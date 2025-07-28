@@ -126,7 +126,7 @@ msgid "Access Logs"
 msgstr "Erişim Günlükleri"
 
 #: src/routes/modules/certificates.ts:20 src/views/certificate/ACMEUser.vue:108
-#: src/views/certificate/components/ACMEUserSelector.vue:86
+#: src/views/certificate/components/ACMEUserSelector.vue:52
 msgid "ACME User"
 msgstr "ACME Kullanıcısı"
 
@@ -143,7 +143,7 @@ msgstr "Eylem"
 #: src/views/environments/list/envColumns.tsx:96
 #: src/views/nginx_log/NginxLogList.vue:67
 #: src/views/notification/notificationColumns.tsx:72
-#: src/views/preference/components/ExternalNotify/columns.tsx:76
+#: src/views/preference/components/ExternalNotify/columns.tsx:73
 #: src/views/site/site_list/columns.tsx:153 src/views/stream/columns.tsx:117
 #: src/views/user/userColumns.tsx:58
 msgid "Actions"
@@ -227,7 +227,7 @@ msgstr "Daha sonra bu sayfayı yenileyin ve tekrar parola anahtarı ekle'ye tık
 msgid "All"
 msgstr "Tümü"
 
-#: src/components/Notification/notifications.ts:189
+#: src/components/Notification/notifications.ts:193
 #: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr "Tüm Kurtarma Kodları Kullanıldı"
@@ -427,7 +427,7 @@ msgstr "AutoCert çalışıyor..."
 msgid "Automatic Restart"
 msgstr "Otomatik Yeniden Başlatma"
 
-#: src/views/certificate/CertificateEditor.vue:257
+#: src/views/certificate/components/CertificateActions.vue:22
 #: src/views/config/components/ConfigLeftPanel.vue:273
 #: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
 #: src/views/nginx_log/NginxLog.vue:174
@@ -665,6 +665,11 @@ msgstr "Sertifika"
 msgid "Cert path is not under the nginx conf dir"
 msgstr "Sertifika yolu nginx conf dizini altında değil"
 
+#: src/views/certificate/components/CertificateFileUpload.vue:120
+#: src/views/certificate/components/CertificateFileUpload.vue:44
+msgid "certificate"
+msgstr "sertifika"
+
 #: src/components/Notification/notifications.ts:42
 msgid "Certificate %{name} has expired"
 msgstr "%{name} sertifikasının süresi doldu"
@@ -678,6 +683,10 @@ msgstr "Sertifika %{name}, %{days} gün sonra sona erecek"
 #: src/components/Notification/notifications.ts:58
 msgid "Certificate %{name} will expire in 1 day"
 msgstr "%{name} sertifikasının süresi 1 gün sonra dolacak"
+
+#: src/views/certificate/components/CertificateDownload.vue:36
+msgid "Certificate content and private key content cannot be empty"
+msgstr "Sertifika içeriği ve özel anahtar içeriği boş olamaz"
 
 #: src/constants/errors/cert.ts:4
 msgid "Certificate decode error"
@@ -696,6 +705,14 @@ msgstr "Sertifikanın süresi doldu"
 #: src/components/Notification/notifications.ts:57
 msgid "Certificate Expiring Soon"
 msgstr "Sertifika Yakında Sona Eriyor"
+
+#: src/views/certificate/components/CertificateDownload.vue:70
+msgid "Certificate files downloaded successfully"
+msgstr "Sertifika dosyaları başarıyla indirildi"
+
+#: src/views/certificate/components/CertificateDownload.vue:41
+msgid "Certificate name cannot be empty"
+msgstr "Sertifika adı boş olamaz"
 
 #: src/language/generate.ts:4
 msgid "Certificate not found: %{error}"
@@ -726,7 +743,7 @@ msgstr "Sertifika başarıyla yenilendi"
 msgid "Certificate revoked successfully"
 msgstr "Sertifika başarıyla iptal edildi"
 
-#: src/views/certificate/CertificateEditor.vue:125
+#: src/views/certificate/components/AutoCertManagement.vue:67
 #: src/views/site/site_edit/components/Cert/Cert.vue:58
 msgid "Certificate Status"
 msgid_plural "Certificates Status"
@@ -1023,7 +1040,6 @@ msgid "Compression level, 1 is lowest, 9 is highest"
 msgstr "Sıkıştırma seviyesi, 1 en düşük, 9 en yüksek"
 
 #: src/views/preference/components/ExternalNotify/columns.tsx:46
-#: src/views/preference/components/ExternalNotify/columns.tsx:58
 msgid "Config"
 msgstr "Yapılandırma"
 
@@ -1169,7 +1185,7 @@ msgstr ""
 #: src/views/environments/group/columns.ts:29
 #: src/views/notification/notificationColumns.tsx:51
 #: src/views/preference/components/AuthSettings/Passkey.vue:95
-#: src/views/preference/components/ExternalNotify/columns.tsx:71
+#: src/views/preference/components/ExternalNotify/columns.tsx:68
 #: src/views/user/userColumns.tsx:46
 msgid "Created at"
 msgstr "Oluşturulma Tarihi"
@@ -1326,27 +1342,28 @@ msgstr "Uzak Yapılandırma Silme Hatası"
 msgid "Delete Remote Config Success"
 msgstr "Uzak Yapılandırma Başarıyla Silindi"
 
-#: src/components/Notification/notifications.ts:93 src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:97 src/language/constants.ts:50
 msgid "Delete Remote Site Error"
 msgstr "Uzak Site Silme Hatası"
 
-#: src/components/Notification/notifications.ts:97 src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:101
+#: src/language/constants.ts:49
 msgid "Delete Remote Site Success"
 msgstr "Uzak Site Başarıyla Silindi"
 
-#: src/components/Notification/notifications.ts:149
+#: src/components/Notification/notifications.ts:153
 msgid "Delete Remote Stream Error"
 msgstr "Uzak Akış Silme Hatası"
 
-#: src/components/Notification/notifications.ts:153
+#: src/components/Notification/notifications.ts:157
 msgid "Delete Remote Stream Success"
 msgstr "Uzak Akış Başarıyla Silindi"
 
-#: src/components/Notification/notifications.ts:94
+#: src/components/Notification/notifications.ts:98
 msgid "Delete site %{name} from %{node} failed"
 msgstr "%{node} üzerindeki %{name} sitesi silinemedi"
 
-#: src/components/Notification/notifications.ts:98
+#: src/components/Notification/notifications.ts:102
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "%{node} üzerindeki %{name} sitesi başarıyla silindi"
 
@@ -1354,11 +1371,11 @@ msgstr "%{node} üzerindeki %{name} sitesi başarıyla silindi"
 msgid "Delete site: %{site_name}"
 msgstr "Siteyi sil: %{site_name}"
 
-#: src/components/Notification/notifications.ts:150
+#: src/components/Notification/notifications.ts:154
 msgid "Delete stream %{name} from %{node} failed"
 msgstr "%{node} üzerindeki %{name} akışı silinemedi"
 
-#: src/components/Notification/notifications.ts:154
+#: src/components/Notification/notifications.ts:158
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "%{name} akışı %{node} üzerinden başarıyla silindi"
 
@@ -1444,53 +1461,53 @@ msgstr "Devre dışı bırak"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "%{name} için otomatik yenileme devre dışı bırakılamadı"
 
-#: src/components/Notification/notifications.ts:101
+#: src/components/Notification/notifications.ts:105
 #: src/language/constants.ts:52
 msgid "Disable Remote Site Error"
 msgstr "Uzak Site Devre Dışı Bırakma Hatası"
 
-#: src/components/Notification/notifications.ts:125
+#: src/components/Notification/notifications.ts:129
 msgid "Disable Remote Site Maintenance Error"
 msgstr "Uzak Site Bakımını Devre Dışı Bırakma Hatası"
 
-#: src/components/Notification/notifications.ts:129
+#: src/components/Notification/notifications.ts:133
 msgid "Disable Remote Site Maintenance Success"
 msgstr "Uzak Site Bakımı Başarıyla Devre Dışı Bırakıldı"
 
-#: src/components/Notification/notifications.ts:105
+#: src/components/Notification/notifications.ts:109
 #: src/language/constants.ts:51
 msgid "Disable Remote Site Success"
 msgstr "Uzak Site Başarıyla Devre Dışı Bırakıldı"
 
-#: src/components/Notification/notifications.ts:157
+#: src/components/Notification/notifications.ts:161
 msgid "Disable Remote Stream Error"
 msgstr "Uzak Akış Devre Dışı Bırakma Hatası"
 
-#: src/components/Notification/notifications.ts:161
+#: src/components/Notification/notifications.ts:165
 msgid "Disable Remote Stream Success"
 msgstr "Uzak Akış Devre Dışı Bırakma Başarılı"
 
-#: src/components/Notification/notifications.ts:102
+#: src/components/Notification/notifications.ts:106
 msgid "Disable site %{name} from %{node} failed"
 msgstr "%{node} üzerindeki %{name} sitesi devre dışı bırakılamadı"
 
-#: src/components/Notification/notifications.ts:106
+#: src/components/Notification/notifications.ts:110
 msgid "Disable site %{name} from %{node} successfully"
 msgstr "%{node} üzerindeki %{name} sitesi başarıyla devre dışı bırakıldı"
 
-#: src/components/Notification/notifications.ts:126
+#: src/components/Notification/notifications.ts:130
 msgid "Disable site %{name} maintenance on %{node} failed"
 msgstr "%{node} üzerindeki %{name} sitesi bakımını devre dışı bırakma başarısız oldu"
 
-#: src/components/Notification/notifications.ts:130
+#: src/components/Notification/notifications.ts:134
 msgid "Disable site %{name} maintenance on %{node} successfully"
 msgstr "%{name} sitesinin bakımı %{node} üzerinde başarıyla devre dışı bırakıldı"
 
-#: src/components/Notification/notifications.ts:158
+#: src/components/Notification/notifications.ts:162
 msgid "Disable stream %{name} from %{node} failed"
 msgstr "%{node} üzerindeki %{name} akışı devre dışı bırakılamadı"
 
-#: src/components/Notification/notifications.ts:162
+#: src/components/Notification/notifications.ts:166
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr "Akış %{name}, %{node} üzerinden başarıyla devre dışı bırakıldı"
 
@@ -1582,11 +1599,15 @@ msgstr[0] "Belge"
 msgid "Domain"
 msgstr "Alan Adı"
 
-#: src/views/certificate/CertificateEditor.vue:109
+#: src/views/certificate/components/AutoCertManagement.vue:55
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
 msgstr ""
 "Alan adları listesi boş, %{config} için Otomatik Sertifikayı yeniden açmayı "
 "deneyin"
+
+#: src/views/certificate/components/CertificateDownload.vue:93
+msgid "Download Certificate Files"
+msgstr "Sertifika Dosyalarını İndir"
 
 #: src/language/constants.ts:27
 msgid "Download latest release error"
@@ -1595,6 +1616,14 @@ msgstr "En son sürümü indirme hatası"
 #: src/language/constants.ts:26
 msgid "Downloading latest release"
 msgstr "En son sürüm indiriliyor"
+
+#: src/views/certificate/components/CertificateContentEditor.vue:126
+msgid "Drop certificate file here"
+msgstr "Sertifika dosyasını buraya bırakın"
+
+#: src/views/certificate/components/CertificateContentEditor.vue:175
+msgid "Drop private key file here"
+msgstr "Özel anahtar dosyasını buraya bırakın"
 
 #: src/views/environments/list/BatchUpgrader.vue:189
 #: src/views/system/Upgrade.vue:237
@@ -1699,53 +1728,53 @@ msgstr "HTTPS'yi Etkinleştir"
 msgid "Enable Proxy Cache"
 msgstr "Proxy Önbelleğini Etkinleştir"
 
-#: src/components/Notification/notifications.ts:109
+#: src/components/Notification/notifications.ts:113
 #: src/language/constants.ts:54
 msgid "Enable Remote Site Error"
 msgstr "Uzak Site Etkinleştirme Hatası"
 
-#: src/components/Notification/notifications.ts:117
+#: src/components/Notification/notifications.ts:121
 msgid "Enable Remote Site Maintenance Error"
 msgstr "Uzak Site Bakımını Etkinleştirme Hatası"
 
-#: src/components/Notification/notifications.ts:121
+#: src/components/Notification/notifications.ts:125
 msgid "Enable Remote Site Maintenance Success"
 msgstr "Uzak Site Bakımını Etkinleştirme Başarılı"
 
-#: src/components/Notification/notifications.ts:113
+#: src/components/Notification/notifications.ts:117
 #: src/language/constants.ts:53
 msgid "Enable Remote Site Success"
 msgstr "Uzak Site Başarıyla Etkinleştirildi"
 
-#: src/components/Notification/notifications.ts:165
+#: src/components/Notification/notifications.ts:169
 msgid "Enable Remote Stream Error"
 msgstr "Uzaktan Akış Etkinleştirme Hatası"
 
-#: src/components/Notification/notifications.ts:169
+#: src/components/Notification/notifications.ts:173
 msgid "Enable Remote Stream Success"
 msgstr "Uzaktan Akış Başarıyla Etkinleştirildi"
 
-#: src/components/Notification/notifications.ts:118
+#: src/components/Notification/notifications.ts:122
 msgid "Enable site %{name} maintenance on %{node} failed"
 msgstr "%{node} üzerinde %{name} sitesi bakımını etkinleştirme başarısız oldu"
 
-#: src/components/Notification/notifications.ts:122
+#: src/components/Notification/notifications.ts:126
 msgid "Enable site %{name} maintenance on %{node} successfully"
 msgstr "%{node} üzerinde %{name} sitesi bakımı başarıyla etkinleştirildi"
 
-#: src/components/Notification/notifications.ts:110
+#: src/components/Notification/notifications.ts:114
 msgid "Enable site %{name} on %{node} failed"
 msgstr "%{node} üzerinde %{name} sitesi etkinleştirilemedi"
 
-#: src/components/Notification/notifications.ts:114
+#: src/components/Notification/notifications.ts:118
 msgid "Enable site %{name} on %{node} successfully"
 msgstr "%{node} üzerinde %{name} sitesi başarıyla etkinleştirildi"
 
-#: src/components/Notification/notifications.ts:166
+#: src/components/Notification/notifications.ts:170
 msgid "Enable stream %{name} on %{node} failed"
 msgstr "%{node} üzerinde %{name} akışı etkinleştirilemedi"
 
-#: src/components/Notification/notifications.ts:170
+#: src/components/Notification/notifications.ts:174
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "%{node} üzerinde %{name} akışı başarıyla etkinleştirildi"
 
@@ -1882,8 +1911,16 @@ msgstr "Excel'e Aktar"
 msgid "External Docker Container"
 msgstr "Harici Docker Konteyneri"
 
+#: src/constants/errors/notification.ts:5
+msgid "External notification configuration not found"
+msgstr "Harici bildirim yapılandırması bulunamadı"
+
+#: src/components/Notification/notifications.ts:93
+msgid "External Notification Test"
+msgstr "Harici Bildirim Testi"
+
 #: src/views/preference/Preference.vue:58
-#: src/views/preference/tabs/ExternalNotify.vue:9
+#: src/views/preference/tabs/ExternalNotify.vue:31
 msgid "External Notify"
 msgstr "Harici Bildirim"
 
@@ -2049,6 +2086,10 @@ msgstr "Devre dışı bırakılamadı %{msg}"
 msgid "Failed to disable maintenance mode %{msg}"
 msgstr "Bakım modu devre dışı bırakılamadı: %{msg}"
 
+#: src/views/certificate/components/CertificateDownload.vue:74
+msgid "Failed to download certificate files"
+msgstr "Sertifika dosyaları indirilemedi"
+
 #: src/views/site/components/SiteStatusSelect.vue:60
 #: src/views/stream/components/StreamStatusSelect.vue:32
 msgid "Failed to enable %{msg}"
@@ -2162,6 +2203,10 @@ msgstr "Görüntü çekme başarısız: {0}"
 msgid "Failed to read encrypted file: {0}"
 msgstr "Şifrelenmiş dosya okunamadı: {0}"
 
+#: src/views/certificate/components/CertificateFileUpload.vue:69
+msgid "Failed to read file"
+msgstr "Dosya okunamadı"
+
 #: src/constants/errors/backup.ts:22
 msgid "Failed to read file: {0}"
 msgstr "Dosya okunamadı: {0}"
@@ -2206,9 +2251,17 @@ msgstr "Sertifika iptal edilemedi: %{error}"
 msgid "Failed to save Nginx performance settings"
 msgstr "Nginx performans ayarları kaydedilemedi"
 
+#: src/views/preference/tabs/ExternalNotify.vue:21
+msgid "Failed to send test message"
+msgstr "Test mesajı gönderilemedi"
+
 #: src/constants/errors/docker.ts:14
 msgid "Failed to start temp container: {0}"
 msgstr "Geçici konteyner başlatılamadı: {0}"
+
+#: src/views/certificate/components/CertificateFileUpload.vue:103
+msgid "Failed to upload file"
+msgstr "Dosya yüklenemedi"
 
 #: src/constants/errors/backup.ts:38
 msgid "Failed to verify hashes: {0}"
@@ -2253,6 +2306,14 @@ msgstr "Dosya Bulunamadı"
 #: src/constants/errors/config.ts:7
 msgid "File or directory not found: {0}"
 msgstr "Dosya veya dizin bulunamadı: {0}"
+
+#: src/views/certificate/components/CertificateFileUpload.vue:53
+msgid "File size cannot exceed 5MB"
+msgstr "Dosya boyutu 5 MB'ı aşamaz"
+
+#: src/views/certificate/components/CertificateFileUpload.vue:99
+msgid "File uploaded successfully"
+msgstr "Dosya başarıyla yüklendi"
 
 #: src/constants/errors/cert.ts:2
 msgid "Filename is empty"
@@ -2471,7 +2532,7 @@ msgid "Import"
 msgstr "İçe Aktar"
 
 #: src/routes/modules/certificates.ts:46
-#: src/views/certificate/CertificateEditor.vue:82
+#: src/views/certificate/CertificateEditor.vue:86
 msgid "Import Certificate"
 msgstr "Sertifika İçe Aktar"
 
@@ -2562,6 +2623,11 @@ msgstr "Geçersiz AES IV biçimi: {0}"
 msgid "Invalid AES key format: {0}"
 msgstr "Geçersiz AES anahtar biçimi: {0}"
 
+#: src/views/certificate/components/CertificateDownload.vue:53
+#: src/views/certificate/components/CertificateFileUpload.vue:87
+msgid "Invalid certificate format"
+msgstr "Geçersiz sertifika biçimi"
+
 #: src/constants/errors/user.ts:14
 msgid "Invalid claims type"
 msgstr "Geçersiz talep türü"
@@ -2583,6 +2649,10 @@ msgstr "Geçersiz dosya adı"
 msgid "Invalid folder name"
 msgstr "Geçersiz klasör adı"
 
+#: src/constants/errors/notification.ts:4
+msgid "Invalid notification ID"
+msgstr "Geçersiz bildirim kimliği"
+
 #: src/constants/errors/notification.ts:3
 msgid "Invalid notifier config"
 msgstr "Geçersiz bildirim yapılandırması"
@@ -2602,6 +2672,11 @@ msgstr "Geçersiz parola veya kurtarma kodu"
 #: src/constants/errors/backup.ts:73
 msgid "Invalid path: {0}"
 msgstr "Geçersiz yol: {0}"
+
+#: src/views/certificate/components/CertificateDownload.vue:58
+#: src/views/certificate/components/CertificateFileUpload.vue:93
+msgid "Invalid private key format"
+msgstr "Geçersiz özel anahtar biçimi"
 
 #: src/constants/errors/user.ts:5
 msgid "Invalid recovery code"
@@ -2708,8 +2783,10 @@ msgstr "Değiştirmek istemiyorsanız boş bırakın"
 msgid "Leave blank if you don't need this."
 msgstr "Buna ihtiyacınız yoksa boş bırakın."
 
-#: src/views/certificate/CertificateEditor.vue:221
-#: src/views/certificate/CertificateEditor.vue:235
+#: src/views/certificate/components/CertificateContentEditor.vue:118
+#: src/views/certificate/components/CertificateContentEditor.vue:136
+#: src/views/certificate/components/CertificateContentEditor.vue:167
+#: src/views/certificate/components/CertificateContentEditor.vue:185
 msgid "Leave blank will not change anything"
 msgstr "Boş bırakmak hiçbir şeyi değiştirmeyecektir"
 
@@ -2796,7 +2873,7 @@ msgstr "Konum"
 msgid "Locations"
 msgstr "Konumlar"
 
-#: src/views/certificate/CertificateEditor.vue:245
+#: src/views/certificate/CertificateEditor.vue:126
 msgid "Log"
 msgstr "Günlük"
 
@@ -3013,7 +3090,7 @@ msgid "Modify"
 msgstr "Değiştir"
 
 #: src/routes/modules/certificates.ts:36
-#: src/views/certificate/CertificateEditor.vue:82
+#: src/views/certificate/CertificateEditor.vue:86
 msgid "Modify Certificate"
 msgstr "Sertifikayı Düzenle"
 
@@ -3048,8 +3125,8 @@ msgstr "Çok Satırlı Yönergeler"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:199
 #: src/views/backup/AutoBackup/AutoBackup.vue:11
 #: src/views/certificate/ACMEUser.vue:11
-#: src/views/certificate/CertificateEditor.vue:160
 #: src/views/certificate/CertificateList/certColumns.tsx:9
+#: src/views/certificate/components/CertificateBasicInfo.vue:23
 #: src/views/certificate/DNSCredential.vue:9
 #: src/views/config/components/ConfigRightPanel/Basic.vue:34
 #: src/views/config/components/Delete.vue:123
@@ -3549,6 +3626,10 @@ msgstr "OpenAI"
 msgid "Or"
 msgstr "Veya"
 
+#: src/views/certificate/components/CertificateFileUpload.vue:146
+msgid "or drag file to editor below"
+msgstr "veya dosyayı aşağıdaki düzenleyiciye sürükleyin"
+
 #: src/views/preference/components/AuthSettings/TOTP.vue:112
 msgid "Or enter the secret: %{secret}"
 msgstr "Veya gizli anahtarı girin: %{secret}"
@@ -3764,7 +3845,7 @@ msgstr ""
 "bilgilerini ekleyin, ardından DNS sağlayıcısının API'sini talep etmek için "
 "aşağıdaki kimlik bilgilerinden birini seçin."
 
-#: src/components/Notification/notifications.ts:190
+#: src/components/Notification/notifications.ts:194
 #: src/language/constants.ts:59
 msgid ""
 "Please generate new recovery codes in the preferences immediately to "
@@ -3835,6 +3916,10 @@ msgstr ""
 msgid "Please select a backup file"
 msgstr "Lütfen bir yedekleme dosyası seçin"
 
+#: src/views/certificate/components/CertificateFileUpload.vue:45
+msgid "Please select a valid %{type} file (%{extensions})"
+msgstr "Lütfen geçerli bir %{type} dosyası seçin (%{extensions})"
+
 #: src/language/curd.ts:33
 msgid "Please select at least one item"
 msgstr "Lütfen en az bir öğe seçin"
@@ -3889,6 +3974,11 @@ msgstr "Tercih"
 #: src/language/constants.ts:8
 msgid "Preparing lego configurations"
 msgstr "Lego yapılandırmaları hazırlanıyor"
+
+#: src/views/certificate/components/CertificateFileUpload.vue:120
+#: src/views/certificate/components/CertificateFileUpload.vue:44
+msgid "private key"
+msgstr "özel anahtar"
 
 #: src/components/PortScanner/PortScannerCompact.vue:55
 msgid "Process"
@@ -4134,41 +4224,41 @@ msgstr "Uzak Yapılandırmayı Yeniden Adlandırma Hatası"
 msgid "Rename Remote Config Success"
 msgstr "Uzak Yapılandırma Yeniden Adlandırma Başarılı"
 
-#: src/components/Notification/notifications.ts:133
+#: src/components/Notification/notifications.ts:137
 #: src/language/constants.ts:56
 msgid "Rename Remote Site Error"
 msgstr "Uzak Site Adı Değiştirme Hatası"
 
-#: src/components/Notification/notifications.ts:137
+#: src/components/Notification/notifications.ts:141
 #: src/language/constants.ts:55
 msgid "Rename Remote Site Success"
 msgstr "Uzak Site Yeniden Adlandırma Başarılı"
 
-#: src/components/Notification/notifications.ts:173
+#: src/components/Notification/notifications.ts:177
 msgid "Rename Remote Stream Error"
 msgstr "Uzak Akışı Yeniden Adlandırma Hatası"
 
-#: src/components/Notification/notifications.ts:177
+#: src/components/Notification/notifications.ts:181
 msgid "Rename Remote Stream Success"
 msgstr "Uzak Akış Yeniden Adlandırma Başarılı"
 
-#: src/components/Notification/notifications.ts:134
+#: src/components/Notification/notifications.ts:138
 msgid "Rename site %{name} to %{new_name} on %{node} failed"
 msgstr "%{node} üzerinde %{name} sitesi %{new_name} olarak yeniden adlandırılamadı"
 
-#: src/components/Notification/notifications.ts:138
+#: src/components/Notification/notifications.ts:142
 msgid "Rename site %{name} to %{new_name} on %{node} successfully"
 msgstr ""
 "Site %{name}, %{node} üzerinde %{new_name} olarak başarıyla yeniden "
 "adlandırıldı"
 
-#: src/components/Notification/notifications.ts:174
+#: src/components/Notification/notifications.ts:178
 msgid "Rename stream %{name} to %{new_name} on %{node} failed"
 msgstr ""
 "%{node} üzerinde %{name} akışını %{new_name} olarak yeniden adlandırma "
 "başarısız oldu"
 
-#: src/components/Notification/notifications.ts:178
+#: src/components/Notification/notifications.ts:182
 msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
 msgstr ""
 "Akış %{name}, %{node} üzerinde %{new_name} olarak başarıyla yeniden "
@@ -4464,7 +4554,8 @@ msgstr "Cumartesi"
 
 #: src/components/ChatGPT/ChatMessage.vue:215
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:129
-#: src/language/curd.ts:18 src/views/certificate/CertificateEditor.vue:264
+#: src/language/curd.ts:18
+#: src/views/certificate/components/CertificateActions.vue:29
 #: src/views/config/components/ConfigLeftPanel.vue:282
 #: src/views/config/components/ConfigName.vue:59
 #: src/views/preference/components/AuthSettings/Passkey.vue:130
@@ -4484,37 +4575,37 @@ msgstr "Yönergeleri Kaydet"
 msgid "Save error %{msg}"
 msgstr "Kaydetme hatası %{msg}"
 
-#: src/components/Notification/notifications.ts:141
+#: src/components/Notification/notifications.ts:145
 #: src/language/constants.ts:48
 msgid "Save Remote Site Error"
 msgstr "Uzak Site Kaydetme Hatası"
 
-#: src/components/Notification/notifications.ts:145
+#: src/components/Notification/notifications.ts:149
 #: src/language/constants.ts:47
 msgid "Save Remote Site Success"
 msgstr "Uzak Site Başarıyla Kaydedildi"
 
-#: src/components/Notification/notifications.ts:181
+#: src/components/Notification/notifications.ts:185
 msgid "Save Remote Stream Error"
 msgstr "Uzak Akış Kaydetme Hatası"
 
-#: src/components/Notification/notifications.ts:185
+#: src/components/Notification/notifications.ts:189
 msgid "Save Remote Stream Success"
 msgstr "Uzak Akış Başarıyla Kaydedildi"
 
-#: src/components/Notification/notifications.ts:142
+#: src/components/Notification/notifications.ts:146
 msgid "Save site %{name} to %{node} failed"
 msgstr "%{name} sitesi %{node} üzerine kaydedilemedi"
 
-#: src/components/Notification/notifications.ts:146
+#: src/components/Notification/notifications.ts:150
 msgid "Save site %{name} to %{node} successfully"
 msgstr "%{name} sitesi %{node} üzerine başarıyla kaydedildi"
 
-#: src/components/Notification/notifications.ts:182
+#: src/components/Notification/notifications.ts:186
 msgid "Save stream %{name} to %{node} failed"
 msgstr "Akış %{name}, %{node} üzerine kaydedilemedi"
 
-#: src/components/Notification/notifications.ts:186
+#: src/components/Notification/notifications.ts:190
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "Akış %{name}, %{node} üzerine başarıyla kaydedildi"
 
@@ -4636,7 +4727,7 @@ msgstr "Gönder"
 msgid "Server"
 msgstr "Sunucu"
 
-#: src/views/certificate/CertificateEditor.vue:54
+#: src/views/certificate/CertificateEditor.vue:58
 msgid "Server error"
 msgstr "Sunucu hatası"
 
@@ -4790,7 +4881,7 @@ msgstr "Önbellek yöneticisi yinelemeleri arasındaki bekleme süresi"
 msgid "Sponsor"
 msgstr "Sponsor"
 
-#: src/views/certificate/CertificateEditor.vue:211
+#: src/views/certificate/components/CertificateContentEditor.vue:93
 msgid "SSL Certificate Content"
 msgstr "SSL Sertifika İçeriği"
 
@@ -4802,15 +4893,15 @@ msgstr "SSL sertifika dosyası Nginx yapılandırma dizini altında olmalıdır:
 msgid "SSL certificate file not found"
 msgstr "SSL sertifika dosyası bulunamadı"
 
-#: src/views/certificate/CertificateEditor.vue:225
+#: src/views/certificate/components/CertificateContentEditor.vue:142
 msgid "SSL Certificate Key Content"
 msgstr "SSL Sertifika Anahtarı İçeriği"
 
-#: src/views/certificate/CertificateEditor.vue:190
+#: src/views/certificate/components/CertificateBasicInfo.vue:55
 msgid "SSL Certificate Key Path"
 msgstr "SSL Sertifika Anahtar Yolu"
 
-#: src/views/certificate/CertificateEditor.vue:175
+#: src/views/certificate/components/CertificateBasicInfo.vue:39
 #: src/views/preference/tabs/ServerSettings.vue:37
 msgid "SSL Certificate Path"
 msgstr "SSL Sertifika Yolu"
@@ -5054,7 +5145,7 @@ msgstr "Senkronizasyon Düğümleri"
 msgid "Sync strategy"
 msgstr "Senkronizasyon stratejisi"
 
-#: src/views/certificate/CertificateEditor.vue:204
+#: src/views/certificate/components/CertificateBasicInfo.vue:70
 msgid "Sync to"
 msgstr "Senkronize Et"
 
@@ -5076,7 +5167,7 @@ msgstr "Sistem Yedekleme"
 msgid "System Check"
 msgstr "Sistem Kontrolü"
 
-#: src/views/certificate/components/ACMEUserSelector.vue:89
+#: src/views/certificate/components/ACMEUserSelector.vue:55
 msgid "System Initial User"
 msgstr "Sistem Başlangıç Kullanıcısı"
 
@@ -5108,6 +5199,14 @@ msgstr "Terminal"
 msgid "Terminal Start Command"
 msgstr "Terminal Başlatma Komutu"
 
+#: src/views/preference/tabs/ExternalNotify.vue:46
+msgid "Test"
+msgstr "Test"
+
+#: src/views/preference/tabs/ExternalNotify.vue:17
+msgid "Test message sent successfully"
+msgstr "Test mesajı başarıyla gönderildi"
+
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:141
 msgid "Test S3 Connection"
 msgstr "S3 Bağlantısını Test Et"
@@ -5130,11 +5229,11 @@ msgstr ""
 "ICP Numarası yalnızca harfler, unicode, sayılar, kısa çizgiler, uzun "
 "çizgiler, iki nokta üst üste ve noktalar içermelidir."
 
-#: src/views/certificate/CertificateEditor.vue:214
+#: src/views/certificate/components/CertificateContentEditor.vue:96
 msgid "The input is not a SSL Certificate"
 msgstr "Girdi bir SSL Sertifikası değil"
 
-#: src/views/certificate/CertificateEditor.vue:228
+#: src/views/certificate/components/CertificateContentEditor.vue:145
 msgid "The input is not a SSL Certificate Key"
 msgstr "Girdi bir SSL Sertifika Anahtarı değil"
 
@@ -5173,11 +5272,11 @@ msgstr ""
 msgid "The parameter of server_name is required"
 msgstr "server_name parametresi gereklidir"
 
-#: src/views/certificate/CertificateEditor.vue:179
+#: src/views/certificate/components/CertificateBasicInfo.vue:43
 msgid "The path exists, but the file is not a certificate"
 msgstr "Yol mevcut, ancak dosya bir sertifika değil"
 
-#: src/views/certificate/CertificateEditor.vue:194
+#: src/views/certificate/components/CertificateBasicInfo.vue:59
 msgid "The path exists, but the file is not a private key"
 msgstr "Yol mevcut, ancak dosya bir özel anahtar değil"
 
@@ -5239,11 +5338,11 @@ msgstr ""
 "hesabınıza erişmek için son çaredir. Bu kodları bulamazsanız, hesabınıza "
 "erişimi kaybedersiniz."
 
-#: src/views/certificate/CertificateEditor.vue:99
+#: src/views/certificate/components/AutoCertManagement.vue:45
 msgid "This Auto Cert item is invalid, please remove it."
 msgstr "Bu Otomatik Sertifika öğesi geçersiz, lütfen kaldırın."
 
-#: src/views/certificate/CertificateEditor.vue:89
+#: src/views/certificate/components/AutoCertManagement.vue:35
 msgid "This certificate is managed by Nginx UI"
 msgstr "Bu sertifika Nginx UI tarafından yönetilmektedir"
 
@@ -5251,9 +5350,9 @@ msgstr "Bu sertifika Nginx UI tarafından yönetilmektedir"
 msgid "This directory is protected and cannot be deleted for system safety."
 msgstr "Bu dizin korumalıdır ve sistem güvenliği için silinemez."
 
-#: src/views/certificate/CertificateEditor.vue:163
-#: src/views/certificate/CertificateEditor.vue:177
-#: src/views/certificate/CertificateEditor.vue:192
+#: src/views/certificate/components/CertificateBasicInfo.vue:26
+#: src/views/certificate/components/CertificateBasicInfo.vue:41
+#: src/views/certificate/components/CertificateBasicInfo.vue:57
 msgid "This field is required"
 msgstr "Bu alan zorunludur"
 
@@ -5278,6 +5377,10 @@ msgid ""
 "This field should only contain letters, unicode characters, numbers, and "
 "-_./:"
 msgstr "Bu alan yalnızca harfler, Unicode karakterler, sayılar ve -_./: içermelidir"
+
+#: src/components/Notification/notifications.ts:94
+msgid "This is a test message sent at %{timestamp} from Nginx UI."
+msgstr "Bu, Nginx UI'den %{Timestamp} adresinden gönderilen bir test mesajıdır."
 
 #: src/views/dashboard/NginxDashBoard.vue:175
 msgid ""
@@ -5549,6 +5652,10 @@ msgstr "Başarıyla yükseltildi"
 #: src/views/system/Upgrade.vue:81
 msgid "Upgrading Nginx UI, please wait..."
 msgstr "Nginx UI güncelleniyor, lütfen bekleyin..."
+
+#: src/views/certificate/components/CertificateFileUpload.vue:121
+msgid "Upload %{type} File"
+msgstr "%{type} Dosyasını Yükle"
 
 #: src/language/curd.ts:49
 msgid "Upload Files"

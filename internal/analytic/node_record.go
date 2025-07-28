@@ -688,8 +688,8 @@ func nodeAnalyticRecord(env *model.Environment, ctx context.Context) error {
 				NodeMap[env.ID].NodeStat.Status = true
 				NodeMap[env.ID].NodeStat.ResponseAt = time.Now()
 
-				logger.Debugf("nodeAnalyticRecord: Updated complete Node info for environment ID: %d, Version: %s, Status: %t, ResponseAt: %v",
-					env.ID, fullNode.Version, NodeMap[env.ID].NodeStat.Status, NodeMap[env.ID].NodeStat.ResponseAt)
+				logger.Debugf("nodeAnalyticRecord: Updated complete Node info for environment ID: %d, Version: %s, Status: %t",
+					env.ID, fullNode.Version, NodeMap[env.ID].NodeStat.Status)
 			} else {
 				// Fall back to NodeStat only
 				var nodeStat NodeStat
@@ -699,8 +699,8 @@ func nodeAnalyticRecord(env *model.Environment, ctx context.Context) error {
 					nodeStat.ResponseAt = time.Now()
 
 					NodeMap[env.ID].NodeStat = nodeStat
-					logger.Debugf("nodeAnalyticRecord: Updated NodeStat for environment ID: %d, Status: %t, ResponseAt: %v",
-						env.ID, nodeStat.Status, nodeStat.ResponseAt)
+					logger.Debugf("nodeAnalyticRecord: Updated NodeStat for environment ID: %d, Status: %t",
+						env.ID, nodeStat.Status)
 				} else {
 					logger.Debugf("nodeAnalyticRecord: Failed to unmarshal message for environment ID: %d, error: %v", env.ID, err)
 				}

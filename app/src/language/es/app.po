@@ -132,7 +132,7 @@ msgid "Access Logs"
 msgstr "Logs de acceso"
 
 #: src/routes/modules/certificates.ts:20 src/views/certificate/ACMEUser.vue:108
-#: src/views/certificate/components/ACMEUserSelector.vue:86
+#: src/views/certificate/components/ACMEUserSelector.vue:52
 msgid "ACME User"
 msgstr "Usuario ACME"
 
@@ -149,7 +149,7 @@ msgstr "Acción"
 #: src/views/environments/list/envColumns.tsx:96
 #: src/views/nginx_log/NginxLogList.vue:67
 #: src/views/notification/notificationColumns.tsx:72
-#: src/views/preference/components/ExternalNotify/columns.tsx:76
+#: src/views/preference/components/ExternalNotify/columns.tsx:73
 #: src/views/site/site_list/columns.tsx:153 src/views/stream/columns.tsx:117
 #: src/views/user/userColumns.tsx:58
 msgid "Actions"
@@ -235,7 +235,7 @@ msgstr ""
 msgid "All"
 msgstr "Todos"
 
-#: src/components/Notification/notifications.ts:189
+#: src/components/Notification/notifications.ts:193
 #: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr "Todos los códigos de recuperación han sido utilizados"
@@ -435,7 +435,7 @@ msgstr "AutoCert se está ejecutando..."
 msgid "Automatic Restart"
 msgstr "Reinicio automático"
 
-#: src/views/certificate/CertificateEditor.vue:257
+#: src/views/certificate/components/CertificateActions.vue:22
 #: src/views/config/components/ConfigLeftPanel.vue:273
 #: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
 #: src/views/nginx_log/NginxLog.vue:174
@@ -687,6 +687,11 @@ msgstr ""
 "La ruta del certificado no está dentro del directorio de configuración de "
 "nginx"
 
+#: src/views/certificate/components/CertificateFileUpload.vue:120
+#: src/views/certificate/components/CertificateFileUpload.vue:44
+msgid "certificate"
+msgstr "certificado"
+
 #: src/components/Notification/notifications.ts:42
 msgid "Certificate %{name} has expired"
 msgstr "El certificado %{name} ha expirado"
@@ -700,6 +705,10 @@ msgstr "El certificado %{name} expirará en %{days} días"
 #: src/components/Notification/notifications.ts:58
 msgid "Certificate %{name} will expire in 1 day"
 msgstr "El certificado %{name} expirará en 1 día"
+
+#: src/views/certificate/components/CertificateDownload.vue:36
+msgid "Certificate content and private key content cannot be empty"
+msgstr "El contenido del certificado y la clave privada no pueden estar vacíos"
 
 #: src/constants/errors/cert.ts:4
 msgid "Certificate decode error"
@@ -718,6 +727,14 @@ msgstr "Certificado caducado"
 #: src/components/Notification/notifications.ts:57
 msgid "Certificate Expiring Soon"
 msgstr "Certificado a punto de expirar"
+
+#: src/views/certificate/components/CertificateDownload.vue:70
+msgid "Certificate files downloaded successfully"
+msgstr "Archivos de certificado descargados correctamente"
+
+#: src/views/certificate/components/CertificateDownload.vue:41
+msgid "Certificate name cannot be empty"
+msgstr "El nombre del certificado no puede estar vacío"
 
 #: src/language/generate.ts:4
 msgid "Certificate not found: %{error}"
@@ -748,7 +765,7 @@ msgstr "Certificado renovado con éxito"
 msgid "Certificate revoked successfully"
 msgstr "Certificado revocado con éxito"
 
-#: src/views/certificate/CertificateEditor.vue:125
+#: src/views/certificate/components/AutoCertManagement.vue:67
 #: src/views/site/site_edit/components/Cert/Cert.vue:58
 msgid "Certificate Status"
 msgid_plural "Certificates Status"
@@ -1042,7 +1059,6 @@ msgid "Compression level, 1 is lowest, 9 is highest"
 msgstr "Nivel de compresión, 1 es más bajo, 9 es más alto"
 
 #: src/views/preference/components/ExternalNotify/columns.tsx:46
-#: src/views/preference/components/ExternalNotify/columns.tsx:58
 msgid "Config"
 msgstr "Configuración"
 
@@ -1189,7 +1205,7 @@ msgstr ""
 #: src/views/environments/group/columns.ts:29
 #: src/views/notification/notificationColumns.tsx:51
 #: src/views/preference/components/AuthSettings/Passkey.vue:95
-#: src/views/preference/components/ExternalNotify/columns.tsx:71
+#: src/views/preference/components/ExternalNotify/columns.tsx:68
 #: src/views/user/userColumns.tsx:46
 msgid "Created at"
 msgstr "Creado el"
@@ -1348,27 +1364,28 @@ msgstr "Error al eliminar la configuración remota"
 msgid "Delete Remote Config Success"
 msgstr "Eliminación de configuración remota exitosa"
 
-#: src/components/Notification/notifications.ts:93 src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:97 src/language/constants.ts:50
 msgid "Delete Remote Site Error"
 msgstr "Error al eliminar sitio remoto"
 
-#: src/components/Notification/notifications.ts:97 src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:101
+#: src/language/constants.ts:49
 msgid "Delete Remote Site Success"
 msgstr "Borrado del sitio remoto correcto"
 
-#: src/components/Notification/notifications.ts:149
+#: src/components/Notification/notifications.ts:153
 msgid "Delete Remote Stream Error"
 msgstr "Error al eliminar transmisión remota"
 
-#: src/components/Notification/notifications.ts:153
+#: src/components/Notification/notifications.ts:157
 msgid "Delete Remote Stream Success"
 msgstr "Eliminación de transmisión remota exitosa"
 
-#: src/components/Notification/notifications.ts:94
+#: src/components/Notification/notifications.ts:98
 msgid "Delete site %{name} from %{node} failed"
 msgstr "Eliminar el sitio %{name} de %{node} falló"
 
-#: src/components/Notification/notifications.ts:98
+#: src/components/Notification/notifications.ts:102
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "Sitio %{name} eliminado de %{node} correctamente"
 
@@ -1376,11 +1393,11 @@ msgstr "Sitio %{name} eliminado de %{node} correctamente"
 msgid "Delete site: %{site_name}"
 msgstr "Eliminar sitio: %{site_name}"
 
-#: src/components/Notification/notifications.ts:150
+#: src/components/Notification/notifications.ts:154
 msgid "Delete stream %{name} from %{node} failed"
 msgstr "Error al eliminar el flujo %{name} de %{node}"
 
-#: src/components/Notification/notifications.ts:154
+#: src/components/Notification/notifications.ts:158
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "Se eliminó el flujo %{name} de %{node} correctamente"
 
@@ -1466,53 +1483,53 @@ msgstr "Desactivar"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "Error al desactivar la renovación automática para %{name}"
 
-#: src/components/Notification/notifications.ts:101
+#: src/components/Notification/notifications.ts:105
 #: src/language/constants.ts:52
 msgid "Disable Remote Site Error"
 msgstr "Error al deshabilitar sitio remoto"
 
-#: src/components/Notification/notifications.ts:125
+#: src/components/Notification/notifications.ts:129
 msgid "Disable Remote Site Maintenance Error"
 msgstr "Error al desactivar el mantenimiento del sitio remoto"
 
-#: src/components/Notification/notifications.ts:129
+#: src/components/Notification/notifications.ts:133
 msgid "Disable Remote Site Maintenance Success"
 msgstr "Desactivación del mantenimiento del sitio remoto exitosa"
 
-#: src/components/Notification/notifications.ts:105
+#: src/components/Notification/notifications.ts:109
 #: src/language/constants.ts:51
 msgid "Disable Remote Site Success"
 msgstr "Sitio remoto deshabilitado correctamente"
 
-#: src/components/Notification/notifications.ts:157
+#: src/components/Notification/notifications.ts:161
 msgid "Disable Remote Stream Error"
 msgstr "Error al desactivar transmisión remota"
 
-#: src/components/Notification/notifications.ts:161
+#: src/components/Notification/notifications.ts:165
 msgid "Disable Remote Stream Success"
 msgstr "Desactivación de transmisión remota exitosa"
 
-#: src/components/Notification/notifications.ts:102
+#: src/components/Notification/notifications.ts:106
 msgid "Disable site %{name} from %{node} failed"
 msgstr "Desactivar el sitio %{name} desde %{node} falló"
 
-#: src/components/Notification/notifications.ts:106
+#: src/components/Notification/notifications.ts:110
 msgid "Disable site %{name} from %{node} successfully"
 msgstr "Sitio %{name} deshabilitado en %{node} correctamente"
 
-#: src/components/Notification/notifications.ts:126
+#: src/components/Notification/notifications.ts:130
 msgid "Disable site %{name} maintenance on %{node} failed"
 msgstr "Desactivar el mantenimiento del sitio %{name} en %{node} falló"
 
-#: src/components/Notification/notifications.ts:130
+#: src/components/Notification/notifications.ts:134
 msgid "Disable site %{name} maintenance on %{node} successfully"
 msgstr "Desactivación del mantenimiento del sitio %{name} en %{node} exitosa"
 
-#: src/components/Notification/notifications.ts:158
+#: src/components/Notification/notifications.ts:162
 msgid "Disable stream %{name} from %{node} failed"
 msgstr "Desactivar el flujo %{name} desde %{node} falló"
 
-#: src/components/Notification/notifications.ts:162
+#: src/components/Notification/notifications.ts:166
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr "Deshabilitar el flujo %{name} desde %{node} con éxito"
 
@@ -1604,11 +1621,15 @@ msgstr[0] "Documento"
 msgid "Domain"
 msgstr "Dominio"
 
-#: src/views/certificate/CertificateEditor.vue:109
+#: src/views/certificate/components/AutoCertManagement.vue:55
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
 msgstr ""
 "La lista de dominios está vacía, intente reabrir la certificación "
 "automática para %{config}"
+
+#: src/views/certificate/components/CertificateDownload.vue:93
+msgid "Download Certificate Files"
+msgstr "Descargar archivos de certificado"
 
 #: src/language/constants.ts:27
 msgid "Download latest release error"
@@ -1617,6 +1638,14 @@ msgstr "Error al descargar la última versión"
 #: src/language/constants.ts:26
 msgid "Downloading latest release"
 msgstr "Descargando la última versión"
+
+#: src/views/certificate/components/CertificateContentEditor.vue:126
+msgid "Drop certificate file here"
+msgstr "Suelta el archivo de certificado aquí"
+
+#: src/views/certificate/components/CertificateContentEditor.vue:175
+msgid "Drop private key file here"
+msgstr "Suelta el archivo de clave privada aquí"
 
 #: src/views/environments/list/BatchUpgrader.vue:189
 #: src/views/system/Upgrade.vue:237
@@ -1721,53 +1750,53 @@ msgstr "Habilitar HTTPS"
 msgid "Enable Proxy Cache"
 msgstr "Habilitar caché de proxy"
 
-#: src/components/Notification/notifications.ts:109
+#: src/components/Notification/notifications.ts:113
 #: src/language/constants.ts:54
 msgid "Enable Remote Site Error"
 msgstr "Error al habilitar sitio remoto"
 
-#: src/components/Notification/notifications.ts:117
+#: src/components/Notification/notifications.ts:121
 msgid "Enable Remote Site Maintenance Error"
 msgstr "Error al habilitar el mantenimiento del sitio remoto"
 
-#: src/components/Notification/notifications.ts:121
+#: src/components/Notification/notifications.ts:125
 msgid "Enable Remote Site Maintenance Success"
 msgstr "Habilitar mantenimiento del sitio remoto exitoso"
 
-#: src/components/Notification/notifications.ts:113
+#: src/components/Notification/notifications.ts:117
 #: src/language/constants.ts:53
 msgid "Enable Remote Site Success"
 msgstr "Sitio remoto habilitado con éxito"
 
-#: src/components/Notification/notifications.ts:165
+#: src/components/Notification/notifications.ts:169
 msgid "Enable Remote Stream Error"
 msgstr "Error al habilitar transmisión remota"
 
-#: src/components/Notification/notifications.ts:169
+#: src/components/Notification/notifications.ts:173
 msgid "Enable Remote Stream Success"
 msgstr "Habilitar transmisión remota exitosa"
 
-#: src/components/Notification/notifications.ts:118
+#: src/components/Notification/notifications.ts:122
 msgid "Enable site %{name} maintenance on %{node} failed"
 msgstr "No se pudo habilitar el mantenimiento del sitio %{name} en %{node}"
 
-#: src/components/Notification/notifications.ts:122
+#: src/components/Notification/notifications.ts:126
 msgid "Enable site %{name} maintenance on %{node} successfully"
 msgstr "Habilitar el mantenimiento del sitio %{name} en %{node} correctamente"
 
-#: src/components/Notification/notifications.ts:110
+#: src/components/Notification/notifications.ts:114
 msgid "Enable site %{name} on %{node} failed"
 msgstr "No se pudo habilitar el sitio %{name} en %{node}"
 
-#: src/components/Notification/notifications.ts:114
+#: src/components/Notification/notifications.ts:118
 msgid "Enable site %{name} on %{node} successfully"
 msgstr "Sitio %{name} habilitado en %{node} correctamente"
 
-#: src/components/Notification/notifications.ts:166
+#: src/components/Notification/notifications.ts:170
 msgid "Enable stream %{name} on %{node} failed"
 msgstr "No se pudo habilitar el flujo %{name} en %{node}"
 
-#: src/components/Notification/notifications.ts:170
+#: src/components/Notification/notifications.ts:174
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "Habilitar el flujo %{name} en %{node} correctamente"
 
@@ -1906,8 +1935,16 @@ msgstr "Exportar Excel"
 msgid "External Docker Container"
 msgstr "Contenedor Docker externo"
 
+#: src/constants/errors/notification.ts:5
+msgid "External notification configuration not found"
+msgstr "Configuración de notificación externa no encontrada"
+
+#: src/components/Notification/notifications.ts:93
+msgid "External Notification Test"
+msgstr "Prueba de notificación externa"
+
 #: src/views/preference/Preference.vue:58
-#: src/views/preference/tabs/ExternalNotify.vue:9
+#: src/views/preference/tabs/ExternalNotify.vue:31
 msgid "External Notify"
 msgstr "Notificación Externa"
 
@@ -2075,6 +2112,10 @@ msgstr "Error al deshabilitar %{msg}"
 msgid "Failed to disable maintenance mode %{msg}"
 msgstr "Error al desactivar el modo de mantenimiento: %{msg}"
 
+#: src/views/certificate/components/CertificateDownload.vue:74
+msgid "Failed to download certificate files"
+msgstr "Error al descargar los archivos del certificado"
+
 #: src/views/site/components/SiteStatusSelect.vue:60
 #: src/views/stream/components/StreamStatusSelect.vue:32
 msgid "Failed to enable %{msg}"
@@ -2188,6 +2229,10 @@ msgstr "Error al descargar la imagen: {0}"
 msgid "Failed to read encrypted file: {0}"
 msgstr "Error al leer el archivo cifrado: {0}"
 
+#: src/views/certificate/components/CertificateFileUpload.vue:69
+msgid "Failed to read file"
+msgstr "Error al leer el archivo"
+
 #: src/constants/errors/backup.ts:22
 msgid "Failed to read file: {0}"
 msgstr "Error al leer el archivo: {0}"
@@ -2232,9 +2277,17 @@ msgstr "No se pudo revocar el certificado: %{error}"
 msgid "Failed to save Nginx performance settings"
 msgstr "Error al guardar la configuración de rendimiento de Nginx"
 
+#: src/views/preference/tabs/ExternalNotify.vue:21
+msgid "Failed to send test message"
+msgstr "Error al enviar el mensaje de prueba"
+
 #: src/constants/errors/docker.ts:14
 msgid "Failed to start temp container: {0}"
 msgstr "Error al iniciar el contenedor temporal: {0}"
+
+#: src/views/certificate/components/CertificateFileUpload.vue:103
+msgid "Failed to upload file"
+msgstr "Error al subir el archivo"
 
 #: src/constants/errors/backup.ts:38
 msgid "Failed to verify hashes: {0}"
@@ -2279,6 +2332,14 @@ msgstr "Archivo no encontrado"
 #: src/constants/errors/config.ts:7
 msgid "File or directory not found: {0}"
 msgstr "Archivo o directorio no encontrado: {0}"
+
+#: src/views/certificate/components/CertificateFileUpload.vue:53
+msgid "File size cannot exceed 5MB"
+msgstr "El tamaño del archivo no puede exceder los 5 MB"
+
+#: src/views/certificate/components/CertificateFileUpload.vue:99
+msgid "File uploaded successfully"
+msgstr "Archivo subido correctamente"
 
 #: src/constants/errors/cert.ts:2
 msgid "Filename is empty"
@@ -2493,7 +2554,7 @@ msgid "Import"
 msgstr "Importar"
 
 #: src/routes/modules/certificates.ts:46
-#: src/views/certificate/CertificateEditor.vue:82
+#: src/views/certificate/CertificateEditor.vue:86
 msgid "Import Certificate"
 msgstr "Importar Certificado"
 
@@ -2584,6 +2645,11 @@ msgstr "Formato de IV de AES no válido: {0}"
 msgid "Invalid AES key format: {0}"
 msgstr "Formato de clave AES no válido: {0}"
 
+#: src/views/certificate/components/CertificateDownload.vue:53
+#: src/views/certificate/components/CertificateFileUpload.vue:87
+msgid "Invalid certificate format"
+msgstr "Formato de certificado no válido"
+
 #: src/constants/errors/user.ts:14
 msgid "Invalid claims type"
 msgstr "Tipo de reclamación no válido"
@@ -2605,6 +2671,10 @@ msgstr "Nombre de archivo inválido"
 msgid "Invalid folder name"
 msgstr "Nombre de carpeta inválido"
 
+#: src/constants/errors/notification.ts:4
+msgid "Invalid notification ID"
+msgstr "ID de notificación no válido"
+
 #: src/constants/errors/notification.ts:3
 msgid "Invalid notifier config"
 msgstr "Configuración de notificador no válida"
@@ -2624,6 +2694,11 @@ msgstr "Código de acceso o código de recuperación inválido"
 #: src/constants/errors/backup.ts:73
 msgid "Invalid path: {0}"
 msgstr "Ruta no válida: {0}"
+
+#: src/views/certificate/components/CertificateDownload.vue:58
+#: src/views/certificate/components/CertificateFileUpload.vue:93
+msgid "Invalid private key format"
+msgstr "Formato de clave privada no válido"
 
 #: src/constants/errors/user.ts:5
 msgid "Invalid recovery code"
@@ -2730,8 +2805,10 @@ msgstr "Dejar en blanco si no desea modificar"
 msgid "Leave blank if you don't need this."
 msgstr "Déjelo en blanco si no lo necesita."
 
-#: src/views/certificate/CertificateEditor.vue:221
-#: src/views/certificate/CertificateEditor.vue:235
+#: src/views/certificate/components/CertificateContentEditor.vue:118
+#: src/views/certificate/components/CertificateContentEditor.vue:136
+#: src/views/certificate/components/CertificateContentEditor.vue:167
+#: src/views/certificate/components/CertificateContentEditor.vue:185
 msgid "Leave blank will not change anything"
 msgstr "Dejarlo en blanco no cambiará nada"
 
@@ -2818,7 +2895,7 @@ msgstr "Ubicación"
 msgid "Locations"
 msgstr "Ubicaciones"
 
-#: src/views/certificate/CertificateEditor.vue:245
+#: src/views/certificate/CertificateEditor.vue:126
 msgid "Log"
 msgstr "Registro"
 
@@ -3037,7 +3114,7 @@ msgid "Modify"
 msgstr "Modificar"
 
 #: src/routes/modules/certificates.ts:36
-#: src/views/certificate/CertificateEditor.vue:82
+#: src/views/certificate/CertificateEditor.vue:86
 msgid "Modify Certificate"
 msgstr "Modificar Certificado"
 
@@ -3072,8 +3149,8 @@ msgstr "Directiva multilínea"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:199
 #: src/views/backup/AutoBackup/AutoBackup.vue:11
 #: src/views/certificate/ACMEUser.vue:11
-#: src/views/certificate/CertificateEditor.vue:160
 #: src/views/certificate/CertificateList/certColumns.tsx:9
+#: src/views/certificate/components/CertificateBasicInfo.vue:23
 #: src/views/certificate/DNSCredential.vue:9
 #: src/views/config/components/ConfigRightPanel/Basic.vue:34
 #: src/views/config/components/Delete.vue:123
@@ -3574,6 +3651,10 @@ msgstr "OpenAI"
 msgid "Or"
 msgstr "O"
 
+#: src/views/certificate/components/CertificateFileUpload.vue:146
+msgid "or drag file to editor below"
+msgstr "o arrastra el archivo al editor de abajo"
+
 #: src/views/preference/components/AuthSettings/TOTP.vue:112
 msgid "Or enter the secret: %{secret}"
 msgstr "O ingrese el secreto: %{secret}"
@@ -3794,7 +3875,7 @@ msgstr ""
 "luego seleccione una de las credenciales de aquí debajo para llamar a la "
 "API del proveedor de DNS."
 
-#: src/components/Notification/notifications.ts:190
+#: src/components/Notification/notifications.ts:194
 #: src/language/constants.ts:59
 msgid ""
 "Please generate new recovery codes in the preferences immediately to "
@@ -3865,6 +3946,10 @@ msgstr ""
 msgid "Please select a backup file"
 msgstr "Por favor, seleccione un archivo de respaldo"
 
+#: src/views/certificate/components/CertificateFileUpload.vue:45
+msgid "Please select a valid %{type} file (%{extensions})"
+msgstr "Por favor, seleccione un archivo %{type} válido (%{extensions})"
+
 #: src/language/curd.ts:33
 msgid "Please select at least one item"
 msgstr "Por favor seleccione al menos un elemento"
@@ -3919,6 +4004,11 @@ msgstr "Configuración"
 #: src/language/constants.ts:8
 msgid "Preparing lego configurations"
 msgstr "Preparar la configuración de LEGO"
+
+#: src/views/certificate/components/CertificateFileUpload.vue:120
+#: src/views/certificate/components/CertificateFileUpload.vue:44
+msgid "private key"
+msgstr "clave privada"
 
 #: src/components/PortScanner/PortScannerCompact.vue:55
 msgid "Process"
@@ -4162,37 +4252,37 @@ msgstr "Error al renombrar la configuración remota"
 msgid "Rename Remote Config Success"
 msgstr "Renombrar Configuración Remota Exitosa"
 
-#: src/components/Notification/notifications.ts:133
+#: src/components/Notification/notifications.ts:137
 #: src/language/constants.ts:56
 msgid "Rename Remote Site Error"
 msgstr "Error al renombrar sitio remoto"
 
-#: src/components/Notification/notifications.ts:137
+#: src/components/Notification/notifications.ts:141
 #: src/language/constants.ts:55
 msgid "Rename Remote Site Success"
 msgstr "Renombrar sitio remoto exitoso"
 
-#: src/components/Notification/notifications.ts:173
+#: src/components/Notification/notifications.ts:177
 msgid "Rename Remote Stream Error"
 msgstr "Error al renombrar el flujo remoto"
 
-#: src/components/Notification/notifications.ts:177
+#: src/components/Notification/notifications.ts:181
 msgid "Rename Remote Stream Success"
 msgstr "Renombrar flujo remoto exitoso"
 
-#: src/components/Notification/notifications.ts:134
+#: src/components/Notification/notifications.ts:138
 msgid "Rename site %{name} to %{new_name} on %{node} failed"
 msgstr "Error al renombrar el sitio %{name} a %{new_name} en %{node}"
 
-#: src/components/Notification/notifications.ts:138
+#: src/components/Notification/notifications.ts:142
 msgid "Rename site %{name} to %{new_name} on %{node} successfully"
 msgstr "El sitio %{name} se ha renombrado a %{new_name} en %{node} correctamente"
 
-#: src/components/Notification/notifications.ts:174
+#: src/components/Notification/notifications.ts:178
 msgid "Rename stream %{name} to %{new_name} on %{node} failed"
 msgstr "Error al renombrar el flujo %{name} a %{new_name} en %{node}"
 
-#: src/components/Notification/notifications.ts:178
+#: src/components/Notification/notifications.ts:182
 msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
 msgstr "Flujo %{name} renombrado a %{new_name} en %{node} correctamente"
 
@@ -4487,7 +4577,8 @@ msgstr "Sábado"
 
 #: src/components/ChatGPT/ChatMessage.vue:215
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:129
-#: src/language/curd.ts:18 src/views/certificate/CertificateEditor.vue:264
+#: src/language/curd.ts:18
+#: src/views/certificate/components/CertificateActions.vue:29
 #: src/views/config/components/ConfigLeftPanel.vue:282
 #: src/views/config/components/ConfigName.vue:59
 #: src/views/preference/components/AuthSettings/Passkey.vue:130
@@ -4507,37 +4598,37 @@ msgstr "Guardar Directiva"
 msgid "Save error %{msg}"
 msgstr "Error al guardar %{msg}"
 
-#: src/components/Notification/notifications.ts:141
+#: src/components/Notification/notifications.ts:145
 #: src/language/constants.ts:48
 msgid "Save Remote Site Error"
 msgstr "Error al guardar sitio remoto"
 
-#: src/components/Notification/notifications.ts:145
+#: src/components/Notification/notifications.ts:149
 #: src/language/constants.ts:47
 msgid "Save Remote Site Success"
 msgstr "Guardar sitio remoto exitoso"
 
-#: src/components/Notification/notifications.ts:181
+#: src/components/Notification/notifications.ts:185
 msgid "Save Remote Stream Error"
 msgstr "Error al guardar el flujo remoto"
 
-#: src/components/Notification/notifications.ts:185
+#: src/components/Notification/notifications.ts:189
 msgid "Save Remote Stream Success"
 msgstr "Guardar transmisión remota exitoso"
 
-#: src/components/Notification/notifications.ts:142
+#: src/components/Notification/notifications.ts:146
 msgid "Save site %{name} to %{node} failed"
 msgstr "Error al guardar el sitio %{name} en %{node}"
 
-#: src/components/Notification/notifications.ts:146
+#: src/components/Notification/notifications.ts:150
 msgid "Save site %{name} to %{node} successfully"
 msgstr "Sitio %{name} guardado en %{node} correctamente"
 
-#: src/components/Notification/notifications.ts:182
+#: src/components/Notification/notifications.ts:186
 msgid "Save stream %{name} to %{node} failed"
 msgstr "Error al guardar el flujo %{name} en %{node}"
 
-#: src/components/Notification/notifications.ts:186
+#: src/components/Notification/notifications.ts:190
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "Flujo %{name} guardado en %{node} correctamente"
 
@@ -4663,7 +4754,7 @@ msgstr "Enviado"
 msgid "Server"
 msgstr "Servidor"
 
-#: src/views/certificate/CertificateEditor.vue:54
+#: src/views/certificate/CertificateEditor.vue:58
 msgid "Server error"
 msgstr "Error del servidor"
 
@@ -4817,7 +4908,7 @@ msgstr "Tiempo de espera entre iteraciones del administrador de caché"
 msgid "Sponsor"
 msgstr "Patrocinador"
 
-#: src/views/certificate/CertificateEditor.vue:211
+#: src/views/certificate/components/CertificateContentEditor.vue:93
 msgid "SSL Certificate Content"
 msgstr "Contenido de certificado SSL"
 
@@ -4831,15 +4922,15 @@ msgstr ""
 msgid "SSL certificate file not found"
 msgstr "Archivo de certificado SSL no encontrado"
 
-#: src/views/certificate/CertificateEditor.vue:225
+#: src/views/certificate/components/CertificateContentEditor.vue:142
 msgid "SSL Certificate Key Content"
 msgstr "Contenido de la llave del certificado SSL"
 
-#: src/views/certificate/CertificateEditor.vue:190
+#: src/views/certificate/components/CertificateBasicInfo.vue:55
 msgid "SSL Certificate Key Path"
 msgstr "Ruta de la llave del certificado SSL"
 
-#: src/views/certificate/CertificateEditor.vue:175
+#: src/views/certificate/components/CertificateBasicInfo.vue:39
 #: src/views/preference/tabs/ServerSettings.vue:37
 msgid "SSL Certificate Path"
 msgstr "Ruta del certificado SSL"
@@ -5084,7 +5175,7 @@ msgstr "Nodos de sincronización"
 msgid "Sync strategy"
 msgstr "Estrategia de sincronización"
 
-#: src/views/certificate/CertificateEditor.vue:204
+#: src/views/certificate/components/CertificateBasicInfo.vue:70
 msgid "Sync to"
 msgstr "Sincronizar con"
 
@@ -5106,7 +5197,7 @@ msgstr "Copia de seguridad del sistema"
 msgid "System Check"
 msgstr "Verificación del sistema"
 
-#: src/views/certificate/components/ACMEUserSelector.vue:89
+#: src/views/certificate/components/ACMEUserSelector.vue:55
 msgid "System Initial User"
 msgstr "Usuario inicial del sistema"
 
@@ -5138,6 +5229,14 @@ msgstr "Terminal"
 msgid "Terminal Start Command"
 msgstr "Comando de inicio de terminal"
 
+#: src/views/preference/tabs/ExternalNotify.vue:46
+msgid "Test"
+msgstr "Prueba"
+
+#: src/views/preference/tabs/ExternalNotify.vue:17
+msgid "Test message sent successfully"
+msgstr "Mensaje de prueba enviado con éxito"
+
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:141
 msgid "Test S3 Connection"
 msgstr "Probar conexión S3"
@@ -5160,11 +5259,11 @@ msgstr ""
 "El número ICP solo debe contener letras, unicode, números, guiones, guiones "
 "bajos, dos puntos y puntos."
 
-#: src/views/certificate/CertificateEditor.vue:214
+#: src/views/certificate/components/CertificateContentEditor.vue:96
 msgid "The input is not a SSL Certificate"
 msgstr "La entrada no es un Certificado SSL"
 
-#: src/views/certificate/CertificateEditor.vue:228
+#: src/views/certificate/components/CertificateContentEditor.vue:145
 msgid "The input is not a SSL Certificate Key"
 msgstr "La entrada no es una clave de certificado SSL"
 
@@ -5203,11 +5302,11 @@ msgstr ""
 msgid "The parameter of server_name is required"
 msgstr "El parámetro de server_name es obligatorio"
 
-#: src/views/certificate/CertificateEditor.vue:179
+#: src/views/certificate/components/CertificateBasicInfo.vue:43
 msgid "The path exists, but the file is not a certificate"
 msgstr "La ruta existe, pero el archivo no es un certificado"
 
-#: src/views/certificate/CertificateEditor.vue:194
+#: src/views/certificate/components/CertificateBasicInfo.vue:59
 msgid "The path exists, but the file is not a private key"
 msgstr "La ruta existe, pero el archivo no es una clave privada"
 
@@ -5269,11 +5368,11 @@ msgstr ""
 "pierda su contraseña y los segundos factores. Si no puede encontrar estos "
 "códigos, perderá el acceso a su cuenta."
 
-#: src/views/certificate/CertificateEditor.vue:99
+#: src/views/certificate/components/AutoCertManagement.vue:45
 msgid "This Auto Cert item is invalid, please remove it."
 msgstr "Este elemento de Auto Cert es inválido, elimínelo por favor."
 
-#: src/views/certificate/CertificateEditor.vue:89
+#: src/views/certificate/components/AutoCertManagement.vue:35
 msgid "This certificate is managed by Nginx UI"
 msgstr "Este certificado es administrado por Nginx UI"
 
@@ -5283,9 +5382,9 @@ msgstr ""
 "Este directorio está protegido y no se puede eliminar por seguridad del "
 "sistema."
 
-#: src/views/certificate/CertificateEditor.vue:163
-#: src/views/certificate/CertificateEditor.vue:177
-#: src/views/certificate/CertificateEditor.vue:192
+#: src/views/certificate/components/CertificateBasicInfo.vue:26
+#: src/views/certificate/components/CertificateBasicInfo.vue:41
+#: src/views/certificate/components/CertificateBasicInfo.vue:57
 msgid "This field is required"
 msgstr "Este campo es obligatorio"
 
@@ -5310,6 +5409,10 @@ msgid ""
 "This field should only contain letters, unicode characters, numbers, and "
 "-_./:"
 msgstr "Este campo solo debe contener letras, caracteres Unicode, números y -_./:"
+
+#: src/components/Notification/notifications.ts:94
+msgid "This is a test message sent at %{timestamp} from Nginx UI."
+msgstr "Este es un mensaje de prueba enviado a %{TimeStamp} de Nginx UI."
 
 #: src/views/dashboard/NginxDashBoard.vue:175
 msgid ""
@@ -5584,6 +5687,10 @@ msgstr "Actualización exitosa"
 #: src/views/system/Upgrade.vue:81
 msgid "Upgrading Nginx UI, please wait..."
 msgstr "Actualizando Nginx UI, por favor espere..."
+
+#: src/views/certificate/components/CertificateFileUpload.vue:121
+msgid "Upload %{type} File"
+msgstr "Subir archivo %{type}"
 
 #: src/language/curd.ts:49
 msgid "Upload Files"

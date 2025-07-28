@@ -86,6 +86,10 @@ func findNotificationCalls(filePath string, calls *[]NotificationCall) {
 		return
 	}
 
+	// Check if this file is in the notification package
+	isNotificationPackage := strings.Contains(filePath, "internal/notification") ||
+		strings.Contains(filePath, "notification/")
+
 	// Traverse the AST to find function calls
 	ast.Inspect(node, func(n ast.Node) bool {
 		callExpr, ok := n.(*ast.CallExpr)
@@ -93,39 +97,41 @@ func findNotificationCalls(filePath string, calls *[]NotificationCall) {
 			return true
 		}
 
-		// Check if it's a call to the notification package
-		selExpr, ok := callExpr.Fun.(*ast.SelectorExpr)
-		if !ok {
-			return true
+		var funcName string
+		var isTargetCall bool
+
+		// Check if it's a call to the notification package (notification.Info)
+		if selExpr, ok := callExpr.Fun.(*ast.SelectorExpr); ok {
+			if xident, ok := selExpr.X.(*ast.Ident); ok && xident.Name == "notification" {
+				funcName = selExpr.Sel.Name
+				isTargetCall = funcName == "Info" || funcName == "Error" || funcName == "Warning" || funcName == "Success" || funcName == "Define"
+			}
+		} else if isNotificationPackage {
+			// Check if it's a direct function call within the notification package (Info, Error, etc.)
+			if ident, ok := callExpr.Fun.(*ast.Ident); ok {
+				funcName = ident.Name
+				isTargetCall = funcName == "Info" || funcName == "Error" || funcName == "Warning" || funcName == "Success" || funcName == "Define"
+			}
 		}
 
-		xident, ok := selExpr.X.(*ast.Ident)
-		if !ok {
-			return true
-		}
+		if isTargetCall {
+			// Function must have at least two parameters (title, content)
+			if len(callExpr.Args) >= 2 {
+				titleArg := callExpr.Args[0]
+				contentArg := callExpr.Args[1]
 
-		// Check if it's one of the functions we're interested in: notification.Info/Error/Warning/Success
-		if xident.Name == "notification" {
-			funcName := selExpr.Sel.Name
-			if funcName == "Info" || funcName == "Error" || funcName == "Warning" || funcName == "Success" {
-				// Function must have at least two parameters (title, content)
-				if len(callExpr.Args) >= 2 {
-					titleArg := callExpr.Args[0]
-					contentArg := callExpr.Args[1]
+				// Get parameter values
+				title := getStringValue(titleArg)
+				content := getStringValue(contentArg)
 
-					// Get parameter values
-					title := getStringValue(titleArg)
-					content := getStringValue(contentArg)
-
-					// Ignore cases where content is a variable name or function call
-					if content != "" && !isVariableOrFunctionCall(content) {
-						*calls = append(*calls, NotificationCall{
-							Type:    funcName,
-							Title:   title,
-							Content: content,
-							Path:    filePath,
-						})
-					}
+				// Ignore cases where content is a variable name or function call
+				if content != "" && !isVariableOrFunctionCall(content) {
+					*calls = append(*calls, NotificationCall{
+						Type:    funcName,
+						Title:   title,
+						Content: content,
+						Path:    filePath,
+					})
 				}
 			}
 		}

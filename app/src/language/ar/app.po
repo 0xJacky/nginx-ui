@@ -126,7 +126,7 @@ msgid "Access Logs"
 msgstr "سجلات الدخول"
 
 #: src/routes/modules/certificates.ts:20 src/views/certificate/ACMEUser.vue:108
-#: src/views/certificate/components/ACMEUserSelector.vue:86
+#: src/views/certificate/components/ACMEUserSelector.vue:52
 msgid "ACME User"
 msgstr "مستخدم ACME"
 
@@ -143,7 +143,7 @@ msgstr "إجراء"
 #: src/views/environments/list/envColumns.tsx:96
 #: src/views/nginx_log/NginxLogList.vue:67
 #: src/views/notification/notificationColumns.tsx:72
-#: src/views/preference/components/ExternalNotify/columns.tsx:76
+#: src/views/preference/components/ExternalNotify/columns.tsx:73
 #: src/views/site/site_list/columns.tsx:153 src/views/stream/columns.tsx:117
 #: src/views/user/userColumns.tsx:58
 msgid "Actions"
@@ -227,7 +227,7 @@ msgstr "بعد ذلك، قم بتحديث هذه الصفحة وانقر على 
 msgid "All"
 msgstr "الكل"
 
-#: src/components/Notification/notifications.ts:189
+#: src/components/Notification/notifications.ts:193
 #: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr "تم استخدام جميع رموز الاسترداد"
@@ -423,7 +423,7 @@ msgstr "AutoCert قيد التشغيل..."
 msgid "Automatic Restart"
 msgstr "إعادة التشغيل التلقائي"
 
-#: src/views/certificate/CertificateEditor.vue:257
+#: src/views/certificate/components/CertificateActions.vue:22
 #: src/views/config/components/ConfigLeftPanel.vue:273
 #: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
 #: src/views/nginx_log/NginxLog.vue:174
@@ -661,6 +661,11 @@ msgstr "شهادة"
 msgid "Cert path is not under the nginx conf dir"
 msgstr "مسار الشهادة ليس ضمن دليل تكوين Nginx"
 
+#: src/views/certificate/components/CertificateFileUpload.vue:120
+#: src/views/certificate/components/CertificateFileUpload.vue:44
+msgid "certificate"
+msgstr "شهادة"
+
 #: src/components/Notification/notifications.ts:42
 msgid "Certificate %{name} has expired"
 msgstr "انتهت صلاحية الشهادة %{name}"
@@ -674,6 +679,10 @@ msgstr "ستنتهي صلاحية الشهادة %{name} خلال %{days} يوم
 #: src/components/Notification/notifications.ts:58
 msgid "Certificate %{name} will expire in 1 day"
 msgstr "ستنتهي صلاحية الشهادة %{name} خلال يوم واحد"
+
+#: src/views/certificate/components/CertificateDownload.vue:36
+msgid "Certificate content and private key content cannot be empty"
+msgstr "محتوى الشهادة ومحتوى المفتاح الخاص لا يمكن أن يكونا فارغين"
 
 #: src/constants/errors/cert.ts:4
 msgid "Certificate decode error"
@@ -692,6 +701,14 @@ msgstr "انتهت صلاحية الشهادة"
 #: src/components/Notification/notifications.ts:57
 msgid "Certificate Expiring Soon"
 msgstr "انتهاء صلاحية الشهادة قريبًا"
+
+#: src/views/certificate/components/CertificateDownload.vue:70
+msgid "Certificate files downloaded successfully"
+msgstr "تم تنزيل ملفات الشهادة بنجاح"
+
+#: src/views/certificate/components/CertificateDownload.vue:41
+msgid "Certificate name cannot be empty"
+msgstr "اسم الشهادة لا يمكن أن يكون فارغًا"
 
 #: src/language/generate.ts:4
 msgid "Certificate not found: %{error}"
@@ -722,7 +739,7 @@ msgstr "تم تجديد الشهادة بنجاح"
 msgid "Certificate revoked successfully"
 msgstr "تم إبطال الشهادة بنجاح"
 
-#: src/views/certificate/CertificateEditor.vue:125
+#: src/views/certificate/components/AutoCertManagement.vue:67
 #: src/views/site/site_edit/components/Cert/Cert.vue:58
 msgid "Certificate Status"
 msgid_plural "Certificates Status"
@@ -1020,7 +1037,6 @@ msgid "Compression level, 1 is lowest, 9 is highest"
 msgstr "مستوى الضغط ، 1 هو أدنى ، 9 هو الأعلى"
 
 #: src/views/preference/components/ExternalNotify/columns.tsx:46
-#: src/views/preference/components/ExternalNotify/columns.tsx:58
 msgid "Config"
 msgstr "التكوين"
 
@@ -1164,7 +1180,7 @@ msgstr ""
 #: src/views/environments/group/columns.ts:29
 #: src/views/notification/notificationColumns.tsx:51
 #: src/views/preference/components/AuthSettings/Passkey.vue:95
-#: src/views/preference/components/ExternalNotify/columns.tsx:71
+#: src/views/preference/components/ExternalNotify/columns.tsx:68
 #: src/views/user/userColumns.tsx:46
 msgid "Created at"
 msgstr "تم الإنشاء في"
@@ -1319,27 +1335,28 @@ msgstr "خطأ في حذف التكوين البعيد"
 msgid "Delete Remote Config Success"
 msgstr "نجاح حذف التكوين البعيد"
 
-#: src/components/Notification/notifications.ts:93 src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:97 src/language/constants.ts:50
 msgid "Delete Remote Site Error"
 msgstr "خطأ حذف الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:97 src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:101
+#: src/language/constants.ts:49
 msgid "Delete Remote Site Success"
 msgstr "نجح حذف الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:149
+#: src/components/Notification/notifications.ts:153
 msgid "Delete Remote Stream Error"
 msgstr "خطأ في حذف البث عن بُعد"
 
-#: src/components/Notification/notifications.ts:153
+#: src/components/Notification/notifications.ts:157
 msgid "Delete Remote Stream Success"
 msgstr "نجاح حذف البث عن بُعد"
 
-#: src/components/Notification/notifications.ts:94
+#: src/components/Notification/notifications.ts:98
 msgid "Delete site %{name} from %{node} failed"
 msgstr "فشل حذف الموقع %{name} من %{node}"
 
-#: src/components/Notification/notifications.ts:98
+#: src/components/Notification/notifications.ts:102
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "تم حذف الموقع %{name} من %{node} بنجاح"
 
@@ -1347,11 +1364,11 @@ msgstr "تم حذف الموقع %{name} من %{node} بنجاح"
 msgid "Delete site: %{site_name}"
 msgstr "حذف الموقع: ‎%{site_name}"
 
-#: src/components/Notification/notifications.ts:150
+#: src/components/Notification/notifications.ts:154
 msgid "Delete stream %{name} from %{node} failed"
 msgstr "فشل حذف الدفق %{name} من %{node}"
 
-#: src/components/Notification/notifications.ts:154
+#: src/components/Notification/notifications.ts:158
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "تم حذف الدفق %{name} من %{node} بنجاح"
 
@@ -1437,53 +1454,53 @@ msgstr "تعطيل"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "فشل تعطيل التجديد التلقائي لـ %{name}"
 
-#: src/components/Notification/notifications.ts:101
+#: src/components/Notification/notifications.ts:105
 #: src/language/constants.ts:52
 msgid "Disable Remote Site Error"
 msgstr "خطأ تعطيل الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:125
+#: src/components/Notification/notifications.ts:129
 msgid "Disable Remote Site Maintenance Error"
 msgstr "خطأ في تعطيل صيانة الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:129
+#: src/components/Notification/notifications.ts:133
 msgid "Disable Remote Site Maintenance Success"
 msgstr "تعطيل صيانة الموقع البعيد بنجاح"
 
-#: src/components/Notification/notifications.ts:105
+#: src/components/Notification/notifications.ts:109
 #: src/language/constants.ts:51
 msgid "Disable Remote Site Success"
 msgstr "تم تعطيل الموقع البعيد بنجاح"
 
-#: src/components/Notification/notifications.ts:157
+#: src/components/Notification/notifications.ts:161
 msgid "Disable Remote Stream Error"
 msgstr "خطأ في تعطيل البث عن بُعد"
 
-#: src/components/Notification/notifications.ts:161
+#: src/components/Notification/notifications.ts:165
 msgid "Disable Remote Stream Success"
 msgstr "تعطيل البث عن بُعد بنجاح"
 
-#: src/components/Notification/notifications.ts:102
+#: src/components/Notification/notifications.ts:106
 msgid "Disable site %{name} from %{node} failed"
 msgstr "فشل تعطيل الموقع %{name} من %{node}"
 
-#: src/components/Notification/notifications.ts:106
+#: src/components/Notification/notifications.ts:110
 msgid "Disable site %{name} from %{node} successfully"
 msgstr "تم تعطيل الموقع %{name} من %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:126
+#: src/components/Notification/notifications.ts:130
 msgid "Disable site %{name} maintenance on %{node} failed"
 msgstr "فشل تعطيل صيانة الموقع %{name} على %{node}"
 
-#: src/components/Notification/notifications.ts:130
+#: src/components/Notification/notifications.ts:134
 msgid "Disable site %{name} maintenance on %{node} successfully"
 msgstr "تم تعطيل صيانة الموقع %{name} على %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:158
+#: src/components/Notification/notifications.ts:162
 msgid "Disable stream %{name} from %{node} failed"
 msgstr "فشل تعطيل الدفق %{name} من %{node}"
 
-#: src/components/Notification/notifications.ts:162
+#: src/components/Notification/notifications.ts:166
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr "تم تعطيل الدفق %{name} من %{node} بنجاح"
 
@@ -1580,9 +1597,13 @@ msgstr[5] "وثيقة"
 msgid "Domain"
 msgstr "نطاق"
 
-#: src/views/certificate/CertificateEditor.vue:109
+#: src/views/certificate/components/AutoCertManagement.vue:55
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
 msgstr "قائمة النطاقات فارغة، حاول إعادة فتح Auto Cert لـ %{config}"
+
+#: src/views/certificate/components/CertificateDownload.vue:93
+msgid "Download Certificate Files"
+msgstr "تنزيل ملفات الشهادة"
 
 #: src/language/constants.ts:27
 msgid "Download latest release error"
@@ -1591,6 +1612,14 @@ msgstr "خطأ في تنزيل الإصدار الأخير"
 #: src/language/constants.ts:26
 msgid "Downloading latest release"
 msgstr "تنزيل الإصدار الأحدث"
+
+#: src/views/certificate/components/CertificateContentEditor.vue:126
+msgid "Drop certificate file here"
+msgstr "قم بإسقاط ملف الشهادة هنا"
+
+#: src/views/certificate/components/CertificateContentEditor.vue:175
+msgid "Drop private key file here"
+msgstr "قم بإسقاط ملف المفتاح الخاص هنا"
 
 #: src/views/environments/list/BatchUpgrader.vue:189
 #: src/views/system/Upgrade.vue:237
@@ -1694,53 +1723,53 @@ msgstr "تمكين HTTPS"
 msgid "Enable Proxy Cache"
 msgstr "تمكين ذاكرة التخزين المؤقت للوكيل"
 
-#: src/components/Notification/notifications.ts:109
+#: src/components/Notification/notifications.ts:113
 #: src/language/constants.ts:54
 msgid "Enable Remote Site Error"
 msgstr "خطأ في تفعيل الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:117
+#: src/components/Notification/notifications.ts:121
 msgid "Enable Remote Site Maintenance Error"
 msgstr "خطأ في تمكين صيانة الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:121
+#: src/components/Notification/notifications.ts:125
 msgid "Enable Remote Site Maintenance Success"
 msgstr "تمكين صيانة الموقع البعيد بنجاح"
 
-#: src/components/Notification/notifications.ts:113
+#: src/components/Notification/notifications.ts:117
 #: src/language/constants.ts:53
 msgid "Enable Remote Site Success"
 msgstr "نجح تفعيل الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:165
+#: src/components/Notification/notifications.ts:169
 msgid "Enable Remote Stream Error"
 msgstr "خطأ في تمكين البث عن بُعد"
 
-#: src/components/Notification/notifications.ts:169
+#: src/components/Notification/notifications.ts:173
 msgid "Enable Remote Stream Success"
 msgstr "تمكين البث عن بُعد بنجاح"
 
-#: src/components/Notification/notifications.ts:118
+#: src/components/Notification/notifications.ts:122
 msgid "Enable site %{name} maintenance on %{node} failed"
 msgstr "فشل تمكين الصيانة للموقع %{name} على %{node}"
 
-#: src/components/Notification/notifications.ts:122
+#: src/components/Notification/notifications.ts:126
 msgid "Enable site %{name} maintenance on %{node} successfully"
 msgstr "تم تمكين صيانة الموقع %{name} على %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:110
+#: src/components/Notification/notifications.ts:114
 msgid "Enable site %{name} on %{node} failed"
 msgstr "فشل تمكين الموقع %{name} على %{node}"
 
-#: src/components/Notification/notifications.ts:114
+#: src/components/Notification/notifications.ts:118
 msgid "Enable site %{name} on %{node} successfully"
 msgstr "تم تمكين الموقع %{name} على %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:166
+#: src/components/Notification/notifications.ts:170
 msgid "Enable stream %{name} on %{node} failed"
 msgstr "فشل تمكين الدفق %{name} على %{node}"
 
-#: src/components/Notification/notifications.ts:170
+#: src/components/Notification/notifications.ts:174
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "تم تمكين الدفق %{name} على %{node} بنجاح"
 
@@ -1875,8 +1904,16 @@ msgstr "تصدير إكسل"
 msgid "External Docker Container"
 msgstr "حاوية Docker خارجية"
 
+#: src/constants/errors/notification.ts:5
+msgid "External notification configuration not found"
+msgstr "لم يتم العثور على تكوين الإخطار الخارجي"
+
+#: src/components/Notification/notifications.ts:93
+msgid "External Notification Test"
+msgstr "اختبار الإشعار الخارجي"
+
 #: src/views/preference/Preference.vue:58
-#: src/views/preference/tabs/ExternalNotify.vue:9
+#: src/views/preference/tabs/ExternalNotify.vue:31
 msgid "External Notify"
 msgstr "إشعار خارجي"
 
@@ -2042,6 +2079,10 @@ msgstr "فشل في تعطيل %{msg}"
 msgid "Failed to disable maintenance mode %{msg}"
 msgstr "فشل تعطيل وضع الصيانة %{msg}"
 
+#: src/views/certificate/components/CertificateDownload.vue:74
+msgid "Failed to download certificate files"
+msgstr "فشل تنزيل ملفات الشهادة"
+
 #: src/views/site/components/SiteStatusSelect.vue:60
 #: src/views/stream/components/StreamStatusSelect.vue:32
 msgid "Failed to enable %{msg}"
@@ -2155,6 +2196,10 @@ msgstr "فشل في جلب الصورة: {0}"
 msgid "Failed to read encrypted file: {0}"
 msgstr "فشل قراءة الملف المشفر: {0}"
 
+#: src/views/certificate/components/CertificateFileUpload.vue:69
+msgid "Failed to read file"
+msgstr "فشل قراءة الملف"
+
 #: src/constants/errors/backup.ts:22
 msgid "Failed to read file: {0}"
 msgstr "فشل قراءة الملف: {0}"
@@ -2199,9 +2244,17 @@ msgstr "فشل إلغاء الشهادة: %{error}"
 msgid "Failed to save Nginx performance settings"
 msgstr "فشل حفظ إعدادات أداء Nginx"
 
+#: src/views/preference/tabs/ExternalNotify.vue:21
+msgid "Failed to send test message"
+msgstr "فشل إرسال رسالة الاختبار"
+
 #: src/constants/errors/docker.ts:14
 msgid "Failed to start temp container: {0}"
 msgstr "فشل بدء الحاوية المؤقتة: {0}"
+
+#: src/views/certificate/components/CertificateFileUpload.vue:103
+msgid "Failed to upload file"
+msgstr "فشل تحميل الملف"
 
 #: src/constants/errors/backup.ts:38
 msgid "Failed to verify hashes: {0}"
@@ -2246,6 +2299,14 @@ msgstr "لم يتم العثور على الملف"
 #: src/constants/errors/config.ts:7
 msgid "File or directory not found: {0}"
 msgstr "الملف أو الدليل غير موجود: {0}"
+
+#: src/views/certificate/components/CertificateFileUpload.vue:53
+msgid "File size cannot exceed 5MB"
+msgstr "لا يمكن أن يتجاوز حجم الملف 5 ميجابايت"
+
+#: src/views/certificate/components/CertificateFileUpload.vue:99
+msgid "File uploaded successfully"
+msgstr "تم تحميل الملف بنجاح"
 
 #: src/constants/errors/cert.ts:2
 msgid "Filename is empty"
@@ -2457,7 +2518,7 @@ msgid "Import"
 msgstr "استيراد"
 
 #: src/routes/modules/certificates.ts:46
-#: src/views/certificate/CertificateEditor.vue:82
+#: src/views/certificate/CertificateEditor.vue:86
 msgid "Import Certificate"
 msgstr "استيراد شهادة"
 
@@ -2548,6 +2609,11 @@ msgstr "تنسيق AES IV غير صالح: {0}"
 msgid "Invalid AES key format: {0}"
 msgstr "تنسيق مفتاح AES غير صالح: {0}"
 
+#: src/views/certificate/components/CertificateDownload.vue:53
+#: src/views/certificate/components/CertificateFileUpload.vue:87
+msgid "Invalid certificate format"
+msgstr "تنسيق الشهادة غير صالح"
+
 #: src/constants/errors/user.ts:14
 msgid "Invalid claims type"
 msgstr "نوع المطالبات غير صالح"
@@ -2569,6 +2635,10 @@ msgstr "اسم ملف غير صالح"
 msgid "Invalid folder name"
 msgstr "اسم المجلد غير صالح"
 
+#: src/constants/errors/notification.ts:4
+msgid "Invalid notification ID"
+msgstr "معرّف الإشعار غير صالح"
+
 #: src/constants/errors/notification.ts:3
 msgid "Invalid notifier config"
 msgstr "تكوين المُنبّه غير صالح"
@@ -2588,6 +2658,11 @@ msgstr "رمز المرور أو رمز الاسترداد غير صالح"
 #: src/constants/errors/backup.ts:73
 msgid "Invalid path: {0}"
 msgstr "مسار غير صالح: {0}"
+
+#: src/views/certificate/components/CertificateDownload.vue:58
+#: src/views/certificate/components/CertificateFileUpload.vue:93
+msgid "Invalid private key format"
+msgstr "تنسيق المفتاح الخاص غير صالح"
 
 #: src/constants/errors/user.ts:5
 msgid "Invalid recovery code"
@@ -2694,8 +2769,10 @@ msgstr "اتركه فارغًا إذا كنت لا تريد التعديل"
 msgid "Leave blank if you don't need this."
 msgstr "اتركه فارغًا إذا لم تكن بحاجة إلى ذلك."
 
-#: src/views/certificate/CertificateEditor.vue:221
-#: src/views/certificate/CertificateEditor.vue:235
+#: src/views/certificate/components/CertificateContentEditor.vue:118
+#: src/views/certificate/components/CertificateContentEditor.vue:136
+#: src/views/certificate/components/CertificateContentEditor.vue:167
+#: src/views/certificate/components/CertificateContentEditor.vue:185
 msgid "Leave blank will not change anything"
 msgstr "تركه فارغًا لن يغير شيئًا"
 
@@ -2782,7 +2859,7 @@ msgstr "مكان"
 msgid "Locations"
 msgstr "أماكن"
 
-#: src/views/certificate/CertificateEditor.vue:245
+#: src/views/certificate/CertificateEditor.vue:126
 msgid "Log"
 msgstr "سجل"
 
@@ -2999,7 +3076,7 @@ msgid "Modify"
 msgstr "تعديل"
 
 #: src/routes/modules/certificates.ts:36
-#: src/views/certificate/CertificateEditor.vue:82
+#: src/views/certificate/CertificateEditor.vue:86
 msgid "Modify Certificate"
 msgstr "تعديل الشهادة"
 
@@ -3034,8 +3111,8 @@ msgstr "توجيه متعدد الأسطر"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:199
 #: src/views/backup/AutoBackup/AutoBackup.vue:11
 #: src/views/certificate/ACMEUser.vue:11
-#: src/views/certificate/CertificateEditor.vue:160
 #: src/views/certificate/CertificateList/certColumns.tsx:9
+#: src/views/certificate/components/CertificateBasicInfo.vue:23
 #: src/views/certificate/DNSCredential.vue:9
 #: src/views/config/components/ConfigRightPanel/Basic.vue:34
 #: src/views/config/components/Delete.vue:123
@@ -3531,6 +3608,10 @@ msgstr "أوبن أي آي"
 msgid "Or"
 msgstr "أو"
 
+#: src/views/certificate/components/CertificateFileUpload.vue:146
+msgid "or drag file to editor below"
+msgstr "أو اسحب الملف إلى المحرر أدناه"
+
 #: src/views/preference/components/AuthSettings/TOTP.vue:112
 msgid "Or enter the secret: %{secret}"
 msgstr "أو أدخل السر: %{secret}"
@@ -3743,7 +3824,7 @@ msgstr ""
 "يرجى أولاً إضافة بيانات الاعتماد في الشهادات > بيانات اعتماد DNS، ثم اختيار "
 "أحد بيانات الاعتماد أدناه لطلب API لمزود DNS."
 
-#: src/components/Notification/notifications.ts:190
+#: src/components/Notification/notifications.ts:194
 #: src/language/constants.ts:59
 msgid ""
 "Please generate new recovery codes in the preferences immediately to "
@@ -3804,6 +3885,10 @@ msgstr "يرجى حفظ رمز الأمان هذا، ستحتاج إليه لل�
 msgid "Please select a backup file"
 msgstr "الرجاء تحديد ملف النسخ الاحتياطي"
 
+#: src/views/certificate/components/CertificateFileUpload.vue:45
+msgid "Please select a valid %{type} file (%{extensions})"
+msgstr "الرجاء تحديد ملف %{type} صالح (%{extensions})"
+
 #: src/language/curd.ts:33
 msgid "Please select at least one item"
 msgstr "الرجاء تحديد عنصر واحد على الأقل"
@@ -3858,6 +3943,11 @@ msgstr "تفضيل"
 #: src/language/constants.ts:8
 msgid "Preparing lego configurations"
 msgstr "تحضير تكوينات Lego"
+
+#: src/views/certificate/components/CertificateFileUpload.vue:120
+#: src/views/certificate/components/CertificateFileUpload.vue:44
+msgid "private key"
+msgstr "مفتاح خاص"
 
 #: src/components/PortScanner/PortScannerCompact.vue:55
 msgid "Process"
@@ -4097,37 +4187,37 @@ msgstr "خطأ في إعادة تسمية التكوين البعيد"
 msgid "Rename Remote Config Success"
 msgstr "إعادة تسمية تكوين البعيد بنجاح"
 
-#: src/components/Notification/notifications.ts:133
+#: src/components/Notification/notifications.ts:137
 #: src/language/constants.ts:56
 msgid "Rename Remote Site Error"
 msgstr "خطأ في إعادة تسمية الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:137
+#: src/components/Notification/notifications.ts:141
 #: src/language/constants.ts:55
 msgid "Rename Remote Site Success"
 msgstr "تم إعادة تسمية الموقع البعيد بنجاح"
 
-#: src/components/Notification/notifications.ts:173
+#: src/components/Notification/notifications.ts:177
 msgid "Rename Remote Stream Error"
 msgstr "خطأ في إعادة تسمية البث عن بُعد"
 
-#: src/components/Notification/notifications.ts:177
+#: src/components/Notification/notifications.ts:181
 msgid "Rename Remote Stream Success"
 msgstr "تمت إعادة تسمية الدفق البعيد بنجاح"
 
-#: src/components/Notification/notifications.ts:134
+#: src/components/Notification/notifications.ts:138
 msgid "Rename site %{name} to %{new_name} on %{node} failed"
 msgstr "فشل إعادة تسمية الموقع %{name} إلى %{new_name} على %{node}"
 
-#: src/components/Notification/notifications.ts:138
+#: src/components/Notification/notifications.ts:142
 msgid "Rename site %{name} to %{new_name} on %{node} successfully"
 msgstr "تمت إعادة تسمية الموقع %{name} إلى %{new_name} على %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:174
+#: src/components/Notification/notifications.ts:178
 msgid "Rename stream %{name} to %{new_name} on %{node} failed"
 msgstr "فشل إعادة تسمية الدفق %{name} إلى %{new_name} على %{node}"
 
-#: src/components/Notification/notifications.ts:178
+#: src/components/Notification/notifications.ts:182
 msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
 msgstr "تمت إعادة تسمية الدفق %{name} إلى %{new_name} على %{node} بنجاح"
 
@@ -4421,7 +4511,8 @@ msgstr "السبت"
 
 #: src/components/ChatGPT/ChatMessage.vue:215
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:129
-#: src/language/curd.ts:18 src/views/certificate/CertificateEditor.vue:264
+#: src/language/curd.ts:18
+#: src/views/certificate/components/CertificateActions.vue:29
 #: src/views/config/components/ConfigLeftPanel.vue:282
 #: src/views/config/components/ConfigName.vue:59
 #: src/views/preference/components/AuthSettings/Passkey.vue:130
@@ -4441,37 +4532,37 @@ msgstr "حفظ التوجيه"
 msgid "Save error %{msg}"
 msgstr "خطأ في الحفظ %{msg}"
 
-#: src/components/Notification/notifications.ts:141
+#: src/components/Notification/notifications.ts:145
 #: src/language/constants.ts:48
 msgid "Save Remote Site Error"
 msgstr "خطأ في حفظ الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:145
+#: src/components/Notification/notifications.ts:149
 #: src/language/constants.ts:47
 msgid "Save Remote Site Success"
 msgstr "حفظ الموقع البعيد بنجاح"
 
-#: src/components/Notification/notifications.ts:181
+#: src/components/Notification/notifications.ts:185
 msgid "Save Remote Stream Error"
 msgstr "خطأ في حفظ البث عن بُعد"
 
-#: src/components/Notification/notifications.ts:185
+#: src/components/Notification/notifications.ts:189
 msgid "Save Remote Stream Success"
 msgstr "حفظ البث عن بُعد بنجاح"
 
-#: src/components/Notification/notifications.ts:142
+#: src/components/Notification/notifications.ts:146
 msgid "Save site %{name} to %{node} failed"
 msgstr "فشل حفظ الموقع %{name} إلى %{node}"
 
-#: src/components/Notification/notifications.ts:146
+#: src/components/Notification/notifications.ts:150
 msgid "Save site %{name} to %{node} successfully"
 msgstr "تم حفظ الموقع %{name} على %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:182
+#: src/components/Notification/notifications.ts:186
 msgid "Save stream %{name} to %{node} failed"
 msgstr "فشل حفظ الدفق %{name} إلى %{node}"
 
-#: src/components/Notification/notifications.ts:186
+#: src/components/Notification/notifications.ts:190
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "تم حفظ الدفق %{name} في %{node} بنجاح"
 
@@ -4593,7 +4684,7 @@ msgstr "إرسال"
 msgid "Server"
 msgstr "الخادم"
 
-#: src/views/certificate/CertificateEditor.vue:54
+#: src/views/certificate/CertificateEditor.vue:58
 msgid "Server error"
 msgstr "خطأ في الخادم"
 
@@ -4745,7 +4836,7 @@ msgstr "وقت الانتظار بين تكرارات مدير الذاكرة ا
 msgid "Sponsor"
 msgstr "راعي"
 
-#: src/views/certificate/CertificateEditor.vue:211
+#: src/views/certificate/components/CertificateContentEditor.vue:93
 msgid "SSL Certificate Content"
 msgstr "محتوى شهادة SSL"
 
@@ -4757,15 +4848,15 @@ msgstr "يجب أن يكون ملف شهادة SSL ضمن دليل تكوين Ng
 msgid "SSL certificate file not found"
 msgstr "لم يتم العثور على ملف شهادة SSL"
 
-#: src/views/certificate/CertificateEditor.vue:225
+#: src/views/certificate/components/CertificateContentEditor.vue:142
 msgid "SSL Certificate Key Content"
 msgstr "محتوى مفتاح شهادة SSL"
 
-#: src/views/certificate/CertificateEditor.vue:190
+#: src/views/certificate/components/CertificateBasicInfo.vue:55
 msgid "SSL Certificate Key Path"
 msgstr "مسار مفتاح شهادة SSL"
 
-#: src/views/certificate/CertificateEditor.vue:175
+#: src/views/certificate/components/CertificateBasicInfo.vue:39
 #: src/views/preference/tabs/ServerSettings.vue:37
 msgid "SSL Certificate Path"
 msgstr "مسار شهادة SSL"
@@ -5005,7 +5096,7 @@ msgstr "مزامنة العقد"
 msgid "Sync strategy"
 msgstr "استراتيجية المزامنة"
 
-#: src/views/certificate/CertificateEditor.vue:204
+#: src/views/certificate/components/CertificateBasicInfo.vue:70
 msgid "Sync to"
 msgstr "مزامنة إلى"
 
@@ -5027,7 +5118,7 @@ msgstr "نسخ احتياطي للنظام"
 msgid "System Check"
 msgstr "فحص النظام"
 
-#: src/views/certificate/components/ACMEUserSelector.vue:89
+#: src/views/certificate/components/ACMEUserSelector.vue:55
 msgid "System Initial User"
 msgstr "مستخدم النظام الأولي"
 
@@ -5059,6 +5150,14 @@ msgstr "طرفية"
 msgid "Terminal Start Command"
 msgstr "أمر البدء في المحطة الطرفية"
 
+#: src/views/preference/tabs/ExternalNotify.vue:46
+msgid "Test"
+msgstr "اختبار"
+
+#: src/views/preference/tabs/ExternalNotify.vue:17
+msgid "Test message sent successfully"
+msgstr "تم إرسال رسالة الاختبار بنجاح"
+
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:141
 msgid "Test S3 Connection"
 msgstr "اختبار اتصال S3"
@@ -5078,11 +5177,11 @@ msgid ""
 "dashes, colons, and dots."
 msgstr "يجب أن يحتوي رقم ICP على أحرف، يونيكود، أرقام، شرطات، نقاط، ونقطتين فقط."
 
-#: src/views/certificate/CertificateEditor.vue:214
+#: src/views/certificate/components/CertificateContentEditor.vue:96
 msgid "The input is not a SSL Certificate"
 msgstr "الإدخال ليس شهادة SSL"
 
-#: src/views/certificate/CertificateEditor.vue:228
+#: src/views/certificate/components/CertificateContentEditor.vue:145
 msgid "The input is not a SSL Certificate Key"
 msgstr "المدخل ليس مفتاح شهادة SSL"
 
@@ -5119,11 +5218,11 @@ msgstr "يجب أن يحتوي اسم العقدة على أحرف، يونيك�
 msgid "The parameter of server_name is required"
 msgstr "معلمة server_name مطلوبة"
 
-#: src/views/certificate/CertificateEditor.vue:179
+#: src/views/certificate/components/CertificateBasicInfo.vue:43
 msgid "The path exists, but the file is not a certificate"
 msgstr "المسار موجود، لكن الملف ليس شهادة"
 
-#: src/views/certificate/CertificateEditor.vue:194
+#: src/views/certificate/components/CertificateBasicInfo.vue:59
 msgid "The path exists, but the file is not a private key"
 msgstr "المسار موجود، لكن الملف ليس مفتاحًا خاصًا"
 
@@ -5184,11 +5283,11 @@ msgstr ""
 "والعوامل الثانية. إذا لم تتمكن من العثور على هذه الرموز، فستفقد الوصول إلى "
 "حسابك."
 
-#: src/views/certificate/CertificateEditor.vue:99
+#: src/views/certificate/components/AutoCertManagement.vue:45
 msgid "This Auto Cert item is invalid, please remove it."
 msgstr "هذا العنصر في الشهادة التلقائية غير صالح، يرجى إزالته."
 
-#: src/views/certificate/CertificateEditor.vue:89
+#: src/views/certificate/components/AutoCertManagement.vue:35
 msgid "This certificate is managed by Nginx UI"
 msgstr "يتم إدارة هذه الشهادة بواسطة Nginx UI"
 
@@ -5196,9 +5295,9 @@ msgstr "يتم إدارة هذه الشهادة بواسطة Nginx UI"
 msgid "This directory is protected and cannot be deleted for system safety."
 msgstr "هذا الدليل محمي ولا يمكن حذفه لأمان النظام."
 
-#: src/views/certificate/CertificateEditor.vue:163
-#: src/views/certificate/CertificateEditor.vue:177
-#: src/views/certificate/CertificateEditor.vue:192
+#: src/views/certificate/components/CertificateBasicInfo.vue:26
+#: src/views/certificate/components/CertificateBasicInfo.vue:41
+#: src/views/certificate/components/CertificateBasicInfo.vue:57
 msgid "This field is required"
 msgstr "هذا الحقل مطلوب"
 
@@ -5223,6 +5322,10 @@ msgid ""
 "This field should only contain letters, unicode characters, numbers, and "
 "-_./:"
 msgstr "يجب أن يحتوي هذا الحقل فقط على أحرف وأحرف يونيكود وأرقام و -_./:"
+
+#: src/components/Notification/notifications.ts:94
+msgid "This is a test message sent at %{timestamp} from Nginx UI."
+msgstr "هذه رسالة اختبار تم إرسالها في %{timestamp} من واجهة Nginx."
 
 #: src/views/dashboard/NginxDashBoard.vue:175
 msgid ""
@@ -5490,6 +5593,10 @@ msgstr "تم الترقية بنجاح"
 #: src/views/system/Upgrade.vue:81
 msgid "Upgrading Nginx UI, please wait..."
 msgstr "جارٍ ترقية Nginx UI، يرجى الانتظار..."
+
+#: src/views/certificate/components/CertificateFileUpload.vue:121
+msgid "Upload %{type} File"
+msgstr "تحميل ملف %{type}"
 
 #: src/language/curd.ts:49
 msgid "Upload Files"

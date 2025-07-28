@@ -54,10 +54,7 @@ const columns: StdTableColumn[] = [
           formData.config = {}
         }
         return (
-          <div>
-            <div>{$gettext('Config')}</div>
-            <ExternalNotifyEditor v-model={formData.config} type={formData.type} />
-          </div>
+          <ExternalNotifyEditor v-model={formData.config} type={formData.type} />
         )
       },
       formItem: {

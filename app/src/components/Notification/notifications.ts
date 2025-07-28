@@ -89,6 +89,10 @@ const notifications: Record<string, { title: () => string, content: (args: any) 
     title: () => $gettext('Delete Remote Config Success'),
     content: (args: any) => $gettext('Delete %{path} on %{env_name} successfully', args, true),
   },
+  'External Notification Test': {
+    title: () => $gettext('External Notification Test'),
+    content: (args: any) => $gettext('This is a test message sent at %{timestamp} from Nginx UI.', args, true),
+  },
   'Delete Remote Site Error': {
     title: () => $gettext('Delete Remote Site Error'),
     content: (args: any) => $gettext('Delete site %{name} from %{node} failed', args, true),

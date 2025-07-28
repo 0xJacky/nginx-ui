@@ -17,7 +17,7 @@ var (
 
 type ExternalNotifierHandlerFunc func(ctx context.Context, n *model.ExternalNotify, msg *ExternalMessage) error
 
-func externalNotifierHandler(n *model.ExternalNotify, msg *model.Notification) (ExternalNotifierHandlerFunc, error) {
+func externalNotifierHandler(n *model.ExternalNotify) (ExternalNotifierHandlerFunc, error) {
 	externalNotifierRegistryMutex.RLock()
 	defer externalNotifierRegistryMutex.RUnlock()
 	notifier, ok := externalNotifierRegistry[n.Type]
@@ -47,7 +47,7 @@ func (n *ExternalMessage) Send() {
 	ctx := context.Background()
 	for _, externalNotify := range externalNotifies {
 		go func(externalNotify *model.ExternalNotify) {
-			notifier, err := externalNotifierHandler(externalNotify, n.Notification)
+			notifier, err := externalNotifierHandler(externalNotify)
 			if err != nil {
 				logger.Error(err)
 				return
@@ -55,6 +55,24 @@ func (n *ExternalMessage) Send() {
 			notifier(ctx, externalNotify, n)
 		}(externalNotify)
 	}
+}
+
+// SendWithConfig sends the message with direct configuration parameters
+func (n *ExternalMessage) SendWithConfig(notifyType, language string, config map[string]string) error {
+	// Create a temporary ExternalNotify object with the provided parameters
+	externalNotify := &model.ExternalNotify{
+		Type:     notifyType,
+		Language: language,
+		Config:   config,
+	}
+
+	ctx := context.Background()
+	notifier, err := externalNotifierHandler(externalNotify)
+	if err != nil {
+		return err
+	}
+
+	return notifier(ctx, externalNotify, n)
 }
 
 func (n *ExternalMessage) GetTitle(lang string) string {

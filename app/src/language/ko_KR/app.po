@@ -124,7 +124,7 @@ msgid "Access Logs"
 msgstr "접근 로그"
 
 #: src/routes/modules/certificates.ts:20 src/views/certificate/ACMEUser.vue:108
-#: src/views/certificate/components/ACMEUserSelector.vue:86
+#: src/views/certificate/components/ACMEUserSelector.vue:52
 msgid "ACME User"
 msgstr "ACME 사용자"
 
@@ -141,7 +141,7 @@ msgstr "작업"
 #: src/views/environments/list/envColumns.tsx:96
 #: src/views/nginx_log/NginxLogList.vue:67
 #: src/views/notification/notificationColumns.tsx:72
-#: src/views/preference/components/ExternalNotify/columns.tsx:76
+#: src/views/preference/components/ExternalNotify/columns.tsx:73
 #: src/views/site/site_list/columns.tsx:153 src/views/stream/columns.tsx:117
 #: src/views/user/userColumns.tsx:58
 msgid "Actions"
@@ -225,7 +225,7 @@ msgstr "이후에 이 페이지를 새로 고치고 패스키 추가를 다시 �
 msgid "All"
 msgstr "모두"
 
-#: src/components/Notification/notifications.ts:189
+#: src/components/Notification/notifications.ts:193
 #: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr "모든 복구 코드가 사용되었습니다"
@@ -419,7 +419,7 @@ msgstr "AutoCert 실행 중..."
 msgid "Automatic Restart"
 msgstr "자동 재시작"
 
-#: src/views/certificate/CertificateEditor.vue:257
+#: src/views/certificate/components/CertificateActions.vue:22
 #: src/views/config/components/ConfigLeftPanel.vue:273
 #: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
 #: src/views/nginx_log/NginxLog.vue:174
@@ -655,6 +655,11 @@ msgstr "인증서"
 msgid "Cert path is not under the nginx conf dir"
 msgstr "인증서 경로가 nginx 설정 디렉터리 아래에 있지 않습니다"
 
+#: src/views/certificate/components/CertificateFileUpload.vue:120
+#: src/views/certificate/components/CertificateFileUpload.vue:44
+msgid "certificate"
+msgstr "인증서"
+
 #: src/components/Notification/notifications.ts:42
 msgid "Certificate %{name} has expired"
 msgstr "인증서 %{name}의 유효 기간이 만료되었습니다"
@@ -668,6 +673,10 @@ msgstr "인증서 %{name}은(는) %{days}일 후에 만료됩니다"
 #: src/components/Notification/notifications.ts:58
 msgid "Certificate %{name} will expire in 1 day"
 msgstr "인증서 %{name}의 유효 기간이 1일 남았습니다"
+
+#: src/views/certificate/components/CertificateDownload.vue:36
+msgid "Certificate content and private key content cannot be empty"
+msgstr "인증서 내용과 개인 키 내용은 비워둘 수 없습니다"
 
 #: src/constants/errors/cert.ts:4
 msgid "Certificate decode error"
@@ -686,6 +695,14 @@ msgstr "인증서 만료됨"
 #: src/components/Notification/notifications.ts:57
 msgid "Certificate Expiring Soon"
 msgstr "인증서 만료 임박"
+
+#: src/views/certificate/components/CertificateDownload.vue:70
+msgid "Certificate files downloaded successfully"
+msgstr "인증서 파일이 성공적으로 다운로드되었습니다"
+
+#: src/views/certificate/components/CertificateDownload.vue:41
+msgid "Certificate name cannot be empty"
+msgstr "인증서 이름은 비워둘 수 없습니다"
 
 #: src/language/generate.ts:4
 msgid "Certificate not found: %{error}"
@@ -716,7 +733,7 @@ msgstr "인증서 갱신 성공"
 msgid "Certificate revoked successfully"
 msgstr "인증서가 성공적으로 취소되었습니다"
 
-#: src/views/certificate/CertificateEditor.vue:125
+#: src/views/certificate/components/AutoCertManagement.vue:67
 #: src/views/site/site_edit/components/Cert/Cert.vue:58
 msgid "Certificate Status"
 msgid_plural "Certificates Status"
@@ -993,7 +1010,6 @@ msgid "Compression level, 1 is lowest, 9 is highest"
 msgstr "압축 수준, 1은 가장 낮고 9는 가장 높습니다"
 
 #: src/views/preference/components/ExternalNotify/columns.tsx:46
-#: src/views/preference/components/ExternalNotify/columns.tsx:58
 msgid "Config"
 msgstr "구성"
 
@@ -1135,7 +1151,7 @@ msgstr "Nginx 구성 및 Nginx UI 설정을 포함한 시스템 백업을 생성
 #: src/views/environments/group/columns.ts:29
 #: src/views/notification/notificationColumns.tsx:51
 #: src/views/preference/components/AuthSettings/Passkey.vue:95
-#: src/views/preference/components/ExternalNotify/columns.tsx:71
+#: src/views/preference/components/ExternalNotify/columns.tsx:68
 #: src/views/user/userColumns.tsx:46
 msgid "Created at"
 msgstr "생성 시간"
@@ -1290,27 +1306,28 @@ msgstr "원격 구성 삭제 오류"
 msgid "Delete Remote Config Success"
 msgstr "원격 구성 삭제 성공"
 
-#: src/components/Notification/notifications.ts:93 src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:97 src/language/constants.ts:50
 msgid "Delete Remote Site Error"
 msgstr "원격 사이트 삭제 오류"
 
-#: src/components/Notification/notifications.ts:97 src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:101
+#: src/language/constants.ts:49
 msgid "Delete Remote Site Success"
 msgstr "원격 사이트 삭제 성공"
 
-#: src/components/Notification/notifications.ts:149
+#: src/components/Notification/notifications.ts:153
 msgid "Delete Remote Stream Error"
 msgstr "원격 스트림 삭제 오류"
 
-#: src/components/Notification/notifications.ts:153
+#: src/components/Notification/notifications.ts:157
 msgid "Delete Remote Stream Success"
 msgstr "원격 스트림 삭제 성공"
 
-#: src/components/Notification/notifications.ts:94
+#: src/components/Notification/notifications.ts:98
 msgid "Delete site %{name} from %{node} failed"
 msgstr "%{node}에서 사이트 %{name} 삭제 실패"
 
-#: src/components/Notification/notifications.ts:98
+#: src/components/Notification/notifications.ts:102
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "%{node}에서 사이트 %{name} 삭제 성공"
 
@@ -1318,11 +1335,11 @@ msgstr "%{node}에서 사이트 %{name} 삭제 성공"
 msgid "Delete site: %{site_name}"
 msgstr "사이트 삭제: %{site_name}"
 
-#: src/components/Notification/notifications.ts:150
+#: src/components/Notification/notifications.ts:154
 msgid "Delete stream %{name} from %{node} failed"
 msgstr "%{node}에서 스트림 %{name} 삭제 실패"
 
-#: src/components/Notification/notifications.ts:154
+#: src/components/Notification/notifications.ts:158
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "스트림 %{name}을(를) %{node}에서 성공적으로 삭제했습니다"
 
@@ -1408,53 +1425,53 @@ msgstr "비활성화"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "%{name}의 자동 갱신 비활성화 실패"
 
-#: src/components/Notification/notifications.ts:101
+#: src/components/Notification/notifications.ts:105
 #: src/language/constants.ts:52
 msgid "Disable Remote Site Error"
 msgstr "원격 사이트 비활성화 오류"
 
-#: src/components/Notification/notifications.ts:125
+#: src/components/Notification/notifications.ts:129
 msgid "Disable Remote Site Maintenance Error"
 msgstr "원격 사이트 유지 관리 비활성화 오류"
 
-#: src/components/Notification/notifications.ts:129
+#: src/components/Notification/notifications.ts:133
 msgid "Disable Remote Site Maintenance Success"
 msgstr "원격 사이트 유지 관리 비활성화 성공"
 
-#: src/components/Notification/notifications.ts:105
+#: src/components/Notification/notifications.ts:109
 #: src/language/constants.ts:51
 msgid "Disable Remote Site Success"
 msgstr "원격 사이트 비활성화 성공"
 
-#: src/components/Notification/notifications.ts:157
+#: src/components/Notification/notifications.ts:161
 msgid "Disable Remote Stream Error"
 msgstr "원격 스트림 비활성화 오류"
 
-#: src/components/Notification/notifications.ts:161
+#: src/components/Notification/notifications.ts:165
 msgid "Disable Remote Stream Success"
 msgstr "원격 스트림 비활성화 성공"
 
-#: src/components/Notification/notifications.ts:102
+#: src/components/Notification/notifications.ts:106
 msgid "Disable site %{name} from %{node} failed"
 msgstr "%{node}에서 사이트 %{name} 비활성화 실패"
 
-#: src/components/Notification/notifications.ts:106
+#: src/components/Notification/notifications.ts:110
 msgid "Disable site %{name} from %{node} successfully"
 msgstr "%{node}에서 사이트 %{name} 비활성화 성공"
 
-#: src/components/Notification/notifications.ts:126
+#: src/components/Notification/notifications.ts:130
 msgid "Disable site %{name} maintenance on %{node} failed"
 msgstr "%{node}에서 사이트 %{name} 유지 관리를 비활성화하지 못했습니다"
 
-#: src/components/Notification/notifications.ts:130
+#: src/components/Notification/notifications.ts:134
 msgid "Disable site %{name} maintenance on %{node} successfully"
 msgstr "%{node}에서 %{name} 사이트 유지 관리 비활성화 성공"
 
-#: src/components/Notification/notifications.ts:158
+#: src/components/Notification/notifications.ts:162
 msgid "Disable stream %{name} from %{node} failed"
 msgstr "%{node}에서 스트림 %{name} 비활성화 실패"
 
-#: src/components/Notification/notifications.ts:162
+#: src/components/Notification/notifications.ts:166
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr "스트림 %{name}을(를) %{node}에서 비활성화했습니다"
 
@@ -1546,9 +1563,13 @@ msgstr[0] "문서"
 msgid "Domain"
 msgstr "도메인"
 
-#: src/views/certificate/CertificateEditor.vue:109
+#: src/views/certificate/components/AutoCertManagement.vue:55
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
 msgstr "도메인 목록이 비어 있습니다. %{config}에 대한 자동 인증서를 다시 열어보세요"
+
+#: src/views/certificate/components/CertificateDownload.vue:93
+msgid "Download Certificate Files"
+msgstr "인증서 파일 다운로드"
 
 #: src/language/constants.ts:27
 msgid "Download latest release error"
@@ -1557,6 +1578,14 @@ msgstr "최신 릴리스 다운로드 오류"
 #: src/language/constants.ts:26
 msgid "Downloading latest release"
 msgstr "최신 릴리스 다운로드 중"
+
+#: src/views/certificate/components/CertificateContentEditor.vue:126
+msgid "Drop certificate file here"
+msgstr "인증서 파일을 여기에 놓으세요"
+
+#: src/views/certificate/components/CertificateContentEditor.vue:175
+msgid "Drop private key file here"
+msgstr "개인 키 파일을 여기에 놓으세요"
 
 #: src/views/environments/list/BatchUpgrader.vue:189
 #: src/views/system/Upgrade.vue:237
@@ -1660,53 +1689,53 @@ msgstr "HTTPS 활성화"
 msgid "Enable Proxy Cache"
 msgstr "프록시 캐시 활성화"
 
-#: src/components/Notification/notifications.ts:109
+#: src/components/Notification/notifications.ts:113
 #: src/language/constants.ts:54
 msgid "Enable Remote Site Error"
 msgstr "원격 사이트 활성화 오류"
 
-#: src/components/Notification/notifications.ts:117
+#: src/components/Notification/notifications.ts:121
 msgid "Enable Remote Site Maintenance Error"
 msgstr "원격 사이트 유지 관리 활성화 오류"
 
-#: src/components/Notification/notifications.ts:121
+#: src/components/Notification/notifications.ts:125
 msgid "Enable Remote Site Maintenance Success"
 msgstr "원격 사이트 유지 관리 활성화 성공"
 
-#: src/components/Notification/notifications.ts:113
+#: src/components/Notification/notifications.ts:117
 #: src/language/constants.ts:53
 msgid "Enable Remote Site Success"
 msgstr "원격 사이트 활성화 성공"
 
-#: src/components/Notification/notifications.ts:165
+#: src/components/Notification/notifications.ts:169
 msgid "Enable Remote Stream Error"
 msgstr "원격 스트림 활성화 오류"
 
-#: src/components/Notification/notifications.ts:169
+#: src/components/Notification/notifications.ts:173
 msgid "Enable Remote Stream Success"
 msgstr "원격 스트림 활성화 성공"
 
-#: src/components/Notification/notifications.ts:118
+#: src/components/Notification/notifications.ts:122
 msgid "Enable site %{name} maintenance on %{node} failed"
 msgstr "%{node}에서 사이트 %{name} 유지 관리 활성화 실패"
 
-#: src/components/Notification/notifications.ts:122
+#: src/components/Notification/notifications.ts:126
 msgid "Enable site %{name} maintenance on %{node} successfully"
 msgstr "%{node}에서 사이트 %{name} 유지 관리 활성화 성공"
 
-#: src/components/Notification/notifications.ts:110
+#: src/components/Notification/notifications.ts:114
 msgid "Enable site %{name} on %{node} failed"
 msgstr "%{node}에서 사이트 %{name} 활성화 실패"
 
-#: src/components/Notification/notifications.ts:114
+#: src/components/Notification/notifications.ts:118
 msgid "Enable site %{name} on %{node} successfully"
 msgstr "%{node}에서 사이트 %{name} 활성화 성공"
 
-#: src/components/Notification/notifications.ts:166
+#: src/components/Notification/notifications.ts:170
 msgid "Enable stream %{name} on %{node} failed"
 msgstr "%{node}에서 스트림 %{name} 활성화 실패"
 
-#: src/components/Notification/notifications.ts:170
+#: src/components/Notification/notifications.ts:174
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "%{node}에서 스트림 %{name} 활성화 성공"
 
@@ -1841,8 +1870,16 @@ msgstr "Excel로 내보내기"
 msgid "External Docker Container"
 msgstr "외부 Docker 컨테이너"
 
+#: src/constants/errors/notification.ts:5
+msgid "External notification configuration not found"
+msgstr "외부 알림 구성이 없습니다"
+
+#: src/components/Notification/notifications.ts:93
+msgid "External Notification Test"
+msgstr "외부 알림 테스트"
+
 #: src/views/preference/Preference.vue:58
-#: src/views/preference/tabs/ExternalNotify.vue:9
+#: src/views/preference/tabs/ExternalNotify.vue:31
 msgid "External Notify"
 msgstr "외부 알림"
 
@@ -2008,6 +2045,10 @@ msgstr "%{msg} 비활성화 실패"
 msgid "Failed to disable maintenance mode %{msg}"
 msgstr "점검 모드 비활성화 실패: %{msg}"
 
+#: src/views/certificate/components/CertificateDownload.vue:74
+msgid "Failed to download certificate files"
+msgstr "인증서 파일 다운로드 실패"
+
 #: src/views/site/components/SiteStatusSelect.vue:60
 #: src/views/stream/components/StreamStatusSelect.vue:32
 msgid "Failed to enable %{msg}"
@@ -2121,6 +2162,10 @@ msgstr "이미지 가져오기 실패: {0}"
 msgid "Failed to read encrypted file: {0}"
 msgstr "암호화된 파일 읽기 실패: {0}"
 
+#: src/views/certificate/components/CertificateFileUpload.vue:69
+msgid "Failed to read file"
+msgstr "파일 읽기 실패"
+
 #: src/constants/errors/backup.ts:22
 msgid "Failed to read file: {0}"
 msgstr "파일 읽기 실패: {0}"
@@ -2165,9 +2210,17 @@ msgstr "인증서 취소 실패: %{error}"
 msgid "Failed to save Nginx performance settings"
 msgstr "Nginx 성능 설정 저장 실패"
 
+#: src/views/preference/tabs/ExternalNotify.vue:21
+msgid "Failed to send test message"
+msgstr "테스트 메시지 전송 실패"
+
 #: src/constants/errors/docker.ts:14
 msgid "Failed to start temp container: {0}"
 msgstr "임시 컨테이너 시작 실패: {0}"
+
+#: src/views/certificate/components/CertificateFileUpload.vue:103
+msgid "Failed to upload file"
+msgstr "파일 업로드 실패"
 
 #: src/constants/errors/backup.ts:38
 msgid "Failed to verify hashes: {0}"
@@ -2212,6 +2265,14 @@ msgstr "파일을 찾을 수 없음"
 #: src/constants/errors/config.ts:7
 msgid "File or directory not found: {0}"
 msgstr "파일 또는 디렉터리를 찾을 수 없음: {0}"
+
+#: src/views/certificate/components/CertificateFileUpload.vue:53
+msgid "File size cannot exceed 5MB"
+msgstr "파일 크기는 5MB를 초과할 수 없습니다"
+
+#: src/views/certificate/components/CertificateFileUpload.vue:99
+msgid "File uploaded successfully"
+msgstr "파일이 성공적으로 업로드되었습니다"
 
 #: src/constants/errors/cert.ts:2
 msgid "Filename is empty"
@@ -2419,7 +2480,7 @@ msgid "Import"
 msgstr "가져오기"
 
 #: src/routes/modules/certificates.ts:46
-#: src/views/certificate/CertificateEditor.vue:82
+#: src/views/certificate/CertificateEditor.vue:86
 msgid "Import Certificate"
 msgstr "인증서 가져오기"
 
@@ -2506,6 +2567,11 @@ msgstr "잘못된 AES IV 형식: {0}"
 msgid "Invalid AES key format: {0}"
 msgstr "잘못된 AES 키 형식: {0}"
 
+#: src/views/certificate/components/CertificateDownload.vue:53
+#: src/views/certificate/components/CertificateFileUpload.vue:87
+msgid "Invalid certificate format"
+msgstr "잘못된 인증서 형식"
+
 #: src/constants/errors/user.ts:14
 msgid "Invalid claims type"
 msgstr "유효하지 않은 클레임 유형"
@@ -2527,6 +2593,10 @@ msgstr "잘못된 파일 이름"
 msgid "Invalid folder name"
 msgstr "잘못된 폴더 이름"
 
+#: src/constants/errors/notification.ts:4
+msgid "Invalid notification ID"
+msgstr "유효하지 않은 알림 ID"
+
 #: src/constants/errors/notification.ts:3
 msgid "Invalid notifier config"
 msgstr "잘못된 알림 설정"
@@ -2546,6 +2616,11 @@ msgstr "잘못된 패스코드 또는 복구 코드"
 #: src/constants/errors/backup.ts:73
 msgid "Invalid path: {0}"
 msgstr "잘못된 경로: {0}"
+
+#: src/views/certificate/components/CertificateDownload.vue:58
+#: src/views/certificate/components/CertificateFileUpload.vue:93
+msgid "Invalid private key format"
+msgstr "잘못된 개인 키 형식"
 
 #: src/constants/errors/user.ts:5
 msgid "Invalid recovery code"
@@ -2650,8 +2725,10 @@ msgstr "수정하지 않으려면 비워 두세요"
 msgid "Leave blank if you don't need this."
 msgstr "필요하지 않으면 비워 두세요."
 
-#: src/views/certificate/CertificateEditor.vue:221
-#: src/views/certificate/CertificateEditor.vue:235
+#: src/views/certificate/components/CertificateContentEditor.vue:118
+#: src/views/certificate/components/CertificateContentEditor.vue:136
+#: src/views/certificate/components/CertificateContentEditor.vue:167
+#: src/views/certificate/components/CertificateContentEditor.vue:185
 msgid "Leave blank will not change anything"
 msgstr "비워 두면 아무것도 변경되지 않습니다"
 
@@ -2738,7 +2815,7 @@ msgstr "위치"
 msgid "Locations"
 msgstr "위치들"
 
-#: src/views/certificate/CertificateEditor.vue:245
+#: src/views/certificate/CertificateEditor.vue:126
 msgid "Log"
 msgstr "로그"
 
@@ -2949,7 +3026,7 @@ msgid "Modify"
 msgstr "수정"
 
 #: src/routes/modules/certificates.ts:36
-#: src/views/certificate/CertificateEditor.vue:82
+#: src/views/certificate/CertificateEditor.vue:86
 msgid "Modify Certificate"
 msgstr "인증서 수정"
 
@@ -2984,8 +3061,8 @@ msgstr "여러 줄 지시문"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:199
 #: src/views/backup/AutoBackup/AutoBackup.vue:11
 #: src/views/certificate/ACMEUser.vue:11
-#: src/views/certificate/CertificateEditor.vue:160
 #: src/views/certificate/CertificateList/certColumns.tsx:9
+#: src/views/certificate/components/CertificateBasicInfo.vue:23
 #: src/views/certificate/DNSCredential.vue:9
 #: src/views/config/components/ConfigRightPanel/Basic.vue:34
 #: src/views/config/components/Delete.vue:123
@@ -3477,6 +3554,10 @@ msgstr "오픈AI"
 msgid "Or"
 msgstr "또는"
 
+#: src/views/certificate/components/CertificateFileUpload.vue:146
+msgid "or drag file to editor below"
+msgstr "또는 파일을 아래 편집기로 드래그하세요"
+
 #: src/views/preference/components/AuthSettings/TOTP.vue:112
 msgid "Or enter the secret: %{secret}"
 msgstr "또는 시크릿을 입력하세요: %{secret}"
@@ -3684,7 +3765,7 @@ msgid ""
 "select one of the credentialsbelow to request the API of the DNS provider."
 msgstr "먼저 인증서 > DNS 자격 증명에 자격 증명을 추가한 다음,DNS 제공자의 API를 요청하려면 아래 자격 증명 중 하나를 선택해주세요."
 
-#: src/components/Notification/notifications.ts:190
+#: src/components/Notification/notifications.ts:194
 #: src/language/constants.ts:59
 msgid ""
 "Please generate new recovery codes in the preferences immediately to "
@@ -3745,6 +3826,10 @@ msgstr "이 보안 토큰을 저장해 두세요. 복원 시 필요합니다:"
 msgid "Please select a backup file"
 msgstr "백업 파일을 선택해 주세요"
 
+#: src/views/certificate/components/CertificateFileUpload.vue:45
+msgid "Please select a valid %{type} file (%{extensions})"
+msgstr "유효한 %{type} 파일을 선택하세요 (%{extensions})"
+
 #: src/language/curd.ts:33
 msgid "Please select at least one item"
 msgstr "최소한 하나의 항목을 선택해 주세요"
@@ -3799,6 +3884,11 @@ msgstr "환경설정"
 #: src/language/constants.ts:8
 msgid "Preparing lego configurations"
 msgstr "Lego 설정 준비 중"
+
+#: src/views/certificate/components/CertificateFileUpload.vue:120
+#: src/views/certificate/components/CertificateFileUpload.vue:44
+msgid "private key"
+msgstr "개인 키"
 
 #: src/components/PortScanner/PortScannerCompact.vue:55
 msgid "Process"
@@ -4034,37 +4124,37 @@ msgstr "원격 구성 이름 변경 오류"
 msgid "Rename Remote Config Success"
 msgstr "원격 구성 이름 변경 성공"
 
-#: src/components/Notification/notifications.ts:133
+#: src/components/Notification/notifications.ts:137
 #: src/language/constants.ts:56
 msgid "Rename Remote Site Error"
 msgstr "원격 사이트 이름 변경 오류"
 
-#: src/components/Notification/notifications.ts:137
+#: src/components/Notification/notifications.ts:141
 #: src/language/constants.ts:55
 msgid "Rename Remote Site Success"
 msgstr "원격 사이트 이름 변경 성공"
 
-#: src/components/Notification/notifications.ts:173
+#: src/components/Notification/notifications.ts:177
 msgid "Rename Remote Stream Error"
 msgstr "원격 스트림 이름 변경 오류"
 
-#: src/components/Notification/notifications.ts:177
+#: src/components/Notification/notifications.ts:181
 msgid "Rename Remote Stream Success"
 msgstr "원격 스트림 이름 변경 성공"
 
-#: src/components/Notification/notifications.ts:134
+#: src/components/Notification/notifications.ts:138
 msgid "Rename site %{name} to %{new_name} on %{node} failed"
 msgstr "%{node}에서 사이트 %{name}을(를) %{new_name}(으)로 이름 변경하는 데 실패했습니다"
 
-#: src/components/Notification/notifications.ts:138
+#: src/components/Notification/notifications.ts:142
 msgid "Rename site %{name} to %{new_name} on %{node} successfully"
 msgstr "사이트 %{name}을(를) %{new_name}(으)로 이름 변경했습니다 (%{node})"
 
-#: src/components/Notification/notifications.ts:174
+#: src/components/Notification/notifications.ts:178
 msgid "Rename stream %{name} to %{new_name} on %{node} failed"
 msgstr "%{node}에서 스트림 %{name}을(를) %{new_name}(으)로 이름 변경하는 데 실패했습니다"
 
-#: src/components/Notification/notifications.ts:178
+#: src/components/Notification/notifications.ts:182
 msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
 msgstr "스트림 %{name}을(를) %{new_name}(으)로 이름 변경했습니다 (%{node})"
 
@@ -4356,7 +4446,8 @@ msgstr "토요일"
 
 #: src/components/ChatGPT/ChatMessage.vue:215
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:129
-#: src/language/curd.ts:18 src/views/certificate/CertificateEditor.vue:264
+#: src/language/curd.ts:18
+#: src/views/certificate/components/CertificateActions.vue:29
 #: src/views/config/components/ConfigLeftPanel.vue:282
 #: src/views/config/components/ConfigName.vue:59
 #: src/views/preference/components/AuthSettings/Passkey.vue:130
@@ -4376,37 +4467,37 @@ msgstr "지시문 저장"
 msgid "Save error %{msg}"
 msgstr "저장 오류 %{msg}"
 
-#: src/components/Notification/notifications.ts:141
+#: src/components/Notification/notifications.ts:145
 #: src/language/constants.ts:48
 msgid "Save Remote Site Error"
 msgstr "원격 사이트 저장 오류"
 
-#: src/components/Notification/notifications.ts:145
+#: src/components/Notification/notifications.ts:149
 #: src/language/constants.ts:47
 msgid "Save Remote Site Success"
 msgstr "원격 사이트 저장 성공"
 
-#: src/components/Notification/notifications.ts:181
+#: src/components/Notification/notifications.ts:185
 msgid "Save Remote Stream Error"
 msgstr "원격 스트림 저장 오류"
 
-#: src/components/Notification/notifications.ts:185
+#: src/components/Notification/notifications.ts:189
 msgid "Save Remote Stream Success"
 msgstr "원격 스트림 저장 성공"
 
-#: src/components/Notification/notifications.ts:142
+#: src/components/Notification/notifications.ts:146
 msgid "Save site %{name} to %{node} failed"
 msgstr "%{name} 사이트를 %{node}에 저장하지 못했습니다"
 
-#: src/components/Notification/notifications.ts:146
+#: src/components/Notification/notifications.ts:150
 msgid "Save site %{name} to %{node} successfully"
 msgstr "사이트 %{name}을(를) %{node}에 성공적으로 저장했습니다"
 
-#: src/components/Notification/notifications.ts:182
+#: src/components/Notification/notifications.ts:186
 msgid "Save stream %{name} to %{node} failed"
 msgstr "스트림 %{name}을(를) %{node}에 저장하지 못했습니다"
 
-#: src/components/Notification/notifications.ts:186
+#: src/components/Notification/notifications.ts:190
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "스트림 %{name}을(를) %{node}에 성공적으로 저장했습니다"
 
@@ -4528,7 +4619,7 @@ msgstr "보내기"
 msgid "Server"
 msgstr "서버"
 
-#: src/views/certificate/CertificateEditor.vue:54
+#: src/views/certificate/CertificateEditor.vue:58
 msgid "Server error"
 msgstr "서버 오류"
 
@@ -4678,7 +4769,7 @@ msgstr "캐시 관리자 반복 간 대기 시간"
 msgid "Sponsor"
 msgstr "스폰서"
 
-#: src/views/certificate/CertificateEditor.vue:211
+#: src/views/certificate/components/CertificateContentEditor.vue:93
 msgid "SSL Certificate Content"
 msgstr "SSL 인증서 내용"
 
@@ -4690,15 +4781,15 @@ msgstr "SSL 인증서 파일은 Nginx 구성 디렉터리 아래에 있어야 �
 msgid "SSL certificate file not found"
 msgstr "SSL 인증서 파일을 찾을 수 없음"
 
-#: src/views/certificate/CertificateEditor.vue:225
+#: src/views/certificate/components/CertificateContentEditor.vue:142
 msgid "SSL Certificate Key Content"
 msgstr "SSL 인증서키 콘텐츠"
 
-#: src/views/certificate/CertificateEditor.vue:190
+#: src/views/certificate/components/CertificateBasicInfo.vue:55
 msgid "SSL Certificate Key Path"
 msgstr "SSL 인증서 키 경로"
 
-#: src/views/certificate/CertificateEditor.vue:175
+#: src/views/certificate/components/CertificateBasicInfo.vue:39
 #: src/views/preference/tabs/ServerSettings.vue:37
 msgid "SSL Certificate Path"
 msgstr "SSL 인증서 경로"
@@ -4936,7 +5027,7 @@ msgstr "동기화 노드"
 msgid "Sync strategy"
 msgstr "동기화 전략"
 
-#: src/views/certificate/CertificateEditor.vue:204
+#: src/views/certificate/components/CertificateBasicInfo.vue:70
 msgid "Sync to"
 msgstr "동기화 대상"
 
@@ -4958,7 +5049,7 @@ msgstr "시스템 백업"
 msgid "System Check"
 msgstr "시스템 점검"
 
-#: src/views/certificate/components/ACMEUserSelector.vue:89
+#: src/views/certificate/components/ACMEUserSelector.vue:55
 msgid "System Initial User"
 msgstr "시스템 초기 사용자"
 
@@ -4990,6 +5081,14 @@ msgstr "터미널"
 msgid "Terminal Start Command"
 msgstr "터미널 시작 명령"
 
+#: src/views/preference/tabs/ExternalNotify.vue:46
+msgid "Test"
+msgstr "테스트"
+
+#: src/views/preference/tabs/ExternalNotify.vue:17
+msgid "Test message sent successfully"
+msgstr "테스트 메시지가 성공적으로 전송되었습니다"
+
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:141
 msgid "Test S3 Connection"
 msgstr "S3 연결 테스트"
@@ -5007,11 +5106,11 @@ msgid ""
 "dashes, colons, and dots."
 msgstr "ICP 번호는 문자, 유니코드, 숫자, 하이픈, 대시, 콜론 및 점만 포함해야 합니다."
 
-#: src/views/certificate/CertificateEditor.vue:214
+#: src/views/certificate/components/CertificateContentEditor.vue:96
 msgid "The input is not a SSL Certificate"
 msgstr "입력이 SSL 인증서가 아닙니다"
 
-#: src/views/certificate/CertificateEditor.vue:228
+#: src/views/certificate/components/CertificateContentEditor.vue:145
 msgid "The input is not a SSL Certificate Key"
 msgstr "입력한 내용이 SSL 인증서 키가 아닙니다"
 
@@ -5042,11 +5141,11 @@ msgstr "노드 이름에는 문자, 유니코드, 숫자, 하이픈, 대시, 콜
 msgid "The parameter of server_name is required"
 msgstr "server_name 매개변수가 필요합니다"
 
-#: src/views/certificate/CertificateEditor.vue:179
+#: src/views/certificate/components/CertificateBasicInfo.vue:43
 msgid "The path exists, but the file is not a certificate"
 msgstr "경로는 존재하지만, 파일이 인증서가 아닙니다"
 
-#: src/views/certificate/CertificateEditor.vue:194
+#: src/views/certificate/components/CertificateBasicInfo.vue:59
 msgid "The path exists, but the file is not a private key"
 msgstr "경로는 존재하지만 파일은 개인 키가 아닙니다"
 
@@ -5102,11 +5201,11 @@ msgstr ""
 "이 코드들은 비밀번호와 두 번째 요소를 잃어버린 경우 계정에 접근할 수 있는 최후의 수단입니다. 이 코드들을 찾을 수 없다면 계정에 "
 "대한 접근 권한을 잃게 됩니다."
 
-#: src/views/certificate/CertificateEditor.vue:99
+#: src/views/certificate/components/AutoCertManagement.vue:45
 msgid "This Auto Cert item is invalid, please remove it."
 msgstr "이 자동 인증 항목이 유효하지 않습니다. 제거해주세요."
 
-#: src/views/certificate/CertificateEditor.vue:89
+#: src/views/certificate/components/AutoCertManagement.vue:35
 msgid "This certificate is managed by Nginx UI"
 msgstr "이 인증서는 Nginx UI에서 관리됩니다"
 
@@ -5114,9 +5213,9 @@ msgstr "이 인증서는 Nginx UI에서 관리됩니다"
 msgid "This directory is protected and cannot be deleted for system safety."
 msgstr "이 디렉터리는 보호되어 있으며 시스템 안전을 위해 삭제할 수 없습니다."
 
-#: src/views/certificate/CertificateEditor.vue:163
-#: src/views/certificate/CertificateEditor.vue:177
-#: src/views/certificate/CertificateEditor.vue:192
+#: src/views/certificate/components/CertificateBasicInfo.vue:26
+#: src/views/certificate/components/CertificateBasicInfo.vue:41
+#: src/views/certificate/components/CertificateBasicInfo.vue:57
 msgid "This field is required"
 msgstr "이 필드는 필수입니다"
 
@@ -5141,6 +5240,10 @@ msgid ""
 "This field should only contain letters, unicode characters, numbers, and "
 "-_./:"
 msgstr "이 필드에는 문자, 유니코드 문자, 숫자 및 -_./: 만 포함되어야 합니다"
+
+#: src/components/Notification/notifications.ts:94
+msgid "This is a test message sent at %{timestamp} from Nginx UI."
+msgstr "이것은 nginx ui에서 %{timestamp}에서 전송 된 테스트 메시지입니다."
 
 #: src/views/dashboard/NginxDashBoard.vue:175
 msgid ""
@@ -5390,6 +5493,10 @@ msgstr "성공적으로 업그레이드됨"
 #: src/views/system/Upgrade.vue:81
 msgid "Upgrading Nginx UI, please wait..."
 msgstr "Nginx UI를 업그레이드하는 중입니다. 잠시 기다려주세요..."
+
+#: src/views/certificate/components/CertificateFileUpload.vue:121
+msgid "Upload %{type} File"
+msgstr "%{type} 파일 업로드"
 
 #: src/language/curd.ts:49
 msgid "Upload Files"

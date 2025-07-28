@@ -121,7 +121,7 @@ msgid "Access Logs"
 msgstr "Log truy cập"
 
 #: src/routes/modules/certificates.ts:20 src/views/certificate/ACMEUser.vue:108
-#: src/views/certificate/components/ACMEUserSelector.vue:86
+#: src/views/certificate/components/ACMEUserSelector.vue:52
 msgid "ACME User"
 msgstr "Người dùng ACME"
 
@@ -138,7 +138,7 @@ msgstr "Hành động"
 #: src/views/environments/list/envColumns.tsx:96
 #: src/views/nginx_log/NginxLogList.vue:67
 #: src/views/notification/notificationColumns.tsx:72
-#: src/views/preference/components/ExternalNotify/columns.tsx:76
+#: src/views/preference/components/ExternalNotify/columns.tsx:73
 #: src/views/site/site_list/columns.tsx:153 src/views/stream/columns.tsx:117
 #: src/views/user/userColumns.tsx:58
 msgid "Actions"
@@ -222,7 +222,7 @@ msgstr "Sau đó, làm mới trang này và nhấp vào thêm khóa truy cập m
 msgid "All"
 msgstr "Tất cả"
 
-#: src/components/Notification/notifications.ts:189
+#: src/components/Notification/notifications.ts:193
 #: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr "Tất cả mã khôi phục đã được sử dụng"
@@ -418,7 +418,7 @@ msgstr "AutoCert đang chạy..."
 msgid "Automatic Restart"
 msgstr "Khởi động lại tự động"
 
-#: src/views/certificate/CertificateEditor.vue:257
+#: src/views/certificate/components/CertificateActions.vue:22
 #: src/views/config/components/ConfigLeftPanel.vue:273
 #: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
 #: src/views/nginx_log/NginxLog.vue:174
@@ -656,6 +656,11 @@ msgstr "Chứng chỉ"
 msgid "Cert path is not under the nginx conf dir"
 msgstr "Đường dẫn chứng chỉ không nằm trong thư mục cấu hình nginx"
 
+#: src/views/certificate/components/CertificateFileUpload.vue:120
+#: src/views/certificate/components/CertificateFileUpload.vue:44
+msgid "certificate"
+msgstr "chứng chỉ"
+
 #: src/components/Notification/notifications.ts:42
 msgid "Certificate %{name} has expired"
 msgstr "Chứng chỉ %{name} đã hết hạn"
@@ -669,6 +674,10 @@ msgstr "Chứng chỉ %{name} sẽ hết hạn sau %{days} ngày"
 #: src/components/Notification/notifications.ts:58
 msgid "Certificate %{name} will expire in 1 day"
 msgstr "Chứng chỉ %{name} sẽ hết hạn trong 1 ngày"
+
+#: src/views/certificate/components/CertificateDownload.vue:36
+msgid "Certificate content and private key content cannot be empty"
+msgstr "Nội dung chứng chỉ và khóa riêng tư không thể để trống"
 
 #: src/constants/errors/cert.ts:4
 msgid "Certificate decode error"
@@ -687,6 +696,14 @@ msgstr "Chứng chỉ đã hết hạn"
 #: src/components/Notification/notifications.ts:57
 msgid "Certificate Expiring Soon"
 msgstr "Chứng chỉ sắp hết hạn"
+
+#: src/views/certificate/components/CertificateDownload.vue:70
+msgid "Certificate files downloaded successfully"
+msgstr "Tải xuống tệp chứng chỉ thành công"
+
+#: src/views/certificate/components/CertificateDownload.vue:41
+msgid "Certificate name cannot be empty"
+msgstr "Tên chứng chỉ không được để trống"
 
 #: src/language/generate.ts:4
 msgid "Certificate not found: %{error}"
@@ -717,7 +734,7 @@ msgstr "Gia hạn chứng chỉ thành công"
 msgid "Certificate revoked successfully"
 msgstr "Hủy chứng chỉ thành công"
 
-#: src/views/certificate/CertificateEditor.vue:125
+#: src/views/certificate/components/AutoCertManagement.vue:67
 #: src/views/site/site_edit/components/Cert/Cert.vue:58
 msgid "Certificate Status"
 msgid_plural "Certificates Status"
@@ -1007,7 +1024,6 @@ msgid "Compression level, 1 is lowest, 9 is highest"
 msgstr "Mức nén, 1 là thấp nhất, 9 là cao nhất"
 
 #: src/views/preference/components/ExternalNotify/columns.tsx:46
-#: src/views/preference/components/ExternalNotify/columns.tsx:58
 msgid "Config"
 msgstr "Cấu hình"
 
@@ -1151,7 +1167,7 @@ msgstr ""
 #: src/views/environments/group/columns.ts:29
 #: src/views/notification/notificationColumns.tsx:51
 #: src/views/preference/components/AuthSettings/Passkey.vue:95
-#: src/views/preference/components/ExternalNotify/columns.tsx:71
+#: src/views/preference/components/ExternalNotify/columns.tsx:68
 #: src/views/user/userColumns.tsx:46
 msgid "Created at"
 msgstr "Ngày tạo"
@@ -1306,27 +1322,28 @@ msgstr "Lỗi xóa cấu hình từ xa"
 msgid "Delete Remote Config Success"
 msgstr "Xóa cấu hình từ xa thành công"
 
-#: src/components/Notification/notifications.ts:93 src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:97 src/language/constants.ts:50
 msgid "Delete Remote Site Error"
 msgstr "Lỗi xóa trang web từ xa"
 
-#: src/components/Notification/notifications.ts:97 src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:101
+#: src/language/constants.ts:49
 msgid "Delete Remote Site Success"
 msgstr "Xóa trang web từ xa thành công"
 
-#: src/components/Notification/notifications.ts:149
+#: src/components/Notification/notifications.ts:153
 msgid "Delete Remote Stream Error"
 msgstr "Lỗi xóa luồng từ xa"
 
-#: src/components/Notification/notifications.ts:153
+#: src/components/Notification/notifications.ts:157
 msgid "Delete Remote Stream Success"
 msgstr "Xóa luồng từ xa thành công"
 
-#: src/components/Notification/notifications.ts:94
+#: src/components/Notification/notifications.ts:98
 msgid "Delete site %{name} from %{node} failed"
 msgstr "Xóa trang %{name} từ %{node} thất bại"
 
-#: src/components/Notification/notifications.ts:98
+#: src/components/Notification/notifications.ts:102
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "Đã xóa trang web %{name} từ %{node} thành công"
 
@@ -1334,11 +1351,11 @@ msgstr "Đã xóa trang web %{name} từ %{node} thành công"
 msgid "Delete site: %{site_name}"
 msgstr "Xoá trang web: %{site_name}"
 
-#: src/components/Notification/notifications.ts:150
+#: src/components/Notification/notifications.ts:154
 msgid "Delete stream %{name} from %{node} failed"
 msgstr "Xóa luồng %{name} từ %{node} thất bại"
 
-#: src/components/Notification/notifications.ts:154
+#: src/components/Notification/notifications.ts:158
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "Đã xóa luồng %{name} từ %{node} thành công"
 
@@ -1424,53 +1441,53 @@ msgstr "Vô hiệu hóa"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "Vô hiệu hóa gia hạn tự động thất bại cho %{name}"
 
-#: src/components/Notification/notifications.ts:101
+#: src/components/Notification/notifications.ts:105
 #: src/language/constants.ts:52
 msgid "Disable Remote Site Error"
 msgstr "Lỗi vô hiệu hóa trang từ xa"
 
-#: src/components/Notification/notifications.ts:125
+#: src/components/Notification/notifications.ts:129
 msgid "Disable Remote Site Maintenance Error"
 msgstr "Lỗi tắt bảo trì trang web từ xa"
 
-#: src/components/Notification/notifications.ts:129
+#: src/components/Notification/notifications.ts:133
 msgid "Disable Remote Site Maintenance Success"
 msgstr "Vô hiệu hóa bảo trì trang web từ xa thành công"
 
-#: src/components/Notification/notifications.ts:105
+#: src/components/Notification/notifications.ts:109
 #: src/language/constants.ts:51
 msgid "Disable Remote Site Success"
 msgstr "Đã vô hiệu hóa trang web từ xa thành công"
 
-#: src/components/Notification/notifications.ts:157
+#: src/components/Notification/notifications.ts:161
 msgid "Disable Remote Stream Error"
 msgstr "Lỗi tắt luồng từ xa"
 
-#: src/components/Notification/notifications.ts:161
+#: src/components/Notification/notifications.ts:165
 msgid "Disable Remote Stream Success"
 msgstr "Vô hiệu hóa luồng từ xa thành công"
 
-#: src/components/Notification/notifications.ts:102
+#: src/components/Notification/notifications.ts:106
 msgid "Disable site %{name} from %{node} failed"
 msgstr "Không thể vô hiệu hóa trang web %{name} từ %{node}"
 
-#: src/components/Notification/notifications.ts:106
+#: src/components/Notification/notifications.ts:110
 msgid "Disable site %{name} from %{node} successfully"
 msgstr "Đã vô hiệu hóa trang %{name} từ %{node} thành công"
 
-#: src/components/Notification/notifications.ts:126
+#: src/components/Notification/notifications.ts:130
 msgid "Disable site %{name} maintenance on %{node} failed"
 msgstr "Không thể tắt bảo trì trang web %{name} trên %{node}"
 
-#: src/components/Notification/notifications.ts:130
+#: src/components/Notification/notifications.ts:134
 msgid "Disable site %{name} maintenance on %{node} successfully"
 msgstr "Đã tắt bảo trì trang web %{name} trên %{node} thành công"
 
-#: src/components/Notification/notifications.ts:158
+#: src/components/Notification/notifications.ts:162
 msgid "Disable stream %{name} from %{node} failed"
 msgstr "Không thể tắt luồng %{name} từ %{node}"
 
-#: src/components/Notification/notifications.ts:162
+#: src/components/Notification/notifications.ts:166
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr "Đã vô hiệu hóa luồng %{name} từ %{node} thành công"
 
@@ -1562,11 +1579,15 @@ msgstr[0] "Tài liệu"
 msgid "Domain"
 msgstr "Tên miền"
 
-#: src/views/certificate/CertificateEditor.vue:109
+#: src/views/certificate/components/AutoCertManagement.vue:55
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
 msgstr ""
 "Danh sách tên miền rỗng, hãy thử mở lại chức năng Tạo chứng chỉ tự động cho "
 "%{config}"
+
+#: src/views/certificate/components/CertificateDownload.vue:93
+msgid "Download Certificate Files"
+msgstr "Tải xuống tệp chứng chỉ"
 
 #: src/language/constants.ts:27
 msgid "Download latest release error"
@@ -1575,6 +1596,14 @@ msgstr "Đã có lỗi xảy ra khi tải về phiên bản mới nhất"
 #: src/language/constants.ts:26
 msgid "Downloading latest release"
 msgstr "Đang tải phiên bản mới nhất"
+
+#: src/views/certificate/components/CertificateContentEditor.vue:126
+msgid "Drop certificate file here"
+msgstr "Thả tệp chứng chỉ vào đây"
+
+#: src/views/certificate/components/CertificateContentEditor.vue:175
+msgid "Drop private key file here"
+msgstr "Thả tệp khóa riêng tư vào đây"
 
 #: src/views/environments/list/BatchUpgrader.vue:189
 #: src/views/system/Upgrade.vue:237
@@ -1678,53 +1707,53 @@ msgstr "Bật HTTPS"
 msgid "Enable Proxy Cache"
 msgstr "Bật bộ nhớ đệm proxy"
 
-#: src/components/Notification/notifications.ts:109
+#: src/components/Notification/notifications.ts:113
 #: src/language/constants.ts:54
 msgid "Enable Remote Site Error"
 msgstr "Lỗi kích hoạt trang từ xa"
 
-#: src/components/Notification/notifications.ts:117
+#: src/components/Notification/notifications.ts:121
 msgid "Enable Remote Site Maintenance Error"
 msgstr "Lỗi bật bảo trì trang web từ xa"
 
-#: src/components/Notification/notifications.ts:121
+#: src/components/Notification/notifications.ts:125
 msgid "Enable Remote Site Maintenance Success"
 msgstr "Kích hoạt chế độ bảo trì trang web từ xa thành công"
 
-#: src/components/Notification/notifications.ts:113
+#: src/components/Notification/notifications.ts:117
 #: src/language/constants.ts:53
 msgid "Enable Remote Site Success"
 msgstr "Kích hoạt trang từ xa thành công"
 
-#: src/components/Notification/notifications.ts:165
+#: src/components/Notification/notifications.ts:169
 msgid "Enable Remote Stream Error"
 msgstr "Lỗi bật luồng từ xa"
 
-#: src/components/Notification/notifications.ts:169
+#: src/components/Notification/notifications.ts:173
 msgid "Enable Remote Stream Success"
 msgstr "Bật luồng từ xa thành công"
 
-#: src/components/Notification/notifications.ts:118
+#: src/components/Notification/notifications.ts:122
 msgid "Enable site %{name} maintenance on %{node} failed"
 msgstr "Không thể bật chế độ bảo trì cho trang web %{name} trên %{node}"
 
-#: src/components/Notification/notifications.ts:122
+#: src/components/Notification/notifications.ts:126
 msgid "Enable site %{name} maintenance on %{node} successfully"
 msgstr "Đã bật chế độ bảo trì trang web %{name} trên %{node} thành công"
 
-#: src/components/Notification/notifications.ts:110
+#: src/components/Notification/notifications.ts:114
 msgid "Enable site %{name} on %{node} failed"
 msgstr "Không thể kích hoạt trang web %{name} trên %{node}"
 
-#: src/components/Notification/notifications.ts:114
+#: src/components/Notification/notifications.ts:118
 msgid "Enable site %{name} on %{node} successfully"
 msgstr "Đã bật trang web %{name} trên %{node} thành công"
 
-#: src/components/Notification/notifications.ts:166
+#: src/components/Notification/notifications.ts:170
 msgid "Enable stream %{name} on %{node} failed"
 msgstr "Không thể bật luồng %{name} trên %{node}"
 
-#: src/components/Notification/notifications.ts:170
+#: src/components/Notification/notifications.ts:174
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "Đã bật luồng %{name} trên %{node} thành công"
 
@@ -1859,8 +1888,16 @@ msgstr "Xuất Excel"
 msgid "External Docker Container"
 msgstr "Container Docker bên ngoài"
 
+#: src/constants/errors/notification.ts:5
+msgid "External notification configuration not found"
+msgstr "Không tìm thấy cấu hình thông báo bên ngoài"
+
+#: src/components/Notification/notifications.ts:93
+msgid "External Notification Test"
+msgstr "Kiểm tra thông báo bên ngoài"
+
 #: src/views/preference/Preference.vue:58
-#: src/views/preference/tabs/ExternalNotify.vue:9
+#: src/views/preference/tabs/ExternalNotify.vue:31
 msgid "External Notify"
 msgstr "Thông báo bên ngoài"
 
@@ -2026,6 +2063,10 @@ msgstr "Không thể tắt %{msg}"
 msgid "Failed to disable maintenance mode %{msg}"
 msgstr "Không thể tắt chế độ bảo trì %{msg}"
 
+#: src/views/certificate/components/CertificateDownload.vue:74
+msgid "Failed to download certificate files"
+msgstr "Tải xuống tệp chứng chỉ thất bại"
+
 #: src/views/site/components/SiteStatusSelect.vue:60
 #: src/views/stream/components/StreamStatusSelect.vue:32
 msgid "Failed to enable %{msg}"
@@ -2139,6 +2180,10 @@ msgstr "Không thể tải hình ảnh: {0}"
 msgid "Failed to read encrypted file: {0}"
 msgstr "Không thể đọc tệp đã mã hóa: {0}"
 
+#: src/views/certificate/components/CertificateFileUpload.vue:69
+msgid "Failed to read file"
+msgstr "Không thể đọc tệp"
+
 #: src/constants/errors/backup.ts:22
 msgid "Failed to read file: {0}"
 msgstr "Không thể đọc tệp: {0}"
@@ -2183,9 +2228,17 @@ msgstr "Không thể thu hồi chứng chỉ: %{error}"
 msgid "Failed to save Nginx performance settings"
 msgstr "Không thể lưu cài đặt hiệu suất Nginx"
 
+#: src/views/preference/tabs/ExternalNotify.vue:21
+msgid "Failed to send test message"
+msgstr "Gửi tin nhắn kiểm tra thất bại"
+
 #: src/constants/errors/docker.ts:14
 msgid "Failed to start temp container: {0}"
 msgstr "Không thể khởi động container tạm thời: {0}"
+
+#: src/views/certificate/components/CertificateFileUpload.vue:103
+msgid "Failed to upload file"
+msgstr "Tải lên tệp thất bại"
 
 #: src/constants/errors/backup.ts:38
 msgid "Failed to verify hashes: {0}"
@@ -2230,6 +2283,14 @@ msgstr "Không tìm thấy tệp tin"
 #: src/constants/errors/config.ts:7
 msgid "File or directory not found: {0}"
 msgstr "Không tìm thấy tệp hoặc thư mục: {0}"
+
+#: src/views/certificate/components/CertificateFileUpload.vue:53
+msgid "File size cannot exceed 5MB"
+msgstr "Kích thước tệp không được vượt quá 5MB"
+
+#: src/views/certificate/components/CertificateFileUpload.vue:99
+msgid "File uploaded successfully"
+msgstr "Tải lên tệp thành công"
 
 #: src/constants/errors/cert.ts:2
 msgid "Filename is empty"
@@ -2443,7 +2504,7 @@ msgid "Import"
 msgstr "Nhập"
 
 #: src/routes/modules/certificates.ts:46
-#: src/views/certificate/CertificateEditor.vue:82
+#: src/views/certificate/CertificateEditor.vue:86
 msgid "Import Certificate"
 msgstr "Nhập chứng chỉ"
 
@@ -2534,6 +2595,11 @@ msgstr "Định dạng AES IV không hợp lệ: {0}"
 msgid "Invalid AES key format: {0}"
 msgstr "Định dạng khóa AES không hợp lệ: {0}"
 
+#: src/views/certificate/components/CertificateDownload.vue:53
+#: src/views/certificate/components/CertificateFileUpload.vue:87
+msgid "Invalid certificate format"
+msgstr "Định dạng chứng chỉ không hợp lệ"
+
 #: src/constants/errors/user.ts:14
 msgid "Invalid claims type"
 msgstr "Loại yêu cầu không hợp lệ"
@@ -2555,6 +2621,10 @@ msgstr "Tên tệp không hợp lệ"
 msgid "Invalid folder name"
 msgstr "Tên thư mục không hợp lệ"
 
+#: src/constants/errors/notification.ts:4
+msgid "Invalid notification ID"
+msgstr "ID thông báo không hợp lệ"
+
 #: src/constants/errors/notification.ts:3
 msgid "Invalid notifier config"
 msgstr "Cấu hình thông báo không hợp lệ"
@@ -2574,6 +2644,11 @@ msgstr "Mã xác thực hoặc mã khôi phục không hợp lệ"
 #: src/constants/errors/backup.ts:73
 msgid "Invalid path: {0}"
 msgstr "Đường dẫn không hợp lệ: {0}"
+
+#: src/views/certificate/components/CertificateDownload.vue:58
+#: src/views/certificate/components/CertificateFileUpload.vue:93
+msgid "Invalid private key format"
+msgstr "Định dạng khóa riêng không hợp lệ"
 
 #: src/constants/errors/user.ts:5
 msgid "Invalid recovery code"
@@ -2680,8 +2755,10 @@ msgstr "Để trống nếu không muốn thay đổi"
 msgid "Leave blank if you don't need this."
 msgstr "Để trống nếu bạn không cần cái này."
 
-#: src/views/certificate/CertificateEditor.vue:221
-#: src/views/certificate/CertificateEditor.vue:235
+#: src/views/certificate/components/CertificateContentEditor.vue:118
+#: src/views/certificate/components/CertificateContentEditor.vue:136
+#: src/views/certificate/components/CertificateContentEditor.vue:167
+#: src/views/certificate/components/CertificateContentEditor.vue:185
 msgid "Leave blank will not change anything"
 msgstr "Để trống sẽ không thay đổi bất cứ điều gì"
 
@@ -2768,7 +2845,7 @@ msgstr "Location"
 msgid "Locations"
 msgstr "Locations"
 
-#: src/views/certificate/CertificateEditor.vue:245
+#: src/views/certificate/CertificateEditor.vue:126
 msgid "Log"
 msgstr "Nhật ký"
 
@@ -2986,7 +3063,7 @@ msgid "Modify"
 msgstr "Sửa đổi"
 
 #: src/routes/modules/certificates.ts:36
-#: src/views/certificate/CertificateEditor.vue:82
+#: src/views/certificate/CertificateEditor.vue:86
 msgid "Modify Certificate"
 msgstr "Sửa đổi chứng chỉ"
 
@@ -3021,8 +3098,8 @@ msgstr "Chỉ thị nhiều dòng"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:199
 #: src/views/backup/AutoBackup/AutoBackup.vue:11
 #: src/views/certificate/ACMEUser.vue:11
-#: src/views/certificate/CertificateEditor.vue:160
 #: src/views/certificate/CertificateList/certColumns.tsx:9
+#: src/views/certificate/components/CertificateBasicInfo.vue:23
 #: src/views/certificate/DNSCredential.vue:9
 #: src/views/config/components/ConfigRightPanel/Basic.vue:34
 #: src/views/config/components/Delete.vue:123
@@ -3520,6 +3597,10 @@ msgstr "OpenAI"
 msgid "Or"
 msgstr "Hoặc"
 
+#: src/views/certificate/components/CertificateFileUpload.vue:146
+msgid "or drag file to editor below"
+msgstr "hoặc kéo tệp vào trình soạn thảo bên dưới"
+
 #: src/views/preference/components/AuthSettings/TOTP.vue:112
 msgid "Or enter the secret: %{secret}"
 msgstr "Hoặc nhập mã bí mật: %{secret}"
@@ -3735,7 +3816,7 @@ msgstr ""
 "Trước tiên, vui lòng thêm thông tin xác thực trong Chứng chỉ > Thông tin "
 "xác thực DNS, sau đó chọn nhà cung cấp DNS"
 
-#: src/components/Notification/notifications.ts:190
+#: src/components/Notification/notifications.ts:194
 #: src/language/constants.ts:59
 msgid ""
 "Please generate new recovery codes in the preferences immediately to "
@@ -3798,6 +3879,10 @@ msgstr "Vui lòng lưu token bảo mật này, bạn sẽ cần nó để khôi 
 msgid "Please select a backup file"
 msgstr "Vui lòng chọn tệp sao lưu"
 
+#: src/views/certificate/components/CertificateFileUpload.vue:45
+msgid "Please select a valid %{type} file (%{extensions})"
+msgstr "Vui lòng chọn tệp %{type} hợp lệ (%{extensions})"
+
 #: src/language/curd.ts:33
 msgid "Please select at least one item"
 msgstr "Vui lòng chọn ít nhất một mục"
@@ -3852,6 +3937,11 @@ msgstr "Cài đặt"
 #: src/language/constants.ts:8
 msgid "Preparing lego configurations"
 msgstr "Chuẩn bị cấu hình Lego"
+
+#: src/views/certificate/components/CertificateFileUpload.vue:120
+#: src/views/certificate/components/CertificateFileUpload.vue:44
+msgid "private key"
+msgstr "khóa riêng tư"
 
 #: src/components/PortScanner/PortScannerCompact.vue:55
 msgid "Process"
@@ -4093,37 +4183,37 @@ msgstr "Lỗi đổi tên cấu hình từ xa"
 msgid "Rename Remote Config Success"
 msgstr "Đổi tên cấu hình từ xa thành công"
 
-#: src/components/Notification/notifications.ts:133
+#: src/components/Notification/notifications.ts:137
 #: src/language/constants.ts:56
 msgid "Rename Remote Site Error"
 msgstr "Lỗi đổi tên trang từ xa"
 
-#: src/components/Notification/notifications.ts:137
+#: src/components/Notification/notifications.ts:141
 #: src/language/constants.ts:55
 msgid "Rename Remote Site Success"
 msgstr "Đổi tên trang từ xa thành công"
 
-#: src/components/Notification/notifications.ts:173
+#: src/components/Notification/notifications.ts:177
 msgid "Rename Remote Stream Error"
 msgstr "Lỗi đổi tên luồng từ xa"
 
-#: src/components/Notification/notifications.ts:177
+#: src/components/Notification/notifications.ts:181
 msgid "Rename Remote Stream Success"
 msgstr "Đổi tên luồng từ xa thành công"
 
-#: src/components/Notification/notifications.ts:134
+#: src/components/Notification/notifications.ts:138
 msgid "Rename site %{name} to %{new_name} on %{node} failed"
 msgstr "Đổi tên trang web %{name} thành %{new_name} trên %{node} thất bại"
 
-#: src/components/Notification/notifications.ts:138
+#: src/components/Notification/notifications.ts:142
 msgid "Rename site %{name} to %{new_name} on %{node} successfully"
 msgstr "Đã đổi tên trang web %{name} thành %{new_name} trên %{node} thành công"
 
-#: src/components/Notification/notifications.ts:174
+#: src/components/Notification/notifications.ts:178
 msgid "Rename stream %{name} to %{new_name} on %{node} failed"
 msgstr "Đổi tên luồng %{name} thành %{new_name} trên %{node} thất bại"
 
-#: src/components/Notification/notifications.ts:178
+#: src/components/Notification/notifications.ts:182
 msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
 msgstr "Đổi tên luồng %{name} thành %{new_name} trên %{node} thành công"
 
@@ -4418,7 +4508,8 @@ msgstr "Thứ Bảy"
 
 #: src/components/ChatGPT/ChatMessage.vue:215
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:129
-#: src/language/curd.ts:18 src/views/certificate/CertificateEditor.vue:264
+#: src/language/curd.ts:18
+#: src/views/certificate/components/CertificateActions.vue:29
 #: src/views/config/components/ConfigLeftPanel.vue:282
 #: src/views/config/components/ConfigName.vue:59
 #: src/views/preference/components/AuthSettings/Passkey.vue:130
@@ -4438,37 +4529,37 @@ msgstr "Lưu Directive"
 msgid "Save error %{msg}"
 msgstr "Đã xảy ra lỗi khi lưu %{msg}"
 
-#: src/components/Notification/notifications.ts:141
+#: src/components/Notification/notifications.ts:145
 #: src/language/constants.ts:48
 msgid "Save Remote Site Error"
 msgstr "Lỗi lưu trang từ xa"
 
-#: src/components/Notification/notifications.ts:145
+#: src/components/Notification/notifications.ts:149
 #: src/language/constants.ts:47
 msgid "Save Remote Site Success"
 msgstr "Lưu trang từ xa thành công"
 
-#: src/components/Notification/notifications.ts:181
+#: src/components/Notification/notifications.ts:185
 msgid "Save Remote Stream Error"
 msgstr "Lỗi lưu luồng từ xa"
 
-#: src/components/Notification/notifications.ts:185
+#: src/components/Notification/notifications.ts:189
 msgid "Save Remote Stream Success"
 msgstr "Lưu luồng từ xa thành công"
 
-#: src/components/Notification/notifications.ts:142
+#: src/components/Notification/notifications.ts:146
 msgid "Save site %{name} to %{node} failed"
 msgstr "Lưu trang %{name} vào %{node} thất bại"
 
-#: src/components/Notification/notifications.ts:146
+#: src/components/Notification/notifications.ts:150
 msgid "Save site %{name} to %{node} successfully"
 msgstr "Đã lưu trang %{name} vào %{node} thành công"
 
-#: src/components/Notification/notifications.ts:182
+#: src/components/Notification/notifications.ts:186
 msgid "Save stream %{name} to %{node} failed"
 msgstr "Lưu luồng %{name} vào %{node} thất bại"
 
-#: src/components/Notification/notifications.ts:186
+#: src/components/Notification/notifications.ts:190
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "Đã lưu luồng %{name} vào %{node} thành công"
 
@@ -4590,7 +4681,7 @@ msgstr "Gửi"
 msgid "Server"
 msgstr "Máy chủ"
 
-#: src/views/certificate/CertificateEditor.vue:54
+#: src/views/certificate/CertificateEditor.vue:58
 msgid "Server error"
 msgstr "Lỗi máy chủ"
 
@@ -4742,7 +4833,7 @@ msgstr "Thời gian chờ giữa các lần lặp của trình quản lý bộ n
 msgid "Sponsor"
 msgstr "Nhà tài trợ"
 
-#: src/views/certificate/CertificateEditor.vue:211
+#: src/views/certificate/components/CertificateContentEditor.vue:93
 msgid "SSL Certificate Content"
 msgstr "Nội dung chứng chỉ SSL"
 
@@ -4754,15 +4845,15 @@ msgstr "Tệp chứng chỉ SSL phải nằm trong thư mục cấu hình Nginx:
 msgid "SSL certificate file not found"
 msgstr "Không tìm thấy tệp chứng chỉ SSL"
 
-#: src/views/certificate/CertificateEditor.vue:225
+#: src/views/certificate/components/CertificateContentEditor.vue:142
 msgid "SSL Certificate Key Content"
 msgstr "Nội dung khóa chứng chỉ SSL"
 
-#: src/views/certificate/CertificateEditor.vue:190
+#: src/views/certificate/components/CertificateBasicInfo.vue:55
 msgid "SSL Certificate Key Path"
 msgstr "Đường dẫn khóa chứng chỉ SSL"
 
-#: src/views/certificate/CertificateEditor.vue:175
+#: src/views/certificate/components/CertificateBasicInfo.vue:39
 #: src/views/preference/tabs/ServerSettings.vue:37
 msgid "SSL Certificate Path"
 msgstr "Đường dẫn chứng chỉ SSL"
@@ -5004,7 +5095,7 @@ msgstr "Nút đồng bộ"
 msgid "Sync strategy"
 msgstr "Chiến lược đồng bộ hóa"
 
-#: src/views/certificate/CertificateEditor.vue:204
+#: src/views/certificate/components/CertificateBasicInfo.vue:70
 msgid "Sync to"
 msgstr "Đồng bộ tới"
 
@@ -5026,7 +5117,7 @@ msgstr "Sao lưu hệ thống"
 msgid "System Check"
 msgstr "Kiểm tra hệ thống"
 
-#: src/views/certificate/components/ACMEUserSelector.vue:89
+#: src/views/certificate/components/ACMEUserSelector.vue:55
 msgid "System Initial User"
 msgstr "Người dùng ban đầu của hệ thống"
 
@@ -5058,6 +5149,14 @@ msgstr "Thiết bị đầu cuối"
 msgid "Terminal Start Command"
 msgstr "Lệnh Khởi động Terminal"
 
+#: src/views/preference/tabs/ExternalNotify.vue:46
+msgid "Test"
+msgstr "Kiểm tra"
+
+#: src/views/preference/tabs/ExternalNotify.vue:17
+msgid "Test message sent successfully"
+msgstr "Gửi tin nhắn kiểm tra thành công"
+
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:141
 msgid "Test S3 Connection"
 msgstr "Kiểm tra kết nối S3"
@@ -5080,11 +5179,11 @@ msgstr ""
 "Số ICP chỉ được chứa chữ cái, unicode, số, dấu gạch ngang, dấu gạch dài, "
 "dấu hai chấm và dấu chấm."
 
-#: src/views/certificate/CertificateEditor.vue:214
+#: src/views/certificate/components/CertificateContentEditor.vue:96
 msgid "The input is not a SSL Certificate"
 msgstr "Đầu vào không phải là Chứng chỉ SSL"
 
-#: src/views/certificate/CertificateEditor.vue:228
+#: src/views/certificate/components/CertificateContentEditor.vue:145
 msgid "The input is not a SSL Certificate Key"
 msgstr "Đầu vào không phải là Khóa Chứng chỉ SSL"
 
@@ -5123,11 +5222,11 @@ msgstr ""
 msgid "The parameter of server_name is required"
 msgstr "Tham số của server_name là bắt buộc"
 
-#: src/views/certificate/CertificateEditor.vue:179
+#: src/views/certificate/components/CertificateBasicInfo.vue:43
 msgid "The path exists, but the file is not a certificate"
 msgstr "Đường dẫn tồn tại, nhưng tệp không phải là chứng chỉ"
 
-#: src/views/certificate/CertificateEditor.vue:194
+#: src/views/certificate/components/CertificateBasicInfo.vue:59
 msgid "The path exists, but the file is not a private key"
 msgstr "Đường dẫn tồn tại, nhưng tệp không phải là khóa riêng tư"
 
@@ -5189,11 +5288,11 @@ msgstr ""
 "trường hợp bạn mất mật khẩu và các yếu tố xác thực thứ hai. Nếu bạn không "
 "thể tìm thấy những mã này, bạn sẽ mất quyền truy cập vào tài khoản."
 
-#: src/views/certificate/CertificateEditor.vue:99
+#: src/views/certificate/components/AutoCertManagement.vue:45
 msgid "This Auto Cert item is invalid, please remove it."
 msgstr "Mục Chứng chỉ tự động này không hợp lệ, vui lòng xóa nó"
 
-#: src/views/certificate/CertificateEditor.vue:89
+#: src/views/certificate/components/AutoCertManagement.vue:35
 msgid "This certificate is managed by Nginx UI"
 msgstr "Chứng chỉ này được quản lý bởi Nginx UI"
 
@@ -5201,9 +5300,9 @@ msgstr "Chứng chỉ này được quản lý bởi Nginx UI"
 msgid "This directory is protected and cannot be deleted for system safety."
 msgstr "Thư mục này được bảo vệ và không thể xóa vì lý do an toàn hệ thống."
 
-#: src/views/certificate/CertificateEditor.vue:163
-#: src/views/certificate/CertificateEditor.vue:177
-#: src/views/certificate/CertificateEditor.vue:192
+#: src/views/certificate/components/CertificateBasicInfo.vue:26
+#: src/views/certificate/components/CertificateBasicInfo.vue:41
+#: src/views/certificate/components/CertificateBasicInfo.vue:57
 msgid "This field is required"
 msgstr "Trường này là bắt buộc"
 
@@ -5228,6 +5327,10 @@ msgid ""
 "This field should only contain letters, unicode characters, numbers, and "
 "-_./:"
 msgstr "Trường này chỉ được chứa chữ cái, ký tự Unicode, số và -_./:"
+
+#: src/components/Notification/notifications.ts:94
+msgid "This is a test message sent at %{timestamp} from Nginx UI."
+msgstr "Đây là một thông báo thử nghiệm được gửi tại %{Timestamp} từ nginx UI."
 
 #: src/views/dashboard/NginxDashBoard.vue:175
 msgid ""
@@ -5499,6 +5602,10 @@ msgstr "Nâng cấp thành công"
 #: src/views/system/Upgrade.vue:81
 msgid "Upgrading Nginx UI, please wait..."
 msgstr "Đang cập nhật Nginx UI, vui lòng đợi..."
+
+#: src/views/certificate/components/CertificateFileUpload.vue:121
+msgid "Upload %{type} File"
+msgstr "Tải lên tệp %{type}"
 
 #: src/language/curd.ts:49
 msgid "Upload Files"

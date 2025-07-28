@@ -129,7 +129,7 @@ msgid "Access Logs"
 msgstr "存取日誌"
 
 #: src/routes/modules/certificates.ts:20 src/views/certificate/ACMEUser.vue:108
-#: src/views/certificate/components/ACMEUserSelector.vue:86
+#: src/views/certificate/components/ACMEUserSelector.vue:52
 msgid "ACME User"
 msgstr "ACME 使用者"
 
@@ -146,7 +146,7 @@ msgstr "操作"
 #: src/views/environments/list/envColumns.tsx:96
 #: src/views/nginx_log/NginxLogList.vue:67
 #: src/views/notification/notificationColumns.tsx:72
-#: src/views/preference/components/ExternalNotify/columns.tsx:76
+#: src/views/preference/components/ExternalNotify/columns.tsx:73
 #: src/views/site/site_list/columns.tsx:153 src/views/stream/columns.tsx:117
 #: src/views/user/userColumns.tsx:58
 msgid "Actions"
@@ -230,7 +230,7 @@ msgstr "之後，請重新整理此頁面並再次點擊新增通行金鑰。"
 msgid "All"
 msgstr "全部"
 
-#: src/components/Notification/notifications.ts:189
+#: src/components/Notification/notifications.ts:193
 #: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr "所有恢復代碼已用完"
@@ -424,7 +424,7 @@ msgstr "AutoCert 正在運行..."
 msgid "Automatic Restart"
 msgstr "自動重啟"
 
-#: src/views/certificate/CertificateEditor.vue:257
+#: src/views/certificate/components/CertificateActions.vue:22
 #: src/views/config/components/ConfigLeftPanel.vue:273
 #: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
 #: src/views/nginx_log/NginxLog.vue:174
@@ -658,6 +658,11 @@ msgstr "證書"
 msgid "Cert path is not under the nginx conf dir"
 msgstr "證書路徑不在 Nginx 設定檔資料夾下"
 
+#: src/views/certificate/components/CertificateFileUpload.vue:120
+#: src/views/certificate/components/CertificateFileUpload.vue:44
+msgid "certificate"
+msgstr "證書"
+
 #: src/components/Notification/notifications.ts:42
 msgid "Certificate %{name} has expired"
 msgstr "證書 %{name} 已過期"
@@ -671,6 +676,10 @@ msgstr "憑證 %{name} 將在 %{days} 天後過期"
 #: src/components/Notification/notifications.ts:58
 msgid "Certificate %{name} will expire in 1 day"
 msgstr "證書 %{name} 將在1天後過期"
+
+#: src/views/certificate/components/CertificateDownload.vue:36
+msgid "Certificate content and private key content cannot be empty"
+msgstr "證書內容和私鑰內容不能為空"
 
 #: src/constants/errors/cert.ts:4
 msgid "Certificate decode error"
@@ -689,6 +698,14 @@ msgstr "憑證已過期"
 #: src/components/Notification/notifications.ts:57
 msgid "Certificate Expiring Soon"
 msgstr "憑證即將到期"
+
+#: src/views/certificate/components/CertificateDownload.vue:70
+msgid "Certificate files downloaded successfully"
+msgstr "憑證檔案下載成功"
+
+#: src/views/certificate/components/CertificateDownload.vue:41
+msgid "Certificate name cannot be empty"
+msgstr "證書名稱不能為空"
 
 #: src/language/generate.ts:4
 msgid "Certificate not found: %{error}"
@@ -719,7 +736,7 @@ msgstr "憑證更新成功"
 msgid "Certificate revoked successfully"
 msgstr "證書撤銷成功"
 
-#: src/views/certificate/CertificateEditor.vue:125
+#: src/views/certificate/components/AutoCertManagement.vue:67
 #: src/views/site/site_edit/components/Cert/Cert.vue:58
 msgid "Certificate Status"
 msgid_plural "Certificates Status"
@@ -991,7 +1008,6 @@ msgid "Compression level, 1 is lowest, 9 is highest"
 msgstr "壓縮等級，1 為最低，9 為最高"
 
 #: src/views/preference/components/ExternalNotify/columns.tsx:46
-#: src/views/preference/components/ExternalNotify/columns.tsx:58
 msgid "Config"
 msgstr "配置"
 
@@ -1133,7 +1149,7 @@ msgstr "建立系統備份，包括 Nginx 設定與 Nginx UI 設定。備份檔�
 #: src/views/environments/group/columns.ts:29
 #: src/views/notification/notificationColumns.tsx:51
 #: src/views/preference/components/AuthSettings/Passkey.vue:95
-#: src/views/preference/components/ExternalNotify/columns.tsx:71
+#: src/views/preference/components/ExternalNotify/columns.tsx:68
 #: src/views/user/userColumns.tsx:46
 msgid "Created at"
 msgstr "建立時間"
@@ -1288,27 +1304,28 @@ msgstr "刪除遠端配置錯誤"
 msgid "Delete Remote Config Success"
 msgstr "遠端配置刪除成功"
 
-#: src/components/Notification/notifications.ts:93 src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:97 src/language/constants.ts:50
 msgid "Delete Remote Site Error"
 msgstr "刪除遠端網站錯誤"
 
-#: src/components/Notification/notifications.ts:97 src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:101
+#: src/language/constants.ts:49
 msgid "Delete Remote Site Success"
 msgstr "刪除遠端網站成功"
 
-#: src/components/Notification/notifications.ts:149
+#: src/components/Notification/notifications.ts:153
 msgid "Delete Remote Stream Error"
 msgstr "刪除遠端串流錯誤"
 
-#: src/components/Notification/notifications.ts:153
+#: src/components/Notification/notifications.ts:157
 msgid "Delete Remote Stream Success"
 msgstr "刪除遠端串流成功"
 
-#: src/components/Notification/notifications.ts:94
+#: src/components/Notification/notifications.ts:98
 msgid "Delete site %{name} from %{node} failed"
 msgstr "從 %{node} 刪除網站 %{name} 失敗"
 
-#: src/components/Notification/notifications.ts:98
+#: src/components/Notification/notifications.ts:102
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "成功從 %{node} 移除站點 %{name}"
 
@@ -1316,11 +1333,11 @@ msgstr "成功從 %{node} 移除站點 %{name}"
 msgid "Delete site: %{site_name}"
 msgstr "刪除網站：%{site_name}"
 
-#: src/components/Notification/notifications.ts:150
+#: src/components/Notification/notifications.ts:154
 msgid "Delete stream %{name} from %{node} failed"
 msgstr "從 %{node} 刪除串流 %{name} 失敗"
 
-#: src/components/Notification/notifications.ts:154
+#: src/components/Notification/notifications.ts:158
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "已成功從 %{node} 刪除串流 %{name}"
 
@@ -1406,53 +1423,53 @@ msgstr "禁用"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "停用 %{name} 的自動續期失敗"
 
-#: src/components/Notification/notifications.ts:101
+#: src/components/Notification/notifications.ts:105
 #: src/language/constants.ts:52
 msgid "Disable Remote Site Error"
 msgstr "禁用遠端站點錯誤"
 
-#: src/components/Notification/notifications.ts:125
+#: src/components/Notification/notifications.ts:129
 msgid "Disable Remote Site Maintenance Error"
 msgstr "禁用遠端站點維護錯誤"
 
-#: src/components/Notification/notifications.ts:129
+#: src/components/Notification/notifications.ts:133
 msgid "Disable Remote Site Maintenance Success"
 msgstr "遠端站點維護已成功停用"
 
-#: src/components/Notification/notifications.ts:105
+#: src/components/Notification/notifications.ts:109
 #: src/language/constants.ts:51
 msgid "Disable Remote Site Success"
 msgstr "遠端站點停用成功"
 
-#: src/components/Notification/notifications.ts:157
+#: src/components/Notification/notifications.ts:161
 msgid "Disable Remote Stream Error"
 msgstr "停用遠端串流錯誤"
 
-#: src/components/Notification/notifications.ts:161
+#: src/components/Notification/notifications.ts:165
 msgid "Disable Remote Stream Success"
 msgstr "停用遠端串流成功"
 
-#: src/components/Notification/notifications.ts:102
+#: src/components/Notification/notifications.ts:106
 msgid "Disable site %{name} from %{node} failed"
 msgstr "停用 %{node} 上的網站 %{name} 失敗"
 
-#: src/components/Notification/notifications.ts:106
+#: src/components/Notification/notifications.ts:110
 msgid "Disable site %{name} from %{node} successfully"
 msgstr "已成功從 %{node} 停用網站 %{name}"
 
-#: src/components/Notification/notifications.ts:126
+#: src/components/Notification/notifications.ts:130
 msgid "Disable site %{name} maintenance on %{node} failed"
 msgstr "在 %{node} 上停用網站%{name}的維護模式失敗"
 
-#: src/components/Notification/notifications.ts:130
+#: src/components/Notification/notifications.ts:134
 msgid "Disable site %{name} maintenance on %{node} successfully"
 msgstr "網站 %{name} 在 %{node} 上的維護已成功停用"
 
-#: src/components/Notification/notifications.ts:158
+#: src/components/Notification/notifications.ts:162
 msgid "Disable stream %{name} from %{node} failed"
 msgstr "停用來自 %{node} 的串流 %{name} 失敗"
 
-#: src/components/Notification/notifications.ts:162
+#: src/components/Notification/notifications.ts:166
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr "已成功從 %{node} 停用串流 %{name}"
 
@@ -1544,9 +1561,13 @@ msgstr[0] "檔案"
 msgid "Domain"
 msgstr "網域"
 
-#: src/views/certificate/CertificateEditor.vue:109
+#: src/views/certificate/components/AutoCertManagement.vue:55
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
 msgstr "網域列表為空，請嘗試重新開啟 %{config} 的自動憑證"
+
+#: src/views/certificate/components/CertificateDownload.vue:93
+msgid "Download Certificate Files"
+msgstr "下載證書文件"
 
 #: src/language/constants.ts:27
 msgid "Download latest release error"
@@ -1555,6 +1576,14 @@ msgstr "下載最新版本錯誤"
 #: src/language/constants.ts:26
 msgid "Downloading latest release"
 msgstr "正在下載最新版本"
+
+#: src/views/certificate/components/CertificateContentEditor.vue:126
+msgid "Drop certificate file here"
+msgstr "將證書文件拖放到此處"
+
+#: src/views/certificate/components/CertificateContentEditor.vue:175
+msgid "Drop private key file here"
+msgstr "將私鑰檔案拖放到此處"
 
 #: src/views/environments/list/BatchUpgrader.vue:189
 #: src/views/system/Upgrade.vue:237
@@ -1656,53 +1685,53 @@ msgstr "啟用 HTTPS"
 msgid "Enable Proxy Cache"
 msgstr "啟用 Proxy 快取"
 
-#: src/components/Notification/notifications.ts:109
+#: src/components/Notification/notifications.ts:113
 #: src/language/constants.ts:54
 msgid "Enable Remote Site Error"
 msgstr "啟用遠端網站錯誤"
 
-#: src/components/Notification/notifications.ts:117
+#: src/components/Notification/notifications.ts:121
 msgid "Enable Remote Site Maintenance Error"
 msgstr "啟用遠端網站維護錯誤"
 
-#: src/components/Notification/notifications.ts:121
+#: src/components/Notification/notifications.ts:125
 msgid "Enable Remote Site Maintenance Success"
 msgstr "啟用遠端網站維護成功"
 
-#: src/components/Notification/notifications.ts:113
+#: src/components/Notification/notifications.ts:117
 #: src/language/constants.ts:53
 msgid "Enable Remote Site Success"
 msgstr "啟用遠端站點成功"
 
-#: src/components/Notification/notifications.ts:165
+#: src/components/Notification/notifications.ts:169
 msgid "Enable Remote Stream Error"
 msgstr "啟用遠端串流錯誤"
 
-#: src/components/Notification/notifications.ts:169
+#: src/components/Notification/notifications.ts:173
 msgid "Enable Remote Stream Success"
 msgstr "啟用遠端串流成功"
 
-#: src/components/Notification/notifications.ts:118
+#: src/components/Notification/notifications.ts:122
 msgid "Enable site %{name} maintenance on %{node} failed"
 msgstr "啟用網站 %{name} 在 %{node} 上的維護模式失敗"
 
-#: src/components/Notification/notifications.ts:122
+#: src/components/Notification/notifications.ts:126
 msgid "Enable site %{name} maintenance on %{node} successfully"
 msgstr "成功在 %{node} 上啟用網站%{name}的維護模式"
 
-#: src/components/Notification/notifications.ts:110
+#: src/components/Notification/notifications.ts:114
 msgid "Enable site %{name} on %{node} failed"
 msgstr "在 %{node} 上啟用網站%{name}失敗"
 
-#: src/components/Notification/notifications.ts:114
+#: src/components/Notification/notifications.ts:118
 msgid "Enable site %{name} on %{node} successfully"
 msgstr "成功在 %{node} 上啟用網站%{name}"
 
-#: src/components/Notification/notifications.ts:166
+#: src/components/Notification/notifications.ts:170
 msgid "Enable stream %{name} on %{node} failed"
 msgstr "在 %{node} 上啟用串流 %{name} 失敗"
 
-#: src/components/Notification/notifications.ts:170
+#: src/components/Notification/notifications.ts:174
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "在 %{node} 上成功啟用串流 %{name}"
 
@@ -1837,8 +1866,16 @@ msgstr "匯出 Excel"
 msgid "External Docker Container"
 msgstr "外部 Docker 容器"
 
+#: src/constants/errors/notification.ts:5
+msgid "External notification configuration not found"
+msgstr "未找到外部通知配置"
+
+#: src/components/Notification/notifications.ts:93
+msgid "External Notification Test"
+msgstr "外部通知測試"
+
 #: src/views/preference/Preference.vue:58
-#: src/views/preference/tabs/ExternalNotify.vue:9
+#: src/views/preference/tabs/ExternalNotify.vue:31
 msgid "External Notify"
 msgstr "外部通知"
 
@@ -2004,6 +2041,10 @@ msgstr "停用 %{msg} 失敗"
 msgid "Failed to disable maintenance mode %{msg}"
 msgstr "無法停用維護模式 %{msg}"
 
+#: src/views/certificate/components/CertificateDownload.vue:74
+msgid "Failed to download certificate files"
+msgstr "下載憑證檔案失敗"
+
 #: src/views/site/components/SiteStatusSelect.vue:60
 #: src/views/stream/components/StreamStatusSelect.vue:32
 msgid "Failed to enable %{msg}"
@@ -2117,6 +2158,10 @@ msgstr "拉取映像失敗: {0}"
 msgid "Failed to read encrypted file: {0}"
 msgstr "無法讀取加密檔案：{0}"
 
+#: src/views/certificate/components/CertificateFileUpload.vue:69
+msgid "Failed to read file"
+msgstr "讀取文件失敗"
+
 #: src/constants/errors/backup.ts:22
 msgid "Failed to read file: {0}"
 msgstr "讀取檔案失敗：{0}"
@@ -2161,9 +2206,17 @@ msgstr "撤銷憑證失敗: %{error}"
 msgid "Failed to save Nginx performance settings"
 msgstr "儲存 Nginx 效能設定失敗"
 
+#: src/views/preference/tabs/ExternalNotify.vue:21
+msgid "Failed to send test message"
+msgstr "發送測試消息失敗"
+
 #: src/constants/errors/docker.ts:14
 msgid "Failed to start temp container: {0}"
 msgstr "啟動臨時容器失敗: {0}"
+
+#: src/views/certificate/components/CertificateFileUpload.vue:103
+msgid "Failed to upload file"
+msgstr "檔案上傳失敗"
 
 #: src/constants/errors/backup.ts:38
 msgid "Failed to verify hashes: {0}"
@@ -2208,6 +2261,14 @@ msgstr "找不到檔案"
 #: src/constants/errors/config.ts:7
 msgid "File or directory not found: {0}"
 msgstr "找不到檔案或目錄：{0}"
+
+#: src/views/certificate/components/CertificateFileUpload.vue:53
+msgid "File size cannot exceed 5MB"
+msgstr "檔案大小不能超過5MB"
+
+#: src/views/certificate/components/CertificateFileUpload.vue:99
+msgid "File uploaded successfully"
+msgstr "檔案上傳成功"
 
 #: src/constants/errors/cert.ts:2
 msgid "Filename is empty"
@@ -2415,7 +2476,7 @@ msgid "Import"
 msgstr "匯入"
 
 #: src/routes/modules/certificates.ts:46
-#: src/views/certificate/CertificateEditor.vue:82
+#: src/views/certificate/CertificateEditor.vue:86
 msgid "Import Certificate"
 msgstr "匯入憑證"
 
@@ -2502,6 +2563,11 @@ msgstr "無效的 AES IV 格式：{0}"
 msgid "Invalid AES key format: {0}"
 msgstr "無效的 AES 金鑰格式：{0}"
 
+#: src/views/certificate/components/CertificateDownload.vue:53
+#: src/views/certificate/components/CertificateFileUpload.vue:87
+msgid "Invalid certificate format"
+msgstr "證書格式無效"
+
 #: src/constants/errors/user.ts:14
 msgid "Invalid claims type"
 msgstr "無效的聲明類型"
@@ -2523,6 +2589,10 @@ msgstr "無效的檔案名"
 msgid "Invalid folder name"
 msgstr "無效的資料夾名稱"
 
+#: src/constants/errors/notification.ts:4
+msgid "Invalid notification ID"
+msgstr "無效的通知ID"
+
 #: src/constants/errors/notification.ts:3
 msgid "Invalid notifier config"
 msgstr "無效的通知器設定"
@@ -2542,6 +2612,11 @@ msgstr "無效的密碼或恢復碼"
 #: src/constants/errors/backup.ts:73
 msgid "Invalid path: {0}"
 msgstr "無效路徑: {0}"
+
+#: src/views/certificate/components/CertificateDownload.vue:58
+#: src/views/certificate/components/CertificateFileUpload.vue:93
+msgid "Invalid private key format"
+msgstr "私鑰格式無效"
 
 #: src/constants/errors/user.ts:5
 msgid "Invalid recovery code"
@@ -2646,8 +2721,10 @@ msgstr "留空表示不修改"
 msgid "Leave blank if you don't need this."
 msgstr "留空表示不需要此項目。"
 
-#: src/views/certificate/CertificateEditor.vue:221
-#: src/views/certificate/CertificateEditor.vue:235
+#: src/views/certificate/components/CertificateContentEditor.vue:118
+#: src/views/certificate/components/CertificateContentEditor.vue:136
+#: src/views/certificate/components/CertificateContentEditor.vue:167
+#: src/views/certificate/components/CertificateContentEditor.vue:185
 msgid "Leave blank will not change anything"
 msgstr "留空將不會改變任何內容"
 
@@ -2734,7 +2811,7 @@ msgstr "Location"
 msgid "Locations"
 msgstr "Locations"
 
-#: src/views/certificate/CertificateEditor.vue:245
+#: src/views/certificate/CertificateEditor.vue:126
 msgid "Log"
 msgstr "日誌"
 
@@ -2945,7 +3022,7 @@ msgid "Modify"
 msgstr "修改"
 
 #: src/routes/modules/certificates.ts:36
-#: src/views/certificate/CertificateEditor.vue:82
+#: src/views/certificate/CertificateEditor.vue:86
 msgid "Modify Certificate"
 msgstr "修改憑證"
 
@@ -2980,8 +3057,8 @@ msgstr "多行指令"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:199
 #: src/views/backup/AutoBackup/AutoBackup.vue:11
 #: src/views/certificate/ACMEUser.vue:11
-#: src/views/certificate/CertificateEditor.vue:160
 #: src/views/certificate/CertificateList/certColumns.tsx:9
+#: src/views/certificate/components/CertificateBasicInfo.vue:23
 #: src/views/certificate/DNSCredential.vue:9
 #: src/views/config/components/ConfigRightPanel/Basic.vue:34
 #: src/views/config/components/Delete.vue:123
@@ -3473,6 +3550,10 @@ msgstr "OpenAI"
 msgid "Or"
 msgstr "或"
 
+#: src/views/certificate/components/CertificateFileUpload.vue:146
+msgid "or drag file to editor below"
+msgstr "或將檔案拖曳到下方編輯器"
+
 #: src/views/preference/components/AuthSettings/TOTP.vue:112
 msgid "Or enter the secret: %{secret}"
 msgstr "或輸入金鑰：%{secret}"
@@ -3680,7 +3761,7 @@ msgid ""
 "select one of the credentialsbelow to request the API of the DNS provider."
 msgstr "請先在「憑證」 > 「DNS 認證」中新增認證，然後選擇以下認證之一以請求 DNS 供應商的 API。"
 
-#: src/components/Notification/notifications.ts:190
+#: src/components/Notification/notifications.ts:194
 #: src/language/constants.ts:59
 msgid ""
 "Please generate new recovery codes in the preferences immediately to "
@@ -3741,6 +3822,10 @@ msgstr "請儲存此安全令牌，您將需要它進行恢復："
 msgid "Please select a backup file"
 msgstr "請選擇備份檔案"
 
+#: src/views/certificate/components/CertificateFileUpload.vue:45
+msgid "Please select a valid %{type} file (%{extensions})"
+msgstr "請選擇有效的%{type}檔案（%{extensions}）"
+
 #: src/language/curd.ts:33
 msgid "Please select at least one item"
 msgstr "請至少選擇一項"
@@ -3795,6 +3880,11 @@ msgstr "偏好設定"
 #: src/language/constants.ts:8
 msgid "Preparing lego configurations"
 msgstr "準備 Lego 設定"
+
+#: src/views/certificate/components/CertificateFileUpload.vue:120
+#: src/views/certificate/components/CertificateFileUpload.vue:44
+msgid "private key"
+msgstr "私鑰"
 
 #: src/components/PortScanner/PortScannerCompact.vue:55
 msgid "Process"
@@ -4030,37 +4120,37 @@ msgstr "重新命名遠端設定錯誤"
 msgid "Rename Remote Config Success"
 msgstr "重新命名遠端設定成功"
 
-#: src/components/Notification/notifications.ts:133
+#: src/components/Notification/notifications.ts:137
 #: src/language/constants.ts:56
 msgid "Rename Remote Site Error"
 msgstr "重新命名遠端遠端站點時發生錯誤"
 
-#: src/components/Notification/notifications.ts:137
+#: src/components/Notification/notifications.ts:141
 #: src/language/constants.ts:55
 msgid "Rename Remote Site Success"
 msgstr "重新命名遠端站點成功"
 
-#: src/components/Notification/notifications.ts:173
+#: src/components/Notification/notifications.ts:177
 msgid "Rename Remote Stream Error"
 msgstr "遠端串流重新命名錯誤"
 
-#: src/components/Notification/notifications.ts:177
+#: src/components/Notification/notifications.ts:181
 msgid "Rename Remote Stream Success"
 msgstr "遠端串流重新命名成功"
 
-#: src/components/Notification/notifications.ts:134
+#: src/components/Notification/notifications.ts:138
 msgid "Rename site %{name} to %{new_name} on %{node} failed"
 msgstr "將網站 %{name} 在 %{node} 上重新命名為 %{new_name} 失敗"
 
-#: src/components/Notification/notifications.ts:138
+#: src/components/Notification/notifications.ts:142
 msgid "Rename site %{name} to %{new_name} on %{node} successfully"
 msgstr "將網站 %{name} 在 %{node} 上成功更名為 %{new_name}"
 
-#: src/components/Notification/notifications.ts:174
+#: src/components/Notification/notifications.ts:178
 msgid "Rename stream %{name} to %{new_name} on %{node} failed"
 msgstr "將節點 %{node} 上的串流 %{name} 重新命名為 %{new_name} 失敗"
 
-#: src/components/Notification/notifications.ts:178
+#: src/components/Notification/notifications.ts:182
 msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
 msgstr "將節點 %{node} 上的串流 %{name} 重新命名為 %{new_name} 成功"
 
@@ -4350,7 +4440,8 @@ msgstr "星期六"
 
 #: src/components/ChatGPT/ChatMessage.vue:215
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:129
-#: src/language/curd.ts:18 src/views/certificate/CertificateEditor.vue:264
+#: src/language/curd.ts:18
+#: src/views/certificate/components/CertificateActions.vue:29
 #: src/views/config/components/ConfigLeftPanel.vue:282
 #: src/views/config/components/ConfigName.vue:59
 #: src/views/preference/components/AuthSettings/Passkey.vue:130
@@ -4370,37 +4461,37 @@ msgstr "儲存指令"
 msgid "Save error %{msg}"
 msgstr "儲存錯誤 %{msg}"
 
-#: src/components/Notification/notifications.ts:141
+#: src/components/Notification/notifications.ts:145
 #: src/language/constants.ts:48
 msgid "Save Remote Site Error"
 msgstr "儲存遠端站點時發生錯誤"
 
-#: src/components/Notification/notifications.ts:145
+#: src/components/Notification/notifications.ts:149
 #: src/language/constants.ts:47
 msgid "Save Remote Site Success"
 msgstr "儲存遠端站點成功"
 
-#: src/components/Notification/notifications.ts:181
+#: src/components/Notification/notifications.ts:185
 msgid "Save Remote Stream Error"
 msgstr "儲存遠端串流錯誤"
 
-#: src/components/Notification/notifications.ts:185
+#: src/components/Notification/notifications.ts:189
 msgid "Save Remote Stream Success"
 msgstr "遠端串流儲存成功"
 
-#: src/components/Notification/notifications.ts:142
+#: src/components/Notification/notifications.ts:146
 msgid "Save site %{name} to %{node} failed"
 msgstr "將網站 %{name} 儲存至 %{node} 失敗"
 
-#: src/components/Notification/notifications.ts:146
+#: src/components/Notification/notifications.ts:150
 msgid "Save site %{name} to %{node} successfully"
 msgstr "網站 %{name} 成功儲存至 %{node}"
 
-#: src/components/Notification/notifications.ts:182
+#: src/components/Notification/notifications.ts:186
 msgid "Save stream %{name} to %{node} failed"
 msgstr "儲存串流 %{name} 至 %{node} 失敗"
 
-#: src/components/Notification/notifications.ts:186
+#: src/components/Notification/notifications.ts:190
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "串流 %{name} 成功儲存至 %{node}"
 
@@ -4522,7 +4613,7 @@ msgstr "傳送"
 msgid "Server"
 msgstr "伺服器"
 
-#: src/views/certificate/CertificateEditor.vue:54
+#: src/views/certificate/CertificateEditor.vue:58
 msgid "Server error"
 msgstr "伺服器錯誤"
 
@@ -4672,7 +4763,7 @@ msgstr "快取管理器迭代間的休眠時間"
 msgid "Sponsor"
 msgstr "贊助"
 
-#: src/views/certificate/CertificateEditor.vue:211
+#: src/views/certificate/components/CertificateContentEditor.vue:93
 msgid "SSL Certificate Content"
 msgstr "SSL 憑證內容"
 
@@ -4684,15 +4775,15 @@ msgstr "SSL 憑證檔案必須位於 Nginx 設定目錄下：{0}"
 msgid "SSL certificate file not found"
 msgstr "SSL 憑證檔案未找到"
 
-#: src/views/certificate/CertificateEditor.vue:225
+#: src/views/certificate/components/CertificateContentEditor.vue:142
 msgid "SSL Certificate Key Content"
 msgstr "SSL 憑證金鑰內容"
 
-#: src/views/certificate/CertificateEditor.vue:190
+#: src/views/certificate/components/CertificateBasicInfo.vue:55
 msgid "SSL Certificate Key Path"
 msgstr "SSL 憑證金鑰路徑"
 
-#: src/views/certificate/CertificateEditor.vue:175
+#: src/views/certificate/components/CertificateBasicInfo.vue:39
 #: src/views/preference/tabs/ServerSettings.vue:37
 msgid "SSL Certificate Path"
 msgstr "SSL 憑證路徑"
@@ -4928,7 +5019,7 @@ msgstr "同步節點"
 msgid "Sync strategy"
 msgstr "同步策略"
 
-#: src/views/certificate/CertificateEditor.vue:204
+#: src/views/certificate/components/CertificateBasicInfo.vue:70
 msgid "Sync to"
 msgstr "同步到"
 
@@ -4950,7 +5041,7 @@ msgstr "系統備份"
 msgid "System Check"
 msgstr "系統檢查"
 
-#: src/views/certificate/components/ACMEUserSelector.vue:89
+#: src/views/certificate/components/ACMEUserSelector.vue:55
 msgid "System Initial User"
 msgstr "系統初始使用者"
 
@@ -4982,6 +5073,14 @@ msgstr "終端"
 msgid "Terminal Start Command"
 msgstr "終端機啟動指令"
 
+#: src/views/preference/tabs/ExternalNotify.vue:46
+msgid "Test"
+msgstr "測試"
+
+#: src/views/preference/tabs/ExternalNotify.vue:17
+msgid "Test message sent successfully"
+msgstr "測試訊息發送成功"
+
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:141
 msgid "Test S3 Connection"
 msgstr "測試 S3 連接"
@@ -4999,11 +5098,11 @@ msgid ""
 "dashes, colons, and dots."
 msgstr "ICP 編號僅能包含字母、Unicode 字元、數字、連字號、破折號、冒號和句點。"
 
-#: src/views/certificate/CertificateEditor.vue:214
+#: src/views/certificate/components/CertificateContentEditor.vue:96
 msgid "The input is not a SSL Certificate"
 msgstr "輸入的不是 SSL 憑證"
 
-#: src/views/certificate/CertificateEditor.vue:228
+#: src/views/certificate/components/CertificateContentEditor.vue:145
 msgid "The input is not a SSL Certificate Key"
 msgstr "輸入的不是 SSL 憑證金鑰"
 
@@ -5034,11 +5133,11 @@ msgstr "節點名稱僅能包含字母、Unicode 字元、數字、連字號、�
 msgid "The parameter of server_name is required"
 msgstr "必須提供 server_name 參數"
 
-#: src/views/certificate/CertificateEditor.vue:179
+#: src/views/certificate/components/CertificateBasicInfo.vue:43
 msgid "The path exists, but the file is not a certificate"
 msgstr "路徑存在，但檔案不是憑證"
 
-#: src/views/certificate/CertificateEditor.vue:194
+#: src/views/certificate/components/CertificateBasicInfo.vue:59
 msgid "The path exists, but the file is not a private key"
 msgstr "路徑存在，但檔案不是金鑰"
 
@@ -5090,11 +5189,11 @@ msgid ""
 "lose access to your account."
 msgstr "這些代碼是您在遺失密碼和第二重驗證因素時，存取帳戶的最後手段。如果您找不到這些代碼，您將無法再存取您的帳戶。"
 
-#: src/views/certificate/CertificateEditor.vue:99
+#: src/views/certificate/components/AutoCertManagement.vue:45
 msgid "This Auto Cert item is invalid, please remove it."
 msgstr "此自動憑證項目無效，請將其移除。"
 
-#: src/views/certificate/CertificateEditor.vue:89
+#: src/views/certificate/components/AutoCertManagement.vue:35
 msgid "This certificate is managed by Nginx UI"
 msgstr "此憑證由 Nginx UI 管理"
 
@@ -5102,9 +5201,9 @@ msgstr "此憑證由 Nginx UI 管理"
 msgid "This directory is protected and cannot be deleted for system safety."
 msgstr "此目錄受保護，為確保系統安全無法刪除。"
 
-#: src/views/certificate/CertificateEditor.vue:163
-#: src/views/certificate/CertificateEditor.vue:177
-#: src/views/certificate/CertificateEditor.vue:192
+#: src/views/certificate/components/CertificateBasicInfo.vue:26
+#: src/views/certificate/components/CertificateBasicInfo.vue:41
+#: src/views/certificate/components/CertificateBasicInfo.vue:57
 msgid "This field is required"
 msgstr "此欄位為必填項"
 
@@ -5129,6 +5228,10 @@ msgid ""
 "This field should only contain letters, unicode characters, numbers, and "
 "-_./:"
 msgstr "此欄位應僅包含字母、Unicode字符、數字和 -_./:"
+
+#: src/components/Notification/notifications.ts:94
+msgid "This is a test message sent at %{timestamp} from Nginx UI."
+msgstr "這是一條測試消息，於 %{timestamp} 從 Nginx UI 發送。"
 
 #: src/views/dashboard/NginxDashBoard.vue:175
 msgid ""
@@ -5376,6 +5479,10 @@ msgstr "升級成功"
 #: src/views/system/Upgrade.vue:81
 msgid "Upgrading Nginx UI, please wait..."
 msgstr "正在升級 Nginx UI，請稍候..."
+
+#: src/views/certificate/components/CertificateFileUpload.vue:121
+msgid "Upload %{type} File"
+msgstr "上傳%{type}檔案"
 
 #: src/language/curd.ts:49
 msgid "Upload Files"

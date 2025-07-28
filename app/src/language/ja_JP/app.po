@@ -126,7 +126,7 @@ msgid "Access Logs"
 msgstr "アクセスログ"
 
 #: src/routes/modules/certificates.ts:20 src/views/certificate/ACMEUser.vue:108
-#: src/views/certificate/components/ACMEUserSelector.vue:86
+#: src/views/certificate/components/ACMEUserSelector.vue:52
 msgid "ACME User"
 msgstr "ACMEユーザー"
 
@@ -143,7 +143,7 @@ msgstr "操作"
 #: src/views/environments/list/envColumns.tsx:96
 #: src/views/nginx_log/NginxLogList.vue:67
 #: src/views/notification/notificationColumns.tsx:72
-#: src/views/preference/components/ExternalNotify/columns.tsx:76
+#: src/views/preference/components/ExternalNotify/columns.tsx:73
 #: src/views/site/site_list/columns.tsx:153 src/views/stream/columns.tsx:117
 #: src/views/user/userColumns.tsx:58
 msgid "Actions"
@@ -227,7 +227,7 @@ msgstr "その後、このページを更新し、再度パスキーを追加を
 msgid "All"
 msgstr "すべて"
 
-#: src/components/Notification/notifications.ts:189
+#: src/components/Notification/notifications.ts:193
 #: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr "すべてのリカバリーコードが使用済みです"
@@ -421,7 +421,7 @@ msgstr "AutoCert が実行中..."
 msgid "Automatic Restart"
 msgstr "自動再起動"
 
-#: src/views/certificate/CertificateEditor.vue:257
+#: src/views/certificate/components/CertificateActions.vue:22
 #: src/views/config/components/ConfigLeftPanel.vue:273
 #: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
 #: src/views/nginx_log/NginxLog.vue:174
@@ -657,6 +657,11 @@ msgstr "証明書"
 msgid "Cert path is not under the nginx conf dir"
 msgstr "証明書のパスがnginxの設定ディレクトリ配下にありません"
 
+#: src/views/certificate/components/CertificateFileUpload.vue:120
+#: src/views/certificate/components/CertificateFileUpload.vue:44
+msgid "certificate"
+msgstr "証明書"
+
 #: src/components/Notification/notifications.ts:42
 msgid "Certificate %{name} has expired"
 msgstr "証明書 %{name} の有効期限が切れました"
@@ -670,6 +675,10 @@ msgstr "証明書 %{name} は %{days} 日後に期限切れになります"
 #: src/components/Notification/notifications.ts:58
 msgid "Certificate %{name} will expire in 1 day"
 msgstr "証明書 %{name} は1日で期限切れになります"
+
+#: src/views/certificate/components/CertificateDownload.vue:36
+msgid "Certificate content and private key content cannot be empty"
+msgstr "証明書の内容と秘密鍵の内容は空にできません"
 
 #: src/constants/errors/cert.ts:4
 msgid "Certificate decode error"
@@ -688,6 +697,14 @@ msgstr "証明書の有効期限が切れました"
 #: src/components/Notification/notifications.ts:57
 msgid "Certificate Expiring Soon"
 msgstr "証明書の有効期限が近づいています"
+
+#: src/views/certificate/components/CertificateDownload.vue:70
+msgid "Certificate files downloaded successfully"
+msgstr "証明書ファイルが正常にダウンロードされました"
+
+#: src/views/certificate/components/CertificateDownload.vue:41
+msgid "Certificate name cannot be empty"
+msgstr "証明書名は空にできません"
 
 #: src/language/generate.ts:4
 msgid "Certificate not found: %{error}"
@@ -718,7 +735,7 @@ msgstr "証明書の更新に成功しました"
 msgid "Certificate revoked successfully"
 msgstr "証明書の失効に成功しました"
 
-#: src/views/certificate/CertificateEditor.vue:125
+#: src/views/certificate/components/AutoCertManagement.vue:67
 #: src/views/site/site_edit/components/Cert/Cert.vue:58
 msgid "Certificate Status"
 msgid_plural "Certificates Status"
@@ -996,7 +1013,6 @@ msgid "Compression level, 1 is lowest, 9 is highest"
 msgstr "圧縮レベル、1は最も低く、9は最高です"
 
 #: src/views/preference/components/ExternalNotify/columns.tsx:46
-#: src/views/preference/components/ExternalNotify/columns.tsx:58
 msgid "Config"
 msgstr "設定"
 
@@ -1138,7 +1154,7 @@ msgstr "Nginx 設定と Nginx UI 設定を含むシステムバックアップ�
 #: src/views/environments/group/columns.ts:29
 #: src/views/notification/notificationColumns.tsx:51
 #: src/views/preference/components/AuthSettings/Passkey.vue:95
-#: src/views/preference/components/ExternalNotify/columns.tsx:71
+#: src/views/preference/components/ExternalNotify/columns.tsx:68
 #: src/views/user/userColumns.tsx:46
 msgid "Created at"
 msgstr "作成日時"
@@ -1293,27 +1309,28 @@ msgstr "リモート設定の削除エラー"
 msgid "Delete Remote Config Success"
 msgstr "リモート設定の削除成功"
 
-#: src/components/Notification/notifications.ts:93 src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:97 src/language/constants.ts:50
 msgid "Delete Remote Site Error"
 msgstr "リモートサイト削除エラー"
 
-#: src/components/Notification/notifications.ts:97 src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:101
+#: src/language/constants.ts:49
 msgid "Delete Remote Site Success"
 msgstr "リモートサイトの削除に成功しました"
 
-#: src/components/Notification/notifications.ts:149
+#: src/components/Notification/notifications.ts:153
 msgid "Delete Remote Stream Error"
 msgstr "リモートストリーム削除エラー"
 
-#: src/components/Notification/notifications.ts:153
+#: src/components/Notification/notifications.ts:157
 msgid "Delete Remote Stream Success"
 msgstr "リモートストリームの削除に成功しました"
 
-#: src/components/Notification/notifications.ts:94
+#: src/components/Notification/notifications.ts:98
 msgid "Delete site %{name} from %{node} failed"
 msgstr "サイト %{name} を %{node} から削除できませんでした"
 
-#: src/components/Notification/notifications.ts:98
+#: src/components/Notification/notifications.ts:102
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "サイト %{name} を %{node} から正常に削除しました"
 
@@ -1321,11 +1338,11 @@ msgstr "サイト %{name} を %{node} から正常に削除しました"
 msgid "Delete site: %{site_name}"
 msgstr "サイトを削除しました: %{site_name}"
 
-#: src/components/Notification/notifications.ts:150
+#: src/components/Notification/notifications.ts:154
 msgid "Delete stream %{name} from %{node} failed"
 msgstr "%{node} からのストリーム %{name} の削除に失敗しました"
 
-#: src/components/Notification/notifications.ts:154
+#: src/components/Notification/notifications.ts:158
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "ストリーム %{name} を %{node} から削除しました"
 
@@ -1411,53 +1428,53 @@ msgstr "無効化"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "%{name} の自動更新の無効化に失敗しました"
 
-#: src/components/Notification/notifications.ts:101
+#: src/components/Notification/notifications.ts:105
 #: src/language/constants.ts:52
 msgid "Disable Remote Site Error"
 msgstr "リモートサイトの無効化エラー"
 
-#: src/components/Notification/notifications.ts:125
+#: src/components/Notification/notifications.ts:129
 msgid "Disable Remote Site Maintenance Error"
 msgstr "リモートサイトメンテナンスの無効化エラー"
 
-#: src/components/Notification/notifications.ts:129
+#: src/components/Notification/notifications.ts:133
 msgid "Disable Remote Site Maintenance Success"
 msgstr "リモートサイトのメンテナンスを無効化しました"
 
-#: src/components/Notification/notifications.ts:105
+#: src/components/Notification/notifications.ts:109
 #: src/language/constants.ts:51
 msgid "Disable Remote Site Success"
 msgstr "リモートサイトの無効化に成功しました"
 
-#: src/components/Notification/notifications.ts:157
+#: src/components/Notification/notifications.ts:161
 msgid "Disable Remote Stream Error"
 msgstr "リモートストリーム無効化エラー"
 
-#: src/components/Notification/notifications.ts:161
+#: src/components/Notification/notifications.ts:165
 msgid "Disable Remote Stream Success"
 msgstr "リモートストリームの無効化に成功しました"
 
-#: src/components/Notification/notifications.ts:102
+#: src/components/Notification/notifications.ts:106
 msgid "Disable site %{name} from %{node} failed"
 msgstr "サイト %{name} を %{node} から無効化できませんでした"
 
-#: src/components/Notification/notifications.ts:106
+#: src/components/Notification/notifications.ts:110
 msgid "Disable site %{name} from %{node} successfully"
 msgstr "サイト %{name} を %{node} から無効化しました"
 
-#: src/components/Notification/notifications.ts:126
+#: src/components/Notification/notifications.ts:130
 msgid "Disable site %{name} maintenance on %{node} failed"
 msgstr "サイト %{name} のメンテナンスを %{node} で無効にするのに失敗しました"
 
-#: src/components/Notification/notifications.ts:130
+#: src/components/Notification/notifications.ts:134
 msgid "Disable site %{name} maintenance on %{node} successfully"
 msgstr "サイト %{name} のメンテナンスを %{node} で無効化しました"
 
-#: src/components/Notification/notifications.ts:158
+#: src/components/Notification/notifications.ts:162
 msgid "Disable stream %{name} from %{node} failed"
 msgstr "ノード %{node} からのストリーム %{name} の無効化に失敗しました"
 
-#: src/components/Notification/notifications.ts:162
+#: src/components/Notification/notifications.ts:166
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr "ストリーム %{name} を %{node} から無効化しました"
 
@@ -1549,9 +1566,13 @@ msgstr[0] "ドキュメント"
 msgid "Domain"
 msgstr "ドメイン"
 
-#: src/views/certificate/CertificateEditor.vue:109
+#: src/views/certificate/components/AutoCertManagement.vue:55
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
 msgstr "ドメインリストが空です。%{config} の自動証明書を再度開いてみてください"
+
+#: src/views/certificate/components/CertificateDownload.vue:93
+msgid "Download Certificate Files"
+msgstr "証明書ファイルをダウンロード"
 
 #: src/language/constants.ts:27
 msgid "Download latest release error"
@@ -1560,6 +1581,14 @@ msgstr "最新リリースのダウンロードエラー"
 #: src/language/constants.ts:26
 msgid "Downloading latest release"
 msgstr "最新リリースをダウンロード中"
+
+#: src/views/certificate/components/CertificateContentEditor.vue:126
+msgid "Drop certificate file here"
+msgstr "証明書ファイルをここにドロップ"
+
+#: src/views/certificate/components/CertificateContentEditor.vue:175
+msgid "Drop private key file here"
+msgstr "秘密鍵ファイルをここにドロップ"
 
 #: src/views/environments/list/BatchUpgrader.vue:189
 #: src/views/system/Upgrade.vue:237
@@ -1661,53 +1690,53 @@ msgstr "HTTPS を有効にする"
 msgid "Enable Proxy Cache"
 msgstr "プロキシキャッシュを有効にする"
 
-#: src/components/Notification/notifications.ts:109
+#: src/components/Notification/notifications.ts:113
 #: src/language/constants.ts:54
 msgid "Enable Remote Site Error"
 msgstr "リモートサイトの有効化エラー"
 
-#: src/components/Notification/notifications.ts:117
+#: src/components/Notification/notifications.ts:121
 msgid "Enable Remote Site Maintenance Error"
 msgstr "リモートサイトのメンテナンス有効化エラー"
 
-#: src/components/Notification/notifications.ts:121
+#: src/components/Notification/notifications.ts:125
 msgid "Enable Remote Site Maintenance Success"
 msgstr "リモートサイトのメンテナンス有効化成功"
 
-#: src/components/Notification/notifications.ts:113
+#: src/components/Notification/notifications.ts:117
 #: src/language/constants.ts:53
 msgid "Enable Remote Site Success"
 msgstr "リモートサイトの有効化に成功しました"
 
-#: src/components/Notification/notifications.ts:165
+#: src/components/Notification/notifications.ts:169
 msgid "Enable Remote Stream Error"
 msgstr "リモートストリームの有効化エラー"
 
-#: src/components/Notification/notifications.ts:169
+#: src/components/Notification/notifications.ts:173
 msgid "Enable Remote Stream Success"
 msgstr "リモートストリームの有効化成功"
 
-#: src/components/Notification/notifications.ts:118
+#: src/components/Notification/notifications.ts:122
 msgid "Enable site %{name} maintenance on %{node} failed"
 msgstr "サイト %{name} のメンテナンスを %{node} で有効化できませんでした"
 
-#: src/components/Notification/notifications.ts:122
+#: src/components/Notification/notifications.ts:126
 msgid "Enable site %{name} maintenance on %{node} successfully"
 msgstr "サイト %{name} のメンテナンスを %{node} で有効化しました"
 
-#: src/components/Notification/notifications.ts:110
+#: src/components/Notification/notifications.ts:114
 msgid "Enable site %{name} on %{node} failed"
 msgstr "サイト %{name} を %{node} で有効化できませんでした"
 
-#: src/components/Notification/notifications.ts:114
+#: src/components/Notification/notifications.ts:118
 msgid "Enable site %{name} on %{node} successfully"
 msgstr "サイト %{name} を %{node} で有効化しました"
 
-#: src/components/Notification/notifications.ts:166
+#: src/components/Notification/notifications.ts:170
 msgid "Enable stream %{name} on %{node} failed"
 msgstr "ストリーム %{name} を %{node} で有効化できませんでした"
 
-#: src/components/Notification/notifications.ts:170
+#: src/components/Notification/notifications.ts:174
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "ストリーム %{name} を %{node} で有効化しました"
 
@@ -1842,8 +1871,16 @@ msgstr "Excel にエクスポート"
 msgid "External Docker Container"
 msgstr "外部 Docker コンテナ"
 
+#: src/constants/errors/notification.ts:5
+msgid "External notification configuration not found"
+msgstr "外部通知設定が見つかりません"
+
+#: src/components/Notification/notifications.ts:93
+msgid "External Notification Test"
+msgstr "外部通知テスト"
+
 #: src/views/preference/Preference.vue:58
-#: src/views/preference/tabs/ExternalNotify.vue:9
+#: src/views/preference/tabs/ExternalNotify.vue:31
 msgid "External Notify"
 msgstr "外部通知"
 
@@ -2009,6 +2046,10 @@ msgstr "%{msg}の無効化に失敗しました"
 msgid "Failed to disable maintenance mode %{msg}"
 msgstr "メンテナンスモードの無効化に失敗しました: %{msg}"
 
+#: src/views/certificate/components/CertificateDownload.vue:74
+msgid "Failed to download certificate files"
+msgstr "証明書ファイルのダウンロードに失敗しました"
+
 #: src/views/site/components/SiteStatusSelect.vue:60
 #: src/views/stream/components/StreamStatusSelect.vue:32
 msgid "Failed to enable %{msg}"
@@ -2122,6 +2163,10 @@ msgstr "イメージの取得に失敗しました: {0}"
 msgid "Failed to read encrypted file: {0}"
 msgstr "暗号化されたファイルの読み込みに失敗しました: {0}"
 
+#: src/views/certificate/components/CertificateFileUpload.vue:69
+msgid "Failed to read file"
+msgstr "ファイルの読み込みに失敗しました"
+
 #: src/constants/errors/backup.ts:22
 msgid "Failed to read file: {0}"
 msgstr "ファイルの読み込みに失敗しました: {0}"
@@ -2166,9 +2211,17 @@ msgstr "証明書の失効に失敗しました: %{error}"
 msgid "Failed to save Nginx performance settings"
 msgstr "Nginxのパフォーマンス設定の保存に失敗しました"
 
+#: src/views/preference/tabs/ExternalNotify.vue:21
+msgid "Failed to send test message"
+msgstr "テストメッセージの送信に失敗しました"
+
 #: src/constants/errors/docker.ts:14
 msgid "Failed to start temp container: {0}"
 msgstr "一時コンテナの起動に失敗しました: {0}"
+
+#: src/views/certificate/components/CertificateFileUpload.vue:103
+msgid "Failed to upload file"
+msgstr "ファイルのアップロードに失敗しました"
 
 #: src/constants/errors/backup.ts:38
 msgid "Failed to verify hashes: {0}"
@@ -2213,6 +2266,14 @@ msgstr "ファイルが見つかりません"
 #: src/constants/errors/config.ts:7
 msgid "File or directory not found: {0}"
 msgstr "ファイルまたはディレクトリが見つかりません: {0}"
+
+#: src/views/certificate/components/CertificateFileUpload.vue:53
+msgid "File size cannot exceed 5MB"
+msgstr "ファイルサイズは5MBを超えることはできません"
+
+#: src/views/certificate/components/CertificateFileUpload.vue:99
+msgid "File uploaded successfully"
+msgstr "ファイルが正常にアップロードされました"
 
 #: src/constants/errors/cert.ts:2
 msgid "Filename is empty"
@@ -2420,7 +2481,7 @@ msgid "Import"
 msgstr "インポート"
 
 #: src/routes/modules/certificates.ts:46
-#: src/views/certificate/CertificateEditor.vue:82
+#: src/views/certificate/CertificateEditor.vue:86
 msgid "Import Certificate"
 msgstr "証明書をインポート"
 
@@ -2507,6 +2568,11 @@ msgstr "無効なAES IV形式: {0}"
 msgid "Invalid AES key format: {0}"
 msgstr "無効なAESキーフォーマット: {0}"
 
+#: src/views/certificate/components/CertificateDownload.vue:53
+#: src/views/certificate/components/CertificateFileUpload.vue:87
+msgid "Invalid certificate format"
+msgstr "無効な証明書形式"
+
 #: src/constants/errors/user.ts:14
 msgid "Invalid claims type"
 msgstr "無効なクレームタイプ"
@@ -2528,6 +2594,10 @@ msgstr "無効なファイル名"
 msgid "Invalid folder name"
 msgstr "無効なフォルダ名"
 
+#: src/constants/errors/notification.ts:4
+msgid "Invalid notification ID"
+msgstr "無効な通知ID"
+
 #: src/constants/errors/notification.ts:3
 msgid "Invalid notifier config"
 msgstr "無効な通知設定"
@@ -2547,6 +2617,11 @@ msgstr "無効なパスコードまたはリカバリーコード"
 #: src/constants/errors/backup.ts:73
 msgid "Invalid path: {0}"
 msgstr "無効なパス: {0}"
+
+#: src/views/certificate/components/CertificateDownload.vue:58
+#: src/views/certificate/components/CertificateFileUpload.vue:93
+msgid "Invalid private key format"
+msgstr "無効な秘密鍵の形式"
 
 #: src/constants/errors/user.ts:5
 msgid "Invalid recovery code"
@@ -2651,8 +2726,10 @@ msgstr "変更しない場合は空白のままにしてください"
 msgid "Leave blank if you don't need this."
 msgstr "必要なければ空白のままにしてください。"
 
-#: src/views/certificate/CertificateEditor.vue:221
-#: src/views/certificate/CertificateEditor.vue:235
+#: src/views/certificate/components/CertificateContentEditor.vue:118
+#: src/views/certificate/components/CertificateContentEditor.vue:136
+#: src/views/certificate/components/CertificateContentEditor.vue:167
+#: src/views/certificate/components/CertificateContentEditor.vue:185
 msgid "Leave blank will not change anything"
 msgstr "空白のままにすると何も変更されません"
 
@@ -2739,7 +2816,7 @@ msgstr "ロケーション"
 msgid "Locations"
 msgstr "ロケーション"
 
-#: src/views/certificate/CertificateEditor.vue:245
+#: src/views/certificate/CertificateEditor.vue:126
 msgid "Log"
 msgstr "ログ"
 
@@ -2953,7 +3030,7 @@ msgid "Modify"
 msgstr "変更"
 
 #: src/routes/modules/certificates.ts:36
-#: src/views/certificate/CertificateEditor.vue:82
+#: src/views/certificate/CertificateEditor.vue:86
 msgid "Modify Certificate"
 msgstr "証明書を変更"
 
@@ -2988,8 +3065,8 @@ msgstr "複数行ディレクティブ"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:199
 #: src/views/backup/AutoBackup/AutoBackup.vue:11
 #: src/views/certificate/ACMEUser.vue:11
-#: src/views/certificate/CertificateEditor.vue:160
 #: src/views/certificate/CertificateList/certColumns.tsx:9
+#: src/views/certificate/components/CertificateBasicInfo.vue:23
 #: src/views/certificate/DNSCredential.vue:9
 #: src/views/config/components/ConfigRightPanel/Basic.vue:34
 #: src/views/config/components/Delete.vue:123
@@ -3481,6 +3558,10 @@ msgstr "OpenAI"
 msgid "Or"
 msgstr "または"
 
+#: src/views/certificate/components/CertificateFileUpload.vue:146
+msgid "or drag file to editor below"
+msgstr "またはファイルを下のエディタにドラッグ"
+
 #: src/views/preference/components/AuthSettings/TOTP.vue:112
 msgid "Or enter the secret: %{secret}"
 msgstr "またはシークレットを入力してください: %{secret}"
@@ -3690,7 +3771,7 @@ msgstr ""
 "まず、Certification > DNS Credentials "
 "で認証情報を追加し、その後、以下の認証情報のいずれかを選択してDNSプロバイダーのAPIをリクエストしてください。"
 
-#: src/components/Notification/notifications.ts:190
+#: src/components/Notification/notifications.ts:194
 #: src/language/constants.ts:59
 msgid ""
 "Please generate new recovery codes in the preferences immediately to "
@@ -3751,6 +3832,10 @@ msgstr "このセキュリティトークンを保存してください。復元
 msgid "Please select a backup file"
 msgstr "バックアップファイルを選択してください"
 
+#: src/views/certificate/components/CertificateFileUpload.vue:45
+msgid "Please select a valid %{type} file (%{extensions})"
+msgstr "有効な%{type}ファイルを選択してください（%{extensions}）"
+
 #: src/language/curd.ts:33
 msgid "Please select at least one item"
 msgstr "少なくとも1つの項目を選択してください"
@@ -3805,6 +3890,11 @@ msgstr "設定"
 #: src/language/constants.ts:8
 msgid "Preparing lego configurations"
 msgstr "Lego 設定を準備中"
+
+#: src/views/certificate/components/CertificateFileUpload.vue:120
+#: src/views/certificate/components/CertificateFileUpload.vue:44
+msgid "private key"
+msgstr "秘密鍵"
 
 #: src/components/PortScanner/PortScannerCompact.vue:55
 msgid "Process"
@@ -4040,37 +4130,37 @@ msgstr "リモート設定の名前変更エラー"
 msgid "Rename Remote Config Success"
 msgstr "リモート設定の名前変更に成功しました"
 
-#: src/components/Notification/notifications.ts:133
+#: src/components/Notification/notifications.ts:137
 #: src/language/constants.ts:56
 msgid "Rename Remote Site Error"
 msgstr "リモートサイト名変更エラー"
 
-#: src/components/Notification/notifications.ts:137
+#: src/components/Notification/notifications.ts:141
 #: src/language/constants.ts:55
 msgid "Rename Remote Site Success"
 msgstr "リモートサイトの名前変更成功"
 
-#: src/components/Notification/notifications.ts:173
+#: src/components/Notification/notifications.ts:177
 msgid "Rename Remote Stream Error"
 msgstr "リモートストリームの名前変更エラー"
 
-#: src/components/Notification/notifications.ts:177
+#: src/components/Notification/notifications.ts:181
 msgid "Rename Remote Stream Success"
 msgstr "リモートストリームの名前変更成功"
 
-#: src/components/Notification/notifications.ts:134
+#: src/components/Notification/notifications.ts:138
 msgid "Rename site %{name} to %{new_name} on %{node} failed"
 msgstr "サイト %{name} を %{new_name} にリネームする際に %{node} で失敗しました"
 
-#: src/components/Notification/notifications.ts:138
+#: src/components/Notification/notifications.ts:142
 msgid "Rename site %{name} to %{new_name} on %{node} successfully"
 msgstr "サイト %{name} を %{new_name} にリネームしました（%{node}）"
 
-#: src/components/Notification/notifications.ts:174
+#: src/components/Notification/notifications.ts:178
 msgid "Rename stream %{name} to %{new_name} on %{node} failed"
 msgstr "ストリーム %{name} を %{new_name} にリネームする際に %{node} で失敗しました"
 
-#: src/components/Notification/notifications.ts:178
+#: src/components/Notification/notifications.ts:182
 msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
 msgstr "ストリーム %{name} を %{new_name} に名前変更しました（%{node}）"
 
@@ -4360,7 +4450,8 @@ msgstr "土曜日"
 
 #: src/components/ChatGPT/ChatMessage.vue:215
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:129
-#: src/language/curd.ts:18 src/views/certificate/CertificateEditor.vue:264
+#: src/language/curd.ts:18
+#: src/views/certificate/components/CertificateActions.vue:29
 #: src/views/config/components/ConfigLeftPanel.vue:282
 #: src/views/config/components/ConfigName.vue:59
 #: src/views/preference/components/AuthSettings/Passkey.vue:130
@@ -4380,37 +4471,37 @@ msgstr "ディレクティブを保存"
 msgid "Save error %{msg}"
 msgstr "保存エラー %{msg}"
 
-#: src/components/Notification/notifications.ts:141
+#: src/components/Notification/notifications.ts:145
 #: src/language/constants.ts:48
 msgid "Save Remote Site Error"
 msgstr "リモートサイトの保存エラー"
 
-#: src/components/Notification/notifications.ts:145
+#: src/components/Notification/notifications.ts:149
 #: src/language/constants.ts:47
 msgid "Save Remote Site Success"
 msgstr "リモートサイトの保存に成功しました"
 
-#: src/components/Notification/notifications.ts:181
+#: src/components/Notification/notifications.ts:185
 msgid "Save Remote Stream Error"
 msgstr "リモートストリームの保存エラー"
 
-#: src/components/Notification/notifications.ts:185
+#: src/components/Notification/notifications.ts:189
 msgid "Save Remote Stream Success"
 msgstr "リモートストリームの保存に成功しました"
 
-#: src/components/Notification/notifications.ts:142
+#: src/components/Notification/notifications.ts:146
 msgid "Save site %{name} to %{node} failed"
 msgstr "サイト %{name} を %{node} に保存できませんでした"
 
-#: src/components/Notification/notifications.ts:146
+#: src/components/Notification/notifications.ts:150
 msgid "Save site %{name} to %{node} successfully"
 msgstr "サイト %{name} を %{node} に正常に保存しました"
 
-#: src/components/Notification/notifications.ts:182
+#: src/components/Notification/notifications.ts:186
 msgid "Save stream %{name} to %{node} failed"
 msgstr "ストリーム %{name} を %{node} に保存できませんでした"
 
-#: src/components/Notification/notifications.ts:186
+#: src/components/Notification/notifications.ts:190
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "ストリーム %{name} を %{node} に正常に保存しました"
 
@@ -4532,7 +4623,7 @@ msgstr "送信"
 msgid "Server"
 msgstr "サーバー"
 
-#: src/views/certificate/CertificateEditor.vue:54
+#: src/views/certificate/CertificateEditor.vue:58
 msgid "Server error"
 msgstr "サーバーエラー"
 
@@ -4682,7 +4773,7 @@ msgstr "キャッシュマネージャーの反復処理間の待機時間"
 msgid "Sponsor"
 msgstr "スポンサー"
 
-#: src/views/certificate/CertificateEditor.vue:211
+#: src/views/certificate/components/CertificateContentEditor.vue:93
 msgid "SSL Certificate Content"
 msgstr "SSL証明書の内容"
 
@@ -4694,15 +4785,15 @@ msgstr "SSL証明書ファイルはNginx設定ディレクトリの下にある�
 msgid "SSL certificate file not found"
 msgstr "SSL証明書ファイルが見つかりません"
 
-#: src/views/certificate/CertificateEditor.vue:225
+#: src/views/certificate/components/CertificateContentEditor.vue:142
 msgid "SSL Certificate Key Content"
 msgstr "SSL証明書キーの内容"
 
-#: src/views/certificate/CertificateEditor.vue:190
+#: src/views/certificate/components/CertificateBasicInfo.vue:55
 msgid "SSL Certificate Key Path"
 msgstr "SSL証明書キーパス"
 
-#: src/views/certificate/CertificateEditor.vue:175
+#: src/views/certificate/components/CertificateBasicInfo.vue:39
 #: src/views/preference/tabs/ServerSettings.vue:37
 msgid "SSL Certificate Path"
 msgstr "SSL証明書のパス"
@@ -4940,7 +5031,7 @@ msgstr "同期ノード"
 msgid "Sync strategy"
 msgstr "同期戦略"
 
-#: src/views/certificate/CertificateEditor.vue:204
+#: src/views/certificate/components/CertificateBasicInfo.vue:70
 msgid "Sync to"
 msgstr "同期先"
 
@@ -4962,7 +5053,7 @@ msgstr "システムバックアップ"
 msgid "System Check"
 msgstr "システムチェック"
 
-#: src/views/certificate/components/ACMEUserSelector.vue:89
+#: src/views/certificate/components/ACMEUserSelector.vue:55
 msgid "System Initial User"
 msgstr "システム初期ユーザー"
 
@@ -4994,6 +5085,14 @@ msgstr "ターミナル"
 msgid "Terminal Start Command"
 msgstr "ターミナル起動コマンド"
 
+#: src/views/preference/tabs/ExternalNotify.vue:46
+msgid "Test"
+msgstr "テスト"
+
+#: src/views/preference/tabs/ExternalNotify.vue:17
+msgid "Test message sent successfully"
+msgstr "テストメッセージが正常に送信されました"
+
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:141
 msgid "Test S3 Connection"
 msgstr "S3接続をテスト"
@@ -5011,11 +5110,11 @@ msgid ""
 "dashes, colons, and dots."
 msgstr "ICP番号には、文字、Unicode、数字、ハイフン、ダッシュ、コロン、およびドットのみを含める必要があります。"
 
-#: src/views/certificate/CertificateEditor.vue:214
+#: src/views/certificate/components/CertificateContentEditor.vue:96
 msgid "The input is not a SSL Certificate"
 msgstr "入力はSSL証明書ではありません"
 
-#: src/views/certificate/CertificateEditor.vue:228
+#: src/views/certificate/components/CertificateContentEditor.vue:145
 msgid "The input is not a SSL Certificate Key"
 msgstr "入力はSSL証明書キーではありません"
 
@@ -5046,11 +5145,11 @@ msgstr "ノード名には、文字、Unicode、数字、ハイフン、ダッ�
 msgid "The parameter of server_name is required"
 msgstr "server_name のパラメーターが必要です"
 
-#: src/views/certificate/CertificateEditor.vue:179
+#: src/views/certificate/components/CertificateBasicInfo.vue:43
 msgid "The path exists, but the file is not a certificate"
 msgstr "パスは存在しますが、ファイルは証明書ではありません"
 
-#: src/views/certificate/CertificateEditor.vue:194
+#: src/views/certificate/components/CertificateBasicInfo.vue:59
 msgid "The path exists, but the file is not a private key"
 msgstr "パスは存在しますが、ファイルは秘密鍵ではありません"
 
@@ -5106,11 +5205,11 @@ msgstr ""
 "これらのコードは、パスワードと第二要素を失った場合にアカウントにアクセスするための最後の手段です。これらのコードが見つからない場合、アカウントにアクセス"
 "できなくなります。"
 
-#: src/views/certificate/CertificateEditor.vue:99
+#: src/views/certificate/components/AutoCertManagement.vue:45
 msgid "This Auto Cert item is invalid, please remove it."
 msgstr "この自動証明書項目は無効です。削除してください。"
 
-#: src/views/certificate/CertificateEditor.vue:89
+#: src/views/certificate/components/AutoCertManagement.vue:35
 msgid "This certificate is managed by Nginx UI"
 msgstr "この証明書はNginx UIによって管理されています"
 
@@ -5118,9 +5217,9 @@ msgstr "この証明書はNginx UIによって管理されています"
 msgid "This directory is protected and cannot be deleted for system safety."
 msgstr "このディレクトリは保護されており、システムの安全のために削除できません。"
 
-#: src/views/certificate/CertificateEditor.vue:163
-#: src/views/certificate/CertificateEditor.vue:177
-#: src/views/certificate/CertificateEditor.vue:192
+#: src/views/certificate/components/CertificateBasicInfo.vue:26
+#: src/views/certificate/components/CertificateBasicInfo.vue:41
+#: src/views/certificate/components/CertificateBasicInfo.vue:57
 msgid "This field is required"
 msgstr "このフィールドは必須です"
 
@@ -5145,6 +5244,10 @@ msgid ""
 "This field should only contain letters, unicode characters, numbers, and "
 "-_./:"
 msgstr "このフィールドには、文字、Unicode文字、数字、および -_./: のみを含める必要があります"
+
+#: src/components/Notification/notifications.ts:94
+msgid "This is a test message sent at %{timestamp} from Nginx UI."
+msgstr "これは、Nginx UIから％{Timestamp}で送信されたテストメッセージです。"
 
 #: src/views/dashboard/NginxDashBoard.vue:175
 msgid ""
@@ -5396,6 +5499,10 @@ msgstr "アップグレードに成功しました"
 #: src/views/system/Upgrade.vue:81
 msgid "Upgrading Nginx UI, please wait..."
 msgstr "Nginx UI をアップグレード中です。しばらくお待ちください..."
+
+#: src/views/certificate/components/CertificateFileUpload.vue:121
+msgid "Upload %{type} File"
+msgstr "%{type}ファイルをアップロード"
 
 #: src/language/curd.ts:49
 msgid "Upload Files"
