@@ -24,6 +24,7 @@ const columns: StdTableColumn[] = [{
 }, {
   title: () => $gettext('Name'),
   dataIndex: 'name',
+  search: true,
   sorter: true,
   pure: true,
   edit: {
@@ -35,7 +36,7 @@ const columns: StdTableColumn[] = [{
 
     // Add stream name
     template.push(
-      <div style="margin-bottom: 8px;">{text}</div>,
+      <div>{text}</div>,
     )
 
     return h('div', {}, template)

@@ -14,6 +14,7 @@ func GetSiteList(c *gin.Context) {
 	// Parse query parameters
 	options := &site.ListOptions{
 		Search:     c.Query("search"),
+		Name:       c.Query("name"),
 		Status:     c.Query("status"),
 		OrderBy:    c.Query("sort_by"),
 		Sort:       c.DefaultQuery("order", "desc"),

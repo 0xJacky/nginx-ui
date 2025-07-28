@@ -12,6 +12,7 @@ import (
 // ListOptions represents the options for listing streams
 type ListOptions struct {
 	Search     string
+	Name       string
 	Status     string
 	OrderBy    string
 	Sort       string
@@ -23,6 +24,7 @@ func GetStreamConfigs(ctx context.Context, options *ListOptions, streams []*mode
 	// Convert to generic options
 	genericOptions := &config.GenericListOptions{
 		Search:      options.Search,
+		Name:        options.Name,
 		Status:      options.Status,
 		OrderBy:     options.OrderBy,
 		Sort:        options.Sort,

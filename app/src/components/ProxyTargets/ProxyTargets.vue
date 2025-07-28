@@ -23,10 +23,10 @@ function getTargetText(target: ProxyTarget): string {
     return `${target.host}:${target.port}`
 
   if (result.online) {
-    return `${target.host}:${target.port} · ${result.latency.toFixed(2)}ms`
+    return `${target.host}:${target.port} (${result.latency.toFixed(2)}ms)`
   }
   else {
-    return `${target.host}:${target.port} · ${$gettext('Offline')}`
+    return `${target.host}:${target.port}`
   }
 }
 

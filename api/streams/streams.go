@@ -35,6 +35,7 @@ func GetStreams(c *gin.Context) {
 	// Parse query parameters
 	options := &stream.ListOptions{
 		Search:     c.Query("search"),
+		Name:       c.Query("name"),
 		Status:     c.Query("status"),
 		OrderBy:    c.Query("order_by"),
 		Sort:       c.DefaultQuery("sort", "desc"),

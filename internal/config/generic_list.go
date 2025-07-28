@@ -16,6 +16,7 @@ import (
 // GenericListOptions represents the options for listing configurations
 type GenericListOptions struct {
 	Search      string
+	Name        string
 	Status      string
 	OrderBy     string
 	Sort        string
@@ -268,9 +269,12 @@ func SiteStatusMapBuilder(maintenanceSuffix string) StatusMapBuilder {
 	}
 }
 
-// DefaultFilterMatcher provides the standard filtering logic without name search
+// DefaultFilterMatcher provides the standard filtering logic with name search
 func DefaultFilterMatcher(fileName string, status ConfigStatus, envGroupID uint64, options *GenericListOptions) bool {
-	// Remove name filtering as it's now handled by fuzzy search
+	// Exact name matching
+	if options.Name != "" && fileName != options.Name {
+		return false
+	}
 	if options.Status != "" && status != ConfigStatus(options.Status) {
 		return false
 	}
@@ -282,8 +286,10 @@ func DefaultFilterMatcher(fileName string, status ConfigStatus, envGroupID uint6
 
 // FuzzyFilterMatcher provides filtering logic with fuzzy search support
 func FuzzyFilterMatcher(fileName string, status ConfigStatus, envGroupID uint64, options *GenericListOptions) bool {
-	// Name filtering is handled by fuzzy search in GetGenericConfigs
-	// Only apply other filters here
+	// Exact name matching takes precedence over fuzzy search
+	if options.Name != "" && fileName != options.Name {
+		return false
+	}
 	if options.Status != "" && status != ConfigStatus(options.Status) {
 		return false
 	}

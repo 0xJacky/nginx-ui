@@ -5,14 +5,12 @@ import JSEncrypt from 'jsencrypt'
 import { storeToRefs } from 'pinia'
 import use2FAModal from '@/components/TwoFA/use2FAModal'
 import { getBrowserFingerprint } from '@/lib/helper'
-import { useNProgress } from '@/lib/nprogress/nprogress'
 import { useSettingsStore, useUserStore } from '@/pinia'
 import router from '@/routes'
 import { handleApiError, useMessageDedupe } from './error'
 
 const { setRequestInterceptor, setResponseInterceptor } = useAxios()
 
-const nprogress = useNProgress()
 const dedupe = useMessageDedupe()
 
 // Helper function for encrypting JSON data
@@ -78,7 +76,6 @@ export function setupRequestInterceptor() {
   const { token, secureSessionId } = storeToRefs(user)
   setRequestInterceptor(
     async config => {
-      nprogress.start()
       if (token.value) {
         config.headers.Authorization = token.value
       }
@@ -116,8 +113,6 @@ export function setupRequestInterceptor() {
 export function setupResponseInterceptor() {
   setResponseInterceptor(
     response => {
-      nprogress.done()
-
       // Check if full response is requested in config
       if (response?.config?.returnFullResponse) {
         return Promise.resolve(response)
@@ -129,7 +124,6 @@ export function setupResponseInterceptor() {
       // Setup stores and refs
       const user = useUserStore()
       const { secureSessionId } = storeToRefs(user)
-      nprogress.done()
       const otpModal = use2FAModal()
 
       // Handle authentication errors

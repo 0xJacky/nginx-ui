@@ -33,13 +33,14 @@ const columns: StdTableColumn[] = [{
   edit: {
     type: 'input',
   },
+  search: true,
   width: 150,
   customRender: ({ text, record }: CustomRenderArgs) => {
     const template: JSXElements = []
 
     // Add site name
     template.push(
-      <div style="margin-bottom: 8px;">{text}</div>,
+      <div>{text}</div>,
     )
 
     // Add URLs below the name
@@ -66,7 +67,7 @@ const columns: StdTableColumn[] = [{
       }
 
       template.push(
-        <div style="display: flex; flex-wrap: wrap; margin-bottom: 4px;">{urlsContainer}</div>,
+        <div style="display: flex; flex-wrap: wrap; margin: 4px 0;">{urlsContainer}</div>,
       )
     }
 
