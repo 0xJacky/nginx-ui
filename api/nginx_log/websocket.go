@@ -21,8 +21,8 @@ import (
 // It checks if the path is under the whitelist directories
 func getLogPath(control *controlStruct) (logPath string, err error) {
 	// If direct log path is provided, use it
-	if control.LogPath != "" {
-		logPath = control.LogPath
+	if control.Path != "" {
+		logPath = control.Path
 		// Check if logPath is under one of the paths in LogDirWhiteList
 		if !nginx_log.IsLogPathUnderWhiteList(logPath) {
 			return "", nginx_log.ErrLogPathIsNotUnderTheLogDirWhiteList

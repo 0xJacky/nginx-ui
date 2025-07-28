@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type ReconnectingWebSocket from 'reconnecting-websocket'
-import type { INginxLogData } from '@/api/nginx_log'
+import type { NginxLogData } from '@/api/nginx_log'
 import { debounce } from 'lodash'
 import nginx_log from '@/api/nginx_log'
 import FooterToolBar from '@/components/FooterToolbar'
@@ -17,9 +17,9 @@ const loading = ref(false)
 const filter = ref('')
 
 // Setup log control data based on route params
-const control = reactive<INginxLogData>({
+const control = reactive<NginxLogData>({
   type: logType(),
-  log_path: route.query.log_path as string,
+  path: route.query.log_path as string,
 })
 
 function logType() {
@@ -92,7 +92,7 @@ watch(autoRefresh, async value => {
 watch(route, () => {
   // Update control data when route changes
   control.type = logType()
-  control.log_path = route.query.log_path as string
+  control.path = route.query.log_path as string
 
   clearLog()
   init()
@@ -169,7 +169,7 @@ const computedBuffer = computed(() => {
         @scroll="debounceScrollLog"
       />
     </ACard>
-    <FooterToolBar v-if="control.log_path">
+    <FooterToolBar v-if="control.path">
       <AButton @click="router.go(-1)">
         {{ $gettext('Back') }}
       </AButton>

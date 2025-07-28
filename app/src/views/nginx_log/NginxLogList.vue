@@ -1,5 +1,6 @@
 <script setup lang="tsx">
 import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
+import type { NginxLogData } from '@/api/nginx_log'
 import { SyncOutlined } from '@ant-design/icons-vue'
 import { StdCurd } from '@uozi-admin/curd'
 import { Tag } from 'ant-design-vue'
@@ -71,11 +72,11 @@ const columns: StdTableColumn[] = [
   },
 ]
 
-function viewLog(record: { type: string, path: string }) {
+function viewLog(record: NginxLogData) {
   router.push({
     path: `/nginx_log/${record.type}`,
     query: {
-      log_path: record.path,
+      path: record.path,
     },
   })
 }

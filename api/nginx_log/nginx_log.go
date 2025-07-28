@@ -22,8 +22,8 @@ const (
 
 // controlStruct represents the request parameters for getting log content
 type controlStruct struct {
-	Type    string `json:"type"`     // Type of log: "access" or "error"
-	LogPath string `json:"log_path"` // Path to the log file
+	Type string `json:"type"` // Type of log: "access" or "error"
+	Path string `json:"path"` // Path to the log file
 }
 
 // nginxLogPageResp represents the response format for log content
