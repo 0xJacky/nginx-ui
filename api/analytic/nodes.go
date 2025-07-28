@@ -65,8 +65,6 @@ func GetNodeStat(c *gin.Context) {
 					NodeInfo: nodeInfo,
 					NodeStat: stat,
 				}
-
-				logger.Debugf("Sending complete node info including version: %s", ver.Version)
 			}
 		} else {
 			// Send only stat information for performance

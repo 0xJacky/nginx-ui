@@ -38,6 +38,11 @@ func NewS3Client(autoBackup *model.AutoBackup) (*S3Client, error) {
 		endpoint = "s3.amazonaws.com"
 	}
 
+	var secure bool
+	if strings.HasPrefix(endpoint, "https://") {
+		secure = true
+	}
+
 	// Remove protocol prefix if present
 	endpoint = strings.ReplaceAll(endpoint, "https://", "")
 	endpoint = strings.ReplaceAll(endpoint, "http://", "")
@@ -45,7 +50,7 @@ func NewS3Client(autoBackup *model.AutoBackup) (*S3Client, error) {
 	// Initialize MinIO client
 	minioClient, err := minio.New(endpoint, &minio.Options{
 		Creds:  credentials.NewStaticV4(autoBackup.S3AccessKeyID, autoBackup.S3SecretAccessKey, ""),
-		Secure: true, // Use SSL by default
+		Secure: secure,
 		Region: getS3Region(autoBackup.S3Region),
 	})
 	if err != nil {
