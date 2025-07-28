@@ -3,7 +3,7 @@ import { StdCurd } from '@uozi-admin/curd'
 import { message } from 'ant-design-vue'
 import notification from '@/api/notification'
 import { useUserStore } from '@/pinia'
-import notificationColumns from '@/views/notification/notificationColumns'
+import notificationColumns from './notificationColumns'
 
 const { unreadCount } = storeToRefs(useUserStore())
 

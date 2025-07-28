@@ -65,6 +65,7 @@ declare module 'vue' {
     ATag: typeof import('ant-design-vue/es')['Tag']
     ATextarea: typeof import('ant-design-vue/es')['Textarea']
     ATooltip: typeof import('ant-design-vue/es')['Tooltip']
+    AUpload: typeof import('ant-design-vue/es')['Upload']
     AUploadDragger: typeof import('ant-design-vue/es')['UploadDragger']
     AutoCertFormAutoCertForm: typeof import('./src/components/AutoCertForm/AutoCertForm.vue')['default']
     AutoCertFormDNSChallenge: typeof import('./src/components/AutoCertForm/DNSChallenge.vue')['default']

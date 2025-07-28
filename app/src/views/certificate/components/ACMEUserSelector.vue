@@ -1,83 +1,49 @@
 <script setup lang="ts">
-import type { SelectProps } from 'ant-design-vue'
-import type { DefaultOptionType } from 'ant-design-vue/es/select'
-import type { Ref } from 'vue'
 import type { AcmeUser } from '@/api/acme_user'
 import type { AutoCertOptions } from '@/api/auto_cert'
 import acme_user from '@/api/acme_user'
 
-const users = ref([]) as Ref<AcmeUser[]>
-
 const data = defineModel<AutoCertOptions>('options', {
-  default: () => {
-    return {}
-  },
+  default: reactive({}),
   required: true,
 })
 
-const id = computed(() => {
-  return data.value?.acme_user_id
-})
+const users = ref<AcmeUser[]>([])
+const loading = ref(false)
 
-const userIdx = ref<number>()
-function init() {
-  users.value?.forEach((v: AcmeUser, k: number) => {
-    if (v.id === id.value)
-      userIdx.value = k
-  })
-}
-
-const current = computed(() => {
-  return users.value?.[userIdx.value || -1]
-})
-
-const mounted = ref(false)
-
-watch(id, init)
-
-watch(current, () => {
-  if (mounted.value)
-    data.value!.acme_user_id = current.value.id
-})
-
+// Load ACME users on component mount
 onMounted(async () => {
-  users.value = []
-  let page = 1
-  while (true) {
-    try {
-      const r = await acme_user.getList({ page })
-
-      users.value.push(...r.data)
-      if (r?.data?.length < (r?.pagination?.per_page ?? 0))
+  loading.value = true
+  try {
+    users.value = []
+    let page = 1
+    while (true) {
+      try {
+        const r = await acme_user.getList({ page })
+        users.value.push(...r.data)
+        if (r?.data?.length < (r?.pagination?.per_page ?? 0))
+          break
+        page++
+      }
+      catch {
         break
-      page++
-    }
-    catch {
-      break
+      }
     }
   }
-
-  init()
-
-  // prevent the acme_user_id from being overwritten
-  mounted.value = true
+  finally {
+    loading.value = false
+  }
 })
 
-const options = computed<SelectProps['options']>(() => {
-  const list: SelectProps['options'] = []
+// Define field names mapping for ASelect
+const fieldNames = {
+  value: 'id',
+  label: 'name',
+}
 
-  users.value.forEach((v, k: number) => {
-    list!.push({
-      value: k,
-      label: v.name,
-    })
-  })
-
-  return list
-})
-
-function filterOption(input: string, option?: DefaultOptionType) {
-  return option?.label.toLowerCase().includes(input.toLowerCase())
+// Filter function for search - using type assertion for compatibility
+function filterOption(input: string, option?: unknown) {
+  return (option as AcmeUser)?.name?.toLowerCase().includes(input.toLowerCase()) ?? false
 }
 </script>
 
@@ -85,10 +51,12 @@ function filterOption(input: string, option?: DefaultOptionType) {
   <AForm layout="vertical">
     <AFormItem :label="$gettext('ACME User')">
       <ASelect
-        v-model:value="userIdx"
+        v-model:value="data.acme_user_id"
         :placeholder="$gettext('System Initial User')"
+        :loading="loading"
         show-search
-        :options
+        :options="users"
+        :field-names="fieldNames"
         :filter-option="filterOption"
       />
     </AFormItem>

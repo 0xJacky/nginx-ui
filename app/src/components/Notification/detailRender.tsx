@@ -6,7 +6,7 @@ export function detailRender(args: Pick<CustomRenderArgs, 'record' | 'text'>) {
   try {
     return (
       <div>
-        <div class="mb-2">
+        <div>
           {
             notifications[args.record.title]?.content(args.record.details)
             || args.record.content || args.record.details
