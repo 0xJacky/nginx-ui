@@ -167,6 +167,9 @@ async function performUpgrade() {
           <ASelectOption key="prerelease">
             {{ $gettext('Pre-release') }}
           </ASelectOption>
+          <ASelectOption key="dev">
+            {{ $gettext('Development') }}
+          </ASelectOption>
         </ASelect>
       </AFormItem>
     </AForm>
