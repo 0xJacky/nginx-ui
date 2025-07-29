@@ -7,10 +7,18 @@ export const PostSyncAction = {
   ReloadNginx: 'reload_nginx',
 }
 
+// Upstream test types
+export const UpstreamTestType = {
+  Local: 'local',
+  Remote: 'remote',
+  Mirror: 'mirror',
+}
+
 export interface EnvGroup extends ModelBase {
   name: string
   sync_node_ids: number[]
   post_sync_action?: string
+  upstream_test_type?: string
 }
 
 const baseUrl = '/env_groups'

@@ -81,6 +81,7 @@ const columns: StdTableColumn[] = [{
   customRender: ({ record }: CustomRenderArgs) => {
     if (record.proxy_targets && record.proxy_targets.length > 0) {
       return h(ProxyTargets, {
+        envGroupId: record.env_group_id,
         targets: record.proxy_targets,
       })
     }

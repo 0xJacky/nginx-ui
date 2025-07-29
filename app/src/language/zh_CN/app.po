@@ -140,14 +140,14 @@ msgstr "操作"
 #: src/views/backup/AutoBackup/AutoBackup.vue:273
 #: src/views/certificate/ACMEUser.vue:90
 #: src/views/certificate/CertificateList/certColumns.tsx:92
-#: src/views/certificate/DNSCredential.vue:44
+#: src/views/certificate/DNSCredential.vue:71
 #: src/views/config/configColumns.tsx:50
-#: src/views/environments/group/columns.ts:71
+#: src/views/environments/group/columns.ts:84
 #: src/views/environments/list/envColumns.tsx:96
 #: src/views/nginx_log/NginxLogList.vue:68
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:73
-#: src/views/site/site_list/columns.tsx:159 src/views/stream/columns.tsx:123
+#: src/views/site/site_list/columns.tsx:160 src/views/stream/columns.tsx:123
 #: src/views/user/userColumns.tsx:58
 msgid "Actions"
 msgstr "操作"
@@ -751,7 +751,7 @@ msgstr "证书类型"
 msgid "Certificates"
 msgstr "证书"
 
-#: src/routes/modules/certificates.ts:28
+#: src/routes/modules/certificates.ts:36
 msgid "Certificates List"
 msgstr "证书列表"
 
@@ -1027,7 +1027,7 @@ msgstr "配置路径为空"
 msgid "Config Template"
 msgstr "配置模板"
 
-#: src/views/certificate/DNSCredential.vue:25
+#: src/views/certificate/DNSCredential.vue:52
 msgid "Configuration"
 msgstr "配置"
 
@@ -1146,7 +1146,7 @@ msgid ""
 msgstr "创建系统备份，包括 Nginx 配置和 Nginx UI 设置。备份文件将自动下载到你的电脑。"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:229
-#: src/views/environments/group/columns.ts:59
+#: src/views/environments/group/columns.ts:72
 #: src/views/notification/notificationColumns.tsx:51
 #: src/views/preference/components/AuthSettings/Passkey.vue:95
 #: src/views/preference/components/ExternalNotify/columns.tsx:68
@@ -1481,7 +1481,7 @@ msgstr "在 %{node} 上禁用 %{name} 成功"
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:162
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
-#: src/views/site/site_list/columns.tsx:145 src/views/stream/columns.tsx:112
+#: src/views/site/site_list/columns.tsx:146 src/views/stream/columns.tsx:112
 #: src/views/stream/components/StreamEditor.vue:32
 #: src/views/user/userColumns.tsx:39
 msgid "Disabled"
@@ -1496,8 +1496,8 @@ msgstr "禁用成功"
 msgid "Disk IO"
 msgstr "磁盘 IO"
 
-#: src/routes/modules/certificates.ts:56
-#: src/views/certificate/DNSCredential.vue:52
+#: src/routes/modules/certificates.ts:28
+#: src/views/certificate/DNSCredential.vue:79
 msgid "DNS Credentials"
 msgstr "DNS 凭证"
 
@@ -1756,7 +1756,7 @@ msgstr "启用 TOTP"
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:159
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:56
-#: src/views/site/site_list/columns.tsx:141 src/views/stream/columns.tsx:108
+#: src/views/site/site_list/columns.tsx:142 src/views/stream/columns.tsx:108
 #: src/views/stream/components/RightPanel/Basic.vue:24
 #: src/views/stream/components/StreamEditor.vue:26
 #: src/views/user/userColumns.tsx:36
@@ -2475,7 +2475,7 @@ msgstr "如果您的域名有 CNAME 记录且无法获取证书，则需要启�
 msgid "Import"
 msgstr "导入"
 
-#: src/routes/modules/certificates.ts:46
+#: src/routes/modules/certificates.ts:54
 #: src/views/certificate/CertificateEditor.vue:86
 msgid "Import Certificate"
 msgstr "导入证书"
@@ -2791,7 +2791,7 @@ msgid "Loading data..."
 msgstr "正在加载数据..."
 
 #: src/components/EnvIndicator/EnvIndicator.vue:39
-#: src/components/NodeSelector/NodeSelector.vue:61
+#: src/components/NodeSelector/NodeSelector.vue:61 src/constants/index.ts:41
 #: src/views/backup/AutoBackup/AutoBackup.vue:74
 #: src/views/backup/AutoBackup/AutoBackup.vue:83
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:48
@@ -2857,9 +2857,17 @@ msgstr ""
 "定时任务，因此您无需修改本页面的参数。对于使用 Docker 容器安装 Nginx 用户界面的用户，您可以手动启用该选项。Nginx UI "
 "的定时任务任务调度器将按照您设置的时间间隔（以分钟为单位）执行 logrotate 命令。"
 
+#: src/components/ProxyTargets/ProxyTargets.vue:220
+msgid "Main"
+msgstr "主"
+
+#: src/components/ProxyTargets/ProxyTargets.vue:148
+msgid "Main Node"
+msgstr "主节点"
+
 #: src/views/site/components/SiteStatusSelect.vue:165
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:68
-#: src/views/site/site_list/columns.tsx:149
+#: src/views/site/site_list/columns.tsx:150
 msgid "Maintenance"
 msgstr "维护模式"
 
@@ -3008,6 +3016,10 @@ msgstr "分钟"
 msgid "Minutes"
 msgstr "分钟"
 
+#: src/constants/index.ts:43
+msgid "Mirror"
+msgstr "镜像"
+
 #: src/views/preference/tabs/OpenAISettings.vue:20
 msgid "Model"
 msgstr "模型"
@@ -3021,7 +3033,7 @@ msgstr "修改时间"
 msgid "Modify"
 msgstr "修改"
 
-#: src/routes/modules/certificates.ts:36
+#: src/routes/modules/certificates.ts:44
 #: src/views/certificate/CertificateEditor.vue:86
 msgid "Modify Certificate"
 msgstr "修改证书"
@@ -3054,17 +3066,21 @@ msgstr "每月%{day}日%{time}"
 msgid "Multi-line Directive"
 msgstr "多行指令"
 
+#: src/components/ProxyTargets/ProxyTargets.vue:225
+msgid "N/A"
+msgstr "不适用"
+
 #: src/components/NgxConfigEditor/NgxUpstream.vue:199
 #: src/views/backup/AutoBackup/AutoBackup.vue:11
 #: src/views/certificate/ACMEUser.vue:11
 #: src/views/certificate/CertificateList/certColumns.tsx:9
 #: src/views/certificate/components/CertificateBasicInfo.vue:23
-#: src/views/certificate/DNSCredential.vue:9
+#: src/views/certificate/DNSCredential.vue:17
 #: src/views/config/components/ConfigRightPanel/Basic.vue:34
 #: src/views/config/components/Delete.vue:123
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:17
-#: src/views/environments/group/columns.ts:8
+#: src/views/environments/group/columns.ts:9
 #: src/views/environments/list/envColumns.tsx:8
 #: src/views/nginx_log/NginxLogList.vue:52
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:80
@@ -3353,8 +3369,7 @@ msgid "No"
 msgstr "取消"
 
 #: src/components/EnvGroupRender/EnvGroupRender.vue:41
-#: src/views/environments/group/columns.ts:49
-#: src/views/environments/group/EnvGroup.vue:47
+#: src/constants/index.ts:36
 msgid "No Action"
 msgstr "无操作"
 
@@ -3383,7 +3398,7 @@ msgid "Node"
 msgstr "节点"
 
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:42
-#: src/views/site/site_list/columns.tsx:90 src/views/stream/columns.tsx:58
+#: src/views/site/site_list/columns.tsx:91 src/views/stream/columns.tsx:58
 #: src/views/stream/components/RightPanel/Basic.vue:39
 msgid "Node Group"
 msgstr "节点组"
@@ -3391,7 +3406,7 @@ msgstr "节点组"
 #: src/routes/modules/environments.ts:33
 #: src/views/environments/group/EnvGroup.vue:19
 msgid "Node Groups"
-msgstr "环境组"
+msgstr "节点组"
 
 #: src/views/preference/tabs/NodeSettings.vue:15
 msgid "Node name"
@@ -3400,6 +3415,10 @@ msgstr "节点名称"
 #: src/views/preference/tabs/NodeSettings.vue:11
 msgid "Node Secret"
 msgstr "节点密钥"
+
+#: src/components/ProxyTargets/ProxyTargets.vue:208
+msgid "Node Status"
+msgstr "节点状态"
 
 #: src/routes/modules/environments.ts:25
 msgid "Nodes"
@@ -3423,7 +3442,7 @@ msgid "Not Valid Before: %{date}"
 msgstr "此前无效: %{date}"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:39
-#: src/views/certificate/DNSCredential.vue:62
+#: src/views/certificate/DNSCredential.vue:89
 msgid "Note"
 msgstr "注意"
 
@@ -3501,6 +3520,7 @@ msgstr "官方文档"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:151
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:84
+#: src/components/ProxyTargets/ProxyTargets.vue:217
 #: src/views/dashboard/Environments.vue:106
 #: src/views/environments/list/envColumns.tsx:55
 msgid "Offline"
@@ -3527,7 +3547,7 @@ msgstr "确定"
 msgid "On"
 msgstr "开启"
 
-#: src/views/certificate/DNSCredential.vue:72
+#: src/views/certificate/DNSCredential.vue:99
 msgid "Once the verification is complete, the records will be removed."
 msgstr "一旦验证完成，这些记录将被删除。"
 
@@ -3535,6 +3555,7 @@ msgstr "一旦验证完成，这些记录将被删除。"
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:64
 #: src/components/NodeSelector/NodeSelector.vue:78
+#: src/components/ProxyTargets/ProxyTargets.vue:217
 #: src/views/dashboard/Environments.vue:99
 #: src/views/environments/list/envColumns.tsx:51
 msgid "Online"
@@ -3753,7 +3774,7 @@ msgstr "请正确填写所有字段"
 msgid "Please fill in required S3 configuration fields"
 msgstr "请填写必填的 S3 配置字段"
 
-#: src/views/certificate/DNSCredential.vue:66
+#: src/views/certificate/DNSCredential.vue:93
 msgid ""
 "Please fill in the API authentication credentials provided by your DNS "
 "provider."
@@ -3810,7 +3831,7 @@ msgstr "请输入您的用户名！"
 msgid "Please log in."
 msgstr "请登录。"
 
-#: src/views/certificate/DNSCredential.vue:75
+#: src/views/certificate/DNSCredential.vue:102
 msgid "Please note that the unit of time configurations below are all in seconds."
 msgstr "请注意，下面的时间单位配置均以秒为单位。"
 
@@ -3871,8 +3892,7 @@ msgid "Port Scanner"
 msgstr "端口检测"
 
 #: src/components/EnvGroupRender/EnvGroupRender.vue:38
-#: src/views/environments/group/columns.ts:45
-#: src/views/environments/group/EnvGroup.vue:39
+#: src/views/environments/group/columns.ts:46
 msgid "Post-sync Action"
 msgstr "同步后操作"
 
@@ -3934,7 +3954,7 @@ msgid ""
 "proxy."
 msgstr "协议配置仅在直接连接时生效。如果使用反向代理，请在反向代理中单独配置协议。"
 
-#: src/views/certificate/DNSCredential.vue:17
+#: src/views/certificate/DNSCredential.vue:26
 msgid "Provider"
 msgstr "提供商"
 
@@ -3946,7 +3966,7 @@ msgstr "未找到提供商：{0}"
 msgid "Proxy"
 msgstr "代理"
 
-#: src/components/ProxyTargets/ProxyTargets.vue:34
+#: src/components/ProxyTargets/ProxyTargets.vue:125
 msgid "Proxy Pass"
 msgstr "代理传递"
 
@@ -4051,9 +4071,7 @@ msgid "Reload"
 msgstr "重载"
 
 #: src/components/EnvGroupRender/EnvGroupRender.vue:44
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:104
-#: src/views/environments/group/columns.ts:52
-#: src/views/environments/group/EnvGroup.vue:50
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:104 src/constants/index.ts:37
 #: src/views/environments/list/Environment.vue:209
 #: src/views/environments/list/Environment.vue:217
 msgid "Reload Nginx"
@@ -4090,6 +4108,10 @@ msgstr "重载中"
 #: src/language/constants.ts:18
 msgid "Reloading nginx"
 msgstr "正在重载 Nginx"
+
+#: src/constants/index.ts:42
+msgid "Remote"
+msgstr "远程"
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:146
 #: src/views/preference/tabs/AuthSettings.vue:137
@@ -4593,10 +4615,6 @@ msgstr "安全令牌信息"
 msgid "Select all"
 msgstr "全选"
 
-#: src/views/environments/group/EnvGroup.vue:42
-msgid "Select an action after sync"
-msgstr "选择同步后的操作"
-
 #: src/language/curd.ts:59
 msgid "Selected {count} files"
 msgstr "已选择 {count} 个文件"
@@ -4853,7 +4871,7 @@ msgstr "静态"
 #: src/views/dashboard/components/ModulesTable.vue:96
 #: src/views/environments/list/envColumns.tsx:43
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:29
-#: src/views/site/site_list/columns.tsx:119 src/views/stream/columns.tsx:87
+#: src/views/site/site_list/columns.tsx:120 src/views/stream/columns.tsx:87
 msgid "Status"
 msgstr "状态"
 
@@ -5023,7 +5041,7 @@ msgstr "同步配置成功"
 
 #: src/components/EnvGroupRender/EnvGroupRender.vue:53
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:90
-#: src/views/environments/group/columns.ts:16
+#: src/views/environments/group/columns.ts:17
 #: src/views/environments/group/EnvGroup.vue:31
 msgid "Sync Nodes"
 msgstr "同步节点"
@@ -5432,7 +5450,7 @@ msgstr "星期二"
 msgid "Two-factor authentication required"
 msgstr "需要两步验证"
 
-#: src/components/ProxyTargets/ProxyTargets.vue:34
+#: src/components/ProxyTargets/ProxyTargets.vue:125
 #: src/views/certificate/CertificateList/certColumns.tsx:24
 #: src/views/config/components/Delete.vue:122
 #: src/views/dashboard/components/ModulesTable.vue:83
@@ -5469,13 +5487,13 @@ msgstr "更新成功"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:236
 #: src/views/certificate/ACMEUser.vue:83
-#: src/views/certificate/DNSCredential.vue:38
+#: src/views/certificate/DNSCredential.vue:65
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
 #: src/views/config/configColumns.tsx:43
-#: src/views/environments/group/columns.ts:65
+#: src/views/environments/group/columns.ts:78
 #: src/views/environments/list/envColumns.tsx:89
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:39
-#: src/views/site/site_list/columns.tsx:112 src/views/stream/columns.tsx:80
+#: src/views/site/site_list/columns.tsx:113 src/views/stream/columns.tsx:80
 #: src/views/stream/components/RightPanel/Basic.vue:35
 #: src/views/user/userColumns.tsx:52
 msgid "Updated at"
@@ -5513,13 +5531,17 @@ msgstr "上传文件"
 msgid "Upload Folders"
 msgstr "上传文件夹"
 
-#: src/components/ProxyTargets/ProxyTargets.vue:34
+#: src/components/ProxyTargets/ProxyTargets.vue:125
 msgid "Upstream"
 msgstr "上游"
 
 #: src/components/NgxConfigEditor/NgxUpstream.vue:194
 msgid "Upstream Name"
 msgstr "Upstream 名称"
+
+#: src/views/environments/group/columns.ts:59
+msgid "Upstream Test Type"
+msgstr "上游测试类型"
 
 #: src/views/dashboard/ServerAnalytic.vue:183
 msgid "Uptime:"
@@ -5639,7 +5661,7 @@ msgid ""
 "to restore."
 msgstr "警告：还原操作将覆盖当前配置。请确保您有有效的备份文件和安全令牌，并仔细选择要还原的内容。"
 
-#: src/views/certificate/DNSCredential.vue:69
+#: src/views/certificate/DNSCredential.vue:96
 msgid ""
 "We will add one or more TXT records to the DNS records of your domain for "
 "ownership verification."
@@ -5807,6 +5829,9 @@ msgstr "您的旧代码将不再有效。"
 #: src/views/preference/components/AuthSettings/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "你的 Passkeys"
+
+#~ msgid "Select an action after sync"
+#~ msgstr "选择同步后的操作"
 
 #~ msgid "Link Start"
 #~ msgstr "链接"

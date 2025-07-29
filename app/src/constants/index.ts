@@ -32,6 +32,17 @@ export enum NginxStatus {
   Stopped,
 }
 
+export const PostSyncActionMask = {
+  none: () => $gettext('No Action'),
+  reload_nginx: () => $gettext('Reload Nginx'),
+} as const
+
+export const UpstreamTestTypeMask = {
+  local: () => $gettext('Local'),
+  remote: () => $gettext('Remote'),
+  mirror: () => $gettext('Mirror'),
+} as const
+
 export const PrivateKeyTypeMask = {
   2048: 'RSA2048',
   3072: 'RSA3072',

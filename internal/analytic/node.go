@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/transport"
+	"github.com/0xJacky/Nginx-UI/internal/upstream"
 	"github.com/0xJacky/Nginx-UI/internal/version"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/shirou/gopsutil/v4/load"
@@ -26,13 +27,14 @@ type NodeInfo struct {
 }
 
 type NodeStat struct {
-	AvgLoad       *load.AvgStat      `json:"avg_load"`
-	CPUPercent    float64            `json:"cpu_percent"`
-	MemoryPercent float64            `json:"memory_percent"`
-	DiskPercent   float64            `json:"disk_percent"`
-	Network       net.IOCountersStat `json:"network"`
-	Status        bool               `json:"status"`
-	ResponseAt    time.Time          `json:"response_at"`
+	AvgLoad           *load.AvgStat                        `json:"avg_load"`
+	CPUPercent        float64                              `json:"cpu_percent"`
+	MemoryPercent     float64                              `json:"memory_percent"`
+	DiskPercent       float64                              `json:"disk_percent"`
+	Network           net.IOCountersStat                   `json:"network"`
+	Status            bool                                 `json:"status"`
+	ResponseAt        time.Time                            `json:"response_at"`
+	UpstreamStatusMap map[string]*upstream.Status `json:"upstream_status_map"`
 }
 
 type Node struct {

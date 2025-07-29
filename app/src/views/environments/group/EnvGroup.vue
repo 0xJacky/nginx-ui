@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { UpdateOrderRequest } from '@/api/curd'
 import { StdCurd } from '@uozi-admin/curd'
-import env_group, { PostSyncAction } from '@/api/env_group'
+import env_group from '@/api/env_group'
 import NodeSelector from '@/components/NodeSelector'
 import columns from '@/views/environments/group/columns'
 
@@ -34,24 +34,6 @@ async function handleDragEnd(data: UpdateOrderRequest) {
         v-model:target="record.sync_node_ids"
         hidden-local
       />
-
-      <AForm class="mt-4" layout="vertical">
-        <AFormItem :label="$gettext('Post-sync Action')">
-          <ASelect
-            v-model:value="record.post_sync_action"
-            :placeholder="$gettext('Select an action after sync')"
-            :default-value="PostSyncAction.ReloadNginx"
-            class="w-full"
-          >
-            <ASelectOption :value="PostSyncAction.None">
-              {{ $gettext('No Action') }}
-            </ASelectOption>
-            <ASelectOption :value="PostSyncAction.ReloadNginx">
-              {{ $gettext('Reload Nginx') }}
-            </ASelectOption>
-          </ASelect>
-        </AFormItem>
-      </AForm>
     </template>
   </StdCurd>
 </template>

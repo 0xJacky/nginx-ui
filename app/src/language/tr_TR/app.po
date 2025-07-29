@@ -143,14 +143,14 @@ msgstr "Eylem"
 #: src/views/backup/AutoBackup/AutoBackup.vue:273
 #: src/views/certificate/ACMEUser.vue:90
 #: src/views/certificate/CertificateList/certColumns.tsx:92
-#: src/views/certificate/DNSCredential.vue:44
+#: src/views/certificate/DNSCredential.vue:71
 #: src/views/config/configColumns.tsx:50
-#: src/views/environments/group/columns.ts:71
+#: src/views/environments/group/columns.ts:84
 #: src/views/environments/list/envColumns.tsx:96
 #: src/views/nginx_log/NginxLogList.vue:68
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:73
-#: src/views/site/site_list/columns.tsx:159 src/views/stream/columns.tsx:123
+#: src/views/site/site_list/columns.tsx:160 src/views/stream/columns.tsx:123
 #: src/views/user/userColumns.tsx:58
 msgid "Actions"
 msgstr "İşlemler"
@@ -765,7 +765,7 @@ msgstr "Sertifika Türü"
 msgid "Certificates"
 msgstr "Sertifikalar"
 
-#: src/routes/modules/certificates.ts:28
+#: src/routes/modules/certificates.ts:36
 msgid "Certificates List"
 msgstr "Sertifika Listesi"
 
@@ -1065,7 +1065,7 @@ msgstr "Yapılandırma yolu boş"
 msgid "Config Template"
 msgstr "Yapılandırma Şablonu"
 
-#: src/views/certificate/DNSCredential.vue:25
+#: src/views/certificate/DNSCredential.vue:52
 msgid "Configuration"
 msgstr "Yapılandırma"
 
@@ -1188,7 +1188,7 @@ msgstr ""
 "oluşturun. Yedek dosyaları otomatik olarak bilgisayarınıza indirilecektir."
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:229
-#: src/views/environments/group/columns.ts:59
+#: src/views/environments/group/columns.ts:72
 #: src/views/notification/notificationColumns.tsx:51
 #: src/views/preference/components/AuthSettings/Passkey.vue:95
 #: src/views/preference/components/ExternalNotify/columns.tsx:68
@@ -1525,7 +1525,7 @@ msgstr "Akış %{name}, %{node} üzerinden başarıyla devre dışı bırakıld�
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:162
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
-#: src/views/site/site_list/columns.tsx:145 src/views/stream/columns.tsx:112
+#: src/views/site/site_list/columns.tsx:146 src/views/stream/columns.tsx:112
 #: src/views/stream/components/StreamEditor.vue:32
 #: src/views/user/userColumns.tsx:39
 msgid "Disabled"
@@ -1540,8 +1540,8 @@ msgstr "Başarıyla devre dışı bırakıldı"
 msgid "Disk IO"
 msgstr "Disk IO"
 
-#: src/routes/modules/certificates.ts:56
-#: src/views/certificate/DNSCredential.vue:52
+#: src/routes/modules/certificates.ts:28
+#: src/views/certificate/DNSCredential.vue:79
 msgid "DNS Credentials"
 msgstr "DNS Kimlik Bilgileri"
 
@@ -1805,7 +1805,7 @@ msgstr "TOTP'yi Etkinleştir"
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:159
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:56
-#: src/views/site/site_list/columns.tsx:141 src/views/stream/columns.tsx:108
+#: src/views/site/site_list/columns.tsx:142 src/views/stream/columns.tsx:108
 #: src/views/stream/components/RightPanel/Basic.vue:24
 #: src/views/stream/components/StreamEditor.vue:26
 #: src/views/user/userColumns.tsx:36
@@ -2537,7 +2537,7 @@ msgstr ""
 msgid "Import"
 msgstr "İçe Aktar"
 
-#: src/routes/modules/certificates.ts:46
+#: src/routes/modules/certificates.ts:54
 #: src/views/certificate/CertificateEditor.vue:86
 msgid "Import Certificate"
 msgstr "Sertifika İçe Aktar"
@@ -2859,7 +2859,7 @@ msgid "Loading data..."
 msgstr "Veriler yükleniyor..."
 
 #: src/components/EnvIndicator/EnvIndicator.vue:39
-#: src/components/NodeSelector/NodeSelector.vue:61
+#: src/components/NodeSelector/NodeSelector.vue:61 src/constants/index.ts:41
 #: src/views/backup/AutoBackup/AutoBackup.vue:74
 #: src/views/backup/AutoBackup/AutoBackup.vue:83
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:48
@@ -2929,9 +2929,17 @@ msgstr ""
 "olarak etkinleştirebilir. Nginx UI'nin crontab görev zamanlayıcısı, "
 "belirlediğiniz dakika aralığında logrotate komutunu çalıştıracaktır."
 
+#: src/components/ProxyTargets/ProxyTargets.vue:220
+msgid "Main"
+msgstr "Ana"
+
+#: src/components/ProxyTargets/ProxyTargets.vue:148
+msgid "Main Node"
+msgstr "Ana Düğüm"
+
 #: src/views/site/components/SiteStatusSelect.vue:165
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:68
-#: src/views/site/site_list/columns.tsx:149
+#: src/views/site/site_list/columns.tsx:150
 msgid "Maintenance"
 msgstr "Bakım"
 
@@ -3082,6 +3090,10 @@ msgstr "Dakika"
 msgid "Minutes"
 msgstr "Dakika"
 
+#: src/constants/index.ts:43
+msgid "Mirror"
+msgstr "Ayna"
+
 #: src/views/preference/tabs/OpenAISettings.vue:20
 msgid "Model"
 msgstr "Model"
@@ -3095,7 +3107,7 @@ msgstr "Değiştirilme Tarihi"
 msgid "Modify"
 msgstr "Değiştir"
 
-#: src/routes/modules/certificates.ts:36
+#: src/routes/modules/certificates.ts:44
 #: src/views/certificate/CertificateEditor.vue:86
 msgid "Modify Certificate"
 msgstr "Sertifikayı Düzenle"
@@ -3128,17 +3140,21 @@ msgstr "Her ayın %{day} günü %{time} saatinde"
 msgid "Multi-line Directive"
 msgstr "Çok Satırlı Yönergeler"
 
+#: src/components/ProxyTargets/ProxyTargets.vue:225
+msgid "N/A"
+msgstr "Yok"
+
 #: src/components/NgxConfigEditor/NgxUpstream.vue:199
 #: src/views/backup/AutoBackup/AutoBackup.vue:11
 #: src/views/certificate/ACMEUser.vue:11
 #: src/views/certificate/CertificateList/certColumns.tsx:9
 #: src/views/certificate/components/CertificateBasicInfo.vue:23
-#: src/views/certificate/DNSCredential.vue:9
+#: src/views/certificate/DNSCredential.vue:17
 #: src/views/config/components/ConfigRightPanel/Basic.vue:34
 #: src/views/config/components/Delete.vue:123
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:17
-#: src/views/environments/group/columns.ts:8
+#: src/views/environments/group/columns.ts:9
 #: src/views/environments/list/envColumns.tsx:8
 #: src/views/nginx_log/NginxLogList.vue:52
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:80
@@ -3429,8 +3445,7 @@ msgid "No"
 msgstr "Hayır"
 
 #: src/components/EnvGroupRender/EnvGroupRender.vue:41
-#: src/views/environments/group/columns.ts:49
-#: src/views/environments/group/EnvGroup.vue:47
+#: src/constants/index.ts:36
 msgid "No Action"
 msgstr "Eylem Yok"
 
@@ -3459,7 +3474,7 @@ msgid "Node"
 msgstr "Düğüm"
 
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:42
-#: src/views/site/site_list/columns.tsx:90 src/views/stream/columns.tsx:58
+#: src/views/site/site_list/columns.tsx:91 src/views/stream/columns.tsx:58
 #: src/views/stream/components/RightPanel/Basic.vue:39
 msgid "Node Group"
 msgstr "Düğüm Grubu"
@@ -3476,6 +3491,10 @@ msgstr "Düğüm adı"
 #: src/views/preference/tabs/NodeSettings.vue:11
 msgid "Node Secret"
 msgstr "Düğüm Sırrı"
+
+#: src/components/ProxyTargets/ProxyTargets.vue:208
+msgid "Node Status"
+msgstr "Düğüm Durumu"
 
 #: src/routes/modules/environments.ts:25
 msgid "Nodes"
@@ -3499,7 +3518,7 @@ msgid "Not Valid Before: %{date}"
 msgstr "Geçerlilik Başlangıç Tarihi: %{date}"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:39
-#: src/views/certificate/DNSCredential.vue:62
+#: src/views/certificate/DNSCredential.vue:89
 msgid "Note"
 msgstr "Not"
 
@@ -3583,6 +3602,7 @@ msgstr "Resmi Belge"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:151
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:84
+#: src/components/ProxyTargets/ProxyTargets.vue:217
 #: src/views/dashboard/Environments.vue:106
 #: src/views/environments/list/envColumns.tsx:55
 msgid "Offline"
@@ -3609,7 +3629,7 @@ msgstr "Tamam"
 msgid "On"
 msgstr "Açık"
 
-#: src/views/certificate/DNSCredential.vue:72
+#: src/views/certificate/DNSCredential.vue:99
 msgid "Once the verification is complete, the records will be removed."
 msgstr "Doğrulama tamamlandığında, kayıtlar kaldırılacaktır."
 
@@ -3617,6 +3637,7 @@ msgstr "Doğrulama tamamlandığında, kayıtlar kaldırılacaktır."
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:64
 #: src/components/NodeSelector/NodeSelector.vue:78
+#: src/components/ProxyTargets/ProxyTargets.vue:217
 #: src/views/dashboard/Environments.vue:99
 #: src/views/environments/list/envColumns.tsx:51
 msgid "Online"
@@ -3842,7 +3863,7 @@ msgstr "Lütfen tüm alanları doğru şekilde doldurun"
 msgid "Please fill in required S3 configuration fields"
 msgstr "Lütfen gerekli S3 yapılandırma alanlarını doldurun"
 
-#: src/views/certificate/DNSCredential.vue:66
+#: src/views/certificate/DNSCredential.vue:93
 msgid ""
 "Please fill in the API authentication credentials provided by your DNS "
 "provider."
@@ -3908,7 +3929,7 @@ msgstr "Lütfen kullanıcı adınızı girin!"
 msgid "Please log in."
 msgstr "Lütfen giriş yapın."
 
-#: src/views/certificate/DNSCredential.vue:75
+#: src/views/certificate/DNSCredential.vue:102
 msgid "Please note that the unit of time configurations below are all in seconds."
 msgstr ""
 "Lütfen aşağıdaki zaman yapılandırmalarının birimlerinin saniye cinsinden "
@@ -3973,8 +3994,7 @@ msgid "Port Scanner"
 msgstr "Port Tarayıcı"
 
 #: src/components/EnvGroupRender/EnvGroupRender.vue:38
-#: src/views/environments/group/columns.ts:45
-#: src/views/environments/group/EnvGroup.vue:39
+#: src/views/environments/group/columns.ts:46
 msgid "Post-sync Action"
 msgstr "Senkronizasyon Sonrası İşlem"
 
@@ -4038,7 +4058,7 @@ msgstr ""
 "Protokol yapılandırması yalnızca doğrudan bağlantı sırasında geçerlidir. "
 "Ters proxy kullanıyorsanız, protokolü ters proxyda ayrı olarak yapılandırın."
 
-#: src/views/certificate/DNSCredential.vue:17
+#: src/views/certificate/DNSCredential.vue:26
 msgid "Provider"
 msgstr "Sağlayıcı"
 
@@ -4050,7 +4070,7 @@ msgstr "Sağlayıcı bulunamadı: {0}"
 msgid "Proxy"
 msgstr "Proxy"
 
-#: src/components/ProxyTargets/ProxyTargets.vue:34
+#: src/components/ProxyTargets/ProxyTargets.vue:125
 msgid "Proxy Pass"
 msgstr "Proxy Geçişi"
 
@@ -4159,9 +4179,7 @@ msgid "Reload"
 msgstr "Yeniden Yükle"
 
 #: src/components/EnvGroupRender/EnvGroupRender.vue:44
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:104
-#: src/views/environments/group/columns.ts:52
-#: src/views/environments/group/EnvGroup.vue:50
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:104 src/constants/index.ts:37
 #: src/views/environments/list/Environment.vue:209
 #: src/views/environments/list/Environment.vue:217
 msgid "Reload Nginx"
@@ -4198,6 +4216,10 @@ msgstr "Yeniden Yükleniyor"
 #: src/language/constants.ts:18
 msgid "Reloading nginx"
 msgstr "nginx yeniden yükleniyor"
+
+#: src/constants/index.ts:42
+msgid "Remote"
+msgstr "Uzak"
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:146
 #: src/views/preference/tabs/AuthSettings.vue:137
@@ -4715,10 +4737,6 @@ msgstr "Güvenlik Belirteci Bilgileri"
 msgid "Select all"
 msgstr "Tümünü seç"
 
-#: src/views/environments/group/EnvGroup.vue:42
-msgid "Select an action after sync"
-msgstr "Senkronizasyon sonrası eylem seçin"
-
 #: src/language/curd.ts:59
 msgid "Selected {count} files"
 msgstr "Seçilen {count} dosya"
@@ -4979,7 +4997,7 @@ msgstr "Statik"
 #: src/views/dashboard/components/ModulesTable.vue:96
 #: src/views/environments/list/envColumns.tsx:43
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:29
-#: src/views/site/site_list/columns.tsx:119 src/views/stream/columns.tsx:87
+#: src/views/site/site_list/columns.tsx:120 src/views/stream/columns.tsx:87
 msgid "Status"
 msgstr "Durum"
 
@@ -5157,7 +5175,7 @@ msgstr "Yapılandırma Başarıyla Senkronize Edildi"
 
 #: src/components/EnvGroupRender/EnvGroupRender.vue:53
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:90
-#: src/views/environments/group/columns.ts:16
+#: src/views/environments/group/columns.ts:17
 #: src/views/environments/group/EnvGroup.vue:31
 msgid "Sync Nodes"
 msgstr "Senkronizasyon Düğümleri"
@@ -5613,7 +5631,7 @@ msgstr "Salı"
 msgid "Two-factor authentication required"
 msgstr "İki faktörlü kimlik doğrulama gerekiyor"
 
-#: src/components/ProxyTargets/ProxyTargets.vue:34
+#: src/components/ProxyTargets/ProxyTargets.vue:125
 #: src/views/certificate/CertificateList/certColumns.tsx:24
 #: src/views/config/components/Delete.vue:122
 #: src/views/dashboard/components/ModulesTable.vue:83
@@ -5650,13 +5668,13 @@ msgstr "Başarıyla güncellendi"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:236
 #: src/views/certificate/ACMEUser.vue:83
-#: src/views/certificate/DNSCredential.vue:38
+#: src/views/certificate/DNSCredential.vue:65
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
 #: src/views/config/configColumns.tsx:43
-#: src/views/environments/group/columns.ts:65
+#: src/views/environments/group/columns.ts:78
 #: src/views/environments/list/envColumns.tsx:89
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:39
-#: src/views/site/site_list/columns.tsx:112 src/views/stream/columns.tsx:80
+#: src/views/site/site_list/columns.tsx:113 src/views/stream/columns.tsx:80
 #: src/views/stream/components/RightPanel/Basic.vue:35
 #: src/views/user/userColumns.tsx:52
 msgid "Updated at"
@@ -5694,13 +5712,17 @@ msgstr "Dosyaları Yükle"
 msgid "Upload Folders"
 msgstr "Klasörleri Yükle"
 
-#: src/components/ProxyTargets/ProxyTargets.vue:34
+#: src/components/ProxyTargets/ProxyTargets.vue:125
 msgid "Upstream"
 msgstr "Yukarı Akış"
 
 #: src/components/NgxConfigEditor/NgxUpstream.vue:194
 msgid "Upstream Name"
 msgstr "Yukarı Akış Adı"
+
+#: src/views/environments/group/columns.ts:59
+msgid "Upstream Test Type"
+msgstr "Yukarı Akış Test Türü"
 
 #: src/views/dashboard/ServerAnalytic.vue:183
 msgid "Uptime:"
@@ -5823,7 +5845,7 @@ msgstr ""
 "Geçerli bir yedekleme dosyasına ve güvenlik belirtecine sahip olduğunuzdan "
 "emin olun ve neyi geri yükleyeceğinizi dikkatlice seçin."
 
-#: src/views/certificate/DNSCredential.vue:69
+#: src/views/certificate/DNSCredential.vue:96
 msgid ""
 "We will add one or more TXT records to the DNS records of your domain for "
 "ownership verification."
@@ -6012,6 +6034,9 @@ msgstr "Eski kodlarınız artık çalışmayacak."
 #: src/views/preference/components/AuthSettings/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "Geçiş Anahtarlarınız"
+
+#~ msgid "Select an action after sync"
+#~ msgstr "Senkronizasyon sonrası eylem seçin"
 
 #~ msgid "Link Start"
 #~ msgstr "Bağlantı Başlat"

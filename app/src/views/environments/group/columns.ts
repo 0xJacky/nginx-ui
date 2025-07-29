@@ -1,6 +1,7 @@
 import type { StdTableColumn } from '@uozi-admin/curd'
-import { datetimeRender } from '@uozi-admin/curd'
-import { PostSyncAction } from '@/api/env_group'
+import { datetimeRender, maskRender } from '@uozi-admin/curd'
+import { PostSyncAction, UpstreamTestType } from '@/api/env_group'
+import { PostSyncActionMask, UpstreamTestTypeMask } from '@/constants'
 import { useNodeAvailabilityStore } from '@/pinia/moudule/nodeAvailability'
 
 const columns: StdTableColumn[] = [{
@@ -44,14 +45,26 @@ const columns: StdTableColumn[] = [{
 }, {
   title: () => $gettext('Post-sync Action'),
   dataIndex: 'post_sync_action',
-  customRender: ({ text }) => {
-    if (!text || text === PostSyncAction.None) {
-      return $gettext('No Action')
-    }
-    else if (text === PostSyncAction.ReloadNginx) {
-      return $gettext('Reload Nginx')
-    }
-    return text
+  customRender: maskRender(PostSyncActionMask),
+  edit: {
+    type: 'select',
+    select: {
+      mask: PostSyncActionMask,
+      defaultValue: PostSyncAction.ReloadNginx,
+    },
+  },
+  pure: true,
+  width: 150,
+}, {
+  title: () => $gettext('Upstream Test Type'),
+  dataIndex: 'upstream_test_type',
+  customRender: maskRender(UpstreamTestTypeMask),
+  edit: {
+    type: 'select',
+    select: {
+      mask: UpstreamTestTypeMask,
+      defaultValue: UpstreamTestType.Local,
+    },
   },
   pure: true,
   width: 150,

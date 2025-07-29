@@ -141,14 +141,14 @@ msgstr "إجراء"
 #: src/views/backup/AutoBackup/AutoBackup.vue:273
 #: src/views/certificate/ACMEUser.vue:90
 #: src/views/certificate/CertificateList/certColumns.tsx:92
-#: src/views/certificate/DNSCredential.vue:44
+#: src/views/certificate/DNSCredential.vue:71
 #: src/views/config/configColumns.tsx:50
-#: src/views/environments/group/columns.ts:71
+#: src/views/environments/group/columns.ts:84
 #: src/views/environments/list/envColumns.tsx:96
 #: src/views/nginx_log/NginxLogList.vue:68
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:73
-#: src/views/site/site_list/columns.tsx:159 src/views/stream/columns.tsx:123
+#: src/views/site/site_list/columns.tsx:160 src/views/stream/columns.tsx:123
 #: src/views/user/userColumns.tsx:58
 msgid "Actions"
 msgstr "الإجراءات"
@@ -763,7 +763,7 @@ msgstr "نوع الشهادة"
 msgid "Certificates"
 msgstr "شهادات"
 
-#: src/routes/modules/certificates.ts:28
+#: src/routes/modules/certificates.ts:36
 msgid "Certificates List"
 msgstr "قائمة الشهادات"
 
@@ -1060,7 +1060,7 @@ msgstr "مسار التكوين فارغ"
 msgid "Config Template"
 msgstr "قالب التكوين"
 
-#: src/views/certificate/DNSCredential.vue:25
+#: src/views/certificate/DNSCredential.vue:52
 msgid "Configuration"
 msgstr "التكوين"
 
@@ -1181,7 +1181,7 @@ msgstr ""
 "سيتم تنزيل ملفات النسخ الاحتياطي تلقائيًا إلى جهاز الكمبيوتر الخاص بك."
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:229
-#: src/views/environments/group/columns.ts:59
+#: src/views/environments/group/columns.ts:72
 #: src/views/notification/notificationColumns.tsx:51
 #: src/views/preference/components/AuthSettings/Passkey.vue:95
 #: src/views/preference/components/ExternalNotify/columns.tsx:68
@@ -1516,7 +1516,7 @@ msgstr "تم تعطيل الدفق %{name} من %{node} بنجاح"
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:162
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
-#: src/views/site/site_list/columns.tsx:145 src/views/stream/columns.tsx:112
+#: src/views/site/site_list/columns.tsx:146 src/views/stream/columns.tsx:112
 #: src/views/stream/components/StreamEditor.vue:32
 #: src/views/user/userColumns.tsx:39
 msgid "Disabled"
@@ -1531,8 +1531,8 @@ msgstr "تم التعطيل بنجاح"
 msgid "Disk IO"
 msgstr "إدخال/إخراج القرص"
 
-#: src/routes/modules/certificates.ts:56
-#: src/views/certificate/DNSCredential.vue:52
+#: src/routes/modules/certificates.ts:28
+#: src/views/certificate/DNSCredential.vue:79
 msgid "DNS Credentials"
 msgstr "بيانات اعتماد DNS"
 
@@ -1798,7 +1798,7 @@ msgstr "تفعيل TOTP"
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:159
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:56
-#: src/views/site/site_list/columns.tsx:141 src/views/stream/columns.tsx:108
+#: src/views/site/site_list/columns.tsx:142 src/views/stream/columns.tsx:108
 #: src/views/stream/components/RightPanel/Basic.vue:24
 #: src/views/stream/components/StreamEditor.vue:26
 #: src/views/user/userColumns.tsx:36
@@ -2521,7 +2521,7 @@ msgstr ""
 msgid "Import"
 msgstr "استيراد"
 
-#: src/routes/modules/certificates.ts:46
+#: src/routes/modules/certificates.ts:54
 #: src/views/certificate/CertificateEditor.vue:86
 msgid "Import Certificate"
 msgstr "استيراد شهادة"
@@ -2843,7 +2843,7 @@ msgid "Loading data..."
 msgstr "جارٍ تحميل البيانات..."
 
 #: src/components/EnvIndicator/EnvIndicator.vue:39
-#: src/components/NodeSelector/NodeSelector.vue:61
+#: src/components/NodeSelector/NodeSelector.vue:61 src/constants/index.ts:41
 #: src/views/backup/AutoBackup/AutoBackup.vue:74
 #: src/views/backup/AutoBackup/AutoBackup.vue:83
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:48
@@ -2913,9 +2913,17 @@ msgstr ""
 "يدويًا. سيقوم مجدول المهام crontab الخاص بواجهة Nginx UI بتنفيذ أمر تدوير "
 "السجلات في الفاصل الزمني الذي تحدده بالدقائق."
 
+#: src/components/ProxyTargets/ProxyTargets.vue:220
+msgid "Main"
+msgstr "رئيسي"
+
+#: src/components/ProxyTargets/ProxyTargets.vue:148
+msgid "Main Node"
+msgstr "العقدة الرئيسية"
+
 #: src/views/site/components/SiteStatusSelect.vue:165
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:68
-#: src/views/site/site_list/columns.tsx:149
+#: src/views/site/site_list/columns.tsx:150
 msgid "Maintenance"
 msgstr "صيانة"
 
@@ -3066,6 +3074,10 @@ msgstr "دقيقة"
 msgid "Minutes"
 msgstr "دقائق"
 
+#: src/constants/index.ts:43
+msgid "Mirror"
+msgstr "مرآة"
+
 #: src/views/preference/tabs/OpenAISettings.vue:20
 msgid "Model"
 msgstr "نموذج"
@@ -3079,7 +3091,7 @@ msgstr "تم التعديل في"
 msgid "Modify"
 msgstr "تعديل"
 
-#: src/routes/modules/certificates.ts:36
+#: src/routes/modules/certificates.ts:44
 #: src/views/certificate/CertificateEditor.vue:86
 msgid "Modify Certificate"
 msgstr "تعديل الشهادة"
@@ -3112,17 +3124,21 @@ msgstr "يوميًا في اليوم %{day} الساعة %{time}"
 msgid "Multi-line Directive"
 msgstr "توجيه متعدد الأسطر"
 
+#: src/components/ProxyTargets/ProxyTargets.vue:225
+msgid "N/A"
+msgstr "غير متاح"
+
 #: src/components/NgxConfigEditor/NgxUpstream.vue:199
 #: src/views/backup/AutoBackup/AutoBackup.vue:11
 #: src/views/certificate/ACMEUser.vue:11
 #: src/views/certificate/CertificateList/certColumns.tsx:9
 #: src/views/certificate/components/CertificateBasicInfo.vue:23
-#: src/views/certificate/DNSCredential.vue:9
+#: src/views/certificate/DNSCredential.vue:17
 #: src/views/config/components/ConfigRightPanel/Basic.vue:34
 #: src/views/config/components/Delete.vue:123
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:17
-#: src/views/environments/group/columns.ts:8
+#: src/views/environments/group/columns.ts:9
 #: src/views/environments/list/envColumns.tsx:8
 #: src/views/nginx_log/NginxLogList.vue:52
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:80
@@ -3411,8 +3427,7 @@ msgid "No"
 msgstr "لا"
 
 #: src/components/EnvGroupRender/EnvGroupRender.vue:41
-#: src/views/environments/group/columns.ts:49
-#: src/views/environments/group/EnvGroup.vue:47
+#: src/constants/index.ts:36
 msgid "No Action"
 msgstr "لا إجراء"
 
@@ -3441,7 +3456,7 @@ msgid "Node"
 msgstr "العقدة"
 
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:42
-#: src/views/site/site_list/columns.tsx:90 src/views/stream/columns.tsx:58
+#: src/views/site/site_list/columns.tsx:91 src/views/stream/columns.tsx:58
 #: src/views/stream/components/RightPanel/Basic.vue:39
 msgid "Node Group"
 msgstr "مجموعة العقد"
@@ -3458,6 +3473,10 @@ msgstr "اسم العقدة"
 #: src/views/preference/tabs/NodeSettings.vue:11
 msgid "Node Secret"
 msgstr "سر العقدة"
+
+#: src/components/ProxyTargets/ProxyTargets.vue:208
+msgid "Node Status"
+msgstr "حالة العقدة"
 
 #: src/routes/modules/environments.ts:25
 msgid "Nodes"
@@ -3481,7 +3500,7 @@ msgid "Not Valid Before: %{date}"
 msgstr "غير صالح قبل: %{date}"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:39
-#: src/views/certificate/DNSCredential.vue:62
+#: src/views/certificate/DNSCredential.vue:89
 msgid "Note"
 msgstr "ملاحظة"
 
@@ -3563,6 +3582,7 @@ msgstr "الوثيقة الرسمية"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:151
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:84
+#: src/components/ProxyTargets/ProxyTargets.vue:217
 #: src/views/dashboard/Environments.vue:106
 #: src/views/environments/list/envColumns.tsx:55
 msgid "Offline"
@@ -3589,7 +3609,7 @@ msgstr "حسنًا"
 msgid "On"
 msgstr "تشغيل"
 
-#: src/views/certificate/DNSCredential.vue:72
+#: src/views/certificate/DNSCredential.vue:99
 msgid "Once the verification is complete, the records will be removed."
 msgstr "بمجرد اكتمال التحقق، سيتم إزالة السجلات."
 
@@ -3597,6 +3617,7 @@ msgstr "بمجرد اكتمال التحقق، سيتم إزالة السجلا�
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:64
 #: src/components/NodeSelector/NodeSelector.vue:78
+#: src/components/ProxyTargets/ProxyTargets.vue:217
 #: src/views/dashboard/Environments.vue:99
 #: src/views/environments/list/envColumns.tsx:51
 msgid "Online"
@@ -3820,7 +3841,7 @@ msgstr "يرجى ملء جميع الحقول بشكل صحيح"
 msgid "Please fill in required S3 configuration fields"
 msgstr "يرجى ملء حقول تكوين S3 المطلوبة"
 
-#: src/views/certificate/DNSCredential.vue:66
+#: src/views/certificate/DNSCredential.vue:93
 msgid ""
 "Please fill in the API authentication credentials provided by your DNS "
 "provider."
@@ -3879,7 +3900,7 @@ msgstr "يرجى إدخال اسم المستخدم الخاص بك!"
 msgid "Please log in."
 msgstr "الرجاء تسجيل الدخول."
 
-#: src/views/certificate/DNSCredential.vue:75
+#: src/views/certificate/DNSCredential.vue:102
 msgid "Please note that the unit of time configurations below are all in seconds."
 msgstr "يرجى ملاحظة أن تكوين وحدات الوقت أدناه كلها بالثواني."
 
@@ -3940,8 +3961,7 @@ msgid "Port Scanner"
 msgstr "ماسح المنافذ"
 
 #: src/components/EnvGroupRender/EnvGroupRender.vue:38
-#: src/views/environments/group/columns.ts:45
-#: src/views/environments/group/EnvGroup.vue:39
+#: src/views/environments/group/columns.ts:46
 msgid "Post-sync Action"
 msgstr "إجراء ما بعد المزامنة"
 
@@ -4005,7 +4025,7 @@ msgstr ""
 "إعدادات البروتوكول تتأثر فقط عند الاتصال المباشر. إذا كنت تستخدم خادم وكيل "
 "عكسي، يرجى تكوين البروتوكول بشكل منفصل في خادم الوكيل العكسي."
 
-#: src/views/certificate/DNSCredential.vue:17
+#: src/views/certificate/DNSCredential.vue:26
 msgid "Provider"
 msgstr "مزود"
 
@@ -4017,7 +4037,7 @@ msgstr "لم يتم العثور على المزود: {0}"
 msgid "Proxy"
 msgstr "وكيل"
 
-#: src/components/ProxyTargets/ProxyTargets.vue:34
+#: src/components/ProxyTargets/ProxyTargets.vue:125
 msgid "Proxy Pass"
 msgstr "مرور الوكيل"
 
@@ -4124,9 +4144,7 @@ msgid "Reload"
 msgstr "إعادة تحميل"
 
 #: src/components/EnvGroupRender/EnvGroupRender.vue:44
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:104
-#: src/views/environments/group/columns.ts:52
-#: src/views/environments/group/EnvGroup.vue:50
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:104 src/constants/index.ts:37
 #: src/views/environments/list/Environment.vue:209
 #: src/views/environments/list/Environment.vue:217
 msgid "Reload Nginx"
@@ -4163,6 +4181,10 @@ msgstr "إعادة التحميل"
 #: src/language/constants.ts:18
 msgid "Reloading nginx"
 msgstr "إعادة تحميل nginx"
+
+#: src/constants/index.ts:42
+msgid "Remote"
+msgstr "عن بُعد"
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:146
 #: src/views/preference/tabs/AuthSettings.vue:137
@@ -4670,10 +4692,6 @@ msgstr "معلومات رمز الأمان"
 msgid "Select all"
 msgstr "تحديد الكل"
 
-#: src/views/environments/group/EnvGroup.vue:42
-msgid "Select an action after sync"
-msgstr "اختر إجراءً بعد المزامنة"
-
 #: src/language/curd.ts:59
 msgid "Selected {count} files"
 msgstr "تم تحديد {count} ملفات"
@@ -4932,7 +4950,7 @@ msgstr "ثابت"
 #: src/views/dashboard/components/ModulesTable.vue:96
 #: src/views/environments/list/envColumns.tsx:43
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:29
-#: src/views/site/site_list/columns.tsx:119 src/views/stream/columns.tsx:87
+#: src/views/site/site_list/columns.tsx:120 src/views/stream/columns.tsx:87
 msgid "Status"
 msgstr "الحالة"
 
@@ -5106,7 +5124,7 @@ msgstr "تمت مزامنة التكوين بنجاح"
 
 #: src/components/EnvGroupRender/EnvGroupRender.vue:53
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:90
-#: src/views/environments/group/columns.ts:16
+#: src/views/environments/group/columns.ts:17
 #: src/views/environments/group/EnvGroup.vue:31
 msgid "Sync Nodes"
 msgstr "مزامنة العقد"
@@ -5552,7 +5570,7 @@ msgstr "الثلاثاء"
 msgid "Two-factor authentication required"
 msgstr "يتطلب المصادقة الثنائية"
 
-#: src/components/ProxyTargets/ProxyTargets.vue:34
+#: src/components/ProxyTargets/ProxyTargets.vue:125
 #: src/views/certificate/CertificateList/certColumns.tsx:24
 #: src/views/config/components/Delete.vue:122
 #: src/views/dashboard/components/ModulesTable.vue:83
@@ -5589,13 +5607,13 @@ msgstr "تم التحديث بنجاح"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:236
 #: src/views/certificate/ACMEUser.vue:83
-#: src/views/certificate/DNSCredential.vue:38
+#: src/views/certificate/DNSCredential.vue:65
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
 #: src/views/config/configColumns.tsx:43
-#: src/views/environments/group/columns.ts:65
+#: src/views/environments/group/columns.ts:78
 #: src/views/environments/list/envColumns.tsx:89
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:39
-#: src/views/site/site_list/columns.tsx:112 src/views/stream/columns.tsx:80
+#: src/views/site/site_list/columns.tsx:113 src/views/stream/columns.tsx:80
 #: src/views/stream/components/RightPanel/Basic.vue:35
 #: src/views/user/userColumns.tsx:52
 msgid "Updated at"
@@ -5633,13 +5651,17 @@ msgstr "تحميل الملفات"
 msgid "Upload Folders"
 msgstr "تحميل المجلدات"
 
-#: src/components/ProxyTargets/ProxyTargets.vue:34
+#: src/components/ProxyTargets/ProxyTargets.vue:125
 msgid "Upstream"
 msgstr "أعلى التيار"
 
 #: src/components/NgxConfigEditor/NgxUpstream.vue:194
 msgid "Upstream Name"
 msgstr "اسم المنبع"
+
+#: src/views/environments/group/columns.ts:59
+msgid "Upstream Test Type"
+msgstr "نوع اختبار المنبع"
 
 #: src/views/dashboard/ServerAnalytic.vue:183
 msgid "Uptime:"
@@ -5761,7 +5783,7 @@ msgstr ""
 "تحذير: ستقوم عملية الاستعادة بالكتابة فوق التكوينات الحالية. تأكد من أن "
 "لديك ملف نسخ احتياطي صالحًا ورمزًا أمنيًا، واختر بعناية ما تريد استعادته."
 
-#: src/views/certificate/DNSCredential.vue:69
+#: src/views/certificate/DNSCredential.vue:96
 msgid ""
 "We will add one or more TXT records to the DNS records of your domain for "
 "ownership verification."
@@ -5942,6 +5964,9 @@ msgstr "رموزك القديمة لن تعمل بعد الآن."
 #: src/views/preference/components/AuthSettings/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "مفاتيح المرور الخاصة بك"
+
+#~ msgid "Select an action after sync"
+#~ msgstr "اختر إجراءً بعد المزامنة"
 
 #~ msgid "Link Start"
 #~ msgstr "ابدأ الرابط"

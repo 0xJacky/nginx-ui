@@ -147,14 +147,14 @@ msgstr "Action"
 #: src/views/backup/AutoBackup/AutoBackup.vue:273
 #: src/views/certificate/ACMEUser.vue:90
 #: src/views/certificate/CertificateList/certColumns.tsx:92
-#: src/views/certificate/DNSCredential.vue:44
+#: src/views/certificate/DNSCredential.vue:71
 #: src/views/config/configColumns.tsx:50
-#: src/views/environments/group/columns.ts:71
+#: src/views/environments/group/columns.ts:84
 #: src/views/environments/list/envColumns.tsx:96
 #: src/views/nginx_log/NginxLogList.vue:68
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:73
-#: src/views/site/site_list/columns.tsx:159 src/views/stream/columns.tsx:123
+#: src/views/site/site_list/columns.tsx:160 src/views/stream/columns.tsx:123
 #: src/views/user/userColumns.tsx:58
 msgid "Actions"
 msgstr "Actions"
@@ -779,7 +779,7 @@ msgstr "Type de certificat"
 msgid "Certificates"
 msgstr "Certificats"
 
-#: src/routes/modules/certificates.ts:28
+#: src/routes/modules/certificates.ts:36
 msgid "Certificates List"
 msgstr "Liste des certificats"
 
@@ -1080,7 +1080,7 @@ msgstr "Le chemin de configuration est vide"
 msgid "Config Template"
 msgstr "Modèle de configuration"
 
-#: src/views/certificate/DNSCredential.vue:25
+#: src/views/certificate/DNSCredential.vue:52
 msgid "Configuration"
 msgstr "Configuration"
 
@@ -1204,7 +1204,7 @@ msgstr ""
 "téléchargés sur votre ordinateur."
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:229
-#: src/views/environments/group/columns.ts:59
+#: src/views/environments/group/columns.ts:72
 #: src/views/notification/notificationColumns.tsx:51
 #: src/views/preference/components/AuthSettings/Passkey.vue:95
 #: src/views/preference/components/ExternalNotify/columns.tsx:68
@@ -1543,7 +1543,7 @@ msgstr "Désactivation du flux %{name} depuis %{node} réussie"
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:162
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
-#: src/views/site/site_list/columns.tsx:145 src/views/stream/columns.tsx:112
+#: src/views/site/site_list/columns.tsx:146 src/views/stream/columns.tsx:112
 #: src/views/stream/components/StreamEditor.vue:32
 #: src/views/user/userColumns.tsx:39
 msgid "Disabled"
@@ -1558,8 +1558,8 @@ msgstr "Désactivé avec succès"
 msgid "Disk IO"
 msgstr "E/S disque"
 
-#: src/routes/modules/certificates.ts:56
-#: src/views/certificate/DNSCredential.vue:52
+#: src/routes/modules/certificates.ts:28
+#: src/views/certificate/DNSCredential.vue:79
 msgid "DNS Credentials"
 msgstr "Identifiants DNS"
 
@@ -1821,7 +1821,7 @@ msgstr "Activer TOTP"
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:159
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:56
-#: src/views/site/site_list/columns.tsx:141 src/views/stream/columns.tsx:108
+#: src/views/site/site_list/columns.tsx:142 src/views/stream/columns.tsx:108
 #: src/views/stream/components/RightPanel/Basic.vue:24
 #: src/views/stream/components/StreamEditor.vue:26
 #: src/views/user/userColumns.tsx:36
@@ -2557,7 +2557,7 @@ msgstr ""
 msgid "Import"
 msgstr "Importer"
 
-#: src/routes/modules/certificates.ts:46
+#: src/routes/modules/certificates.ts:54
 #: src/views/certificate/CertificateEditor.vue:86
 msgid "Import Certificate"
 msgstr "Importer un certificat"
@@ -2879,7 +2879,7 @@ msgid "Loading data..."
 msgstr "Chargement des données..."
 
 #: src/components/EnvIndicator/EnvIndicator.vue:39
-#: src/components/NodeSelector/NodeSelector.vue:61
+#: src/components/NodeSelector/NodeSelector.vue:61 src/constants/index.ts:41
 #: src/views/backup/AutoBackup/AutoBackup.vue:74
 #: src/views/backup/AutoBackup/AutoBackup.vue:83
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:48
@@ -2951,9 +2951,17 @@ msgstr ""
 "planificateur de tâches crontab de Nginx UI exécutera la commande logrotate "
 "à l'intervalle que vous avez défini en minutes."
 
+#: src/components/ProxyTargets/ProxyTargets.vue:220
+msgid "Main"
+msgstr "Principal"
+
+#: src/components/ProxyTargets/ProxyTargets.vue:148
+msgid "Main Node"
+msgstr "Nœud principal"
+
 #: src/views/site/components/SiteStatusSelect.vue:165
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:68
-#: src/views/site/site_list/columns.tsx:149
+#: src/views/site/site_list/columns.tsx:150
 msgid "Maintenance"
 msgstr "Maintenance"
 
@@ -3104,6 +3112,10 @@ msgstr "Minute"
 msgid "Minutes"
 msgstr "Minutes"
 
+#: src/constants/index.ts:43
+msgid "Mirror"
+msgstr "Miroir"
+
 #: src/views/preference/tabs/OpenAISettings.vue:20
 msgid "Model"
 msgstr "Modèle"
@@ -3117,7 +3129,7 @@ msgstr "Modifié le"
 msgid "Modify"
 msgstr "Modifier"
 
-#: src/routes/modules/certificates.ts:36
+#: src/routes/modules/certificates.ts:44
 #: src/views/certificate/CertificateEditor.vue:86
 msgid "Modify Certificate"
 msgstr "Modifier le certificat"
@@ -3150,17 +3162,21 @@ msgstr "Mensuellement le jour %{day} à %{time}"
 msgid "Multi-line Directive"
 msgstr "Directive multiligne"
 
+#: src/components/ProxyTargets/ProxyTargets.vue:225
+msgid "N/A"
+msgstr "N/D"
+
 #: src/components/NgxConfigEditor/NgxUpstream.vue:199
 #: src/views/backup/AutoBackup/AutoBackup.vue:11
 #: src/views/certificate/ACMEUser.vue:11
 #: src/views/certificate/CertificateList/certColumns.tsx:9
 #: src/views/certificate/components/CertificateBasicInfo.vue:23
-#: src/views/certificate/DNSCredential.vue:9
+#: src/views/certificate/DNSCredential.vue:17
 #: src/views/config/components/ConfigRightPanel/Basic.vue:34
 #: src/views/config/components/Delete.vue:123
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:17
-#: src/views/environments/group/columns.ts:8
+#: src/views/environments/group/columns.ts:9
 #: src/views/environments/list/envColumns.tsx:8
 #: src/views/nginx_log/NginxLogList.vue:52
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:80
@@ -3451,8 +3467,7 @@ msgid "No"
 msgstr "Non"
 
 #: src/components/EnvGroupRender/EnvGroupRender.vue:41
-#: src/views/environments/group/columns.ts:49
-#: src/views/environments/group/EnvGroup.vue:47
+#: src/constants/index.ts:36
 msgid "No Action"
 msgstr "Aucune action"
 
@@ -3481,7 +3496,7 @@ msgid "Node"
 msgstr "Nœud"
 
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:42
-#: src/views/site/site_list/columns.tsx:90 src/views/stream/columns.tsx:58
+#: src/views/site/site_list/columns.tsx:91 src/views/stream/columns.tsx:58
 #: src/views/stream/components/RightPanel/Basic.vue:39
 msgid "Node Group"
 msgstr "Groupe de nœuds"
@@ -3498,6 +3513,10 @@ msgstr "Nom du nœud"
 #: src/views/preference/tabs/NodeSettings.vue:11
 msgid "Node Secret"
 msgstr "Secret du nœud"
+
+#: src/components/ProxyTargets/ProxyTargets.vue:208
+msgid "Node Status"
+msgstr "État du nœud"
 
 #: src/routes/modules/environments.ts:25
 msgid "Nodes"
@@ -3521,7 +3540,7 @@ msgid "Not Valid Before: %{date}"
 msgstr "Non valide avant : %{date}"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:39
-#: src/views/certificate/DNSCredential.vue:62
+#: src/views/certificate/DNSCredential.vue:89
 msgid "Note"
 msgstr "Note"
 
@@ -3605,6 +3624,7 @@ msgstr "Documentation officielle"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:151
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:84
+#: src/components/ProxyTargets/ProxyTargets.vue:217
 #: src/views/dashboard/Environments.vue:106
 #: src/views/environments/list/envColumns.tsx:55
 msgid "Offline"
@@ -3631,7 +3651,7 @@ msgstr "OK"
 msgid "On"
 msgstr "Activé"
 
-#: src/views/certificate/DNSCredential.vue:72
+#: src/views/certificate/DNSCredential.vue:99
 msgid "Once the verification is complete, the records will be removed."
 msgstr "Une fois la vérification terminée, les enregistrements seront supprimés."
 
@@ -3639,6 +3659,7 @@ msgstr "Une fois la vérification terminée, les enregistrements seront supprim�
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:64
 #: src/components/NodeSelector/NodeSelector.vue:78
+#: src/components/ProxyTargets/ProxyTargets.vue:217
 #: src/views/dashboard/Environments.vue:99
 #: src/views/environments/list/envColumns.tsx:51
 msgid "Online"
@@ -3867,7 +3888,7 @@ msgstr "Veuillez remplir tous les champs correctement"
 msgid "Please fill in required S3 configuration fields"
 msgstr "Veuillez remplir les champs de configuration S3 requis"
 
-#: src/views/certificate/DNSCredential.vue:66
+#: src/views/certificate/DNSCredential.vue:93
 msgid ""
 "Please fill in the API authentication credentials provided by your DNS "
 "provider."
@@ -3935,7 +3956,7 @@ msgstr "Veuillez saisir votre nom d'utilisateur !"
 msgid "Please log in."
 msgstr "Veuillez vous connecter."
 
-#: src/views/certificate/DNSCredential.vue:75
+#: src/views/certificate/DNSCredential.vue:102
 msgid "Please note that the unit of time configurations below are all in seconds."
 msgstr ""
 "Veuillez noter que les unités de temps des configurations ci-dessous sont "
@@ -4000,8 +4021,7 @@ msgid "Port Scanner"
 msgstr "Scanner de ports"
 
 #: src/components/EnvGroupRender/EnvGroupRender.vue:38
-#: src/views/environments/group/columns.ts:45
-#: src/views/environments/group/EnvGroup.vue:39
+#: src/views/environments/group/columns.ts:46
 msgid "Post-sync Action"
 msgstr "Action post-synchronisation"
 
@@ -4066,7 +4086,7 @@ msgstr ""
 "directe. Si vous utilisez un proxy inverse, veuillez configurer le "
 "protocole séparément dans le proxy inverse."
 
-#: src/views/certificate/DNSCredential.vue:17
+#: src/views/certificate/DNSCredential.vue:26
 msgid "Provider"
 msgstr "Fournisseur"
 
@@ -4078,7 +4098,7 @@ msgstr "Fournisseur introuvable : {0}"
 msgid "Proxy"
 msgstr "Proxy"
 
-#: src/components/ProxyTargets/ProxyTargets.vue:34
+#: src/components/ProxyTargets/ProxyTargets.vue:125
 msgid "Proxy Pass"
 msgstr "Passe de Proxy"
 
@@ -4188,9 +4208,7 @@ msgid "Reload"
 msgstr "Recharger"
 
 #: src/components/EnvGroupRender/EnvGroupRender.vue:44
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:104
-#: src/views/environments/group/columns.ts:52
-#: src/views/environments/group/EnvGroup.vue:50
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:104 src/constants/index.ts:37
 #: src/views/environments/list/Environment.vue:209
 #: src/views/environments/list/Environment.vue:217
 msgid "Reload Nginx"
@@ -4229,6 +4247,10 @@ msgstr "Rechargement"
 #: src/language/constants.ts:18
 msgid "Reloading nginx"
 msgstr "Rechargement de nginx"
+
+#: src/constants/index.ts:42
+msgid "Remote"
+msgstr "Distant"
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:146
 #: src/views/preference/tabs/AuthSettings.vue:137
@@ -4739,10 +4761,6 @@ msgstr "Informations sur le jeton de sécurité"
 msgid "Select all"
 msgstr "Tout sélectionner"
 
-#: src/views/environments/group/EnvGroup.vue:42
-msgid "Select an action after sync"
-msgstr "Sélectionner une action après la synchronisation"
-
 #: src/language/curd.ts:59
 msgid "Selected {count} files"
 msgstr "{count} fichiers sélectionnés"
@@ -5009,7 +5027,7 @@ msgstr "Statique"
 #: src/views/dashboard/components/ModulesTable.vue:96
 #: src/views/environments/list/envColumns.tsx:43
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:29
-#: src/views/site/site_list/columns.tsx:119 src/views/stream/columns.tsx:87
+#: src/views/site/site_list/columns.tsx:120 src/views/stream/columns.tsx:87
 msgid "Status"
 msgstr "Statut"
 
@@ -5188,7 +5206,7 @@ msgstr "Synchronisation de la configuration réussie"
 
 #: src/components/EnvGroupRender/EnvGroupRender.vue:53
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:90
-#: src/views/environments/group/columns.ts:16
+#: src/views/environments/group/columns.ts:17
 #: src/views/environments/group/EnvGroup.vue:31
 msgid "Sync Nodes"
 msgstr "Nœuds de synchronisation"
@@ -5656,7 +5674,7 @@ msgstr "Mardi"
 msgid "Two-factor authentication required"
 msgstr "Authentification à deux facteurs requise"
 
-#: src/components/ProxyTargets/ProxyTargets.vue:34
+#: src/components/ProxyTargets/ProxyTargets.vue:125
 #: src/views/certificate/CertificateList/certColumns.tsx:24
 #: src/views/config/components/Delete.vue:122
 #: src/views/dashboard/components/ModulesTable.vue:83
@@ -5693,13 +5711,13 @@ msgstr "Mise à jour réussie"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:236
 #: src/views/certificate/ACMEUser.vue:83
-#: src/views/certificate/DNSCredential.vue:38
+#: src/views/certificate/DNSCredential.vue:65
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
 #: src/views/config/configColumns.tsx:43
-#: src/views/environments/group/columns.ts:65
+#: src/views/environments/group/columns.ts:78
 #: src/views/environments/list/envColumns.tsx:89
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:39
-#: src/views/site/site_list/columns.tsx:112 src/views/stream/columns.tsx:80
+#: src/views/site/site_list/columns.tsx:113 src/views/stream/columns.tsx:80
 #: src/views/stream/components/RightPanel/Basic.vue:35
 #: src/views/user/userColumns.tsx:52
 msgid "Updated at"
@@ -5737,13 +5755,17 @@ msgstr "Téléverser des fichiers"
 msgid "Upload Folders"
 msgstr "Télécharger des dossiers"
 
-#: src/components/ProxyTargets/ProxyTargets.vue:34
+#: src/components/ProxyTargets/ProxyTargets.vue:125
 msgid "Upstream"
 msgstr "Amont"
 
 #: src/components/NgxConfigEditor/NgxUpstream.vue:194
 msgid "Upstream Name"
 msgstr "Nom de l'amont"
+
+#: src/views/environments/group/columns.ts:59
+msgid "Upstream Test Type"
+msgstr "Type de test en amont"
 
 #: src/views/dashboard/ServerAnalytic.vue:183
 msgid "Uptime:"
@@ -5866,7 +5888,7 @@ msgstr ""
 "actuelles. Assurez-vous d'avoir un fichier de sauvegarde valide et un jeton "
 "de sécurité, et sélectionnez soigneusement ce qu'il faut restaurer."
 
-#: src/views/certificate/DNSCredential.vue:69
+#: src/views/certificate/DNSCredential.vue:96
 msgid ""
 "We will add one or more TXT records to the DNS records of your domain for "
 "ownership verification."
@@ -6060,6 +6082,9 @@ msgstr "Vos anciens codes ne fonctionneront plus."
 #: src/views/preference/components/AuthSettings/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "Vos clés d'accès"
+
+#~ msgid "Select an action after sync"
+#~ msgstr "Sélectionner une action après la synchronisation"
 
 #~ msgid "Link Start"
 #~ msgstr "Démarrer la liaison"

@@ -21,6 +21,14 @@ export const certificatesRoutes: RouteRecordRaw[] = [
         },
       },
       {
+        path: 'dns_credential',
+        name: 'DNS Credentials',
+        component: () => import('@/views/certificate/DNSCredential.vue'),
+        meta: {
+          name: () => $gettext('DNS Credentials'),
+        },
+      },
+      {
         path: 'list',
         name: 'Certificates List',
         component: () => import('@/views/certificate/CertificateList/Certificate.vue'),
@@ -46,14 +54,6 @@ export const certificatesRoutes: RouteRecordRaw[] = [
           name: () => $gettext('Import Certificate'),
           hiddenInSidebar: true,
           lastRouteName: 'Certificates List',
-        },
-      },
-      {
-        path: 'dns_credential',
-        name: 'DNS Credentials',
-        component: () => import('@/views/certificate/DNSCredential.vue'),
-        meta: {
-          name: () => $gettext('DNS Credentials'),
         },
       },
     ],

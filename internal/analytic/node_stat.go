@@ -5,6 +5,7 @@ import (
 	"runtime"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/upstream"
 	"github.com/shirou/gopsutil/v4/cpu"
 	"github.com/shirou/gopsutil/v4/load"
 	"github.com/uozi-tech/cosy/logger"
@@ -43,11 +44,22 @@ func GetNodeStat() (data NodeStat) {
 		return
 	}
 
+	// Get upstream status for current node
+	upstreamService := upstream.GetUpstreamService()
+	
+	// Ensure upstream availability test is performed if targets exist
+	if upstreamService.GetTargetCount() > 0 {
+		upstreamService.PerformAvailabilityTest()
+	}
+	
+	upstreamStatusMap := upstreamService.GetAvailabilityMap()
+
 	return NodeStat{
-		AvgLoad:       loadAvg,
-		CPUPercent:    math.Min((cpuUserUsage+cpuSystemUsage)*100, 100),
-		MemoryPercent: memory.Pressure,
-		DiskPercent:   diskStat.Percentage,
-		Network:       *network,
+		AvgLoad:           loadAvg,
+		CPUPercent:        math.Min((cpuUserUsage+cpuSystemUsage)*100, 100),
+		MemoryPercent:     memory.Pressure,
+		DiskPercent:       diskStat.Percentage,
+		Network:           *network,
+		UpstreamStatusMap: upstreamStatusMap,
 	}
 }

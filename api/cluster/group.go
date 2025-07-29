@@ -110,9 +110,10 @@ func RestartNginx(c *gin.Context) {
 func AddGroup(c *gin.Context) {
 	cosy.Core[model.EnvGroup](c).
 		SetValidRules(gin.H{
-			"name":             "required",
-			"sync_node_ids":    "omitempty",
-			"post_sync_action": "omitempty,oneof=" + model.PostSyncActionNone + " " + model.PostSyncActionReloadNginx,
+			"name":               "required",
+			"sync_node_ids":      "omitempty",
+			"post_sync_action":   "omitempty,oneof=" + model.PostSyncActionNone + " " + model.PostSyncActionReloadNginx,
+			"upstream_test_type": "omitempty,oneof=" + model.UpstreamTestLocal + " " + model.UpstreamTestRemote + " " + model.UpstreamTestMirror,
 		}).
 		Create()
 }
@@ -120,9 +121,10 @@ func AddGroup(c *gin.Context) {
 func ModifyGroup(c *gin.Context) {
 	cosy.Core[model.EnvGroup](c).
 		SetValidRules(gin.H{
-			"name":             "required",
-			"sync_node_ids":    "omitempty",
-			"post_sync_action": "omitempty,oneof=" + model.PostSyncActionNone + " " + model.PostSyncActionReloadNginx,
+			"name":               "required",
+			"sync_node_ids":      "omitempty",
+			"post_sync_action":   "omitempty,oneof=" + model.PostSyncActionNone + " " + model.PostSyncActionReloadNginx,
+			"upstream_test_type": "omitempty,oneof=" + model.UpstreamTestLocal + " " + model.UpstreamTestRemote + " " + model.UpstreamTestMirror,
 		}).
 		Modify()
 }

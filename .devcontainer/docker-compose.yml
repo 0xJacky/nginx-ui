@@ -5,7 +5,7 @@ services:
     container_name: nginx-ui
     volumes:
       - ../..:/workspaces:cached
-      - ./go-path:/root/go
+      - ../.go:/root/go
       - ./data/nginx:/etc/nginx
       - /var/run/docker.sock:/var/run/docker.sock
     command: sleep infinity
