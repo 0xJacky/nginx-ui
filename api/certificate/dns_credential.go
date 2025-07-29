@@ -36,7 +36,10 @@ func GetDnsCredential(c *gin.Context) {
 }
 
 func GetDnsCredentialList(c *gin.Context) {
-	cosy.Core[model.DnsCredential](c).SetFussy("provider").PagingList()
+	cosy.Core[model.DnsCredential](c).
+		SetEqual("provider").
+		SetFussy("name").
+		PagingList()
 }
 
 type DnsCredentialManageJson struct {

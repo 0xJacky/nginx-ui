@@ -1,9 +1,17 @@
 <script setup lang="tsx">
 import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
+import type { DNSProvider } from '@/api/auto_cert'
 import type { DnsCredential } from '@/api/dns_credential'
 import { datetimeRender, StdCurd } from '@uozi-admin/curd'
+import auto_cert from '@/api/auto_cert'
 import dns_credential from '@/api/dns_credential'
 import DNSChallenge from './components/DNSChallenge.vue'
+
+const dnsProviders = ref<DNSProvider[]>([])
+
+onMounted(async () => {
+  dnsProviders.value = await auto_cert.get_dns_providers()
+})
 
 const columns: StdTableColumn[] = [{
   title: () => $gettext('Name'),
@@ -13,14 +21,33 @@ const columns: StdTableColumn[] = [{
   edit: {
     type: 'input',
   },
+  search: true,
 }, {
   title: () => $gettext('Provider'),
-  dataIndex: ['config', 'name'],
+  dataIndex: 'provider',
   customRender: ({ record }: CustomRenderArgs) => {
     return record.provider
   },
   sorter: true,
   pure: true,
+  search: {
+    type: 'select',
+    select: {
+      remote: {
+        valueKey: 'name',
+        labelKey: 'name',
+        api: async () => {
+          return {
+            data: await auto_cert.get_dns_providers(),
+          }
+        },
+      },
+      showSearch: true,
+      filterOption: (input, option) => {
+        return option?.label?.toLowerCase().includes(input.toLowerCase()) ?? false
+      },
+    },
+  },
 }, {
   title: () => $gettext('Configuration'),
   dataIndex: 'code',
