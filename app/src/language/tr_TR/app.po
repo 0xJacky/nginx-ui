@@ -100,6 +100,12 @@ msgstr "[Nginx UI] Sertifika özel anahtarı diske yazılıyor"
 msgid "[Nginx UI] Writing certificate to disk"
 msgstr "[Nginx UI] Sertifika diske yazılıyor"
 
+#: src/components/SyncNodesPreview/SyncNodesPreview.vue:59
+msgid "* Includes nodes from group \"%{groupName}\" and manually selected nodes"
+msgstr ""
+"* \"%{groupName}\" grubundaki düğümler ve manuel olarak seçilen düğümler "
+"dahil"
+
 #: src/views/user/userColumns.tsx:30
 msgid "2FA"
 msgstr "İki aşamalı kimlik doğrulaması(2FA)"
@@ -112,7 +118,7 @@ msgstr "2FA Ayarları"
 msgid "About"
 msgstr "Hakkında"
 
-#: src/views/nginx_log/NginxLogList.vue:38
+#: src/views/nginx_log/NginxLogList.vue:39
 msgid "Access Log"
 msgstr "Erişim Kayıtları"
 
@@ -139,12 +145,12 @@ msgstr "Eylem"
 #: src/views/certificate/CertificateList/certColumns.tsx:92
 #: src/views/certificate/DNSCredential.vue:44
 #: src/views/config/configColumns.tsx:50
-#: src/views/environments/group/columns.ts:41
+#: src/views/environments/group/columns.ts:71
 #: src/views/environments/list/envColumns.tsx:96
-#: src/views/nginx_log/NginxLogList.vue:67
+#: src/views/nginx_log/NginxLogList.vue:68
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:73
-#: src/views/site/site_list/columns.tsx:153 src/views/stream/columns.tsx:117
+#: src/views/site/site_list/columns.tsx:159 src/views/stream/columns.tsx:123
 #: src/views/user/userColumns.tsx:58
 msgid "Actions"
 msgstr "İşlemler"
@@ -223,7 +229,7 @@ msgstr "Gelişmiş Mod"
 msgid "Afterwards, refresh this page and click add passkey again."
 msgstr "Daha sonra bu sayfayı yenileyin ve tekrar parola anahtarı ekle'ye tıklayın."
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:141
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:83
 msgid "All"
 msgstr "Tümü"
 
@@ -302,7 +308,7 @@ msgstr "Kalıcı olarak silmek istediğinizden emin misiniz?"
 msgid "Are you sure you want to delete?"
 msgstr "Silmek istediğine emin misin?"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:155
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:97
 msgid "Are you sure you want to reload Nginx on the following sync nodes?"
 msgstr ""
 "Aşağıdaki senkronizasyon düğümlerinde Nginx'i yeniden yüklemek "
@@ -320,7 +326,7 @@ msgstr "Bu öğeyi kaldırmak istediğinizden emin misiniz?"
 msgid "Are you sure you want to remove this location?"
 msgstr "Bu konumu kaldırmak istediğinizden emin misiniz?"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:167
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:109
 msgid "Are you sure you want to restart Nginx on the following sync nodes?"
 msgstr ""
 "Aşağıdaki senkronizasyon düğümlerinde Nginx'i yeniden başlatmak "
@@ -1182,7 +1188,7 @@ msgstr ""
 "oluşturun. Yedek dosyaları otomatik olarak bilgisayarınıza indirilecektir."
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:229
-#: src/views/environments/group/columns.ts:29
+#: src/views/environments/group/columns.ts:59
 #: src/views/notification/notificationColumns.tsx:51
 #: src/views/preference/components/AuthSettings/Passkey.vue:95
 #: src/views/preference/components/ExternalNotify/columns.tsx:68
@@ -1519,7 +1525,7 @@ msgstr "Akış %{name}, %{node} üzerinden başarıyla devre dışı bırakıld�
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:162
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
-#: src/views/site/site_list/columns.tsx:139 src/views/stream/columns.tsx:106
+#: src/views/site/site_list/columns.tsx:145 src/views/stream/columns.tsx:112
 #: src/views/stream/components/StreamEditor.vue:32
 #: src/views/user/userColumns.tsx:39
 msgid "Disabled"
@@ -1799,8 +1805,8 @@ msgstr "TOTP'yi Etkinleştir"
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:159
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:56
-#: src/views/site/site_list/columns.tsx:135 src/views/stream/columns.tsx:102
-#: src/views/stream/components/RightPanel/Basic.vue:23
+#: src/views/site/site_list/columns.tsx:141 src/views/stream/columns.tsx:108
+#: src/views/stream/components/RightPanel/Basic.vue:24
 #: src/views/stream/components/StreamEditor.vue:26
 #: src/views/user/userColumns.tsx:36
 msgid "Enabled"
@@ -1847,7 +1853,7 @@ msgid "Environment variables cleaned"
 msgstr "Ortam değişkenleri temizlendi"
 
 #: src/routes/modules/environments.ts:11
-#: src/views/dashboard/Environments.vue:75
+#: src/views/dashboard/Environments.vue:80
 #: src/views/environments/list/Environment.vue:131
 msgid "Environments"
 msgstr "Ortamlar"
@@ -1861,7 +1867,7 @@ msgstr "Hata"
 msgid "Error initializing diff viewer"
 msgstr "Fark görüntüleyici başlatılırken hata"
 
-#: src/views/nginx_log/NginxLogList.vue:42
+#: src/views/nginx_log/NginxLogList.vue:43
 msgid "Error Log"
 msgstr "Hata Günlüğü"
 
@@ -1920,7 +1926,7 @@ msgid "External Notification Test"
 msgstr "Harici Bildirim Testi"
 
 #: src/views/preference/Preference.vue:58
-#: src/views/preference/tabs/ExternalNotify.vue:31
+#: src/views/preference/tabs/ExternalNotify.vue:36
 msgid "External Notify"
 msgstr "Harici Bildirim"
 
@@ -2251,7 +2257,7 @@ msgstr "Sertifika iptal edilemedi: %{error}"
 msgid "Failed to save Nginx performance settings"
 msgstr "Nginx performans ayarları kaydedilemedi"
 
-#: src/views/preference/tabs/ExternalNotify.vue:21
+#: src/views/preference/tabs/ExternalNotify.vue:26
 msgid "Failed to send test message"
 msgstr "Test mesajı gönderilemedi"
 
@@ -2853,7 +2859,7 @@ msgid "Loading data..."
 msgstr "Veriler yükleniyor..."
 
 #: src/components/EnvIndicator/EnvIndicator.vue:39
-#: src/components/NodeSelector/NodeSelector.vue:84
+#: src/components/NodeSelector/NodeSelector.vue:61
 #: src/views/backup/AutoBackup/AutoBackup.vue:74
 #: src/views/backup/AutoBackup/AutoBackup.vue:83
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:48
@@ -2887,7 +2893,7 @@ msgstr ""
 "nginx-ui kullanıyorsanız, daha fazla bilgi için "
 "https://nginxui.com/zh_CN/guide/config-nginx-log.html adresine bakın."
 
-#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:87
+#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:88
 msgid "Log List"
 msgstr "Günlük Listesi"
 
@@ -2925,7 +2931,7 @@ msgstr ""
 
 #: src/views/site/components/SiteStatusSelect.vue:165
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:68
-#: src/views/site/site_list/columns.tsx:143
+#: src/views/site/site_list/columns.tsx:149
 msgid "Maintenance"
 msgstr "Bakım"
 
@@ -3132,22 +3138,22 @@ msgstr "Çok Satırlı Yönergeler"
 #: src/views/config/components/Delete.vue:123
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:17
-#: src/views/environments/group/columns.ts:7
+#: src/views/environments/group/columns.ts:8
 #: src/views/environments/list/envColumns.tsx:8
-#: src/views/nginx_log/NginxLogList.vue:51
+#: src/views/nginx_log/NginxLogList.vue:52
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:80
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:35
-#: src/views/site/site_list/columns.tsx:29
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:36
+#: src/views/site/site_list/columns.tsx:30
 #: src/views/site/site_list/SiteDuplicate.vue:79
-#: src/views/stream/columns.tsx:25
-#: src/views/stream/components/RightPanel/Basic.vue:30
+#: src/views/stream/columns.tsx:26
+#: src/views/stream/components/RightPanel/Basic.vue:31
 #: src/views/stream/components/StreamDuplicate.vue:71
 #: src/views/stream/StreamList.vue:145
 msgid "Name"
 msgstr "İsim"
 
 #: src/views/config/configColumns.tsx:10
-#: src/views/site/site_list/columns.tsx:21 src/views/stream/columns.tsx:17
+#: src/views/site/site_list/columns.tsx:22 src/views/stream/columns.tsx:18
 msgid "Name or content"
 msgstr "Ad veya içerik"
 
@@ -3409,8 +3415,8 @@ msgid "Nginx.conf includes streams-enabled directory"
 msgstr "Nginx.conf, streams-enabled dizinini içerir"
 
 #: src/components/ChatGPT/ChatMessageInput.vue:17
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:157
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:169
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:111
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:99
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:99
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
 #: src/components/Notification/Notification.vue:108 src/language/curd.ts:40
@@ -3422,7 +3428,8 @@ msgstr "Nginx.conf, streams-enabled dizinini içerir"
 msgid "No"
 msgstr "Hayır"
 
-#: src/views/environments/group/columns.ts:19
+#: src/components/EnvGroupRender/EnvGroupRender.vue:41
+#: src/views/environments/group/columns.ts:49
 #: src/views/environments/group/EnvGroup.vue:47
 msgid "No Action"
 msgstr "Eylem Yok"
@@ -3430,6 +3437,10 @@ msgstr "Eylem Yok"
 #: src/views/dashboard/NginxDashBoard.vue:202
 msgid "No data"
 msgstr "Veri yok"
+
+#: src/components/EnvGroupRender/EnvGroupRender.vue:55
+msgid "No nodes selected"
+msgstr "Hiçbir düğüm seçilmedi"
 
 #: src/components/ConfigHistory/DiffViewer.vue:47
 msgid "No records selected"
@@ -3447,9 +3458,9 @@ msgstr "Yapılandırılmış yukarı akış yok"
 msgid "Node"
 msgstr "Düğüm"
 
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:41
-#: src/views/site/site_list/columns.tsx:88 src/views/stream/columns.tsx:56
-#: src/views/stream/components/RightPanel/Basic.vue:38
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:42
+#: src/views/site/site_list/columns.tsx:90 src/views/stream/columns.tsx:58
+#: src/views/stream/components/RightPanel/Basic.vue:39
 msgid "Node Group"
 msgstr "Düğüm Grubu"
 
@@ -3492,8 +3503,8 @@ msgstr "Geçerlilik Başlangıç Tarihi: %{date}"
 msgid "Note"
 msgstr "Not"
 
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:65
-#: src/views/stream/components/RightPanel/Basic.vue:60
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:66
+#: src/views/stream/components/RightPanel/Basic.vue:61
 msgid ""
 "Note, if the configuration file include other configurations or "
 "certificates, please synchronize them to the remote nodes in advance."
@@ -3568,11 +3579,11 @@ msgstr "Kapalı"
 msgid "Official Document"
 msgstr "Resmi Belge"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:185
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:127
 #: src/components/NgxConfigEditor/NgxUpstream.vue:151
-#: src/components/NodeSelector/NodeSelector.vue:107
-#: src/components/ProxyTargets/ProxyTargets.vue:29
-#: src/views/dashboard/Environments.vue:101
+#: src/components/NodeCard/NodeCard.vue:51
+#: src/components/NodeSelector/NodeSelector.vue:84
+#: src/views/dashboard/Environments.vue:106
 #: src/views/environments/list/envColumns.tsx:55
 msgid "Offline"
 msgstr "Çevrimdışı"
@@ -3602,10 +3613,11 @@ msgstr "Açık"
 msgid "Once the verification is complete, the records will be removed."
 msgstr "Doğrulama tamamlandığında, kayıtlar kaldırılacaktır."
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:185
-#: src/components/NodeSelector/NodeSelector.vue:101
-#: src/components/NodeSelector/NodeSelector.vue:87
-#: src/views/dashboard/Environments.vue:94
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:127
+#: src/components/NodeCard/NodeCard.vue:51
+#: src/components/NodeSelector/NodeSelector.vue:64
+#: src/components/NodeSelector/NodeSelector.vue:78
+#: src/views/dashboard/Environments.vue:99
 #: src/views/environments/list/envColumns.tsx:51
 msgid "Online"
 msgstr "Çevrimiçi"
@@ -3728,7 +3740,7 @@ msgstr "Şifreler eşleşmiyor"
 #: src/language/curd.ts:61
 #: src/views/config/components/ConfigRightPanel/Basic.vue:41
 #: src/views/config/components/Delete.vue:124
-#: src/views/nginx_log/NginxLogList.vue:59
+#: src/views/nginx_log/NginxLogList.vue:60
 msgid "Path"
 msgstr "Yol"
 
@@ -3916,6 +3928,10 @@ msgstr ""
 msgid "Please select a backup file"
 msgstr "Lütfen bir yedekleme dosyası seçin"
 
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:41
+msgid "Please select a notification type"
+msgstr "Lütfen bir bildirim türü seçin"
+
 #: src/views/certificate/components/CertificateFileUpload.vue:45
 msgid "Please select a valid %{type} file (%{extensions})"
 msgstr "Lütfen geçerli bir %{type} dosyası seçin (%{extensions})"
@@ -3956,7 +3972,8 @@ msgstr "Port"
 msgid "Port Scanner"
 msgstr "Port Tarayıcı"
 
-#: src/views/environments/group/columns.ts:15
+#: src/components/EnvGroupRender/EnvGroupRender.vue:38
+#: src/views/environments/group/columns.ts:45
 #: src/views/environments/group/EnvGroup.vue:39
 msgid "Post-sync Action"
 msgstr "Senkronizasyon Sonrası İşlem"
@@ -4037,7 +4054,7 @@ msgstr "Proxy"
 msgid "Proxy Pass"
 msgstr "Proxy Geçişi"
 
-#: src/views/site/site_list/columns.tsx:76 src/views/stream/columns.tsx:44
+#: src/views/site/site_list/columns.tsx:78 src/views/stream/columns.tsx:46
 msgid "Proxy Targets"
 msgstr "Proxy Hedefleri"
 
@@ -4141,8 +4158,9 @@ msgstr "Sürüm Notları"
 msgid "Reload"
 msgstr "Yeniden Yükle"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:162
-#: src/views/environments/group/columns.ts:22
+#: src/components/EnvGroupRender/EnvGroupRender.vue:44
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:104
+#: src/views/environments/group/columns.ts:52
 #: src/views/environments/group/EnvGroup.vue:50
 #: src/views/environments/list/Environment.vue:209
 #: src/views/environments/list/Environment.vue:217
@@ -4169,7 +4187,7 @@ msgstr "Uzak Nginx Yeniden Yükleme Hatası"
 msgid "Reload Remote Nginx Success"
 msgstr "Uzak Nginx Yeniden Yükleme Başarılı"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:110
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:52
 msgid "Reload request failed, please check your network connection"
 msgstr "Yeniden yükleme isteği başarısız oldu, lütfen ağ bağlantınızı kontrol edin"
 
@@ -4338,7 +4356,7 @@ msgstr "Yanıtlar"
 msgid "Restart"
 msgstr "Yeniden Başlat"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:174
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:116
 #: src/views/environments/list/Environment.vue:230
 #: src/views/environments/list/Environment.vue:238
 msgid "Restart Nginx"
@@ -4360,7 +4378,7 @@ msgstr "Uzak Nginx Yeniden Başlatma Hatası"
 msgid "Restart Remote Nginx Success"
 msgstr "Uzak Nginx Yeniden Başlatma Başarılı"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:130
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:72
 msgid "Restart request failed, please check your network connection"
 msgstr "Yeniden başlatma isteği başarısız oldu, lütfen ağ bağlantınızı kontrol edin"
 
@@ -4650,7 +4668,7 @@ msgstr "Tarama Sonuçları"
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr "Hesabı uygulamaya eklemek için telefonunuzla QR kodunu tarayın."
 
-#: src/views/nginx_log/NginxLogList.vue:100
+#: src/views/nginx_log/NginxLogList.vue:101
 msgid "Scanning logs..."
 msgstr "Günlükler taranıyor..."
 
@@ -4667,8 +4685,8 @@ msgid "SDK"
 msgstr "SDK"
 
 #: src/language/constants.ts:62 src/language/curd.ts:12
-#: src/views/config/configColumns.tsx:5 src/views/site/site_list/columns.tsx:16
-#: src/views/stream/columns.tsx:12
+#: src/views/config/configColumns.tsx:5 src/views/site/site_list/columns.tsx:17
+#: src/views/stream/columns.tsx:13
 msgid "Search"
 msgstr "Ara"
 
@@ -4722,6 +4740,10 @@ msgstr "Kendi kendine kontrol başarısız oldu, Nginx UI düzgün çalışmayab
 #: src/views/dashboard/ServerAnalytic.vue:351
 msgid "Send"
 msgstr "Gönder"
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:77
+msgid "Send test message"
+msgstr "Test mesajı gönder"
 
 #: src/routes/modules/dashboard.ts:19 src/views/preference/Preference.vue:46
 msgid "Server"
@@ -4956,8 +4978,8 @@ msgstr "Statik"
 #: src/views/certificate/CertificateList/certColumns.tsx:63
 #: src/views/dashboard/components/ModulesTable.vue:96
 #: src/views/environments/list/envColumns.tsx:43
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:28
-#: src/views/site/site_list/columns.tsx:113 src/views/stream/columns.tsx:81
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:29
+#: src/views/site/site_list/columns.tsx:119 src/views/stream/columns.tsx:87
 msgid "Status"
 msgstr "Durum"
 
@@ -5133,15 +5155,21 @@ msgstr "Yapılandırma Senkronizasyon Hatası"
 msgid "Sync Config Success"
 msgstr "Yapılandırma Başarıyla Senkronize Edildi"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:148
+#: src/components/EnvGroupRender/EnvGroupRender.vue:53
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:90
+#: src/views/environments/group/columns.ts:16
 #: src/views/environments/group/EnvGroup.vue:31
 msgid "Sync Nodes"
 msgstr "Senkronizasyon Düğümleri"
 
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:58
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:71
-#: src/views/stream/components/RightPanel/Basic.vue:53
-#: src/views/stream/components/RightPanel/Basic.vue:66
+#: src/components/SyncNodesPreview/SyncNodesPreview.vue:45
+msgid "Sync Preview"
+msgstr "Senkronizasyon Önizleme"
+
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:59
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:72
+#: src/views/stream/components/RightPanel/Basic.vue:54
+#: src/views/stream/components/RightPanel/Basic.vue:67
 msgid "Sync strategy"
 msgstr "Senkronizasyon stratejisi"
 
@@ -5149,8 +5177,8 @@ msgstr "Senkronizasyon stratejisi"
 msgid "Sync to"
 msgstr "Senkronize Et"
 
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:56
-#: src/views/stream/components/RightPanel/Basic.vue:51
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:57
+#: src/views/stream/components/RightPanel/Basic.vue:52
 msgid "Synchronization"
 msgstr "Senkronizasyon"
 
@@ -5199,11 +5227,12 @@ msgstr "Terminal"
 msgid "Terminal Start Command"
 msgstr "Terminal Başlatma Komutu"
 
-#: src/views/preference/tabs/ExternalNotify.vue:46
+#: src/views/preference/tabs/ExternalNotify.vue:51
 msgid "Test"
 msgstr "Test"
 
-#: src/views/preference/tabs/ExternalNotify.vue:17
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:52
+#: src/views/preference/tabs/ExternalNotify.vue:22
 msgid "Test message sent successfully"
 msgstr "Test mesajı başarıyla gönderildi"
 
@@ -5588,7 +5617,7 @@ msgstr "İki faktörlü kimlik doğrulama gerekiyor"
 #: src/views/certificate/CertificateList/certColumns.tsx:24
 #: src/views/config/components/Delete.vue:122
 #: src/views/dashboard/components/ModulesTable.vue:83
-#: src/views/nginx_log/NginxLogList.vue:27
+#: src/views/nginx_log/NginxLogList.vue:28
 #: src/views/notification/notificationColumns.tsx:8
 #: src/views/preference/components/ExternalNotify/columns.tsx:18
 msgid "Type"
@@ -5624,11 +5653,11 @@ msgstr "Başarıyla güncellendi"
 #: src/views/certificate/DNSCredential.vue:38
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
 #: src/views/config/configColumns.tsx:43
-#: src/views/environments/group/columns.ts:35
+#: src/views/environments/group/columns.ts:65
 #: src/views/environments/list/envColumns.tsx:89
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:38
-#: src/views/site/site_list/columns.tsx:106 src/views/stream/columns.tsx:74
-#: src/views/stream/components/RightPanel/Basic.vue:34
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:39
+#: src/views/site/site_list/columns.tsx:112 src/views/stream/columns.tsx:80
+#: src/views/stream/components/RightPanel/Basic.vue:35
 #: src/views/user/userColumns.tsx:52
 msgid "Updated at"
 msgstr "Güncellenme Tarihi"
@@ -5749,7 +5778,7 @@ msgstr "Sistem Gereksinimlerini Doğrulun"
 msgid "Version"
 msgstr "Sürüm"
 
-#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:105
+#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:106
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:83
 msgid "View"
 msgstr "Görüntüle"
@@ -5844,8 +5873,8 @@ msgstr ""
 "yeniden kaydedecektir. Genellikle, bir geliştirme ortamında değilseniz ve "
 "Pebble'ı CA olarak kullanmıyorsanız bunu etkinleştirmeyin."
 
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:61
-#: src/views/stream/components/RightPanel/Basic.vue:56
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:62
+#: src/views/stream/components/RightPanel/Basic.vue:57
 msgid ""
 "When you enable/disable, delete, or save this site, the nodes set in the "
 "Node Group and the nodes selected below will be synchronized."
@@ -5911,8 +5940,8 @@ msgstr "Sertifika özel anahtarı diske yazılıyor"
 msgid "Writing certificate to disk"
 msgstr "Sertifika diske yazılıyor"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:156
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:168
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:110
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:98
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:98
 #: src/components/NgxConfigEditor/LocationEditor.vue:88
 #: src/views/preference/tabs/AuthSettings.vue:131

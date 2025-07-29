@@ -103,6 +103,10 @@ msgstr "[Nginx UI] 正在將證書私鑰寫入磁碟"
 msgid "[Nginx UI] Writing certificate to disk"
 msgstr "[Nginx UI] 正在將憑證寫入磁碟"
 
+#: src/components/SyncNodesPreview/SyncNodesPreview.vue:59
+msgid "* Includes nodes from group \"%{groupName}\" and manually selected nodes"
+msgstr "* 包含來自群組 \"%{groupName}\" 的節點和手動選擇的節點"
+
 #: src/views/user/userColumns.tsx:30
 msgid "2FA"
 msgstr "雙因素驗證"
@@ -115,7 +119,7 @@ msgstr "多重要素驗證設定"
 msgid "About"
 msgstr "關於"
 
-#: src/views/nginx_log/NginxLogList.vue:38
+#: src/views/nginx_log/NginxLogList.vue:39
 msgid "Access Log"
 msgstr "存取日誌"
 
@@ -142,12 +146,12 @@ msgstr "操作"
 #: src/views/certificate/CertificateList/certColumns.tsx:92
 #: src/views/certificate/DNSCredential.vue:44
 #: src/views/config/configColumns.tsx:50
-#: src/views/environments/group/columns.ts:41
+#: src/views/environments/group/columns.ts:71
 #: src/views/environments/list/envColumns.tsx:96
-#: src/views/nginx_log/NginxLogList.vue:67
+#: src/views/nginx_log/NginxLogList.vue:68
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:73
-#: src/views/site/site_list/columns.tsx:153 src/views/stream/columns.tsx:117
+#: src/views/site/site_list/columns.tsx:159 src/views/stream/columns.tsx:123
 #: src/views/user/userColumns.tsx:58
 msgid "Actions"
 msgstr "操作"
@@ -226,7 +230,7 @@ msgstr "進階模式"
 msgid "Afterwards, refresh this page and click add passkey again."
 msgstr "之後，請重新整理此頁面並再次點擊新增通行金鑰。"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:141
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:83
 msgid "All"
 msgstr "全部"
 
@@ -303,7 +307,7 @@ msgstr "確定要永久刪除嗎？"
 msgid "Are you sure you want to delete?"
 msgstr "您確定要刪除嗎？"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:155
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:97
 msgid "Are you sure you want to reload Nginx on the following sync nodes?"
 msgstr "您確定要在以下同步節點上重新載入 Nginx 嗎？"
 
@@ -319,7 +323,7 @@ msgstr "您確定要刪除此項目嗎？"
 msgid "Are you sure you want to remove this location?"
 msgstr "您確定要刪除此 Location 嗎？"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:167
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:109
 msgid "Are you sure you want to restart Nginx on the following sync nodes?"
 msgstr "您確定要在以下同步節點上重新啟動 Nginx 嗎？"
 
@@ -1146,7 +1150,7 @@ msgid ""
 msgstr "建立系統備份，包括 Nginx 設定與 Nginx UI 設定。備份檔案將自動下載至您的電腦。"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:229
-#: src/views/environments/group/columns.ts:29
+#: src/views/environments/group/columns.ts:59
 #: src/views/notification/notificationColumns.tsx:51
 #: src/views/preference/components/AuthSettings/Passkey.vue:95
 #: src/views/preference/components/ExternalNotify/columns.tsx:68
@@ -1481,7 +1485,7 @@ msgstr "已成功從 %{node} 停用串流 %{name}"
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:162
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
-#: src/views/site/site_list/columns.tsx:139 src/views/stream/columns.tsx:106
+#: src/views/site/site_list/columns.tsx:145 src/views/stream/columns.tsx:112
 #: src/views/stream/components/StreamEditor.vue:32
 #: src/views/user/userColumns.tsx:39
 msgid "Disabled"
@@ -1756,8 +1760,8 @@ msgstr "啟用 TOTP"
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:159
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:56
-#: src/views/site/site_list/columns.tsx:135 src/views/stream/columns.tsx:102
-#: src/views/stream/components/RightPanel/Basic.vue:23
+#: src/views/site/site_list/columns.tsx:141 src/views/stream/columns.tsx:108
+#: src/views/stream/components/RightPanel/Basic.vue:24
 #: src/views/stream/components/StreamEditor.vue:26
 #: src/views/user/userColumns.tsx:36
 msgid "Enabled"
@@ -1802,7 +1806,7 @@ msgid "Environment variables cleaned"
 msgstr "環境變數已清理"
 
 #: src/routes/modules/environments.ts:11
-#: src/views/dashboard/Environments.vue:75
+#: src/views/dashboard/Environments.vue:80
 #: src/views/environments/list/Environment.vue:131
 msgid "Environments"
 msgstr "環境"
@@ -1816,7 +1820,7 @@ msgstr "錯誤"
 msgid "Error initializing diff viewer"
 msgstr "初始化差異檢視器時發生錯誤"
 
-#: src/views/nginx_log/NginxLogList.vue:42
+#: src/views/nginx_log/NginxLogList.vue:43
 msgid "Error Log"
 msgstr "錯誤日誌"
 
@@ -1875,7 +1879,7 @@ msgid "External Notification Test"
 msgstr "外部通知測試"
 
 #: src/views/preference/Preference.vue:58
-#: src/views/preference/tabs/ExternalNotify.vue:31
+#: src/views/preference/tabs/ExternalNotify.vue:36
 msgid "External Notify"
 msgstr "外部通知"
 
@@ -2206,7 +2210,7 @@ msgstr "撤銷憑證失敗: %{error}"
 msgid "Failed to save Nginx performance settings"
 msgstr "儲存 Nginx 效能設定失敗"
 
-#: src/views/preference/tabs/ExternalNotify.vue:21
+#: src/views/preference/tabs/ExternalNotify.vue:26
 msgid "Failed to send test message"
 msgstr "發送測試消息失敗"
 
@@ -2791,7 +2795,7 @@ msgid "Loading data..."
 msgstr "資料載入中…"
 
 #: src/components/EnvIndicator/EnvIndicator.vue:39
-#: src/components/NodeSelector/NodeSelector.vue:84
+#: src/components/NodeSelector/NodeSelector.vue:61
 #: src/views/backup/AutoBackup/AutoBackup.vue:74
 #: src/views/backup/AutoBackup/AutoBackup.vue:83
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:48
@@ -2824,7 +2828,7 @@ msgstr ""
 "日誌文件 %{log_path} 不是常規文件。如果您在 docker 容器中使用 nginx-ui，請參考 "
 "https://nginxui.com/zh_CN/guide/config-nginx-log.html 獲取更多信息。"
 
-#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:87
+#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:88
 msgid "Log List"
 msgstr "日誌列表"
 
@@ -2859,7 +2863,7 @@ msgstr ""
 
 #: src/views/site/components/SiteStatusSelect.vue:165
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:68
-#: src/views/site/site_list/columns.tsx:143
+#: src/views/site/site_list/columns.tsx:149
 msgid "Maintenance"
 msgstr "維護"
 
@@ -3064,22 +3068,22 @@ msgstr "多行指令"
 #: src/views/config/components/Delete.vue:123
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:17
-#: src/views/environments/group/columns.ts:7
+#: src/views/environments/group/columns.ts:8
 #: src/views/environments/list/envColumns.tsx:8
-#: src/views/nginx_log/NginxLogList.vue:51
+#: src/views/nginx_log/NginxLogList.vue:52
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:80
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:35
-#: src/views/site/site_list/columns.tsx:29
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:36
+#: src/views/site/site_list/columns.tsx:30
 #: src/views/site/site_list/SiteDuplicate.vue:79
-#: src/views/stream/columns.tsx:25
-#: src/views/stream/components/RightPanel/Basic.vue:30
+#: src/views/stream/columns.tsx:26
+#: src/views/stream/components/RightPanel/Basic.vue:31
 #: src/views/stream/components/StreamDuplicate.vue:71
 #: src/views/stream/StreamList.vue:145
 msgid "Name"
 msgstr "名稱"
 
 #: src/views/config/configColumns.tsx:10
-#: src/views/site/site_list/columns.tsx:21 src/views/stream/columns.tsx:17
+#: src/views/site/site_list/columns.tsx:22 src/views/stream/columns.tsx:18
 msgid "Name or content"
 msgstr "名稱或內容"
 
@@ -3339,8 +3343,8 @@ msgid "Nginx.conf includes streams-enabled directory"
 msgstr "Nginx.conf 包含 streams-enabled 目錄"
 
 #: src/components/ChatGPT/ChatMessageInput.vue:17
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:157
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:169
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:111
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:99
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:99
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
 #: src/components/Notification/Notification.vue:108 src/language/curd.ts:40
@@ -3352,7 +3356,8 @@ msgstr "Nginx.conf 包含 streams-enabled 目錄"
 msgid "No"
 msgstr "取消"
 
-#: src/views/environments/group/columns.ts:19
+#: src/components/EnvGroupRender/EnvGroupRender.vue:41
+#: src/views/environments/group/columns.ts:49
 #: src/views/environments/group/EnvGroup.vue:47
 msgid "No Action"
 msgstr "無行動"
@@ -3360,6 +3365,10 @@ msgstr "無行動"
 #: src/views/dashboard/NginxDashBoard.vue:202
 msgid "No data"
 msgstr "無數據"
+
+#: src/components/EnvGroupRender/EnvGroupRender.vue:55
+msgid "No nodes selected"
+msgstr "未選擇節點"
 
 #: src/components/ConfigHistory/DiffViewer.vue:47
 msgid "No records selected"
@@ -3377,9 +3386,9 @@ msgstr "未配置上游"
 msgid "Node"
 msgstr "節點"
 
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:41
-#: src/views/site/site_list/columns.tsx:88 src/views/stream/columns.tsx:56
-#: src/views/stream/components/RightPanel/Basic.vue:38
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:42
+#: src/views/site/site_list/columns.tsx:90 src/views/stream/columns.tsx:58
+#: src/views/stream/components/RightPanel/Basic.vue:39
 msgid "Node Group"
 msgstr "節點群組"
 
@@ -3422,8 +3431,8 @@ msgstr "此前無效：%{date}"
 msgid "Note"
 msgstr "備註"
 
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:65
-#: src/views/stream/components/RightPanel/Basic.vue:60
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:66
+#: src/views/stream/components/RightPanel/Basic.vue:61
 msgid ""
 "Note, if the configuration file include other configurations or "
 "certificates, please synchronize them to the remote nodes in advance."
@@ -3492,11 +3501,11 @@ msgstr "關"
 msgid "Official Document"
 msgstr "官方文件"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:185
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:127
 #: src/components/NgxConfigEditor/NgxUpstream.vue:151
-#: src/components/NodeSelector/NodeSelector.vue:107
-#: src/components/ProxyTargets/ProxyTargets.vue:29
-#: src/views/dashboard/Environments.vue:101
+#: src/components/NodeCard/NodeCard.vue:51
+#: src/components/NodeSelector/NodeSelector.vue:84
+#: src/views/dashboard/Environments.vue:106
 #: src/views/environments/list/envColumns.tsx:55
 msgid "Offline"
 msgstr "離線"
@@ -3526,10 +3535,11 @@ msgstr "開啟"
 msgid "Once the verification is complete, the records will be removed."
 msgstr "驗證完成後，記錄將被刪除。"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:185
-#: src/components/NodeSelector/NodeSelector.vue:101
-#: src/components/NodeSelector/NodeSelector.vue:87
-#: src/views/dashboard/Environments.vue:94
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:127
+#: src/components/NodeCard/NodeCard.vue:51
+#: src/components/NodeSelector/NodeSelector.vue:64
+#: src/components/NodeSelector/NodeSelector.vue:78
+#: src/views/dashboard/Environments.vue:99
 #: src/views/environments/list/envColumns.tsx:51
 msgid "Online"
 msgstr "線上"
@@ -3651,7 +3661,7 @@ msgstr "密碼不匹配"
 #: src/language/curd.ts:61
 #: src/views/config/components/ConfigRightPanel/Basic.vue:41
 #: src/views/config/components/Delete.vue:124
-#: src/views/nginx_log/NginxLogList.vue:59
+#: src/views/nginx_log/NginxLogList.vue:60
 msgid "Path"
 msgstr "路徑"
 
@@ -3822,6 +3832,10 @@ msgstr "請儲存此安全令牌，您將需要它進行恢復："
 msgid "Please select a backup file"
 msgstr "請選擇備份檔案"
 
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:41
+msgid "Please select a notification type"
+msgstr "請選擇通知類型"
+
 #: src/views/certificate/components/CertificateFileUpload.vue:45
 msgid "Please select a valid %{type} file (%{extensions})"
 msgstr "請選擇有效的%{type}檔案（%{extensions}）"
@@ -3862,7 +3876,8 @@ msgstr "監聽埠"
 msgid "Port Scanner"
 msgstr "端口掃描器"
 
-#: src/views/environments/group/columns.ts:15
+#: src/components/EnvGroupRender/EnvGroupRender.vue:38
+#: src/views/environments/group/columns.ts:45
 #: src/views/environments/group/EnvGroup.vue:39
 msgid "Post-sync Action"
 msgstr "同步後動作"
@@ -3941,7 +3956,7 @@ msgstr "代理伺服器"
 msgid "Proxy Pass"
 msgstr "代理傳遞"
 
-#: src/views/site/site_list/columns.tsx:76 src/views/stream/columns.tsx:44
+#: src/views/site/site_list/columns.tsx:78 src/views/stream/columns.tsx:46
 msgid "Proxy Targets"
 msgstr "代理目標"
 
@@ -4041,8 +4056,9 @@ msgstr "發行公告"
 msgid "Reload"
 msgstr "重新載入"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:162
-#: src/views/environments/group/columns.ts:22
+#: src/components/EnvGroupRender/EnvGroupRender.vue:44
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:104
+#: src/views/environments/group/columns.ts:52
 #: src/views/environments/group/EnvGroup.vue:50
 #: src/views/environments/list/Environment.vue:209
 #: src/views/environments/list/Environment.vue:217
@@ -4069,7 +4085,7 @@ msgstr "重新載入遠端 Nginx 錯誤"
 msgid "Reload Remote Nginx Success"
 msgstr "遠端 Nginx 重新載入成功"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:110
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:52
 msgid "Reload request failed, please check your network connection"
 msgstr "重新載入請求失敗，請檢查您的網路連線"
 
@@ -4226,7 +4242,7 @@ msgstr "回應"
 msgid "Restart"
 msgstr "重新啟動"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:174
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:116
 #: src/views/environments/list/Environment.vue:230
 #: src/views/environments/list/Environment.vue:238
 msgid "Restart Nginx"
@@ -4248,7 +4264,7 @@ msgstr "遠端 Nginx 重啟錯誤"
 msgid "Restart Remote Nginx Success"
 msgstr "遠端 Nginx 重啟成功"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:130
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:72
 msgid "Restart request failed, please check your network connection"
 msgstr "重新啟動請求失敗，請檢查您的網路連線"
 
@@ -4536,7 +4552,7 @@ msgstr "掃描結果"
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr "用手機掃描二維碼將賬戶新增到應用程式中。"
 
-#: src/views/nginx_log/NginxLogList.vue:100
+#: src/views/nginx_log/NginxLogList.vue:101
 msgid "Scanning logs..."
 msgstr "正在掃描日誌..."
 
@@ -4553,8 +4569,8 @@ msgid "SDK"
 msgstr "SDK"
 
 #: src/language/constants.ts:62 src/language/curd.ts:12
-#: src/views/config/configColumns.tsx:5 src/views/site/site_list/columns.tsx:16
-#: src/views/stream/columns.tsx:12
+#: src/views/config/configColumns.tsx:5 src/views/site/site_list/columns.tsx:17
+#: src/views/stream/columns.tsx:13
 msgid "Search"
 msgstr "搜尋"
 
@@ -4608,6 +4624,10 @@ msgstr "自我檢查失敗，Nginx UI 可能無法正常運作"
 #: src/views/dashboard/ServerAnalytic.vue:351
 msgid "Send"
 msgstr "傳送"
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:77
+msgid "Send test message"
+msgstr "發送測試訊息"
 
 #: src/routes/modules/dashboard.ts:19 src/views/preference/Preference.vue:46
 msgid "Server"
@@ -4838,8 +4858,8 @@ msgstr "靜態"
 #: src/views/certificate/CertificateList/certColumns.tsx:63
 #: src/views/dashboard/components/ModulesTable.vue:96
 #: src/views/environments/list/envColumns.tsx:43
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:28
-#: src/views/site/site_list/columns.tsx:113 src/views/stream/columns.tsx:81
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:29
+#: src/views/site/site_list/columns.tsx:119 src/views/stream/columns.tsx:87
 msgid "Status"
 msgstr "狀態"
 
@@ -5007,15 +5027,21 @@ msgstr "同步設定錯誤"
 msgid "Sync Config Success"
 msgstr "同步設定成功"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:148
+#: src/components/EnvGroupRender/EnvGroupRender.vue:53
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:90
+#: src/views/environments/group/columns.ts:16
 #: src/views/environments/group/EnvGroup.vue:31
 msgid "Sync Nodes"
 msgstr "同步節點"
 
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:58
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:71
-#: src/views/stream/components/RightPanel/Basic.vue:53
-#: src/views/stream/components/RightPanel/Basic.vue:66
+#: src/components/SyncNodesPreview/SyncNodesPreview.vue:45
+msgid "Sync Preview"
+msgstr "同步預覽"
+
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:59
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:72
+#: src/views/stream/components/RightPanel/Basic.vue:54
+#: src/views/stream/components/RightPanel/Basic.vue:67
 msgid "Sync strategy"
 msgstr "同步策略"
 
@@ -5023,8 +5049,8 @@ msgstr "同步策略"
 msgid "Sync to"
 msgstr "同步到"
 
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:56
-#: src/views/stream/components/RightPanel/Basic.vue:51
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:57
+#: src/views/stream/components/RightPanel/Basic.vue:52
 msgid "Synchronization"
 msgstr "同步"
 
@@ -5073,11 +5099,12 @@ msgstr "終端"
 msgid "Terminal Start Command"
 msgstr "終端機啟動指令"
 
-#: src/views/preference/tabs/ExternalNotify.vue:46
+#: src/views/preference/tabs/ExternalNotify.vue:51
 msgid "Test"
 msgstr "測試"
 
-#: src/views/preference/tabs/ExternalNotify.vue:17
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:52
+#: src/views/preference/tabs/ExternalNotify.vue:22
 msgid "Test message sent successfully"
 msgstr "測試訊息發送成功"
 
@@ -5415,7 +5442,7 @@ msgstr "需要多重因素驗證"
 #: src/views/certificate/CertificateList/certColumns.tsx:24
 #: src/views/config/components/Delete.vue:122
 #: src/views/dashboard/components/ModulesTable.vue:83
-#: src/views/nginx_log/NginxLogList.vue:27
+#: src/views/nginx_log/NginxLogList.vue:28
 #: src/views/notification/notificationColumns.tsx:8
 #: src/views/preference/components/ExternalNotify/columns.tsx:18
 msgid "Type"
@@ -5451,11 +5478,11 @@ msgstr "更新成功"
 #: src/views/certificate/DNSCredential.vue:38
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
 #: src/views/config/configColumns.tsx:43
-#: src/views/environments/group/columns.ts:35
+#: src/views/environments/group/columns.ts:65
 #: src/views/environments/list/envColumns.tsx:89
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:38
-#: src/views/site/site_list/columns.tsx:106 src/views/stream/columns.tsx:74
-#: src/views/stream/components/RightPanel/Basic.vue:34
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:39
+#: src/views/site/site_list/columns.tsx:112 src/views/stream/columns.tsx:80
+#: src/views/stream/components/RightPanel/Basic.vue:35
 #: src/views/user/userColumns.tsx:52
 msgid "Updated at"
 msgstr "更新時間"
@@ -5576,7 +5603,7 @@ msgstr "驗證系統要求"
 msgid "Version"
 msgstr "版本"
 
-#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:105
+#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:106
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:83
 msgid "View"
 msgstr "檢視"
@@ -5661,8 +5688,8 @@ msgid ""
 "Pebble as CA."
 msgstr "啟用後，Nginx UI 將在啟動時自動重新註冊使用者。通常，除非您處於開發環境並使用 Pebble 作為 CA，否則不建議啟用此功能。"
 
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:61
-#: src/views/stream/components/RightPanel/Basic.vue:56
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:62
+#: src/views/stream/components/RightPanel/Basic.vue:57
 msgid ""
 "When you enable/disable, delete, or save this site, the nodes set in the "
 "Node Group and the nodes selected below will be synchronized."
@@ -5723,8 +5750,8 @@ msgstr "將憑證私鑰寫入磁碟"
 msgid "Writing certificate to disk"
 msgstr "將憑證寫入磁碟"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:156
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:168
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:110
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:98
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:98
 #: src/components/NgxConfigEditor/LocationEditor.vue:88
 #: src/views/preference/tabs/AuthSettings.vue:131

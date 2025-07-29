@@ -104,6 +104,10 @@ msgstr "[Nginx UI] Запис приватного ключа сертифіка
 msgid "[Nginx UI] Writing certificate to disk"
 msgstr "[Nginx UI] Запис сертифіката на диск"
 
+#: src/components/SyncNodesPreview/SyncNodesPreview.vue:59
+msgid "* Includes nodes from group \"%{groupName}\" and manually selected nodes"
+msgstr "* Включає вузли з групи \"%{groupName}\" та вручну вибрані вузли"
+
 #: src/views/user/userColumns.tsx:30
 msgid "2FA"
 msgstr "2FA"
@@ -116,7 +120,7 @@ msgstr "2FA Налаштування"
 msgid "About"
 msgstr "Про программу"
 
-#: src/views/nginx_log/NginxLogList.vue:38
+#: src/views/nginx_log/NginxLogList.vue:39
 msgid "Access Log"
 msgstr "Логи доступу"
 
@@ -143,12 +147,12 @@ msgstr "Дія"
 #: src/views/certificate/CertificateList/certColumns.tsx:92
 #: src/views/certificate/DNSCredential.vue:44
 #: src/views/config/configColumns.tsx:50
-#: src/views/environments/group/columns.ts:41
+#: src/views/environments/group/columns.ts:71
 #: src/views/environments/list/envColumns.tsx:96
-#: src/views/nginx_log/NginxLogList.vue:67
+#: src/views/nginx_log/NginxLogList.vue:68
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:73
-#: src/views/site/site_list/columns.tsx:153 src/views/stream/columns.tsx:117
+#: src/views/site/site_list/columns.tsx:159 src/views/stream/columns.tsx:123
 #: src/views/user/userColumns.tsx:58
 msgid "Actions"
 msgstr "Дії"
@@ -227,7 +231,7 @@ msgstr "Розширений режим"
 msgid "Afterwards, refresh this page and click add passkey again."
 msgstr "Після цього оновіть цю сторінку та натисніть «Додати ключ доступу» знову."
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:141
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:83
 msgid "All"
 msgstr "Усі"
 
@@ -306,7 +310,7 @@ msgstr "Ви впевнені, що хочете видалити назавжд
 msgid "Are you sure you want to delete?"
 msgstr "Ви впевнені, що хочете видалити?"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:155
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:97
 msgid "Are you sure you want to reload Nginx on the following sync nodes?"
 msgstr ""
 "Ви впевнені, що бажаєте перезавантажити Nginx на наступних вузлах "
@@ -324,7 +328,7 @@ msgstr "Ви впевнені, що хочете видалити цей еле�
 msgid "Are you sure you want to remove this location?"
 msgstr "Ви впевнені, що хочете видалити цю локацію?"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:167
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:109
 msgid "Are you sure you want to restart Nginx on the following sync nodes?"
 msgstr ""
 "Ви впевнені, що хочете перезавантажити Nginx на вказаних синхронізованих "
@@ -1188,7 +1192,7 @@ msgstr ""
 "комп’ютер."
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:229
-#: src/views/environments/group/columns.ts:29
+#: src/views/environments/group/columns.ts:59
 #: src/views/notification/notificationColumns.tsx:51
 #: src/views/preference/components/AuthSettings/Passkey.vue:95
 #: src/views/preference/components/ExternalNotify/columns.tsx:68
@@ -1595,7 +1599,7 @@ msgstr "Потік %{name} успішно вимкнено з %{node}"
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:162
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
-#: src/views/site/site_list/columns.tsx:139 src/views/stream/columns.tsx:106
+#: src/views/site/site_list/columns.tsx:145 src/views/stream/columns.tsx:112
 #: src/views/stream/components/StreamEditor.vue:32
 #: src/views/user/userColumns.tsx:39
 msgid "Disabled"
@@ -1873,8 +1877,8 @@ msgstr "Увімкнути TOTP"
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:159
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:56
-#: src/views/site/site_list/columns.tsx:135 src/views/stream/columns.tsx:102
-#: src/views/stream/components/RightPanel/Basic.vue:23
+#: src/views/site/site_list/columns.tsx:141 src/views/stream/columns.tsx:108
+#: src/views/stream/components/RightPanel/Basic.vue:24
 #: src/views/stream/components/StreamEditor.vue:26
 #: src/views/user/userColumns.tsx:36
 msgid "Enabled"
@@ -1923,7 +1927,7 @@ msgid "Environment variables cleaned"
 msgstr "Змінні середовища очищено"
 
 #: src/routes/modules/environments.ts:11
-#: src/views/dashboard/Environments.vue:75
+#: src/views/dashboard/Environments.vue:80
 #: src/views/environments/list/Environment.vue:131
 msgid "Environments"
 msgstr "Середовища"
@@ -1937,7 +1941,7 @@ msgstr "Помилка"
 msgid "Error initializing diff viewer"
 msgstr "Помилка ініціалізації переглядача різниць"
 
-#: src/views/nginx_log/NginxLogList.vue:42
+#: src/views/nginx_log/NginxLogList.vue:43
 msgid "Error Log"
 msgstr "Журнал помилок"
 
@@ -1996,7 +2000,7 @@ msgid "External Notification Test"
 msgstr "Тест зовнішнього сповіщення"
 
 #: src/views/preference/Preference.vue:58
-#: src/views/preference/tabs/ExternalNotify.vue:31
+#: src/views/preference/tabs/ExternalNotify.vue:36
 msgid "External Notify"
 msgstr "Зовнішнє сповіщення"
 
@@ -2327,7 +2331,7 @@ msgstr "Не вдалося відкликати сертифікат: %{error}"
 msgid "Failed to save Nginx performance settings"
 msgstr "Не вдалося зберегти налаштування продуктивності Nginx"
 
-#: src/views/preference/tabs/ExternalNotify.vue:21
+#: src/views/preference/tabs/ExternalNotify.vue:26
 msgid "Failed to send test message"
 msgstr "Не вдалося надіслати тестове повідомлення"
 
@@ -2925,7 +2929,7 @@ msgid "Loading data..."
 msgstr "Завантаження даних..."
 
 #: src/components/EnvIndicator/EnvIndicator.vue:39
-#: src/components/NodeSelector/NodeSelector.vue:84
+#: src/components/NodeSelector/NodeSelector.vue:61
 #: src/views/backup/AutoBackup/AutoBackup.vue:74
 #: src/views/backup/AutoBackup/AutoBackup.vue:83
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:48
@@ -2960,7 +2964,7 @@ msgstr ""
 "https://nginxui.com/zh_CN/guide/config-nginx-log.html для отримання "
 "додаткової інформації."
 
-#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:87
+#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:88
 msgid "Log List"
 msgstr "Список журналів"
 
@@ -2998,7 +3002,7 @@ msgstr ""
 
 #: src/views/site/components/SiteStatusSelect.vue:165
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:68
-#: src/views/site/site_list/columns.tsx:143
+#: src/views/site/site_list/columns.tsx:149
 msgid "Maintenance"
 msgstr "Технічне обслуговування"
 
@@ -3205,22 +3209,22 @@ msgstr "Багаторядкова директива"
 #: src/views/config/components/Delete.vue:123
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:17
-#: src/views/environments/group/columns.ts:7
+#: src/views/environments/group/columns.ts:8
 #: src/views/environments/list/envColumns.tsx:8
-#: src/views/nginx_log/NginxLogList.vue:51
+#: src/views/nginx_log/NginxLogList.vue:52
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:80
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:35
-#: src/views/site/site_list/columns.tsx:29
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:36
+#: src/views/site/site_list/columns.tsx:30
 #: src/views/site/site_list/SiteDuplicate.vue:79
-#: src/views/stream/columns.tsx:25
-#: src/views/stream/components/RightPanel/Basic.vue:30
+#: src/views/stream/columns.tsx:26
+#: src/views/stream/components/RightPanel/Basic.vue:31
 #: src/views/stream/components/StreamDuplicate.vue:71
 #: src/views/stream/StreamList.vue:145
 msgid "Name"
 msgstr "Ім'я"
 
 #: src/views/config/configColumns.tsx:10
-#: src/views/site/site_list/columns.tsx:21 src/views/stream/columns.tsx:17
+#: src/views/site/site_list/columns.tsx:22 src/views/stream/columns.tsx:18
 msgid "Name or content"
 msgstr "Ім’я або вміст"
 
@@ -3482,8 +3486,8 @@ msgid "Nginx.conf includes streams-enabled directory"
 msgstr "Nginx.conf включає каталог streams-enabled"
 
 #: src/components/ChatGPT/ChatMessageInput.vue:17
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:157
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:169
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:111
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:99
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:99
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
 #: src/components/Notification/Notification.vue:108 src/language/curd.ts:40
@@ -3495,7 +3499,8 @@ msgstr "Nginx.conf включає каталог streams-enabled"
 msgid "No"
 msgstr "Ні"
 
-#: src/views/environments/group/columns.ts:19
+#: src/components/EnvGroupRender/EnvGroupRender.vue:41
+#: src/views/environments/group/columns.ts:49
 #: src/views/environments/group/EnvGroup.vue:47
 msgid "No Action"
 msgstr "Без дії"
@@ -3503,6 +3508,10 @@ msgstr "Без дії"
 #: src/views/dashboard/NginxDashBoard.vue:202
 msgid "No data"
 msgstr "Немає даних"
+
+#: src/components/EnvGroupRender/EnvGroupRender.vue:55
+msgid "No nodes selected"
+msgstr "Не вибрано жодного вузла"
 
 #: src/components/ConfigHistory/DiffViewer.vue:47
 msgid "No records selected"
@@ -3520,9 +3529,9 @@ msgstr "Не налаштовано жодного апстріму"
 msgid "Node"
 msgstr "Вузол"
 
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:41
-#: src/views/site/site_list/columns.tsx:88 src/views/stream/columns.tsx:56
-#: src/views/stream/components/RightPanel/Basic.vue:38
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:42
+#: src/views/site/site_list/columns.tsx:90 src/views/stream/columns.tsx:58
+#: src/views/stream/components/RightPanel/Basic.vue:39
 msgid "Node Group"
 msgstr "Група вузлів"
 
@@ -3565,8 +3574,8 @@ msgstr "Не дійсний до: %{date}"
 msgid "Note"
 msgstr "Примітка"
 
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:65
-#: src/views/stream/components/RightPanel/Basic.vue:60
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:66
+#: src/views/stream/components/RightPanel/Basic.vue:61
 msgid ""
 "Note, if the configuration file include other configurations or "
 "certificates, please synchronize them to the remote nodes in advance."
@@ -3641,11 +3650,11 @@ msgstr "Вимкнено"
 msgid "Official Document"
 msgstr "Офіційна документація"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:185
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:127
 #: src/components/NgxConfigEditor/NgxUpstream.vue:151
-#: src/components/NodeSelector/NodeSelector.vue:107
-#: src/components/ProxyTargets/ProxyTargets.vue:29
-#: src/views/dashboard/Environments.vue:101
+#: src/components/NodeCard/NodeCard.vue:51
+#: src/components/NodeSelector/NodeSelector.vue:84
+#: src/views/dashboard/Environments.vue:106
 #: src/views/environments/list/envColumns.tsx:55
 msgid "Offline"
 msgstr "Офлайн"
@@ -3675,10 +3684,11 @@ msgstr "Увімкнено"
 msgid "Once the verification is complete, the records will be removed."
 msgstr "Після завершення перевірки записи будуть видалені."
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:185
-#: src/components/NodeSelector/NodeSelector.vue:101
-#: src/components/NodeSelector/NodeSelector.vue:87
-#: src/views/dashboard/Environments.vue:94
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:127
+#: src/components/NodeCard/NodeCard.vue:51
+#: src/components/NodeSelector/NodeSelector.vue:64
+#: src/components/NodeSelector/NodeSelector.vue:78
+#: src/views/dashboard/Environments.vue:99
 #: src/views/environments/list/envColumns.tsx:51
 msgid "Online"
 msgstr "Онлайн"
@@ -3802,7 +3812,7 @@ msgstr "Паролі не збігаються"
 #: src/language/curd.ts:61
 #: src/views/config/components/ConfigRightPanel/Basic.vue:41
 #: src/views/config/components/Delete.vue:124
-#: src/views/nginx_log/NginxLogList.vue:59
+#: src/views/nginx_log/NginxLogList.vue:60
 msgid "Path"
 msgstr "Шлях"
 
@@ -3990,6 +4000,10 @@ msgstr ""
 msgid "Please select a backup file"
 msgstr "Будь ласка, виберіть файл резервної копії"
 
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:41
+msgid "Please select a notification type"
+msgstr "Будь ласка, виберіть тип сповіщення"
+
 #: src/views/certificate/components/CertificateFileUpload.vue:45
 msgid "Please select a valid %{type} file (%{extensions})"
 msgstr "Будь ласка, виберіть дійсний файл %{type} (%{extensions})"
@@ -4030,7 +4044,8 @@ msgstr "Порт"
 msgid "Port Scanner"
 msgstr "Сканер портів"
 
-#: src/views/environments/group/columns.ts:15
+#: src/components/EnvGroupRender/EnvGroupRender.vue:38
+#: src/views/environments/group/columns.ts:45
 #: src/views/environments/group/EnvGroup.vue:39
 msgid "Post-sync Action"
 msgstr "Дія після синхронізації"
@@ -4112,7 +4127,7 @@ msgstr "Проксі"
 msgid "Proxy Pass"
 msgstr "Проксі-передача"
 
-#: src/views/site/site_list/columns.tsx:76 src/views/stream/columns.tsx:44
+#: src/views/site/site_list/columns.tsx:78 src/views/stream/columns.tsx:46
 msgid "Proxy Targets"
 msgstr "Цілі проксі"
 
@@ -4217,8 +4232,9 @@ msgstr "Примітки до версії"
 msgid "Reload"
 msgstr "Перезавантажити"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:162
-#: src/views/environments/group/columns.ts:22
+#: src/components/EnvGroupRender/EnvGroupRender.vue:44
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:104
+#: src/views/environments/group/columns.ts:52
 #: src/views/environments/group/EnvGroup.vue:50
 #: src/views/environments/list/Environment.vue:209
 #: src/views/environments/list/Environment.vue:217
@@ -4245,7 +4261,7 @@ msgstr "Помилка перезавантаження віддаленого N
 msgid "Reload Remote Nginx Success"
 msgstr "Успішне перезавантаження віддаленого Nginx"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:110
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:52
 msgid "Reload request failed, please check your network connection"
 msgstr ""
 "Не вдалося виконати запит на перезавантаження, будь ласка, перевірте "
@@ -4407,7 +4423,7 @@ msgstr "Відповіді"
 msgid "Restart"
 msgstr "Перезавантажити"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:174
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:116
 #: src/views/environments/list/Environment.vue:230
 #: src/views/environments/list/Environment.vue:238
 msgid "Restart Nginx"
@@ -4429,7 +4445,7 @@ msgstr "Помилка перезапуску віддаленого Nginx"
 msgid "Restart Remote Nginx Success"
 msgstr "Віддалений перезапуск Nginx успішний"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:130
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:72
 msgid "Restart request failed, please check your network connection"
 msgstr ""
 "Не вдалося виконати запит на перезавантаження, будь ласка, перевірте "
@@ -4723,7 +4739,7 @@ msgstr ""
 "Відскануйте QR-код за допомогою мобільного телефону, щоб додати обліковий "
 "запис до програми."
 
-#: src/views/nginx_log/NginxLogList.vue:100
+#: src/views/nginx_log/NginxLogList.vue:101
 msgid "Scanning logs..."
 msgstr "Сканування журналів..."
 
@@ -4740,8 +4756,8 @@ msgid "SDK"
 msgstr "SDK"
 
 #: src/language/constants.ts:62 src/language/curd.ts:12
-#: src/views/config/configColumns.tsx:5 src/views/site/site_list/columns.tsx:16
-#: src/views/stream/columns.tsx:12
+#: src/views/config/configColumns.tsx:5 src/views/site/site_list/columns.tsx:17
+#: src/views/stream/columns.tsx:13
 msgid "Search"
 msgstr "Пошук"
 
@@ -4795,6 +4811,10 @@ msgstr "Самоперевірка не вдалася, інтерфейс Nginx
 #: src/views/dashboard/ServerAnalytic.vue:351
 msgid "Send"
 msgstr "Надіслати"
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:77
+msgid "Send test message"
+msgstr "Надіслати тестове повідомлення"
 
 #: src/routes/modules/dashboard.ts:19 src/views/preference/Preference.vue:46
 msgid "Server"
@@ -5031,8 +5051,8 @@ msgstr "Статичний"
 #: src/views/certificate/CertificateList/certColumns.tsx:63
 #: src/views/dashboard/components/ModulesTable.vue:96
 #: src/views/environments/list/envColumns.tsx:43
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:28
-#: src/views/site/site_list/columns.tsx:113 src/views/stream/columns.tsx:81
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:29
+#: src/views/site/site_list/columns.tsx:119 src/views/stream/columns.tsx:87
 msgid "Status"
 msgstr "Статус"
 
@@ -5206,15 +5226,21 @@ msgstr "Помилка синхронізації конфігурації"
 msgid "Sync Config Success"
 msgstr "Успішна синхронізація конфігурації"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:148
+#: src/components/EnvGroupRender/EnvGroupRender.vue:53
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:90
+#: src/views/environments/group/columns.ts:16
 #: src/views/environments/group/EnvGroup.vue:31
 msgid "Sync Nodes"
 msgstr "Синхронізовані вузли"
 
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:58
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:71
-#: src/views/stream/components/RightPanel/Basic.vue:53
-#: src/views/stream/components/RightPanel/Basic.vue:66
+#: src/components/SyncNodesPreview/SyncNodesPreview.vue:45
+msgid "Sync Preview"
+msgstr "Попередній перегляд синхронізації"
+
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:59
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:72
+#: src/views/stream/components/RightPanel/Basic.vue:54
+#: src/views/stream/components/RightPanel/Basic.vue:67
 msgid "Sync strategy"
 msgstr "Стратегія синхронізації"
 
@@ -5222,8 +5248,8 @@ msgstr "Стратегія синхронізації"
 msgid "Sync to"
 msgstr "Синхронізувати з"
 
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:56
-#: src/views/stream/components/RightPanel/Basic.vue:51
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:57
+#: src/views/stream/components/RightPanel/Basic.vue:52
 msgid "Synchronization"
 msgstr "Синхронізація"
 
@@ -5272,11 +5298,12 @@ msgstr "Термінал"
 msgid "Terminal Start Command"
 msgstr "Команда запуску терміналу"
 
-#: src/views/preference/tabs/ExternalNotify.vue:46
+#: src/views/preference/tabs/ExternalNotify.vue:51
 msgid "Test"
 msgstr "Тест"
 
-#: src/views/preference/tabs/ExternalNotify.vue:17
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:52
+#: src/views/preference/tabs/ExternalNotify.vue:22
 msgid "Test message sent successfully"
 msgstr "Тестове повідомлення успішно надіслано"
 
@@ -5661,7 +5688,7 @@ msgstr "Потрібна двофакторна аутентифікація"
 #: src/views/certificate/CertificateList/certColumns.tsx:24
 #: src/views/config/components/Delete.vue:122
 #: src/views/dashboard/components/ModulesTable.vue:83
-#: src/views/nginx_log/NginxLogList.vue:27
+#: src/views/nginx_log/NginxLogList.vue:28
 #: src/views/notification/notificationColumns.tsx:8
 #: src/views/preference/components/ExternalNotify/columns.tsx:18
 msgid "Type"
@@ -5697,11 +5724,11 @@ msgstr "Успішно оновлено"
 #: src/views/certificate/DNSCredential.vue:38
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
 #: src/views/config/configColumns.tsx:43
-#: src/views/environments/group/columns.ts:35
+#: src/views/environments/group/columns.ts:65
 #: src/views/environments/list/envColumns.tsx:89
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:38
-#: src/views/site/site_list/columns.tsx:106 src/views/stream/columns.tsx:74
-#: src/views/stream/components/RightPanel/Basic.vue:34
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:39
+#: src/views/site/site_list/columns.tsx:112 src/views/stream/columns.tsx:80
+#: src/views/stream/components/RightPanel/Basic.vue:35
 #: src/views/user/userColumns.tsx:52
 msgid "Updated at"
 msgstr "Оновлено"
@@ -5822,7 +5849,7 @@ msgstr "Перевірте системні вимоги"
 msgid "Version"
 msgstr "Версія"
 
-#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:105
+#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:106
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:83
 msgid "View"
 msgstr "Переглянути"
@@ -5917,8 +5944,8 @@ msgstr ""
 "запуску. Як правило, не вмикайте цю функцію, якщо ви не перебуваєте у "
 "середовищі розробки та використовуєте Pebble як CA."
 
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:61
-#: src/views/stream/components/RightPanel/Basic.vue:56
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:62
+#: src/views/stream/components/RightPanel/Basic.vue:57
 msgid ""
 "When you enable/disable, delete, or save this site, the nodes set in the "
 "Node Group and the nodes selected below will be synchronized."
@@ -5983,8 +6010,8 @@ msgstr "Запис приватного ключа сертифіката на �
 msgid "Writing certificate to disk"
 msgstr "Запис сертифіката на диск"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:156
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:168
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:110
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:98
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:98
 #: src/components/NgxConfigEditor/LocationEditor.vue:88
 #: src/views/preference/tabs/AuthSettings.vue:131

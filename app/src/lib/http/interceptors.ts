@@ -34,7 +34,11 @@ async function encryptJsonData(data: any): Promise<string> {
 
 // Helper function for handling encrypted form data
 async function handleEncryptedFormData(formData: FormData): Promise<FormData> {
-  const cryptoParams = await http.get('/crypto/public_key')
+  const fingerprint = await getBrowserFingerprint()
+  const cryptoParams = await http.post('/crypto/public_key', {
+    timestamp: dayjs().unix(),
+    fingerprint,
+  })
   const { public_key } = await cryptoParams
 
   // Extract form parameters that are not files

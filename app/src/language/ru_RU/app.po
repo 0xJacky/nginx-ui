@@ -104,6 +104,10 @@ msgstr "[Nginx UI] Запись закрытого ключа сертифика
 msgid "[Nginx UI] Writing certificate to disk"
 msgstr "[Nginx UI] Запись сертификата на диск"
 
+#: src/components/SyncNodesPreview/SyncNodesPreview.vue:59
+msgid "* Includes nodes from group \"%{groupName}\" and manually selected nodes"
+msgstr "* Включает узлы из группы \"%{groupName}\" и узлы, выбранные вручную"
+
 #: src/views/user/userColumns.tsx:30
 msgid "2FA"
 msgstr "2FA"
@@ -116,7 +120,7 @@ msgstr "Настройки 2FA"
 msgid "About"
 msgstr "О проекте"
 
-#: src/views/nginx_log/NginxLogList.vue:38
+#: src/views/nginx_log/NginxLogList.vue:39
 msgid "Access Log"
 msgstr "Журнал доступа"
 
@@ -143,12 +147,12 @@ msgstr "Действие"
 #: src/views/certificate/CertificateList/certColumns.tsx:92
 #: src/views/certificate/DNSCredential.vue:44
 #: src/views/config/configColumns.tsx:50
-#: src/views/environments/group/columns.ts:41
+#: src/views/environments/group/columns.ts:71
 #: src/views/environments/list/envColumns.tsx:96
-#: src/views/nginx_log/NginxLogList.vue:67
+#: src/views/nginx_log/NginxLogList.vue:68
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:73
-#: src/views/site/site_list/columns.tsx:153 src/views/stream/columns.tsx:117
+#: src/views/site/site_list/columns.tsx:159 src/views/stream/columns.tsx:123
 #: src/views/user/userColumns.tsx:58
 msgid "Actions"
 msgstr "Действия"
@@ -227,7 +231,7 @@ msgstr "Расширенный режим"
 msgid "Afterwards, refresh this page and click add passkey again."
 msgstr "После этого обновите эту страницу и снова нажмите «Добавить ключ доступа»."
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:141
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:83
 msgid "All"
 msgstr "Все"
 
@@ -306,7 +310,7 @@ msgstr "Вы уверены, что хотите удалить безвозвр
 msgid "Are you sure you want to delete?"
 msgstr "Вы уверены, что хотите удалить?"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:155
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:97
 msgid "Are you sure you want to reload Nginx on the following sync nodes?"
 msgstr ""
 "Вы уверены, что хотите перезагрузить Nginx на следующих синхронизированных "
@@ -324,7 +328,7 @@ msgstr "Вы уверены, что хотите удалить этот эле�
 msgid "Are you sure you want to remove this location?"
 msgstr "Вы уверены, что хотите удалить location?"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:167
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:109
 msgid "Are you sure you want to restart Nginx on the following sync nodes?"
 msgstr ""
 "Вы уверены, что хотите перезапустить Nginx на следующих синхронизированных "
@@ -1194,7 +1198,7 @@ msgstr ""
 "компьютер."
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:229
-#: src/views/environments/group/columns.ts:29
+#: src/views/environments/group/columns.ts:59
 #: src/views/notification/notificationColumns.tsx:51
 #: src/views/preference/components/AuthSettings/Passkey.vue:95
 #: src/views/preference/components/ExternalNotify/columns.tsx:68
@@ -1529,7 +1533,7 @@ msgstr "Поток %{name} отключен от %{node} успешно"
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:162
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
-#: src/views/site/site_list/columns.tsx:139 src/views/stream/columns.tsx:106
+#: src/views/site/site_list/columns.tsx:145 src/views/stream/columns.tsx:112
 #: src/views/stream/components/StreamEditor.vue:32
 #: src/views/user/userColumns.tsx:39
 msgid "Disabled"
@@ -1807,8 +1811,8 @@ msgstr "Включить TOTP"
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:159
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:56
-#: src/views/site/site_list/columns.tsx:135 src/views/stream/columns.tsx:102
-#: src/views/stream/components/RightPanel/Basic.vue:23
+#: src/views/site/site_list/columns.tsx:141 src/views/stream/columns.tsx:108
+#: src/views/stream/components/RightPanel/Basic.vue:24
 #: src/views/stream/components/StreamEditor.vue:26
 #: src/views/user/userColumns.tsx:36
 msgid "Enabled"
@@ -1857,7 +1861,7 @@ msgid "Environment variables cleaned"
 msgstr "Переменные окружения очищены"
 
 #: src/routes/modules/environments.ts:11
-#: src/views/dashboard/Environments.vue:75
+#: src/views/dashboard/Environments.vue:80
 #: src/views/environments/list/Environment.vue:131
 msgid "Environments"
 msgstr "Окружения"
@@ -1871,7 +1875,7 @@ msgstr "Ошибка"
 msgid "Error initializing diff viewer"
 msgstr "Ошибка инициализации просмотрщика различий"
 
-#: src/views/nginx_log/NginxLogList.vue:42
+#: src/views/nginx_log/NginxLogList.vue:43
 msgid "Error Log"
 msgstr "Журнал ошибок"
 
@@ -1930,7 +1934,7 @@ msgid "External Notification Test"
 msgstr "Тест внешнего уведомления"
 
 #: src/views/preference/Preference.vue:58
-#: src/views/preference/tabs/ExternalNotify.vue:31
+#: src/views/preference/tabs/ExternalNotify.vue:36
 msgid "External Notify"
 msgstr "Внешнее уведомление"
 
@@ -2261,7 +2265,7 @@ msgstr "Не удалось отозвать сертификат: %{error}"
 msgid "Failed to save Nginx performance settings"
 msgstr "Не удалось сохранить настройки производительности Nginx"
 
-#: src/views/preference/tabs/ExternalNotify.vue:21
+#: src/views/preference/tabs/ExternalNotify.vue:26
 msgid "Failed to send test message"
 msgstr "Не удалось отправить тестовое сообщение"
 
@@ -2859,7 +2863,7 @@ msgid "Loading data..."
 msgstr "Загрузка данных..."
 
 #: src/components/EnvIndicator/EnvIndicator.vue:39
-#: src/components/NodeSelector/NodeSelector.vue:84
+#: src/components/NodeSelector/NodeSelector.vue:61
 #: src/views/backup/AutoBackup/AutoBackup.vue:74
 #: src/views/backup/AutoBackup/AutoBackup.vue:83
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:48
@@ -2894,7 +2898,7 @@ msgstr ""
 "https://nginxui.com/zh_CN/guide/config-nginx-log.html для получения "
 "дополнительной информации."
 
-#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:87
+#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:88
 msgid "Log List"
 msgstr "Список журналов"
 
@@ -2932,7 +2936,7 @@ msgstr ""
 
 #: src/views/site/components/SiteStatusSelect.vue:165
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:68
-#: src/views/site/site_list/columns.tsx:143
+#: src/views/site/site_list/columns.tsx:149
 msgid "Maintenance"
 msgstr "Техническое обслуживание"
 
@@ -3139,22 +3143,22 @@ msgstr "Многострочная директива"
 #: src/views/config/components/Delete.vue:123
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:17
-#: src/views/environments/group/columns.ts:7
+#: src/views/environments/group/columns.ts:8
 #: src/views/environments/list/envColumns.tsx:8
-#: src/views/nginx_log/NginxLogList.vue:51
+#: src/views/nginx_log/NginxLogList.vue:52
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:80
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:35
-#: src/views/site/site_list/columns.tsx:29
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:36
+#: src/views/site/site_list/columns.tsx:30
 #: src/views/site/site_list/SiteDuplicate.vue:79
-#: src/views/stream/columns.tsx:25
-#: src/views/stream/components/RightPanel/Basic.vue:30
+#: src/views/stream/columns.tsx:26
+#: src/views/stream/components/RightPanel/Basic.vue:31
 #: src/views/stream/components/StreamDuplicate.vue:71
 #: src/views/stream/StreamList.vue:145
 msgid "Name"
 msgstr "Имя"
 
 #: src/views/config/configColumns.tsx:10
-#: src/views/site/site_list/columns.tsx:21 src/views/stream/columns.tsx:17
+#: src/views/site/site_list/columns.tsx:22 src/views/stream/columns.tsx:18
 msgid "Name or content"
 msgstr "Имя или содержание"
 
@@ -3416,8 +3420,8 @@ msgid "Nginx.conf includes streams-enabled directory"
 msgstr "Nginx.conf включает каталог streams-enabled"
 
 #: src/components/ChatGPT/ChatMessageInput.vue:17
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:157
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:169
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:111
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:99
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:99
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
 #: src/components/Notification/Notification.vue:108 src/language/curd.ts:40
@@ -3429,7 +3433,8 @@ msgstr "Nginx.conf включает каталог streams-enabled"
 msgid "No"
 msgstr "Нет"
 
-#: src/views/environments/group/columns.ts:19
+#: src/components/EnvGroupRender/EnvGroupRender.vue:41
+#: src/views/environments/group/columns.ts:49
 #: src/views/environments/group/EnvGroup.vue:47
 msgid "No Action"
 msgstr "Нет действия"
@@ -3437,6 +3442,10 @@ msgstr "Нет действия"
 #: src/views/dashboard/NginxDashBoard.vue:202
 msgid "No data"
 msgstr "Нет данных"
+
+#: src/components/EnvGroupRender/EnvGroupRender.vue:55
+msgid "No nodes selected"
+msgstr "Нет выбранных узлов"
 
 #: src/components/ConfigHistory/DiffViewer.vue:47
 msgid "No records selected"
@@ -3454,9 +3463,9 @@ msgstr "Нет настроенных апстримов"
 msgid "Node"
 msgstr "Узел"
 
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:41
-#: src/views/site/site_list/columns.tsx:88 src/views/stream/columns.tsx:56
-#: src/views/stream/components/RightPanel/Basic.vue:38
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:42
+#: src/views/site/site_list/columns.tsx:90 src/views/stream/columns.tsx:58
+#: src/views/stream/components/RightPanel/Basic.vue:39
 msgid "Node Group"
 msgstr "Группа узлов"
 
@@ -3499,8 +3508,8 @@ msgstr "Действителен до: %{date}"
 msgid "Note"
 msgstr "Заметка"
 
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:65
-#: src/views/stream/components/RightPanel/Basic.vue:60
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:66
+#: src/views/stream/components/RightPanel/Basic.vue:61
 msgid ""
 "Note, if the configuration file include other configurations or "
 "certificates, please synchronize them to the remote nodes in advance."
@@ -3575,11 +3584,11 @@ msgstr "Выкл"
 msgid "Official Document"
 msgstr "Официальная документация"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:185
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:127
 #: src/components/NgxConfigEditor/NgxUpstream.vue:151
-#: src/components/NodeSelector/NodeSelector.vue:107
-#: src/components/ProxyTargets/ProxyTargets.vue:29
-#: src/views/dashboard/Environments.vue:101
+#: src/components/NodeCard/NodeCard.vue:51
+#: src/components/NodeSelector/NodeSelector.vue:84
+#: src/views/dashboard/Environments.vue:106
 #: src/views/environments/list/envColumns.tsx:55
 msgid "Offline"
 msgstr "Оффлайн"
@@ -3609,10 +3618,11 @@ msgstr "Вкл"
 msgid "Once the verification is complete, the records will be removed."
 msgstr "После завершения проверки записи будут удалены."
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:185
-#: src/components/NodeSelector/NodeSelector.vue:101
-#: src/components/NodeSelector/NodeSelector.vue:87
-#: src/views/dashboard/Environments.vue:94
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:127
+#: src/components/NodeCard/NodeCard.vue:51
+#: src/components/NodeSelector/NodeSelector.vue:64
+#: src/components/NodeSelector/NodeSelector.vue:78
+#: src/views/dashboard/Environments.vue:99
 #: src/views/environments/list/envColumns.tsx:51
 msgid "Online"
 msgstr "Онлайн"
@@ -3736,7 +3746,7 @@ msgstr "Пароли не совпадают"
 #: src/language/curd.ts:61
 #: src/views/config/components/ConfigRightPanel/Basic.vue:41
 #: src/views/config/components/Delete.vue:124
-#: src/views/nginx_log/NginxLogList.vue:59
+#: src/views/nginx_log/NginxLogList.vue:60
 msgid "Path"
 msgstr "Путь"
 
@@ -3928,6 +3938,10 @@ msgstr ""
 msgid "Please select a backup file"
 msgstr "Пожалуйста, выберите файл резервной копии"
 
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:41
+msgid "Please select a notification type"
+msgstr "Пожалуйста, выберите тип уведомления"
+
 #: src/views/certificate/components/CertificateFileUpload.vue:45
 msgid "Please select a valid %{type} file (%{extensions})"
 msgstr "Пожалуйста, выберите действительный файл %{type} (%{extensions})"
@@ -3968,7 +3982,8 @@ msgstr "Порт"
 msgid "Port Scanner"
 msgstr "Сканер портов"
 
-#: src/views/environments/group/columns.ts:15
+#: src/components/EnvGroupRender/EnvGroupRender.vue:38
+#: src/views/environments/group/columns.ts:45
 #: src/views/environments/group/EnvGroup.vue:39
 msgid "Post-sync Action"
 msgstr "Действие после синхронизации"
@@ -4050,7 +4065,7 @@ msgstr "Прокси"
 msgid "Proxy Pass"
 msgstr "Прокси-передача"
 
-#: src/views/site/site_list/columns.tsx:76 src/views/stream/columns.tsx:44
+#: src/views/site/site_list/columns.tsx:78 src/views/stream/columns.tsx:46
 msgid "Proxy Targets"
 msgstr "Цели прокси"
 
@@ -4154,8 +4169,9 @@ msgstr "Что нового"
 msgid "Reload"
 msgstr "Перегрузить"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:162
-#: src/views/environments/group/columns.ts:22
+#: src/components/EnvGroupRender/EnvGroupRender.vue:44
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:104
+#: src/views/environments/group/columns.ts:52
 #: src/views/environments/group/EnvGroup.vue:50
 #: src/views/environments/list/Environment.vue:209
 #: src/views/environments/list/Environment.vue:217
@@ -4182,7 +4198,7 @@ msgstr "Ошибка перезагрузки удаленного Nginx"
 msgid "Reload Remote Nginx Success"
 msgstr "Удаленная перезагрузка Nginx успешно выполнена"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:110
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:52
 msgid "Reload request failed, please check your network connection"
 msgstr "Не удалось выполнить запрос на перезагрузку, проверьте подключение к сети"
 
@@ -4342,7 +4358,7 @@ msgstr "Ответы"
 msgid "Restart"
 msgstr "Перезапуск"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:174
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:116
 #: src/views/environments/list/Environment.vue:230
 #: src/views/environments/list/Environment.vue:238
 msgid "Restart Nginx"
@@ -4364,7 +4380,7 @@ msgstr "Ошибка перезапуска удаленного Nginx"
 msgid "Restart Remote Nginx Success"
 msgstr "Удалённая перезагрузка Nginx успешно выполнена"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:130
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:72
 msgid "Restart request failed, please check your network connection"
 msgstr "Запрос на перезапуск не выполнен, проверьте подключение к сети"
 
@@ -4656,7 +4672,7 @@ msgstr ""
 "Отсканируйте QR-код с помощью мобильного телефона, чтобы добавить учетную "
 "запись в приложение."
 
-#: src/views/nginx_log/NginxLogList.vue:100
+#: src/views/nginx_log/NginxLogList.vue:101
 msgid "Scanning logs..."
 msgstr "Сканирование журналов..."
 
@@ -4673,8 +4689,8 @@ msgid "SDK"
 msgstr "SDK"
 
 #: src/language/constants.ts:62 src/language/curd.ts:12
-#: src/views/config/configColumns.tsx:5 src/views/site/site_list/columns.tsx:16
-#: src/views/stream/columns.tsx:12
+#: src/views/config/configColumns.tsx:5 src/views/site/site_list/columns.tsx:17
+#: src/views/stream/columns.tsx:13
 msgid "Search"
 msgstr "Поиск"
 
@@ -4728,6 +4744,10 @@ msgstr "Самопроверка не удалась, Nginx UI может раб
 #: src/views/dashboard/ServerAnalytic.vue:351
 msgid "Send"
 msgstr "Отправлено"
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:77
+msgid "Send test message"
+msgstr "Отправить тестовое сообщение"
 
 #: src/routes/modules/dashboard.ts:19 src/views/preference/Preference.vue:46
 msgid "Server"
@@ -4960,8 +4980,8 @@ msgstr "Статический"
 #: src/views/certificate/CertificateList/certColumns.tsx:63
 #: src/views/dashboard/components/ModulesTable.vue:96
 #: src/views/environments/list/envColumns.tsx:43
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:28
-#: src/views/site/site_list/columns.tsx:113 src/views/stream/columns.tsx:81
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:29
+#: src/views/site/site_list/columns.tsx:119 src/views/stream/columns.tsx:87
 msgid "Status"
 msgstr "Статус"
 
@@ -5135,15 +5155,21 @@ msgstr "Ошибка синхронизации конфигурации"
 msgid "Sync Config Success"
 msgstr "Синхронизация конфигурации успешна"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:148
+#: src/components/EnvGroupRender/EnvGroupRender.vue:53
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:90
+#: src/views/environments/group/columns.ts:16
 #: src/views/environments/group/EnvGroup.vue:31
 msgid "Sync Nodes"
 msgstr "Синхронизированные узлы"
 
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:58
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:71
-#: src/views/stream/components/RightPanel/Basic.vue:53
-#: src/views/stream/components/RightPanel/Basic.vue:66
+#: src/components/SyncNodesPreview/SyncNodesPreview.vue:45
+msgid "Sync Preview"
+msgstr "Предпросмотр синхронизации"
+
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:59
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:72
+#: src/views/stream/components/RightPanel/Basic.vue:54
+#: src/views/stream/components/RightPanel/Basic.vue:67
 msgid "Sync strategy"
 msgstr "Стратегия синхронизации"
 
@@ -5151,8 +5177,8 @@ msgstr "Стратегия синхронизации"
 msgid "Sync to"
 msgstr "Синхронизировать с"
 
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:56
-#: src/views/stream/components/RightPanel/Basic.vue:51
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:57
+#: src/views/stream/components/RightPanel/Basic.vue:52
 msgid "Synchronization"
 msgstr "Синхронизация"
 
@@ -5201,11 +5227,12 @@ msgstr "Терминал"
 msgid "Terminal Start Command"
 msgstr "Терминальная команда запуска"
 
-#: src/views/preference/tabs/ExternalNotify.vue:46
+#: src/views/preference/tabs/ExternalNotify.vue:51
 msgid "Test"
 msgstr "Тест"
 
-#: src/views/preference/tabs/ExternalNotify.vue:17
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:52
+#: src/views/preference/tabs/ExternalNotify.vue:22
 msgid "Test message sent successfully"
 msgstr "Тестовое сообщение успешно отправлено"
 
@@ -5591,7 +5618,7 @@ msgstr "Требуется двухфакторная аутентификаци
 #: src/views/certificate/CertificateList/certColumns.tsx:24
 #: src/views/config/components/Delete.vue:122
 #: src/views/dashboard/components/ModulesTable.vue:83
-#: src/views/nginx_log/NginxLogList.vue:27
+#: src/views/nginx_log/NginxLogList.vue:28
 #: src/views/notification/notificationColumns.tsx:8
 #: src/views/preference/components/ExternalNotify/columns.tsx:18
 msgid "Type"
@@ -5627,11 +5654,11 @@ msgstr "Успешно обновлено"
 #: src/views/certificate/DNSCredential.vue:38
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
 #: src/views/config/configColumns.tsx:43
-#: src/views/environments/group/columns.ts:35
+#: src/views/environments/group/columns.ts:65
 #: src/views/environments/list/envColumns.tsx:89
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:38
-#: src/views/site/site_list/columns.tsx:106 src/views/stream/columns.tsx:74
-#: src/views/stream/components/RightPanel/Basic.vue:34
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:39
+#: src/views/site/site_list/columns.tsx:112 src/views/stream/columns.tsx:80
+#: src/views/stream/components/RightPanel/Basic.vue:35
 #: src/views/user/userColumns.tsx:52
 msgid "Updated at"
 msgstr "Обновлено в"
@@ -5752,7 +5779,7 @@ msgstr "Проверьте системные требования"
 msgid "Version"
 msgstr "Версия"
 
-#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:105
+#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:106
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:83
 msgid "View"
 msgstr "Просмотр"
@@ -5847,8 +5874,8 @@ msgstr ""
 "при запуске. Обычно не включайте эту функцию, если только вы не находитесь "
 "в среде разработки и используете Pebble в качестве CA."
 
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:61
-#: src/views/stream/components/RightPanel/Basic.vue:56
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:62
+#: src/views/stream/components/RightPanel/Basic.vue:57
 msgid ""
 "When you enable/disable, delete, or save this site, the nodes set in the "
 "Node Group and the nodes selected below will be synchronized."
@@ -5913,8 +5940,8 @@ msgstr "Запись закрытого ключа сертификата на �
 msgid "Writing certificate to disk"
 msgstr "Запись сертификата на диск"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:156
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:168
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:110
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:98
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:98
 #: src/components/NgxConfigEditor/LocationEditor.vue:88
 #: src/views/preference/tabs/AuthSettings.vue:131
