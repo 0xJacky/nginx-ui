@@ -2,7 +2,6 @@ package crypto
 
 import (
 	"net/http"
-	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/crypto"
 	"github.com/gin-gonic/gin"
@@ -18,11 +17,6 @@ func GetPublicKey(c *gin.Context) {
 	}
 
 	if !cosy.BindAndValid(c, &data) {
-		return
-	}
-
-	if time.Now().Unix()-data.Timestamp > 10 {
-		cosy.ErrHandler(c, crypto.ErrTimeout)
 		return
 	}
 
