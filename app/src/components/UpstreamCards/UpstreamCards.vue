@@ -46,7 +46,9 @@ function getCardStatusColor(target: ProxyTarget): string {
 <template>
   <div v-if="targets.length > 0" class="upstream-cards">
     <div class="upstream-header">
-      <h3 class="upstream-title">Upstreams</h3>
+      <h3 class="upstream-title">
+        Upstreams
+      </h3>
       <span class="upstream-count">{{ targets.length }}</span>
     </div>
     <div class="cards-grid">
