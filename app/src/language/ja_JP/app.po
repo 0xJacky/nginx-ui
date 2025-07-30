@@ -101,8 +101,8 @@ msgid "[Nginx UI] Writing certificate to disk"
 msgstr "[Nginx UI] 証明書をディスクに書き込み中"
 
 #: src/components/SyncNodesPreview/SyncNodesPreview.vue:59
-msgid "* Includes nodes from group \"%{groupName}\" and manually selected nodes"
-msgstr "* グループ \"%{groupName}\" のノードと手動で選択したノードを含む"
+msgid "* Includes nodes from group %{groupName} and manually selected nodes"
+msgstr "* グループ %{groupName} のノードと手動で選択したノードを含む"
 
 #: src/views/user/userColumns.tsx:30
 msgid "2FA"
@@ -163,7 +163,7 @@ msgid "Actual worker to configured ratio"
 msgstr "実際のワーカー数と設定値の比率"
 
 #: src/components/NgxConfigEditor/NgxServer.vue:144
-#: src/components/NgxConfigEditor/NgxUpstream.vue:166 src/language/curd.ts:19
+#: src/components/NgxConfigEditor/NgxUpstream.vue:97 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:45
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:94
 #: src/views/site/site_list/SiteList.vue:95 src/views/stream/StreamList.vue:103
@@ -206,7 +206,7 @@ msgstr "サイトを追加"
 msgid "Add Stream"
 msgstr "Streamを追加"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:187
+#: src/components/NgxConfigEditor/NgxUpstream.vue:118
 msgid "Add Upstream"
 msgstr "アップストリームを追加"
 
@@ -218,8 +218,8 @@ msgstr "正常に追加されました"
 msgid "Additional"
 msgstr "追加設定"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:94
-#: src/views/stream/components/StreamEditor.vue:57
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:100
+#: src/views/stream/components/StreamEditor.vue:63
 msgid "Advance Mode"
 msgstr "アドバンスモード"
 
@@ -425,12 +425,16 @@ msgstr "AutoCert が実行中..."
 msgid "Automatic Restart"
 msgstr "自動再起動"
 
+#: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:36
+msgid "Average Latency"
+msgstr "平均レイテンシ"
+
 #: src/views/certificate/components/CertificateActions.vue:22
 #: src/views/config/components/ConfigLeftPanel.vue:273
 #: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
 #: src/views/nginx_log/NginxLog.vue:174
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:156
-#: src/views/stream/components/StreamEditor.vue:111
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:169
+#: src/views/stream/components/StreamEditor.vue:123
 msgid "Back"
 msgstr "戻る"
 
@@ -524,8 +528,8 @@ msgstr "基本情報"
 msgid "Basic"
 msgstr "基本"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:97
-#: src/views/stream/components/StreamEditor.vue:60
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:103
+#: src/views/stream/components/StreamEditor.vue:66
 msgid "Basic Mode"
 msgstr "基本モード"
 
@@ -614,7 +618,7 @@ msgstr ""
 
 #: src/components/ChatGPT/ChatMessage.vue:216
 #: src/components/NgxConfigEditor/NgxServer.vue:61
-#: src/components/NgxConfigEditor/NgxUpstream.vue:37 src/language/curd.ts:37
+#: src/components/NgxConfigEditor/NgxUpstream.vue:32 src/language/curd.ts:37
 #: src/views/config/components/Delete.vue:98
 #: src/views/preference/components/AuthSettings/Passkey.vue:141
 #: src/views/site/components/SiteStatusSelect.vue:124
@@ -1275,7 +1279,7 @@ msgid "Define shared memory zone name and size, e.g. proxy_cache:10m"
 msgstr "共有メモリゾーンの名前とサイズを定義します（例: proxy_cache:10m）"
 
 #: src/components/NgxConfigEditor/NgxServer.vue:110
-#: src/components/NgxConfigEditor/NgxUpstream.vue:134 src/language/curd.ts:9
+#: src/components/NgxConfigEditor/NgxUpstream.vue:78 src/language/curd.ts:9
 #: src/views/certificate/components/RemoveCert.vue:90
 #: src/views/config/components/Delete.vue:65
 #: src/views/config/components/Delete.vue:97
@@ -1387,6 +1391,10 @@ msgstr "詳細"
 msgid "Dev"
 msgstr "Dev"
 
+#: src/views/environments/list/BatchUpgrader.vue:171
+msgid "Development"
+msgstr "開発"
+
 #: src/views/system/About.vue:28
 msgid "Development Mode"
 msgstr "開発モード"
@@ -1489,9 +1497,9 @@ msgstr "ストリーム %{name} を %{node} から無効化しました"
 #: src/views/preference/tabs/NodeSettings.vue:25
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:162
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:68
 #: src/views/site/site_list/columns.tsx:146 src/views/stream/columns.tsx:112
-#: src/views/stream/components/StreamEditor.vue:32
+#: src/views/stream/components/StreamEditor.vue:38
 #: src/views/user/userColumns.tsx:39
 msgid "Disabled"
 msgstr "無効"
@@ -1544,7 +1552,7 @@ msgstr "TLSを有効にしますか？"
 msgid "Do you want to remove this server?"
 msgstr "このサーバーを削除しますか？"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:33
+#: src/components/NgxConfigEditor/NgxUpstream.vue:28
 msgid "Do you want to remove this upstream?"
 msgstr "このアップストリームを削除しますか？"
 
@@ -1594,7 +1602,7 @@ msgstr "証明書ファイルをここにドロップ"
 msgid "Drop private key file here"
 msgstr "秘密鍵ファイルをここにドロップ"
 
-#: src/views/environments/list/BatchUpgrader.vue:189
+#: src/views/environments/list/BatchUpgrader.vue:192
 #: src/views/system/Upgrade.vue:237
 msgid "Dry run mode enabled"
 msgstr "ドライランモードが有効です"
@@ -1630,8 +1638,8 @@ msgstr "例: 0 0 * * * (毎日深夜0時)"
 msgid "Edit"
 msgstr "編集"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:51
-#: src/views/stream/components/StreamEditor.vue:21
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:57
+#: src/views/stream/components/StreamEditor.vue:27
 msgid "Edit %{n}"
 msgstr "%{n} を編集"
 
@@ -1764,10 +1772,10 @@ msgstr "TOTP を有効にする"
 #: src/views/preference/tabs/NodeSettings.vue:25
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:159
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:56
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
 #: src/views/site/site_list/columns.tsx:142 src/views/stream/columns.tsx:108
 #: src/views/stream/components/RightPanel/Basic.vue:24
-#: src/views/stream/components/StreamEditor.vue:26
+#: src/views/stream/components/StreamEditor.vue:32
 #: src/views/user/userColumns.tsx:36
 msgid "Enabled"
 msgstr "有効"
@@ -2375,7 +2383,7 @@ msgstr "データの取得に失敗しました"
 msgid "Get dns credential error: {0}"
 msgstr "DNS認証情報の取得エラー: {0}"
 
-#: src/views/environments/list/BatchUpgrader.vue:178
+#: src/views/environments/list/BatchUpgrader.vue:181
 #: src/views/system/Upgrade.vue:188
 msgid "Get release information error"
 msgstr "リリース情報の取得エラー"
@@ -2417,8 +2425,8 @@ msgid "Higher value means better connection reuse"
 msgstr "値が高いほど接続の再利用が効率的であることを意味します"
 
 #: src/views/config/components/ConfigLeftPanel.vue:254
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:81
-#: src/views/stream/components/StreamEditor.vue:45
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:87
+#: src/views/stream/components/StreamEditor.vue:51
 msgid "History"
 msgstr "履歴"
 
@@ -2867,16 +2875,13 @@ msgstr ""
 "Nginx UI をインストールするユーザーは、このオプションを手動で有効にすることができます。Nginx UI の crontab "
 "タスクスケジューラは、設定した間隔（分単位）で logrotate コマンドを実行します。"
 
-#: src/components/ProxyTargets/ProxyTargets.vue:220
-msgid "Main"
-msgstr "メイン"
-
-#: src/components/ProxyTargets/ProxyTargets.vue:148
+#: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:51
+#: src/composables/useUpstreamStatus.ts:139
 msgid "Main Node"
 msgstr "メインノード"
 
 #: src/views/site/components/SiteStatusSelect.vue:165
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:68
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:74
 #: src/views/site/site_list/columns.tsx:150
 msgid "Maintenance"
 msgstr "メンテナンス"
@@ -3078,11 +3083,12 @@ msgstr "毎月%{day}日%{time}に"
 msgid "Multi-line Directive"
 msgstr "複数行ディレクティブ"
 
-#: src/components/ProxyTargets/ProxyTargets.vue:225
+#: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:38
+#: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:56
 msgid "N/A"
 msgstr "該当なし"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:199
+#: src/components/NgxConfigEditor/NgxUpstream.vue:130
 #: src/views/backup/AutoBackup/AutoBackup.vue:11
 #: src/views/certificate/ACMEUser.vue:11
 #: src/views/certificate/CertificateList/certColumns.tsx:9
@@ -3219,8 +3225,8 @@ msgstr "Nginx設定エントリファイルが存在します"
 msgid "Nginx configuration has been restored"
 msgstr "Nginxの設定が復元されました"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:115
-#: src/views/stream/components/StreamEditor.vue:75
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:121
+#: src/views/stream/components/StreamEditor.vue:81
 msgid "Nginx Configuration Parse Error"
 msgstr "Nginx設定解析エラー"
 
@@ -3401,7 +3407,7 @@ msgstr "選択されたレコードがありません"
 msgid "No servers configured"
 msgstr "サーバーが設定されていません"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:172
+#: src/components/NgxConfigEditor/NgxUpstream.vue:103
 msgid "No upstreams configured"
 msgstr "アップストリームが設定されていません"
 
@@ -3428,7 +3434,7 @@ msgstr "ノード名"
 msgid "Node Secret"
 msgstr "ノードシークレット"
 
-#: src/components/ProxyTargets/ProxyTargets.vue:208
+#: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:24
 msgid "Node Status"
 msgstr "ノードステータス"
 
@@ -3529,10 +3535,9 @@ msgid "Official Document"
 msgstr "公式ドキュメント"
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:127
-#: src/components/NgxConfigEditor/NgxUpstream.vue:151
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:84
-#: src/components/ProxyTargets/ProxyTargets.vue:217
+#: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
 #: src/views/dashboard/Environments.vue:106
 #: src/views/environments/list/envColumns.tsx:55
 msgid "Offline"
@@ -3540,7 +3545,7 @@ msgstr "オフライン"
 
 #: src/components/ChatGPT/ChatMessageInput.vue:18
 #: src/components/NgxConfigEditor/NgxServer.vue:60
-#: src/components/NgxConfigEditor/NgxUpstream.vue:36
+#: src/components/NgxConfigEditor/NgxUpstream.vue:31
 #: src/components/Notification/Notification.vue:109 src/language/curd.ts:15
 #: src/views/backup/components/BackupCreator.vue:149
 #: src/views/notification/Notification.vue:39
@@ -3567,11 +3572,15 @@ msgstr "検証が完了すると、レコードは削除されます。"
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:64
 #: src/components/NodeSelector/NodeSelector.vue:78
-#: src/components/ProxyTargets/ProxyTargets.vue:217
+#: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
 #: src/views/dashboard/Environments.vue:99
 #: src/views/environments/list/envColumns.tsx:51
 msgid "Online"
 msgstr "オンライン"
+
+#: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:32
+msgid "Online Count"
+msgstr "オンライン数"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:78
 msgid "Only zip files are allowed"
@@ -3711,7 +3720,7 @@ msgstr "ペイロードリソースが nil です"
 msgid "Pending"
 msgstr "保留中"
 
-#: src/views/environments/list/BatchUpgrader.vue:242
+#: src/views/environments/list/BatchUpgrader.vue:245
 msgid "Perform"
 msgstr "実行"
 
@@ -3913,7 +3922,7 @@ msgid "Post-sync Action"
 msgstr "同期後のアクション"
 
 #: src/views/environments/list/BatchUpgrader.vue:168
-#: src/views/environments/list/BatchUpgrader.vue:221
+#: src/views/environments/list/BatchUpgrader.vue:224
 #: src/views/system/Upgrade.vue:213 src/views/system/Upgrade.vue:267
 msgid "Pre-release"
 msgstr "プレリリース"
@@ -3982,7 +3991,7 @@ msgstr "プロバイダーが見つかりません: {0}"
 msgid "Proxy"
 msgstr "プロキシ"
 
-#: src/components/ProxyTargets/ProxyTargets.vue:125
+#: src/composables/useUpstreamStatus.ts:115
 msgid "Proxy Pass"
 msgstr "プロキシパス"
 
@@ -4143,7 +4152,7 @@ msgstr "削除に成功しました"
 msgid "Removed successfully"
 msgstr "正常に削除されました"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:131
+#: src/components/NgxConfigEditor/NgxUpstream.vue:75
 #: src/views/config/components/ConfigName.vue:51
 #: src/views/config/components/Rename.vue:56
 #: src/views/config/ConfigList.vue:190
@@ -4495,9 +4504,9 @@ msgstr "土曜日"
 #: src/views/preference/components/AuthSettings/Passkey.vue:130
 #: src/views/preference/Preference.vue:117
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:163
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:176
 #: src/views/stream/components/ConfigName.vue:52
-#: src/views/stream/components/StreamEditor.vue:118
+#: src/views/stream/components/StreamEditor.vue:130
 msgid "Save"
 msgstr "保存"
 
@@ -4555,7 +4564,7 @@ msgstr "保存に成功しました"
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:43
 #: src/language/curd.ts:28 src/views/config/components/ConfigLeftPanel.vue:198
 #: src/views/site/site_add/SiteAdd.vue:36
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:40
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:46
 #: src/views/stream/store.ts:70
 msgid "Saved successfully"
 msgstr "正常に保存されました"
@@ -4861,7 +4870,7 @@ msgid "SSO Login"
 msgstr "SSOログイン"
 
 #: src/views/environments/list/BatchUpgrader.vue:165
-#: src/views/environments/list/BatchUpgrader.vue:215
+#: src/views/environments/list/BatchUpgrader.vue:218
 #: src/views/system/Upgrade.vue:210 src/views/system/Upgrade.vue:261
 msgid "Stable"
 msgstr "安定版"
@@ -5334,7 +5343,7 @@ msgid ""
 "after the restoration is complete."
 msgstr "これにより設定ファイルとデータベースが復元されます。復元が完了すると、Nginx UI が再起動します。"
 
-#: src/views/environments/list/BatchUpgrader.vue:183
+#: src/views/environments/list/BatchUpgrader.vue:186
 msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr "これにより、%{nodeNames} 上の Nginx UI が %{version} にアップグレードまたは再インストールされます。"
 
@@ -5476,7 +5485,7 @@ msgstr "火曜日"
 msgid "Two-factor authentication required"
 msgstr "二要素認証が必要です"
 
-#: src/components/ProxyTargets/ProxyTargets.vue:125
+#: src/composables/useUpstreamStatus.ts:115
 #: src/views/certificate/CertificateList/certColumns.tsx:24
 #: src/views/config/components/Delete.vue:122
 #: src/views/dashboard/components/ModulesTable.vue:83
@@ -5557,11 +5566,11 @@ msgstr "ファイルをアップロード"
 msgid "Upload Folders"
 msgstr "フォルダをアップロード"
 
-#: src/components/ProxyTargets/ProxyTargets.vue:125
+#: src/composables/useUpstreamStatus.ts:115
 msgid "Upstream"
 msgstr "アップストリーム"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:194
+#: src/components/NgxConfigEditor/NgxUpstream.vue:125
 msgid "Upstream Name"
 msgstr "アップストリーム名"
 
@@ -5654,7 +5663,7 @@ msgstr "ビュー"
 msgid "View all notifications"
 msgstr "すべての通知を表示します"
 
-#: src/views/environments/list/BatchUpgrader.vue:232
+#: src/views/environments/list/BatchUpgrader.vue:235
 #: src/views/system/Upgrade.vue:279
 msgid "View on GitHub"
 msgstr "GitHubで見る"
@@ -5857,6 +5866,9 @@ msgstr "以前のコードはもう使えません。"
 #: src/views/preference/components/AuthSettings/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "あなたのパスキー"
+
+#~ msgid "Main"
+#~ msgstr "メイン"
 
 #~ msgid "Select an action after sync"
 #~ msgstr "同期後のアクションを選択"

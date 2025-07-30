@@ -96,8 +96,8 @@ msgid "[Nginx UI] Writing certificate to disk"
 msgstr "[Nginx UI] Đang ghi chứng chỉ vào ổ đĩa"
 
 #: src/components/SyncNodesPreview/SyncNodesPreview.vue:59
-msgid "* Includes nodes from group \"%{groupName}\" and manually selected nodes"
-msgstr "* Bao gồm các nút từ nhóm \"%{groupName}\" và các nút được chọn thủ công"
+msgid "* Includes nodes from group %{groupName} and manually selected nodes"
+msgstr "* Bao gồm các nút từ nhóm %{groupName} và các nút được chọn thủ công"
 
 #: src/views/user/userColumns.tsx:30
 msgid "2FA"
@@ -158,7 +158,7 @@ msgid "Actual worker to configured ratio"
 msgstr "Tỷ lệ công nhân thực tế so với cấu hình"
 
 #: src/components/NgxConfigEditor/NgxServer.vue:144
-#: src/components/NgxConfigEditor/NgxUpstream.vue:166 src/language/curd.ts:19
+#: src/components/NgxConfigEditor/NgxUpstream.vue:97 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:45
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:94
 #: src/views/site/site_list/SiteList.vue:95 src/views/stream/StreamList.vue:103
@@ -201,7 +201,7 @@ msgstr "Thêm Website"
 msgid "Add Stream"
 msgstr "Thêm luồng"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:187
+#: src/components/NgxConfigEditor/NgxUpstream.vue:118
 msgid "Add Upstream"
 msgstr "Thêm upstream"
 
@@ -213,8 +213,8 @@ msgstr "Đã thêm thành công"
 msgid "Additional"
 msgstr "Bổ sung"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:94
-#: src/views/stream/components/StreamEditor.vue:57
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:100
+#: src/views/stream/components/StreamEditor.vue:63
 msgid "Advance Mode"
 msgstr "Nâng cao"
 
@@ -422,12 +422,16 @@ msgstr "AutoCert đang chạy..."
 msgid "Automatic Restart"
 msgstr "Khởi động lại tự động"
 
+#: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:36
+msgid "Average Latency"
+msgstr "Độ trễ trung bình"
+
 #: src/views/certificate/components/CertificateActions.vue:22
 #: src/views/config/components/ConfigLeftPanel.vue:273
 #: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
 #: src/views/nginx_log/NginxLog.vue:174
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:156
-#: src/views/stream/components/StreamEditor.vue:111
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:169
+#: src/views/stream/components/StreamEditor.vue:123
 msgid "Back"
 msgstr "Quay lại"
 
@@ -523,8 +527,8 @@ msgstr "Thông tin"
 msgid "Basic"
 msgstr "Cơ bản"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:97
-#: src/views/stream/components/StreamEditor.vue:60
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:103
+#: src/views/stream/components/StreamEditor.vue:66
 msgid "Basic Mode"
 msgstr "Cơ bản"
 
@@ -613,7 +617,7 @@ msgstr ""
 
 #: src/components/ChatGPT/ChatMessage.vue:216
 #: src/components/NgxConfigEditor/NgxServer.vue:61
-#: src/components/NgxConfigEditor/NgxUpstream.vue:37 src/language/curd.ts:37
+#: src/components/NgxConfigEditor/NgxUpstream.vue:32 src/language/curd.ts:37
 #: src/views/config/components/Delete.vue:98
 #: src/views/preference/components/AuthSettings/Passkey.vue:141
 #: src/views/site/components/SiteStatusSelect.vue:124
@@ -1288,7 +1292,7 @@ msgid "Define shared memory zone name and size, e.g. proxy_cache:10m"
 msgstr "Xác định tên và kích thước vùng bộ nhớ dùng chung, ví dụ proxy_cache:10m"
 
 #: src/components/NgxConfigEditor/NgxServer.vue:110
-#: src/components/NgxConfigEditor/NgxUpstream.vue:134 src/language/curd.ts:9
+#: src/components/NgxConfigEditor/NgxUpstream.vue:78 src/language/curd.ts:9
 #: src/views/certificate/components/RemoveCert.vue:90
 #: src/views/config/components/Delete.vue:65
 #: src/views/config/components/Delete.vue:97
@@ -1400,6 +1404,10 @@ msgstr "Chi tiết"
 msgid "Dev"
 msgstr "Dev"
 
+#: src/views/environments/list/BatchUpgrader.vue:171
+msgid "Development"
+msgstr "Phát triển"
+
 #: src/views/system/About.vue:28
 msgid "Development Mode"
 msgstr "Chế độ phát triển"
@@ -1502,9 +1510,9 @@ msgstr "Đã vô hiệu hóa luồng %{name} từ %{node} thành công"
 #: src/views/preference/tabs/NodeSettings.vue:25
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:162
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:68
 #: src/views/site/site_list/columns.tsx:146 src/views/stream/columns.tsx:112
-#: src/views/stream/components/StreamEditor.vue:32
+#: src/views/stream/components/StreamEditor.vue:38
 #: src/views/user/userColumns.tsx:39
 msgid "Disabled"
 msgstr "Đã tắt"
@@ -1557,7 +1565,7 @@ msgstr "Bạn có muốn bật TLS không?"
 msgid "Do you want to remove this server?"
 msgstr "Bạn có muốn xóa máy chủ này không?"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:33
+#: src/components/NgxConfigEditor/NgxUpstream.vue:28
 msgid "Do you want to remove this upstream?"
 msgstr "Bạn có muốn xóa upstream này không?"
 
@@ -1609,7 +1617,7 @@ msgstr "Thả tệp chứng chỉ vào đây"
 msgid "Drop private key file here"
 msgstr "Thả tệp khóa riêng tư vào đây"
 
-#: src/views/environments/list/BatchUpgrader.vue:189
+#: src/views/environments/list/BatchUpgrader.vue:192
 #: src/views/system/Upgrade.vue:237
 msgid "Dry run mode enabled"
 msgstr "Đã bật chế độ Dry run"
@@ -1647,8 +1655,8 @@ msgstr "vd, 0 0 * * * (hàng ngày vào nửa đêm)"
 msgid "Edit"
 msgstr "Chỉnh sửa"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:51
-#: src/views/stream/components/StreamEditor.vue:21
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:57
+#: src/views/stream/components/StreamEditor.vue:27
 msgid "Edit %{n}"
 msgstr "Sửa %{n}"
 
@@ -1781,10 +1789,10 @@ msgstr "Bật TOTP"
 #: src/views/preference/tabs/NodeSettings.vue:25
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:159
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:56
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
 #: src/views/site/site_list/columns.tsx:142 src/views/stream/columns.tsx:108
 #: src/views/stream/components/RightPanel/Basic.vue:24
-#: src/views/stream/components/StreamEditor.vue:26
+#: src/views/stream/components/StreamEditor.vue:32
 #: src/views/user/userColumns.tsx:36
 msgid "Enabled"
 msgstr "Đã bật"
@@ -2394,7 +2402,7 @@ msgstr "Không thể lấy dữ liệu"
 msgid "Get dns credential error: {0}"
 msgstr "Lỗi khi lấy thông tin xác thực DNS: {0}"
 
-#: src/views/environments/list/BatchUpgrader.vue:178
+#: src/views/environments/list/BatchUpgrader.vue:181
 #: src/views/system/Upgrade.vue:188
 msgid "Get release information error"
 msgstr "Lỗi lấy thông tin phát hành"
@@ -2436,8 +2444,8 @@ msgid "Higher value means better connection reuse"
 msgstr "Giá trị cao hơn có nghĩa là tái sử dụng kết nối tốt hơn"
 
 #: src/views/config/components/ConfigLeftPanel.vue:254
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:81
-#: src/views/stream/components/StreamEditor.vue:45
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:87
+#: src/views/stream/components/StreamEditor.vue:51
 msgid "History"
 msgstr "Lịch sử"
 
@@ -2900,16 +2908,13 @@ msgstr ""
 "chọn này. Bộ lập lịch tác vụ crontab của Nginx UI sẽ thực thi lệnh "
 "logrotate theo khoảng thời gian bạn đặt (tính bằng phút)."
 
-#: src/components/ProxyTargets/ProxyTargets.vue:220
-msgid "Main"
-msgstr "Chính"
-
-#: src/components/ProxyTargets/ProxyTargets.vue:148
+#: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:51
+#: src/composables/useUpstreamStatus.ts:139
 msgid "Main Node"
 msgstr "Nút chính"
 
 #: src/views/site/components/SiteStatusSelect.vue:165
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:68
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:74
 #: src/views/site/site_list/columns.tsx:150
 msgid "Maintenance"
 msgstr "Bảo trì"
@@ -3111,11 +3116,12 @@ msgstr "Hàng tháng vào ngày %{day} lúc %{time}"
 msgid "Multi-line Directive"
 msgstr "Chỉ thị nhiều dòng"
 
-#: src/components/ProxyTargets/ProxyTargets.vue:225
+#: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:38
+#: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:56
 msgid "N/A"
 msgstr "Không có"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:199
+#: src/components/NgxConfigEditor/NgxUpstream.vue:130
 #: src/views/backup/AutoBackup/AutoBackup.vue:11
 #: src/views/certificate/ACMEUser.vue:11
 #: src/views/certificate/CertificateList/certColumns.tsx:9
@@ -3252,8 +3258,8 @@ msgstr "Tập tin cấu hình đầu vào Nginx tồn tại"
 msgid "Nginx configuration has been restored"
 msgstr "Cấu hình Nginx đã được khôi phục"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:115
-#: src/views/stream/components/StreamEditor.vue:75
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:121
+#: src/views/stream/components/StreamEditor.vue:81
 msgid "Nginx Configuration Parse Error"
 msgstr "Lỗi phân tích cấu hình Nginx"
 
@@ -3436,7 +3442,7 @@ msgstr "Không có bản ghi nào được chọn"
 msgid "No servers configured"
 msgstr "Không có máy chủ nào được cấu hình"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:172
+#: src/components/NgxConfigEditor/NgxUpstream.vue:103
 msgid "No upstreams configured"
 msgstr "Không có upstream nào được cấu hình"
 
@@ -3463,7 +3469,7 @@ msgstr "Tên nút"
 msgid "Node Secret"
 msgstr "Bí mật nút"
 
-#: src/components/ProxyTargets/ProxyTargets.vue:208
+#: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:24
 msgid "Node Status"
 msgstr "Trạng thái nút"
 
@@ -3568,10 +3574,9 @@ msgid "Official Document"
 msgstr "Tài liệu chính thức"
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:127
-#: src/components/NgxConfigEditor/NgxUpstream.vue:151
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:84
-#: src/components/ProxyTargets/ProxyTargets.vue:217
+#: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
 #: src/views/dashboard/Environments.vue:106
 #: src/views/environments/list/envColumns.tsx:55
 msgid "Offline"
@@ -3579,7 +3584,7 @@ msgstr "Ngoại tuyến"
 
 #: src/components/ChatGPT/ChatMessageInput.vue:18
 #: src/components/NgxConfigEditor/NgxServer.vue:60
-#: src/components/NgxConfigEditor/NgxUpstream.vue:36
+#: src/components/NgxConfigEditor/NgxUpstream.vue:31
 #: src/components/Notification/Notification.vue:109 src/language/curd.ts:15
 #: src/views/backup/components/BackupCreator.vue:149
 #: src/views/notification/Notification.vue:39
@@ -3606,11 +3611,15 @@ msgstr "Sau khi quá trình xác minh hoàn tất, bản ghi sẽ bị xóa."
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:64
 #: src/components/NodeSelector/NodeSelector.vue:78
-#: src/components/ProxyTargets/ProxyTargets.vue:217
+#: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
 #: src/views/dashboard/Environments.vue:99
 #: src/views/environments/list/envColumns.tsx:51
 msgid "Online"
 msgstr "Trực tuyến"
+
+#: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:32
+msgid "Online Count"
+msgstr "Số lượng trực tuyến"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:78
 msgid "Only zip files are allowed"
@@ -3752,7 +3761,7 @@ msgstr "Tài nguyên tải trọng là nil"
 msgid "Pending"
 msgstr "Đang chờ"
 
-#: src/views/environments/list/BatchUpgrader.vue:242
+#: src/views/environments/list/BatchUpgrader.vue:245
 msgid "Perform"
 msgstr "Thực hiện"
 
@@ -3960,7 +3969,7 @@ msgid "Post-sync Action"
 msgstr "Hành động sau đồng bộ"
 
 #: src/views/environments/list/BatchUpgrader.vue:168
-#: src/views/environments/list/BatchUpgrader.vue:221
+#: src/views/environments/list/BatchUpgrader.vue:224
 #: src/views/system/Upgrade.vue:213 src/views/system/Upgrade.vue:267
 msgid "Pre-release"
 msgstr "Bản phát hành trước"
@@ -4031,7 +4040,7 @@ msgstr "Không tìm thấy nhà cung cấp: {0}"
 msgid "Proxy"
 msgstr "Proxy"
 
-#: src/components/ProxyTargets/ProxyTargets.vue:125
+#: src/composables/useUpstreamStatus.ts:115
 msgid "Proxy Pass"
 msgstr "Chuyển tiếp Proxy"
 
@@ -4196,7 +4205,7 @@ msgstr "Xóa thành công"
 msgid "Removed successfully"
 msgstr "Đã xóa thành công"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:131
+#: src/components/NgxConfigEditor/NgxUpstream.vue:75
 #: src/views/config/components/ConfigName.vue:51
 #: src/views/config/components/Rename.vue:56
 #: src/views/config/ConfigList.vue:190
@@ -4553,9 +4562,9 @@ msgstr "Thứ Bảy"
 #: src/views/preference/components/AuthSettings/Passkey.vue:130
 #: src/views/preference/Preference.vue:117
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:163
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:176
 #: src/views/stream/components/ConfigName.vue:52
-#: src/views/stream/components/StreamEditor.vue:118
+#: src/views/stream/components/StreamEditor.vue:130
 msgid "Save"
 msgstr "Lưu"
 
@@ -4613,7 +4622,7 @@ msgstr "Lưu thành công"
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:43
 #: src/language/curd.ts:28 src/views/config/components/ConfigLeftPanel.vue:198
 #: src/views/site/site_add/SiteAdd.vue:36
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:40
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:46
 #: src/views/stream/store.ts:70
 msgid "Saved successfully"
 msgstr "Lưu thành công"
@@ -4921,7 +4930,7 @@ msgid "SSO Login"
 msgstr "Đăng nhập SSO"
 
 #: src/views/environments/list/BatchUpgrader.vue:165
-#: src/views/environments/list/BatchUpgrader.vue:215
+#: src/views/environments/list/BatchUpgrader.vue:218
 #: src/views/system/Upgrade.vue:210 src/views/system/Upgrade.vue:261
 msgid "Stable"
 msgstr "Ổn định"
@@ -5427,7 +5436,7 @@ msgstr ""
 "Thao tác này sẽ khôi phục các tệp cấu hình và cơ sở dữ liệu. Giao diện "
 "Nginx sẽ khởi động lại sau khi quá trình khôi phục hoàn tất."
 
-#: src/views/environments/list/BatchUpgrader.vue:183
+#: src/views/environments/list/BatchUpgrader.vue:186
 msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr ""
 "Thao tác này sẽ nâng cấp hoặc cài đặt lại Nginx UI trên %{nodeNames} lên "
@@ -5579,7 +5588,7 @@ msgstr "Thứ Ba"
 msgid "Two-factor authentication required"
 msgstr "Yêu cầu xác thực hai yếu tố"
 
-#: src/components/ProxyTargets/ProxyTargets.vue:125
+#: src/composables/useUpstreamStatus.ts:115
 #: src/views/certificate/CertificateList/certColumns.tsx:24
 #: src/views/config/components/Delete.vue:122
 #: src/views/dashboard/components/ModulesTable.vue:83
@@ -5660,11 +5669,11 @@ msgstr "Tải lên tệp"
 msgid "Upload Folders"
 msgstr "Tải lên thư mục"
 
-#: src/components/ProxyTargets/ProxyTargets.vue:125
+#: src/composables/useUpstreamStatus.ts:115
 msgid "Upstream"
 msgstr "Ngược dòng"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:194
+#: src/components/NgxConfigEditor/NgxUpstream.vue:125
 msgid "Upstream Name"
 msgstr "Tên Upstream"
 
@@ -5757,7 +5766,7 @@ msgstr "Xem"
 msgid "View all notifications"
 msgstr "Xem tất cả thông báo"
 
-#: src/views/environments/list/BatchUpgrader.vue:232
+#: src/views/environments/list/BatchUpgrader.vue:235
 #: src/views/system/Upgrade.vue:279
 msgid "View on GitHub"
 msgstr "Xem trên GitHub"
@@ -5977,6 +5986,9 @@ msgstr "Mã cũ của bạn sẽ không còn hoạt động nữa."
 #: src/views/preference/components/AuthSettings/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "Khóa truy cập của bạn"
+
+#~ msgid "Main"
+#~ msgstr "Chính"
 
 #~ msgid "Select an action after sync"
 #~ msgstr "Chọn hành động sau khi đồng bộ"

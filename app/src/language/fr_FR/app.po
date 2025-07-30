@@ -105,9 +105,9 @@ msgid "[Nginx UI] Writing certificate to disk"
 msgstr "[Nginx UI] Écriture du certificat sur le disque"
 
 #: src/components/SyncNodesPreview/SyncNodesPreview.vue:59
-msgid "* Includes nodes from group \"%{groupName}\" and manually selected nodes"
+msgid "* Includes nodes from group %{groupName} and manually selected nodes"
 msgstr ""
-"* Inclut les nœuds du groupe \"%{groupName}\" et les nœuds sélectionnés "
+"* Inclut les nœuds du groupe %{groupName} et les nœuds sélectionnés "
 "manuellement"
 
 #: src/views/user/userColumns.tsx:30
@@ -169,7 +169,7 @@ msgid "Actual worker to configured ratio"
 msgstr "Ratio réel des travailleurs par rapport à la configuration"
 
 #: src/components/NgxConfigEditor/NgxServer.vue:144
-#: src/components/NgxConfigEditor/NgxUpstream.vue:166 src/language/curd.ts:19
+#: src/components/NgxConfigEditor/NgxUpstream.vue:97 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:45
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:94
 #: src/views/site/site_list/SiteList.vue:95 src/views/stream/StreamList.vue:103
@@ -212,7 +212,7 @@ msgstr "Ajouter un site"
 msgid "Add Stream"
 msgstr "Ajouter un flux"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:187
+#: src/components/NgxConfigEditor/NgxUpstream.vue:118
 msgid "Add Upstream"
 msgstr "Ajouter un upstream"
 
@@ -224,8 +224,8 @@ msgstr "Ajouté avec succès"
 msgid "Additional"
 msgstr "Supplémentaire"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:94
-#: src/views/stream/components/StreamEditor.vue:57
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:100
+#: src/views/stream/components/StreamEditor.vue:63
 msgid "Advance Mode"
 msgstr "Mode avancé"
 
@@ -439,12 +439,16 @@ msgstr "AutoCert est en cours d'exécution..."
 msgid "Automatic Restart"
 msgstr "Redémarrage automatique"
 
+#: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:36
+msgid "Average Latency"
+msgstr "Latence moyenne"
+
 #: src/views/certificate/components/CertificateActions.vue:22
 #: src/views/config/components/ConfigLeftPanel.vue:273
 #: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
 #: src/views/nginx_log/NginxLog.vue:174
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:156
-#: src/views/stream/components/StreamEditor.vue:111
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:169
+#: src/views/stream/components/StreamEditor.vue:123
 msgid "Back"
 msgstr "Retour"
 
@@ -548,8 +552,8 @@ msgstr "Information générale"
 msgid "Basic"
 msgstr "Basique"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:97
-#: src/views/stream/components/StreamEditor.vue:60
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:103
+#: src/views/stream/components/StreamEditor.vue:66
 msgid "Basic Mode"
 msgstr "Mode simple"
 
@@ -639,7 +643,7 @@ msgstr ""
 
 #: src/components/ChatGPT/ChatMessage.vue:216
 #: src/components/NgxConfigEditor/NgxServer.vue:61
-#: src/components/NgxConfigEditor/NgxUpstream.vue:37 src/language/curd.ts:37
+#: src/components/NgxConfigEditor/NgxUpstream.vue:32 src/language/curd.ts:37
 #: src/views/config/components/Delete.vue:98
 #: src/views/preference/components/AuthSettings/Passkey.vue:141
 #: src/views/site/components/SiteStatusSelect.vue:124
@@ -1328,7 +1332,7 @@ msgstr ""
 "proxy_cache:10m"
 
 #: src/components/NgxConfigEditor/NgxServer.vue:110
-#: src/components/NgxConfigEditor/NgxUpstream.vue:134 src/language/curd.ts:9
+#: src/components/NgxConfigEditor/NgxUpstream.vue:78 src/language/curd.ts:9
 #: src/views/certificate/components/RemoveCert.vue:90
 #: src/views/config/components/Delete.vue:65
 #: src/views/config/components/Delete.vue:97
@@ -1440,6 +1444,10 @@ msgstr "Détails"
 msgid "Dev"
 msgstr "Dev"
 
+#: src/views/environments/list/BatchUpgrader.vue:171
+msgid "Development"
+msgstr "Développement"
+
 #: src/views/system/About.vue:28
 msgid "Development Mode"
 msgstr "Mode développement"
@@ -1542,9 +1550,9 @@ msgstr "Désactivation du flux %{name} depuis %{node} réussie"
 #: src/views/preference/tabs/NodeSettings.vue:25
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:162
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:68
 #: src/views/site/site_list/columns.tsx:146 src/views/stream/columns.tsx:112
-#: src/views/stream/components/StreamEditor.vue:32
+#: src/views/stream/components/StreamEditor.vue:38
 #: src/views/user/userColumns.tsx:39
 msgid "Disabled"
 msgstr "Désactivé"
@@ -1597,7 +1605,7 @@ msgstr "Voulez-vous activer TLS ?"
 msgid "Do you want to remove this server?"
 msgstr "Voulez-vous supprimer ce serveur ?"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:33
+#: src/components/NgxConfigEditor/NgxUpstream.vue:28
 msgid "Do you want to remove this upstream?"
 msgstr "Voulez-vous supprimer cet upstream ?"
 
@@ -1647,7 +1655,7 @@ msgstr "Déposez le fichier de certificat ici"
 msgid "Drop private key file here"
 msgstr "Déposer le fichier de clé privée ici"
 
-#: src/views/environments/list/BatchUpgrader.vue:189
+#: src/views/environments/list/BatchUpgrader.vue:192
 #: src/views/system/Upgrade.vue:237
 msgid "Dry run mode enabled"
 msgstr "Mode de simulation activé"
@@ -1686,8 +1694,8 @@ msgstr "par ex., 0 0 * * * (quotidiennement à minuit)"
 msgid "Edit"
 msgstr "Modifier"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:51
-#: src/views/stream/components/StreamEditor.vue:21
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:57
+#: src/views/stream/components/StreamEditor.vue:27
 msgid "Edit %{n}"
 msgstr "Modifier %{n}"
 
@@ -1820,10 +1828,10 @@ msgstr "Activer TOTP"
 #: src/views/preference/tabs/NodeSettings.vue:25
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:159
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:56
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
 #: src/views/site/site_list/columns.tsx:142 src/views/stream/columns.tsx:108
 #: src/views/stream/components/RightPanel/Basic.vue:24
-#: src/views/stream/components/StreamEditor.vue:26
+#: src/views/stream/components/StreamEditor.vue:32
 #: src/views/user/userColumns.tsx:36
 msgid "Enabled"
 msgstr "Activé"
@@ -2439,7 +2447,7 @@ msgstr "Échec de la récupération des données"
 msgid "Get dns credential error: {0}"
 msgstr "Erreur lors de la récupération des informations d'identification DNS : {0}"
 
-#: src/views/environments/list/BatchUpgrader.vue:178
+#: src/views/environments/list/BatchUpgrader.vue:181
 #: src/views/system/Upgrade.vue:188
 msgid "Get release information error"
 msgstr "Erreur d'obtention des informations sur la version"
@@ -2481,8 +2489,8 @@ msgid "Higher value means better connection reuse"
 msgstr "Une valeur plus élevée signifie une meilleure réutilisation de la connexion"
 
 #: src/views/config/components/ConfigLeftPanel.vue:254
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:81
-#: src/views/stream/components/StreamEditor.vue:45
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:87
+#: src/views/stream/components/StreamEditor.vue:51
 msgid "History"
 msgstr "Historique"
 
@@ -2951,16 +2959,13 @@ msgstr ""
 "planificateur de tâches crontab de Nginx UI exécutera la commande logrotate "
 "à l'intervalle que vous avez défini en minutes."
 
-#: src/components/ProxyTargets/ProxyTargets.vue:220
-msgid "Main"
-msgstr "Principal"
-
-#: src/components/ProxyTargets/ProxyTargets.vue:148
+#: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:51
+#: src/composables/useUpstreamStatus.ts:139
 msgid "Main Node"
 msgstr "Nœud principal"
 
 #: src/views/site/components/SiteStatusSelect.vue:165
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:68
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:74
 #: src/views/site/site_list/columns.tsx:150
 msgid "Maintenance"
 msgstr "Maintenance"
@@ -3162,11 +3167,12 @@ msgstr "Mensuellement le jour %{day} à %{time}"
 msgid "Multi-line Directive"
 msgstr "Directive multiligne"
 
-#: src/components/ProxyTargets/ProxyTargets.vue:225
+#: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:38
+#: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:56
 msgid "N/A"
 msgstr "N/D"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:199
+#: src/components/NgxConfigEditor/NgxUpstream.vue:130
 #: src/views/backup/AutoBackup/AutoBackup.vue:11
 #: src/views/certificate/ACMEUser.vue:11
 #: src/views/certificate/CertificateList/certColumns.tsx:9
@@ -3303,8 +3309,8 @@ msgstr "Le fichier d'entrée de configuration Nginx existe"
 msgid "Nginx configuration has been restored"
 msgstr "La configuration de Nginx a été restaurée"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:115
-#: src/views/stream/components/StreamEditor.vue:75
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:121
+#: src/views/stream/components/StreamEditor.vue:81
 msgid "Nginx Configuration Parse Error"
 msgstr "Erreur d'analyse de configuration Nginx"
 
@@ -3487,7 +3493,7 @@ msgstr "Aucun enregistrement sélectionné"
 msgid "No servers configured"
 msgstr "Aucun serveur configuré"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:172
+#: src/components/NgxConfigEditor/NgxUpstream.vue:103
 msgid "No upstreams configured"
 msgstr "Aucun amont configuré"
 
@@ -3514,7 +3520,7 @@ msgstr "Nom du nœud"
 msgid "Node Secret"
 msgstr "Secret du nœud"
 
-#: src/components/ProxyTargets/ProxyTargets.vue:208
+#: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:24
 msgid "Node Status"
 msgstr "État du nœud"
 
@@ -3621,10 +3627,9 @@ msgid "Official Document"
 msgstr "Documentation officielle"
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:127
-#: src/components/NgxConfigEditor/NgxUpstream.vue:151
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:84
-#: src/components/ProxyTargets/ProxyTargets.vue:217
+#: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
 #: src/views/dashboard/Environments.vue:106
 #: src/views/environments/list/envColumns.tsx:55
 msgid "Offline"
@@ -3632,7 +3637,7 @@ msgstr "Hors ligne"
 
 #: src/components/ChatGPT/ChatMessageInput.vue:18
 #: src/components/NgxConfigEditor/NgxServer.vue:60
-#: src/components/NgxConfigEditor/NgxUpstream.vue:36
+#: src/components/NgxConfigEditor/NgxUpstream.vue:31
 #: src/components/Notification/Notification.vue:109 src/language/curd.ts:15
 #: src/views/backup/components/BackupCreator.vue:149
 #: src/views/notification/Notification.vue:39
@@ -3659,11 +3664,15 @@ msgstr "Une fois la vérification terminée, les enregistrements seront supprim�
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:64
 #: src/components/NodeSelector/NodeSelector.vue:78
-#: src/components/ProxyTargets/ProxyTargets.vue:217
+#: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
 #: src/views/dashboard/Environments.vue:99
 #: src/views/environments/list/envColumns.tsx:51
 msgid "Online"
 msgstr "En ligne"
+
+#: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:32
+msgid "Online Count"
+msgstr "Nombre en ligne"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:78
 msgid "Only zip files are allowed"
@@ -3807,7 +3816,7 @@ msgstr "La ressource de charge utile est nulle"
 msgid "Pending"
 msgstr "En attente"
 
-#: src/views/environments/list/BatchUpgrader.vue:242
+#: src/views/environments/list/BatchUpgrader.vue:245
 msgid "Perform"
 msgstr "Exécuter"
 
@@ -4026,7 +4035,7 @@ msgid "Post-sync Action"
 msgstr "Action post-synchronisation"
 
 #: src/views/environments/list/BatchUpgrader.vue:168
-#: src/views/environments/list/BatchUpgrader.vue:221
+#: src/views/environments/list/BatchUpgrader.vue:224
 #: src/views/system/Upgrade.vue:213 src/views/system/Upgrade.vue:267
 msgid "Pre-release"
 msgstr "Pré-version"
@@ -4098,7 +4107,7 @@ msgstr "Fournisseur introuvable : {0}"
 msgid "Proxy"
 msgstr "Proxy"
 
-#: src/components/ProxyTargets/ProxyTargets.vue:125
+#: src/composables/useUpstreamStatus.ts:115
 msgid "Proxy Pass"
 msgstr "Passe de Proxy"
 
@@ -4266,7 +4275,7 @@ msgstr "Suppression réussie"
 msgid "Removed successfully"
 msgstr "Supprimé avec succès"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:131
+#: src/components/NgxConfigEditor/NgxUpstream.vue:75
 #: src/views/config/components/ConfigName.vue:51
 #: src/views/config/components/Rename.vue:56
 #: src/views/config/ConfigList.vue:190
@@ -4623,9 +4632,9 @@ msgstr "Samedi"
 #: src/views/preference/components/AuthSettings/Passkey.vue:130
 #: src/views/preference/Preference.vue:117
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:163
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:176
 #: src/views/stream/components/ConfigName.vue:52
-#: src/views/stream/components/StreamEditor.vue:118
+#: src/views/stream/components/StreamEditor.vue:130
 msgid "Save"
 msgstr "Enregistrer"
 
@@ -4683,7 +4692,7 @@ msgstr "Sauvegarde réussie"
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:43
 #: src/language/curd.ts:28 src/views/config/components/ConfigLeftPanel.vue:198
 #: src/views/site/site_add/SiteAdd.vue:36
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:40
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:46
 #: src/views/stream/store.ts:70
 msgid "Saved successfully"
 msgstr "Enregistré avec succès"
@@ -5001,7 +5010,7 @@ msgid "SSO Login"
 msgstr "Connexion SSO"
 
 #: src/views/environments/list/BatchUpgrader.vue:165
-#: src/views/environments/list/BatchUpgrader.vue:215
+#: src/views/environments/list/BatchUpgrader.vue:218
 #: src/views/system/Upgrade.vue:210 src/views/system/Upgrade.vue:261
 msgid "Stable"
 msgstr "Stable"
@@ -5519,7 +5528,7 @@ msgstr ""
 "Cela restaurera les fichiers de configuration et la base de données. "
 "L'interface Nginx redémarrera une fois la restauration terminée."
 
-#: src/views/environments/list/BatchUpgrader.vue:183
+#: src/views/environments/list/BatchUpgrader.vue:186
 msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr ""
 "Cela mettra à jour ou réinstallera l'interface Nginx sur %{nodeNames} vers "
@@ -5674,7 +5683,7 @@ msgstr "Mardi"
 msgid "Two-factor authentication required"
 msgstr "Authentification à deux facteurs requise"
 
-#: src/components/ProxyTargets/ProxyTargets.vue:125
+#: src/composables/useUpstreamStatus.ts:115
 #: src/views/certificate/CertificateList/certColumns.tsx:24
 #: src/views/config/components/Delete.vue:122
 #: src/views/dashboard/components/ModulesTable.vue:83
@@ -5755,11 +5764,11 @@ msgstr "Téléverser des fichiers"
 msgid "Upload Folders"
 msgstr "Télécharger des dossiers"
 
-#: src/components/ProxyTargets/ProxyTargets.vue:125
+#: src/composables/useUpstreamStatus.ts:115
 msgid "Upstream"
 msgstr "Amont"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:194
+#: src/components/NgxConfigEditor/NgxUpstream.vue:125
 msgid "Upstream Name"
 msgstr "Nom de l'amont"
 
@@ -5852,7 +5861,7 @@ msgstr "Voir"
 msgid "View all notifications"
 msgstr "Voir toutes les notifications"
 
-#: src/views/environments/list/BatchUpgrader.vue:232
+#: src/views/environments/list/BatchUpgrader.vue:235
 #: src/views/system/Upgrade.vue:279
 msgid "View on GitHub"
 msgstr "Voir sur GitHub"
@@ -6082,6 +6091,9 @@ msgstr "Vos anciens codes ne fonctionneront plus."
 #: src/views/preference/components/AuthSettings/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "Vos clés d'accès"
+
+#~ msgid "Main"
+#~ msgstr "Principal"
 
 #~ msgid "Select an action after sync"
 #~ msgstr "Sélectionner une action après la synchronisation"

@@ -4,14 +4,20 @@ import CodeEditor from '@/components/CodeEditor'
 import ConfigHistory from '@/components/ConfigHistory'
 import FooterToolBar from '@/components/FooterToolbar'
 import NgxConfigEditor from '@/components/NgxConfigEditor'
+import UpstreamCards from '@/components/UpstreamCards/UpstreamCards.vue'
 import { ConfigStatus } from '@/constants'
 import { useStreamEditorStore } from '../store'
 
 const router = useRouter()
 
 const store = useStreamEditorStore()
-const { name, status, configText, filepath, saving, parseErrorStatus, parseErrorMessage, advanceMode, loading } = storeToRefs(store)
+const { name, status, configText, filepath, saving, parseErrorStatus, parseErrorMessage, advanceMode, loading, data } = storeToRefs(store)
 const showHistory = ref(false)
+
+// Get upstream targets from backend API data
+const upstreamTargets = computed(() => {
+  return data.value.proxy_targets || []
+})
 </script>
 
 <template>
@@ -91,6 +97,12 @@ const showHistory = ref(false)
             key="basic"
             class="domain-edit-container"
           >
+            <!-- Upstream Cards Display -->
+            <UpstreamCards
+              :targets="upstreamTargets"
+              :env-group-id="data.env_group_id"
+            />
+
             <NgxConfigEditor
               :enabled="status === ConfigStatus.Enabled"
               context="stream"

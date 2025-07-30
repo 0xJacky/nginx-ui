@@ -100,8 +100,8 @@ msgid "[Nginx UI] Writing certificate to disk"
 msgstr "[Nginx UI] 正在将证书写入磁盘"
 
 #: src/components/SyncNodesPreview/SyncNodesPreview.vue:59
-msgid "* Includes nodes from group \"%{groupName}\" and manually selected nodes"
-msgstr "* 包含来自组 \"%{groupName}\" 的节点和手动选择的节点"
+msgid "* Includes nodes from group %{groupName} and manually selected nodes"
+msgstr "* 包含来自组 %{groupName} 的节点和手动选择的节点"
 
 #: src/views/user/userColumns.tsx:30
 msgid "2FA"
@@ -162,7 +162,7 @@ msgid "Actual worker to configured ratio"
 msgstr "实际工作进程与配置比例"
 
 #: src/components/NgxConfigEditor/NgxServer.vue:144
-#: src/components/NgxConfigEditor/NgxUpstream.vue:166 src/language/curd.ts:19
+#: src/components/NgxConfigEditor/NgxUpstream.vue:97 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:45
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:94
 #: src/views/site/site_list/SiteList.vue:95 src/views/stream/StreamList.vue:103
@@ -205,7 +205,7 @@ msgstr "添加站点"
 msgid "Add Stream"
 msgstr "添加 Stream"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:187
+#: src/components/NgxConfigEditor/NgxUpstream.vue:118
 msgid "Add Upstream"
 msgstr "添加上游"
 
@@ -217,8 +217,8 @@ msgstr "添加成功"
 msgid "Additional"
 msgstr "额外选项"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:94
-#: src/views/stream/components/StreamEditor.vue:57
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:100
+#: src/views/stream/components/StreamEditor.vue:63
 msgid "Advance Mode"
 msgstr "高级模式"
 
@@ -424,12 +424,16 @@ msgstr "AutoCert 正在运行..."
 msgid "Automatic Restart"
 msgstr "自动重启"
 
+#: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:36
+msgid "Average Latency"
+msgstr "平均延迟"
+
 #: src/views/certificate/components/CertificateActions.vue:22
 #: src/views/config/components/ConfigLeftPanel.vue:273
 #: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
 #: src/views/nginx_log/NginxLog.vue:174
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:156
-#: src/views/stream/components/StreamEditor.vue:111
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:169
+#: src/views/stream/components/StreamEditor.vue:123
 msgid "Back"
 msgstr "返回"
 
@@ -523,8 +527,8 @@ msgstr "基本信息"
 msgid "Basic"
 msgstr "基本"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:97
-#: src/views/stream/components/StreamEditor.vue:60
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:103
+#: src/views/stream/components/StreamEditor.vue:66
 msgid "Basic Mode"
 msgstr "基本模式"
 
@@ -611,7 +615,7 @@ msgstr "基于 worker_processes * worker_connections 计算得出。实际性能
 
 #: src/components/ChatGPT/ChatMessage.vue:216
 #: src/components/NgxConfigEditor/NgxServer.vue:61
-#: src/components/NgxConfigEditor/NgxUpstream.vue:37 src/language/curd.ts:37
+#: src/components/NgxConfigEditor/NgxUpstream.vue:32 src/language/curd.ts:37
 #: src/views/config/components/Delete.vue:98
 #: src/views/preference/components/AuthSettings/Passkey.vue:141
 #: src/views/site/components/SiteStatusSelect.vue:124
@@ -1266,7 +1270,7 @@ msgid "Define shared memory zone name and size, e.g. proxy_cache:10m"
 msgstr "定义共享内存区名称和大小，例如 proxy_cache:10m"
 
 #: src/components/NgxConfigEditor/NgxServer.vue:110
-#: src/components/NgxConfigEditor/NgxUpstream.vue:134 src/language/curd.ts:9
+#: src/components/NgxConfigEditor/NgxUpstream.vue:78 src/language/curd.ts:9
 #: src/views/certificate/components/RemoveCert.vue:90
 #: src/views/config/components/Delete.vue:65
 #: src/views/config/components/Delete.vue:97
@@ -1378,6 +1382,10 @@ msgstr "详情"
 msgid "Dev"
 msgstr "开发版"
 
+#: src/views/environments/list/BatchUpgrader.vue:171
+msgid "Development"
+msgstr "开发"
+
 #: src/views/system/About.vue:28
 msgid "Development Mode"
 msgstr "开发模式"
@@ -1480,9 +1488,9 @@ msgstr "在 %{node} 上禁用 %{name} 成功"
 #: src/views/preference/tabs/NodeSettings.vue:25
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:162
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:68
 #: src/views/site/site_list/columns.tsx:146 src/views/stream/columns.tsx:112
-#: src/views/stream/components/StreamEditor.vue:32
+#: src/views/stream/components/StreamEditor.vue:38
 #: src/views/user/userColumns.tsx:39
 msgid "Disabled"
 msgstr "禁用"
@@ -1535,7 +1543,7 @@ msgstr "你想启用 TLS 吗？"
 msgid "Do you want to remove this server?"
 msgstr "你想删除这个服务器吗？"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:33
+#: src/components/NgxConfigEditor/NgxUpstream.vue:28
 msgid "Do you want to remove this upstream?"
 msgstr "你想删除这个 Upstream 吗？"
 
@@ -1585,7 +1593,7 @@ msgstr "将证书文件拖放到此处"
 msgid "Drop private key file here"
 msgstr "将私钥文件拖放到此处"
 
-#: src/views/environments/list/BatchUpgrader.vue:189
+#: src/views/environments/list/BatchUpgrader.vue:192
 #: src/views/system/Upgrade.vue:237
 msgid "Dry run mode enabled"
 msgstr "试运行模式已启动"
@@ -1621,8 +1629,8 @@ msgstr "例如：0 0 * * *（每天午夜）"
 msgid "Edit"
 msgstr "编辑"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:51
-#: src/views/stream/components/StreamEditor.vue:21
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:57
+#: src/views/stream/components/StreamEditor.vue:27
 msgid "Edit %{n}"
 msgstr "编辑 %{n}"
 
@@ -1755,10 +1763,10 @@ msgstr "启用 TOTP"
 #: src/views/preference/tabs/NodeSettings.vue:25
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:159
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:56
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
 #: src/views/site/site_list/columns.tsx:142 src/views/stream/columns.tsx:108
 #: src/views/stream/components/RightPanel/Basic.vue:24
-#: src/views/stream/components/StreamEditor.vue:26
+#: src/views/stream/components/StreamEditor.vue:32
 #: src/views/user/userColumns.tsx:36
 msgid "Enabled"
 msgstr "启用"
@@ -2366,7 +2374,7 @@ msgstr "获取数据失败"
 msgid "Get dns credential error: {0}"
 msgstr "获取 DNS 凭证错误：{0}"
 
-#: src/views/environments/list/BatchUpgrader.vue:178
+#: src/views/environments/list/BatchUpgrader.vue:181
 #: src/views/system/Upgrade.vue:188
 msgid "Get release information error"
 msgstr "获取发布信息错误"
@@ -2408,8 +2416,8 @@ msgid "Higher value means better connection reuse"
 msgstr "更高的值意味着更好的连接再利用"
 
 #: src/views/config/components/ConfigLeftPanel.vue:254
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:81
-#: src/views/stream/components/StreamEditor.vue:45
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:87
+#: src/views/stream/components/StreamEditor.vue:51
 msgid "History"
 msgstr "历史"
 
@@ -2857,16 +2865,13 @@ msgstr ""
 "定时任务，因此您无需修改本页面的参数。对于使用 Docker 容器安装 Nginx 用户界面的用户，您可以手动启用该选项。Nginx UI "
 "的定时任务任务调度器将按照您设置的时间间隔（以分钟为单位）执行 logrotate 命令。"
 
-#: src/components/ProxyTargets/ProxyTargets.vue:220
-msgid "Main"
-msgstr "主"
-
-#: src/components/ProxyTargets/ProxyTargets.vue:148
+#: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:51
+#: src/composables/useUpstreamStatus.ts:139
 msgid "Main Node"
 msgstr "主节点"
 
 #: src/views/site/components/SiteStatusSelect.vue:165
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:68
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:74
 #: src/views/site/site_list/columns.tsx:150
 msgid "Maintenance"
 msgstr "维护模式"
@@ -3066,11 +3071,12 @@ msgstr "每月%{day}日%{time}"
 msgid "Multi-line Directive"
 msgstr "多行指令"
 
-#: src/components/ProxyTargets/ProxyTargets.vue:225
+#: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:38
+#: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:56
 msgid "N/A"
 msgstr "不适用"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:199
+#: src/components/NgxConfigEditor/NgxUpstream.vue:130
 #: src/views/backup/AutoBackup/AutoBackup.vue:11
 #: src/views/certificate/ACMEUser.vue:11
 #: src/views/certificate/CertificateList/certColumns.tsx:9
@@ -3207,8 +3213,8 @@ msgstr "存在 Nginx 配置入口文件"
 msgid "Nginx configuration has been restored"
 msgstr "Nginx 配置已恢复"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:115
-#: src/views/stream/components/StreamEditor.vue:75
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:121
+#: src/views/stream/components/StreamEditor.vue:81
 msgid "Nginx Configuration Parse Error"
 msgstr "Nginx 配置解析错误"
 
@@ -3389,7 +3395,7 @@ msgstr "未选择记录"
 msgid "No servers configured"
 msgstr "未配置服务器"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:172
+#: src/components/NgxConfigEditor/NgxUpstream.vue:103
 msgid "No upstreams configured"
 msgstr "未配置上游"
 
@@ -3416,7 +3422,7 @@ msgstr "节点名称"
 msgid "Node Secret"
 msgstr "节点密钥"
 
-#: src/components/ProxyTargets/ProxyTargets.vue:208
+#: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:24
 msgid "Node Status"
 msgstr "节点状态"
 
@@ -3517,10 +3523,9 @@ msgid "Official Document"
 msgstr "官方文档"
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:127
-#: src/components/NgxConfigEditor/NgxUpstream.vue:151
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:84
-#: src/components/ProxyTargets/ProxyTargets.vue:217
+#: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
 #: src/views/dashboard/Environments.vue:106
 #: src/views/environments/list/envColumns.tsx:55
 msgid "Offline"
@@ -3528,7 +3533,7 @@ msgstr "离线"
 
 #: src/components/ChatGPT/ChatMessageInput.vue:18
 #: src/components/NgxConfigEditor/NgxServer.vue:60
-#: src/components/NgxConfigEditor/NgxUpstream.vue:36
+#: src/components/NgxConfigEditor/NgxUpstream.vue:31
 #: src/components/Notification/Notification.vue:109 src/language/curd.ts:15
 #: src/views/backup/components/BackupCreator.vue:149
 #: src/views/notification/Notification.vue:39
@@ -3555,11 +3560,15 @@ msgstr "一旦验证完成，这些记录将被删除。"
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:64
 #: src/components/NodeSelector/NodeSelector.vue:78
-#: src/components/ProxyTargets/ProxyTargets.vue:217
+#: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
 #: src/views/dashboard/Environments.vue:99
 #: src/views/environments/list/envColumns.tsx:51
 msgid "Online"
 msgstr "在线"
+
+#: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:32
+msgid "Online Count"
+msgstr "在线数量"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:78
 msgid "Only zip files are allowed"
@@ -3697,7 +3706,7 @@ msgstr "有效载荷资源为空"
 msgid "Pending"
 msgstr "待处理"
 
-#: src/views/environments/list/BatchUpgrader.vue:242
+#: src/views/environments/list/BatchUpgrader.vue:245
 msgid "Perform"
 msgstr "执行"
 
@@ -3897,7 +3906,7 @@ msgid "Post-sync Action"
 msgstr "同步后操作"
 
 #: src/views/environments/list/BatchUpgrader.vue:168
-#: src/views/environments/list/BatchUpgrader.vue:221
+#: src/views/environments/list/BatchUpgrader.vue:224
 #: src/views/system/Upgrade.vue:213 src/views/system/Upgrade.vue:267
 msgid "Pre-release"
 msgstr "预发布"
@@ -3966,7 +3975,7 @@ msgstr "未找到提供商：{0}"
 msgid "Proxy"
 msgstr "代理"
 
-#: src/components/ProxyTargets/ProxyTargets.vue:125
+#: src/composables/useUpstreamStatus.ts:115
 msgid "Proxy Pass"
 msgstr "代理传递"
 
@@ -4127,7 +4136,7 @@ msgstr "移除成功"
 msgid "Removed successfully"
 msgstr "删除成功"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:131
+#: src/components/NgxConfigEditor/NgxUpstream.vue:75
 #: src/views/config/components/ConfigName.vue:51
 #: src/views/config/components/Rename.vue:56
 #: src/views/config/ConfigList.vue:190
@@ -4479,9 +4488,9 @@ msgstr "星期六"
 #: src/views/preference/components/AuthSettings/Passkey.vue:130
 #: src/views/preference/Preference.vue:117
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:163
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:176
 #: src/views/stream/components/ConfigName.vue:52
-#: src/views/stream/components/StreamEditor.vue:118
+#: src/views/stream/components/StreamEditor.vue:130
 msgid "Save"
 msgstr "保存"
 
@@ -4539,7 +4548,7 @@ msgstr "保存成功"
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:43
 #: src/language/curd.ts:28 src/views/config/components/ConfigLeftPanel.vue:198
 #: src/views/site/site_add/SiteAdd.vue:36
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:40
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:46
 #: src/views/stream/store.ts:70
 msgid "Saved successfully"
 msgstr "保存成功"
@@ -4845,7 +4854,7 @@ msgid "SSO Login"
 msgstr "SSO 登录"
 
 #: src/views/environments/list/BatchUpgrader.vue:165
-#: src/views/environments/list/BatchUpgrader.vue:215
+#: src/views/environments/list/BatchUpgrader.vue:218
 #: src/views/system/Upgrade.vue:210 src/views/system/Upgrade.vue:261
 msgid "Stable"
 msgstr "稳定"
@@ -5312,7 +5321,7 @@ msgid ""
 "after the restoration is complete."
 msgstr "这将恢复配置文件和数据库。恢复完成后，Nginx UI 将重新启动。"
 
-#: src/views/environments/list/BatchUpgrader.vue:183
+#: src/views/environments/list/BatchUpgrader.vue:186
 msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr "将 %{nodeNames} 上的 Nginx UI 升级或重新安装到 %{version} 版本。"
 
@@ -5450,7 +5459,7 @@ msgstr "星期二"
 msgid "Two-factor authentication required"
 msgstr "需要两步验证"
 
-#: src/components/ProxyTargets/ProxyTargets.vue:125
+#: src/composables/useUpstreamStatus.ts:115
 #: src/views/certificate/CertificateList/certColumns.tsx:24
 #: src/views/config/components/Delete.vue:122
 #: src/views/dashboard/components/ModulesTable.vue:83
@@ -5531,11 +5540,11 @@ msgstr "上传文件"
 msgid "Upload Folders"
 msgstr "上传文件夹"
 
-#: src/components/ProxyTargets/ProxyTargets.vue:125
+#: src/composables/useUpstreamStatus.ts:115
 msgid "Upstream"
 msgstr "上游"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:194
+#: src/components/NgxConfigEditor/NgxUpstream.vue:125
 msgid "Upstream Name"
 msgstr "Upstream 名称"
 
@@ -5628,7 +5637,7 @@ msgstr "查看"
 msgid "View all notifications"
 msgstr "查看全部通知"
 
-#: src/views/environments/list/BatchUpgrader.vue:232
+#: src/views/environments/list/BatchUpgrader.vue:235
 #: src/views/system/Upgrade.vue:279
 msgid "View on GitHub"
 msgstr "在 GitHub 上查看"
@@ -5829,6 +5838,9 @@ msgstr "您的旧代码将不再有效。"
 #: src/views/preference/components/AuthSettings/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "你的 Passkeys"
+
+#~ msgid "Main"
+#~ msgstr "主"
 
 #~ msgid "Select an action after sync"
 #~ msgstr "选择同步后的操作"

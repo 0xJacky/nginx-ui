@@ -18,7 +18,7 @@ const settings = useSettingsStore()
 </script>
 
 <template>
-  <div class="px-6">
+  <div class="px-6 pb-2">
     <AForm
       layout="vertical"
       :model="data"

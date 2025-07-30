@@ -1,12 +1,7 @@
 <script setup lang="ts">
-import type ReconnectingWebSocket from 'reconnecting-websocket'
-import type { NgxDirective } from '@/api/ngx'
-import type { UpstreamStatus } from '@/api/upstream'
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import { Modal } from 'ant-design-vue'
-import { throttle } from 'lodash'
-import upstream from '@/api/upstream'
-import { DirectiveEditor, Server, useNgxConfigStore } from '.'
+import { DirectiveEditor, useNgxConfigStore } from '.'
 
 const [modal, ContextHolder] = Modal.useModal()
 
@@ -42,10 +37,6 @@ function removeUpstream(index: number) {
   })
 }
 
-const curUptreamDirectives = computed(() => {
-  return ngxConfig.value.upstreams?.[currentUpstreamIdx.value]?.directives
-})
-
 const open = ref(false)
 const renameIdx = ref(-1)
 const buffer = ref('')
@@ -60,53 +51,6 @@ function renameOK() {
   if (ngxConfig.value.upstreams?.[renameIdx.value])
     ngxConfig.value.upstreams[renameIdx.value].name = buffer.value
   open.value = false
-}
-
-const availabilityResult = ref({}) as Ref<Record<string, UpstreamStatus>>
-const websocket = shallowRef<ReconnectingWebSocket | WebSocket>()
-
-function availabilityTest() {
-  const sockets: string[] = []
-  for (const u of ngxConfig.value.upstreams ?? []) {
-    for (const d of u.directives ?? []) {
-      if (d.directive === Server)
-        sockets.push(d.params.split(' ')[0])
-    }
-  }
-
-  if (sockets.length > 0) {
-    websocket.value = upstream.availabilityWebSocket()
-    websocket.value.onopen = () => {
-      websocket.value!.send(JSON.stringify(sockets))
-    }
-    websocket.value.onmessage = (e: MessageEvent) => {
-      availabilityResult.value = JSON.parse(e.data)
-    }
-  }
-}
-
-onMounted(() => {
-  availabilityTest()
-})
-
-onBeforeUnmount(() => {
-  websocket.value?.close()
-})
-
-async function _restartTest() {
-  websocket.value?.close()
-  availabilityTest()
-}
-
-const restartTest = throttle(_restartTest, 5000)
-
-watch(curUptreamDirectives, () => {
-  restartTest()
-}, { deep: true })
-
-function getAvailabilityResult(directive: NgxDirective) {
-  const params = directive.params.split(' ')
-  return availabilityResult.value[params?.[0]]
 }
 </script>
 
@@ -139,20 +83,7 @@ function getAvailabilityResult(directive: NgxDirective) {
         </template>
 
         <div class="tab-content">
-          <DirectiveEditor v-model:directives="v.directives">
-            <template #directiveSuffix="{ directive }: {directive: NgxDirective}">
-              <template v-if="directive.directive === Server">
-                <template v-if="getAvailabilityResult(directive)?.online">
-                  <ABadge color="green" />
-                  {{ getAvailabilityResult(directive)?.latency?.toFixed(2) }}ms
-                </template>
-                <template v-else>
-                  <ABadge color="red" />
-                  {{ $gettext('Offline') }}
-                </template>
-              </template>
-            </template>
-          </DirectiveEditor>
+          <DirectiveEditor v-model:directives="v.directives" />
         </div>
       </ATabPane>
 
@@ -207,7 +138,7 @@ function getAvailabilityResult(directive: NgxDirective) {
 <style scoped lang="less">
 .empty-state {
   @apply px-8 text-center;
-  min-height: 400px;
+  min-height: 200px;
   display: flex;
   flex-direction: column;
   justify-content: center;

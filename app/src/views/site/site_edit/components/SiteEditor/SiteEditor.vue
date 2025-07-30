@@ -5,6 +5,7 @@ import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 import ConfigHistory from '@/components/ConfigHistory'
 import FooterToolBar from '@/components/FooterToolbar'
 import NgxConfigEditor from '@/components/NgxConfigEditor'
+import UpstreamCards from '@/components/UpstreamCards/UpstreamCards.vue'
 import { ConfigStatus } from '@/constants'
 import Cert from '@/views/site/site_edit/components/Cert'
 import EnableTLS from '@/views/site/site_edit/components/EnableTLS'
@@ -27,6 +28,11 @@ const {
   advanceMode,
   curSupportSSL,
 } = storeToRefs(editorStore)
+
+// Get upstream targets from backend API data
+const upstreamTargets = computed(() => {
+  return data.value.proxy_targets || []
+})
 
 const showHistory = ref(false)
 
@@ -132,6 +138,13 @@ async function save() {
           class="domain-edit-container"
         >
           <EnableTLS />
+
+          <!-- Upstream Cards Display -->
+          <UpstreamCards
+            :targets="upstreamTargets"
+            :env-group-id="data.env_group_id"
+          />
+
           <NgxConfigEditor
             :cert-info="certInfoMap"
             :status="data.status"

@@ -122,6 +122,8 @@ declare module 'vue' {
     SyncNodesPreviewSyncNodesPreview: typeof import('./src/components/SyncNodesPreview/SyncNodesPreview.vue')['default']
     SystemRestoreSystemRestoreContent: typeof import('./src/components/SystemRestore/SystemRestoreContent.vue')['default']
     TwoFAAuthorization: typeof import('./src/components/TwoFA/Authorization.vue')['default']
+    UpstreamCardsUpstreamCards: typeof import('./src/components/UpstreamCards/UpstreamCards.vue')['default']
+    UpstreamDetailModalUpstreamDetailModal: typeof import('./src/components/UpstreamDetailModal/UpstreamDetailModal.vue')['default']
     VPSwitchVPSwitch: typeof import('./src/components/VPSwitch/VPSwitch.vue')['default']
   }
 }
