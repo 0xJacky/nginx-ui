@@ -58,6 +58,7 @@ func handleNginxConfigModify(ctx context.Context, request mcp.CallToolRequest) (
 	q := query.Config
 	cfg, err := q.Assign(field.Attrs(&model.Config{
 		Filepath: absPath,
+		Name:     filepath.Base(absPath),
 	})).Where(q.Filepath.Eq(absPath)).FirstOrCreate()
 	if err != nil {
 		return nil, err
