@@ -242,7 +242,7 @@ func TestDynamicTargets(dynamicTargets []ProxyTarget) map[string]*Status {
 			dynamicTargetsByResolver[target.Resolver] = append(dynamicTargetsByResolver[target.Resolver], target)
 		} else {
 			// No resolver specified, mark as offline
-			key := target.Host + ":" + target.Port
+			key := formatSocketAddress(target.Host, target.Port)
 			result[key] = &Status{
 				Online:  false,
 				Latency: 0,
@@ -255,7 +255,7 @@ func TestDynamicTargets(dynamicTargets []ProxyTarget) map[string]*Status {
 		dynamicResolver := NewDynamicResolver(resolver)
 
 		for _, target := range targets {
-			key := target.Host + ":" + target.Port
+			key := formatSocketAddress(target.Host, target.Port)
 
 			// Try to resolve the service
 			addresses, err := dynamicResolver.ResolveService(target.ServiceURL)
@@ -305,8 +305,8 @@ func EnhancedAvailabilityTest(targets []ProxyTarget) map[string]*Status {
 		if target.IsConsul && target.Resolver != "" {
 			dynamicTargets = append(dynamicTargets, target)
 		} else {
-			// Regular target - use existing format for traditional AvailabilityTest
-			key := target.Host + ":" + target.Port
+			// Regular target - use properly formatted socket address for traditional AvailabilityTest
+			key := formatSocketAddress(target.Host, target.Port)
 			regularTargets = append(regularTargets, key)
 		}
 	}

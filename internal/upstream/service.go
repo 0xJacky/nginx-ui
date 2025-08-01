@@ -3,6 +3,7 @@ package upstream
 import (
 	"maps"
 	"slices"
+	"strings"
 	"sync"
 	"time"
 
@@ -43,6 +44,22 @@ var (
 	upstreamService *UpstreamService
 	serviceOnce     sync.Once
 )
+
+// formatSocketAddress formats a host:port combination into a proper socket address
+// For IPv6 addresses, it adds brackets around the host if they're not already present
+func formatSocketAddress(host, port string) string {
+	// Check if this is an IPv6 address by looking for colons
+	if strings.Contains(host, ":") {
+		// IPv6 address - check if it already has brackets
+		if !strings.HasPrefix(host, "[") {
+			return "[" + host + "]:" + port
+		}
+		// Already has brackets, just append port
+		return host + ":" + port
+	}
+	// IPv4 address or hostname
+	return host + ":" + port
+}
 
 // GetUpstreamService returns the singleton upstream service instance
 func GetUpstreamService() *UpstreamService {
@@ -117,7 +134,7 @@ func (s *UpstreamService) updateTargetsFromConfig(configPath string, targets []P
 	// Add/update new targets
 	newTargetKeys := make([]string, 0, len(targets))
 	for _, target := range targets {
-		key := target.Host + ":" + target.Port
+		key := formatSocketAddress(target.Host, target.Port)
 		newTargetKeys = append(newTargetKeys, key)
 
 		if existingTarget, exists := s.targets[key]; exists {
@@ -228,8 +245,8 @@ func (s *UpstreamService) PerformAvailabilityTest() {
 		if targetInfo.ProxyTarget.IsConsul {
 			consulTargets = append(consulTargets, targetInfo.ProxyTarget)
 		} else {
-			// Traditional target - use host:port key format
-			key := targetInfo.ProxyTarget.Host + ":" + targetInfo.ProxyTarget.Port
+			// Traditional target - use properly formatted socket address
+			key := formatSocketAddress(targetInfo.ProxyTarget.Host, targetInfo.ProxyTarget.Port)
 			regularTargetKeys = append(regularTargetKeys, key)
 		}
 	}

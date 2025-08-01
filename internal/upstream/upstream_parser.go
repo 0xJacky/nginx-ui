@@ -319,7 +319,9 @@ func deduplicateTargets(targets []ProxyTarget) []ProxyTarget {
 
 	for _, target := range targets {
 		// Create a unique key that includes resolver and consul information
-		key := target.Host + ":" + target.Port + ":" + target.Type + ":" + target.Resolver
+		// Use formatSocketAddress for proper IPv6 handling in the key
+		socketAddr := formatSocketAddress(target.Host, target.Port)
+		key := socketAddr + ":" + target.Type + ":" + target.Resolver
 		if target.IsConsul {
 			key += ":consul:" + target.ServiceURL
 		}

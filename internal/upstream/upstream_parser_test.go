@@ -201,12 +201,12 @@ server {
 	// Create a map for easier comparison
 	targetMap := make(map[string]ProxyTarget)
 	for _, target := range targets {
-		key := target.Host + ":" + target.Port + ":" + target.Type
+		key := formatSocketAddress(target.Host, target.Port) + ":" + target.Type
 		targetMap[key] = target
 	}
 
 	for _, expected := range expectedTargets {
-		key := expected.Host + ":" + expected.Port + ":" + expected.Type
+		key := formatSocketAddress(expected.Host, expected.Port) + ":" + expected.Type
 		if _, found := targetMap[key]; !found {
 			t.Errorf("Expected target not found: %+v", expected)
 		}
@@ -258,12 +258,12 @@ server {
 	// Create a map for easier comparison
 	targetMap := make(map[string]ProxyTarget)
 	for _, target := range targets {
-		key := target.Host + ":" + target.Port + ":" + target.Type
+		key := formatSocketAddress(target.Host, target.Port) + ":" + target.Type
 		targetMap[key] = target
 	}
 
 	for _, expected := range expectedTargets {
-		key := expected.Host + ":" + expected.Port + ":" + expected.Type
+		key := formatSocketAddress(expected.Host, expected.Port) + ":" + expected.Type
 		if _, found := targetMap[key]; !found {
 			t.Errorf("Expected target not found: %+v", expected)
 		}
@@ -332,12 +332,12 @@ server {
 	// Create a map for easier comparison
 	targetMap := make(map[string]ProxyTarget)
 	for _, target := range targets {
-		key := target.Host + ":" + target.Port + ":" + target.Type
+		key := formatSocketAddress(target.Host, target.Port) + ":" + target.Type
 		targetMap[key] = target
 	}
 
 	for _, expected := range expectedTargets {
-		key := expected.Host + ":" + expected.Port + ":" + expected.Type
+		key := formatSocketAddress(expected.Host, expected.Port) + ":" + expected.Type
 		if _, found := targetMap[key]; !found {
 			t.Errorf("Expected target not found: %+v", expected)
 		}
@@ -680,7 +680,7 @@ server {
 	// Verify specific targets exist
 	found := make(map[string]bool)
 	for _, target := range targets {
-		key := target.Host + ":" + target.Port + ":" + target.Type
+		key := formatSocketAddress(target.Host, target.Port) + ":" + target.Type
 		found[key] = true
 	}
 
