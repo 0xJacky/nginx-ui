@@ -102,6 +102,8 @@ func InitRouter() {
 			nginxLog.InitRouter(w)
 			upstream.InitRouter(w)
 			system.InitWebSocketRouter(w)
+			nginx.InitWebSocketRouter(w)
+			cluster.InitWebSocketRouter(w)
 		}
 	}
 }

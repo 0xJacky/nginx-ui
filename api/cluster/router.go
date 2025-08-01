@@ -5,7 +5,6 @@ import "github.com/gin-gonic/gin"
 func InitRouter(r *gin.RouterGroup) {
 	// Environment
 	r.GET("environments", GetEnvironmentList)
-	r.GET("environments/enabled", GetAllEnabledEnvironmentWS)
 	r.POST("environments/load_from_settings", LoadEnvironmentFromSettings)
 	envGroup := r.Group("environments")
 	{
@@ -27,4 +26,8 @@ func InitRouter(r *gin.RouterGroup) {
 	r.DELETE("env_groups/:id", DeleteGroup)
 	r.POST("env_groups/:id/recover", RecoverGroup)
 	r.POST("env_groups/order", UpdateGroupsOrder)
+}
+
+func InitWebSocketRouter(r *gin.RouterGroup) {
+	r.GET("environments/enabled", GetAllEnabledEnvironmentWS)
 }
