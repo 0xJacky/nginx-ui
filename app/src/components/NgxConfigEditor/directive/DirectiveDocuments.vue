@@ -17,7 +17,7 @@ const { nginxDirectivesDocsMap } = storeToRefs(useDirectiveStore())
                 nginxDirectivesDocsMap[props.directive].links.length)"
   >
     <div v-for="(link, idx) in nginxDirectivesDocsMap[props.directive]?.links" :key="idx" class="mb-2">
-      <a :href="link">
+      <a :href="link" target="_blank">
         {{ link }}
       </a>
     </div>

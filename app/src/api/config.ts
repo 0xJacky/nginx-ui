@@ -1,3 +1,4 @@
+import type { AxiosRequestConfig } from '@uozi-admin/request'
 import type { GetListResponse } from '@/api/curd'
 import type { ChatComplicationMessage } from '@/api/openai'
 import { extendCurdApi, http, useCurdApi } from '@uozi-admin/request'
@@ -26,6 +27,14 @@ export interface ConfigBackup extends ModelBase {
 }
 
 const config = extendCurdApi(useCurdApi<Config>('/configs'), {
+  // eslint-disable-next-line ts/no-explicit-any
+  getItem: (id: string | number, params?: Record<string, any>, config?: AxiosRequestConfig) => {
+    return http.get<Config>('/config', { params: { path: id, ...params }, ...config })
+  },
+  // eslint-disable-next-line ts/no-explicit-any
+  updateItem: (id: string | number, data: Record<string, any>, config?: AxiosRequestConfig) => {
+    return http.post<Config>('/config', { path: decodeURIComponent(id as string), ...data }, config)
+  },
   get_base_path: () => http.get('/config_base_path'),
   mkdir: (basePath: string, name: string) => http.post('/config_mkdir', { base_path: basePath, folder_name: name }),
   rename: (basePath: string, origName: string, newName: string, syncNodeIds?: number[]) => http.post('/config_rename', {

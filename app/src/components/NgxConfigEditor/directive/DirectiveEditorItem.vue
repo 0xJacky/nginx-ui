@@ -41,8 +41,6 @@ function save() {
   config.updateItem(directive.value.params, { content: content.value }).then(r => {
     content.value = r.content
     message.success($gettext('Saved successfully'))
-  }).catch(r => {
-    message.error($gettext('Save error %{msg}', { msg: r.message ?? '' }))
   })
 }
 

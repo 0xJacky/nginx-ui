@@ -20,10 +20,9 @@ type EditConfigJson struct {
 }
 
 func EditConfig(c *gin.Context) {
-	relativePath := helper.UnescapeURL(c.Param("path"))
-
 	var json struct {
 		Content       string   `json:"content"`
+		Path          string   `json:"path"`
 		SyncOverwrite bool     `json:"sync_overwrite"`
 		SyncNodeIds   []uint64 `json:"sync_node_ids"`
 	}
@@ -31,7 +30,13 @@ func EditConfig(c *gin.Context) {
 		return
 	}
 
-	absPath := nginx.GetConfPath(relativePath)
+	var absPath string
+	if filepath.IsAbs(json.Path) {
+		absPath = json.Path
+	} else {
+		absPath = nginx.GetConfPath(json.Path)
+	}
+
 	if !helper.FileExists(absPath) {
 		c.JSON(http.StatusNotFound, gin.H{
 			"message": "file not found",
@@ -74,7 +79,7 @@ func EditConfig(c *gin.Context) {
 		Content:       content,
 		FilePath:      absPath,
 		ModifiedAt:    time.Now(),
-		Dir:           filepath.Dir(relativePath),
+		Dir:           filepath.Dir(absPath),
 		SyncNodeIds:   cfg.SyncNodeIds,
 		SyncOverwrite: cfg.SyncOverwrite,
 	})

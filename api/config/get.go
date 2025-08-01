@@ -14,13 +14,17 @@ import (
 )
 
 func GetConfig(c *gin.Context) {
-	relativePath := helper.UnescapeURL(c.Param("path"))
+	path := helper.UnescapeURL(c.Query("path"))
 
-	absPath := nginx.GetConfPath(relativePath)
+	var absPath string
+	if filepath.IsAbs(path) {
+		absPath = path
+	} else {
+		absPath = nginx.GetConfPath(path)
+	}
+
 	if !helper.IsUnderDirectory(absPath, nginx.GetConfPath()) {
-		c.JSON(http.StatusForbidden, gin.H{
-			"message": "path is not under the nginx conf path",
-		})
+		cosy.ErrHandler(c, cosy.WrapErrorWithParams(config.ErrPathIsNotUnderTheNginxConfDir, absPath, nginx.GetConfPath()))
 		return
 	}
 
@@ -48,7 +52,7 @@ func GetConfig(c *gin.Context) {
 		Content:       string(content),
 		FilePath:      absPath,
 		ModifiedAt:    stat.ModTime(),
-		Dir:           filepath.Dir(relativePath),
+		Dir:           filepath.Dir(absPath),
 		SyncNodeIds:   cfg.SyncNodeIds,
 		SyncOverwrite: cfg.SyncOverwrite,
 	})
