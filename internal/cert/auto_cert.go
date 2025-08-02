@@ -66,13 +66,28 @@ func autoCert(certModel *model.Cert) {
 	certAge := int(time.Since(certInfo.NotBefore).Hours() / 24)
 	// Calculate days until expiration
 	daysUntilExpiration := int(time.Until(certInfo.NotAfter).Hours() / 24)
+	// Calculate total certificate validity period
+	totalValidityDays := int(certInfo.NotAfter.Sub(certInfo.NotBefore).Hours() / 24)
 
-	// Skip renewal only if:
-	// 1. Certificate age is less than renewal interval AND
-	// 2. Certificate has more than 6 days remaining before expiration
-	if certAge < settings.CertSettings.GetCertRenewalInterval() && daysUntilExpiration > 6 {
-		// Certificate is too young and not expiring soon, ignore
-		return
+	renewalInterval := settings.CertSettings.GetCertRenewalInterval()
+
+	// For certificates with short validity periods (less than renewal interval),
+	// use early renewal logic to prevent expiration
+	if totalValidityDays < renewalInterval {
+		// Renew when 2/3 of the certificate's lifetime remains
+		// This provides a safety buffer for short-lived certificates
+		earlyRenewalThreshold := 2 * totalValidityDays / 3
+		if daysUntilExpiration > earlyRenewalThreshold {
+			return
+		}
+		// If we reach here, proceed with renewal for short-lived certificate
+	} else {
+		// For normal certificates with validity >= renewal interval:
+		// Skip renewal if certificate age is less than the configured renewal interval
+		// This ensures we don't renew certificates too frequently
+		if certAge < renewalInterval {
+			return
+		}
 	}
 
 	// after 1 mo, reissue certificate
