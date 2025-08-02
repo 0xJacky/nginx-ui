@@ -116,7 +116,7 @@ msgid "Access Logs"
 msgstr ""
 
 #: src/routes/modules/certificates.ts:20
-#: src/views/certificate/ACMEUser.vue:108
+#: src/views/certificate/ACMEUser.vue:148
 #: src/views/certificate/components/ACMEUserSelector.vue:52
 msgid "ACME User"
 msgstr ""
@@ -126,7 +126,7 @@ msgid "Action"
 msgstr ""
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:273
-#: src/views/certificate/ACMEUser.vue:90
+#: src/views/certificate/ACMEUser.vue:130
 #: src/views/certificate/CertificateList/certColumns.tsx:92
 #: src/views/certificate/DNSCredential.vue:71
 #: src/views/config/configColumns.tsx:50
@@ -298,7 +298,7 @@ msgstr ""
 msgid "Are you sure you want to reload Nginx on the following sync nodes?"
 msgstr ""
 
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:97
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:100
 msgid "Are you sure you want to remove this directive?"
 msgstr ""
 
@@ -934,7 +934,7 @@ msgstr ""
 msgid "Command exited with unexpected exit code: {0}, error: {1}"
 msgstr ""
 
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:115
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:118
 #: src/components/NgxConfigEditor/LocationEditor.vue:104
 #: src/components/NgxConfigEditor/LocationEditor.vue:135
 #: src/components/NgxConfigEditor/NgxServer.vue:123
@@ -1033,7 +1033,7 @@ msgstr ""
 msgid "Container status unknown"
 msgstr ""
 
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:120
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:123
 #: src/components/NgxConfigEditor/LocationEditor.vue:116
 #: src/components/NgxConfigEditor/LocationEditor.vue:144
 msgid "Content"
@@ -1576,6 +1576,14 @@ msgstr ""
 msgid "e.g., 0 0 * * * (daily at midnight)"
 msgstr ""
 
+#: src/views/certificate/ACMEUser.vue:98
+msgid "EAB HMAC Key"
+msgstr ""
+
+#: src/views/certificate/ACMEUser.vue:85
+msgid "EAB Key ID"
+msgstr ""
+
 #: src/language/curd.ts:8
 msgid "Edit"
 msgstr ""
@@ -1821,6 +1829,14 @@ msgstr ""
 
 #: src/language/curd.ts:22
 msgid "Export Excel"
+msgstr ""
+
+#: src/views/certificate/ACMEUser.vue:103
+msgid "External Account Binding HMAC Key (optional). Should be in Base64 URL encoding format."
+msgstr ""
+
+#: src/views/certificate/ACMEUser.vue:90
+msgid "External Account Binding Key ID (optional). Required for some ACME providers like ZeroSSL."
 msgstr ""
 
 #: src/views/preference/tabs/NginxSettings.vue:49
@@ -2405,10 +2421,6 @@ msgstr ""
 msgid "ICP Number"
 msgstr ""
 
-#: src/views/certificate/ACMEUser.vue:43
-msgid "If left blank, the default CA Dir will be used."
-msgstr ""
-
 #: src/views/preference/tabs/AuthSettings.vue:113
 msgid "If the number of login failed attempts from a ip reach the max attempts in ban threshold minutes, the ip will be banned for a period of time."
 msgstr ""
@@ -2502,7 +2514,7 @@ msgstr ""
 msgid "Interval"
 msgstr ""
 
-#: src/views/certificate/ACMEUser.vue:125
+#: src/views/certificate/ACMEUser.vue:165
 msgid "Invalid"
 msgstr ""
 
@@ -2666,7 +2678,12 @@ msgstr ""
 msgid "Leave blank if do not want to modify"
 msgstr ""
 
-#: src/views/certificate/ACMEUser.vue:55
+#: src/views/certificate/ACMEUser.vue:105
+#: src/views/certificate/ACMEUser.vue:92
+msgid "Leave blank if not required by your ACME provider"
+msgstr ""
+
+#: src/views/certificate/ACMEUser.vue:68
 msgid "Leave blank if you don't need this."
 msgstr ""
 
@@ -2796,7 +2813,7 @@ msgid "Logrotate, by default, is enabled in most mainstream Linux distributions 
 msgstr ""
 
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:51
-#: src/composables/useUpstreamStatus.ts:139
+#: src/composables/useUpstreamStatus.ts:156
 msgid "Main Node"
 msgstr ""
 
@@ -3297,7 +3314,7 @@ msgstr ""
 #: src/components/ChatGPT/ChatMessageInput.vue:17
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:111
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:99
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:99
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:102
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
 #: src/components/Notification/Notification.vue:108
 #: src/language/curd.ts:40
@@ -3891,11 +3908,11 @@ msgstr ""
 msgid "Provider not found: {0}"
 msgstr ""
 
-#: src/views/certificate/ACMEUser.vue:48
+#: src/views/certificate/ACMEUser.vue:61
 msgid "Proxy"
 msgstr ""
 
-#: src/composables/useUpstreamStatus.ts:115
+#: src/composables/useUpstreamStatus.ts:132
 msgid "Proxy Pass"
 msgstr ""
 
@@ -3952,19 +3969,19 @@ msgstr ""
 msgid "Regenerate response"
 msgstr ""
 
-#: src/views/certificate/ACMEUser.vue:133
+#: src/views/certificate/ACMEUser.vue:173
 msgid "Register"
 msgstr ""
 
-#: src/views/certificate/ACMEUser.vue:53
+#: src/views/certificate/ACMEUser.vue:66
 msgid "Register a user or use this account to issue a certificate through an HTTP proxy."
 msgstr ""
 
-#: src/views/certificate/ACMEUser.vue:101
+#: src/views/certificate/ACMEUser.vue:141
 msgid "Register failed"
 msgstr ""
 
-#: src/views/certificate/ACMEUser.vue:72
+#: src/views/certificate/ACMEUser.vue:112
 msgid "Register On Startup"
 msgstr ""
 
@@ -3972,7 +3989,7 @@ msgstr ""
 msgid "Register passkey successfully"
 msgstr ""
 
-#: src/views/certificate/ACMEUser.vue:99
+#: src/views/certificate/ACMEUser.vue:139
 msgid "Register successfully"
 msgstr ""
 
@@ -3980,7 +3997,7 @@ msgstr ""
 msgid "Registering user"
 msgstr ""
 
-#: src/views/certificate/ACMEUser.vue:116
+#: src/views/certificate/ACMEUser.vue:156
 msgid "Registration Status"
 msgstr ""
 
@@ -4397,7 +4414,7 @@ msgid "Saturday"
 msgstr ""
 
 #: src/components/ChatGPT/ChatMessage.vue:215
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:129
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:132
 #: src/language/curd.ts:18
 #: src/views/certificate/components/CertificateActions.vue:29
 #: src/views/config/components/ConfigLeftPanel.vue:282
@@ -4413,10 +4430,6 @@ msgstr ""
 
 #: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:112
 msgid "Save Directive"
-msgstr ""
-
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:45
-msgid "Save error %{msg}"
 msgstr ""
 
 #: src/components/Notification/notifications.ts:145
@@ -4463,7 +4476,7 @@ msgstr ""
 msgid "Save successfully"
 msgstr ""
 
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:43
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:48
 #: src/language/curd.ts:28
 #: src/views/config/components/ConfigLeftPanel.vue:198
 #: src/views/site/site_add/SiteAdd.vue:36
@@ -4541,8 +4554,16 @@ msgstr ""
 msgid "Security Token Information"
 msgstr ""
 
+#: src/views/certificate/ACMEUser.vue:57
+msgid "Select a predefined CA directory or enter a custom one. Leave blank to use the default CA directory."
+msgstr ""
+
 #: src/language/curd.ts:31
 msgid "Select all"
+msgstr ""
+
+#: src/views/certificate/ACMEUser.vue:43
+msgid "Select or enter a CA directory URL"
 msgstr ""
 
 #: src/language/curd.ts:59
@@ -4789,7 +4810,7 @@ msgstr ""
 
 #: src/components/PortScanner/PortScannerCompact.vue:37
 #: src/views/backup/AutoBackup/AutoBackup.vue:160
-#: src/views/certificate/ACMEUser.vue:60
+#: src/views/certificate/ACMEUser.vue:73
 #: src/views/certificate/CertificateList/certColumns.tsx:63
 #: src/views/dashboard/components/ModulesTable.vue:96
 #: src/views/environments/list/envColumns.tsx:43
@@ -5319,7 +5340,7 @@ msgstr ""
 msgid "Two-factor authentication required"
 msgstr ""
 
-#: src/composables/useUpstreamStatus.ts:115
+#: src/composables/useUpstreamStatus.ts:132
 #: src/views/certificate/CertificateList/certColumns.tsx:24
 #: src/views/config/components/Delete.vue:122
 #: src/views/dashboard/components/ModulesTable.vue:83
@@ -5355,7 +5376,7 @@ msgid "Update successfully"
 msgstr ""
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:236
-#: src/views/certificate/ACMEUser.vue:83
+#: src/views/certificate/ACMEUser.vue:123
 #: src/views/certificate/DNSCredential.vue:65
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
 #: src/views/config/configColumns.tsx:43
@@ -5402,7 +5423,7 @@ msgstr ""
 msgid "Upload Folders"
 msgstr ""
 
-#: src/composables/useUpstreamStatus.ts:115
+#: src/composables/useUpstreamStatus.ts:132
 msgid "Upstream"
 msgstr ""
 
@@ -5470,7 +5491,7 @@ msgid "Username length cannot exceed 255 characters"
 msgstr ""
 
 #: src/components/CertInfo/CertInfo.vue:24
-#: src/views/certificate/ACMEUser.vue:120
+#: src/views/certificate/ACMEUser.vue:160
 #: src/views/certificate/CertificateList/certColumns.tsx:76
 msgid "Valid"
 msgstr ""
@@ -5565,7 +5586,7 @@ msgstr ""
 msgid "Weekly on %{day} at %{time}"
 msgstr ""
 
-#: src/views/certificate/ACMEUser.vue:78
+#: src/views/certificate/ACMEUser.vue:118
 msgid "When Enabled, Nginx UI will automatically re-register users upon startup. Generally, do not enable this unless you are in a dev environment and using Pebble as CA."
 msgstr ""
 
@@ -5630,7 +5651,7 @@ msgstr ""
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:110
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:98
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:98
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:101
 #: src/components/NgxConfigEditor/LocationEditor.vue:88
 #: src/views/preference/tabs/AuthSettings.vue:131
 #: src/views/preference/tabs/CertSettings.vue:72

@@ -608,8 +608,8 @@ func (si *SearchIndexer) updateMemoryUsage(documentID string, contentSize int64,
 	if isAddition {
 		si.totalContentSize += contentSize
 		si.documentCount++
-		logger.Debugf("Added document %s: size=%d, total_size=%d, count=%d",
-			documentID, contentSize, si.totalContentSize, si.documentCount)
+		// logger.Debugf("Added document %s: size=%d, total_size=%d, count=%d",
+		// 	documentID, contentSize, si.totalContentSize, si.documentCount)
 	} else {
 		si.totalContentSize -= contentSize
 		si.documentCount--
@@ -619,8 +619,8 @@ func (si *SearchIndexer) updateMemoryUsage(documentID string, contentSize int64,
 		if si.documentCount < 0 {
 			si.documentCount = 0
 		}
-		logger.Debugf("Removed document %s: size=%d, total_size=%d, count=%d",
-			documentID, contentSize, si.totalContentSize, si.documentCount)
+		// logger.Debugf("Removed document %s: size=%d, total_size=%d, count=%d",
+		// 	documentID, contentSize, si.totalContentSize, si.documentCount)
 	}
 }
 

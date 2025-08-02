@@ -6,6 +6,8 @@ export interface AcmeUser extends ModelBase {
   email: string
   ca_dir: string
   registration: { body?: { status: string } }
+  eab_key_id?: string
+  eab_hmac_key?: string
 }
 
 const baseUrl = '/acme_users'

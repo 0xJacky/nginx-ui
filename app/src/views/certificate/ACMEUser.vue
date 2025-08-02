@@ -38,10 +38,23 @@ const columns: StdTableColumn[] = [
     sorter: true,
     pure: true,
     edit: {
-      type: 'input',
-      input: {
-        placeholder: () => $gettext('If left blank, the default CA Dir will be used.'),
+      type: 'autoComplete',
+      autoComplete: {
+        placeholder: () => $gettext('Select or enter a CA directory URL'),
+        allowClear: true,
+        options: [
+          {
+            value: 'https://acme-v02.api.letsencrypt.org/directory',
+          },
+          {
+            value: 'https://acme-staging-v02.api.letsencrypt.org/directory',
+          },
+          {
+            value: 'https://acme.zerossl.com/v2/DV90',
+          },
+        ],
       },
+      hint: $gettext('Select a predefined CA directory or enter a custom one. Leave blank to use the default CA directory.'),
     },
   },
   {
@@ -67,6 +80,33 @@ const columns: StdTableColumn[] = [
     },
     sorter: true,
     pure: true,
+  },
+  {
+    title: () => $gettext('EAB Key ID'),
+    dataIndex: 'eab_key_id',
+    hiddenInTable: true,
+    edit: {
+      type: 'input',
+      hint: $gettext('External Account Binding Key ID (optional). Required for some ACME providers like ZeroSSL.'),
+      input: {
+        placeholder: $gettext('Leave blank if not required by your ACME provider'),
+      },
+    },
+    hiddenInDetail: true,
+  },
+  {
+    title: () => $gettext('EAB HMAC Key'),
+    dataIndex: 'eab_hmac_key',
+    hiddenInTable: true,
+    edit: {
+      type: 'input',
+      hint: $gettext('External Account Binding HMAC Key (optional). Should be in Base64 URL encoding format.'),
+      input: {
+        placeholder: $gettext('Leave blank if not required by your ACME provider'),
+        type: 'password',
+      },
+    },
+    hiddenInDetail: true,
   },
   {
     title: () => $gettext('Register On Startup'),

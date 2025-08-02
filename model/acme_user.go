@@ -5,10 +5,11 @@ import (
 	"crypto/ecdsa"
 	"crypto/elliptic"
 	"crypto/rand"
+	"math/big"
+
 	"github.com/0xJacky/Nginx-UI/internal/transport"
 	"github.com/go-acme/lego/v4/lego"
 	"github.com/go-acme/lego/v4/registration"
-	"math/big"
 )
 
 type PrivateKey struct {
@@ -25,6 +26,8 @@ type AcmeUser struct {
 	Key               PrivateKey            `json:"-" gorm:"serializer:json"`
 	Proxy             string                `json:"proxy"`
 	RegisterOnStartup bool                  `json:"register_on_startup"`
+	EABKeyID          string                `json:"eab_key_id"`
+	EABHMACKey        string                `json:"eab_hmac_key"`
 }
 
 func (u *AcmeUser) GetEmail() string {
@@ -77,7 +80,21 @@ func (u *AcmeUser) Register() error {
 	}
 
 	// New users will need to register
-	reg, err := client.Registration.Register(registration.RegisterOptions{TermsOfServiceAgreed: true})
+	var reg *registration.Resource
+
+	// Check if EAB credentials are provided
+	if u.EABKeyID != "" && u.EABHMACKey != "" {
+		// Register with External Account Binding
+		reg, err = client.Registration.RegisterWithExternalAccountBinding(registration.RegisterEABOptions{
+			TermsOfServiceAgreed: true,
+			Kid:                  u.EABKeyID,
+			HmacEncoded:          u.EABHMACKey,
+		})
+	} else {
+		// Register without EAB
+		reg, err = client.Registration.Register(registration.RegisterOptions{TermsOfServiceAgreed: true})
+	}
+
 	if err != nil {
 		return err
 	}

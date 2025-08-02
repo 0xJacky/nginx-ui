@@ -29,6 +29,8 @@ func CreateAcmeUser(c *gin.Context) {
 		"ca_dir":              "omitempty",
 		"proxy":               "omitempty",
 		"register_on_startup": "omitempty",
+		"eab_key_id":          "omitempty",
+		"eab_hmac_key":        "omitempty",
 	}).BeforeExecuteHook(func(ctx *cosy.Ctx[model.AcmeUser]) {
 		if ctx.Model.CADir == "" {
 			ctx.Model.CADir = settings.CertSettings.GetCADir()
@@ -48,6 +50,8 @@ func ModifyAcmeUser(c *gin.Context) {
 		"ca_dir":              "omitempty",
 		"proxy":               "omitempty",
 		"register_on_startup": "omitempty",
+		"eab_key_id":          "omitempty",
+		"eab_hmac_key":        "omitempty",
 	}).BeforeExecuteHook(func(ctx *cosy.Ctx[model.AcmeUser]) {
 		if ctx.Model.CADir == "" {
 			ctx.Model.CADir = settings.CertSettings.GetCADir()

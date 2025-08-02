@@ -82,7 +82,7 @@ func init() {
 
 // scanForProxyTargets is the callback function for cache scanner
 func scanForProxyTargets(configPath string, content []byte) error {
-	logger.Debug("scanForProxyTargets", configPath)
+	// logger.Debug("scanForProxyTargets", configPath)
 	// Parse proxy targets and upstream definitions from config content
 	result := ParseProxyTargetsAndUpstreamsFromRawContent(string(content))
 
