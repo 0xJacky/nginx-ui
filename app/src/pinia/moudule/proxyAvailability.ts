@@ -36,8 +36,23 @@ export const useProxyAvailabilityStore = defineStore('proxyAvailability', () => 
 
   const nodeStore = useNodeAvailabilityStore()
 
+  // Format socket address for target key (handles IPv6 addresses)
+  function formatSocketAddress(host: string, port: string): string {
+    // Check if this is an IPv6 address by looking for colons
+    if (host.includes(':')) {
+      // IPv6 address - check if it already has brackets
+      if (!host.startsWith('[')) {
+        return `[${host}]:${port}`
+      }
+      // Already has brackets, just append port
+      return `${host}:${port}`
+    }
+    // IPv4 address or hostname
+    return `${host}:${port}`
+  }
+
   function getTargetKey(target: ProxyTarget): string {
-    return `${target.host}:${target.port}`
+    return formatSocketAddress(target.host, target.port)
   }
 
   // Initialize availability data from HTTP API

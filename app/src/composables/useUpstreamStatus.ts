@@ -86,19 +86,36 @@ export function useUpstreamStatus(envGroupId?: Ref<number | undefined>) {
     return onlineCount
   }
 
+  // Format socket address for display (handles IPv6 addresses)
+  function formatSocketAddress(host: string, port: string): string {
+    // Check if this is an IPv6 address by looking for colons
+    if (host.includes(':')) {
+      // IPv6 address - check if it already has brackets
+      if (!host.startsWith('[')) {
+        return `[${host}]:${port}`
+      }
+      // Already has brackets, just append port
+      return `${host}:${port}`
+    }
+    // IPv4 address or hostname
+    return `${host}:${port}`
+  }
+
   // Get target display text
   function getTargetText(target: ProxyTarget): string {
+    const socketAddress = formatSocketAddress(target.host, target.port)
+
     if (!shouldShowMultiNodeDisplay.value) {
       // Fallback to single-node display
       const result = proxyStore.getAvailabilityResult(target)
       if (!result)
-        return `${target.host}:${target.port}`
+        return socketAddress
 
       if (result.online) {
-        return `${target.host}:${target.port} (${result.latency.toFixed(2)}ms)`
+        return `${socketAddress} (${result.latency.toFixed(2)}ms)`
       }
       else {
-        return `${target.host}:${target.port}`
+        return socketAddress
       }
     }
 
@@ -107,7 +124,7 @@ export function useUpstreamStatus(envGroupId?: Ref<number | undefined>) {
     const totalNodes = calculateTotalNodes(group, testType)
     const onlineCount = calculateOnlineCount(target, group, testType)
 
-    return `${target.host}:${target.port} (${onlineCount}/${totalNodes})`
+    return `${socketAddress} (${onlineCount}/${totalNodes})`
   }
 
   // Get target tooltip title
