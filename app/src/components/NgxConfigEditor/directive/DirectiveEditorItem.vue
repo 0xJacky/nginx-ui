@@ -25,8 +25,13 @@ const directive = defineModel<NgxDirective>('directive', {
 
 const content = ref('')
 
+const shouldLoadInclude = computed(() => {
+  return directive.value.directive === Include && !directive.value.params.includes('*')
+})
+
 function init() {
-  if (directive.value.directive === Include) {
+  // if directive is Include and params is not * #1278
+  if (shouldLoadInclude.value) {
     config.getItem(directive.value.params).then(r => {
       content.value = r.content
     })
@@ -114,7 +119,7 @@ const showComment = ref(false)
             <ATextarea v-model:value="directive.comments" />
           </AFormItem>
           <AFormItem
-            v-if="directive.directive === Include"
+            v-if="shouldLoadInclude"
             :label="$gettext('Content')"
           >
             <CodeEditor
