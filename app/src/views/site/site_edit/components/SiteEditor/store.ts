@@ -154,6 +154,53 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
     return false
   })
 
+  const isDefaultServer = computed(() => {
+    if (curDirectivesMap.value.listen) {
+      for (const v of curDirectivesMap.value.listen) {
+        const params = v?.params || ''
+        if (params.includes('443') && params.includes('ssl') && params.includes('default_server'))
+          return true
+      }
+    }
+
+    return false
+  })
+
+  const hasWildcardServerName = computed(() => {
+    if (curDirectivesMap.value.server_name) {
+      for (const v of curDirectivesMap.value.server_name) {
+        const params = v?.params || ''
+        if (params.includes('_'))
+          return true
+      }
+    }
+
+    return false
+  })
+
+  const hasExplicitIpAddress = computed(() => {
+    if (curDirectivesMap.value.server_name) {
+      for (const v of curDirectivesMap.value.server_name) {
+        const params = v?.params || ''
+        // Check for IPv4 or IPv6 addresses
+        const ipv4Regex = /\b(?:\d{1,3}\.){3}\d{1,3}\b/
+        const ipv6Regex = /\[?(?:[\da-f]{0,4}:){1,7}[\da-f]{0,4}\]?/i
+        if (ipv4Regex.test(params) || ipv6Regex.test(params))
+          return true
+      }
+    }
+
+    return false
+  })
+
+  const isIpCertificate = computed(() => {
+    return isDefaultServer.value || hasWildcardServerName.value
+  })
+
+  const needsManualIpInput = computed(() => {
+    return isIpCertificate.value && !hasExplicitIpAddress.value
+  })
+
   return {
     name,
     advanceMode,
@@ -174,6 +221,11 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
     configText,
     issuingCert,
     curSupportSSL,
+    isDefaultServer,
+    hasWildcardServerName,
+    hasExplicitIpAddress,
+    isIpCertificate,
+    needsManualIpInput,
     hasServers,
     init,
     save,

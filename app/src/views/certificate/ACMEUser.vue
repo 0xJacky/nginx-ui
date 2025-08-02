@@ -103,7 +103,6 @@ const columns: StdTableColumn[] = [
       hint: $gettext('External Account Binding HMAC Key (optional). Should be in Base64 URL encoding format.'),
       input: {
         placeholder: $gettext('Leave blank if not required by your ACME provider'),
-        type: 'password',
       },
     },
     hiddenInDetail: true,

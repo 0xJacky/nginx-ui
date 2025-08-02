@@ -16,7 +16,7 @@ const props = defineProps<{
 }>()
 
 const editorStore = useSiteEditorStore()
-const { ngxConfig, issuingCert, curServerDirectives, curDirectivesMap } = storeToRefs(editorStore)
+const { ngxConfig, issuingCert, curServerDirectives, curDirectivesMap, isDefaultServer, hasWildcardServerName, hasExplicitIpAddress, isIpCertificate, needsManualIpInput } = storeToRefs(editorStore)
 
 const autoCert = defineModel<boolean>('autoCert')
 
@@ -43,6 +43,7 @@ const name = computed(() => {
 })
 
 const refObtainCertLive = useTemplateRef('refObtainCertLive')
+const refAutoCertForm = useTemplateRef('refAutoCertForm')
 
 function issueCert() {
   refObtainCertLive.value?.issue_cert(
@@ -172,6 +173,9 @@ const canNext = computed(() => {
 })
 
 function next() {
+  // Apply manual IP address to domains before proceeding
+  refAutoCertForm.value?.applyManualIpToDomains()
+
   step.value++
   onchange(true)
 }
@@ -191,8 +195,14 @@ function next() {
     >
       <template v-if="step === 1">
         <AutoCertStepOne
+          ref="refAutoCertForm"
           v-model:options="data"
           :no-server-name="noServerName"
+          :is-default-server="isDefaultServer"
+          :has-wildcard-server-name="hasWildcardServerName"
+          :has-explicit-ip-address="hasExplicitIpAddress"
+          :is-ip-certificate="isIpCertificate"
+          :needs-manual-ip-input="needsManualIpInput"
         />
       </template>
       <template v-else-if="step === 2">

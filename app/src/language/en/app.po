@@ -225,6 +225,11 @@ msgid ""
 "certificate application will fail."
 msgstr ""
 
+#: src/components/AutoCertForm/AutoCertForm.vue:188
+msgid ""
+"Any reachable IP address can be used with private Certificate Authorities"
+msgstr ""
+
 #: src/views/preference/tabs/OpenAISettings.vue:32
 msgid "API Base Url"
 msgstr ""
@@ -749,7 +754,7 @@ msgstr ""
 msgid "Challenge error: {0}"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:66
+#: src/components/AutoCertForm/AutoCertForm.vue:197
 msgid "Challenge Method"
 msgstr ""
 
@@ -1486,11 +1491,11 @@ msgstr ""
 msgid "DNS Provider"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:73
+#: src/components/AutoCertForm/AutoCertForm.vue:207
 msgid "DNS01"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:103
+#: src/components/AutoCertForm/AutoCertForm.vue:240
 msgid "Do not enable this option unless you are sure that you need it."
 msgstr ""
 
@@ -1776,6 +1781,10 @@ msgstr ""
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:137
 msgid "Enter domain name"
+msgstr ""
+
+#: src/components/AutoCertForm/AutoCertForm.vue:162
+msgid "Enter server IP address (e.g., 203.0.113.1 or 2001:db8::1)"
 msgstr ""
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:122
@@ -2310,6 +2319,18 @@ msgstr ""
 msgid "For Chinese user: https://cloud.nginxui.com/"
 msgstr ""
 
+#: src/components/AutoCertForm/AutoCertForm.vue:119
+msgid ""
+"For IP-based certificate configurations, only HTTP-01 challenge method is "
+"supported. DNS-01 challenge is not compatible with IP-based certificates."
+msgstr ""
+
+#: src/components/AutoCertForm/AutoCertForm.vue:167
+msgid ""
+"For IP-based certificates, please specify the server IP address that will be "
+"included in the certificate."
+msgstr ""
+
 #: src/constants/errors/middleware.ts:4
 msgid "Form parse failed"
 msgstr ""
@@ -2434,7 +2455,7 @@ msgstr ""
 msgid "HTTP Challenge Port"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:70
+#: src/components/AutoCertForm/AutoCertForm.vue:201
 msgid "HTTP01"
 msgstr ""
 
@@ -2452,7 +2473,7 @@ msgid ""
 "ban threshold minutes, the ip will be banned for a period of time."
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:122
+#: src/components/AutoCertForm/AutoCertForm.vue:259
 msgid ""
 "If you want to automatically revoke the old certificate, please enable this "
 "option."
@@ -2462,7 +2483,7 @@ msgstr ""
 msgid "If your browser supports WebAuthn Passkey, a dialog box will appear."
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:113
+#: src/components/AutoCertForm/AutoCertForm.vue:250
 msgid ""
 "If your domain has CNAME records and you cannot obtain certificates, you "
 "need to enable this option."
@@ -2631,6 +2652,10 @@ msgstr ""
 msgid "IP"
 msgstr ""
 
+#: src/components/AutoCertForm/AutoCertForm.vue:102
+msgid "IP Certificate Notice"
+msgstr ""
+
 #: src/views/certificate/CertificateList/Certificate.vue:37
 msgid "Issue certificate"
 msgstr ""
@@ -2665,7 +2690,7 @@ msgstr ""
 msgid "Keepalive Timeout"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:78
+#: src/components/AutoCertForm/AutoCertForm.vue:215
 #: src/views/certificate/CertificateList/certColumns.tsx:57
 msgid "Key Type"
 msgstr ""
@@ -2733,7 +2758,7 @@ msgstr ""
 msgid "Legacy recovery code not allowed since totp is not enabled"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:110
+#: src/components/AutoCertForm/AutoCertForm.vue:247
 msgid "Lego disable CNAME Support"
 msgstr ""
 
@@ -2876,7 +2901,7 @@ msgstr ""
 msgid "Make certificate dir error: {0}"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:53
+#: src/components/AutoCertForm/AutoCertForm.vue:143
 msgid ""
 "Make sure you have configured a reverse proxy for .well-known directory to "
 "HTTPChallengePort before obtaining the certificate."
@@ -3059,6 +3084,10 @@ msgstr ""
 msgid "Multi-line Directive"
 msgstr ""
 
+#: src/components/AutoCertForm/AutoCertForm.vue:175
+msgid "Must be a public IP address accessible from the internet"
+msgstr ""
+
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:38
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:56
 msgid "N/A"
@@ -3140,7 +3169,7 @@ msgstr ""
 #: src/views/certificate/components/DNSIssueCertificate.vue:183
 #: src/views/install/components/InstallView.vue:96
 #: src/views/site/site_add/SiteAdd.vue:131
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:214
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:219
 msgid "Next"
 msgstr ""
 
@@ -3383,6 +3412,12 @@ msgstr ""
 msgid "No servers configured"
 msgstr ""
 
+#: src/components/AutoCertForm/AutoCertForm.vue:115
+msgid ""
+"No specific IP address found in server_name configuration. Please specify "
+"the server IP address below for the certificate."
+msgstr ""
+
 #: src/components/NgxConfigEditor/NgxUpstream.vue:103
 msgid "No upstreams configured"
 msgstr ""
@@ -3431,11 +3466,15 @@ msgstr ""
 msgid "Not Loaded"
 msgstr ""
 
+#: src/components/AutoCertForm/AutoCertForm.vue:209
+msgid "Not supported for IP certificates"
+msgstr ""
+
 #: src/components/CertInfo/CertInfo.vue:41
 msgid "Not Valid Before: %{date}"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:39
+#: src/components/AutoCertForm/AutoCertForm.vue:129
 #: src/views/certificate/DNSCredential.vue:89
 msgid "Note"
 msgstr ""
@@ -3491,11 +3530,11 @@ msgstr ""
 msgid "Obtaining certificate"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:100
+#: src/components/AutoCertForm/AutoCertForm.vue:237
 msgid "OCSP Must Staple"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:104
+#: src/components/AutoCertForm/AutoCertForm.vue:241
 msgid ""
 "OCSP Must Staple may cause errors for some users on first access using "
 "Firefox."
@@ -3742,6 +3781,14 @@ msgid ""
 "button below."
 msgstr ""
 
+#: src/components/AutoCertForm/AutoCertForm.vue:77
+msgid "Please enter a valid IPv4 address (0-255 per octet)"
+msgstr ""
+
+#: src/components/AutoCertForm/AutoCertForm.vue:88
+msgid "Please enter a valid IPv4 or IPv6 address"
+msgstr ""
+
 #: src/components/PortScanner/PortScannerCompact.vue:85
 msgid "Please enter a valid port range"
 msgstr ""
@@ -3763,6 +3810,10 @@ msgstr ""
 msgid "Please enter the security token received during backup"
 msgstr ""
 
+#: src/components/AutoCertForm/AutoCertForm.vue:59
+msgid "Please enter the server IP address"
+msgstr ""
+
 #: src/language/curd.ts:24
 msgid "Please fill all fields correctly"
 msgstr ""
@@ -3777,7 +3828,7 @@ msgid ""
 "provider."
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:57
+#: src/components/AutoCertForm/AutoCertForm.vue:147
 msgid ""
 "Please first add credentials in Certification > DNS Credentials, and then "
 "select one of the credentialsbelow to request the API of the DNS provider."
@@ -3884,6 +3935,10 @@ msgstr ""
 msgid "Port"
 msgstr ""
 
+#: src/components/AutoCertForm/AutoCertForm.vue:178
+msgid "Port 80 must be open for HTTP-01 challenge validation"
+msgstr ""
+
 #: src/views/site/site_edit/components/RightPanel/RightPanel.vue:44
 #: src/views/stream/components/RightPanel/RightPanel.vue:25
 msgid "Port Scanner"
@@ -3906,6 +3961,14 @@ msgstr ""
 
 #: src/language/constants.ts:8
 msgid "Preparing lego configurations"
+msgstr ""
+
+#: src/components/AutoCertForm/AutoCertForm.vue:185
+msgid "Private CA:"
+msgstr ""
+
+#: src/components/AutoCertForm/AutoCertForm.vue:181
+msgid "Private IPs (192.168.x.x, 10.x.x.x, 172.16-31.x.x) will fail"
 msgstr ""
 
 #: src/views/certificate/components/CertificateFileUpload.vue:120
@@ -3969,6 +4032,10 @@ msgstr ""
 
 #: src/views/site/site_list/columns.tsx:78 src/views/stream/columns.tsx:46
 msgid "Proxy Targets"
+msgstr ""
+
+#: src/components/AutoCertForm/AutoCertForm.vue:171
+msgid "Public CA Requirements:"
 msgstr ""
 
 #: src/views/preference/tabs/NodeSettings.vue:46
@@ -4325,7 +4392,7 @@ msgstr ""
 msgid "Revoke cert error: {0}"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:119
+#: src/components/AutoCertForm/AutoCertForm.vue:256
 msgid "Revoke Old Certificate"
 msgstr ""
 
@@ -4654,6 +4721,10 @@ msgstr ""
 
 #: src/views/dashboard/ServerAnalytic.vue:179
 msgid "Server Info"
+msgstr ""
+
+#: src/components/AutoCertForm/AutoCertForm.vue:157
+msgid "Server IP Address"
 msgstr ""
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:99
@@ -5119,7 +5190,7 @@ msgstr ""
 msgid "Test S3 Connection"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:49
+#: src/components/AutoCertForm/AutoCertForm.vue:139
 msgid ""
 "The certificate for the domain will be checked 30 minutes, and will be "
 "renewed if it has been more than 1 week or the period you set in settings "
@@ -5188,7 +5259,7 @@ msgid ""
 "match the local version."
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:44
+#: src/components/AutoCertForm/AutoCertForm.vue:134
 msgid ""
 "The server_name in the current configuration must be the domain name you "
 "need to get the certificate, supportmultiple domains."
@@ -5278,6 +5349,20 @@ msgstr ""
 msgid ""
 "This operation will only remove the certificate from the database. The "
 "certificate files on the file system will not be deleted."
+msgstr ""
+
+#: src/components/AutoCertForm/AutoCertForm.vue:107
+msgid ""
+"This site is configured as a default server (default_server) for HTTPS (port "
+"443). IP certificates require Certificate Authority (CA) support and may not "
+"be available with all ACME providers."
+msgstr ""
+
+#: src/components/AutoCertForm/AutoCertForm.vue:111
+msgid ""
+"This site uses wildcard server name (_) which typically indicates an IP-"
+"based certificate. IP certificates require Certificate Authority (CA) "
+"support and may not be available with all ACME providers."
 msgstr ""
 
 #: src/views/backup/components/BackupCreator.vue:141
@@ -5652,6 +5737,13 @@ msgid ""
 "Warning: Restore operation will overwrite current configurations. Make sure "
 "you have a valid backup file and security token, and carefully select what "
 "to restore."
+msgstr ""
+
+#: src/components/AutoCertForm/AutoCertForm.vue:82
+msgid ""
+"Warning: This appears to be a private IP address. Public CAs like Let's "
+"Encrypt cannot issue certificates for private IPs. Use a public IP address "
+"or consider using a private CA."
 msgstr ""
 
 #: src/views/certificate/DNSCredential.vue:96
