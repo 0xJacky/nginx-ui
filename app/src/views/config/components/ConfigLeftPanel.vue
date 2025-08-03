@@ -47,7 +47,7 @@ const newPath = computed(() => {
   return path
 })
 
-const relativePath = computed(() => (basePath.value ? `${basePath.value}/${route.params.name}` : route.params.name) as string)
+const relativePath = computed(() => (basePath.value ? `${basePath.value}/${route.params.name.toString()}` : route.params.name.toString()))
 const breadcrumbs = useBreadcrumbs()
 
 // Use Vue 3.4+ useTemplateRef for InspectConfig component
