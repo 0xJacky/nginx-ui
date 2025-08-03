@@ -39,6 +39,8 @@ func newAcmeUser(db *gorm.DB, opts ...gen.DOOption) acmeUser {
 	_acmeUser.Key = field.NewField(tableName, "key")
 	_acmeUser.Proxy = field.NewString(tableName, "proxy")
 	_acmeUser.RegisterOnStartup = field.NewBool(tableName, "register_on_startup")
+	_acmeUser.EABKeyID = field.NewString(tableName, "eab_key_id")
+	_acmeUser.EABHMACKey = field.NewString(tableName, "eabhmac_key")
 
 	_acmeUser.fillFieldMap()
 
@@ -60,6 +62,8 @@ type acmeUser struct {
 	Key               field.Field
 	Proxy             field.String
 	RegisterOnStartup field.Bool
+	EABKeyID          field.String
+	EABHMACKey        field.String
 
 	fieldMap map[string]field.Expr
 }
@@ -87,6 +91,8 @@ func (a *acmeUser) updateTableName(table string) *acmeUser {
 	a.Key = field.NewField(table, "key")
 	a.Proxy = field.NewString(table, "proxy")
 	a.RegisterOnStartup = field.NewBool(table, "register_on_startup")
+	a.EABKeyID = field.NewString(table, "eab_key_id")
+	a.EABHMACKey = field.NewString(table, "eabhmac_key")
 
 	a.fillFieldMap()
 
@@ -103,7 +109,7 @@ func (a *acmeUser) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (a *acmeUser) fillFieldMap() {
-	a.fieldMap = make(map[string]field.Expr, 11)
+	a.fieldMap = make(map[string]field.Expr, 13)
 	a.fieldMap["id"] = a.ID
 	a.fieldMap["created_at"] = a.CreatedAt
 	a.fieldMap["updated_at"] = a.UpdatedAt
@@ -115,6 +121,8 @@ func (a *acmeUser) fillFieldMap() {
 	a.fieldMap["key"] = a.Key
 	a.fieldMap["proxy"] = a.Proxy
 	a.fieldMap["register_on_startup"] = a.RegisterOnStartup
+	a.fieldMap["eab_key_id"] = a.EABKeyID
+	a.fieldMap["eabhmac_key"] = a.EABHMACKey
 }
 
 func (a acmeUser) clone(db *gorm.DB) acmeUser {

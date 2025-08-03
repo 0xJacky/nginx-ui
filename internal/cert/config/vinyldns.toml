@@ -22,6 +22,7 @@ Users are required to have DELETE ACL level or zone admin permissions on the Vin
     VINYLDNS_SECRET_KEY = "The VinylDNS API Secret key"
     VINYLDNS_HOST = "The VinylDNS API URL"
   [Configuration.Additional]
+    VINYLDNS_QUOTE_VALUE = "Adds quotes around the TXT record value (Default: false)"
     VINYLDNS_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 4)"
     VINYLDNS_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 120)"
     VINYLDNS_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 30)"

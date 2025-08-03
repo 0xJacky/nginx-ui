@@ -36,6 +36,7 @@ func newEnvGroup(db *gorm.DB, opts ...gen.DOOption) envGroup {
 	_envGroup.SyncNodeIds = field.NewField(tableName, "sync_node_ids")
 	_envGroup.OrderID = field.NewInt(tableName, "order_id")
 	_envGroup.PostSyncAction = field.NewString(tableName, "post_sync_action")
+	_envGroup.UpstreamTestType = field.NewString(tableName, "upstream_test_type")
 
 	_envGroup.fillFieldMap()
 
@@ -45,15 +46,16 @@ func newEnvGroup(db *gorm.DB, opts ...gen.DOOption) envGroup {
 type envGroup struct {
 	envGroupDo
 
-	ALL            field.Asterisk
-	ID             field.Uint64
-	CreatedAt      field.Time
-	UpdatedAt      field.Time
-	DeletedAt      field.Field
-	Name           field.String
-	SyncNodeIds    field.Field
-	OrderID        field.Int
-	PostSyncAction field.String
+	ALL              field.Asterisk
+	ID               field.Uint64
+	CreatedAt        field.Time
+	UpdatedAt        field.Time
+	DeletedAt        field.Field
+	Name             field.String
+	SyncNodeIds      field.Field
+	OrderID          field.Int
+	PostSyncAction   field.String
+	UpstreamTestType field.String
 
 	fieldMap map[string]field.Expr
 }
@@ -78,6 +80,7 @@ func (e *envGroup) updateTableName(table string) *envGroup {
 	e.SyncNodeIds = field.NewField(table, "sync_node_ids")
 	e.OrderID = field.NewInt(table, "order_id")
 	e.PostSyncAction = field.NewString(table, "post_sync_action")
+	e.UpstreamTestType = field.NewString(table, "upstream_test_type")
 
 	e.fillFieldMap()
 
@@ -94,7 +97,7 @@ func (e *envGroup) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (e *envGroup) fillFieldMap() {
-	e.fieldMap = make(map[string]field.Expr, 8)
+	e.fieldMap = make(map[string]field.Expr, 9)
 	e.fieldMap["id"] = e.ID
 	e.fieldMap["created_at"] = e.CreatedAt
 	e.fieldMap["updated_at"] = e.UpdatedAt
@@ -103,6 +106,7 @@ func (e *envGroup) fillFieldMap() {
 	e.fieldMap["sync_node_ids"] = e.SyncNodeIds
 	e.fieldMap["order_id"] = e.OrderID
 	e.fieldMap["post_sync_action"] = e.PostSyncAction
+	e.fieldMap["upstream_test_type"] = e.UpstreamTestType
 }
 
 func (e envGroup) clone(db *gorm.DB) envGroup {

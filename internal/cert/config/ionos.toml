@@ -14,7 +14,7 @@ lego --email you@example.com --dns ionos -d '*.example.com' -d example.com run
     IONOS_API_KEY = "API key `<prefix>.<secret>` https://developer.hosting.ionos.com/docs/getstarted"
   [Configuration.Additional]
     IONOS_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 2)"
-    IONOS_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 60)"
+    IONOS_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 900)"
     IONOS_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 300)"
     IONOS_HTTP_TIMEOUT = "API request timeout in seconds (Default: 30)"
 

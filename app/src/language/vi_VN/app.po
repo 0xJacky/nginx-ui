@@ -5,13 +5,14 @@ msgstr ""
 "Language-Team: none\n"
 "Language: vi_VN\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/language/generate.ts:33
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
-msgstr "[Nginx UI] Người dùng ACME: %{name}, Email: %{email}, Thư mục CA: %{caDir}"
+msgstr ""
+"[Nginx UI] Người dùng ACME: %{name}, Email: %{email}, Thư mục CA: %{caDir}"
 
 #: src/language/generate.ts:34
 msgid "[Nginx UI] Backing up current certificate for later revocation"
@@ -26,10 +27,11 @@ msgid "[Nginx UI] Certificate successfully revoked"
 msgstr "[Nginx UI] Hủy chứng chỉ thành công"
 
 #: src/language/generate.ts:37
-msgid "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
+msgid ""
+"[Nginx UI] Certificate was used for server, reloading server TLS certificate"
 msgstr ""
-"[Nginx UI] Chứng chỉ đã được sử dụng cho máy chủ, đang tải lại chứng chỉ "
-"TLS của máy chủ"
+"[Nginx UI] Chứng chỉ đã được sử dụng cho máy chủ, đang tải lại chứng chỉ TLS "
+"của máy chủ"
 
 #: src/language/generate.ts:38
 msgid "[Nginx UI] Creating client facilitates communication with the CA server"
@@ -124,7 +126,7 @@ msgstr "Đường dẫn nhật ký truy cập không tồn tại"
 msgid "Access Logs"
 msgstr "Log truy cập"
 
-#: src/routes/modules/certificates.ts:20 src/views/certificate/ACMEUser.vue:148
+#: src/routes/modules/certificates.ts:20 src/views/certificate/ACMEUser.vue:147
 #: src/views/certificate/components/ACMEUserSelector.vue:52
 msgid "ACME User"
 msgstr "Người dùng ACME"
@@ -134,7 +136,7 @@ msgid "Action"
 msgstr "Hành động"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:273
-#: src/views/certificate/ACMEUser.vue:130
+#: src/views/certificate/ACMEUser.vue:129
 #: src/views/certificate/CertificateList/certColumns.tsx:92
 #: src/views/certificate/DNSCredential.vue:71
 #: src/views/config/configColumns.tsx:50
@@ -239,8 +241,9 @@ msgstr ""
 "Tất cả các tên miền phụ được chọn phải thuộc cùng một Nhà cung cấp DNS, nếu "
 "không, việc xin cấp chứng chỉ sẽ thất bại."
 
-#: src/components/AutoCertForm/AutoCertForm.vue:188
-msgid "Any reachable IP address can be used with private Certificate Authorities"
+#: src/components/AutoCertForm/AutoCertForm.vue:209
+msgid ""
+"Any reachable IP address can be used with private Certificate Authorities"
 msgstr ""
 "Bất kỳ địa chỉ IP có thể truy cập nào đều có thể được sử dụng với các cơ "
 "quan cấp chứng chỉ riêng tư"
@@ -325,7 +328,8 @@ msgstr "Bạn có chắc chắn muốn xóa vị trí này không?"
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:109
 msgid "Are you sure you want to restart Nginx on the following sync nodes?"
-msgstr "Bạn có chắc chắn muốn khởi động lại Nginx trên các nút đồng bộ sau không?"
+msgstr ""
+"Bạn có chắc chắn muốn khởi động lại Nginx trên các nút đồng bộ sau không?"
 
 #: src/language/curd.ts:26
 msgid "Are you sure you want to restore?"
@@ -407,11 +411,11 @@ msgstr "Tự động làm mới đã bị vô hiệu hóa"
 msgid "Auto refresh enabled"
 msgstr "Cập nhật tự động đã được bật"
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:78
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:79
 msgid "Auto-renewal disabled for %{name}"
 msgstr "Đã tắt tự động gia hạn SSL cho %{name}"
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:71
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:72
 msgid "Auto-renewal enabled for %{name}"
 msgstr "Đã bật tự động gia hạn SSL cho %{name}"
 
@@ -455,7 +459,8 @@ msgstr "Sao lưu"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:155
 msgid "Backup file integrity check failed, it may have been tampered with"
-msgstr "Kiểm tra tính toàn vẹn của tập tin sao lưu thất bại, có thể đã bị can thiệp"
+msgstr ""
+"Kiểm tra tính toàn vẹn của tập tin sao lưu thất bại, có thể đã bị can thiệp"
 
 #: src/constants/errors/backup.ts:41
 msgid "Backup file not found: {0}"
@@ -491,13 +496,15 @@ msgstr "Lịch trình sao lưu"
 
 #: src/components/Notification/notifications.ts:38
 msgid "Backup task %{backup_name} completed successfully, file: %{file_path}"
-msgstr "Tác vụ sao lưu %{backup_name} đã hoàn thành thành công, tệp: %{file_path}"
+msgstr ""
+"Tác vụ sao lưu %{backup_name} đã hoàn thành thành công, tệp: %{file_path}"
 
 #: src/components/Notification/notifications.ts:34
-msgid "Backup task %{backup_name} failed during storage upload, error: %{error}"
+msgid ""
+"Backup task %{backup_name} failed during storage upload, error: %{error}"
 msgstr ""
-"Tác vụ sao lưu %{backup_name} thất bại trong quá trình tải lên lưu trữ, "
-"lỗi: %{error}"
+"Tác vụ sao lưu %{backup_name} thất bại trong quá trình tải lên lưu trữ, lỗi: "
+"%{error}"
 
 #: src/components/Notification/notifications.ts:30
 msgid "Backup task %{backup_name} failed to execute, error: %{error}"
@@ -628,7 +635,7 @@ msgstr ""
 #: src/views/preference/components/AuthSettings/Passkey.vue:141
 #: src/views/site/components/SiteStatusSelect.vue:124
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:40
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:143
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:144
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:21
 #: src/views/stream/components/StreamStatusSelect.vue:61
 msgid "Cancel"
@@ -771,7 +778,7 @@ msgstr "Danh sách chứng chỉ"
 msgid "Challenge error: {0}"
 msgstr "Lỗi thử thách: {0}"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:197
+#: src/components/AutoCertForm/AutoCertForm.vue:218
 msgid "Challenge Method"
 msgstr "Phương pháp xác thực"
 
@@ -816,13 +823,13 @@ msgstr "Kiểm tra lại"
 #: src/language/generate.ts:6
 msgid ""
 "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
-"Docker Image, please make sure the docker socket is mounted like this: `-v "
-"/var/run/docker.sock:/var/run/docker.sock`. Nginx UI official image uses "
-"/var/run/docker.sock to communicate with the host Docker Engine via Docker "
-"Client API. This feature is used to control Nginx in another container and "
-"perform container replacement rather than binary replacement during OTA "
-"upgrades of Nginx UI to ensure container dependencies are also upgraded. If "
-"you don't need this feature, please add the environment variable "
+"Docker Image, please make sure the docker socket is mounted like this: `-v /"
+"var/run/docker.sock:/var/run/docker.sock`. Nginx UI official image uses /var/"
+"run/docker.sock to communicate with the host Docker Engine via Docker Client "
+"API. This feature is used to control Nginx in another container and perform "
+"container replacement rather than binary replacement during OTA upgrades of "
+"Nginx UI to ensure container dependencies are also upgraded. If you don't "
+"need this feature, please add the environment variable "
 "NGINX_UI_IGNORE_DOCKER_SOCKET=true to the container."
 msgstr ""
 "Kiểm tra xem /var/run/docker.sock có tồn tại không. Nếu bạn đang sử dụng "
@@ -841,23 +848,23 @@ msgid ""
 "Check if HTTPS is enabled. Using HTTP outside localhost is insecure and "
 "prevents using Passkeys and clipboard features"
 msgstr ""
-"Kiểm tra xem HTTPS có được bật không. Sử dụng HTTP bên ngoài localhost "
-"không an toàn và ngăn chặn việc sử dụng tính năng Passkeys và clipboard"
+"Kiểm tra xem HTTPS có được bật không. Sử dụng HTTP bên ngoài localhost không "
+"an toàn và ngăn chặn việc sử dụng tính năng Passkeys và clipboard"
 
 #: src/language/generate.ts:8
 msgid ""
-"Check if the nginx access log path exists. By default, this path is "
-"obtained from 'nginx -V'. If it cannot be obtained or the obtained path "
-"does not point to a valid, existing file, an error will be reported. In "
-"this case, you need to modify the configuration file to specify the access "
-"log path.Refer to the docs for more details: "
-"https://nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
+"Check if the nginx access log path exists. By default, this path is obtained "
+"from 'nginx -V'. If it cannot be obtained or the obtained path does not "
+"point to a valid, existing file, an error will be reported. In this case, "
+"you need to modify the configuration file to specify the access log path."
+"Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-"
+"nginx.html#accesslogpath"
 msgstr ""
 "Kiểm tra xem đường dẫn nhật ký truy cập nginx có tồn tại không. Theo mặc "
 "định, đường dẫn này được lấy từ 'nginx -V'. Nếu không thể lấy được hoặc "
 "đường dẫn lấy được không trỏ đến một tệp hợp lệ đang tồn tại, một lỗi sẽ "
-"được báo cáo. Trong trường hợp này, bạn cần sửa đổi tệp cấu hình để chỉ "
-"định đường dẫn nhật ký truy cập. Tham khảo tài liệu để biết thêm chi tiết: "
+"được báo cáo. Trong trường hợp này, bạn cần sửa đổi tệp cấu hình để chỉ định "
+"đường dẫn nhật ký truy cập. Tham khảo tài liệu để biết thêm chi tiết: "
 "https://nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
 
 #: src/language/generate.ts:9
@@ -874,29 +881,29 @@ msgid ""
 "from 'nginx -V'. If it cannot be obtained or the obtained path does not "
 "point to a valid, existing file, an error will be reported. In this case, "
 "you need to modify the configuration file to specify the error log path. "
-"Refer to the docs for more details: "
-"https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
+"Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-"
+"nginx.html#errorlogpath"
 msgstr ""
 "Kiểm tra xem đường dẫn nhật ký lỗi của nginx có tồn tại không. Theo mặc "
 "định, đường dẫn này được lấy từ 'nginx -V'. Nếu không thể lấy được hoặc "
 "đường dẫn lấy được không trỏ đến một tệp hợp lệ đang tồn tại, một lỗi sẽ "
-"được báo cáo. Trong trường hợp này, bạn cần sửa đổi tệp cấu hình để chỉ "
-"định đường dẫn nhật ký lỗi. Tham khảo tài liệu để biết thêm chi tiết: "
-"https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
+"được báo cáo. Trong trường hợp này, bạn cần sửa đổi tệp cấu hình để chỉ định "
+"đường dẫn nhật ký lỗi. Tham khảo tài liệu để biết thêm chi tiết: https://"
+"nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
 
 #: src/language/generate.ts:7
 msgid ""
 "Check if the nginx PID path exists. By default, this path is obtained from "
 "'nginx -V'. If it cannot be obtained, an error will be reported. In this "
 "case, you need to modify the configuration file to specify the Nginx PID "
-"path.Refer to the docs for more details: "
-"https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
+"path.Refer to the docs for more details: https://nginxui.com/zh_CN/guide/"
+"config-nginx.html#pidpath"
 msgstr ""
 "Kiểm tra xem đường dẫn PID của Nginx có tồn tại không. Theo mặc định, đường "
-"dẫn này được lấy từ lệnh 'nginx -V'. Nếu không thể lấy được, một lỗi sẽ "
-"được báo cáo. Trong trường hợp này, bạn cần sửa đổi tệp cấu hình để chỉ "
-"định đường dẫn PID của Nginx. Tham khảo tài liệu để biết thêm chi tiết: "
-"https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
+"dẫn này được lấy từ lệnh 'nginx -V'. Nếu không thể lấy được, một lỗi sẽ được "
+"báo cáo. Trong trường hợp này, bạn cần sửa đổi tệp cấu hình để chỉ định "
+"đường dẫn PID của Nginx. Tham khảo tài liệu để biết thêm chi tiết: https://"
+"nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
 
 #: src/language/generate.ts:12
 msgid "Check if the nginx sbin path exists"
@@ -924,8 +931,8 @@ msgstr ""
 
 #: src/language/generate.ts:17
 msgid ""
-"Check if the streams-available and streams-enabled directories are under "
-"the nginx configuration directory"
+"Check if the streams-available and streams-enabled directories are under the "
+"nginx configuration directory"
 msgstr ""
 "Kiểm tra xem các thư mục streams-available và streams-enabled có nằm trong "
 "thư mục cấu hình nginx không"
@@ -1174,8 +1181,8 @@ msgid ""
 "Create system backups including Nginx configuration and Nginx UI settings. "
 "Backup files will be automatically downloaded to your computer."
 msgstr ""
-"Tạo bản sao lưu hệ thống bao gồm cấu hình Nginx và cài đặt Nginx UI. Các "
-"tệp sao lưu sẽ tự động được tải xuống máy tính của bạn."
+"Tạo bản sao lưu hệ thống bao gồm cấu hình Nginx và cài đặt Nginx UI. Các tệp "
+"sao lưu sẽ tự động được tải xuống máy tính của bạn."
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:229
 #: src/views/environments/group/columns.ts:72
@@ -1295,7 +1302,8 @@ msgstr "Giải mã thất bại"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:150
 msgid "Define shared memory zone name and size, e.g. proxy_cache:10m"
-msgstr "Xác định tên và kích thước vùng bộ nhớ dùng chung, ví dụ proxy_cache:10m"
+msgstr ""
+"Xác định tên và kích thước vùng bộ nhớ dùng chung, ví dụ proxy_cache:10m"
 
 #: src/components/NgxConfigEditor/NgxServer.vue:110
 #: src/components/NgxConfigEditor/NgxUpstream.vue:78 src/language/curd.ts:9
@@ -1455,7 +1463,7 @@ msgstr "Đường dẫn thư mục để lưu trữ các tệp bộ nhớ đệm
 msgid "disable"
 msgstr "Vô hiệu hóa"
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:80
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:81
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "Vô hiệu hóa gia hạn tự động thất bại cho %{name}"
 
@@ -1542,11 +1550,11 @@ msgstr "Xác thực DNS"
 msgid "DNS Provider"
 msgstr "Nhà cung cấp DNS"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:207
+#: src/components/AutoCertForm/AutoCertForm.vue:228
 msgid "DNS01"
 msgstr "DNS01"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:240
+#: src/components/AutoCertForm/AutoCertForm.vue:261
 msgid "Do not enable this option unless you are sure that you need it."
 msgstr "Không bật tùy chọn này trừ khi bạn chắc chắn cần đến nó."
 
@@ -1558,7 +1566,7 @@ msgstr "Bạn có muốn %{action} trang web này không?"
 msgid "Do you want to %{action} this stream?"
 msgstr "Bạn có muốn %{action} luồng này không?"
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:139
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:140
 msgid "Do you want to disable auto-cert renewal?"
 msgstr "Bạn muốn tắt tự động gia hạn chứng chỉ SSL ?"
 
@@ -1705,7 +1713,7 @@ msgstr "bật"
 msgid "Enable 2FA successfully"
 msgstr "Bật 2FA thành công"
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:73
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:74
 msgid "Enable auto-renewal failed for %{name}"
 msgstr "Không thể bật tự động gia hạn SSL cho %{name}"
 
@@ -1837,7 +1845,7 @@ msgstr "Kết thúc"
 msgid "Enter domain name"
 msgstr "Nhập tên miền"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:162
+#: src/components/AutoCertForm/AutoCertForm.vue:183
 msgid "Enter server IP address (e.g., 203.0.113.1 or 2001:db8::1)"
 msgstr "Nhập địa chỉ IP máy chủ (ví dụ: 203.0.113.1 hoặc 2001:db8::1)"
 
@@ -1924,11 +1932,11 @@ msgstr ""
 
 #: src/views/certificate/ACMEUser.vue:90
 msgid ""
-"External Account Binding Key ID (optional). Required for some ACME "
-"providers like ZeroSSL."
+"External Account Binding Key ID (optional). Required for some ACME providers "
+"like ZeroSSL."
 msgstr ""
-"ID khóa liên kết tài khoản bên ngoài (tùy chọn). Bắt buộc đối với một số "
-"nhà cung cấp ACME như ZeroSSL."
+"ID khóa liên kết tài khoản bên ngoài (tùy chọn). Bắt buộc đối với một số nhà "
+"cung cấp ACME như ZeroSSL."
 
 #: src/views/preference/tabs/NginxSettings.vue:49
 msgid "External Docker Container"
@@ -2379,7 +2387,7 @@ msgstr "Dành cho người dùng Trung Quốc"
 msgid "For Chinese user: https://cloud.nginxui.com/"
 msgstr "Dành cho người dùng Trung Quốc: https://cloud.nginxui.com/"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:119
+#: src/components/AutoCertForm/AutoCertForm.vue:140
 msgid ""
 "For IP-based certificate configurations, only HTTP-01 challenge method is "
 "supported. DNS-01 challenge is not compatible with IP-based certificates."
@@ -2387,10 +2395,10 @@ msgstr ""
 "Đối với cấu hình chứng chỉ dựa trên IP, chỉ phương thức thử thách HTTP-01 "
 "được hỗ trợ. Thử thách DNS-01 không tương thích với chứng chỉ dựa trên IP."
 
-#: src/components/AutoCertForm/AutoCertForm.vue:167
+#: src/components/AutoCertForm/AutoCertForm.vue:188
 msgid ""
-"For IP-based certificates, please specify the server IP address that will "
-"be included in the certificate."
+"For IP-based certificates, please specify the server IP address that will be "
+"included in the certificate."
 msgstr ""
 "Đối với chứng chỉ dựa trên IP, vui lòng chỉ định địa chỉ IP của máy chủ sẽ "
 "được đưa vào chứng chỉ."
@@ -2519,7 +2527,7 @@ msgstr "HTTP"
 msgid "HTTP Challenge Port"
 msgstr "Cổng thử thách HTTP"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:201
+#: src/components/AutoCertForm/AutoCertForm.vue:222
 msgid "HTTP01"
 msgstr "HTTP01"
 
@@ -2539,7 +2547,7 @@ msgstr ""
 "Nếu số lần đăng nhập thất bại từ một IP đạt đến số lần thử tối đa trong "
 "khoảng thời gian ngưỡng cấm, IP đó sẽ bị cấm trong một khoảng thời gian."
 
-#: src/components/AutoCertForm/AutoCertForm.vue:259
+#: src/components/AutoCertForm/AutoCertForm.vue:280
 msgid ""
 "If you want to automatically revoke the old certificate, please enable this "
 "option."
@@ -2547,9 +2555,10 @@ msgstr "Nếu bạn muốn tự động thu hồi chứng chỉ cũ, vui lòng b
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:75
 msgid "If your browser supports WebAuthn Passkey, a dialog box will appear."
-msgstr "Nếu trình duyệt của bạn hỗ trợ WebAuthn Passkey, một hộp thoại sẽ xuất hiện."
+msgstr ""
+"Nếu trình duyệt của bạn hỗ trợ WebAuthn Passkey, một hộp thoại sẽ xuất hiện."
 
-#: src/components/AutoCertForm/AutoCertForm.vue:250
+#: src/components/AutoCertForm/AutoCertForm.vue:271
 msgid ""
 "If your domain has CNAME records and you cannot obtain certificates, you "
 "need to enable this option."
@@ -2641,7 +2650,7 @@ msgstr ""
 msgid "Interval"
 msgstr "Khoảng thời gian"
 
-#: src/views/certificate/ACMEUser.vue:165
+#: src/views/certificate/ACMEUser.vue:164
 msgid "Invalid"
 msgstr "Không hợp lệ"
 
@@ -2724,7 +2733,7 @@ msgstr "Định dạng mã bảo mật không hợp lệ"
 msgid "IP"
 msgstr "IP"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:102
+#: src/components/AutoCertForm/AutoCertForm.vue:123
 msgid "IP Certificate Notice"
 msgstr "Thông báo chứng chỉ IP"
 
@@ -2764,7 +2773,7 @@ msgstr ""
 msgid "Keepalive Timeout"
 msgstr "Thời gian chờ Keepalive"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:215
+#: src/components/AutoCertForm/AutoCertForm.vue:236
 #: src/views/certificate/CertificateList/certColumns.tsx:57
 msgid "Key Type"
 msgstr "Loại khóa"
@@ -2832,7 +2841,7 @@ msgstr "Để trống sẽ không thay đổi bất cứ điều gì"
 msgid "Legacy recovery code not allowed since totp is not enabled"
 msgstr "Không cho phép mã khôi phục cũ vì TOTP chưa được bật"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:247
+#: src/components/AutoCertForm/AutoCertForm.vue:268
 msgid "Lego disable CNAME Support"
 msgstr "Lego tắt hỗ trợ CNAME"
 
@@ -2918,13 +2927,12 @@ msgstr "Nhật ký"
 #: src/language/generate.ts:21
 msgid ""
 "Log file %{log_path} is not a regular file. If you are using nginx-ui in "
-"docker container, please refer to "
-"https://nginxui.com/zh_CN/guide/config-nginx-log.html for more information."
+"docker container, please refer to https://nginxui.com/zh_CN/guide/config-"
+"nginx-log.html for more information."
 msgstr ""
-"Tệp nhật ký %{log_path} không phải là tệp thông thường. Nếu bạn đang sử "
-"dụng nginx-ui trong container docker, vui lòng tham khảo "
-"https://nginxui.com/zh_CN/guide/config-nginx-log.html để biết thêm thông "
-"tin."
+"Tệp nhật ký %{log_path} không phải là tệp thông thường. Nếu bạn đang sử dụng "
+"nginx-ui trong container docker, vui lòng tham khảo https://nginxui.com/"
+"zh_CN/guide/config-nginx-log.html để biết thêm thông tin."
 
 #: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:88
 msgid "Log List"
@@ -2948,19 +2956,19 @@ msgstr "Logrotate"
 
 #: src/views/preference/tabs/LogrotateSettings.vue:13
 msgid ""
-"Logrotate, by default, is enabled in most mainstream Linux distributions "
-"for users who install Nginx UI on the host machine, so you don't need to "
-"modify the parameters on this page. For users who install Nginx UI using "
-"Docker containers, you can manually enable this option. The crontab task "
-"scheduler of Nginx UI will execute the logrotate command at the interval "
-"you set in minutes."
+"Logrotate, by default, is enabled in most mainstream Linux distributions for "
+"users who install Nginx UI on the host machine, so you don't need to modify "
+"the parameters on this page. For users who install Nginx UI using Docker "
+"containers, you can manually enable this option. The crontab task scheduler "
+"of Nginx UI will execute the logrotate command at the interval you set in "
+"minutes."
 msgstr ""
 "Logrotate được kích hoạt mặc định trong hầu hết các bản phân phối Linux phổ "
-"biến dành cho người dùng cài đặt Nginx UI trực tiếp trên máy chủ, vì vậy "
-"bạn không cần phải thay đổi các tham số trên trang này. Đối với người dùng "
-"cài đặt Nginx UI bằng container Docker, bạn có thể kích hoạt thủ công tùy "
-"chọn này. Bộ lập lịch tác vụ crontab của Nginx UI sẽ thực thi lệnh "
-"logrotate theo khoảng thời gian bạn đặt (tính bằng phút)."
+"biến dành cho người dùng cài đặt Nginx UI trực tiếp trên máy chủ, vì vậy bạn "
+"không cần phải thay đổi các tham số trên trang này. Đối với người dùng cài "
+"đặt Nginx UI bằng container Docker, bạn có thể kích hoạt thủ công tùy chọn "
+"này. Bộ lập lịch tác vụ crontab của Nginx UI sẽ thực thi lệnh logrotate theo "
+"khoảng thời gian bạn đặt (tính bằng phút)."
 
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:51
 #: src/composables/useUpstreamStatus.ts:156
@@ -2985,7 +2993,7 @@ msgstr "Đã bật chế độ bảo trì thành công"
 msgid "Make certificate dir error: {0}"
 msgstr "Lỗi tạo thư mục chứng chỉ: {0}"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:143
+#: src/components/AutoCertForm/AutoCertForm.vue:164
 msgid ""
 "Make sure you have configured a reverse proxy for .well-known directory to "
 "HTTPChallengePort before obtaining the certificate."
@@ -3170,7 +3178,7 @@ msgstr "Hàng tháng vào ngày %{day} lúc %{time}"
 msgid "Multi-line Directive"
 msgstr "Chỉ thị nhiều dòng"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:175
+#: src/components/AutoCertForm/AutoCertForm.vue:196
 msgid "Must be a public IP address accessible from the internet"
 msgstr "Phải là địa chỉ IP công cộng có thể truy cập từ internet"
 
@@ -3255,7 +3263,7 @@ msgstr "Đã có phiên bản mới"
 #: src/views/certificate/components/DNSIssueCertificate.vue:183
 #: src/views/install/components/InstallView.vue:96
 #: src/views/site/site_add/SiteAdd.vue:131
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:219
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:224
 msgid "Next"
 msgstr "Tiếp theo"
 
@@ -3447,11 +3455,10 @@ msgstr "Cấu hình Nginx UI đã được khôi phục"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:336
 msgid ""
-"Nginx UI configuration has been restored and will restart automatically in "
-"a few seconds."
+"Nginx UI configuration has been restored and will restart automatically in a "
+"few seconds."
 msgstr ""
-"Cấu hình Nginx UI đã được khôi phục và sẽ tự động khởi động lại sau vài "
-"giây."
+"Cấu hình Nginx UI đã được khôi phục và sẽ tự động khởi động lại sau vài giây."
 
 #: src/language/generate.ts:28
 msgid "Nginx.conf includes conf.d directory"
@@ -3500,7 +3507,7 @@ msgstr "Không có bản ghi nào được chọn"
 msgid "No servers configured"
 msgstr "Không có máy chủ nào được cấu hình"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:115
+#: src/components/AutoCertForm/AutoCertForm.vue:136
 msgid ""
 "No specific IP address found in server_name configuration. Please specify "
 "the server IP address below for the certificate."
@@ -3556,7 +3563,7 @@ msgstr "Không tìm thấy"
 msgid "Not Loaded"
 msgstr "Chưa tải"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:209
+#: src/components/AutoCertForm/AutoCertForm.vue:230
 msgid "Not supported for IP certificates"
 msgstr "Không hỗ trợ cho chứng chỉ IP"
 
@@ -3564,7 +3571,7 @@ msgstr "Không hỗ trợ cho chứng chỉ IP"
 msgid "Not Valid Before: %{date}"
 msgstr "Không hợp lệ trước: %{date}"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:129
+#: src/components/AutoCertForm/AutoCertForm.vue:150
 #: src/views/certificate/DNSCredential.vue:89
 msgid "Note"
 msgstr "Ghi chú"
@@ -3614,7 +3621,7 @@ msgstr "Số lượng tiến trình worker"
 msgid "Obtain cert error: {0}"
 msgstr "Lỗi khi lấy chứng chỉ: {0}"
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:185
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:189
 msgid "Obtain certificate"
 msgstr "Nhận chứng chỉ"
 
@@ -3622,11 +3629,11 @@ msgstr "Nhận chứng chỉ"
 msgid "Obtaining certificate"
 msgstr "Đang nhận chứng chỉ"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:237
+#: src/components/AutoCertForm/AutoCertForm.vue:258
 msgid "OCSP Must Staple"
 msgstr "OCSP Must Staple"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:241
+#: src/components/AutoCertForm/AutoCertForm.vue:262
 msgid ""
 "OCSP Must Staple may cause errors for some users on first access using "
 "Firefox."
@@ -3660,7 +3667,7 @@ msgstr "Ngoại tuyến"
 #: src/views/notification/Notification.vue:39
 #: src/views/site/components/SiteStatusSelect.vue:123
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:39
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:142
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:143
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:20
 #: src/views/site/site_list/SiteList.vue:112
 #: src/views/stream/components/StreamStatusSelect.vue:60
@@ -3777,9 +3784,9 @@ msgid ""
 "password replacement or as a 2FA method."
 msgstr ""
 "Passkey là thông tin xác thực WebAuthn dùng để xác minh danh tính của bạn "
-"thông qua chạm, nhận diện khuôn mặt, mật khẩu thiết bị hoặc mã PIN. Chúng "
-"có thể được sử dụng để thay thế mật khẩu hoặc làm phương thức xác thực hai "
-"yếu tố (2FA)."
+"thông qua chạm, nhận diện khuôn mặt, mật khẩu thiết bị hoặc mã PIN. Chúng có "
+"thể được sử dụng để thay thế mật khẩu hoặc làm phương thức xác thực hai yếu "
+"tố (2FA)."
 
 #: src/views/other/Login.vue:238 src/views/user/userColumns.tsx:16
 msgid "Password"
@@ -3880,14 +3887,13 @@ msgid ""
 "Please enter a name for the passkey you wish to create and click the OK "
 "button below."
 msgstr ""
-"Vui lòng nhập tên cho khóa truy cập bạn muốn tạo và nhấp vào nút OK bên "
-"dưới."
+"Vui lòng nhập tên cho khóa truy cập bạn muốn tạo và nhấp vào nút OK bên dưới."
 
-#: src/components/AutoCertForm/AutoCertForm.vue:77
+#: src/components/AutoCertForm/AutoCertForm.vue:98
 msgid "Please enter a valid IPv4 address (0-255 per octet)"
 msgstr "Vui lòng nhập địa chỉ IPv4 hợp lệ (0-255 mỗi octet)"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:88
+#: src/components/AutoCertForm/AutoCertForm.vue:109
 msgid "Please enter a valid IPv4 or IPv6 address"
 msgstr "Vui lòng nhập địa chỉ IPv4 hoặc IPv6 hợp lệ"
 
@@ -3912,7 +3918,7 @@ msgstr "Vui lòng nhập mã bảo mật"
 msgid "Please enter the security token received during backup"
 msgstr "Vui lòng nhập mã bảo mật nhận được trong quá trình sao lưu"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:59
+#: src/components/AutoCertForm/AutoCertForm.vue:80
 msgid "Please enter the server IP address"
 msgstr "Vui lòng nhập địa chỉ IP của máy chủ"
 
@@ -3928,21 +3934,22 @@ msgstr "Vui lòng điền vào các trường cấu hình S3 bắt buộc"
 msgid ""
 "Please fill in the API authentication credentials provided by your DNS "
 "provider."
-msgstr "Vui lòng điền thông tin xác thực API do nhà cung cấp DNS của bạn cung cấp"
+msgstr ""
+"Vui lòng điền thông tin xác thực API do nhà cung cấp DNS của bạn cung cấp"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:147
+#: src/components/AutoCertForm/AutoCertForm.vue:168
 msgid ""
 "Please first add credentials in Certification > DNS Credentials, and then "
 "select one of the credentialsbelow to request the API of the DNS provider."
 msgstr ""
-"Trước tiên, vui lòng thêm thông tin xác thực trong Chứng chỉ > Thông tin "
-"xác thực DNS, sau đó chọn nhà cung cấp DNS"
+"Trước tiên, vui lòng thêm thông tin xác thực trong Chứng chỉ > Thông tin xác "
+"thực DNS, sau đó chọn nhà cung cấp DNS"
 
 #: src/components/Notification/notifications.ts:194
 #: src/language/constants.ts:59
 msgid ""
-"Please generate new recovery codes in the preferences immediately to "
-"prevent lockout."
+"Please generate new recovery codes in the preferences immediately to prevent "
+"lockout."
 msgstr ""
 "Vui lòng tạo mã khôi phục mới trong phần tùy chọn ngay lập tức để tránh bị "
 "khóa."
@@ -3960,13 +3967,15 @@ msgstr "Vui lòng nhập tên thư mục"
 msgid ""
 "Please input name, this will be used as the filename of the new "
 "configuration!"
-msgstr "Vui lòng nhập tên, tên này sẽ được sử dụng làm tên tệp của cấu hình mới!"
+msgstr ""
+"Vui lòng nhập tên, tên này sẽ được sử dụng làm tên tệp của cấu hình mới!"
 
 #: src/views/site/site_list/SiteDuplicate.vue:33
 msgid ""
 "Please input name, this will be used as the filename of the new "
 "configuration."
-msgstr "Vui lòng nhập tên, tên này sẽ được sử dụng làm tên tệp cho cấu hình mới."
+msgstr ""
+"Vui lòng nhập tên, tên này sẽ được sử dụng làm tên tệp cho cấu hình mới."
 
 #: src/views/install/components/InstallForm.vue:25
 msgid "Please input your E-mail!"
@@ -3986,7 +3995,8 @@ msgid "Please log in."
 msgstr "Vui lòng đăng nhập."
 
 #: src/views/certificate/DNSCredential.vue:102
-msgid "Please note that the unit of time configurations below are all in seconds."
+msgid ""
+"Please note that the unit of time configurations below are all in seconds."
 msgstr "Lưu ý đơn vị cấu hình thời gian bên dưới được tính bằng giây."
 
 #: src/views/install/components/InstallView.vue:102
@@ -4040,7 +4050,7 @@ msgstr "Vui lòng nhập chính xác văn bản xác nhận"
 msgid "Port"
 msgstr "Cổng"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:178
+#: src/components/AutoCertForm/AutoCertForm.vue:199
 msgid "Port 80 must be open for HTTP-01 challenge validation"
 msgstr "Cổng 80 phải được mở để xác thực thử thách HTTP-01"
 
@@ -4068,11 +4078,11 @@ msgstr "Cài đặt"
 msgid "Preparing lego configurations"
 msgstr "Chuẩn bị cấu hình Lego"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:185
+#: src/components/AutoCertForm/AutoCertForm.vue:206
 msgid "Private CA:"
 msgstr "CA riêng:"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:181
+#: src/components/AutoCertForm/AutoCertForm.vue:202
 msgid "Private IPs (192.168.x.x, 10.x.x.x, 172.16-31.x.x) will fail"
 msgstr "IP riêng (192.168.x.x, 10.x.x.x, 172.16-31.x.x) sẽ thất bại"
 
@@ -4116,8 +4126,7 @@ msgstr "Thư mục được bảo vệ"
 #: src/views/preference/tabs/ServerSettings.vue:47
 msgid ""
 "Protocol configuration only takes effect when directly connecting. If using "
-"reverse proxy, please configure the protocol separately in the reverse "
-"proxy."
+"reverse proxy, please configure the protocol separately in the reverse proxy."
 msgstr ""
 "Cấu hình giao thức chỉ có hiệu lực khi kết nối trực tiếp. Nếu sử dụng proxy "
 "ngược, vui lòng cấu hình giao thức riêng trong proxy ngược."
@@ -4142,7 +4151,7 @@ msgstr "Chuyển tiếp Proxy"
 msgid "Proxy Targets"
 msgstr "Mục tiêu proxy"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:171
+#: src/components/AutoCertForm/AutoCertForm.vue:192
 msgid "Public CA Requirements:"
 msgstr "Yêu cầu của CA công cộng:"
 
@@ -4197,7 +4206,7 @@ msgstr "Máy chủ tên đệ quy"
 msgid "Regenerate response"
 msgstr "Tạo lại câu trả lời"
 
-#: src/views/certificate/ACMEUser.vue:173
+#: src/views/certificate/ACMEUser.vue:172
 msgid "Register"
 msgstr "Đăng ký"
 
@@ -4209,11 +4218,11 @@ msgstr ""
 "Đăng ký người dùng hoặc sử dụng tài khoản này để cấp chứng chỉ thông qua "
 "proxy HTTP."
 
-#: src/views/certificate/ACMEUser.vue:141
+#: src/views/certificate/ACMEUser.vue:140
 msgid "Register failed"
 msgstr "Đăng ký thất bại"
 
-#: src/views/certificate/ACMEUser.vue:112
+#: src/views/certificate/ACMEUser.vue:111
 msgid "Register On Startup"
 msgstr "Đăng ký khi khởi động"
 
@@ -4221,7 +4230,7 @@ msgstr "Đăng ký khi khởi động"
 msgid "Register passkey successfully"
 msgstr "Đăng ký khóa truy cập thành công"
 
-#: src/views/certificate/ACMEUser.vue:139
+#: src/views/certificate/ACMEUser.vue:138
 msgid "Register successfully"
 msgstr "Đăng ký thành công"
 
@@ -4229,7 +4238,7 @@ msgstr "Đăng ký thành công"
 msgid "Registering user"
 msgstr "Đăng ký người dùng"
 
-#: src/views/certificate/ACMEUser.vue:156
+#: src/views/certificate/ACMEUser.vue:155
 msgid "Registration Status"
 msgstr "Trạng thái đăng ký"
 
@@ -4425,8 +4434,8 @@ msgid ""
 "processes"
 msgstr ""
 "Kích thước tập hợp thường trú: Bộ nhớ thực tế thường trú trong bộ nhớ vật "
-"lý, bao gồm tất cả bộ nhớ thư viện dùng chung, sẽ được tính toán lặp lại "
-"cho nhiều tiến trình"
+"lý, bao gồm tất cả bộ nhớ thư viện dùng chung, sẽ được tính toán lặp lại cho "
+"nhiều tiến trình"
 
 #: src/composables/usePerformanceMetrics.ts:109
 #: src/views/dashboard/components/PerformanceTablesCard.vue:69
@@ -4507,7 +4516,7 @@ msgstr "Thu hồi"
 msgid "Revoke cert error: {0}"
 msgstr "Lỗi thu hồi chứng chỉ: {0}"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:256
+#: src/components/AutoCertForm/AutoCertForm.vue:277
 msgid "Revoke Old Certificate"
 msgstr "Thu hồi chứng chỉ cũ"
 
@@ -4520,8 +4529,8 @@ msgid ""
 "Revoking a certificate will affect any services currently using it. This "
 "action cannot be undone."
 msgstr ""
-"Việc thu hồi chứng chỉ sẽ ảnh hưởng đến bất kỳ dịch vụ nào hiện đang sử "
-"dụng nó. Hành động này không thể hoàn tác."
+"Việc thu hồi chứng chỉ sẽ ảnh hưởng đến bất kỳ dịch vụ nào hiện đang sử dụng "
+"nó. Hành động này không thể hoàn tác."
 
 #: src/views/preference/tabs/AuthSettings.vue:75
 msgid "RP Display Name"
@@ -4743,7 +4752,8 @@ msgstr "Kết quả quét"
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:69
 msgid "Scan the QR code with your mobile phone to add the account to the app."
-msgstr "Quét mã QR bằng điện thoại di động của bạn để thêm tài khoản vào ứng dụng."
+msgstr ""
+"Quét mã QR bằng điện thoại di động của bạn để thêm tài khoản vào ứng dụng."
 
 #: src/views/nginx_log/NginxLogList.vue:101
 msgid "Scanning logs..."
@@ -4819,7 +4829,8 @@ msgstr "Tự kiểm tra"
 #: src/components/SelfCheck/SelfCheckHeaderBanner.vue:37
 #: src/components/SelfCheck/SelfCheckHeaderBanner.vue:60
 msgid "Self check failed, Nginx UI may not work properly"
-msgstr "Tự kiểm tra thất bại, giao diện Nginx có thể không hoạt động bình thường"
+msgstr ""
+"Tự kiểm tra thất bại, giao diện Nginx có thể không hoạt động bình thường"
 
 #: src/views/dashboard/ServerAnalytic.vue:35
 #: src/views/dashboard/ServerAnalytic.vue:351
@@ -4842,7 +4853,7 @@ msgstr "Lỗi máy chủ"
 msgid "Server Info"
 msgstr "Thông tin máy chủ"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:157
+#: src/components/AutoCertForm/AutoCertForm.vue:178
 msgid "Server IP Address"
 msgstr "Địa chỉ IP máy chủ"
 
@@ -4854,7 +4865,7 @@ msgstr "Kích thước bảng băm tên máy chủ"
 msgid "Server names hash table size"
 msgstr "Kích thước bảng băm tên máy chủ"
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:105
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:106
 msgid "server_name not found in directives"
 msgstr "không tìm thấy server_name trong directives"
 
@@ -4879,8 +4890,8 @@ msgid ""
 "Set the recursive nameservers to override the systems nameservers for the "
 "step of DNS challenge."
 msgstr ""
-"Đặt các máy chủ tên đệ quy để ghi đè các máy chủ tên hệ thống trong bước "
-"thử thách DNS."
+"Đặt các máy chủ tên đệ quy để ghi đè các máy chủ tên hệ thống trong bước thử "
+"thách DNS."
 
 #: src/views/site/components/SiteStatusSelect.vue:116
 msgid "set to maintenance mode"
@@ -4900,19 +4911,19 @@ msgstr "Đang thiết lập nhà cung cấp thử thách HTTP01"
 
 #: src/constants/errors/nginx_log.ts:8
 msgid ""
-"Settings.NginxLogSettings.AccessLogPath is empty, refer to "
-"https://nginxui.com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://nginxui."
+"com/guide/config-nginx.html for more information"
 msgstr ""
-"Settings.NginxLogSettings.AccessLogPath trống, tham khảo "
-"https://nginxui.com/guide/config-nginx.html để biết thêm thông tin"
+"Settings.NginxLogSettings.AccessLogPath trống, tham khảo https://nginxui.com/"
+"guide/config-nginx.html để biết thêm thông tin"
 
 #: src/constants/errors/nginx_log.ts:7
 msgid ""
-"Settings.NginxLogSettings.ErrorLogPath is empty, refer to "
-"https://nginxui.com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://nginxui."
+"com/guide/config-nginx.html for more information"
 msgstr ""
-"Settings.NginxLogSettings.ErrorLogPath trống, tham khảo "
-"https://nginxui.com/guide/config-nginx.html để biết thêm thông tin"
+"Settings.NginxLogSettings.ErrorLogPath trống, tham khảo https://nginxui.com/"
+"guide/config-nginx.html để biết thêm thông tin"
 
 #: src/views/install/components/InstallView.vue:65
 msgid "Setup your Nginx UI"
@@ -5153,25 +5164,25 @@ msgstr "Chủ nhật"
 msgid ""
 "Support communication with the backend through the Server-Sent Events "
 "protocol. If your Nginx UI is being used via an Nginx reverse proxy, please "
-"refer to this link to write the corresponding configuration file: "
-"https://nginxui.com/guide/nginx-proxy-example.html"
+"refer to this link to write the corresponding configuration file: https://"
+"nginxui.com/guide/nginx-proxy-example.html"
 msgstr ""
 "Hỗ trợ giao tiếp với backend thông qua giao thức Server-Sent Events. Nếu "
-"Nginx UI của bạn đang được sử dụng qua proxy ngược Nginx, vui lòng tham "
-"khảo liên kết này để viết tệp cấu hình tương ứng: "
-"https://nginxui.com/guide/nginx-proxy-example.html"
+"Nginx UI của bạn đang được sử dụng qua proxy ngược Nginx, vui lòng tham khảo "
+"liên kết này để viết tệp cấu hình tương ứng: https://nginxui.com/guide/nginx-"
+"proxy-example.html"
 
 #: src/components/SelfCheck/tasks/frontend/websocket.ts:13
 msgid ""
 "Support communication with the backend through the WebSocket protocol. If "
-"your Nginx UI is being used via an Nginx reverse proxy, please refer to "
-"this link to write the corresponding configuration file: "
-"https://nginxui.com/guide/nginx-proxy-example.html"
+"your Nginx UI is being used via an Nginx reverse proxy, please refer to this "
+"link to write the corresponding configuration file: https://nginxui.com/"
+"guide/nginx-proxy-example.html"
 msgstr ""
-"Hỗ trợ giao tiếp với backend thông qua giao thức WebSocket. Nếu Nginx UI "
-"của bạn đang được sử dụng thông qua proxy ngược Nginx, vui lòng tham khảo "
-"liên kết này để viết tệp cấu hình tương ứng: "
-"https://nginxui.com/guide/nginx-proxy-example.html"
+"Hỗ trợ giao tiếp với backend thông qua giao thức WebSocket. Nếu Nginx UI của "
+"bạn đang được sử dụng thông qua proxy ngược Nginx, vui lòng tham khảo liên "
+"kết này để viết tệp cấu hình tương ứng: https://nginxui.com/guide/nginx-"
+"proxy-example.html"
 
 #: src/language/curd.ts:53 src/language/curd.ts:57
 msgid "Support single or batch upload of files"
@@ -5325,23 +5336,23 @@ msgstr "Gửi tin nhắn kiểm tra thành công"
 msgid "Test S3 Connection"
 msgstr "Kiểm tra kết nối S3"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:139
+#: src/components/AutoCertForm/AutoCertForm.vue:160
 msgid ""
 "The certificate for the domain will be checked 30 minutes, and will be "
 "renewed if it has been more than 1 week or the period you set in settings "
 "since it was last issued."
 msgstr ""
 "Chứng chỉ cho tên miền sẽ được kiểm tra sau mỗi 30 phút và sẽ được gia hạn "
-"nếu đã hơn 1 tuần hoặc khoảng thời gian bạn đặt trong cài đặt kể từ lần "
-"phát hành cuối cùng."
+"nếu đã hơn 1 tuần hoặc khoảng thời gian bạn đặt trong cài đặt kể từ lần phát "
+"hành cuối cùng."
 
 #: src/views/preference/tabs/NodeSettings.vue:37
 msgid ""
 "The ICP Number should only contain letters, unicode, numbers, hyphens, "
 "dashes, colons, and dots."
 msgstr ""
-"Số ICP chỉ được chứa chữ cái, unicode, số, dấu gạch ngang, dấu gạch dài, "
-"dấu hai chấm và dấu chấm."
+"Số ICP chỉ được chứa chữ cái, unicode, số, dấu gạch ngang, dấu gạch dài, dấu "
+"hai chấm và dấu chấm."
 
 #: src/views/certificate/components/CertificateContentEditor.vue:96
 msgid "The input is not a SSL Certificate"
@@ -5353,11 +5364,10 @@ msgstr "Đầu vào không phải là Khóa Chứng chỉ SSL"
 
 #: src/constants/errors/nginx_log.ts:2
 msgid ""
-"The log path is not under the paths in "
-"settings.NginxSettings.LogDirWhiteList"
+"The log path is not under the paths in settings.NginxSettings.LogDirWhiteList"
 msgstr ""
-"Đường dẫn nhật ký không nằm trong các đường dẫn trong "
-"settings.NginxSettings.LogDirWhiteList"
+"Đường dẫn nhật ký không nằm trong các đường dẫn trong settings.NginxSettings."
+"LogDirWhiteList"
 
 #: src/views/preference/tabs/OpenAISettings.vue:23
 #: src/views/preference/tabs/OpenAISettings.vue:89
@@ -5369,7 +5379,8 @@ msgstr ""
 "dài, dấu hai chấm và dấu chấm."
 
 #: src/views/preference/tabs/OpenAISettings.vue:90
-msgid "The model used for code completion, if not set, the chat model will be used."
+msgid ""
+"The model used for code completion, if not set, the chat model will be used."
 msgstr ""
 "Mô hình được sử dụng để hoàn thành mã, nếu không được đặt, mô hình trò "
 "chuyện sẽ được sử dụng."
@@ -5399,8 +5410,8 @@ msgid ""
 "The Public Security Number should only contain letters, unicode, numbers, "
 "hyphens, dashes, colons, and dots."
 msgstr ""
-"Số Công an chỉ được chứa chữ cái, unicode, số, dấu gạch ngang, dấu gạch "
-"dài, dấu hai chấm và dấu chấm."
+"Số Công an chỉ được chứa chữ cái, unicode, số, dấu gạch ngang, dấu gạch dài, "
+"dấu hai chấm và dấu chấm."
 
 #: src/views/dashboard/components/NodeAnalyticItem.vue:107
 msgid ""
@@ -5408,11 +5419,11 @@ msgid ""
 "version. To avoid potential errors, please upgrade the remote Nginx UI to "
 "match the local version."
 msgstr ""
-"Phiên bản Nginx UI từ xa không tương thích với phiên bản Nginx UI cục bộ. "
-"Để tránh các lỗi tiềm ẩn, vui lòng nâng cấp phiên bản Nginx UI từ xa để "
-"khớp với phiên bản cục bộ."
+"Phiên bản Nginx UI từ xa không tương thích với phiên bản Nginx UI cục bộ. Để "
+"tránh các lỗi tiềm ẩn, vui lòng nâng cấp phiên bản Nginx UI từ xa để khớp "
+"với phiên bản cục bộ."
 
-#: src/components/AutoCertForm/AutoCertForm.vue:134
+#: src/components/AutoCertForm/AutoCertForm.vue:155
 msgid ""
 "The server_name in the current configuration must be the domain name you "
 "need to get the certificate, supportmultiple domains."
@@ -5483,13 +5494,14 @@ msgid "This field should not be empty"
 msgstr "Trường này không được để trống"
 
 #: src/constants/form_errors.ts:6
-msgid "This field should only contain letters, unicode characters, numbers, and -_."
+msgid ""
+"This field should only contain letters, unicode characters, numbers, and -_."
 msgstr "Trường này chỉ được chứa chữ cái, ký tự Unicode, số và -_."
 
 #: src/language/curd.ts:46
 msgid ""
-"This field should only contain letters, unicode characters, numbers, and "
-"-_./:"
+"This field should only contain letters, unicode characters, numbers, and -"
+"_./:"
 msgstr "Trường này chỉ được chứa chữ cái, ký tự Unicode, số và -_./:"
 
 #: src/components/Notification/notifications.ts:94
@@ -5501,36 +5513,36 @@ msgid ""
 "This module provides Nginx request statistics, connection count, etc. data. "
 "After enabling it, you can view performance statistics"
 msgstr ""
-"Mô-đun này cung cấp dữ liệu như thống kê yêu cầu Nginx, số lượng kết nối, "
-"v.v. Sau khi bật, bạn có thể xem thống kê hiệu suất"
+"Mô-đun này cung cấp dữ liệu như thống kê yêu cầu Nginx, số lượng kết nối, v."
+"v. Sau khi bật, bạn có thể xem thống kê hiệu suất"
 
 #: src/views/certificate/components/RemoveCert.vue:106
 msgid ""
 "This operation will only remove the certificate from the database. The "
 "certificate files on the file system will not be deleted."
 msgstr ""
-"Thao tác này sẽ chỉ xóa chứng chỉ khỏi cơ sở dữ liệu. Các tệp chứng chỉ "
-"trên hệ thống tệp sẽ không bị xóa."
+"Thao tác này sẽ chỉ xóa chứng chỉ khỏi cơ sở dữ liệu. Các tệp chứng chỉ trên "
+"hệ thống tệp sẽ không bị xóa."
 
-#: src/components/AutoCertForm/AutoCertForm.vue:107
+#: src/components/AutoCertForm/AutoCertForm.vue:128
 msgid ""
-"This site is configured as a default server (default_server) for HTTPS "
-"(port 443). IP certificates require Certificate Authority (CA) support and "
-"may not be available with all ACME providers."
+"This site is configured as a default server (default_server) for HTTPS (port "
+"443). IP certificates require Certificate Authority (CA) support and may not "
+"be available with all ACME providers."
 msgstr ""
 "Trang web này được cấu hình làm máy chủ mặc định (default_server) cho HTTPS "
 "(cổng 443). Chứng chỉ IP yêu cầu hỗ trợ từ Tổ chức cấp chứng chỉ (CA) và có "
 "thể không khả dụng với tất cả nhà cung cấp ACME."
 
-#: src/components/AutoCertForm/AutoCertForm.vue:111
+#: src/components/AutoCertForm/AutoCertForm.vue:132
 msgid ""
-"This site uses wildcard server name (_) which typically indicates an "
-"IP-based certificate. IP certificates require Certificate Authority (CA) "
+"This site uses wildcard server name (_) which typically indicates an IP-"
+"based certificate. IP certificates require Certificate Authority (CA) "
 "support and may not be available with all ACME providers."
 msgstr ""
 "Trang web này sử dụng tên máy chủ đại diện (_) thường chỉ ra chứng chỉ dựa "
-"trên IP. Chứng chỉ IP yêu cầu hỗ trợ từ Tổ chức cấp chứng chỉ (CA) và có "
-"thể không khả dụng với tất cả nhà cung cấp ACME."
+"trên IP. Chứng chỉ IP yêu cầu hỗ trợ từ Tổ chức cấp chứng chỉ (CA) và có thể "
+"không khả dụng với tất cả nhà cung cấp ACME."
 
 #: src/views/backup/components/BackupCreator.vue:141
 msgid ""
@@ -5563,11 +5575,12 @@ msgid ""
 "This will restore configuration files and database. Nginx UI will restart "
 "after the restoration is complete."
 msgstr ""
-"Thao tác này sẽ khôi phục các tệp cấu hình và cơ sở dữ liệu. Giao diện "
-"Nginx sẽ khởi động lại sau khi quá trình khôi phục hoàn tất."
+"Thao tác này sẽ khôi phục các tệp cấu hình và cơ sở dữ liệu. Giao diện Nginx "
+"sẽ khởi động lại sau khi quá trình khôi phục hoàn tất."
 
 #: src/views/environments/list/BatchUpgrader.vue:186
-msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
+msgid ""
+"This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr ""
 "Thao tác này sẽ nâng cấp hoặc cài đặt lại Nginx UI trên %{nodeNames} lên "
 "phiên bản %{version}."
@@ -5617,20 +5630,20 @@ msgid ""
 "and restart Nginx UI."
 msgstr ""
 "Để đảm bảo bảo mật, cấu hình WebAuthn không thể được thêm qua giao diện "
-"người dùng. Vui lòng cấu hình thủ công các mục sau trong tệp cấu hình "
-"app.ini và khởi động lại Nginx UI."
+"người dùng. Vui lòng cấu hình thủ công các mục sau trong tệp cấu hình app."
+"ini và khởi động lại Nginx UI."
 
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:34
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:15
 msgid ""
 "To make sure the certification auto-renewal can work normally, we need to "
-"add a location which can proxy the request from authority to backend, and "
-"we need to save this file and reload the Nginx. Are you sure you want to "
+"add a location which can proxy the request from authority to backend, and we "
+"need to save this file and reload the Nginx. Are you sure you want to "
 "continue?"
 msgstr ""
-"Để đảm bảo tính năng tự động gia hạn chứng chỉ có thể hoạt động bình "
-"thường, chúng tôi cần thêm một vị trí có thể ủy quyền yêu cầu từ cơ quan có "
-"thẩm quyền đến chương trình phụ trợ và chúng tôi cần lưu tệp này và tải lại "
+"Để đảm bảo tính năng tự động gia hạn chứng chỉ có thể hoạt động bình thường, "
+"chúng tôi cần thêm một vị trí có thể ủy quyền yêu cầu từ cơ quan có thẩm "
+"quyền đến chương trình phụ trợ và chúng tôi cần lưu tệp này và tải lại "
 "Nginx. Bạn có chắc chắn muốn Tiếp tục?"
 
 #: src/views/preference/tabs/OpenAISettings.vue:36
@@ -5754,7 +5767,7 @@ msgid "Update successfully"
 msgstr "Cập nhật thành công"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:236
-#: src/views/certificate/ACMEUser.vue:123
+#: src/views/certificate/ACMEUser.vue:122
 #: src/views/certificate/DNSCredential.vue:65
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
 #: src/views/config/configColumns.tsx:43
@@ -5865,7 +5878,7 @@ msgid "Username length cannot exceed 255 characters"
 msgstr "Độ dài tên người dùng không được vượt quá 255 ký tự"
 
 #: src/components/CertInfo/CertInfo.vue:24
-#: src/views/certificate/ACMEUser.vue:160
+#: src/views/certificate/ACMEUser.vue:159
 #: src/views/certificate/CertificateList/certColumns.tsx:76
 msgid "Valid"
 msgstr "Hợp lệ"
@@ -5928,19 +5941,19 @@ msgid ""
 "you have a valid backup file and security token, and carefully select what "
 "to restore."
 msgstr ""
-"Cảnh báo: Thao tác khôi phục sẽ ghi đè lên cấu hình hiện tại. Đảm bảo bạn "
-"có tệp sao lưu hợp lệ và mã bảo mật, đồng thời cẩn thận chọn nội dung cần "
-"khôi phục."
+"Cảnh báo: Thao tác khôi phục sẽ ghi đè lên cấu hình hiện tại. Đảm bảo bạn có "
+"tệp sao lưu hợp lệ và mã bảo mật, đồng thời cẩn thận chọn nội dung cần khôi "
+"phục."
 
-#: src/components/AutoCertForm/AutoCertForm.vue:82
+#: src/components/AutoCertForm/AutoCertForm.vue:103
 msgid ""
 "Warning: This appears to be a private IP address. Public CAs like Let's "
 "Encrypt cannot issue certificates for private IPs. Use a public IP address "
 "or consider using a private CA."
 msgstr ""
 "Cảnh báo: Đây có vẻ là một địa chỉ IP riêng. Các tổ chức cấp chứng chỉ công "
-"cộng như Let's Encrypt không thể cấp chứng chỉ cho các IP riêng. Hãy sử "
-"dụng địa chỉ IP công cộng hoặc cân nhắc sử dụng tổ chức cấp chứng chỉ riêng."
+"cộng như Let's Encrypt không thể cấp chứng chỉ cho các IP riêng. Hãy sử dụng "
+"địa chỉ IP công cộng hoặc cân nhắc sử dụng tổ chức cấp chứng chỉ riêng."
 
 #: src/views/certificate/DNSCredential.vue:96
 msgid ""
@@ -5950,10 +5963,10 @@ msgstr ""
 "Chúng tôi sẽ thêm một hoặc nhiều bản ghi TXT để xác minh quyền sở hữu tên "
 "miền của bạn."
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:140
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:141
 msgid ""
-"We will remove the HTTPChallenge configuration from this file and reload "
-"the Nginx. Are you sure you want to continue?"
+"We will remove the HTTPChallenge configuration from this file and reload the "
+"Nginx. Are you sure you want to continue?"
 msgstr ""
 "Chúng tôi sẽ xóa cấu hình HTTPChallenge khỏi tệp này và tải lại Nginx. Bạn "
 "có muốn tiếp tục không?"
@@ -5982,7 +5995,7 @@ msgstr "Hàng tuần"
 msgid "Weekly on %{day} at %{time}"
 msgstr "Hàng tuần vào %{day} lúc %{time}"
 
-#: src/views/certificate/ACMEUser.vue:118
+#: src/views/certificate/ACMEUser.vue:117
 msgid ""
 "When Enabled, Nginx UI will automatically re-register users upon startup. "
 "Generally, do not enable this unless you are in a dev environment and using "
@@ -5998,8 +6011,8 @@ msgid ""
 "When you enable/disable, delete, or save this site, the nodes set in the "
 "Node Group and the nodes selected below will be synchronized."
 msgstr ""
-"Khi bạn bật/tắt, xóa hoặc lưu trang web này, các nút được đặt trong Nhóm "
-"Nút và các nút được chọn bên dưới sẽ được đồng bộ hóa."
+"Khi bạn bật/tắt, xóa hoặc lưu trang web này, các nút được đặt trong Nhóm Nút "
+"và các nút được chọn bên dưới sẽ được đồng bộ hóa."
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:140
 msgid ""
@@ -6067,12 +6080,12 @@ msgstr "Có"
 
 #: src/views/terminal/Terminal.vue:132
 msgid ""
-"You are accessing this terminal over an insecure HTTP connection on a "
-"non-localhost domain. This may expose sensitive information."
+"You are accessing this terminal over an insecure HTTP connection on a non-"
+"localhost domain. This may expose sensitive information."
 msgstr ""
-"Bạn đang truy cập thiết bị đầu cuối này thông qua kết nối HTTP không an "
-"toàn trên một miền không phải localhost. Điều này có thể làm lộ thông tin "
-"nhạy cảm."
+"Bạn đang truy cập thiết bị đầu cuối này thông qua kết nối HTTP không an toàn "
+"trên một miền không phải localhost. Điều này có thể làm lộ thông tin nhạy "
+"cảm."
 
 #: src/constants/errors/config.ts:8
 msgid "You are not allowed to delete a file outside of the nginx config path"
@@ -6098,13 +6111,15 @@ msgstr "Bạn có thể đóng hộp thoại này ngay bây giờ"
 msgid ""
 "You have not configured the settings of Webauthn, so you cannot add a "
 "passkey."
-msgstr "Bạn chưa cấu hình cài đặt WebAuthn, vì vậy không thể thêm khóa truy cập."
+msgstr ""
+"Bạn chưa cấu hình cài đặt WebAuthn, vì vậy không thể thêm khóa truy cập."
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:81
-msgid "You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
+msgid ""
+"You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
 msgstr ""
-"Bạn chưa bật xác thực hai yếu tố. Vui lòng bật xác thực hai yếu tố để tạo "
-"mã khôi phục."
+"Bạn chưa bật xác thực hai yếu tố. Vui lòng bật xác thực hai yếu tố để tạo mã "
+"khôi phục."
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:94
 msgid "You have not generated recovery codes yet."
@@ -6214,8 +6229,8 @@ msgstr "Khóa truy cập của bạn"
 
 #~ msgid ""
 #~ "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
-#~ "Docker Image, please make sure the docker socket is mounted like this: `-v "
-#~ "/var/run/docker.sock:/var/run/docker.sock`."
+#~ "Docker Image, please make sure the docker socket is mounted like this: `-"
+#~ "v /var/run/docker.sock:/var/run/docker.sock`."
 #~ msgstr ""
 #~ "Kiểm tra xem /var/run/docker.sock có tồn tại không. Nếu bạn đang sử dụng "
 #~ "Docker Image chính thức của Nginx UI, hãy đảm bảo rằng ổ cắm Docker được "
@@ -6310,11 +6325,14 @@ msgstr "Khóa truy cập của bạn"
 #~ msgstr "Nhân bản %{conf_name} thành %{node_name} thành công"
 
 #, fuzzy
-#~ msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: %{resp}"
+#~ msgid ""
+#~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: "
+#~ "%{resp}"
 #~ msgstr "Nhân bản %{conf_name} thành %{node_name} thành công"
 
 #, fuzzy
-#~ msgid "Rename Site %{site} to %{new_site} on %{node} error, response: %{resp}"
+#~ msgid ""
+#~ "Rename Site %{site} to %{new_site} on %{node} error, response: %{resp}"
 #~ msgstr "Nhân bản %{conf_name} thành %{node_name} thành công"
 
 #, fuzzy
@@ -6328,7 +6346,8 @@ msgstr "Khóa truy cập của bạn"
 #~ msgstr "Nhân bản %{conf_name} thành %{node_name} thành công"
 
 #, fuzzy
-#~ msgid "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
+#~ msgid ""
+#~ "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
 #~ msgstr "Nhân bản %{conf_name} thành %{node_name} thành công"
 
 #, fuzzy
