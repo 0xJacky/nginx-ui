@@ -5,100 +5,15 @@ msgstr ""
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2025-05-09 21:33+0800\n"
 "Last-Translator: 0xJacky <me@jackyu.cn>\n"
-"Language-Team: Chinese (Simplified Han script) <https://weblate.nginxui.com/"
-"projects/nginx-ui/frontend/zh_Hans/>\n"
+"Language-Team: Chinese (Simplified Han script) "
+"<https://weblate.nginxui.com/projects/nginx-ui/frontend/zh_Hans/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 3.6\n"
 "Generated-By: easygettext\n"
-
-#: src/language/generate.ts:33
-msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
-msgstr "[Nginx UI] ACME 用户：%{name}，邮箱：%{email}，CA 目录：%{caDir}"
-
-#: src/language/generate.ts:34
-msgid "[Nginx UI] Backing up current certificate for later revocation"
-msgstr "[Nginx UI] 正在备份当前证书以便后续撤销"
-
-#: src/language/generate.ts:35
-msgid "[Nginx UI] Certificate renewed successfully"
-msgstr "[Nginx UI] 证书更新成功"
-
-#: src/language/generate.ts:36
-msgid "[Nginx UI] Certificate successfully revoked"
-msgstr "[Nginx UI] 证书成功撤销"
-
-#: src/language/generate.ts:37
-msgid ""
-"[Nginx UI] Certificate was used for server, reloading server TLS certificate"
-msgstr "[Nginx UI] 证书已用于服务器，正在重新加载服务器 TLS 证书"
-
-#: src/language/generate.ts:38
-msgid "[Nginx UI] Creating client facilitates communication with the CA server"
-msgstr "[Nginx UI] 正在创建客户端用于与 CA 服务器通信"
-
-#: src/language/generate.ts:39
-msgid "[Nginx UI] Environment variables cleaned"
-msgstr "[Nginx UI] 环境变量已清理"
-
-#: src/language/generate.ts:40
-msgid "[Nginx UI] Finished"
-msgstr "[Nginx UI] 已完成"
-
-#: src/language/generate.ts:41
-msgid "[Nginx UI] Issued certificate successfully"
-msgstr "[Nginx UI] 证书申请成功"
-
-#: src/language/generate.ts:42
-msgid "[Nginx UI] Obtaining certificate"
-msgstr "[Nginx UI] 正在获取证书"
-
-#: src/language/generate.ts:43
-msgid "[Nginx UI] Preparing for certificate revocation"
-msgstr "[Nginx UI] 准备撤销证书"
-
-#: src/language/generate.ts:44
-msgid "[Nginx UI] Preparing lego configurations"
-msgstr "[Nginx UI] 正在准备 lego 配置"
-
-#: src/language/generate.ts:45
-msgid "[Nginx UI] Reloading nginx"
-msgstr "[Nginx UI] 重新加载 Nginx"
-
-#: src/language/generate.ts:46
-msgid "[Nginx UI] Revocation completed"
-msgstr "[Nginx UI] 吊销完成"
-
-#: src/language/generate.ts:47
-msgid "[Nginx UI] Revoking certificate"
-msgstr "[Nginx UI] 正在撤销证书"
-
-#: src/language/generate.ts:48
-msgid "[Nginx UI] Revoking old certificate"
-msgstr "[Nginx UI] 正在撤销旧证书"
-
-#: src/language/generate.ts:49
-msgid "[Nginx UI] Setting DNS01 challenge provider"
-msgstr "[Nginx UI] 正在设置 DNS01 验证提供程序"
-
-#: src/language/generate.ts:51
-msgid "[Nginx UI] Setting environment variables"
-msgstr "[Nginx UI] 正在设置环境变量"
-
-#: src/language/generate.ts:50
-msgid "[Nginx UI] Setting HTTP01 challenge provider"
-msgstr "[Nginx UI] 正在设置 HTTP01 验证提供程序"
-
-#: src/language/generate.ts:52
-msgid "[Nginx UI] Writing certificate private key to disk"
-msgstr "[Nginx UI] 正在将证书私钥写入磁盘"
-
-#: src/language/generate.ts:53
-msgid "[Nginx UI] Writing certificate to disk"
-msgstr "[Nginx UI] 正在将证书写入磁盘"
 
 #: src/components/SyncNodesPreview/SyncNodesPreview.vue:59
 msgid "* Includes nodes from group %{groupName} and manually selected nodes"
@@ -147,7 +62,7 @@ msgstr "操作"
 #: src/views/environments/list/envColumns.tsx:96
 #: src/views/nginx_log/NginxLogList.vue:68
 #: src/views/notification/notificationColumns.tsx:72
-#: src/views/preference/components/ExternalNotify/columns.tsx:73
+#: src/views/preference/components/ExternalNotify/columns.tsx:85
 #: src/views/site/site_list/columns.tsx:160 src/views/stream/columns.tsx:123
 #: src/views/user/userColumns.tsx:58
 msgid "Actions"
@@ -231,7 +146,6 @@ msgstr "之后，请刷新此页面并再次点击添加通行密钥。"
 msgid "All"
 msgstr "全部"
 
-#: src/components/Notification/notifications.ts:193
 #: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr "所有恢复代码已用完"
@@ -243,8 +157,7 @@ msgid ""
 msgstr "所有选定的子域名必须属于同一 DNS 提供商，否则证书申请将失败。"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:209
-msgid ""
-"Any reachable IP address can be used with private Certificate Authorities"
+msgid "Any reachable IP address can be used with private Certificate Authorities"
 msgstr "任何可访问的IP地址均可用于私有证书颁发机构"
 
 #: src/views/preference/tabs/OpenAISettings.vue:32
@@ -380,22 +293,6 @@ msgstr "自动 = CPU 线程数"
 msgid "Auto Backup"
 msgstr "自动备份"
 
-#: src/components/Notification/notifications.ts:37
-msgid "Auto Backup Completed"
-msgstr "自动备份完成"
-
-#: src/components/Notification/notifications.ts:25
-msgid "Auto Backup Configuration Error"
-msgstr "自动备份配置错误"
-
-#: src/components/Notification/notifications.ts:29
-msgid "Auto Backup Failed"
-msgstr "自动备份失败"
-
-#: src/components/Notification/notifications.ts:33
-msgid "Auto Backup Storage Failed"
-msgstr "自动备份存储失败"
-
 #: src/views/environments/list/Environment.vue:165
 #: src/views/nginx_log/NginxLog.vue:150
 msgid "Auto Refresh"
@@ -490,19 +387,6 @@ msgstr "备份路径不在授予的访问路径中: {0}"
 #: src/views/backup/AutoBackup/components/CronEditor.vue:141
 msgid "Backup Schedule"
 msgstr "备份计划"
-
-#: src/components/Notification/notifications.ts:38
-msgid "Backup task %{backup_name} completed successfully, file: %{file_path}"
-msgstr "备份任务 %{backup_name} 已完成，文件：%{file_path}"
-
-#: src/components/Notification/notifications.ts:34
-msgid ""
-"Backup task %{backup_name} failed during storage upload, error: %{error}"
-msgstr "备份任务 %{backup_name} 在存储上传过程中失败，错误：%{error}"
-
-#: src/components/Notification/notifications.ts:30
-msgid "Backup task %{backup_name} failed to execute, error: %{error}"
-msgstr "备份任务 %{backup_name} 执行失败，错误：%{error}"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:24
 msgid "Backup Type"
@@ -618,9 +502,7 @@ msgstr "CADir"
 msgid ""
 "Calculated based on worker_processes * worker_connections. Actual "
 "performance depends on hardware, configuration, and workload"
-msgstr ""
-"基于 worker_processes * worker_connections 计算得出。实际性能取决于硬件、配置"
-"和工作负载"
+msgstr "基于 worker_processes * worker_connections 计算得出。实际性能取决于硬件、配置和工作负载"
 
 #: src/components/ChatGPT/ChatMessage.vue:216
 #: src/components/NgxConfigEditor/NgxServer.vue:61
@@ -676,20 +558,6 @@ msgstr "证书路径不在 Nginx 配置目录下"
 msgid "certificate"
 msgstr "证书"
 
-#: src/components/Notification/notifications.ts:42
-msgid "Certificate %{name} has expired"
-msgstr "证书 %{name} 已过期"
-
-#: src/components/Notification/notifications.ts:46
-#: src/components/Notification/notifications.ts:50
-#: src/components/Notification/notifications.ts:54
-msgid "Certificate %{name} will expire in %{days} days"
-msgstr "证书 %{name} 将在 %{days} 天后过期"
-
-#: src/components/Notification/notifications.ts:58
-msgid "Certificate %{name} will expire in 1 day"
-msgstr "证书 %{name} 将在1天后过期"
-
 #: src/views/certificate/components/CertificateDownload.vue:36
 msgid "Certificate content and private key content cannot be empty"
 msgstr "证书内容和私钥内容不能为空"
@@ -698,20 +566,6 @@ msgstr "证书内容和私钥内容不能为空"
 msgid "Certificate decode error"
 msgstr "证书解码错误"
 
-#: src/components/Notification/notifications.ts:45
-msgid "Certificate Expiration Notice"
-msgstr "证书到期通知"
-
-#: src/components/Notification/notifications.ts:41
-msgid "Certificate Expired"
-msgstr "证书已过期"
-
-#: src/components/Notification/notifications.ts:49
-#: src/components/Notification/notifications.ts:53
-#: src/components/Notification/notifications.ts:57
-msgid "Certificate Expiring Soon"
-msgstr "证书即将过期"
-
 #: src/views/certificate/components/CertificateDownload.vue:70
 msgid "Certificate files downloaded successfully"
 msgstr "证书文件下载成功"
@@ -719,10 +573,6 @@ msgstr "证书文件下载成功"
 #: src/views/certificate/components/CertificateDownload.vue:41
 msgid "Certificate name cannot be empty"
 msgstr "证书名称不能为空"
-
-#: src/language/generate.ts:4
-msgid "Certificate not found: %{error}"
-msgstr "未找到证书：%{error}"
 
 #: src/constants/errors/cert.ts:5
 msgid "Certificate parse error"
@@ -744,10 +594,6 @@ msgstr "证书续期间隔"
 #: src/language/constants.ts:21
 msgid "Certificate renewed successfully"
 msgstr "证书更新成功"
-
-#: src/language/generate.ts:5
-msgid "Certificate revoked successfully"
-msgstr "证书撤销成功"
 
 #: src/views/certificate/components/AutoCertManagement.vue:67
 #: src/views/site/site_edit/components/Cert/Cert.vue:58
@@ -814,109 +660,11 @@ msgstr "检查"
 msgid "Check again"
 msgstr "重新检查"
 
-#: src/language/generate.ts:6
-msgid ""
-"Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
-"Docker Image, please make sure the docker socket is mounted like this: `-v /"
-"var/run/docker.sock:/var/run/docker.sock`. Nginx UI official image uses /var/"
-"run/docker.sock to communicate with the host Docker Engine via Docker Client "
-"API. This feature is used to control Nginx in another container and perform "
-"container replacement rather than binary replacement during OTA upgrades of "
-"Nginx UI to ensure container dependencies are also upgraded. If you don't "
-"need this feature, please add the environment variable "
-"NGINX_UI_IGNORE_DOCKER_SOCKET=true to the container."
-msgstr ""
-"检查 /var/run/docker.sock 是否存在。如果您使用的是 Nginx UI 官方 Docker 镜"
-"像，请确保以这种方式挂载 Docker 套接字：`-v /var/run/docker.sock:/var/run/"
-"docker.sock`。Nginx UI 官方镜像使用 /var/run/docker.sock 通过 Docker Client "
-"API 与主机 Docker Engine 通信。此功能用于在另一个容器中控制 Nginx，并在 "
-"Nginx UI 的 OTA 升级期间执行容器替换而非二进制替换，以确保容器依赖项也得到升"
-"级。如果您不需要此功能，请向容器添加环境变量 "
-"NGINX_UI_IGNORE_DOCKER_SOCKET=true。"
-
 #: src/components/SelfCheck/tasks/frontend/https-check.ts:14
 msgid ""
 "Check if HTTPS is enabled. Using HTTP outside localhost is insecure and "
 "prevents using Passkeys and clipboard features"
-msgstr ""
-"检查是否启用了 HTTPS。在本地主机之外使用 HTTP 是不安全的，这也会导致无法使用 "
-"Passkey 和剪贴板功能"
-
-#: src/language/generate.ts:8
-msgid ""
-"Check if the nginx access log path exists. By default, this path is obtained "
-"from 'nginx -V'. If it cannot be obtained or the obtained path does not "
-"point to a valid, existing file, an error will be reported. In this case, "
-"you need to modify the configuration file to specify the access log path."
-"Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-"
-"nginx.html#accesslogpath"
-msgstr ""
-"检查 nginx 访问日志路径是否存在。默认情况下，此路径从 'nginx -V' 获取。如果无"
-"法获取或获取的路径未指向有效的现有文件，将报告错误。在这种情况下，您需要修改"
-"配置文件以指定访问日志路径。更多详情请参阅文档：https://nginxui.com/zh_CN/"
-"guide/config-nginx.html#accesslogpath"
-
-#: src/language/generate.ts:9
-msgid "Check if the nginx configuration directory exists"
-msgstr "检查 Nginx 配置目录是否存在"
-
-#: src/language/generate.ts:10
-msgid "Check if the nginx configuration entry file exists"
-msgstr "检查 nginx 配置入口文件是否存在"
-
-#: src/language/generate.ts:11
-msgid ""
-"Check if the nginx error log path exists. By default, this path is obtained "
-"from 'nginx -V'. If it cannot be obtained or the obtained path does not "
-"point to a valid, existing file, an error will be reported. In this case, "
-"you need to modify the configuration file to specify the error log path. "
-"Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-"
-"nginx.html#errorlogpath"
-msgstr ""
-"检查 nginx 错误日志路径是否存在。默认情况下，该路径从 'nginx -V' 获取。如果无"
-"法获取或获取的路径未指向有效的现有文件，将报错。此时需要修改配置文件以指定错"
-"误日志路径。详情请参阅文档：https://nginxui.com/zh_CN/guide/config-nginx."
-"html#errorlogpath"
-
-#: src/language/generate.ts:7
-msgid ""
-"Check if the nginx PID path exists. By default, this path is obtained from "
-"'nginx -V'. If it cannot be obtained, an error will be reported. In this "
-"case, you need to modify the configuration file to specify the Nginx PID "
-"path.Refer to the docs for more details: https://nginxui.com/zh_CN/guide/"
-"config-nginx.html#pidpath"
-msgstr ""
-"检查 Nginx PID 路径是否存在。默认情况下，该路径是从 'nginx -V' 获取的。如果无"
-"法获取，将会报错。在这种情况下，您需要修改配置文件以指定 Nginx PID 路径。更多"
-"详情请参阅文档：https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
-
-#: src/language/generate.ts:12
-msgid "Check if the nginx sbin path exists"
-msgstr "检查 nginx sbin 路径是否存在"
-
-#: src/language/generate.ts:13
-msgid "Check if the nginx.conf includes the conf.d directory"
-msgstr "检查 nginx.conf 是否包含 conf.d 目录"
-
-#: src/language/generate.ts:14
-msgid "Check if the nginx.conf includes the sites-enabled directory"
-msgstr "检查 nginx.conf 是否包含 sites-enabled 目录"
-
-#: src/language/generate.ts:15
-msgid "Check if the nginx.conf includes the streams-enabled directory"
-msgstr "检查 nginx.conf 是否包含 streams-enabled 的目录"
-
-#: src/language/generate.ts:16
-msgid ""
-"Check if the sites-available and sites-enabled directories are under the "
-"nginx configuration directory"
-msgstr "检查 sites-available 和 sites-enabled 目录是否位于 Nginx 配置目录下"
-
-#: src/language/generate.ts:17
-msgid ""
-"Check if the streams-available and streams-enabled directories are under the "
-"nginx configuration directory"
-msgstr "检查 Nginx 配置目录下是否有 streams-available 和 streams-enabled 目录"
+msgstr "检查是否启用了 HTTPS。在本地主机之外使用 HTTP 是不安全的，这也会导致无法使用 Passkey 和剪贴板功能"
 
 #: src/constants/errors/crypto.ts:3
 msgid "Cipher text is too short"
@@ -1025,7 +773,7 @@ msgstr "与当前的比较"
 msgid "Compression level, 1 is lowest, 9 is highest"
 msgstr "压缩级别，1 为最低，9 为最高"
 
-#: src/views/preference/components/ExternalNotify/columns.tsx:46
+#: src/views/preference/components/ExternalNotify/columns.tsx:58
 msgid "Config"
 msgstr "配置"
 
@@ -1161,14 +909,13 @@ msgstr "创建文件夹"
 msgid ""
 "Create system backups including Nginx configuration and Nginx UI settings. "
 "Backup files will be automatically downloaded to your computer."
-msgstr ""
-"创建系统备份，包括 Nginx 配置和 Nginx UI 设置。备份文件将自动下载到你的电脑。"
+msgstr "创建系统备份，包括 Nginx 配置和 Nginx UI 设置。备份文件将自动下载到你的电脑。"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:229
 #: src/views/environments/group/columns.ts:72
 #: src/views/notification/notificationColumns.tsx:51
 #: src/views/preference/components/AuthSettings/Passkey.vue:95
-#: src/views/preference/components/ExternalNotify/columns.tsx:68
+#: src/views/preference/components/ExternalNotify/columns.tsx:80
 #: src/views/user/userColumns.tsx:46
 msgid "Created at"
 msgstr "创建时间"
@@ -1295,14 +1042,6 @@ msgstr "定义共享内存区名称和大小，例如 proxy_cache:10m"
 msgid "Delete"
 msgstr "删除"
 
-#: src/components/Notification/notifications.ts:86
-msgid "Delete %{path} on %{env_name} failed"
-msgstr "删除 %{env_name} 上的 %{path} 失败"
-
-#: src/components/Notification/notifications.ts:90
-msgid "Delete %{path} on %{env_name} successfully"
-msgstr "已在 %{env_name} 上成功删除 %{path}"
-
 #: src/views/certificate/components/RemoveCert.vue:95
 msgid "Delete Certificate"
 msgstr "删除证书"
@@ -1315,50 +1054,17 @@ msgstr "删除确认"
 msgid "Delete Permanently"
 msgstr "彻底删除"
 
-#: src/components/Notification/notifications.ts:85
-msgid "Delete Remote Config Error"
-msgstr "删除远程配置错误"
-
-#: src/components/Notification/notifications.ts:89
-msgid "Delete Remote Config Success"
-msgstr "远程配置删除成功"
-
-#: src/components/Notification/notifications.ts:97 src/language/constants.ts:50
+#: src/language/constants.ts:50
 msgid "Delete Remote Site Error"
 msgstr "删除远程站点错误"
 
-#: src/components/Notification/notifications.ts:101
 #: src/language/constants.ts:49
 msgid "Delete Remote Site Success"
 msgstr "删除远程站点成功"
 
-#: src/components/Notification/notifications.ts:153
-msgid "Delete Remote Stream Error"
-msgstr "删除远程 Stream 错误"
-
-#: src/components/Notification/notifications.ts:157
-msgid "Delete Remote Stream Success"
-msgstr "删除远程 Stream 成功"
-
-#: src/components/Notification/notifications.ts:98
-msgid "Delete site %{name} from %{node} failed"
-msgstr "部署 %{name} 到 %{node} 失败"
-
-#: src/components/Notification/notifications.ts:102
-msgid "Delete site %{name} from %{node} successfully"
-msgstr "成功从 %{node} 中删除站点 %{name}"
-
 #: src/views/site/site_list/SiteList.vue:48
 msgid "Delete site: %{site_name}"
 msgstr "删除站点: %{site_name}"
-
-#: src/components/Notification/notifications.ts:154
-msgid "Delete stream %{name} from %{node} failed"
-msgstr "从 %{node} 删除 Stream %{name} 失败"
-
-#: src/components/Notification/notifications.ts:158
-msgid "Delete stream %{name} from %{node} successfully"
-msgstr "已成功从 %{node} 删除 Stream %{name}"
 
 #: src/views/stream/StreamList.vue:47
 msgid "Delete stream: %{stream_name}"
@@ -1446,55 +1152,13 @@ msgstr "禁用"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "禁用 %{name} 的自动续期失败"
 
-#: src/components/Notification/notifications.ts:105
 #: src/language/constants.ts:52
 msgid "Disable Remote Site Error"
 msgstr "禁用远程站点错误"
 
-#: src/components/Notification/notifications.ts:129
-msgid "Disable Remote Site Maintenance Error"
-msgstr "禁用远程站点维护错误"
-
-#: src/components/Notification/notifications.ts:133
-msgid "Disable Remote Site Maintenance Success"
-msgstr "远程站点维护已成功禁用"
-
-#: src/components/Notification/notifications.ts:109
 #: src/language/constants.ts:51
 msgid "Disable Remote Site Success"
 msgstr "远程站点禁用成功"
-
-#: src/components/Notification/notifications.ts:161
-msgid "Disable Remote Stream Error"
-msgstr "禁用远程 Stream 错误"
-
-#: src/components/Notification/notifications.ts:165
-msgid "Disable Remote Stream Success"
-msgstr "禁用远程 Stream成功"
-
-#: src/components/Notification/notifications.ts:106
-msgid "Disable site %{name} from %{node} failed"
-msgstr "在 %{node} 上禁用 %{name} 成功"
-
-#: src/components/Notification/notifications.ts:110
-msgid "Disable site %{name} from %{node} successfully"
-msgstr "在 %{node} 上禁用 %{name} 成功"
-
-#: src/components/Notification/notifications.ts:130
-msgid "Disable site %{name} maintenance on %{node} failed"
-msgstr "停用站点 %{name} 维护 %{node} 失败"
-
-#: src/components/Notification/notifications.ts:134
-msgid "Disable site %{name} maintenance on %{node} successfully"
-msgstr "成功停用站点 %{name} 上 %{node} 的维护功能"
-
-#: src/components/Notification/notifications.ts:162
-msgid "Disable stream %{name} from %{node} failed"
-msgstr "在 %{node} 中启用 %{name} 失败"
-
-#: src/components/Notification/notifications.ts:166
-msgid "Disable stream %{name} from %{node} successfully"
-msgstr "在 %{node} 上禁用 %{name} 成功"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:175
 #: src/views/environments/list/envColumns.tsx:60
@@ -1566,10 +1230,6 @@ msgstr "你想删除这个 Upstream 吗？"
 msgid "Docker client not initialized"
 msgstr "Docker 客户端未初始化"
 
-#: src/language/generate.ts:18
-msgid "Docker socket exists"
-msgstr "Docker Socket 存在"
-
 #: src/constants/errors/self_check.ts:16
 msgid "Docker socket not exist"
 msgstr "不存在 Docker Socket"
@@ -1617,9 +1277,7 @@ msgstr "试运行模式已启动"
 msgid ""
 "Due to the security policies of some browsers, you cannot use passkeys on "
 "non-HTTPS websites, except when running on localhost."
-msgstr ""
-"由于某些浏览器的安全策略，除非在 localhost 上使用，否则不能在非 HTTPS 网站上"
-"使用 Passkey。"
+msgstr "由于某些浏览器的安全策略，除非在 localhost 上使用，否则不能在非 HTTPS 网站上使用 Passkey。"
 
 #: src/views/site/site_list/SiteDuplicate.vue:72
 #: src/views/site/site_list/SiteList.vue:108
@@ -1718,55 +1376,13 @@ msgstr "启用 HTTPS"
 msgid "Enable Proxy Cache"
 msgstr "启用代理缓存"
 
-#: src/components/Notification/notifications.ts:113
 #: src/language/constants.ts:54
 msgid "Enable Remote Site Error"
 msgstr "启用远程站点错误"
 
-#: src/components/Notification/notifications.ts:121
-msgid "Enable Remote Site Maintenance Error"
-msgstr "在 %{node} 上启用 %{site} 失败"
-
-#: src/components/Notification/notifications.ts:125
-msgid "Enable Remote Site Maintenance Success"
-msgstr "成功启用远程站点维护"
-
-#: src/components/Notification/notifications.ts:117
 #: src/language/constants.ts:53
 msgid "Enable Remote Site Success"
 msgstr "启用远程站点成功"
-
-#: src/components/Notification/notifications.ts:169
-msgid "Enable Remote Stream Error"
-msgstr "启用远程 Steam 错误"
-
-#: src/components/Notification/notifications.ts:173
-msgid "Enable Remote Stream Success"
-msgstr "启用远程 Stream 成功"
-
-#: src/components/Notification/notifications.ts:122
-msgid "Enable site %{name} maintenance on %{node} failed"
-msgstr "在 %{node} 中为 %{name} 启用维护模式失败"
-
-#: src/components/Notification/notifications.ts:126
-msgid "Enable site %{name} maintenance on %{node} successfully"
-msgstr "在 %{node} 上成功启用站点 %{name} 维护模式"
-
-#: src/components/Notification/notifications.ts:114
-msgid "Enable site %{name} on %{node} failed"
-msgstr "在 %{node} 中启用 %{name} 失败"
-
-#: src/components/Notification/notifications.ts:118
-msgid "Enable site %{name} on %{node} successfully"
-msgstr "在 %{node} 上启用 %{name} 成功"
-
-#: src/components/Notification/notifications.ts:170
-msgid "Enable stream %{name} on %{node} failed"
-msgstr "在 %{node} 中启用 %{name} 失败"
-
-#: src/components/Notification/notifications.ts:174
-msgid "Enable stream %{name} on %{node} successfully"
-msgstr "在 %{node} 上启用 %{name} 成功"
 
 #: src/views/dashboard/NginxDashBoard.vue:172
 msgid "Enable stub_status module"
@@ -1783,6 +1399,7 @@ msgstr "启用 TOTP"
 #: src/views/backup/AutoBackup/AutoBackup.vue:174
 #: src/views/environments/list/envColumns.tsx:69
 #: src/views/environments/list/envColumns.tsx:75
+#: src/views/preference/components/ExternalNotify/columns.tsx:47
 #: src/views/preference/tabs/HTTPSettings.vue:24
 #: src/views/preference/tabs/LogrotateSettings.vue:20
 #: src/views/preference/tabs/NodeSettings.vue:25
@@ -1907,8 +1524,8 @@ msgstr "外部账户绑定 HMAC 密钥（可选）。应为 Base64 URL 编码格
 
 #: src/views/certificate/ACMEUser.vue:90
 msgid ""
-"External Account Binding Key ID (optional). Required for some ACME providers "
-"like ZeroSSL."
+"External Account Binding Key ID (optional). Required for some ACME "
+"providers like ZeroSSL."
 msgstr "外部账户绑定密钥ID（可选）。某些ACME提供商（如ZeroSSL）需要此信息。"
 
 #: src/views/preference/tabs/NginxSettings.vue:49
@@ -1919,12 +1536,8 @@ msgstr "外部 Docker 容器"
 msgid "External notification configuration not found"
 msgstr "未找到外部通知配置"
 
-#: src/components/Notification/notifications.ts:93
-msgid "External Notification Test"
-msgstr "外部通知测试"
-
 #: src/views/preference/Preference.vue:58
-#: src/views/preference/tabs/ExternalNotify.vue:36
+#: src/views/preference/tabs/ExternalNotify.vue:41
 msgid "External Notify"
 msgstr "外部通知"
 
@@ -2076,10 +1689,6 @@ msgstr "解密 Nginx UI 目录失败：{0}"
 #: src/views/certificate/components/RemoveCert.vue:67
 msgid "Failed to delete certificate"
 msgstr "删除证书失败"
-
-#: src/language/generate.ts:19
-msgid "Failed to delete certificate from database: %{error}"
-msgstr "从数据库中删除证书失败：%{error}"
 
 #: src/views/site/components/SiteStatusSelect.vue:73
 #: src/views/stream/components/StreamStatusSelect.vue:45
@@ -2247,21 +1856,21 @@ msgstr "恢复 Nginx UI 文件失败：{0}"
 msgid "Failed to revoke certificate"
 msgstr "证书撤销失败"
 
-#: src/language/generate.ts:20
-msgid "Failed to revoke certificate: %{error}"
-msgstr "撤销证书失败：%{error}"
-
 #: src/views/dashboard/components/ParamsOptimization.vue:91
 msgid "Failed to save Nginx performance settings"
 msgstr "保存 Nginx 性能参数失败"
 
-#: src/views/preference/tabs/ExternalNotify.vue:26
+#: src/views/preference/tabs/ExternalNotify.vue:31
 msgid "Failed to send test message"
 msgstr "发送测试消息失败"
 
 #: src/constants/errors/docker.ts:14
 msgid "Failed to start temp container: {0}"
 msgstr "启动临时容器失败：{0}"
+
+#: src/views/preference/components/ExternalNotify/EnabledSwitch.vue:29
+msgid "Failed to update status"
+msgstr "更新状态失败"
 
 #: src/views/certificate/components/CertificateFileUpload.vue:103
 msgid "Failed to upload file"
@@ -2362,13 +1971,12 @@ msgstr "中国用户：https://cloud.nginxui.com/"
 msgid ""
 "For IP-based certificate configurations, only HTTP-01 challenge method is "
 "supported. DNS-01 challenge is not compatible with IP-based certificates."
-msgstr ""
-"对于基于IP的证书配置，仅支持HTTP-01验证方法。DNS-01验证与基于IP的证书不兼容。"
+msgstr "对于基于IP的证书配置，仅支持HTTP-01验证方法。DNS-01验证与基于IP的证书不兼容。"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:188
 msgid ""
-"For IP-based certificates, please specify the server IP address that will be "
-"included in the certificate."
+"For IP-based certificates, please specify the server IP address that will "
+"be included in the certificate."
 msgstr "对于基于IP的证书，请指定将包含在证书中的服务器IP地址。"
 
 #: src/constants/errors/middleware.ts:4
@@ -2511,9 +2119,7 @@ msgstr "ICP备案号"
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
 "ban threshold minutes, the ip will be banned for a period of time."
-msgstr ""
-"如果某个 IP 的登录失败次数达到禁用阈值分钟内的最大尝试次数，该 IP 将被禁止登"
-"录一段时间。"
+msgstr "如果某个 IP 的登录失败次数达到禁用阈值分钟内的最大尝试次数，该 IP 将被禁止登录一段时间。"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:280
 msgid ""
@@ -2726,8 +2332,7 @@ msgstr "Jwt 密钥"
 msgid ""
 "Keep your recovery codes as safe as your password. We recommend saving them "
 "with a password manager."
-msgstr ""
-"请像保护密码一样安全地保管您的恢复代码。我们建议使用密码管理器保存它们。"
+msgstr "请像保护密码一样安全地保管您的恢复代码。我们建议使用密码管理器保存它们。"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:60
 msgid "Keepalive Timeout"
@@ -2738,7 +2343,7 @@ msgstr "Keepalive 超时"
 msgid "Key Type"
 msgstr "密钥类型"
 
-#: src/views/preference/components/ExternalNotify/columns.tsx:32
+#: src/views/preference/components/ExternalNotify/columns.tsx:33
 msgid "Language"
 msgstr "语言"
 
@@ -2884,15 +2489,6 @@ msgstr "Locations"
 msgid "Log"
 msgstr "日志"
 
-#: src/language/generate.ts:21
-msgid ""
-"Log file %{log_path} is not a regular file. If you are using nginx-ui in "
-"docker container, please refer to https://nginxui.com/zh_CN/guide/config-"
-"nginx-log.html for more information."
-msgstr ""
-"日志文件 %{log_path} 不是常规文件。如果在 Docker 容器中使用 Nginx UI，请参阅 "
-"https://nginxui.com/zh_CN/guide/config-nginx-log.html 获取更多信息。"
-
 #: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:88
 msgid "Log List"
 msgstr "日志列表"
@@ -2915,17 +2511,16 @@ msgstr "Logrotate"
 
 #: src/views/preference/tabs/LogrotateSettings.vue:13
 msgid ""
-"Logrotate, by default, is enabled in most mainstream Linux distributions for "
-"users who install Nginx UI on the host machine, so you don't need to modify "
-"the parameters on this page. For users who install Nginx UI using Docker "
-"containers, you can manually enable this option. The crontab task scheduler "
-"of Nginx UI will execute the logrotate command at the interval you set in "
-"minutes."
+"Logrotate, by default, is enabled in most mainstream Linux distributions "
+"for users who install Nginx UI on the host machine, so you don't need to "
+"modify the parameters on this page. For users who install Nginx UI using "
+"Docker containers, you can manually enable this option. The crontab task "
+"scheduler of Nginx UI will execute the logrotate command at the interval "
+"you set in minutes."
 msgstr ""
-"对于在宿主机上安装 Nginx UI 的用户，大多数主流 Linux 发行版都默认启用 "
-"logrotate 定时任务，因此您无需修改本页面的参数。对于使用 Docker 容器安装 "
-"Nginx 用户界面的用户，您可以手动启用该选项。Nginx UI 的定时任务任务调度器将按"
-"照您设置的时间间隔（以分钟为单位）执行 logrotate 命令。"
+"对于在宿主机上安装 Nginx UI 的用户，大多数主流 Linux 发行版都默认启用 logrotate "
+"定时任务，因此您无需修改本页面的参数。对于使用 Docker 容器安装 Nginx 用户界面的用户，您可以手动启用该选项。Nginx UI "
+"的定时任务任务调度器将按照您设置的时间间隔（以分钟为单位）执行 logrotate 命令。"
 
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:51
 #: src/composables/useUpstreamStatus.ts:156
@@ -2954,9 +2549,7 @@ msgstr "创建证书目录错误：{0}"
 msgid ""
 "Make sure you have configured a reverse proxy for .well-known directory to "
 "HTTPChallengePort before obtaining the certificate."
-msgstr ""
-"在获取签发证书前，请确保配置文件中已将 .well-known 目录反向代理到 "
-"HTTPChallengePort。"
+msgstr "在获取签发证书前，请确保配置文件中已将 .well-known 目录反向代理到 HTTPChallengePort。"
 
 #: src/routes/modules/config.ts:10
 #: src/views/config/components/ConfigLeftPanel.vue:114
@@ -3236,10 +2829,6 @@ msgstr "Nginx -T 的输出为空"
 msgid "Nginx Access Log Path"
 msgstr "Nginx 访问日志路径"
 
-#: src/language/generate.ts:23
-msgid "Nginx access log path exists"
-msgstr "存在 Nginx 访问日志路径"
-
 #: src/views/backup/AutoBackup/AutoBackup.vue:28
 #: src/views/backup/AutoBackup/AutoBackup.vue:40
 msgid "Nginx and Nginx UI Config"
@@ -3268,14 +2857,6 @@ msgstr "Nginx Conf 中未引用 stream-enabled"
 #: src/constants/errors/backup.ts:19
 msgid "Nginx config directory is not set"
 msgstr "未设置 Nginx 配置目录"
-
-#: src/language/generate.ts:24
-msgid "Nginx configuration directory exists"
-msgstr "Nginx 配置目录存在"
-
-#: src/language/generate.ts:25
-msgid "Nginx configuration entry file exists"
-msgstr "存在 Nginx 配置入口文件"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:138
 msgid "Nginx configuration has been restored"
@@ -3310,10 +2891,6 @@ msgstr "Nginx CPU 使用率"
 #: src/views/preference/tabs/NginxSettings.vue:16
 msgid "Nginx Error Log Path"
 msgstr "Nginx 错误日志路径"
-
-#: src/language/generate.ts:26
-msgid "Nginx error log path exists"
-msgstr "存在 Nginx 错误日志路径"
 
 #: src/constants/errors/nginx.ts:2
 msgid "Nginx error: {0}"
@@ -3352,10 +2929,6 @@ msgstr "Nginx 内存使用量"
 msgid "Nginx PID Path"
 msgstr "Nginx PID 路径"
 
-#: src/language/generate.ts:22
-msgid "Nginx PID path exists"
-msgstr "Nginx PID 路径存在"
-
 #: src/views/preference/tabs/NginxSettings.vue:40
 msgid "Nginx Reload Command"
 msgstr "Nginx 重载命令"
@@ -3385,10 +2958,6 @@ msgstr "Nginx 重启操作已发送到远程节点"
 msgid "Nginx restarted successfully"
 msgstr "Nginx 重启成功"
 
-#: src/language/generate.ts:27
-msgid "Nginx sbin path exists"
-msgstr "Nginx Sbin 路径存在"
-
 #: src/views/preference/tabs/NginxSettings.vue:37
 msgid "Nginx Test Config Command"
 msgstr "Nginx 测试配置命令"
@@ -3412,21 +2981,9 @@ msgstr "Nginx 用户界面配置已恢复"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:336
 msgid ""
-"Nginx UI configuration has been restored and will restart automatically in a "
-"few seconds."
+"Nginx UI configuration has been restored and will restart automatically in "
+"a few seconds."
 msgstr "Nginx UI 配置已恢复，几秒钟后将自动重启。"
-
-#: src/language/generate.ts:28
-msgid "Nginx.conf includes conf.d directory"
-msgstr "Nginx.conf 包括 conf.d 目录"
-
-#: src/language/generate.ts:29
-msgid "Nginx.conf includes sites-enabled directory"
-msgstr "Nginx.conf 包含 sites-enabled 目录"
-
-#: src/language/generate.ts:30
-msgid "Nginx.conf includes streams-enabled directory"
-msgstr "检查 nginx.conf 是否包含 streams-enabled 的目录"
 
 #: src/components/ChatGPT/ChatMessageInput.vue:17
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:111
@@ -3467,9 +3024,7 @@ msgstr "未配置服务器"
 msgid ""
 "No specific IP address found in server_name configuration. Please specify "
 "the server IP address below for the certificate."
-msgstr ""
-"在 server_name 配置中未找到特定 IP 地址。请在下方指定服务器 IP 地址以获取证"
-"书。"
+msgstr "在 server_name 配置中未找到特定 IP 地址。请在下方指定服务器 IP 地址以获取证书。"
 
 #: src/components/NgxConfigEditor/NgxUpstream.vue:103
 msgid "No upstreams configured"
@@ -3734,9 +3289,7 @@ msgid ""
 "Passkeys are webauthn credentials that validate your identity using touch, "
 "facial recognition, a device password, or a PIN. They can be used as a "
 "password replacement or as a 2FA method."
-msgstr ""
-"Passkey 是一种网络认证凭据，可通过指纹、面部识别、设备密码或 PIN 码验证身份。"
-"它们可用作密码替代品或二步验证方法。"
+msgstr "Passkey 是一种网络认证凭据，可通过指纹、面部识别、设备密码或 PIN 码验证身份。它们可用作密码替代品或二步验证方法。"
 
 #: src/views/other/Login.vue:238 src/views/user/userColumns.tsx:16
 msgid "Password"
@@ -3887,15 +3440,12 @@ msgstr "请填写 DNS 提供商提供的 API 验证凭据。"
 msgid ""
 "Please first add credentials in Certification > DNS Credentials, and then "
 "select one of the credentialsbelow to request the API of the DNS provider."
-msgstr ""
-"请首先在 “证书”> “DNS 凭证” 中添加凭证，然后在下方选择一个凭证，请求 DNS 提供"
-"商的 API。"
+msgstr "请首先在 “证书”> “DNS 凭证” 中添加凭证，然后在下方选择一个凭证，请求 DNS 提供商的 API。"
 
-#: src/components/Notification/notifications.ts:194
 #: src/language/constants.ts:59
 msgid ""
-"Please generate new recovery codes in the preferences immediately to prevent "
-"lockout."
+"Please generate new recovery codes in the preferences immediately to "
+"prevent lockout."
 msgstr "请立即在偏好设置中生成新的恢复码，以防止无法访问您的账户。"
 
 #: src/views/config/components/ConfigRightPanel/Basic.vue:27
@@ -3937,8 +3487,7 @@ msgid "Please log in."
 msgstr "请登录。"
 
 #: src/views/certificate/DNSCredential.vue:102
-msgid ""
-"Please note that the unit of time configurations below are all in seconds."
+msgid "Please note that the unit of time configurations below are all in seconds."
 msgstr "请注意，下面的时间单位配置均以秒为单位。"
 
 #: src/views/install/components/InstallView.vue:102
@@ -4068,9 +3617,9 @@ msgstr "受保护目录"
 #: src/views/preference/tabs/ServerSettings.vue:47
 msgid ""
 "Protocol configuration only takes effect when directly connecting. If using "
-"reverse proxy, please configure the protocol separately in the reverse proxy."
-msgstr ""
-"协议配置仅在直接连接时生效。如果使用反向代理，请在反向代理中单独配置协议。"
+"reverse proxy, please configure the protocol separately in the reverse "
+"proxy."
+msgstr "协议配置仅在直接连接时生效。如果使用反向代理，请在反向代理中单独配置协议。"
 
 #: src/views/certificate/DNSCredential.vue:26
 msgid "Provider"
@@ -4135,9 +3684,7 @@ msgstr "恢复代码"
 msgid ""
 "Recovery codes are used to access your account when you lose access to your "
 "2FA device. Each code can only be used once."
-msgstr ""
-"恢复代码用于在您无法访问双重身份验证设备时登录您的账户。每个代码只能使用一"
-"次。"
+msgstr "恢复代码用于在您无法访问双重身份验证设备时登录您的账户。每个代码只能使用一次。"
 
 #: src/views/preference/tabs/CertSettings.vue:40
 msgid "Recursive Nameservers"
@@ -4205,22 +3752,6 @@ msgstr "重载 Nginx"
 msgid "Reload nginx failed: {0}"
 msgstr "重载 Nginx 失败: {0}"
 
-#: src/components/Notification/notifications.ts:10
-msgid "Reload Nginx on %{node} failed, response: %{resp}"
-msgstr "在 %{node} 上重载 Nginx 失败，响应：%{resp}"
-
-#: src/components/Notification/notifications.ts:14
-msgid "Reload Nginx on %{node} successfully"
-msgstr "在 %{node} 上重载 Nginx 成功"
-
-#: src/components/Notification/notifications.ts:9
-msgid "Reload Remote Nginx Error"
-msgstr "重载远程 Nginx 错误"
-
-#: src/components/Notification/notifications.ts:13
-msgid "Reload Remote Nginx Success"
-msgstr "重载远程 Nginx 成功"
-
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:52
 msgid "Reload request failed, please check your network connection"
 msgstr "重载请求失败，请检查网络连接"
@@ -4260,55 +3791,21 @@ msgstr "删除成功"
 msgid "Rename"
 msgstr "重命名"
 
-#: src/components/Notification/notifications.ts:78
-msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed"
-msgstr "成功将 %{env_name} 上的 %{orig_path} 重命名为 %{new_path}"
-
-#: src/components/Notification/notifications.ts:82
-msgid "Rename %{orig_path} to %{new_path} on %{env_name} successfully"
-msgstr "成功将 %{env_name} 上的 %{orig_path} 重命名为 %{new_path}"
-
-#: src/components/Notification/notifications.ts:77 src/language/constants.ts:42
+#: src/language/constants.ts:42
 msgid "Rename Remote Config Error"
 msgstr "远程配置重命名错误"
 
-#: src/components/Notification/notifications.ts:81 src/language/constants.ts:41
+#: src/language/constants.ts:41
 msgid "Rename Remote Config Success"
 msgstr "重命名远程配置成功"
 
-#: src/components/Notification/notifications.ts:137
 #: src/language/constants.ts:56
 msgid "Rename Remote Site Error"
 msgstr "重命名远程站点错误"
 
-#: src/components/Notification/notifications.ts:141
 #: src/language/constants.ts:55
 msgid "Rename Remote Site Success"
 msgstr "重命名远程站点成功"
-
-#: src/components/Notification/notifications.ts:177
-msgid "Rename Remote Stream Error"
-msgstr "重命名远程 Stream 错误"
-
-#: src/components/Notification/notifications.ts:181
-msgid "Rename Remote Stream Success"
-msgstr "重命名远程 Stream成功"
-
-#: src/components/Notification/notifications.ts:138
-msgid "Rename site %{name} to %{new_name} on %{node} failed"
-msgstr "在 %{node} 上将站点 %{name} 重命名为 %{new_name} 成功"
-
-#: src/components/Notification/notifications.ts:142
-msgid "Rename site %{name} to %{new_name} on %{node} successfully"
-msgstr "在 %{node} 上将站点 %{name} 重命名为 %{new_name} 成功"
-
-#: src/components/Notification/notifications.ts:178
-msgid "Rename stream %{name} to %{new_name} on %{node} failed"
-msgstr "在 %{node} 上将站点 %{name} 重命名为 %{new_name} 成功"
-
-#: src/components/Notification/notifications.ts:182
-msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
-msgstr "在 %{node} 上将站点 %{name} 重命名为 %{new_name} 成功"
 
 #: src/views/config/components/Rename.vue:43
 msgid "Rename successfully"
@@ -4371,9 +3868,7 @@ msgid ""
 "Resident Set Size: Actual memory resident in physical memory, including all "
 "shared library memory, which will be repeated calculated for multiple "
 "processes"
-msgstr ""
-"驻留集大小：实际驻留在物理内存中的内存，包括所有共享库内存，将为多个进程重复"
-"计算"
+msgstr "驻留集大小：实际驻留在物理内存中的内存，包括所有共享库内存，将为多个进程重复计算"
 
 #: src/composables/usePerformanceMetrics.ts:109
 #: src/views/dashboard/components/PerformanceTablesCard.vue:69
@@ -4389,22 +3884,6 @@ msgstr "重启"
 #: src/views/environments/list/Environment.vue:238
 msgid "Restart Nginx"
 msgstr "重启 Nginx"
-
-#: src/components/Notification/notifications.ts:18
-msgid "Restart Nginx on %{node} failed, response: %{resp}"
-msgstr "在 %{node} 上重启 Nginx 失败，响应：%{resp}"
-
-#: src/components/Notification/notifications.ts:22
-msgid "Restart Nginx on %{node} successfully"
-msgstr "在 %{node} 上重启 Nginx 成功"
-
-#: src/components/Notification/notifications.ts:17
-msgid "Restart Remote Nginx Error"
-msgstr "重启远程 Nginx 错误"
-
-#: src/components/Notification/notifications.ts:21
-msgid "Restart Remote Nginx Success"
-msgstr "重启远程 Nginx 成功"
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:72
 msgid "Restart request failed, please check your network connection"
@@ -4615,39 +4094,13 @@ msgstr "保存"
 msgid "Save Directive"
 msgstr "保存指令"
 
-#: src/components/Notification/notifications.ts:145
 #: src/language/constants.ts:48
 msgid "Save Remote Site Error"
 msgstr "保存远程站点错误"
 
-#: src/components/Notification/notifications.ts:149
 #: src/language/constants.ts:47
 msgid "Save Remote Site Success"
 msgstr "保存远程站点成功"
-
-#: src/components/Notification/notifications.ts:185
-msgid "Save Remote Stream Error"
-msgstr "保存远程 Stream 错误"
-
-#: src/components/Notification/notifications.ts:189
-msgid "Save Remote Stream Success"
-msgstr "保存远程 Stream 成功"
-
-#: src/components/Notification/notifications.ts:146
-msgid "Save site %{name} to %{node} failed"
-msgstr "成功将站点 %{name} 保存到 %{node} 中"
-
-#: src/components/Notification/notifications.ts:150
-msgid "Save site %{name} to %{node} successfully"
-msgstr "成功将站点 %{name} 保存到 %{node} 中"
-
-#: src/components/Notification/notifications.ts:186
-msgid "Save stream %{name} to %{node} failed"
-msgstr "部署 %{name} 到 %{node} 失败"
-
-#: src/components/Notification/notifications.ts:190
-msgid "Save stream %{name} to %{node} successfully"
-msgstr "成功将站点 %{name} 保存到 %{node} 中"
 
 #: src/language/curd.ts:36
 msgid "Save successful"
@@ -4841,19 +4294,19 @@ msgstr "使用 HTTP01 challenge provider"
 
 #: src/constants/errors/nginx_log.ts:8
 msgid ""
-"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://nginxui."
-"com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.AccessLogPath is empty, refer to "
+"https://nginxui.com/guide/config-nginx.html for more information"
 msgstr ""
-"Settings.NginxLogSettings.AccessLogPath 为空，更多信息请参阅 https://nginxui."
-"com/guide/config-nginx.html"
+"Settings.NginxLogSettings.AccessLogPath 为空，更多信息请参阅 "
+"https://nginxui.com/guide/config-nginx.html"
 
 #: src/constants/errors/nginx_log.ts:7
 msgid ""
-"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://nginxui."
-"com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.ErrorLogPath is empty, refer to "
+"https://nginxui.com/guide/config-nginx.html for more information"
 msgstr ""
-"Settings.NginxLogSettings.ErrorLogPath为空，更多信息请参阅 https://nginxui."
-"com/guide/config-nginx.html"
+"Settings.NginxLogSettings.ErrorLogPath为空，更多信息请参阅 "
+"https://nginxui.com/guide/config-nginx.html"
 
 #: src/views/install/components/InstallView.vue:65
 msgid "Setup your Nginx UI"
@@ -4894,10 +4347,6 @@ msgstr "站点列表"
 #: src/constants/errors/site.ts:2
 msgid "Site not found"
 msgstr "网站未找到"
-
-#: src/language/generate.ts:31
-msgid "Sites directory exists"
-msgstr "网站目录存在"
 
 #: src/routes/modules/sites.ts:19
 msgid "Sites List"
@@ -5011,6 +4460,10 @@ msgstr "静态"
 msgid "Status"
 msgstr "状态"
 
+#: src/views/preference/components/ExternalNotify/EnabledSwitch.vue:23
+msgid "Status updated successfully"
+msgstr "状态更新成功"
+
 #: src/components/NginxControl/NginxControl.vue:87
 msgid "Stopped"
 msgstr "已停止"
@@ -5023,12 +4476,6 @@ msgstr "存储"
 #: src/views/backup/AutoBackup/AutoBackup.vue:92
 msgid "Storage Configuration"
 msgstr "存储配置"
-
-#: src/components/Notification/notifications.ts:26
-msgid ""
-"Storage configuration validation failed for backup task %{backup_name}, "
-"error: %{error}"
-msgstr "备份任务 %{backup_name} 的存储配置验证失败，错误：%{error}"
 
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:120
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:54
@@ -5056,10 +4503,6 @@ msgstr "Stream 已启用"
 #: src/constants/errors/stream.ts:2
 msgid "Stream not found"
 msgstr "Stream 未找到"
-
-#: src/language/generate.ts:32
-msgid "Streams directory exists"
-msgstr "Streams 目录存在"
 
 #: src/constants/errors/self_check.ts:13
 msgid "Streams-available directory not exist"
@@ -5092,19 +4535,18 @@ msgstr "星期日"
 msgid ""
 "Support communication with the backend through the Server-Sent Events "
 "protocol. If your Nginx UI is being used via an Nginx reverse proxy, please "
-"refer to this link to write the corresponding configuration file: https://"
-"nginxui.com/guide/nginx-proxy-example.html"
+"refer to this link to write the corresponding configuration file: "
+"https://nginxui.com/guide/nginx-proxy-example.html"
 msgstr ""
-"支持通过 Server-Sent Events 协议与后端通信。如果您的 Nginx UI 是通过 Nginx 反"
-"向代理使用的，请参考此链接编写相应的配置文件：https://nginxui.com/guide/"
-"nginx-proxy-example.html"
+"支持通过 Server-Sent Events 协议与后端通信。如果您的 Nginx UI 是通过 Nginx "
+"反向代理使用的，请参考此链接编写相应的配置文件：https://nginxui.com/guide/nginx-proxy-example.html"
 
 #: src/components/SelfCheck/tasks/frontend/websocket.ts:13
 msgid ""
 "Support communication with the backend through the WebSocket protocol. If "
-"your Nginx UI is being used via an Nginx reverse proxy, please refer to this "
-"link to write the corresponding configuration file: https://nginxui.com/"
-"guide/nginx-proxy-example.html"
+"your Nginx UI is being used via an Nginx reverse proxy, please refer to "
+"this link to write the corresponding configuration file: "
+"https://nginxui.com/guide/nginx-proxy-example.html"
 msgstr ""
 "支持通过 WebSocket 协议与后端通信，如果您正在使用 Nginx 反向代理了 Nginx UI "
 "请参考：https://nginxui.com/guide/nginx-proxy-example.html 编写配置文件"
@@ -5144,35 +4586,19 @@ msgstr "同步"
 msgid "Sync Certificate"
 msgstr "同步证书"
 
-#: src/components/Notification/notifications.ts:62
-msgid "Sync Certificate %{cert_name} to %{env_name} failed"
-msgstr "证书 %{cert_name} 已成功同步到 %{env_name}"
-
-#: src/components/Notification/notifications.ts:66
-msgid "Sync Certificate %{cert_name} to %{env_name} successfully"
-msgstr "证书 %{cert_name} 已成功同步到 %{env_name}"
-
-#: src/components/Notification/notifications.ts:61 src/language/constants.ts:39
+#: src/language/constants.ts:39
 msgid "Sync Certificate Error"
 msgstr "同步证书错误"
 
-#: src/components/Notification/notifications.ts:65 src/language/constants.ts:38
+#: src/language/constants.ts:38
 msgid "Sync Certificate Success"
 msgstr "同步证书成功"
 
-#: src/components/Notification/notifications.ts:70
-msgid "Sync config %{config_name} to %{env_name} failed"
-msgstr "配置 %{config_name} 同步到 %{env_name} 失败"
-
-#: src/components/Notification/notifications.ts:74
-msgid "Sync config %{config_name} to %{env_name} successfully"
-msgstr "配置 %{config_name} 同步到 %{env_name} 成功"
-
-#: src/components/Notification/notifications.ts:69 src/language/constants.ts:45
+#: src/language/constants.ts:45
 msgid "Sync Config Error"
 msgstr "同步配置错误"
 
-#: src/components/Notification/notifications.ts:73 src/language/constants.ts:44
+#: src/language/constants.ts:44
 msgid "Sync Config Success"
 msgstr "同步配置成功"
 
@@ -5248,12 +4674,12 @@ msgstr "终端"
 msgid "Terminal Start Command"
 msgstr "终端启动命令"
 
-#: src/views/preference/tabs/ExternalNotify.vue:51
+#: src/views/preference/tabs/ExternalNotify.vue:56
 msgid "Test"
 msgstr "测试"
 
 #: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:52
-#: src/views/preference/tabs/ExternalNotify.vue:22
+#: src/views/preference/tabs/ExternalNotify.vue:27
 msgid "Test message sent successfully"
 msgstr "测试消息发送成功"
 
@@ -5266,9 +4692,7 @@ msgid ""
 "The certificate for the domain will be checked 30 minutes, and will be "
 "renewed if it has been more than 1 week or the period you set in settings "
 "since it was last issued."
-msgstr ""
-"域名证书将在 30 分钟内接受检查，如果距离上次签发证书的时间超过 1 周或您在设置"
-"中设定的时间，证书将被更新。"
+msgstr "域名证书将在 30 分钟内接受检查，如果距离上次签发证书的时间超过 1 周或您在设置中设定的时间，证书将被更新。"
 
 #: src/views/preference/tabs/NodeSettings.vue:37
 msgid ""
@@ -5286,7 +4710,8 @@ msgstr "输入的内容不是 SSL 证书密钥"
 
 #: src/constants/errors/nginx_log.ts:2
 msgid ""
-"The log path is not under the paths in settings.NginxSettings.LogDirWhiteList"
+"The log path is not under the paths in "
+"settings.NginxSettings.LogDirWhiteList"
 msgstr "日志路径不在 settings.NginxSettings.LogDirWhiteList 中的路径之下"
 
 #: src/views/preference/tabs/OpenAISettings.vue:23
@@ -5297,8 +4722,7 @@ msgid ""
 msgstr "模型名称只能包含字母、单码、数字、连字符、破折号、冒号和点。"
 
 #: src/views/preference/tabs/OpenAISettings.vue:90
-msgid ""
-"The model used for code completion, if not set, the chat model will be used."
+msgid "The model used for code completion, if not set, the chat model will be used."
 msgstr "用于代码自动补全的模型，如果未设置，则使用聊天模型。"
 
 #: src/views/preference/tabs/NodeSettings.vue:18
@@ -5330,9 +4754,7 @@ msgid ""
 "The remote Nginx UI version is not compatible with the local Nginx UI "
 "version. To avoid potential errors, please upgrade the remote Nginx UI to "
 "match the local version."
-msgstr ""
-"远程 Nginx UI 版本与本地 Nginx UI版本不兼容。为避免意料之外的错误，请升级远"
-"程 Nginx UI，使其与本地版本一致。"
+msgstr "远程 Nginx UI 版本与本地 Nginx UI版本不兼容。为避免意料之外的错误，请升级远程 Nginx UI，使其与本地版本一致。"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:155
 msgid ""
@@ -5367,9 +4789,7 @@ msgid ""
 "These codes are the last resort for accessing your account in case you lose "
 "your password and second factors. If you cannot find these codes, you will "
 "lose access to your account."
-msgstr ""
-"这些代码是在您丢失密码和双重身份验证方式时，访问账户的最后手段。如果找不到这"
-"些代码，您将无法再访问您的账户。"
+msgstr "这些代码是在您丢失密码和双重身份验证方式时，访问账户的最后手段。如果找不到这些代码，您将无法再访问您的账户。"
 
 #: src/views/certificate/components/AutoCertManagement.vue:45
 msgid "This Auto Cert item is invalid, please remove it."
@@ -5402,25 +4822,24 @@ msgid "This field should not be empty"
 msgstr "该字段不能为空"
 
 #: src/constants/form_errors.ts:6
-msgid ""
-"This field should only contain letters, unicode characters, numbers, and -_."
+msgid "This field should only contain letters, unicode characters, numbers, and -_."
 msgstr "该字段只能包含字母、unicode 字符、数字和 -_。"
 
 #: src/language/curd.ts:46
 msgid ""
-"This field should only contain letters, unicode characters, numbers, and -"
-"_./:"
+"This field should only contain letters, unicode characters, numbers, and "
+"-_./:"
 msgstr "此字段应仅包含字母、Unicode字符、数字和 -_./:"
-
-#: src/components/Notification/notifications.ts:94
-msgid "This is a test message sent at %{timestamp} from Nginx UI."
-msgstr "这是一条测试消息，于 %{timestamp} 从 Nginx UI 发送。"
 
 #: src/views/dashboard/NginxDashBoard.vue:175
 msgid ""
 "This module provides Nginx request statistics, connection count, etc. data. "
 "After enabling it, you can view performance statistics"
 msgstr "该模块提供 Nginx 请求统计、连接数等数据。启用后，可以查看性能统计"
+
+#: src/views/preference/tabs/ExternalNotify.vue:15
+msgid "This notification is disabled"
+msgstr "此通知已禁用"
 
 #: src/views/certificate/components/RemoveCert.vue:106
 msgid ""
@@ -5430,21 +4849,19 @@ msgstr "此操作只会从数据库中删除证书。文件系统中的证书文
 
 #: src/components/AutoCertForm/AutoCertForm.vue:128
 msgid ""
-"This site is configured as a default server (default_server) for HTTPS (port "
-"443). IP certificates require Certificate Authority (CA) support and may not "
-"be available with all ACME providers."
+"This site is configured as a default server (default_server) for HTTPS "
+"(port 443). IP certificates require Certificate Authority (CA) support and "
+"may not be available with all ACME providers."
 msgstr ""
-"此站点已配置为 HTTPS（端口 443）的默认服务器（default_server）。IP 证书需要证"
-"书颁发机构（CA）的支持，且并非所有 ACME 提供商都提供此类证书。"
+"此站点已配置为 HTTPS（端口 443）的默认服务器（default_server）。IP 证书需要证书颁发机构（CA）的支持，且并非所有 ACME "
+"提供商都提供此类证书。"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:132
 msgid ""
-"This site uses wildcard server name (_) which typically indicates an IP-"
-"based certificate. IP certificates require Certificate Authority (CA) "
+"This site uses wildcard server name (_) which typically indicates an "
+"IP-based certificate. IP certificates require Certificate Authority (CA) "
 "support and may not be available with all ACME providers."
-msgstr ""
-"此站点使用通配符服务器名称（_），通常表示基于IP的证书。IP证书需要证书颁发机构"
-"（CA）的支持，并且可能并非所有ACME提供商都提供。"
+msgstr "此站点使用通配符服务器名称（_），通常表示基于IP的证书。IP证书需要证书颁发机构（CA）的支持，并且可能并非所有ACME提供商都提供。"
 
 #: src/views/backup/components/BackupCreator.vue:141
 msgid ""
@@ -5475,8 +4892,7 @@ msgid ""
 msgstr "这将恢复配置文件和数据库。恢复完成后，Nginx UI 将重新启动。"
 
 #: src/views/environments/list/BatchUpgrader.vue:186
-msgid ""
-"This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
+msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr "将 %{nodeNames} 上的 Nginx UI 升级或重新安装到 %{version} 版本。"
 
 #: src/views/preference/tabs/AuthSettings.vue:92
@@ -5497,8 +4913,7 @@ msgstr "提示"
 msgid ""
 "Tips: You can increase the concurrency processing capacity by increasing "
 "worker_processes or worker_connections"
-msgstr ""
-"提示您可以通过增加 worker_processes 或 worker_connections 来提高并发处理能力"
+msgstr "提示您可以通过增加 worker_processes 或 worker_connections 来提高并发处理能力"
 
 #: src/views/notification/notificationColumns.tsx:58
 msgid "Title"
@@ -5512,28 +4927,25 @@ msgstr "要确认撤销，请在下面的字段中输入 \"撤销\"："
 msgid ""
 "To enable it, you need to install the Google or Microsoft Authenticator app "
 "on your mobile phone."
-msgstr ""
-"要启用该功能，您需要在手机上安装 Google 或 Microsoft Authenticator 应用程序。"
+msgstr "要启用该功能，您需要在手机上安装 Google 或 Microsoft Authenticator 应用程序。"
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:94
 msgid ""
 "To ensure security, Webauthn configuration cannot be added through the UI. "
 "Please manually configure the following in the app.ini configuration file "
 "and restart Nginx UI."
-msgstr ""
-"为确保安全，Webauthn 配置不能通过用户界面添加。请在 app.ini 配置文件中手动配"
-"置以下内容，并重启 Nginx UI 服务。"
+msgstr "为确保安全，Webauthn 配置不能通过用户界面添加。请在 app.ini 配置文件中手动配置以下内容，并重启 Nginx UI 服务。"
 
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:34
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:15
 msgid ""
 "To make sure the certification auto-renewal can work normally, we need to "
-"add a location which can proxy the request from authority to backend, and we "
-"need to save this file and reload the Nginx. Are you sure you want to "
+"add a location which can proxy the request from authority to backend, and "
+"we need to save this file and reload the Nginx. Are you sure you want to "
 "continue?"
 msgstr ""
-"为了确保认证自动更新能够正常工作，我们需要添加一个能够代理从权威机构到后端的"
-"请求的 Location，并且我们需要保存这个文件并重新加载Nginx。你确定要继续吗？"
+"为了确保认证自动更新能够正常工作，我们需要添加一个能够代理从权威机构到后端的请求的 "
+"Location，并且我们需要保存这个文件并重新加载Nginx。你确定要继续吗？"
 
 #: src/views/preference/tabs/OpenAISettings.vue:36
 msgid ""
@@ -5541,8 +4953,8 @@ msgid ""
 "provide an OpenAI-compatible API endpoint, so just set the baseUrl to your "
 "local API."
 msgstr ""
-"要使用本地大型模型，可使用 ollama、vllm 或 lmdeploy 进行部署。它们提供了与 "
-"OpenAI 兼容的 API 端点，因此只需将 baseUrl 设置为本地 API 即可。"
+"要使用本地大型模型，可使用 ollama、vllm 或 lmdeploy 进行部署。它们提供了与 OpenAI 兼容的 API 端点，因此只需将 "
+"baseUrl 设置为本地 API 即可。"
 
 #: src/views/dashboard/NginxDashBoard.vue:57
 msgid "Toggle failed"
@@ -5623,7 +5035,7 @@ msgstr "需要两步验证"
 #: src/views/dashboard/components/ModulesTable.vue:83
 #: src/views/nginx_log/NginxLogList.vue:28
 #: src/views/notification/notificationColumns.tsx:8
-#: src/views/preference/components/ExternalNotify/columns.tsx:18
+#: src/views/preference/components/ExternalNotify/columns.tsx:19
 msgid "Type"
 msgstr "类型"
 
@@ -5826,9 +5238,7 @@ msgid ""
 "Warning: Restore operation will overwrite current configurations. Make sure "
 "you have a valid backup file and security token, and carefully select what "
 "to restore."
-msgstr ""
-"警告：还原操作将覆盖当前配置。请确保您有有效的备份文件和安全令牌，并仔细选择"
-"要还原的内容。"
+msgstr "警告：还原操作将覆盖当前配置。请确保您有有效的备份文件和安全令牌，并仔细选择要还原的内容。"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:103
 msgid ""
@@ -5836,8 +5246,8 @@ msgid ""
 "Encrypt cannot issue certificates for private IPs. Use a public IP address "
 "or consider using a private CA."
 msgstr ""
-"警告：这似乎是一个私有 IP 地址。像 Let's Encrypt 这样的公共 CA 无法为私有 IP "
-"颁发证书。请使用公共 IP 地址或考虑使用私有CA。"
+"警告：这似乎是一个私有 IP 地址。像 Let's Encrypt 这样的公共 CA 无法为私有 IP 颁发证书。请使用公共 IP "
+"地址或考虑使用私有CA。"
 
 #: src/views/certificate/DNSCredential.vue:96
 msgid ""
@@ -5847,10 +5257,9 @@ msgstr "我们将在您域名的 DNS 记录中添加一个或多个 TXT 记录�
 
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:141
 msgid ""
-"We will remove the HTTPChallenge configuration from this file and reload the "
-"Nginx. Are you sure you want to continue?"
-msgstr ""
-"我们将从这个文件中删除HTTPChallenge的配置，并重新加载Nginx。你确定要继续吗？"
+"We will remove the HTTPChallenge configuration from this file and reload "
+"the Nginx. Are you sure you want to continue?"
+msgstr "我们将从这个文件中删除HTTPChallenge的配置，并重新加载Nginx。你确定要继续吗？"
 
 #: src/views/preference/tabs/AuthSettings.vue:65
 msgid "Webauthn"
@@ -5863,6 +5272,10 @@ msgstr "WebAuthn 未配置"
 #: src/views/certificate/components/RemoveCert.vue:55
 msgid "WebSocket connection error"
 msgstr "WebSocket 连接错误"
+
+#: src/views/preference/components/ExternalNotify/wecom.ts:5
+msgid "WeCom"
+msgstr "企业微信"
 
 #: src/views/backup/AutoBackup/components/CronEditor.vue:29
 msgid "Wednesday"
@@ -5881,18 +5294,14 @@ msgid ""
 "When Enabled, Nginx UI will automatically re-register users upon startup. "
 "Generally, do not enable this unless you are in a dev environment and using "
 "Pebble as CA."
-msgstr ""
-"启用后，Nginx UI 将在启动时自动重新注册用户。一般情况下，除非在开发环境中使"
-"用 Pebble 作为 CA，否则不要启用此功能。"
+msgstr "启用后，Nginx UI 将在启动时自动重新注册用户。一般情况下，除非在开发环境中使用 Pebble 作为 CA，否则不要启用此功能。"
 
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:62
 #: src/views/stream/components/RightPanel/Basic.vue:57
 msgid ""
 "When you enable/disable, delete, or save this site, the nodes set in the "
 "Node Group and the nodes selected below will be synchronized."
-msgstr ""
-"启用/禁用、删除或保存此站点时，环境组中设置的节点和下面选择的节点将同步执行操"
-"作。"
+msgstr "启用/禁用、删除或保存此站点时，环境组中设置的节点和下面选择的节点将同步执行操作。"
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:140
 msgid ""
@@ -5960,10 +5369,9 @@ msgstr "是的"
 
 #: src/views/terminal/Terminal.vue:132
 msgid ""
-"You are accessing this terminal over an insecure HTTP connection on a non-"
-"localhost domain. This may expose sensitive information."
-msgstr ""
-"您正在通过非本地主机域上的不安全 HTTP 连接访问此终端。这可能会暴露敏感信息。"
+"You are accessing this terminal over an insecure HTTP connection on a "
+"non-localhost domain. This may expose sensitive information."
+msgstr "您正在通过非本地主机域上的不安全 HTTP 连接访问此终端。这可能会暴露敏感信息。"
 
 #: src/constants/errors/config.ts:8
 msgid "You are not allowed to delete a file outside of the nginx config path"
@@ -5992,8 +5400,7 @@ msgid ""
 msgstr "您尚未配置 Webauthn 的设置，因此无法添加 Passkey。"
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:81
-msgid ""
-"You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
+msgid "You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
 msgstr "您尚未启用双重身份验证。请启用双重身份验证以生成恢复代码。"
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:94
@@ -6014,6 +5421,424 @@ msgstr "您的旧代码将不再有效。"
 #: src/views/preference/components/AuthSettings/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "你的 Passkeys"
+
+#~ msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
+#~ msgstr "[Nginx UI] ACME 用户：%{name}，邮箱：%{email}，CA 目录：%{caDir}"
+
+#~ msgid "[Nginx UI] Backing up current certificate for later revocation"
+#~ msgstr "[Nginx UI] 正在备份当前证书以便后续撤销"
+
+#~ msgid "[Nginx UI] Certificate renewed successfully"
+#~ msgstr "[Nginx UI] 证书更新成功"
+
+#~ msgid "[Nginx UI] Certificate successfully revoked"
+#~ msgstr "[Nginx UI] 证书成功撤销"
+
+#~ msgid "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
+#~ msgstr "[Nginx UI] 证书已用于服务器，正在重新加载服务器 TLS 证书"
+
+#~ msgid "[Nginx UI] Creating client facilitates communication with the CA server"
+#~ msgstr "[Nginx UI] 正在创建客户端用于与 CA 服务器通信"
+
+#~ msgid "[Nginx UI] Environment variables cleaned"
+#~ msgstr "[Nginx UI] 环境变量已清理"
+
+#~ msgid "[Nginx UI] Finished"
+#~ msgstr "[Nginx UI] 已完成"
+
+#~ msgid "[Nginx UI] Issued certificate successfully"
+#~ msgstr "[Nginx UI] 证书申请成功"
+
+#~ msgid "[Nginx UI] Obtaining certificate"
+#~ msgstr "[Nginx UI] 正在获取证书"
+
+#~ msgid "[Nginx UI] Preparing for certificate revocation"
+#~ msgstr "[Nginx UI] 准备撤销证书"
+
+#~ msgid "[Nginx UI] Preparing lego configurations"
+#~ msgstr "[Nginx UI] 正在准备 lego 配置"
+
+#~ msgid "[Nginx UI] Reloading nginx"
+#~ msgstr "[Nginx UI] 重新加载 Nginx"
+
+#~ msgid "[Nginx UI] Revocation completed"
+#~ msgstr "[Nginx UI] 吊销完成"
+
+#~ msgid "[Nginx UI] Revoking certificate"
+#~ msgstr "[Nginx UI] 正在撤销证书"
+
+#~ msgid "[Nginx UI] Revoking old certificate"
+#~ msgstr "[Nginx UI] 正在撤销旧证书"
+
+#~ msgid "[Nginx UI] Setting DNS01 challenge provider"
+#~ msgstr "[Nginx UI] 正在设置 DNS01 验证提供程序"
+
+#~ msgid "[Nginx UI] Setting environment variables"
+#~ msgstr "[Nginx UI] 正在设置环境变量"
+
+#~ msgid "[Nginx UI] Setting HTTP01 challenge provider"
+#~ msgstr "[Nginx UI] 正在设置 HTTP01 验证提供程序"
+
+#~ msgid "[Nginx UI] Writing certificate private key to disk"
+#~ msgstr "[Nginx UI] 正在将证书私钥写入磁盘"
+
+#~ msgid "[Nginx UI] Writing certificate to disk"
+#~ msgstr "[Nginx UI] 正在将证书写入磁盘"
+
+#~ msgid "Auto Backup Completed"
+#~ msgstr "自动备份完成"
+
+#~ msgid "Auto Backup Configuration Error"
+#~ msgstr "自动备份配置错误"
+
+#~ msgid "Auto Backup Failed"
+#~ msgstr "自动备份失败"
+
+#~ msgid "Auto Backup Storage Failed"
+#~ msgstr "自动备份存储失败"
+
+#~ msgid "Backup task %{backup_name} completed successfully, file: %{file_path}"
+#~ msgstr "备份任务 %{backup_name} 已完成，文件：%{file_path}"
+
+#~ msgid "Backup task %{backup_name} failed during storage upload, error: %{error}"
+#~ msgstr "备份任务 %{backup_name} 在存储上传过程中失败，错误：%{error}"
+
+#~ msgid "Backup task %{backup_name} failed to execute, error: %{error}"
+#~ msgstr "备份任务 %{backup_name} 执行失败，错误：%{error}"
+
+#~ msgid "Certificate %{name} has expired"
+#~ msgstr "证书 %{name} 已过期"
+
+#~ msgid "Certificate %{name} will expire in %{days} days"
+#~ msgstr "证书 %{name} 将在 %{days} 天后过期"
+
+#~ msgid "Certificate %{name} will expire in 1 day"
+#~ msgstr "证书 %{name} 将在1天后过期"
+
+#~ msgid "Certificate Expiration Notice"
+#~ msgstr "证书到期通知"
+
+#~ msgid "Certificate Expired"
+#~ msgstr "证书已过期"
+
+#~ msgid "Certificate Expiring Soon"
+#~ msgstr "证书即将过期"
+
+#~ msgid "Certificate not found: %{error}"
+#~ msgstr "未找到证书：%{error}"
+
+#~ msgid "Certificate revoked successfully"
+#~ msgstr "证书撤销成功"
+
+#~ msgid ""
+#~ "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
+#~ "Docker Image, please make sure the docker socket is mounted like this: `-v "
+#~ "/var/run/docker.sock:/var/run/docker.sock`. Nginx UI official image uses "
+#~ "/var/run/docker.sock to communicate with the host Docker Engine via Docker "
+#~ "Client API. This feature is used to control Nginx in another container and "
+#~ "perform container replacement rather than binary replacement during OTA "
+#~ "upgrades of Nginx UI to ensure container dependencies are also upgraded. If "
+#~ "you don't need this feature, please add the environment variable "
+#~ "NGINX_UI_IGNORE_DOCKER_SOCKET=true to the container."
+#~ msgstr ""
+#~ "检查 /var/run/docker.sock 是否存在。如果您使用的是 Nginx UI 官方 Docker 镜像，请确保以这种方式挂载 "
+#~ "Docker 套接字：`-v /var/run/docker.sock:/var/run/docker.sock`。Nginx UI 官方镜像使用 "
+#~ "/var/run/docker.sock 通过 Docker Client API 与主机 Docker Engine "
+#~ "通信。此功能用于在另一个容器中控制 Nginx，并在 Nginx UI 的 OTA "
+#~ "升级期间执行容器替换而非二进制替换，以确保容器依赖项也得到升级。如果您不需要此功能，请向容器添加环境变量 "
+#~ "NGINX_UI_IGNORE_DOCKER_SOCKET=true。"
+
+#~ msgid ""
+#~ "Check if the nginx access log path exists. By default, this path is "
+#~ "obtained from 'nginx -V'. If it cannot be obtained or the obtained path "
+#~ "does not point to a valid, existing file, an error will be reported. In "
+#~ "this case, you need to modify the configuration file to specify the access "
+#~ "log path.Refer to the docs for more details: "
+#~ "https://nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
+#~ msgstr ""
+#~ "检查 nginx 访问日志路径是否存在。默认情况下，此路径从 'nginx -V' "
+#~ "获取。如果无法获取或获取的路径未指向有效的现有文件，将报告错误。在这种情况下，您需要修改配置文件以指定访问日志路径。更多详情请参阅文档：https://"
+#~ "nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
+
+#~ msgid "Check if the nginx configuration directory exists"
+#~ msgstr "检查 Nginx 配置目录是否存在"
+
+#~ msgid "Check if the nginx configuration entry file exists"
+#~ msgstr "检查 nginx 配置入口文件是否存在"
+
+#~ msgid ""
+#~ "Check if the nginx error log path exists. By default, this path is obtained "
+#~ "from 'nginx -V'. If it cannot be obtained or the obtained path does not "
+#~ "point to a valid, existing file, an error will be reported. In this case, "
+#~ "you need to modify the configuration file to specify the error log path. "
+#~ "Refer to the docs for more details: "
+#~ "https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
+#~ msgstr ""
+#~ "检查 nginx 错误日志路径是否存在。默认情况下，该路径从 'nginx -V' "
+#~ "获取。如果无法获取或获取的路径未指向有效的现有文件，将报错。此时需要修改配置文件以指定错误日志路径。详情请参阅文档：https://nginxui."
+#~ "com/zh_CN/guide/config-nginx.html#errorlogpath"
+
+#~ msgid ""
+#~ "Check if the nginx PID path exists. By default, this path is obtained from "
+#~ "'nginx -V'. If it cannot be obtained, an error will be reported. In this "
+#~ "case, you need to modify the configuration file to specify the Nginx PID "
+#~ "path.Refer to the docs for more details: "
+#~ "https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
+#~ msgstr ""
+#~ "检查 Nginx PID 路径是否存在。默认情况下，该路径是从 'nginx -V' "
+#~ "获取的。如果无法获取，将会报错。在这种情况下，您需要修改配置文件以指定 Nginx PID "
+#~ "路径。更多详情请参阅文档：https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
+
+#~ msgid "Check if the nginx sbin path exists"
+#~ msgstr "检查 nginx sbin 路径是否存在"
+
+#~ msgid "Check if the nginx.conf includes the conf.d directory"
+#~ msgstr "检查 nginx.conf 是否包含 conf.d 目录"
+
+#~ msgid "Check if the nginx.conf includes the sites-enabled directory"
+#~ msgstr "检查 nginx.conf 是否包含 sites-enabled 目录"
+
+#~ msgid "Check if the nginx.conf includes the streams-enabled directory"
+#~ msgstr "检查 nginx.conf 是否包含 streams-enabled 的目录"
+
+#~ msgid ""
+#~ "Check if the sites-available and sites-enabled directories are under the "
+#~ "nginx configuration directory"
+#~ msgstr "检查 sites-available 和 sites-enabled 目录是否位于 Nginx 配置目录下"
+
+#~ msgid ""
+#~ "Check if the streams-available and streams-enabled directories are under "
+#~ "the nginx configuration directory"
+#~ msgstr "检查 Nginx 配置目录下是否有 streams-available 和 streams-enabled 目录"
+
+#~ msgid "Delete %{path} on %{env_name} failed"
+#~ msgstr "删除 %{env_name} 上的 %{path} 失败"
+
+#~ msgid "Delete %{path} on %{env_name} successfully"
+#~ msgstr "已在 %{env_name} 上成功删除 %{path}"
+
+#~ msgid "Delete Remote Config Error"
+#~ msgstr "删除远程配置错误"
+
+#~ msgid "Delete Remote Config Success"
+#~ msgstr "远程配置删除成功"
+
+#~ msgid "Delete Remote Stream Error"
+#~ msgstr "删除远程 Stream 错误"
+
+#~ msgid "Delete Remote Stream Success"
+#~ msgstr "删除远程 Stream 成功"
+
+#~ msgid "Delete site %{name} from %{node} failed"
+#~ msgstr "部署 %{name} 到 %{node} 失败"
+
+#~ msgid "Delete site %{name} from %{node} successfully"
+#~ msgstr "成功从 %{node} 中删除站点 %{name}"
+
+#~ msgid "Delete stream %{name} from %{node} failed"
+#~ msgstr "从 %{node} 删除 Stream %{name} 失败"
+
+#~ msgid "Delete stream %{name} from %{node} successfully"
+#~ msgstr "已成功从 %{node} 删除 Stream %{name}"
+
+#~ msgid "Disable Remote Site Maintenance Error"
+#~ msgstr "禁用远程站点维护错误"
+
+#~ msgid "Disable Remote Site Maintenance Success"
+#~ msgstr "远程站点维护已成功禁用"
+
+#~ msgid "Disable Remote Stream Error"
+#~ msgstr "禁用远程 Stream 错误"
+
+#~ msgid "Disable Remote Stream Success"
+#~ msgstr "禁用远程 Stream成功"
+
+#~ msgid "Disable site %{name} from %{node} failed"
+#~ msgstr "在 %{node} 上禁用 %{name} 成功"
+
+#~ msgid "Disable site %{name} from %{node} successfully"
+#~ msgstr "在 %{node} 上禁用 %{name} 成功"
+
+#~ msgid "Disable site %{name} maintenance on %{node} failed"
+#~ msgstr "停用站点 %{name} 维护 %{node} 失败"
+
+#~ msgid "Disable site %{name} maintenance on %{node} successfully"
+#~ msgstr "成功停用站点 %{name} 上 %{node} 的维护功能"
+
+#~ msgid "Disable stream %{name} from %{node} failed"
+#~ msgstr "在 %{node} 中启用 %{name} 失败"
+
+#~ msgid "Disable stream %{name} from %{node} successfully"
+#~ msgstr "在 %{node} 上禁用 %{name} 成功"
+
+#~ msgid "Docker socket exists"
+#~ msgstr "Docker Socket 存在"
+
+#~ msgid "Enable Remote Site Maintenance Error"
+#~ msgstr "在 %{node} 上启用 %{site} 失败"
+
+#~ msgid "Enable Remote Site Maintenance Success"
+#~ msgstr "成功启用远程站点维护"
+
+#~ msgid "Enable Remote Stream Error"
+#~ msgstr "启用远程 Steam 错误"
+
+#~ msgid "Enable Remote Stream Success"
+#~ msgstr "启用远程 Stream 成功"
+
+#~ msgid "Enable site %{name} maintenance on %{node} failed"
+#~ msgstr "在 %{node} 中为 %{name} 启用维护模式失败"
+
+#~ msgid "Enable site %{name} maintenance on %{node} successfully"
+#~ msgstr "在 %{node} 上成功启用站点 %{name} 维护模式"
+
+#~ msgid "Enable site %{name} on %{node} failed"
+#~ msgstr "在 %{node} 中启用 %{name} 失败"
+
+#~ msgid "Enable site %{name} on %{node} successfully"
+#~ msgstr "在 %{node} 上启用 %{name} 成功"
+
+#~ msgid "Enable stream %{name} on %{node} failed"
+#~ msgstr "在 %{node} 中启用 %{name} 失败"
+
+#~ msgid "Enable stream %{name} on %{node} successfully"
+#~ msgstr "在 %{node} 上启用 %{name} 成功"
+
+#~ msgid "External Notification Test"
+#~ msgstr "外部通知测试"
+
+#~ msgid "Failed to delete certificate from database: %{error}"
+#~ msgstr "从数据库中删除证书失败：%{error}"
+
+#~ msgid "Failed to revoke certificate: %{error}"
+#~ msgstr "撤销证书失败：%{error}"
+
+#~ msgid ""
+#~ "Log file %{log_path} is not a regular file. If you are using nginx-ui in "
+#~ "docker container, please refer to "
+#~ "https://nginxui.com/zh_CN/guide/config-nginx-log.html for more information."
+#~ msgstr ""
+#~ "日志文件 %{log_path} 不是常规文件。如果在 Docker 容器中使用 Nginx UI，请参阅 "
+#~ "https://nginxui.com/zh_CN/guide/config-nginx-log.html 获取更多信息。"
+
+#~ msgid "Nginx access log path exists"
+#~ msgstr "存在 Nginx 访问日志路径"
+
+#~ msgid "Nginx configuration directory exists"
+#~ msgstr "Nginx 配置目录存在"
+
+#~ msgid "Nginx configuration entry file exists"
+#~ msgstr "存在 Nginx 配置入口文件"
+
+#~ msgid "Nginx error log path exists"
+#~ msgstr "存在 Nginx 错误日志路径"
+
+#~ msgid "Nginx PID path exists"
+#~ msgstr "Nginx PID 路径存在"
+
+#~ msgid "Nginx sbin path exists"
+#~ msgstr "Nginx Sbin 路径存在"
+
+#~ msgid "Nginx.conf includes conf.d directory"
+#~ msgstr "Nginx.conf 包括 conf.d 目录"
+
+#~ msgid "Nginx.conf includes sites-enabled directory"
+#~ msgstr "Nginx.conf 包含 sites-enabled 目录"
+
+#~ msgid "Nginx.conf includes streams-enabled directory"
+#~ msgstr "检查 nginx.conf 是否包含 streams-enabled 的目录"
+
+#~ msgid "Reload Nginx on %{node} failed, response: %{resp}"
+#~ msgstr "在 %{node} 上重载 Nginx 失败，响应：%{resp}"
+
+#~ msgid "Reload Nginx on %{node} successfully"
+#~ msgstr "在 %{node} 上重载 Nginx 成功"
+
+#~ msgid "Reload Remote Nginx Error"
+#~ msgstr "重载远程 Nginx 错误"
+
+#~ msgid "Reload Remote Nginx Success"
+#~ msgstr "重载远程 Nginx 成功"
+
+#~ msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed"
+#~ msgstr "成功将 %{env_name} 上的 %{orig_path} 重命名为 %{new_path}"
+
+#~ msgid "Rename %{orig_path} to %{new_path} on %{env_name} successfully"
+#~ msgstr "成功将 %{env_name} 上的 %{orig_path} 重命名为 %{new_path}"
+
+#~ msgid "Rename Remote Stream Error"
+#~ msgstr "重命名远程 Stream 错误"
+
+#~ msgid "Rename Remote Stream Success"
+#~ msgstr "重命名远程 Stream成功"
+
+#~ msgid "Rename site %{name} to %{new_name} on %{node} failed"
+#~ msgstr "在 %{node} 上将站点 %{name} 重命名为 %{new_name} 成功"
+
+#~ msgid "Rename site %{name} to %{new_name} on %{node} successfully"
+#~ msgstr "在 %{node} 上将站点 %{name} 重命名为 %{new_name} 成功"
+
+#~ msgid "Rename stream %{name} to %{new_name} on %{node} failed"
+#~ msgstr "在 %{node} 上将站点 %{name} 重命名为 %{new_name} 成功"
+
+#~ msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
+#~ msgstr "在 %{node} 上将站点 %{name} 重命名为 %{new_name} 成功"
+
+#~ msgid "Restart Nginx on %{node} failed, response: %{resp}"
+#~ msgstr "在 %{node} 上重启 Nginx 失败，响应：%{resp}"
+
+#~ msgid "Restart Nginx on %{node} successfully"
+#~ msgstr "在 %{node} 上重启 Nginx 成功"
+
+#~ msgid "Restart Remote Nginx Error"
+#~ msgstr "重启远程 Nginx 错误"
+
+#~ msgid "Restart Remote Nginx Success"
+#~ msgstr "重启远程 Nginx 成功"
+
+#~ msgid "Save Remote Stream Error"
+#~ msgstr "保存远程 Stream 错误"
+
+#~ msgid "Save Remote Stream Success"
+#~ msgstr "保存远程 Stream 成功"
+
+#~ msgid "Save site %{name} to %{node} failed"
+#~ msgstr "成功将站点 %{name} 保存到 %{node} 中"
+
+#~ msgid "Save site %{name} to %{node} successfully"
+#~ msgstr "成功将站点 %{name} 保存到 %{node} 中"
+
+#~ msgid "Save stream %{name} to %{node} failed"
+#~ msgstr "部署 %{name} 到 %{node} 失败"
+
+#~ msgid "Save stream %{name} to %{node} successfully"
+#~ msgstr "成功将站点 %{name} 保存到 %{node} 中"
+
+#~ msgid "Sites directory exists"
+#~ msgstr "网站目录存在"
+
+#~ msgid ""
+#~ "Storage configuration validation failed for backup task %{backup_name}, "
+#~ "error: %{error}"
+#~ msgstr "备份任务 %{backup_name} 的存储配置验证失败，错误：%{error}"
+
+#~ msgid "Streams directory exists"
+#~ msgstr "Streams 目录存在"
+
+#~ msgid "Sync Certificate %{cert_name} to %{env_name} failed"
+#~ msgstr "证书 %{cert_name} 已成功同步到 %{env_name}"
+
+#~ msgid "Sync Certificate %{cert_name} to %{env_name} successfully"
+#~ msgstr "证书 %{cert_name} 已成功同步到 %{env_name}"
+
+#~ msgid "Sync config %{config_name} to %{env_name} failed"
+#~ msgstr "配置 %{config_name} 同步到 %{env_name} 失败"
+
+#~ msgid "Sync config %{config_name} to %{env_name} successfully"
+#~ msgstr "配置 %{config_name} 同步到 %{env_name} 成功"
+
+#~ msgid "This is a test message sent at %{timestamp} from Nginx UI."
+#~ msgstr "这是一条测试消息，于 %{timestamp} 从 Nginx UI 发送。"
 
 #~ msgid "If left blank, the default CA Dir will be used."
 #~ msgstr "如果留空，则使用默认 CA Dir。"
@@ -6102,12 +5927,11 @@ msgstr "你的 Passkeys"
 
 #~ msgid ""
 #~ "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
-#~ "Docker Image, please make sure the docker socket is mounted like this: `-"
-#~ "v /var/run/docker.sock:/var/run/docker.sock`."
+#~ "Docker Image, please make sure the docker socket is mounted like this: `-v "
+#~ "/var/run/docker.sock:/var/run/docker.sock`."
 #~ msgstr ""
-#~ "检查 /var/run/docker.sock 是否存在。如果你使用的是 Nginx UI 官方 Docker "
-#~ "Image，请确保 Docker Socket 像这样挂载：`-v /var/run/docker.sock:/var/run/"
-#~ "docker.sock`."
+#~ "检查 /var/run/docker.sock 是否存在。如果你使用的是 Nginx UI 官方 Docker Image，请确保 Docker "
+#~ "Socket 像这样挂载：`-v /var/run/docker.sock:/var/run/docker.sock`."
 
 #~ msgid "Check if the nginx access log path exists"
 #~ msgstr "检查 Nginx 访问日志路径是否存在"
@@ -6133,9 +5957,7 @@ msgstr "你的 Passkeys"
 #~ msgid ""
 #~ "If logs are not indexed, please check if the log file is under the "
 #~ "directory in Nginx.LogDirWhiteList."
-#~ msgstr ""
-#~ "如果日志未被索引，请检查日志文件是否位于 Nginx.LogDirWhiteList 中的目录"
-#~ "下。"
+#~ msgstr "如果日志未被索引，请检查日志文件是否位于 Nginx.LogDirWhiteList 中的目录下。"
 
 #~ msgid "Indexed"
 #~ msgstr "已索引"
@@ -6162,11 +5984,9 @@ msgstr "你的 Passkeys"
 #~ msgstr "保存失败，在配置中检测到语法错误。"
 
 #~ msgid ""
-#~ "When you enable/disable, delete, or save this stream, the nodes set in "
-#~ "the Node Group and the nodes selected below will be synchronized."
-#~ msgstr ""
-#~ "启用/禁用、删除或保存此站点时，环境组中设置的节点和下面选择的节点将同步执"
-#~ "行操作。"
+#~ "When you enable/disable, delete, or save this stream, the nodes set in the "
+#~ "Node Group and the nodes selected below will be synchronized."
+#~ msgstr "启用/禁用、删除或保存此站点时，环境组中设置的节点和下面选择的节点将同步执行操作。"
 
 #~ msgid "KB"
 #~ msgstr "KB"
@@ -6250,16 +6070,11 @@ msgstr "你的 Passkeys"
 #~ msgid "Please upgrade the remote Nginx UI to the latest version"
 #~ msgstr "请将远程 Nginx UI 升级到最新版本"
 
-#~ msgid ""
-#~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: "
-#~ "%{resp}"
-#~ msgstr ""
-#~ "将 %{env_name} 上的 %{orig_path} 重命名为 %{new_path} 失败，响应：%{resp}"
+#~ msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: %{resp}"
+#~ msgstr "将 %{env_name} 上的 %{orig_path} 重命名为 %{new_path} 失败，响应：%{resp}"
 
-#~ msgid ""
-#~ "Rename Site %{site} to %{new_site} on %{node} error, response: %{resp}"
-#~ msgstr ""
-#~ "在 %{node} 上将站点 %{site} 重命名为 %{new_site} 失败，响应：%{resp}"
+#~ msgid "Rename Site %{site} to %{new_site} on %{node} error, response: %{resp}"
+#~ msgstr "在 %{node} 上将站点 %{site} 重命名为 %{new_site} 失败，响应：%{resp}"
 
 #~ msgid "Save site %{site} to %{node} error, response: %{resp}"
 #~ msgstr "保存站点 %{site} 到 %{node} 错误，响应: %{resp}"
@@ -6267,27 +6082,23 @@ msgstr "你的 Passkeys"
 #~ msgid ""
 #~ "Sync Certificate %{cert_name} to %{env_name} failed, please upgrade the "
 #~ "remote Nginx UI to the latest version"
-#~ msgstr ""
-#~ "同步证书 %{cert_name} 到 %{env_name} 失败，请先将远程的 Nginx UI 升级到最"
-#~ "新版本"
+#~ msgstr "同步证书 %{cert_name} 到 %{env_name} 失败，请先将远程的 Nginx UI 升级到最新版本"
 
-#~ msgid ""
-#~ "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
+#~ msgid "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
 #~ msgstr "同步证书 %{cert_name} 到 %{env_name} 失败，响应：%{resp}"
 
 #~ msgid "Sync config %{config_name} to %{env_name} failed, response: %{resp}"
 #~ msgstr "同步配置 %{config_name} 到 %{env_name} 失败，响应：%{resp}"
 
 #~ msgid ""
-#~ "If you lose your mobile phone, you can use the recovery code to reset "
-#~ "your 2FA."
+#~ "If you lose your mobile phone, you can use the recovery code to reset your "
+#~ "2FA."
 #~ msgstr "如果丢失了手机，可以使用恢复代码重置二步验证。"
 
 #~ msgid "Recovery Code:"
 #~ msgstr "恢复代码："
 
-#~ msgid ""
-#~ "The recovery code is only displayed once, please save it in a safe place."
+#~ msgid "The recovery code is only displayed once, please save it in a safe place."
 #~ msgstr "恢复密码只会显示一次，请妥善保存。"
 
 #~ msgid "Can't scan? Use text key binding"
@@ -6302,9 +6113,7 @@ msgstr "你的 Passkeys"
 #~ msgid ""
 #~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, please upgrade "
 #~ "the remote Nginx UI to the latest version"
-#~ msgstr ""
-#~ "将 %{env_name} 上的 %{orig_path} 重命名为 %{new_path} 失败，请将远程 "
-#~ "Nginx UI 升级到最新版本"
+#~ msgstr "将 %{env_name} 上的 %{orig_path} 重命名为 %{new_path} 失败，请将远程 Nginx UI 升级到最新版本"
 
 #~ msgid "Server Name"
 #~ msgstr "服务器名称"
@@ -6378,9 +6187,8 @@ msgstr "你的 Passkeys"
 #~ "Once the verification is complete, the records will be removed.\n"
 #~ "Please note that the unit of time configurations below are all in seconds."
 #~ msgstr ""
-#~ "请填写您的DNS提供商提供的API认证凭证。我们将在你的域名的DNS记录中添加一个"
-#~ "或多个TXT记录，以进行所有权验证。一旦验证完成，这些记录将被删除。请注意，"
-#~ "下面的时间配置都是以秒为单位。"
+#~ "请填写您的DNS提供商提供的API认证凭证。我们将在你的域名的DNS记录中添加一个或多个TXT记录，以进行所有权验证。一旦验证完成，这些记录将被删除。请"
+#~ "注意，下面的时间配置都是以秒为单位。"
 
 #~ msgid "Delete ID: %{id}"
 #~ msgstr "删除 ID: %{id}"
@@ -6401,11 +6209,11 @@ msgstr "你的 Passkeys"
 #~ msgstr "操作同步"
 
 #~ msgid ""
-#~ "Such as Reload and Configs, regex can configure as `/api/nginx/reload|/"
-#~ "api/nginx/test|/api/config/.+`, please see system api"
+#~ "Such as Reload and Configs, regex can configure as "
+#~ "`/api/nginx/reload|/api/nginx/test|/api/config/.+`, please see system api"
 #~ msgstr ""
-#~ "`重载`和`配置管理`的操作同步正则可以配置为`/api/nginx/reload|/api/nginx/"
-#~ "test|/api/config/.+`，详细请查看系统API"
+#~ "`重载`和`配置管理`的操作同步正则可以配置为`/api/nginx/reload|/api/nginx/test|/api/config/.+`"
+#~ "，详细请查看系统API"
 
 #~ msgid "SyncApiRegex"
 #~ msgstr "Api正则表达式"
@@ -6423,11 +6231,9 @@ msgstr "你的 Passkeys"
 #~ msgstr "你想启用自动更新证书吗？"
 
 #~ msgid ""
-#~ "We need to add the HTTPChallenge configuration to this file and reload "
-#~ "the Nginx. Are you sure you want to continue?"
-#~ msgstr ""
-#~ "我们需要将 HTTPChallenge 的配置添加到这个文件中，并重新加载Nginx。你确定要"
-#~ "继续吗？"
+#~ "We need to add the HTTPChallenge configuration to this file and reload the "
+#~ "Nginx. Are you sure you want to continue?"
+#~ msgstr "我们需要将 HTTPChallenge 的配置添加到这个文件中，并重新加载Nginx。你确定要继续吗？"
 
 #~ msgid "Chat with ChatGPT"
 #~ msgstr "与ChatGPT聊天"
@@ -6480,8 +6286,8 @@ msgstr "你的 Passkeys"
 #~ "you do not have a certificate before, please click \"Getting Certificate "
 #~ "from Let's Encrypt\" first."
 #~ msgstr ""
-#~ "系统将会每小时检测一次该域名证书，若距离上次签发已超过1个月，则将自动续"
-#~ "签。<br/>如果您之前没有证书，请先点击 \"从 Let's Encrypt 获取证书\"。"
+#~ "系统将会每小时检测一次该域名证书，若距离上次签发已超过1个月，则将自动续签。<br/>如果您之前没有证书，请先点击 \"从 Let's Encrypt "
+#~ "获取证书\"。"
 
 #~ msgid "Do you want to change the template to support the TLS?"
 #~ msgstr "你想要改变模板以支持 TLS 吗？"
@@ -6496,15 +6302,12 @@ msgstr "你的 Passkeys"
 #~ "The following values will only take effect if you have the corresponding "
 #~ "fields in your configuration file. The configuration filename cannot be "
 #~ "changed after it has been created."
-#~ msgstr ""
-#~ "只有在您的配置文件中有相应字段时，下列的配置才能生效。配置文件名称创建后不"
-#~ "可修改。"
+#~ msgstr "只有在您的配置文件中有相应字段时，下列的配置才能生效。配置文件名称创建后不可修改。"
 
 #~ msgid "This operation will lose the custom configuration."
 #~ msgstr "该操作将会丢失自定义配置。"
 
-#~ msgid ""
-#~ "Add site here first, then you can configure TLS on the domain edit page."
+#~ msgid "Add site here first, then you can configure TLS on the domain edit page."
 #~ msgstr "在这里添加站点，完成后可进入编辑页面配置 TLS。"
 
 #~ msgid "Server Status"

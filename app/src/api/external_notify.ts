@@ -5,6 +5,7 @@ export interface ExternalNotify extends ModelBase {
   type: string
   language: string
   config: Record<string, string>
+  enabled: boolean
 }
 
 export interface TestMessageRequest {

@@ -2,6 +2,7 @@ import type { StdTableColumn } from '@uozi-admin/curd'
 import type { ExternalNotify } from '@/api/external_notify'
 import { datetimeRender, maskRender } from '@uozi-admin/curd'
 import gettext from '@/gettext'
+import EnabledSwitch from './EnabledSwitch.vue'
 import ExternalNotifyEditor from './ExternalNotifyEditor.vue'
 import configMap from './index'
 
@@ -40,6 +41,17 @@ const columns: StdTableColumn[] = [
         required: true,
       },
     },
+  },
+  {
+    dataIndex: 'enabled',
+    title: () => $gettext('Enabled'),
+    customRender: ({ record }: { record: ExternalNotify }) => (
+      <EnabledSwitch v-model:enabled={record.enabled} record={record} />
+    ),
+    edit: {
+      type: 'switch',
+    },
+    width: 100,
   },
   {
     dataIndex: 'config',

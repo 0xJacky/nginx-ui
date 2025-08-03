@@ -11,6 +11,11 @@ async function handleTestSingleMessage(record: ExternalNotify) {
   if (!record.id)
     return
 
+  if (!record.enabled) {
+    message.warning($gettext('This notification is disabled'))
+    return
+  }
+
   loadingStates.value[record.id] = true
   try {
     // Use new API with direct parameters instead of ID

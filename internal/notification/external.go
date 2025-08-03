@@ -39,7 +39,7 @@ type ExternalMessage struct {
 
 func (n *ExternalMessage) Send() {
 	en := query.ExternalNotify
-	externalNotifies, err := en.Find()
+	externalNotifies, err := en.Where(en.Enabled.Is(true)).Find()
 	if err != nil {
 		logger.Error(err)
 		return

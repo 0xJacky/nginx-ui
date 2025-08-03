@@ -35,6 +35,7 @@ func newExternalNotify(db *gorm.DB, opts ...gen.DOOption) externalNotify {
 	_externalNotify.Type = field.NewString(tableName, "type")
 	_externalNotify.Language = field.NewString(tableName, "language")
 	_externalNotify.Config = field.NewField(tableName, "config")
+	_externalNotify.Enabled = field.NewBool(tableName, "enabled")
 
 	_externalNotify.fillFieldMap()
 
@@ -52,6 +53,7 @@ type externalNotify struct {
 	Type      field.String
 	Language  field.String
 	Config    field.Field
+	Enabled   field.Bool
 
 	fieldMap map[string]field.Expr
 }
@@ -75,6 +77,7 @@ func (e *externalNotify) updateTableName(table string) *externalNotify {
 	e.Type = field.NewString(table, "type")
 	e.Language = field.NewString(table, "language")
 	e.Config = field.NewField(table, "config")
+	e.Enabled = field.NewBool(table, "enabled")
 
 	e.fillFieldMap()
 
@@ -91,7 +94,7 @@ func (e *externalNotify) GetFieldByName(fieldName string) (field.OrderExpr, bool
 }
 
 func (e *externalNotify) fillFieldMap() {
-	e.fieldMap = make(map[string]field.Expr, 7)
+	e.fieldMap = make(map[string]field.Expr, 8)
 	e.fieldMap["id"] = e.ID
 	e.fieldMap["created_at"] = e.CreatedAt
 	e.fieldMap["updated_at"] = e.UpdatedAt
@@ -99,6 +102,7 @@ func (e *externalNotify) fillFieldMap() {
 	e.fieldMap["type"] = e.Type
 	e.fieldMap["language"] = e.Language
 	e.fieldMap["config"] = e.Config
+	e.fieldMap["enabled"] = e.Enabled
 }
 
 func (e externalNotify) clone(db *gorm.DB) externalNotify {

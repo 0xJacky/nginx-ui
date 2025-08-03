@@ -17,7 +17,9 @@ import (
 // Directories to exclude
 var excludeDirs = []string{
 	".devcontainer", ".github", ".idea", ".pnpm-store",
-	".vscode", "app", "query", "tmp", "cmd",
+	".vscode", "app", "query", "tmp", "cmd", ".git", ".go", ".claude",
+	".cunzhi-memory", ".cursor", ".github", ".idea",
+	".vscode", ".pnpm-store",
 }
 
 // Regular expression to match import statements for translation package

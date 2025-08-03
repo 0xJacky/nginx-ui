@@ -5,6 +5,7 @@ import GotifyConfig from './gotify'
 import LarkConfig from './lark'
 import LarkCustomConfig from './lark_custom'
 import TelegramConfig from './telegram'
+import WeComConfig from './wecom'
 
 const configMap = {
   bark: BarkConfig,
@@ -13,6 +14,7 @@ const configMap = {
   lark: LarkConfig,
   lark_custom: LarkCustomConfig,
   telegram: TelegramConfig,
+  wecom: WeComConfig,
 }
 
 export default configMap
