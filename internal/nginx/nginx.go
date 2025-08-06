@@ -5,11 +5,11 @@ import (
 	"strconv"
 	"strings"
 	"sync"
-	"syscall"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/docker"
 	"github.com/0xJacky/Nginx-UI/settings"
+	"github.com/shirou/gopsutil/v4/process"
 	"github.com/uozi-tech/cosy/logger"
 )
 
@@ -141,22 +141,18 @@ func isProcessRunning(pidPath string) bool {
 		return false
 	}
 
-	// Cross-platform process existence check
-	process, err := os.FindProcess(pid)
+	// Use gopsutil for cross-platform process existence check
+	exists, err := process.PidExists(int32(pid))
 	if err != nil {
-		logger.Debugf("isProcessRunning pidPath: %s, err: %v", pidPath, err)
+		logger.Debugf("isProcessRunning pidPath: %s, PidExists err: %v", pidPath, err)
 		return false
 	}
 
-	// On Unix systems, FindProcess always succeeds and returns a Process for the given pid,
-	// regardless of whether the process exists. To test whether the process actually exists,
-	// see whether p.Signal(syscall.Signal(0)) reports an error.
-	err = process.Signal(syscall.Signal(0))
-	if err == nil {
-		// Process exists and we can signal it
+	if exists {
 		logger.Debugf("isProcessRunning pidPath: %s, process exists", pidPath)
 		return true
 	}
+
 	logger.Debugf("isProcessRunning pidPath: %s, process does not exist", pidPath)
 	return false
 }
