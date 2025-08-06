@@ -146,7 +146,7 @@ func handleLogControl(ws *websocket.Conn, controlChan chan controlStruct, errCha
 
 	for {
 		msgType, payload, err := ws.ReadMessage()
-		if err != nil && websocket.IsUnexpectedCloseError(err, websocket.CloseNormalClosure) {
+		if err != nil && helper.IsUnexpectedWebsocketError(err) {
 			errChan <- errors.Wrap(err, "error handleLogControl read message")
 			return
 		}

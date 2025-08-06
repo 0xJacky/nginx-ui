@@ -11,6 +11,7 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/analytic"
 	"github.com/0xJacky/Nginx-UI/internal/kernel"
+	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
@@ -286,10 +287,10 @@ func (c *Client) readPump() {
 		for {
 			_, _, err := c.conn.ReadMessage()
 			if err != nil {
-				if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
+				if helper.IsUnexpectedWebsocketError(err) {
 					logger.Error("Websocket error:", err)
 				}
-				break
+				return 
 			}
 		}
 	}()
