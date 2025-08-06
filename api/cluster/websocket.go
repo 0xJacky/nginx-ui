@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/analytic"
+	"github.com/0xJacky/Nginx-UI/internal/kernel"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
@@ -258,7 +259,8 @@ func (c *Client) writePump() {
 			if err := c.conn.WriteMessage(websocket.PingMessage, nil); err != nil {
 				return
 			}
-
+		case <-kernel.Context.Done():
+			return
 		case <-c.ctx.Done():
 			return
 		}
@@ -292,5 +294,10 @@ func (c *Client) readPump() {
 		}
 	}()
 
-	<-c.ctx.Done()
+	select {
+	case <-kernel.Context.Done():
+		return
+	case <-c.ctx.Done():
+		return
+	}
 }

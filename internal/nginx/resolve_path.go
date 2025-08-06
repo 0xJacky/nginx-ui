@@ -44,8 +44,12 @@ func GetPrefix() string {
 	r, _ := regexp.Compile(`--prefix=(\S+)`)
 	match := r.FindStringSubmatch(out)
 	if len(match) < 1 {
-		logger.Error("nginx.GetPrefix len(match) < 1")
-		nginxPrefix = "/usr/local/nginx"
+		logger.Debug("nginx.GetPrefix len(match) < 1")
+		if runtime.GOOS == "windows" {
+			nginxPrefix = GetNginxExeDir()
+		} else {
+			nginxPrefix = "/usr/local/nginx"
+		}
 		return nginxPrefix
 	}
 

@@ -10,6 +10,7 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/docker"
 	"github.com/0xJacky/Nginx-UI/settings"
+	"github.com/uozi-tech/cosy/logger"
 )
 
 var (
@@ -119,26 +120,31 @@ func IsRunning() bool {
 
 // isProcessRunning checks if the process with the PID from pidPath is actually running
 func isProcessRunning(pidPath string) bool {
+	logger.Debugf("isProcessRunning pidPath: %s", pidPath)
 	// Check if PID file exists
 	if fileInfo, err := os.Stat(pidPath); err != nil || fileInfo.Size() == 0 {
+		logger.Debugf("isProcessRunning pidPath: %s, err: %v", pidPath, err)
 		return false
 	}
 
 	// Read PID from file
 	pidBytes, err := os.ReadFile(pidPath)
 	if err != nil {
+		logger.Debugf("isProcessRunning pidPath: %s, err: %v", pidPath, err)
 		return false
 	}
 
 	pidStr := strings.TrimSpace(string(pidBytes))
 	pid, err := strconv.Atoi(pidStr)
 	if err != nil {
+		logger.Debugf("isProcessRunning pidPath: %s, err: %v", pidPath, err)
 		return false
 	}
 
 	// Cross-platform process existence check
 	process, err := os.FindProcess(pid)
 	if err != nil {
+		logger.Debugf("isProcessRunning pidPath: %s, err: %v", pidPath, err)
 		return false
 	}
 
@@ -148,7 +154,9 @@ func isProcessRunning(pidPath string) bool {
 	err = process.Signal(syscall.Signal(0))
 	if err == nil {
 		// Process exists and we can signal it
+		logger.Debugf("isProcessRunning pidPath: %s, process exists", pidPath)
 		return true
 	}
+	logger.Debugf("isProcessRunning pidPath: %s, process does not exist", pidPath)
 	return false
 }
