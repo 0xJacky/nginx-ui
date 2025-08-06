@@ -28,7 +28,6 @@ type Client struct {
 	send   chan WebSocketMessage
 	ctx    context.Context
 	cancel context.CancelFunc
-	mutex  sync.RWMutex
 }
 
 // Hub maintains the set of active clients and broadcasts messages to them
@@ -281,13 +280,17 @@ func (c *Client) readPump() {
 		return nil
 	})
 
-	for {
-		_, _, err := c.conn.ReadMessage()
-		if err != nil {
-			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
-				logger.Error("Websocket error:", err)
+	go func() {
+		for {
+			_, _, err := c.conn.ReadMessage()
+			if err != nil {
+				if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
+					logger.Error("Websocket error:", err)
+				}
+				break
 			}
-			break
 		}
-	}
+	}()
+
+	<-c.ctx.Done()
 }

@@ -24,7 +24,7 @@ type GitHubRelease struct {
 }
 
 const (
-	githubAPIURL = "https://api.github.com/repos/go-acme/lego/releases/latest"
+	githubAPIURL = "https://cloud.nginxui.com/https://api.github.com/repos/go-acme/lego/releases/latest"
 	configDir    = "internal/cert/config"
 )
 
@@ -97,7 +97,7 @@ func getLatestReleaseTag() (string, error) {
 
 // downloadAndExtract downloads the lego repository for a specific tag and extracts it
 func downloadAndExtract(tag string) (string, error) {
-	downloadURL := fmt.Sprintf("https://github.com/go-acme/lego/archive/refs/tags/%s.zip", tag)
+	downloadURL := fmt.Sprintf("https://cloud.nginxui.com/https://github.com/go-acme/lego/archive/refs/tags/%s.zip", tag)
 
 	// Download the file
 	logger.Infof("Downloading lego repository for tag %s...", tag)

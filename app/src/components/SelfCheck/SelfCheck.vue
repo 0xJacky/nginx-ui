@@ -8,7 +8,6 @@ const { data, loading, fixing } = storeToRefs(store)
 
 onMounted(() => {
   store.check()
-  // selfCheck.timeoutCheck().catch(console.error)
 })
 </script>
 

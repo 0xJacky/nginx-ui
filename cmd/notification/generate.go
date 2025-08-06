@@ -50,12 +50,16 @@ func main() {
 		}
 
 		// Skip excluded directories
-		for _, dir := range excludeDirs {
-			if strings.Contains(path, dir) {
-				if info.IsDir() {
-					return filepath.SkipDir
+		for _, excludeDir := range excludeDirs {
+			// Check if the path contains the excluded directory
+			pathParts := strings.Split(filepath.Clean(path), string(filepath.Separator))
+			for _, part := range pathParts {
+				if part == excludeDir {
+					if info.IsDir() {
+						return filepath.SkipDir
+					}
+					return nil
 				}
-				return nil
 			}
 		}
 
