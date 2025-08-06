@@ -2,87 +2,87 @@ msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 
-#: src/language/generate.ts:33
+#: src/language/generate.ts:35
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
 msgstr ""
 
-#: src/language/generate.ts:34
+#: src/language/generate.ts:36
 msgid "[Nginx UI] Backing up current certificate for later revocation"
 msgstr ""
 
-#: src/language/generate.ts:35
+#: src/language/generate.ts:37
 msgid "[Nginx UI] Certificate renewed successfully"
 msgstr ""
 
-#: src/language/generate.ts:36
+#: src/language/generate.ts:38
 msgid "[Nginx UI] Certificate successfully revoked"
 msgstr ""
 
-#: src/language/generate.ts:37
+#: src/language/generate.ts:39
 msgid "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
 msgstr ""
 
-#: src/language/generate.ts:38
+#: src/language/generate.ts:40
 msgid "[Nginx UI] Creating client facilitates communication with the CA server"
 msgstr ""
 
-#: src/language/generate.ts:39
+#: src/language/generate.ts:41
 msgid "[Nginx UI] Environment variables cleaned"
 msgstr ""
 
-#: src/language/generate.ts:40
+#: src/language/generate.ts:42
 msgid "[Nginx UI] Finished"
 msgstr ""
 
-#: src/language/generate.ts:41
+#: src/language/generate.ts:43
 msgid "[Nginx UI] Issued certificate successfully"
 msgstr ""
 
-#: src/language/generate.ts:42
+#: src/language/generate.ts:44
 msgid "[Nginx UI] Obtaining certificate"
 msgstr ""
 
-#: src/language/generate.ts:43
+#: src/language/generate.ts:45
 msgid "[Nginx UI] Preparing for certificate revocation"
 msgstr ""
 
-#: src/language/generate.ts:44
+#: src/language/generate.ts:46
 msgid "[Nginx UI] Preparing lego configurations"
 msgstr ""
 
-#: src/language/generate.ts:45
+#: src/language/generate.ts:47
 msgid "[Nginx UI] Reloading nginx"
 msgstr ""
 
-#: src/language/generate.ts:46
+#: src/language/generate.ts:48
 msgid "[Nginx UI] Revocation completed"
 msgstr ""
 
-#: src/language/generate.ts:47
+#: src/language/generate.ts:49
 msgid "[Nginx UI] Revoking certificate"
 msgstr ""
 
-#: src/language/generate.ts:48
+#: src/language/generate.ts:50
 msgid "[Nginx UI] Revoking old certificate"
 msgstr ""
 
-#: src/language/generate.ts:49
+#: src/language/generate.ts:51
 msgid "[Nginx UI] Setting DNS01 challenge provider"
 msgstr ""
 
-#: src/language/generate.ts:51
+#: src/language/generate.ts:53
 msgid "[Nginx UI] Setting environment variables"
 msgstr ""
 
-#: src/language/generate.ts:50
+#: src/language/generate.ts:52
 msgid "[Nginx UI] Setting HTTP01 challenge provider"
 msgstr ""
 
-#: src/language/generate.ts:52
+#: src/language/generate.ts:54
 msgid "[Nginx UI] Writing certificate private key to disk"
 msgstr ""
 
-#: src/language/generate.ts:53
+#: src/language/generate.ts:55
 msgid "[Nginx UI] Writing certificate to disk"
 msgstr ""
 
@@ -811,47 +811,51 @@ msgstr ""
 msgid "Check if HTTPS is enabled. Using HTTP outside localhost is insecure and prevents using Passkeys and clipboard features"
 msgstr ""
 
-#: src/language/generate.ts:8
-msgid "Check if the nginx access log path exists. By default, this path is obtained from 'nginx -V'. If it cannot be obtained or the obtained path does not point to a valid, existing file, an error will be reported. In this case, you need to modify the configuration file to specify the access log path.Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
+#: src/language/generate.ts:7
+msgid "Check if the conf.d directory is under the nginx configuration directory"
 msgstr ""
 
 #: src/language/generate.ts:9
-msgid "Check if the nginx configuration directory exists"
+msgid "Check if the nginx access log path exists. By default, this path is obtained from 'nginx -V'. If it cannot be obtained or the obtained path does not point to a valid, existing file, an error will be reported. In this case, you need to modify the configuration file to specify the access log path.Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
 msgstr ""
 
 #: src/language/generate.ts:10
-msgid "Check if the nginx configuration entry file exists"
+msgid "Check if the nginx configuration directory exists"
 msgstr ""
 
 #: src/language/generate.ts:11
-msgid "Check if the nginx error log path exists. By default, this path is obtained from 'nginx -V'. If it cannot be obtained or the obtained path does not point to a valid, existing file, an error will be reported. In this case, you need to modify the configuration file to specify the error log path. Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
-msgstr ""
-
-#: src/language/generate.ts:7
-msgid "Check if the nginx PID path exists. By default, this path is obtained from 'nginx -V'. If it cannot be obtained, an error will be reported. In this case, you need to modify the configuration file to specify the Nginx PID path.Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
+msgid "Check if the nginx configuration entry file exists"
 msgstr ""
 
 #: src/language/generate.ts:12
-msgid "Check if the nginx sbin path exists"
+msgid "Check if the nginx error log path exists. By default, this path is obtained from 'nginx -V'. If it cannot be obtained or the obtained path does not point to a valid, existing file, an error will be reported. In this case, you need to modify the configuration file to specify the error log path. Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
+msgstr ""
+
+#: src/language/generate.ts:8
+msgid "Check if the nginx PID path exists. By default, this path is obtained from 'nginx -V'. If it cannot be obtained, an error will be reported. In this case, you need to modify the configuration file to specify the Nginx PID path.Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
 msgstr ""
 
 #: src/language/generate.ts:13
-msgid "Check if the nginx.conf includes the conf.d directory"
+msgid "Check if the nginx sbin path exists"
 msgstr ""
 
 #: src/language/generate.ts:14
-msgid "Check if the nginx.conf includes the sites-enabled directory"
+msgid "Check if the nginx.conf includes the conf.d directory"
 msgstr ""
 
 #: src/language/generate.ts:15
-msgid "Check if the nginx.conf includes the streams-enabled directory"
+msgid "Check if the nginx.conf includes the sites-enabled directory"
 msgstr ""
 
 #: src/language/generate.ts:16
-msgid "Check if the sites-available and sites-enabled directories are under the nginx configuration directory"
+msgid "Check if the nginx.conf includes the streams-enabled directory"
 msgstr ""
 
 #: src/language/generate.ts:17
+msgid "Check if the sites-available and sites-enabled directories are under the nginx configuration directory"
+msgstr ""
+
+#: src/language/generate.ts:18
 msgid "Check if the streams-available and streams-enabled directories are under the nginx configuration directory"
 msgstr ""
 
@@ -963,6 +967,14 @@ msgstr ""
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:88
 msgid "Compression level, 1 is lowest, 9 is highest"
+msgstr ""
+
+#: src/language/generate.ts:19
+msgid "Conf.d directory exists"
+msgstr ""
+
+#: src/constants/errors/self_check.ts:23
+msgid "Conf.d directory not exists"
 msgstr ""
 
 #: src/views/preference/components/ExternalNotify/columns.tsx:58
@@ -1507,7 +1519,7 @@ msgstr ""
 msgid "Docker client not initialized"
 msgstr ""
 
-#: src/language/generate.ts:18
+#: src/language/generate.ts:20
 msgid "Docker socket exists"
 msgstr ""
 
@@ -2014,7 +2026,7 @@ msgstr ""
 msgid "Failed to delete certificate"
 msgstr ""
 
-#: src/language/generate.ts:19
+#: src/language/generate.ts:21
 msgid "Failed to delete certificate from database: %{error}"
 msgstr ""
 
@@ -2184,7 +2196,7 @@ msgstr ""
 msgid "Failed to revoke certificate"
 msgstr ""
 
-#: src/language/generate.ts:20
+#: src/language/generate.ts:22
 msgid "Failed to revoke certificate: %{error}"
 msgstr ""
 
@@ -2807,7 +2819,7 @@ msgstr ""
 msgid "Log"
 msgstr ""
 
-#: src/language/generate.ts:21
+#: src/language/generate.ts:23
 msgid "Log file %{log_path} is not a regular file. If you are using nginx-ui in docker container, please refer to https://nginxui.com/zh_CN/guide/config-nginx-log.html for more information."
 msgstr ""
 
@@ -3147,7 +3159,7 @@ msgstr ""
 msgid "Nginx Access Log Path"
 msgstr ""
 
-#: src/language/generate.ts:23
+#: src/language/generate.ts:25
 msgid "Nginx access log path exists"
 msgstr ""
 
@@ -3180,11 +3192,11 @@ msgstr ""
 msgid "Nginx config directory is not set"
 msgstr ""
 
-#: src/language/generate.ts:24
+#: src/language/generate.ts:26
 msgid "Nginx configuration directory exists"
 msgstr ""
 
-#: src/language/generate.ts:25
+#: src/language/generate.ts:27
 msgid "Nginx configuration entry file exists"
 msgstr ""
 
@@ -3222,7 +3234,7 @@ msgstr ""
 msgid "Nginx Error Log Path"
 msgstr ""
 
-#: src/language/generate.ts:26
+#: src/language/generate.ts:28
 msgid "Nginx error log path exists"
 msgstr ""
 
@@ -3264,7 +3276,7 @@ msgstr ""
 msgid "Nginx PID Path"
 msgstr ""
 
-#: src/language/generate.ts:22
+#: src/language/generate.ts:24
 msgid "Nginx PID path exists"
 msgstr ""
 
@@ -3298,7 +3310,7 @@ msgstr ""
 msgid "Nginx restarted successfully"
 msgstr ""
 
-#: src/language/generate.ts:27
+#: src/language/generate.ts:29
 msgid "Nginx sbin path exists"
 msgstr ""
 
@@ -3328,15 +3340,15 @@ msgstr ""
 msgid "Nginx UI configuration has been restored and will restart automatically in a few seconds."
 msgstr ""
 
-#: src/language/generate.ts:28
+#: src/language/generate.ts:30
 msgid "Nginx.conf includes conf.d directory"
 msgstr ""
 
-#: src/language/generate.ts:29
+#: src/language/generate.ts:31
 msgid "Nginx.conf includes sites-enabled directory"
 msgstr ""
 
-#: src/language/generate.ts:30
+#: src/language/generate.ts:32
 msgid "Nginx.conf includes streams-enabled directory"
 msgstr ""
 
@@ -4771,7 +4783,7 @@ msgstr ""
 msgid "Site not found"
 msgstr ""
 
-#: src/language/generate.ts:31
+#: src/language/generate.ts:33
 msgid "Sites directory exists"
 msgstr ""
 
@@ -4937,7 +4949,7 @@ msgstr ""
 msgid "Stream not found"
 msgstr ""
 
-#: src/language/generate.ts:32
+#: src/language/generate.ts:34
 msgid "Streams directory exists"
 msgstr ""
 

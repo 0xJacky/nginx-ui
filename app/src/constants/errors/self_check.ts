@@ -20,4 +20,5 @@ export default {
   40416: () => $gettext('Sbin path not exist'),
   40417: () => $gettext('Access log path not exist'),
   40418: () => $gettext('Error log path not exist'),
+  40419: () => $gettext('Conf.d directory not exists'),
 }

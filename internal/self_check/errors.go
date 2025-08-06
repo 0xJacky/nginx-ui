@@ -25,4 +25,5 @@ var (
 	ErrSbinPathNotExist                 = e.New(40416, "Sbin path not exist")
 	ErrAccessLogPathNotExist            = e.New(40417, "Access log path not exist")
 	ErrErrorLogPathNotExist             = e.New(40418, "Error log path not exist")
+	ErrConfdNotExists                   = e.New(40419, "Conf.d directory not exists")
 )

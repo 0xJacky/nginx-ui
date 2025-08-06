@@ -36,6 +36,16 @@ func CheckStreamDirectory() error {
 	return nil
 }
 
+// CheckConfDirectory checks if conf.d directory exists
+func CheckConfDirectory() error {
+	// check conf.d directory
+	if _, err := os.Stat(nginx.GetConfPath("conf.d")); os.IsNotExist(err) {
+		return ErrNginxConfNotIncludeConfD
+	}
+
+	return nil
+}
+
 // FixSitesDirectory creates sites-available/sites-enabled directory
 func FixSitesDirectory() error {
 	// create sites-available directory
@@ -60,6 +70,16 @@ func FixStreamDirectory() error {
 
 	// create stream-enabled directory
 	if err := os.MkdirAll(nginx.GetConfPath("streams-enabled"), 0755); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// FixConfDirectory creates conf.d directory
+func FixConfDirectory() error {
+	// create conf.d directory
+	if err := os.MkdirAll(nginx.GetConfPath("conf.d"), 0755); err != nil {
 		return err
 	}
 
