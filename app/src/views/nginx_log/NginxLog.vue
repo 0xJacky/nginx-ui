@@ -19,7 +19,7 @@ const filter = ref('')
 // Setup log control data based on route params
 const control = reactive<NginxLogData>({
   type: logType(),
-  path: route.query.log_path as string,
+  path: route.query.path?.toString() ?? '',
 })
 
 function logType() {
