@@ -49,7 +49,7 @@ func GetHub() *Hub {
 	hubOnce.Do(func() {
 		hub = &Hub{
 			clients:    make(map[*Client]bool),
-			broadcast:  make(chan WebSocketMessage, 256),
+			broadcast:  make(chan WebSocketMessage, 1024), // Increased buffer size
 			register:   make(chan *Client),
 			unregister: make(chan *Client),
 		}
@@ -69,8 +69,10 @@ func (h *Hub) BroadcastMessage(event string, data interface{}) {
 	}
 	select {
 	case h.broadcast <- message:
+	case <-time.After(1 * time.Second):
+		logger.Warn("Broadcast channel full, message dropped after timeout", "event", event)
 	default:
-		logger.Warn("Broadcast channel full, message dropped")
+		logger.Warn("Broadcast channel full, message dropped immediately", "event", event)
 	}
 }
 
@@ -131,7 +133,7 @@ func EventBus(c *gin.Context) {
 
 	client := &Client{
 		conn:   ws,
-		send:   make(chan WebSocketMessage, 256),
+		send:   make(chan WebSocketMessage, 1024), // Increased buffer size
 		ctx:    ctx,
 		cancel: cancel,
 	}

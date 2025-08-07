@@ -153,7 +153,7 @@ func StreamDetailStatusWS(c *gin.Context) {
 
 	client := &NginxPerformanceClient{
 		conn:   ws,
-		send:   make(chan interface{}, 256),
+		send:   make(chan interface{}, 1024), // Increased buffer size
 		ctx:    ctx,
 		cancel: cancel,
 	}
