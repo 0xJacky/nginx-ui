@@ -1,14 +1,14 @@
 module github.com/0xJacky/Nginx-UI
 
-go 1.24.5
+go 1.24.6
 
 require (
 	code.pfad.fr/risefront v1.0.0
 	github.com/0xJacky/pofile v1.1.0
 	github.com/BurntSushi/toml v1.5.0
-	github.com/blevesearch/bleve/v2 v2.5.2
+	github.com/blevesearch/bleve/v2 v2.5.3
 	github.com/caarlos0/env/v11 v11.3.1
-	github.com/casdoor/casdoor-go-sdk v1.12.0
+	github.com/casdoor/casdoor-go-sdk v1.14.0
 	github.com/creack/pty v1.1.24
 	github.com/dgraph-io/ristretto/v2 v2.2.0
 	github.com/docker/docker v28.3.3+incompatible
@@ -20,7 +20,7 @@ require (
 	github.com/gin-contrib/pprof v1.5.3
 	github.com/gin-contrib/static v1.1.5
 	github.com/gin-gonic/gin v1.10.1
-	github.com/go-acme/lego/v4 v4.25.1
+	github.com/go-acme/lego/v4 v4.25.2
 	github.com/go-co-op/gocron/v2 v2.16.3
 	github.com/go-gormigrate/gormigrate/v2 v2.1.4
 	github.com/go-playground/validator/v10 v10.27.0
@@ -45,11 +45,11 @@ require (
 	github.com/spf13/cast v1.9.2
 	github.com/stretchr/testify v1.10.0
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20250620092546-c3e307e36701
-	github.com/uozi-tech/cosy v1.24.10
+	github.com/uozi-tech/cosy v1.25.1
 	github.com/uozi-tech/cosy-driver-sqlite v0.2.1
 	github.com/urfave/cli/v3 v3.3.8
-	golang.org/x/crypto v0.40.0
-	golang.org/x/net v0.42.0
+	golang.org/x/crypto v0.41.0
+	golang.org/x/net v0.43.0
 	gopkg.in/ini.v1 v1.67.0
 	gorm.io/driver/sqlite v1.6.0
 	gorm.io/gen v0.3.27
@@ -116,7 +116,7 @@ require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bits-and-blooms/bitset v1.24.0 // indirect
 	github.com/blevesearch/bleve_index_api v1.2.8 // indirect
-	github.com/blevesearch/geo v0.2.3 // indirect
+	github.com/blevesearch/geo v0.2.4 // indirect
 	github.com/blevesearch/go-faiss v1.0.25 // indirect
 	github.com/blevesearch/go-porterstemmer v1.0.3 // indirect
 	github.com/blevesearch/gtreap v0.1.1 // indirect
@@ -344,8 +344,8 @@ require (
 	golang.org/x/mod v0.26.0 // indirect
 	golang.org/x/oauth2 v0.30.0 // indirect
 	golang.org/x/sync v0.16.0 // indirect
-	golang.org/x/sys v0.34.0 // indirect
-	golang.org/x/text v0.27.0 // indirect
+	golang.org/x/sys v0.35.0 // indirect
+	golang.org/x/text v0.28.0 // indirect
 	golang.org/x/time v0.12.0 // indirect
 	golang.org/x/tools v0.35.0 // indirect
 	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da // indirect
