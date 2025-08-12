@@ -31,7 +31,7 @@ type RetryConfig struct {
 
 var defaultRetryConfig = RetryConfig{
 	BaseInterval:    5 * time.Second,
-	MaxInterval:     5 * time.Minute,
+	MaxInterval:     30 * time.Second,
 	MaxRetries:      10,
 	BackoffMultiple: 1.5,
 }
@@ -120,6 +120,7 @@ func markConnectionSuccess(envID uint64) {
 	state.FailureCount = 0
 	state.LastSuccess = time.Now()
 	state.NextRetry = time.Now()
+	updateNodeStatus(envID, true, "connection_success")
 }
 
 func logCurrentNodeStatus(prefix string) {
