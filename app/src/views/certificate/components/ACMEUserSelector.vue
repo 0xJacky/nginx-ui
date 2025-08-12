@@ -45,13 +45,25 @@ const fieldNames = {
 function filterOption(input: string, option?: unknown) {
   return (option as AcmeUser)?.name?.toLowerCase().includes(input.toLowerCase()) ?? false
 }
+
+const value = computed({
+  set(value: number) {
+    data.value.acme_user_id = value
+  },
+  get() {
+    if (data.value.acme_user_id && data.value.acme_user_id > 0) {
+      return data.value.acme_user_id
+    }
+    return undefined
+  },
+})
 </script>
 
 <template>
   <AForm layout="vertical">
     <AFormItem :label="$gettext('ACME User')">
       <ASelect
-        v-model:value="data.acme_user_id"
+        v-model:value="value"
         :placeholder="$gettext('System Initial User')"
         :loading="loading"
         show-search

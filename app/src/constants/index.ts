@@ -7,8 +7,9 @@ export enum ConfigStatus {
 }
 
 export enum AutoCertState {
-  Disable = 0,
+  Disable = -1,
   Enable = 1,
+  Sync = 2,
 }
 
 export enum NotificationTypeT {

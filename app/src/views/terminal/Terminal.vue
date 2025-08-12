@@ -14,6 +14,7 @@ const router = useRouter()
 const websocket = shallowRef<ReconnectingWebSocket | WebSocket>()
 const lostConnection = ref(false)
 const insecureConnection = ref(false)
+const isWebSocketReady = ref(false)
 
 // Check if using HTTP in a non-localhost environment
 function checkSecureConnection() {
@@ -36,15 +37,19 @@ onMounted(() => {
     websocket.value = ws(`/api/pty?X-Secure-Session-ID=${secureSessionId}`, false)
 
     nextTick(() => {
-      initTerm()
       websocket.value!.onmessage = wsOnMessage
       websocket.value!.onopen = wsOnOpen
       websocket.value!.onerror = () => {
         lostConnection.value = true
+        isWebSocketReady.value = false
       }
       websocket.value!.onclose = () => {
         lostConnection.value = true
+        isWebSocketReady.value = false
       }
+
+      // Initialize terminal only after WebSocket is ready
+      initTerm()
     })
   }).catch(() => {
     if (window.history.length > 1)
@@ -84,6 +89,7 @@ function initTerm() {
   window.addEventListener('resize', fit)
   term.focus()
 
+  // Only set up event handlers, but don't send messages until WebSocket is ready
   term.onData(key => {
     const order: Message = {
       Data: key,
@@ -101,7 +107,10 @@ function initTerm() {
 }
 
 function sendMessage(data: Message) {
-  websocket.value?.send(JSON.stringify(data))
+  // Only send if WebSocket is ready
+  if (websocket.value && isWebSocketReady.value) {
+    websocket.value.send(JSON.stringify(data))
+  }
 }
 
 function wsOnMessage(msg: { data: string | Uint8Array }) {
@@ -109,6 +118,7 @@ function wsOnMessage(msg: { data: string | Uint8Array }) {
 }
 
 function wsOnOpen() {
+  isWebSocketReady.value = true
   ping = setInterval(() => {
     sendMessage({ Type: 3, Data: null })
   }, 30000)

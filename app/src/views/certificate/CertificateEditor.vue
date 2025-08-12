@@ -23,12 +23,8 @@ const id = computed(() => {
 
 const { data } = storeToRefs(certStore)
 
-const notShowInAutoCert = computed(() => {
-  return data.value.auto_cert !== AutoCertState.Enable
-})
-
 const isManaged = computed(() => {
-  return data.value.auto_cert === AutoCertState.Enable
+  return data.value.auto_cert === AutoCertState.Enable || data.value.auto_cert === AutoCertState.Sync
 })
 
 function init() {
@@ -111,7 +107,7 @@ const log = computed(() => {
           <CertificateContentEditor
             v-model:data="data"
             :errors="errors"
-            :readonly="!notShowInAutoCert"
+            :readonly="isManaged"
             class="max-w-600px"
           />
         </AForm>

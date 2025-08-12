@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import type { Cert } from '@/api/cert'
+import { CopyOutlined } from '@ant-design/icons-vue'
+import { useClipboard } from '@vueuse/core'
+import { message } from 'ant-design-vue'
 import NodeSelector from '@/components/NodeSelector'
 
 interface Props {
@@ -12,6 +15,23 @@ defineProps<Props>()
 
 // Use defineModel for two-way binding
 const data = defineModel<Cert>('data', { required: true })
+
+const { copy } = useClipboard()
+
+async function copyToClipboard(text: string, label: string) {
+  if (!text) {
+    message.warning($gettext('Nothing to copy'))
+    return
+  }
+  try {
+    await copy(text)
+    message.success($gettext(`{label} copied to clipboard`).replace('{label}', label))
+  }
+  catch (error) {
+    console.error(error)
+    message.error($gettext('Failed to copy to clipboard'))
+  }
+}
 </script>
 
 <template>
@@ -26,13 +46,31 @@ const data = defineModel<Cert>('data', { required: true })
         ? $gettext('This field is required')
         : ''"
     >
-      <p v-if="isManaged">
-        {{ data.name }}
-      </p>
-      <AInput
-        v-else
-        v-model:value="data.name"
-      />
+      <div v-if="isManaged" class="copy-container">
+        <p class="copy-text">
+          {{ data.name }}
+        </p>
+        <AButton
+          v-if="data.name"
+          type="text"
+          size="small"
+          @click="copyToClipboard(data.name, $gettext('Name'))"
+        >
+          <CopyOutlined />
+        </AButton>
+      </div>
+      <div v-else class="input-with-copy">
+        <AInput v-model:value="data.name" />
+        <AButton
+          v-if="data.name"
+          type="text"
+          size="small"
+          class="copy-button"
+          @click="copyToClipboard(data.name, $gettext('Name'))"
+        >
+          <CopyOutlined />
+        </AButton>
+      </div>
     </AFormItem>
 
     <AFormItem
@@ -42,13 +80,31 @@ const data = defineModel<Cert>('data', { required: true })
         : errors.ssl_certificate_path === 'certificate_path'
           ? $gettext('The path exists, but the file is not a certificate') : ''"
     >
-      <p v-if="isManaged">
-        {{ data.ssl_certificate_path }}
-      </p>
-      <AInput
-        v-else
-        v-model:value="data.ssl_certificate_path"
-      />
+      <div v-if="isManaged" class="copy-container">
+        <p class="copy-text">
+          {{ data.ssl_certificate_path }}
+        </p>
+        <AButton
+          v-if="data.ssl_certificate_path"
+          type="text"
+          size="small"
+          @click="copyToClipboard(data.ssl_certificate_path, $gettext('SSL Certificate Path'))"
+        >
+          <CopyOutlined />
+        </AButton>
+      </div>
+      <div v-else class="input-with-copy">
+        <AInput v-model:value="data.ssl_certificate_path" />
+        <AButton
+          v-if="data.ssl_certificate_path"
+          type="text"
+          size="small"
+          class="copy-button"
+          @click="copyToClipboard(data.ssl_certificate_path, $gettext('SSL Certificate Path'))"
+        >
+          <CopyOutlined />
+        </AButton>
+      </div>
     </AFormItem>
 
     <AFormItem
@@ -58,13 +114,31 @@ const data = defineModel<Cert>('data', { required: true })
         : errors.ssl_certificate_key_path === 'privatekey_path'
           ? $gettext('The path exists, but the file is not a private key') : ''"
     >
-      <p v-if="isManaged">
-        {{ data.ssl_certificate_key_path }}
-      </p>
-      <AInput
-        v-else
-        v-model:value="data.ssl_certificate_key_path"
-      />
+      <div v-if="isManaged" class="copy-container">
+        <p class="copy-text">
+          {{ data.ssl_certificate_key_path }}
+        </p>
+        <AButton
+          v-if="data.ssl_certificate_key_path"
+          type="text"
+          size="small"
+          @click="copyToClipboard(data.ssl_certificate_key_path, $gettext('SSL Certificate Key Path'))"
+        >
+          <CopyOutlined />
+        </AButton>
+      </div>
+      <div v-else class="input-with-copy">
+        <AInput v-model:value="data.ssl_certificate_key_path" />
+        <AButton
+          v-if="data.ssl_certificate_key_path"
+          type="text"
+          size="small"
+          class="copy-button"
+          @click="copyToClipboard(data.ssl_certificate_key_path, $gettext('SSL Certificate Key Path'))"
+        >
+          <CopyOutlined />
+        </AButton>
+      </div>
     </AFormItem>
 
     <AFormItem :label="$gettext('Sync to')">
@@ -77,4 +151,29 @@ const data = defineModel<Cert>('data', { required: true })
 </template>
 
 <style scoped lang="less">
+.copy-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .copy-text {
+    margin: 0;
+    flex: 1;
+    word-break: break-all;
+  }
+}
+
+.input-with-copy {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .ant-input {
+    flex: 1;
+  }
+
+  .copy-button {
+    flex-shrink: 0;
+  }
+}
 </style>

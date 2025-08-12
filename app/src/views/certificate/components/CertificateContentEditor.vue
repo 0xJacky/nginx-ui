@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { Cert } from '@/api/cert'
-import { InboxOutlined } from '@ant-design/icons-vue'
+import { CopyOutlined, InboxOutlined } from '@ant-design/icons-vue'
+import { useClipboard } from '@vueuse/core'
+import { message } from 'ant-design-vue'
 import CodeEditor from '@/components/CodeEditor'
 import CertificateFileUpload from './CertificateFileUpload.vue'
 
@@ -14,6 +16,23 @@ defineProps<Props>()
 
 // Use defineModel for two-way binding
 const data = defineModel<Cert>('data', { required: true })
+
+const { copy } = useClipboard()
+
+async function copyToClipboard(text: string, label: string) {
+  if (!text) {
+    message.warning($gettext('Nothing to copy'))
+    return
+  }
+  try {
+    await copy(text)
+    message.success($gettext(`{label} copied to clipboard`).replace('{label}', label))
+  }
+  catch (error) {
+    console.error(error)
+    message.error($gettext('Failed to copy to clipboard'))
+  }
+}
 
 // Drag and drop state
 const isDragOverCert = ref(false)
@@ -90,11 +109,23 @@ function handleDrop(e: DragEvent, type: 'certificate' | 'key') {
   <div class="certificate-content-editor">
     <!-- SSL Certificate Content -->
     <AFormItem
-      :label="$gettext('SSL Certificate Content')"
       :validate-status="errors.ssl_certificate ? 'error' : ''"
       :help="errors.ssl_certificate === 'certificate'
         ? $gettext('The input is not a SSL Certificate') : ''"
     >
+      <template #label>
+        <div class="label-with-copy">
+          <span class="label-text">{{ $gettext('SSL Certificate Content') }}</span>
+          <AButton
+            v-if="data.ssl_certificate"
+            type="text"
+            size="small"
+            @click="copyToClipboard(data.ssl_certificate, $gettext('SSL Certificate Content'))"
+          >
+            <CopyOutlined />
+          </AButton>
+        </div>
+      </template>
       <!-- Certificate File Upload -->
       <CertificateFileUpload
         v-if="!readonly"
@@ -139,11 +170,23 @@ function handleDrop(e: DragEvent, type: 'certificate' | 'key') {
 
     <!-- SSL Certificate Key Content -->
     <AFormItem
-      :label="$gettext('SSL Certificate Key Content')"
       :validate-status="errors.ssl_certificate_key ? 'error' : ''"
       :help="errors.ssl_certificate_key === 'privatekey'
         ? $gettext('The input is not a SSL Certificate Key') : ''"
     >
+      <template #label>
+        <div class="label-with-copy">
+          <span class="label-text">{{ $gettext('SSL Certificate Key Content') }}</span>
+          <AButton
+            v-if="data.ssl_certificate_key"
+            type="text"
+            size="small"
+            @click="copyToClipboard(data.ssl_certificate_key, $gettext('SSL Certificate Key Content'))"
+          >
+            <CopyOutlined />
+          </AButton>
+        </div>
+      </template>
       <!-- Private Key File Upload -->
       <CertificateFileUpload
         v-if="!readonly"
@@ -190,6 +233,18 @@ function handleDrop(e: DragEvent, type: 'certificate' | 'key') {
 
 <style scoped lang="less">
 .certificate-content-editor {
+  .label-with-copy {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+    .label-text {
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.85);
+    }
+  }
+
   .code-editor-container {
     position: relative;
 
