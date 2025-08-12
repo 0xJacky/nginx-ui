@@ -44,7 +44,7 @@ jobs:
     runs-on: macos-14
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up nodejs
         uses: actions/setup-node@v4
@@ -136,7 +136,7 @@ jobs:
       GOARM: ${{ matrix.goarm }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Go
         uses: actions/setup-go@v5
@@ -309,7 +309,7 @@ jobs:
       PLATFORMS: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6,linux/arm/v5
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Docker meta
         id: meta
@@ -380,7 +380,7 @@ jobs:
     if: github.event_name == 'release'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Get release info
         id: release
@@ -505,7 +505,7 @@ jobs:
           cat nginx-ui.rb
 
       - name: Checkout homebrew-tools repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: 0xJacky/homebrew-tools
           path: homebrew-tools
@@ -560,7 +560,7 @@ jobs:
     if: github.event_name == 'release'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Publish to WinGet
         uses: vedantmgoyal9/winget-releaser@v2
