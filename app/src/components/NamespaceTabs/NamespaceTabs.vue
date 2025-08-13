@@ -1,15 +1,48 @@
 <script setup lang="ts">
 import type { Namespace } from '@/api/namespace'
 import { message } from 'ant-design-vue'
+import namespaceApi from '@/api/namespace'
 import nodeApi from '@/api/node'
 import { useNodeAvailabilityStore } from '@/pinia/moudule/nodeAvailability'
 
-const props = defineProps<{
-  namespaces: Namespace[]
+defineProps<{
+  hideNodeInfo?: boolean
 }>()
 
 const modelValue = defineModel<string | number>('activeKey')
 const nodeStore = useNodeAvailabilityStore()
+const namespaces = ref<Namespace[]>([])
+
+// Load all namespaces on mount (handle pagination)
+async function loadAllNamespaces() {
+  const allNamespaces: Namespace[] = []
+  let currentPage = 1
+  let hasMore = true
+
+  while (hasMore) {
+    try {
+      const response = await namespaceApi.getList({ page: currentPage })
+      allNamespaces.push(...response.data)
+
+      if (response.pagination && response.pagination.current_page < response.pagination.total_pages) {
+        currentPage++
+      }
+      else {
+        hasMore = false
+      }
+    }
+    catch (error) {
+      console.error('Failed to load namespaces:', error)
+      hasMore = false
+    }
+  }
+
+  namespaces.value = allNamespaces
+}
+
+onMounted(() => {
+  loadAllNamespaces()
+})
 
 const loading = ref({
   reload: false,
@@ -20,7 +53,7 @@ const loading = ref({
 const currentNamespace = computed(() => {
   if (!modelValue.value || modelValue.value === 0)
     return null
-  return props.namespaces.find(g => g.id === Number(modelValue.value))
+  return namespaces.value.find(g => g.id === Number(modelValue.value))
 })
 
 // Get the list of nodes in the current group
@@ -86,7 +119,7 @@ async function handleRestartNginx() {
 
     <!-- Display node information -->
     <ACard
-      v-if="modelValue && modelValue !== 0 && syncNodes.length > 0"
+      v-if="!hideNodeInfo && modelValue && modelValue !== 0 && syncNodes.length > 0"
       :title="$gettext('Sync Nodes')"
       size="small"
       class="mb-4"

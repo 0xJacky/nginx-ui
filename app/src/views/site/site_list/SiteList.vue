@@ -1,8 +1,6 @@
 <script setup lang="tsx">
-import type { Namespace } from '@/api/namespace'
 import { StdCurd } from '@uozi-admin/curd'
 import { message } from 'ant-design-vue'
-import namespace from '@/api/namespace'
 import site from '@/api/site'
 import NamespaceTabs from '@/components/NamespaceTabs'
 import { ConfigStatus } from '@/constants'
@@ -17,29 +15,9 @@ const curd = ref()
 const inspectConfig = ref()
 
 const namespaceId = ref(Number.parseInt(route.query.namespace_id as string) || 0)
-const namespaces = ref<Namespace[]>([])
 
 watch(route, () => {
   inspectConfig.value?.test()
-})
-
-onMounted(async () => {
-  let page = 1
-  while (true) {
-    try {
-      const { data, pagination } = await namespace.getList({ page })
-      if (!data || !pagination)
-        return
-      namespaces.value.push(...data)
-      if (data.length < pagination?.per_page) {
-        return
-      }
-      page++
-    }
-    catch {
-      return
-    }
-  }
 })
 
 function destroy(site_name: string) {
@@ -97,7 +75,7 @@ function handle_click_duplicate(name: string) {
       </template>
       <template #beforeCardBody>
         <InspectConfig ref="inspectConfig" />
-        <NamespaceTabs v-model:active-key="namespaceId" :namespaces="namespaces" />
+        <NamespaceTabs v-model:active-key="namespaceId" />
       </template>
       <template #afterActions="{ record }">
         <AButton

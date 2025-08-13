@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
+import type { Namespace } from '@/api/namespace'
 import type { Node } from '@/api/node'
 import Icon, { LinkOutlined, ThunderboltOutlined } from '@ant-design/icons-vue'
 import analytic from '@/api/analytic'
+import namespaceApi from '@/api/namespace'
 import nodeApi from '@/api/node'
 import logo from '@/assets/img/logo.png'
 import pulse from '@/assets/svg/pulse.svg?component'
+import NamespaceTabs from '@/components/NamespaceTabs'
 import { formatDateTime } from '@/lib/helper'
 import { useSettingsStore } from '@/pinia'
 import { useNodeAvailabilityStore } from '@/pinia/moudule/nodeAvailability'
@@ -14,6 +17,7 @@ import NodeAnalyticItem from './components/NodeAnalyticItem.vue'
 
 const nodeStore = useNodeAvailabilityStore()
 const data = ref([]) as Ref<Node[]>
+const activeNamespaceKey = ref<string | number>(0)
 
 const nodeMap = computed(() => {
   const o = {} as Record<number, Node>
@@ -25,10 +29,56 @@ const nodeMap = computed(() => {
   return o
 })
 
+// Get namespaces to filter nodes
+const namespaces = ref([]) as Ref<Namespace[]>
+
+// Filtered nodes based on active namespace
+const filteredNodes = computed(() => {
+  if (activeNamespaceKey.value === 0) {
+    return data.value
+  }
+
+  const currentNamespace = namespaces.value.find(ns => ns.id === Number(activeNamespaceKey.value))
+  if (!currentNamespace || !currentNamespace.sync_node_ids) {
+    return []
+  }
+
+  return data.value.filter(node => currentNamespace.sync_node_ids.includes(node.id))
+})
+
+// Load all namespaces (handle pagination)
+async function loadAllNamespaces() {
+  const allNamespaces: Namespace[] = []
+  let currentPage = 1
+  let hasMore = true
+
+  while (hasMore) {
+    try {
+      const response = await namespaceApi.getList({ page: currentPage })
+      allNamespaces.push(...response.data)
+
+      if (response.pagination && response.pagination.current_page < response.pagination.total_pages) {
+        currentPage++
+      }
+      else {
+        hasMore = false
+      }
+    }
+    catch (error) {
+      console.error('Failed to load namespaces:', error)
+      hasMore = false
+    }
+  }
+
+  namespaces.value = allNamespaces
+}
+
 onMounted(() => {
   nodeApi.getList({ enabled: true }).then(r => {
     data.value.push(...r.data)
   })
+
+  loadAllNamespaces()
 })
 
 onMounted(() => {
@@ -80,9 +130,11 @@ const visible = computed(() => {
     :title="$gettext('Nodes')"
     :bordered="false"
   >
+    <NamespaceTabs v-model:active-key="activeNamespaceKey" class="mb-4" hide-node-info />
+
     <AList
       item-layout="horizontal"
-      :data-source="data"
+      :data-source="filteredNodes"
       class="env-list"
     >
       <template #renderItem="{ item }">

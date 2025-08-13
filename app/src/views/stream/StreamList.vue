@@ -1,8 +1,6 @@
 <script setup lang="tsx">
-import type { Namespace } from '@/api/namespace'
 import { StdCurd } from '@uozi-admin/curd'
 import { message } from 'ant-design-vue'
-import namespace from '@/api/namespace'
 import stream from '@/api/stream'
 import NamespaceTabs from '@/components/NamespaceTabs'
 import InspectConfig from '@/views/config/InspectConfig.vue'
@@ -16,26 +14,6 @@ const curd = ref()
 const inspect_config = ref()
 
 const namespaceId = ref(Number.parseInt(route.query.namespace_id as string) || 0)
-const namespaces = ref<Namespace[]>([])
-
-onMounted(async () => {
-  let page = 1
-  while (true) {
-    try {
-      const { data, pagination } = await namespace.getList({ page })
-      if (!data || !pagination)
-        return
-      namespaces.value.push(...data)
-      if (data.length < pagination?.per_page) {
-        return
-      }
-      page++
-    }
-    catch {
-      return
-    }
-  }
-})
 
 watch(route, () => {
   inspect_config.value?.test()
@@ -106,7 +84,7 @@ function handleAddStream() {
 
       <template #beforeCardBody>
         <InspectConfig ref="inspect_config" />
-        <NamespaceTabs v-model:active-key="namespaceId" :namespaces="namespaces" />
+        <NamespaceTabs v-model:active-key="namespaceId" />
       </template>
 
       <template #afterActions="{ record }">
