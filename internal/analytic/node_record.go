@@ -37,9 +37,9 @@ var defaultRetryConfig = RetryConfig{
 }
 
 type NodeRetryState struct {
-	FailureCount  int
-	LastSuccess   time.Time
-	NextRetry     time.Time
+	FailureCount int
+	LastSuccess  time.Time
+	NextRetry    time.Time
 }
 
 var (
@@ -47,30 +47,30 @@ var (
 	retryMutex  sync.Mutex
 )
 
-func getRetryState(envID uint64) *NodeRetryState {
+func getRetryState(nodeID uint64) *NodeRetryState {
 	retryMutex.Lock()
 	defer retryMutex.Unlock()
 
-	if state, exists := retryStates[envID]; exists {
+	if state, exists := retryStates[nodeID]; exists {
 		return state
 	}
 
 	state := &NodeRetryState{LastSuccess: time.Now(), NextRetry: time.Now()}
-	retryStates[envID] = state
+	retryStates[nodeID] = state
 	return state
 }
 
 // updateNodeStatus directly updates node status without condition checks
-func updateNodeStatus(envID uint64, status bool, reason string) {
+func updateNodeStatus(nodeID uint64, status bool, reason string) {
 	mutex.Lock()
 	defer mutex.Unlock()
 
 	now := time.Now()
-	if NodeMap[envID] == nil {
-		NodeMap[envID] = &Node{NodeStat: NodeStat{}}
+	if NodeMap[nodeID] == nil {
+		NodeMap[nodeID] = &Node{NodeStat: NodeStat{}}
 	}
-	NodeMap[envID].Status = status
-	NodeMap[envID].ResponseAt = now
+	NodeMap[nodeID].Status = status
+	NodeMap[nodeID].ResponseAt = now
 }
 
 func calculateNextRetryInterval(failureCount int) time.Duration {
@@ -87,8 +87,8 @@ func calculateNextRetryInterval(failureCount int) time.Duration {
 	return interval
 }
 
-func shouldRetry(envID uint64) bool {
-	state := getRetryState(envID)
+func shouldRetry(nodeID uint64) bool {
+	state := getRetryState(nodeID)
 	now := time.Now()
 
 	if state.FailureCount >= defaultRetryConfig.MaxRetries {
@@ -108,19 +108,19 @@ func shouldRetry(envID uint64) bool {
 	return !now.Before(state.NextRetry)
 }
 
-func markConnectionFailure(envID uint64, err error) {
-	state := getRetryState(envID)
+func markConnectionFailure(nodeID uint64, err error) {
+	state := getRetryState(nodeID)
 	state.FailureCount++
 	state.NextRetry = time.Now().Add(calculateNextRetryInterval(state.FailureCount))
-	updateNodeStatus(envID, false, "connection_failed")
+	updateNodeStatus(nodeID, false, "connection_failed")
 }
 
-func markConnectionSuccess(envID uint64) {
-	state := getRetryState(envID)
+func markConnectionSuccess(nodeID uint64) {
+	state := getRetryState(nodeID)
 	state.FailureCount = 0
 	state.LastSuccess = time.Now()
 	state.NextRetry = time.Now()
-	updateNodeStatus(envID, true, "connection_success")
+	updateNodeStatus(nodeID, true, "connection_success")
 }
 
 func logCurrentNodeStatus(prefix string) {
@@ -221,10 +221,10 @@ func cleanupDisabledNodes(enabledEnvIDs []uint64) {
 	mutex.Unlock()
 }
 
-func checkEnvironmentStillEnabled(envID uint64) bool {
-	env := query.Environment
-	environment, err := env.Where(env.ID.Eq(envID), env.Enabled.Is(true)).First()
-	return err == nil && environment != nil
+func checkNodeStillEnabled(nodeID uint64) bool {
+	nodeQuery := query.Node
+	node, err := nodeQuery.Where(nodeQuery.ID.Eq(nodeID), nodeQuery.Enabled.Is(true)).First()
+	return err == nil && node != nil
 }
 
 func RetrieveNodesStatus(ctx context.Context) {
@@ -242,25 +242,25 @@ func RetrieveNodesStatus(ctx context.Context) {
 	timeoutCheckTicker := time.NewTicker(10 * time.Second)
 	defer timeoutCheckTicker.Stop()
 
-	env := query.Environment
-	envs, err := env.Where(env.Enabled.Is(true)).Find()
+	nodeQuery := query.Node
+	nodes, err := nodeQuery.Where(nodeQuery.Enabled.Is(true)).Find()
 	if err != nil {
 		logger.Error(err)
 		return
 	}
 
-	var enabledEnvIDs []uint64
-	for _, e := range envs {
-		enabledEnvIDs = append(enabledEnvIDs, e.ID)
+	var enabledNodeIDs []uint64
+	for _, n := range nodes {
+		enabledNodeIDs = append(enabledNodeIDs, n.ID)
 	}
 
-	cleanupDisabledNodes(enabledEnvIDs)
+	cleanupDisabledNodes(enabledNodeIDs)
 
 	var wg sync.WaitGroup
 	defer wg.Wait()
 
-	// Channel to signal when environment list changes
-	envUpdateChan := make(chan []uint64, 1)
+	// Channel to signal when nodes list changes
+	nodeUpdateChan := make(chan []uint64, 1)
 
 	wg.Add(1)
 	go func() {
@@ -272,20 +272,20 @@ func RetrieveNodesStatus(ctx context.Context) {
 			case <-timeoutCheckTicker.C:
 				checkNodeTimeouts(2 * time.Minute)
 			case <-envCheckTicker.C:
-				currentEnvs, err := env.Where(env.Enabled.Is(true)).Find()
+				currentNodes, err := nodeQuery.Where(nodeQuery.Enabled.Is(true)).Find()
 				if err != nil {
-					logger.Error("Failed to re-query environments:", err)
+					logger.Error("Failed to re-query nodes:", err)
 					continue
 				}
 				var currentEnabledIDs []uint64
-				for _, e := range currentEnvs {
-					currentEnabledIDs = append(currentEnabledIDs, e.ID)
+				for _, n := range currentNodes {
+					currentEnabledIDs = append(currentEnabledIDs, n.ID)
 				}
-				if !equalUint64Slices(enabledEnvIDs, currentEnabledIDs) {
+				if !equalUint64Slices(enabledNodeIDs, currentEnabledIDs) {
 					cleanupDisabledNodes(currentEnabledIDs)
-					enabledEnvIDs = currentEnabledIDs
+					enabledNodeIDs = currentEnabledIDs
 					select {
-					case envUpdateChan <- currentEnabledIDs:
+					case nodeUpdateChan <- currentEnabledIDs:
 					default:
 					}
 				}
@@ -293,9 +293,9 @@ func RetrieveNodesStatus(ctx context.Context) {
 		}
 	}()
 
-	for _, env := range envs {
+	for _, node := range nodes {
 		wg.Add(1)
-		go func(e *model.Environment) {
+		go func(n *model.Node) {
 			defer wg.Done()
 			retryTicker := time.NewTicker(1 * time.Second)
 			defer retryTicker.Stop()
@@ -304,10 +304,10 @@ func RetrieveNodesStatus(ctx context.Context) {
 				select {
 				case <-ctx.Done():
 					return
-				case newEnabledIDs := <-envUpdateChan:
+				case newEnabledIDs := <-nodeUpdateChan:
 					found := false
 					for _, id := range newEnabledIDs {
-						if id == e.ID {
+						if id == n.ID {
 							found = true
 							break
 						}
@@ -316,24 +316,24 @@ func RetrieveNodesStatus(ctx context.Context) {
 						return
 					}
 				case <-retryTicker.C:
-					if !checkEnvironmentStillEnabled(e.ID) {
+					if !checkNodeStillEnabled(n.ID) {
 						retryMutex.Lock()
-						delete(retryStates, e.ID)
+						delete(retryStates, n.ID)
 						retryMutex.Unlock()
 						return
 					}
-					if !shouldRetry(e.ID) {
+					if !shouldRetry(n.ID) {
 						continue
 					}
-					if err := nodeAnalyticRecord(e, ctx); err != nil {
+					if err := nodeAnalyticRecord(n, ctx); err != nil {
 						logger.Error(err)
-						markConnectionFailure(e.ID, err)
+						markConnectionFailure(n.ID, err)
 					} else {
-						markConnectionSuccess(e.ID)
+						markConnectionSuccess(n.ID)
 					}
 				}
 			}
-		}(env)
+		}(node)
 	}
 
 }
@@ -382,37 +382,37 @@ func equalUint64Slices(a, b []uint64) bool {
 	return true
 }
 
-func nodeAnalyticRecord(env *model.Environment, ctx context.Context) error {
+func nodeAnalyticRecord(nodeModel *model.Node, ctx context.Context) error {
 	scopeCtx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
-	node, err := InitNode(env)
+	node, err := InitNode(nodeModel)
 	if err != nil {
 		mutex.Lock()
-		if NodeMap[env.ID] == nil {
-			NodeMap[env.ID] = &Node{
-				Environment: env,
+		if NodeMap[nodeModel.ID] == nil {
+			NodeMap[nodeModel.ID] = &Node{
+				Node:     nodeModel,
 				NodeStat: NodeStat{Status: false, ResponseAt: time.Now()},
 			}
 		} else {
-			NodeMap[env.ID].Status = false
-			NodeMap[env.ID].ResponseAt = time.Now()
+			NodeMap[nodeModel.ID].Status = false
+			NodeMap[nodeModel.ID].ResponseAt = time.Now()
 		}
 		mutex.Unlock()
 		return err
 	}
 
 	mutex.Lock()
-	NodeMap[env.ID] = node
+	NodeMap[nodeModel.ID] = node
 	mutex.Unlock()
 
-	u, err := env.GetWebSocketURL("/api/analytic/intro")
+	u, err := nodeModel.GetWebSocketURL("/api/analytic/intro")
 	if err != nil {
 		return err
 	}
 
 	header := http.Header{}
-	header.Set("X-Node-Secret", env.Token)
+	header.Set("X-Node-Secret", nodeModel.Token)
 
 	dial := &websocket.Dialer{
 		Proxy:            http.ProxyFromEnvironment,
@@ -421,13 +421,13 @@ func nodeAnalyticRecord(env *model.Environment, ctx context.Context) error {
 
 	c, _, err := dial.Dial(u, header)
 	if err != nil {
-		updateNodeStatus(env.ID, false, "websocket_dial_failed")
+		updateNodeStatus(nodeModel.ID, false, "websocket_dial_failed")
 		return err
 	}
 
 	defer func() {
 		c.Close()
-		updateNodeStatus(env.ID, false, "websocket_connection_closed")
+		updateNodeStatus(nodeModel.ID, false, "websocket_connection_closed")
 	}()
 
 	go func() {
@@ -452,31 +452,31 @@ func nodeAnalyticRecord(env *model.Environment, ctx context.Context) error {
 		err = c.ReadJSON(&rawMsg)
 		if err != nil {
 			if helper.IsUnexpectedWebsocketError(err) {
-				updateNodeStatus(env.ID, false, "websocket_error")
+				updateNodeStatus(nodeModel.ID, false, "websocket_error")
 				return err
 			}
 			return nil
 		}
 
 		mutex.Lock()
-		if NodeMap[env.ID] == nil {
-			NodeMap[env.ID] = &Node{
-				Environment: env,
-				NodeStat:    NodeStat{Status: true, ResponseAt: time.Now()},
+		if NodeMap[nodeModel.ID] == nil {
+			NodeMap[nodeModel.ID] = &Node{
+				Node:     nodeModel,
+				NodeStat: NodeStat{Status: true, ResponseAt: time.Now()},
 			}
 		} else {
 			var fullNode Node
 			if err := json.Unmarshal(rawMsg, &fullNode); err == nil && fullNode.Version != "" {
-				NodeMap[env.ID].NodeInfo = fullNode.NodeInfo
-				NodeMap[env.ID].NodeStat = fullNode.NodeStat
+				NodeMap[nodeModel.ID].NodeInfo = fullNode.NodeInfo
+				NodeMap[nodeModel.ID].NodeStat = fullNode.NodeStat
 			} else {
 				var nodeStat NodeStat
 				if err := json.Unmarshal(rawMsg, &nodeStat); err == nil {
-					NodeMap[env.ID].NodeStat = nodeStat
+					NodeMap[nodeModel.ID].NodeStat = nodeStat
 				}
 			}
-			NodeMap[env.ID].Status = true
-			NodeMap[env.ID].ResponseAt = time.Now()
+			NodeMap[nodeModel.ID].Status = true
+			NodeMap[nodeModel.ID].ResponseAt = time.Now()
 		}
 		mutex.Unlock()
 	}

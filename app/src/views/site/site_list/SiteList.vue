@@ -1,10 +1,10 @@
 <script setup lang="tsx">
-import type { EnvGroup } from '@/api/env_group'
+import type { Namespace } from '@/api/namespace'
 import { StdCurd } from '@uozi-admin/curd'
 import { message } from 'ant-design-vue'
-import env_group from '@/api/env_group'
+import namespace from '@/api/namespace'
 import site from '@/api/site'
-import EnvGroupTabs from '@/components/EnvGroupTabs'
+import NamespaceTabs from '@/components/NamespaceTabs'
 import { ConfigStatus } from '@/constants'
 import InspectConfig from '@/views/config/InspectConfig.vue'
 import columns from '@/views/site/site_list/columns'
@@ -16,8 +16,8 @@ const router = useRouter()
 const curd = ref()
 const inspectConfig = ref()
 
-const envGroupId = ref(Number.parseInt(route.query.env_group_id as string) || 0)
-const envGroups = ref<EnvGroup[]>([])
+const namespaceId = ref(Number.parseInt(route.query.namespace_id as string) || 0)
+const namespaces = ref<Namespace[]>([])
 
 watch(route, () => {
   inspectConfig.value?.test()
@@ -27,10 +27,10 @@ onMounted(async () => {
   let page = 1
   while (true) {
     try {
-      const { data, pagination } = await env_group.getList({ page })
+      const { data, pagination } = await namespace.getList({ page })
       if (!data || !pagination)
         return
-      envGroups.value.push(...data)
+      namespaces.value.push(...data)
       if (data.length < pagination?.per_page) {
         return
       }
@@ -77,7 +77,7 @@ function handle_click_duplicate(name: string) {
       disable-export
       row-selection-type="checkbox"
       :custom-query-params="{
-        env_group_id: envGroupId,
+        namespace_id: namespaceId,
       }"
       :scroll-x="1600"
       @edit-item="record => router.push({
@@ -97,7 +97,7 @@ function handle_click_duplicate(name: string) {
       </template>
       <template #beforeCardBody>
         <InspectConfig ref="inspectConfig" />
-        <EnvGroupTabs v-model:active-key="envGroupId" :env-groups="envGroups" />
+        <NamespaceTabs v-model:active-key="namespaceId" :namespaces="namespaces" />
       </template>
       <template #afterActions="{ record }">
         <AButton

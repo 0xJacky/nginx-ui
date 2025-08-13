@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Environment } from '@/api/environment'
+import type { Node } from '@/api/node'
 import type { ReleaseInfo } from '@/api/upgrade'
 import { cloneDeep } from 'lodash'
 import { marked } from 'marked'
@@ -11,7 +11,7 @@ const emit = defineEmits(['success'])
 const route = useRoute()
 const visible = ref(false)
 const nodeIds = ref<number[]>([])
-const nodes = ref<Environment[]>([])
+const nodes = ref<Node[]>([])
 const channel = ref('stable')
 const nodeNames = computed(() => nodes.value.map(v => v.name).join(', '))
 const loading = ref(false)
@@ -59,7 +59,7 @@ function getLatestRelease() {
   })
 }
 
-function open(selectedNodeIds: Ref<number[]>, selectedNodes: Ref<Environment[]>) {
+function open(selectedNodeIds: Ref<number[]>, selectedNodes: Ref<Node[]>) {
   showLogContainer.value = false
   visible.value = true
   nodeIds.value = selectedNodeIds.value

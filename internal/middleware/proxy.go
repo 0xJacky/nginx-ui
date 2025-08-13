@@ -28,9 +28,9 @@ func Proxy() gin.HandlerFunc {
 
 		defer c.Abort()
 
-		env := query.Environment
+		nodeQuery := query.Node
 
-		environment, err := env.Where(env.ID.Eq(id)).First()
+		node, err := nodeQuery.Where(nodeQuery.ID.Eq(id)).First()
 		if err != nil {
 			logger.Error(err)
 			c.AbortWithStatusJSON(http.StatusServiceUnavailable, gin.H{
@@ -39,7 +39,7 @@ func Proxy() gin.HandlerFunc {
 			return
 		}
 
-		baseUrl, err := url.Parse(environment.URL)
+		baseUrl, err := url.Parse(node.URL)
 		if err != nil {
 			logger.Error(err)
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
@@ -65,7 +65,7 @@ func Proxy() gin.HandlerFunc {
 		proxy.Director = func(req *http.Request) {
 			defaultDirector(req)
 			req.Header.Del("X-Node-ID")
-			req.Header.Set("X-Node-Secret", environment.Token)
+			req.Header.Set("X-Node-Secret", node.Token)
 		}
 
 		// resolve https://github.com/0xJacky/nginx-ui/issues/342

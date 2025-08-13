@@ -1,11 +1,10 @@
 <script setup lang="tsx">
 import { StdCurd } from '@uozi-admin/curd'
 import { message } from 'ant-design-vue'
-import environment from '@/api/environment'
-import node from '@/api/node'
+import nodeApi from '@/api/node'
 import FooterToolBar from '@/components/FooterToolbar'
 import BatchUpgrader from './BatchUpgrader.vue'
-import envColumns from './envColumns'
+import envColumns from './nodeColumns'
 
 const route = useRoute()
 const curd = ref()
@@ -63,7 +62,7 @@ onBeforeUnmount(() => {
 
 function loadFromSettings() {
   loadingFromSettings.value = true
-  environment.load_from_settings().then(() => {
+  nodeApi.load_from_settings().then(() => {
     curd.value.getList()
     message.success($gettext('Load successfully'))
   }).finally(() => {
@@ -85,7 +84,7 @@ function reloadNginx() {
   }
 
   loadingReload.value = true
-  node.reloadNginx(selectedNodeIds.value).then(() => {
+  nodeApi.reloadNginx(selectedNodeIds.value).then(() => {
     message.success($gettext('Nginx reload operations have been dispatched to remote nodes'))
   }).finally(() => {
     loadingReload.value = false
@@ -99,7 +98,7 @@ function restartNginx() {
   }
 
   loadingRestart.value = true
-  node.restartNginx(selectedNodeIds.value).then(() => {
+  nodeApi.restartNginx(selectedNodeIds.value).then(() => {
     message.success($gettext('Nginx restart operations have been dispatched to remote nodes'))
   }).finally(() => {
     loadingRestart.value = false
@@ -128,8 +127,8 @@ const inTrash = computed(() => {
         },
         pagination: false,
       }"
-      :title="$gettext('Environments')"
-      :api="environment"
+      :title="$gettext('Nodes')"
+      :api="nodeApi"
       :columns="envColumns"
       disable-export
     >

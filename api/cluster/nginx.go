@@ -23,10 +23,10 @@ func syncReload(nodeIDs []uint64) {
 		return
 	}
 
-	e := query.Environment
-	nodes, err := e.Where(e.ID.In(nodeIDs...)).Find()
+	n := query.Node
+	nodes, err := n.Where(n.ID.In(nodeIDs...)).Find()
 	if err != nil {
-		logger.Error("Failed to get environment nodes:", err)
+		logger.Error("Failed to get nodes:", err)
 		return
 	}
 
@@ -34,7 +34,7 @@ func syncReload(nodeIDs []uint64) {
 	wg.Add(len(nodes))
 
 	for _, node := range nodes {
-		go func(node *model.Environment) {
+		go func(node *model.Node) {
 			defer func() {
 				if err := recover(); err != nil {
 					buf := make([]byte, 1024)
@@ -77,10 +77,10 @@ func syncRestart(nodeIDs []uint64) {
 		return
 	}
 
-	e := query.Environment
-	nodes, err := e.Where(e.ID.In(nodeIDs...)).Find()
+	n := query.Node
+	nodes, err := n.Where(n.ID.In(nodeIDs...)).Find()
 	if err != nil {
-		logger.Error("Failed to get environment nodes:", err)
+		logger.Error("Failed to get nodes:", err)
 		return
 	}
 
@@ -88,7 +88,7 @@ func syncRestart(nodeIDs []uint64) {
 	wg.Add(len(nodes))
 
 	for _, node := range nodes {
-		go func(node *model.Environment) {
+		go func(node *model.Node) {
 			defer func() {
 				if err := recover(); err != nil {
 					buf := make([]byte, 1024)

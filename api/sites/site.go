@@ -132,7 +132,7 @@ func SaveSite(c *gin.Context) {
 
 	var json struct {
 		Content     string   `json:"content" binding:"required"`
-		EnvGroupID  uint64   `json:"env_group_id"`
+		NamespaceID  uint64   `json:"env_group_id"`
 		SyncNodeIDs []uint64 `json:"sync_node_ids"`
 		Overwrite   bool     `json:"overwrite"`
 		PostAction  string   `json:"post_action"`
@@ -142,7 +142,7 @@ func SaveSite(c *gin.Context) {
 		return
 	}
 
-	err := site.Save(name, json.Content, json.Overwrite, json.EnvGroupID, json.SyncNodeIDs, json.PostAction)
+	err := site.Save(name, json.Content, json.Overwrite, json.NamespaceID, json.SyncNodeIDs, json.PostAction)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

@@ -18,14 +18,14 @@ func GetSiteList(c *gin.Context) {
 		Status:     c.Query("status"),
 		OrderBy:    c.Query("sort_by"),
 		Sort:       c.DefaultQuery("order", "desc"),
-		EnvGroupID: cast.ToUint64(c.Query("env_group_id")),
+		NamespaceID: cast.ToUint64(c.Query("env_group_id")),
 	}
 
 	// Get sites from database
 	s := query.Site
-	sTx := s.Preload(s.EnvGroup)
-	if options.EnvGroupID != 0 {
-		sTx = sTx.Where(s.EnvGroupID.Eq(options.EnvGroupID))
+	sTx := s.Preload(s.Namespace)
+	if options.NamespaceID != 0 {
+		sTx = sTx.Where(s.NamespaceID.Eq(options.NamespaceID))
 	}
 
 	sites, err := sTx.Find()

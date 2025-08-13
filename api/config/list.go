@@ -18,8 +18,8 @@ import (
 // ConfigFileEntity represents a generic configuration file entity
 type ConfigFileEntity struct {
 	path       string
-	envGroupID uint64
-	envGroup   *model.EnvGroup
+	namespaceID uint64
+	namespace   *model.Namespace
 }
 
 // GetPath implements ConfigEntity interface
@@ -27,21 +27,21 @@ func (c *ConfigFileEntity) GetPath() string {
 	return c.path
 }
 
-// GetEnvGroupID implements ConfigEntity interface
-func (c *ConfigFileEntity) GetEnvGroupID() uint64 {
-	return c.envGroupID
+// GetNamespaceID implements ConfigEntity interface
+func (c *ConfigFileEntity) GetNamespaceID() uint64 {
+	return c.namespaceID
 }
 
-// GetEnvGroup implements ConfigEntity interface
-func (c *ConfigFileEntity) GetEnvGroup() *model.EnvGroup {
-	return c.envGroup
+// GetNamespace implements ConfigEntity interface
+func (c *ConfigFileEntity) GetNamespace() *model.Namespace {
+	return c.namespace
 }
 
 func GetConfigs(c *gin.Context) {
 	search := c.Query("search")
 	sortBy := c.Query("sort_by")
 	order := c.DefaultQuery("order", "desc")
-	envGroupIDStr := c.Query("env_group_id")
+	namespaceIDStr := c.Query("env_group_id")
 
 	// Get directory parameter
 	encodedDir := c.DefaultQuery("dir", "/")
@@ -56,10 +56,10 @@ func GetConfigs(c *gin.Context) {
 	}
 
 	// Parse env_group_id
-	var envGroupID uint64
-	if envGroupIDStr != "" {
-		if id, err := strconv.ParseUint(envGroupIDStr, 10, 64); err == nil {
-			envGroupID = id
+	var namespaceID uint64
+	if namespaceIDStr != "" {
+		if id, err := strconv.ParseUint(namespaceIDStr, 10, 64); err == nil {
+			namespaceID = id
 		}
 	}
 
@@ -68,7 +68,7 @@ func GetConfigs(c *gin.Context) {
 		Search:      search,
 		OrderBy:     sortBy,
 		Sort:        order,
-		EnvGroupID:  envGroupID,
+		NamespaceID:  namespaceID,
 		IncludeDirs: true, // Keep directories for the list.go endpoint
 	}
 
@@ -88,11 +88,11 @@ func GetConfigs(c *gin.Context) {
 		}
 
 		// For generic config files, we don't have database records
-		// so envGroupID and envGroup will be 0 and nil
+		// so namespaceID and namespace will be 0 and nil
 		entity := &ConfigFileEntity{
 			path:       filepath.Join(nginx.GetConfPath(dir), file.Name()),
-			envGroupID: 0,
-			envGroup:   nil,
+			namespaceID: 0,
+			namespace:   nil,
 		}
 		entities = append(entities, entity)
 	}
@@ -122,15 +122,15 @@ func GetConfigs(c *gin.Context) {
 
 // createConfigBuilder creates a custom config builder for generic config files
 func createConfigBuilder(dir string) config.ConfigBuilder {
-	return func(fileName string, fileInfo os.FileInfo, status config.ConfigStatus, envGroupID uint64, envGroup *model.EnvGroup) config.Config {
+	return func(fileName string, fileInfo os.FileInfo, status config.ConfigStatus, namespaceID uint64, namespace *model.Namespace) config.Config {
 		return config.Config{
 			Name:       fileName,
 			ModifiedAt: fileInfo.ModTime(),
 			Size:       fileInfo.Size(),
 			IsDir:      fileInfo.IsDir(),
 			Status:     status,
-			EnvGroupID: envGroupID,
-			EnvGroup:   envGroup,
+			NamespaceID: namespaceID,
+			Namespace:   namespace,
 			Dir:        dir,
 		}
 	}

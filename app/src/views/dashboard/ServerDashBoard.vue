@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Environments from '@/views/dashboard/Environments.vue'
+import Nodes from '@/views/dashboard/Nodes.vue'
 import ServerAnalytic from '@/views/dashboard/ServerAnalytic.vue'
 
 const key = ref(0)
@@ -12,7 +12,7 @@ setInterval(() => {
 <template>
   <div>
     <ServerAnalytic :key />
-    <Environments />
+    <Nodes />
   </div>
 </template>
 

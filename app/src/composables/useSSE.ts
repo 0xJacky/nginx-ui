@@ -83,8 +83,8 @@ export function useSSE() {
       headers.Authorization = token.value
     }
 
-    if (settings.environment.id) {
-      headers['X-Node-ID'] = settings.environment.id.toString()
+    if (settings.node.id) {
+      headers['X-Node-ID'] = settings.node.id.toString()
     }
 
     const sse = new SSE(fullUrl, {

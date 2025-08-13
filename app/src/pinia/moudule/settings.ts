@@ -6,7 +6,7 @@ export const useSettingsStore = defineStore('settings', {
     language: '',
     theme: 'light',
     preference_theme: 'auto',
-    environment: {
+    node: {
       id: 0,
       name: 'Local',
     },
@@ -15,7 +15,7 @@ export const useSettingsStore = defineStore('settings', {
   }),
   getters: {
     is_remote(): boolean {
-      return this.environment.id !== 0
+      return this.node.id !== 0
     },
   },
   actions: {
@@ -30,9 +30,9 @@ export const useSettingsStore = defineStore('settings', {
     set_preference_theme(t: string) {
       this.preference_theme = t
     },
-    clear_environment() {
-      this.environment.id = 0
-      this.environment.name = 'Local'
+    clear_node() {
+      this.node.id = 0
+      this.node.name = 'Local'
     },
   },
   persist: [

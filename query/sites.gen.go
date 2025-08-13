@@ -34,12 +34,12 @@ func newSite(db *gorm.DB, opts ...gen.DOOption) site {
 	_site.DeletedAt = field.NewField(tableName, "deleted_at")
 	_site.Path = field.NewString(tableName, "path")
 	_site.Advanced = field.NewBool(tableName, "advanced")
-	_site.EnvGroupID = field.NewUint64(tableName, "env_group_id")
+	_site.NamespaceID = field.NewUint64(tableName, "namespace_id")
 	_site.SyncNodeIDs = field.NewField(tableName, "sync_node_ids")
-	_site.EnvGroup = siteBelongsToEnvGroup{
+	_site.Namespace = siteBelongsToNamespace{
 		db: db.Session(&gorm.Session{}),
 
-		RelationField: field.NewRelation("EnvGroup", "model.EnvGroup"),
+		RelationField: field.NewRelation("Namespace", "model.Namespace"),
 	}
 
 	_site.fillFieldMap()
@@ -57,9 +57,9 @@ type site struct {
 	DeletedAt   field.Field
 	Path        field.String
 	Advanced    field.Bool
-	EnvGroupID  field.Uint64
+	NamespaceID field.Uint64
 	SyncNodeIDs field.Field
-	EnvGroup    siteBelongsToEnvGroup
+	Namespace   siteBelongsToNamespace
 
 	fieldMap map[string]field.Expr
 }
@@ -82,7 +82,7 @@ func (s *site) updateTableName(table string) *site {
 	s.DeletedAt = field.NewField(table, "deleted_at")
 	s.Path = field.NewString(table, "path")
 	s.Advanced = field.NewBool(table, "advanced")
-	s.EnvGroupID = field.NewUint64(table, "env_group_id")
+	s.NamespaceID = field.NewUint64(table, "namespace_id")
 	s.SyncNodeIDs = field.NewField(table, "sync_node_ids")
 
 	s.fillFieldMap()
@@ -107,31 +107,31 @@ func (s *site) fillFieldMap() {
 	s.fieldMap["deleted_at"] = s.DeletedAt
 	s.fieldMap["path"] = s.Path
 	s.fieldMap["advanced"] = s.Advanced
-	s.fieldMap["env_group_id"] = s.EnvGroupID
+	s.fieldMap["namespace_id"] = s.NamespaceID
 	s.fieldMap["sync_node_ids"] = s.SyncNodeIDs
 
 }
 
 func (s site) clone(db *gorm.DB) site {
 	s.siteDo.ReplaceConnPool(db.Statement.ConnPool)
-	s.EnvGroup.db = db.Session(&gorm.Session{Initialized: true})
-	s.EnvGroup.db.Statement.ConnPool = db.Statement.ConnPool
+	s.Namespace.db = db.Session(&gorm.Session{Initialized: true})
+	s.Namespace.db.Statement.ConnPool = db.Statement.ConnPool
 	return s
 }
 
 func (s site) replaceDB(db *gorm.DB) site {
 	s.siteDo.ReplaceDB(db)
-	s.EnvGroup.db = db.Session(&gorm.Session{})
+	s.Namespace.db = db.Session(&gorm.Session{})
 	return s
 }
 
-type siteBelongsToEnvGroup struct {
+type siteBelongsToNamespace struct {
 	db *gorm.DB
 
 	field.RelationField
 }
 
-func (a siteBelongsToEnvGroup) Where(conds ...field.Expr) *siteBelongsToEnvGroup {
+func (a siteBelongsToNamespace) Where(conds ...field.Expr) *siteBelongsToNamespace {
 	if len(conds) == 0 {
 		return &a
 	}
@@ -144,32 +144,32 @@ func (a siteBelongsToEnvGroup) Where(conds ...field.Expr) *siteBelongsToEnvGroup
 	return &a
 }
 
-func (a siteBelongsToEnvGroup) WithContext(ctx context.Context) *siteBelongsToEnvGroup {
+func (a siteBelongsToNamespace) WithContext(ctx context.Context) *siteBelongsToNamespace {
 	a.db = a.db.WithContext(ctx)
 	return &a
 }
 
-func (a siteBelongsToEnvGroup) Session(session *gorm.Session) *siteBelongsToEnvGroup {
+func (a siteBelongsToNamespace) Session(session *gorm.Session) *siteBelongsToNamespace {
 	a.db = a.db.Session(session)
 	return &a
 }
 
-func (a siteBelongsToEnvGroup) Model(m *model.Site) *siteBelongsToEnvGroupTx {
-	return &siteBelongsToEnvGroupTx{a.db.Model(m).Association(a.Name())}
+func (a siteBelongsToNamespace) Model(m *model.Site) *siteBelongsToNamespaceTx {
+	return &siteBelongsToNamespaceTx{a.db.Model(m).Association(a.Name())}
 }
 
-func (a siteBelongsToEnvGroup) Unscoped() *siteBelongsToEnvGroup {
+func (a siteBelongsToNamespace) Unscoped() *siteBelongsToNamespace {
 	a.db = a.db.Unscoped()
 	return &a
 }
 
-type siteBelongsToEnvGroupTx struct{ tx *gorm.Association }
+type siteBelongsToNamespaceTx struct{ tx *gorm.Association }
 
-func (a siteBelongsToEnvGroupTx) Find() (result *model.EnvGroup, err error) {
+func (a siteBelongsToNamespaceTx) Find() (result *model.Namespace, err error) {
 	return result, a.tx.Find(&result)
 }
 
-func (a siteBelongsToEnvGroupTx) Append(values ...*model.EnvGroup) (err error) {
+func (a siteBelongsToNamespaceTx) Append(values ...*model.Namespace) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -177,7 +177,7 @@ func (a siteBelongsToEnvGroupTx) Append(values ...*model.EnvGroup) (err error) {
 	return a.tx.Append(targetValues...)
 }
 
-func (a siteBelongsToEnvGroupTx) Replace(values ...*model.EnvGroup) (err error) {
+func (a siteBelongsToNamespaceTx) Replace(values ...*model.Namespace) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -185,7 +185,7 @@ func (a siteBelongsToEnvGroupTx) Replace(values ...*model.EnvGroup) (err error) 
 	return a.tx.Replace(targetValues...)
 }
 
-func (a siteBelongsToEnvGroupTx) Delete(values ...*model.EnvGroup) (err error) {
+func (a siteBelongsToNamespaceTx) Delete(values ...*model.Namespace) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -193,15 +193,15 @@ func (a siteBelongsToEnvGroupTx) Delete(values ...*model.EnvGroup) (err error) {
 	return a.tx.Delete(targetValues...)
 }
 
-func (a siteBelongsToEnvGroupTx) Clear() error {
+func (a siteBelongsToNamespaceTx) Clear() error {
 	return a.tx.Clear()
 }
 
-func (a siteBelongsToEnvGroupTx) Count() int64 {
+func (a siteBelongsToNamespaceTx) Count() int64 {
 	return a.tx.Count()
 }
 
-func (a siteBelongsToEnvGroupTx) Unscoped() *siteBelongsToEnvGroupTx {
+func (a siteBelongsToNamespaceTx) Unscoped() *siteBelongsToNamespaceTx {
 	a.tx = a.tx.Unscoped()
 	return &a
 }

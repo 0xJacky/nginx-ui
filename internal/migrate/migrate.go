@@ -5,9 +5,11 @@ import (
 )
 
 var Migrations = []*gormigrate.Migration{
-	SiteCategoryToEnvGroup,
+	SiteCategoryToNamespace,
 	RenameAuthsToUsers,
 	UpdateCertDomains,
+	RenameEnvGroupsToNamespaces,
+	RenameEnvironmentsToNodes,
 }
 
 var BeforeAutoMigrate = []*gormigrate.Migration{

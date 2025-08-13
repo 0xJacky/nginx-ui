@@ -6,19 +6,19 @@ import { useSettingsStore } from '@/pinia'
 
 const settingsStore = useSettingsStore()
 
-const { environment } = storeToRefs(settingsStore)
+const { node } = storeToRefs(settingsStore)
 const router = useRouter()
 
-async function clear_env() {
+async function clear_node() {
   await router.push('/dashboard')
-  settingsStore.clear_environment()
+  settingsStore.clear_node()
 }
 
 const is_local = computed(() => {
-  return environment.value.id === 0
+  return node.value.id === 0
 })
 
-const node_id = computed(() => environment.value.id)
+const node_id = computed(() => node.value.id)
 
 watch(node_id, async () => {
   await router.push('/dashboard')
@@ -34,17 +34,17 @@ const { server_name } = storeToRefs(useSettingsStore())
       <DatabaseOutlined />
       <span
         v-if="is_local"
-        class="env-name"
+        class="node-name"
       >
         {{ server_name || $gettext('Local') }}
       </span>
       <span
         v-else
-        class="env-name"
+        class="node-name"
       >
-        {{ environment.name }}
+        {{ node.name }}
       </span>
-      <ATag @click="clear_env">
+      <ATag @click="clear_node">
         <DashboardOutlined v-if="is_local" />
         <CloseOutlined v-else />
       </ATag>
@@ -54,7 +54,7 @@ const { server_name } = storeToRefs(useSettingsStore())
 
 <style scoped lang="less">
 .ant-layout-sider-collapsed {
-  .ant-tag, .env-name {
+  .ant-tag, .node-name {
     display: none;
   }
 
@@ -79,7 +79,7 @@ const { server_name } = storeToRefs(useSettingsStore())
     align-items: center;
     justify-content: space-between;
 
-    .env-name {
+    .node-name {
       max-width: 85px;
       text-overflow: ellipsis;
       white-space: nowrap;

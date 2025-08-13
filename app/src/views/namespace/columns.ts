@@ -1,6 +1,6 @@
 import type { StdTableColumn } from '@uozi-admin/curd'
 import { datetimeRender, maskRender } from '@uozi-admin/curd'
-import { PostSyncAction, UpstreamTestType } from '@/api/env_group'
+import { PostSyncAction, UpstreamTestType } from '@/api/namespace'
 import { PostSyncActionMask, UpstreamTestTypeMask } from '@/constants'
 import { useNodeAvailabilityStore } from '@/pinia/moudule/nodeAvailability'
 

@@ -16,7 +16,7 @@ type ListOptions struct {
 	Status     string
 	OrderBy    string
 	Sort       string
-	EnvGroupID uint64
+	NamespaceID uint64
 }
 
 // GetStreamConfigs retrieves and processes stream configurations with database integration
@@ -28,7 +28,7 @@ func GetStreamConfigs(ctx context.Context, options *ListOptions, streams []*mode
 		Status:      options.Status,
 		OrderBy:     options.OrderBy,
 		Sort:        options.Sort,
-		EnvGroupID:  options.EnvGroupID,
+		NamespaceID: options.NamespaceID,
 		IncludeDirs: false, // Filter out directories for stream configurations
 	}
 
@@ -47,7 +47,7 @@ func GetStreamConfigs(ctx context.Context, options *ListOptions, streams []*mode
 }
 
 // buildConfig creates a config.Config from file information with stream-specific data
-func buildConfig(fileName string, fileInfo os.FileInfo, status config.ConfigStatus, envGroupID uint64, envGroup *model.EnvGroup) config.Config {
+func buildConfig(fileName string, fileInfo os.FileInfo, status config.ConfigStatus, namespaceID uint64, namespace *model.Namespace) config.Config {
 	indexedStream := GetIndexedStream(fileName)
 
 	// Convert proxy targets, expanding upstream references
@@ -81,8 +81,8 @@ func buildConfig(fileName string, fileInfo os.FileInfo, status config.ConfigStat
 		Size:         fileInfo.Size(),
 		IsDir:        fileInfo.IsDir(),
 		Status:       status,
-		EnvGroupID:   envGroupID,
-		EnvGroup:     envGroup,
+		NamespaceID:  namespaceID,
+		Namespace:    namespace,
 		ProxyTargets: proxyTargets,
 	}
 }

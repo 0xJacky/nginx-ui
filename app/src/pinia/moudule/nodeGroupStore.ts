@@ -1,10 +1,10 @@
-import type { EnvGroup } from '@/api/env_group'
+import type { Namespace } from '@/api/namespace'
 import { defineStore } from 'pinia'
-import env_group from '@/api/env_group'
+import namespace from '@/api/namespace'
 
 export const useNodeGroupStore = defineStore('nodeGroup', () => {
-  const envGroups = ref<EnvGroup[]>([])
-  const envGroupMap = ref<Record<number, EnvGroup>>({})
+  const namespaces = ref<Namespace[]>([])
+  const namespaceMap = ref<Record<number, Namespace>>({})
   const isLoading = ref(false)
   const isInitialized = ref(false)
   const lastUpdateTime = ref<string>('')
@@ -28,12 +28,12 @@ export const useNodeGroupStore = defineStore('nodeGroup', () => {
     isLoading.value = true
 
     try {
-      const allGroups: EnvGroup[] = []
+      const allGroups: Namespace[] = []
       let currentPage = 1
       let hasMorePages = true
 
       while (hasMorePages) {
-        const response = await env_group.getList({
+        const response = await namespace.getList({
           page: currentPage,
           page_size: 100, // Use a reasonable page size
         })
@@ -53,12 +53,12 @@ export const useNodeGroupStore = defineStore('nodeGroup', () => {
         currentPage++
       }
 
-      envGroups.value = allGroups
+      namespaces.value = allGroups
       lastUpdateTime.value = new Date().toISOString()
-      envGroupMap.value = allGroups.reduce((acc, group) => {
+      namespaceMap.value = allGroups.reduce((acc, group) => {
         acc[group.id] = group
         return acc
-      }, {} as Record<number, EnvGroup>)
+      }, {} as Record<number, Namespace>)
     }
     catch (error) {
       console.error('Failed to load environment groups:', error)
@@ -69,8 +69,8 @@ export const useNodeGroupStore = defineStore('nodeGroup', () => {
   }
 
   // Get environment group by ID
-  function getGroupById(id: number): EnvGroup | undefined {
-    return envGroupMap.value[id]
+  function getGroupById(id: number): Namespace | undefined {
+    return namespaceMap.value[id]
   }
 
   // Refresh all data
@@ -79,7 +79,7 @@ export const useNodeGroupStore = defineStore('nodeGroup', () => {
   }
 
   return {
-    envGroups: readonly(envGroups),
+    namespaces: readonly(namespaces),
     isLoading: readonly(isLoading),
     isInitialized: readonly(isInitialized),
     lastUpdateTime: readonly(lastUpdateTime),

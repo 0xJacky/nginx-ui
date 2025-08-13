@@ -318,7 +318,7 @@ func syncEnableMaintenance(name string) {
 	wg.Add(len(nodes))
 
 	for _, node := range nodes {
-		go func(node *model.Environment) {
+		go func(node *model.Node) {
 			defer func() {
 				if err := recover(); err != nil {
 					buf := make([]byte, 1024)
@@ -356,7 +356,7 @@ func syncDisableMaintenance(name string) {
 	wg.Add(len(nodes))
 
 	for _, node := range nodes {
-		go func(node *model.Environment) {
+		go func(node *model.Node) {
 			defer func() {
 				if err := recover(); err != nil {
 					buf := make([]byte, 1024)

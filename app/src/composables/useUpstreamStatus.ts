@@ -1,11 +1,11 @@
 // Composable for managing upstream status logic shared between components
-import type { EnvGroup } from '@/api/env_group'
+import type { Namespace } from '@/api/namespace'
 import type { ProxyTarget } from '@/api/site'
 import { useNodeAvailabilityStore } from '@/pinia/moudule/nodeAvailability'
 import { useNodeGroupStore } from '@/pinia/moudule/nodeGroupStore'
 import { useProxyAvailabilityStore } from '@/pinia/moudule/proxyAvailability'
 
-export function useUpstreamStatus(envGroupId?: Ref<number | undefined>) {
+export function useUpstreamStatus(namespaceId?: Ref<number | undefined>) {
   const proxyStore = useProxyAvailabilityStore()
   const nodeStore = useNodeAvailabilityStore()
   const nodeGroupStore = useNodeGroupStore()
@@ -22,11 +22,11 @@ export function useUpstreamStatus(envGroupId?: Ref<number | undefined>) {
 
   // Check if should show multi-node display based on group configuration
   const shouldShowMultiNodeDisplay = computed(() => {
-    if (!envGroupId?.value) {
+    if (!namespaceId?.value) {
       return false
     }
 
-    const group = nodeGroupStore.getGroupById(envGroupId.value)
+    const group = nodeGroupStore.getGroupById(namespaceId.value)
     const testType = group?.upstream_test_type || 'local'
     return testType === 'remote' || testType === 'mirror'
   })
@@ -46,7 +46,7 @@ export function useUpstreamStatus(envGroupId?: Ref<number | undefined>) {
 
   // Helper function to get color for multi-node display
   function getMultiNodeColor(target: ProxyTarget): string {
-    const group = nodeGroupStore.getGroupById(envGroupId!.value!)
+    const group = nodeGroupStore.getGroupById(namespaceId!.value!)
     const testType = group?.upstream_test_type || 'local'
     const totalNodes = calculateTotalNodes(group, testType)
     const onlineCount = calculateOnlineCount(target, group, testType)
@@ -59,14 +59,14 @@ export function useUpstreamStatus(envGroupId?: Ref<number | undefined>) {
   }
 
   // Calculate total nodes based on test type
-  function calculateTotalNodes(group: EnvGroup | undefined, testType: string): number {
+  function calculateTotalNodes(group: Namespace | undefined, testType: string): number {
     return testType === 'remote'
       ? (group?.sync_node_ids?.length || 0) // remote: only sync nodes
       : (group?.sync_node_ids?.length || 0) + 1 // mirror: sync nodes + main node
   }
 
   // Calculate online nodes count
-  function calculateOnlineCount(target: ProxyTarget, group: EnvGroup | undefined, testType: string): number {
+  function calculateOnlineCount(target: ProxyTarget, group: Namespace | undefined, testType: string): number {
     const multiNodeStatus = proxyStore.getMultiNodeStatus(target)
     let onlineCount = 0
 
@@ -119,7 +119,7 @@ export function useUpstreamStatus(envGroupId?: Ref<number | undefined>) {
       }
     }
 
-    const group = nodeGroupStore.getGroupById(envGroupId!.value!)
+    const group = nodeGroupStore.getGroupById(namespaceId!.value!)
     const testType = group?.upstream_test_type || 'local'
     const totalNodes = calculateTotalNodes(group, testType)
     const onlineCount = calculateOnlineCount(target, group, testType)
@@ -140,10 +140,10 @@ export function useUpstreamStatus(envGroupId?: Ref<number | undefined>) {
 
   // Get all node statuses for modal display
   function getAllNodeStatuses(target: ProxyTarget) {
-    if (!envGroupId?.value)
+    if (!namespaceId?.value)
       return []
 
-    const group = nodeGroupStore.getGroupById(envGroupId.value)
+    const group = nodeGroupStore.getGroupById(namespaceId.value)
     const testType = group?.upstream_test_type || 'local'
     const allStatuses: Array<{ nodeId: string, name: string, status: { online: boolean, latency: number }, isMainNode: boolean }> = []
 

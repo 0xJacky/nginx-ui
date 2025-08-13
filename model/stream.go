@@ -2,11 +2,11 @@ package model
 
 type Stream struct {
 	Model
-	Path        string    `json:"path" gorm:"uniqueIndex"`
-	Advanced    bool      `json:"advanced"`
-	EnvGroupID  uint64    `json:"env_group_id"`
-	EnvGroup    *EnvGroup `json:"env_group,omitempty"`
-	SyncNodeIDs []uint64  `json:"sync_node_ids" gorm:"serializer:json"`
+	Path        string     `json:"path" gorm:"uniqueIndex"`
+	Advanced    bool       `json:"advanced"`
+	NamespaceID uint64     `json:"namespace_id"`
+	Namespace   *Namespace `json:"namespace,omitempty"`
+	SyncNodeIDs []uint64   `json:"sync_node_ids" gorm:"serializer:json"`
 }
 
 // GetPath implements ConfigEntity interface
@@ -14,12 +14,12 @@ func (s *Stream) GetPath() string {
 	return s.Path
 }
 
-// GetEnvGroupID implements ConfigEntity interface
-func (s *Stream) GetEnvGroupID() uint64 {
-	return s.EnvGroupID
+// GetNamespaceID implements ConfigEntity interface
+func (s *Stream) GetNamespaceID() uint64 {
+	return s.NamespaceID
 }
 
-// GetEnvGroup implements ConfigEntity interface
-func (s *Stream) GetEnvGroup() *EnvGroup {
-	return s.EnvGroup
+// GetNamespace implements ConfigEntity interface
+func (s *Stream) GetNamespace() *Namespace {
+	return s.Namespace
 }

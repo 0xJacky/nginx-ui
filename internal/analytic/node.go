@@ -38,8 +38,8 @@ type NodeStat struct {
 }
 
 type Node struct {
-	EnvironmentID int `json:"environment_id,omitempty"`
-	*model.Environment
+	NodeID int `json:"node_id,omitempty"`
+	*model.Node
 	NodeStat
 	NodeInfo
 }
@@ -54,31 +54,31 @@ func init() {
 	NodeMap = make(TNodeMap)
 }
 
-func GetNode(env *model.Environment) (n *Node) {
-	if env == nil {
+func GetNode(node *model.Node) (n *Node) {
+	if node == nil {
 		// this should never happen
-		logger.Error("env is nil")
+		logger.Error("node is nil")
 		return
 	}
-	if !env.Enabled {
+	if !node.Enabled {
 		return &Node{
-			Environment: env,
+			Node: node,
 		}
 	}
-	n, ok := NodeMap[env.ID]
+	n, ok := NodeMap[node.ID]
 	if !ok {
 		n = &Node{}
 	}
-	n.Environment = env
+	n.Node = node
 	return n
 }
 
-func InitNode(env *model.Environment) (n *Node, err error) {
+func InitNode(node *model.Node) (n *Node, err error) {
 	n = &Node{
-		Environment: env,
+		Node: node,
 	}
 
-	u, err := url.JoinPath(env.URL, "/api/node")
+	u, err := url.JoinPath(node.URL, "/api/node")
 	if err != nil {
 		return
 	}
@@ -96,7 +96,7 @@ func InitNode(env *model.Environment) (n *Node, err error) {
 		return
 	}
 
-	req.Header.Set("X-Node-Secret", env.Token)
+	req.Header.Set("X-Node-Secret", node.Token)
 
 	resp, err := client.Do(req)
 	if err != nil {

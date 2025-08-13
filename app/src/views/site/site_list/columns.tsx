@@ -6,11 +6,11 @@ import type { Site, SiteStatus } from '@/api/site'
 import type { JSXElements } from '@/types'
 import { datetimeRender } from '@uozi-admin/curd'
 import { Tag } from 'ant-design-vue'
-import env_group from '@/api/env_group'
-import EnvGroupRender from '@/components/EnvGroupRender'
+import namespace from '@/api/namespace'
+import NamespaceRender from '@/components/NamespaceRender'
 import ProxyTargets from '@/components/ProxyTargets'
 import { ConfigStatus } from '@/constants'
-import envGroupColumns from '@/views/environments/group/columns'
+import namespaceColumns from '@/views/namespace/columns'
 import SiteStatusSelect from '@/views/site/components/SiteStatusSelect.vue'
 
 const columns: StdTableColumn[] = [{
@@ -81,25 +81,25 @@ const columns: StdTableColumn[] = [{
   customRender: ({ record }: CustomRenderArgs) => {
     if (record.proxy_targets && record.proxy_targets.length > 0) {
       return h(ProxyTargets, {
-        envGroupId: record.env_group_id,
+        namespaceId: record.namespace_id,
         targets: record.proxy_targets,
       })
     }
     return h('span', '-')
   },
 }, {
-  title: () => $gettext('Node Group'),
-  dataIndex: 'env_group_id',
+  title: () => $gettext('Namespace'),
+  dataIndex: 'namespace_id',
   customRender: ({ record }: CustomRenderArgs<Site>) => {
-    return h(EnvGroupRender, {
-      envGroup: record.env_group || null,
+    return h(NamespaceRender, {
+      namespace: record.namespace || null,
     })
   },
   edit: {
     type: 'selector',
     selector: {
-      getListApi: env_group.getList,
-      columns: envGroupColumns,
+      getListApi: namespace.getList,
+      columns: namespaceColumns,
       valueKey: 'id',
       displayKey: 'name',
       selectionType: 'radio',

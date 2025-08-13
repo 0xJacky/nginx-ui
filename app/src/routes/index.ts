@@ -8,9 +8,10 @@ import { backupRoutes } from './modules/backup'
 import { certificatesRoutes } from './modules/certificates'
 import { configRoutes } from './modules/config'
 import { dashboardRoutes } from './modules/dashboard'
-import { environmentsRoutes } from './modules/environments'
 import { errorRoutes } from './modules/error'
+import { namespacesRoutes } from './modules/namespaces'
 import { nginxLogRoutes } from './modules/nginx_log'
+import { nodesRoutes } from './modules/nodes'
 import { notificationsRoutes } from './modules/notifications'
 import { preferenceRoutes } from './modules/preference'
 import { sitesRoutes } from './modules/sites'
@@ -29,7 +30,8 @@ const mainLayoutChildren: RouteRecordRaw[] = [
   ...certificatesRoutes,
   ...terminalRoutes,
   ...nginxLogRoutes,
-  ...environmentsRoutes,
+  ...namespacesRoutes,
+  ...nodesRoutes,
   ...notificationsRoutes,
   ...userRoutes,
   ...preferenceRoutes,

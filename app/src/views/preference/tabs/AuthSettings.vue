@@ -50,97 +50,94 @@ function removeBannedIP(ip: string) {
 </script>
 
 <template>
-  <div class="flex justify-center">
-    <div>
-      <h2>
-        {{ $gettext('Authentication Settings') }}
-      </h2>
-      <div
-        v-if="data.webauthn.rpid
-          && data.webauthn.rp_display_name
-          && data.webauthn.rp_origins?.length > 0"
-        class="mb-4"
-      >
-        <h3>
-          {{ $gettext('Webauthn') }}
-        </h3>
-        <div class="mb-4">
-          <h4>
-            {{ $gettext('RPID') }}
-          </h4>
-          <p>{{ data.webauthn.rpid }}</p>
-        </div>
-        <div class="mb-4">
-          <h4>
-            {{ $gettext('RP Display Name') }}
-          </h4>
-          <p>{{ data.webauthn.rp_display_name }}</p>
-        </div>
-        <div>
-          <h4>
-            {{ $gettext('RP Origins') }}
-          </h4>
-          <div
-            v-for="origin in data.webauthn.rp_origins"
-            :key="origin"
-            class="mb-4"
-          >
-            {{ origin }}
-          </div>
-        </div>
-      </div>
-      <h3>{{ $gettext('Throttle') }}</h3>
-      <AForm
-        layout="horizontal"
-        style="width:90%;max-width: 500px"
-      >
-        <AFormItem :label="$gettext('Ban Threshold Minutes')">
-          <AInputNumber
-            v-model:value="data.auth.ban_threshold_minutes"
-            min="1"
-          />
-        </AFormItem>
-        <AFormItem :label="$gettext('Max Attempts')">
-          <AInputNumber
-            v-model:value="data.auth.max_attempts"
-            min="1"
-          />
-        </AFormItem>
-      </AForm>
-      <AAlert
-        class="mb-6"
-        :message="$gettext('Tips')"
-        :description="$gettext('If the number of login failed attempts from a ip reach the max attempts in ban threshold minutes,'
-          + ' the ip will be banned for a period of time.')"
-        type="info"
-      />
-      <h3 class="mb-4">
-        {{ $gettext('Banned IPs') }}
+  <div>
+    <h2>
+      {{ $gettext('Authentication Settings') }}
+    </h2>
+    <div
+      v-if="data.webauthn.rpid
+        && data.webauthn.rp_display_name
+        && data.webauthn.rp_origins?.length > 0"
+      class="mb-4"
+    >
+      <h3>
+        {{ $gettext('Webauthn') }}
       </h3>
-      <div class="mb-6">
-        <ATable
-          :columns="bannedIPColumns"
-          row-key="ip"
-          :data-source="bannedIPs"
-          size="small"
-        >
-          <template #bodyCell="{ column, record }">
-            <template v-if="column.dataIndex === 'action'">
-              <APopconfirm
-                :title="$gettext('Are you sure to delete this banned IP immediately?')"
-                :ok-text="$gettext('Yes')"
-                :cancel-text="$gettext('No')"
-                placement="bottom"
-                @confirm="() => removeBannedIP(record.ip)"
-              >
-                <a>
-                  {{ $gettext('Remove') }}
-                </a>
-              </APopconfirm>
-            </template>
-          </template>
-        </ATable>
+      <div class="mb-4">
+        <h4>
+          {{ $gettext('RPID') }}
+        </h4>
+        <p>{{ data.webauthn.rpid }}</p>
       </div>
+      <div class="mb-4">
+        <h4>
+          {{ $gettext('RP Display Name') }}
+        </h4>
+        <p>{{ data.webauthn.rp_display_name }}</p>
+      </div>
+      <div>
+        <h4>
+          {{ $gettext('RP Origins') }}
+        </h4>
+        <div
+          v-for="origin in data.webauthn.rp_origins"
+          :key="origin"
+          class="mb-4"
+        >
+          {{ origin }}
+        </div>
+      </div>
+    </div>
+    <h3>{{ $gettext('Throttle') }}</h3>
+    <AForm
+      layout="horizontal"
+    >
+      <AFormItem :label="$gettext('Ban Threshold Minutes')">
+        <AInputNumber
+          v-model:value="data.auth.ban_threshold_minutes"
+          min="1"
+        />
+      </AFormItem>
+      <AFormItem :label="$gettext('Max Attempts')">
+        <AInputNumber
+          v-model:value="data.auth.max_attempts"
+          min="1"
+        />
+      </AFormItem>
+    </AForm>
+    <AAlert
+      class="mb-6"
+      show-icon
+      :message="$gettext('If the number of login failed attempts from a ip reach the max attempts in ban threshold minutes,'
+        + ' the ip will be banned for a period of time.')"
+      type="info"
+    />
+    <h3 class="mb-4">
+      {{ $gettext('Banned IPs') }}
+    </h3>
+    <div class="mb-6">
+      <ATable
+        :columns="bannedIPColumns"
+        row-key="ip"
+        :data-source="bannedIPs"
+        size="small"
+      >
+        <template #bodyCell="{ column, record }">
+          <template v-if="column.dataIndex === 'action'">
+            <APopconfirm
+              :title="$gettext('Are you sure to delete this banned IP immediately?')"
+              :ok-text="$gettext('Yes')"
+              :cancel-text="$gettext('No')"
+              placement="bottom"
+              @confirm="() => removeBannedIP(record.ip)"
+            >
+              <a>
+                {{ $gettext('Remove') }}
+              </a>
+            </APopconfirm>
+          </template>
+        </template>
+      </ATable>
     </div>
   </div>
 </template>

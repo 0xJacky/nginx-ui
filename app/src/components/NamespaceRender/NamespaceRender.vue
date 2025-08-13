@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { EnvGroup } from '@/api/env_group'
+import type { Namespace } from '@/api/namespace'
 import NodeCard from '@/components/NodeCard'
 
 defineProps<{
-  envGroup: EnvGroup | null
+  namespace: Namespace | null
 }>()
 
 const modalVisible = ref(false)
@@ -18,17 +18,17 @@ function handleCancel() {
 </script>
 
 <template>
-  <div v-if="envGroup">
+  <div v-if="namespace">
     <span
       class="cursor-pointer text-blue-500 hover:text-blue-700"
       @click="showModal"
     >
-      {{ envGroup.name }}
+      {{ namespace.name }}
     </span>
 
     <AModal
       v-model:open="modalVisible"
-      :title="envGroup.name"
+      :title="namespace.name"
       :footer="null"
       width="680px"
       @cancel="handleCancel"
@@ -37,27 +37,27 @@ function handleCancel() {
         <div class="mb-4">
           <strong class="text-gray-900 dark:text-gray-100">{{ $gettext('Post-sync Action') }}:</strong>
           <span class="ml-2 text-gray-700 dark:text-gray-300">
-            <template v-if="!envGroup.post_sync_action || envGroup.post_sync_action === 'none'">
+            <template v-if="!namespace.post_sync_action || namespace.post_sync_action === 'none'">
               {{ $gettext('No Action') }}
             </template>
-            <template v-else-if="envGroup.post_sync_action === 'reload_nginx'">
+            <template v-else-if="namespace.post_sync_action === 'reload_nginx'">
               {{ $gettext('Reload Nginx') }}
             </template>
             <template v-else>
-              {{ envGroup.post_sync_action }}
+              {{ namespace.post_sync_action }}
             </template>
           </span>
         </div>
 
         <div>
           <strong class="text-gray-900 dark:text-gray-100">{{ $gettext('Sync Nodes') }}</strong>
-          <div v-if="!envGroup.sync_node_ids || envGroup.sync_node_ids.length === 0" class="mt-2 text-gray-400 dark:text-gray-500">
+          <div v-if="!namespace.sync_node_ids || namespace.sync_node_ids.length === 0" class="mt-2 text-gray-400 dark:text-gray-500">
             {{ $gettext('No nodes selected') }}
           </div>
           <div v-else class="mt-2">
             <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
               <NodeCard
-                v-for="nodeId in envGroup.sync_node_ids"
+                v-for="nodeId in namespace.sync_node_ids"
                 :key="nodeId"
                 :node-id="nodeId"
                 size="sm"

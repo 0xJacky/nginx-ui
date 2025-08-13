@@ -4,8 +4,8 @@ import type { AntdIconType } from '@ant-design/icons-vue/lib/components/AntdIcon
 import type { Key } from 'ant-design-vue/es/_util/type'
 import type { NgxModule } from '@/api/ngx'
 import ngx from '@/api/ngx'
-import EnvIndicator from '@/components/EnvIndicator'
 import Logo from '@/components/Logo'
+import NodeIndicator from '@/components/NodeIndicator'
 import { useGlobalStore } from '@/pinia/moudule/global'
 import { routes } from '@/routes'
 
@@ -112,7 +112,7 @@ const visible: ComputedRef<Sidebar[]> = computed(() => {
       v-model:selected-keys="selectedKey"
       mode="inline"
     >
-      <EnvIndicator />
+      <NodeIndicator />
 
       <template v-for="s in visible">
         <AMenuItem

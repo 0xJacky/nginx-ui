@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { EnvGroup } from '@/api/env_group'
+import type { Namespace } from '@/api/namespace'
 import { message } from 'ant-design-vue'
 import nodeApi from '@/api/node'
 import { useNodeAvailabilityStore } from '@/pinia/moudule/nodeAvailability'
 
 const props = defineProps<{
-  envGroups: EnvGroup[]
+  namespaces: Namespace[]
 }>()
 
 const modelValue = defineModel<string | number>('activeKey')
@@ -17,28 +17,28 @@ const loading = ref({
 })
 
 // Get the current Node Group data
-const currentEnvGroup = computed(() => {
+const currentNamespace = computed(() => {
   if (!modelValue.value || modelValue.value === 0)
     return null
-  return props.envGroups.find(g => g.id === Number(modelValue.value))
+  return props.namespaces.find(g => g.id === Number(modelValue.value))
 })
 
 // Get the list of nodes in the current group
 const syncNodes = computed(() => {
-  if (!currentEnvGroup.value)
+  if (!currentNamespace.value)
     return []
 
-  if (!currentEnvGroup.value.sync_node_ids)
+  if (!currentNamespace.value.sync_node_ids)
     return []
 
-  return currentEnvGroup.value.sync_node_ids
+  return currentNamespace.value.sync_node_ids
     .map(id => nodeStore.getNodeStatus(id))
     .filter((node): node is NonNullable<typeof node> => Boolean(node))
 })
 
 // Handle reload Nginx on all sync nodes
 async function handleReloadNginx() {
-  if (!currentEnvGroup.value || !syncNodes.value.length)
+  if (!currentNamespace.value || !syncNodes.value.length)
     return
 
   const nodeIds = syncNodes.value.map(node => node.id)
@@ -58,7 +58,7 @@ async function handleReloadNginx() {
 
 // Handle restart Nginx on all sync nodes
 async function handleRestartNginx() {
-  if (!currentEnvGroup.value || !syncNodes.value.length)
+  if (!currentNamespace.value || !syncNodes.value.length)
     return
 
   const nodeIds = syncNodes.value.map(node => node.id)
@@ -81,7 +81,7 @@ async function handleRestartNginx() {
   <div>
     <ATabs :active-key="modelValue" @update:active-key="modelValue = $event">
       <ATabPane :key="0" :tab="$gettext('All')" />
-      <ATabPane v-for="c in envGroups" :key="c.id" :tab="c.name" />
+      <ATabPane v-for="c in namespaces" :key="c.id" :tab="c.name" />
     </ATabs>
 
     <!-- Display node information -->

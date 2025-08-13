@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-type Environment struct {
+type Node struct {
 	Model
 	Name    string `json:"name"`
 	URL     string `json:"url"`
@@ -13,8 +13,8 @@ type Environment struct {
 	Enabled bool   `json:"enabled" gorm:"default:false"`
 }
 
-func (e *Environment) GetUrl(uri string) (decodedUri string, err error) {
-	baseUrl, err := url.Parse(e.URL)
+func (n *Node) GetUrl(uri string) (decodedUri string, err error) {
+	baseUrl, err := url.Parse(n.URL)
 	if err != nil {
 		return
 	}
@@ -32,8 +32,8 @@ func (e *Environment) GetUrl(uri string) (decodedUri string, err error) {
 	return
 }
 
-func (e *Environment) GetWebSocketURL(uri string) (decodedUri string, err error) {
-	baseUrl, err := url.Parse(e.URL)
+func (n *Node) GetWebSocketURL(uri string) (decodedUri string, err error) {
+	baseUrl, err := url.Parse(n.URL)
 	if err != nil {
 		return
 	}

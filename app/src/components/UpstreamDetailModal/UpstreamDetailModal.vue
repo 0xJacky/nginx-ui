@@ -6,7 +6,7 @@ import { useUpstreamStatus } from '@/composables/useUpstreamStatus'
 interface Props {
   open: boolean
   target: ProxyTarget | null
-  envGroupId?: number
+  namespaceId?: number
 }
 
 const props = defineProps<Props>()
@@ -14,8 +14,8 @@ defineEmits<{
   'update:open': [value: boolean]
 }>()
 
-const envGroupIdRef = computed(() => props.envGroupId)
-const { getAllNodeStatuses, getStatusSummary } = useUpstreamStatus(envGroupIdRef)
+const namespaceIdRef = computed(() => props.namespaceId)
+const { getAllNodeStatuses, getStatusSummary } = useUpstreamStatus(namespaceIdRef)
 </script>
 
 <template>

@@ -9,6 +9,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/analytic"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/kernel"
+	"github.com/0xJacky/Nginx-UI/internal/version"
 	"github.com/shirou/gopsutil/v4/cpu"
 	"github.com/shirou/gopsutil/v4/host"
 	"github.com/shirou/gopsutil/v4/load"
@@ -161,4 +162,55 @@ func GetAnalyticInit(c *gin.Context) {
 		Disk:    diskStat,
 		LoadAvg: loadAvg,
 	})
+}
+
+func GetNode(c *gin.Context) {
+	cpuInfo, err := cpu.Info()
+	if err != nil {
+		logger.Error(err)
+	}
+
+	memory, err := analytic.GetMemoryStat()
+	if err != nil {
+		logger.Error(err)
+	}
+
+	diskStat, err := analytic.GetDiskStat()
+	if err != nil {
+		logger.Error(err)
+	}
+
+	hostInfo, err := host.Info()
+	if err != nil {
+		logger.Error(err)
+		hostInfo = &host.InfoStat{}
+	}
+
+	switch hostInfo.Platform {
+	case "ubuntu":
+		hostInfo.Platform = "Ubuntu"
+	case "centos":
+		hostInfo.Platform = "CentOS"
+	}
+
+	runtimeInfo, err := version.GetRuntimeInfo()
+	if err != nil {
+		logger.Error("Failed to get runtime info:", err)
+		runtimeInfo = version.RuntimeInfo{
+			OS:   fmt.Sprintf("%s %s", hostInfo.Platform, hostInfo.PlatformVersion),
+			Arch: runtime.GOARCH,
+		}
+	}
+
+	ver := version.GetVersionInfo()
+
+	nodeInfo := analytic.NodeInfo{
+		NodeRuntimeInfo: runtimeInfo,
+		Version:         ver.Version,
+		CPUNum:          len(cpuInfo),
+		MemoryTotal:     memory.Total,
+		DiskTotal:       diskStat.Total,
+	}
+
+	c.JSON(http.StatusOK, nodeInfo)
 }

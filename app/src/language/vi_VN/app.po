@@ -95,6 +95,11 @@ msgstr "[Nginx UI] Đang ghi khóa riêng của chứng chỉ vào ổ đĩa"
 msgid "[Nginx UI] Writing certificate to disk"
 msgstr "[Nginx UI] Đang ghi chứng chỉ vào ổ đĩa"
 
+#: src/views/certificate/components/CertificateBasicInfo.vue:28
+#: src/views/certificate/components/CertificateContentEditor.vue:29
+msgid "{label} copied to clipboard"
+msgstr "{label} đã được sao chép vào bảng nhớ tạm"
+
 #: src/components/SyncNodesPreview/SyncNodesPreview.vue:59
 msgid "* Includes nodes from group %{groupName} and manually selected nodes"
 msgstr "* Bao gồm các nút từ nhóm %{groupName} và các nút được chọn thủ công"
@@ -125,7 +130,7 @@ msgid "Access Logs"
 msgstr "Log truy cập"
 
 #: src/routes/modules/certificates.ts:20 src/views/certificate/ACMEUser.vue:147
-#: src/views/certificate/components/ACMEUserSelector.vue:52
+#: src/views/certificate/components/ACMEUserSelector.vue:64
 msgid "ACME User"
 msgstr "Người dùng ACME"
 
@@ -137,10 +142,8 @@ msgstr "Hành động"
 #: src/views/certificate/ACMEUser.vue:129
 #: src/views/certificate/CertificateList/certColumns.tsx:92
 #: src/views/certificate/DNSCredential.vue:71
-#: src/views/config/configColumns.tsx:50
-#: src/views/environments/group/columns.ts:84
-#: src/views/environments/list/envColumns.tsx:96
-#: src/views/nginx_log/NginxLogList.vue:68
+#: src/views/config/configColumns.tsx:50 src/views/namespace/columns.ts:84
+#: src/views/nginx_log/NginxLogList.vue:68 src/views/node/nodeColumns.tsx:96
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:85
 #: src/views/site/site_list/columns.tsx:160 src/views/stream/columns.tsx:123
@@ -222,7 +225,7 @@ msgstr "Nâng cao"
 msgid "Afterwards, refresh this page and click add passkey again."
 msgstr "Sau đó, làm mới trang này và nhấp vào thêm khóa truy cập một lần nữa."
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:83
+#: src/components/NamespaceTabs/NamespaceTabs.vue:83
 msgid "All"
 msgstr "Tất cả"
 
@@ -269,6 +272,10 @@ msgstr "Loại API"
 msgid "App"
 msgstr "Ứng dụng"
 
+#: src/language/curd.ts:65
+msgid "Apply"
+msgstr "Áp dụng"
+
 #: src/views/system/Upgrade.vue:195
 msgid "Arch"
 msgstr "Kiến trúc"
@@ -307,7 +314,7 @@ msgstr "Bạn có chắc chắn muốn xóa vĩnh viễn không?"
 msgid "Are you sure you want to delete?"
 msgstr "Bạn có chắc chắn muốn xóa không?"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:97
+#: src/components/NamespaceTabs/NamespaceTabs.vue:97
 msgid "Are you sure you want to reload Nginx on the following sync nodes?"
 msgstr "Bạn có chắc chắn muốn tải lại Nginx trên các nút đồng bộ sau không?"
 
@@ -323,7 +330,7 @@ msgstr "Bạn có chắc chắn muốn xóa mục này không?"
 msgid "Are you sure you want to remove this location?"
 msgstr "Bạn có chắc chắn muốn xóa vị trí này không?"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:109
+#: src/components/NamespaceTabs/NamespaceTabs.vue:109
 msgid "Are you sure you want to restart Nginx on the following sync nodes?"
 msgstr "Bạn có chắc chắn muốn khởi động lại Nginx trên các nút đồng bộ sau không?"
 
@@ -394,16 +401,15 @@ msgstr "Sao lưu tự động thất bại"
 msgid "Auto Backup Storage Failed"
 msgstr "Lưu trữ sao lưu tự động thất bại"
 
-#: src/views/environments/list/Environment.vue:165
-#: src/views/nginx_log/NginxLog.vue:150
+#: src/views/nginx_log/NginxLog.vue:150 src/views/node/Node.vue:165
 msgid "Auto Refresh"
 msgstr "Tự động làm mới"
 
-#: src/views/environments/list/Environment.vue:48
+#: src/views/node/Node.vue:48
 msgid "Auto refresh disabled"
 msgstr "Tự động làm mới đã bị vô hiệu hóa"
 
-#: src/views/environments/list/Environment.vue:44
+#: src/views/node/Node.vue:44
 msgid "Auto refresh enabled"
 msgstr "Cập nhật tự động đã được bật"
 
@@ -550,7 +556,7 @@ msgstr "Chỉnh sửa hàng loạt"
 msgid "Batch Modify"
 msgstr "Chỉnh sửa hàng loạt"
 
-#: src/views/environments/list/BatchUpgrader.vue:153
+#: src/views/node/BatchUpgrader.vue:153
 msgid "Batch Upgrade"
 msgstr "Nâng cấp hàng loạt"
 
@@ -793,8 +799,7 @@ msgstr[0] "Chứng chỉ đã thay đổi"
 msgid "Changed Path"
 msgstr "Đường dẫn đã thay đổi"
 
-#: src/views/environments/list/BatchUpgrader.vue:160
-#: src/views/system/Upgrade.vue:207
+#: src/views/node/BatchUpgrader.vue:160 src/views/system/Upgrade.vue:207
 msgid "Channel"
 msgstr "Kênh"
 
@@ -1006,6 +1011,10 @@ msgstr "Hoàn thành mã không được bật"
 msgid "Code Completion Model"
 msgstr "Mô hình hoàn thành mã"
 
+#: src/language/curd.ts:64
+msgid "Column Settings"
+msgstr "Cài đặt cột"
+
 #: src/views/preference/tabs/LogrotateSettings.vue:23
 msgid "Command"
 msgstr "Lệnh"
@@ -1097,6 +1106,10 @@ msgstr "Cấu hình"
 msgid "Configure SSL"
 msgstr "Cấu hình SSL"
 
+#: src/language/curd.ts:66
+msgid "Confirm Delete"
+msgstr "Xác nhận xóa"
+
 #: src/views/user/UserProfile.vue:204
 msgid "Confirm New Password"
 msgstr "Xác nhận mật khẩu mới"
@@ -1109,7 +1122,7 @@ msgstr "Đã kết nối"
 msgid "Connection error, trying to reconnect..."
 msgstr "Lỗi kết nối, đang thử kết nối lại..."
 
-#: src/views/terminal/Terminal.vue:139
+#: src/views/terminal/Terminal.vue:149
 msgid "Connection lost, please refresh the page."
 msgstr "Kết nối bị mất, xin vui lòng làm mới trang."
 
@@ -1190,7 +1203,7 @@ msgstr ""
 "tệp sao lưu sẽ tự động được tải xuống máy tính của bạn."
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:229
-#: src/views/environments/group/columns.ts:72
+#: src/views/namespace/columns.ts:72
 #: src/views/notification/notificationColumns.tsx:51
 #: src/views/preference/components/AuthSettings/Passkey.vue:95
 #: src/views/preference/components/ExternalNotify/columns.tsx:80
@@ -1422,7 +1435,7 @@ msgstr "Chi tiết"
 msgid "Dev"
 msgstr "Dev"
 
-#: src/views/environments/list/BatchUpgrader.vue:171
+#: src/views/node/BatchUpgrader.vue:171
 msgid "Development"
 msgstr "Phát triển"
 
@@ -1522,8 +1535,7 @@ msgid "Disable stream %{name} from %{node} successfully"
 msgstr "Đã vô hiệu hóa luồng %{name} từ %{node} thành công"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:175
-#: src/views/environments/list/envColumns.tsx:60
-#: src/views/environments/list/envColumns.tsx:78
+#: src/views/node/nodeColumns.tsx:60 src/views/node/nodeColumns.tsx:78
 #: src/views/preference/tabs/HTTPSettings.vue:24
 #: src/views/preference/tabs/NodeSettings.vue:25
 #: src/views/preference/tabs/NodeSettings.vue:30
@@ -1627,16 +1639,15 @@ msgstr "Đã có lỗi xảy ra khi tải về phiên bản mới nhất"
 msgid "Downloading latest release"
 msgstr "Đang tải phiên bản mới nhất"
 
-#: src/views/certificate/components/CertificateContentEditor.vue:126
+#: src/views/certificate/components/CertificateContentEditor.vue:157
 msgid "Drop certificate file here"
 msgstr "Thả tệp chứng chỉ vào đây"
 
-#: src/views/certificate/components/CertificateContentEditor.vue:175
+#: src/views/certificate/components/CertificateContentEditor.vue:218
 msgid "Drop private key file here"
 msgstr "Thả tệp khóa riêng tư vào đây"
 
-#: src/views/environments/list/BatchUpgrader.vue:192
-#: src/views/system/Upgrade.vue:237
+#: src/views/node/BatchUpgrader.vue:192 src/views/system/Upgrade.vue:237
 msgid "Dry run mode enabled"
 msgstr "Đã bật chế độ Dry run"
 
@@ -1808,8 +1819,7 @@ msgid "Enable TOTP"
 msgstr "Bật TOTP"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:174
-#: src/views/environments/list/envColumns.tsx:69
-#: src/views/environments/list/envColumns.tsx:75
+#: src/views/node/nodeColumns.tsx:69 src/views/node/nodeColumns.tsx:75
 #: src/views/preference/components/ExternalNotify/columns.tsx:47
 #: src/views/preference/tabs/HTTPSettings.vue:24
 #: src/views/preference/tabs/LogrotateSettings.vue:20
@@ -1866,13 +1876,11 @@ msgstr "Cấu hình môi trường trống"
 msgid "Environment variables cleaned"
 msgstr "Đã dọn dẹp biến môi trường"
 
-#: src/routes/modules/environments.ts:11
-#: src/views/dashboard/Environments.vue:80
-#: src/views/environments/list/Environment.vue:131
+#: src/views/node/Node.vue:131
 msgid "Environments"
 msgstr "Môi trường"
 
-#: src/constants/index.ts:22 src/views/config/InspectConfig.vue:63
+#: src/constants/index.ts:23 src/views/config/InspectConfig.vue:63
 #: src/views/notification/notificationColumns.tsx:14
 msgid "Error"
 msgstr "Lỗi"
@@ -2024,6 +2032,11 @@ msgstr "Không thể sao chép nội dung tệp: {0}"
 #: src/constants/errors/backup.ts:20
 msgid "Failed to copy Nginx config directory: {0}"
 msgstr "Không thể sao chép thư mục cấu hình Nginx: {0}"
+
+#: src/views/certificate/components/CertificateBasicInfo.vue:32
+#: src/views/certificate/components/CertificateContentEditor.vue:33
+msgid "Failed to copy to clipboard"
+msgstr "Sao chép vào bộ nhớ tạm thất bại"
 
 #: src/constants/errors/self_check.ts:10
 msgid "Failed to create backup"
@@ -2473,8 +2486,7 @@ msgstr "Không thể lấy dữ liệu"
 msgid "Get dns credential error: {0}"
 msgstr "Lỗi khi lấy thông tin xác thực DNS: {0}"
 
-#: src/views/environments/list/BatchUpgrader.vue:181
-#: src/views/system/Upgrade.vue:188
+#: src/views/node/BatchUpgrader.vue:181 src/views/system/Upgrade.vue:188
 msgid "Get release information error"
 msgstr "Lỗi lấy thông tin phát hành"
 
@@ -2520,7 +2532,7 @@ msgstr "Giá trị cao hơn có nghĩa là tái sử dụng kết nối tốt h�
 msgid "History"
 msgstr "Lịch sử"
 
-#: src/routes/index.ts:48
+#: src/routes/index.ts:50
 msgid "Home"
 msgstr "Trang chủ"
 
@@ -2583,7 +2595,7 @@ msgid "Import"
 msgstr "Nhập"
 
 #: src/routes/modules/certificates.ts:54
-#: src/views/certificate/CertificateEditor.vue:86
+#: src/views/certificate/CertificateEditor.vue:82
 msgid "Import Certificate"
 msgstr "Nhập chứng chỉ"
 
@@ -2607,7 +2619,7 @@ msgstr "Đang lập chỉ mục..."
 msgid "Indicator"
 msgstr "Chỉ số"
 
-#: src/constants/index.ts:24 src/views/notification/notificationColumns.tsx:28
+#: src/constants/index.ts:25 src/views/notification/notificationColumns.tsx:28
 msgid "Info"
 msgstr "Thông tin"
 
@@ -2842,10 +2854,10 @@ msgstr "Để trống nếu nhà cung cấp ACME của bạn không yêu cầu"
 msgid "Leave blank if you don't need this."
 msgstr "Để trống nếu bạn không cần cái này."
 
-#: src/views/certificate/components/CertificateContentEditor.vue:118
-#: src/views/certificate/components/CertificateContentEditor.vue:136
+#: src/views/certificate/components/CertificateContentEditor.vue:149
 #: src/views/certificate/components/CertificateContentEditor.vue:167
-#: src/views/certificate/components/CertificateContentEditor.vue:185
+#: src/views/certificate/components/CertificateContentEditor.vue:210
+#: src/views/certificate/components/CertificateContentEditor.vue:228
 msgid "Leave blank will not change anything"
 msgstr "Để trống sẽ không thay đổi bất cứ điều gì"
 
@@ -2878,11 +2890,11 @@ msgstr "Đang lắng nghe"
 msgid "Load Average:"
 msgstr "Tải trung bình:"
 
-#: src/views/environments/list/Environment.vue:138
+#: src/views/node/Node.vue:138
 msgid "Load from settings"
 msgstr "Tải từ cài đặt"
 
-#: src/views/environments/list/Environment.vue:68
+#: src/views/node/Node.vue:68
 msgid "Load successfully"
 msgstr "Tải thành công"
 
@@ -2912,7 +2924,7 @@ msgid "Loading data..."
 msgstr "Đang tải dữ liệu..."
 
 #: src/components/EnvIndicator/EnvIndicator.vue:39
-#: src/components/NodeSelector/NodeSelector.vue:61 src/constants/index.ts:41
+#: src/components/NodeSelector/NodeSelector.vue:61 src/constants/index.ts:42
 #: src/views/backup/AutoBackup/AutoBackup.vue:74
 #: src/views/backup/AutoBackup/AutoBackup.vue:83
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:48
@@ -2932,7 +2944,7 @@ msgstr "Location"
 msgid "Locations"
 msgstr "Locations"
 
-#: src/views/certificate/CertificateEditor.vue:126
+#: src/views/certificate/CertificateEditor.vue:122
 msgid "Log"
 msgstr "Nhật ký"
 
@@ -3141,7 +3153,7 @@ msgstr "Phút"
 msgid "Minutes"
 msgstr "Phút"
 
-#: src/constants/index.ts:43
+#: src/constants/index.ts:44
 msgid "Mirror"
 msgstr "Gương"
 
@@ -3159,7 +3171,7 @@ msgid "Modify"
 msgstr "Sửa đổi"
 
 #: src/routes/modules/certificates.ts:44
-#: src/views/certificate/CertificateEditor.vue:86
+#: src/views/certificate/CertificateEditor.vue:82
 msgid "Modify Certificate"
 msgstr "Sửa đổi chứng chỉ"
 
@@ -3204,15 +3216,15 @@ msgstr "Không có"
 #: src/views/backup/AutoBackup/AutoBackup.vue:11
 #: src/views/certificate/ACMEUser.vue:11
 #: src/views/certificate/CertificateList/certColumns.tsx:9
-#: src/views/certificate/components/CertificateBasicInfo.vue:23
+#: src/views/certificate/components/CertificateBasicInfo.vue:43
+#: src/views/certificate/components/CertificateBasicInfo.vue:57
+#: src/views/certificate/components/CertificateBasicInfo.vue:69
 #: src/views/certificate/DNSCredential.vue:17
 #: src/views/config/components/ConfigRightPanel/Basic.vue:34
 #: src/views/config/components/Delete.vue:123
 #: src/views/config/components/Mkdir.vue:64
-#: src/views/config/configColumns.tsx:17
-#: src/views/environments/group/columns.ts:9
-#: src/views/environments/list/envColumns.tsx:8
-#: src/views/nginx_log/NginxLogList.vue:52
+#: src/views/config/configColumns.tsx:17 src/views/namespace/columns.ts:9
+#: src/views/nginx_log/NginxLogList.vue:52 src/views/node/nodeColumns.tsx:8
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:80
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:36
 #: src/views/site/site_list/columns.tsx:30
@@ -3228,6 +3240,18 @@ msgstr "Tên"
 #: src/views/site/site_list/columns.tsx:22 src/views/stream/columns.tsx:18
 msgid "Name or content"
 msgstr "Tên hoặc nội dung"
+
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:42
+#: src/views/site/site_list/columns.tsx:91
+#: src/views/stream/columns.tsx:58
+#: src/views/stream/components/RightPanel/Basic.vue:39
+msgid "Namespace"
+msgstr "Không gian tên"
+
+#: src/routes/modules/namespaces.ts:11
+#: src/views/namespace/Namespace.vue:19
+msgid "Namespaces"
+msgstr "Không gian tên"
 
 #: src/views/dashboard/NginxDashBoard.vue:195
 msgid "Need to enable the stub_status module"
@@ -3421,7 +3445,7 @@ msgstr "Lệnh Tải lại Nginx"
 msgid "Nginx reload failed: {0}"
 msgstr "Tải lại Nginx thất bại: {0}"
 
-#: src/views/environments/list/Environment.vue:89
+#: src/views/node/Node.vue:89
 msgid "Nginx reload operations have been dispatched to remote nodes"
 msgstr "Các thao tác tải lại Nginx đã được gửi đến các nút từ xa"
 
@@ -3433,7 +3457,7 @@ msgstr "Nginx đã tải lại thành công"
 msgid "Nginx Restart Command"
 msgstr "Lệnh khởi động lại Nginx"
 
-#: src/views/environments/list/Environment.vue:103
+#: src/views/node/Node.vue:103
 msgid "Nginx restart operations have been dispatched to remote nodes"
 msgstr "Các thao tác khởi động lại Nginx đã được gửi đến các nút từ xa"
 
@@ -3487,8 +3511,8 @@ msgid "Nginx.conf includes streams-enabled directory"
 msgstr "Nginx.conf bao gồm thư mục streams-enabled"
 
 #: src/components/ChatGPT/ChatMessageInput.vue:17
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:111
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:99
+#: src/components/NamespaceTabs/NamespaceTabs.vue:111
+#: src/components/NamespaceTabs/NamespaceTabs.vue:99
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:102
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
 #: src/components/Notification/Notification.vue:108 src/language/curd.ts:40
@@ -3500,8 +3524,8 @@ msgstr "Nginx.conf bao gồm thư mục streams-enabled"
 msgid "No"
 msgstr "Không"
 
-#: src/components/EnvGroupRender/EnvGroupRender.vue:41
-#: src/constants/index.ts:36
+#: src/components/NamespaceRender/NamespaceRender.vue:41
+#: src/constants/index.ts:37
 msgid "No Action"
 msgstr "Không hành động"
 
@@ -3509,7 +3533,7 @@ msgstr "Không hành động"
 msgid "No data"
 msgstr "Không có dữ liệu"
 
-#: src/components/EnvGroupRender/EnvGroupRender.vue:55
+#: src/components/NamespaceRender/NamespaceRender.vue:55
 msgid "No nodes selected"
 msgstr "Không có nút nào được chọn"
 
@@ -3537,17 +3561,6 @@ msgstr "Không có upstream nào được cấu hình"
 msgid "Node"
 msgstr "Nút"
 
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:42
-#: src/views/site/site_list/columns.tsx:91 src/views/stream/columns.tsx:58
-#: src/views/stream/components/RightPanel/Basic.vue:39
-msgid "Node Group"
-msgstr "Nhóm nút"
-
-#: src/routes/modules/environments.ts:33
-#: src/views/environments/group/EnvGroup.vue:19
-msgid "Node Groups"
-msgstr "Nhóm nút"
-
 #: src/views/preference/tabs/NodeSettings.vue:15
 msgid "Node name"
 msgstr "Tên nút"
@@ -3560,7 +3573,7 @@ msgstr "Bí mật nút"
 msgid "Node Status"
 msgstr "Trạng thái nút"
 
-#: src/routes/modules/environments.ts:25
+#: src/routes/modules/nodes.ts:11 src/views/dashboard/Nodes.vue:80
 msgid "Nodes"
 msgstr "Nút"
 
@@ -3598,6 +3611,11 @@ msgid ""
 msgstr ""
 "Lưu ý, nếu tệp cấu hình bao gồm các cấu hình hoặc chứng chỉ khác, vui lòng "
 "đồng bộ chúng với các nút từ xa trước."
+
+#: src/views/certificate/components/CertificateBasicInfo.vue:23
+#: src/views/certificate/components/CertificateContentEditor.vue:24
+msgid "Nothing to copy"
+msgstr "Không có gì để sao chép"
 
 #: src/views/notification/Notification.vue:28
 msgid "Notification"
@@ -3664,12 +3682,11 @@ msgstr "Tắt"
 msgid "Official Document"
 msgstr "Tài liệu chính thức"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:127
+#: src/components/NamespaceTabs/NamespaceTabs.vue:127
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:84
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
-#: src/views/dashboard/Environments.vue:106
-#: src/views/environments/list/envColumns.tsx:55
+#: src/views/dashboard/Nodes.vue:106 src/views/node/nodeColumns.tsx:55
 msgid "Offline"
 msgstr "Ngoại tuyến"
 
@@ -3698,13 +3715,12 @@ msgstr "Bật"
 msgid "Once the verification is complete, the records will be removed."
 msgstr "Sau khi quá trình xác minh hoàn tất, bản ghi sẽ bị xóa."
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:127
+#: src/components/NamespaceTabs/NamespaceTabs.vue:127
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:64
 #: src/components/NodeSelector/NodeSelector.vue:78
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
-#: src/views/dashboard/Environments.vue:99
-#: src/views/environments/list/envColumns.tsx:51
+#: src/views/dashboard/Nodes.vue:99 src/views/node/nodeColumns.tsx:51
 msgid "Online"
 msgstr "Trực tuyến"
 
@@ -3852,7 +3868,7 @@ msgstr "Tài nguyên tải trọng là nil"
 msgid "Pending"
 msgstr "Đang chờ"
 
-#: src/views/environments/list/BatchUpgrader.vue:245
+#: src/views/node/BatchUpgrader.vue:245
 msgid "Perform"
 msgstr "Thực hiện"
 
@@ -3895,6 +3911,10 @@ msgid ""
 msgstr ""
 "Vui lòng bật module stub_status để nhận thống kê yêu cầu, số lượng kết nối, "
 "v.v."
+
+#: src/language/curd.ts:67
+msgid "Please enter"
+msgstr "Vui lòng nhập"
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:74
 msgid ""
@@ -4034,17 +4054,15 @@ msgstr "Vui lòng chọn tệp %{type} hợp lệ (%{extensions})"
 msgid "Please select at least one item"
 msgstr "Vui lòng chọn ít nhất một mục"
 
-#: src/views/environments/list/Environment.vue:201
-#: src/views/environments/list/Environment.vue:83
+#: src/views/node/Node.vue:201 src/views/node/Node.vue:83
 msgid "Please select at least one node to reload Nginx"
 msgstr "Vui lòng chọn ít nhất một nút để tải lại Nginx"
 
-#: src/views/environments/list/Environment.vue:222
-#: src/views/environments/list/Environment.vue:97
+#: src/views/node/Node.vue:222 src/views/node/Node.vue:97
 msgid "Please select at least one node to restart Nginx"
 msgstr "Vui lòng chọn ít nhất một nút để khởi động lại Nginx"
 
-#: src/views/environments/list/Environment.vue:180
+#: src/views/node/Node.vue:180
 msgid "Please select at least one node to upgrade"
 msgstr "Vui lòng chọn ít nhất một nút để nâng cấp"
 
@@ -4070,13 +4088,12 @@ msgstr "Cổng 80 phải được mở để xác thực thử thách HTTP-01"
 msgid "Port Scanner"
 msgstr "Trình quét cổng"
 
-#: src/components/EnvGroupRender/EnvGroupRender.vue:38
-#: src/views/environments/group/columns.ts:46
+#: src/components/NamespaceRender/NamespaceRender.vue:38
+#: src/views/namespace/columns.ts:46
 msgid "Post-sync Action"
 msgstr "Hành động sau đồng bộ"
 
-#: src/views/environments/list/BatchUpgrader.vue:168
-#: src/views/environments/list/BatchUpgrader.vue:224
+#: src/views/node/BatchUpgrader.vue:168 src/views/node/BatchUpgrader.vue:224
 #: src/views/system/Upgrade.vue:213 src/views/system/Upgrade.vue:267
 msgid "Pre-release"
 msgstr "Bản phát hành trước"
@@ -4214,6 +4231,10 @@ msgstr ""
 msgid "Recursive Nameservers"
 msgstr "Máy chủ tên đệ quy"
 
+#: src/language/curd.ts:70
+msgid "Refresh"
+msgstr "Làm mới"
+
 #: src/components/ChatGPT/ChatMessageInput.vue:30
 msgid "Regenerate response"
 msgstr "Tạo lại câu trả lời"
@@ -4267,10 +4288,9 @@ msgstr "Ghi chú phát hành"
 msgid "Reload"
 msgstr "Tải lại"
 
-#: src/components/EnvGroupRender/EnvGroupRender.vue:44
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:104 src/constants/index.ts:37
-#: src/views/environments/list/Environment.vue:209
-#: src/views/environments/list/Environment.vue:217
+#: src/components/NamespaceRender/NamespaceRender.vue:44
+#: src/components/NamespaceTabs/NamespaceTabs.vue:104 src/constants/index.ts:38
+#: src/views/node/Node.vue:209 src/views/node/Node.vue:217
 msgid "Reload Nginx"
 msgstr "Tải lại Nginx"
 
@@ -4294,7 +4314,7 @@ msgstr "Lỗi tải lại Nginx từ xa"
 msgid "Reload Remote Nginx Success"
 msgstr "Tải lại Nginx từ xa thành công"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:52
+#: src/components/NamespaceTabs/NamespaceTabs.vue:52
 msgid "Reload request failed, please check your network connection"
 msgstr "Yêu cầu tải lại thất bại, vui lòng kiểm tra kết nối mạng của bạn"
 
@@ -4306,7 +4326,7 @@ msgstr "Đang tải lại"
 msgid "Reloading nginx"
 msgstr "Tải lại nginx"
 
-#: src/constants/index.ts:42
+#: src/constants/index.ts:43
 msgid "Remote"
 msgstr "Từ xa"
 
@@ -4458,9 +4478,8 @@ msgstr "Phản hồi"
 msgid "Restart"
 msgstr "Khởi động lại"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:116
-#: src/views/environments/list/Environment.vue:230
-#: src/views/environments/list/Environment.vue:238
+#: src/components/NamespaceTabs/NamespaceTabs.vue:116
+#: src/views/node/Node.vue:230 src/views/node/Node.vue:238
 msgid "Restart Nginx"
 msgstr "Khởi động lại Nginx"
 
@@ -4480,7 +4499,7 @@ msgstr "Lỗi khởi động lại Nginx từ xa"
 msgid "Restart Remote Nginx Success"
 msgstr "Khởi động lại Nginx từ xa thành công"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:72
+#: src/components/NamespaceTabs/NamespaceTabs.vue:72
 msgid "Restart request failed, please check your network connection"
 msgstr "Yêu cầu khởi động lại thất bại, vui lòng kiểm tra kết nối mạng của bạn"
 
@@ -4855,7 +4874,7 @@ msgstr "Gửi tin nhắn kiểm tra"
 msgid "Server"
 msgstr "Máy chủ"
 
-#: src/views/certificate/CertificateEditor.vue:58
+#: src/views/certificate/CertificateEditor.vue:54
 msgid "Server error"
 msgstr "Lỗi máy chủ"
 
@@ -5011,7 +5030,8 @@ msgstr "Thời gian chờ giữa các lần lặp của trình quản lý bộ n
 msgid "Sponsor"
 msgstr "Nhà tài trợ"
 
-#: src/views/certificate/components/CertificateContentEditor.vue:93
+#: src/views/certificate/components/CertificateContentEditor.vue:118
+#: src/views/certificate/components/CertificateContentEditor.vue:123
 msgid "SSL Certificate Content"
 msgstr "Nội dung chứng chỉ SSL"
 
@@ -5023,15 +5043,20 @@ msgstr "Tệp chứng chỉ SSL phải nằm trong thư mục cấu hình Nginx:
 msgid "SSL certificate file not found"
 msgstr "Không tìm thấy tệp chứng chỉ SSL"
 
-#: src/views/certificate/components/CertificateContentEditor.vue:142
+#: src/views/certificate/components/CertificateContentEditor.vue:179
+#: src/views/certificate/components/CertificateContentEditor.vue:184
 msgid "SSL Certificate Key Content"
 msgstr "Nội dung khóa chứng chỉ SSL"
 
-#: src/views/certificate/components/CertificateBasicInfo.vue:55
+#: src/views/certificate/components/CertificateBasicInfo.vue:111
+#: src/views/certificate/components/CertificateBasicInfo.vue:125
+#: src/views/certificate/components/CertificateBasicInfo.vue:137
 msgid "SSL Certificate Key Path"
 msgstr "Đường dẫn khóa chứng chỉ SSL"
 
-#: src/views/certificate/components/CertificateBasicInfo.vue:39
+#: src/views/certificate/components/CertificateBasicInfo.vue:103
+#: src/views/certificate/components/CertificateBasicInfo.vue:77
+#: src/views/certificate/components/CertificateBasicInfo.vue:91
 #: src/views/preference/tabs/ServerSettings.vue:37
 msgid "SSL Certificate Path"
 msgstr "Đường dẫn chứng chỉ SSL"
@@ -5060,8 +5085,7 @@ msgstr "Đường dẫn khóa SSL là bắt buộc khi bật HTTPS"
 msgid "SSO Login"
 msgstr "Đăng nhập SSO"
 
-#: src/views/environments/list/BatchUpgrader.vue:165
-#: src/views/environments/list/BatchUpgrader.vue:218
+#: src/views/node/BatchUpgrader.vue:165 src/views/node/BatchUpgrader.vue:218
 #: src/views/system/Upgrade.vue:210 src/views/system/Upgrade.vue:261
 msgid "Stable"
 msgstr "Ổn định"
@@ -5085,7 +5109,7 @@ msgstr "Tĩnh"
 #: src/views/certificate/ACMEUser.vue:73
 #: src/views/certificate/CertificateList/certColumns.tsx:63
 #: src/views/dashboard/components/ModulesTable.vue:96
-#: src/views/environments/list/envColumns.tsx:43
+#: src/views/node/nodeColumns.tsx:43
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:29
 #: src/views/site/site_list/columns.tsx:120 src/views/stream/columns.tsx:87
 msgid "Status"
@@ -5163,7 +5187,7 @@ msgstr "Cổng trạng thái stub"
 msgid "Stub_status is not enabled"
 msgstr "Stub_status chưa được bật"
 
-#: src/constants/index.ts:25 src/views/backup/AutoBackup/AutoBackup.vue:195
+#: src/constants/index.ts:26 src/views/backup/AutoBackup/AutoBackup.vue:195
 #: src/views/backup/AutoBackup/AutoBackup.vue:220
 #: src/views/notification/notificationColumns.tsx:35
 msgid "Success"
@@ -5253,10 +5277,9 @@ msgstr "Lỗi đồng bộ cấu hình"
 msgid "Sync Config Success"
 msgstr "Đồng bộ cấu hình thành công"
 
-#: src/components/EnvGroupRender/EnvGroupRender.vue:53
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:90
-#: src/views/environments/group/columns.ts:17
-#: src/views/environments/group/EnvGroup.vue:31
+#: src/components/NamespaceRender/NamespaceRender.vue:53
+#: src/components/NamespaceTabs/NamespaceTabs.vue:90
+#: src/views/namespace/columns.ts:17 src/views/namespace/Namespace.vue:31
 msgid "Sync Nodes"
 msgstr "Nút đồng bộ"
 
@@ -5271,7 +5294,7 @@ msgstr "Xem trước đồng bộ"
 msgid "Sync strategy"
 msgstr "Chiến lược đồng bộ hóa"
 
-#: src/views/certificate/components/CertificateBasicInfo.vue:70
+#: src/views/certificate/components/CertificateBasicInfo.vue:144
 msgid "Sync to"
 msgstr "Đồng bộ tới"
 
@@ -5293,7 +5316,7 @@ msgstr "Sao lưu hệ thống"
 msgid "System Check"
 msgstr "Kiểm tra hệ thống"
 
-#: src/views/certificate/components/ACMEUserSelector.vue:55
+#: src/views/certificate/components/ACMEUserSelector.vue:67
 msgid "System Initial User"
 msgstr "Người dùng ban đầu của hệ thống"
 
@@ -5356,11 +5379,11 @@ msgstr ""
 "Số ICP chỉ được chứa chữ cái, unicode, số, dấu gạch ngang, dấu gạch dài, "
 "dấu hai chấm và dấu chấm."
 
-#: src/views/certificate/components/CertificateContentEditor.vue:96
+#: src/views/certificate/components/CertificateContentEditor.vue:114
 msgid "The input is not a SSL Certificate"
 msgstr "Đầu vào không phải là Chứng chỉ SSL"
 
-#: src/views/certificate/components/CertificateContentEditor.vue:145
+#: src/views/certificate/components/CertificateContentEditor.vue:175
 msgid "The input is not a SSL Certificate Key"
 msgstr "Đầu vào không phải là Khóa Chứng chỉ SSL"
 
@@ -5399,11 +5422,11 @@ msgstr ""
 msgid "The parameter of server_name is required"
 msgstr "Tham số của server_name là bắt buộc"
 
-#: src/views/certificate/components/CertificateBasicInfo.vue:43
+#: src/views/certificate/components/CertificateBasicInfo.vue:81
 msgid "The path exists, but the file is not a certificate"
 msgstr "Đường dẫn tồn tại, nhưng tệp không phải là chứng chỉ"
 
-#: src/views/certificate/components/CertificateBasicInfo.vue:59
+#: src/views/certificate/components/CertificateBasicInfo.vue:115
 msgid "The path exists, but the file is not a private key"
 msgstr "Đường dẫn tồn tại, nhưng tệp không phải là khóa riêng tư"
 
@@ -5477,9 +5500,9 @@ msgstr "Chứng chỉ này được quản lý bởi Nginx UI"
 msgid "This directory is protected and cannot be deleted for system safety."
 msgstr "Thư mục này được bảo vệ và không thể xóa vì lý do an toàn hệ thống."
 
-#: src/views/certificate/components/CertificateBasicInfo.vue:26
-#: src/views/certificate/components/CertificateBasicInfo.vue:41
-#: src/views/certificate/components/CertificateBasicInfo.vue:57
+#: src/views/certificate/components/CertificateBasicInfo.vue:113
+#: src/views/certificate/components/CertificateBasicInfo.vue:46
+#: src/views/certificate/components/CertificateBasicInfo.vue:79
 msgid "This field is required"
 msgstr "Trường này là bắt buộc"
 
@@ -5583,7 +5606,7 @@ msgstr ""
 "Thao tác này sẽ khôi phục các tệp cấu hình và cơ sở dữ liệu. Giao diện "
 "Nginx sẽ khởi động lại sau khi quá trình khôi phục hoàn tất."
 
-#: src/views/environments/list/BatchUpgrader.vue:186
+#: src/views/node/BatchUpgrader.vue:186
 msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr ""
 "Thao tác này sẽ nâng cấp hoặc cài đặt lại Nginx UI trên %{nodeNames} lên "
@@ -5614,6 +5637,11 @@ msgstr ""
 #: src/views/notification/notificationColumns.tsx:58
 msgid "Title"
 msgstr "Tiêu đề"
+
+#: src/language/curd.ts:68
+#: src/language/curd.ts:69
+msgid "to confirm deletion"
+msgstr "để xác nhận xóa"
 
 #: src/views/certificate/components/RemoveCert.vue:124
 msgid "To confirm revocation, please type \"Revoke\" in the field below:"
@@ -5778,9 +5806,8 @@ msgstr "Cập nhật thành công"
 #: src/views/certificate/ACMEUser.vue:122
 #: src/views/certificate/DNSCredential.vue:65
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
-#: src/views/config/configColumns.tsx:43
-#: src/views/environments/group/columns.ts:78
-#: src/views/environments/list/envColumns.tsx:89
+#: src/views/config/configColumns.tsx:43 src/views/namespace/columns.ts:78
+#: src/views/node/nodeColumns.tsx:89
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:39
 #: src/views/site/site_list/columns.tsx:113 src/views/stream/columns.tsx:80
 #: src/views/stream/components/RightPanel/Basic.vue:35
@@ -5788,14 +5815,13 @@ msgstr "Cập nhật thành công"
 msgid "Updated at"
 msgstr "Ngày cập nhật"
 
-#: src/routes/modules/system.ts:26
-#: src/views/environments/list/Environment.vue:188
-#: src/views/environments/list/Environment.vue:196
-#: src/views/system/Upgrade.vue:154 src/views/system/Upgrade.vue:159
+#: src/routes/modules/system.ts:26 src/views/node/Node.vue:188
+#: src/views/node/Node.vue:196 src/views/system/Upgrade.vue:154
+#: src/views/system/Upgrade.vue:159
 msgid "Upgrade"
 msgstr "Cập nhật"
 
-#: src/views/environments/list/BatchUpgrader.vue:137
+#: src/views/node/BatchUpgrader.vue:137
 msgid "Upgraded Nginx UI on %{node} successfully 🎉"
 msgstr "Nâng cấp Nginx UI trên %{node} thành công 🎉"
 
@@ -5803,8 +5829,7 @@ msgstr "Nâng cấp Nginx UI trên %{node} thành công 🎉"
 msgid "Upgraded successfully"
 msgstr "Nâng cấp thành công"
 
-#: src/views/environments/list/BatchUpgrader.vue:88
-#: src/views/system/Upgrade.vue:81
+#: src/views/node/BatchUpgrader.vue:88 src/views/system/Upgrade.vue:81
 msgid "Upgrading Nginx UI, please wait..."
 msgstr "Đang cập nhật Nginx UI, vui lòng đợi..."
 
@@ -5828,7 +5853,7 @@ msgstr "Ngược dòng"
 msgid "Upstream Name"
 msgstr "Tên Upstream"
 
-#: src/views/environments/group/columns.ts:59
+#: src/views/namespace/columns.ts:59
 msgid "Upstream Test Type"
 msgstr "Loại kiểm tra upstream"
 
@@ -5836,7 +5861,7 @@ msgstr "Loại kiểm tra upstream"
 msgid "Uptime:"
 msgstr "Thời gian hoạt động:"
 
-#: src/views/environments/list/envColumns.tsx:18
+#: src/views/node/nodeColumns.tsx:18
 msgid "URL"
 msgstr "URL"
 
@@ -5904,7 +5929,7 @@ msgstr "Xác minh tính toàn vẹn của tệp sao lưu"
 msgid "Verify system requirements"
 msgstr "Xác minh các yêu cầu hệ thống"
 
-#: src/views/environments/list/envColumns.tsx:30
+#: src/views/node/nodeColumns.tsx:30
 msgid "Version"
 msgstr "Phiên bản"
 
@@ -5917,8 +5942,7 @@ msgstr "Xem"
 msgid "View all notifications"
 msgstr "Xem tất cả thông báo"
 
-#: src/views/environments/list/BatchUpgrader.vue:235
-#: src/views/system/Upgrade.vue:279
+#: src/views/node/BatchUpgrader.vue:235 src/views/system/Upgrade.vue:279
 msgid "View on GitHub"
 msgstr "Xem trên GitHub"
 
@@ -5935,7 +5959,7 @@ msgstr "Đã xem"
 msgid "Waiting processes"
 msgstr "Quá trình chờ đợi"
 
-#: src/constants/index.ts:23 src/views/backup/components/BackupCreator.vue:138
+#: src/constants/index.ts:24 src/views/backup/components/BackupCreator.vue:138
 #: src/views/config/InspectConfig.vue:51
 #: src/views/notification/notificationColumns.tsx:21
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:87
@@ -6021,10 +6045,10 @@ msgstr ""
 #: src/views/stream/components/RightPanel/Basic.vue:57
 msgid ""
 "When you enable/disable, delete, or save this site, the nodes set in the "
-"Node Group and the nodes selected below will be synchronized."
+"namespace and the nodes selected below will be synchronized."
 msgstr ""
-"Khi bạn bật/tắt, xóa hoặc lưu trang web này, các nút được đặt trong Nhóm "
-"Nút và các nút được chọn bên dưới sẽ được đồng bộ hóa."
+"Khi bạn bật/tắt, xóa hoặc lưu trang web này, các nút được đặt trong không "
+"gian tên và các nút được chọn bên dưới sẽ được đồng bộ hóa."
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:140
 msgid ""
@@ -6055,7 +6079,7 @@ msgstr "Tiến trình công nhân"
 msgid "Workers"
 msgstr "Công nhân"
 
-#: src/layouts/HeaderLayout.vue:62 src/routes/index.ts:57
+#: src/layouts/HeaderLayout.vue:62 src/routes/index.ts:59
 #: src/views/workspace/WorkSpace.vue:52
 msgid "Workspace"
 msgstr "Không gian làm việc"
@@ -6081,8 +6105,8 @@ msgstr "Ghi Private Key vào disk"
 msgid "Writing certificate to disk"
 msgstr "Ghi chứng chỉ vào disk"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:110
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:98
+#: src/components/NamespaceTabs/NamespaceTabs.vue:110
+#: src/components/NamespaceTabs/NamespaceTabs.vue:98
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:101
 #: src/components/NgxConfigEditor/LocationEditor.vue:88
 #: src/views/preference/tabs/AuthSettings.vue:131
@@ -6090,7 +6114,7 @@ msgstr "Ghi chứng chỉ vào disk"
 msgid "Yes"
 msgstr "Có"
 
-#: src/views/terminal/Terminal.vue:132
+#: src/views/terminal/Terminal.vue:142
 msgid ""
 "You are accessing this terminal over an insecure HTTP connection on a "
 "non-localhost domain. This may expose sensitive information."
@@ -6152,6 +6176,12 @@ msgstr "Mã cũ của bạn sẽ không còn hoạt động nữa."
 msgid "Your passkeys"
 msgstr "Khóa truy cập của bạn"
 
+#~ msgid "Node Group"
+#~ msgstr "Nhóm nút"
+
+#~ msgid "Node Groups"
+#~ msgstr "Nhóm nút"
+
 #~ msgid "Check if the conf.d directory exists"
 #~ msgstr "Kiểm tra xem thư mục conf.d có tồn tại không"
 
@@ -6210,9 +6240,6 @@ msgstr "Khóa truy cập của bạn"
 
 #~ msgid "Last Backup Error"
 #~ msgstr "Lỗi sao lưu cuối cùng"
-
-#~ msgid "Apply"
-#~ msgstr "Áp dụng"
 
 #~ msgid "Apply bulk action successfully"
 #~ msgstr "Áp dụng hành động hàng loạt thành công"

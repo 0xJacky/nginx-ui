@@ -25,14 +25,14 @@ func ProxyWs() gin.HandlerFunc {
 
 		defer c.Abort()
 
-		env := query.Environment
-		environment, err := env.Where(env.ID.Eq(id)).First()
+		nodeQuery := query.Node
+		node, err := nodeQuery.Where(nodeQuery.ID.Eq(id)).First()
 		if err != nil {
 			logger.Error(err)
 			return
 		}
 
-		decodedUri, err := environment.GetWebSocketURL(c.Request.RequestURI)
+		decodedUri, err := node.GetWebSocketURL(c.Request.RequestURI)
 
 		if err != nil {
 			logger.Error(err)
@@ -42,7 +42,7 @@ func ProxyWs() gin.HandlerFunc {
 		logger.Debug("Proxy request", decodedUri)
 
 		wp, err := websocketproxy.NewProxy(decodedUri, func(r *http.Request) error {
-			r.Header.Set("X-Node-Secret", environment.Token)
+			r.Header.Set("X-Node-Secret", node.Token)
 			r.Header.Del("X-Node-ID")
 			queryValues := r.URL.Query()
 			queryValues.Del("x_node_id")

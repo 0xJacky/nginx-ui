@@ -6,19 +6,19 @@ import { useUpstreamStatus } from '@/composables/useUpstreamStatus'
 
 interface Props {
   targets: ProxyTarget[]
-  envGroupId?: number
+  namespaceId?: number
 }
 
 const props = defineProps<Props>()
 
-const envGroupIdRef = computed(() => props.envGroupId)
+const namespaceIdRef = computed(() => props.namespaceId)
 const {
   shouldShowMultiNodeDisplay,
   getTargetColor,
   getTargetText,
   getTargetTitle,
   proxyStore,
-} = useUpstreamStatus(envGroupIdRef)
+} = useUpstreamStatus(namespaceIdRef)
 
 const showDetailModal = ref(false)
 const selectedTarget = ref<ProxyTarget | null>(null)
@@ -51,7 +51,7 @@ function handleTargetClick(target: ProxyTarget) {
     <UpstreamDetailModal
       v-model:open="showDetailModal"
       :target="selectedTarget"
-      :env-group-id="envGroupId"
+      :namespace-id="namespaceId"
     />
   </div>
 </template>

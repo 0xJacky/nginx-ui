@@ -72,11 +72,11 @@ func syncSave(name string, content string) {
 	wg.Add(len(nodes))
 
 	// Map to track successful nodes for potential post-sync action
-	successfulNodes := make([]*model.Environment, 0)
+	successfulNodes := make([]*model.Node, 0)
 	var nodesMutex sync.Mutex
 
 	for _, node := range nodes {
-		go func(node *model.Environment) {
+		go func(node *model.Node) {
 			defer func() {
 				if err := recover(); err != nil {
 					buf := make([]byte, 1024)

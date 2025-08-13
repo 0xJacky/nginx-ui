@@ -14,19 +14,19 @@ export const UpstreamTestType = {
   Mirror: 'mirror',
 }
 
-export interface EnvGroup extends ModelBase {
+export interface Namespace extends ModelBase {
   name: string
   sync_node_ids: number[]
   post_sync_action?: string
   upstream_test_type?: string
 }
 
-const baseUrl = '/env_groups'
+const baseUrl = '/namespaces'
 
-const env_group = extendCurdApi(useCurdApi<EnvGroup>(baseUrl), {
+const namespace = extendCurdApi(useCurdApi<Namespace>(baseUrl), {
   updateOrder(data: UpdateOrderRequest) {
-    return http.post('/env_groups/order', data)
+    return http.post('/namespaces/order', data)
   },
 })
 
-export default env_group
+export default namespace

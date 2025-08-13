@@ -26,9 +26,9 @@ var (
 	Config         *config
 	ConfigBackup   *configBackup
 	DnsCredential  *dnsCredential
-	EnvGroup       *envGroup
-	Environment    *environment
 	ExternalNotify *externalNotify
+	Namespace      *namespace
+	Node           *node
 	Notification   *notification
 	Passkey        *passkey
 	Site           *site
@@ -47,9 +47,9 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	Config = &Q.Config
 	ConfigBackup = &Q.ConfigBackup
 	DnsCredential = &Q.DnsCredential
-	EnvGroup = &Q.EnvGroup
-	Environment = &Q.Environment
 	ExternalNotify = &Q.ExternalNotify
+	Namespace = &Q.Namespace
+	Node = &Q.Node
 	Notification = &Q.Notification
 	Passkey = &Q.Passkey
 	Site = &Q.Site
@@ -69,9 +69,9 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		Config:         newConfig(db, opts...),
 		ConfigBackup:   newConfigBackup(db, opts...),
 		DnsCredential:  newDnsCredential(db, opts...),
-		EnvGroup:       newEnvGroup(db, opts...),
-		Environment:    newEnvironment(db, opts...),
 		ExternalNotify: newExternalNotify(db, opts...),
+		Namespace:      newNamespace(db, opts...),
+		Node:           newNode(db, opts...),
 		Notification:   newNotification(db, opts...),
 		Passkey:        newPasskey(db, opts...),
 		Site:           newSite(db, opts...),
@@ -92,9 +92,9 @@ type Query struct {
 	Config         config
 	ConfigBackup   configBackup
 	DnsCredential  dnsCredential
-	EnvGroup       envGroup
-	Environment    environment
 	ExternalNotify externalNotify
+	Namespace      namespace
+	Node           node
 	Notification   notification
 	Passkey        passkey
 	Site           site
@@ -116,9 +116,9 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		Config:         q.Config.clone(db),
 		ConfigBackup:   q.ConfigBackup.clone(db),
 		DnsCredential:  q.DnsCredential.clone(db),
-		EnvGroup:       q.EnvGroup.clone(db),
-		Environment:    q.Environment.clone(db),
 		ExternalNotify: q.ExternalNotify.clone(db),
+		Namespace:      q.Namespace.clone(db),
+		Node:           q.Node.clone(db),
 		Notification:   q.Notification.clone(db),
 		Passkey:        q.Passkey.clone(db),
 		Site:           q.Site.clone(db),
@@ -147,9 +147,9 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		Config:         q.Config.replaceDB(db),
 		ConfigBackup:   q.ConfigBackup.replaceDB(db),
 		DnsCredential:  q.DnsCredential.replaceDB(db),
-		EnvGroup:       q.EnvGroup.replaceDB(db),
-		Environment:    q.Environment.replaceDB(db),
 		ExternalNotify: q.ExternalNotify.replaceDB(db),
+		Namespace:      q.Namespace.replaceDB(db),
+		Node:           q.Node.replaceDB(db),
 		Notification:   q.Notification.replaceDB(db),
 		Passkey:        q.Passkey.replaceDB(db),
 		Site:           q.Site.replaceDB(db),
@@ -168,9 +168,9 @@ type queryCtx struct {
 	Config         *configDo
 	ConfigBackup   *configBackupDo
 	DnsCredential  *dnsCredentialDo
-	EnvGroup       *envGroupDo
-	Environment    *environmentDo
 	ExternalNotify *externalNotifyDo
+	Namespace      *namespaceDo
+	Node           *nodeDo
 	Notification   *notificationDo
 	Passkey        *passkeyDo
 	Site           *siteDo
@@ -189,9 +189,9 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		Config:         q.Config.WithContext(ctx),
 		ConfigBackup:   q.ConfigBackup.WithContext(ctx),
 		DnsCredential:  q.DnsCredential.WithContext(ctx),
-		EnvGroup:       q.EnvGroup.WithContext(ctx),
-		Environment:    q.Environment.WithContext(ctx),
 		ExternalNotify: q.ExternalNotify.WithContext(ctx),
+		Namespace:      q.Namespace.WithContext(ctx),
+		Node:           q.Node.WithContext(ctx),
 		Notification:   q.Notification.WithContext(ctx),
 		Passkey:        q.Passkey.WithContext(ctx),
 		Site:           q.Site.WithContext(ctx),

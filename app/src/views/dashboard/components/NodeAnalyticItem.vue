@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Node } from '@/api/environment'
+import type { Node } from '@/api/node'
 import Icon, { ArrowDownOutlined, ArrowUpOutlined, DatabaseOutlined, LineChartOutlined, SendOutlined } from '@ant-design/icons-vue'
 import cpu from '@/assets/svg/cpu.svg?component'
 import memory from '@/assets/svg/memory.svg?component'
@@ -8,8 +8,6 @@ import { bytesToSize } from '@/lib/helper'
 
 interface ExtendedNode extends Node {
   version?: string
-  status?: boolean
-  url?: string
   avg_load?: {
     load1: number
     load5: number

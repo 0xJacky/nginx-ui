@@ -126,5 +126,9 @@ onMounted(() => {
   max-width: 850px;
   margin: 0 auto;
   padding: 0 10px;
+
+  :deep(label) {
+    font-weight: 500;
+  }
 }
 </style>

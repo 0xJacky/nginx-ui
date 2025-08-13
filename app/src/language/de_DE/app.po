@@ -99,6 +99,11 @@ msgstr "[Nginx UI] Schreibe privaten Zertifikatsschlüssel auf die Festplatte"
 msgid "[Nginx UI] Writing certificate to disk"
 msgstr "[Nginx UI] Zertifikat wird auf die Festplatte geschrieben"
 
+#: src/views/certificate/components/CertificateBasicInfo.vue:28
+#: src/views/certificate/components/CertificateContentEditor.vue:29
+msgid "{label} copied to clipboard"
+msgstr "{label} in die Zwischenablage kopiert"
+
 #: src/components/SyncNodesPreview/SyncNodesPreview.vue:59
 msgid "* Includes nodes from group %{groupName} and manually selected nodes"
 msgstr "* Enthält Knoten aus der Gruppe %{groupName} und manuell ausgewählte Knoten"
@@ -129,7 +134,7 @@ msgid "Access Logs"
 msgstr "Zugriffslog"
 
 #: src/routes/modules/certificates.ts:20 src/views/certificate/ACMEUser.vue:147
-#: src/views/certificate/components/ACMEUserSelector.vue:52
+#: src/views/certificate/components/ACMEUserSelector.vue:64
 msgid "ACME User"
 msgstr "ACME-Benutzer"
 
@@ -141,10 +146,8 @@ msgstr "Aktion"
 #: src/views/certificate/ACMEUser.vue:129
 #: src/views/certificate/CertificateList/certColumns.tsx:92
 #: src/views/certificate/DNSCredential.vue:71
-#: src/views/config/configColumns.tsx:50
-#: src/views/environments/group/columns.ts:84
-#: src/views/environments/list/envColumns.tsx:96
-#: src/views/nginx_log/NginxLogList.vue:68
+#: src/views/config/configColumns.tsx:50 src/views/namespace/columns.ts:84
+#: src/views/nginx_log/NginxLogList.vue:68 src/views/node/nodeColumns.tsx:96
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:85
 #: src/views/site/site_list/columns.tsx:160 src/views/stream/columns.tsx:123
@@ -228,7 +231,7 @@ msgstr ""
 "Aktualisieren Sie anschließend diese Seite und klicken Sie erneut auf "
 "\"Passkey hinzufügen\"."
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:83
+#: src/components/NamespaceTabs/NamespaceTabs.vue:83
 msgid "All"
 msgstr "Alle"
 
@@ -275,6 +278,10 @@ msgstr "API-Typ"
 msgid "App"
 msgstr "App"
 
+#: src/language/curd.ts:65
+msgid "Apply"
+msgstr "Anwenden"
+
 #: src/views/system/Upgrade.vue:195
 msgid "Arch"
 msgstr "Arch"
@@ -313,7 +320,7 @@ msgstr "Sind Sie sicher, dass Sie dauerhaft löschen möchten?"
 msgid "Are you sure you want to delete?"
 msgstr "Sind Sie sicher, dass Sie löschen möchten?"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:97
+#: src/components/NamespaceTabs/NamespaceTabs.vue:97
 msgid "Are you sure you want to reload Nginx on the following sync nodes?"
 msgstr ""
 "Sind Sie sicher, dass Sie Nginx auf den folgenden Sync-Knoten neu laden "
@@ -331,7 +338,7 @@ msgstr "Möchten Sie dieses Element wirklich entfernen?"
 msgid "Are you sure you want to remove this location?"
 msgstr "Sind Sie sicher, dass Sie diesen Standort entfernen möchten?"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:109
+#: src/components/NamespaceTabs/NamespaceTabs.vue:109
 msgid "Are you sure you want to restart Nginx on the following sync nodes?"
 msgstr ""
 "Sind Sie sicher, dass Sie Nginx auf den folgenden Synchronisationsknoten "
@@ -404,16 +411,15 @@ msgstr "Automatische Sicherung fehlgeschlagen"
 msgid "Auto Backup Storage Failed"
 msgstr "Automatische Sicherungsspeicherung fehlgeschlagen"
 
-#: src/views/environments/list/Environment.vue:165
-#: src/views/nginx_log/NginxLog.vue:150
+#: src/views/nginx_log/NginxLog.vue:150 src/views/node/Node.vue:165
 msgid "Auto Refresh"
 msgstr "Automatische Aktualisierung"
 
-#: src/views/environments/list/Environment.vue:48
+#: src/views/node/Node.vue:48
 msgid "Auto refresh disabled"
 msgstr "Automatisches Aktualisieren deaktiviert"
 
-#: src/views/environments/list/Environment.vue:44
+#: src/views/node/Node.vue:44
 msgid "Auto refresh enabled"
 msgstr "Automatisches Aktualisieren aktiviert"
 
@@ -568,7 +574,7 @@ msgstr "Stapelverarbeitung"
 msgid "Batch Modify"
 msgstr "Stapelverarbeitung"
 
-#: src/views/environments/list/BatchUpgrader.vue:153
+#: src/views/node/BatchUpgrader.vue:153
 msgid "Batch Upgrade"
 msgstr "Stapel-Upgrade"
 
@@ -813,8 +819,7 @@ msgstr[0] "Geändertes Zertifikat"
 msgid "Changed Path"
 msgstr "Geänderter Pfad"
 
-#: src/views/environments/list/BatchUpgrader.vue:160
-#: src/views/system/Upgrade.vue:207
+#: src/views/node/BatchUpgrader.vue:160 src/views/system/Upgrade.vue:207
 msgid "Channel"
 msgstr "Kanal"
 
@@ -1034,6 +1039,10 @@ msgstr "Code-Vervollständigung ist nicht aktiviert"
 msgid "Code Completion Model"
 msgstr "Code-Vervollständigungsmodell"
 
+#: src/language/curd.ts:64
+msgid "Column Settings"
+msgstr "Spalteneinstellungen"
+
 #: src/views/preference/tabs/LogrotateSettings.vue:23
 msgid "Command"
 msgstr "Befehl"
@@ -1125,6 +1134,10 @@ msgstr "Konfigurationen"
 msgid "Configure SSL"
 msgstr "SSL konfigurieren"
 
+#: src/language/curd.ts:66
+msgid "Confirm Delete"
+msgstr "Löschen bestätigen"
+
 #: src/views/user/UserProfile.vue:204
 msgid "Confirm New Password"
 msgstr "Neues Passwort bestätigen"
@@ -1137,7 +1150,7 @@ msgstr "Verbunden"
 msgid "Connection error, trying to reconnect..."
 msgstr "Verbindungsfehler, versuche erneut zu verbinden..."
 
-#: src/views/terminal/Terminal.vue:139
+#: src/views/terminal/Terminal.vue:149
 msgid "Connection lost, please refresh the page."
 msgstr "Ver"
 
@@ -1221,7 +1234,7 @@ msgstr ""
 "Computer heruntergeladen."
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:229
-#: src/views/environments/group/columns.ts:72
+#: src/views/namespace/columns.ts:72
 #: src/views/notification/notificationColumns.tsx:51
 #: src/views/preference/components/AuthSettings/Passkey.vue:95
 #: src/views/preference/components/ExternalNotify/columns.tsx:80
@@ -1455,7 +1468,7 @@ msgstr "Details"
 msgid "Dev"
 msgstr "Entwicklung"
 
-#: src/views/environments/list/BatchUpgrader.vue:171
+#: src/views/node/BatchUpgrader.vue:171
 msgid "Development"
 msgstr "Entwicklung"
 
@@ -1555,8 +1568,7 @@ msgid "Disable stream %{name} from %{node} successfully"
 msgstr "Stream %{name} von %{node} erfolgreich deaktiviert"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:175
-#: src/views/environments/list/envColumns.tsx:60
-#: src/views/environments/list/envColumns.tsx:78
+#: src/views/node/nodeColumns.tsx:60 src/views/node/nodeColumns.tsx:78
 #: src/views/preference/tabs/HTTPSettings.vue:24
 #: src/views/preference/tabs/NodeSettings.vue:25
 #: src/views/preference/tabs/NodeSettings.vue:30
@@ -1662,16 +1674,15 @@ msgstr "Fehler beim Herunterladen der neuesten Version"
 msgid "Downloading latest release"
 msgstr "Neueste Version wird heruntergeladen"
 
-#: src/views/certificate/components/CertificateContentEditor.vue:126
+#: src/views/certificate/components/CertificateContentEditor.vue:157
 msgid "Drop certificate file here"
 msgstr "Zertifikatsdatei hier ablegen"
 
-#: src/views/certificate/components/CertificateContentEditor.vue:175
+#: src/views/certificate/components/CertificateContentEditor.vue:218
 msgid "Drop private key file here"
 msgstr "Private Schlüsseldatei hier ablegen"
 
-#: src/views/environments/list/BatchUpgrader.vue:192
-#: src/views/system/Upgrade.vue:237
+#: src/views/node/BatchUpgrader.vue:192 src/views/system/Upgrade.vue:237
 msgid "Dry run mode enabled"
 msgstr "Dry-Run-Modus aktiviert"
 
@@ -1844,8 +1855,7 @@ msgid "Enable TOTP"
 msgstr "TOTP aktivieren"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:174
-#: src/views/environments/list/envColumns.tsx:69
-#: src/views/environments/list/envColumns.tsx:75
+#: src/views/node/nodeColumns.tsx:69 src/views/node/nodeColumns.tsx:75
 #: src/views/preference/components/ExternalNotify/columns.tsx:47
 #: src/views/preference/tabs/HTTPSettings.vue:24
 #: src/views/preference/tabs/LogrotateSettings.vue:20
@@ -1904,13 +1914,11 @@ msgstr "Die Umgebungskonfiguration ist leer"
 msgid "Environment variables cleaned"
 msgstr "Umgebungsvariablen gesäubert"
 
-#: src/routes/modules/environments.ts:11
-#: src/views/dashboard/Environments.vue:80
-#: src/views/environments/list/Environment.vue:131
+#: src/views/node/Node.vue:131
 msgid "Environments"
 msgstr "Umgebungen"
 
-#: src/constants/index.ts:22 src/views/config/InspectConfig.vue:63
+#: src/constants/index.ts:23 src/views/config/InspectConfig.vue:63
 #: src/views/notification/notificationColumns.tsx:14
 msgid "Error"
 msgstr "Fehler"
@@ -2062,6 +2070,11 @@ msgstr "Fehler beim Kopieren des Dateiinhalts: {0}"
 #: src/constants/errors/backup.ts:20
 msgid "Failed to copy Nginx config directory: {0}"
 msgstr "Fehler beim Kopieren des Nginx-Konfigurationsverzeichnisses: {0}"
+
+#: src/views/certificate/components/CertificateBasicInfo.vue:32
+#: src/views/certificate/components/CertificateContentEditor.vue:33
+msgid "Failed to copy to clipboard"
+msgstr "In die Zwischenablage kopieren fehlgeschlagen"
 
 #: src/constants/errors/self_check.ts:10
 msgid "Failed to create backup"
@@ -2512,8 +2525,7 @@ msgstr "Datenabruf fehlgeschlagen"
 msgid "Get dns credential error: {0}"
 msgstr "Fehler beim Abrufen der DNS-Anmeldeinformationen: {0}"
 
-#: src/views/environments/list/BatchUpgrader.vue:181
-#: src/views/system/Upgrade.vue:188
+#: src/views/node/BatchUpgrader.vue:181 src/views/system/Upgrade.vue:188
 msgid "Get release information error"
 msgstr "Fehler beim Abrufen der Release-Informationen"
 
@@ -2559,7 +2571,7 @@ msgstr "Ein höherer Wert bedeutet eine bessere Wiederverwendung der Verbindung"
 msgid "History"
 msgstr "Verlauf"
 
-#: src/routes/index.ts:48
+#: src/routes/index.ts:50
 msgid "Home"
 msgstr "Startseite"
 
@@ -2627,7 +2639,7 @@ msgid "Import"
 msgstr "Import"
 
 #: src/routes/modules/certificates.ts:54
-#: src/views/certificate/CertificateEditor.vue:86
+#: src/views/certificate/CertificateEditor.vue:82
 msgid "Import Certificate"
 msgstr "Zertifikat importieren"
 
@@ -2651,7 +2663,7 @@ msgstr "Indizierung läuft..."
 msgid "Indicator"
 msgstr "Indikator"
 
-#: src/constants/index.ts:24 src/views/notification/notificationColumns.tsx:28
+#: src/constants/index.ts:25 src/views/notification/notificationColumns.tsx:28
 msgid "Info"
 msgstr "Information"
 
@@ -2886,10 +2898,10 @@ msgstr "Leer lassen, falls nicht von Ihrem ACME-Anbieter benötigt"
 msgid "Leave blank if you don't need this."
 msgstr "Lassen Sie dieses Feld leer, wenn Sie es nicht benötigen."
 
-#: src/views/certificate/components/CertificateContentEditor.vue:118
-#: src/views/certificate/components/CertificateContentEditor.vue:136
+#: src/views/certificate/components/CertificateContentEditor.vue:149
 #: src/views/certificate/components/CertificateContentEditor.vue:167
-#: src/views/certificate/components/CertificateContentEditor.vue:185
+#: src/views/certificate/components/CertificateContentEditor.vue:210
+#: src/views/certificate/components/CertificateContentEditor.vue:228
 msgid "Leave blank will not change anything"
 msgstr "Leer lassen ändert nichts"
 
@@ -2922,11 +2934,11 @@ msgstr "Lauschend"
 msgid "Load Average:"
 msgstr "Durchschnittliche Last:"
 
-#: src/views/environments/list/Environment.vue:138
+#: src/views/node/Node.vue:138
 msgid "Load from settings"
 msgstr "Aus Einstellungen laden"
 
-#: src/views/environments/list/Environment.vue:68
+#: src/views/node/Node.vue:68
 msgid "Load successfully"
 msgstr "Erfolgreich geladen"
 
@@ -2956,7 +2968,7 @@ msgid "Loading data..."
 msgstr "Daten werden geladen..."
 
 #: src/components/EnvIndicator/EnvIndicator.vue:39
-#: src/components/NodeSelector/NodeSelector.vue:61 src/constants/index.ts:41
+#: src/components/NodeSelector/NodeSelector.vue:61 src/constants/index.ts:42
 #: src/views/backup/AutoBackup/AutoBackup.vue:74
 #: src/views/backup/AutoBackup/AutoBackup.vue:83
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:48
@@ -2976,7 +2988,7 @@ msgstr "Ort"
 msgid "Locations"
 msgstr "Orte"
 
-#: src/views/certificate/CertificateEditor.vue:126
+#: src/views/certificate/CertificateEditor.vue:122
 msgid "Log"
 msgstr "Protokoll"
 
@@ -3185,7 +3197,7 @@ msgstr "Minute"
 msgid "Minutes"
 msgstr "Minuten"
 
-#: src/constants/index.ts:43
+#: src/constants/index.ts:44
 msgid "Mirror"
 msgstr "Spiegel"
 
@@ -3203,7 +3215,7 @@ msgid "Modify"
 msgstr "Ändern"
 
 #: src/routes/modules/certificates.ts:44
-#: src/views/certificate/CertificateEditor.vue:86
+#: src/views/certificate/CertificateEditor.vue:82
 msgid "Modify Certificate"
 msgstr "Zertifikat ändern"
 
@@ -3248,15 +3260,15 @@ msgstr "N/V"
 #: src/views/backup/AutoBackup/AutoBackup.vue:11
 #: src/views/certificate/ACMEUser.vue:11
 #: src/views/certificate/CertificateList/certColumns.tsx:9
-#: src/views/certificate/components/CertificateBasicInfo.vue:23
+#: src/views/certificate/components/CertificateBasicInfo.vue:43
+#: src/views/certificate/components/CertificateBasicInfo.vue:57
+#: src/views/certificate/components/CertificateBasicInfo.vue:69
 #: src/views/certificate/DNSCredential.vue:17
 #: src/views/config/components/ConfigRightPanel/Basic.vue:34
 #: src/views/config/components/Delete.vue:123
 #: src/views/config/components/Mkdir.vue:64
-#: src/views/config/configColumns.tsx:17
-#: src/views/environments/group/columns.ts:9
-#: src/views/environments/list/envColumns.tsx:8
-#: src/views/nginx_log/NginxLogList.vue:52
+#: src/views/config/configColumns.tsx:17 src/views/namespace/columns.ts:9
+#: src/views/nginx_log/NginxLogList.vue:52 src/views/node/nodeColumns.tsx:8
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:80
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:36
 #: src/views/site/site_list/columns.tsx:30
@@ -3272,6 +3284,18 @@ msgstr "Name"
 #: src/views/site/site_list/columns.tsx:22 src/views/stream/columns.tsx:18
 msgid "Name or content"
 msgstr "Name oder Inhalt"
+
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:42
+#: src/views/site/site_list/columns.tsx:91
+#: src/views/stream/columns.tsx:58
+#: src/views/stream/components/RightPanel/Basic.vue:39
+msgid "Namespace"
+msgstr "Namensraum"
+
+#: src/routes/modules/namespaces.ts:11
+#: src/views/namespace/Namespace.vue:19
+msgid "Namespaces"
+msgstr "Namensräume"
 
 #: src/views/dashboard/NginxDashBoard.vue:195
 msgid "Need to enable the stub_status module"
@@ -3465,7 +3489,7 @@ msgstr "Befehl zum Neuladen von Nginx"
 msgid "Nginx reload failed: {0}"
 msgstr "Nginx-Neustart fehlgeschlagen: {0}"
 
-#: src/views/environments/list/Environment.vue:89
+#: src/views/node/Node.vue:89
 msgid "Nginx reload operations have been dispatched to remote nodes"
 msgstr "Die Nginx-Neuladevorgänge wurden an die entfernten Knoten gesendet"
 
@@ -3477,7 +3501,7 @@ msgstr "Nginx erfolgreich neu geladen"
 msgid "Nginx Restart Command"
 msgstr "Beffehl zum Neustarten von Nginx"
 
-#: src/views/environments/list/Environment.vue:103
+#: src/views/node/Node.vue:103
 msgid "Nginx restart operations have been dispatched to remote nodes"
 msgstr "Die Nginx-Neustart-Operationen wurden an die entfernten Knoten gesendet"
 
@@ -3531,8 +3555,8 @@ msgid "Nginx.conf includes streams-enabled directory"
 msgstr "Nginx.conf enthält das streams-enabled-Verzeichnis"
 
 #: src/components/ChatGPT/ChatMessageInput.vue:17
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:111
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:99
+#: src/components/NamespaceTabs/NamespaceTabs.vue:111
+#: src/components/NamespaceTabs/NamespaceTabs.vue:99
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:102
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
 #: src/components/Notification/Notification.vue:108 src/language/curd.ts:40
@@ -3544,8 +3568,8 @@ msgstr "Nginx.conf enthält das streams-enabled-Verzeichnis"
 msgid "No"
 msgstr "Nein"
 
-#: src/components/EnvGroupRender/EnvGroupRender.vue:41
-#: src/constants/index.ts:36
+#: src/components/NamespaceRender/NamespaceRender.vue:41
+#: src/constants/index.ts:37
 msgid "No Action"
 msgstr "Keine Aktion"
 
@@ -3553,7 +3577,7 @@ msgstr "Keine Aktion"
 msgid "No data"
 msgstr "Keine Daten"
 
-#: src/components/EnvGroupRender/EnvGroupRender.vue:55
+#: src/components/NamespaceRender/NamespaceRender.vue:55
 msgid "No nodes selected"
 msgstr "Keine Knoten ausgewählt"
 
@@ -3581,17 +3605,6 @@ msgstr "Keine Upstreams konfiguriert"
 msgid "Node"
 msgstr "Node"
 
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:42
-#: src/views/site/site_list/columns.tsx:91 src/views/stream/columns.tsx:58
-#: src/views/stream/components/RightPanel/Basic.vue:39
-msgid "Node Group"
-msgstr "Node-Gruppe"
-
-#: src/routes/modules/environments.ts:33
-#: src/views/environments/group/EnvGroup.vue:19
-msgid "Node Groups"
-msgstr "Knotengruppen"
-
 #: src/views/preference/tabs/NodeSettings.vue:15
 msgid "Node name"
 msgstr "Knotenname"
@@ -3604,7 +3617,7 @@ msgstr "Node-Secret"
 msgid "Node Status"
 msgstr "Knotenstatus"
 
-#: src/routes/modules/environments.ts:25
+#: src/routes/modules/nodes.ts:11 src/views/dashboard/Nodes.vue:80
 msgid "Nodes"
 msgstr "Knoten"
 
@@ -3643,6 +3656,11 @@ msgstr ""
 "Hinweis: Wenn die Konfigurationsdatei andere Konfigurationen oder "
 "Zertifikate enthält, synchronisiere sie bitte im Voraus mit den "
 "Remote-Knoten."
+
+#: src/views/certificate/components/CertificateBasicInfo.vue:23
+#: src/views/certificate/components/CertificateContentEditor.vue:24
+msgid "Nothing to copy"
+msgstr "Nichts zu kopieren"
 
 #: src/views/notification/Notification.vue:28
 msgid "Notification"
@@ -3711,12 +3729,11 @@ msgstr "Aus"
 msgid "Official Document"
 msgstr "Offizielle Dokumentation"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:127
+#: src/components/NamespaceTabs/NamespaceTabs.vue:127
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:84
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
-#: src/views/dashboard/Environments.vue:106
-#: src/views/environments/list/envColumns.tsx:55
+#: src/views/dashboard/Nodes.vue:106 src/views/node/nodeColumns.tsx:55
 msgid "Offline"
 msgstr "Offline"
 
@@ -3745,13 +3762,12 @@ msgstr "Ein"
 msgid "Once the verification is complete, the records will be removed."
 msgstr "Sobaöd die Überprüfung abgeschlossen ist, werden die Einträge entfernt."
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:127
+#: src/components/NamespaceTabs/NamespaceTabs.vue:127
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:64
 #: src/components/NodeSelector/NodeSelector.vue:78
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
-#: src/views/dashboard/Environments.vue:99
-#: src/views/environments/list/envColumns.tsx:51
+#: src/views/dashboard/Nodes.vue:99 src/views/node/nodeColumns.tsx:51
 msgid "Online"
 msgstr "Online"
 
@@ -3898,7 +3914,7 @@ msgstr "Die Nutzlast-Ressource ist null"
 msgid "Pending"
 msgstr "Ausstehend"
 
-#: src/views/environments/list/BatchUpgrader.vue:245
+#: src/views/node/BatchUpgrader.vue:245
 msgid "Perform"
 msgstr "Ausführen"
 
@@ -3941,6 +3957,10 @@ msgid ""
 msgstr ""
 "Bitte aktivieren Sie das stub_status-Modul, um Anforderungsstatistiken, "
 "Verbindungsanzahl usw. zu erhalten."
+
+#: src/language/curd.ts:67
+msgid "Please enter"
+msgstr "Bitte eingeben"
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:74
 msgid ""
@@ -4091,17 +4111,15 @@ msgstr "Bitte wählen Sie eine gültige %{type}-Datei aus (%{extensions})"
 msgid "Please select at least one item"
 msgstr "Bitte wählen Sie mindestens einen Artikel aus"
 
-#: src/views/environments/list/Environment.vue:201
-#: src/views/environments/list/Environment.vue:83
+#: src/views/node/Node.vue:201 src/views/node/Node.vue:83
 msgid "Please select at least one node to reload Nginx"
 msgstr "Bitte wählen Sie mindestens einen Knoten aus, um Nginx neu zu laden"
 
-#: src/views/environments/list/Environment.vue:222
-#: src/views/environments/list/Environment.vue:97
+#: src/views/node/Node.vue:222 src/views/node/Node.vue:97
 msgid "Please select at least one node to restart Nginx"
 msgstr "Bitte wählen Sie mindestens einen Knoten aus, um Nginx neu zu starten"
 
-#: src/views/environments/list/Environment.vue:180
+#: src/views/node/Node.vue:180
 msgid "Please select at least one node to upgrade"
 msgstr "Bitte wähle mindestens einen Knoten zum Upgrade aus"
 
@@ -4127,13 +4145,12 @@ msgstr "Port 80 muss für die HTTP-01-Challenge-Validierung geöffnet sein"
 msgid "Port Scanner"
 msgstr "Port-Scanner"
 
-#: src/components/EnvGroupRender/EnvGroupRender.vue:38
-#: src/views/environments/group/columns.ts:46
+#: src/components/NamespaceRender/NamespaceRender.vue:38
+#: src/views/namespace/columns.ts:46
 msgid "Post-sync Action"
 msgstr "Aktion nach der Synchronisierung"
 
-#: src/views/environments/list/BatchUpgrader.vue:168
-#: src/views/environments/list/BatchUpgrader.vue:224
+#: src/views/node/BatchUpgrader.vue:168 src/views/node/BatchUpgrader.vue:224
 #: src/views/system/Upgrade.vue:213 src/views/system/Upgrade.vue:267
 msgid "Pre-release"
 msgstr "Vorabversion"
@@ -4273,6 +4290,10 @@ msgstr ""
 msgid "Recursive Nameservers"
 msgstr "Rekursive Nameserver"
 
+#: src/language/curd.ts:70
+msgid "Refresh"
+msgstr "Aktualisieren"
+
 #: src/components/ChatGPT/ChatMessageInput.vue:30
 msgid "Regenerate response"
 msgstr "Auffrischen der Antwort"
@@ -4326,10 +4347,9 @@ msgstr "Änderungsprotokoll"
 msgid "Reload"
 msgstr "Neu laden"
 
-#: src/components/EnvGroupRender/EnvGroupRender.vue:44
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:104 src/constants/index.ts:37
-#: src/views/environments/list/Environment.vue:209
-#: src/views/environments/list/Environment.vue:217
+#: src/components/NamespaceRender/NamespaceRender.vue:44
+#: src/components/NamespaceTabs/NamespaceTabs.vue:104 src/constants/index.ts:38
+#: src/views/node/Node.vue:209 src/views/node/Node.vue:217
 msgid "Reload Nginx"
 msgstr "Nginx neu laden"
 
@@ -4353,7 +4373,7 @@ msgstr "Fehler beim Neuladen von Remote-Nginx"
 msgid "Reload Remote Nginx Success"
 msgstr "Neustart von Remote-Nginx erfolgreich"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:52
+#: src/components/NamespaceTabs/NamespaceTabs.vue:52
 msgid "Reload request failed, please check your network connection"
 msgstr ""
 "Die Neulade-Anfrage ist fehlgeschlagen, bitte überprüfen Sie Ihre "
@@ -4367,7 +4387,7 @@ msgstr "Lade neu"
 msgid "Reloading nginx"
 msgstr "Lade Nginx neu"
 
-#: src/constants/index.ts:42
+#: src/constants/index.ts:43
 msgid "Remote"
 msgstr "Remote"
 
@@ -4519,9 +4539,8 @@ msgstr "Antworten"
 msgid "Restart"
 msgstr "Neustart"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:116
-#: src/views/environments/list/Environment.vue:230
-#: src/views/environments/list/Environment.vue:238
+#: src/components/NamespaceTabs/NamespaceTabs.vue:116
+#: src/views/node/Node.vue:230 src/views/node/Node.vue:238
 msgid "Restart Nginx"
 msgstr "Nginx neu starten"
 
@@ -4541,7 +4560,7 @@ msgstr "Fehler beim Neustart von Remote-Nginx"
 msgid "Restart Remote Nginx Success"
 msgstr "Neustart von Remote-Nginx erfolgreich"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:72
+#: src/components/NamespaceTabs/NamespaceTabs.vue:72
 msgid "Restart request failed, please check your network connection"
 msgstr ""
 "Neustart-Anforderung fehlgeschlagen, bitte überprüfen Sie Ihre "
@@ -4921,7 +4940,7 @@ msgstr "Testnachricht senden"
 msgid "Server"
 msgstr "Server"
 
-#: src/views/certificate/CertificateEditor.vue:58
+#: src/views/certificate/CertificateEditor.vue:54
 msgid "Server error"
 msgstr "Serverfehler"
 
@@ -5079,7 +5098,8 @@ msgstr "Wartezeit zwischen den Iterationen des Cache-Managers"
 msgid "Sponsor"
 msgstr "Sponsor"
 
-#: src/views/certificate/components/CertificateContentEditor.vue:93
+#: src/views/certificate/components/CertificateContentEditor.vue:118
+#: src/views/certificate/components/CertificateContentEditor.vue:123
 msgid "SSL Certificate Content"
 msgstr "SSL-Zertifikatsinhalt"
 
@@ -5093,15 +5113,20 @@ msgstr ""
 msgid "SSL certificate file not found"
 msgstr "SSL-Zertifikatsdatei nicht gefunden"
 
-#: src/views/certificate/components/CertificateContentEditor.vue:142
+#: src/views/certificate/components/CertificateContentEditor.vue:179
+#: src/views/certificate/components/CertificateContentEditor.vue:184
 msgid "SSL Certificate Key Content"
 msgstr "SSL-Zertifikatsschlüsselinhalt"
 
-#: src/views/certificate/components/CertificateBasicInfo.vue:55
+#: src/views/certificate/components/CertificateBasicInfo.vue:111
+#: src/views/certificate/components/CertificateBasicInfo.vue:125
+#: src/views/certificate/components/CertificateBasicInfo.vue:137
 msgid "SSL Certificate Key Path"
 msgstr "SSL-Zertifikatsschlüssel-Pfad"
 
-#: src/views/certificate/components/CertificateBasicInfo.vue:39
+#: src/views/certificate/components/CertificateBasicInfo.vue:103
+#: src/views/certificate/components/CertificateBasicInfo.vue:77
+#: src/views/certificate/components/CertificateBasicInfo.vue:91
 #: src/views/preference/tabs/ServerSettings.vue:37
 msgid "SSL Certificate Path"
 msgstr "SSL-Zertifikatspfad"
@@ -5132,8 +5157,7 @@ msgstr "Der SSL-Schlüsselpfad ist erforderlich, wenn HTTPS aktiviert ist"
 msgid "SSO Login"
 msgstr "SSO-Anmeldung"
 
-#: src/views/environments/list/BatchUpgrader.vue:165
-#: src/views/environments/list/BatchUpgrader.vue:218
+#: src/views/node/BatchUpgrader.vue:165 src/views/node/BatchUpgrader.vue:218
 #: src/views/system/Upgrade.vue:210 src/views/system/Upgrade.vue:261
 msgid "Stable"
 msgstr "Stabil"
@@ -5157,7 +5181,7 @@ msgstr "Statisch"
 #: src/views/certificate/ACMEUser.vue:73
 #: src/views/certificate/CertificateList/certColumns.tsx:63
 #: src/views/dashboard/components/ModulesTable.vue:96
-#: src/views/environments/list/envColumns.tsx:43
+#: src/views/node/nodeColumns.tsx:43
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:29
 #: src/views/site/site_list/columns.tsx:120 src/views/stream/columns.tsx:87
 msgid "Status"
@@ -5235,7 +5259,7 @@ msgstr "Stub-Status-Port"
 msgid "Stub_status is not enabled"
 msgstr "Stub_status ist nicht aktiviert"
 
-#: src/constants/index.ts:25 src/views/backup/AutoBackup/AutoBackup.vue:195
+#: src/constants/index.ts:26 src/views/backup/AutoBackup/AutoBackup.vue:195
 #: src/views/backup/AutoBackup/AutoBackup.vue:220
 #: src/views/notification/notificationColumns.tsx:35
 msgid "Success"
@@ -5327,10 +5351,9 @@ msgstr "Fehler beim Synchronisieren der Konfiguration"
 msgid "Sync Config Success"
 msgstr "Konfiguration erfolgreich synchronisiert"
 
-#: src/components/EnvGroupRender/EnvGroupRender.vue:53
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:90
-#: src/views/environments/group/columns.ts:17
-#: src/views/environments/group/EnvGroup.vue:31
+#: src/components/NamespaceRender/NamespaceRender.vue:53
+#: src/components/NamespaceTabs/NamespaceTabs.vue:90
+#: src/views/namespace/columns.ts:17 src/views/namespace/Namespace.vue:31
 msgid "Sync Nodes"
 msgstr "Synchrone Knoten"
 
@@ -5345,7 +5368,7 @@ msgstr "Synchronisierungsvorschau"
 msgid "Sync strategy"
 msgstr "Synchronisierungsstrategie"
 
-#: src/views/certificate/components/CertificateBasicInfo.vue:70
+#: src/views/certificate/components/CertificateBasicInfo.vue:144
 msgid "Sync to"
 msgstr "Synchronisieren mit"
 
@@ -5367,7 +5390,7 @@ msgstr "System-Backup"
 msgid "System Check"
 msgstr "Systemprüfung"
 
-#: src/views/certificate/components/ACMEUserSelector.vue:55
+#: src/views/certificate/components/ACMEUserSelector.vue:67
 msgid "System Initial User"
 msgstr "System-Startbenutzer"
 
@@ -5430,11 +5453,11 @@ msgstr ""
 "Die ICP-Nummer sollte nur Buchstaben, Unicode, Zahlen, Bindestriche, "
 "Doppelpunkte und Punkte enthalten."
 
-#: src/views/certificate/components/CertificateContentEditor.vue:96
+#: src/views/certificate/components/CertificateContentEditor.vue:114
 msgid "The input is not a SSL Certificate"
 msgstr "Die Eingabe ist kein SSL-Zertifikat"
 
-#: src/views/certificate/components/CertificateContentEditor.vue:145
+#: src/views/certificate/components/CertificateContentEditor.vue:175
 msgid "The input is not a SSL Certificate Key"
 msgstr "Die Eingabe ist kein SSL-Zertifikatsschlüssel"
 
@@ -5473,11 +5496,11 @@ msgstr ""
 msgid "The parameter of server_name is required"
 msgstr "Der Parameter server_name ist erforderlich"
 
-#: src/views/certificate/components/CertificateBasicInfo.vue:43
+#: src/views/certificate/components/CertificateBasicInfo.vue:81
 msgid "The path exists, but the file is not a certificate"
 msgstr "Der Pfad existiert, aber die Datei ist kein Zertifikat"
 
-#: src/views/certificate/components/CertificateBasicInfo.vue:59
+#: src/views/certificate/components/CertificateBasicInfo.vue:115
 msgid "The path exists, but the file is not a private key"
 msgstr "Der Pfad existiert, aber die Datei ist kein privater Schlüssel"
 
@@ -5553,9 +5576,9 @@ msgstr ""
 "Dieses Verzeichnis ist geschützt und kann aus Sicherheitsgründen nicht "
 "gelöscht werden."
 
-#: src/views/certificate/components/CertificateBasicInfo.vue:26
-#: src/views/certificate/components/CertificateBasicInfo.vue:41
-#: src/views/certificate/components/CertificateBasicInfo.vue:57
+#: src/views/certificate/components/CertificateBasicInfo.vue:113
+#: src/views/certificate/components/CertificateBasicInfo.vue:46
+#: src/views/certificate/components/CertificateBasicInfo.vue:79
 msgid "This field is required"
 msgstr "Dieses Feld ist erforderlich"
 
@@ -5664,7 +5687,7 @@ msgstr ""
 "Dadurch werden Konfigurationsdateien und Datenbank wiederhergestellt. Die "
 "Nginx UI wird nach Abschluss der Wiederherstellung neu gestartet."
 
-#: src/views/environments/list/BatchUpgrader.vue:186
+#: src/views/node/BatchUpgrader.vue:186
 msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr ""
 "Dies wird das Nginx UI auf %{nodeNames} auf %{version} aktualisieren oder "
@@ -5695,6 +5718,11 @@ msgstr ""
 #: src/views/notification/notificationColumns.tsx:58
 msgid "Title"
 msgstr "Titel"
+
+#: src/language/curd.ts:68
+#: src/language/curd.ts:69
+msgid "to confirm deletion"
+msgstr "Löschung bestätigen"
 
 #: src/views/certificate/components/RemoveCert.vue:124
 msgid "To confirm revocation, please type \"Revoke\" in the field below:"
@@ -5860,9 +5888,8 @@ msgstr "Erfolgreich aktualisiert"
 #: src/views/certificate/ACMEUser.vue:122
 #: src/views/certificate/DNSCredential.vue:65
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
-#: src/views/config/configColumns.tsx:43
-#: src/views/environments/group/columns.ts:78
-#: src/views/environments/list/envColumns.tsx:89
+#: src/views/config/configColumns.tsx:43 src/views/namespace/columns.ts:78
+#: src/views/node/nodeColumns.tsx:89
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:39
 #: src/views/site/site_list/columns.tsx:113 src/views/stream/columns.tsx:80
 #: src/views/stream/components/RightPanel/Basic.vue:35
@@ -5870,14 +5897,13 @@ msgstr "Erfolgreich aktualisiert"
 msgid "Updated at"
 msgstr "Aktualisiert am"
 
-#: src/routes/modules/system.ts:26
-#: src/views/environments/list/Environment.vue:188
-#: src/views/environments/list/Environment.vue:196
-#: src/views/system/Upgrade.vue:154 src/views/system/Upgrade.vue:159
+#: src/routes/modules/system.ts:26 src/views/node/Node.vue:188
+#: src/views/node/Node.vue:196 src/views/system/Upgrade.vue:154
+#: src/views/system/Upgrade.vue:159
 msgid "Upgrade"
 msgstr "Upgrade"
 
-#: src/views/environments/list/BatchUpgrader.vue:137
+#: src/views/node/BatchUpgrader.vue:137
 msgid "Upgraded Nginx UI on %{node} successfully 🎉"
 msgstr "Nginx UI auf %{node} erfolgreich aktualisiert 🎉"
 
@@ -5885,8 +5911,7 @@ msgstr "Nginx UI auf %{node} erfolgreich aktualisiert 🎉"
 msgid "Upgraded successfully"
 msgstr "Erfolgreich aktualisiert"
 
-#: src/views/environments/list/BatchUpgrader.vue:88
-#: src/views/system/Upgrade.vue:81
+#: src/views/node/BatchUpgrader.vue:88 src/views/system/Upgrade.vue:81
 msgid "Upgrading Nginx UI, please wait..."
 msgstr "Upgrade von Nginx UI, bitte warten..."
 
@@ -5910,7 +5935,7 @@ msgstr "Upstream"
 msgid "Upstream Name"
 msgstr "Upstream-Name"
 
-#: src/views/environments/group/columns.ts:59
+#: src/views/namespace/columns.ts:59
 msgid "Upstream Test Type"
 msgstr "Upstream-Testtyp"
 
@@ -5918,7 +5943,7 @@ msgstr "Upstream-Testtyp"
 msgid "Uptime:"
 msgstr "Uptime:"
 
-#: src/views/environments/list/envColumns.tsx:18
+#: src/views/node/nodeColumns.tsx:18
 msgid "URL"
 msgstr "URL"
 
@@ -5986,7 +6011,7 @@ msgstr "Backup-Dateiintegrität überprüfen"
 msgid "Verify system requirements"
 msgstr "Überprüfen Sie die Systemanforderungen"
 
-#: src/views/environments/list/envColumns.tsx:30
+#: src/views/node/nodeColumns.tsx:30
 msgid "Version"
 msgstr "Version"
 
@@ -5999,8 +6024,7 @@ msgstr "Anzeigen"
 msgid "View all notifications"
 msgstr "Alle Benachrichtigungen anzeigen"
 
-#: src/views/environments/list/BatchUpgrader.vue:235
-#: src/views/system/Upgrade.vue:279
+#: src/views/node/BatchUpgrader.vue:235 src/views/system/Upgrade.vue:279
 msgid "View on GitHub"
 msgstr "Auf GitHub anzeigen"
 
@@ -6017,7 +6041,7 @@ msgstr "Angesehen"
 msgid "Waiting processes"
 msgstr "Warteverfahren"
 
-#: src/constants/index.ts:23 src/views/backup/components/BackupCreator.vue:138
+#: src/constants/index.ts:24 src/views/backup/components/BackupCreator.vue:138
 #: src/views/config/InspectConfig.vue:51
 #: src/views/notification/notificationColumns.tsx:21
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:87
@@ -6106,10 +6130,10 @@ msgstr ""
 #: src/views/stream/components/RightPanel/Basic.vue:57
 msgid ""
 "When you enable/disable, delete, or save this site, the nodes set in the "
-"Node Group and the nodes selected below will be synchronized."
+"namespace and the nodes selected below will be synchronized."
 msgstr ""
 "Wenn Sie diese Website aktivieren/deaktivieren, löschen oder speichern, "
-"werden die im Node Group festgelegten Knoten und die unten ausgewählten "
+"werden die im Namespace festgelegten Knoten und die unten ausgewählten "
 "Knoten synchronisiert."
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:140
@@ -6145,7 +6169,7 @@ msgstr "Worker-Prozesse"
 msgid "Workers"
 msgstr "Worker"
 
-#: src/layouts/HeaderLayout.vue:62 src/routes/index.ts:57
+#: src/layouts/HeaderLayout.vue:62 src/routes/index.ts:59
 #: src/views/workspace/WorkSpace.vue:52
 msgid "Workspace"
 msgstr "Arbeitsplatz"
@@ -6171,8 +6195,8 @@ msgstr "Scrheibe Zertifikat-Privatschlüssel auf die Festplatte"
 msgid "Writing certificate to disk"
 msgstr "Schreibe Zertifikat auf die Festplatte"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:110
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:98
+#: src/components/NamespaceTabs/NamespaceTabs.vue:110
+#: src/components/NamespaceTabs/NamespaceTabs.vue:98
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:101
 #: src/components/NgxConfigEditor/LocationEditor.vue:88
 #: src/views/preference/tabs/AuthSettings.vue:131
@@ -6180,7 +6204,7 @@ msgstr "Schreibe Zertifikat auf die Festplatte"
 msgid "Yes"
 msgstr "Ja"
 
-#: src/views/terminal/Terminal.vue:132
+#: src/views/terminal/Terminal.vue:142
 msgid ""
 "You are accessing this terminal over an insecure HTTP connection on a "
 "non-localhost domain. This may expose sensitive information."
@@ -6245,6 +6269,12 @@ msgstr "Ihre alten Codes funktionieren nicht mehr."
 msgid "Your passkeys"
 msgstr "Deine Passkeys"
 
+#~ msgid "Node Group"
+#~ msgstr "Node-Gruppe"
+
+#~ msgid "Node Groups"
+#~ msgstr "Knotengruppen"
+
 #~ msgid "Check if the conf.d directory exists"
 #~ msgstr "Überprüfen Sie, ob das conf.d-Verzeichnis existiert"
 
@@ -6304,9 +6334,6 @@ msgstr "Deine Passkeys"
 
 #~ msgid "Last Backup Error"
 #~ msgstr "Letzter Sicherungsfehler"
-
-#~ msgid "Apply"
-#~ msgstr "Anwenden"
 
 #~ msgid "Apply bulk action successfully"
 #~ msgstr "Massenaktion erfolgreich angewendet"

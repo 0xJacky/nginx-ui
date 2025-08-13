@@ -1,6 +1,7 @@
 import type ReconnectingWebSocket from 'reconnecting-websocket'
-import type { Environment } from '@/api/environment'
+import type { Node } from '@/api/node'
 import { defineStore } from 'pinia'
+import nodeApi from '@/api/node'
 import ws from '@/lib/websocket'
 
 export interface NodeStatus {
@@ -19,14 +20,40 @@ export const useNodeAvailabilityStore = defineStore('nodeAvailability', () => {
   const isInitialized = ref(false)
   const lastUpdateTime = ref<string>('')
 
-  // Initialize node data from WebSocket
-  function initialize() {
+  // Initialize node data from API and WebSocket
+  async function initialize() {
     if (isInitialized.value) {
       return
     }
 
-    connectWebSocket()
-    isInitialized.value = true
+    try {
+      // First, load the initial node data from API
+      const response = await nodeApi.getList({ enabled: true })
+      const nodeMap: Record<number, NodeStatus> = {}
+
+      response.data.forEach((node: Node) => {
+        nodeMap[node.id] = {
+          id: node.id,
+          name: node.name,
+          status: node.status ?? false,
+          url: node.url,
+          token: node.token,
+          enabled: true,
+        }
+      })
+
+      nodes.value = nodeMap
+
+      // Then connect WebSocket for real-time updates
+      connectWebSocket()
+      isInitialized.value = true
+    }
+    catch (error) {
+      console.error('Failed to initialize node data:', error)
+      // Still try to connect WebSocket even if API call fails
+      connectWebSocket()
+      isInitialized.value = true
+    }
   }
 
   // Connect to WebSocket for real-time updates
@@ -42,7 +69,7 @@ export const useNodeAvailabilityStore = defineStore('nodeAvailability', () => {
 
     try {
       // Create new WebSocket connection
-      const socket = ws('/api/environments/enabled', true)
+      const socket = ws('/api/analytic/nodes', true)
       websocket.value = socket
 
       socket.onopen = () => {
@@ -51,26 +78,34 @@ export const useNodeAvailabilityStore = defineStore('nodeAvailability', () => {
 
       socket.onmessage = event => {
         try {
-          const message = JSON.parse(event.data)
+          const nodesData = JSON.parse(event.data)
 
-          if (message.event === 'message') {
-            const environments: Environment[] = message.data
-            const nodeMap: Record<number, NodeStatus> = {}
+          // The /api/analytic/nodes endpoint returns an object with node IDs as keys
+          // Update existing nodes' status or create new ones if not exist
+          Object.keys(nodesData).forEach((nodeIdStr: string) => {
+            const nodeId = Number.parseInt(nodeIdStr)
+            const nodeData = nodesData[nodeIdStr]
 
-            environments.forEach(env => {
-              nodeMap[env.id] = {
-                id: env.id,
-                name: env.name,
-                status: env.status ?? false,
-                url: env.url,
-                token: env.token,
+            // Update existing node or create new one
+            const existingNode = nodes.value[nodeId]
+            if (existingNode) {
+              // Update status for existing node
+              existingNode.status = nodeData.status ?? false
+            }
+            else {
+              // Create new node entry (this should be initialized from API call)
+              nodes.value[nodeId] = {
+                id: nodeId,
+                name: nodeData.name || `Node ${nodeId}`,
+                status: nodeData.status ?? false,
+                url: nodeData.url,
+                token: nodeData.token,
                 enabled: true,
               }
-            })
+            }
+          })
 
-            nodes.value = nodeMap
-            lastUpdateTime.value = new Date().toISOString()
-          }
+          lastUpdateTime.value = new Date().toISOString()
         }
         catch (error) {
           console.error('Error parsing WebSocket message:', error)
@@ -82,7 +117,7 @@ export const useNodeAvailabilityStore = defineStore('nodeAvailability', () => {
       }
 
       socket.onerror = error => {
-        console.warn('Failed to connect to environments WebSocket endpoint', error)
+        console.warn('Failed to connect to nodes WebSocket endpoint', error)
         isConnected.value = false
       }
     }
@@ -92,8 +127,8 @@ export const useNodeAvailabilityStore = defineStore('nodeAvailability', () => {
   }
 
   // Start monitoring (initialize + WebSocket)
-  function startMonitoring() {
-    initialize()
+  async function startMonitoring() {
+    await initialize()
   }
 
   // Stop monitoring and cleanup

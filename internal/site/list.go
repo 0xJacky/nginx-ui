@@ -16,7 +16,7 @@ type ListOptions struct {
 	Status     string
 	OrderBy    string
 	Sort       string
-	EnvGroupID uint64
+	NamespaceID uint64
 }
 
 // GetSiteConfigs retrieves and processes site configurations with database integration
@@ -28,7 +28,7 @@ func GetSiteConfigs(ctx context.Context, options *ListOptions, sites []*model.Si
 		Status:      options.Status,
 		OrderBy:     options.OrderBy,
 		Sort:        options.Sort,
-		EnvGroupID:  options.EnvGroupID,
+		NamespaceID:  options.NamespaceID,
 		IncludeDirs: false, // Filter out directories for site configurations
 	}
 
@@ -47,7 +47,7 @@ func GetSiteConfigs(ctx context.Context, options *ListOptions, sites []*model.Si
 }
 
 // buildConfig creates a config.Config from file information with site-specific data
-func buildConfig(fileName string, fileInfo os.FileInfo, status config.ConfigStatus, envGroupID uint64, envGroup *model.EnvGroup) config.Config {
+func buildConfig(fileName string, fileInfo os.FileInfo, status config.ConfigStatus, namespaceID uint64, namespace *model.Namespace) config.Config {
 	indexedSite := GetIndexedSite(fileName)
 
 	// Convert proxy targets, expanding upstream references
@@ -81,8 +81,8 @@ func buildConfig(fileName string, fileInfo os.FileInfo, status config.ConfigStat
 		Size:         fileInfo.Size(),
 		IsDir:        fileInfo.IsDir(),
 		Status:       status,
-		EnvGroupID:   envGroupID,
-		EnvGroup:     envGroup,
+		NamespaceID:   namespaceID,
+		Namespace:     namespace,
 		Urls:         indexedSite.Urls,
 		ProxyTargets: proxyTargets,
 	}

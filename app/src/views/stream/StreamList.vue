@@ -1,10 +1,10 @@
 <script setup lang="tsx">
-import type { EnvGroup } from '@/api/env_group'
+import type { Namespace } from '@/api/namespace'
 import { StdCurd } from '@uozi-admin/curd'
 import { message } from 'ant-design-vue'
-import env_group from '@/api/env_group'
+import namespace from '@/api/namespace'
 import stream from '@/api/stream'
-import EnvGroupTabs from '@/components/EnvGroupTabs'
+import NamespaceTabs from '@/components/NamespaceTabs'
 import InspectConfig from '@/views/config/InspectConfig.vue'
 import columns from '@/views/stream/columns'
 import StreamDuplicate from '@/views/stream/components/StreamDuplicate.vue'
@@ -15,17 +15,17 @@ const router = useRouter()
 const curd = ref()
 const inspect_config = ref()
 
-const envGroupId = ref(Number.parseInt(route.query.env_group_id as string) || 0)
-const envGroups = ref<EnvGroup[]>([])
+const namespaceId = ref(Number.parseInt(route.query.namespace_id as string) || 0)
+const namespaces = ref<Namespace[]>([])
 
 onMounted(async () => {
   let page = 1
   while (true) {
     try {
-      const { data, pagination } = await env_group.getList({ page })
+      const { data, pagination } = await namespace.getList({ page })
       if (!data || !pagination)
         return
-      envGroups.value.push(...data)
+      namespaces.value.push(...data)
       if (data.length < pagination?.per_page) {
         return
       }
@@ -91,7 +91,7 @@ function handleAddStream() {
       disable-export
       row-selection-type="checkbox"
       :custom-query-params="{
-        env_group_id: envGroupId,
+        namespace_id: namespaceId,
       }"
       :scroll-x="800"
       @edit-item="record => router.push({
@@ -106,7 +106,7 @@ function handleAddStream() {
 
       <template #beforeCardBody>
         <InspectConfig ref="inspect_config" />
-        <EnvGroupTabs v-model:active-key="envGroupId" :env-groups="envGroups" />
+        <NamespaceTabs v-model:active-key="namespaceId" :namespaces="namespaces" />
       </template>
 
       <template #afterActions="{ record }">

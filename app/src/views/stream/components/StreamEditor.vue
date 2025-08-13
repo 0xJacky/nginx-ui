@@ -100,7 +100,7 @@ const upstreamTargets = computed(() => {
             <!-- Upstream Cards Display -->
             <UpstreamCards
               :targets="upstreamTargets"
-              :env-group-id="data.env_group_id"
+              :namespace-id="data.namespace_id"
             />
 
             <NgxConfigEditor

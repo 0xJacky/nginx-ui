@@ -29,7 +29,7 @@ function ws(url: string, reconnect: boolean = true): ReconnectingWebSocket | Web
   const settings = useSettingsStore()
   const { token, shortToken } = storeToRefs(user)
 
-  const _url = buildWebSocketUrl(url, token.value, shortToken.value, settings.environment.id)
+  const _url = buildWebSocketUrl(url, token.value, shortToken.value, settings.node.id)
 
   if (reconnect)
     return new ReconnectingWebSocket(_url, undefined, { maxRetries: 10 })

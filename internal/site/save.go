@@ -18,7 +18,7 @@ import (
 )
 
 // Save saves a site configuration file
-func Save(name string, content string, overwrite bool, envGroupId uint64, syncNodeIds []uint64, postAction string) (err error) {
+func Save(name string, content string, overwrite bool, namespaceId uint64, syncNodeIds []uint64, postAction string) (err error) {
 	path := nginx.GetConfPath("sites-available", name)
 	if !overwrite && helper.FileExists(path) {
 		return ErrDstFileExists
@@ -52,9 +52,9 @@ func Save(name string, content string, overwrite bool, envGroupId uint64, syncNo
 
 	s := query.Site
 	_, err = s.Where(s.Path.Eq(path)).
-		Select(s.EnvGroupID, s.SyncNodeIDs).
+		Select(s.NamespaceID, s.SyncNodeIDs).
 		Updates(&model.Site{
-			EnvGroupID:  envGroupId,
+			NamespaceID:  namespaceId,
 			SyncNodeIDs: syncNodeIds,
 		})
 	if err != nil {
@@ -73,11 +73,11 @@ func syncSave(name string, content string) {
 	wg.Add(len(nodes))
 
 	// Map to track successful nodes for potential post-sync action
-	successfulNodes := make([]*model.Environment, 0)
+	successfulNodes := make([]*model.Node, 0)
 	var nodesMutex sync.Mutex
 
 	for _, node := range nodes {
-		go func(node *model.Environment) {
+		go func(node *model.Node) {
 			defer func() {
 				if err := recover(); err != nil {
 					buf := make([]byte, 1024)

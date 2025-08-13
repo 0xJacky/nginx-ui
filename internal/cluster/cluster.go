@@ -18,7 +18,7 @@ func RegisterPredefinedNodes(ctx context.Context) {
 		return
 	}
 
-	q := query.Environment
+	q := query.Node
 	for _, nodeUrl := range settings.ClusterSettings.Node {
 		func() {
 			node, err := parseNodeUrl(nodeUrl)
@@ -52,7 +52,7 @@ func RegisterPredefinedNodes(ctx context.Context) {
 	}
 }
 
-func parseNodeUrl(nodeUrl string) (env *model.Environment, err error) {
+func parseNodeUrl(nodeUrl string) (node *model.Node, err error) {
 	u, err := url.Parse(nodeUrl)
 	if err != nil {
 		return
@@ -63,7 +63,7 @@ func parseNodeUrl(nodeUrl string) (env *model.Environment, err error) {
 	sb.WriteString(u.Host)
 	sb.WriteString(u.Path)
 
-	env = &model.Environment{
+	node = &model.Node{
 		Name:    u.Query().Get("name"),
 		URL:     sb.String(),
 		Token:   u.Query().Get("node_secret"),

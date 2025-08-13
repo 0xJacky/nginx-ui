@@ -3,10 +3,10 @@ import type { SiteStatus } from '@/api/site'
 import type { Stream } from '@/api/stream'
 import type { JSXElements } from '@/types'
 import { datetimeRender } from '@uozi-admin/curd'
-import env_group from '@/api/env_group'
-import EnvGroupRender from '@/components/EnvGroupRender'
+import namespace from '@/api/namespace'
+import NamespaceRender from '@/components/NamespaceRender'
 import ProxyTargets from '@/components/ProxyTargets'
-import envGroupColumns from '@/views/environments/group/columns'
+import namespaceColumns from '@/views/namespace/columns'
 import StreamStatusSelect from '@/views/stream/components/StreamStatusSelect.vue'
 
 const columns: StdTableColumn[] = [{
@@ -55,18 +55,18 @@ const columns: StdTableColumn[] = [{
     return h('span', '-')
   },
 }, {
-  title: () => $gettext('Node Group'),
-  dataIndex: 'env_group_id',
+  title: () => $gettext('Namespace'),
+  dataIndex: 'namespace_id',
   customRender: ({ record }: CustomRenderArgs<Stream>) => {
-    return h(EnvGroupRender, {
-      envGroup: record.env_group || null,
+    return h(NamespaceRender, {
+      namespace: record.namespace || null,
     })
   },
   edit: {
     type: 'selector',
     selector: {
-      getListApi: env_group.getList,
-      columns: envGroupColumns,
+      getListApi: namespace.getList,
+      columns: namespaceColumns,
       valueKey: 'id',
       displayKey: 'name',
       selectionType: 'radio',

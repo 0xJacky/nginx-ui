@@ -103,6 +103,11 @@ msgstr "[Nginx UI] 正在將證書私鑰寫入磁碟"
 msgid "[Nginx UI] Writing certificate to disk"
 msgstr "[Nginx UI] 正在將憑證寫入磁碟"
 
+#: src/views/certificate/components/CertificateBasicInfo.vue:28
+#: src/views/certificate/components/CertificateContentEditor.vue:29
+msgid "{label} copied to clipboard"
+msgstr "{label} 已複製到剪貼簿"
+
 #: src/components/SyncNodesPreview/SyncNodesPreview.vue:59
 msgid "* Includes nodes from group %{groupName} and manually selected nodes"
 msgstr "* 包含來自群組 %{groupName} 的節點和手動選擇的節點"
@@ -133,7 +138,7 @@ msgid "Access Logs"
 msgstr "存取日誌"
 
 #: src/routes/modules/certificates.ts:20 src/views/certificate/ACMEUser.vue:147
-#: src/views/certificate/components/ACMEUserSelector.vue:52
+#: src/views/certificate/components/ACMEUserSelector.vue:64
 msgid "ACME User"
 msgstr "ACME 使用者"
 
@@ -145,10 +150,8 @@ msgstr "操作"
 #: src/views/certificate/ACMEUser.vue:129
 #: src/views/certificate/CertificateList/certColumns.tsx:92
 #: src/views/certificate/DNSCredential.vue:71
-#: src/views/config/configColumns.tsx:50
-#: src/views/environments/group/columns.ts:84
-#: src/views/environments/list/envColumns.tsx:96
-#: src/views/nginx_log/NginxLogList.vue:68
+#: src/views/config/configColumns.tsx:50 src/views/namespace/columns.ts:84
+#: src/views/nginx_log/NginxLogList.vue:68 src/views/node/nodeColumns.tsx:96
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:85
 #: src/views/site/site_list/columns.tsx:160 src/views/stream/columns.tsx:123
@@ -230,7 +233,7 @@ msgstr "進階模式"
 msgid "Afterwards, refresh this page and click add passkey again."
 msgstr "之後，請重新整理此頁面並再次點擊新增通行金鑰。"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:83
+#: src/components/NamespaceTabs/NamespaceTabs.vue:83
 msgid "All"
 msgstr "全部"
 
@@ -273,6 +276,10 @@ msgstr "API 類型"
 msgid "App"
 msgstr "應用"
 
+#: src/language/curd.ts:65
+msgid "Apply"
+msgstr "應用"
+
 #: src/views/system/Upgrade.vue:195
 msgid "Arch"
 msgstr "架構"
@@ -311,7 +318,7 @@ msgstr "確定要永久刪除嗎？"
 msgid "Are you sure you want to delete?"
 msgstr "您確定要刪除嗎？"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:97
+#: src/components/NamespaceTabs/NamespaceTabs.vue:97
 msgid "Are you sure you want to reload Nginx on the following sync nodes?"
 msgstr "您確定要在以下同步節點上重新載入 Nginx 嗎？"
 
@@ -327,7 +334,7 @@ msgstr "您確定要刪除此項目嗎？"
 msgid "Are you sure you want to remove this location?"
 msgstr "您確定要刪除此 Location 嗎？"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:109
+#: src/components/NamespaceTabs/NamespaceTabs.vue:109
 msgid "Are you sure you want to restart Nginx on the following sync nodes?"
 msgstr "您確定要在以下同步節點上重新啟動 Nginx 嗎？"
 
@@ -398,16 +405,15 @@ msgstr "自動備份失敗"
 msgid "Auto Backup Storage Failed"
 msgstr "自動備份儲存失敗"
 
-#: src/views/environments/list/Environment.vue:165
-#: src/views/nginx_log/NginxLog.vue:150
+#: src/views/nginx_log/NginxLog.vue:150 src/views/node/Node.vue:165
 msgid "Auto Refresh"
 msgstr "自動重新整理"
 
-#: src/views/environments/list/Environment.vue:48
+#: src/views/node/Node.vue:48
 msgid "Auto refresh disabled"
 msgstr "自動刷新已停用"
 
-#: src/views/environments/list/Environment.vue:44
+#: src/views/node/Node.vue:44
 msgid "Auto refresh enabled"
 msgstr "自動刷新已啟用"
 
@@ -552,7 +558,7 @@ msgstr "批次編輯"
 msgid "Batch Modify"
 msgstr "批次修改"
 
-#: src/views/environments/list/BatchUpgrader.vue:153
+#: src/views/node/BatchUpgrader.vue:153
 msgid "Batch Upgrade"
 msgstr "批次升級"
 
@@ -793,8 +799,7 @@ msgstr[0] "變更後憑證"
 msgid "Changed Path"
 msgstr "變更後路徑"
 
-#: src/views/environments/list/BatchUpgrader.vue:160
-#: src/views/system/Upgrade.vue:207
+#: src/views/node/BatchUpgrader.vue:160 src/views/system/Upgrade.vue:207
 msgid "Channel"
 msgstr "通道"
 
@@ -988,6 +993,10 @@ msgstr "程式碼補全未啟用"
 msgid "Code Completion Model"
 msgstr "程式碼補全模型"
 
+#: src/language/curd.ts:64
+msgid "Column Settings"
+msgstr "列設置"
+
 #: src/views/preference/tabs/LogrotateSettings.vue:23
 msgid "Command"
 msgstr "命令"
@@ -1079,6 +1088,10 @@ msgstr "設定"
 msgid "Configure SSL"
 msgstr "設定 SSL"
 
+#: src/language/curd.ts:66
+msgid "Confirm Delete"
+msgstr "確認刪除"
+
 #: src/views/user/UserProfile.vue:204
 msgid "Confirm New Password"
 msgstr "確認新密碼"
@@ -1091,7 +1104,7 @@ msgstr "已連線"
 msgid "Connection error, trying to reconnect..."
 msgstr "連線錯誤，正在嘗試重新連線..."
 
-#: src/views/terminal/Terminal.vue:139
+#: src/views/terminal/Terminal.vue:149
 msgid "Connection lost, please refresh the page."
 msgstr "連線中斷，請重新整理此頁面。"
 
@@ -1170,7 +1183,7 @@ msgid ""
 msgstr "建立系統備份，包括 Nginx 設定與 Nginx UI 設定。備份檔案將自動下載至您的電腦。"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:229
-#: src/views/environments/group/columns.ts:72
+#: src/views/namespace/columns.ts:72
 #: src/views/notification/notificationColumns.tsx:51
 #: src/views/preference/components/AuthSettings/Passkey.vue:95
 #: src/views/preference/components/ExternalNotify/columns.tsx:80
@@ -1402,7 +1415,7 @@ msgstr "細節"
 msgid "Dev"
 msgstr "Dev"
 
-#: src/views/environments/list/BatchUpgrader.vue:171
+#: src/views/node/BatchUpgrader.vue:171
 msgid "Development"
 msgstr "開發"
 
@@ -1502,8 +1515,7 @@ msgid "Disable stream %{name} from %{node} successfully"
 msgstr "已成功從 %{node} 停用串流 %{name}"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:175
-#: src/views/environments/list/envColumns.tsx:60
-#: src/views/environments/list/envColumns.tsx:78
+#: src/views/node/nodeColumns.tsx:60 src/views/node/nodeColumns.tsx:78
 #: src/views/preference/tabs/HTTPSettings.vue:24
 #: src/views/preference/tabs/NodeSettings.vue:25
 #: src/views/preference/tabs/NodeSettings.vue:30
@@ -1605,16 +1617,15 @@ msgstr "下載最新版本錯誤"
 msgid "Downloading latest release"
 msgstr "正在下載最新版本"
 
-#: src/views/certificate/components/CertificateContentEditor.vue:126
+#: src/views/certificate/components/CertificateContentEditor.vue:157
 msgid "Drop certificate file here"
 msgstr "將證書文件拖放到此處"
 
-#: src/views/certificate/components/CertificateContentEditor.vue:175
+#: src/views/certificate/components/CertificateContentEditor.vue:218
 msgid "Drop private key file here"
 msgstr "將私鑰檔案拖放到此處"
 
-#: src/views/environments/list/BatchUpgrader.vue:192
-#: src/views/system/Upgrade.vue:237
+#: src/views/node/BatchUpgrader.vue:192 src/views/system/Upgrade.vue:237
 msgid "Dry run mode enabled"
 msgstr "試運轉模式已啟用"
 
@@ -1784,8 +1795,7 @@ msgid "Enable TOTP"
 msgstr "啟用 TOTP"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:174
-#: src/views/environments/list/envColumns.tsx:69
-#: src/views/environments/list/envColumns.tsx:75
+#: src/views/node/nodeColumns.tsx:69 src/views/node/nodeColumns.tsx:75
 #: src/views/preference/components/ExternalNotify/columns.tsx:47
 #: src/views/preference/tabs/HTTPSettings.vue:24
 #: src/views/preference/tabs/LogrotateSettings.vue:20
@@ -1842,13 +1852,11 @@ msgstr "環境配置為空"
 msgid "Environment variables cleaned"
 msgstr "環境變數已清理"
 
-#: src/routes/modules/environments.ts:11
-#: src/views/dashboard/Environments.vue:80
-#: src/views/environments/list/Environment.vue:131
+#: src/views/node/Node.vue:131
 msgid "Environments"
 msgstr "環境"
 
-#: src/constants/index.ts:22 src/views/config/InspectConfig.vue:63
+#: src/constants/index.ts:23 src/views/config/InspectConfig.vue:63
 #: src/views/notification/notificationColumns.tsx:14
 msgid "Error"
 msgstr "錯誤"
@@ -1996,6 +2004,11 @@ msgstr "複製檔案內容失敗：{0}"
 #: src/constants/errors/backup.ts:20
 msgid "Failed to copy Nginx config directory: {0}"
 msgstr "複製 Nginx 設定目錄失敗：{0}"
+
+#: src/views/certificate/components/CertificateBasicInfo.vue:32
+#: src/views/certificate/components/CertificateContentEditor.vue:33
+msgid "Failed to copy to clipboard"
+msgstr "複製到剪貼簿失敗"
 
 #: src/constants/errors/self_check.ts:10
 msgid "Failed to create backup"
@@ -2439,8 +2452,7 @@ msgstr "取得資料失敗"
 msgid "Get dns credential error: {0}"
 msgstr "獲取 DNS 憑證錯誤：{0}"
 
-#: src/views/environments/list/BatchUpgrader.vue:181
-#: src/views/system/Upgrade.vue:188
+#: src/views/node/BatchUpgrader.vue:181 src/views/system/Upgrade.vue:188
 msgid "Get release information error"
 msgstr "取得發佈資訊錯誤"
 
@@ -2486,7 +2498,7 @@ msgstr "數值越高表示連線重複使用率越好"
 msgid "History"
 msgstr "歷史"
 
-#: src/routes/index.ts:48
+#: src/routes/index.ts:50
 msgid "Home"
 msgstr "首頁"
 
@@ -2545,7 +2557,7 @@ msgid "Import"
 msgstr "匯入"
 
 #: src/routes/modules/certificates.ts:54
-#: src/views/certificate/CertificateEditor.vue:86
+#: src/views/certificate/CertificateEditor.vue:82
 msgid "Import Certificate"
 msgstr "匯入憑證"
 
@@ -2567,7 +2579,7 @@ msgstr "建立索引中..."
 msgid "Indicator"
 msgstr "指標"
 
-#: src/constants/index.ts:24 src/views/notification/notificationColumns.tsx:28
+#: src/constants/index.ts:25 src/views/notification/notificationColumns.tsx:28
 msgid "Info"
 msgstr "資訊"
 
@@ -2798,10 +2810,10 @@ msgstr "如果您的 ACME 提供商不需要，請留空"
 msgid "Leave blank if you don't need this."
 msgstr "留空表示不需要此項目。"
 
-#: src/views/certificate/components/CertificateContentEditor.vue:118
-#: src/views/certificate/components/CertificateContentEditor.vue:136
+#: src/views/certificate/components/CertificateContentEditor.vue:149
 #: src/views/certificate/components/CertificateContentEditor.vue:167
-#: src/views/certificate/components/CertificateContentEditor.vue:185
+#: src/views/certificate/components/CertificateContentEditor.vue:210
+#: src/views/certificate/components/CertificateContentEditor.vue:228
 msgid "Leave blank will not change anything"
 msgstr "留空將不會改變任何內容"
 
@@ -2834,11 +2846,11 @@ msgstr "監聽中"
 msgid "Load Average:"
 msgstr "負載平均值："
 
-#: src/views/environments/list/Environment.vue:138
+#: src/views/node/Node.vue:138
 msgid "Load from settings"
 msgstr "從設定載入"
 
-#: src/views/environments/list/Environment.vue:68
+#: src/views/node/Node.vue:68
 msgid "Load successfully"
 msgstr "載入成功"
 
@@ -2868,7 +2880,7 @@ msgid "Loading data..."
 msgstr "資料載入中…"
 
 #: src/components/EnvIndicator/EnvIndicator.vue:39
-#: src/components/NodeSelector/NodeSelector.vue:61 src/constants/index.ts:41
+#: src/components/NodeSelector/NodeSelector.vue:61 src/constants/index.ts:42
 #: src/views/backup/AutoBackup/AutoBackup.vue:74
 #: src/views/backup/AutoBackup/AutoBackup.vue:83
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:48
@@ -2888,7 +2900,7 @@ msgstr "Location"
 msgid "Locations"
 msgstr "Locations"
 
-#: src/views/certificate/CertificateEditor.vue:126
+#: src/views/certificate/CertificateEditor.vue:122
 msgid "Log"
 msgstr "日誌"
 
@@ -3090,7 +3102,7 @@ msgstr "分鐘"
 msgid "Minutes"
 msgstr "分鐘"
 
-#: src/constants/index.ts:43
+#: src/constants/index.ts:44
 msgid "Mirror"
 msgstr "鏡像"
 
@@ -3108,7 +3120,7 @@ msgid "Modify"
 msgstr "修改"
 
 #: src/routes/modules/certificates.ts:44
-#: src/views/certificate/CertificateEditor.vue:86
+#: src/views/certificate/CertificateEditor.vue:82
 msgid "Modify Certificate"
 msgstr "修改憑證"
 
@@ -3153,15 +3165,15 @@ msgstr "不適用"
 #: src/views/backup/AutoBackup/AutoBackup.vue:11
 #: src/views/certificate/ACMEUser.vue:11
 #: src/views/certificate/CertificateList/certColumns.tsx:9
-#: src/views/certificate/components/CertificateBasicInfo.vue:23
+#: src/views/certificate/components/CertificateBasicInfo.vue:43
+#: src/views/certificate/components/CertificateBasicInfo.vue:57
+#: src/views/certificate/components/CertificateBasicInfo.vue:69
 #: src/views/certificate/DNSCredential.vue:17
 #: src/views/config/components/ConfigRightPanel/Basic.vue:34
 #: src/views/config/components/Delete.vue:123
 #: src/views/config/components/Mkdir.vue:64
-#: src/views/config/configColumns.tsx:17
-#: src/views/environments/group/columns.ts:9
-#: src/views/environments/list/envColumns.tsx:8
-#: src/views/nginx_log/NginxLogList.vue:52
+#: src/views/config/configColumns.tsx:17 src/views/namespace/columns.ts:9
+#: src/views/nginx_log/NginxLogList.vue:52 src/views/node/nodeColumns.tsx:8
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:80
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:36
 #: src/views/site/site_list/columns.tsx:30
@@ -3177,6 +3189,18 @@ msgstr "名稱"
 #: src/views/site/site_list/columns.tsx:22 src/views/stream/columns.tsx:18
 msgid "Name or content"
 msgstr "名稱或內容"
+
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:42
+#: src/views/site/site_list/columns.tsx:91
+#: src/views/stream/columns.tsx:58
+#: src/views/stream/components/RightPanel/Basic.vue:39
+msgid "Namespace"
+msgstr "命名空間"
+
+#: src/routes/modules/namespaces.ts:11
+#: src/views/namespace/Namespace.vue:19
+msgid "Namespaces"
+msgstr "命名空間"
 
 #: src/views/dashboard/NginxDashBoard.vue:195
 msgid "Need to enable the stub_status module"
@@ -3370,7 +3394,7 @@ msgstr "Nginx 重新載入指令"
 msgid "Nginx reload failed: {0}"
 msgstr "Nginx 重新載入失敗: {0}"
 
-#: src/views/environments/list/Environment.vue:89
+#: src/views/node/Node.vue:89
 msgid "Nginx reload operations have been dispatched to remote nodes"
 msgstr "Nginx 重新載入操作已分發至遠端節點"
 
@@ -3382,7 +3406,7 @@ msgstr "Nginx 重新載入成功"
 msgid "Nginx Restart Command"
 msgstr "Nginx 重啟指令"
 
-#: src/views/environments/list/Environment.vue:103
+#: src/views/node/Node.vue:103
 msgid "Nginx restart operations have been dispatched to remote nodes"
 msgstr "Nginx 重啟操作已分發至遠端節點"
 
@@ -3434,8 +3458,8 @@ msgid "Nginx.conf includes streams-enabled directory"
 msgstr "Nginx.conf 包含 streams-enabled 目錄"
 
 #: src/components/ChatGPT/ChatMessageInput.vue:17
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:111
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:99
+#: src/components/NamespaceTabs/NamespaceTabs.vue:111
+#: src/components/NamespaceTabs/NamespaceTabs.vue:99
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:102
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
 #: src/components/Notification/Notification.vue:108 src/language/curd.ts:40
@@ -3447,8 +3471,8 @@ msgstr "Nginx.conf 包含 streams-enabled 目錄"
 msgid "No"
 msgstr "取消"
 
-#: src/components/EnvGroupRender/EnvGroupRender.vue:41
-#: src/constants/index.ts:36
+#: src/components/NamespaceRender/NamespaceRender.vue:41
+#: src/constants/index.ts:37
 msgid "No Action"
 msgstr "無行動"
 
@@ -3456,7 +3480,7 @@ msgstr "無行動"
 msgid "No data"
 msgstr "無數據"
 
-#: src/components/EnvGroupRender/EnvGroupRender.vue:55
+#: src/components/NamespaceRender/NamespaceRender.vue:55
 msgid "No nodes selected"
 msgstr "未選擇節點"
 
@@ -3482,17 +3506,6 @@ msgstr "未配置上游"
 msgid "Node"
 msgstr "節點"
 
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:42
-#: src/views/site/site_list/columns.tsx:91 src/views/stream/columns.tsx:58
-#: src/views/stream/components/RightPanel/Basic.vue:39
-msgid "Node Group"
-msgstr "節點群組"
-
-#: src/routes/modules/environments.ts:33
-#: src/views/environments/group/EnvGroup.vue:19
-msgid "Node Groups"
-msgstr "節點群組"
-
 #: src/views/preference/tabs/NodeSettings.vue:15
 msgid "Node name"
 msgstr "節點名稱"
@@ -3505,7 +3518,7 @@ msgstr "節點金鑰"
 msgid "Node Status"
 msgstr "節點狀態"
 
-#: src/routes/modules/environments.ts:25
+#: src/routes/modules/nodes.ts:11 src/views/dashboard/Nodes.vue:80
 msgid "Nodes"
 msgstr "節點"
 
@@ -3541,6 +3554,11 @@ msgid ""
 "Note, if the configuration file include other configurations or "
 "certificates, please synchronize them to the remote nodes in advance."
 msgstr "請注意，如果設定檔包含其他設定或憑證，請提前將它們同步到遠端節點。"
+
+#: src/views/certificate/components/CertificateBasicInfo.vue:23
+#: src/views/certificate/components/CertificateContentEditor.vue:24
+msgid "Nothing to copy"
+msgstr "無內容可複製"
 
 #: src/views/notification/Notification.vue:28
 msgid "Notification"
@@ -3605,12 +3623,11 @@ msgstr "關"
 msgid "Official Document"
 msgstr "官方文件"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:127
+#: src/components/NamespaceTabs/NamespaceTabs.vue:127
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:84
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
-#: src/views/dashboard/Environments.vue:106
-#: src/views/environments/list/envColumns.tsx:55
+#: src/views/dashboard/Nodes.vue:106 src/views/node/nodeColumns.tsx:55
 msgid "Offline"
 msgstr "離線"
 
@@ -3639,13 +3656,12 @@ msgstr "開啟"
 msgid "Once the verification is complete, the records will be removed."
 msgstr "驗證完成後，記錄將被刪除。"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:127
+#: src/components/NamespaceTabs/NamespaceTabs.vue:127
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:64
 #: src/components/NodeSelector/NodeSelector.vue:78
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
-#: src/views/dashboard/Environments.vue:99
-#: src/views/environments/list/envColumns.tsx:51
+#: src/views/dashboard/Nodes.vue:99 src/views/node/nodeColumns.tsx:51
 msgid "Online"
 msgstr "線上"
 
@@ -3791,7 +3807,7 @@ msgstr "有效載荷資源為空"
 msgid "Pending"
 msgstr "待處理"
 
-#: src/views/environments/list/BatchUpgrader.vue:245
+#: src/views/node/BatchUpgrader.vue:245
 msgid "Perform"
 msgstr "執行"
 
@@ -3832,6 +3848,10 @@ msgid ""
 "Please enable the stub_status module to get request statistics, connection "
 "count, etc."
 msgstr "請啟用 stub_status 模組以取得請求統計、連線數量等資訊"
+
+#: src/language/curd.ts:67
+msgid "Please enter"
+msgstr "請輸入"
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:74
 msgid ""
@@ -3965,17 +3985,15 @@ msgstr "請選擇有效的%{type}檔案（%{extensions}）"
 msgid "Please select at least one item"
 msgstr "請至少選擇一項"
 
-#: src/views/environments/list/Environment.vue:201
-#: src/views/environments/list/Environment.vue:83
+#: src/views/node/Node.vue:201 src/views/node/Node.vue:83
 msgid "Please select at least one node to reload Nginx"
 msgstr "請至少選擇一個節點以重新載入 Nginx"
 
-#: src/views/environments/list/Environment.vue:222
-#: src/views/environments/list/Environment.vue:97
+#: src/views/node/Node.vue:222 src/views/node/Node.vue:97
 msgid "Please select at least one node to restart Nginx"
 msgstr "請至少選擇一個節點以重啟 Nginx"
 
-#: src/views/environments/list/Environment.vue:180
+#: src/views/node/Node.vue:180
 msgid "Please select at least one node to upgrade"
 msgstr "請至少選擇一個節點進行升級"
 
@@ -4001,13 +4019,12 @@ msgstr "必須開放 80 端口以進行 HTTP-01 挑戰驗證"
 msgid "Port Scanner"
 msgstr "端口掃描器"
 
-#: src/components/EnvGroupRender/EnvGroupRender.vue:38
-#: src/views/environments/group/columns.ts:46
+#: src/components/NamespaceRender/NamespaceRender.vue:38
+#: src/views/namespace/columns.ts:46
 msgid "Post-sync Action"
 msgstr "同步後動作"
 
-#: src/views/environments/list/BatchUpgrader.vue:168
-#: src/views/environments/list/BatchUpgrader.vue:224
+#: src/views/node/BatchUpgrader.vue:168 src/views/node/BatchUpgrader.vue:224
 #: src/views/system/Upgrade.vue:213 src/views/system/Upgrade.vue:267
 msgid "Pre-release"
 msgstr "預先發布"
@@ -4141,6 +4158,10 @@ msgstr "復原代碼在您無法使用 2FA 裝置時，用於存取您的帳戶�
 msgid "Recursive Nameservers"
 msgstr "遞迴名稱伺服器"
 
+#: src/language/curd.ts:70
+msgid "Refresh"
+msgstr "重新整理"
+
 #: src/components/ChatGPT/ChatMessageInput.vue:30
 msgid "Regenerate response"
 msgstr "重新產生回應"
@@ -4192,10 +4213,9 @@ msgstr "發行公告"
 msgid "Reload"
 msgstr "重新載入"
 
-#: src/components/EnvGroupRender/EnvGroupRender.vue:44
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:104 src/constants/index.ts:37
-#: src/views/environments/list/Environment.vue:209
-#: src/views/environments/list/Environment.vue:217
+#: src/components/NamespaceRender/NamespaceRender.vue:44
+#: src/components/NamespaceTabs/NamespaceTabs.vue:104 src/constants/index.ts:38
+#: src/views/node/Node.vue:209 src/views/node/Node.vue:217
 msgid "Reload Nginx"
 msgstr "重新載入 Nginx"
 
@@ -4219,7 +4239,7 @@ msgstr "重新載入遠端 Nginx 錯誤"
 msgid "Reload Remote Nginx Success"
 msgstr "遠端 Nginx 重新載入成功"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:52
+#: src/components/NamespaceTabs/NamespaceTabs.vue:52
 msgid "Reload request failed, please check your network connection"
 msgstr "重新載入請求失敗，請檢查您的網路連線"
 
@@ -4231,7 +4251,7 @@ msgstr "重新載入中"
 msgid "Reloading nginx"
 msgstr "正在重新載入 Nginx"
 
-#: src/constants/index.ts:42
+#: src/constants/index.ts:43
 msgid "Remote"
 msgstr "遠端"
 
@@ -4380,9 +4400,8 @@ msgstr "回應"
 msgid "Restart"
 msgstr "重新啟動"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:116
-#: src/views/environments/list/Environment.vue:230
-#: src/views/environments/list/Environment.vue:238
+#: src/components/NamespaceTabs/NamespaceTabs.vue:116
+#: src/views/node/Node.vue:230 src/views/node/Node.vue:238
 msgid "Restart Nginx"
 msgstr "重新啟動 Nginx"
 
@@ -4402,7 +4421,7 @@ msgstr "遠端 Nginx 重啟錯誤"
 msgid "Restart Remote Nginx Success"
 msgstr "遠端 Nginx 重啟成功"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:72
+#: src/components/NamespaceTabs/NamespaceTabs.vue:72
 msgid "Restart request failed, please check your network connection"
 msgstr "重新啟動請求失敗，請檢查您的網路連線"
 
@@ -4773,7 +4792,7 @@ msgstr "發送測試訊息"
 msgid "Server"
 msgstr "伺服器"
 
-#: src/views/certificate/CertificateEditor.vue:58
+#: src/views/certificate/CertificateEditor.vue:54
 msgid "Server error"
 msgstr "伺服器錯誤"
 
@@ -4927,7 +4946,8 @@ msgstr "快取管理器迭代間的休眠時間"
 msgid "Sponsor"
 msgstr "贊助"
 
-#: src/views/certificate/components/CertificateContentEditor.vue:93
+#: src/views/certificate/components/CertificateContentEditor.vue:118
+#: src/views/certificate/components/CertificateContentEditor.vue:123
 msgid "SSL Certificate Content"
 msgstr "SSL 憑證內容"
 
@@ -4939,15 +4959,20 @@ msgstr "SSL 憑證檔案必須位於 Nginx 設定目錄下：{0}"
 msgid "SSL certificate file not found"
 msgstr "SSL 憑證檔案未找到"
 
-#: src/views/certificate/components/CertificateContentEditor.vue:142
+#: src/views/certificate/components/CertificateContentEditor.vue:179
+#: src/views/certificate/components/CertificateContentEditor.vue:184
 msgid "SSL Certificate Key Content"
 msgstr "SSL 憑證金鑰內容"
 
-#: src/views/certificate/components/CertificateBasicInfo.vue:55
+#: src/views/certificate/components/CertificateBasicInfo.vue:111
+#: src/views/certificate/components/CertificateBasicInfo.vue:125
+#: src/views/certificate/components/CertificateBasicInfo.vue:137
 msgid "SSL Certificate Key Path"
 msgstr "SSL 憑證金鑰路徑"
 
-#: src/views/certificate/components/CertificateBasicInfo.vue:39
+#: src/views/certificate/components/CertificateBasicInfo.vue:103
+#: src/views/certificate/components/CertificateBasicInfo.vue:77
+#: src/views/certificate/components/CertificateBasicInfo.vue:91
 #: src/views/preference/tabs/ServerSettings.vue:37
 msgid "SSL Certificate Path"
 msgstr "SSL 憑證路徑"
@@ -4976,8 +5001,7 @@ msgstr "啟用 HTTPS 時必須提供 SSL 金鑰路徑"
 msgid "SSO Login"
 msgstr "SSO 登入"
 
-#: src/views/environments/list/BatchUpgrader.vue:165
-#: src/views/environments/list/BatchUpgrader.vue:218
+#: src/views/node/BatchUpgrader.vue:165 src/views/node/BatchUpgrader.vue:218
 #: src/views/system/Upgrade.vue:210 src/views/system/Upgrade.vue:261
 msgid "Stable"
 msgstr "穩定"
@@ -5001,7 +5025,7 @@ msgstr "靜態"
 #: src/views/certificate/ACMEUser.vue:73
 #: src/views/certificate/CertificateList/certColumns.tsx:63
 #: src/views/dashboard/components/ModulesTable.vue:96
-#: src/views/environments/list/envColumns.tsx:43
+#: src/views/node/nodeColumns.tsx:43
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:29
 #: src/views/site/site_list/columns.tsx:120 src/views/stream/columns.tsx:87
 msgid "Status"
@@ -5077,7 +5101,7 @@ msgstr "存根狀態端口"
 msgid "Stub_status is not enabled"
 msgstr "未啟用 stub_status"
 
-#: src/constants/index.ts:25 src/views/backup/AutoBackup/AutoBackup.vue:195
+#: src/constants/index.ts:26 src/views/backup/AutoBackup/AutoBackup.vue:195
 #: src/views/backup/AutoBackup/AutoBackup.vue:220
 #: src/views/notification/notificationColumns.tsx:35
 msgid "Success"
@@ -5165,10 +5189,9 @@ msgstr "同步設定錯誤"
 msgid "Sync Config Success"
 msgstr "同步設定成功"
 
-#: src/components/EnvGroupRender/EnvGroupRender.vue:53
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:90
-#: src/views/environments/group/columns.ts:17
-#: src/views/environments/group/EnvGroup.vue:31
+#: src/components/NamespaceRender/NamespaceRender.vue:53
+#: src/components/NamespaceTabs/NamespaceTabs.vue:90
+#: src/views/namespace/columns.ts:17 src/views/namespace/Namespace.vue:31
 msgid "Sync Nodes"
 msgstr "同步節點"
 
@@ -5183,7 +5206,7 @@ msgstr "同步預覽"
 msgid "Sync strategy"
 msgstr "同步策略"
 
-#: src/views/certificate/components/CertificateBasicInfo.vue:70
+#: src/views/certificate/components/CertificateBasicInfo.vue:144
 msgid "Sync to"
 msgstr "同步到"
 
@@ -5205,7 +5228,7 @@ msgstr "系統備份"
 msgid "System Check"
 msgstr "系統檢查"
 
-#: src/views/certificate/components/ACMEUserSelector.vue:55
+#: src/views/certificate/components/ACMEUserSelector.vue:67
 msgid "System Initial User"
 msgstr "系統初始使用者"
 
@@ -5263,11 +5286,11 @@ msgid ""
 "dashes, colons, and dots."
 msgstr "ICP 編號僅能包含字母、Unicode 字元、數字、連字號、破折號、冒號和句點。"
 
-#: src/views/certificate/components/CertificateContentEditor.vue:96
+#: src/views/certificate/components/CertificateContentEditor.vue:114
 msgid "The input is not a SSL Certificate"
 msgstr "輸入的不是 SSL 憑證"
 
-#: src/views/certificate/components/CertificateContentEditor.vue:145
+#: src/views/certificate/components/CertificateContentEditor.vue:175
 msgid "The input is not a SSL Certificate Key"
 msgstr "輸入的不是 SSL 憑證金鑰"
 
@@ -5298,11 +5321,11 @@ msgstr "節點名稱僅能包含字母、Unicode 字元、數字、連字號、�
 msgid "The parameter of server_name is required"
 msgstr "必須提供 server_name 參數"
 
-#: src/views/certificate/components/CertificateBasicInfo.vue:43
+#: src/views/certificate/components/CertificateBasicInfo.vue:81
 msgid "The path exists, but the file is not a certificate"
 msgstr "路徑存在，但檔案不是憑證"
 
-#: src/views/certificate/components/CertificateBasicInfo.vue:59
+#: src/views/certificate/components/CertificateBasicInfo.vue:115
 msgid "The path exists, but the file is not a private key"
 msgstr "路徑存在，但檔案不是金鑰"
 
@@ -5366,9 +5389,9 @@ msgstr "此憑證由 Nginx UI 管理"
 msgid "This directory is protected and cannot be deleted for system safety."
 msgstr "此目錄受保護，為確保系統安全無法刪除。"
 
-#: src/views/certificate/components/CertificateBasicInfo.vue:26
-#: src/views/certificate/components/CertificateBasicInfo.vue:41
-#: src/views/certificate/components/CertificateBasicInfo.vue:57
+#: src/views/certificate/components/CertificateBasicInfo.vue:113
+#: src/views/certificate/components/CertificateBasicInfo.vue:46
+#: src/views/certificate/components/CertificateBasicInfo.vue:79
 msgid "This field is required"
 msgstr "此欄位為必填項"
 
@@ -5458,7 +5481,7 @@ msgid ""
 "after the restoration is complete."
 msgstr "這將恢復設定檔案和資料庫。恢復完成後，Nginx UI 將重新啟動。"
 
-#: src/views/environments/list/BatchUpgrader.vue:186
+#: src/views/node/BatchUpgrader.vue:186
 msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr "這將在 %{nodeNames} 上升級或重新安裝 Nginx UI 到 %{version}。"
 
@@ -5485,6 +5508,11 @@ msgstr "提示：您可以通過增加 worker_processes 或 worker_connections �
 #: src/views/notification/notificationColumns.tsx:58
 msgid "Title"
 msgstr "標題"
+
+#: src/language/curd.ts:68
+#: src/language/curd.ts:69
+msgid "to confirm deletion"
+msgstr "確認刪除"
 
 #: src/views/certificate/components/RemoveCert.vue:124
 msgid "To confirm revocation, please type \"Revoke\" in the field below:"
@@ -5639,9 +5667,8 @@ msgstr "更新成功"
 #: src/views/certificate/ACMEUser.vue:122
 #: src/views/certificate/DNSCredential.vue:65
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
-#: src/views/config/configColumns.tsx:43
-#: src/views/environments/group/columns.ts:78
-#: src/views/environments/list/envColumns.tsx:89
+#: src/views/config/configColumns.tsx:43 src/views/namespace/columns.ts:78
+#: src/views/node/nodeColumns.tsx:89
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:39
 #: src/views/site/site_list/columns.tsx:113 src/views/stream/columns.tsx:80
 #: src/views/stream/components/RightPanel/Basic.vue:35
@@ -5649,14 +5676,13 @@ msgstr "更新成功"
 msgid "Updated at"
 msgstr "更新時間"
 
-#: src/routes/modules/system.ts:26
-#: src/views/environments/list/Environment.vue:188
-#: src/views/environments/list/Environment.vue:196
-#: src/views/system/Upgrade.vue:154 src/views/system/Upgrade.vue:159
+#: src/routes/modules/system.ts:26 src/views/node/Node.vue:188
+#: src/views/node/Node.vue:196 src/views/system/Upgrade.vue:154
+#: src/views/system/Upgrade.vue:159
 msgid "Upgrade"
 msgstr "升級"
 
-#: src/views/environments/list/BatchUpgrader.vue:137
+#: src/views/node/BatchUpgrader.vue:137
 msgid "Upgraded Nginx UI on %{node} successfully 🎉"
 msgstr "成功升級 %{node} 上的 Nginx UI 🎉"
 
@@ -5664,8 +5690,7 @@ msgstr "成功升級 %{node} 上的 Nginx UI 🎉"
 msgid "Upgraded successfully"
 msgstr "升級成功"
 
-#: src/views/environments/list/BatchUpgrader.vue:88
-#: src/views/system/Upgrade.vue:81
+#: src/views/node/BatchUpgrader.vue:88 src/views/system/Upgrade.vue:81
 msgid "Upgrading Nginx UI, please wait..."
 msgstr "正在升級 Nginx UI，請稍候..."
 
@@ -5689,7 +5714,7 @@ msgstr "上游"
 msgid "Upstream Name"
 msgstr "Upstream 名稱"
 
-#: src/views/environments/group/columns.ts:59
+#: src/views/namespace/columns.ts:59
 msgid "Upstream Test Type"
 msgstr "上游測試類型"
 
@@ -5697,7 +5722,7 @@ msgstr "上游測試類型"
 msgid "Uptime:"
 msgstr "運作時間："
 
-#: src/views/environments/list/envColumns.tsx:18
+#: src/views/node/nodeColumns.tsx:18
 msgid "URL"
 msgstr "URL"
 
@@ -5765,7 +5790,7 @@ msgstr "驗證備份檔案完整性"
 msgid "Verify system requirements"
 msgstr "驗證系統要求"
 
-#: src/views/environments/list/envColumns.tsx:30
+#: src/views/node/nodeColumns.tsx:30
 msgid "Version"
 msgstr "版本"
 
@@ -5778,8 +5803,7 @@ msgstr "檢視"
 msgid "View all notifications"
 msgstr "檢視所有通知"
 
-#: src/views/environments/list/BatchUpgrader.vue:235
-#: src/views/system/Upgrade.vue:279
+#: src/views/node/BatchUpgrader.vue:235 src/views/system/Upgrade.vue:279
 msgid "View on GitHub"
 msgstr "在 GitHub 上查看"
 
@@ -5796,7 +5820,7 @@ msgstr "已檢視"
 msgid "Waiting processes"
 msgstr "等待過程"
 
-#: src/constants/index.ts:23 src/views/backup/components/BackupCreator.vue:138
+#: src/constants/index.ts:24 src/views/backup/components/BackupCreator.vue:138
 #: src/views/config/InspectConfig.vue:51
 #: src/views/notification/notificationColumns.tsx:21
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:87
@@ -5869,8 +5893,8 @@ msgstr "啟用後，Nginx UI 將在啟動時自動重新註冊使用者。通常
 #: src/views/stream/components/RightPanel/Basic.vue:57
 msgid ""
 "When you enable/disable, delete, or save this site, the nodes set in the "
-"Node Group and the nodes selected below will be synchronized."
-msgstr "當您啟用/停用、刪除或儲存此網站時，在節點群組中設定的節點以及下方選擇的節點將會同步更新。"
+"namespace and the nodes selected below will be synchronized."
+msgstr "當您啟用/停用、刪除或儲存此站點時，命名空間中設定的節點和下方選擇的節點將被同步。"
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:140
 msgid ""
@@ -5901,7 +5925,7 @@ msgstr "worker 行程"
 msgid "Workers"
 msgstr "worker"
 
-#: src/layouts/HeaderLayout.vue:62 src/routes/index.ts:57
+#: src/layouts/HeaderLayout.vue:62 src/routes/index.ts:59
 #: src/views/workspace/WorkSpace.vue:52
 msgid "Workspace"
 msgstr "工作區"
@@ -5927,8 +5951,8 @@ msgstr "將憑證私鑰寫入磁碟"
 msgid "Writing certificate to disk"
 msgstr "將憑證寫入磁碟"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:110
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:98
+#: src/components/NamespaceTabs/NamespaceTabs.vue:110
+#: src/components/NamespaceTabs/NamespaceTabs.vue:98
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:101
 #: src/components/NgxConfigEditor/LocationEditor.vue:88
 #: src/views/preference/tabs/AuthSettings.vue:131
@@ -5936,7 +5960,7 @@ msgstr "將憑證寫入磁碟"
 msgid "Yes"
 msgstr "是的"
 
-#: src/views/terminal/Terminal.vue:132
+#: src/views/terminal/Terminal.vue:142
 msgid ""
 "You are accessing this terminal over an insecure HTTP connection on a "
 "non-localhost domain. This may expose sensitive information."
@@ -5990,6 +6014,12 @@ msgstr "您的舊代碼將不再有效。"
 #: src/views/preference/components/AuthSettings/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "您的通行金鑰"
+
+#~ msgid "Node Group"
+#~ msgstr "節點群組"
+
+#~ msgid "Node Groups"
+#~ msgstr "節點群組"
 
 #~ msgid "Check if the conf.d directory exists"
 #~ msgstr "檢查 conf.d 目錄是否存在"
@@ -6047,9 +6077,6 @@ msgstr "您的通行金鑰"
 
 #~ msgid "Last Backup Error"
 #~ msgstr "最後一次備份錯誤"
-
-#~ msgid "Apply"
-#~ msgstr "應用"
 
 #~ msgid "Apply bulk action successfully"
 #~ msgstr "批次操作成功應用"

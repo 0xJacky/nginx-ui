@@ -12,4 +12,5 @@ func InitWebSocketRouter(r *gin.RouterGroup) {
 
 func InitRouter(r *gin.RouterGroup) {
 	r.GET("analytic/init", GetAnalyticInit)
+	r.GET("node", GetNode)
 }

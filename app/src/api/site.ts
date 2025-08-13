@@ -1,6 +1,6 @@
 import type { CertificateInfo } from '@/api/cert'
 import type { ModelBase } from '@/api/curd'
-import type { EnvGroup } from '@/api/env_group'
+import type { Namespace } from '@/api/namespace'
 import type { NgxConfig } from '@/api/ngx'
 import type { ConfigStatus, PrivateKeyType } from '@/constants'
 import { extendCurdApi, http, useCurdApi } from '@uozi-admin/request'
@@ -23,8 +23,8 @@ export interface Site extends ModelBase {
   auto_cert: boolean
   tokenized?: NgxConfig
   cert_info?: Record<number, CertificateInfo[]>
-  env_group_id: number
-  env_group?: EnvGroup
+  namespace_id: number
+  namespace?: Namespace
   sync_node_ids: number[]
   urls?: string[]
   proxy_targets?: ProxyTarget[]

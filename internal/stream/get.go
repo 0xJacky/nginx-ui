@@ -71,7 +71,7 @@ func GetStreamInfo(name string) (*StreamInfo, error) {
 }
 
 // SaveStreamConfig saves stream configuration with database update
-func SaveStreamConfig(name, content string, envGroupID uint64, syncNodeIDs []uint64, overwrite bool, postAction string) error {
+func SaveStreamConfig(name, content string, namespaceID uint64, syncNodeIDs []uint64, overwrite bool, postAction string) error {
 	// Get stream from database or create if not exists
 	path := nginx.GetConfPath("streams-available", name)
 	s := query.Stream
@@ -80,9 +80,9 @@ func SaveStreamConfig(name, content string, envGroupID uint64, syncNodeIDs []uin
 		return err
 	}
 
-	// Update Node Group ID if provided
-	if envGroupID > 0 {
-		streamModel.EnvGroupID = envGroupID
+	// Update Namespace ID if provided
+	if namespaceID > 0 {
+		streamModel.NamespaceID = namespaceID
 	}
 
 	// Update synchronization node IDs if provided

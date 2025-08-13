@@ -20,15 +20,15 @@ type GenericListOptions struct {
 	Status      string
 	OrderBy     string
 	Sort        string
-	EnvGroupID  uint64
+	NamespaceID uint64
 	IncludeDirs bool // Whether to include directories in the results, default is false (filter out directories)
 }
 
 // ConfigEntity represents a generic configuration entity interface
 type ConfigEntity interface {
 	GetPath() string
-	GetEnvGroupID() uint64
-	GetEnvGroup() *model.EnvGroup
+	GetNamespaceID() uint64
+	GetNamespace() *model.Namespace
 }
 
 // ConfigPaths holds the directory paths for available and enabled configurations
@@ -41,10 +41,10 @@ type ConfigPaths struct {
 type StatusMapBuilder func(configFiles, enabledConfig []os.DirEntry) map[string]ConfigStatus
 
 // ConfigBuilder is a function type for building Config objects with custom logic
-type ConfigBuilder func(fileName string, fileInfo os.FileInfo, status ConfigStatus, envGroupID uint64, envGroup *model.EnvGroup) Config
+type ConfigBuilder func(fileName string, fileInfo os.FileInfo, status ConfigStatus, namespaceID uint64, namespace *model.Namespace) Config
 
 // FilterMatcher is a function type for custom filtering logic
-type FilterMatcher func(fileName string, status ConfigStatus, envGroupID uint64, options *GenericListOptions) bool
+type FilterMatcher func(fileName string, status ConfigStatus, namespaceID uint64, options *GenericListOptions) bool
 
 // GenericConfigProcessor holds all the custom functions for processing configurations
 type GenericConfigProcessor struct {
@@ -113,15 +113,15 @@ func GetGenericConfigs[T ConfigEntity](
 		status := statusMap[fileName]
 
 		// Get environment group info from database
-		var envGroupID uint64
-		var envGroup *model.EnvGroup
+		var namespaceID uint64
+		var namespace *model.Namespace
 		if entity, ok := entitiesMap[fileName]; ok {
-			envGroupID = entity.GetEnvGroupID()
-			envGroup = entity.GetEnvGroup()
+			namespaceID = entity.GetNamespaceID()
+			namespace = entity.GetNamespace()
 		}
 
 		// Apply filters using custom logic
-		if !processor.FilterMatcher(fileName, status, envGroupID, options) {
+		if !processor.FilterMatcher(fileName, status, namespaceID, options) {
 			continue
 		}
 
@@ -154,7 +154,7 @@ func GetGenericConfigs[T ConfigEntity](
 		}
 
 		// Build configuration using custom logic
-		configs = append(configs, processor.ConfigBuilder(fileName, fileInfo, status, envGroupID, envGroup))
+		configs = append(configs, processor.ConfigBuilder(fileName, fileInfo, status, namespaceID, namespace))
 	}
 
 	// Sort and return
@@ -270,7 +270,7 @@ func SiteStatusMapBuilder(maintenanceSuffix string) StatusMapBuilder {
 }
 
 // DefaultFilterMatcher provides the standard filtering logic with name search
-func DefaultFilterMatcher(fileName string, status ConfigStatus, envGroupID uint64, options *GenericListOptions) bool {
+func DefaultFilterMatcher(fileName string, status ConfigStatus, namespaceID uint64, options *GenericListOptions) bool {
 	// Exact name matching
 	if options.Name != "" && fileName != options.Name {
 		return false
@@ -278,14 +278,14 @@ func DefaultFilterMatcher(fileName string, status ConfigStatus, envGroupID uint6
 	if options.Status != "" && status != ConfigStatus(options.Status) {
 		return false
 	}
-	if options.EnvGroupID != 0 && envGroupID != options.EnvGroupID {
+	if options.NamespaceID != 0 && namespaceID != options.NamespaceID {
 		return false
 	}
 	return true
 }
 
 // FuzzyFilterMatcher provides filtering logic with fuzzy search support
-func FuzzyFilterMatcher(fileName string, status ConfigStatus, envGroupID uint64, options *GenericListOptions) bool {
+func FuzzyFilterMatcher(fileName string, status ConfigStatus, namespaceID uint64, options *GenericListOptions) bool {
 	// Exact name matching takes precedence over fuzzy search
 	if options.Name != "" && fileName != options.Name {
 		return false
@@ -293,21 +293,21 @@ func FuzzyFilterMatcher(fileName string, status ConfigStatus, envGroupID uint64,
 	if options.Status != "" && status != ConfigStatus(options.Status) {
 		return false
 	}
-	if options.EnvGroupID != 0 && envGroupID != options.EnvGroupID {
+	if options.NamespaceID != 0 && namespaceID != options.NamespaceID {
 		return false
 	}
 	return true
 }
 
 // DefaultConfigBuilder provides basic config building logic
-func DefaultConfigBuilder(fileName string, fileInfo os.FileInfo, status ConfigStatus, envGroupID uint64, envGroup *model.EnvGroup) Config {
+func DefaultConfigBuilder(fileName string, fileInfo os.FileInfo, status ConfigStatus, namespaceID uint64, namespace *model.Namespace) Config {
 	return Config{
 		Name:       fileName,
 		ModifiedAt: fileInfo.ModTime(),
 		Size:       fileInfo.Size(),
 		IsDir:      fileInfo.IsDir(),
 		Status:     status,
-		EnvGroupID: envGroupID,
-		EnvGroup:   envGroup,
+		NamespaceID: namespaceID,
+		Namespace:   namespace,
 	}
 }

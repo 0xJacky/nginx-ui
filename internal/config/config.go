@@ -25,8 +25,8 @@ type Config struct {
 	ModifiedAt    time.Time       `json:"modified_at"`
 	Size          int64           `json:"size,omitempty"`
 	IsDir         bool            `json:"is_dir"`
-	EnvGroupID    uint64          `json:"env_group_id"`
-	EnvGroup      *model.EnvGroup `json:"env_group,omitempty"`
+	NamespaceID   uint64          `json:"namespace_id"`
+	Namespace     *model.Namespace `json:"namespace,omitempty"`
 	Status        ConfigStatus    `json:"status"`
 	Dir           string          `json:"dir"`
 	Urls          []string        `json:"urls,omitempty"`

@@ -1,4 +1,4 @@
-import type { EnvGroup } from './env_group'
+import type { Namespace } from './namespace'
 import type { NgxConfig } from '@/api/ngx'
 import type { ChatComplicationMessage } from '@/api/openai'
 import type { ProxyTarget, SiteStatus } from '@/api/site'
@@ -13,8 +13,8 @@ export interface Stream {
   config: string
   chatgpt_messages: ChatComplicationMessage[]
   tokenized?: NgxConfig
-  env_group_id: number
-  env_group?: EnvGroup
+  namespace_id: number
+  namespace?: Namespace
   sync_node_ids: number[]
   proxy_targets?: ProxyTarget[]
 }

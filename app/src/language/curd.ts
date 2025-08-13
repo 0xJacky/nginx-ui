@@ -60,5 +60,12 @@ export const translations = {
     processing: $gettext('Processing {count}/{total}'),
     path: $gettext('Path'),
     size: $gettext('Size')
-  }
+  },
+  'Column Settings': $gettext('Column Settings'),
+  Apply: $gettext('Apply'),
+  'Confirm Delete': $gettext('Confirm Delete'),
+  'Please Input': $gettext('Please enter'),
+  'to comfirm delete': $gettext('to confirm deletion'),
+  'to confirm deletion': $gettext('to confirm deletion'),
+  refresh: $gettext('Refresh')
 }

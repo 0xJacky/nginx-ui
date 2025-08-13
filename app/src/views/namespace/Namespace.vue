@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import type { UpdateOrderRequest } from '@/api/curd'
 import { StdCurd } from '@uozi-admin/curd'
-import env_group from '@/api/env_group'
+import namespace from '@/api/namespace'
 import NodeSelector from '@/components/NodeSelector'
-import columns from '@/views/environments/group/columns'
+import columns from './columns'
 
 const table = useTemplateRef('table')
 
 async function handleDragEnd(data: UpdateOrderRequest) {
-  await env_group.updateOrder(data)
+  await namespace.updateOrder(data)
   table.value?.refresh()
 }
 </script>
@@ -16,8 +16,8 @@ async function handleDragEnd(data: UpdateOrderRequest) {
 <template>
   <StdCurd
     ref="table"
-    :title="$gettext('Node Groups')"
-    :api="env_group"
+    :title="$gettext('Namespaces')"
+    :api="namespace"
     :columns="columns"
     :scroll-x="600"
     disable-export

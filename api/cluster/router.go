@@ -3,31 +3,29 @@ package cluster
 import "github.com/gin-gonic/gin"
 
 func InitRouter(r *gin.RouterGroup) {
-	// Environment
-	r.GET("environments", GetEnvironmentList)
-	r.POST("environments/load_from_settings", LoadEnvironmentFromSettings)
-	envGroup := r.Group("environments")
-	{
-		envGroup.GET("/:id", GetEnvironment)
-		envGroup.POST("", AddEnvironment)
-		envGroup.POST("/:id", EditEnvironment)
-		envGroup.DELETE("/:id", DeleteEnvironment)
-	}
 	// Node
-	r.GET("node", GetCurrentNode)
+	r.GET("nodes", GetNodeList)
+	r.POST("nodes/load_from_settings", LoadNodeFromSettings)
+	nodeGroup := r.Group("nodes")
+	{
+		nodeGroup.GET("/:id", GetNode)
+		nodeGroup.POST("", AddNode)
+		nodeGroup.POST("/:id", EditNode)
+		nodeGroup.DELETE("/:id", DeleteNode)
+	}
 
-	r.POST("environments/reload_nginx", ReloadNginx)
-	r.POST("environments/restart_nginx", RestartNginx)
+	r.POST("nodes/reload_nginx", ReloadNginx)
+	r.POST("nodes/restart_nginx", RestartNginx)
 
-	r.GET("env_groups", GetGroupList)
-	r.GET("env_groups/:id", GetGroup)
-	r.POST("env_groups", AddGroup)
-	r.POST("env_groups/:id", ModifyGroup)
-	r.DELETE("env_groups/:id", DeleteGroup)
-	r.POST("env_groups/:id/recover", RecoverGroup)
-	r.POST("env_groups/order", UpdateGroupsOrder)
+	r.GET("namespaces", GetNamespaceList)
+	r.GET("namespaces/:id", GetNamespace)
+	r.POST("namespaces", AddNamespace)
+	r.POST("namespaces/:id", ModifyNamespace)
+	r.DELETE("namespaces/:id", DeleteNamespace)
+	r.POST("namespaces/:id/recover", RecoverNamespace)
+	r.POST("namespaces/order", UpdateNamespacesOrder)
 }
 
 func InitWebSocketRouter(r *gin.RouterGroup) {
-	r.GET("environments/enabled", GetAllEnabledEnvironmentWS)
+	r.GET("nodes/enabled", GetAllEnabledNodeWS)
 }

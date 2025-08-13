@@ -12,25 +12,25 @@ import (
 )
 
 // getSyncData returns the nodes that need to be synchronized by stream name and the post-sync action
-func getSyncData(name string) (nodes []*model.Environment, postSyncAction string) {
+func getSyncData(name string) (nodes []*model.Node, postSyncAction string) {
 	configFilePath := nginx.GetConfPath("streams-available", name)
 	s := query.Stream
 	stream, err := s.Where(s.Path.Eq(configFilePath)).
-		Preload(s.EnvGroup).First()
+		Preload(s.Namespace).First()
 	if err != nil {
 		logger.Error(err)
 		return
 	}
 
 	syncNodeIds := stream.SyncNodeIDs
-	// inherit sync node ids from stream category
-	if stream.EnvGroup != nil {
-		syncNodeIds = append(syncNodeIds, stream.EnvGroup.SyncNodeIds...)
-		postSyncAction = stream.EnvGroup.PostSyncAction
+	// inherit sync node ids from stream namespace
+	if stream.Namespace != nil {
+		syncNodeIds = append(syncNodeIds, stream.Namespace.SyncNodeIds...)
+		postSyncAction = stream.Namespace.PostSyncAction
 	}
 
-	e := query.Environment
-	nodes, err = e.Where(e.ID.In(syncNodeIds...)).Find()
+	n := query.Node
+	nodes, err = n.Where(n.ID.In(syncNodeIds...)).Find()
 	if err != nil {
 		logger.Error(err)
 		return
@@ -39,7 +39,7 @@ func getSyncData(name string) (nodes []*model.Environment, postSyncAction string
 }
 
 // getSyncNodes returns the nodes that need to be synchronized by stream name (for backward compatibility)
-func getSyncNodes(name string) (nodes []*model.Environment) {
+func getSyncNodes(name string) (nodes []*model.Node) {
 	nodes, _ = getSyncData(name)
 	return
 }

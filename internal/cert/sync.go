@@ -63,11 +63,11 @@ func SyncToRemoteServer(c *model.Cert) (err error) {
 		return
 	}
 
-	q := query.Environment
-	envs, _ := q.Where(q.ID.In(c.SyncNodeIds...)).Find()
-	for _, env := range envs {
+	q := query.Node
+	nodes, _ := q.Where(q.ID.In(c.SyncNodeIds...)).Find()
+	for _, node := range nodes {
 		go func() {
-			err := deploy(env, c, payloadBytes)
+			err := deploy(node, c, payloadBytes)
 			if err != nil {
 				logger.Error(err)
 			}
@@ -80,11 +80,11 @@ func SyncToRemoteServer(c *model.Cert) (err error) {
 type SyncNotificationPayload struct {
 	StatusCode int    `json:"status_code"`
 	CertName   string `json:"cert_name"`
-	EnvName    string `json:"env_name"`
+	NodeName    string `json:"node_name"`
 	Response   string `json:"response"`
 }
 
-func deploy(env *model.Environment, c *model.Cert, payloadBytes []byte) (err error) {
+func deploy(node *model.Node, c *model.Cert, payloadBytes []byte) (err error) {
 	t, err := transport.NewTransport()
 	if err != nil {
 		return
@@ -92,7 +92,7 @@ func deploy(env *model.Environment, c *model.Cert, payloadBytes []byte) (err err
 	client := http.Client{
 		Transport: t,
 	}
-	url, err := env.GetUrl("/api/cert_sync")
+	url, err := node.GetUrl("/api/cert_sync")
 	if err != nil {
 		return
 	}
@@ -100,7 +100,7 @@ func deploy(env *model.Environment, c *model.Cert, payloadBytes []byte) (err err
 	if err != nil {
 		return
 	}
-	req.Header.Set("X-Node-Secret", env.Token)
+	req.Header.Set("X-Node-Secret", node.Token)
 	resp, err := client.Do(req)
 	if err != nil {
 		return
@@ -115,18 +115,18 @@ func deploy(env *model.Environment, c *model.Cert, payloadBytes []byte) (err err
 	notificationPayload := &SyncNotificationPayload{
 		StatusCode: resp.StatusCode,
 		CertName:   c.Name,
-		EnvName:    env.Name,
+		NodeName:    node.Name,
 		Response:   string(respBody),
 	}
 
 	if resp.StatusCode != http.StatusOK {
 		notification.Error("Sync Certificate Error",
-			"Sync Certificate %{cert_name} to %{env_name} failed", notificationPayload)
+			"Sync Certificate %{cert_name} to %{node_name} failed", notificationPayload)
 		return
 	}
 
 	notification.Success("Sync Certificate Success",
-		"Sync Certificate %{cert_name} to %{env_name} successfully", notificationPayload)
+		"Sync Certificate %{cert_name} to %{node_name} successfully", notificationPayload)
 
 	return
 }

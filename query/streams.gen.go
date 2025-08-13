@@ -34,12 +34,12 @@ func newStream(db *gorm.DB, opts ...gen.DOOption) stream {
 	_stream.DeletedAt = field.NewField(tableName, "deleted_at")
 	_stream.Path = field.NewString(tableName, "path")
 	_stream.Advanced = field.NewBool(tableName, "advanced")
-	_stream.EnvGroupID = field.NewUint64(tableName, "env_group_id")
+	_stream.NamespaceID = field.NewUint64(tableName, "namespace_id")
 	_stream.SyncNodeIDs = field.NewField(tableName, "sync_node_ids")
-	_stream.EnvGroup = streamBelongsToEnvGroup{
+	_stream.Namespace = streamBelongsToNamespace{
 		db: db.Session(&gorm.Session{}),
 
-		RelationField: field.NewRelation("EnvGroup", "model.EnvGroup"),
+		RelationField: field.NewRelation("Namespace", "model.Namespace"),
 	}
 
 	_stream.fillFieldMap()
@@ -57,9 +57,9 @@ type stream struct {
 	DeletedAt   field.Field
 	Path        field.String
 	Advanced    field.Bool
-	EnvGroupID  field.Uint64
+	NamespaceID field.Uint64
 	SyncNodeIDs field.Field
-	EnvGroup    streamBelongsToEnvGroup
+	Namespace   streamBelongsToNamespace
 
 	fieldMap map[string]field.Expr
 }
@@ -82,7 +82,7 @@ func (s *stream) updateTableName(table string) *stream {
 	s.DeletedAt = field.NewField(table, "deleted_at")
 	s.Path = field.NewString(table, "path")
 	s.Advanced = field.NewBool(table, "advanced")
-	s.EnvGroupID = field.NewUint64(table, "env_group_id")
+	s.NamespaceID = field.NewUint64(table, "namespace_id")
 	s.SyncNodeIDs = field.NewField(table, "sync_node_ids")
 
 	s.fillFieldMap()
@@ -107,31 +107,31 @@ func (s *stream) fillFieldMap() {
 	s.fieldMap["deleted_at"] = s.DeletedAt
 	s.fieldMap["path"] = s.Path
 	s.fieldMap["advanced"] = s.Advanced
-	s.fieldMap["env_group_id"] = s.EnvGroupID
+	s.fieldMap["namespace_id"] = s.NamespaceID
 	s.fieldMap["sync_node_ids"] = s.SyncNodeIDs
 
 }
 
 func (s stream) clone(db *gorm.DB) stream {
 	s.streamDo.ReplaceConnPool(db.Statement.ConnPool)
-	s.EnvGroup.db = db.Session(&gorm.Session{Initialized: true})
-	s.EnvGroup.db.Statement.ConnPool = db.Statement.ConnPool
+	s.Namespace.db = db.Session(&gorm.Session{Initialized: true})
+	s.Namespace.db.Statement.ConnPool = db.Statement.ConnPool
 	return s
 }
 
 func (s stream) replaceDB(db *gorm.DB) stream {
 	s.streamDo.ReplaceDB(db)
-	s.EnvGroup.db = db.Session(&gorm.Session{})
+	s.Namespace.db = db.Session(&gorm.Session{})
 	return s
 }
 
-type streamBelongsToEnvGroup struct {
+type streamBelongsToNamespace struct {
 	db *gorm.DB
 
 	field.RelationField
 }
 
-func (a streamBelongsToEnvGroup) Where(conds ...field.Expr) *streamBelongsToEnvGroup {
+func (a streamBelongsToNamespace) Where(conds ...field.Expr) *streamBelongsToNamespace {
 	if len(conds) == 0 {
 		return &a
 	}
@@ -144,32 +144,32 @@ func (a streamBelongsToEnvGroup) Where(conds ...field.Expr) *streamBelongsToEnvG
 	return &a
 }
 
-func (a streamBelongsToEnvGroup) WithContext(ctx context.Context) *streamBelongsToEnvGroup {
+func (a streamBelongsToNamespace) WithContext(ctx context.Context) *streamBelongsToNamespace {
 	a.db = a.db.WithContext(ctx)
 	return &a
 }
 
-func (a streamBelongsToEnvGroup) Session(session *gorm.Session) *streamBelongsToEnvGroup {
+func (a streamBelongsToNamespace) Session(session *gorm.Session) *streamBelongsToNamespace {
 	a.db = a.db.Session(session)
 	return &a
 }
 
-func (a streamBelongsToEnvGroup) Model(m *model.Stream) *streamBelongsToEnvGroupTx {
-	return &streamBelongsToEnvGroupTx{a.db.Model(m).Association(a.Name())}
+func (a streamBelongsToNamespace) Model(m *model.Stream) *streamBelongsToNamespaceTx {
+	return &streamBelongsToNamespaceTx{a.db.Model(m).Association(a.Name())}
 }
 
-func (a streamBelongsToEnvGroup) Unscoped() *streamBelongsToEnvGroup {
+func (a streamBelongsToNamespace) Unscoped() *streamBelongsToNamespace {
 	a.db = a.db.Unscoped()
 	return &a
 }
 
-type streamBelongsToEnvGroupTx struct{ tx *gorm.Association }
+type streamBelongsToNamespaceTx struct{ tx *gorm.Association }
 
-func (a streamBelongsToEnvGroupTx) Find() (result *model.EnvGroup, err error) {
+func (a streamBelongsToNamespaceTx) Find() (result *model.Namespace, err error) {
 	return result, a.tx.Find(&result)
 }
 
-func (a streamBelongsToEnvGroupTx) Append(values ...*model.EnvGroup) (err error) {
+func (a streamBelongsToNamespaceTx) Append(values ...*model.Namespace) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -177,7 +177,7 @@ func (a streamBelongsToEnvGroupTx) Append(values ...*model.EnvGroup) (err error)
 	return a.tx.Append(targetValues...)
 }
 
-func (a streamBelongsToEnvGroupTx) Replace(values ...*model.EnvGroup) (err error) {
+func (a streamBelongsToNamespaceTx) Replace(values ...*model.Namespace) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -185,7 +185,7 @@ func (a streamBelongsToEnvGroupTx) Replace(values ...*model.EnvGroup) (err error
 	return a.tx.Replace(targetValues...)
 }
 
-func (a streamBelongsToEnvGroupTx) Delete(values ...*model.EnvGroup) (err error) {
+func (a streamBelongsToNamespaceTx) Delete(values ...*model.Namespace) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -193,15 +193,15 @@ func (a streamBelongsToEnvGroupTx) Delete(values ...*model.EnvGroup) (err error)
 	return a.tx.Delete(targetValues...)
 }
 
-func (a streamBelongsToEnvGroupTx) Clear() error {
+func (a streamBelongsToNamespaceTx) Clear() error {
 	return a.tx.Clear()
 }
 
-func (a streamBelongsToEnvGroupTx) Count() int64 {
+func (a streamBelongsToNamespaceTx) Count() int64 {
 	return a.tx.Count()
 }
 
-func (a streamBelongsToEnvGroupTx) Unscoped() *streamBelongsToEnvGroupTx {
+func (a streamBelongsToNamespaceTx) Unscoped() *streamBelongsToNamespaceTx {
 	a.tx = a.tx.Unscoped()
 	return &a
 }

@@ -24,7 +24,7 @@ type WebSocketMessage struct {
 	Data  interface{} `json:"data"`
 }
 
-// Client represents a WebSocket client connection for cluster environment monitoring
+// Client represents a WebSocket client connection for cluster node monitoring
 type Client struct {
 	conn   *websocket.Conn
 	send   chan WebSocketMessage
@@ -68,7 +68,7 @@ func (h *Hub) run() {
 			h.mutex.Lock()
 			h.clients[client] = true
 			h.mutex.Unlock()
-			logger.Debug("Cluster environment client connected, total clients:", len(h.clients))
+			logger.Debug("Cluster node client connected, total clients:", len(h.clients))
 
 		case client := <-h.unregister:
 			h.mutex.Lock()
@@ -77,7 +77,7 @@ func (h *Hub) run() {
 				close(client.send)
 			}
 			h.mutex.Unlock()
-			logger.Debug("Cluster environment client disconnected, total clients:", len(h.clients))
+			logger.Debug("Cluster node client disconnected, total clients:", len(h.clients))
 
 		case message := <-h.broadcast:
 			h.mutex.RLock()
@@ -123,7 +123,7 @@ func (h *Hub) BroadcastMessage(event string, data any) {
 	select {
 	case h.broadcast <- message:
 	default:
-		logger.Warn("Cluster environment broadcast channel full, message dropped")
+		logger.Warn("Cluster node broadcast channel full, message dropped")
 	}
 }
 
@@ -136,13 +136,13 @@ var upgrader = websocket.Upgrader{
 	WriteBufferSize: 1024,
 }
 
-type respEnvironment struct {
-	*model.Environment
+type respNode struct {
+	*model.Node
 	Status bool `json:"status"`
 }
 
-// GetAllEnabledEnvironmentWS handles WebSocket connections for real-time environment monitoring
-func GetAllEnabledEnvironmentWS(c *gin.Context) {
+// GetAllEnabledNodeWS handles WebSocket connections for real-time node monitoring
+func GetAllEnabledNodeWS(c *gin.Context) {
 	ws, err := upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
 		logger.Error("Failed to upgrade connection:", err)
@@ -163,34 +163,34 @@ func GetAllEnabledEnvironmentWS(c *gin.Context) {
 	hub := GetHub()
 	hub.register <- client
 
-	// Start goroutines for handling environment monitoring
-	go client.handleEnvironmentMonitoring()
+	// Start goroutines for handling node monitoring
+	go client.handleNodeMonitoring()
 
 	// Start write and read pumps
 	go client.writePump()
 	client.readPump()
 }
 
-// handleEnvironmentMonitoring monitors environment status and sends updates
-func (c *Client) handleEnvironmentMonitoring() {
+// handleNodeMonitoring monitors node status and sends updates
+func (c *Client) handleNodeMonitoring() {
 	interval := 10 * time.Second
 	heartbeatInterval := 30 * time.Second
 
-	getEnvironmentData := func() (interface{}, bool) {
-		// Query environments directly from database
-		var environments []model.Environment
-		err := model.UseDB().Where("enabled = ?", true).Find(&environments).Error
+	getNodeData := func() (interface{}, bool) {
+		// Query nodes directly from database
+		var nodes []model.Node
+		err := model.UseDB().Where("enabled = ?", true).Find(&nodes).Error
 		if err != nil {
-			logger.Error("Failed to query environments:", err)
+			logger.Error("Failed to query nodes:", err)
 			return nil, false
 		}
 
-		// Transform environments to response format
-		var result []respEnvironment
-		for _, env := range environments {
-			result = append(result, respEnvironment{
-				Environment: &env,
-				Status:      analytic.GetNode(&env).Status,
+		// Transform nodes to response format
+		var result []respNode
+		for _, node := range nodes {
+			result = append(result, respNode{
+				Node:   &node,
+				Status: analytic.GetNode(&node).Status,
 			})
 		}
 
@@ -208,7 +208,7 @@ func (c *Client) handleEnvironmentMonitoring() {
 	var dataHash string
 
 	// Send initial data
-	data, ok := getEnvironmentData()
+	data, ok := getNodeData()
 	if ok {
 		dataHash = getHash(data)
 		c.sendMessage("message", data)
@@ -222,7 +222,7 @@ func (c *Client) handleEnvironmentMonitoring() {
 	for {
 		select {
 		case <-ticker.C:
-			data, ok := getEnvironmentData()
+			data, ok := getNodeData()
 			if !ok {
 				return
 			}

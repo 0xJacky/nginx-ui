@@ -84,8 +84,8 @@ export function setupRequestInterceptor() {
         config.headers.Authorization = token.value
       }
 
-      if (settings.environment.id) {
-        config.headers['X-Node-ID'] = settings.environment.id
+      if (settings.node.id) {
+        config.headers['X-Node-ID'] = settings.node.id
       }
 
       if (secureSessionId.value) {

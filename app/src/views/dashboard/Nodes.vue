@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import type { Node } from '@/api/environment'
+import type { Node } from '@/api/node'
 import Icon, { LinkOutlined, ThunderboltOutlined } from '@ant-design/icons-vue'
 import analytic from '@/api/analytic'
-import environment from '@/api/environment'
+import nodeApi from '@/api/node'
 import logo from '@/assets/img/logo.png'
 import pulse from '@/assets/svg/pulse.svg?component'
 import { formatDateTime } from '@/lib/helper'
@@ -26,7 +26,7 @@ const nodeMap = computed(() => {
 })
 
 onMounted(() => {
-  environment.getList({ enabled: true }).then(r => {
+  nodeApi.getList({ enabled: true }).then(r => {
     data.value.push(...r.data)
   })
 })
@@ -58,7 +58,7 @@ onMounted(() => {
   })
 })
 
-const { environment: env } = useSettingsStore()
+const { node: env } = useSettingsStore()
 
 function linkStart(node: Node) {
   env.id = node.id
@@ -77,7 +77,7 @@ const visible = computed(() => {
   <ACard
     v-if="visible"
     class="env-list-card w-full max-w-none"
-    :title="$gettext('Environments')"
+    :title="$gettext('Nodes')"
     :bordered="false"
   >
     <AList

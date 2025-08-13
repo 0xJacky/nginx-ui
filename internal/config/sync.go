@@ -54,11 +54,11 @@ func SyncToRemoteServer(c *model.Config) (err error) {
 		return
 	}
 
-	q := query.Environment
-	envs, _ := q.Where(q.ID.In(c.SyncNodeIds...), q.Enabled.Is(true)).Find()
-	for _, env := range envs {
+	q := query.Node
+	nodes, _ := q.Where(q.ID.In(c.SyncNodeIds...), q.Enabled.Is(true)).Find()
+	for _, node := range nodes {
 		go func() {
-			err := payload.deploy(env, c, payloadBytes)
+			err := payload.deploy(node, c, payloadBytes)
 			if err != nil {
 				logger.Error(err)
 			}
@@ -87,11 +87,11 @@ func SyncRenameOnRemoteServer(origPath, newPath string, syncNodeIds []uint64) (e
 		NewFilepath: newPath,
 	}
 
-	q := query.Environment
-	envs, _ := q.Where(q.ID.In(syncNodeIds...)).Find()
-	for _, env := range envs {
+	q := query.Node
+	nodes, _ := q.Where(q.ID.In(syncNodeIds...)).Find()
+	for _, node := range nodes {
 		go func() {
-			err := payload.rename(env)
+			err := payload.rename(node)
 			if err != nil {
 				logger.Error(err)
 			}
@@ -104,11 +104,11 @@ func SyncRenameOnRemoteServer(origPath, newPath string, syncNodeIds []uint64) (e
 type SyncNotificationPayload struct {
 	StatusCode int    `json:"status_code"`
 	ConfigName string `json:"config_name"`
-	EnvName    string `json:"env_name"`
+	NodeName    string `json:"node_name"`
 	Response   string `json:"response"`
 }
 
-func (p *SyncConfigPayload) deploy(env *model.Environment, c *model.Config, payloadBytes []byte) (err error) {
+func (p *SyncConfigPayload) deploy(node *model.Node, c *model.Config, payloadBytes []byte) (err error) {
 	t, err := transport.NewTransport()
 	if err != nil {
 		return
@@ -116,7 +116,7 @@ func (p *SyncConfigPayload) deploy(env *model.Environment, c *model.Config, payl
 	client := http.Client{
 		Transport: t,
 	}
-	url, err := env.GetUrl("/api/configs")
+	url, err := node.GetUrl("/api/configs")
 	if err != nil {
 		return
 	}
@@ -124,7 +124,7 @@ func (p *SyncConfigPayload) deploy(env *model.Environment, c *model.Config, payl
 	if err != nil {
 		return
 	}
-	req.Header.Set("X-Node-Secret", env.Token)
+	req.Header.Set("X-Node-Secret", node.Token)
 	resp, err := client.Do(req)
 	if err != nil {
 		return
@@ -139,16 +139,16 @@ func (p *SyncConfigPayload) deploy(env *model.Environment, c *model.Config, payl
 	notificationPayload := &SyncNotificationPayload{
 		StatusCode: resp.StatusCode,
 		ConfigName: c.Name,
-		EnvName:    env.Name,
+		NodeName:    node.Name,
 		Response:   string(respBody),
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		notification.Error("Sync Config Error", "Sync config %{config_name} to %{env_name} failed", notificationPayload)
+		notification.Error("Sync Config Error", "Sync config %{config_name} to %{node_name} failed", notificationPayload)
 		return
 	}
 
-	notification.Success("Sync Config Success", "Sync config %{config_name} to %{env_name} successfully", notificationPayload)
+	notification.Success("Sync Config Success", "Sync config %{config_name} to %{node_name} successfully", notificationPayload)
 
 	return
 }
@@ -162,11 +162,11 @@ type SyncRenameNotificationPayload struct {
 	StatusCode int    `json:"status_code"`
 	OrigPath   string `json:"orig_path"`
 	NewPath    string `json:"new_path"`
-	EnvName    string `json:"env_name"`
+	NodeName    string `json:"node_name"`
 	Response   string `json:"response"`
 }
 
-func (p *RenameConfigPayload) rename(env *model.Environment) (err error) {
+func (p *RenameConfigPayload) rename(node *model.Node) (err error) {
 	// handle rename
 	if p.NewFilepath == "" || p.Filepath == p.NewFilepath {
 		return
@@ -186,7 +186,7 @@ func (p *RenameConfigPayload) rename(env *model.Environment) (err error) {
 	if err != nil {
 		return
 	}
-	url, err := env.GetUrl("/api/config_rename")
+	url, err := node.GetUrl("/api/config_rename")
 	if err != nil {
 		return
 	}
@@ -194,7 +194,7 @@ func (p *RenameConfigPayload) rename(env *model.Environment) (err error) {
 	if err != nil {
 		return
 	}
-	req.Header.Set("X-Node-Secret", env.Token)
+	req.Header.Set("X-Node-Secret", node.Token)
 	resp, err := client.Do(req)
 	if err != nil {
 		return
@@ -210,16 +210,16 @@ func (p *RenameConfigPayload) rename(env *model.Environment) (err error) {
 		StatusCode: resp.StatusCode,
 		OrigPath:   p.Filepath,
 		NewPath:    p.NewFilepath,
-		EnvName:    env.Name,
+		NodeName:    node.Name,
 		Response:   string(respBody),
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		notification.Error("Rename Remote Config Error", "Rename %{orig_path} to %{new_path} on %{env_name} failed", notificationPayload)
+		notification.Error("Rename Remote Config Error", "Rename %{orig_path} to %{new_path} on %{node_name} failed", notificationPayload)
 		return
 	}
 
-	notification.Success("Rename Remote Config Success", "Rename %{orig_path} to %{new_path} on %{env_name} successfully", notificationPayload)
+	notification.Success("Rename Remote Config Success", "Rename %{orig_path} to %{new_path} on %{node_name} successfully", notificationPayload)
 
 	return
 }
@@ -238,11 +238,11 @@ func SyncDeleteOnRemoteServer(deletePath string, syncNodeIds []uint64) (err erro
 		Filepath: deletePath,
 	}
 
-	q := query.Environment
-	envs, _ := q.Where(q.ID.In(syncNodeIds...)).Find()
-	for _, env := range envs {
+	q := query.Node
+	nodes, _ := q.Where(q.ID.In(syncNodeIds...)).Find()
+	for _, node := range nodes {
 		go func() {
-			err := payload.delete(env)
+			err := payload.delete(node)
 			if err != nil {
 				logger.Error(err)
 			}
@@ -259,11 +259,11 @@ type DeleteConfigPayload struct {
 type SyncDeleteNotificationPayload struct {
 	StatusCode int    `json:"status_code"`
 	Path       string `json:"path"`
-	EnvName    string `json:"env_name"`
+	NodeName    string `json:"node_name"`
 	Response   string `json:"response"`
 }
 
-func (p *DeleteConfigPayload) delete(env *model.Environment) (err error) {
+func (p *DeleteConfigPayload) delete(node *model.Node) (err error) {
 	client := http.Client{
 		Transport: &http.Transport{
 			TLSClientConfig: &tls.Config{InsecureSkipVerify: settings.HTTPSettings.InsecureSkipVerify},
@@ -278,7 +278,7 @@ func (p *DeleteConfigPayload) delete(env *model.Environment) (err error) {
 		return
 	}
 
-	url, err := env.GetUrl("/api/config_delete")
+	url, err := node.GetUrl("/api/config_delete")
 	if err != nil {
 		return
 	}
@@ -287,7 +287,7 @@ func (p *DeleteConfigPayload) delete(env *model.Environment) (err error) {
 	if err != nil {
 		return
 	}
-	req.Header.Set("X-Node-Secret", env.Token)
+	req.Header.Set("X-Node-Secret", node.Token)
 	resp, err := client.Do(req)
 	if err != nil {
 		return
@@ -302,16 +302,16 @@ func (p *DeleteConfigPayload) delete(env *model.Environment) (err error) {
 	notificationPayload := &SyncDeleteNotificationPayload{
 		StatusCode: resp.StatusCode,
 		Path:       p.Filepath,
-		EnvName:    env.Name,
+		NodeName:    node.Name,
 		Response:   string(respBody),
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		notification.Error("Delete Remote Config Error", "Delete %{path} on %{env_name} failed", notificationPayload)
+		notification.Error("Delete Remote Config Error", "Delete %{path} on %{node_name} failed", notificationPayload)
 		return
 	}
 
-	notification.Success("Delete Remote Config Success", "Delete %{path} on %{env_name} successfully", notificationPayload)
+	notification.Success("Delete Remote Config Success", "Delete %{path} on %{node_name} successfully", notificationPayload)
 
 	return
 }

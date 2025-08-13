@@ -2,12 +2,12 @@
 import type { SiteStatus } from '@/api/site'
 import { InfoCircleOutlined } from '@ant-design/icons-vue'
 import { StdSelector } from '@uozi-admin/curd'
-import envGroup from '@/api/env_group'
+import namespace from '@/api/namespace'
 import NodeSelector from '@/components/NodeSelector'
 import SyncNodesPreview from '@/components/SyncNodesPreview'
 import { formatDateTime } from '@/lib/helper'
 import { useSettingsStore } from '@/pinia'
-import envGroupColumns from '@/views/environments/group/columns'
+import namespaceColumns from '@/views/namespace/columns'
 import SiteStatusSelect from '@/views/site/components/SiteStatusSelect.vue'
 import ConfigName from '@/views/site/site_edit/components/ConfigName/ConfigName.vue'
 import { useSiteEditorStore } from '../SiteEditor/store'
@@ -39,11 +39,11 @@ function handleStatusChanged(event: { status: SiteStatus }) {
         <AFormItem :label="$gettext('Updated at')">
           {{ formatDateTime(data.modified_at) }}
         </AFormItem>
-        <AFormItem :label="$gettext('Node Group')">
+        <AFormItem :label="$gettext('Namespace')">
           <StdSelector
-            v-model:value="data.env_group_id"
-            :get-list-api="envGroup.getList"
-            :columns="envGroupColumns"
+            v-model:value="data.namespace_id"
+            :get-list-api="namespace.getList"
+            :columns="namespaceColumns"
             display-key="name"
             selection-type="radio"
           />
@@ -60,7 +60,7 @@ function handleStatusChanged(event: { status: SiteStatus }) {
           <template #content>
             <div class="max-w-200px mb-2">
               {{ $gettext('When you enable/disable, delete, or save this site, '
-                + 'the nodes set in the Node Group and the nodes selected below will be synchronized.') }}
+                + 'the nodes set in the namespace and the nodes selected below will be synchronized.') }}
             </div>
             <div class="max-w-200px">
               {{ $gettext('Note, if the configuration file include other configurations or certificates, '
@@ -81,7 +81,7 @@ function handleStatusChanged(event: { status: SiteStatus }) {
 
       <!-- Sync nodes preview -->
       <SyncNodesPreview
-        :env-group-id="data.env_group_id"
+        :namespace-id="data.namespace_id"
         :sync-node-ids="data.sync_node_ids"
       />
     </div>

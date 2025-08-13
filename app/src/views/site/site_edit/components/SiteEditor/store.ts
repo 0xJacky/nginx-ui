@@ -71,7 +71,7 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
       const response = await site.updateItem(encodeURIComponent(name.value), {
         content: configText.value,
         overwrite: true,
-        env_group_id: data.value.env_group_id,
+        namespace_id: data.value.namespace_id,
         sync_node_ids: data.value.sync_node_ids,
         post_action: 'reload_nginx',
       })
