@@ -41,7 +41,7 @@ on:
 
 jobs:
   build_app:
-    runs-on: macos-14
+    runs-on: macos-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -97,12 +97,12 @@ jobs:
     needs: build_app
     strategy:
       matrix:
-        goos: [ linux, darwin, windows ]
+        goos: [ linux, windows ]
         goarch: [ amd64, 386, arm64 ]
-        exclude:
-          # Exclude i386 on darwin.
-          - goarch: 386
-            goos: darwin
+        # exclude:
+          # Exclude i386 on windows (if needed)
+          # - goarch: 386
+          #   goos: windows
         include:
           # BEGIN Linux ARM 5 6 7
           - goos: linux
@@ -141,7 +141,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: ^1.24.6
+          go-version: ^1.25.0
           cache: false
 
       - name: Setup environment
@@ -301,10 +301,102 @@ jobs:
           
           echo "Upload completed successfully"
 
+  build_macos_native:
+    runs-on: macos-latest
+    needs: build_app
+    strategy:
+      matrix:
+        goarch: [amd64, arm64]
+    env:
+      CGO_ENABLED: 1
+      GOOS: darwin
+      GOARCH: ${{ matrix.goarch }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ^1.25.0
+          cache: false
+
+      - name: Setup environment
+        id: info
+        run: |
+          export _NAME=$(jq ".darwin[\"$GOARCH\"].name" -r < .github/build/build_info.json)
+          export _ARTIFACT=nginx-ui-darwin-$GOARCH
+          export _BINARY=nginx-ui
+          echo "GOOS: darwin, GOARCH: $GOARCH, RELEASE_NAME: $_NAME, ARTIFACT_NAME: $_ARTIFACT, BINARY_NAME: $_BINARY"
+          echo "CACHE_NAME=$_NAME" >> $GITHUB_ENV
+          echo "DIST=nginx-ui-$_NAME" >> $GITHUB_ENV
+          echo "ARTIFACT=$_ARTIFACT" >> $GITHUB_ENV
+          echo "BINARY_NAME=$_BINARY" >> $GITHUB_ENV
+
+      - name: Setup Go build cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/go/pkg/mod
+            ~/.cache/go-build
+          key: go-${{ runner.os }}-${{ runner.arch }}-${{ env.CACHE_NAME }}-${{ hashFiles('go.mod') }}
+          restore-keys: |
+            go-${{ runner.os }}-${{ runner.arch }}-${{ env.CACHE_NAME }}-
+
+      - name: Download app artifacts
+        uses: actions/download-artifact@v5
+        with:
+          name: app-dist
+          path: app/dist
+
+      - name: Generate files
+        run: go generate cmd/version/generate.go
+
+      - name: Build with native CGO
+        run: |
+          mkdir -p dist
+          go build -trimpath -tags=jsoniter -ldflags "-w -X 'github.com/0xJacky/Nginx-UI/settings.buildTime=$(date +%s)'" -o dist/$BINARY_NAME -v main.go
+
+      - name: Archive backend artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.ARTIFACT }}
+          path: dist/${{ env.BINARY_NAME }}
+
+      - name: Prepare publish
+        run: |
+          cp README*.md ./dist
+          cd dist && tar -zcvf ../${{ env.DIST }}.tar.gz .
+          cd ..
+          openssl dgst -sha512 ${{ env.DIST }}.tar.gz | sed 's/([^)]*)//g' | awk '{print $NF}' >> ${{ env.DIST }}.tar.gz.digest
+
+      - name: Publish
+        uses: softprops/action-gh-release@v2
+        if: github.event_name == 'release'
+        with:
+          files: |
+            ${{ env.DIST }}.tar.gz
+            ${{ env.DIST }}.tar.gz.digest
+
+      - name: Upload to R2 using S3 API
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/dev'
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_REGION: us-east-1
+        run: |
+          echo "Uploading ${{ env.DIST }}.tar.gz to R2..."
+          aws s3 cp ./${{ env.DIST }}.tar.gz s3://nginx-ui-dev-build/${{ env.DIST }}.tar.gz --endpoint-url=${{ secrets.R2_S3_API_ENDPOINT }}
+          
+          echo "Uploading ${{ env.DIST }}.tar.gz.digest to R2..."
+          aws s3 cp ./${{ env.DIST }}.tar.gz.digest s3://nginx-ui-dev-build/${{ env.DIST }}.tar.gz.digest --endpoint-url=${{ secrets.R2_S3_API_ENDPOINT }}
+          
+          echo "Upload completed successfully"
+
   docker-build:
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
-    needs: build
+    needs: [build, build_macos_native]
     env:
       PLATFORMS: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6,linux/arm/v5
     steps:
@@ -376,7 +468,7 @@ jobs:
 
   update-homebrew:
     runs-on: ubuntu-latest
-    needs: build
+    needs: [build, build_macos_native]
     if: github.event_name == 'release'
     steps:
       - name: Checkout
@@ -556,7 +648,7 @@ jobs:
 
   publish-winget:
     runs-on: windows-latest
-    needs: build
+    needs: [build, build_macos_native]
     if: github.event_name == 'release'
     steps:
       - name: Checkout
