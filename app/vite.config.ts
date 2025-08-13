@@ -90,31 +90,6 @@ export default defineConfig(({ mode }) => {
     },
     build: {
       chunkSizeWarningLimit: 1500,
-      rollupOptions: {
-        output: {
-          advancedChunks: {
-            groups: [
-              // Code editors
-              { name: 'ace-editor', test: /ace-builds/ },
-
-              // Vue ecosystem
-              { name: 'vue-vendor', test: /[\\/]node_modules[\\/](vue|@vue|vue-router|pinia)[\\/]/ },
-
-              // Ant Design Vue
-              { name: 'antdv', test: /[\\/]node_modules[\\/]ant-design-vue[\\/]/ },
-
-              // Chart libraries
-              { name: 'charts', test: /[\\/]node_modules[\\/](echarts|@antv|chart\.js)[\\/]/ },
-
-              // Utility libraries
-              { name: 'utils', test: /[\\/]node_modules[\\/](lodash|dayjs|moment|axios)[\\/]/ },
-
-              // UI utilities
-              { name: 'ui-utils', test: /[\\/]node_modules[\\/](@vueuse|vue-demi)[\\/]/ },
-            ],
-          },
-        },
-      },
     },
   }
 })
