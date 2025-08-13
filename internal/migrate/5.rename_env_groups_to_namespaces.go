@@ -1,6 +1,7 @@
 package migrate
 
 import (
+	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/go-gormigrate/gormigrate/v2"
 	"gorm.io/gorm"
 )
@@ -22,17 +23,30 @@ var RenameEnvGroupsToNamespaces = &gormigrate.Migration{
 			}
 		} else {
 			// namespaces 表已存在，迁移数据后删除旧表
-			if err := tx.Exec(`
-				INSERT OR IGNORE INTO namespaces (id, created_at, updated_at, deleted_at, name, sync_node_ids, order_id, post_sync_action, upstream_test_type)
-				SELECT id, created_at, updated_at, deleted_at, 
-					   COALESCE(name, 'Default') as name,
-					   COALESCE(sync_node_ids, '[]') as sync_node_ids,
-					   COALESCE(order_id, 0) as order_id,
-					   COALESCE(post_sync_action, 'reload_nginx') as post_sync_action,
-					   COALESCE(upstream_test_type, 'local') as upstream_test_type
-				FROM env_groups
-			`).Error; err != nil {
+			// 使用 GORM 查询和创建来迁移数据
+			var envGroups []model.Namespace
+			if err := tx.Table("env_groups").Find(&envGroups).Error; err != nil {
 				return err
+			}
+
+			// 为每个 env_group 创建对应的 namespace
+			for _, envGroup := range envGroups {
+				// 设置默认值
+				if envGroup.Name == "" {
+					envGroup.Name = "Default"
+				}
+				if envGroup.PostSyncAction == "" {
+					envGroup.PostSyncAction = "reload_nginx"
+				}
+				if envGroup.UpstreamTestType == "" {
+					envGroup.UpstreamTestType = "local"
+				}
+
+				// 使用 FirstOrCreate 避免重复插入
+				var existingNamespace model.Namespace
+				if err := tx.Where("id = ?", envGroup.ID).FirstOrCreate(&existingNamespace, &envGroup).Error; err != nil {
+					return err
+				}
 			}
 
 			// 删除旧表
