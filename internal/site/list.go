@@ -11,11 +11,11 @@ import (
 
 // ListOptions represents the options for listing sites
 type ListOptions struct {
-	Search     string
-	Name       string
-	Status     string
-	OrderBy    string
-	Sort       string
+	Search      string
+	Name        string
+	Status      string
+	OrderBy     string
+	Sort        string
 	NamespaceID uint64
 }
 
@@ -28,7 +28,7 @@ func GetSiteConfigs(ctx context.Context, options *ListOptions, sites []*model.Si
 		Status:      options.Status,
 		OrderBy:     options.OrderBy,
 		Sort:        options.Sort,
-		NamespaceID:  options.NamespaceID,
+		NamespaceID: options.NamespaceID,
 		IncludeDirs: false, // Filter out directories for site configurations
 	}
 
@@ -81,8 +81,8 @@ func buildConfig(fileName string, fileInfo os.FileInfo, status config.ConfigStat
 		Size:         fileInfo.Size(),
 		IsDir:        fileInfo.IsDir(),
 		Status:       status,
-		NamespaceID:   namespaceID,
-		Namespace:     namespace,
+		NamespaceID:  namespaceID,
+		Namespace:    namespace,
 		Urls:         indexedSite.Urls,
 		ProxyTargets: proxyTargets,
 	}

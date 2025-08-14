@@ -3,8 +3,8 @@ package model
 import (
 	"database/sql/driver"
 	"encoding/json"
-	"fmt"
 	"errors"
+	"fmt"
 	"github.com/sashabaranov/go-openai"
 )
 

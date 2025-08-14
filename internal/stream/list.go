@@ -11,11 +11,11 @@ import (
 
 // ListOptions represents the options for listing streams
 type ListOptions struct {
-	Search     string
-	Name       string
-	Status     string
-	OrderBy    string
-	Sort       string
+	Search      string
+	Name        string
+	Status      string
+	OrderBy     string
+	Sort        string
 	NamespaceID uint64
 }
 

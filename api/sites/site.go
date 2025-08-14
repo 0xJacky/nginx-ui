@@ -20,7 +20,7 @@ import (
 // buildProxyTargets processes proxy targets similar to list.go logic
 func buildProxyTargets(fileName string) []site.ProxyTarget {
 	indexedSite := site.GetIndexedSite(fileName)
-	
+
 	// Convert proxy targets, expanding upstream references
 	var proxyTargets []site.ProxyTarget
 	upstreamService := upstream.GetUpstreamService()
@@ -132,7 +132,7 @@ func SaveSite(c *gin.Context) {
 
 	var json struct {
 		Content     string   `json:"content" binding:"required"`
-		NamespaceID  uint64   `json:"env_group_id"`
+		NamespaceID uint64   `json:"env_group_id"`
 		SyncNodeIDs []uint64 `json:"sync_node_ids"`
 		Overwrite   bool     `json:"overwrite"`
 		PostAction  string   `json:"post_action"`

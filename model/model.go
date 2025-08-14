@@ -35,6 +35,7 @@ func GenerateAllModel() []any {
 		Namespace{},
 		ExternalNotify{},
 		AutoBackup{},
+		SiteConfig{},
 	}
 }
 

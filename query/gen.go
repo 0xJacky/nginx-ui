@@ -32,6 +32,7 @@ var (
 	Notification   *notification
 	Passkey        *passkey
 	Site           *site
+	SiteConfig     *siteConfig
 	Stream         *stream
 	User           *user
 )
@@ -53,6 +54,7 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	Notification = &Q.Notification
 	Passkey = &Q.Passkey
 	Site = &Q.Site
+	SiteConfig = &Q.SiteConfig
 	Stream = &Q.Stream
 	User = &Q.User
 }
@@ -75,6 +77,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		Notification:   newNotification(db, opts...),
 		Passkey:        newPasskey(db, opts...),
 		Site:           newSite(db, opts...),
+		SiteConfig:     newSiteConfig(db, opts...),
 		Stream:         newStream(db, opts...),
 		User:           newUser(db, opts...),
 	}
@@ -98,6 +101,7 @@ type Query struct {
 	Notification   notification
 	Passkey        passkey
 	Site           site
+	SiteConfig     siteConfig
 	Stream         stream
 	User           user
 }
@@ -122,6 +126,7 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		Notification:   q.Notification.clone(db),
 		Passkey:        q.Passkey.clone(db),
 		Site:           q.Site.clone(db),
+		SiteConfig:     q.SiteConfig.clone(db),
 		Stream:         q.Stream.clone(db),
 		User:           q.User.clone(db),
 	}
@@ -153,6 +158,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		Notification:   q.Notification.replaceDB(db),
 		Passkey:        q.Passkey.replaceDB(db),
 		Site:           q.Site.replaceDB(db),
+		SiteConfig:     q.SiteConfig.replaceDB(db),
 		Stream:         q.Stream.replaceDB(db),
 		User:           q.User.replaceDB(db),
 	}
@@ -174,6 +180,7 @@ type queryCtx struct {
 	Notification   *notificationDo
 	Passkey        *passkeyDo
 	Site           *siteDo
+	SiteConfig     *siteConfigDo
 	Stream         *streamDo
 	User           *userDo
 }
@@ -195,6 +202,7 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		Notification:   q.Notification.WithContext(ctx),
 		Passkey:        q.Passkey.WithContext(ctx),
 		Site:           q.Site.WithContext(ctx),
+		SiteConfig:     q.SiteConfig.WithContext(ctx),
 		Stream:         q.Stream.WithContext(ctx),
 		User:           q.User.WithContext(ctx),
 	}

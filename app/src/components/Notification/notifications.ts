@@ -59,35 +59,35 @@ const notifications: Record<string, { title: () => string, content: (args: any) 
   },
   'Sync Certificate Error': {
     title: () => $gettext('Sync Certificate Error'),
-    content: (args: any) => $gettext('Sync Certificate %{cert_name} to %{env_name} failed', args, true),
+    content: (args: any) => $gettext('Sync Certificate %{cert_name} to %{node_name} failed', args, true),
   },
   'Sync Certificate Success': {
     title: () => $gettext('Sync Certificate Success'),
-    content: (args: any) => $gettext('Sync Certificate %{cert_name} to %{env_name} successfully', args, true),
+    content: (args: any) => $gettext('Sync Certificate %{cert_name} to %{node_name} successfully', args, true),
   },
   'Sync Config Error': {
     title: () => $gettext('Sync Config Error'),
-    content: (args: any) => $gettext('Sync config %{config_name} to %{env_name} failed', args, true),
+    content: (args: any) => $gettext('Sync config %{config_name} to %{node_name} failed', args, true),
   },
   'Sync Config Success': {
     title: () => $gettext('Sync Config Success'),
-    content: (args: any) => $gettext('Sync config %{config_name} to %{env_name} successfully', args, true),
+    content: (args: any) => $gettext('Sync config %{config_name} to %{node_name} successfully', args, true),
   },
   'Rename Remote Config Error': {
     title: () => $gettext('Rename Remote Config Error'),
-    content: (args: any) => $gettext('Rename %{orig_path} to %{new_path} on %{env_name} failed', args, true),
+    content: (args: any) => $gettext('Rename %{orig_path} to %{new_path} on %{node_name} failed', args, true),
   },
   'Rename Remote Config Success': {
     title: () => $gettext('Rename Remote Config Success'),
-    content: (args: any) => $gettext('Rename %{orig_path} to %{new_path} on %{env_name} successfully', args, true),
+    content: (args: any) => $gettext('Rename %{orig_path} to %{new_path} on %{node_name} successfully', args, true),
   },
   'Delete Remote Config Error': {
     title: () => $gettext('Delete Remote Config Error'),
-    content: (args: any) => $gettext('Delete %{path} on %{env_name} failed', args, true),
+    content: (args: any) => $gettext('Delete %{path} on %{node_name} failed', args, true),
   },
   'Delete Remote Config Success': {
     title: () => $gettext('Delete Remote Config Success'),
-    content: (args: any) => $gettext('Delete %{path} on %{env_name} successfully', args, true),
+    content: (args: any) => $gettext('Delete %{path} on %{node_name} successfully', args, true),
   },
   'External Notification Test': {
     title: () => $gettext('External Notification Test'),

@@ -27,6 +27,14 @@ export const dashboardRoutes: RouteRecordRaw[] = [
           name: () => $gettext('Nginx'),
         },
       },
+      {
+        path: 'sites',
+        component: () => import('@/views/dashboard/SiteNavigation.vue'),
+        name: 'SiteNavigation',
+        meta: {
+          name: () => $gettext('Sites'),
+        },
+      },
     ],
   },
 ]
