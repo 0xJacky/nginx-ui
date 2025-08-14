@@ -13,11 +13,11 @@ import (
 func GetSiteList(c *gin.Context) {
 	// Parse query parameters
 	options := &site.ListOptions{
-		Search:     c.Query("search"),
-		Name:       c.Query("name"),
-		Status:     c.Query("status"),
-		OrderBy:    c.Query("sort_by"),
-		Sort:       c.DefaultQuery("order", "desc"),
+		Search:      c.Query("search"),
+		Name:        c.Query("name"),
+		Status:      c.Query("status"),
+		OrderBy:     c.Query("sort_by"),
+		Sort:        c.DefaultQuery("order", "desc"),
 		NamespaceID: cast.ToUint64(c.Query("env_group_id")),
 	}
 

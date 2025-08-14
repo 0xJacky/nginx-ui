@@ -17,7 +17,7 @@ import (
 
 // ConfigFileEntity represents a generic configuration file entity
 type ConfigFileEntity struct {
-	path       string
+	path        string
 	namespaceID uint64
 	namespace   *model.Namespace
 }
@@ -68,7 +68,7 @@ func GetConfigs(c *gin.Context) {
 		Search:      search,
 		OrderBy:     sortBy,
 		Sort:        order,
-		NamespaceID:  namespaceID,
+		NamespaceID: namespaceID,
 		IncludeDirs: true, // Keep directories for the list.go endpoint
 	}
 
@@ -90,7 +90,7 @@ func GetConfigs(c *gin.Context) {
 		// For generic config files, we don't have database records
 		// so namespaceID and namespace will be 0 and nil
 		entity := &ConfigFileEntity{
-			path:       filepath.Join(nginx.GetConfPath(dir), file.Name()),
+			path:        filepath.Join(nginx.GetConfPath(dir), file.Name()),
 			namespaceID: 0,
 			namespace:   nil,
 		}
@@ -124,14 +124,14 @@ func GetConfigs(c *gin.Context) {
 func createConfigBuilder(dir string) config.ConfigBuilder {
 	return func(fileName string, fileInfo os.FileInfo, status config.ConfigStatus, namespaceID uint64, namespace *model.Namespace) config.Config {
 		return config.Config{
-			Name:       fileName,
-			ModifiedAt: fileInfo.ModTime(),
-			Size:       fileInfo.Size(),
-			IsDir:      fileInfo.IsDir(),
-			Status:     status,
+			Name:        fileName,
+			ModifiedAt:  fileInfo.ModTime(),
+			Size:        fileInfo.Size(),
+			IsDir:       fileInfo.IsDir(),
+			Status:      status,
 			NamespaceID: namespaceID,
 			Namespace:   namespace,
-			Dir:        dir,
+			Dir:         dir,
 		}
 	}
 }

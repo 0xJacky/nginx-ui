@@ -38,16 +38,16 @@ func init() {
 		message := wecomMessage{
 			MsgType: "text",
 		}
-		
+
 		title := msg.GetTitle(n.Language)
 		content := msg.GetContent(n.Language)
-		
+
 		// Combine title and content
 		fullMessage := title
 		if content != "" {
 			fullMessage = fmt.Sprintf("%s\n\n%s", title, content)
 		}
-		
+
 		message.Text.Content = fullMessage
 
 		// Marshal to JSON

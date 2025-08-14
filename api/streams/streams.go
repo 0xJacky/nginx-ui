@@ -35,7 +35,7 @@ type Stream struct {
 // buildProxyTargets processes stream proxy targets similar to list.go logic
 func buildStreamProxyTargets(fileName string) []config.ProxyTarget {
 	indexedStream := stream.GetIndexedStream(fileName)
-	
+
 	// Convert proxy targets, expanding upstream references
 	var proxyTargets []config.ProxyTarget
 	upstreamService := upstream.GetUpstreamService()
@@ -67,11 +67,11 @@ func buildStreamProxyTargets(fileName string) []config.ProxyTarget {
 func GetStreams(c *gin.Context) {
 	// Parse query parameters
 	options := &stream.ListOptions{
-		Search:     c.Query("search"),
-		Name:       c.Query("name"),
-		Status:     c.Query("status"),
-		OrderBy:    c.Query("order_by"),
-		Sort:       c.DefaultQuery("sort", "desc"),
+		Search:      c.Query("search"),
+		Name:        c.Query("name"),
+		Status:      c.Query("status"),
+		OrderBy:     c.Query("order_by"),
+		Sort:        c.DefaultQuery("sort", "desc"),
 		NamespaceID: cast.ToUint64(c.Query("namespace_id")),
 	}
 

@@ -80,7 +80,7 @@ func SyncToRemoteServer(c *model.Cert) (err error) {
 type SyncNotificationPayload struct {
 	StatusCode int    `json:"status_code"`
 	CertName   string `json:"cert_name"`
-	NodeName    string `json:"node_name"`
+	NodeName   string `json:"node_name"`
 	Response   string `json:"response"`
 }
 
@@ -115,7 +115,7 @@ func deploy(node *model.Node, c *model.Cert, payloadBytes []byte) (err error) {
 	notificationPayload := &SyncNotificationPayload{
 		StatusCode: resp.StatusCode,
 		CertName:   c.Name,
-		NodeName:    node.Name,
+		NodeName:   node.Name,
 		Response:   string(respBody),
 	}
 

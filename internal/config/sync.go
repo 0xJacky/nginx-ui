@@ -104,7 +104,7 @@ func SyncRenameOnRemoteServer(origPath, newPath string, syncNodeIds []uint64) (e
 type SyncNotificationPayload struct {
 	StatusCode int    `json:"status_code"`
 	ConfigName string `json:"config_name"`
-	NodeName    string `json:"node_name"`
+	NodeName   string `json:"node_name"`
 	Response   string `json:"response"`
 }
 
@@ -139,7 +139,7 @@ func (p *SyncConfigPayload) deploy(node *model.Node, c *model.Config, payloadByt
 	notificationPayload := &SyncNotificationPayload{
 		StatusCode: resp.StatusCode,
 		ConfigName: c.Name,
-		NodeName:    node.Name,
+		NodeName:   node.Name,
 		Response:   string(respBody),
 	}
 
@@ -162,7 +162,7 @@ type SyncRenameNotificationPayload struct {
 	StatusCode int    `json:"status_code"`
 	OrigPath   string `json:"orig_path"`
 	NewPath    string `json:"new_path"`
-	NodeName    string `json:"node_name"`
+	NodeName   string `json:"node_name"`
 	Response   string `json:"response"`
 }
 
@@ -210,7 +210,7 @@ func (p *RenameConfigPayload) rename(node *model.Node) (err error) {
 		StatusCode: resp.StatusCode,
 		OrigPath:   p.Filepath,
 		NewPath:    p.NewFilepath,
-		NodeName:    node.Name,
+		NodeName:   node.Name,
 		Response:   string(respBody),
 	}
 
@@ -259,7 +259,7 @@ type DeleteConfigPayload struct {
 type SyncDeleteNotificationPayload struct {
 	StatusCode int    `json:"status_code"`
 	Path       string `json:"path"`
-	NodeName    string `json:"node_name"`
+	NodeName   string `json:"node_name"`
 	Response   string `json:"response"`
 }
 
@@ -302,7 +302,7 @@ func (p *DeleteConfigPayload) delete(node *model.Node) (err error) {
 	notificationPayload := &SyncDeleteNotificationPayload{
 		StatusCode: resp.StatusCode,
 		Path:       p.Filepath,
-		NodeName:    node.Name,
+		NodeName:   node.Name,
 		Response:   string(respBody),
 	}
 

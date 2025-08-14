@@ -19,18 +19,18 @@ const (
 type ProxyTarget = upstream.ProxyTarget
 
 type Config struct {
-	Name          string          `json:"name"`
-	Content       string          `json:"content"`
-	FilePath      string          `json:"filepath,omitempty"`
-	ModifiedAt    time.Time       `json:"modified_at"`
-	Size          int64           `json:"size,omitempty"`
-	IsDir         bool            `json:"is_dir"`
-	NamespaceID   uint64          `json:"namespace_id"`
+	Name          string           `json:"name"`
+	Content       string           `json:"content"`
+	FilePath      string           `json:"filepath,omitempty"`
+	ModifiedAt    time.Time        `json:"modified_at"`
+	Size          int64            `json:"size,omitempty"`
+	IsDir         bool             `json:"is_dir"`
+	NamespaceID   uint64           `json:"namespace_id"`
 	Namespace     *model.Namespace `json:"namespace,omitempty"`
-	Status        ConfigStatus    `json:"status"`
-	Dir           string          `json:"dir"`
-	Urls          []string        `json:"urls,omitempty"`
-	ProxyTargets  []ProxyTarget   `json:"proxy_targets,omitempty"`
-	SyncNodeIds   []uint64        `json:"sync_node_ids,omitempty"`
-	SyncOverwrite bool            `json:"sync_overwrite"`
+	Status        ConfigStatus     `json:"status"`
+	Dir           string           `json:"dir"`
+	Urls          []string         `json:"urls,omitempty"`
+	ProxyTargets  []ProxyTarget    `json:"proxy_targets,omitempty"`
+	SyncNodeIds   []uint64         `json:"sync_node_ids,omitempty"`
+	SyncOverwrite bool             `json:"sync_overwrite"`
 }

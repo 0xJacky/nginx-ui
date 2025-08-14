@@ -46,12 +46,12 @@ func GetNodeStat() (data NodeStat) {
 
 	// Get upstream status for current node
 	upstreamService := upstream.GetUpstreamService()
-	
+
 	// Ensure upstream availability test is performed if targets exist
 	if upstreamService.GetTargetCount() > 0 {
 		upstreamService.PerformAvailabilityTest()
 	}
-	
+
 	upstreamStatusMap := upstreamService.GetAvailabilityMap()
 
 	return NodeStat{

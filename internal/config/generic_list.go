@@ -302,11 +302,11 @@ func FuzzyFilterMatcher(fileName string, status ConfigStatus, namespaceID uint64
 // DefaultConfigBuilder provides basic config building logic
 func DefaultConfigBuilder(fileName string, fileInfo os.FileInfo, status ConfigStatus, namespaceID uint64, namespace *model.Namespace) Config {
 	return Config{
-		Name:       fileName,
-		ModifiedAt: fileInfo.ModTime(),
-		Size:       fileInfo.Size(),
-		IsDir:      fileInfo.IsDir(),
-		Status:     status,
+		Name:        fileName,
+		ModifiedAt:  fileInfo.ModTime(),
+		Size:        fileInfo.Size(),
+		IsDir:       fileInfo.IsDir(),
+		Status:      status,
 		NamespaceID: namespaceID,
 		Namespace:   namespace,
 	}

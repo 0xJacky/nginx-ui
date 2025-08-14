@@ -54,7 +54,7 @@ func Save(name string, content string, overwrite bool, namespaceId uint64, syncN
 	_, err = s.Where(s.Path.Eq(path)).
 		Select(s.NamespaceID, s.SyncNodeIDs).
 		Updates(&model.Site{
-			NamespaceID:  namespaceId,
+			NamespaceID: namespaceId,
 			SyncNodeIDs: syncNodeIds,
 		})
 	if err != nil {
