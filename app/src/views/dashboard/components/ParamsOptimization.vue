@@ -20,7 +20,7 @@ const data = ref<NginxConfigInfo>({
   gzip_min_length: 1,
   gzip_comp_level: 1,
   client_max_body_size: '1m',
-  server_names_hash_bucket_size: '32k',
+  server_names_hash_bucket_size: '32',
   client_header_buffer_size: '1k',
   client_body_buffer_size: '8k',
   proxy_cache: {

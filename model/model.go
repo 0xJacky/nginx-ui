@@ -36,6 +36,7 @@ func GenerateAllModel() []any {
 		ExternalNotify{},
 		AutoBackup{},
 		SiteConfig{},
+		NginxLogIndex{},
 	}
 }
 

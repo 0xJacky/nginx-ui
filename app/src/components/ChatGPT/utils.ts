@@ -57,7 +57,7 @@ let scrollTimeoutId: number | null = null
  * scrollToBottom: Scroll container to bottom with optimized performance
  */
 export function scrollToBottom() {
-  // 更简单的防抖，避免过度优化导致的卡顿
+  // Simple debounce to avoid stuttering from over-optimization
   if (scrollTimeoutId) {
     return
   }
@@ -65,11 +65,11 @@ export function scrollToBottom() {
   scrollTimeoutId = window.setTimeout(() => {
     const container = document.querySelector('.right-settings .ant-card-body')
     if (container) {
-      // 直接设置scrollTop，避免动画导致的卡顿
+      // Set scrollTop directly to avoid animation stuttering
       container.scrollTop = container.scrollHeight
     }
     scrollTimeoutId = null
-  }, 50) // 减少到50ms，提高响应性
+  }, 50) // Reduced to 50ms for better responsiveness
 }
 
 /**

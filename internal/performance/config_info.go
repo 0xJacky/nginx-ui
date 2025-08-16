@@ -36,7 +36,7 @@ func GetNginxWorkerConfigInfo() (*NginxConfigInfo, error) {
 		GzipMinLength:             1,
 		GzipCompLevel:             1,
 		ClientMaxBodySize:         "1m",
-		ServerNamesHashBucketSize: "32k",
+		ServerNamesHashBucketSize: "32",
 		ClientHeaderBufferSize:    "1k",
 		ClientBodyBufferSize:      "8k",
 		ProxyCache: ProxyCacheConfig{

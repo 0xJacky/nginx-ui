@@ -50,11 +50,11 @@ export function useTypewriter(options: TypewriterOptions = {}) {
           return
         }
 
-        // 一个字符一个字符地添加
+        // Add character by character
         targetRef.value += chars[charIndex]
         charIndex++
 
-        // Throttled scrolling - 减少滚动频率
+        // Throttled scrolling - reduce scroll frequency
         if (onScroll && !scrollTimer) {
           scrollTimer = window.setTimeout(() => {
             onScroll()

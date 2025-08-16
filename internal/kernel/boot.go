@@ -19,6 +19,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/event"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/mcp"
+	"github.com/0xJacky/Nginx-UI/internal/nginx_log"
 	"github.com/0xJacky/Nginx-UI/internal/passkey"
 	"github.com/0xJacky/Nginx-UI/internal/self_check"
 	"github.com/0xJacky/Nginx-UI/internal/sitecheck"
@@ -89,6 +90,14 @@ func InitAfterDatabase(ctx context.Context) {
 		func(ctx context.Context) {
 			service := sitecheck.GetService()
 			service.Start()
+		},
+		func(ctx context.Context) {
+			// Initialize background log service
+			if err := nginx_log.InitBackgroundLogService(ctx); err != nil {
+				logger.Errorf("Failed to initialize background log service: %v", err)
+			} else {
+				logger.Info("Background log service initialized successfully")
+			}
 		},
 	}
 
