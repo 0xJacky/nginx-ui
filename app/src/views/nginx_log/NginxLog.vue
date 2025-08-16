@@ -1,141 +1,43 @@
 <script setup lang="ts">
-import type ReconnectingWebSocket from 'reconnecting-websocket'
-import type { NginxLogData } from '@/api/nginx_log'
-import { debounce } from 'lodash'
-import nginx_log from '@/api/nginx_log'
+import { FileOutlined } from '@ant-design/icons-vue'
 import FooterToolBar from '@/components/FooterToolbar'
-import ws from '@/lib/websocket'
+import DashboardViewer from './dashboard/DashboardViewer.vue'
+import RawLogViewer from './raw/RawLogViewer.vue'
+import StructuredLogViewer from './structured/StructuredLogViewer.vue'
 
-const logContainer = useTemplateRef('logContainer')
-let websocket: ReconnectingWebSocket | WebSocket
+// Route and router
 const route = useRoute()
-const buffer = ref('')
-const page = ref(0)
-const autoRefresh = ref(true)
 const router = useRouter()
-const loading = ref(false)
-const filter = ref('')
 
 // Setup log control data based on route params
-const control = reactive<NginxLogData>({
-  type: logType(),
-  path: route.query.path?.toString() ?? '',
-})
-
-function logType() {
+const logPath = computed(() => route.query.path?.toString() ?? '')
+const logType = computed(() => {
   if (route.path.indexOf('access') > 0)
     return 'access'
   return route.path.indexOf('error') > 0 ? 'error' : 'site'
-}
-
-function openWs() {
-  websocket = ws('/api/nginx_log')
-
-  websocket.onopen = () => {
-    websocket.send(JSON.stringify(control))
-  }
-
-  websocket.onmessage = (m: { data: string }) => {
-    addLog(`${m.data}\n`)
-  }
-}
-
-function addLog(data: string, prepend: boolean = false) {
-  if (prepend)
-    buffer.value = data + buffer.value
-  else
-    buffer.value += data
-
-  nextTick(() => {
-    logContainer.value?.scroll({
-      top: logContainer.value.scrollHeight,
-      left: 0,
-    })
-  })
-}
-
-function init() {
-  nginx_log.page(0, control).then(r => {
-    page.value = r.page - 1
-    addLog(r.content)
-    openWs()
-  }).catch(e => {
-    if (e.error)
-      addLog(T(e.error))
-  })
-}
-
-function clearLog() {
-  buffer.value = ''
-}
-
-onMounted(() => {
-  init()
 })
 
-onUnmounted(() => {
-  websocket?.close()
+// Check if this is an error log
+const isErrorLog = computed(() => {
+  return logType.value === 'error' || logPath.value.includes('error.log') || logPath.value.includes('error_log')
 })
 
-watch(autoRefresh, async value => {
-  if (value) {
-    clearLog()
-    await nextTick()
-    await init()
-    openWs()
-  }
-  else {
-    websocket.close()
+// Reactive data - use reactive to handle computed changes
+const viewMode = ref<'raw' | 'structured' | 'dashboard'>('structured')
+const autoRefresh = ref(true)
+
+// Set initial view mode and watch for error log changes
+watchEffect(() => {
+  if (isErrorLog.value) {
+    viewMode.value = 'raw'
   }
 })
 
-watch(route, () => {
-  // Update control data when route changes
-  control.type = logType()
-  control.path = route.query.log_path as string
-
-  clearLog()
-  init()
-})
-
-watch(control, () => {
-  clearLog()
-  autoRefresh.value = true
-
-  nextTick(() => {
-    websocket.send(JSON.stringify(control))
-  })
-})
-
-function onScrollLog() {
-  if (!loading.value && page.value > 0) {
-    loading.value = true
-
-    const elem = logContainer.value!
-
-    if (elem?.scrollTop / elem?.scrollHeight < 0.333) {
-      nginx_log.page(page.value, control).then(r => {
-        page.value = r.page - 1
-        addLog(r.content, true)
-      }).finally(() => {
-        loading.value = false
-      })
-    }
-    else {
-      loading.value = false
-    }
+// Watch for view mode changes
+watch(viewMode, newMode => {
+  if (newMode === 'structured' || newMode === 'dashboard') {
+    autoRefresh.value = false
   }
-}
-
-function debounceScrollLog() {
-  return debounce(onScrollLog, 100)()
-}
-
-const computedBuffer = computed(() => {
-  if (filter.value)
-    return buffer.value.split('\n').filter(line => line.match(filter.value)).join('\n')
-
-  return buffer.value
 })
 </script>
 
@@ -144,47 +46,58 @@ const computedBuffer = computed(() => {
     :title="$gettext('Nginx Log')"
     :bordered="false"
   >
+    <!-- Log Path Header -->
+    <div v-if="logPath" class="mb-4 px-2 py-1.5 bg-gray-50 dark:bg-gray-800 rounded text-xs text-gray-500 dark:text-gray-400">
+      <FileOutlined class="mr-2" />
+      <span class="font-mono">{{ logPath }}</span>
+    </div>
+
     <template #extra>
-      <div class="flex items-center">
-        <span class="mr-2">
-          {{ $gettext('Auto Refresh') }}
-        </span>
-        <ASwitch v-model:checked="autoRefresh" />
+      <div class="flex items-center gap-4">
+        <!-- View Mode Toggle (hide for error logs) -->
+        <div v-if="!isErrorLog" class="flex items-center">
+          <ASegmented
+            v-model:value="viewMode"
+            :options="[
+              { label: $gettext('Structured'), value: 'structured' },
+              { label: $gettext('Dashboard'), value: 'dashboard' },
+              { label: $gettext('Raw'), value: 'raw' },
+            ]"
+          />
+        </div>
+
+        <!-- Auto Refresh (only for raw mode) -->
+        <div v-if="viewMode === 'raw'" class="flex items-center">
+          <span class="mr-2">{{ $gettext('Auto Refresh') }}</span>
+          <ASwitch v-model:checked="autoRefresh" />
+        </div>
       </div>
     </template>
-    <AForm layout="vertical">
-      <AFormItem :label="$gettext('Filter')">
-        <AInput
-          v-model:value="filter"
-          style="max-width: 300px"
-        />
-      </AFormItem>
-    </AForm>
 
-    <ACard>
-      <pre
-        ref="logContainer"
-        v-dompurify-html="computedBuffer"
-        class="nginx-log-container"
-        @scroll="debounceScrollLog"
-      />
-    </ACard>
-    <FooterToolBar v-if="control.path">
+    <!-- Raw Log View -->
+    <RawLogViewer
+      v-if="viewMode === 'raw'"
+      :log-path="logPath"
+      :log-type="logType"
+      :auto-refresh="autoRefresh"
+    />
+
+    <!-- Structured Log View -->
+    <StructuredLogViewer
+      v-else-if="viewMode === 'structured'"
+      :log-path="logPath"
+    />
+
+    <!-- Dashboard View -->
+    <DashboardViewer
+      v-else-if="viewMode === 'dashboard'"
+      :log-path="logPath"
+    />
+
+    <FooterToolBar v-if="logPath">
       <AButton @click="router.go(-1)">
         {{ $gettext('Back') }}
       </AButton>
     </FooterToolBar>
   </ACard>
 </template>
-
-<style lang="less">
-.nginx-log-container {
-  height: 60vh;
-  overflow: scroll;
-  padding: 5px;
-  margin-bottom: 0;
-
-  font-size: 12px;
-  line-height: 2;
-}
-</style>

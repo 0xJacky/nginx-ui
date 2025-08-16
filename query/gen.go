@@ -28,6 +28,7 @@ var (
 	DnsCredential  *dnsCredential
 	ExternalNotify *externalNotify
 	Namespace      *namespace
+	NginxLogIndex  *nginxLogIndex
 	Node           *node
 	Notification   *notification
 	Passkey        *passkey
@@ -50,6 +51,7 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	DnsCredential = &Q.DnsCredential
 	ExternalNotify = &Q.ExternalNotify
 	Namespace = &Q.Namespace
+	NginxLogIndex = &Q.NginxLogIndex
 	Node = &Q.Node
 	Notification = &Q.Notification
 	Passkey = &Q.Passkey
@@ -73,6 +75,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		DnsCredential:  newDnsCredential(db, opts...),
 		ExternalNotify: newExternalNotify(db, opts...),
 		Namespace:      newNamespace(db, opts...),
+		NginxLogIndex:  newNginxLogIndex(db, opts...),
 		Node:           newNode(db, opts...),
 		Notification:   newNotification(db, opts...),
 		Passkey:        newPasskey(db, opts...),
@@ -97,6 +100,7 @@ type Query struct {
 	DnsCredential  dnsCredential
 	ExternalNotify externalNotify
 	Namespace      namespace
+	NginxLogIndex  nginxLogIndex
 	Node           node
 	Notification   notification
 	Passkey        passkey
@@ -122,6 +126,7 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		DnsCredential:  q.DnsCredential.clone(db),
 		ExternalNotify: q.ExternalNotify.clone(db),
 		Namespace:      q.Namespace.clone(db),
+		NginxLogIndex:  q.NginxLogIndex.clone(db),
 		Node:           q.Node.clone(db),
 		Notification:   q.Notification.clone(db),
 		Passkey:        q.Passkey.clone(db),
@@ -154,6 +159,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		DnsCredential:  q.DnsCredential.replaceDB(db),
 		ExternalNotify: q.ExternalNotify.replaceDB(db),
 		Namespace:      q.Namespace.replaceDB(db),
+		NginxLogIndex:  q.NginxLogIndex.replaceDB(db),
 		Node:           q.Node.replaceDB(db),
 		Notification:   q.Notification.replaceDB(db),
 		Passkey:        q.Passkey.replaceDB(db),
@@ -176,6 +182,7 @@ type queryCtx struct {
 	DnsCredential  *dnsCredentialDo
 	ExternalNotify *externalNotifyDo
 	Namespace      *namespaceDo
+	NginxLogIndex  *nginxLogIndexDo
 	Node           *nodeDo
 	Notification   *notificationDo
 	Passkey        *passkeyDo
@@ -198,6 +205,7 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		DnsCredential:  q.DnsCredential.WithContext(ctx),
 		ExternalNotify: q.ExternalNotify.WithContext(ctx),
 		Namespace:      q.Namespace.WithContext(ctx),
+		NginxLogIndex:  q.NginxLogIndex.WithContext(ctx),
 		Node:           q.Node.WithContext(ctx),
 		Notification:   q.Notification.WithContext(ctx),
 		Passkey:        q.Passkey.WithContext(ctx),

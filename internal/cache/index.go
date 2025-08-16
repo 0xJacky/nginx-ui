@@ -299,7 +299,7 @@ func (s *Scanner) scanSingleFile(filePath string) error {
 
 		// Process symlinks to files, but use the target's info for size check
 		fileInfo = targetInfo
-		logger.Debugf("Processing symlink to file: %s", filePath)
+		// logger.Debugf("Processing symlink to file: %s", filePath)
 	}
 
 	// Skip non-regular files (devices, pipes, sockets, etc.)

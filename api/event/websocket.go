@@ -141,6 +141,12 @@ func EventBus(c *gin.Context) {
 	hub := GetHub()
 	hub.register <- client
 
+	// Broadcast current processing status to the new client
+	go func() {
+		processingManager := event.GetProcessingStatusManager()
+		processingManager.BroadcastCurrentStatus()
+	}()
+
 	// Start write and read pumps - no manual event subscriptions needed
 	go client.writePump()
 	client.readPump()

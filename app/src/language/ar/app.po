@@ -109,6 +109,15 @@ msgstr "تم نسخ {label} إلى الحافظة"
 msgid "* Includes nodes from group %{groupName} and manually selected nodes"
 msgstr "* يتضمن عقدًا من مجموعة %{groupName} وعقدًا مختارة يدويًا"
 
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:795
+msgid "%{start}-%{end} of %{total} items"
+msgstr "%{start}-%{end} من %{total} عنصر"
+
+#: src/views/nginx_log/dashboard/components/HourlyChart.vue:40
+#: src/views/nginx_log/dashboard/components/HourlyChart.vue:41
+msgid "24-Hour UV/PV Statistics"
+msgstr "إحصائيات UV/PV لمدة 24 ساعة"
+
 #: src/views/user/userColumns.tsx:30
 msgid "2FA"
 msgstr "المصادقة الثنائية"
@@ -121,7 +130,7 @@ msgstr "إعدادات المصادقة الثنائية"
 msgid "About"
 msgstr "عن"
 
-#: src/views/nginx_log/NginxLogList.vue:39
+#: src/views/nginx_log/NginxLogList.vue:63
 msgid "Access Log"
 msgstr "سجل الوصول"
 
@@ -148,7 +157,7 @@ msgstr "إجراء"
 #: src/views/certificate/CertificateList/certColumns.tsx:92
 #: src/views/certificate/DNSCredential.vue:71
 #: src/views/config/configColumns.tsx:50 src/views/namespace/columns.ts:84
-#: src/views/nginx_log/NginxLogList.vue:68 src/views/node/nodeColumns.tsx:96
+#: src/views/nginx_log/NginxLogList.vue:272 src/views/node/nodeColumns.tsx:96
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:85
 #: src/views/site/site_list/columns.tsx:160 src/views/stream/columns.tsx:123
@@ -169,7 +178,7 @@ msgstr "نسبة العامل الفعلي إلى المُهيأ"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:97 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:45
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:94
-#: src/views/site/site_list/SiteList.vue:95 src/views/stream/StreamList.vue:103
+#: src/views/site/site_list/SiteList.vue:73 src/views/stream/StreamList.vue:81
 msgid "Add"
 msgstr "إضافة"
 
@@ -192,6 +201,10 @@ msgstr "أضف التوجيه أدناه"
 msgid "Add Domain"
 msgstr "إضافة نطاق"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:441
+msgid "Add Header"
+msgstr "إضافة رأس"
+
 #: src/components/NgxConfigEditor/LocationEditor.vue:131
 #: src/components/NgxConfigEditor/LocationEditor.vue:158
 msgid "Add Location"
@@ -205,7 +218,7 @@ msgstr "إضافة خادم"
 msgid "Add Site"
 msgstr "أضف موقع"
 
-#: src/views/stream/StreamList.vue:140
+#: src/views/stream/StreamList.vue:118
 msgid "Add Stream"
 msgstr "أضف Stream"
 
@@ -213,7 +226,7 @@ msgstr "أضف Stream"
 msgid "Add Upstream"
 msgstr "إضافة upstream"
 
-#: src/views/stream/StreamList.vue:72
+#: src/views/stream/StreamList.vue:50
 msgid "Added successfully"
 msgstr "تمت الإضافة بنجاح"
 
@@ -226,11 +239,15 @@ msgstr "إضافي"
 msgid "Advance Mode"
 msgstr "الوضع المتقدم"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:529
+msgid "Advanced Settings"
+msgstr "الإعدادات المتقدمة"
+
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:104
 msgid "Afterwards, refresh this page and click add passkey again."
 msgstr "بعد ذلك، قم بتحديث هذه الصفحة وانقر على إضافة مفتاح مرور مرة أخرى."
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:83
+#: src/components/NamespaceTabs/NamespaceTabs.vue:116
 msgid "All"
 msgstr "الكل"
 
@@ -246,6 +263,14 @@ msgid ""
 msgstr ""
 "يجب أن تنتمي جميع النطاقات الفرعية المحددة إلى نفس موفر DNS، وإلا فشل طلب "
 "الشهادة."
+
+#: src/constants/errors/nginx_log.ts:13
+msgid "Analytics service not available"
+msgstr "خدمة التحليلات غير متوفرة"
+
+#: src/views/nginx_log/structured/components/SearchFilters.vue:96
+msgid "Any"
+msgstr "أي"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:209
 msgid "Any reachable IP address can be used with private Certificate Authorities"
@@ -283,7 +308,7 @@ msgstr "تطبيق"
 msgid "Arch"
 msgstr "أرك"
 
-#: src/views/preference/tabs/AuthSettings.vue:130
+#: src/views/preference/tabs/AuthSettings.vue:128
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "هل أنت متأكد من حذف عنوان IP المحظور هذا على الفور؟"
 
@@ -312,12 +337,12 @@ msgstr "هل أنت متأكد أنك تريد مسح سجل المحادثة؟"
 msgid "Are you sure you want to delete permanently?"
 msgstr "هل أنت متأكد أنك تريد الحذف نهائيًا؟"
 
-#: src/language/curd.ts:25 src/views/site/site_list/SiteList.vue:113
-#: src/views/stream/StreamList.vue:123
+#: src/language/curd.ts:25 src/views/site/site_list/SiteList.vue:91
+#: src/views/stream/StreamList.vue:101
 msgid "Are you sure you want to delete?"
 msgstr "هل أنت متأكد أنك تريد الحذف؟"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:97
+#: src/components/NamespaceTabs/NamespaceTabs.vue:130
 msgid "Are you sure you want to reload Nginx on the following sync nodes?"
 msgstr "هل أنت متأكد أنك تريد إعادة تحميل Nginx على عقد المزامنة التالية؟"
 
@@ -333,13 +358,17 @@ msgstr "هل أنت متأكد أنك تريد إزالة هذا العنصر؟"
 msgid "Are you sure you want to remove this location?"
 msgstr "هل أنت متأكد أنك تريد إزالة هذا المكان؟"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:109
+#: src/components/NamespaceTabs/NamespaceTabs.vue:142
 msgid "Are you sure you want to restart Nginx on the following sync nodes?"
 msgstr "هل أنت متأكد أنك تريد إعادة تشغيل Nginx على عقد المزامنة التالية؟"
 
 #: src/language/curd.ts:26
 msgid "Are you sure you want to restore?"
 msgstr "هل أنت متأكد أنك تريد الاستعادة؟"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:717
+msgid "Ascending"
+msgstr "تصاعدي"
 
 #: src/components/ChatGPT/ChatGPT.vue:55
 msgid "Ask ChatGPT for Help"
@@ -365,7 +394,7 @@ msgstr "مصادقة"
 msgid "Authenticate with a passkey"
 msgstr "المصادقة باستخدام مفتاح المرور"
 
-#: src/views/preference/tabs/AuthSettings.vue:56
+#: src/views/preference/tabs/AuthSettings.vue:55
 msgid "Authentication Settings"
 msgstr "إعدادات المصادقة"
 
@@ -404,15 +433,15 @@ msgstr "فشل النسخ الاحتياطي التلقائي"
 msgid "Auto Backup Storage Failed"
 msgstr "فشل تخزين النسخ الاحتياطي التلقائي"
 
-#: src/views/nginx_log/NginxLog.vue:150 src/views/node/Node.vue:165
+#: src/views/nginx_log/NginxLog.vue:64 src/views/node/Node.vue:164
 msgid "Auto Refresh"
 msgstr "التحديث التلقائي"
 
-#: src/views/node/Node.vue:48
+#: src/views/node/Node.vue:47
 msgid "Auto refresh disabled"
 msgstr "تم تعطيل التحديث التلقائي"
 
-#: src/views/node/Node.vue:44
+#: src/views/node/Node.vue:43
 msgid "Auto refresh enabled"
 msgstr "تمكين التحديث التلقائي"
 
@@ -441,10 +470,18 @@ msgstr "إعادة التشغيل التلقائي"
 msgid "Average Latency"
 msgstr "متوسط زمن الوصول"
 
+#: src/views/nginx_log/dashboard/components/SummaryStats.vue:33
+msgid "Avg Daily UV"
+msgstr "متوسط الزوار اليوميين"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:778
+msgid "Avg/PV"
+msgstr "متوسط/زيارة الصفحة"
+
 #: src/views/certificate/components/CertificateActions.vue:22
 #: src/views/config/components/ConfigLeftPanel.vue:273
 #: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
-#: src/views/nginx_log/NginxLog.vue:174
+#: src/views/nginx_log/NginxLog.vue:92
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:169
 #: src/views/stream/components/StreamEditor.vue:123
 msgid "Back"
@@ -457,6 +494,10 @@ msgstr "العودة إلى الصفحة الرئيسية"
 #: src/language/curd.ts:21
 msgid "Back to List"
 msgstr "العودة إلى القائمة"
+
+#: src/constants/errors/nginx_log.ts:17
+msgid "Background log service not available"
+msgstr "خدمة السجل الخلفي غير متاحة"
 
 #: src/routes/modules/backup.ts:11 src/routes/modules/backup.ts:19
 msgid "Backup"
@@ -516,11 +557,11 @@ msgstr "فشل تنفيذ مهمة النسخ الاحتياطي %{backup_name}�
 msgid "Backup Type"
 msgstr "نوع النسخ الاحتياطي"
 
-#: src/views/preference/tabs/AuthSettings.vue:97
+#: src/views/preference/tabs/AuthSettings.vue:95
 msgid "Ban Threshold Minutes"
 msgstr "دقائق حد الحظر"
 
-#: src/views/preference/tabs/AuthSettings.vue:118
+#: src/views/preference/tabs/AuthSettings.vue:116
 msgid "Banned IPs"
 msgstr "عناوين IP المحظورة"
 
@@ -570,6 +611,17 @@ msgstr "فيما يلي العناصر المحددة التي تريد تعدي
 #: src/constants/errors/nginx.ts:3
 msgid "Block is nil"
 msgstr "الكتلة فارغة"
+
+#: src/views/nginx_log/dashboard/components/BrowserStatsTable.vue:13
+#: src/views/nginx_log/structured/components/SearchFilters.vue:137
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:209
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:471
+msgid "Browser"
+msgstr "المتصفح"
+
+#: src/views/nginx_log/dashboard/components/BrowserStatsTable.vue:36
+msgid "Browser Statistics"
+msgstr "إحصائيات المتصفح"
 
 #: src/views/system/About.vue:75
 msgid "Build with"
@@ -634,6 +686,10 @@ msgstr ""
 #: src/components/NgxConfigEditor/NgxServer.vue:61
 #: src/components/NgxConfigEditor/NgxUpstream.vue:32 src/language/curd.ts:37
 #: src/views/config/components/Delete.vue:98
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:632
+#: src/views/dashboard/components/SiteNavigationToolbar.vue:64
+#: src/views/nginx_log/indexing/IndexManagement.vue:31
+#: src/views/nginx_log/indexing/IndexManagement.vue:57
 #: src/views/preference/components/AuthSettings/Passkey.vue:141
 #: src/views/site/components/SiteStatusSelect.vue:124
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:40
@@ -646,6 +702,10 @@ msgstr "إلغاء"
 #: src/constants/errors/backup.ts:76
 msgid "Cannot access backup path {0}: {1}"
 msgstr "لا يمكن الوصول إلى مسار النسخ الاحتياطي {0}: {1}"
+
+#: src/constants/errors/nginx_log.ts:16
+msgid "Cannot access log file"
+msgstr "لا يمكن الوصول إلى ملف السجل"
 
 #: src/constants/errors/backup.ts:79
 msgid "Cannot access storage path {0}: {1}"
@@ -740,8 +800,8 @@ msgstr "خطأ في تحليل الشهادة"
 msgid "Certificate path is empty"
 msgstr "مسار الشهادة فارغ"
 
-#: src/views/certificate/components/RemoveCert.vue:42
-#: src/views/certificate/components/RemoveCert.vue:62
+#: src/views/certificate/components/RemoveCert.vue:50
+#: src/views/certificate/components/RemoveCert.vue:70
 msgid "Certificate removed successfully"
 msgstr "تم إزالة الشهادة بنجاح"
 
@@ -830,6 +890,10 @@ msgstr "تحقق"
 #: src/views/system/Upgrade.vue:204
 msgid "Check again"
 msgstr "تحقق مرة أخرى"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:592
+msgid "Check Favicon"
+msgstr "فحص الأيقونة"
 
 #: src/language/generate.ts:6
 msgid ""
@@ -950,6 +1014,10 @@ msgstr ""
 "تحقق مما إذا كانت الدلائل streams-available و streams-enabled موجودة ضمن "
 "دليل تكوين nginx"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:532
+msgid "Check Interval (seconds)"
+msgstr "فترة الفحص (بالثواني)"
+
 #: src/constants/errors/crypto.ts:3
 msgid "Cipher text is too short"
 msgstr "النص المشفر قصير جدًا"
@@ -990,9 +1058,17 @@ msgstr "انقر لنسخ"
 msgid "Client Body Buffer Size"
 msgstr "حجم العميل العازلة للعميل"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:614
+msgid "Client Certificate"
+msgstr "شهادة العميل"
+
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:117
 msgid "Client Header Buffer Size"
 msgstr "حجم مخزن رأس العميل"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:619
+msgid "Client Key"
+msgstr "مفتاح العميل"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:110
 msgid "Client Max Body Size"
@@ -1061,6 +1137,10 @@ msgstr "قارن مع التيار"
 msgid "Compression level, 1 is lowest, 9 is highest"
 msgstr "مستوى الضغط ، 1 هو أدنى ، 9 هو الأعلى"
 
+#: src/views/nginx_log/indexing/components/IndexProgressBar.vue:57
+msgid "Computing Statistics"
+msgstr "حساب الإحصائيات"
+
 #: src/language/generate.ts:19
 msgid "Conf.d directory exists"
 msgstr "دليل conf.d موجود"
@@ -1125,7 +1205,8 @@ msgstr "تأكيد الحذف"
 msgid "Confirm New Password"
 msgstr "تأكيد كلمة المرور الجديدة"
 
-#: src/views/dashboard/components/NodeAnalyticItem.vue:99
+#: src/views/dashboard/components/NodeAnalyticItem.vue:97
+#: src/views/dashboard/components/SiteNavigationToolbar.vue:39
 msgid "Connected"
 msgstr "متصل"
 
@@ -1172,6 +1253,14 @@ msgstr "نسخ الرموز"
 #: src/views/system/Upgrade.vue:162
 msgid "Core Upgrade"
 msgstr "ترقية نواة"
+
+#: src/views/nginx_log/dashboard/components/BrowserStatsTable.vue:18
+#: src/views/nginx_log/dashboard/components/DailyTrendsChart.vue:84
+#: src/views/nginx_log/dashboard/components/DeviceStatsTable.vue:18
+#: src/views/nginx_log/dashboard/components/HourlyChart.vue:73
+#: src/views/nginx_log/dashboard/components/OSStatsTable.vue:18
+msgid "Count"
+msgstr "عدد"
 
 #: src/views/dashboard/ServerAnalytic.vue:308
 msgid "CPU Status"
@@ -1292,6 +1381,10 @@ msgstr "نطاقات مخصصة"
 msgid "Custom Domains Certificate"
 msgstr "شهادة النطاقات المخصصة"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:426
+msgid "Custom Headers"
+msgstr "رؤوس مخصصة"
+
 #: src/views/preference/tabs/NodeSettings.vue:19
 msgid ""
 "Customize the name of local node to be displayed in the environment "
@@ -1302,6 +1395,10 @@ msgstr "قم بتخصيص اسم العقدة المحلية ليتم عرضها
 msgid "Daily"
 msgstr "يومي"
 
+#: src/views/nginx_log/dashboard/components/DailyTrendsChart.vue:41
+msgid "Daily Access Trends"
+msgstr "اتجاهات الوصول اليومية"
+
 #: src/views/backup/AutoBackup/AutoBackup.vue:128
 msgid "Daily at %{time}"
 msgstr "يوميًا في الساعة %{time}"
@@ -1309,9 +1406,17 @@ msgstr "يوميًا في الساعة %{time}"
 #: src/routes/modules/dashboard.ts:10
 #: src/views/config/components/ConfigLeftPanel.vue:109
 #: src/views/config/components/ConfigLeftPanel.vue:159
-#: src/views/config/ConfigList.vue:69
+#: src/views/config/ConfigList.vue:69 src/views/nginx_log/NginxLog.vue:56
 msgid "Dashboard"
 msgstr "لوحة المعلومات"
+
+#: src/views/nginx_log/dashboard/components/DailyTrendsChart.vue:71
+msgid "Date"
+msgstr "التاريخ"
+
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:34
+msgid "Date Range"
+msgstr "نطاق التاريخ"
 
 #: src/views/backup/AutoBackup/components/CronEditor.vue:184
 msgid "Day of Month"
@@ -1329,30 +1434,34 @@ msgstr "أيام"
 msgid "Decryption failed"
 msgstr "فشل فك التشفير"
 
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:831
+msgid "Default range"
+msgstr "النطاق الافتراضي"
+
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:150
 msgid "Define shared memory zone name and size, e.g. proxy_cache:10m"
 msgstr "حدد اسم منطقة الذاكرة المشتركة والحجم، على سبيل المثال proxy_cache:10m"
 
 #: src/components/NgxConfigEditor/NgxServer.vue:110
 #: src/components/NgxConfigEditor/NgxUpstream.vue:78 src/language/curd.ts:9
-#: src/views/certificate/components/RemoveCert.vue:90
+#: src/views/certificate/components/RemoveCert.vue:98
 #: src/views/config/components/Delete.vue:65
 #: src/views/config/components/Delete.vue:97
 #: src/views/config/ConfigList.vue:199
-#: src/views/site/site_list/SiteList.vue:122
-#: src/views/stream/StreamList.vue:132
+#: src/views/site/site_list/SiteList.vue:100
+#: src/views/stream/StreamList.vue:110
 msgid "Delete"
 msgstr "حذف"
 
 #: src/components/Notification/notifications.ts:86
-msgid "Delete %{path} on %{env_name} failed"
-msgstr "فشل حذف %{path} على %{env_name}"
+msgid "Delete %{path} on %{node_name} failed"
+msgstr "فشل حذف %{path} على %{node_name}"
 
 #: src/components/Notification/notifications.ts:90
-msgid "Delete %{path} on %{env_name} successfully"
-msgstr "تم حذف %{path} على %{env_name} بنجاح"
+msgid "Delete %{path} on %{node_name} successfully"
+msgstr "تم حذف %{path} على %{node_name} بنجاح"
 
-#: src/views/certificate/components/RemoveCert.vue:95
+#: src/views/certificate/components/RemoveCert.vue:103
 msgid "Delete Certificate"
 msgstr "حذف الشهادة"
 
@@ -1397,7 +1506,7 @@ msgstr "فشل حذف الموقع %{name} من %{node}"
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "تم حذف الموقع %{name} من %{node} بنجاح"
 
-#: src/views/site/site_list/SiteList.vue:48
+#: src/views/site/site_list/SiteList.vue:26
 msgid "Delete site: %{site_name}"
 msgstr "حذف الموقع: ‎%{site_name}"
 
@@ -1409,7 +1518,7 @@ msgstr "فشل حذف الدفق %{name} من %{node}"
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "تم حذف الدفق %{name} من %{node} بنجاح"
 
-#: src/views/stream/StreamList.vue:47
+#: src/views/stream/StreamList.vue:25
 msgid "Delete stream: %{stream_name}"
 msgstr "حذف البث: ‎%{stream_name}"
 
@@ -1424,6 +1533,10 @@ msgstr "عرض تجريبي"
 #: src/views/config/components/ConfigRightPanel/Basic.vue:60
 msgid "Deploy"
 msgstr "نشر"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:717
+msgid "Descending"
+msgstr "تنازلي"
 
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:74
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:98
@@ -1453,6 +1566,20 @@ msgstr "التطوير"
 #: src/views/system/About.vue:28
 msgid "Development Mode"
 msgstr "وضع التطوير"
+
+#: src/views/nginx_log/structured/components/SearchFilters.vue:169
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:241
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:473
+msgid "Device"
+msgstr "الجهاز"
+
+#: src/views/nginx_log/dashboard/components/DeviceStatsTable.vue:36
+msgid "Device Statistics"
+msgstr "إحصاءات الجهاز"
+
+#: src/views/nginx_log/dashboard/components/DeviceStatsTable.vue:13
+msgid "Device Type"
+msgstr "نوع الجهاز"
 
 #: src/views/preference/components/ExternalNotify/dingtalk.ts:5
 msgid "DingTalk"
@@ -1563,6 +1690,10 @@ msgstr "معطل"
 msgid "Disabled successfully"
 msgstr "تم التعطيل بنجاح"
 
+#: src/views/dashboard/components/SiteNavigationToolbar.vue:39
+msgid "Disconnected"
+msgstr "غير متصل"
+
 #: src/views/dashboard/ServerAnalytic.vue:373
 msgid "Disk IO"
 msgstr "إدخال/إخراج القرص"
@@ -1576,6 +1707,10 @@ msgstr "بيانات اعتماد DNS"
 #: src/views/certificate/components/DNSChallenge.vue:59
 msgid "DNS Provider"
 msgstr "مزود DNS"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:600
+msgid "DNS Resolver"
+msgstr "حل DNS"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:228
 msgid "DNS01"
@@ -1633,6 +1768,10 @@ msgstr[3] "وثائق"
 msgstr[4] "وثيقة"
 msgstr[5] "وثيقة"
 
+#: src/views/nginx_log/NginxLogList.vue:212
+msgid "Document Count"
+msgstr "عدد المستندات"
+
 #: src/views/certificate/components/DNSIssueCertificate.vue:118
 msgid "Domain"
 msgstr "نطاق"
@@ -1674,9 +1813,9 @@ msgstr ""
 "مواقع الويب غير HTTPS، إلا عند التشغيل على localhost."
 
 #: src/views/site/site_list/SiteDuplicate.vue:72
-#: src/views/site/site_list/SiteList.vue:108
+#: src/views/site/site_list/SiteList.vue:86
 #: src/views/stream/components/StreamDuplicate.vue:64
-#: src/views/stream/StreamList.vue:118
+#: src/views/stream/StreamList.vue:96
 msgid "Duplicate"
 msgstr "مكرر"
 
@@ -1732,6 +1871,10 @@ msgstr "بريد إلكتروني"
 #: src/views/install/components/InstallForm.vue:75
 msgid "Email (*)"
 msgstr "البريد الإلكتروني (*)"
+
+#: src/constants/errors/nginx_log.ts:9
+msgid "Empty log line"
+msgstr "سجل فارغ"
 
 #: src/views/site/components/SiteStatusSelect.vue:114
 #: src/views/stream/components/StreamStatusSelect.vue:54
@@ -1870,6 +2013,10 @@ msgstr "تشفير الموقع باستخدام Let's Encrypt"
 msgid "End"
 msgstr "النهاية"
 
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:52
+msgid "End Date"
+msgstr "تاريخ الانتهاء"
+
 #: src/views/certificate/components/DNSIssueCertificate.vue:137
 msgid "Enter domain name"
 msgstr "أدخل اسم النطاق"
@@ -1890,10 +2037,6 @@ msgstr "تكوين البيئة فارغ"
 msgid "Environment variables cleaned"
 msgstr "تم تنظيف متغيرات البيئة"
 
-#: src/views/node/Node.vue:131
-msgid "Environments"
-msgstr "البيئات"
-
 #: src/constants/index.ts:23 src/views/config/InspectConfig.vue:63
 #: src/views/notification/notificationColumns.tsx:14
 msgid "Error"
@@ -1907,9 +2050,13 @@ msgstr "تفاصيل الخطأ"
 msgid "Error initializing diff viewer"
 msgstr "خطأ في تهيئة عارض الاختلافات"
 
-#: src/views/nginx_log/NginxLogList.vue:43
+#: src/views/nginx_log/NginxLogList.vue:67
 msgid "Error Log"
 msgstr "سجل الأخطاء"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:648
+msgid "Error Log Detected"
+msgstr "تم اكتشاف سجل الأخطاء"
 
 #: src/constants/errors/self_check.ts:22
 msgid "Error log path not exist"
@@ -1919,6 +2066,12 @@ msgstr "مسار سجل الأخطاء غير موجود"
 #: src/routes/modules/nginx_log.ts:24
 msgid "Error Logs"
 msgstr "سجلات الأخطاء"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:651
+msgid ""
+"Error logs do not support structured analysis as they contain free-form "
+"text messages."
+msgstr "لا تدعم سجلات الأخطاء التحليل المنظم لأنها تحتوي على رسائل نصية حرة."
 
 #: src/components/ConfigHistory/DiffViewer.vue:81
 msgid "Error processing content"
@@ -1939,6 +2092,14 @@ msgstr "تنفيذ كل يوم في الساعة %{time}"
 #: src/views/backup/AutoBackup/components/CronEditor.vue:129
 msgid "Execute on every month on day %{day} at %{time}"
 msgstr "تنفيذ في كل شهر في اليوم %{day} عند الساعة %{time}"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:454
+msgid "Expected Status Codes"
+msgstr "رموز الحالة المتوقعة"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:484
+msgid "Expected Text"
+msgstr "النص المتوقع"
 
 #: src/components/CertInfo/CertInfo.vue:31
 #: src/views/certificate/CertificateList/certColumns.tsx:80
@@ -2134,13 +2295,21 @@ msgstr "فشل فك تشفير دليل Nginx: {0}"
 msgid "Failed to decrypt Nginx UI directory: {0}"
 msgstr "فشل فك تشفير دليل Nginx UI: {0}"
 
-#: src/views/certificate/components/RemoveCert.vue:67
+#: src/constants/errors/nginx_log.ts:22
+msgid "Failed to delete all indexes"
+msgstr "فشل في حذف جميع الفهارس"
+
+#: src/views/certificate/components/RemoveCert.vue:75
 msgid "Failed to delete certificate"
 msgstr "فشل في حذف الشهادة"
 
 #: src/language/generate.ts:21
 msgid "Failed to delete certificate from database: %{error}"
 msgstr "فشل حذف الشهادة من قاعدة البيانات: %{error}"
+
+#: src/constants/errors/nginx_log.ts:21
+msgid "Failed to delete file index"
+msgstr "فشل في حذف فهرس الملف"
 
 #: src/views/site/components/SiteStatusSelect.vue:73
 #: src/views/stream/components/StreamStatusSelect.vue:45
@@ -2212,6 +2381,10 @@ msgstr "فشل في الحصول على معلومات الشهادة"
 msgid "Failed to get container id: {0}"
 msgstr "فشل في الحصول على معرف الحاوية: {0}"
 
+#: src/constants/errors/nginx_log.ts:23
+msgid "Failed to get index status"
+msgstr "فشل في الحصول على حالة الفهرس"
+
 #: src/views/dashboard/components/ParamsOptimization.vue:62
 msgid "Failed to get Nginx performance settings"
 msgstr "فشل في الحصول على إعدادات أداء Nginx"
@@ -2219,6 +2392,10 @@ msgstr "فشل في الحصول على إعدادات أداء Nginx"
 #: src/composables/useNginxPerformance.ts:49
 msgid "Failed to get performance data"
 msgstr "فشل في الحصول على بيانات الأداء"
+
+#: src/constants/errors/nginx_log.ts:24
+msgid "Failed to get persistence stats"
+msgstr "فشل في الحصول على إحصائيات الثبات"
 
 #: src/constants/errors/performance.ts:3
 msgid "Failed to get stub status: {0}"
@@ -2296,6 +2473,18 @@ msgstr "فشل في قراءة نص الاستجابة: {0}"
 msgid "Failed to read symlink: {0}"
 msgstr "فشل في قراءة الرابط الرمزي: {0}"
 
+#: src/constants/errors/nginx_log.ts:20
+msgid "Failed to rebuild file index"
+msgstr "فشل إعادة بناء فهرس الملف"
+
+#: src/constants/errors/nginx_log.ts:19
+msgid "Failed to rebuild index"
+msgstr "فشل إعادة بناء الفهرس"
+
+#: src/views/dashboard/SiteNavigation.vue:101
+msgid "Failed to refresh sites"
+msgstr "فشل في تحديث المواقع"
+
 #: src/constants/errors/backup.ts:39
 msgid "Failed to restore Nginx configs: {0}"
 msgstr "فشل استعادة إعدادات Nginx: {0}"
@@ -2304,7 +2493,7 @@ msgstr "فشل استعادة إعدادات Nginx: {0}"
 msgid "Failed to restore Nginx UI files: {0}"
 msgstr "فشل استعادة ملفات واجهة NGINX: {0}"
 
-#: src/views/certificate/components/RemoveCert.vue:49
+#: src/views/certificate/components/RemoveCert.vue:57
 msgid "Failed to revoke certificate"
 msgstr "فشل إبطال الشهادة"
 
@@ -2312,9 +2501,21 @@ msgstr "فشل إبطال الشهادة"
 msgid "Failed to revoke certificate: %{error}"
 msgstr "فشل إلغاء الشهادة: %{error}"
 
+#: src/views/dashboard/SiteNavigation.vue:193
+msgid "Failed to save configuration"
+msgstr "فشل حفظ الإعدادات"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:310
+msgid "Failed to save health check configuration"
+msgstr "فشل حفظ تكوين فحص الصحة"
+
 #: src/views/dashboard/components/ParamsOptimization.vue:91
 msgid "Failed to save Nginx performance settings"
 msgstr "فشل حفظ إعدادات أداء Nginx"
+
+#: src/views/dashboard/SiteNavigation.vue:166
+msgid "Failed to save order"
+msgstr "فشل حفظ الترتيب"
 
 #: src/views/preference/tabs/ExternalNotify.vue:31
 msgid "Failed to send test message"
@@ -2368,6 +2569,10 @@ msgstr "ملف"
 msgid "File exists"
 msgstr "الملف موجود"
 
+#: src/views/nginx_log/indexing/IndexManagement.vue:62
+msgid "File index rebuild started successfully for %{path}"
+msgstr "تم بدء إعادة بناء فهرس الملف بنجاح لـ %{path}"
+
 #: src/views/other/Error.vue:8
 msgid "File Not Found"
 msgstr "لم يتم العثور على الملف"
@@ -2375,6 +2580,10 @@ msgstr "لم يتم العثور على الملف"
 #: src/constants/errors/config.ts:7
 msgid "File or directory not found: {0}"
 msgstr "الملف أو الدليل غير موجود: {0}"
+
+#: src/constants/errors/nginx_log.ts:18
+msgid "File path is required"
+msgstr "مسار الملف مطلوب"
 
 #: src/views/certificate/components/CertificateFileUpload.vue:53
 msgid "File size cannot exceed 5MB"
@@ -2388,9 +2597,17 @@ msgstr "تم تحميل الملف بنجاح"
 msgid "Filename is empty"
 msgstr "اسم الملف فارغ"
 
-#: src/views/nginx_log/NginxLog.vue:156
+#: src/views/nginx_log/NginxLogList.vue:323
+msgid "files"
+msgstr "ملفات"
+
+#: src/views/nginx_log/raw/RawLogViewer.vue:155
 msgid "Filter"
 msgstr "تصفيه"
+
+#: src/views/nginx_log/raw/RawLogViewer.vue:158
+msgid "Filter log content"
+msgstr "تصفية محتوى السجل"
 
 #: src/language/constants.ts:19 src/views/site/site_add/SiteAdd.vue:82
 msgid "Finished"
@@ -2408,6 +2625,10 @@ msgstr "مجلد"
 msgid "Folder"
 msgstr "مجلد"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:572
+msgid "Follow Redirects"
+msgstr "متابعة إعادة التوجيه"
+
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:76
 msgid ""
 "Follow the instructions in the dialog to complete the passkey registration "
@@ -2422,6 +2643,12 @@ msgstr "للمستخدمين الصينيين"
 #: src/views/preference/tabs/HTTPSettings.vue:19
 msgid "For Chinese user: https://cloud.nginxui.com/"
 msgstr "للمستخدمين الصين: /https://cloud.nginxui.com"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:653
+msgid "For error logs, please use the Raw Log Viewer for better viewing experience."
+msgstr ""
+"بالنسبة لسجلات الأخطاء، يرجى استخدام عارض السجلات الخام للحصول على تجربة "
+"عرض أفضل."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:140
 msgid ""
@@ -2458,6 +2685,14 @@ msgstr "التنسيق: دقيقة ساعة يوم شهر يوم_الأسبوع"
 #: src/views/backup/AutoBackup/components/CronEditor.vue:31
 msgid "Friday"
 msgstr "الجمعة"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:828
+msgid "From indexed logs"
+msgstr "من السجلات المفهرسة"
+
+#: src/views/nginx_log/structured/components/SearchFilters.vue:65
+msgid "Full Text Search"
+msgstr "بحث النص الكامل"
 
 #: src/views/certificate/CertificateList/certColumns.tsx:30
 msgid "General Certificate"
@@ -2508,9 +2743,29 @@ msgstr "جارٍ الحصول على الشهادة، يرجى الانتظار.
 msgid "Github Proxy"
 msgstr "وكيل Github"
 
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:658
+msgid "Go to Raw Log Viewer"
+msgstr "الانتقال إلى عارض السجلات الخام"
+
 #: src/views/preference/components/ExternalNotify/gotify.ts:5
 msgid "Gotify"
 msgstr "غوتيفاي"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:502
+msgid ""
+"gRPC health check requires server to implement gRPC Health Check service "
+"(grpc.health.v1.Health)."
+msgstr ""
+"يتطلب فحص صحة gRPC أن يقوم الخادم بتنفيذ خدمة فحص صحة gRPC "
+"(grpc.health.v1.Health)."
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:501
+msgid ""
+"gRPCS uses TLS encryption. Server must implement gRPC Health Check service. "
+"For testing, SSL validation is disabled by default."
+msgstr ""
+"يستخدم gRPTS تشفير TLS. يجب على الخادم تنفيذ خدمة فحص صحة gRPC. لأغراض "
+"الاختبار، يتم تعطيل التحقق من صحة SSL افتراضيًا."
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:67
 msgid "GZIP Compression"
@@ -2527,6 +2782,18 @@ msgstr "الحد الأدنى لطول GZIP"
 #: src/constants/errors/backup.ts:59
 msgid "Hash verification failed: file integrity compromised"
 msgstr "فشل التحقق من التجزئة: تم اختراق سلامة الملف"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:365
+msgid "Health Check Configuration"
+msgstr "تكوين فحص الصحة"
+
+#: src/views/dashboard/SiteNavigation.vue:188
+msgid "Health check configuration saved"
+msgstr "تم حفظ تكوين فحص الصحة"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:301
+msgid "Health check configuration saved successfully"
+msgstr "تم حفظ تكوين فحص الصحة بنجاح"
 
 #: src/components/SensitiveString/SensitiveString.vue:40
 msgid "Hide"
@@ -2551,6 +2818,7 @@ msgid "Host"
 msgstr "المضيف"
 
 #: src/views/backup/AutoBackup/components/CronEditor.vue:159
+#: src/views/nginx_log/dashboard/components/HourlyChart.vue:60
 msgid "Hour"
 msgstr "ساعة"
 
@@ -2562,6 +2830,10 @@ msgstr "HTTP"
 msgid "HTTP Challenge Port"
 msgstr "منفذ تحدي HTTP"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:399
+msgid "HTTP Method"
+msgstr "طريقة HTTP"
+
 #: src/components/AutoCertForm/AutoCertForm.vue:222
 msgid "HTTP01"
 msgstr "HTTP01"
@@ -2570,11 +2842,15 @@ msgstr "HTTP01"
 msgid "HTTPS Protocol"
 msgstr "بروتوكول HTTPS"
 
+#: src/views/nginx_log/structured/components/SearchFilters.vue:189
+msgid "https://..."
+msgstr "https://..."
+
 #: src/views/preference/tabs/NodeSettings.vue:34
 msgid "ICP Number"
 msgstr "رقم ICP"
 
-#: src/views/preference/tabs/AuthSettings.vue:113
+#: src/views/preference/tabs/AuthSettings.vue:111
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
 "ban threshold minutes, the ip will be banned for a period of time."
@@ -2620,6 +2896,31 @@ msgid ""
 msgstr ""
 "يشمل العملية الرئيسية وعمليات العامل وعمليات التخزين المؤقت وعمليات Nginx "
 "الأخرى"
+
+#: src/views/nginx_log/indexing/IndexManagement.vue:36
+msgid "Index and statistics rebuild started successfully"
+msgstr "تم بدء إعادة بناء الفهرس والإحصائيات بنجاح"
+
+#: src/views/nginx_log/NginxLogList.vue:94
+msgid "Index Status"
+msgstr "حالة الفهرسة"
+
+#: src/views/nginx_log/NginxLogList.vue:140
+msgid "Indexed"
+msgstr "مفهرس"
+
+#: src/views/nginx_log/indexing/components/IndexProgressBar.vue:55
+#: src/views/nginx_log/NginxLogList.vue:144
+msgid "Indexing"
+msgstr "فهرسة"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:737
+msgid "Indexing logs, please wait..."
+msgstr "جاري فهرسة السجلات، يرجى الانتظار..."
+
+#: src/views/nginx_log/NginxLogList.vue:318
+msgid "Indexing logs..."
+msgstr "جاري فهرسة السجلات..."
 
 #: src/components/ProcessingStatus/ProcessingStatus.vue:31
 msgid "Indexing..."
@@ -2763,9 +3064,23 @@ msgstr "تنسيق الطلب غير صالح"
 msgid "Invalid security token format"
 msgstr "تنسيق رمز الأمان غير صالح"
 
+#: src/constants/errors/nginx_log.ts:10
+msgid "Invalid timestamp format"
+msgstr "تنسيق الطابع الزمني غير صالح"
+
+#: src/constants/errors/nginx_log.ts:26
+msgid "Invalid websocket message type"
+msgstr "نوع رسالة WebSocket غير صالح"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:159
 #: src/views/preference/tabs/AuthSettings.vue:14
 msgid "IP"
 msgstr "IP"
+
+#: src/views/nginx_log/structured/components/SearchFilters.vue:77
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:466
+msgid "IP Address"
+msgstr "عنوان IP"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:123
 msgid "IP Certificate Notice"
@@ -2824,6 +3139,44 @@ msgstr "لارك"
 msgid "Lark Custom"
 msgstr "لارك المخصص"
 
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:267
+msgid "Last 12 hours"
+msgstr "آخر 12 ساعة"
+
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:17
+msgid "Last 14 days"
+msgstr "آخر 14 يومًا"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:263
+msgid "Last 15 minutes"
+msgstr "آخر 15 دقيقة"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:268
+msgid "Last 24 hours"
+msgstr "آخر 24 ساعة"
+
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:18
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:270
+msgid "Last 30 days"
+msgstr "آخر 30 يومًا"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:264
+msgid "Last 30 minutes"
+msgstr "آخر 30 دقيقة"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:266
+msgid "Last 4 hours"
+msgstr "آخر 4 ساعات"
+
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:16
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:269
+msgid "Last 7 days"
+msgstr "آخر 7 أيام"
+
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:19
+msgid "Last 90 days"
+msgstr "آخر 90 يومًا"
+
 #: src/views/backup/AutoBackup/AutoBackup.vue:190
 msgid "Last Backup Status"
 msgstr "حالة النسخ الاحتياطي الأخيرة"
@@ -2835,6 +3188,18 @@ msgstr "وقت آخر نسخة احتياطية"
 #: src/views/system/Upgrade.vue:198
 msgid "Last checked at"
 msgstr "آخر فحص في"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:265
+msgid "Last hour"
+msgstr "آخر ساعة"
+
+#: src/views/nginx_log/NginxLogList.vue:157
+msgid "Last Indexed"
+msgstr "آخر فهرسة"
+
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:21
+msgid "Last month"
+msgstr "الشهر الماضي"
 
 #: src/views/dashboard/NginxDashBoard.vue:138
 msgid "Last update"
@@ -2883,8 +3248,8 @@ msgstr "تعطيل دعم CNAME في Lego"
 msgid "License"
 msgstr "رخصة"
 
-#: src/views/dashboard/components/NodeAnalyticItem.vue:116
-#: src/views/dashboard/components/NodeAnalyticItem.vue:99
+#: src/views/dashboard/components/NodeAnalyticItem.vue:114
+#: src/views/dashboard/components/NodeAnalyticItem.vue:97
 msgid "Link"
 msgstr "ربط"
 
@@ -2900,11 +3265,11 @@ msgstr "يستمع"
 msgid "Load Average:"
 msgstr "متوسط التحميل:"
 
-#: src/views/node/Node.vue:138
+#: src/views/node/Node.vue:137
 msgid "Load from settings"
 msgstr "تحميل من الإعدادات"
 
-#: src/views/node/Node.vue:68
+#: src/views/node/Node.vue:67
 msgid "Load successfully"
 msgstr "تم التحميل بنجاح"
 
@@ -2929,11 +3294,15 @@ msgstr "وقت توقف المحمل"
 msgid "Loader Threshold"
 msgstr "عتبة المحمل"
 
+#: src/views/nginx_log/dashboard/DashboardViewer.vue:107
+msgid "Loading dashboard data..."
+msgstr "جاري تحميل بيانات لوحة التحكم..."
+
 #: src/views/dashboard/NginxDashBoard.vue:200
 msgid "Loading data..."
 msgstr "جارٍ تحميل البيانات..."
 
-#: src/components/EnvIndicator/EnvIndicator.vue:39
+#: src/components/NodeIndicator/NodeIndicator.vue:39
 #: src/components/NodeSelector/NodeSelector.vue:61 src/constants/index.ts:42
 #: src/views/backup/AutoBackup/AutoBackup.vue:74
 #: src/views/backup/AutoBackup/AutoBackup.vue:83
@@ -2968,9 +3337,37 @@ msgstr ""
 "Docker، يرجى الرجوع إلى "
 "https://nginxui.com/zh_CN/guide/config-nginx-log.html لمزيد من المعلومات."
 
-#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:88
+#: src/constants/errors/nginx_log.ts:14
+msgid "Log file does not exist"
+msgstr "ملف السجل غير موجود"
+
+#: src/constants/errors/nginx_log.ts:25
+msgid "Log file is not a regular file"
+msgstr "ملف السجل ليس ملفًا عاديًا"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:846
+msgid "Log file not available"
+msgstr "ملف السجل غير متوفر"
+
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:56
+msgid "Log File:"
+msgstr "ملف السجل:"
+
+#: src/constants/errors/nginx_log.ts:12
+msgid "Log indexer not available"
+msgstr "فهرس السجلات غير متاح"
+
+#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:302
 msgid "Log List"
 msgstr "قائمة السجلات"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:835
+msgid "Log path"
+msgstr "مسار السجل"
+
+#: src/constants/errors/nginx_log.ts:15
+msgid "Log path is not under whitelist"
+msgstr "مسار السجل ليس ضمن القائمة البيضاء"
 
 #: src/routes/modules/auth.ts:14 src/views/other/Login.vue:277
 msgid "Login"
@@ -3042,11 +3439,11 @@ msgstr ""
 msgid "Manage Configs"
 msgstr "إدارة التكوينات"
 
-#: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:67
+#: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:45
 msgid "Manage Sites"
 msgstr "إدارة المواقع"
 
-#: src/routes/modules/streams.ts:10 src/views/stream/StreamList.vue:81
+#: src/routes/modules/streams.ts:10 src/views/stream/StreamList.vue:59
 msgid "Manage Streams"
 msgstr "إدارة التدفقات"
 
@@ -3092,13 +3489,17 @@ msgstr "العملية الرئيسية"
 msgid "Master Process"
 msgstr "العملية الرئيسية"
 
-#: src/views/preference/tabs/AuthSettings.vue:103
+#: src/views/preference/tabs/AuthSettings.vue:101
 msgid "Max Attempts"
 msgstr "الحد الأقصى للمحاولات"
 
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:56
 msgid "Max Concurrent Connections"
 msgstr "أقصى اتصالات متزامنة"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:560
+msgid "Max Redirects"
+msgstr "أقصى عدد لإعادة التوجيه"
 
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:42
 msgid "Max Requests Per Second"
@@ -3141,6 +3542,15 @@ msgstr "الذاكرة والتخزين"
 #: src/views/dashboard/components/ResourceUsageCard.vue:51
 msgid "Memory Usage (RSS)"
 msgstr "استخدام الذاكرة (RSS)"
+
+#: src/views/nginx_log/structured/components/SearchFilters.vue:92
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:467
+msgid "Method"
+msgstr "الطريقة"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:520
+msgid "Method Name"
+msgstr "اسم الطريقة"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:81
 msgid "Minimum file size for compression"
@@ -3208,6 +3618,10 @@ msgstr "شهري"
 msgid "Monthly on day %{day} at %{time}"
 msgstr "يوميًا في اليوم %{day} الساعة %{time}"
 
+#: src/views/nginx_log/structured/components/SearchFilters.vue:204
+msgid "Mozilla/5.0..."
+msgstr "Mozilla/5.0..."
+
 #: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:51
 msgid "Multi-line Directive"
 msgstr "توجيه متعدد الأسطر"
@@ -3233,7 +3647,7 @@ msgstr "غير متاح"
 #: src/views/config/components/Delete.vue:123
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:17 src/views/namespace/columns.ts:9
-#: src/views/nginx_log/NginxLogList.vue:52 src/views/node/nodeColumns.tsx:8
+#: src/views/nginx_log/NginxLogList.vue:76 src/views/node/nodeColumns.tsx:8
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:80
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:36
 #: src/views/site/site_list/columns.tsx:30
@@ -3241,7 +3655,7 @@ msgstr "غير متاح"
 #: src/views/stream/columns.tsx:26
 #: src/views/stream/components/RightPanel/Basic.vue:31
 #: src/views/stream/components/StreamDuplicate.vue:71
-#: src/views/stream/StreamList.vue:145
+#: src/views/stream/StreamList.vue:123
 msgid "Name"
 msgstr "اسم"
 
@@ -3251,14 +3665,12 @@ msgid "Name or content"
 msgstr "الاسم أو المحتوى"
 
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:42
-#: src/views/site/site_list/columns.tsx:91
-#: src/views/stream/columns.tsx:58
+#: src/views/site/site_list/columns.tsx:91 src/views/stream/columns.tsx:58
 #: src/views/stream/components/RightPanel/Basic.vue:39
 msgid "Namespace"
 msgstr "مساحة الاسم"
 
-#: src/routes/modules/namespaces.ts:11
-#: src/views/namespace/Namespace.vue:19
+#: src/routes/modules/namespaces.ts:10 src/views/namespace/Namespace.vue:19
 msgid "Namespaces"
 msgstr "مساحات الأسماء"
 
@@ -3424,13 +3836,17 @@ msgstr "إن Nginx لا يعمل في حاوية أخرى"
 msgid "Nginx is running"
 msgstr "إن Nginx يعمل"
 
-#: src/routes/modules/nginx_log.ts:9 src/views/nginx_log/NginxLog.vue:144
+#: src/routes/modules/nginx_log.ts:9 src/views/nginx_log/NginxLog.vue:45
 msgid "Nginx Log"
 msgstr "سجل Nginx"
 
 #: src/views/preference/tabs/NginxSettings.vue:25
 msgid "Nginx Log Directory Whitelist"
 msgstr "قائمة السماح لمجلد سجلات Nginx"
+
+#: src/components/ProcessingStatus/ProcessingStatus.vue:45
+msgid "Nginx Log Indexing..."
+msgstr "فهرسة سجلات Nginx..."
 
 #: src/composables/usePerformanceMetrics.ts:154
 #: src/views/dashboard/components/PerformanceTablesCard.vue:110
@@ -3454,7 +3870,7 @@ msgstr "أمر إعادة تحميل Nginx"
 msgid "Nginx reload failed: {0}"
 msgstr "فشل إعادة تحميل Nginx: {0}"
 
-#: src/views/node/Node.vue:89
+#: src/views/node/Node.vue:88
 msgid "Nginx reload operations have been dispatched to remote nodes"
 msgstr "تم إرسال عمليات إعادة تحميل Nginx إلى العقد البعيدة"
 
@@ -3466,7 +3882,7 @@ msgstr "تم إعادة تحميل Nginx بنجاح"
 msgid "Nginx Restart Command"
 msgstr "أمر إعادة تشغيل Nginx"
 
-#: src/views/node/Node.vue:103
+#: src/views/node/Node.vue:102
 msgid "Nginx restart operations have been dispatched to remote nodes"
 msgstr "تم إرسال عمليات إعادة تشغيل Nginx إلى العقد البعيدة"
 
@@ -3518,16 +3934,15 @@ msgid "Nginx.conf includes streams-enabled directory"
 msgstr "يتضمن Nginx.conf دليل streams-enabled"
 
 #: src/components/ChatGPT/ChatMessageInput.vue:17
-#: src/components/NamespaceTabs/NamespaceTabs.vue:111
-#: src/components/NamespaceTabs/NamespaceTabs.vue:99
+#: src/components/NamespaceTabs/NamespaceTabs.vue:132
+#: src/components/NamespaceTabs/NamespaceTabs.vue:144
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:102
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
 #: src/components/Notification/Notification.vue:108 src/language/curd.ts:40
 #: src/views/notification/Notification.vue:38
-#: src/views/preference/tabs/AuthSettings.vue:132
+#: src/views/preference/tabs/AuthSettings.vue:130
 #: src/views/preference/tabs/CertSettings.vue:73
-#: src/views/site/site_list/SiteList.vue:111
-#: src/views/stream/StreamList.vue:121
+#: src/views/site/site_list/SiteList.vue:89 src/views/stream/StreamList.vue:99
 msgid "No"
 msgstr "لا"
 
@@ -3539,6 +3954,10 @@ msgstr "لا إجراء"
 #: src/views/dashboard/NginxDashBoard.vue:202
 msgid "No data"
 msgstr "لا توجد بيانات"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:811
+msgid "No entries in current page"
+msgstr "لا توجد إدخالات في الصفحة الحالية"
 
 #: src/components/NamespaceRender/NamespaceRender.vue:55
 msgid "No nodes selected"
@@ -3552,6 +3971,10 @@ msgstr "لم يتم تحديد أي سجلات"
 msgid "No servers configured"
 msgstr "لا توجد خوادم مُهيأة"
 
+#: src/views/dashboard/SiteNavigation.vue:231
+msgid "No sites found"
+msgstr "لم يتم العثور على مواقع"
+
 #: src/components/AutoCertForm/AutoCertForm.vue:136
 msgid ""
 "No specific IP address found in server_name configuration. Please specify "
@@ -3559,6 +3982,10 @@ msgid ""
 msgstr ""
 "لم يتم العثور على عنوان IP محدد في تكوين server_name. يرجى تحديد عنوان IP "
 "الخادم أدناه للحصول على الشهادة."
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:820
+msgid "No structured log data available"
+msgstr "لا توجد بيانات سجل منظمة متاحة"
 
 #: src/components/NgxConfigEditor/NgxUpstream.vue:103
 msgid "No upstreams configured"
@@ -3580,7 +4007,8 @@ msgstr "سر العقدة"
 msgid "Node Status"
 msgstr "حالة العقدة"
 
-#: src/routes/modules/nodes.ts:11 src/views/dashboard/Nodes.vue:80
+#: src/routes/modules/nodes.ts:11 src/views/dashboard/Nodes.vue:130
+#: src/views/node/Node.vue:130
 msgid "Nodes"
 msgstr "العقد"
 
@@ -3588,9 +4016,17 @@ msgstr "العقد"
 msgid "Not After"
 msgstr "ليس بعد"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:489
+msgid "Not Expected Text"
+msgstr "نص غير متوقع"
+
 #: src/routes/modules/error.ts:8
 msgid "Not Found"
 msgstr "غير موجود"
+
+#: src/views/nginx_log/NginxLogList.vue:148
+msgid "Not Indexed"
+msgstr "غير مفهرس"
 
 #: src/views/dashboard/components/ModulesTable.vue:101
 #: src/views/dashboard/components/ModulesTable.vue:105
@@ -3618,6 +4054,14 @@ msgid ""
 msgstr ""
 "يرجى ملاحظة أنه إذا كان ملف التكوين يتضمن تكوينات أو شهادات أخرى، فيرجى "
 "مزامنتها مع العقد البعيدة مسبقًا."
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:508
+msgid ""
+"Note: If the server does not support gRPC Reflection, health checks may "
+"fail. Please ensure your gRPC server has Reflection enabled."
+msgstr ""
+"ملاحظة: إذا كان الخادم لا يدعم انعكاس gRPC، فقد تفشل عمليات فحص الصحة. يرجى "
+"التأكد من تمكين الانعكاس على خادم gRPC الخاص بك."
 
 #: src/views/certificate/components/CertificateBasicInfo.vue:23
 #: src/views/certificate/components/CertificateContentEditor.vue:24
@@ -3689,11 +4133,11 @@ msgstr "إيقاف"
 msgid "Official Document"
 msgstr "الوثيقة الرسمية"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:127
+#: src/components/NamespaceTabs/NamespaceTabs.vue:160
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:84
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
-#: src/views/dashboard/Nodes.vue:106 src/views/node/nodeColumns.tsx:55
+#: src/views/dashboard/Nodes.vue:158 src/views/node/nodeColumns.tsx:55
 msgid "Offline"
 msgstr "غير متصل"
 
@@ -3707,9 +4151,9 @@ msgstr "غير متصل"
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:39
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:143
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:20
-#: src/views/site/site_list/SiteList.vue:112
+#: src/views/site/site_list/SiteList.vue:90
 #: src/views/stream/components/StreamStatusSelect.vue:60
-#: src/views/stream/StreamList.vue:122
+#: src/views/stream/StreamList.vue:100
 msgid "OK"
 msgstr "حسنًا"
 
@@ -3722,12 +4166,12 @@ msgstr "تشغيل"
 msgid "Once the verification is complete, the records will be removed."
 msgstr "بمجرد اكتمال التحقق، سيتم إزالة السجلات."
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:127
+#: src/components/NamespaceTabs/NamespaceTabs.vue:160
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:64
 #: src/components/NodeSelector/NodeSelector.vue:78
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
-#: src/views/dashboard/Nodes.vue:99 src/views/node/nodeColumns.tsx:51
+#: src/views/dashboard/Nodes.vue:151 src/views/node/nodeColumns.tsx:51
 msgid "Online"
 msgstr "متصل"
 
@@ -3747,6 +4191,14 @@ msgstr "مفتوح"
 msgid "OpenAI"
 msgstr "أوبن أي آي"
 
+#: src/views/nginx_log/dashboard/components/OSStatsTable.vue:13
+msgid "Operating System"
+msgstr "نظام التشغيل"
+
+#: src/views/nginx_log/dashboard/components/OSStatsTable.vue:36
+msgid "Operating System Statistics"
+msgstr "إحصائيات نظام التشغيل"
+
 #: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:286
 msgid "Or"
 msgstr "أو"
@@ -3759,10 +4211,17 @@ msgstr "أو اسحب الملف إلى المحرر أدناه"
 msgid "Or enter the secret: %{secret}"
 msgstr "أو أدخل السر: %{secret}"
 
+#: src/views/dashboard/SiteNavigation.vue:156
+msgid "Order saved successfully"
+msgstr "تم حفظ الطلب بنجاح"
+
 #: src/views/config/components/Rename.vue:70
 msgid "Original name"
 msgstr "الاسم الأصلي"
 
+#: src/views/nginx_log/structured/components/SearchFilters.vue:153
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:225
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:472
 #: src/views/system/Upgrade.vue:194
 msgid "OS"
 msgstr "نظام التشغيل"
@@ -3853,7 +4312,9 @@ msgstr "كلمات المرور غير متطابقة"
 #: src/language/curd.ts:61
 #: src/views/config/components/ConfigRightPanel/Basic.vue:41
 #: src/views/config/components/Delete.vue:124
-#: src/views/nginx_log/NginxLogList.vue:60
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:420
+#: src/views/nginx_log/NginxLogList.vue:85
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:468
 msgid "Path"
 msgstr "مسار"
 
@@ -3869,10 +4330,21 @@ msgstr "المسار: {0} ليس ضمن دليل nginx conf: {1}"
 msgid "Payload resource is nil"
 msgstr "مورد الحمولة فارغ"
 
+#: src/views/nginx_log/dashboard/components/SummaryStats.vue:42
+msgid "Peak Hour"
+msgstr "ساعة الذروة"
+
 #: src/views/backup/AutoBackup/AutoBackup.vue:194
 #: src/views/backup/AutoBackup/AutoBackup.vue:219
 msgid "Pending"
 msgstr "قيد الانتظار"
+
+#: src/views/nginx_log/dashboard/components/BrowserStatsTable.vue:26
+#: src/views/nginx_log/dashboard/components/DeviceStatsTable.vue:26
+#: src/views/nginx_log/dashboard/components/OSStatsTable.vue:26
+#: src/views/nginx_log/dashboard/components/TopUrlsTable.vue:27
+msgid "Percentage"
+msgstr "النسبة المئوية"
 
 #: src/views/node/BatchUpgrader.vue:245
 msgid "Perform"
@@ -4056,19 +4528,19 @@ msgstr "الرجاء تحديد ملف %{type} صالح (%{extensions})"
 msgid "Please select at least one item"
 msgstr "الرجاء تحديد عنصر واحد على الأقل"
 
-#: src/views/node/Node.vue:201 src/views/node/Node.vue:83
+#: src/views/node/Node.vue:200 src/views/node/Node.vue:82
 msgid "Please select at least one node to reload Nginx"
 msgstr "الرجاء تحديد عقدة واحدة على الأقل لإعادة تحميل Nginx"
 
-#: src/views/node/Node.vue:222 src/views/node/Node.vue:97
+#: src/views/node/Node.vue:221 src/views/node/Node.vue:96
 msgid "Please select at least one node to restart Nginx"
 msgstr "الرجاء تحديد عقدة واحدة على الأقل لإعادة تشغيل Nginx"
 
-#: src/views/node/Node.vue:180
+#: src/views/node/Node.vue:179
 msgid "Please select at least one node to upgrade"
 msgstr "يرجى اختيار عقدة واحدة على الأقل للترقية"
 
-#: src/views/certificate/components/RemoveCert.vue:28
+#: src/views/certificate/components/RemoveCert.vue:36
 msgid "Please type \"Revoke\" to confirm"
 msgstr "يرجى كتابة \"إلغاء\" للتأكيد"
 
@@ -4153,6 +4625,10 @@ msgstr "فريق المشروع"
 msgid "Protected Directory"
 msgstr "دليل محمي"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:378
+msgid "Protocol"
+msgstr "البروتوكول"
+
 #: src/views/preference/tabs/ServerSettings.vue:47
 msgid ""
 "Protocol configuration only takes effect when directly connecting. If using "
@@ -4190,6 +4666,19 @@ msgstr "متطلبات CA العامة:"
 msgid "Public Security Number"
 msgstr "رقم الأمن العام"
 
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:754
+msgid "PV"
+msgstr "زيارات الصفحة"
+
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:46
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:684
+msgid "Quick Select"
+msgstr "اختيار سريع"
+
+#: src/views/nginx_log/NginxLog.vue:57
+msgid "Raw"
+msgstr "خام"
+
 #: src/constants/errors/site.ts:8 src/constants/errors/stream.ts:7
 msgid "Read dir failed: {0}"
 msgstr "فشل قراءة الدليل: {0}"
@@ -4203,6 +4692,22 @@ msgstr "طلبات القراءة"
 #: src/views/dashboard/ServerAnalytic.vue:390
 msgid "Reads"
 msgstr "يقرأ"
+
+#: src/views/nginx_log/NginxLogList.vue:349
+msgid "Rebuild"
+msgstr "إعادة بناء"
+
+#: src/views/nginx_log/indexing/IndexManagement.vue:92
+msgid "Rebuild All Index"
+msgstr "إعادة بناء الفهرس بالكامل"
+
+#: src/views/nginx_log/indexing/IndexManagement.vue:53
+msgid "Rebuild File Index"
+msgstr "إعادة بناء فهرس الملف"
+
+#: src/views/nginx_log/indexing/IndexManagement.vue:27
+msgid "Rebuild Index"
+msgstr "إعادة بناء الفهرس"
 
 #: src/views/dashboard/ServerAnalytic.vue:341
 #: src/views/dashboard/ServerAnalytic.vue:35
@@ -4233,7 +4738,13 @@ msgstr ""
 msgid "Recursive Nameservers"
 msgstr "خوادم الأسماء التكرارية"
 
+#: src/views/nginx_log/structured/components/SearchFilters.vue:185
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:251
+msgid "Referer"
+msgstr "المرجع"
+
 #: src/language/curd.ts:70
+#: src/views/dashboard/components/SiteNavigationToolbar.vue:77
 msgid "Refresh"
 msgstr "تحديث"
 
@@ -4289,8 +4800,8 @@ msgid "Reload"
 msgstr "إعادة تحميل"
 
 #: src/components/NamespaceRender/NamespaceRender.vue:44
-#: src/components/NamespaceTabs/NamespaceTabs.vue:104 src/constants/index.ts:38
-#: src/views/node/Node.vue:209 src/views/node/Node.vue:217
+#: src/components/NamespaceTabs/NamespaceTabs.vue:137 src/constants/index.ts:38
+#: src/views/node/Node.vue:208 src/views/node/Node.vue:216
 msgid "Reload Nginx"
 msgstr "إعادة تحميل Nginx"
 
@@ -4314,7 +4825,7 @@ msgstr "خطأ في إعادة تحميل Nginx البعيد"
 msgid "Reload Remote Nginx Success"
 msgstr "إعادة تحميل Nginx البعيد بنجاح"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:52
+#: src/components/NamespaceTabs/NamespaceTabs.vue:85
 msgid "Reload request failed, please check your network connection"
 msgstr "فشل طلب إعادة التحميل، يرجى التحقق من اتصال الشبكة لديك"
 
@@ -4331,7 +4842,7 @@ msgid "Remote"
 msgstr "عن بُعد"
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:146
-#: src/views/preference/tabs/AuthSettings.vue:137
+#: src/views/preference/tabs/AuthSettings.vue:135
 msgid "Remove"
 msgstr "إزالة"
 
@@ -4354,12 +4865,12 @@ msgid "Rename"
 msgstr "إعادة تسمية"
 
 #: src/components/Notification/notifications.ts:78
-msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed"
-msgstr "فشل إعادة تسمية %{orig_path} إلى %{new_path} على %{env_name}"
+msgid "Rename %{orig_path} to %{new_path} on %{node_name} failed"
+msgstr "فشل إعادة تسمية %{orig_path} إلى %{new_path} على %{node_name}"
 
 #: src/components/Notification/notifications.ts:82
-msgid "Rename %{orig_path} to %{new_path} on %{env_name} successfully"
-msgstr "تم إعادة تسمية %{orig_path} إلى %{new_path} على %{env_name} بنجاح"
+msgid "Rename %{orig_path} to %{new_path} on %{node_name} successfully"
+msgstr "تمت إعادة تسمية %{orig_path} إلى %{new_path} على %{node_name} بنجاح"
 
 #: src/components/Notification/notifications.ts:77 src/language/constants.ts:42
 msgid "Rename Remote Config Error"
@@ -4435,6 +4946,18 @@ msgstr "تجديد الشهادة بنجاح"
 msgid "Renew successfully"
 msgstr "تم التجديد بنجاح"
 
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:170
+msgid "Request"
+msgstr "طلب"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:446
+msgid "Request Body"
+msgstr "نص الطلب"
+
+#: src/views/nginx_log/structured/components/SearchFilters.vue:122
+msgid "Request Path"
+msgstr "مسار الطلب"
+
 #: src/views/dashboard/components/PerformanceTablesCard.vue:142
 msgid "Request statistics"
 msgstr "إحصائيات الطلبات"
@@ -4452,12 +4975,18 @@ msgid "Requests Per Connection"
 msgstr "الطلبات لكل اتصال"
 
 #: src/language/curd.ts:13
+#: src/views/nginx_log/structured/components/SearchFilters.vue:214
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:720
 msgid "Reset"
 msgstr "إعادة تعيين"
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:93
 msgid "Reset 2FA"
 msgstr "إعادة تعيين التحقق بخطوتين"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:838
+msgid "Reset Search"
+msgstr "إعادة تعيين البحث"
 
 #: src/views/dashboard/components/ResourceUsageCard.vue:53
 msgid ""
@@ -4477,8 +5006,8 @@ msgstr "الردود"
 msgid "Restart"
 msgstr "إعادة تشغيل"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:116
-#: src/views/node/Node.vue:230 src/views/node/Node.vue:238
+#: src/components/NamespaceTabs/NamespaceTabs.vue:149
+#: src/views/node/Node.vue:229 src/views/node/Node.vue:237
 msgid "Restart Nginx"
 msgstr "إعادة تشغيل Nginx"
 
@@ -4498,7 +5027,7 @@ msgstr "خطأ في إعادة تشغيل Nginx البعيد"
 msgid "Restart Remote Nginx Success"
 msgstr "إعادة تشغيل Nginx البعيد بنجاح"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:72
+#: src/components/NamespaceTabs/NamespaceTabs.vue:105
 msgid "Restart request failed, please check your network connection"
 msgstr "فشل طلب إعادة التشغيل، يرجى التحقق من اتصال الشبكة لديك"
 
@@ -4537,8 +5066,8 @@ msgstr "استعادة هذه النسخة"
 msgid "Restored successfully"
 msgstr "تم الاستعادة بنجاح"
 
-#: src/views/certificate/components/RemoveCert.vue:27
-#: src/views/certificate/components/RemoveCert.vue:98
+#: src/views/certificate/components/RemoveCert.vue:106
+#: src/views/certificate/components/RemoveCert.vue:35
 msgid "Revoke"
 msgstr "إبطال"
 
@@ -4550,11 +5079,11 @@ msgstr "خطأ في إلغاء الشهادة: {0}"
 msgid "Revoke Old Certificate"
 msgstr "إبطال الشهادة القديمة"
 
-#: src/views/certificate/components/RemoveCert.vue:112
+#: src/views/certificate/components/RemoveCert.vue:120
 msgid "Revoke this certificate"
 msgstr "إبطال هذه الشهادة"
 
-#: src/views/certificate/components/RemoveCert.vue:120
+#: src/views/certificate/components/RemoveCert.vue:128
 msgid ""
 "Revoking a certificate will affect any services currently using it. This "
 "action cannot be undone."
@@ -4562,15 +5091,15 @@ msgstr ""
 "إلغاء الشهادة سيؤثر على أي خدمات تستخدمها حالياً. لا يمكن التراجع عن هذا "
 "الإجراء."
 
-#: src/views/preference/tabs/AuthSettings.vue:75
+#: src/views/preference/tabs/AuthSettings.vue:74
 msgid "RP Display Name"
 msgstr "اسم العرض RP"
 
-#: src/views/preference/tabs/AuthSettings.vue:81
+#: src/views/preference/tabs/AuthSettings.vue:80
 msgid "RP Origins"
 msgstr "أصول RP"
 
-#: src/views/preference/tabs/AuthSettings.vue:69
+#: src/views/preference/tabs/AuthSettings.vue:68
 msgid "RPID"
 msgstr "معرّف الجهاز عن بُعد"
 
@@ -4696,6 +5225,7 @@ msgstr "السبت"
 #: src/views/certificate/components/CertificateActions.vue:29
 #: src/views/config/components/ConfigLeftPanel.vue:282
 #: src/views/config/components/ConfigName.vue:59
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:635
 #: src/views/preference/components/AuthSettings/Passkey.vue:130
 #: src/views/preference/Preference.vue:117
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
@@ -4708,6 +5238,10 @@ msgstr "حفظ"
 #: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:112
 msgid "Save Directive"
 msgstr "حفظ التوجيه"
+
+#: src/views/dashboard/components/SiteNavigationToolbar.vue:53
+msgid "Save Order"
+msgstr "حفظ الطلب"
 
 #: src/components/Notification/notifications.ts:145
 #: src/language/constants.ts:48
@@ -4784,9 +5318,9 @@ msgstr "نتائج المسح"
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr "امسح رمز الاستجابة السريعة بهاتفك المحمول لإضافة الحساب إلى التطبيق."
 
-#: src/views/nginx_log/NginxLogList.vue:101
-msgid "Scanning logs..."
-msgstr "جارٍ فحص السجلات..."
+#: src/views/nginx_log/indexing/components/IndexProgressBar.vue:53
+msgid "Scanning"
+msgstr "مسح"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:113
 msgid "Schedule"
@@ -4801,14 +5335,31 @@ msgid "SDK"
 msgstr "حزمة تطوير البرمجيات SDK"
 
 #: src/language/constants.ts:62 src/language/curd.ts:12
-#: src/views/config/configColumns.tsx:5 src/views/site/site_list/columns.tsx:17
-#: src/views/stream/columns.tsx:13
+#: src/views/config/configColumns.tsx:5
+#: src/views/nginx_log/structured/components/SearchFilters.vue:217
+#: src/views/site/site_list/columns.tsx:17 src/views/stream/columns.tsx:13
 msgid "Search"
 msgstr "بحث"
+
+#: src/views/nginx_log/structured/components/SearchFilters.vue:53
+msgid "Search Filters"
+msgstr "مرشحات البحث"
+
+#: src/views/nginx_log/structured/components/SearchFilters.vue:69
+msgid "Search in log content..."
+msgstr "البحث في محتوى السجل..."
 
 #: src/language/constants.ts:61
 msgid "Search module name"
 msgstr "اسم وحدة البحث"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:826
+msgid "Search range"
+msgstr "نطاق البحث"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:729
+msgid "Searching logs..."
+msgstr "جارٍ البحث في السجلات..."
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:109
 msgid "Secret has been copied"
@@ -4901,6 +5452,10 @@ msgstr "اسم_الخادم غير موجود في التوجيهات"
 msgid "ServerIdx out of range"
 msgstr "معرف الخادم خارج النطاق"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:515
+msgid "Service Name"
+msgstr "اسم الخدمة"
+
 #: src/constants/errors/user.ts:12
 msgid "Session not found"
 msgstr "الجلسة غير موجودة"
@@ -4936,6 +5491,10 @@ msgstr "تعيين متغيرات البيئة"
 #: src/language/constants.ts:10
 msgid "Setting HTTP01 challenge provider"
 msgstr "تعيين موفر تحدي HTTP01"
+
+#: src/views/dashboard/components/SiteNavigationToolbar.vue:88
+msgid "Settings"
+msgstr "الإعدادات"
 
 #: src/constants/errors/nginx_log.ts:8
 msgid ""
@@ -4989,9 +5548,21 @@ msgstr "الموقع في وضع الصيانة"
 msgid "Site Logs"
 msgstr "سجلات الموقع"
 
+#: src/views/dashboard/components/SiteNavigationToolbar.vue:29
+msgid "Site Navigation"
+msgstr "تنقل الموقع"
+
 #: src/constants/errors/site.ts:2
 msgid "Site not found"
 msgstr "الموقع غير موجود"
+
+#: src/views/dashboard/SiteNavigation.vue:93
+msgid "Site refresh initiated"
+msgstr "تم بدء تحديث الموقع"
+
+#: src/routes/modules/dashboard.ts:35
+msgid "Sites"
+msgstr "المواقع"
 
 #: src/language/generate.ts:33
 msgid "Sites directory exists"
@@ -5000,6 +5571,14 @@ msgstr "دليل المواقع موجود"
 #: src/routes/modules/sites.ts:19
 msgid "Sites List"
 msgstr "قائمة المواقع"
+
+#: src/views/dashboard/SiteNavigation.vue:234
+msgid ""
+"Sites will appear here once you configure nginx server blocks with valid "
+"server_name directives."
+msgstr ""
+"ستظهر المواقع هنا بمجرد تكوين كتل خادم nginx باستخدام توجيهات server_name "
+"الصالحة."
 
 #: src/constants/errors/self_check.ts:11
 msgid "Sites-available directory not exist"
@@ -5010,6 +5589,8 @@ msgid "Sites-enabled directory not exist"
 msgstr "دليل sites-enabled غير موجود"
 
 #: src/language/curd.ts:62
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:201
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:470
 msgid "Size"
 msgstr "الحجم"
 
@@ -5024,6 +5605,14 @@ msgstr "وقت الانتظار بين تكرارات محمل ذاكرة الت
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:263
 msgid "Sleep time between cache manager iterations"
 msgstr "وقت الانتظار بين تكرارات مدير الذاكرة المؤقتة"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:717
+msgid "Sorted by"
+msgstr "مرتب حسب"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:605
+msgid "Source IP"
+msgstr "IP المصدر"
 
 #: src/views/system/About.vue:46
 msgid "Sponsor"
@@ -5093,6 +5682,10 @@ msgstr "مستقر"
 msgid "Start"
 msgstr "بداية"
 
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:52
+msgid "Start Date"
+msgstr "تاريخ البدء"
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:246
 #: src/components/SystemRestore/SystemRestoreContent.vue:323
 msgid "Start Restore"
@@ -5108,6 +5701,9 @@ msgstr "ثابت"
 #: src/views/certificate/ACMEUser.vue:73
 #: src/views/certificate/CertificateList/certColumns.tsx:63
 #: src/views/dashboard/components/ModulesTable.vue:96
+#: src/views/nginx_log/structured/components/SearchFilters.vue:106
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:193
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:469
 #: src/views/node/nodeColumns.tsx:43
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:29
 #: src/views/site/site_list/columns.tsx:120 src/views/stream/columns.tsx:87
@@ -5178,6 +5774,10 @@ msgstr "دليل Streams-available غير موجود"
 msgid "Streams-enabled directory not exist"
 msgstr "دليل Streams-enabled غير موجود"
 
+#: src/views/nginx_log/NginxLog.vue:55
+msgid "Structured"
+msgstr "منظم"
+
 #: src/views/preference/tabs/NginxSettings.vue:10
 msgid "Stub Status Port"
 msgstr "منفذ حالة ستاب"
@@ -5244,12 +5844,12 @@ msgid "Sync Certificate"
 msgstr "مزامنة الشهادة"
 
 #: src/components/Notification/notifications.ts:62
-msgid "Sync Certificate %{cert_name} to %{env_name} failed"
-msgstr "فشل مزامنة الشهادة %{cert_name} إلى %{env_name}"
+msgid "Sync Certificate %{cert_name} to %{node_name} failed"
+msgstr "فشل مزامنة الشهادة %{cert_name} إلى %{node_name}"
 
 #: src/components/Notification/notifications.ts:66
-msgid "Sync Certificate %{cert_name} to %{env_name} successfully"
-msgstr "نجح مزامنة الشهادة %{cert_name} إلى %{env_name}"
+msgid "Sync Certificate %{cert_name} to %{node_name} successfully"
+msgstr "تمت مزامنة الشهادة %{cert_name} إلى %{node_name} بنجاح"
 
 #: src/components/Notification/notifications.ts:61 src/language/constants.ts:39
 msgid "Sync Certificate Error"
@@ -5260,12 +5860,12 @@ msgid "Sync Certificate Success"
 msgstr "تمت مزامنة الشهادة بنجاح"
 
 #: src/components/Notification/notifications.ts:70
-msgid "Sync config %{config_name} to %{env_name} failed"
-msgstr "فشل مزامنة التكوين %{config_name} إلى %{env_name}"
+msgid "Sync config %{config_name} to %{node_name} failed"
+msgstr "فشل مزامنة التكوين %{config_name} إلى %{node_name}"
 
 #: src/components/Notification/notifications.ts:74
-msgid "Sync config %{config_name} to %{env_name} successfully"
-msgstr "تم مزامنة التكوين %{config_name} إلى %{env_name} بنجاح"
+msgid "Sync config %{config_name} to %{node_name} successfully"
+msgstr "تمت مزامنة التكوين %{config_name} إلى %{node_name} بنجاح"
 
 #: src/components/Notification/notifications.ts:69 src/language/constants.ts:45
 msgid "Sync Config Error"
@@ -5276,7 +5876,7 @@ msgid "Sync Config Success"
 msgstr "تمت مزامنة التكوين بنجاح"
 
 #: src/components/NamespaceRender/NamespaceRender.vue:53
-#: src/components/NamespaceTabs/NamespaceTabs.vue:90
+#: src/components/NamespaceTabs/NamespaceTabs.vue:123
 #: src/views/namespace/columns.ts:17 src/views/namespace/Namespace.vue:31
 msgid "Sync Nodes"
 msgstr "مزامنة العقد"
@@ -5346,9 +5946,18 @@ msgstr "طرفية"
 msgid "Terminal Start Command"
 msgstr "أمر البدء في المحطة الطرفية"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:638
 #: src/views/preference/tabs/ExternalNotify.vue:56
 msgid "Test"
 msgstr "اختبار"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:349
+msgid "Test failed: %{error}"
+msgstr "فشل الاختبار: %{error}"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:354
+msgid "Test failed: Unable to perform health check"
+msgstr "فشل الاختبار: تعذر إجراء فحص الحالة"
 
 #: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:52
 #: src/views/preference/tabs/ExternalNotify.vue:27
@@ -5358,6 +5967,10 @@ msgstr "تم إرسال رسالة الاختبار بنجاح"
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:141
 msgid "Test S3 Connection"
 msgstr "اختبار اتصال S3"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:346
+msgid "Test successful! Response time: %{response_time}ms"
+msgstr "تم الاختبار بنجاح! وقت الاستجابة: %{response_time} مللي ثانية"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:160
 msgid ""
@@ -5431,7 +6044,7 @@ msgstr ""
 "يجب أن يحتوي رقم الأمن العام على أحرف وunicode وأرقام وواصلات وشرطات ونقاط "
 "فقط."
 
-#: src/views/dashboard/components/NodeAnalyticItem.vue:107
+#: src/views/dashboard/components/NodeAnalyticItem.vue:105
 msgid ""
 "The remote Nginx UI version is not compatible with the local Nginx UI "
 "version. To avoid potential errors, please upgrade the remote Nginx UI to "
@@ -5532,11 +6145,15 @@ msgstr ""
 "توفر هذه الوحدة إحصائيات طلبات Nginx وعدد الاتصالات وما إلى ذلك من "
 "البيانات. بعد تمكينها، يمكنك عرض إحصائيات الأداء"
 
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:20
+msgid "This month"
+msgstr "هذا الشهر"
+
 #: src/views/preference/tabs/ExternalNotify.vue:15
 msgid "This notification is disabled"
 msgstr "هذا الإشعار معطل"
 
-#: src/views/certificate/components/RemoveCert.vue:106
+#: src/views/certificate/components/RemoveCert.vue:114
 msgid ""
 "This operation will only remove the certificate from the database. The "
 "certificate files on the file system will not be deleted."
@@ -5580,6 +6197,18 @@ msgstr "هذه القيمة مستخدمة مسبقا"
 msgid "This will permanently delete the %{type}."
 msgstr "سيتم حذف %{type} نهائيًا."
 
+#: src/views/nginx_log/indexing/IndexManagement.vue:28
+msgid ""
+"This will rebuild the entire log index. All existing index data will be "
+"deleted and rebuilt from scratch. This may take some time. Continue?"
+msgstr ""
+"سيتم إعادة بناء فهرس السجل بالكامل. سيتم حذف جميع بيانات الفهرس الموجودة "
+"وإعادة بنائها من الصفر. قد يستغرق هذا بعض الوقت. هل تريد المتابعة؟"
+
+#: src/views/nginx_log/indexing/IndexManagement.vue:54
+msgid "This will rebuild the index data for this specific file: %{path}"
+msgstr "سيتم إعادة بناء بيانات الفهرس لهذا الملف المحدد: %{path}"
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:227
 #: src/components/SystemRestore/SystemRestoreContent.vue:304
 msgid ""
@@ -5602,7 +6231,7 @@ msgstr ""
 msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr "سيتم ترقية أو إعادة تثبيت Nginx UI على %{nodeNames} إلى %{version}."
 
-#: src/views/preference/tabs/AuthSettings.vue:92
+#: src/views/preference/tabs/AuthSettings.vue:91
 msgid "Throttle"
 msgstr "كبح"
 
@@ -5610,8 +6239,21 @@ msgstr "كبح"
 msgid "Thursday"
 msgstr "الخميس"
 
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:150
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:465
+msgid "Time"
+msgstr "الوقت"
+
+#: src/views/nginx_log/NginxLogList.vue:225
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:672
+msgid "Time Range"
+msgstr "نطاق الوقت"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:542
+msgid "Timeout (seconds)"
+msgstr "الوقت المحدد (بالثواني)"
+
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:70
-#: src/views/preference/tabs/AuthSettings.vue:112
 #: src/views/preference/tabs/LogrotateSettings.vue:12
 msgid "Tips"
 msgstr "نصائح"
@@ -5628,12 +6270,11 @@ msgstr ""
 msgid "Title"
 msgstr "عنوان"
 
-#: src/language/curd.ts:68
-#: src/language/curd.ts:69
+#: src/language/curd.ts:68 src/language/curd.ts:69
 msgid "to confirm deletion"
 msgstr "لتأكيد الحذف"
 
-#: src/views/certificate/components/RemoveCert.vue:124
+#: src/views/certificate/components/RemoveCert.vue:132
 msgid "To confirm revocation, please type \"Revoke\" in the field below:"
 msgstr "لتأكيد الإلغاء، يرجى كتابة \"إلغاء\" في الحقل أدناه:"
 
@@ -5676,6 +6317,10 @@ msgstr ""
 "توفر هذه الأدوات نقطة نهاية API متوافقة مع OpenAI، لذا ما عليك سوى تعيين "
 "baseUrl إلى API المحلي الخاص بك."
 
+#: src/views/nginx_log/NginxLogList.vue:240
+msgid "Today"
+msgstr "اليوم"
+
 #: src/views/dashboard/NginxDashBoard.vue:57
 msgid "Toggle failed"
 msgstr "فشل التبديل"
@@ -5688,6 +6333,10 @@ msgstr "الرمز فارغ"
 msgid "Token is not valid"
 msgstr "الرمز غير صالح"
 
+#: src/views/nginx_log/dashboard/components/TopUrlsTable.vue:37
+msgid "TOP 10 URLs"
+msgstr "أفضل 10 عناوين URL"
+
 #: src/language/curd.ts:5
 msgid "Total"
 msgstr "الإجمالي"
@@ -5696,6 +6345,10 @@ msgstr "الإجمالي"
 #: src/views/dashboard/components/PerformanceTablesCard.vue:54
 msgid "Total connections"
 msgstr "إجمالي الاتصالات"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:748
+msgid "Total Entries"
+msgstr "إجمالي المدخلات"
 
 #: src/composables/usePerformanceMetrics.ts:89
 #: src/views/dashboard/components/PerformanceTablesCard.vue:49
@@ -5709,6 +6362,10 @@ msgstr "إجمالي عمليات Nginx"
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:94
 msgid "Total Nginx Processes"
 msgstr "إجمالي عمليات Nginx"
+
+#: src/views/nginx_log/dashboard/components/SummaryStats.vue:24
+msgid "Total PV"
+msgstr "إجمالي المشاهدات"
 
 #: src/views/dashboard/ServerAnalytic.vue:283
 msgid "Total Receive"
@@ -5727,6 +6384,10 @@ msgstr "إجمالي الطلبات / إجمالي الاتصالات"
 msgid "Total Send"
 msgstr "إجمالي الإرسال"
 
+#: src/views/nginx_log/dashboard/components/SummaryStats.vue:15
+msgid "Total UV"
+msgstr "إجمالي الزوار الفريدين"
+
 #: src/views/preference/components/AuthSettings/TOTP.vue:66
 msgid "TOTP"
 msgstr "كلمة مرور لمرة واحدة تعتمد على الوقت"
@@ -5739,6 +6400,10 @@ msgstr ""
 "TOTP هو طريقة مصادقة ثنائية تستخدم خوارزمية كلمة مرور لمرة واحدة تعتمد على "
 "الوقت."
 
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:766
+msgid "Traffic"
+msgstr "حركة المرور"
+
 #: src/components/Notification/detailRender.tsx:65
 msgid "Translating error..."
 msgstr "جاري ترجمة الخطأ..."
@@ -5746,6 +6411,14 @@ msgstr "جاري ترجمة الخطأ..."
 #: src/language/curd.ts:20
 msgid "Trash"
 msgstr "مهملات"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:813
+msgid "Try adjusting your search criteria or navigate to different pages."
+msgstr "حاول تعديل معايير البحث أو التنقل بين الصفحات المختلفة."
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:823
+msgid "Try adjusting your search criteria or time range."
+msgstr "حاول تعديل معايير البحث أو النطاق الزمني."
 
 #: src/views/backup/AutoBackup/components/CronEditor.vue:28
 msgid "Tuesday"
@@ -5759,7 +6432,7 @@ msgstr "يتطلب المصادقة الثنائية"
 #: src/views/certificate/CertificateList/certColumns.tsx:24
 #: src/views/config/components/Delete.vue:122
 #: src/views/dashboard/components/ModulesTable.vue:83
-#: src/views/nginx_log/NginxLogList.vue:28
+#: src/views/nginx_log/NginxLogList.vue:52
 #: src/views/notification/notificationColumns.tsx:8
 #: src/views/preference/components/ExternalNotify/columns.tsx:19
 msgid "Type"
@@ -5769,6 +6442,26 @@ msgstr "نوع"
 msgid "Type %{delete} to confirm"
 msgstr "اكتب %{delete} للتأكيد"
 
+#: src/views/nginx_log/structured/components/SearchFilters.vue:142
+msgid "Type or select browser"
+msgstr "اكتب أو اختر المتصفح"
+
+#: src/views/nginx_log/structured/components/SearchFilters.vue:174
+msgid "Type or select device"
+msgstr "اكتب أو اختر الجهاز"
+
+#: src/views/nginx_log/structured/components/SearchFilters.vue:158
+msgid "Type or select OS"
+msgstr "اكتب أو اختر نظام التشغيل"
+
+#: src/views/nginx_log/structured/components/SearchFilters.vue:111
+msgid "Type or select status codes"
+msgstr "اكتب أو اختر رموز الحالة"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:772
+msgid "Unique Pages"
+msgstr "صفحات فريدة"
+
 #: src/components/PortScanner/PortScannerCompact.vue:47
 #: src/composables/useNginxPerformance.ts:18
 msgid "Unknown"
@@ -5777,6 +6470,10 @@ msgstr "غير معروف"
 #: src/constants/errors/backup.ts:64
 msgid "Unsupported backup type: {0}"
 msgstr "نوع النسخ الاحتياطي غير مدعوم: {0}"
+
+#: src/constants/errors/nginx_log.ts:11
+msgid "Unsupported log format"
+msgstr "تنسيق السجل غير مدعوم"
 
 #: src/views/user/UserProfile.vue:218
 msgid "Update Password"
@@ -5803,8 +6500,8 @@ msgstr "تم التحديث بنجاح"
 msgid "Updated at"
 msgstr "محدث في"
 
-#: src/routes/modules/system.ts:26 src/views/node/Node.vue:188
-#: src/views/node/Node.vue:196 src/views/system/Upgrade.vue:154
+#: src/routes/modules/system.ts:26 src/views/node/Node.vue:187
+#: src/views/node/Node.vue:195 src/views/system/Upgrade.vue:154
 #: src/views/system/Upgrade.vue:159
 msgid "Upgrade"
 msgstr "ترقية"
@@ -5849,6 +6546,7 @@ msgstr "نوع اختبار المنبع"
 msgid "Uptime:"
 msgstr "مدة التشغيل:"
 
+#: src/views/nginx_log/dashboard/components/TopUrlsTable.vue:13
 #: src/views/node/nodeColumns.tsx:18
 msgid "URL"
 msgstr "عنوان URL"
@@ -5868,6 +6566,11 @@ msgstr "استخدام المسار المؤقت"
 #: src/components/ChatGPT/ChatMessage.vue:187
 msgid "User"
 msgstr "مستخدم"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:553
+#: src/views/nginx_log/structured/components/SearchFilters.vue:200
+msgid "User Agent"
+msgstr "وكيل المستخدم"
 
 #: src/constants/errors/user.ts:3
 msgid "User banned"
@@ -5898,11 +6601,19 @@ msgstr "اسم المستخدم (*)"
 msgid "Username length cannot exceed 255 characters"
 msgstr "يجب ألا يتجاوز طول اسم المستخدم 255 حرفًا"
 
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:760
+msgid "UV"
+msgstr "زيارة فريدة"
+
 #: src/components/CertInfo/CertInfo.vue:24
 #: src/views/certificate/ACMEUser.vue:159
 #: src/views/certificate/CertificateList/certColumns.tsx:76
 msgid "Valid"
 msgstr "صالح"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:580
+msgid "Validate SSL Certificate"
+msgstr "التحقق من صحة شهادة SSL"
 
 #: src/views/dashboard/components/PerformanceTablesCard.vue:22
 msgid "Value"
@@ -5913,6 +6624,10 @@ msgstr "القيمة"
 msgid "Verify Backup File Integrity"
 msgstr "التحقق من سلامة ملف النسخ الاحتياطي"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:586
+msgid "Verify Hostname"
+msgstr "التحقق من اسم المضيف"
+
 #: src/views/install/components/InstallView.vue:61
 msgid "Verify system requirements"
 msgstr "تحقق من متطلبات النظام"
@@ -5921,7 +6636,7 @@ msgstr "تحقق من متطلبات النظام"
 msgid "Version"
 msgstr "إصدار"
 
-#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:106
+#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:339
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:83
 msgid "View"
 msgstr "عرض"
@@ -5941,6 +6656,10 @@ msgstr "عرض رموز الاسترداد"
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:70
 msgid "Viewed"
 msgstr "تمت المشاهدة"
+
+#: src/views/nginx_log/dashboard/components/TopUrlsTable.vue:19
+msgid "Visits"
+msgstr "الزيارات"
 
 #: src/composables/usePerformanceMetrics.ts:114
 #: src/views/dashboard/components/PerformanceTablesCard.vue:74
@@ -5988,7 +6707,7 @@ msgstr ""
 "سنقوم بإزالة تكوين HTTPChallenge من هذا الملف وإعادة تحميل Nginx. هل أنت "
 "متأكد أنك تريد المتابعة؟"
 
-#: src/views/preference/tabs/AuthSettings.vue:65
+#: src/views/preference/tabs/AuthSettings.vue:64
 msgid "Webauthn"
 msgstr "ويب أوثن"
 
@@ -5996,9 +6715,13 @@ msgstr "ويب أوثن"
 msgid "WebAuthn settings are not configured"
 msgstr "إعدادات WebAuthn غير مضبوطة"
 
-#: src/views/certificate/components/RemoveCert.vue:55
+#: src/views/certificate/components/RemoveCert.vue:63
 msgid "WebSocket connection error"
 msgstr "خطأ في اتصال WebSocket"
+
+#: src/views/dashboard/SiteNavigation.vue:96
+msgid "WebSocket not connected, please wait for connection"
+msgstr "اتصال WebSocket غير متاح، يرجى الانتظار حتى يتم الاتصال"
 
 #: src/views/preference/components/ExternalNotify/wecom.ts:5
 msgid "WeCom"
@@ -6090,11 +6813,13 @@ msgstr "كتابة مفتاح الشهادة الخاص إلى القرص"
 msgid "Writing certificate to disk"
 msgstr "كتابة الشهادة إلى القرص"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:110
-#: src/components/NamespaceTabs/NamespaceTabs.vue:98
+#: src/components/NamespaceTabs/NamespaceTabs.vue:131
+#: src/components/NamespaceTabs/NamespaceTabs.vue:143
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:101
 #: src/components/NgxConfigEditor/LocationEditor.vue:88
-#: src/views/preference/tabs/AuthSettings.vue:131
+#: src/views/nginx_log/indexing/IndexManagement.vue:29
+#: src/views/nginx_log/indexing/IndexManagement.vue:55
+#: src/views/preference/tabs/AuthSettings.vue:129
 #: src/views/preference/tabs/CertSettings.vue:72
 msgid "Yes"
 msgstr "نعم"
@@ -6159,6 +6884,16 @@ msgstr "رموزك القديمة لن تعمل بعد الآن."
 #: src/views/preference/components/AuthSettings/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "مفاتيح المرور الخاصة بك"
+
+#~ msgid "Index Size"
+#~ msgstr "حجم الفهرس"
+
+#, fuzzy
+#~ msgid "File Size"
+#~ msgstr "حجم الصفحة"
+
+#~ msgid "Environments"
+#~ msgstr "البيئات"
 
 #~ msgid "Node Group"
 #~ msgstr "مجموعة العقد"
@@ -6260,10 +6995,6 @@ msgstr "مفاتيح المرور الخاصة بك"
 #~ msgid "Recovered Successfully"
 #~ msgstr "تم الاسترداد بنجاح"
 
-#~ msgid "Total %{total} item"
-#~ msgid_plural "Total %{total} items"
-#~ msgstr[0] "إجمالي %{total} عنصر"
-
 #~ msgid "View Details"
 #~ msgstr "عرض التفاصيل"
 
@@ -6311,9 +7042,6 @@ msgstr "مفاتيح المرور الخاصة بك"
 #~ msgid "Format error %{msg}"
 #~ msgstr "خطأ في التنسيق %{msg}"
 
-#~ msgid "Failed to save, syntax error(s) was detected in the configuration."
-#~ msgstr "فشل في الحفظ، تم اكتشاف خطأ(أخطاء) في بناء الجملة في التكوين."
-
 #, fuzzy
 #~ msgid ""
 #~ "When you enable/disable, delete, or save this stream, the nodes set in the "
@@ -6321,10 +7049,6 @@ msgstr "مفاتيح المرور الخاصة بك"
 #~ msgstr ""
 #~ "عند تفعيل/تعطيل، حذف، أو حفظ هذا الموقع، سيتم مزامنة العقد المحددة في فئة "
 #~ "الموقع والعقد المحددة أدناه."
-
-#, fuzzy
-#~ msgid "Access Token"
-#~ msgstr "سجلات الدخول"
 
 #, fuzzy
 #~ msgid "Bot Token"

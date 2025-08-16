@@ -112,6 +112,15 @@ msgstr "{label} 已複製到剪貼簿"
 msgid "* Includes nodes from group %{groupName} and manually selected nodes"
 msgstr "* 包含來自群組 %{groupName} 的節點和手動選擇的節點"
 
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:795
+msgid "%{start}-%{end} of %{total} items"
+msgstr "第 %{start}-%{end} 條，共 %{total} 條"
+
+#: src/views/nginx_log/dashboard/components/HourlyChart.vue:40
+#: src/views/nginx_log/dashboard/components/HourlyChart.vue:41
+msgid "24-Hour UV/PV Statistics"
+msgstr "24小時UV/PV統計"
+
 #: src/views/user/userColumns.tsx:30
 msgid "2FA"
 msgstr "雙因素驗證"
@@ -124,7 +133,7 @@ msgstr "多重要素驗證設定"
 msgid "About"
 msgstr "關於"
 
-#: src/views/nginx_log/NginxLogList.vue:39
+#: src/views/nginx_log/NginxLogList.vue:63
 msgid "Access Log"
 msgstr "存取日誌"
 
@@ -151,7 +160,7 @@ msgstr "操作"
 #: src/views/certificate/CertificateList/certColumns.tsx:92
 #: src/views/certificate/DNSCredential.vue:71
 #: src/views/config/configColumns.tsx:50 src/views/namespace/columns.ts:84
-#: src/views/nginx_log/NginxLogList.vue:68 src/views/node/nodeColumns.tsx:96
+#: src/views/nginx_log/NginxLogList.vue:272 src/views/node/nodeColumns.tsx:96
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:85
 #: src/views/site/site_list/columns.tsx:160 src/views/stream/columns.tsx:123
@@ -172,7 +181,7 @@ msgstr "實際工作進程與配置比例"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:97 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:45
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:94
-#: src/views/site/site_list/SiteList.vue:95 src/views/stream/StreamList.vue:103
+#: src/views/site/site_list/SiteList.vue:73 src/views/stream/StreamList.vue:81
 msgid "Add"
 msgstr "新增"
 
@@ -195,6 +204,10 @@ msgstr "在下方新增指令"
 msgid "Add Domain"
 msgstr "添加域名"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:441
+msgid "Add Header"
+msgstr "添加標頭"
+
 #: src/components/NgxConfigEditor/LocationEditor.vue:131
 #: src/components/NgxConfigEditor/LocationEditor.vue:158
 msgid "Add Location"
@@ -208,7 +221,7 @@ msgstr "新增伺服器"
 msgid "Add Site"
 msgstr "新增網站"
 
-#: src/views/stream/StreamList.vue:140
+#: src/views/stream/StreamList.vue:118
 msgid "Add Stream"
 msgstr "新增 Stream"
 
@@ -216,7 +229,7 @@ msgstr "新增 Stream"
 msgid "Add Upstream"
 msgstr "添加上游"
 
-#: src/views/stream/StreamList.vue:72
+#: src/views/stream/StreamList.vue:50
 msgid "Added successfully"
 msgstr "新增成功"
 
@@ -229,11 +242,15 @@ msgstr "其他設定"
 msgid "Advance Mode"
 msgstr "進階模式"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:529
+msgid "Advanced Settings"
+msgstr "進階設定"
+
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:104
 msgid "Afterwards, refresh this page and click add passkey again."
 msgstr "之後，請重新整理此頁面並再次點擊新增通行金鑰。"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:83
+#: src/components/NamespaceTabs/NamespaceTabs.vue:116
 msgid "All"
 msgstr "全部"
 
@@ -247,6 +264,14 @@ msgid ""
 "All selected subdomains must belong to the same DNS Provider, otherwise the "
 "certificate application will fail."
 msgstr "所有選定的子網域名稱必須屬於同一 DNS 提供商，否則證書申請將失敗。"
+
+#: src/constants/errors/nginx_log.ts:13
+msgid "Analytics service not available"
+msgstr "分析服務不可用"
+
+#: src/views/nginx_log/structured/components/SearchFilters.vue:96
+msgid "Any"
+msgstr "任意"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:209
 msgid "Any reachable IP address can be used with private Certificate Authorities"
@@ -284,7 +309,7 @@ msgstr "應用"
 msgid "Arch"
 msgstr "架構"
 
-#: src/views/preference/tabs/AuthSettings.vue:130
+#: src/views/preference/tabs/AuthSettings.vue:128
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "您確定要刪除這個被停用的 IP 嗎？"
 
@@ -313,12 +338,12 @@ msgstr "您確定要清除聊天記錄嗎？"
 msgid "Are you sure you want to delete permanently?"
 msgstr "確定要永久刪除嗎？"
 
-#: src/language/curd.ts:25 src/views/site/site_list/SiteList.vue:113
-#: src/views/stream/StreamList.vue:123
+#: src/language/curd.ts:25 src/views/site/site_list/SiteList.vue:91
+#: src/views/stream/StreamList.vue:101
 msgid "Are you sure you want to delete?"
 msgstr "您確定要刪除嗎？"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:97
+#: src/components/NamespaceTabs/NamespaceTabs.vue:130
 msgid "Are you sure you want to reload Nginx on the following sync nodes?"
 msgstr "您確定要在以下同步節點上重新載入 Nginx 嗎？"
 
@@ -334,13 +359,17 @@ msgstr "您確定要刪除此項目嗎？"
 msgid "Are you sure you want to remove this location?"
 msgstr "您確定要刪除此 Location 嗎？"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:109
+#: src/components/NamespaceTabs/NamespaceTabs.vue:142
 msgid "Are you sure you want to restart Nginx on the following sync nodes?"
 msgstr "您確定要在以下同步節點上重新啟動 Nginx 嗎？"
 
 #: src/language/curd.ts:26
 msgid "Are you sure you want to restore?"
 msgstr "您確定要恢復？"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:717
+msgid "Ascending"
+msgstr "升序"
 
 #: src/components/ChatGPT/ChatGPT.vue:55
 msgid "Ask ChatGPT for Help"
@@ -366,7 +395,7 @@ msgstr "身份驗證"
 msgid "Authenticate with a passkey"
 msgstr "使用通行金鑰認證"
 
-#: src/views/preference/tabs/AuthSettings.vue:56
+#: src/views/preference/tabs/AuthSettings.vue:55
 msgid "Authentication Settings"
 msgstr "認證設定"
 
@@ -405,15 +434,15 @@ msgstr "自動備份失敗"
 msgid "Auto Backup Storage Failed"
 msgstr "自動備份儲存失敗"
 
-#: src/views/nginx_log/NginxLog.vue:150 src/views/node/Node.vue:165
+#: src/views/nginx_log/NginxLog.vue:64 src/views/node/Node.vue:164
 msgid "Auto Refresh"
 msgstr "自動重新整理"
 
-#: src/views/node/Node.vue:48
+#: src/views/node/Node.vue:47
 msgid "Auto refresh disabled"
 msgstr "自動刷新已停用"
 
-#: src/views/node/Node.vue:44
+#: src/views/node/Node.vue:43
 msgid "Auto refresh enabled"
 msgstr "自動刷新已啟用"
 
@@ -442,10 +471,18 @@ msgstr "自動重啟"
 msgid "Average Latency"
 msgstr "平均延遲"
 
+#: src/views/nginx_log/dashboard/components/SummaryStats.vue:33
+msgid "Avg Daily UV"
+msgstr "日均UV"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:778
+msgid "Avg/PV"
+msgstr "平均/PV"
+
 #: src/views/certificate/components/CertificateActions.vue:22
 #: src/views/config/components/ConfigLeftPanel.vue:273
 #: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
-#: src/views/nginx_log/NginxLog.vue:174
+#: src/views/nginx_log/NginxLog.vue:92
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:169
 #: src/views/stream/components/StreamEditor.vue:123
 msgid "Back"
@@ -458,6 +495,10 @@ msgstr "返回首頁"
 #: src/language/curd.ts:21
 msgid "Back to List"
 msgstr "返回列表"
+
+#: src/constants/errors/nginx_log.ts:17
+msgid "Background log service not available"
+msgstr "後台日誌服務不可用"
 
 #: src/routes/modules/backup.ts:11 src/routes/modules/backup.ts:19
 msgid "Backup"
@@ -515,11 +556,11 @@ msgstr "備份任務 %{backup_name} 執行失敗，錯誤：%{error}"
 msgid "Backup Type"
 msgstr "備份類型"
 
-#: src/views/preference/tabs/AuthSettings.vue:97
+#: src/views/preference/tabs/AuthSettings.vue:95
 msgid "Ban Threshold Minutes"
 msgstr "封禁閾值分鐘數"
 
-#: src/views/preference/tabs/AuthSettings.vue:118
+#: src/views/preference/tabs/AuthSettings.vue:116
 msgid "Banned IPs"
 msgstr "被禁止的 IP"
 
@@ -569,6 +610,17 @@ msgstr "以下是您要批次修改的選定項目"
 #: src/constants/errors/nginx.ts:3
 msgid "Block is nil"
 msgstr "區塊為空"
+
+#: src/views/nginx_log/dashboard/components/BrowserStatsTable.vue:13
+#: src/views/nginx_log/structured/components/SearchFilters.vue:137
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:209
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:471
+msgid "Browser"
+msgstr "瀏覽器"
+
+#: src/views/nginx_log/dashboard/components/BrowserStatsTable.vue:36
+msgid "Browser Statistics"
+msgstr "瀏覽器統計"
 
 #: src/views/system/About.vue:75
 msgid "Build with"
@@ -631,6 +683,10 @@ msgstr "基於 worker_processes * worker_connections 計算得出。實際效能
 #: src/components/NgxConfigEditor/NgxServer.vue:61
 #: src/components/NgxConfigEditor/NgxUpstream.vue:32 src/language/curd.ts:37
 #: src/views/config/components/Delete.vue:98
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:632
+#: src/views/dashboard/components/SiteNavigationToolbar.vue:64
+#: src/views/nginx_log/indexing/IndexManagement.vue:31
+#: src/views/nginx_log/indexing/IndexManagement.vue:57
 #: src/views/preference/components/AuthSettings/Passkey.vue:141
 #: src/views/site/components/SiteStatusSelect.vue:124
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:40
@@ -643,6 +699,10 @@ msgstr "取消"
 #: src/constants/errors/backup.ts:76
 msgid "Cannot access backup path {0}: {1}"
 msgstr "無法存取備份路徑 {0}：{1}"
+
+#: src/constants/errors/nginx_log.ts:16
+msgid "Cannot access log file"
+msgstr "無法存取日誌檔案"
 
 #: src/constants/errors/backup.ts:79
 msgid "Cannot access storage path {0}: {1}"
@@ -737,8 +797,8 @@ msgstr "憑證解析錯誤"
 msgid "Certificate path is empty"
 msgstr "憑證路徑為空"
 
-#: src/views/certificate/components/RemoveCert.vue:42
-#: src/views/certificate/components/RemoveCert.vue:62
+#: src/views/certificate/components/RemoveCert.vue:50
+#: src/views/certificate/components/RemoveCert.vue:70
 msgid "Certificate removed successfully"
 msgstr "憑證已成功移除"
 
@@ -817,6 +877,10 @@ msgstr "檢查"
 #: src/views/system/Upgrade.vue:204
 msgid "Check again"
 msgstr "再次檢查"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:592
+msgid "Check Favicon"
+msgstr "檢查網站圖示"
 
 #: src/language/generate.ts:6
 msgid ""
@@ -921,6 +985,10 @@ msgid ""
 "the nginx configuration directory"
 msgstr "檢查 streams-available 和 streams-enabled 目錄是否位於 nginx 配置目錄下"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:532
+msgid "Check Interval (seconds)"
+msgstr "檢查間隔（秒）"
+
 #: src/constants/errors/crypto.ts:3
 msgid "Cipher text is too short"
 msgstr "加密文字過短"
@@ -961,9 +1029,17 @@ msgstr "點選複製"
 msgid "Client Body Buffer Size"
 msgstr "Client 請求主體緩衝區大小"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:614
+msgid "Client Certificate"
+msgstr "客戶端憑證"
+
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:117
 msgid "Client Header Buffer Size"
 msgstr "Client 請求標頭緩衝區大小"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:619
+msgid "Client Key"
+msgstr "客戶端金鑰"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:110
 msgid "Client Max Body Size"
@@ -1032,6 +1108,10 @@ msgstr "與目前設定比較"
 msgid "Compression level, 1 is lowest, 9 is highest"
 msgstr "壓縮等級，1 為最低，9 為最高"
 
+#: src/views/nginx_log/indexing/components/IndexProgressBar.vue:57
+msgid "Computing Statistics"
+msgstr "計算統計資訊"
+
 #: src/language/generate.ts:19
 msgid "Conf.d directory exists"
 msgstr "conf.d 目錄存在"
@@ -1096,7 +1176,8 @@ msgstr "確認刪除"
 msgid "Confirm New Password"
 msgstr "確認新密碼"
 
-#: src/views/dashboard/components/NodeAnalyticItem.vue:99
+#: src/views/dashboard/components/NodeAnalyticItem.vue:97
+#: src/views/dashboard/components/SiteNavigationToolbar.vue:39
 msgid "Connected"
 msgstr "已連線"
 
@@ -1143,6 +1224,14 @@ msgstr "恢復碼"
 #: src/views/system/Upgrade.vue:162
 msgid "Core Upgrade"
 msgstr "核心升級"
+
+#: src/views/nginx_log/dashboard/components/BrowserStatsTable.vue:18
+#: src/views/nginx_log/dashboard/components/DailyTrendsChart.vue:84
+#: src/views/nginx_log/dashboard/components/DeviceStatsTable.vue:18
+#: src/views/nginx_log/dashboard/components/HourlyChart.vue:73
+#: src/views/nginx_log/dashboard/components/OSStatsTable.vue:18
+msgid "Count"
+msgstr "計數"
 
 #: src/views/dashboard/ServerAnalytic.vue:308
 msgid "CPU Status"
@@ -1261,6 +1350,10 @@ msgstr "自訂網域"
 msgid "Custom Domains Certificate"
 msgstr "自訂網域證書"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:426
+msgid "Custom Headers"
+msgstr "自訂標頭"
+
 #: src/views/preference/tabs/NodeSettings.vue:19
 msgid ""
 "Customize the name of local node to be displayed in the environment "
@@ -1271,6 +1364,10 @@ msgstr "自訂顯示在環境指示器中的本機節點名稱。"
 msgid "Daily"
 msgstr "每日"
 
+#: src/views/nginx_log/dashboard/components/DailyTrendsChart.vue:41
+msgid "Daily Access Trends"
+msgstr "每日訪問趨勢"
+
 #: src/views/backup/AutoBackup/AutoBackup.vue:128
 msgid "Daily at %{time}"
 msgstr "每天 %{time}"
@@ -1278,9 +1375,17 @@ msgstr "每天 %{time}"
 #: src/routes/modules/dashboard.ts:10
 #: src/views/config/components/ConfigLeftPanel.vue:109
 #: src/views/config/components/ConfigLeftPanel.vue:159
-#: src/views/config/ConfigList.vue:69
+#: src/views/config/ConfigList.vue:69 src/views/nginx_log/NginxLog.vue:56
 msgid "Dashboard"
 msgstr "儀錶板"
+
+#: src/views/nginx_log/dashboard/components/DailyTrendsChart.vue:71
+msgid "Date"
+msgstr "日期"
+
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:34
+msgid "Date Range"
+msgstr "日期範圍"
 
 #: src/views/backup/AutoBackup/components/CronEditor.vue:184
 msgid "Day of Month"
@@ -1298,30 +1403,34 @@ msgstr "天"
 msgid "Decryption failed"
 msgstr "解密失敗"
 
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:831
+msgid "Default range"
+msgstr "預設範圍"
+
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:150
 msgid "Define shared memory zone name and size, e.g. proxy_cache:10m"
 msgstr "定義共享記憶體區域名稱和大小，例如 proxy_cache:10m"
 
 #: src/components/NgxConfigEditor/NgxServer.vue:110
 #: src/components/NgxConfigEditor/NgxUpstream.vue:78 src/language/curd.ts:9
-#: src/views/certificate/components/RemoveCert.vue:90
+#: src/views/certificate/components/RemoveCert.vue:98
 #: src/views/config/components/Delete.vue:65
 #: src/views/config/components/Delete.vue:97
 #: src/views/config/ConfigList.vue:199
-#: src/views/site/site_list/SiteList.vue:122
-#: src/views/stream/StreamList.vue:132
+#: src/views/site/site_list/SiteList.vue:100
+#: src/views/stream/StreamList.vue:110
 msgid "Delete"
 msgstr "刪除"
 
 #: src/components/Notification/notifications.ts:86
-msgid "Delete %{path} on %{env_name} failed"
-msgstr "刪除 %{env_name} 上的 %{path} 失敗"
+msgid "Delete %{path} on %{node_name} failed"
+msgstr "刪除 %{node_name} 上的 %{path} 失敗"
 
 #: src/components/Notification/notifications.ts:90
-msgid "Delete %{path} on %{env_name} successfully"
-msgstr "已在 %{env_name} 上成功刪除 %{path}"
+msgid "Delete %{path} on %{node_name} successfully"
+msgstr "在 %{node_name} 上成功刪除 %{path}"
 
-#: src/views/certificate/components/RemoveCert.vue:95
+#: src/views/certificate/components/RemoveCert.vue:103
 msgid "Delete Certificate"
 msgstr "刪除憑證"
 
@@ -1366,7 +1475,7 @@ msgstr "從 %{node} 刪除網站 %{name} 失敗"
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "成功從 %{node} 移除站點 %{name}"
 
-#: src/views/site/site_list/SiteList.vue:48
+#: src/views/site/site_list/SiteList.vue:26
 msgid "Delete site: %{site_name}"
 msgstr "刪除網站：%{site_name}"
 
@@ -1378,7 +1487,7 @@ msgstr "從 %{node} 刪除串流 %{name} 失敗"
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "已成功從 %{node} 刪除串流 %{name}"
 
-#: src/views/stream/StreamList.vue:47
+#: src/views/stream/StreamList.vue:25
 msgid "Delete stream: %{stream_name}"
 msgstr "刪除 Stream：%{stream_name}"
 
@@ -1393,6 +1502,10 @@ msgstr "演示"
 #: src/views/config/components/ConfigRightPanel/Basic.vue:60
 msgid "Deploy"
 msgstr "部署"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:717
+msgid "Descending"
+msgstr "降序"
 
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:74
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:98
@@ -1422,6 +1535,20 @@ msgstr "開發"
 #: src/views/system/About.vue:28
 msgid "Development Mode"
 msgstr "開發模式"
+
+#: src/views/nginx_log/structured/components/SearchFilters.vue:169
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:241
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:473
+msgid "Device"
+msgstr "裝置"
+
+#: src/views/nginx_log/dashboard/components/DeviceStatsTable.vue:36
+msgid "Device Statistics"
+msgstr "設備統計"
+
+#: src/views/nginx_log/dashboard/components/DeviceStatsTable.vue:13
+msgid "Device Type"
+msgstr "設備類型"
 
 #: src/views/preference/components/ExternalNotify/dingtalk.ts:5
 msgid "DingTalk"
@@ -1532,6 +1659,10 @@ msgstr "停用"
 msgid "Disabled successfully"
 msgstr "成功停用"
 
+#: src/views/dashboard/components/SiteNavigationToolbar.vue:39
+msgid "Disconnected"
+msgstr "已斷開連接"
+
 #: src/views/dashboard/ServerAnalytic.vue:373
 msgid "Disk IO"
 msgstr "磁碟 IO"
@@ -1545,6 +1676,10 @@ msgstr "DNS 認證"
 #: src/views/certificate/components/DNSChallenge.vue:59
 msgid "DNS Provider"
 msgstr "DNS 供應商"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:600
+msgid "DNS Resolver"
+msgstr "DNS解析器"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:228
 msgid "DNS01"
@@ -1597,6 +1732,10 @@ msgid "Document"
 msgid_plural "Documents"
 msgstr[0] "檔案"
 
+#: src/views/nginx_log/NginxLogList.vue:212
+msgid "Document Count"
+msgstr "文件數量"
+
 #: src/views/certificate/components/DNSIssueCertificate.vue:118
 msgid "Domain"
 msgstr "網域"
@@ -1636,9 +1775,9 @@ msgid ""
 msgstr "基於部分瀏覽器的安全政策，您無法在未啟用 HTTPS 網站，特別是 localhost 上使用通行金鑰。"
 
 #: src/views/site/site_list/SiteDuplicate.vue:72
-#: src/views/site/site_list/SiteList.vue:108
+#: src/views/site/site_list/SiteList.vue:86
 #: src/views/stream/components/StreamDuplicate.vue:64
-#: src/views/stream/StreamList.vue:118
+#: src/views/stream/StreamList.vue:96
 msgid "Duplicate"
 msgstr "複製"
 
@@ -1694,6 +1833,10 @@ msgstr "電子郵件"
 #: src/views/install/components/InstallForm.vue:75
 msgid "Email (*)"
 msgstr "電子郵件 (*)"
+
+#: src/constants/errors/nginx_log.ts:9
+msgid "Empty log line"
+msgstr "空日誌行"
 
 #: src/views/site/components/SiteStatusSelect.vue:114
 #: src/views/stream/components/StreamStatusSelect.vue:54
@@ -1832,6 +1975,10 @@ msgstr "用 Let's Encrypt 對網站進行加密"
 msgid "End"
 msgstr "結束"
 
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:52
+msgid "End Date"
+msgstr "結束日期"
+
 #: src/views/certificate/components/DNSIssueCertificate.vue:137
 msgid "Enter domain name"
 msgstr "輸入網域名稱"
@@ -1852,10 +1999,6 @@ msgstr "環境配置為空"
 msgid "Environment variables cleaned"
 msgstr "環境變數已清理"
 
-#: src/views/node/Node.vue:131
-msgid "Environments"
-msgstr "環境"
-
 #: src/constants/index.ts:23 src/views/config/InspectConfig.vue:63
 #: src/views/notification/notificationColumns.tsx:14
 msgid "Error"
@@ -1869,9 +2012,13 @@ msgstr "錯誤詳情"
 msgid "Error initializing diff viewer"
 msgstr "初始化差異檢視器時發生錯誤"
 
-#: src/views/nginx_log/NginxLogList.vue:43
+#: src/views/nginx_log/NginxLogList.vue:67
 msgid "Error Log"
 msgstr "錯誤日誌"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:648
+msgid "Error Log Detected"
+msgstr "檢測到錯誤日誌"
 
 #: src/constants/errors/self_check.ts:22
 msgid "Error log path not exist"
@@ -1881,6 +2028,12 @@ msgstr "錯誤日誌路徑不存在"
 #: src/routes/modules/nginx_log.ts:24
 msgid "Error Logs"
 msgstr "錯誤日誌"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:651
+msgid ""
+"Error logs do not support structured analysis as they contain free-form "
+"text messages."
+msgstr "錯誤日誌不支援結構化分析，因為它們包含自由格式的文字訊息。"
 
 #: src/components/ConfigHistory/DiffViewer.vue:81
 msgid "Error processing content"
@@ -1901,6 +2054,14 @@ msgstr "每天 %{time} 執行"
 #: src/views/backup/AutoBackup/components/CronEditor.vue:129
 msgid "Execute on every month on day %{day} at %{time}"
 msgstr "每月 %{day} 日 %{time} 執行"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:454
+msgid "Expected Status Codes"
+msgstr "預期狀態碼"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:484
+msgid "Expected Text"
+msgstr "預期文本"
 
 #: src/components/CertInfo/CertInfo.vue:31
 #: src/views/certificate/CertificateList/certColumns.tsx:80
@@ -2094,13 +2255,21 @@ msgstr "解密 Nginx 目錄失敗：{0}"
 msgid "Failed to decrypt Nginx UI directory: {0}"
 msgstr "解密 Nginx UI 目錄失敗：{0}"
 
-#: src/views/certificate/components/RemoveCert.vue:67
+#: src/constants/errors/nginx_log.ts:22
+msgid "Failed to delete all indexes"
+msgstr "刪除所有索引失敗"
+
+#: src/views/certificate/components/RemoveCert.vue:75
 msgid "Failed to delete certificate"
 msgstr "憑證刪除失敗"
 
 #: src/language/generate.ts:21
 msgid "Failed to delete certificate from database: %{error}"
 msgstr "從資料庫刪除憑證失敗: %{error}"
+
+#: src/constants/errors/nginx_log.ts:21
+msgid "Failed to delete file index"
+msgstr "刪除文件索引失敗"
 
 #: src/views/site/components/SiteStatusSelect.vue:73
 #: src/views/stream/components/StreamStatusSelect.vue:45
@@ -2172,6 +2341,10 @@ msgstr "取得憑證資訊失敗"
 msgid "Failed to get container id: {0}"
 msgstr "獲取容器ID失敗: {0}"
 
+#: src/constants/errors/nginx_log.ts:23
+msgid "Failed to get index status"
+msgstr "獲取索引狀態失敗"
+
 #: src/views/dashboard/components/ParamsOptimization.vue:62
 msgid "Failed to get Nginx performance settings"
 msgstr "無法取得 Nginx 效能設定"
@@ -2179,6 +2352,10 @@ msgstr "無法取得 Nginx 效能設定"
 #: src/composables/useNginxPerformance.ts:49
 msgid "Failed to get performance data"
 msgstr "無法取得效能資料"
+
+#: src/constants/errors/nginx_log.ts:24
+msgid "Failed to get persistence stats"
+msgstr "獲取持久化統計資訊失敗"
 
 #: src/constants/errors/performance.ts:3
 msgid "Failed to get stub status: {0}"
@@ -2256,6 +2433,18 @@ msgstr "讀取響應正文失敗: {0}"
 msgid "Failed to read symlink: {0}"
 msgstr "讀取符號連結失敗：{0}"
 
+#: src/constants/errors/nginx_log.ts:20
+msgid "Failed to rebuild file index"
+msgstr "重建文件索引失敗"
+
+#: src/constants/errors/nginx_log.ts:19
+msgid "Failed to rebuild index"
+msgstr "重建索引失敗"
+
+#: src/views/dashboard/SiteNavigation.vue:101
+msgid "Failed to refresh sites"
+msgstr "刷新站點失敗"
+
 #: src/constants/errors/backup.ts:39
 msgid "Failed to restore Nginx configs: {0}"
 msgstr "恢復 Nginx 設定失敗：{0}"
@@ -2264,7 +2453,7 @@ msgstr "恢復 Nginx 設定失敗：{0}"
 msgid "Failed to restore Nginx UI files: {0}"
 msgstr "還原 Nginx UI 檔案失敗：{0}"
 
-#: src/views/certificate/components/RemoveCert.vue:49
+#: src/views/certificate/components/RemoveCert.vue:57
 msgid "Failed to revoke certificate"
 msgstr "撤銷憑證失敗"
 
@@ -2272,9 +2461,21 @@ msgstr "撤銷憑證失敗"
 msgid "Failed to revoke certificate: %{error}"
 msgstr "撤銷憑證失敗: %{error}"
 
+#: src/views/dashboard/SiteNavigation.vue:193
+msgid "Failed to save configuration"
+msgstr "儲存設定失敗"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:310
+msgid "Failed to save health check configuration"
+msgstr "儲存健康檢查設定失敗"
+
 #: src/views/dashboard/components/ParamsOptimization.vue:91
 msgid "Failed to save Nginx performance settings"
 msgstr "儲存 Nginx 效能設定失敗"
+
+#: src/views/dashboard/SiteNavigation.vue:166
+msgid "Failed to save order"
+msgstr "儲存順序失敗"
 
 #: src/views/preference/tabs/ExternalNotify.vue:31
 msgid "Failed to send test message"
@@ -2328,6 +2529,10 @@ msgstr "檔案"
 msgid "File exists"
 msgstr "檔案已存在"
 
+#: src/views/nginx_log/indexing/IndexManagement.vue:62
+msgid "File index rebuild started successfully for %{path}"
+msgstr "已成功開始為 %{path} 重建檔案索引"
+
 #: src/views/other/Error.vue:8
 msgid "File Not Found"
 msgstr "找不到檔案"
@@ -2335,6 +2540,10 @@ msgstr "找不到檔案"
 #: src/constants/errors/config.ts:7
 msgid "File or directory not found: {0}"
 msgstr "找不到檔案或目錄：{0}"
+
+#: src/constants/errors/nginx_log.ts:18
+msgid "File path is required"
+msgstr "文件路徑是必需的"
 
 #: src/views/certificate/components/CertificateFileUpload.vue:53
 msgid "File size cannot exceed 5MB"
@@ -2348,9 +2557,17 @@ msgstr "檔案上傳成功"
 msgid "Filename is empty"
 msgstr "檔名空白"
 
-#: src/views/nginx_log/NginxLog.vue:156
+#: src/views/nginx_log/NginxLogList.vue:323
+msgid "files"
+msgstr "檔案"
+
+#: src/views/nginx_log/raw/RawLogViewer.vue:155
 msgid "Filter"
 msgstr "篩選"
+
+#: src/views/nginx_log/raw/RawLogViewer.vue:158
+msgid "Filter log content"
+msgstr "過濾日誌內容"
 
 #: src/language/constants.ts:19 src/views/site/site_add/SiteAdd.vue:82
 msgid "Finished"
@@ -2368,6 +2585,10 @@ msgstr "資料夾"
 msgid "Folder"
 msgstr "資料夾"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:572
+msgid "Follow Redirects"
+msgstr "跟隨重定向"
+
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:76
 msgid ""
 "Follow the instructions in the dialog to complete the passkey registration "
@@ -2382,6 +2603,10 @@ msgstr "針對中國大陸使用者"
 #: src/views/preference/tabs/HTTPSettings.vue:19
 msgid "For Chinese user: https://cloud.nginxui.com/"
 msgstr "中國使用者：https://cloud.nginxui.com/"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:653
+msgid "For error logs, please use the Raw Log Viewer for better viewing experience."
+msgstr "對於錯誤日誌，請使用原始日誌檢視器以獲得更好的檢視體驗。"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:140
 msgid ""
@@ -2414,6 +2639,14 @@ msgstr "格式：分鐘 小時 日 月 星期"
 #: src/views/backup/AutoBackup/components/CronEditor.vue:31
 msgid "Friday"
 msgstr "星期五"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:828
+msgid "From indexed logs"
+msgstr "來自已索引的日誌"
+
+#: src/views/nginx_log/structured/components/SearchFilters.vue:65
+msgid "Full Text Search"
+msgstr "全文搜尋"
 
 #: src/views/certificate/CertificateList/certColumns.tsx:30
 msgid "General Certificate"
@@ -2464,9 +2697,25 @@ msgstr "正在取得憑證，請稍候..."
 msgid "Github Proxy"
 msgstr "Github 代理"
 
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:658
+msgid "Go to Raw Log Viewer"
+msgstr "轉到原始日誌查看器"
+
 #: src/views/preference/components/ExternalNotify/gotify.ts:5
 msgid "Gotify"
 msgstr "Gotify"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:502
+msgid ""
+"gRPC health check requires server to implement gRPC Health Check service "
+"(grpc.health.v1.Health)."
+msgstr "gRPC健康檢查要求伺服器實現gRPC健康檢查服務（grpc.health.v1.Health）。"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:501
+msgid ""
+"gRPCS uses TLS encryption. Server must implement gRPC Health Check service. "
+"For testing, SSL validation is disabled by default."
+msgstr "gRPCS 使用 TLS 加密。伺服器必須實作 gRPC 健康檢查服務。出於測試目的，預設情況下禁用 SSL 驗證。"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:67
 msgid "GZIP Compression"
@@ -2483,6 +2732,18 @@ msgstr "GZIP 最小長度"
 #: src/constants/errors/backup.ts:59
 msgid "Hash verification failed: file integrity compromised"
 msgstr "雜湊驗證失敗：檔案完整性受損"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:365
+msgid "Health Check Configuration"
+msgstr "健康檢查配置"
+
+#: src/views/dashboard/SiteNavigation.vue:188
+msgid "Health check configuration saved"
+msgstr "健康檢查配置已保存"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:301
+msgid "Health check configuration saved successfully"
+msgstr "健康檢查配置保存成功"
 
 #: src/components/SensitiveString/SensitiveString.vue:40
 msgid "Hide"
@@ -2507,6 +2768,7 @@ msgid "Host"
 msgstr "主機"
 
 #: src/views/backup/AutoBackup/components/CronEditor.vue:159
+#: src/views/nginx_log/dashboard/components/HourlyChart.vue:60
 msgid "Hour"
 msgstr "小時"
 
@@ -2518,6 +2780,10 @@ msgstr "HTTP"
 msgid "HTTP Challenge Port"
 msgstr "HTTP 挑戰埠"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:399
+msgid "HTTP Method"
+msgstr "HTTP 方法"
+
 #: src/components/AutoCertForm/AutoCertForm.vue:222
 msgid "HTTP01"
 msgstr "HTTP01"
@@ -2526,11 +2792,15 @@ msgstr "HTTP01"
 msgid "HTTPS Protocol"
 msgstr "HTTPS 協議"
 
+#: src/views/nginx_log/structured/components/SearchFilters.vue:189
+msgid "https://..."
+msgstr "https://..."
+
 #: src/views/preference/tabs/NodeSettings.vue:34
 msgid "ICP Number"
 msgstr "ICP 編號"
 
-#: src/views/preference/tabs/AuthSettings.vue:113
+#: src/views/preference/tabs/AuthSettings.vue:111
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
 "ban threshold minutes, the ip will be banned for a period of time."
@@ -2570,6 +2840,31 @@ msgid ""
 "Includes master process, worker processes, cache processes, and other Nginx "
 "processes"
 msgstr "包含 Master 行程、工作行程、快取行程，以及其他 Nginx 行程"
+
+#: src/views/nginx_log/indexing/IndexManagement.vue:36
+msgid "Index and statistics rebuild started successfully"
+msgstr "索引和統計重建已成功啟動"
+
+#: src/views/nginx_log/NginxLogList.vue:94
+msgid "Index Status"
+msgstr "索引狀態"
+
+#: src/views/nginx_log/NginxLogList.vue:140
+msgid "Indexed"
+msgstr "已建立索引"
+
+#: src/views/nginx_log/indexing/components/IndexProgressBar.vue:55
+#: src/views/nginx_log/NginxLogList.vue:144
+msgid "Indexing"
+msgstr "索引中"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:737
+msgid "Indexing logs, please wait..."
+msgstr "正在索引日誌，請稍候..."
+
+#: src/views/nginx_log/NginxLogList.vue:318
+msgid "Indexing logs..."
+msgstr "正在索引日誌..."
 
 #: src/components/ProcessingStatus/ProcessingStatus.vue:31
 msgid "Indexing..."
@@ -2711,9 +3006,23 @@ msgstr "無效的請求格式"
 msgid "Invalid security token format"
 msgstr "無效的安全令牌格式"
 
+#: src/constants/errors/nginx_log.ts:10
+msgid "Invalid timestamp format"
+msgstr "時間戳格式無效"
+
+#: src/constants/errors/nginx_log.ts:26
+msgid "Invalid websocket message type"
+msgstr "無效的WebSocket消息類型"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:159
 #: src/views/preference/tabs/AuthSettings.vue:14
 msgid "IP"
 msgstr "IP"
+
+#: src/views/nginx_log/structured/components/SearchFilters.vue:77
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:466
+msgid "IP Address"
+msgstr "IP位址"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:123
 msgid "IP Certificate Notice"
@@ -2770,6 +3079,44 @@ msgstr "Lark"
 msgid "Lark Custom"
 msgstr "Lark 自訂"
 
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:267
+msgid "Last 12 hours"
+msgstr "過去12小時"
+
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:17
+msgid "Last 14 days"
+msgstr "過去14天"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:263
+msgid "Last 15 minutes"
+msgstr "過去15分鐘"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:268
+msgid "Last 24 hours"
+msgstr "過去24小時"
+
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:18
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:270
+msgid "Last 30 days"
+msgstr "過去30天"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:264
+msgid "Last 30 minutes"
+msgstr "過去30分鐘"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:266
+msgid "Last 4 hours"
+msgstr "過去4小時"
+
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:16
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:269
+msgid "Last 7 days"
+msgstr "最近7天"
+
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:19
+msgid "Last 90 days"
+msgstr "過去90天"
+
 #: src/views/backup/AutoBackup/AutoBackup.vue:190
 msgid "Last Backup Status"
 msgstr "上次備份狀態"
@@ -2781,6 +3128,18 @@ msgstr "上次備份時間"
 #: src/views/system/Upgrade.vue:198
 msgid "Last checked at"
 msgstr "上次檢查時間"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:265
+msgid "Last hour"
+msgstr "過去1小時"
+
+#: src/views/nginx_log/NginxLogList.vue:157
+msgid "Last Indexed"
+msgstr "最後索引時間"
+
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:21
+msgid "Last month"
+msgstr "上個月"
 
 #: src/views/dashboard/NginxDashBoard.vue:138
 msgid "Last update"
@@ -2829,8 +3188,8 @@ msgstr "Lego 停用 CNAME 支援"
 msgid "License"
 msgstr "開源授權"
 
-#: src/views/dashboard/components/NodeAnalyticItem.vue:116
-#: src/views/dashboard/components/NodeAnalyticItem.vue:99
+#: src/views/dashboard/components/NodeAnalyticItem.vue:114
+#: src/views/dashboard/components/NodeAnalyticItem.vue:97
 msgid "Link"
 msgstr "連結"
 
@@ -2846,11 +3205,11 @@ msgstr "監聽中"
 msgid "Load Average:"
 msgstr "負載平均值："
 
-#: src/views/node/Node.vue:138
+#: src/views/node/Node.vue:137
 msgid "Load from settings"
 msgstr "從設定載入"
 
-#: src/views/node/Node.vue:68
+#: src/views/node/Node.vue:67
 msgid "Load successfully"
 msgstr "載入成功"
 
@@ -2875,11 +3234,15 @@ msgstr "載入器休眠時間"
 msgid "Loader Threshold"
 msgstr "載入器門檻值"
 
+#: src/views/nginx_log/dashboard/DashboardViewer.vue:107
+msgid "Loading dashboard data..."
+msgstr "正在載入儀表板數據..."
+
 #: src/views/dashboard/NginxDashBoard.vue:200
 msgid "Loading data..."
 msgstr "資料載入中…"
 
-#: src/components/EnvIndicator/EnvIndicator.vue:39
+#: src/components/NodeIndicator/NodeIndicator.vue:39
 #: src/components/NodeSelector/NodeSelector.vue:61 src/constants/index.ts:42
 #: src/views/backup/AutoBackup/AutoBackup.vue:74
 #: src/views/backup/AutoBackup/AutoBackup.vue:83
@@ -2913,9 +3276,37 @@ msgstr ""
 "日誌文件 %{log_path} 不是常規文件。如果您在 docker 容器中使用 nginx-ui，請參考 "
 "https://nginxui.com/zh_CN/guide/config-nginx-log.html 獲取更多信息。"
 
-#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:88
+#: src/constants/errors/nginx_log.ts:14
+msgid "Log file does not exist"
+msgstr "日誌文件不存在"
+
+#: src/constants/errors/nginx_log.ts:25
+msgid "Log file is not a regular file"
+msgstr "日誌檔案不是常規檔案"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:846
+msgid "Log file not available"
+msgstr "日誌文件不可用"
+
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:56
+msgid "Log File:"
+msgstr "日誌檔案："
+
+#: src/constants/errors/nginx_log.ts:12
+msgid "Log indexer not available"
+msgstr "日誌索引器不可用"
+
+#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:302
 msgid "Log List"
 msgstr "日誌列表"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:835
+msgid "Log path"
+msgstr "日誌路徑"
+
+#: src/constants/errors/nginx_log.ts:15
+msgid "Log path is not under whitelist"
+msgstr "日誌路徑不在白名單中"
 
 #: src/routes/modules/auth.ts:14 src/views/other/Login.vue:277
 msgid "Login"
@@ -2982,11 +3373,11 @@ msgstr "在取得憑證前，請確保您已將 .well-known 目錄反向代理�
 msgid "Manage Configs"
 msgstr "管理設定"
 
-#: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:67
+#: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:45
 msgid "Manage Sites"
 msgstr "管理網站"
 
-#: src/routes/modules/streams.ts:10 src/views/stream/StreamList.vue:81
+#: src/routes/modules/streams.ts:10 src/views/stream/StreamList.vue:59
 msgid "Manage Streams"
 msgstr "管理 Stream"
 
@@ -3032,13 +3423,17 @@ msgstr "主行程"
 msgid "Master Process"
 msgstr "主行程"
 
-#: src/views/preference/tabs/AuthSettings.vue:103
+#: src/views/preference/tabs/AuthSettings.vue:101
 msgid "Max Attempts"
 msgstr "最大嘗試次數"
 
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:56
 msgid "Max Concurrent Connections"
 msgstr "最大同時連線數"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:560
+msgid "Max Redirects"
+msgstr "最大重定向次數"
 
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:42
 msgid "Max Requests Per Second"
@@ -3081,6 +3476,15 @@ msgstr "記憶體與儲存空間"
 #: src/views/dashboard/components/ResourceUsageCard.vue:51
 msgid "Memory Usage (RSS)"
 msgstr "記憶體使用量 (RSS)"
+
+#: src/views/nginx_log/structured/components/SearchFilters.vue:92
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:467
+msgid "Method"
+msgstr "方法"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:520
+msgid "Method Name"
+msgstr "方法名稱"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:81
 msgid "Minimum file size for compression"
@@ -3148,6 +3552,10 @@ msgstr "每月"
 msgid "Monthly on day %{day} at %{time}"
 msgstr "每月%{day}日%{time}"
 
+#: src/views/nginx_log/structured/components/SearchFilters.vue:204
+msgid "Mozilla/5.0..."
+msgstr "Mozilla/5.0..."
+
 #: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:51
 msgid "Multi-line Directive"
 msgstr "多行指令"
@@ -3173,7 +3581,7 @@ msgstr "不適用"
 #: src/views/config/components/Delete.vue:123
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:17 src/views/namespace/columns.ts:9
-#: src/views/nginx_log/NginxLogList.vue:52 src/views/node/nodeColumns.tsx:8
+#: src/views/nginx_log/NginxLogList.vue:76 src/views/node/nodeColumns.tsx:8
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:80
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:36
 #: src/views/site/site_list/columns.tsx:30
@@ -3181,7 +3589,7 @@ msgstr "不適用"
 #: src/views/stream/columns.tsx:26
 #: src/views/stream/components/RightPanel/Basic.vue:31
 #: src/views/stream/components/StreamDuplicate.vue:71
-#: src/views/stream/StreamList.vue:145
+#: src/views/stream/StreamList.vue:123
 msgid "Name"
 msgstr "名稱"
 
@@ -3191,14 +3599,12 @@ msgid "Name or content"
 msgstr "名稱或內容"
 
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:42
-#: src/views/site/site_list/columns.tsx:91
-#: src/views/stream/columns.tsx:58
+#: src/views/site/site_list/columns.tsx:91 src/views/stream/columns.tsx:58
 #: src/views/stream/components/RightPanel/Basic.vue:39
 msgid "Namespace"
 msgstr "命名空間"
 
-#: src/routes/modules/namespaces.ts:11
-#: src/views/namespace/Namespace.vue:19
+#: src/routes/modules/namespaces.ts:10 src/views/namespace/Namespace.vue:19
 msgid "Namespaces"
 msgstr "命名空間"
 
@@ -3364,13 +3770,17 @@ msgstr "Nginx 未在另一個容器中運行"
 msgid "Nginx is running"
 msgstr "Nginx 執行中"
 
-#: src/routes/modules/nginx_log.ts:9 src/views/nginx_log/NginxLog.vue:144
+#: src/routes/modules/nginx_log.ts:9 src/views/nginx_log/NginxLog.vue:45
 msgid "Nginx Log"
 msgstr "Nginx 日誌"
 
 #: src/views/preference/tabs/NginxSettings.vue:25
 msgid "Nginx Log Directory Whitelist"
 msgstr "Nginx 日誌目錄白名單"
+
+#: src/components/ProcessingStatus/ProcessingStatus.vue:45
+msgid "Nginx Log Indexing..."
+msgstr "Nginx 日誌索引中..."
 
 #: src/composables/usePerformanceMetrics.ts:154
 #: src/views/dashboard/components/PerformanceTablesCard.vue:110
@@ -3394,7 +3804,7 @@ msgstr "Nginx 重新載入指令"
 msgid "Nginx reload failed: {0}"
 msgstr "Nginx 重新載入失敗: {0}"
 
-#: src/views/node/Node.vue:89
+#: src/views/node/Node.vue:88
 msgid "Nginx reload operations have been dispatched to remote nodes"
 msgstr "Nginx 重新載入操作已分發至遠端節點"
 
@@ -3406,7 +3816,7 @@ msgstr "Nginx 重新載入成功"
 msgid "Nginx Restart Command"
 msgstr "Nginx 重啟指令"
 
-#: src/views/node/Node.vue:103
+#: src/views/node/Node.vue:102
 msgid "Nginx restart operations have been dispatched to remote nodes"
 msgstr "Nginx 重啟操作已分發至遠端節點"
 
@@ -3458,16 +3868,15 @@ msgid "Nginx.conf includes streams-enabled directory"
 msgstr "Nginx.conf 包含 streams-enabled 目錄"
 
 #: src/components/ChatGPT/ChatMessageInput.vue:17
-#: src/components/NamespaceTabs/NamespaceTabs.vue:111
-#: src/components/NamespaceTabs/NamespaceTabs.vue:99
+#: src/components/NamespaceTabs/NamespaceTabs.vue:132
+#: src/components/NamespaceTabs/NamespaceTabs.vue:144
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:102
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
 #: src/components/Notification/Notification.vue:108 src/language/curd.ts:40
 #: src/views/notification/Notification.vue:38
-#: src/views/preference/tabs/AuthSettings.vue:132
+#: src/views/preference/tabs/AuthSettings.vue:130
 #: src/views/preference/tabs/CertSettings.vue:73
-#: src/views/site/site_list/SiteList.vue:111
-#: src/views/stream/StreamList.vue:121
+#: src/views/site/site_list/SiteList.vue:89 src/views/stream/StreamList.vue:99
 msgid "No"
 msgstr "取消"
 
@@ -3479,6 +3888,10 @@ msgstr "無行動"
 #: src/views/dashboard/NginxDashBoard.vue:202
 msgid "No data"
 msgstr "無數據"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:811
+msgid "No entries in current page"
+msgstr "當前頁面沒有條目"
 
 #: src/components/NamespaceRender/NamespaceRender.vue:55
 msgid "No nodes selected"
@@ -3492,11 +3905,19 @@ msgstr "未選取任何記錄"
 msgid "No servers configured"
 msgstr "未配置伺服器"
 
+#: src/views/dashboard/SiteNavigation.vue:231
+msgid "No sites found"
+msgstr "未找到站點"
+
 #: src/components/AutoCertForm/AutoCertForm.vue:136
 msgid ""
 "No specific IP address found in server_name configuration. Please specify "
 "the server IP address below for the certificate."
 msgstr "在 server_name 設定中未找到特定 IP 位址。請在下方指定伺服器 IP 位址以取得憑證。"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:820
+msgid "No structured log data available"
+msgstr "無結構化日誌數據可用"
 
 #: src/components/NgxConfigEditor/NgxUpstream.vue:103
 msgid "No upstreams configured"
@@ -3518,7 +3939,8 @@ msgstr "節點金鑰"
 msgid "Node Status"
 msgstr "節點狀態"
 
-#: src/routes/modules/nodes.ts:11 src/views/dashboard/Nodes.vue:80
+#: src/routes/modules/nodes.ts:11 src/views/dashboard/Nodes.vue:130
+#: src/views/node/Node.vue:130
 msgid "Nodes"
 msgstr "節點"
 
@@ -3526,9 +3948,17 @@ msgstr "節點"
 msgid "Not After"
 msgstr "不晚於"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:489
+msgid "Not Expected Text"
+msgstr "非預期文本"
+
 #: src/routes/modules/error.ts:8
 msgid "Not Found"
 msgstr "找不到頁面"
+
+#: src/views/nginx_log/NginxLogList.vue:148
+msgid "Not Indexed"
+msgstr "未索引"
 
 #: src/views/dashboard/components/ModulesTable.vue:101
 #: src/views/dashboard/components/ModulesTable.vue:105
@@ -3554,6 +3984,12 @@ msgid ""
 "Note, if the configuration file include other configurations or "
 "certificates, please synchronize them to the remote nodes in advance."
 msgstr "請注意，如果設定檔包含其他設定或憑證，請提前將它們同步到遠端節點。"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:508
+msgid ""
+"Note: If the server does not support gRPC Reflection, health checks may "
+"fail. Please ensure your gRPC server has Reflection enabled."
+msgstr "注意：如果伺服器不支援 gRPC 反射，健康檢查可能會失敗。請確保您的 gRPC 伺服器已啟用反射功能。"
 
 #: src/views/certificate/components/CertificateBasicInfo.vue:23
 #: src/views/certificate/components/CertificateContentEditor.vue:24
@@ -3623,11 +4059,11 @@ msgstr "關"
 msgid "Official Document"
 msgstr "官方文件"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:127
+#: src/components/NamespaceTabs/NamespaceTabs.vue:160
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:84
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
-#: src/views/dashboard/Nodes.vue:106 src/views/node/nodeColumns.tsx:55
+#: src/views/dashboard/Nodes.vue:158 src/views/node/nodeColumns.tsx:55
 msgid "Offline"
 msgstr "離線"
 
@@ -3641,9 +4077,9 @@ msgstr "離線"
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:39
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:143
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:20
-#: src/views/site/site_list/SiteList.vue:112
+#: src/views/site/site_list/SiteList.vue:90
 #: src/views/stream/components/StreamStatusSelect.vue:60
-#: src/views/stream/StreamList.vue:122
+#: src/views/stream/StreamList.vue:100
 msgid "OK"
 msgstr "確定"
 
@@ -3656,12 +4092,12 @@ msgstr "開啟"
 msgid "Once the verification is complete, the records will be removed."
 msgstr "驗證完成後，記錄將被刪除。"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:127
+#: src/components/NamespaceTabs/NamespaceTabs.vue:160
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:64
 #: src/components/NodeSelector/NodeSelector.vue:78
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
-#: src/views/dashboard/Nodes.vue:99 src/views/node/nodeColumns.tsx:51
+#: src/views/dashboard/Nodes.vue:151 src/views/node/nodeColumns.tsx:51
 msgid "Online"
 msgstr "線上"
 
@@ -3681,6 +4117,14 @@ msgstr "開放"
 msgid "OpenAI"
 msgstr "OpenAI"
 
+#: src/views/nginx_log/dashboard/components/OSStatsTable.vue:13
+msgid "Operating System"
+msgstr "作業系統"
+
+#: src/views/nginx_log/dashboard/components/OSStatsTable.vue:36
+msgid "Operating System Statistics"
+msgstr "作業系統統計"
+
 #: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:286
 msgid "Or"
 msgstr "或"
@@ -3693,10 +4137,17 @@ msgstr "或將檔案拖曳到下方編輯器"
 msgid "Or enter the secret: %{secret}"
 msgstr "或輸入金鑰：%{secret}"
 
+#: src/views/dashboard/SiteNavigation.vue:156
+msgid "Order saved successfully"
+msgstr "順序保存成功"
+
 #: src/views/config/components/Rename.vue:70
 msgid "Original name"
 msgstr "原始名稱"
 
+#: src/views/nginx_log/structured/components/SearchFilters.vue:153
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:225
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:472
 #: src/views/system/Upgrade.vue:194
 msgid "OS"
 msgstr "作業系統"
@@ -3786,7 +4237,9 @@ msgstr "密碼不匹配"
 #: src/language/curd.ts:61
 #: src/views/config/components/ConfigRightPanel/Basic.vue:41
 #: src/views/config/components/Delete.vue:124
-#: src/views/nginx_log/NginxLogList.vue:60
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:420
+#: src/views/nginx_log/NginxLogList.vue:85
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:468
 msgid "Path"
 msgstr "路徑"
 
@@ -3802,10 +4255,21 @@ msgstr "路徑：{0} 不在 Nginx 設定目錄：{1} 下"
 msgid "Payload resource is nil"
 msgstr "有效載荷資源為空"
 
+#: src/views/nginx_log/dashboard/components/SummaryStats.vue:42
+msgid "Peak Hour"
+msgstr "高峰時段"
+
 #: src/views/backup/AutoBackup/AutoBackup.vue:194
 #: src/views/backup/AutoBackup/AutoBackup.vue:219
 msgid "Pending"
 msgstr "待處理"
+
+#: src/views/nginx_log/dashboard/components/BrowserStatsTable.vue:26
+#: src/views/nginx_log/dashboard/components/DeviceStatsTable.vue:26
+#: src/views/nginx_log/dashboard/components/OSStatsTable.vue:26
+#: src/views/nginx_log/dashboard/components/TopUrlsTable.vue:27
+msgid "Percentage"
+msgstr "百分比"
 
 #: src/views/node/BatchUpgrader.vue:245
 msgid "Perform"
@@ -3985,19 +4449,19 @@ msgstr "請選擇有效的%{type}檔案（%{extensions}）"
 msgid "Please select at least one item"
 msgstr "請至少選擇一項"
 
-#: src/views/node/Node.vue:201 src/views/node/Node.vue:83
+#: src/views/node/Node.vue:200 src/views/node/Node.vue:82
 msgid "Please select at least one node to reload Nginx"
 msgstr "請至少選擇一個節點以重新載入 Nginx"
 
-#: src/views/node/Node.vue:222 src/views/node/Node.vue:97
+#: src/views/node/Node.vue:221 src/views/node/Node.vue:96
 msgid "Please select at least one node to restart Nginx"
 msgstr "請至少選擇一個節點以重啟 Nginx"
 
-#: src/views/node/Node.vue:180
+#: src/views/node/Node.vue:179
 msgid "Please select at least one node to upgrade"
 msgstr "請至少選擇一個節點進行升級"
 
-#: src/views/certificate/components/RemoveCert.vue:28
+#: src/views/certificate/components/RemoveCert.vue:36
 msgid "Please type \"Revoke\" to confirm"
 msgstr "請輸入「撤銷」以確認"
 
@@ -4082,6 +4546,10 @@ msgstr "專案團隊"
 msgid "Protected Directory"
 msgstr "受保護目錄"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:378
+msgid "Protocol"
+msgstr "協定"
+
 #: src/views/preference/tabs/ServerSettings.vue:47
 msgid ""
 "Protocol configuration only takes effect when directly connecting. If using "
@@ -4117,6 +4585,19 @@ msgstr "公共CA要求："
 msgid "Public Security Number"
 msgstr "公安編號"
 
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:754
+msgid "PV"
+msgstr "頁面瀏覽量"
+
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:46
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:684
+msgid "Quick Select"
+msgstr "快速選擇"
+
+#: src/views/nginx_log/NginxLog.vue:57
+msgid "Raw"
+msgstr "原始"
+
 #: src/constants/errors/site.ts:8 src/constants/errors/stream.ts:7
 msgid "Read dir failed: {0}"
 msgstr "讀取目錄失敗: {0}"
@@ -4130,6 +4611,22 @@ msgstr "讀取請求"
 #: src/views/dashboard/ServerAnalytic.vue:390
 msgid "Reads"
 msgstr "讀取"
+
+#: src/views/nginx_log/NginxLogList.vue:349
+msgid "Rebuild"
+msgstr "重建"
+
+#: src/views/nginx_log/indexing/IndexManagement.vue:92
+msgid "Rebuild All Index"
+msgstr "重建所有索引"
+
+#: src/views/nginx_log/indexing/IndexManagement.vue:53
+msgid "Rebuild File Index"
+msgstr "重建文件索引"
+
+#: src/views/nginx_log/indexing/IndexManagement.vue:27
+msgid "Rebuild Index"
+msgstr "重建索引"
 
 #: src/views/dashboard/ServerAnalytic.vue:341
 #: src/views/dashboard/ServerAnalytic.vue:35
@@ -4158,7 +4655,13 @@ msgstr "復原代碼在您無法使用 2FA 裝置時，用於存取您的帳戶�
 msgid "Recursive Nameservers"
 msgstr "遞迴名稱伺服器"
 
+#: src/views/nginx_log/structured/components/SearchFilters.vue:185
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:251
+msgid "Referer"
+msgstr "來源"
+
 #: src/language/curd.ts:70
+#: src/views/dashboard/components/SiteNavigationToolbar.vue:77
 msgid "Refresh"
 msgstr "重新整理"
 
@@ -4214,8 +4717,8 @@ msgid "Reload"
 msgstr "重新載入"
 
 #: src/components/NamespaceRender/NamespaceRender.vue:44
-#: src/components/NamespaceTabs/NamespaceTabs.vue:104 src/constants/index.ts:38
-#: src/views/node/Node.vue:209 src/views/node/Node.vue:217
+#: src/components/NamespaceTabs/NamespaceTabs.vue:137 src/constants/index.ts:38
+#: src/views/node/Node.vue:208 src/views/node/Node.vue:216
 msgid "Reload Nginx"
 msgstr "重新載入 Nginx"
 
@@ -4239,7 +4742,7 @@ msgstr "重新載入遠端 Nginx 錯誤"
 msgid "Reload Remote Nginx Success"
 msgstr "遠端 Nginx 重新載入成功"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:52
+#: src/components/NamespaceTabs/NamespaceTabs.vue:85
 msgid "Reload request failed, please check your network connection"
 msgstr "重新載入請求失敗，請檢查您的網路連線"
 
@@ -4256,7 +4759,7 @@ msgid "Remote"
 msgstr "遠端"
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:146
-#: src/views/preference/tabs/AuthSettings.vue:137
+#: src/views/preference/tabs/AuthSettings.vue:135
 msgid "Remove"
 msgstr "移除"
 
@@ -4279,12 +4782,12 @@ msgid "Rename"
 msgstr "重新命名"
 
 #: src/components/Notification/notifications.ts:78
-msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed"
-msgstr "將 %{orig_path} 重新命名為 %{new_path} 在 %{env_name} 上失敗"
+msgid "Rename %{orig_path} to %{new_path} on %{node_name} failed"
+msgstr "在 %{node_name} 上將 %{orig_path} 重新命名為 %{new_path} 失敗"
 
 #: src/components/Notification/notifications.ts:82
-msgid "Rename %{orig_path} to %{new_path} on %{env_name} successfully"
-msgstr "成功將 %{env_name} 上的 %{orig_path} 重新命名為 %{new_path}"
+msgid "Rename %{orig_path} to %{new_path} on %{node_name} successfully"
+msgstr "在 %{node_name} 上成功將 %{orig_path} 重新命名為 %{new_path}"
 
 #: src/components/Notification/notifications.ts:77 src/language/constants.ts:42
 msgid "Rename Remote Config Error"
@@ -4360,6 +4863,18 @@ msgstr "更新憑證成功"
 msgid "Renew successfully"
 msgstr "更新成功"
 
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:170
+msgid "Request"
+msgstr "請求"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:446
+msgid "Request Body"
+msgstr "請求體"
+
+#: src/views/nginx_log/structured/components/SearchFilters.vue:122
+msgid "Request Path"
+msgstr "請求路徑"
+
 #: src/views/dashboard/components/PerformanceTablesCard.vue:142
 msgid "Request statistics"
 msgstr "請求統計"
@@ -4377,12 +4892,18 @@ msgid "Requests Per Connection"
 msgstr "每連線請求數量"
 
 #: src/language/curd.ts:13
+#: src/views/nginx_log/structured/components/SearchFilters.vue:214
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:720
 msgid "Reset"
 msgstr "重設"
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:93
 msgid "Reset 2FA"
 msgstr "重設多重因素驗證"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:838
+msgid "Reset Search"
+msgstr "重置搜尋"
 
 #: src/views/dashboard/components/ResourceUsageCard.vue:53
 msgid ""
@@ -4400,8 +4921,8 @@ msgstr "回應"
 msgid "Restart"
 msgstr "重新啟動"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:116
-#: src/views/node/Node.vue:230 src/views/node/Node.vue:238
+#: src/components/NamespaceTabs/NamespaceTabs.vue:149
+#: src/views/node/Node.vue:229 src/views/node/Node.vue:237
 msgid "Restart Nginx"
 msgstr "重新啟動 Nginx"
 
@@ -4421,7 +4942,7 @@ msgstr "遠端 Nginx 重啟錯誤"
 msgid "Restart Remote Nginx Success"
 msgstr "遠端 Nginx 重啟成功"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:72
+#: src/components/NamespaceTabs/NamespaceTabs.vue:105
 msgid "Restart request failed, please check your network connection"
 msgstr "重新啟動請求失敗，請檢查您的網路連線"
 
@@ -4460,8 +4981,8 @@ msgstr "恢復此版本"
 msgid "Restored successfully"
 msgstr "恢復成功"
 
-#: src/views/certificate/components/RemoveCert.vue:27
-#: src/views/certificate/components/RemoveCert.vue:98
+#: src/views/certificate/components/RemoveCert.vue:106
+#: src/views/certificate/components/RemoveCert.vue:35
 msgid "Revoke"
 msgstr "撤銷"
 
@@ -4473,25 +4994,25 @@ msgstr "吊銷證書錯誤：{0}"
 msgid "Revoke Old Certificate"
 msgstr "撤銷舊憑證"
 
-#: src/views/certificate/components/RemoveCert.vue:112
+#: src/views/certificate/components/RemoveCert.vue:120
 msgid "Revoke this certificate"
 msgstr "撤銷此憑證"
 
-#: src/views/certificate/components/RemoveCert.vue:120
+#: src/views/certificate/components/RemoveCert.vue:128
 msgid ""
 "Revoking a certificate will affect any services currently using it. This "
 "action cannot be undone."
 msgstr "撤銷憑證將會影響目前使用它的所有服務。此動作無法復原。"
 
-#: src/views/preference/tabs/AuthSettings.vue:75
+#: src/views/preference/tabs/AuthSettings.vue:74
 msgid "RP Display Name"
 msgstr "RP 顯示名稱"
 
-#: src/views/preference/tabs/AuthSettings.vue:81
+#: src/views/preference/tabs/AuthSettings.vue:80
 msgid "RP Origins"
 msgstr "RP 源站"
 
-#: src/views/preference/tabs/AuthSettings.vue:69
+#: src/views/preference/tabs/AuthSettings.vue:68
 msgid "RPID"
 msgstr "RPID"
 
@@ -4617,6 +5138,7 @@ msgstr "星期六"
 #: src/views/certificate/components/CertificateActions.vue:29
 #: src/views/config/components/ConfigLeftPanel.vue:282
 #: src/views/config/components/ConfigName.vue:59
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:635
 #: src/views/preference/components/AuthSettings/Passkey.vue:130
 #: src/views/preference/Preference.vue:117
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
@@ -4629,6 +5151,10 @@ msgstr "儲存"
 #: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:112
 msgid "Save Directive"
 msgstr "儲存指令"
+
+#: src/views/dashboard/components/SiteNavigationToolbar.vue:53
+msgid "Save Order"
+msgstr "儲存順序"
 
 #: src/components/Notification/notifications.ts:145
 #: src/language/constants.ts:48
@@ -4705,9 +5231,9 @@ msgstr "掃描結果"
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr "用手機掃描二維碼將賬戶新增到應用程式中。"
 
-#: src/views/nginx_log/NginxLogList.vue:101
-msgid "Scanning logs..."
-msgstr "正在掃描日誌..."
+#: src/views/nginx_log/indexing/components/IndexProgressBar.vue:53
+msgid "Scanning"
+msgstr "掃描中"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:113
 msgid "Schedule"
@@ -4722,14 +5248,31 @@ msgid "SDK"
 msgstr "SDK"
 
 #: src/language/constants.ts:62 src/language/curd.ts:12
-#: src/views/config/configColumns.tsx:5 src/views/site/site_list/columns.tsx:17
-#: src/views/stream/columns.tsx:13
+#: src/views/config/configColumns.tsx:5
+#: src/views/nginx_log/structured/components/SearchFilters.vue:217
+#: src/views/site/site_list/columns.tsx:17 src/views/stream/columns.tsx:13
 msgid "Search"
 msgstr "搜尋"
+
+#: src/views/nginx_log/structured/components/SearchFilters.vue:53
+msgid "Search Filters"
+msgstr "搜尋篩選器"
+
+#: src/views/nginx_log/structured/components/SearchFilters.vue:69
+msgid "Search in log content..."
+msgstr "在日誌內容中搜尋..."
 
 #: src/language/constants.ts:61
 msgid "Search module name"
 msgstr "搜尋模組名稱"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:826
+msgid "Search range"
+msgstr "搜尋範圍"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:729
+msgid "Searching logs..."
+msgstr "正在搜尋日誌..."
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:109
 msgid "Secret has been copied"
@@ -4820,6 +5363,10 @@ msgstr "在指令中未找到 server_name"
 msgid "ServerIdx out of range"
 msgstr "伺服器索引超出範圍"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:515
+msgid "Service Name"
+msgstr "服務名稱"
+
 #: src/constants/errors/user.ts:12
 msgid "Session not found"
 msgstr "找不到工作階段"
@@ -4853,6 +5400,10 @@ msgstr "設定環境變數中"
 #: src/language/constants.ts:10
 msgid "Setting HTTP01 challenge provider"
 msgstr "使用 HTTP01 挑戰提供者"
+
+#: src/views/dashboard/components/SiteNavigationToolbar.vue:88
+msgid "Settings"
+msgstr "設定"
 
 #: src/constants/errors/nginx_log.ts:8
 msgid ""
@@ -4906,9 +5457,21 @@ msgstr "網站處於維護模式"
 msgid "Site Logs"
 msgstr "網站日誌"
 
+#: src/views/dashboard/components/SiteNavigationToolbar.vue:29
+msgid "Site Navigation"
+msgstr "站點導航"
+
 #: src/constants/errors/site.ts:2
 msgid "Site not found"
 msgstr "站點未找到"
+
+#: src/views/dashboard/SiteNavigation.vue:93
+msgid "Site refresh initiated"
+msgstr "站點刷新已啟動"
+
+#: src/routes/modules/dashboard.ts:35
+msgid "Sites"
+msgstr "站點"
 
 #: src/language/generate.ts:33
 msgid "Sites directory exists"
@@ -4917,6 +5480,12 @@ msgstr "站點目錄存在"
 #: src/routes/modules/sites.ts:19
 msgid "Sites List"
 msgstr "網站列表"
+
+#: src/views/dashboard/SiteNavigation.vue:234
+msgid ""
+"Sites will appear here once you configure nginx server blocks with valid "
+"server_name directives."
+msgstr "配置帶有有效 server_name 指令的 nginx 伺服器區塊後，站點將顯示在此處。"
 
 #: src/constants/errors/self_check.ts:11
 msgid "Sites-available directory not exist"
@@ -4927,6 +5496,8 @@ msgid "Sites-enabled directory not exist"
 msgstr "sites-enabled 資料夾不存在"
 
 #: src/language/curd.ts:62
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:201
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:470
 msgid "Size"
 msgstr "大小"
 
@@ -4941,6 +5512,14 @@ msgstr "快取載入器迭代間的休眠時間"
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:263
 msgid "Sleep time between cache manager iterations"
 msgstr "快取管理器迭代間的休眠時間"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:717
+msgid "Sorted by"
+msgstr "排序方式"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:605
+msgid "Source IP"
+msgstr "來源IP"
 
 #: src/views/system/About.vue:46
 msgid "Sponsor"
@@ -5010,6 +5589,10 @@ msgstr "穩定"
 msgid "Start"
 msgstr "開始"
 
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:52
+msgid "Start Date"
+msgstr "開始日期"
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:246
 #: src/components/SystemRestore/SystemRestoreContent.vue:323
 msgid "Start Restore"
@@ -5025,6 +5608,9 @@ msgstr "靜態"
 #: src/views/certificate/ACMEUser.vue:73
 #: src/views/certificate/CertificateList/certColumns.tsx:63
 #: src/views/dashboard/components/ModulesTable.vue:96
+#: src/views/nginx_log/structured/components/SearchFilters.vue:106
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:193
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:469
 #: src/views/node/nodeColumns.tsx:43
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:29
 #: src/views/site/site_list/columns.tsx:120 src/views/stream/columns.tsx:87
@@ -5093,6 +5679,10 @@ msgstr "streams-available 資料夾不存在"
 msgid "Streams-enabled directory not exist"
 msgstr "streams-enabled 資料夾不存在"
 
+#: src/views/nginx_log/NginxLog.vue:55
+msgid "Structured"
+msgstr "結構化"
+
 #: src/views/preference/tabs/NginxSettings.vue:10
 msgid "Stub Status Port"
 msgstr "存根狀態端口"
@@ -5158,12 +5748,12 @@ msgid "Sync Certificate"
 msgstr "同步憑證"
 
 #: src/components/Notification/notifications.ts:62
-msgid "Sync Certificate %{cert_name} to %{env_name} failed"
-msgstr "同步證書 %{cert_name} 到 %{env_name} 失敗"
+msgid "Sync Certificate %{cert_name} to %{node_name} failed"
+msgstr "同步證書 %{cert_name} 到 %{node_name} 失敗"
 
 #: src/components/Notification/notifications.ts:66
-msgid "Sync Certificate %{cert_name} to %{env_name} successfully"
-msgstr "同步憑證 %{cert_name} 到 %{env_name} 成功"
+msgid "Sync Certificate %{cert_name} to %{node_name} successfully"
+msgstr "證書 %{cert_name} 已成功同步至 %{node_name}"
 
 #: src/components/Notification/notifications.ts:61 src/language/constants.ts:39
 msgid "Sync Certificate Error"
@@ -5174,12 +5764,12 @@ msgid "Sync Certificate Success"
 msgstr "同步憑證成功"
 
 #: src/components/Notification/notifications.ts:70
-msgid "Sync config %{config_name} to %{env_name} failed"
-msgstr "同步設定 %{config_name} 至 %{env_name} 失敗"
+msgid "Sync config %{config_name} to %{node_name} failed"
+msgstr "同步配置 %{config_name} 到 %{node_name} 失敗"
 
 #: src/components/Notification/notifications.ts:74
-msgid "Sync config %{config_name} to %{env_name} successfully"
-msgstr "同步設定 %{config_name} 到 %{env_name} 成功"
+msgid "Sync config %{config_name} to %{node_name} successfully"
+msgstr "設定 %{config_name} 已成功同步到 %{node_name}"
 
 #: src/components/Notification/notifications.ts:69 src/language/constants.ts:45
 msgid "Sync Config Error"
@@ -5190,7 +5780,7 @@ msgid "Sync Config Success"
 msgstr "同步設定成功"
 
 #: src/components/NamespaceRender/NamespaceRender.vue:53
-#: src/components/NamespaceTabs/NamespaceTabs.vue:90
+#: src/components/NamespaceTabs/NamespaceTabs.vue:123
 #: src/views/namespace/columns.ts:17 src/views/namespace/Namespace.vue:31
 msgid "Sync Nodes"
 msgstr "同步節點"
@@ -5260,9 +5850,18 @@ msgstr "終端"
 msgid "Terminal Start Command"
 msgstr "終端機啟動指令"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:638
 #: src/views/preference/tabs/ExternalNotify.vue:56
 msgid "Test"
 msgstr "測試"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:349
+msgid "Test failed: %{error}"
+msgstr "測試失敗: %{error}"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:354
+msgid "Test failed: Unable to perform health check"
+msgstr "測試失敗：無法執行健康檢查"
 
 #: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:52
 #: src/views/preference/tabs/ExternalNotify.vue:27
@@ -5272,6 +5871,10 @@ msgstr "測試訊息發送成功"
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:141
 msgid "Test S3 Connection"
 msgstr "測試 S3 連接"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:346
+msgid "Test successful! Response time: %{response_time}ms"
+msgstr "測試成功！回應時間：%{response_time}毫秒"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:160
 msgid ""
@@ -5335,7 +5938,7 @@ msgid ""
 "hyphens, dashes, colons, and dots."
 msgstr "公安編號僅能包含字母、Unicode 字元、數字、連字號、破折號、冒號和句點。"
 
-#: src/views/dashboard/components/NodeAnalyticItem.vue:107
+#: src/views/dashboard/components/NodeAnalyticItem.vue:105
 msgid ""
 "The remote Nginx UI version is not compatible with the local Nginx UI "
 "version. To avoid potential errors, please upgrade the remote Nginx UI to "
@@ -5427,11 +6030,15 @@ msgid ""
 "After enabling it, you can view performance statistics"
 msgstr "此模組提供 Nginx 請求統計、連接數等數據。啟用後，您可以查看效能統計"
 
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:20
+msgid "This month"
+msgstr "本月"
+
 #: src/views/preference/tabs/ExternalNotify.vue:15
 msgid "This notification is disabled"
 msgstr "此通知已停用"
 
-#: src/views/certificate/components/RemoveCert.vue:106
+#: src/views/certificate/components/RemoveCert.vue:114
 msgid ""
 "This operation will only remove the certificate from the database. The "
 "certificate files on the file system will not be deleted."
@@ -5467,6 +6074,16 @@ msgstr "此值已被使用"
 msgid "This will permanently delete the %{type}."
 msgstr "這將永久刪除%{type}。"
 
+#: src/views/nginx_log/indexing/IndexManagement.vue:28
+msgid ""
+"This will rebuild the entire log index. All existing index data will be "
+"deleted and rebuilt from scratch. This may take some time. Continue?"
+msgstr "這將重建整個日誌索引。所有現有索引數據將被刪除並從頭開始重建。這可能需要一些時間。是否繼續？"
+
+#: src/views/nginx_log/indexing/IndexManagement.vue:54
+msgid "This will rebuild the index data for this specific file: %{path}"
+msgstr "這將重建此特定檔案的索引數據：%{path}"
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:227
 #: src/components/SystemRestore/SystemRestoreContent.vue:304
 msgid ""
@@ -5485,7 +6102,7 @@ msgstr "這將恢復設定檔案和資料庫。恢復完成後，Nginx UI 將重
 msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr "這將在 %{nodeNames} 上升級或重新安裝 Nginx UI 到 %{version}。"
 
-#: src/views/preference/tabs/AuthSettings.vue:92
+#: src/views/preference/tabs/AuthSettings.vue:91
 msgid "Throttle"
 msgstr "節流"
 
@@ -5493,8 +6110,21 @@ msgstr "節流"
 msgid "Thursday"
 msgstr "星期四"
 
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:150
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:465
+msgid "Time"
+msgstr "時間"
+
+#: src/views/nginx_log/NginxLogList.vue:225
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:672
+msgid "Time Range"
+msgstr "時間範圍"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:542
+msgid "Timeout (seconds)"
+msgstr "超時時間（秒）"
+
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:70
-#: src/views/preference/tabs/AuthSettings.vue:112
 #: src/views/preference/tabs/LogrotateSettings.vue:12
 msgid "Tips"
 msgstr "提示"
@@ -5509,12 +6139,11 @@ msgstr "提示：您可以通過增加 worker_processes 或 worker_connections �
 msgid "Title"
 msgstr "標題"
 
-#: src/language/curd.ts:68
-#: src/language/curd.ts:69
+#: src/language/curd.ts:68 src/language/curd.ts:69
 msgid "to confirm deletion"
 msgstr "確認刪除"
 
-#: src/views/certificate/components/RemoveCert.vue:124
+#: src/views/certificate/components/RemoveCert.vue:132
 msgid "To confirm revocation, please type \"Revoke\" in the field below:"
 msgstr "若要確認撤銷，請在下方欄位中輸入「撤銷」："
 
@@ -5551,6 +6180,10 @@ msgstr ""
 "要使用本機大型語言模型，請使用 ollama、vllm 或 lmdeploy 部署。它們提供與 OpenAI 相容的 API 端點，因此只需將 "
 "baseUrl 設定為您的本機 API。"
 
+#: src/views/nginx_log/NginxLogList.vue:240
+msgid "Today"
+msgstr "今天"
+
 #: src/views/dashboard/NginxDashBoard.vue:57
 msgid "Toggle failed"
 msgstr "切換失敗"
@@ -5563,6 +6196,10 @@ msgstr "令牌為空"
 msgid "Token is not valid"
 msgstr "令牌無效"
 
+#: src/views/nginx_log/dashboard/components/TopUrlsTable.vue:37
+msgid "TOP 10 URLs"
+msgstr "前 10 個URL"
+
 #: src/language/curd.ts:5
 msgid "Total"
 msgstr "總計"
@@ -5571,6 +6208,10 @@ msgstr "總計"
 #: src/views/dashboard/components/PerformanceTablesCard.vue:54
 msgid "Total connections"
 msgstr "總連線數"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:748
+msgid "Total Entries"
+msgstr "總條目數"
 
 #: src/composables/usePerformanceMetrics.ts:89
 #: src/views/dashboard/components/PerformanceTablesCard.vue:49
@@ -5584,6 +6225,10 @@ msgstr "Nginx 行程總數"
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:94
 msgid "Total Nginx Processes"
 msgstr "Nginx 行程總數"
+
+#: src/views/nginx_log/dashboard/components/SummaryStats.vue:24
+msgid "Total PV"
+msgstr "總訪問量"
 
 #: src/views/dashboard/ServerAnalytic.vue:283
 msgid "Total Receive"
@@ -5602,6 +6247,10 @@ msgstr "總請求數 / 總連線數"
 msgid "Total Send"
 msgstr "總發送"
 
+#: src/views/nginx_log/dashboard/components/SummaryStats.vue:15
+msgid "Total UV"
+msgstr "總 UV 數"
+
 #: src/views/preference/components/AuthSettings/TOTP.vue:66
 msgid "TOTP"
 msgstr "TOTP"
@@ -5612,6 +6261,10 @@ msgid ""
 "password algorithm."
 msgstr "TOTP 是一種使用基於時間的一次性密碼演算法的多重因素驗證方法。"
 
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:766
+msgid "Traffic"
+msgstr "流量"
+
 #: src/components/Notification/detailRender.tsx:65
 msgid "Translating error..."
 msgstr "正在翻譯錯誤..."
@@ -5619,6 +6272,14 @@ msgstr "正在翻譯錯誤..."
 #: src/language/curd.ts:20
 msgid "Trash"
 msgstr "垃圾桶"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:813
+msgid "Try adjusting your search criteria or navigate to different pages."
+msgstr "嘗試調整搜索條件或導航到其他頁面。"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:823
+msgid "Try adjusting your search criteria or time range."
+msgstr "嘗試調整您的搜尋條件或時間範圍。"
 
 #: src/views/backup/AutoBackup/components/CronEditor.vue:28
 msgid "Tuesday"
@@ -5632,7 +6293,7 @@ msgstr "需要多重因素驗證"
 #: src/views/certificate/CertificateList/certColumns.tsx:24
 #: src/views/config/components/Delete.vue:122
 #: src/views/dashboard/components/ModulesTable.vue:83
-#: src/views/nginx_log/NginxLogList.vue:28
+#: src/views/nginx_log/NginxLogList.vue:52
 #: src/views/notification/notificationColumns.tsx:8
 #: src/views/preference/components/ExternalNotify/columns.tsx:19
 msgid "Type"
@@ -5642,6 +6303,26 @@ msgstr "類型"
 msgid "Type %{delete} to confirm"
 msgstr "輸入 %{delete} 以確認"
 
+#: src/views/nginx_log/structured/components/SearchFilters.vue:142
+msgid "Type or select browser"
+msgstr "輸入或選擇瀏覽器"
+
+#: src/views/nginx_log/structured/components/SearchFilters.vue:174
+msgid "Type or select device"
+msgstr "輸入或選擇裝置"
+
+#: src/views/nginx_log/structured/components/SearchFilters.vue:158
+msgid "Type or select OS"
+msgstr "輸入或選擇作業系統"
+
+#: src/views/nginx_log/structured/components/SearchFilters.vue:111
+msgid "Type or select status codes"
+msgstr "輸入或選擇狀態碼"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:772
+msgid "Unique Pages"
+msgstr "獨立頁面"
+
 #: src/components/PortScanner/PortScannerCompact.vue:47
 #: src/composables/useNginxPerformance.ts:18
 msgid "Unknown"
@@ -5650,6 +6331,10 @@ msgstr "未知"
 #: src/constants/errors/backup.ts:64
 msgid "Unsupported backup type: {0}"
 msgstr "不支援的備份類型: {0}"
+
+#: src/constants/errors/nginx_log.ts:11
+msgid "Unsupported log format"
+msgstr "不支援的日誌格式"
 
 #: src/views/user/UserProfile.vue:218
 msgid "Update Password"
@@ -5676,8 +6361,8 @@ msgstr "更新成功"
 msgid "Updated at"
 msgstr "更新時間"
 
-#: src/routes/modules/system.ts:26 src/views/node/Node.vue:188
-#: src/views/node/Node.vue:196 src/views/system/Upgrade.vue:154
+#: src/routes/modules/system.ts:26 src/views/node/Node.vue:187
+#: src/views/node/Node.vue:195 src/views/system/Upgrade.vue:154
 #: src/views/system/Upgrade.vue:159
 msgid "Upgrade"
 msgstr "升級"
@@ -5722,6 +6407,7 @@ msgstr "上游測試類型"
 msgid "Uptime:"
 msgstr "運作時間："
 
+#: src/views/nginx_log/dashboard/components/TopUrlsTable.vue:13
 #: src/views/node/nodeColumns.tsx:18
 msgid "URL"
 msgstr "URL"
@@ -5741,6 +6427,11 @@ msgstr "使用臨時路徑"
 #: src/components/ChatGPT/ChatMessage.vue:187
 msgid "User"
 msgstr "使用者名稱"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:553
+#: src/views/nginx_log/structured/components/SearchFilters.vue:200
+msgid "User Agent"
+msgstr "使用者代理"
 
 #: src/constants/errors/user.ts:3
 msgid "User banned"
@@ -5771,11 +6462,19 @@ msgstr "使用者名稱 (*)"
 msgid "Username length cannot exceed 255 characters"
 msgstr "使用者名稱長度不能超過255個字元"
 
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:760
+msgid "UV"
+msgstr "獨立訪客"
+
 #: src/components/CertInfo/CertInfo.vue:24
 #: src/views/certificate/ACMEUser.vue:159
 #: src/views/certificate/CertificateList/certColumns.tsx:76
 msgid "Valid"
 msgstr "有效"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:580
+msgid "Validate SSL Certificate"
+msgstr "驗證SSL憑證"
 
 #: src/views/dashboard/components/PerformanceTablesCard.vue:22
 msgid "Value"
@@ -5786,6 +6485,10 @@ msgstr "數值"
 msgid "Verify Backup File Integrity"
 msgstr "驗證備份檔案完整性"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:586
+msgid "Verify Hostname"
+msgstr "驗證主機名稱"
+
 #: src/views/install/components/InstallView.vue:61
 msgid "Verify system requirements"
 msgstr "驗證系統要求"
@@ -5794,7 +6497,7 @@ msgstr "驗證系統要求"
 msgid "Version"
 msgstr "版本"
 
-#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:106
+#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:339
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:83
 msgid "View"
 msgstr "檢視"
@@ -5814,6 +6517,10 @@ msgstr "檢視復原代碼"
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:70
 msgid "Viewed"
 msgstr "已檢視"
+
+#: src/views/nginx_log/dashboard/components/TopUrlsTable.vue:19
+msgid "Visits"
+msgstr "訪問量"
 
 #: src/composables/usePerformanceMetrics.ts:114
 #: src/views/dashboard/components/PerformanceTablesCard.vue:74
@@ -5854,7 +6561,7 @@ msgid ""
 "the Nginx. Are you sure you want to continue?"
 msgstr "我們將從該檔案中刪除 HTTPChallenge 設定並重新載入 Nginx 設定檔案。你確定你要繼續嗎？"
 
-#: src/views/preference/tabs/AuthSettings.vue:65
+#: src/views/preference/tabs/AuthSettings.vue:64
 msgid "Webauthn"
 msgstr "Webauthn"
 
@@ -5862,9 +6569,13 @@ msgstr "Webauthn"
 msgid "WebAuthn settings are not configured"
 msgstr "WebAuthn 設定尚未設定"
 
-#: src/views/certificate/components/RemoveCert.vue:55
+#: src/views/certificate/components/RemoveCert.vue:63
 msgid "WebSocket connection error"
 msgstr "WebSocket 連接錯誤"
+
+#: src/views/dashboard/SiteNavigation.vue:96
+msgid "WebSocket not connected, please wait for connection"
+msgstr "WebSocket 未連接，請等待連接"
 
 #: src/views/preference/components/ExternalNotify/wecom.ts:5
 msgid "WeCom"
@@ -5951,11 +6662,13 @@ msgstr "將憑證私鑰寫入磁碟"
 msgid "Writing certificate to disk"
 msgstr "將憑證寫入磁碟"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:110
-#: src/components/NamespaceTabs/NamespaceTabs.vue:98
+#: src/components/NamespaceTabs/NamespaceTabs.vue:131
+#: src/components/NamespaceTabs/NamespaceTabs.vue:143
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:101
 #: src/components/NgxConfigEditor/LocationEditor.vue:88
-#: src/views/preference/tabs/AuthSettings.vue:131
+#: src/views/nginx_log/indexing/IndexManagement.vue:29
+#: src/views/nginx_log/indexing/IndexManagement.vue:55
+#: src/views/preference/tabs/AuthSettings.vue:129
 #: src/views/preference/tabs/CertSettings.vue:72
 msgid "Yes"
 msgstr "是的"
@@ -6014,6 +6727,12 @@ msgstr "您的舊代碼將不再有效。"
 #: src/views/preference/components/AuthSettings/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "您的通行金鑰"
+
+#~ msgid "Index Size"
+#~ msgstr "索引大小"
+
+#~ msgid "Environments"
+#~ msgstr "環境"
 
 #~ msgid "Node Group"
 #~ msgstr "節點群組"
@@ -6105,10 +6824,6 @@ msgstr "您的通行金鑰"
 #~ msgid "Recovered Successfully"
 #~ msgstr "恢復成功"
 
-#~ msgid "Total %{total} item"
-#~ msgid_plural "Total %{total} items"
-#~ msgstr[0] "總計 %{total} 項"
-
 #~ msgid "View Details"
 #~ msgstr "檢視詳細資訊"
 
@@ -6153,9 +6868,6 @@ msgstr "您的通行金鑰"
 #~ "directory in Nginx.LogDirWhiteList."
 #~ msgstr "如果日誌未被索引，請檢查日誌檔案是否位於 Nginx 的 LogDirWhiteList 目錄下。"
 
-#~ msgid "Indexed"
-#~ msgstr "已建立索引"
-
 #, fuzzy
 #~ msgid "Nginx Conf Include Conf.d"
 #~ msgstr "Nginx 設定檔包含 Conf.d"
@@ -6169,17 +6881,10 @@ msgstr "您的通行金鑰"
 #~ msgid "Format error %{msg}"
 #~ msgstr "格式錯誤 %{msg}"
 
-#~ msgid "Failed to save, syntax error(s) was detected in the configuration."
-#~ msgstr "儲存失敗，在設定中偵測到語法錯誤。"
-
 #~ msgid ""
 #~ "When you enable/disable, delete, or save this stream, the nodes set in the "
 #~ "Node Group and the nodes selected below will be synchronized."
 #~ msgstr "當您啟用/停用、刪除或儲存此串流時，在節點群組中設定的節點以及下方選擇的節點將會同步更新。"
-
-#, fuzzy
-#~ msgid "Access Token"
-#~ msgstr "存取日誌"
 
 #, fuzzy
 #~ msgid "Bot Token"
@@ -6275,9 +6980,6 @@ msgstr "您的通行金鑰"
 #~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, please upgrade "
 #~ "the remote Nginx UI to the latest version"
 #~ msgstr "將 %{orig_path} 重新命名為 %{new_path} 在 %{env_name} 失敗，請將遠端 Nginx UI 升級到最新版本"
-
-#~ msgid "Server Name"
-#~ msgstr "伺服器名稱"
 
 #~ msgid "Enable 2FA"
 #~ msgstr "啟用多因素身份驗證"

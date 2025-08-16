@@ -19,12 +19,12 @@ async function handleChange(checked) {
     await externalNotify.updateItem(props.record.id, {
       enabled: checked,
     })
-    // 更新本地状态
+    // Update local state
     message.success($gettext('Status updated successfully'))
   }
   catch (error) {
     console.error('Update enabled status error:', error)
-    // 出错时恢复原状态
+    // Revert to original state on error
     enabled.value = props.record.enabled
     message.error($gettext('Failed to update status'))
   }
