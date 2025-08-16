@@ -44,22 +44,7 @@ func newSiteConfig(db *gorm.DB, opts ...gen.DOOption) siteConfig {
 	_siteConfig.MaxRedirects = field.NewInt(tableName, "max_redirects")
 	_siteConfig.FollowRedirects = field.NewBool(tableName, "follow_redirects")
 	_siteConfig.CheckFavicon = field.NewBool(tableName, "check_favicon")
-	_siteConfig.HealthCheckConfigProtocol = field.NewString(tableName, "hc_protocol")
-	_siteConfig.HealthCheckConfigMethod = field.NewString(tableName, "hc_method")
-	_siteConfig.HealthCheckConfigPath = field.NewString(tableName, "hc_path")
-	_siteConfig.HealthCheckConfigHeaders = field.NewField(tableName, "hc_headers")
-	_siteConfig.HealthCheckConfigBody = field.NewString(tableName, "hc_body")
-	_siteConfig.HealthCheckConfigExpectedStatus = field.NewField(tableName, "hc_expected_status")
-	_siteConfig.HealthCheckConfigExpectedText = field.NewString(tableName, "hc_expected_text")
-	_siteConfig.HealthCheckConfigNotExpectedText = field.NewString(tableName, "hc_not_expected_text")
-	_siteConfig.HealthCheckConfigValidateSSL = field.NewBool(tableName, "hc_validate_ssl")
-	_siteConfig.HealthCheckConfigGRPCService = field.NewString(tableName, "hc_g_rpc_service")
-	_siteConfig.HealthCheckConfigGRPCMethod = field.NewString(tableName, "hc_g_rpc_method")
-	_siteConfig.HealthCheckConfigDNSResolver = field.NewString(tableName, "hc_dns_resolver")
-	_siteConfig.HealthCheckConfigSourceIP = field.NewString(tableName, "hc_source_ip")
-	_siteConfig.HealthCheckConfigVerifyHostname = field.NewBool(tableName, "hc_verify_hostname")
-	_siteConfig.HealthCheckConfigClientCert = field.NewString(tableName, "hc_client_cert")
-	_siteConfig.HealthCheckConfigClientKey = field.NewString(tableName, "hc_client_key")
+	_siteConfig.HealthCheckConfig = field.NewField(tableName, "health_check_config")
 
 	_siteConfig.fillFieldMap()
 
@@ -69,39 +54,24 @@ func newSiteConfig(db *gorm.DB, opts ...gen.DOOption) siteConfig {
 type siteConfig struct {
 	siteConfigDo
 
-	ALL                              field.Asterisk
-	ID                               field.Uint64
-	CreatedAt                        field.Time
-	UpdatedAt                        field.Time
-	DeletedAt                        field.Field
-	Host                             field.String
-	Port                             field.Int
-	Scheme                           field.String
-	DisplayURL                       field.String
-	CustomOrder                      field.Int
-	HealthCheckEnabled               field.Bool
-	CheckInterval                    field.Int
-	Timeout                          field.Int
-	UserAgent                        field.String
-	MaxRedirects                     field.Int
-	FollowRedirects                  field.Bool
-	CheckFavicon                     field.Bool
-	HealthCheckConfigProtocol        field.String
-	HealthCheckConfigMethod          field.String
-	HealthCheckConfigPath            field.String
-	HealthCheckConfigHeaders         field.Field
-	HealthCheckConfigBody            field.String
-	HealthCheckConfigExpectedStatus  field.Field
-	HealthCheckConfigExpectedText    field.String
-	HealthCheckConfigNotExpectedText field.String
-	HealthCheckConfigValidateSSL     field.Bool
-	HealthCheckConfigGRPCService     field.String
-	HealthCheckConfigGRPCMethod      field.String
-	HealthCheckConfigDNSResolver     field.String
-	HealthCheckConfigSourceIP        field.String
-	HealthCheckConfigVerifyHostname  field.Bool
-	HealthCheckConfigClientCert      field.String
-	HealthCheckConfigClientKey       field.String
+	ALL                field.Asterisk
+	ID                 field.Uint64
+	CreatedAt          field.Time
+	UpdatedAt          field.Time
+	DeletedAt          field.Field
+	Host               field.String
+	Port               field.Int
+	Scheme             field.String
+	DisplayURL         field.String
+	CustomOrder        field.Int
+	HealthCheckEnabled field.Bool
+	CheckInterval      field.Int
+	Timeout            field.Int
+	UserAgent          field.String
+	MaxRedirects       field.Int
+	FollowRedirects    field.Bool
+	CheckFavicon       field.Bool
+	HealthCheckConfig  field.Field
 
 	fieldMap map[string]field.Expr
 }
@@ -134,22 +104,7 @@ func (s *siteConfig) updateTableName(table string) *siteConfig {
 	s.MaxRedirects = field.NewInt(table, "max_redirects")
 	s.FollowRedirects = field.NewBool(table, "follow_redirects")
 	s.CheckFavicon = field.NewBool(table, "check_favicon")
-	s.HealthCheckConfigProtocol = field.NewString(table, "hc_protocol")
-	s.HealthCheckConfigMethod = field.NewString(table, "hc_method")
-	s.HealthCheckConfigPath = field.NewString(table, "hc_path")
-	s.HealthCheckConfigHeaders = field.NewField(table, "hc_headers")
-	s.HealthCheckConfigBody = field.NewString(table, "hc_body")
-	s.HealthCheckConfigExpectedStatus = field.NewField(table, "hc_expected_status")
-	s.HealthCheckConfigExpectedText = field.NewString(table, "hc_expected_text")
-	s.HealthCheckConfigNotExpectedText = field.NewString(table, "hc_not_expected_text")
-	s.HealthCheckConfigValidateSSL = field.NewBool(table, "hc_validate_ssl")
-	s.HealthCheckConfigGRPCService = field.NewString(table, "hc_g_rpc_service")
-	s.HealthCheckConfigGRPCMethod = field.NewString(table, "hc_g_rpc_method")
-	s.HealthCheckConfigDNSResolver = field.NewString(table, "hc_dns_resolver")
-	s.HealthCheckConfigSourceIP = field.NewString(table, "hc_source_ip")
-	s.HealthCheckConfigVerifyHostname = field.NewBool(table, "hc_verify_hostname")
-	s.HealthCheckConfigClientCert = field.NewString(table, "hc_client_cert")
-	s.HealthCheckConfigClientKey = field.NewString(table, "hc_client_key")
+	s.HealthCheckConfig = field.NewField(table, "health_check_config")
 
 	s.fillFieldMap()
 
@@ -166,7 +121,7 @@ func (s *siteConfig) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (s *siteConfig) fillFieldMap() {
-	s.fieldMap = make(map[string]field.Expr, 32)
+	s.fieldMap = make(map[string]field.Expr, 17)
 	s.fieldMap["id"] = s.ID
 	s.fieldMap["created_at"] = s.CreatedAt
 	s.fieldMap["updated_at"] = s.UpdatedAt
@@ -183,22 +138,7 @@ func (s *siteConfig) fillFieldMap() {
 	s.fieldMap["max_redirects"] = s.MaxRedirects
 	s.fieldMap["follow_redirects"] = s.FollowRedirects
 	s.fieldMap["check_favicon"] = s.CheckFavicon
-	s.fieldMap["hc_protocol"] = s.HealthCheckConfigProtocol
-	s.fieldMap["hc_method"] = s.HealthCheckConfigMethod
-	s.fieldMap["hc_path"] = s.HealthCheckConfigPath
-	s.fieldMap["hc_headers"] = s.HealthCheckConfigHeaders
-	s.fieldMap["hc_body"] = s.HealthCheckConfigBody
-	s.fieldMap["hc_expected_status"] = s.HealthCheckConfigExpectedStatus
-	s.fieldMap["hc_expected_text"] = s.HealthCheckConfigExpectedText
-	s.fieldMap["hc_not_expected_text"] = s.HealthCheckConfigNotExpectedText
-	s.fieldMap["hc_validate_ssl"] = s.HealthCheckConfigValidateSSL
-	s.fieldMap["hc_g_rpc_service"] = s.HealthCheckConfigGRPCService
-	s.fieldMap["hc_g_rpc_method"] = s.HealthCheckConfigGRPCMethod
-	s.fieldMap["hc_dns_resolver"] = s.HealthCheckConfigDNSResolver
-	s.fieldMap["hc_source_ip"] = s.HealthCheckConfigSourceIP
-	s.fieldMap["hc_verify_hostname"] = s.HealthCheckConfigVerifyHostname
-	s.fieldMap["hc_client_cert"] = s.HealthCheckConfigClientCert
-	s.fieldMap["hc_client_key"] = s.HealthCheckConfigClientKey
+	s.fieldMap["health_check_config"] = s.HealthCheckConfig
 }
 
 func (s siteConfig) clone(db *gorm.DB) siteConfig {

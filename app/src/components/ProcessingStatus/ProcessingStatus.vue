@@ -38,6 +38,13 @@ const isProcessing = computed(() => {
               :text="$gettext('AutoCert is running...')"
             />
           </div>
+          <div>
+            <ABadge
+              v-if="processingStatus.nginx_log_indexing"
+              status="processing"
+              :text="$gettext('Nginx Log Indexing...')"
+            />
+          </div>
         </div>
       </template>
       <SyncOutlined spin />

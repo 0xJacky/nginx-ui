@@ -14,7 +14,7 @@ export default defineConfig({
   shortcuts: [],
   rules: [],
   variants: [
-    // 使用工具函数
+    // Use utility functions
     matcher => {
       if (!matcher.endsWith('!'))
         return matcher

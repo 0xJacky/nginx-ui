@@ -1,11 +1,14 @@
 <script setup lang="ts">
+import type { Cert } from '@/api/cert'
 import { message } from 'ant-design-vue'
 import cert from '@/api/cert'
+import { AutoCertState } from '@/constants'
 import websocket from '@/lib/websocket'
 
 const props = defineProps<{
   id: number
   disabled?: boolean
+  certificate?: Cert // Certificate full information
 }>()
 
 const emit = defineEmits(['removed'])
@@ -14,6 +17,11 @@ const modalVisible = ref(false)
 const confirmLoading = ref(false)
 const shouldRevoke = ref(false)
 const revokeInput = ref('')
+
+// Check if it's a managed certificate (auto_cert === AutoCertState.Enable)
+const isManagedCertificate = computed(() => {
+  return props.certificate?.auto_cert === AutoCertState.Enable
+})
 
 // Handle certificate deletion
 function handleDelete() {
@@ -107,7 +115,7 @@ function handleCancel() {
         class="mb-4"
       />
 
-      <div class="mb-4">
+      <div v-if="isManagedCertificate" class="mb-4">
         <ACheckbox v-model:checked="shouldRevoke">
           {{ $gettext('Revoke this certificate') }}
         </ACheckbox>
