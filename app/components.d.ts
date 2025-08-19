@@ -51,6 +51,7 @@ declare module 'vue' {
     AQrcode: typeof import('ant-design-vue/es')['QRCode']
     ARadio: typeof import('ant-design-vue/es')['Radio']
     ARadioGroup: typeof import('ant-design-vue/es')['RadioGroup']
+    ARangePicker: typeof import('ant-design-vue/es')['RangePicker']
     AResult: typeof import('ant-design-vue/es')['Result']
     ARow: typeof import('ant-design-vue/es')['Row']
     ASegmented: typeof import('ant-design-vue/es')['Segmented']

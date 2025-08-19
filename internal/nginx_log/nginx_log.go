@@ -46,6 +46,11 @@ func scanForLogDirectives(configPath string, content []byte) error {
 			directiveType := string(match[1]) // "access_log" or "error_log"
 			logPath := string(match[2])       // Path to log file
 
+			// Skip if log is disabled with "off"
+			if logPath == "off" {
+				continue
+			}
+
 			// Handle relative paths by joining with nginx prefix
 			if !filepath.IsAbs(logPath) {
 				logPath = filepath.Join(prefix, logPath)

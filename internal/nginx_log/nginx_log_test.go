@@ -1,6 +1,7 @@
 package nginx_log
 
 import (
+	"strings"
 	"testing"
 )
 
@@ -296,6 +297,78 @@ func TestLogDirectiveRegex(t *testing.T) {
 					tc.name, tc.expectedActive, activeCount, tc.content)
 			}
 		})
+	}
+}
+
+// TestAccessLogOff tests that "access_log off;" directives are properly ignored
+func TestAccessLogOff(t *testing.T) {
+	// Clear cache before test
+	ClearLogCache()
+
+	configPath := "/etc/nginx/sites-available/test.conf"
+
+	// Content with various access_log directives including "off"
+	content := []byte(`
+server {
+    listen 80;
+    server_name example.com;
+    
+    # Normal access log
+    access_log /var/log/nginx/access.log;
+    
+    # Disabled access log - should be ignored
+    access_log off;
+    
+    # Another normal access log with format
+    access_log /var/log/nginx/custom.log combined;
+    
+    # Error log should work normally
+    error_log /var/log/nginx/error.log;
+    
+    # Error log can also be turned off
+    error_log off;
+}
+`)
+
+	err := scanForLogDirectives(configPath, content)
+	if err != nil {
+		t.Fatalf("Scan failed: %v", err)
+	}
+
+	// Should only find 3 valid log paths (excluding "off" directives)
+	logs := GetAllLogPaths()
+	expectedCount := 3
+	if len(logs) != expectedCount {
+		t.Fatalf("Expected %d logs, got %d. Logs found: %+v", expectedCount, len(logs), logs)
+	}
+
+	// Verify the correct paths were found
+	expectedPaths := map[string]string{
+		"/var/log/nginx/access.log": "access",
+		"/var/log/nginx/custom.log": "access",
+		"/var/log/nginx/error.log":  "error",
+	}
+
+	for _, log := range logs {
+		expectedType, exists := expectedPaths[log.Path]
+		if !exists {
+			t.Errorf("Unexpected log path found: %s", log.Path)
+		} else if log.Type != expectedType {
+			t.Errorf("Expected log type %s for path %s, got %s", expectedType, log.Path, log.Type)
+		}
+		delete(expectedPaths, log.Path)
+	}
+
+	// Check that all expected paths were found
+	for path := range expectedPaths {
+		t.Errorf("Expected log path not found: %s", path)
+	}
+
+	// Verify "off" was not treated as a path
+	for _, log := range logs {
+		if log.Path == "off" || strings.Contains(log.Path, "off") {
+			t.Errorf("'off' should not be treated as a log path: %s", log.Path)
+		}
 	}
 }
 
