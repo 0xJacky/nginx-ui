@@ -4,7 +4,6 @@ import type { AccessLogEntry, AdvancedSearchRequest, PreflightResponse } from '@
 import { DownOutlined, ExclamationCircleOutlined, LoadingOutlined, ReloadOutlined } from '@ant-design/icons-vue'
 import { message, Tag } from 'ant-design-vue'
 import dayjs from 'dayjs'
-import { h, nextTick } from 'vue'
 import nginx_log from '@/api/nginx_log'
 import { useWebSocketEventBus } from '@/composables/useWebSocketEventBus'
 import { bytesToSize } from '@/lib/helper'
@@ -158,13 +157,26 @@ const structuredLogColumns = computed(() => [
   {
     title: $gettext('IP'),
     dataIndex: 'ip',
-    width: 120,
+    width: 350,
     sorter: true,
     sortOrder: getSortOrder('ip'),
-    customRender: ({ record }: { record: AccessLogEntry }) => h('div', { class: 'flex items-center gap-2' }, [
-      record.location ? h(Tag, { color: 'blue', size: 'small' }, { default: () => record.location }) : null,
-      h('span', record.ip),
-    ]),
+    customRender: ({ record }: { record: AccessLogEntry }) => {
+      const locationParts: string[] = []
+      if (record.region_code) {
+        locationParts.push(record.region_code)
+      }
+      if (record.province) {
+        locationParts.push(record.province)
+      }
+      if (record.city) {
+        locationParts.push(record.city)
+      }
+
+      return h('div', { class: 'flex items-center gap-2' }, [
+        locationParts.length > 0 ? h(Tag, { color: 'blue', size: 'small' }, { default: () => locationParts.join(' · ') }) : null,
+        h('span', record.ip),
+      ])
+    },
   },
   {
     title: $gettext('Request'),
@@ -319,9 +331,6 @@ async function performAdvancedSearch() {
       return
     }
 
-    // Only show error message for actual search failures
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error'
-    message.error(`Search failed: ${errorMessage}`)
     // Reset results on error
     searchResults.value = []
     searchTotal.value = 0
@@ -503,12 +512,12 @@ async function refreshData() {
     // Reload search results if we have valid data
     if (hasIndexedData && timeRange.value.start && timeRange.value.end) {
       await performAdvancedSearch()
-      message.success('Data refreshed successfully')
+      message.success($gettext('Data refreshed successfully'))
     }
   }
   catch {
     indexingStatus.value = 'failed'
-    message.error('Failed to refresh data')
+    message.error($gettext('Failed to refresh data'))
   }
 }
 
@@ -541,10 +550,10 @@ async function handleInitializedData(hasIndexedData: boolean) {
 
     // Only show messages for specific scenarios
     if (searchResults.value.length === 0 && hasIndexedData) {
-      message.info('No logs found in the selected time range.')
+      message.info($gettext('No logs found in the selected time range.'))
     }
     else if (searchResults.value.length > 0 && !hasIndexedData) {
-      message.info('Background indexing in progress. Data will be updated automatically when ready.')
+      message.info($gettext('Background indexing in progress. Data will be updated automatically when ready.'))
     }
   }
 }
@@ -560,7 +569,7 @@ async function handleIndexReadyNotification(data: {
   const currentPath = logPath.value || ''
   // Check if the notification is for the current log path
   if (data.log_path === currentPath || (!currentPath && data.log_path)) {
-    message.success('Log indexing completed! Loading updated data...')
+    message.success($gettext('Log indexing completed! Loading updated data...'))
 
     try {
       // Re-request preflight to get the latest information
@@ -599,10 +608,9 @@ onMounted(async () => {
       indexingStatus.value = 'ready'
       await handleInitializedData(hasIndexedData)
     }
-    else {
-      // Index is not ready yet, keep indexing status and wait for event notification
-      // indexingStatus remains 'indexing'
-    }
+
+    // Index is not ready yet, keep indexing status and wait for event notification
+    // indexingStatus remains 'indexing'
   }
   catch {
     indexingStatus.value = 'failed'
@@ -799,7 +807,7 @@ defineExpose({
               }),
             }"
             size="small"
-            :scroll="{ x: 1600 }"
+            :scroll="{ x: 2400 }"
             :columns="structuredLogColumns"
             :loading="isLoading"
             @change="handleTableChange"

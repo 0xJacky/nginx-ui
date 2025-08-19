@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import type { DashboardAnalytics } from '@/api/nginx_log'
-import { Card } from 'ant-design-vue'
 import { storeToRefs } from 'pinia'
-import VueApexCharts from 'vue3-apexcharts'
+import VueApexchart from 'vue3-apexcharts'
 import { useSettingsStore } from '@/pinia'
 
 const props = defineProps<{
@@ -10,8 +9,6 @@ const props = defineProps<{
   loading: boolean
   endDate?: string
 }>()
-
-const apexchart = VueApexCharts
 
 const settings = useSettingsStore()
 const { theme } = storeToRefs(settings)
@@ -126,8 +123,8 @@ const hourlySeries = computed(() => {
 </script>
 
 <template>
-  <Card size="small" :loading="loading">
-    <apexchart
+  <ACard size="small" :loading="loading">
+    <VueApexchart
       v-if="dashboardData"
       :key="`hourly-${theme}`"
       type="bar"
@@ -135,5 +132,5 @@ const hourlySeries = computed(() => {
       :options="hourlyChartOptions"
       :series="hourlySeries"
     />
-  </Card>
+  </ACard>
 </template>

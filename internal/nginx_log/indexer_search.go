@@ -9,6 +9,7 @@ import (
 	"github.com/blevesearch/bleve/v2"
 	"github.com/blevesearch/bleve/v2/search"
 	"github.com/blevesearch/bleve/v2/search/query"
+	"github.com/spf13/cast"
 	"github.com/uozi-tech/cosy/logger"
 )
 
@@ -19,17 +20,15 @@ func (li *LogIndexer) SearchLogs(ctx context.Context, req *QueryRequest) (*Query
 	// Create cache key
 	cacheKey := li.createCacheKey(req)
 
-	// Check cache first (skip in debug mode)
+	// Check cache first
 	if cached, found := li.cache.Get(cacheKey); found {
-		logger.Debugf("Cache hit for key: %s, returning %d entries with total %d", cacheKey, len(cached.Entries), cached.Total)
-		
 		// Calculate summary statistics from cache (we still need to do this since cache doesn't store summary)
 		summaryStats, err := li.calculateSummaryStatsFromQuery(ctx, li.buildSearchQuery(req))
 		if err != nil {
 			logger.Warnf("Failed to calculate summary statistics from cache: %v", err)
 			summaryStats = &SummaryStats{}
 		}
-		
+
 		return &QueryResult{
 			Entries: cached.Entries,
 			Total:   cached.Total,
@@ -37,7 +36,6 @@ func (li *LogIndexer) SearchLogs(ctx context.Context, req *QueryRequest) (*Query
 			Summary: summaryStats,
 		}, nil
 	}
-	logger.Debugf("Cache miss for key: %s", cacheKey)
 
 	// Build search query
 	query := li.buildSearchQuery(req)
@@ -88,9 +86,6 @@ func (li *LogIndexer) SearchLogs(ctx context.Context, req *QueryRequest) (*Query
 	// Include all fields in results
 	searchReq.Fields = []string{"*"}
 
-	// Debug: Log the query type and pagination
-	logger.Infof("Executing search query type: %T", query)
-	logger.Infof("Search request - Size: %d, From: %d (Page: %d)", searchReq.Size, searchReq.From, (searchReq.From/searchReq.Size)+1)
 
 	// Execute search
 	searchResult, err := li.index.SearchInContext(ctx, searchReq)
@@ -98,21 +93,14 @@ func (li *LogIndexer) SearchLogs(ctx context.Context, req *QueryRequest) (*Query
 		return nil, fmt.Errorf("search failed: %w", err)
 	}
 
-	logger.Infof("Search completed: found %d hits, total: %d", len(searchResult.Hits), searchResult.Total)
-
 	// Convert search results to AccessLogEntry
 	entries := make([]*AccessLogEntry, 0, len(searchResult.Hits))
-	for i, hit := range searchResult.Hits {
-		logger.Debugf("Processing hit %d: %T", i, hit)
+	for _, hit := range searchResult.Hits {
 		entry := li.convertHitToEntry(hit)
 		if entry != nil {
 			entries = append(entries, entry)
-		} else {
-			logger.Warnf("Failed to convert hit %d to entry", i)
 		}
 	}
-
-	logger.Infof("Successfully converted %d out of %d hits to entries", len(entries), len(searchResult.Hits))
 
 	// Calculate summary statistics from ALL matching results (not just current page)
 	summaryStats, err := li.calculateSummaryStatsFromQuery(ctx, query)
@@ -296,14 +284,11 @@ func (li *LogIndexer) buildSearchQuery(req *QueryRequest) query.Query {
 	}
 
 	// Combine all queries
-	logger.Infof("Building query with %d conditions", len(queries))
 	if len(queries) == 0 {
 		return bleve.NewMatchAllQuery()
 	} else if len(queries) == 1 {
-		logger.Infof("Using single query: %T", queries[0])
 		return queries[0]
 	} else {
-		logger.Infof("Using conjunction query with %d conditions", len(queries))
 		return bleve.NewConjunctionQuery(queries...)
 	}
 }
@@ -311,9 +296,7 @@ func (li *LogIndexer) buildSearchQuery(req *QueryRequest) query.Query {
 // getStringField safely gets a string field from search results
 func (li *LogIndexer) getStringField(fields map[string]interface{}, fieldName string) string {
 	if value, ok := fields[fieldName]; ok {
-		if str, ok := value.(string); ok {
-			return str
-		}
+		return cast.ToString(value)
 	}
 	return ""
 }
@@ -321,17 +304,13 @@ func (li *LogIndexer) getStringField(fields map[string]interface{}, fieldName st
 // getFloatField safely gets a float field from search results
 func (li *LogIndexer) getFloatField(fields map[string]interface{}, fieldName string) float64 {
 	if value, ok := fields[fieldName]; ok {
-		if f, ok := value.(float64); ok {
-			return f
-		}
+		return cast.ToFloat64(value)
 	}
 	return 0
 }
 
 // convertHitToEntry converts a Bleve search hit to an AccessLogEntry
 func (li *LogIndexer) convertHitToEntry(hit interface{}) *AccessLogEntry {
-	// Debug: Print the actual type we received
-	logger.Debugf("convertHitToEntry received type: %T", hit)
 
 	// Try different type assertions for Bleve v2
 	switch h := hit.(type) {
@@ -341,7 +320,9 @@ func (li *LogIndexer) convertHitToEntry(hit interface{}) *AccessLogEntry {
 		// Extract fields from the hit
 		if fields := h.Fields; fields != nil {
 			entry.IP = li.getStringField(fields, "ip")
-			entry.Location = li.getStringField(fields, "location")
+			entry.RegionCode = li.getStringField(fields, "region_code")
+			entry.Province = li.getStringField(fields, "province")
+			entry.City = li.getStringField(fields, "city")
 			entry.Method = li.getStringField(fields, "method")
 			entry.Path = li.getStringField(fields, "path")
 			entry.Protocol = li.getStringField(fields, "protocol")
@@ -370,7 +351,6 @@ func (li *LogIndexer) convertHitToEntry(hit interface{}) *AccessLogEntry {
 				}
 			}
 
-			logger.Debugf("Converted hit to entry: IP=%s, Method=%s, Path=%s", entry.IP, entry.Method, entry.Path)
 		} else {
 			logger.Warnf("Hit has no fields: %+v", h)
 		}

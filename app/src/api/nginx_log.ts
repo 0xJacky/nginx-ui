@@ -27,8 +27,10 @@ export interface AnalyticsRequest {
 export interface AccessLogEntry {
   timestamp: string
   ip: string
-  location: string
   method: string
+  region_code: string
+  province: string
+  city: string
   path: string
   protocol: string
   status: number
@@ -246,6 +248,48 @@ export interface DashboardAnalytics {
   summary: DashboardSummary
 }
 
+export interface WorldMapData {
+  code: string
+  value: number
+  percent: number
+  region?: string
+  province?: string
+  city?: string
+  isp?: string
+}
+
+// ECharts GeoJSON map data type
+export interface EChartsMapData {
+  features: Array<{
+    type: string
+    properties: Record<string, unknown>
+    geometry: Record<string, unknown>
+  }>
+  [key: string]: unknown
+}
+
+export interface CityData {
+  name: string
+  value: number
+  percent: number
+}
+
+export interface ChinaMapData {
+  name: string
+  value: number
+  percent: number
+  cities?: CityData[]
+}
+
+export interface GeoStats {
+  region_code: string
+  country: string
+  province?: string
+  city?: string
+  count: number
+  percent: number
+}
+
 const nginx_log = extendCurdApi(useCurdApi('/nginx_logs'), {
   page(page = 0, data: NginxLogData | undefined = undefined) {
     return http.post(`/nginx_log/page?page=${page}`, data)
@@ -284,6 +328,19 @@ const nginx_log = extendCurdApi(useCurdApi('/nginx_logs'), {
   // Dashboard analytics API
   getDashboardAnalytics(data: DashboardRequest): Promise<DashboardAnalytics> {
     return http.post('/nginx_log/dashboard', data)
+  },
+
+  // Geographic analytics APIs
+  getWorldMapData(data: AnalyticsRequest): Promise<{ data: WorldMapData[] }> {
+    return http.post('/nginx_log/geo/world', data)
+  },
+
+  getChinaMapData(data: AnalyticsRequest): Promise<{ data: ChinaMapData[] }> {
+    return http.post('/nginx_log/geo/china', data)
+  },
+
+  getGeoStats(data: AnalyticsRequest): Promise<{ stats: GeoStats[] }> {
+    return http.post('/nginx_log/geo/stats', data)
   },
 })
 

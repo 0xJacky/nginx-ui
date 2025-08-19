@@ -30,8 +30,6 @@ func (li *LogIndexer) processBatchStreaming(lines []string, filePath string, mai
 			*newTimeEnd = &entry.Timestamp
 		}
 
-		// Note: Real-time stats processing removed - using Bleve aggregations instead
-
 		// Create indexed entry with unique ID
 		// Use actual file path in ID to avoid conflicts, but mainLogPath for grouping queries
 		indexedEntry := &IndexedLogEntry{
@@ -39,7 +37,9 @@ func (li *LogIndexer) processBatchStreaming(lines []string, filePath string, mai
 			FilePath:     mainLogPath, // Use main log path for queries
 			Timestamp:    entry.Timestamp,
 			IP:           entry.IP,
-			Location:     entry.Location,
+			RegionCode:   entry.RegionCode,
+			Province:     entry.Province,
+			City:         entry.City,
 			Method:       entry.Method,
 			Path:         entry.Path,
 			Protocol:     entry.Protocol,

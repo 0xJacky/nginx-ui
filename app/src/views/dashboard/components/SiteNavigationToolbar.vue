@@ -41,7 +41,7 @@ defineEmits<Emits>()
       </div>
 
       <div class="flex gap-2">
-        <a-button
+        <AButton
           v-if="settingsMode"
           type="primary"
           size="small"
@@ -51,9 +51,9 @@ defineEmits<Emits>()
             <SaveOutlined />
           </template>
           {{ $gettext('Save Order') }}
-        </a-button>
+        </AButton>
 
-        <a-button
+        <AButton
           v-if="settingsMode"
           size="small"
           @click="$emit('cancelSettings')"
@@ -62,9 +62,9 @@ defineEmits<Emits>()
             <CloseOutlined />
           </template>
           {{ $gettext('Cancel') }}
-        </a-button>
+        </AButton>
 
-        <a-button
+        <AButton
           v-if="!settingsMode"
           type="primary"
           size="small"
@@ -75,9 +75,9 @@ defineEmits<Emits>()
             <ReloadOutlined />
           </template>
           {{ $gettext('Refresh') }}
-        </a-button>
+        </AButton>
 
-        <a-button
+        <AButton
           v-if="!settingsMode"
           size="small"
           @click="$emit('toggleSettings')"
@@ -86,7 +86,7 @@ defineEmits<Emits>()
             <SettingOutlined />
           </template>
           {{ $gettext('Settings') }}
-        </a-button>
+        </AButton>
       </div>
     </div>
   </div>

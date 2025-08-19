@@ -1,5 +1,4 @@
 import type { Namespace } from '@/api/namespace'
-import { defineStore } from 'pinia'
 import namespace from '@/api/namespace'
 
 export const useNodeGroupStore = defineStore('nodeGroup', () => {

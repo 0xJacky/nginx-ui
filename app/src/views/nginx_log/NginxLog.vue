@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { FileOutlined } from '@ant-design/icons-vue'
+import { useRouteQuery } from '@vueuse/router'
 import FooterToolBar from '@/components/FooterToolbar'
 import DashboardViewer from './dashboard/DashboardViewer.vue'
 import RawLogViewer from './raw/RawLogViewer.vue'
@@ -17,28 +18,14 @@ const logType = computed(() => {
   return route.path.indexOf('error') > 0 ? 'error' : 'site'
 })
 
+const viewMode = useRouteQuery<'raw' | 'structured' | 'dashboard'>('view', 'structured')
+
 // Check if this is an error log
 const isErrorLog = computed(() => {
   return logType.value === 'error' || logPath.value.includes('error.log') || logPath.value.includes('error_log')
 })
 
-// Reactive data - use reactive to handle computed changes
-const viewMode = ref<'raw' | 'structured' | 'dashboard'>('structured')
 const autoRefresh = ref(true)
-
-// Set initial view mode and watch for error log changes
-watchEffect(() => {
-  if (isErrorLog.value) {
-    viewMode.value = 'raw'
-  }
-})
-
-// Watch for view mode changes
-watch(viewMode, newMode => {
-  if (newMode === 'structured' || newMode === 'dashboard') {
-    autoRefresh.value = false
-  }
-})
 </script>
 
 <template>

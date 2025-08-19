@@ -58,10 +58,10 @@ func BenchmarkUserAgentParser_ParseAndroid(b *testing.B) {
 }
 
 func BenchmarkDetectLogFormat(b *testing.B) {
-	logLine := `192.168.1.1 - - [25/Dec/2023:10:00:00 +0000] "GET /test HTTP/1.1" 200 1024 "https://example.com" "Mozilla/5.0"`
+	logLines := []string{`192.168.1.1 - - [25/Dec/2023:10:00:00 +0000] "GET /test HTTP/1.1" 200 1024 "https://example.com" "Mozilla/5.0"`}
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		_ = DetectLogFormat(logLine)
+		_ = DetectLogFormat(logLines)
 	}
 }

@@ -12,5 +12,8 @@ func InitRouter(r *gin.RouterGroup) {
 	r.POST("nginx_log/search", AdvancedSearchLogs)
 	r.GET("nginx_log/preflight", GetLogPreflight)
 	r.POST("nginx_log/dashboard", GetDashboardAnalytics)
+	r.POST("nginx_log/geo/world", GetWorldMapData)
+	r.POST("nginx_log/geo/china", GetChinaMapData)
+	r.POST("nginx_log/geo/stats", GetGeoStats)
 	r.POST("nginx_log/index/rebuild", RebuildIndex)
 }

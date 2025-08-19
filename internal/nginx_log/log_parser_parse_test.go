@@ -40,7 +40,7 @@ func TestLogParser_ParseLine(t *testing.T) {
 				Referer:      "https://example.com",
 				UserAgent:    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
 				RequestTime:  0.123,
-				UpstreamTime: 0.050,
+				UpstreamTime: func() *float64 { v := 0.050; return &v }(),
 				Browser:      "Chrome",
 				BrowserVer:   "91.0",
 				OS:           "Windows 10",
@@ -278,30 +278,38 @@ func TestDetectLogFormat(t *testing.T) {
 	testCases := []struct {
 		name     string
 		logLine  string
-		expected LogFormat
+		expected *LogFormat
 	}{
 		{
 			name:     "Combined format",
 			logLine:  `192.168.1.1 - - [25/Dec/2023:10:00:00 +0000] "GET /test HTTP/1.1" 200 1024 "https://example.com" "Mozilla/5.0" 0.123`,
-			expected: LogFormatCombined,
+			expected: CombinedFormat,
 		},
 		{
 			name:     "Common format",
 			logLine:  `192.168.1.1 - - [25/Dec/2023:10:00:00 +0000] "GET /test HTTP/1.1" 200 1024`,
-			expected: LogFormatCommon,
+			expected: MainFormat,
 		},
 		{
 			name:     "Unknown format",
 			logLine:  "invalid log line",
-			expected: LogFormatUnknown,
+			expected: nil,
 		},
 	}
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			result := DetectLogFormat(tc.logLine)
-			if result != tc.expected {
-				t.Errorf("Format mismatch. Expected: %d, Got: %d", tc.expected, result)
+			result := DetectLogFormat([]string{tc.logLine})
+			if (result == nil && tc.expected != nil) || (result != nil && tc.expected == nil) || (result != nil && tc.expected != nil && result.Name != tc.expected.Name) {
+				expectedName := "nil"
+				if tc.expected != nil {
+					expectedName = tc.expected.Name
+				}
+				resultName := "nil"
+				if result != nil {
+					resultName = result.Name
+				}
+				t.Errorf("Format mismatch. Expected: %s, Got: %s", expectedName, resultName)
 			}
 		})
 	}

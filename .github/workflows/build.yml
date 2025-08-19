@@ -74,11 +74,30 @@ jobs:
           pnpm build
         working-directory: app
 
+      - name: Compress frontend with xz
+        run: |
+          # Create compressed archive of the entire dist directory
+          tar -C app -cf - dist | xz -9 -c > app/dist.tar.xz
+
+          # Verify compression worked and show savings (macOS compatible)
+          ORIGINAL_SIZE=$(find app/dist -type f -exec stat -f%z {} \; | awk '{total += $1} END {print total}')
+          COMPRESSED_SIZE=$(stat -f%z app/dist.tar.xz)
+          
+          if [[ $ORIGINAL_SIZE -gt 0 ]]; then
+            SAVINGS=$((100 - COMPRESSED_SIZE * 100 / ORIGINAL_SIZE))
+            echo "Original size: ${ORIGINAL_SIZE} bytes"
+            echo "Compressed size: ${COMPRESSED_SIZE} bytes"
+            echo "Compression savings: ${SAVINGS}%"
+          else
+            echo "Compressed size: ${COMPRESSED_SIZE} bytes"
+          fi
+
       - name: Archive app artifacts
         uses: actions/upload-artifact@v4
         with:
           name: app-dist
-          path: app/dist
+          path: |
+            app/dist.tar.xz
 
       - name: Prepare publish
         if: github.event_name == 'release'
@@ -182,7 +201,7 @@ jobs:
         uses: actions/download-artifact@v5
         with:
           name: app-dist
-          path: app/dist
+          path: app/dist.tar.xz
 
       - name: Generate files
         env:
@@ -205,17 +224,6 @@ jobs:
           echo "CC=${{ env.ARCH_NAME }}-linux-musl${{ env.ABI }}-gcc" >> $GITHUB_ENV
           echo "CXX=${{ env.ARCH_NAME }}-linux-musl${{ env.ABI }}-g++" >> $GITHUB_ENV
           echo "LD_FLAGS=-w --extldflags '-static'" >> $GITHUB_ENV
-
-      - name: Install darwin cross compiler
-        if: env.GOOS == 'darwin'
-        run: |
-          curl -L https://github.com/Hintay/crossosx/releases/latest/download/crossosx.tar.zst -o crossosx.tar.zst
-          tar xvaf crossosx.tar.zst
-          echo "LD_LIBRARY_PATH=$(pwd)/crossosx/lib/" >> $GITHUB_ENV
-          echo "PATH=$(pwd)/crossosx/bin/:$PATH" >> $GITHUB_ENV
-          echo "CC=${{ env.ARCH_NAME }}-clang" >> $GITHUB_ENV
-          echo "CXX=${{ env.ARCH_NAME }}-clang++" >> $GITHUB_ENV
-          echo "LD_FLAGS=-w" >> $GITHUB_ENV
 
       - name: Setup for Windows
         if: env.GOOS == 'windows'
@@ -295,10 +303,10 @@ jobs:
         run: |
           echo "Uploading ${{ env.DIST }}.tar.gz to R2..."
           aws s3 cp ./${{ env.DIST }}.tar.gz s3://nginx-ui-dev-build/${{ env.DIST }}.tar.gz --endpoint-url=${{ secrets.R2_S3_API_ENDPOINT }}
-          
+
           echo "Uploading ${{ env.DIST }}.tar.gz.digest to R2..."
           aws s3 cp ./${{ env.DIST }}.tar.gz.digest s3://nginx-ui-dev-build/${{ env.DIST }}.tar.gz.digest --endpoint-url=${{ secrets.R2_S3_API_ENDPOINT }}
-          
+
           echo "Upload completed successfully"
 
   build_macos_native:
@@ -347,7 +355,7 @@ jobs:
         uses: actions/download-artifact@v5
         with:
           name: app-dist
-          path: app/dist
+          path: app/dist.tar.xz
 
       - name: Generate files
         run: go generate cmd/version/generate.go
@@ -387,10 +395,10 @@ jobs:
         run: |
           echo "Uploading ${{ env.DIST }}.tar.gz to R2..."
           aws s3 cp ./${{ env.DIST }}.tar.gz s3://nginx-ui-dev-build/${{ env.DIST }}.tar.gz --endpoint-url=${{ secrets.R2_S3_API_ENDPOINT }}
-          
+
           echo "Uploading ${{ env.DIST }}.tar.gz.digest to R2..."
           aws s3 cp ./${{ env.DIST }}.tar.gz.digest s3://nginx-ui-dev-build/${{ env.DIST }}.tar.gz.digest --endpoint-url=${{ secrets.R2_S3_API_ENDPOINT }}
-          
+
           echo "Upload completed successfully"
 
   docker-build:

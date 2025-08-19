@@ -1,6 +1,5 @@
 import type { NgxModule } from '@/api/ngx'
 import type { NginxStatus } from '@/constants'
-import { defineStore } from 'pinia'
 
 interface ProcessingStatus {
   index_scanning: boolean

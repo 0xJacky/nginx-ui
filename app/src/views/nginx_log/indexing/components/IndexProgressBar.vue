@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Progress, Tag } from 'ant-design-vue'
-import { computed } from 'vue'
 
 export interface IndexProgress {
   logPath: string

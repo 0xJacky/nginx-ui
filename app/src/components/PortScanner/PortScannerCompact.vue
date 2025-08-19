@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { PortInfo, PortScanRequest } from '@/api/port_scan'
 import { Badge, message } from 'ant-design-vue'
-import { computed, reactive, ref } from 'vue'
 import portScan from '@/api/port_scan'
 
 interface FormData {

@@ -222,7 +222,7 @@ onUnmounted(() => {
     />
 
     <div v-if="loading" class="flex items-center justify-center py-12">
-      <a-spin size="large" />
+      <ASpin size="large" />
     </div>
 
     <div v-else-if="displaySites.length === 0" class="empty-state">

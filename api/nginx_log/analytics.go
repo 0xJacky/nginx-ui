@@ -399,3 +399,143 @@ func GetDashboardAnalytics(c *gin.Context) {
 	
 	c.JSON(http.StatusOK, analytics)
 }
+
+// GetWorldMapData provides geographic data for world map visualization
+func GetWorldMapData(c *gin.Context) {
+	var req AnalyticsRequest
+	if !cosy.BindAndValid(c, &req) {
+		return
+	}
+
+	service := nginx_log.GetAnalyticsService()
+	if service == nil {
+		cosy.ErrHandler(c, nginx_log.ErrAnalyticsServiceNotAvailable)
+		return
+	}
+
+	// Use default access log path if Path is empty
+	if req.Path == "" {
+		defaultLogPath := nginx.GetAccessLogPath()
+		if defaultLogPath != "" {
+			req.Path = defaultLogPath
+			logger.Debugf("Using default access log path for world map: %s", req.Path)
+		}
+	}
+
+	// Validate log path if provided
+	if req.Path != "" {
+		if err := service.ValidateLogPath(req.Path); err != nil {
+			cosy.ErrHandler(c, err)
+			return
+		}
+	}
+
+	// Get world map data with timeout
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
+	defer cancel()
+
+	data, err := service.GetWorldMapData(ctx, req.Path, req.StartTime, req.EndTime)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"data": data,
+	})
+}
+
+// GetChinaMapData provides geographic data for China map visualization
+func GetChinaMapData(c *gin.Context) {
+	var req AnalyticsRequest
+	if !cosy.BindAndValid(c, &req) {
+		return
+	}
+
+	service := nginx_log.GetAnalyticsService()
+	if service == nil {
+		cosy.ErrHandler(c, nginx_log.ErrAnalyticsServiceNotAvailable)
+		return
+	}
+
+	// Use default access log path if Path is empty
+	if req.Path == "" {
+		defaultLogPath := nginx.GetAccessLogPath()
+		if defaultLogPath != "" {
+			req.Path = defaultLogPath
+			logger.Debugf("Using default access log path for China map: %s", req.Path)
+		}
+	}
+
+	// Validate log path if provided
+	if req.Path != "" {
+		if err := service.ValidateLogPath(req.Path); err != nil {
+			cosy.ErrHandler(c, err)
+			return
+		}
+	}
+
+	// Get China map data with timeout
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
+	defer cancel()
+
+	data, err := service.GetChinaMapData(ctx, req.Path, req.StartTime, req.EndTime)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"data": data,
+	})
+}
+
+// GetGeoStats provides geographic statistics
+func GetGeoStats(c *gin.Context) {
+	var req AnalyticsRequest
+	if !cosy.BindAndValid(c, &req) {
+		return
+	}
+
+	service := nginx_log.GetAnalyticsService()
+	if service == nil {
+		cosy.ErrHandler(c, nginx_log.ErrAnalyticsServiceNotAvailable)
+		return
+	}
+
+	// Use default access log path if Path is empty
+	if req.Path == "" {
+		defaultLogPath := nginx.GetAccessLogPath()
+		if defaultLogPath != "" {
+			req.Path = defaultLogPath
+			logger.Debugf("Using default access log path for geo stats: %s", req.Path)
+		}
+	}
+
+	// Validate log path if provided
+	if req.Path != "" {
+		if err := service.ValidateLogPath(req.Path); err != nil {
+			cosy.ErrHandler(c, err)
+			return
+		}
+	}
+
+	// Set default limit if not provided
+	if req.Limit == 0 {
+		req.Limit = 20
+	}
+
+	// Get geographic statistics with timeout
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
+	defer cancel()
+
+	stats, err := service.GetGeoStats(ctx, req.Path, req.StartTime, req.EndTime, req.Limit)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"stats": stats,
+	})
+}

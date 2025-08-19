@@ -16,7 +16,15 @@ var Dict map[string]pofile.Dict
 func init() {
 	Dict = make(map[string]pofile.Dict)
 
-	i18nJson, _ := app.DistFS.Open("i18n.json")
+	fs, err := app.GetDistFS()
+	if err != nil {
+		log.Fatalln("Failed to get DistFS:", err)
+	}
+
+	i18nJson, err := fs.Open("i18n.json")
+	if err != nil {
+		log.Fatalln("Failed to open i18n.json:", err)
+	}
 
 	defer i18nJson.Close()
 
@@ -36,7 +44,8 @@ func init() {
 }
 
 func handlePo(langCode string) {
-	file, err := app.DistFS.Open(fmt.Sprintf("src/language/%s/app.po", langCode))
+	fs, _ := app.GetDistFS()
+	file, err := fs.Open(fmt.Sprintf("src/language/%s/app.po", langCode))
 
 	if err != nil {
 		log.Fatalln(err)

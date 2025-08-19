@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { DashboardAnalytics, DashboardRequest } from '@/api/nginx_log'
+import type { AnalyticsRequest, ChinaMapData, DashboardAnalytics, DashboardRequest, WorldMapData } from '@/api/nginx_log'
 import { LoadingOutlined } from '@ant-design/icons-vue'
 import { Col, Row } from 'ant-design-vue'
 import dayjs from 'dayjs'
@@ -8,6 +8,7 @@ import BrowserStatsTable from './components/BrowserStatsTable.vue'
 import DailyTrendsChart from './components/DailyTrendsChart.vue'
 import DateRangeSelector from './components/DateRangeSelector.vue'
 import DeviceStatsTable from './components/DeviceStatsTable.vue'
+import GeoMapChart from './components/GeoMapChart.vue'
 import HourlyChart from './components/HourlyChart.vue'
 import OSStatsTable from './components/OSStatsTable.vue'
 import SummaryStats from './components/SummaryStats.vue'
@@ -26,6 +27,14 @@ const dateRange = ref<[dayjs.Dayjs, dayjs.Dayjs]>([
   dayjs(),
 ])
 const timeRangeLoaded = ref(false)
+
+// Geographic data
+const worldMapData = ref<WorldMapData[] | null>(null)
+const chinaMapData = ref<ChinaMapData[] | null>(null)
+const geoLoading = ref(false)
+
+// Overall loading state for refresh button
+const refreshLoading = computed(() => loading.value || geoLoading.value)
 
 // Load time range from preflight API for specific log file
 async function loadTimeRange() {
@@ -76,6 +85,40 @@ async function loadDashboardData() {
   }
 }
 
+// Load geographic data
+async function loadGeographicData() {
+  geoLoading.value = true
+  try {
+    const request: AnalyticsRequest = {
+      path: props.logPath,
+      start_time: dateRange.value[0].toISOString(),
+      end_time: dateRange.value[1].toISOString(),
+    }
+
+    // Load both world and China map data in parallel
+    const [worldResponse, chinaResponse] = await Promise.all([
+      nginx_log.getWorldMapData(request),
+      nginx_log.getChinaMapData(request),
+    ])
+
+    worldMapData.value = worldResponse.data
+    chinaMapData.value = chinaResponse.data
+  }
+  catch (error) {
+    console.error('Failed to load geographic data:', error)
+    worldMapData.value = null
+    chinaMapData.value = null
+  }
+  finally {
+    geoLoading.value = false
+  }
+}
+
+// Refresh all dashboard data
+function refreshAllData() {
+  Promise.all([loadDashboardData(), loadGeographicData()])
+}
+
 // Initialize time range when log path changes
 watch(() => props.logPath, async () => {
   timeRangeLoaded.value = false
@@ -86,14 +129,14 @@ watch(() => props.logPath, async () => {
   if (timeRangeLoaded.value
     && oldDateRange[0].isSame(dateRange.value[0])
     && oldDateRange[1].isSame(dateRange.value[1])) {
-    await loadDashboardData()
+    await Promise.all([loadDashboardData(), loadGeographicData()])
   }
 }, { immediate: true })
 
 // Reload data when date range changes (after initial load)
 watch(dateRange, () => {
   if (timeRangeLoaded.value) {
-    loadDashboardData()
+    Promise.all([loadDashboardData(), loadGeographicData()])
   }
 }, { deep: true })
 </script>
@@ -114,6 +157,8 @@ watch(dateRange, () => {
       <DateRangeSelector
         v-model:date-range="dateRange"
         :log-path="logPath"
+        :refresh-loading="refreshLoading"
+        @refresh="refreshAllData"
       />
 
       <!-- Summary Statistics -->
@@ -133,6 +178,17 @@ watch(dateRange, () => {
         <!-- Daily Trends Area Chart -->
         <Col :span="12">
           <DailyTrendsChart :dashboard-data="dashboardData" :loading="loading" />
+        </Col>
+      </Row>
+
+      <!-- Geographic Visualizations -->
+      <Row :gutter="16" class="mb-4">
+        <Col :span="24">
+          <GeoMapChart
+            :world-data="worldMapData"
+            :china-data="chinaMapData"
+            :loading="geoLoading"
+          />
         </Col>
       </Row>
 

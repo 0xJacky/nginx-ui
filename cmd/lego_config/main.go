@@ -2,7 +2,9 @@
 package main
 
 import (
+	"archive/tar"
 	"archive/zip"
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -16,6 +18,7 @@ import (
 	"github.com/spf13/afero"
 	"github.com/spf13/afero/zipfs"
 	"github.com/uozi-tech/cosy/logger"
+	"github.com/ulikunitz/xz"
 )
 
 // GitHubRelease represents the structure of GitHub's release API response
@@ -57,7 +60,12 @@ func main() {
 		os.Exit(1)
 	}
 
-	logger.Info("Successfully updated provider config")
+	if err := compressConfigs(basePath); err != nil {
+		logger.Errorf("Error compressing configs: %v\n", err)
+		os.Exit(1)
+	}
+
+	logger.Info("Successfully updated and compressed provider config")
 }
 
 // getLatestReleaseTag fetches the latest release tag from GitHub API
@@ -164,4 +172,103 @@ func copyTomlFiles(zipFile, basePath, tag string) error {
 
 	// Clean up zip file
 	return os.Remove(zipFile)
+}
+
+// compressConfigs compresses all TOML files into a single XZ archive
+func compressConfigs(basePath string) error {
+	logger.Info("Compressing config files...")
+	
+	configDir := filepath.Join(basePath, "internal/cert/config")
+	
+	// Create buffer for tar data
+	var tarBuffer bytes.Buffer
+	tarWriter := tar.NewWriter(&tarBuffer)
+	
+	// Walk through TOML files and add to tar
+	err := filepath.Walk(configDir, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		
+		if !strings.HasSuffix(info.Name(), ".toml") {
+			return nil
+		}
+		
+		// Read file content
+		data, err := os.ReadFile(path)
+		if err != nil {
+			return err
+		}
+		
+		// Create tar header
+		header := &tar.Header{
+			Name: info.Name(),
+			Mode: 0644,
+			Size: int64(len(data)),
+		}
+		
+		// Write header and data to tar
+		if err := tarWriter.WriteHeader(header); err != nil {
+			return err
+		}
+		
+		if _, err := tarWriter.Write(data); err != nil {
+			return err
+		}
+		
+		logger.Infof("Added to archive: %s", info.Name())
+		return nil
+	})
+	
+	if err != nil {
+		return err
+	}
+	
+	if err := tarWriter.Close(); err != nil {
+		return err
+	}
+	
+	// Compress with XZ
+	var compressedBuffer bytes.Buffer
+	xzWriter, err := xz.NewWriter(&compressedBuffer)
+	if err != nil {
+		return err
+	}
+	
+	if _, err := xzWriter.Write(tarBuffer.Bytes()); err != nil {
+		return err
+	}
+	
+	if err := xzWriter.Close(); err != nil {
+		return err
+	}
+	
+	// Write compressed data to config.tar.xz
+	compressedPath := filepath.Join(configDir, "config.tar.xz")
+	if err := os.WriteFile(compressedPath, compressedBuffer.Bytes(), 0644); err != nil {
+		return err
+	}
+	
+	// Remove individual TOML files
+	err = filepath.Walk(configDir, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		
+		if strings.HasSuffix(info.Name(), ".toml") {
+			if err := os.Remove(path); err != nil {
+				return err
+			}
+			logger.Infof("Removed: %s", info.Name())
+		}
+		
+		return nil
+	})
+	
+	if err != nil {
+		return err
+	}
+	
+	logger.Infof("Compressed config saved to: %s", compressedPath)
+	return nil
 }

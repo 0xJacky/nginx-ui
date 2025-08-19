@@ -1,16 +1,13 @@
 <script setup lang="ts">
 import type { DashboardAnalytics } from '@/api/nginx_log'
-import { Card } from 'ant-design-vue'
 import { storeToRefs } from 'pinia'
-import VueApexCharts from 'vue3-apexcharts'
+import VueApexchart from 'vue3-apexcharts'
 import { useSettingsStore } from '@/pinia'
 
 const props = defineProps<{
   dashboardData: DashboardAnalytics | null
   loading: boolean
 }>()
-
-const apexchart = VueApexCharts
 
 const settings = useSettingsStore()
 const { theme } = storeToRefs(settings)
@@ -131,8 +128,8 @@ const dailySeries = computed(() => {
 </script>
 
 <template>
-  <Card size="small" :loading="loading">
-    <apexchart
+  <ACard size="small" :loading="loading">
+    <VueApexchart
       v-if="dashboardData"
       :key="`daily-${theme}`"
       type="area"
@@ -140,5 +137,5 @@ const dailySeries = computed(() => {
       :options="dailyChartOptions"
       :series="dailySeries"
     />
-  </Card>
+  </ACard>
 </template>

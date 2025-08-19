@@ -171,7 +171,6 @@ func (li *LogIndexer) calculateRelatedLogFilesSize(filePath string) int64 {
 	}
 
 	var totalSize int64
-	logger.Debugf("Calculating total size for log group: filePath=%s, mainLogPath=%s, baseLogName=%s, logDir=%s", filePath, mainLogPath, baseLogName, logDir)
 
 	var foundFiles []string
 	for _, entry := range entries {
@@ -193,21 +192,14 @@ func (li *LogIndexer) calculateRelatedLogFilesSize(filePath string) int64 {
 					// This provides a more consistent progress measurement across file types
 					estimatedUncompressedSize := fileSize * 3
 					totalSize += estimatedUncompressedSize
-					logger.Debugf("Added compressed file %s (compressed: %d, estimated: %d) to total size calculation", fullPath, fileSize, estimatedUncompressedSize)
 				} else {
 					// For uncompressed files, use actual size
 					totalSize += fileSize
-					logger.Debugf("Added uncompressed file %s (size: %d) to total size calculation", fullPath, fileSize)
 				}
-			} else {
-				logger.Debugf("Failed to get file info for %s: %v", fullPath, err)
 			}
 		}
 	}
 
-	logger.Debugf("Found %d related files: %v", len(foundFiles), foundFiles)
-
-	logger.Debugf("Total processing units for log group %s: %d", mainLogPath, totalSize)
 	return totalSize
 }
 

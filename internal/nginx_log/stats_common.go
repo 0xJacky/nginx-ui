@@ -17,9 +17,6 @@ func calculateCommonStats(entries []*AccessLogEntry, extractField func(*AccessLo
 	// Count field occurrences
 	for _, entry := range entries {
 		field := extractField(entry)
-		if field == "" {
-			field = "Unknown"
-		}
 		fieldCount[field]++
 	}
 

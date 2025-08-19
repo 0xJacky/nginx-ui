@@ -12,6 +12,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/geolite"
 	"github.com/uozi-tech/cosy/geoip"
 	"github.com/uozi-tech/cosy/logger"
 )
@@ -20,7 +21,9 @@ import (
 type AccessLogEntry struct {
 	Timestamp    time.Time `json:"timestamp"`
 	IP           string    `json:"ip"`
-	Location     string    `json:"location"`
+	RegionCode   string    `json:"region_code"`
+	Province     string    `json:"province"`
+	City         string    `json:"city"`
 	Method       string    `json:"method"`
 	Path         string    `json:"path"`
 	Protocol     string    `json:"protocol"`
@@ -44,6 +47,11 @@ type LogFormat struct {
 	Pattern *regexp.Regexp
 	Fields  []string
 }
+
+// Constants for optimization
+const (
+	invalidIPString = "invalid"
+)
 
 // Valid HTTP methods according to RFC specifications
 var validHTTPMethods = map[string]bool{
@@ -142,7 +150,31 @@ func (p *LogParser) parseMatches(matches []string, format *LogFormat, rawLine st
 		switch field {
 		case "ip":
 			entry.IP = p.sanitizeString(p.extractRealIP(value))
-			entry.Location = geoip.ParseIP(entry.IP)
+			// Use cosy geoip for ISO code first, then geolite for detailed info
+			entry.RegionCode = geoip.ParseIP(entry.IP)
+
+			// Use geolite service for detailed location information if available
+			geoService, err := geolite.GetService()
+			if err == nil {
+				if loc, err := geoService.Search(entry.IP); err == nil {
+					// If cosy geoip didn't return a code, use geolite's country code
+					if entry.RegionCode == "" {
+						entry.RegionCode = loc.CountryCode
+					}
+
+					entry.Province = loc.Region
+					entry.City = loc.City
+
+					// Build location string for display
+					var locationParts []string
+					if loc.Region != "" {
+						locationParts = append(locationParts, loc.Region)
+					}
+					if loc.City != "" {
+						locationParts = append(locationParts, loc.City)
+					}
+				}
+			}
 
 		case "timestamp":
 			timestamp, err := p.parseTimestamp(value)
@@ -236,7 +268,7 @@ func (p *LogParser) extractRealIP(ipStr string) string {
 	}
 
 	// Return sanitized string if not a valid IP
-	return "invalid"
+	return invalidIPString
 }
 
 // isValidIP checks if a string is a valid IP address format
@@ -386,9 +418,6 @@ func (p *LogParser) ParseLinesParallel(lines []string) []*AccessLogEntry {
 		logger.Warnf("Total parse errors: %d out of %d lines", parseErrors, len(lines))
 	}
 
-	logger.Debugf("Successfully parsed %d entries out of %d lines (%d parse errors) using %d workers",
-		len(entries), len(lines), parseErrors, numWorkers)
-
 	return entries
 }
 
@@ -397,24 +426,18 @@ func (p *LogParser) parseLinesSingleThreaded(lines []string) []*AccessLogEntry {
 	var entries []*AccessLogEntry
 	var parseErrors int
 
-	for i, line := range lines {
+	for _, line := range lines {
 		entry, err := p.ParseLine(line)
 		if err == nil && entry != nil && !entry.Timestamp.IsZero() {
 			entries = append(entries, entry)
 		} else {
 			parseErrors++
-			if parseErrors <= 3 {
-				logger.Debugf("Failed to parse log line %d: %v, line: %s", i+1, err, line)
-			}
 		}
 	}
 
 	if parseErrors > 3 {
 		logger.Warnf("Total parse errors: %d out of %d lines", parseErrors, len(lines))
 	}
-
-	logger.Infof("Successfully parsed %d entries out of %d lines (%d parse errors) - single-threaded",
-		len(entries), len(lines), parseErrors)
 
 	return entries
 }
@@ -441,9 +464,6 @@ func (p *LogParser) parseWorkerOptimized(lineChan <-chan lineWork, results []*Ac
 			results[work.index] = nil
 			if err != nil {
 				localErrors++
-				if localErrors <= 3 {
-					logger.Debugf("Failed to parse log line %d: %v, line: %s", work.index+1, err, work.line)
-				}
 			}
 		}
 	}

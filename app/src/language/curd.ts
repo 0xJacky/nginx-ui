@@ -67,5 +67,7 @@ export const translations = {
   'Please Input': $gettext('Please enter'),
   'to comfirm delete': $gettext('to confirm deletion'),
   'to confirm deletion': $gettext('to confirm deletion'),
-  refresh: $gettext('Refresh')
+  refresh: $gettext('Refresh'),
+  collapse: $gettext('Collapse'),
+  expand: $gettext('Expand')
 }

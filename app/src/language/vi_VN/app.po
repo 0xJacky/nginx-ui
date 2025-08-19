@@ -104,7 +104,7 @@ msgstr "{label} đã được sao chép vào bảng nhớ tạm"
 msgid "* Includes nodes from group %{groupName} and manually selected nodes"
 msgstr "* Bao gồm các nút từ nhóm %{groupName} và các nút được chọn thủ công"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:795
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:803
 msgid "%{start}-%{end} of %{total} items"
 msgstr "%{start}-%{end} trong %{total} mục"
 
@@ -363,7 +363,7 @@ msgstr "Bạn có chắc chắn muốn khởi động lại Nginx trên các nú
 msgid "Are you sure you want to restore?"
 msgstr "Bạn có chắc chắn muốn khôi phục không?"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:717
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:725
 msgid "Ascending"
 msgstr "Tăng dần"
 
@@ -430,7 +430,7 @@ msgstr "Sao lưu tự động thất bại"
 msgid "Auto Backup Storage Failed"
 msgstr "Lưu trữ sao lưu tự động thất bại"
 
-#: src/views/nginx_log/NginxLog.vue:64 src/views/node/Node.vue:164
+#: src/views/nginx_log/NginxLog.vue:58 src/views/node/Node.vue:164
 msgid "Auto Refresh"
 msgstr "Tự động làm mới"
 
@@ -471,14 +471,14 @@ msgstr "Độ trễ trung bình"
 msgid "Avg Daily UV"
 msgstr "UV trung bình hàng ngày"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:778
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:786
 msgid "Avg/PV"
 msgstr "TB/PV"
 
 #: src/views/certificate/components/CertificateActions.vue:22
 #: src/views/config/components/ConfigLeftPanel.vue:273
 #: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
-#: src/views/nginx_log/NginxLog.vue:92
+#: src/views/nginx_log/NginxLog.vue:86
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:169
 #: src/views/stream/components/StreamEditor.vue:123
 msgid "Back"
@@ -491,6 +491,14 @@ msgstr "Trở về trang chủ"
 #: src/language/curd.ts:21
 msgid "Back to List"
 msgstr "Quay lại danh sách"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:556
+msgid ""
+"Background indexing in progress. Data will be updated automatically when "
+"ready."
+msgstr ""
+"Đang tiến hành lập chỉ mục nền. Dữ liệu sẽ được tự động cập nhật khi sẵn "
+"sàng."
 
 #: src/constants/errors/nginx_log.ts:17
 msgid "Background log service not available"
@@ -611,8 +619,8 @@ msgstr "Khối là nil"
 
 #: src/views/nginx_log/dashboard/components/BrowserStatsTable.vue:13
 #: src/views/nginx_log/structured/components/SearchFilters.vue:137
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:209
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:471
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:221
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:480
 msgid "Browser"
 msgstr "Trình duyệt"
 
@@ -1007,6 +1015,15 @@ msgstr ""
 msgid "Check Interval (seconds)"
 msgstr "Khoảng thời gian kiểm tra (giây)"
 
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:180
+#: src/views/nginx_log/dashboard/components/GeoMapChart.vue:47
+msgid "China Access Map"
+msgstr "Bản đồ Truy cập Trung Quốc"
+
+#: src/views/nginx_log/dashboard/components/GeoMapChart.vue:34
+msgid "China Map"
+msgstr "Bản đồ Trung Quốc"
+
 #: src/constants/errors/crypto.ts:3
 msgid "Cipher text is too short"
 msgstr "Văn bản mã hóa quá ngắn"
@@ -1086,6 +1103,10 @@ msgstr "Hoàn thành mã không được bật"
 #: src/views/preference/tabs/OpenAISettings.vue:86
 msgid "Code Completion Model"
 msgstr "Mô hình hoàn thành mã"
+
+#: src/language/curd.ts:71
+msgid "Collapse"
+msgstr "Thu gọn"
 
 #: src/language/curd.ts:64
 msgid "Column Settings"
@@ -1251,6 +1272,10 @@ msgstr "Cập nhật core"
 msgid "Count"
 msgstr "Số lượng"
 
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:156
+msgid "Country / Region"
+msgstr "Quốc gia / Vùng"
+
 #: src/views/dashboard/ServerAnalytic.vue:308
 msgid "CPU Status"
 msgstr "Trạng thái CPU"
@@ -1395,15 +1420,19 @@ msgstr "Hàng ngày lúc %{time}"
 #: src/routes/modules/dashboard.ts:10
 #: src/views/config/components/ConfigLeftPanel.vue:109
 #: src/views/config/components/ConfigLeftPanel.vue:159
-#: src/views/config/ConfigList.vue:69 src/views/nginx_log/NginxLog.vue:56
+#: src/views/config/ConfigList.vue:69 src/views/nginx_log/NginxLog.vue:50
 msgid "Dashboard"
 msgstr "Bảng điều khiển"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:515
+msgid "Data refreshed successfully"
+msgstr "Dữ liệu đã được cập nhật thành công"
 
 #: src/views/nginx_log/dashboard/components/DailyTrendsChart.vue:71
 msgid "Date"
 msgstr "Ngày"
 
-#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:34
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:39
 msgid "Date Range"
 msgstr "Phạm vi ngày"
 
@@ -1423,7 +1452,7 @@ msgstr "Ngày"
 msgid "Decryption failed"
 msgstr "Giải mã thất bại"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:831
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:839
 msgid "Default range"
 msgstr "Phạm vi mặc định"
 
@@ -1523,7 +1552,7 @@ msgstr "Bản demo"
 msgid "Deploy"
 msgstr "Triển khai"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:717
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:725
 msgid "Descending"
 msgstr "Giảm dần"
 
@@ -1557,8 +1586,8 @@ msgid "Development Mode"
 msgstr "Chế độ phát triển"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:169
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:241
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:473
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:253
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:482
 msgid "Device"
 msgstr "Thiết bị"
 
@@ -1999,7 +2028,7 @@ msgstr "Bảo mật trang web với Let's Encrypt"
 msgid "End"
 msgstr "Kết thúc"
 
-#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:52
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:57
 msgid "End Date"
 msgstr "Ngày kết thúc"
 
@@ -2040,7 +2069,7 @@ msgstr "Lỗi khởi tạo trình xem khác biệt"
 msgid "Error Log"
 msgstr "Nhật ký lỗi"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:648
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:656
 msgid "Error Log Detected"
 msgstr "Đã phát hiện nhật ký lỗi"
 
@@ -2053,7 +2082,7 @@ msgstr "Đường dẫn nhật ký lỗi không tồn tại"
 msgid "Error Logs"
 msgstr "Log lỗi"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:651
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:659
 msgid ""
 "Error logs do not support structured analysis as they contain free-form "
 "text messages."
@@ -2080,6 +2109,10 @@ msgstr "Thực hiện mỗi ngày vào lúc %{time}"
 #: src/views/backup/AutoBackup/components/CronEditor.vue:129
 msgid "Execute on every month on day %{day} at %{time}"
 msgstr "Thực thi vào mỗi tháng vào ngày %{day} lúc %{time}"
+
+#: src/language/curd.ts:72
+msgid "Expand"
+msgstr "Mở rộng"
 
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:454
 msgid "Expected Status Codes"
@@ -2471,6 +2504,10 @@ msgstr "Không thể xây dựng lại chỉ mục tệp"
 msgid "Failed to rebuild index"
 msgstr "Không thể xây dựng lại chỉ mục"
 
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:520
+msgid "Failed to refresh data"
+msgstr "Không thể làm mới dữ liệu"
+
 #: src/views/dashboard/SiteNavigation.vue:101
 msgid "Failed to refresh sites"
 msgstr "Không thể làm mới trang web"
@@ -2636,7 +2673,7 @@ msgstr "Dành cho người dùng Trung Quốc"
 msgid "For Chinese user: https://cloud.nginxui.com/"
 msgstr "Dành cho người dùng Trung Quốc: https://cloud.nginxui.com/"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:653
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:661
 msgid "For error logs, please use the Raw Log Viewer for better viewing experience."
 msgstr ""
 "Đối với nhật ký lỗi, vui lòng sử dụng Trình xem Nhật ký Thô để có trải "
@@ -2678,7 +2715,7 @@ msgstr "Định dạng: phút giờ ngày tháng thứ_trong_tuần"
 msgid "Friday"
 msgstr "Thứ Sáu"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:828
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:836
 msgid "From indexed logs"
 msgstr "Từ nhật ký đã lập chỉ mục"
 
@@ -2735,7 +2772,16 @@ msgstr "Đang lấy chứng chỉ, vui lòng đợi..."
 msgid "Github Proxy"
 msgstr "Proxy Github"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:658
+#: src/views/nginx_log/dashboard/components/GeoMapChart.vue:47
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:183
+msgid "Global Access Map"
+msgstr "Bản đồ Truy cập Toàn cầu"
+
+#: src/views/nginx_log/dashboard/components/GeoMapChart.vue:31
+msgid "Global Map"
+msgstr "Bản đồ Thế giới"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:666
 msgid "Go to Raw Log Viewer"
 msgstr "Đi đến Trình xem Nhật ký Thô"
 
@@ -2790,6 +2836,12 @@ msgstr "Cấu hình kiểm tra sức khỏe đã được lưu thành công"
 #: src/components/SensitiveString/SensitiveString.vue:40
 msgid "Hide"
 msgstr "Ẩn"
+
+#: src/composables/useGeoTranslation.ts:166
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:134
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:99
+msgid "High"
+msgstr "Cao"
 
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:87
 msgid "Higher value means better connection reuse"
@@ -2906,7 +2958,7 @@ msgstr "Đã lập chỉ mục"
 msgid "Indexing"
 msgstr "Đang lập chỉ mục"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:737
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:745
 msgid "Indexing logs, please wait..."
 msgstr "Đang lập chỉ mục nhật ký, vui lòng chờ..."
 
@@ -3064,13 +3116,13 @@ msgstr "Định dạng dấu thời gian không hợp lệ"
 msgid "Invalid websocket message type"
 msgstr "Loại tin nhắn WebSocket không hợp lệ"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:159
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:158
 #: src/views/preference/tabs/AuthSettings.vue:14
 msgid "IP"
 msgstr "IP"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:77
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:466
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:475
 msgid "IP Address"
 msgstr "Địa chỉ IP"
 
@@ -3131,41 +3183,41 @@ msgstr "Lark"
 msgid "Lark Custom"
 msgstr "Lark Tùy chỉnh"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:267
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:279
 msgid "Last 12 hours"
 msgstr "12 giờ trước"
 
-#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:17
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:22
 msgid "Last 14 days"
 msgstr "14 ngày trước"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:263
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:275
 msgid "Last 15 minutes"
 msgstr "15 phút trước"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:268
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:280
 msgid "Last 24 hours"
 msgstr "24 giờ qua"
 
-#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:18
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:270
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:23
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:282
 msgid "Last 30 days"
 msgstr "30 ngày qua"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:264
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:276
 msgid "Last 30 minutes"
 msgstr "30 phút trước"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:266
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:278
 msgid "Last 4 hours"
 msgstr "4 giờ trước"
 
-#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:16
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:269
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:21
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:281
 msgid "Last 7 days"
 msgstr "7 ngày trước"
 
-#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:19
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:24
 msgid "Last 90 days"
 msgstr "90 ngày qua"
 
@@ -3181,7 +3233,7 @@ msgstr "Thời gian sao lưu cuối cùng"
 msgid "Last checked at"
 msgstr "Kiểm tra lần cuối lúc"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:265
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:277
 msgid "Last hour"
 msgstr "Giờ qua"
 
@@ -3189,7 +3241,7 @@ msgstr "Giờ qua"
 msgid "Last Indexed"
 msgstr "Lần lập chỉ mục cuối"
 
-#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:21
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:26
 msgid "Last month"
 msgstr "Tháng trước"
 
@@ -3286,7 +3338,7 @@ msgstr "Thời gian nghỉ của bộ nạp"
 msgid "Loader Threshold"
 msgstr "Ngưỡng tải"
 
-#: src/views/nginx_log/dashboard/DashboardViewer.vue:107
+#: src/views/nginx_log/dashboard/DashboardViewer.vue:150
 msgid "Loading dashboard data..."
 msgstr "Đang tải dữ liệu bảng điều khiển..."
 
@@ -3338,25 +3390,21 @@ msgstr "Tập tin nhật ký không tồn tại"
 msgid "Log file is not a regular file"
 msgstr "Tập tin nhật ký không phải là tập tin thông thường"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:846
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:851
 msgid "Log file not available"
 msgstr "Tệp nhật ký không có sẵn"
-
-#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:56
-msgid "Log File:"
-msgstr "Tập tin nhật ký:"
 
 #: src/constants/errors/nginx_log.ts:12
 msgid "Log indexer not available"
 msgstr "Bộ lập chỉ mục nhật ký không khả dụng"
 
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:572
+msgid "Log indexing completed! Loading updated data..."
+msgstr "Lập chỉ mục nhật ký hoàn tất! Đang tải dữ liệu cập nhật..."
+
 #: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:302
 msgid "Log List"
 msgstr "Danh sách nhật ký"
-
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:835
-msgid "Log path"
-msgstr "Đường dẫn nhật ký"
 
 #: src/constants/errors/nginx_log.ts:15
 msgid "Log path is not under whitelist"
@@ -3393,6 +3441,12 @@ msgstr ""
 "cài đặt Nginx UI bằng container Docker, bạn có thể kích hoạt thủ công tùy "
 "chọn này. Bộ lập lịch tác vụ crontab của Nginx UI sẽ thực thi lệnh "
 "logrotate theo khoảng thời gian bạn đặt (tính bằng phút)."
+
+#: src/composables/useGeoTranslation.ts:167
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:134
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:99
+msgid "Low"
+msgstr "Thấp"
 
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:51
 #: src/composables/useUpstreamStatus.ts:156
@@ -3537,7 +3591,7 @@ msgid "Memory Usage (RSS)"
 msgstr "Mức sử dụng bộ nhớ (RSS)"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:92
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:467
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:476
 msgid "Method"
 msgstr "Phương pháp"
 
@@ -3829,7 +3883,7 @@ msgstr "Nginx không chạy trong một container khác"
 msgid "Nginx is running"
 msgstr "Nginx đang chạy"
 
-#: src/routes/modules/nginx_log.ts:9 src/views/nginx_log/NginxLog.vue:45
+#: src/routes/modules/nginx_log.ts:9 src/views/nginx_log/NginxLog.vue:33
 msgid "Nginx Log"
 msgstr "Nhật ký Nginx"
 
@@ -3946,13 +4000,30 @@ msgstr "Không"
 msgid "No Action"
 msgstr "Không hành động"
 
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:195
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:231
+msgid "No China geographic data available"
+msgstr "Không có dữ liệu địa lý Trung Quốc"
+
+#: src/composables/useGeoTranslation.ts:170
 #: src/views/dashboard/NginxDashBoard.vue:202
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:126
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:91
 msgid "No data"
 msgstr "Không có dữ liệu"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:811
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:819
 msgid "No entries in current page"
 msgstr "Không có mục nào trong trang hiện tại"
+
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:198
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:234
+msgid "No geographic data available"
+msgstr "Không có dữ liệu địa lý"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:553
+msgid "No logs found in the selected time range."
+msgstr "Không tìm thấy nhật ký trong khoảng thời gian đã chọn."
 
 #: src/components/NamespaceRender/NamespaceRender.vue:55
 msgid "No nodes selected"
@@ -3978,7 +4049,7 @@ msgstr ""
 "Không tìm thấy địa chỉ IP cụ thể trong cấu hình server_name. Vui lòng chỉ "
 "định địa chỉ IP máy chủ bên dưới để lấy chứng chỉ."
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:820
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:828
 msgid "No structured log data available"
 msgstr "Không có dữ liệu nhật ký có cấu trúc nào khả dụng"
 
@@ -4215,8 +4286,8 @@ msgid "Original name"
 msgstr "Tên gốc"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:153
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:225
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:472
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:237
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:481
 #: src/views/system/Upgrade.vue:194
 msgid "OS"
 msgstr "Hệ điều hành"
@@ -4310,7 +4381,7 @@ msgstr "Mật khẩu không khớp"
 #: src/views/config/components/Delete.vue:124
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:420
 #: src/views/nginx_log/NginxLogList.vue:85
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:468
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:477
 msgid "Path"
 msgstr "Đường dẫn"
 
@@ -4335,10 +4406,15 @@ msgstr "Giờ cao điểm"
 msgid "Pending"
 msgstr "Đang chờ"
 
+#: src/composables/useGeoTranslation.ts:169
 #: src/views/nginx_log/dashboard/components/BrowserStatsTable.vue:26
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:121
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:71
 #: src/views/nginx_log/dashboard/components/DeviceStatsTable.vue:26
 #: src/views/nginx_log/dashboard/components/OSStatsTable.vue:26
 #: src/views/nginx_log/dashboard/components/TopUrlsTable.vue:27
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:168
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:87
 msgid "Percentage"
 msgstr "Phần trăm"
 
@@ -4646,6 +4722,10 @@ msgstr "Nhà cung cấp"
 msgid "Provider not found: {0}"
 msgstr "Không tìm thấy nhà cung cấp: {0}"
 
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:59
+msgid "Province / Region"
+msgstr "Tỉnh / Vùng"
+
 #: src/views/certificate/ACMEUser.vue:61
 msgid "Proxy"
 msgstr "Proxy"
@@ -4666,16 +4746,16 @@ msgstr "Yêu cầu của CA công cộng:"
 msgid "Public Security Number"
 msgstr "Số An ninh Công cộng"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:754
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:762
 msgid "PV"
 msgstr "Lượt xem trang"
 
-#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:46
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:684
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:51
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:692
 msgid "Quick Select"
 msgstr "Chọn nhanh"
 
-#: src/views/nginx_log/NginxLog.vue:57
+#: src/views/nginx_log/NginxLog.vue:51
 msgid "Raw"
 msgstr "Thô"
 
@@ -4739,12 +4819,13 @@ msgid "Recursive Nameservers"
 msgstr "Máy chủ tên đệ quy"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:185
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:251
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:263
 msgid "Referer"
 msgstr "Người giới thiệu"
 
 #: src/language/curd.ts:70
 #: src/views/dashboard/components/SiteNavigationToolbar.vue:77
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:67
 msgid "Refresh"
 msgstr "Làm mới"
 
@@ -4948,7 +5029,7 @@ msgstr "Gia hạn chứng chỉ thành công"
 msgid "Renew successfully"
 msgstr "Gia hạn thành công"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:170
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:182
 msgid "Request"
 msgstr "Yêu cầu"
 
@@ -4978,7 +5059,7 @@ msgstr "Yêu cầu mỗi kết nối"
 
 #: src/language/curd.ts:13
 #: src/views/nginx_log/structured/components/SearchFilters.vue:214
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:720
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:728
 msgid "Reset"
 msgstr "Đặt lại"
 
@@ -4986,7 +5067,7 @@ msgstr "Đặt lại"
 msgid "Reset 2FA"
 msgstr "Đặt lại 2FA"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:838
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:843
 msgid "Reset Search"
 msgstr "Đặt lại tìm kiếm"
 
@@ -5356,11 +5437,11 @@ msgstr "Tìm kiếm trong nội dung nhật ký..."
 msgid "Search module name"
 msgstr "Tên mô-đun tìm kiếm"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:826
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:834
 msgid "Search range"
 msgstr "Phạm vi tìm kiếm"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:729
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:737
 msgid "Searching logs..."
 msgstr "Đang tìm kiếm nhật ký..."
 
@@ -5592,8 +5673,8 @@ msgid "Sites-enabled directory not exist"
 msgstr "Thư mục sites-enabled không tồn tại"
 
 #: src/language/curd.ts:62
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:201
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:470
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:213
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:479
 msgid "Size"
 msgstr "Kích thước"
 
@@ -5609,7 +5690,7 @@ msgstr "Thời gian chờ giữa các lần lặp của bộ nạp bộ đệm"
 msgid "Sleep time between cache manager iterations"
 msgstr "Thời gian chờ giữa các lần lặp của trình quản lý bộ nhớ đệm"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:717
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:725
 msgid "Sorted by"
 msgstr "Sắp xếp theo"
 
@@ -5685,7 +5766,7 @@ msgstr "Ổn định"
 msgid "Start"
 msgstr "Bắt đầu"
 
-#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:52
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:57
 msgid "Start Date"
 msgstr "Ngày bắt đầu"
 
@@ -5705,8 +5786,8 @@ msgstr "Tĩnh"
 #: src/views/certificate/CertificateList/certColumns.tsx:63
 #: src/views/dashboard/components/ModulesTable.vue:96
 #: src/views/nginx_log/structured/components/SearchFilters.vue:106
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:193
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:469
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:205
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:478
 #: src/views/node/nodeColumns.tsx:43
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:29
 #: src/views/site/site_list/columns.tsx:120 src/views/stream/columns.tsx:87
@@ -5777,7 +5858,7 @@ msgstr "Thư mục Streams-available không tồn tại"
 msgid "Streams-enabled directory not exist"
 msgstr "Thư mục streams-enabled không tồn tại"
 
-#: src/views/nginx_log/NginxLog.vue:55
+#: src/views/nginx_log/NginxLog.vue:49
 msgid "Structured"
 msgstr "Có cấu trúc"
 
@@ -6155,7 +6236,7 @@ msgstr ""
 "Mô-đun này cung cấp dữ liệu như thống kê yêu cầu Nginx, số lượng kết nối, "
 "v.v. Sau khi bật, bạn có thể xem thống kê hiệu suất"
 
-#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:20
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:25
 msgid "This month"
 msgstr "Tháng này"
 
@@ -6252,13 +6333,13 @@ msgstr "Hạn chế"
 msgid "Thursday"
 msgstr "Thứ Năm"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:150
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:465
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:149
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:474
 msgid "Time"
 msgstr "Thời gian"
 
 #: src/views/nginx_log/NginxLogList.vue:225
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:672
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:680
 msgid "Time Range"
 msgstr "Phạm vi thời gian"
 
@@ -6348,6 +6429,16 @@ msgstr "Token trống"
 msgid "Token is not valid"
 msgstr "Mã thông báo không hợp lệ"
 
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:217
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:253
+msgid "Top 10 Countries / Regions"
+msgstr "Top 10 quốc gia / khu vực"
+
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:214
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:250
+msgid "Top 10 Provinces / Regions"
+msgstr "Top 10 Tỉnh / Vùng"
+
 #: src/views/nginx_log/dashboard/components/TopUrlsTable.vue:37
 msgid "TOP 10 URLs"
 msgstr "10 URL hàng đầu"
@@ -6361,7 +6452,7 @@ msgstr "Tổng"
 msgid "Total connections"
 msgstr "Tổng số kết nối"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:748
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:756
 msgid "Total Entries"
 msgstr "Tổng số mục"
 
@@ -6415,7 +6506,7 @@ msgstr ""
 "TOTP là một phương pháp xác thực hai yếu tố sử dụng thuật toán mật khẩu một "
 "lần dựa trên thời gian."
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:766
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:774
 msgid "Traffic"
 msgstr "Lưu lượng"
 
@@ -6427,11 +6518,11 @@ msgstr "Đang dịch lỗi..."
 msgid "Trash"
 msgstr "Thùng rác"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:813
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:821
 msgid "Try adjusting your search criteria or navigate to different pages."
 msgstr "Hãy thử điều chỉnh tiêu chí tìm kiếm hoặc điều hướng đến các trang khác."
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:823
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:831
 msgid "Try adjusting your search criteria or time range."
 msgstr "Hãy thử điều chỉnh tiêu chí tìm kiếm hoặc khoảng thời gian."
 
@@ -6473,7 +6564,7 @@ msgstr "Nhập hoặc chọn hệ điều hành"
 msgid "Type or select status codes"
 msgstr "Nhập hoặc chọn mã trạng thái"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:772
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:780
 msgid "Unique Pages"
 msgstr "Trang duy nhất"
 
@@ -6616,7 +6707,7 @@ msgstr "Username (*)"
 msgid "Username length cannot exceed 255 characters"
 msgstr "Độ dài tên người dùng không được vượt quá 255 ký tự"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:760
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:768
 msgid "UV"
 msgstr "Lượt truy cập duy nhất"
 
@@ -6672,7 +6763,14 @@ msgstr "Xem mã phục hồi"
 msgid "Viewed"
 msgstr "Đã xem"
 
+#: src/composables/useGeoTranslation.ts:168
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:120
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:145
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:64
 #: src/views/nginx_log/dashboard/components/TopUrlsTable.vue:19
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:110
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:161
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:86
 msgid "Visits"
 msgstr "Lượt truy cập"
 
@@ -6903,6 +7001,12 @@ msgstr "Mã cũ của bạn sẽ không còn hoạt động nữa."
 #: src/views/preference/components/AuthSettings/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "Khóa truy cập của bạn"
+
+#~ msgid "Log File:"
+#~ msgstr "Tập tin nhật ký:"
+
+#~ msgid "Log path"
+#~ msgstr "Đường dẫn nhật ký"
 
 #~ msgid "Index Size"
 #~ msgstr "Kích thước chỉ mục"

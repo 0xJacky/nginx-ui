@@ -1,10 +1,15 @@
 <script setup lang="ts">
-import { DownOutlined } from '@ant-design/icons-vue'
+import { DownOutlined, ReloadOutlined } from '@ant-design/icons-vue'
 import { Card, DatePicker } from 'ant-design-vue'
 import dayjs from 'dayjs'
 
 defineProps<{
   logPath: string
+  refreshLoading?: boolean
+}>()
+
+const emit = defineEmits<{
+  refresh: []
 }>()
 
 const dateRange = defineModel<[dayjs.Dayjs, dayjs.Dayjs]>('dateRange', { required: true })
@@ -51,6 +56,15 @@ function applyDatePreset(preset: { value: () => [dayjs.Dayjs, dayjs.Dayjs] }) {
         v-model:value="dateRange"
         :placeholder="[$gettext('Start Date'), $gettext('End Date')]"
       />
+      <AButton
+        type="default"
+        :loading="refreshLoading"
+        @click="emit('refresh')"
+      >
+        <template #icon>
+          <ReloadOutlined />
+        </template>
+      </AButton>
     </ASpace>
   </Card>
 </template>

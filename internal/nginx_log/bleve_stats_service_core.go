@@ -40,31 +40,6 @@ func (s *BleveStatsService) GetDashboardAnalytics(ctx context.Context, req *Dash
 	logger.Infof("BleveStatsService: Starting dashboard analytics for log_path='%s', start=%v, end=%v",
 		req.LogPath, req.StartTime, req.EndTime)
 
-	// First, check total document count in index
-	docCount, err := s.indexer.index.DocCount()
-	if err != nil {
-		logger.Errorf("BleveStatsService: Failed to get document count: %v", err)
-	} else {
-		logger.Infof("BleveStatsService: Total documents in index: %d", docCount)
-	}
-
-	// Debug: Let's see what file_path values are actually in the index
-	debugSearchReq := bleve.NewSearchRequest(bleve.NewMatchAllQuery())
-	debugSearchReq.Size = 5
-	debugSearchReq.Fields = []string{"file_path"}
-	debugResult, err := s.indexer.index.Search(debugSearchReq)
-	if err != nil {
-		logger.Errorf("BleveStatsService: Failed to debug search: %v", err)
-	} else {
-		logger.Infof("BleveStatsService: Debug - sample file_path values in index:")
-		for i, hit := range debugResult.Hits {
-			if filePathField, ok := hit.Fields["file_path"]; ok {
-				logger.Infof("  [%d] file_path: '%v'", i, filePathField)
-			} else {
-				logger.Infof("  [%d] file_path: <missing>", i)
-			}
-		}
-	}
 
 	// Build time range query
 	timeQuery := s.buildTimeRangeQuery(req.StartTime, req.EndTime)
@@ -86,9 +61,6 @@ func (s *BleveStatsService) GetDashboardAnalytics(ctx context.Context, req *Dash
 		boolQuery.AddMust(filePathMatchQuery)
 
 		searchQuery = boolQuery
-		logger.Infof("BleveStatsService: Using BooleanQuery with field-specific file_path MatchQuery for '%s'", req.LogPath)
-	} else {
-		logger.Info("BleveStatsService: No log path filter, using time query only")
 	}
 
 	// Initialize result with empty arrays to ensure JSON structure
@@ -169,14 +141,12 @@ func (s *BleveStatsService) GetDashboardAnalytics(ctx context.Context, req *Dash
 func (s *BleveStatsService) buildTimeRangeQuery(startTime, endTime time.Time) query.Query {
 	// If both times are zero or the range is too wide, return match all query
 	if startTime.IsZero() && endTime.IsZero() {
-		logger.Info("BleveStatsService: No time range specified, using MatchAll query")
 		return bleve.NewMatchAllQuery()
 	}
 
 	// Check if the time range is reasonable (same as search interface)
 	if !startTime.IsZero() && !endTime.IsZero() {
 		if endTime.Sub(startTime) >= 400*24*time.Hour { // More than ~400 days
-			logger.Infof("BleveStatsService: Time range too wide (%v), using MatchAll query", endTime.Sub(startTime))
 			return bleve.NewMatchAllQuery()
 		}
 	}
@@ -185,23 +155,18 @@ func (s *BleveStatsService) buildTimeRangeQuery(startTime, endTime time.Time) qu
 	var timeQuery query.Query
 	if !startTime.IsZero() && !endTime.IsZero() {
 		// Add 1 millisecond to endTime to ensure boundary values are included
-		// This fixes the issue where records with exact endTime are excluded due to exclusive upper bound
 		inclusiveEndTime := endTime.Add(1 * time.Millisecond)
-		logger.Infof("BleveStatsService: Using time range filter: %s to %s (inclusive)", startTime.Format(time.RFC3339), inclusiveEndTime.Format(time.RFC3339))
 		timeQuery = bleve.NewDateRangeQuery(startTime, inclusiveEndTime)
 		timeQuery.(*query.DateRangeQuery).SetField("timestamp")
 	} else if !startTime.IsZero() {
-		logger.Infof("BleveStatsService: Using start time filter: %s", startTime.Format(time.RFC3339))
 		timeQuery = bleve.NewDateRangeQuery(startTime, time.Time{})
 		timeQuery.(*query.DateRangeQuery).SetField("timestamp")
 	} else if !endTime.IsZero() {
 		// Add 1 millisecond to endTime to ensure boundary values are included
 		inclusiveEndTime := endTime.Add(1 * time.Millisecond)
-		logger.Infof("BleveStatsService: Using end time filter: %s (inclusive)", inclusiveEndTime.Format(time.RFC3339))
 		timeQuery = bleve.NewDateRangeQuery(time.Time{}, inclusiveEndTime)
 		timeQuery.(*query.DateRangeQuery).SetField("timestamp")
 	} else {
-		logger.Info("BleveStatsService: No valid time range, using MatchAll query")
 		return bleve.NewMatchAllQuery()
 	}
 

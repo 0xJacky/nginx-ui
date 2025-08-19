@@ -1,6 +1,5 @@
 import type { Cert } from '@/api/cert'
 import { message } from 'ant-design-vue'
-import { defineStore } from 'pinia'
 import cert from '@/api/cert'
 
 export const useCertStore = defineStore('cert', () => {

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { DeviceStatItem } from '../types'
 import type { DashboardAnalytics } from '@/api/nginx_log'
-import { Card, Table } from 'ant-design-vue'
 
 defineProps<{
   dashboardData: DashboardAnalytics | null
@@ -33,8 +32,8 @@ const deviceColumns = [
 </script>
 
 <template>
-  <Card :title="$gettext('Device Statistics')" size="small" :loading="loading">
-    <Table
+  <ACard :title="$gettext('Device Statistics')" size="small" :loading="loading">
+    <ATable
       v-if="dashboardData"
       :columns="deviceColumns"
       :data-source="dashboardData.devices.slice(0, 10)"
@@ -43,5 +42,5 @@ const deviceColumns = [
       size="small"
       :scroll="{ y: 200 }"
     />
-  </Card>
+  </ACard>
 </template>

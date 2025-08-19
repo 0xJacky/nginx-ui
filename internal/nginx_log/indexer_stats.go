@@ -52,10 +52,6 @@ func (li *LogIndexer) isCacheValid(cached *CachedStatsResult) bool {
 		!latestModTime.After(cached.FilesModTime) &&
 		time.Since(cached.LastCalculated) < 5*time.Minute
 
-	if !isValid {
-		logger.Infof("Cache invalid - DocCount: %d->%d, ModTime: %v->%v, Age: %v",
-			cached.DocCount, docCount, cached.FilesModTime, latestModTime, time.Since(cached.LastCalculated))
-	}
 
 	return isValid
 }
@@ -68,16 +64,12 @@ func (li *LogIndexer) calculateSummaryStatsFromQuery(ctx context.Context, query 
 	// Check cache first
 	if cached, found := li.statsCache.Get(cacheKey); found {
 		if li.isCacheValid(cached) {
-			logger.Infof("Stats cache hit for key: %s", cacheKey)
 			return cached.Stats, nil
 		} else {
-			logger.Infof("Stats cache invalid for key: %s, recalculating", cacheKey)
 			// Remove invalid cache entry
 			li.statsCache.Del(cacheKey)
 		}
 	}
-
-	logger.Infof("Stats cache miss for key: %s, calculating...", cacheKey)
 	// Get total page views (PV) - just the count
 	countReq := bleve.NewSearchRequest(query)
 	countReq.Size = 0 // Don't fetch any documents, just get the count
@@ -91,7 +83,6 @@ func (li *LogIndexer) calculateSummaryStatsFromQuery(ctx context.Context, query 
 		return &SummaryStats{}, nil
 	}
 
-	logger.Infof("Total page views (PV): %d", pv)
 
 	// Calculate all statistics by processing all records (same as dashboard algorithm)
 	// This ensures consistency between search and dashboard interfaces
@@ -118,7 +109,6 @@ func (li *LogIndexer) calculateSummaryStatsFromQuery(ctx context.Context, query 
 			break
 		}
 
-		logger.Debugf("Processing batch %d-%d (%d hits) for statistics calculation", from, from+len(statsResult.Hits)-1, len(statsResult.Hits))
 
 		// Calculate all statistics in this batch
 		for _, hit := range statsResult.Hits {
@@ -155,8 +145,6 @@ func (li *LogIndexer) calculateSummaryStatsFromQuery(ctx context.Context, query 
 	uv := len(uniqueIPs)
 	uniquePagesCount := len(uniquePages)
 
-	logger.Infof("Summary calculation results: UV=%d, PV=%d, Traffic=%d, UniquePages=%d, AvgTrafficPerPV=%.2f (from ALL %d records)",
-		uv, pv, totalTraffic, uniquePagesCount, avgTrafficPerPV, pv)
 
 	stats := &SummaryStats{
 		UV:              uv,
@@ -183,7 +171,6 @@ func (li *LogIndexer) calculateSummaryStatsFromQuery(ctx context.Context, query 
 
 	// Store in cache with estimated size (small structures, so use fixed size)
 	li.statsCache.Set(cacheKey, cachedResult, 1024) // 1KB estimated size
-	logger.Infof("Cached stats result for key: %s", cacheKey)
 
 	return stats, nil
 }
@@ -192,7 +179,6 @@ func (li *LogIndexer) calculateSummaryStatsFromQuery(ctx context.Context, query 
 func (li *LogIndexer) invalidateStatsCache() {
 	// Clear all stats cache entries since we don't know which queries might be affected
 	li.statsCache.Clear()
-	logger.Infof("Statistics cache invalidated due to data changes")
 }
 
 // GetStatsCacheStatus returns statistics about the stats cache for monitoring

@@ -2,7 +2,6 @@
 import type { SelectValue } from 'ant-design-vue/es/select'
 import type { SiteStatus } from '@/api/site'
 import { message, Modal } from 'ant-design-vue'
-import { computed } from 'vue'
 import site from '@/api/site'
 import { ConfigStatus } from '@/constants'
 

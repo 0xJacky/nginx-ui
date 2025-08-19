@@ -50,7 +50,10 @@ type IndexedLogEntry struct {
 	FilePath     string    `json:"file_path"`
 	Timestamp    time.Time `json:"timestamp"`
 	IP           string    `json:"ip"`
-	Location     string    `json:"location"`
+	RegionCode   string    `json:"region_code"`
+	Province     string    `json:"province"`
+	City         string    `json:"city"`
+	ISP          string    `json:"isp"`
 	Method       string    `json:"method"`
 	Path         string    `json:"path"`
 	Protocol     string    `json:"protocol"`
