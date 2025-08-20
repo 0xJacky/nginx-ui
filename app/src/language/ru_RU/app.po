@@ -113,6 +113,15 @@ msgstr "{label} скопировано в буфер обмена"
 msgid "* Includes nodes from group %{groupName} and manually selected nodes"
 msgstr "* Включает узлы из группы %{groupName} и узлы, выбранные вручную"
 
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:803
+msgid "%{start}-%{end} of %{total} items"
+msgstr "%{start}-%{end} из %{total} элементов"
+
+#: src/views/nginx_log/dashboard/components/HourlyChart.vue:40
+#: src/views/nginx_log/dashboard/components/HourlyChart.vue:41
+msgid "24-Hour UV/PV Statistics"
+msgstr "24-часовая статистика UV/PV"
+
 #: src/views/user/userColumns.tsx:30
 msgid "2FA"
 msgstr "2FA"
@@ -125,7 +134,7 @@ msgstr "Настройки 2FA"
 msgid "About"
 msgstr "О проекте"
 
-#: src/views/nginx_log/NginxLogList.vue:39
+#: src/views/nginx_log/NginxLogList.vue:63
 msgid "Access Log"
 msgstr "Журнал доступа"
 
@@ -152,7 +161,7 @@ msgstr "Действие"
 #: src/views/certificate/CertificateList/certColumns.tsx:92
 #: src/views/certificate/DNSCredential.vue:71
 #: src/views/config/configColumns.tsx:50 src/views/namespace/columns.ts:84
-#: src/views/nginx_log/NginxLogList.vue:68 src/views/node/nodeColumns.tsx:96
+#: src/views/nginx_log/NginxLogList.vue:272 src/views/node/nodeColumns.tsx:96
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:85
 #: src/views/site/site_list/columns.tsx:160 src/views/stream/columns.tsx:123
@@ -173,7 +182,7 @@ msgstr "Фактическое соотношение рабочих к наст
 #: src/components/NgxConfigEditor/NgxUpstream.vue:97 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:45
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:94
-#: src/views/site/site_list/SiteList.vue:95 src/views/stream/StreamList.vue:103
+#: src/views/site/site_list/SiteList.vue:73 src/views/stream/StreamList.vue:81
 msgid "Add"
 msgstr "Добавить"
 
@@ -196,6 +205,10 @@ msgstr "Добавить директиву ниже"
 msgid "Add Domain"
 msgstr "Добавить домен"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:441
+msgid "Add Header"
+msgstr "Добавить заголовок"
+
 #: src/components/NgxConfigEditor/LocationEditor.vue:131
 #: src/components/NgxConfigEditor/LocationEditor.vue:158
 msgid "Add Location"
@@ -209,7 +222,7 @@ msgstr "Добавить сервер"
 msgid "Add Site"
 msgstr "Добавить Сайт"
 
-#: src/views/stream/StreamList.vue:140
+#: src/views/stream/StreamList.vue:118
 msgid "Add Stream"
 msgstr "Добавить поток"
 
@@ -217,7 +230,7 @@ msgstr "Добавить поток"
 msgid "Add Upstream"
 msgstr "Добавить upstream"
 
-#: src/views/stream/StreamList.vue:72
+#: src/views/stream/StreamList.vue:50
 msgid "Added successfully"
 msgstr "Добавлено успешно"
 
@@ -230,11 +243,15 @@ msgstr "Дополнительно"
 msgid "Advance Mode"
 msgstr "Расширенный режим"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:529
+msgid "Advanced Settings"
+msgstr "Дополнительные настройки"
+
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:104
 msgid "Afterwards, refresh this page and click add passkey again."
 msgstr "После этого обновите эту страницу и снова нажмите «Добавить ключ доступа»."
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:83
+#: src/components/NamespaceTabs/NamespaceTabs.vue:116
 msgid "All"
 msgstr "Все"
 
@@ -250,6 +267,14 @@ msgid ""
 msgstr ""
 "Все выбранные поддомены должны принадлежать одному и тому же "
 "DNS-провайдеру, иначе запрос сертификата завершится неудачей."
+
+#: src/constants/errors/nginx_log.ts:13
+msgid "Analytics service not available"
+msgstr "Сервис аналитики недоступен"
+
+#: src/views/nginx_log/structured/components/SearchFilters.vue:96
+msgid "Any"
+msgstr "Любой"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:209
 msgid "Any reachable IP address can be used with private Certificate Authorities"
@@ -287,7 +312,7 @@ msgstr "Применить"
 msgid "Arch"
 msgstr "Архитектура"
 
-#: src/views/preference/tabs/AuthSettings.vue:130
+#: src/views/preference/tabs/AuthSettings.vue:128
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "Вы уверены, что хотите немедленно удалить этот заблокированный IP?"
 
@@ -316,12 +341,12 @@ msgstr "Вы уверены, что хотите очистить сообщен
 msgid "Are you sure you want to delete permanently?"
 msgstr "Вы уверены, что хотите удалить безвозвратно?"
 
-#: src/language/curd.ts:25 src/views/site/site_list/SiteList.vue:113
-#: src/views/stream/StreamList.vue:123
+#: src/language/curd.ts:25 src/views/site/site_list/SiteList.vue:91
+#: src/views/stream/StreamList.vue:101
 msgid "Are you sure you want to delete?"
 msgstr "Вы уверены, что хотите удалить?"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:97
+#: src/components/NamespaceTabs/NamespaceTabs.vue:130
 msgid "Are you sure you want to reload Nginx on the following sync nodes?"
 msgstr ""
 "Вы уверены, что хотите перезагрузить Nginx на следующих синхронизированных "
@@ -339,7 +364,7 @@ msgstr "Вы уверены, что хотите удалить этот эле�
 msgid "Are you sure you want to remove this location?"
 msgstr "Вы уверены, что хотите удалить location?"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:109
+#: src/components/NamespaceTabs/NamespaceTabs.vue:142
 msgid "Are you sure you want to restart Nginx on the following sync nodes?"
 msgstr ""
 "Вы уверены, что хотите перезапустить Nginx на следующих синхронизированных "
@@ -348,6 +373,10 @@ msgstr ""
 #: src/language/curd.ts:26
 msgid "Are you sure you want to restore?"
 msgstr "Вы уверены, что хотите восстановить?"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:725
+msgid "Ascending"
+msgstr "По возрастанию"
 
 #: src/components/ChatGPT/ChatGPT.vue:55
 msgid "Ask ChatGPT for Help"
@@ -373,7 +402,7 @@ msgstr "Авторизация"
 msgid "Authenticate with a passkey"
 msgstr "Аутентификация с помощью ключа доступа"
 
-#: src/views/preference/tabs/AuthSettings.vue:56
+#: src/views/preference/tabs/AuthSettings.vue:55
 msgid "Authentication Settings"
 msgstr "Настройки аутентификации"
 
@@ -412,15 +441,15 @@ msgstr "Автоматическое резервное копирование �
 msgid "Auto Backup Storage Failed"
 msgstr "Сбой хранения автоматической резервной копии"
 
-#: src/views/nginx_log/NginxLog.vue:150 src/views/node/Node.vue:165
+#: src/views/nginx_log/NginxLog.vue:58 src/views/node/Node.vue:164
 msgid "Auto Refresh"
 msgstr "Автообновление"
 
-#: src/views/node/Node.vue:48
+#: src/views/node/Node.vue:47
 msgid "Auto refresh disabled"
 msgstr "Автоматическое обновление отключено"
 
-#: src/views/node/Node.vue:44
+#: src/views/node/Node.vue:43
 msgid "Auto refresh enabled"
 msgstr "Автоматическое обновление включено"
 
@@ -449,10 +478,18 @@ msgstr "Автоматическая перезагрузка"
 msgid "Average Latency"
 msgstr "Средняя задержка"
 
+#: src/views/nginx_log/dashboard/components/SummaryStats.vue:33
+msgid "Avg Daily UV"
+msgstr "Среднее дневное UV"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:786
+msgid "Avg/PV"
+msgstr "Сред./PV"
+
 #: src/views/certificate/components/CertificateActions.vue:22
 #: src/views/config/components/ConfigLeftPanel.vue:273
 #: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
-#: src/views/nginx_log/NginxLog.vue:174
+#: src/views/nginx_log/NginxLog.vue:86
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:169
 #: src/views/stream/components/StreamEditor.vue:123
 msgid "Back"
@@ -465,6 +502,18 @@ msgstr "Вернуться на главную"
 #: src/language/curd.ts:21
 msgid "Back to List"
 msgstr "Вернуться к списку"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:556
+msgid ""
+"Background indexing in progress. Data will be updated automatically when "
+"ready."
+msgstr ""
+"Фоновое индексирование в процессе. Данные будут автоматически обновлены по "
+"готовности."
+
+#: src/constants/errors/nginx_log.ts:17
+msgid "Background log service not available"
+msgstr "Фоновая служба журналов недоступна"
 
 #: src/routes/modules/backup.ts:11 src/routes/modules/backup.ts:19
 msgid "Backup"
@@ -532,11 +581,11 @@ msgstr ""
 msgid "Backup Type"
 msgstr "Тип резервной копии"
 
-#: src/views/preference/tabs/AuthSettings.vue:97
+#: src/views/preference/tabs/AuthSettings.vue:95
 msgid "Ban Threshold Minutes"
 msgstr "Порог блокировки в минутах"
 
-#: src/views/preference/tabs/AuthSettings.vue:118
+#: src/views/preference/tabs/AuthSettings.vue:116
 msgid "Banned IPs"
 msgstr "Заблокированные IP-адреса"
 
@@ -586,6 +635,17 @@ msgstr "Ниже приведены выбранные элементы, кот�
 #: src/constants/errors/nginx.ts:3
 msgid "Block is nil"
 msgstr "Блок равен nil"
+
+#: src/views/nginx_log/dashboard/components/BrowserStatsTable.vue:13
+#: src/views/nginx_log/structured/components/SearchFilters.vue:137
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:221
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:480
+msgid "Browser"
+msgstr "Браузер"
+
+#: src/views/nginx_log/dashboard/components/BrowserStatsTable.vue:36
+msgid "Browser Statistics"
+msgstr "Статистика браузера"
 
 #: src/views/system/About.vue:75
 msgid "Build with"
@@ -652,6 +712,10 @@ msgstr ""
 #: src/components/NgxConfigEditor/NgxServer.vue:61
 #: src/components/NgxConfigEditor/NgxUpstream.vue:32 src/language/curd.ts:37
 #: src/views/config/components/Delete.vue:98
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:632
+#: src/views/dashboard/components/SiteNavigationToolbar.vue:64
+#: src/views/nginx_log/indexing/IndexManagement.vue:31
+#: src/views/nginx_log/indexing/IndexManagement.vue:57
 #: src/views/preference/components/AuthSettings/Passkey.vue:141
 #: src/views/site/components/SiteStatusSelect.vue:124
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:40
@@ -664,6 +728,10 @@ msgstr "Отмена"
 #: src/constants/errors/backup.ts:76
 msgid "Cannot access backup path {0}: {1}"
 msgstr "Невозможно получить доступ к пути резервного копирования {0}: {1}"
+
+#: src/constants/errors/nginx_log.ts:16
+msgid "Cannot access log file"
+msgstr "Невозможно получить доступ к файлу журнала"
 
 #: src/constants/errors/backup.ts:79
 msgid "Cannot access storage path {0}: {1}"
@@ -758,8 +826,8 @@ msgstr "Ошибка разбора сертификата"
 msgid "Certificate path is empty"
 msgstr "Путь к сертификату пуст"
 
-#: src/views/certificate/components/RemoveCert.vue:42
-#: src/views/certificate/components/RemoveCert.vue:62
+#: src/views/certificate/components/RemoveCert.vue:50
+#: src/views/certificate/components/RemoveCert.vue:70
 msgid "Certificate removed successfully"
 msgstr "Сертификат успешно удален"
 
@@ -840,6 +908,10 @@ msgstr "Проверить"
 #: src/views/system/Upgrade.vue:204
 msgid "Check again"
 msgstr "Проверить повторно"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:592
+msgid "Check Favicon"
+msgstr "Проверить фавикон"
 
 #: src/language/generate.ts:6
 msgid ""
@@ -962,6 +1034,19 @@ msgstr ""
 "Проверьте, находятся ли каталоги streams-available и streams-enabled в "
 "каталоге конфигурации nginx"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:532
+msgid "Check Interval (seconds)"
+msgstr "Интервал проверки (секунды)"
+
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:180
+#: src/views/nginx_log/dashboard/components/GeoMapChart.vue:47
+msgid "China Access Map"
+msgstr "Карта доступа Китая"
+
+#: src/views/nginx_log/dashboard/components/GeoMapChart.vue:34
+msgid "China Map"
+msgstr "Карта Китая"
+
 #: src/constants/errors/crypto.ts:3
 msgid "Cipher text is too short"
 msgstr "Зашифрованный текст слишком короткий"
@@ -1004,9 +1089,17 @@ msgstr "Нажмите, чтобы скопировать"
 msgid "Client Body Buffer Size"
 msgstr "Размер буфера корпуса клиента"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:614
+msgid "Client Certificate"
+msgstr "Клиентский сертификат"
+
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:117
 msgid "Client Header Buffer Size"
 msgstr "Размер буфера заголовков клиента"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:619
+msgid "Client Key"
+msgstr "Ключ клиента"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:110
 msgid "Client Max Body Size"
@@ -1035,6 +1128,10 @@ msgstr "Автодополнение кода не включено"
 #: src/views/preference/tabs/OpenAISettings.vue:86
 msgid "Code Completion Model"
 msgstr "Модель автодополнения кода"
+
+#: src/language/curd.ts:71
+msgid "Collapse"
+msgstr "Свернуть"
 
 #: src/language/curd.ts:64
 msgid "Column Settings"
@@ -1074,6 +1171,10 @@ msgstr "Сравнить с текущим"
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:88
 msgid "Compression level, 1 is lowest, 9 is highest"
 msgstr "Уровень сжатия, 1 самый низкий, 9 - самый высокий"
+
+#: src/views/nginx_log/indexing/components/IndexProgressBar.vue:57
+msgid "Computing Statistics"
+msgstr "Вычисление статистики"
 
 #: src/language/generate.ts:19
 msgid "Conf.d directory exists"
@@ -1139,7 +1240,8 @@ msgstr "Подтвердить удаление"
 msgid "Confirm New Password"
 msgstr "Подтвердите новый пароль"
 
-#: src/views/dashboard/components/NodeAnalyticItem.vue:99
+#: src/views/dashboard/components/NodeAnalyticItem.vue:97
+#: src/views/dashboard/components/SiteNavigationToolbar.vue:39
 msgid "Connected"
 msgstr "Подключено"
 
@@ -1186,6 +1288,18 @@ msgstr "Копировать коды"
 #: src/views/system/Upgrade.vue:162
 msgid "Core Upgrade"
 msgstr "Обновление ядра"
+
+#: src/views/nginx_log/dashboard/components/BrowserStatsTable.vue:18
+#: src/views/nginx_log/dashboard/components/DailyTrendsChart.vue:84
+#: src/views/nginx_log/dashboard/components/DeviceStatsTable.vue:18
+#: src/views/nginx_log/dashboard/components/HourlyChart.vue:73
+#: src/views/nginx_log/dashboard/components/OSStatsTable.vue:18
+msgid "Count"
+msgstr "Количество"
+
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:156
+msgid "Country / Region"
+msgstr "Страна / Регион"
 
 #: src/views/dashboard/ServerAnalytic.vue:308
 msgid "CPU Status"
@@ -1309,6 +1423,10 @@ msgstr "Пользовательские домены"
 msgid "Custom Domains Certificate"
 msgstr "Сертификат для пользовательских доменов"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:426
+msgid "Custom Headers"
+msgstr "Пользовательские заголовки"
+
 #: src/views/preference/tabs/NodeSettings.vue:19
 msgid ""
 "Customize the name of local node to be displayed in the environment "
@@ -1319,6 +1437,10 @@ msgstr "Настройте имя локального узла для отоб�
 msgid "Daily"
 msgstr "Ежедневно"
 
+#: src/views/nginx_log/dashboard/components/DailyTrendsChart.vue:41
+msgid "Daily Access Trends"
+msgstr "Ежедневные тенденции доступа"
+
 #: src/views/backup/AutoBackup/AutoBackup.vue:128
 msgid "Daily at %{time}"
 msgstr "Ежедневно в %{time}"
@@ -1326,9 +1448,21 @@ msgstr "Ежедневно в %{time}"
 #: src/routes/modules/dashboard.ts:10
 #: src/views/config/components/ConfigLeftPanel.vue:109
 #: src/views/config/components/ConfigLeftPanel.vue:159
-#: src/views/config/ConfigList.vue:69
+#: src/views/config/ConfigList.vue:69 src/views/nginx_log/NginxLog.vue:50
 msgid "Dashboard"
 msgstr "Доска"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:515
+msgid "Data refreshed successfully"
+msgstr "Данные успешно обновлены"
+
+#: src/views/nginx_log/dashboard/components/DailyTrendsChart.vue:71
+msgid "Date"
+msgstr "Дата"
+
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:39
+msgid "Date Range"
+msgstr "Диапазон дат"
 
 #: src/views/backup/AutoBackup/components/CronEditor.vue:184
 msgid "Day of Month"
@@ -1346,30 +1480,34 @@ msgstr "Дни"
 msgid "Decryption failed"
 msgstr "Ошибка расшифровки"
 
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:839
+msgid "Default range"
+msgstr "Диапазон по умолчанию"
+
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:150
 msgid "Define shared memory zone name and size, e.g. proxy_cache:10m"
 msgstr "Определите имя и размер зоны общей памяти, например proxy_cache:10m"
 
 #: src/components/NgxConfigEditor/NgxServer.vue:110
 #: src/components/NgxConfigEditor/NgxUpstream.vue:78 src/language/curd.ts:9
-#: src/views/certificate/components/RemoveCert.vue:90
+#: src/views/certificate/components/RemoveCert.vue:98
 #: src/views/config/components/Delete.vue:65
 #: src/views/config/components/Delete.vue:97
 #: src/views/config/ConfigList.vue:199
-#: src/views/site/site_list/SiteList.vue:122
-#: src/views/stream/StreamList.vue:132
+#: src/views/site/site_list/SiteList.vue:100
+#: src/views/stream/StreamList.vue:110
 msgid "Delete"
 msgstr "Удалить"
 
 #: src/components/Notification/notifications.ts:86
-msgid "Delete %{path} on %{env_name} failed"
-msgstr "Не удалось удалить %{path} на %{env_name}"
+msgid "Delete %{path} on %{node_name} failed"
+msgstr "Не удалось удалить %{path} на %{node_name}"
 
 #: src/components/Notification/notifications.ts:90
-msgid "Delete %{path} on %{env_name} successfully"
-msgstr "%{path} на %{env_name} успешно удалён"
+msgid "Delete %{path} on %{node_name} successfully"
+msgstr "%{path} успешно удалён на %{node_name}"
 
-#: src/views/certificate/components/RemoveCert.vue:95
+#: src/views/certificate/components/RemoveCert.vue:103
 msgid "Delete Certificate"
 msgstr "Удалить сертификат"
 
@@ -1414,7 +1552,7 @@ msgstr "Не удалось удалить сайт %{name} с %{node}"
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "Сайт %{name} успешно удалён с %{node}"
 
-#: src/views/site/site_list/SiteList.vue:48
+#: src/views/site/site_list/SiteList.vue:26
 msgid "Delete site: %{site_name}"
 msgstr "Удалить сайт: %{site_name}"
 
@@ -1426,7 +1564,7 @@ msgstr "Не удалось удалить поток %{name} с %{node}"
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "Поток %{name} успешно удален с %{node}"
 
-#: src/views/stream/StreamList.vue:47
+#: src/views/stream/StreamList.vue:25
 msgid "Delete stream: %{stream_name}"
 msgstr "Удалить поток: %{stream_name}"
 
@@ -1441,6 +1579,10 @@ msgstr "Демо"
 #: src/views/config/components/ConfigRightPanel/Basic.vue:60
 msgid "Deploy"
 msgstr "Развернуть"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:725
+msgid "Descending"
+msgstr "По убыванию"
 
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:74
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:98
@@ -1470,6 +1612,20 @@ msgstr "Разработка"
 #: src/views/system/About.vue:28
 msgid "Development Mode"
 msgstr "Режим разработки"
+
+#: src/views/nginx_log/structured/components/SearchFilters.vue:169
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:253
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:482
+msgid "Device"
+msgstr "Устройство"
+
+#: src/views/nginx_log/dashboard/components/DeviceStatsTable.vue:36
+msgid "Device Statistics"
+msgstr "Статистика устройств"
+
+#: src/views/nginx_log/dashboard/components/DeviceStatsTable.vue:13
+msgid "Device Type"
+msgstr "Тип устройства"
 
 #: src/views/preference/components/ExternalNotify/dingtalk.ts:5
 msgid "DingTalk"
@@ -1580,6 +1736,10 @@ msgstr "Отключено"
 msgid "Disabled successfully"
 msgstr "Отключено успешно"
 
+#: src/views/dashboard/components/SiteNavigationToolbar.vue:39
+msgid "Disconnected"
+msgstr "Отключено"
+
 #: src/views/dashboard/ServerAnalytic.vue:373
 msgid "Disk IO"
 msgstr "Нагрузка на Диск IO"
@@ -1593,6 +1753,10 @@ msgstr "DNS учетные данные"
 #: src/views/certificate/components/DNSChallenge.vue:59
 msgid "DNS Provider"
 msgstr "Провайдер DNS"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:600
+msgid "DNS Resolver"
+msgstr "DNS-резолвер"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:228
 msgid "DNS01"
@@ -1645,6 +1809,10 @@ msgid "Document"
 msgid_plural "Documents"
 msgstr[0] "Документ"
 
+#: src/views/nginx_log/NginxLogList.vue:212
+msgid "Document Count"
+msgstr "Количество документов"
+
 #: src/views/certificate/components/DNSIssueCertificate.vue:118
 msgid "Domain"
 msgstr "Домен"
@@ -1687,9 +1855,9 @@ msgstr ""
 "запускаются на localhost."
 
 #: src/views/site/site_list/SiteDuplicate.vue:72
-#: src/views/site/site_list/SiteList.vue:108
+#: src/views/site/site_list/SiteList.vue:86
 #: src/views/stream/components/StreamDuplicate.vue:64
-#: src/views/stream/StreamList.vue:118
+#: src/views/stream/StreamList.vue:96
 msgid "Duplicate"
 msgstr "Дублировать"
 
@@ -1745,6 +1913,10 @@ msgstr "Электронная почта"
 #: src/views/install/components/InstallForm.vue:75
 msgid "Email (*)"
 msgstr "Email (*)"
+
+#: src/constants/errors/nginx_log.ts:9
+msgid "Empty log line"
+msgstr "Пустая строка журнала"
 
 #: src/views/site/components/SiteStatusSelect.vue:114
 #: src/views/stream/components/StreamStatusSelect.vue:54
@@ -1887,6 +2059,10 @@ msgstr "Использовать для сайта Let's Encrypt"
 msgid "End"
 msgstr "Конец"
 
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:57
+msgid "End Date"
+msgstr "Дата окончания"
+
 #: src/views/certificate/components/DNSIssueCertificate.vue:137
 msgid "Enter domain name"
 msgstr "Введите имя домена"
@@ -1907,10 +2083,6 @@ msgstr "Конфигурация среды пуста"
 msgid "Environment variables cleaned"
 msgstr "Переменные окружения очищены"
 
-#: src/views/node/Node.vue:131
-msgid "Environments"
-msgstr "Окружения"
-
 #: src/constants/index.ts:23 src/views/config/InspectConfig.vue:63
 #: src/views/notification/notificationColumns.tsx:14
 msgid "Error"
@@ -1924,9 +2096,13 @@ msgstr "Детали ошибки"
 msgid "Error initializing diff viewer"
 msgstr "Ошибка инициализации просмотрщика различий"
 
-#: src/views/nginx_log/NginxLogList.vue:43
+#: src/views/nginx_log/NginxLogList.vue:67
 msgid "Error Log"
 msgstr "Журнал ошибок"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:656
+msgid "Error Log Detected"
+msgstr "Обнаружен журнал ошибок"
 
 #: src/constants/errors/self_check.ts:22
 msgid "Error log path not exist"
@@ -1936,6 +2112,14 @@ msgstr "Путь к журналу ошибок не существует"
 #: src/routes/modules/nginx_log.ts:24
 msgid "Error Logs"
 msgstr "Ошибка логирования"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:659
+msgid ""
+"Error logs do not support structured analysis as they contain free-form "
+"text messages."
+msgstr ""
+"Журналы ошибок не поддерживают структурированный анализ, так как содержат "
+"свободные текстовые сообщения."
 
 #: src/components/ConfigHistory/DiffViewer.vue:81
 msgid "Error processing content"
@@ -1956,6 +2140,18 @@ msgstr "Выполнять каждый день в %{time}"
 #: src/views/backup/AutoBackup/components/CronEditor.vue:129
 msgid "Execute on every month on day %{day} at %{time}"
 msgstr "Выполнять каждый месяц в день %{day} в %{time}"
+
+#: src/language/curd.ts:72
+msgid "Expand"
+msgstr "Развернуть"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:454
+msgid "Expected Status Codes"
+msgstr "Ожидаемые коды состояния"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:484
+msgid "Expected Text"
+msgstr "Ожидаемый текст"
 
 #: src/components/CertInfo/CertInfo.vue:31
 #: src/views/certificate/CertificateList/certColumns.tsx:80
@@ -2153,13 +2349,21 @@ msgstr "Не удалось расшифровать каталог Nginx: {0}"
 msgid "Failed to decrypt Nginx UI directory: {0}"
 msgstr "Не удалось расшифровать каталог Nginx UI: {0}"
 
-#: src/views/certificate/components/RemoveCert.vue:67
+#: src/constants/errors/nginx_log.ts:22
+msgid "Failed to delete all indexes"
+msgstr "Не удалось удалить все индексы"
+
+#: src/views/certificate/components/RemoveCert.vue:75
 msgid "Failed to delete certificate"
 msgstr "Не удалось удалить сертификат"
 
 #: src/language/generate.ts:21
 msgid "Failed to delete certificate from database: %{error}"
 msgstr "Не удалось удалить сертификат из базы данных: %{error}"
+
+#: src/constants/errors/nginx_log.ts:21
+msgid "Failed to delete file index"
+msgstr "Не удалось удалить индекс файла"
 
 #: src/views/site/components/SiteStatusSelect.vue:73
 #: src/views/stream/components/StreamStatusSelect.vue:45
@@ -2231,6 +2435,10 @@ msgstr "Не удалось получить информацию о серти�
 msgid "Failed to get container id: {0}"
 msgstr "Не удалось получить идентификатор контейнера: {0}"
 
+#: src/constants/errors/nginx_log.ts:23
+msgid "Failed to get index status"
+msgstr "Не удалось получить статус индекса"
+
 #: src/views/dashboard/components/ParamsOptimization.vue:62
 msgid "Failed to get Nginx performance settings"
 msgstr "Не удалось получить настройки производительности Nginx"
@@ -2238,6 +2446,10 @@ msgstr "Не удалось получить настройки производ
 #: src/composables/useNginxPerformance.ts:49
 msgid "Failed to get performance data"
 msgstr "Не удалось получить данные о производительности"
+
+#: src/constants/errors/nginx_log.ts:24
+msgid "Failed to get persistence stats"
+msgstr "Не удалось получить статистику устойчивости"
 
 #: src/constants/errors/performance.ts:3
 msgid "Failed to get stub status: {0}"
@@ -2315,6 +2527,22 @@ msgstr "Не удалось прочитать тело ответа: {0}"
 msgid "Failed to read symlink: {0}"
 msgstr "Ошибка чтения символической ссылки: {0}"
 
+#: src/constants/errors/nginx_log.ts:20
+msgid "Failed to rebuild file index"
+msgstr "Не удалось перестроить индекс файла"
+
+#: src/constants/errors/nginx_log.ts:19
+msgid "Failed to rebuild index"
+msgstr "Не удалось перестроить индекс"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:520
+msgid "Failed to refresh data"
+msgstr "Не удалось обновить данные"
+
+#: src/views/dashboard/SiteNavigation.vue:101
+msgid "Failed to refresh sites"
+msgstr "Не удалось обновить сайты"
+
 #: src/constants/errors/backup.ts:39
 msgid "Failed to restore Nginx configs: {0}"
 msgstr "Не удалось восстановить конфигурации Nginx: {0}"
@@ -2323,7 +2551,7 @@ msgstr "Не удалось восстановить конфигурации Ng
 msgid "Failed to restore Nginx UI files: {0}"
 msgstr "Не удалось восстановить файлы пользовательского интерфейса Nginx: {0}"
 
-#: src/views/certificate/components/RemoveCert.vue:49
+#: src/views/certificate/components/RemoveCert.vue:57
 msgid "Failed to revoke certificate"
 msgstr "Не удалось отозвать сертификат"
 
@@ -2331,9 +2559,21 @@ msgstr "Не удалось отозвать сертификат"
 msgid "Failed to revoke certificate: %{error}"
 msgstr "Не удалось отозвать сертификат: %{error}"
 
+#: src/views/dashboard/SiteNavigation.vue:193
+msgid "Failed to save configuration"
+msgstr "Не удалось сохранить конфигурацию"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:310
+msgid "Failed to save health check configuration"
+msgstr "Не удалось сохранить конфигурацию проверки работоспособности"
+
 #: src/views/dashboard/components/ParamsOptimization.vue:91
 msgid "Failed to save Nginx performance settings"
 msgstr "Не удалось сохранить настройки производительности Nginx"
+
+#: src/views/dashboard/SiteNavigation.vue:166
+msgid "Failed to save order"
+msgstr "Не удалось сохранить порядок"
 
 #: src/views/preference/tabs/ExternalNotify.vue:31
 msgid "Failed to send test message"
@@ -2387,6 +2627,10 @@ msgstr "Файл"
 msgid "File exists"
 msgstr "Файл существует"
 
+#: src/views/nginx_log/indexing/IndexManagement.vue:62
+msgid "File index rebuild started successfully for %{path}"
+msgstr "Перестроение индекса файла для %{path} успешно запущено"
+
 #: src/views/other/Error.vue:8
 msgid "File Not Found"
 msgstr "Файл не найден"
@@ -2394,6 +2638,10 @@ msgstr "Файл не найден"
 #: src/constants/errors/config.ts:7
 msgid "File or directory not found: {0}"
 msgstr "Файл или каталог не найден: {0}"
+
+#: src/constants/errors/nginx_log.ts:18
+msgid "File path is required"
+msgstr "Требуется путь к файлу"
 
 #: src/views/certificate/components/CertificateFileUpload.vue:53
 msgid "File size cannot exceed 5MB"
@@ -2407,9 +2655,17 @@ msgstr "Файл успешно загружен"
 msgid "Filename is empty"
 msgstr "Имя файла пустое"
 
-#: src/views/nginx_log/NginxLog.vue:156
+#: src/views/nginx_log/NginxLogList.vue:323
+msgid "files"
+msgstr "файлы"
+
+#: src/views/nginx_log/raw/RawLogViewer.vue:155
 msgid "Filter"
 msgstr "Фильтр"
+
+#: src/views/nginx_log/raw/RawLogViewer.vue:158
+msgid "Filter log content"
+msgstr "Фильтровать содержимое журнала"
 
 #: src/language/constants.ts:19 src/views/site/site_add/SiteAdd.vue:82
 msgid "Finished"
@@ -2427,6 +2683,10 @@ msgstr "папка"
 msgid "Folder"
 msgstr "Папка"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:572
+msgid "Follow Redirects"
+msgstr "Следовать перенаправлениям"
+
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:76
 msgid ""
 "Follow the instructions in the dialog to complete the passkey registration "
@@ -2443,6 +2703,12 @@ msgstr "Для китайскоязычных пользователей"
 #: src/views/preference/tabs/HTTPSettings.vue:19
 msgid "For Chinese user: https://cloud.nginxui.com/"
 msgstr "Для китайских пользователей: https://cloud.nginxui.com/"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:661
+msgid "For error logs, please use the Raw Log Viewer for better viewing experience."
+msgstr ""
+"Для просмотра журналов ошибок используйте Raw Log Viewer для лучшего опыта "
+"просмотра."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:140
 msgid ""
@@ -2480,6 +2746,14 @@ msgstr "Формат: минута час день месяц день_неде�
 #: src/views/backup/AutoBackup/components/CronEditor.vue:31
 msgid "Friday"
 msgstr "Пятница"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:836
+msgid "From indexed logs"
+msgstr "Из индексированных журналов"
+
+#: src/views/nginx_log/structured/components/SearchFilters.vue:65
+msgid "Full Text Search"
+msgstr "Полнотекстовый поиск"
 
 #: src/views/certificate/CertificateList/certColumns.tsx:30
 msgid "General Certificate"
@@ -2530,9 +2804,39 @@ msgstr "Получение сертификата, пожалуйста, под�
 msgid "Github Proxy"
 msgstr "Прокси Github"
 
+#: src/views/nginx_log/dashboard/components/GeoMapChart.vue:47
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:183
+msgid "Global Access Map"
+msgstr "Карта глобального доступа"
+
+#: src/views/nginx_log/dashboard/components/GeoMapChart.vue:31
+msgid "Global Map"
+msgstr "Мировая карта"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:666
+msgid "Go to Raw Log Viewer"
+msgstr "Перейти к просмотру сырых логов"
+
 #: src/views/preference/components/ExternalNotify/gotify.ts:5
 msgid "Gotify"
 msgstr "Gotify"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:502
+msgid ""
+"gRPC health check requires server to implement gRPC Health Check service "
+"(grpc.health.v1.Health)."
+msgstr ""
+"Проверка работоспособности gRPC требует, чтобы сервер реализовал службу "
+"проверки работоспособности gRPC (grpc.health.v1.Health)."
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:501
+msgid ""
+"gRPCS uses TLS encryption. Server must implement gRPC Health Check service. "
+"For testing, SSL validation is disabled by default."
+msgstr ""
+"gRPCS использует шифрование TLS. Сервер должен реализовать службу проверки "
+"работоспособности gRPC. Для тестирования проверка SSL по умолчанию "
+"отключена."
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:67
 msgid "GZIP Compression"
@@ -2550,9 +2854,27 @@ msgstr "Минимальная длина GZIP"
 msgid "Hash verification failed: file integrity compromised"
 msgstr "Проверка хеша не удалась: целостность файла нарушена"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:365
+msgid "Health Check Configuration"
+msgstr "Конфигурация проверки работоспособности"
+
+#: src/views/dashboard/SiteNavigation.vue:188
+msgid "Health check configuration saved"
+msgstr "Конфигурация проверки работоспособности сохранена"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:301
+msgid "Health check configuration saved successfully"
+msgstr "Конфигурация проверки работоспособности успешно сохранена"
+
 #: src/components/SensitiveString/SensitiveString.vue:40
 msgid "Hide"
 msgstr "Скрыть"
+
+#: src/composables/useGeoTranslation.ts:166
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:134
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:99
+msgid "High"
+msgstr "Высокий"
 
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:87
 msgid "Higher value means better connection reuse"
@@ -2573,6 +2895,7 @@ msgid "Host"
 msgstr "Хост"
 
 #: src/views/backup/AutoBackup/components/CronEditor.vue:159
+#: src/views/nginx_log/dashboard/components/HourlyChart.vue:60
 msgid "Hour"
 msgstr "Час"
 
@@ -2584,6 +2907,10 @@ msgstr "HTTP"
 msgid "HTTP Challenge Port"
 msgstr "Порт HTTP Challenge"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:399
+msgid "HTTP Method"
+msgstr "HTTP-метод"
+
 #: src/components/AutoCertForm/AutoCertForm.vue:222
 msgid "HTTP01"
 msgstr "HTTP01"
@@ -2592,11 +2919,15 @@ msgstr "HTTP01"
 msgid "HTTPS Protocol"
 msgstr "Протокол HTTPS"
 
+#: src/views/nginx_log/structured/components/SearchFilters.vue:189
+msgid "https://..."
+msgstr "https://..."
+
 #: src/views/preference/tabs/NodeSettings.vue:34
 msgid "ICP Number"
 msgstr "ICP номер"
 
-#: src/views/preference/tabs/AuthSettings.vue:113
+#: src/views/preference/tabs/AuthSettings.vue:111
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
 "ban threshold minutes, the ip will be banned for a period of time."
@@ -2643,6 +2974,31 @@ msgid ""
 msgstr ""
 "Включает мастер-процесс, рабочие процессы, процессы кеширования и другие "
 "процессы Nginx"
+
+#: src/views/nginx_log/indexing/IndexManagement.vue:36
+msgid "Index and statistics rebuild started successfully"
+msgstr "Перестроение индекса и статистики успешно запущено"
+
+#: src/views/nginx_log/NginxLogList.vue:94
+msgid "Index Status"
+msgstr "Статус индекса"
+
+#: src/views/nginx_log/NginxLogList.vue:140
+msgid "Indexed"
+msgstr "Проиндексировано"
+
+#: src/views/nginx_log/indexing/components/IndexProgressBar.vue:55
+#: src/views/nginx_log/NginxLogList.vue:144
+msgid "Indexing"
+msgstr "Индексация"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:745
+msgid "Indexing logs, please wait..."
+msgstr "Индексация журналов, пожалуйста, подождите..."
+
+#: src/views/nginx_log/NginxLogList.vue:318
+msgid "Indexing logs..."
+msgstr "Индексация журналов..."
 
 #: src/components/ProcessingStatus/ProcessingStatus.vue:31
 msgid "Indexing..."
@@ -2786,9 +3142,23 @@ msgstr "Неверный формат запроса"
 msgid "Invalid security token format"
 msgstr "Неверный формат токена безопасности"
 
+#: src/constants/errors/nginx_log.ts:10
+msgid "Invalid timestamp format"
+msgstr "Неверный формат временной метки"
+
+#: src/constants/errors/nginx_log.ts:26
+msgid "Invalid websocket message type"
+msgstr "Неверный тип сообщения WebSocket"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:158
 #: src/views/preference/tabs/AuthSettings.vue:14
 msgid "IP"
 msgstr "IP"
+
+#: src/views/nginx_log/structured/components/SearchFilters.vue:77
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:475
+msgid "IP Address"
+msgstr "IP-адрес"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:123
 msgid "IP Certificate Notice"
@@ -2847,6 +3217,44 @@ msgstr "Lark"
 msgid "Lark Custom"
 msgstr "Lark Пользовательский"
 
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:279
+msgid "Last 12 hours"
+msgstr "Последние 12 часов"
+
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:22
+msgid "Last 14 days"
+msgstr "Последние 14 дней"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:275
+msgid "Last 15 minutes"
+msgstr "Последние 15 минут"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:280
+msgid "Last 24 hours"
+msgstr "Последние 24 часа"
+
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:23
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:282
+msgid "Last 30 days"
+msgstr "Последние 30 дней"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:276
+msgid "Last 30 minutes"
+msgstr "Последние 30 минут"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:278
+msgid "Last 4 hours"
+msgstr "Последние 4 часа"
+
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:21
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:281
+msgid "Last 7 days"
+msgstr "Последние 7 дней"
+
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:24
+msgid "Last 90 days"
+msgstr "Последние 90 дней"
+
 #: src/views/backup/AutoBackup/AutoBackup.vue:190
 msgid "Last Backup Status"
 msgstr "Статус последнего резервного копирования"
@@ -2858,6 +3266,18 @@ msgstr "Время последнего резервного копирован�
 #: src/views/system/Upgrade.vue:198
 msgid "Last checked at"
 msgstr "Последняя проверка в"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:277
+msgid "Last hour"
+msgstr "Последний час"
+
+#: src/views/nginx_log/NginxLogList.vue:157
+msgid "Last Indexed"
+msgstr "Последняя индексация"
+
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:26
+msgid "Last month"
+msgstr "Прошлый месяц"
 
 #: src/views/dashboard/NginxDashBoard.vue:138
 msgid "Last update"
@@ -2906,8 +3326,8 @@ msgstr "Lego отключить поддержку CNAME"
 msgid "License"
 msgstr "Лицензия"
 
-#: src/views/dashboard/components/NodeAnalyticItem.vue:116
-#: src/views/dashboard/components/NodeAnalyticItem.vue:99
+#: src/views/dashboard/components/NodeAnalyticItem.vue:114
+#: src/views/dashboard/components/NodeAnalyticItem.vue:97
 msgid "Link"
 msgstr "Связь"
 
@@ -2923,11 +3343,11 @@ msgstr "Ожидает"
 msgid "Load Average:"
 msgstr "Средняя нагрузка:"
 
-#: src/views/node/Node.vue:138
+#: src/views/node/Node.vue:137
 msgid "Load from settings"
 msgstr "Загрузить из настроек"
 
-#: src/views/node/Node.vue:68
+#: src/views/node/Node.vue:67
 msgid "Load successfully"
 msgstr "Загружено успешно"
 
@@ -2952,11 +3372,15 @@ msgstr "Пауза загрузчика"
 msgid "Loader Threshold"
 msgstr "Порог загрузчика"
 
+#: src/views/nginx_log/dashboard/DashboardViewer.vue:150
+msgid "Loading dashboard data..."
+msgstr "Загрузка данных панели управления..."
+
 #: src/views/dashboard/NginxDashBoard.vue:200
 msgid "Loading data..."
 msgstr "Загрузка данных..."
 
-#: src/components/EnvIndicator/EnvIndicator.vue:39
+#: src/components/NodeIndicator/NodeIndicator.vue:39
 #: src/components/NodeSelector/NodeSelector.vue:61 src/constants/index.ts:42
 #: src/views/backup/AutoBackup/AutoBackup.vue:74
 #: src/views/backup/AutoBackup/AutoBackup.vue:83
@@ -2992,9 +3416,33 @@ msgstr ""
 "https://nginxui.com/zh_CN/guide/config-nginx-log.html для получения "
 "дополнительной информации."
 
-#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:88
+#: src/constants/errors/nginx_log.ts:14
+msgid "Log file does not exist"
+msgstr "Файл журнала не существует"
+
+#: src/constants/errors/nginx_log.ts:25
+msgid "Log file is not a regular file"
+msgstr "Файл журнала не является обычным файлом"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:851
+msgid "Log file not available"
+msgstr "Файл журнала недоступен"
+
+#: src/constants/errors/nginx_log.ts:12
+msgid "Log indexer not available"
+msgstr "Индексатор логов недоступен"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:572
+msgid "Log indexing completed! Loading updated data..."
+msgstr "Индексация логов завершена! Загрузка обновленных данных..."
+
+#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:302
 msgid "Log List"
 msgstr "Список журналов"
+
+#: src/constants/errors/nginx_log.ts:15
+msgid "Log path is not under whitelist"
+msgstr "Путь к журналу не находится в белом списке"
 
 #: src/routes/modules/auth.ts:14 src/views/other/Login.vue:277
 msgid "Login"
@@ -3027,6 +3475,12 @@ msgstr ""
 "которые устанавливают Nginx UI с использованием Docker-контейнеров, вы "
 "можете вручную включить эту опцию. Планировщик задач crontab Nginx UI будет "
 "выполнять команду logrotate с интервалом, который вы установите в минутах."
+
+#: src/composables/useGeoTranslation.ts:167
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:134
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:99
+msgid "Low"
+msgstr "Низкий"
 
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:51
 #: src/composables/useUpstreamStatus.ts:156
@@ -3066,11 +3520,11 @@ msgstr ""
 msgid "Manage Configs"
 msgstr "Конфигурации"
 
-#: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:67
+#: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:45
 msgid "Manage Sites"
 msgstr "Сайты"
 
-#: src/routes/modules/streams.ts:10 src/views/stream/StreamList.vue:81
+#: src/routes/modules/streams.ts:10 src/views/stream/StreamList.vue:59
 msgid "Manage Streams"
 msgstr "Управление потоками"
 
@@ -3116,13 +3570,17 @@ msgstr "Главный процесс"
 msgid "Master Process"
 msgstr "Главный процесс"
 
-#: src/views/preference/tabs/AuthSettings.vue:103
+#: src/views/preference/tabs/AuthSettings.vue:101
 msgid "Max Attempts"
 msgstr "Максимальное количество попыток"
 
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:56
 msgid "Max Concurrent Connections"
 msgstr "Максимальное количество одновременных подключений"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:560
+msgid "Max Redirects"
+msgstr "Максимальное количество перенаправлений"
 
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:42
 msgid "Max Requests Per Second"
@@ -3165,6 +3623,15 @@ msgstr "Память и хранилище"
 #: src/views/dashboard/components/ResourceUsageCard.vue:51
 msgid "Memory Usage (RSS)"
 msgstr "Использование памяти (RSS)"
+
+#: src/views/nginx_log/structured/components/SearchFilters.vue:92
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:476
+msgid "Method"
+msgstr "Метод"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:520
+msgid "Method Name"
+msgstr "Имя метода"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:81
 msgid "Minimum file size for compression"
@@ -3232,6 +3699,10 @@ msgstr "Ежемесячно"
 msgid "Monthly on day %{day} at %{time}"
 msgstr "Ежемесячно в день %{day} в %{time}"
 
+#: src/views/nginx_log/structured/components/SearchFilters.vue:204
+msgid "Mozilla/5.0..."
+msgstr "Mozilla/5.0..."
+
 #: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:51
 msgid "Multi-line Directive"
 msgstr "Многострочная директива"
@@ -3257,7 +3728,7 @@ msgstr "Н/Д"
 #: src/views/config/components/Delete.vue:123
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:17 src/views/namespace/columns.ts:9
-#: src/views/nginx_log/NginxLogList.vue:52 src/views/node/nodeColumns.tsx:8
+#: src/views/nginx_log/NginxLogList.vue:76 src/views/node/nodeColumns.tsx:8
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:80
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:36
 #: src/views/site/site_list/columns.tsx:30
@@ -3265,7 +3736,7 @@ msgstr "Н/Д"
 #: src/views/stream/columns.tsx:26
 #: src/views/stream/components/RightPanel/Basic.vue:31
 #: src/views/stream/components/StreamDuplicate.vue:71
-#: src/views/stream/StreamList.vue:145
+#: src/views/stream/StreamList.vue:123
 msgid "Name"
 msgstr "Имя"
 
@@ -3275,14 +3746,12 @@ msgid "Name or content"
 msgstr "Имя или содержание"
 
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:42
-#: src/views/site/site_list/columns.tsx:91
-#: src/views/stream/columns.tsx:58
+#: src/views/site/site_list/columns.tsx:91 src/views/stream/columns.tsx:58
 #: src/views/stream/components/RightPanel/Basic.vue:39
 msgid "Namespace"
 msgstr "Пространство имен"
 
-#: src/routes/modules/namespaces.ts:11
-#: src/views/namespace/Namespace.vue:19
+#: src/routes/modules/namespaces.ts:10 src/views/namespace/Namespace.vue:19
 msgid "Namespaces"
 msgstr "Пространства имен"
 
@@ -3448,13 +3917,17 @@ msgstr "Nginx не работает в другом контейнере"
 msgid "Nginx is running"
 msgstr "Nginx работает"
 
-#: src/routes/modules/nginx_log.ts:9 src/views/nginx_log/NginxLog.vue:144
+#: src/routes/modules/nginx_log.ts:9 src/views/nginx_log/NginxLog.vue:33
 msgid "Nginx Log"
 msgstr "Журнал"
 
 #: src/views/preference/tabs/NginxSettings.vue:25
 msgid "Nginx Log Directory Whitelist"
 msgstr "Белый список директорий для логов Nginx"
+
+#: src/components/ProcessingStatus/ProcessingStatus.vue:45
+msgid "Nginx Log Indexing..."
+msgstr "Индексация логов Nginx..."
 
 #: src/composables/usePerformanceMetrics.ts:154
 #: src/views/dashboard/components/PerformanceTablesCard.vue:110
@@ -3478,7 +3951,7 @@ msgstr "Команда перезагрузки Nginx"
 msgid "Nginx reload failed: {0}"
 msgstr "Перезагрузка Nginx не удалась: {0}"
 
-#: src/views/node/Node.vue:89
+#: src/views/node/Node.vue:88
 msgid "Nginx reload operations have been dispatched to remote nodes"
 msgstr "Операции перезагрузки Nginx были отправлены на удаленные узлы"
 
@@ -3490,7 +3963,7 @@ msgstr "Nginx успешно перезагружен"
 msgid "Nginx Restart Command"
 msgstr "Команда перезапуска Nginx"
 
-#: src/views/node/Node.vue:103
+#: src/views/node/Node.vue:102
 msgid "Nginx restart operations have been dispatched to remote nodes"
 msgstr "Операции перезапуска Nginx были отправлены на удаленные узлы"
 
@@ -3544,16 +4017,15 @@ msgid "Nginx.conf includes streams-enabled directory"
 msgstr "Nginx.conf включает каталог streams-enabled"
 
 #: src/components/ChatGPT/ChatMessageInput.vue:17
-#: src/components/NamespaceTabs/NamespaceTabs.vue:111
-#: src/components/NamespaceTabs/NamespaceTabs.vue:99
+#: src/components/NamespaceTabs/NamespaceTabs.vue:132
+#: src/components/NamespaceTabs/NamespaceTabs.vue:144
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:102
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
 #: src/components/Notification/Notification.vue:108 src/language/curd.ts:40
 #: src/views/notification/Notification.vue:38
-#: src/views/preference/tabs/AuthSettings.vue:132
+#: src/views/preference/tabs/AuthSettings.vue:130
 #: src/views/preference/tabs/CertSettings.vue:73
-#: src/views/site/site_list/SiteList.vue:111
-#: src/views/stream/StreamList.vue:121
+#: src/views/site/site_list/SiteList.vue:89 src/views/stream/StreamList.vue:99
 msgid "No"
 msgstr "Нет"
 
@@ -3562,9 +4034,30 @@ msgstr "Нет"
 msgid "No Action"
 msgstr "Нет действия"
 
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:195
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:231
+msgid "No China geographic data available"
+msgstr "Географические данные по Китаю недоступны"
+
+#: src/composables/useGeoTranslation.ts:170
 #: src/views/dashboard/NginxDashBoard.vue:202
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:126
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:91
 msgid "No data"
 msgstr "Нет данных"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:819
+msgid "No entries in current page"
+msgstr "Нет записей на текущей странице"
+
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:198
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:234
+msgid "No geographic data available"
+msgstr "Географические данные недоступны"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:553
+msgid "No logs found in the selected time range."
+msgstr "В выбранном временном диапазоне журналы не найдены."
 
 #: src/components/NamespaceRender/NamespaceRender.vue:55
 msgid "No nodes selected"
@@ -3578,6 +4071,10 @@ msgstr "Нет выбранных записей"
 msgid "No servers configured"
 msgstr "Серверы не настроены"
 
+#: src/views/dashboard/SiteNavigation.vue:231
+msgid "No sites found"
+msgstr "Сайты не найдены"
+
 #: src/components/AutoCertForm/AutoCertForm.vue:136
 msgid ""
 "No specific IP address found in server_name configuration. Please specify "
@@ -3585,6 +4082,10 @@ msgid ""
 msgstr ""
 "В конфигурации server_name не найден конкретный IP-адрес. Укажите IP-адрес "
 "сервера ниже для сертификата."
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:828
+msgid "No structured log data available"
+msgstr "Нет доступных структурированных данных журнала"
 
 #: src/components/NgxConfigEditor/NgxUpstream.vue:103
 msgid "No upstreams configured"
@@ -3606,7 +4107,8 @@ msgstr "Секрет узла"
 msgid "Node Status"
 msgstr "Статус узла"
 
-#: src/routes/modules/nodes.ts:11 src/views/dashboard/Nodes.vue:80
+#: src/routes/modules/nodes.ts:11 src/views/dashboard/Nodes.vue:130
+#: src/views/node/Node.vue:130
 msgid "Nodes"
 msgstr "Узлы"
 
@@ -3614,9 +4116,17 @@ msgstr "Узлы"
 msgid "Not After"
 msgstr "Не позднее"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:489
+msgid "Not Expected Text"
+msgstr "Неожиданный текст"
+
 #: src/routes/modules/error.ts:8
 msgid "Not Found"
 msgstr "Не найден"
+
+#: src/views/nginx_log/NginxLogList.vue:148
+msgid "Not Indexed"
+msgstr "Не проиндексировано"
 
 #: src/views/dashboard/components/ModulesTable.vue:101
 #: src/views/dashboard/components/ModulesTable.vue:105
@@ -3644,6 +4154,15 @@ msgid ""
 msgstr ""
 "Примечание: если файл конфигурации включает другие настройки или "
 "сертификаты, пожалуйста, заранее синхронизируйте их с удалёнными узлами."
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:508
+msgid ""
+"Note: If the server does not support gRPC Reflection, health checks may "
+"fail. Please ensure your gRPC server has Reflection enabled."
+msgstr ""
+"Примечание: Если сервер не поддерживает gRPC Reflection, проверки "
+"работоспособности могут завершиться неудачей. Убедитесь, что на вашем "
+"сервере gRPC включена Reflection."
 
 #: src/views/certificate/components/CertificateBasicInfo.vue:23
 #: src/views/certificate/components/CertificateContentEditor.vue:24
@@ -3717,11 +4236,11 @@ msgstr "Выкл"
 msgid "Official Document"
 msgstr "Официальная документация"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:127
+#: src/components/NamespaceTabs/NamespaceTabs.vue:160
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:84
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
-#: src/views/dashboard/Nodes.vue:106 src/views/node/nodeColumns.tsx:55
+#: src/views/dashboard/Nodes.vue:158 src/views/node/nodeColumns.tsx:55
 msgid "Offline"
 msgstr "Оффлайн"
 
@@ -3735,9 +4254,9 @@ msgstr "Оффлайн"
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:39
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:143
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:20
-#: src/views/site/site_list/SiteList.vue:112
+#: src/views/site/site_list/SiteList.vue:90
 #: src/views/stream/components/StreamStatusSelect.vue:60
-#: src/views/stream/StreamList.vue:122
+#: src/views/stream/StreamList.vue:100
 msgid "OK"
 msgstr "ОК"
 
@@ -3750,12 +4269,12 @@ msgstr "Вкл"
 msgid "Once the verification is complete, the records will be removed."
 msgstr "После завершения проверки записи будут удалены."
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:127
+#: src/components/NamespaceTabs/NamespaceTabs.vue:160
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:64
 #: src/components/NodeSelector/NodeSelector.vue:78
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
-#: src/views/dashboard/Nodes.vue:99 src/views/node/nodeColumns.tsx:51
+#: src/views/dashboard/Nodes.vue:151 src/views/node/nodeColumns.tsx:51
 msgid "Online"
 msgstr "Онлайн"
 
@@ -3775,6 +4294,14 @@ msgstr "Открыт"
 msgid "OpenAI"
 msgstr "OpenAI"
 
+#: src/views/nginx_log/dashboard/components/OSStatsTable.vue:13
+msgid "Operating System"
+msgstr "Операционная система"
+
+#: src/views/nginx_log/dashboard/components/OSStatsTable.vue:36
+msgid "Operating System Statistics"
+msgstr "Статистика операционной системы"
+
 #: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:286
 msgid "Or"
 msgstr "Или"
@@ -3787,10 +4314,17 @@ msgstr "или перетащите файл в редактор ниже"
 msgid "Or enter the secret: %{secret}"
 msgstr "Или введите секрет: %{secret}"
 
+#: src/views/dashboard/SiteNavigation.vue:156
+msgid "Order saved successfully"
+msgstr "Порядок успешно сохранён"
+
 #: src/views/config/components/Rename.vue:70
 msgid "Original name"
 msgstr "Оригинальное имя"
 
+#: src/views/nginx_log/structured/components/SearchFilters.vue:153
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:237
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:481
 #: src/views/system/Upgrade.vue:194
 msgid "OS"
 msgstr "ОС"
@@ -3882,7 +4416,9 @@ msgstr "Пароли не совпадают"
 #: src/language/curd.ts:61
 #: src/views/config/components/ConfigRightPanel/Basic.vue:41
 #: src/views/config/components/Delete.vue:124
-#: src/views/nginx_log/NginxLogList.vue:60
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:420
+#: src/views/nginx_log/NginxLogList.vue:85
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:477
 msgid "Path"
 msgstr "Путь"
 
@@ -3898,10 +4434,26 @@ msgstr "Путь: {0} не находится в каталоге конфигу
 msgid "Payload resource is nil"
 msgstr "Ресурс полезной нагрузки равен nil"
 
+#: src/views/nginx_log/dashboard/components/SummaryStats.vue:42
+msgid "Peak Hour"
+msgstr "Пиковый час"
+
 #: src/views/backup/AutoBackup/AutoBackup.vue:194
 #: src/views/backup/AutoBackup/AutoBackup.vue:219
 msgid "Pending"
 msgstr "В ожидании"
+
+#: src/composables/useGeoTranslation.ts:169
+#: src/views/nginx_log/dashboard/components/BrowserStatsTable.vue:26
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:121
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:71
+#: src/views/nginx_log/dashboard/components/DeviceStatsTable.vue:26
+#: src/views/nginx_log/dashboard/components/OSStatsTable.vue:26
+#: src/views/nginx_log/dashboard/components/TopUrlsTable.vue:27
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:168
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:87
+msgid "Percentage"
+msgstr "Процент"
 
 #: src/views/node/BatchUpgrader.vue:245
 msgid "Perform"
@@ -4102,19 +4654,19 @@ msgstr "Пожалуйста, выберите действительный фа
 msgid "Please select at least one item"
 msgstr "Пожалуйста, выберите хотя бы один элемент"
 
-#: src/views/node/Node.vue:201 src/views/node/Node.vue:83
+#: src/views/node/Node.vue:200 src/views/node/Node.vue:82
 msgid "Please select at least one node to reload Nginx"
 msgstr "Пожалуйста, выберите хотя бы один узел для перезагрузки Nginx"
 
-#: src/views/node/Node.vue:222 src/views/node/Node.vue:97
+#: src/views/node/Node.vue:221 src/views/node/Node.vue:96
 msgid "Please select at least one node to restart Nginx"
 msgstr "Пожалуйста, выберите хотя бы один узел для перезапуска Nginx"
 
-#: src/views/node/Node.vue:180
+#: src/views/node/Node.vue:179
 msgid "Please select at least one node to upgrade"
 msgstr "Пожалуйста, выберите хотя бы один узел"
 
-#: src/views/certificate/components/RemoveCert.vue:28
+#: src/views/certificate/components/RemoveCert.vue:36
 msgid "Please type \"Revoke\" to confirm"
 msgstr "Пожалуйста, введите \"Отозвать\" для подтверждения"
 
@@ -4199,6 +4751,10 @@ msgstr "Команда проекта"
 msgid "Protected Directory"
 msgstr "Защищённая директория"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:378
+msgid "Protocol"
+msgstr "Протокол"
+
 #: src/views/preference/tabs/ServerSettings.vue:47
 msgid ""
 "Protocol configuration only takes effect when directly connecting. If using "
@@ -4216,6 +4772,10 @@ msgstr "Провайдер"
 #: src/constants/errors/cert.ts:13
 msgid "Provider not found: {0}"
 msgstr "Поставщик не найден: {0}"
+
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:59
+msgid "Province / Region"
+msgstr "Провинция / Регион"
 
 #: src/views/certificate/ACMEUser.vue:61
 msgid "Proxy"
@@ -4237,6 +4797,19 @@ msgstr "Требования публичного CA:"
 msgid "Public Security Number"
 msgstr "Номер в органах общественной безопасности"
 
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:762
+msgid "PV"
+msgstr "Просмотры страниц"
+
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:51
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:692
+msgid "Quick Select"
+msgstr "Быстрый выбор"
+
+#: src/views/nginx_log/NginxLog.vue:51
+msgid "Raw"
+msgstr "Сырой"
+
 #: src/constants/errors/site.ts:8 src/constants/errors/stream.ts:7
 msgid "Read dir failed: {0}"
 msgstr "Ошибка чтения директории: {0}"
@@ -4250,6 +4823,22 @@ msgstr "Запросы на чтение"
 #: src/views/dashboard/ServerAnalytic.vue:390
 msgid "Reads"
 msgstr "Чтение"
+
+#: src/views/nginx_log/NginxLogList.vue:349
+msgid "Rebuild"
+msgstr "Перестроить"
+
+#: src/views/nginx_log/indexing/IndexManagement.vue:92
+msgid "Rebuild All Index"
+msgstr "Перестроить все индексы"
+
+#: src/views/nginx_log/indexing/IndexManagement.vue:53
+msgid "Rebuild File Index"
+msgstr "Перестроить индекс файла"
+
+#: src/views/nginx_log/indexing/IndexManagement.vue:27
+msgid "Rebuild Index"
+msgstr "Перестроить индекс"
 
 #: src/views/dashboard/ServerAnalytic.vue:341
 #: src/views/dashboard/ServerAnalytic.vue:35
@@ -4280,7 +4869,14 @@ msgstr ""
 msgid "Recursive Nameservers"
 msgstr "Рекурсивные DNS"
 
+#: src/views/nginx_log/structured/components/SearchFilters.vue:185
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:263
+msgid "Referer"
+msgstr "Реферер"
+
 #: src/language/curd.ts:70
+#: src/views/dashboard/components/SiteNavigationToolbar.vue:77
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:67
 msgid "Refresh"
 msgstr "Обновить"
 
@@ -4338,8 +4934,8 @@ msgid "Reload"
 msgstr "Перегрузить"
 
 #: src/components/NamespaceRender/NamespaceRender.vue:44
-#: src/components/NamespaceTabs/NamespaceTabs.vue:104 src/constants/index.ts:38
-#: src/views/node/Node.vue:209 src/views/node/Node.vue:217
+#: src/components/NamespaceTabs/NamespaceTabs.vue:137 src/constants/index.ts:38
+#: src/views/node/Node.vue:208 src/views/node/Node.vue:216
 msgid "Reload Nginx"
 msgstr "Перезагрузить Nginx"
 
@@ -4363,7 +4959,7 @@ msgstr "Ошибка перезагрузки удаленного Nginx"
 msgid "Reload Remote Nginx Success"
 msgstr "Удаленная перезагрузка Nginx успешно выполнена"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:52
+#: src/components/NamespaceTabs/NamespaceTabs.vue:85
 msgid "Reload request failed, please check your network connection"
 msgstr "Не удалось выполнить запрос на перезагрузку, проверьте подключение к сети"
 
@@ -4380,7 +4976,7 @@ msgid "Remote"
 msgstr "Удаленный"
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:146
-#: src/views/preference/tabs/AuthSettings.vue:137
+#: src/views/preference/tabs/AuthSettings.vue:135
 msgid "Remove"
 msgstr "Удалить"
 
@@ -4403,12 +4999,12 @@ msgid "Rename"
 msgstr "Переименовать"
 
 #: src/components/Notification/notifications.ts:78
-msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed"
-msgstr "Не удалось переименовать %{orig_path} в %{new_path} на %{env_name}"
+msgid "Rename %{orig_path} to %{new_path} on %{node_name} failed"
+msgstr "Не удалось переименовать %{orig_path} в %{new_path} на %{node_name}"
 
 #: src/components/Notification/notifications.ts:82
-msgid "Rename %{orig_path} to %{new_path} on %{env_name} successfully"
-msgstr "%{orig_path} успешно переименован в %{new_path} на %{env_name}"
+msgid "Rename %{orig_path} to %{new_path} on %{node_name} successfully"
+msgstr "Успешно переименовано %{orig_path} в %{new_path} на %{node_name}"
 
 #: src/components/Notification/notifications.ts:77 src/language/constants.ts:42
 msgid "Rename Remote Config Error"
@@ -4484,6 +5080,18 @@ msgstr "Успешное обновление сертификата"
 msgid "Renew successfully"
 msgstr "Успешно обновлено"
 
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:182
+msgid "Request"
+msgstr "Запрос"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:446
+msgid "Request Body"
+msgstr "Тело запроса"
+
+#: src/views/nginx_log/structured/components/SearchFilters.vue:122
+msgid "Request Path"
+msgstr "Путь запроса"
+
 #: src/views/dashboard/components/PerformanceTablesCard.vue:142
 msgid "Request statistics"
 msgstr "Статистика запросов"
@@ -4501,12 +5109,18 @@ msgid "Requests Per Connection"
 msgstr "Запросов на соединение"
 
 #: src/language/curd.ts:13
+#: src/views/nginx_log/structured/components/SearchFilters.vue:214
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:728
 msgid "Reset"
 msgstr "Сброс"
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:93
 msgid "Reset 2FA"
 msgstr "Сброс 2FA"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:843
+msgid "Reset Search"
+msgstr "Сбросить поиск"
 
 #: src/views/dashboard/components/ResourceUsageCard.vue:53
 msgid ""
@@ -4527,8 +5141,8 @@ msgstr "Ответы"
 msgid "Restart"
 msgstr "Перезапуск"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:116
-#: src/views/node/Node.vue:230 src/views/node/Node.vue:238
+#: src/components/NamespaceTabs/NamespaceTabs.vue:149
+#: src/views/node/Node.vue:229 src/views/node/Node.vue:237
 msgid "Restart Nginx"
 msgstr "Перезапустить Nginx"
 
@@ -4548,7 +5162,7 @@ msgstr "Ошибка перезапуска удаленного Nginx"
 msgid "Restart Remote Nginx Success"
 msgstr "Удалённая перезагрузка Nginx успешно выполнена"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:72
+#: src/components/NamespaceTabs/NamespaceTabs.vue:105
 msgid "Restart request failed, please check your network connection"
 msgstr "Запрос на перезапуск не выполнен, проверьте подключение к сети"
 
@@ -4587,8 +5201,8 @@ msgstr "Восстановить эту версию"
 msgid "Restored successfully"
 msgstr "Успешно восстановлено"
 
-#: src/views/certificate/components/RemoveCert.vue:27
-#: src/views/certificate/components/RemoveCert.vue:98
+#: src/views/certificate/components/RemoveCert.vue:106
+#: src/views/certificate/components/RemoveCert.vue:35
 msgid "Revoke"
 msgstr "Аннулировать"
 
@@ -4600,11 +5214,11 @@ msgstr "Ошибка отзыва сертификата: {0}"
 msgid "Revoke Old Certificate"
 msgstr "Отозвать старый сертификат"
 
-#: src/views/certificate/components/RemoveCert.vue:112
+#: src/views/certificate/components/RemoveCert.vue:120
 msgid "Revoke this certificate"
 msgstr "Отозвать этот сертификат"
 
-#: src/views/certificate/components/RemoveCert.vue:120
+#: src/views/certificate/components/RemoveCert.vue:128
 msgid ""
 "Revoking a certificate will affect any services currently using it. This "
 "action cannot be undone."
@@ -4612,15 +5226,15 @@ msgstr ""
 "Отзыв сертификата затронет все службы, которые его используют в данный "
 "момент. Это действие нельзя отменить."
 
-#: src/views/preference/tabs/AuthSettings.vue:75
+#: src/views/preference/tabs/AuthSettings.vue:74
 msgid "RP Display Name"
 msgstr "Отображаемое имя RP"
 
-#: src/views/preference/tabs/AuthSettings.vue:81
+#: src/views/preference/tabs/AuthSettings.vue:80
 msgid "RP Origins"
 msgstr "Истоки RP"
 
-#: src/views/preference/tabs/AuthSettings.vue:69
+#: src/views/preference/tabs/AuthSettings.vue:68
 msgid "RPID"
 msgstr "RPID"
 
@@ -4746,6 +5360,7 @@ msgstr "Суббота"
 #: src/views/certificate/components/CertificateActions.vue:29
 #: src/views/config/components/ConfigLeftPanel.vue:282
 #: src/views/config/components/ConfigName.vue:59
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:635
 #: src/views/preference/components/AuthSettings/Passkey.vue:130
 #: src/views/preference/Preference.vue:117
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
@@ -4758,6 +5373,10 @@ msgstr "Сохранить"
 #: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:112
 msgid "Save Directive"
 msgstr "Сохранить директиву"
+
+#: src/views/dashboard/components/SiteNavigationToolbar.vue:53
+msgid "Save Order"
+msgstr "Сохранить порядок"
 
 #: src/components/Notification/notifications.ts:145
 #: src/language/constants.ts:48
@@ -4836,9 +5455,9 @@ msgstr ""
 "Отсканируйте QR-код с помощью мобильного телефона, чтобы добавить учетную "
 "запись в приложение."
 
-#: src/views/nginx_log/NginxLogList.vue:101
-msgid "Scanning logs..."
-msgstr "Сканирование журналов..."
+#: src/views/nginx_log/indexing/components/IndexProgressBar.vue:53
+msgid "Scanning"
+msgstr "Сканирование"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:113
 msgid "Schedule"
@@ -4853,14 +5472,31 @@ msgid "SDK"
 msgstr "SDK"
 
 #: src/language/constants.ts:62 src/language/curd.ts:12
-#: src/views/config/configColumns.tsx:5 src/views/site/site_list/columns.tsx:17
-#: src/views/stream/columns.tsx:13
+#: src/views/config/configColumns.tsx:5
+#: src/views/nginx_log/structured/components/SearchFilters.vue:217
+#: src/views/site/site_list/columns.tsx:17 src/views/stream/columns.tsx:13
 msgid "Search"
 msgstr "Поиск"
+
+#: src/views/nginx_log/structured/components/SearchFilters.vue:53
+msgid "Search Filters"
+msgstr "Фильтры поиска"
+
+#: src/views/nginx_log/structured/components/SearchFilters.vue:69
+msgid "Search in log content..."
+msgstr "Поиск в содержимом журнала..."
 
 #: src/language/constants.ts:61
 msgid "Search module name"
 msgstr "Название модуля поиска"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:834
+msgid "Search range"
+msgstr "Диапазон поиска"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:737
+msgid "Searching logs..."
+msgstr "Поиск в журналах..."
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:109
 msgid "Secret has been copied"
@@ -4953,6 +5589,10 @@ msgstr "server_name не нашел в директивах"
 msgid "ServerIdx out of range"
 msgstr "ServerIdx вне диапазона"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:515
+msgid "Service Name"
+msgstr "Название сервиса"
+
 #: src/constants/errors/user.ts:12
 msgid "Session not found"
 msgstr "Сессия не найдена"
@@ -4988,6 +5628,10 @@ msgstr "Настройка переменных сред"
 #: src/language/constants.ts:10
 msgid "Setting HTTP01 challenge provider"
 msgstr "Настройка провайдера проверки HTTP01"
+
+#: src/views/dashboard/components/SiteNavigationToolbar.vue:88
+msgid "Settings"
+msgstr "Настройки"
 
 #: src/constants/errors/nginx_log.ts:8
 msgid ""
@@ -5041,9 +5685,21 @@ msgstr "Сайт находится в режиме обслуживания"
 msgid "Site Logs"
 msgstr "Журналы сайта"
 
+#: src/views/dashboard/components/SiteNavigationToolbar.vue:29
+msgid "Site Navigation"
+msgstr "Навигация по сайту"
+
 #: src/constants/errors/site.ts:2
 msgid "Site not found"
 msgstr "Сайт не найден"
+
+#: src/views/dashboard/SiteNavigation.vue:93
+msgid "Site refresh initiated"
+msgstr "Обновление сайта запущено"
+
+#: src/routes/modules/dashboard.ts:35
+msgid "Sites"
+msgstr "Сайты"
 
 #: src/language/generate.ts:33
 msgid "Sites directory exists"
@@ -5052,6 +5708,14 @@ msgstr "Каталог сайтов существует"
 #: src/routes/modules/sites.ts:19
 msgid "Sites List"
 msgstr "Список сайтов"
+
+#: src/views/dashboard/SiteNavigation.vue:234
+msgid ""
+"Sites will appear here once you configure nginx server blocks with valid "
+"server_name directives."
+msgstr ""
+"Сайты появятся здесь после настройки блоков сервера nginx с действительными "
+"директивами server_name."
 
 #: src/constants/errors/self_check.ts:11
 msgid "Sites-available directory not exist"
@@ -5062,6 +5726,8 @@ msgid "Sites-enabled directory not exist"
 msgstr "Каталог sites-enabled не существует"
 
 #: src/language/curd.ts:62
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:213
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:479
 msgid "Size"
 msgstr "Размер"
 
@@ -5076,6 +5742,14 @@ msgstr "Время ожидания между итерациями загруз
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:263
 msgid "Sleep time between cache manager iterations"
 msgstr "Время ожидания между итерациями менеджера кеша"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:725
+msgid "Sorted by"
+msgstr "Сортировка по"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:605
+msgid "Source IP"
+msgstr "Исходный IP"
 
 #: src/views/system/About.vue:46
 msgid "Sponsor"
@@ -5145,6 +5819,10 @@ msgstr "Стабильный"
 msgid "Start"
 msgstr "Начало"
 
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:57
+msgid "Start Date"
+msgstr "Дата начала"
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:246
 #: src/components/SystemRestore/SystemRestoreContent.vue:323
 msgid "Start Restore"
@@ -5160,6 +5838,9 @@ msgstr "Статический"
 #: src/views/certificate/ACMEUser.vue:73
 #: src/views/certificate/CertificateList/certColumns.tsx:63
 #: src/views/dashboard/components/ModulesTable.vue:96
+#: src/views/nginx_log/structured/components/SearchFilters.vue:106
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:205
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:478
 #: src/views/node/nodeColumns.tsx:43
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:29
 #: src/views/site/site_list/columns.tsx:120 src/views/stream/columns.tsx:87
@@ -5230,6 +5911,10 @@ msgstr "Каталог streams-available не существует"
 msgid "Streams-enabled directory not exist"
 msgstr "Каталог streams-enabled не существует"
 
+#: src/views/nginx_log/NginxLog.vue:49
+msgid "Structured"
+msgstr "Структурированный"
+
 #: src/views/preference/tabs/NginxSettings.vue:10
 msgid "Stub Status Port"
 msgstr "Порт состояния заглушки"
@@ -5297,12 +5982,12 @@ msgid "Sync Certificate"
 msgstr "Синхронизировать сертификат"
 
 #: src/components/Notification/notifications.ts:62
-msgid "Sync Certificate %{cert_name} to %{env_name} failed"
-msgstr "Не удалось синхронизировать сертификат %{cert_name} с %{env_name}"
+msgid "Sync Certificate %{cert_name} to %{node_name} failed"
+msgstr "Не удалось синхронизировать сертификат %{cert_name} с %{node_name}"
 
 #: src/components/Notification/notifications.ts:66
-msgid "Sync Certificate %{cert_name} to %{env_name} successfully"
-msgstr "Сертификат %{cert_name} успешно синхронизирован с %{env_name}"
+msgid "Sync Certificate %{cert_name} to %{node_name} successfully"
+msgstr "Сертификат %{cert_name} успешно синхронизирован с %{node_name}"
 
 #: src/components/Notification/notifications.ts:61 src/language/constants.ts:39
 msgid "Sync Certificate Error"
@@ -5313,12 +5998,12 @@ msgid "Sync Certificate Success"
 msgstr "Сертификат успешно синхронизирован"
 
 #: src/components/Notification/notifications.ts:70
-msgid "Sync config %{config_name} to %{env_name} failed"
-msgstr "Не удалось синхронизировать конфигурацию %{config_name} с %{env_name}"
+msgid "Sync config %{config_name} to %{node_name} failed"
+msgstr "Не удалось синхронизировать конфигурацию %{config_name} с %{node_name}"
 
 #: src/components/Notification/notifications.ts:74
-msgid "Sync config %{config_name} to %{env_name} successfully"
-msgstr "Конфигурация %{config_name} успешно синхронизирована с %{env_name}"
+msgid "Sync config %{config_name} to %{node_name} successfully"
+msgstr "Конфигурация %{config_name} успешно синхронизирована с %{node_name}"
 
 #: src/components/Notification/notifications.ts:69 src/language/constants.ts:45
 msgid "Sync Config Error"
@@ -5329,7 +6014,7 @@ msgid "Sync Config Success"
 msgstr "Синхронизация конфигурации успешна"
 
 #: src/components/NamespaceRender/NamespaceRender.vue:53
-#: src/components/NamespaceTabs/NamespaceTabs.vue:90
+#: src/components/NamespaceTabs/NamespaceTabs.vue:123
 #: src/views/namespace/columns.ts:17 src/views/namespace/Namespace.vue:31
 msgid "Sync Nodes"
 msgstr "Синхронизированные узлы"
@@ -5399,9 +6084,18 @@ msgstr "Терминал"
 msgid "Terminal Start Command"
 msgstr "Терминальная команда запуска"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:638
 #: src/views/preference/tabs/ExternalNotify.vue:56
 msgid "Test"
 msgstr "Тест"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:349
+msgid "Test failed: %{error}"
+msgstr "Тест не пройден: %{error}"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:354
+msgid "Test failed: Unable to perform health check"
+msgstr "Тест не удался: Невозможно выполнить проверку состояния"
 
 #: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:52
 #: src/views/preference/tabs/ExternalNotify.vue:27
@@ -5411,6 +6105,10 @@ msgstr "Тестовое сообщение успешно отправлено"
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:141
 msgid "Test S3 Connection"
 msgstr "Проверить подключение S3"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:346
+msgid "Test successful! Response time: %{response_time}ms"
+msgstr "Тест успешен! Время отклика: %{response_time}мс"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:160
 msgid ""
@@ -5489,7 +6187,7 @@ msgstr ""
 "Номер общественной безопасности должен содержать только буквы, юникод, "
 "цифры, дефисы, тире, двоеточия и точки."
 
-#: src/views/dashboard/components/NodeAnalyticItem.vue:107
+#: src/views/dashboard/components/NodeAnalyticItem.vue:105
 msgid ""
 "The remote Nginx UI version is not compatible with the local Nginx UI "
 "version. To avoid potential errors, please upgrade the remote Nginx UI to "
@@ -5592,11 +6290,15 @@ msgstr ""
 "и другие данные. После включения вы сможете просматривать статистику "
 "производительности."
 
+#: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:25
+msgid "This month"
+msgstr "Этот месяц"
+
 #: src/views/preference/tabs/ExternalNotify.vue:15
 msgid "This notification is disabled"
 msgstr "Это уведомление отключено"
 
-#: src/views/certificate/components/RemoveCert.vue:106
+#: src/views/certificate/components/RemoveCert.vue:114
 msgid ""
 "This operation will only remove the certificate from the database. The "
 "certificate files on the file system will not be deleted."
@@ -5640,6 +6342,19 @@ msgstr "Это значение уже занято"
 msgid "This will permanently delete the %{type}."
 msgstr "Это приведет к безвозвратному удалению %{type}."
 
+#: src/views/nginx_log/indexing/IndexManagement.vue:28
+msgid ""
+"This will rebuild the entire log index. All existing index data will be "
+"deleted and rebuilt from scratch. This may take some time. Continue?"
+msgstr ""
+"Это приведет к полной перестройке индекса журналов. Все существующие данные "
+"индекса будут удалены и перестроены с нуля. Это может занять некоторое "
+"время. Продолжить?"
+
+#: src/views/nginx_log/indexing/IndexManagement.vue:54
+msgid "This will rebuild the index data for this specific file: %{path}"
+msgstr "Это перестроит данные индекса для этого конкретного файла: %{path}"
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:227
 #: src/components/SystemRestore/SystemRestoreContent.vue:304
 msgid ""
@@ -5664,7 +6379,7 @@ msgstr ""
 "Это обновит или переустановит интерфейс Nginx на %{nodeNames} до версии "
 "%{version}."
 
-#: src/views/preference/tabs/AuthSettings.vue:92
+#: src/views/preference/tabs/AuthSettings.vue:91
 msgid "Throttle"
 msgstr "Ограничение"
 
@@ -5672,8 +6387,21 @@ msgstr "Ограничение"
 msgid "Thursday"
 msgstr "Четверг"
 
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:149
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:474
+msgid "Time"
+msgstr "Время"
+
+#: src/views/nginx_log/NginxLogList.vue:225
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:680
+msgid "Time Range"
+msgstr "Временной диапазон"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:542
+msgid "Timeout (seconds)"
+msgstr "Таймаут (секунды)"
+
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:70
-#: src/views/preference/tabs/AuthSettings.vue:112
 #: src/views/preference/tabs/LogrotateSettings.vue:12
 msgid "Tips"
 msgstr "Советы"
@@ -5690,12 +6418,11 @@ msgstr ""
 msgid "Title"
 msgstr "Заголовок"
 
-#: src/language/curd.ts:68
-#: src/language/curd.ts:69
+#: src/language/curd.ts:68 src/language/curd.ts:69
 msgid "to confirm deletion"
 msgstr "подтвердить удаление"
 
-#: src/views/certificate/components/RemoveCert.vue:124
+#: src/views/certificate/components/RemoveCert.vue:132
 msgid "To confirm revocation, please type \"Revoke\" in the field below:"
 msgstr "Для подтверждения отзыва введите \"Отозвать\" в поле ниже:"
 
@@ -5740,6 +6467,10 @@ msgstr ""
 "ollama, vllm или lmdeploy. Они предоставляют API-эндпоинт, совместимый с "
 "OpenAI, поэтому просто установите baseUrl на ваш локальный API."
 
+#: src/views/nginx_log/NginxLogList.vue:240
+msgid "Today"
+msgstr "Сегодня"
+
 #: src/views/dashboard/NginxDashBoard.vue:57
 msgid "Toggle failed"
 msgstr "Не удалось переключить"
@@ -5752,6 +6483,20 @@ msgstr "Токен пуст"
 msgid "Token is not valid"
 msgstr "Токен недействителен"
 
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:217
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:253
+msgid "Top 10 Countries / Regions"
+msgstr "Топ-10 стран / регионов"
+
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:214
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:250
+msgid "Top 10 Provinces / Regions"
+msgstr "Топ-10 провинций / регионов"
+
+#: src/views/nginx_log/dashboard/components/TopUrlsTable.vue:37
+msgid "TOP 10 URLs"
+msgstr "Топ 10 URL-адресов"
+
 #: src/language/curd.ts:5
 msgid "Total"
 msgstr "Всего"
@@ -5760,6 +6505,10 @@ msgstr "Всего"
 #: src/views/dashboard/components/PerformanceTablesCard.vue:54
 msgid "Total connections"
 msgstr "Всего соединений"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:756
+msgid "Total Entries"
+msgstr "Всего записей"
 
 #: src/composables/usePerformanceMetrics.ts:89
 #: src/views/dashboard/components/PerformanceTablesCard.vue:49
@@ -5773,6 +6522,10 @@ msgstr "Всего процессов Nginx"
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:94
 msgid "Total Nginx Processes"
 msgstr "Общее количество процессов Nginx"
+
+#: src/views/nginx_log/dashboard/components/SummaryStats.vue:24
+msgid "Total PV"
+msgstr "Всего PV"
 
 #: src/views/dashboard/ServerAnalytic.vue:283
 msgid "Total Receive"
@@ -5791,6 +6544,10 @@ msgstr "Всего запросов / Всего соединений"
 msgid "Total Send"
 msgstr "Всего отправлено"
 
+#: src/views/nginx_log/dashboard/components/SummaryStats.vue:15
+msgid "Total UV"
+msgstr "Всего UV"
+
 #: src/views/preference/components/AuthSettings/TOTP.vue:66
 msgid "TOTP"
 msgstr "TOTP"
@@ -5803,6 +6560,10 @@ msgstr ""
 "TOTP — это метод двухфакторной аутентификации, который использует алгоритм "
 "одноразового пароля на основе времени."
 
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:774
+msgid "Traffic"
+msgstr "Трафик"
+
 #: src/components/Notification/detailRender.tsx:65
 msgid "Translating error..."
 msgstr "Перевод ошибки..."
@@ -5810,6 +6571,14 @@ msgstr "Перевод ошибки..."
 #: src/language/curd.ts:20
 msgid "Trash"
 msgstr "Корзина"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:821
+msgid "Try adjusting your search criteria or navigate to different pages."
+msgstr "Попробуйте изменить критерии поиска или перейти на другие страницы."
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:831
+msgid "Try adjusting your search criteria or time range."
+msgstr "Попробуйте изменить критерии поиска или временной диапазон."
 
 #: src/views/backup/AutoBackup/components/CronEditor.vue:28
 msgid "Tuesday"
@@ -5823,7 +6592,7 @@ msgstr "Требуется двухфакторная аутентификаци
 #: src/views/certificate/CertificateList/certColumns.tsx:24
 #: src/views/config/components/Delete.vue:122
 #: src/views/dashboard/components/ModulesTable.vue:83
-#: src/views/nginx_log/NginxLogList.vue:28
+#: src/views/nginx_log/NginxLogList.vue:52
 #: src/views/notification/notificationColumns.tsx:8
 #: src/views/preference/components/ExternalNotify/columns.tsx:19
 msgid "Type"
@@ -5833,6 +6602,26 @@ msgstr "Тип"
 msgid "Type %{delete} to confirm"
 msgstr "Введите %{delete} для подтверждения"
 
+#: src/views/nginx_log/structured/components/SearchFilters.vue:142
+msgid "Type or select browser"
+msgstr "Введите или выберите браузер"
+
+#: src/views/nginx_log/structured/components/SearchFilters.vue:174
+msgid "Type or select device"
+msgstr "Введите или выберите устройство"
+
+#: src/views/nginx_log/structured/components/SearchFilters.vue:158
+msgid "Type or select OS"
+msgstr "Введите или выберите ОС"
+
+#: src/views/nginx_log/structured/components/SearchFilters.vue:111
+msgid "Type or select status codes"
+msgstr "Введите или выберите коды состояния"
+
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:780
+msgid "Unique Pages"
+msgstr "Уникальные страницы"
+
 #: src/components/PortScanner/PortScannerCompact.vue:47
 #: src/composables/useNginxPerformance.ts:18
 msgid "Unknown"
@@ -5841,6 +6630,10 @@ msgstr "Неизвестно"
 #: src/constants/errors/backup.ts:64
 msgid "Unsupported backup type: {0}"
 msgstr "Неподдерживаемый тип резервного копирования: {0}"
+
+#: src/constants/errors/nginx_log.ts:11
+msgid "Unsupported log format"
+msgstr "Неподдерживаемый формат лога"
 
 #: src/views/user/UserProfile.vue:218
 msgid "Update Password"
@@ -5867,8 +6660,8 @@ msgstr "Успешно обновлено"
 msgid "Updated at"
 msgstr "Обновлено в"
 
-#: src/routes/modules/system.ts:26 src/views/node/Node.vue:188
-#: src/views/node/Node.vue:196 src/views/system/Upgrade.vue:154
+#: src/routes/modules/system.ts:26 src/views/node/Node.vue:187
+#: src/views/node/Node.vue:195 src/views/system/Upgrade.vue:154
 #: src/views/system/Upgrade.vue:159
 msgid "Upgrade"
 msgstr "Обновление"
@@ -5913,6 +6706,7 @@ msgstr "Тип теста апстрима"
 msgid "Uptime:"
 msgstr "Аптайм:"
 
+#: src/views/nginx_log/dashboard/components/TopUrlsTable.vue:13
 #: src/views/node/nodeColumns.tsx:18
 msgid "URL"
 msgstr "URL"
@@ -5932,6 +6726,11 @@ msgstr "Использовать временный путь"
 #: src/components/ChatGPT/ChatMessage.vue:187
 msgid "User"
 msgstr "Пользователь"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:553
+#: src/views/nginx_log/structured/components/SearchFilters.vue:200
+msgid "User Agent"
+msgstr "Пользовательский агент"
 
 #: src/constants/errors/user.ts:3
 msgid "User banned"
@@ -5962,11 +6761,19 @@ msgstr "Имя пользователя (*)"
 msgid "Username length cannot exceed 255 characters"
 msgstr "Длина имени пользователя не может превышать 255 символов"
 
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:768
+msgid "UV"
+msgstr "Уникальные посетители"
+
 #: src/components/CertInfo/CertInfo.vue:24
 #: src/views/certificate/ACMEUser.vue:159
 #: src/views/certificate/CertificateList/certColumns.tsx:76
 msgid "Valid"
 msgstr "Действительный"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:580
+msgid "Validate SSL Certificate"
+msgstr "Проверить SSL-сертификат"
 
 #: src/views/dashboard/components/PerformanceTablesCard.vue:22
 msgid "Value"
@@ -5977,6 +6784,10 @@ msgstr "Значение"
 msgid "Verify Backup File Integrity"
 msgstr "Проверить целостность файла резервной копии"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:586
+msgid "Verify Hostname"
+msgstr "Проверить имя хоста"
+
 #: src/views/install/components/InstallView.vue:61
 msgid "Verify system requirements"
 msgstr "Проверьте системные требования"
@@ -5985,7 +6796,7 @@ msgstr "Проверьте системные требования"
 msgid "Version"
 msgstr "Версия"
 
-#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:106
+#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:339
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:83
 msgid "View"
 msgstr "Просмотр"
@@ -6005,6 +6816,17 @@ msgstr "Просмотреть коды восстановления"
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:70
 msgid "Viewed"
 msgstr "Просмотрено"
+
+#: src/composables/useGeoTranslation.ts:168
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:120
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:145
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:64
+#: src/views/nginx_log/dashboard/components/TopUrlsTable.vue:19
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:110
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:161
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:86
+msgid "Visits"
+msgstr "Посещения"
 
 #: src/composables/usePerformanceMetrics.ts:114
 #: src/views/dashboard/components/PerformanceTablesCard.vue:74
@@ -6056,7 +6878,7 @@ msgstr ""
 "Мы удалим конфигурацию HTTPChallenge из этого файла и перезагрузим Nginx. "
 "Вы уверены, что хотите продолжить?"
 
-#: src/views/preference/tabs/AuthSettings.vue:65
+#: src/views/preference/tabs/AuthSettings.vue:64
 msgid "Webauthn"
 msgstr "WebAuthn"
 
@@ -6064,9 +6886,13 @@ msgstr "WebAuthn"
 msgid "WebAuthn settings are not configured"
 msgstr "Настройки WebAuthn не настроены"
 
-#: src/views/certificate/components/RemoveCert.vue:55
+#: src/views/certificate/components/RemoveCert.vue:63
 msgid "WebSocket connection error"
 msgstr "Ошибка подключения WebSocket"
+
+#: src/views/dashboard/SiteNavigation.vue:96
+msgid "WebSocket not connected, please wait for connection"
+msgstr "WebSocket не подключен, пожалуйста, дождитесь подключения"
 
 #: src/views/preference/components/ExternalNotify/wecom.ts:5
 msgid "WeCom"
@@ -6161,11 +6987,13 @@ msgstr "Запись закрытого ключа сертификата на �
 msgid "Writing certificate to disk"
 msgstr "Запись сертификата на диск"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:110
-#: src/components/NamespaceTabs/NamespaceTabs.vue:98
+#: src/components/NamespaceTabs/NamespaceTabs.vue:131
+#: src/components/NamespaceTabs/NamespaceTabs.vue:143
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:101
 #: src/components/NgxConfigEditor/LocationEditor.vue:88
-#: src/views/preference/tabs/AuthSettings.vue:131
+#: src/views/nginx_log/indexing/IndexManagement.vue:29
+#: src/views/nginx_log/indexing/IndexManagement.vue:55
+#: src/views/preference/tabs/AuthSettings.vue:129
 #: src/views/preference/tabs/CertSettings.vue:72
 msgid "Yes"
 msgstr "Да"
@@ -6232,6 +7060,22 @@ msgstr "Ваши старые коды больше не будут работа
 #: src/views/preference/components/AuthSettings/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "Ваши ключи доступа"
+
+#~ msgid "Log File:"
+#~ msgstr "Файл журнала:"
+
+#~ msgid "Log path"
+#~ msgstr "Путь к журналу"
+
+#~ msgid "Index Size"
+#~ msgstr "Размер индекса"
+
+#, fuzzy
+#~ msgid "File Size"
+#~ msgstr "Размер страницы"
+
+#~ msgid "Environments"
+#~ msgstr "Окружения"
 
 #~ msgid "Node Group"
 #~ msgstr "Группа узлов"
@@ -6325,10 +7169,6 @@ msgstr "Ваши ключи доступа"
 #~ msgid "Recovered Successfully"
 #~ msgstr "Восстановлено успешно"
 
-#~ msgid "Total %{total} item"
-#~ msgid_plural "Total %{total} items"
-#~ msgstr[0] "Всего %{total} элемент"
-
 #~ msgid "View Details"
 #~ msgstr "Подробно"
 
@@ -6375,13 +7215,6 @@ msgstr "Ваши ключи доступа"
 
 #~ msgid "Format error %{msg}"
 #~ msgstr "Ошибка формата %{msg}"
-
-#~ msgid "Failed to save, syntax error(s) was detected in the configuration."
-#~ msgstr "Не удалось сохранить, обнаружены синтаксические ошибки в конфигурации."
-
-#, fuzzy
-#~ msgid "Access Token"
-#~ msgstr "Журналы доступа"
 
 #, fuzzy
 #~ msgid "Bot Token"
@@ -6499,9 +7332,6 @@ msgstr "Ваши ключи доступа"
 #~ msgstr ""
 #~ "Переименование %{orig_path} в %{new_path} на %{env_name} не удалось, "
 #~ "пожалуйста, обновите удаленный интерфейс Nginx до последней версии"
-
-#~ msgid "Server Name"
-#~ msgstr "Имя сервера"
 
 #~ msgid "Enable 2FA"
 #~ msgstr "Включить 2ФА"

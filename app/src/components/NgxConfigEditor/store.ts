@@ -1,5 +1,4 @@
 import type { NgxConfig, NgxDirective } from '@/api/ngx'
-import { defineStore } from 'pinia'
 
 export const useNgxConfigStore = defineStore('ngxConfig', () => {
   const ngxConfig = ref<NgxConfig>({

@@ -1,7 +1,6 @@
 import type ReconnectingWebSocket from 'reconnecting-websocket'
 import type { ProxyTarget } from '@/api/site'
 import type { UpstreamAvailabilityResponse, UpstreamStatus } from '@/api/upstream'
-import { defineStore } from 'pinia'
 import analytic from '@/api/analytic'
 import upstream from '@/api/upstream'
 import { useNodeAvailabilityStore } from './nodeAvailability'

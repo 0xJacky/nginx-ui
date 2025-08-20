@@ -20,7 +20,14 @@ func IsUnderDirectory(path, directory string) bool {
 		return false
 	}
 
-	absDirectory = filepath.Clean(absDirectory) + string(filepath.Separator)
+	absPath = filepath.Clean(absPath)
+	absDirectory = filepath.Clean(absDirectory)
 
+	// Check if path is exactly the directory or under it
+	if absPath == absDirectory {
+		return true
+	}
+
+	absDirectory = absDirectory + string(filepath.Separator)
 	return strings.HasPrefix(absPath, absDirectory)
 }

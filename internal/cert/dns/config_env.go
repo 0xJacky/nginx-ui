@@ -5,7 +5,7 @@ import (
 	"github.com/BurntSushi/toml"
 	"log"
 	"os"
-	"path/filepath"
+	"strings"
 )
 
 type Configuration struct {
@@ -30,22 +30,25 @@ var configurations []Config
 var configurationMap map[string]Config
 
 func init() {
-	files, err := config.DistFS.ReadDir(".")
-
+	filenames, err := config.ListConfigs()
 	if err != nil {
 		log.Fatalln(err)
 	}
 
 	configurationMap = make(map[string]Config)
 
-	for _, file := range files {
-		if filepath.Ext(file.Name()) != ".toml" {
+	for _, filename := range filenames {
+		if !strings.HasSuffix(filename, ".toml") {
 			continue
 		}
+		
+		data, err := config.GetConfig(filename)
+		if err != nil {
+			log.Fatalln(err)
+		}
+
 		c := Config{}
-
-		_, err = toml.DecodeFS(config.DistFS, file.Name(), &c)
-
+		err = toml.Unmarshal(data, &c)
 		if err != nil {
 			log.Fatalln(err)
 		}

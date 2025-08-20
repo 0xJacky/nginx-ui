@@ -1,6 +1,4 @@
 import type { ChatComplicationMessage } from '@/api/openai'
-import { defineStore } from 'pinia'
-import { computed, nextTick, ref } from 'vue'
 import openai from '@/api/openai'
 import { ChatService } from './chatService'
 

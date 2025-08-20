@@ -4,7 +4,6 @@ import type { ReleaseInfo } from '@/api/upgrade'
 import dayjs from 'dayjs'
 
 import { marked } from 'marked'
-import { useRoute } from 'vue-router'
 import upgrade from '@/api/upgrade'
 import websocket from '@/lib/websocket'
 import version from '@/version.json'

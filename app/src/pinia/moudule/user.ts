@@ -1,7 +1,6 @@
 import type { CookieChangeOptions } from 'universal-cookie'
 import type { User } from '@/api/user'
 import { useCookies } from '@vueuse/integrations/useCookies'
-import { defineStore } from 'pinia'
 import user from '@/api/user'
 
 export const useUserStore = defineStore('user', () => {

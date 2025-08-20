@@ -167,7 +167,7 @@ function getStatusClass(status: string): string {
 
     <!-- Settings button in settings mode -->
     <div v-if="settingsMode" class="site-card-config">
-      <a-button
+      <AButton
         type="text"
         size="small"
         @click.stop="$emit('openConfig', site)"
@@ -175,7 +175,7 @@ function getStatusClass(status: string): string {
         <template #icon>
           <SettingOutlined />
         </template>
-      </a-button>
+      </AButton>
     </div>
 
     <!-- Drag handle in settings mode -->

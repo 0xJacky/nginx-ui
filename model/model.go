@@ -3,6 +3,7 @@ package model
 import (
 	"time"
 
+	"github.com/google/uuid"
 	"gorm.io/gen"
 	"gorm.io/gorm"
 )
@@ -14,6 +15,21 @@ type Model struct {
 	CreatedAt time.Time       `json:"created_at"`
 	UpdatedAt time.Time       `json:"updated_at"`
 	DeletedAt *gorm.DeletedAt `gorm:"index" json:"deleted_at,omitempty"`
+}
+
+// BaseModelUUID defines a base model with UUID as the primary key.
+type BaseModelUUID struct {
+	ID        uuid.UUID `gorm:"type:uuid;primary_key;" json:"id"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+// BeforeCreate will set a UUID rather than numeric ID.
+func (base *BaseModelUUID) BeforeCreate(tx *gorm.DB) (err error) {
+	if base.ID == uuid.Nil {
+		base.ID = uuid.New()
+	}
+	return
 }
 
 func GenerateAllModel() []any {
@@ -36,6 +52,7 @@ func GenerateAllModel() []any {
 		ExternalNotify{},
 		AutoBackup{},
 		SiteConfig{},
+		NginxLogIndex{},
 	}
 }
 

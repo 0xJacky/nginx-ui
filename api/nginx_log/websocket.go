@@ -14,6 +14,7 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/nxadm/tail"
 	"github.com/pkg/errors"
+	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 )
 
@@ -89,12 +90,12 @@ func tailNginxLog(ws *websocket.Conn, controlChan chan controlStruct, errChan ch
 
 		stat, err := os.Stat(logPath)
 		if os.IsNotExist(err) {
-			errChan <- errors.New("[error] Log path does not exist: " + logPath)
+			errChan <- cosy.WrapErrorWithParams(nginx_log.ErrLogFileNotExists, logPath)
 			return
 		}
 
 		if !stat.Mode().IsRegular() {
-			errChan <- errors.Errorf("[error] %s is not a regular file. If you are using nginx-ui in docker container, please refer to https://nginxui.com/zh_CN/guide/config-nginx-log.html for more information.", logPath)
+			errChan <- cosy.WrapErrorWithParams(nginx_log.ErrLogFileNotRegular, logPath)
 			return
 		}
 
@@ -152,7 +153,7 @@ func handleLogControl(ws *websocket.Conn, controlChan chan controlStruct, errCha
 		}
 
 		if msgType != websocket.TextMessage {
-			errChan <- errors.New("error handleLogControl message type")
+			errChan <- nginx_log.ErrInvalidWebSocketMessageType
 			return
 		}
 

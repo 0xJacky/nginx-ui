@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { ProxyCacheConfig } from '@/api/ngx'
-import { reactive } from 'vue'
 
 const value = defineModel<ProxyCacheConfig>({
   default: reactive({

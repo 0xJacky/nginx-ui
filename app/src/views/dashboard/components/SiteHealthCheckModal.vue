@@ -360,14 +360,14 @@ async function handleTest() {
 </script>
 
 <template>
-  <a-modal
+  <AModal
     v-model:open="visible"
     :title="`${$gettext('Health Check Configuration')} - ${site?.name || getTestUrl()}`"
     width="800px"
     @cancel="handleCancel"
   >
     <div class="p-2">
-      <a-form
+      <AForm
         :model="formData"
         layout="vertical"
         :label-col="{ span: 24 }"
@@ -375,127 +375,127 @@ async function handleTest() {
       >
         <div>
           <!-- Protocol Selection -->
-          <a-form-item :label="$gettext('Protocol')">
-            <a-radio-group v-model:value="formData.protocol">
-              <a-radio value="http">
+          <AFormItem :label="$gettext('Protocol')">
+            <ARadioGroup v-model:value="formData.protocol">
+              <ARadio value="http">
                 HTTP
-              </a-radio>
-              <a-radio value="https">
+              </ARadio>
+              <ARadio value="https">
                 HTTPS
-              </a-radio>
-              <a-radio value="grpc">
+              </ARadio>
+              <ARadio value="grpc">
                 gRPC
-              </a-radio>
-              <a-radio value="grpcs">
+              </ARadio>
+              <ARadio value="grpcs">
                 gRPCS
-              </a-radio>
-            </a-radio-group>
-          </a-form-item>
+              </ARadio>
+            </ARadioGroup>
+          </AFormItem>
 
           <!-- HTTP/HTTPS Settings -->
           <div v-if="!['grpc', 'grpcs'].includes(formData.protocol)">
-            <a-row :gutter="16">
-              <a-col :span="12">
-                <a-form-item :label="$gettext('HTTP Method')">
-                  <a-select v-model:value="formData.method" style="width: 100%">
-                    <a-select-option value="GET">
+            <ARow :gutter="16">
+              <ACol :span="12">
+                <AFormItem :label="$gettext('HTTP Method')">
+                  <ASelect v-model:value="formData.method" style="width: 100%">
+                    <ASelectOption value="GET">
                       GET
-                    </a-select-option>
-                    <a-select-option value="POST">
+                    </ASelectOption>
+                    <ASelectOption value="POST">
                       POST
-                    </a-select-option>
-                    <a-select-option value="PUT">
+                    </ASelectOption>
+                    <ASelectOption value="PUT">
                       PUT
-                    </a-select-option>
-                    <a-select-option value="HEAD">
+                    </ASelectOption>
+                    <ASelectOption value="HEAD">
                       HEAD
-                    </a-select-option>
-                    <a-select-option value="OPTIONS">
+                    </ASelectOption>
+                    <ASelectOption value="OPTIONS">
                       OPTIONS
-                    </a-select-option>
-                  </a-select>
-                </a-form-item>
-              </a-col>
-              <a-col :span="12">
-                <a-form-item :label="$gettext('Path')">
-                  <a-input v-model:value="formData.path" placeholder="/" />
-                </a-form-item>
-              </a-col>
-            </a-row>
+                    </ASelectOption>
+                  </ASelect>
+                </AFormItem>
+              </ACol>
+              <ACol :span="12">
+                <AFormItem :label="$gettext('Path')">
+                  <AInput v-model:value="formData.path" placeholder="/" />
+                </AFormItem>
+              </ACol>
+            </ARow>
 
-            <a-form-item :label="$gettext('Custom Headers')" class="mb-4">
+            <AFormItem :label="$gettext('Custom Headers')" class="mb-4">
               <div class="space-y-2">
                 <div v-for="(header, index) in formData.headers" :key="index" class="flex gap-2">
-                  <a-input v-model:value="header.name" placeholder="Header Name" class="flex-1" />
-                  <a-input v-model:value="header.value" placeholder="Header Value" class="flex-1" />
-                  <a-button type="text" danger @click="removeHeader(index)">
+                  <AInput v-model:value="header.name" placeholder="Header Name" class="flex-1" />
+                  <AInput v-model:value="header.value" placeholder="Header Value" class="flex-1" />
+                  <AButton type="text" danger @click="removeHeader(index)">
                     <template #icon>
                       <CloseOutlined />
                     </template>
-                  </a-button>
+                  </AButton>
                 </div>
-                <a-button type="dashed" class="w-full" @click="addHeader">
+                <AButton type="dashed" class="w-full" @click="addHeader">
                   <template #icon>
                     <PlusOutlined />
                   </template>
                   {{ $gettext('Add Header') }}
-                </a-button>
+                </AButton>
               </div>
-            </a-form-item>
+            </AFormItem>
 
-            <a-form-item v-if="formData.method !== 'GET'" :label="$gettext('Request Body')">
-              <a-textarea
+            <AFormItem v-if="formData.method !== 'GET'" :label="$gettext('Request Body')">
+              <ATextarea
                 v-model:value="formData.body"
                 :rows="3"
                 placeholder="{&quot;key&quot;: &quot;value&quot;}"
               />
-            </a-form-item>
+            </AFormItem>
 
-            <a-form-item :label="$gettext('Expected Status Codes')">
-              <a-select
+            <AFormItem :label="$gettext('Expected Status Codes')">
+              <ASelect
                 v-model:value="formData.expectedStatus"
                 mode="multiple"
                 style="width: 100%"
                 placeholder="200, 201, 204..."
               >
-                <a-select-option :value="200">
+                <ASelectOption :value="200">
                   200 OK
-                </a-select-option>
-                <a-select-option :value="201">
+                </ASelectOption>
+                <ASelectOption :value="201">
                   201 Created
-                </a-select-option>
-                <a-select-option :value="204">
+                </ASelectOption>
+                <ASelectOption :value="204">
                   204 No Content
-                </a-select-option>
-                <a-select-option :value="301">
+                </ASelectOption>
+                <ASelectOption :value="301">
                   301 Moved Permanently
-                </a-select-option>
-                <a-select-option :value="302">
+                </ASelectOption>
+                <ASelectOption :value="302">
                   302 Found
-                </a-select-option>
-                <a-select-option :value="304">
+                </ASelectOption>
+                <ASelectOption :value="304">
                   304 Not Modified
-                </a-select-option>
-              </a-select>
-            </a-form-item>
+                </ASelectOption>
+              </ASelect>
+            </AFormItem>
 
-            <a-row :gutter="16">
-              <a-col :span="12">
-                <a-form-item :label="$gettext('Expected Text')">
-                  <a-input v-model:value="formData.expectedText" placeholder="Success" />
-                </a-form-item>
-              </a-col>
-              <a-col :span="12">
-                <a-form-item :label="$gettext('Not Expected Text')">
-                  <a-input v-model:value="formData.notExpectedText" placeholder="Error" />
-                </a-form-item>
-              </a-col>
-            </a-row>
+            <ARow :gutter="16">
+              <ACol :span="12">
+                <AFormItem :label="$gettext('Expected Text')">
+                  <AInput v-model:value="formData.expectedText" placeholder="Success" />
+                </AFormItem>
+              </ACol>
+              <ACol :span="12">
+                <AFormItem :label="$gettext('Not Expected Text')">
+                  <AInput v-model:value="formData.notExpectedText" placeholder="Error" />
+                </AFormItem>
+              </ACol>
+            </ARow>
           </div>
 
           <!-- gRPC/gRPCS Settings -->
           <div v-if="['grpc', 'grpcs'].includes(formData.protocol)">
-            <a-alert
+            <AAlert
               v-if="['grpc', 'grpcs'].includes(formData.protocol)"
               :message="formData.protocol === 'grpcs'
                 ? $gettext('gRPCS uses TLS encryption. Server must implement gRPC Health Check service. For testing, SSL validation is disabled by default.')
@@ -504,141 +504,141 @@ async function handleTest() {
               show-icon
               class="mb-4"
             />
-            <a-alert
+            <AAlert
               :message="$gettext('Note: If the server does not support gRPC Reflection, health checks may fail. Please ensure your gRPC server has Reflection enabled.')"
               type="warning"
               show-icon
               class="mb-4"
             />
-            <a-row :gutter="16">
-              <a-col :span="12">
-                <a-form-item :label="$gettext('Service Name')">
-                  <a-input v-model:value="formData.grpcService" placeholder="my.service.v1.MyService" />
-                </a-form-item>
-              </a-col>
-              <a-col :span="12">
-                <a-form-item :label="$gettext('Method Name')">
-                  <a-input v-model:value="formData.grpcMethod" placeholder="Check" />
-                </a-form-item>
-              </a-col>
-            </a-row>
+            <ARow :gutter="16">
+              <ACol :span="12">
+                <AFormItem :label="$gettext('Service Name')">
+                  <AInput v-model:value="formData.grpcService" placeholder="my.service.v1.MyService" />
+                </AFormItem>
+              </ACol>
+              <ACol :span="12">
+                <AFormItem :label="$gettext('Method Name')">
+                  <AInput v-model:value="formData.grpcMethod" placeholder="Check" />
+                </AFormItem>
+              </ACol>
+            </ARow>
           </div>
 
           <!-- Advanced Settings -->
-          <a-collapse>
-            <a-collapse-panel key="advanced" :header="$gettext('Advanced Settings')">
-              <a-row :gutter="16">
-                <a-col :span="12">
-                  <a-form-item :label="$gettext('Check Interval (seconds)')">
-                    <a-input-number
+          <ACollapse>
+            <ACollapsePanel key="advanced" :header="$gettext('Advanced Settings')">
+              <ARow :gutter="16">
+                <ACol :span="12">
+                  <AFormItem :label="$gettext('Check Interval (seconds)')">
+                    <AInputNumber
                       v-model:value="formData.interval"
                       :min="30"
                       :max="3600"
                       style="width: 100%"
                     />
-                  </a-form-item>
-                </a-col>
-                <a-col :span="12">
-                  <a-form-item :label="$gettext('Timeout (seconds)')">
-                    <a-input-number
+                  </AFormItem>
+                </ACol>
+                <ACol :span="12">
+                  <AFormItem :label="$gettext('Timeout (seconds)')">
+                    <AInputNumber
                       v-model:value="formData.timeout"
                       :min="5"
                       :max="60"
                       style="width: 100%"
                     />
-                  </a-form-item>
-                </a-col>
-              </a-row>
+                  </AFormItem>
+                </ACol>
+              </ARow>
 
-              <a-form-item :label="$gettext('User Agent')">
-                <a-input v-model:value="formData.userAgent" />
-              </a-form-item>
+              <AFormItem :label="$gettext('User Agent')">
+                <AInput v-model:value="formData.userAgent" />
+              </AFormItem>
 
               <div v-if="!['grpc', 'grpcs'].includes(formData.protocol)">
-                <a-row :gutter="16">
-                  <a-col :span="12">
-                    <a-form-item :label="$gettext('Max Redirects')">
-                      <a-input-number
+                <ARow :gutter="16">
+                  <ACol :span="12">
+                    <AFormItem :label="$gettext('Max Redirects')">
+                      <AInputNumber
                         v-model:value="formData.maxRedirects"
                         :min="0"
                         :max="10"
                         style="width: 100%"
                       />
-                    </a-form-item>
-                  </a-col>
-                  <a-col :span="12">
-                    <a-form-item>
-                      <a-checkbox v-model:checked="formData.followRedirects">
+                    </AFormItem>
+                  </ACol>
+                  <ACol :span="12">
+                    <AFormItem>
+                      <ACheckbox v-model:checked="formData.followRedirects">
                         {{ $gettext('Follow Redirects') }}
-                      </a-checkbox>
-                    </a-form-item>
-                  </a-col>
-                </a-row>
+                      </ACheckbox>
+                    </AFormItem>
+                  </ACol>
+                </ARow>
 
-                <a-form-item>
-                  <a-checkbox v-model:checked="formData.validateSSL">
+                <AFormItem>
+                  <ACheckbox v-model:checked="formData.validateSSL">
                     {{ $gettext('Validate SSL Certificate') }}
-                  </a-checkbox>
-                </a-form-item>
+                  </ACheckbox>
+                </AFormItem>
 
-                <a-form-item>
-                  <a-checkbox v-model:checked="formData.verifyHostname">
+                <AFormItem>
+                  <ACheckbox v-model:checked="formData.verifyHostname">
                     {{ $gettext('Verify Hostname') }}
-                  </a-checkbox>
-                </a-form-item>
+                  </ACheckbox>
+                </AFormItem>
 
-                <a-form-item>
-                  <a-checkbox v-model:checked="formData.checkFavicon">
+                <AFormItem>
+                  <ACheckbox v-model:checked="formData.checkFavicon">
                     {{ $gettext('Check Favicon') }}
-                  </a-checkbox>
-                </a-form-item>
+                  </ACheckbox>
+                </AFormItem>
               </div>
 
               <!-- DNS & Network -->
-              <a-row :gutter="16">
-                <a-col :span="12">
-                  <a-form-item :label="$gettext('DNS Resolver')">
-                    <a-input v-model:value="formData.dnsResolver" placeholder="8.8.8.8:53" />
-                  </a-form-item>
-                </a-col>
-                <a-col :span="12">
-                  <a-form-item :label="$gettext('Source IP')">
-                    <a-input v-model:value="formData.sourceIP" placeholder="192.168.1.100" />
-                  </a-form-item>
-                </a-col>
-              </a-row>
+              <ARow :gutter="16">
+                <ACol :span="12">
+                  <AFormItem :label="$gettext('DNS Resolver')">
+                    <AInput v-model:value="formData.dnsResolver" placeholder="8.8.8.8:53" />
+                  </AFormItem>
+                </ACol>
+                <ACol :span="12">
+                  <AFormItem :label="$gettext('Source IP')">
+                    <AInput v-model:value="formData.sourceIP" placeholder="192.168.1.100" />
+                  </AFormItem>
+                </ACol>
+              </ARow>
 
               <!-- Client Certificates -->
-              <a-row :gutter="16">
-                <a-col :span="12">
-                  <a-form-item :label="$gettext('Client Certificate')">
-                    <a-input v-model:value="formData.clientCert" placeholder="/path/to/client.crt" />
-                  </a-form-item>
-                </a-col>
-                <a-col :span="12">
-                  <a-form-item :label="$gettext('Client Key')">
-                    <a-input v-model:value="formData.clientKey" placeholder="/path/to/client.key" />
-                  </a-form-item>
-                </a-col>
-              </a-row>
-            </a-collapse-panel>
-          </a-collapse>
+              <ARow :gutter="16">
+                <ACol :span="12">
+                  <AFormItem :label="$gettext('Client Certificate')">
+                    <AInput v-model:value="formData.clientCert" placeholder="/path/to/client.crt" />
+                  </AFormItem>
+                </ACol>
+                <ACol :span="12">
+                  <AFormItem :label="$gettext('Client Key')">
+                    <AInput v-model:value="formData.clientKey" placeholder="/path/to/client.key" />
+                  </AFormItem>
+                </ACol>
+              </ARow>
+            </ACollapsePanel>
+          </ACollapse>
         </div>
-      </a-form>
+      </AForm>
     </div>
 
     <template #footer>
-      <a-button @click="handleCancel">
+      <AButton @click="handleCancel">
         {{ $gettext('Cancel') }}
-      </a-button>
-      <a-button type="primary" @click="handleSave">
+      </AButton>
+      <AButton type="primary" @click="handleSave">
         {{ $gettext('Save') }}
-      </a-button>
-      <a-button :loading="testing" @click="handleTest">
+      </AButton>
+      <AButton :loading="testing" @click="handleTest">
         {{ $gettext('Test') }}
-      </a-button>
+      </AButton>
     </template>
-  </a-modal>
+  </AModal>
 </template>
 
 <style scoped>

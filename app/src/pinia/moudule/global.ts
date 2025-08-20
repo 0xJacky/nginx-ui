@@ -1,14 +1,14 @@
 import type { NgxModule } from '@/api/ngx'
 import type { NginxStatus } from '@/constants'
-import { defineStore } from 'pinia'
 
 interface ProcessingStatus {
   index_scanning: boolean
   auto_cert_processing: boolean
+  nginx_log_indexing: boolean
 }
 
 interface NginxLogStatus {
-  scanning: boolean
+  indexing: boolean
 }
 
 type NginxStatusType = NginxStatus.Reloading | NginxStatus.Restarting | NginxStatus.Running | NginxStatus.Stopped
@@ -19,10 +19,11 @@ export const useGlobalStore = defineStore('global', () => {
   const processingStatus = ref<ProcessingStatus>({
     index_scanning: false,
     auto_cert_processing: false,
+    nginx_log_indexing: false,
   })
 
   const nginxLogStatus = ref<NginxLogStatus>({
-    scanning: false,
+    indexing: false,
   })
 
   const modules = ref<NgxModule[]>([])

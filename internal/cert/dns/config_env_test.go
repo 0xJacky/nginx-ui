@@ -4,7 +4,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/cert/config"
 	"github.com/BurntSushi/toml"
 	"log"
-	"path/filepath"
+	"strings"
 	"testing"
 )
 
@@ -15,18 +15,19 @@ func CheckIfErr(err error) {
 }
 
 func TestConfigEnv(t *testing.T) {
-
-	files, err := config.DistFS.ReadDir(".")
-
+	filenames, err := config.ListConfigs()
 	CheckIfErr(err)
 
-	for _, file := range files {
-		if filepath.Ext(file.Name()) != ".toml" {
+	for _, filename := range filenames {
+		if !strings.HasSuffix(filename, ".toml") {
 			continue
 		}
-		c := Config{}
+		
+		data, err := config.GetConfig(filename)
+		CheckIfErr(err)
 
-		_, err := toml.DecodeFS(config.DistFS, file.Name(), &c)
+		c := Config{}
+		err = toml.Unmarshal(data, &c)
 		CheckIfErr(err)
 
 		log.Println(c.Name)
@@ -46,5 +47,4 @@ func TestConfigEnv(t *testing.T) {
 			log.Println(c.Links.GoClient)
 		}
 	}
-
 }

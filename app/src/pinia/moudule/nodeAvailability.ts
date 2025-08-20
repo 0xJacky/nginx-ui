@@ -1,6 +1,5 @@
 import type ReconnectingWebSocket from 'reconnecting-websocket'
 import type { Node } from '@/api/node'
-import { defineStore } from 'pinia'
 import nodeApi from '@/api/node'
 import ws from '@/lib/websocket'
 

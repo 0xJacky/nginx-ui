@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { CloseOutlined } from '@ant-design/icons-vue'
 import { Pane, Splitpanes } from 'splitpanes'
-import { useRouter } from 'vue-router'
 import 'splitpanes/dist/splitpanes.css'
 
 const router = useRouter()
