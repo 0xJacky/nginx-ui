@@ -10,11 +10,14 @@ import (
 	"sync"
 	"time"
 	"unsafe"
+
+	"github.com/0xJacky/Nginx-UI/internal/geolite"
 )
 
 type OptimizedLogParser struct {
-	uaParser UserAgentParser
-	pool     *sync.Pool
+	uaParser    UserAgentParser
+	pool        *sync.Pool
+	geoService  *geolite.Service
 }
 
 type parseBuffer struct {
@@ -23,8 +26,10 @@ type parseBuffer struct {
 }
 
 func NewOptimizedLogParser(uaParser UserAgentParser) *OptimizedLogParser {
+	geoService, _ := geolite.GetService()
 	return &OptimizedLogParser{
-		uaParser: uaParser,
+		uaParser:   uaParser,
+		geoService: geoService,
 		pool: &sync.Pool{
 			New: func() interface{} {
 				return &parseBuffer{
@@ -143,6 +148,15 @@ func (p *OptimizedLogParser) parseIP(line []byte, pos int, entry *AccessLogEntry
 	}
 	if pos > start {
 		entry.IP = bytesToString(line[start:pos])
+		
+		// Populate geographic fields using geolite service
+		if p.geoService != nil && entry.IP != "" && entry.IP != "-" {
+			if location, err := p.geoService.Search(entry.IP); err == nil && location != nil {
+				entry.RegionCode = location.CountryCode
+				entry.Province = location.Region
+				entry.City = location.City
+			}
+		}
 	}
 	return pos
 }

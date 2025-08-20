@@ -77,10 +77,10 @@ var (
 		Fields:  []string{"ip", "remote_user", "timestamp", "request", "status", "bytes_sent", "referer", "user_agent", "request_time", "upstream_time"},
 	}
 
-	// Standard main log format
+	// Standard main log format (common log format)
 	MainFormat = &LogFormat{
 		Name:    "main",
-		Pattern: regexp.MustCompile(`^(\S+) - (\S+) \[([^]]+)\] "([^"]*)" (\d+) (\d+|-) "([^"]*)" "([^"]*)"`),
+		Pattern: regexp.MustCompile(`^(\S+) - (\S+) \[([^]]+)\] "([^"]*)" (\d+) (\d+|-)(?:\s+"([^"]*)")?(?:\s+"([^"]*)")?`),
 		Fields:  []string{"ip", "remote_user", "timestamp", "request", "status", "bytes_sent", "referer", "user_agent"},
 	}
 

@@ -73,23 +73,24 @@ type IndexedLogEntry struct {
 
 // QueryRequest represents a search query for logs
 type QueryRequest struct {
-	StartTime time.Time `json:"start_time"`
-	EndTime   time.Time `json:"end_time"`
-	Query     string    `json:"query,omitempty"`
-	IP        string    `json:"ip,omitempty"`
-	Method    string    `json:"method,omitempty"`
-	Status    []int     `json:"status,omitempty"`
-	Path      string    `json:"path,omitempty"`
-	UserAgent string    `json:"user_agent,omitempty"`
-	Referer   string    `json:"referer,omitempty"`
-	Browser   string    `json:"browser,omitempty"`
-	OS        string    `json:"os,omitempty"`
-	Device    string    `json:"device,omitempty"`
-	Limit     int       `json:"limit"`
-	Offset    int       `json:"offset"`
-	SortBy    string    `json:"sort_by"`
-	SortOrder string    `json:"sort_order"`
-	LogPath   string    `json:"log_path,omitempty"`
+	StartTime      time.Time `json:"start_time"`
+	EndTime        time.Time `json:"end_time"`
+	Query          string    `json:"query,omitempty"`
+	IP             string    `json:"ip,omitempty"`
+	Method         string    `json:"method,omitempty"`
+	Status         []int     `json:"status,omitempty"`
+	Path           string    `json:"path,omitempty"`
+	UserAgent      string    `json:"user_agent,omitempty"`
+	Referer        string    `json:"referer,omitempty"`
+	Browser        string    `json:"browser,omitempty"`
+	OS             string    `json:"os,omitempty"`
+	Device         string    `json:"device,omitempty"`
+	Limit          int       `json:"limit"`
+	Offset         int       `json:"offset"`
+	SortBy         string    `json:"sort_by"`
+	SortOrder      string    `json:"sort_order"`
+	LogPath        string    `json:"log_path,omitempty"`
+	IncludeSummary bool      `json:"include_summary,omitempty"`
 }
 
 // SummaryStats represents the summary statistics for log entries
@@ -108,4 +109,5 @@ type QueryResult struct {
 	Took         time.Duration     `json:"took"`
 	Aggregations map[string]int    `json:"aggregations,omitempty"`
 	Summary      *SummaryStats     `json:"summary,omitempty"`
+	FromCache    bool              `json:"from_cache,omitempty"`
 }
