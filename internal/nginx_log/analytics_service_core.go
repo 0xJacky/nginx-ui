@@ -11,14 +11,14 @@ import (
 // AnalyticsService provides log analytics functionality
 type AnalyticsService struct {
 	indexer *LogIndexer
-	parser  *LogParser
+	parser  *OptimizedLogParser
 }
 
 // NewAnalyticsService creates a new analytics service
 func NewAnalyticsService() *AnalyticsService {
 	// Create user agent parser
 	userAgent := NewSimpleUserAgentParser()
-	parser := NewLogParser(userAgent)
+	parser := NewOptimizedLogParser(userAgent)
 
 	return &AnalyticsService{
 		parser: parser,

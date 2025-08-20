@@ -6,7 +6,7 @@ import (
 
 func BenchmarkLogParser_ParseLine(b *testing.B) {
 	mockUA := NewMockUserAgentParser()
-	parser := NewLogParser(mockUA)
+	parser := NewOptimizedLogParser(mockUA)
 
 	logLine := `192.168.1.1 - - [25/Dec/2023:10:00:00 +0000] "GET /test HTTP/1.1" 200 1024 "https://example.com" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"`
 
@@ -27,7 +27,7 @@ func BenchmarkUserAgentParser_Parse(b *testing.B) {
 }
 
 func BenchmarkLogParser_ParseLineComplex(b *testing.B) {
-	parser := NewLogParser(NewSimpleUserAgentParser())
+	parser := NewOptimizedLogParser(NewSimpleUserAgentParser())
 
 	logLine := `192.168.1.1 - - [25/Dec/2023:10:00:00 +0000] "GET /api/v1/users/123?include=profile&format=json HTTP/1.1" 200 2048 "https://example.com/dashboard" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36" 0.456 0.123`
 

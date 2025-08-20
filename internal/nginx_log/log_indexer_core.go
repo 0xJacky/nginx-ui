@@ -27,7 +27,7 @@ type LogIndexer struct {
 	index      bleve.Index
 	cache      *ristretto.Cache[string, *CachedSearchResult]
 	statsCache *ristretto.Cache[string, *CachedStatsResult]
-	parser     *LogParser
+	parser     *OptimizedLogParser
 	watcher    *fsnotify.Watcher
 	logPaths   map[string]*LogFileInfo
 	mu         sync.RWMutex
@@ -99,7 +99,7 @@ func NewLogIndexer() (*LogIndexer, error) {
 
 	// Create user agent parser
 	userAgent := NewSimpleUserAgentParser()
-	parser := NewLogParser(userAgent)
+	parser := NewOptimizedLogParser(userAgent)
 
 	// Initialize file system watcher
 	watcher, err := fsnotify.NewWatcher()

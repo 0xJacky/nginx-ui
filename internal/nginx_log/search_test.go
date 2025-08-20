@@ -38,7 +38,7 @@ func TestLogIndexer_SearchFunctionality(t *testing.T) {
 	}
 
 	uaParser := NewSimpleUserAgentParser()
-	parser := NewLogParser(uaParser)
+	parser := NewOptimizedLogParser(uaParser)
 
 	// Initialize cache
 	cache, err := ristretto.NewCache(&ristretto.Config[string, *CachedSearchResult]{
@@ -220,7 +220,7 @@ func TestLogIndexer_GetIndexStatus(t *testing.T) {
 	}
 
 	uaParser := NewSimpleUserAgentParser()
-	parser := NewLogParser(uaParser)
+	parser := NewOptimizedLogParser(uaParser)
 
 	// Initialize cache
 	cache, err := ristretto.NewCache(&ristretto.Config[string, *CachedSearchResult]{
