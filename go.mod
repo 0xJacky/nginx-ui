@@ -10,7 +10,7 @@ require (
 	github.com/caarlos0/env/v11 v11.3.1
 	github.com/casdoor/casdoor-go-sdk v1.15.0
 	github.com/creack/pty v1.1.24
-	github.com/dgraph-io/ristretto/v2 v2.2.0
+	github.com/dgraph-io/ristretto/v2 v2.3.0
 	github.com/docker/docker v28.3.3+incompatible
 	github.com/dustin/go-humanize v1.0.1
 	github.com/elliotchance/orderedmap/v3 v3.1.0
@@ -52,7 +52,7 @@ require (
 	github.com/urfave/cli/v3 v3.4.1
 	golang.org/x/crypto v0.41.0
 	golang.org/x/net v0.43.0
-	google.golang.org/grpc v1.74.2
+	google.golang.org/grpc v1.75.0
 	gopkg.in/ini.v1 v1.67.0
 	gorm.io/driver/sqlite v1.6.0
 	gorm.io/gen v0.3.27
