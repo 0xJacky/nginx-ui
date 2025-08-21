@@ -18,8 +18,8 @@ type BackgroundLogService struct {
 }
 
 // NewBackgroundLogService creates a new background log service
-func NewBackgroundLogService() (*BackgroundLogService, error) {
-	indexer, err := NewLogIndexer()
+func NewBackgroundLogService(ctx context.Context) (*BackgroundLogService, error) {
+	indexer, err := NewLogIndexer(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -83,8 +83,6 @@ func (s *BackgroundLogService) discoverInitialLogs() {
 	} else {
 		logger.Warn("Access log path not available or not in whitelist")
 	}
-
-	// Skip error logs - they have different format and are not indexed for structured search
 
 	logger.Info("Initial log discovery completed")
 }
@@ -197,28 +195,23 @@ func (s *BackgroundLogService) loadExistingIndexes() {
 var backgroundService *BackgroundLogService
 
 // InitBackgroundLogService initializes the global background log service
-func InitBackgroundLogService(ctx context.Context) error {
+func InitBackgroundLogService(ctx context.Context) {
 	var err error
-	backgroundService, err = NewBackgroundLogService()
+	backgroundService, err = NewBackgroundLogService(ctx)
 	if err != nil {
-		return err
+		logger.Fatalf("Failed to initialize background log service: %v", err)
+		return
 	}
 
 	// Use the provided context instead of creating a new one
 	backgroundService.ctx, backgroundService.cancel = context.WithCancel(ctx)
 	backgroundService.Start()
-	return nil
+
+	<-ctx.Done()
+	backgroundService.Stop()
 }
 
 // GetBackgroundLogService returns the global background service instance
 func GetBackgroundLogService() *BackgroundLogService {
 	return backgroundService
-}
-
-// StopBackgroundLogService stops the global background log service
-func StopBackgroundLogService() {
-	if backgroundService != nil {
-		backgroundService.Stop()
-		backgroundService = nil
-	}
 }

@@ -57,7 +57,7 @@ type LogIndexer struct {
 }
 
 // NewLogIndexer creates a new log indexer instance
-func NewLogIndexer() (*LogIndexer, error) {
+func NewLogIndexer(ctx context.Context) (*LogIndexer, error) {
 	// Use nginx-ui config directory for index storage
 	configDir := filepath.Dir(cosysettings.ConfPath)
 	if configDir == "" {
@@ -109,25 +109,25 @@ func NewLogIndexer() (*LogIndexer, error) {
 	}
 
 	// Create context for background processing
-	ctx, cancel := context.WithCancel(context.Background())
+	ctx, cancel := context.WithCancel(ctx)
 
 	// Create persistence manager
 	persistence := NewPersistenceManager()
 
 	indexer := &LogIndexer{
-		indexPath:      indexPath,
-		index:          index,
-		cache:          cache,
-		statsCache:     statsCache,
-		parser:         parser,
-		watcher:        watcher,
-		logPaths:       make(map[string]*LogFileInfo),
-		ctx:            ctx,
-		cancel:         cancel,
-		indexQueue:     make(chan *IndexTask, 1000),
-		persistence:    persistence,
-		maxCacheSize:   128 * 1024 * 1024, // 128MB
-		indexBatch:     1000,               // Process 1000 entries per batch
+		indexPath:    indexPath,
+		index:        index,
+		cache:        cache,
+		statsCache:   statsCache,
+		parser:       parser,
+		watcher:      watcher,
+		logPaths:     make(map[string]*LogFileInfo),
+		ctx:          ctx,
+		cancel:       cancel,
+		indexQueue:   make(chan *IndexTask, 1000),
+		persistence:  persistence,
+		maxCacheSize: 128 * 1024 * 1024, // 128MB
+		indexBatch:   1000,              // Process 1000 entries per batch
 	}
 
 	// Start background processing

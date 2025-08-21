@@ -37,6 +37,8 @@ import (
 func InitRouter() {
 	r := cosy.GetEngine()
 
+	r.SetTrustedProxies(nil)
+
 	// Add CORS middleware to allow all origins
 	r.Use(middleware.CORS())
 
@@ -59,7 +61,6 @@ func InitRouter() {
 		user.InitAuthRouter(root)
 
 		system.InitPublicRouter(root)
-		system.InitBackupRestoreRouter(root)
 		system.InitSelfCheckRouter(root)
 		backup.InitRouter(root)
 

@@ -11,7 +11,7 @@ import (
 func IPWhiteList() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		clientIP := c.ClientIP()
-		if len(settings.AuthSettings.IPWhiteList) == 0 || clientIP == "127.0.0.1" || clientIP == "::1" {
+		if len(settings.AuthSettings.IPWhiteList) == 0 || clientIP == "" || clientIP == "127.0.0.1" || clientIP == "::1" {
 			c.Next()
 			return
 		}

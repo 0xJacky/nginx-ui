@@ -326,7 +326,9 @@ func RetrieveNodesStatus(ctx context.Context) {
 						continue
 					}
 					if err := nodeAnalyticRecord(n, ctx); err != nil {
-						logger.Error(err)
+						if helper.IsUnexpectedWebsocketError(err) {
+							logger.Error(err)
+						}
 						markConnectionFailure(n.ID, err)
 					} else {
 						markConnectionSuccess(n.ID)

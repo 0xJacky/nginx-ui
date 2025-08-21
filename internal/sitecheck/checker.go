@@ -87,20 +87,20 @@ func (sc *SiteChecker) CollectSites() {
 		// Check site status - only collect from enabled sites
 		siteStatus := site.GetSiteStatus(siteName)
 		if siteStatus != site.SiteStatusEnabled {
-			logger.Debugf("Skipping site %s (status: %s) - only collecting from enabled sites", siteName, siteStatus)
+			// logger.Debugf("Skipping site %s (status: %s) - only collecting from enabled sites", siteName, siteStatus)
 			continue
 		}
 
-		logger.Debugf("Processing enabled site: %s with %d URLs", siteName, len(indexedSite.Urls))
+		// logger.Debugf("Processing enabled site: %s with %d URLs", siteName, len(indexedSite.Urls))
 		for _, url := range indexedSite.Urls {
 			if url != "" {
-				logger.Debugf("Adding site URL: %s", url)
+				// logger.Debugf("Adding site URL: %s", url)
 				// Load site config to determine display URL
 				config, err := LoadSiteConfig(url)
 				protocol := "http" // default protocol
 				if err == nil && config != nil && config.HealthCheckConfig != nil && config.HealthCheckConfig.Protocol != "" {
 					protocol = config.HealthCheckConfig.Protocol
-					logger.Debugf("Site %s using protocol: %s", url, protocol)
+					// logger.Debugf("Site %s using protocol: %s", url, protocol)
 				} else {
 					logger.Debugf("Site %s using default protocol: %s (config error: %v)", url, protocol, err)
 				}
@@ -371,7 +371,7 @@ func (sc *SiteChecker) CheckAllSites(ctx context.Context) {
 	}
 
 	wg.Wait()
-	logger.Infof("Completed checking %d sites", len(urls))
+	// logger.Infof("Completed checking %d sites", len(urls))
 
 	// Notify WebSocket clients of the update
 	if sc.onUpdateCallback != nil {

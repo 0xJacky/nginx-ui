@@ -10,6 +10,17 @@ import (
 
 // debounceIndexTask implements file-level debouncing for index operations
 func (li *LogIndexer) debounceIndexTask(task *IndexTask) {
+	// First, check if the context is already cancelled
+	select {
+	case <-li.ctx.Done():
+		logger.Debugf("Debounce check cancelled for %s as context is done.", task.FilePath)
+		if task.Wg != nil {
+			task.Wg.Done()
+		}
+		return
+	default:
+	}
+
 	filePath := task.FilePath
 
 	// Check if we need to respect the minimum interval
@@ -49,6 +60,14 @@ func (li *LogIndexer) debounceIndexTask(task *IndexTask) {
 func (li *LogIndexer) executeIndexTask(task *IndexTask) {
 	// Update last index time before processing
 	li.lastIndexTime.Store(task.FilePath, time.Now())
+
+	// Check if context is still valid
+	select {
+	case <-li.ctx.Done():
+		logger.Warnf("Index task cancelled for file: %s", task.FilePath)
+		return
+	default:
+	}
 
 	// Queue the task for processing
 	select {

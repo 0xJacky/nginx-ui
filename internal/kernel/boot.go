@@ -87,18 +87,8 @@ func InitAfterDatabase(ctx context.Context) {
 		analytic.RetrieveNodesStatus,
 		passkey.Init,
 		mcp.Init,
-		func(ctx context.Context) {
-			service := sitecheck.GetService()
-			service.Start()
-		},
-		func(ctx context.Context) {
-			// Initialize background log service
-			if err := nginx_log.InitBackgroundLogService(ctx); err != nil {
-				logger.Errorf("Failed to initialize background log service: %v", err)
-			} else {
-				logger.Info("Background log service initialized successfully")
-			}
-		},
+		sitecheck.Init,
+		nginx_log.InitBackgroundLogService,
 	}
 
 	for _, v := range asyncs {

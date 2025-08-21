@@ -20,20 +20,23 @@ type Service struct {
 
 var (
 	globalService *Service
-	serviceOnce   sync.Once
 )
+
+// Init initializes the site checking service
+func Init(ctx context.Context) {
+	globalService = NewService(ctx, DefaultCheckOptions())
+
+	globalService.Start()
+}
 
 // GetService returns the singleton service instance
 func GetService() *Service {
-	serviceOnce.Do(func() {
-		globalService = NewService(DefaultCheckOptions())
-	})
 	return globalService
 }
 
 // NewService creates a new site checking service
-func NewService(options CheckOptions) *Service {
-	return NewServiceWithContext(context.Background(), options)
+func NewService(ctx context.Context, options CheckOptions) *Service {
+	return NewServiceWithContext(ctx, options)
 }
 
 // NewServiceWithContext creates a new site checking service with a parent context

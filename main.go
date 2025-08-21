@@ -29,9 +29,6 @@ import (
 
 func Program(ctx context.Context, confPath string) func(l []net.Listener) error {
 	return func(l []net.Listener) error {
-		ctx, cancel := context.WithCancel(ctx)
-		defer cancel()
-
 		listener := l[0]
 
 		cosy.RegisterMigrationsBeforeAutoMigrate(migrate.BeforeAutoMigrate)
@@ -103,20 +100,29 @@ func Program(ctx context.Context, confPath string) func(l []net.Listener) error 
 			return err
 		}
 
+		go func() {
+			// Wait for context cancellation
+			<-ctx.Done()
+
+			// Graceful shutdown
+			logger.Info("Shutting down servers...")
+			if err := serverFactory.Shutdown(ctx); err != nil {
+				logger.Errorf("Error during server shutdown: %v", err)
+			}
+		}()
+
 		// Start the servers
 		if err := serverFactory.Start(ctx, listener); err != nil {
 			logger.Fatalf("Failed to start servers: %v", err)
 			return err
 		}
 
-		// Wait for context cancellation
 		<-ctx.Done()
 
 		// Graceful shutdown
 		logger.Info("Shutting down servers...")
 		if err := serverFactory.Shutdown(ctx); err != nil {
 			logger.Errorf("Error during server shutdown: %v", err)
-			return err
 		}
 
 		return nil
@@ -130,8 +136,8 @@ func main() {
 	confPath := appCmd.String("config")
 	settings.Init(confPath)
 
-	ctx, cancel := signal.NotifyContext(context.Background(), syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM)
-	defer cancel()
+	mainCtx, mainCancel := signal.NotifyContext(context.Background(), syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM)
+	defer mainCancel()
 
 	pidPath := appCmd.String("pidfile")
 	if pidPath != "" {
@@ -141,11 +147,25 @@ func main() {
 		defer process.RemovePIDFile(pidPath)
 	}
 
-	err := risefront.New(ctx, risefront.Config{
-		Run:       Program(ctx, confPath),
+	var programCancel context.CancelFunc
+
+	err := risefront.New(mainCtx, risefront.Config{
+		Run: func(l []net.Listener) error {
+			// Create a new context for the program itself, derived from the main context.
+			programCtx, cancel := context.WithCancel(mainCtx)
+			// Store the cancel function so the Shutdown callback can use it.
+			programCancel = cancel
+			return Program(programCtx, confPath)(l)
+		},
+		Shutdown: func() {
+			// This is called by risefront.Restart() to shut down the old program.
+			if programCancel != nil {
+				programCancel()
+			}
+		},
 		Name:      "nginx-ui",
 		Addresses: []string{fmt.Sprintf("%s:%d", cSettings.ServerSettings.Host, cSettings.ServerSettings.Port)},
-		LogHandler: func(loglevel risefront.LogLevel, kind string, args ...interface{}) {
+		LogHandler: func(loglevel risefront.LogLevel, kind string, args ...any) {
 			switch loglevel {
 			case risefront.DebugLevel:
 				logger.Debugf(kind, args...)

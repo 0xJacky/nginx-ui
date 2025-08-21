@@ -40,13 +40,13 @@ func executeUpstreamAvailabilityTest() {
 		return
 	}
 
-	start := time.Now()
-	logger.Debug("Starting scheduled upstream availability test for", targetCount, "targets")
+	// start := time.Now()
+	// logger.Debug("Starting scheduled upstream availability test for", targetCount, "targets")
 
 	service.PerformAvailabilityTest()
 
-	duration := time.Since(start)
-	logger.Debug("Upstream availability test completed in", duration)
+	// duration := time.Since(start)
+	// logger.Debug("Upstream availability test completed in", duration)
 }
 
 // RestartUpstreamAvailabilityJob restarts the upstream availability job

@@ -234,7 +234,7 @@ func (s *UpstreamService) PerformAvailabilityTest() {
 		return
 	}
 
-	logger.Debug("Performing availability test for", targetCount, "unique targets")
+	// logger.Debug("Performing availability test for", targetCount, "unique targets")
 
 	// Separate targets into traditional and consul groups from the start
 	s.targetsMutex.RLock()
