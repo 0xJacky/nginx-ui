@@ -123,7 +123,7 @@ func (li *LogIndexer) indexFileFromPositionStreamingWithMainLogPath(filePath, ma
 	lineCount := 0
 	entryCount := 0
 	batch := li.index.NewBatch()
-	var newTimeStart, newTimeEnd *time.Time
+	var newTimeStart, newTimeEnd int64
 
 	logger.Infof("Starting index for file %s -> %s (size: %d bytes)", filePath, mainLogPath, fileInfo.Size())
 
@@ -197,7 +197,16 @@ func (li *LogIndexer) indexFileFromPositionStreamingWithMainLogPath(filePath, ma
 	}
 
 	// Update persistence with final status
-	logIndex.UpdateProgress(fileInfo.ModTime(), fileInfo.Size(), currentPosition, uint64(entryCount), newTimeStart, newTimeEnd)
+	var newTimeStartPtr, newTimeEndPtr *time.Time
+	if newTimeStart != 0 {
+		t := time.Unix(newTimeStart, 0)
+		newTimeStartPtr = &t
+	}
+	if newTimeEnd != 0 {
+		t := time.Unix(newTimeEnd, 0)
+		newTimeEndPtr = &t
+	}
+	logIndex.UpdateProgress(fileInfo.ModTime(), fileInfo.Size(), currentPosition, uint64(entryCount), newTimeStartPtr, newTimeEndPtr)
 	logIndex.SetIndexDuration(startTime)
 
 	// Save the updated log index
@@ -229,7 +238,7 @@ func (li *LogIndexer) indexFileFromPositionStreaming(filePath string, startPosit
 	lineCount := 0
 	entryCount := 0
 	batch := li.index.NewBatch()
-	var newTimeStart, newTimeEnd *time.Time
+	var newTimeStart, newTimeEnd int64
 
 	// Get main log path first (for statistics grouping)
 	mainLogPath := li.getMainLogPath(filePath)
@@ -355,21 +364,25 @@ func (li *LogIndexer) indexFileFromPositionStreaming(filePath string, startPosit
 	var timeRangeStart, timeRangeEnd *time.Time
 	if logIndex.TimeRangeStart != nil {
 		timeRangeStart = logIndex.TimeRangeStart
-	} else {
-		timeRangeStart = newTimeStart
+	} else if newTimeStart != 0 {
+		t := time.Unix(newTimeStart, 0)
+		timeRangeStart = &t
 	}
 	if logIndex.TimeRangeEnd != nil {
 		timeRangeEnd = logIndex.TimeRangeEnd
-	} else {
-		timeRangeEnd = newTimeEnd
+	} else if newTimeEnd != 0 {
+		t := time.Unix(newTimeEnd, 0)
+		timeRangeEnd = &t
 	}
 
 	// Expand time range if needed
-	if newTimeStart != nil && (timeRangeStart == nil || newTimeStart.Before(*timeRangeStart)) {
-		timeRangeStart = newTimeStart
+	if newTimeStart != 0 && (timeRangeStart == nil || time.Unix(newTimeStart, 0).Before(*timeRangeStart)) {
+		t := time.Unix(newTimeStart, 0)
+		timeRangeStart = &t
 	}
-	if newTimeEnd != nil && (timeRangeEnd == nil || newTimeEnd.After(*timeRangeEnd)) {
-		timeRangeEnd = newTimeEnd
+	if newTimeEnd != 0 && (timeRangeEnd == nil || time.Unix(newTimeEnd, 0).After(*timeRangeEnd)) {
+		t := time.Unix(newTimeEnd, 0)
+		timeRangeEnd = &t
 	}
 
 	// Calculate total index size of related log files for this log group
@@ -387,11 +400,11 @@ func (li *LogIndexer) indexFileFromPositionStreaming(filePath string, startPosit
 	// Update in-memory file info for compatibility
 	li.mu.Lock()
 	if fileInfo, exists := li.logPaths[filePath]; exists {
-		fileInfo.LastModified = logIndex.LastModified
+		fileInfo.LastModified = logIndex.LastModified.Unix()
 		fileInfo.LastSize = logIndex.LastSize
-		fileInfo.LastIndexed = logIndex.LastIndexed
+		fileInfo.LastIndexed = logIndex.LastIndexed.Unix()
 		if timeRangeStart != nil && timeRangeEnd != nil {
-			fileInfo.TimeRange = &TimeRange{Start: *timeRangeStart, End: *timeRangeEnd}
+			fileInfo.TimeRange = &TimeRange{Start: timeRangeStart.Unix(), End: timeRangeEnd.Unix()}
 		}
 	}
 	li.mu.Unlock()

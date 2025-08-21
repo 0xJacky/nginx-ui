@@ -78,7 +78,11 @@ func (s *BleveStatsService) extractTimestampIPAndPath(hit *search.DocumentMatch)
 	var filePath string
 
 	if timestampField, ok := hit.Fields["timestamp"]; ok {
-		if timestampStr, ok := timestampField.(string); ok {
+		if timestampFloat, ok := timestampField.(float64); ok {
+			t := time.Unix(int64(timestampFloat), 0)
+			timestamp = &t
+		} else if timestampStr, ok := timestampField.(string); ok {
+			// Fallback for old RFC3339 format
 			if t, err := time.Parse(time.RFC3339, timestampStr); err == nil {
 				timestamp = &t
 			}
@@ -103,16 +107,24 @@ func (s *BleveStatsService) extractTimestampIPAndPath(hit *search.DocumentMatch)
 // GetTimeRangeFromBleve returns the available time range from Bleve index
 func (s *BleveStatsService) GetTimeRangeFromBleve(logPath string) (start, end time.Time) {
 	if s.indexer == nil {
-		logger.Warn("BleveStatsService.GetTimeRangeFromBleve: indexer is nil")
+		logger.Error("BleveStatsService.GetTimeRangeFromBleve: indexer is nil")
 		return time.Time{}, time.Time{}
 	}
 
 	if s.indexer.index == nil {
-		logger.Warn("BleveStatsService.GetTimeRangeFromBleve: index is nil")
+		logger.Error("BleveStatsService.GetTimeRangeFromBleve: index is nil")
 		return time.Time{}, time.Time{}
 	}
 
 	logger.Infof("BleveStatsService.GetTimeRangeFromBleve: Getting time range for log_path='%s'", logPath)
+	
+	// First, let's check if the index has any documents at all
+	docCount, err := s.indexer.index.DocCount()
+	if err != nil {
+		logger.Errorf("BleveStatsService.GetTimeRangeFromBleve: Failed to get doc count: %v", err)
+	} else {
+		logger.Infof("BleveStatsService.GetTimeRangeFromBleve: Total documents in index: %d", docCount)
+	}
 
 	var searchQuery query.Query = bleve.NewMatchAllQuery()
 
@@ -152,13 +164,29 @@ func (s *BleveStatsService) GetTimeRangeFromBleve(logPath string) (start, end ti
 		return time.Time{}, time.Time{}
 	}
 
-	logger.Debugf("BleveStatsService.GetTimeRangeFromBleve: Found %d entries (total=%d)", len(searchResult.Hits), searchResult.Total)
+	logger.Infof("BleveStatsService.GetTimeRangeFromBleve: Found %d entries (total=%d)", len(searchResult.Hits), searchResult.Total)
 
 	if timestampField, ok := searchResult.Hits[0].Fields["timestamp"]; ok {
-		if timestampStr, ok := timestampField.(string); ok {
+		logger.Infof("BleveStatsService.GetTimeRangeFromBleve: timestamp field exists, type=%T, value=%v", timestampField, timestampField)
+		if timestampFloat, ok := timestampField.(float64); ok {
+			start = time.Unix(int64(timestampFloat), 0)
+			logger.Infof("BleveStatsService.GetTimeRangeFromBleve: Parsed start time from float64: %v", start)
+		} else if timestampStr, ok := timestampField.(string); ok {
+			// Fallback for old RFC3339 format (backward compatibility)
 			if t, err := time.Parse(time.RFC3339, timestampStr); err == nil {
 				start = t
+				logger.Infof("BleveStatsService.GetTimeRangeFromBleve: Parsed start time from string: %v", start)
+			} else {
+				logger.Errorf("BleveStatsService.GetTimeRangeFromBleve: Failed to parse RFC3339 string: %v, error: %v", timestampStr, err)
 			}
+		} else {
+			logger.Errorf("BleveStatsService.GetTimeRangeFromBleve: timestamp field has unexpected type: %T", timestampField)
+		}
+	} else {
+		logger.Error("BleveStatsService.GetTimeRangeFromBleve: timestamp field not found in search result")
+		// Let's see what fields are actually available
+		for key, value := range searchResult.Hits[0].Fields {
+			logger.Infof("BleveStatsService.GetTimeRangeFromBleve: Available field: %s = %v (type: %T)", key, value, value)
 		}
 	}
 
@@ -170,7 +198,10 @@ func (s *BleveStatsService) GetTimeRangeFromBleve(logPath string) (start, end ti
 	}
 
 	if timestampField, ok := searchResult.Hits[0].Fields["timestamp"]; ok {
-		if timestampStr, ok := timestampField.(string); ok {
+		if timestampFloat, ok := timestampField.(float64); ok {
+			end = time.Unix(int64(timestampFloat), 0)
+		} else if timestampStr, ok := timestampField.(string); ok {
+			// Fallback for old RFC3339 format (backward compatibility)
 			if t, err := time.Parse(time.RFC3339, timestampStr); err == nil {
 				end = t
 			}

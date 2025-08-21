@@ -105,24 +105,24 @@ func GetAllLogsWithIndexGrouped(filters ...func(*NginxLogWithIndex) bool) []*Ngi
 			
 			// Use persistence data
 			if !persistenceIndex.LastModified.IsZero() {
-				log.LastModified = &persistenceIndex.LastModified
+				log.LastModified = persistenceIndex.LastModified.Unix()
 			}
 			log.LastSize = persistenceIndex.LastSize
 			if !persistenceIndex.LastIndexed.IsZero() {
-				log.LastIndexed = &persistenceIndex.LastIndexed
+				log.LastIndexed = persistenceIndex.LastIndexed.Unix()
 			}
 			if persistenceIndex.IndexStartTime != nil {
-				log.IndexStartTime = persistenceIndex.IndexStartTime
+				log.IndexStartTime = persistenceIndex.IndexStartTime.Unix()
 			}
 			if persistenceIndex.IndexDuration != nil {
-				log.IndexDuration = persistenceIndex.IndexDuration
+				log.IndexDuration = *persistenceIndex.IndexDuration
 			}
 			if persistenceIndex.TimeRangeStart != nil {
-				log.TimeRangeStart = persistenceIndex.TimeRangeStart
+				log.TimeRangeStart = persistenceIndex.TimeRangeStart.Unix()
 				log.HasTimeRange = true
 			}
 			if persistenceIndex.TimeRangeEnd != nil {
-				log.TimeRangeEnd = persistenceIndex.TimeRangeEnd
+				log.TimeRangeEnd = persistenceIndex.TimeRangeEnd.Unix()
 				log.HasTimeRange = true
 			}
 			log.DocumentCount = persistenceIndex.DocumentCount
@@ -131,20 +131,20 @@ func GetAllLogsWithIndexGrouped(filters ...func(*NginxLogWithIndex) bool) []*Ngi
 			if log.IndexStatus != IndexStatusIndexing {
 				log.IndexStatus = IndexStatusIndexed
 			}
-			if !fileStatus.LastModified.IsZero() {
-				log.LastModified = &fileStatus.LastModified
+			if fileStatus.LastModified != 0 {
+				log.LastModified = fileStatus.LastModified
 			}
 			log.LastSize = fileStatus.LastSize
-			if !fileStatus.LastIndexed.IsZero() {
-				log.LastIndexed = &fileStatus.LastIndexed
+			if fileStatus.LastIndexed != 0 {
+				log.LastIndexed = fileStatus.LastIndexed
 			}
 			log.IsCompressed = fileStatus.IsCompressed
 			log.HasTimeRange = fileStatus.HasTimeRange
-			if !fileStatus.TimeRangeStart.IsZero() {
-				log.TimeRangeStart = &fileStatus.TimeRangeStart
+			if fileStatus.TimeRangeStart != 0 {
+				log.TimeRangeStart = fileStatus.TimeRangeStart
 			}
-			if !fileStatus.TimeRangeEnd.IsZero() {
-				log.TimeRangeEnd = &fileStatus.TimeRangeEnd
+			if fileStatus.TimeRangeEnd != 0 {
+				log.TimeRangeEnd = fileStatus.TimeRangeEnd
 			}
 		}
 	}
@@ -287,50 +287,62 @@ func aggregateLogGroupStats(aggregatedLog *NginxLogWithIndex, group []*NginxLogW
 		}
 		
 		// Find the most recent indexed time
-		if log.LastIndexed != nil {
-			if mostRecentIndexed == nil || log.LastIndexed.After(*mostRecentIndexed) {
-				mostRecentIndexed = log.LastIndexed
+		if log.LastIndexed != 0 {
+			indexedTime := time.Unix(log.LastIndexed, 0)
+			if mostRecentIndexed == nil || indexedTime.After(*mostRecentIndexed) {
+				mostRecentIndexed = &indexedTime
 			}
 		}
 		
 		// Aggregate time ranges
-		if log.TimeRangeStart != nil {
-			if earliestTimeStart == nil || log.TimeRangeStart.Before(*earliestTimeStart) {
-				earliestTimeStart = log.TimeRangeStart
+		if log.TimeRangeStart != 0 {
+			startTime := time.Unix(log.TimeRangeStart, 0)
+			if earliestTimeStart == nil || startTime.Before(*earliestTimeStart) {
+				earliestTimeStart = &startTime
 			}
 		}
 		
-		if log.TimeRangeEnd != nil {
-			if latestTimeEnd == nil || log.TimeRangeEnd.After(*latestTimeEnd) {
-				latestTimeEnd = log.TimeRangeEnd
+		if log.TimeRangeEnd != 0 {
+			endTime := time.Unix(log.TimeRangeEnd, 0)
+			if latestTimeEnd == nil || endTime.After(*latestTimeEnd) {
+				latestTimeEnd = &endTime
 			}
 		}
 		
 		// Use properties from the most recent file
-		if log.LastModified != nil && (aggregatedLog.LastModified == nil || log.LastModified.After(*aggregatedLog.LastModified)) {
+		if log.LastModified != 0 && (aggregatedLog.LastModified == 0 || log.LastModified > aggregatedLog.LastModified) {
 			aggregatedLog.LastModified = log.LastModified
 		}
 		
 		// Find the EARLIEST IndexStartTime for the log group (when the group indexing started)
-		if log.IndexStartTime != nil && (earliestIndexStartTime == nil || log.IndexStartTime.Before(*earliestIndexStartTime)) {
-			earliestIndexStartTime = log.IndexStartTime
+		if log.IndexStartTime != 0 {
+			startTime := time.Unix(log.IndexStartTime, 0)
+			if earliestIndexStartTime == nil || startTime.Before(*earliestIndexStartTime) {
+				earliestIndexStartTime = &startTime
+			}
 		}
 		
 		// Sum up individual file durations to get total group duration
-		if log.IndexDuration != nil {
+		if log.IndexDuration != 0 {
 			if totalIndexDuration == nil {
 				totalIndexDuration = new(int64)
 			}
-			*totalIndexDuration += *log.IndexDuration
+			*totalIndexDuration += log.IndexDuration
 		}
 	}
 	
 	// Set aggregated values
-	aggregatedLog.IndexStartTime = earliestIndexStartTime
+	if earliestIndexStartTime != nil {
+		aggregatedLog.IndexStartTime = earliestIndexStartTime.Unix()
+	}
 	aggregatedLog.LastSize = totalSize
 	aggregatedLog.DocumentCount = totalDocuments
-	aggregatedLog.LastIndexed = mostRecentIndexed
-	aggregatedLog.IndexDuration = totalIndexDuration  // Sum of all individual file durations
+	if mostRecentIndexed != nil {
+		aggregatedLog.LastIndexed = mostRecentIndexed.Unix()
+	}
+	if totalIndexDuration != nil {
+		aggregatedLog.IndexDuration = *totalIndexDuration
+	}
 	
 	// Set index status based on group status
 	if indexingInProgress {
@@ -343,8 +355,8 @@ func aggregateLogGroupStats(aggregatedLog *NginxLogWithIndex, group []*NginxLogW
 	
 	// Set time range
 	if earliestTimeStart != nil && latestTimeEnd != nil {
-		aggregatedLog.TimeRangeStart = earliestTimeStart
-		aggregatedLog.TimeRangeEnd = latestTimeEnd
+		aggregatedLog.TimeRangeStart = earliestTimeStart.Unix()
+		aggregatedLog.TimeRangeEnd = latestTimeEnd.Unix()
 		aggregatedLog.HasTimeRange = true
 	}
 }

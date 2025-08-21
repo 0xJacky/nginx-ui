@@ -168,9 +168,9 @@ func (pm *PersistenceManager) GetLogFileInfo(path string) (*LogFileInfo, error) 
 	}
 	return &LogFileInfo{
 		Path:         logIndex.Path,
-		LastModified: logIndex.LastModified,
+		LastModified: logIndex.LastModified.Unix(),
 		LastSize:     logIndex.LastSize,
-		LastIndexed:  logIndex.LastIndexed,
+		LastIndexed:  logIndex.LastIndexed.Unix(),
 	}, nil
 }
 
@@ -180,9 +180,9 @@ func (pm *PersistenceManager) SaveLogFileInfo(path string, info *LogFileInfo) er
 	if err != nil {
 		return err
 	}
-	logIndex.LastModified = info.LastModified
+	logIndex.LastModified = time.Unix(info.LastModified, 0)
 	logIndex.LastSize = info.LastSize
-	logIndex.LastIndexed = info.LastIndexed
+	logIndex.LastIndexed = time.Unix(info.LastIndexed, 0)
 	return pm.SaveLogIndex(logIndex)
 }
 

@@ -12,7 +12,7 @@ import (
 
 // calculateHourlyStatsFromBleve calculates 24-hour UV/PV statistics using Bleve aggregations
 // Shows stats for the End Date (target day) only
-func (s *BleveStatsService) calculateHourlyStatsFromBleve(ctx context.Context, baseQuery query.Query, startTime, endTime time.Time) ([]HourlyAccessStats, error) {
+func (s *BleveStatsService) calculateHourlyStatsFromBleve(ctx context.Context, baseQuery query.Query, startTime, endTime int64) ([]HourlyAccessStats, error) {
 	logger.Info("BleveStatsService: Starting hourly stats calculation")
 
 	hourStats := make(map[int]map[string]bool) // hour -> unique IPs
@@ -54,8 +54,9 @@ func (s *BleveStatsService) calculateHourlyStatsFromBleve(ctx context.Context, b
 
 			if timestamp != nil && ip != "" {
 				// For hourly stats, only process entries from the target date (endTime)
-				if !endTime.IsZero() {
-					targetDate := endTime.Truncate(24 * time.Hour)
+				if endTime != 0 {
+					targetTime := time.Unix(endTime, 0)
+					targetDate := targetTime.Truncate(24 * time.Hour)
 					entryDate := timestamp.Truncate(24 * time.Hour)
 					if !entryDate.Equal(targetDate) {
 						continue // Skip entries not from the target date
@@ -84,8 +85,9 @@ func (s *BleveStatsService) calculateHourlyStatsFromBleve(ctx context.Context, b
 
 	// Use endTime (target date) for hour timestamps, or current date if not specified
 	var targetDate time.Time
-	if !endTime.IsZero() {
-		targetDate = endTime.Truncate(24 * time.Hour)
+	if endTime != 0 {
+		endDateTime := time.Unix(endTime, 0)
+		targetDate = endDateTime.Truncate(24 * time.Hour)
 	} else {
 		now := time.Now()
 		targetDate = time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, now.Location())
@@ -106,7 +108,7 @@ func (s *BleveStatsService) calculateHourlyStatsFromBleve(ctx context.Context, b
 }
 
 // calculateDailyStatsFromBleve calculates daily UV/PV statistics using Bleve
-func (s *BleveStatsService) calculateDailyStatsFromBleve(ctx context.Context, baseQuery query.Query, startTime, endTime time.Time) ([]DailyAccessStats, error) {
+func (s *BleveStatsService) calculateDailyStatsFromBleve(ctx context.Context, baseQuery query.Query, startTime, endTime int64) ([]DailyAccessStats, error) {
 	dailyStats := make(map[string]map[string]bool) // date -> unique IPs
 	dailyPV := make(map[string]int)                // date -> page views
 
@@ -152,13 +154,17 @@ func (s *BleveStatsService) calculateDailyStatsFromBleve(ctx context.Context, ba
 	result := make([]DailyAccessStats, 0)
 
 	// Use default time range if not provided
-	if startTime.IsZero() || endTime.IsZero() {
-		endTime = time.Now()
-		startTime = endTime.AddDate(0, 0, -30) // 30 days ago
+	var startDateTime, endDateTime time.Time
+	if startTime == 0 || endTime == 0 {
+		endDateTime = time.Now()
+		startDateTime = endDateTime.AddDate(0, 0, -30) // 30 days ago
+	} else {
+		startDateTime = time.Unix(startTime, 0)
+		endDateTime = time.Unix(endTime, 0)
 	}
 
-	currentDate := startTime.Truncate(24 * time.Hour)
-	for currentDate.Before(endTime) || currentDate.Equal(endTime.Truncate(24*time.Hour)) {
+	currentDate := startDateTime.Truncate(24 * time.Hour)
+	for currentDate.Before(endDateTime) || currentDate.Equal(endDateTime.Truncate(24*time.Hour)) {
 		dateKey := currentDate.Format("2006-01-02")
 
 		if ips, exists := dailyStats[dateKey]; exists {

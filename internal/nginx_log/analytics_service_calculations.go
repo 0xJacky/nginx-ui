@@ -6,7 +6,7 @@ import (
 )
 
 // calculateHourlyStats calculates UV/PV statistics for each hour of the day
-func (s *AnalyticsService) calculateHourlyStats(entries []*AccessLogEntry, startTime, endTime time.Time) []HourlyAccessStats {
+func (s *AnalyticsService) calculateHourlyStats(entries []*AccessLogEntry, startTime, endTime int64) []HourlyAccessStats {
 	// Create map to aggregate stats by hour (0-23)
 	hourStats := make(map[int]map[string]bool) // hour -> set of unique IPs
 	hourPV := make(map[int]int)                // hour -> page view count
@@ -19,7 +19,8 @@ func (s *AnalyticsService) calculateHourlyStats(entries []*AccessLogEntry, start
 
 	// Process entries
 	for _, entry := range entries {
-		hour := entry.Timestamp.Hour()
+		entryTime := time.Unix(entry.Timestamp, 0)
+		hour := entryTime.Hour()
 
 		// Count unique visitors (UV)
 		hourStats[hour][entry.IP] = true
@@ -47,14 +48,15 @@ func (s *AnalyticsService) calculateHourlyStats(entries []*AccessLogEntry, start
 }
 
 // calculateDailyStats calculates daily UV/PV statistics for the time range with padding
-func (s *AnalyticsService) calculateDailyStats(entries []*AccessLogEntry, startTime, endTime time.Time) []DailyAccessStats {
+func (s *AnalyticsService) calculateDailyStats(entries []*AccessLogEntry, startTime, endTime int64) []DailyAccessStats {
 	// Create map to aggregate stats by date
 	dailyStats := make(map[string]map[string]bool) // date -> set of unique IPs
 	dailyPV := make(map[string]int)                // date -> page view count
 
 	// Process entries
 	for _, entry := range entries {
-		date := entry.Timestamp.Format("2006-01-02")
+		entryTime := time.Unix(entry.Timestamp, 0)
+		date := entryTime.Format("2006-01-02")
 
 		if dailyStats[date] == nil {
 			dailyStats[date] = make(map[string]bool)
@@ -71,13 +73,17 @@ func (s *AnalyticsService) calculateDailyStats(entries []*AccessLogEntry, startT
 	result := make([]DailyAccessStats, 0)
 
 	// Use default time range if not provided
-	if startTime.IsZero() || endTime.IsZero() {
-		endTime = time.Now()
-		startTime = endTime.AddDate(0, 0, -30) // 30 days ago
+	var startDateTime, endDateTime time.Time
+	if startTime == 0 || endTime == 0 {
+		endDateTime = time.Now()
+		startDateTime = endDateTime.AddDate(0, 0, -30) // 30 days ago
+	} else {
+		startDateTime = time.Unix(startTime, 0)
+		endDateTime = time.Unix(endTime, 0)
 	}
 
-	currentDate := startTime.Truncate(24 * time.Hour)
-	for currentDate.Before(endTime) || currentDate.Equal(endTime.Truncate(24*time.Hour)) {
+	currentDate := startDateTime.Truncate(24 * time.Hour)
+	for currentDate.Before(endDateTime) || currentDate.Equal(endDateTime.Truncate(24*time.Hour)) {
 		dateKey := currentDate.Format("2006-01-02")
 
 		if ips, exists := dailyStats[dateKey]; exists {

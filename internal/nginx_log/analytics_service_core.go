@@ -95,7 +95,7 @@ func (s *AnalyticsService) validateAndNormalizeSearchRequest(req *QueryRequest) 
 	}
 
 	// Validate time range
-	if !req.StartTime.IsZero() && !req.EndTime.IsZero() && req.StartTime.After(req.EndTime) {
+	if req.StartTime != 0 && req.EndTime != 0 && req.StartTime > req.EndTime {
 		return fmt.Errorf("start time cannot be after end time")
 	}
 

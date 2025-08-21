@@ -67,12 +67,12 @@ func sortCompareWithIndex(i, j *NginxLogWithIndex, key string, order string) boo
 		flag = iOrder < jOrder
 	case "last_indexed":
 		// Sort by last indexed time (more recent first)
-		if i.LastIndexed != nil && j.LastIndexed != nil {
-			flag = i.LastIndexed.After(*j.LastIndexed)
-		} else if i.LastIndexed == nil && j.LastIndexed != nil {
-			flag = true // nil comes after non-nil
-		} else if i.LastIndexed != nil && j.LastIndexed == nil {
-			flag = false // non-nil comes before nil
+		if i.LastIndexed != 0 && j.LastIndexed != 0 {
+			flag = i.LastIndexed > j.LastIndexed
+		} else if i.LastIndexed == 0 && j.LastIndexed != 0 {
+			flag = true // 0 comes after non-zero
+		} else if i.LastIndexed != 0 && j.LastIndexed == 0 {
+			flag = false // non-zero comes before 0
 		}
 	case "last_size":
 		// Sort by file size

@@ -32,7 +32,7 @@ func (li *LogIndexer) SearchLogs(ctx context.Context, req *QueryRequest) (*Query
 		return &QueryResult{
 			Entries: cached.Entries,
 			Total:   cached.Total,
-			Took:    time.Since(start),
+			Took:    time.Since(start).Milliseconds(),
 			Summary: summaryStats,
 		}, nil
 	}
@@ -119,7 +119,7 @@ func (li *LogIndexer) SearchLogs(ctx context.Context, req *QueryRequest) (*Query
 	result := &QueryResult{
 		Entries: entries,
 		Total:   int(searchResult.Total),
-		Took:    time.Since(start),
+		Took:    time.Since(start).Milliseconds(),
 		Summary: summaryStats,
 	}
 
@@ -131,18 +131,21 @@ func (li *LogIndexer) buildSearchQuery(req *QueryRequest) query.Query {
 	var queries []query.Query
 
 	// Time range query - only add if we have meaningful time constraints
-	if !req.StartTime.IsZero() && !req.EndTime.IsZero() {
+	if req.StartTime != 0 && req.EndTime != 0 {
 		// Check if the time range is reasonable (not too wide)
-		if req.EndTime.Sub(req.StartTime) < 400*24*time.Hour { // Less than ~400 days
-			// Add 1 millisecond to endTime to ensure boundary values are included
+		duration := req.EndTime - req.StartTime
+		if duration < 400*24*3600 { // Less than ~400 days in seconds
+			// Add 1 second to endTime to ensure boundary values are included
 			// This fixes the issue where records with exact endTime are excluded due to exclusive upper bound
-			inclusiveEndTime := req.EndTime.Add(1 * time.Millisecond)
-			logger.Infof("Using time range filter: %s to %s (inclusive)", req.StartTime.Format(time.RFC3339), inclusiveEndTime.Format(time.RFC3339))
-			timeQuery := bleve.NewDateRangeQuery(req.StartTime, inclusiveEndTime)
+			inclusiveEndTime := req.EndTime + 1
+			logger.Infof("Using time range filter: %d to %d (inclusive)", req.StartTime, inclusiveEndTime)
+			startFloat := float64(req.StartTime)
+			endFloat := float64(inclusiveEndTime)
+			timeQuery := bleve.NewNumericRangeQuery(&startFloat, &endFloat)
 			timeQuery.SetField("timestamp")
 			queries = append(queries, timeQuery)
 		} else {
-			logger.Infof("Time range too wide (%v), ignoring time filter to search all data", req.EndTime.Sub(req.StartTime))
+			logger.Infof("Time range too wide (%d seconds), ignoring time filter to search all data", duration)
 		}
 	} else {
 		logger.Infof("No meaningful time range specified, searching all data")
@@ -345,10 +348,8 @@ func (li *LogIndexer) convertHitToEntry(hit interface{}) *AccessLogEntry {
 			entry.RequestTime = li.getFloatField(fields, "request_time")
 
 			// Handle timestamp
-			if timestampStr := li.getStringField(fields, "timestamp"); timestampStr != "" {
-				if ts, err := time.Parse(time.RFC3339, timestampStr); err == nil {
-					entry.Timestamp = ts
-				}
+			if timestampField := li.getFloatField(fields, "timestamp"); timestampField != 0 {
+				entry.Timestamp = int64(timestampField)
 			}
 
 		} else {
@@ -371,9 +372,9 @@ func (li *LogIndexer) createCacheKey(req *QueryRequest) string {
 		statusStr = fmt.Sprintf("%v", req.Status)
 	}
 
-	return fmt.Sprintf("search_%s_%s_%s_%s_%s_%s_%s_%s_%s_%s_%s_%s_%s_%d_%d_%s_%s",
-		req.StartTime.Format("20060102150405"),
-		req.EndTime.Format("20060102150405"),
+	return fmt.Sprintf("search_%d_%d_%s_%s_%s_%s_%s_%s_%s_%s_%s_%s_%s_%d_%d_%s_%s",
+		req.StartTime,
+		req.EndTime,
 		req.Query,
 		req.IP,
 		req.Method,

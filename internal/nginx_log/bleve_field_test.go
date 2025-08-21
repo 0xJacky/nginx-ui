@@ -21,7 +21,7 @@ func TestBleveFieldMapping(t *testing.T) {
 	testEntry := &IndexedLogEntry{
 		ID:        "test_1",
 		FilePath:  "/var/log/nginx/access.log",
-		Timestamp: time.Now(),
+		Timestamp: time.Now().Unix(),
 		IP:        "135.220.172.38",
 		Method:    "GET",
 		Path:      "/test",
@@ -190,7 +190,7 @@ func createTestIndexMapping() mapping.IndexMapping {
 	logMapping := bleve.NewDocumentMapping()
 
 	// Timestamp
-	timestampMapping := bleve.NewDateTimeFieldMapping()
+	timestampMapping := bleve.NewNumericFieldMapping()
 	logMapping.AddFieldMappingsAt("timestamp", timestampMapping)
 
 	// File path with TextFieldMapping + keyword analyzer (current approach)
@@ -227,7 +227,7 @@ func createAlternativeIndexMapping() mapping.IndexMapping {
 	logMapping := bleve.NewDocumentMapping()
 
 	// Timestamp
-	timestampMapping := bleve.NewDateTimeFieldMapping()
+	timestampMapping := bleve.NewNumericFieldMapping()
 	logMapping.AddFieldMappingsAt("timestamp", timestampMapping)
 
 	// File path with TextFieldMapping instead of KeywordFieldMapping

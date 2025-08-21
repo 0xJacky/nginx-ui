@@ -161,7 +161,7 @@ const columns: StdTableColumn[] = [
       if (!record || !record.last_indexed)
         return <span class="text-gray-400 dark:text-gray-500">-</span>
 
-      const lastIndexed = dayjs(record.last_indexed)
+      const lastIndexed = dayjs.unix(record.last_indexed)
       const displayText = lastIndexed.format('YYYY-MM-DD HH:mm')
       const statusIcon = <CheckCircleOutlined class="text-green-500 ml-1" />
 
@@ -230,8 +230,8 @@ const columns: StdTableColumn[] = [
         return <span class="text-gray-400 dark:text-gray-500">-</span>
       }
 
-      const start = dayjs(record.timerange_start)
-      const end = dayjs(record.timerange_end)
+      const start = dayjs.unix(record.timerange_start)
+      const end = dayjs.unix(record.timerange_end)
       const duration = end.diff(start, 'day')
 
       // Format duration display

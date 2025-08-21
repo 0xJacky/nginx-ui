@@ -79,8 +79,8 @@ func TestAnalyticsService_ValidateAndNormalizeSearchRequest(t *testing.T) {
 		{
 			name: "Invalid time range should return error",
 			req: &QueryRequest{
-				StartTime: time.Now(),
-				EndTime:   time.Now().Add(-1 * time.Hour),
+				StartTime: time.Now().Unix(),
+				EndTime:   time.Now().Add(-1 * time.Hour).Unix(),
 				Limit:     100,
 			},
 			wantErr: true,
@@ -161,8 +161,8 @@ func TestAnalyticsService_GetLogEntries(t *testing.T) {
 func BenchmarkAnalyticsService_ValidateAndNormalizeSearchRequest(b *testing.B) {
 	service := NewAnalyticsService()
 	req := &QueryRequest{
-		StartTime: time.Now().Add(-1 * time.Hour),
-		EndTime:   time.Now(),
+		StartTime: time.Now().Add(-1 * time.Hour).Unix(),
+		EndTime:   time.Now().Unix(),
 		Query:     "test query",
 		IP:        "192.168.1.1",
 		Method:    "GET",

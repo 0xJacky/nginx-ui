@@ -2,31 +2,30 @@ package nginx_log
 
 import (
 	"regexp"
-	"time"
 )
 
 // AccessLogEntry represents a parsed access log entry
 type AccessLogEntry struct {
-	Timestamp    time.Time `json:"timestamp"`
-	IP           string    `json:"ip"`
-	RegionCode   string    `json:"region_code"`
-	Province     string    `json:"province"`
-	City         string    `json:"city"`
-	Method       string    `json:"method"`
-	Path         string    `json:"path"`
-	Protocol     string    `json:"protocol"`
-	Status       int       `json:"status"`
-	BytesSent    int64     `json:"bytes_sent"`
-	Referer      string    `json:"referer"`
-	UserAgent    string    `json:"user_agent"`
-	Browser      string    `json:"browser"`
-	BrowserVer   string    `json:"browser_version"`
-	OS           string    `json:"os"`
-	OSVersion    string    `json:"os_version"`
-	DeviceType   string    `json:"device_type"`
-	RequestTime  float64   `json:"request_time,omitempty"`
-	UpstreamTime *float64  `json:"upstream_time,omitempty"`
-	Raw          string    `json:"raw"`
+	Timestamp    int64    `json:"timestamp"` // Unix timestamp
+	IP           string   `json:"ip"`
+	RegionCode   string   `json:"region_code"`
+	Province     string   `json:"province"`
+	City         string   `json:"city"`
+	Method       string   `json:"method"`
+	Path         string   `json:"path"`
+	Protocol     string   `json:"protocol"`
+	Status       int      `json:"status"`
+	BytesSent    int64    `json:"bytes_sent"`
+	Referer      string   `json:"referer"`
+	UserAgent    string   `json:"user_agent"`
+	Browser      string   `json:"browser"`
+	BrowserVer   string   `json:"browser_version"`
+	OS           string   `json:"os"`
+	OSVersion    string   `json:"os_version"`
+	DeviceType   string   `json:"device_type"`
+	RequestTime  float64  `json:"request_time,omitempty"`
+	UpstreamTime *float64 `json:"upstream_time,omitempty"`
+	Raw          string   `json:"raw"`
 }
 
 // LogFormat represents different nginx log format patterns

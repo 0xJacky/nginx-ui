@@ -22,7 +22,7 @@ const hourlyChartOptions = computed(() => {
     return {}
 
   const hourlyData = props.dashboardData.hourly_stats || []
-  const hours = hourlyData.map(item => `${item.hour}:00`)
+  const hours = hourlyData.map(item => `${item.hour}`)
 
   return {
     chart: {

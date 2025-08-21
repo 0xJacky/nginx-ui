@@ -73,24 +73,24 @@ func GetAllLogsWithIndex(filters ...func(*NginxLogWithIndex) bool) []*NginxLogWi
 			
 			// Use persistence data
 			if !persistenceIndex.LastModified.IsZero() {
-				logWithIndex.LastModified = &persistenceIndex.LastModified
+				logWithIndex.LastModified = persistenceIndex.LastModified.Unix()
 			}
 			logWithIndex.LastSize = persistenceIndex.LastSize
 			if !persistenceIndex.LastIndexed.IsZero() {
-				logWithIndex.LastIndexed = &persistenceIndex.LastIndexed
+				logWithIndex.LastIndexed = persistenceIndex.LastIndexed.Unix()
 			}
 			if persistenceIndex.IndexStartTime != nil {
-				logWithIndex.IndexStartTime = persistenceIndex.IndexStartTime
+				logWithIndex.IndexStartTime = persistenceIndex.IndexStartTime.Unix()
 			}
 			if persistenceIndex.IndexDuration != nil {
-				logWithIndex.IndexDuration = persistenceIndex.IndexDuration
+				logWithIndex.IndexDuration = *persistenceIndex.IndexDuration
 			}
 			if persistenceIndex.TimeRangeStart != nil {
-				logWithIndex.TimeRangeStart = persistenceIndex.TimeRangeStart
+				logWithIndex.TimeRangeStart = persistenceIndex.TimeRangeStart.Unix()
 				logWithIndex.HasTimeRange = true
 			}
 			if persistenceIndex.TimeRangeEnd != nil {
-				logWithIndex.TimeRangeEnd = persistenceIndex.TimeRangeEnd
+				logWithIndex.TimeRangeEnd = persistenceIndex.TimeRangeEnd.Unix()
 				logWithIndex.HasTimeRange = true
 			}
 			logWithIndex.DocumentCount = persistenceIndex.DocumentCount
@@ -99,20 +99,20 @@ func GetAllLogsWithIndex(filters ...func(*NginxLogWithIndex) bool) []*NginxLogWi
 			if logWithIndex.IndexStatus != IndexStatusIndexing {
 				logWithIndex.IndexStatus = IndexStatusIndexed
 			}
-			if !fileStatus.LastModified.IsZero() {
-				logWithIndex.LastModified = &fileStatus.LastModified
+			if fileStatus.LastModified != 0 {
+				logWithIndex.LastModified = fileStatus.LastModified
 			}
 			logWithIndex.LastSize = fileStatus.LastSize
-			if !fileStatus.LastIndexed.IsZero() {
-				logWithIndex.LastIndexed = &fileStatus.LastIndexed
+			if fileStatus.LastIndexed != 0 {
+				logWithIndex.LastIndexed = fileStatus.LastIndexed
 			}
 			logWithIndex.IsCompressed = fileStatus.IsCompressed
 			logWithIndex.HasTimeRange = fileStatus.HasTimeRange
-			if !fileStatus.TimeRangeStart.IsZero() {
-				logWithIndex.TimeRangeStart = &fileStatus.TimeRangeStart
+			if fileStatus.TimeRangeStart != 0 {
+				logWithIndex.TimeRangeStart = fileStatus.TimeRangeStart
 			}
-			if !fileStatus.TimeRangeEnd.IsZero() {
-				logWithIndex.TimeRangeEnd = &fileStatus.TimeRangeEnd
+			if fileStatus.TimeRangeEnd != 0 {
+				logWithIndex.TimeRangeEnd = fileStatus.TimeRangeEnd
 			}
 		}
 

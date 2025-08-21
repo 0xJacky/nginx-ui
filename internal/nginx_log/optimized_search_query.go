@@ -106,7 +106,7 @@ func (osq *OptimizedSearchQuery) SearchLogsOptimized(ctx context.Context, req *Q
 		
 		// Clone cached result to avoid mutation
 		result := osq.cloneCachedResult(cached)
-		result.Took = time.Since(start)
+		result.Took = time.Since(start).Milliseconds()
 		result.FromCache = true
 		
 		return result, nil
@@ -125,10 +125,10 @@ func (osq *OptimizedSearchQuery) SearchLogsOptimized(ctx context.Context, req *Q
 		return nil, err
 	}
 	
-	result.Took = time.Since(start)
+	result.Took = time.Since(start).Milliseconds()
 	
 	// Update average query time
-	osq.updateQueryTime(result.Took)
+	osq.updateQueryTime(time.Since(start))
 	
 	// Cache the result
 	osq.cacheResult(cacheKey, result)
@@ -146,15 +146,15 @@ func (osq *OptimizedSearchQuery) optimizeRequest(req *QueryRequest) *QueryReques
 	}
 	
 	// Optimize time range queries
-	if !optimized.StartTime.IsZero() && !optimized.EndTime.IsZero() {
-		duration := optimized.EndTime.Sub(optimized.StartTime)
+	if optimized.StartTime != 0 && optimized.EndTime != 0 {
+		duration := optimized.EndTime - optimized.StartTime
 		
 		// If time range is too wide, use index optimization
-		if duration > 365*24*time.Hour {
+		if duration > 365*24*3600 { // 365 days in seconds
 			// For very wide ranges, don't use time filter to avoid poor performance
-			logger.Debugf("Time range too wide (%v), removing time filter for optimization", duration)
-			optimized.StartTime = time.Time{}
-			optimized.EndTime = time.Time{}
+			logger.Debugf("Time range too wide (%d seconds), removing time filter for optimization", duration)
+			optimized.StartTime = 0
+			optimized.EndTime = 0
 		}
 	}
 	
@@ -229,10 +229,12 @@ func (osq *OptimizedSearchQuery) buildOptimizedQuery(req *QueryRequest) query.Qu
 	}
 	
 	// 3. Time range queries (if not too wide)
-	if !req.StartTime.IsZero() && !req.EndTime.IsZero() {
+	if req.StartTime != 0 && req.EndTime != 0 {
 		// Add small buffer to end time for inclusive search
-		inclusiveEndTime := req.EndTime.Add(1 * time.Millisecond)
-		timeQuery := bleve.NewDateRangeQuery(req.StartTime, inclusiveEndTime)
+		inclusiveEndTime := req.EndTime + 1
+		startFloat := float64(req.StartTime)
+		endFloat := float64(inclusiveEndTime)
+		timeQuery := bleve.NewNumericRangeQuery(&startFloat, &endFloat)
 		timeQuery.SetField("timestamp")
 		queries = append(queries, timeQuery)
 	}
@@ -532,10 +534,8 @@ func (osq *OptimizedSearchQuery) convertSearchResults(hits []*search.DocumentMat
 		}
 		
 		// Parse timestamp
-		if timestampStr := osq.getStringField(hit.Fields, "timestamp"); timestampStr != "" {
-			if ts, err := time.Parse(time.RFC3339, timestampStr); err == nil {
-				entry.Timestamp = ts
-			}
+		if timestampField := osq.getFloatField(hit.Fields, "timestamp"); timestampField != 0 {
+			entry.Timestamp = int64(timestampField)
 		}
 		
 		entries = append(entries, entry)
@@ -598,11 +598,11 @@ func (osq *OptimizedSearchQuery) createOptimizedCacheKey(req *QueryRequest) stri
 	// Create a more efficient cache key
 	var keyParts []string
 	
-	if !req.StartTime.IsZero() {
-		keyParts = append(keyParts, req.StartTime.Format("20060102150405"))
+	if req.StartTime != 0 {
+		keyParts = append(keyParts, fmt.Sprintf("%d", req.StartTime))
 	}
-	if !req.EndTime.IsZero() {
-		keyParts = append(keyParts, req.EndTime.Format("20060102150405"))
+	if req.EndTime != 0 {
+		keyParts = append(keyParts, fmt.Sprintf("%d", req.EndTime))
 	}
 	if req.Query != "" {
 		keyParts = append(keyParts, req.Query)

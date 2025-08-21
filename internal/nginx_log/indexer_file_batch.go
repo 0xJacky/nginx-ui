@@ -2,13 +2,12 @@ package nginx_log
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/blevesearch/bleve/v2"
 )
 
 // processBatchStreaming processes a batch of lines using parallel parsing
-func (li *LogIndexer) processBatchStreaming(lines []string, filePath string, mainLogPath string, startPosition int64, batch **bleve.Batch, entryCount *int, newTimeStart, newTimeEnd **time.Time) error {
+func (li *LogIndexer) processBatchStreaming(lines []string, filePath string, mainLogPath string, startPosition int64, batch **bleve.Batch, entryCount *int, newTimeStart, newTimeEnd *int64) error {
 	if len(lines) == 0 {
 		return nil
 	}
@@ -23,11 +22,11 @@ func (li *LogIndexer) processBatchStreaming(lines []string, filePath string, mai
 	// Index entries
 	for i, entry := range entries {
 		// Track time range for new entries
-		if *newTimeStart == nil || entry.Timestamp.Before(**newTimeStart) {
-			*newTimeStart = &entry.Timestamp
+		if *newTimeStart == 0 || entry.Timestamp < *newTimeStart {
+			*newTimeStart = entry.Timestamp
 		}
-		if *newTimeEnd == nil || entry.Timestamp.After(**newTimeEnd) {
-			*newTimeEnd = &entry.Timestamp
+		if *newTimeEnd == 0 || entry.Timestamp > *newTimeEnd {
+			*newTimeEnd = entry.Timestamp
 		}
 
 		// Create indexed entry with unique ID

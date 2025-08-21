@@ -3,7 +3,6 @@ package nginx_log
 import (
 	"context"
 	"fmt"
-	"time"
 
 	"github.com/blevesearch/bleve/v2"
 	"github.com/blevesearch/bleve/v2/search/query"
@@ -138,37 +137,42 @@ func (s *BleveStatsService) GetDashboardAnalytics(ctx context.Context, req *Dash
 }
 
 // buildTimeRangeQuery builds a time range query for Bleve
-func (s *BleveStatsService) buildTimeRangeQuery(startTime, endTime time.Time) query.Query {
+func (s *BleveStatsService) buildTimeRangeQuery(startTime, endTime int64) query.Query {
 	// If both times are zero or the range is too wide, return match all query
-	if startTime.IsZero() && endTime.IsZero() {
+	if startTime == 0 && endTime == 0 {
 		return bleve.NewMatchAllQuery()
 	}
 
 	// Check if the time range is reasonable (same as search interface)
-	if !startTime.IsZero() && !endTime.IsZero() {
-		if endTime.Sub(startTime) >= 400*24*time.Hour { // More than ~400 days
+	if startTime != 0 && endTime != 0 {
+		if endTime-startTime >= 400*24*3600 { // More than ~400 days in seconds
 			return bleve.NewMatchAllQuery()
 		}
 	}
 
 	// Build proper time range query
 	var timeQuery query.Query
-	if !startTime.IsZero() && !endTime.IsZero() {
-		// Add 1 millisecond to endTime to ensure boundary values are included
-		inclusiveEndTime := endTime.Add(1 * time.Millisecond)
-		timeQuery = bleve.NewDateRangeQuery(startTime, inclusiveEndTime)
-		timeQuery.(*query.DateRangeQuery).SetField("timestamp")
-	} else if !startTime.IsZero() {
-		timeQuery = bleve.NewDateRangeQuery(startTime, time.Time{})
-		timeQuery.(*query.DateRangeQuery).SetField("timestamp")
-	} else if !endTime.IsZero() {
-		// Add 1 millisecond to endTime to ensure boundary values are included
-		inclusiveEndTime := endTime.Add(1 * time.Millisecond)
-		timeQuery = bleve.NewDateRangeQuery(time.Time{}, inclusiveEndTime)
-		timeQuery.(*query.DateRangeQuery).SetField("timestamp")
+	if startTime != 0 && endTime != 0 {
+		// Add 1 second to endTime to ensure boundary values are included
+		inclusiveEndTime := endTime + 1
+		startFloat := float64(startTime)
+		endFloat := float64(inclusiveEndTime)
+		timeQuery = bleve.NewNumericRangeQuery(&startFloat, &endFloat)
+		timeQuery.(*query.NumericRangeQuery).SetField("timestamp")
+	} else if startTime != 0 {
+		startFloat := float64(startTime)
+		timeQuery = bleve.NewNumericRangeQuery(&startFloat, nil)
+		timeQuery.(*query.NumericRangeQuery).SetField("timestamp")
+	} else if endTime != 0 {
+		// Add 1 second to endTime to ensure boundary values are included
+		inclusiveEndTime := endTime + 1
+		endFloat := float64(inclusiveEndTime)
+		timeQuery = bleve.NewNumericRangeQuery(nil, &endFloat)
+		timeQuery.(*query.NumericRangeQuery).SetField("timestamp")
 	} else {
 		return bleve.NewMatchAllQuery()
 	}
 
 	return timeQuery
 }
+

@@ -26,7 +26,10 @@ func (li *LogIndexer) GetTimeRange() (start, end time.Time) {
 	}
 
 	if searchResultMin.Total > 0 && len(searchResultMin.Hits) > 0 {
-		if tsVal, ok := searchResultMin.Hits[0].Fields["timestamp"].(string); ok {
+		if tsFloat, ok := searchResultMin.Hits[0].Fields["timestamp"].(float64); ok {
+			start = time.Unix(int64(tsFloat), 0)
+		} else if tsVal, ok := searchResultMin.Hits[0].Fields["timestamp"].(string); ok {
+			// Fallback for old RFC3339 format
 			start, _ = time.Parse(time.RFC3339, tsVal)
 		}
 	}
@@ -45,7 +48,10 @@ func (li *LogIndexer) GetTimeRange() (start, end time.Time) {
 	}
 
 	if searchResultMax.Total > 0 && len(searchResultMax.Hits) > 0 {
-		if tsVal, ok := searchResultMax.Hits[0].Fields["timestamp"].(string); ok {
+		if tsFloat, ok := searchResultMax.Hits[0].Fields["timestamp"].(float64); ok {
+			end = time.Unix(int64(tsFloat), 0)
+		} else if tsVal, ok := searchResultMax.Hits[0].Fields["timestamp"].(string); ok {
+			// Fallback for old RFC3339 format
 			end, _ = time.Parse(time.RFC3339, tsVal)
 		}
 	}
@@ -79,7 +85,10 @@ func (li *LogIndexer) GetTimeRangeForPath(logPath string) (start, end time.Time)
 	}
 
 	if searchResultMin.Total > 0 && len(searchResultMin.Hits) > 0 {
-		if tsVal, ok := searchResultMin.Hits[0].Fields["timestamp"].(string); ok {
+		if tsFloat, ok := searchResultMin.Hits[0].Fields["timestamp"].(float64); ok {
+			start = time.Unix(int64(tsFloat), 0)
+		} else if tsVal, ok := searchResultMin.Hits[0].Fields["timestamp"].(string); ok {
+			// Fallback for old RFC3339 format
 			start, _ = time.Parse(time.RFC3339, tsVal)
 		}
 	}
@@ -97,7 +106,10 @@ func (li *LogIndexer) GetTimeRangeForPath(logPath string) (start, end time.Time)
 	}
 
 	if searchResultMax.Total > 0 && len(searchResultMax.Hits) > 0 {
-		if tsVal, ok := searchResultMax.Hits[0].Fields["timestamp"].(string); ok {
+		if tsFloat, ok := searchResultMax.Hits[0].Fields["timestamp"].(float64); ok {
+			end = time.Unix(int64(tsFloat), 0)
+		} else if tsVal, ok := searchResultMax.Hits[0].Fields["timestamp"].(string); ok {
+			// Fallback for old RFC3339 format
 			end, _ = time.Parse(time.RFC3339, tsVal)
 		}
 	}

@@ -196,7 +196,7 @@ func createIndexMapping() mapping.IndexMapping {
 
 	// Map fields to their types
 	logMapping.AddFieldMappingsAt("file_path", filePathFieldMapping) // Use keyword analyzer for exact matching
-	logMapping.AddFieldMappingsAt("timestamp", dateFieldMapping)
+	logMapping.AddFieldMappingsAt("timestamp", numericFieldMapping) // Use numeric mapping for Unix timestamps
 	logMapping.AddFieldMappingsAt("ip", textFieldMapping)
 	logMapping.AddFieldMappingsAt("location", textFieldMapping)
 	logMapping.AddFieldMappingsAt("region_code", textFieldMapping)

@@ -77,30 +77,33 @@ func (li *LogIndexer) RepairFileMetadata() error {
 		var timeRange *TimeRange
 		for _, hit := range searchResult.Hits {
 			if timestampField, ok := hit.Fields["timestamp"]; ok {
-				if timestampStr, ok := timestampField.(string); ok {
-					timestamp, err := time.Parse(time.RFC3339, timestampStr)
-					if err != nil {
-						continue
-					}
+				var timestamp int64
+				switch v := timestampField.(type) {
+				case float64:
+					timestamp = int64(v)
+				case int64:
+					timestamp = v
+				default:
+					continue
+				}
 
-					if timeRange == nil {
-						timeRange = &TimeRange{Start: timestamp, End: timestamp}
-					} else {
-						if timestamp.Before(timeRange.Start) {
-							timeRange.Start = timestamp
-						}
-						if timestamp.After(timeRange.End) {
-							timeRange.End = timestamp
-						}
+				if timeRange == nil {
+					timeRange = &TimeRange{Start: timestamp, End: timestamp}
+				} else {
+					if timestamp < timeRange.Start {
+						timeRange.Start = timestamp
+					}
+					if timestamp > timeRange.End {
+						timeRange.End = timestamp
 					}
 				}
 			}
 		}
 
 		// Update file info
-		fileInfo.LastModified = currentInfo.ModTime()
+		fileInfo.LastModified = currentInfo.ModTime().Unix()
 		fileInfo.LastSize = currentInfo.Size()
-		fileInfo.LastIndexed = time.Now()
+		fileInfo.LastIndexed = time.Now().Unix()
 		fileInfo.TimeRange = timeRange
 
 		if timeRange != nil {

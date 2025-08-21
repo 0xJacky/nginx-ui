@@ -175,7 +175,7 @@ func (p *OptimizedLogParser) parseTimestamp(line []byte, pos int, entry *AccessL
 	if pos > start {
 		timeStr := bytesToString(line[start:pos])
 		if t, err := time.Parse("02/Jan/2006:15:04:05 -0700", timeStr); err == nil {
-			entry.Timestamp = t
+			entry.Timestamp = t.Unix()
 		}
 	}
 	

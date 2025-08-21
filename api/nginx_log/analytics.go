@@ -14,39 +14,39 @@ import (
 
 // AnalyticsRequest represents the request for log analytics
 type AnalyticsRequest struct {
-	Path      string    `json:"path" form:"path"`
-	StartTime time.Time `json:"start_time" form:"start_time"`
-	EndTime   time.Time `json:"end_time" form:"end_time"`
-	Limit     int       `json:"limit" form:"limit"`
+	Path      string `json:"path" form:"path"`
+	StartTime int64  `json:"start_time" form:"start_time"`
+	EndTime   int64  `json:"end_time" form:"end_time"`
+	Limit     int    `json:"limit" form:"limit"`
 }
 
 // AdvancedSearchRequest represents the request for advanced log search
 type AdvancedSearchRequest struct {
-	Query     string    `json:"query" form:"query"`
-	LogPath   string    `json:"log_path" form:"log_path"`
-	StartTime time.Time `json:"start_time" form:"start_time"`
-	EndTime   time.Time `json:"end_time" form:"end_time"`
-	IP        string    `json:"ip" form:"ip"`
-	Method    string    `json:"method" form:"method"`
-	Status    []int     `json:"status" form:"status"`
-	Path      string    `json:"path" form:"path"`
-	UserAgent string    `json:"user_agent" form:"user_agent"`
-	Referer   string    `json:"referer" form:"referer"`
-	Browser   string    `json:"browser" form:"browser"`
-	OS        string    `json:"os" form:"os"`
-	Device    string    `json:"device" form:"device"`
-	Limit     int       `json:"limit" form:"limit"`
-	Offset    int       `json:"offset" form:"offset"`
-	SortBy    string    `json:"sort_by" form:"sort_by"`
-	SortOrder string    `json:"sort_order" form:"sort_order"`
+	Query     string `json:"query" form:"query"`
+	LogPath   string `json:"log_path" form:"log_path"`
+	StartTime int64  `json:"start_time" form:"start_time"`
+	EndTime   int64  `json:"end_time" form:"end_time"`
+	IP        string `json:"ip" form:"ip"`
+	Method    string `json:"method" form:"method"`
+	Status    []int  `json:"status" form:"status"`
+	Path      string `json:"path" form:"path"`
+	UserAgent string `json:"user_agent" form:"user_agent"`
+	Referer   string `json:"referer" form:"referer"`
+	Browser   string `json:"browser" form:"browser"`
+	OS        string `json:"os" form:"os"`
+	Device    string `json:"device" form:"device"`
+	Limit     int    `json:"limit" form:"limit"`
+	Offset    int    `json:"offset" form:"offset"`
+	SortBy    string `json:"sort_by" form:"sort_by"`
+	SortOrder string `json:"sort_order" form:"sort_order"`
 }
 
 // PreflightResponse represents the response for preflight query
 type PreflightResponse struct {
-	StartTime   *time.Time `json:"start_time,omitempty"`
-	EndTime     *time.Time `json:"end_time,omitempty"`
-	Available   bool       `json:"available"`
-	IndexStatus string     `json:"index_status"`
+	StartTime   *int64 `json:"start_time,omitempty"`
+	EndTime     *int64 `json:"end_time,omitempty"`
+	Available   bool   `json:"available"`
+	IndexStatus string `json:"index_status"`
 }
 
 // GetLogAnalytics provides comprehensive log analytics
@@ -108,8 +108,8 @@ func GetLogPreflight(c *gin.Context) {
 
 	// Convert internal result to API response
 	response := PreflightResponse{
-		StartTime:   result.StartTime,
-		EndTime:     result.EndTime,
+		StartTime:   &result.StartTime,
+		EndTime:     &result.EndTime,
 		Available:   result.Available,
 		IndexStatus: result.IndexStatus,
 	}
@@ -372,8 +372,8 @@ func GetDashboardAnalytics(c *gin.Context) {
 	// Debug: Log exact query parameters
 	queryRequest := &nginx_log.DashboardQueryRequest{
 		LogPath:   req.LogPath,
-		StartTime: startTime,
-		EndTime:   endTime,
+		StartTime: startTime.Unix(),
+		EndTime:   endTime.Unix(),
 	}
 	logger.Debugf("Query parameters - LogPath='%s', StartTime=%v, EndTime=%v", 
 		queryRequest.LogPath, queryRequest.StartTime, queryRequest.EndTime)
@@ -434,7 +434,7 @@ func GetWorldMapData(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
 	defer cancel()
 
-	data, err := service.GetWorldMapData(ctx, req.Path, req.StartTime, req.EndTime)
+	data, err := service.GetWorldMapData(ctx, req.Path, time.Unix(req.StartTime, 0), time.Unix(req.EndTime, 0))
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
@@ -479,7 +479,7 @@ func GetChinaMapData(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
 	defer cancel()
 
-	data, err := service.GetChinaMapData(ctx, req.Path, req.StartTime, req.EndTime)
+	data, err := service.GetChinaMapData(ctx, req.Path, time.Unix(req.StartTime, 0), time.Unix(req.EndTime, 0))
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
@@ -529,7 +529,7 @@ func GetGeoStats(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
 	defer cancel()
 
-	stats, err := service.GetGeoStats(ctx, req.Path, req.StartTime, req.EndTime, req.Limit)
+	stats, err := service.GetGeoStats(ctx, req.Path, time.Unix(req.StartTime, 0), time.Unix(req.EndTime, 0), req.Limit)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

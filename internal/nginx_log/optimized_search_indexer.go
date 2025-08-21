@@ -118,8 +118,8 @@ func createOptimizedIndexMapping() mapping.IndexMapping {
 	docMapping := bleve.NewDocumentMapping()
 	
 	// Optimize field mappings for better search performance
-	timestampMapping := bleve.NewDateTimeFieldMapping()
-	timestampMapping.Store = false // Don't store, only index for searching
+	timestampMapping := bleve.NewNumericFieldMapping()
+	timestampMapping.Store = true // Store for time range queries
 	timestampMapping.Index = true
 	docMapping.AddFieldMappingsAt("timestamp", timestampMapping)
 	
@@ -339,7 +339,7 @@ func (osi *OptimizedSearchIndexer) indexBatch(entries []*AccessLogEntry) error {
 	for _, entry := range entries {
 		doc := osi.createIndexDocument(entry)
 		docID := fmt.Sprintf("%d_%s_%s", 
-			entry.Timestamp.Unix(), 
+			entry.Timestamp, 
 			entry.IP, 
 			entry.Path)
 		
@@ -360,7 +360,7 @@ func (osi *OptimizedSearchIndexer) indexBatch(entries []*AccessLogEntry) error {
 // createIndexDocument creates an optimized document for indexing
 func (osi *OptimizedSearchIndexer) createIndexDocument(entry *AccessLogEntry) map[string]interface{} {
 	doc := map[string]interface{}{
-		"timestamp":    entry.Timestamp.Format(time.RFC3339),
+		"timestamp":    entry.Timestamp,
 		"ip":           entry.IP,
 		"method":       entry.Method,
 		"path":         entry.Path,

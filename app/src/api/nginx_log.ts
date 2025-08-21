@@ -6,26 +6,26 @@ export interface NginxLogData {
   name?: string
   config_file?: string
   index_status?: string
-  last_modified?: string
-  last_indexed?: string
-  index_start_time?: string
+  last_modified?: number
+  last_indexed?: number
+  index_start_time?: number
   index_duration?: number
   is_compressed?: boolean
   has_timerange?: boolean
-  timerange_start?: string
-  timerange_end?: string
+  timerange_start?: number
+  timerange_end?: number
   document_count?: number
 }
 
 export interface AnalyticsRequest {
   path: string
-  start_time?: string
-  end_time?: string
+  start_time?: number
+  end_time?: number
   limit?: number
 }
 
 export interface AccessLogEntry {
-  timestamp: string
+  timestamp: number
   ip: string
   method: string
   region_code: string
@@ -123,8 +123,8 @@ export interface SearchFilters {
 }
 
 export interface AdvancedSearchRequest {
-  start_time?: string
-  end_time?: string
+  start_time?: number
+  end_time?: number
   query?: string
   ip?: string
   method?: string
@@ -159,8 +159,8 @@ export interface AdvancedSearchResponse {
 }
 
 export interface PreflightResponse {
-  start_time: string
-  end_time: string
+  start_time: number
+  end_time: number
   available: boolean
   index_status: string
 }
@@ -168,12 +168,12 @@ export interface PreflightResponse {
 // Index status related interfaces
 export interface FileStatus {
   path: string
-  last_modified: string
-  last_indexed: string
+  last_modified: number
+  last_indexed: number
   is_compressed: boolean
   has_timerange: boolean
-  timerange_start?: string
-  timerange_end?: string
+  timerange_start?: number
+  timerange_end?: number
 }
 
 export interface IndexStatus {

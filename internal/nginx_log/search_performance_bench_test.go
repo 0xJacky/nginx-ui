@@ -174,7 +174,7 @@ func setupBenchmarkIndexer(b *testing.B, entryCount int) (*LogIndexer, string, f
 	for i, entry := range entries {
 		docID := fmt.Sprintf("doc_%d", i)
 		doc := map[string]interface{}{
-			"timestamp":    entry.Timestamp.Format(time.RFC3339),
+			"timestamp":    entry.Timestamp,
 			"ip":           entry.IP,
 			"method":       entry.Method,
 			"path":         entry.Path,
@@ -346,8 +346,8 @@ func BenchmarkSearchLogs_TimeRange(b *testing.B) {
 	endTime := startTime.Add(24 * time.Hour)
 	
 	req := &QueryRequest{
-		StartTime: startTime,
-		EndTime:   endTime,
+		StartTime: startTime.Unix(),
+		EndTime:   endTime.Unix(),
 		Limit:     100,
 	}
 	
@@ -613,7 +613,7 @@ func BenchmarkSearchLogs_Comprehensive(b *testing.B) {
 				if i == 0 {
 					b.ReportMetric(float64(result.Total), "total_results")
 					b.ReportMetric(float64(len(result.Entries)), "returned_results")
-					b.ReportMetric(float64(result.Took.Nanoseconds()), "search_time_ns")
+					b.ReportMetric(float64(result.Took*1000000), "search_time_ns")
 				}
 			}
 		})

@@ -1,12 +1,10 @@
 package nginx_log
 
-import "time"
-
 // DashboardQueryRequest represents a request for dashboard analytics
 type DashboardQueryRequest struct {
-	StartTime time.Time `json:"start_time"`
-	EndTime   time.Time `json:"end_time"`
-	LogPath   string    `json:"log_path,omitempty"`
+	StartTime int64  `json:"start_time"` // Unix timestamp
+	EndTime   int64  `json:"end_time"`   // Unix timestamp
+	LogPath   string `json:"log_path,omitempty"`
 }
 
 // DashboardAnalytics represents comprehensive dashboard analytics data

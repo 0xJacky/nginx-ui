@@ -5,7 +5,6 @@ import (
 	"path/filepath"
 	"strings"
 	"sync"
-	"time"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/uozi-tech/cosy/logger"
@@ -34,8 +33,8 @@ func (li *LogIndexer) AddLogPath(logPath string) error {
 		// Add new log path with zero time to trigger initial indexing check
 		li.logPaths[logPath] = &LogFileInfo{
 			Path:         logPath,
-			LastModified: time.Time{}, // Will trigger indexing check on first scan
-			LastSize:     0,           // Will trigger indexing check on first scan
+			LastModified: 0, // Will trigger indexing check on first scan
+			LastSize:     0, // Will trigger indexing check on first scan
 			IsCompressed: isCompressed,
 		}
 		logger.Infof("Added new log path %s (compressed=%v)", logPath, isCompressed)

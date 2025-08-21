@@ -75,9 +75,25 @@ func (s *AnalyticsService) GetPreflightStatus(logPath string) (*PreflightResult,
 	var start, end time.Time
 	var indexStatus string
 
+	logger.Infof("GetPreflightStatus called with logPath='%s'", logPath)
+	
+	// Check if analytics service has an indexer
+	if s.indexer == nil {
+		logger.Error("GetPreflightStatus: Analytics service has no indexer")
+		return &PreflightResult{
+			StartTime:   0,
+			EndTime:     0,
+			Available:   false,
+			IndexStatus: IndexStatusNotIndexed,
+		}, nil
+	}
+	
+	logger.Infof("GetPreflightStatus: Analytics service has indexer")
+
 	// Check real indexing status using IndexingStatusManager
 	statusManager := GetIndexingStatusManager()
 	isCurrentlyIndexing := statusManager.IsIndexing()
+	logger.Infof("GetPreflightStatus: Is currently indexing: %v", isCurrentlyIndexing)
 
 	if logPath != "" {
 		// Validate log path exists
@@ -119,10 +135,10 @@ func (s *AnalyticsService) GetPreflightStatus(logPath string) (*PreflightResult,
 					if file.Path == logPath {
 						found = true
 						logger.Debugf("Found matching path %s, HasTimeRange=%v", logPath, file.HasTimeRange)
-						if file.HasTimeRange && !file.TimeRangeStart.IsZero() && !file.TimeRangeEnd.IsZero() {
+						if file.HasTimeRange && file.TimeRangeStart != 0 && file.TimeRangeEnd != 0 {
 							// File is indexed with time range data
-							start = file.TimeRangeStart
-							end = file.TimeRangeEnd
+							start = time.Unix(file.TimeRangeStart, 0)
+							end = time.Unix(file.TimeRangeEnd, 0)
 							indexStatus = IndexStatusReady
 							logger.Debugf("File %s found in index status with time range %v to %v", logPath, start, end)
 							goto statusDetermined
@@ -150,20 +166,20 @@ func (s *AnalyticsService) GetPreflightStatus(logPath string) (*PreflightResult,
 		}
 	}
 
-	var startPtr, endPtr *time.Time
+	var startUnix, endUnix int64
 	if !start.IsZero() {
-		startPtr = &start
+		startUnix = start.Unix()
 	}
 	if !end.IsZero() {
-		endPtr = &end
+		endUnix = end.Unix()
 	}
 
 	// Data is available if we have time range data from Bleve or if currently indexing
 	dataAvailable := (!start.IsZero() && !end.IsZero()) || indexStatus == IndexStatusIndexing
 
 	result := &PreflightResult{
-		StartTime:   startPtr,
-		EndTime:     endPtr,
+		StartTime:   startUnix,
+		EndTime:     endUnix,
 		Available:   dataAvailable,
 		IndexStatus: indexStatus,
 	}

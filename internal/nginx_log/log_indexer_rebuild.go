@@ -71,9 +71,9 @@ func (li *LogIndexer) RebuildIndex() error {
 	// Reset file tracking
 	li.mu.Lock()
 	for path := range li.logPaths {
-		li.logPaths[path].LastModified = time.Time{}
+		li.logPaths[path].LastModified = 0
 		li.logPaths[path].LastSize = 0
-		li.logPaths[path].LastIndexed = time.Time{}
+		li.logPaths[path].LastIndexed = 0
 		li.logPaths[path].TimeRange = nil // Clear in-memory time range
 	}
 	li.mu.Unlock()

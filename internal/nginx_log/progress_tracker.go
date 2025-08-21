@@ -12,13 +12,13 @@ import (
 type ProgressTracker struct {
 	mu                 sync.RWMutex
 	logGroupPath       string
-	startTime          time.Time
+	startTime          int64 // Unix timestamp
 	files              map[string]*FileProgress
 	totalEstimate      int64 // Total estimated lines across all files
 	totalActual        int64 // Total actual lines processed
 	isCompleted        bool
 	completionNotified bool // Flag to prevent duplicate completion notifications
-	lastNotify         time.Time
+	lastNotify         int64 // Unix timestamp
 }
 
 // FileProgress tracks progress for individual files
@@ -32,8 +32,8 @@ type FileProgress struct {
 	AvgLineSize    int64 // Dynamic average line size in bytes (for compressed files)
 	SampleCount    int64 // Number of lines sampled for average calculation
 	IsCompressed   bool
-	StartTime      *time.Time
-	CompletedTime  *time.Time
+	StartTime      int64 // Unix timestamp
+	CompletedTime  int64 // Unix timestamp
 }
 
 // FileState represents the current state of file processing
@@ -62,7 +62,7 @@ func (fs FileState) String() string {
 func NewProgressTracker(logGroupPath string) *ProgressTracker {
 	return &ProgressTracker{
 		logGroupPath:       logGroupPath,
-		startTime:          time.Now(),
+		startTime:          time.Now().Unix(),
 		files:              make(map[string]*FileProgress),
 		completionNotified: false,
 	}
@@ -154,8 +154,7 @@ func (pt *ProgressTracker) StartFile(filePath string) {
 
 	if progress, exists := pt.files[filePath]; exists {
 		progress.State = FileStateProcessing
-		now := time.Now()
-		progress.StartTime = &now
+		progress.StartTime = time.Now().Unix()
 
 		logger.Debugf("Started processing file: %s", filePath)
 		pt.notifyProgressLocked()
@@ -188,8 +187,7 @@ func (pt *ProgressTracker) CompleteFile(filePath string, finalProcessedLines int
 		oldProcessed := progress.ProcessedLines
 		progress.ProcessedLines = finalProcessedLines
 		progress.State = FileStateCompleted
-		now := time.Now()
-		progress.CompletedTime = &now
+		progress.CompletedTime = time.Now().Unix()
 
 		// Update total actual processed
 		pt.totalActual = pt.totalActual - oldProcessed + finalProcessedLines
@@ -265,22 +263,22 @@ type ProgressStats struct {
 	ProcessingFiles int
 	ProcessedLines  int64
 	EstimatedLines  int64
-	StartTime       time.Time
+	StartTime       int64 // Unix timestamp
 	IsCompleted     bool
 }
 
 // notifyProgressLocked sends progress notification (must be called with lock held)
 func (pt *ProgressTracker) notifyProgressLocked() {
 	// Throttle notifications to avoid spam
-	now := time.Now()
-	if now.Sub(pt.lastNotify) < 2*time.Second {
+	now := time.Now().Unix()
+	if now-pt.lastNotify < 2 {
 		return
 	}
 	pt.lastNotify = now
 
 	percentage, stats := pt.getProgressLocked()
 
-	elapsed := time.Since(pt.startTime).Milliseconds()
+	elapsed := (time.Now().Unix() - pt.startTime) * 1000 // Convert to milliseconds
 	var estimatedRemain int64
 
 	if percentage > 0 && percentage < 100 {
@@ -310,7 +308,7 @@ func (pt *ProgressTracker) notifyProgressLocked() {
 
 // notifyCompletionLocked sends completion notification (must be called with lock held)
 func (pt *ProgressTracker) notifyCompletionLocked() {
-	elapsed := time.Since(pt.startTime).Milliseconds()
+	elapsed := (time.Now().Unix() - pt.startTime) * 1000 // Convert to milliseconds
 
 	// Calculate total size processed using improved estimation
 	var totalSize int64

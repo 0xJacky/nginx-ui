@@ -45,7 +45,7 @@ async function loadTimeRange() {
     const preflight = await nginx_log.getPreflight(props.logPath)
 
     if (preflight.available && preflight.start_time && preflight.end_time) {
-      const endTime = dayjs(preflight.end_time)
+      const endTime = dayjs.unix(preflight.end_time)
 
       // Use last week's data as default range (from last day back to 7 days ago)
       const weekStart = endTime.subtract(7, 'day').startOf('day')
@@ -91,8 +91,8 @@ async function loadGeographicData() {
   try {
     const request: AnalyticsRequest = {
       path: props.logPath,
-      start_time: dateRange.value[0].toISOString(),
-      end_time: dateRange.value[1].toISOString(),
+      start_time: dateRange.value[0].unix(),
+      end_time: dateRange.value[1].unix(),
     }
 
     // Load both world and China map data in parallel

@@ -313,17 +313,19 @@ func (bso *BatchSearchOptimizer) findCommonTimeRange(requests []*BatchSearchRequ
 	hasTimeRange := false
 	
 	for _, req := range requests {
-		if !req.Request.StartTime.IsZero() && !req.Request.EndTime.IsZero() {
+		if req.Request.StartTime != 0 && req.Request.EndTime != 0 {
 			if !hasTimeRange {
-				minStart = req.Request.StartTime
-				maxEnd = req.Request.EndTime
+				minStart = time.Unix(req.Request.StartTime, 0)
+				maxEnd = time.Unix(req.Request.EndTime, 0)
 				hasTimeRange = true
 			} else {
-				if req.Request.StartTime.Before(minStart) {
-					minStart = req.Request.StartTime
+				reqStartTime := time.Unix(req.Request.StartTime, 0)
+				if reqStartTime.Before(minStart) {
+					minStart = reqStartTime
 				}
-				if req.Request.EndTime.After(maxEnd) {
-					maxEnd = req.Request.EndTime
+				reqEndTime := time.Unix(req.Request.EndTime, 0)
+				if reqEndTime.After(maxEnd) {
+					maxEnd = reqEndTime
 				}
 			}
 		}

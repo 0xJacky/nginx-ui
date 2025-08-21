@@ -95,11 +95,23 @@ func (s *AnalyticsService) buildTimeRangeQuery(logPath string, startTime, endTim
 
 	// Add time range filter if specified
 	if !startTime.IsZero() || !endTime.IsZero() {
-		dateQuery := bleve.NewDateRangeQuery(startTime, endTime)
-		dateQuery.SetField("timestamp")
-		queries = append(queries, dateQuery)
+		var start, end *float64
 		
-		logger.Debugf("Time range query: start=%v, end=%v", startTime, endTime)
+		if !startTime.IsZero() {
+			startFloat := float64(startTime.Unix())
+			start = &startFloat
+		}
+		
+		if !endTime.IsZero() {
+			endFloat := float64(endTime.Unix())
+			end = &endFloat
+		}
+		
+		numericQuery := bleve.NewNumericRangeQuery(start, end)
+		numericQuery.SetField("timestamp")
+		queries = append(queries, numericQuery)
+		
+		logger.Debugf("Time range query: start=%v (%v), end=%v (%v)", startTime, start, endTime, end)
 	}
 
 	// Combine queries

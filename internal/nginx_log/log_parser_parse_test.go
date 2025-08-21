@@ -31,7 +31,7 @@ func TestLogParser_ParseLine(t *testing.T) {
 			logLine: `192.168.1.1 - - [25/Dec/2023:10:00:00 +0000] "GET /api/test HTTP/1.1" 200 1024 "https://example.com" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" 0.123 0.050`,
 			expected: &AccessLogEntry{
 				IP:           "192.168.1.1",
-				Timestamp:    time.Date(2023, 12, 25, 10, 0, 0, 0, time.UTC),
+				Timestamp:    time.Date(2023, 12, 25, 10, 0, 0, 0, time.UTC).Unix(),
 				Method:       "GET",
 				Path:         "/api/test",
 				Protocol:     "HTTP/1.1",
@@ -54,7 +54,7 @@ func TestLogParser_ParseLine(t *testing.T) {
 			logLine: `10.0.0.1 - - [01/Jan/2023:12:00:00 +0000] "POST /submit HTTP/1.1" 201 512`,
 			expected: &AccessLogEntry{
 				IP:        "10.0.0.1",
-				Timestamp: time.Date(2023, 1, 1, 12, 0, 0, 0, time.UTC),
+				Timestamp: time.Date(2023, 1, 1, 12, 0, 0, 0, time.UTC).Unix(),
 				Method:    "POST",
 				Path:      "/submit",
 				Protocol:  "HTTP/1.1",
@@ -83,7 +83,7 @@ func TestLogParser_ParseLine(t *testing.T) {
 			logLine: `127.0.0.1 - - [01/Jan/2023:00:00:00 +0000] "GET /path%20with%20spaces?param=value HTTP/1.1" 200 0 "-" "-"`,
 			expected: &AccessLogEntry{
 				IP:        "127.0.0.1",
-				Timestamp: time.Date(2023, 1, 1, 0, 0, 0, 0, time.UTC),
+				Timestamp: time.Date(2023, 1, 1, 0, 0, 0, 0, time.UTC).Unix(),
 				Method:    "GET",
 				Path:      "/path%20with%20spaces?param=value",
 				Protocol:  "HTTP/1.1",
@@ -99,7 +99,7 @@ func TestLogParser_ParseLine(t *testing.T) {
 			logLine: `2001:db8::1 - - [01/Jan/2023:00:00:00 +0000] "GET /ipv6 HTTP/1.1" 200 100 "-" "-"`,
 			expected: &AccessLogEntry{
 				IP:        "2001:db8::1",
-				Timestamp: time.Date(2023, 1, 1, 0, 0, 0, 0, time.UTC),
+				Timestamp: time.Date(2023, 1, 1, 0, 0, 0, 0, time.UTC).Unix(),
 				Method:    "GET",
 				Path:      "/ipv6",
 				Protocol:  "HTTP/1.1",
@@ -115,7 +115,7 @@ func TestLogParser_ParseLine(t *testing.T) {
 			logLine: `192.168.1.1 - - [01/Jan/2023:00:00:00 +0000] "GET /error HTTP/1.1" 500 0 "-" "-"`,
 			expected: &AccessLogEntry{
 				IP:        "192.168.1.1",
-				Timestamp: time.Date(2023, 1, 1, 0, 0, 0, 0, time.UTC),
+				Timestamp: time.Date(2023, 1, 1, 0, 0, 0, 0, time.UTC).Unix(),
 				Method:    "GET",
 				Path:      "/error",
 				Protocol:  "HTTP/1.1",
@@ -153,7 +153,7 @@ func TestLogParser_ParseLine(t *testing.T) {
 			if result.IP != tc.expected.IP {
 				t.Errorf("IP mismatch. Expected: %s, Got: %s", tc.expected.IP, result.IP)
 			}
-			if !result.Timestamp.Equal(tc.expected.Timestamp) {
+			if result.Timestamp != tc.expected.Timestamp {
 				t.Errorf("Timestamp mismatch. Expected: %v, Got: %v", tc.expected.Timestamp, result.Timestamp)
 			}
 			if result.Method != tc.expected.Method {

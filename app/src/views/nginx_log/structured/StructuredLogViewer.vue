@@ -152,7 +152,7 @@ const structuredLogColumns = computed(() => [
     fixed: 'left' as const,
     sorter: true,
     sortOrder: getSortOrder('timestamp'),
-    customRender: ({ record }: { record: AccessLogEntry }) => h('span', dayjs(record.timestamp).format('YYYY-MM-DD HH:mm:ss')),
+    customRender: ({ record }: { record: AccessLogEntry }) => h('span', dayjs.unix(record.timestamp).format('YYYY-MM-DD HH:mm:ss')),
   },
   {
     title: $gettext('IP'),
@@ -297,8 +297,8 @@ async function performAdvancedSearch() {
   searchLoading.value = true
   try {
     const searchRequest: AdvancedSearchRequest = {
-      start_time: timeRange.value.start.toISOString(),
-      end_time: timeRange.value.end.toISOString(),
+      start_time: timeRange.value.start.unix(),
+      end_time: timeRange.value.end.unix(),
       query: searchFilters.value.query || undefined,
       ip: searchFilters.value.ip || undefined,
       method: searchFilters.value.method || undefined,
@@ -355,8 +355,8 @@ async function loadPreflight(): Promise<boolean> {
     if (preflightResponse.value.available) {
       // Cache this path as valid and set time range
       pathValidationCache.value.set(currentPath, true)
-      timeRange.value.start = dayjs(preflightResponse.value.start_time)
-      timeRange.value.end = dayjs(preflightResponse.value.end_time)
+      timeRange.value.start = dayjs.unix(preflightResponse.value.start_time)
+      timeRange.value.end = dayjs.unix(preflightResponse.value.end_time)
       return true // Index is ready
     }
     else {

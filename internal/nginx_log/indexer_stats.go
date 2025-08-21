@@ -25,8 +25,9 @@ func (li *LogIndexer) getLatestFilesModTime() time.Time {
 
 	var latest time.Time
 	for _, fileInfo := range li.logPaths {
-		if fileInfo.LastModified.After(latest) {
-			latest = fileInfo.LastModified
+		modTime := time.Unix(fileInfo.LastModified, 0)
+		if modTime.After(latest) {
+			latest = modTime
 		}
 	}
 	return latest
@@ -49,8 +50,8 @@ func (li *LogIndexer) isCacheValid(cached *CachedStatsResult) bool {
 	// 2. No files have been modified since cache was created
 	// 3. Cache is not older than 5 minutes (safety fallback)
 	isValid := cached.DocCount == docCount &&
-		!latestModTime.After(cached.FilesModTime) &&
-		time.Since(cached.LastCalculated) < 5*time.Minute
+		!latestModTime.After(time.Unix(cached.FilesModTime, 0)) &&
+		time.Since(time.Unix(cached.LastCalculated, 0)) < 5*time.Minute
 
 
 	return isValid
@@ -164,8 +165,8 @@ func (li *LogIndexer) calculateSummaryStatsFromQuery(ctx context.Context, query 
 	cachedResult := &CachedStatsResult{
 		Stats:          stats,
 		QueryHash:      cacheKey,
-		LastCalculated: time.Now(),
-		FilesModTime:   li.getLatestFilesModTime(),
+		LastCalculated: time.Now().Unix(),
+		FilesModTime:   li.getLatestFilesModTime().Unix(),
 		DocCount:       docCount,
 	}
 
