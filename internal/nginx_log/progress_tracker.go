@@ -17,7 +17,7 @@ type ProgressTracker struct {
 	totalEstimate      int64 // Total estimated lines across all files
 	totalActual        int64 // Total actual lines processed
 	isCompleted        bool
-	completionNotified bool // Flag to prevent duplicate completion notifications
+	completionNotified bool  // Flag to prevent duplicate completion notifications
 	lastNotify         int64 // Unix timestamp
 }
 
@@ -112,38 +112,27 @@ func (pt *ProgressTracker) SetFileSize(filePath string, fileSize int64) {
 	}
 }
 
-// UpdateFilePosition updates the current reading position for files
-func (pt *ProgressTracker) UpdateFilePosition(filePath string, currentPos int64, linesProcessed int64) {
+// UpdateFileProgress updates the processed line count and position for a file
+func (pt *ProgressTracker) UpdateFileProgress(filePath string, processedLines int64, currentPos ...int64) {
 	pt.mu.Lock()
 	defer pt.mu.Unlock()
 
 	if progress, exists := pt.files[filePath]; exists {
-		progress.ProcessedLines = linesProcessed
-
-		if progress.IsCompressed {
-			// For compressed files, update average line size dynamically
-			if linesProcessed > 0 {
-				// Use the first 1000 lines to establish a good average, then update less frequently
-				if progress.SampleCount < 1000 || progress.SampleCount%100 == 0 {
-					// Calculate current average line size based on processed data
-					// For compressed files, we estimate based on processed lines and compression ratio
-					estimatedUncompressedBytes := progress.FileSize * 3 // Assume 3:1 compression ratio
-					newAvgLineSize := estimatedUncompressedBytes / linesProcessed
-					if newAvgLineSize > 50 && newAvgLineSize < 5000 { // Sanity check: 50-5000 bytes per line
-						// Smooth the average to avoid sudden jumps
-						if progress.SampleCount > 0 {
-							progress.AvgLineSize = (progress.AvgLineSize + newAvgLineSize) / 2
-						} else {
-							progress.AvgLineSize = newAvgLineSize
-						}
-					}
-				}
-				progress.SampleCount = linesProcessed
-			}
-		} else {
-			// For uncompressed files, update current position
-			progress.CurrentPos = currentPos
+		// Update total actual processed, ensuring not to double-count on completion
+		if progress.State != FileStateCompleted {
+			pt.totalActual = pt.totalActual - progress.ProcessedLines + processedLines
 		}
+		progress.ProcessedLines = processedLines
+
+		// Update position if provided
+		if len(currentPos) > 0 {
+			if !progress.IsCompressed {
+				progress.CurrentPos = currentPos[0]
+			}
+		}
+
+		// Notify progress if enough time has passed
+		pt.notifyProgressLocked()
 	}
 }
 
@@ -161,36 +150,23 @@ func (pt *ProgressTracker) StartFile(filePath string) {
 	}
 }
 
-// UpdateFileProgress updates the processed line count for a file
-func (pt *ProgressTracker) UpdateFileProgress(filePath string, processedLines int64) {
-	pt.mu.Lock()
-	defer pt.mu.Unlock()
-
-	if progress, exists := pt.files[filePath]; exists {
-		oldProcessed := progress.ProcessedLines
-		progress.ProcessedLines = processedLines
-
-		// Update total actual processed
-		pt.totalActual = pt.totalActual - oldProcessed + processedLines
-
-		// Notify progress if enough time has passed
-		pt.notifyProgressLocked()
-	}
-}
-
 // CompleteFile marks a file as completed
 func (pt *ProgressTracker) CompleteFile(filePath string, finalProcessedLines int64) {
 	pt.mu.Lock()
 	defer pt.mu.Unlock()
 
 	if progress, exists := pt.files[filePath]; exists {
-		oldProcessed := progress.ProcessedLines
+		// Prevent marking as completed multiple times
+		if progress.State == FileStateCompleted {
+			return
+		}
+
+		// Ensure final processed lines are correctly accounted for in total
+		pt.totalActual = pt.totalActual - progress.ProcessedLines + finalProcessedLines
+
 		progress.ProcessedLines = finalProcessedLines
 		progress.State = FileStateCompleted
 		progress.CompletedTime = time.Now().Unix()
-
-		// Update total actual processed
-		pt.totalActual = pt.totalActual - oldProcessed + finalProcessedLines
 
 		logger.Debugf("Completed processing file: %s (%d lines)", filePath, finalProcessedLines)
 

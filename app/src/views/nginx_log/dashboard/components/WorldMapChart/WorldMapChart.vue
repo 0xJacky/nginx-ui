@@ -88,7 +88,11 @@ const mapOption = computed((): EChartsOption => {
             </div>
           `
         }
-        return `${params.name}: ${$gettext('No data')}`
+        // For countries without data, translate the name
+        const englishName = params.name
+        const countryCode = countries.getAlpha2Code(englishName, 'en')
+        const localizedName = countryCode ? translateCountry(countryCode) : englishName
+        return `${localizedName}: ${$gettext('No data')}`
       },
     },
     visualMap: {
@@ -115,7 +119,21 @@ const mapOption = computed((): EChartsOption => {
           label: {
             show: true,
             color: fontColor.value,
+            fontSize: 12,
+            // eslint-disable-next-line ts/no-explicit-any
+            formatter: (params: any) => {
+              const data = params.data
+              if (data && data.localizedName) {
+                return data.localizedName
+              }
+              // For countries not in top 10, try to get country code from English name
+              const englishName = params.name
+              // Convert English name back to country code
+              const countryCode = countries.getAlpha2Code(englishName, 'en')
+              return countryCode ? translateCountry(countryCode) : englishName
+            },
           },
+          itemStyle: {},
         },
         data: chartData,
         itemStyle: {

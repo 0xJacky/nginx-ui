@@ -167,7 +167,7 @@ func (li *LogIndexer) indexFileFromPositionStreamingWithMainLogPath(filePath, ma
 
 			// Update progress tracker periodically
 			if lineCount%5000 == 0 {
-				progressTracker.UpdateFilePosition(filePath, currentPosition, int64(lineCount))
+				progressTracker.UpdateFileProgress(filePath, int64(lineCount), currentPosition)
 			}
 		}
 	}
@@ -216,7 +216,7 @@ func (li *LogIndexer) indexFileFromPositionStreamingWithMainLogPath(filePath, ma
 
 	// Final position update for progress tracker
 	if progressTracker != nil {
-		progressTracker.UpdateFilePosition(filePath, currentPosition, int64(lineCount))
+		progressTracker.UpdateFileProgress(filePath, int64(lineCount), currentPosition)
 	}
 
 	// Complete file in progress tracker

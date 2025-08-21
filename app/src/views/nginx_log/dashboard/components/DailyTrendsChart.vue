@@ -85,7 +85,13 @@ const dailyChartOptions = computed(() => {
         show: true,
         showDuplicates: false,
       },
-      tickAmount: dates.length > 20 ? 10 : dates.length > 10 ? Math.ceil(dates.length / 2) : undefined, // Limit tick amount for better readability
+      tickAmount: (() => {
+        if (dates.length > 20)
+          return 10
+        if (dates.length > 10)
+          return Math.ceil(dates.length / 2)
+        return undefined
+      })(), // Limit tick amount for better readability
     },
     yaxis: {
       title: {
