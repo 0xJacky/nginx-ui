@@ -1,6 +1,10 @@
 package nginx_log
 
 import (
+	"bytes"
+	"compress/gzip"
+	"io"
+	"os"
 	"sync"
 	"time"
 
@@ -403,17 +407,70 @@ func RemoveProgressTracker(logGroupPath string) {
 
 // EstimateFileLines estimates the number of lines in a file based on sampling
 func EstimateFileLines(filePath string, fileSize int64, isCompressed bool) int64 {
-	if isCompressed {
-		// For compressed files, estimate based on compression ratio and average line size
-		// Assume 3:1 compression ratio and 100 bytes average per line
-		estimatedUncompressedSize := fileSize * 3
-		return estimatedUncompressedSize / 100
-	}
-
-	// For uncompressed files, assume average 100 bytes per line
 	if fileSize == 0 {
 		return 0
 	}
 
-	return fileSize / 100 // Rough estimate
+	file, err := os.Open(filePath)
+	if err != nil {
+		logger.Warnf("Failed to open file for line estimation, falling back to rough estimate: %v", err)
+		return fileSize / 150 // Fallback
+	}
+	defer file.Close()
+
+	var reader io.Reader = file
+
+	// Handle compressed files
+	if isCompressed {
+		gzReader, err := gzip.NewReader(file)
+		if err != nil {
+			logger.Warnf("Failed to create gzip reader for line estimation, falling back: %v", err)
+			return (fileSize * 3) / 150 // Fallback for compressed
+		}
+		defer gzReader.Close()
+		reader = gzReader
+	}
+
+	// Sample the first 1MB of the file content (decompressed if necessary)
+	sampleSize := int64(1024 * 1024)
+	buf := make([]byte, sampleSize)
+	bytesRead, err := io.ReadFull(reader, buf)
+	if err != nil && err != io.EOF && err != io.ErrUnexpectedEOF {
+		logger.Warnf("Failed to read sample from file, falling back to rough estimate: %v", err)
+		return fileSize / 150 // Fallback
+	}
+
+	if bytesRead == 0 {
+		return 0 // Empty file
+	}
+
+	// Count lines in the sample
+	lineCount := bytes.Count(buf[:bytesRead], []byte{'\n'})
+
+	if lineCount == 0 {
+		// Avoid division by zero, fallback to rough estimate
+		logger.Warnf("No newlines in sample for %s, falling back to rough estimate", filePath)
+		return fileSize / 150
+	}
+
+	// Calculate average line size from the sample
+	avgLineSize := float64(bytesRead) / float64(lineCount)
+	if avgLineSize == 0 {
+		return fileSize / 150 // Fallback
+	}
+
+	// Estimate total lines
+	var estimatedLines int64
+	if isCompressed {
+		// For compressed files, use a default compression ratio with the calculated avg line size
+		estimatedUncompressedSize := fileSize * 5 // Use a more generous compression ratio for estimation
+		estimatedLines = int64(float64(estimatedUncompressedSize) / avgLineSize)
+	} else {
+		estimatedLines = int64(float64(fileSize) / avgLineSize)
+	}
+
+	logger.Debugf("Estimated %d lines for %s (sample size: %d, sample lines: %d, avg size: %.2f)",
+		estimatedLines, filePath, bytesRead, lineCount, avgLineSize)
+
+	return estimatedLines
 }
