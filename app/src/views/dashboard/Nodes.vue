@@ -108,15 +108,16 @@ onMounted(() => {
   })
 })
 
-const { node: env } = useSettingsStore()
+const settingsStore = useSettingsStore()
+const { node } = storeToRefs(settingsStore)
 
-function linkStart(node: Node) {
-  env.id = node.id
-  env.name = node.name
+function linkStart(n: Node) {
+  node.value.id = n.id
+  node.value.name = n.name
 }
 
 const visible = computed(() => {
-  if (env.id > 0)
+  if (node.value.id > 0)
     return false
   else
     return data.value?.length
@@ -185,7 +186,7 @@ const visible = computed(() => {
               <div class="env-description">
                 <NodeAnalyticItem
                   :item="item"
-                  :current-env-id="env.id"
+                  :current-node-id="node.id"
                   :local-version="version"
                   :on-link-start="linkStart"
                   class="node-analytic"

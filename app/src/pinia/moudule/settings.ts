@@ -38,7 +38,7 @@ export const useSettingsStore = defineStore('settings', {
     {
       key: `LOCAL_${window.name || 'main'}`,
       storage: localStorage,
-      pick: ['environment', 'server_name', 'route_path'],
+      pick: ['node', 'server_name', 'route_path'],
     },
     {
       storage: localStorage,

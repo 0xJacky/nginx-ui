@@ -47,7 +47,7 @@ require (
 	github.com/stretchr/testify v1.10.0
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20250620092546-c3e307e36701
 	github.com/ulikunitz/xz v0.5.12
-	github.com/uozi-tech/cosy v1.25.8
+	github.com/uozi-tech/cosy v1.25.6
 	github.com/uozi-tech/cosy-driver-sqlite v0.2.1
 	github.com/urfave/cli/v3 v3.4.1
 	golang.org/x/crypto v0.41.0
@@ -271,6 +271,7 @@ require (
 	github.com/peterhellberg/link v1.2.0 // indirect
 	github.com/philhofer/fwd v1.2.0 // indirect
 	github.com/pierrec/lz4/v4 v4.1.22 // indirect
+	github.com/pires/go-proxyproto v0.8.1 // indirect
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/power-devops/perfstat v0.0.0-20240221224432-82ca36839d55 // indirect
@@ -369,7 +370,7 @@ require (
 )
 
 replace (
-	code.pfad.fr/risefront => github.com/nginxui/risefront v1.3.0
+	code.pfad.fr/risefront => github.com/nginxui/risefront v1.3.1
 	github.com/minio/selfupdate => github.com/nginxui/selfupdate v0.0.0-20250508140228-a7dab39cec4a
 	github.com/nikoksr/notify => github.com/nginxui/notify v0.0.0-20250509000747-c76622723eb1
 )

@@ -13,13 +13,13 @@ async function clear_node() {
   settingsStore.clear_node()
 }
 
-const is_local = computed(() => {
+const isLocal = computed(() => {
   return node.value.id === 0
 })
 
-const node_id = computed(() => node.value.id)
+const nodeId = computed(() => node.value.id)
 
-watch(node_id, async () => {
+watch(nodeId, async () => {
   await router.push('/dashboard')
   location.reload()
 })
@@ -32,7 +32,7 @@ const { server_name } = storeToRefs(useSettingsStore())
     <div class="container">
       <DatabaseOutlined />
       <span
-        v-if="is_local"
+        v-if="isLocal"
         class="node-name"
       >
         {{ server_name || $gettext('Local') }}
@@ -44,7 +44,7 @@ const { server_name } = storeToRefs(useSettingsStore())
         {{ node.name }}
       </span>
       <ATag @click="clear_node">
-        <DashboardOutlined v-if="is_local" />
+        <DashboardOutlined v-if="isLocal" />
         <CloseOutlined v-else />
       </ATag>
     </div>

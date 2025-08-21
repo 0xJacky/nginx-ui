@@ -27,7 +27,7 @@ interface ExtendedNode extends Node {
 
 defineProps<{
   item: ExtendedNode
-  currentEnvId?: number
+  currentNodeId?: number
   localVersion?: string
   onLinkStart?: (item: ExtendedNode) => void
 }>()
@@ -87,14 +87,14 @@ defineProps<{
           <AButton
             v-if="item.version === localVersion"
             type="primary"
-            :disabled="!item.status || currentEnvId === item.id"
+            :disabled="!item.status || currentNodeId === item.id"
             ghost
             class="link-btn"
             @click="onLinkStart?.(item)"
           >
             <SendOutlined />
             <span class="link-btn-text">
-              {{ currentEnvId !== item.id ? $gettext('Link') : $gettext('Connected') }}
+              {{ currentNodeId !== item.id ? $gettext('Link') : $gettext('Connected') }}
             </span>
           </AButton>
           <ATooltip

@@ -24,7 +24,7 @@ func (li *LogIndexer) IndexLogFile(filePath string) error {
 
 // IndexLogFileIncremental performs incremental indexing of a log file
 func (li *LogIndexer) IndexLogFileIncremental(filePath string) error {
-	logger.Infof("Starting incremental index of log file: %s", filePath)
+	logger.Debugf("Starting incremental index of log file: %s", filePath)
 
 	// Note: Global indexing status is managed at the rebuild level
 	// Individual file notifications are not needed as they cause excessive status changes
@@ -47,17 +47,17 @@ func (li *LogIndexer) IndexLogFileIncremental(filePath string) error {
 
 	// Check if file needs indexing
 	if !logIndex.NeedsIndexing(currentInfo.ModTime(), totalSize) {
-		logger.Infof("Skipping %s - file group hasn't changed since last index", filePath)
+		logger.Debugf("Skipping %s - file group hasn't changed since last index", filePath)
 		return nil
 	}
 
 	// Check if we need full reindex instead
 	if logIndex.ShouldFullReindex(currentInfo.ModTime(), totalSize) {
-		logger.Infof("File %s needs full reindex instead of incremental", filePath)
+		logger.Debugf("File %s needs full reindex instead of incremental", filePath)
 		return li.IndexLogFileFull(filePath)
 	}
 
-	logger.Infof("Incremental indexing log file: %s from position %d", filePath, logIndex.LastPosition)
+	logger.Debugf("Incremental indexing log file: %s from position %d", filePath, logIndex.LastPosition)
 
 	// Index from last position
 	return li.indexFileFromPosition(filePath, logIndex.LastPosition, logIndex)
