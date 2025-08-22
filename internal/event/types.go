@@ -42,8 +42,8 @@ type NginxLogStatusData struct {
 // NginxLogIndexReadyData represents the data for nginx log index ready events
 type NginxLogIndexReadyData struct {
 	LogPath     string `json:"log_path"`
-	StartTime   string `json:"start_time"`
-	EndTime     string `json:"end_time"`
+	StartTime   int64  `json:"start_time"`
+	EndTime     int64  `json:"end_time"`
 	Available   bool   `json:"available"`
 	IndexStatus string `json:"index_status"`
 }

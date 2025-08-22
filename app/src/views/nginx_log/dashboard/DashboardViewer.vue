@@ -45,11 +45,12 @@ async function loadTimeRange() {
     const preflight = await nginx_log.getPreflight(props.logPath)
 
     if (preflight.available && preflight.start_time && preflight.end_time) {
-      const endTime = dayjs.unix(preflight.end_time)
+      // Set start_date to 00:00:00 and end_date to 23:59:59
+      const endTime = dayjs.unix(preflight.end_time).endOf('day')
 
       // Use last week's data as default range (from last day back to 7 days ago)
       const weekStart = endTime.subtract(7, 'day').startOf('day')
-      const lastDayEnd = endTime.endOf('day')
+      const lastDayEnd = endTime
       dateRange.value = [weekStart, lastDayEnd]
       timeRangeLoaded.value = true
 

@@ -65,7 +65,7 @@ const searchLoading = ref(false)
 const indexingStatus = ref<'idle' | 'indexing' | 'ready' | 'failed'>('idle')
 const currentPage = ref(1)
 const pageSize = ref(50)
-const sortBy = ref('timestamp')
+const sortBy = ref<string>()
 const sortOrder = ref<'asc' | 'desc'>('desc')
 // Cache for failed path validations to prevent repeated calls
 const pathValidationCache = ref<Map<string, boolean>>(new Map())
@@ -355,8 +355,9 @@ async function loadPreflight(): Promise<boolean> {
     if (preflightResponse.value.available) {
       // Cache this path as valid and set time range
       pathValidationCache.value.set(currentPath, true)
-      timeRange.value.start = dayjs.unix(preflightResponse.value.start_time)
-      timeRange.value.end = dayjs.unix(preflightResponse.value.end_time)
+      // Set time range to full days: start_date 00:00:00 to end_date 23:59:59
+      timeRange.value.start = dayjs.unix(preflightResponse.value.start_time).startOf('day')
+      timeRange.value.end = dayjs.unix(preflightResponse.value.end_time).endOf('day')
       return true // Index is ready
     }
     else {
@@ -427,13 +428,16 @@ function handleTableChange(
 
   // Handle sorting changes
   const singleSorter = Array.isArray(sorter) ? sorter[0] : sorter
-  if (singleSorter?.field && singleSorter?.order) {
+
+  if (singleSorter?.field) {
     const newSortBy = mapColumnToSortField(String(singleSorter.field))
+    // When order is not present, it means to clear sorting, so we revert to default
     const newSortOrder = singleSorter.order === 'ascend' ? 'asc' : 'desc'
+    const newSortField = singleSorter.order ? newSortBy : undefined
 
     // Check if sorting actually changed
-    if (newSortBy !== sortBy.value || newSortOrder !== sortOrder.value) {
-      sortBy.value = newSortBy
+    if (newSortField !== sortBy.value || newSortOrder !== sortOrder.value) {
+      sortBy.value = newSortField
       sortOrder.value = newSortOrder
       shouldResetPage = true // Reset to first page when sorting changes
     }
@@ -492,35 +496,6 @@ function resetSorting() {
   performAdvancedSearch()
 }
 
-// Refresh data - reload preflight and search results
-async function refreshData() {
-  if (isErrorLog.value || isFailed.value) {
-    return
-  }
-
-  try {
-    indexingStatus.value = 'indexing'
-
-    // Clear cache for current path to force fresh data
-    const currentPath = logPath.value || ''
-    pathValidationCache.value.delete(currentPath)
-
-    // Reload preflight data
-    const hasIndexedData = await loadPreflight()
-    indexingStatus.value = 'ready'
-
-    // Reload search results if we have valid data
-    if (hasIndexedData && timeRange.value.start && timeRange.value.end) {
-      await performAdvancedSearch()
-      message.success($gettext('Data refreshed successfully'))
-    }
-  }
-  catch {
-    indexingStatus.value = 'failed'
-    message.error($gettext('Failed to refresh data'))
-  }
-}
-
 // Helper function to check if error is a path validation error
 function isPathValidationError(error: unknown): boolean {
   if (!(error instanceof Error)) {
@@ -561,8 +536,8 @@ async function handleInitializedData(hasIndexedData: boolean) {
 // Handle index ready notification from WebSocket
 async function handleIndexReadyNotification(data: {
   log_path: string
-  start_time: string
-  end_time: string
+  start_time: number
+  end_time: number
   available: boolean
   index_status: string
 }) {
@@ -596,7 +571,9 @@ onMounted(async () => {
   }
 
   // Subscribe to index ready notifications
-  subscribeToEvent('nginx_log_index_ready', handleIndexReadyNotification)
+  subscribeToEvent('nginx_log_index_ready', data => {
+    setTimeout(() => handleIndexReadyNotification(data), 1000)
+  })
 
   indexingStatus.value = 'indexing'
 
@@ -635,12 +612,6 @@ watch(timeRange, () => {
     loadLogs()
   }
 }, { deep: true })
-
-// Expose functions for parent component
-defineExpose({
-  loadLogs,
-  refreshData,
-})
 </script>
 
 <template>
@@ -702,7 +673,7 @@ defineExpose({
             <AButton
               type="default"
               :loading="isIndexing"
-              @click="refreshData"
+              @click="loadLogs"
             >
               <template #icon>
                 <ReloadOutlined />
@@ -720,7 +691,7 @@ defineExpose({
         />
 
         <!-- Sort Info -->
-        <div v-if="sortBy !== 'timestamp' || sortOrder !== 'desc'" class="mb-4 p-2 bg-blue-50 dark:bg-blue-900/20 rounded border border-blue-200 dark:border-blue-800">
+        <div v-if="sortBy" class="mb-4 p-2 bg-blue-50 dark:bg-blue-900/20 rounded border border-blue-200 dark:border-blue-800">
           <span class="text-sm text-blue-600 dark:text-blue-300">
             {{ $gettext('Sorted by') }}: <strong>{{ getSortDisplayName(sortBy) }}</strong> ({{ sortOrder === 'asc' ? $gettext('Ascending') : $gettext('Descending') }})
           </span>

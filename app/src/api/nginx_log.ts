@@ -308,14 +308,6 @@ const nginx_log = extendCurdApi(useCurdApi('/nginx_logs'), {
     return http.get('/nginx_log/preflight', { params })
   },
 
-  // Note: getIndexStatus removed - index status is now included in the log list response
-  // The nginx_logs endpoint now returns comprehensive information including:
-  // - Basic log file information (path, type, name)
-  // - Index status for each file (is_indexed, last_indexed)
-  // - File metadata (size, modification time)
-  // - Time ranges for indexed files
-  // - Summary statistics (total files, indexed count, document count)
-
   // Index management APIs
   rebuildIndex(): Promise<{ message: string }> {
     return http.post('/nginx_log/index/rebuild')

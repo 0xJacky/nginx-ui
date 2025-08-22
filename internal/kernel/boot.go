@@ -88,7 +88,7 @@ func InitAfterDatabase(ctx context.Context) {
 		passkey.Init,
 		mcp.Init,
 		sitecheck.Init,
-		nginx_log.InitBackgroundLogService,
+		nginx_log.InitializeModernServices,
 	}
 
 	for _, v := range asyncs {

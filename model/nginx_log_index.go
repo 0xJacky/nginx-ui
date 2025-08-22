@@ -19,6 +19,7 @@ type NginxLogIndex struct {
 	TimeRangeEnd   *time.Time `json:"timerange_end"`                             // Latest log entry time
 	DocumentCount  uint64     `gorm:"default:0" json:"document_count"`           // Total documents indexed from this file
 	Enabled        bool       `gorm:"default:true" json:"enabled"`               // Whether indexing is enabled for this file
+	HasTimeRange   bool       `gorm:"-" json:"has_timerange"`                    // Whether a time range is available (not persisted)
 }
 
 // NeedsIndexing checks if the file needs incremental indexing

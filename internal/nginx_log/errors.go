@@ -29,4 +29,7 @@ var (
 	ErrFailedToGetPersistenceStats         = e.New(50023, "failed to get persistence stats")
 	ErrLogFileNotRegular                   = e.New(50024, "log file is not a regular file")
 	ErrInvalidWebSocketMessageType         = e.New(50025, "invalid websocket message type")
+	ErrModernSearcherNotAvailable          = e.New(50026, "modern searcher service not available")
+	ErrModernAnalyticsNotAvailable         = e.New(50027, "modern analytics service not available")
+	ErrModernIndexerNotAvailable           = e.New(50028, "modern indexer service not available")
 )

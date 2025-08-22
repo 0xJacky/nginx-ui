@@ -17,10 +17,9 @@ import (
 var embeddedCityDB []byte
 
 type IPLocation struct {
-	CountryCode string `json:"country_code"`
-	Region      string `json:"region"`
-	RegionCode  string `json:"region_code"`
-	City        string `json:"city"`
+	RegionCode string `json:"region_code"`
+	Province   string `json:"province"`
+	City       string `json:"city"`
 }
 
 type Service struct {
@@ -88,41 +87,44 @@ func (s *Service) Search(ipStr string) (*IPLocation, error) {
 	loc := &IPLocation{}
 
 	// Use cosy geoip for country code
-	loc.CountryCode = geoip.ParseIP(ipStr)
+	loc.RegionCode = geoip.ParseIP(ipStr)
 
 	// Use city database for detailed information
 	if record, err := s.cityDB.City(ip); err == nil {
 		// Override country code from city database if cosy didn't provide it
-		if loc.CountryCode == "" {
-			loc.CountryCode = record.Country.IsoCode
+		if loc.RegionCode == "" {
+			loc.RegionCode = record.Country.IsoCode
 		}
 
 		if len(record.Subdivisions) > 0 {
-			loc.Region = record.Subdivisions[0].Names["en"]
-			loc.RegionCode = record.Subdivisions[0].
-				IsoCode
+			loc.Province = record.Subdivisions[0].Names["en"]
 		}
 
 		loc.City = record.City.Names["en"]
 
 		// Get Chinese names for Chinese regions
-		if loc.CountryCode == "CN" || loc.CountryCode == "HK" ||
-			loc.CountryCode == "MO" || loc.CountryCode == "TW" {
+		if loc.RegionCode == "CN" || loc.RegionCode == "HK" ||
+			loc.RegionCode == "MO" || loc.RegionCode == "TW" {
 			if len(record.Subdivisions) > 0 {
 				if cnRegion := record.Subdivisions[0].Names["zh-CN"]; cnRegion != "" {
-					loc.Region = cnRegion
+					loc.Province = cnRegion
 				}
+			} else {
+				// If it's a Chinese IP but has no province, mark it as "其它"
+				loc.Province = "其它"
 			}
 			if cnCity := record.City.Names["zh-CN"]; cnCity != "" {
 				loc.City = cnCity
 			}
+
+			loc.RegionCode = "CN"
 		}
 
 		return loc, nil
 	}
 
 	// If city database lookup fails, return minimal info with country code
-	if loc.CountryCode != "" {
+	if loc.RegionCode != "" {
 		return loc, nil
 	}
 
@@ -143,27 +145,26 @@ func (s *Service) SearchWithISO(ipStr string) (*IPLocation, error) {
 	loc := &IPLocation{}
 
 	// Use cosy geoip for country code
-	loc.CountryCode = geoip.ParseIP(ipStr)
+	loc.RegionCode = geoip.ParseIP(ipStr)
 
 	// Use city database for detailed information
 	if record, err := s.cityDB.City(ip); err == nil {
 		// Override country code from city database if cosy didn't provide it
-		if loc.CountryCode == "" {
-			loc.CountryCode = record.Country.IsoCode
+		if loc.RegionCode == "" {
+			loc.RegionCode = record.Country.IsoCode
 		}
 
 		if len(record.Subdivisions) > 0 {
-			loc.Region = record.Subdivisions[0].Names["en"]
-			loc.RegionCode = record.Subdivisions[0].IsoCode
+			loc.RegionCode = record.Subdivisions[0].Names["en"]
 		}
 
-		loc.City = record.City.Names["en"]
+		loc.RegionCode = record.City.Names["en"]
 
 		return loc, nil
 	}
 
 	// If city database lookup fails, return minimal info with country code
-	if loc.CountryCode != "" {
+	if loc.RegionCode != "" {
 		return loc, nil
 	}
 
@@ -178,16 +179,16 @@ func (s *Service) Close() {
 }
 
 func IsChineseIP(loc *IPLocation) bool {
-	return loc != nil && (loc.CountryCode == "CN" ||
-		loc.CountryCode == "HK" ||
-		loc.CountryCode == "MO" ||
-		loc.CountryCode == "TW")
+	return loc != nil && (loc.RegionCode == "CN" ||
+		loc.RegionCode == "HK" ||
+		loc.RegionCode == "MO" ||
+		loc.RegionCode == "TW")
 }
 
-func IsChineseRegion(code string) bool {
-	chineseRegions := []string{"CN", "HK", "MO", "TW"}
-	for _, region := range chineseRegions {
-		if code == region {
+func IsChineseRegion(regionCode string) bool {
+	chineseRegionCodes := []string{"CN", "HK", "MO", "TW"}
+	for _, region := range chineseRegionCodes {
+		if regionCode == region {
 			return true
 		}
 	}
