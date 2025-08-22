@@ -114,7 +114,7 @@ func GetLogPreflight(c *gin.Context) {
 		IndexStatus: result.IndexStatus,
 	}
 
-	logger.Debugf("Preflight response: log_path=%s, available=%v, index_status=%s", 
+	logger.Debugf("Preflight response: log_path=%s, available=%v, index_status=%s",
 		logPath, result.Available, result.IndexStatus)
 
 	c.JSON(http.StatusOK, response)
@@ -178,7 +178,7 @@ func AdvancedSearchLogs(c *gin.Context) {
 	}
 
 	// Execute search with timeout
-	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Minute)
 	defer cancel()
 
 	result, err := service.SearchLogs(ctx, queryReq)
@@ -368,14 +368,14 @@ func GetDashboardAnalytics(c *gin.Context) {
 	// Debug: Check time range from Bleve for this file
 	debugStart, debugEnd := service.GetTimeRangeFromSummaryStatsForPath(req.LogPath)
 	logger.Debugf("Bleve time range for %s - start=%v, end=%v", req.LogPath, debugStart, debugEnd)
-	
+
 	// Debug: Log exact query parameters
 	queryRequest := &nginx_log.DashboardQueryRequest{
 		LogPath:   req.LogPath,
 		StartTime: startTime.Unix(),
 		EndTime:   endTime.Unix(),
 	}
-	logger.Debugf("Query parameters - LogPath='%s', StartTime=%v, EndTime=%v", 
+	logger.Debugf("Query parameters - LogPath='%s', StartTime=%v, EndTime=%v",
 		queryRequest.LogPath, queryRequest.StartTime, queryRequest.EndTime)
 
 	// Get analytics from Bleve aggregations
@@ -387,16 +387,16 @@ func GetDashboardAnalytics(c *gin.Context) {
 	}
 
 	logger.Debugf("Successfully retrieved dashboard analytics from Bleve aggregations")
-	
+
 	// Debug: Log summary of results
 	if analytics != nil {
-		logger.Debugf("Results summary - TotalUV=%d, TotalPV=%d, HourlyStats=%d, DailyStats=%d, TopURLs=%d", 
-			analytics.Summary.TotalUV, analytics.Summary.TotalPV, 
+		logger.Debugf("Results summary - TotalUV=%d, TotalPV=%d, HourlyStats=%d, DailyStats=%d, TopURLs=%d",
+			analytics.Summary.TotalUV, analytics.Summary.TotalPV,
 			len(analytics.HourlyStats), len(analytics.DailyStats), len(analytics.TopURLs))
 	} else {
 		logger.Debugf("Analytics result is nil")
 	}
-	
+
 	c.JSON(http.StatusOK, analytics)
 }
 
