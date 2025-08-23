@@ -6,9 +6,10 @@ require (
 	code.pfad.fr/risefront v1.0.0
 	github.com/0xJacky/pofile v1.1.0
 	github.com/BurntSushi/toml v1.5.0
+	github.com/RoaringBitmap/roaring v1.9.4
 	github.com/blevesearch/bleve/v2 v2.5.3
 	github.com/caarlos0/env/v11 v11.3.1
-	github.com/casdoor/casdoor-go-sdk v1.15.0
+	github.com/casdoor/casdoor-go-sdk v1.16.0
 	github.com/creack/pty v1.1.24
 	github.com/dgraph-io/ristretto/v2 v2.3.0
 	github.com/docker/docker v28.3.3+incompatible
@@ -30,7 +31,7 @@ require (
 	github.com/golang-jwt/jwt/v5 v5.3.0
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.3
-	github.com/mark3labs/mcp-go v0.37.0
+	github.com/mark3labs/mcp-go v0.38.0
 	github.com/minio/minio-go/v7 v7.0.95
 	github.com/minio/selfupdate v0.6.0
 	github.com/nikoksr/notify v1.3.0
@@ -46,8 +47,8 @@ require (
 	github.com/spf13/cast v1.9.2
 	github.com/stretchr/testify v1.10.0
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20250620092546-c3e307e36701
-	github.com/ulikunitz/xz v0.5.12
-	github.com/uozi-tech/cosy v1.25.6
+	github.com/ulikunitz/xz v0.5.13
+	github.com/uozi-tech/cosy v1.25.8
 	github.com/uozi-tech/cosy-driver-sqlite v0.2.1
 	github.com/urfave/cli/v3 v3.4.1
 	golang.org/x/crypto v0.41.0
@@ -86,7 +87,6 @@ require (
 	github.com/AzureAD/microsoft-authentication-library-for-go v1.4.2 // indirect
 	github.com/Microsoft/go-winio v0.6.2 // indirect
 	github.com/OpenDNS/vegadns2client v0.0.0-20180418235048-a3fa4a771d87 // indirect
-	github.com/RoaringBitmap/roaring v1.9.4 // indirect
 	github.com/RoaringBitmap/roaring/v2 v2.8.0 // indirect
 	github.com/akamai/AkamaiOPEN-edgegrid-golang v1.2.2 // indirect
 	github.com/alibabacloud-go/alibabacloud-gateway-spi v0.0.5 // indirect
