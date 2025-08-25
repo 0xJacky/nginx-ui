@@ -97,7 +97,7 @@ func Restart() {
 	restart()
 }
 
-// GetLastOutput returns the last output of the nginx command
+// GetLastResult returns the last output of the nginx command
 func GetLastResult() *ControlResult {
 	mutex.Lock()
 	defer mutex.Unlock()

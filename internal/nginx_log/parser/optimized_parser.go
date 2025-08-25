@@ -16,7 +16,7 @@ import (
 
 // OptimizedParser provides high-performance log parsing with zero-copy optimizations
 type OptimizedParser struct {
-	config     *ParserConfig
+	config     *Config
 	uaParser   UserAgentParser
 	geoService GeoIPService
 	pool       *sync.Pool
@@ -45,7 +45,7 @@ type parseBuffer struct {
 }
 
 // NewOptimizedParser creates a new high-performance parser
-func NewOptimizedParser(config *ParserConfig, uaParser UserAgentParser, geoService GeoIPService) *OptimizedParser {
+func NewOptimizedParser(config *Config, uaParser UserAgentParser, geoService GeoIPService) *OptimizedParser {
 	if config == nil {
 		config = DefaultParserConfig()
 	}

@@ -334,7 +334,7 @@ func (s *Scanner) setScanningState(scanning bool) {
 	if s.scanning != scanning {
 		s.scanning = scanning
 		event.Publish(event.Event{
-			Type: event.EventTypeIndexScanning,
+			Type: event.TypeIndexScanning,
 			Data: scanning,
 		})
 	}

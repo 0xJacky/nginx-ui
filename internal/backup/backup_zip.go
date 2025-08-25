@@ -112,62 +112,6 @@ func createZipArchive(zipPath, srcDir string) error {
 	return err
 }
 
-// createZipArchiveFromFiles creates a zip archive from a list of files
-func createZipArchiveFromFiles(zipPath string, files []string) error {
-	// Create a new zip file
-	zipFile, err := os.Create(zipPath)
-	if err != nil {
-		return cosy.WrapErrorWithParams(ErrCreateZipFile, err.Error())
-	}
-	defer zipFile.Close()
-
-	// Create a new zip writer
-	zipWriter := zip.NewWriter(zipFile)
-	defer zipWriter.Close()
-
-	// Add each file to the zip
-	for _, file := range files {
-		// Get file info
-		info, err := os.Stat(file)
-		if err != nil {
-			return cosy.WrapErrorWithParams(ErrOpenSourceFile, err.Error())
-		}
-
-		// Create zip header
-		header, err := zip.FileInfoHeader(info)
-		if err != nil {
-			return cosy.WrapErrorWithParams(ErrCreateZipHeader, err.Error())
-		}
-
-		// Set base name as header name
-		header.Name = filepath.Base(file)
-
-		// Set compression method
-		header.Method = zip.Deflate
-
-		// Create zip entry writer
-		writer, err := zipWriter.CreateHeader(header)
-		if err != nil {
-			return cosy.WrapErrorWithParams(ErrCreateZipEntry, err.Error())
-		}
-
-		// Open source file
-		source, err := os.Open(file)
-		if err != nil {
-			return cosy.WrapErrorWithParams(ErrOpenSourceFile, err.Error())
-		}
-		defer source.Close()
-
-		// Copy to zip
-		_, err = io.Copy(writer, source)
-		if err != nil {
-			return cosy.WrapErrorWithParams(ErrCopyContent, file)
-		}
-	}
-
-	return nil
-}
-
 // calculateFileHash calculates the SHA-256 hash of a file
 func calculateFileHash(filePath string) (string, error) {
 	// Open file

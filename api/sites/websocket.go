@@ -42,7 +42,7 @@ var upgrader = websocket.Upgrader{
 	},
 }
 
-// WebSocket connection manager
+// WSManager WebSocket connection manager
 type WSManager struct {
 	connections map[*websocket.Conn]bool
 	mutex       sync.RWMutex

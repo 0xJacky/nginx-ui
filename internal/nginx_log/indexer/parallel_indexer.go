@@ -16,11 +16,12 @@ import (
 
 	"github.com/blevesearch/bleve/v2"
 	"github.com/uozi-tech/cosy/logger"
+	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
 )
 
 // ParallelIndexer provides high-performance parallel indexing with sharding
 type ParallelIndexer struct {
-	config       *IndexerConfig
+	config       *Config
 	shardManager ShardManager
 	metrics      MetricsCollector
 
@@ -53,7 +54,7 @@ type indexWorker struct {
 }
 
 // NewParallelIndexer creates a new parallel indexer
-func NewParallelIndexer(config *IndexerConfig, shardManager ShardManager) *ParallelIndexer {
+func NewParallelIndexer(config *Config, shardManager ShardManager) *ParallelIndexer {
 	if config == nil {
 		config = DefaultIndexerConfig()
 	}
@@ -257,7 +258,13 @@ func (pi *ParallelIndexer) FlushAll() error {
 
 		// Force flush by creating and immediately deleting a temporary document
 		batch := shard.NewBatch()
-		tempID := fmt.Sprintf("_flush_temp_%d_%d", i, time.Now().UnixNano())
+		// Use efficient string building instead of fmt.Sprintf
+		tempIDBuf := make([]byte, 0, 64)
+		tempIDBuf = append(tempIDBuf, "_flush_temp_"...)
+		tempIDBuf = utils.AppendInt(tempIDBuf, i)
+		tempIDBuf = append(tempIDBuf, '_')
+		tempIDBuf = utils.AppendInt(tempIDBuf, int(time.Now().UnixNano()))
+		tempID := utils.BytesToStringUnsafe(tempIDBuf)
 		batch.Index(tempID, map[string]interface{}{"_temp": true})
 
 		if err := shard.Batch(batch); err != nil {
@@ -349,8 +356,14 @@ func (pi *ParallelIndexer) IndexLogFile(filePath string) error {
 		}
 		logDoc.FilePath = filePath
 
+		// Use efficient string building for document ID
+		docIDBuf := make([]byte, 0, len(filePath)+16)
+		docIDBuf = append(docIDBuf, filePath...)
+		docIDBuf = append(docIDBuf, '-')
+		docIDBuf = utils.AppendInt(docIDBuf, int(docCount))
+		
 		doc := &Document{
-			ID:     fmt.Sprintf("%s-%d", filePath, docCount),
+			ID:     utils.BytesToStringUnsafe(docIDBuf),
 			Fields: logDoc,
 		}
 
@@ -431,7 +444,7 @@ func (pi *ParallelIndexer) IsHealthy() bool {
 }
 
 // GetConfig returns the current configuration
-func (pi *ParallelIndexer) GetConfig() *IndexerConfig {
+func (pi *ParallelIndexer) GetConfig() *Config {
 	return pi.config
 }
 
@@ -582,8 +595,14 @@ func (pi *ParallelIndexer) indexSingleFile(filePath string) (uint64, *time.Time,
 			maxTime = &ts
 		}
 
+		// Use efficient string building for document ID
+		docIDBuf := make([]byte, 0, len(filePath)+16)
+		docIDBuf = append(docIDBuf, filePath...)
+		docIDBuf = append(docIDBuf, '-')
+		docIDBuf = utils.AppendInt(docIDBuf, int(docCount))
+
 		doc := &Document{
-			ID:     fmt.Sprintf("%s-%d", filePath, docCount),
+			ID:     utils.BytesToStringUnsafe(docIDBuf),
 			Fields: logDoc,
 		}
 
@@ -611,7 +630,7 @@ func (pi *ParallelIndexer) indexSingleFile(filePath string) (uint64, *time.Time,
 }
 
 // UpdateConfig updates the indexer configuration
-func (pi *ParallelIndexer) UpdateConfig(config *IndexerConfig) error {
+func (pi *ParallelIndexer) UpdateConfig(config *Config) error {
 	// Only allow updating certain configuration parameters while running
 	pi.config.BatchSize = config.BatchSize
 	pi.config.FlushInterval = config.FlushInterval
@@ -925,11 +944,11 @@ func (pi *ParallelIndexer) IndexLogGroupWithProgress(basePath string, progressCo
 		for _, filePath := range uniqueFiles {
 			isCompressed := IsCompressedFile(filePath)
 			progressTracker.AddFile(filePath, isCompressed)
-			
+
 			// Get file size and estimate lines
 			if stat, err := os.Stat(filePath); err == nil {
 				progressTracker.SetFileSize(filePath, stat.Size())
-				
+
 				// Estimate lines for progress calculation
 				if estimatedLines, err := EstimateFileLines(context.Background(), filePath, stat.Size(), isCompressed); err == nil {
 					progressTracker.SetFileEstimate(filePath, estimatedLines)
@@ -957,7 +976,7 @@ func (pi *ParallelIndexer) IndexLogGroupWithProgress(basePath string, progressCo
 		}
 
 		docsCountMap[filePath] = docsIndexed
-		
+
 		if progressTracker != nil {
 			progressTracker.CompleteFile(filePath, int64(docsIndexed))
 		}

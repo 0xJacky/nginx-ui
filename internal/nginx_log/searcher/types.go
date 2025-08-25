@@ -9,7 +9,7 @@ import (
 )
 
 // SearcherConfig holds configuration for the searcher
-type SearcherConfig struct {
+type Config struct {
 	MaxConcurrency     int           `json:"max_concurrency"`
 	TimeoutDuration    time.Duration `json:"timeout_duration"`
 	CacheSize          int           `json:"cache_size"`
@@ -22,8 +22,8 @@ type SearcherConfig struct {
 }
 
 // DefaultSearcherConfig returns default searcher configuration
-func DefaultSearcherConfig() *SearcherConfig {
-	return &SearcherConfig{
+func DefaultSearcherConfig() *Config {
+	return &Config{
 		MaxConcurrency:     10,
 		TimeoutDuration:    30 * time.Second,
 		CacheSize:          1000,
@@ -201,27 +201,21 @@ type ShardSearcher interface {
 
 // Searcher defines the main search interface
 type Searcher interface {
-	// Core search operations
 	Search(ctx context.Context, req *SearchRequest) (*SearchResult, error)
 	SearchAsync(ctx context.Context, req *SearchRequest) (<-chan *SearchResult, <-chan error)
 
-	// Aggregation operations
 	Aggregate(ctx context.Context, req *AggregationRequest) (*AggregationResult, error)
 
-	// Suggestion operations
 	Suggest(ctx context.Context, text string, field string, size int) ([]*Suggestion, error)
 
-	// Analysis operations
 	Analyze(ctx context.Context, text string, analyzer string) ([]string, error)
 
-	// Cache operations
 	ClearCache() error
 	GetCacheStats() *CacheStats
 
-	// Health and statistics
 	IsHealthy() bool
-	GetStats() *SearcherStats
-	GetConfig() *SearcherConfig
+	GetStats() *Stats
+	GetConfig() *Config
 	Stop() error
 }
 
@@ -241,8 +235,8 @@ type Suggestion struct {
 	Freq  int64   `json:"freq"`
 }
 
-// SearcherStats provides comprehensive search statistics
-type SearcherStats struct {
+// Stats provides comprehensive search statistics
+type Stats struct {
 	TotalSearches      int64               `json:"total_searches"`
 	SuccessfulSearches int64               `json:"successful_searches"`
 	FailedSearches     int64               `json:"failed_searches"`

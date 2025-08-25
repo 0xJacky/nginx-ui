@@ -40,7 +40,7 @@ type Tool struct {
 }
 
 var (
-	tools     = []Tool{}
+	tools     = make([]Tool, 0)
 	toolMutex sync.Mutex
 )
 

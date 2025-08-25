@@ -95,7 +95,7 @@ func init() {
 	TotalBuild = %d
 	Hash = "%s"
 }
-`, versionInfo.Version, versionInfo.BuildId, versionInfo.TotalBuild, strings.TrimRight(string(commitHash), "\r\n"))
+`, versionInfo.Version, versionInfo.BuildId, versionInfo.TotalBuild, strings.TrimRight(commitHash, "\r\n"))
 
 	genPath := filepath.Join(basePath, "internal/version/version.gen.go")
 	err := os.WriteFile(genPath, []byte(genContent), 0644)

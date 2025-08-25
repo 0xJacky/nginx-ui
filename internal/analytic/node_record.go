@@ -7,12 +7,19 @@ import (
 	"sync"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/cache"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gorilla/websocket"
 	"github.com/uozi-tech/cosy/logger"
 )
+
+// nodeCache contains both slice and map for efficient access
+type nodeCache struct {
+	Nodes   []*model.Node         // For iteration
+	NodeMap map[uint64]*model.Node // For fast lookup by ID
+}
 
 // NodeRecordManager manages the node status retrieval process
 type NodeRecordManager struct {
@@ -221,10 +228,61 @@ func cleanupDisabledNodes(enabledEnvIDs []uint64) {
 	mutex.Unlock()
 }
 
-func checkNodeStillEnabled(nodeID uint64) bool {
+
+// getEnabledNodes retrieves enabled nodes from cache or database
+func getEnabledNodes() ([]*model.Node, error) {
+	if cached, found := cache.GetCachedNodes(); found {
+		if nc, ok := cached.(*nodeCache); ok {
+			return nc.Nodes, nil
+		}
+	}
+
 	nodeQuery := query.Node
-	node, err := nodeQuery.Where(nodeQuery.ID.Eq(nodeID), nodeQuery.Enabled.Is(true)).First()
-	return err == nil && node != nil
+	nodes, err := nodeQuery.Where(nodeQuery.Enabled.Is(true)).Find()
+	if err != nil {
+		logger.Error("Failed to query enabled nodes:", err)
+		return nil, err
+	}
+
+	// Create cache with both slice and map
+	nodeMap := make(map[uint64]*model.Node, len(nodes))
+	for _, node := range nodes {
+		nodeMap[node.ID] = node
+	}
+	
+	nc := &nodeCache{
+		Nodes:   nodes,
+		NodeMap: nodeMap,
+	}
+
+	cache.SetCachedNodes(nc)
+	logger.Debug("Queried and cached %d enabled nodes", len(nodes))
+	return nodes, nil
+}
+
+// isNodeEnabled checks if a node is enabled using cached map for O(1) lookup
+func isNodeEnabled(nodeID uint64) bool {
+	if cached, found := cache.GetCachedNodes(); found {
+		if nc, ok := cached.(*nodeCache); ok {
+			_, exists := nc.NodeMap[nodeID]
+			return exists
+		}
+	}
+	
+	// Fallback: load cache and check again
+	_, err := getEnabledNodes()
+	if err != nil {
+		return false
+	}
+	
+	if cached, found := cache.GetCachedNodes(); found {
+		if nc, ok := cached.(*nodeCache); ok {
+			_, exists := nc.NodeMap[nodeID]
+			return exists
+		}
+	}
+	
+	return false
 }
 
 func RetrieveNodesStatus(ctx context.Context) {
@@ -242,8 +300,7 @@ func RetrieveNodesStatus(ctx context.Context) {
 	timeoutCheckTicker := time.NewTicker(10 * time.Second)
 	defer timeoutCheckTicker.Stop()
 
-	nodeQuery := query.Node
-	nodes, err := nodeQuery.Where(nodeQuery.Enabled.Is(true)).Find()
+	nodes, err := getEnabledNodes()
 	if err != nil {
 		logger.Error(err)
 		return
@@ -272,7 +329,7 @@ func RetrieveNodesStatus(ctx context.Context) {
 			case <-timeoutCheckTicker.C:
 				checkNodeTimeouts(2 * time.Minute)
 			case <-envCheckTicker.C:
-				currentNodes, err := nodeQuery.Where(nodeQuery.Enabled.Is(true)).Find()
+				currentNodes, err := getEnabledNodes()
 				if err != nil {
 					logger.Error("Failed to re-query nodes:", err)
 					continue
@@ -316,7 +373,7 @@ func RetrieveNodesStatus(ctx context.Context) {
 						return
 					}
 				case <-retryTicker.C:
-					if !checkNodeStillEnabled(n.ID) {
+					if !isNodeEnabled(n.ID) {
 						retryMutex.Lock()
 						delete(retryStates, n.ID)
 						retryMutex.Unlock()

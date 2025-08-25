@@ -1,29 +1,25 @@
 package event
 
 // EventType represents the type of event
-type EventType string
+type Type string
 
 const (
-	// Processing status events
-	EventTypeIndexScanning      EventType = "index_scanning"
-	EventTypeAutoCertProcessing EventType = "auto_cert_processing"
-	EventTypeProcessingStatus   EventType = "processing_status"
+	TypeIndexScanning      Type = "index_scanning"
+	TypeAutoCertProcessing Type = "auto_cert_processing"
+	TypeProcessingStatus   Type = "processing_status"
 
-	// Nginx log status events (for backward compatibility)
-	EventTypeNginxLogStatus EventType = "nginx_log_status"
+	TypeNginxLogStatus Type = "nginx_log_status"
 
-	// Nginx log indexing events
-	EventTypeNginxLogIndexReady    EventType = "nginx_log_index_ready"
-	EventTypeNginxLogIndexProgress EventType = "nginx_log_index_progress"
-	EventTypeNginxLogIndexComplete EventType = "nginx_log_index_complete"
+	TypeNginxLogIndexReady    Type = "nginx_log_index_ready"
+	TypeNginxLogIndexProgress Type = "nginx_log_index_progress"
+	TypeNginxLogIndexComplete Type = "nginx_log_index_complete"
 
-	// Notification events
-	EventTypeNotification EventType = "notification"
+	TypeNotification Type = "notification"
 )
 
 // Event represents a generic event structure
 type Event struct {
-	Type EventType   `json:"type"`
+	Type Type        `json:"type"`
 	Data interface{} `json:"data"`
 }
 
@@ -51,10 +47,10 @@ type NginxLogIndexReadyData struct {
 // NginxLogIndexProgressData represents the data for nginx log index progress events
 type NginxLogIndexProgressData struct {
 	LogPath         string  `json:"log_path"`
-	Progress        float64 `json:"progress"`        // 0-100 percentage
-	Stage           string  `json:"stage"`           // "scanning", "indexing", "stats"
-	Status          string  `json:"status"`          // "running", "completed", "error"
-	ElapsedTime     int64   `json:"elapsed_time"`    // milliseconds
+	Progress        float64 `json:"progress"`         // 0-100 percentage
+	Stage           string  `json:"stage"`            // "scanning", "indexing", "stats"
+	Status          string  `json:"status"`           // "running", "completed", "error"
+	ElapsedTime     int64   `json:"elapsed_time"`     // milliseconds
 	EstimatedRemain int64   `json:"estimated_remain"` // milliseconds
 }
 
@@ -62,7 +58,7 @@ type NginxLogIndexProgressData struct {
 type NginxLogIndexCompleteData struct {
 	LogPath     string `json:"log_path"`
 	Success     bool   `json:"success"`
-	Duration    int64  `json:"duration"`    // milliseconds
+	Duration    int64  `json:"duration"` // milliseconds
 	TotalLines  int64  `json:"total_lines"`
 	IndexedSize int64  `json:"indexed_size"` // bytes
 	Error       string `json:"error,omitempty"`

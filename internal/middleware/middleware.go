@@ -45,6 +45,15 @@ func getXNodeID(c *gin.Context) (xNodeID string) {
 	return c.Query("x_node_id")
 }
 
+// getNodeSecret from header or query
+func getNodeSecret(c *gin.Context) (secret string) {
+	if secret = c.GetHeader("X-Node-Secret"); secret != "" {
+		return secret
+	}
+
+	return c.Query("node_secret")
+}
+
 // AuthRequired is a middleware that checks if the user is authenticated
 func AuthRequired() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -59,17 +68,10 @@ func AuthRequired() gin.HandlerFunc {
 			c.Set("ProxyNodeID", xNodeID)
 		}
 
-		initUser := user.GetInitUser(c)
-
-		if token := c.GetHeader("X-Node-Secret"); token != "" && token == settings.NodeSettings.Secret {
-			c.Set("Secret", token)
-			c.Set("user", initUser)
-			c.Next()
-			return
-		}
-
-		if token := c.Query("node_secret"); token != "" && token == settings.NodeSettings.Secret {
-			c.Set("Secret", token)
+		// Check node secret authentication
+		if nodeSecret := getNodeSecret(c); nodeSecret != "" && nodeSecret == settings.NodeSettings.Secret {
+			initUser := user.GetInitUser(c)
+			c.Set("Secret", nodeSecret)
 			c.Set("user", initUser)
 			c.Next()
 			return

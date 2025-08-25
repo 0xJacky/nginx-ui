@@ -29,7 +29,7 @@ func TestBuildConfig_UpstreamExpansion(t *testing.T) {
 	service.UpdateUpstreamDefinition("api_backend", apiBackendServers, "test.conf")
 
 	// Create a mock indexed site with proxy targets that reference upstreams
-	IndexedSites["test_site"] = &SiteIndex{
+	IndexedSites["test_site"] = &Index{
 		Path:    "test_site",
 		Content: "test content",
 		Urls:    []string{"example.com"},
@@ -96,7 +96,7 @@ func TestBuildConfig_UpstreamExpansion(t *testing.T) {
 
 func TestBuildConfig_NoUpstreamExpansion(t *testing.T) {
 	// Test case where proxy targets don't reference any upstreams
-	IndexedSites["test_site_no_upstream"] = &SiteIndex{
+	IndexedSites["test_site_no_upstream"] = &Index{
 		Path:    "test_site_no_upstream",
 		Content: "test content",
 		Urls:    []string{"example.com"},

@@ -21,6 +21,19 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 )
 
+// Site config cache with expiration
+var (
+	siteConfigCache = make(map[string]*siteConfigCacheEntry)
+	siteConfigMutex sync.RWMutex
+	cacheExpiry     = 5 * time.Minute // Cache entries expire after 5 minutes
+	lastBatchLoad   time.Time
+)
+
+type siteConfigCacheEntry struct {
+	config    *model.SiteConfig
+	expiresAt time.Time
+}
+
 type SiteChecker struct {
 	sites            map[string]*SiteInfo
 	mu               sync.RWMutex
@@ -86,7 +99,7 @@ func (sc *SiteChecker) CollectSites() {
 	for siteName, indexedSite := range site.IndexedSites {
 		// Check site status - only collect from enabled sites
 		siteStatus := site.GetSiteStatus(siteName)
-		if siteStatus != site.SiteStatusEnabled {
+		if siteStatus != site.StatusEnabled {
 			// logger.Debugf("Skipping site %s (status: %s) - only collecting from enabled sites", siteName, siteStatus)
 			continue
 		}
@@ -133,12 +146,112 @@ func (sc *SiteChecker) CollectSites() {
 	logger.Infof("Collected %d sites for checking (enabled sites only)", len(sc.sites))
 }
 
+// loadAllSiteConfigs loads all site configs from database and caches them
+func loadAllSiteConfigs() error {
+	siteConfigMutex.Lock()
+	defer siteConfigMutex.Unlock()
+	
+	// Skip database operation if query.SiteConfig is nil (e.g., in tests)
+	if query.SiteConfig == nil {
+		logger.Debugf("Skipping site config batch load - query.SiteConfig is nil (likely in test environment)")
+		lastBatchLoad = time.Now()
+		return nil
+	}
+	
+	sc := query.SiteConfig
+	configs, err := sc.Find()
+	if err != nil {
+		return fmt.Errorf("failed to load site configs: %w", err)
+	}
+	
+	now := time.Now()
+	expiry := now.Add(cacheExpiry)
+	
+	// Clear existing cache
+	siteConfigCache = make(map[string]*siteConfigCacheEntry)
+	
+	// Cache all configs
+	for _, config := range configs {
+		siteConfigCache[config.Host] = &siteConfigCacheEntry{
+			config:    config,
+			expiresAt: expiry,
+		}
+	}
+	
+	lastBatchLoad = now
+	logger.Debugf("Loaded %d site configs into cache", len(configs))
+	return nil
+}
+
+// getCachedSiteConfig gets a site config from cache, loading all configs if needed
+func getCachedSiteConfig(host string) (*model.SiteConfig, bool) {
+	siteConfigMutex.RLock()
+	
+	// Check if we need to refresh the cache
+	needsRefresh := time.Since(lastBatchLoad) > cacheExpiry
+	
+	if needsRefresh {
+		siteConfigMutex.RUnlock()
+		// Reload all configs if cache is expired
+		if err := loadAllSiteConfigs(); err != nil {
+			logger.Errorf("Failed to reload site configs: %v", err)
+			return nil, false
+		}
+		siteConfigMutex.RLock()
+	}
+	
+	entry, exists := siteConfigCache[host]
+	siteConfigMutex.RUnlock()
+	
+	if !exists || time.Now().After(entry.expiresAt) {
+		return nil, false
+	}
+	
+	return entry.config, true
+}
+
+// setCachedSiteConfig sets a site config in cache
+func setCachedSiteConfig(host string, config *model.SiteConfig) {
+	siteConfigMutex.Lock()
+	defer siteConfigMutex.Unlock()
+	
+	siteConfigCache[host] = &siteConfigCacheEntry{
+		config:    config,
+		expiresAt: time.Now().Add(cacheExpiry),
+	}
+}
+
+// InvalidateSiteConfigCache invalidates the entire site config cache
+func InvalidateSiteConfigCache() {
+	siteConfigMutex.Lock()
+	defer siteConfigMutex.Unlock()
+	
+	siteConfigCache = make(map[string]*siteConfigCacheEntry)
+	lastBatchLoad = time.Time{} // Reset batch load time to force reload
+	logger.Debugf("Site config cache invalidated")
+}
+
+// InvalidateSiteConfigCacheForHost invalidates cache for a specific host
+func InvalidateSiteConfigCacheForHost(host string) {
+	siteConfigMutex.Lock()
+	defer siteConfigMutex.Unlock()
+	
+	delete(siteConfigCache, host)
+	logger.Debugf("Site config cache invalidated for host: %s", host)
+}
+
 // getOrCreateSiteConfigForURL gets or creates a site config for the given URL
 func getOrCreateSiteConfigForURL(url string) *model.SiteConfig {
 	// Parse URL to get host:port
 	tempConfig := &model.SiteConfig{}
 	tempConfig.SetFromURL(url)
 
+	// Try to get from cache first
+	if config, found := getCachedSiteConfig(tempConfig.Host); found {
+		return config
+	}
+
+	// Not in cache, query database
 	sc := query.SiteConfig
 	siteConfig, err := sc.Where(sc.Host.Eq(tempConfig.Host)).First()
 	if err != nil {
@@ -165,6 +278,8 @@ func getOrCreateSiteConfigForURL(url string) *model.SiteConfig {
 			return tempConfig
 		}
 
+		// Cache the new config
+		setCachedSiteConfig(tempConfig.Host, newConfig)
 		return newConfig
 	}
 
@@ -176,6 +291,8 @@ func getOrCreateSiteConfigForURL(url string) *model.SiteConfig {
 		sc.Save(siteConfig)
 	}
 
+	// Cache the config
+	setCachedSiteConfig(tempConfig.Host, siteConfig)
 	return siteConfig
 }
 

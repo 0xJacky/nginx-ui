@@ -18,21 +18,21 @@ type TargetInfo struct {
 	LastSeen   time.Time `json:"last_seen"`
 }
 
-// UpstreamDefinition contains upstream block information
-type UpstreamDefinition struct {
+// Definition contains upstream block information
+type Definition struct {
 	Name       string        `json:"name"`
 	Servers    []ProxyTarget `json:"servers"`
 	ConfigPath string        `json:"config_path"`
 	LastSeen   time.Time     `json:"last_seen"`
 }
 
-// UpstreamService manages upstream availability testing
-type UpstreamService struct {
+// Service manages upstream availability testing
+type Service struct {
 	targets         map[string]*TargetInfo // key: host:port
 	availabilityMap map[string]*Status     // key: host:port
 	configTargets   map[string][]string    // configPath -> []targetKeys
 	// Public upstream definitions storage
-	Upstreams      map[string]*UpstreamDefinition // key: upstream name
+	Upstreams      map[string]*Definition // key: upstream name
 	upstreamsMutex sync.RWMutex
 	targetsMutex   sync.RWMutex
 	lastUpdateTime time.Time
@@ -41,7 +41,7 @@ type UpstreamService struct {
 }
 
 var (
-	upstreamService *UpstreamService
+	upstreamService *Service
 	serviceOnce     sync.Once
 )
 
@@ -62,13 +62,13 @@ func formatSocketAddress(host, port string) string {
 }
 
 // GetUpstreamService returns the singleton upstream service instance
-func GetUpstreamService() *UpstreamService {
+func GetUpstreamService() *Service {
 	serviceOnce.Do(func() {
-		upstreamService = &UpstreamService{
+		upstreamService = &Service{
 			targets:         make(map[string]*TargetInfo),
 			availabilityMap: make(map[string]*Status),
 			configTargets:   make(map[string][]string),
-			Upstreams:       make(map[string]*UpstreamDefinition),
+			Upstreams:       make(map[string]*Definition),
 			lastUpdateTime:  time.Now(),
 		}
 	})
@@ -98,7 +98,7 @@ func scanForProxyTargets(configPath string, content []byte) error {
 }
 
 // updateTargetsFromConfig updates proxy targets from a specific config file
-func (s *UpstreamService) updateTargetsFromConfig(configPath string, targets []ProxyTarget) {
+func (s *Service) updateTargetsFromConfig(configPath string, targets []ProxyTarget) {
 	s.targetsMutex.Lock()
 	defer s.targetsMutex.Unlock()
 
@@ -161,7 +161,7 @@ func (s *UpstreamService) updateTargetsFromConfig(configPath string, targets []P
 }
 
 // GetTargets returns a copy of current proxy targets
-func (s *UpstreamService) GetTargets() []ProxyTarget {
+func (s *Service) GetTargets() []ProxyTarget {
 	s.targetsMutex.RLock()
 	defer s.targetsMutex.RUnlock()
 
@@ -173,7 +173,7 @@ func (s *UpstreamService) GetTargets() []ProxyTarget {
 }
 
 // GetTargetInfos returns a copy of current target infos
-func (s *UpstreamService) GetTargetInfos() []*TargetInfo {
+func (s *Service) GetTargetInfos() []*TargetInfo {
 	s.targetsMutex.RLock()
 	defer s.targetsMutex.RUnlock()
 
@@ -191,7 +191,7 @@ func (s *UpstreamService) GetTargetInfos() []*TargetInfo {
 }
 
 // GetAvailabilityMap returns a copy of current availability results
-func (s *UpstreamService) GetAvailabilityMap() map[string]*Status {
+func (s *Service) GetAvailabilityMap() map[string]*Status {
 	s.targetsMutex.RLock()
 	defer s.targetsMutex.RUnlock()
 
@@ -207,7 +207,7 @@ func (s *UpstreamService) GetAvailabilityMap() map[string]*Status {
 }
 
 // PerformAvailabilityTest performs availability test for all targets
-func (s *UpstreamService) PerformAvailabilityTest() {
+func (s *Service) PerformAvailabilityTest() {
 	// Prevent concurrent tests
 	s.testMutex.Lock()
 	if s.testInProgress {
@@ -278,7 +278,7 @@ func (s *UpstreamService) PerformAvailabilityTest() {
 }
 
 // ClearTargets clears all targets (useful for testing or reloading)
-func (s *UpstreamService) ClearTargets() {
+func (s *Service) ClearTargets() {
 	s.targetsMutex.Lock()
 	s.upstreamsMutex.Lock()
 	defer s.targetsMutex.Unlock()
@@ -287,32 +287,32 @@ func (s *UpstreamService) ClearTargets() {
 	s.targets = make(map[string]*TargetInfo)
 	s.availabilityMap = make(map[string]*Status)
 	s.configTargets = make(map[string][]string)
-	s.Upstreams = make(map[string]*UpstreamDefinition)
+	s.Upstreams = make(map[string]*Definition)
 	s.lastUpdateTime = time.Now()
 
 	// logger.Debug("Cleared all proxy targets and upstream definitions")
 }
 
 // GetLastUpdateTime returns the last time targets were updated
-func (s *UpstreamService) GetLastUpdateTime() time.Time {
+func (s *Service) GetLastUpdateTime() time.Time {
 	s.targetsMutex.RLock()
 	defer s.targetsMutex.RUnlock()
 	return s.lastUpdateTime
 }
 
 // GetTargetCount returns the number of unique targets
-func (s *UpstreamService) GetTargetCount() int {
+func (s *Service) GetTargetCount() int {
 	s.targetsMutex.RLock()
 	defer s.targetsMutex.RUnlock()
 	return len(s.targets)
 }
 
 // UpdateUpstreamDefinition updates or adds an upstream definition
-func (s *UpstreamService) UpdateUpstreamDefinition(name string, servers []ProxyTarget, configPath string) {
+func (s *Service) UpdateUpstreamDefinition(name string, servers []ProxyTarget, configPath string) {
 	s.upstreamsMutex.Lock()
 	defer s.upstreamsMutex.Unlock()
 
-	s.Upstreams[name] = &UpstreamDefinition{
+	s.Upstreams[name] = &Definition{
 		Name:       name,
 		Servers:    servers,
 		ConfigPath: configPath,
@@ -321,7 +321,7 @@ func (s *UpstreamService) UpdateUpstreamDefinition(name string, servers []ProxyT
 }
 
 // GetUpstreamDefinition returns an upstream definition by name
-func (s *UpstreamService) GetUpstreamDefinition(name string) (*UpstreamDefinition, bool) {
+func (s *Service) GetUpstreamDefinition(name string) (*Definition, bool) {
 	s.upstreamsMutex.RLock()
 	defer s.upstreamsMutex.RUnlock()
 
@@ -331,7 +331,7 @@ func (s *UpstreamService) GetUpstreamDefinition(name string) (*UpstreamDefinitio
 	}
 
 	// Return a copy to avoid race conditions
-	return &UpstreamDefinition{
+	return &Definition{
 		Name:       upstream.Name,
 		Servers:    append([]ProxyTarget(nil), upstream.Servers...),
 		ConfigPath: upstream.ConfigPath,
@@ -340,13 +340,13 @@ func (s *UpstreamService) GetUpstreamDefinition(name string) (*UpstreamDefinitio
 }
 
 // GetAllUpstreamDefinitions returns a copy of all upstream definitions
-func (s *UpstreamService) GetAllUpstreamDefinitions() map[string]*UpstreamDefinition {
+func (s *Service) GetAllUpstreamDefinitions() map[string]*Definition {
 	s.upstreamsMutex.RLock()
 	defer s.upstreamsMutex.RUnlock()
 
-	result := make(map[string]*UpstreamDefinition)
+	result := make(map[string]*Definition)
 	for name, upstream := range s.Upstreams {
-		result[name] = &UpstreamDefinition{
+		result[name] = &Definition{
 			Name:       upstream.Name,
 			Servers:    append([]ProxyTarget(nil), upstream.Servers...),
 			ConfigPath: upstream.ConfigPath,
@@ -357,7 +357,7 @@ func (s *UpstreamService) GetAllUpstreamDefinitions() map[string]*UpstreamDefini
 }
 
 // IsUpstreamName checks if a given name is a known upstream
-func (s *UpstreamService) IsUpstreamName(name string) bool {
+func (s *Service) IsUpstreamName(name string) bool {
 	s.upstreamsMutex.RLock()
 	defer s.upstreamsMutex.RUnlock()
 	_, exists := s.Upstreams[name]
@@ -365,7 +365,7 @@ func (s *UpstreamService) IsUpstreamName(name string) bool {
 }
 
 // RemoveConfigTargets removes all targets associated with a specific config file
-func (s *UpstreamService) RemoveConfigTargets(configPath string) {
+func (s *Service) RemoveConfigTargets(configPath string) {
 	s.targetsMutex.Lock()
 	defer s.targetsMutex.Unlock()
 

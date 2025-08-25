@@ -13,9 +13,9 @@ import (
 )
 
 const (
-	MaxTokens   = 100
+	MaxTokens   = 2000
 	Temperature = 1
-	// Build system prompt and user prompt
+	// SystemPrompt Build system prompt and user prompt
 	SystemPrompt = "You are a code completion assistant. " +
 		"Complete the provided code snippet based on the context and instruction." +
 		"[IMPORTANT] Keep the original code indentation."
@@ -89,10 +89,10 @@ func (c *CodeCompletionRequest) Send() (completedCode string, err error) {
 	}
 
 	req := openai.ChatCompletionRequest{
-		Model:       settings.OpenAISettings.GetCodeCompletionModel(),
-		Messages:    messages,
-		MaxTokens:   MaxTokens,
-		Temperature: Temperature,
+		Model:               settings.OpenAISettings.GetCodeCompletionModel(),
+		Messages:            messages,
+		MaxCompletionTokens: MaxTokens,
+		Temperature:         Temperature,
 	}
 
 	// Make a direct (non-streaming) call to the API

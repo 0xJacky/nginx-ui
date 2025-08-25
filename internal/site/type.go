@@ -9,12 +9,12 @@ import (
 	"github.com/0xJacky/Nginx-UI/model"
 )
 
-type SiteStatus string
+type Status string
 
 const (
-	SiteStatusEnabled     SiteStatus = "enabled"
-	SiteStatusDisabled    SiteStatus = "disabled"
-	SiteStatusMaintenance SiteStatus = "maintenance"
+	StatusEnabled     Status = "enabled"
+	StatusDisabled    Status = "disabled"
+	StatusMaintenance Status = "maintenance"
 )
 
 // ProxyTarget is an alias for upstream.ProxyTarget
@@ -24,7 +24,7 @@ type Site struct {
 	*model.Site
 	Name         string               `json:"name"`
 	ModifiedAt   time.Time            `json:"modified_at"`
-	Status       SiteStatus           `json:"status"`
+	Status       Status               `json:"status"`
 	Config       string               `json:"config"`
 	AutoCert     bool                 `json:"auto_cert"`
 	Tokenized    *nginx.NgxConfig     `json:"tokenized,omitempty"`

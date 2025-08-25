@@ -8,12 +8,12 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 )
 
-func CertExpiredNotify() {
+func ExpiredNotify() {
 	c := query.Cert
 
 	certs, err := c.Find()
 	if err != nil {
-		logger.Errorf("CertExpiredNotify: Err: %v\n", err)
+		logger.Errorf("ExpiredNotify: Err: %v\n", err)
 		return
 	}
 

@@ -56,7 +56,7 @@ func getNginxV() string {
 		return ""
 	}
 
-	nginxVOutput = string(out)
+	nginxVOutput = out
 	return nginxVOutput
 }
 

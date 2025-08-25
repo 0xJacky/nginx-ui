@@ -18,8 +18,8 @@ type ProxyTarget struct {
 	ServiceURL string `json:"service_url"` // Full service URL for consul (e.g., "service.consul service=redacted-net resolve")
 }
 
-// UpstreamContext contains upstream-level configuration
-type UpstreamContext struct {
+// TheUpstreamContext contains upstream-level configuration
+type TheUpstreamContext struct {
 	Name     string
 	Resolver string
 }
@@ -43,7 +43,7 @@ func ParseProxyTargetsAndUpstreamsFromRawContent(content string) *ParseResult {
 
 	// First, collect all upstream names and their contexts
 	upstreamNames := make(map[string]bool)
-	upstreamContexts := make(map[string]*UpstreamContext)
+	upstreamContexts := make(map[string]*TheUpstreamContext)
 	upstreamRegex := regexp.MustCompile(`(?s)upstream\s+([^\s]+)\s*\{([^}]+)\}`)
 	upstreamMatches := upstreamRegex.FindAllStringSubmatch(content, -1)
 
@@ -55,7 +55,7 @@ func ParseProxyTargetsAndUpstreamsFromRawContent(content string) *ParseResult {
 			upstreamContent := match[2]
 
 			// Create upstream context
-			ctx := &UpstreamContext{
+			ctx := &TheUpstreamContext{
 				Name: upstreamName,
 			}
 
@@ -191,7 +191,7 @@ func parseProxyPassURL(passURL, passType string) ProxyTarget {
 }
 
 // parseServerAddress parses upstream server address with upstream context
-func parseServerAddress(serverAddr string, targetType string, ctx *UpstreamContext) ProxyTarget {
+func parseServerAddress(serverAddr string, targetType string, ctx *TheUpstreamContext) ProxyTarget {
 	serverAddr = strings.TrimSpace(serverAddr)
 
 	// Remove additional parameters (weight, max_fails, etc.)

@@ -15,8 +15,8 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 )
 
-// BackupExecutionResult contains the result of a backup execution
-type BackupExecutionResult struct {
+// ExecutionResult contains the result of a backup execution
+type ExecutionResult struct {
 	FilePath string // Path to the created backup file
 	KeyPath  string // Path to the encryption key file (if applicable)
 }
@@ -37,7 +37,7 @@ func ExecuteAutoBackup(autoBackup *model.AutoBackup) error {
 	// Validate storage configuration before starting backup
 	if err := validateStorageConfiguration(autoBackup); err != nil {
 		logger.Errorf("Storage configuration validation failed for task %s: %v", autoBackup.Name, err)
-		updateBackupStatus(autoBackup.ID, model.BackupStatusFailed, err.Error())
+		_ = updateBackupStatus(autoBackup.ID, model.BackupStatusFailed, err.Error())
 		// Send validation failure notification
 		notification.Error("Auto Backup Configuration Error",
 			"Storage configuration validation failed for backup task %{backup_name}, error: %{error}",
@@ -124,7 +124,7 @@ func ExecuteAutoBackup(autoBackup *model.AutoBackup) error {
 // Returns:
 //   - BackupExecutionResult: Result containing file paths
 //   - error: CosyError if backup fails
-func executeBackupByType(autoBackup *model.AutoBackup) (*BackupExecutionResult, error) {
+func executeBackupByType(autoBackup *model.AutoBackup) (*ExecutionResult, error) {
 	switch autoBackup.BackupType {
 	case model.BackupTypeNginxAndNginxUI:
 		return createEncryptedBackup(autoBackup)
@@ -145,7 +145,7 @@ func executeBackupByType(autoBackup *model.AutoBackup) (*BackupExecutionResult, 
 // Returns:
 //   - BackupExecutionResult: Result containing file paths
 //   - error: CosyError if backup creation fails
-func createEncryptedBackup(autoBackup *model.AutoBackup) (*BackupExecutionResult, error) {
+func createEncryptedBackup(autoBackup *model.AutoBackup) (*ExecutionResult, error) {
 	// Generate unique filename with timestamp
 	filename := fmt.Sprintf("%s_%d.zip", autoBackup.GetName(), time.Now().Unix())
 
@@ -177,7 +177,7 @@ func createEncryptedBackup(autoBackup *model.AutoBackup) (*BackupExecutionResult
 		return nil, err
 	}
 
-	return &BackupExecutionResult{
+	return &ExecutionResult{
 		FilePath: outputPath,
 		KeyPath:  keyPath,
 	}, nil
@@ -192,7 +192,7 @@ func createEncryptedBackup(autoBackup *model.AutoBackup) (*BackupExecutionResult
 // Returns:
 //   - BackupExecutionResult: Result containing file paths
 //   - error: CosyError if backup creation fails
-func createCustomDirectoryBackup(autoBackup *model.AutoBackup) (*BackupExecutionResult, error) {
+func createCustomDirectoryBackup(autoBackup *model.AutoBackup) (*ExecutionResult, error) {
 	// Validate that backup path is specified for custom directory backup
 	if autoBackup.BackupPath == "" {
 		return nil, ErrAutoBackupPathRequired
@@ -222,7 +222,7 @@ func createCustomDirectoryBackup(autoBackup *model.AutoBackup) (*BackupExecution
 		return nil, cosy.WrapErrorWithParams(ErrCreateZipArchive, err.Error())
 	}
 
-	return &BackupExecutionResult{
+	return &ExecutionResult{
 		FilePath: outputPath,
 		KeyPath:  "", // No key file for unencrypted backups
 	}, nil
@@ -357,7 +357,7 @@ func validateStorageConfiguration(autoBackup *model.AutoBackup) error {
 //
 // Returns:
 //   - error: CosyError if storage operation fails
-func handleBackupStorage(autoBackup *model.AutoBackup, result *BackupExecutionResult) error {
+func handleBackupStorage(autoBackup *model.AutoBackup, result *ExecutionResult) error {
 	switch autoBackup.StorageType {
 	case model.StorageTypeLocal:
 		// For local storage, files are already written to the correct location
@@ -380,7 +380,7 @@ func handleBackupStorage(autoBackup *model.AutoBackup, result *BackupExecutionRe
 //
 // Returns:
 //   - error: CosyError if S3 operations fail
-func handleS3Storage(autoBackup *model.AutoBackup, result *BackupExecutionResult) error {
+func handleS3Storage(autoBackup *model.AutoBackup, result *ExecutionResult) error {
 	// Create S3 client
 	s3Client, err := NewS3Client(autoBackup)
 	if err != nil {
@@ -411,7 +411,7 @@ func handleS3Storage(autoBackup *model.AutoBackup, result *BackupExecutionResult
 //
 // Returns:
 //   - error: Standard error if cleanup fails
-func cleanupLocalBackupFiles(result *BackupExecutionResult) error {
+func cleanupLocalBackupFiles(result *ExecutionResult) error {
 	// Remove backup file
 	if err := os.Remove(result.FilePath); err != nil && !os.IsNotExist(err) {
 		return fmt.Errorf("failed to remove backup file %s: %v", result.FilePath, err)

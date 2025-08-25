@@ -53,7 +53,7 @@ func getDevBuild() (data TRelease, err error) {
 	}
 	defer resp.Body.Close()
 
-	assets := []TReleaseAsset{}
+	assets := make([]TReleaseAsset, 0)
 	err = json.Unmarshal(body, &assets)
 	if err != nil {
 		return

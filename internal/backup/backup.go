@@ -15,17 +15,16 @@ import (
 
 // Constants for backup directory and file naming conventions
 const (
-	BackupDirPrefix = "nginx-ui-backup-" // Prefix for temporary backup directories
-	NginxUIDir      = "nginx-ui"         // Directory name for Nginx UI files in backup
-	NginxDir        = "nginx"            // Directory name for Nginx config files in backup
-	HashInfoFile    = "hash_info.txt"    // Filename for hash verification information
-	NginxUIZipName  = "nginx-ui.zip"     // Filename for Nginx UI archive within backup
-	NginxZipName    = "nginx.zip"        // Filename for Nginx config archive within backup
+	NginxUIDir     = "nginx-ui"      // Directory name for Nginx UI files in backup
+	NginxDir       = "nginx"         // Directory name for Nginx config files in backup
+	HashInfoFile   = "hash_info.txt" // Filename for hash verification information
+	NginxUIZipName = "nginx-ui.zip"  // Filename for Nginx UI archive within backup
+	NginxZipName   = "nginx.zip"     // Filename for Nginx config archive within backup
 )
 
-// BackupResult contains the complete results of a backup operation.
+// Result contains the complete results of a backup operation.
 // This structure encapsulates all data needed to restore or verify a backup.
-type BackupResult struct {
+type Result struct {
 	BackupContent []byte `json:"-"`       // Encrypted backup content as byte array (excluded from JSON)
 	BackupName    string `json:"name"`    // Generated backup filename with timestamp
 	AESKey        string `json:"aes_key"` // Base64 encoded AES encryption key
@@ -56,7 +55,7 @@ type HashInfo struct {
 // Returns:
 //   - BackupResult: Complete backup data including encrypted content and keys
 //   - error: CosyError if any step of the backup process fails
-func Backup() (BackupResult, error) {
+func Backup() (Result, error) {
 	// Generate timestamp for unique backup identification
 	timestamp := time.Now().Format("20060102-150405")
 	backupName := fmt.Sprintf("backup-%s.zip", timestamp)
@@ -64,18 +63,18 @@ func Backup() (BackupResult, error) {
 	// Generate cryptographic keys for AES encryption
 	key, err := GenerateAESKey()
 	if err != nil {
-		return BackupResult{}, cosy.WrapErrorWithParams(ErrGenerateAESKey, err.Error())
+		return Result{}, cosy.WrapErrorWithParams(ErrGenerateAESKey, err.Error())
 	}
 
 	iv, err := GenerateIV()
 	if err != nil {
-		return BackupResult{}, cosy.WrapErrorWithParams(ErrGenerateIV, err.Error())
+		return Result{}, cosy.WrapErrorWithParams(ErrGenerateIV, err.Error())
 	}
 
 	// Create temporary directory for staging backup files
 	tempDir, err := os.MkdirTemp("", "nginx-ui-backup-*")
 	if err != nil {
-		return BackupResult{}, cosy.WrapErrorWithParams(ErrCreateTempDir, err.Error())
+		return Result{}, cosy.WrapErrorWithParams(ErrCreateTempDir, err.Error())
 	}
 	defer os.RemoveAll(tempDir) // Ensure cleanup of temporary files
 
@@ -83,20 +82,20 @@ func Backup() (BackupResult, error) {
 	nginxUITempDir := filepath.Join(tempDir, NginxUIDir)
 	nginxTempDir := filepath.Join(tempDir, NginxDir)
 	if err := os.MkdirAll(nginxUITempDir, 0755); err != nil {
-		return BackupResult{}, cosy.WrapErrorWithParams(ErrCreateTempSubDir, err.Error())
+		return Result{}, cosy.WrapErrorWithParams(ErrCreateTempSubDir, err.Error())
 	}
 	if err := os.MkdirAll(nginxTempDir, 0755); err != nil {
-		return BackupResult{}, cosy.WrapErrorWithParams(ErrCreateTempSubDir, err.Error())
+		return Result{}, cosy.WrapErrorWithParams(ErrCreateTempSubDir, err.Error())
 	}
 
 	// Stage Nginx UI configuration and database files
 	if err := backupNginxUIFiles(nginxUITempDir); err != nil {
-		return BackupResult{}, cosy.WrapErrorWithParams(ErrBackupNginxUI, err.Error())
+		return Result{}, cosy.WrapErrorWithParams(ErrBackupNginxUI, err.Error())
 	}
 
 	// Stage Nginx configuration files
 	if err := backupNginxFiles(nginxTempDir); err != nil {
-		return BackupResult{}, cosy.WrapErrorWithParams(ErrBackupNginx, err.Error())
+		return Result{}, cosy.WrapErrorWithParams(ErrBackupNginx, err.Error())
 	}
 
 	// Create individual ZIP archives for each component
@@ -105,23 +104,23 @@ func Backup() (BackupResult, error) {
 
 	// Compress Nginx UI files into archive
 	if err := createZipArchive(nginxUIZipPath, nginxUITempDir); err != nil {
-		return BackupResult{}, cosy.WrapErrorWithParams(ErrCreateZipArchive, err.Error())
+		return Result{}, cosy.WrapErrorWithParams(ErrCreateZipArchive, err.Error())
 	}
 
 	// Compress Nginx configuration files into archive
 	if err := createZipArchive(nginxZipPath, nginxTempDir); err != nil {
-		return BackupResult{}, cosy.WrapErrorWithParams(ErrCreateZipArchive, err.Error())
+		return Result{}, cosy.WrapErrorWithParams(ErrCreateZipArchive, err.Error())
 	}
 
 	// Calculate cryptographic hashes for integrity verification
 	nginxUIHash, err := calculateFileHash(nginxUIZipPath)
 	if err != nil {
-		return BackupResult{}, cosy.WrapErrorWithParams(ErrCalculateHash, err.Error())
+		return Result{}, cosy.WrapErrorWithParams(ErrCalculateHash, err.Error())
 	}
 
 	nginxHash, err := calculateFileHash(nginxZipPath)
 	if err != nil {
-		return BackupResult{}, cosy.WrapErrorWithParams(ErrCalculateHash, err.Error())
+		return Result{}, cosy.WrapErrorWithParams(ErrCalculateHash, err.Error())
 	}
 
 	// Gather version information for backup metadata
@@ -138,34 +137,34 @@ func Backup() (BackupResult, error) {
 	// Write hash information to verification file
 	hashInfoPath := filepath.Join(tempDir, HashInfoFile)
 	if err := writeHashInfoFile(hashInfoPath, hashInfo); err != nil {
-		return BackupResult{}, cosy.WrapErrorWithParams(ErrCreateHashFile, err.Error())
+		return Result{}, cosy.WrapErrorWithParams(ErrCreateHashFile, err.Error())
 	}
 
 	// Encrypt all backup components for security
 	if err := encryptFile(hashInfoPath, key, iv); err != nil {
-		return BackupResult{}, cosy.WrapErrorWithParams(ErrEncryptFile, HashInfoFile)
+		return Result{}, cosy.WrapErrorWithParams(ErrEncryptFile, HashInfoFile)
 	}
 
 	if err := encryptFile(nginxUIZipPath, key, iv); err != nil {
-		return BackupResult{}, cosy.WrapErrorWithParams(ErrEncryptNginxUIDir, err.Error())
+		return Result{}, cosy.WrapErrorWithParams(ErrEncryptNginxUIDir, err.Error())
 	}
 
 	if err := encryptFile(nginxZipPath, key, iv); err != nil {
-		return BackupResult{}, cosy.WrapErrorWithParams(ErrEncryptNginxDir, err.Error())
+		return Result{}, cosy.WrapErrorWithParams(ErrEncryptNginxDir, err.Error())
 	}
 
 	// Clean up unencrypted directories to prevent duplication in final archive
 	if err := os.RemoveAll(nginxUITempDir); err != nil {
-		return BackupResult{}, cosy.WrapErrorWithParams(ErrCleanupTempDir, err.Error())
+		return Result{}, cosy.WrapErrorWithParams(ErrCleanupTempDir, err.Error())
 	}
 	if err := os.RemoveAll(nginxTempDir); err != nil {
-		return BackupResult{}, cosy.WrapErrorWithParams(ErrCleanupTempDir, err.Error())
+		return Result{}, cosy.WrapErrorWithParams(ErrCleanupTempDir, err.Error())
 	}
 
 	// Create final encrypted backup archive in memory
 	var buffer bytes.Buffer
 	if err := createZipArchiveToBuffer(&buffer, tempDir); err != nil {
-		return BackupResult{}, cosy.WrapErrorWithParams(ErrCreateZipArchive, err.Error())
+		return Result{}, cosy.WrapErrorWithParams(ErrCreateZipArchive, err.Error())
 	}
 
 	// Encode encryption keys as base64 for safe transmission/storage
@@ -173,7 +172,7 @@ func Backup() (BackupResult, error) {
 	ivBase64 := base64.StdEncoding.EncodeToString(iv)
 
 	// Assemble final backup result
-	result := BackupResult{
+	result := Result{
 		BackupContent: buffer.Bytes(),
 		BackupName:    backupName,
 		AESKey:        keyBase64,

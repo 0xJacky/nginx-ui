@@ -42,7 +42,7 @@ func (m *ProcessingStatusManager) GetCurrentStatus() ProcessingStatusData {
 func (m *ProcessingStatusManager) UpdateIndexScanning(scanning bool) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
-	
+
 	if m.status.IndexScanning != scanning {
 		m.status.IndexScanning = scanning
 		logger.Infof("Index scanning status changed to: %t", scanning)
@@ -54,7 +54,7 @@ func (m *ProcessingStatusManager) UpdateIndexScanning(scanning bool) {
 func (m *ProcessingStatusManager) UpdateAutoCertProcessing(processing bool) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
-	
+
 	if m.status.AutoCertProcessing != processing {
 		m.status.AutoCertProcessing = processing
 		logger.Infof("Auto cert processing status changed to: %t", processing)
@@ -66,15 +66,15 @@ func (m *ProcessingStatusManager) UpdateAutoCertProcessing(processing bool) {
 func (m *ProcessingStatusManager) UpdateNginxLogIndexing(indexing bool) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
-	
+
 	if m.status.NginxLogIndexing != indexing {
 		m.status.NginxLogIndexing = indexing
 		logger.Infof("Nginx log indexing status changed to: %t", indexing)
 		m.publishStatus()
-		
+
 		// Also publish legacy nginx_log_status for backward compatibility
 		Publish(Event{
-			Type: EventTypeNginxLogStatus,
+			Type: TypeNginxLogStatus,
 			Data: NginxLogStatusData{
 				Indexing: indexing,
 			},
@@ -85,7 +85,7 @@ func (m *ProcessingStatusManager) UpdateNginxLogIndexing(indexing bool) {
 // publishStatus publishes the current processing status
 func (m *ProcessingStatusManager) publishStatus() {
 	Publish(Event{
-		Type: EventTypeProcessingStatus,
+		Type: TypeProcessingStatus,
 		Data: m.status,
 	})
 }
@@ -94,10 +94,10 @@ func (m *ProcessingStatusManager) publishStatus() {
 func (m *ProcessingStatusManager) BroadcastCurrentStatus() {
 	m.mu.RLock()
 	defer m.mu.RUnlock()
-	
+
 	logger.Info("Broadcasting current processing status to new client")
 	Publish(Event{
-		Type: EventTypeProcessingStatus,
+		Type: TypeProcessingStatus,
 		Data: m.status,
 	})
 }

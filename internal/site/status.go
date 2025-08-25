@@ -6,16 +6,16 @@ import (
 )
 
 // GetSiteStatus returns the status of the site
-func GetSiteStatus(name string) SiteStatus {
+func GetSiteStatus(name string) Status {
 	enabledFilePath := nginx.GetConfSymlinkPath(nginx.GetConfPath("sites-enabled", name))
 	if helper.FileExists(enabledFilePath) {
-		return SiteStatusEnabled
+		return StatusEnabled
 	}
 
 	mantainanceFilePath := nginx.GetConfPath("sites-enabled", name+MaintenanceSuffix)
 	if helper.FileExists(mantainanceFilePath) {
-		return SiteStatusMaintenance
+		return StatusMaintenance
 	}
 
-	return SiteStatusDisabled
+	return StatusDisabled
 }

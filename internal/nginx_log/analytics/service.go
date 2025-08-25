@@ -10,25 +10,20 @@ import (
 
 // Service defines the interface for analytics operations
 type Service interface {
-	// Dashboard analytics
 	GetDashboardAnalytics(ctx context.Context, req *DashboardQueryRequest) (*DashboardAnalytics, error)
 
-	// Entries analytics
 	GetLogEntriesStats(ctx context.Context, req *searcher.SearchRequest) (*EntriesStats, error)
 
-	// Geo analytics
 	GetGeoDistribution(ctx context.Context, req *GeoQueryRequest) (*GeoDistribution, error)
 	GetGeoDistributionByCountry(ctx context.Context, req *GeoQueryRequest, countryCode string) (*GeoDistribution, error)
 	GetTopCountries(ctx context.Context, req *GeoQueryRequest) ([]CountryStats, error)
 	GetTopCities(ctx context.Context, req *GeoQueryRequest) ([]CityStats, error)
 	GetGeoStatsForIP(ctx context.Context, req *GeoQueryRequest, ip string) (*CityStats, error)
 
-	// Top lists
 	GetTopPaths(ctx context.Context, req *TopListRequest) ([]KeyValue, error)
 	GetTopIPs(ctx context.Context, req *TopListRequest) ([]KeyValue, error)
 	GetTopUserAgents(ctx context.Context, req *TopListRequest) ([]KeyValue, error)
 
-	// Validation
 	ValidateLogPath(logPath string) error
 	ValidateTimeRange(startTime, endTime int64) error
 }

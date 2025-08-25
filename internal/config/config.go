@@ -7,12 +7,12 @@ import (
 	"github.com/0xJacky/Nginx-UI/model"
 )
 
-type ConfigStatus string
+type Status string
 
 const (
-	StatusEnabled     ConfigStatus = "enabled"
-	StatusDisabled    ConfigStatus = "disabled"
-	StatusMaintenance ConfigStatus = "maintenance"
+	StatusEnabled     Status = "enabled"
+	StatusDisabled    Status = "disabled"
+	StatusMaintenance Status = "maintenance"
 )
 
 // ProxyTarget is an alias for upstream.ProxyTarget
@@ -27,7 +27,7 @@ type Config struct {
 	IsDir         bool             `json:"is_dir"`
 	NamespaceID   uint64           `json:"namespace_id"`
 	Namespace     *model.Namespace `json:"namespace,omitempty"`
-	Status        ConfigStatus     `json:"status"`
+	Status        Status           `json:"status"`
 	Dir           string           `json:"dir"`
 	Urls          []string         `json:"urls,omitempty"`
 	ProxyTargets  []ProxyTarget    `json:"proxy_targets,omitempty"`

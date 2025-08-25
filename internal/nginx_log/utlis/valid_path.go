@@ -12,7 +12,7 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 )
 
-// isValidLogPath checks if a log path is valid:
+// IsValidLogPath checks if a log path is valid:
 // 1. It must be a regular file or a symlink to a regular file
 // 2. It must not point to a console or special device
 // 3. It must be under the whitelist directories

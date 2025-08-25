@@ -14,7 +14,7 @@ import (
 
 // DistributedSearcher implements high-performance distributed search across multiple shards
 type DistributedSearcher struct {
-	config       *SearcherConfig
+	config       *Config
 	shards       []bleve.Index
 	queryBuilder *QueryBuilderService
 	cache        *OptimizedSearchCache
@@ -42,7 +42,7 @@ type searcherStats struct {
 }
 
 // NewDistributedSearcher creates a new distributed searcher
-func NewDistributedSearcher(config *SearcherConfig, shards []bleve.Index) *DistributedSearcher {
+func NewDistributedSearcher(config *Config, shards []bleve.Index) *DistributedSearcher {
 	if config == nil {
 		config = DefaultSearcherConfig()
 	}
@@ -142,7 +142,7 @@ func (ds *DistributedSearcher) Search(ctx context.Context, req *SearchRequest) (
 	result.Duration = time.Since(startTime)
 
 	// Cache result if enabled
-	if ds.config.EnableCache && req.UseCache && err == nil {
+	if ds.config.EnableCache && req.UseCache {
 		ds.cacheResult(req, result)
 	}
 
@@ -184,7 +184,7 @@ func (ds *DistributedSearcher) executeDistributedSearch(ctx context.Context, que
 		searchReq.Size = req.Limit + req.Offset // Ensure we get enough data for pagination
 	}
 	searchReq.From = 0
-	
+
 	// Set up sorting with proper direction
 	if req.SortBy != "" {
 		sortField := req.SortBy
@@ -361,9 +361,9 @@ func (ds *DistributedSearcher) mergeShardResults(shardResults []*bleve.SearchRes
 					Terms: make([]*FacetTerm, 0),
 				}
 			}
-			merged.Facets[name].Total += int(facet.Total)
-			merged.Facets[name].Missing += int(facet.Missing)
-			merged.Facets[name].Other += int(facet.Other)
+			merged.Facets[name].Total += facet.Total
+			merged.Facets[name].Missing += facet.Missing
+			merged.Facets[name].Other += facet.Other
 
 			// A map-based merge to correctly handle term counts across shards.
 			termMap := make(map[string]*FacetTerm)
@@ -395,53 +395,6 @@ func (ds *DistributedSearcher) mergeShardResults(shardResults []*bleve.SearchRes
 	}
 
 	return merged
-}
-
-// createShardSearchRequest creates a Bleve search request
-func (ds *DistributedSearcher) createShardSearchRequest(query query.Query, req *SearchRequest) *bleve.SearchRequest {
-	searchReq := bleve.NewSearchRequest(query)
-	// Size and From are now handled in the calling function
-
-	// We do not set Sort here, as we are doing it manually after merging.
-
-	// Configure highlighting
-	if req.IncludeHighlighting && ds.config.EnableHighlighting {
-		searchReq.Highlight = bleve.NewHighlight()
-		if len(req.Fields) > 0 {
-			for _, field := range req.Fields {
-				searchReq.Highlight.AddField(field)
-			}
-		} else {
-			searchReq.Highlight.AddField("*")
-		}
-	}
-
-	// Configure facets
-	if req.IncludeFacets && ds.config.EnableFaceting {
-		facetFields := req.FacetFields
-		if len(facetFields) == 0 {
-			// Default facet fields
-			facetFields = []string{"status", "method", "browser", "os", "device_type", "region_code"}
-		}
-
-		for _, field := range facetFields {
-			size := DefaultFacetSize
-			if req.FacetSize > 0 {
-				size = req.FacetSize
-			}
-			facet := bleve.NewFacetRequest(field, size)
-			searchReq.AddFacet(field, facet)
-		}
-	}
-
-	// Configure fields to return
-	if len(req.Fields) > 0 {
-		searchReq.Fields = req.Fields
-	} else {
-		searchReq.Fields = []string{"*"}
-	}
-
-	return searchReq
 }
 
 // Utility methods
@@ -543,11 +496,11 @@ func (ds *DistributedSearcher) IsHealthy() bool {
 	return len(healthy) > 0
 }
 
-func (ds *DistributedSearcher) GetStats() *SearcherStats {
+func (ds *DistributedSearcher) GetStats() *Stats {
 	ds.stats.mutex.RLock()
 	defer ds.stats.mutex.RUnlock()
 
-	stats := &SearcherStats{
+	stats := &Stats{
 		TotalSearches:      atomic.LoadInt64(&ds.stats.totalSearches),
 		SuccessfulSearches: atomic.LoadInt64(&ds.stats.successfulSearches),
 		FailedSearches:     atomic.LoadInt64(&ds.stats.failedSearches),
@@ -579,7 +532,7 @@ func (ds *DistributedSearcher) GetStats() *SearcherStats {
 	return stats
 }
 
-func (ds *DistributedSearcher) GetConfig() *SearcherConfig {
+func (ds *DistributedSearcher) GetConfig() *Config {
 	return ds.config
 }
 

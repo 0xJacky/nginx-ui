@@ -59,10 +59,10 @@ func RebuildIndex(c *gin.Context) {
 // performAsyncRebuild performs the actual rebuild logic asynchronously
 func performAsyncRebuild(modernIndexer interface{}, path string) {
 	processingManager := event.GetProcessingStatusManager()
-	
+
 	// Notify that indexing has started
 	processingManager.UpdateNginxLogIndexing(true)
-	
+
 	// Ensure we always reset status when done
 	defer func() {
 		processingManager.UpdateNginxLogIndexing(false)
@@ -93,25 +93,25 @@ func performAsyncRebuild(modernIndexer interface{}, path string) {
 		OnProgress: func(progress indexer.ProgressNotification) {
 			// Send progress event to frontend
 			event.Publish(event.Event{
-				Type: event.EventTypeNginxLogIndexProgress,
+				Type: event.TypeNginxLogIndexProgress,
 				Data: event.NginxLogIndexProgressData{
 					LogPath:         progress.LogGroupPath,
 					Progress:        progress.Percentage,
 					Stage:           "indexing",
 					Status:          "running",
-					ElapsedTime:     int64(progress.ElapsedTime.Milliseconds()),
-					EstimatedRemain: int64(progress.EstimatedRemain.Milliseconds()),
+					ElapsedTime:     progress.ElapsedTime.Milliseconds(),
+					EstimatedRemain: progress.EstimatedRemain.Milliseconds(),
 				},
 			})
-			
-			logger.Infof("Index progress: %s - %.1f%% (Files: %d/%d, Lines: %d/%d)", 
-				progress.LogGroupPath, progress.Percentage, progress.CompletedFiles, 
+
+			logger.Infof("Index progress: %s - %.1f%% (Files: %d/%d, Lines: %d/%d)",
+				progress.LogGroupPath, progress.Percentage, progress.CompletedFiles,
 				progress.TotalFiles, progress.ProcessedLines, progress.EstimatedLines)
 		},
 		OnCompletion: func(completion indexer.CompletionNotification) {
 			// Send completion event to frontend
 			event.Publish(event.Event{
-				Type: event.EventTypeNginxLogIndexComplete,
+				Type: event.TypeNginxLogIndexComplete,
 				Data: event.NginxLogIndexCompleteData{
 					LogPath:     completion.LogGroupPath,
 					Success:     completion.Success,
@@ -121,10 +121,9 @@ func performAsyncRebuild(modernIndexer interface{}, path string) {
 					Error:       completion.Error,
 				},
 			})
-			
-			
-			logger.Infof("Index completion: %s - Success: %t, Duration: %s, Lines: %d, Size: %d bytes", 
-				completion.LogGroupPath, completion.Success, completion.Duration, 
+
+			logger.Infof("Index completion: %s - Success: %t, Duration: %s, Lines: %d, Size: %d bytes",
+				completion.LogGroupPath, completion.Success, completion.Duration,
 				completion.TotalLines, completion.IndexedSize)
 		},
 	}
@@ -141,26 +140,26 @@ func performAsyncRebuild(modernIndexer interface{}, path string) {
 			if progressConfig.OnCompletion != nil {
 				progressConfig.OnCompletion(completion)
 			}
-			
+
 			// Send index ready event if indexing was successful with actual time range
 			if completion.Success {
 				var startTimeUnix, endTimeUnix int64
-				
+
 				// Use global timing if available, otherwise use current time
 				if globalMinTime != nil {
 					startTimeUnix = globalMinTime.Unix()
 				} else {
 					startTimeUnix = time.Now().Unix()
 				}
-				
+
 				if globalMaxTime != nil {
 					endTimeUnix = globalMaxTime.Unix()
 				} else {
 					endTimeUnix = time.Now().Unix()
 				}
-				
+
 				event.Publish(event.Event{
-					Type: event.EventTypeNginxLogIndexReady,
+					Type: event.TypeNginxLogIndexReady,
 					Data: event.NginxLogIndexReadyData{
 						LogPath:     completion.LogGroupPath,
 						StartTime:   startTimeUnix,
@@ -197,7 +196,7 @@ func rebuildSingleFile(modernIndexer interface{}, path string, logFileManager in
 	}
 
 	var minTime, maxTime *time.Time
-	
+
 	if targetLog != nil && targetLog.Type == "error" {
 		logger.Infof("Skipping index rebuild for error log as requested: %s", path)
 		if logFileManager != nil {
@@ -209,7 +208,7 @@ func rebuildSingleFile(modernIndexer interface{}, path string, logFileManager in
 		}
 	} else {
 		logger.Infof("Starting modern index rebuild for file: %s", path)
-		
+
 		// Clear existing database records for this log group before rebuilding
 		if logFileManager != nil {
 			if err := logFileManager.(interface {
@@ -218,18 +217,18 @@ func rebuildSingleFile(modernIndexer interface{}, path string, logFileManager in
 				logger.Warnf("Could not clean up existing DB records for log group %s: %v", path, err)
 			}
 		}
-		
+
 		startTime := time.Now()
-		
+
 		docsCountMap, docMinTime, docMaxTime, err := modernIndexer.(*indexer.ParallelIndexer).IndexLogGroupWithProgress(path, progressConfig)
-		
+
 		if err != nil {
 			logger.Errorf("Failed to index modern index for file group %s: %v", path, err)
 			return nil, nil
 		}
-		
+
 		minTime, maxTime = docMinTime, docMaxTime
-		
+
 		duration := time.Since(startTime)
 		var totalDocsIndexed uint64
 		if logFileManager != nil {
@@ -251,7 +250,7 @@ func rebuildSingleFile(modernIndexer interface{}, path string, logFileManager in
 		logger.Errorf("Failed to flush all indexer data for single file: %v", err)
 	}
 	nginx_log.UpdateSearcherShards()
-	
+
 	return minTime, maxTime
 }
 
@@ -286,7 +285,7 @@ func rebuildAllFiles(modernIndexer interface{}, logFileManager interface{}, prog
 
 		loopStartTime := time.Now()
 		docsCountMap, minTime, maxTime, err := modernIndexer.(*indexer.ParallelIndexer).IndexLogGroupWithProgress(log.Path, progressConfig)
-		
+
 		if err != nil {
 			logger.Warnf("Failed to index file group, skipping: %s, error: %v", log.Path, err)
 		} else {
@@ -301,7 +300,7 @@ func rebuildAllFiles(modernIndexer interface{}, logFileManager interface{}, prog
 					overallMaxTime = maxTime
 				}
 			}
-			
+
 			if logFileManager != nil {
 				duration := time.Since(loopStartTime)
 				for path, docCount := range docsCountMap {
@@ -325,6 +324,6 @@ func rebuildAllFiles(modernIndexer interface{}, logFileManager interface{}, prog
 	}
 
 	nginx_log.UpdateSearcherShards()
-	
+
 	return overallMinTime, overallMaxTime
 }

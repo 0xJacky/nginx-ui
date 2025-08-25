@@ -15,25 +15,25 @@ import (
 	"github.com/uozi-tech/cosy"
 )
 
-// ConfigFileEntity represents a generic configuration file entity
-type ConfigFileEntity struct {
+// FileEntity represents a generic configuration file entity
+type FileEntity struct {
 	path        string
 	namespaceID uint64
 	namespace   *model.Namespace
 }
 
-// GetPath implements ConfigEntity interface
-func (c *ConfigFileEntity) GetPath() string {
+// GetPath implements Entity interface
+func (c *FileEntity) GetPath() string {
 	return c.path
 }
 
-// GetNamespaceID implements ConfigEntity interface
-func (c *ConfigFileEntity) GetNamespaceID() uint64 {
+// GetNamespaceID implements Entity interface
+func (c *FileEntity) GetNamespaceID() uint64 {
 	return c.namespaceID
 }
 
-// GetNamespace implements ConfigEntity interface
-func (c *ConfigFileEntity) GetNamespace() *model.Namespace {
+// GetNamespace implements Entity interface
+func (c *FileEntity) GetNamespace() *model.Namespace {
 	return c.namespace
 }
 
@@ -80,7 +80,7 @@ func GetConfigs(c *gin.Context) {
 	}
 
 	// Create entities for each config file
-	var entities []*ConfigFileEntity
+	var entities []*FileEntity
 	for _, file := range configFiles {
 		// Skip directories only if IncludeDirs is false
 		if file.IsDir() && !options.IncludeDirs {
@@ -89,7 +89,7 @@ func GetConfigs(c *gin.Context) {
 
 		// For generic config files, we don't have database records
 		// so namespaceID and namespace will be 0 and nil
-		entity := &ConfigFileEntity{
+		entity := &FileEntity{
 			path:        filepath.Join(nginx.GetConfPath(dir), file.Name()),
 			namespaceID: 0,
 			namespace:   nil,
@@ -99,7 +99,7 @@ func GetConfigs(c *gin.Context) {
 
 	// Create processor for generic config files
 	processor := &config.GenericConfigProcessor{
-		Paths: config.ConfigPaths{
+		Paths: config.Paths{
 			AvailableDir: dir,
 			EnabledDir:   dir, // For generic configs, available and enabled are the same
 		},
@@ -121,8 +121,8 @@ func GetConfigs(c *gin.Context) {
 }
 
 // createConfigBuilder creates a custom config builder for generic config files
-func createConfigBuilder(dir string) config.ConfigBuilder {
-	return func(fileName string, fileInfo os.FileInfo, status config.ConfigStatus, namespaceID uint64, namespace *model.Namespace) config.Config {
+func createConfigBuilder(dir string) config.Builder {
+	return func(fileName string, fileInfo os.FileInfo, status config.Status, namespaceID uint64, namespace *model.Namespace) config.Config {
 		return config.Config{
 			Name:        fileName,
 			ModifiedAt:  fileInfo.ModTime(),

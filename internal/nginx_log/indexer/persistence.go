@@ -2,6 +2,7 @@ package indexer
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"path/filepath"
 	"regexp"
@@ -72,7 +73,7 @@ func (pm *PersistenceManager) GetLogIndex(path string) (*model.NginxLogIndex, er
 	q := query.NginxLogIndex
 	logIndex, err := q.Where(q.Path.Eq(path)).First()
 	if err != nil {
-		if err == gorm.ErrRecordNotFound {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
 			// Return a new record for first-time indexing
 			// Determine main log path for grouping
 			mainLogPath := getMainLogPathFromFile(path)

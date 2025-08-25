@@ -10,9 +10,9 @@ import (
 )
 
 // StreamInfo represents stream information
-type StreamInfo struct {
+type Info struct {
 	Path       string
-	Status     config.ConfigStatus
+	Status     config.Status
 	Model      *model.Stream
 	FileInfo   os.FileInfo
 	RawContent string
@@ -20,7 +20,7 @@ type StreamInfo struct {
 }
 
 // GetStreamInfo retrieves comprehensive information about a stream
-func GetStreamInfo(name string) (*StreamInfo, error) {
+func GetStreamInfo(name string) (*Info, error) {
 	// Get the absolute path to the stream configuration file
 	path := nginx.GetConfPath("streams-available", name)
 	fileInfo, err := os.Stat(path)
@@ -50,7 +50,7 @@ func GetStreamInfo(name string) (*StreamInfo, error) {
 		return nil, err
 	}
 
-	info := &StreamInfo{
+	info := &Info{
 		Path:       path,
 		Status:     status,
 		Model:      streamModel,

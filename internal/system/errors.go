@@ -8,7 +8,6 @@ var (
 	ErrInstalled      = e.New(40301, "Nginx UI already installed")
 	ErrInstallTimeout = e.New(40302, "installation is not allowed after 10 minutes of system startup")
 
-	// SSL certificate validation errors
 	ErrSSLCertRequired     = e.New(40303, "SSL certificate path is required when HTTPS is enabled")
 	ErrSSLKeyRequired      = e.New(40304, "SSL key path is required when HTTPS is enabled")
 	ErrSSLCertNotFound     = e.New(40305, "SSL certificate file not found")

@@ -334,7 +334,7 @@ func verifyHashes(restoreDir, nginxUIZipPath, nginxZipPath string) (bool, error)
 	}
 
 	// Verify hashes
-	return (hashInfo.NginxUIHash == nginxUIHash && hashInfo.NginxHash == nginxHash), nil
+	return hashInfo.NginxUIHash == nginxUIHash && hashInfo.NginxHash == nginxHash, nil
 }
 
 // parseHashInfo parses hash info from content string

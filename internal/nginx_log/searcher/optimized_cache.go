@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/dgraph-io/ristretto/v2"
+	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
 )
 
 // OptimizedSearchCache provides high-performance caching using Ristretto
@@ -67,8 +68,19 @@ func (osc *OptimizedSearchCache) GenerateOptimizedKey(req *SearchRequest) string
 	// Convert to JSON and hash for consistent key generation
 	jsonData, err := json.Marshal(keyData)
 	if err != nil {
-		// Fallback to simple string concatenation if JSON marshal fails
-		return fmt.Sprintf("q:%s|l:%d|o:%d|s:%s|so:%s", req.Query, req.Limit, req.Offset, req.SortBy, req.SortOrder)
+		// Fallback to efficient string building if JSON marshal fails
+		keyBuf := make([]byte, 0, len(req.Query)+len(req.SortBy)+len(req.SortOrder)+32)
+		keyBuf = append(keyBuf, "q:"...)
+		keyBuf = append(keyBuf, req.Query...)
+		keyBuf = append(keyBuf, "|l:"...)
+		keyBuf = utils.AppendInt(keyBuf, req.Limit)
+		keyBuf = append(keyBuf, "|o:"...)
+		keyBuf = utils.AppendInt(keyBuf, req.Offset)
+		keyBuf = append(keyBuf, "|s:"...)
+		keyBuf = append(keyBuf, req.SortBy...)
+		keyBuf = append(keyBuf, "|so:"...)
+		keyBuf = append(keyBuf, req.SortOrder...)
+		return utils.BytesToStringUnsafe(keyBuf)
 	}
 
 	// Use MD5 hash for compact key representation

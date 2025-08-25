@@ -34,7 +34,7 @@ func GetStreamConfigs(ctx context.Context, options *ListOptions, streams []*mode
 
 	// Create processor with stream-specific logic
 	processor := &config.GenericConfigProcessor{
-		Paths: config.ConfigPaths{
+		Paths: config.Paths{
 			AvailableDir: "streams-available",
 			EnabledDir:   "streams-enabled",
 		},
@@ -47,7 +47,7 @@ func GetStreamConfigs(ctx context.Context, options *ListOptions, streams []*mode
 }
 
 // buildConfig creates a config.Config from file information with stream-specific data
-func buildConfig(fileName string, fileInfo os.FileInfo, status config.ConfigStatus, namespaceID uint64, namespace *model.Namespace) config.Config {
+func buildConfig(fileName string, fileInfo os.FileInfo, status config.Status, namespaceID uint64, namespace *model.Namespace) config.Config {
 	indexedStream := GetIndexedStream(fileName)
 
 	// Convert proxy targets, expanding upstream references

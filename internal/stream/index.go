@@ -8,21 +8,21 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/upstream"
 )
 
-type StreamIndex struct {
+type Index struct {
 	Path         string
 	Content      string
 	ProxyTargets []upstream.ProxyTarget
 }
 
 var (
-	IndexedStreams = make(map[string]*StreamIndex)
+	IndexedStreams = make(map[string]*Index)
 )
 
-func GetIndexedStream(path string) *StreamIndex {
+func GetIndexedStream(path string) *Index {
 	if stream, ok := IndexedStreams[path]; ok {
 		return stream
 	}
-	return &StreamIndex{}
+	return &Index{}
 }
 
 func init() {
@@ -35,7 +35,7 @@ func scanForStream(configPath string, content []byte) error {
 		return nil
 	}
 
-	streamIndex := StreamIndex{
+	streamIndex := Index{
 		Path:         configPath,
 		Content:      string(content),
 		ProxyTargets: []upstream.ProxyTarget{},

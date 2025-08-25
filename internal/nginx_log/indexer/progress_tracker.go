@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"compress/gzip"
 	"context"
+	"errors"
 	"io"
 	"os"
 	"path/filepath"
@@ -23,7 +24,7 @@ type ProgressTracker struct {
 	isCompleted        bool
 	completionNotified bool // Flag to prevent duplicate completion notifications
 	lastNotify         time.Time
-	
+
 	// Callback functions for notifications
 	onProgress   func(ProgressNotification)
 	onCompletion func(CompletionNotification)
@@ -483,7 +484,7 @@ func EstimateFileLines(ctx context.Context, filePath string, fileSize int64, isC
 	}
 
 	bytesRead, err := io.ReadFull(reader, buf)
-	if err != nil && err != io.EOF && err != io.ErrUnexpectedEOF {
+	if err != nil && err != io.EOF && !errors.Is(err, io.ErrUnexpectedEOF) {
 		return fileSize / 150, nil // Fallback on read error
 	}
 
@@ -527,22 +528,22 @@ func IsCompressedFile(filePath string) bool {
 // IsRotationLogFile determines if a file is a rotation log file
 func IsRotationLogFile(filePath string) bool {
 	base := filepath.Base(filePath)
-	
+
 	// Common nginx rotation patterns:
 	// access.log, access.log.1, access.log.2.gz
 	// access.1.log, access.2.log.gz
 	// error.log, error.log.1, error.log.2.gz
-	
+
 	// Remove compression extensions first
 	if IsCompressedFile(base) {
 		base = strings.TrimSuffix(base, filepath.Ext(base))
 	}
-	
+
 	// Check for basic .log files
 	if strings.HasSuffix(base, ".log") {
 		return true
 	}
-	
+
 	// Check for numbered rotation patterns: access.log.1, error.log.10, etc.
 	parts := strings.Split(base, ".")
 	if len(parts) >= 3 {
@@ -550,7 +551,7 @@ func IsRotationLogFile(filePath string) bool {
 		if parts[len(parts)-2] == "log" && isNumeric(parts[len(parts)-1]) {
 			return true
 		}
-		
+
 		// Pattern: name.number.log (e.g., access.1.log)
 		if parts[len(parts)-1] == "log" {
 			for i := 1; i < len(parts)-1; i++ {
@@ -560,7 +561,7 @@ func IsRotationLogFile(filePath string) bool {
 			}
 		}
 	}
-	
+
 	return false
 }
 

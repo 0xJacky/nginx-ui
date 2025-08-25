@@ -11,7 +11,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/upstream"
 )
 
-type SiteIndex struct {
+type Index struct {
 	Path         string
 	Content      string
 	Urls         []string
@@ -19,14 +19,14 @@ type SiteIndex struct {
 }
 
 var (
-	IndexedSites = make(map[string]*SiteIndex)
+	IndexedSites = make(map[string]*Index)
 )
 
-func GetIndexedSite(path string) *SiteIndex {
+func GetIndexedSite(path string) *Index {
 	if site, ok := IndexedSites[path]; ok {
 		return site
 	}
-	return &SiteIndex{}
+	return &Index{}
 }
 
 func init() {
@@ -43,7 +43,7 @@ func scanForSite(configPath string, content []byte) error {
 	serverBlockRegex := regexp.MustCompile(`(?ms)server\s*\{[^\{]*((.*?\{.*?\})*?[^\}]*)\}`)
 	serverBlocks := serverBlockRegex.FindAllSubmatch(content, -1)
 
-	siteIndex := SiteIndex{
+	siteIndex := Index{
 		Path:         configPath,
 		Content:      string(content),
 		Urls:         []string{},

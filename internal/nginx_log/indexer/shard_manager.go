@@ -9,11 +9,12 @@ import (
 	"sync"
 
 	"github.com/blevesearch/bleve/v2"
+	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
 )
 
 // DefaultShardManager implements sharding logic for distributed indexing
 type DefaultShardManager struct {
-	config     *IndexerConfig
+	config     *Config
 	shards     map[int]bleve.Index
 	shardPaths map[int]string
 	mu         sync.RWMutex
@@ -24,7 +25,7 @@ type DefaultShardManager struct {
 type ShardHashFunc func(key string, shardCount int) int
 
 // NewDefaultShardManager creates a new shard manager
-func NewDefaultShardManager(config *IndexerConfig) *DefaultShardManager {
+func NewDefaultShardManager(config *Config) *DefaultShardManager {
 	return &DefaultShardManager{
 		config:     config,
 		shards:     make(map[int]bleve.Index),
@@ -124,7 +125,12 @@ func (sm *DefaultShardManager) CreateShard(id int, path string) error {
 
 // createShardLocked creates a shard while holding the lock
 func (sm *DefaultShardManager) createShardLocked(id int) error {
-	shardPath := filepath.Join(sm.config.IndexPath, fmt.Sprintf("shard_%d", id))
+	// Use efficient string building for shard path
+	shardNameBuf := make([]byte, 0, 16)
+	shardNameBuf = append(shardNameBuf, "shard_"...)
+	shardNameBuf = utils.AppendInt(shardNameBuf, id)
+	shardName := utils.BytesToStringUnsafe(shardNameBuf)
+	shardPath := filepath.Join(sm.config.IndexPath, shardName)
 
 	// Ensure directory exists
 	if err := os.MkdirAll(shardPath, 0755); err != nil {

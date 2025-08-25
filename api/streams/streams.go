@@ -21,7 +21,7 @@ import (
 type Stream struct {
 	ModifiedAt   time.Time            `json:"modified_at"`
 	Advanced     bool                 `json:"advanced"`
-	Status       config.ConfigStatus  `json:"status"`
+	Status       config.Status        `json:"status"`
 	Name         string               `json:"name"`
 	Config       string               `json:"config"`
 	Tokenized    *nginx.NgxConfig     `json:"tokenized,omitempty"`

@@ -15,7 +15,7 @@ var (
 	nginxPrefix string
 )
 
-// Returns the directory containing the nginx executable
+// GetNginxExeDir Returns the directory containing the nginx executable
 func GetNginxExeDir() string {
 	return filepath.Dir(getNginxSbinPath())
 }

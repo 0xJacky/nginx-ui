@@ -24,7 +24,7 @@ func setupAutoCertJob(scheduler gocron.Scheduler) (gocron.Job, error) {
 // setupCertExpiredJob initializes the certificate expiration check job
 func setupCertExpiredJob(scheduler gocron.Scheduler) (gocron.Job, error) {
 	job, err := scheduler.NewJob(gocron.DurationJob(6*time.Hour),
-		gocron.NewTask(cert.CertExpiredNotify),
+		gocron.NewTask(cert.ExpiredNotify),
 		gocron.WithSingletonMode(gocron.LimitModeWait),
 		gocron.JobOption(gocron.WithStartImmediately()))
 	if err != nil {

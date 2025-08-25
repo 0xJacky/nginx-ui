@@ -57,7 +57,7 @@ type AdvancedSearchRequest struct {
 	SortOrder string `json:"sort_order" form:"sort_order"`
 }
 
-// Structures to match the frontend's expectations for the search response
+// SummaryStats Structures to match the frontend's expectations for the search response
 type SummaryStats struct {
 	UV              int     `json:"uv"`
 	PV              int     `json:"pv"`
@@ -155,10 +155,10 @@ func GetLogPreflight(c *gin.Context) {
 	// Check if indexing is currently in progress
 	processingManager := event.GetProcessingStatusManager()
 	currentStatus := processingManager.GetCurrentStatus()
-	
+
 	var available bool
 	var indexStatus string
-	
+
 	if currentStatus.NginxLogIndexing {
 		// Index is being rebuilt, return not ready status
 		indexStatus = "indexing"
@@ -639,7 +639,7 @@ func GetWorldMapData(c *gin.Context) {
 	}
 
 	logger.Debugf("=== DEBUG GetWorldMapData START ===")
-	logger.Debugf("WorldMapData request - Path: '%s', StartTime: %d, EndTime: %d, Limit: %d", 
+	logger.Debugf("WorldMapData request - Path: '%s', StartTime: %d, EndTime: %d, Limit: %d",
 		req.Path, req.StartTime, req.EndTime, req.Limit)
 
 	analyticsService := nginx_log.GetModernAnalytics()
@@ -744,7 +744,7 @@ func GetChinaMapData(c *gin.Context) {
 	}
 
 	logger.Debugf("=== DEBUG GetChinaMapData START ===")
-	logger.Debugf("ChinaMapData request - Path: '%s', StartTime: %d, EndTime: %d, Limit: %d", 
+	logger.Debugf("ChinaMapData request - Path: '%s', StartTime: %d, EndTime: %d, Limit: %d",
 		req.Path, req.StartTime, req.EndTime, req.Limit)
 
 	analyticsService := nginx_log.GetModernAnalytics()

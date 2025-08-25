@@ -27,8 +27,8 @@ type MockBackupService struct {
 	mock.Mock
 }
 
-func (m *MockBackupService) Backup() (backup.BackupResult, error) {
-	return backup.BackupResult{
+func (m *MockBackupService) Backup() (backup.Result, error) {
+	return backup.Result{
 		BackupName:    "backup-test.zip",
 		AESKey:        "YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY=", // base64 encoded test key
 		AESIv:         "YWJjZGVmZ2hpamtsbW5vcA==",                     // base64 encoded test IV

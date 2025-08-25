@@ -1,7 +1,8 @@
+package nginx
+
 // Implementation of GetDetailedStatus API
 // This feature is designed to address Issue #850, providing Nginx load monitoring functionality similar to BT Panel
 // Returns detailed Nginx status information, including request statistics, connections, worker processes, and other data
-package nginx
 
 import (
 	"net/http"
@@ -13,8 +14,8 @@ import (
 	"github.com/uozi-tech/cosy"
 )
 
-// NginxPerformanceInfo stores Nginx performance-related information
-type NginxPerformanceInfo struct {
+// PerformanceInfo stores Nginx performance-related information
+type PerformanceInfo struct {
 	// Basic status information
 	performance.StubStatusData
 

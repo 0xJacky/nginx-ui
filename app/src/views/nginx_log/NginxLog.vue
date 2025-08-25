@@ -31,9 +31,6 @@ watch(logType, v => {
   if (v === 'error') {
     viewMode.value = 'raw'
   }
-  else {
-    viewMode.value = 'structured'
-  }
 }, { immediate: true })
 </script>
 

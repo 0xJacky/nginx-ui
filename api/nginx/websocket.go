@@ -14,8 +14,8 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 )
 
-// NginxPerformanceClient represents a WebSocket client for Nginx performance monitoring
-type NginxPerformanceClient struct {
+// PerformanceClient represents a WebSocket client for Nginx performance monitoring
+type PerformanceClient struct {
 	conn   *websocket.Conn
 	send   chan interface{}
 	ctx    context.Context
@@ -23,27 +23,27 @@ type NginxPerformanceClient struct {
 	mutex  sync.RWMutex
 }
 
-// NginxPerformanceHub manages WebSocket connections for Nginx performance monitoring
-type NginxPerformanceHub struct {
-	clients    map[*NginxPerformanceClient]bool
-	register   chan *NginxPerformanceClient
-	unregister chan *NginxPerformanceClient
+// PerformanceHub manages WebSocket connections for Nginx performance monitoring
+type PerformanceHub struct {
+	clients    map[*PerformanceClient]bool
+	register   chan *PerformanceClient
+	unregister chan *PerformanceClient
 	mutex      sync.RWMutex
 	ticker     *time.Ticker
 }
 
 var (
-	performanceHub     *NginxPerformanceHub
+	performanceHub     *PerformanceHub
 	performanceHubOnce sync.Once
 )
 
 // GetNginxPerformanceHub returns the singleton hub instance
-func GetNginxPerformanceHub() *NginxPerformanceHub {
+func GetNginxPerformanceHub() *PerformanceHub {
 	performanceHubOnce.Do(func() {
-		performanceHub = &NginxPerformanceHub{
-			clients:    make(map[*NginxPerformanceClient]bool),
-			register:   make(chan *NginxPerformanceClient),
-			unregister: make(chan *NginxPerformanceClient),
+		performanceHub = &PerformanceHub{
+			clients:    make(map[*PerformanceClient]bool),
+			register:   make(chan *PerformanceClient),
+			unregister: make(chan *PerformanceClient),
 			ticker:     time.NewTicker(5 * time.Second),
 		}
 		go performanceHub.run()
@@ -52,7 +52,7 @@ func GetNginxPerformanceHub() *NginxPerformanceHub {
 }
 
 // run handles the main hub loop
-func (h *NginxPerformanceHub) run() {
+func (h *PerformanceHub) run() {
 	defer h.ticker.Stop()
 
 	for {
@@ -80,7 +80,7 @@ func (h *NginxPerformanceHub) run() {
 			h.broadcastPerformanceData()
 
 		case <-kernel.Context.Done():
-			logger.Debug("NginxPerformanceHub: Context cancelled, closing WebSocket")
+			logger.Debug("PerformanceHub: Context cancelled, closing WebSocket")
 			// Shutdown all clients
 			h.mutex.Lock()
 			for client := range h.clients {
@@ -94,7 +94,7 @@ func (h *NginxPerformanceHub) run() {
 }
 
 // sendPerformanceDataToClient sends performance data to a specific client
-func (h *NginxPerformanceHub) sendPerformanceDataToClient(client *NginxPerformanceClient) {
+func (h *PerformanceHub) sendPerformanceDataToClient(client *PerformanceClient) {
 	response := performance.GetPerformanceData()
 
 	select {
@@ -106,7 +106,7 @@ func (h *NginxPerformanceHub) sendPerformanceDataToClient(client *NginxPerforman
 }
 
 // broadcastPerformanceData sends performance data to all connected clients
-func (h *NginxPerformanceHub) broadcastPerformanceData() {
+func (h *PerformanceHub) broadcastPerformanceData() {
 	h.mutex.RLock()
 
 	// Check if there are any connected clients
@@ -151,7 +151,7 @@ func StreamDetailStatusWS(c *gin.Context) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	client := &NginxPerformanceClient{
+	client := &PerformanceClient{
 		conn:   ws,
 		send:   make(chan interface{}, 1024), // Increased buffer size
 		ctx:    ctx,
@@ -167,7 +167,7 @@ func StreamDetailStatusWS(c *gin.Context) {
 }
 
 // writePump pumps messages from the hub to the websocket connection
-func (c *NginxPerformanceClient) writePump() {
+func (c *PerformanceClient) writePump() {
 	ticker := time.NewTicker(30 * time.Second)
 	defer func() {
 		ticker.Stop()
@@ -201,14 +201,14 @@ func (c *NginxPerformanceClient) writePump() {
 			return
 
 		case <-kernel.Context.Done():
-			logger.Debug("NginxPerformanceClient: Context cancelled, closing WebSocket")
+			logger.Debug("PerformanceClient: Context cancelled, closing WebSocket")
 			return
 		}
 	}
 }
 
 // readPump pumps messages from the websocket connection to the hub
-func (c *NginxPerformanceClient) readPump() {
+func (c *PerformanceClient) readPump() {
 	defer func() {
 		hub := GetNginxPerformanceHub()
 		hub.unregister <- c

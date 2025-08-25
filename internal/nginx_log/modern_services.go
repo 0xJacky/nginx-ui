@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/0xJacky/Nginx-UI/internal/event"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/analytics"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/indexer"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/searcher"
@@ -147,31 +146,7 @@ func GetLogFileManager() *indexer.LogFileManager {
 	return globalLogFileManager
 }
 
-// IsIndexing returns whether any indexing operation is currently running
-func IsIndexing() bool {
-	servicesMutex.RLock()
-	defer servicesMutex.RUnlock()
-
-	if !servicesInitialized || globalIndexer == nil {
-		return false
-	}
-	return globalIndexer.IsRunning()
-}
-
-// UpdateIndexingStatus updates the global processing status based on modern indexer
-func UpdateIndexingStatus() {
-	servicesMutex.RLock()
-	isRunning := servicesInitialized && globalIndexer != nil && globalIndexer.IsRunning()
-	servicesMutex.RUnlock()
-
-	// Update global processing status
-	processingManager := event.GetProcessingStatusManager()
-	if processingManager != nil {
-		processingManager.UpdateNginxLogIndexing(isRunning)
-	}
-}
-
-// Type aliases for backward compatibility
+// NginxLogCache Type aliases for backward compatibility
 type NginxLogCache = indexer.NginxLogCache
 type NginxLogWithIndex = indexer.NginxLogWithIndex
 

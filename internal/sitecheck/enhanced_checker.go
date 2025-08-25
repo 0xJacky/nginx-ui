@@ -413,12 +413,27 @@ func parseGRPCURL(rawURL string) (*url.URL, error) {
 	return grpcURL, nil
 }
 
-// LoadSiteConfig loads health check configuration for a site
+// LoadSiteConfig loads health check configuration for a site using cache
 func LoadSiteConfig(siteURL string) (*model.SiteConfig, error) {
 	// Parse URL to get host:port
 	tempConfig := &model.SiteConfig{}
 	tempConfig.SetFromURL(siteURL)
 
+	// Try to get from cache first
+	if config, found := getCachedSiteConfig(tempConfig.Host); found {
+		// Set default health check config if nil
+		if config.HealthCheckConfig == nil {
+			config.HealthCheckConfig = &model.HealthCheckConfig{
+				Protocol:       "http",
+				Method:         "GET",
+				Path:           "/",
+				ExpectedStatus: []int{200},
+			}
+		}
+		return config, nil
+	}
+
+	// Not in cache, query database
 	sc := query.SiteConfig
 	config, err := sc.Where(sc.Host.Eq(tempConfig.Host)).First()
 	if err != nil {
@@ -448,5 +463,7 @@ func LoadSiteConfig(siteURL string) (*model.SiteConfig, error) {
 		}
 	}
 
+	// Cache the config
+	setCachedSiteConfig(tempConfig.Host, config)
 	return config, nil
 }

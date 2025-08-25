@@ -11,7 +11,7 @@ import (
 
 // GetLogList returns a list of Nginx log files with their index status
 func GetLogList(c *gin.Context) {
-	filters := []func(*nginx_log.NginxLogWithIndex) bool{}
+	var filters []func(*nginx_log.NginxLogWithIndex) bool
 
 	if logType := c.Query("type"); logType != "" {
 		filters = append(filters, func(entry *nginx_log.NginxLogWithIndex) bool {

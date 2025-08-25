@@ -9,7 +9,7 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
-// Command to be executed in the temporary container
+// UpgradeDockerStep2Command Command to be executed in the temporary container
 var UpgradeDockerStep2Command = &cli.Command{
 	Name:   "upgrade-docker-step2",
 	Usage:  "Execute the second step of Docker container upgrade (to be run inside the temp container)",

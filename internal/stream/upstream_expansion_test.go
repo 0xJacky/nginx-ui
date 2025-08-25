@@ -29,7 +29,7 @@ func TestBuildConfig_UpstreamExpansion(t *testing.T) {
 	service.UpdateUpstreamDefinition("udp_backend", udpBackendServers, "test.conf")
 
 	// Create a mock indexed stream with proxy targets that reference upstreams
-	IndexedStreams["test_stream"] = &StreamIndex{
+	IndexedStreams["test_stream"] = &Index{
 		Path:    "test_stream",
 		Content: "test content",
 		ProxyTargets: []upstream.ProxyTarget{
@@ -95,7 +95,7 @@ func TestBuildConfig_UpstreamExpansion(t *testing.T) {
 
 func TestBuildConfig_NoUpstreamExpansion(t *testing.T) {
 	// Test case where proxy targets don't reference any upstreams
-	IndexedStreams["test_stream_no_upstream"] = &StreamIndex{
+	IndexedStreams["test_stream_no_upstream"] = &Index{
 		Path:    "test_stream_no_upstream",
 		Content: "test content",
 		ProxyTargets: []upstream.ProxyTarget{

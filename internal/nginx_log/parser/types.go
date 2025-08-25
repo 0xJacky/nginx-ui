@@ -76,7 +76,7 @@ type ParseResult struct {
 }
 
 // ParserConfig holds configuration for the log parser
-type ParserConfig struct {
+type Config struct {
 	BufferSize    int
 	BatchSize     int
 	WorkerCount   int
@@ -88,8 +88,8 @@ type ParserConfig struct {
 }
 
 // DefaultParserConfig returns default parser configuration
-func DefaultParserConfig() *ParserConfig {
-	return &ParserConfig{
+func DefaultParserConfig() *Config {
+	return &Config{
 		BufferSize:    64 * 1024, // 64KB
 		BatchSize:     1000,
 		WorkerCount:   4,
@@ -101,7 +101,7 @@ func DefaultParserConfig() *ParserConfig {
 	}
 }
 
-// Valid HTTP methods
+// ValidHTTPMethods Valid HTTP methods
 var ValidHTTPMethods = map[string]bool{
 	"GET":     true,
 	"POST":    true,

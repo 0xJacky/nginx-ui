@@ -11,29 +11,29 @@ import (
 // convertFacets converts Bleve facets to our facet format
 func (ds *DistributedSearcher) convertFacets(bleveFacets search.FacetResults) map[string]*Facet {
 	facets := make(map[string]*Facet)
-	
+
 	for name, result := range bleveFacets {
 		facet := &Facet{
 			Field:   name,
-			Total:   int(result.Total),
-			Missing: int(result.Missing),
-			Other:   int(result.Other),
+			Total:   result.Total,
+			Missing: result.Missing,
+			Other:   result.Other,
 			Terms:   make([]*FacetTerm, 0),
 		}
-		
+
 		// Handle Terms facet
 		if result.Terms != nil {
 			for _, term := range result.Terms.Terms() {
 				facet.Terms = append(facet.Terms, &FacetTerm{
 					Term:  term.Term,
-					Count: int(term.Count),
+					Count: term.Count,
 				})
 			}
 		}
-		
+
 		facets[name] = facet
 	}
-	
+
 	return facets
 }
 
@@ -53,20 +53,20 @@ func (ds *DistributedSearcher) mergeSingleFacet(existing, incoming *Facet) {
 	existing.Total += incoming.Total
 	existing.Missing += incoming.Missing
 	existing.Other += incoming.Other
-	
+
 	// Merge terms
 	termCounts := make(map[string]int)
-	
+
 	// Add existing terms
 	for _, term := range existing.Terms {
 		termCounts[term.Term] = term.Count
 	}
-	
+
 	// Add incoming terms
 	for _, term := range incoming.Terms {
 		termCounts[term.Term] += term.Count
 	}
-	
+
 	// Convert back to slice and sort by count
 	terms := make([]*FacetTerm, 0, len(termCounts))
 	for term, count := range termCounts {
@@ -75,7 +75,7 @@ func (ds *DistributedSearcher) mergeSingleFacet(existing, incoming *Facet) {
 			Count: count,
 		})
 	}
-	
+
 	// Sort by count (descending) then by term (ascending)
 	sort.Slice(terms, func(i, j int) bool {
 		if terms[i].Count == terms[j].Count {
@@ -83,7 +83,7 @@ func (ds *DistributedSearcher) mergeSingleFacet(existing, incoming *Facet) {
 		}
 		return terms[i].Count > terms[j].Count
 	})
-	
+
 	// Limit to top terms
 	if len(terms) > DefaultFacetSize {
 		// Calculate "other" count
@@ -94,7 +94,7 @@ func (ds *DistributedSearcher) mergeSingleFacet(existing, incoming *Facet) {
 		existing.Other += otherCount
 		terms = terms[:DefaultFacetSize]
 	}
-	
+
 	existing.Terms = terms
 }
 
@@ -107,14 +107,14 @@ func (ds *DistributedSearcher) copyFacet(original *Facet) *Facet {
 		Other:   original.Other,
 		Terms:   make([]*FacetTerm, len(original.Terms)),
 	}
-	
+
 	for i, term := range original.Terms {
 		facet.Terms[i] = &FacetTerm{
 			Term:  term.Term,
 			Count: term.Count,
 		}
 	}
-	
+
 	return facet
 }
 
@@ -123,12 +123,12 @@ func (ds *DistributedSearcher) Aggregate(ctx context.Context, req *AggregationRe
 	// This is a simplified implementation
 	// In a full implementation, you would execute the aggregation across all shards
 	// and merge the results similar to how facets are handled
-	
+
 	result := &AggregationResult{
 		Field: req.Field,
 		Type:  req.Type,
 	}
-	
+
 	// For now, return a placeholder result
 	// This would need to be implemented based on specific requirements
 	switch req.Type {
@@ -157,7 +157,7 @@ func (ds *DistributedSearcher) Aggregate(ctx context.Context, req *AggregationRe
 			"value": 0,
 		}
 	}
-	
+
 	return result, nil
 }
 
@@ -166,42 +166,42 @@ func (ds *DistributedSearcher) Suggest(ctx context.Context, text string, field s
 	if size <= 0 || size > 100 {
 		size = 10
 	}
-	
+
 	// Create search request
 	req := &SearchRequest{
-		Query:   text,
-		Fields:  []string{field},
-		Limit:   size * 2, // Get more results to have better suggestions
-		SortBy:  "_score",
+		Query:     text,
+		Fields:    []string{field},
+		Limit:     size * 2, // Get more results to have better suggestions
+		SortBy:    "_score",
 		SortOrder: SortOrderDesc,
 	}
-	
+
 	// Execute search
 	result, err := ds.Search(ctx, req)
 	if err != nil {
 		return nil, err
 	}
-	
+
 	// Convert results to suggestions
 	suggestions := make([]*Suggestion, 0, size)
 	seen := make(map[string]bool)
-	
+
 	for _, hit := range result.Hits {
 		if len(suggestions) >= size {
 			break
 		}
-		
+
 		// Extract text from the specified field
 		if fieldValue, exists := hit.Fields[field]; exists {
 			if textValue, ok := fieldValue.(string); ok {
 				// Simple suggestion extraction - this could be made more sophisticated
 				terms := ds.extractSuggestionTerms(textValue, text)
-				
+
 				for _, term := range terms {
 					if len(suggestions) >= size {
 						break
 					}
-					
+
 					if !seen[term] && strings.Contains(strings.ToLower(term), strings.ToLower(text)) {
 						suggestions = append(suggestions, &Suggestion{
 							Text:  term,
@@ -214,12 +214,12 @@ func (ds *DistributedSearcher) Suggest(ctx context.Context, text string, field s
 			}
 		}
 	}
-	
+
 	// Sort suggestions by score
 	sort.Slice(suggestions, func(i, j int) bool {
 		return suggestions[i].Score > suggestions[j].Score
 	})
-	
+
 	return suggestions, nil
 }
 
@@ -227,7 +227,7 @@ func (ds *DistributedSearcher) Suggest(ctx context.Context, text string, field s
 func (ds *DistributedSearcher) extractSuggestionTerms(text string, query string) []string {
 	// Simple term extraction - this could be enhanced with NLP
 	terms := strings.Fields(text)
-	
+
 	// Filter and clean terms
 	var suggestions []string
 	for _, term := range terms {
@@ -236,7 +236,7 @@ func (ds *DistributedSearcher) extractSuggestionTerms(text string, query string)
 			suggestions = append(suggestions, term)
 		}
 	}
-	
+
 	return suggestions
 }
 
@@ -253,7 +253,7 @@ func isCommonWord(word string) bool {
 		"would": true, "could": true, "should": true, "may": true,
 		"might": true, "must": true, "can": true, "shall": true,
 	}
-	
+
 	return commonWords[strings.ToLower(word)]
 }
 
@@ -261,14 +261,14 @@ func isCommonWord(word string) bool {
 func (ds *DistributedSearcher) Analyze(ctx context.Context, text string, analyzer string) ([]string, error) {
 	// This would typically use Bleve's analysis capabilities
 	// For now, provide a simple implementation
-	
+
 	if analyzer == "" {
 		analyzer = "standard"
 	}
-	
+
 	// Simple tokenization - this should use proper analyzers
 	terms := strings.Fields(strings.ToLower(text))
-	
+
 	// Remove punctuation and short terms
 	var analyzed []string
 	for _, term := range terms {
@@ -277,7 +277,7 @@ func (ds *DistributedSearcher) Analyze(ctx context.Context, text string, analyze
 			analyzed = append(analyzed, term)
 		}
 	}
-	
+
 	return analyzed, nil
 }
 
@@ -286,7 +286,7 @@ func (ds *DistributedSearcher) getFromCache(req *SearchRequest) *SearchResult {
 	if ds.cache == nil {
 		return nil
 	}
-	
+
 	return ds.cache.Get(req)
 }
 
@@ -294,7 +294,7 @@ func (ds *DistributedSearcher) cacheResult(req *SearchRequest, result *SearchRes
 	if ds.cache == nil {
 		return
 	}
-	
+
 	ds.cache.Put(req, result, DefaultCacheTTL)
 }
 

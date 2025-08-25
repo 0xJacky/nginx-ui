@@ -41,7 +41,7 @@ func GetNginxProcessInfo() (*NginxProcessInfo, error) {
 	masterCount := 0
 	cacheCount := 0
 	otherCount := 0
-	nginxProcesses := []*process.Process{}
+	nginxProcesses := make([]*process.Process, 0)
 
 	// Get the number of system CPU cores
 	numCPU := runtime.NumCPU()

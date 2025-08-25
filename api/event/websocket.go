@@ -119,8 +119,8 @@ var upgrader = websocket.Upgrader{
 	WriteBufferSize: 1024,
 }
 
-// EventBus handles the main WebSocket connection for the event bus
-func EventBus(c *gin.Context) {
+// Bus handles the main WebSocket connection for the event bus
+func Bus(c *gin.Context) {
 	ws, err := upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
 		logger.Error("Failed to upgrade connection:", err)
@@ -187,7 +187,7 @@ func (c *Client) writePump() {
 			return
 
 		case <-kernel.Context.Done():
-			logger.Debug("EventBus: Context cancelled, closing WebSocket")
+			logger.Debug("Bus: Context cancelled, closing WebSocket")
 			return
 		}
 	}

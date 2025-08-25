@@ -6,35 +6,35 @@ import (
 
 // Common nginx log formats
 var (
-	// Standard combined log format
+	// CombinedFormat Standard combined log format
 	CombinedFormat = &LogFormat{
 		Name:    "combined",
 		Pattern: regexp.MustCompile(`^(\S+) - (\S+) \[([^]]+)\] "([^"]*)" (\d+) (\d+|-) "([^"]*)" "([^"]*)"(?:\s+(\S+))?(?:\s+(\S+))?`),
 		Fields:  []string{"ip", "remote_user", "timestamp", "request", "status", "bytes_sent", "referer", "user_agent", "request_time", "upstream_time"},
 	}
 
-	// Standard main log format (common log format)
+	// MainFormat Standard main log format (common log format)
 	MainFormat = &LogFormat{
 		Name:    "main",
 		Pattern: regexp.MustCompile(`^(\S+) - (\S+) \[([^]]+)\] "([^"]*)" (\d+) (\d+|-)(?:\s+"([^"]*)")?(?:\s+"([^"]*)")?`),
 		Fields:  []string{"ip", "remote_user", "timestamp", "request", "status", "bytes_sent", "referer", "user_agent"},
 	}
 
-	// Custom format with more details
+	// DetailedFormat Custom format with more details
 	DetailedFormat = &LogFormat{
 		Name:    "detailed",
 		Pattern: regexp.MustCompile(`^(\S+) - (\S+) \[([^]]+)\] "([^"]*)" (\d+) (\d+|-) "([^"]*)" "([^"]*)" (\S+) (\S+) "([^"]*)" (\S+)`),
 		Fields:  []string{"ip", "remote_user", "timestamp", "request", "status", "bytes_sent", "referer", "user_agent", "request_time", "upstream_time", "x_forwarded_for", "connection"},
 	}
 
-	// All supported formats ordered by priority
+	// SupportedFormats All supported formats ordered by priority
 	SupportedFormats = []*LogFormat{DetailedFormat, CombinedFormat, MainFormat}
 )
 
 // FormatDetector handles automatic log format detection
 type FormatDetector struct {
-	formats       []*LogFormat
-	sampleSize    int
+	formats        []*LogFormat
+	sampleSize     int
 	matchThreshold float64
 }
 
@@ -65,7 +65,7 @@ func (fd *FormatDetector) DetectFormat(lines []string) *LogFormat {
 				matchCount++
 			}
 		}
-		
+
 		matchRate := float64(matchCount) / float64(len(sampleLines))
 		if matchRate >= fd.matchThreshold {
 			return format
@@ -97,10 +97,10 @@ func (fd *FormatDetector) DetectFormatWithDetails(lines []string) (*LogFormat, m
 				matchCount++
 			}
 		}
-		
+
 		score := float64(matchCount) / float64(len(sampleLines))
 		results[format.Name] = score
-		
+
 		if score > bestScore {
 			bestScore = score
 			bestFormat = format

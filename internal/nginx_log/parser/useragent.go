@@ -3,6 +3,7 @@ package parser
 import (
 	"regexp"
 	"strings"
+	"sync"
 )
 
 // SimpleUserAgentParser implements a lightweight user agent parser
@@ -586,6 +587,7 @@ type CachedUserAgentParser struct {
 	parser UserAgentParser
 	cache  map[string]UserAgentInfo
 	maxSize int
+	mu     sync.RWMutex
 }
 
 // NewCachedUserAgentParser creates a cached user agent parser
@@ -603,6 +605,19 @@ func NewCachedUserAgentParser(parser UserAgentParser, maxSize int) *CachedUserAg
 
 // Parse parses a user agent string with caching
 func (p *CachedUserAgentParser) Parse(userAgent string) UserAgentInfo {
+	// Try to get from cache with read lock
+	p.mu.RLock()
+	if info, exists := p.cache[userAgent]; exists {
+		p.mu.RUnlock()
+		return info
+	}
+	p.mu.RUnlock()
+
+	// Parse and cache with write lock
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	
+	// Double-check after acquiring write lock
 	if info, exists := p.cache[userAgent]; exists {
 		return info
 	}
@@ -619,10 +634,14 @@ func (p *CachedUserAgentParser) Parse(userAgent string) UserAgentInfo {
 
 // GetCacheStats returns cache statistics
 func (p *CachedUserAgentParser) GetCacheStats() (size int, maxSize int) {
+	p.mu.RLock()
+	defer p.mu.RUnlock()
 	return len(p.cache), p.maxSize
 }
 
 // ClearCache clears the parser cache
 func (p *CachedUserAgentParser) ClearCache() {
+	p.mu.Lock()
+	defer p.mu.Unlock()
 	p.cache = make(map[string]UserAgentInfo)
 }

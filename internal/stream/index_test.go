@@ -31,7 +31,7 @@ func TestIsStreamConfig(t *testing.T) {
 
 func TestScanForStream(t *testing.T) {
 	// Clear the IndexedStreams map
-	IndexedStreams = make(map[string]*StreamIndex)
+	IndexedStreams = make(map[string]*Index)
 
 	config := `upstream my-tcp {
     server 127.0.0.1:9000;
@@ -66,7 +66,7 @@ server {
 	}
 
 	// Test with a non-stream config path
-	IndexedStreams = make(map[string]*StreamIndex)
+	IndexedStreams = make(map[string]*Index)
 	err = scanForStream("sites-available/test.conf", []byte(config))
 	if err != nil {
 		t.Errorf("scanForStream failed: %v", err)

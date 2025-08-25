@@ -14,7 +14,7 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 )
 
-// Structure for notification function calls
+// NotificationCall Structure for notification function calls
 type NotificationCall struct {
 	Type    string
 	Title   string
@@ -41,7 +41,7 @@ func main() {
 	}
 
 	root := filepath.Join(filepath.Dir(file), "../../")
-	calls := []NotificationCall{}
+	var calls []NotificationCall
 
 	// Scan all Go files
 	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {

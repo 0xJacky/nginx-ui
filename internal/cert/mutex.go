@@ -20,7 +20,7 @@ var (
 // publishProcessingStatus publishes the processing status to the event bus
 func publishProcessingStatus(processing bool) {
 	event.Publish(event.Event{
-		Type: event.EventTypeAutoCertProcessing,
+		Type: event.TypeAutoCertProcessing,
 		Data: processing,
 	})
 }

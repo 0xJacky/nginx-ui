@@ -185,9 +185,9 @@ func updateOrRemoveProxyCachePath(block config.IBlock, directives []config.IDire
 	}
 
 	// If enabled, build the proxy_cache_path directive with all parameters
-	params := []config.Parameter{}
+	params := make([]config.Parameter, 0)
 
-	// First parameter is the path (required)
+	// The First parameter is the path (required)
 	if proxyCache.Path != "" {
 		params = append(params, config.Parameter{Value: proxyCache.Path})
 		err := os.MkdirAll(proxyCache.Path, 0755)

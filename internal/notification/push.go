@@ -25,7 +25,7 @@ func push(nType model.NotificationType, title string, content string, details an
 
 	// Use event system instead of direct broadcast
 	event.Publish(event.Event{
-		Type: event.EventTypeNotification,
+		Type: event.TypeNotification,
 		Data: data,
 	})
 

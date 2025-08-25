@@ -34,7 +34,7 @@ func GetSiteConfigs(ctx context.Context, options *ListOptions, sites []*model.Si
 
 	// Create processor with site-specific logic
 	processor := &config.GenericConfigProcessor{
-		Paths: config.ConfigPaths{
+		Paths: config.Paths{
 			AvailableDir: "sites-available",
 			EnabledDir:   "sites-enabled",
 		},
@@ -47,7 +47,7 @@ func GetSiteConfigs(ctx context.Context, options *ListOptions, sites []*model.Si
 }
 
 // buildConfig creates a config.Config from file information with site-specific data
-func buildConfig(fileName string, fileInfo os.FileInfo, status config.ConfigStatus, namespaceID uint64, namespace *model.Namespace) config.Config {
+func buildConfig(fileName string, fileInfo os.FileInfo, status config.Status, namespaceID uint64, namespace *model.Namespace) config.Config {
 	indexedSite := GetIndexedSite(fileName)
 
 	// Convert proxy targets, expanding upstream references

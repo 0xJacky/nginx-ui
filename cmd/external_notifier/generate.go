@@ -17,7 +17,7 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 )
 
-// Structure to hold extracted notifier information
+// NotifierInfo Structure to hold extracted notifier information
 type NotifierInfo struct {
 	Name      string
 	Fields    []FieldInfo
@@ -25,7 +25,7 @@ type NotifierInfo struct {
 	ConfigKey string
 }
 
-// Structure to hold field information for notifier
+// FieldInfo Structure to hold field information for notifier
 type FieldInfo struct {
 	Name  string
 	Key   string
@@ -88,7 +88,7 @@ func GenerateExternalNotifiers(root string) error {
 	}
 
 	// Collect all notifier info
-	notifiers := []NotifierInfo{}
+	var notifiers []NotifierInfo
 
 	for _, file := range files {
 		notifier, found := extractNotifierInfo(file)

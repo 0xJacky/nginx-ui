@@ -23,6 +23,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/passkey"
 	"github.com/0xJacky/Nginx-UI/internal/self_check"
 	"github.com/0xJacky/Nginx-UI/internal/sitecheck"
+	"github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/internal/validation"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -89,6 +90,7 @@ func InitAfterDatabase(ctx context.Context) {
 		mcp.Init,
 		sitecheck.Init,
 		nginx_log.InitializeModernServices,
+		user.InitTokenCache,
 	}
 
 	for _, v := range asyncs {

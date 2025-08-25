@@ -70,20 +70,20 @@ func (m *MockSearcher) IsHealthy() bool {
 	return args.Bool(0)
 }
 
-func (m *MockSearcher) GetStats() *searcher.SearcherStats {
+func (m *MockSearcher) GetStats() *searcher.Stats {
 	args := m.Called()
 	if args.Get(0) == nil {
 		return nil
 	}
-	return args.Get(0).(*searcher.SearcherStats)
+	return args.Get(0).(*searcher.Stats)
 }
 
-func (m *MockSearcher) GetConfig() *searcher.SearcherConfig {
+func (m *MockSearcher) GetConfig() *searcher.Config {
 	args := m.Called()
 	if args.Get(0) == nil {
 		return nil
 	}
-	return args.Get(0).(*searcher.SearcherConfig)
+	return args.Get(0).(*searcher.Config)
 }
 
 func (m *MockSearcher) Stop() error {

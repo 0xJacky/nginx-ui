@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/0xJacky/Nginx-UI/internal/analytic"
+	"github.com/0xJacky/Nginx-UI/internal/cache"
 	"github.com/0xJacky/Nginx-UI/internal/cluster"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -61,6 +62,7 @@ func AddNode(c *gin.Context) {
 		"token":   "required",
 		"enabled": "omitempty,boolean",
 	}).ExecutedHook(func(c *cosy.Ctx[model.Node]) {
+		cache.InvalidateNodeCache()
 		go analytic.RestartRetrieveNodesStatus()
 	}).Create()
 }
@@ -72,6 +74,7 @@ func EditNode(c *gin.Context) {
 		"token":   "required",
 		"enabled": "omitempty,boolean",
 	}).ExecutedHook(func(c *cosy.Ctx[model.Node]) {
+		cache.InvalidateNodeCache()
 		go analytic.RestartRetrieveNodesStatus()
 	}).Modify()
 }
@@ -79,6 +82,7 @@ func EditNode(c *gin.Context) {
 func DeleteNode(c *gin.Context) {
 	cosy.Core[model.Node](c).
 		ExecutedHook(func(c *cosy.Ctx[model.Node]) {
+			cache.InvalidateNodeCache()
 			go analytic.RestartRetrieveNodesStatus()
 		}).Destroy()
 }
@@ -93,6 +97,7 @@ func LoadNodeFromSettings(c *gin.Context) {
 	ctx := context.Background()
 	cluster.RegisterPredefinedNodes(ctx)
 
+	cache.InvalidateNodeCache()
 	go analytic.RestartRetrieveNodesStatus()
 
 	c.JSON(http.StatusOK, gin.H{

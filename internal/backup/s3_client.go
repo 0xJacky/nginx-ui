@@ -107,7 +107,7 @@ func (s3c *S3Client) UploadFile(ctx context.Context, key string, data []byte, co
 //
 // Returns:
 //   - error: CosyError if any upload fails
-func (s3c *S3Client) UploadBackupFiles(ctx context.Context, result *BackupExecutionResult, autoBackup *model.AutoBackup) error {
+func (s3c *S3Client) UploadBackupFiles(ctx context.Context, result *ExecutionResult, autoBackup *model.AutoBackup) error {
 	// Read backup file content
 	backupData, err := readFileContent(result.FilePath)
 	if err != nil {
