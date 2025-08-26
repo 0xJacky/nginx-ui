@@ -778,9 +778,6 @@ func (w *indexWorker) logDocumentToMap(doc *LogDocument) map[string]interface{} 
 	if doc.City != "" {
 		docMap["city"] = doc.City
 	}
-	if doc.ISP != "" {
-		docMap["isp"] = doc.ISP
-	}
 	if doc.Protocol != "" {
 		docMap["protocol"] = doc.Protocol
 	}

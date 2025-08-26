@@ -762,7 +762,7 @@ watch(timeRange, () => {
         </div>
 
         <!-- Log Table (show if we have entries) -->
-        <div v-if="filteredEntries.length > 0">
+        <div v-if="filteredEntries.length > 0" class="log-table-container">
           <ATable
             :data-source="filteredEntries"
             :pagination="{
@@ -771,6 +771,7 @@ watch(timeRange, () => {
               total: searchTotal,
               showSizeChanger: true,
               showQuickJumper: true,
+              pageSizeOptions: ['50', '100', '200', '500', '1000'],
               showTotal: (total, range) => $gettext('%{start}-%{end} of %{total} items', {
                 start: range[0].toLocaleString(),
                 end: range[1].toLocaleString(),
@@ -823,3 +824,19 @@ watch(timeRange, () => {
     </div>
   </div>
 </template>
+
+<style scoped>
+/* Fix pagination page size selector width */
+:deep(.log-table-container .ant-pagination-options-size-changer .ant-select) {
+  min-width: 100px !important;
+}
+
+:deep(.log-table-container .ant-pagination-options-size-changer .ant-select-selector) {
+  min-width: 100px !important;
+}
+
+/* Ensure the dropdown has enough width */
+:deep(.ant-select-dropdown .ant-select-item) {
+  min-width: 100px;
+}
+</style>

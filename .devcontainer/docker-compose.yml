@@ -4,6 +4,7 @@ services:
     image: nginx-ui-dev
     container_name: nginx-ui
     volumes:
+      - ~/.ssh:/root/.ssh
       - ../..:/workspaces:cached
       - ../.go:/root/go
       - ./data/nginx:/etc/nginx

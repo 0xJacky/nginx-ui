@@ -187,7 +187,8 @@ const columns: StdTableColumn[] = [
           <div>{lastIndexed.format('YYYY-MM-DD HH:mm:ss')}</div>
           {durationText && (
             <div class="text-xs text-gray-100 dark:text-gray-300 mt-1">
-              Duration:
+              { $gettext('Duration') }
+              :
               {' '}
               {durationText.slice(1, -1)}
             </div>

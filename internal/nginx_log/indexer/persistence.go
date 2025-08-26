@@ -2,7 +2,6 @@ package indexer
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"path/filepath"
 	"regexp"
@@ -14,7 +13,6 @@ import (
 	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 	"gorm.io/gen/field"
-	"gorm.io/gorm"
 )
 
 // PersistenceManager handles database operations for log index positions
@@ -71,19 +69,21 @@ func NewPersistenceManager(config *IncrementalIndexConfig) *PersistenceManager {
 // GetLogIndex retrieves the index record for a log file path
 func (pm *PersistenceManager) GetLogIndex(path string) (*model.NginxLogIndex, error) {
 	q := query.NginxLogIndex
-	logIndex, err := q.Where(q.Path.Eq(path)).First()
+
+	// Determine main log path for grouping
+	mainLogPath := getMainLogPathFromFile(path)
+
+	// Use FirstOrCreate to get existing record or create a new one
+	logIndex, err := q.Where(q.Path.Eq(path)).
+		Assign(field.Attrs(&model.NginxLogIndex{
+			Path:        path,
+			MainLogPath: mainLogPath,
+			Enabled:     true,
+		})).
+		FirstOrCreate()
+
 	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			// Return a new record for first-time indexing
-			// Determine main log path for grouping
-			mainLogPath := getMainLogPathFromFile(path)
-			return &model.NginxLogIndex{
-				Path:        path,
-				MainLogPath: mainLogPath,
-				Enabled:     true,
-			}, nil
-		}
-		return nil, fmt.Errorf("failed to get log index: %w", err)
+		return nil, fmt.Errorf("failed to get or create log index: %w", err)
 	}
 
 	return logIndex, nil

@@ -114,9 +114,9 @@ func TestService_ValidateLogPath(t *testing.T) {
 			wantErr: false,
 		},
 		{
-			name:    "non-empty path should be valid",
+			name:    "non-empty path should be invalid without whitelist",
 			logPath: "/var/log/nginx/access.log",
-			wantErr: false,
+			wantErr: true, // In test environment, no whitelist is configured
 		},
 	}
 

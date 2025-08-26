@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { DashboardAnalytics } from '@/api/nginx_log'
+import type { DashboardAnalytics, HourlyStats } from '@/api/nginx_log'
 import { storeToRefs } from 'pinia'
 import VueApexchart from 'vue3-apexcharts'
 import { useSettingsStore } from '@/pinia'
@@ -21,8 +21,38 @@ const hourlyChartOptions = computed(() => {
   if (!props.dashboardData || !props.dashboardData.hourly_stats)
     return {}
 
-  const hourlyData = props.dashboardData.hourly_stats || []
-  const hours = hourlyData.map(item => `${item.hour}`)
+  // Filter hourly data to get only the 24 hours for the end_date in local timezone
+  const allHourlyData = props.dashboardData.hourly_stats || []
+
+  // Get the end date in local timezone
+  const endDateLocal = props.endDate ? new Date(`${props.endDate}T00:00:00`) : new Date()
+  const startOfDayTimestamp = Math.floor(endDateLocal.getTime() / 1000)
+  const endOfDayTimestamp = startOfDayTimestamp + (24 * 60 * 60)
+
+  // Filter data for the local date's 24 hours
+  const hourlyData = allHourlyData.filter(item =>
+    item.timestamp >= startOfDayTimestamp && item.timestamp < endOfDayTimestamp,
+  )
+
+  // Sort by timestamp and ensure we have 24 hours
+  hourlyData.sort((a, b) => a.timestamp - b.timestamp)
+
+  // Create final data with proper hour values (0-23) based on local time
+  const finalHourlyData: HourlyStats[] = []
+  for (let hour = 0; hour < 24; hour++) {
+    const targetTimestamp = startOfDayTimestamp + hour * 3600
+    const found = hourlyData.find(item =>
+      item.timestamp >= targetTimestamp && item.timestamp < targetTimestamp + 3600,
+    )
+    if (found) {
+      finalHourlyData.push({ ...found, hour })
+    }
+    else {
+      finalHourlyData.push({ hour, uv: 0, pv: 0, timestamp: targetTimestamp })
+    }
+  }
+
+  const hours = finalHourlyData.map(item => `${item.hour}`)
 
   return {
     chart: {
@@ -105,9 +135,39 @@ const hourlySeries = computed(() => {
   if (!props.dashboardData || !props.dashboardData.hourly_stats)
     return []
 
-  const hourlyData = props.dashboardData.hourly_stats || []
-  const uvData = hourlyData.map(item => item.uv)
-  const pvData = hourlyData.map(item => item.pv)
+  // Use the same filtered data as in hourlyChartOptions
+  const allHourlyData = props.dashboardData.hourly_stats || []
+
+  // Get the end date in local timezone
+  const endDateLocal = props.endDate ? new Date(`${props.endDate}T00:00:00`) : new Date()
+  const startOfDayTimestamp = Math.floor(endDateLocal.getTime() / 1000)
+  const endOfDayTimestamp = startOfDayTimestamp + (24 * 60 * 60)
+
+  // Filter data for the local date's 24 hours
+  const hourlyData = allHourlyData.filter(item =>
+    item.timestamp >= startOfDayTimestamp && item.timestamp < endOfDayTimestamp,
+  )
+
+  // Sort by timestamp and ensure we have 24 hours
+  hourlyData.sort((a, b) => a.timestamp - b.timestamp)
+
+  // Create final data with proper hour values (0-23) based on local time
+  const finalHourlyData: HourlyStats[] = []
+  for (let hour = 0; hour < 24; hour++) {
+    const targetTimestamp = startOfDayTimestamp + hour * 3600
+    const found = hourlyData.find(item =>
+      item.timestamp >= targetTimestamp && item.timestamp < targetTimestamp + 3600,
+    )
+    if (found) {
+      finalHourlyData.push({ ...found, hour })
+    }
+    else {
+      finalHourlyData.push({ hour, uv: 0, pv: 0, timestamp: targetTimestamp })
+    }
+  }
+
+  const uvData = finalHourlyData.map(item => item.uv)
+  const pvData = finalHourlyData.map(item => item.pv)
 
   return [
     {

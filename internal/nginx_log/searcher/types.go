@@ -111,6 +111,9 @@ type SearchResult struct {
 	// Cache info
 	FromCache bool `json:"from_cache,omitempty"`
 	CacheHit  bool `json:"cache_hit,omitempty"`
+	
+	// Warning message for deep pagination or other issues
+	Warning string `json:"warning,omitempty"`
 }
 
 // SearchHit represents a single search result

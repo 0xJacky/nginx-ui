@@ -16,7 +16,7 @@ func TestService_GetDashboardAnalytics_HourlyStats(t *testing.T) {
 	ctx := context.Background()
 	req := &DashboardQueryRequest{
 		StartTime: 1640995200, // 2022-01-01 00:00:00 UTC
-		EndTime:   1641081600, // 2022-01-02 00:00:00 UTC
+		EndTime:   1641006000, // 2022-01-01 03:00:00 UTC (same day as test data)
 		LogPaths:  []string{"/var/log/nginx/access.log"},
 	}
 

@@ -53,7 +53,6 @@ type LogDocument struct {
 	RegionCode   string   `json:"region_code,omitempty"`
 	Province     string   `json:"province,omitempty"`
 	City         string   `json:"city,omitempty"`
-	ISP          string   `json:"isp,omitempty"`
 	Method       string   `json:"method"`
 	Path         string   `json:"path"`
 	PathExact    string   `json:"path_exact"`
@@ -235,7 +234,6 @@ func CreateLogIndexMapping() mapping.IndexMapping {
 	docMapping.AddFieldMappingsAt("region_code", regionMapping)
 	docMapping.AddFieldMappingsAt("province", regionMapping)
 	docMapping.AddFieldMappingsAt("city", regionMapping)
-	docMapping.AddFieldMappingsAt("isp", regionMapping)
 
 	// HTTP method - keyword
 	methodMapping := bleve.NewTextFieldMapping()

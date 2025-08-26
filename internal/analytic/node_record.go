@@ -17,7 +17,7 @@ import (
 
 // nodeCache contains both slice and map for efficient access
 type nodeCache struct {
-	Nodes   []*model.Node         // For iteration
+	Nodes   []*model.Node          // For iteration
 	NodeMap map[uint64]*model.Node // For fast lookup by ID
 }
 
@@ -228,7 +228,6 @@ func cleanupDisabledNodes(enabledEnvIDs []uint64) {
 	mutex.Unlock()
 }
 
-
 // getEnabledNodes retrieves enabled nodes from cache or database
 func getEnabledNodes() ([]*model.Node, error) {
 	if cached, found := cache.GetCachedNodes(); found {
@@ -249,14 +248,14 @@ func getEnabledNodes() ([]*model.Node, error) {
 	for _, node := range nodes {
 		nodeMap[node.ID] = node
 	}
-	
+
 	nc := &nodeCache{
 		Nodes:   nodes,
 		NodeMap: nodeMap,
 	}
 
 	cache.SetCachedNodes(nc)
-	logger.Debug("Queried and cached %d enabled nodes", len(nodes))
+	logger.Debugf("Queried and cached %d enabled nodes", len(nodes))
 	return nodes, nil
 }
 
@@ -268,20 +267,20 @@ func isNodeEnabled(nodeID uint64) bool {
 			return exists
 		}
 	}
-	
+
 	// Fallback: load cache and check again
 	_, err := getEnabledNodes()
 	if err != nil {
 		return false
 	}
-	
+
 	if cached, found := cache.GetCachedNodes(); found {
 		if nc, ok := cached.(*nodeCache); ok {
 			_, exists := nc.NodeMap[nodeID]
 			return exists
 		}
 	}
-	
+
 	return false
 }
 

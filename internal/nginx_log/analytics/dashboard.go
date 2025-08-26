@@ -75,44 +75,51 @@ func (s *service) GetDashboardAnalytics(ctx context.Context, req *DashboardQuery
 }
 
 // calculateHourlyStats calculates hourly access statistics.
-// This still requires in-memory calculation from hits as it's a temporal analysis.
-// We need to fetch the actual documents for this. A separate, limited query is better.
+// Returns 48 hours of data centered around the end_date to support all timezones.
 func (s *service) calculateHourlyStats(result *searcher.SearchResult, startTime, endTime int64) []HourlyAccessStats {
-	hourlyMap := make(map[int]*HourlyAccessStats)
-	uniqueIPsPerHour := make(map[int]map[string]bool)
+	// Use a map with timestamp as key for easier processing
+	hourlyMap := make(map[int64]*HourlyAccessStats)
+	uniqueIPsPerHour := make(map[int64]map[string]bool)
 
-	// Initialize hourly buckets for end_date (last day) only
-	endDate := time.Unix(endTime, 0)
-	endDateStart := time.Date(endDate.Year(), endDate.Month(), endDate.Day(), 0, 0, 0, 0, endDate.Location())
+	// Calculate 48 hours range: from UTC end_date minus 12 hours to plus 36 hours
+	// This covers UTC-12 to UTC+14 timezones
+	endDate := time.Unix(endTime, 0).UTC()
+	endDateStart := time.Date(endDate.Year(), endDate.Month(), endDate.Day(), 0, 0, 0, 0, time.UTC)
 	
-	// Create 24 hour buckets for the end date
-	for hour := 0; hour < 24; hour++ {
-		hourTime := endDateStart.Add(time.Duration(hour) * time.Hour)
-		hourlyMap[hour] = &HourlyAccessStats{
-			Hour:      hour,
+	// Create hourly buckets for 48 hours (12 hours before to 36 hours after the UTC date boundary)
+	rangeStart := endDateStart.Add(-12 * time.Hour)
+	rangeEnd := endDateStart.Add(36 * time.Hour)
+	
+	// Initialize hourly buckets
+	for t := rangeStart; t.Before(rangeEnd); t = t.Add(time.Hour) {
+		timestamp := t.Unix()
+		hourlyMap[timestamp] = &HourlyAccessStats{
+			Hour:      t.Hour(),
 			UV:        0,
 			PV:        0,
-			Timestamp: hourTime.Unix(),
+			Timestamp: timestamp,
 		}
-		uniqueIPsPerHour[hour] = make(map[string]bool)
+		uniqueIPsPerHour[timestamp] = make(map[string]bool)
 	}
 
-	// Process search results - only count hits from end_date
+	// Process search results - count hits within the 48-hour window
 	for _, hit := range result.Hits {
 		if timestampField, ok := hit.Fields["timestamp"]; ok {
 			if timestampFloat, ok := timestampField.(float64); ok {
 				timestamp := int64(timestampFloat)
-				t := time.Unix(timestamp, 0)
 				
-				// Check if this hit is from the end_date
-				if t.Year() == endDate.Year() && t.Month() == endDate.Month() && t.Day() == endDate.Day() {
-					hour := t.Hour()
-					if stats, exists := hourlyMap[hour]; exists {
+				// Check if this hit falls within our 48-hour window
+				if timestamp >= rangeStart.Unix() && timestamp < rangeEnd.Unix() {
+					// Round down to the hour
+					t := time.Unix(timestamp, 0).UTC()
+					hourTimestamp := time.Date(t.Year(), t.Month(), t.Day(), t.Hour(), 0, 0, 0, time.UTC).Unix()
+					
+					if stats, exists := hourlyMap[hourTimestamp]; exists {
 						stats.PV++
 						if ipField, ok := hit.Fields["ip"]; ok {
 							if ip, ok := ipField.(string); ok && ip != "" {
-								if !uniqueIPsPerHour[hour][ip] {
-									uniqueIPsPerHour[hour][ip] = true
+								if !uniqueIPsPerHour[hourTimestamp][ip] {
+									uniqueIPsPerHour[hourTimestamp][ip] = true
 									stats.UV++
 								}
 							}
@@ -123,14 +130,14 @@ func (s *service) calculateHourlyStats(result *searcher.SearchResult, startTime,
 		}
 	}
 
-	// Convert to slice and sort
+	// Convert to slice and sort by timestamp
 	var stats []HourlyAccessStats
 	for _, stat := range hourlyMap {
 		stats = append(stats, *stat)
 	}
 
 	sort.Slice(stats, func(i, j int) bool {
-		return stats[i].Hour < stats[j].Hour
+		return stats[i].Timestamp < stats[j].Timestamp
 	})
 
 	return stats

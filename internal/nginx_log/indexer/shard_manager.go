@@ -142,9 +142,21 @@ func (sm *DefaultShardManager) createShardLocked(id int) error {
 	var err error
 
 	if _, statErr := os.Stat(filepath.Join(shardPath, "index_meta.json")); os.IsNotExist(statErr) {
-		// Create new index
+		// Create new index with optimized disk space configuration
 		mapping := CreateLogIndexMapping()
-		shard, err = bleve.New(shardPath, mapping)
+		
+		// Optimize FloorSegmentFileSize for better disk space usage
+		// FloorSegmentFileSize controls the minimum size of segment files.
+		// Larger values reduce file fragmentation and improve I/O efficiency,
+		// which can save disk space by reducing metadata overhead.
+		// 5MB provides a good balance between space efficiency and performance.
+		kvConfig := map[string]interface{}{
+			"scorchMergePlanOptions": map[string]interface{}{
+				"FloorSegmentFileSize": 5000000, // 5MB minimum segment file size
+			},
+		}
+		
+		shard, err = bleve.NewUsing(shardPath, mapping, bleve.Config.DefaultIndexType, bleve.Config.DefaultMemKVStore, kvConfig)
 		if err != nil {
 			return fmt.Errorf("failed to create new shard index: %w", err)
 		}

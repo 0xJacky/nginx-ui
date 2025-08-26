@@ -13,7 +13,6 @@ type AccessLogEntry struct {
 	RegionCode   string   `json:"region_code"`
 	Province     string   `json:"province"`
 	City         string   `json:"city"`
-	ISP          string   `json:"isp"`
 	Method       string   `json:"method"`
 	Path         string   `json:"path"`
 	Protocol     string   `json:"protocol"`

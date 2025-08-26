@@ -35,7 +35,7 @@ func TestService_GetLogEntriesStats_Success(t *testing.T) {
 					{Term: "POST", Count: 1},
 				},
 			},
-			"path": {
+			"path_exact": {
 				Terms: []*searcher.FacetTerm{
 					{Term: "/a", Count: 3},
 					{Term: "/b", Count: 1},

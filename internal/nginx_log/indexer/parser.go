@@ -46,7 +46,6 @@ func ParseLogLine(line string) (*LogDocument, error) {
 		RegionCode:  entry.RegionCode,
 		Province:    entry.Province,
 		City:        entry.City,
-		ISP:         entry.ISP,
 		Method:      entry.Method,
 		Path:        entry.Path,
 		PathExact:   entry.Path, // Use the same for now
