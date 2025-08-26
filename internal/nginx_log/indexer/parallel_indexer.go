@@ -193,8 +193,6 @@ func (pi *ParallelIndexer) IndexDocuments(ctx context.Context, docs []*Document)
 		return ctx.Err()
 	case <-pi.ctx.Done():
 		return fmt.Errorf("indexer stopped")
-	default:
-		return fmt.Errorf("queue is full")
 	}
 }
 

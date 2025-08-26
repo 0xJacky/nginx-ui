@@ -409,13 +409,105 @@ func (pt *ProgressTracker) getProgressLocked() ProgressNotification {
 		}
 	}
 
-	// Calculate progress percentage
+	// Calculate progress percentage using hybrid approach
 	var percentage float64
-	if pt.totalEstimate > 0 {
-		percentage = float64(pt.totalActual) / float64(pt.totalEstimate) * 100
-	} else if len(pt.files) > 0 {
-		// Fallback to file-based progress if no line estimates
-		percentage = float64(completedFiles) / float64(len(pt.files)) * 100
+	
+	// Calculate weighted progress combining file count, file sizes, and line estimates
+	var totalFileWeight, processedFileWeight float64
+	var totalSizeWeight, processedSizeWeight float64
+	var totalLineWeight, processedLineWeight float64
+	
+	// Collect metrics for hybrid calculation
+	for _, fp := range pt.files {
+		fileWeight := 1.0 // Each file contributes equally to file-based progress
+		sizeWeight := float64(fp.FileSize)
+		lineWeight := float64(fp.EstimatedLines)
+		
+		totalFileWeight += fileWeight
+		totalSizeWeight += sizeWeight
+		if lineWeight > 0 {
+			totalLineWeight += lineWeight
+		}
+		
+		if fp.State == FileStateCompleted {
+			processedFileWeight += fileWeight
+			processedSizeWeight += sizeWeight
+			if lineWeight > 0 {
+				processedLineWeight += float64(fp.ProcessedLines)
+			}
+		} else if fp.State == FileStateProcessing && fp.ProcessedLines > 0 {
+			// For processing files, add partial progress
+			if lineWeight > 0 {
+				processedLineWeight += float64(fp.ProcessedLines)
+				// For size-based progress, estimate based on lines processed
+				if fp.EstimatedLines > 0 {
+					sizeProgress := float64(fp.ProcessedLines) / float64(fp.EstimatedLines)
+					processedSizeWeight += sizeWeight * sizeProgress
+				}
+			} else if fp.FileSize > 0 && fp.CurrentPos > 0 {
+				// Use position-based progress for files without line estimates
+				sizeProgress := float64(fp.CurrentPos) / float64(fp.FileSize)
+				processedSizeWeight += sizeWeight * sizeProgress
+				processedFileWeight += fileWeight * sizeProgress
+			}
+		}
+	}
+	
+	// Calculate progress using the most reliable metric available
+	if totalLineWeight > 0 && processedLineWeight > 0 {
+		// Dynamic line estimation: adjust line estimates based on completed files
+		dynamicLineWeight := totalLineWeight
+		if completedFiles >= 2 {
+			// Calculate average lines per completed file
+			var totalLinesFromCompleted int64
+			for _, fp := range pt.files {
+				if fp.State == FileStateCompleted {
+					totalLinesFromCompleted += fp.ProcessedLines
+				}
+			}
+			
+			if completedFiles > 0 {
+				avgLinesPerFile := float64(totalLinesFromCompleted) / float64(completedFiles)
+				// Adjust remaining file estimates based on observed average
+				remainingFiles := len(pt.files) - completedFiles
+				if remainingFiles > 0 {
+					// Calculate current estimate for remaining files
+					var remainingEstimate int64
+					for _, fp := range pt.files {
+						if fp.State != FileStateCompleted {
+							remainingEstimate += fp.EstimatedLines
+						}
+					}
+					
+					// Replace remaining estimates with dynamic estimate
+					dynamicRemainingEstimate := int64(avgLinesPerFile * float64(remainingFiles))
+					dynamicLineWeight = float64(int64(totalLinesFromCompleted) + dynamicRemainingEstimate)
+				}
+			}
+		}
+		
+		// Use line-based progress with dynamic estimation
+		linePercentage := (processedLineWeight / float64(dynamicLineWeight)) * 100
+		
+		// Use file-based progress as primary metric for reliability  
+		filePercentage := (processedFileWeight / totalFileWeight) * 100
+		
+		// Weight them: 40% lines, 60% files for better reliability
+		// Files are more predictable than line estimates for compressed files
+		percentage = (linePercentage * 0.4) + (filePercentage * 0.6)
+		
+		// Additional safety: never exceed file-based progress by more than 10%
+		// This prevents premature 100% when file-based progress is more reliable
+		maxAllowedPercentage := filePercentage + 10.0
+		if percentage > maxAllowedPercentage {
+			percentage = maxAllowedPercentage
+		}
+	} else if totalSizeWeight > 0 {
+		// Fallback to size-based progress
+		percentage = (processedSizeWeight / totalSizeWeight) * 100
+	} else if totalFileWeight > 0 {
+		// Fallback to file-based progress only
+		percentage = (processedFileWeight / totalFileWeight) * 100
 	}
 
 	// Cap at 100%
@@ -432,6 +524,34 @@ func (pt *ProgressTracker) getProgressLocked() ProgressNotification {
 		estimatedRemain = time.Duration(int64(avgTimePerPercent * remainingPercent))
 	}
 
+	// Use dynamic line estimation for reporting
+	adjustedEstimate := pt.totalEstimate
+	if completedFiles >= 2 {
+		// Calculate average lines per completed file
+		var totalLinesFromCompleted int64
+		for _, fp := range pt.files {
+			if fp.State == FileStateCompleted {
+				totalLinesFromCompleted += fp.ProcessedLines
+			}
+		}
+		
+		if completedFiles > 0 {
+			avgLinesPerFile := float64(totalLinesFromCompleted) / float64(completedFiles)
+			// Project total lines based on completed files
+			projectedTotal := int64(avgLinesPerFile * float64(len(pt.files)))
+			
+			// Use dynamic estimate with some constraints to prevent extreme changes
+			if completedFiles >= len(pt.files)/5 { // At least 20% of files processed
+				// More confidence, allow larger adjustments
+				adjustedEstimate = projectedTotal
+			} else if projectedTotal > adjustedEstimate {
+				// Less confidence, be more conservative but still adjust upward
+				maxIncrease := adjustedEstimate + (projectedTotal-adjustedEstimate)/2
+				adjustedEstimate = maxIncrease
+			}
+		}
+	}
+
 	return ProgressNotification{
 		LogGroupPath:    pt.logGroupPath,
 		Percentage:      percentage,
@@ -440,7 +560,7 @@ func (pt *ProgressTracker) getProgressLocked() ProgressNotification {
 		ProcessingFiles: processingFiles,
 		FailedFiles:     failedFiles,
 		ProcessedLines:  pt.totalActual,
-		EstimatedLines:  pt.totalEstimate,
+		EstimatedLines:  adjustedEstimate,
 		ElapsedTime:     elapsed,
 		EstimatedRemain: estimatedRemain,
 		IsCompleted:     pt.isCompleted,

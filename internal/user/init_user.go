@@ -8,15 +8,16 @@ import (
 
 // GetInitUser get the init user from database with caching
 func GetInitUser(c *gin.Context) *model.User {
+	const initUserID = 1
 	// Try to get from cache first
-	if cachedUser, found := GetCachedUser(1); found {
+	if cachedUser, found := GetCachedUser(initUserID); found {
 		return cachedUser
 	}
 	
 	// If not in cache, get from database
 	db := cosy.UseDB(c)
 	user := &model.User{}
-	db.First(user, 1)
+	db.First(user, initUserID)
 	
 	// Cache the user for future requests
 	if user.ID != 0 {

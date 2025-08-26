@@ -67,7 +67,10 @@ func TestProgressTracker_BasicFunctionality(t *testing.T) {
 	// Update progress for first file
 	tracker.UpdateFileProgress("/var/log/nginx/access.log", 500)
 	progress = tracker.GetProgress()
-	expectedPercentage := float64(500) / float64(4600) * 100
+	// With hybrid calculation: 40% line-based + 60% file-based
+	// Line progress: 500/4600 = 10.87%, File progress: 0/5 = 0% (file still processing)
+	// Expected: (10.87 * 0.4) + (0 * 0.6) = 4.35%
+	expectedPercentage := (float64(500)/float64(4600)*100)*0.4 + (0.0)*0.6
 	if progress.Percentage < expectedPercentage-1 || progress.Percentage > expectedPercentage+1 {
 		t.Errorf("Expected progress around %.2f%%, got %.2f%%", expectedPercentage, progress.Percentage)
 	}
