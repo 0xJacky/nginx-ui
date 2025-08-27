@@ -3,6 +3,8 @@ package nginx_log
 import (
 	"context"
 	"fmt"
+	"os"
+	"path/filepath"
 	"sync"
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/analytics"
@@ -10,6 +12,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/searcher"
 	"github.com/blevesearch/bleve/v2"
 	"github.com/uozi-tech/cosy/logger"
+	cSettings "github.com/uozi-tech/cosy/settings"
 )
 
 // Global instances for new services
@@ -72,6 +75,8 @@ func initializeWithDefaults(ctx context.Context) error {
 
 	// Initialize parallel indexer with shard manager
 	indexerConfig := indexer.DefaultIndexerConfig()
+	// Use config directory for index path
+	indexerConfig.IndexPath = getConfigDirIndexPath()
 	shardManager := indexer.NewDefaultShardManager(indexerConfig)
 	globalIndexer = indexer.NewParallelIndexer(indexerConfig, shardManager)
 
@@ -92,6 +97,28 @@ func initializeWithDefaults(ctx context.Context) error {
 	updateSearcherShardsLocked()
 
 	return nil
+}
+
+// getConfigDirIndexPath returns the index path relative to the config file directory
+func getConfigDirIndexPath() string {
+	// Get the config file path from cosy settings
+	if cSettings.ConfPath != "" {
+		configDir := filepath.Dir(cSettings.ConfPath)
+		indexPath := filepath.Join(configDir, "log-index")
+		
+		// Ensure the directory exists
+		if err := os.MkdirAll(indexPath, 0755); err != nil {
+			logger.Warnf("Failed to create index directory at %s: %v, using default", indexPath, err)
+			return "./log-index"
+		}
+		
+		logger.Infof("Using index path: %s", indexPath)
+		return indexPath
+	}
+	
+	// Fallback to default relative path
+	logger.Warn("Config file path not available, using default index path")
+	return "./log-index"
 }
 
 // GetModernSearcher returns the global searcher instance
