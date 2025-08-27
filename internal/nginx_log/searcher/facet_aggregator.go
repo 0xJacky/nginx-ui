@@ -50,7 +50,8 @@ func (ds *DistributedSearcher) mergeFacets(combined, incoming map[string]*Facet)
 
 // mergeSingleFacet merges two facets for the same field
 func (ds *DistributedSearcher) mergeSingleFacet(existing, incoming *Facet) {
-	existing.Total += incoming.Total
+	// Note: Do NOT sum Total values - it represents unique terms count, not document count
+	// The Total should be recalculated based on the actual number of unique terms after merging
 	existing.Missing += incoming.Missing
 	existing.Other += incoming.Other
 
@@ -96,6 +97,8 @@ func (ds *DistributedSearcher) mergeSingleFacet(existing, incoming *Facet) {
 	}
 
 	existing.Terms = terms
+	// Set Total to the actual number of unique terms (not sum of totals)
+	existing.Total = len(termCounts)
 }
 
 // copyFacet creates a deep copy of a facet
