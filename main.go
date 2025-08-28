@@ -5,6 +5,7 @@ import (
 	"crypto/tls"
 	"fmt"
 	"net"
+	"os"
 	"os/signal"
 	"syscall"
 
@@ -19,7 +20,6 @@ import (
 	"github.com/0xJacky/Nginx-UI/router"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
-	"github.com/pkg/errors"
 	"github.com/uozi-tech/cosy"
 	cKernel "github.com/uozi-tech/cosy/kernel"
 	"github.com/uozi-tech/cosy/logger"
@@ -101,14 +101,18 @@ func Program(ctx context.Context, confPath string) func(l []net.Listener) error 
 		}
 
 		go func() {
+			logger.Info("Started graceful shutdown handler goroutine")
 			// Wait for context cancellation
 			<-ctx.Done()
 
 			// Graceful shutdown
 			logger.Info("Shutting down servers...")
 			if err := serverFactory.Shutdown(ctx); err != nil {
-				logger.Errorf("Error during server shutdown: %v", err)
+				if kernel.IsUnknownServerListenError(err) {
+					logger.Errorf("Error during server shutdown: %v", err)
+				}
 			}
+			logger.Info("Graceful shutdown handler goroutine completed")
 		}()
 
 		// Start the servers
@@ -122,7 +126,9 @@ func Program(ctx context.Context, confPath string) func(l []net.Listener) error 
 		// Graceful shutdown
 		logger.Info("Shutting down servers...")
 		if err := serverFactory.Shutdown(ctx); err != nil {
-			logger.Errorf("Error during server shutdown: %v", err)
+			if kernel.IsUnknownServerListenError(err) {
+				logger.Errorf("Error during server shutdown: %v", err)
+			}
 		}
 
 		return nil
@@ -147,6 +153,8 @@ func main() {
 		defer process.RemovePIDFile(pidPath)
 	}
 
+	kernel.Anchor()
+
 	var programCancel context.CancelFunc
 
 	err := risefront.New(mainCtx, risefront.Config{
@@ -166,35 +174,28 @@ func main() {
 		Name:      "nginx-ui",
 		Addresses: []string{fmt.Sprintf("%s:%d", cSettings.ServerSettings.Host, cSettings.ServerSettings.Port)},
 		LogHandler: func(loglevel risefront.LogLevel, kind string, args ...any) {
+			logger := logger.GetLogger()
+			args = append([]any{kind}, args...)
 			switch loglevel {
 			case risefront.DebugLevel:
-				logger.Debugf(kind, args...)
+				logger.Debug(args...)
 			case risefront.InfoLevel:
-				logger.Infof(kind, args...)
+				logger.Info(args...)
 			case risefront.WarnLevel:
-				logger.Warnf(kind, args...)
+				logger.Warn(args...)
 			case risefront.ErrorLevel:
-				switch args[0].(type) {
-				case error:
-					if errors.Is(args[0].(error), net.ErrClosed) {
-						return
-					}
-					logger.Errorf(kind, fmt.Errorf("%v", args[0].(error)))
-				default:
-					logger.Errorf(kind, args...)
-				}
+				logger.Error(args...)
 			case risefront.FatalLevel:
-				logger.Fatalf(kind, args...)
+				logger.Fatal(args...)
 			case risefront.PanicLevel:
-				logger.Panicf(kind, args...)
+				logger.Panic(args...)
 			default:
-				logger.Errorf(kind, args...)
+				logger.Error(args...)
 			}
 		},
 	})
-	if err != nil && !errors.Is(err, context.DeadlineExceeded) &&
-		!errors.Is(err, context.Canceled) &&
-		!errors.Is(err, net.ErrClosed) {
+	if err != nil && kernel.IsUnknownServerListenError(err) {
 		logger.Error(err)
+		os.Exit(1)
 	}
 }

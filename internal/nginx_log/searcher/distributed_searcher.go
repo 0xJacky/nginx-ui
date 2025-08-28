@@ -10,6 +10,7 @@ import (
 	"github.com/blevesearch/bleve/v2"
 	"github.com/blevesearch/bleve/v2/search"
 	"github.com/blevesearch/bleve/v2/search/query"
+	"github.com/uozi-tech/cosy/logger"
 )
 
 // DistributedSearcher implements high-performance distributed search across multiple shards
@@ -263,6 +264,14 @@ func (ds *DistributedSearcher) convertBleveResult(bleveResult *bleve.SearchResul
 					Count: term.Count,
 				})
 			}
+			
+			// Fix Total to be the actual count of unique terms, not the sum
+			// This addresses the issue where Bleve may incorrectly aggregate Total values
+			// across multiple shards in IndexAlias
+			convertedFacet.Total = len(facetTerms)
+		} else {
+			// If there are no terms, Total should be 0
+			convertedFacet.Total = 0
 		}
 		
 		result.Facets[name] = convertedFacet
@@ -448,8 +457,55 @@ func (ds *DistributedSearcher) GetConfig() *Config {
 	return ds.config
 }
 
-// Stop gracefully stops the searcher
+// GetShards returns the underlying shards for cardinality counting
+func (ds *DistributedSearcher) GetShards() []bleve.Index {
+	return ds.shards
+}
+
+// Stop gracefully stops the searcher and closes all bleve indexes
 func (ds *DistributedSearcher) Stop() error {
-	atomic.StoreInt32(&ds.running, 0)
+	// Check if already stopped
+	if !atomic.CompareAndSwapInt32(&ds.running, 1, 0) {
+		logger.Warnf("[DistributedSearcher] Stop called but already stopped")
+		return nil
+	}
+	
+	// Note: IndexAlias doesn't own the underlying indexes, it just references them
+	// We need to close both the alias and the underlying shards
+	
+	// First, close the index alias (this doesn't close the underlying indexes)
+	if ds.indexAlias != nil {
+		// IndexAlias.Close() just removes references, doesn't close underlying indexes
+		if err := ds.indexAlias.Close(); err != nil {
+			logger.Errorf("Failed to close index alias: %v", err)
+		}
+		ds.indexAlias = nil
+	}
+	
+	// Now close the actual shard indexes
+	for i, shard := range ds.shards {
+		if shard != nil {
+			// Use recover to catch any panic from double-close
+			func() {
+				defer func() {
+					if r := recover(); r != nil {
+						logger.Errorf("[DistributedSearcher] Panic while closing shard %d: %v", i, r)
+					}
+				}()
+				
+				if err := shard.Close(); err != nil {
+					// Only log if it's not already closed
+					if err.Error() != "close of closed channel" {
+						logger.Errorf("Failed to close shard %d: %v", i, err)
+					}
+				}
+			}()
+			ds.shards[i] = nil
+		}
+	}
+	
+	// Clear the shards slice
+	ds.shards = nil
+	
 	return nil
 }

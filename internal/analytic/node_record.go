@@ -255,7 +255,6 @@ func getEnabledNodes() ([]*model.Node, error) {
 	}
 
 	cache.SetCachedNodes(nc)
-	logger.Debugf("Queried and cached %d enabled nodes", len(nodes))
 	return nodes, nil
 }
 

@@ -13,6 +13,10 @@ var cache *ristretto.Cache[string, any]
 
 // Init initializes the cache system with search indexing and config scanning
 func Init(ctx context.Context) {
+	// Force release any existing file system resources before initialization
+	logger.Info("Initializing cache system - ensuring clean state...")
+	ForceReleaseResources()
+
 	// Initialize the main cache
 	var err error
 	cache, err = ristretto.NewCache(&ristretto.Config[string, any]{
@@ -30,7 +34,14 @@ func Init(ctx context.Context) {
 	}
 
 	// Initialize config file scanner
+	logger.Info("Starting config scanner initialization...")
 	InitScanner(ctx)
+	logger.Info("Cache system initialization completed")
+
+	go func() {
+		<-ctx.Done()
+		Shutdown()
+	}()
 }
 
 // Set stores a value in cache with TTL
@@ -47,4 +58,21 @@ func Get(key string) (interface{}, bool) {
 // Del removes a value from cache
 func Del(key string) {
 	cache.Del(key)
+}
+
+// Shutdown gracefully shuts down the cache system and releases all resources
+func Shutdown() {
+	logger.Info("Shutting down cache system...")
+
+	// Force release all file system resources
+	ForceReleaseResources()
+
+	// Close main cache
+	if cache != nil {
+		cache.Close()
+		cache = nil
+		logger.Info("Main cache closed")
+	}
+
+	logger.Info("Cache system shutdown completed")
 }

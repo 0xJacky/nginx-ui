@@ -3,6 +3,7 @@ package stream
 import (
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/cache"
 	"github.com/0xJacky/Nginx-UI/internal/upstream"
@@ -26,7 +27,7 @@ func GetIndexedStream(path string) *Index {
 }
 
 func init() {
-	cache.RegisterCallback(scanForStream)
+	cache.RegisterCallback("stream.scanForStream", scanForStream)
 }
 
 func scanForStream(configPath string, content []byte) error {
@@ -41,11 +42,24 @@ func scanForStream(configPath string, content []byte) error {
 		ProxyTargets: []upstream.ProxyTarget{},
 	}
 
-	// Parse proxy targets from the configuration content
-	streamIndex.ProxyTargets = upstream.ParseProxyTargetsFromRawContent(string(content))
-	// Only store if we found proxy targets
-	if len(streamIndex.ProxyTargets) > 0 {
-		IndexedStreams[filepath.Base(configPath)] = &streamIndex
+	// Parse proxy targets from the configuration content with timeout protection
+	done := make(chan []upstream.ProxyTarget, 1)
+	go func() {
+		targets := upstream.ParseProxyTargetsFromRawContent(string(content))
+		done <- targets
+	}()
+	
+	select {
+	case targets := <-done:
+		streamIndex.ProxyTargets = targets
+		// Only store if we found proxy targets
+		if len(streamIndex.ProxyTargets) > 0 {
+			IndexedStreams[filepath.Base(configPath)] = &streamIndex
+		}
+	case <-time.After(2 * time.Second):
+		// Timeout protection - skip this file's stream processing
+		// This prevents the callback from blocking indefinitely
+		return nil
 	}
 
 	return nil

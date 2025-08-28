@@ -143,33 +143,33 @@ func (sc *SiteChecker) CollectSites() {
 		}
 	}
 
-	logger.Infof("Collected %d sites for checking (enabled sites only)", len(sc.sites))
+	logger.Infof("Collected %d enabled sites for checking", len(sc.sites))
 }
 
 // loadAllSiteConfigs loads all site configs from database and caches them
 func loadAllSiteConfigs() error {
 	siteConfigMutex.Lock()
 	defer siteConfigMutex.Unlock()
-	
+
 	// Skip database operation if query.SiteConfig is nil (e.g., in tests)
 	if query.SiteConfig == nil {
 		logger.Debugf("Skipping site config batch load - query.SiteConfig is nil (likely in test environment)")
 		lastBatchLoad = time.Now()
 		return nil
 	}
-	
+
 	sc := query.SiteConfig
 	configs, err := sc.Find()
 	if err != nil {
 		return fmt.Errorf("failed to load site configs: %w", err)
 	}
-	
+
 	now := time.Now()
 	expiry := now.Add(cacheExpiry)
-	
+
 	// Clear existing cache
 	siteConfigCache = make(map[string]*siteConfigCacheEntry)
-	
+
 	// Cache all configs
 	for _, config := range configs {
 		siteConfigCache[config.Host] = &siteConfigCacheEntry{
@@ -177,7 +177,7 @@ func loadAllSiteConfigs() error {
 			expiresAt: expiry,
 		}
 	}
-	
+
 	lastBatchLoad = now
 	logger.Debugf("Loaded %d site configs into cache", len(configs))
 	return nil
@@ -186,10 +186,10 @@ func loadAllSiteConfigs() error {
 // getCachedSiteConfig gets a site config from cache, loading all configs if needed
 func getCachedSiteConfig(host string) (*model.SiteConfig, bool) {
 	siteConfigMutex.RLock()
-	
+
 	// Check if we need to refresh the cache
 	needsRefresh := time.Since(lastBatchLoad) > cacheExpiry
-	
+
 	if needsRefresh {
 		siteConfigMutex.RUnlock()
 		// Reload all configs if cache is expired
@@ -199,14 +199,14 @@ func getCachedSiteConfig(host string) (*model.SiteConfig, bool) {
 		}
 		siteConfigMutex.RLock()
 	}
-	
+
 	entry, exists := siteConfigCache[host]
 	siteConfigMutex.RUnlock()
-	
+
 	if !exists || time.Now().After(entry.expiresAt) {
 		return nil, false
 	}
-	
+
 	return entry.config, true
 }
 
@@ -214,7 +214,7 @@ func getCachedSiteConfig(host string) (*model.SiteConfig, bool) {
 func setCachedSiteConfig(host string, config *model.SiteConfig) {
 	siteConfigMutex.Lock()
 	defer siteConfigMutex.Unlock()
-	
+
 	siteConfigCache[host] = &siteConfigCacheEntry{
 		config:    config,
 		expiresAt: time.Now().Add(cacheExpiry),
@@ -225,7 +225,7 @@ func setCachedSiteConfig(host string, config *model.SiteConfig) {
 func InvalidateSiteConfigCache() {
 	siteConfigMutex.Lock()
 	defer siteConfigMutex.Unlock()
-	
+
 	siteConfigCache = make(map[string]*siteConfigCacheEntry)
 	lastBatchLoad = time.Time{} // Reset batch load time to force reload
 	logger.Debugf("Site config cache invalidated")
@@ -235,7 +235,7 @@ func InvalidateSiteConfigCache() {
 func InvalidateSiteConfigCacheForHost(host string) {
 	siteConfigMutex.Lock()
 	defer siteConfigMutex.Unlock()
-	
+
 	delete(siteConfigCache, host)
 	logger.Debugf("Site config cache invalidated for host: %s", host)
 }
@@ -513,6 +513,13 @@ func (sc *SiteChecker) GetSites() map[string]*SiteInfo {
 	return result
 }
 
+// GetSiteCount returns the number of sites being monitored
+func (sc *SiteChecker) GetSiteCount() int {
+	sc.mu.RLock()
+	defer sc.mu.RUnlock()
+	return len(sc.sites)
+}
+
 // GetSitesList returns sites as a slice
 func (sc *SiteChecker) GetSitesList() []*SiteInfo {
 	sc.mu.RLock()
@@ -626,11 +633,9 @@ func (sc *SiteChecker) downloadFavicon(ctx context.Context, faviconURL string) s
 func generateDisplayURL(originalURL, protocol string) string {
 	parsed, err := url.Parse(originalURL)
 	if err != nil {
-		logger.Debugf("Failed to parse URL %s: %v", originalURL, err)
+		logger.Errorf("Failed to parse URL %s: %v", originalURL, err)
 		return originalURL
 	}
-
-	logger.Debugf("Generating display URL for %s with protocol %s", originalURL, protocol)
 
 	// Determine the optimal scheme (prefer HTTPS if available)
 	scheme := determineOptimalScheme(parsed, protocol)
@@ -648,7 +653,6 @@ func generateDisplayURL(originalURL, protocol string) string {
 			// Non-default port - show port
 			result = fmt.Sprintf("%s://%s:%s", scheme, hostname, port)
 		}
-		logger.Debugf("HTTP/HTTPS display URL: %s", result)
 		return result
 	}
 
@@ -670,12 +674,10 @@ func generateDisplayURL(originalURL, protocol string) string {
 		} else {
 			result = fmt.Sprintf("%s://%s:%s", scheme, hostname, port)
 		}
-		logger.Debugf("gRPC/gRPCS display URL: %s", result)
 		return result
 	}
 
 	// Fallback to original URL
-	logger.Debugf("Using fallback display URL: %s", originalURL)
 	return originalURL
 }
 

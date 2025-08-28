@@ -4,10 +4,12 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/cache"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utlis"
+	"github.com/uozi-tech/cosy/logger"
 )
 
 // Regular expression for log directives - matches access_log or error_log
@@ -18,21 +20,38 @@ var (
 // Use init function to automatically register callback
 func init() {
 	// Register the callback directly with the global registry
-	cache.RegisterCallback(scanForLogDirectives)
+	cache.RegisterCallback("nginx_log.scanForLogDirectives", scanForLogDirectives)
 }
 
 // scanForLogDirectives scans and parses configuration files for log directives
 func scanForLogDirectives(configPath string, content []byte) error {
+	// Step 1: Get nginx prefix
 	prefix := nginx.GetPrefix()
-	// First, remove all log paths that came from this config file
-	// This ensures that removed log directives are properly cleaned up
-	RemoveLogPathsFromConfig(configPath)
+	
+	// Step 2: Remove existing log paths - with timeout protection
+	removeSuccess := make(chan bool, 1)
+	go func() {
+		defer func() {
+			if r := recover(); r != nil {
+				logger.Warnf("[scanForLogDirectives] RemoveLogPathsFromConfig panicked for %s: %v", configPath, r)
+			}
+		}()
+		RemoveLogPathsFromConfig(configPath)
+		removeSuccess <- true
+	}()
+	
+	select {
+	case <-removeSuccess:
+		// Success - no logging needed
+	case <-time.After(2 * time.Second):
+		logger.Warnf("[scanForLogDirectives] RemoveLogPathsFromConfig timed out after 2 seconds for config: %s", configPath)
+	}
 
-	// Find log directives using regex
+	// Step 3: Find log directives using regex
 	matches := logDirectiveRegex.FindAllSubmatch(content, -1)
 
-	// Parse log paths
-	for _, match := range matches {
+	// Step 4: Parse log paths
+	for i, match := range matches {
 		if len(match) >= 3 {
 			// Check if this match is from a commented line
 			if isCommentedMatch(content, match) {
@@ -59,8 +78,24 @@ func scanForLogDirectives(configPath string, content []byte) error {
 					logType = "error"
 				}
 
-				// Add to cache with config file path
-				AddLogPath(logPath, logType, filepath.Base(logPath), configPath)
+				// Add to cache with config file path - with timeout protection
+				addSuccess := make(chan bool, 1)
+				go func() {
+					defer func() {
+						if r := recover(); r != nil {
+							logger.Warnf("[scanForLogDirectives] AddLogPath panicked for match %d, path %s: %v", i, logPath, r)
+						}
+					}()
+					AddLogPath(logPath, logType, filepath.Base(logPath), configPath)
+					addSuccess <- true
+				}()
+				
+				select {
+				case <-addSuccess:
+					// Success - no logging needed
+				case <-time.After(1 * time.Second):
+					logger.Warnf("[scanForLogDirectives] AddLogPath timed out after 1 second for match %d, path %s", i, logPath)
+				}
 			}
 		}
 	}

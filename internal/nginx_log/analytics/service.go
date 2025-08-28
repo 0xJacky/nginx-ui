@@ -30,13 +30,26 @@ type Service interface {
 
 // service implements the Service interface
 type service struct {
-	searcher searcher.Searcher
+	searcher           searcher.Searcher
+	cardinalityCounter *searcher.CardinalityCounter
 }
 
 // NewService creates a new analytics service
 func NewService(s searcher.Searcher) Service {
+	// Try to extract shards from distributed searcher for cardinality counting
+	var cardinalityCounter *searcher.CardinalityCounter
+
+	if ds, ok := s.(*searcher.DistributedSearcher); ok {
+		shards := ds.GetShards()
+
+		if len(shards) > 0 {
+			cardinalityCounter = searcher.NewCardinalityCounter(shards)
+		}
+	}
+
 	return &service{
-		searcher: s,
+		searcher:           s,
+		cardinalityCounter: cardinalityCounter,
 	}
 }
 

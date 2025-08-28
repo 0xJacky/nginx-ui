@@ -6,6 +6,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"sync"
 
 	"github.com/0xJacky/Nginx-UI/internal/cache"
 	"github.com/0xJacky/Nginx-UI/internal/upstream"
@@ -20,17 +21,22 @@ type Index struct {
 
 var (
 	IndexedSites = make(map[string]*Index)
+	siteIndexMutex sync.RWMutex
 )
 
 func GetIndexedSite(path string) *Index {
+	siteIndexMutex.RLock()
+	defer siteIndexMutex.RUnlock()
+	
 	if site, ok := IndexedSites[path]; ok {
 		return site
 	}
 	return &Index{}
 }
 
+
 func init() {
-	cache.RegisterCallback(scanForSite)
+	cache.RegisterCallback("site.scanForSite", scanForSite)
 }
 
 func scanForSite(configPath string, content []byte) error {
@@ -225,7 +231,9 @@ func scanForSite(configPath string, content []byte) error {
 
 	// Only store if we found valid URLs or proxy targets
 	if len(siteIndex.Urls) > 0 || len(siteIndex.ProxyTargets) > 0 {
+		siteIndexMutex.Lock()
 		IndexedSites[filepath.Base(configPath)] = &siteIndex
+		siteIndexMutex.Unlock()
 	}
 
 	return nil

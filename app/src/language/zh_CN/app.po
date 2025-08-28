@@ -109,12 +109,12 @@ msgstr "{label} 已复制到剪贴板"
 msgid "* Includes nodes from group %{groupName} and manually selected nodes"
 msgstr "* 包含来自组 %{groupName} 的节点和手动选择的节点"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:803
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:775
 msgid "%{start}-%{end} of %{total} items"
 msgstr "第 %{start}-%{end} 条，共 %{total} 条"
 
-#: src/views/nginx_log/dashboard/components/HourlyChart.vue:37
-#: src/views/nginx_log/dashboard/components/HourlyChart.vue:38
+#: src/views/nginx_log/dashboard/components/HourlyChart.vue:67
+#: src/views/nginx_log/dashboard/components/HourlyChart.vue:68
 msgid "24-Hour UV/PV Statistics"
 msgstr "24 小时 UV/PV 统计"
 
@@ -157,7 +157,7 @@ msgstr "操作"
 #: src/views/certificate/CertificateList/certColumns.tsx:92
 #: src/views/certificate/DNSCredential.vue:71
 #: src/views/config/configColumns.tsx:50 src/views/namespace/columns.ts:84
-#: src/views/nginx_log/NginxLogList.vue:272 src/views/node/nodeColumns.tsx:96
+#: src/views/nginx_log/NginxLogList.vue:267 src/views/node/nodeColumns.tsx:96
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:85
 #: src/views/site/site_list/columns.tsx:160 src/views/stream/columns.tsx:123
@@ -365,7 +365,7 @@ msgstr "你确定要在以下同步节点上重启 Nginx 吗？"
 msgid "Are you sure you want to restore?"
 msgstr "您确定要恢复吗？"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:725
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:696
 msgid "Ascending"
 msgstr "升序"
 
@@ -432,7 +432,7 @@ msgstr "自动备份失败"
 msgid "Auto Backup Storage Failed"
 msgstr "自动备份存储失败"
 
-#: src/views/nginx_log/NginxLog.vue:58 src/views/node/Node.vue:164
+#: src/views/nginx_log/NginxLog.vue:64 src/views/node/Node.vue:164
 msgid "Auto Refresh"
 msgstr "自动刷新"
 
@@ -473,14 +473,14 @@ msgstr "平均延迟"
 msgid "Avg Daily UV"
 msgstr "日均 UV"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:786
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:757
 msgid "Avg/PV"
 msgstr "平均/PV"
 
 #: src/views/certificate/components/CertificateActions.vue:22
 #: src/views/config/components/ConfigLeftPanel.vue:273
 #: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
-#: src/views/nginx_log/NginxLog.vue:86
+#: src/views/nginx_log/NginxLog.vue:92
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:169
 #: src/views/stream/components/StreamEditor.vue:123
 msgid "Back"
@@ -494,7 +494,7 @@ msgstr "返回首页"
 msgid "Back to List"
 msgstr "返回列表"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:556
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:531
 msgid ""
 "Background indexing in progress. Data will be updated automatically when "
 "ready."
@@ -619,7 +619,7 @@ msgstr "区块为空"
 #: src/views/nginx_log/dashboard/components/BrowserStatsTable.vue:13
 #: src/views/nginx_log/structured/components/SearchFilters.vue:137
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:221
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:480
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:484
 msgid "Browser"
 msgstr "浏览器"
 
@@ -1252,14 +1252,14 @@ msgid "Core Upgrade"
 msgstr "核心升级"
 
 #: src/views/nginx_log/dashboard/components/BrowserStatsTable.vue:18
-#: src/views/nginx_log/dashboard/components/DailyTrendsChart.vue:81
+#: src/views/nginx_log/dashboard/components/DailyTrendsChart.vue:98
 #: src/views/nginx_log/dashboard/components/DeviceStatsTable.vue:17
-#: src/views/nginx_log/dashboard/components/HourlyChart.vue:70
+#: src/views/nginx_log/dashboard/components/HourlyChart.vue:100
 #: src/views/nginx_log/dashboard/components/OSStatsTable.vue:18
 msgid "Count"
 msgstr "计数"
 
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:156
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:174
 msgid "Country / Region"
 msgstr "国家 / 地区"
 
@@ -1395,7 +1395,7 @@ msgstr "自定义显示在环境指示器中的本地服务器名称。"
 msgid "Daily"
 msgstr "每日"
 
-#: src/views/nginx_log/dashboard/components/DailyTrendsChart.vue:38
+#: src/views/nginx_log/dashboard/components/DailyTrendsChart.vue:41
 msgid "Daily Access Trends"
 msgstr "每日访问趋势"
 
@@ -1406,15 +1406,11 @@ msgstr "每天 %{time}"
 #: src/routes/modules/dashboard.ts:10
 #: src/views/config/components/ConfigLeftPanel.vue:109
 #: src/views/config/components/ConfigLeftPanel.vue:159
-#: src/views/config/ConfigList.vue:69 src/views/nginx_log/NginxLog.vue:50
+#: src/views/config/ConfigList.vue:69 src/views/nginx_log/NginxLog.vue:56
 msgid "Dashboard"
 msgstr "仪表盘"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:515
-msgid "Data refreshed successfully"
-msgstr "数据刷新成功"
-
-#: src/views/nginx_log/dashboard/components/DailyTrendsChart.vue:68
+#: src/views/nginx_log/dashboard/components/DailyTrendsChart.vue:71
 msgid "Date"
 msgstr "日期"
 
@@ -1438,7 +1434,7 @@ msgstr "天"
 msgid "Decryption failed"
 msgstr "解密失败"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:839
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:811
 msgid "Default range"
 msgstr "默认范围"
 
@@ -1538,7 +1534,7 @@ msgstr "Demo"
 msgid "Deploy"
 msgstr "部署"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:725
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:696
 msgid "Descending"
 msgstr "降序"
 
@@ -1573,7 +1569,7 @@ msgstr "开发模式"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:169
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:253
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:482
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:486
 msgid "Device"
 msgstr "设备"
 
@@ -1767,7 +1763,7 @@ msgid "Document"
 msgid_plural "Documents"
 msgstr[0] "文档"
 
-#: src/views/nginx_log/NginxLogList.vue:212
+#: src/views/nginx_log/NginxLogList.vue:207
 msgid "Document Count"
 msgstr "文档数量"
 
@@ -2053,7 +2049,7 @@ msgstr "差异查看器初始化出错"
 msgid "Error Log"
 msgstr "错误日志"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:656
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:627
 msgid "Error Log Detected"
 msgstr "检测到错误日志"
 
@@ -2066,7 +2062,7 @@ msgstr "错误日志路径不存在"
 msgid "Error Logs"
 msgstr "错误日志"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:659
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:630
 msgid ""
 "Error logs do not support structured analysis as they contain free-form text "
 "messages."
@@ -2483,10 +2479,6 @@ msgstr "重建文件索引失败"
 msgid "Failed to rebuild index"
 msgstr "重建索引失败"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:520
-msgid "Failed to refresh data"
-msgstr "刷新数据失败"
-
 #: src/views/dashboard/SiteNavigation.vue:101
 msgid "Failed to refresh sites"
 msgstr "刷新站点失败"
@@ -2603,7 +2595,7 @@ msgstr "文件上传成功"
 msgid "Filename is empty"
 msgstr "文件名为空"
 
-#: src/views/nginx_log/NginxLogList.vue:323
+#: src/views/nginx_log/NginxLogList.vue:318
 msgid "files"
 msgstr "文件"
 
@@ -2650,7 +2642,7 @@ msgstr "中国用户"
 msgid "For Chinese user: https://cloud.nginxui.com/"
 msgstr "中国用户：https://cloud.nginxui.com/"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:661
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:632
 msgid ""
 "For error logs, please use the Raw Log Viewer for better viewing experience."
 msgstr "对于错误日志，请使用原始日志查看器以获得更好的查看体验。"
@@ -2689,7 +2681,7 @@ msgstr "格式：分钟 小时 日 月 星期"
 msgid "Friday"
 msgstr "星期五"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:836
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:808
 msgid "From indexed logs"
 msgstr "来自已索引的日志"
 
@@ -2747,7 +2739,7 @@ msgid "Github Proxy"
 msgstr "Github 代理"
 
 #: src/views/nginx_log/dashboard/components/GeoMapChart.vue:47
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:183
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:201
 msgid "Global Access Map"
 msgstr "全球访问地图"
 
@@ -2755,7 +2747,7 @@ msgstr "全球访问地图"
 msgid "Global Map"
 msgstr "全球地图"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:666
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:637
 msgid "Go to Raw Log Viewer"
 msgstr "转到原始日志查看器"
 
@@ -2812,7 +2804,7 @@ msgstr "隐藏"
 
 #: src/composables/useGeoTranslation.ts:165
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:134
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:99
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:103
 msgid "High"
 msgstr "高"
 
@@ -2835,7 +2827,7 @@ msgid "Host"
 msgstr "主机"
 
 #: src/views/backup/AutoBackup/components/CronEditor.vue:159
-#: src/views/nginx_log/dashboard/components/HourlyChart.vue:57
+#: src/views/nginx_log/dashboard/components/HourlyChart.vue:87
 msgid "Hour"
 msgstr "小时"
 
@@ -2918,20 +2910,20 @@ msgstr "索引和统计重建已成功启动"
 msgid "Index Status"
 msgstr "索引状态"
 
-#: src/views/nginx_log/NginxLogList.vue:140
+#: src/views/nginx_log/NginxLogList.vue:134
 msgid "Indexed"
 msgstr "已索引"
 
 #: src/views/nginx_log/indexing/components/IndexProgressBar.vue:54
-#: src/views/nginx_log/NginxLogList.vue:144
+#: src/views/nginx_log/NginxLogList.vue:138
 msgid "Indexing"
 msgstr "索引中"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:745
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:716
 msgid "Indexing logs, please wait..."
 msgstr "正在索引日志，请稍候..."
 
-#: src/views/nginx_log/NginxLogList.vue:318
+#: src/views/nginx_log/NginxLogList.vue:313
 msgid "Indexing logs..."
 msgstr "正在索引日志..."
 
@@ -3089,7 +3081,7 @@ msgid "IP"
 msgstr "IP"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:77
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:475
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:479
 msgid "IP Address"
 msgstr "IP 地址"
 
@@ -3203,7 +3195,7 @@ msgstr "最后检查时间"
 msgid "Last hour"
 msgstr "过去 1 小时"
 
-#: src/views/nginx_log/NginxLogList.vue:157
+#: src/views/nginx_log/NginxLogList.vue:151
 msgid "Last Indexed"
 msgstr "最后索引时间"
 
@@ -3304,7 +3296,7 @@ msgstr "加载器睡眠"
 msgid "Loader Threshold"
 msgstr "加载器阈值"
 
-#: src/views/nginx_log/dashboard/DashboardViewer.vue:150
+#: src/views/nginx_log/dashboard/DashboardViewer.vue:151
 msgid "Loading dashboard data..."
 msgstr "正在加载仪表板数据..."
 
@@ -3354,7 +3346,7 @@ msgstr "日志文件不存在"
 msgid "Log file is not a regular file"
 msgstr "日志文件不是常规文件"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:851
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:823
 msgid "Log file not available"
 msgstr "日志文件不可用"
 
@@ -3362,11 +3354,11 @@ msgstr "日志文件不可用"
 msgid "Log indexer not available"
 msgstr "日志索引器不可用"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:572
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:547
 msgid "Log indexing completed! Loading updated data..."
 msgstr "日志索引完成！正在加载更新数据..."
 
-#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:302
+#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:297
 msgid "Log List"
 msgstr "日志列表"
 
@@ -3406,7 +3398,7 @@ msgstr ""
 
 #: src/composables/useGeoTranslation.ts:166
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:134
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:99
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:103
 msgid "Low"
 msgstr "低"
 
@@ -3553,7 +3545,7 @@ msgid "Memory Usage (RSS)"
 msgstr "内存使用量（RSS）"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:92
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:476
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:480
 msgid "Method"
 msgstr "方法"
 
@@ -3845,7 +3837,7 @@ msgstr "Nginx 未在另一个容器中运行"
 msgid "Nginx is running"
 msgstr "Nginx 正在运行"
 
-#: src/routes/modules/nginx_log.ts:9 src/views/nginx_log/NginxLog.vue:33
+#: src/routes/modules/nginx_log.ts:9 src/views/nginx_log/NginxLog.vue:39
 msgid "Nginx Log"
 msgstr "Nginx 日志"
 
@@ -3968,20 +3960,20 @@ msgstr "无中国地理数据"
 #: src/composables/useGeoTranslation.ts:169
 #: src/views/dashboard/NginxDashBoard.vue:202
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:126
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:91
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:95
 msgid "No data"
 msgstr "没有数据"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:819
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:791
 msgid "No entries in current page"
 msgstr "当前页面没有条目"
 
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:198
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:234
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:216
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:252
 msgid "No geographic data available"
 msgstr "无可用地理数据"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:553
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:528
 msgid "No logs found in the selected time range."
 msgstr "在选定的时间范围内未找到日志。"
 
@@ -4009,7 +4001,7 @@ msgstr ""
 "在 server_name 配置中未找到特定 IP 地址。请在下方指定服务器 IP 地址以获取证"
 "书。"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:828
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:800
 msgid "No structured log data available"
 msgstr "无结构化日志数据可用"
 
@@ -4033,7 +4025,7 @@ msgstr "节点密钥"
 msgid "Node Status"
 msgstr "节点状态"
 
-#: src/routes/modules/nodes.ts:11 src/views/dashboard/Nodes.vue:130
+#: src/routes/modules/nodes.ts:11 src/views/dashboard/Nodes.vue:131
 #: src/views/node/Node.vue:130
 msgid "Nodes"
 msgstr "节点"
@@ -4050,7 +4042,7 @@ msgstr "非预期文本"
 msgid "Not Found"
 msgstr "找不到页面"
 
-#: src/views/nginx_log/NginxLogList.vue:148
+#: src/views/nginx_log/NginxLogList.vue:142
 msgid "Not Indexed"
 msgstr "未索引"
 
@@ -4159,7 +4151,7 @@ msgstr "官方文档"
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:84
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
-#: src/views/dashboard/Nodes.vue:158 src/views/node/nodeColumns.tsx:55
+#: src/views/dashboard/Nodes.vue:159 src/views/node/nodeColumns.tsx:55
 msgid "Offline"
 msgstr "离线"
 
@@ -4193,7 +4185,7 @@ msgstr "一旦验证完成，这些记录将被删除。"
 #: src/components/NodeSelector/NodeSelector.vue:64
 #: src/components/NodeSelector/NodeSelector.vue:78
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
-#: src/views/dashboard/Nodes.vue:151 src/views/node/nodeColumns.tsx:51
+#: src/views/dashboard/Nodes.vue:152 src/views/node/nodeColumns.tsx:51
 msgid "Online"
 msgstr "在线"
 
@@ -4243,7 +4235,7 @@ msgstr "原名"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:153
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:237
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:481
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:485
 #: src/views/system/Upgrade.vue:193
 msgid "OS"
 msgstr "OS"
@@ -4335,7 +4327,7 @@ msgstr "密码不匹配"
 #: src/views/config/components/Delete.vue:124
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:420
 #: src/views/nginx_log/NginxLogList.vue:85
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:477
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:481
 msgid "Path"
 msgstr "路径"
 
@@ -4367,7 +4359,7 @@ msgstr "待处理"
 #: src/views/nginx_log/dashboard/components/DeviceStatsTable.vue:25
 #: src/views/nginx_log/dashboard/components/OSStatsTable.vue:26
 #: src/views/nginx_log/dashboard/components/TopUrlsTable.vue:27
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:168
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:186
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:87
 msgid "Percentage"
 msgstr "百分比"
@@ -4693,16 +4685,16 @@ msgstr "公共 CA 要求："
 msgid "Public Security Number"
 msgstr "公安备案号"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:762
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:733
 msgid "PV"
 msgstr "页面浏览量"
 
 #: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:51
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:692
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:663
 msgid "Quick Select"
 msgstr "快速选择"
 
-#: src/views/nginx_log/NginxLog.vue:51
+#: src/views/nginx_log/NginxLog.vue:57
 msgid "Raw"
 msgstr "原始"
 
@@ -4720,7 +4712,7 @@ msgstr "读取请求数"
 msgid "Reads"
 msgstr "读"
 
-#: src/views/nginx_log/NginxLogList.vue:349
+#: src/views/nginx_log/NginxLogList.vue:344
 msgid "Rebuild"
 msgstr "重建"
 
@@ -5003,7 +4995,7 @@ msgstr "每次连接请求数"
 
 #: src/language/curd.ts:13
 #: src/views/nginx_log/structured/components/SearchFilters.vue:214
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:728
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:699
 msgid "Reset"
 msgstr "重置"
 
@@ -5011,7 +5003,7 @@ msgstr "重置"
 msgid "Reset 2FA"
 msgstr "重置二步验证"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:843
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:815
 msgid "Reset Search"
 msgstr "重置搜索"
 
@@ -5378,11 +5370,11 @@ msgstr "在日志内容中搜索..."
 msgid "Search module name"
 msgstr "搜索模块名称"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:834
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:806
 msgid "Search range"
 msgstr "搜索范围"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:737
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:708
 msgid "Searching logs..."
 msgstr "正在搜索日志..."
 
@@ -5609,7 +5601,7 @@ msgstr "Sites-enabled 目录不存在"
 
 #: src/language/curd.ts:62
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:213
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:479
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:483
 msgid "Size"
 msgstr "大小"
 
@@ -5625,7 +5617,7 @@ msgstr "缓存加载器迭代之间的休眠时间"
 msgid "Sleep time between cache manager iterations"
 msgstr "缓存管理器迭代之间的休眠时间"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:725
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:696
 msgid "Sorted by"
 msgstr "排序方式"
 
@@ -5722,7 +5714,7 @@ msgstr "静态"
 #: src/views/dashboard/components/ModulesTable.vue:96
 #: src/views/nginx_log/structured/components/SearchFilters.vue:106
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:205
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:478
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:482
 #: src/views/node/nodeColumns.tsx:43
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:29
 #: src/views/site/site_list/columns.tsx:120 src/views/stream/columns.tsx:87
@@ -5791,7 +5783,7 @@ msgstr "Streams-available 目录不存在"
 msgid "Streams-enabled directory not exist"
 msgstr "Streams-enabled 目录不存在"
 
-#: src/views/nginx_log/NginxLog.vue:49
+#: src/views/nginx_log/NginxLog.vue:55
 msgid "Structured"
 msgstr "结构化"
 
@@ -6235,12 +6227,12 @@ msgid "Thursday"
 msgstr "星期四"
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:149
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:474
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:478
 msgid "Time"
 msgstr "时间"
 
-#: src/views/nginx_log/NginxLogList.vue:225
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:680
+#: src/views/nginx_log/NginxLogList.vue:220
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:651
 msgid "Time Range"
 msgstr "时间范围"
 
@@ -6308,7 +6300,7 @@ msgstr ""
 "要使用本地大型模型，可使用 ollama、vllm 或 lmdeploy 进行部署。它们提供了与 "
 "OpenAI 兼容的 API 端点，因此只需将 baseUrl 设置为本地 API 即可。"
 
-#: src/views/nginx_log/NginxLogList.vue:240
+#: src/views/nginx_log/NginxLogList.vue:235
 msgid "Today"
 msgstr "今天"
 
@@ -6324,8 +6316,8 @@ msgstr "令牌为空"
 msgid "Token is not valid"
 msgstr "Token 无效"
 
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:217
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:253
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:235
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:271
 msgid "Top 10 Countries / Regions"
 msgstr "前 10 个国家 / 地区"
 
@@ -6347,7 +6339,7 @@ msgstr "总计"
 msgid "Total connections"
 msgstr "连接总数"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:756
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:727
 msgid "Total Entries"
 msgstr "总条目数"
 
@@ -6399,7 +6391,7 @@ msgid ""
 "password algorithm."
 msgstr "TOTP 是一种使用基于时间的一次性密码算法的双因素身份验证方法。"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:774
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:745
 msgid "Traffic"
 msgstr "流量"
 
@@ -6411,11 +6403,11 @@ msgstr "正在翻译错误..."
 msgid "Trash"
 msgstr "回收站"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:821
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:793
 msgid "Try adjusting your search criteria or navigate to different pages."
 msgstr "尝试调整搜索条件或导航到其他页面。"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:831
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:803
 msgid "Try adjusting your search criteria or time range."
 msgstr "尝试调整您的搜索条件或时间范围。"
 
@@ -6457,7 +6449,7 @@ msgstr "输入或选择操作系统"
 msgid "Type or select status codes"
 msgstr "输入或选择状态码"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:780
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:751
 msgid "Unique Pages"
 msgstr "独立页面"
 
@@ -6600,7 +6592,7 @@ msgstr "用户名 (*)"
 msgid "Username length cannot exceed 255 characters"
 msgstr "用户名长度不能超过 255 个字符"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:768
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:739
 msgid "UV"
 msgstr "独立访客"
 
@@ -6635,7 +6627,7 @@ msgstr "验证系统要求"
 msgid "Version"
 msgstr "版本"
 
-#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:339
+#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:334
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:83
 msgid "View"
 msgstr "查看"
@@ -6661,8 +6653,8 @@ msgstr "已查看"
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:145
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:64
 #: src/views/nginx_log/dashboard/components/TopUrlsTable.vue:19
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:110
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:161
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:114
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:179
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:86
 msgid "Visits"
 msgstr "访问量"
@@ -6884,6 +6876,12 @@ msgstr "您的旧代码将不再有效。"
 #: src/views/preference/components/AuthSettings/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "你的 Passkeys"
+
+#~ msgid "Data refreshed successfully"
+#~ msgstr "数据刷新成功"
+
+#~ msgid "Failed to refresh data"
+#~ msgstr "刷新数据失败"
 
 #~ msgid "Log File:"
 #~ msgstr "日志文件："

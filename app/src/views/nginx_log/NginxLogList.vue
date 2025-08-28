@@ -112,22 +112,16 @@ const columns: StdTableColumn[] = [
       switch (record.index_status) {
         case 'indexed':
           return (
-            <Tooltip title={$gettext('Indexed and searchable')}>
-              <Badge status="success" text={$gettext('Indexed')} />
-            </Tooltip>
+            <Badge status="success" text={$gettext('Indexed')} />
           )
         case 'indexing':
           return (
-            <Tooltip title={$gettext('Currently being indexed')}>
-              <Badge status="processing" text={$gettext('Indexing')} />
-            </Tooltip>
+            <Badge status="processing" text={$gettext('Indexing')} />
           )
         case 'not_indexed':
         default:
           return (
-            <Tooltip title={$gettext('Not indexed for search')}>
-              <Badge status="default" text={$gettext('Not Indexed')} />
-            </Tooltip>
+            <Badge status="default" text={$gettext('Not Indexed')} />
           )
       }
     },

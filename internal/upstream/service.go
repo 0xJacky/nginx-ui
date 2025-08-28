@@ -77,7 +77,7 @@ func GetUpstreamService() *Service {
 
 // init registers the ParseProxyTargetsFromRawContent callback
 func init() {
-	cache.RegisterCallback(scanForProxyTargets)
+	cache.RegisterCallback("upstream.scanForProxyTargets", scanForProxyTargets)
 }
 
 // scanForProxyTargets is the callback function for cache scanner

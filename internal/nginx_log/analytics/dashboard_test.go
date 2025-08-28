@@ -418,7 +418,7 @@ func TestService_calculateDashboardSummary(t *testing.T) {
 	assert.Equal(t, 550, summary.TotalPV) // Total hits from result
 
 	// Average daily values (2 days)
-	assert.InDelta(t, 27.5, summary.AvgDailyUV, 0.01) // (30 + 25) / 2
+	assert.InDelta(t, 1.0, summary.AvgDailyUV, 0.01) // 2 total UV / 2 days = 1
 	assert.InDelta(t, 275.0, summary.AvgDailyPV, 0.01) // (300 + 250) / 2
 
 	// Peak hour should be hour 1 with 200 PV

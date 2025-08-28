@@ -247,9 +247,11 @@ func AdvancedSearchLogs(c *gin.Context) {
 		SortBy:              req.SortBy,
 		SortOrder:           req.SortOrder,
 		UseCache:            true,
+		Timeout:             30 * time.Second, // Add timeout for large facet operations
 		IncludeHighlighting: true,
-		IncludeFacets:       true,                   // Re-enable facets for accurate summary stats
-		FacetFields:         []string{"ip", "path"}, // For UV and Unique Pages
+		IncludeFacets:       true,                        // Re-enable facets for accurate summary stats
+		FacetFields:         []string{"ip", "path_exact"}, // For UV and Unique Pages
+		FacetSize:           10000,                       // Balanced: large enough for most cases, but not excessive
 	}
 
 	// If no sorting is specified, default to sorting by timestamp descending.
@@ -336,15 +338,35 @@ func AdvancedSearchLogs(c *gin.Context) {
 		}
 	}
 
-	// 2. Calculate summary stats from the overall results (facets and total hits)
+	// 2. Calculate summary stats from the overall results using CardinalityCounter for accuracy
 	pv := int(result.TotalHits)
 	var uv, uniquePages int
+	var facetUV, facetUniquePages int
+	
+	// First get facet values as fallback
 	if result.Facets != nil {
 		if ipFacet, ok := result.Facets["ip"]; ok {
-			uv = ipFacet.Total // .Total on a facet gives the count of unique terms
+			facetUV = ipFacet.Total // .Total on a facet gives the count of unique terms
+			uv = facetUV
 		}
-		if pathFacet, ok := result.Facets["path"]; ok {
-			uniquePages = pathFacet.Total
+		if pathFacet, ok := result.Facets["path_exact"]; ok {
+			facetUniquePages = pathFacet.Total
+			uniquePages = facetUniquePages
+		}
+	}
+	
+	// Override with CardinalityCounter results for better accuracy
+	if analyticsService != nil {
+		// Get cardinality counts for UV (unique IPs)
+		if uvResult := getCardinalityCount(ctx, analyticsService, "ip", searchReq); uvResult > 0 {
+			uv = uvResult
+			logger.Debugf("🔢 Search endpoint - UV from CardinalityCounter: %d (vs facet: %d)", uvResult, facetUV)
+		}
+		
+		// Get cardinality counts for Unique Pages (unique paths)  
+		if upResult := getCardinalityCount(ctx, analyticsService, "path_exact", searchReq); upResult > 0 {
+			uniquePages = upResult
+			logger.Debugf("🔢 Search endpoint - Unique Pages from CardinalityCounter: %d (vs facet: %d)", upResult, facetUniquePages)
 		}
 	}
 
@@ -901,4 +923,49 @@ func GetGeoStats(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"stats": stats,
 	})
+}
+
+// getCardinalityCount is a helper function to get accurate cardinality counts using the analytics service
+func getCardinalityCount(ctx context.Context, analyticsService analytics.Service, field string, searchReq *searcher.SearchRequest) int {
+	// Create a CardinalityRequest from the SearchRequest
+	cardReq := &searcher.CardinalityRequest{
+		Field:     field,
+		StartTime: searchReq.StartTime,
+		EndTime:   searchReq.EndTime,
+		LogPaths:  searchReq.LogPaths,
+	}
+	
+	// Try to get the searcher to access cardinality counter
+	searcherService := nginx_log.GetModernSearcher()
+	if searcherService == nil {
+		logger.Debugf("🚨 getCardinalityCount: ModernSearcher not available for field %s", field)
+		return 0
+	}
+	
+	// Try to cast to DistributedSearcher to access CardinalityCounter
+	if ds, ok := searcherService.(*searcher.DistributedSearcher); ok {
+		shards := ds.GetShards()
+		if len(shards) > 0 {
+			cardinalityCounter := searcher.NewCardinalityCounter(shards)
+			result, err := cardinalityCounter.CountCardinality(ctx, cardReq)
+			if err != nil {
+				logger.Debugf("🚨 getCardinalityCount: CardinalityCounter failed for field %s: %v", field, err)
+				return 0
+			}
+			
+			if result.Error != "" {
+				logger.Debugf("🚨 getCardinalityCount: CardinalityCounter returned error for field %s: %s", field, result.Error)
+				return 0
+			}
+			
+			logger.Debugf("✅ getCardinalityCount: Successfully got cardinality for field %s: %d", field, result.Cardinality)
+			return int(result.Cardinality)
+		} else {
+			logger.Debugf("🚨 getCardinalityCount: DistributedSearcher has no shards for field %s", field)
+		}
+	} else {
+		logger.Debugf("🚨 getCardinalityCount: Searcher is not DistributedSearcher (type: %T) for field %s", searcherService, field)
+	}
+	
+	return 0
 }

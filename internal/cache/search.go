@@ -111,7 +111,7 @@ func (si *SearchIndexer) Initialize(ctx context.Context) error {
 	}
 
 	// Register callback for config scanning
-	RegisterCallback(si.handleConfigScan)
+	RegisterCallback("search.handleConfigScan", si.handleConfigScan)
 
 	// Start cleanup goroutine
 	go si.watchContext()
@@ -208,7 +208,6 @@ func (si *SearchIndexer) handleConfigScan(configPath string, content []byte) (er
 	// File size limit: 1MB to prevent memory overflow and improve performance
 	const maxFileSize = 1024 * 1024 // 1MB
 	if len(content) > maxFileSize {
-		logger.Debugf("Skipping file due to size limit, path: %s, size: %d, limit: %d", configPath, len(content), maxFileSize)
 		return nil
 	}
 
@@ -219,7 +218,6 @@ func (si *SearchIndexer) handleConfigScan(configPath string, content []byte) (er
 
 	// Basic content validation: check if it's a configuration file
 	if !isConfigFile(content) {
-		logger.Debugf("Skipping non-config file: %s", configPath)
 		return nil
 	}
 
@@ -644,6 +642,5 @@ func isConfigFile(content []byte) bool {
 		return true
 	}
 
-	logger.Debugf("Skipping non-text/plain file with MIME type: %s", mtype.String())
 	return false
 }

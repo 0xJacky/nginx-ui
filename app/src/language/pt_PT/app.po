@@ -112,12 +112,12 @@ msgstr "{label} copiado para a área de transferência"
 msgid "* Includes nodes from group %{groupName} and manually selected nodes"
 msgstr "* Inclui nós do grupo %{groupName} e nós selecionados manualmente"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:803
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:775
 msgid "%{start}-%{end} of %{total} items"
 msgstr "%{start}-%{end} de %{total} itens"
 
-#: src/views/nginx_log/dashboard/components/HourlyChart.vue:37
-#: src/views/nginx_log/dashboard/components/HourlyChart.vue:38
+#: src/views/nginx_log/dashboard/components/HourlyChart.vue:67
+#: src/views/nginx_log/dashboard/components/HourlyChart.vue:68
 msgid "24-Hour UV/PV Statistics"
 msgstr "Estatísticas UV/PV de 24 horas"
 
@@ -160,7 +160,7 @@ msgstr "Acção"
 #: src/views/certificate/CertificateList/certColumns.tsx:92
 #: src/views/certificate/DNSCredential.vue:71
 #: src/views/config/configColumns.tsx:50 src/views/namespace/columns.ts:84
-#: src/views/nginx_log/NginxLogList.vue:272 src/views/node/nodeColumns.tsx:96
+#: src/views/nginx_log/NginxLogList.vue:267 src/views/node/nodeColumns.tsx:96
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:85
 #: src/views/site/site_list/columns.tsx:160 src/views/stream/columns.tsx:123
@@ -378,7 +378,7 @@ msgstr ""
 msgid "Are you sure you want to restore?"
 msgstr "Tem a certeza que deseja restaurar?"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:725
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:696
 msgid "Ascending"
 msgstr "Ascendente"
 
@@ -445,7 +445,7 @@ msgstr "Backup automático falhou"
 msgid "Auto Backup Storage Failed"
 msgstr "Falha no armazenamento de backup automático"
 
-#: src/views/nginx_log/NginxLog.vue:58 src/views/node/Node.vue:164
+#: src/views/nginx_log/NginxLog.vue:64 src/views/node/Node.vue:164
 msgid "Auto Refresh"
 msgstr "Actualizar Automaticamente"
 
@@ -486,14 +486,14 @@ msgstr "Latência média"
 msgid "Avg Daily UV"
 msgstr "UV diário médio"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:786
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:757
 msgid "Avg/PV"
 msgstr "Méd./PV"
 
 #: src/views/certificate/components/CertificateActions.vue:22
 #: src/views/config/components/ConfigLeftPanel.vue:273
 #: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
-#: src/views/nginx_log/NginxLog.vue:86
+#: src/views/nginx_log/NginxLog.vue:92
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:169
 #: src/views/stream/components/StreamEditor.vue:123
 msgid "Back"
@@ -507,7 +507,7 @@ msgstr "Voltar ao Início"
 msgid "Back to List"
 msgstr "Voltar à lista"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:556
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:531
 msgid ""
 "Background indexing in progress. Data will be updated automatically when "
 "ready."
@@ -640,7 +640,7 @@ msgstr "O bloco é nulo"
 #: src/views/nginx_log/dashboard/components/BrowserStatsTable.vue:13
 #: src/views/nginx_log/structured/components/SearchFilters.vue:137
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:221
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:480
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:484
 msgid "Browser"
 msgstr "Navegador"
 
@@ -1296,14 +1296,14 @@ msgid "Core Upgrade"
 msgstr "Actualização do Core"
 
 #: src/views/nginx_log/dashboard/components/BrowserStatsTable.vue:18
-#: src/views/nginx_log/dashboard/components/DailyTrendsChart.vue:81
+#: src/views/nginx_log/dashboard/components/DailyTrendsChart.vue:98
 #: src/views/nginx_log/dashboard/components/DeviceStatsTable.vue:17
-#: src/views/nginx_log/dashboard/components/HourlyChart.vue:70
+#: src/views/nginx_log/dashboard/components/HourlyChart.vue:100
 #: src/views/nginx_log/dashboard/components/OSStatsTable.vue:18
 msgid "Count"
 msgstr "Contagem"
 
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:156
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:174
 msgid "Country / Region"
 msgstr "País / Região"
 
@@ -1443,7 +1443,7 @@ msgstr "Personalize o nome do nó local a ser exibido no indicador de ambiente."
 msgid "Daily"
 msgstr "Diário"
 
-#: src/views/nginx_log/dashboard/components/DailyTrendsChart.vue:38
+#: src/views/nginx_log/dashboard/components/DailyTrendsChart.vue:41
 msgid "Daily Access Trends"
 msgstr "Tendências de Acesso Diário"
 
@@ -1454,15 +1454,11 @@ msgstr "Diariamente às %{time}"
 #: src/routes/modules/dashboard.ts:10
 #: src/views/config/components/ConfigLeftPanel.vue:109
 #: src/views/config/components/ConfigLeftPanel.vue:159
-#: src/views/config/ConfigList.vue:69 src/views/nginx_log/NginxLog.vue:50
+#: src/views/config/ConfigList.vue:69 src/views/nginx_log/NginxLog.vue:56
 msgid "Dashboard"
 msgstr "Painel"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:515
-msgid "Data refreshed successfully"
-msgstr "Dados atualizados com sucesso"
-
-#: src/views/nginx_log/dashboard/components/DailyTrendsChart.vue:68
+#: src/views/nginx_log/dashboard/components/DailyTrendsChart.vue:71
 msgid "Date"
 msgstr "Data"
 
@@ -1486,7 +1482,7 @@ msgstr "Dias"
 msgid "Decryption failed"
 msgstr "Falha na desencriptação"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:839
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:811
 msgid "Default range"
 msgstr "Intervalo padrão"
 
@@ -1588,7 +1584,7 @@ msgstr "Demonstração"
 msgid "Deploy"
 msgstr "Deploy"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:725
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:696
 msgid "Descending"
 msgstr "Decrescente"
 
@@ -1623,7 +1619,7 @@ msgstr "Modo Desenvolvimento"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:169
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:253
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:482
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:486
 msgid "Device"
 msgstr "Dispositivo"
 
@@ -1817,7 +1813,7 @@ msgid "Document"
 msgid_plural "Documents"
 msgstr[0] "Documento"
 
-#: src/views/nginx_log/NginxLogList.vue:212
+#: src/views/nginx_log/NginxLogList.vue:207
 msgid "Document Count"
 msgstr "Contagem de documentos"
 
@@ -2106,7 +2102,7 @@ msgstr "Erro ao inicializar o visualizador de diferenças"
 msgid "Error Log"
 msgstr "Registo de erros"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:656
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:627
 msgid "Error Log Detected"
 msgstr "Registo de erros detetado"
 
@@ -2119,7 +2115,7 @@ msgstr "O caminho do registo de erros não existe"
 msgid "Error Logs"
 msgstr "Logs de Erro"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:659
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:630
 msgid ""
 "Error logs do not support structured analysis as they contain free-form text "
 "messages."
@@ -2541,10 +2537,6 @@ msgstr "Falha ao reconstruir o índice de arquivos"
 msgid "Failed to rebuild index"
 msgstr "Falha ao reconstruir o índice"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:520
-msgid "Failed to refresh data"
-msgstr "Falha ao atualizar os dados"
-
 #: src/views/dashboard/SiteNavigation.vue:101
 msgid "Failed to refresh sites"
 msgstr "Falha ao atualizar os sites"
@@ -2662,7 +2654,7 @@ msgstr "Ficheiro carregado com sucesso"
 msgid "Filename is empty"
 msgstr "O nome do ficheiro está vazio"
 
-#: src/views/nginx_log/NginxLogList.vue:323
+#: src/views/nginx_log/NginxLogList.vue:318
 msgid "files"
 msgstr "arquivos"
 
@@ -2711,7 +2703,7 @@ msgstr "Para utilizadores chineses"
 msgid "For Chinese user: https://cloud.nginxui.com/"
 msgstr "Para Utilizador Chinês: https://cloud.nginxui.com/"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:661
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:632
 msgid ""
 "For error logs, please use the Raw Log Viewer for better viewing experience."
 msgstr ""
@@ -2755,7 +2747,7 @@ msgstr "Formato: minuto hora dia mês dia_da_semana"
 msgid "Friday"
 msgstr "Sexta-feira"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:836
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:808
 msgid "From indexed logs"
 msgstr "A partir de registos indexados"
 
@@ -2813,7 +2805,7 @@ msgid "Github Proxy"
 msgstr "Github Proxy"
 
 #: src/views/nginx_log/dashboard/components/GeoMapChart.vue:47
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:183
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:201
 msgid "Global Access Map"
 msgstr "Mapa de Acesso Global"
 
@@ -2821,7 +2813,7 @@ msgstr "Mapa de Acesso Global"
 msgid "Global Map"
 msgstr "Mapa Global"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:666
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:637
 msgid "Go to Raw Log Viewer"
 msgstr "Ir para o Visualizador de Logs Brutos"
 
@@ -2880,7 +2872,7 @@ msgstr "Esconder"
 
 #: src/composables/useGeoTranslation.ts:165
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:134
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:99
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:103
 msgid "High"
 msgstr "Alto"
 
@@ -2903,7 +2895,7 @@ msgid "Host"
 msgstr "Host"
 
 #: src/views/backup/AutoBackup/components/CronEditor.vue:159
-#: src/views/nginx_log/dashboard/components/HourlyChart.vue:57
+#: src/views/nginx_log/dashboard/components/HourlyChart.vue:87
 msgid "Hour"
 msgstr "Hora"
 
@@ -2994,20 +2986,20 @@ msgstr "Reconstrução do índice e estatísticas iniciada com sucesso"
 msgid "Index Status"
 msgstr "Estado do Índice"
 
-#: src/views/nginx_log/NginxLogList.vue:140
+#: src/views/nginx_log/NginxLogList.vue:134
 msgid "Indexed"
 msgstr "Indexado"
 
 #: src/views/nginx_log/indexing/components/IndexProgressBar.vue:54
-#: src/views/nginx_log/NginxLogList.vue:144
+#: src/views/nginx_log/NginxLogList.vue:138
 msgid "Indexing"
 msgstr "Indexação"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:745
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:716
 msgid "Indexing logs, please wait..."
 msgstr "A indexar registos, por favor aguarde..."
 
-#: src/views/nginx_log/NginxLogList.vue:318
+#: src/views/nginx_log/NginxLogList.vue:313
 msgid "Indexing logs..."
 msgstr "A indexar registos..."
 
@@ -3168,7 +3160,7 @@ msgid "IP"
 msgstr "IP"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:77
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:475
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:479
 msgid "IP Address"
 msgstr "Endereço IP"
 
@@ -3283,7 +3275,7 @@ msgstr "Última verificação em"
 msgid "Last hour"
 msgstr "Última hora"
 
-#: src/views/nginx_log/NginxLogList.vue:157
+#: src/views/nginx_log/NginxLogList.vue:151
 msgid "Last Indexed"
 msgstr "Última indexação"
 
@@ -3385,7 +3377,7 @@ msgstr "Pausa do Carregador"
 msgid "Loader Threshold"
 msgstr "Limiar do carregador"
 
-#: src/views/nginx_log/dashboard/DashboardViewer.vue:150
+#: src/views/nginx_log/dashboard/DashboardViewer.vue:151
 msgid "Loading dashboard data..."
 msgstr "A carregar dados do painel..."
 
@@ -3436,7 +3428,7 @@ msgstr "O ficheiro de registo não existe"
 msgid "Log file is not a regular file"
 msgstr "O ficheiro de registo não é um ficheiro regular"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:851
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:823
 msgid "Log file not available"
 msgstr "Ficheiro de registo não disponível"
 
@@ -3444,11 +3436,11 @@ msgstr "Ficheiro de registo não disponível"
 msgid "Log indexer not available"
 msgstr "Indexador de registros não disponível"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:572
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:547
 msgid "Log indexing completed! Loading updated data..."
 msgstr "Indexação de registos concluída! A carregar dados atualizados..."
 
-#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:302
+#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:297
 msgid "Log List"
 msgstr "Lista de registos"
 
@@ -3490,7 +3482,7 @@ msgstr ""
 
 #: src/composables/useGeoTranslation.ts:166
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:134
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:99
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:103
 msgid "Low"
 msgstr "Baixo"
 
@@ -3637,7 +3629,7 @@ msgid "Memory Usage (RSS)"
 msgstr "Uso de memória (RSS)"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:92
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:476
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:480
 msgid "Method"
 msgstr "Método"
 
@@ -3929,7 +3921,7 @@ msgstr "O Nginx não está em execução noutro contentor"
 msgid "Nginx is running"
 msgstr "O Nginx está em execução"
 
-#: src/routes/modules/nginx_log.ts:9 src/views/nginx_log/NginxLog.vue:33
+#: src/routes/modules/nginx_log.ts:9 src/views/nginx_log/NginxLog.vue:39
 msgid "Nginx Log"
 msgstr "Logs do Nginx"
 
@@ -4055,20 +4047,20 @@ msgstr "Nenhum dado geográfico da China disponível"
 #: src/composables/useGeoTranslation.ts:169
 #: src/views/dashboard/NginxDashBoard.vue:202
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:126
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:91
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:95
 msgid "No data"
 msgstr "Sem dados"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:819
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:791
 msgid "No entries in current page"
 msgstr "Nenhuma entrada na página atual"
 
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:198
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:234
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:216
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:252
 msgid "No geographic data available"
 msgstr "Nenhum dado geográfico disponível"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:553
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:528
 msgid "No logs found in the selected time range."
 msgstr "Nenhum registo encontrado no intervalo de tempo selecionado."
 
@@ -4096,7 +4088,7 @@ msgstr ""
 "Nenhum endereço IP específico encontrado na configuração server_name. Por "
 "favor, especifique o endereço IP do servidor abaixo para o certificado."
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:828
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:800
 msgid "No structured log data available"
 msgstr "Nenhum dado de log estruturado disponível"
 
@@ -4120,7 +4112,7 @@ msgstr "Segredo do Nó"
 msgid "Node Status"
 msgstr "Estado do Nó"
 
-#: src/routes/modules/nodes.ts:11 src/views/dashboard/Nodes.vue:130
+#: src/routes/modules/nodes.ts:11 src/views/dashboard/Nodes.vue:131
 #: src/views/node/Node.vue:130
 msgid "Nodes"
 msgstr "Nós"
@@ -4137,7 +4129,7 @@ msgstr "Texto não esperado"
 msgid "Not Found"
 msgstr "Não Encontrado"
 
-#: src/views/nginx_log/NginxLogList.vue:148
+#: src/views/nginx_log/NginxLogList.vue:142
 msgid "Not Indexed"
 msgstr "Não indexado"
 
@@ -4253,7 +4245,7 @@ msgstr "Documentação oficial"
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:84
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
-#: src/views/dashboard/Nodes.vue:158 src/views/node/nodeColumns.tsx:55
+#: src/views/dashboard/Nodes.vue:159 src/views/node/nodeColumns.tsx:55
 msgid "Offline"
 msgstr "Off-line"
 
@@ -4288,7 +4280,7 @@ msgstr ""
 #: src/components/NodeSelector/NodeSelector.vue:64
 #: src/components/NodeSelector/NodeSelector.vue:78
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
-#: src/views/dashboard/Nodes.vue:151 src/views/node/nodeColumns.tsx:51
+#: src/views/dashboard/Nodes.vue:152 src/views/node/nodeColumns.tsx:51
 msgid "Online"
 msgstr "On-line"
 
@@ -4338,7 +4330,7 @@ msgstr "Nome Original"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:153
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:237
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:481
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:485
 #: src/views/system/Upgrade.vue:193
 msgid "OS"
 msgstr "OS"
@@ -4432,7 +4424,7 @@ msgstr "As palavras-passe não coincidem"
 #: src/views/config/components/Delete.vue:124
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:420
 #: src/views/nginx_log/NginxLogList.vue:85
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:477
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:481
 msgid "Path"
 msgstr "Caminho"
 
@@ -4464,7 +4456,7 @@ msgstr "Pendente"
 #: src/views/nginx_log/dashboard/components/DeviceStatsTable.vue:25
 #: src/views/nginx_log/dashboard/components/OSStatsTable.vue:26
 #: src/views/nginx_log/dashboard/components/TopUrlsTable.vue:27
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:168
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:186
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:87
 msgid "Percentage"
 msgstr "Percentagem"
@@ -4809,16 +4801,16 @@ msgstr "Requisitos da CA pública:"
 msgid "Public Security Number"
 msgstr "Número de Segurança Pública"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:762
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:733
 msgid "PV"
 msgstr "Visualizações de página"
 
 #: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:51
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:692
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:663
 msgid "Quick Select"
 msgstr "Seleção rápida"
 
-#: src/views/nginx_log/NginxLog.vue:51
+#: src/views/nginx_log/NginxLog.vue:57
 msgid "Raw"
 msgstr "Bruto"
 
@@ -4836,7 +4828,7 @@ msgstr "Pedidos de leitura"
 msgid "Reads"
 msgstr "Leituras"
 
-#: src/views/nginx_log/NginxLogList.vue:349
+#: src/views/nginx_log/NginxLogList.vue:344
 msgid "Rebuild"
 msgstr "Reconstruir"
 
@@ -5122,7 +5114,7 @@ msgstr "Pedidos por ligação"
 
 #: src/language/curd.ts:13
 #: src/views/nginx_log/structured/components/SearchFilters.vue:214
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:728
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:699
 msgid "Reset"
 msgstr "Reiniciar"
 
@@ -5130,7 +5122,7 @@ msgstr "Reiniciar"
 msgid "Reset 2FA"
 msgstr "Repor 2FA"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:843
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:815
 msgid "Reset Search"
 msgstr "Repor pesquisa"
 
@@ -5502,11 +5494,11 @@ msgstr "Pesquisar no conteúdo do registo..."
 msgid "Search module name"
 msgstr "Nome do módulo de pesquisa"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:834
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:806
 msgid "Search range"
 msgstr "Intervalo de pesquisa"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:737
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:708
 msgid "Searching logs..."
 msgstr "A pesquisar registos..."
 
@@ -5742,7 +5734,7 @@ msgstr "O diretório sites-enabled não existe"
 
 #: src/language/curd.ts:62
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:213
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:479
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:483
 msgid "Size"
 msgstr "Tamanho"
 
@@ -5758,7 +5750,7 @@ msgstr "Tempo de espera entre iterações do carregador de cache"
 msgid "Sleep time between cache manager iterations"
 msgstr "Tempo de espera entre iterações do gestor de cache"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:725
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:696
 msgid "Sorted by"
 msgstr "Ordenado por"
 
@@ -5858,7 +5850,7 @@ msgstr "Estático"
 #: src/views/dashboard/components/ModulesTable.vue:96
 #: src/views/nginx_log/structured/components/SearchFilters.vue:106
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:205
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:478
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:482
 #: src/views/node/nodeColumns.tsx:43
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:29
 #: src/views/site/site_list/columns.tsx:120 src/views/stream/columns.tsx:87
@@ -5930,7 +5922,7 @@ msgstr "O diretório streams-available não existe"
 msgid "Streams-enabled directory not exist"
 msgstr "O diretório streams-enabled não existe"
 
-#: src/views/nginx_log/NginxLog.vue:49
+#: src/views/nginx_log/NginxLog.vue:55
 msgid "Structured"
 msgstr "Estruturado"
 
@@ -6417,12 +6409,12 @@ msgid "Thursday"
 msgstr "Quinta-feira"
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:149
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:474
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:478
 msgid "Time"
 msgstr "Tempo"
 
-#: src/views/nginx_log/NginxLogList.vue:225
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:680
+#: src/views/nginx_log/NginxLogList.vue:220
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:651
 msgid "Time Range"
 msgstr "Intervalo de tempo"
 
@@ -6496,7 +6488,7 @@ msgstr ""
 "Eles fornecem um ponto de extremidade de API compatível com OpenAI, então "
 "basta definir o baseUrl para sua API local."
 
-#: src/views/nginx_log/NginxLogList.vue:240
+#: src/views/nginx_log/NginxLogList.vue:235
 msgid "Today"
 msgstr "Hoje"
 
@@ -6512,8 +6504,8 @@ msgstr "O token está vazio"
 msgid "Token is not valid"
 msgstr "Token inválida"
 
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:217
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:253
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:235
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:271
 msgid "Top 10 Countries / Regions"
 msgstr "Top 10 países / regiões"
 
@@ -6535,7 +6527,7 @@ msgstr "Total"
 msgid "Total connections"
 msgstr "Conexões totais"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:756
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:727
 msgid "Total Entries"
 msgstr "Total de entradas"
 
@@ -6589,7 +6581,7 @@ msgstr ""
 "O TOTP é um método de autenticação de dois fatores que utiliza um algoritmo "
 "de palavra-passe única baseado no tempo."
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:774
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:745
 msgid "Traffic"
 msgstr "Tráfego"
 
@@ -6601,13 +6593,13 @@ msgstr "A traduzir erro..."
 msgid "Trash"
 msgstr "Lixo"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:821
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:793
 msgid "Try adjusting your search criteria or navigate to different pages."
 msgstr ""
 "Tente ajustar os seus critérios de pesquisa ou navegar para páginas "
 "diferentes."
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:831
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:803
 msgid "Try adjusting your search criteria or time range."
 msgstr "Tente ajustar os seus critérios de pesquisa ou o intervalo de tempo."
 
@@ -6649,7 +6641,7 @@ msgstr "Digitar ou selecionar SO"
 msgid "Type or select status codes"
 msgstr "Digite ou selecione códigos de status"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:780
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:751
 msgid "Unique Pages"
 msgstr "Páginas únicas"
 
@@ -6792,7 +6784,7 @@ msgstr "Nome de Utilizador (*)"
 msgid "Username length cannot exceed 255 characters"
 msgstr "O comprimento do nome de utilizador não pode exceder 255 caracteres"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:768
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:739
 msgid "UV"
 msgstr "UV"
 
@@ -6827,7 +6819,7 @@ msgstr "Verificar requisitos do sistema"
 msgid "Version"
 msgstr "Versão"
 
-#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:339
+#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:334
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:83
 msgid "View"
 msgstr "Ver"
@@ -6853,8 +6845,8 @@ msgstr "Visualizado"
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:145
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:64
 #: src/views/nginx_log/dashboard/components/TopUrlsTable.vue:19
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:110
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:161
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:114
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:179
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:86
 msgid "Visits"
 msgstr "Visitas"
@@ -7094,6 +7086,12 @@ msgstr "Os seus códigos antigos não funcionarão mais."
 #: src/views/preference/components/AuthSettings/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "As suas chaves de acesso"
+
+#~ msgid "Data refreshed successfully"
+#~ msgstr "Dados atualizados com sucesso"
+
+#~ msgid "Failed to refresh data"
+#~ msgstr "Falha ao atualizar os dados"
 
 #~ msgid "Log File:"
 #~ msgstr "Ficheiro de registo:"

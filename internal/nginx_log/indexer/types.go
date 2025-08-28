@@ -224,6 +224,7 @@ func CreateLogIndexMapping() mapping.IndexMapping {
 	ipMapping.Store = true
 	ipMapping.Index = true
 	ipMapping.Analyzer = "keyword"
+	ipMapping.DocValues = true // Enable for faceting performance
 	docMapping.AddFieldMappingsAt("ip", ipMapping)
 
 	// Geographic fields
@@ -253,6 +254,7 @@ func CreateLogIndexMapping() mapping.IndexMapping {
 	pathKeywordMapping.Store = false
 	pathKeywordMapping.Index = true
 	pathKeywordMapping.Analyzer = "keyword"
+	pathKeywordMapping.DocValues = true // Enable for faceting performance
 	docMapping.AddFieldMappingsAt("path_exact", pathKeywordMapping)
 
 	// Status code - numeric for range queries

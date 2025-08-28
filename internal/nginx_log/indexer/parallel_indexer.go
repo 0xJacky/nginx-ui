@@ -131,6 +131,7 @@ func (pi *ParallelIndexer) Start(ctx context.Context) error {
 // Stop gracefully stops the indexer
 func (pi *ParallelIndexer) Stop() error {
 	if !atomic.CompareAndSwapInt32(&pi.running, 1, 0) {
+		logger.Warnf("[ParallelIndexer] Stop called but indexer already stopped")
 		return fmt.Errorf("indexer stopped")
 	}
 
@@ -148,8 +149,13 @@ func (pi *ParallelIndexer) Stop() error {
 
 	// Flush all remaining data
 	if err := pi.FlushAll(); err != nil {
-		return fmt.Errorf("failed to flush during stop: %w", err)
+		logger.Errorf("[ParallelIndexer] Failed to flush during stop: %v", err)
+		// Don't return error here, continue with cleanup
 	}
+
+	// Close the shard manager - this will close all shards
+	// But we don't do this here because the shards might be in use by the searcher
+	// The shards will be closed when the searcher is stopped
 
 	return nil
 }

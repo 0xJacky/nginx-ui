@@ -110,12 +110,12 @@ msgstr "{label}이(가) 클립보드에 복사되었습니다"
 msgid "* Includes nodes from group %{groupName} and manually selected nodes"
 msgstr "* 그룹 %{groupName}의 노드와 수동으로 선택한 노드 포함"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:803
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:775
 msgid "%{start}-%{end} of %{total} items"
 msgstr "%{total}개 항목 중 %{start}-%{end}"
 
-#: src/views/nginx_log/dashboard/components/HourlyChart.vue:37
-#: src/views/nginx_log/dashboard/components/HourlyChart.vue:38
+#: src/views/nginx_log/dashboard/components/HourlyChart.vue:67
+#: src/views/nginx_log/dashboard/components/HourlyChart.vue:68
 msgid "24-Hour UV/PV Statistics"
 msgstr "24시간 UV/PV 통계"
 
@@ -158,7 +158,7 @@ msgstr "작업"
 #: src/views/certificate/CertificateList/certColumns.tsx:92
 #: src/views/certificate/DNSCredential.vue:71
 #: src/views/config/configColumns.tsx:50 src/views/namespace/columns.ts:84
-#: src/views/nginx_log/NginxLogList.vue:272 src/views/node/nodeColumns.tsx:96
+#: src/views/nginx_log/NginxLogList.vue:267 src/views/node/nodeColumns.tsx:96
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:85
 #: src/views/site/site_list/columns.tsx:160 src/views/stream/columns.tsx:123
@@ -368,7 +368,7 @@ msgstr "다음 동기화 노드에서 Nginx를 다시 시작하시겠습니까?"
 msgid "Are you sure you want to restore?"
 msgstr "복원하시겠습니까?"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:725
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:696
 msgid "Ascending"
 msgstr "오름차순"
 
@@ -435,7 +435,7 @@ msgstr "자동 백업 실패"
 msgid "Auto Backup Storage Failed"
 msgstr "자동 백업 저장 실패"
 
-#: src/views/nginx_log/NginxLog.vue:58 src/views/node/Node.vue:164
+#: src/views/nginx_log/NginxLog.vue:64 src/views/node/Node.vue:164
 msgid "Auto Refresh"
 msgstr "자동 새로고침"
 
@@ -476,14 +476,14 @@ msgstr "평균 지연 시간"
 msgid "Avg Daily UV"
 msgstr "평균 일일 UV"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:786
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:757
 msgid "Avg/PV"
 msgstr "평균/PV"
 
 #: src/views/certificate/components/CertificateActions.vue:22
 #: src/views/config/components/ConfigLeftPanel.vue:273
 #: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
-#: src/views/nginx_log/NginxLog.vue:86
+#: src/views/nginx_log/NginxLog.vue:92
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:169
 #: src/views/stream/components/StreamEditor.vue:123
 msgid "Back"
@@ -497,7 +497,7 @@ msgstr "홈으로"
 msgid "Back to List"
 msgstr "목록으로 돌아가기"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:556
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:531
 msgid ""
 "Background indexing in progress. Data will be updated automatically when "
 "ready."
@@ -624,7 +624,7 @@ msgstr "블록이 nil입니다"
 #: src/views/nginx_log/dashboard/components/BrowserStatsTable.vue:13
 #: src/views/nginx_log/structured/components/SearchFilters.vue:137
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:221
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:480
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:484
 msgid "Browser"
 msgstr "브라우저"
 
@@ -1265,14 +1265,14 @@ msgid "Core Upgrade"
 msgstr "코어 업그레이드"
 
 #: src/views/nginx_log/dashboard/components/BrowserStatsTable.vue:18
-#: src/views/nginx_log/dashboard/components/DailyTrendsChart.vue:81
+#: src/views/nginx_log/dashboard/components/DailyTrendsChart.vue:98
 #: src/views/nginx_log/dashboard/components/DeviceStatsTable.vue:17
-#: src/views/nginx_log/dashboard/components/HourlyChart.vue:70
+#: src/views/nginx_log/dashboard/components/HourlyChart.vue:100
 #: src/views/nginx_log/dashboard/components/OSStatsTable.vue:18
 msgid "Count"
 msgstr "카운트"
 
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:156
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:174
 msgid "Country / Region"
 msgstr "국가 / 지역"
 
@@ -1409,7 +1409,7 @@ msgstr "환경 표시기에 표시될 로컬 노드의 이름을 사용자 지�
 msgid "Daily"
 msgstr "매일"
 
-#: src/views/nginx_log/dashboard/components/DailyTrendsChart.vue:38
+#: src/views/nginx_log/dashboard/components/DailyTrendsChart.vue:41
 msgid "Daily Access Trends"
 msgstr "일별 접속 트렌드"
 
@@ -1420,15 +1420,11 @@ msgstr "매일 %{time}"
 #: src/routes/modules/dashboard.ts:10
 #: src/views/config/components/ConfigLeftPanel.vue:109
 #: src/views/config/components/ConfigLeftPanel.vue:159
-#: src/views/config/ConfigList.vue:69 src/views/nginx_log/NginxLog.vue:50
+#: src/views/config/ConfigList.vue:69 src/views/nginx_log/NginxLog.vue:56
 msgid "Dashboard"
 msgstr "대시보드"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:515
-msgid "Data refreshed successfully"
-msgstr "데이터가 성공적으로 업데이트되었습니다"
-
-#: src/views/nginx_log/dashboard/components/DailyTrendsChart.vue:68
+#: src/views/nginx_log/dashboard/components/DailyTrendsChart.vue:71
 msgid "Date"
 msgstr "날짜"
 
@@ -1452,7 +1448,7 @@ msgstr "일"
 msgid "Decryption failed"
 msgstr "복호화 실패"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:839
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:811
 msgid "Default range"
 msgstr "기본 범위"
 
@@ -1552,7 +1548,7 @@ msgstr "데모"
 msgid "Deploy"
 msgstr "배포"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:725
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:696
 msgid "Descending"
 msgstr "내림차순"
 
@@ -1587,7 +1583,7 @@ msgstr "개발 모드"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:169
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:253
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:482
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:486
 msgid "Device"
 msgstr "장치"
 
@@ -1781,7 +1777,7 @@ msgid "Document"
 msgid_plural "Documents"
 msgstr[0] "문서"
 
-#: src/views/nginx_log/NginxLogList.vue:212
+#: src/views/nginx_log/NginxLogList.vue:207
 msgid "Document Count"
 msgstr "문서 수"
 
@@ -2068,7 +2064,7 @@ msgstr "차이점 뷰어 초기화 오류"
 msgid "Error Log"
 msgstr "오류 로그"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:656
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:627
 msgid "Error Log Detected"
 msgstr "오류 로그 감지됨"
 
@@ -2081,7 +2077,7 @@ msgstr "오류 로그 경로가 존재하지 않습니다"
 msgid "Error Logs"
 msgstr "오류 로그"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:659
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:630
 msgid ""
 "Error logs do not support structured analysis as they contain free-form text "
 "messages."
@@ -2502,10 +2498,6 @@ msgstr "파일 인덱스 재구성 실패"
 msgid "Failed to rebuild index"
 msgstr "인덱스 재구성 실패"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:520
-msgid "Failed to refresh data"
-msgstr "데이터 새로 고침 실패"
-
 #: src/views/dashboard/SiteNavigation.vue:101
 msgid "Failed to refresh sites"
 msgstr "사이트 새로 고침 실패"
@@ -2622,7 +2614,7 @@ msgstr "파일이 성공적으로 업로드되었습니다"
 msgid "Filename is empty"
 msgstr "파일 이름이 비어 있습니다"
 
-#: src/views/nginx_log/NginxLogList.vue:323
+#: src/views/nginx_log/NginxLogList.vue:318
 msgid "files"
 msgstr "파일"
 
@@ -2669,7 +2661,7 @@ msgstr "중국 사용자를 위한"
 msgid "For Chinese user: https://cloud.nginxui.com/"
 msgstr "중국 사용자를 위해: https://cloud.nginxui.com/"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:661
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:632
 msgid ""
 "For error logs, please use the Raw Log Viewer for better viewing experience."
 msgstr ""
@@ -2709,7 +2701,7 @@ msgstr "형식: 분 시 일 월 요일"
 msgid "Friday"
 msgstr "금요일"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:836
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:808
 msgid "From indexed logs"
 msgstr "인덱싱된 로그에서"
 
@@ -2767,7 +2759,7 @@ msgid "Github Proxy"
 msgstr "Github 프록시"
 
 #: src/views/nginx_log/dashboard/components/GeoMapChart.vue:47
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:183
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:201
 msgid "Global Access Map"
 msgstr "글로벌 접속 지도"
 
@@ -2775,7 +2767,7 @@ msgstr "글로벌 접속 지도"
 msgid "Global Map"
 msgstr "세계 지도"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:666
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:637
 msgid "Go to Raw Log Viewer"
 msgstr "원시 로그 뷰어로 이동"
 
@@ -2833,7 +2825,7 @@ msgstr "숨기기"
 
 #: src/composables/useGeoTranslation.ts:165
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:134
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:99
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:103
 msgid "High"
 msgstr "높음"
 
@@ -2856,7 +2848,7 @@ msgid "Host"
 msgstr "호스트"
 
 #: src/views/backup/AutoBackup/components/CronEditor.vue:159
-#: src/views/nginx_log/dashboard/components/HourlyChart.vue:57
+#: src/views/nginx_log/dashboard/components/HourlyChart.vue:87
 msgid "Hour"
 msgstr "시간"
 
@@ -2942,20 +2934,20 @@ msgstr "인덱스 및 통계 재구성이 성공적으로 시작되었습니다"
 msgid "Index Status"
 msgstr "인덱스 상태"
 
-#: src/views/nginx_log/NginxLogList.vue:140
+#: src/views/nginx_log/NginxLogList.vue:134
 msgid "Indexed"
 msgstr "인덱싱됨"
 
 #: src/views/nginx_log/indexing/components/IndexProgressBar.vue:54
-#: src/views/nginx_log/NginxLogList.vue:144
+#: src/views/nginx_log/NginxLogList.vue:138
 msgid "Indexing"
 msgstr "인덱싱"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:745
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:716
 msgid "Indexing logs, please wait..."
 msgstr "로그 인덱싱 중입니다. 잠시 기다려 주세요..."
 
-#: src/views/nginx_log/NginxLogList.vue:318
+#: src/views/nginx_log/NginxLogList.vue:313
 msgid "Indexing logs..."
 msgstr "로그 인덱싱 중..."
 
@@ -3115,7 +3107,7 @@ msgid "IP"
 msgstr "IP"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:77
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:475
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:479
 msgid "IP Address"
 msgstr "IP 주소"
 
@@ -3230,7 +3222,7 @@ msgstr "마지막 확인 시간"
 msgid "Last hour"
 msgstr "지난 1시간"
 
-#: src/views/nginx_log/NginxLogList.vue:157
+#: src/views/nginx_log/NginxLogList.vue:151
 msgid "Last Indexed"
 msgstr "마지막 인덱싱"
 
@@ -3331,7 +3323,7 @@ msgstr "로더 슬립"
 msgid "Loader Threshold"
 msgstr "로더 임계값"
 
-#: src/views/nginx_log/dashboard/DashboardViewer.vue:150
+#: src/views/nginx_log/dashboard/DashboardViewer.vue:151
 msgid "Loading dashboard data..."
 msgstr "대시보드 데이터 로드 중..."
 
@@ -3382,7 +3374,7 @@ msgstr "로그 파일이 존재하지 않습니다"
 msgid "Log file is not a regular file"
 msgstr "로그 파일이 일반 파일이 아닙니다"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:851
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:823
 msgid "Log file not available"
 msgstr "로그 파일을 사용할 수 없음"
 
@@ -3390,11 +3382,11 @@ msgstr "로그 파일을 사용할 수 없음"
 msgid "Log indexer not available"
 msgstr "로그 인덱서를 사용할 수 없음"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:572
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:547
 msgid "Log indexing completed! Loading updated data..."
 msgstr "로그 인덱싱 완료! 업데이트된 데이터를 불러오는 중..."
 
-#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:302
+#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:297
 msgid "Log List"
 msgstr "로그 목록"
 
@@ -3435,7 +3427,7 @@ msgstr ""
 
 #: src/composables/useGeoTranslation.ts:166
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:134
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:99
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:103
 msgid "Low"
 msgstr "낮음"
 
@@ -3582,7 +3574,7 @@ msgid "Memory Usage (RSS)"
 msgstr "메모리 사용량 (RSS)"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:92
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:476
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:480
 msgid "Method"
 msgstr "방법"
 
@@ -3874,7 +3866,7 @@ msgstr "Nginx가 다른 컨테이너에서 실행되고 있지 않습니다"
 msgid "Nginx is running"
 msgstr "Nginx가 실행 중입니다"
 
-#: src/routes/modules/nginx_log.ts:9 src/views/nginx_log/NginxLog.vue:33
+#: src/routes/modules/nginx_log.ts:9 src/views/nginx_log/NginxLog.vue:39
 msgid "Nginx Log"
 msgstr "Nginx 로그"
 
@@ -3997,20 +3989,20 @@ msgstr "중국 지리 데이터를 사용할 수 없음"
 #: src/composables/useGeoTranslation.ts:169
 #: src/views/dashboard/NginxDashBoard.vue:202
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:126
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:91
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:95
 msgid "No data"
 msgstr "데이터 없음"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:819
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:791
 msgid "No entries in current page"
 msgstr "현재 페이지에 항목이 없습니다"
 
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:198
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:234
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:216
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:252
 msgid "No geographic data available"
 msgstr "지리 데이터를 사용할 수 없음"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:553
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:528
 msgid "No logs found in the selected time range."
 msgstr "선택한 시간 범위에서 로그를 찾을 수 없습니다."
 
@@ -4038,7 +4030,7 @@ msgstr ""
 "server_name 구성에서 특정 IP 주소를 찾을 수 없습니다. 인증서를 위해 아래에 서"
 "버 IP 주소를 지정해 주세요."
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:828
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:800
 msgid "No structured log data available"
 msgstr "구조화된 로그 데이터를 사용할 수 없음"
 
@@ -4062,7 +4054,7 @@ msgstr "노드 시크릿"
 msgid "Node Status"
 msgstr "노드 상태"
 
-#: src/routes/modules/nodes.ts:11 src/views/dashboard/Nodes.vue:130
+#: src/routes/modules/nodes.ts:11 src/views/dashboard/Nodes.vue:131
 #: src/views/node/Node.vue:130
 msgid "Nodes"
 msgstr "노드"
@@ -4079,7 +4071,7 @@ msgstr "예상하지 않은 텍스트"
 msgid "Not Found"
 msgstr "찾을 수 없음"
 
-#: src/views/nginx_log/NginxLogList.vue:148
+#: src/views/nginx_log/NginxLogList.vue:142
 msgid "Not Indexed"
 msgstr "인덱스되지 않음"
 
@@ -4192,7 +4184,7 @@ msgstr "공식 문서"
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:84
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
-#: src/views/dashboard/Nodes.vue:158 src/views/node/nodeColumns.tsx:55
+#: src/views/dashboard/Nodes.vue:159 src/views/node/nodeColumns.tsx:55
 msgid "Offline"
 msgstr "오프라인"
 
@@ -4226,7 +4218,7 @@ msgstr "검증이 완료되면, 레코드는 제거됩니다."
 #: src/components/NodeSelector/NodeSelector.vue:64
 #: src/components/NodeSelector/NodeSelector.vue:78
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
-#: src/views/dashboard/Nodes.vue:151 src/views/node/nodeColumns.tsx:51
+#: src/views/dashboard/Nodes.vue:152 src/views/node/nodeColumns.tsx:51
 msgid "Online"
 msgstr "온라인"
 
@@ -4276,7 +4268,7 @@ msgstr "원본 이름"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:153
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:237
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:481
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:485
 #: src/views/system/Upgrade.vue:193
 msgid "OS"
 msgstr "운영 체제"
@@ -4369,7 +4361,7 @@ msgstr "비밀번호가 일치하지 않습니다"
 #: src/views/config/components/Delete.vue:124
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:420
 #: src/views/nginx_log/NginxLogList.vue:85
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:477
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:481
 msgid "Path"
 msgstr "경로"
 
@@ -4401,7 +4393,7 @@ msgstr "대기 중"
 #: src/views/nginx_log/dashboard/components/DeviceStatsTable.vue:25
 #: src/views/nginx_log/dashboard/components/OSStatsTable.vue:26
 #: src/views/nginx_log/dashboard/components/TopUrlsTable.vue:27
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:168
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:186
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:87
 msgid "Percentage"
 msgstr "백분율"
@@ -4728,16 +4720,16 @@ msgstr "공개 CA 요구 사항:"
 msgid "Public Security Number"
 msgstr "공공 보안 번호"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:762
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:733
 msgid "PV"
 msgstr "페이지 뷰"
 
 #: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:51
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:692
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:663
 msgid "Quick Select"
 msgstr "빠른 선택"
 
-#: src/views/nginx_log/NginxLog.vue:51
+#: src/views/nginx_log/NginxLog.vue:57
 msgid "Raw"
 msgstr "원시"
 
@@ -4755,7 +4747,7 @@ msgstr "읽기 요청"
 msgid "Reads"
 msgstr "읽기"
 
-#: src/views/nginx_log/NginxLogList.vue:349
+#: src/views/nginx_log/NginxLogList.vue:344
 msgid "Rebuild"
 msgstr "재구축"
 
@@ -5044,7 +5036,7 @@ msgstr "연결당 요청 수"
 
 #: src/language/curd.ts:13
 #: src/views/nginx_log/structured/components/SearchFilters.vue:214
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:728
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:699
 msgid "Reset"
 msgstr "재설정"
 
@@ -5052,7 +5044,7 @@ msgstr "재설정"
 msgid "Reset 2FA"
 msgstr "2FA 재설정"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:843
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:815
 msgid "Reset Search"
 msgstr "검색 초기화"
 
@@ -5421,11 +5413,11 @@ msgstr "로그 내용 검색..."
 msgid "Search module name"
 msgstr "모듈 이름 검색"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:834
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:806
 msgid "Search range"
 msgstr "검색 범위"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:737
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:708
 msgid "Searching logs..."
 msgstr "로그 검색 중..."
 
@@ -5658,7 +5650,7 @@ msgstr "sites-enabled 디렉터리가 존재하지 않습니다"
 
 #: src/language/curd.ts:62
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:213
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:479
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:483
 msgid "Size"
 msgstr "크기"
 
@@ -5674,7 +5666,7 @@ msgstr "캐시 로더 반복 사이의 대기 시간"
 msgid "Sleep time between cache manager iterations"
 msgstr "캐시 관리자 반복 간 대기 시간"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:725
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:696
 msgid "Sorted by"
 msgstr "정렬 기준"
 
@@ -5771,7 +5763,7 @@ msgstr "정적"
 #: src/views/dashboard/components/ModulesTable.vue:96
 #: src/views/nginx_log/structured/components/SearchFilters.vue:106
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:205
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:478
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:482
 #: src/views/node/nodeColumns.tsx:43
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:29
 #: src/views/site/site_list/columns.tsx:120 src/views/stream/columns.tsx:87
@@ -5841,7 +5833,7 @@ msgstr "streams-available 디렉터리가 존재하지 않습니다"
 msgid "Streams-enabled directory not exist"
 msgstr "streams-enabled 디렉터리가 존재하지 않습니다"
 
-#: src/views/nginx_log/NginxLog.vue:49
+#: src/views/nginx_log/NginxLog.vue:55
 msgid "Structured"
 msgstr "구조화된"
 
@@ -6313,12 +6305,12 @@ msgid "Thursday"
 msgstr "목요일"
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:149
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:474
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:478
 msgid "Time"
 msgstr "시간"
 
-#: src/views/nginx_log/NginxLogList.vue:225
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:680
+#: src/views/nginx_log/NginxLogList.vue:220
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:651
 msgid "Time Range"
 msgstr "시간 범위"
 
@@ -6390,7 +6382,7 @@ msgstr ""
 "OpenAI 호환 API 엔드포인트를 제공하므로 baseUrl을 로컬 API로 설정하기만 하면 "
 "됩니다."
 
-#: src/views/nginx_log/NginxLogList.vue:240
+#: src/views/nginx_log/NginxLogList.vue:235
 msgid "Today"
 msgstr "오늘"
 
@@ -6406,8 +6398,8 @@ msgstr "토큰이 비어 있습니다"
 msgid "Token is not valid"
 msgstr "토큰이 유효하지 않습니다"
 
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:217
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:253
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:235
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:271
 msgid "Top 10 Countries / Regions"
 msgstr "상위 10개 국가/지역"
 
@@ -6429,7 +6421,7 @@ msgstr "총계"
 msgid "Total connections"
 msgstr "총 연결 수"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:756
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:727
 msgid "Total Entries"
 msgstr "총 항목 수"
 
@@ -6482,7 +6474,7 @@ msgid ""
 msgstr ""
 "TOTP는 시간 기반의 일회용 비밀번호 알고리즘을 사용하는 이중 인증 방법입니다."
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:774
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:745
 msgid "Traffic"
 msgstr "트래픽"
 
@@ -6494,11 +6486,11 @@ msgstr "오류 번역 중..."
 msgid "Trash"
 msgstr "휴지통"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:821
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:793
 msgid "Try adjusting your search criteria or navigate to different pages."
 msgstr "검색 조건을 조정하거나 다른 페이지로 이동해 보세요."
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:831
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:803
 msgid "Try adjusting your search criteria or time range."
 msgstr "검색 조건이나 시간 범위를 조정해 보세요."
 
@@ -6540,7 +6532,7 @@ msgstr "OS 입력 또는 선택"
 msgid "Type or select status codes"
 msgstr "상태 코드 입력 또는 선택"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:780
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:751
 msgid "Unique Pages"
 msgstr "고유 페이지"
 
@@ -6683,7 +6675,7 @@ msgstr "사용자 이름 (*)"
 msgid "Username length cannot exceed 255 characters"
 msgstr "사용자 이름 길이는 255자를 초과할 수 없습니다"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:768
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:739
 msgid "UV"
 msgstr "고유 방문자"
 
@@ -6718,7 +6710,7 @@ msgstr "시스템 요구 사항을 확인하십시오"
 msgid "Version"
 msgstr "버전"
 
-#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:339
+#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:334
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:83
 msgid "View"
 msgstr "보기"
@@ -6744,8 +6736,8 @@ msgstr "확인됨"
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:145
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:64
 #: src/views/nginx_log/dashboard/components/TopUrlsTable.vue:19
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:110
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:161
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:114
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:179
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:86
 msgid "Visits"
 msgstr "방문 수"
@@ -6977,6 +6969,12 @@ msgstr "이전 코드는 더 이상 작동하지 않습니다."
 #: src/views/preference/components/AuthSettings/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "귀하의 패스키"
+
+#~ msgid "Data refreshed successfully"
+#~ msgstr "데이터가 성공적으로 업데이트되었습니다"
+
+#~ msgid "Failed to refresh data"
+#~ msgstr "데이터 새로 고침 실패"
 
 #~ msgid "Log File:"
 #~ msgstr "로그 파일:"

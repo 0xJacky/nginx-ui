@@ -31,6 +31,7 @@ func InitializeModernServices(ctx context.Context) {
 	defer servicesMutex.Unlock()
 
 	if servicesInitialized {
+		logger.Info("Modern nginx log services already initialized, skipping")
 		return
 	}
 
@@ -42,8 +43,11 @@ func InitializeModernServices(ctx context.Context) {
 		return
 	}
 
+	logger.Info("Modern nginx log services initialization completed")
+
 	// Monitor context for shutdown
 	go func() {
+		logger.Info("Started nginx_log shutdown monitor goroutine")
 		<-ctx.Done()
 		logger.Info("Shutting down modern nginx log services...")
 
@@ -57,8 +61,16 @@ func InitializeModernServices(ctx context.Context) {
 			}
 		}
 
+		// Stop searcher if it exists
+		if globalSearcher != nil {
+			if err := globalSearcher.Stop(); err != nil {
+				logger.Errorf("Failed to stop searcher: %v", err)
+			}
+		}
+
 		servicesInitialized = false
 		logger.Info("Modern nginx log services shut down")
+		logger.Info("Nginx_log shutdown monitor goroutine completed")
 	}()
 }
 
@@ -105,17 +117,16 @@ func getConfigDirIndexPath() string {
 	if cSettings.ConfPath != "" {
 		configDir := filepath.Dir(cSettings.ConfPath)
 		indexPath := filepath.Join(configDir, "log-index")
-		
+
 		// Ensure the directory exists
 		if err := os.MkdirAll(indexPath, 0755); err != nil {
 			logger.Warnf("Failed to create index directory at %s: %v, using default", indexPath, err)
 			return "./log-index"
 		}
-		
-		logger.Infof("Using index path: %s", indexPath)
+
 		return indexPath
 	}
-	
+
 	// Fallback to default relative path
 	logger.Warn("Config file path not available, using default index path")
 	return "./log-index"
@@ -166,7 +177,12 @@ func GetLogFileManager() *indexer.LogFileManager {
 	defer servicesMutex.RUnlock()
 
 	if !servicesInitialized {
-		logger.Warn("Modern services not initialized, returning nil")
+		// Only warn during actual operations, not during initialization
+		return nil
+	}
+
+	if globalLogFileManager == nil {
+		logger.Warnf("[nginx_log] GetLogFileManager: globalLogFileManager is nil even though servicesInitialized=true")
 		return nil
 	}
 
@@ -188,15 +204,22 @@ const (
 
 // AddLogPath adds a log path to the log cache with the source config file
 func AddLogPath(path, logType, name, configFile string) {
-	if manager := GetLogFileManager(); manager != nil {
+	manager := GetLogFileManager()
+	if manager != nil {
 		manager.AddLogPath(path, logType, name, configFile)
+	} else {
+		// Only warn if during initialization (when it might be expected)
+		// Skip warning during shutdown or restart phases
 	}
 }
 
 // RemoveLogPathsFromConfig removes all log paths associated with a specific config file
 func RemoveLogPathsFromConfig(configFile string) {
-	if manager := GetLogFileManager(); manager != nil {
+	manager := GetLogFileManager()
+	if manager != nil {
 		manager.RemoveLogPathsFromConfig(configFile)
+	} else {
+		// Silently skip if manager not available - this is normal during shutdown/restart
 	}
 }
 

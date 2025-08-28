@@ -9,7 +9,6 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/settings"
-	"github.com/uozi-tech/cosy/logger"
 )
 
 // IsValidLogPath checks if a log path is valid:
@@ -17,9 +16,9 @@ import (
 // 2. It must not point to a console or special device
 // 3. It must be under the whitelist directories
 func IsValidLogPath(logPath string) bool {
+
 	// First check if the path is in the whitelist
 	if !isLogPathUnderWhiteList(logPath) {
-		logger.Warn("Log path is not under whitelist:", logPath)
 		return false
 	}
 
@@ -37,7 +36,6 @@ func IsValidLogPath(logPath string) bool {
 		// This function detects circular symlinks and returns an error
 		resolvedPath, err := filepath.EvalSymlinks(logPath)
 		if err != nil {
-			logger.Warn("Failed to resolve symlink (possible circular reference):", logPath, "error:", err)
 			return false
 		}
 
@@ -48,11 +46,13 @@ func IsValidLogPath(logPath string) bool {
 		}
 
 		// Only accept regular files as targets
-		return targetInfo.Mode().IsRegular()
+		result := targetInfo.Mode().IsRegular()
+		return result
 	}
 
 	// For non-symlinks, just check if it's a regular file
-	return fileInfo.Mode().IsRegular()
+	result := fileInfo.Mode().IsRegular()
+	return result
 }
 
 // isLogPathUnderWhiteList checks if a log path is under one of the paths in LogDirWhiteList

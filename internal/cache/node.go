@@ -25,5 +25,4 @@ func GetCachedNodes() (interface{}, bool) {
 // SetCachedNodes stores nodes in cache
 func SetCachedNodes(data interface{}) {
 	Set(NodeCacheKey, data, NodeCacheTTL)
-	logger.Debug("Cached enabled nodes data")
 }
