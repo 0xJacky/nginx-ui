@@ -39,8 +39,8 @@ func (c *FileEntity) GetNamespace() *model.Namespace {
 
 func GetConfigs(c *gin.Context) {
 	search := c.Query("search")
-	sortBy := c.Query("sort_by")
-	order := c.DefaultQuery("order", "desc")
+	sortBy := c.DefaultQuery("sort_by", "name")
+	order := c.DefaultQuery("order", "asc")
 	namespaceIDStr := c.Query("env_group_id")
 
 	// Get directory parameter
