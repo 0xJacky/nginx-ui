@@ -33,12 +33,15 @@ func (c ConfigsSort) Less(i, j int) bool {
 		flag = c.ConfigList[i].Name > c.ConfigList[j].Name
 	case "modified_at":
 		flag = c.ConfigList[i].ModifiedAt.After(c.ConfigList[j].ModifiedAt)
-	case "is_dir":
-		flag = boolToInt(c.ConfigList[i].IsDir) > boolToInt(c.ConfigList[j].IsDir)
 	case "status":
 		flag = c.ConfigList[i].Status > c.ConfigList[j].Status
 	case "namespace_id":
 		flag = c.ConfigList[i].NamespaceID > c.ConfigList[j].NamespaceID
+	}
+
+	if c.ConfigList[i].IsDir != c.ConfigList[j].IsDir {
+		// Sort folders and files separately
+		flag = boolToInt(c.ConfigList[i].IsDir) < boolToInt(c.ConfigList[j].IsDir)
 	}
 
 	if c.Order == "asc" {

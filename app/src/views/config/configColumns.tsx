@@ -17,6 +17,7 @@ const configColumns: StdTableColumn[] = [{
   title: () => $gettext('Name'),
   dataIndex: 'name',
   sorter: true,
+  sortDirections: ['descend', 'ascend'],
   pure: true,
   customRender: ({ text, record }: CustomRenderArgs) => {
     function renderIcon(isDir: boolean) {
