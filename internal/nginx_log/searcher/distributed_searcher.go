@@ -27,6 +27,9 @@ type DistributedSearcher struct {
 
 	// State
 	running int32
+	
+	// Cleanup control
+	closeOnce sync.Once
 }
 
 // searcherStats tracks search performance metrics
@@ -417,6 +420,11 @@ func (ds *DistributedSearcher) IsHealthy() bool {
 	return len(healthy) > 0
 }
 
+// IsRunning returns true if the searcher is currently running
+func (ds *DistributedSearcher) IsRunning() bool {
+	return atomic.LoadInt32(&ds.running) == 1
+}
+
 func (ds *DistributedSearcher) GetStats() *Stats {
 	ds.stats.mutex.RLock()
 	defer ds.stats.mutex.RUnlock()
@@ -462,50 +470,101 @@ func (ds *DistributedSearcher) GetShards() []bleve.Index {
 	return ds.shards
 }
 
-// Stop gracefully stops the searcher and closes all bleve indexes
-func (ds *DistributedSearcher) Stop() error {
-	// Check if already stopped
-	if !atomic.CompareAndSwapInt32(&ds.running, 1, 0) {
-		logger.Warnf("[DistributedSearcher] Stop called but already stopped")
-		return nil
+// SwapShards atomically replaces the current shards with new ones using IndexAlias.Swap()
+// This follows Bleve best practices for zero-downtime index updates
+func (ds *DistributedSearcher) SwapShards(newShards []bleve.Index) error {
+	if atomic.LoadInt32(&ds.running) == 0 {
+		return fmt.Errorf("searcher is not running")
 	}
+
+	if ds.indexAlias == nil {
+		return fmt.Errorf("indexAlias is nil")
+	}
+
+	// Store old shards for logging
+	oldShards := ds.shards
 	
-	// Note: IndexAlias doesn't own the underlying indexes, it just references them
-	// We need to close both the alias and the underlying shards
+	// Perform atomic swap using IndexAlias - this is the key Bleve operation
+	// that provides zero-downtime index updates
+	ds.indexAlias.Swap(newShards, oldShards)
 	
-	// First, close the index alias (this doesn't close the underlying indexes)
-	if ds.indexAlias != nil {
-		// IndexAlias.Close() just removes references, doesn't close underlying indexes
-		if err := ds.indexAlias.Close(); err != nil {
-			logger.Errorf("Failed to close index alias: %v", err)
+	// Update internal shards reference to match the IndexAlias
+	ds.shards = newShards
+	
+	// Update shard stats for the new shards
+	ds.stats.mutex.Lock()
+	// Clear old shard stats
+	ds.stats.shardStats = make(map[int]*ShardSearchStats)
+	// Initialize stats for new shards
+	for i := range newShards {
+		ds.stats.shardStats[i] = &ShardSearchStats{
+			ShardID:   i,
+			IsHealthy: true,
 		}
-		ds.indexAlias = nil
 	}
+	ds.stats.mutex.Unlock()
 	
-	// Now close the actual shard indexes
-	for i, shard := range ds.shards {
+	logger.Infof("IndexAlias.Swap() completed: %d old shards -> %d new shards", 
+		len(oldShards), len(newShards))
+	
+	// Verify each new shard's document count for debugging
+	for i, shard := range newShards {
 		if shard != nil {
-			// Use recover to catch any panic from double-close
-			func() {
-				defer func() {
-					if r := recover(); r != nil {
-						logger.Errorf("[DistributedSearcher] Panic while closing shard %d: %v", i, r)
-					}
-				}()
-				
-				if err := shard.Close(); err != nil {
-					// Only log if it's not already closed
-					if err.Error() != "close of closed channel" {
-						logger.Errorf("Failed to close shard %d: %v", i, err)
-					}
-				}
-			}()
-			ds.shards[i] = nil
+			if docCount, err := shard.DocCount(); err != nil {
+				logger.Warnf("New shard %d: error getting doc count: %v", i, err)
+			} else {
+				logger.Infof("New shard %d: contains %d documents", i, docCount)
+			}
+		} else {
+			logger.Warnf("New shard %d: is nil", i)
 		}
 	}
 	
-	// Clear the shards slice
-	ds.shards = nil
+	// Test the searcher with a simple query to verify functionality
+	testCtx := context.Background()
+	testReq := &SearchRequest{
+		Limit:  1,
+		Offset: 0,
+	}
+	
+	if _, err := ds.Search(testCtx, testReq); err != nil {
+		logger.Errorf("Post-swap searcher test query failed: %v", err)
+		return fmt.Errorf("searcher test failed after shard swap: %w", err)
+	} else {
+		logger.Info("Post-swap searcher test query succeeded")
+	}
 	
 	return nil
+}
+
+// Stop gracefully stops the searcher and closes all bleve indexes
+func (ds *DistributedSearcher) Stop() error {
+	var err error
+	
+	ds.closeOnce.Do(func() {
+		// Set running to 0
+		atomic.StoreInt32(&ds.running, 0)
+		
+		// Close the index alias first (this doesn't close underlying indexes)
+		if ds.indexAlias != nil {
+			if closeErr := ds.indexAlias.Close(); closeErr != nil {
+				logger.Errorf("Failed to close index alias: %v", closeErr)
+				err = closeErr
+			}
+			ds.indexAlias = nil
+		}
+		
+		// DON'T close the underlying shards - they are managed by the indexer/shard manager
+		// The searcher is just a consumer of these shards, not the owner
+		// Clear the shards slice reference without closing the indexes
+		ds.shards = nil
+		
+		// Close cache if it exists
+		if ds.cache != nil {
+			ds.cache.Close()
+			ds.cache = nil
+		}
+	})
+	
+	return err
 }

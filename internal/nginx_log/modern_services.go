@@ -142,6 +142,16 @@ func GetModernSearcher() searcher.Searcher {
 		return nil
 	}
 
+	if globalSearcher == nil {
+		logger.Warn("GetModernSearcher: globalSearcher is nil even though services are initialized")
+		return nil
+	}
+	
+	// Check searcher health status
+	isHealthy := globalSearcher.IsHealthy()
+	isRunning := globalSearcher.IsRunning()
+	logger.Debugf("GetModernSearcher: returning searcher, isHealthy: %v, isRunning: %v", isHealthy, isRunning)
+
 	return globalSearcher
 }
 
@@ -262,8 +272,9 @@ func GetIndexingFiles() []string {
 	return []string{}
 }
 
-// UpdateSearcherShards fetches all shards from the indexer and re-creates the searcher.
-// This function is safe for concurrent use.
+// UpdateSearcherShards fetches all shards from the indexer and performs zero-downtime shard updates.
+// Uses Bleve IndexAlias.Swap() for atomic shard replacement without recreating the searcher.
+// This function is safe for concurrent use and maintains service availability during index rebuilds.
 func UpdateSearcherShards() {
 	servicesMutex.Lock() // Use a write lock as we are modifying a global variable
 	defer servicesMutex.Unlock()
@@ -271,38 +282,72 @@ func UpdateSearcherShards() {
 }
 
 // updateSearcherShardsLocked performs the actual update logic assumes the caller holds the lock.
+// Uses Bleve IndexAlias.Swap() for zero-downtime shard updates following official best practices.
 func updateSearcherShardsLocked() {
 	if !servicesInitialized || globalIndexer == nil {
 		logger.Warn("Cannot update searcher shards, services not fully initialized.")
 		return
 	}
 
-	allShards := globalIndexer.GetAllShards()
+	// Check if indexer is healthy before getting shards
+	if !globalIndexer.IsHealthy() {
+		logger.Warn("Cannot update searcher shards, indexer is not healthy")
+		return
+	}
 
-	// Re-create the searcher instance with the latest shards.
-	// This ensures it reads the most up-to-date index state from disk.
-	if globalSearcher != nil {
-		// Stop the old searcher to release any resources
-		if err := globalSearcher.Stop(); err != nil {
-			logger.Warnf("Error stopping old searcher: %v", err)
+	newShards := globalIndexer.GetAllShards()
+	logger.Infof("Retrieved %d new shards from indexer for hot-swap update", len(newShards))
+
+	// If no searcher exists yet, create the initial one (first time setup)
+	if globalSearcher == nil {
+		logger.Info("Creating initial searcher with IndexAlias")
+		searcherConfig := searcher.DefaultSearcherConfig()
+		globalSearcher = searcher.NewDistributedSearcher(searcherConfig, newShards)
+		
+		if globalSearcher == nil {
+			logger.Error("Failed to create initial searcher instance")
+			return
 		}
+		
+		// Create analytics service with the initial searcher
+		globalAnalytics = analytics.NewService(globalSearcher)
+		
+		isHealthy := globalSearcher.IsHealthy()
+		isRunning := globalSearcher.IsRunning()
+		logger.Infof("Initial searcher created successfully, isHealthy: %v, isRunning: %v", isHealthy, isRunning)
+		return
 	}
 
-	searcherConfig := searcher.DefaultSearcherConfig() // Or get from existing if config can change
-	globalSearcher = searcher.NewDistributedSearcher(searcherConfig, allShards)
-
-	// Also update the analytics service to use the new searcher instance
-	globalAnalytics = analytics.NewService(globalSearcher)
-
-	if len(allShards) > 0 {
-		logger.Infof("Searcher re-created with %d shards.", len(allShards))
+	// For subsequent updates, use hot-swap through IndexAlias
+	// This follows Bleve best practices for zero-downtime index updates
+	if ds, ok := globalSearcher.(*searcher.DistributedSearcher); ok {
+		oldShards := ds.GetShards()
+		
+		// Perform atomic shard swap using IndexAlias
+		if err := ds.SwapShards(newShards); err != nil {
+			logger.Errorf("Failed to swap shards atomically: %v", err)
+			return
+		}
+		
+		logger.Infof("Successfully swapped %d old shards with %d new shards using IndexAlias", 
+			len(oldShards), len(newShards))
+		
+		// Verify searcher health after swap
+		isHealthy := globalSearcher.IsHealthy()
+		isRunning := globalSearcher.IsRunning()
+		logger.Infof("Post-swap searcher status: isHealthy: %v, isRunning: %v", isHealthy, isRunning)
+		
+		// Note: We do NOT recreate the analytics service here since the searcher interface remains the same
+		// The CardinalityCounter will automatically use the new shards through the same IndexAlias
+		
 	} else {
-		logger.Info("Searcher re-created with no shards.")
+		logger.Warn("globalSearcher is not a DistributedSearcher, cannot perform hot-swap")
 	}
+
 }
 
 // DestroyAllIndexes completely removes all indexed data from disk.
-func DestroyAllIndexes() error {
+func DestroyAllIndexes(ctx context.Context) error {
 	servicesMutex.RLock()
 	defer servicesMutex.RUnlock()
 
@@ -311,5 +356,5 @@ func DestroyAllIndexes() error {
 		return fmt.Errorf("services not initialized")
 	}
 
-	return globalIndexer.DestroyAllIndexes()
+	return globalIndexer.DestroyAllIndexes(ctx)
 }

@@ -212,7 +212,7 @@ const indexColumns: StdTableColumn[] = [
       )
     },
     sorter: true,
-    width: 220,
+    width: 250,
   },
   {
     title: () => $gettext('Document Count'),

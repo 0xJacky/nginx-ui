@@ -7,6 +7,7 @@ import dayjs from 'dayjs'
 import nginx_log from '@/api/nginx_log'
 import { useWebSocketEventBus } from '@/composables/useWebSocketEventBus'
 import { bytesToSize } from '@/lib/helper'
+import { useIndexProgress } from '../composables/useIndexProgress'
 import SearchFilters from './components/SearchFilters.vue'
 
 interface Props {
@@ -28,6 +29,9 @@ const route = useRoute()
 
 // WebSocket event bus for index ready notifications
 const { subscribe: subscribeToEvent } = useWebSocketEventBus()
+
+// Index progress tracking for this specific file
+const { isFileIndexing } = useIndexProgress()
 
 // Use provided log path or let backend determine default
 const logPath = computed(() => props.logPath || undefined)
@@ -95,17 +99,45 @@ const filteredEntries = computed(() => {
 // Summary stats from search response
 const searchSummary = ref<SearchSummary | null>(null)
 
+// Check if current file is being indexed (from WebSocket progress events)
+const isCurrentFileIndexing = computed(() => {
+  return logPath.value ? isFileIndexing(logPath.value) : false
+})
+
+// Check if preflight shows this specific file is available/indexed
+const isFileAvailable = computed(() => {
+  return preflightResponse.value?.available === true
+})
+
 // Computed properties for indexing status
 const isLoading = computed(() => searchLoading.value)
-const isIndexing = computed(() => indexingStatus.value === 'indexing')
 const isReady = computed(() => indexingStatus.value === 'ready')
 const isFailed = computed(() => indexingStatus.value === 'failed')
 
-// Combined status computed properties
+// Combined status computed properties based on file-specific states
 const shouldShowContent = computed(() => !isFailed.value)
-const shouldShowControls = computed(() => isReady.value)
-const shouldShowIndexingSpinner = computed(() => isIndexing.value)
-const shouldShowResults = computed(() => isReady.value && searchSummary.value !== null)
+
+const shouldShowControls = computed(() => {
+  // Show controls when:
+  // 1. File is available (indexed and ready) AND
+  // 2. File is not currently being indexed
+  return isFileAvailable.value && !isCurrentFileIndexing.value
+})
+
+const shouldShowIndexingSpinner = computed(() => {
+  // Show indexing spinner if:
+  // 1. Current file is actively being indexed (from WebSocket progress), OR
+  // 2. Component is in indexing state but file is not yet available (waiting for initial index)
+  return isCurrentFileIndexing.value || (indexingStatus.value === 'indexing' && !isFileAvailable.value)
+})
+
+const shouldShowResults = computed(() => {
+  // Show results only when:
+  // 1. File is available (indexed) AND
+  // 2. File is not currently being re-indexed AND
+  // 3. We have search results
+  return isFileAvailable.value && !isCurrentFileIndexing.value && searchSummary.value !== null
+})
 
 // Status code color mapping
 function getStatusColor(status: number): string {
@@ -672,7 +704,8 @@ watch(timeRange, () => {
             />
             <AButton
               type="default"
-              :loading="isIndexing"
+              :loading="isCurrentFileIndexing || !isFileAvailable"
+              :disabled="isCurrentFileIndexing || !isFileAvailable"
               @click="loadLogs"
             >
               <template #icon>
@@ -713,7 +746,15 @@ watch(timeRange, () => {
       <div v-else-if="shouldShowIndexingSpinner" class="text-center" style="padding: 40px;">
         <LoadingOutlined class="text-2xl text-blue-500" />
         <p style="margin-top: 16px;">
-          {{ $gettext('Indexing logs, please wait...') }}
+          <template v-if="isCurrentFileIndexing">
+            {{ $gettext('This log file is currently being indexed, please wait...') }}
+          </template>
+          <template v-else-if="!isFileAvailable">
+            {{ $gettext('Waiting for this log file to be indexed...') }}
+          </template>
+          <template v-else>
+            {{ $gettext('Loading log data...') }}
+          </template>
         </p>
       </div>
 

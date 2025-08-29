@@ -266,13 +266,6 @@ func (si *SearchIndexer) IndexDocument(doc SearchDocument) (err error) {
 		return fmt.Errorf("document content too large: %d bytes", len(doc.Content))
 	}
 
-	// Check memory usage before indexing
-	contentSize := int64(len(doc.Content))
-	if !si.checkMemoryLimitBeforeIndexing(contentSize) {
-		logger.Warn("Skipping document due to memory limit", "document_id", doc.ID, "content_size", contentSize)
-		return nil
-	}
-
 	si.indexMutex.RLock()
 	defer si.indexMutex.RUnlock()
 
@@ -280,17 +273,32 @@ func (si *SearchIndexer) IndexDocument(doc SearchDocument) (err error) {
 		return fmt.Errorf("search index not initialized")
 	}
 
-	// Index the document
+	// Check if document already exists in the index
+	contentSize := int64(len(doc.Content))
+	existingDoc, err := si.index.Document(doc.ID)
+	isNewDocument := err != nil || existingDoc == nil
+
+	// For new documents, check memory limits
+	if isNewDocument {
+		if !si.checkMemoryLimitBeforeIndexing(contentSize) {
+			logger.Warn("Skipping document due to memory limit", "document_id", doc.ID, "content_size", contentSize)
+			return nil
+		}
+	}
+
+	// Index the document (this will update existing or create new)
 	err = si.index.Index(doc.ID, doc)
 	if err != nil {
 		return err
 	}
 
-	// Update memory usage tracking
-	si.updateMemoryUsage(doc.ID, contentSize, true)
-
-	// logger.Debugf("Indexing document: ID=%s, Type=%s, Name=%s, Path=%s",
-	// 	doc.ID, doc.Type, doc.Name, doc.Path)
+	// Update memory usage tracking only for new documents
+	if isNewDocument {
+		si.updateMemoryUsage(doc.ID, contentSize, true)
+		logger.Debugf("Indexed new document: ID=%s, Type=%s, Name=%s", doc.ID, doc.Type, doc.Name)
+	} else {
+		logger.Debugf("Updated existing document: ID=%s, Type=%s, Name=%s", doc.ID, doc.Type, doc.Name)
+	}
 
 	return nil
 }

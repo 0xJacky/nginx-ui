@@ -333,31 +333,61 @@ func (s *service) calculateDashboardSummary(analytics *DashboardAnalytics, resul
 
 // calculateDashboardSummaryWithCardinality calculates enhanced summary statistics using cardinality counters
 func (s *service) calculateDashboardSummaryWithCardinality(ctx context.Context, analytics *DashboardAnalytics, result *searcher.SearchResult, req *DashboardQueryRequest) DashboardSummary {
+	// Start with the basic summary but we'll override the UV calculation
 	summary := s.calculateDashboardSummary(analytics, result)
 	
-	// Use cardinality counter for accurate unique pages counting if available
-	if s.cardinalityCounter != nil {
-		cardReq := &searcher.CardinalityRequest{
+	// Use cardinality counter for accurate unique visitor (UV) counting if available
+	cardinalityCounter := s.getCardinalityCounter()
+	if cardinalityCounter != nil {
+		// Count unique IPs (visitors) using cardinality counter instead of limited facet
+		uvCardReq := &searcher.CardinalityRequest{
+			Field:     "ip",
+			StartTime: &req.StartTime,
+			EndTime:   &req.EndTime,
+			LogPaths:  req.LogPaths,
+		}
+		
+		if uvResult, err := cardinalityCounter.CountCardinality(ctx, uvCardReq); err == nil {
+			// Override the facet-limited UV count with accurate cardinality count
+			summary.TotalUV = int(uvResult.Cardinality)
+			
+			// Recalculate average daily UV with accurate count
+			if len(analytics.DailyStats) > 0 {
+				summary.AvgDailyUV = float64(summary.TotalUV) / float64(len(analytics.DailyStats))
+			}
+			
+			// Log the improvement - handle case where IP facet might not exist
+			facetUV := "N/A"
+			if result.Facets != nil && result.Facets["ip"] != nil {
+				facetUV = fmt.Sprintf("%d", result.Facets["ip"].Total)
+			}
+			logger.Infof("✓ Accurate UV count using CardinalityCounter: %d (was limited to %s by facet)", 
+				uvResult.Cardinality, facetUV)
+		} else {
+			logger.Errorf("Failed to count unique visitors with cardinality counter: %v", err)
+		}
+		
+		// Also count unique pages for additional insights
+		pageCardReq := &searcher.CardinalityRequest{
 			Field:     "path_exact",
 			StartTime: &req.StartTime,
 			EndTime:   &req.EndTime,
 			LogPaths:  req.LogPaths,
 		}
 		
-		if cardResult, err := s.cardinalityCounter.CountCardinality(ctx, cardReq); err == nil {
-			// Store unique pages count in a custom field - we'll need to extend DashboardSummary
-			logger.Debugf("Accurate unique pages count: %d (vs PV: %d)", cardResult.Cardinality, summary.TotalPV)
+		if pageResult, err := cardinalityCounter.CountCardinality(ctx, pageCardReq); err == nil {
+			logger.Debugf("Accurate unique pages count: %d (vs Total PV: %d)", pageResult.Cardinality, summary.TotalPV)
 			
-			// For now, log the accurate count for debugging
-			// In production, this would be added to DashboardSummary struct
-			if cardResult.Cardinality <= uint64(summary.TotalPV) {
-				logger.Infof("✓ Fixed: Unique pages (%d) is now ≤ Total PV (%d)", cardResult.Cardinality, summary.TotalPV)
+			if pageResult.Cardinality <= uint64(summary.TotalPV) {
+				logger.Infof("✓ Unique pages (%d) ≤ Total PV (%d) - data consistency verified", pageResult.Cardinality, summary.TotalPV)
 			} else {
-				logger.Warnf("⚠ Issue persists: Unique pages (%d) > Total PV (%d)", cardResult.Cardinality, summary.TotalPV)
+				logger.Warnf("⚠ Unique pages (%d) > Total PV (%d) - possible data inconsistency", pageResult.Cardinality, summary.TotalPV)
 			}
 		} else {
 			logger.Errorf("Failed to count unique pages: %v", err)
 		}
+	} else {
+		logger.Warnf("CardinalityCounter not available, UV count limited by facet size to %d", summary.TotalUV)
 	}
 	
 	return summary

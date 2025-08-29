@@ -24,6 +24,7 @@ type ProgressTracker struct {
 	isCompleted        bool
 	completionNotified bool // Flag to prevent duplicate completion notifications
 	lastNotify         time.Time
+	notifyInterval     time.Duration // Configurable notification interval
 
 	// Callback functions for notifications
 	onProgress   func(ProgressNotification)
@@ -116,10 +117,13 @@ func NewProgressTracker(logGroupPath string, config *ProgressConfig) *ProgressTr
 
 	if config != nil {
 		if config.NotifyInterval == 0 {
-			config.NotifyInterval = 2 * time.Second // Default notify interval
+			config.NotifyInterval = 1 * time.Second // Default notify interval
 		}
+		pt.notifyInterval = config.NotifyInterval
 		pt.onProgress = config.OnProgress
 		pt.onCompletion = config.OnCompletion
+	} else {
+		pt.notifyInterval = 1 * time.Second // Default when no config provided
 	}
 
 	return pt
@@ -332,9 +336,9 @@ func (pt *ProgressTracker) checkCompletionLocked() {
 
 // notifyProgressLocked sends progress notification (must be called with lock held)
 func (pt *ProgressTracker) notifyProgressLocked() {
-	// Throttle notifications to avoid spam
+	// Throttle notifications to avoid spam using configurable interval
 	now := time.Now()
-	if now.Sub(pt.lastNotify) < 2*time.Second {
+	if now.Sub(pt.lastNotify) < pt.notifyInterval {
 		return
 	}
 	pt.lastNotify = now

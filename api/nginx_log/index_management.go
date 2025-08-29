@@ -63,6 +63,10 @@ func performAsyncRebuild(modernIndexer interface{}, path string) {
 	// Notify that indexing has started
 	processingManager.UpdateNginxLogIndexing(true)
 
+	// Create a context for this rebuild operation that can be cancelled
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
 	// Ensure we always reset status when done
 	defer func() {
 		processingManager.UpdateNginxLogIndexing(false)
@@ -82,8 +86,8 @@ func performAsyncRebuild(modernIndexer interface{}, path string) {
 		}
 		logger.Infof("Deleted existing indexes for log group: %s", path)
 	} else {
-		// For full rebuild, destroy all existing indexes
-		if err := nginx_log.DestroyAllIndexes(); err != nil {
+		// For full rebuild, destroy all existing indexes with context
+		if err := nginx_log.DestroyAllIndexes(ctx); err != nil {
 			logger.Errorf("Failed to destroy existing indexes before rebuild: %v", err)
 			return
 		}
@@ -91,16 +95,16 @@ func performAsyncRebuild(modernIndexer interface{}, path string) {
 		// Re-initialize the indexer to create new, empty shards
 		if err := modernIndexer.(interface {
 			Start(context.Context) error
-		}).Start(context.Background()); err != nil {
+		}).Start(ctx); err != nil {
 			logger.Errorf("Failed to re-initialize indexer after destruction: %v", err)
 			return
 		}
-		logger.Info("Destroyed all indexes and re-initialized indexer")
+		logger.Info("Re-initialized indexer after destruction")
 	}
 
 	// Create progress tracking callbacks
 	progressConfig := &indexer.ProgressConfig{
-		NotifyInterval: 2 * time.Second,
+		NotifyInterval: 1 * time.Second,
 		OnProgress: func(progress indexer.ProgressNotification) {
 			// Send progress event to frontend
 			event.Publish(event.Event{

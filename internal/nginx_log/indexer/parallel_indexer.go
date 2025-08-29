@@ -35,6 +35,10 @@ type ParallelIndexer struct {
 	cancel  context.CancelFunc
 	wg      sync.WaitGroup
 	running int32
+	
+	// Cleanup control
+	stopOnce sync.Once
+	channelsClosed int32
 
 	// Statistics
 	stats      *IndexStats
@@ -130,34 +134,43 @@ func (pi *ParallelIndexer) Start(ctx context.Context) error {
 
 // Stop gracefully stops the indexer
 func (pi *ParallelIndexer) Stop() error {
-	if !atomic.CompareAndSwapInt32(&pi.running, 1, 0) {
-		logger.Warnf("[ParallelIndexer] Stop called but indexer already stopped")
-		return fmt.Errorf("indexer stopped")
-	}
+	var stopErr error
+	
+	pi.stopOnce.Do(func() {
+		// Set running to 0
+		if !atomic.CompareAndSwapInt32(&pi.running, 1, 0) {
+			logger.Warnf("[ParallelIndexer] Stop called but indexer already stopped")
+			stopErr = fmt.Errorf("indexer already stopped")
+			return
+		}
 
-	// Cancel context to stop all routines
-	pi.cancel()
+		// Cancel context to stop all routines
+		pi.cancel()
 
-	// Close job queue to stop accepting new jobs
-	close(pi.jobQueue)
+		// Close channels safely if they haven't been closed yet
+		if atomic.CompareAndSwapInt32(&pi.channelsClosed, 0, 1) {
+			// Close job queue to stop accepting new jobs
+			close(pi.jobQueue)
 
-	// Wait for all workers to finish
-	pi.wg.Wait()
+			// Wait for all workers to finish
+			pi.wg.Wait()
 
-	// Close result queue
-	close(pi.resultQueue)
+			// Close result queue
+			close(pi.resultQueue)
+		} else {
+			// If channels are already closed, just wait for workers
+			pi.wg.Wait()
+		}
 
-	// Flush all remaining data
-	if err := pi.FlushAll(); err != nil {
-		logger.Errorf("[ParallelIndexer] Failed to flush during stop: %v", err)
-		// Don't return error here, continue with cleanup
-	}
+		// Skip flush during stop - shards may already be closed by searcher
+		// FlushAll should be called before Stop() if needed
 
-	// Close the shard manager - this will close all shards
-	// But we don't do this here because the shards might be in use by the searcher
-	// The shards will be closed when the searcher is stopped
+		// Close the shard manager - this will close all shards
+		// But we don't do this here because the shards might be in use by the searcher
+		// The shards will be closed when the searcher is stopped
+	})
 
-	return nil
+	return stopErr
 }
 
 // IndexDocument indexes a single document
@@ -251,6 +264,11 @@ func (pi *ParallelIndexer) StartBatch() BatchWriterInterface {
 
 // FlushAll flushes all pending operations
 func (pi *ParallelIndexer) FlushAll() error {
+	// Check if indexer is still running
+	if atomic.LoadInt32(&pi.running) != 1 {
+		return fmt.Errorf("indexer not running")
+	}
+
 	// Get all shards and flush them
 	shards := pi.shardManager.GetAllShards()
 	var errs []error
@@ -536,13 +554,18 @@ func (pi *ParallelIndexer) DeleteIndexByLogGroup(basePath string, logFileManager
 	return nil
 }
 
+
 // DestroyAllIndexes closes and deletes all index data from disk.
-func (pi *ParallelIndexer) DestroyAllIndexes() error {
+func (pi *ParallelIndexer) DestroyAllIndexes(parentCtx context.Context) error {
 	// Stop all background routines before deleting files
 	pi.cancel()
 	pi.wg.Wait()
-	close(pi.jobQueue)
-	close(pi.resultQueue)
+	
+	// Safely close channels if they haven't been closed yet
+	if atomic.CompareAndSwapInt32(&pi.channelsClosed, 0, 1) {
+		close(pi.jobQueue)
+		close(pi.resultQueue)
+	}
 
 	atomic.StoreInt32(&pi.running, 0) // Mark as not running
 
@@ -553,10 +576,11 @@ func (pi *ParallelIndexer) DestroyAllIndexes() error {
 		destructionErr = fmt.Errorf("shard manager does not support destruction")
 	}
 
-	// Re-initialize context and channels for a potential restart
-	pi.ctx, pi.cancel = context.WithCancel(context.Background())
+	// Re-initialize context and channels for a potential restart using parent context
+	pi.ctx, pi.cancel = context.WithCancel(parentCtx)
 	pi.jobQueue = make(chan *IndexJob, pi.config.MaxQueueSize)
 	pi.resultQueue = make(chan *IndexResult, pi.config.WorkerCount)
+	atomic.StoreInt32(&pi.channelsClosed, 0) // Reset the channel closed flag
 
 	return destructionErr
 }

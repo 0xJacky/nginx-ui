@@ -109,9 +109,9 @@ func TestService_calculateHourlyStats_HourlyInterval(t *testing.T) {
 	assert.NotNil(t, stats)
 	assert.GreaterOrEqual(t, len(stats), 2) // Should have at least 2 hours
 
-	// Check that stats are sorted by hour
+	// Check that stats are sorted by timestamp (not just hour, since we have 48 hours of data)
 	for i := 1; i < len(stats); i++ {
-		assert.LessOrEqual(t, stats[i-1].Hour, stats[i].Hour)
+		assert.LessOrEqual(t, stats[i-1].Timestamp, stats[i].Timestamp)
 	}
 }
 

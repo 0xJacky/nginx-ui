@@ -217,6 +217,7 @@ type Searcher interface {
 	GetCacheStats() *CacheStats
 
 	IsHealthy() bool
+	IsRunning() bool
 	GetStats() *Stats
 	GetConfig() *Config
 	Stop() error

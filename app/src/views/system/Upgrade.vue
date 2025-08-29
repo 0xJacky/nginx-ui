@@ -140,7 +140,7 @@ async function performUpgrade() {
           }, 1000)
         }, interval)
       })
-    }, 2000)
+    }, 5000)
   }
 }
 

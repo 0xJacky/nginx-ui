@@ -152,23 +152,31 @@ func GetLogPreflight(c *gin.Context) {
 		return
 	}
 
-	// Check if indexing is currently in progress
+	// Check if the specific file is currently being indexed
 	processingManager := event.GetProcessingStatusManager()
 	currentStatus := processingManager.GetCurrentStatus()
-
-	var available bool
-	var indexStatus string
-
+	
+	// Check if searcher is healthy (indicates index is available)
+	available := searcherService.IsHealthy()
+	indexStatus := "not_ready"
+	
+	if available {
+		indexStatus = analytics.IndexStatusReady
+	}
+	
+	// If global indexing is in progress, check if this specific file has existing index data
+	// Only mark as unavailable if the file specifically doesn't have indexed data yet
 	if currentStatus.NginxLogIndexing {
-		// Index is being rebuilt, return not ready status
-		indexStatus = "indexing"
-		available = false
-	} else {
-		// Check if searcher is healthy (indicates index is available)
-		available = searcherService.IsHealthy()
-		indexStatus = "not_ready"
-		if available {
-			indexStatus = analytics.IndexStatusReady
+		// Check if this specific file has been indexed before
+		logFileManager := nginx_log.GetLogFileManager()
+		if logFileManager != nil {
+			logGroup, err := logFileManager.GetLogByPath(logPath)
+			if err != nil || logGroup == nil || !logGroup.HasTimeRange {
+				// This specific file hasn't been indexed yet
+				indexStatus = "indexing"
+				available = false
+			}
+			// If logGroup exists with time range, file was previously indexed and remains available
 		}
 	}
 

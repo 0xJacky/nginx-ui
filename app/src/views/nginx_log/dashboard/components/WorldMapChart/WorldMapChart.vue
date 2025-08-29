@@ -181,6 +181,7 @@ const columns = computed(() => {
       key: 'value',
       align: 'right' as const,
       sorter: (a: Record<string, unknown>, b: Record<string, unknown>) => (a.value as number) - (b.value as number),
+      customRender: ({ text }) => `${text.toLocaleString()}`,
     },
     {
       title: $gettext('Percentage'),
@@ -188,7 +189,7 @@ const columns = computed(() => {
       key: 'percent',
       align: 'right' as const,
       sorter: (a: Record<string, unknown>, b: Record<string, unknown>) => Number.parseFloat(a.percent as string) - Number.parseFloat(b.percent as string),
-      customRender: ({ text }: { text: string }) => `${text}%`,
+      customRender: ({ text }) => `${text}%`,
     },
   ]
 })

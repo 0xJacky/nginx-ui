@@ -53,6 +53,27 @@ func NewService(s searcher.Searcher) Service {
 	}
 }
 
+// getCardinalityCounter dynamically creates or returns a cardinality counter
+// This is necessary because shards may be updated after service initialization
+func (s *service) getCardinalityCounter() *searcher.CardinalityCounter {
+	// If we already have a cardinality counter and it's still valid, use it
+	if s.cardinalityCounter != nil {
+		return s.cardinalityCounter
+	}
+	
+	// Try to create a new cardinality counter from current shards
+	if ds, ok := s.searcher.(*searcher.DistributedSearcher); ok {
+		shards := ds.GetShards()
+		if len(shards) > 0 {
+			// Update our cached cardinality counter
+			s.cardinalityCounter = searcher.NewCardinalityCounter(shards)
+			return s.cardinalityCounter
+		}
+	}
+	
+	return nil
+}
+
 // ValidateLogPath validates the log path against whitelist
 func (s *service) ValidateLogPath(logPath string) error {
 	if logPath == "" {
