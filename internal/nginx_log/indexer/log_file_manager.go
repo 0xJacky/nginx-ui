@@ -416,10 +416,19 @@ func (lm *LogFileManager) GetLogByPath(basePath string) (*NginxLogWithIndex, err
 
 // GetFilePathsForGroup returns all physical file paths for a given log group base path.
 func (lm *LogFileManager) GetFilePathsForGroup(basePath string) ([]string, error) {
-	// This function is not implemented in the provided file,
-	// but the user's edit hint implies its existence.
-	// For now, returning an empty slice as a placeholder.
-	return []string{}, nil
+	// Query the database for all log indexes with matching main_log_path
+	logIndexes, err := lm.persistence.GetLogIndexesByGroup(basePath)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get log indexes for group %s: %w", basePath, err)
+	}
+
+	// Extract file paths from the database records
+	filePaths := make([]string, 0, len(logIndexes))
+	for _, logIndex := range logIndexes {
+		filePaths = append(filePaths, logIndex.Path)
+	}
+
+	return filePaths, nil
 }
 
 // maxInt64 returns the maximum of two int64 values

@@ -71,21 +71,32 @@ func performAsyncRebuild(modernIndexer interface{}, path string) {
 		}
 	}()
 
-	// First, destroy all existing indexes to ensure a clean slate
-	if err := nginx_log.DestroyAllIndexes(); err != nil {
-		logger.Errorf("Failed to destroy existing indexes before rebuild: %v", err)
-		return
-	}
-
-	// Re-initialize the indexer to create new, empty shards
-	if err := modernIndexer.(interface {
-		Start(context.Context) error
-	}).Start(context.Background()); err != nil {
-		logger.Errorf("Failed to re-initialize indexer after destruction: %v", err)
-		return
-	}
-
 	logFileManager := nginx_log.GetLogFileManager()
+
+	// Handle index cleanup based on rebuild scope
+	if path != "" {
+		// For single file rebuild, only delete indexes for that log group
+		if err := modernIndexer.(*indexer.ParallelIndexer).DeleteIndexByLogGroup(path, logFileManager); err != nil {
+			logger.Errorf("Failed to delete existing indexes for log group %s: %v", path, err)
+			return
+		}
+		logger.Infof("Deleted existing indexes for log group: %s", path)
+	} else {
+		// For full rebuild, destroy all existing indexes
+		if err := nginx_log.DestroyAllIndexes(); err != nil {
+			logger.Errorf("Failed to destroy existing indexes before rebuild: %v", err)
+			return
+		}
+
+		// Re-initialize the indexer to create new, empty shards
+		if err := modernIndexer.(interface {
+			Start(context.Context) error
+		}).Start(context.Background()); err != nil {
+			logger.Errorf("Failed to re-initialize indexer after destruction: %v", err)
+			return
+		}
+		logger.Info("Destroyed all indexes and re-initialized indexer")
+	}
 
 	// Create progress tracking callbacks
 	progressConfig := &indexer.ProgressConfig{

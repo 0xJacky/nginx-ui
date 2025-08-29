@@ -457,6 +457,85 @@ func (pi *ParallelIndexer) GetAllShards() []bleve.Index {
 	return pi.shardManager.GetAllShards()
 }
 
+// DeleteIndexByLogGroup deletes all index entries for a specific log group (base path and its rotated files)
+func (pi *ParallelIndexer) DeleteIndexByLogGroup(basePath string, logFileManager interface{}) error {
+	if !pi.IsHealthy() {
+		return fmt.Errorf("indexer not healthy")
+	}
+
+	// Get all file paths for this log group from the database
+	if logFileManager == nil {
+		return fmt.Errorf("log file manager is required")
+	}
+
+	lfm, ok := logFileManager.(interface {
+		GetFilePathsForGroup(string) ([]string, error)
+	})
+	if !ok {
+		return fmt.Errorf("log file manager does not support GetFilePathsForGroup")
+	}
+
+	filesToDelete, err := lfm.GetFilePathsForGroup(basePath)
+	if err != nil {
+		return fmt.Errorf("failed to get file paths for log group %s: %w", basePath, err)
+	}
+
+	logger.Infof("Deleting index entries for log group %s, files: %v", basePath, filesToDelete)
+
+	// Delete documents from all shards for these files
+	shards := pi.shardManager.GetAllShards()
+	var deleteErrors []error
+	
+	for _, shard := range shards {
+		// Search for documents with matching file_path
+		for _, filePath := range filesToDelete {
+			query := bleve.NewTermQuery(filePath)
+			query.SetField("file_path")
+			
+			searchRequest := bleve.NewSearchRequest(query)
+			searchRequest.Size = 1000 // Process in batches
+			searchRequest.Fields = []string{"file_path"}
+			
+			for {
+				searchResult, err := shard.Search(searchRequest)
+				if err != nil {
+					deleteErrors = append(deleteErrors, fmt.Errorf("failed to search for documents in file %s: %w", filePath, err))
+					break
+				}
+				
+				if len(searchResult.Hits) == 0 {
+					break // No more documents to delete
+				}
+				
+				// Delete documents in batch
+				batch := shard.NewBatch()
+				for _, hit := range searchResult.Hits {
+					batch.Delete(hit.ID)
+				}
+				
+				if err := shard.Batch(batch); err != nil {
+					deleteErrors = append(deleteErrors, fmt.Errorf("failed to delete batch for file %s: %w", filePath, err))
+				}
+				
+				// If we got fewer results than requested, we're done
+				if len(searchResult.Hits) < searchRequest.Size {
+					break
+				}
+				
+				// Continue from where we left off
+				searchRequest.From += searchRequest.Size
+			}
+		}
+	}
+
+	if len(deleteErrors) > 0 {
+		return fmt.Errorf("encountered %d errors during deletion: %v", len(deleteErrors), deleteErrors[0])
+	}
+
+	logger.Infof("Successfully deleted index entries for log group: %s", basePath)
+	return nil
+}
+
 // DestroyAllIndexes closes and deletes all index data from disk.
 func (pi *ParallelIndexer) DestroyAllIndexes() error {
 	// Stop all background routines before deleting files

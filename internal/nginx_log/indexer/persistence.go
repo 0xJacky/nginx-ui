@@ -389,6 +389,18 @@ func (pm *PersistenceManager) DeleteAllLogIndexes() error {
 }
 
 // DeleteLogIndexesByGroup deletes all log index records for a specific log group.
+// GetLogIndexesByGroup retrieves all log index records for a given main log path
+func (pm *PersistenceManager) GetLogIndexesByGroup(mainLogPath string) ([]*model.NginxLogIndex, error) {
+	q := query.NginxLogIndex
+	
+	logIndexes, err := q.Where(q.MainLogPath.Eq(mainLogPath)).Find()
+	if err != nil {
+		return nil, fmt.Errorf("failed to get log indexes for group %s: %w", mainLogPath, err)
+	}
+
+	return logIndexes, nil
+}
+
 func (pm *PersistenceManager) DeleteLogIndexesByGroup(mainLogPath string) error {
 	q := query.NginxLogIndex
 	result, err := q.Unscoped().Where(q.MainLogPath.Eq(mainLogPath)).Delete()

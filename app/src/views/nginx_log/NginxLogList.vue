@@ -1,11 +1,14 @@
 <script setup lang="tsx">
 import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
 import type { NginxLogData } from '@/api/nginx_log'
-import { CheckCircleOutlined, SyncOutlined } from '@ant-design/icons-vue'
+import type { TabOption } from '@/components/TabFilter'
+import { CheckCircleOutlined, ExclamationCircleOutlined, SyncOutlined } from '@ant-design/icons-vue'
 import { StdCurd } from '@uozi-admin/curd'
+import { useRouteQuery } from '@vueuse/router'
 import { Badge, Tag, Tooltip } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import nginxLog from '@/api/nginx_log'
+import { TabFilter } from '@/components/TabFilter'
 import { useWebSocketEventBus } from '@/composables/useWebSocketEventBus'
 import { useGlobalStore } from '@/pinia'
 import { useIndexProgress } from './composables/useIndexProgress'
@@ -22,7 +25,25 @@ const globalStore = useGlobalStore()
 const { nginxLogStatus, processingStatus } = storeToRefs(globalStore)
 
 // Index progress tracking
-const { getProgressForFile, isGlobalIndexing, globalProgress } = useIndexProgress()
+const { getProgressForFile, isGlobalIndexing } = useIndexProgress()
+
+// Tab filter for log types
+const activeLogType = useRouteQuery('type', 'access')
+
+const tabOptions: TabOption[] = [
+  {
+    key: 'access',
+    label: $gettext('Access Logs'),
+    icon: h(CheckCircleOutlined),
+    color: '#52c41a',
+  },
+  {
+    key: 'error',
+    label: $gettext('Error Logs'),
+    icon: h(ExclamationCircleOutlined),
+    color: '#ff4d4f',
+  },
+]
 
 // Subscribe to events
 onMounted(() => {
@@ -47,7 +68,8 @@ onMounted(() => {
   })
 })
 
-const columns: StdTableColumn[] = [
+// Base columns that are always visible
+const baseColumns: StdTableColumn[] = [
   {
     title: () => $gettext('Type'),
     dataIndex: 'type',
@@ -55,21 +77,6 @@ const columns: StdTableColumn[] = [
       return args.record?.type === 'access' ? <Tag color="green">{ $gettext('Access Log') }</Tag> : <Tag color="orange">{ $gettext('Error Log') }</Tag>
     },
     sorter: true,
-    search: {
-      type: 'select',
-      select: {
-        options: [
-          {
-            label: () => $gettext('Access Log'),
-            value: 'access',
-          },
-          {
-            label: () => $gettext('Error Log'),
-            value: 'error',
-          },
-        ],
-      },
-    },
     width: 120,
   },
   {
@@ -90,6 +97,10 @@ const columns: StdTableColumn[] = [
     },
     ellipsis: true,
   },
+]
+
+// Index-related columns only for Access logs
+const indexColumns: StdTableColumn[] = [
   {
     title: () => $gettext('Index Status'),
     dataIndex: 'index_status',
@@ -263,13 +274,28 @@ const columns: StdTableColumn[] = [
     },
     width: 380,
   },
-  {
-    title: () => $gettext('Actions'),
-    dataIndex: 'actions',
-    fixed: 'right',
-    width: 250,
-  },
 ]
+
+// Actions column
+const actionsColumn: StdTableColumn = {
+  title: () => $gettext('Actions'),
+  dataIndex: 'actions',
+  fixed: 'right',
+  width: 250,
+}
+
+// Computed columns based on active log type
+const columns = computed(() => {
+  const cols = [...baseColumns]
+
+  // Only show index-related columns for Access logs
+  if (activeLogType.value === 'access') {
+    cols.push(...indexColumns)
+  }
+
+  cols.push(actionsColumn)
+  return cols
+})
 
 function viewLog(record: NginxLogData) {
   router.push({
@@ -303,25 +329,31 @@ async function refreshTable() {
     disable-trash
     disable-view
     disable-edit
+    :overwrite-params="{
+      type: activeLogType,
+    }"
   >
+    <template #beforeSearch>
+      <TabFilter
+        v-model:active-key="activeLogType"
+        :options="tabOptions"
+        size="middle"
+      />
+    </template>
+
     <template #beforeListActions>
       <div class="flex items-center gap-4">
         <!-- Global indexing progress -->
-        <div v-if="isGlobalIndexing" class="flex items-center space-x-4">
+        <div v-if="isGlobalIndexing" class="flex items-center">
           <div class="flex items-center text-blue-500">
             <SyncOutlined spin class="mr-2" />
             <span>{{ $gettext('Indexing logs...') }}</span>
           </div>
-          <div v-if="globalProgress.totalFiles > 0" class="text-sm text-gray-600 dark:text-gray-400">
-            <span>
-              {{ globalProgress.completedFiles }} / {{ globalProgress.totalFiles }}
-              {{ $gettext('files') }}
-            </span>
-          </div>
         </div>
 
-        <!-- Index Management -->
+        <!-- Index Management - only for Access logs -->
         <IndexManagement
+          v-if="activeLogType === 'access'"
           ref="indexManagementRef"
           :disabled="processingStatus.nginx_log_indexing"
           :indexing="isGlobalIndexing || processingStatus.nginx_log_indexing"
@@ -334,8 +366,9 @@ async function refreshTable() {
         {{ $gettext('View') }}
       </AButton>
 
-      <!-- Rebuild File Index Action -->
+      <!-- Rebuild File Index Action - only for Access logs -->
       <AButton
+        v-if="record.type === 'access'"
         type="link"
         size="small"
         :disabled="processingStatus.nginx_log_indexing"
