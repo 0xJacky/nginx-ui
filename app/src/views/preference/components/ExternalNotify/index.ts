@@ -4,6 +4,7 @@ import DingTalkConfig from './dingtalk'
 import GotifyConfig from './gotify'
 import LarkConfig from './lark'
 import LarkCustomConfig from './lark_custom'
+import NtfyConfig from './ntfy'
 import TelegramConfig from './telegram'
 import WeComConfig from './wecom'
 
@@ -13,6 +14,7 @@ const configMap = {
   gotify: GotifyConfig,
   lark: LarkConfig,
   lark_custom: LarkCustomConfig,
+  ntfy: NtfyConfig,
   telegram: TelegramConfig,
   wecom: WeComConfig,
 }
