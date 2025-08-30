@@ -90,7 +90,10 @@ func init() {
 		}
 
 		// Create HTTP request
-		jsonData, _ := json.Marshal(ntfyMsg)
+		jsonData, err := json.Marshal(ntfyMsg)
+		if err != nil {
+			return fmt.Errorf("failed to marshal ntfy message: %w", err)
+		}
 		req, err := http.NewRequestWithContext(ctx, "POST", ntfyConfig.ServerURL, bytes.NewBuffer(jsonData))
 		if err != nil {
 			return fmt.Errorf("failed to create HTTP request: %w", err)
