@@ -125,10 +125,32 @@ const indexColumns: StdTableColumn[] = [
           return (
             <Badge status="success" text={$gettext('Indexed')} />
           )
+        case 'ready':
+          return (
+            <Badge status="success" text={$gettext('Ready')} />
+          )
         case 'indexing':
           return (
             <Badge status="processing" text={$gettext('Indexing')} />
           )
+        case 'error':
+          return (
+            <Tooltip title={record.error_message || $gettext('Index failed')}>
+              <Badge status="error" text={$gettext('Error')} />
+            </Tooltip>
+          )
+        case 'partial':
+          return (
+            <Badge status="processing" text={$gettext('Partial')} />
+          )
+        case 'queued': {
+          const queueText = record.queue_position
+            ? `${$gettext('Queued')} (#${record.queue_position})`
+            : $gettext('Queued')
+          return (
+            <Badge status="processing" text={queueText} />
+          )
+        }
         case 'not_indexed':
         default:
           return (
@@ -142,16 +164,32 @@ const indexColumns: StdTableColumn[] = [
       select: {
         options: [
           {
-            label: () => $gettext('Indexed'),
-            value: 'true',
+            label: () => $gettext('Not Indexed'),
+            value: 'not_indexed',
           },
           {
             label: () => $gettext('Indexing'),
             value: 'indexing',
           },
           {
-            label: () => $gettext('Not Indexed'),
-            value: 'false',
+            label: () => $gettext('Indexed'),
+            value: 'indexed',
+          },
+          {
+            label: () => $gettext('Ready'),
+            value: 'ready',
+          },
+          {
+            label: () => $gettext('Error'),
+            value: 'error',
+          },
+          {
+            label: () => $gettext('Partial'),
+            value: 'partial',
+          },
+          {
+            label: () => $gettext('Queued'),
+            value: 'queued',
           },
         ],
       },
@@ -187,28 +225,12 @@ const indexColumns: StdTableColumn[] = [
         }
       }
 
-      const tooltipContent = (
-        <div>
-          <div>{lastIndexed.format('YYYY-MM-DD HH:mm:ss')}</div>
-          {durationText && (
-            <div class="text-xs text-gray-100 dark:text-gray-300 mt-1">
-              { $gettext('Duration') }
-              :
-              {' '}
-              {durationText.slice(1, -1)}
-            </div>
-          )}
-        </div>
-      )
-
       return (
-        <Tooltip title={tooltipContent}>
-          <span>
-            {displayText}
-            {durationText && <span class="text-xs text-gray-500 dark:text-gray-400 ml-1">{durationText}</span>}
-            {statusIcon}
-          </span>
-        </Tooltip>
+        <span>
+          {displayText}
+          {durationText && <span class="text-xs text-gray-500 dark:text-gray-400 ml-1">{durationText}</span>}
+          {statusIcon}
+        </span>
       )
     },
     sorter: true,
@@ -238,38 +260,15 @@ const indexColumns: StdTableColumn[] = [
 
       const start = dayjs.unix(record.timerange_start)
       const end = dayjs.unix(record.timerange_end)
-      const duration = end.diff(start, 'day')
-
-      // Format duration display
-      let durationText = ''
-      if (duration === 0) {
-        durationText = $gettext('Today')
-      }
-      else if (duration === 1) {
-        durationText = '1 day'
-      }
-      else if (duration < 30) {
-        durationText = `${duration} days`
-      }
-      else if (duration < 365) {
-        const months = Math.floor(duration / 30)
-        durationText = `${months} month${months > 1 ? 's' : ''}`
-      }
-      else {
-        const years = Math.floor(duration / 365)
-        durationText = `${years} year${years > 1 ? 's' : ''}`
-      }
 
       return (
-        <Tooltip title={durationText}>
-          <span>
-            {start.format('YYYY-MM-DD HH:mm:ss')}
-            {' '}
-            ~
-            {' '}
-            {end.format('YYYY-MM-DD HH:mm:ss')}
-          </span>
-        </Tooltip>
+        <span>
+          {start.format('YYYY-MM-DD HH:mm:ss')}
+          {' '}
+          ~
+          {' '}
+          {end.format('YYYY-MM-DD HH:mm:ss')}
+        </span>
       )
     },
     width: 380,

@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/event"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/uozi-tech/cosy"
@@ -363,6 +364,145 @@ func (pm *PersistenceManager) GetLogFileInfo(path string) (*LogFileInfo, error) 
 // SaveLogFileInfo saves the log file info for a given path.
 func (pm *PersistenceManager) SaveLogFileInfo(path string, info *LogFileInfo) error {
 	return pm.UpdateIncrementalInfo(path, info)
+}
+
+// SetIndexStatus updates the index status for a specific file path with enhanced status support
+func (pm *PersistenceManager) SetIndexStatus(path, status string, queuePosition int, errorMessage string) error {
+	logIndex, err := pm.GetLogIndex(path)
+	if err != nil {
+		return fmt.Errorf("failed to get log index for status update: %w", err)
+	}
+
+	// Update status based on the new status
+	switch status {
+	case string(IndexStatusQueued):
+		logIndex.SetQueuedStatus(queuePosition)
+	case string(IndexStatusIndexing):
+		logIndex.SetIndexingStatus(status)
+	case string(IndexStatusIndexed):
+		logIndex.SetCompletedStatus()
+	case string(IndexStatusReady):
+		logIndex.IndexStatus = string(IndexStatusReady)
+		logIndex.ErrorMessage = ""
+		logIndex.ErrorTime = nil
+	case string(IndexStatusError):
+		logIndex.SetErrorStatus(errorMessage)
+	case string(IndexStatusPartial):
+		logIndex.IndexStatus = string(IndexStatusPartial)
+	default:
+		logIndex.IndexStatus = status
+	}
+
+	err = pm.SaveLogIndex(logIndex)
+	if err != nil {
+		return err
+	}
+
+	// Broadcast status change event to frontend
+	event.Publish(event.Event{
+		Type: event.TypeNginxLogIndexProgress,
+		Data: event.NginxLogIndexProgressData{
+			LogPath: path,
+			Status:  status,
+			Stage:   "status_update",
+		},
+	})
+
+	return nil
+}
+
+// GetIncompleteIndexingTasks returns all files that have incomplete indexing tasks
+func (pm *PersistenceManager) GetIncompleteIndexingTasks() ([]*model.NginxLogIndex, error) {
+	// Use direct database query since query fields are not generated yet
+	db := cosy.UseDB(context.Background())
+	var indexes []*model.NginxLogIndex
+	
+	err := db.Where("enabled = ? AND index_status IN ?", true, []string{
+		string(IndexStatusIndexing),
+		string(IndexStatusQueued),
+		string(IndexStatusPartial),
+	}).Order("queue_position").Find(&indexes).Error
+
+	if err != nil {
+		return nil, fmt.Errorf("failed to get incomplete indexing tasks: %w", err)
+	}
+
+	return indexes, nil
+}
+
+// GetQueuedTasks returns all queued indexing tasks ordered by queue position
+func (pm *PersistenceManager) GetQueuedTasks() ([]*model.NginxLogIndex, error) {
+	// Use direct database query since query fields are not generated yet
+	db := cosy.UseDB(context.Background())
+	var indexes []*model.NginxLogIndex
+	
+	err := db.Where("enabled = ? AND index_status = ?", true, string(IndexStatusQueued)).Order("queue_position").Find(&indexes).Error
+
+	if err != nil {
+		return nil, fmt.Errorf("failed to get queued tasks: %w", err)
+	}
+
+	return indexes, nil
+}
+
+// ResetIndexingTasks resets all indexing and queued tasks to not_indexed state
+// This is useful during startup to clear stale states
+func (pm *PersistenceManager) ResetIndexingTasks() error {
+	// Use direct database query
+	db := cosy.UseDB(context.Background())
+	
+	err := db.Model(&model.NginxLogIndex{}).Where("index_status IN ?", []string{
+		string(IndexStatusIndexing),
+		string(IndexStatusQueued),
+	}).Updates(map[string]interface{}{
+		"index_status":    string(IndexStatusNotIndexed),
+		"queue_position":  0,
+		"partial_offset":  0,
+		"error_message":   "",
+		"error_time":      nil,
+		"index_start_time": nil,
+	}).Error
+
+	if err != nil {
+		return fmt.Errorf("failed to reset indexing tasks: %w", err)
+	}
+
+	// Clear cache
+	pm.enabledPaths = make(map[string]bool)
+	
+	logger.Info("Reset all incomplete indexing tasks")
+	return nil
+}
+
+// GetIndexingTaskStats returns statistics about indexing tasks
+func (pm *PersistenceManager) GetIndexingTaskStats() (map[string]int64, error) {
+	// Use direct database query
+	db := cosy.UseDB(context.Background())
+	stats := make(map[string]int64)
+	
+	// Count by status
+	statuses := []string{
+		string(IndexStatusNotIndexed),
+		string(IndexStatusIndexing),
+		string(IndexStatusIndexed),
+		string(IndexStatusQueued),
+		string(IndexStatusError),
+		string(IndexStatusPartial),
+		string(IndexStatusReady),
+	}
+	
+	for _, status := range statuses {
+		var count int64
+		err := db.Model(&model.NginxLogIndex{}).Where("enabled = ? AND index_status = ?", true, status).Count(&count).Error
+		
+		if err != nil {
+			return nil, fmt.Errorf("failed to count status %s: %w", status, err)
+		}
+		
+		stats[status] = count
+	}
+	
+	return stats, nil
 }
 
 // Close flushes any pending operations and cleans up resources

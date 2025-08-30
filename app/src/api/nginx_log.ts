@@ -15,6 +15,12 @@ export interface NginxLogData {
   timerange_start?: number
   timerange_end?: number
   document_count?: number
+  // Enhanced status tracking fields
+  error_message?: string
+  error_time?: number
+  retry_count?: number
+  queue_position?: number
+  partial_offset?: number
 }
 
 export interface AnalyticsRequest {
@@ -159,10 +165,19 @@ export interface AdvancedSearchResponse {
 }
 
 export interface PreflightResponse {
-  start_time: number
-  end_time: number
   available: boolean
   index_status: string
+  message?: string
+  time_range?: {
+    start: number
+    end: number
+  }
+  file_info?: {
+    exists: boolean
+    readable: boolean
+    size?: number
+    last_modified?: number
+  }
 }
 
 // Index status related interfaces

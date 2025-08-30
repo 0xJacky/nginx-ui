@@ -36,7 +36,7 @@ const deviceColumns = [
     <ATable
       v-if="dashboardData"
       :columns="deviceColumns"
-      :data-source="dashboardData.devices.slice(0, 10)"
+      :data-source="dashboardData?.devices?.slice(0, 10) || []"
       :pagination="false"
       row-key="device"
       size="small"

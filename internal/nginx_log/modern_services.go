@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"sync"
+	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/analytics"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/indexer"
@@ -205,9 +206,9 @@ type NginxLogWithIndex = indexer.NginxLogWithIndex
 
 // Constants for backward compatibility
 const (
-	IndexStatusIndexed    = indexer.IndexStatusIndexed
-	IndexStatusIndexing   = indexer.IndexStatusIndexing
-	IndexStatusNotIndexed = indexer.IndexStatusNotIndexed
+	IndexStatusIndexed    = string(indexer.IndexStatusIndexed)
+	IndexStatusIndexing   = string(indexer.IndexStatusIndexing)
+	IndexStatusNotIndexed = string(indexer.IndexStatusNotIndexed)
 )
 
 // Legacy compatibility functions for log cache system
@@ -276,8 +277,23 @@ func GetIndexingFiles() []string {
 // Uses Bleve IndexAlias.Swap() for atomic shard replacement without recreating the searcher.
 // This function is safe for concurrent use and maintains service availability during index rebuilds.
 func UpdateSearcherShards() {
-	servicesMutex.Lock() // Use a write lock as we are modifying a global variable
-	defer servicesMutex.Unlock()
+	// Schedule async update to avoid blocking indexing operations
+	logger.Debugf("UpdateSearcherShards: Scheduling async shard update")
+	go updateSearcherShardsAsync()
+}
+
+// updateSearcherShardsAsync performs the actual shard update asynchronously
+func updateSearcherShardsAsync() {
+	// Small delay to let indexing operations complete
+	time.Sleep(500 * time.Millisecond)
+	
+	logger.Debugf("updateSearcherShardsAsync: Attempting to acquire write lock...")
+	servicesMutex.Lock()
+	logger.Debugf("updateSearcherShardsAsync: Write lock acquired")
+	defer func() {
+		logger.Debugf("updateSearcherShardsAsync: Releasing write lock...")
+		servicesMutex.Unlock()
+	}()
 	updateSearcherShardsLocked()
 }
 
@@ -322,12 +338,14 @@ func updateSearcherShardsLocked() {
 	// This follows Bleve best practices for zero-downtime index updates
 	if ds, ok := globalSearcher.(*searcher.DistributedSearcher); ok {
 		oldShards := ds.GetShards()
+		logger.Debugf("updateSearcherShardsLocked: About to call SwapShards...")
 		
 		// Perform atomic shard swap using IndexAlias
 		if err := ds.SwapShards(newShards); err != nil {
 			logger.Errorf("Failed to swap shards atomically: %v", err)
 			return
 		}
+		logger.Debugf("updateSearcherShardsLocked: SwapShards completed successfully")
 		
 		logger.Infof("Successfully swapped %d old shards with %d new shards using IndexAlias", 
 			len(oldShards), len(newShards))

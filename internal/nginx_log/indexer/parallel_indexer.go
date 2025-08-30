@@ -486,9 +486,7 @@ func (pi *ParallelIndexer) DeleteIndexByLogGroup(basePath string, logFileManager
 		return fmt.Errorf("log file manager is required")
 	}
 
-	lfm, ok := logFileManager.(interface {
-		GetFilePathsForGroup(string) ([]string, error)
-	})
+	lfm, ok := logFileManager.(GroupFileProvider)
 	if !ok {
 		return fmt.Errorf("log file manager does not support GetFilePathsForGroup")
 	}

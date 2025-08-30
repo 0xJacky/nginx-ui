@@ -89,13 +89,13 @@ func GetLogList(c *gin.Context) {
 		}
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"data": data,
-		"summary": gin.H{
-			"total_files":    totalCount,
-			"indexed_files":  indexedCount,
-			"indexing_files": indexingCount,
-			"document_count": totalDocuments,
+	c.JSON(http.StatusOK, LogListResponse{
+		Data: data,
+		Summary: LogListSummary{
+			TotalFiles:    totalCount,
+			IndexedFiles:  indexedCount,
+			IndexingFiles: indexingCount,
+			DocumentCount: int(totalDocuments),
 		},
 	})
 }

@@ -2,6 +2,7 @@ package indexer
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
 	"regexp"
 	"sort"
@@ -13,12 +14,7 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 )
 
-// IndexStatus constants
-const (
-	IndexStatusIndexed    = "indexed"
-	IndexStatusIndexing   = "indexing"
-	IndexStatusNotIndexed = "not_indexed"
-)
+// Legacy constants for backward compatibility - use IndexStatus enum in types.go instead
 
 // NginxLogCache represents a cached log entry from nginx configuration
 type NginxLogCache struct {
@@ -190,7 +186,7 @@ func (lm *LogFileManager) GetAllLogsWithIndexGrouped(filters ...func(*NginxLogWi
 			Type:         cache.Type,
 			Name:         cache.Name,
 			ConfigFile:   cache.ConfigFile,
-			IndexStatus:  IndexStatusNotIndexed,
+			IndexStatus:  string(IndexStatusNotIndexed),
 			IsCompressed: false,
 			HasTimeRange: false,
 		}
@@ -203,14 +199,6 @@ func (lm *LogFileManager) GetAllLogsWithIndexGrouped(filters ...func(*NginxLogWi
 		logger.Warnf("Failed to get persistence indexes: %v", err)
 		persistenceIndexes = []*model.NginxLogIndex{}
 	}
-
-	// --- START DIAGNOSTIC LOGGING ---
-	logger.Debugf("===== DB STATE BEFORE GROUPING =====")
-	for _, pIdx := range persistenceIndexes {
-		logger.Debugf("DB Record: Path=%s, MainLogPath=%s, DocCount=%d, LastIndexed=%s", pIdx.Path, pIdx.MainLogPath, pIdx.DocumentCount, pIdx.LastIndexed)
-	}
-	logger.Debugf("===================================")
-	// --- END DIAGNOSTIC LOGGING ---
 
 	// Add all indexed files from persistence (including rotated files)
 	for _, idx := range persistenceIndexes {
@@ -226,7 +214,7 @@ func (lm *LogFileManager) GetAllLogsWithIndexGrouped(filters ...func(*NginxLogWi
 				Type:        logType,
 				Name:        filepath.Base(idx.Path),
 				ConfigFile:  "",
-				IndexStatus: IndexStatusNotIndexed,
+				IndexStatus: string(IndexStatusNotIndexed),
 			}
 			allLogsMap[idx.Path] = logWithIndex
 		}
@@ -236,7 +224,9 @@ func (lm *LogFileManager) GetAllLogsWithIndexGrouped(filters ...func(*NginxLogWi
 		logWithIndex.LastModified = idx.LastModified.Unix()
 		logWithIndex.LastSize = idx.LastSize
 		logWithIndex.LastIndexed = idx.LastIndexed.Unix()
-		logWithIndex.IndexStartTime = idx.IndexStartTime.Unix()
+		if idx.IndexStartTime != nil {
+			logWithIndex.IndexStartTime = idx.IndexStartTime.Unix()
+		}
 		if idx.IndexDuration != nil {
 			logWithIndex.IndexDuration = *idx.IndexDuration
 		}
@@ -248,9 +238,10 @@ func (lm *LogFileManager) GetAllLogsWithIndexGrouped(filters ...func(*NginxLogWi
 		lm.indexingMutex.RUnlock()
 
 		if isIndexing {
-			logWithIndex.IndexStatus = IndexStatusIndexing
-		} else if idx.DocumentCount > 0 {
-			logWithIndex.IndexStatus = IndexStatusIndexed
+			logWithIndex.IndexStatus = string(IndexStatusIndexing)
+		} else if !idx.LastIndexed.IsZero() {
+			// If file has been indexed (regardless of document count), it's indexed
+			logWithIndex.IndexStatus = string(IndexStatusIndexed)
 		}
 
 		// Set time range if available
@@ -292,40 +283,62 @@ func (lm *LogFileManager) GetAllLogsWithIndexGrouped(filters ...func(*NginxLogWi
 		baseLogName := getBaseLogName(log.Path)
 
 		if existing, exists := groupedMap[baseLogName]; exists {
-			// Merge with existing entry using consistent rules
-			// Always use the most recent data for single-value fields
-			if log.LastIndexed > existing.LastIndexed {
-				existing.LastModified = log.LastModified
-				existing.LastIndexed = log.LastIndexed
-				existing.IndexStartTime = log.IndexStartTime
-				existing.IndexDuration = log.IndexDuration
-			}
+			// Check if current log is a main log path record (already aggregated)
+			// or if existing record is a main log path record
+			logIsMainPath := (log.Path == baseLogName)
+			existingIsMainPath := (existing.Path == baseLogName)
+			
+			if logIsMainPath && !existingIsMainPath {
+				// Current log is the main aggregated record, replace existing
+				groupedLog := *log
+				groupedLog.Path = baseLogName
+				groupedLog.Name = filepath.Base(baseLogName)
+				groupedMap[baseLogName] = &groupedLog
+			} else if !logIsMainPath && existingIsMainPath {
+				// Existing is main record, keep it, don't accumulate
+				// Only update status if needed
+				if log.IndexStatus == string(IndexStatusIndexing) {
+					existing.IndexStatus = string(IndexStatusIndexing)
+				}
+			} else if !logIsMainPath && !existingIsMainPath {
+				// Both are individual files, accumulate normally
+				if log.LastIndexed > existing.LastIndexed {
+					existing.LastModified = log.LastModified
+					existing.LastIndexed = log.LastIndexed
+					existing.IndexStartTime = log.IndexStartTime
+					existing.IndexDuration = log.IndexDuration
+				}
 
-			// Accumulate countable metrics
-			existing.DocumentCount += log.DocumentCount
-			existing.LastSize += log.LastSize
+				existing.DocumentCount += log.DocumentCount
+				existing.LastSize += log.LastSize
 
-			// Update status to most significant (indexing > indexed > not_indexed)
-			if log.IndexStatus == IndexStatusIndexing {
-				existing.IndexStatus = IndexStatusIndexing
-			} else if log.IndexStatus == IndexStatusIndexed && existing.IndexStatus != IndexStatusIndexing {
-				existing.IndexStatus = IndexStatusIndexed
-			}
+				if log.IndexStatus == string(IndexStatusIndexing) {
+					existing.IndexStatus = string(IndexStatusIndexing)
+				} else if log.IndexStatus == string(IndexStatusIndexed) && existing.IndexStatus != string(IndexStatusIndexing) {
+					existing.IndexStatus = string(IndexStatusIndexed)
+				}
 
-			// Expand time range to encompass both (deterministic expansion)
-			if log.HasTimeRange {
-				if !existing.HasTimeRange {
-					existing.HasTimeRange = true
-					existing.TimeRangeStart = log.TimeRangeStart
-					existing.TimeRangeEnd = log.TimeRangeEnd
-				} else {
-					// Always expand range consistently
-					if log.TimeRangeStart > 0 && (existing.TimeRangeStart == 0 || log.TimeRangeStart < existing.TimeRangeStart) {
+				if log.HasTimeRange {
+					if !existing.HasTimeRange {
+						existing.HasTimeRange = true
 						existing.TimeRangeStart = log.TimeRangeStart
-					}
-					if log.TimeRangeEnd > existing.TimeRangeEnd {
 						existing.TimeRangeEnd = log.TimeRangeEnd
+					} else {
+						if log.TimeRangeStart > 0 && (existing.TimeRangeStart == 0 || log.TimeRangeStart < existing.TimeRangeStart) {
+							existing.TimeRangeStart = log.TimeRangeStart
+						}
+						if log.TimeRangeEnd > existing.TimeRangeEnd {
+							existing.TimeRangeEnd = log.TimeRangeEnd
+						}
 					}
+				}
+			} else if logIsMainPath && existingIsMainPath {
+				// If both are main paths, use the one with more recent LastIndexed
+				if log.LastIndexed > existing.LastIndexed {
+					groupedLog := *log
+					groupedLog.Path = baseLogName
+					groupedLog.Name = filepath.Base(baseLogName)
+					groupedMap[baseLogName] = &groupedLog
 				}
 			}
 		} else {
@@ -373,6 +386,12 @@ func (lm *LogFileManager) SaveIndexMetadata(basePath string, documentCount uint6
 		// If the error is anything other than "not found", it's a real problem.
 		// GetLogIndex is designed to return a new object if not found, so this should be rare.
 		return fmt.Errorf("could not get or create log index for '%s': %w", basePath, err)
+	}
+
+	// Get file stats to update LastModified and LastSize
+	if fileInfo, err := os.Stat(basePath); err == nil {
+		logIndex.LastModified = fileInfo.ModTime()
+		logIndex.LastSize = fileInfo.Size()
 	}
 
 	// Update the record with the new metadata
@@ -431,6 +450,11 @@ func (lm *LogFileManager) GetFilePathsForGroup(basePath string) ([]string, error
 	return filePaths, nil
 }
 
+// GetPersistence returns the persistence manager for advanced operations
+func (lm *LogFileManager) GetPersistence() *PersistenceManager {
+	return lm.persistence
+}
+
 // maxInt64 returns the maximum of two int64 values
 func maxInt64(a, b int64) int64 {
 	if a > b {
@@ -466,7 +490,7 @@ func (lm *LogFileManager) GetAllLogsWithIndex(filters ...func(*NginxLogWithIndex
 			Type:         cache.Type,
 			Name:         cache.Name,
 			ConfigFile:   cache.ConfigFile,
-			IndexStatus:  IndexStatusNotIndexed,
+			IndexStatus:  string(IndexStatusNotIndexed),
 			IsCompressed: strings.HasSuffix(cache.Path, ".gz") || strings.HasSuffix(cache.Path, ".bz2"),
 		}
 
@@ -475,7 +499,9 @@ func (lm *LogFileManager) GetAllLogsWithIndex(filters ...func(*NginxLogWithIndex
 			logWithIndex.LastModified = idx.LastModified.Unix()
 			logWithIndex.LastSize = idx.LastSize
 			logWithIndex.LastIndexed = idx.LastIndexed.Unix()
-			logWithIndex.IndexStartTime = idx.IndexStartTime.Unix()
+			if idx.IndexStartTime != nil {
+				logWithIndex.IndexStartTime = idx.IndexStartTime.Unix()
+			}
 			if idx.IndexDuration != nil {
 				logWithIndex.IndexDuration = *idx.IndexDuration
 			}
@@ -487,9 +513,10 @@ func (lm *LogFileManager) GetAllLogsWithIndex(filters ...func(*NginxLogWithIndex
 			lm.indexingMutex.RUnlock()
 
 			if isIndexing {
-				logWithIndex.IndexStatus = IndexStatusIndexing
-			} else if idx.DocumentCount > 0 {
-				logWithIndex.IndexStatus = IndexStatusIndexed
+				logWithIndex.IndexStatus = string(IndexStatusIndexing)
+			} else if !idx.LastIndexed.IsZero() {
+				// If file has been indexed (regardless of document count), it's indexed
+				logWithIndex.IndexStatus = string(IndexStatusIndexed)
 			}
 
 			// Set time range if available

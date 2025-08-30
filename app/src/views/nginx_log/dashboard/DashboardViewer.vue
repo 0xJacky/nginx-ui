@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { AnalyticsRequest, ChinaMapData, DashboardAnalytics, DashboardRequest, WorldMapData } from '@/api/nginx_log'
-import { LoadingOutlined } from '@ant-design/icons-vue'
 import { Col, Row } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import nginx_log from '@/api/nginx_log'
+import LoadingState from '../components/LoadingState.vue'
 import BrowserStatsTable from './components/BrowserStatsTable.vue'
 import DailyTrendsChart from './components/DailyTrendsChart.vue'
 import DateRangeSelector from './components/DateRangeSelector.vue'
@@ -27,6 +27,7 @@ const dateRange = ref<[dayjs.Dayjs, dayjs.Dayjs]>([
   dayjs(),
 ])
 const timeRangeLoaded = ref(false)
+const hasValidTimeRange = ref(false)
 
 // Geographic data
 const worldMapData = ref<WorldMapData[] | null>(null)
@@ -44,24 +45,40 @@ async function loadTimeRange() {
   try {
     const preflight = await nginx_log.getPreflight(props.logPath)
 
-    if (preflight.available && preflight.start_time && preflight.end_time) {
+    if (preflight.time_range && preflight.time_range.start && preflight.time_range.end) {
       // Set start_date to 00:00:00 and end_date to 23:59:59
-      const endTime = dayjs.unix(preflight.end_time).endOf('day')
+      const endTime = dayjs.unix(preflight.time_range.end).endOf('day')
 
       // Use last week's data as default range (from last day back to 7 days ago)
       const weekStart = endTime.subtract(7, 'day').startOf('day')
       const lastDayEnd = endTime
       dateRange.value = [weekStart, lastDayEnd]
       timeRangeLoaded.value = true
-
-      // Time range loaded successfully
+      hasValidTimeRange.value = true
     }
     else {
-      console.warn(`No valid time range available for ${props.logPath}, using default range`)
+      // Still set timeRangeLoaded to true so we can proceed with loading
+      timeRangeLoaded.value = true
+      hasValidTimeRange.value = false
+
+      // Use default range (last 7 days from now)
+      dateRange.value = [
+        dayjs().subtract(7, 'day').startOf('day'),
+        dayjs().endOf('day'),
+      ]
     }
   }
   catch (error) {
     console.error('Failed to load time range from preflight:', error)
+    // Still set timeRangeLoaded to true so we don't get stuck in loading state
+    timeRangeLoaded.value = true
+    hasValidTimeRange.value = false
+
+    // Use default range
+    dateRange.value = [
+      dayjs().subtract(7, 'day').startOf('day'),
+      dayjs().endOf('day'),
+    ]
   }
 }
 
@@ -124,9 +141,9 @@ function refreshAllData() {
 watch(() => props.logPath, async () => {
   timeRangeLoaded.value = false
   const oldDateRange = dateRange.value
-  loadTimeRange()
+  await loadTimeRange()
 
-  // Only load dashboard data if dateRange didn't change (no automatic trigger)
+  // Load dashboard data if dateRange didn't change (no automatic trigger from watch below)
   if (timeRangeLoaded.value
     && oldDateRange[0].isSame(dateRange.value[0])
     && oldDateRange[1].isSame(dateRange.value[1])) {
@@ -144,18 +161,17 @@ watch(dateRange, () => {
 
 <template>
   <div class="dashboard-viewer">
-    <!-- Loading Spinner -->
-    <div v-if="loading" class="text-center" style="padding: 40px;">
-      <LoadingOutlined class="text-2xl text-blue-500" />
-      <p style="margin-top: 16px;">
-        {{ $gettext('Loading dashboard data...') }}
-      </p>
-    </div>
+    <!-- Loading State with Index Progress -->
+    <LoadingState
+      v-if="loading"
+      :log-path="logPath"
+    />
 
     <!-- Dashboard Content -->
     <div v-else>
-      <!-- Date Range Selector -->
+      <!-- Date Range Selector - only show when we have valid time range -->
       <DateRangeSelector
+        v-if="hasValidTimeRange"
         v-model:date-range="dateRange"
         :log-path="logPath"
         :refresh-loading="refreshLoading"

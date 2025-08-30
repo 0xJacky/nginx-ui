@@ -2,6 +2,7 @@ package searcher
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"sync"
 
@@ -129,22 +130,33 @@ func (cc *CardinalityCounter) collectTermsUsingIndexAlias(ctx context.Context, r
 func (cc *CardinalityCounter) collectTermsUsingLargeFacet(ctx context.Context, req *CardinalityRequest) (map[string]struct{}, uint64, error) {
 	terms := make(map[string]struct{})
 	
-	// Build search request using IndexAlias
-	searchReq := bleve.NewSearchRequest(bleve.NewMatchAllQuery())
-	searchReq.Size = 0 // We don't need documents, just facets
-
+	// Build search request using IndexAlias with proper filtering
+	boolQuery := bleve.NewBooleanQuery()
+	boolQuery.AddMust(bleve.NewMatchAllQuery())
+	
 	// Add time range filter if specified
 	if req.StartTime != nil && req.EndTime != nil {
 		startTime := float64(*req.StartTime)
 		endTime := float64(*req.EndTime)
 		timeQuery := bleve.NewNumericRangeQuery(&startTime, &endTime)
 		timeQuery.SetField("timestamp")
-		
-		boolQuery := bleve.NewBooleanQuery()
-		boolQuery.AddMust(searchReq.Query)
 		boolQuery.AddMust(timeQuery)
-		searchReq.Query = boolQuery
 	}
+	
+	// CRITICAL FIX: Add log path filters (this was missing!)
+	if len(req.LogPaths) > 0 {
+		logPathQuery := bleve.NewBooleanQuery()
+		for _, logPath := range req.LogPaths {
+			termQuery := bleve.NewTermQuery(logPath)
+			termQuery.SetField("file_path")
+			logPathQuery.AddShould(termQuery)
+		}
+		logPathQuery.SetMinShould(1)
+		boolQuery.AddMust(logPathQuery)
+	}
+	
+	searchReq := bleve.NewSearchRequest(boolQuery)
+	searchReq.Size = 0 // We don't need documents, just facets
 
 	// Use very large facet size - we're back to this approach but using IndexAlias
 	// which should handle it more efficiently than individual shards
@@ -152,11 +164,18 @@ func (cc *CardinalityCounter) collectTermsUsingLargeFacet(ctx context.Context, r
 	facet := bleve.NewFacetRequest(req.Field, facetSize)
 	searchReq.AddFacet(req.Field, facet)
 
+	// Debug: Log the constructed query
+	if queryBytes, err := json.Marshal(searchReq.Query); err == nil {
+		logger.Debugf("CardinalityCounter query: %s", string(queryBytes))
+	}
+	
 	// Execute search using IndexAlias with global scoring context
 	result, err := cc.indexAlias.SearchInContext(ctx, searchReq)
 	if err != nil {
 		return terms, 0, fmt.Errorf("IndexAlias facet search failed: %w", err)
 	}
+	
+	logger.Debugf("CardinalityCounter facet search result: Total=%d, Facets=%v", result.Total, result.Facets != nil)
 
 	// Extract terms from facet result
 	if facetResult, ok := result.Facets[req.Field]; ok && facetResult.Terms != nil {
@@ -188,23 +207,35 @@ func (cc *CardinalityCounter) collectTermsUsingPagination(ctx context.Context, r
 	logger.Infof("Starting IndexAlias pagination for field '%s' (pageSize=%d)", req.Field, pageSize)
 	
 	for page := 0; page < maxPages; page++ {
-		searchReq := bleve.NewSearchRequest(bleve.NewMatchAllQuery())
-		searchReq.Size = pageSize
-		searchReq.From = page * pageSize
-		searchReq.Fields = []string{req.Field}
-
+		// Build proper query with all filters
+		boolQuery := bleve.NewBooleanQuery()
+		boolQuery.AddMust(bleve.NewMatchAllQuery())
+		
 		// Add time range filter if specified
 		if req.StartTime != nil && req.EndTime != nil {
 			startTime := float64(*req.StartTime)
 			endTime := float64(*req.EndTime)
 			timeQuery := bleve.NewNumericRangeQuery(&startTime, &endTime)
 			timeQuery.SetField("timestamp")
-			
-			boolQuery := bleve.NewBooleanQuery()
-			boolQuery.AddMust(searchReq.Query)
 			boolQuery.AddMust(timeQuery)
-			searchReq.Query = boolQuery
 		}
+		
+		// CRITICAL FIX: Add log path filters (this was missing!)
+		if len(req.LogPaths) > 0 {
+			logPathQuery := bleve.NewBooleanQuery()
+			for _, logPath := range req.LogPaths {
+				termQuery := bleve.NewTermQuery(logPath)
+				termQuery.SetField("file_path")
+				logPathQuery.AddShould(termQuery)
+			}
+			logPathQuery.SetMinShould(1)
+			boolQuery.AddMust(logPathQuery)
+		}
+		
+		searchReq := bleve.NewSearchRequest(boolQuery)
+		searchReq.Size = pageSize
+		searchReq.From = page * pageSize
+		searchReq.Fields = []string{req.Field}
 
 		// Execute with IndexAlias and global scoring
 		result, err := cc.indexAlias.SearchInContext(ctx, searchReq)

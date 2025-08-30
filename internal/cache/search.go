@@ -295,9 +295,6 @@ func (si *SearchIndexer) IndexDocument(doc SearchDocument) (err error) {
 	// Update memory usage tracking only for new documents
 	if isNewDocument {
 		si.updateMemoryUsage(doc.ID, contentSize, true)
-		logger.Debugf("Indexed new document: ID=%s, Type=%s, Name=%s", doc.ID, doc.Type, doc.Name)
-	} else {
-		logger.Debugf("Updated existing document: ID=%s, Type=%s, Name=%s", doc.ID, doc.Type, doc.Name)
 	}
 
 	return nil

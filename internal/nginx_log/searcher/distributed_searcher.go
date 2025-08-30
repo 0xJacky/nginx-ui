@@ -2,6 +2,7 @@ package searcher
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"sync"
 	"sync/atomic"
@@ -216,6 +217,12 @@ func (ds *DistributedSearcher) executeGlobalScoringSearch(ctx context.Context, q
 	// Enable global scoring for distributed search consistency
 	// This is the key fix from Bleve documentation for distributed search
 	globalCtx := context.WithValue(ctx, search.SearchTypeKey, search.GlobalScoring)
+	
+	// Debug: Log the constructed query for comparison
+	if queryBytes, err := json.Marshal(searchReq.Query); err == nil {
+		logger.Debugf("Main search query: %s", string(queryBytes))
+		logger.Debugf("Main search Size=%d, From=%d, Fields=%v", searchReq.Size, searchReq.From, searchReq.Fields)
+	}
 	
 	// Execute search using Bleve's IndexAlias with global scoring
 	result, err := ds.indexAlias.SearchInContext(globalCtx, searchReq)
@@ -486,10 +493,34 @@ func (ds *DistributedSearcher) SwapShards(newShards []bleve.Index) error {
 	
 	// Perform atomic swap using IndexAlias - this is the key Bleve operation
 	// that provides zero-downtime index updates
+	logger.Debugf("SwapShards: Starting atomic swap - old=%d, new=%d", len(oldShards), len(newShards))
+	
+	swapStartTime := time.Now()
 	ds.indexAlias.Swap(newShards, oldShards)
+	swapDuration := time.Since(swapStartTime)
+	
+	logger.Infof("IndexAlias.Swap completed in %v (old=%d shards, new=%d shards)", 
+		swapDuration, len(oldShards), len(newShards))
 	
 	// Update internal shards reference to match the IndexAlias
 	ds.shards = newShards
+	
+	// Clear cache after shard swap to prevent stale results
+	// Use goroutine to avoid potential deadlock during shard swap
+	if ds.cache != nil {
+		// Capture cache reference to avoid race condition
+		cache := ds.cache
+		go func() {
+			// Add a small delay to ensure shard swap is fully completed
+			time.Sleep(100 * time.Millisecond)
+			
+			// Double-check cache is still valid before clearing
+			if cache != nil {
+				cache.Clear()
+				logger.Infof("Cache cleared after shard swap to prevent stale results")
+			}
+		}()
+	}
 	
 	// Update shard stats for the new shards
 	ds.stats.mutex.Lock()

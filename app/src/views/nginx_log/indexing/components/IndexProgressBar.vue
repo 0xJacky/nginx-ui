@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { Progress, Tag } from 'ant-design-vue'
-
 export interface IndexProgress {
   logPath: string
   progress: number
@@ -64,9 +62,9 @@ const stageText = computed(() => {
   <div v-if="progress" class="index-progress">
     <div class="progress-info">
       <div class="info-left">
-        <Tag :color="progressColor" size="small" class="stage-tag">
+        <ATag :color="progressColor" size="small" class="stage-tag">
           {{ stageText }}
-        </Tag>
+        </ATag>
       </div>
       <div class="info-right text-gray-600 dark:text-gray-400">
         <span class="time-elapsed text-gray-500 dark:text-gray-400">{{ formatTime(progress.elapsedTime) }}</span>
@@ -77,7 +75,7 @@ const stageText = computed(() => {
     </div>
 
     <div class="progress-container">
-      <Progress
+      <AProgress
         :percent="Math.round(progress.progress)"
         size="small"
         :stroke-color="progressColor"
@@ -95,6 +93,7 @@ const stageText = computed(() => {
 .index-progress {
   width: 100%;
   min-width: 200px;
+  max-width: 300px;
   padding: 2px 0;
 }
 

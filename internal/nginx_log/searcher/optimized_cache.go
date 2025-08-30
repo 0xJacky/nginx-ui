@@ -120,7 +120,9 @@ func (osc *OptimizedSearchCache) Put(req *SearchRequest, result *SearchResult, t
 
 // Clear clears all cached entries
 func (osc *OptimizedSearchCache) Clear() {
-	osc.cache.Clear()
+	if osc != nil && osc.cache != nil {
+		osc.cache.Clear()
+	}
 }
 
 // GetStats returns cache statistics

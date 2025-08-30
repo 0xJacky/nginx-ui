@@ -8,6 +8,43 @@ import (
 	"github.com/blevesearch/bleve/v2/mapping"
 )
 
+// IndexStatus represents different states of log indexing
+type IndexStatus string
+
+// Index status constants
+const (
+	IndexStatusNotIndexed IndexStatus = "not_indexed" // File not indexed
+	IndexStatusIndexing   IndexStatus = "indexing"    // Currently being indexed
+	IndexStatusIndexed    IndexStatus = "indexed"     // Successfully indexed
+	IndexStatusError      IndexStatus = "error"       // Index failed with error
+	IndexStatusPartial    IndexStatus = "partial"     // Partially indexed (large file)
+	IndexStatusQueued     IndexStatus = "queued"      // Waiting in queue
+	IndexStatusReady      IndexStatus = "ready"       // Ready for search (alias for indexed)
+)
+
+// IndexStatusDetails contains detailed status information
+type IndexStatusDetails struct {
+	Status        IndexStatus `json:"status"`
+	Message       string      `json:"message,omitempty"`
+	ErrorMessage  string      `json:"error_message,omitempty"`
+	ErrorTime     *time.Time  `json:"error_time,omitempty"`
+	RetryCount    int         `json:"retry_count,omitempty"`
+	QueuePosition int         `json:"queue_position,omitempty"`
+	PartialOffset int64       `json:"partial_offset,omitempty"`
+	Progress      *IndexProgress `json:"progress,omitempty"`
+}
+
+// IndexProgress contains indexing progress information
+type IndexProgress struct {
+	Percent        float64 `json:"percent"`
+	ProcessedLines int64   `json:"processed_lines"`
+	TotalLines     int64   `json:"total_lines"`
+	ProcessedBytes int64   `json:"processed_bytes"`
+	TotalBytes     int64   `json:"total_bytes"`
+	Speed          int64   `json:"speed"` // lines per second
+	ETA            int64   `json:"eta"`   // estimated time to completion in seconds
+}
+
 // IndexerConfig holds configuration for the indexer
 type Config struct {
 	IndexPath         string        `json:"index_path"`
@@ -338,3 +375,33 @@ var (
 	ErrInvalidDocument    = "invalid document"
 	ErrOptimizationFailed = "optimization failed"
 )
+
+// MetadataManager defines the interface for managing log index metadata
+type MetadataManager interface {
+	// SaveIndexMetadata saves metadata for a log group after indexing
+	SaveIndexMetadata(basePath string, documentCount uint64, startTime time.Time, duration time.Duration, minTime *time.Time, maxTime *time.Time) error
+	// DeleteIndexMetadataByGroup deletes all database records for a log group
+	DeleteIndexMetadataByGroup(basePath string) error
+	// DeleteAllIndexMetadata deletes all index metadata from the database
+	DeleteAllIndexMetadata() error
+	// GetFilePathsForGroup returns all physical file paths for a given log group
+	GetFilePathsForGroup(basePath string) ([]string, error)
+}
+
+// GroupFileProvider defines the interface for getting file paths for a log group
+type GroupFileProvider interface {
+	// GetFilePathsForGroup returns all physical file paths for a given log group
+	GetFilePathsForGroup(basePath string) ([]string, error)
+}
+
+// FlushableIndexer defines the interface for indexers that can be flushed
+type FlushableIndexer interface {
+	// FlushAll flushes all pending operations
+	FlushAll() error
+}
+
+// RestartableIndexer defines the interface for indexers that can be restarted
+type RestartableIndexer interface {
+	// Start begins the indexer operation
+	Start(context.Context) error
+}

@@ -79,3 +79,4 @@ This project is a web-based NGINX management interface built with Go backend and
 - **All code comments, documentation, and communication must be in English**
 - Maintain consistency and accessibility across the codebase
 - 优先使用 context7 mcp 搜索文档
+- 生成 find 命令的时候应该排除掉 ./.go/ 这个文件夹，因为那里面是 devcontainer 的依赖

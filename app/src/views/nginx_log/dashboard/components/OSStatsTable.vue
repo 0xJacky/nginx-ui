@@ -37,7 +37,7 @@ const osColumns = [
     <Table
       v-if="dashboardData"
       :columns="osColumns"
-      :data-source="dashboardData.operating_systems.slice(0, 10)"
+      :data-source="dashboardData?.operating_systems?.slice(0, 10) || []"
       :pagination="false"
       row-key="os"
       size="small"

@@ -6,7 +6,6 @@ import (
 	"sort"
 	"time"
 
-	"github.com/0xJacky/Nginx-UI/internal/event"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/analytics"
@@ -75,12 +74,6 @@ type AdvancedSearchResponseAPI struct {
 }
 
 // PreflightResponse represents the response for preflight query
-type PreflightResponse struct {
-	StartTime   *int64 `json:"start_time,omitempty"`
-	EndTime     *int64 `json:"end_time,omitempty"`
-	Available   bool   `json:"available"`
-	IndexStatus string `json:"index_status"`
-}
 
 // GetLogAnalytics provides comprehensive log analytics
 func GetLogAnalytics(c *gin.Context) {
@@ -136,77 +129,36 @@ func GetLogPreflight(c *gin.Context) {
 	// Get optional log path parameter
 	logPath := c.Query("log_path")
 
-	// Use default access log path if logPath is empty
-	if logPath == "" {
-		defaultLogPath := nginx.GetAccessLogPath()
-		if defaultLogPath != "" {
-			logPath = defaultLogPath
-			logger.Debugf("Using default access log path for preflight: %s", logPath)
-		}
-	}
-
-	// Get searcher to check index status
-	searcherService := nginx_log.GetModernSearcher()
-	if searcherService == nil {
-		cosy.ErrHandler(c, nginx_log.ErrModernSearcherNotAvailable)
+	// Create preflight service and perform check
+	preflightService := nginx_log.NewPreflightService()
+	internalResponse, err := preflightService.CheckLogPreflight(logPath)
+	if err != nil {
+		cosy.ErrHandler(c, err)
 		return
 	}
 
-	// Check if the specific file is currently being indexed
-	processingManager := event.GetProcessingStatusManager()
-	currentStatus := processingManager.GetCurrentStatus()
-	
-	// Check if searcher is healthy (indicates index is available)
-	available := searcherService.IsHealthy()
-	indexStatus := "not_ready"
-	
-	if available {
-		indexStatus = analytics.IndexStatusReady
-	}
-	
-	// If global indexing is in progress, check if this specific file has existing index data
-	// Only mark as unavailable if the file specifically doesn't have indexed data yet
-	if currentStatus.NginxLogIndexing {
-		// Check if this specific file has been indexed before
-		logFileManager := nginx_log.GetLogFileManager()
-		if logFileManager != nil {
-			logGroup, err := logFileManager.GetLogByPath(logPath)
-			if err != nil || logGroup == nil || !logGroup.HasTimeRange {
-				// This specific file hasn't been indexed yet
-				indexStatus = "indexing"
-				available = false
-			}
-			// If logGroup exists with time range, file was previously indexed and remains available
-		}
-	}
-
-	// Try to get the actual time range from the persisted log metadata.
-	var startTime, endTime *int64
-	logFileManager := nginx_log.GetLogFileManager()
-	if logFileManager != nil {
-		logGroup, err := logFileManager.GetLogByPath(logPath)
-		if err == nil && logGroup != nil && logGroup.HasTimeRange {
-			startTime = &logGroup.TimeRangeStart
-			endTime = &logGroup.TimeRangeEnd
-		} else {
-			// Fallback for when there is no DB record or no time range yet.
-			now := time.Now().Unix()
-			monthAgo := now - (30 * 24 * 60 * 60) // 30 days ago
-			startTime = &monthAgo
-			endTime = &now
-		}
-	}
-
-	// Convert internal result to API response
+	// Convert internal response to API response
 	response := PreflightResponse{
-		StartTime:   startTime,
-		EndTime:     endTime,
-		Available:   available,
-		IndexStatus: indexStatus,
+		Available:   internalResponse.Available,
+		IndexStatus: internalResponse.IndexStatus,
+		Message:     internalResponse.Message,
 	}
 
-	logger.Debugf("Preflight response: log_path=%s, available=%v, index_status=%s",
-		logPath, available, indexStatus)
+	if internalResponse.TimeRange != nil {
+		response.TimeRange = &TimeRange{
+			Start: internalResponse.TimeRange.Start,
+			End:   internalResponse.TimeRange.End,
+		}
+	}
+
+	if internalResponse.FileInfo != nil {
+		response.FileInfo = &FileInfo{
+			Exists:       internalResponse.FileInfo.Exists,
+			Readable:     internalResponse.FileInfo.Readable,
+			Size:         internalResponse.FileInfo.Size,
+			LastModified: internalResponse.FileInfo.LastModified,
+		}
+	}
 
 	c.JSON(http.StatusOK, response)
 }
@@ -255,11 +207,11 @@ func AdvancedSearchLogs(c *gin.Context) {
 		SortBy:              req.SortBy,
 		SortOrder:           req.SortOrder,
 		UseCache:            true,
-		Timeout:             30 * time.Second, // Add timeout for large facet operations
+		Timeout:             60 * time.Second, // Add timeout for large facet operations
 		IncludeHighlighting: true,
-		IncludeFacets:       true,                        // Re-enable facets for accurate summary stats
+		IncludeFacets:       true,                         // Re-enable facets for accurate summary stats
 		FacetFields:         []string{"ip", "path_exact"}, // For UV and Unique Pages
-		FacetSize:           10000,                       // Balanced: large enough for most cases, but not excessive
+		FacetSize:           10000,                        // Balanced: large enough for most cases, but not excessive
 	}
 
 	// If no sorting is specified, default to sorting by timestamp descending.
@@ -273,11 +225,17 @@ func AdvancedSearchLogs(c *gin.Context) {
 		logPaths, err := nginx_log.ExpandLogGroupPath(req.LogPath)
 		if err != nil {
 			logger.Warnf("Could not expand log group path %s: %v", req.LogPath, err)
-			// Fallback to using the raw path
+			// Fallback to using the raw path when expansion fails
+			searchReq.LogPaths = []string{req.LogPath}
+		} else if len(logPaths) == 0 {
+			// ExpandLogGroupPath succeeded but returned empty slice (file doesn't exist on filesystem)
+			// Still search for historical indexed data using the requested path
+			logger.Debugf("Log file %s does not exist on filesystem, but searching for historical indexed data", req.LogPath)
 			searchReq.LogPaths = []string{req.LogPath}
 		} else {
 			searchReq.LogPaths = logPaths
 		}
+		logger.Debugf("Search request LogPaths: %v", searchReq.LogPaths)
 	}
 
 	// Add time filters
@@ -350,7 +308,7 @@ func AdvancedSearchLogs(c *gin.Context) {
 	pv := int(result.TotalHits)
 	var uv, uniquePages int
 	var facetUV, facetUniquePages int
-	
+
 	// First get facet values as fallback
 	if result.Facets != nil {
 		if ipFacet, ok := result.Facets["ip"]; ok {
@@ -362,17 +320,17 @@ func AdvancedSearchLogs(c *gin.Context) {
 			uniquePages = facetUniquePages
 		}
 	}
-	
+
 	// Override with CardinalityCounter results for better accuracy
 	if analyticsService != nil {
 		// Get cardinality counts for UV (unique IPs)
-		if uvResult := getCardinalityCount(ctx, analyticsService, "ip", searchReq); uvResult > 0 {
+		if uvResult := getCardinalityCount(ctx, "ip", searchReq); uvResult > 0 {
 			uv = uvResult
 			logger.Debugf("🔢 Search endpoint - UV from CardinalityCounter: %d (vs facet: %d)", uvResult, facetUV)
 		}
-		
-		// Get cardinality counts for Unique Pages (unique paths)  
-		if upResult := getCardinalityCount(ctx, analyticsService, "path_exact", searchReq); upResult > 0 {
+
+		// Get cardinality counts for Unique Pages (unique paths)
+		if upResult := getCardinalityCount(ctx, "path_exact", searchReq); upResult > 0 {
 			uniquePages = upResult
 			logger.Debugf("🔢 Search endpoint - Unique Pages from CardinalityCounter: %d (vs facet: %d)", upResult, facetUniquePages)
 		}
@@ -476,9 +434,9 @@ func GetLogEntries(c *gin.Context) {
 		entries = append(entries, hit.Fields)
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"entries": entries,
-		"count":   len(entries),
+	c.JSON(http.StatusOK, AnalyticsResponse{
+		Entries: entries,
+		Count:   len(entries),
 	})
 }
 
@@ -593,7 +551,7 @@ func GetDashboardAnalytics(c *gin.Context) {
 	if req.StartDate != "" {
 		startTime, err = time.Parse("2006-01-02", req.StartDate)
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid start_date format, expected YYYY-MM-DD: " + err.Error()})
+			c.JSON(http.StatusBadRequest, ErrorResponse{Error: "Invalid start_date format, expected YYYY-MM-DD: " + err.Error()})
 			return
 		}
 	}
@@ -601,7 +559,7 @@ func GetDashboardAnalytics(c *gin.Context) {
 	if req.EndDate != "" {
 		endTime, err = time.Parse("2006-01-02", req.EndDate)
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid end_date format, expected YYYY-MM-DD: " + err.Error()})
+			c.JSON(http.StatusBadRequest, ErrorResponse{Error: "Invalid end_date format, expected YYYY-MM-DD: " + err.Error()})
 			return
 		}
 		// Set end time to end of day
@@ -620,13 +578,12 @@ func GetDashboardAnalytics(c *gin.Context) {
 
 	logger.Debugf("Dashboard request for log_path: %s, parsed start_time: %v, end_time: %v", req.LogPath, startTime, endTime)
 
-	// Expand the log path to its full list of physical files
-	logPaths, err := nginx_log.ExpandLogGroupPath(req.LogPath)
-	if err != nil {
-		// Log the error but proceed with the base path as a fallback
-		logger.Warnf("Could not expand log group path for dashboard %s: %v", req.LogPath, err)
-		logPaths = []string{req.LogPath}
-	}
+	// For Dashboard queries, only query the specific file requested, not the entire log group
+	// This ensures that when user clicks on a specific file, they see data only from that file
+	logPaths := []string{req.LogPath}
+	
+	// Debug: Log the paths being queried
+	logger.Debugf("Dashboard querying specific log path: %s", req.LogPath)
 
 	// Build dashboard query request
 	dashboardReq := &analytics.DashboardQueryRequest{
@@ -760,8 +717,8 @@ func GetWorldMapData(c *gin.Context) {
 	}
 	logger.Debugf("=== DEBUG GetWorldMapData END ===")
 
-	c.JSON(http.StatusOK, gin.H{
-		"data": chartData,
+	c.JSON(http.StatusOK, GeoRegionResponse{
+		Data: chartData,
 	})
 }
 
@@ -862,8 +819,8 @@ func GetChinaMapData(c *gin.Context) {
 	}
 	logger.Debugf("=== DEBUG GetChinaMapData END ===")
 
-	c.JSON(http.StatusOK, gin.H{
-		"data": chartData,
+	c.JSON(http.StatusOK, GeoDataResponse{
+		Data: chartData,
 	})
 }
 
@@ -871,7 +828,7 @@ func GetChinaMapData(c *gin.Context) {
 func GetGeoStats(c *gin.Context) {
 	var req AnalyticsRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON request body: " + err.Error()})
+		c.JSON(http.StatusBadRequest, ErrorResponse{Error: "Invalid JSON request body: " + err.Error()})
 		return
 	}
 
@@ -928,13 +885,21 @@ func GetGeoStats(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"stats": stats,
+	// Convert to []interface{} for JSON serialization
+	statsInterface := make([]interface{}, len(stats))
+	for i, stat := range stats {
+		statsInterface[i] = stat
+	}
+	
+	c.JSON(http.StatusOK, GeoStatsResponse{
+		Stats: statsInterface,
 	})
 }
 
 // getCardinalityCount is a helper function to get accurate cardinality counts using the analytics service
-func getCardinalityCount(ctx context.Context, analyticsService analytics.Service, field string, searchReq *searcher.SearchRequest) int {
+func getCardinalityCount(ctx context.Context, field string, searchReq *searcher.SearchRequest) int {
+	logger.Debugf("🔍 getCardinalityCount: Starting cardinality count for field '%s'", field)
+
 	// Create a CardinalityRequest from the SearchRequest
 	cardReq := &searcher.CardinalityRequest{
 		Field:     field,
@@ -942,30 +907,41 @@ func getCardinalityCount(ctx context.Context, analyticsService analytics.Service
 		EndTime:   searchReq.EndTime,
 		LogPaths:  searchReq.LogPaths,
 	}
-	
+	logger.Debugf("🔍 CardinalityRequest: Field=%s, StartTime=%v, EndTime=%v, LogPaths=%v",
+		cardReq.Field, cardReq.StartTime, cardReq.EndTime, cardReq.LogPaths)
+
 	// Try to get the searcher to access cardinality counter
 	searcherService := nginx_log.GetModernSearcher()
 	if searcherService == nil {
 		logger.Debugf("🚨 getCardinalityCount: ModernSearcher not available for field %s", field)
 		return 0
 	}
-	
+	logger.Debugf("🔍 getCardinalityCount: ModernSearcher available, type: %T", searcherService)
+
 	// Try to cast to DistributedSearcher to access CardinalityCounter
 	if ds, ok := searcherService.(*searcher.DistributedSearcher); ok {
+		logger.Debugf("🔍 getCardinalityCount: Successfully cast to DistributedSearcher")
 		shards := ds.GetShards()
+		logger.Debugf("🔍 getCardinalityCount: Retrieved %d shards", len(shards))
 		if len(shards) > 0 {
+			// Check shard health
+			for i, shard := range shards {
+				logger.Debugf("🔍 getCardinalityCount: Shard %d: %v", i, shard != nil)
+			}
+
 			cardinalityCounter := searcher.NewCardinalityCounter(shards)
+			logger.Debugf("🔍 getCardinalityCount: Created CardinalityCounter")
 			result, err := cardinalityCounter.CountCardinality(ctx, cardReq)
 			if err != nil {
 				logger.Debugf("🚨 getCardinalityCount: CardinalityCounter failed for field %s: %v", field, err)
 				return 0
 			}
-			
+
 			if result.Error != "" {
 				logger.Debugf("🚨 getCardinalityCount: CardinalityCounter returned error for field %s: %s", field, result.Error)
 				return 0
 			}
-			
+
 			logger.Debugf("✅ getCardinalityCount: Successfully got cardinality for field %s: %d", field, result.Cardinality)
 			return int(result.Cardinality)
 		} else {
@@ -974,6 +950,6 @@ func getCardinalityCount(ctx context.Context, analyticsService analytics.Service
 	} else {
 		logger.Debugf("🚨 getCardinalityCount: Searcher is not DistributedSearcher (type: %T) for field %s", searcherService, field)
 	}
-	
+
 	return 0
 }

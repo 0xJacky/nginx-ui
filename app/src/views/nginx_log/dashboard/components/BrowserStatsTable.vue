@@ -37,7 +37,7 @@ const browserColumns = [
     <Table
       v-if="dashboardData"
       :columns="browserColumns"
-      :data-source="dashboardData.browsers.slice(0, 10)"
+      :data-source="dashboardData?.browsers?.slice(0, 10) || []"
       :pagination="false"
       row-key="browser"
       size="small"

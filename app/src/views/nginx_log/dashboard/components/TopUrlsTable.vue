@@ -38,7 +38,7 @@ const urlColumns = [
     <Table
       v-if="dashboardData"
       :columns="urlColumns"
-      :data-source="dashboardData.top_urls"
+      :data-source="dashboardData?.top_urls || []"
       :pagination="false"
       row-key="url"
       size="small"

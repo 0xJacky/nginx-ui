@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import type { SorterResult, TablePaginationConfig } from 'ant-design-vue/es/table/interface'
 import type { AccessLogEntry, AdvancedSearchRequest, PreflightResponse } from '@/api/nginx_log'
-import { DownOutlined, ExclamationCircleOutlined, LoadingOutlined, ReloadOutlined } from '@ant-design/icons-vue'
+import { DownOutlined, ExclamationCircleOutlined, ReloadOutlined } from '@ant-design/icons-vue'
 import { message, Tag } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import nginx_log from '@/api/nginx_log'
 import { useWebSocketEventBus } from '@/composables/useWebSocketEventBus'
 import { bytesToSize } from '@/lib/helper'
+import LoadingState from '../components/LoadingState.vue'
 import { useIndexProgress } from '../composables/useIndexProgress'
 import SearchFilters from './components/SearchFilters.vue'
 
@@ -384,12 +385,15 @@ async function loadPreflight(): Promise<boolean> {
   try {
     preflightResponse.value = await nginx_log.getPreflight(logPath.value)
 
-    if (preflightResponse.value.available) {
+    if (preflightResponse.value.available && preflightResponse.value.time_range) {
       // Cache this path as valid and set time range
       pathValidationCache.value.set(currentPath, true)
       // Set time range to full days: start_date 00:00:00 to end_date 23:59:59
-      timeRange.value.start = dayjs.unix(preflightResponse.value.start_time).startOf('day')
-      timeRange.value.end = dayjs.unix(preflightResponse.value.end_time).endOf('day')
+      const startTime = dayjs.unix(preflightResponse.value.time_range.start).startOf('day')
+      const endTime = dayjs.unix(preflightResponse.value.time_range.end).endOf('day')
+
+      timeRange.value.start = startTime
+      timeRange.value.end = endTime
       return true // Index is ready
     }
     else {
@@ -575,7 +579,7 @@ async function handleIndexReadyNotification(data: {
 }) {
   const currentPath = logPath.value || ''
   // Check if the notification is for the current log path
-  if (data.log_path === currentPath || (!currentPath && data.log_path)) {
+  if (data.log_path === currentPath) {
     message.success($gettext('Log indexing completed! Loading updated data...'))
 
     try {
@@ -734,29 +738,11 @@ watch(timeRange, () => {
         </div>
       </div>
 
-      <!-- Loading State -->
-      <div v-if="isLoading" class="text-center" style="padding: 40px;">
-        <LoadingOutlined class="text-2xl text-blue-500" />
-        <p style="margin-top: 16px;">
-          {{ $gettext('Searching logs...') }}
-        </p>
-      </div>
-
-      <!-- Indexing Status -->
-      <div v-else-if="shouldShowIndexingSpinner" class="text-center" style="padding: 40px;">
-        <LoadingOutlined class="text-2xl text-blue-500" />
-        <p style="margin-top: 16px;">
-          <template v-if="isCurrentFileIndexing">
-            {{ $gettext('This log file is currently being indexed, please wait...') }}
-          </template>
-          <template v-else-if="!isFileAvailable">
-            {{ $gettext('Waiting for this log file to be indexed...') }}
-          </template>
-          <template v-else>
-            {{ $gettext('Loading log data...') }}
-          </template>
-        </p>
-      </div>
+      <!-- Loading/Indexing State -->
+      <LoadingState
+        v-if="isLoading || shouldShowIndexingSpinner"
+        :log-path="logPath || ''"
+      />
 
       <!-- Search Results (show when indexing is ready and we have search results) -->
       <div v-else-if="shouldShowResults">
