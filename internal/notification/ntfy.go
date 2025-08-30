@@ -55,8 +55,11 @@ func init() {
 		priority := DEFAULT_NTFY_PRIORITY
 		if ntfyConfig.Priority != "" {
 			p, err := strconv.Atoi(ntfyConfig.Priority)
-			if err != nil || p < 1 || p > 5 {
+			if err != nil {
 				return fmt.Errorf("invalid priority: %w", err)
+			}
+			if p < 1 || p > 5 {
+				return fmt.Errorf("invalid priority: must be between 1 and 5")
 			}
 			priority = p
 		}
