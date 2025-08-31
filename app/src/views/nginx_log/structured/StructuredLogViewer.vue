@@ -67,7 +67,7 @@ const searchFilters = ref({
 const searchResults = ref<AccessLogEntry[]>([])
 const searchTotal = ref(0)
 const searchLoading = ref(false)
-const indexingStatus = ref<'idle' | 'indexing' | 'ready' | 'failed'>('idle')
+const indexingStatus = ref<'idle' | 'indexing' | 'indexed' | 'failed'>('idle')
 const currentPage = ref(1)
 const pageSize = ref(50)
 const sortBy = ref<string>()
@@ -112,7 +112,7 @@ const isFileAvailable = computed(() => {
 
 // Computed properties for indexing status
 const isLoading = computed(() => searchLoading.value)
-const isReady = computed(() => indexingStatus.value === 'ready')
+const isReady = computed(() => indexingStatus.value === 'indexed')
 const isFailed = computed(() => indexingStatus.value === 'failed')
 
 // Combined status computed properties based on file-specific states
@@ -587,7 +587,7 @@ async function handleIndexReadyNotification(data: {
       const hasIndexedData = await loadPreflight()
 
       if (hasIndexedData) {
-        indexingStatus.value = 'ready'
+        indexingStatus.value = 'indexed'
         // Load initial data with the updated time range
         await performAdvancedSearch()
       }
@@ -618,7 +618,7 @@ onMounted(async () => {
 
     if (hasIndexedData) {
       // Index is ready and data is available
-      indexingStatus.value = 'ready'
+      indexingStatus.value = 'indexed'
       await handleInitializedData(hasIndexedData)
     }
 

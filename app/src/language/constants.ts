@@ -60,4 +60,7 @@ export const msg = [
 
   $gettext('Search module name'),
   $gettext('Search'),
+
+  $gettext('Access Log'),
+  $gettext('Error Log'),
 ]

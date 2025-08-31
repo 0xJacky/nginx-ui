@@ -113,7 +113,7 @@ msgstr "{label} 已複製到剪貼簿"
 msgid "* Includes nodes from group %{groupName} and manually selected nodes"
 msgstr "* 包含來自群組 %{groupName} 的節點和手動選擇的節點"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:775
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:802
 msgid "%{start}-%{end} of %{total} items"
 msgstr "第 %{start}-%{end} 條，共 %{total} 條"
 
@@ -134,7 +134,7 @@ msgstr "多重要素驗證設定"
 msgid "About"
 msgstr "關於"
 
-#: src/views/nginx_log/NginxLogList.vue:63
+#: src/language/constants.ts:64
 msgid "Access Log"
 msgstr "存取日誌"
 
@@ -143,7 +143,7 @@ msgid "Access log path not exist"
 msgstr "存取記錄路徑不存在"
 
 #: src/components/NgxConfigEditor/LogEntry.vue:90
-#: src/routes/modules/nginx_log.ts:17
+#: src/routes/modules/nginx_log.ts:17 src/views/nginx_log/NginxLogList.vue:36
 msgid "Access Logs"
 msgstr "存取日誌"
 
@@ -160,8 +160,8 @@ msgstr "操作"
 #: src/views/certificate/ACMEUser.vue:129
 #: src/views/certificate/CertificateList/certColumns.tsx:92
 #: src/views/certificate/DNSCredential.vue:71
-#: src/views/config/configColumns.tsx:50 src/views/namespace/columns.ts:84
-#: src/views/nginx_log/NginxLogList.vue:267 src/views/node/nodeColumns.tsx:96
+#: src/views/config/configColumns.tsx:51 src/views/namespace/columns.ts:84
+#: src/views/nginx_log/NginxLogList.vue:311 src/views/node/nodeColumns.tsx:96
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:85
 #: src/views/site/site_list/columns.tsx:160 src/views/stream/columns.tsx:123
@@ -369,7 +369,7 @@ msgstr "您確定要在以下同步節點上重新啟動 Nginx 嗎？"
 msgid "Are you sure you want to restore?"
 msgstr "您確定要恢復？"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:696
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:733
 msgid "Ascending"
 msgstr "升序"
 
@@ -477,7 +477,7 @@ msgstr "平均延遲"
 msgid "Avg Daily UV"
 msgstr "日均 UV"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:757
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:784
 msgid "Avg/PV"
 msgstr "平均 /PV"
 
@@ -498,7 +498,7 @@ msgstr "返回首頁"
 msgid "Back to List"
 msgstr "返回列表"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:531
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:567
 msgid ""
 "Background indexing in progress. Data will be updated automatically when "
 "ready."
@@ -622,8 +622,8 @@ msgstr "區塊為空"
 
 #: src/views/nginx_log/dashboard/components/BrowserStatsTable.vue:13
 #: src/views/nginx_log/structured/components/SearchFilters.vue:137
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:221
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:484
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:254
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:520
 msgid "Browser"
 msgstr "瀏覽器"
 
@@ -1007,7 +1007,7 @@ msgstr ""
 msgid "Check Interval (seconds)"
 msgstr "檢查間隔（秒）"
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:180
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:181
 #: src/views/nginx_log/dashboard/components/GeoMapChart.vue:47
 msgid "China Access Map"
 msgstr "中國訪問地圖"
@@ -1139,7 +1139,7 @@ msgstr "與目前設定比較"
 msgid "Compression level, 1 is lowest, 9 is highest"
 msgstr "壓縮等級，1 為最低，9 為最高"
 
-#: src/views/nginx_log/indexing/components/IndexProgressBar.vue:56
+#: src/views/nginx_log/indexing/components/IndexProgressBar.vue:54
 msgid "Computing Statistics"
 msgstr "計算統計資訊"
 
@@ -1439,7 +1439,7 @@ msgstr "天"
 msgid "Decryption failed"
 msgstr "解密失敗"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:811
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:838
 msgid "Default range"
 msgstr "預設範圍"
 
@@ -1539,7 +1539,7 @@ msgstr "演示"
 msgid "Deploy"
 msgstr "部署"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:696
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:733
 msgid "Descending"
 msgstr "降序"
 
@@ -1573,8 +1573,8 @@ msgid "Development Mode"
 msgstr "開發模式"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:169
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:253
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:486
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:286
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:522
 msgid "Device"
 msgstr "裝置"
 
@@ -1768,7 +1768,7 @@ msgid "Document"
 msgid_plural "Documents"
 msgstr[0] "檔案"
 
-#: src/views/nginx_log/NginxLogList.vue:207
+#: src/views/nginx_log/NginxLogList.vue:271
 msgid "Document Count"
 msgstr "文件數量"
 
@@ -2038,6 +2038,7 @@ msgid "Environment variables cleaned"
 msgstr "環境變數已清理"
 
 #: src/constants/index.ts:23 src/views/config/InspectConfig.vue:63
+#: src/views/nginx_log/NginxLogList.vue:222
 #: src/views/notification/notificationColumns.tsx:14
 msgid "Error"
 msgstr "錯誤"
@@ -2050,11 +2051,11 @@ msgstr "錯誤詳情"
 msgid "Error initializing diff viewer"
 msgstr "初始化差異檢視器時發生錯誤"
 
-#: src/views/nginx_log/NginxLogList.vue:67
+#: src/language/constants.ts:65
 msgid "Error Log"
 msgstr "錯誤日誌"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:627
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:663
 msgid "Error Log Detected"
 msgstr "檢測到錯誤日誌"
 
@@ -2063,11 +2064,11 @@ msgid "Error log path not exist"
 msgstr "錯誤日誌路徑不存在"
 
 #: src/components/NgxConfigEditor/LogEntry.vue:98
-#: src/routes/modules/nginx_log.ts:24
+#: src/routes/modules/nginx_log.ts:24 src/views/nginx_log/NginxLogList.vue:42
 msgid "Error Logs"
 msgstr "錯誤日誌"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:630
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:666
 msgid ""
 "Error logs do not support structured analysis as they contain free-form text "
 "messages."
@@ -2600,10 +2601,6 @@ msgstr "檔案上傳成功"
 msgid "Filename is empty"
 msgstr "檔名空白"
 
-#: src/views/nginx_log/NginxLogList.vue:318
-msgid "files"
-msgstr "檔案"
-
 #: src/views/nginx_log/raw/RawLogViewer.vue:155
 msgid "Filter"
 msgstr "篩選"
@@ -2647,7 +2644,7 @@ msgstr "針對中國大陸使用者"
 msgid "For Chinese user: https://cloud.nginxui.com/"
 msgstr "中國使用者：https://cloud.nginxui.com/"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:632
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:668
 msgid ""
 "For error logs, please use the Raw Log Viewer for better viewing experience."
 msgstr "對於錯誤日誌，請使用原始日誌檢視器以獲得更好的檢視體驗。"
@@ -2686,7 +2683,7 @@ msgstr "格式：分鐘 小時 日 月 星期"
 msgid "Friday"
 msgstr "星期五"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:808
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:835
 msgid "From indexed logs"
 msgstr "來自已索引的日誌"
 
@@ -2744,7 +2741,7 @@ msgid "Github Proxy"
 msgstr "Github 代理"
 
 #: src/views/nginx_log/dashboard/components/GeoMapChart.vue:47
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:201
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:202
 msgid "Global Access Map"
 msgstr "全球訪問地圖"
 
@@ -2752,17 +2749,13 @@ msgstr "全球訪問地圖"
 msgid "Global Map"
 msgstr "全球地圖"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:637
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:673
 msgid "Go to Raw Log Viewer"
 msgstr "轉到原始日誌查看器"
 
 #: src/views/preference/components/ExternalNotify/gotify.ts:5
 msgid "Gotify"
 msgstr "Gotify"
-
-#: src/views/preference/components/ExternalNotify/ntfy.ts:5
-msgid "Ntfy"
-msgstr "Ntfy"
 
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:502
 msgid ""
@@ -2812,7 +2805,7 @@ msgid "Hide"
 msgstr "隱藏"
 
 #: src/composables/useGeoTranslation.ts:165
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:134
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:135
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:103
 msgid "High"
 msgstr "高"
@@ -2915,28 +2908,34 @@ msgstr "包含 Master 行程、工作行程、快取行程，以及其他 Nginx 
 msgid "Index and statistics rebuild started successfully"
 msgstr "索引和統計重建已成功啟動"
 
-#: src/views/nginx_log/NginxLogList.vue:94
+#: src/views/nginx_log/NginxLogList.vue:181
+msgid "Index failed"
+msgstr "索引失敗"
+
+#: src/views/nginx_log/components/LoadingState.vue:55
+msgid "Index failed, please try rebuilding"
+msgstr "索引失敗，請嘗試重新構建"
+
+#: src/views/nginx_log/NginxLogList.vue:150
 msgid "Index Status"
 msgstr "索引狀態"
 
-#: src/views/nginx_log/NginxLogList.vue:134
+#: src/views/nginx_log/NginxLogList.vue:218
 msgid "Indexed"
 msgstr "已建立索引"
 
-#: src/views/nginx_log/indexing/components/IndexProgressBar.vue:54
-#: src/views/nginx_log/NginxLogList.vue:138
+#: src/views/nginx_log/indexing/components/IndexProgressBar.vue:52
+#: src/views/nginx_log/NginxLogList.vue:214
 msgid "Indexing"
 msgstr "索引中"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:716
-msgid "Indexing logs, please wait..."
-msgstr "正在索引日誌，請稍候..."
-
-#: src/views/nginx_log/NginxLogList.vue:313
+#: src/views/nginx_log/components/LoadingState.vue:33
+#: src/views/nginx_log/NginxLogList.vue:380
 msgid "Indexing logs..."
 msgstr "正在索引日誌..."
 
 #: src/components/ProcessingStatus/ProcessingStatus.vue:31
+#: src/views/nginx_log/components/LoadingState.vue:71
 msgid "Indexing..."
 msgstr "建立索引中..."
 
@@ -3084,13 +3083,13 @@ msgstr "時間戳格式無效"
 msgid "Invalid websocket message type"
 msgstr "無效的 WebSocket 消息類型"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:158
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:191
 #: src/views/preference/tabs/AuthSettings.vue:14
 msgid "IP"
 msgstr "IP"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:77
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:479
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:515
 msgid "IP Address"
 msgstr "IP 位址"
 
@@ -3150,7 +3149,7 @@ msgstr "Lark"
 msgid "Lark Custom"
 msgstr "Lark 自訂"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:279
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:312
 msgid "Last 12 hours"
 msgstr "過去 12 小時"
 
@@ -3158,29 +3157,29 @@ msgstr "過去 12 小時"
 msgid "Last 14 days"
 msgstr "過去 14 天"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:275
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:308
 msgid "Last 15 minutes"
 msgstr "過去 15 分鐘"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:280
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:313
 msgid "Last 24 hours"
 msgstr "過去 24 小時"
 
 #: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:23
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:282
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:315
 msgid "Last 30 days"
 msgstr "過去 30 天"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:276
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:309
 msgid "Last 30 minutes"
 msgstr "過去 30 分鐘"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:278
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:311
 msgid "Last 4 hours"
 msgstr "過去 4 小時"
 
 #: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:21
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:281
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:314
 msgid "Last 7 days"
 msgstr "最近 7 天"
 
@@ -3200,11 +3199,11 @@ msgstr "上次備份時間"
 msgid "Last checked at"
 msgstr "上次檢查時間"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:277
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:310
 msgid "Last hour"
 msgstr "過去 1 小時"
 
-#: src/views/nginx_log/NginxLogList.vue:151
+#: src/views/nginx_log/NginxLogList.vue:231
 msgid "Last Indexed"
 msgstr "最後索引時間"
 
@@ -3305,13 +3304,14 @@ msgstr "載入器休眠時間"
 msgid "Loader Threshold"
 msgstr "載入器門檻值"
 
-#: src/views/nginx_log/dashboard/DashboardViewer.vue:151
-msgid "Loading dashboard data..."
-msgstr "正在載入儀表板數據..."
-
 #: src/views/dashboard/NginxDashBoard.vue:200
 msgid "Loading data..."
 msgstr "資料載入中…"
+
+#: src/views/nginx_log/components/LoadingState.vue:41
+#: src/views/nginx_log/components/LoadingState.vue:78
+msgid "Loading..."
+msgstr "載入中..."
 
 #: src/components/NodeIndicator/NodeIndicator.vue:38
 #: src/components/NodeSelector/NodeSelector.vue:61 src/constants/index.ts:42
@@ -3355,19 +3355,23 @@ msgstr "日誌文件不存在"
 msgid "Log file is not a regular file"
 msgstr "日誌檔案不是常規檔案"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:823
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:850
 msgid "Log file not available"
 msgstr "日誌文件不可用"
+
+#: src/views/nginx_log/components/LoadingState.vue:62
+msgid "Log file not indexed yet"
+msgstr "日誌檔案尚未建立索引"
 
 #: src/constants/errors/nginx_log.ts:12
 msgid "Log indexer not available"
 msgstr "日誌索引器不可用"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:547
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:583
 msgid "Log indexing completed! Loading updated data..."
 msgstr "日誌索引完成！正在載入更新數據..."
 
-#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:297
+#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:353
 msgid "Log List"
 msgstr "日誌列表"
 
@@ -3406,7 +3410,7 @@ msgstr ""
 "分鐘間隔執行 logrotate 命令。"
 
 #: src/composables/useGeoTranslation.ts:166
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:134
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:135
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:103
 msgid "Low"
 msgstr "低"
@@ -3553,7 +3557,7 @@ msgid "Memory Usage (RSS)"
 msgstr "記憶體使用量 (RSS)"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:92
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:480
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:516
 msgid "Method"
 msgstr "方法"
 
@@ -3656,7 +3660,7 @@ msgstr "不適用"
 #: src/views/config/components/Delete.vue:123
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:17 src/views/namespace/columns.ts:9
-#: src/views/nginx_log/NginxLogList.vue:76 src/views/node/nodeColumns.tsx:8
+#: src/views/nginx_log/NginxLogList.vue:128 src/views/node/nodeColumns.tsx:8
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:80
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:36
 #: src/views/site/site_list/columns.tsx:30
@@ -3960,28 +3964,28 @@ msgstr "取消"
 msgid "No Action"
 msgstr "無行動"
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:195
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:231
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:196
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:232
 msgid "No China geographic data available"
 msgstr "無中國地理數據"
 
 #: src/composables/useGeoTranslation.ts:169
 #: src/views/dashboard/NginxDashBoard.vue:202
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:126
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:127
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:95
 msgid "No data"
 msgstr "無數據"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:791
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:818
 msgid "No entries in current page"
 msgstr "當前頁面沒有條目"
 
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:216
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:252
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:217
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:253
 msgid "No geographic data available"
 msgstr "無可用地理數據"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:528
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:564
 msgid "No logs found in the selected time range."
 msgstr "在選定的時間範圍內未找到日誌。"
 
@@ -4009,7 +4013,7 @@ msgstr ""
 "在 server_name 設定中未找到特定 IP 位址。請在下方指定伺服器 IP 位址以取得憑"
 "證。"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:800
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:827
 msgid "No structured log data available"
 msgstr "無結構化日誌數據可用"
 
@@ -4050,7 +4054,7 @@ msgstr "非預期文本"
 msgid "Not Found"
 msgstr "找不到頁面"
 
-#: src/views/nginx_log/NginxLogList.vue:142
+#: src/views/nginx_log/NginxLogList.vue:206
 msgid "Not Indexed"
 msgstr "未索引"
 
@@ -4104,6 +4108,10 @@ msgstr "通知"
 #: src/constants/errors/notification.ts:2
 msgid "Notifier not found"
 msgstr "找不到通知器"
+
+#: src/views/preference/components/ExternalNotify/ntfy.ts:5
+msgid "Ntfy"
+msgstr "Ntfy"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:26
 msgid "Number of concurrent worker processes, auto sets to CPU core count"
@@ -4242,8 +4250,8 @@ msgid "Original name"
 msgstr "原始名稱"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:153
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:237
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:485
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:270
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:521
 #: src/views/system/Upgrade.vue:193
 msgid "OS"
 msgstr "作業系統"
@@ -4334,8 +4342,8 @@ msgstr "密碼不匹配"
 #: src/views/config/components/ConfigRightPanel/Basic.vue:41
 #: src/views/config/components/Delete.vue:124
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:420
-#: src/views/nginx_log/NginxLogList.vue:85
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:481
+#: src/views/nginx_log/NginxLogList.vue:137
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:517
 msgid "Path"
 msgstr "路徑"
 
@@ -4362,12 +4370,12 @@ msgstr "待處理"
 
 #: src/composables/useGeoTranslation.ts:168
 #: src/views/nginx_log/dashboard/components/BrowserStatsTable.vue:26
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:121
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:71
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:122
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:72
 #: src/views/nginx_log/dashboard/components/DeviceStatsTable.vue:25
 #: src/views/nginx_log/dashboard/components/OSStatsTable.vue:26
 #: src/views/nginx_log/dashboard/components/TopUrlsTable.vue:27
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:186
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:187
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:87
 msgid "Percentage"
 msgstr "百分比"
@@ -4693,12 +4701,22 @@ msgstr "公共 CA 要求："
 msgid "Public Security Number"
 msgstr "公安編號"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:733
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:760
 msgid "PV"
 msgstr "頁面瀏覽量"
 
+#: src/views/nginx_log/NginxLogList.vue:187
+#: src/views/nginx_log/NginxLogList.vue:188
+#: src/views/nginx_log/NginxLogList.vue:210
+msgid "Queued"
+msgstr "已排隊"
+
+#: src/views/nginx_log/components/LoadingState.vue:48
+msgid "Queued for indexing..."
+msgstr "排隊等待索引中..."
+
 #: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:51
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:663
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:699
 msgid "Quick Select"
 msgstr "快速選擇"
 
@@ -4720,7 +4738,7 @@ msgstr "讀取請求"
 msgid "Reads"
 msgstr "讀取"
 
-#: src/views/nginx_log/NginxLogList.vue:344
+#: src/views/nginx_log/NginxLogList.vue:407
 msgid "Rebuild"
 msgstr "重建"
 
@@ -4765,7 +4783,7 @@ msgid "Recursive Nameservers"
 msgstr "遞迴名稱伺服器"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:185
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:263
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:296
 msgid "Referer"
 msgstr "來源"
 
@@ -4972,7 +4990,7 @@ msgstr "更新憑證成功"
 msgid "Renew successfully"
 msgstr "更新成功"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:182
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:215
 msgid "Request"
 msgstr "請求"
 
@@ -5002,7 +5020,7 @@ msgstr "每連線請求數量"
 
 #: src/language/curd.ts:13
 #: src/views/nginx_log/structured/components/SearchFilters.vue:214
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:699
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:736
 msgid "Reset"
 msgstr "重設"
 
@@ -5010,7 +5028,7 @@ msgstr "重設"
 msgid "Reset 2FA"
 msgstr "重設多重因素驗證"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:815
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:842
 msgid "Reset Search"
 msgstr "重置搜尋"
 
@@ -5342,7 +5360,7 @@ msgstr "掃描結果"
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr "用手機掃描二維碼將賬戶新增到應用程式中。"
 
-#: src/views/nginx_log/indexing/components/IndexProgressBar.vue:52
+#: src/views/nginx_log/indexing/components/IndexProgressBar.vue:50
 msgid "Scanning"
 msgstr "掃描中"
 
@@ -5377,13 +5395,9 @@ msgstr "在日誌內容中搜尋..."
 msgid "Search module name"
 msgstr "搜尋模組名稱"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:806
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:833
 msgid "Search range"
 msgstr "搜尋範圍"
-
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:708
-msgid "Searching logs..."
-msgstr "正在搜尋日誌..."
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:109
 msgid "Secret has been copied"
@@ -5607,8 +5621,8 @@ msgid "Sites-enabled directory not exist"
 msgstr "sites-enabled 資料夾不存在"
 
 #: src/language/curd.ts:62
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:213
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:483
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:246
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:519
 msgid "Size"
 msgstr "大小"
 
@@ -5624,7 +5638,7 @@ msgstr "快取載入器迭代間的休眠時間"
 msgid "Sleep time between cache manager iterations"
 msgstr "快取管理器迭代間的休眠時間"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:696
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:733
 msgid "Sorted by"
 msgstr "排序方式"
 
@@ -5720,8 +5734,8 @@ msgstr "靜態"
 #: src/views/certificate/CertificateList/certColumns.tsx:63
 #: src/views/dashboard/components/ModulesTable.vue:96
 #: src/views/nginx_log/structured/components/SearchFilters.vue:106
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:205
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:482
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:238
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:518
 #: src/views/node/nodeColumns.tsx:43
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:29
 #: src/views/site/site_list/columns.tsx:120 src/views/stream/columns.tsx:87
@@ -6234,13 +6248,13 @@ msgstr "節流"
 msgid "Thursday"
 msgstr "星期四"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:149
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:478
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:182
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:514
 msgid "Time"
 msgstr "時間"
 
-#: src/views/nginx_log/NginxLogList.vue:220
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:651
+#: src/views/nginx_log/NginxLogList.vue:284
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:687
 msgid "Time Range"
 msgstr "時間範圍"
 
@@ -6309,10 +6323,6 @@ msgstr ""
 "要使用本機大型語言模型，請使用 ollama、vllm 或 lmdeploy 部署。它們提供與 "
 "OpenAI 相容的 API 端點，因此只需將 baseUrl 設定為您的本機 API。"
 
-#: src/views/nginx_log/NginxLogList.vue:235
-msgid "Today"
-msgstr "今天"
-
 #: src/views/dashboard/NginxDashBoard.vue:57
 msgid "Toggle failed"
 msgstr "切換失敗"
@@ -6325,13 +6335,13 @@ msgstr "令牌為空"
 msgid "Token is not valid"
 msgstr "令牌無效"
 
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:235
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:271
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:236
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:272
 msgid "Top 10 Countries / Regions"
 msgstr "前 10 個國家/地區"
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:214
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:250
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:215
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:251
 msgid "Top 10 Provinces / Regions"
 msgstr "前十省份/地區"
 
@@ -6348,7 +6358,7 @@ msgstr "總計"
 msgid "Total connections"
 msgstr "總連線數"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:727
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:754
 msgid "Total Entries"
 msgstr "總條目數"
 
@@ -6400,7 +6410,7 @@ msgid ""
 "password algorithm."
 msgstr "TOTP 是一種使用基於時間的一次性密碼演算法的多重因素驗證方法。"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:745
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:772
 msgid "Traffic"
 msgstr "流量"
 
@@ -6412,11 +6422,11 @@ msgstr "正在翻譯錯誤..."
 msgid "Trash"
 msgstr "垃圾桶"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:793
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:820
 msgid "Try adjusting your search criteria or navigate to different pages."
 msgstr "嘗試調整搜索條件或導航到其他頁面。"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:803
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:830
 msgid "Try adjusting your search criteria or time range."
 msgstr "嘗試調整您的搜尋條件或時間範圍。"
 
@@ -6432,7 +6442,7 @@ msgstr "需要多重因素驗證"
 #: src/views/certificate/CertificateList/certColumns.tsx:24
 #: src/views/config/components/Delete.vue:122
 #: src/views/dashboard/components/ModulesTable.vue:83
-#: src/views/nginx_log/NginxLogList.vue:52
+#: src/views/nginx_log/NginxLogList.vue:119
 #: src/views/notification/notificationColumns.tsx:8
 #: src/views/preference/components/ExternalNotify/columns.tsx:19
 msgid "Type"
@@ -6458,7 +6468,7 @@ msgstr "輸入或選擇作業系統"
 msgid "Type or select status codes"
 msgstr "輸入或選擇狀態碼"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:751
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:778
 msgid "Unique Pages"
 msgstr "獨立頁面"
 
@@ -6491,7 +6501,7 @@ msgstr "更新成功"
 #: src/views/certificate/ACMEUser.vue:122
 #: src/views/certificate/DNSCredential.vue:65
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
-#: src/views/config/configColumns.tsx:43 src/views/namespace/columns.ts:78
+#: src/views/config/configColumns.tsx:44 src/views/namespace/columns.ts:78
 #: src/views/node/nodeColumns.tsx:89
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:39
 #: src/views/site/site_list/columns.tsx:113 src/views/stream/columns.tsx:80
@@ -6601,7 +6611,7 @@ msgstr "使用者名稱 (*)"
 msgid "Username length cannot exceed 255 characters"
 msgstr "使用者名稱長度不能超過 255 個字元"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:739
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:766
 msgid "UV"
 msgstr "獨立訪客"
 
@@ -6636,7 +6646,7 @@ msgstr "驗證系統要求"
 msgid "Version"
 msgstr "版本"
 
-#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:334
+#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:396
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:83
 msgid "View"
 msgstr "檢視"
@@ -6658,8 +6668,8 @@ msgid "Viewed"
 msgstr "已檢視"
 
 #: src/composables/useGeoTranslation.ts:167
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:120
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:145
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:121
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:146
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:64
 #: src/views/nginx_log/dashboard/components/TopUrlsTable.vue:19
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:114
@@ -6886,6 +6896,21 @@ msgstr "您的舊代碼將不再有效。"
 #: src/views/preference/components/AuthSettings/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "您的通行金鑰"
+
+#~ msgid "files"
+#~ msgstr "檔案"
+
+#~ msgid "Indexing logs, please wait..."
+#~ msgstr "正在索引日誌，請稍候..."
+
+#~ msgid "Loading dashboard data..."
+#~ msgstr "正在載入儀表板數據..."
+
+#~ msgid "Searching logs..."
+#~ msgstr "正在搜尋日誌..."
+
+#~ msgid "Today"
+#~ msgstr "今天"
 
 #~ msgid "Data refreshed successfully"
 #~ msgstr "數據刷新成功"

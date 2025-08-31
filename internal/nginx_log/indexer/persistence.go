@@ -8,7 +8,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/0xJacky/Nginx-UI/internal/event"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/uozi-tech/cosy"
@@ -381,14 +380,8 @@ func (pm *PersistenceManager) SetIndexStatus(path, status string, queuePosition 
 		logIndex.SetIndexingStatus(status)
 	case string(IndexStatusIndexed):
 		logIndex.SetCompletedStatus()
-	case string(IndexStatusReady):
-		logIndex.IndexStatus = string(IndexStatusReady)
-		logIndex.ErrorMessage = ""
-		logIndex.ErrorTime = nil
 	case string(IndexStatusError):
 		logIndex.SetErrorStatus(errorMessage)
-	case string(IndexStatusPartial):
-		logIndex.IndexStatus = string(IndexStatusPartial)
 	default:
 		logIndex.IndexStatus = status
 	}
@@ -398,16 +391,11 @@ func (pm *PersistenceManager) SetIndexStatus(path, status string, queuePosition 
 		return err
 	}
 
-	// Broadcast status change event to frontend
-	event.Publish(event.Event{
-		Type: event.TypeNginxLogIndexProgress,
-		Data: event.NginxLogIndexProgressData{
-			LogPath: path,
-			Status:  status,
-			Stage:   "status_update",
-		},
-	})
-
+	// For status updates, we need to notify the frontend to refresh
+	// But we shouldn't use progress events for this
+	// Instead, trigger a data refresh through a different mechanism
+	// For now, we'll rely on the auto-refresh mechanism in the frontend
+	
 	return nil
 }
 
@@ -420,7 +408,6 @@ func (pm *PersistenceManager) GetIncompleteIndexingTasks() ([]*model.NginxLogInd
 	err := db.Where("enabled = ? AND index_status IN ?", true, []string{
 		string(IndexStatusIndexing),
 		string(IndexStatusQueued),
-		string(IndexStatusPartial),
 	}).Order("queue_position").Find(&indexes).Error
 
 	if err != nil {
@@ -457,7 +444,6 @@ func (pm *PersistenceManager) ResetIndexingTasks() error {
 	}).Updates(map[string]interface{}{
 		"index_status":    string(IndexStatusNotIndexed),
 		"queue_position":  0,
-		"partial_offset":  0,
 		"error_message":   "",
 		"error_time":      nil,
 		"index_start_time": nil,
@@ -483,12 +469,10 @@ func (pm *PersistenceManager) GetIndexingTaskStats() (map[string]int64, error) {
 	// Count by status
 	statuses := []string{
 		string(IndexStatusNotIndexed),
+		string(IndexStatusQueued),
 		string(IndexStatusIndexing),
 		string(IndexStatusIndexed),
-		string(IndexStatusQueued),
 		string(IndexStatusError),
-		string(IndexStatusPartial),
-		string(IndexStatusReady),
 	}
 	
 	for _, status := range statuses {

@@ -45,8 +45,14 @@ type ParallelIndexer struct {
 	statsMutex sync.RWMutex
 
 	// Optimization
-	lastOptimized int64
-	optimizing    int32
+	lastOptimized       int64
+	optimizing          int32
+	adaptiveOptimizer   *AdaptiveOptimizer
+	zeroAllocProcessor  *ZeroAllocBatchProcessor
+	optimizationEnabled bool
+	
+	// Dynamic shard awareness
+	dynamicAwareness    *DynamicShardAwareness
 }
 
 // indexWorker represents a single indexing worker
@@ -57,7 +63,7 @@ type indexWorker struct {
 	statsMutex sync.RWMutex
 }
 
-// NewParallelIndexer creates a new parallel indexer
+// NewParallelIndexer creates a new parallel indexer with dynamic shard awareness
 func NewParallelIndexer(config *Config, shardManager ShardManager) *ParallelIndexer {
 	if config == nil {
 		config = DefaultIndexerConfig()
@@ -65,17 +71,46 @@ func NewParallelIndexer(config *Config, shardManager ShardManager) *ParallelInde
 
 	ctx, cancel := context.WithCancel(context.Background())
 
+	// Initialize dynamic shard awareness
+	dynamicAwareness := NewDynamicShardAwareness(config)
+	
+	// If no shard manager provided, use dynamic awareness to detect optimal type
+	var actualShardManager ShardManager
+	if shardManager == nil {
+		detected, err := dynamicAwareness.DetectAndSetupShardManager()
+		if err != nil {
+			logger.Warnf("Failed to setup dynamic shard manager, using default: %v", err)
+			detected = NewDefaultShardManager(config)
+			detected.(*DefaultShardManager).Initialize()
+		}
+		
+		// Type assertion to ShardManager interface
+		if sm, ok := detected.(ShardManager); ok {
+			actualShardManager = sm
+		} else {
+			// Fallback to default
+			actualShardManager = NewDefaultShardManager(config)
+			actualShardManager.(*DefaultShardManager).Initialize()
+		}
+	} else {
+		actualShardManager = shardManager
+	}
+
 	indexer := &ParallelIndexer{
-		config:       config,
-		shardManager: shardManager,
-		metrics:      NewDefaultMetricsCollector(),
-		jobQueue:     make(chan *IndexJob, config.MaxQueueSize),
-		resultQueue:  make(chan *IndexResult, config.WorkerCount),
-		ctx:          ctx,
-		cancel:       cancel,
+		config:              config,
+		shardManager:        actualShardManager,
+		metrics:            NewDefaultMetricsCollector(),
+		jobQueue:           make(chan *IndexJob, config.MaxQueueSize),
+		resultQueue:        make(chan *IndexResult, config.WorkerCount),
+		ctx:                ctx,
+		cancel:             cancel,
 		stats: &IndexStats{
 			WorkerStats: make([]*WorkerStats, config.WorkerCount),
 		},
+		adaptiveOptimizer:   NewAdaptiveOptimizer(config),
+		zeroAllocProcessor:  NewZeroAllocBatchProcessor(config),
+		optimizationEnabled: true, // Enable optimizations by default
+		dynamicAwareness:    dynamicAwareness,
 	}
 
 	// Initialize workers
@@ -129,6 +164,24 @@ func (pi *ParallelIndexer) Start(ctx context.Context) error {
 		go pi.metricsRoutine()
 	}
 
+	// Start adaptive optimizer if enabled
+	if pi.optimizationEnabled && pi.adaptiveOptimizer != nil {
+		if err := pi.adaptiveOptimizer.Start(); err != nil {
+			logger.Warnf("Failed to start adaptive optimizer: %v", err)
+		}
+	}
+	
+	// Start dynamic shard awareness monitoring if enabled
+	if pi.dynamicAwareness != nil {
+		pi.dynamicAwareness.StartMonitoring(ctx)
+		
+		if pi.dynamicAwareness.IsDynamic() {
+			logger.Info("Dynamic shard management is active with automatic scaling")
+		} else {
+			logger.Info("Static shard management is active")
+		}
+	}
+
 	return nil
 }
 
@@ -146,6 +199,11 @@ func (pi *ParallelIndexer) Stop() error {
 
 		// Cancel context to stop all routines
 		pi.cancel()
+
+		// Stop adaptive optimizer
+		if pi.adaptiveOptimizer != nil {
+			pi.adaptiveOptimizer.Stop()
+		}
 
 		// Close channels safely if they haven't been closed yet
 		if atomic.CompareAndSwapInt32(&pi.channelsClosed, 0, 1) {
@@ -257,9 +315,98 @@ func (pi *ParallelIndexer) IndexDocumentsAsync(docs []*Document, callback func(e
 	}
 }
 
-// StartBatch returns a new batch writer
+// StartBatch returns a new batch writer with adaptive batch size
 func (pi *ParallelIndexer) StartBatch() BatchWriterInterface {
-	return NewBatchWriter(pi, pi.config.BatchSize)
+	batchSize := pi.config.BatchSize
+	if pi.adaptiveOptimizer != nil {
+		batchSize = pi.adaptiveOptimizer.GetOptimalBatchSize()
+	}
+	return NewBatchWriter(pi, batchSize)
+}
+
+// GetOptimizationStats returns current optimization statistics
+func (pi *ParallelIndexer) GetOptimizationStats() AdaptiveOptimizationStats {
+	if pi.adaptiveOptimizer != nil {
+		return pi.adaptiveOptimizer.GetOptimizationStats()
+	}
+	return AdaptiveOptimizationStats{}
+}
+
+// GetPoolStats returns object pool statistics
+func (pi *ParallelIndexer) GetPoolStats() PoolStats {
+	if pi.zeroAllocProcessor != nil {
+		return pi.zeroAllocProcessor.GetPoolStats()
+	}
+	return PoolStats{}
+}
+
+// EnableOptimizations enables or disables adaptive optimizations
+func (pi *ParallelIndexer) EnableOptimizations(enabled bool) {
+	pi.optimizationEnabled = enabled
+	if !enabled && pi.adaptiveOptimizer != nil {
+		pi.adaptiveOptimizer.Stop()
+	} else if enabled && pi.adaptiveOptimizer != nil && atomic.LoadInt32(&pi.running) == 1 {
+		pi.adaptiveOptimizer.Start()
+	}
+}
+
+// GetDynamicShardInfo returns information about dynamic shard management
+func (pi *ParallelIndexer) GetDynamicShardInfo() *DynamicShardInfo {
+	if pi.dynamicAwareness == nil {
+		return &DynamicShardInfo{
+			IsEnabled:    false,
+			IsActive:     false,
+			ShardCount:   pi.config.ShardCount,
+			ShardType:    "static",
+		}
+	}
+	
+	isDynamic := pi.dynamicAwareness.IsDynamic()
+	shardManager := pi.dynamicAwareness.GetCurrentShardManager()
+	
+	info := &DynamicShardInfo{
+		IsEnabled:    true,
+		IsActive:     isDynamic,
+		ShardCount:   pi.config.ShardCount,
+		ShardType:    "static",
+	}
+	
+	if isDynamic {
+		info.ShardType = "dynamic"
+		
+		if enhancedManager, ok := shardManager.(*EnhancedDynamicShardManager); ok {
+			info.TargetShardCount = enhancedManager.GetTargetShardCount()
+			info.IsScaling = enhancedManager.IsScalingInProgress()
+			info.AutoScaleEnabled = enhancedManager.IsAutoScaleEnabled()
+			
+			// Get scaling recommendation
+			recommendation := enhancedManager.GetScalingRecommendations()
+			info.Recommendation = recommendation
+			
+			// Get shard health
+			info.ShardHealth = enhancedManager.GetShardHealth()
+		}
+	}
+	
+	// Get performance analysis
+	analysis := pi.dynamicAwareness.GetPerformanceAnalysis()
+	info.PerformanceAnalysis = &analysis
+	
+	return info
+}
+
+// DynamicShardInfo contains information about dynamic shard management status
+type DynamicShardInfo struct {
+	IsEnabled           bool                             `json:"is_enabled"`
+	IsActive            bool                             `json:"is_active"`
+	ShardType           string                           `json:"shard_type"`        // "static" or "dynamic"
+	ShardCount          int                              `json:"shard_count"`
+	TargetShardCount    int                              `json:"target_shard_count,omitempty"`
+	IsScaling           bool                             `json:"is_scaling,omitempty"`
+	AutoScaleEnabled    bool                             `json:"auto_scale_enabled,omitempty"`
+	Recommendation      *ScalingRecommendation           `json:"recommendation,omitempty"`
+	ShardHealth         map[int]*ShardHealthStatus       `json:"shard_health,omitempty"`
+	PerformanceAnalysis *PerformanceAnalysis             `json:"performance_analysis,omitempty"`
 }
 
 // FlushAll flushes all pending operations

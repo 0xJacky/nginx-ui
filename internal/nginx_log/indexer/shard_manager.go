@@ -178,7 +178,12 @@ func (sm *DefaultShardManager) createShardLocked(id int) error {
 func (sm *DefaultShardManager) CloseShard(id int) error {
 	sm.mu.Lock()
 	defer sm.mu.Unlock()
+	
+	return sm.closeShardLocked(id)
+}
 
+// closeShardLocked closes a shard while already holding the lock
+func (sm *DefaultShardManager) closeShardLocked(id int) error {
 	shard, exists := sm.shards[id]
 	if !exists {
 		return fmt.Errorf("%s: %d", ErrShardNotFound, id)

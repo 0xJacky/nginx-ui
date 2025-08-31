@@ -45,11 +45,51 @@ const tabOptions: TabOption[] = [
   },
 ]
 
+// Auto-refresh timer for indexing status updates
+let autoRefreshTimer: ReturnType<typeof setInterval> | null = null
+
+// Start auto refresh when indexing begins
+function startAutoRefresh() {
+  if (autoRefreshTimer)
+    return // Already running
+
+  autoRefreshTimer = setInterval(() => {
+    if (stdCurdRef.value && processingStatus.value?.nginx_log_indexing) {
+      stdCurdRef.value.refresh()
+    }
+  }, 2000) // Refresh every 2 seconds during indexing
+}
+
+// Stop auto refresh when indexing completes
+function stopAutoRefresh() {
+  if (autoRefreshTimer) {
+    clearInterval(autoRefreshTimer)
+    autoRefreshTimer = null
+  }
+}
+
 // Subscribe to events
 onMounted(() => {
   // Subscribe to processing status events
   subscribe('processing_status', data => {
+    const wasIndexing = processingStatus.value?.nginx_log_indexing
     processingStatus.value = data
+
+    // Start/stop auto refresh based on indexing status
+    if (data?.nginx_log_indexing && !wasIndexing) {
+      // Indexing started
+      startAutoRefresh()
+    }
+    else if (!data?.nginx_log_indexing && wasIndexing) {
+      // Indexing stopped
+      stopAutoRefresh()
+      // Final refresh to update status
+      setTimeout(() => {
+        if (stdCurdRef.value) {
+          stdCurdRef.value.refresh()
+        }
+      }, 500)
+    }
   })
 
   // Subscribe to nginx log status events (backward compatibility)
@@ -66,6 +106,11 @@ onMounted(() => {
       }, 1000)
     }
   })
+})
+
+onUnmounted(() => {
+  // Clean up auto refresh timer
+  stopAutoRefresh()
 })
 
 // Base columns that are always visible
@@ -111,7 +156,8 @@ const indexColumns: StdTableColumn[] = [
 
       // Check if file is currently being indexed with progress
       const progress = getProgressForFile(record.path)
-      if (progress) {
+      // Show progress bar for actual indexing progress (not status updates)
+      if (progress && progress.stage !== 'status_update') {
         return (
           <div style="min-width: 200px; padding: 6px 0 8px 0;">
             <IndexProgressBar progress={progress} size="small" />
@@ -122,12 +168,9 @@ const indexColumns: StdTableColumn[] = [
       // Show regular status badges when not actively indexing
       switch (record.index_status) {
         case 'indexed':
+        case 'ready': // Treat 'ready' as 'indexed' for backward compatibility
           return (
             <Badge status="success" text={$gettext('Indexed')} />
-          )
-        case 'ready':
-          return (
-            <Badge status="success" text={$gettext('Ready')} />
           )
         case 'indexing':
           return (
@@ -138,10 +181,6 @@ const indexColumns: StdTableColumn[] = [
             <Tooltip title={record.error_message || $gettext('Index failed')}>
               <Badge status="error" text={$gettext('Error')} />
             </Tooltip>
-          )
-        case 'partial':
-          return (
-            <Badge status="processing" text={$gettext('Partial')} />
           )
         case 'queued': {
           const queueText = record.queue_position
@@ -168,6 +207,10 @@ const indexColumns: StdTableColumn[] = [
             value: 'not_indexed',
           },
           {
+            label: () => $gettext('Queued'),
+            value: 'queued',
+          },
+          {
             label: () => $gettext('Indexing'),
             value: 'indexing',
           },
@@ -176,20 +219,8 @@ const indexColumns: StdTableColumn[] = [
             value: 'indexed',
           },
           {
-            label: () => $gettext('Ready'),
-            value: 'ready',
-          },
-          {
             label: () => $gettext('Error'),
             value: 'error',
-          },
-          {
-            label: () => $gettext('Partial'),
-            value: 'partial',
-          },
-          {
-            label: () => $gettext('Queued'),
-            value: 'queued',
           },
         ],
       },

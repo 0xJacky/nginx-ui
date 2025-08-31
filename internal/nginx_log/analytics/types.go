@@ -337,9 +337,9 @@ type TimeValue struct {
 	Value     int
 }
 
-// IndexStatusReady Constants for index status
+// IndexStatusIndexed Constants for index status
 const (
-	IndexStatusReady = "ready" // Different from internal status - used for API
+	IndexStatusIndexed = "indexed" // Used for API responses
 )
 
 // Constants for timeline intervals

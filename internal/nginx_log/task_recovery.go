@@ -3,8 +3,10 @@ package nginx_log
 import (
 	"context"
 	"fmt"
+	"sync/atomic"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/event"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/indexer"
 	"github.com/uozi-tech/cosy/logger"
 )
@@ -13,6 +15,7 @@ import (
 type TaskRecovery struct {
 	logFileManager *indexer.LogFileManager
 	modernIndexer  *indexer.ParallelIndexer
+	activeTasks    int32 // Counter for active recovery tasks
 }
 
 // NewTaskRecovery creates a new task recovery manager
@@ -86,11 +89,6 @@ func (tr *TaskRecovery) needsRecovery(log *NginxLogWithIndex) bool {
 				return true
 			}
 		}
-		
-	case string(indexer.IndexStatusPartial):
-		// Partial indexing should be resumed
-		logger.Debugf("Found partial indexing task: %s", log.Path)
-		return true
 	}
 	
 	return false
@@ -111,12 +109,34 @@ func (tr *TaskRecovery) recoverTask(ctx context.Context, logPath string, queuePo
 	return nil
 }
 
-// executeRecoveredTask executes a recovered indexing task
+// executeRecoveredTask executes a recovered indexing task with proper global state and progress tracking
 func (tr *TaskRecovery) executeRecoveredTask(ctx context.Context, logPath string) {
 	// Add a small delay to stagger recovery tasks
 	time.Sleep(time.Second * 2)
 	
 	logger.Infof("Executing recovered indexing task: %s", logPath)
+	
+	// Get processing manager for global state updates
+	processingManager := event.GetProcessingStatusManager()
+	
+	// Increment active tasks counter and set global status if this is the first task
+	isFirstTask := atomic.AddInt32(&tr.activeTasks, 1) == 1
+	if isFirstTask {
+		processingManager.UpdateNginxLogIndexing(true)
+		logger.Info("Set global indexing status to true for recovery tasks")
+	}
+	
+	// Ensure we always decrement counter and reset global status when no tasks remain
+	defer func() {
+		remainingTasks := atomic.AddInt32(&tr.activeTasks, -1)
+		if remainingTasks == 0 {
+			processingManager.UpdateNginxLogIndexing(false)
+			logger.Info("Set global indexing status to false - all recovery tasks completed")
+		}
+		if r := recover(); r != nil {
+			logger.Errorf("Panic during recovered task execution: %v", r)
+		}
+	}()
 	
 	// Set status to indexing
 	if err := tr.setTaskStatus(logPath, string(indexer.IndexStatusIndexing), 0); err != nil {
@@ -124,9 +144,64 @@ func (tr *TaskRecovery) executeRecoveredTask(ctx context.Context, logPath string
 		return
 	}
 	
-	// Execute the indexing
+	// Create progress tracking configuration for recovery task
+	progressConfig := &indexer.ProgressConfig{
+		NotifyInterval: 1 * time.Second,
+		OnProgress: func(progress indexer.ProgressNotification) {
+			// Send progress event to frontend
+			event.Publish(event.Event{
+				Type: event.TypeNginxLogIndexProgress,
+				Data: event.NginxLogIndexProgressData{
+					LogPath:         progress.LogGroupPath,
+					Progress:        progress.Percentage,
+					Stage:           "indexing",
+					Status:          "running",
+					ElapsedTime:     progress.ElapsedTime.Milliseconds(),
+					EstimatedRemain: progress.EstimatedRemain.Milliseconds(),
+				},
+			})
+
+			logger.Infof("Recovery progress: %s - %.1f%% (Files: %d/%d, Lines: %d/%d)",
+				progress.LogGroupPath, progress.Percentage, progress.CompletedFiles,
+				progress.TotalFiles, progress.ProcessedLines, progress.EstimatedLines)
+		},
+		OnCompletion: func(completion indexer.CompletionNotification) {
+			// Send completion event to frontend
+			event.Publish(event.Event{
+				Type: event.TypeNginxLogIndexComplete,
+				Data: event.NginxLogIndexCompleteData{
+					LogPath:     completion.LogGroupPath,
+					Success:     completion.Success,
+					Duration:    int64(completion.Duration.Milliseconds()),
+					TotalLines:  completion.TotalLines,
+					IndexedSize: completion.IndexedSize,
+					Error:       completion.Error,
+				},
+			})
+
+			logger.Infof("Recovery completion: %s - Success: %t, Duration: %s, Lines: %d, Size: %d bytes",
+				completion.LogGroupPath, completion.Success, completion.Duration,
+				completion.TotalLines, completion.IndexedSize)
+			
+			// Send index ready event if recovery was successful
+			if completion.Success {
+				event.Publish(event.Event{
+					Type: event.TypeNginxLogIndexReady,
+					Data: event.NginxLogIndexReadyData{
+						LogPath:     completion.LogGroupPath,
+						StartTime:   time.Now().Unix(),
+						EndTime:     time.Now().Unix(),
+						Available:   true,
+						IndexStatus: "ready",
+					},
+				})
+			}
+		},
+	}
+	
+	// Execute the indexing with progress tracking
 	startTime := time.Now()
-	docsCountMap, minTime, maxTime, err := tr.modernIndexer.IndexLogGroupWithProgress(logPath, nil)
+	docsCountMap, minTime, maxTime, err := tr.modernIndexer.IndexLogGroupWithProgress(logPath, progressConfig)
 	
 	if err != nil {
 		logger.Errorf("Failed to execute recovered indexing task %s: %v", logPath, err)

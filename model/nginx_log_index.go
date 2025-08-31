@@ -27,7 +27,6 @@ type NginxLogIndex struct {
 	ErrorTime      *time.Time `json:"error_time,omitempty"`                               // When error occurred
 	RetryCount     int        `gorm:"default:0" json:"retry_count"`                       // Number of retry attempts
 	QueuePosition  int        `gorm:"default:0" json:"queue_position,omitempty"`          // Position in indexing queue
-	PartialOffset  int64      `gorm:"default:0" json:"partial_offset,omitempty"`          // Offset for partial indexing
 }
 
 // NeedsIndexing checks if the file needs incremental indexing
@@ -114,7 +113,6 @@ func (nli *NginxLogIndex) Reset() {
 	nli.ErrorTime = nil
 	nli.RetryCount = 0
 	nli.QueuePosition = 0
-	nli.PartialOffset = 0
 }
 
 // SetIndexingStatus updates the indexing status
@@ -141,7 +139,6 @@ func (nli *NginxLogIndex) SetCompletedStatus() {
 	nli.ErrorMessage = ""
 	nli.ErrorTime = nil
 	nli.QueuePosition = 0
-	nli.PartialOffset = 0
 }
 
 // SetQueuedStatus marks the file as queued for indexing

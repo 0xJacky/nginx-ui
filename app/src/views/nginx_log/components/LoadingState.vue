@@ -35,13 +35,7 @@ const statusInfo = computed(() => {
         showProgress: true,
       }
     case 'indexed':
-      return {
-        icon: LoadingOutlined,
-        message: $gettext('Loading...'),
-        color: 'text-blue-500',
-        showProgress: false,
-      }
-    case 'ready':
+    case 'ready': // Treat 'ready' as 'indexed'
       return {
         icon: LoadingOutlined,
         message: $gettext('Loading...'),
@@ -54,13 +48,6 @@ const statusInfo = computed(() => {
         message: $gettext('Queued for indexing...'),
         color: 'text-orange-500',
         showProgress: false,
-      }
-    case 'partial':
-      return {
-        icon: LoadingOutlined,
-        message: $gettext('Partially indexed, resuming...'),
-        color: 'text-blue-500',
-        showProgress: true,
       }
     case 'error':
       return {

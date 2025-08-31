@@ -30,7 +30,7 @@ type NginxLogWithIndex struct {
 	Type           string `json:"type"`                       // Type of log: "access" or "error"
 	Name           string `json:"name"`                       // Name of the log file
 	ConfigFile     string `json:"config_file"`                // Path to the configuration file
-	IndexStatus    string `json:"index_status"`               // Index status: indexed, indexing, not_indexed
+	IndexStatus    string `json:"index_status"`               // Index status: indexed, indexing, not_indexed, queued, error
 	LastModified   int64  `json:"last_modified,omitempty"`    // Unix timestamp of last modification time
 	LastSize       int64  `json:"last_size,omitempty"`        // Last known size of the file
 	LastIndexed    int64  `json:"last_indexed,omitempty"`     // Unix timestamp when the file was last indexed
@@ -41,6 +41,11 @@ type NginxLogWithIndex struct {
 	TimeRangeStart int64  `json:"timerange_start,omitempty"`  // Unix timestamp of start of time range in the log
 	TimeRangeEnd   int64  `json:"timerange_end,omitempty"`    // Unix timestamp of end of time range in the log
 	DocumentCount  uint64 `json:"document_count,omitempty"`   // Number of indexed documents from this file
+	// Enhanced status tracking fields
+	ErrorMessage  string `json:"error_message,omitempty"`  // Error message if indexing failed
+	ErrorTime     int64  `json:"error_time,omitempty"`     // Unix timestamp when error occurred
+	RetryCount    int    `json:"retry_count,omitempty"`    // Number of retry attempts
+	QueuePosition int    `json:"queue_position,omitempty"` // Position in indexing queue
 }
 
 // LogFileManager manages nginx log file discovery and index status
@@ -232,16 +237,31 @@ func (lm *LogFileManager) GetAllLogsWithIndexGrouped(filters ...func(*NginxLogWi
 		}
 		logWithIndex.DocumentCount = idx.DocumentCount
 
-		// Determine index status
-		lm.indexingMutex.RLock()
-		isIndexing := lm.indexingStatus[idx.Path]
-		lm.indexingMutex.RUnlock()
+		// Set queue position if available
+		logWithIndex.QueuePosition = idx.QueuePosition
 
-		if isIndexing {
-			logWithIndex.IndexStatus = string(IndexStatusIndexing)
-		} else if !idx.LastIndexed.IsZero() {
-			// If file has been indexed (regardless of document count), it's indexed
-			logWithIndex.IndexStatus = string(IndexStatusIndexed)
+		// Set error message if available  
+		logWithIndex.ErrorMessage = idx.ErrorMessage
+		if idx.ErrorTime != nil {
+			logWithIndex.ErrorTime = idx.ErrorTime.Unix()
+		}
+		logWithIndex.RetryCount = idx.RetryCount
+
+		// Use the index status from the database if it's set
+		if idx.IndexStatus != "" {
+			logWithIndex.IndexStatus = idx.IndexStatus
+		} else {
+			// Fallback to determining status if not set in DB
+			lm.indexingMutex.RLock()
+			isIndexing := lm.indexingStatus[idx.Path]
+			lm.indexingMutex.RUnlock()
+
+			if isIndexing {
+				logWithIndex.IndexStatus = string(IndexStatusIndexing)
+			} else if !idx.LastIndexed.IsZero() {
+				// If file has been indexed (regardless of document count), it's indexed
+				logWithIndex.IndexStatus = string(IndexStatusIndexed)
+			}
 		}
 
 		// Set time range if available
@@ -312,10 +332,27 @@ func (lm *LogFileManager) GetAllLogsWithIndexGrouped(filters ...func(*NginxLogWi
 				existing.DocumentCount += log.DocumentCount
 				existing.LastSize += log.LastSize
 
+				// Update status with priority: indexing > queued > indexed > error > not_indexed
 				if log.IndexStatus == string(IndexStatusIndexing) {
 					existing.IndexStatus = string(IndexStatusIndexing)
-				} else if log.IndexStatus == string(IndexStatusIndexed) && existing.IndexStatus != string(IndexStatusIndexing) {
+				} else if log.IndexStatus == string(IndexStatusQueued) && 
+					existing.IndexStatus != string(IndexStatusIndexing) {
+					existing.IndexStatus = string(IndexStatusQueued)
+					// Keep the queue position from the queued log
+					if log.QueuePosition > 0 {
+						existing.QueuePosition = log.QueuePosition
+					}
+				} else if log.IndexStatus == string(IndexStatusIndexed) && 
+					existing.IndexStatus != string(IndexStatusIndexing) && 
+					existing.IndexStatus != string(IndexStatusQueued) {
 					existing.IndexStatus = string(IndexStatusIndexed)
+				} else if log.IndexStatus == string(IndexStatusError) &&
+					existing.IndexStatus != string(IndexStatusIndexing) &&
+					existing.IndexStatus != string(IndexStatusQueued) &&
+					existing.IndexStatus != string(IndexStatusIndexed) {
+					existing.IndexStatus = string(IndexStatusError)
+					existing.ErrorMessage = log.ErrorMessage
+					existing.ErrorTime = log.ErrorTime
 				}
 
 				if log.HasTimeRange {
@@ -346,6 +383,11 @@ func (lm *LogFileManager) GetAllLogsWithIndexGrouped(filters ...func(*NginxLogWi
 			groupedLog := *log
 			groupedLog.Path = baseLogName
 			groupedLog.Name = filepath.Base(baseLogName)
+			// Preserve queue position and error info for the grouped log
+			groupedLog.QueuePosition = log.QueuePosition
+			groupedLog.ErrorMessage = log.ErrorMessage
+			groupedLog.ErrorTime = log.ErrorTime
+			groupedLog.RetryCount = log.RetryCount
 			groupedMap[baseLogName] = &groupedLog
 		}
 	}

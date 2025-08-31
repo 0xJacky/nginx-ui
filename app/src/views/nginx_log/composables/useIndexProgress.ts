@@ -40,6 +40,16 @@ export function useIndexProgress() {
 
   // Subscribe to progress events
   subscribe<IndexProgressData>('nginx_log_index_progress', data => {
+    // Ignore status_update events - these are just status changes, not actual progress
+    if (data.stage === 'status_update') {
+      // If there's no actual indexing progress, remove any existing progress bar
+      if (data.status !== 'indexing') {
+        progressMap.value.delete(data.log_path)
+        updateGlobalProgress()
+      }
+      return
+    }
+
     const progress: IndexProgress = {
       logPath: data.log_path,
       progress: data.progress,

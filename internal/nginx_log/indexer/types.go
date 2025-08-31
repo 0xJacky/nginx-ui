@@ -2,6 +2,7 @@ package indexer
 
 import (
 	"context"
+	"runtime"
 	"time"
 
 	"github.com/blevesearch/bleve/v2"
@@ -14,12 +15,10 @@ type IndexStatus string
 // Index status constants
 const (
 	IndexStatusNotIndexed IndexStatus = "not_indexed" // File not indexed
+	IndexStatusQueued     IndexStatus = "queued"      // Waiting in queue
 	IndexStatusIndexing   IndexStatus = "indexing"    // Currently being indexed
 	IndexStatusIndexed    IndexStatus = "indexed"     // Successfully indexed
 	IndexStatusError      IndexStatus = "error"       // Index failed with error
-	IndexStatusPartial    IndexStatus = "partial"     // Partially indexed (large file)
-	IndexStatusQueued     IndexStatus = "queued"      // Waiting in queue
-	IndexStatusReady      IndexStatus = "ready"       // Ready for search (alias for indexed)
 )
 
 // IndexStatusDetails contains detailed status information
@@ -30,7 +29,6 @@ type IndexStatusDetails struct {
 	ErrorTime     *time.Time  `json:"error_time,omitempty"`
 	RetryCount    int         `json:"retry_count,omitempty"`
 	QueuePosition int         `json:"queue_position,omitempty"`
-	PartialOffset int64       `json:"partial_offset,omitempty"`
 	Progress      *IndexProgress `json:"progress,omitempty"`
 }
 
@@ -60,21 +58,63 @@ type Config struct {
 	EnableMetrics     bool          `json:"enable_metrics"`
 }
 
-// DefaultIndexerConfig returns default indexer configuration
+// DefaultIndexerConfig returns default indexer configuration with CPU optimization
 func DefaultIndexerConfig() *Config {
+	numCPU := runtime.NumCPU()
 	return &Config{
 		IndexPath:         "./log-index",
 		ShardCount:        4,
-		WorkerCount:       8,
-		BatchSize:         1000,
+		WorkerCount:       numCPU * 2,            // Optimized: CPU cores * 2 for better utilization
+		BatchSize:         1500,                   // Optimized: Increased from 1000 to 1500 for better throughput
 		FlushInterval:     5 * time.Second,
-		MaxQueueSize:      10000,
+		MaxQueueSize:      15000,                  // Optimized: Increased from 10000 to 15000
 		EnableCompression: true,
 		MemoryQuota:       1024 * 1024 * 1024, // 1GB
 		MaxSegmentSize:    64 * 1024 * 1024,   // 64MB
 		OptimizeInterval:  30 * time.Minute,
 		EnableMetrics:     true,
 	}
+}
+
+// GetOptimizedConfig returns configuration optimized for specific scenarios
+func GetOptimizedConfig(scenario string) *Config {
+	base := DefaultIndexerConfig()
+	numCPU := runtime.NumCPU()
+	
+	switch scenario {
+	case "high_throughput":
+		// Maximize throughput at cost of higher latency
+		base.WorkerCount = numCPU * 2
+		base.BatchSize = 2000
+		base.MaxQueueSize = 20000
+		base.FlushInterval = 10 * time.Second
+		
+	case "low_latency":
+		// Minimize latency with reasonable throughput
+		base.WorkerCount = int(float64(numCPU) * 1.5)
+		base.BatchSize = 500
+		base.MaxQueueSize = 10000
+		base.FlushInterval = 2 * time.Second
+		
+	case "balanced":
+		// Balanced performance (same as default)
+		// Already set by DefaultIndexerConfig()
+		
+	case "memory_constrained":
+		// Reduce memory usage
+		base.WorkerCount = max(2, numCPU/2)
+		base.BatchSize = 250
+		base.MaxQueueSize = 5000
+		base.MemoryQuota = 256 * 1024 * 1024 // 256MB
+		
+	case "cpu_intensive":
+		// CPU-heavy workloads (parsing, etc.)
+		base.WorkerCount = numCPU * 3
+		base.BatchSize = 1000
+		base.MaxQueueSize = 25000
+	}
+	
+	return base
 }
 
 // Document represents a document to be indexed

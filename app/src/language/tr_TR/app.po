@@ -114,7 +114,7 @@ msgid "* Includes nodes from group %{groupName} and manually selected nodes"
 msgstr ""
 "* %{groupName} grubundan düğümler ve manuel olarak seçilen düğümler içerir"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:775
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:802
 msgid "%{start}-%{end} of %{total} items"
 msgstr "%{total} öğenin %{start}-%{end} arası"
 
@@ -135,7 +135,7 @@ msgstr "2FA Ayarları"
 msgid "About"
 msgstr "Hakkında"
 
-#: src/views/nginx_log/NginxLogList.vue:63
+#: src/language/constants.ts:64
 msgid "Access Log"
 msgstr "Erişim Kayıtları"
 
@@ -144,7 +144,7 @@ msgid "Access log path not exist"
 msgstr "Erişim günlüğü yolu mevcut değil"
 
 #: src/components/NgxConfigEditor/LogEntry.vue:90
-#: src/routes/modules/nginx_log.ts:17
+#: src/routes/modules/nginx_log.ts:17 src/views/nginx_log/NginxLogList.vue:36
 msgid "Access Logs"
 msgstr "Erişim Günlükleri"
 
@@ -161,8 +161,8 @@ msgstr "Eylem"
 #: src/views/certificate/ACMEUser.vue:129
 #: src/views/certificate/CertificateList/certColumns.tsx:92
 #: src/views/certificate/DNSCredential.vue:71
-#: src/views/config/configColumns.tsx:50 src/views/namespace/columns.ts:84
-#: src/views/nginx_log/NginxLogList.vue:267 src/views/node/nodeColumns.tsx:96
+#: src/views/config/configColumns.tsx:51 src/views/namespace/columns.ts:84
+#: src/views/nginx_log/NginxLogList.vue:311 src/views/node/nodeColumns.tsx:96
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:85
 #: src/views/site/site_list/columns.tsx:160 src/views/stream/columns.tsx:123
@@ -379,7 +379,7 @@ msgstr ""
 msgid "Are you sure you want to restore?"
 msgstr "Geri yüklemek istediğinizden emin misiniz?"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:696
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:733
 msgid "Ascending"
 msgstr "Artan"
 
@@ -487,7 +487,7 @@ msgstr "Ortalama Gecikme"
 msgid "Avg Daily UV"
 msgstr "Ortalama Günlük UV"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:757
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:784
 msgid "Avg/PV"
 msgstr "Ort./PV"
 
@@ -508,7 +508,7 @@ msgstr "Ana Sayfaya Dön"
 msgid "Back to List"
 msgstr "Listeye Dön"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:531
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:567
 msgid ""
 "Background indexing in progress. Data will be updated automatically when "
 "ready."
@@ -639,8 +639,8 @@ msgstr "Blok nil değerinde"
 
 #: src/views/nginx_log/dashboard/components/BrowserStatsTable.vue:13
 #: src/views/nginx_log/structured/components/SearchFilters.vue:137
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:221
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:484
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:254
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:520
 msgid "Browser"
 msgstr "Tarayıcı"
 
@@ -1044,7 +1044,7 @@ msgstr ""
 msgid "Check Interval (seconds)"
 msgstr "Kontrol Aralığı (saniye)"
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:180
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:181
 #: src/views/nginx_log/dashboard/components/GeoMapChart.vue:47
 msgid "China Access Map"
 msgstr "Çin Erişim Haritası"
@@ -1176,7 +1176,7 @@ msgstr "Mevcut ile karşılaştırın"
 msgid "Compression level, 1 is lowest, 9 is highest"
 msgstr "Sıkıştırma seviyesi, 1 en düşük, 9 en yüksek"
 
-#: src/views/nginx_log/indexing/components/IndexProgressBar.vue:56
+#: src/views/nginx_log/indexing/components/IndexProgressBar.vue:54
 msgid "Computing Statistics"
 msgstr "İstatistikleri Hesaplama"
 
@@ -1478,7 +1478,7 @@ msgstr "Günler"
 msgid "Decryption failed"
 msgstr "Şifre çözme başarısız"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:811
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:838
 msgid "Default range"
 msgstr "Varsayılan aralık"
 
@@ -1580,7 +1580,7 @@ msgstr "Demo"
 msgid "Deploy"
 msgstr "Yayınla"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:696
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:733
 msgid "Descending"
 msgstr "Azalan"
 
@@ -1614,8 +1614,8 @@ msgid "Development Mode"
 msgstr "Geliştirme modu"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:169
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:253
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:486
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:286
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:522
 msgid "Device"
 msgstr "Cihaz"
 
@@ -1811,7 +1811,7 @@ msgid "Document"
 msgid_plural "Documents"
 msgstr[0] "Belge"
 
-#: src/views/nginx_log/NginxLogList.vue:207
+#: src/views/nginx_log/NginxLogList.vue:271
 msgid "Document Count"
 msgstr "Belge Sayısı"
 
@@ -2085,6 +2085,7 @@ msgid "Environment variables cleaned"
 msgstr "Ortam değişkenleri temizlendi"
 
 #: src/constants/index.ts:23 src/views/config/InspectConfig.vue:63
+#: src/views/nginx_log/NginxLogList.vue:222
 #: src/views/notification/notificationColumns.tsx:14
 msgid "Error"
 msgstr "Hata"
@@ -2097,11 +2098,11 @@ msgstr "Hata detayları"
 msgid "Error initializing diff viewer"
 msgstr "Fark görüntüleyici başlatılırken hata"
 
-#: src/views/nginx_log/NginxLogList.vue:67
+#: src/language/constants.ts:65
 msgid "Error Log"
 msgstr "Hata Günlüğü"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:627
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:663
 msgid "Error Log Detected"
 msgstr "Hata Günlüğü Tespit Edildi"
 
@@ -2110,11 +2111,11 @@ msgid "Error log path not exist"
 msgstr "Hata günlüğü yolu mevcut değil"
 
 #: src/components/NgxConfigEditor/LogEntry.vue:98
-#: src/routes/modules/nginx_log.ts:24
+#: src/routes/modules/nginx_log.ts:24 src/views/nginx_log/NginxLogList.vue:42
 msgid "Error Logs"
 msgstr "Hata Günlükleri"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:630
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:666
 msgid ""
 "Error logs do not support structured analysis as they contain free-form text "
 "messages."
@@ -2652,10 +2653,6 @@ msgstr "Dosya başarıyla yüklendi"
 msgid "Filename is empty"
 msgstr "Dosya adı boş"
 
-#: src/views/nginx_log/NginxLogList.vue:318
-msgid "files"
-msgstr "dosyalar"
-
 #: src/views/nginx_log/raw/RawLogViewer.vue:155
 msgid "Filter"
 msgstr "Filtre"
@@ -2701,7 +2698,7 @@ msgstr "Çin kullanıcıları için"
 msgid "For Chinese user: https://cloud.nginxui.com/"
 msgstr "Çinli kullanıcılar için: https://cloud.nginxui.com/"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:632
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:668
 msgid ""
 "For error logs, please use the Raw Log Viewer for better viewing experience."
 msgstr ""
@@ -2745,7 +2742,7 @@ msgstr "Biçim: dakika saat gün ay haftanın_günü"
 msgid "Friday"
 msgstr "Cuma"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:808
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:835
 msgid "From indexed logs"
 msgstr "Dizine alınmış kayıtlardan"
 
@@ -2803,7 +2800,7 @@ msgid "Github Proxy"
 msgstr "Github Proxy"
 
 #: src/views/nginx_log/dashboard/components/GeoMapChart.vue:47
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:201
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:202
 msgid "Global Access Map"
 msgstr "Küresel Erişim Haritası"
 
@@ -2811,17 +2808,13 @@ msgstr "Küresel Erişim Haritası"
 msgid "Global Map"
 msgstr "Dünya Haritası"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:637
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:673
 msgid "Go to Raw Log Viewer"
 msgstr "Ham Log Görüntüleyiciye Git"
 
 #: src/views/preference/components/ExternalNotify/gotify.ts:5
 msgid "Gotify"
 msgstr "Gotify"
-
-#: src/views/preference/components/ExternalNotify/ntfy.ts:5
-msgid "Ntfy"
-msgstr "Ntfy"
 
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:502
 msgid ""
@@ -2872,7 +2865,7 @@ msgid "Hide"
 msgstr "Gizle"
 
 #: src/composables/useGeoTranslation.ts:165
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:134
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:135
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:103
 msgid "High"
 msgstr "Yüksek"
@@ -2985,28 +2978,34 @@ msgstr ""
 msgid "Index and statistics rebuild started successfully"
 msgstr "Dizin ve istatistiklerin yeniden oluşturulması başarıyla başlatıldı"
 
-#: src/views/nginx_log/NginxLogList.vue:94
+#: src/views/nginx_log/NginxLogList.vue:181
+msgid "Index failed"
+msgstr "Dizin oluşturma başarısız"
+
+#: src/views/nginx_log/components/LoadingState.vue:55
+msgid "Index failed, please try rebuilding"
+msgstr "Dizin oluşturma başarısız oldu, lütfen yeniden oluşturmayı deneyin"
+
+#: src/views/nginx_log/NginxLogList.vue:150
 msgid "Index Status"
 msgstr "Dizin Durumu"
 
-#: src/views/nginx_log/NginxLogList.vue:134
+#: src/views/nginx_log/NginxLogList.vue:218
 msgid "Indexed"
 msgstr "Dizine Alındı"
 
-#: src/views/nginx_log/indexing/components/IndexProgressBar.vue:54
-#: src/views/nginx_log/NginxLogList.vue:138
+#: src/views/nginx_log/indexing/components/IndexProgressBar.vue:52
+#: src/views/nginx_log/NginxLogList.vue:214
 msgid "Indexing"
 msgstr "Dizinleme"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:716
-msgid "Indexing logs, please wait..."
-msgstr "Günlükler dizinleniyor, lütfen bekleyin..."
-
-#: src/views/nginx_log/NginxLogList.vue:313
+#: src/views/nginx_log/components/LoadingState.vue:33
+#: src/views/nginx_log/NginxLogList.vue:380
 msgid "Indexing logs..."
 msgstr "Günlükler dizinleniyor..."
 
 #: src/components/ProcessingStatus/ProcessingStatus.vue:31
+#: src/views/nginx_log/components/LoadingState.vue:71
 msgid "Indexing..."
 msgstr "Dizinleniyor..."
 
@@ -3156,13 +3155,13 @@ msgstr "Geçersiz zaman damgası biçimi"
 msgid "Invalid websocket message type"
 msgstr "Geçersiz WebSocket mesaj türü"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:158
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:191
 #: src/views/preference/tabs/AuthSettings.vue:14
 msgid "IP"
 msgstr "IP"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:77
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:479
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:515
 msgid "IP Address"
 msgstr "IP Adresi"
 
@@ -3223,7 +3222,7 @@ msgstr "Lark"
 msgid "Lark Custom"
 msgstr "Lark Özel"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:279
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:312
 msgid "Last 12 hours"
 msgstr "Son 12 saat"
 
@@ -3231,29 +3230,29 @@ msgstr "Son 12 saat"
 msgid "Last 14 days"
 msgstr "Son 14 gün"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:275
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:308
 msgid "Last 15 minutes"
 msgstr "Son 15 dakika"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:280
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:313
 msgid "Last 24 hours"
 msgstr "Son 24 saat"
 
 #: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:23
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:282
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:315
 msgid "Last 30 days"
 msgstr "Son 30 gün"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:276
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:309
 msgid "Last 30 minutes"
 msgstr "Son 30 dakika"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:278
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:311
 msgid "Last 4 hours"
 msgstr "Son 4 saat"
 
 #: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:21
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:281
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:314
 msgid "Last 7 days"
 msgstr "Son 7 gün"
 
@@ -3273,11 +3272,11 @@ msgstr "Son Yedekleme Zamanı"
 msgid "Last checked at"
 msgstr "En son şu tarihte kontrol edildi"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:277
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:310
 msgid "Last hour"
 msgstr "Son 1 saat"
 
-#: src/views/nginx_log/NginxLogList.vue:151
+#: src/views/nginx_log/NginxLogList.vue:231
 msgid "Last Indexed"
 msgstr "Son Dizinlenme"
 
@@ -3378,13 +3377,14 @@ msgstr "Yükleyici Bekleme Süresi"
 msgid "Loader Threshold"
 msgstr "Yükleyici Eşiği"
 
-#: src/views/nginx_log/dashboard/DashboardViewer.vue:151
-msgid "Loading dashboard data..."
-msgstr "Pano verileri yükleniyor..."
-
 #: src/views/dashboard/NginxDashBoard.vue:200
 msgid "Loading data..."
 msgstr "Veriler yükleniyor..."
+
+#: src/views/nginx_log/components/LoadingState.vue:41
+#: src/views/nginx_log/components/LoadingState.vue:78
+msgid "Loading..."
+msgstr "Yükleniyor..."
 
 #: src/components/NodeIndicator/NodeIndicator.vue:38
 #: src/components/NodeSelector/NodeSelector.vue:61 src/constants/index.ts:42
@@ -3429,19 +3429,23 @@ msgstr "Günlük dosyası mevcut değil"
 msgid "Log file is not a regular file"
 msgstr "Günlük dosyası normal bir dosya değil"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:823
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:850
 msgid "Log file not available"
 msgstr "Günlük dosyası mevcut değil"
+
+#: src/views/nginx_log/components/LoadingState.vue:62
+msgid "Log file not indexed yet"
+msgstr "Günlük dosyası henüz dizine eklenmedi"
 
 #: src/constants/errors/nginx_log.ts:12
 msgid "Log indexer not available"
 msgstr "Günlük indeksleyici mevcut değil"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:547
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:583
 msgid "Log indexing completed! Loading updated data..."
 msgstr "Günlük indeksleme tamamlandı! Güncel veriler yükleniyor..."
 
-#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:297
+#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:353
 msgid "Log List"
 msgstr "Günlük Listesi"
 
@@ -3482,7 +3486,7 @@ msgstr ""
 "dakika aralığında logrotate komutunu çalıştıracaktır."
 
 #: src/composables/useGeoTranslation.ts:166
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:134
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:135
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:103
 msgid "Low"
 msgstr "Düşük"
@@ -3630,7 +3634,7 @@ msgid "Memory Usage (RSS)"
 msgstr "Bellek Kullanımı (RSS)"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:92
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:480
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:516
 msgid "Method"
 msgstr "Yöntem"
 
@@ -3733,7 +3737,7 @@ msgstr "Yok"
 #: src/views/config/components/Delete.vue:123
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:17 src/views/namespace/columns.ts:9
-#: src/views/nginx_log/NginxLogList.vue:76 src/views/node/nodeColumns.tsx:8
+#: src/views/nginx_log/NginxLogList.vue:128 src/views/node/nodeColumns.tsx:8
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:80
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:36
 #: src/views/site/site_list/columns.tsx:30
@@ -4039,28 +4043,28 @@ msgstr "Hayır"
 msgid "No Action"
 msgstr "Eylem Yok"
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:195
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:231
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:196
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:232
 msgid "No China geographic data available"
 msgstr "Çin coğrafi verisi mevcut değil"
 
 #: src/composables/useGeoTranslation.ts:169
 #: src/views/dashboard/NginxDashBoard.vue:202
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:126
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:127
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:95
 msgid "No data"
 msgstr "Veri yok"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:791
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:818
 msgid "No entries in current page"
 msgstr "Geçerli sayfada hiçbir giriş yok"
 
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:216
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:252
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:217
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:253
 msgid "No geographic data available"
 msgstr "Coğrafi veri mevcut değil"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:528
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:564
 msgid "No logs found in the selected time range."
 msgstr "Seçilen zaman aralığında kayıt bulunamadı."
 
@@ -4088,7 +4092,7 @@ msgstr ""
 "server_name yapılandırmasında belirli bir IP adresi bulunamadı. Lütfen "
 "sertifika için sunucu IP adresini aşağıda belirtin."
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:800
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:827
 msgid "No structured log data available"
 msgstr "Yapılandırılmış günlük verisi mevcut değil"
 
@@ -4129,7 +4133,7 @@ msgstr "Beklenmeyen Metin"
 msgid "Not Found"
 msgstr "Bulunamadı"
 
-#: src/views/nginx_log/NginxLogList.vue:142
+#: src/views/nginx_log/NginxLogList.vue:206
 msgid "Not Indexed"
 msgstr "Dizine Alınmamış"
 
@@ -4185,6 +4189,10 @@ msgstr "Bildirimler"
 #: src/constants/errors/notification.ts:2
 msgid "Notifier not found"
 msgstr "Bildirici bulunamadı"
+
+#: src/views/preference/components/ExternalNotify/ntfy.ts:5
+msgid "Ntfy"
+msgstr "Ntfy"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:26
 msgid "Number of concurrent worker processes, auto sets to CPU core count"
@@ -4327,8 +4335,8 @@ msgid "Original name"
 msgstr "Orijinal ad"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:153
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:237
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:485
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:270
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:521
 #: src/views/system/Upgrade.vue:193
 msgid "OS"
 msgstr "İşletim Sistemi"
@@ -4420,8 +4428,8 @@ msgstr "Şifreler eşleşmiyor"
 #: src/views/config/components/ConfigRightPanel/Basic.vue:41
 #: src/views/config/components/Delete.vue:124
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:420
-#: src/views/nginx_log/NginxLogList.vue:85
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:481
+#: src/views/nginx_log/NginxLogList.vue:137
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:517
 msgid "Path"
 msgstr "Yol"
 
@@ -4448,12 +4456,12 @@ msgstr "Beklemede"
 
 #: src/composables/useGeoTranslation.ts:168
 #: src/views/nginx_log/dashboard/components/BrowserStatsTable.vue:26
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:121
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:71
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:122
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:72
 #: src/views/nginx_log/dashboard/components/DeviceStatsTable.vue:25
 #: src/views/nginx_log/dashboard/components/OSStatsTable.vue:26
 #: src/views/nginx_log/dashboard/components/TopUrlsTable.vue:27
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:186
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:187
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:87
 msgid "Percentage"
 msgstr "Yüzde"
@@ -4795,12 +4803,22 @@ msgstr "Genel CA Gereksinimleri:"
 msgid "Public Security Number"
 msgstr "Kamu Güvenlik Numarası"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:733
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:760
 msgid "PV"
 msgstr "Sayfa Görüntüleme"
 
+#: src/views/nginx_log/NginxLogList.vue:187
+#: src/views/nginx_log/NginxLogList.vue:188
+#: src/views/nginx_log/NginxLogList.vue:210
+msgid "Queued"
+msgstr "Sıraya alındı"
+
+#: src/views/nginx_log/components/LoadingState.vue:48
+msgid "Queued for indexing..."
+msgstr "Dizine ekleme için sırada..."
+
 #: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:51
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:663
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:699
 msgid "Quick Select"
 msgstr "Hızlı Seçim"
 
@@ -4822,7 +4840,7 @@ msgstr "Okuma istekleri"
 msgid "Reads"
 msgstr "Okumalar"
 
-#: src/views/nginx_log/NginxLogList.vue:344
+#: src/views/nginx_log/NginxLogList.vue:407
 msgid "Rebuild"
 msgstr "Yeniden oluştur"
 
@@ -4868,7 +4886,7 @@ msgid "Recursive Nameservers"
 msgstr "Özyinelemeli İsim Sunucuları"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:185
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:263
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:296
 msgid "Referer"
 msgstr "Referer"
 
@@ -5089,7 +5107,7 @@ msgstr "Sertifika Yenileme Başarılı"
 msgid "Renew successfully"
 msgstr "Başarıyla yenilendi"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:182
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:215
 msgid "Request"
 msgstr "İstek"
 
@@ -5119,7 +5137,7 @@ msgstr "Bağlantı Başına İstek Sayısı"
 
 #: src/language/curd.ts:13
 #: src/views/nginx_log/structured/components/SearchFilters.vue:214
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:699
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:736
 msgid "Reset"
 msgstr "Sıfırla"
 
@@ -5127,7 +5145,7 @@ msgstr "Sıfırla"
 msgid "Reset 2FA"
 msgstr "2FA'yı Sıfırla"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:815
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:842
 msgid "Reset Search"
 msgstr "Aramayı Sıfırla"
 
@@ -5462,7 +5480,7 @@ msgstr "Tarama Sonuçları"
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr "Hesabı uygulamaya eklemek için telefonunuzla QR kodunu tarayın."
 
-#: src/views/nginx_log/indexing/components/IndexProgressBar.vue:52
+#: src/views/nginx_log/indexing/components/IndexProgressBar.vue:50
 msgid "Scanning"
 msgstr "Taranıyor"
 
@@ -5497,13 +5515,9 @@ msgstr "Günlük içeriğinde ara..."
 msgid "Search module name"
 msgstr "Modül adı ara"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:806
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:833
 msgid "Search range"
 msgstr "Arama aralığı"
-
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:708
-msgid "Searching logs..."
-msgstr "Günlükler aranıyor..."
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:109
 msgid "Secret has been copied"
@@ -5735,8 +5749,8 @@ msgid "Sites-enabled directory not exist"
 msgstr "Sites-enabled dizini mevcut değil"
 
 #: src/language/curd.ts:62
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:213
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:483
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:246
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:519
 msgid "Size"
 msgstr "Boyut"
 
@@ -5752,7 +5766,7 @@ msgstr "Önbellek yükleyici tekrarları arasındaki bekleme süresi"
 msgid "Sleep time between cache manager iterations"
 msgstr "Önbellek yöneticisi yinelemeleri arasındaki bekleme süresi"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:696
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:733
 msgid "Sorted by"
 msgstr "Sıralama ölçütü"
 
@@ -5848,8 +5862,8 @@ msgstr "Statik"
 #: src/views/certificate/CertificateList/certColumns.tsx:63
 #: src/views/dashboard/components/ModulesTable.vue:96
 #: src/views/nginx_log/structured/components/SearchFilters.vue:106
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:205
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:482
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:238
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:518
 #: src/views/node/nodeColumns.tsx:43
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:29
 #: src/views/site/site_list/columns.tsx:120 src/views/stream/columns.tsx:87
@@ -6402,13 +6416,13 @@ msgstr "Kısıtlama"
 msgid "Thursday"
 msgstr "Perşembe"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:149
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:478
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:182
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:514
 msgid "Time"
 msgstr "Zaman"
 
-#: src/views/nginx_log/NginxLogList.vue:220
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:651
+#: src/views/nginx_log/NginxLogList.vue:284
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:687
 msgid "Time Range"
 msgstr "Zaman Aralığı"
 
@@ -6482,10 +6496,6 @@ msgstr ""
 "dağıtın. Bunlar OpenAI uyumlu bir API uç noktası sağlar, bu yüzden sadece "
 "baseUrl'i yerel API'nize ayarlayın."
 
-#: src/views/nginx_log/NginxLogList.vue:235
-msgid "Today"
-msgstr "Bugün"
-
 #: src/views/dashboard/NginxDashBoard.vue:57
 msgid "Toggle failed"
 msgstr "Değiştirme başarısız"
@@ -6498,13 +6508,13 @@ msgstr "Token boş"
 msgid "Token is not valid"
 msgstr "Token geçerli değil"
 
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:235
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:271
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:236
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:272
 msgid "Top 10 Countries / Regions"
 msgstr "En İyi 10 Ülke / Bölge"
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:214
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:250
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:215
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:251
 msgid "Top 10 Provinces / Regions"
 msgstr "En İyi 10 İl / Bölge"
 
@@ -6521,7 +6531,7 @@ msgstr "Toplam"
 msgid "Total connections"
 msgstr "Toplam bağlantılar"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:727
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:754
 msgid "Total Entries"
 msgstr "Toplam Girdiler"
 
@@ -6575,7 +6585,7 @@ msgstr ""
 "TOTP, zaman tabanlı tek kullanımlık şifre algoritması kullanan iki faktörlü "
 "bir kimlik doğrulama yöntemidir."
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:745
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:772
 msgid "Traffic"
 msgstr "Trafik"
 
@@ -6587,11 +6597,11 @@ msgstr "Hata çevriliyor..."
 msgid "Trash"
 msgstr "Çöp"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:793
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:820
 msgid "Try adjusting your search criteria or navigate to different pages."
 msgstr "Arama kriterlerinizi ayarlamayı veya farklı sayfalara gitmeyi deneyin."
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:803
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:830
 msgid "Try adjusting your search criteria or time range."
 msgstr "Arama kriterlerinizi veya zaman aralığınızı ayarlamayı deneyin."
 
@@ -6607,7 +6617,7 @@ msgstr "İki faktörlü kimlik doğrulama gerekiyor"
 #: src/views/certificate/CertificateList/certColumns.tsx:24
 #: src/views/config/components/Delete.vue:122
 #: src/views/dashboard/components/ModulesTable.vue:83
-#: src/views/nginx_log/NginxLogList.vue:52
+#: src/views/nginx_log/NginxLogList.vue:119
 #: src/views/notification/notificationColumns.tsx:8
 #: src/views/preference/components/ExternalNotify/columns.tsx:19
 msgid "Type"
@@ -6633,7 +6643,7 @@ msgstr "Yazın veya işletim sistemini seçin"
 msgid "Type or select status codes"
 msgstr "Durum kodlarını yazın veya seçin"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:751
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:778
 msgid "Unique Pages"
 msgstr "Benzersiz Sayfalar"
 
@@ -6666,7 +6676,7 @@ msgstr "Başarıyla güncellendi"
 #: src/views/certificate/ACMEUser.vue:122
 #: src/views/certificate/DNSCredential.vue:65
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
-#: src/views/config/configColumns.tsx:43 src/views/namespace/columns.ts:78
+#: src/views/config/configColumns.tsx:44 src/views/namespace/columns.ts:78
 #: src/views/node/nodeColumns.tsx:89
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:39
 #: src/views/site/site_list/columns.tsx:113 src/views/stream/columns.tsx:80
@@ -6776,7 +6786,7 @@ msgstr "Kullanıcı Adı (*)"
 msgid "Username length cannot exceed 255 characters"
 msgstr "Kullanıcı adı uzunluğu 255 karakteri geçemez"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:739
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:766
 msgid "UV"
 msgstr "Benzersiz Ziyaretçi"
 
@@ -6811,7 +6821,7 @@ msgstr "Sistem Gereksinimlerini Doğrulun"
 msgid "Version"
 msgstr "Sürüm"
 
-#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:334
+#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:396
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:83
 msgid "View"
 msgstr "Görüntüle"
@@ -6833,8 +6843,8 @@ msgid "Viewed"
 msgstr "Görüntülendi"
 
 #: src/composables/useGeoTranslation.ts:167
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:120
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:145
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:121
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:146
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:64
 #: src/views/nginx_log/dashboard/components/TopUrlsTable.vue:19
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:114
@@ -7076,6 +7086,21 @@ msgstr "Eski kodlarınız artık çalışmayacak."
 #: src/views/preference/components/AuthSettings/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "Geçiş Anahtarlarınız"
+
+#~ msgid "files"
+#~ msgstr "dosyalar"
+
+#~ msgid "Indexing logs, please wait..."
+#~ msgstr "Günlükler dizinleniyor, lütfen bekleyin..."
+
+#~ msgid "Loading dashboard data..."
+#~ msgstr "Pano verileri yükleniyor..."
+
+#~ msgid "Searching logs..."
+#~ msgstr "Günlükler aranıyor..."
+
+#~ msgid "Today"
+#~ msgstr "Bugün"
 
 #~ msgid "Data refreshed successfully"
 #~ msgstr "Veriler başarıyla güncellendi"
