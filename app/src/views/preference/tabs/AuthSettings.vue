@@ -51,9 +51,6 @@ function removeBannedIP(ip: string) {
 
 <template>
   <div>
-    <h2>
-      {{ $gettext('Authentication Settings') }}
-    </h2>
     <div
       v-if="data.webauthn.rpid
         && data.webauthn.rp_display_name

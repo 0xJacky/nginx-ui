@@ -1,3 +1,4 @@
+//go:generate go run .
 package main
 
 import (
@@ -44,7 +45,7 @@ func main() {
 		log.Printf("INFO: Backend license collection completed: %d components", len(backendLicenses))
 	}
 
-	// Generate frontend licenses  
+	// Generate frontend licenses
 	frontendLicenses, err := generateFrontendLicenses()
 	if err != nil {
 		log.Printf("Error generating frontend licenses: %v", err)
@@ -78,7 +79,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error closing xz writer: %v", err)
 	}
-	log.Printf("INFO: Compressed size: %d bytes (%.1f%% of original)", 
+	log.Printf("INFO: Compressed size: %d bytes (%.1f%% of original)",
 		compressed.Len(), float64(compressed.Len())/float64(len(jsonData))*100)
 
 	// Write compressed data to file
@@ -106,7 +107,7 @@ func generateBackendLicenses() ([]License, error) {
 	var licenses []License
 
 	log.Println("INFO: Collecting backend Go modules...")
-	
+
 	// Get only direct and indirect dependencies, exclude workspace modules
 	cmd := exec.Command("go", "mod", "graph")
 	output, err := cmd.Output()
@@ -117,40 +118,40 @@ func generateBackendLicenses() ([]License, error) {
 	// Parse module graph to get unique dependencies
 	depMap := make(map[string]string) // path -> version
 	lines := strings.Split(string(output), "\n")
-	
+
 	for _, line := range lines {
 		line = strings.TrimSpace(line)
 		if line == "" {
 			continue
 		}
-		
+
 		parts := strings.Fields(line)
 		if len(parts) != 2 {
 			continue
 		}
-		
+
 		// Extract dependency info from "module@version dependency@version"
 		dep := parts[1]
 		if dep == "" || !strings.Contains(dep, "@") {
 			continue
 		}
-		
+
 		atIndex := strings.LastIndex(dep, "@")
 		if atIndex == -1 {
 			continue
 		}
-		
+
 		path := dep[:atIndex]
 		version := dep[atIndex+1:]
-		
+
 		// Skip our own module and workspace modules
-		if path == "" || 
-		   strings.HasPrefix(path, "github.com/0xJacky/Nginx-UI") ||
-		   strings.Contains(path, "git.uozi.org") ||
-		   strings.Contains(path, "apple-store-helper") {
+		if path == "" ||
+			strings.HasPrefix(path, "github.com/0xJacky/Nginx-UI") ||
+			strings.Contains(path, "git.uozi.org") ||
+			strings.Contains(path, "apple-store-helper") {
 			continue
 		}
-		
+
 		// Only keep the first version we see (go mod graph shows all versions)
 		if _, exists := depMap[path]; !exists {
 			depMap[path] = version
@@ -162,7 +163,7 @@ func generateBackendLicenses() ([]License, error) {
 		Path    string `json:"Path"`
 		Version string `json:"Version"`
 	}
-	
+
 	for path, version := range depMap {
 		allMods = append(allMods, struct {
 			Path    string `json:"Path"`
@@ -191,13 +192,13 @@ func generateBackendLicenses() ([]License, error) {
 		Version string
 		Index   int
 	}, len(allMods))
-	
+
 	results := make(chan License, len(allMods))
-	
+
 	// Progress tracking
 	var processed int32
 	var mu sync.Mutex
-	
+
 	// Start workers
 	var wg sync.WaitGroup
 	for i := 0; i < maxWorkers; i++ {
@@ -222,7 +223,7 @@ func generateBackendLicenses() ([]License, error) {
 				processed++
 				currentCount := processed
 				mu.Unlock()
-				
+
 				log.Printf("INFO: [%d/%d] Backend: %s -> %s", currentCount, len(allMods), job.Path, licenseText)
 				results <- license
 			}
@@ -292,7 +293,7 @@ func generateFrontendLicenses() ([]License, error) {
 		Version string
 		Index   int
 	}
-	
+
 	i := 0
 	for name, version := range pkg.Dependencies {
 		packages = append(packages, struct {
@@ -314,13 +315,13 @@ func generateFrontendLicenses() ([]License, error) {
 		Version string
 		Index   int
 	}, len(packages))
-	
+
 	results := make(chan License, len(packages))
-	
+
 	// Progress tracking
 	var processed int32
 	var mu sync.Mutex
-	
+
 	// Start workers
 	var wg sync.WaitGroup
 	for i := 0; i < maxWorkers; i++ {
@@ -345,7 +346,7 @@ func generateFrontendLicenses() ([]License, error) {
 				processed++
 				currentCount := processed
 				mu.Unlock()
-				
+
 				log.Printf("INFO: [%d/%d] Frontend: %s -> %s", currentCount, len(packages), job.Name, licenseText)
 				results <- license
 			}
@@ -387,15 +388,15 @@ func tryGetLicenseFromGitHub(modulePath string) string {
 
 	owner := parts[1]
 	repo := parts[2]
-	
+
 	// Try common license files and branches
 	licenseFiles := []string{"LICENSE", "LICENSE.txt", "LICENSE.md", "COPYING", "COPYING.txt", "License", "license"}
 	branches := []string{"master", "main", "HEAD"}
-	
+
 	for _, branch := range branches {
 		for _, file := range licenseFiles {
 			url := fmt.Sprintf("https://raw.githubusercontent.com/%s/%s/%s/%s", owner, repo, branch, file)
-			
+
 			client := &http.Client{Timeout: 10 * time.Second}
 			resp, err := client.Get(url)
 			if err != nil {
@@ -408,7 +409,7 @@ func tryGetLicenseFromGitHub(modulePath string) string {
 				if err != nil {
 					continue
 				}
-				
+
 				// Extract license type from content
 				content := string(body)
 				licenseType := extractLicenseType(content)
@@ -427,19 +428,19 @@ func tryGetLicenseFromGit(modulePath string) string {
 	if strings.HasPrefix(modulePath, "github.com/") {
 		return tryGetLicenseFromGitHub(modulePath)
 	}
-	
+
 	if strings.HasPrefix(modulePath, "gitlab.com/") {
 		return tryGetLicenseFromGitLab(modulePath)
 	}
-	
+
 	if strings.HasPrefix(modulePath, "gitee.com/") {
 		return tryGetLicenseFromGitee(modulePath)
 	}
-	
+
 	if strings.HasPrefix(modulePath, "bitbucket.org/") {
 		return tryGetLicenseFromBitbucket(modulePath)
 	}
-	
+
 	// Try to use go.mod info or pkg.go.dev API
 	return tryGetLicenseFromPkgGoDev(modulePath)
 }
@@ -449,18 +450,18 @@ func tryGetLicenseFromGitLab(modulePath string) string {
 	if len(parts) < 3 {
 		return ""
 	}
-	
+
 	owner := parts[1]
 	repo := parts[2]
-	
+
 	// GitLab raw file URL format
 	licenseFiles := []string{"LICENSE", "LICENSE.txt", "LICENSE.md", "COPYING", "License"}
 	branches := []string{"master", "main"}
-	
+
 	for _, branch := range branches {
 		for _, file := range licenseFiles {
 			url := fmt.Sprintf("https://gitlab.com/%s/%s/-/raw/%s/%s", owner, repo, branch, file)
-			
+
 			client := &http.Client{Timeout: 10 * time.Second}
 			resp, err := client.Get(url)
 			if err != nil {
@@ -473,7 +474,7 @@ func tryGetLicenseFromGitLab(modulePath string) string {
 				if err != nil {
 					continue
 				}
-				
+
 				content := string(body)
 				licenseType := extractLicenseType(content)
 				if licenseType != "Custom" {
@@ -482,7 +483,7 @@ func tryGetLicenseFromGitLab(modulePath string) string {
 			}
 		}
 	}
-	
+
 	return ""
 }
 
@@ -491,18 +492,18 @@ func tryGetLicenseFromGitee(modulePath string) string {
 	if len(parts) < 3 {
 		return ""
 	}
-	
+
 	owner := parts[1]
 	repo := parts[2]
-	
+
 	// Gitee raw file URL format
 	licenseFiles := []string{"LICENSE", "LICENSE.txt", "LICENSE.md", "COPYING"}
 	branches := []string{"master", "main"}
-	
+
 	for _, branch := range branches {
 		for _, file := range licenseFiles {
 			url := fmt.Sprintf("https://gitee.com/%s/%s/raw/%s/%s", owner, repo, branch, file)
-			
+
 			client := &http.Client{Timeout: 10 * time.Second}
 			resp, err := client.Get(url)
 			if err != nil {
@@ -515,7 +516,7 @@ func tryGetLicenseFromGitee(modulePath string) string {
 				if err != nil {
 					continue
 				}
-				
+
 				content := string(body)
 				licenseType := extractLicenseType(content)
 				if licenseType != "Custom" {
@@ -524,7 +525,7 @@ func tryGetLicenseFromGitee(modulePath string) string {
 			}
 		}
 	}
-	
+
 	return ""
 }
 
@@ -533,18 +534,18 @@ func tryGetLicenseFromBitbucket(modulePath string) string {
 	if len(parts) < 3 {
 		return ""
 	}
-	
+
 	owner := parts[1]
 	repo := parts[2]
-	
-	// Bitbucket raw file URL format  
+
+	// Bitbucket raw file URL format
 	licenseFiles := []string{"LICENSE", "LICENSE.txt", "LICENSE.md", "COPYING"}
 	branches := []string{"master", "main"}
-	
+
 	for _, branch := range branches {
 		for _, file := range licenseFiles {
 			url := fmt.Sprintf("https://bitbucket.org/%s/%s/raw/%s/%s", owner, repo, branch, file)
-			
+
 			client := &http.Client{Timeout: 10 * time.Second}
 			resp, err := client.Get(url)
 			if err != nil {
@@ -557,7 +558,7 @@ func tryGetLicenseFromBitbucket(modulePath string) string {
 				if err != nil {
 					continue
 				}
-				
+
 				content := string(body)
 				licenseType := extractLicenseType(content)
 				if licenseType != "Custom" {
@@ -566,14 +567,14 @@ func tryGetLicenseFromBitbucket(modulePath string) string {
 			}
 		}
 	}
-	
+
 	return ""
 }
 
 func tryGetLicenseFromPkgGoDev(modulePath string) string {
 	// Try to get license info from pkg.go.dev API
 	url := fmt.Sprintf("https://api.deps.dev/v3alpha/systems/go/packages/%s", modulePath)
-	
+
 	client := &http.Client{Timeout: 10 * time.Second}
 	resp, err := client.Get(url)
 	if err != nil {
@@ -607,7 +608,7 @@ func tryGetLicenseFromPkgGoDev(modulePath string) string {
 func tryGetNpmLicense(packageName string) string {
 	// Try to get license from npm registry
 	url := fmt.Sprintf("https://registry.npmjs.org/%s/latest", packageName)
-	
+
 	client := &http.Client{Timeout: 10 * time.Second}
 	resp, err := client.Get(url)
 	if err != nil {
@@ -641,15 +642,15 @@ func tryGetNpmLicense(packageName string) string {
 
 func extractLicenseType(content string) string {
 	content = strings.ToUpper(content)
-	
+
 	licensePatterns := map[string]*regexp.Regexp{
-		"MIT":         regexp.MustCompile(`MIT\s+LICENSE`),
-		"Apache-2.0":  regexp.MustCompile(`APACHE\s+LICENSE.*VERSION\s+2\.0`),
-		"GPL-3.0":     regexp.MustCompile(`GNU\s+GENERAL\s+PUBLIC\s+LICENSE.*VERSION\s+3`),
-		"BSD-3":       regexp.MustCompile(`BSD\s+3-CLAUSE`),
-		"BSD-2":       regexp.MustCompile(`BSD\s+2-CLAUSE`),
-		"ISC":         regexp.MustCompile(`ISC\s+LICENSE`),
-		"AGPL-3.0":    regexp.MustCompile(`GNU\s+AFFERO\s+GENERAL\s+PUBLIC\s+LICENSE`),
+		"MIT":        regexp.MustCompile(`MIT\s+LICENSE`),
+		"Apache-2.0": regexp.MustCompile(`APACHE\s+LICENSE.*VERSION\s+2\.0`),
+		"GPL-3.0":    regexp.MustCompile(`GNU\s+GENERAL\s+PUBLIC\s+LICENSE.*VERSION\s+3`),
+		"BSD-3":      regexp.MustCompile(`BSD\s+3-CLAUSE`),
+		"BSD-2":      regexp.MustCompile(`BSD\s+2-CLAUSE`),
+		"ISC":        regexp.MustCompile(`ISC\s+LICENSE`),
+		"AGPL-3.0":   regexp.MustCompile(`GNU\s+AFFERO\s+GENERAL\s+PUBLIC\s+LICENSE`),
 	}
 
 	for license, pattern := range licensePatterns {
@@ -664,32 +665,32 @@ func extractLicenseType(content string) string {
 func detectCommonLicense(modulePath string) string {
 	// Common patterns for detecting license types based on module paths
 	commonLicenses := map[string]string{
-		"golang.org/x":            "BSD-3-Clause",
-		"google.golang.org":       "Apache-2.0",
-		"gopkg.in":               "Various",
-		"go.uber.org":            "MIT",
-		"go.etcd.io":             "Apache-2.0",
-		"go.mongodb.org":         "Apache-2.0",
-		"go.opentelemetry.io":    "Apache-2.0",
-		"k8s.io":                 "Apache-2.0",
-		"sigs.k8s.io":            "Apache-2.0",
-		"cloud.google.com":       "Apache-2.0",
-		"go.opencensus.io":       "Apache-2.0",
-		"contrib.go.opencensus.io": "Apache-2.0",
-		"github.com/golang/":     "BSD-3-Clause",
-		"github.com/google/":     "Apache-2.0",
+		"golang.org/x":               "BSD-3-Clause",
+		"google.golang.org":          "Apache-2.0",
+		"gopkg.in":                   "Various",
+		"go.uber.org":                "MIT",
+		"go.etcd.io":                 "Apache-2.0",
+		"go.mongodb.org":             "Apache-2.0",
+		"go.opentelemetry.io":        "Apache-2.0",
+		"k8s.io":                     "Apache-2.0",
+		"sigs.k8s.io":                "Apache-2.0",
+		"cloud.google.com":           "Apache-2.0",
+		"go.opencensus.io":           "Apache-2.0",
+		"contrib.go.opencensus.io":   "Apache-2.0",
+		"github.com/golang/":         "BSD-3-Clause",
+		"github.com/google/":         "Apache-2.0",
 		"github.com/grpc-ecosystem/": "Apache-2.0",
-		"github.com/prometheus/":    "Apache-2.0",
-		"github.com/coreos/":        "Apache-2.0",
-		"github.com/etcd-io/":       "Apache-2.0",
-		"github.com/go-kit/":        "MIT",
-		"github.com/sirupsen/":      "MIT",
-		"github.com/stretchr/":      "MIT",
-		"github.com/spf13/":         "Apache-2.0",
-		"github.com/gorilla/":       "BSD-3-Clause",
-		"github.com/gin-gonic/":     "MIT",
-		"github.com/labstack/":      "MIT",
-		"github.com/julienschmidt/": "BSD-2-Clause",
+		"github.com/prometheus/":     "Apache-2.0",
+		"github.com/coreos/":         "Apache-2.0",
+		"github.com/etcd-io/":        "Apache-2.0",
+		"github.com/go-kit/":         "MIT",
+		"github.com/sirupsen/":       "MIT",
+		"github.com/stretchr/":       "MIT",
+		"github.com/spf13/":          "Apache-2.0",
+		"github.com/gorilla/":        "BSD-3-Clause",
+		"github.com/gin-gonic/":      "MIT",
+		"github.com/labstack/":       "MIT",
+		"github.com/julienschmidt/":  "BSD-2-Clause",
 	}
 
 	for prefix, license := range commonLicenses {
@@ -707,12 +708,12 @@ func getGoVersion() string {
 	if err != nil {
 		return "Unknown"
 	}
-	
+
 	// Parse "go version go1.21.5 darwin/amd64" to extract "go1.21.5"
 	parts := strings.Fields(string(output))
 	if len(parts) >= 3 {
 		return parts[2] // "go1.21.5"
 	}
-	
+
 	return "Unknown"
 }
