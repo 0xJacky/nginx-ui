@@ -64,6 +64,11 @@ func (m *mockShardManagerForRebuild) HealthCheck() error {
 	return nil
 }
 
+func (m *mockShardManagerForRebuild) Close() error {
+	atomic.StoreInt32(&m.closeCalled, 1)
+	return nil
+}
+
 type mockShard struct {
 	closed bool
 	mu     sync.Mutex

@@ -24,4 +24,7 @@ export default {
   50023: () => $gettext('Failed to get persistence stats'),
   50024: () => $gettext('Log file is not a regular file'),
   50025: () => $gettext('Invalid websocket message type'),
+  50026: () => $gettext('Modern searcher service not available'),
+  50027: () => $gettext('Modern analytics service not available'),
+  50028: () => $gettext('Modern indexer service not available'),
 }

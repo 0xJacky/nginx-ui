@@ -13,6 +13,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/api/crypto"
 	"github.com/0xJacky/Nginx-UI/api/event"
 	"github.com/0xJacky/Nginx-UI/api/external_notify"
+	"github.com/0xJacky/Nginx-UI/api/license"
 	"github.com/0xJacky/Nginx-UI/api/nginx"
 	nginxLog "github.com/0xJacky/Nginx-UI/api/nginx_log"
 	"github.com/0xJacky/Nginx-UI/api/notification"
@@ -59,6 +60,7 @@ func InitRouter() {
 		public.InitRouter(root)
 		crypto.InitPublicRouter(root)
 		user.InitAuthRouter(root)
+		license.InitRouter(root)
 
 		system.InitPublicRouter(root)
 		system.InitSelfCheckRouter(root)

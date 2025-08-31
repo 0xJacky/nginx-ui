@@ -70,6 +70,10 @@ export interface NginxSettings {
   container_name: string
 }
 
+export interface NginxLogSettings {
+  advanced_indexing_enabled: boolean
+}
+
 export interface NodeSettings {
   name: string
   secret: string
@@ -115,6 +119,7 @@ export interface Settings {
   http: HTTPSettings
   logrotate: LogrotateSettings
   nginx: NginxSettings
+  nginx_log: NginxLogSettings
   node: NodeSettings
   openai: OpenaiSettings
   terminal: TerminalSettings

@@ -72,16 +72,17 @@ const thisYear = new Date().getFullYear()
     </h3>
     <p><a href="https://jackyu.cn/">@0xJacky</a> <a href="https://blog.kugeek.com/">@Hintay</a> <a href="https://github.com/akinoccc">@Akino</a></p>
     <h3>
-      {{ $gettext('Build with') }}
-    </h3>
-    <p>❤️</p>
-    <p>Go</p>
-    <p>Gin</p>
-    <p>Vue3 + Vite + TypeScript</p>
-    <p>Websocket</p>
-    <h3>
       {{ $gettext('License') }}
     </h3>
+    <div class="mb-3">
+      <AButton
+        type="link"
+        size="small"
+        @click="$router.push('/system/licenses')"
+      >
+        {{ $gettext('View Third-party Components') }}
+      </AButton>
+    </div>
     <p>GNU Affero General Public License v3.0</p>
     <p>Copyright © 2021 - {{ thisYear }} Nginx UI Team</p>
   </ACard>

@@ -63,6 +63,7 @@ export const zhCNConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
             { text: 'Http', link: '/zh_CN/guide/config-http' },
             { text: 'Logrotate', link: '/zh_CN/guide/config-logrotate' },
             { text: 'Nginx', link: '/zh_CN/guide/config-nginx' },
+            { text: 'Nginx Log', link: '/zh_CN/guide/config-nginx-log' },
             { text: 'Node', link: '/zh_CN/guide/config-node' },
             { text: 'Open AI', link: '/zh_CN/guide/config-openai' },
             { text: 'Server', link: '/zh_CN/guide/config-server' },

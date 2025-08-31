@@ -103,16 +103,3 @@ Nginx UI 可在以下平台中使用：
 
 此外，感谢我们优秀的社区提供了更多语言，欢迎访问 [Weblate](https://weblate.nginxui.com) 进行查看和贡献翻译。
 
-## 构建基于
-
-- [The Go Programming Language](https://go.dev)
-- [Gin Web Framework](https://gin-gonic.com)
-- [GORM](http://gorm.io)
-- [Vue 3](https://v3.vuejs.org)
-- [Vite](https://vitejs.dev)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Ant Design Vue](https://antdv.com)
-- [vue3-gettext](https://github.com/jshmrtn/vue3-gettext)
-- [vue3-ace-editor](https://github.com/CarterLi/vue3-ace-editor)
-- [Gonginx](https://github.com/tufanbarisyildirim/gonginx)
-- [lego](https://github.com/go-acme/lego)

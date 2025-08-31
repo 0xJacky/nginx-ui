@@ -30,7 +30,7 @@
 
 [![Stargazers over time](https://starchart.cc/0xJacky/nginx-ui.svg)](https://starchart.cc/0xJacky/nginx-ui)
 
-English | [Español](README-es.md) | [简体中文](README-zh_CN.md) | [繁體中文](README-zh_TW.md) | [Tiếng Việt](README-vi_VN.md) | [日本語](README-ja_JP.md)
+[English](../../README.md) | [Español](README-es.md) | [简体中文](README-zh_CN.md) | [繁體中文](README-zh_TW.md) | [Tiếng Việt](README-vi_VN.md) | [日本語](README-ja_JP.md)
 
 <details>
   <summary>目次</summary>
@@ -41,7 +41,6 @@ English | [Español](README-es.md) | [简体中文](README-zh_CN.md) | [繁體�
         <li><a href="#demo">デモ</a></li>
         <li><a href="#features">機能</a></li>
         <li><a href="#internationalization">多言語化</a></li>
-        <li><a href="#built-with">主要技術</a></li>
       </ul>
     </li>
     <li>
@@ -118,19 +117,6 @@ URL：[https://demo.nginxui.com](https://demo.nginxui.com)
 
 コミュニティのおかげで他の言語もいろいろ揃っとるで。翻訳に参加したい人は [Weblate](https://weblate.nginxui.com) 見てみてな。
 
-### 主要技術
-
-- [Go言語](https://go.dev)
-- [Gin Web Framework](https://gin-gonic.com)
-- [GORM](http://gorm.io)
-- [Vue 3](https://v3.vuejs.org)
-- [Vite](https://vitejs.dev)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Ant Design Vue](https://antdv.com)
-- [vue3-gettext](https://github.com/jshmrtn/vue3-gettext)
-- [vue3-ace-editor](https://github.com/CarterLi/vue3-ace-editor)
-- [Gonginx](https://github.com/tufanbarisyildirim/gonginx)
-- [lego](https://github.com/go-acme/lego)
 
 ## はじめに
 

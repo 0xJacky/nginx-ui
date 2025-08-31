@@ -59,6 +59,7 @@ func Boot(ctx context.Context) {
 	syncs := []func(ctx context.Context){
 		analytic.RecordServerAnalytic,
 		event.InitEventSystem,
+		event.InitWebSocketHub,
 	}
 
 	for _, v := range async {

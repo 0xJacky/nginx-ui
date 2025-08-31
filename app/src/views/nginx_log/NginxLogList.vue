@@ -5,12 +5,13 @@ import type { TabOption } from '@/components/TabFilter'
 import { CheckCircleOutlined, ExclamationCircleOutlined, SyncOutlined } from '@ant-design/icons-vue'
 import { StdCurd } from '@uozi-admin/curd'
 import { useRouteQuery } from '@vueuse/router'
-import { Badge, Tag, Tooltip } from 'ant-design-vue'
+import { Badge, message, Tag, Tooltip } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import nginxLog from '@/api/nginx_log'
 import { TabFilter } from '@/components/TabFilter'
 import { useWebSocketEventBus } from '@/composables/useWebSocketEventBus'
 import { useGlobalStore } from '@/pinia'
+import IndexingSettingsModal from './components/IndexingSettingsModal.vue'
 import { useIndexProgress } from './composables/useIndexProgress'
 import IndexProgressBar from './indexing/components/IndexProgressBar.vue'
 import IndexManagement from './indexing/IndexManagement.vue'
@@ -18,6 +19,9 @@ import IndexManagement from './indexing/IndexManagement.vue'
 const router = useRouter()
 const stdCurdRef = ref()
 const indexManagementRef = ref()
+const indexingSettingsModalVisible = ref(false)
+const advancedIndexingEnabled = ref(false)
+const enableIndexingLoading = ref(false)
 
 // WebSocket event bus and global store
 const { subscribe } = useWebSocketEventBus()
@@ -68,8 +72,22 @@ function stopAutoRefresh() {
   }
 }
 
+// Check advanced indexing status on mount
+async function checkAdvancedIndexingStatus() {
+  try {
+    const response = await nginxLog.getAdvancedIndexingStatus()
+    advancedIndexingEnabled.value = response.enabled
+  }
+  catch (error) {
+    console.error('Failed to check advanced indexing status:', error)
+  }
+}
+
 // Subscribe to events
-onMounted(() => {
+onMounted(async () => {
+  // Check advanced indexing status
+  await checkAdvancedIndexingStatus()
+
   // Subscribe to processing status events
   subscribe('processing_status', data => {
     const wasIndexing = processingStatus.value?.nginx_log_indexing
@@ -345,6 +363,48 @@ function rebuildFileIndex(record: NginxLogData) {
 async function refreshTable() {
   stdCurdRef.value.refresh()
 }
+
+function showIndexingSettingsModal() {
+  indexingSettingsModalVisible.value = true
+}
+
+async function enableAdvancedIndexing() {
+  enableIndexingLoading.value = true
+  try {
+    await nginxLog.enableAdvancedIndexing()
+    advancedIndexingEnabled.value = true
+    indexingSettingsModalVisible.value = false
+
+    // Show success message
+    message.success($gettext('Advanced indexing enabled successfully'))
+
+    // Start rebuild all indexes
+    try {
+      await nginxLog.rebuildIndex()
+      message.success($gettext('Index rebuild initiated'))
+    }
+    catch (rebuildError) {
+      console.error('Failed to rebuild index:', rebuildError)
+      message.warning($gettext('Advanced indexing enabled but failed to start rebuild'))
+    }
+
+    // Refresh table to show updated indexing status
+    setTimeout(() => {
+      refreshTable()
+    }, 500)
+  }
+  catch (error) {
+    console.error('Failed to enable advanced indexing:', error)
+    message.error($gettext('Failed to enable advanced indexing'))
+  }
+  finally {
+    enableIndexingLoading.value = false
+  }
+}
+
+function cancelIndexingSettings() {
+  indexingSettingsModalVisible.value = false
+}
 </script>
 
 <template>
@@ -381,9 +441,20 @@ async function refreshTable() {
           </div>
         </div>
 
-        <!-- Index Management - only for Access logs -->
+        <!-- Advanced Indexing Toggle - only for Access logs -->
+        <div v-if="activeLogType === 'access' && !advancedIndexingEnabled" class="flex items-center">
+          <AButton
+            type="link"
+            size="small"
+            @click="showIndexingSettingsModal"
+          >
+            {{ $gettext('Enable Advanced Indexing') }}
+          </AButton>
+        </div>
+
+        <!-- Index Management - only for Access logs when advanced indexing is enabled -->
         <IndexManagement
-          v-if="activeLogType === 'access'"
+          v-if="activeLogType === 'access' && advancedIndexingEnabled"
           ref="indexManagementRef"
           :disabled="processingStatus.nginx_log_indexing"
           :indexing="isGlobalIndexing || processingStatus.nginx_log_indexing"
@@ -396,9 +467,9 @@ async function refreshTable() {
         {{ $gettext('View') }}
       </AButton>
 
-      <!-- Rebuild File Index Action - only for Access logs -->
+      <!-- Rebuild File Index Action - only for Access logs with advanced indexing enabled -->
       <AButton
-        v-if="record.type === 'access'"
+        v-if="record.type === 'access' && advancedIndexingEnabled"
         type="link"
         size="small"
         :disabled="processingStatus.nginx_log_indexing"
@@ -408,6 +479,14 @@ async function refreshTable() {
       </AButton>
     </template>
   </StdCurd>
+
+  <!-- Advanced Indexing Settings Modal -->
+  <IndexingSettingsModal
+    v-model:visible="indexingSettingsModalVisible"
+    :loading="enableIndexingLoading"
+    @confirm="enableAdvancedIndexing"
+    @cancel="cancelIndexingSettings"
+  />
 </template>
 
 <style scoped lang="less">

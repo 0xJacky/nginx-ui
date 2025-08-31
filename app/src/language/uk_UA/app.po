@@ -4,11 +4,11 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "PO-Revision-Date: 2025-04-16 15:12+0000\n"
 "Last-Translator: sergio_from_tauri <dedysobr@gmail.com>\n"
-"Language-Team: Ukrainian <https://weblate.nginxui.com/projects/nginx-ui/"
-"frontend/uk/>\n"
+"Language-Team: Ukrainian "
+"<https://weblate.nginxui.com/projects/nginx-ui/frontend/uk/>\n"
 "Language: uk_UA\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
@@ -17,8 +17,8 @@ msgstr ""
 #: src/language/generate.ts:35
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
 msgstr ""
-"[Nginx UI] Користувач ACME: %{name}, Електронна пошта: %{email}, Каталог CA: "
-"%{caDir}"
+"[Nginx UI] Користувач ACME: %{name}, Електронна пошта: %{email}, Каталог "
+"CA: %{caDir}"
 
 #: src/language/generate.ts:36
 msgid "[Nginx UI] Backing up current certificate for later revocation"
@@ -35,11 +35,10 @@ msgid "[Nginx UI] Certificate successfully revoked"
 msgstr "[Nginx UI] Сертифікат успішно відкликано"
 
 #: src/language/generate.ts:39
-msgid ""
-"[Nginx UI] Certificate was used for server, reloading server TLS certificate"
+msgid "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
 msgstr ""
-"[Nginx UI] Сертифікат використовувався для сервера, перезавантаження TLS-"
-"сертифіката сервера"
+"[Nginx UI] Сертифікат використовувався для сервера, перезавантаження "
+"TLS-сертифіката сервера"
 
 #: src/language/generate.ts:40
 msgid "[Nginx UI] Creating client facilitates communication with the CA server"
@@ -118,6 +117,14 @@ msgstr "* Включає вузли з групи %{groupName} та вузли, 
 msgid "%{start}-%{end} of %{total} items"
 msgstr "%{start}-%{end} з %{total} елементів"
 
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:24
+msgid "1 core minimum"
+msgstr "Мінімум 1 ядро"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:25
+msgid "2+ cores recommended"
+msgstr "Рекомендовано 2+ ядра"
+
 #: src/views/nginx_log/dashboard/components/HourlyChart.vue:67
 #: src/views/nginx_log/dashboard/components/HourlyChart.vue:68
 msgid "24-Hour UV/PV Statistics"
@@ -130,6 +137,14 @@ msgstr "2FA"
 #: src/views/user/UserProfile.vue:151
 msgid "2FA Settings"
 msgstr "2FA Налаштування"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:30
+msgid "2GB RAM minimum"
+msgstr "Мінімум 2 ГБ оперативної пам'яті"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:31
+msgid "4GB+ RAM recommended"
+msgstr "Рекомендується 4 ГБ оперативної пам’яті або більше"
 
 #: src/routes/modules/system.ts:38
 msgid "About"
@@ -144,7 +159,7 @@ msgid "Access log path not exist"
 msgstr "Шлях до журналу доступу не існує"
 
 #: src/components/NgxConfigEditor/LogEntry.vue:90
-#: src/routes/modules/nginx_log.ts:17 src/views/nginx_log/NginxLogList.vue:36
+#: src/routes/modules/nginx_log.ts:17 src/views/nginx_log/NginxLogList.vue:40
 msgid "Access Logs"
 msgstr "Логи доступу"
 
@@ -162,7 +177,7 @@ msgstr "Дія"
 #: src/views/certificate/CertificateList/certColumns.tsx:92
 #: src/views/certificate/DNSCredential.vue:71
 #: src/views/config/configColumns.tsx:51 src/views/namespace/columns.ts:84
-#: src/views/nginx_log/NginxLogList.vue:311 src/views/node/nodeColumns.tsx:96
+#: src/views/nginx_log/NginxLogList.vue:329 src/views/node/nodeColumns.tsx:96
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:85
 #: src/views/site/site_list/columns.tsx:160 src/views/stream/columns.tsx:123
@@ -244,18 +259,39 @@ msgstr "Додатково"
 msgid "Advance Mode"
 msgstr "Розширений режим"
 
+#: src/views/nginx_log/NginxLogList.vue:387
+msgid "Advanced indexing enabled but failed to start rebuild"
+msgstr "Розширене індексування увімкнено, але не вдалося розпочати перебудову"
+
+#: src/views/nginx_log/NginxLogList.vue:379
+msgid "Advanced indexing enabled successfully"
+msgstr "Розширене індексування успішно ввімкнено"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:239
+msgid "Advanced log indexing features are free and open source for all users"
+msgstr ""
+"Розширені функції індексації журналів є безкоштовними та з відкритим кодом "
+"для всіх користувачів"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:187
+msgid "Advanced search & filtering"
+msgstr "Розширений пошук і фільтрація"
+
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:529
 msgid "Advanced Settings"
 msgstr "Розширені налаштування"
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:104
 msgid "Afterwards, refresh this page and click add passkey again."
-msgstr ""
-"Після цього оновіть цю сторінку та натисніть «Додати ключ доступу» знову."
+msgstr "Після цього оновіть цю сторінку та натисніть «Додати ключ доступу» знову."
 
 #: src/components/NamespaceTabs/NamespaceTabs.vue:116
 msgid "All"
 msgstr "Усі"
+
+#: src/views/system/Licenses.vue:152
+msgid "All Components"
+msgstr "Усі компоненти"
 
 #: src/components/Notification/notifications.ts:193
 #: src/language/constants.ts:58
@@ -267,8 +303,8 @@ msgid ""
 "All selected subdomains must belong to the same DNS Provider, otherwise the "
 "certificate application will fail."
 msgstr ""
-"Усі вибрані піддомени повинні належати до одного й того самого DNS-"
-"провайдера, інакше запит на сертифікат не буде успішним."
+"Усі вибрані піддомени повинні належати до одного й того самого "
+"DNS-провайдера, інакше запит на сертифікат не буде успішним."
 
 #: src/constants/errors/nginx_log.ts:13
 msgid "Analytics service not available"
@@ -279,8 +315,7 @@ msgid "Any"
 msgstr "Будь-який"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:209
-msgid ""
-"Any reachable IP address can be used with private Certificate Authorities"
+msgid "Any reachable IP address can be used with private Certificate Authorities"
 msgstr ""
 "Будь-яку доступну IP-адресу можна використовувати з приватним центром "
 "сертифікації"
@@ -391,6 +426,10 @@ msgstr "Запитати допомоги у ChatGPT"
 msgid "Assistant"
 msgstr "Помічник"
 
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:36
+msgid "At least 20GB available disk space"
+msgstr "Не менше 20 ГБ вільного місця на диску"
+
 #: src/components/SelfCheck/SelfCheck.vue:30
 msgid "Attempt to fix"
 msgstr "Спробувати виправити"
@@ -475,6 +514,10 @@ msgstr "AutoCert виконується, будь ласка, зачекайте
 msgid "AutoCert is running..."
 msgstr "AutoCert виконується..."
 
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:207
+msgid "Automated log rotation detection"
+msgstr "Автоматичне виявлення ротації логів"
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:332
 msgid "Automatic Restart"
 msgstr "Автоматичний перезапуск"
@@ -508,6 +551,10 @@ msgstr "На головну"
 msgid "Back to List"
 msgstr "Повернутися до списку"
 
+#: src/views/system/Licenses.vue:113 src/views/system/Licenses.vue:187
+msgid "Backend"
+msgstr "Бекенд"
+
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:567
 msgid ""
 "Background indexing in progress. Data will be updated automatically when "
@@ -526,10 +573,9 @@ msgstr "Резервна копія"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:155
 msgid "Backup file integrity check failed, it may have been tampered with"
-msgstr ""
-"Перевірка цілісності резервного файлу не вдалася, можливо, його було змінено"
+msgstr "Перевірка цілісності резервного файлу не вдалася, можливо, його було змінено"
 
-#: src/constants/errors/backup.ts:41
+#: src/constants/errors/backup.ts:38
 msgid "Backup file not found: {0}"
 msgstr "Файл резервної копії не знайдено: {0}"
 
@@ -541,23 +587,19 @@ msgstr "Резервну копію успішно завантажено"
 msgid "Backup Path"
 msgstr "Шлях резервного копіювання"
 
-#: src/constants/errors/backup.ts:75
+#: src/constants/errors/backup.ts:63
 msgid "Backup path does not exist: {0}"
 msgstr "Шлях резервного копіювання не існує: {0}"
 
-#: src/constants/errors/backup.ts:77
+#: src/constants/errors/backup.ts:65
 msgid "Backup path is not a directory: {0}"
 msgstr "Шлях резервного копіювання не є директорією: {0}"
 
-#: src/constants/errors/backup.ts:62
+#: src/constants/errors/backup.ts:55
 msgid "Backup path is required for custom directory backup"
 msgstr ""
-"Шлях резервного копіювання необхідний для резервного копіювання спеціального "
-"каталогу"
-
-#: src/constants/errors/backup.ts:60
-msgid "Backup path not in granted access paths: {0}"
-msgstr "Шлях резервного копіювання не входить до наданих шляхів доступу: {0}"
+"Шлях резервного копіювання необхідний для резервного копіювання "
+"спеціального каталогу"
 
 #: src/views/backup/AutoBackup/components/CronEditor.vue:141
 msgid "Backup Schedule"
@@ -570,8 +612,7 @@ msgstr ""
 "%{file_path}"
 
 #: src/components/Notification/notifications.ts:34
-msgid ""
-"Backup task %{backup_name} failed during storage upload, error: %{error}"
+msgid "Backup task %{backup_name} failed during storage upload, error: %{error}"
 msgstr ""
 "Завдання резервного копіювання %{backup_name} не вдалося під час "
 "завантаження в сховище, помилка: %{error}"
@@ -605,6 +646,10 @@ msgstr "Bark"
 #: src/views/site/site_add/SiteAdd.vue:80
 msgid "Base information"
 msgstr "Основна інформація"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:46
+msgid "Based on M2 Pro (12 cores) testing"
+msgstr "На основі тестування M2 Pro (12 ядер)"
 
 #: src/views/config/components/ConfigRightPanel/ConfigRightPanel.vue:29
 #: src/views/site/site_edit/components/RightPanel/RightPanel.vue:31
@@ -652,9 +697,15 @@ msgstr "Браузер"
 msgid "Browser Statistics"
 msgstr "Статистика браузера"
 
-#: src/views/system/About.vue:75
-msgid "Build with"
-msgstr "Створено за допомогою"
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:261
+msgid ""
+"By enabling advanced indexing, you acknowledge that your system meets the "
+"requirements and understand the performance implications. This will start "
+"indexing existing log files immediately."
+msgstr ""
+"Увімкнувши розширене індексування, ви підтверджуєте, що ваша система "
+"відповідає вимогам і розумієте наслідки для продуктивності. Це негайно "
+"почне індексувати наявні файли журналів."
 
 #: src/views/certificate/ACMEUser.vue:36
 msgid "CA Dir"
@@ -666,8 +717,7 @@ msgstr "Кеш"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:177
 msgid "Cache items not accessed within this time will be removed"
-msgstr ""
-"Елементи кешу, до яких не було звернень протягом цього часу, будуть видалені"
+msgstr "Елементи кешу, до яких не було звернень протягом цього часу, будуть видалені"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:349
 msgid "Cache loader processing time threshold"
@@ -719,6 +769,7 @@ msgstr ""
 #: src/views/config/components/Delete.vue:98
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:632
 #: src/views/dashboard/components/SiteNavigationToolbar.vue:64
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:76
 #: src/views/nginx_log/indexing/IndexManagement.vue:31
 #: src/views/nginx_log/indexing/IndexManagement.vue:57
 #: src/views/preference/components/AuthSettings/Passkey.vue:141
@@ -730,7 +781,7 @@ msgstr ""
 msgid "Cancel"
 msgstr "Скасувати"
 
-#: src/constants/errors/backup.ts:76
+#: src/constants/errors/backup.ts:64
 msgid "Cannot access backup path {0}: {1}"
 msgstr "Не вдається отримати доступ до шляху резервної копії {0}: {1}"
 
@@ -738,14 +789,13 @@ msgstr "Не вдається отримати доступ до шляху ре
 msgid "Cannot access log file"
 msgstr "Не вдається отримати доступ до файлу журналу"
 
-#: src/constants/errors/backup.ts:79
+#: src/constants/errors/backup.ts:67
 msgid "Cannot access storage path {0}: {1}"
 msgstr "Неможливо отримати доступ до шляху зберігання {0}: {1}"
 
 #: src/constants/errors/user.ts:11
 msgid "Cannot change initial user password in demo mode"
-msgstr ""
-"Не вдається змінити початковий пароль користувача в демонстраційному режимі"
+msgstr "Не вдається змінити початковий пароль користувача в демонстраційному режимі"
 
 #: src/components/ConfigHistory/DiffViewer.vue:72
 msgid "Cannot compare: Missing content"
@@ -920,24 +970,24 @@ msgstr "Перевірити фавікон"
 #: src/language/generate.ts:6
 msgid ""
 "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
-"Docker Image, please make sure the docker socket is mounted like this: `-v /"
-"var/run/docker.sock:/var/run/docker.sock`. Nginx UI official image uses /var/"
-"run/docker.sock to communicate with the host Docker Engine via Docker Client "
-"API. This feature is used to control Nginx in another container and perform "
-"container replacement rather than binary replacement during OTA upgrades of "
-"Nginx UI to ensure container dependencies are also upgraded. If you don't "
-"need this feature, please add the environment variable "
+"Docker Image, please make sure the docker socket is mounted like this: `-v "
+"/var/run/docker.sock:/var/run/docker.sock`. Nginx UI official image uses "
+"/var/run/docker.sock to communicate with the host Docker Engine via Docker "
+"Client API. This feature is used to control Nginx in another container and "
+"perform container replacement rather than binary replacement during OTA "
+"upgrades of Nginx UI to ensure container dependencies are also upgraded. If "
+"you don't need this feature, please add the environment variable "
 "NGINX_UI_IGNORE_DOCKER_SOCKET=true to the container."
 msgstr ""
 "Перевірте, чи існує /var/run/docker.sock. Якщо ви використовуєте офіційний "
 "образ Docker Nginx UI, переконайтеся, що сокет Docker змонтовано таким "
-"чином: `-v /var/run/docker.sock:/var/run/docker.sock`. Офіційний образ Nginx "
-"UI використовує /var/run/docker.sock для зв’язку з Docker Engine хоста через "
-"API Docker Client. Ця функція використовується для керування Nginx в іншому "
-"контейнері та виконання заміни контейнера замість заміни бінарного файлу під "
-"час OTA-оновлень Nginx UI, щоб гарантувати, що залежності контейнера також "
-"оновлюються. Якщо вам не потрібна ця функція, додайте змінну середовища "
-"NGINX_UI_IGNORE_DOCKER_SOCKET=true до контейнера."
+"чином: `-v /var/run/docker.sock:/var/run/docker.sock`. Офіційний образ "
+"Nginx UI використовує /var/run/docker.sock для зв’язку з Docker Engine "
+"хоста через API Docker Client. Ця функція використовується для керування "
+"Nginx в іншому контейнері та виконання заміни контейнера замість заміни "
+"бінарного файлу під час OTA-оновлень Nginx UI, щоб гарантувати, що "
+"залежності контейнера також оновлюються. Якщо вам не потрібна ця функція, "
+"додайте змінну середовища NGINX_UI_IGNORE_DOCKER_SOCKET=true до контейнера."
 
 #: src/components/SelfCheck/tasks/frontend/https-check.ts:14
 msgid ""
@@ -948,25 +998,24 @@ msgstr ""
 "небезпечним і перешкоджає використанню Passkeys та функцій буфера обміну"
 
 #: src/language/generate.ts:7
-msgid ""
-"Check if the conf.d directory is under the nginx configuration directory"
+msgid "Check if the conf.d directory is under the nginx configuration directory"
 msgstr "Перевірте, чи знаходиться каталог conf.d у каталозі конфігурації nginx"
 
 #: src/language/generate.ts:9
 msgid ""
-"Check if the nginx access log path exists. By default, this path is obtained "
-"from 'nginx -V'. If it cannot be obtained or the obtained path does not "
-"point to a valid, existing file, an error will be reported. In this case, "
-"you need to modify the configuration file to specify the access log path."
-"Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-"
-"nginx.html#accesslogpath"
+"Check if the nginx access log path exists. By default, this path is "
+"obtained from 'nginx -V'. If it cannot be obtained or the obtained path "
+"does not point to a valid, existing file, an error will be reported. In "
+"this case, you need to modify the configuration file to specify the access "
+"log path.Refer to the docs for more details: "
+"https://nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
 msgstr ""
-"Перевірте, чи існує шлях до журналу доступу nginx. За замовчуванням цей шлях "
-"отримується з 'nginx -V'. Якщо його не вдається отримати або отриманий шлях "
-"не вказує на дійсний існуючий файл, буде повідомлено про помилку. У цьому "
-"випадку вам потрібно змінити файл конфігурації, щоб вказати шлях до журналу "
-"доступу. Докладніше див. у документації: https://nginxui.com/zh_CN/guide/"
-"config-nginx.html#accesslogpath"
+"Перевірте, чи існує шлях до журналу доступу nginx. За замовчуванням цей "
+"шлях отримується з 'nginx -V'. Якщо його не вдається отримати або отриманий "
+"шлях не вказує на дійсний існуючий файл, буде повідомлено про помилку. У "
+"цьому випадку вам потрібно змінити файл конфігурації, щоб вказати шлях до "
+"журналу доступу. Докладніше див. у документації: "
+"https://nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
 
 #: src/language/generate.ts:10
 msgid "Check if the nginx configuration directory exists"
@@ -982,29 +1031,29 @@ msgid ""
 "from 'nginx -V'. If it cannot be obtained or the obtained path does not "
 "point to a valid, existing file, an error will be reported. In this case, "
 "you need to modify the configuration file to specify the error log path. "
-"Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-"
-"nginx.html#errorlogpath"
+"Refer to the docs for more details: "
+"https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
 msgstr ""
-"Перевірте, чи існує шлях до журналу помилок nginx. За замовчуванням цей шлях "
-"отримується з 'nginx -V'. Якщо його не вдається отримати або отриманий шлях "
-"не вказує на дійсний існуючий файл, буде повідомлено про помилку. У цьому "
-"випадку вам потрібно змінити файл конфігурації, щоб вказати шлях до журналу "
-"помилок. Докладніше див. у документації: https://nginxui.com/zh_CN/guide/"
-"config-nginx.html#errorlogpath"
+"Перевірте, чи існує шлях до журналу помилок nginx. За замовчуванням цей "
+"шлях отримується з 'nginx -V'. Якщо його не вдається отримати або отриманий "
+"шлях не вказує на дійсний існуючий файл, буде повідомлено про помилку. У "
+"цьому випадку вам потрібно змінити файл конфігурації, щоб вказати шлях до "
+"журналу помилок. Докладніше див. у документації: "
+"https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
 
 #: src/language/generate.ts:8
 msgid ""
 "Check if the nginx PID path exists. By default, this path is obtained from "
 "'nginx -V'. If it cannot be obtained, an error will be reported. In this "
 "case, you need to modify the configuration file to specify the Nginx PID "
-"path.Refer to the docs for more details: https://nginxui.com/zh_CN/guide/"
-"config-nginx.html#pidpath"
+"path.Refer to the docs for more details: "
+"https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
 msgstr ""
-"Перевірте, чи існує шлях до PID Nginx. За замовчуванням цей шлях отримується "
-"з команди 'nginx -V'. Якщо його не вдається отримати, буде повідомлено про "
-"помилку. У цьому випадку вам потрібно змінити конфігураційний файл, щоб "
-"вказати шлях до PID Nginx. Докладніше див. у документації: https://nginxui."
-"com/zh_CN/guide/config-nginx.html#pidpath"
+"Перевірте, чи існує шлях до PID Nginx. За замовчуванням цей шлях "
+"отримується з команди 'nginx -V'. Якщо його не вдається отримати, буде "
+"повідомлено про помилку. У цьому випадку вам потрібно змінити "
+"конфігураційний файл, щоб вказати шлях до PID Nginx. Докладніше див. у "
+"документації: https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
 
 #: src/language/generate.ts:13
 msgid "Check if the nginx sbin path exists"
@@ -1032,8 +1081,8 @@ msgstr ""
 
 #: src/language/generate.ts:18
 msgid ""
-"Check if the streams-available and streams-enabled directories are under the "
-"nginx configuration directory"
+"Check if the streams-available and streams-enabled directories are under "
+"the nginx configuration directory"
 msgstr ""
 "Перевірте, чи каталоги streams-available та streams-enabled знаходяться в "
 "каталозі конфігурації nginx"
@@ -1172,6 +1221,14 @@ msgstr "Порівняйте вибрані"
 msgid "Compare with Current"
 msgstr "Порівняйте з струмом"
 
+#: src/views/system/Licenses.vue:144
+msgid "components"
+msgstr "компоненти"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:215
+msgid "Compressed log file support"
+msgstr "Підтримка стиснених файлів журналів"
+
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:88
 msgid "Compression level, 1 is lowest, 9 is highest"
 msgstr "Рівень стиснення, 1 найнижчий, 9 - найвищий"
@@ -1244,6 +1301,10 @@ msgstr "Підтвердити видалення"
 msgid "Confirm New Password"
 msgstr "Підтвердити новий пароль"
 
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:260
+msgid "Confirmation Required"
+msgstr "Потрібне підтвердження"
+
 #: src/views/dashboard/components/NodeAnalyticItem.vue:97
 #: src/views/dashboard/components/SiteNavigationToolbar.vue:39
 msgid "Connected"
@@ -1305,6 +1366,10 @@ msgstr "Кількість"
 msgid "Country / Region"
 msgstr "Країна / Регіон"
 
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:23
+msgid "CPU"
+msgstr "ЦП"
+
 #: src/views/dashboard/ServerAnalytic.vue:308
 msgid "CPU Status"
 msgstr "Статус процесора"
@@ -1318,6 +1383,10 @@ msgid "CPU usage is relatively high, consider optimizing Nginx configuration"
 msgstr ""
 "Використання процесора відносно високе, розгляньте оптимізацію конфігурації "
 "Nginx"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:49
+msgid "CPU Utilization"
+msgstr "Використання процесора"
 
 #: src/views/dashboard/ServerAnalytic.vue:199
 msgid "CPU:"
@@ -1377,6 +1446,10 @@ msgstr "Повноваження"
 msgid "Cron Expression"
 msgstr "Вираз Cron"
 
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:211
+msgid "Cross-file timeline correlation"
+msgstr "Кросфайлова кореляція часових шкал"
+
 #: src/views/preference/components/AuthSettings/TOTP.vue:72
 msgid "Current account is enabled TOTP."
 msgstr "Для поточного облікового запису ввімкнено TOTP."
@@ -1404,8 +1477,8 @@ msgstr ""
 "\"Вірність\" означає точність до змісту та наміру оригінального тексту;\n"
 "\"Плавність\" означає, що переклад має бути зрозумілим та легким для "
 "сприйняття;\n"
-"\"Витонченість\" означає прагнення до культурної естетики перекладу та краси "
-"мови.\n"
+"\"Витонченість\" означає прагнення до культурної естетики перекладу та "
+"краси мови.\n"
 "Мета полягає у створенні перекладу, який був би вірним духу оригіналу,\n"
 "а також відповідав цільовій мові, культурі та естетичним уподобанням "
 "читачів.\n"
@@ -1471,8 +1544,7 @@ msgstr "Користувацькі заголовки"
 msgid ""
 "Customize the name of local node to be displayed in the environment "
 "indicator."
-msgstr ""
-"Налаштуйте назву локального вузла для відображення в індикаторі середовища."
+msgstr "Налаштуйте назву локального вузла для відображення в індикаторі середовища."
 
 #: src/views/backup/AutoBackup/components/CronEditor.vue:19
 msgid "Daily"
@@ -1523,8 +1595,7 @@ msgstr "Типовий діапазон"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:149
 msgid "Define shared memory zone name and size, e.g. proxy_cache:10m"
-msgstr ""
-"Вкажіть назву та розмір зони спільної пам'яті, наприклад proxy_cache:10m"
+msgstr "Вкажіть назву та розмір зони спільної пам'яті, наприклад proxy_cache:10m"
 
 #: src/components/NgxConfigEditor/NgxServer.vue:110
 #: src/components/NgxConfigEditor/NgxUpstream.vue:78 src/language/curd.ts:9
@@ -1883,7 +1954,7 @@ msgid "Document"
 msgid_plural "Documents"
 msgstr[0] "Документ"
 
-#: src/views/nginx_log/NginxLogList.vue:271
+#: src/views/nginx_log/NginxLogList.vue:289
 msgid "Document Count"
 msgstr "Кількість документів"
 
@@ -1893,8 +1964,7 @@ msgstr "Домен"
 
 #: src/views/certificate/components/AutoCertManagement.vue:55
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
-msgstr ""
-"Список доменів порожній, спробуйте знову відкрити Auto Cert для %{config}"
+msgstr "Список доменів порожній, спробуйте знову відкрити Auto Cert для %{config}"
 
 #: src/views/certificate/components/CertificateDownload.vue:93
 msgid "Download Certificate Files"
@@ -1925,8 +1995,9 @@ msgid ""
 "Due to the security policies of some browsers, you cannot use passkeys on "
 "non-HTTPS websites, except when running on localhost."
 msgstr ""
-"Через політику безпеки деяких браузерів ви не можете використовувати пас-"
-"ключі на вебсайтах без HTTPS, окрім випадків, коли сайт працює на localhost."
+"Через політику безпеки деяких браузерів ви не можете використовувати "
+"пас-ключі на вебсайтах без HTTPS, окрім випадків, коли сайт працює на "
+"localhost."
 
 #: src/views/site/site_list/SiteDuplicate.vue:72
 #: src/views/site/site_list/SiteList.vue:86
@@ -1944,6 +2015,10 @@ msgstr "Успішно дубльовано локально"
 #: src/views/dashboard/components/ModulesTable.vue:92
 msgid "Dynamic"
 msgstr "Динамічний"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:183
+msgid "Dynamic shard management"
+msgstr "Динамічне управління шардами"
 
 #: src/views/backup/AutoBackup/components/CronEditor.vue:197
 msgid "e.g., 0 0 * * * (daily at midnight)"
@@ -2001,6 +2076,14 @@ msgstr "увімкнути"
 msgid "Enable 2FA successfully"
 msgstr "2FA успішно ввімкнено"
 
+#: src/views/nginx_log/NginxLogList.vue:450
+msgid "Enable Advanced Indexing"
+msgstr "Увімкнути розширене індексування"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:73
+msgid "Enable Advanced Log Indexing"
+msgstr "Увімкнути розширене індексування журналів"
+
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:74
 msgid "Enable auto-renewal failed for %{name}"
 msgstr "Не вдалося увімкнути автоматичне оновлення для %{name}"
@@ -2024,6 +2107,10 @@ msgstr "Увімкнути HTTP/3"
 #: src/views/preference/tabs/ServerSettings.vue:30
 msgid "Enable HTTPS"
 msgstr "Увімкнути HTTPS"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:75
+msgid "Enable Indexing"
+msgstr "Увімкнути індексацію"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:113
 msgid "Enable Proxy Cache"
@@ -2116,14 +2203,22 @@ msgstr "Успішно ввімкнено"
 #: src/views/preference/tabs/ServerSettings.vue:52
 msgid "Enables HTTP/2 support with multiplexing and server push capabilities"
 msgstr ""
-"Увімкнення підтримки HTTP/2 з можливістю мультиплексування та push-"
-"повідомлень сервера"
+"Увімкнення підтримки HTTP/2 з можливістю мультиплексування та "
+"push-повідомлень сервера"
 
 #: src/views/preference/tabs/ServerSettings.vue:56
 msgid "Enables HTTP/3 support based on QUIC protocol for best performance"
 msgstr ""
 "Увімкнути підтримку HTTP/3 на основі протоколу QUIC для найкращої "
 "продуктивності"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:85
+msgid ""
+"Enabling advanced indexing will consume system resources during log "
+"processing. Please review the requirements below."
+msgstr ""
+"Увімкнення розширеного індексування споживатиме ресурси системи під час "
+"обробки журналів. Будь ласка, перегляньте вимоги нижче."
 
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:76
 msgid "Encrypt website with Let's Encrypt"
@@ -2158,7 +2253,7 @@ msgid "Environment variables cleaned"
 msgstr "Змінні середовища очищено"
 
 #: src/constants/index.ts:23 src/views/config/InspectConfig.vue:63
-#: src/views/nginx_log/NginxLogList.vue:222
+#: src/views/nginx_log/NginxLogList.vue:240
 #: src/views/notification/notificationColumns.tsx:14
 msgid "Error"
 msgstr "Помилка"
@@ -2184,17 +2279,21 @@ msgid "Error log path not exist"
 msgstr "Шлях до журналу помилок не існує"
 
 #: src/components/NgxConfigEditor/LogEntry.vue:98
-#: src/routes/modules/nginx_log.ts:24 src/views/nginx_log/NginxLogList.vue:42
+#: src/routes/modules/nginx_log.ts:24 src/views/nginx_log/NginxLogList.vue:46
 msgid "Error Logs"
 msgstr "Журнали помилок"
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:666
 msgid ""
-"Error logs do not support structured analysis as they contain free-form text "
-"messages."
+"Error logs do not support structured analysis as they contain free-form "
+"text messages."
 msgstr ""
 "Журнали помилок не підтримують структурований аналіз, оскільки вони містять "
 "довільні текстові повідомлення."
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:219
+msgid "Error pattern recognition"
+msgstr "Розпізнавання шаблонів помилок"
 
 #: src/components/ConfigHistory/DiffViewer.vue:81
 msgid "Error processing content"
@@ -2219,6 +2318,10 @@ msgstr "Виконувати щомісяця %{day} числа о %{time}"
 #: src/language/curd.ts:72
 msgid "Expand"
 msgstr "Розгорнути"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:145
+msgid "Expected Performance"
+msgstr "Очікувана продуктивність"
 
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:454
 msgid "Expected Status Codes"
@@ -2251,8 +2354,8 @@ msgstr ""
 
 #: src/views/certificate/ACMEUser.vue:90
 msgid ""
-"External Account Binding Key ID (optional). Required for some ACME providers "
-"like ZeroSSL."
+"External Account Binding Key ID (optional). Required for some ACME "
+"providers like ZeroSSL."
 msgstr ""
 "Ідентифікатор ключа зовнішнього облікового запису (опціонально). Потрібен "
 "для деяких провайдерів ACME, таких як ZeroSSL."
@@ -2299,15 +2402,15 @@ msgstr "Не вдалося створити резервну копію фай�
 msgid "Failed to build nginx config: {0}"
 msgstr "Не вдалося створити конфігурацію nginx: {0}"
 
-#: src/constants/errors/backup.ts:18
+#: src/constants/errors/backup.ts:17
 msgid "Failed to calculate hash: {0}"
 msgstr "Не вдалося обчислити хеш: {0}"
 
-#: src/constants/errors/backup.ts:58
+#: src/constants/errors/backup.ts:54
 msgid "Failed to calculate Nginx hash: {0}"
 msgstr "Не вдалося обчислити хеш Nginx: {0}"
 
-#: src/constants/errors/backup.ts:57
+#: src/constants/errors/backup.ts:53
 msgid "Failed to calculate Nginx UI hash: {0}"
 msgstr "Не вдалося обчислити хеш інтерфейсу Nginx: {0}"
 
@@ -2320,18 +2423,14 @@ msgid "Failed to copy config file: {0}"
 msgstr "Не вдалося скопіювати файл конфігурації: {0}"
 
 #: src/constants/errors/backup.ts:16
-msgid "Failed to copy database directory: {0}"
-msgstr "Не вдалося скопіювати каталог бази даних: {0}"
-
-#: src/constants/errors/backup.ts:17
 msgid "Failed to copy database file: {0}"
 msgstr "Не вдалося скопіювати файл бази даних: {0}"
 
-#: src/constants/errors/backup.ts:32
+#: src/constants/errors/backup.ts:31
 msgid "Failed to copy file content: {0}"
 msgstr "Не вдалося скопіювати вміст файлу: {0}"
 
-#: src/constants/errors/backup.ts:20
+#: src/constants/errors/backup.ts:19
 msgid "Failed to copy Nginx config directory: {0}"
 msgstr "Не вдалося скопіювати каталог конфігурації Nginx: {0}"
 
@@ -2344,19 +2443,15 @@ msgstr "Не вдалося скопіювати в буфер обміну"
 msgid "Failed to create backup"
 msgstr "Не вдалося створити резервну копію"
 
-#: src/constants/errors/backup.ts:65
-msgid "Failed to create backup directory: {0}"
-msgstr "Не вдалося створити директорію для резервних копій: {0}"
-
 #: src/constants/errors/backup.ts:12
 msgid "Failed to create backup file: {0}"
 msgstr "Не вдалося створити резервний файл: {0}"
 
-#: src/constants/errors/backup.ts:46
+#: src/constants/errors/backup.ts:43
 msgid "Failed to create directory: {0}"
 msgstr "Не вдалося створити директорію: {0}"
 
-#: src/constants/errors/backup.ts:48
+#: src/constants/errors/backup.ts:45
 msgid "Failed to create file: {0}"
 msgstr "Не вдалося створити файл: {0}"
 
@@ -2364,19 +2459,19 @@ msgstr "Не вдалося створити файл: {0}"
 msgid "Failed to create hash info file: {0}"
 msgstr "Не вдалося створити файл з інформацією про хеш: {0}"
 
-#: src/constants/errors/backup.ts:47
+#: src/constants/errors/backup.ts:44
 msgid "Failed to create parent directory: {0}"
 msgstr "Не вдалося створити батьківський каталог: {0}"
 
-#: src/constants/errors/backup.ts:34
+#: src/constants/errors/backup.ts:32
 msgid "Failed to create restore directory: {0}"
 msgstr "Не вдалося створити директорію відновлення: {0}"
 
-#: src/constants/errors/backup.ts:78
+#: src/constants/errors/backup.ts:66
 msgid "Failed to create storage directory {0}: {1}"
 msgstr "Не вдалося створити каталог сховища {0}: {1}"
 
-#: src/constants/errors/backup.ts:50
+#: src/constants/errors/backup.ts:47
 msgid "Failed to create symbolic link: {0}"
 msgstr "Не вдалося створити символічне посилання: {0}"
 
@@ -2396,31 +2491,31 @@ msgstr "Не вдалося створити тимчасову піддирек
 msgid "Failed to create zip archive: {0}"
 msgstr "Не вдалося створити ZIP-архів: {0}"
 
-#: src/constants/errors/backup.ts:29
+#: src/constants/errors/backup.ts:28
 msgid "Failed to create zip entry: {0}"
 msgstr "Не вдалося створити запис у ZIP: {0}"
 
-#: src/constants/errors/backup.ts:28
+#: src/constants/errors/backup.ts:27
 msgid "Failed to create zip file: {0}"
 msgstr "Не вдалося створити ZIP-файл: {0}"
 
-#: src/constants/errors/backup.ts:31
+#: src/constants/errors/backup.ts:30
 msgid "Failed to create zip header: {0}"
 msgstr "Не вдалося створити заголовок ZIP: {0}"
 
-#: src/constants/errors/backup.ts:26
+#: src/constants/errors/backup.ts:25
 msgid "Failed to decrypt data: {0}"
 msgstr "Не вдалося розшифрувати дані: {0}"
 
-#: src/constants/errors/backup.ts:54
+#: src/constants/errors/backup.ts:50
 msgid "Failed to decrypt file: {0}"
 msgstr "Не вдалося розшифрувати файл: {0}"
 
-#: src/constants/errors/backup.ts:37
+#: src/constants/errors/backup.ts:35
 msgid "Failed to decrypt Nginx directory: {0}"
 msgstr "Не вдалося розшифрувати каталог Nginx: {0}"
 
-#: src/constants/errors/backup.ts:36
+#: src/constants/errors/backup.ts:34
 msgid "Failed to decrypt Nginx UI directory: {0}"
 msgstr "Не вдалося розшифрувати каталог Nginx UI: {0}"
 
@@ -2458,15 +2553,19 @@ msgstr "Не вдалося завантажити файли сертифіка
 msgid "Failed to enable %{msg}"
 msgstr "Не вдалося увімкнути %{msg}"
 
+#: src/views/nginx_log/NginxLogList.vue:397
+msgid "Failed to enable advanced indexing"
+msgstr "Не вдалося увімкнути розширене індексування"
+
 #: src/views/site/components/SiteStatusSelect.vue:85
 msgid "Failed to enable maintenance mode %{msg}"
 msgstr "Не вдалося увімкнути режим обслуговування %{msg}"
 
-#: src/constants/errors/backup.ts:25
+#: src/constants/errors/backup.ts:24
 msgid "Failed to encrypt data: {0}"
 msgstr "Не вдалося зашифрувати дані: {0}"
 
-#: src/constants/errors/backup.ts:23
+#: src/constants/errors/backup.ts:22
 msgid "Failed to encrypt file: {0}"
 msgstr "Не вдалося зашифрувати файл: {0}"
 
@@ -2478,10 +2577,6 @@ msgstr "Не вдалося зашифрувати каталог Nginx: {0}"
 msgid "Failed to encrypt Nginx UI directory: {0}"
 msgstr "Не вдалося зашифрувати каталог Nginx UI: {0}"
 
-#: src/constants/errors/backup.ts:52
-msgid "Failed to evaluate symbolic links: {0}"
-msgstr "Не вдалося оцінити символічні посилання: {0}"
-
 #: src/constants/errors/docker.ts:3
 msgid "Failed to exec command: {0}"
 msgstr "Не вдалося виконати команду: {0}"
@@ -2490,7 +2585,7 @@ msgstr "Не вдалося виконати команду: {0}"
 msgid "Failed to execute template: {0}"
 msgstr "Не вдалося виконати шаблон: {0}"
 
-#: src/constants/errors/backup.ts:35
+#: src/constants/errors/backup.ts:33
 msgid "Failed to extract archive: {0}"
 msgstr "Не вдалося розпакувати архів: {0}"
 
@@ -2542,15 +2637,15 @@ msgstr "Не вдалося перевірити поточний контейн
 msgid "Failed to load history records"
 msgstr "Не вдалося завантажити історичні записи"
 
-#: src/constants/errors/backup.ts:30
+#: src/constants/errors/backup.ts:29
 msgid "Failed to open source file: {0}"
 msgstr "Не вдалося відкрити вихідний файл: {0}"
 
-#: src/constants/errors/backup.ts:49
+#: src/constants/errors/backup.ts:46
 msgid "Failed to open zip entry: {0}"
 msgstr "Не вдалося відкрити запис у ZIP: {0}"
 
-#: src/constants/errors/backup.ts:45
+#: src/constants/errors/backup.ts:42
 msgid "Failed to open zip file: {0}"
 msgstr "Не вдалося відкрити ZIP-файл: {0}"
 
@@ -2570,7 +2665,7 @@ msgstr "Не вдалося розібрати шаблон: {0}"
 msgid "Failed to pull image: {0}"
 msgstr "Не вдалося отримати образ: {0}"
 
-#: src/constants/errors/backup.ts:53
+#: src/constants/errors/backup.ts:49
 msgid "Failed to read encrypted file: {0}"
 msgstr "Не вдалося прочитати зашифрований файл: {0}"
 
@@ -2578,11 +2673,11 @@ msgstr "Не вдалося прочитати зашифрований файл
 msgid "Failed to read file"
 msgstr "Не вдалося прочитати файл"
 
-#: src/constants/errors/backup.ts:22
+#: src/constants/errors/backup.ts:21
 msgid "Failed to read file: {0}"
 msgstr "Не вдалося прочитати файл: {0}"
 
-#: src/constants/errors/backup.ts:56
+#: src/constants/errors/backup.ts:52
 msgid "Failed to read hash info file: {0}"
 msgstr "Не вдалося прочитати файл з інформацією про хеш: {0}"
 
@@ -2598,7 +2693,7 @@ msgstr "Не вдалося прочитати вивід: {0}"
 msgid "Failed to read response body: {0}"
 msgstr "Не вдалося прочитати тіло відповіді: {0}"
 
-#: src/constants/errors/backup.ts:21
+#: src/constants/errors/backup.ts:20
 msgid "Failed to read symlink: {0}"
 msgstr "Не вдалося прочитати символічне посилання: {0}"
 
@@ -2614,13 +2709,9 @@ msgstr "Не вдалося перебудувати індекс"
 msgid "Failed to refresh sites"
 msgstr "Не вдалося оновити сайти"
 
-#: src/constants/errors/backup.ts:39
+#: src/constants/errors/backup.ts:37
 msgid "Failed to restore Nginx configs: {0}"
 msgstr "Не вдалося відновити конфігурації Nginx: {0}"
-
-#: src/constants/errors/backup.ts:40
-msgid "Failed to restore Nginx UI files: {0}"
-msgstr "Не вдалося відновити файли Nginx UI: {0}"
 
 #: src/views/certificate/components/RemoveCert.vue:57
 msgid "Failed to revoke certificate"
@@ -2662,29 +2753,29 @@ msgstr "Не вдалося оновити статус"
 msgid "Failed to upload file"
 msgstr "Не вдалося завантажити файл"
 
-#: src/constants/errors/backup.ts:38
+#: src/constants/errors/backup.ts:36
 msgid "Failed to verify hashes: {0}"
 msgstr "Не вдалося перевірити хеші: {0}"
 
-#: src/constants/errors/backup.ts:66
+#: src/constants/errors/backup.ts:58
 msgid "Failed to write backup file: {0}"
 msgstr "Не вдалося записати резервний файл: {0}"
 
-#: src/constants/errors/backup.ts:55
+#: src/constants/errors/backup.ts:51
 msgid "Failed to write decrypted file: {0}"
 msgstr "Не вдалося записати розшифрований файл: {0}"
 
-#: src/constants/errors/backup.ts:24
+#: src/constants/errors/backup.ts:23
 msgid "Failed to write encrypted file: {0}"
 msgstr "Не вдалося записати зашифрований файл: {0}"
 
-#: src/constants/errors/backup.ts:67
+#: src/constants/errors/backup.ts:59
 msgid "Failed to write security key file: {0}"
 msgstr "Не вдалося записати файл ключа безпеки: {0}"
 
-#: src/constants/errors/backup.ts:33
-msgid "Failed to write to zip buffer: {0}"
-msgstr "Не вдалося записати в zip-буфер: {0}"
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:173
+msgid "Features"
+msgstr "Функції"
 
 #: src/views/config/components/Delete.vue:116
 msgid "file"
@@ -2759,8 +2850,8 @@ msgid ""
 "Follow the instructions in the dialog to complete the passkey registration "
 "process."
 msgstr ""
-"Дотримуйтесь інструкцій у діалоговому вікні, щоб завершити процес реєстрації "
-"ключа доступу."
+"Дотримуйтесь інструкцій у діалоговому вікні, щоб завершити процес "
+"реєстрації ключа доступу."
 
 #: src/views/preference/tabs/NodeSettings.vue:42
 #: src/views/preference/tabs/NodeSettings.vue:54
@@ -2771,11 +2862,13 @@ msgstr "Для китайських користувачів"
 msgid "For Chinese user: https://cloud.nginxui.com/"
 msgstr "Для китайських користувачів: https://cloud.nginxui.com/"
 
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:251
+msgid "For commercial or professional use, contact"
+msgstr "Для комерційного або професійного використання зв'яжіться з"
+
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:668
-msgid ""
-"For error logs, please use the Raw Log Viewer for better viewing experience."
-msgstr ""
-"Для журналів помилок використовуйте Raw Log Viewer для кращого перегляду."
+msgid "For error logs, please use the Raw Log Viewer for better viewing experience."
+msgstr "Для журналів помилок використовуйте Raw Log Viewer для кращого перегляду."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:140
 msgid ""
@@ -2788,8 +2881,8 @@ msgstr ""
 
 #: src/components/AutoCertForm/AutoCertForm.vue:188
 msgid ""
-"For IP-based certificates, please specify the server IP address that will be "
-"included in the certificate."
+"For IP-based certificates, please specify the server IP address that will "
+"be included in the certificate."
 msgstr ""
 "Для сертифікатів на основі IP вкажіть IP-адресу сервера, яка буде включена "
 "до сертифіката."
@@ -2818,9 +2911,17 @@ msgstr "П'ятниця"
 msgid "From indexed logs"
 msgstr "З індексованих журналів"
 
+#: src/views/system/Licenses.vue:119 src/views/system/Licenses.vue:222
+msgid "Frontend"
+msgstr "Фронтенд"
+
 #: src/views/nginx_log/structured/components/SearchFilters.vue:65
 msgid "Full Text Search"
 msgstr "Повнотекстовий пошук"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:203
+msgid "Full-text search with regex support"
+msgstr "Повнотекстовий пошук з підтримкою регулярних виразів"
 
 #: src/views/certificate/CertificateList/certColumns.tsx:30
 msgid "General Certificate"
@@ -2902,7 +3003,8 @@ msgid ""
 "For testing, SSL validation is disabled by default."
 msgstr ""
 "gRPCS використовує шифрування TLS. Сервер повинен реалізувати службу "
-"перевірки стану gRPC. Для тестування перевірка SSL за замовчуванням вимкнена."
+"перевірки стану gRPC. Для тестування перевірка SSL за замовчуванням "
+"вимкнена."
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:67
 msgid "GZIP Compression"
@@ -2915,10 +3017,6 @@ msgstr "Рівень стиснення GZIP"
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:80
 msgid "GZIP Min Length"
 msgstr "Мінімальна довжина GZIP"
-
-#: src/constants/errors/backup.ts:59
-msgid "Hash verification failed: file integrity compromised"
-msgstr "Не вдалося перевірити хеш: цілісність файлу порушена"
 
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:365
 msgid "Health Check Configuration"
@@ -3006,13 +3104,11 @@ msgstr ""
 msgid ""
 "If you want to automatically revoke the old certificate, please enable this "
 "option."
-msgstr ""
-"Якщо ви хочете автоматично відкликати старий сертифікат, увімкніть цю опцію."
+msgstr "Якщо ви хочете автоматично відкликати старий сертифікат, увімкніть цю опцію."
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:75
 msgid "If your browser supports WebAuthn Passkey, a dialog box will appear."
-msgstr ""
-"Якщо ваш браузер підтримує WebAuthn Passkey, з’явиться діалогове вікно."
+msgstr "Якщо ваш браузер підтримує WebAuthn Passkey, з’явиться діалогове вікно."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:271
 msgid ""
@@ -3043,11 +3139,15 @@ msgstr ""
 "Включає головний процес, робочі процеси, процеси кешування та інші процеси "
 "Nginx"
 
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:199
+msgid "Incremental index scanning"
+msgstr "Інкрементальне сканування індексу"
+
 #: src/views/nginx_log/indexing/IndexManagement.vue:36
 msgid "Index and statistics rebuild started successfully"
 msgstr "Перебудова індексу та статистики успішно розпочата"
 
-#: src/views/nginx_log/NginxLogList.vue:181
+#: src/views/nginx_log/NginxLogList.vue:199
 msgid "Index failed"
 msgstr "Помилка індексації"
 
@@ -3055,23 +3155,31 @@ msgstr "Помилка індексації"
 msgid "Index failed, please try rebuilding"
 msgstr "Не вдалося індексувати, спробуйте перебудувати"
 
-#: src/views/nginx_log/NginxLogList.vue:150
+#: src/views/nginx_log/NginxLogList.vue:384
+msgid "Index rebuild initiated"
+msgstr "Перебудову індексу розпочато"
+
+#: src/views/nginx_log/NginxLogList.vue:168
 msgid "Index Status"
 msgstr "Стан індексу"
 
-#: src/views/nginx_log/NginxLogList.vue:218
+#: src/views/nginx_log/NginxLogList.vue:236
 msgid "Indexed"
 msgstr "Проіндексовано"
 
 #: src/views/nginx_log/indexing/components/IndexProgressBar.vue:52
-#: src/views/nginx_log/NginxLogList.vue:214
+#: src/views/nginx_log/NginxLogList.vue:232
 msgid "Indexing"
 msgstr "Індексація"
 
 #: src/views/nginx_log/components/LoadingState.vue:33
-#: src/views/nginx_log/NginxLogList.vue:380
+#: src/views/nginx_log/NginxLogList.vue:439
 msgid "Indexing logs..."
 msgstr "Індексація журналів..."
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:44
+msgid "Indexing Throughput"
+msgstr "Продуктивність індексації"
 
 #: src/components/ProcessingStatus/ProcessingStatus.vue:31
 #: src/views/nginx_log/components/LoadingState.vue:71
@@ -3141,11 +3249,11 @@ msgstr "Інтервал"
 msgid "Invalid"
 msgstr "Недійсний"
 
-#: src/constants/errors/backup.ts:44
+#: src/constants/errors/backup.ts:41
 msgid "Invalid AES IV format: {0}"
 msgstr "Невірний формат AES IV: {0}"
 
-#: src/constants/errors/backup.ts:43
+#: src/constants/errors/backup.ts:40
 msgid "Invalid AES key format: {0}"
 msgstr "Невірний формат ключа AES: {0}"
 
@@ -3162,7 +3270,7 @@ msgstr "Недійсний тип вимог"
 msgid "Invalid file object"
 msgstr "Недійсний об’єкт файлу"
 
-#: src/constants/errors/backup.ts:51
+#: src/constants/errors/backup.ts:48
 msgid "Invalid file path: {0}"
 msgstr "Недійсний шлях до файлу: {0}"
 
@@ -3187,7 +3295,7 @@ msgstr "Недійсна конфігурація сповіщення"
 msgid "Invalid otp code"
 msgstr "Недійсний OTP-код"
 
-#: src/constants/errors/backup.ts:27
+#: src/constants/errors/backup.ts:26
 msgid "Invalid padding in decrypted data"
 msgstr "Недійсне заповнення в розшифрованих даних"
 
@@ -3195,7 +3303,7 @@ msgstr "Недійсне заповнення в розшифрованих да
 msgid "Invalid passcode or recovery code"
 msgstr "Невірний код підтвердження або код відновлення"
 
-#: src/constants/errors/backup.ts:73
+#: src/constants/errors/backup.ts:61
 msgid "Invalid path: {0}"
 msgstr "Недійсний шлях: {0}"
 
@@ -3212,7 +3320,7 @@ msgstr "Недійсний код відновлення"
 msgid "Invalid request format"
 msgstr "Недійсний формат запиту"
 
-#: src/constants/errors/backup.ts:42
+#: src/constants/errors/backup.ts:39
 msgid "Invalid security token format"
 msgstr "Недійсний формат токена безпеки"
 
@@ -3267,8 +3375,8 @@ msgid ""
 "Keep your recovery codes as safe as your password. We recommend saving them "
 "with a password manager."
 msgstr ""
-"Зберігайте ваші коди відновлення так само надійно, як і пароль. Рекомендуємо "
-"зберігати їх у менеджері паролів."
+"Зберігайте ваші коди відновлення так само надійно, як і пароль. "
+"Рекомендуємо зберігати їх у менеджері паролів."
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:60
 msgid "Keepalive Timeout"
@@ -3345,7 +3453,7 @@ msgstr "Остання перевірка"
 msgid "Last hour"
 msgstr "Остання година"
 
-#: src/views/nginx_log/NginxLogList.vue:231
+#: src/views/nginx_log/NginxLogList.vue:249
 msgid "Last Indexed"
 msgstr "Останнє індексування"
 
@@ -3367,8 +3475,7 @@ msgstr "Залиште порожнім, щоб не змінювати"
 
 #: src/views/preference/tabs/OpenAISettings.vue:41
 msgid "Leave blank for the default: https://api.openai.com/"
-msgstr ""
-"Залиште порожнім для значення за замовчуванням: https://api.openai.com/"
+msgstr "Залиште порожнім для значення за замовчуванням: https://api.openai.com/"
 
 #: src/language/curd.ts:39
 msgid "Leave blank if do not want to modify"
@@ -3397,9 +3504,17 @@ msgstr "Застарілий код відновлення не дозволяє
 msgid "Lego disable CNAME Support"
 msgstr "Lego вимкнути підтримку CNAME"
 
-#: src/views/system/About.vue:83
+#: src/views/system/About.vue:75 src/views/system/Licenses.vue:21
 msgid "License"
 msgstr "Ліцензія"
+
+#: src/views/system/Licenses.vue:133
+msgid "License Distribution"
+msgstr "Розподіл ліцензій"
+
+#: src/views/system/Licenses.vue:125
+msgid "License Types"
+msgstr "Типи ліцензій"
 
 #: src/views/dashboard/components/NodeAnalyticItem.vue:114
 #: src/views/dashboard/components/NodeAnalyticItem.vue:97
@@ -3484,12 +3599,13 @@ msgstr "Журнал"
 #: src/language/generate.ts:23
 msgid ""
 "Log file %{log_path} is not a regular file. If you are using nginx-ui in "
-"docker container, please refer to https://nginxui.com/zh_CN/guide/config-"
-"nginx-log.html for more information."
+"docker container, please refer to "
+"https://nginxui.com/zh_CN/guide/config-nginx-log.html for more information."
 msgstr ""
-"Файл журналу %{log_path} не є звичайним файлом. Якщо ви використовуєте nginx-"
-"ui у контейнері Docker, будь ласка, зверніться до https://nginxui.com/zh_CN/"
-"guide/config-nginx-log.html для отримання додаткової інформації."
+"Файл журналу %{log_path} не є звичайним файлом. Якщо ви використовуєте "
+"nginx-ui у контейнері Docker, будь ласка, зверніться до "
+"https://nginxui.com/zh_CN/guide/config-nginx-log.html для отримання "
+"додаткової інформації."
 
 #: src/constants/errors/nginx_log.ts:14
 msgid "Log file does not exist"
@@ -3515,7 +3631,7 @@ msgstr "Індексатор журналів недоступний"
 msgid "Log indexing completed! Loading updated data..."
 msgstr "Індексація журналів завершена! Завантаження оновлених даних..."
 
-#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:353
+#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:412
 msgid "Log List"
 msgstr "Список журналів"
 
@@ -3541,16 +3657,16 @@ msgstr "Logrotate"
 
 #: src/views/preference/tabs/LogrotateSettings.vue:13
 msgid ""
-"Logrotate, by default, is enabled in most mainstream Linux distributions for "
-"users who install Nginx UI on the host machine, so you don't need to modify "
-"the parameters on this page. For users who install Nginx UI using Docker "
-"containers, you can manually enable this option. The crontab task scheduler "
-"of Nginx UI will execute the logrotate command at the interval you set in "
-"minutes."
+"Logrotate, by default, is enabled in most mainstream Linux distributions "
+"for users who install Nginx UI on the host machine, so you don't need to "
+"modify the parameters on this page. For users who install Nginx UI using "
+"Docker containers, you can manually enable this option. The crontab task "
+"scheduler of Nginx UI will execute the logrotate command at the interval "
+"you set in minutes."
 msgstr ""
 "Logrotate за замовчуванням увімкнено у більшості популярних дистрибутивів "
-"Linux для користувачів, які встановлюють Nginx UI безпосередньо на хост-"
-"машині, тому вам не потрібно змінювати параметри на цій сторінці. Для "
+"Linux для користувачів, які встановлюють Nginx UI безпосередньо на "
+"хост-машині, тому вам не потрібно змінювати параметри на цій сторінці. Для "
 "користувачів, які встановлюють Nginx UI за допомогою контейнерів Docker, ви "
 "можете вручну активувати цю опцію. Планувальник завдань crontab у Nginx UI "
 "виконуватиме команду logrotate з інтервалом, який ви встановите у хвилинах."
@@ -3692,12 +3808,17 @@ msgstr "Максимальна кількість робочих процесі�
 
 #: src/views/dashboard/ServerAnalytic.vue:227
 #: src/views/dashboard/ServerAnalytic.vue:228
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:29
 msgid "Memory"
 msgstr "Пам'ять"
 
 #: src/views/dashboard/ServerAnalytic.vue:216
 msgid "Memory and Storage"
 msgstr "Пам’ять та сховище"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:54
+msgid "Memory Efficiency"
+msgstr "Ефективність пам'яті"
 
 #: src/views/dashboard/components/ResourceUsageCard.vue:51
 msgid "Memory Usage (RSS)"
@@ -3724,6 +3845,10 @@ msgstr "Мінімальний вільний простір"
 msgid "Minimum free space in the cache directory"
 msgstr "Мінімальний вільний простір у кеш-директорії"
 
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:117
+msgid "Minimum:"
+msgstr "Мінімум:"
+
 #: src/views/backup/AutoBackup/components/CronEditor.vue:169
 msgid "Minute"
 msgstr "Хвилина"
@@ -3739,6 +3864,18 @@ msgstr "Дзеркало"
 #: src/views/preference/tabs/OpenAISettings.vue:20
 msgid "Model"
 msgstr "Модель"
+
+#: src/constants/errors/nginx_log.ts:28
+msgid "Modern analytics service not available"
+msgstr "Сучасний аналітичний сервіс недоступний"
+
+#: src/constants/errors/nginx_log.ts:29
+msgid "Modern indexer service not available"
+msgstr "Сучасна служба індексації недоступна"
+
+#: src/constants/errors/nginx_log.ts:27
+msgid "Modern searcher service not available"
+msgstr "Сучасний пошуковий сервіс недоступний"
 
 #: src/components/ConfigHistory/ConfigHistory.vue:53
 msgid "Modified At"
@@ -3782,6 +3919,10 @@ msgstr "Щомісяця %{day} числа о %{time}"
 msgid "Mozilla/5.0..."
 msgstr "Mozilla/5.0..."
 
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:223
+msgid "Multi-dimensional data visualization"
+msgstr "Багатовимірна візуалізація даних"
+
 #: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:51
 msgid "Multi-line Directive"
 msgstr "Багаторядкова директива"
@@ -3807,7 +3948,7 @@ msgstr "Н/Д"
 #: src/views/config/components/Delete.vue:123
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:17 src/views/namespace/columns.ts:9
-#: src/views/nginx_log/NginxLogList.vue:128 src/views/node/nodeColumns.tsx:8
+#: src/views/nginx_log/NginxLogList.vue:146 src/views/node/nodeColumns.tsx:8
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:80
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:36
 #: src/views/site/site_list/columns.tsx:30
@@ -3815,7 +3956,7 @@ msgstr "Н/Д"
 #: src/views/stream/columns.tsx:26
 #: src/views/stream/components/RightPanel/Basic.vue:31
 #: src/views/stream/components/StreamDuplicate.vue:71
-#: src/views/stream/StreamList.vue:123
+#: src/views/stream/StreamList.vue:123 src/views/system/Licenses.vue:13
 msgid "Name"
 msgstr "Ім'я"
 
@@ -3926,7 +4067,7 @@ msgstr "Конфігурація Nginx не містить sites-enabled"
 msgid "Nginx conf not include stream-enabled"
 msgstr "Конфігурація Nginx не містить stream-enabled"
 
-#: src/constants/errors/backup.ts:19
+#: src/constants/errors/backup.ts:18
 msgid "Nginx config directory is not set"
 msgstr "Каталог конфігурації Nginx не встановлено"
 
@@ -4077,8 +4218,8 @@ msgstr "Конфігурацію Nginx UI відновлено"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:336
 msgid ""
-"Nginx UI configuration has been restored and will restart automatically in a "
-"few seconds."
+"Nginx UI configuration has been restored and will restart automatically in "
+"a few seconds."
 msgstr ""
 "Конфігурацію Nginx UI відновлено, і вона автоматично перезавантажиться за "
 "кілька секунд."
@@ -4203,7 +4344,7 @@ msgstr "Неочікуваний текст"
 msgid "Not Found"
 msgstr "Не знайдено"
 
-#: src/views/nginx_log/NginxLogList.vue:206
+#: src/views/nginx_log/NginxLogList.vue:224
 msgid "Not Indexed"
 msgstr "Не індексовано"
 
@@ -4327,6 +4468,10 @@ msgstr "Офіційна документація"
 msgid "Offline"
 msgstr "Офлайн"
 
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:195
+msgid "Offline GeoIP analysis"
+msgstr "Офлайн-аналіз GeoIP"
+
 #: src/components/ChatGPT/ChatMessageInput.vue:18
 #: src/components/NgxConfigEditor/NgxServer.vue:60
 #: src/components/NgxConfigEditor/NgxUpstream.vue:31
@@ -4373,6 +4518,10 @@ msgstr "Дозволені лише zip-файли"
 msgid "Open"
 msgstr "Відкрито"
 
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:232
+msgid "Open Source Limitation"
+msgstr "Обмеження відкритого коду"
+
 #: src/views/preference/Preference.vue:100
 msgid "OpenAI"
 msgstr "OpenAI"
@@ -4384,6 +4533,10 @@ msgstr "Операційна система"
 #: src/views/nginx_log/dashboard/components/OSStatsTable.vue:36
 msgid "Operating System Statistics"
 msgstr "Статистика операційної системи"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:51
+msgid "Optimized multi-core processing"
+msgstr "Оптимізована багатоядерна обробка"
 
 #: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:286
 msgid "Or"
@@ -4500,12 +4653,12 @@ msgstr "Паролі не збігаються"
 #: src/views/config/components/ConfigRightPanel/Basic.vue:41
 #: src/views/config/components/Delete.vue:124
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:420
-#: src/views/nginx_log/NginxLogList.vue:137
+#: src/views/nginx_log/NginxLogList.vue:155
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:517
 msgid "Path"
 msgstr "Шлях"
 
-#: src/constants/errors/backup.ts:74
+#: src/constants/errors/backup.ts:62
 msgid "Path not in granted access paths: {0}"
 msgstr "Шлях не входить до наданих шляхів доступу: {0}"
 
@@ -4549,6 +4702,10 @@ msgstr "Помилка виконання оновлення ядра"
 #: src/views/dashboard/components/ParamsOptimization.vue:122
 msgid "Performance"
 msgstr "Продуктивність"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:84
+msgid "Performance Impact Notice"
+msgstr "Повідомлення про вплив на продуктивність"
 
 #: src/views/dashboard/NginxDashBoard.vue:207
 msgid "Performance Metrics"
@@ -4621,8 +4778,7 @@ msgstr "Будь ласка, введіть токен безпеки"
 #: src/components/SystemRestore/SystemRestoreContent.vue:210
 #: src/components/SystemRestore/SystemRestoreContent.vue:287
 msgid "Please enter the security token received during backup"
-msgstr ""
-"Будь ласка, введіть токен безпеки, отриманий під час резервного копіювання"
+msgstr "Будь ласка, введіть токен безпеки, отриманий під час резервного копіювання"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:80
 msgid "Please enter the server IP address"
@@ -4654,8 +4810,8 @@ msgstr ""
 #: src/components/Notification/notifications.ts:194
 #: src/language/constants.ts:59
 msgid ""
-"Please generate new recovery codes in the preferences immediately to prevent "
-"lockout."
+"Please generate new recovery codes in the preferences immediately to "
+"prevent lockout."
 msgstr ""
 "Будь ласка, негайно згенеруйте нові коди відновлення в налаштуваннях, щоб "
 "уникнути блокування."
@@ -4703,8 +4859,7 @@ msgid "Please log in."
 msgstr "Будь ласка, увійдіть."
 
 #: src/views/certificate/DNSCredential.vue:102
-msgid ""
-"Please note that the unit of time configurations below are all in seconds."
+msgid "Please note that the unit of time configurations below are all in seconds."
 msgstr ""
 "Будь ласка, зверніть увагу, що одиницею виміру часу в наведених нижче "
 "налаштуваннях є секунди."
@@ -4716,7 +4871,8 @@ msgstr "Будь ласка, усуньте всі проблеми перед �
 #: src/views/backup/components/BackupCreator.vue:106
 msgid "Please save this security token, you will need it for restoration:"
 msgstr ""
-"Будь ласка, збережіть цей токен безпеки, він знадобиться вам для відновлення:"
+"Будь ласка, збережіть цей токен безпеки, він знадобиться вам для "
+"відновлення:"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:107
 msgid "Please select a backup file"
@@ -4792,8 +4948,7 @@ msgstr "Приватний CA:"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:202
 msgid "Private IPs (192.168.x.x, 10.x.x.x, 172.16-31.x.x) will fail"
-msgstr ""
-"Приватні IP-адреси (192.168.x.x, 10.x.x.x, 172.16-31.x.x) не працюватимуть"
+msgstr "Приватні IP-адреси (192.168.x.x, 10.x.x.x, 172.16-31.x.x) не працюватимуть"
 
 #: src/views/certificate/components/CertificateFileUpload.vue:120
 #: src/views/certificate/components/CertificateFileUpload.vue:44
@@ -4839,7 +4994,8 @@ msgstr "Протокол"
 #: src/views/preference/tabs/ServerSettings.vue:47
 msgid ""
 "Protocol configuration only takes effect when directly connecting. If using "
-"reverse proxy, please configure the protocol separately in the reverse proxy."
+"reverse proxy, please configure the protocol separately in the reverse "
+"proxy."
 msgstr ""
 "Налаштування протоколу діє лише при прямому підключенні. Якщо ви "
 "використовуєте зворотний проксі, налаштуйте протокол окремо у зворотному "
@@ -4881,9 +5037,9 @@ msgstr "Номер громадської безпеки"
 msgid "PV"
 msgstr "Перегляди сторінок"
 
-#: src/views/nginx_log/NginxLogList.vue:187
-#: src/views/nginx_log/NginxLogList.vue:188
-#: src/views/nginx_log/NginxLogList.vue:210
+#: src/views/nginx_log/NginxLogList.vue:205
+#: src/views/nginx_log/NginxLogList.vue:206
+#: src/views/nginx_log/NginxLogList.vue:228
 msgid "Queued"
 msgstr "У черзі"
 
@@ -4914,7 +5070,11 @@ msgstr "Запити на читання"
 msgid "Reads"
 msgstr "Читання"
 
-#: src/views/nginx_log/NginxLogList.vue:407
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:191
+msgid "Real-time analytics dashboard"
+msgstr "Панель аналітики в реальному часі"
+
+#: src/views/nginx_log/NginxLogList.vue:477
 msgid "Rebuild"
 msgstr "Перебудувати"
 
@@ -4938,6 +5098,10 @@ msgstr "Отримання"
 #: src/components/SelfCheck/SelfCheck.vue:23
 msgid "Recheck"
 msgstr "Перевірити знову"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:125
+msgid "Recommended:"
+msgstr "Рекомендовано:"
 
 #: src/components/TwoFA/Authorization.vue:79
 msgid "Recovery"
@@ -5220,9 +5384,9 @@ msgid ""
 "shared library memory, which will be repeated calculated for multiple "
 "processes"
 msgstr ""
-"Розмір резидентного набору: Фактична пам'ять, резидентна у фізичній пам'яті, "
-"включаючи всю пам'ять спільних бібліотек, яка буде повторно обчислюватися "
-"для кількох процесів"
+"Розмір резидентного набору: Фактична пам'ять, резидентна у фізичній "
+"пам'яті, включаючи всю пам'ять спільних бібліотек, яка буде повторно "
+"обчислюватися для кількох процесів"
 
 #: src/composables/usePerformanceMetrics.ts:109
 #: src/views/dashboard/components/PerformanceTablesCard.vue:69
@@ -5364,10 +5528,6 @@ msgstr "Потрібен ідентифікатор ключа доступу S3
 msgid "S3 Bucket"
 msgstr "S3-відро"
 
-#: src/constants/errors/backup.ts:70
-msgid "S3 bucket access denied: {0}"
-msgstr "Доступ до сховища S3 заборонено: {0}"
-
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:101
 msgid "S3 bucket is required"
 msgstr "Потрібен S3-відро"
@@ -5376,7 +5536,7 @@ msgstr "Потрібен S3-відро"
 msgid "S3 bucket name"
 msgstr "Назва S3-відра"
 
-#: src/constants/errors/backup.ts:63
+#: src/constants/errors/backup.ts:56
 msgid "S3 configuration is incomplete: missing {0}"
 msgstr "Конфігурація S3 неповна: відсутній {0}"
 
@@ -5384,26 +5544,14 @@ msgstr "Конфігурація S3 неповна: відсутній {0}"
 msgid "S3 connection test failed"
 msgstr "Тест підключення S3 не вдався"
 
-#: src/constants/errors/backup.ts:69
-msgid "S3 connection test failed: {0}"
-msgstr "Тест підключення S3 не вдався: {0}"
-
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:30
 msgid "S3 connection test successful"
 msgstr "Тест підключення S3 успішний"
-
-#: src/constants/errors/backup.ts:71
-msgid "S3 credentials are invalid: {0}"
-msgstr "Облікові дані S3 недійсні: {0}"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:243
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:66
 msgid "S3 Endpoint"
 msgstr "Кінцева точка S3"
-
-#: src/constants/errors/backup.ts:72
-msgid "S3 endpoint is invalid: {0}"
-msgstr "Кінцева точка S3 недійсна: {0}"
 
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:68
 msgid "S3 endpoint is required"
@@ -5440,7 +5588,7 @@ msgstr "Секретний ключ доступу S3"
 msgid "S3 secret access key is required"
 msgstr "Потрібен секретний ключ доступу S3"
 
-#: src/constants/errors/backup.ts:68
+#: src/constants/errors/backup.ts:60
 msgid "S3 upload failed: {0}"
 msgstr "Помилка завантаження в S3: {0}"
 
@@ -5511,7 +5659,7 @@ msgid "Save successful"
 msgstr "Успішно збережено"
 
 #: src/language/curd.ts:35 src/views/certificate/store.ts:13
-#: src/views/preference/store/index.ts:119
+#: src/views/preference/store/index.ts:122
 msgid "Save successfully"
 msgstr "Успішно збережено"
 
@@ -5727,19 +5875,21 @@ msgstr "Налаштування"
 
 #: src/constants/errors/nginx_log.ts:8
 msgid ""
-"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://nginxui."
-"com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.AccessLogPath is empty, refer to "
+"https://nginxui.com/guide/config-nginx.html for more information"
 msgstr ""
-"Settings.NginxLogSettings.AccessLogPath порожній, див. https://nginxui.com/"
-"guide/config-nginx.html для отримання додаткової інформації"
+"Settings.NginxLogSettings.AccessLogPath порожній, див. "
+"https://nginxui.com/guide/config-nginx.html для отримання додаткової "
+"інформації"
 
 #: src/constants/errors/nginx_log.ts:7
 msgid ""
-"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://nginxui."
-"com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.ErrorLogPath is empty, refer to "
+"https://nginxui.com/guide/config-nginx.html for more information"
 msgstr ""
-"Settings.NginxLogSettings.ErrorLogPath порожній, див. https://nginxui.com/"
-"guide/config-nginx.html для отримання додаткової інформації"
+"Settings.NginxLogSettings.ErrorLogPath порожній, див. "
+"https://nginxui.com/guide/config-nginx.html для отримання додаткової "
+"інформації"
 
 #: src/views/install/components/InstallView.vue:65
 msgid "Setup your Nginx UI"
@@ -5847,6 +5997,10 @@ msgstr "Вихідна IP"
 msgid "Sponsor"
 msgstr "Спонсор"
 
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:37
+msgid "SSD storage for better I/O performance"
+msgstr "SSD-накопич для кращої продуктивності вводу-виводу"
+
 #: src/views/certificate/components/CertificateContentEditor.vue:118
 #: src/views/certificate/components/CertificateContentEditor.vue:123
 msgid "SSL Certificate Content"
@@ -5854,8 +6008,7 @@ msgstr "Вміст SSL-сертифіката"
 
 #: src/constants/errors/system.ts:8
 msgid "SSL certificate file must be under Nginx configuration directory: {0}"
-msgstr ""
-"Файл SSL-сертифіката повинен знаходитися в каталозі конфігурації Nginx: {0}"
+msgstr "Файл SSL-сертифіката повинен знаходитися в каталозі конфігурації Nginx: {0}"
 
 #: src/constants/errors/system.ts:6
 msgid "SSL certificate file not found"
@@ -5950,6 +6103,7 @@ msgstr "Зупинено"
 
 #: src/views/dashboard/ServerAnalytic.vue:257
 #: src/views/dashboard/ServerAnalytic.vue:258
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:35
 msgid "Storage"
 msgstr "Сховище"
 
@@ -5974,10 +6128,6 @@ msgstr "Шлях зберігання"
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:56
 msgid "Storage path is required"
 msgstr "Шлях до сховища обов’язковий"
-
-#: src/constants/errors/backup.ts:61
-msgid "Storage path not in granted access paths: {0}"
-msgstr "Шлях зберігання не входить до наданих шляхів доступу: {0}"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:70
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:45
@@ -6030,14 +6180,14 @@ msgstr "Неділя"
 #: src/components/SelfCheck/tasks/frontend/websocket.ts:13
 msgid ""
 "Support communication with the backend through the WebSocket protocol. If "
-"your Nginx UI is being used via an Nginx reverse proxy, please refer to this "
-"link to write the corresponding configuration file: https://nginxui.com/"
-"guide/nginx-proxy-example.html"
+"your Nginx UI is being used via an Nginx reverse proxy, please refer to "
+"this link to write the corresponding configuration file: "
+"https://nginxui.com/guide/nginx-proxy-example.html"
 msgstr ""
 "Підтримка зв'язку з бекендом через протокол WebSocket. Якщо ваш Nginx UI "
-"використовується через зворотний проксі Nginx, перегляньте це посилання, щоб "
-"написати відповідний конфігураційний файл: https://nginxui.com/guide/nginx-"
-"proxy-example.html"
+"використовується через зворотний проксі Nginx, перегляньте це посилання, "
+"щоб написати відповідний конфігураційний файл: "
+"https://nginxui.com/guide/nginx-proxy-example.html"
 
 #: src/language/curd.ts:53 src/language/curd.ts:57
 msgid "Support single or batch upload of files"
@@ -6149,6 +6299,10 @@ msgstr "Перевірка системи"
 msgid "System Initial User"
 msgstr "Початковий користувач системи"
 
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:95
+msgid "System Requirements"
+msgstr "Системні вимоги"
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:174
 msgid "System Restore"
 msgstr "Відновлення системи"
@@ -6231,10 +6385,11 @@ msgstr "Введений текст не є ключем SSL-сертифіка�
 
 #: src/constants/errors/nginx_log.ts:2
 msgid ""
-"The log path is not under the paths in settings.NginxSettings.LogDirWhiteList"
+"The log path is not under the paths in "
+"settings.NginxSettings.LogDirWhiteList"
 msgstr ""
-"Шлях до журналу не знаходиться серед шляхів у settings.NginxSettings."
-"LogDirWhiteList"
+"Шлях до журналу не знаходиться серед шляхів у "
+"settings.NginxSettings.LogDirWhiteList"
 
 #: src/views/preference/tabs/OpenAISettings.vue:23
 #: src/views/preference/tabs/OpenAISettings.vue:89
@@ -6246,8 +6401,7 @@ msgstr ""
 "двокрапки та крапки."
 
 #: src/views/preference/tabs/OpenAISettings.vue:90
-msgid ""
-"The model used for code completion, if not set, the chat model will be used."
+msgid "The model used for code completion, if not set, the chat model will be used."
 msgstr ""
 "Модель, яка використовується для завершення коду. Якщо вона не встановлена, "
 "буде використовуватися модель чату."
@@ -6330,10 +6484,15 @@ msgstr ""
 "втрати пароля та других факторів. Якщо ви не зможете знайти ці коди, ви "
 "втратите доступ до свого облікового запису."
 
+#: src/routes/modules/system.ts:45
+msgid "Third-party Components"
+msgstr "Сторонні компоненти"
+
 #: src/views/certificate/components/AutoCertManagement.vue:45
 msgid "This Auto Cert item is invalid, please remove it."
 msgstr ""
-"Цей елемент автоматичного сертифікату є недійсним, будь ласка, видаліть його."
+"Цей елемент автоматичного сертифікату є недійсним, будь ласка, видаліть "
+"його."
 
 #: src/views/certificate/components/AutoCertManagement.vue:35
 msgid "This certificate is managed by Nginx UI"
@@ -6362,20 +6521,18 @@ msgid "This field should not be empty"
 msgstr "Це поле не повинно бути порожнім"
 
 #: src/constants/form_errors.ts:6
-msgid ""
-"This field should only contain letters, unicode characters, numbers, and -_."
+msgid "This field should only contain letters, unicode characters, numbers, and -_."
 msgstr "Це поле має містити лише літери, символи Unicode, цифри та -_."
 
 #: src/language/curd.ts:46
 msgid ""
-"This field should only contain letters, unicode characters, numbers, and -"
-"_./:"
+"This field should only contain letters, unicode characters, numbers, and "
+"-_./:"
 msgstr "Це поле має містити лише літери, символи Unicode, цифри та -_./:"
 
 #: src/components/Notification/notifications.ts:94
 msgid "This is a test message sent at %{timestamp} from Nginx UI."
-msgstr ""
-"Це тестове повідомлення, надіслане на %{timestamp} з користувача Nginx."
+msgstr "Це тестове повідомлення, надіслане на %{timestamp} з користувача Nginx."
 
 #: src/views/dashboard/NginxDashBoard.vue:175
 msgid ""
@@ -6403,9 +6560,9 @@ msgstr ""
 
 #: src/components/AutoCertForm/AutoCertForm.vue:128
 msgid ""
-"This site is configured as a default server (default_server) for HTTPS (port "
-"443). IP certificates require Certificate Authority (CA) support and may not "
-"be available with all ACME providers."
+"This site is configured as a default server (default_server) for HTTPS "
+"(port 443). IP certificates require Certificate Authority (CA) support and "
+"may not be available with all ACME providers."
 msgstr ""
 "Цей сайт налаштований як сервер за замовчуванням (default_server) для HTTPS "
 "(порт 443). IP-сертифікати вимагають підтримки Центру сертифікації (CA) і "
@@ -6413,13 +6570,13 @@ msgstr ""
 
 #: src/components/AutoCertForm/AutoCertForm.vue:132
 msgid ""
-"This site uses wildcard server name (_) which typically indicates an IP-"
-"based certificate. IP certificates require Certificate Authority (CA) "
+"This site uses wildcard server name (_) which typically indicates an "
+"IP-based certificate. IP certificates require Certificate Authority (CA) "
 "support and may not be available with all ACME providers."
 msgstr ""
-"Цей сайт використовує шаблонне ім’я сервера (_), яке зазвичай вказує на IP-"
-"сертифікат. IP-сертифікати вимагають підтримки Центру сертифікації (CA) і "
-"можуть бути недоступні у всіх провайдерів ACME."
+"Цей сайт використовує шаблонне ім’я сервера (_), яке зазвичай вказує на "
+"IP-сертифікат. IP-сертифікати вимагають підтримки Центру сертифікації (CA) "
+"і можуть бути недоступні у всіх провайдерів ACME."
 
 #: src/views/backup/components/BackupCreator.vue:140
 msgid ""
@@ -6469,10 +6626,8 @@ msgstr ""
 "після завершення відновлення."
 
 #: src/views/node/BatchUpgrader.vue:186
-msgid ""
-"This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
-msgstr ""
-"Це оновить або перевстановить Nginx UI на %{nodeNames} до версії %{version}."
+msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
+msgstr "Це оновить або перевстановить Nginx UI на %{nodeNames} до версії %{version}."
 
 #: src/views/preference/tabs/AuthSettings.vue:91
 msgid "Throttle"
@@ -6487,7 +6642,7 @@ msgstr "Четвер"
 msgid "Time"
 msgstr "Час"
 
-#: src/views/nginx_log/NginxLogList.vue:284
+#: src/views/nginx_log/NginxLogList.vue:302
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:687
 msgid "Time Range"
 msgstr "Часовий діапазон"
@@ -6526,8 +6681,8 @@ msgid ""
 "To enable it, you need to install the Google or Microsoft Authenticator app "
 "on your mobile phone."
 msgstr ""
-"Щоб увімкнути його, вам потрібно встановити додаток Google Authenticator або "
-"Microsoft Authenticator на свій мобільний телефон."
+"Щоб увімкнути його, вам потрібно встановити додаток Google Authenticator "
+"або Microsoft Authenticator на свій мобільний телефон."
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:94
 msgid ""
@@ -6536,15 +6691,15 @@ msgid ""
 "and restart Nginx UI."
 msgstr ""
 "Для забезпечення безпеки конфігурацію WebAuthn не можна додати через "
-"інтерфейс. Будь ласка, налаштуйте вручну наступне у файлі конфігурації app."
-"ini та перезапустіть Nginx UI."
+"інтерфейс. Будь ласка, налаштуйте вручну наступне у файлі конфігурації "
+"app.ini та перезапустіть Nginx UI."
 
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:34
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:15
 msgid ""
 "To make sure the certification auto-renewal can work normally, we need to "
-"add a location which can proxy the request from authority to backend, and we "
-"need to save this file and reload the Nginx. Are you sure you want to "
+"add a location which can proxy the request from authority to backend, and "
+"we need to save this file and reload the Nginx. Are you sure you want to "
 "continue?"
 msgstr ""
 "Щоб гарантувати нормальну роботу автоматичного поновлення сертифікатів, нам "
@@ -6591,6 +6746,10 @@ msgstr "Топ-10 URL-адрес"
 #: src/language/curd.ts:5
 msgid "Total"
 msgstr "Всього"
+
+#: src/views/system/Licenses.vue:107
+msgid "Total Components"
+msgstr "Всього компонентів"
 
 #: src/composables/usePerformanceMetrics.ts:94
 #: src/views/dashboard/components/PerformanceTablesCard.vue:54
@@ -6683,7 +6842,7 @@ msgstr "Потрібна двофакторна аутентифікація"
 #: src/views/certificate/CertificateList/certColumns.tsx:24
 #: src/views/config/components/Delete.vue:122
 #: src/views/dashboard/components/ModulesTable.vue:83
-#: src/views/nginx_log/NginxLogList.vue:119
+#: src/views/nginx_log/NginxLogList.vue:137
 #: src/views/notification/notificationColumns.tsx:8
 #: src/views/preference/components/ExternalNotify/columns.tsx:19
 msgid "Type"
@@ -6718,7 +6877,7 @@ msgstr "Унікальні сторінки"
 msgid "Unknown"
 msgstr "Невідомо"
 
-#: src/constants/errors/backup.ts:64
+#: src/constants/errors/backup.ts:57
 msgid "Unsupported backup type: {0}"
 msgstr "Тип резервної копії не підтримується: {0}"
 
@@ -6798,7 +6957,7 @@ msgid "Uptime:"
 msgstr "Час роботи:"
 
 #: src/views/nginx_log/dashboard/components/TopUrlsTable.vue:13
-#: src/views/node/nodeColumns.tsx:18
+#: src/views/node/nodeColumns.tsx:18 src/views/system/Licenses.vue:34
 msgid "URL"
 msgstr "URL"
 
@@ -6883,12 +7042,14 @@ msgstr "Перевірити ім’я хоста"
 msgid "Verify system requirements"
 msgstr "Перевірте системні вимоги"
 
-#: src/views/node/nodeColumns.tsx:30
+#: src/views/node/nodeColumns.tsx:30 src/views/system/Licenses.vue:28
 msgid "Version"
 msgstr "Версія"
 
-#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:396
+#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:466
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:83
+#: src/views/system/Licenses.vue:180 src/views/system/Licenses.vue:215
+#: src/views/system/Licenses.vue:250
 msgid "View"
 msgstr "Переглянути"
 
@@ -6903,6 +7064,10 @@ msgstr "Переглянути на GitHub"
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:134
 msgid "View Recovery Codes"
 msgstr "Переглянути коди відновлення"
+
+#: src/views/system/About.vue:83
+msgid "View Third-party Components"
+msgstr "Переглянути сторонні компоненти"
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:70
 msgid "Viewed"
@@ -6948,10 +7113,14 @@ msgid ""
 "Encrypt cannot issue certificates for private IPs. Use a public IP address "
 "or consider using a private CA."
 msgstr ""
-"Попередження: Схоже, що це приватна IP-адреса. Публічні центри сертифікації, "
-"такі як Let's Encrypt, не можуть видавати сертифікати для приватних IP. "
-"Використовуйте публічну IP-адресу або розгляньте можливість використання "
-"приватного центру сертифікації."
+"Попередження: Схоже, що це приватна IP-адреса. Публічні центри "
+"сертифікації, такі як Let's Encrypt, не можуть видавати сертифікати для "
+"приватних IP. Використовуйте публічну IP-адресу або розгляньте можливість "
+"використання приватного центру сертифікації."
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:245
+msgid "We do not accept any feature requests"
+msgstr "Ми не приймаємо жодних запитів на функції"
 
 #: src/views/certificate/DNSCredential.vue:96
 msgid ""
@@ -6963,8 +7132,8 @@ msgstr ""
 
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:141
 msgid ""
-"We will remove the HTTPChallenge configuration from this file and reload the "
-"Nginx. Are you sure you want to continue?"
+"We will remove the HTTPChallenge configuration from this file and reload "
+"the Nginx. Are you sure you want to continue?"
 msgstr ""
 "Ми видалимо конфігурацію HTTPChallenge з цього файлу та перезавантажимо "
 "Nginx. Ви впевнені, що хочете продовжити?"
@@ -7090,8 +7259,8 @@ msgstr "Так"
 
 #: src/views/terminal/Terminal.vue:142
 msgid ""
-"You are accessing this terminal over an insecure HTTP connection on a non-"
-"localhost domain. This may expose sensitive information."
+"You are accessing this terminal over an insecure HTTP connection on a "
+"non-localhost domain. This may expose sensitive information."
 msgstr ""
 "Ви отримуєте доступ до цього терміналу через незахищене HTTP-з’єднання в "
 "домені, який не є локальним. Це може призвести до витоку конфіденційної "
@@ -7121,15 +7290,13 @@ msgstr "Тепер ви можете закрити це діалогове ві
 msgid ""
 "You have not configured the settings of Webauthn, so you cannot add a "
 "passkey."
-msgstr ""
-"Ви не налаштували параметри WebAuthn, тому не можете додати ключ доступу."
+msgstr "Ви не налаштували параметри WebAuthn, тому не можете додати ключ доступу."
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:81
-msgid ""
-"You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
+msgid "You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
 msgstr ""
-"Ви ще не ввімкнули двофакторну аутентифікацію. Будь ласка, увімкніть її, щоб "
-"згенерувати коди відновлення."
+"Ви ще не ввімкнули двофакторну аутентифікацію. Будь ласка, увімкніть її, "
+"щоб згенерувати коди відновлення."
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:94
 msgid "You have not generated recovery codes yet."
@@ -7151,6 +7318,92 @@ msgstr "Ваші старі коди більше не працюватимут�
 #: src/views/preference/components/AuthSettings/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "Ваші ключі доступу"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:179
+msgid "Zero-allocation pipeline"
+msgstr "Конвеєр без виділення пам’яті"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:56
+msgid "Zero-allocation pipeline optimization"
+msgstr "Оптимізація конвеєра без виділення пам'яті"
+
+#~ msgid "Geographic mapping & insights"
+#~ msgstr "Географічне картографування та аналітика"
+
+#~ msgid "No feature requests accepted."
+#~ msgstr "Запити на функціонал не приймаються"
+
+#~ msgid "Time-series trend analysis"
+#~ msgstr "Аналіз часових рядів"
+
+#~ msgid "User-Agent & browser analytics"
+#~ msgstr "Аналітика User-Agent та браузера"
+
+#~ msgid "12+ cores (Apple M2 Pro or Intel equivalent)"
+#~ msgstr "12+ ядер (Apple M2 Pro або еквівалент Intel)"
+
+#~ msgid "4GB+ RAM for optimal performance"
+#~ msgstr "4 ГБ+ оперативної пам’яті для оптимальної продуктивності"
+
+#~ msgid "Adaptive batch sizing"
+#~ msgstr "Адаптивний розмір пакету"
+
+#~ msgid "CPU Architecture"
+#~ msgstr "Архітектура процесора"
+
+#~ msgid "GeoIP and User-Agent parsing"
+#~ msgstr "Аналіз GeoIP та User-Agent"
+
+#~ msgid "Minimum 1GB RAM"
+#~ msgstr "Мінімум 1 ГБ оперативної пам'яті"
+
+#~ msgid "Modern CPU (x86_64, ARM64)"
+#~ msgstr "Сучасний процесор (x86_64, ARM64)"
+
+#~ msgid "Real-time performance monitoring"
+#~ msgstr "Моніторинг продуктивності в реальному часі"
+
+#~ msgid "Sustained performance on modern hardware"
+#~ msgstr "Стабільна продуктивність на сучасному обладнанні"
+
+#~ msgid "Backup path not in granted access paths: {0}"
+#~ msgstr "Шлях резервного копіювання не входить до наданих шляхів доступу: {0}"
+
+#~ msgid "Build with"
+#~ msgstr "Створено за допомогою"
+
+#~ msgid "Failed to copy database directory: {0}"
+#~ msgstr "Не вдалося скопіювати каталог бази даних: {0}"
+
+#~ msgid "Failed to create backup directory: {0}"
+#~ msgstr "Не вдалося створити директорію для резервних копій: {0}"
+
+#~ msgid "Failed to evaluate symbolic links: {0}"
+#~ msgstr "Не вдалося оцінити символічні посилання: {0}"
+
+#~ msgid "Failed to restore Nginx UI files: {0}"
+#~ msgstr "Не вдалося відновити файли Nginx UI: {0}"
+
+#~ msgid "Failed to write to zip buffer: {0}"
+#~ msgstr "Не вдалося записати в zip-буфер: {0}"
+
+#~ msgid "Hash verification failed: file integrity compromised"
+#~ msgstr "Не вдалося перевірити хеш: цілісність файлу порушена"
+
+#~ msgid "S3 bucket access denied: {0}"
+#~ msgstr "Доступ до сховища S3 заборонено: {0}"
+
+#~ msgid "S3 connection test failed: {0}"
+#~ msgstr "Тест підключення S3 не вдався: {0}"
+
+#~ msgid "S3 credentials are invalid: {0}"
+#~ msgstr "Облікові дані S3 недійсні: {0}"
+
+#~ msgid "S3 endpoint is invalid: {0}"
+#~ msgstr "Кінцева точка S3 недійсна: {0}"
+
+#~ msgid "Storage path not in granted access paths: {0}"
+#~ msgstr "Шлях зберігання не входить до наданих шляхів доступу: {0}"
 
 #~ msgid "files"
 #~ msgstr "файли"
@@ -7200,18 +7453,17 @@ msgstr "Ваші ключі доступу"
 
 #~ msgid ""
 #~ "Support communication with the backend through the Server-Sent Events "
-#~ "protocol. If your Nginx UI is being used via an Nginx reverse proxy, "
-#~ "please refer to this link to write the corresponding configuration file: "
+#~ "protocol. If your Nginx UI is being used via an Nginx reverse proxy, please "
+#~ "refer to this link to write the corresponding configuration file: "
 #~ "https://nginxui.com/guide/nginx-proxy-example.html"
 #~ msgstr ""
 #~ "Підтримка зв’язку з бекендом через протокол Server-Sent Events. Якщо ваш "
 #~ "Nginx UI використовується через зворотний проксі Nginx, перейдіть за цим "
-#~ "посиланням, щоб написати відповідний конфігураційний файл: https://"
-#~ "nginxui.com/guide/nginx-proxy-example.html"
+#~ "посиланням, щоб написати відповідний конфігураційний файл: "
+#~ "https://nginxui.com/guide/nginx-proxy-example.html"
 
 #~ msgid "If left blank, the default CA Dir will be used."
-#~ msgstr ""
-#~ "Якщо залишити порожнім, буде використовуватися стандартний каталог CA."
+#~ msgstr "Якщо залишити порожнім, буде використовуватися стандартний каталог CA."
 
 #~ msgid "Save error %{msg}"
 #~ msgstr "Помилка збереження %{msg}"
@@ -7290,12 +7542,12 @@ msgstr "Ваші ключі доступу"
 
 #~ msgid ""
 #~ "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
-#~ "Docker Image, please make sure the docker socket is mounted like this: `-"
-#~ "v /var/run/docker.sock:/var/run/docker.sock`."
+#~ "Docker Image, please make sure the docker socket is mounted like this: `-v "
+#~ "/var/run/docker.sock:/var/run/docker.sock`."
 #~ msgstr ""
-#~ "Перевірте, чи існує /var/run/docker.sock. Якщо ви використовуєте "
-#~ "офіційний Docker-образ Nginx UI, переконайтеся, що сокет Docker "
-#~ "підключено таким чином: `-v /var/run/docker.sock:/var/run/docker.sock`."
+#~ "Перевірте, чи існує /var/run/docker.sock. Якщо ви використовуєте офіційний "
+#~ "Docker-образ Nginx UI, переконайтеся, що сокет Docker підключено таким "
+#~ "чином: `-v /var/run/docker.sock:/var/run/docker.sock`."
 
 #~ msgid "Check if the nginx access log path exists"
 #~ msgstr "Перевірити, чи існує шлях до журналу доступу nginx"

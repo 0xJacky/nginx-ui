@@ -223,9 +223,14 @@ func (pi *ParallelIndexer) Stop() error {
 		// Skip flush during stop - shards may already be closed by searcher
 		// FlushAll should be called before Stop() if needed
 
-		// Close the shard manager - this will close all shards
-		// But we don't do this here because the shards might be in use by the searcher
-		// The shards will be closed when the searcher is stopped
+		// Close the shard manager - this will close all shards and stop Bleve worker goroutines
+		// This is critical to prevent goroutine leaks from Bleve's internal workers
+		if pi.shardManager != nil {
+			if err := pi.shardManager.Close(); err != nil {
+				logger.Errorf("Failed to close shard manager: %v", err)
+				stopErr = err
+			}
+		}
 	})
 
 	return stopErr

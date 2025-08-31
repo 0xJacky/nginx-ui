@@ -89,6 +89,11 @@ Applicable for version v2.0.0-beta.37 and above.
 | StubStatusPort        | NGINX_UI_NGINX_STUB_STATUS_PORT   |
 | ContainerName         | NGINX_UI_NGINX_CONTAINER_NAME     |
 
+## Nginx Log
+| Configuration Setting  | Environment Variable                   |
+|------------------------|---------------------------------------|
+| AdvancedIndexingEnabled | NGINX_UI_NGINX_LOG_ADVANCED_INDEXING_ENABLED |
+
 ## Node
 | Configuration Setting | Environment Variable            |
 |-----------------------|---------------------------------|

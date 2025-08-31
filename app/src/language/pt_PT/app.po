@@ -4,18 +4,17 @@ msgid ""
 msgstr ""
 "PO-Revision-Date: 2024-08-12 17:09+0000\n"
 "Last-Translator: Kleiser Sarifo <kleiser.sarifo@gmail.com>\n"
-"Language-Team: Portuguese (Portugal) <https://weblate.nginxui.com/projects/"
-"nginx-ui/frontend/pt_PT/>\n"
+"Language-Team: Portuguese (Portugal) "
+"<https://weblate.nginxui.com/projects/nginx-ui/frontend/pt_PT/>\n"
 "Language: pt_PT\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: Weblate 5.6.2\n"
 
 #: src/language/generate.ts:35
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
-msgstr ""
-"[Nginx UI] Utilizador ACME: %{name}, Email: %{email}, Diretório CA: %{caDir}"
+msgstr "[Nginx UI] Utilizador ACME: %{name}, Email: %{email}, Diretório CA: %{caDir}"
 
 #: src/language/generate.ts:36
 msgid "[Nginx UI] Backing up current certificate for later revocation"
@@ -32,16 +31,14 @@ msgid "[Nginx UI] Certificate successfully revoked"
 msgstr "[Nginx UI] Certificado revogado com sucesso"
 
 #: src/language/generate.ts:39
-msgid ""
-"[Nginx UI] Certificate was used for server, reloading server TLS certificate"
+msgid "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
 msgstr ""
 "[Nginx UI] O certificado foi usado para o servidor, a recarregar o "
 "certificado TLS do servidor"
 
 #: src/language/generate.ts:40
 msgid "[Nginx UI] Creating client facilitates communication with the CA server"
-msgstr ""
-"[Nginx UI] Criando cliente para facilitar a comunicação com o servidor CA"
+msgstr "[Nginx UI] Criando cliente para facilitar a comunicação com o servidor CA"
 
 #: src/language/generate.ts:41
 msgid "[Nginx UI] Environment variables cleaned"
@@ -116,6 +113,14 @@ msgstr "* Inclui nós do grupo %{groupName} e nós selecionados manualmente"
 msgid "%{start}-%{end} of %{total} items"
 msgstr "%{start}-%{end} de %{total} itens"
 
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:24
+msgid "1 core minimum"
+msgstr "Mínimo de 1 núcleo"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:25
+msgid "2+ cores recommended"
+msgstr "2+ núcleos recomendados"
+
 #: src/views/nginx_log/dashboard/components/HourlyChart.vue:67
 #: src/views/nginx_log/dashboard/components/HourlyChart.vue:68
 msgid "24-Hour UV/PV Statistics"
@@ -128,6 +133,14 @@ msgstr "2FA"
 #: src/views/user/UserProfile.vue:151
 msgid "2FA Settings"
 msgstr "Definições 2FA"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:30
+msgid "2GB RAM minimum"
+msgstr "Mínimo de 2 GB de RAM"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:31
+msgid "4GB+ RAM recommended"
+msgstr "Recomenda-se 4 GB de RAM ou mais"
 
 #: src/routes/modules/system.ts:38
 msgid "About"
@@ -142,7 +155,7 @@ msgid "Access log path not exist"
 msgstr "O caminho do registo de acesso não existe"
 
 #: src/components/NgxConfigEditor/LogEntry.vue:90
-#: src/routes/modules/nginx_log.ts:17 src/views/nginx_log/NginxLogList.vue:36
+#: src/routes/modules/nginx_log.ts:17 src/views/nginx_log/NginxLogList.vue:40
 msgid "Access Logs"
 msgstr "Logs de Acesso"
 
@@ -160,7 +173,7 @@ msgstr "Acção"
 #: src/views/certificate/CertificateList/certColumns.tsx:92
 #: src/views/certificate/DNSCredential.vue:71
 #: src/views/config/configColumns.tsx:51 src/views/namespace/columns.ts:84
-#: src/views/nginx_log/NginxLogList.vue:311 src/views/node/nodeColumns.tsx:96
+#: src/views/nginx_log/NginxLogList.vue:329 src/views/node/nodeColumns.tsx:96
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:85
 #: src/views/site/site_list/columns.tsx:160 src/views/stream/columns.tsx:123
@@ -242,6 +255,24 @@ msgstr "Adicional"
 msgid "Advance Mode"
 msgstr "Modo Avançado"
 
+#: src/views/nginx_log/NginxLogList.vue:387
+msgid "Advanced indexing enabled but failed to start rebuild"
+msgstr "Indexação avançada ativada mas falhou ao iniciar reconstrução"
+
+#: src/views/nginx_log/NginxLogList.vue:379
+msgid "Advanced indexing enabled successfully"
+msgstr "Indexação avançada ativada com sucesso"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:239
+msgid "Advanced log indexing features are free and open source for all users"
+msgstr ""
+"Os recursos avançados de indexação de logs são gratuitos e de código aberto "
+"para todos os utilizadores"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:187
+msgid "Advanced search & filtering"
+msgstr "Pesquisa e filtragem avançadas"
+
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:529
 msgid "Advanced Settings"
 msgstr "Configurações avançadas"
@@ -249,11 +280,16 @@ msgstr "Configurações avançadas"
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:104
 msgid "Afterwards, refresh this page and click add passkey again."
 msgstr ""
-"Depois, atualize esta página e clique em adicionar chave de acesso novamente."
+"Depois, atualize esta página e clique em adicionar chave de acesso "
+"novamente."
 
 #: src/components/NamespaceTabs/NamespaceTabs.vue:116
 msgid "All"
 msgstr "Todos"
+
+#: src/views/system/Licenses.vue:152
+msgid "All Components"
+msgstr "Todos os componentes"
 
 #: src/components/Notification/notifications.ts:193
 #: src/language/constants.ts:58
@@ -277,8 +313,7 @@ msgid "Any"
 msgstr "Qualquer"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:209
-msgid ""
-"Any reachable IP address can be used with private Certificate Authorities"
+msgid "Any reachable IP address can be used with private Certificate Authorities"
 msgstr ""
 "Qualquer endereço IP acessível pode ser usado com autoridades de "
 "certificação privadas"
@@ -321,8 +356,7 @@ msgstr "Tem certeza que pretende eliminar este IP banido imediatamente?"
 
 #: src/views/preference/components/AuthSettings/Passkey.vue:113
 msgid "Are you sure to delete this passkey immediately?"
-msgstr ""
-"Tem a certeza de que deseja eliminar imediatamente esta chave de acesso?"
+msgstr "Tem a certeza de que deseja eliminar imediatamente esta chave de acesso?"
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:154
 msgid "Are you sure to generate new recovery codes?"
@@ -389,6 +423,10 @@ msgstr "Pedir ajuda ao ChatGPT"
 #: src/components/ChatGPT/ChatMessage.vue:187
 msgid "Assistant"
 msgstr "Assistente"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:36
+msgid "At least 20GB available disk space"
+msgstr "Pelo menos 20 GB de espaço disponível em disco"
 
 #: src/components/SelfCheck/SelfCheck.vue:30
 msgid "Attempt to fix"
@@ -474,6 +512,10 @@ msgstr "O AutoCert está em execução, aguarde..."
 msgid "AutoCert is running..."
 msgstr "AutoCert está em execução..."
 
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:207
+msgid "Automated log rotation detection"
+msgstr "Detecção automática de rotação de logs"
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:332
 msgid "Automatic Restart"
 msgstr "Reinício Automático"
@@ -507,6 +549,10 @@ msgstr "Voltar ao Início"
 msgid "Back to List"
 msgstr "Voltar à lista"
 
+#: src/views/system/Licenses.vue:113 src/views/system/Licenses.vue:187
+msgid "Backend"
+msgstr "Backend"
+
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:567
 msgid ""
 "Background indexing in progress. Data will be updated automatically when "
@@ -529,7 +575,7 @@ msgstr ""
 "A verificação de integridade do ficheiro de backup falhou, pode ter sido "
 "adulterado."
 
-#: src/constants/errors/backup.ts:41
+#: src/constants/errors/backup.ts:38
 msgid "Backup file not found: {0}"
 msgstr "Ficheiro de cópia de segurança não encontrado: {0}"
 
@@ -541,22 +587,17 @@ msgstr "O backup foi descarregado com sucesso"
 msgid "Backup Path"
 msgstr "Caminho de backup"
 
-#: src/constants/errors/backup.ts:75
+#: src/constants/errors/backup.ts:63
 msgid "Backup path does not exist: {0}"
 msgstr "O caminho de backup não existe: {0}"
 
-#: src/constants/errors/backup.ts:77
+#: src/constants/errors/backup.ts:65
 msgid "Backup path is not a directory: {0}"
 msgstr "O caminho de backup não é um diretório: {0}"
 
-#: src/constants/errors/backup.ts:62
+#: src/constants/errors/backup.ts:55
 msgid "Backup path is required for custom directory backup"
-msgstr ""
-"O caminho de backup é necessário para o backup de diretório personalizado"
-
-#: src/constants/errors/backup.ts:60
-msgid "Backup path not in granted access paths: {0}"
-msgstr "Caminho de backup não está nos caminhos de acesso concedidos: {0}"
+msgstr "O caminho de backup é necessário para o backup de diretório personalizado"
 
 #: src/views/backup/AutoBackup/components/CronEditor.vue:141
 msgid "Backup Schedule"
@@ -565,11 +606,11 @@ msgstr "Agendamento de backup"
 #: src/components/Notification/notifications.ts:38
 msgid "Backup task %{backup_name} completed successfully, file: %{file_path}"
 msgstr ""
-"Tarefa de backup %{backup_name} concluída com sucesso, ficheiro: %{file_path}"
+"Tarefa de backup %{backup_name} concluída com sucesso, ficheiro: "
+"%{file_path}"
 
 #: src/components/Notification/notifications.ts:34
-msgid ""
-"Backup task %{backup_name} failed during storage upload, error: %{error}"
+msgid "Backup task %{backup_name} failed during storage upload, error: %{error}"
 msgstr ""
 "A tarefa de backup %{backup_name} falhou durante o upload para o "
 "armazenamento, erro: %{error}"
@@ -601,6 +642,10 @@ msgstr "Bark"
 #: src/views/site/site_add/SiteAdd.vue:80
 msgid "Base information"
 msgstr "Informação base"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:46
+msgid "Based on M2 Pro (12 cores) testing"
+msgstr "Com base em testes com M2 Pro (12 núcleos)"
 
 #: src/views/config/components/ConfigRightPanel/ConfigRightPanel.vue:29
 #: src/views/site/site_edit/components/RightPanel/RightPanel.vue:31
@@ -648,9 +693,15 @@ msgstr "Navegador"
 msgid "Browser Statistics"
 msgstr "Estatísticas do navegador"
 
-#: src/views/system/About.vue:75
-msgid "Build with"
-msgstr "Build com"
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:261
+msgid ""
+"By enabling advanced indexing, you acknowledge that your system meets the "
+"requirements and understand the performance implications. This will start "
+"indexing existing log files immediately."
+msgstr ""
+"Ao ativar a indexação avançada, reconhece que o seu sistema cumpre os "
+"requisitos e compreende as implicações de desempenho. Isto iniciará "
+"imediatamente a indexação dos ficheiros de registo existentes."
 
 #: src/views/certificate/ACMEUser.vue:36
 msgid "CA Dir"
@@ -713,6 +764,7 @@ msgstr ""
 #: src/views/config/components/Delete.vue:98
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:632
 #: src/views/dashboard/components/SiteNavigationToolbar.vue:64
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:76
 #: src/views/nginx_log/indexing/IndexManagement.vue:31
 #: src/views/nginx_log/indexing/IndexManagement.vue:57
 #: src/views/preference/components/AuthSettings/Passkey.vue:141
@@ -724,7 +776,7 @@ msgstr ""
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: src/constants/errors/backup.ts:76
+#: src/constants/errors/backup.ts:64
 msgid "Cannot access backup path {0}: {1}"
 msgstr "Não é possível aceder ao caminho de backup {0}: {1}"
 
@@ -732,14 +784,13 @@ msgstr "Não é possível aceder ao caminho de backup {0}: {1}"
 msgid "Cannot access log file"
 msgstr "Não é possível aceder ao ficheiro de registo"
 
-#: src/constants/errors/backup.ts:79
+#: src/constants/errors/backup.ts:67
 msgid "Cannot access storage path {0}: {1}"
 msgstr "Não é possível aceder ao caminho de armazenamento {0}: {1}"
 
 #: src/constants/errors/user.ts:11
 msgid "Cannot change initial user password in demo mode"
-msgstr ""
-"Não é possível alterar a senha do usuário inicial no modo de demonstração"
+msgstr "Não é possível alterar a senha do usuário inicial no modo de demonstração"
 
 #: src/components/ConfigHistory/DiffViewer.vue:72
 msgid "Cannot compare: Missing content"
@@ -918,26 +969,26 @@ msgstr "Verificar favicon"
 #: src/language/generate.ts:6
 msgid ""
 "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
-"Docker Image, please make sure the docker socket is mounted like this: `-v /"
-"var/run/docker.sock:/var/run/docker.sock`. Nginx UI official image uses /var/"
-"run/docker.sock to communicate with the host Docker Engine via Docker Client "
-"API. This feature is used to control Nginx in another container and perform "
-"container replacement rather than binary replacement during OTA upgrades of "
-"Nginx UI to ensure container dependencies are also upgraded. If you don't "
-"need this feature, please add the environment variable "
+"Docker Image, please make sure the docker socket is mounted like this: `-v "
+"/var/run/docker.sock:/var/run/docker.sock`. Nginx UI official image uses "
+"/var/run/docker.sock to communicate with the host Docker Engine via Docker "
+"Client API. This feature is used to control Nginx in another container and "
+"perform container replacement rather than binary replacement during OTA "
+"upgrades of Nginx UI to ensure container dependencies are also upgraded. If "
+"you don't need this feature, please add the environment variable "
 "NGINX_UI_IGNORE_DOCKER_SOCKET=true to the container."
 msgstr ""
 "Verifique se /var/run/docker.sock existe. Se estiver a utilizar a imagem "
 "Docker oficial do Nginx UI, certifique-se de que o socket Docker está "
 "montado desta forma: `-v /var/run/docker.sock:/var/run/docker.sock`. A "
-"imagem oficial do Nginx UI utiliza /var/run/docker.sock para comunicar com o "
-"Docker Engine do anfitrião através da API do Docker Client. Esta "
+"imagem oficial do Nginx UI utiliza /var/run/docker.sock para comunicar com "
+"o Docker Engine do anfitrião através da API do Docker Client. Esta "
 "funcionalidade é utilizada para controlar o Nginx noutro contentor e "
 "realizar a substituição de contentores em vez da substituição binária "
-"durante as atualizações OTA do Nginx UI para garantir que as dependências do "
-"contentor também são atualizadas. Se não necessitar desta funcionalidade, "
-"adicione a variável de ambiente NGINX_UI_IGNORE_DOCKER_SOCKET=true ao "
-"contentor."
+"durante as atualizações OTA do Nginx UI para garantir que as dependências "
+"do contentor também são atualizadas. Se não necessitar desta "
+"funcionalidade, adicione a variável de ambiente "
+"NGINX_UI_IGNORE_DOCKER_SOCKET=true ao contentor."
 
 #: src/components/SelfCheck/tasks/frontend/https-check.ts:14
 msgid ""
@@ -948,27 +999,25 @@ msgstr ""
 "impede o uso de Passkeys e funcionalidades da área de transferência"
 
 #: src/language/generate.ts:7
-msgid ""
-"Check if the conf.d directory is under the nginx configuration directory"
-msgstr ""
-"Verifique se o diretório conf.d está no diretório de configuração do nginx"
+msgid "Check if the conf.d directory is under the nginx configuration directory"
+msgstr "Verifique se o diretório conf.d está no diretório de configuração do nginx"
 
 #: src/language/generate.ts:9
 msgid ""
-"Check if the nginx access log path exists. By default, this path is obtained "
-"from 'nginx -V'. If it cannot be obtained or the obtained path does not "
-"point to a valid, existing file, an error will be reported. In this case, "
-"you need to modify the configuration file to specify the access log path."
-"Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-"
-"nginx.html#accesslogpath"
+"Check if the nginx access log path exists. By default, this path is "
+"obtained from 'nginx -V'. If it cannot be obtained or the obtained path "
+"does not point to a valid, existing file, an error will be reported. In "
+"this case, you need to modify the configuration file to specify the access "
+"log path.Refer to the docs for more details: "
+"https://nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
 msgstr ""
 "Verifique se o caminho do registo de acesso do nginx existe. Por "
 "predefinição, este caminho é obtido a partir de 'nginx -V'. Se não for "
 "possível obtê-lo ou se o caminho obtido não apontar para um ficheiro válido "
 "existente, será reportado um erro. Neste caso, terá de modificar o ficheiro "
 "de configuração para especificar o caminho do registo de acesso. Consulte a "
-"documentação para mais detalhes: https://nginxui.com/zh_CN/guide/config-"
-"nginx.html#accesslogpath"
+"documentação para mais detalhes: "
+"https://nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
 
 #: src/language/generate.ts:10
 msgid "Check if the nginx configuration directory exists"
@@ -984,24 +1033,24 @@ msgid ""
 "from 'nginx -V'. If it cannot be obtained or the obtained path does not "
 "point to a valid, existing file, an error will be reported. In this case, "
 "you need to modify the configuration file to specify the error log path. "
-"Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-"
-"nginx.html#errorlogpath"
+"Refer to the docs for more details: "
+"https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
 msgstr ""
 "Verifique se o caminho do registo de erros do nginx existe. Por "
 "predefinição, este caminho é obtido a partir de 'nginx -V'. Se não for "
 "possível obtê-lo ou se o caminho obtido não apontar para um ficheiro válido "
 "existente, será reportado um erro. Neste caso, terá de modificar o ficheiro "
 "de configuração para especificar o caminho do registo de erros. Consulte a "
-"documentação para mais detalhes: https://nginxui.com/zh_CN/guide/config-"
-"nginx.html#errorlogpath"
+"documentação para mais detalhes: "
+"https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
 
 #: src/language/generate.ts:8
 msgid ""
 "Check if the nginx PID path exists. By default, this path is obtained from "
 "'nginx -V'. If it cannot be obtained, an error will be reported. In this "
 "case, you need to modify the configuration file to specify the Nginx PID "
-"path.Refer to the docs for more details: https://nginxui.com/zh_CN/guide/"
-"config-nginx.html#pidpath"
+"path.Refer to the docs for more details: "
+"https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
 msgstr ""
 "Verifique se o caminho do PID do Nginx existe. Por padrão, este caminho é "
 "obtido a partir de 'nginx -V'. Se não puder ser obtido, será relatado um "
@@ -1035,8 +1084,8 @@ msgstr ""
 
 #: src/language/generate.ts:18
 msgid ""
-"Check if the streams-available and streams-enabled directories are under the "
-"nginx configuration directory"
+"Check if the streams-available and streams-enabled directories are under "
+"the nginx configuration directory"
 msgstr ""
 "Verifique se os diretórios streams-available e streams-enabled estão no "
 "diretório de configuração do nginx"
@@ -1076,8 +1125,7 @@ msgstr "Limpo com sucesso"
 #: src/components/SystemRestore/SystemRestoreContent.vue:194
 #: src/components/SystemRestore/SystemRestoreContent.vue:271
 msgid "Click or drag backup file to this area to upload"
-msgstr ""
-"Clique ou arraste o arquivo de backup para esta área para fazer o upload"
+msgstr "Clique ou arraste o arquivo de backup para esta área para fazer o upload"
 
 #: src/language/curd.ts:51 src/language/curd.ts:55
 msgid "Click or drag files to this area to upload"
@@ -1174,6 +1222,14 @@ msgstr "Compare selecionado"
 msgid "Compare with Current"
 msgstr "Compare com a corrente"
 
+#: src/views/system/Licenses.vue:144
+msgid "components"
+msgstr "componentes"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:215
+msgid "Compressed log file support"
+msgstr "Suporte a ficheiros de registo comprimidos"
+
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:88
 msgid "Compression level, 1 is lowest, 9 is highest"
 msgstr "O nível de compressão, 1 é mais baixo, 9 é mais alto"
@@ -1246,6 +1302,10 @@ msgstr "Confirmar eliminação"
 msgid "Confirm New Password"
 msgstr "Confirmar nova palavra-passe"
 
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:260
+msgid "Confirmation Required"
+msgstr "Confirmação necessária"
+
 #: src/views/dashboard/components/NodeAnalyticItem.vue:97
 #: src/views/dashboard/components/SiteNavigationToolbar.vue:39
 msgid "Connected"
@@ -1307,6 +1367,10 @@ msgstr "Contagem"
 msgid "Country / Region"
 msgstr "País / Região"
 
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:23
+msgid "CPU"
+msgstr "CPU"
+
 #: src/views/dashboard/ServerAnalytic.vue:308
 msgid "CPU Status"
 msgstr "Estado do CPU"
@@ -1320,6 +1384,10 @@ msgid "CPU usage is relatively high, consider optimizing Nginx configuration"
 msgstr ""
 "O uso da CPU está relativamente alto, considere otimizar a configuração do "
 "Nginx"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:49
+msgid "CPU Utilization"
+msgstr "Utilização da CPU"
 
 #: src/views/dashboard/ServerAnalytic.vue:199
 msgid "CPU:"
@@ -1378,6 +1446,10 @@ msgstr "Credenciais"
 #: src/views/backup/AutoBackup/components/CronEditor.vue:194
 msgid "Cron Expression"
 msgstr "Expressão Cron"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:211
+msgid "Cross-file timeline correlation"
+msgstr "Correlação de cronologia entre ficheiros"
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:72
 msgid "Current account is enabled TOTP."
@@ -1813,7 +1885,7 @@ msgid "Document"
 msgid_plural "Documents"
 msgstr[0] "Documento"
 
-#: src/views/nginx_log/NginxLogList.vue:271
+#: src/views/nginx_log/NginxLogList.vue:289
 msgid "Document Count"
 msgstr "Contagem de documentos"
 
@@ -1823,8 +1895,7 @@ msgstr "Domínio"
 
 #: src/views/certificate/components/AutoCertManagement.vue:55
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
-msgstr ""
-"A lista de domínios está vazia, tente reabrir o Auto Cert para %{config}"
+msgstr "A lista de domínios está vazia, tente reabrir o Auto Cert para %{config}"
 
 #: src/views/certificate/components/CertificateDownload.vue:93
 msgid "Download Certificate Files"
@@ -1856,7 +1927,8 @@ msgid ""
 "non-HTTPS websites, except when running on localhost."
 msgstr ""
 "Devido às políticas de segurança de alguns navegadores, não é possível "
-"utilizar passkeys em sites não HTTPS, exceto quando em execução no localhost."
+"utilizar passkeys em sites não HTTPS, exceto quando em execução no "
+"localhost."
 
 #: src/views/site/site_list/SiteDuplicate.vue:72
 #: src/views/site/site_list/SiteList.vue:86
@@ -1874,6 +1946,10 @@ msgstr "Duplicado para local com sucesso"
 #: src/views/dashboard/components/ModulesTable.vue:92
 msgid "Dynamic"
 msgstr "Dinâmico"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:183
+msgid "Dynamic shard management"
+msgstr "Gestão dinâmica de fragmentos"
 
 #: src/views/backup/AutoBackup/components/CronEditor.vue:197
 msgid "e.g., 0 0 * * * (daily at midnight)"
@@ -1931,6 +2007,14 @@ msgstr "ativar"
 msgid "Enable 2FA successfully"
 msgstr "2FA Activado com Sucesso"
 
+#: src/views/nginx_log/NginxLogList.vue:450
+msgid "Enable Advanced Indexing"
+msgstr "Ativar indexação avançada"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:73
+msgid "Enable Advanced Log Indexing"
+msgstr "Ativar indexação avançada de registros"
+
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:74
 msgid "Enable auto-renewal failed for %{name}"
 msgstr "Activação de renovação automática para %{name} falhou"
@@ -1954,6 +2038,10 @@ msgstr "Ativar HTTP/3"
 #: src/views/preference/tabs/ServerSettings.vue:30
 msgid "Enable HTTPS"
 msgstr "Ativar HTTPS"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:75
+msgid "Enable Indexing"
+msgstr "Ativar indexação"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:113
 msgid "Enable Proxy Cache"
@@ -2045,13 +2133,19 @@ msgstr "Activado com sucesso"
 
 #: src/views/preference/tabs/ServerSettings.vue:52
 msgid "Enables HTTP/2 support with multiplexing and server push capabilities"
-msgstr ""
-"Ativa o suporte a HTTP/2 com capacidades de multiplexação e push do servidor"
+msgstr "Ativa o suporte a HTTP/2 com capacidades de multiplexação e push do servidor"
 
 #: src/views/preference/tabs/ServerSettings.vue:56
 msgid "Enables HTTP/3 support based on QUIC protocol for best performance"
+msgstr "Ativa o suporte a HTTP/3 baseado no protocolo QUIC para melhor desempenho"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:85
+msgid ""
+"Enabling advanced indexing will consume system resources during log "
+"processing. Please review the requirements below."
 msgstr ""
-"Ativa o suporte a HTTP/3 baseado no protocolo QUIC para melhor desempenho"
+"Ativar a indexação avançada consumirá recursos do sistema durante o "
+"processamento de registos. Por favor, reveja os requisitos abaixo."
 
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:76
 msgid "Encrypt website with Let's Encrypt"
@@ -2086,7 +2180,7 @@ msgid "Environment variables cleaned"
 msgstr "Variáveis de ambiente limpas"
 
 #: src/constants/index.ts:23 src/views/config/InspectConfig.vue:63
-#: src/views/nginx_log/NginxLogList.vue:222
+#: src/views/nginx_log/NginxLogList.vue:240
 #: src/views/notification/notificationColumns.tsx:14
 msgid "Error"
 msgstr "Erro"
@@ -2112,17 +2206,21 @@ msgid "Error log path not exist"
 msgstr "O caminho do registo de erros não existe"
 
 #: src/components/NgxConfigEditor/LogEntry.vue:98
-#: src/routes/modules/nginx_log.ts:24 src/views/nginx_log/NginxLogList.vue:42
+#: src/routes/modules/nginx_log.ts:24 src/views/nginx_log/NginxLogList.vue:46
 msgid "Error Logs"
 msgstr "Logs de Erro"
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:666
 msgid ""
-"Error logs do not support structured analysis as they contain free-form text "
-"messages."
+"Error logs do not support structured analysis as they contain free-form "
+"text messages."
 msgstr ""
 "Os registos de erro não suportam análise estruturada, pois contêm mensagens "
 "de texto livre."
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:219
+msgid "Error pattern recognition"
+msgstr "Reconhecimento de padrões de erro"
 
 #: src/components/ConfigHistory/DiffViewer.vue:81
 msgid "Error processing content"
@@ -2147,6 +2245,10 @@ msgstr "Executar todos os meses no dia %{day} às %{time}"
 #: src/language/curd.ts:72
 msgid "Expand"
 msgstr "Expandir"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:145
+msgid "Expected Performance"
+msgstr "Desempenho esperado"
 
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:454
 msgid "Expected Status Codes"
@@ -2179,8 +2281,8 @@ msgstr ""
 
 #: src/views/certificate/ACMEUser.vue:90
 msgid ""
-"External Account Binding Key ID (optional). Required for some ACME providers "
-"like ZeroSSL."
+"External Account Binding Key ID (optional). Required for some ACME "
+"providers like ZeroSSL."
 msgstr ""
 "ID da chave de vinculação de conta externa (opcional). Necessário para "
 "alguns fornecedores ACME como o ZeroSSL."
@@ -2227,15 +2329,15 @@ msgstr "Falha ao fazer backup dos ficheiros Nginx UI: {0}"
 msgid "Failed to build nginx config: {0}"
 msgstr "Falha ao construir a configuração do nginx: {0}"
 
-#: src/constants/errors/backup.ts:18
+#: src/constants/errors/backup.ts:17
 msgid "Failed to calculate hash: {0}"
 msgstr "Falha ao calcular o hash: {0}"
 
-#: src/constants/errors/backup.ts:58
+#: src/constants/errors/backup.ts:54
 msgid "Failed to calculate Nginx hash: {0}"
 msgstr "Falha ao calcular o hash do Nginx: {0}"
 
-#: src/constants/errors/backup.ts:57
+#: src/constants/errors/backup.ts:53
 msgid "Failed to calculate Nginx UI hash: {0}"
 msgstr "Falha ao calcular o hash do Nginx UI: {0}"
 
@@ -2248,18 +2350,14 @@ msgid "Failed to copy config file: {0}"
 msgstr "Falha ao copiar o ficheiro de configuração: {0}"
 
 #: src/constants/errors/backup.ts:16
-msgid "Failed to copy database directory: {0}"
-msgstr "Falha ao copiar o diretório da base de dados: {0}"
-
-#: src/constants/errors/backup.ts:17
 msgid "Failed to copy database file: {0}"
 msgstr "Falha ao copiar o ficheiro da base de dados: {0}"
 
-#: src/constants/errors/backup.ts:32
+#: src/constants/errors/backup.ts:31
 msgid "Failed to copy file content: {0}"
 msgstr "Falha ao copiar o conteúdo do ficheiro: {0}"
 
-#: src/constants/errors/backup.ts:20
+#: src/constants/errors/backup.ts:19
 msgid "Failed to copy Nginx config directory: {0}"
 msgstr "Falha ao copiar o diretório de configuração do Nginx: {0}"
 
@@ -2272,19 +2370,15 @@ msgstr "Falha ao copiar para a área de transferência"
 msgid "Failed to create backup"
 msgstr "Falha ao criar cópia de segurança"
 
-#: src/constants/errors/backup.ts:65
-msgid "Failed to create backup directory: {0}"
-msgstr "Falha ao criar o diretório de backup: {0}"
-
 #: src/constants/errors/backup.ts:12
 msgid "Failed to create backup file: {0}"
 msgstr "Falha ao criar o ficheiro de backup: {0}"
 
-#: src/constants/errors/backup.ts:46
+#: src/constants/errors/backup.ts:43
 msgid "Failed to create directory: {0}"
 msgstr "Falha ao criar diretório: {0}"
 
-#: src/constants/errors/backup.ts:48
+#: src/constants/errors/backup.ts:45
 msgid "Failed to create file: {0}"
 msgstr "Falha ao criar o ficheiro: {0}"
 
@@ -2292,19 +2386,19 @@ msgstr "Falha ao criar o ficheiro: {0}"
 msgid "Failed to create hash info file: {0}"
 msgstr "Falha ao criar o ficheiro de informações de hash: {0}"
 
-#: src/constants/errors/backup.ts:47
+#: src/constants/errors/backup.ts:44
 msgid "Failed to create parent directory: {0}"
 msgstr "Falha ao criar o diretório principal: {0}"
 
-#: src/constants/errors/backup.ts:34
+#: src/constants/errors/backup.ts:32
 msgid "Failed to create restore directory: {0}"
 msgstr "Falha ao criar o diretório de restauro: {0}"
 
-#: src/constants/errors/backup.ts:78
+#: src/constants/errors/backup.ts:66
 msgid "Failed to create storage directory {0}: {1}"
 msgstr "Falha ao criar o diretório de armazenamento {0}: {1}"
 
-#: src/constants/errors/backup.ts:50
+#: src/constants/errors/backup.ts:47
 msgid "Failed to create symbolic link: {0}"
 msgstr "Falha ao criar ligação simbólica: {0}"
 
@@ -2324,31 +2418,31 @@ msgstr "Falha ao criar subdiretório temporário"
 msgid "Failed to create zip archive: {0}"
 msgstr "Falha ao criar o arquivo ZIP: {0}"
 
-#: src/constants/errors/backup.ts:29
+#: src/constants/errors/backup.ts:28
 msgid "Failed to create zip entry: {0}"
 msgstr "Falha ao criar entrada ZIP: {0}"
 
-#: src/constants/errors/backup.ts:28
+#: src/constants/errors/backup.ts:27
 msgid "Failed to create zip file: {0}"
 msgstr "Falha ao criar o ficheiro ZIP: {0}"
 
-#: src/constants/errors/backup.ts:31
+#: src/constants/errors/backup.ts:30
 msgid "Failed to create zip header: {0}"
 msgstr "Falha ao criar o cabeçalho ZIP: {0}"
 
-#: src/constants/errors/backup.ts:26
+#: src/constants/errors/backup.ts:25
 msgid "Failed to decrypt data: {0}"
 msgstr "Falha ao desencriptar os dados: {0}"
 
-#: src/constants/errors/backup.ts:54
+#: src/constants/errors/backup.ts:50
 msgid "Failed to decrypt file: {0}"
 msgstr "Falha ao desencriptar o ficheiro: {0}"
 
-#: src/constants/errors/backup.ts:37
+#: src/constants/errors/backup.ts:35
 msgid "Failed to decrypt Nginx directory: {0}"
 msgstr "Falha ao desencriptar o diretório Nginx: {0}"
 
-#: src/constants/errors/backup.ts:36
+#: src/constants/errors/backup.ts:34
 msgid "Failed to decrypt Nginx UI directory: {0}"
 msgstr "Falha ao desencriptar o diretório Nginx UI: {0}"
 
@@ -2386,15 +2480,19 @@ msgstr "Falha ao baixar os ficheiros do certificado"
 msgid "Failed to enable %{msg}"
 msgstr "Falha ao Activar %{msg}"
 
+#: src/views/nginx_log/NginxLogList.vue:397
+msgid "Failed to enable advanced indexing"
+msgstr "Falha ao ativar a indexação avançada"
+
 #: src/views/site/components/SiteStatusSelect.vue:85
 msgid "Failed to enable maintenance mode %{msg}"
 msgstr "Falha ao ativar o modo de manutenção: %{msg}"
 
-#: src/constants/errors/backup.ts:25
+#: src/constants/errors/backup.ts:24
 msgid "Failed to encrypt data: {0}"
 msgstr "Falha ao encriptar os dados: {0}"
 
-#: src/constants/errors/backup.ts:23
+#: src/constants/errors/backup.ts:22
 msgid "Failed to encrypt file: {0}"
 msgstr "Falha ao encriptar o ficheiro: {0}"
 
@@ -2406,10 +2504,6 @@ msgstr "Falha ao encriptar o diretório Nginx: {0}"
 msgid "Failed to encrypt Nginx UI directory: {0}"
 msgstr "Falha ao encriptar o diretório Nginx UI: {0}"
 
-#: src/constants/errors/backup.ts:52
-msgid "Failed to evaluate symbolic links: {0}"
-msgstr "Falha ao avaliar os links simbólicos: {0}"
-
 #: src/constants/errors/docker.ts:3
 msgid "Failed to exec command: {0}"
 msgstr "Falha ao executar o comando: {0}"
@@ -2418,7 +2512,7 @@ msgstr "Falha ao executar o comando: {0}"
 msgid "Failed to execute template: {0}"
 msgstr "Falha ao executar o modelo: {0}"
 
-#: src/constants/errors/backup.ts:35
+#: src/constants/errors/backup.ts:33
 msgid "Failed to extract archive: {0}"
 msgstr "Falha ao extrair o arquivo: {0}"
 
@@ -2470,15 +2564,15 @@ msgstr "Falha ao inspecionar o contentor atual: {0}"
 msgid "Failed to load history records"
 msgstr "Falha ao carregar registros históricos"
 
-#: src/constants/errors/backup.ts:30
+#: src/constants/errors/backup.ts:29
 msgid "Failed to open source file: {0}"
 msgstr "Falha ao abrir o arquivo de origem: {0}"
 
-#: src/constants/errors/backup.ts:49
+#: src/constants/errors/backup.ts:46
 msgid "Failed to open zip entry: {0}"
 msgstr "Falha ao abrir entrada ZIP: {0}"
 
-#: src/constants/errors/backup.ts:45
+#: src/constants/errors/backup.ts:42
 msgid "Failed to open zip file: {0}"
 msgstr "Falha ao abrir o ficheiro ZIP: {0}"
 
@@ -2498,7 +2592,7 @@ msgstr "Falha ao analisar o modelo: {0}"
 msgid "Failed to pull image: {0}"
 msgstr "Falha ao obter a imagem: {0}"
 
-#: src/constants/errors/backup.ts:53
+#: src/constants/errors/backup.ts:49
 msgid "Failed to read encrypted file: {0}"
 msgstr "Falha ao ler o ficheiro encriptado: {0}"
 
@@ -2506,11 +2600,11 @@ msgstr "Falha ao ler o ficheiro encriptado: {0}"
 msgid "Failed to read file"
 msgstr "Falha ao ler o ficheiro"
 
-#: src/constants/errors/backup.ts:22
+#: src/constants/errors/backup.ts:21
 msgid "Failed to read file: {0}"
 msgstr "Falha ao ler o ficheiro: {0}"
 
-#: src/constants/errors/backup.ts:56
+#: src/constants/errors/backup.ts:52
 msgid "Failed to read hash info file: {0}"
 msgstr "Falha ao ler o ficheiro de informações de hash: {0}"
 
@@ -2526,7 +2620,7 @@ msgstr "Falha ao ler a saída: {0}"
 msgid "Failed to read response body: {0}"
 msgstr "Falha ao ler o corpo da resposta: {0}"
 
-#: src/constants/errors/backup.ts:21
+#: src/constants/errors/backup.ts:20
 msgid "Failed to read symlink: {0}"
 msgstr "Falha ao ler o link simbólico: {0}"
 
@@ -2542,14 +2636,9 @@ msgstr "Falha ao reconstruir o índice"
 msgid "Failed to refresh sites"
 msgstr "Falha ao atualizar os sites"
 
-#: src/constants/errors/backup.ts:39
+#: src/constants/errors/backup.ts:37
 msgid "Failed to restore Nginx configs: {0}"
 msgstr "Falha ao restaurar as configurações do Nginx: {0}"
-
-#: src/constants/errors/backup.ts:40
-msgid "Failed to restore Nginx UI files: {0}"
-msgstr ""
-"Falha ao restaurar os ficheiros da interface de utilizador do Nginx: {0}"
 
 #: src/views/certificate/components/RemoveCert.vue:57
 msgid "Failed to revoke certificate"
@@ -2591,29 +2680,29 @@ msgstr "Falha ao atualizar o estado"
 msgid "Failed to upload file"
 msgstr "Falha ao carregar o ficheiro"
 
-#: src/constants/errors/backup.ts:38
+#: src/constants/errors/backup.ts:36
 msgid "Failed to verify hashes: {0}"
 msgstr "Falha ao verificar hashes: {0}"
 
-#: src/constants/errors/backup.ts:66
+#: src/constants/errors/backup.ts:58
 msgid "Failed to write backup file: {0}"
 msgstr "Falha ao escrever o arquivo de backup: {0}"
 
-#: src/constants/errors/backup.ts:55
+#: src/constants/errors/backup.ts:51
 msgid "Failed to write decrypted file: {0}"
 msgstr "Falha ao escrever o ficheiro desencriptado: {0}"
 
-#: src/constants/errors/backup.ts:24
+#: src/constants/errors/backup.ts:23
 msgid "Failed to write encrypted file: {0}"
 msgstr "Falha ao escrever o ficheiro encriptado: {0}"
 
-#: src/constants/errors/backup.ts:67
+#: src/constants/errors/backup.ts:59
 msgid "Failed to write security key file: {0}"
 msgstr "Falha ao escrever o ficheiro da chave de segurança: {0}"
 
-#: src/constants/errors/backup.ts:33
-msgid "Failed to write to zip buffer: {0}"
-msgstr "Falha ao escrever no buffer ZIP: {0}"
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:173
+msgid "Features"
+msgstr "Funcionalidades"
 
 #: src/views/config/components/Delete.vue:116
 msgid "file"
@@ -2700,12 +2789,15 @@ msgstr "Para utilizadores chineses"
 msgid "For Chinese user: https://cloud.nginxui.com/"
 msgstr "Para Utilizador Chinês: https://cloud.nginxui.com/"
 
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:251
+msgid "For commercial or professional use, contact"
+msgstr "Para uso comercial ou profissional, contacte"
+
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:668
-msgid ""
-"For error logs, please use the Raw Log Viewer for better viewing experience."
+msgid "For error logs, please use the Raw Log Viewer for better viewing experience."
 msgstr ""
-"Para registos de erros, utilize o Visualizador de Registos em Bruto para uma "
-"melhor experiência de visualização."
+"Para registos de erros, utilize o Visualizador de Registos em Bruto para "
+"uma melhor experiência de visualização."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:140
 msgid ""
@@ -2718,8 +2810,8 @@ msgstr ""
 
 #: src/components/AutoCertForm/AutoCertForm.vue:188
 msgid ""
-"For IP-based certificates, please specify the server IP address that will be "
-"included in the certificate."
+"For IP-based certificates, please specify the server IP address that will "
+"be included in the certificate."
 msgstr ""
 "Para certificados baseados em IP, por favor especifique o endereço IP do "
 "servidor que será incluído no certificado."
@@ -2748,9 +2840,17 @@ msgstr "Sexta-feira"
 msgid "From indexed logs"
 msgstr "A partir de registos indexados"
 
+#: src/views/system/Licenses.vue:119 src/views/system/Licenses.vue:222
+msgid "Frontend"
+msgstr "Frontend"
+
 #: src/views/nginx_log/structured/components/SearchFilters.vue:65
 msgid "Full Text Search"
 msgstr "Pesquisa de texto completo"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:203
+msgid "Full-text search with regex support"
+msgstr "Pesquisa de texto completo com suporte a expressões regulares"
 
 #: src/views/certificate/CertificateList/certColumns.tsx:30
 msgid "General Certificate"
@@ -2847,10 +2947,6 @@ msgstr "Nível de compressão GZIP"
 msgid "GZIP Min Length"
 msgstr "Comprimento mínimo do GZIP"
 
-#: src/constants/errors/backup.ts:59
-msgid "Hash verification failed: file integrity compromised"
-msgstr "Falha na verificação do hash: integridade do ficheiro comprometida"
-
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:365
 msgid "Health Check Configuration"
 msgstr "Configuração de verificação de saúde"
@@ -2930,15 +3026,14 @@ msgid ""
 "ban threshold minutes, the ip will be banned for a period of time."
 msgstr ""
 "Se o número de tentativas de início de sessão falhadas de um IP atingir o "
-"máximo de tentativas em minutos de limite de banimento, o IP será banido por "
-"um período de tempo."
+"máximo de tentativas em minutos de limite de banimento, o IP será banido "
+"por um período de tempo."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:280
 msgid ""
 "If you want to automatically revoke the old certificate, please enable this "
 "option."
-msgstr ""
-"Se desejar revogar automaticamente o certificado antigo, ative esta opção."
+msgstr "Se desejar revogar automaticamente o certificado antigo, ative esta opção."
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:75
 msgid "If your browser supports WebAuthn Passkey, a dialog box will appear."
@@ -2975,11 +3070,15 @@ msgstr ""
 "Inclui processo master, processos worker, processos de cache e outros "
 "processos Nginx"
 
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:199
+msgid "Incremental index scanning"
+msgstr "Digitalização de índice incremental"
+
 #: src/views/nginx_log/indexing/IndexManagement.vue:36
 msgid "Index and statistics rebuild started successfully"
 msgstr "Reconstrução do índice e estatísticas iniciada com sucesso"
 
-#: src/views/nginx_log/NginxLogList.vue:181
+#: src/views/nginx_log/NginxLogList.vue:199
 msgid "Index failed"
 msgstr "Falha na indexação"
 
@@ -2987,23 +3086,31 @@ msgstr "Falha na indexação"
 msgid "Index failed, please try rebuilding"
 msgstr "Falha na indexação, por favor tente reconstruir"
 
-#: src/views/nginx_log/NginxLogList.vue:150
+#: src/views/nginx_log/NginxLogList.vue:384
+msgid "Index rebuild initiated"
+msgstr "Reconstrução do índice iniciada"
+
+#: src/views/nginx_log/NginxLogList.vue:168
 msgid "Index Status"
 msgstr "Estado do Índice"
 
-#: src/views/nginx_log/NginxLogList.vue:218
+#: src/views/nginx_log/NginxLogList.vue:236
 msgid "Indexed"
 msgstr "Indexado"
 
 #: src/views/nginx_log/indexing/components/IndexProgressBar.vue:52
-#: src/views/nginx_log/NginxLogList.vue:214
+#: src/views/nginx_log/NginxLogList.vue:232
 msgid "Indexing"
 msgstr "Indexação"
 
 #: src/views/nginx_log/components/LoadingState.vue:33
-#: src/views/nginx_log/NginxLogList.vue:380
+#: src/views/nginx_log/NginxLogList.vue:439
 msgid "Indexing logs..."
 msgstr "A indexar registos..."
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:44
+msgid "Indexing Throughput"
+msgstr "Taxa de indexação"
 
 #: src/components/ProcessingStatus/ProcessingStatus.vue:31
 #: src/views/nginx_log/components/LoadingState.vue:71
@@ -3055,8 +3162,7 @@ msgstr "Instalação"
 
 #: src/constants/errors/system.ts:3
 msgid "Installation is not allowed after 10 minutes of system startup"
-msgstr ""
-"A instalação não é permitida após 10 minutos de inicialização do sistema"
+msgstr "A instalação não é permitida após 10 minutos de inicialização do sistema"
 
 #: src/views/install/components/TimeoutAlert.vue:11
 msgid ""
@@ -3074,11 +3180,11 @@ msgstr "Intervalo"
 msgid "Invalid"
 msgstr "Inválido"
 
-#: src/constants/errors/backup.ts:44
+#: src/constants/errors/backup.ts:41
 msgid "Invalid AES IV format: {0}"
 msgstr "Formato de IV AES inválido: {0}"
 
-#: src/constants/errors/backup.ts:43
+#: src/constants/errors/backup.ts:40
 msgid "Invalid AES key format: {0}"
 msgstr "Formato de chave AES inválido: {0}"
 
@@ -3095,7 +3201,7 @@ msgstr "Tipo de reclamação inválido"
 msgid "Invalid file object"
 msgstr "Objeto de ficheiro inválido"
 
-#: src/constants/errors/backup.ts:51
+#: src/constants/errors/backup.ts:48
 msgid "Invalid file path: {0}"
 msgstr "Caminho de ficheiro inválido: {0}"
 
@@ -3120,7 +3226,7 @@ msgstr "Configuração de notificador inválida"
 msgid "Invalid otp code"
 msgstr "Código OTP inválido"
 
-#: src/constants/errors/backup.ts:27
+#: src/constants/errors/backup.ts:26
 msgid "Invalid padding in decrypted data"
 msgstr "Preenchimento inválido nos dados desencriptados"
 
@@ -3128,7 +3234,7 @@ msgstr "Preenchimento inválido nos dados desencriptados"
 msgid "Invalid passcode or recovery code"
 msgstr "Passcode ou código de recuperação inválido"
 
-#: src/constants/errors/backup.ts:73
+#: src/constants/errors/backup.ts:61
 msgid "Invalid path: {0}"
 msgstr "Caminho inválido: {0}"
 
@@ -3145,7 +3251,7 @@ msgstr "Código de recuperação inválido"
 msgid "Invalid request format"
 msgstr "Formato de pedido inválido"
 
-#: src/constants/errors/backup.ts:42
+#: src/constants/errors/backup.ts:39
 msgid "Invalid security token format"
 msgstr "Formato de token de segurança inválido"
 
@@ -3200,8 +3306,8 @@ msgid ""
 "Keep your recovery codes as safe as your password. We recommend saving them "
 "with a password manager."
 msgstr ""
-"Mantenha os seus códigos de recuperação tão seguros como a sua palavra-"
-"passe. Recomendamos guardá-los com um gestor de palavras-passe."
+"Mantenha os seus códigos de recuperação tão seguros como a sua "
+"palavra-passe. Recomendamos guardá-los com um gestor de palavras-passe."
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:60
 msgid "Keepalive Timeout"
@@ -3278,7 +3384,7 @@ msgstr "Última verificação em"
 msgid "Last hour"
 msgstr "Última hora"
 
-#: src/views/nginx_log/NginxLogList.vue:231
+#: src/views/nginx_log/NginxLogList.vue:249
 msgid "Last Indexed"
 msgstr "Última indexação"
 
@@ -3323,16 +3429,23 @@ msgstr "Deixar em branco não vai mudar nada"
 
 #: src/constants/errors/user.ts:6
 msgid "Legacy recovery code not allowed since totp is not enabled"
-msgstr ""
-"Código de recuperação antigo não permitido porque o TOTP não está ativado"
+msgstr "Código de recuperação antigo não permitido porque o TOTP não está ativado"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:268
 msgid "Lego disable CNAME Support"
 msgstr "Lego desativar suporte CNAME"
 
-#: src/views/system/About.vue:83
+#: src/views/system/About.vue:75 src/views/system/Licenses.vue:21
 msgid "License"
 msgstr "Licença"
+
+#: src/views/system/Licenses.vue:133
+msgid "License Distribution"
+msgstr "Distribuição de Licenças"
+
+#: src/views/system/Licenses.vue:125
+msgid "License Types"
+msgstr "Tipos de licença"
 
 #: src/views/dashboard/components/NodeAnalyticItem.vue:114
 #: src/views/dashboard/components/NodeAnalyticItem.vue:97
@@ -3417,12 +3530,13 @@ msgstr "Log"
 #: src/language/generate.ts:23
 msgid ""
 "Log file %{log_path} is not a regular file. If you are using nginx-ui in "
-"docker container, please refer to https://nginxui.com/zh_CN/guide/config-"
-"nginx-log.html for more information."
+"docker container, please refer to "
+"https://nginxui.com/zh_CN/guide/config-nginx-log.html for more information."
 msgstr ""
 "O ficheiro de registo %{log_path} não é um ficheiro regular. Se estiver a "
-"utilizar o nginx-ui num contentor Docker, consulte https://nginxui.com/zh_CN/"
-"guide/config-nginx-log.html para obter mais informações."
+"utilizar o nginx-ui num contentor Docker, consulte "
+"https://nginxui.com/zh_CN/guide/config-nginx-log.html para obter mais "
+"informações."
 
 #: src/constants/errors/nginx_log.ts:14
 msgid "Log file does not exist"
@@ -3448,7 +3562,7 @@ msgstr "Indexador de registros não disponível"
 msgid "Log indexing completed! Loading updated data..."
 msgstr "Indexação de registos concluída! A carregar dados atualizados..."
 
-#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:353
+#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:412
 msgid "Log List"
 msgstr "Lista de registos"
 
@@ -3474,12 +3588,12 @@ msgstr "Logrotate"
 
 #: src/views/preference/tabs/LogrotateSettings.vue:13
 msgid ""
-"Logrotate, by default, is enabled in most mainstream Linux distributions for "
-"users who install Nginx UI on the host machine, so you don't need to modify "
-"the parameters on this page. For users who install Nginx UI using Docker "
-"containers, you can manually enable this option. The crontab task scheduler "
-"of Nginx UI will execute the logrotate command at the interval you set in "
-"minutes."
+"Logrotate, by default, is enabled in most mainstream Linux distributions "
+"for users who install Nginx UI on the host machine, so you don't need to "
+"modify the parameters on this page. For users who install Nginx UI using "
+"Docker containers, you can manually enable this option. The crontab task "
+"scheduler of Nginx UI will execute the logrotate command at the interval "
+"you set in minutes."
 msgstr ""
 "O Logrotate, por defeito, está activado na maioria das distribuições Linux "
 "convencionais para utilizadores que instalam o Nginx UI na máquina host, "
@@ -3625,12 +3739,17 @@ msgstr "Número máximo de processos de trabalho:"
 
 #: src/views/dashboard/ServerAnalytic.vue:227
 #: src/views/dashboard/ServerAnalytic.vue:228
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:29
 msgid "Memory"
 msgstr "Memória"
 
 #: src/views/dashboard/ServerAnalytic.vue:216
 msgid "Memory and Storage"
 msgstr "Memória e Armazenamento"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:54
+msgid "Memory Efficiency"
+msgstr "Eficiência de memória"
 
 #: src/views/dashboard/components/ResourceUsageCard.vue:51
 msgid "Memory Usage (RSS)"
@@ -3657,6 +3776,10 @@ msgstr "Espaço livre mínimo"
 msgid "Minimum free space in the cache directory"
 msgstr "Espaço livre mínimo no diretório de cache"
 
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:117
+msgid "Minimum:"
+msgstr "Mínimo:"
+
 #: src/views/backup/AutoBackup/components/CronEditor.vue:169
 msgid "Minute"
 msgstr "Minuto"
@@ -3672,6 +3795,18 @@ msgstr "Espelho"
 #: src/views/preference/tabs/OpenAISettings.vue:20
 msgid "Model"
 msgstr "Modelo"
+
+#: src/constants/errors/nginx_log.ts:28
+msgid "Modern analytics service not available"
+msgstr "Serviço de análise moderno não disponível"
+
+#: src/constants/errors/nginx_log.ts:29
+msgid "Modern indexer service not available"
+msgstr "Serviço de indexação moderno não disponível"
+
+#: src/constants/errors/nginx_log.ts:27
+msgid "Modern searcher service not available"
+msgstr "Serviço de pesquisa moderno não disponível"
 
 #: src/components/ConfigHistory/ConfigHistory.vue:53
 msgid "Modified At"
@@ -3715,6 +3850,10 @@ msgstr "Mensalmente no dia %{day} às %{time}"
 msgid "Mozilla/5.0..."
 msgstr "Mozilla/5.0..."
 
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:223
+msgid "Multi-dimensional data visualization"
+msgstr "Visualização de dados multidimensionais"
+
 #: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:51
 msgid "Multi-line Directive"
 msgstr "Diretiva Multilinha"
@@ -3740,7 +3879,7 @@ msgstr "N/D"
 #: src/views/config/components/Delete.vue:123
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:17 src/views/namespace/columns.ts:9
-#: src/views/nginx_log/NginxLogList.vue:128 src/views/node/nodeColumns.tsx:8
+#: src/views/nginx_log/NginxLogList.vue:146 src/views/node/nodeColumns.tsx:8
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:80
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:36
 #: src/views/site/site_list/columns.tsx:30
@@ -3748,7 +3887,7 @@ msgstr "N/D"
 #: src/views/stream/columns.tsx:26
 #: src/views/stream/components/RightPanel/Basic.vue:31
 #: src/views/stream/components/StreamDuplicate.vue:71
-#: src/views/stream/StreamList.vue:123
+#: src/views/stream/StreamList.vue:123 src/views/system/Licenses.vue:13
 msgid "Name"
 msgstr "Nome"
 
@@ -3859,7 +3998,7 @@ msgstr "A configuração do Nginx não inclui sites-enabled"
 msgid "Nginx conf not include stream-enabled"
 msgstr "A configuração do Nginx não inclui stream-enabled"
 
-#: src/constants/errors/backup.ts:19
+#: src/constants/errors/backup.ts:18
 msgid "Nginx config directory is not set"
 msgstr "O diretório de configuração do Nginx não está definido"
 
@@ -3965,8 +4104,7 @@ msgstr "Recarga do Nginx falhou: {0}"
 
 #: src/views/node/Node.vue:88
 msgid "Nginx reload operations have been dispatched to remote nodes"
-msgstr ""
-"As operações de recarregamento do Nginx foram enviadas para os nós remotos"
+msgstr "As operações de recarregamento do Nginx foram enviadas para os nós remotos"
 
 #: src/components/NginxControl/NginxControl.vue:26
 msgid "Nginx reloaded successfully"
@@ -4011,11 +4149,11 @@ msgstr "A configuração do Nginx UI foi restaurada"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:336
 msgid ""
-"Nginx UI configuration has been restored and will restart automatically in a "
-"few seconds."
+"Nginx UI configuration has been restored and will restart automatically in "
+"a few seconds."
 msgstr ""
-"A configuração do Nginx UI foi restaurada e irá reiniciar automaticamente em "
-"alguns segundos."
+"A configuração do Nginx UI foi restaurada e irá reiniciar automaticamente "
+"em alguns segundos."
 
 #: src/language/generate.ts:30
 msgid "Nginx.conf includes conf.d directory"
@@ -4137,7 +4275,7 @@ msgstr "Texto não esperado"
 msgid "Not Found"
 msgstr "Não Encontrado"
 
-#: src/views/nginx_log/NginxLogList.vue:206
+#: src/views/nginx_log/NginxLogList.vue:224
 msgid "Not Indexed"
 msgstr "Não indexado"
 
@@ -4261,6 +4399,10 @@ msgstr "Documentação oficial"
 msgid "Offline"
 msgstr "Off-line"
 
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:195
+msgid "Offline GeoIP analysis"
+msgstr "Análise GeoIP offline"
+
 #: src/components/ChatGPT/ChatMessageInput.vue:18
 #: src/components/NgxConfigEditor/NgxServer.vue:60
 #: src/components/NgxConfigEditor/NgxUpstream.vue:31
@@ -4284,8 +4426,7 @@ msgstr "Ligado"
 
 #: src/views/certificate/DNSCredential.vue:99
 msgid "Once the verification is complete, the records will be removed."
-msgstr ""
-"Assim que a verificação estiver concluída, os registos serão removidos."
+msgstr "Assim que a verificação estiver concluída, os registos serão removidos."
 
 #: src/components/NamespaceTabs/NamespaceTabs.vue:160
 #: src/components/NodeCard/NodeCard.vue:51
@@ -4308,6 +4449,10 @@ msgstr "Apenas ficheiros ZIP são permitidos"
 msgid "Open"
 msgstr "Aberto"
 
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:232
+msgid "Open Source Limitation"
+msgstr "Limitação de código aberto"
+
 #: src/views/preference/Preference.vue:100
 msgid "OpenAI"
 msgstr "OpenAI"
@@ -4319,6 +4464,10 @@ msgstr "Sistema operativo"
 #: src/views/nginx_log/dashboard/components/OSStatsTable.vue:36
 msgid "Operating System Statistics"
 msgstr "Estatísticas do sistema operativo"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:51
+msgid "Optimized multi-core processing"
+msgstr "Processamento multicore otimizado"
 
 #: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:286
 msgid "Or"
@@ -4400,10 +4549,10 @@ msgid ""
 "facial recognition, a device password, or a PIN. They can be used as a "
 "password replacement or as a 2FA method."
 msgstr ""
-"As passkeys são credenciais WebAuthn que validam a sua identidade utilizando "
-"toque, reconhecimento facial, uma palavra-passe do dispositivo ou um PIN. "
-"Podem ser usadas como substituto de palavra-passe ou como método de "
-"autenticação de dois fatores (2FA)."
+"As passkeys são credenciais WebAuthn que validam a sua identidade "
+"utilizando toque, reconhecimento facial, uma palavra-passe do dispositivo "
+"ou um PIN. Podem ser usadas como substituto de palavra-passe ou como método "
+"de autenticação de dois fatores (2FA)."
 
 #: src/views/other/Login.vue:238 src/views/user/userColumns.tsx:16
 msgid "Password"
@@ -4435,12 +4584,12 @@ msgstr "As palavras-passe não coincidem"
 #: src/views/config/components/ConfigRightPanel/Basic.vue:41
 #: src/views/config/components/Delete.vue:124
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:420
-#: src/views/nginx_log/NginxLogList.vue:137
+#: src/views/nginx_log/NginxLogList.vue:155
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:517
 msgid "Path"
 msgstr "Caminho"
 
-#: src/constants/errors/backup.ts:74
+#: src/constants/errors/backup.ts:62
 msgid "Path not in granted access paths: {0}"
 msgstr "Caminho não está nos caminhos de acesso concedidos: {0}"
 
@@ -4484,6 +4633,10 @@ msgstr "Erro ao efectuar actualização do core"
 #: src/views/dashboard/components/ParamsOptimization.vue:122
 msgid "Performance"
 msgstr "Desempenho"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:84
+msgid "Performance Impact Notice"
+msgstr "Aviso de Impacto no Desempenho"
 
 #: src/views/dashboard/NginxDashBoard.vue:207
 msgid "Performance Metrics"
@@ -4556,8 +4709,7 @@ msgstr "Por favor, insira o token de segurança"
 #: src/components/SystemRestore/SystemRestoreContent.vue:210
 #: src/components/SystemRestore/SystemRestoreContent.vue:287
 msgid "Please enter the security token received during backup"
-msgstr ""
-"Por favor, insira o token de segurança recebido durante a cópia de segurança"
+msgstr "Por favor, insira o token de segurança recebido durante a cópia de segurança"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:80
 msgid "Please enter the server IP address"
@@ -4590,8 +4742,8 @@ msgstr ""
 #: src/components/Notification/notifications.ts:194
 #: src/language/constants.ts:59
 msgid ""
-"Please generate new recovery codes in the preferences immediately to prevent "
-"lockout."
+"Please generate new recovery codes in the preferences immediately to "
+"prevent lockout."
 msgstr ""
 "Por favor, gere novos códigos de recuperação nas preferências imediatamente "
 "para evitar bloqueio."
@@ -4639,15 +4791,12 @@ msgid "Please log in."
 msgstr "Por favor, faça login."
 
 #: src/views/certificate/DNSCredential.vue:102
-msgid ""
-"Please note that the unit of time configurations below are all in seconds."
-msgstr ""
-"Note que as definições da unidade de tempo abaixo estão todas em segundos."
+msgid "Please note that the unit of time configurations below are all in seconds."
+msgstr "Note que as definições da unidade de tempo abaixo estão todas em segundos."
 
 #: src/views/install/components/InstallView.vue:102
 msgid "Please resolve all issues before proceeding with installation"
-msgstr ""
-"Por favor, resolva todos os problemas antes de prosseguir com a instalação"
+msgstr "Por favor, resolva todos os problemas antes de prosseguir com a instalação"
 
 #: src/views/backup/components/BackupCreator.vue:106
 msgid "Please save this security token, you will need it for restoration:"
@@ -4775,7 +4924,8 @@ msgstr "Protocolo"
 #: src/views/preference/tabs/ServerSettings.vue:47
 msgid ""
 "Protocol configuration only takes effect when directly connecting. If using "
-"reverse proxy, please configure the protocol separately in the reverse proxy."
+"reverse proxy, please configure the protocol separately in the reverse "
+"proxy."
 msgstr ""
 "A configuração do protocolo só tem efeito ao conectar diretamente. Se "
 "estiver a usar um proxy inverso, configure o protocolo separadamente no "
@@ -4817,9 +4967,9 @@ msgstr "Número de Segurança Pública"
 msgid "PV"
 msgstr "Visualizações de página"
 
-#: src/views/nginx_log/NginxLogList.vue:187
-#: src/views/nginx_log/NginxLogList.vue:188
-#: src/views/nginx_log/NginxLogList.vue:210
+#: src/views/nginx_log/NginxLogList.vue:205
+#: src/views/nginx_log/NginxLogList.vue:206
+#: src/views/nginx_log/NginxLogList.vue:228
 msgid "Queued"
 msgstr "Na fila"
 
@@ -4850,7 +5000,11 @@ msgstr "Pedidos de leitura"
 msgid "Reads"
 msgstr "Leituras"
 
-#: src/views/nginx_log/NginxLogList.vue:407
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:191
+msgid "Real-time analytics dashboard"
+msgstr "Painel de análise em tempo real"
+
+#: src/views/nginx_log/NginxLogList.vue:477
 msgid "Rebuild"
 msgstr "Reconstruir"
 
@@ -4874,6 +5028,10 @@ msgstr "Receber"
 #: src/components/SelfCheck/SelfCheck.vue:23
 msgid "Recheck"
 msgstr "Verificar novamente"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:125
+msgid "Recommended:"
+msgstr "Recomendado:"
 
 #: src/components/TwoFA/Authorization.vue:79
 msgid "Recovery"
@@ -4986,8 +5144,7 @@ msgstr "Recarregamento remoto do Nginx bem-sucedido"
 
 #: src/components/NamespaceTabs/NamespaceTabs.vue:85
 msgid "Reload request failed, please check your network connection"
-msgstr ""
-"O pedido de recarregamento falhou, por favor verifique a sua ligação à rede"
+msgstr "O pedido de recarregamento falhou, por favor verifique a sua ligação à rede"
 
 #: src/components/NginxControl/NginxControl.vue:77
 msgid "Reloading"
@@ -5296,10 +5453,6 @@ msgstr "O ID da chave de acesso S3 é obrigatório"
 msgid "S3 Bucket"
 msgstr "Balde S3"
 
-#: src/constants/errors/backup.ts:70
-msgid "S3 bucket access denied: {0}"
-msgstr "Acesso ao bucket S3 negado: {0}"
-
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:101
 msgid "S3 bucket is required"
 msgstr "O bucket S3 é obrigatório"
@@ -5308,7 +5461,7 @@ msgstr "O bucket S3 é obrigatório"
 msgid "S3 bucket name"
 msgstr "Nome do bucket S3"
 
-#: src/constants/errors/backup.ts:63
+#: src/constants/errors/backup.ts:56
 msgid "S3 configuration is incomplete: missing {0}"
 msgstr "A configuração do S3 está incompleta: falta {0}"
 
@@ -5316,26 +5469,14 @@ msgstr "A configuração do S3 está incompleta: falta {0}"
 msgid "S3 connection test failed"
 msgstr "Teste de conexão S3 falhou"
 
-#: src/constants/errors/backup.ts:69
-msgid "S3 connection test failed: {0}"
-msgstr "Teste de conexão S3 falhou: {0}"
-
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:30
 msgid "S3 connection test successful"
 msgstr "Teste de conexão S3 bem-sucedido"
-
-#: src/constants/errors/backup.ts:71
-msgid "S3 credentials are invalid: {0}"
-msgstr "As credenciais do S3 são inválidas: {0}"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:243
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:66
 msgid "S3 Endpoint"
 msgstr "Ponto de extremidade S3"
-
-#: src/constants/errors/backup.ts:72
-msgid "S3 endpoint is invalid: {0}"
-msgstr "O endpoint S3 é inválido: {0}"
 
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:68
 msgid "S3 endpoint is required"
@@ -5372,7 +5513,7 @@ msgstr "Chave de Acesso Secreto do S3"
 msgid "S3 secret access key is required"
 msgstr "A chave de acesso secreta do S3 é necessária"
 
-#: src/constants/errors/backup.ts:68
+#: src/constants/errors/backup.ts:60
 msgid "S3 upload failed: {0}"
 msgstr "Falha no upload para S3: {0}"
 
@@ -5443,7 +5584,7 @@ msgid "Save successful"
 msgstr "Salvo com sucesso"
 
 #: src/language/curd.ts:35 src/views/certificate/store.ts:13
-#: src/views/preference/store/index.ts:119
+#: src/views/preference/store/index.ts:122
 msgid "Save successfully"
 msgstr "Salvo com sucesso"
 
@@ -5627,8 +5768,7 @@ msgstr "Erro ao definir ambiente: {0}"
 
 #: src/constants/errors/cert.ts:18
 msgid "Set env flag to disable lego CNAME support error: {0}"
-msgstr ""
-"Definir flag de ambiente para desativar suporte CNAME do lego erro: {0}"
+msgstr "Definir flag de ambiente para desativar suporte CNAME do lego erro: {0}"
 
 #: src/views/preference/tabs/CertSettings.vue:36
 msgid ""
@@ -5660,19 +5800,19 @@ msgstr "Configurações"
 
 #: src/constants/errors/nginx_log.ts:8
 msgid ""
-"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://nginxui."
-"com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.AccessLogPath is empty, refer to "
+"https://nginxui.com/guide/config-nginx.html for more information"
 msgstr ""
-"Settings.NginxLogSettings.AccessLogPath está vazio, consulte https://nginxui."
-"com/guide/config-nginx.html para mais informações"
+"Settings.NginxLogSettings.AccessLogPath está vazio, consulte "
+"https://nginxui.com/guide/config-nginx.html para mais informações"
 
 #: src/constants/errors/nginx_log.ts:7
 msgid ""
-"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://nginxui."
-"com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.ErrorLogPath is empty, refer to "
+"https://nginxui.com/guide/config-nginx.html for more information"
 msgstr ""
-"Settings.NginxLogSettings.ErrorLogPath está vazio, consulte https://nginxui."
-"com/guide/config-nginx.html para mais informações"
+"Settings.NginxLogSettings.ErrorLogPath está vazio, consulte "
+"https://nginxui.com/guide/config-nginx.html para mais informações"
 
 #: src/views/install/components/InstallView.vue:65
 msgid "Setup your Nginx UI"
@@ -5780,6 +5920,10 @@ msgstr "IP de origem"
 msgid "Sponsor"
 msgstr "Patrocinador"
 
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:37
+msgid "SSD storage for better I/O performance"
+msgstr "Armazenamento SSD para melhor desempenho de E/S"
+
 #: src/views/certificate/components/CertificateContentEditor.vue:118
 #: src/views/certificate/components/CertificateContentEditor.vue:123
 msgid "SSL Certificate Content"
@@ -5820,7 +5964,8 @@ msgstr "O caminho do certificado SSL é necessário quando o HTTPS está ativado
 #: src/constants/errors/system.ts:9
 msgid "SSL key file must be under Nginx configuration directory: {0}"
 msgstr ""
-"O ficheiro de chave SSL deve estar no diretório de configuração do Nginx: {0}"
+"O ficheiro de chave SSL deve estar no diretório de configuração do Nginx: "
+"{0}"
 
 #: src/constants/errors/system.ts:7
 msgid "SSL key file not found"
@@ -5885,6 +6030,7 @@ msgstr "Parado"
 
 #: src/views/dashboard/ServerAnalytic.vue:257
 #: src/views/dashboard/ServerAnalytic.vue:258
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:35
 msgid "Storage"
 msgstr "Armazenamento"
 
@@ -5909,11 +6055,6 @@ msgstr "Caminho de armazenamento"
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:56
 msgid "Storage path is required"
 msgstr "O caminho de armazenamento é obrigatório"
-
-#: src/constants/errors/backup.ts:61
-msgid "Storage path not in granted access paths: {0}"
-msgstr ""
-"Caminho de armazenamento não está nos caminhos de acesso concedidos: {0}"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:70
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:45
@@ -5966,12 +6107,12 @@ msgstr "Domingo"
 #: src/components/SelfCheck/tasks/frontend/websocket.ts:13
 msgid ""
 "Support communication with the backend through the WebSocket protocol. If "
-"your Nginx UI is being used via an Nginx reverse proxy, please refer to this "
-"link to write the corresponding configuration file: https://nginxui.com/"
-"guide/nginx-proxy-example.html"
+"your Nginx UI is being used via an Nginx reverse proxy, please refer to "
+"this link to write the corresponding configuration file: "
+"https://nginxui.com/guide/nginx-proxy-example.html"
 msgstr ""
-"Suporta a comunicação com o backend através do protocolo WebSocket. Se a sua "
-"interface Nginx está a ser utilizada através de um proxy inverso Nginx, "
+"Suporta a comunicação com o backend através do protocolo WebSocket. Se a "
+"sua interface Nginx está a ser utilizada através de um proxy inverso Nginx, "
 "consulte este link para escrever o ficheiro de configuração correspondente: "
 "https://nginxui.com/guide/nginx-proxy-example.html"
 
@@ -6085,6 +6226,10 @@ msgstr "Verificação do sistema"
 msgid "System Initial User"
 msgstr "Utilizador Inicial do Sistema"
 
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:95
+msgid "System Requirements"
+msgstr "Requisitos do sistema"
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:174
 msgid "System Restore"
 msgstr "Restauro do sistema"
@@ -6146,8 +6291,8 @@ msgid ""
 "since it was last issued."
 msgstr ""
 "O certificado do domínio será verificado 30 minutos e será renovado se já "
-"tiver passado mais de 1 semana ou o período que definiu nas definições desde "
-"a última emissão."
+"tiver passado mais de 1 semana ou o período que definiu nas definições "
+"desde a última emissão."
 
 #: src/views/preference/tabs/NodeSettings.vue:37
 msgid ""
@@ -6167,10 +6312,11 @@ msgstr "O valor introduzido não é uma Chave de Certificado SSL"
 
 #: src/constants/errors/nginx_log.ts:2
 msgid ""
-"The log path is not under the paths in settings.NginxSettings.LogDirWhiteList"
+"The log path is not under the paths in "
+"settings.NginxSettings.LogDirWhiteList"
 msgstr ""
-"O caminho do registo não está sob os caminhos em settings.NginxSettings."
-"LogDirWhiteList"
+"O caminho do registo não está sob os caminhos em "
+"settings.NginxSettings.LogDirWhiteList"
 
 #: src/views/preference/tabs/OpenAISettings.vue:23
 #: src/views/preference/tabs/OpenAISettings.vue:89
@@ -6182,11 +6328,10 @@ msgstr ""
 "traços, dois pontos e pontos."
 
 #: src/views/preference/tabs/OpenAISettings.vue:90
-msgid ""
-"The model used for code completion, if not set, the chat model will be used."
+msgid "The model used for code completion, if not set, the chat model will be used."
 msgstr ""
-"O modelo utilizado para a conclusão de código, se não estiver definido, será "
-"utilizado o modelo de chat."
+"O modelo utilizado para a conclusão de código, se não estiver definido, "
+"será utilizado o modelo de chat."
 
 #: src/views/preference/tabs/NodeSettings.vue:18
 msgid ""
@@ -6222,8 +6367,8 @@ msgid ""
 "version. To avoid potential errors, please upgrade the remote Nginx UI to "
 "match the local version."
 msgstr ""
-"A versão remota do Nginx UI não é compatível com a versão local do Nginx UI. "
-"Para evitar possíveis erros, atualize a versão remota do Nginx UI para "
+"A versão remota do Nginx UI não é compatível com a versão local do Nginx "
+"UI. Para evitar possíveis erros, atualize a versão remota do Nginx UI para "
 "corresponder à versão local."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:155
@@ -6266,6 +6411,10 @@ msgstr ""
 "palavra-passe e os segundos fatores. Se não conseguir encontrar estes "
 "códigos, perderá o acesso à sua conta."
 
+#: src/routes/modules/system.ts:45
+msgid "Third-party Components"
+msgstr "Componentes de terceiros"
+
 #: src/views/certificate/components/AutoCertManagement.vue:45
 msgid "This Auto Cert item is invalid, please remove it."
 msgstr "Este item Auto Cert é inválido, por favor remova-o."
@@ -6299,23 +6448,20 @@ msgid "This field should not be empty"
 msgstr "Este campo não pode estar vazio"
 
 #: src/constants/form_errors.ts:6
-msgid ""
-"This field should only contain letters, unicode characters, numbers, and -_."
-msgstr ""
-"Este campo deve conter apenas letras, caracteres Unicode, números e -_."
+msgid "This field should only contain letters, unicode characters, numbers, and -_."
+msgstr "Este campo deve conter apenas letras, caracteres Unicode, números e -_."
 
 #: src/language/curd.ts:46
 msgid ""
-"This field should only contain letters, unicode characters, numbers, and -"
-"_./:"
-msgstr ""
-"Este campo deve conter apenas letras, caracteres Unicode, números e -_./:"
+"This field should only contain letters, unicode characters, numbers, and "
+"-_./:"
+msgstr "Este campo deve conter apenas letras, caracteres Unicode, números e -_./:"
 
 #: src/components/Notification/notifications.ts:94
 msgid "This is a test message sent at %{timestamp} from Nginx UI."
 msgstr ""
-"Esta é uma mensagem de teste enviada em %{timestamp} da interface do usuário "
-"nginx."
+"Esta é uma mensagem de teste enviada em %{timestamp} da interface do "
+"usuário nginx."
 
 #: src/views/dashboard/NginxDashBoard.vue:175
 msgid ""
@@ -6343,9 +6489,9 @@ msgstr ""
 
 #: src/components/AutoCertForm/AutoCertForm.vue:128
 msgid ""
-"This site is configured as a default server (default_server) for HTTPS (port "
-"443). IP certificates require Certificate Authority (CA) support and may not "
-"be available with all ACME providers."
+"This site is configured as a default server (default_server) for HTTPS "
+"(port 443). IP certificates require Certificate Authority (CA) support and "
+"may not be available with all ACME providers."
 msgstr ""
 "Este site está configurado como um servidor padrão (default_server) para "
 "HTTPS (porta 443). Os certificados IP requerem suporte de uma Autoridade de "
@@ -6354,8 +6500,8 @@ msgstr ""
 
 #: src/components/AutoCertForm/AutoCertForm.vue:132
 msgid ""
-"This site uses wildcard server name (_) which typically indicates an IP-"
-"based certificate. IP certificates require Certificate Authority (CA) "
+"This site uses wildcard server name (_) which typically indicates an "
+"IP-based certificate. IP certificates require Certificate Authority (CA) "
 "support and may not be available with all ACME providers."
 msgstr ""
 "Este site utiliza um nome de servidor curinga (_) que normalmente indica um "
@@ -6385,8 +6531,8 @@ msgid ""
 "deleted and rebuilt from scratch. This may take some time. Continue?"
 msgstr ""
 "Isso irá reconstruir todo o índice de registros. Todos os dados de índice "
-"existentes serão eliminados e reconstruídos do zero. Isto pode demorar algum "
-"tempo. Continuar?"
+"existentes serão eliminados e reconstruídos do zero. Isto pode demorar "
+"algum tempo. Continuar?"
 
 #: src/views/nginx_log/indexing/IndexManagement.vue:54
 msgid "This will rebuild the index data for this specific file: %{path}"
@@ -6413,10 +6559,10 @@ msgstr ""
 "UI irá reiniciar após a conclusão da restauração."
 
 #: src/views/node/BatchUpgrader.vue:186
-msgid ""
-"This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
+msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr ""
-"Isto vai actualizar ou reinstalar o Nginx UI em %{nodeNames} para %{version}."
+"Isto vai actualizar ou reinstalar o Nginx UI em %{nodeNames} para "
+"%{version}."
 
 #: src/views/preference/tabs/AuthSettings.vue:91
 msgid "Throttle"
@@ -6431,7 +6577,7 @@ msgstr "Quinta-feira"
 msgid "Time"
 msgstr "Tempo"
 
-#: src/views/nginx_log/NginxLogList.vue:284
+#: src/views/nginx_log/NginxLogList.vue:302
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:687
 msgid "Time Range"
 msgstr "Intervalo de tempo"
@@ -6487,8 +6633,8 @@ msgstr ""
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:15
 msgid ""
 "To make sure the certification auto-renewal can work normally, we need to "
-"add a location which can proxy the request from authority to backend, and we "
-"need to save this file and reload the Nginx. Are you sure you want to "
+"add a location which can proxy the request from authority to backend, and "
+"we need to save this file and reload the Nginx. Are you sure you want to "
 "continue?"
 msgstr ""
 "Para garantir que a renovação automática da certificação funciona "
@@ -6535,6 +6681,10 @@ msgstr "Top 10 URLs"
 #: src/language/curd.ts:5
 msgid "Total"
 msgstr "Total"
+
+#: src/views/system/Licenses.vue:107
+msgid "Total Components"
+msgstr "Componentes totais"
 
 #: src/composables/usePerformanceMetrics.ts:94
 #: src/views/dashboard/components/PerformanceTablesCard.vue:54
@@ -6629,7 +6779,7 @@ msgstr "Autenticação de dois fatores necessária"
 #: src/views/certificate/CertificateList/certColumns.tsx:24
 #: src/views/config/components/Delete.vue:122
 #: src/views/dashboard/components/ModulesTable.vue:83
-#: src/views/nginx_log/NginxLogList.vue:119
+#: src/views/nginx_log/NginxLogList.vue:137
 #: src/views/notification/notificationColumns.tsx:8
 #: src/views/preference/components/ExternalNotify/columns.tsx:19
 msgid "Type"
@@ -6664,7 +6814,7 @@ msgstr "Páginas únicas"
 msgid "Unknown"
 msgstr "Desconhecido"
 
-#: src/constants/errors/backup.ts:64
+#: src/constants/errors/backup.ts:57
 msgid "Unsupported backup type: {0}"
 msgstr "Tipo de backup não suportado: {0}"
 
@@ -6744,7 +6894,7 @@ msgid "Uptime:"
 msgstr "Uptime:"
 
 #: src/views/nginx_log/dashboard/components/TopUrlsTable.vue:13
-#: src/views/node/nodeColumns.tsx:18
+#: src/views/node/nodeColumns.tsx:18 src/views/system/Licenses.vue:34
 msgid "URL"
 msgstr "URL"
 
@@ -6829,12 +6979,14 @@ msgstr "Verificar nome do host"
 msgid "Verify system requirements"
 msgstr "Verificar requisitos do sistema"
 
-#: src/views/node/nodeColumns.tsx:30
+#: src/views/node/nodeColumns.tsx:30 src/views/system/Licenses.vue:28
 msgid "Version"
 msgstr "Versão"
 
-#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:396
+#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:466
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:83
+#: src/views/system/Licenses.vue:180 src/views/system/Licenses.vue:215
+#: src/views/system/Licenses.vue:250
 msgid "View"
 msgstr "Ver"
 
@@ -6849,6 +7001,10 @@ msgstr "Ver no GitHub"
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:134
 msgid "View Recovery Codes"
 msgstr "Ver códigos de recuperação"
+
+#: src/views/system/About.vue:83
+msgid "View Third-party Components"
+msgstr "Ver componentes de terceiros"
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:70
 msgid "Viewed"
@@ -6885,8 +7041,8 @@ msgid ""
 "to restore."
 msgstr ""
 "Aviso: A operação de restauro irá substituir as configurações atuais. "
-"Certifique-se de que tem um ficheiro de cópia de segurança válido e um token "
-"de segurança, e selecione cuidadosamente o que restaurar."
+"Certifique-se de que tem um ficheiro de cópia de segurança válido e um "
+"token de segurança, e selecione cuidadosamente o que restaurar."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:103
 msgid ""
@@ -6899,6 +7055,10 @@ msgstr ""
 "para IPs privados. Utilize um endereço IP público ou considere usar uma "
 "autoridade de certificação privada."
 
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:245
+msgid "We do not accept any feature requests"
+msgstr "Não aceitamos pedidos de funcionalidades"
+
 #: src/views/certificate/DNSCredential.vue:96
 msgid ""
 "We will add one or more TXT records to the DNS records of your domain for "
@@ -6909,8 +7069,8 @@ msgstr ""
 
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:141
 msgid ""
-"We will remove the HTTPChallenge configuration from this file and reload the "
-"Nginx. Are you sure you want to continue?"
+"We will remove the HTTPChallenge configuration from this file and reload "
+"the Nginx. Are you sure you want to continue?"
 msgstr ""
 "Removeremos a configuração HTTPChallenge deste ficheiro e reiniciaremos o "
 "Nginx. Tem a certeza de que quer continuar?"
@@ -7036,8 +7196,8 @@ msgstr "Sim"
 
 #: src/views/terminal/Terminal.vue:142
 msgid ""
-"You are accessing this terminal over an insecure HTTP connection on a non-"
-"localhost domain. This may expose sensitive information."
+"You are accessing this terminal over an insecure HTTP connection on a "
+"non-localhost domain. This may expose sensitive information."
 msgstr ""
 "Está a aceder a este terminal através de uma ligação HTTP insegura num "
 "domínio que não é localhost. Isto pode expor informações sensíveis."
@@ -7069,12 +7229,11 @@ msgid ""
 "You have not configured the settings of Webauthn, so you cannot add a "
 "passkey."
 msgstr ""
-"Não configuraste as definições do WebAuthn, por isso não podes adicionar uma "
-"chave de acesso."
+"Não configuraste as definições do WebAuthn, por isso não podes adicionar "
+"uma chave de acesso."
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:81
-msgid ""
-"You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
+msgid "You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
 msgstr ""
 "Ainda não ativou a autenticação de dois fatores. Por favor, ative-a para "
 "gerar códigos de recuperação."
@@ -7100,6 +7259,92 @@ msgstr "Os seus códigos antigos não funcionarão mais."
 #: src/views/preference/components/AuthSettings/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "As suas chaves de acesso"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:179
+msgid "Zero-allocation pipeline"
+msgstr "Pipeline sem alocação"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:56
+msgid "Zero-allocation pipeline optimization"
+msgstr "Otimização de pipeline sem alocação"
+
+#~ msgid "Geographic mapping & insights"
+#~ msgstr "Mapeamento geográfico e insights"
+
+#~ msgid "No feature requests accepted."
+#~ msgstr "Não são aceites pedidos de funcionalidades"
+
+#~ msgid "Time-series trend analysis"
+#~ msgstr "Análise de tendências de séries temporais"
+
+#~ msgid "User-Agent & browser analytics"
+#~ msgstr "Análise de User-Agent e navegador"
+
+#~ msgid "12+ cores (Apple M2 Pro or Intel equivalent)"
+#~ msgstr "12+ núcleos (Apple M2 Pro ou equivalente Intel)"
+
+#~ msgid "4GB+ RAM for optimal performance"
+#~ msgstr "4 GB+ de RAM para desempenho ideal"
+
+#~ msgid "Adaptive batch sizing"
+#~ msgstr "Tamanho de lote adaptável"
+
+#~ msgid "CPU Architecture"
+#~ msgstr "Arquitetura da CPU"
+
+#~ msgid "GeoIP and User-Agent parsing"
+#~ msgstr "Análise de GeoIP e User-Agent"
+
+#~ msgid "Minimum 1GB RAM"
+#~ msgstr "Mínimo de 1 GB de RAM"
+
+#~ msgid "Modern CPU (x86_64, ARM64)"
+#~ msgstr "CPU moderno (x86_64, ARM64)"
+
+#~ msgid "Real-time performance monitoring"
+#~ msgstr "Monitorização de desempenho em tempo real"
+
+#~ msgid "Sustained performance on modern hardware"
+#~ msgstr "Desempenho sustentado em hardware moderno"
+
+#~ msgid "Backup path not in granted access paths: {0}"
+#~ msgstr "Caminho de backup não está nos caminhos de acesso concedidos: {0}"
+
+#~ msgid "Build with"
+#~ msgstr "Build com"
+
+#~ msgid "Failed to copy database directory: {0}"
+#~ msgstr "Falha ao copiar o diretório da base de dados: {0}"
+
+#~ msgid "Failed to create backup directory: {0}"
+#~ msgstr "Falha ao criar o diretório de backup: {0}"
+
+#~ msgid "Failed to evaluate symbolic links: {0}"
+#~ msgstr "Falha ao avaliar os links simbólicos: {0}"
+
+#~ msgid "Failed to restore Nginx UI files: {0}"
+#~ msgstr "Falha ao restaurar os ficheiros da interface de utilizador do Nginx: {0}"
+
+#~ msgid "Failed to write to zip buffer: {0}"
+#~ msgstr "Falha ao escrever no buffer ZIP: {0}"
+
+#~ msgid "Hash verification failed: file integrity compromised"
+#~ msgstr "Falha na verificação do hash: integridade do ficheiro comprometida"
+
+#~ msgid "S3 bucket access denied: {0}"
+#~ msgstr "Acesso ao bucket S3 negado: {0}"
+
+#~ msgid "S3 connection test failed: {0}"
+#~ msgstr "Teste de conexão S3 falhou: {0}"
+
+#~ msgid "S3 credentials are invalid: {0}"
+#~ msgstr "As credenciais do S3 são inválidas: {0}"
+
+#~ msgid "S3 endpoint is invalid: {0}"
+#~ msgstr "O endpoint S3 é inválido: {0}"
+
+#~ msgid "Storage path not in granted access paths: {0}"
+#~ msgstr "Caminho de armazenamento não está nos caminhos de acesso concedidos: {0}"
 
 #~ msgid "files"
 #~ msgstr "arquivos"
@@ -7149,15 +7394,14 @@ msgstr "As suas chaves de acesso"
 
 #~ msgid ""
 #~ "Support communication with the backend through the Server-Sent Events "
-#~ "protocol. If your Nginx UI is being used via an Nginx reverse proxy, "
-#~ "please refer to this link to write the corresponding configuration file: "
+#~ "protocol. If your Nginx UI is being used via an Nginx reverse proxy, please "
+#~ "refer to this link to write the corresponding configuration file: "
 #~ "https://nginxui.com/guide/nginx-proxy-example.html"
 #~ msgstr ""
 #~ "Suporte à comunicação com o backend através do protocolo Server-Sent "
 #~ "Events. Se a sua Nginx UI estiver a ser utilizada através de um proxy "
-#~ "inverso Nginx, consulte este link para escrever o ficheiro de "
-#~ "configuração correspondente: https://nginxui.com/guide/nginx-proxy-"
-#~ "example.html"
+#~ "inverso Nginx, consulte este link para escrever o ficheiro de configuração "
+#~ "correspondente: https://nginxui.com/guide/nginx-proxy-example.html"
 
 #~ msgid "If left blank, the default CA Dir will be used."
 #~ msgstr "Se for deixado em branco, será utilizado o diretório CA padrão."
@@ -7239,8 +7483,8 @@ msgstr "As suas chaves de acesso"
 
 #~ msgid ""
 #~ "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
-#~ "Docker Image, please make sure the docker socket is mounted like this: `-"
-#~ "v /var/run/docker.sock:/var/run/docker.sock`."
+#~ "Docker Image, please make sure the docker socket is mounted like this: `-v "
+#~ "/var/run/docker.sock:/var/run/docker.sock`."
 #~ msgstr ""
 #~ "Verifique se /var/run/docker.sock existe. Se estiver a utilizar a imagem "
 #~ "Docker oficial do Nginx UI, certifique-se de que o socket Docker está "
@@ -7269,8 +7513,7 @@ msgstr "As suas chaves de acesso"
 #~ msgstr "Este item Auto Cert é inválido, por favor remova-o."
 
 #~ msgid "Automatically indexed from site and stream configurations."
-#~ msgstr ""
-#~ "Indexado automaticamente a partir das configurações de site e stream."
+#~ msgstr "Indexado automaticamente a partir das configurações de site e stream."
 
 #~ msgid "Deploy successfully"
 #~ msgstr "Deploy sucedido"
@@ -7296,17 +7539,14 @@ msgstr "As suas chaves de acesso"
 #~ msgstr "Erro de Formato %{msg}"
 
 #~ msgid ""
-#~ "If you lose your mobile phone, you can use the recovery code to reset "
-#~ "your 2FA."
+#~ "If you lose your mobile phone, you can use the recovery code to reset your "
+#~ "2FA."
 #~ msgstr ""
-#~ "Se perder o seu telemóvel, pode utilizar o código de recuperação para "
-#~ "repor o seu 2FA."
+#~ "Se perder o seu telemóvel, pode utilizar o código de recuperação para repor "
+#~ "o seu 2FA."
 
 #~ msgid "Incorrect username or password"
 #~ msgstr "Utilizador ou senha incorrectos"
-
-#~ msgid "Recovery Code:"
-#~ msgstr "Código de Recuperação:"
 
 #~ msgid ""
 #~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, please upgrade "
@@ -7322,8 +7562,7 @@ msgstr "As suas chaves de acesso"
 #~ "Sincronização do Certificado %{cert_name} para %{env_name} falhou, por "
 #~ "favor actualize a versão remota do Nginx UI para a última versão"
 
-#~ msgid ""
-#~ "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
+#~ msgid "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
 #~ msgstr ""
 #~ "Sincronização do Certificado %{cert_name} para %{env_name} falhou, "
 #~ "resposta: %{resp}"
@@ -7340,8 +7579,7 @@ msgstr "As suas chaves de acesso"
 #~ "Sincronização de configuração %{config_name} para %{env_name} falhou, "
 #~ "resposta: %{resp}"
 
-#~ msgid ""
-#~ "The recovery code is only displayed once, please save it in a safe place."
+#~ msgid "The recovery code is only displayed once, please save it in a safe place."
 #~ msgstr ""
 #~ "O código de recuperação é apresentado apenas uma vez, guarde-o num local "
 #~ "seguro."

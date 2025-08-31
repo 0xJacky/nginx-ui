@@ -106,16 +106,3 @@ As non-native English speakers, we strive for accuracy, but we know there's alwa
 
 Thanks to our amazing community, additional languages are also available! Explore and contribute to translations on [Weblate](https://weblate.nginxui.com).
 
-## Built With
-
-- [The Go Programming Language](https://go.dev)
-- [Gin Web Framework](https://gin-gonic.com)
-- [GORM](http://gorm.io)
-- [Vue 3](https://v3.vuejs.org)
-- [Vite](https://vitejs.dev)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Ant Design Vue](https://antdv.com)
-- [vue3-gettext](https://github.com/jshmrtn/vue3-gettext)
-- [vue3-ace-editor](https://github.com/CarterLi/vue3-ace-editor)
-- [Gonginx](https://github.com/tufanbarisyildirim/gonginx)
-- [lego](https://github.com/go-acme/lego)

@@ -99,6 +99,12 @@
 | StubStatusPort  | NGINX_UI_NGINX_STUB_STATUS_PORT   |
 | ContainerName   | NGINX_UI_NGINX_CONTAINER_NAME     |
 
+## Nginx Log
+
+| 設定                     | 環境變數                                       |
+|-------------------------|-----------------------------------------------|
+| AdvancedIndexingEnabled | NGINX_UI_NGINX_LOG_ADVANCED_INDEXING_ENABLED |
+
 ## Node
 
 | 設定               | 環境變數                            |

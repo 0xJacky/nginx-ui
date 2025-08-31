@@ -25,7 +25,7 @@ Yet another Nginx Web UI, được phát triển bởi [0xJacky](https://jackyu.
 
 [![Stargazers over time](https://starchart.cc/0xJacky/nginx-ui.svg)](https://starchart.cc/0xJacky/nginx-ui)
 
-English | [Español](README-es.md) | [简体中文](README-zh_CN.md) | [繁體中文](README-zh_TW.md) | [Tiếng Việt](README-vi_VN.md)
+[English](../../README.md) | [Español](README-es.md) | [简体中文](README-zh_CN.md) | [繁體中文](README-zh_TW.md) | [Tiếng Việt](README-vi_VN.md)
 
 <details>
   <summary>Mục lục</summary>
@@ -36,7 +36,6 @@ English | [Español](README-es.md) | [简体中文](README-zh_CN.md) | [繁體�
         <li><a href="#demo">Demo</a></li>
         <li><a href="#features">Tính năng</a></li>
         <li><a href="#internationalization">Ngôn ngữ hiển thị</a></li>
-        <li><a href="#built-with">Được xây dựng với</a></li>
       </ul>
     </li>
     <li>
@@ -109,19 +108,6 @@ URL：[https://demo.nginxui.com](https://demo.nginxui.com)
 
 Chúng tôi hoan nghênh bản dịch sang bất kỳ ngôn ngữ nào.
 
-### Được xây dựng với
-
-- [The Go Programming Language](https://go.dev)
-- [Gin Web Framework](https://gin-gonic.com)
-- [GORM](http://gorm.io)
-- [Vue 3](https://v3.vuejs.org)
-- [Vite](https://vitejs.dev)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Ant Design Vue](https://antdv.com)
-- [vue3-gettext](https://github.com/jshmrtn/vue3-gettext)
-- [vue3-ace-editor](https://github.com/CarterLi/vue3-ace-editor)
-- [Gonginx](https://github.com/tufanbarisyildirim/gonginx)
-- [lego](https://github.com/go-acme/lego)
 
 ## Bắt đầu
 

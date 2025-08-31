@@ -3,6 +3,7 @@ package nginx_log
 import (
 	"context"
 	"fmt"
+	"sync"
 	"sync/atomic"
 	"time"
 
@@ -16,13 +17,19 @@ type TaskRecovery struct {
 	logFileManager *indexer.LogFileManager
 	modernIndexer  *indexer.ParallelIndexer
 	activeTasks    int32 // Counter for active recovery tasks
+	ctx            context.Context
+	cancel         context.CancelFunc
+	wg             sync.WaitGroup
 }
 
 // NewTaskRecovery creates a new task recovery manager
-func NewTaskRecovery() *TaskRecovery {
+func NewTaskRecovery(parentCtx context.Context) *TaskRecovery {
+	ctx, cancel := context.WithCancel(parentCtx)
 	return &TaskRecovery{
 		logFileManager: GetLogFileManager(),
 		modernIndexer:  GetModernIndexer(),
+		ctx:            ctx,
+		cancel:         cancel,
 	}
 }
 
@@ -103,16 +110,32 @@ func (tr *TaskRecovery) recoverTask(ctx context.Context, logPath string, queuePo
 		return err
 	}
 	
-	// Queue the recovery task asynchronously
-	go tr.executeRecoveredTask(ctx, logPath)
+	// Queue the recovery task asynchronously with proper context and WaitGroup
+	tr.wg.Add(1)
+	go tr.executeRecoveredTask(tr.ctx, logPath)
 	
 	return nil
 }
 
 // executeRecoveredTask executes a recovered indexing task with proper global state and progress tracking
 func (tr *TaskRecovery) executeRecoveredTask(ctx context.Context, logPath string) {
-	// Add a small delay to stagger recovery tasks
-	time.Sleep(time.Second * 2)
+	defer tr.wg.Done() // Always decrement WaitGroup
+	
+	// Check context before starting
+	select {
+	case <-ctx.Done():
+		logger.Infof("Context cancelled, skipping recovery task for %s", logPath)
+		return
+	default:
+	}
+	
+	// Add a small delay to stagger recovery tasks, but check context
+	select {
+	case <-time.After(time.Second * 2):
+	case <-ctx.Done():
+		logger.Infof("Context cancelled during delay, skipping recovery task for %s", logPath)
+		return
+	}
 	
 	logger.Infof("Executing recovered indexing task: %s", logPath)
 	
@@ -199,6 +222,14 @@ func (tr *TaskRecovery) executeRecoveredTask(ctx context.Context, logPath string
 		},
 	}
 	
+	// Check context before starting indexing
+	select {
+	case <-ctx.Done():
+		logger.Infof("Context cancelled before indexing, stopping recovery task for %s", logPath)
+		return
+	default:
+	}
+	
 	// Execute the indexing with progress tracking
 	startTime := time.Now()
 	docsCountMap, minTime, maxTime, err := tr.modernIndexer.IndexLogGroupWithProgress(logPath, progressConfig)
@@ -247,6 +278,33 @@ func (tr *TaskRecovery) setTaskStatus(logPath, status string, queuePosition int)
 	return persistence.SetIndexStatus(logPath, status, queuePosition, "")
 }
 
+// Shutdown gracefully stops all recovery tasks
+func (tr *TaskRecovery) Shutdown() {
+	logger.Info("Shutting down task recovery system...")
+	
+	// Cancel all active tasks
+	tr.cancel()
+	
+	// Wait for all tasks to complete with timeout
+	done := make(chan struct{})
+	go func() {
+		tr.wg.Wait()
+		close(done)
+	}()
+	
+	select {
+	case <-done:
+		logger.Info("All recovery tasks completed successfully")
+	case <-time.After(30 * time.Second):
+		logger.Warn("Timeout waiting for recovery tasks to complete")
+	}
+	
+	logger.Info("Task recovery system shutdown completed")
+}
+
+// Global task recovery manager
+var globalTaskRecovery *TaskRecovery
+
 // InitTaskRecovery initializes the task recovery system - called during application startup
 func InitTaskRecovery(ctx context.Context) {
 	logger.Info("Initializing task recovery system")
@@ -254,8 +312,16 @@ func InitTaskRecovery(ctx context.Context) {
 	// Wait a bit for services to fully initialize
 	time.Sleep(3 * time.Second)
 	
-	recoveryManager := NewTaskRecovery()
-	if err := recoveryManager.RecoverUnfinishedTasks(ctx); err != nil {
+	globalTaskRecovery = NewTaskRecovery(ctx)
+	if err := globalTaskRecovery.RecoverUnfinishedTasks(ctx); err != nil {
 		logger.Errorf("Failed to recover unfinished tasks: %v", err)
 	}
+	
+	// Monitor context for shutdown
+	go func() {
+		<-ctx.Done()
+		if globalTaskRecovery != nil {
+			globalTaskRecovery.Shutdown()
+		}
+	}()
 }

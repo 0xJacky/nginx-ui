@@ -349,6 +349,19 @@ const nginx_log = extendCurdApi(useCurdApi('/nginx_logs'), {
   getGeoStats(data: AnalyticsRequest): Promise<{ stats: GeoStats[] }> {
     return http.post('/nginx_log/geo/stats', data)
   },
+
+  // Advanced indexing settings APIs
+  enableAdvancedIndexing(): Promise<{ message: string }> {
+    return http.post('/nginx_log/settings/advanced_indexing/enable')
+  },
+
+  disableAdvancedIndexing(): Promise<{ message: string }> {
+    return http.post('/nginx_log/settings/advanced_indexing/disable')
+  },
+
+  getAdvancedIndexingStatus(): Promise<{ enabled: boolean }> {
+    return http.get('/nginx_log/settings/advanced_indexing/status')
+  },
 })
 
 export default nginx_log

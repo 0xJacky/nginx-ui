@@ -43,6 +43,11 @@ func newNginxLogIndex(db *gorm.DB, opts ...gen.DOOption) nginxLogIndex {
 	_nginxLogIndex.TimeRangeEnd = field.NewTime(tableName, "time_range_end")
 	_nginxLogIndex.DocumentCount = field.NewUint64(tableName, "document_count")
 	_nginxLogIndex.Enabled = field.NewBool(tableName, "enabled")
+	_nginxLogIndex.IndexStatus = field.NewString(tableName, "index_status")
+	_nginxLogIndex.ErrorMessage = field.NewString(tableName, "error_message")
+	_nginxLogIndex.ErrorTime = field.NewTime(tableName, "error_time")
+	_nginxLogIndex.RetryCount = field.NewInt(tableName, "retry_count")
+	_nginxLogIndex.QueuePosition = field.NewInt(tableName, "queue_position")
 
 	_nginxLogIndex.fillFieldMap()
 
@@ -68,6 +73,11 @@ type nginxLogIndex struct {
 	TimeRangeEnd   field.Time
 	DocumentCount  field.Uint64
 	Enabled        field.Bool
+	IndexStatus    field.String
+	ErrorMessage   field.String
+	ErrorTime      field.Time
+	RetryCount     field.Int
+	QueuePosition  field.Int
 
 	fieldMap map[string]field.Expr
 }
@@ -99,6 +109,11 @@ func (n *nginxLogIndex) updateTableName(table string) *nginxLogIndex {
 	n.TimeRangeEnd = field.NewTime(table, "time_range_end")
 	n.DocumentCount = field.NewUint64(table, "document_count")
 	n.Enabled = field.NewBool(table, "enabled")
+	n.IndexStatus = field.NewString(table, "index_status")
+	n.ErrorMessage = field.NewString(table, "error_message")
+	n.ErrorTime = field.NewTime(table, "error_time")
+	n.RetryCount = field.NewInt(table, "retry_count")
+	n.QueuePosition = field.NewInt(table, "queue_position")
 
 	n.fillFieldMap()
 
@@ -115,7 +130,7 @@ func (n *nginxLogIndex) GetFieldByName(fieldName string) (field.OrderExpr, bool)
 }
 
 func (n *nginxLogIndex) fillFieldMap() {
-	n.fieldMap = make(map[string]field.Expr, 15)
+	n.fieldMap = make(map[string]field.Expr, 20)
 	n.fieldMap["id"] = n.ID
 	n.fieldMap["created_at"] = n.CreatedAt
 	n.fieldMap["updated_at"] = n.UpdatedAt
@@ -131,6 +146,11 @@ func (n *nginxLogIndex) fillFieldMap() {
 	n.fieldMap["time_range_end"] = n.TimeRangeEnd
 	n.fieldMap["document_count"] = n.DocumentCount
 	n.fieldMap["enabled"] = n.Enabled
+	n.fieldMap["index_status"] = n.IndexStatus
+	n.fieldMap["error_message"] = n.ErrorMessage
+	n.fieldMap["error_time"] = n.ErrorTime
+	n.fieldMap["retry_count"] = n.RetryCount
+	n.fieldMap["queue_position"] = n.QueuePosition
 }
 
 func (n nginxLogIndex) clone(db *gorm.DB) nginxLogIndex {

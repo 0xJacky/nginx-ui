@@ -34,6 +34,7 @@ var envPrefixMap = map[string]interface{}{
 	"HTTP":      HTTPSettings,
 	"LOGROTATE": LogrotateSettings,
 	"NGINX":     NginxSettings,
+	"NGINX_LOG": NginxLogSettings,
 	"NODE":      NodeSettings,
 	"OPENAI":    OpenAISettings,
 	"TERMINAL":  TerminalSettings,
@@ -55,6 +56,7 @@ func init() {
 	sections.Set("http", HTTPSettings)
 	sections.Set("logrotate", LogrotateSettings)
 	sections.Set("nginx", NginxSettings)
+	sections.Set("nginx_log", NginxLogSettings)
 	sections.Set("node", NodeSettings)
 	sections.Set("openai", OpenAISettings)
 	sections.Set("terminal", TerminalSettings)

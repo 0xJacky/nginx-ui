@@ -37,6 +37,14 @@ export const systemRoutes: RouteRecordRaw[] = [
       meta: {
         name: () => $gettext('About'),
       },
+    }, {
+      path: 'licenses',
+      name: 'Licenses',
+      component: () => import('@/views/system/Licenses.vue'),
+      meta: {
+        name: () => $gettext('Third-party Components'),
+        hiddenInSidebar: true,
+      },
     }],
   },
 ]

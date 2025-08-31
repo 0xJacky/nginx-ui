@@ -66,6 +66,9 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
       stub_status_port: 51820,
       container_name: '',
     },
+    nginx_log: {
+      advanced_indexing_enabled: false,
+    },
     node: {
       name: '',
       secret: '',

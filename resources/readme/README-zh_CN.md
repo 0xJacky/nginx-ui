@@ -10,7 +10,7 @@ Nginx 网络管理界面，由 [0xJacky](https://jackyu.cn/)、[Hintay](https://
 
 [![Build and Publish](https://github.com/0xJacky/nginx-ui/actions/workflows/build.yml/badge.svg)](https://github.com/0xJacky/nginx-ui/actions/workflows/build.yml)
 
-[English](README.md) | [Español](README-es.md) | 简体中文 | [繁體中文](README-zh_TW.md)
+[English](../../README.md) | [Español](README-es.md) | 简体中文 | [繁體中文](README-zh_TW.md)
 
 <details>
   <summary>目录</summary>
@@ -21,7 +21,6 @@ Nginx 网络管理界面，由 [0xJacky](https://jackyu.cn/)、[Hintay](https://
         <li><a href="#在线预览">在线预览</a></li>
         <li><a href="#特色">特色</a></li>
         <li><a href="#国际化">国际化</a></li>
-        <li><a href="#构建基于">构建基于</a></li>
       </ul>
     </li>
     <li>
@@ -95,18 +94,6 @@ Nginx 网络管理界面，由 [0xJacky](https://jackyu.cn/)、[Hintay](https://
 
 我们欢迎您将项目翻译成任何语言。
 
-### 构建基于
-- [The Go Programming Language](https://go.dev)
-- [Gin Web Framework](https://gin-gonic.com)
-- [GORM](http://gorm.io)
-- [Vue 3](https://v3.vuejs.org)
-- [Vite](https://vitejs.dev)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Ant Design Vue](https://antdv.com)
-- [vue3-gettext](https://github.com/jshmrtn/vue3-gettext)
-- [vue3-ace-editor](https://github.com/CarterLi/vue3-ace-editor)
-- [Gonginx](https://github.com/tufanbarisyildirim/gonginx)
-- [lego](https://github.com/go-acme/lego)
 
 ## 入门指南
 

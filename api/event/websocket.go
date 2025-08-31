@@ -27,7 +27,6 @@ type Client struct {
 	send   chan WebSocketMessage
 	ctx    context.Context
 	cancel context.CancelFunc
-	mutex  sync.RWMutex
 }
 
 // Hub maintains the set of active clients and broadcasts messages to them
@@ -37,6 +36,7 @@ type Hub struct {
 	register   chan *Client
 	unregister chan *Client
 	mutex      sync.RWMutex
+	ctx        context.Context
 }
 
 var (
@@ -52,6 +52,7 @@ func GetHub() *Hub {
 			broadcast:  make(chan WebSocketMessage, 1024), // Increased buffer size
 			register:   make(chan *Client),
 			unregister: make(chan *Client),
+			ctx:        event.GetWebSocketContext(),
 		}
 		go hub.run()
 
@@ -106,6 +107,26 @@ func (h *Hub) run() {
 				}
 			}
 			h.mutex.RUnlock()
+
+		case <-h.ctx.Done():
+			logger.Info("Hub context cancelled, shutting down WebSocket hub")
+			h.mutex.Lock()
+			for client := range h.clients {
+				close(client.send)
+				delete(h.clients, client)
+			}
+			h.mutex.Unlock()
+			return
+
+		case <-kernel.Context.Done():
+			logger.Debug("Kernel context cancelled, closing WebSocket hub")
+			h.mutex.Lock()
+			for client := range h.clients {
+				close(client.send)
+				delete(h.clients, client)
+			}
+			h.mutex.Unlock()
+			return
 		}
 	}
 }
@@ -139,7 +160,20 @@ func Bus(c *gin.Context) {
 	}
 
 	hub := GetHub()
-	hub.register <- client
+	
+	// Safely register the client with timeout to prevent blocking
+	select {
+	case hub.register <- client:
+		// Successfully registered
+	case <-time.After(1 * time.Second):
+		// Timeout - hub might be shutting down
+		logger.Warn("Failed to register client - hub may be shutting down")
+		return
+	case <-kernel.Context.Done():
+		// Kernel context cancelled
+		logger.Debug("Kernel context cancelled during client registration")
+		return
+	}
 
 	// Broadcast current processing status to the new client
 	go func() {
@@ -196,8 +230,17 @@ func (c *Client) writePump() {
 // readPump pumps messages from the websocket connection to the hub
 func (c *Client) readPump() {
 	defer func() {
+		// Safely unregister the client with timeout to prevent blocking
 		hub := GetHub()
-		hub.unregister <- c
+		select {
+		case hub.unregister <- c:
+			// Successfully unregistered
+		case <-time.After(1 * time.Second):
+			// Timeout - hub might be shutting down
+			logger.Warn("Failed to unregister client - hub may be shutting down")
+		}
+		
+		// Always close the connection and cancel context
 		c.conn.Close()
 		c.cancel()
 	}()
@@ -210,15 +253,27 @@ func (c *Client) readPump() {
 	})
 
 	for {
-		var msg json.RawMessage
-		err := c.conn.ReadJSON(&msg)
-		if err != nil {
-			if helper.IsUnexpectedWebsocketError(err) {
-				logger.Error("Unexpected WebSocket error:", err)
+		select {
+		case <-c.ctx.Done():
+			// Context cancelled, exit gracefully
+			return
+		case <-kernel.Context.Done():
+			// Kernel context cancelled, exit gracefully
+			return
+		default:
+			// Set a short read deadline to check context regularly
+			c.conn.SetReadDeadline(time.Now().Add(5 * time.Second))
+			
+			var msg json.RawMessage
+			err := c.conn.ReadJSON(&msg)
+			if err != nil {
+				if helper.IsUnexpectedWebsocketError(err) {
+					logger.Error("Unexpected WebSocket error:", err)
+				}
+				return
 			}
-			break
+			// Handle incoming messages if needed
+			// For now, this is a one-way communication (server to client)
 		}
-		// Handle incoming messages if needed
-		// For now, this is a one-way communication (server to client)
 	}
 }

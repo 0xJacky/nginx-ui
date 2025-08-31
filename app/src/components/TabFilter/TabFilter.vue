@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { Key } from 'ant-design-vue/es/_util/type'
+import { storeToRefs } from 'pinia'
+import { useSettingsStore } from '@/pinia'
 
 export interface TabOption {
   key: string
@@ -29,6 +31,11 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<Emits>()
 
+const settings = useSettingsStore()
+const { theme } = storeToRefs(settings)
+
+const isDarkMode = computed(() => theme.value === 'dark')
+
 const currentActiveKey = computed({
   get: () => props.activeKey,
   set: value => emit('update:activeKey', value),
@@ -44,7 +51,7 @@ function handleTabChange(key: Key) {
 <template>
   <ATabs
     :active-key="currentActiveKey"
-    class="tab-filter mb-4"
+    class="tab-filter mb-4" :class="[{ 'tab-filter-dark': isDarkMode }]"
     :size="size"
     @change="handleTabChange"
   >
@@ -123,7 +130,7 @@ function handleTabChange(key: Key) {
 
 /* Active Tab State */
 .tab-filter :deep(.ant-tabs-tab.ant-tabs-tab-active) {
-  background: var(--white);
+  background: transparent;
   border-bottom: 2px solid var(--primary-color);
 }
 
@@ -177,19 +184,29 @@ function handleTabChange(key: Key) {
 }
 
 /* Dark Mode Support */
-@media (prefers-color-scheme: dark) {
-  .tab-filter {
-    --border-color: #303030;
-    --white: #1f1f1f;
-  }
+.tab-filter-dark {
+  --border-color: #303030;
+  --white: #1f1f1f;
+}
 
-  .tab-filter :deep(.ant-tabs-nav) {
-    border-bottom-color: var(--border-color);
-  }
+.tab-filter-dark :deep(.ant-tabs-nav) {
+  border-bottom-color: var(--border-color);
+}
 
-  .tab-filter :deep(.ant-tabs-tab.ant-tabs-tab-active) {
-    background: var(--white);
-  }
+.tab-filter-dark :deep(.ant-tabs-tab.ant-tabs-tab-active) {
+  background: transparent;
+}
+
+.tab-filter-dark :deep(.ant-tabs-tab) .tab-content {
+  color: #ffffff;
+}
+
+.tab-filter-dark :deep(.ant-tabs-tab.ant-tabs-tab-active) .tab-content {
+  color: #ffffff;
+}
+
+.tab-filter-dark :deep(.ant-tabs-tab.ant-tabs-tab-disabled) .tab-content {
+  color: #666666;
 }
 
 /* Responsive Design */

@@ -45,7 +45,7 @@ Your support helps us:
 
 [![Stargazers over time](https://starchart.cc/0xJacky/nginx-ui.svg)](https://starchart.cc/0xJacky/nginx-ui)
 
-English | [Español](README-es.md) | [简体中文](README-zh_CN.md) | [繁體中文](README-zh_TW.md) | [Tiếng Việt](README-vi_VN.md) | [日本語](README-ja_JP.md)
+English | [Español](resources/readme/README-es.md) | [简体中文](resources/readme/README-zh_CN.md) | [繁體中文](resources/readme/README-zh_TW.md) | [Tiếng Việt](resources/readme/README-vi_VN.md) | [日本語](resources/readme/README-ja_JP.md)
 
 <details>
   <summary>Table of Contents</summary>
@@ -56,7 +56,6 @@ English | [Español](README-es.md) | [简体中文](README-zh_CN.md) | [繁體�
         <li><a href="#demo">Demo</a></li>
         <li><a href="#features">Features</a></li>
         <li><a href="#internationalization">Internationalization</a></li>
-        <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
     <li>
@@ -133,19 +132,6 @@ As non-native English speakers, we strive for accuracy, but we know there's alwa
 
 Thanks to our amazing community, additional languages are also available! Explore and contribute to translations on [Weblate](https://weblate.nginxui.com).
 
-### Built With
-
-- [The Go Programming Language](https://go.dev)
-- [Gin Web Framework](https://gin-gonic.com)
-- [GORM](http://gorm.io)
-- [Vue 3](https://v3.vuejs.org)
-- [Vite](https://vitejs.dev)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Ant Design Vue](https://antdv.com)
-- [vue3-gettext](https://github.com/jshmrtn/vue3-gettext)
-- [vue3-ace-editor](https://github.com/CarterLi/vue3-ace-editor)
-- [Gonginx](https://github.com/tufanbarisyildirim/gonginx)
-- [lego](https://github.com/go-acme/lego)
 
 ## Getting Started
 

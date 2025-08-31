@@ -251,6 +251,7 @@ type ShardManager interface {
 	CloseShard(id int) error
 	OptimizeShard(id int) error
 	HealthCheck() error
+	Close() error // Close all shards and cleanup resources
 }
 
 // MetricsCollector collects and reports indexing metrics

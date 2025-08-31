@@ -14,11 +14,11 @@ const NtfyConfig: ExternalNotifyConfig = {
     },
     {
       key: 'priority',
-      label: 'Priority(int, one of: 1, 2, 3, 4, 5)',
+      label: 'Priority',
     },
     {
       key: 'tags',
-      label: 'Tags(string array)',
+      label: 'Tags',
     },
     {
       key: 'click',
@@ -26,7 +26,7 @@ const NtfyConfig: ExternalNotifyConfig = {
     },
     {
       key: 'actions',
-      label: 'Actions(JSON array)',
+      label: 'Actions',
     },
     {
       key: 'username',
