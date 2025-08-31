@@ -9,6 +9,7 @@
 - 類型: `boolean`
 - 預設值: `false`
 - 環境變數: `NGINX_UI_NGINX_LOG_ADVANCED_INDEXING_ENABLED`
+- 版本: `>= v2.2.0`
 
 此選項啟用 Nginx 日誌的進階索引功能，提供高效能的日誌搜尋和分析能力。
 

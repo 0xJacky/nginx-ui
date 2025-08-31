@@ -9,6 +9,7 @@ This section covers configuration options for Nginx log processing and analysis 
 - Type: `boolean`
 - Default: `false`
 - Environment Variable: `NGINX_UI_NGINX_LOG_ADVANCED_INDEXING_ENABLED`
+- Version: `>= v2.2.0`
 
 This option enables advanced indexing for Nginx logs, which provides high-performance log search and analysis capabilities.
 
