@@ -75,8 +75,8 @@ func Rename(c *gin.Context) {
 		return
 	}
 
-	// update ChatGPT records
-	g := query.ChatGPTLog
+	// update LLM records
+	g := query.LLMMessages
 	q := query.Config
 	cfg, err := q.Where(q.Filepath.Eq(origFullPath)).FirstOrInit()
 	if err != nil {

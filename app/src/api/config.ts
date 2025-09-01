@@ -1,6 +1,6 @@
 import type { AxiosRequestConfig } from '@uozi-admin/request'
 import type { GetListResponse } from '@/api/curd'
-import type { ChatComplicationMessage } from '@/api/openai'
+import type { ChatComplicationMessage } from '@/api/llm'
 import { extendCurdApi, http, useCurdApi } from '@uozi-admin/request'
 
 export interface ModelBase {
@@ -12,7 +12,7 @@ export interface ModelBase {
 export interface Config {
   name: string
   content: string
-  chatgpt_messages: ChatComplicationMessage[]
+  llm_messages: ChatComplicationMessage[]
   filepath: string
   modified_at: string
   sync_node_ids?: number[]

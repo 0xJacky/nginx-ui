@@ -38,7 +38,7 @@ func GenerateAllModel() []any {
 		User{},
 		AuthToken{},
 		Cert{},
-		ChatGPTLog{},
+		LLMMessages{},
 		Site{},
 		Stream{},
 		DnsCredential{},

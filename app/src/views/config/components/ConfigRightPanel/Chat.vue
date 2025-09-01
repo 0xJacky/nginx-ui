@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import type { Config } from '@/api/config'
-import ChatGPT from '@/components/ChatGPT'
+import LLM from '@/components/LLM'
 
 const data = defineModel<Config>('data', { required: true })
 </script>
 
 <template>
   <div class="mt--6">
-    <ChatGPT
+    <LLM
       :content="data.content"
       :path="data.filepath"
     />

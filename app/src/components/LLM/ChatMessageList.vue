@@ -1,34 +1,34 @@
 <script setup lang="ts">
-import { useChatGPTStore } from './chatgpt'
 import ChatMessage from './ChatMessage.vue'
+import { useLLMStore } from './llm'
 
-// Use ChatGPT store
-const chatGPTStore = useChatGPTStore()
-const { messages, editingIdx, editValue, loading } = storeToRefs(chatGPTStore)
+// Use LLM store
+const llmStore = useLLMStore()
+const { messages, editingIdx, editValue, loading } = storeToRefs(llmStore)
 
 function handleEdit(index: number) {
-  chatGPTStore.startEdit(index)
+  llmStore.startEdit(index)
 }
 
 async function handleSave() {
-  chatGPTStore.saveEdit()
+  llmStore.saveEdit()
   await nextTick()
-  chatGPTStore.request()
+  llmStore.request()
 }
 
 function handleCancel() {
-  chatGPTStore.cancelEdit()
+  llmStore.cancelEdit()
 }
 
 async function handleRegenerate(index: number) {
-  chatGPTStore.regenerate(index)
+  llmStore.regenerate(index)
 }
 </script>
 
 <template>
   <div class="message-list-container">
     <AList
-      class="chatgpt-log"
+      class="llm-log"
       item-layout="horizontal"
       :data-source="messages"
     >
@@ -54,7 +54,7 @@ async function handleRegenerate(index: number) {
   overflow-y: auto;
   height: 100%;
 
-  .chatgpt-log {
+  .llm-log {
     :deep(.ant-list-item) {
       padding: 0 12px;
     }

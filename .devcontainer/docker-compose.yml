@@ -6,7 +6,7 @@ services:
     volumes:
       - ~/.ssh:/root/.ssh
       - ../..:/workspaces:cached
-      - ../.go:/root/go
+      - go-modules:/root/go
       - ./data/nginx:/etc/nginx
       - ./data/nginx-logs:/var/log/nginx
       - /var/run/docker.sock:/var/run/docker.sock
@@ -82,3 +82,6 @@ services:
 
 networks:
   nginxui:
+
+volumes:
+  go-modules:

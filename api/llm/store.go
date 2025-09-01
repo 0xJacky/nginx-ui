@@ -1,4 +1,4 @@
-package openai
+package llm
 
 import (
 	"net/http"
@@ -10,7 +10,7 @@ import (
 	"github.com/uozi-tech/cosy"
 )
 
-func StoreChatGPTRecord(c *gin.Context) {
+func StoreLLMRecord(c *gin.Context) {
 	var json struct {
 		FileName string                         `json:"file_name"`
 		Messages []openai.ChatCompletionMessage `json:"messages"`
@@ -21,7 +21,7 @@ func StoreChatGPTRecord(c *gin.Context) {
 	}
 
 	name := json.FileName
-	g := query.ChatGPTLog
+	g := query.LLMMessages
 	_, err := g.Where(g.Name.Eq(name)).FirstOrCreate()
 
 	if err != nil {
@@ -29,7 +29,7 @@ func StoreChatGPTRecord(c *gin.Context) {
 		return
 	}
 
-	_, err = g.Where(g.Name.Eq(name)).Updates(&model.ChatGPTLog{
+	_, err = g.Where(g.Name.Eq(name)).Updates(&model.LLMMessages{
 		Name:    name,
 		Content: json.Messages,
 	})

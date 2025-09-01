@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Template } from '@/api/template'
+import { SearchOutlined } from '@ant-design/icons-vue'
 import { storeToRefs } from 'pinia'
 import template from '@/api/template'
 import CodeEditor from '@/components/CodeEditor'
@@ -19,6 +20,7 @@ const { data } = storeToRefs(configTemplateStore)
 const blocks = ref<Template[]>([])
 const visible = ref(false)
 const name = ref('')
+const filterText = ref('')
 
 function getBlockList() {
   template.get_block_list().then(r => {
@@ -41,6 +43,18 @@ const transDescription = computed(() => {
     item.description?.[language.value] ?? item.description?.en ?? ''
 })
 
+const filteredBlocks = computed(() => {
+  if (!filterText.value)
+    return blocks.value
+
+  const searchText = filterText.value.toLowerCase()
+  return blocks.value.filter(item =>
+    item.name?.toLowerCase().includes(searchText)
+    || item.author?.toLowerCase().includes(searchText)
+    || transDescription.value(item).toLowerCase().includes(searchText),
+  )
+})
+
 async function add() {
   if (data.value?.custom)
     ngxConfig.value.custom += `\n${data.value.custom}`
@@ -59,8 +73,19 @@ async function add() {
 
 <template>
   <div>
+    <div class="mb-4">
+      <AInput
+        v-model:value="filterText"
+        :placeholder="$gettext('Search templates')"
+        allow-clear
+      >
+        <template #prefix>
+          <SearchOutlined />
+        </template>
+      </AInput>
+    </div>
     <div class="config-list-wrapper">
-      <AList :data-source="blocks">
+      <AList :data-source="filteredBlocks">
         <template #renderItem="{ item }">
           <AListItem>
             <AListItemMeta

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { ChatComplicationMessage } from '@/api/openai'
-import { useChatGPTStore } from './chatgpt'
+import type { ChatComplicationMessage } from '@/api/llm'
+import { useLLMStore } from './llm'
 import { marked } from './markdown'
 import { transformText } from './utils'
 
@@ -21,11 +21,11 @@ defineEmits<{
   regenerate: [index: number]
 }>()
 
-const chatGPTStore = useChatGPTStore()
-const { streamingMessageIndex } = storeToRefs(chatGPTStore)
+const llmStore = useLLMStore()
+const { streamingMessageIndex } = storeToRefs(llmStore)
 
 function updateEditValue(value: string) {
-  chatGPTStore.editValue = value
+  llmStore.editValue = value
 }
 
 // Typewriter effect state
@@ -242,6 +242,68 @@ onMounted(() => {
     }
   }
 
+  .message-content :deep(h1) {
+    font-size: 1.5em;
+    font-weight: 600;
+    margin: 1em 0 0.5em 0;
+    line-height: 1.3;
+  }
+
+  .message-content :deep(h2) {
+    font-size: 1.3em;
+    font-weight: 600;
+    margin: 0.8em 0 0.4em 0;
+    line-height: 1.3;
+  }
+
+  .message-content :deep(h3) {
+    font-size: 1.15em;
+    font-weight: 600;
+    margin: 0.7em 0 0.3em 0;
+    line-height: 1.3;
+  }
+
+  .message-content :deep(h4) {
+    font-size: 1.05em;
+    font-weight: 600;
+    margin: 0.6em 0 0.3em 0;
+    line-height: 1.3;
+  }
+
+  .message-content :deep(h5), .message-content :deep(h6) {
+    font-size: 1em;
+    font-weight: 600;
+    margin: 0.5em 0 0.2em 0;
+    line-height: 1.3;
+  }
+
+  .message-content :deep(p) {
+    margin: 0.5em 0;
+    line-height: 1.6;
+  }
+
+  .message-content :deep(ul), .message-content :deep(ol) {
+    margin: 0.5em 0 1em 0;
+    padding-left: 1.5em;
+  }
+
+  .message-content :deep(li) {
+    margin: 0.2em 0;
+    line-height: 1.5;
+  }
+
+  .message-content :deep(ul li) {
+    list-style-type: disc;
+  }
+
+  .message-content :deep(ol li) {
+    list-style-type: decimal;
+  }
+
+  .message-content :deep(ul ul), .message-content :deep(ol ol), .message-content :deep(ul ol), .message-content :deep(ol ul) {
+    margin: 0.2em 0;
+  }
+
   :deep(code) {
     font-size: 12px;
   }
@@ -250,12 +312,40 @@ onMounted(() => {
     border-radius: 5px;
   }
 
-  :deep(blockquote) {
+  .message-content :deep(blockquote) {
     display: block;
-    opacity: 0.6;
-    margin: 0.5em 0;
-    padding-left: 1em;
-    border-left: 3px solid #ccc;
+    opacity: 0.8;
+    margin: 1em 0;
+    padding: 0.5em 0 0.5em 1em;
+    border-left: 4px solid #d0d7de;
+    background-color: rgba(208, 215, 222, 0.1);
+  }
+
+  .message-content :deep(blockquote p) {
+    margin: 0;
+  }
+
+  .message-content :deep(table) {
+    border-collapse: collapse;
+    margin: 1em 0;
+    width: 100%;
+  }
+
+  .message-content :deep(th), .message-content :deep(td) {
+    border: 1px solid #d0d7de;
+    padding: 0.5em;
+    text-align: left;
+  }
+
+  .message-content :deep(th) {
+    background-color: #f6f8fa;
+    font-weight: 600;
+  }
+
+  .message-content :deep(hr) {
+    border: none;
+    border-top: 1px solid #d0d7de;
+    margin: 1.5em 0;
   }
 }
 

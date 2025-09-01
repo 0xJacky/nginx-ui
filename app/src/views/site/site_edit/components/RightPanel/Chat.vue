@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ChatGPT from '@/components/ChatGPT'
+import LLM from '@/components/LLM'
 import { useSiteEditorStore } from '../SiteEditor/store'
 
 const editorStore = useSiteEditorStore()
@@ -11,7 +11,7 @@ const {
 
 <template>
   <div class="mt--6">
-    <ChatGPT
+    <LLM
       :content="configText"
       :path="filepath"
     />

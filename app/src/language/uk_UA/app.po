@@ -197,7 +197,7 @@ msgstr "Фактичне співвідношення робочих до нал
 #: src/components/NgxConfigEditor/NgxServer.vue:144
 #: src/components/NgxConfigEditor/NgxUpstream.vue:97 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:45
-#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:94
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:119
 #: src/views/site/site_list/SiteList.vue:73 src/views/stream/StreamList.vue:81
 msgid "Add"
 msgstr "Додати"
@@ -259,7 +259,7 @@ msgstr "Додатково"
 msgid "Advance Mode"
 msgstr "Розширений режим"
 
-#: src/views/nginx_log/NginxLogList.vue:387
+#: src/views/nginx_log/NginxLogList.vue:388
 msgid "Advanced indexing enabled but failed to start rebuild"
 msgstr "Розширене індексування увімкнено, але не вдалося розпочати перебудову"
 
@@ -352,7 +352,7 @@ msgstr "Застосувати"
 msgid "Arch"
 msgstr "Архітектура"
 
-#: src/views/preference/tabs/AuthSettings.vue:128
+#: src/views/preference/tabs/AuthSettings.vue:125
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "Ви впевнені, що хочите видалити цю заборонену IP-адресу?"
 
@@ -373,7 +373,7 @@ msgstr "Ви впевнені, що хочете скинути 2FA?"
 msgid "Are you sure you want to clear all notifications?"
 msgstr "Ви впевнені, що бажаєте очистити всі сповіщення?"
 
-#: src/components/ChatGPT/ChatMessageInput.vue:19
+#: src/components/LLM/ChatMessageInput.vue:19
 msgid "Are you sure you want to clear the record of chat?"
 msgstr "Ви впевнені, що бажаєте очистити запис чату?"
 
@@ -418,11 +418,7 @@ msgstr "Ви впевнені, що хочете відновити?"
 msgid "Ascending"
 msgstr "За зростанням"
 
-#: src/components/ChatGPT/ChatGPT.vue:55
-msgid "Ask ChatGPT for Help"
-msgstr "Запитати допомоги у ChatGPT"
-
-#: src/components/ChatGPT/ChatMessage.vue:187
+#: src/components/LLM/ChatMessage.vue:187
 msgid "Assistant"
 msgstr "Помічник"
 
@@ -446,12 +442,8 @@ msgstr "Авторизація"
 msgid "Authenticate with a passkey"
 msgstr "Автентифікація пасоком"
 
-#: src/views/preference/tabs/AuthSettings.vue:55
-msgid "Authentication Settings"
-msgstr "Налаштування аутентифікації"
-
-#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:71
-#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:97
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:122
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:96
 msgid "Author"
 msgstr "Автор"
 
@@ -627,11 +619,11 @@ msgstr ""
 msgid "Backup Type"
 msgstr "Тип резервної копії"
 
-#: src/views/preference/tabs/AuthSettings.vue:95
+#: src/views/preference/tabs/AuthSettings.vue:92
 msgid "Ban Threshold Minutes"
 msgstr "Хвилини до блокування"
 
-#: src/views/preference/tabs/AuthSettings.vue:116
+#: src/views/preference/tabs/AuthSettings.vue:113
 msgid "Banned IPs"
 msgstr "Заблоковані IP-адреси"
 
@@ -763,7 +755,7 @@ msgstr ""
 "продуктивність залежить від апаратного забезпечення, конфігурації та "
 "навантаження"
 
-#: src/components/ChatGPT/ChatMessage.vue:216
+#: src/components/LLM/ChatMessage.vue:216
 #: src/components/NgxConfigEditor/NgxServer.vue:61
 #: src/components/NgxConfigEditor/NgxUpstream.vue:32 src/language/curd.ts:37
 #: src/views/config/components/Delete.vue:98
@@ -1108,7 +1100,7 @@ msgstr "Зашифрований текст занадто короткий"
 msgid "Cleaning environment variables"
 msgstr "Змінні навколишнього середовища очищення"
 
-#: src/components/ChatGPT/ChatMessageInput.vue:23
+#: src/components/LLM/ChatMessageInput.vue:23
 #: src/components/Notification/Notification.vue:115
 #: src/views/notification/Notification.vue:45
 msgid "Clear"
@@ -1515,7 +1507,7 @@ msgid "Current Version"
 msgstr "Поточна версія"
 
 #: src/components/NgxConfigEditor/NgxConfigEditor.vue:33
-#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:104
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:129
 msgid "Custom"
 msgstr "Користувацький"
 
@@ -1693,8 +1685,8 @@ msgstr "Розгорнути"
 msgid "Descending"
 msgstr "Спадаючий"
 
-#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:74
-#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:98
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:123
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:99
 msgid "Description"
 msgstr ""
 "Опис\"\n"
@@ -2076,7 +2068,7 @@ msgstr "увімкнути"
 msgid "Enable 2FA successfully"
 msgstr "2FA успішно ввімкнено"
 
-#: src/views/nginx_log/NginxLogList.vue:450
+#: src/views/nginx_log/NginxLogList.vue:451
 msgid "Enable Advanced Indexing"
 msgstr "Увімкнути розширене індексування"
 
@@ -2553,7 +2545,7 @@ msgstr "Не вдалося завантажити файли сертифіка
 msgid "Failed to enable %{msg}"
 msgstr "Не вдалося увімкнути %{msg}"
 
-#: src/views/nginx_log/NginxLogList.vue:397
+#: src/views/nginx_log/NginxLogList.vue:398
 msgid "Failed to enable advanced indexing"
 msgstr "Не вдалося увімкнути розширене індексування"
 
@@ -3091,7 +3083,7 @@ msgstr "https://..."
 msgid "ICP Number"
 msgstr "Номер ICP"
 
-#: src/views/preference/tabs/AuthSettings.vue:111
+#: src/views/preference/tabs/AuthSettings.vue:108
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
 "ban threshold minutes, the ip will be banned for a period of time."
@@ -3173,7 +3165,7 @@ msgid "Indexing"
 msgstr "Індексація"
 
 #: src/views/nginx_log/components/LoadingState.vue:33
-#: src/views/nginx_log/NginxLogList.vue:439
+#: src/views/nginx_log/NginxLogList.vue:440
 msgid "Indexing logs..."
 msgstr "Індексація журналів..."
 
@@ -3631,7 +3623,7 @@ msgstr "Індексатор журналів недоступний"
 msgid "Log indexing completed! Loading updated data..."
 msgstr "Індексація журналів завершена! Завантаження оновлених даних..."
 
-#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:412
+#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:413
 msgid "Log List"
 msgstr "Список журналів"
 
@@ -3765,7 +3757,7 @@ msgstr "Головний процес"
 msgid "Master Process"
 msgstr "Головний процес"
 
-#: src/views/preference/tabs/AuthSettings.vue:101
+#: src/views/preference/tabs/AuthSettings.vue:98
 msgid "Max Attempts"
 msgstr "Максимальна кількість спроб"
 
@@ -3881,8 +3873,7 @@ msgstr "Сучасний пошуковий сервіс недоступний"
 msgid "Modified At"
 msgstr "Змінено"
 
-#: src/components/ChatGPT/ChatMessage.vue:212
-#: src/views/config/ConfigList.vue:182
+#: src/components/LLM/ChatMessage.vue:212 src/views/config/ConfigList.vue:182
 msgid "Modify"
 msgstr "Змінити"
 
@@ -4236,14 +4227,14 @@ msgstr "Nginx.conf включає каталог sites-enabled"
 msgid "Nginx.conf includes streams-enabled directory"
 msgstr "Nginx.conf включає каталог streams-enabled"
 
-#: src/components/ChatGPT/ChatMessageInput.vue:17
+#: src/components/LLM/ChatMessageInput.vue:17
 #: src/components/NamespaceTabs/NamespaceTabs.vue:132
 #: src/components/NamespaceTabs/NamespaceTabs.vue:144
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:102
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
 #: src/components/Notification/Notification.vue:108 src/language/curd.ts:40
 #: src/views/notification/Notification.vue:38
-#: src/views/preference/tabs/AuthSettings.vue:130
+#: src/views/preference/tabs/AuthSettings.vue:127
 #: src/views/preference/tabs/CertSettings.vue:73
 #: src/views/site/site_list/SiteList.vue:89 src/views/stream/StreamList.vue:99
 msgid "No"
@@ -4472,7 +4463,7 @@ msgstr "Офлайн"
 msgid "Offline GeoIP analysis"
 msgstr "Офлайн-аналіз GeoIP"
 
-#: src/components/ChatGPT/ChatMessageInput.vue:18
+#: src/components/LLM/ChatMessageInput.vue:18
 #: src/components/NgxConfigEditor/NgxServer.vue:60
 #: src/components/NgxConfigEditor/NgxUpstream.vue:31
 #: src/components/Notification/Notification.vue:109 src/language/curd.ts:15
@@ -5074,7 +5065,7 @@ msgstr "Читання"
 msgid "Real-time analytics dashboard"
 msgstr "Панель аналітики в реальному часі"
 
-#: src/views/nginx_log/NginxLogList.vue:477
+#: src/views/nginx_log/NginxLogList.vue:478
 msgid "Rebuild"
 msgstr "Перебудувати"
 
@@ -5134,7 +5125,7 @@ msgstr "Реферер"
 msgid "Refresh"
 msgstr "Оновити"
 
-#: src/components/ChatGPT/ChatMessageInput.vue:30
+#: src/components/LLM/ChatMessageInput.vue:30
 msgid "Regenerate response"
 msgstr "Повторити відповідь"
 
@@ -5182,7 +5173,7 @@ msgstr "Перевстановити"
 msgid "Release Note"
 msgstr "Примітки до версії"
 
-#: src/components/ChatGPT/ChatMessage.vue:222
+#: src/components/LLM/ChatMessage.vue:222
 #: src/components/NginxControl/NginxControl.vue:103
 msgid "Reload"
 msgstr "Перезавантажити"
@@ -5232,7 +5223,7 @@ msgid "Remote"
 msgstr "Віддалено"
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:146
-#: src/views/preference/tabs/AuthSettings.vue:135
+#: src/views/preference/tabs/AuthSettings.vue:132
 msgid "Remove"
 msgstr "Видалити"
 
@@ -5484,15 +5475,15 @@ msgstr ""
 "Відкликання сертифіката вплине на всі служби, які його використовують. Цю "
 "дію не можна скасувати."
 
-#: src/views/preference/tabs/AuthSettings.vue:74
+#: src/views/preference/tabs/AuthSettings.vue:71
 msgid "RP Display Name"
 msgstr "Відображуване ім’я RP"
 
-#: src/views/preference/tabs/AuthSettings.vue:80
+#: src/views/preference/tabs/AuthSettings.vue:77
 msgid "RP Origins"
 msgstr "Джерела RP"
 
-#: src/views/preference/tabs/AuthSettings.vue:68
+#: src/views/preference/tabs/AuthSettings.vue:65
 msgid "RPID"
 msgstr "RPID"
 
@@ -5596,7 +5587,7 @@ msgstr "Помилка завантаження в S3: {0}"
 msgid "Saturday"
 msgstr "Субота"
 
-#: src/components/ChatGPT/ChatMessage.vue:215
+#: src/components/LLM/ChatMessage.vue:215
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:132
 #: src/language/curd.ts:18
 #: src/views/certificate/components/CertificateActions.vue:29
@@ -5735,6 +5726,10 @@ msgstr "Назва модуля пошуку"
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:833
 msgid "Search range"
 msgstr "Діапазон пошуку"
+
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:79
+msgid "Search templates"
+msgstr "Пошук шаблонів"
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:109
 msgid "Secret has been copied"
@@ -6629,7 +6624,7 @@ msgstr ""
 msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr "Це оновить або перевстановить Nginx UI на %{nodeNames} до версії %{version}."
 
-#: src/views/preference/tabs/AuthSettings.vue:91
+#: src/views/preference/tabs/AuthSettings.vue:88
 msgid "Throttle"
 msgstr "Обмеження"
 
@@ -6973,7 +6968,7 @@ msgstr "Використати код відновлення"
 msgid "Use Temporary Path"
 msgstr "Використовувати тимчасовий шлях"
 
-#: src/components/ChatGPT/ChatMessage.vue:187
+#: src/components/LLM/ChatMessage.vue:187
 msgid "User"
 msgstr "Користувач"
 
@@ -7046,8 +7041,8 @@ msgstr "Перевірте системні вимоги"
 msgid "Version"
 msgstr "Версія"
 
-#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:466
-#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:83
+#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:467
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:108
 #: src/views/system/Licenses.vue:180 src/views/system/Licenses.vue:215
 #: src/views/system/Licenses.vue:250
 msgid "View"
@@ -7138,7 +7133,7 @@ msgstr ""
 "Ми видалимо конфігурацію HTTPChallenge з цього файлу та перезавантажимо "
 "Nginx. Ви впевнені, що хочете продовжити?"
 
-#: src/views/preference/tabs/AuthSettings.vue:64
+#: src/views/preference/tabs/AuthSettings.vue:61
 msgid "Webauthn"
 msgstr "WebAuthn"
 
@@ -7252,7 +7247,7 @@ msgstr "Запис сертифіката на диск"
 #: src/components/NgxConfigEditor/LocationEditor.vue:88
 #: src/views/nginx_log/indexing/IndexManagement.vue:29
 #: src/views/nginx_log/indexing/IndexManagement.vue:55
-#: src/views/preference/tabs/AuthSettings.vue:129
+#: src/views/preference/tabs/AuthSettings.vue:126
 #: src/views/preference/tabs/CertSettings.vue:72
 msgid "Yes"
 msgstr "Так"
@@ -7326,6 +7321,12 @@ msgstr "Конвеєр без виділення пам’яті"
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:56
 msgid "Zero-allocation pipeline optimization"
 msgstr "Оптимізація конвеєра без виділення пам'яті"
+
+#~ msgid "Ask ChatGPT for Help"
+#~ msgstr "Запитати допомоги у ChatGPT"
+
+#~ msgid "Authentication Settings"
+#~ msgstr "Налаштування аутентифікації"
 
 #~ msgid "Geographic mapping & insights"
 #~ msgstr "Географічне картографування та аналітика"

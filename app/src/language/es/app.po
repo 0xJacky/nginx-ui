@@ -199,7 +199,7 @@ msgstr "Proporción real de trabajadores a configurados"
 #: src/components/NgxConfigEditor/NgxServer.vue:144
 #: src/components/NgxConfigEditor/NgxUpstream.vue:97 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:45
-#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:94
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:119
 #: src/views/site/site_list/SiteList.vue:73 src/views/stream/StreamList.vue:81
 msgid "Add"
 msgstr "Agregar"
@@ -261,7 +261,7 @@ msgstr "Adicional"
 msgid "Advance Mode"
 msgstr "Modo avanzado"
 
-#: src/views/nginx_log/NginxLogList.vue:387
+#: src/views/nginx_log/NginxLogList.vue:388
 msgid "Advanced indexing enabled but failed to start rebuild"
 msgstr "Indexación avanzada habilitada pero falló al iniciar la reconstrucción"
 
@@ -356,7 +356,7 @@ msgstr "Aplicar"
 msgid "Arch"
 msgstr "Arquitectura"
 
-#: src/views/preference/tabs/AuthSettings.vue:128
+#: src/views/preference/tabs/AuthSettings.vue:125
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "¿Está seguro de eliminar esta IP bloqueada inmediatamente?"
 
@@ -377,7 +377,7 @@ msgstr "¿Estás seguro de restablecer la autenticación de dos factores?"
 msgid "Are you sure you want to clear all notifications?"
 msgstr "¿Está seguro de que desea borrar todas las notificaciones?"
 
-#: src/components/ChatGPT/ChatMessageInput.vue:19
+#: src/components/LLM/ChatMessageInput.vue:19
 msgid "Are you sure you want to clear the record of chat?"
 msgstr "¿Está seguro de que desea borrar el registro del chat?"
 
@@ -422,11 +422,7 @@ msgstr "¿Estás seguro de que quieres restaurar?"
 msgid "Ascending"
 msgstr "Ascendente"
 
-#: src/components/ChatGPT/ChatGPT.vue:55
-msgid "Ask ChatGPT for Help"
-msgstr "Preguntar por ayuda a ChatGPT"
-
-#: src/components/ChatGPT/ChatMessage.vue:187
+#: src/components/LLM/ChatMessage.vue:187
 msgid "Assistant"
 msgstr "Asistente"
 
@@ -450,12 +446,8 @@ msgstr "Autenticación"
 msgid "Authenticate with a passkey"
 msgstr "Autenticarse con una llave de acceso"
 
-#: src/views/preference/tabs/AuthSettings.vue:55
-msgid "Authentication Settings"
-msgstr "Configuración de autenticación"
-
-#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:71
-#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:97
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:122
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:96
 msgid "Author"
 msgstr "Autor"
 
@@ -633,11 +625,11 @@ msgstr ""
 msgid "Backup Type"
 msgstr "Tipo de copia de seguridad"
 
-#: src/views/preference/tabs/AuthSettings.vue:95
+#: src/views/preference/tabs/AuthSettings.vue:92
 msgid "Ban Threshold Minutes"
 msgstr "Umbral de Prohibición en Minutos"
 
-#: src/views/preference/tabs/AuthSettings.vue:116
+#: src/views/preference/tabs/AuthSettings.vue:113
 msgid "Banned IPs"
 msgstr "IPs prohibidas"
 
@@ -772,7 +764,7 @@ msgstr ""
 "Calculado en base a worker_processes * worker_connections. El rendimiento "
 "real depende del hardware, la configuración y la carga de trabajo"
 
-#: src/components/ChatGPT/ChatMessage.vue:216
+#: src/components/LLM/ChatMessage.vue:216
 #: src/components/NgxConfigEditor/NgxServer.vue:61
 #: src/components/NgxConfigEditor/NgxUpstream.vue:32 src/language/curd.ts:37
 #: src/views/config/components/Delete.vue:98
@@ -1124,7 +1116,7 @@ msgstr "El texto cifrado es demasiado corto"
 msgid "Cleaning environment variables"
 msgstr "Borrar las variables de entorno"
 
-#: src/components/ChatGPT/ChatMessageInput.vue:23
+#: src/components/LLM/ChatMessageInput.vue:23
 #: src/components/Notification/Notification.vue:115
 #: src/views/notification/Notification.vue:45
 msgid "Clear"
@@ -1495,7 +1487,7 @@ msgid "Current Version"
 msgstr "Versión actual"
 
 #: src/components/NgxConfigEditor/NgxConfigEditor.vue:33
-#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:104
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:129
 msgid "Custom"
 msgstr "Personalizado"
 
@@ -1677,8 +1669,8 @@ msgstr "Desplegar"
 msgid "Descending"
 msgstr "Descendente"
 
-#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:74
-#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:98
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:123
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:99
 msgid "Description"
 msgstr "Descripción"
 
@@ -2026,7 +2018,7 @@ msgstr "habilitar"
 msgid "Enable 2FA successfully"
 msgstr "Habilitar 2FA exitoso"
 
-#: src/views/nginx_log/NginxLogList.vue:450
+#: src/views/nginx_log/NginxLogList.vue:451
 msgid "Enable Advanced Indexing"
 msgstr "Habilitar indexación avanzada"
 
@@ -2505,7 +2497,7 @@ msgstr "Error al descargar los archivos del certificado"
 msgid "Failed to enable %{msg}"
 msgstr "Error al habilitar %{msg}"
 
-#: src/views/nginx_log/NginxLogList.vue:397
+#: src/views/nginx_log/NginxLogList.vue:398
 msgid "Failed to enable advanced indexing"
 msgstr "Error al habilitar la indexación avanzada"
 
@@ -3045,7 +3037,7 @@ msgstr "https://..."
 msgid "ICP Number"
 msgstr "Número ICP"
 
-#: src/views/preference/tabs/AuthSettings.vue:111
+#: src/views/preference/tabs/AuthSettings.vue:108
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
 "ban threshold minutes, the ip will be banned for a period of time."
@@ -3127,7 +3119,7 @@ msgid "Indexing"
 msgstr "Indexación"
 
 #: src/views/nginx_log/components/LoadingState.vue:33
-#: src/views/nginx_log/NginxLogList.vue:439
+#: src/views/nginx_log/NginxLogList.vue:440
 msgid "Indexing logs..."
 msgstr "Indexando registros..."
 
@@ -3585,7 +3577,7 @@ msgstr "Indexador de registros no disponible"
 msgid "Log indexing completed! Loading updated data..."
 msgstr "¡Indexación de registros completada! Cargando datos actualizados..."
 
-#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:412
+#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:413
 msgid "Log List"
 msgstr "Lista de registros"
 
@@ -3720,7 +3712,7 @@ msgstr "Proceso maestro"
 msgid "Master Process"
 msgstr "Proceso maestro"
 
-#: src/views/preference/tabs/AuthSettings.vue:101
+#: src/views/preference/tabs/AuthSettings.vue:98
 msgid "Max Attempts"
 msgstr "Intentos máximos"
 
@@ -3836,8 +3828,7 @@ msgstr "Servicio de búsqueda moderno no disponible"
 msgid "Modified At"
 msgstr "Modificado el"
 
-#: src/components/ChatGPT/ChatMessage.vue:212
-#: src/views/config/ConfigList.vue:182
+#: src/components/LLM/ChatMessage.vue:212 src/views/config/ConfigList.vue:182
 msgid "Modify"
 msgstr "Modificar"
 
@@ -4191,14 +4182,14 @@ msgstr "Nginx.conf incluye el directorio sites-enabled"
 msgid "Nginx.conf includes streams-enabled directory"
 msgstr "Nginx.conf incluye el directorio streams-enabled"
 
-#: src/components/ChatGPT/ChatMessageInput.vue:17
+#: src/components/LLM/ChatMessageInput.vue:17
 #: src/components/NamespaceTabs/NamespaceTabs.vue:132
 #: src/components/NamespaceTabs/NamespaceTabs.vue:144
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:102
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
 #: src/components/Notification/Notification.vue:108 src/language/curd.ts:40
 #: src/views/notification/Notification.vue:38
-#: src/views/preference/tabs/AuthSettings.vue:130
+#: src/views/preference/tabs/AuthSettings.vue:127
 #: src/views/preference/tabs/CertSettings.vue:73
 #: src/views/site/site_list/SiteList.vue:89 src/views/stream/StreamList.vue:99
 msgid "No"
@@ -4429,7 +4420,7 @@ msgstr "Desconectado"
 msgid "Offline GeoIP analysis"
 msgstr "Análisis GeoIP sin conexión"
 
-#: src/components/ChatGPT/ChatMessageInput.vue:18
+#: src/components/LLM/ChatMessageInput.vue:18
 #: src/components/NgxConfigEditor/NgxServer.vue:60
 #: src/components/NgxConfigEditor/NgxUpstream.vue:31
 #: src/components/Notification/Notification.vue:109 src/language/curd.ts:15
@@ -5035,7 +5026,7 @@ msgstr "Lecturas"
 msgid "Real-time analytics dashboard"
 msgstr "Panel de análisis en tiempo real"
 
-#: src/views/nginx_log/NginxLogList.vue:477
+#: src/views/nginx_log/NginxLogList.vue:478
 msgid "Rebuild"
 msgstr "Reconstruir"
 
@@ -5095,7 +5086,7 @@ msgstr "Referente"
 msgid "Refresh"
 msgstr "Actualizar"
 
-#: src/components/ChatGPT/ChatMessageInput.vue:30
+#: src/components/LLM/ChatMessageInput.vue:30
 msgid "Regenerate response"
 msgstr "Regenerar respuesta"
 
@@ -5143,7 +5134,7 @@ msgstr "Reinstalar"
 msgid "Release Note"
 msgstr "Nota de versión"
 
-#: src/components/ChatGPT/ChatMessage.vue:222
+#: src/components/LLM/ChatMessage.vue:222
 #: src/components/NginxControl/NginxControl.vue:103
 msgid "Reload"
 msgstr "Recargar"
@@ -5191,7 +5182,7 @@ msgid "Remote"
 msgstr "Remoto"
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:146
-#: src/views/preference/tabs/AuthSettings.vue:135
+#: src/views/preference/tabs/AuthSettings.vue:132
 msgid "Remove"
 msgstr "Eliminar"
 
@@ -5441,15 +5432,15 @@ msgstr ""
 "La revocación de un certificado afectará a cualquier servicio que lo esté "
 "utilizando actualmente. Esta acción no se puede deshacer."
 
-#: src/views/preference/tabs/AuthSettings.vue:74
+#: src/views/preference/tabs/AuthSettings.vue:71
 msgid "RP Display Name"
 msgstr "Nombre RP"
 
-#: src/views/preference/tabs/AuthSettings.vue:80
+#: src/views/preference/tabs/AuthSettings.vue:77
 msgid "RP Origins"
 msgstr "Orígenes RP"
 
-#: src/views/preference/tabs/AuthSettings.vue:68
+#: src/views/preference/tabs/AuthSettings.vue:65
 msgid "RPID"
 msgstr "RPID"
 
@@ -5553,7 +5544,7 @@ msgstr "Error al subir a S3: {0}"
 msgid "Saturday"
 msgstr "Sábado"
 
-#: src/components/ChatGPT/ChatMessage.vue:215
+#: src/components/LLM/ChatMessage.vue:215
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:132
 #: src/language/curd.ts:18
 #: src/views/certificate/components/CertificateActions.vue:29
@@ -5692,6 +5683,10 @@ msgstr "Nombre del módulo de búsqueda"
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:833
 msgid "Search range"
 msgstr "Rango de búsqueda"
+
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:79
+msgid "Search templates"
+msgstr "Buscar plantillas"
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:109
 msgid "Secret has been copied"
@@ -6595,7 +6590,7 @@ msgstr ""
 "Esto actualizará o reinstalará la interfaz de usuario de Nginx en "
 "%{nodeNames} a %{version}."
 
-#: src/views/preference/tabs/AuthSettings.vue:91
+#: src/views/preference/tabs/AuthSettings.vue:88
 msgid "Throttle"
 msgstr "Acelerador"
 
@@ -6941,7 +6936,7 @@ msgstr "Usar código de recuperación"
 msgid "Use Temporary Path"
 msgstr "Usar ruta temporal"
 
-#: src/components/ChatGPT/ChatMessage.vue:187
+#: src/components/LLM/ChatMessage.vue:187
 msgid "User"
 msgstr "Usuario"
 
@@ -7014,8 +7009,8 @@ msgstr "Verificar los requisitos del sistema"
 msgid "Version"
 msgstr "Versión"
 
-#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:466
-#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:83
+#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:467
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:108
 #: src/views/system/Licenses.vue:180 src/views/system/Licenses.vue:215
 #: src/views/system/Licenses.vue:250
 msgid "View"
@@ -7106,7 +7101,7 @@ msgstr ""
 "Eliminaremos la configuración de HTTPChallenge de este archivo y "
 "recargaremos Nginx. ¿Estás seguro de que quieres continuar?"
 
-#: src/views/preference/tabs/AuthSettings.vue:64
+#: src/views/preference/tabs/AuthSettings.vue:61
 msgid "Webauthn"
 msgstr "Webauthn"
 
@@ -7221,7 +7216,7 @@ msgstr "Escribir certificado a disco"
 #: src/components/NgxConfigEditor/LocationEditor.vue:88
 #: src/views/nginx_log/indexing/IndexManagement.vue:29
 #: src/views/nginx_log/indexing/IndexManagement.vue:55
-#: src/views/preference/tabs/AuthSettings.vue:129
+#: src/views/preference/tabs/AuthSettings.vue:126
 #: src/views/preference/tabs/CertSettings.vue:72
 msgid "Yes"
 msgstr "Si"
@@ -7299,6 +7294,12 @@ msgstr "Canalización sin asignación"
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:56
 msgid "Zero-allocation pipeline optimization"
 msgstr "Optimización de tubería sin asignación"
+
+#~ msgid "Ask ChatGPT for Help"
+#~ msgstr "Preguntar por ayuda a ChatGPT"
+
+#~ msgid "Authentication Settings"
+#~ msgstr "Configuración de autenticación"
 
 #~ msgid "Geographic mapping & insights"
 #~ msgstr "Mapeo geográfico y conocimientos"

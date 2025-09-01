@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { SendOutlined } from '@ant-design/icons-vue'
 import { storeToRefs } from 'pinia'
-import { useChatGPTStore } from './chatgpt'
+import { useLLMStore } from './llm'
 
-const chatGPTStore = useChatGPTStore()
-const { loading, askBuffer, messages } = storeToRefs(chatGPTStore)
+const llmStore = useLLMStore()
+const { loading, askBuffer, messages } = storeToRefs(llmStore)
 
 const messagesLength = computed(() => messages.value?.length ?? 0)
 </script>
@@ -17,7 +17,7 @@ const messagesLength = computed(() => messages.value?.length ?? 0)
           :cancel-text="$gettext('No')"
           :ok-text="$gettext('OK')"
           :title="$gettext('Are you sure you want to clear the record of chat?')"
-          @confirm="chatGPTStore.clearRecord()"
+          @confirm="llmStore.clearRecord()"
         >
           <AButton type="text">
             {{ $gettext('Clear') }}
@@ -25,7 +25,7 @@ const messagesLength = computed(() => messages.value?.length ?? 0)
         </APopconfirm>
         <AButton
           type="text"
-          @click="chatGPTStore.regenerate(messagesLength - 1)"
+          @click="llmStore.regenerate(messagesLength - 1)"
         >
           {{ $gettext('Regenerate response') }}
         </AButton>
@@ -34,14 +34,14 @@ const messagesLength = computed(() => messages.value?.length ?? 0)
     <ATextarea
       v-model:value="askBuffer"
       auto-size
-      @press-enter="chatGPTStore.send(askBuffer)"
+      @press-enter="llmStore.send(askBuffer)"
     />
     <div class="send-btn">
       <AButton
         size="small"
         type="text"
         :loading="loading"
-        @click="chatGPTStore.send(askBuffer)"
+        @click="llmStore.send(askBuffer)"
       >
         <SendOutlined />
       </AButton>

@@ -1,4 +1,4 @@
-package openai
+package llm
 
 import (
 	"net/http"
@@ -10,7 +10,7 @@ import (
 	"github.com/uozi-tech/cosy"
 )
 
-func GetChatGPTRecord(c *gin.Context) {
+func GetLLMRecord(c *gin.Context) {
 	absPath := c.Query("path")
 
 	if !helper.IsUnderDirectory(absPath, nginx.GetConfPath()) {
@@ -20,12 +20,12 @@ func GetChatGPTRecord(c *gin.Context) {
 		return
 	}
 
-	g := query.ChatGPTLog
-	chatgpt, err := g.Where(g.Name.Eq(absPath)).FirstOrCreate()
+	g := query.LLMMessages
+	llmMsg, err := g.Where(g.Name.Eq(absPath)).FirstOrCreate()
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
 	}
 
-	c.JSON(http.StatusOK, chatgpt)
+	c.JSON(http.StatusOK, llmMsg)
 }

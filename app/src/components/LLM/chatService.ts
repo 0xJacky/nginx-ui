@@ -1,5 +1,5 @@
 import type { CodeBlockState } from './types'
-import type { ChatComplicationMessage } from '@/api/openai'
+import type { ChatComplicationMessage } from '@/api/llm'
 import { storeToRefs } from 'pinia'
 import { urlJoin } from '@/lib/helper'
 import { useUserStore } from '@/pinia'
@@ -67,14 +67,13 @@ export class ChatService {
       msg.role === 'user' || (msg.role === 'assistant' && msg.content.trim() !== ''),
     )
 
-    const res = await fetch(urlJoin(window.location.pathname, '/api/chatgpt'), {
+    const res = await fetch(urlJoin(window.location.pathname, '/api/llm'), {
       method: 'POST',
       headers: {
         Accept: 'text/event-stream',
         Authorization: token.value,
       },
       body: JSON.stringify({
-        filepath: path,
         messages: requestMessages,
       }),
     })

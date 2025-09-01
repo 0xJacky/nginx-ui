@@ -191,7 +191,7 @@ msgstr "실제 작업자 대 구성 비율"
 #: src/components/NgxConfigEditor/NgxServer.vue:144
 #: src/components/NgxConfigEditor/NgxUpstream.vue:97 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:45
-#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:94
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:119
 #: src/views/site/site_list/SiteList.vue:73 src/views/stream/StreamList.vue:81
 msgid "Add"
 msgstr "추가"
@@ -253,7 +253,7 @@ msgstr "추가적인"
 msgid "Advance Mode"
 msgstr "고급 모드"
 
-#: src/views/nginx_log/NginxLogList.vue:387
+#: src/views/nginx_log/NginxLogList.vue:388
 msgid "Advanced indexing enabled but failed to start rebuild"
 msgstr "고급 인덱싱이 활성화되었지만 재구축 시작에 실패했습니다"
 
@@ -340,7 +340,7 @@ msgstr "적용"
 msgid "Arch"
 msgstr "아키텍처"
 
-#: src/views/preference/tabs/AuthSettings.vue:128
+#: src/views/preference/tabs/AuthSettings.vue:125
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "차단된 IP를 즉시 삭제하시겠습니까?"
 
@@ -361,7 +361,7 @@ msgstr "2FA를 재설정하시겠습니까?"
 msgid "Are you sure you want to clear all notifications?"
 msgstr "모든 알림을 지우시겠습니까?"
 
-#: src/components/ChatGPT/ChatMessageInput.vue:19
+#: src/components/LLM/ChatMessageInput.vue:19
 msgid "Are you sure you want to clear the record of chat?"
 msgstr "채팅 기록을 지우시겠습니까?"
 
@@ -402,11 +402,7 @@ msgstr "복원하시겠습니까?"
 msgid "Ascending"
 msgstr "오름차순"
 
-#: src/components/ChatGPT/ChatGPT.vue:55
-msgid "Ask ChatGPT for Help"
-msgstr "ChatGPT에게 도움 요청"
-
-#: src/components/ChatGPT/ChatMessage.vue:187
+#: src/components/LLM/ChatMessage.vue:187
 msgid "Assistant"
 msgstr "어시스턴트"
 
@@ -430,12 +426,8 @@ msgstr "인증"
 msgid "Authenticate with a passkey"
 msgstr "패스키로 인증"
 
-#: src/views/preference/tabs/AuthSettings.vue:55
-msgid "Authentication Settings"
-msgstr "인증 설정"
-
-#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:71
-#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:97
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:122
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:96
 msgid "Author"
 msgstr "저자"
 
@@ -601,11 +593,11 @@ msgstr "백업 작업 %{backup_name} 실행 실패, 오류: %{error}"
 msgid "Backup Type"
 msgstr "백업 유형"
 
-#: src/views/preference/tabs/AuthSettings.vue:95
+#: src/views/preference/tabs/AuthSettings.vue:92
 msgid "Ban Threshold Minutes"
 msgstr "차단 시간(분)"
 
-#: src/views/preference/tabs/AuthSettings.vue:116
+#: src/views/preference/tabs/AuthSettings.vue:113
 msgid "Banned IPs"
 msgstr "차단된 IP"
 
@@ -735,7 +727,7 @@ msgstr ""
 "worker_processes * worker_connections를 기반으로 계산되었습니다. 실제 성능은 하드웨어, 구성 및 작업량에 "
 "따라 달라집니다"
 
-#: src/components/ChatGPT/ChatMessage.vue:216
+#: src/components/LLM/ChatMessage.vue:216
 #: src/components/NgxConfigEditor/NgxServer.vue:61
 #: src/components/NgxConfigEditor/NgxUpstream.vue:32 src/language/curd.ts:37
 #: src/views/config/components/Delete.vue:98
@@ -1068,7 +1060,7 @@ msgstr "암호문이 너무 짧습니다"
 msgid "Cleaning environment variables"
 msgstr "환경 변수 정리"
 
-#: src/components/ChatGPT/ChatMessageInput.vue:23
+#: src/components/LLM/ChatMessageInput.vue:23
 #: src/components/Notification/Notification.vue:115
 #: src/views/notification/Notification.vue:45
 msgid "Clear"
@@ -1432,7 +1424,7 @@ msgid "Current Version"
 msgstr "현재 버전"
 
 #: src/components/NgxConfigEditor/NgxConfigEditor.vue:33
-#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:104
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:129
 msgid "Custom"
 msgstr "사용자 정의"
 
@@ -1610,8 +1602,8 @@ msgstr "배포"
 msgid "Descending"
 msgstr "내림차순"
 
-#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:74
-#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:98
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:123
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:99
 msgid "Description"
 msgstr "설명"
 
@@ -1956,7 +1948,7 @@ msgstr "활성화"
 msgid "Enable 2FA successfully"
 msgstr "2FA가 성공적으로 활성화되었습니다"
 
-#: src/views/nginx_log/NginxLogList.vue:450
+#: src/views/nginx_log/NginxLogList.vue:451
 msgid "Enable Advanced Indexing"
 msgstr "고급 인덱싱 활성화"
 
@@ -2421,7 +2413,7 @@ msgstr "인증서 파일 다운로드 실패"
 msgid "Failed to enable %{msg}"
 msgstr "%{msg} 활성화 실패"
 
-#: src/views/nginx_log/NginxLogList.vue:397
+#: src/views/nginx_log/NginxLogList.vue:398
 msgid "Failed to enable advanced indexing"
 msgstr "고급 인덱싱 활성화 실패"
 
@@ -2949,7 +2941,7 @@ msgstr "https://..."
 msgid "ICP Number"
 msgstr "ICP 번호"
 
-#: src/views/preference/tabs/AuthSettings.vue:111
+#: src/views/preference/tabs/AuthSettings.vue:108
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
 "ban threshold minutes, the ip will be banned for a period of time."
@@ -3024,7 +3016,7 @@ msgid "Indexing"
 msgstr "인덱싱"
 
 #: src/views/nginx_log/components/LoadingState.vue:33
-#: src/views/nginx_log/NginxLogList.vue:439
+#: src/views/nginx_log/NginxLogList.vue:440
 msgid "Indexing logs..."
 msgstr "로그 인덱싱 중..."
 
@@ -3476,7 +3468,7 @@ msgstr "로그 인덱서를 사용할 수 없음"
 msgid "Log indexing completed! Loading updated data..."
 msgstr "로그 인덱싱 완료! 업데이트된 데이터를 불러오는 중..."
 
-#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:412
+#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:413
 msgid "Log List"
 msgstr "로그 목록"
 
@@ -3605,7 +3597,7 @@ msgstr "마스터 프로세스"
 msgid "Master Process"
 msgstr "마스터 프로세스"
 
-#: src/views/preference/tabs/AuthSettings.vue:101
+#: src/views/preference/tabs/AuthSettings.vue:98
 msgid "Max Attempts"
 msgstr "최대 시도 횟수"
 
@@ -3721,8 +3713,7 @@ msgstr "현대적인 검색 서비스를 사용할 수 없음"
 msgid "Modified At"
 msgstr "수정일시"
 
-#: src/components/ChatGPT/ChatMessage.vue:212
-#: src/views/config/ConfigList.vue:182
+#: src/components/LLM/ChatMessage.vue:212 src/views/config/ConfigList.vue:182
 msgid "Modify"
 msgstr "수정"
 
@@ -4074,14 +4065,14 @@ msgstr "Nginx.conf에 sites-enabled 디렉터리가 포함되어 있습니다"
 msgid "Nginx.conf includes streams-enabled directory"
 msgstr "Nginx.conf에는 streams-enabled 디렉토리가 포함됩니다"
 
-#: src/components/ChatGPT/ChatMessageInput.vue:17
+#: src/components/LLM/ChatMessageInput.vue:17
 #: src/components/NamespaceTabs/NamespaceTabs.vue:132
 #: src/components/NamespaceTabs/NamespaceTabs.vue:144
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:102
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
 #: src/components/Notification/Notification.vue:108 src/language/curd.ts:40
 #: src/views/notification/Notification.vue:38
-#: src/views/preference/tabs/AuthSettings.vue:130
+#: src/views/preference/tabs/AuthSettings.vue:127
 #: src/views/preference/tabs/CertSettings.vue:73
 #: src/views/site/site_list/SiteList.vue:89 src/views/stream/StreamList.vue:99
 msgid "No"
@@ -4301,7 +4292,7 @@ msgstr "오프라인"
 msgid "Offline GeoIP analysis"
 msgstr "오프라인 GeoIP 분석"
 
-#: src/components/ChatGPT/ChatMessageInput.vue:18
+#: src/components/LLM/ChatMessageInput.vue:18
 #: src/components/NgxConfigEditor/NgxServer.vue:60
 #: src/components/NgxConfigEditor/NgxUpstream.vue:31
 #: src/components/Notification/Notification.vue:109 src/language/curd.ts:15
@@ -4881,7 +4872,7 @@ msgstr "읽기"
 msgid "Real-time analytics dashboard"
 msgstr "실시간 분석 대시보드"
 
-#: src/views/nginx_log/NginxLogList.vue:477
+#: src/views/nginx_log/NginxLogList.vue:478
 msgid "Rebuild"
 msgstr "재구축"
 
@@ -4938,7 +4929,7 @@ msgstr "리퍼러"
 msgid "Refresh"
 msgstr "새로 고침"
 
-#: src/components/ChatGPT/ChatMessageInput.vue:30
+#: src/components/LLM/ChatMessageInput.vue:30
 msgid "Regenerate response"
 msgstr "응답 재생성"
 
@@ -4984,7 +4975,7 @@ msgstr "재설치"
 msgid "Release Note"
 msgstr "릴리스 노트"
 
-#: src/components/ChatGPT/ChatMessage.vue:222
+#: src/components/LLM/ChatMessage.vue:222
 #: src/components/NginxControl/NginxControl.vue:103
 msgid "Reload"
 msgstr "리로드"
@@ -5032,7 +5023,7 @@ msgid "Remote"
 msgstr "원격"
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:146
-#: src/views/preference/tabs/AuthSettings.vue:135
+#: src/views/preference/tabs/AuthSettings.vue:132
 msgid "Remove"
 msgstr "제거"
 
@@ -5279,15 +5270,15 @@ msgid ""
 "action cannot be undone."
 msgstr "인증서를 취소하면 현재 이를 사용 중인 모든 서비스에 영향을 미칩니다. 이 작업은 취소할 수 없습니다."
 
-#: src/views/preference/tabs/AuthSettings.vue:74
+#: src/views/preference/tabs/AuthSettings.vue:71
 msgid "RP Display Name"
 msgstr "RP 표시 이름"
 
-#: src/views/preference/tabs/AuthSettings.vue:80
+#: src/views/preference/tabs/AuthSettings.vue:77
 msgid "RP Origins"
 msgstr "RP 오리진"
 
-#: src/views/preference/tabs/AuthSettings.vue:68
+#: src/views/preference/tabs/AuthSettings.vue:65
 msgid "RPID"
 msgstr "RPID"
 
@@ -5391,7 +5382,7 @@ msgstr "S3 업로드 실패: {0}"
 msgid "Saturday"
 msgstr "토요일"
 
-#: src/components/ChatGPT/ChatMessage.vue:215
+#: src/components/LLM/ChatMessage.vue:215
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:132
 #: src/language/curd.ts:18
 #: src/views/certificate/components/CertificateActions.vue:29
@@ -5528,6 +5519,10 @@ msgstr "모듈 이름 검색"
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:833
 msgid "Search range"
 msgstr "검색 범위"
+
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:79
+msgid "Search templates"
+msgstr "템플릿 검색"
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:109
 msgid "Secret has been copied"
@@ -6375,7 +6370,7 @@ msgstr "이 작업은 구성 파일과 데이터베이스를 복원합니다. �
 msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr "이 작업은 %{nodeNames}의 Nginx UI를 %{version}으로 업그레이드하거나 재설치합니다."
 
-#: src/views/preference/tabs/AuthSettings.vue:91
+#: src/views/preference/tabs/AuthSettings.vue:88
 msgid "Throttle"
 msgstr "제한"
 
@@ -6709,7 +6704,7 @@ msgstr "복구 코드 사용"
 msgid "Use Temporary Path"
 msgstr "임시 경로 사용"
 
-#: src/components/ChatGPT/ChatMessage.vue:187
+#: src/components/LLM/ChatMessage.vue:187
 msgid "User"
 msgstr "사용자"
 
@@ -6782,8 +6777,8 @@ msgstr "시스템 요구 사항을 확인하십시오"
 msgid "Version"
 msgstr "버전"
 
-#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:466
-#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:83
+#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:467
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:108
 #: src/views/system/Licenses.vue:180 src/views/system/Licenses.vue:215
 #: src/views/system/Licenses.vue:250
 msgid "View"
@@ -6865,7 +6860,7 @@ msgid ""
 "the Nginx. Are you sure you want to continue?"
 msgstr "이 파일에서 HTTPChallenge 구성을 제거하고 Nginx를 다시 로드할 예정입니다. 계속하시겠습니까?"
 
-#: src/views/preference/tabs/AuthSettings.vue:64
+#: src/views/preference/tabs/AuthSettings.vue:61
 msgid "Webauthn"
 msgstr "웹인증"
 
@@ -6974,7 +6969,7 @@ msgstr "인증서를 디스크에 쓰기"
 #: src/components/NgxConfigEditor/LocationEditor.vue:88
 #: src/views/nginx_log/indexing/IndexManagement.vue:29
 #: src/views/nginx_log/indexing/IndexManagement.vue:55
-#: src/views/preference/tabs/AuthSettings.vue:129
+#: src/views/preference/tabs/AuthSettings.vue:126
 #: src/views/preference/tabs/CertSettings.vue:72
 msgid "Yes"
 msgstr "예"
@@ -7043,6 +7038,12 @@ msgstr "할당 없는 파이프라인"
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:56
 msgid "Zero-allocation pipeline optimization"
 msgstr "제로 할당 파이프라인 최적화"
+
+#~ msgid "Ask ChatGPT for Help"
+#~ msgstr "ChatGPT에게 도움 요청"
+
+#~ msgid "Authentication Settings"
+#~ msgstr "인증 설정"
 
 #~ msgid "Geographic mapping & insights"
 #~ msgstr "지리적 매핑 및 인사이트"

@@ -1,4 +1,4 @@
-package openai
+package llm
 
 import (
 	"net/http"

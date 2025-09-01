@@ -193,7 +193,7 @@ msgstr "実際のワーカー数と設定値の比率"
 #: src/components/NgxConfigEditor/NgxServer.vue:144
 #: src/components/NgxConfigEditor/NgxUpstream.vue:97 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:45
-#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:94
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:119
 #: src/views/site/site_list/SiteList.vue:73 src/views/stream/StreamList.vue:81
 msgid "Add"
 msgstr "追加"
@@ -255,7 +255,7 @@ msgstr "追加設定"
 msgid "Advance Mode"
 msgstr "アドバンスモード"
 
-#: src/views/nginx_log/NginxLogList.vue:387
+#: src/views/nginx_log/NginxLogList.vue:388
 msgid "Advanced indexing enabled but failed to start rebuild"
 msgstr "高度なインデックス作成は有効になりましたが、再構築の開始に失敗しました"
 
@@ -342,7 +342,7 @@ msgstr "適用"
 msgid "Arch"
 msgstr "アーキテクチャ"
 
-#: src/views/preference/tabs/AuthSettings.vue:128
+#: src/views/preference/tabs/AuthSettings.vue:125
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "このIPアドレス制限を削除してもよろしいですか？"
 
@@ -363,7 +363,7 @@ msgstr "2要素認証をリセットしてもよろしいですか？"
 msgid "Are you sure you want to clear all notifications?"
 msgstr "すべての通知をクリアしてもよろしいですか？"
 
-#: src/components/ChatGPT/ChatMessageInput.vue:19
+#: src/components/LLM/ChatMessageInput.vue:19
 msgid "Are you sure you want to clear the record of chat?"
 msgstr "チャットの記録をクリアしてもよろしいですか？"
 
@@ -404,11 +404,7 @@ msgstr "復元してもよろしいですか？"
 msgid "Ascending"
 msgstr "昇順"
 
-#: src/components/ChatGPT/ChatGPT.vue:55
-msgid "Ask ChatGPT for Help"
-msgstr "ChatGPTに助けを求める"
-
-#: src/components/ChatGPT/ChatMessage.vue:187
+#: src/components/LLM/ChatMessage.vue:187
 msgid "Assistant"
 msgstr "アシスタント"
 
@@ -432,12 +428,8 @@ msgstr "認証"
 msgid "Authenticate with a passkey"
 msgstr "「パスキーで認証する」"
 
-#: src/views/preference/tabs/AuthSettings.vue:55
-msgid "Authentication Settings"
-msgstr "認証設定"
-
-#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:71
-#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:97
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:122
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:96
 msgid "Author"
 msgstr "著者"
 
@@ -603,11 +595,11 @@ msgstr "バックアップタスク %{backup_name} の実行に失敗しまし�
 msgid "Backup Type"
 msgstr "バックアップタイプ"
 
-#: src/views/preference/tabs/AuthSettings.vue:95
+#: src/views/preference/tabs/AuthSettings.vue:92
 msgid "Ban Threshold Minutes"
 msgstr "制限閾値（分）"
 
-#: src/views/preference/tabs/AuthSettings.vue:116
+#: src/views/preference/tabs/AuthSettings.vue:113
 msgid "Banned IPs"
 msgstr "IPアドレス制限"
 
@@ -737,7 +729,7 @@ msgstr ""
 "worker_processes * worker_connections "
 "に基づいて計算されます。実際のパフォーマンスはハードウェア、設定、およびワークロードに依存します"
 
-#: src/components/ChatGPT/ChatMessage.vue:216
+#: src/components/LLM/ChatMessage.vue:216
 #: src/components/NgxConfigEditor/NgxServer.vue:61
 #: src/components/NgxConfigEditor/NgxUpstream.vue:32 src/language/curd.ts:37
 #: src/views/config/components/Delete.vue:98
@@ -1071,7 +1063,7 @@ msgstr "暗号文が短すぎます"
 msgid "Cleaning environment variables"
 msgstr "環境変数を削除する"
 
-#: src/components/ChatGPT/ChatMessageInput.vue:23
+#: src/components/LLM/ChatMessageInput.vue:23
 #: src/components/Notification/Notification.vue:115
 #: src/views/notification/Notification.vue:45
 msgid "Clear"
@@ -1435,7 +1427,7 @@ msgid "Current Version"
 msgstr "現在のバージョン"
 
 #: src/components/NgxConfigEditor/NgxConfigEditor.vue:33
-#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:104
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:129
 msgid "Custom"
 msgstr "カスタム"
 
@@ -1613,8 +1605,8 @@ msgstr "デプロイ"
 msgid "Descending"
 msgstr "降順"
 
-#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:74
-#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:98
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:123
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:99
 msgid "Description"
 msgstr "説明"
 
@@ -1957,7 +1949,7 @@ msgstr "有効にする"
 msgid "Enable 2FA successfully"
 msgstr "2FAが有効化されました"
 
-#: src/views/nginx_log/NginxLogList.vue:450
+#: src/views/nginx_log/NginxLogList.vue:451
 msgid "Enable Advanced Indexing"
 msgstr "高度なインデックス作成を有効にする"
 
@@ -2422,7 +2414,7 @@ msgstr "証明書ファイルのダウンロードに失敗しました"
 msgid "Failed to enable %{msg}"
 msgstr "有効化に失敗しました %{msg}"
 
-#: src/views/nginx_log/NginxLogList.vue:397
+#: src/views/nginx_log/NginxLogList.vue:398
 msgid "Failed to enable advanced indexing"
 msgstr "高度なインデックス作成の有効化に失敗しました"
 
@@ -2950,7 +2942,7 @@ msgstr "https://..."
 msgid "ICP Number"
 msgstr "ICP番号"
 
-#: src/views/preference/tabs/AuthSettings.vue:111
+#: src/views/preference/tabs/AuthSettings.vue:108
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
 "ban threshold minutes, the ip will be banned for a period of time."
@@ -3025,7 +3017,7 @@ msgid "Indexing"
 msgstr "インデックス作成"
 
 #: src/views/nginx_log/components/LoadingState.vue:33
-#: src/views/nginx_log/NginxLogList.vue:439
+#: src/views/nginx_log/NginxLogList.vue:440
 msgid "Indexing logs..."
 msgstr "ログをインデックス中..."
 
@@ -3477,7 +3469,7 @@ msgstr "ログインデクサが利用できません"
 msgid "Log indexing completed! Loading updated data..."
 msgstr "ログのインデックス作成が完了しました！更新されたデータを読み込み中..."
 
-#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:412
+#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:413
 msgid "Log List"
 msgstr "ログリスト"
 
@@ -3609,7 +3601,7 @@ msgstr "マスタープロセス"
 msgid "Master Process"
 msgstr "マスタープロセス"
 
-#: src/views/preference/tabs/AuthSettings.vue:101
+#: src/views/preference/tabs/AuthSettings.vue:98
 msgid "Max Attempts"
 msgstr "最大試行回数"
 
@@ -3725,8 +3717,7 @@ msgstr "最新の検索サービスは利用できません"
 msgid "Modified At"
 msgstr "更新日時"
 
-#: src/components/ChatGPT/ChatMessage.vue:212
-#: src/views/config/ConfigList.vue:182
+#: src/components/LLM/ChatMessage.vue:212 src/views/config/ConfigList.vue:182
 msgid "Modify"
 msgstr "変更"
 
@@ -4078,14 +4069,14 @@ msgstr "Nginx.conf は sites-enabled ディレクトリを含んでいます"
 msgid "Nginx.conf includes streams-enabled directory"
 msgstr "Nginx.conf には streams-enabled ディレクトリが含まれています"
 
-#: src/components/ChatGPT/ChatMessageInput.vue:17
+#: src/components/LLM/ChatMessageInput.vue:17
 #: src/components/NamespaceTabs/NamespaceTabs.vue:132
 #: src/components/NamespaceTabs/NamespaceTabs.vue:144
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:102
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
 #: src/components/Notification/Notification.vue:108 src/language/curd.ts:40
 #: src/views/notification/Notification.vue:38
-#: src/views/preference/tabs/AuthSettings.vue:130
+#: src/views/preference/tabs/AuthSettings.vue:127
 #: src/views/preference/tabs/CertSettings.vue:73
 #: src/views/site/site_list/SiteList.vue:89 src/views/stream/StreamList.vue:99
 msgid "No"
@@ -4305,7 +4296,7 @@ msgstr "オフライン"
 msgid "Offline GeoIP analysis"
 msgstr "オフライン GeoIP 分析"
 
-#: src/components/ChatGPT/ChatMessageInput.vue:18
+#: src/components/LLM/ChatMessageInput.vue:18
 #: src/components/NgxConfigEditor/NgxServer.vue:60
 #: src/components/NgxConfigEditor/NgxUpstream.vue:31
 #: src/components/Notification/Notification.vue:109 src/language/curd.ts:15
@@ -4887,7 +4878,7 @@ msgstr "読み取り"
 msgid "Real-time analytics dashboard"
 msgstr "リアルタイム分析ダッシュボード"
 
-#: src/views/nginx_log/NginxLogList.vue:477
+#: src/views/nginx_log/NginxLogList.vue:478
 msgid "Rebuild"
 msgstr "再構築"
 
@@ -4944,7 +4935,7 @@ msgstr "リファラー"
 msgid "Refresh"
 msgstr "更新"
 
-#: src/components/ChatGPT/ChatMessageInput.vue:30
+#: src/components/LLM/ChatMessageInput.vue:30
 msgid "Regenerate response"
 msgstr "応答を再生成"
 
@@ -4990,7 +4981,7 @@ msgstr "再インストール"
 msgid "Release Note"
 msgstr "リリースノート"
 
-#: src/components/ChatGPT/ChatMessage.vue:222
+#: src/components/LLM/ChatMessage.vue:222
 #: src/components/NginxControl/NginxControl.vue:103
 msgid "Reload"
 msgstr "再読み込み"
@@ -5038,7 +5029,7 @@ msgid "Remote"
 msgstr "リモート"
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:146
-#: src/views/preference/tabs/AuthSettings.vue:135
+#: src/views/preference/tabs/AuthSettings.vue:132
 msgid "Remove"
 msgstr "削除"
 
@@ -5283,15 +5274,15 @@ msgid ""
 "action cannot be undone."
 msgstr "証明書を失効させると、現在それを使用しているすべてのサービスに影響します。この操作は元に戻せません。"
 
-#: src/views/preference/tabs/AuthSettings.vue:74
+#: src/views/preference/tabs/AuthSettings.vue:71
 msgid "RP Display Name"
 msgstr "RP 表示名"
 
-#: src/views/preference/tabs/AuthSettings.vue:80
+#: src/views/preference/tabs/AuthSettings.vue:77
 msgid "RP Origins"
 msgstr "RP オリジン"
 
-#: src/views/preference/tabs/AuthSettings.vue:68
+#: src/views/preference/tabs/AuthSettings.vue:65
 msgid "RPID"
 msgstr "RPID"
 
@@ -5395,7 +5386,7 @@ msgstr "S3アップロードに失敗しました: {0}"
 msgid "Saturday"
 msgstr "土曜日"
 
-#: src/components/ChatGPT/ChatMessage.vue:215
+#: src/components/LLM/ChatMessage.vue:215
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:132
 #: src/language/curd.ts:18
 #: src/views/certificate/components/CertificateActions.vue:29
@@ -5532,6 +5523,10 @@ msgstr "検索モジュール名"
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:833
 msgid "Search range"
 msgstr "検索範囲"
+
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:79
+msgid "Search templates"
+msgstr "テンプレートを検索"
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:109
 msgid "Secret has been copied"
@@ -6380,7 +6375,7 @@ msgstr "これにより設定ファイルとデータベースが復元されま
 msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr "これにより、%{nodeNames} 上の Nginx UI が %{version} にアップグレードまたは再インストールされます。"
 
-#: src/views/preference/tabs/AuthSettings.vue:91
+#: src/views/preference/tabs/AuthSettings.vue:88
 msgid "Throttle"
 msgstr "スロットル"
 
@@ -6716,7 +6711,7 @@ msgstr "リカバリーコードを使用"
 msgid "Use Temporary Path"
 msgstr "一時パスを使用"
 
-#: src/components/ChatGPT/ChatMessage.vue:187
+#: src/components/LLM/ChatMessage.vue:187
 msgid "User"
 msgstr "ユーザー"
 
@@ -6789,8 +6784,8 @@ msgstr "システム要件を確認する"
 msgid "Version"
 msgstr "バージョン"
 
-#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:466
-#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:83
+#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:467
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:108
 #: src/views/system/Licenses.vue:180 src/views/system/Licenses.vue:215
 #: src/views/system/Licenses.vue:250
 msgid "View"
@@ -6873,7 +6868,7 @@ msgid ""
 "the Nginx. Are you sure you want to continue?"
 msgstr "このファイルからHTTPChallengeの設定を削除し、Nginxを再読み込みします。続行してもよろしいですか？"
 
-#: src/views/preference/tabs/AuthSettings.vue:64
+#: src/views/preference/tabs/AuthSettings.vue:61
 msgid "Webauthn"
 msgstr "WebAuthn"
 
@@ -6982,7 +6977,7 @@ msgstr "証明書をディスクに書き込み中"
 #: src/components/NgxConfigEditor/LocationEditor.vue:88
 #: src/views/nginx_log/indexing/IndexManagement.vue:29
 #: src/views/nginx_log/indexing/IndexManagement.vue:55
-#: src/views/preference/tabs/AuthSettings.vue:129
+#: src/views/preference/tabs/AuthSettings.vue:126
 #: src/views/preference/tabs/CertSettings.vue:72
 msgid "Yes"
 msgstr "はい"
@@ -7049,6 +7044,12 @@ msgstr "ゼロアロケーションパイプライン"
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:56
 msgid "Zero-allocation pipeline optimization"
 msgstr "ゼロ割り当てパイプラインの最適化"
+
+#~ msgid "Ask ChatGPT for Help"
+#~ msgstr "ChatGPTに助けを求める"
+
+#~ msgid "Authentication Settings"
+#~ msgstr "認証設定"
 
 #~ msgid "Geographic mapping & insights"
 #~ msgstr "地理的マッピングとインサイト"

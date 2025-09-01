@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ChatGPT from '@/components/ChatGPT'
+import LLM from '@/components/LLM'
 import { useStreamEditorStore } from '../../store'
 
 const store = useStreamEditorStore()
@@ -8,7 +8,7 @@ const { configText, filepath } = storeToRefs(store)
 
 <template>
   <div class="mt--6">
-    <ChatGPT
+    <LLM
       :content="configText"
       :path="filepath"
     />

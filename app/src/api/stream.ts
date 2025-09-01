@@ -1,6 +1,6 @@
 import type { Namespace } from './namespace'
+import type { ChatComplicationMessage } from '@/api/llm'
 import type { NgxConfig } from '@/api/ngx'
-import type { ChatComplicationMessage } from '@/api/openai'
 import type { ProxyTarget, SiteStatus } from '@/api/site'
 import { extendCurdApi, http, useCurdApi } from '@uozi-admin/request'
 
@@ -11,7 +11,7 @@ export interface Stream {
   name: string
   filepath: string
   config: string
-  chatgpt_messages: ChatComplicationMessage[]
+  llm_messages: ChatComplicationMessage[]
   tokenized?: NgxConfig
   namespace_id: number
   namespace?: Namespace

@@ -1,4 +1,4 @@
-package openai
+package llm
 
 import (
 	"context"
@@ -17,7 +17,7 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 )
 
-const ChatGPTInitPrompt = `You are a assistant who can help users write and optimise the configurations of Nginx,
+const LLMInitPrompt = `You are a assistant who can help users write and optimise the configurations of Nginx,
 the first user message contains the content of the configuration file which is currently opened by the user and
 the current language code(CLC). You suppose to use the language corresponding to the CLC to give the first reply.
 Later the language environment depends on the user message.
@@ -36,7 +36,7 @@ func MakeChatCompletionRequest(c *gin.Context) {
 	messages := []openai.ChatCompletionMessage{
 		{
 			Role:    openai.ChatMessageRoleSystem,
-			Content: ChatGPTInitPrompt,
+			Content: LLMInitPrompt,
 		},
 	}
 

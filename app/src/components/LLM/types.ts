@@ -3,7 +3,7 @@ export interface CodeBlockState {
   backtickCount: number
 }
 
-export interface ChatGPTProps {
+export interface LLMProps {
   content: string
   path?: string
 }

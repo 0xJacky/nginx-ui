@@ -72,8 +72,8 @@ func handleNginxConfigRename(ctx context.Context, request mcp.CallToolRequest) (
 		return nil, err
 	}
 
-	// update ChatGPT records
-	g := query.ChatGPTLog
+	// update LLM records
+	g := query.LLMMessages
 	q := query.Config
 	cfg, err := q.Where(q.Filepath.Eq(origFullPath)).FirstOrInit()
 	if err != nil {

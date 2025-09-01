@@ -408,85 +408,87 @@ function cancelIndexingSettings() {
 </script>
 
 <template>
-  <StdCurd
-    ref="stdCurdRef"
-    :title="$gettext('Log List')"
-    :columns="columns"
-    :api="nginxLog"
-    disable-add
-    disable-export
-    disable-delete
-    disable-trash
-    disable-view
-    disable-edit
-    :overwrite-params="{
-      type: activeLogType,
-    }"
-  >
-    <template #beforeSearch>
-      <TabFilter
-        v-model:active-key="activeLogType"
-        :options="tabOptions"
-        size="middle"
-      />
-    </template>
-
-    <template #beforeListActions>
-      <div class="flex items-center gap-4">
-        <!-- Global indexing progress -->
-        <div v-if="isGlobalIndexing" class="flex items-center">
-          <div class="flex items-center text-blue-500">
-            <SyncOutlined spin class="mr-2" />
-            <span>{{ $gettext('Indexing logs...') }}</span>
-          </div>
-        </div>
-
-        <!-- Advanced Indexing Toggle - only for Access logs -->
-        <div v-if="activeLogType === 'access' && !advancedIndexingEnabled" class="flex items-center">
-          <AButton
-            type="link"
-            size="small"
-            @click="showIndexingSettingsModal"
-          >
-            {{ $gettext('Enable Advanced Indexing') }}
-          </AButton>
-        </div>
-
-        <!-- Index Management - only for Access logs when advanced indexing is enabled -->
-        <IndexManagement
-          v-if="activeLogType === 'access' && advancedIndexingEnabled"
-          ref="indexManagementRef"
-          :disabled="processingStatus.nginx_log_indexing"
-          :indexing="isGlobalIndexing || processingStatus.nginx_log_indexing"
-          @refresh="refreshTable"
+  <div>
+    <StdCurd
+      ref="stdCurdRef"
+      :title="$gettext('Log List')"
+      :columns="columns"
+      :api="nginxLog"
+      disable-add
+      disable-export
+      disable-delete
+      disable-trash
+      disable-view
+      disable-edit
+      :overwrite-params="{
+        type: activeLogType,
+      }"
+    >
+      <template #beforeSearch>
+        <TabFilter
+          v-model:active-key="activeLogType"
+          :options="tabOptions"
+          size="middle"
         />
-      </div>
-    </template>
-    <template #beforeActions="{ record }">
-      <AButton type="link" size="small" @click="viewLog(record)">
-        {{ $gettext('View') }}
-      </AButton>
+      </template>
 
-      <!-- Rebuild File Index Action - only for Access logs with advanced indexing enabled -->
-      <AButton
-        v-if="record.type === 'access' && advancedIndexingEnabled"
-        type="link"
-        size="small"
-        :disabled="processingStatus.nginx_log_indexing"
-        @click="rebuildFileIndex(record)"
-      >
-        {{ $gettext('Rebuild') }}
-      </AButton>
-    </template>
-  </StdCurd>
+      <template #beforeListActions>
+        <div class="flex items-center gap-4">
+          <!-- Global indexing progress -->
+          <div v-if="isGlobalIndexing" class="flex items-center">
+            <div class="flex items-center text-blue-500">
+              <SyncOutlined spin class="mr-2" />
+              <span>{{ $gettext('Indexing logs...') }}</span>
+            </div>
+          </div>
 
-  <!-- Advanced Indexing Settings Modal -->
-  <IndexingSettingsModal
-    v-model:visible="indexingSettingsModalVisible"
-    :loading="enableIndexingLoading"
-    @confirm="enableAdvancedIndexing"
-    @cancel="cancelIndexingSettings"
-  />
+          <!-- Advanced Indexing Toggle - only for Access logs -->
+          <div v-if="activeLogType === 'access' && !advancedIndexingEnabled" class="flex items-center">
+            <AButton
+              type="link"
+              size="small"
+              @click="showIndexingSettingsModal"
+            >
+              {{ $gettext('Enable Advanced Indexing') }}
+            </AButton>
+          </div>
+
+          <!-- Index Management - only for Access logs when advanced indexing is enabled -->
+          <IndexManagement
+            v-if="activeLogType === 'access' && advancedIndexingEnabled"
+            ref="indexManagementRef"
+            :disabled="processingStatus.nginx_log_indexing"
+            :indexing="isGlobalIndexing || processingStatus.nginx_log_indexing"
+            @refresh="refreshTable"
+          />
+        </div>
+      </template>
+      <template #beforeActions="{ record }">
+        <AButton type="link" size="small" @click="viewLog(record)">
+          {{ $gettext('View') }}
+        </AButton>
+
+        <!-- Rebuild File Index Action - only for Access logs with advanced indexing enabled -->
+        <AButton
+          v-if="record.type === 'access' && advancedIndexingEnabled"
+          type="link"
+          size="small"
+          :disabled="processingStatus.nginx_log_indexing"
+          @click="rebuildFileIndex(record)"
+        >
+          {{ $gettext('Rebuild') }}
+        </AButton>
+      </template>
+    </StdCurd>
+
+    <!-- Advanced Indexing Settings Modal -->
+    <IndexingSettingsModal
+      v-model:visible="indexingSettingsModalVisible"
+      :loading="enableIndexingLoading"
+      @confirm="enableAdvancedIndexing"
+      @cancel="cancelIndexingSettings"
+    />
+  </div>
 </template>
 
 <style scoped lang="less">

@@ -23,12 +23,12 @@ export interface CodeCompletionResponse {
   code: string // Completed code
 }
 
-const openai = {
-  get_record(path: string) {
-    return http.get(`/chatgpt/history`, { params: { path } })
+const llm = {
+  get_messages(path: string) {
+    return http.get(`/llm_messages`, { params: { path } })
   },
-  store_record(data: { file_name?: string, messages?: ChatComplicationMessage[] }) {
-    return http.post('/chatgpt_record', data)
+  store_messages(data: { file_name?: string, messages?: ChatComplicationMessage[] }) {
+    return http.post('/llm_messages', data)
   },
   code_completion() {
     return ws('/api/code_completion') as ReconnectingWebSocket
@@ -38,4 +38,4 @@ const openai = {
   },
 }
 
-export default openai
+export default llm

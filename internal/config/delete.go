@@ -11,7 +11,7 @@ import (
 // CleanupDatabaseRecords removes related database records after deletion
 func CleanupDatabaseRecords(fullPath string, isDir bool) error {
 	q := query.Config
-	g := query.ChatGPTLog
+	g := query.LLMMessages
 	b := query.ConfigBackup
 
 	if isDir {

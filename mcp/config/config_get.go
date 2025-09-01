@@ -41,8 +41,8 @@ func handleNginxConfigGet(ctx context.Context, request mcp.CallToolRequest) (*mc
 	}
 
 	q := query.Config
-	g := query.ChatGPTLog
-	chatgpt, err := g.Where(g.Name.Eq(absPath)).FirstOrCreate()
+	g := query.LLMMessages
+	llmMsg, err := g.Where(g.Name.Eq(absPath)).FirstOrCreate()
 	if err != nil {
 		return nil, err
 	}
@@ -55,7 +55,7 @@ func handleNginxConfigGet(ctx context.Context, request mcp.CallToolRequest) (*mc
 	result := map[string]interface{}{
 		"name":              stat.Name(),
 		"content":           string(content),
-		"chat_gpt_messages": chatgpt.Content,
+		"llm_messages": llmMsg.Content,
 		"file_path":         absPath,
 		"modified_at":       stat.ModTime(),
 		"dir":               filepath.Dir(relativePath),

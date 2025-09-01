@@ -22,11 +22,11 @@ var (
 	AutoBackup     *autoBackup
 	BanIP          *banIP
 	Cert           *cert
-	ChatGPTLog     *chatGPTLog
 	Config         *config
 	ConfigBackup   *configBackup
 	DnsCredential  *dnsCredential
 	ExternalNotify *externalNotify
+	LLMMessages    *lLMMessages
 	Namespace      *namespace
 	NginxLogIndex  *nginxLogIndex
 	Node           *node
@@ -45,11 +45,11 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	AutoBackup = &Q.AutoBackup
 	BanIP = &Q.BanIP
 	Cert = &Q.Cert
-	ChatGPTLog = &Q.ChatGPTLog
 	Config = &Q.Config
 	ConfigBackup = &Q.ConfigBackup
 	DnsCredential = &Q.DnsCredential
 	ExternalNotify = &Q.ExternalNotify
+	LLMMessages = &Q.LLMMessages
 	Namespace = &Q.Namespace
 	NginxLogIndex = &Q.NginxLogIndex
 	Node = &Q.Node
@@ -69,11 +69,11 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		AutoBackup:     newAutoBackup(db, opts...),
 		BanIP:          newBanIP(db, opts...),
 		Cert:           newCert(db, opts...),
-		ChatGPTLog:     newChatGPTLog(db, opts...),
 		Config:         newConfig(db, opts...),
 		ConfigBackup:   newConfigBackup(db, opts...),
 		DnsCredential:  newDnsCredential(db, opts...),
 		ExternalNotify: newExternalNotify(db, opts...),
+		LLMMessages:    newLLMMessages(db, opts...),
 		Namespace:      newNamespace(db, opts...),
 		NginxLogIndex:  newNginxLogIndex(db, opts...),
 		Node:           newNode(db, opts...),
@@ -94,11 +94,11 @@ type Query struct {
 	AutoBackup     autoBackup
 	BanIP          banIP
 	Cert           cert
-	ChatGPTLog     chatGPTLog
 	Config         config
 	ConfigBackup   configBackup
 	DnsCredential  dnsCredential
 	ExternalNotify externalNotify
+	LLMMessages    lLMMessages
 	Namespace      namespace
 	NginxLogIndex  nginxLogIndex
 	Node           node
@@ -120,11 +120,11 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		AutoBackup:     q.AutoBackup.clone(db),
 		BanIP:          q.BanIP.clone(db),
 		Cert:           q.Cert.clone(db),
-		ChatGPTLog:     q.ChatGPTLog.clone(db),
 		Config:         q.Config.clone(db),
 		ConfigBackup:   q.ConfigBackup.clone(db),
 		DnsCredential:  q.DnsCredential.clone(db),
 		ExternalNotify: q.ExternalNotify.clone(db),
+		LLMMessages:    q.LLMMessages.clone(db),
 		Namespace:      q.Namespace.clone(db),
 		NginxLogIndex:  q.NginxLogIndex.clone(db),
 		Node:           q.Node.clone(db),
@@ -153,11 +153,11 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		AutoBackup:     q.AutoBackup.replaceDB(db),
 		BanIP:          q.BanIP.replaceDB(db),
 		Cert:           q.Cert.replaceDB(db),
-		ChatGPTLog:     q.ChatGPTLog.replaceDB(db),
 		Config:         q.Config.replaceDB(db),
 		ConfigBackup:   q.ConfigBackup.replaceDB(db),
 		DnsCredential:  q.DnsCredential.replaceDB(db),
 		ExternalNotify: q.ExternalNotify.replaceDB(db),
+		LLMMessages:    q.LLMMessages.replaceDB(db),
 		Namespace:      q.Namespace.replaceDB(db),
 		NginxLogIndex:  q.NginxLogIndex.replaceDB(db),
 		Node:           q.Node.replaceDB(db),
@@ -176,11 +176,11 @@ type queryCtx struct {
 	AutoBackup     *autoBackupDo
 	BanIP          *banIPDo
 	Cert           *certDo
-	ChatGPTLog     *chatGPTLogDo
 	Config         *configDo
 	ConfigBackup   *configBackupDo
 	DnsCredential  *dnsCredentialDo
 	ExternalNotify *externalNotifyDo
+	LLMMessages    *lLMMessagesDo
 	Namespace      *namespaceDo
 	NginxLogIndex  *nginxLogIndexDo
 	Node           *nodeDo
@@ -199,11 +199,11 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		AutoBackup:     q.AutoBackup.WithContext(ctx),
 		BanIP:          q.BanIP.WithContext(ctx),
 		Cert:           q.Cert.WithContext(ctx),
-		ChatGPTLog:     q.ChatGPTLog.WithContext(ctx),
 		Config:         q.Config.WithContext(ctx),
 		ConfigBackup:   q.ConfigBackup.WithContext(ctx),
 		DnsCredential:  q.DnsCredential.WithContext(ctx),
 		ExternalNotify: q.ExternalNotify.WithContext(ctx),
+		LLMMessages:    q.LLMMessages.WithContext(ctx),
 		Namespace:      q.Namespace.WithContext(ctx),
 		NginxLogIndex:  q.NginxLogIndex.WithContext(ctx),
 		Node:           q.Node.WithContext(ctx),

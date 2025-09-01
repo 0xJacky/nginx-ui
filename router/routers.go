@@ -14,10 +14,10 @@ import (
 	"github.com/0xJacky/Nginx-UI/api/event"
 	"github.com/0xJacky/Nginx-UI/api/external_notify"
 	"github.com/0xJacky/Nginx-UI/api/license"
+	"github.com/0xJacky/Nginx-UI/api/llm"
 	"github.com/0xJacky/Nginx-UI/api/nginx"
 	nginxLog "github.com/0xJacky/Nginx-UI/api/nginx_log"
 	"github.com/0xJacky/Nginx-UI/api/notification"
-	"github.com/0xJacky/Nginx-UI/api/openai"
 	"github.com/0xJacky/Nginx-UI/api/pages"
 	"github.com/0xJacky/Nginx-UI/api/public"
 	"github.com/0xJacky/Nginx-UI/api/settings"
@@ -66,6 +66,12 @@ func InitRouter() {
 		system.InitSelfCheckRouter(root)
 		backup.InitRouter(root)
 
+		// Local-only routes (no proxy) - authorization required
+		local := root.Group("/", middleware.AuthRequired())
+		{
+			llm.InitLocalRouter(local)
+		}
+
 		// Authorization required and not websocket request
 		g := root.Group("/", middleware.AuthRequired(), middleware.Proxy())
 		{
@@ -85,7 +91,7 @@ func InitRouter() {
 			certificate.InitAcmeUserRouter(g)
 			system.InitPrivateRouter(g)
 			settings.InitRouter(g)
-			openai.InitRouter(g)
+			llm.InitRouter(g)
 			cluster.InitRouter(g)
 			notification.InitRouter(g)
 			external_notify.InitRouter(g)

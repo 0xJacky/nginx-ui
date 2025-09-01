@@ -1,8 +1,8 @@
-import type { ChatComplicationMessage } from '@/api/openai'
-import openai from '@/api/openai'
+import type { ChatComplicationMessage } from '@/api/llm'
+import llm from '@/api/llm'
 import { ChatService } from './chatService'
 
-export const useChatGPTStore = defineStore('chatgpt', () => {
+export const useLLMStore = defineStore('llm', () => {
   // State
   const path = ref<string>('') // Path to the chat record file
   const messages = ref<ChatComplicationMessage[]>([])
@@ -22,7 +22,6 @@ export const useChatGPTStore = defineStore('chatgpt', () => {
     return null
   })
   const hasMessages = computed(() => messages.value.length > 0)
-  const shouldShowStartButton = computed(() => messages.value.length === 0)
 
   // Actions
   // Initialize messages for a specific file path
@@ -30,7 +29,7 @@ export const useChatGPTStore = defineStore('chatgpt', () => {
     messages.value = []
     if (filePath) {
       try {
-        const record = await openai.get_record(filePath)
+        const record = await llm.get_messages(filePath)
         messages.value = record.content || []
       }
       catch (error) {
@@ -107,7 +106,7 @@ export const useChatGPTStore = defineStore('chatgpt', () => {
     try {
       // Filter out empty messages before storing
       const validMessages = messages.value.filter(msg => msg.content.trim() !== '')
-      await openai.store_record({
+      await llm.store_messages({
         file_name: path.value,
         messages: validMessages,
       })
@@ -123,7 +122,7 @@ export const useChatGPTStore = defineStore('chatgpt', () => {
       return
 
     try {
-      await openai.store_record({
+      await llm.store_messages({
         file_name: path.value,
         messages: [],
       })
@@ -151,10 +150,14 @@ export const useChatGPTStore = defineStore('chatgpt', () => {
 
   // scroll to bottom
   function scrollToBottom() {
-    messageContainerRef.value?.scrollTo({
-      top: messageContainerRef.value.scrollHeight,
-      behavior: 'smooth',
-    })
+    if (messageContainerRef.value) {
+      // Use setTimeout to ensure DOM is updated
+      setTimeout(() => {
+        if (messageContainerRef.value) {
+          messageContainerRef.value.scrollTop = messageContainerRef.value.scrollHeight
+        }
+      }, 10)
+    }
   }
 
   // Set streaming message index
@@ -202,15 +205,25 @@ export const useChatGPTStore = defineStore('chatgpt', () => {
     finally {
       setLoading(false)
       clearStreamingMessageIndex() // Clear streaming state
+
+      // Force scroll to bottom one more time after everything is done
+      await nextTick()
+      setTimeout(() => {
+        scrollToBottom()
+      }, 100)
+
       await storeRecord()
     }
   }
 
   // Send: Add user message into messages then call request
-  async function send(content: string, currentLanguage?: string) {
+  async function send(content: string, currentLanguage?: string, fileContent?: string) {
     if (messages.value.length === 0) {
-      // The first message
-      addUserMessage(`${content}\n\nCurrent Language Code: ${currentLanguage}`)
+      // The first message - include file content as context
+      const firstMessage = fileContent
+        ? `File Content:\n${fileContent}\n\n${content}\n\nCurrent Language Code: ${currentLanguage}`
+        : `${content}\n\nCurrent Language Code: ${currentLanguage}`
+      addUserMessage(firstMessage)
     }
     else {
       // Append user's new message
@@ -234,9 +247,19 @@ export const useChatGPTStore = defineStore('chatgpt', () => {
     await request()
   }
 
-  watch(messages, () => {
-    scrollToBottom()
-  }, { immediate: true })
+  // Watch for streaming messages to auto-scroll during typing
+  watch(streamingMessageIndex, newIndex => {
+    if (newIndex !== -1) {
+      scrollToBottom()
+    }
+  })
+
+  // Auto-scroll when messages are updated during streaming
+  watch(() => messages.value.length > 0 ? messages.value[messages.value.length - 1]?.content : '', newContent => {
+    if (streamingMessageIndex.value !== -1 && newContent) {
+      scrollToBottom()
+    }
+  })
   // Return all state, getters, and actions
   return {
     // State
@@ -252,7 +275,6 @@ export const useChatGPTStore = defineStore('chatgpt', () => {
     isEditing,
     currentEditingMessage,
     hasMessages,
-    shouldShowStartButton,
 
     // Actions
     initMessages,
