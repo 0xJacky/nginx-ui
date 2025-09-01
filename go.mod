@@ -8,7 +8,7 @@ require (
 	github.com/BurntSushi/toml v1.5.0
 	github.com/blevesearch/bleve/v2 v2.5.3
 	github.com/caarlos0/env/v11 v11.3.1
-	github.com/casdoor/casdoor-go-sdk v1.16.0
+	github.com/casdoor/casdoor-go-sdk v1.17.0
 	github.com/creack/pty v1.1.24
 	github.com/dgraph-io/ristretto/v2 v2.3.0
 	github.com/docker/docker v28.3.3+incompatible
@@ -21,7 +21,7 @@ require (
 	github.com/gin-contrib/static v1.1.5
 	github.com/gin-gonic/gin v1.10.1
 	github.com/go-acme/lego/v4 v4.25.2
-	github.com/go-co-op/gocron/v2 v2.16.3
+	github.com/go-co-op/gocron/v2 v2.16.4
 	github.com/go-gormigrate/gormigrate/v2 v2.1.4
 	github.com/go-playground/validator/v10 v10.27.0
 	github.com/go-resty/resty/v2 v2.16.5
@@ -41,12 +41,12 @@ require (
 	github.com/pretty66/websocketproxy v0.0.0-20220507015215-930b3a686308
 	github.com/samber/lo v1.51.0
 	github.com/sashabaranov/go-openai v1.41.1
-	github.com/shirou/gopsutil/v4 v4.25.7
+	github.com/shirou/gopsutil/v4 v4.25.8
 	github.com/spf13/afero v1.14.0
 	github.com/spf13/cast v1.9.2
 	github.com/stretchr/testify v1.11.1
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20250620092546-c3e307e36701
-	github.com/ulikunitz/xz v0.5.13
+	github.com/ulikunitz/xz v0.5.15
 	github.com/uozi-tech/cosy v1.25.9
 	github.com/uozi-tech/cosy-driver-sqlite v0.2.1
 	github.com/urfave/cli/v3 v3.4.1
