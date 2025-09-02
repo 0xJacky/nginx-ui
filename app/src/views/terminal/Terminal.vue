@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import type ReconnectingWebSocket from 'reconnecting-websocket'
+import { ReloadOutlined } from '@ant-design/icons-vue'
 import { FitAddon } from '@xterm/addon-fit'
 import { Terminal } from '@xterm/xterm'
 import { throttle } from 'lodash'
 import use2FAModal from '@/components/TwoFA/use2FAModal'
 import ws from '@/lib/websocket'
+import TerminalStatusBar from './components/TerminalStatusBar.vue'
 import '@xterm/xterm/css/xterm.css'
 
 let term: Terminal | null
@@ -130,6 +132,10 @@ onUnmounted(() => {
   term?.dispose()
   websocket.value?.close()
 })
+
+function refreshTerminal() {
+  window.location.reload()
+}
 </script>
 
 <template>
@@ -147,27 +153,54 @@ onUnmounted(() => {
       type="error"
       show-icon
       :message="$gettext('Connection lost, please refresh the page.')"
-    />
-    <div
-      id="terminal"
-      class="console"
-    />
+      action
+    >
+      <template #action>
+        <AButton
+          size="small"
+          type="text"
+          @click="refreshTerminal"
+        >
+          <template #icon>
+            <ReloadOutlined />
+          </template>
+        </AButton>
+      </template>
+    </AAlert>
+    <div class="terminal-container">
+      <div
+        id="terminal"
+        class="console"
+      />
+      <TerminalStatusBar />
+    </div>
   </div>
 </template>
 
 <style lang="less" scoped>
-.console {
+.terminal-container {
+  display: flex;
+  flex-direction: column;
   min-height: calc(100vh - 200px);
+  border-radius: 5px;
+  overflow: hidden;
+  background: #000;
+
+  @media (max-width: 512px) {
+    border-radius: 0;
+  }
+}
+
+.console {
+  flex: 1;
 
   :deep(.terminal) {
     padding: 10px;
+    height: 100%;
   }
 
   :deep(.xterm-viewport) {
-    border-radius: 5px;
-    @media (max-width: 512px) {
-      border-radius: 0;
-    }
+    border-radius: 0;
   }
 }
 </style>

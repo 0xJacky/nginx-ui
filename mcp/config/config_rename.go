@@ -73,7 +73,7 @@ func handleNginxConfigRename(ctx context.Context, request mcp.CallToolRequest) (
 	}
 
 	// update LLM records
-	g := query.LLMMessages
+	g := query.LLMSession
 	q := query.Config
 	cfg, err := q.Where(q.Filepath.Eq(origFullPath)).FirstOrInit()
 	if err != nil {
@@ -81,13 +81,13 @@ func handleNginxConfigRename(ctx context.Context, request mcp.CallToolRequest) (
 	}
 
 	if !stat.IsDir() {
-		_, _ = g.Where(g.Name.Eq(newFullPath)).Delete()
-		_, _ = g.Where(g.Name.Eq(origFullPath)).Update(g.Name, newFullPath)
+		_, _ = g.Where(g.Path.Eq(newFullPath)).Delete()
+		_, _ = g.Where(g.Path.Eq(origFullPath)).Update(g.Path, newFullPath)
 		// for file, the sync policy for this file is used
 		syncNodeIds = cfg.SyncNodeIds
 	} else {
 		// is directory, update all records under the directory
-		_, _ = g.Where(g.Name.Like(origFullPath+"%")).Update(g.Name, g.Name.Replace(origFullPath, newFullPath))
+		_, _ = g.Where(g.Path.Like(origFullPath+"%")).Update(g.Path, g.Path.Replace(origFullPath, newFullPath))
 	}
 
 	_, err = q.Where(q.Filepath.Eq(origFullPath)).Updates(&model.Config{

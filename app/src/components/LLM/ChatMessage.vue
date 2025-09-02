@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ChatComplicationMessage } from '@/api/llm'
+import { useAnimationCoordinator } from './animationCoordinator'
 import { useLLMStore } from './llm'
 import { marked } from './markdown'
 import { transformText } from './utils'
@@ -23,6 +24,7 @@ defineEmits<{
 
 const llmStore = useLLMStore()
 const { streamingMessageIndex } = storeToRefs(llmStore)
+const { coordinator } = useAnimationCoordinator()
 
 function updateEditValue(value: string) {
   llmStore.editValue = value
@@ -51,20 +53,26 @@ function getTransformedContent(content: string): string {
 const shouldUseTypewriter = computed(() => {
   return props.message.role === 'assistant'
     && !props.isEditing
-    && streamingMessageIndex.value === props.index
+    && (streamingMessageIndex.value === props.index || isTyping.value)
 })
 
 // High-performance typewriter animation using RAF
 function startTypewriterAnimation(targetContent: string) {
-  if (animationFrame.value) {
-    cancelAnimationFrame(animationFrame.value)
-  }
-
   const transformedContent = getTransformedContent(targetContent)
 
   // Skip if content hasn't changed
   if (displayText.value === transformedContent) {
-    isTyping.value = false
+    if (isTyping.value) {
+      isTyping.value = false
+      coordinator.setMessageTyping(false)
+    }
+    return
+  }
+
+  // For streaming content, just update the target without restarting animation
+  if (isTyping.value && animationFrame.value) {
+    // Animation is already running, just update the target content
+    // The animation will automatically pick up the new content
     return
   }
 
@@ -75,44 +83,58 @@ function startTypewriterAnimation(targetContent: string) {
   // If content is shorter (like editing), immediately set to target
   if (targetLength < startLength) {
     displayText.value = transformedContent
-    isTyping.value = false
+    if (isTyping.value) {
+      isTyping.value = false
+      coordinator.setMessageTyping(false)
+    }
     return
   }
 
-  isTyping.value = true
-  let currentIndex = startLength
-  let lastTime = performance.now()
+  // Only start new animation if not already typing
+  if (!isTyping.value) {
+    isTyping.value = true
+    coordinator.setMessageTyping(true)
 
-  // Characters per second (adjustable for speed)
-  const charactersPerSecond = 120 // Similar to VScode speed
-  const msPerCharacter = 1000 / charactersPerSecond
+    let currentIndex = startLength
+    let lastTime = performance.now()
 
-  function animate(currentTime: number) {
-    const deltaTime = currentTime - lastTime
+    // Characters per second (adjustable for speed)
+    const charactersPerSecond = 120 // Similar to VScode speed
+    const msPerCharacter = 1000 / charactersPerSecond
 
-    // Check if enough time has passed to show next character(s)
-    if (deltaTime >= msPerCharacter) {
-      // Calculate how many characters to show based on elapsed time
-      const charactersToAdd = Math.floor(deltaTime / msPerCharacter)
-      currentIndex = Math.min(currentIndex + charactersToAdd, targetLength)
+    function animate(currentTime: number) {
+      // Get the latest transformed content (in case it changed during animation)
+      const latestContent = getTransformedContent(props.message.content)
+      const latestLength = latestContent.length
 
-      displayText.value = transformedContent.substring(0, currentIndex)
-      lastTime = currentTime
+      const deltaTime = currentTime - lastTime
 
-      // Check if we've reached the end
-      if (currentIndex >= targetLength) {
-        isTyping.value = false
-        animationFrame.value = null
-        return
+      // Check if enough time has passed to show next character(s)
+      if (deltaTime >= msPerCharacter) {
+        // Calculate how many characters to show based on elapsed time
+        const charactersToAdd = Math.floor(deltaTime / msPerCharacter)
+        currentIndex = Math.min(currentIndex + charactersToAdd, latestLength)
+
+        displayText.value = latestContent.substring(0, currentIndex)
+        lastTime = currentTime
+
+        // Check if we've reached the end
+        if (currentIndex >= latestLength) {
+          isTyping.value = false
+          coordinator.setMessageTyping(false)
+          coordinator.setMessageStreaming(false) // End streaming when typing completes
+          animationFrame.value = null
+          return
+        }
       }
+
+      // Continue animation
+      animationFrame.value = requestAnimationFrame(animate)
     }
 
-    // Continue animation
+    // Start the animation
     animationFrame.value = requestAnimationFrame(animate)
   }
-
-  // Start the animation
-  animationFrame.value = requestAnimationFrame(animate)
 }
 
 // Stop animation when component unmounts
@@ -133,7 +155,10 @@ watch(
     else {
       // For user messages, non-streaming messages, or when editing, show immediately
       displayText.value = getTransformedContent(newContent)
-      isTyping.value = false
+      if (isTyping.value) {
+        isTyping.value = false
+        coordinator.setMessageTyping(false)
+      }
     }
   },
   { immediate: true },
@@ -142,11 +167,15 @@ watch(
 // Watch for streaming state changes
 watch(
   shouldUseTypewriter,
-  newValue => {
-    if (!newValue) {
-      // If no longer streaming, immediately show full content
+  (newValue, oldValue) => {
+    if (!newValue && oldValue) {
+      // Don't interrupt if typewriter is still animating
+      if (isTyping.value) {
+        return
+      }
+
+      // If no longer streaming and not typing, immediately show full content
       displayText.value = getTransformedContent(props.message.content)
-      isTyping.value = false
       if (animationFrame.value) {
         cancelAnimationFrame(animationFrame.value)
         animationFrame.value = null

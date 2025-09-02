@@ -51,8 +51,7 @@ async function handleRegenerate(index: number) {
 
 <style lang="less" scoped>
 .message-list-container {
-  overflow-y: auto;
-  height: 100%;
+  width: 100%;
 
   .llm-log {
     :deep(.ant-list-item) {

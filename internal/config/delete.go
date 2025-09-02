@@ -11,7 +11,7 @@ import (
 // CleanupDatabaseRecords removes related database records after deletion
 func CleanupDatabaseRecords(fullPath string, isDir bool) error {
 	q := query.Config
-	g := query.LLMMessages
+	g := query.LLMSession
 	b := query.ConfigBackup
 
 	if isDir {
@@ -19,7 +19,7 @@ func CleanupDatabaseRecords(fullPath string, isDir bool) error {
 		pathPattern := fullPath + "%"
 
 		// Delete ChatGPT logs
-		_, err := g.Where(g.Name.Like(pathPattern)).Delete()
+		_, err := g.Where(g.Path.Like(pathPattern)).Delete()
 		if err != nil {
 			return err
 		}
@@ -37,7 +37,7 @@ func CleanupDatabaseRecords(fullPath string, isDir bool) error {
 		}
 	} else {
 		// For files, delete specific records
-		_, err := g.Where(g.Name.Eq(fullPath)).Delete()
+		_, err := g.Where(g.Path.Eq(fullPath)).Delete()
 		if err != nil {
 			return err
 		}

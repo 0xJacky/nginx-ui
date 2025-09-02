@@ -3,8 +3,18 @@ package llm
 import "github.com/gin-gonic/gin"
 
 func InitRouter(r *gin.RouterGroup) {
-	r.GET("llm_messages", GetLLMRecord)
-	r.POST("llm_messages", StoreLLMRecord)
+	// LLM Session endpoints
+	r.GET("llm_sessions", GetLLMSessions)
+	r.GET("llm_sessions/:session_id", GetLLMSession)
+	r.POST("llm_sessions", CreateLLMSession)
+	r.PUT("llm_sessions/:session_id", UpdateLLMSession)
+	r.DELETE("llm_sessions/:session_id", DeleteLLMSession)
+	r.POST("llm_sessions/:session_id/duplicate", DuplicateLLMSession)
+	r.POST("llm_sessions/:session_id/generate_title", GenerateSessionTitle)
+	
+	// Compatibility endpoints for legacy file-based sessions
+	r.GET("llm_messages", GetLLMSessionByPath)
+	r.POST("llm_messages", CreateOrUpdateLLMSessionByPath)
 }
 
 // InitLocalRouter for main node only (no proxy)

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SendOutlined } from '@ant-design/icons-vue'
+import { LoadingOutlined, SendOutlined } from '@ant-design/icons-vue'
 import { storeToRefs } from 'pinia'
 import { useLLMStore } from './llm'
 
@@ -40,10 +40,11 @@ const messagesLength = computed(() => messages.value?.length ?? 0)
       <AButton
         size="small"
         type="text"
-        :loading="loading"
+        :disabled="loading"
         @click="llmStore.send(askBuffer)"
       >
-        <SendOutlined />
+        <LoadingOutlined v-if="loading" spin />
+        <SendOutlined v-else />
       </AButton>
     </div>
   </div>
@@ -53,13 +54,13 @@ const messagesLength = computed(() => messages.value?.length ?? 0)
 .input-msg {
   position: sticky;
   bottom: 0;
-  left: 0;
-  right: 0;
   background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   padding: 16px;
   border-radius: 0 0 8px 8px;
+  width: 100%;
+  box-sizing: border-box;
 
   .control-btn {
     display: flex;

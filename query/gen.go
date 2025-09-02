@@ -26,7 +26,7 @@ var (
 	ConfigBackup   *configBackup
 	DnsCredential  *dnsCredential
 	ExternalNotify *externalNotify
-	LLMMessages    *lLMMessages
+	LLMSession     *lLMSession
 	Namespace      *namespace
 	NginxLogIndex  *nginxLogIndex
 	Node           *node
@@ -49,7 +49,7 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	ConfigBackup = &Q.ConfigBackup
 	DnsCredential = &Q.DnsCredential
 	ExternalNotify = &Q.ExternalNotify
-	LLMMessages = &Q.LLMMessages
+	LLMSession = &Q.LLMSession
 	Namespace = &Q.Namespace
 	NginxLogIndex = &Q.NginxLogIndex
 	Node = &Q.Node
@@ -73,7 +73,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		ConfigBackup:   newConfigBackup(db, opts...),
 		DnsCredential:  newDnsCredential(db, opts...),
 		ExternalNotify: newExternalNotify(db, opts...),
-		LLMMessages:    newLLMMessages(db, opts...),
+		LLMSession:     newLLMSession(db, opts...),
 		Namespace:      newNamespace(db, opts...),
 		NginxLogIndex:  newNginxLogIndex(db, opts...),
 		Node:           newNode(db, opts...),
@@ -98,7 +98,7 @@ type Query struct {
 	ConfigBackup   configBackup
 	DnsCredential  dnsCredential
 	ExternalNotify externalNotify
-	LLMMessages    lLMMessages
+	LLMSession     lLMSession
 	Namespace      namespace
 	NginxLogIndex  nginxLogIndex
 	Node           node
@@ -124,7 +124,7 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		ConfigBackup:   q.ConfigBackup.clone(db),
 		DnsCredential:  q.DnsCredential.clone(db),
 		ExternalNotify: q.ExternalNotify.clone(db),
-		LLMMessages:    q.LLMMessages.clone(db),
+		LLMSession:     q.LLMSession.clone(db),
 		Namespace:      q.Namespace.clone(db),
 		NginxLogIndex:  q.NginxLogIndex.clone(db),
 		Node:           q.Node.clone(db),
@@ -157,7 +157,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		ConfigBackup:   q.ConfigBackup.replaceDB(db),
 		DnsCredential:  q.DnsCredential.replaceDB(db),
 		ExternalNotify: q.ExternalNotify.replaceDB(db),
-		LLMMessages:    q.LLMMessages.replaceDB(db),
+		LLMSession:     q.LLMSession.replaceDB(db),
 		Namespace:      q.Namespace.replaceDB(db),
 		NginxLogIndex:  q.NginxLogIndex.replaceDB(db),
 		Node:           q.Node.replaceDB(db),
@@ -180,7 +180,7 @@ type queryCtx struct {
 	ConfigBackup   *configBackupDo
 	DnsCredential  *dnsCredentialDo
 	ExternalNotify *externalNotifyDo
-	LLMMessages    *lLMMessagesDo
+	LLMSession     *lLMSessionDo
 	Namespace      *namespaceDo
 	NginxLogIndex  *nginxLogIndexDo
 	Node           *nodeDo
@@ -203,7 +203,7 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		ConfigBackup:   q.ConfigBackup.WithContext(ctx),
 		DnsCredential:  q.DnsCredential.WithContext(ctx),
 		ExternalNotify: q.ExternalNotify.WithContext(ctx),
-		LLMMessages:    q.LLMMessages.WithContext(ctx),
+		LLMSession:     q.LLMSession.WithContext(ctx),
 		Namespace:      q.Namespace.WithContext(ctx),
 		NginxLogIndex:  q.NginxLogIndex.WithContext(ctx),
 		Node:           q.Node.WithContext(ctx),

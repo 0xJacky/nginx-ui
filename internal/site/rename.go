@@ -60,8 +60,8 @@ func Rename(oldName string, newName string) (err error) {
 	}
 
 	// update ChatGPT history
-	g := query.LLMMessages
-	_, _ = g.Where(g.Name.Eq(oldName)).Update(g.Name, newName)
+	g := query.LLMSession
+	_, _ = g.Where(g.Path.Eq(oldName)).Update(g.Path, newName)
 
 	// update config history
 	b := query.ConfigBackup

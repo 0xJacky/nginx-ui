@@ -5,7 +5,7 @@ import (
 	"gorm.io/gorm"
 )
 
-var RenameChatGPTLogsToLLMMessages = &gormigrate.Migration{
+var RenameChatGPTLogsToLLMSessions = &gormigrate.Migration{
 	ID: "20250831000001",
 	Migrate: func(tx *gorm.DB) error {
 		// 检查 chatgpt_logs 表是否存在
@@ -13,23 +13,15 @@ var RenameChatGPTLogsToLLMMessages = &gormigrate.Migration{
 			return nil
 		}
 
-		// 检查 llm_messages 表是否存在
-		if !tx.Migrator().HasTable("llm_messages") {
-			// llm_messages 表不存在，直接重命名
-			if err := tx.Exec("ALTER TABLE chat_gpt_logs RENAME TO llm_messages").Error; err != nil {
-				return err
-			}
-		} else {
-			// llm_messages 表已存在，迁移数据后删除旧表
-			// 使用原生 SQL 迁移数据，因为两个表结构相同
-			if err := tx.Exec("INSERT INTO llm_messages (name, content) SELECT name, content FROM chat_gpt_logs WHERE NOT EXISTS (SELECT 1 FROM llm_messages WHERE llm_messages.name = chat_gpt_logs.name)").Error; err != nil {
-				return err
-			}
+		// llm_messages 表已存在，迁移数据后删除旧表
+		// 使用原生 SQL 迁移数据，因为两个表结构相同
+		if err := tx.Exec("INSERT INTO llm_messages (path, content) SELECT name, content FROM chat_gpt_logs WHERE NOT EXISTS (SELECT 1 FROM llm_messages WHERE llm_messages.name = chat_gpt_logs.name)").Error; err != nil {
+			return err
+		}
 
-			// 删除旧表
-			if err := tx.Migrator().DropTable("chat_gpt_logs"); err != nil {
-				return err
-			}
+		// 删除旧表
+		if err := tx.Migrator().DropTable("chat_gpt_logs"); err != nil {
+			return err
 		}
 
 		return nil

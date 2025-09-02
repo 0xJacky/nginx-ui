@@ -41,26 +41,19 @@ func handleNginxConfigGet(ctx context.Context, request mcp.CallToolRequest) (*mc
 	}
 
 	q := query.Config
-	g := query.LLMMessages
-	llmMsg, err := g.Where(g.Name.Eq(absPath)).FirstOrCreate()
-	if err != nil {
-		return nil, err
-	}
-
 	cfg, err := q.Where(q.Filepath.Eq(absPath)).FirstOrInit()
 	if err != nil {
 		return nil, err
 	}
 
 	result := map[string]interface{}{
-		"name":              stat.Name(),
-		"content":           string(content),
-		"llm_messages": llmMsg.Content,
-		"file_path":         absPath,
-		"modified_at":       stat.ModTime(),
-		"dir":               filepath.Dir(relativePath),
-		"sync_node_ids":     cfg.SyncNodeIds,
-		"sync_overwrite":    cfg.SyncOverwrite,
+		"name":           stat.Name(),
+		"content":        string(content),
+		"file_path":      absPath,
+		"modified_at":    stat.ModTime(),
+		"dir":            filepath.Dir(relativePath),
+		"sync_node_ids":  cfg.SyncNodeIds,
+		"sync_overwrite": cfg.SyncOverwrite,
 	}
 
 	jsonResult, _ := json.Marshal(result)

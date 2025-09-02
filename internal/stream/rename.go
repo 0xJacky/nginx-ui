@@ -60,8 +60,8 @@ func Rename(oldName string, newName string) (err error) {
 	}
 
 	// update LLM history
-	g := query.LLMMessages
-	_, _ = g.Where(g.Name.Eq(oldName)).Update(g.Name, newName)
+	g := query.LLMSession
+	_, _ = g.Where(g.Path.Eq(oldPath)).Update(g.Path, newPath)
 
 	// update config history
 	b := query.ConfigBackup

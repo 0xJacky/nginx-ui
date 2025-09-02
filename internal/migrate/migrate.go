@@ -10,7 +10,7 @@ var Migrations = []*gormigrate.Migration{
 	UpdateCertDomains,
 	RenameEnvGroupsToNamespaces,
 	RenameEnvironmentsToNodes,
-	RenameChatGPTLogsToLLMMessages,
+	RenameChatGPTLogsToLLMSessions,
 }
 
 var BeforeAutoMigrate = []*gormigrate.Migration{

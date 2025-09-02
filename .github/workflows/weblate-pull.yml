@@ -29,4 +29,4 @@ jobs:
       - name: Update Repository
         env:
           WEBLATE_TOKEN: ${{ secrets.WEBLATE_TOKEN }}
-        run: wlc --key $WEBLATE_TOKEN pull
+        run: wlc --key $WEBLATE_TOKEN reset nginx-ui
