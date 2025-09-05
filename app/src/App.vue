@@ -4,6 +4,7 @@ import en_US from 'ant-design-vue/es/locale/en_US'
 import zh_CN from 'ant-design-vue/es/locale/zh_CN'
 import zh_TW from 'ant-design-vue/es/locale/zh_TW'
 import loadTranslations from '@/api/translations'
+import AppProvider from '@/components/AppProvider.vue'
 import gettext from '@/gettext'
 import { useSettingsStore } from '@/pinia'
 
@@ -60,7 +61,9 @@ loadTranslations(route)
     :auto-insert-space-in-button="false"
   >
     <AApp>
-      <RouterView />
+      <AppProvider>
+        <RouterView />
+      </AppProvider>
     </AApp>
   </AConfigProvider>
 </template>

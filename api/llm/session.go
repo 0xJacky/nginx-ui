@@ -102,6 +102,16 @@ func CreateLLMSession(c *gin.Context) {
 	}
 
 	g := query.LLMSession
+	
+	// When creating a new active session, deactivate all other sessions with the same path
+	if session.IsActive && sessionPath != "" {
+		_, err := g.Where(g.Path.Eq(sessionPath)).UpdateSimple(g.IsActive.Value(false))
+		if err != nil {
+			logger.Error("Failed to deactivate other sessions:", err)
+			// Continue anyway, this is not critical
+		}
+	}
+	
 	err := g.Create(session)
 	if err != nil {
 		logger.Error(err)
@@ -144,7 +154,20 @@ func UpdateLLMSession(c *gin.Context) {
 		session.MessageCount = len(json.Messages)
 	}
 	
-	if json.IsActive != nil {
+	if json.IsActive != nil && *json.IsActive {
+		session.IsActive = true
+		
+		// Deactivate all other sessions with the same path
+		_, err = g.Where(
+			g.Path.Eq(session.Path),
+			g.SessionID.Neq(sessionID),
+		).UpdateSimple(g.IsActive.Value(false))
+		
+		if err != nil {
+			logger.Error("Failed to deactivate other sessions:", err)
+			// Continue anyway, this is not critical
+		}
+	} else if json.IsActive != nil {
 		session.IsActive = *json.IsActive
 	}
 
@@ -240,6 +263,14 @@ func GetLLMSessionByPath(c *gin.Context) {
 			IsActive:     true,
 		}
 		
+		// Deactivate all other sessions with the same path before creating
+		if path != "" {
+			_, deactivateErr := g.Where(g.Path.Eq(path)).UpdateSimple(g.IsActive.Value(false))
+			if deactivateErr != nil {
+				logger.Error("Failed to deactivate other sessions:", deactivateErr)
+			}
+		}
+		
 		err = g.Create(session)
 		if err != nil {
 			logger.Error(err)
@@ -292,6 +323,14 @@ func CreateOrUpdateLLMSessionByPath(c *gin.Context) {
 			Messages:     json.Messages,
 			MessageCount: len(json.Messages),
 			IsActive:     true,
+		}
+		
+		// Deactivate all other sessions with the same path before creating
+		if json.FileName != "" {
+			_, deactivateErr := g.Where(g.Path.Eq(json.FileName)).UpdateSimple(g.IsActive.Value(false))
+			if deactivateErr != nil {
+				logger.Error("Failed to deactivate other sessions:", deactivateErr)
+			}
 		}
 		
 		err = g.Create(session)

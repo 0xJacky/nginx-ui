@@ -33,8 +33,8 @@ const historyDrawerVisible = ref(false)
 const sessionsDropdownVisible = ref(false)
 const searchText = ref('')
 
-// Only show first 3 sessions in tabs, rest in history
-const visibleSessions = computed(() => sortedSessions.value.slice(0, 3))
+// Only show first 5 sessions in tabs, rest in history
+const visibleSessions = computed(() => sortedSessions.value.slice(0, 5))
 
 // Filtered sessions for dropdown search
 const filteredSessions = computed(() => {
@@ -54,6 +54,10 @@ async function createNewSession() {
   const title = props.type === 'terminal' ? 'Terminal Assistant' : 'New Chat'
   try {
     const session = await sessionStore.createSession(title, props.path, props.type)
+
+    // Update is_active field for all sessions
+    await updateActiveSessionStatus(session.session_id)
+
     await llmStore.switchSession(session.session_id)
     emit('newSessionCreated')
   }
@@ -70,10 +74,33 @@ async function selectSession(sessionId: string) {
     return // Don't switch sessions while LLM is generating output
   }
 
+  // Update is_active field for all sessions
+  await updateActiveSessionStatus(sessionId)
+
   await llmStore.switchSession(sessionId)
   sessionStore.setActiveSession(sessionId)
   historyDrawerVisible.value = false
   sessionsDropdownVisible.value = false
+}
+
+async function updateActiveSessionStatus(newActiveId: string) {
+  // Update previous active session to inactive
+  if (activeSessionId.value && activeSessionId.value !== newActiveId) {
+    try {
+      await sessionStore.updateSessionActiveStatus(activeSessionId.value, false)
+    }
+    catch (error) {
+      console.error('Failed to update previous session:', error)
+    }
+  }
+
+  // Update new active session
+  try {
+    await sessionStore.updateSessionActiveStatus(newActiveId, true)
+  }
+  catch (error) {
+    console.error('Failed to update new session:', error)
+  }
 }
 
 async function closeSession(sessionId: string, event: Event) {
@@ -124,6 +151,7 @@ async function duplicateSession(sessionId: string, event: Event) {
 
   try {
     const newSession = await sessionStore.duplicateSession(sessionId)
+    // selectSession already handles is_active update
     await selectSession(newSession.session_id)
   }
   catch (error) {
@@ -206,7 +234,7 @@ function formatDate(dateStr: string) {
           :key="session.session_id"
           class="tab-item" :class="[
             {
-              active: session.session_id === activeSessionId,
+              active: session.is_active || session.session_id === activeSessionId,
               disabled: llmLoading,
             },
           ]"
@@ -306,7 +334,7 @@ function formatDate(dateStr: string) {
                   v-for="session in filteredSessions"
                   :key="session.session_id"
                   class="session-item"
-                  :class="{ active: session.session_id === activeSessionId }"
+                  :class="{ active: session.is_active || session.session_id === activeSessionId }"
                   @click="selectSession(session.session_id)"
                 >
                   <div class="session-info">
@@ -384,9 +412,9 @@ function formatDate(dateStr: string) {
 
   .tabs-container {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     height: 48px;
-    padding: 6px 12px 0;
+    padding: 0 12px;
     width: 100%;
     box-sizing: border-box;
   }
@@ -400,9 +428,11 @@ function formatDate(dateStr: string) {
     min-width: 0;
     border: 1px solid var(--color-border);
     border-bottom: none;
-    border-radius: 8px 8px 0 0;
+    border-radius: 7px 7px 0 0;
     background: transparent;
     position: relative;
+    box-sizing: content-box;
+    height: 34px;
 
     &::-webkit-scrollbar {
       height: 0;
@@ -418,8 +448,8 @@ function formatDate(dateStr: string) {
     transition: all 0.15s ease;
     background: transparent;
     border-right: 1px solid var(--color-border);
-    max-width: 120px;
-    min-width: 80px;
+    max-width: 100px;
+    min-width: 70px;
     position: relative;
     height: 34px;
     box-sizing: border-box;
@@ -434,8 +464,6 @@ function formatDate(dateStr: string) {
     }
 
     &:hover:not(.disabled):not(.active) {
-      background: var(--color-fill-2);
-
       .tab-title {
         color: var(--color-text-1);
       }
@@ -563,15 +591,7 @@ function formatDate(dateStr: string) {
     flex-shrink: 0;
     display: flex;
     align-items: center;
-    height: 34px;
-    padding: 0 8px;
-    background: transparent;
-    border: 1px solid var(--color-border);
-    border-left: none;
-    border-bottom: none;
-    border-radius: 0 8px 0 0;
-    margin-left: 8px;
-    position: relative;
+    gap: 4px;
 
     .sessions-btn,
     .history-btn,
@@ -586,11 +606,10 @@ function formatDate(dateStr: string) {
       border: none;
       background: transparent;
       color: var(--color-text-3);
-      transition: all 0.15s ease;
+      transition: color 0.15s ease;
       margin: 0 2px;
 
       &:hover:not(:disabled) {
-        background: var(--color-fill-2);
         color: var(--color-text-1);
       }
 
@@ -830,6 +849,10 @@ function formatDate(dateStr: string) {
   .llm-session-tabs {
     background: rgba(30, 30, 30, 0.8);
 
+    .tabs-container {
+      border-bottom: 1px solid #333;
+    }
+
     .tabs-scroll {
       background: transparent;
       border-color: rgba(255, 255, 255, 0.1);
@@ -837,10 +860,6 @@ function formatDate(dateStr: string) {
 
     .tab-item {
       border-right-color: rgba(255, 255, 255, 0.08);
-
-      &:hover:not(.disabled):not(.active) {
-        background: rgba(255, 255, 255, 0.08);
-      }
 
       &.active {
         background: rgba(var(--primary-6), 0.15);
@@ -888,16 +907,12 @@ function formatDate(dateStr: string) {
     }
 
     .tab-actions-group {
-      background: transparent;
-      border-color: rgba(255, 255, 255, 0.1);
-
       .sessions-btn,
       .history-btn,
       .add-btn {
         color: rgba(255, 255, 255, 0.6);
 
         &:hover:not(:disabled) {
-          background: rgba(255, 255, 255, 0.1);
           color: rgba(255, 255, 255, 0.9);
         }
       }

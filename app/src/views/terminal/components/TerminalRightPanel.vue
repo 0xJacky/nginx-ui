@@ -2,6 +2,7 @@
 import type { AnalyticInit } from '@/api/analytic'
 import analytic from '@/api/analytic'
 import LLM from '@/components/LLM/LLM.vue'
+import { useTerminalStore } from '@/pinia'
 
 interface Props {
   isVisible: boolean
@@ -9,8 +10,10 @@ interface Props {
 
 defineProps<Props>()
 
-// Get current terminal command context
-const currentCommand = ref('')
+const terminalStore = useTerminalStore()
+
+// Get current terminal command context per tab
+const tabCommands = ref<Map<string, string>>(new Map())
 const systemInfo = ref<AnalyticInit | null>(null)
 
 // No longer need to calculate height since we have CSS min-height
@@ -25,6 +28,29 @@ async function fetchSystemInfo() {
   }
 }
 
+// Build OS information string
+const osInfoString = computed(() => {
+  if (!systemInfo.value?.host) {
+    return ''
+  }
+
+  const host = systemInfo.value.host
+  const parts: string[] = []
+
+  if (host.os)
+    parts.push(`OS: ${host.os}`)
+  if (host.platform)
+    parts.push(`Platform: ${host.platform}`)
+  if (host.platformVersion)
+    parts.push(`Version: ${host.platformVersion}`)
+  if (host.kernelVersion)
+    parts.push(`Kernel: ${host.kernelVersion}`)
+  if (host.kernelArch)
+    parts.push(`Architecture: ${host.kernelArch}`)
+
+  return parts.join(', ')
+})
+
 // Build terminal context with system information
 const terminalContext = computed(() => {
   let context = ''
@@ -33,8 +59,15 @@ const terminalContext = computed(() => {
     context += `System: ${systemInfo.value.host.platformVersion}\n\n`
   }
 
-  if (currentCommand.value) {
-    context += `Current terminal command: ${currentCommand.value}\n\n`
+  const activeTabId = terminalStore.activeTabId
+  const currentCommand = activeTabId ? tabCommands.value.get(activeTabId) || '' : ''
+
+  if (activeTabId && terminalStore.activeTab) {
+    context += `Active terminal tab: ${terminalStore.activeTab.name}\n`
+  }
+
+  if (currentCommand) {
+    context += `Current terminal command: ${currentCommand}\n\n`
     context += 'Please help me with this command or terminal operation.'
   }
   else {
@@ -49,9 +82,12 @@ onMounted(() => {
   fetchSystemInfo()
 })
 
-// Function to extract current terminal command (could be enhanced later)
+// Function to update command for active tab
 function updateCurrentCommand(command: string) {
-  currentCommand.value = command
+  const activeTabId = terminalStore.activeTabId
+  if (activeTabId) {
+    tabCommands.value.set(activeTabId, command)
+  }
 }
 
 defineExpose({
@@ -69,6 +105,7 @@ defineExpose({
         :content="terminalContext"
         type="terminal"
         theme="dark"
+        :os-info="osInfoString"
       />
     </div>
   </div>

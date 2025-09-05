@@ -1,15 +1,18 @@
 import { Modal } from 'ant-design-vue'
-import { createVNode, render } from 'vue'
 import twoFA from '@/api/2fa'
 import Authorization from '@/components/TwoFA/Authorization.vue'
+import { useGlobalApp } from '@/composables/useGlobalApp'
 import { useUserStore } from '@/pinia'
 
 function use2FAModal() {
-  const { message } = App.useApp()
+  const [modal, contextHolder] = Modal.useModal()
   const refOTPAuthorization = ref<typeof Authorization>()
   // eslint-disable-next-line sonarjs/pseudo-random
   const randomId = Math.random().toString(36).substring(2, 8)
   const { secureSessionId } = storeToRefs(useUserStore())
+
+  // Use global message API
+  const { message } = useGlobalApp()
 
   const injectStyles = () => {
     const style = document.createElement('style')
@@ -29,70 +32,64 @@ function use2FAModal() {
     return new Promise((resolve, reject) => {
       if (!twoFAStatus.enabled) {
         resolve('')
-
         return
       }
 
       if (secureSessionId.value && secureSessionStatus) {
         resolve(secureSessionId.value)
-
         return
       }
+
       injectStyles()
-      let container: HTMLDivElement | null = document.createElement('div')
-      document.body.appendChild(container)
 
-      const close = () => {
-        render(null, container!)
-        document.body.removeChild(container!)
-        container = null
-      }
-
-      const setSessionId = (sessionId: string) => {
-        close()
-        secureSessionId.value = sessionId
-        resolve(sessionId)
-      }
-
-      const verifyOTP = (passcode: string, recovery: string) => {
-        twoFA.start_secure_session_by_otp(passcode, recovery).then(async r => {
-          setSessionId(r.session_id)
-        }).catch(async () => {
-          refOTPAuthorization.value?.clearInput()
-          await message.error($gettext('Invalid passcode or recovery code'))
-        })
-      }
-
-      const vnode = createVNode(Modal, {
-        open: true,
+      // Create modal instance to be able to destroy it later
+      const modalInstance = modal.confirm({
         title: $gettext('Two-factor authentication required'),
         centered: true,
         maskClosable: false,
         class: randomId,
-        footer: false,
+        footer: null,
+        appContext: getCurrentInstance()?.appContext,
+        width: '500px',
+        content: () => {
+          const verifyOTP = (passcode: string, recovery: string) => {
+            twoFA.start_secure_session_by_otp(passcode, recovery).then(async r => {
+              modalInstance.destroy()
+              secureSessionId.value = r.session_id
+              resolve(r.session_id)
+            }).catch(async () => {
+              refOTPAuthorization.value?.clearInput()
+              await message.error($gettext('Invalid passcode or recovery code'))
+            })
+          }
+
+          const setSessionId = (sessionId: string) => {
+            modalInstance.destroy()
+            secureSessionId.value = sessionId
+            resolve(sessionId)
+          }
+
+          return h(
+            Authorization,
+            {
+              ref: refOTPAuthorization,
+              twoFAStatus,
+              class: 'mt-3 mr-34px',
+              onSubmitOTP: verifyOTP,
+              onSubmitSecureSessionID: setSessionId,
+            },
+          )
+        },
         onCancel: () => {
-          close()
+          modalInstance.destroy()
           // eslint-disable-next-line prefer-promise-reject-errors
           reject()
         },
-      }, {
-        default: () => h(
-          Authorization,
-          {
-            ref: refOTPAuthorization,
-            twoFAStatus,
-            class: 'mt-3',
-            onSubmitOTP: verifyOTP,
-            onSubmitSecureSessionID: setSessionId,
-          },
-        ),
       })
-
-      render(vnode, container!)
     })
   }
 
-  return { open }
+  return { open, contextHolder }
 }
 
 export default use2FAModal

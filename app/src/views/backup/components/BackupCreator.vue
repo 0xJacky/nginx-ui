@@ -2,8 +2,9 @@
 import { CheckOutlined, CopyOutlined, InfoCircleFilled, WarningOutlined } from '@ant-design/icons-vue'
 import { UseClipboard } from '@vueuse/components'
 import backup from '@/api/backup'
+import { useGlobalApp } from '@/composables/useGlobalApp'
 
-const { message } = App.useApp()
+const { message } = useGlobalApp()
 
 const isCreatingBackup = ref(false)
 const showSecurityModal = ref(false)

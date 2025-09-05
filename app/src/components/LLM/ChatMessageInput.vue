@@ -5,8 +5,9 @@ import { storeToRefs } from 'pinia'
 import { useSettingsStore } from '@/pinia'
 import { useLLMStore } from './llm'
 
-defineProps<{
+const props = defineProps<{
   nginxConfig?: string
+  osInfo?: string
 }>()
 const llmStore = useLLMStore()
 const { loading, askBuffer, messages } = storeToRefs(llmStore)
@@ -42,13 +43,13 @@ function handleSend(event?: KeyboardEvent) {
 
   if (!askBuffer.value.trim())
     return
-  llmStore.send(askBuffer.value, currentLanguage.value)
+  llmStore.send(askBuffer.value, currentLanguage.value, props.osInfo)
 }
 
 function handleButtonClick() {
   if (!askBuffer.value.trim())
     return
-  llmStore.send(askBuffer.value, currentLanguage.value)
+  llmStore.send(askBuffer.value, currentLanguage.value, props.osInfo)
 }
 </script>
 
@@ -68,7 +69,7 @@ function handleButtonClick() {
         </APopconfirm>
         <AButton
           type="text"
-          @click="llmStore.regenerate(messagesLength - 1, currentLanguage)"
+          @click="llmStore.regenerate(messagesLength - 1, currentLanguage, props.osInfo)"
         >
           {{ $gettext('Regenerate response') }}
         </AButton>
@@ -104,7 +105,7 @@ function handleButtonClick() {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   padding: 16px;
-  border-radius: 0 0 8px 8px;
+  border-top: 1px solid var(--ant-color-border);
   width: 100%;
   box-sizing: border-box;
   z-index: 100;
@@ -138,6 +139,7 @@ function handleButtonClick() {
 .dark {
   .input-msg {
     background: rgba(30, 30, 30, 0.8);
+    border-top: 1px solid #333;
   }
 }
 </style>

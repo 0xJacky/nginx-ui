@@ -1,4 +1,5 @@
 import type { CosyError, CosyErrorRecord } from './types'
+import { useGlobalApp } from '@/composables/useGlobalApp'
 
 const errors: Record<string, CosyErrorRecord> = {}
 
@@ -19,7 +20,9 @@ export function useMessageDedupe(interval = 5000): MessageDedupe {
       const now = Date.now()
       if (!lastMessages.has(content) || (now - (lastMessages.get(content) || 0)) > interval) {
         lastMessages.set(content, now)
-        const { message } = App.useApp()
+
+        // Use global App context with fallback
+        const { message } = useGlobalApp()
         message.error(content, duration)
       }
     },

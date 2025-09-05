@@ -69,7 +69,7 @@ const llm = {
   create_session(data: { title: string, path?: string, type?: string }) {
     return http.post<LLMSessionResponse>('/llm_sessions', data)
   },
-  update_session(sessionId: string, data: { title?: string, messages?: ChatComplicationMessage[] }) {
+  update_session(sessionId: string, data: { title?: string, messages?: ChatComplicationMessage[], is_active?: boolean }) {
     return http.put<LLMSessionResponse>(`/llm_sessions/${sessionId}`, data)
   },
   delete_session(sessionId: string) {
