@@ -6,6 +6,7 @@ import { useLLMStore } from './llm'
 // Props
 const props = defineProps<{
   inputHeight?: number
+  osInfo?: string
 }>()
 
 // Use LLM store
@@ -131,7 +132,7 @@ function handleEdit(index: number) {
 async function handleSave(index: number) {
   llmStore.saveEdit()
   await nextTick()
-  llmStore.regenerate(index, currentLanguage.value)
+  llmStore.regenerate(index, currentLanguage.value, props.osInfo)
 }
 
 function handleCancel() {
@@ -139,7 +140,7 @@ function handleCancel() {
 }
 
 async function handleRegenerate(index: number) {
-  llmStore.regenerate(index, currentLanguage.value)
+  llmStore.regenerate(index, currentLanguage.value, props.osInfo)
 }
 </script>
 

@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { theme } from 'ant-design-vue'
 import { storeToRefs } from 'pinia'
-import { useSettingsStore } from '@/pinia'
 import { useAnimationCoordinator } from './animationCoordinator'
 import ChatMessageInput from './ChatMessageInput.vue'
 import ChatMessageList from './ChatMessageList.vue'
@@ -13,21 +11,9 @@ const props = defineProps<{
   path?: string
   nginxConfig?: string
   type?: 'terminal' | 'nginx'
-  theme?: 'light' | 'dark'
   height?: string
+  osInfo?: string
 }>()
-
-const { theme: settingsTheme } = storeToRefs(useSettingsStore())
-
-const currentTheme = computed(() => props.theme || settingsTheme.value)
-
-// Create theme config for AConfigProvider
-const llmTheme = computed(() => {
-  const isDark = currentTheme.value === 'dark'
-  return {
-    algorithm: isDark ? theme.darkAlgorithm : theme.defaultAlgorithm,
-  }
-})
 
 // Use LLM store and session store
 const llmStore = useLLMStore()
@@ -175,36 +161,38 @@ watch(() => props.nginxConfig, v => {
 </script>
 
 <template>
-  <AConfigProvider :theme="llmTheme">
-    <div
-      class="llm-wrapper"
-    >
-      <div class="llm-container">
-        <!-- Session Tabs -->
-        <div class="session-header">
-          <LLMSessionTabs
-            :path="path"
-            :type="type"
-            @new-session-created="handleNewSessionCreated"
-            @session-cleared="handleSessionCleared"
-          />
-        </div>
+  <div
+    class="llm-wrapper"
+  >
+    <div class="llm-container">
+      <!-- Session Tabs -->
+      <div class="session-header">
+        <LLMSessionTabs
+          :path="path"
+          :type="type"
+          @new-session-created="handleNewSessionCreated"
+          @session-cleared="handleSessionCleared"
+        />
+      </div>
 
-        <!-- Message List -->
-        <div class="message-container">
-          <ChatMessageList
-            ref="messageListRef"
-            :input-height="inputHeight"
-          />
-        </div>
+      <!-- Message List -->
+      <div class="message-container">
+        <ChatMessageList
+          ref="messageListRef"
+          :input-height="inputHeight"
+          :os-info="props.osInfo"
+        />
+      </div>
 
-        <!-- Input Container -->
-        <div class="input-container">
-          <ChatMessageInput ref="chatInputRef" />
-        </div>
+      <!-- Input Container -->
+      <div class="input-container">
+        <ChatMessageInput
+          ref="chatInputRef"
+          :os-info="props.osInfo"
+        />
       </div>
     </div>
-  </AConfigProvider>
+  </div>
 </template>
 
 <style lang="less" scoped>
@@ -246,5 +234,15 @@ watch(() => props.nginxConfig, v => {
   min-height: 56px;
   background: var(--ant-color-bg-container);
   border-top: 1px solid var(--ant-color-border);
+}
+
+.dark {
+  .session-header {
+    border-bottom: 1px solid #333;
+  }
+
+  .input-container {
+    border-top: 1px solid #333;
+  }
 }
 </style>

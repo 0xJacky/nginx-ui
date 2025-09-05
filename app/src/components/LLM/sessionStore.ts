@@ -63,7 +63,7 @@ export const useLLMSessionStore = defineStore('llm-session', () => {
     }
   }
 
-  async function updateSession(sessionId: string, data: { title?: string, messages?: ChatComplicationMessage[] }) {
+  async function updateSession(sessionId: string, data: { title?: string, messages?: ChatComplicationMessage[], is_active?: boolean }) {
     try {
       const response = await llm.update_session(sessionId, data)
       const index = sessions.value.findIndex(s => s.session_id === sessionId)
@@ -191,6 +191,21 @@ export const useLLMSessionStore = defineStore('llm-session', () => {
     activeSessionId.value = sessionId
   }
 
+  async function updateSessionActiveStatus(sessionId: string, isActive: boolean) {
+    try {
+      const response = await llm.update_session(sessionId, { is_active: isActive })
+      const index = sessions.value.findIndex(s => s.session_id === sessionId)
+      if (index !== -1) {
+        sessions.value[index].is_active = isActive
+      }
+      return response
+    }
+    catch (error) {
+      console.error('Failed to update session active status:', error)
+      throw error
+    }
+  }
+
   function toggleSessionDrawer() {
     sessionDrawerVisible.value = !sessionDrawerVisible.value
   }
@@ -229,6 +244,7 @@ export const useLLMSessionStore = defineStore('llm-session', () => {
     duplicateSession,
     generateSessionTitle,
     setActiveSession,
+    updateSessionActiveStatus,
     toggleSessionDrawer,
     showSessionDrawer,
     hideSessionDrawer,

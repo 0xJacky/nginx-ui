@@ -24,6 +24,7 @@ func MakeChatCompletionRequest(c *gin.Context) {
 		Messages    []openai.ChatCompletionMessage `json:"messages"`
 		Language    string                         `json:"language,omitempty"`
 		NginxConfig string                         `json:"nginx_config,omitempty"` // Separate field for nginx configuration content
+		OSInfo      string                         `json:"os_info,omitempty"`      // Operating system information
 	}
 
 	if !cosy.BindAndValid(c, &json) {
@@ -34,6 +35,11 @@ func MakeChatCompletionRequest(c *gin.Context) {
 	var systemPrompt string
 	if json.Type == "terminal" {
 		systemPrompt = llm.TerminalAssistantPrompt
+		
+		// Add OS context for terminal assistant
+		if json.OSInfo != "" {
+			systemPrompt += fmt.Sprintf("\n\nSystem Information: %s", json.OSInfo)
+		}
 	} else {
 		systemPrompt = llm.NginxConfigPrompt
 	}

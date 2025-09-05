@@ -330,7 +330,7 @@ export const useLLMStore = defineStore('llm', () => {
   }
 
   // Request: Send messages to server using chat service
-  async function request(language?: string) {
+  async function request(language?: string, osInfo?: string) {
     setLoading(true)
     animationCoordinator.reset() // Reset all animation states
     animationCoordinator.setMessageStreaming(true)
@@ -352,6 +352,7 @@ export const useLLMStore = defineStore('llm', () => {
         },
         language,
         nginxConfig.value,
+        osInfo,
       )
 
       // Update the final content
@@ -411,7 +412,7 @@ export const useLLMStore = defineStore('llm', () => {
   }
 
   // Send: Add user message into messages then call request
-  async function send(content: string, currentLanguage?: string) {
+  async function send(content: string, currentLanguage?: string, osInfo?: string) {
     // Add user message directly without embedding file content
     addUserMessage(content)
 
@@ -421,17 +422,17 @@ export const useLLMStore = defineStore('llm', () => {
     // Add empty assistant message for real-time updates
     addAssistantMessage('')
 
-    await request(currentLanguage)
+    await request(currentLanguage, osInfo)
   }
 
   // Regenerate: Removes messages after index and re-request the answer
-  async function regenerate(index: number, currentLanguage?: string) {
+  async function regenerate(index: number, currentLanguage?: string, osInfo?: string) {
     prepareRegenerate(index)
 
     // Add empty assistant message for real-time updates
     addAssistantMessage('')
 
-    await request(currentLanguage)
+    await request(currentLanguage, osInfo)
   }
 
   // Auto-generate title for sessions with user messages
