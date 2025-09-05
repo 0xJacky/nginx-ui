@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ReloadOutlined } from '@ant-design/icons-vue'
-import { message } from 'ant-design-vue'
 import ngx from '@/api/ngx'
 import { NginxStatus } from '@/constants'
 import { useGlobalStore } from '@/pinia'
@@ -8,6 +7,7 @@ import { logLevel } from '@/views/config/constants'
 
 const global = useGlobalStore()
 const { nginxStatus: status } = storeToRefs(global)
+const { message } = App.useApp()
 
 async function getStatus() {
   const r = await ngx.status()
@@ -25,7 +25,7 @@ function reloadNginx() {
     if (r.level < logLevel.Warn)
       message.success($gettext('Nginx reloaded successfully'))
     else if (r.level === logLevel.Warn)
-      message.warn(r.message)
+      message.warning(r.message)
     else
       message.error(r.message)
   }).finally(() => getStatus())
@@ -39,7 +39,7 @@ async function restartNginx() {
     if (r.level < logLevel.Warn)
       message.success($gettext('Nginx restarted successfully'))
     else if (r.level === logLevel.Warn)
-      message.warn(r.message)
+      message.warning(r.message)
     else
       message.error(r.message)
   })

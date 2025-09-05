@@ -26,10 +26,10 @@ export const useLLMSessionStore = defineStore('llm-session', () => {
   const hasActiveSession = computed(() => activeSessionId.value !== null)
 
   // Actions
-  async function loadSessions(path?: string) {
+  async function loadSessions(pathOrType?: string, isType?: boolean) {
     loading.value = true
     try {
-      const response = await llm.get_sessions(path)
+      const response = await llm.get_sessions(pathOrType, isType)
       sessions.value = response
     }
     catch (error) {
@@ -40,9 +40,19 @@ export const useLLMSessionStore = defineStore('llm-session', () => {
     }
   }
 
-  async function createSession(title: string, path?: string) {
+  async function createSession(title: string, path?: string, type?: string) {
     try {
-      const response = await llm.create_session({ title, path })
+      const sessionData: { title: string, path?: string, type?: string } = { title }
+
+      // For terminal type, don't pass path
+      if (type === 'terminal') {
+        sessionData.type = type
+      }
+      else if (path) {
+        sessionData.path = path
+      }
+
+      const response = await llm.create_session(sessionData)
       sessions.value.unshift(response)
       activeSessionId.value = response.session_id
       return response

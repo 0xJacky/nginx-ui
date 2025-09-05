@@ -49,9 +49,11 @@ export class ChatService {
 
   // request: Send messages to server, receive SSE, and process chunks
   async request(
-    path: string | undefined,
+    type: string | undefined,
     messages: ChatComplicationMessage[],
     onProgress?: (message: ChatComplicationMessage) => void,
+    language?: string,
+    nginxConfig?: string,
   ): Promise<ChatComplicationMessage> {
     // Reset buffer flags each time
     this.buffer = ''
@@ -74,7 +76,10 @@ export class ChatService {
         Authorization: token.value,
       },
       body: JSON.stringify({
+        type,
         messages: requestMessages,
+        language,
+        nginx_config: nginxConfig,
       }),
     })
 

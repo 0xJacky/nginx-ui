@@ -10,6 +10,7 @@ declare global {
   const $ngettext: typeof import('@/gettext')['$ngettext']
   const $npgettext: typeof import('@/gettext')['$npgettext']
   const $pgettext: typeof import('@/gettext')['$pgettext']
+  const App: typeof import('ant-design-vue')['App']
   const EffectScope: typeof import('vue')['EffectScope']
   const T: typeof import('@/language')['T']
   const acceptHMRUpdate: typeof import('pinia')['acceptHMRUpdate']
@@ -38,7 +39,10 @@ declare global {
   const mapStores: typeof import('pinia')['mapStores']
   const mapWritableState: typeof import('pinia')['mapWritableState']
   const markRaw: typeof import('vue')['markRaw']
+  const message: typeof import('@/useAntApp')['message']
+  const modal: typeof import('@/useAntApp')['modal']
   const nextTick: typeof import('vue')['nextTick']
+  const notification: typeof import('@/useAntApp')['notification']
   const onActivated: typeof import('vue')['onActivated']
   const onBeforeMount: typeof import('vue')['onBeforeMount']
   const onBeforeRouteLeave: typeof import('vue-router')['onBeforeRouteLeave']
@@ -72,6 +76,9 @@ declare global {
   const toValue: typeof import('vue')['toValue']
   const triggerRef: typeof import('vue')['triggerRef']
   const unref: typeof import('vue')['unref']
+  const useAntAppStore: typeof import('@/pinia')['useAntAppStore']
+  const useApp: typeof import('ant-design-vue')['App.useApp']
+  const useAppUtils: typeof import('@/useAntApp')['useAppUtils']
   const useAttrs: typeof import('vue')['useAttrs']
   const useCssModule: typeof import('vue')['useCssModule']
   const useCssVars: typeof import('vue')['useCssVars']
@@ -103,6 +110,7 @@ declare module 'vue' {
     readonly $ngettext: UnwrapRef<typeof import('@/gettext')['$ngettext']>
     readonly $npgettext: UnwrapRef<typeof import('@/gettext')['$npgettext']>
     readonly $pgettext: UnwrapRef<typeof import('@/gettext')['$pgettext']>
+    readonly App: UnwrapRef<typeof import('ant-design-vue')['App']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly T: UnwrapRef<typeof import('@/language')['T']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>

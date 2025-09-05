@@ -2,16 +2,17 @@
 import type { Cert } from '@/api/cert'
 import { CopyOutlined } from '@ant-design/icons-vue'
 import { useClipboard } from '@vueuse/core'
-import { message } from 'ant-design-vue'
 import NodeSelector from '@/components/NodeSelector'
 
 interface Props {
   data: Cert
-  errors: Record<string, string>
+  errors?: Record<string, string>
   isManaged: boolean
 }
 
 defineProps<Props>()
+
+const { message } = App.useApp()
 
 // Use defineModel for two-way binding
 const data = defineModel<Cert>('data', { required: true })
@@ -41,8 +42,8 @@ async function copyToClipboard(text: string, label: string) {
   >
     <AFormItem
       :label="$gettext('Name')"
-      :validate-status="errors.name ? 'error' : ''"
-      :help="errors.name === 'required'
+      :validate-status="errors?.name ? 'error' : ''"
+      :help="errors?.name === 'required'
         ? $gettext('This field is required')
         : ''"
     >
@@ -75,9 +76,9 @@ async function copyToClipboard(text: string, label: string) {
 
     <AFormItem
       :label="$gettext('SSL Certificate Path')"
-      :validate-status="errors.ssl_certificate_path ? 'error' : ''"
-      :help="errors.ssl_certificate_path === 'required' ? $gettext('This field is required')
-        : errors.ssl_certificate_path === 'certificate_path'
+      :validate-status="errors?.ssl_certificate_path ? 'error' : ''"
+      :help="errors?.ssl_certificate_path === 'required' ? $gettext('This field is required')
+        : errors?.ssl_certificate_path === 'certificate_path'
           ? $gettext('The path exists, but the file is not a certificate') : ''"
     >
       <div v-if="isManaged" class="copy-container">
@@ -109,9 +110,9 @@ async function copyToClipboard(text: string, label: string) {
 
     <AFormItem
       :label="$gettext('SSL Certificate Key Path')"
-      :validate-status="errors.ssl_certificate_key_path ? 'error' : ''"
-      :help="errors.ssl_certificate_key_path === 'required' ? $gettext('This field is required')
-        : errors.ssl_certificate_key_path === 'privatekey_path'
+      :validate-status="errors?.ssl_certificate_key_path ? 'error' : ''"
+      :help="errors?.ssl_certificate_key_path === 'required' ? $gettext('This field is required')
+        : errors?.ssl_certificate_key_path === 'privatekey_path'
           ? $gettext('The path exists, but the file is not a private key') : ''"
     >
       <div v-if="isManaged" class="copy-container">

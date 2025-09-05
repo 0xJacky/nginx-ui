@@ -1,5 +1,4 @@
 import type { Cert } from '@/api/cert'
-import { message } from 'ant-design-vue'
 import cert from '@/api/cert'
 
 export const useCertStore = defineStore('cert', () => {
@@ -10,7 +9,6 @@ export const useCertStore = defineStore('cert', () => {
       ? await cert.updateItem(data.value.id, data.value)
       : await cert.createItem(data.value)
     data.value = r
-    message.success($gettext('Save successfully'))
   }
 
   return {

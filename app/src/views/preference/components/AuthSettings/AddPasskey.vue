@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { startRegistration } from '@simplewebauthn/browser'
-import { message } from 'ant-design-vue'
 import passkey from '@/api/passkey'
 import { useUserStore } from '@/pinia'
 
 const emit = defineEmits(['created'])
+
+const { message } = App.useApp()
 
 const user = useUserStore()
 const passkeyName = ref('')

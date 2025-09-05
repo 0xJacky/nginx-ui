@@ -17,34 +17,50 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 )
 
-const LLMInitPrompt = `You are a assistant who can help users write and optimise the configurations of Nginx,
-the first user message contains the content of the configuration file which is currently opened by the user and
-the current language code(CLC). You suppose to use the language corresponding to the CLC to give the first reply.
-Later the language environment depends on the user message.
-The first reply should involve the key information of the file and ask user what can you help them.`
 
 func MakeChatCompletionRequest(c *gin.Context) {
 	var json struct {
-		Filepath string                         `json:"filepath"`
-		Messages []openai.ChatCompletionMessage `json:"messages"`
+		Type        string                         `json:"type"`
+		Messages    []openai.ChatCompletionMessage `json:"messages"`
+		Language    string                         `json:"language,omitempty"`
+		NginxConfig string                         `json:"nginx_config,omitempty"` // Separate field for nginx configuration content
 	}
 
 	if !cosy.BindAndValid(c, &json) {
 		return
 	}
 
+	// Choose appropriate system prompt based on the type
+	var systemPrompt string
+	if json.Type == "terminal" {
+		systemPrompt = llm.TerminalAssistantPrompt
+	} else {
+		systemPrompt = llm.NginxConfigPrompt
+	}
+
+	// Append language instruction if language is provided
+	if json.Language != "" {
+		systemPrompt += fmt.Sprintf("\n\nIMPORTANT: Please respond in the language corresponding to this language code: %s", json.Language)
+	}
+
 	messages := []openai.ChatCompletionMessage{
 		{
 			Role:    openai.ChatMessageRoleSystem,
-			Content: LLMInitPrompt,
+			Content: systemPrompt,
 		},
 	}
 
-	messages = append(messages, json.Messages...)
-
-	if json.Filepath != "" {
-		messages = llm.ChatCompletionWithContext(json.Filepath, messages)
+	// Add nginx configuration context if provided
+	if json.Type != "terminal" && json.NginxConfig != "" {
+		// Add nginx configuration as context to the first user message
+		if len(json.Messages) > 0 && json.Messages[0].Role == openai.ChatMessageRoleUser {
+			// Prepend the nginx configuration to the first user message
+			contextualContent := fmt.Sprintf("Nginx Configuration:\n```nginx\n%s\n```\n\n%s", json.NginxConfig, json.Messages[0].Content)
+			json.Messages[0].Content = contextualContent
+		}
 	}
+
+	messages = append(messages, json.Messages...)
 
 	// SSE server
 	api.SetSSEHeaders(c)

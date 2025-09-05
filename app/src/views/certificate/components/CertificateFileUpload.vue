@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { UploadOutlined } from '@ant-design/icons-vue'
-import { message } from 'ant-design-vue'
 
 interface Props {
   type: 'certificate' | 'key'
@@ -14,6 +13,8 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
   upload: [content: string]
 }>()
+
+const { message } = App.useApp()
 
 // File upload state
 const fileInput = ref<HTMLInputElement>()

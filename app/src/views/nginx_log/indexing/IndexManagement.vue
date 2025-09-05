@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { message, Modal } from 'ant-design-vue'
+import { Modal } from 'ant-design-vue'
 import nginxLog from '@/api/nginx_log'
 
 // Props
@@ -17,6 +17,8 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
   refresh: []
 }>()
+
+const { message } = App.useApp()
 
 // Reactive state
 const loading = ref(false)

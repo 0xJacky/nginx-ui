@@ -3,7 +3,6 @@ import type { TwoFAStatus } from '@/api/2fa'
 import type { RecoveryCode } from '@/api/recovery'
 import { CopyOutlined, WarningOutlined } from '@ant-design/icons-vue'
 import { UseClipboard } from '@vueuse/components'
-import { message } from 'ant-design-vue'
 import recovery from '@/api/recovery'
 import { use2FAModal } from '@/components/TwoFA'
 
@@ -15,6 +14,8 @@ const props = defineProps<{
 const emit = defineEmits<{
   refresh: [void]
 }>()
+
+const { message } = App.useApp()
 
 const _codes = ref<RecoveryCode[]>()
 const codes = computed(() => _codes.value ?? props.recoveryCodes)

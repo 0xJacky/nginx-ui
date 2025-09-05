@@ -89,17 +89,18 @@ function getCardStatusColor(target: ProxyTarget): string {
 
 <style scoped lang="less">
 .upstream-cards {
-  margin-bottom: 24px;
+  padding: 0 12px;
+  margin-bottom: 16px;
 
   .upstream-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
 
     .upstream-title {
       margin: 0;
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 600;
       color: #333;
 
@@ -112,12 +113,12 @@ function getCardStatusColor(target: ProxyTarget): string {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-width: 20px;
-      height: 20px;
-      padding: 0 6px;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 5px;
       background-color: #f0f0f0;
       color: #666;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 500;
       border-radius: 50%;
 
@@ -130,13 +131,13 @@ function getCardStatusColor(target: ProxyTarget): string {
 
   .cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
   }
 
   .upstream-card {
     border: 1px solid #e8e9ea;
-    border-radius: 8px;
+    border-radius: 6px;
     background: #ffffff;
     transition: all 0.2s ease;
 
@@ -149,28 +150,31 @@ function getCardStatusColor(target: ProxyTarget): string {
       cursor: pointer;
 
       &:hover {
-        box-shadow: 0 0 8px rgba(0, 0, 0, 0.09);
+        box-shadow: 0 0 6px rgba(0, 0, 0, 0.08);
 
         .dark & {
-          box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+          box-shadow: 0 0 6px rgba(255, 255, 255, 0.08);
         }
       }
     }
 
     .card-content {
-      padding: 16px;
+      padding: 10px 12px;
 
       .card-info {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 6px;
 
         .card-status-text {
           font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-          font-size: 12px;
+          font-size: 11px;
           color: #666;
-          line-height: 1.4;
+          line-height: 1.3;
           flex: 1;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
 
           .dark & {
             color: #999;
@@ -179,9 +183,11 @@ function getCardStatusColor(target: ProxyTarget): string {
 
         .type-tag {
           margin: 0;
-          font-size: 10px;
+          font-size: 9px;
           font-weight: bold;
-          border-radius: 4px;
+          border-radius: 3px;
+          padding: 0 4px;
+          line-height: 14px;
         }
       }
     }

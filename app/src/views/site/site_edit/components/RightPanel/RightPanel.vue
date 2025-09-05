@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useElementSize } from '@vueuse/core'
 import { PortScannerCompact } from '@/components/PortScanner'
 import { useSiteEditorStore } from '../SiteEditor/store'
 import Basic from './Basic.vue'
@@ -10,6 +11,17 @@ const activeKey = ref('basic')
 const editorStore = useSiteEditorStore()
 const { advanceMode, loading } = storeToRefs(editorStore)
 
+// Get container height for Chat component
+const containerRef = ref<HTMLElement>()
+const { height: containerHeight } = useElementSize(containerRef)
+
+// Calculate chat height
+const chatHeight = computed(() => {
+  const tabsNavHeight = 55
+  const padding = 48
+  return `${containerHeight.value - tabsNavHeight - padding}px`
+})
+
 watch(advanceMode, val => {
   if (val) {
     activeKey.value = 'basic'
@@ -18,7 +30,7 @@ watch(advanceMode, val => {
 </script>
 
 <template>
-  <div class="right-settings-container">
+  <div ref="containerRef" class="right-settings-container">
     <ACard
       class="right-settings"
       :bordered="false"
@@ -39,7 +51,7 @@ watch(advanceMode, val => {
           <ConfigTemplate />
         </ATabPane>
         <ATabPane key="chat" :tab="$gettext('Chat')">
-          <Chat />
+          <Chat :chat-height="chatHeight" />
         </ATabPane>
         <ATabPane key="port-scanner" :tab="$gettext('Port Scanner')">
           <PortScannerCompact />

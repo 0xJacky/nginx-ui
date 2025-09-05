@@ -1,7 +1,6 @@
 import type { CertificateInfo } from '@/api/cert'
 import type { Stream } from '@/api/stream'
 import type { CheckedType } from '@/types'
-import { message } from 'ant-design-vue'
 import config from '@/api/config'
 import ngx from '@/api/ngx'
 import stream from '@/api/stream'
@@ -9,6 +8,8 @@ import { useNgxConfigStore } from '@/components/NgxConfigEditor'
 import { ConfigStatus } from '@/constants'
 
 export const useStreamEditorStore = defineStore('streamEditor', () => {
+  const { message } = App.useApp()
+
   const name = ref('')
   const advanceMode = ref(false)
   const parseErrorStatus = ref(false)

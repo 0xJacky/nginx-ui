@@ -15,14 +15,26 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 )
 
+const TerminalAssistantPath = "__terminal_assistant__"
+
 // GetLLMSessions returns LLM sessions with optional filtering
 func GetLLMSessions(c *gin.Context) {
 	g := query.LLMSession
 	query := g.Order(g.UpdatedAt.Desc())
 	
-	// Filter by path if provided
-	if path := c.Query("path"); path != "" {
-		if !helper.IsUnderDirectory(path, nginx.GetConfPath()) {
+	// Filter by type if provided
+	if assistantType := c.Query("type"); assistantType != "" {
+		if assistantType == "terminal" {
+			// For terminal type, filter by terminal assistant path
+			query = query.Where(g.Path.Eq(TerminalAssistantPath))
+		} else if assistantType == "nginx" {
+			// For nginx type, exclude terminal assistant path
+			query = query.Where(g.Path.Neq(TerminalAssistantPath))
+		}
+	} else if path := c.Query("path"); path != "" {
+		// Filter by path if provided (legacy support)
+		// Skip path validation for terminal assistant
+		if path != TerminalAssistantPath && !helper.IsUnderDirectory(path, nginx.GetConfPath()) {
 			c.JSON(http.StatusForbidden, gin.H{
 				"message": "path is not under the nginx conf path",
 			})
@@ -59,23 +71,31 @@ func CreateLLMSession(c *gin.Context) {
 	var json struct {
 		Title string `json:"title" binding:"required"`
 		Path  string `json:"path"`
+		Type  string `json:"type"`
 	}
 
 	if !cosy.BindAndValid(c, &json) {
 		return
 	}
 
-	// Validate path if provided
-	if json.Path != "" && !helper.IsUnderDirectory(json.Path, nginx.GetConfPath()) {
-		c.JSON(http.StatusForbidden, gin.H{
-			"message": "path is not under the nginx conf path",
-		})
-		return
+	// Determine path based on type
+	var sessionPath string
+	if json.Type == "terminal" {
+		sessionPath = TerminalAssistantPath
+	} else {
+		sessionPath = json.Path
+		// Validate path for non-terminal types
+		if sessionPath != "" && !helper.IsUnderDirectory(sessionPath, nginx.GetConfPath()) {
+			c.JSON(http.StatusForbidden, gin.H{
+				"message": "path is not under the nginx conf path",
+			})
+			return
+		}
 	}
 
 	session := &model.LLMSession{
 		Title:        json.Title,
-		Path:         json.Path,
+		Path:         sessionPath,
 		Messages:     []openai.ChatCompletionMessage{},
 		MessageCount: 0,
 		IsActive:     true,
@@ -197,7 +217,8 @@ func DuplicateLLMSession(c *gin.Context) {
 func GetLLMSessionByPath(c *gin.Context) {
 	path := c.Query("path")
 
-	if !helper.IsUnderDirectory(path, nginx.GetConfPath()) {
+	// Skip path validation for terminal assistant
+	if path != TerminalAssistantPath && !helper.IsUnderDirectory(path, nginx.GetConfPath()) {
 		c.JSON(http.StatusForbidden, gin.H{
 			"message": "path is not under the nginx conf path",
 		})
@@ -250,7 +271,8 @@ func CreateOrUpdateLLMSessionByPath(c *gin.Context) {
 		return
 	}
 
-	if !helper.IsUnderDirectory(json.FileName, nginx.GetConfPath()) {
+	// Skip path validation for terminal assistant
+	if json.FileName != TerminalAssistantPath && !helper.IsUnderDirectory(json.FileName, nginx.GetConfPath()) {
 		c.JSON(http.StatusForbidden, gin.H{
 			"message": "path is not under the nginx conf path",
 		})

@@ -2,7 +2,6 @@
 import type { StdTableColumn } from '@uozi-admin/curd'
 import type { ExternalNotifyConfig } from './types'
 import { StdForm } from '@uozi-admin/curd'
-import { message } from 'ant-design-vue'
 import { testMessage } from '@/api/external_notify'
 import gettext from '@/gettext'
 import configMap from './index'
@@ -10,6 +9,8 @@ import configMap from './index'
 const props = defineProps<{
   type?: string
 }>()
+
+const { message } = App.useApp()
 
 const modelValue = defineModel<Record<string, string>>({ default: reactive({}) })
 

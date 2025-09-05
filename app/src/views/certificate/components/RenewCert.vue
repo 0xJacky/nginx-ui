@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { AutoCertOptions } from '@/api/auto_cert'
-import { message } from 'ant-design-vue'
 import { useGlobalStore } from '@/pinia'
 import ObtainCertLive from '@/views/site/site_edit/components/Cert/ObtainCertLive.vue'
 import { useCertStore } from '../store'
@@ -13,6 +12,8 @@ const emit = defineEmits<{
   renewed: [void]
 }>()
 
+const { message } = App.useApp()
+
 const certStore = useCertStore()
 
 const modalVisible = ref(false)
@@ -21,6 +22,8 @@ const refObtainCertLive = useTemplateRef('refObtainCertLive')
 
 async function issueCert() {
   await certStore.save()
+
+  message.success($gettext('Save successfully'))
 
   modalVisible.value = true
 

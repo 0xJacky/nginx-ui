@@ -1,5 +1,4 @@
 import type { CosyError, CosyErrorRecord } from './types'
-import { message } from 'ant-design-vue'
 
 const errors: Record<string, CosyErrorRecord> = {}
 
@@ -20,6 +19,7 @@ export function useMessageDedupe(interval = 5000): MessageDedupe {
       const now = Date.now()
       if (!lastMessages.has(content) || (now - (lastMessages.get(content) || 0)) > interval) {
         lastMessages.set(content, now)
+        const { message } = App.useApp()
         message.error(content, duration)
       }
     },

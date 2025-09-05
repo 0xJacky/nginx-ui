@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { Passkey } from '@/api/passkey'
 import { DeleteOutlined, EditOutlined, KeyOutlined } from '@ant-design/icons-vue'
-import { message } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import passkey from '@/api/passkey'
@@ -11,6 +10,8 @@ import { useUserStore } from '@/pinia'
 import AddPasskey from './AddPasskey.vue'
 
 dayjs.extend(relativeTime)
+
+const { message } = App.useApp()
 
 const user = useUserStore()
 

@@ -244,7 +244,7 @@ msgstr ""
 msgid "Additional"
 msgstr ""
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:100
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:101
 #: src/views/stream/components/StreamEditor.vue:63
 msgid "Advance Mode"
 msgstr ""
@@ -355,7 +355,7 @@ msgstr ""
 msgid "Are you sure you want to clear all notifications?"
 msgstr ""
 
-#: src/components/LLM/ChatMessageInput.vue:19
+#: src/components/LLM/ChatMessageInput.vue:62
 msgid "Are you sure you want to clear the record of chat?"
 msgstr ""
 
@@ -397,7 +397,7 @@ msgstr ""
 msgid "Ascending"
 msgstr ""
 
-#: src/components/LLM/ChatMessage.vue:187
+#: src/components/LLM/ChatMessage.vue:216
 msgid "Assistant"
 msgstr ""
 
@@ -511,7 +511,7 @@ msgstr ""
 #: src/views/config/ConfigList.vue:120
 #: src/views/config/ConfigList.vue:217
 #: src/views/nginx_log/NginxLog.vue:92
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:169
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:170
 #: src/views/stream/components/StreamEditor.vue:123
 msgid "Back"
 msgstr ""
@@ -614,13 +614,13 @@ msgstr ""
 msgid "Based on M2 Pro (12 cores) testing"
 msgstr ""
 
-#: src/views/config/components/ConfigRightPanel/ConfigRightPanel.vue:29
-#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:31
-#: src/views/stream/components/RightPanel/RightPanel.vue:19
+#: src/views/config/components/ConfigRightPanel/ConfigRightPanel.vue:41
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:43
+#: src/views/stream/components/RightPanel/RightPanel.vue:31
 msgid "Basic"
 msgstr ""
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:103
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:104
 #: src/views/stream/components/StreamEditor.vue:66
 msgid "Basic Mode"
 msgstr ""
@@ -715,7 +715,7 @@ msgstr ""
 msgid "Calculated based on worker_processes * worker_connections. Actual performance depends on hardware, configuration, and workload"
 msgstr ""
 
-#: src/components/LLM/ChatMessage.vue:216
+#: src/components/LLM/ChatMessage.vue:245
 #: src/components/NgxConfigEditor/NgxServer.vue:61
 #: src/components/NgxConfigEditor/NgxUpstream.vue:32
 #: src/language/curd.ts:37
@@ -904,10 +904,14 @@ msgstr ""
 msgid "Channel"
 msgstr ""
 
-#: src/views/config/components/ConfigRightPanel/ConfigRightPanel.vue:38
-#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:41
-#: src/views/stream/components/RightPanel/RightPanel.vue:22
+#: src/views/config/components/ConfigRightPanel/ConfigRightPanel.vue:50
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:53
+#: src/views/stream/components/RightPanel/RightPanel.vue:34
 msgid "Chat"
+msgstr ""
+
+#: src/components/LLM/LLM.vue:77
+msgid "Chat for %{path}"
 msgstr ""
 
 #: src/components/SelfCheck/SelfCheckHeaderBanner.vue:40
@@ -1000,7 +1004,7 @@ msgstr ""
 msgid "Cleaning environment variables"
 msgstr ""
 
-#: src/components/LLM/ChatMessageInput.vue:23
+#: src/components/LLM/ChatMessageInput.vue:66
 #: src/components/Notification/Notification.vue:115
 #: src/views/notification/Notification.vue:45
 msgid "Clear"
@@ -1154,7 +1158,7 @@ msgstr ""
 msgid "Config path is empty"
 msgstr ""
 
-#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:37
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:49
 msgid "Config Template"
 msgstr ""
 
@@ -1207,7 +1211,7 @@ msgstr ""
 msgid "Connection error, trying to reconnect..."
 msgstr ""
 
-#: src/views/terminal/Terminal.vue:149
+#: src/views/terminal/Terminal.vue:179
 msgid "Connection lost, please refresh the page."
 msgstr ""
 
@@ -1447,6 +1451,8 @@ msgstr ""
 msgid "Define shared memory zone name and size, e.g. proxy_cache:10m"
 msgstr ""
 
+#: src/components/LLM/LLMSessionTabs.vue:256
+#: src/components/LLM/LLMSessionTabs.vue:347
 #: src/components/NgxConfigEditor/NgxServer.vue:110
 #: src/components/NgxConfigEditor/NgxUpstream.vue:78
 #: src/language/curd.ts:9
@@ -1688,7 +1694,7 @@ msgstr ""
 #: src/views/preference/tabs/NodeSettings.vue:25
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:161
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:68
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:69
 #: src/views/site/site_list/columns.tsx:146
 #: src/views/stream/columns.tsx:112
 #: src/views/stream/components/StreamEditor.vue:38
@@ -1816,6 +1822,8 @@ msgstr ""
 msgid "Due to the security policies of some browsers, you cannot use passkeys on non-HTTPS websites, except when running on localhost."
 msgstr ""
 
+#: src/components/LLM/LLMSessionTabs.vue:250
+#: src/components/LLM/LLMSessionTabs.vue:341
 #: src/views/site/site_list/SiteDuplicate.vue:72
 #: src/views/site/site_list/SiteList.vue:86
 #: src/views/stream/components/StreamDuplicate.vue:64
@@ -1853,7 +1861,7 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:57
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:58
 #: src/views/stream/components/StreamEditor.vue:27
 msgid "Edit %{n}"
 msgstr ""
@@ -1893,7 +1901,7 @@ msgstr ""
 msgid "Enable 2FA successfully"
 msgstr ""
 
-#: src/views/nginx_log/NginxLogList.vue:451
+#: src/views/nginx_log/NginxLogList.vue:452
 msgid "Enable Advanced Indexing"
 msgstr ""
 
@@ -2004,7 +2012,7 @@ msgstr ""
 #: src/views/preference/tabs/NodeSettings.vue:25
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:158
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:63
 #: src/views/site/site_list/columns.tsx:142
 #: src/views/stream/columns.tsx:108
 #: src/views/stream/components/RightPanel/Basic.vue:24
@@ -2816,6 +2824,10 @@ msgstr ""
 msgid "Hide"
 msgstr ""
 
+#: src/views/terminal/Terminal.vue:203
+msgid "Hide Assistant"
+msgstr ""
+
 #: src/composables/useGeoTranslation.ts:165
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:135
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:103
@@ -2827,7 +2839,7 @@ msgid "Higher value means better connection reuse"
 msgstr ""
 
 #: src/views/config/components/ConfigLeftPanel.vue:254
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:87
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:88
 #: src/views/stream/components/StreamEditor.vue:51
 msgid "History"
 msgstr ""
@@ -2940,7 +2952,7 @@ msgid "Indexing"
 msgstr ""
 
 #: src/views/nginx_log/components/LoadingState.vue:33
-#: src/views/nginx_log/NginxLogList.vue:440
+#: src/views/nginx_log/NginxLogList.vue:441
 msgid "Indexing logs..."
 msgstr ""
 
@@ -3063,7 +3075,7 @@ msgstr ""
 msgid "Invalid padding in decrypted data"
 msgstr ""
 
-#: src/components/TwoFA/use2FAModal.ts:61
+#: src/components/TwoFA/use2FAModal.ts:62
 msgid "Invalid passcode or recovery code"
 msgstr ""
 
@@ -3388,7 +3400,7 @@ msgid "Log indexing completed! Loading updated data..."
 msgstr ""
 
 #: src/routes/modules/nginx_log.ts:39
-#: src/views/nginx_log/NginxLogList.vue:413
+#: src/views/nginx_log/NginxLogList.vue:414
 msgid "Log List"
 msgstr ""
 
@@ -3429,7 +3441,7 @@ msgid "Main Node"
 msgstr ""
 
 #: src/views/site/components/SiteStatusSelect.vue:164
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:74
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:75
 #: src/views/site/site_list/columns.tsx:150
 msgid "Maintenance"
 msgstr ""
@@ -3626,7 +3638,7 @@ msgstr ""
 msgid "Modified At"
 msgstr ""
 
-#: src/components/LLM/ChatMessage.vue:212
+#: src/components/LLM/ChatMessage.vue:241
 #: src/views/config/ConfigList.vue:182
 msgid "Modify"
 msgstr ""
@@ -3738,6 +3750,10 @@ msgstr ""
 msgid "Network Statistics"
 msgstr ""
 
+#: src/components/LLM/LLM.vue:72
+msgid "New Chat"
+msgstr ""
+
 #: src/constants/errors/cert.ts:15
 msgid "New dns challenge provider error: {0}"
 msgstr ""
@@ -3835,7 +3851,7 @@ msgstr ""
 msgid "Nginx configuration has been restored"
 msgstr ""
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:121
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:122
 #: src/views/stream/components/StreamEditor.vue:81
 msgid "Nginx Configuration Parse Error"
 msgstr ""
@@ -3987,7 +4003,7 @@ msgstr ""
 msgid "Nginx.conf includes streams-enabled directory"
 msgstr ""
 
-#: src/components/LLM/ChatMessageInput.vue:17
+#: src/components/LLM/ChatMessageInput.vue:60
 #: src/components/NamespaceTabs/NamespaceTabs.vue:132
 #: src/components/NamespaceTabs/NamespaceTabs.vue:144
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:102
@@ -4208,7 +4224,7 @@ msgstr ""
 msgid "Offline GeoIP analysis"
 msgstr ""
 
-#: src/components/LLM/ChatMessageInput.vue:18
+#: src/components/LLM/ChatMessageInput.vue:61
 #: src/components/NgxConfigEditor/NgxServer.vue:60
 #: src/components/NgxConfigEditor/NgxUpstream.vue:31
 #: src/components/Notification/Notification.vue:109
@@ -4626,8 +4642,8 @@ msgstr ""
 msgid "Port 80 must be open for HTTP-01 challenge validation"
 msgstr ""
 
-#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:44
-#: src/views/stream/components/RightPanel/RightPanel.vue:25
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:56
+#: src/views/stream/components/RightPanel/RightPanel.vue:37
 msgid "Port Scanner"
 msgstr ""
 
@@ -4780,7 +4796,7 @@ msgstr ""
 msgid "Real-time analytics dashboard"
 msgstr ""
 
-#: src/views/nginx_log/NginxLogList.vue:478
+#: src/views/nginx_log/NginxLogList.vue:479
 msgid "Rebuild"
 msgstr ""
 
@@ -4835,7 +4851,7 @@ msgstr ""
 msgid "Refresh"
 msgstr ""
 
-#: src/components/LLM/ChatMessageInput.vue:30
+#: src/components/LLM/ChatMessageInput.vue:73
 msgid "Regenerate response"
 msgstr ""
 
@@ -4879,7 +4895,7 @@ msgstr ""
 msgid "Release Note"
 msgstr ""
 
-#: src/components/LLM/ChatMessage.vue:222
+#: src/components/LLM/ChatMessage.vue:251
 #: src/components/NginxControl/NginxControl.vue:103
 msgid "Reload"
 msgstr ""
@@ -4942,6 +4958,8 @@ msgstr ""
 msgid "Removed successfully"
 msgstr ""
 
+#: src/components/LLM/LLMSessionTabs.vue:246
+#: src/components/LLM/LLMSessionTabs.vue:337
 #: src/components/NgxConfigEditor/NgxUpstream.vue:75
 #: src/views/config/components/ConfigName.vue:51
 #: src/views/config/components/Rename.vue:56
@@ -5285,7 +5303,7 @@ msgstr ""
 msgid "Saturday"
 msgstr ""
 
-#: src/components/LLM/ChatMessage.vue:215
+#: src/components/LLM/ChatMessage.vue:244
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:132
 #: src/language/curd.ts:18
 #: src/views/certificate/components/CertificateActions.vue:29
@@ -5295,7 +5313,7 @@ msgstr ""
 #: src/views/preference/components/AuthSettings/Passkey.vue:130
 #: src/views/preference/Preference.vue:117
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:176
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:177
 #: src/views/stream/components/ConfigName.vue:52
 #: src/views/stream/components/StreamEditor.vue:130
 msgid "Save"
@@ -5357,7 +5375,7 @@ msgstr ""
 #: src/language/curd.ts:28
 #: src/views/config/components/ConfigLeftPanel.vue:198
 #: src/views/site/site_add/SiteAdd.vue:36
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:46
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:47
 #: src/views/stream/store.ts:70
 msgid "Saved successfully"
 msgstr ""
@@ -5578,6 +5596,10 @@ msgstr ""
 
 #: src/components/SensitiveString/SensitiveString.vue:40
 msgid "Show"
+msgstr ""
+
+#: src/views/terminal/Terminal.vue:203
+msgid "Show Assistant"
 msgstr ""
 
 #: src/views/other/Login.vue:295
@@ -6000,6 +6022,10 @@ msgstr ""
 msgid "Terminal"
 msgstr ""
 
+#: src/components/LLM/LLM.vue:74
+msgid "Terminal Assistant"
+msgstr ""
+
 #: src/views/preference/tabs/TerminalSettings.vue:10
 msgid "Terminal Start Command"
 msgstr ""
@@ -6395,7 +6421,7 @@ msgstr ""
 msgid "Tuesday"
 msgstr ""
 
-#: src/components/TwoFA/use2FAModal.ts:67
+#: src/components/TwoFA/use2FAModal.ts:68
 msgid "Two-factor authentication required"
 msgstr ""
 
@@ -6427,6 +6453,10 @@ msgstr ""
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:111
 msgid "Type or select status codes"
+msgstr ""
+
+#: src/components/LLM/ChatMessageInput.vue:80
+msgid "Type your message here..."
 msgstr ""
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:778
@@ -6540,7 +6570,7 @@ msgstr ""
 msgid "Use Temporary Path"
 msgstr ""
 
-#: src/components/LLM/ChatMessage.vue:187
+#: src/components/LLM/ChatMessage.vue:216
 msgid "User"
 msgstr ""
 
@@ -6617,7 +6647,7 @@ msgid "Version"
 msgstr ""
 
 #: src/language/curd.ts:7
-#: src/views/nginx_log/NginxLogList.vue:467
+#: src/views/nginx_log/NginxLogList.vue:468
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:108
 #: src/views/system/Licenses.vue:180
 #: src/views/system/Licenses.vue:215
@@ -6797,7 +6827,7 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: src/views/terminal/Terminal.vue:142
+#: src/views/terminal/Terminal.vue:172
 msgid "You are accessing this terminal over an insecure HTTP connection on a non-localhost domain. This may expose sensitive information."
 msgstr ""
 

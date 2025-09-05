@@ -7,6 +7,7 @@ import { useLLMSessionStore } from './sessionStore'
 export const useLLMStore = defineStore('llm', () => {
   // State
   const path = ref('')
+  const nginxConfig = ref('')
   const currentSessionId = ref<string | null>(null)
   const messages = ref<ChatComplicationMessage[]>([])
   const messageContainerRef = ref<HTMLDivElement>()
@@ -50,7 +51,10 @@ export const useLLMStore = defineStore('llm', () => {
       currentSessionId.value = sessionId
       const session = await llm.get_session(sessionId)
       messages.value = session.messages || []
-      path.value = session.path || ''
+      // Only update path if it's not already set to terminal assistant
+      if (path.value !== '__terminal_assistant__') {
+        path.value = session.path || ''
+      }
       cancelEdit()
     }
     catch (error) {
@@ -148,6 +152,16 @@ export const useLLMStore = defineStore('llm', () => {
       catch (error) {
         console.error('Failed to store chat record:', error)
       }
+    }
+  }
+
+  // Current assistant type
+  const assistantType = ref<string>('nginx')
+
+  // Set assistant type for the current session
+  function setType(type: 'terminal') {
+    if (type === 'terminal') {
+      assistantType.value = 'terminal'
     }
   }
 
@@ -316,7 +330,7 @@ export const useLLMStore = defineStore('llm', () => {
   }
 
   // Request: Send messages to server using chat service
-  async function request() {
+  async function request(language?: string) {
     setLoading(true)
     animationCoordinator.reset() // Reset all animation states
     animationCoordinator.setMessageStreaming(true)
@@ -330,17 +344,19 @@ export const useLLMStore = defineStore('llm', () => {
     try {
       const chatService = new ChatService()
       const assistantMessage = await chatService.request(
-        path.value,
+        assistantType.value,
         messages.value.slice(0, -1), // Exclude the empty assistant message
         message => {
           // Update the current assistant message in real-time
           updateLastAssistantMessage(message.content)
         },
+        language,
+        nginxConfig.value,
       )
 
       // Update the final content
       updateLastAssistantMessage(assistantMessage.content)
-      
+
       // If no typing animation starts within a reasonable time, end streaming
       // This handles cases where content is too short for typewriter effect
       setTimeout(() => {
@@ -363,7 +379,7 @@ export const useLLMStore = defineStore('llm', () => {
     }
     finally {
       // Don't clear streaming index immediately - let typewriter animation complete first
-      
+
       // Ensure all DOM updates are complete before final scroll
       await nextTick()
       await nextTick()
@@ -387,39 +403,35 @@ export const useLLMStore = defineStore('llm', () => {
 
         // Final scroll after everything is truly complete
         scrollToBottom(true)
+
+        // Generate session title after everything is complete
+        await tryGenerateSessionTitle()
       }, 100)
     }
   }
 
   // Send: Add user message into messages then call request
-  async function send(content: string, currentLanguage?: string, fileContent?: string) {
-    if (messages.value.length === 0) {
-      // The first message - include file content as context
-      const firstMessage = fileContent
-        ? `File Content:\n${fileContent}\n\n${content}\n\nCurrent Language Code: ${currentLanguage}`
-        : `${content}\n\nCurrent Language Code: ${currentLanguage}`
-      addUserMessage(firstMessage)
-    }
-    else {
-      // Append user's new message
-      addUserMessage(askBuffer.value)
-      clearAskBuffer()
-    }
+  async function send(content: string, currentLanguage?: string) {
+    // Add user message directly without embedding file content
+    addUserMessage(content)
+
+    // Clear ask buffer
+    clearAskBuffer()
 
     // Add empty assistant message for real-time updates
     addAssistantMessage('')
 
-    await request()
+    await request(currentLanguage)
   }
 
   // Regenerate: Removes messages after index and re-request the answer
-  async function regenerate(index: number) {
+  async function regenerate(index: number, currentLanguage?: string) {
     prepareRegenerate(index)
 
     // Add empty assistant message for real-time updates
     addAssistantMessage('')
 
-    await request()
+    await request(currentLanguage)
   }
 
   // Auto-generate title for sessions with user messages
@@ -443,6 +455,10 @@ export const useLLMStore = defineStore('llm', () => {
     catch (error) {
       console.error('Failed to auto-generate session title:', error)
     }
+  }
+
+  function setNginxConfig(config: string) {
+    nginxConfig.value = config
   }
 
   // Listen for title animation trigger from coordinator
@@ -482,6 +498,7 @@ export const useLLMStore = defineStore('llm', () => {
   return {
     // State
     path,
+    nginxConfig,
     currentSessionId,
     messages,
     loading,
@@ -492,6 +509,7 @@ export const useLLMStore = defineStore('llm', () => {
     streamingMessageIndex,
     userScrolledUp,
     messageTypingCompleted,
+    assistantType,
 
     // Getters
     isEditing,
@@ -500,6 +518,7 @@ export const useLLMStore = defineStore('llm', () => {
 
     // Actions
     initMessages,
+    setNginxConfig,
     switchSession,
     saveSession,
     startEdit,
@@ -511,6 +530,7 @@ export const useLLMStore = defineStore('llm', () => {
     prepareRegenerate,
     clearMessages,
     storeRecord,
+    setType,
     clearRecord,
     setLoading,
     setAskBuffer,

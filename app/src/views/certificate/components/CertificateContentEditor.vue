@@ -2,17 +2,18 @@
 import type { Cert } from '@/api/cert'
 import { CopyOutlined, InboxOutlined } from '@ant-design/icons-vue'
 import { useClipboard } from '@vueuse/core'
-import { message } from 'ant-design-vue'
 import CodeEditor from '@/components/CodeEditor'
 import CertificateFileUpload from './CertificateFileUpload.vue'
 
 interface Props {
   data: Cert
-  errors: Record<string, string>
+  errors?: Record<string, string>
   readonly: boolean
 }
 
 defineProps<Props>()
+
+const { message } = App.useApp()
 
 // Use defineModel for two-way binding
 const data = defineModel<Cert>('data', { required: true })
@@ -109,8 +110,8 @@ function handleDrop(e: DragEvent, type: 'certificate' | 'key') {
   <div class="certificate-content-editor">
     <!-- SSL Certificate Content -->
     <AFormItem
-      :validate-status="errors.ssl_certificate ? 'error' : ''"
-      :help="errors.ssl_certificate === 'certificate'
+      :validate-status="errors?.ssl_certificate ? 'error' : ''"
+      :help="errors?.ssl_certificate === 'certificate'
         ? $gettext('The input is not a SSL Certificate') : ''"
     >
       <template #label>
@@ -170,8 +171,8 @@ function handleDrop(e: DragEvent, type: 'certificate' | 'key') {
 
     <!-- SSL Certificate Key Content -->
     <AFormItem
-      :validate-status="errors.ssl_certificate_key ? 'error' : ''"
-      :help="errors.ssl_certificate_key === 'privatekey'
+      :validate-status="errors?.ssl_certificate_key ? 'error' : ''"
+      :help="errors?.ssl_certificate_key === 'privatekey'
         ? $gettext('The input is not a SSL Certificate Key') : ''"
     >
       <template #label>

@@ -9,6 +9,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AAlert: typeof import('ant-design-vue/es')['Alert']
+    AApp: typeof import('ant-design-vue/es')['App']
     AAutoComplete: typeof import('ant-design-vue/es')['AutoComplete']
     AAvatar: typeof import('ant-design-vue/es')['Avatar']
     ABadge: typeof import('ant-design-vue/es')['Badge']
@@ -90,6 +91,7 @@ declare module 'vue' {
     LLMChatMessageInput: typeof import('./src/components/LLM/ChatMessageInput.vue')['default']
     LLMChatMessageList: typeof import('./src/components/LLM/ChatMessageList.vue')['default']
     LLMLLM: typeof import('./src/components/LLM/LLM.vue')['default']
+    LLMLLMIframe: typeof import('./src/components/LLM/LLMIframe.vue')['default']
     LLMLLMSessionSelector: typeof import('./src/components/LLM/LLMSessionSelector.vue')['default']
     LLMLLMSessionSidebar: typeof import('./src/components/LLM/LLMSessionSidebar.vue')['default']
     LLMLLMSessionTabs: typeof import('./src/components/LLM/LLMSessionTabs.vue')['default']
@@ -123,6 +125,7 @@ declare module 'vue' {
     SelfCheckSelfCheckHeaderBanner: typeof import('./src/components/SelfCheck/SelfCheckHeaderBanner.vue')['default']
     SensitiveStringSensitiveString: typeof import('./src/components/SensitiveString/SensitiveString.vue')['default']
     SetLanguageSetLanguage: typeof import('./src/components/SetLanguage/SetLanguage.vue')['default']
+    ShadowRootShadowRoot: typeof import('./src/components/ShadowRoot/ShadowRoot.vue')['default']
     SwitchAppearanceIconsVPIconMoon: typeof import('./src/components/SwitchAppearance/icons/VPIconMoon.vue')['default']
     SwitchAppearanceIconsVPIconSun: typeof import('./src/components/SwitchAppearance/icons/VPIconSun.vue')['default']
     SwitchAppearanceSwitchAppearance: typeof import('./src/components/SwitchAppearance/SwitchAppearance.vue')['default']

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import {
-  ClockCircleOutlined,
   CloseOutlined,
   CopyOutlined,
   DeleteOutlined,
   EditOutlined,
+  HistoryOutlined,
   MoreOutlined,
   PlusOutlined,
 } from '@ant-design/icons-vue'
@@ -13,8 +13,8 @@ import { useLLMStore } from './llm'
 import { useLLMSessionStore } from './sessionStore'
 
 const props = defineProps<{
-  content?: string
   path?: string
+  type?: 'terminal' | 'nginx'
 }>()
 
 const emit = defineEmits<{
@@ -30,19 +30,30 @@ const { loading: llmLoading } = storeToRefs(llmStore)
 const editingSessionId = ref<string | null>(null)
 const editingTitle = ref('')
 const historyDrawerVisible = ref(false)
+const sessionsDropdownVisible = ref(false)
+const searchText = ref('')
 
 // Only show first 3 sessions in tabs, rest in history
 const visibleSessions = computed(() => sortedSessions.value.slice(0, 3))
-const historySessions = computed(() => sortedSessions.value.slice(3))
+
+// Filtered sessions for dropdown search
+const filteredSessions = computed(() => {
+  if (!searchText.value.trim()) {
+    return sortedSessions.value
+  }
+  return sortedSessions.value.filter(session =>
+    session.title.toLowerCase().includes(searchText.value.toLowerCase()),
+  )
+})
 
 async function createNewSession() {
   if (llmLoading.value) {
     return // Don't create new session while LLM is generating output
   }
 
-  const title = `New Chat`
+  const title = props.type === 'terminal' ? 'Terminal Assistant' : 'New Chat'
   try {
-    const session = await sessionStore.createSession(title, props.path)
+    const session = await sessionStore.createSession(title, props.path, props.type)
     await llmStore.switchSession(session.session_id)
     emit('newSessionCreated')
   }
@@ -62,6 +73,7 @@ async function selectSession(sessionId: string) {
   await llmStore.switchSession(sessionId)
   sessionStore.setActiveSession(sessionId)
   historyDrawerVisible.value = false
+  sessionsDropdownVisible.value = false
 }
 
 async function closeSession(sessionId: string, event: Event) {
@@ -69,6 +81,11 @@ async function closeSession(sessionId: string, event: Event) {
 
   if (llmLoading.value) {
     return // Don't delete sessions while LLM is generating output
+  }
+
+  // Don't allow deleting the only session
+  if (sortedSessions.value.length <= 1) {
+    return
   }
 
   const sessionIndex = sortedSessions.value.findIndex(s => s.session_id === sessionId)
@@ -177,10 +194,6 @@ function formatDate(dateStr: string) {
     return date.toLocaleDateString()
   }
 }
-
-function showHistoryDrawer() {
-  historyDrawerVisible.value = true
-}
 </script>
 
 <template>
@@ -223,9 +236,7 @@ function showHistoryDrawer() {
                   class="tab-action-btn"
                   @click.stop
                 >
-                  <template #icon>
-                    <MoreOutlined />
-                  </template>
+                  <MoreOutlined />
                 </AButton>
                 <template #overlay>
                   <AMenu>
@@ -237,16 +248,19 @@ function showHistoryDrawer() {
                       <CopyOutlined />
                       {{ $gettext('Duplicate') }}
                     </AMenuItem>
-                    <AMenuDivider />
-                    <AMenuItem danger @click="closeSession(session.session_id, $event)">
-                      <DeleteOutlined />
-                      {{ $gettext('Delete') }}
-                    </AMenuItem>
+                    <template v-if="sortedSessions.length > 1">
+                      <AMenuDivider />
+                      <AMenuItem danger @click="closeSession(session.session_id, $event)">
+                        <DeleteOutlined />
+                        {{ $gettext('Delete') }}
+                      </AMenuItem>
+                    </template>
                   </AMenu>
                 </template>
               </ADropdown>
 
               <AButton
+                v-if="sortedSessions.length > 1"
                 type="text"
                 size="small"
                 class="tab-close-btn"
@@ -261,16 +275,86 @@ function showHistoryDrawer() {
 
       <!-- Actions -->
       <div class="tab-actions-group">
-        <!-- History button (only show if there are sessions beyond the visible ones) -->
-        <AButton
-          v-if="historySessions.length > 0"
-          type="text"
-          size="small"
-          class="history-btn"
-          @click="showHistoryDrawer"
+        <!-- Sessions list button -->
+        <APopover
+          v-model:open="sessionsDropdownVisible"
+          :trigger="['click']"
+          placement="bottomRight"
+          overlay-class-name="sessions-popover"
+          @open-change="(open) => { if (!open) searchText = '' }"
         >
-          <ClockCircleOutlined />
-        </AButton>
+          <AButton
+            type="text"
+            size="small"
+            class="sessions-btn"
+          >
+            <HistoryOutlined />
+          </AButton>
+          <template #content>
+            <div class="sessions-dropdown">
+              <div class="sessions-search">
+                <AInput
+                  v-model:value="searchText"
+                  placeholder="Search sessions..."
+                  size="small"
+                  allow-clear
+                  @click.stop
+                />
+              </div>
+              <div class="sessions-list">
+                <div
+                  v-for="session in filteredSessions"
+                  :key="session.session_id"
+                  class="session-item"
+                  :class="{ active: session.session_id === activeSessionId }"
+                  @click="selectSession(session.session_id)"
+                >
+                  <div class="session-info">
+                    <div class="session-title">
+                      {{ session.title }}
+                    </div>
+                    <div class="session-meta">
+                      <span class="session-date">{{ formatDate(session.updated_at) }}</span>
+                      <span v-if="session.message_count > 0" class="session-count">
+                        {{ session.message_count }} messages
+                      </span>
+                    </div>
+                  </div>
+                  <div class="session-actions">
+                    <ADropdown :trigger="['click']" placement="bottomLeft">
+                      <AButton
+                        type="text"
+                        size="small"
+                        @click.stop
+                      >
+                        <MoreOutlined />
+                      </AButton>
+                      <template #overlay>
+                        <AMenu>
+                          <AMenuItem @click.stop="startEditingTitle(session.session_id, session.title, $event)">
+                            <EditOutlined />
+                            {{ $gettext('Rename') }}
+                          </AMenuItem>
+                          <AMenuItem @click.stop="duplicateSession(session.session_id, $event)">
+                            <CopyOutlined />
+                            {{ $gettext('Duplicate') }}
+                          </AMenuItem>
+                          <template v-if="sortedSessions.length > 1">
+                            <AMenuDivider />
+                            <AMenuItem danger @click.stop="closeSession(session.session_id, $event)">
+                              <DeleteOutlined />
+                              {{ $gettext('Delete') }}
+                            </AMenuItem>
+                          </template>
+                        </AMenu>
+                      </template>
+                    </ADropdown>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+        </APopover>
 
         <!-- Add new session button -->
         <AButton
@@ -284,89 +368,19 @@ function showHistoryDrawer() {
         </AButton>
       </div>
     </div>
-
-    <!-- History Drawer -->
-    <ADrawer
-      v-model:open="historyDrawerVisible"
-      title="Chat History"
-      placement="right"
-      :width="320"
-    >
-      <div class="history-list">
-        <div
-          v-for="session in historySessions"
-          :key="session.session_id"
-          class="history-item" :class="[
-            {
-              active: session.session_id === activeSessionId,
-              disabled: llmLoading,
-            },
-          ]"
-          @click="selectSession(session.session_id)"
-        >
-          <div class="history-content">
-            <div class="history-main">
-              <div class="history-title">
-                {{ session.title }}
-              </div>
-              <div class="history-meta">
-                <span class="history-date">{{ formatDate(session.updated_at) }}</span>
-                <span v-if="session.message_count > 0" class="history-count">
-                  {{ session.message_count }} messages
-                </span>
-              </div>
-            </div>
-
-            <div class="history-actions">
-              <ADropdown :trigger="['click']" placement="bottomLeft">
-                <AButton
-                  type="text"
-                  size="small"
-                  @click.stop
-                >
-                  <MoreOutlined />
-                </AButton>
-                <template #overlay>
-                  <AMenu>
-                    <AMenuItem @click="startEditingTitle(session.session_id, session.title, $event)">
-                      <EditOutlined />
-                      {{ $gettext('Rename') }}
-                    </AMenuItem>
-                    <AMenuItem @click="duplicateSession(session.session_id, $event)">
-                      <CopyOutlined />
-                      {{ $gettext('Duplicate') }}
-                    </AMenuItem>
-                    <AMenuDivider />
-                    <AMenuItem danger @click="closeSession(session.session_id, $event)">
-                      <DeleteOutlined />
-                      {{ $gettext('Delete') }}
-                    </AMenuItem>
-                  </AMenu>
-                </template>
-              </ADropdown>
-            </div>
-          </div>
-        </div>
-
-        <AEmpty
-          v-if="historySessions.length === 0"
-          :description="$gettext('No more sessions')"
-          size="small"
-        />
-      </div>
-    </ADrawer>
   </div>
 </template>
 
 <style lang="less" scoped>
 .llm-session-tabs {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   width: 100%;
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 2;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.04);
 
   .tabs-container {
     display: flex;
@@ -399,13 +413,13 @@ function showHistoryDrawer() {
     flex-shrink: 0;
     display: flex;
     align-items: center;
-    padding: 8px 12px;
+    padding: 8px 8px;
     cursor: pointer;
     transition: all 0.15s ease;
     background: transparent;
     border-right: 1px solid var(--color-border);
-    max-width: 240px;
-    min-width: 140px;
+    max-width: 120px;
+    min-width: 80px;
     position: relative;
     height: 34px;
     box-sizing: border-box;
@@ -428,23 +442,31 @@ function showHistoryDrawer() {
 
       .tab-actions {
         opacity: 1;
+        visibility: visible;
+        transform: translateY(-50%) translateX(0);
       }
     }
 
     &.active {
-      background: var(--color-bg-container);
+      background: var(--color-primary-light-9);
       color: var(--color-text-1);
       margin-bottom: -1px;
       z-index: 2;
       position: relative;
+      border-radius: 6px;
+      border: 1px solid var(--color-primary-light-7);
 
       .tab-title {
         font-weight: 500;
         color: var(--color-text-1);
       }
 
-      .tab-actions {
-        opacity: 1;
+      &:hover {
+        .tab-actions {
+          opacity: 1;
+          visibility: visible;
+          transform: translateY(-50%) translateX(0);
+        }
       }
     }
 
@@ -457,7 +479,6 @@ function showHistoryDrawer() {
   .tab-content {
     display: flex;
     align-items: center;
-    gap: 8px;
     width: 100%;
   }
 
@@ -466,7 +487,7 @@ function showHistoryDrawer() {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-size: 14px;
+    font-size: 13px;
     color: var(--color-text-2);
     transition: color 0.15s ease;
   }
@@ -476,7 +497,7 @@ function showHistoryDrawer() {
 
     :deep(.ant-input) {
       padding: 4px 0;
-      font-size: 14px;
+      font-size: 13px;
       background: transparent;
       border: none;
       color: var(--color-text-1);
@@ -492,11 +513,21 @@ function showHistoryDrawer() {
   }
 
   .tab-actions {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%) translateX(8px);
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 1px;
     opacity: 0;
-    transition: opacity 0.15s ease;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, #ffffff 20%);
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    padding: 2px 3px 2px 6px;
+    z-index: 10;
   }
 
   .tab-action-btn,
@@ -542,6 +573,7 @@ function showHistoryDrawer() {
     margin-left: 8px;
     position: relative;
 
+    .sessions-btn,
     .history-btn,
     .add-btn {
       width: 24px;
@@ -583,14 +615,9 @@ function showHistoryDrawer() {
     border-radius: 8px;
     margin-bottom: 6px;
     transition: all 0.15s ease;
-    border: 1px solid transparent;
-    background: var(--color-bg-container);
 
     &:hover:not(.disabled) {
       background: var(--color-fill-1);
-      border-color: var(--color-border-2);
-      transform: translateY(-1px);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     }
 
     &.active {
@@ -684,6 +711,121 @@ function showHistoryDrawer() {
   }
 }
 
+.sessions-dropdown {
+  width: 360px;
+
+  .sessions-search {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--color-border);
+
+    :deep(.ant-input) {
+      border-radius: 6px;
+      font-size: 13px;
+    }
+  }
+
+  .sessions-list {
+    max-height: 380px;
+    overflow-y: auto;
+    padding: 4px 0;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--color-fill-3);
+      border-radius: 3px;
+    }
+  }
+
+  .session-item {
+    padding: 6px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &:hover {
+      background: var(--color-fill-1);
+
+      .session-actions {
+        opacity: 1;
+      }
+    }
+
+    &.active {
+      background: var(--color-primary-light-9);
+
+      .session-title {
+        color: var(--color-primary);
+        font-weight: 500;
+      }
+    }
+
+    .session-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .session-title {
+      font-size: 13px;
+      font-weight: 450;
+      margin-bottom: 2px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: var(--color-text-1);
+    }
+
+    .session-meta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--color-text-3);
+
+      .session-date {
+        font-weight: 400;
+      }
+
+      .session-count {
+        padding: 0 4px;
+        background: var(--color-fill-2);
+        border-radius: 8px;
+        font-size: 10px;
+        line-height: 16px;
+        color: var(--color-text-2);
+      }
+    }
+
+    .session-actions {
+      opacity: 0;
+      transition: opacity 0.15s ease;
+
+      .ant-btn {
+        width: 20px;
+        height: 20px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        :deep(.anticon) {
+          font-size: 11px;
+        }
+      }
+    }
+  }
+}
+
+:deep(.sessions-popover) {
+  .ant-popover-inner {
+    padding: 0;
+  }
+}
+
 .dark {
   .llm-session-tabs {
     background: rgba(30, 30, 30, 0.8);
@@ -701,8 +843,10 @@ function showHistoryDrawer() {
       }
 
       &.active {
-        background: rgba(30, 30, 30, 0.8);
+        background: rgba(var(--primary-6), 0.15);
         color: #ffffff;
+        border: 1px solid var(--color-primary);
+        border-radius: 6px;
       }
     }
 
@@ -721,6 +865,7 @@ function showHistoryDrawer() {
 
     .tab-title-input :deep(.ant-input) {
       color: #ffffff;
+      font-size: 13px;
 
       &:focus {
         background: rgba(255, 255, 255, 0.1);
@@ -746,6 +891,7 @@ function showHistoryDrawer() {
       background: transparent;
       border-color: rgba(255, 255, 255, 0.1);
 
+      .sessions-btn,
       .history-btn,
       .add-btn {
         color: rgba(255, 255, 255, 0.6);
@@ -760,12 +906,8 @@ function showHistoryDrawer() {
 
   .history-list {
     .history-item {
-      background: #1a1a1a;
-
       &:hover:not(.disabled) {
         background: #2a2a2a;
-        border-color: #404040;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
       }
 
       &.active {
@@ -798,6 +940,51 @@ function showHistoryDrawer() {
         background: #404040;
         color: #e8e8e8;
       }
+    }
+  }
+
+  .tab-actions {
+    background: linear-gradient(to right, rgba(26, 26, 26, 0) 0%, #1a1a1a 20%);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .sessions-dropdown {
+    .sessions-search {
+      border-bottom-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .session-item {
+      &:hover {
+        background: #2a2a2a;
+      }
+
+      &.active {
+        background: rgba(var(--primary-6), 0.15);
+
+        .session-title {
+          color: var(--color-primary);
+        }
+      }
+    }
+
+    .session-title {
+      color: #e8e8e8;
+    }
+
+    .session-meta {
+      color: #888888;
+
+      .session-count {
+        background: #333333;
+        color: #aaaaaa;
+      }
+    }
+  }
+
+  :deep(.sessions-popover) {
+    .ant-popover-inner {
+      background: #1a1a1a;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
     }
   }
 }

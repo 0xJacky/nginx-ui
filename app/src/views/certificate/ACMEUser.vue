@@ -2,9 +2,11 @@
 import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
 import type { AcmeUser } from '@/api/acme_user'
 import { datetimeRender, StdCurd } from '@uozi-admin/curd'
-import { message, Tag } from 'ant-design-vue'
+import { Tag } from 'ant-design-vue'
 
 import acme_user from '@/api/acme_user'
+
+const { message } = App.useApp()
 
 const columns: StdTableColumn[] = [
   {

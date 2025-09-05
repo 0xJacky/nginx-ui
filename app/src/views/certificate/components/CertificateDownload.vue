@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import type { Cert } from '@/api/cert'
 import { DownloadOutlined } from '@ant-design/icons-vue'
-import { message } from 'ant-design-vue'
 
 interface Props {
   data: Cert
 }
 
 const props = defineProps<Props>()
+
+const { message } = App.useApp()
 
 // Download state
 const isDownloading = ref(false)

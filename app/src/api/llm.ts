@@ -49,15 +49,24 @@ const llm = {
   },
 
   // Session APIs
-  get_sessions(path?: string) {
+  get_sessions(pathOrType?: string, isType?: boolean) {
+    const params: Record<string, string> = {}
+    if (pathOrType) {
+      if (isType) {
+        params.type = pathOrType
+      }
+      else {
+        params.path = pathOrType
+      }
+    }
     return http.get<LLMSessionResponse[]>('/llm_sessions', {
-      params: path ? { path } : undefined,
+      params: Object.keys(params).length > 0 ? params : undefined,
     })
   },
   get_session(sessionId: string) {
     return http.get<LLMSessionResponse>(`/llm_sessions/${sessionId}`)
   },
-  create_session(data: { title: string, path?: string }) {
+  create_session(data: { title: string, path?: string, type?: string }) {
     return http.post<LLMSessionResponse>('/llm_sessions', data)
   },
   update_session(sessionId: string, data: { title?: string, messages?: ChatComplicationMessage[] }) {

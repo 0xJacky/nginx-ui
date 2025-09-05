@@ -58,6 +58,11 @@ export default defineConfig(({ mode }) => {
           {
             '@/language': ['T'],
           },
+          {
+            'ant-design-vue': [
+              'App',
+            ],
+          },
         ],
         vueTemplate: true,
         eslintrc: {

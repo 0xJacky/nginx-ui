@@ -6,6 +6,7 @@ import { Terminal } from '@xterm/xterm'
 import { throttle } from 'lodash'
 import use2FAModal from '@/components/TwoFA/use2FAModal'
 import ws from '@/lib/websocket'
+import TerminalRightPanel from './components/TerminalRightPanel.vue'
 import TerminalStatusBar from './components/TerminalStatusBar.vue'
 import '@xterm/xterm/css/xterm.css'
 
@@ -17,6 +18,11 @@ const websocket = shallowRef<ReconnectingWebSocket | WebSocket>()
 const lostConnection = ref(false)
 const insecureConnection = ref(false)
 const isWebSocketReady = ref(false)
+const isRightPanelVisible = ref(false)
+const rightPanelRef = ref<InstanceType<typeof TerminalRightPanel>>()
+
+// Keep ref for terminal layout
+const terminalLayoutRef = ref<HTMLElement>()
 
 // Check if using HTTP in a non-localhost environment
 function checkSecureConnection() {
@@ -98,6 +104,9 @@ function initTerm() {
       Type: 1,
     }
 
+    // Monitor terminal input for LLM context
+    handleTerminalInput(key)
+
     sendMessage(order)
   })
   term.onBinary(data => {
@@ -136,6 +145,21 @@ onUnmounted(() => {
 function refreshTerminal() {
   window.location.reload()
 }
+
+function toggleRightPanel() {
+  isRightPanelVisible.value = !isRightPanelVisible.value
+}
+
+// Monitor terminal input to provide context to LLM
+function handleTerminalInput(data: string) {
+  if (rightPanelRef.value && data.includes('\r')) {
+    // Extract command when Enter is pressed
+    const command = data.replace('\r', '').trim()
+    if (command) {
+      rightPanelRef.value.updateCurrentCommand(command)
+    }
+  }
+}
 </script>
 
 <template>
@@ -167,27 +191,87 @@ function refreshTerminal() {
         </AButton>
       </template>
     </AAlert>
-    <div class="terminal-container">
-      <div
-        id="terminal"
-        class="console"
+    <div ref="terminalLayoutRef" class="terminal-layout">
+      <div class="terminal-container">
+        <div class="terminal-header">
+          <div class="header-actions">
+            <AButton
+              type="text"
+              size="small"
+              @click="toggleRightPanel"
+            >
+              {{ isRightPanelVisible ? $gettext('Hide Assistant') : $gettext('Show Assistant') }}
+            </AButton>
+          </div>
+        </div>
+        <div
+          id="terminal"
+          class="console"
+        />
+        <TerminalStatusBar />
+      </div>
+
+      <TerminalRightPanel
+        ref="rightPanelRef"
+        :is-visible="isRightPanelVisible"
       />
-      <TerminalStatusBar />
     </div>
   </div>
 </template>
 
 <style lang="less" scoped>
-.terminal-container {
+.terminal-layout {
   display: flex;
-  flex-direction: column;
-  min-height: calc(100vh - 200px);
+  min-height: max(585px, calc(100vh - 200px));
   border-radius: 5px;
   overflow: hidden;
   background: #000;
+  position: relative;
+  width: 100%;
 
   @media (max-width: 512px) {
     border-radius: 0;
+  }
+}
+
+.terminal-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  transition: all 0.3s ease;
+  background: #000;
+}
+
+.terminal-header {
+  background: #1a1a1a;
+  border-bottom: 1px solid #333;
+  padding: 8px 12px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  min-height: 40px;
+
+  .header-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+
+    .icon {
+      font-size: 16px;
+    }
+  }
+
+  :deep(.ant-btn) {
+    color: #e0e0e0;
+    border: 1px solid #444;
+    background: transparent;
+
+    &:hover {
+      color: #4a9eff;
+      border-color: #4a9eff;
+      background: rgba(74, 158, 255, 0.1);
+    }
   }
 }
 
@@ -201,6 +285,18 @@ function refreshTerminal() {
 
   :deep(.xterm-viewport) {
     border-radius: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .terminal-header {
+    padding: 6px 8px;
+    min-height: 36px;
+
+    :deep(.ant-btn) {
+      font-size: 12px;
+      padding: 4px 8px;
+    }
   }
 }
 </style>

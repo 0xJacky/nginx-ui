@@ -1,10 +1,11 @@
-import { message, Modal } from 'ant-design-vue'
+import { Modal } from 'ant-design-vue'
 import { createVNode, render } from 'vue'
 import twoFA from '@/api/2fa'
 import Authorization from '@/components/TwoFA/Authorization.vue'
 import { useUserStore } from '@/pinia'
 
 function use2FAModal() {
+  const { message } = App.useApp()
   const refOTPAuthorization = ref<typeof Authorization>()
   // eslint-disable-next-line sonarjs/pseudo-random
   const randomId = Math.random().toString(36).substring(2, 8)

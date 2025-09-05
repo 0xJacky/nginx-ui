@@ -4,6 +4,7 @@ export default {
     "$ngettext": true,
     "$npgettext": true,
     "$pgettext": true,
+    "App": true,
     "Component": true,
     "ComponentPublicInstance": true,
     "ComputedRef": true,

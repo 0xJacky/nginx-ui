@@ -2,7 +2,7 @@
 import type { SorterResult, TablePaginationConfig } from 'ant-design-vue/es/table/interface'
 import type { AccessLogEntry, AdvancedSearchRequest, PreflightResponse } from '@/api/nginx_log'
 import { DownOutlined, ExclamationCircleOutlined, ReloadOutlined } from '@ant-design/icons-vue'
-import { message, Tag } from 'ant-design-vue'
+import { Tag } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import nginx_log from '@/api/nginx_log'
 import { useWebSocketEventBus } from '@/composables/useWebSocketEventBus'
@@ -24,6 +24,8 @@ interface SearchSummary {
 }
 
 const props = defineProps<Props>()
+
+const { message } = App.useApp()
 
 // Route and router
 const route = useRoute()

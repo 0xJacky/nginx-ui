@@ -1,31 +1,64 @@
 <script setup lang="ts">
-import { useElementVisibility } from '@vueuse/core'
+import { theme } from 'ant-design-vue'
 import { storeToRefs } from 'pinia'
 import { useSettingsStore } from '@/pinia'
+import { useAnimationCoordinator } from './animationCoordinator'
 import ChatMessageInput from './ChatMessageInput.vue'
 import ChatMessageList from './ChatMessageList.vue'
-import { buildLLMContext } from './contextBuilder'
 import { useLLMStore } from './llm'
 import LLMSessionTabs from './LLMSessionTabs.vue'
 import { useLLMSessionStore } from './sessionStore'
 
 const props = defineProps<{
-  content: string
   path?: string
+  nginxConfig?: string
+  type?: 'terminal' | 'nginx'
+  theme?: 'light' | 'dark'
+  height?: string
 }>()
 
-const { language: current } = storeToRefs(useSettingsStore())
+const { theme: settingsTheme } = storeToRefs(useSettingsStore())
+
+const currentTheme = computed(() => props.theme || settingsTheme.value)
+
+// Create theme config for AConfigProvider
+const llmTheme = computed(() => {
+  const isDark = currentTheme.value === 'dark'
+  return {
+    algorithm: isDark ? theme.darkAlgorithm : theme.defaultAlgorithm,
+  }
+})
 
 // Use LLM store and session store
 const llmStore = useLLMStore()
 const sessionStore = useLLMSessionStore()
-const { messageContainerRef } = storeToRefs(llmStore)
 const { activeSessionId, sortedSessions } = storeToRefs(sessionStore)
 
-// Initialize sessions and handle path changes
-watch(() => props.path, async () => {
-  // Load sessions for current path
-  await sessionStore.loadSessions(props.path)
+// Animation coordinator
+const { state: animationState, isMessageAnimationComplete } = useAnimationCoordinator()
+
+// Message list ref for scrolling
+const messageListRef = ref<InstanceType<typeof ChatMessageList>>()
+
+// Get input height for padding calculation
+const chatInputRef = ref<InstanceType<typeof ChatMessageInput>>()
+const inputHeight = computed(() => chatInputRef.value?.inputHeight || 0)
+
+// Initialize sessions and handle type changes
+watch(() => props.type, async () => {
+  // Set assistant type
+  if (props.type === 'terminal') {
+    llmStore.setType('terminal')
+  }
+
+  // Load sessions for current type
+  if (props.type) {
+    await sessionStore.loadSessions(props.type, true) // true indicates it's a type, not a path
+  }
+  else {
+    // Fallback to path-based loading if no type specified
+    await sessionStore.loadSessions(props.path)
+  }
 
   // Check if we have sessions available
   if (sortedSessions.value.length > 0 && !activeSessionId.value) {
@@ -35,60 +68,39 @@ watch(() => props.path, async () => {
     sessionStore.setActiveSession(latestSession.session_id)
   }
   else if (sortedSessions.value.length === 0) {
-    // No sessions exist for this path, create a new one automatically
-    const title = props.path ? `Chat for ${props.path.split('/').pop()}` : 'New Chat'
+    // No sessions exist for this type/path, create a new one automatically
+    let title = $gettext('New Chat')
+    if (props.type === 'terminal') {
+      title = $gettext('Terminal Assistant')
+    }
+    else if (props.path) {
+      title = $gettext('Chat for %{path}', { path: props.path.split('/').pop() || '' })
+    }
     try {
-      const session = await sessionStore.createSession(title, props.path)
+      const session = await sessionStore.createSession(title, props.path, props.type)
       await llmStore.switchSession(session.session_id)
-
-      // Initialize with first message
-      await nextTick()
-      await sendFirstMessage()
+      // Auto-initialization removed - no initial message sent
     }
     catch (error) {
       console.error('Failed to create initial session:', error)
       // Fallback to legacy mode
       await llmStore.initMessages(props.path)
-      await nextTick()
-      if (llmStore.messages.length === 0) {
-        await sendFirstMessage()
-      }
+      // Auto-initialization removed - no initial message sent
     }
   }
 }, { immediate: true })
 
-// Build context and send first message
-async function sendFirstMessage() {
-  if (!props.path) {
-    // If no path, use original content only
-    await llmStore.send(props.content, current.value, props.content)
-    return
-  }
-
-  try {
-    // Build complete context including included files
-    const context = await buildLLMContext(props.path, props.content)
-
-    // Send with enhanced context
-    await llmStore.send(props.content, current.value, context.contextText)
-  }
-  catch (error) {
-    console.error('Failed to build enhanced context, falling back to original:', error)
-    // Fallback to original behavior
-    await llmStore.send(props.content, current.value, props.content)
-  }
-}
-
 // Handle new session creation
 async function handleNewSessionCreated() {
   // Reload sessions to update the list
-  await sessionStore.loadSessions(props.path)
-  await nextTick()
-
-  // Auto-send first message if no messages exist
-  if (llmStore.messages.length === 0) {
-    await sendFirstMessage()
+  if (props.type) {
+    await sessionStore.loadSessions(props.type, true)
   }
+  else {
+    await sessionStore.loadSessions(props.path)
+  }
+  await nextTick()
+  // Auto-initialization removed - no initial message sent
 }
 
 // Handle when all sessions are cleared
@@ -96,100 +108,143 @@ function handleSessionCleared() {
   // Reset to initial state - could create a welcome message or just stay empty
 }
 
-const isVisible = useElementVisibility(messageContainerRef)
+// Handle scrolling when messages change (immediate scroll for new messages)
+watch(
+  () => llmStore.messages.length,
+  () => {
+    // Reset scroll state for new messages
+    if (messageListRef.value) {
+      messageListRef.value.resetScrollState()
+    }
 
-watch(isVisible, visible => {
-  if (visible) {
-    llmStore.scrollToBottom()
+    nextTick(() => {
+      if (messageListRef.value) {
+        messageListRef.value.scrollToBottom()
+      }
+    })
+  },
+)
+
+// Watch animation state and scroll when all message animations complete
+watch(animationState, (_, oldState) => {
+  // When message animations complete, scroll to bottom with a final force scroll
+  if (oldState && (oldState.messageStreaming || oldState.messageTyping) && isMessageAnimationComplete()) {
+    nextTick(() => {
+      if (messageListRef.value) {
+        messageListRef.value.scrollToBottom()
+
+        // Final force scroll after a small delay to ensure everything is rendered
+        setTimeout(() => {
+          if (messageListRef.value) {
+            messageListRef.value.scrollToBottom()
+          }
+        }, 200)
+      }
+    })
   }
+}, { deep: true })
+
+// Also scroll during typing animation to keep up with content changes
+watch(
+  () => animationState.value.messageTyping,
+  (isTyping, _wasTyping) => {
+    if (isTyping) {
+      // During typing, continuously scroll to bottom with a small delay
+      const scrollInterval = setInterval(() => {
+        if (!animationState.value.messageTyping) {
+          clearInterval(scrollInterval)
+          // Final scroll when typing stops
+          setTimeout(() => {
+            if (messageListRef.value) {
+              messageListRef.value.scrollToBottom()
+            }
+          }, 100)
+          return
+        }
+        if (messageListRef.value) {
+          messageListRef.value.scrollToBottom()
+        }
+      }, 100)
+    }
+  },
+)
+
+watch(() => props.nginxConfig, v => {
+  llmStore.setNginxConfig(v || '')
 }, { immediate: true })
 </script>
 
 <template>
-  <div class="llm-container">
-    <div class="session-header">
-      <LLMSessionTabs
-        :content="props.content"
-        :path="props.path"
-        @new-session-created="handleNewSessionCreated"
-        @session-cleared="handleSessionCleared"
-      />
-    </div>
-
+  <AConfigProvider :theme="llmTheme">
     <div
-      ref="messageContainerRef"
-      class="message-container"
+      class="llm-wrapper"
     >
-      <ChatMessageList />
-      <ChatMessageInput />
+      <div class="llm-container">
+        <!-- Session Tabs -->
+        <div class="session-header">
+          <LLMSessionTabs
+            :path="path"
+            :type="type"
+            @new-session-created="handleNewSessionCreated"
+            @session-cleared="handleSessionCleared"
+          />
+        </div>
+
+        <!-- Message List -->
+        <div class="message-container">
+          <ChatMessageList
+            ref="messageListRef"
+            :input-height="inputHeight"
+          />
+        </div>
+
+        <!-- Input Container -->
+        <div class="input-container">
+          <ChatMessageInput ref="chatInputRef" />
+        </div>
+      </div>
     </div>
-  </div>
+  </AConfigProvider>
 </template>
 
 <style lang="less" scoped>
-.llm-container {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+.llm-wrapper {
   width: 100%;
-  position: relative;
+  height: max(600px, calc(100vh - 200px));
+}
 
-  // 为 backdrop-filter 提供背景内容
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg,
-      rgba(0, 0, 0, 0.02) 0%,
-      rgba(255, 255, 255, 0.01) 50%,
-      rgba(0, 0, 0, 0.02) 100%);
-    pointer-events: none;
-    z-index: 0;
-  }
+.llm-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 
 .session-header {
-  flex-shrink: 0;
-  position: relative;
-  z-index: 1;
+  border-bottom: 1px solid var(--ant-color-border);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
 }
 
 .message-container {
-  flex: 1;
-  margin: 0 auto;
-  width: 100%;
-  max-width: 800px;
-  max-height: calc(100vh - 332px);
-  overflow-y: auto;
-  overflow-x: hidden;
+  height: calc(100% - 48px - 56px); // Total height - header height - default input height
+  overflow: hidden;
   position: relative;
-  z-index: 1;
-  background: linear-gradient(to bottom,
-    rgba(0, 0, 0, 0.01) 0%,
-    rgba(255, 255, 255, 0.005) 30%,
-    rgba(0, 0, 0, 0.01) 60%,
-    rgba(255, 255, 255, 0.01) 100%);
+
+  :deep(.message-list-container) {
+    height: 100%;
+  }
 }
 
-.dark {
-  .llm-container {
-    &::before {
-      background: linear-gradient(135deg,
-        rgba(255, 255, 255, 0.02) 0%,
-        rgba(0, 0, 0, 0.01) 50%,
-        rgba(255, 255, 255, 0.02) 100%);
-    }
-  }
-
-  .message-container {
-    background: linear-gradient(to bottom,
-      rgba(255, 255, 255, 0.01) 0%,
-      rgba(0, 0, 0, 0.005) 30%,
-      rgba(255, 255, 255, 0.01) 60%,
-      rgba(0, 0, 0, 0.01) 100%);
-  }
+.input-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  min-height: 56px;
+  background: var(--ant-color-bg-container);
+  border-top: 1px solid var(--ant-color-border);
 }
 </style>

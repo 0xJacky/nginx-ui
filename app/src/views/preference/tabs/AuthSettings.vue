@@ -2,10 +2,11 @@
 import type { Ref } from 'vue'
 
 import type { BannedIP } from '@/api/settings'
-import { message } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import setting from '@/api/settings'
 import useSystemSettingsStore from '../store'
+
+const { message } = App.useApp()
 
 const systemSettingsStore = useSystemSettingsStore()
 const { data } = storeToRefs(systemSettingsStore)

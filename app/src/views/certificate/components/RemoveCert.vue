@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { Cert } from '@/api/cert'
-import { message } from 'ant-design-vue'
 import cert from '@/api/cert'
 import { AutoCertState } from '@/constants'
 import websocket from '@/lib/websocket'
@@ -12,6 +11,8 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits(['removed'])
+
+const { message } = App.useApp()
 
 const modalVisible = ref(false)
 const confirmLoading = ref(false)

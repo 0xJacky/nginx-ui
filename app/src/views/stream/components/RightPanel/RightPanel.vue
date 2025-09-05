@@ -1,13 +1,25 @@
 <script setup lang="ts">
+import { useElementSize } from '@vueuse/core'
 import { PortScannerCompact } from '@/components/PortScanner'
 import Basic from './Basic.vue'
 import Chat from './Chat.vue'
 
 const activeKey = ref('basic')
+
+// Get container height for Chat component
+const containerRef = ref<HTMLElement>()
+const { height: containerHeight } = useElementSize(containerRef)
+
+// Calculate chat height
+const chatHeight = computed(() => {
+  const tabsNavHeight = 55
+  const padding = 48
+  return `${containerHeight.value - tabsNavHeight - padding}px`
+})
 </script>
 
 <template>
-  <div class="right-settings-container">
+  <div ref="containerRef" class="right-settings-container">
     <ACard
       class="right-settings"
       :bordered="false"
@@ -20,7 +32,7 @@ const activeKey = ref('basic')
           <Basic />
         </ATabPane>
         <ATabPane key="chat" :tab="$gettext('Chat')">
-          <Chat />
+          <Chat :chat-height="chatHeight" />
         </ATabPane>
         <ATabPane key="port-scanner" :tab="$gettext('Port Scanner')">
           <PortScannerCompact />

@@ -5,7 +5,7 @@ import type { TabOption } from '@/components/TabFilter'
 import { CheckCircleOutlined, ExclamationCircleOutlined, SyncOutlined } from '@ant-design/icons-vue'
 import { StdCurd } from '@uozi-admin/curd'
 import { useRouteQuery } from '@vueuse/router'
-import { Badge, message, Tag, Tooltip } from 'ant-design-vue'
+import { Badge, Tag, Tooltip } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import nginxLog from '@/api/nginx_log'
 import { TabFilter } from '@/components/TabFilter'
@@ -15,6 +15,8 @@ import IndexingSettingsModal from './components/IndexingSettingsModal.vue'
 import { useIndexProgress } from './composables/useIndexProgress'
 import IndexProgressBar from './indexing/components/IndexProgressBar.vue'
 import IndexManagement from './indexing/IndexManagement.vue'
+
+const { message } = App.useApp()
 
 const router = useRouter()
 const stdCurdRef = ref()

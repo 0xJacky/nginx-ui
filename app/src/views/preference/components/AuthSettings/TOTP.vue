@@ -2,7 +2,6 @@
 import type { RecoveryCode } from '@/api/recovery'
 import { CheckCircleOutlined } from '@ant-design/icons-vue'
 import { UseClipboard } from '@vueuse/components'
-import { message } from 'ant-design-vue'
 import otp from '@/api/otp'
 import OTPInput from '@/components/OTPInput'
 import { use2FAModal } from '@/components/TwoFA'
@@ -14,6 +13,8 @@ const { status = false } = defineProps<{
 const emit = defineEmits<{
   refresh: [void]
 }>()
+
+const { message } = App.useApp()
 
 const recoveryCodes = defineModel<RecoveryCode[]>('recoveryCodes')
 

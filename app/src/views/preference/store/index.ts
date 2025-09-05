@@ -1,10 +1,11 @@
 import type { Settings } from '@/api/settings'
-import { message } from 'ant-design-vue'
 import settings from '@/api/settings'
 import { use2FAModal } from '@/components/TwoFA'
 import { useSettingsStore } from '@/pinia'
 
 const useSystemSettingsStore = defineStore('systemSettings', () => {
+  const { message } = App.useApp()
+
   const data = ref<Settings>({
     app: {
       page_size: 10,

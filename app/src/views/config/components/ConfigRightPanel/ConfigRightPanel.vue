@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Config } from '@/api/config'
+import { useElementSize } from '@vueuse/core'
 import Basic from './Basic.vue'
 import Chat from './Chat.vue'
 
@@ -14,10 +15,21 @@ const props = defineProps<ConfigRightPanelProps>()
 const data = defineModel<Config>('data', { required: true })
 
 const activeKey = ref('basic')
+
+// Get container height for Chat component
+const containerRef = ref<HTMLElement>()
+const { height: containerHeight } = useElementSize(containerRef)
+
+// Calculate chat height (container height - tabs nav height - padding)
+const chatHeight = computed(() => {
+  const tabsNavHeight = 55
+  const padding = 48 // top and bottom padding
+  return `${containerHeight.value - tabsNavHeight - padding}px`
+})
 </script>
 
 <template>
-  <div class="right-settings-container">
+  <div ref="containerRef" class="right-settings-container">
     <ACard
       class="right-settings"
       :bordered="false"
@@ -36,7 +48,7 @@ const activeKey = ref('basic')
           />
         </ATabPane>
         <ATabPane key="chat" :tab="$gettext('Chat')">
-          <Chat v-model:data="data" />
+          <Chat v-model:data="data" :chat-height="chatHeight" />
         </ATabPane>
       </ATabs>
     </ACard>

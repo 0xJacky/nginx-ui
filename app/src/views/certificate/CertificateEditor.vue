@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
 import type { Cert } from '@/api/cert'
-import { message } from 'ant-design-vue'
 import cert from '@/api/cert'
 import { AutoCertState } from '@/constants'
 
@@ -11,6 +10,8 @@ import CertificateBasicInfo from './components/CertificateBasicInfo.vue'
 import CertificateContentEditor from './components/CertificateContentEditor.vue'
 import CertificateDownload from './components/CertificateDownload.vue'
 import { useCertStore } from './store'
+
+const { message } = App.useApp()
 
 const route = useRoute()
 const certStore = useCertStore()
@@ -45,6 +46,7 @@ onMounted(() => {
 async function save() {
   try {
     await certStore.save()
+    message.success($gettext('Save successfully'))
     errors.value = {}
     await router.push(`/certificates/${certStore.data.id}`)
   }

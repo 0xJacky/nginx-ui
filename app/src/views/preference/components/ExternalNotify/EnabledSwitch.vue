@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type { ExternalNotify } from '@/api/external_notify'
-import { message } from 'ant-design-vue'
 import externalNotify from '@/api/external_notify'
 
 const props = defineProps<{
   record: ExternalNotify
 }>()
+
+const { message } = App.useApp()
 
 const loading = ref(false)
 const enabled = defineModel<boolean>('enabled')

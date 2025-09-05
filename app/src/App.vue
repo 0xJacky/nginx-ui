@@ -59,7 +59,9 @@ loadTranslations(route)
     :locale="lang"
     :auto-insert-space-in-button="false"
   >
-    <RouterView />
+    <AApp>
+      <RouterView />
+    </AApp>
   </AConfigProvider>
 </template>
 

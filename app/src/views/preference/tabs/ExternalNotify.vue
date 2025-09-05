@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import type { ExternalNotify } from '@/api/external_notify'
 import { StdCurd } from '@uozi-admin/curd'
-import { Button, message } from 'ant-design-vue'
+import { Button } from 'ant-design-vue'
 import externalNotify, { testMessage } from '@/api/external_notify'
 import columns from '../components/ExternalNotify/columns'
+
+const { message } = App.useApp()
 
 const loadingStates = ref<Record<number, boolean>>({})
 
