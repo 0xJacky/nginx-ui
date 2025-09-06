@@ -1,5 +1,4 @@
 import type { CosyError, CosyErrorRecord } from './types'
-import { useGlobalApp } from '@/composables/useGlobalApp'
 
 const errors: Record<string, CosyErrorRecord> = {}
 

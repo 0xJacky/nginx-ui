@@ -2,7 +2,6 @@
 import type { UploadFile } from 'ant-design-vue'
 import type { RestoreOptions, RestoreResponse } from '@/api/backup'
 import { InboxOutlined } from '@ant-design/icons-vue'
-import { message } from 'ant-design-vue'
 import backup from '@/api/backup'
 
 // Define props using TypeScript interface
@@ -23,6 +22,7 @@ withDefaults(defineProps<SystemRestoreProps>(), {
 })
 
 const emit = defineEmits<SystemRestoreEmits>()
+const { message } = useGlobalApp()
 
 // Use UploadFile from ant-design-vue
 const uploadFiles = ref<UploadFile[]>([])

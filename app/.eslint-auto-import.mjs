@@ -87,6 +87,7 @@ export default {
     "useAttrs": true,
     "useCssModule": true,
     "useCssVars": true,
+    "useGlobalApp": true,
     "useId": true,
     "useLink": true,
     "useModel": true,

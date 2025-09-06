@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { Form, message } from 'ant-design-vue'
-
+import { Form } from 'ant-design-vue'
 import stream from '@/api/stream'
 import gettext from '@/gettext'
 
@@ -9,6 +8,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits(['duplicated'])
+const { message } = useGlobalApp()
 
 const visible = defineModel<boolean>('visible')
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PortInfo, PortScanRequest } from '@/api/port_scan'
-import { Badge, message } from 'ant-design-vue'
+import { Badge } from 'ant-design-vue'
 import portScan from '@/api/port_scan'
 
 interface FormData {
@@ -13,6 +13,7 @@ const formData = reactive<FormData>({
   startPort: 80,
   endPort: 8080,
 })
+const { message } = useGlobalApp()
 
 const tableData = ref<PortInfo[]>([])
 const pagination = reactive({

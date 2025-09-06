@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { message } from 'ant-design-vue'
 import config from '@/api/config'
 import use2FAModal from '@/components/TwoFA/use2FAModal'
 
@@ -10,6 +9,7 @@ const props = defineProps<{
 const name = defineModel<string>('name', { default: '' })
 
 const router = useRouter()
+const { message } = useGlobalApp()
 
 const modify = ref(false)
 const buffer = ref('')

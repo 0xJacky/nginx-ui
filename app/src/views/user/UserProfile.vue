@@ -1,7 +1,6 @@
 <script setup lang="tsx">
 import type { TwoFAStatus } from '@/api/2fa'
 import type { RecoveryCode } from '@/api/recovery'
-import { message } from 'ant-design-vue'
 import twoFA from '@/api/2fa'
 import { use2FAModal } from '@/components/TwoFA'
 import { useUserStore } from '@/pinia'
@@ -9,6 +8,7 @@ import { Passkey, RecoveryCodes, TOTP } from '@/views/preference/components/Auth
 
 const twoFAStatus = ref<TwoFAStatus>({} as TwoFAStatus)
 const recoveryCodes = ref<RecoveryCode[]>()
+const { message } = useGlobalApp()
 
 const userStore = useUserStore()
 const { info } = storeToRefs(userStore)

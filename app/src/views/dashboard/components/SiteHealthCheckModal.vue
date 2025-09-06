@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { EnhancedHealthCheckConfig, HeaderItem, SiteInfo } from '@/api/site_navigation'
 import { CloseOutlined, PlusOutlined } from '@ant-design/icons-vue'
-import { message } from 'ant-design-vue'
 import { siteNavigationApi } from '@/api/site_navigation'
 
 interface Props {
@@ -17,6 +16,7 @@ interface Emits {
 
 const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
+const { message } = useGlobalApp()
 
 const testing = ref(false)
 

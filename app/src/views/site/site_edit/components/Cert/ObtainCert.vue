@@ -2,7 +2,7 @@
 import type { AutoCertOptions } from '@/api/auto_cert'
 import type { CertificateResult } from '@/api/cert'
 import type { PrivateKeyType } from '@/constants'
-import { message, Modal } from 'ant-design-vue'
+import { Modal } from 'ant-design-vue'
 import { AutoCertChallengeMethod } from '@/api/auto_cert'
 import site from '@/api/site'
 import AutoCertStepOne from '@/components/AutoCertForm'
@@ -16,6 +16,7 @@ const props = defineProps<{
 }>()
 
 const editorStore = useSiteEditorStore()
+const { message } = useGlobalApp()
 const { ngxConfig, issuingCert, curServerDirectives, curDirectivesMap, isDefaultServer, hasWildcardServerName, hasExplicitIpAddress, isIpCertificate, needsManualIpInput } = storeToRefs(editorStore)
 
 const autoCert = defineModel<boolean>('autoCert')

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { Config } from '@/api/config'
 import { HistoryOutlined } from '@ant-design/icons-vue'
-import { message } from 'ant-design-vue'
 import { trim, trimEnd } from 'lodash'
 import config from '@/api/config'
 import ngx from '@/api/ngx'
@@ -13,6 +12,7 @@ import InspectConfig from '@/views/config/InspectConfig.vue'
 
 const route = useRoute()
 const router = useRouter()
+const { message } = useGlobalApp()
 
 const origName = ref('')
 const addMode = computed(() => !route.params.name)

@@ -2,7 +2,6 @@
 import type ReconnectingWebSocket from 'reconnecting-websocket'
 import type { SiteInfo } from '@/api/site_navigation'
 import { GlobalOutlined } from '@ant-design/icons-vue'
-import { message } from 'ant-design-vue'
 import Sortable from 'sortablejs'
 import { siteNavigationApi } from '@/api/site_navigation'
 import SiteCard from './components/SiteCard.vue'
@@ -10,6 +9,7 @@ import SiteHealthCheckModal from './components/SiteHealthCheckModal.vue'
 import SiteNavigationToolbar from './components/SiteNavigationToolbar.vue'
 
 const sites = ref<SiteInfo[]>([])
+const { message } = useGlobalApp()
 const loading = ref(true)
 const refreshing = ref(false)
 const isConnected = ref(false)

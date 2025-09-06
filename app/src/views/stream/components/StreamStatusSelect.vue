@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { SiteStatus } from '@/api/site'
 import type { CheckedType } from '@/types'
-import { message, Modal } from 'ant-design-vue'
+import { Modal } from 'ant-design-vue'
 import stream from '@/api/stream'
 import { ConfigStatus } from '@/constants'
 
@@ -17,6 +17,7 @@ const emit = defineEmits<{
 
 // Use defineModel for v-model binding
 const status = defineModel<SiteStatus>('status')
+const { message } = useGlobalApp()
 
 const [modal, ContextHolder] = Modal.useModal()
 

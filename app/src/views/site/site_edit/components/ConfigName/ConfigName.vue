@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { message } from 'ant-design-vue'
 import site from '@/api/site'
 
 const props = defineProps<{
@@ -7,6 +6,7 @@ const props = defineProps<{
 }>()
 
 const router = useRouter()
+const { message } = useGlobalApp()
 
 const modify = ref(false)
 const buffer = ref('')

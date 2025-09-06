@@ -3,7 +3,6 @@ import type { Key } from 'ant-design-vue/es/_util/type'
 import type { ConfigBackup } from '@/api/config'
 import type { GetListResponse } from '@/api/curd'
 import { datetimeRender, StdPagination } from '@uozi-admin/curd'
-import { message } from 'ant-design-vue'
 import config from '@/api/config'
 
 // Define props for the component
@@ -14,6 +13,7 @@ const props = defineProps<{
 // Define modal props using defineModel with boolean type
 const visible = defineModel<boolean>('visible')
 const currentContent = defineModel<string>('currentContent')
+const { message } = useGlobalApp()
 
 // Import DiffViewer asynchronously with loading options
 const DiffViewer = defineAsyncComponent({

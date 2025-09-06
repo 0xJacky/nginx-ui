@@ -59,6 +59,9 @@ export default defineConfig(({ mode }) => {
             '@/language': ['T'],
           },
           {
+            '@/composables/useGlobalApp': ['useGlobalApp'],
+          },
+          {
             'ant-design-vue': [
               'App',
             ],

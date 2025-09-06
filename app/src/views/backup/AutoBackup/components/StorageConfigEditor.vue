@@ -2,12 +2,12 @@
 import type { AutoBackup } from '@/api/backup'
 
 import { CheckCircleOutlined, LoadingOutlined } from '@ant-design/icons-vue'
-import { message } from 'ant-design-vue'
 import { testS3Connection } from '@/api/backup'
 
 const modelValue = defineModel<AutoBackup>({ default: reactive({
   storage_type: 'local',
 }) as AutoBackup })
+const { message } = useGlobalApp()
 
 const isLocalStorage = computed(() => modelValue.value.storage_type === 'local')
 const isS3Storage = computed(() => modelValue.value.storage_type === 's3')

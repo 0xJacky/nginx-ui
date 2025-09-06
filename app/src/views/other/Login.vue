@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { KeyOutlined, LockOutlined, UserOutlined } from '@ant-design/icons-vue'
 import { startAuthentication } from '@simplewebauthn/browser'
-import { Form, message } from 'ant-design-vue'
+import { Form } from 'ant-design-vue'
 import auth from '@/api/auth'
 import install from '@/api/install'
 import passkey from '@/api/passkey'
@@ -23,6 +23,7 @@ install.get_lock().then(async (r: { lock: boolean }) => {
 })
 
 const loading = ref(false)
+const { message } = useGlobalApp()
 const enabled2FA = ref(false)
 const refOTP = useTemplateRef('refOTP')
 const passcode = ref('')

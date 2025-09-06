@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { Namespace } from '@/api/namespace'
-import { message } from 'ant-design-vue'
 import namespaceApi from '@/api/namespace'
 import nodeApi from '@/api/node'
 import { useNodeAvailabilityStore } from '@/pinia/moudule/nodeAvailability'
@@ -12,6 +11,7 @@ defineProps<{
 const modelValue = defineModel<string | number>('activeKey')
 const nodeStore = useNodeAvailabilityStore()
 const namespaces = ref<Namespace[]>([])
+const { message } = useGlobalApp()
 
 // Load all namespaces on mount (handle pagination)
 async function loadAllNamespaces() {

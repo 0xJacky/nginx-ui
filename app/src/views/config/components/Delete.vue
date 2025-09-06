@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { message } from 'ant-design-vue'
 import config from '@/api/config'
 import NodeSelector from '@/components/NodeSelector'
 import use2FAModal from '@/components/TwoFA/use2FAModal'
@@ -7,6 +6,7 @@ import { urlJoin } from '@/lib/helper'
 import { isProtectedPath } from '@/views/config/configUtils'
 
 const emit = defineEmits(['deleted'])
+const { message } = useGlobalApp()
 const visible = ref(false)
 const confirmText = ref('')
 

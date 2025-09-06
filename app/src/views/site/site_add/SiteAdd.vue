@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { message } from 'ant-design-vue'
 import ngx from '@/api/ngx'
 import site from '@/api/site'
 import NgxConfigEditor, { DirectiveEditor, LocationEditor, useNgxConfigStore } from '@/components/NgxConfigEditor'
@@ -9,6 +8,7 @@ import EnableTLS from '../site_edit/components/EnableTLS'
 import { useSiteEditorStore } from '../site_edit/components/SiteEditor/store'
 
 const currentStep = ref(0)
+const { message } = useGlobalApp()
 
 onMounted(() => {
   init()

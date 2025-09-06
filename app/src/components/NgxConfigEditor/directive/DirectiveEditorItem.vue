@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { NgxDirective } from '@/api/ngx'
 import { DeleteOutlined, HolderOutlined, InfoCircleOutlined } from '@ant-design/icons-vue'
-import { message } from 'ant-design-vue'
 import config from '@/api/config'
 import CodeEditor from '@/components/CodeEditor'
 import { Include } from '..'
@@ -15,6 +14,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits(['remove'])
+const { message } = useGlobalApp()
 
 const directiveStore = useDirectiveStore()
 const { curIdx } = storeToRefs(directiveStore)

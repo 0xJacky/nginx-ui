@@ -1,7 +1,6 @@
 import { Modal } from 'ant-design-vue'
 import twoFA from '@/api/2fa'
 import Authorization from '@/components/TwoFA/Authorization.vue'
-import { useGlobalApp } from '@/composables/useGlobalApp'
 import { useUserStore } from '@/pinia'
 
 function use2FAModal() {

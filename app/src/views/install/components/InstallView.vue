@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { message } from 'ant-design-vue'
 import install from '@/api/install'
 import SelfCheck, { useSelfCheckStore } from '@/components/SelfCheck'
 import SystemRestoreContent from '@/components/SystemRestore'
@@ -11,6 +10,7 @@ import TimeoutAlert from './TimeoutAlert.vue'
 const installTimeout = ref(false)
 const activeTab = ref('1')
 const step = ref(1)
+const { message } = useGlobalApp()
 const selfCheckStore = useSelfCheckStore()
 const { hasError, loading } = storeToRefs(selfCheckStore)
 

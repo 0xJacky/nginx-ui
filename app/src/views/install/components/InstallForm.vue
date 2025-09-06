@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons-vue'
-import { Form, message } from 'ant-design-vue'
+import { Form } from 'ant-design-vue'
 import install from '@/api/install'
 
 const emit = defineEmits<{
   (e: 'installSuccess'): void
 }>()
+const { message } = useGlobalApp()
 
 const router = useRouter()
 const loading = ref(false)

@@ -1,12 +1,12 @@
 <script setup lang="tsx">
 import { StdCurd } from '@uozi-admin/curd'
-import { message } from 'ant-design-vue'
 import nodeApi from '@/api/node'
 import FooterToolBar from '@/components/FooterToolbar'
 import BatchUpgrader from './BatchUpgrader.vue'
 import envColumns from './nodeColumns'
 
 const route = useRoute()
+const { message } = useGlobalApp()
 const curd = ref()
 const loadingFromSettings = ref(false)
 const loadingReload = ref(false)

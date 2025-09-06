@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { SelectValue } from 'ant-design-vue/es/select'
 import type { SiteStatus } from '@/api/site'
-import { message, Modal } from 'ant-design-vue'
+import { Modal } from 'ant-design-vue'
 import site from '@/api/site'
 import { ConfigStatus } from '@/constants'
 
@@ -20,6 +20,7 @@ const status = defineModel<string>({
   default: ConfigStatus.Disabled,
 })
 
+const { message } = useGlobalApp()
 const [modal, ContextHolder] = Modal.useModal()
 
 // Computed property for select style based on current status

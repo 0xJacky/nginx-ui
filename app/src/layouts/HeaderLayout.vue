@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { DesktopOutlined, HomeOutlined, LogoutOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue'
 import { useElementSize } from '@vueuse/core'
-import { message } from 'ant-design-vue'
 import auth from '@/api/auth'
 import NginxControl from '@/components/NginxControl'
 import Notification from '@/components/Notification'
@@ -15,6 +14,7 @@ const emit = defineEmits<{
 }>()
 
 const router = useRouter()
+const { message } = useGlobalApp()
 
 function logout() {
   auth.logout().then(() => {

@@ -1,6 +1,5 @@
 <script setup lang="tsx">
 import { StdCurd } from '@uozi-admin/curd'
-import { message } from 'ant-design-vue'
 import stream from '@/api/stream'
 import NamespaceTabs from '@/components/NamespaceTabs'
 import InspectConfig from '@/views/config/InspectConfig.vue'
@@ -9,6 +8,7 @@ import StreamDuplicate from '@/views/stream/components/StreamDuplicate.vue'
 
 const route = useRoute()
 const router = useRouter()
+const { message } = useGlobalApp()
 
 const curd = ref()
 const inspect_config = ref()

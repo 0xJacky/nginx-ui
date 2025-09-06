@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { message } from 'ant-design-vue'
 import SystemRestoreContent from '@/components/SystemRestore/SystemRestoreContent.vue'
+
+const { message } = useGlobalApp()
 
 function handleRestoreSuccess(options: { restoreNginx: boolean, restoreNginxUI: boolean }): void {
   // Only redirect to login page if Nginx UI was restored

@@ -2,7 +2,6 @@
 import { CheckOutlined, CopyOutlined, InfoCircleFilled, WarningOutlined } from '@ant-design/icons-vue'
 import { UseClipboard } from '@vueuse/components'
 import backup from '@/api/backup'
-import { useGlobalApp } from '@/composables/useGlobalApp'
 
 const { message } = useGlobalApp()
 
