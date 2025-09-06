@@ -49,9 +49,15 @@ func (qb *QueryBuilderService) BuildQuery(req *SearchRequest) (query.Query, erro
 		}
 	}
 
-	// Add log path filters
+	// Add log path filters - use main_log_path for efficient log group queries or file_path for specific files
 	if len(req.LogPaths) > 0 {
-		if logPathQuery := qb.buildTermsQuery("file_path", req.LogPaths); logPathQuery != nil {
+		var fieldName string
+		if req.UseMainLogPath {
+			fieldName = "main_log_path"
+		} else {
+			fieldName = "file_path"
+		}
+		if logPathQuery := qb.buildTermsQuery(fieldName, req.LogPaths); logPathQuery != nil {
 			boolQuery.AddMust(logPathQuery)
 		}
 	}
@@ -88,6 +94,11 @@ func (qb *QueryBuilderService) BuildQuery(req *SearchRequest) (query.Query, erro
 	queryBytes, err := json.Marshal(boolQuery)
 	if err == nil {
 		logger.Debugf("Constructed Bleve Query: %s", string(queryBytes))
+	}
+	
+	// Additional debug: if using main_log_path, also log a diagnostic query without filters
+	if len(req.LogPaths) > 0 && req.UseMainLogPath {
+		logger.Debugf("DEBUG: Dashboard query using main_log_path field with path: %v", req.LogPaths)
 	}
 
 	return boolQuery, nil

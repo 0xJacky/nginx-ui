@@ -61,13 +61,25 @@ type Config struct {
 // DefaultIndexerConfig returns default indexer configuration with processor optimization
 func DefaultIndexerConfig() *Config {
 	maxProcs := runtime.GOMAXPROCS(0)
+	
+	// Dynamically scale batch size based on CPU cores
+	// Significantly increased batch sizes to maximize frontend indexing throughput
+	baseBatchSize := 15000
+	if maxProcs >= 16 {
+		baseBatchSize = 25000  // High-core systems (16+ cores) - maximum throughput
+	} else if maxProcs >= 8 {
+		baseBatchSize = 20000  // Mid-range systems (8-15 cores) - high throughput
+	} else if maxProcs >= 4 {
+		baseBatchSize = 18000  // Standard systems (4-7 cores) - good throughput
+	}
+	
 	return &Config{
 		IndexPath:         "./log-index",
-		ShardCount:        4,
-		WorkerCount:       maxProcs * 2,            // Optimized: Available processors * 2 for better utilization
-		BatchSize:         1500,                   // Optimized: Increased from 1000 to 1500 for better throughput
+		ShardCount:        max(4, maxProcs/2),      // Scale shards with CPU cores
+		WorkerCount:       maxProcs * 3,            // Optimized: 3x processors for better I/O-bound workload handling
+		BatchSize:         baseBatchSize,           // Dynamically scaled based on CPU cores
 		FlushInterval:     5 * time.Second,
-		MaxQueueSize:      15000,                  // Optimized: Increased from 10000 to 15000
+		MaxQueueSize:      baseBatchSize * 10,      // Scale queue with batch size
 		EnableCompression: true,
 		MemoryQuota:       1024 * 1024 * 1024, // 1GB
 		MaxSegmentSize:    64 * 1024 * 1024,   // 64MB
@@ -84,9 +96,18 @@ func GetOptimizedConfig(scenario string) *Config {
 	switch scenario {
 	case "high_throughput":
 		// Maximize throughput at cost of higher latency
-		base.WorkerCount = maxProcs * 2
-		base.BatchSize = 2000
-		base.MaxQueueSize = 20000
+		// Aggressively utilize multi-core CPUs
+		base.WorkerCount = maxProcs * 4  // Aggressive worker scaling for I/O-bound operations
+		if maxProcs >= 16 {
+			base.BatchSize = 5000  // Very large batches for 16+ cores
+			base.MaxQueueSize = 50000
+		} else if maxProcs >= 8 {
+			base.BatchSize = 4000  // Large batches for 8+ cores
+			base.MaxQueueSize = 40000
+		} else {
+			base.BatchSize = 3000  // Standard high-throughput batch size
+			base.MaxQueueSize = 30000
+		}
 		base.FlushInterval = 10 * time.Second
 		
 	case "low_latency":
@@ -109,9 +130,38 @@ func GetOptimizedConfig(scenario string) *Config {
 		
 	case "cpu_intensive":
 		// CPU-heavy workloads (parsing, etc.)
-		base.WorkerCount = maxProcs * 3
-		base.BatchSize = 1000
-		base.MaxQueueSize = 25000
+		// Optimized for maximum CPU utilization on multi-core systems
+		base.WorkerCount = maxProcs * 4  // Even more workers for CPU-bound tasks
+		if maxProcs >= 16 {
+			base.BatchSize = 4500  // Large batches to keep all cores busy
+			base.MaxQueueSize = 45000
+		} else if maxProcs >= 8 {
+			base.BatchSize = 3500
+			base.MaxQueueSize = 35000
+		} else {
+			base.BatchSize = 2500
+			base.MaxQueueSize = 25000
+		}
+		
+	case "max_performance":
+		// Maximum performance mode - uses all available resources
+		// WARNING: This will consume significant CPU and memory
+		base.WorkerCount = maxProcs * 5  // Maximum workers
+		base.ShardCount = max(8, maxProcs)  // More shards for parallelism
+		if maxProcs >= 16 {
+			base.BatchSize = 6000  // Very large batches for maximum throughput
+			base.MaxQueueSize = 60000
+			base.MemoryQuota = 2 * 1024 * 1024 * 1024  // 2GB
+		} else if maxProcs >= 8 {
+			base.BatchSize = 5000
+			base.MaxQueueSize = 50000
+			base.MemoryQuota = 1536 * 1024 * 1024  // 1.5GB
+		} else {
+			base.BatchSize = 4000
+			base.MaxQueueSize = 40000
+		}
+		base.FlushInterval = 15 * time.Second  // Less frequent flushes for larger batches
+		base.MaxSegmentSize = 128 * 1024 * 1024  // 128MB segments
 	}
 	
 	return base
@@ -145,7 +195,8 @@ type LogDocument struct {
 	DeviceType   string   `json:"device_type,omitempty"`
 	RequestTime  float64  `json:"request_time,omitempty"`
 	UpstreamTime *float64 `json:"upstream_time,omitempty"`
-	FilePath     string   `json:"file_path"`
+	FilePath     string   `json:"file_path"`      // Actual physical file path (e.g., /var/log/nginx/access.log.1.gz)
+	MainLogPath  string   `json:"main_log_path"` // Main log group path (e.g., /var/log/nginx/access.log)
 	Raw          string   `json:"raw"`
 }
 
@@ -385,6 +436,14 @@ func CreateLogIndexMapping() mapping.IndexMapping {
 	fileMapping.Index = true
 	fileMapping.Analyzer = "keyword"
 	docMapping.AddFieldMappingsAt("file_path", fileMapping)
+
+	// Main log path - keyword for efficient log group filtering
+	mainLogMapping := bleve.NewTextFieldMapping()
+	mainLogMapping.Store = true
+	mainLogMapping.Index = true
+	mainLogMapping.Analyzer = "keyword"
+	mainLogMapping.DocValues = true // Enable for efficient faceting and filtering
+	docMapping.AddFieldMappingsAt("main_log_path", mainLogMapping)
 
 	indexMapping.AddDocumentMapping("_default", docMapping)
 

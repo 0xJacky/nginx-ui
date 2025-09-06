@@ -5,6 +5,7 @@ import { Form } from 'ant-design-vue'
 import auth from '@/api/auth'
 import install from '@/api/install'
 import passkey from '@/api/passkey'
+import { DevDebugPanel } from '@/components/DevDebugPanel'
 import ICP from '@/components/ICP'
 import SetLanguage from '@/components/SetLanguage'
 import SwitchAppearance from '@/components/SwitchAppearance'
@@ -21,7 +22,13 @@ const loading = ref(false)
 const { message } = useGlobalApp()
 const enabled2FA = ref(false)
 
-const isDebugMode = computed(() => route.query.debug === 'true')
+// Debug data for development
+const debugData = computed(() => ({
+  loading: loading.value,
+  enabled2FA: enabled2FA.value,
+  routeQuery: route.query,
+  currentYear: thisYear,
+}))
 
 const loadingIndicator = h(LoadingOutlined, {
   style: {
@@ -343,23 +350,39 @@ async function handlePasskeyLogin() {
           </div>
         </div>
 
-        <!-- Debug Panel -->
-        <div v-if="isDebugMode" class="debug-panel">
-          <div class="debug-header">
-            🐛 Debug Panel
-          </div>
-          <div class="debug-buttons">
-            <AButton size="small" @click="toggleDebugLoading">
-              {{ loading ? 'Stop Loading' : 'Toggle Loading' }}
-            </AButton>
-            <AButton size="small" @click="simulateLoading">
-              Simulate 3s Loading
-            </AButton>
-            <AButton size="small" @click="simulate2FA">
-              {{ enabled2FA ? 'Hide 2FA' : 'Show 2FA' }}
-            </AButton>
-          </div>
-        </div>
+        <!-- Development Debug Panel -->
+        <DevDebugPanel :debug-data="debugData">
+          <template #default="{ debugData: slotDebugData }">
+            <div class="debug-item">
+              <span class="debug-label">Loading State:</span>
+              <span class="debug-value">{{ (slotDebugData as any).loading ? 'Active' : 'Inactive' }}</span>
+            </div>
+            <div class="debug-item">
+              <span class="debug-label">2FA Enabled:</span>
+              <span class="debug-value">{{ (slotDebugData as any).enabled2FA ? 'Yes' : 'No' }}</span>
+            </div>
+            <div class="debug-item">
+              <span class="debug-label">Route Query:</span>
+              <pre>{{ JSON.stringify((slotDebugData as any).routeQuery, null, 2) }}</pre>
+            </div>
+            <div class="debug-item">
+              <span class="debug-label">Quick Actions:</span>
+              <div class="mt-2">
+                <ASpace direction="vertical" :size="8">
+                  <AButton size="small" block @click="toggleDebugLoading">
+                    {{ (slotDebugData as any).loading ? 'Stop Loading' : 'Toggle Loading' }}
+                  </AButton>
+                  <AButton size="small" block @click="simulateLoading">
+                    Simulate 3s Loading
+                  </AButton>
+                  <AButton size="small" block @click="simulate2FA">
+                    {{ (slotDebugData as any).enabled2FA ? 'Hide 2FA' : 'Show 2FA' }}
+                  </AButton>
+                </ASpace>
+              </div>
+            </div>
+          </template>
+        </DevDebugPanel>
       </div>
     </ALayoutContent>
   </ALayout>
@@ -423,38 +446,5 @@ async function handlePasskeyLogin() {
       font-size: 14px;
     }
   }
-}
-
-.debug-panel {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 12px 16px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  z-index: 1000;
-  backdrop-filter: blur(8px);
-
-  .debug-header {
-    font-size: 12px;
-    font-weight: 500;
-    margin-bottom: 8px;
-    text-align: center;
-  }
-
-  .debug-buttons {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-}
-
-.dark .debug-panel {
-  background: rgba(255, 255, 255, 0.15);
-  color: rgba(255, 255, 255, 0.9);
 }
 </style>

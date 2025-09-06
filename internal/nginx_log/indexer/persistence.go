@@ -101,6 +101,11 @@ func (pm *PersistenceManager) SaveLogIndex(logIndex *model.NginxLogIndex) error 
 	// Update last indexed time
 	logIndex.LastIndexed = time.Now()
 
+	// If we are saving metadata, it implies the task is complete.
+	if logIndex.IndexDuration != nil && *logIndex.IndexDuration > 0 {
+		logIndex.IndexStatus = string(IndexStatusIndexed)
+	}
+
 	q := query.NginxLogIndex
 	savedRecord, err := q.Where(q.Path.Eq(logIndex.Path)).
 		Assign(field.Attrs(logIndex)).
@@ -395,7 +400,7 @@ func (pm *PersistenceManager) SetIndexStatus(path, status string, queuePosition 
 	// But we shouldn't use progress events for this
 	// Instead, trigger a data refresh through a different mechanism
 	// For now, we'll rely on the auto-refresh mechanism in the frontend
-	
+
 	return nil
 }
 
@@ -404,7 +409,7 @@ func (pm *PersistenceManager) GetIncompleteIndexingTasks() ([]*model.NginxLogInd
 	// Use direct database query since query fields are not generated yet
 	db := cosy.UseDB(context.Background())
 	var indexes []*model.NginxLogIndex
-	
+
 	err := db.Where("enabled = ? AND index_status IN ?", true, []string{
 		string(IndexStatusIndexing),
 		string(IndexStatusQueued),
@@ -422,7 +427,7 @@ func (pm *PersistenceManager) GetQueuedTasks() ([]*model.NginxLogIndex, error) {
 	// Use direct database query since query fields are not generated yet
 	db := cosy.UseDB(context.Background())
 	var indexes []*model.NginxLogIndex
-	
+
 	err := db.Where("enabled = ? AND index_status = ?", true, string(IndexStatusQueued)).Order("queue_position").Find(&indexes).Error
 
 	if err != nil {
@@ -437,15 +442,15 @@ func (pm *PersistenceManager) GetQueuedTasks() ([]*model.NginxLogIndex, error) {
 func (pm *PersistenceManager) ResetIndexingTasks() error {
 	// Use direct database query
 	db := cosy.UseDB(context.Background())
-	
+
 	err := db.Model(&model.NginxLogIndex{}).Where("index_status IN ?", []string{
 		string(IndexStatusIndexing),
 		string(IndexStatusQueued),
 	}).Updates(map[string]interface{}{
-		"index_status":    string(IndexStatusNotIndexed),
-		"queue_position":  0,
-		"error_message":   "",
-		"error_time":      nil,
+		"index_status":     string(IndexStatusNotIndexed),
+		"queue_position":   0,
+		"error_message":    "",
+		"error_time":       nil,
 		"index_start_time": nil,
 	}).Error
 
@@ -455,7 +460,7 @@ func (pm *PersistenceManager) ResetIndexingTasks() error {
 
 	// Clear cache
 	pm.enabledPaths = make(map[string]bool)
-	
+
 	logger.Info("Reset all incomplete indexing tasks")
 	return nil
 }
@@ -465,7 +470,7 @@ func (pm *PersistenceManager) GetIndexingTaskStats() (map[string]int64, error) {
 	// Use direct database query
 	db := cosy.UseDB(context.Background())
 	stats := make(map[string]int64)
-	
+
 	// Count by status
 	statuses := []string{
 		string(IndexStatusNotIndexed),
@@ -474,18 +479,18 @@ func (pm *PersistenceManager) GetIndexingTaskStats() (map[string]int64, error) {
 		string(IndexStatusIndexed),
 		string(IndexStatusError),
 	}
-	
+
 	for _, status := range statuses {
 		var count int64
 		err := db.Model(&model.NginxLogIndex{}).Where("enabled = ? AND index_status = ?", true, status).Count(&count).Error
-		
+
 		if err != nil {
 			return nil, fmt.Errorf("failed to count status %s: %w", status, err)
 		}
-		
+
 		stats[status] = count
 	}
-	
+
 	return stats, nil
 }
 
@@ -516,7 +521,7 @@ func (pm *PersistenceManager) DeleteAllLogIndexes() error {
 // GetLogIndexesByGroup retrieves all log index records for a given main log path
 func (pm *PersistenceManager) GetLogIndexesByGroup(mainLogPath string) ([]*model.NginxLogIndex, error) {
 	q := query.NginxLogIndex
-	
+
 	logIndexes, err := q.Where(q.MainLogPath.Eq(mainLogPath)).Find()
 	if err != nil {
 		return nil, fmt.Errorf("failed to get log indexes for group %s: %w", mainLogPath, err)

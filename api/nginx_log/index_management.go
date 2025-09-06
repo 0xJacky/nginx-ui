@@ -108,6 +108,8 @@ func RebuildIndex(c *gin.Context) {
 }
 
 // performAsyncRebuild performs the actual rebuild logic asynchronously
+// For incremental indexing of a specific log group, it preserves existing metadata
+// For full rebuilds (path == ""), it clears all metadata first
 func performAsyncRebuild(modernIndexer interface{}, path string) {
 	processingManager := event.GetProcessingStatusManager()
 
@@ -278,12 +280,9 @@ func rebuildSingleFile(modernIndexer interface{}, path string, logFileManager in
 	} else {
 		logger.Infof("Starting modern index rebuild for file: %s", path)
 
-		// Clear existing database records for this log group before rebuilding
-		if logFileManager != nil {
-			if err := logFileManager.(indexer.MetadataManager).DeleteIndexMetadataByGroup(path); err != nil {
-				logger.Warnf("Could not clean up existing DB records for log group %s: %v", path, err)
-			}
-		}
+		// NOTE: We intentionally do NOT delete existing index metadata here
+		// This allows incremental indexing to work properly with rotated logs
+		// The IndexLogGroupWithProgress method will handle updating existing records
 
 		startTime := time.Now()
 
@@ -340,6 +339,8 @@ func rebuildAllFiles(modernIndexer interface{}, logFileManager interface{}, prog
 		releaseRebuildLock(globalLockKey)
 	}()
 	
+	// For full rebuild, we clear ALL existing metadata to start fresh
+	// This is different from single file/group rebuild which preserves metadata for incremental indexing
 	if logFileManager != nil {
 		if err := logFileManager.(indexer.MetadataManager).DeleteAllIndexMetadata(); err != nil {
 			logger.Errorf("Could not clean up all old DB records before full rebuild: %v", err)

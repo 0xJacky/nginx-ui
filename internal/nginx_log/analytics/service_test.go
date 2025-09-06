@@ -597,12 +597,12 @@ func TestService_GetDashboardAnalytics_WithCardinalityCounter(t *testing.T) {
 
 	// Mock batch search calls for hourly/daily stats (simplified - return empty for test focus)
 	mockSearcher.On("Search", ctx, mock.MatchedBy(func(r *searcher.SearchRequest) bool {
-		return r.Fields != nil && len(r.Fields) == 2
+		return len(r.Fields) == 2
 	})).Return(&searcher.SearchResult{Hits: []*searcher.SearchHit{}}, nil)
 
 	// Mock URL facet search
 	mockSearcher.On("Search", ctx, mock.MatchedBy(func(r *searcher.SearchRequest) bool {
-		return r.FacetFields != nil && len(r.FacetFields) == 1 && r.FacetFields[0] == "path_exact"
+		return len(r.FacetFields) == 1 && r.FacetFields[0] == "path_exact"
 	})).Return(&searcher.SearchResult{
 		Facets: map[string]*searcher.Facet{
 			"path_exact": {
@@ -616,7 +616,7 @@ func TestService_GetDashboardAnalytics_WithCardinalityCounter(t *testing.T) {
 
 	// Mock main search result
 	mockSearcher.On("Search", ctx, mock.MatchedBy(func(r *searcher.SearchRequest) bool {
-		return r.FacetFields != nil && len(r.FacetFields) == 4 && r.FacetSize == 1000
+		return len(r.FacetFields) == 4 && r.FacetSize == 1000
 	})).Return(expectedResult, nil)
 
 	// The key test: CardinalityCounter should be called to get accurate UV count

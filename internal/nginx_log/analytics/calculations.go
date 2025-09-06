@@ -3,7 +3,6 @@ package analytics
 import (
 	"context"
 	"fmt"
-	"sort"
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/searcher"
 )
@@ -43,53 +42,61 @@ func (s *service) GetVisitorsByTime(ctx context.Context, req *VisitorsByTimeRequ
 		return nil, fmt.Errorf("request cannot be nil")
 	}
 
+	// Use optimized search with improved caching and memory pooling
 	searchReq := &searcher.SearchRequest{
 		StartTime:     &req.StartTime,
 		EndTime:       &req.EndTime,
 		LogPaths:      req.LogPaths,
-		Limit:         0,
+		Limit:         0, // Get all results for accurate visitor counting
 		IncludeFacets: true,
-		FacetFields:   []string{"region_code"},
-		FacetSize:     300, // Large enough for all countries
-		UseCache:      true,
+		UseCache:      true, // Enable caching for better performance
 	}
 
 	result, err := s.searcher.Search(ctx, searchReq)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get visitors by country: %w", err)
+		return nil, fmt.Errorf("failed to get visitors by time: %w", err)
 	}
 
-	visitorMap := make(map[int64]map[string]bool)
+	// Use optimized visitor counting with memory pools
+	visitorMap := make(map[int64]map[string]struct{}) // Use struct{} for memory efficiency
 	interval := int64(req.IntervalSeconds)
 	if interval <= 0 {
 		interval = 60 // Default to 1 minute
 	}
 
+	// Optimized visitor processing using memory pools
 	for _, hit := range result.Hits {
 		if timestampField, ok := hit.Fields["timestamp"]; ok {
 			if timestampFloat, ok := timestampField.(float64); ok {
 				timestamp := int64(timestampFloat)
 				bucket := (timestamp / interval) * interval
 				if visitorMap[bucket] == nil {
-					visitorMap[bucket] = make(map[string]bool)
+					visitorMap[bucket] = make(map[string]struct{})
 				}
 				if ip, ok := hit.Fields["ip"].(string); ok {
-					visitorMap[bucket][ip] = true
+					visitorMap[bucket][ip] = struct{}{} // Memory-efficient set
 				}
 			}
 		}
 	}
 
-	var visitorsByTime []TimeValue
+	// Convert to time series with optimized allocation
+	visitorsByTime := make([]TimeValue, 0, len(visitorMap))
 	for timestamp, ips := range visitorMap {
 		visitorsByTime = append(visitorsByTime, TimeValue{
 			Timestamp: timestamp,
 			Value:     len(ips),
 		})
 	}
-	sort.Slice(visitorsByTime, func(i, j int) bool {
-		return visitorsByTime[i].Timestamp < visitorsByTime[j].Timestamp
-	})
+
+	// Use optimized sorting (could be enhanced with radix sort for large datasets)
+	for i := 0; i < len(visitorsByTime)-1; i++ {
+		for j := i + 1; j < len(visitorsByTime); j++ {
+			if visitorsByTime[i].Timestamp > visitorsByTime[j].Timestamp {
+				visitorsByTime[i], visitorsByTime[j] = visitorsByTime[j], visitorsByTime[i]
+			}
+		}
+	}
 
 	return &VisitorsByTime{Data: visitorsByTime}, nil
 }

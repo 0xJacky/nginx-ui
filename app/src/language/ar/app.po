@@ -5,10 +5,10 @@ msgid ""
 msgstr ""
 "PO-Revision-Date: 2025-07-14 07:37+0000\n"
 "Last-Translator: mosaati <mohammed.saati@gmail.com>\n"
-"Language-Team: Arabic <https://weblate.nginxui.com/projects/nginx-ui/"
-"frontend/ar/>\n"
+"Language-Team: Arabic "
+"<https://weblate.nginxui.com/projects/nginx-ui/frontend/ar/>\n"
 "Language: ar\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
@@ -33,8 +33,7 @@ msgid "[Nginx UI] Certificate successfully revoked"
 msgstr "[Nginx UI] تم إلغاء الشهادة بنجاح"
 
 #: src/language/generate.ts:39
-msgid ""
-"[Nginx UI] Certificate was used for server, reloading server TLS certificate"
+msgid "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
 msgstr "[Nginx UI] تم استخدام الشهادة للخادم، إعادة تحميل شهادة TLS للخادم"
 
 #: src/language/generate.ts:40
@@ -110,6 +109,14 @@ msgstr "تم نسخ {label} إلى الحافظة"
 msgid "* Includes nodes from group %{groupName} and manually selected nodes"
 msgstr "* يتضمن عقدًا من مجموعة %{groupName} وعقدًا مختارة يدويًا"
 
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:168
+msgid ""
+"* Performance metrics measured on Apple M2 Pro (12-core) with 32GB RAM. "
+"Actual performance may vary based on your hardware configuration."
+msgstr ""
+"* تم قياس مقاييس الأداء على Apple M2 Pro (12 نواة) مع 32 جيجابايت من ذاكرة "
+"الوصول العشوائي. قد يختلف الأداء الفعلي بناءً على تكوين الأجهزة لديك."
+
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:804
 msgid "%{start}-%{end} of %{total} items"
 msgstr "%{start}-%{end} من %{total} عنصر"
@@ -117,6 +124,10 @@ msgstr "%{start}-%{end} من %{total} عنصر"
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:24
 msgid "1 core minimum"
 msgstr "حد أدنى نواة واحدة"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:30
+msgid "1GB RAM minimum"
+msgstr "1 جيجابايت من ذاكرة الوصول العشوائي كحد أدنى"
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:25
 msgid "2+ cores recommended"
@@ -135,10 +146,6 @@ msgstr "المصادقة الثنائية"
 msgid "2FA Settings"
 msgstr "إعدادات المصادقة الثنائية"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:30
-msgid "2GB RAM minimum"
-msgstr "2 جيجابايت من ذاكرة الوصول العشوائي كحد أدنى"
-
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:31
 msgid "4GB+ RAM recommended"
 msgstr "يوصى بذاكرة وصول عشوائي 4 جيجابايت فأكثر"
@@ -156,7 +163,7 @@ msgid "Access log path not exist"
 msgstr "مسار سجل الوصول غير موجود"
 
 #: src/components/NgxConfigEditor/LogEntry.vue:90
-#: src/routes/modules/nginx_log.ts:17 src/views/nginx_log/NginxLogList.vue:42
+#: src/routes/modules/nginx_log.ts:17 src/views/nginx_log/NginxLogList.vue:43
 msgid "Access Logs"
 msgstr "سجلات الدخول"
 
@@ -174,7 +181,7 @@ msgstr "إجراء"
 #: src/views/certificate/CertificateList/certColumns.tsx:92
 #: src/views/certificate/DNSCredential.vue:71
 #: src/views/config/configColumns.tsx:51 src/views/namespace/columns.ts:84
-#: src/views/nginx_log/NginxLogList.vue:331 src/views/node/nodeColumns.tsx:96
+#: src/views/nginx_log/NginxLogList.vue:332 src/views/node/nodeColumns.tsx:96
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:85
 #: src/views/site/site_list/columns.tsx:160 src/views/stream/columns.tsx:123
@@ -256,19 +263,23 @@ msgstr "إضافي"
 msgid "Advance Mode"
 msgstr "الوضع المتقدم"
 
-#: src/views/nginx_log/NginxLogList.vue:390
+#: src/views/nginx_log/NginxLogList.vue:391
 msgid "Advanced indexing enabled but failed to start rebuild"
 msgstr "تم تمكين الفهرسة المتقدمة ولكن فشل بدء إعادة البناء"
 
-#: src/views/nginx_log/NginxLogList.vue:381
+#: src/views/nginx_log/NginxLogList.vue:382
 msgid "Advanced indexing enabled successfully"
 msgstr "تم تمكين الفهرسة المتقدمة بنجاح"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:239
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:245
 msgid "Advanced log indexing features are free and open source for all users"
 msgstr "ميزات الفهرسة المتقدمة للسجلات مجانية ومفتوحة المصدر لجميع المستخدمين"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:187
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:56
+msgid "Advanced memory pooling system"
+msgstr "نظام تجميع الذاكرة المتقدم"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:193
 msgid "Advanced search & filtering"
 msgstr "البحث المتقدم والتصفية"
 
@@ -310,8 +321,7 @@ msgid "Any"
 msgstr "أي"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:209
-msgid ""
-"Any reachable IP address can be used with private Certificate Authorities"
+msgid "Any reachable IP address can be used with private Certificate Authorities"
 msgstr "يمكن استخدام أي عنوان IP قابل للوصول مع سلطات الشهادات الخاصة"
 
 #: src/views/preference/tabs/OpenAISettings.vue:32
@@ -432,6 +442,10 @@ msgstr "مصادقة"
 msgid "Authenticate with a passkey"
 msgstr "المصادقة باستخدام مفتاح المرور"
 
+#: src/views/other/Login.vue:259
+msgid "Authenticating..."
+msgstr "يتم المصادقة..."
+
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:122
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:96
 msgid "Author"
@@ -496,7 +510,7 @@ msgstr "AutoCert قيد التشغيل، يرجى الانتظار..."
 msgid "AutoCert is running..."
 msgstr "AutoCert قيد التشغيل..."
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:207
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:213
 msgid "Automated log rotation detection"
 msgstr "الكشف التلقائي عن تدوير السجلات"
 
@@ -585,14 +599,13 @@ msgstr "جدول النسخ الاحتياطي"
 
 #: src/components/Notification/notifications.ts:38
 msgid "Backup task %{backup_name} completed successfully, file: %{file_path}"
-msgstr ""
-"تم إنجاز مهمة النسخ الاحتياطي %{backup_name} بنجاح، الملف: %{file_path}"
+msgstr "تم إنجاز مهمة النسخ الاحتياطي %{backup_name} بنجاح، الملف: %{file_path}"
 
 #: src/components/Notification/notifications.ts:34
-msgid ""
-"Backup task %{backup_name} failed during storage upload, error: %{error}"
+msgid "Backup task %{backup_name} failed during storage upload, error: %{error}"
 msgstr ""
-"فشلت مهمة النسخ الاحتياطي %{backup_name} أثناء تحميل التخزين، الخطأ: %{error}"
+"فشلت مهمة النسخ الاحتياطي %{backup_name} أثناء تحميل التخزين، الخطأ: "
+"%{error}"
 
 #: src/components/Notification/notifications.ts:30
 msgid "Backup task %{backup_name} failed to execute, error: %{error}"
@@ -621,10 +634,6 @@ msgstr "بارك"
 #: src/views/site/site_add/SiteAdd.vue:80
 msgid "Base information"
 msgstr "المعلومات الأساسية"
-
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:46
-msgid "Based on M2 Pro (12 cores) testing"
-msgstr "بناءً على اختبار M2 Pro (12 نواة)"
 
 #: src/views/config/components/ConfigRightPanel/ConfigRightPanel.vue:41
 #: src/views/site/site_edit/components/RightPanel/RightPanel.vue:43
@@ -672,7 +681,7 @@ msgstr "المتصفح"
 msgid "Browser Statistics"
 msgstr "إحصائيات المتصفح"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:261
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:267
 msgid ""
 "By enabling advanced indexing, you acknowledge that your system meets the "
 "requirements and understand the performance implications. This will start "
@@ -691,8 +700,7 @@ msgstr "الذاكرة المؤقتة"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:177
 msgid "Cache items not accessed within this time will be removed"
-msgstr ""
-"سيتم إزالة عناصر الذاكرة المؤقتة التي لم يتم الوصول إليها خلال هذا الوقت"
+msgstr "سيتم إزالة عناصر الذاكرة المؤقتة التي لم يتم الوصول إليها خلال هذا الوقت"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:349
 msgid "Cache loader processing time threshold"
@@ -958,23 +966,23 @@ msgstr "فحص الأيقونة"
 #: src/language/generate.ts:6
 msgid ""
 "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
-"Docker Image, please make sure the docker socket is mounted like this: `-v /"
-"var/run/docker.sock:/var/run/docker.sock`. Nginx UI official image uses /var/"
-"run/docker.sock to communicate with the host Docker Engine via Docker Client "
-"API. This feature is used to control Nginx in another container and perform "
-"container replacement rather than binary replacement during OTA upgrades of "
-"Nginx UI to ensure container dependencies are also upgraded. If you don't "
-"need this feature, please add the environment variable "
+"Docker Image, please make sure the docker socket is mounted like this: `-v "
+"/var/run/docker.sock:/var/run/docker.sock`. Nginx UI official image uses "
+"/var/run/docker.sock to communicate with the host Docker Engine via Docker "
+"Client API. This feature is used to control Nginx in another container and "
+"perform container replacement rather than binary replacement during OTA "
+"upgrades of Nginx UI to ensure container dependencies are also upgraded. If "
+"you don't need this feature, please add the environment variable "
 "NGINX_UI_IGNORE_DOCKER_SOCKET=true to the container."
 msgstr ""
 "تحقق مما إذا كان /var/run/docker.sock موجودًا. إذا كنت تستخدم صورة Docker "
-"الرسمية لـ Nginx UI، يرجى التأكد من توصيل مقبس Docker بهذه الطريقة: `-v /var/"
-"run/docker.sock:/var/run/docker.sock`. تستخدم صورة Nginx UI الرسمية /var/run/"
-"docker.sock للتواصل مع محرك Docker المضيف عبر واجهة برمجة تطبيقات Docker "
-"Client. تُستخدم هذه الميزة للتحكم في Nginx في حاوية أخرى وإجراء استبدال "
-"الحاوية بدلاً من استبدال الثنائي أثناء التحديثات OTA لـ Nginx UI لضمان تحديث "
-"تبعيات الحاوية أيضًا. إذا كنت لا تحتاج إلى هذه الميزة، يرجى إضافة متغير "
-"البيئة NGINX_UI_IGNORE_DOCKER_SOCKET=true إلى الحاوية."
+"الرسمية لـ Nginx UI، يرجى التأكد من توصيل مقبس Docker بهذه الطريقة: `-v "
+"/var/run/docker.sock:/var/run/docker.sock`. تستخدم صورة Nginx UI الرسمية "
+"/var/run/docker.sock للتواصل مع محرك Docker المضيف عبر واجهة برمجة تطبيقات "
+"Docker Client. تُستخدم هذه الميزة للتحكم في Nginx في حاوية أخرى وإجراء "
+"استبدال الحاوية بدلاً من استبدال الثنائي أثناء التحديثات OTA لـ Nginx UI "
+"لضمان تحديث تبعيات الحاوية أيضًا. إذا كنت لا تحتاج إلى هذه الميزة، يرجى "
+"إضافة متغير البيئة NGINX_UI_IGNORE_DOCKER_SOCKET=true إلى الحاوية."
 
 #: src/components/SelfCheck/tasks/frontend/https-check.ts:14
 msgid ""
@@ -985,25 +993,24 @@ msgstr ""
 "استخدام ميزات Passkeys والحافظة"
 
 #: src/language/generate.ts:7
-msgid ""
-"Check if the conf.d directory is under the nginx configuration directory"
+msgid "Check if the conf.d directory is under the nginx configuration directory"
 msgstr "تحقق مما إذا كان دليل conf.d موجودًا ضمن دليل تكوين nginx"
 
 #: src/language/generate.ts:9
 msgid ""
-"Check if the nginx access log path exists. By default, this path is obtained "
-"from 'nginx -V'. If it cannot be obtained or the obtained path does not "
-"point to a valid, existing file, an error will be reported. In this case, "
-"you need to modify the configuration file to specify the access log path."
-"Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-"
-"nginx.html#accesslogpath"
+"Check if the nginx access log path exists. By default, this path is "
+"obtained from 'nginx -V'. If it cannot be obtained or the obtained path "
+"does not point to a valid, existing file, an error will be reported. In "
+"this case, you need to modify the configuration file to specify the access "
+"log path.Refer to the docs for more details: "
+"https://nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
 msgstr ""
-"تحقق مما إذا كان مسار سجل الوصول إلى nginx موجودًا. بشكل افتراضي، يتم الحصول "
-"على هذا المسار من 'nginx -V'. إذا لم يتم الحصول عليه أو إذا كان المسار الذي "
-"تم الحصول عليه لا يشير إلى ملف صالح موجود، فسيتم الإبلاغ عن خطأ. في هذه "
-"الحالة، تحتاج إلى تعديل ملف التكوين لتحديد مسار سجل الوصول. راجع الوثائق "
-"لمزيد من التفاصيل: https://nginxui.com/zh_CN/guide/config-nginx."
-"html#accesslogpath"
+"تحقق مما إذا كان مسار سجل الوصول إلى nginx موجودًا. بشكل افتراضي، يتم "
+"الحصول على هذا المسار من 'nginx -V'. إذا لم يتم الحصول عليه أو إذا كان "
+"المسار الذي تم الحصول عليه لا يشير إلى ملف صالح موجود، فسيتم الإبلاغ عن "
+"خطأ. في هذه الحالة، تحتاج إلى تعديل ملف التكوين لتحديد مسار سجل الوصول. "
+"راجع الوثائق لمزيد من التفاصيل: "
+"https://nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
 
 #: src/language/generate.ts:10
 msgid "Check if the nginx configuration directory exists"
@@ -1019,28 +1026,29 @@ msgid ""
 "from 'nginx -V'. If it cannot be obtained or the obtained path does not "
 "point to a valid, existing file, an error will be reported. In this case, "
 "you need to modify the configuration file to specify the error log path. "
-"Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-"
-"nginx.html#errorlogpath"
+"Refer to the docs for more details: "
+"https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
 msgstr ""
 "تحقق مما إذا كان مسار سجل أخطاء nginx موجودًا. بشكل افتراضي، يتم الحصول على "
 "هذا المسار من 'nginx -V'. إذا تعذر الحصول عليه أو إذا كان المسار الذي تم "
-"الحصول عليه لا يشير إلى ملف صالح موجود، فسيتم الإبلاغ عن خطأ. في هذه الحالة، "
-"تحتاج إلى تعديل ملف التكوين لتحديد مسار سجل الأخطاء. راجع الوثائق لمزيد من "
-"التفاصيل: https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
+"الحصول عليه لا يشير إلى ملف صالح موجود، فسيتم الإبلاغ عن خطأ. في هذه "
+"الحالة، تحتاج إلى تعديل ملف التكوين لتحديد مسار سجل الأخطاء. راجع الوثائق "
+"لمزيد من التفاصيل: "
+"https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
 
 #: src/language/generate.ts:8
 msgid ""
 "Check if the nginx PID path exists. By default, this path is obtained from "
 "'nginx -V'. If it cannot be obtained, an error will be reported. In this "
 "case, you need to modify the configuration file to specify the Nginx PID "
-"path.Refer to the docs for more details: https://nginxui.com/zh_CN/guide/"
-"config-nginx.html#pidpath"
+"path.Refer to the docs for more details: "
+"https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
 msgstr ""
-"تحقق مما إذا كان مسار معرف عملية Nginx موجودًا. بشكل افتراضي، يتم الحصول على "
-"هذا المسار من الأمر 'nginx -V'. إذا تعذر الحصول عليه، سيتم الإبلاغ عن خطأ. "
-"في هذه الحالة، تحتاج إلى تعديل ملف التكوين لتحديد مسار معرف عملية Nginx. "
-"راجع الوثائق لمزيد من التفاصيل: https://nginxui.com/zh_CN/guide/config-nginx."
-"html#pidpath"
+"تحقق مما إذا كان مسار معرف عملية Nginx موجودًا. بشكل افتراضي، يتم الحصول "
+"على هذا المسار من الأمر 'nginx -V'. إذا تعذر الحصول عليه، سيتم الإبلاغ عن "
+"خطأ. في هذه الحالة، تحتاج إلى تعديل ملف التكوين لتحديد مسار معرف عملية "
+"Nginx. راجع الوثائق لمزيد من التفاصيل: "
+"https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
 
 #: src/language/generate.ts:13
 msgid "Check if the nginx sbin path exists"
@@ -1068,8 +1076,8 @@ msgstr ""
 
 #: src/language/generate.ts:18
 msgid ""
-"Check if the streams-available and streams-enabled directories are under the "
-"nginx configuration directory"
+"Check if the streams-available and streams-enabled directories are under "
+"the nginx configuration directory"
 msgstr ""
 "تحقق مما إذا كانت الدلائل streams-available و streams-enabled موجودة ضمن "
 "دليل تكوين nginx"
@@ -1206,11 +1214,15 @@ msgstr "قارن المحدد"
 msgid "Compare with Current"
 msgstr "قارن مع التيار"
 
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:46
+msgid "Complete indexing with search capabilities"
+msgstr "فهرسة كاملة مع إمكانيات البحث"
+
 #: src/views/system/Licenses.vue:144
 msgid "components"
 msgstr "المكونات"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:215
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:221
 msgid "Compressed log file support"
 msgstr "دعم ملفات السجل المضغوطة"
 
@@ -1286,7 +1298,7 @@ msgstr "تأكيد الحذف"
 msgid "Confirm New Password"
 msgstr "تأكيد كلمة المرور الجديدة"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:260
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:266
 msgid "Confirmation Required"
 msgstr "مطلوب تأكيد"
 
@@ -1367,10 +1379,6 @@ msgstr "استخدام وحدة المعالجة المركزية"
 msgid "CPU usage is relatively high, consider optimizing Nginx configuration"
 msgstr "استخدام وحدة المعالجة المركزية مرتفع نسبيًا، يُنصح بتحسين تكوين Nginx"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:49
-msgid "CPU Utilization"
-msgstr "استخدام وحدة المعالجة المركزية"
-
 #: src/views/dashboard/ServerAnalytic.vue:199
 msgid "CPU:"
 msgstr "CPU:"
@@ -1428,7 +1436,7 @@ msgstr "بيانات الاعتماد"
 msgid "Cron Expression"
 msgstr "تعبير كرون"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:211
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:217
 msgid "Cross-file timeline correlation"
 msgstr "ارتباط الجدول الزمني عبر الملفات"
 
@@ -1543,8 +1551,8 @@ msgstr "النطاق الافتراضي"
 msgid "Define shared memory zone name and size, e.g. proxy_cache:10m"
 msgstr "حدد اسم منطقة الذاكرة المشتركة والحجم، على سبيل المثال proxy_cache:10m"
 
-#: src/components/LLM/LLMSessionTabs.vue:283
-#: src/components/LLM/LLMSessionTabs.vue:374
+#: src/components/LLM/LLMSessionTabs.vue:293
+#: src/components/LLM/LLMSessionTabs.vue:384
 #: src/components/NgxConfigEditor/NgxServer.vue:110
 #: src/components/NgxConfigEditor/NgxUpstream.vue:78 src/language/curd.ts:9
 #: src/views/certificate/components/RemoveCert.vue:99
@@ -1871,7 +1879,7 @@ msgstr[3] "وثائق"
 msgstr[4] "وثيقة"
 msgstr[5] "وثيقة"
 
-#: src/views/nginx_log/NginxLogList.vue:291
+#: src/views/nginx_log/NginxLogList.vue:292
 msgid "Document Count"
 msgstr "عدد المستندات"
 
@@ -1912,11 +1920,11 @@ msgid ""
 "Due to the security policies of some browsers, you cannot use passkeys on "
 "non-HTTPS websites, except when running on localhost."
 msgstr ""
-"نظرًا لسياسات الأمان لبعض المتصفحات، لا يمكنك استخدام مفاتيح المرور على مواقع "
-"الويب غير HTTPS، إلا عند التشغيل على localhost."
+"نظرًا لسياسات الأمان لبعض المتصفحات، لا يمكنك استخدام مفاتيح المرور على "
+"مواقع الويب غير HTTPS، إلا عند التشغيل على localhost."
 
-#: src/components/LLM/LLMSessionTabs.vue:277
-#: src/components/LLM/LLMSessionTabs.vue:368
+#: src/components/LLM/LLMSessionTabs.vue:287
+#: src/components/LLM/LLMSessionTabs.vue:378
 #: src/views/site/site_list/SiteDuplicate.vue:72
 #: src/views/site/site_list/SiteList.vue:86
 #: src/views/stream/components/StreamDuplicate.vue:64
@@ -1934,7 +1942,7 @@ msgstr "تم النسخ إلى المحلي بنجاح"
 msgid "Dynamic"
 msgstr "ديناميكي"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:183
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:189
 msgid "Dynamic shard management"
 msgstr "إدارة الأجزاء الديناميكية"
 
@@ -1994,7 +2002,7 @@ msgstr "تمكين"
 msgid "Enable 2FA successfully"
 msgstr "تم تفعيل المصادقة الثنائية بنجاح"
 
-#: src/views/nginx_log/NginxLogList.vue:454
+#: src/views/nginx_log/NginxLogList.vue:468
 msgid "Enable Advanced Indexing"
 msgstr "تمكين الفهرسة المتقدمة"
 
@@ -2128,11 +2136,13 @@ msgstr "تمكين دعم HTTP/3 بناءً على بروتوكول QUIC لأف�
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:85
 msgid ""
-"Enabling advanced indexing will consume system resources during log "
-"processing. Please review the requirements below."
+"Enabling advanced log indexing will consume significant computational "
+"resources including CPU and memory. Please ensure your system meets the "
+"minimum requirements before proceeding."
 msgstr ""
-"تمكين الفهرسة المتقدمة سوف يستهلك موارد النظام أثناء معالجة السجل. يرجى "
-"مراجعة المتطلبات أدناه."
+"تمكين الفهرسة المتقدمة للسجلات سيستهلك موارد حاسوبية كبيرة بما في ذلك وحدة "
+"المعالجة المركزية والذاكرة. يرجى التأكد من أن نظامك يستوفي الحد الأدنى من "
+"المتطلبات قبل المتابعة."
 
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:76
 msgid "Encrypt website with Let's Encrypt"
@@ -2167,7 +2177,7 @@ msgid "Environment variables cleaned"
 msgstr "تم تنظيف متغيرات البيئة"
 
 #: src/constants/index.ts:23 src/views/config/InspectConfig.vue:63
-#: src/views/nginx_log/NginxLogList.vue:242
+#: src/views/nginx_log/NginxLogList.vue:243
 #: src/views/notification/notificationColumns.tsx:14
 msgid "Error"
 msgstr "خطأ"
@@ -2193,17 +2203,17 @@ msgid "Error log path not exist"
 msgstr "مسار سجل الأخطاء غير موجود"
 
 #: src/components/NgxConfigEditor/LogEntry.vue:98
-#: src/routes/modules/nginx_log.ts:24 src/views/nginx_log/NginxLogList.vue:48
+#: src/routes/modules/nginx_log.ts:24 src/views/nginx_log/NginxLogList.vue:49
 msgid "Error Logs"
 msgstr "سجلات الأخطاء"
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:668
 msgid ""
-"Error logs do not support structured analysis as they contain free-form text "
-"messages."
+"Error logs do not support structured analysis as they contain free-form "
+"text messages."
 msgstr "لا تدعم سجلات الأخطاء التحليل المنظم لأنها تحتوي على رسائل نصية حرة."
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:219
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:225
 msgid "Error pattern recognition"
 msgstr "التعرف على أنماط الأخطاء"
 
@@ -2260,15 +2270,15 @@ msgstr "تصدير إكسل"
 msgid ""
 "External Account Binding HMAC Key (optional). Should be in Base64 URL "
 "encoding format."
-msgstr ""
-"مفتاح HMAC لربط الحساب الخارجي (اختياري). يجب أن يكون بتنسيق Base64 URL."
+msgstr "مفتاح HMAC لربط الحساب الخارجي (اختياري). يجب أن يكون بتنسيق Base64 URL."
 
 #: src/views/certificate/ACMEUser.vue:92
 msgid ""
-"External Account Binding Key ID (optional). Required for some ACME providers "
-"like ZeroSSL."
+"External Account Binding Key ID (optional). Required for some ACME "
+"providers like ZeroSSL."
 msgstr ""
-"معرف مفتاح الربط الحساب الخارجي (اختياري). مطلوب لبعض موفري ACME مثل ZeroSSL."
+"معرف مفتاح الربط الحساب الخارجي (اختياري). مطلوب لبعض موفري ACME مثل "
+"ZeroSSL."
 
 #: src/views/preference/tabs/NginxSettings.vue:49
 msgid "External Docker Container"
@@ -2283,7 +2293,7 @@ msgid "External Notification Test"
 msgstr "اختبار الإشعار الخارجي"
 
 #: src/views/preference/Preference.vue:58
-#: src/views/preference/tabs/ExternalNotify.vue:43
+#: src/views/preference/tabs/ExternalNotify.vue:42
 msgid "External Notify"
 msgstr "إشعار خارجي"
 
@@ -2463,7 +2473,7 @@ msgstr "فشل تنزيل ملفات الشهادة"
 msgid "Failed to enable %{msg}"
 msgstr "فشل في التفعيل %{msg}"
 
-#: src/views/nginx_log/NginxLogList.vue:400
+#: src/views/nginx_log/NginxLogList.vue:401
 msgid "Failed to enable advanced indexing"
 msgstr "فشل تمكين الفهرسة المتقدمة"
 
@@ -2647,7 +2657,7 @@ msgstr "فشل حفظ إعدادات أداء Nginx"
 msgid "Failed to save order"
 msgstr "فشل حفظ الترتيب"
 
-#: src/views/preference/tabs/ExternalNotify.vue:33
+#: src/views/preference/tabs/ExternalNotify.vue:32
 msgid "Failed to send test message"
 msgstr "فشل إرسال رسالة الاختبار"
 
@@ -2683,7 +2693,7 @@ msgstr "فشل في كتابة الملف المشفر: {0}"
 msgid "Failed to write security key file: {0}"
 msgstr "فشل في كتابة ملف مفتاح الأمان: {0}"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:173
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:179
 msgid "Features"
 msgstr "الميزات"
 
@@ -2770,16 +2780,15 @@ msgstr "للمستخدمين الصينيين"
 msgid "For Chinese user: https://cloud.nginxui.com/"
 msgstr "للمستخدمين الصين: /https://cloud.nginxui.com"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:251
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:257
 msgid "For commercial or professional use, contact"
 msgstr "للاستخدام التجاري أو المهني، يرجى الاتصال بـ"
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:670
-msgid ""
-"For error logs, please use the Raw Log Viewer for better viewing experience."
+msgid "For error logs, please use the Raw Log Viewer for better viewing experience."
 msgstr ""
-"بالنسبة لسجلات الأخطاء، يرجى استخدام عارض السجلات الخام للحصول على تجربة عرض "
-"أفضل."
+"بالنسبة لسجلات الأخطاء، يرجى استخدام عارض السجلات الخام للحصول على تجربة "
+"عرض أفضل."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:140
 msgid ""
@@ -2791,11 +2800,11 @@ msgstr ""
 
 #: src/components/AutoCertForm/AutoCertForm.vue:188
 msgid ""
-"For IP-based certificates, please specify the server IP address that will be "
-"included in the certificate."
+"For IP-based certificates, please specify the server IP address that will "
+"be included in the certificate."
 msgstr ""
-"بالنسبة للشهادات القائمة على IP، يرجى تحديد عنوان IP الخاص بالخادم الذي سيتم "
-"تضمينه في الشهادة."
+"بالنسبة للشهادات القائمة على IP، يرجى تحديد عنوان IP الخاص بالخادم الذي "
+"سيتم تضمينه في الشهادة."
 
 #: src/constants/errors/middleware.ts:4
 msgid "Form parse failed"
@@ -2829,9 +2838,9 @@ msgstr "واجهة المستخدم"
 msgid "Full Text Search"
 msgstr "بحث النص الكامل"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:203
-msgid "Full-text search with regex support"
-msgstr "بحث نصي كامل مع دعم التعبيرات النمطية"
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:209
+msgid "Full-text search support"
+msgstr "دعم البحث النصي الكامل"
 
 #: src/views/certificate/CertificateList/certColumns.tsx:30
 msgid "General Certificate"
@@ -2904,8 +2913,8 @@ msgid ""
 "gRPC health check requires server to implement gRPC Health Check service "
 "(grpc.health.v1.Health)."
 msgstr ""
-"يتطلب فحص صحة gRPC أن يقوم الخادم بتنفيذ خدمة فحص صحة gRPC (grpc.health.v1."
-"Health)."
+"يتطلب فحص صحة gRPC أن يقوم الخادم بتنفيذ خدمة فحص صحة gRPC "
+"(grpc.health.v1.Health)."
 
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:501
 msgid ""
@@ -2943,7 +2952,7 @@ msgstr "تم حفظ تكوين فحص الصحة بنجاح"
 msgid "Hide"
 msgstr "إخفاء"
 
-#: src/views/terminal/components/TerminalHeader.vue:76
+#: src/views/terminal/components/TerminalHeader.vue:85
 msgid "Hide Assistant"
 msgstr "إخفاء المساعد"
 
@@ -3051,7 +3060,7 @@ msgstr ""
 "يشمل العملية الرئيسية وعمليات العامل وعمليات التخزين المؤقت وعمليات Nginx "
 "الأخرى"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:199
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:205
 msgid "Incremental index scanning"
 msgstr "مسح فهرس تدريجي"
 
@@ -3059,7 +3068,7 @@ msgstr "مسح فهرس تدريجي"
 msgid "Index and statistics rebuild started successfully"
 msgstr "تم بدء إعادة بناء الفهرس والإحصائيات بنجاح"
 
-#: src/views/nginx_log/NginxLogList.vue:201
+#: src/views/nginx_log/NginxLogList.vue:202
 msgid "Index failed"
 msgstr "فشل الفهرسة"
 
@@ -3067,31 +3076,27 @@ msgstr "فشل الفهرسة"
 msgid "Index failed, please try rebuilding"
 msgstr "فشل الفهرسة، يرجى إعادة البناء"
 
-#: src/views/nginx_log/NginxLogList.vue:386
+#: src/views/nginx_log/NginxLogList.vue:387
 msgid "Index rebuild initiated"
 msgstr "تم بدء إعادة بناء الفهرس"
 
-#: src/views/nginx_log/NginxLogList.vue:170
+#: src/views/nginx_log/NginxLogList.vue:171
 msgid "Index Status"
 msgstr "حالة الفهرسة"
 
-#: src/views/nginx_log/NginxLogList.vue:238
+#: src/views/nginx_log/NginxLogList.vue:239
 msgid "Indexed"
 msgstr "مفهرس"
 
 #: src/views/nginx_log/indexing/components/IndexProgressBar.vue:52
-#: src/views/nginx_log/NginxLogList.vue:234
+#: src/views/nginx_log/NginxLogList.vue:235
 msgid "Indexing"
 msgstr "فهرسة"
 
 #: src/views/nginx_log/components/LoadingState.vue:33
-#: src/views/nginx_log/NginxLogList.vue:443
+#: src/views/nginx_log/NginxLogList.vue:457
 msgid "Indexing logs..."
 msgstr "جاري فهرسة السجلات..."
-
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:44
-msgid "Indexing Throughput"
-msgstr "إنتاجية الفهرسة"
 
 #: src/components/ProcessingStatus/ProcessingStatus.vue:31
 #: src/views/nginx_log/components/LoadingState.vue:71
@@ -3365,7 +3370,7 @@ msgstr "آخر فحص في"
 msgid "Last hour"
 msgstr "آخر ساعة"
 
-#: src/views/nginx_log/NginxLogList.vue:251
+#: src/views/nginx_log/NginxLogList.vue:252
 msgid "Last Indexed"
 msgstr "آخر فهرسة"
 
@@ -3511,12 +3516,12 @@ msgstr "سجل"
 #: src/language/generate.ts:23
 msgid ""
 "Log file %{log_path} is not a regular file. If you are using nginx-ui in "
-"docker container, please refer to https://nginxui.com/zh_CN/guide/config-"
-"nginx-log.html for more information."
+"docker container, please refer to "
+"https://nginxui.com/zh_CN/guide/config-nginx-log.html for more information."
 msgstr ""
 "ملف السجل %{log_path} ليس ملفًا عاديًا. إذا كنت تستخدم nginx-ui في حاوية "
-"Docker، يرجى الرجوع إلى https://nginxui.com/zh_CN/guide/config-nginx-log."
-"html لمزيد من المعلومات."
+"Docker، يرجى الرجوع إلى "
+"https://nginxui.com/zh_CN/guide/config-nginx-log.html لمزيد من المعلومات."
 
 #: src/constants/errors/nginx_log.ts:14
 msgid "Log file does not exist"
@@ -3542,7 +3547,7 @@ msgstr "فهرس السجلات غير متاح"
 msgid "Log indexing completed! Loading updated data..."
 msgstr "اكتمل فهرسة السجلات! جارٍ تحميل البيانات المحدثة..."
 
-#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:416
+#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:430
 msgid "Log List"
 msgstr "قائمة السجلات"
 
@@ -3550,11 +3555,11 @@ msgstr "قائمة السجلات"
 msgid "Log path is not under whitelist"
 msgstr "مسار السجل ليس ضمن القائمة البيضاء"
 
-#: src/routes/modules/auth.ts:14 src/views/other/Login.vue:278
+#: src/routes/modules/auth.ts:14 src/views/other/Login.vue:317
 msgid "Login"
 msgstr "تسجيل الدخول"
 
-#: src/views/other/Login.vue:79
+#: src/views/other/Login.vue:111
 msgid "Login successful"
 msgstr "تم تسجيل الدخول بنجاح"
 
@@ -3568,19 +3573,19 @@ msgstr "تدوير السجلات"
 
 #: src/views/preference/tabs/LogrotateSettings.vue:13
 msgid ""
-"Logrotate, by default, is enabled in most mainstream Linux distributions for "
-"users who install Nginx UI on the host machine, so you don't need to modify "
-"the parameters on this page. For users who install Nginx UI using Docker "
-"containers, you can manually enable this option. The crontab task scheduler "
-"of Nginx UI will execute the logrotate command at the interval you set in "
-"minutes."
+"Logrotate, by default, is enabled in most mainstream Linux distributions "
+"for users who install Nginx UI on the host machine, so you don't need to "
+"modify the parameters on this page. For users who install Nginx UI using "
+"Docker containers, you can manually enable this option. The crontab task "
+"scheduler of Nginx UI will execute the logrotate command at the interval "
+"you set in minutes."
 msgstr ""
 "بشكل افتراضي، يتم تفعيل تدوير السجلات في معظم توزيعات لينكس الرئيسية "
 "للمستخدمين الذين يقومون بتثبيت واجهة Nginx UI على الجهاز المضيف، لذا لا "
-"تحتاج إلى تعديل معايير في هذه الصفحة. بالنسبة للمستخدمين الذين يقومون بتثبيت "
-"واجهة Nginx UI باستخدام حاويات Docker، يمكنك تمكين هذا الخيار يدويًا. سيقوم "
-"مجدول المهام crontab الخاص بواجهة Nginx UI بتنفيذ أمر تدوير السجلات في "
-"الفاصل الزمني الذي تحدده بالدقائق."
+"تحتاج إلى تعديل معايير في هذه الصفحة. بالنسبة للمستخدمين الذين يقومون "
+"بتثبيت واجهة Nginx UI باستخدام حاويات Docker، يمكنك تمكين هذا الخيار "
+"يدويًا. سيقوم مجدول المهام crontab الخاص بواجهة Nginx UI بتنفيذ أمر تدوير "
+"السجلات في الفاصل الزمني الذي تحدده بالدقائق."
 
 #: src/composables/useGeoTranslation.ts:166
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:135
@@ -3728,8 +3733,8 @@ msgid "Memory and Storage"
 msgstr "الذاكرة والتخزين"
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:54
-msgid "Memory Efficiency"
-msgstr "كفاءة الذاكرة"
+msgid "Memory Design"
+msgstr "تصميم الذاكرة"
 
 #: src/views/dashboard/components/ResourceUsageCard.vue:51
 msgid "Memory Usage (RSS)"
@@ -3829,7 +3834,7 @@ msgstr "يوميًا في اليوم %{day} الساعة %{time}"
 msgid "Mozilla/5.0..."
 msgstr "Mozilla/5.0..."
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:223
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:229
 msgid "Multi-dimensional data visualization"
 msgstr "تصور البيانات متعدد الأبعاد"
 
@@ -3858,7 +3863,7 @@ msgstr "غير متاح"
 #: src/views/config/components/Delete.vue:123
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:17 src/views/namespace/columns.ts:9
-#: src/views/nginx_log/NginxLogList.vue:148 src/views/node/nodeColumns.tsx:8
+#: src/views/nginx_log/NginxLogList.vue:149 src/views/node/nodeColumns.tsx:8
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:81
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:36
 #: src/views/site/site_list/columns.tsx:30
@@ -4132,8 +4137,8 @@ msgstr "تمت استعادة تكوين Nginx UI"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:336
 msgid ""
-"Nginx UI configuration has been restored and will restart automatically in a "
-"few seconds."
+"Nginx UI configuration has been restored and will restart automatically in "
+"a few seconds."
 msgstr "تمت استعادة تكوين Nginx UI وسيتم إعادة التشغيل تلقائيًا خلال بضع ثوانٍ."
 
 #: src/language/generate.ts:30
@@ -4256,7 +4261,7 @@ msgstr "نص غير متوقع"
 msgid "Not Found"
 msgstr "غير موجود"
 
-#: src/views/nginx_log/NginxLogList.vue:226
+#: src/views/nginx_log/NginxLogList.vue:227
 msgid "Not Indexed"
 msgstr "غير مفهرس"
 
@@ -4323,13 +4328,11 @@ msgstr "عدد عمليات العامل المتزامنة، يتم الضبط 
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:314
 msgid "Number of files processed by cache loader at once"
-msgstr ""
-"عدد الملفات التي تتم معالجتها بواسطة محمل ذاكرة التخزين المؤقت في وقت واحد"
+msgstr "عدد الملفات التي تتم معالجتها بواسطة محمل ذاكرة التخزين المؤقت في وقت واحد"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:252
 msgid "Number of files processed by cache manager at once"
-msgstr ""
-"عدد الملفات التي تتم معالجتها بواسطة مدير ذاكرة التخزين المؤقت في وقت واحد"
+msgstr "عدد الملفات التي تتم معالجتها بواسطة مدير ذاكرة التخزين المؤقت في وقت واحد"
 
 #: src/composables/usePerformanceMetrics.ts:129
 #: src/composables/usePerformanceMetrics.ts:169
@@ -4379,7 +4382,7 @@ msgstr "الوثيقة الرسمية"
 msgid "Offline"
 msgstr "غير متصل"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:195
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:201
 msgid "Offline GeoIP analysis"
 msgstr "تحليل GeoIP دون اتصال"
 
@@ -4429,7 +4432,7 @@ msgstr "يُسمح فقط بملفات zip"
 msgid "Open"
 msgstr "مفتوح"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:232
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:238
 msgid "Open Source Limitation"
 msgstr "قيود المصدر المفتوح"
 
@@ -4445,11 +4448,7 @@ msgstr "نظام التشغيل"
 msgid "Operating System Statistics"
 msgstr "إحصائيات نظام التشغيل"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:51
-msgid "Optimized multi-core processing"
-msgstr "معالجة متعددة النوى محسنة"
-
-#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:287
+#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:326
 msgid "Or"
 msgstr "أو"
 
@@ -4519,6 +4518,10 @@ msgstr "عوامل"
 msgid "Params Optimization"
 msgstr "تحسين المعلمات"
 
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:49
+msgid "Parser Performance"
+msgstr "أداء المحلل"
+
 #: src/views/preference/components/AuthSettings/Passkey.vue:60
 msgid "Passkey"
 msgstr "مفتاح المرور"
@@ -4533,7 +4536,7 @@ msgstr ""
 "التعرف على الوجه أو كلمة مرور الجهاز أو رقم التعريف الشخصي. يمكن استخدامها "
 "كبديل لكلمة المرور أو كطريقة للمصادقة الثنائية."
 
-#: src/views/other/Login.vue:239 src/views/user/userColumns.tsx:16
+#: src/views/other/Login.vue:278 src/views/user/userColumns.tsx:16
 msgid "Password"
 msgstr "كلمة المرور"
 
@@ -4563,7 +4566,7 @@ msgstr "كلمات المرور غير متطابقة"
 #: src/views/config/components/ConfigRightPanel/Basic.vue:41
 #: src/views/config/components/Delete.vue:124
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:420
-#: src/views/nginx_log/NginxLogList.vue:157
+#: src/views/nginx_log/NginxLogList.vue:158
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:519
 msgid "Path"
 msgstr "مسار"
@@ -4613,10 +4616,6 @@ msgstr "خطأ في تنفيذ ترقية النواة"
 msgid "Performance"
 msgstr "الأداء"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:84
-msgid "Performance Impact Notice"
-msgstr "إشعار تأثير الأداء"
-
 #: src/views/dashboard/NginxDashBoard.vue:207
 msgid "Performance Metrics"
 msgstr "مقاييس الأداء"
@@ -4657,8 +4656,7 @@ msgstr "الرجاء إدخال"
 msgid ""
 "Please enter a name for the passkey you wish to create and click the OK "
 "button below."
-msgstr ""
-"يرجى إدخال اسم لمفتاح المرور الذي ترغب في إنشائه ثم انقر على زر موافق أدناه."
+msgstr "يرجى إدخال اسم لمفتاح المرور الذي ترغب في إنشائه ثم انقر على زر موافق أدناه."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:98
 msgid "Please enter a valid IPv4 address (0-255 per octet)"
@@ -4718,8 +4716,8 @@ msgstr ""
 #: src/components/Notification/notifications.ts:194
 #: src/language/constants.ts:59
 msgid ""
-"Please generate new recovery codes in the preferences immediately to prevent "
-"lockout."
+"Please generate new recovery codes in the preferences immediately to "
+"prevent lockout."
 msgstr "يرجى إنشاء رموز استرداد جديدة في التفضيلات على الفور لمنع الإغلاق."
 
 #: src/views/config/components/ConfigRightPanel/Basic.vue:27
@@ -4747,11 +4745,11 @@ msgstr "يرجى إدخال الاسم، سيتم استخدامه كاسم ال
 msgid "Please input your E-mail!"
 msgstr "يرجى إدخال بريدك الإلكتروني!"
 
-#: src/views/install/components/InstallForm.vue:41 src/views/other/Login.vue:48
+#: src/views/install/components/InstallForm.vue:41 src/views/other/Login.vue:80
 msgid "Please input your password!"
 msgstr "يرجى إدخال كلمة المرور الخاصة بك!"
 
-#: src/views/install/components/InstallForm.vue:31 src/views/other/Login.vue:42
+#: src/views/install/components/InstallForm.vue:31 src/views/other/Login.vue:74
 msgid "Please input your username!"
 msgstr "يرجى إدخال اسم المستخدم الخاص بك!"
 
@@ -4761,8 +4759,7 @@ msgid "Please log in."
 msgstr "الرجاء تسجيل الدخول."
 
 #: src/views/certificate/DNSCredential.vue:102
-msgid ""
-"Please note that the unit of time configurations below are all in seconds."
+msgid "Please note that the unit of time configurations below are all in seconds."
 msgstr "يرجى ملاحظة أن تكوين وحدات الوقت أدناه كلها بالثواني."
 
 #: src/views/install/components/InstallView.vue:102
@@ -4870,6 +4867,10 @@ msgstr "معلومات العملية"
 msgid "Processing {count}/{total}"
 msgstr "جاري المعالجة {count}/{total}"
 
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:44
+msgid "Production Pipeline"
+msgstr "خط الإنتاج"
+
 #: src/language/constants.ts:3
 msgid "Prohibit changing root password in demo"
 msgstr "حظر تغيير كلمة مرور root في العرض التوضيحي"
@@ -4893,7 +4894,8 @@ msgstr "البروتوكول"
 #: src/views/preference/tabs/ServerSettings.vue:47
 msgid ""
 "Protocol configuration only takes effect when directly connecting. If using "
-"reverse proxy, please configure the protocol separately in the reverse proxy."
+"reverse proxy, please configure the protocol separately in the reverse "
+"proxy."
 msgstr ""
 "إعدادات البروتوكول تتأثر فقط عند الاتصال المباشر. إذا كنت تستخدم خادم وكيل "
 "عكسي، يرجى تكوين البروتوكول بشكل منفصل في خادم الوكيل العكسي."
@@ -4934,9 +4936,9 @@ msgstr "رقم الأمن العام"
 msgid "PV"
 msgstr "زيارات الصفحة"
 
-#: src/views/nginx_log/NginxLogList.vue:207
 #: src/views/nginx_log/NginxLogList.vue:208
-#: src/views/nginx_log/NginxLogList.vue:230
+#: src/views/nginx_log/NginxLogList.vue:209
+#: src/views/nginx_log/NginxLogList.vue:231
 msgid "Queued"
 msgstr "في قائمة الانتظار"
 
@@ -4967,11 +4969,11 @@ msgstr "طلبات القراءة"
 msgid "Reads"
 msgstr "يقرأ"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:191
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:197
 msgid "Real-time analytics dashboard"
 msgstr "لوحة تحليلات في الوقت الفعلي"
 
-#: src/views/nginx_log/NginxLogList.vue:481
+#: src/views/nginx_log/NginxLogList.vue:495
 msgid "Rebuild"
 msgstr "إعادة بناء"
 
@@ -5137,8 +5139,8 @@ msgstr "إزالة بنجاح"
 msgid "Removed successfully"
 msgstr "تمت الإزالة بنجاح"
 
-#: src/components/LLM/LLMSessionTabs.vue:273
-#: src/components/LLM/LLMSessionTabs.vue:364
+#: src/components/LLM/LLMSessionTabs.vue:283
+#: src/components/LLM/LLMSessionTabs.vue:374
 #: src/components/NgxConfigEditor/NgxUpstream.vue:75
 #: src/views/config/components/ConfigName.vue:51
 #: src/views/config/components/Rename.vue:56
@@ -5280,6 +5282,10 @@ msgid ""
 msgstr ""
 "حجم مجموعة المقيم: الذاكرة الفعلية المقيمة في الذاكرة المادية، بما في ذلك "
 "ذاكرة المكتبة المشتركة، والتي سيتم حسابها بشكل متكرر للعديد من العمليات"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:84
+msgid "Resource Usage Warning"
+msgstr "تحذير استخدام الموارد"
 
 #: src/composables/usePerformanceMetrics.ts:109
 #: src/views/dashboard/components/PerformanceTablesCard.vue:69
@@ -5767,19 +5773,19 @@ msgstr "الإعدادات"
 
 #: src/constants/errors/nginx_log.ts:8
 msgid ""
-"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://nginxui."
-"com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.AccessLogPath is empty, refer to "
+"https://nginxui.com/guide/config-nginx.html for more information"
 msgstr ""
-"إعدادات.Settings.NginxLogSettings.AccessLogPath فارغة، راجع https://nginxui."
-"com/guide/config-nginx.html لمزيد من المعلومات"
+"إعدادات.Settings.NginxLogSettings.AccessLogPath فارغة، راجع "
+"https://nginxui.com/guide/config-nginx.html لمزيد من المعلومات"
 
 #: src/constants/errors/nginx_log.ts:7
 msgid ""
-"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://nginxui."
-"com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.ErrorLogPath is empty, refer to "
+"https://nginxui.com/guide/config-nginx.html for more information"
 msgstr ""
-"إعدادات.Settings.NginxLogSettings.ErrorLogPath فارغة، راجع https://nginxui."
-"com/guide/config-nginx.html لمزيد من المعلومات"
+"إعدادات.Settings.NginxLogSettings.ErrorLogPath فارغة، راجع "
+"https://nginxui.com/guide/config-nginx.html لمزيد من المعلومات"
 
 #: src/views/install/components/InstallView.vue:65
 msgid "Setup your Nginx UI"
@@ -5793,13 +5799,17 @@ msgstr "منطقة الذاكرة المشتركة"
 msgid "Show"
 msgstr "عرض"
 
-#: src/views/terminal/components/TerminalHeader.vue:76
+#: src/views/terminal/components/TerminalHeader.vue:85
 msgid "Show Assistant"
 msgstr "إظهار المساعد"
 
-#: src/views/other/Login.vue:296
+#: src/views/other/Login.vue:335
 msgid "Sign in with a passkey"
 msgstr "تسجيل الدخول باستخدام مفتاح المرور"
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:51
+msgid "SIMD-optimized stream processing"
+msgstr "معالجة تيار مُحسّنة باستخدام SIMD"
 
 #: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:48
 msgid "Single Directive"
@@ -5946,7 +5956,7 @@ msgstr "مسار مفتاح SSL"
 msgid "SSL key path is required when HTTPS is enabled"
 msgstr "مسار مفتاح SSL مطلوب عند تمكين HTTPS"
 
-#: src/views/other/Login.vue:253
+#: src/views/other/Login.vue:292
 msgid "SSO Login"
 msgstr "تسجيل الدخول عبر SSO"
 
@@ -6074,9 +6084,9 @@ msgstr "الأحد"
 #: src/components/SelfCheck/tasks/frontend/websocket.ts:13
 msgid ""
 "Support communication with the backend through the WebSocket protocol. If "
-"your Nginx UI is being used via an Nginx reverse proxy, please refer to this "
-"link to write the corresponding configuration file: https://nginxui.com/"
-"guide/nginx-proxy-example.html"
+"your Nginx UI is being used via an Nginx reverse proxy, please refer to "
+"this link to write the corresponding configuration file: "
+"https://nginxui.com/guide/nginx-proxy-example.html"
 msgstr ""
 "دعم الاتصال مع الخلفية من خلال بروتوكول WebSocket. إذا كنت تستخدم واجهة "
 "Nginx عبر وكيل عكسي لـ Nginx، يرجى الرجوع إلى هذا الرابط لكتابة ملف التكوين "
@@ -6229,7 +6239,7 @@ msgid "Terminal Start Command"
 msgstr "أمر البدء في المحطة الطرفية"
 
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:638
-#: src/views/preference/tabs/ExternalNotify.vue:58
+#: src/views/preference/tabs/ExternalNotify.vue:57
 msgid "Test"
 msgstr "اختبار"
 
@@ -6242,7 +6252,7 @@ msgid "Test failed: Unable to perform health check"
 msgstr "فشل الاختبار: تعذر إجراء فحص الحالة"
 
 #: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:53
-#: src/views/preference/tabs/ExternalNotify.vue:29
+#: src/views/preference/tabs/ExternalNotify.vue:28
 msgid "Test message sent successfully"
 msgstr "تم إرسال رسالة الاختبار بنجاح"
 
@@ -6267,8 +6277,7 @@ msgstr ""
 msgid ""
 "The ICP Number should only contain letters, unicode, numbers, hyphens, "
 "dashes, colons, and dots."
-msgstr ""
-"يجب أن يحتوي رقم ICP على أحرف، يونيكود، أرقام، شرطات، نقاط، ونقطتين فقط."
+msgstr "يجب أن يحتوي رقم ICP على أحرف، يونيكود، أرقام، شرطات، نقاط، ونقطتين فقط."
 
 #: src/views/certificate/components/CertificateContentEditor.vue:115
 msgid "The input is not a SSL Certificate"
@@ -6280,10 +6289,11 @@ msgstr "المدخل ليس مفتاح شهادة SSL"
 
 #: src/constants/errors/nginx_log.ts:2
 msgid ""
-"The log path is not under the paths in settings.NginxSettings.LogDirWhiteList"
+"The log path is not under the paths in "
+"settings.NginxSettings.LogDirWhiteList"
 msgstr ""
-"مسار السجل ليس ضمن المسارات الموجودة في settings.NginxSettings."
-"LogDirWhiteList"
+"مسار السجل ليس ضمن المسارات الموجودة في "
+"settings.NginxSettings.LogDirWhiteList"
 
 #: src/views/preference/tabs/OpenAISettings.vue:23
 #: src/views/preference/tabs/OpenAISettings.vue:89
@@ -6295,8 +6305,7 @@ msgstr ""
 "فقط."
 
 #: src/views/preference/tabs/OpenAISettings.vue:90
-msgid ""
-"The model used for code completion, if not set, the chat model will be used."
+msgid "The model used for code completion, if not set, the chat model will be used."
 msgstr ""
 "النموذج المستخدم لإكمال التعليمات البرمجية، إذا لم يتم تعيينه، سيتم استخدام "
 "نموذج الدردشة."
@@ -6305,8 +6314,7 @@ msgstr ""
 msgid ""
 "The node name should only contain letters, unicode, numbers, hyphens, "
 "dashes, colons, and dots."
-msgstr ""
-"يجب أن يحتوي اسم العقدة على أحرف، يونيكود، أرقام، شرطات، نقاط، ونقطتين فقط."
+msgstr "يجب أن يحتوي اسم العقدة على أحرف، يونيكود، أرقام، شرطات، نقاط، ونقطتين فقط."
 
 #: src/views/site/site_add/SiteAdd.vue:96
 msgid "The parameter of server_name is required"
@@ -6412,14 +6420,13 @@ msgid "This field should not be empty"
 msgstr "يجب ألا يكون هذا الحقل فارغًا"
 
 #: src/constants/form_errors.ts:6
-msgid ""
-"This field should only contain letters, unicode characters, numbers, and -_."
+msgid "This field should only contain letters, unicode characters, numbers, and -_."
 msgstr "يجب أن يحتوي هذا الحقل على حروف وأحرف يونيكود وأرقام و-_. فقط."
 
 #: src/language/curd.ts:46
 msgid ""
-"This field should only contain letters, unicode characters, numbers, and -"
-"_./:"
+"This field should only contain letters, unicode characters, numbers, and "
+"-_./:"
 msgstr "يجب أن يحتوي هذا الحقل فقط على أحرف وأحرف يونيكود وأرقام و -_./:"
 
 #: src/components/Notification/notifications.ts:94
@@ -6431,14 +6438,14 @@ msgid ""
 "This module provides Nginx request statistics, connection count, etc. data. "
 "After enabling it, you can view performance statistics"
 msgstr ""
-"توفر هذه الوحدة إحصائيات طلبات Nginx وعدد الاتصالات وما إلى ذلك من البيانات. "
-"بعد تمكينها، يمكنك عرض إحصائيات الأداء"
+"توفر هذه الوحدة إحصائيات طلبات Nginx وعدد الاتصالات وما إلى ذلك من "
+"البيانات. بعد تمكينها، يمكنك عرض إحصائيات الأداء"
 
 #: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:25
 msgid "This month"
 msgstr "هذا الشهر"
 
-#: src/views/preference/tabs/ExternalNotify.vue:17
+#: src/views/preference/tabs/ExternalNotify.vue:16
 msgid "This notification is disabled"
 msgstr "هذا الإشعار معطل"
 
@@ -6452,9 +6459,9 @@ msgstr ""
 
 #: src/components/AutoCertForm/AutoCertForm.vue:128
 msgid ""
-"This site is configured as a default server (default_server) for HTTPS (port "
-"443). IP certificates require Certificate Authority (CA) support and may not "
-"be available with all ACME providers."
+"This site is configured as a default server (default_server) for HTTPS "
+"(port 443). IP certificates require Certificate Authority (CA) support and "
+"may not be available with all ACME providers."
 msgstr ""
 "تم تكوين هذا الموقع كخادم افتراضي (default_server) لـ HTTPS (المنفذ 443). "
 "تتطلب شهادات IP دعمًا من سلطة الشهادات (CA) وقد لا تكون متاحة مع جميع موفري "
@@ -6462,8 +6469,8 @@ msgstr ""
 
 #: src/components/AutoCertForm/AutoCertForm.vue:132
 msgid ""
-"This site uses wildcard server name (_) which typically indicates an IP-"
-"based certificate. IP certificates require Certificate Authority (CA) "
+"This site uses wildcard server name (_) which typically indicates an "
+"IP-based certificate. IP certificates require Certificate Authority (CA) "
 "support and may not be available with all ACME providers."
 msgstr ""
 "يستخدم هذا الموقع اسم خادم شامل (_) والذي يشير عادةً إلى شهادة قائمة على "
@@ -6513,12 +6520,11 @@ msgid ""
 "This will restore configuration files and database. Nginx UI will restart "
 "after the restoration is complete."
 msgstr ""
-"سيؤدي هذا إلى استعادة ملفات التكوين وقاعدة البيانات. سيعاد تشغيل واجهة Nginx "
-"بعد اكتمال الاستعادة."
+"سيؤدي هذا إلى استعادة ملفات التكوين وقاعدة البيانات. سيعاد تشغيل واجهة "
+"Nginx بعد اكتمال الاستعادة."
 
 #: src/views/node/BatchUpgrader.vue:186
-msgid ""
-"This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
+msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr "سيتم ترقية أو إعادة تثبيت Nginx UI على %{nodeNames} إلى %{version}."
 
 #: src/views/preference/tabs/AuthSettings.vue:89
@@ -6534,7 +6540,7 @@ msgstr "الخميس"
 msgid "Time"
 msgstr "الوقت"
 
-#: src/views/nginx_log/NginxLogList.vue:304
+#: src/views/nginx_log/NginxLogList.vue:305
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:689
 msgid "Time Range"
 msgstr "نطاق الوقت"
@@ -6589,8 +6595,8 @@ msgstr ""
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:15
 msgid ""
 "To make sure the certification auto-renewal can work normally, we need to "
-"add a location which can proxy the request from authority to backend, and we "
-"need to save this file and reload the Nginx. Are you sure you want to "
+"add a location which can proxy the request from authority to backend, and "
+"we need to save this file and reload the Nginx. Are you sure you want to "
 "continue?"
 msgstr ""
 "لضمان عمل تجديد الشهادة التلقائي بشكل طبيعي، نحتاج إلى إضافة موقع يمكنه "
@@ -6603,9 +6609,9 @@ msgid ""
 "provide an OpenAI-compatible API endpoint, so just set the baseUrl to your "
 "local API."
 msgstr ""
-"لاستخدام نموذج كبير محلي، قم بنشره باستخدام ollama أو vllm أو lmdeploy. توفر "
-"هذه الأدوات نقطة نهاية API متوافقة مع OpenAI، لذا ما عليك سوى تعيين baseUrl "
-"إلى API المحلي الخاص بك."
+"لاستخدام نموذج كبير محلي، قم بنشره باستخدام ollama أو vllm أو lmdeploy. "
+"توفر هذه الأدوات نقطة نهاية API متوافقة مع OpenAI، لذا ما عليك سوى تعيين "
+"baseUrl إلى API المحلي الخاص بك."
 
 #: src/views/dashboard/NginxDashBoard.vue:57
 msgid "Toggle failed"
@@ -6732,7 +6738,7 @@ msgstr "يتطلب المصادقة الثنائية"
 #: src/views/certificate/CertificateList/certColumns.tsx:24
 #: src/views/config/components/Delete.vue:122
 #: src/views/dashboard/components/ModulesTable.vue:83
-#: src/views/nginx_log/NginxLogList.vue:139
+#: src/views/nginx_log/NginxLogList.vue:140
 #: src/views/notification/notificationColumns.tsx:8
 #: src/views/preference/components/ExternalNotify/columns.tsx:19
 msgid "Type"
@@ -6892,7 +6898,7 @@ msgstr "المستخدم لم يتم تفعيل OTP كعامل ثنائي"
 msgid "User Profile"
 msgstr "ملف المستخدم"
 
-#: src/views/other/Login.vue:229 src/views/user/userColumns.tsx:7
+#: src/views/other/Login.vue:268 src/views/user/userColumns.tsx:7
 #: src/views/user/UserProfile.vue:127 src/views/user/UserProfile.vue:131
 msgid "Username"
 msgstr "اسم المستخدم"
@@ -6940,7 +6946,7 @@ msgstr "تحقق من متطلبات النظام"
 msgid "Version"
 msgstr "إصدار"
 
-#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:470
+#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:484
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:108
 #: src/views/system/Licenses.vue:180 src/views/system/Licenses.vue:215
 #: src/views/system/Licenses.vue:250
@@ -6997,8 +7003,8 @@ msgid ""
 "you have a valid backup file and security token, and carefully select what "
 "to restore."
 msgstr ""
-"تحذير: ستقوم عملية الاستعادة بالكتابة فوق التكوينات الحالية. تأكد من أن لديك "
-"ملف نسخ احتياطي صالحًا ورمزًا أمنيًا، واختر بعناية ما تريد استعادته."
+"تحذير: ستقوم عملية الاستعادة بالكتابة فوق التكوينات الحالية. تأكد من أن "
+"لديك ملف نسخ احتياطي صالحًا ورمزًا أمنيًا، واختر بعناية ما تريد استعادته."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:103
 msgid ""
@@ -7010,7 +7016,7 @@ msgstr ""
 "Encrypt إصدار شهادات لعناوين IP الخاصة. استخدم عنوان IP عام أو فكر في "
 "استخدام سلطة تصديق خاصة."
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:245
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:251
 msgid "We do not accept any feature requests"
 msgstr "نحن لا نقبل أي طلبات ميزات"
 
@@ -7022,8 +7028,8 @@ msgstr "سنضيف سجل أو أكثر من سجلات TXT إلى سجلات DN
 
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:142
 msgid ""
-"We will remove the HTTPChallenge configuration from this file and reload the "
-"Nginx. Are you sure you want to continue?"
+"We will remove the HTTPChallenge configuration from this file and reload "
+"the Nginx. Are you sure you want to continue?"
 msgstr ""
 "سنقوم بإزالة تكوين HTTPChallenge من هذا الملف وإعادة تحميل Nginx. هل أنت "
 "متأكد أنك تريد المتابعة؟"
@@ -7076,8 +7082,8 @@ msgid ""
 "When you enable/disable, delete, or save this site, the nodes set in the "
 "namespace and the nodes selected below will be synchronized."
 msgstr ""
-"عند تمكين/تعطيل أو حذف أو حفظ هذا الموقع، سيتم مزامنة العقد المحددة في مساحة "
-"الاسم والعقد المحددة أدناه."
+"عند تمكين/تعطيل أو حذف أو حفظ هذا الموقع، سيتم مزامنة العقد المحددة في "
+"مساحة الاسم والعقد المحددة أدناه."
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:141
 msgid ""
@@ -7145,13 +7151,13 @@ msgstr "كتابة الشهادة إلى القرص"
 msgid "Yes"
 msgstr "نعم"
 
-#: src/views/terminal/Terminal.vue:163
+#: src/views/terminal/Terminal.vue:201
 msgid ""
-"You are accessing this terminal over an insecure HTTP connection on a non-"
-"localhost domain. This may expose sensitive information."
+"You are accessing this terminal over an insecure HTTP connection on a "
+"non-localhost domain. This may expose sensitive information."
 msgstr ""
-"أنت تتصل بهذا الطرف عبر اتصال HTTP غير آمن في نطاق غير محلي. قد يؤدي هذا إلى "
-"كشف معلومات حساسة."
+"أنت تتصل بهذا الطرف عبر اتصال HTTP غير آمن في نطاق غير محلي. قد يؤدي هذا "
+"إلى كشف معلومات حساسة."
 
 #: src/constants/errors/config.ts:8
 msgid "You are not allowed to delete a file outside of the nginx config path"
@@ -7180,8 +7186,7 @@ msgid ""
 msgstr "لم تقم بتكوين إعدادات Webauthn، لذا لا يمكنك إضافة مفتاح مرور."
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:82
-msgid ""
-"You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
+msgid "You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
 msgstr ""
 "لم تقم بتمكين المصادقة الثنائية بعد. يرجى تمكين المصادقة الثنائية لإنشاء "
 "رموز الاسترداد."
@@ -7207,19 +7212,30 @@ msgstr "رموزك القديمة لن تعمل بعد الآن."
 msgid "Your passkeys"
 msgstr "مفاتيح المرور الخاصة بك"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:179
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:185
 msgid "Zero-allocation pipeline"
 msgstr "خط أنابيب بدون تخصيص"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:56
-msgid "Zero-allocation pipeline optimization"
-msgstr "تحسين خط الأنابيب بدون تخصيص"
+#~ msgid "Based on M2 Pro (12 cores) testing"
+#~ msgstr "بناءً على اختبار M2 Pro (12 نواة)"
+
+#~ msgid "CPU Utilization"
+#~ msgstr "استخدام وحدة المعالجة المركزية"
+
+#~ msgid "Indexing Throughput"
+#~ msgstr "إنتاجية الفهرسة"
+
+#~ msgid "Memory Efficiency"
+#~ msgstr "كفاءة الذاكرة"
+
+#~ msgid "Performance Impact Notice"
+#~ msgstr "إشعار تأثير الأداء"
+
+#~ msgid "Zero-allocation pipeline optimization"
+#~ msgstr "تحسين خط الأنابيب بدون تخصيص"
 
 #~ msgid "Ask ChatGPT for Help"
 #~ msgstr "اطلب المساعدة من ChatGPT"
-
-#~ msgid "Authentication Settings"
-#~ msgstr "إعدادات المصادقة"
 
 #~ msgid "Geographic mapping & insights"
 #~ msgstr "رسم الخرائط الجغرافية والرؤى"
@@ -7347,14 +7363,13 @@ msgstr "تحسين خط الأنابيب بدون تخصيص"
 
 #~ msgid ""
 #~ "Support communication with the backend through the Server-Sent Events "
-#~ "protocol. If your Nginx UI is being used via an Nginx reverse proxy, "
-#~ "please refer to this link to write the corresponding configuration file: "
+#~ "protocol. If your Nginx UI is being used via an Nginx reverse proxy, please "
+#~ "refer to this link to write the corresponding configuration file: "
 #~ "https://nginxui.com/guide/nginx-proxy-example.html"
 #~ msgstr ""
-#~ "دعم الاتصال مع الخلفية من خلال بروتوكول Server-Sent Events. إذا كنت "
-#~ "تستخدم واجهة Nginx UI عبر وكيل عكسي لـ Nginx، يرجى الرجوع إلى هذا الرابط "
-#~ "لكتابة ملف التكوين المقابل: https://nginxui.com/guide/nginx-proxy-example."
-#~ "html"
+#~ "دعم الاتصال مع الخلفية من خلال بروتوكول Server-Sent Events. إذا كنت تستخدم "
+#~ "واجهة Nginx UI عبر وكيل عكسي لـ Nginx، يرجى الرجوع إلى هذا الرابط لكتابة "
+#~ "ملف التكوين المقابل: https://nginxui.com/guide/nginx-proxy-example.html"
 
 #~ msgid "If left blank, the default CA Dir will be used."
 #~ msgstr "إذا تُرك فارغًا، سيتم استخدام دليل CA الافتراضي."
@@ -7445,12 +7460,12 @@ msgstr "تحسين خط الأنابيب بدون تخصيص"
 
 #~ msgid ""
 #~ "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
-#~ "Docker Image, please make sure the docker socket is mounted like this: `-"
-#~ "v /var/run/docker.sock:/var/run/docker.sock`."
+#~ "Docker Image, please make sure the docker socket is mounted like this: `-v "
+#~ "/var/run/docker.sock:/var/run/docker.sock`."
 #~ msgstr ""
 #~ "تحقق مما إذا كان /var/run/docker.sock موجودًا. إذا كنت تستخدم صورة Docker "
-#~ "الرسمية لـ Nginx UI، يرجى التأكد من أن مقبس Docker مثبت بهذه الطريقة: `-"
-#~ "v /var/run/docker.sock:/var/run/docker.sock`."
+#~ "الرسمية لـ Nginx UI، يرجى التأكد من أن مقبس Docker مثبت بهذه الطريقة: `-v "
+#~ "/var/run/docker.sock:/var/run/docker.sock`."
 
 #~ msgid "Check if the nginx access log path exists"
 #~ msgstr "تحقق مما إذا كان مسار سجل الوصول لـ nginx موجودًا"
@@ -7486,8 +7501,8 @@ msgstr "تحسين خط الأنابيب بدون تخصيص"
 
 #, fuzzy
 #~ msgid ""
-#~ "When you enable/disable, delete, or save this stream, the nodes set in "
-#~ "the Node Group and the nodes selected below will be synchronized."
+#~ "When you enable/disable, delete, or save this stream, the nodes set in the "
+#~ "Node Group and the nodes selected below will be synchronized."
 #~ msgstr ""
 #~ "عند تفعيل/تعطيل، حذف، أو حفظ هذا الموقع، سيتم مزامنة العقد المحددة في فئة "
 #~ "الموقع والعقد المحددة أدناه."
@@ -7550,15 +7565,12 @@ msgstr "تحسين خط الأنابيب بدون تخصيص"
 #~ msgid "Please upgrade the remote Nginx UI to the latest version"
 #~ msgstr "يرجى ترقية واجهة Nginx البعيدة إلى أحدث إصدار"
 
-#~ msgid ""
-#~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: "
-#~ "%{resp}"
+#~ msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: %{resp}"
 #~ msgstr ""
 #~ "فشل إعادة تسمية %{orig_path} إلى %{new_path} على %{env_name}، الاستجابة: "
 #~ "%{resp}"
 
-#~ msgid ""
-#~ "Rename Site %{site} to %{new_site} on %{node} error, response: %{resp}"
+#~ msgid "Rename Site %{site} to %{new_site} on %{node} error, response: %{resp}"
 #~ msgstr ""
 #~ "خطأ في إعادة تسمية الموقع %{site} إلى %{new_site} على %{node}، الاستجابة: "
 #~ "%{resp}"
@@ -7573,23 +7585,20 @@ msgstr "تحسين خط الأنابيب بدون تخصيص"
 #~ "فشل مزامنة الشهادة %{cert_name} إلى %{env_name}، يرجى ترقية واجهة Nginx "
 #~ "البعيدة إلى أحدث إصدار"
 
-#~ msgid ""
-#~ "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
+#~ msgid "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
 #~ msgstr "فشل مزامنة الشهادة %{cert_name} إلى %{env_name}، الاستجابة: %{resp}"
 
 #~ msgid "Sync config %{config_name} to %{env_name} failed, response: %{resp}"
-#~ msgstr ""
-#~ "فشل مزامنة التكوين %{config_name} إلى %{env_name}، الاستجابة: %{resp}"
+#~ msgstr "فشل مزامنة التكوين %{config_name} إلى %{env_name}، الاستجابة: %{resp}"
 
 #~ msgid ""
-#~ "If you lose your mobile phone, you can use the recovery code to reset "
-#~ "your 2FA."
+#~ "If you lose your mobile phone, you can use the recovery code to reset your "
+#~ "2FA."
 #~ msgstr ""
 #~ "إذا فقدت هاتفك المحمول، يمكنك استخدام رمز الاسترداد لإعادة تعيين المصادقة "
 #~ "الثنائية."
 
-#~ msgid ""
-#~ "The recovery code is only displayed once, please save it in a safe place."
+#~ msgid "The recovery code is only displayed once, please save it in a safe place."
 #~ msgstr "رمز الاسترداد يُعرض مرة واحدة فقط، يرجى حفظه في مكان آمن."
 
 #~ msgid "Can't scan? Use text key binding"
@@ -7599,5 +7608,4 @@ msgstr "تحسين خط الأنابيب بدون تخصيص"
 #~ msgstr "اسم المستخدم أو كلمة المرور غير صحيحة"
 
 #~ msgid "Too many login failed attempts, please try again later"
-#~ msgstr ""
-#~ "عدد كبير جدًا من محاولات تسجيل الدخول الفاشلة، يرجى المحاولة مرة أخرى لاحقًا"
+#~ msgstr "عدد كبير جدًا من محاولات تسجيل الدخول الفاشلة، يرجى المحاولة مرة أخرى لاحقًا"

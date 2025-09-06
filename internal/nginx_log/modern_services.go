@@ -62,6 +62,12 @@ func InitializeModernServices(ctx context.Context) {
 			}
 		}
 
+		if globalAnalytics != nil {
+			if err := globalAnalytics.Stop(); err != nil {
+				logger.Errorf("Failed to stop analytics service: %v", err)
+			}
+		}
+
 		// Stop searcher if it exists
 		if globalSearcher != nil {
 			if err := globalSearcher.Stop(); err != nil {
@@ -147,7 +153,7 @@ func GetModernSearcher() searcher.Searcher {
 		logger.Warn("GetModernSearcher: globalSearcher is nil even though services are initialized")
 		return nil
 	}
-	
+
 	// Check searcher health status
 	isHealthy := globalSearcher.IsHealthy()
 	isRunning := globalSearcher.IsRunning()
@@ -286,7 +292,7 @@ func UpdateSearcherShards() {
 func updateSearcherShardsAsync() {
 	// Small delay to let indexing operations complete
 	time.Sleep(500 * time.Millisecond)
-	
+
 	logger.Debugf("updateSearcherShardsAsync: Attempting to acquire write lock...")
 	servicesMutex.Lock()
 	logger.Debugf("updateSearcherShardsAsync: Write lock acquired")
@@ -319,15 +325,15 @@ func updateSearcherShardsLocked() {
 		logger.Info("Creating initial searcher with IndexAlias")
 		searcherConfig := searcher.DefaultSearcherConfig()
 		globalSearcher = searcher.NewDistributedSearcher(searcherConfig, newShards)
-		
+
 		if globalSearcher == nil {
 			logger.Error("Failed to create initial searcher instance")
 			return
 		}
-		
+
 		// Create analytics service with the initial searcher
 		globalAnalytics = analytics.NewService(globalSearcher)
-		
+
 		isHealthy := globalSearcher.IsHealthy()
 		isRunning := globalSearcher.IsRunning()
 		logger.Infof("Initial searcher created successfully, isHealthy: %v, isRunning: %v", isHealthy, isRunning)
@@ -339,25 +345,25 @@ func updateSearcherShardsLocked() {
 	if ds, ok := globalSearcher.(*searcher.DistributedSearcher); ok {
 		oldShards := ds.GetShards()
 		logger.Debugf("updateSearcherShardsLocked: About to call SwapShards...")
-		
+
 		// Perform atomic shard swap using IndexAlias
 		if err := ds.SwapShards(newShards); err != nil {
 			logger.Errorf("Failed to swap shards atomically: %v", err)
 			return
 		}
 		logger.Debugf("updateSearcherShardsLocked: SwapShards completed successfully")
-		
-		logger.Infof("Successfully swapped %d old shards with %d new shards using IndexAlias", 
+
+		logger.Infof("Successfully swapped %d old shards with %d new shards using IndexAlias",
 			len(oldShards), len(newShards))
-		
+
 		// Verify searcher health after swap
 		isHealthy := globalSearcher.IsHealthy()
 		isRunning := globalSearcher.IsRunning()
 		logger.Infof("Post-swap searcher status: isHealthy: %v, isRunning: %v", isHealthy, isRunning)
-		
+
 		// Note: We do NOT recreate the analytics service here since the searcher interface remains the same
 		// The CardinalityCounter will automatically use the new shards through the same IndexAlias
-		
+
 	} else {
 		logger.Warn("globalSearcher is not a DistributedSearcher, cannot perform hot-swap")
 	}

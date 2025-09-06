@@ -52,9 +52,10 @@ type SearchRequest struct {
 	Fields []string `json:"fields,omitempty"`
 
 	// Filters
-	LogPaths    []string `json:"log_paths,omitempty"`
-	StartTime   *int64   `json:"start_time,omitempty"` // Unix timestamp
-	EndTime     *int64   `json:"end_time,omitempty"`   // Unix timestamp
+	LogPaths          []string `json:"log_paths,omitempty"`
+	UseMainLogPath    bool     `json:"use_main_log_path,omitempty"` // Use main_log_path field instead of file_path for log group queries
+	StartTime         *int64   `json:"start_time,omitempty"`         // Unix timestamp
+	EndTime           *int64   `json:"end_time,omitempty"`           // Unix timestamp
 	IPAddresses []string `json:"ip_addresses,omitempty"`
 	Methods     []string `json:"methods,omitempty"`
 	StatusCodes []int    `json:"status_codes,omitempty"`

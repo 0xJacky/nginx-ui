@@ -240,7 +240,7 @@ func (lm *LogFileManager) GetAllLogsWithIndexGrouped(filters ...func(*NginxLogWi
 		// Set queue position if available
 		logWithIndex.QueuePosition = idx.QueuePosition
 
-		// Set error message if available  
+		// Set error message if available
 		logWithIndex.ErrorMessage = idx.ErrorMessage
 		if idx.ErrorTime != nil {
 			logWithIndex.ErrorTime = idx.ErrorTime.Unix()
@@ -307,7 +307,7 @@ func (lm *LogFileManager) GetAllLogsWithIndexGrouped(filters ...func(*NginxLogWi
 			// or if existing record is a main log path record
 			logIsMainPath := (log.Path == baseLogName)
 			existingIsMainPath := (existing.Path == baseLogName)
-			
+
 			if logIsMainPath && !existingIsMainPath {
 				// Current log is the main aggregated record, replace existing
 				groupedLog := *log
@@ -335,15 +335,15 @@ func (lm *LogFileManager) GetAllLogsWithIndexGrouped(filters ...func(*NginxLogWi
 				// Update status with priority: indexing > queued > indexed > error > not_indexed
 				if log.IndexStatus == string(IndexStatusIndexing) {
 					existing.IndexStatus = string(IndexStatusIndexing)
-				} else if log.IndexStatus == string(IndexStatusQueued) && 
+				} else if log.IndexStatus == string(IndexStatusQueued) &&
 					existing.IndexStatus != string(IndexStatusIndexing) {
 					existing.IndexStatus = string(IndexStatusQueued)
 					// Keep the queue position from the queued log
 					if log.QueuePosition > 0 {
 						existing.QueuePosition = log.QueuePosition
 					}
-				} else if log.IndexStatus == string(IndexStatusIndexed) && 
-					existing.IndexStatus != string(IndexStatusIndexing) && 
+				} else if log.IndexStatus == string(IndexStatusIndexed) &&
+					existing.IndexStatus != string(IndexStatusIndexing) &&
 					existing.IndexStatus != string(IndexStatusQueued) {
 					existing.IndexStatus = string(IndexStatusIndexed)
 				} else if log.IndexStatus == string(IndexStatusError) &&
@@ -443,9 +443,18 @@ func (lm *LogFileManager) SaveIndexMetadata(basePath string, documentCount uint6
 	durationMs := duration.Milliseconds()
 	logIndex.IndexDuration = &durationMs
 
-	// Set the time range from the parsed logs
-	logIndex.TimeRangeStart = minTime
-	logIndex.TimeRangeEnd = maxTime
+	// Merge time ranges: preserve existing historical range and expand if necessary
+	// This prevents incremental indexing from losing historical time range data
+	if minTime != nil {
+		if logIndex.TimeRangeStart == nil || minTime.Before(*logIndex.TimeRangeStart) {
+			logIndex.TimeRangeStart = minTime
+		}
+	}
+	if maxTime != nil {
+		if logIndex.TimeRangeEnd == nil || maxTime.After(*logIndex.TimeRangeEnd) {
+			logIndex.TimeRangeEnd = maxTime
+		}
+	}
 
 	// Save the updated record to the database
 	return lm.persistence.SaveLogIndex(logIndex)

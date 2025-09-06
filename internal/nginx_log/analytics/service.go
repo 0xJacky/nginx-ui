@@ -26,6 +26,8 @@ type Service interface {
 
 	ValidateLogPath(logPath string) error
 	ValidateTimeRange(startTime, endTime int64) error
+
+	Stop() error
 }
 
 // service implements the Service interface
@@ -51,6 +53,14 @@ func NewService(s searcher.Searcher) Service {
 		searcher:           s,
 		cardinalityCounter: cardinalityCounter,
 	}
+}
+
+// Stop gracefully stops the analytics service and its components
+func (s *service) Stop() error {
+	if s.cardinalityCounter != nil {
+		return s.cardinalityCounter.Stop()
+	}
+	return nil
 }
 
 // getCardinalityCounter dynamically creates or returns a cardinality counter

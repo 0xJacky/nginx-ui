@@ -130,6 +130,14 @@ func queueIncrementalIndexing(logPath string, modernIndexer interface{}, logFile
 
 	// Queue the indexing job asynchronously
 	go func() {
+		defer func() {
+			// Ensure status is always updated, even on panic
+			if r := recover(); r != nil {
+				logger.Errorf("Recovered from panic during incremental indexing for %s: %v", logPath, r)
+				_ = setFileIndexStatus(logPath, string(indexer.IndexStatusError), logFileManager)
+			}
+		}()
+
 		logger.Infof("Starting incremental indexing for file: %s", logPath)
 
 		// Set status to indexing
@@ -159,8 +167,35 @@ func queueIncrementalIndexing(logPath string, modernIndexer interface{}, logFile
 
 		// Save indexing metadata
 		duration := time.Since(startTime)
-		if metadataManager, ok := logFileManager.(indexer.MetadataManager); ok {
-			if err := metadataManager.SaveIndexMetadata(logPath, totalDocsIndexed, startTime, duration, minTime, maxTime); err != nil {
+
+		if lfm, ok := logFileManager.(*indexer.LogFileManager); ok {
+			persistence := lfm.GetPersistence()
+			var existingDocCount uint64
+
+			existingIndex, err := persistence.GetLogIndex(logPath)
+			if err != nil {
+				logger.Warnf("Could not get existing log index for %s: %v", logPath, err)
+			}
+
+			// Determine if the file was rotated by checking if the current size is smaller than the last recorded size.
+			// This is a strong indicator of log rotation.
+			fileInfo, statErr := os.Stat(logPath)
+			isRotated := false
+			if statErr == nil && existingIndex != nil && fileInfo.Size() < existingIndex.LastSize {
+				isRotated = true
+				logger.Infof("Log rotation detected for %s: new size %d is smaller than last size %d. Resetting document count.",
+					logPath, fileInfo.Size(), existingIndex.LastSize)
+			}
+
+			if existingIndex != nil && !isRotated {
+				// If it's a normal incremental update (not a rotation), we build upon the existing count.
+				existingDocCount = existingIndex.DocumentCount
+			}
+			// If the file was rotated, existingDocCount remains 0, effectively starting the count over for the new file.
+
+			finalDocCount := existingDocCount + totalDocsIndexed
+
+			if err := lfm.SaveIndexMetadata(logPath, finalDocCount, startTime, duration, minTime, maxTime); err != nil {
 				logger.Errorf("Failed to save incremental index metadata for %s: %v", logPath, err)
 			}
 		}
@@ -190,7 +225,6 @@ func setFileIndexStatus(logPath, status string, logFileManager interface{}) erro
 	if !ok {
 		return fmt.Errorf("invalid log file manager type")
 	}
-
 	persistence := lfm.GetPersistence()
 	if persistence == nil {
 		return fmt.Errorf("persistence manager not available")

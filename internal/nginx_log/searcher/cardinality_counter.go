@@ -17,6 +17,7 @@ type CardinalityCounter struct {
 	indexAlias bleve.IndexAlias // Use IndexAlias instead of individual shards
 	shards     []bleve.Index    // Keep shards for fallback if needed
 	mu         sync.RWMutex
+	stopOnce   sync.Once
 }
 
 // NewCardinalityCounter creates a new cardinality counter
@@ -25,25 +26,43 @@ func NewCardinalityCounter(shards []bleve.Index) *CardinalityCounter {
 	if len(shards) > 0 {
 		// Create IndexAlias for distributed search like DistributedSearcher does
 		indexAlias = bleve.NewIndexAlias(shards...)
-		
+
 		// Note: IndexAlias doesn't have SetIndexMapping method
 		// The mapping will be inherited from the constituent indices
 		logger.Debugf("Created IndexAlias for cardinality counter with %d shards", len(shards))
 	}
-	
+
 	return &CardinalityCounter{
 		indexAlias: indexAlias,
 		shards:     shards,
 	}
 }
 
+// Stop gracefully closes the counter's resources, like the IndexAlias.
+func (cc *CardinalityCounter) Stop() error {
+	var err error
+	cc.stopOnce.Do(func() {
+		cc.mu.Lock()
+		defer cc.mu.Unlock()
+
+		if cc.indexAlias != nil {
+			logger.Debugf("Closing IndexAlias in CardinalityCounter")
+			err = cc.indexAlias.Close()
+			cc.indexAlias = nil
+		}
+		cc.shards = nil
+	})
+	return err
+}
+
 // CardinalityRequest represents a request for unique value counting
 type CardinalityRequest struct {
-	Field     string    `json:"field"`
-	Query     query.Query `json:"query,omitempty"` // Optional query to filter documents
-	StartTime *int64    `json:"start_time,omitempty"`
-	EndTime   *int64    `json:"end_time,omitempty"`
-	LogPaths  []string  `json:"log_paths,omitempty"`
+	Field          string      `json:"field"`
+	Query          query.Query `json:"query,omitempty"` // Optional query to filter documents
+	StartTime      *int64      `json:"start_time,omitempty"`
+	EndTime        *int64      `json:"end_time,omitempty"`
+	LogPaths       []string    `json:"log_paths,omitempty"`
+	UseMainLogPath bool        `json:"use_main_log_path,omitempty"` // Use main_log_path field instead of file_path
 }
 
 // CardinalityResult represents the result of cardinality counting
@@ -80,7 +99,7 @@ func (cc *CardinalityCounter) CountCardinality(ctx context.Context, req *Cardina
 		}, err
 	}
 
-	logger.Infof("Cardinality count completed: field='%s', unique_terms=%d, total_docs=%d", 
+	logger.Infof("Cardinality count completed: field='%s', unique_terms=%d, total_docs=%d",
 		req.Field, len(uniqueTerms), totalDocs)
 
 	return &CardinalityResult{
@@ -93,10 +112,10 @@ func (cc *CardinalityCounter) CountCardinality(ctx context.Context, req *Cardina
 // collectTermsUsingIndexAlias collects unique terms using IndexAlias with global scoring
 func (cc *CardinalityCounter) collectTermsUsingIndexAlias(ctx context.Context, req *CardinalityRequest) (map[string]struct{}, uint64, error) {
 	uniqueTerms := make(map[string]struct{})
-	
+
 	// Enable global scoring context like DistributedSearcher does
 	globalCtx := context.WithValue(ctx, search.SearchTypeKey, search.GlobalScoring)
-	
+
 	// Strategy 1: Try large facet first (more efficient for most cases)
 	terms1, totalDocs, err1 := cc.collectTermsUsingLargeFacet(globalCtx, req)
 	if err1 != nil {
@@ -107,7 +126,7 @@ func (cc *CardinalityCounter) collectTermsUsingIndexAlias(ctx context.Context, r
 		}
 		logger.Infof("Large facet collected %d unique terms", len(terms1))
 	}
-	
+
 	// Strategy 2: Use pagination if facet was likely truncated or failed
 	needsPagination := len(terms1) >= 50000 || err1 != nil
 	if needsPagination {
@@ -122,18 +141,18 @@ func (cc *CardinalityCounter) collectTermsUsingIndexAlias(ctx context.Context, r
 			logger.Infof("Pagination collected additional terms, total unique: %d", len(uniqueTerms))
 		}
 	}
-	
+
 	return uniqueTerms, totalDocs, nil
 }
 
 // collectTermsUsingLargeFacet uses IndexAlias with a large facet to efficiently collect terms
 func (cc *CardinalityCounter) collectTermsUsingLargeFacet(ctx context.Context, req *CardinalityRequest) (map[string]struct{}, uint64, error) {
 	terms := make(map[string]struct{})
-	
+
 	// Build search request using IndexAlias with proper filtering
 	boolQuery := bleve.NewBooleanQuery()
 	boolQuery.AddMust(bleve.NewMatchAllQuery())
-	
+
 	// Add time range filter if specified
 	if req.StartTime != nil && req.EndTime != nil {
 		startTime := float64(*req.StartTime)
@@ -142,19 +161,23 @@ func (cc *CardinalityCounter) collectTermsUsingLargeFacet(ctx context.Context, r
 		timeQuery.SetField("timestamp")
 		boolQuery.AddMust(timeQuery)
 	}
-	
-	// CRITICAL FIX: Add log path filters (this was missing!)
+
+	// Add log path filters - use main_log_path or file_path based on request
 	if len(req.LogPaths) > 0 {
 		logPathQuery := bleve.NewBooleanQuery()
+		fieldName := "file_path" // default
+		if req.UseMainLogPath {
+			fieldName = "main_log_path"
+		}
 		for _, logPath := range req.LogPaths {
 			termQuery := bleve.NewTermQuery(logPath)
-			termQuery.SetField("file_path")
+			termQuery.SetField(fieldName)
 			logPathQuery.AddShould(termQuery)
 		}
 		logPathQuery.SetMinShould(1)
 		boolQuery.AddMust(logPathQuery)
 	}
-	
+
 	searchReq := bleve.NewSearchRequest(boolQuery)
 	searchReq.Size = 0 // We don't need documents, just facets
 
@@ -168,13 +191,13 @@ func (cc *CardinalityCounter) collectTermsUsingLargeFacet(ctx context.Context, r
 	if queryBytes, err := json.Marshal(searchReq.Query); err == nil {
 		logger.Debugf("CardinalityCounter query: %s", string(queryBytes))
 	}
-	
+
 	// Execute search using IndexAlias with global scoring context
 	result, err := cc.indexAlias.SearchInContext(ctx, searchReq)
 	if err != nil {
 		return terms, 0, fmt.Errorf("IndexAlias facet search failed: %w", err)
 	}
-	
+
 	logger.Debugf("CardinalityCounter facet search result: Total=%d, Facets=%v", result.Total, result.Facets != nil)
 
 	// Extract terms from facet result
@@ -183,10 +206,10 @@ func (cc *CardinalityCounter) collectTermsUsingLargeFacet(ctx context.Context, r
 		for _, term := range facetTerms {
 			terms[term.Term] = struct{}{}
 		}
-		
-		logger.Infof("IndexAlias large facet: collected %d terms, facet.Total=%d, result.Total=%d", 
+
+		logger.Infof("IndexAlias large facet: collected %d terms, facet.Total=%d, result.Total=%d",
 			len(terms), facetResult.Total, result.Total)
-		
+
 		// Check if facet was truncated
 		if len(facetTerms) >= facetSize {
 			logger.Warnf("Facet likely truncated at %d terms, total unique may be higher", facetSize)
@@ -199,18 +222,18 @@ func (cc *CardinalityCounter) collectTermsUsingLargeFacet(ctx context.Context, r
 // collectTermsUsingPagination uses IndexAlias with pagination to collect all terms
 func (cc *CardinalityCounter) collectTermsUsingPagination(ctx context.Context, req *CardinalityRequest) (map[string]struct{}, uint64, error) {
 	terms := make(map[string]struct{})
-	
-	pageSize := 10000  // Large page size for efficiency
-	maxPages := 1000   // Support very large datasets
+
+	pageSize := 10000 // Large page size for efficiency
+	maxPages := 1000  // Support very large datasets
 	processedDocs := 0
-	
+
 	logger.Infof("Starting IndexAlias pagination for field '%s' (pageSize=%d)", req.Field, pageSize)
-	
+
 	for page := 0; page < maxPages; page++ {
 		// Build proper query with all filters
 		boolQuery := bleve.NewBooleanQuery()
 		boolQuery.AddMust(bleve.NewMatchAllQuery())
-		
+
 		// Add time range filter if specified
 		if req.StartTime != nil && req.EndTime != nil {
 			startTime := float64(*req.StartTime)
@@ -219,7 +242,7 @@ func (cc *CardinalityCounter) collectTermsUsingPagination(ctx context.Context, r
 			timeQuery.SetField("timestamp")
 			boolQuery.AddMust(timeQuery)
 		}
-		
+
 		// CRITICAL FIX: Add log path filters (this was missing!)
 		if len(req.LogPaths) > 0 {
 			logPathQuery := bleve.NewBooleanQuery()
@@ -231,7 +254,7 @@ func (cc *CardinalityCounter) collectTermsUsingPagination(ctx context.Context, r
 			logPathQuery.SetMinShould(1)
 			boolQuery.AddMust(logPathQuery)
 		}
-		
+
 		searchReq := bleve.NewSearchRequest(boolQuery)
 		searchReq.Size = pageSize
 		searchReq.From = page * pageSize
@@ -245,7 +268,7 @@ func (cc *CardinalityCounter) collectTermsUsingPagination(ctx context.Context, r
 
 		// If no more hits, we're done
 		if len(result.Hits) == 0 {
-			logger.Infof("Pagination complete: processed %d documents, found %d unique terms", 
+			logger.Infof("Pagination complete: processed %d documents, found %d unique terms",
 				processedDocs, len(terms))
 			break
 		}
@@ -258,22 +281,22 @@ func (cc *CardinalityCounter) collectTermsUsingPagination(ctx context.Context, r
 				}
 			}
 		}
-		
+
 		processedDocs += len(result.Hits)
-		
+
 		// Progress logging
 		if processedDocs%50000 == 0 && processedDocs > 0 {
-			logger.Infof("Pagination progress: processed %d documents, found %d unique terms", 
+			logger.Infof("Pagination progress: processed %d documents, found %d unique terms",
 				processedDocs, len(terms))
 		}
 
 		// If we got fewer results than pageSize, we've reached the end
 		if len(result.Hits) < pageSize {
-			logger.Infof("Pagination complete: processed %d documents, found %d unique terms", 
+			logger.Infof("Pagination complete: processed %d documents, found %d unique terms",
 				processedDocs, len(terms))
 			break
 		}
-		
+
 		// Generous safety limit
 		if len(terms) > 500000 {
 			logger.Warnf("Very large cardinality detected (%d terms), stopping for memory safety", len(terms))
@@ -297,7 +320,7 @@ func (cc *CardinalityCounter) countShardCardinality(ctx context.Context, shard b
 		endTime := float64(*req.EndTime)
 		timeQuery := bleve.NewNumericRangeQuery(&startTime, &endTime)
 		timeQuery.SetField("timestamp")
-		
+
 		boolQuery := bleve.NewBooleanQuery()
 		boolQuery.AddMust(searchReq.Query)
 		boolQuery.AddMust(timeQuery)
@@ -327,19 +350,19 @@ func (cc *CardinalityCounter) countShardCardinality(ctx context.Context, shard b
 // getShardTerms retrieves unique terms from a shard using multiple strategies to avoid FacetSize limits
 func (cc *CardinalityCounter) getShardTerms(ctx context.Context, shard bleve.Index, req *CardinalityRequest) (map[string]struct{}, error) {
 	// Try multiple approaches for maximum accuracy
-	
+
 	// Strategy 1: Use large facet first (still more efficient than old 100k)
 	terms1, err1 := cc.getTermsUsingLargeFacet(ctx, shard, req)
 	if err1 != nil {
 		logger.Warnf("Large facet strategy failed: %v", err1)
 	}
-	
+
 	// Strategy 2: Use pagination to get remaining terms
 	terms2, err2 := cc.getTermsUsingPagination(ctx, shard, req)
 	if err2 != nil {
 		logger.Warnf("Pagination strategy failed: %v", err2)
 	}
-	
+
 	// Merge results from both strategies
 	allTerms := make(map[string]struct{})
 	for term := range terms1 {
@@ -348,17 +371,17 @@ func (cc *CardinalityCounter) getShardTerms(ctx context.Context, shard bleve.Ind
 	for term := range terms2 {
 		allTerms[term] = struct{}{}
 	}
-	
-	logger.Infof("Combined strategies found %d unique terms for field '%s' (facet: %d, pagination: %d)", 
+
+	logger.Infof("Combined strategies found %d unique terms for field '%s' (facet: %d, pagination: %d)",
 		len(allTerms), req.Field, len(terms1), len(terms2))
-	
+
 	return allTerms, nil
 }
 
 // getTermsUsingLargeFacet uses a large facet to collect terms efficiently
 func (cc *CardinalityCounter) getTermsUsingLargeFacet(ctx context.Context, shard bleve.Index, req *CardinalityRequest) (map[string]struct{}, error) {
 	terms := make(map[string]struct{})
-	
+
 	searchReq := bleve.NewSearchRequest(bleve.NewMatchAllQuery())
 	searchReq.Size = 0 // We don't need documents, just facets
 
@@ -368,7 +391,7 @@ func (cc *CardinalityCounter) getTermsUsingLargeFacet(ctx context.Context, shard
 		endTime := float64(*req.EndTime)
 		timeQuery := bleve.NewNumericRangeQuery(&startTime, &endTime)
 		timeQuery.SetField("timestamp")
-		
+
 		boolQuery := bleve.NewBooleanQuery()
 		boolQuery.AddMust(searchReq.Query)
 		boolQuery.AddMust(timeQuery)
@@ -391,9 +414,9 @@ func (cc *CardinalityCounter) getTermsUsingLargeFacet(ctx context.Context, shard
 		for _, term := range facetTerms {
 			terms[term.Term] = struct{}{}
 		}
-		
+
 		logger.Debugf("Large facet collected %d terms (facet reports total: %d)", len(terms), facetResult.Total)
-		
+
 		// If facet is truncated, we know we need pagination
 		if len(facetTerms) >= facetSize {
 			logger.Warnf("Facet truncated at %d terms, pagination needed for complete results", facetSize)
@@ -409,12 +432,12 @@ func (cc *CardinalityCounter) getTermsUsingPagination(ctx context.Context, shard
 
 	// Use pagination approach to collect all terms without FacetSize limitation
 	// This iterates through result pages to get complete term list
-	pageSize := 5000   // Larger page size for efficiency
-	maxPages := 1000   // Higher limit to handle large datasets
+	pageSize := 5000 // Larger page size for efficiency
+	maxPages := 1000 // Higher limit to handle large datasets
 	processedDocs := 0
-	
+
 	logger.Infof("Starting cardinality collection for field '%s' with pagination (pageSize=%d)", req.Field, pageSize)
-	
+
 	for page := 0; page < maxPages; page++ {
 		searchReq := bleve.NewSearchRequest(bleve.NewMatchAllQuery())
 		searchReq.Size = pageSize
@@ -427,7 +450,7 @@ func (cc *CardinalityCounter) getTermsUsingPagination(ctx context.Context, shard
 			endTime := float64(*req.EndTime)
 			timeQuery := bleve.NewNumericRangeQuery(&startTime, &endTime)
 			timeQuery.SetField("timestamp")
-			
+
 			boolQuery := bleve.NewBooleanQuery()
 			boolQuery.AddMust(searchReq.Query)
 			boolQuery.AddMust(timeQuery)
@@ -452,22 +475,22 @@ func (cc *CardinalityCounter) getTermsUsingPagination(ctx context.Context, shard
 				}
 			}
 		}
-		
+
 		processedDocs += len(result.Hits)
-		
+
 		// Progress logging every 50K documents
 		if processedDocs%50000 == 0 && processedDocs > 0 {
-			logger.Infof("Progress: processed %d documents, found %d unique terms for field '%s'", 
+			logger.Infof("Progress: processed %d documents, found %d unique terms for field '%s'",
 				processedDocs, len(terms), req.Field)
 		}
 
 		// If we got fewer results than pageSize, we've reached the end
 		if len(result.Hits) < pageSize {
-			logger.Infof("Completed: processed %d documents, found %d unique terms for field '%s'", 
+			logger.Infof("Completed: processed %d documents, found %d unique terms for field '%s'",
 				processedDocs, len(terms), req.Field)
 			break
 		}
-		
+
 		// Increased safety limit for large datasets, but with warning
 		if len(terms) > 200000 {
 			logger.Warnf("Very large number of unique terms detected (%d), stopping collection for field %s. Consider using EstimateCardinality for better performance", len(terms), req.Field)
@@ -518,7 +541,7 @@ func (cc *CardinalityCounter) EstimateCardinality(ctx context.Context, req *Card
 	// In the future, we could use the sample to extrapolate:
 	// sampledUnique := uint64(len(uniqueInSample))
 	// estimatedCardinality := sampledUnique * (totalDocs / totalSampleDocs)
-	
+
 	if totalSampleDocs == 0 {
 		return &CardinalityResult{
 			Field:       req.Field,
@@ -535,7 +558,7 @@ func (cc *CardinalityCounter) EstimateCardinality(ctx context.Context, req *Card
 // sampleShardTerms takes a statistical sample from a shard for cardinality estimation
 func (cc *CardinalityCounter) sampleShardTerms(ctx context.Context, shard bleve.Index, req *CardinalityRequest, sampleSize int) (map[string]struct{}, uint64, error) {
 	terms := make(map[string]struct{})
-	
+
 	searchReq := bleve.NewSearchRequest(bleve.NewMatchAllQuery())
 	searchReq.Size = sampleSize
 	searchReq.Fields = []string{req.Field}
@@ -546,7 +569,7 @@ func (cc *CardinalityCounter) sampleShardTerms(ctx context.Context, shard bleve.
 		endTime := float64(*req.EndTime)
 		timeQuery := bleve.NewNumericRangeQuery(&startTime, &endTime)
 		timeQuery.SetField("timestamp")
-		
+
 		boolQuery := bleve.NewBooleanQuery()
 		boolQuery.AddMust(searchReq.Query)
 		boolQuery.AddMust(timeQuery)
@@ -573,19 +596,19 @@ func (cc *CardinalityCounter) sampleShardTerms(ctx context.Context, shard bleve.
 // BatchCountCardinality counts cardinality for multiple fields efficiently
 func (cc *CardinalityCounter) BatchCountCardinality(ctx context.Context, fields []string, baseReq *CardinalityRequest) (map[string]*CardinalityResult, error) {
 	results := make(map[string]*CardinalityResult)
-	
+
 	// Process fields in parallel
 	var wg sync.WaitGroup
 	var mu sync.Mutex
-	
+
 	for _, field := range fields {
 		wg.Add(1)
 		go func(f string) {
 			defer wg.Done()
-			
+
 			req := *baseReq // Copy base request
 			req.Field = f
-			
+
 			result, err := cc.CountCardinality(ctx, &req)
 			if err != nil {
 				result = &CardinalityResult{
@@ -593,13 +616,13 @@ func (cc *CardinalityCounter) BatchCountCardinality(ctx context.Context, fields 
 					Error: err.Error(),
 				}
 			}
-			
+
 			mu.Lock()
 			results[f] = result
 			mu.Unlock()
 		}(field)
 	}
-	
+
 	wg.Wait()
 	return results, nil
 }

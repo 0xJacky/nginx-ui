@@ -8,6 +8,7 @@ import { useRouteQuery } from '@vueuse/router'
 import { Badge, Tag, Tooltip } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import nginxLog from '@/api/nginx_log'
+import { DevDebugPanel } from '@/components/DevDebugPanel'
 import { TabFilter } from '@/components/TabFilter'
 import { useWebSocketEventBus } from '@/composables/useWebSocketEventBus'
 import { useGlobalStore } from '@/pinia'
@@ -407,6 +408,19 @@ async function enableAdvancedIndexing() {
 function cancelIndexingSettings() {
   indexingSettingsModalVisible.value = false
 }
+
+// Debug data for development
+const debugData = computed(() => ({
+  activeLogType: activeLogType.value,
+  advancedIndexingEnabled: advancedIndexingEnabled.value,
+  processingStatus: processingStatus.value,
+  nginxLogStatus: nginxLogStatus.value,
+  isGlobalIndexing: isGlobalIndexing.value,
+  enableIndexingLoading: enableIndexingLoading.value,
+  indexingSettingsModalVisible: indexingSettingsModalVisible.value,
+  columns: columns.value.map(col => ({ title: col.title, dataIndex: col.dataIndex })),
+  tabOptions,
+}))
 </script>
 
 <template>
@@ -490,6 +504,45 @@ function cancelIndexingSettings() {
       @confirm="enableAdvancedIndexing"
       @cancel="cancelIndexingSettings"
     />
+
+    <!-- Development Debug Panel -->
+    <DevDebugPanel :debug-data="debugData">
+      <template #default="{ debugData: slotDebugData }">
+        <div class="debug-item">
+          <span class="debug-label">Active Log Type:</span>
+          <span class="debug-value">{{ (slotDebugData as any).activeLogType }}</span>
+        </div>
+        <div class="debug-item">
+          <span class="debug-label">Advanced Indexing:</span>
+          <span class="debug-value">{{ (slotDebugData as any).advancedIndexingEnabled ? 'Enabled' : 'Disabled' }}</span>
+        </div>
+        <div class="debug-item">
+          <span class="debug-label">Global Indexing:</span>
+          <span class="debug-value">{{ (slotDebugData as any).isGlobalIndexing ? 'Yes' : 'No' }}</span>
+        </div>
+        <div class="debug-item">
+          <span class="debug-label">Columns Count:</span>
+          <span class="debug-value">{{ Array.isArray((slotDebugData as any).columns) ? (slotDebugData as any).columns.length : 'N/A' }}</span>
+        </div>
+        <div class="debug-item">
+          <span class="debug-label">Processing Status:</span>
+          <pre>{{ JSON.stringify((slotDebugData as any).processingStatus, null, 2) }}</pre>
+        </div>
+        <div class="debug-item">
+          <span class="debug-label">Quick Actions:</span>
+          <div class="mt-2">
+            <ASpace direction="vertical" :size="8">
+              <AButton size="small" @click="showIndexingSettingsModal">
+                Show Indexing Modal
+              </AButton>
+              <AButton size="small" @click="refreshTable">
+                Refresh Table
+              </AButton>
+            </ASpace>
+          </div>
+        </div>
+      </template>
+    </DevDebugPanel>
   </div>
 </template>
 

@@ -20,13 +20,13 @@ type NginxLogIndex struct {
 	DocumentCount  uint64     `gorm:"default:0" json:"document_count"`           // Total documents indexed from this file
 	Enabled        bool       `gorm:"default:true" json:"enabled"`               // Whether indexing is enabled for this file
 	HasTimeRange   bool       `gorm:"-" json:"has_timerange"`                    // Whether a time range is available (not persisted)
-	
+
 	// Extended status fields
-	IndexStatus    string     `gorm:"default:'not_indexed';size:50" json:"index_status"`  // Current index status
-	ErrorMessage   string     `gorm:"type:text" json:"error_message,omitempty"`           // Last error message
-	ErrorTime      *time.Time `json:"error_time,omitempty"`                               // When error occurred
-	RetryCount     int        `gorm:"default:0" json:"retry_count"`                       // Number of retry attempts
-	QueuePosition  int        `gorm:"default:0" json:"queue_position,omitempty"`          // Position in indexing queue
+	IndexStatus   string     `gorm:"default:'not_indexed';size:50" json:"index_status"` // Current index status
+	ErrorMessage  string     `gorm:"type:text" json:"error_message,omitempty"`          // Last error message
+	ErrorTime     *time.Time `json:"error_time,omitempty"`                              // When error occurred
+	RetryCount    int        `gorm:"default:0" json:"retry_count"`                      // Number of retry attempts
+	QueuePosition int        `gorm:"default:0" json:"queue_position,omitempty"`         // Position in indexing queue
 }
 
 // NeedsIndexing checks if the file needs incremental indexing
@@ -72,11 +72,17 @@ func (nli *NginxLogIndex) UpdateProgress(modTime time.Time, size int64, position
 	nli.LastIndexed = time.Now()
 	nli.DocumentCount = docCount
 
+	// Merge time ranges: preserve existing historical range and expand if necessary
+	// This prevents incremental updates from losing historical time range data
 	if timeStart != nil {
-		nli.TimeRangeStart = timeStart
+		if nli.TimeRangeStart == nil || timeStart.Before(*nli.TimeRangeStart) {
+			nli.TimeRangeStart = timeStart
+		}
 	}
 	if timeEnd != nil {
-		nli.TimeRangeEnd = timeEnd
+		if nli.TimeRangeEnd == nil || timeEnd.After(*nli.TimeRangeEnd) {
+			nli.TimeRangeEnd = timeEnd
+		}
 	}
 }
 
@@ -106,7 +112,7 @@ func (nli *NginxLogIndex) Reset() {
 	nli.DocumentCount = 0
 	nli.TimeRangeStart = nil
 	nli.TimeRangeEnd = nil
-	
+
 	// Reset status fields
 	nli.IndexStatus = "not_indexed"
 	nli.ErrorMessage = ""

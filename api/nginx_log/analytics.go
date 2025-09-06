@@ -554,6 +554,8 @@ func GetDashboardAnalytics(c *gin.Context) {
 			c.JSON(http.StatusBadRequest, ErrorResponse{Error: "Invalid start_date format, expected YYYY-MM-DD: " + err.Error()})
 			return
 		}
+		// Convert to UTC for consistent processing
+		startTime = startTime.UTC()
 	}
 
 	if req.EndDate != "" {
@@ -562,8 +564,8 @@ func GetDashboardAnalytics(c *gin.Context) {
 			c.JSON(http.StatusBadRequest, ErrorResponse{Error: "Invalid end_date format, expected YYYY-MM-DD: " + err.Error()})
 			return
 		}
-		// Set end time to end of day
-		endTime = endTime.Add(23*time.Hour + 59*time.Minute + 59*time.Second)
+		// Set end time to end of day and convert to UTC
+		endTime = endTime.Add(23*time.Hour + 59*time.Minute + 59*time.Second).UTC()
 	}
 
 	// Set default time range if not provided (last 30 days)
@@ -578,17 +580,14 @@ func GetDashboardAnalytics(c *gin.Context) {
 
 	logger.Debugf("Dashboard request for log_path: %s, parsed start_time: %v, end_time: %v", req.LogPath, startTime, endTime)
 
-	// For Dashboard queries, only query the specific file requested, not the entire log group
-	// This ensures that when user clicks on a specific file, they see data only from that file
-	logPaths := []string{req.LogPath}
-	
-	// Debug: Log the paths being queried
-	logger.Debugf("Dashboard querying specific log path: %s", req.LogPath)
+	// Use main_log_path field for efficient log group queries instead of expanding file paths
+	// This provides much better performance by using indexed field filtering
+	logger.Debugf("Dashboard querying log group with main_log_path: %s", req.LogPath)
 
 	// Build dashboard query request
 	dashboardReq := &analytics.DashboardQueryRequest{
 		LogPath:   req.LogPath,
-		LogPaths:  logPaths,
+		LogPaths:  []string{req.LogPath}, // Use single main log path
 		StartTime: startTime.Unix(),
 		EndTime:   endTime.Unix(),
 	}
@@ -652,24 +651,20 @@ func GetWorldMapData(c *gin.Context) {
 		}
 	}
 
-	// Expand log path for filtering
-	logPaths, err := nginx_log.ExpandLogGroupPath(req.Path)
-	if err != nil {
-		logger.Warnf("Could not expand log group path for world map %s: %v", req.Path, err)
-		logPaths = []string{req.Path} // Fallback
-	}
-	logger.Debugf("WorldMapData - Expanded log paths: %v", logPaths)
+	// Use main_log_path field for efficient log group queries instead of expanding file paths
+	logger.Debugf("WorldMapData - Using main_log_path field for log group: %s", req.Path)
 
 	// Get world map data with timeout
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
 	defer cancel()
 
 	geoReq := &analytics.GeoQueryRequest{
-		StartTime: req.StartTime,
-		EndTime:   req.EndTime,
-		LogPath:   req.Path,
-		LogPaths:  logPaths,
-		Limit:     req.Limit,
+		StartTime:      req.StartTime,
+		EndTime:        req.EndTime,
+		LogPath:        req.Path,
+		LogPaths:       []string{req.Path}, // Use single main log path
+		UseMainLogPath: true,              // Use main_log_path field for efficient queries
+		Limit:          req.Limit,
 	}
 	logger.Debugf("WorldMapData - GeoQueryRequest: %+v", geoReq)
 
@@ -757,24 +752,20 @@ func GetChinaMapData(c *gin.Context) {
 		}
 	}
 
-	// Expand log path for filtering
-	logPaths, err := nginx_log.ExpandLogGroupPath(req.Path)
-	if err != nil {
-		logger.Warnf("Could not expand log group path for China map %s: %v", req.Path, err)
-		logPaths = []string{req.Path} // Fallback
-	}
-	logger.Debugf("ChinaMapData - Expanded log paths: %v", logPaths)
+	// Use main_log_path field for efficient log group queries instead of expanding file paths
+	logger.Debugf("ChinaMapData - Using main_log_path field for log group: %s", req.Path)
 
 	// Get China map data with timeout
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
 	defer cancel()
 
 	geoReq := &analytics.GeoQueryRequest{
-		StartTime: req.StartTime,
-		EndTime:   req.EndTime,
-		LogPath:   req.Path,
-		LogPaths:  logPaths,
-		Limit:     req.Limit,
+		StartTime:      req.StartTime,
+		EndTime:        req.EndTime,
+		LogPath:        req.Path,
+		LogPaths:       []string{req.Path}, // Use single main log path
+		UseMainLogPath: true,              // Use main_log_path field for efficient queries
+		Limit:          req.Limit,
 	}
 	logger.Debugf("ChinaMapData - GeoQueryRequest: %+v", geoReq)
 
@@ -855,12 +846,8 @@ func GetGeoStats(c *gin.Context) {
 		}
 	}
 
-	// Expand log path for filtering
-	logPaths, err := nginx_log.ExpandLogGroupPath(req.Path)
-	if err != nil {
-		logger.Warnf("Could not expand log group path for geo stats %s: %v", req.Path, err)
-		logPaths = []string{req.Path} // Fallback
-	}
+	// Use main_log_path field for efficient log group queries instead of expanding file paths
+	logger.Debugf("GeoStats - Using main_log_path field for log group: %s", req.Path)
 
 	// Set default limit if not provided
 	if req.Limit == 0 {
@@ -872,11 +859,12 @@ func GetGeoStats(c *gin.Context) {
 	defer cancel()
 
 	geoReq := &analytics.GeoQueryRequest{
-		StartTime: req.StartTime,
-		EndTime:   req.EndTime,
-		LogPath:   req.Path,
-		LogPaths:  logPaths,
-		Limit:     req.Limit,
+		StartTime:      req.StartTime,
+		EndTime:        req.EndTime,
+		LogPath:        req.Path,
+		LogPaths:       []string{req.Path}, // Use single main log path
+		UseMainLogPath: true,              // Use main_log_path field for efficient queries
+		Limit:          req.Limit,
 	}
 
 	stats, err := analyticsService.GetTopCountries(ctx, geoReq)
@@ -902,10 +890,11 @@ func getCardinalityCount(ctx context.Context, field string, searchReq *searcher.
 
 	// Create a CardinalityRequest from the SearchRequest
 	cardReq := &searcher.CardinalityRequest{
-		Field:     field,
-		StartTime: searchReq.StartTime,
-		EndTime:   searchReq.EndTime,
-		LogPaths:  searchReq.LogPaths,
+		Field:          field,
+		StartTime:      searchReq.StartTime,
+		EndTime:        searchReq.EndTime,
+		LogPaths:       searchReq.LogPaths,
+		UseMainLogPath: searchReq.UseMainLogPath, // Use main_log_path field if enabled
 	}
 	logger.Debugf("🔍 CardinalityRequest: Field=%s, StartTime=%v, EndTime=%v, LogPaths=%v",
 		cardReq.Field, cardReq.StartTime, cardReq.EndTime, cardReq.LogPaths)

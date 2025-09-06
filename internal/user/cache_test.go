@@ -1,7 +1,6 @@
 package user
 
 import (
-	"context"
 	"testing"
 	"time"
 
@@ -11,8 +10,11 @@ import (
 )
 
 func TestTokenCacheOperations(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping test in short mode")
+	}
 	// Initialize cache for testing
-	cache.Init(context.Background())
+	cache.InitInMemoryCache()
 
 	// Create test token data
 	testToken := &model.AuthToken{
@@ -47,8 +49,11 @@ func TestTokenCacheOperations(t *testing.T) {
 }
 
 func TestUserCacheOperations(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping integration test in short mode")
+	}
 	// Initialize cache for testing
-	cache.Init(context.Background())
+	cache.InitInMemoryCache()
 
 	// Create test user
 	testUser := &model.User{
@@ -75,8 +80,11 @@ func TestUserCacheOperations(t *testing.T) {
 }
 
 func TestExpiredTokenHandling(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping test in short mode")
+	}
 	// Initialize cache for testing
-	cache.Init(context.Background())
+	cache.InitInMemoryCache()
 
 	// Create expired token
 	expiredToken := &model.AuthToken{

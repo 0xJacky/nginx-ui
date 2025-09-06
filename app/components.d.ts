@@ -86,6 +86,7 @@ declare module 'vue' {
     CodeEditorCodeEditor: typeof import('./src/components/CodeEditor/CodeEditor.vue')['default']
     ConfigHistoryConfigHistory: typeof import('./src/components/ConfigHistory/ConfigHistory.vue')['default']
     ConfigHistoryDiffViewer: typeof import('./src/components/ConfigHistory/DiffViewer.vue')['default']
+    DevDebugPanelDevDebugPanel: typeof import('./src/components/DevDebugPanel/DevDebugPanel.vue')['default']
     FooterToolbarFooterToolBar: typeof import('./src/components/FooterToolbar/FooterToolBar.vue')['default']
     ICPICP: typeof import('./src/components/ICP/ICP.vue')['default']
     LLMChatMessage: typeof import('./src/components/LLM/ChatMessage.vue')['default']

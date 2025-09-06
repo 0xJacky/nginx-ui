@@ -27,7 +27,7 @@ const systemRequirements = [
   },
   {
     title: $gettext('Memory'),
-    requirement: $gettext('2GB RAM minimum'),
+    requirement: $gettext('1GB RAM minimum'),
     recommended: $gettext('4GB+ RAM recommended'),
     icon: <CheckCircleOutlined class="text-green-500" />,
   },
@@ -41,19 +41,19 @@ const systemRequirements = [
 
 const performanceStats = [
   {
-    metric: $gettext('Indexing Throughput'),
-    value: '3,860it/s',
-    description: $gettext('Based on M2 Pro (12 cores) testing'),
+    metric: $gettext('Production Pipeline'),
+    value: '~10,000/sec',
+    description: $gettext('Complete indexing with search capabilities'),
   },
   {
-    metric: $gettext('CPU Utilization'),
-    value: '90%+',
-    description: $gettext('Optimized multi-core processing'),
+    metric: $gettext('Parser Performance'),
+    value: '~932K/sec',
+    description: $gettext('SIMD-optimized stream processing'),
   },
   {
-    metric: $gettext('Memory Efficiency'),
-    value: '600MB/1Mit',
-    description: $gettext('Zero-allocation pipeline optimization'),
+    metric: $gettext('Memory Design'),
+    value: 'Zero-allocation',
+    description: $gettext('Advanced memory pooling system'),
   },
 ]
 
@@ -81,8 +81,8 @@ function handleCancel() {
     <div class="space-y-6">
       <!-- Warning Alert -->
       <AAlert
-        :message="$gettext('Performance Impact Notice')"
-        :description="$gettext('Enabling advanced indexing will consume system resources during log processing. Please review the requirements below.')"
+        :message="$gettext('Resource Usage Warning')"
+        :description="$gettext('Enabling advanced log indexing will consume significant computational resources including CPU and memory. Please ensure your system meets the minimum requirements before proceeding.')"
         type="warning"
         show-icon
         :icon="h(WarningOutlined)"
@@ -145,7 +145,7 @@ function handleCancel() {
           {{ $gettext('Expected Performance') }}
         </ATypographyTitle>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div
             v-for="stat in performanceStats"
             :key="stat.metric"
@@ -161,6 +161,12 @@ function handleCancel() {
               {{ stat.description }}
             </div>
           </div>
+        </div>
+
+        <div class="mt-3">
+          <ATypographyText type="secondary" class="text-xs">
+            {{ $gettext('* Performance metrics measured on Apple M2 Pro (12-core) with 32GB RAM. Actual performance may vary based on your hardware configuration.') }}
+          </ATypographyText>
         </div>
       </div>
 
@@ -200,7 +206,7 @@ function handleCancel() {
           </div>
           <div class="flex items-center space-x-2">
             <CheckCircleOutlined class="text-green-500" />
-            <ATypographyText>{{ $gettext('Full-text search with regex support') }}</ATypographyText>
+            <ATypographyText>{{ $gettext('Full-text search support') }}</ATypographyText>
           </div>
           <div class="flex items-center space-x-2">
             <CheckCircleOutlined class="text-green-500" />

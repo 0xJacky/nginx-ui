@@ -163,11 +163,12 @@ type ResponseTimeStatistics struct {
 
 // GeoQueryRequest represents a request for geographical data
 type GeoQueryRequest struct {
-	LogPath   string
-	LogPaths  []string
-	StartTime int64
-	EndTime   int64
-	Limit     int
+	LogPath        string
+	LogPaths       []string
+	StartTime      int64
+	EndTime        int64
+	Limit          int
+	UseMainLogPath bool // Use main_log_path field instead of expanding file paths
 }
 
 // GeoDistribution represents geographical distribution of requests

@@ -21,14 +21,15 @@ func (s *service) GetGeoDistribution(ctx context.Context, req *GeoQueryRequest) 
 	logger.Debugf("GetGeoDistribution - req: %+v", req)
 
 	searchReq := &searcher.SearchRequest{
-		StartTime:     &req.StartTime,
-		EndTime:       &req.EndTime,
-		LogPaths:      req.LogPaths,
-		Limit:         0, // We only need facets.
-		IncludeFacets: true,
-		FacetFields:   []string{"region_code"},
-		FacetSize:     300, // Large enough to cover all countries
-		UseCache:      true,
+		StartTime:      &req.StartTime,
+		EndTime:        &req.EndTime,
+		LogPaths:       req.LogPaths,
+		UseMainLogPath: req.UseMainLogPath, // Use main_log_path field for efficient queries
+		Limit:          0,                  // We only need facets.
+		IncludeFacets:  true,
+		FacetFields:    []string{"region_code"},
+		FacetSize:      300, // Large enough to cover all countries
+		UseCache:       true,
 	}
 	logger.Debugf("GetGeoDistribution - SearchRequest: %+v", searchReq)
 
@@ -87,15 +88,16 @@ func (s *service) GetGeoDistributionByCountry(ctx context.Context, req *GeoQuery
 	logger.Debugf("GetGeoDistributionByCountry - req: %+v", req)
 
 	searchReq := &searcher.SearchRequest{
-		StartTime:     &req.StartTime,
-		EndTime:       &req.EndTime,
-		LogPaths:      req.LogPaths,
-		Countries:     []string{countryCode}, // Use proper country filter instead of text query
-		Limit:         0, // We only need facets.
-		IncludeFacets: true,
-		FacetFields:   []string{"province"},
-		FacetSize:     100, // Large enough to cover all provinces in a country
-		UseCache:      true,
+		StartTime:      &req.StartTime,
+		EndTime:        &req.EndTime,
+		LogPaths:       req.LogPaths,
+		UseMainLogPath: req.UseMainLogPath, // Use main_log_path field for efficient queries
+		Countries:      []string{countryCode}, // Use proper country filter instead of text query
+		Limit:          0, // We only need facets.
+		IncludeFacets:  true,
+		FacetFields:    []string{"province"},
+		FacetSize:      100, // Large enough to cover all provinces in a country
+		UseCache:       true,
 	}
 	logger.Debugf("GetGeoDistributionByCountry - SearchRequest: %+v", searchReq)
 	logger.Debugf("GetGeoDistributionByCountry - Countries filter: %v", searchReq.Countries)
@@ -145,14 +147,15 @@ func (s *service) GetTopCountries(ctx context.Context, req *GeoQueryRequest) ([]
 	}
 
 	searchReq := &searcher.SearchRequest{
-		StartTime:     &req.StartTime,
-		EndTime:       &req.EndTime,
-		LogPaths:      req.LogPaths,
-		Limit:         0, // We only need facets
-		IncludeFacets: true,
-		FacetFields:   []string{"region_code"},
-		FacetSize:     req.Limit, // Use the requested limit for facet size
-		UseCache:      true,
+		StartTime:      &req.StartTime,
+		EndTime:        &req.EndTime,
+		LogPaths:       req.LogPaths,
+		UseMainLogPath: req.UseMainLogPath, // Use main_log_path field for efficient queries
+		Limit:          0, // We only need facets
+		IncludeFacets:  true,
+		FacetFields:    []string{"region_code"},
+		FacetSize:      req.Limit, // Use the requested limit for facet size
+		UseCache:       true,
 	}
 
 	result, err := s.searcher.Search(ctx, searchReq)
@@ -186,14 +189,15 @@ func (s *service) GetTopCities(ctx context.Context, req *GeoQueryRequest) ([]Cit
 	}
 
 	searchReq := &searcher.SearchRequest{
-		StartTime:     &req.StartTime,
-		EndTime:       &req.EndTime,
-		LogPaths:      req.LogPaths,
-		Limit:         0, // We only need facets
-		IncludeFacets: true,
-		FacetFields:   []string{"city"},
-		FacetSize:     req.Limit,
-		UseCache:      true,
+		StartTime:      &req.StartTime,
+		EndTime:        &req.EndTime,
+		LogPaths:       req.LogPaths,
+		UseMainLogPath: req.UseMainLogPath, // Use main_log_path field for efficient queries
+		Limit:          0, // We only need facets
+		IncludeFacets:  true,
+		FacetFields:    []string{"city"},
+		FacetSize:      req.Limit,
+		UseCache:       true,
 	}
 
 	result, err := s.searcher.Search(ctx, searchReq)
@@ -233,15 +237,16 @@ func (s *service) GetGeoStatsForIP(ctx context.Context, req *GeoQueryRequest, ip
 	}
 
 	searchReq := &searcher.SearchRequest{
-		StartTime:     &req.StartTime,
-		EndTime:       &req.EndTime,
-		LogPaths:      req.LogPaths,
-		Limit:         0,
-		IncludeFacets: true,
-		FacetFields:   []string{"country", "country_code", "city"},
-		FacetSize:     10,
-		Query:         fmt.Sprintf(`ip:"%s"`, ip),
-		UseCache:      true,
+		StartTime:      &req.StartTime,
+		EndTime:        &req.EndTime,
+		LogPaths:       req.LogPaths,
+		UseMainLogPath: req.UseMainLogPath, // Use main_log_path field for efficient queries
+		Limit:          0,
+		IncludeFacets:  true,
+		FacetFields:    []string{"country", "country_code", "city"},
+		FacetSize:      10,
+		Query:          fmt.Sprintf(`ip:"%s"`, ip),
+		UseCache:       true,
 	}
 
 	result, err := s.searcher.Search(ctx, searchReq)

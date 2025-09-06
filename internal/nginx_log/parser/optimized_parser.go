@@ -96,14 +96,18 @@ func (p *OptimizedParser) ParseLine(line string) (*AccessLogEntry, error) {
 		buf.entry.Raw = line
 		buf.entry.Timestamp = time.Now().Unix()
 		buf.entry.ID = p.generateEntryID(line)
-		return buf.entry, nil
+		// Create a copy to avoid sharing the pooled object
+		entryCopy := *buf.entry
+		return &entryCopy, nil
 	}
 
 	// Generate unique ID for the entry
 	buf.entry.ID = p.generateEntryID(line)
 	buf.entry.Raw = line
 
-	return buf.entry, nil
+	// Create a copy of the entry to avoid sharing the pooled object
+	entryCopy := *buf.entry
+	return &entryCopy, nil
 }
 
 // ParseLines parses multiple log lines with parallel processing
@@ -435,8 +439,35 @@ func (p *OptimizedParser) parseTimestamp(line []byte, pos int, entry *AccessLogE
 
 	if pos > start {
 		timeStr := bytesToString(line[start:pos])
+		
+		// Debug: log the timestamp string we're trying to parse  
+		// fmt.Printf("DEBUG: Parsing timestamp string: '%s'\n", timeStr)
+		
 		if t, err := time.Parse(p.config.TimeLayout, timeStr); err == nil {
 			entry.Timestamp = t.Unix()
+		} else {
+			// Try alternative common nginx timestamp formats if the default fails
+			formats := []string{
+				"02/Jan/2006:15:04:05 -0700", // Standard nginx format
+				"2006-01-02T15:04:05-07:00",  // ISO 8601 format
+				"2006-01-02 15:04:05",        // Simple datetime format
+				"02/Jan/2006:15:04:05",       // Without timezone
+			}
+			
+			parsed := false
+			for _, format := range formats {
+				if t, err := time.Parse(format, timeStr); err == nil {
+					entry.Timestamp = t.Unix()
+					parsed = true
+					break
+				}
+			}
+			
+			// If all parsing attempts fail, keep timestamp as 0
+			if !parsed {
+				// Debug: log parsing failure
+				// fmt.Printf("DEBUG: Failed to parse timestamp: '%s'\n", timeStr)
+			}
 		}
 	}
 

@@ -111,18 +111,18 @@ func NewAdaptiveOptimizer(config *Config) *AdaptiveOptimizer {
 			targetUtilization:   0.75, // Target 75% CPU utilization (more conservative)
 			measurementInterval: 5 * time.Second,
 			adjustmentThreshold: 0.10, // Adjust if 10% deviation from target (more sensitive)
-			maxWorkers:          runtime.GOMAXPROCS(0) * 3,
-			minWorkers:          max(1, runtime.GOMAXPROCS(0)/8), // Allow aggressive scaling down: 1/8 of available processors or 1, whichever is higher
+			maxWorkers:          runtime.GOMAXPROCS(0) * 6, // Allow scaling up to 6x CPU cores for I/O-bound workloads
+			minWorkers:          max(2, runtime.GOMAXPROCS(0)/4), // Minimum 2 workers or 1/4 of cores for baseline performance
 			measurements:        make([]float64, 0, 12),          // 1 minute history at 5s intervals
 		},
 		batchSizeController: &BatchSizeController{
 			baseBatchSize:    config.BatchSize,
-			minBatchSize:     max(100, config.BatchSize/4),
-			maxBatchSize:     config.BatchSize * 3,
-			adjustmentFactor: 0.2, // 20% adjustment steps
+			minBatchSize:     max(500, config.BatchSize/6),   // Higher minimum for throughput
+			maxBatchSize:     config.BatchSize * 6,          // Increased to 6x for maximum throughput
+			adjustmentFactor: 0.25, // 25% adjustment steps for faster scaling
 			currentBatchSize: int32(config.BatchSize),
-			latencyThreshold: 5 * time.Second,
-			throughputTarget: 25.0, // Target 25 MB/s
+			latencyThreshold: 8 * time.Second,              // Higher latency tolerance for throughput
+			throughputTarget: 50.0, // Target 50 MB/s - higher throughput target
 		},
 		performanceHistory: &PerformanceHistory{
 			samples:         make([]PerformanceSample, 0, 120), // 2 minutes of 1s samples
