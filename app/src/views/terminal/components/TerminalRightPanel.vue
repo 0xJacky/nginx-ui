@@ -128,14 +128,14 @@ defineExpose({
     width: 300px;
   }
 
-  @media (max-width: 768px) {
-    position: fixed;
-    right: 0;
-    top: 0;
+  @media (max-width: 1024px) {
+    position: relative;
     width: 100%;
-    height: 100vh;
-    z-index: 1000;
+    height: 40%;
+    min-height: 250px;
     border-left: none;
+    border-top: 1px solid #333;
+    flex-shrink: 0;
   }
 }
 

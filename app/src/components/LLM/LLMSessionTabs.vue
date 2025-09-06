@@ -116,15 +116,25 @@ async function closeSession(sessionId: string, event: Event) {
   }
 
   const sessionIndex = sortedSessions.value.findIndex(s => s.session_id === sessionId)
+  const isActiveSession = sessionId === activeSessionId.value
 
   try {
     await sessionStore.deleteSession(sessionId)
 
     // If deleted the active session, switch to another
-    if (sessionId === activeSessionId.value && sortedSessions.value.length > 0) {
-      // Try to select the next tab, or the previous one if it was the last
-      const newIndex = Math.min(sessionIndex, sortedSessions.value.length - 1)
-      if (newIndex >= 0) {
+    if (isActiveSession && sortedSessions.value.length > 0) {
+      let newIndex
+
+      // If it was the last tab, select the previous one
+      if (sessionIndex >= sortedSessions.value.length) {
+        newIndex = sortedSessions.value.length - 1
+      }
+      // Otherwise, select the next one (which now has the same index)
+      else {
+        newIndex = sessionIndex
+      }
+
+      if (newIndex >= 0 && sortedSessions.value[newIndex]) {
         await selectSession(sortedSessions.value[newIndex].session_id)
       }
       else {

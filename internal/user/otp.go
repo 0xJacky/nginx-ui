@@ -81,7 +81,7 @@ func secureSessionIDCacheKey(sessionId string) string {
 
 func SetSecureSessionID(userId uint64) (sessionId string) {
 	sessionId = uuid.NewString()
-	cache.Set(secureSessionIDCacheKey(sessionId), userId, 5*time.Minute)
+	cache.Set(secureSessionIDCacheKey(sessionId), userId, 10*time.Minute)
 
 	return
 }

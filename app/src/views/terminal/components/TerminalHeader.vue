@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { TerminalTab } from '@/pinia/moudule/terminal'
 import { CloseOutlined, PlusOutlined } from '@ant-design/icons-vue'
+import { nextTick, ref } from 'vue'
 
 interface Props {
   tabs: TerminalTab[]
@@ -17,6 +18,8 @@ const emit = defineEmits<{
   toggleRightPanel: []
 }>()
 
+const tabsScrollRef = ref<HTMLElement>()
+
 function handleSwitchTab(tabId: string) {
   emit('switchTab', tabId)
 }
@@ -27,6 +30,12 @@ function handleCloseTab(tabId: string) {
 
 function handleCreateNewTerminal() {
   emit('createNewTerminal')
+
+  nextTick(() => {
+    if (tabsScrollRef.value) {
+      tabsScrollRef.value.scrollLeft = tabsScrollRef.value.scrollWidth
+    }
+  })
 }
 
 function handleToggleRightPanel() {
@@ -37,7 +46,7 @@ function handleToggleRightPanel() {
 <template>
   <div class="terminal-header">
     <div class="terminal-tabs">
-      <div class="tabs-scroll">
+      <div ref="tabsScrollRef" class="tabs-scroll">
         <div
           v-for="tab in tabs"
           :key="tab.id"
@@ -97,6 +106,7 @@ function handleToggleRightPanel() {
     padding: 0 12px;
     width: 100%;
     box-sizing: border-box;
+    min-width: 0;
 
     .tabs-scroll {
       flex: 1;
@@ -230,6 +240,7 @@ function handleToggleRightPanel() {
     gap: 8px;
     align-items: center;
     padding: 0 12px 0 0;
+    flex-shrink: 0;
 
     .icon {
       font-size: 16px;

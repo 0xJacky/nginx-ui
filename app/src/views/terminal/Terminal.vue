@@ -95,6 +95,8 @@ function closeTab(tabId: string) {
 
 onMounted(() => {
   checkSecureConnection()
+  updateWindowWidth()
+  window.addEventListener('resize', updateWindowWidth)
 
   if (!terminalStore.hasActiveTabs) {
     createNewTerminal()
@@ -102,6 +104,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  window.removeEventListener('resize', updateWindowWidth)
   terminalStore.tabs.forEach(tab => {
     destroySession(tab.id)
   })
@@ -149,6 +152,41 @@ function toggleRightPanel() {
     }, 300)
   })
 }
+
+// Track window size for responsive design
+const windowWidth = ref(0)
+
+function updateWindowWidth() {
+  windowWidth.value = window.innerWidth
+}
+
+// Dynamic height calculation for terminals container
+const terminalContainerHeight = computed(() => {
+  if (windowWidth.value <= 1024) {
+    // In mobile/tablet layout, consider LLM panel visibility
+    if (terminalStore.llm_panel_visible) {
+      // Terminal takes 60% when LLM panel is visible
+      return windowWidth.value <= 512 ? '50%' : '60%'
+    }
+    return '100%' // Full height minus header and status bar when LLM panel is hidden
+  }
+  // In desktop layout, always full height (LLM panel is on the right)
+  return '100%' // header (48px) + status bar (28px)
+})
+
+// Dynamic height calculation for terminal container
+const terminalMainContainerHeight = computed(() => {
+  if (windowWidth.value <= 1024) {
+    // In mobile/tablet layout, consider LLM panel visibility
+    if (terminalStore.llm_panel_visible) {
+      // Terminal container takes allocated percentage
+      return windowWidth.value <= 512 ? '50%' : '60%'
+    }
+    return '100%' // Full height minus header and status bar when LLM panel is hidden
+  }
+  // In desktop layout, always flex: 1
+  return 'auto'
+})
 </script>
 
 <template>
@@ -163,7 +201,7 @@ function toggleRightPanel() {
         :message="$gettext('You are accessing this terminal over an insecure HTTP connection on a non-localhost domain. This may expose sensitive information.')"
       />
       <div ref="terminalLayoutRef" class="terminal-layout">
-        <div class="terminal-container">
+        <div class="terminal-container" :style="{ height: terminalMainContainerHeight }">
           <TerminalHeader
             :tabs="terminalStore.tabs"
             :active-tab-id="terminalStore.activeTabId"
@@ -173,7 +211,7 @@ function toggleRightPanel() {
             @create-new-terminal="createNewTerminal"
             @toggle-right-panel="toggleRightPanel"
           />
-          <div class="terminals-container">
+          <div class="terminals-container" :style="{ height: terminalContainerHeight }">
             <TerminalSessionContent
               v-for="tab in terminalStore.tabs"
               :key="tab.id"
@@ -206,8 +244,14 @@ function toggleRightPanel() {
   position: relative;
   width: 100%;
 
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    height: max(400px, calc(100vh - 160px));
+  }
+
   @media (max-width: 512px) {
     border-radius: 0;
+    height: calc(100vh - 180px);
   }
 }
 
@@ -218,12 +262,28 @@ function toggleRightPanel() {
   min-width: 0;
   transition: all 0.3s ease;
   background: #000;
+
+  @media (max-width: 1024px) {
+    flex: none;
+    /* Height will be controlled by inline style */
+  }
+
+  @media (max-width: 512px) {
+    /* Height will be controlled by inline style */
+  }
 }
 
 .terminals-container {
   flex: 1;
   position: relative;
-  height: calc(100% - 48px - 40px);
   overflow: hidden;
+
+  @media (max-width: 1024px) {
+    min-height: 200px;
+  }
+
+  @media (max-width: 512px) {
+    min-height: 150px;
+  }
 }
 </style>

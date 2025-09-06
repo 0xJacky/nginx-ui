@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { KeyOutlined, LockOutlined, UserOutlined } from '@ant-design/icons-vue'
+import { KeyOutlined, LoadingOutlined, LockOutlined, UserOutlined } from '@ant-design/icons-vue'
 import { startAuthentication } from '@simplewebauthn/browser'
 import { Form } from 'ant-design-vue'
 import auth from '@/api/auth'
@@ -17,14 +17,39 @@ const thisYear = new Date().getFullYear()
 const route = useRoute()
 const router = useRouter()
 
+const loading = ref(false)
+const { message } = useGlobalApp()
+const enabled2FA = ref(false)
+
+const isDebugMode = computed(() => route.query.debug === 'true')
+
+const loadingIndicator = h(LoadingOutlined, {
+  style: {
+    fontSize: '32px',
+    color: '#1890ff',
+  },
+  spin: true,
+})
+
+function simulateLoading() {
+  loading.value = true
+  setTimeout(() => {
+    loading.value = false
+  }, 3000)
+}
+
+function simulate2FA() {
+  enabled2FA.value = !enabled2FA.value
+}
+
+function toggleDebugLoading() {
+  loading.value = !loading.value
+}
+
 install.get_lock().then(async (r: { lock: boolean }) => {
   if (!r.lock)
     await router.push('/install')
 })
-
-const loading = ref(false)
-const { message } = useGlobalApp()
-const enabled2FA = ref(false)
 const refOTP = useTemplateRef('refOTP')
 const passcode = ref('')
 const recoveryCode = ref('')
@@ -163,8 +188,9 @@ if (route.query?.code !== undefined && route.query?.state !== undefined) {
   loading.value = true
   auth.casdoor_login(route.query?.code?.toString(), route.query?.state?.toString()).then(async () => {
     await handleLoginSuccess()
+  }).finally(() => {
+    loading.value = false
   })
-  loading.value = false
 }
 
 function handleOTPSubmit(code: string, recovery: string) {
@@ -180,9 +206,8 @@ passkey.get_config_status().then(r => {
   passkeyConfigStatus.value = r.status
 })
 
-const passkeyLoginLoading = ref(false)
 async function handlePasskeyLogin() {
-  passkeyLoginLoading.value = true
+  loading.value = true
 
   try {
     const begin = await auth.begin_passkey_login()
@@ -200,7 +225,6 @@ async function handlePasskeyLogin() {
         secureSessionId: r.secure_session_id,
         loginType: 'passkey',
         passkeyRawId: asseResp.rawId,
-        showSuccessMessage: false,
       })
     }
   }
@@ -208,7 +232,7 @@ async function handlePasskeyLogin() {
     console.error(e)
   }
   finally {
-    passkeyLoginLoading.value = false
+    loading.value = false
   }
 }
 </script>
@@ -221,7 +245,15 @@ async function handlePasskeyLogin() {
           <div class="project-title">
             <h1>Nginx UI</h1>
           </div>
-          <AForm id="components-form-demo-normal-login">
+
+          <div v-if="loading" class="loading-container">
+            <ASpin :indicator="loadingIndicator" />
+            <div class="loading-text">
+              {{ $gettext('Authenticating...') }}
+            </div>
+          </div>
+
+          <AForm v-else id="components-form-demo-normal-login">
             <template v-if="!enabled2FA">
               <AFormItem v-bind="validateInfos.username">
                 <AInput
@@ -289,7 +321,7 @@ async function handlePasskeyLogin() {
                 </ADivider>
 
                 <AButton
-                  :loading="passkeyLoginLoading"
+                  :disabled="loading"
                   @click="handlePasskeyLogin"
                 >
                   <KeyOutlined />
@@ -308,6 +340,24 @@ async function handlePasskeyLogin() {
             <div class="flex justify-center mt-4">
               <SwitchAppearance />
             </div>
+          </div>
+        </div>
+
+        <!-- Debug Panel -->
+        <div v-if="isDebugMode" class="debug-panel">
+          <div class="debug-header">
+            🐛 Debug Panel
+          </div>
+          <div class="debug-buttons">
+            <AButton size="small" @click="toggleDebugLoading">
+              {{ loading ? 'Stop Loading' : 'Toggle Loading' }}
+            </AButton>
+            <AButton size="small" @click="simulateLoading">
+              Simulate 3s Loading
+            </AButton>
+            <AButton size="small" @click="simulate2FA">
+              {{ enabled2FA ? 'Hide 2FA' : 'Show 2FA' }}
+            </AButton>
           </div>
         </div>
       </div>
@@ -348,11 +398,63 @@ async function handlePasskeyLogin() {
       color: #a8a5a5 !important;
     }
 
+    .loading-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 20px;
+      text-align: center;
+
+      .loading-text {
+        margin-top: 16px;
+        font-size: 16px;
+        color: rgba(0, 0, 0, 0.65);
+      }
+    }
+
+    .dark .loading-container .loading-text {
+      color: rgba(255, 255, 255, 0.65);
+    }
+
     .footer {
       padding: 30px 20px;
       text-align: center;
       font-size: 14px;
     }
   }
+}
+
+.debug-panel {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  backdrop-filter: blur(8px);
+
+  .debug-header {
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+
+  .debug-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+.dark .debug-panel {
+  background: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.9);
 }
 </style>
