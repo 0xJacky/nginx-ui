@@ -58,13 +58,13 @@ type Config struct {
 	EnableMetrics     bool          `json:"enable_metrics"`
 }
 
-// DefaultIndexerConfig returns default indexer configuration with CPU optimization
+// DefaultIndexerConfig returns default indexer configuration with processor optimization
 func DefaultIndexerConfig() *Config {
-	numCPU := runtime.NumCPU()
+	maxProcs := runtime.GOMAXPROCS(0)
 	return &Config{
 		IndexPath:         "./log-index",
 		ShardCount:        4,
-		WorkerCount:       numCPU * 2,            // Optimized: CPU cores * 2 for better utilization
+		WorkerCount:       maxProcs * 2,            // Optimized: Available processors * 2 for better utilization
 		BatchSize:         1500,                   // Optimized: Increased from 1000 to 1500 for better throughput
 		FlushInterval:     5 * time.Second,
 		MaxQueueSize:      15000,                  // Optimized: Increased from 10000 to 15000
@@ -79,19 +79,19 @@ func DefaultIndexerConfig() *Config {
 // GetOptimizedConfig returns configuration optimized for specific scenarios
 func GetOptimizedConfig(scenario string) *Config {
 	base := DefaultIndexerConfig()
-	numCPU := runtime.NumCPU()
+	maxProcs := runtime.GOMAXPROCS(0)
 	
 	switch scenario {
 	case "high_throughput":
 		// Maximize throughput at cost of higher latency
-		base.WorkerCount = numCPU * 2
+		base.WorkerCount = maxProcs * 2
 		base.BatchSize = 2000
 		base.MaxQueueSize = 20000
 		base.FlushInterval = 10 * time.Second
 		
 	case "low_latency":
 		// Minimize latency with reasonable throughput
-		base.WorkerCount = int(float64(numCPU) * 1.5)
+		base.WorkerCount = int(float64(maxProcs) * 1.5)
 		base.BatchSize = 500
 		base.MaxQueueSize = 10000
 		base.FlushInterval = 2 * time.Second
@@ -102,14 +102,14 @@ func GetOptimizedConfig(scenario string) *Config {
 		
 	case "memory_constrained":
 		// Reduce memory usage
-		base.WorkerCount = max(2, numCPU/2)
+		base.WorkerCount = max(2, maxProcs/2)
 		base.BatchSize = 250
 		base.MaxQueueSize = 5000
 		base.MemoryQuota = 256 * 1024 * 1024 // 256MB
 		
 	case "cpu_intensive":
 		// CPU-heavy workloads (parsing, etc.)
-		base.WorkerCount = numCPU * 3
+		base.WorkerCount = maxProcs * 3
 		base.BatchSize = 1000
 		base.MaxQueueSize = 25000
 	}

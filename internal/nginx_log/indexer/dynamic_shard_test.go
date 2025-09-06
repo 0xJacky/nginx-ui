@@ -118,7 +118,7 @@ func TestEnhancedDynamicShardManager(t *testing.T) {
 func TestParallelIndexerWithDynamicShards(t *testing.T) {
 	config := DefaultIndexerConfig()
 	config.IndexPath = t.TempDir()
-	config.WorkerCount = runtime.NumCPU() * 2 // Ensure high worker count for dynamic detection
+	config.WorkerCount = runtime.GOMAXPROCS(0) * 2 // Ensure high worker count for dynamic detection
 	
 	// Create indexer with nil shard manager to trigger dynamic detection
 	indexer := NewParallelIndexer(config, nil)
@@ -135,9 +135,9 @@ func TestParallelIndexerWithDynamicShards(t *testing.T) {
 	t.Logf("Current shard manager type: %T", currentManager)
 	
 	// For M2 Pro with 12 cores, 24 workers, should detect dynamic management
-	if runtime.NumCPU() >= 8 {
+	if runtime.GOMAXPROCS(0) >= 8 {
 		if !isDynamic {
-			t.Errorf("Expected dynamic shard management on high-core system (CPU: %d)", runtime.NumCPU())
+			t.Errorf("Expected dynamic shard management on high-core system (Procs: %d)", runtime.GOMAXPROCS(0))
 		} else {
 			t.Logf("✅ Dynamic shard management correctly detected on high-core system")
 		}

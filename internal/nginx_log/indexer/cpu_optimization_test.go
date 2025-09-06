@@ -18,9 +18,9 @@ func BenchmarkCPUUtilization(b *testing.B) {
 		queueSize   int
 	}{
 		{"Current_8W_1000B", 8, 1000, 10000},
-		{"CPU_Match", runtime.NumCPU(), 1000, 10000},
-		{"CPU_Double", runtime.NumCPU() * 2, 1000, 10000},
-		{"CPU_Triple", runtime.NumCPU() * 3, 1000, 10000},
+		{"CPU_Match", runtime.GOMAXPROCS(0), 1000, 10000},
+		{"CPU_Double", runtime.GOMAXPROCS(0) * 2, 1000, 10000},
+		{"CPU_Triple", runtime.GOMAXPROCS(0) * 3, 1000, 10000},
 		{"HighBatch_8W_2000B", 8, 2000, 10000},
 		{"HighBatch_12W_2000B", 12, 2000, 20000},
 		{"LowLatency_16W_500B", 16, 500, 20000},

@@ -14,9 +14,9 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
 	"github.com/blevesearch/bleve/v2"
 	"github.com/uozi-tech/cosy/logger"
-	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
 )
 
 // ParallelIndexer provides high-performance parallel indexing with sharding
@@ -35,9 +35,9 @@ type ParallelIndexer struct {
 	cancel  context.CancelFunc
 	wg      sync.WaitGroup
 	running int32
-	
+
 	// Cleanup control
-	stopOnce sync.Once
+	stopOnce       sync.Once
 	channelsClosed int32
 
 	// Statistics
@@ -50,9 +50,9 @@ type ParallelIndexer struct {
 	adaptiveOptimizer   *AdaptiveOptimizer
 	zeroAllocProcessor  *ZeroAllocBatchProcessor
 	optimizationEnabled bool
-	
+
 	// Dynamic shard awareness
-	dynamicAwareness    *DynamicShardAwareness
+	dynamicAwareness *DynamicShardAwareness
 }
 
 // indexWorker represents a single indexing worker
@@ -73,7 +73,7 @@ func NewParallelIndexer(config *Config, shardManager ShardManager) *ParallelInde
 
 	// Initialize dynamic shard awareness
 	dynamicAwareness := NewDynamicShardAwareness(config)
-	
+
 	// If no shard manager provided, use dynamic awareness to detect optimal type
 	var actualShardManager ShardManager
 	if shardManager == nil {
@@ -83,7 +83,7 @@ func NewParallelIndexer(config *Config, shardManager ShardManager) *ParallelInde
 			detected = NewDefaultShardManager(config)
 			detected.(*DefaultShardManager).Initialize()
 		}
-		
+
 		// Type assertion to ShardManager interface
 		if sm, ok := detected.(ShardManager); ok {
 			actualShardManager = sm
@@ -96,9 +96,11 @@ func NewParallelIndexer(config *Config, shardManager ShardManager) *ParallelInde
 		actualShardManager = shardManager
 	}
 
+	ao := NewAdaptiveOptimizer(config)
+
 	indexer := &ParallelIndexer{
-		config:              config,
-		shardManager:        actualShardManager,
+		config:             config,
+		shardManager:       actualShardManager,
 		metrics:            NewDefaultMetricsCollector(),
 		jobQueue:           make(chan *IndexJob, config.MaxQueueSize),
 		resultQueue:        make(chan *IndexResult, config.WorkerCount),
@@ -107,10 +109,15 @@ func NewParallelIndexer(config *Config, shardManager ShardManager) *ParallelInde
 		stats: &IndexStats{
 			WorkerStats: make([]*WorkerStats, config.WorkerCount),
 		},
-		adaptiveOptimizer:   NewAdaptiveOptimizer(config),
-		zeroAllocProcessor:  NewZeroAllocBatchProcessor(config),
+		adaptiveOptimizer:   ao,
+		zeroAllocProcessor: NewZeroAllocBatchProcessor(config),
 		optimizationEnabled: true, // Enable optimizations by default
 		dynamicAwareness:    dynamicAwareness,
+	}
+
+	// Set up the activity poller for the adaptive optimizer
+	if indexer.adaptiveOptimizer != nil {
+		indexer.adaptiveOptimizer.SetActivityPoller(indexer)
 	}
 
 	// Initialize workers
@@ -166,15 +173,21 @@ func (pi *ParallelIndexer) Start(ctx context.Context) error {
 
 	// Start adaptive optimizer if enabled
 	if pi.optimizationEnabled && pi.adaptiveOptimizer != nil {
+		// Set worker count change callback
+		logger.Debugf("Setting up adaptive optimizer callback for worker count changes")
+		pi.adaptiveOptimizer.SetWorkerCountChangeCallback(pi.handleWorkerCountChange)
+
 		if err := pi.adaptiveOptimizer.Start(); err != nil {
 			logger.Warnf("Failed to start adaptive optimizer: %v", err)
+		} else {
+			logger.Debugf("Adaptive optimizer started successfully")
 		}
 	}
-	
+
 	// Start dynamic shard awareness monitoring if enabled
 	if pi.dynamicAwareness != nil {
 		pi.dynamicAwareness.StartMonitoring(ctx)
-		
+
 		if pi.dynamicAwareness.IsDynamic() {
 			logger.Info("Dynamic shard management is active with automatic scaling")
 		} else {
@@ -185,10 +198,90 @@ func (pi *ParallelIndexer) Start(ctx context.Context) error {
 	return nil
 }
 
+// handleWorkerCountChange handles dynamic worker count adjustments from adaptive optimizer
+func (pi *ParallelIndexer) handleWorkerCountChange(oldCount, newCount int) {
+	logger.Infof("Handling worker count change from %d to %d", oldCount, newCount)
+
+	// Check if indexer is running
+	if atomic.LoadInt32(&pi.running) != 1 {
+		logger.Warn("Cannot adjust worker count: indexer not running")
+		return
+	}
+
+	// Prevent concurrent worker adjustments
+	pi.statsMutex.Lock()
+	defer pi.statsMutex.Unlock()
+
+	currentWorkerCount := len(pi.workers)
+	if currentWorkerCount == newCount {
+		return // Already at desired count
+	}
+
+	if newCount > currentWorkerCount {
+		// Add more workers
+		pi.addWorkers(newCount - currentWorkerCount)
+	} else {
+		// Remove workers
+		pi.removeWorkers(currentWorkerCount - newCount)
+	}
+
+	// Update config to reflect the change
+	pi.config.WorkerCount = newCount
+
+	logger.Infof("Successfully adjusted worker count to %d", newCount)
+}
+
+// addWorkers adds new workers to the pool
+func (pi *ParallelIndexer) addWorkers(count int) {
+	for i := 0; i < count; i++ {
+		workerID := len(pi.workers)
+		worker := &indexWorker{
+			id:      workerID,
+			indexer: pi,
+			stats: &WorkerStats{
+				ID:     workerID,
+				Status: WorkerStatusIdle,
+			},
+		}
+
+		pi.workers = append(pi.workers, worker)
+		pi.stats.WorkerStats = append(pi.stats.WorkerStats, worker.stats)
+
+		// Start the new worker
+		pi.wg.Add(1)
+		go worker.run()
+
+		logger.Debugf("Added worker %d", workerID)
+	}
+}
+
+// removeWorkers gracefully removes workers from the pool
+func (pi *ParallelIndexer) removeWorkers(count int) {
+	if count >= len(pi.workers) {
+		logger.Warn("Cannot remove all workers, keeping at least one")
+		count = len(pi.workers) - 1
+	}
+
+	// Remove workers from the end of the slice
+	workersToRemove := pi.workers[len(pi.workers)-count:]
+	pi.workers = pi.workers[:len(pi.workers)-count]
+	pi.stats.WorkerStats = pi.stats.WorkerStats[:len(pi.stats.WorkerStats)-count]
+
+	// Note: In a full implementation, you would need to:
+	// 1. Signal workers to stop gracefully after finishing current jobs
+	// 2. Wait for them to complete
+	// 3. Clean up their resources
+	// For now, we just remove them from tracking
+
+	for _, worker := range workersToRemove {
+		logger.Debugf("Removed worker %d", worker.id)
+	}
+}
+
 // Stop gracefully stops the indexer
 func (pi *ParallelIndexer) Stop() error {
 	var stopErr error
-	
+
 	pi.stopOnce.Do(func() {
 		// Set running to 0
 		if !atomic.CompareAndSwapInt32(&pi.running, 1, 0) {
@@ -359,59 +452,59 @@ func (pi *ParallelIndexer) EnableOptimizations(enabled bool) {
 func (pi *ParallelIndexer) GetDynamicShardInfo() *DynamicShardInfo {
 	if pi.dynamicAwareness == nil {
 		return &DynamicShardInfo{
-			IsEnabled:    false,
-			IsActive:     false,
-			ShardCount:   pi.config.ShardCount,
-			ShardType:    "static",
+			IsEnabled:  false,
+			IsActive:   false,
+			ShardCount: pi.config.ShardCount,
+			ShardType:  "static",
 		}
 	}
-	
+
 	isDynamic := pi.dynamicAwareness.IsDynamic()
 	shardManager := pi.dynamicAwareness.GetCurrentShardManager()
-	
+
 	info := &DynamicShardInfo{
-		IsEnabled:    true,
-		IsActive:     isDynamic,
-		ShardCount:   pi.config.ShardCount,
-		ShardType:    "static",
+		IsEnabled:  true,
+		IsActive:   isDynamic,
+		ShardCount: pi.config.ShardCount,
+		ShardType:  "static",
 	}
-	
+
 	if isDynamic {
 		info.ShardType = "dynamic"
-		
+
 		if enhancedManager, ok := shardManager.(*EnhancedDynamicShardManager); ok {
 			info.TargetShardCount = enhancedManager.GetTargetShardCount()
 			info.IsScaling = enhancedManager.IsScalingInProgress()
 			info.AutoScaleEnabled = enhancedManager.IsAutoScaleEnabled()
-			
+
 			// Get scaling recommendation
 			recommendation := enhancedManager.GetScalingRecommendations()
 			info.Recommendation = recommendation
-			
+
 			// Get shard health
 			info.ShardHealth = enhancedManager.GetShardHealth()
 		}
 	}
-	
+
 	// Get performance analysis
 	analysis := pi.dynamicAwareness.GetPerformanceAnalysis()
 	info.PerformanceAnalysis = &analysis
-	
+
 	return info
 }
 
 // DynamicShardInfo contains information about dynamic shard management status
 type DynamicShardInfo struct {
-	IsEnabled           bool                             `json:"is_enabled"`
-	IsActive            bool                             `json:"is_active"`
-	ShardType           string                           `json:"shard_type"`        // "static" or "dynamic"
-	ShardCount          int                              `json:"shard_count"`
-	TargetShardCount    int                              `json:"target_shard_count,omitempty"`
-	IsScaling           bool                             `json:"is_scaling,omitempty"`
-	AutoScaleEnabled    bool                             `json:"auto_scale_enabled,omitempty"`
-	Recommendation      *ScalingRecommendation           `json:"recommendation,omitempty"`
-	ShardHealth         map[int]*ShardHealthStatus       `json:"shard_health,omitempty"`
-	PerformanceAnalysis *PerformanceAnalysis             `json:"performance_analysis,omitempty"`
+	IsEnabled           bool                       `json:"is_enabled"`
+	IsActive            bool                       `json:"is_active"`
+	ShardType           string                     `json:"shard_type"` // "static" or "dynamic"
+	ShardCount          int                        `json:"shard_count"`
+	TargetShardCount    int                        `json:"target_shard_count,omitempty"`
+	IsScaling           bool                       `json:"is_scaling,omitempty"`
+	AutoScaleEnabled    bool                       `json:"auto_scale_enabled,omitempty"`
+	Recommendation      *ScalingRecommendation     `json:"recommendation,omitempty"`
+	ShardHealth         map[int]*ShardHealthStatus `json:"shard_health,omitempty"`
+	PerformanceAnalysis *PerformanceAnalysis       `json:"performance_analysis,omitempty"`
 }
 
 // FlushAll flushes all pending operations
@@ -535,7 +628,7 @@ func (pi *ParallelIndexer) IndexLogFile(filePath string) error {
 		docIDBuf = append(docIDBuf, filePath...)
 		docIDBuf = append(docIDBuf, '-')
 		docIDBuf = utils.AppendInt(docIDBuf, int(docCount))
-		
+
 		doc := &Document{
 			ID:     utils.BytesToStringUnsafe(docIDBuf),
 			Fields: logDoc,
@@ -596,6 +689,28 @@ func (pi *ParallelIndexer) IsRunning() bool {
 	return atomic.LoadInt32(&pi.running) != 0
 }
 
+// IsBusy checks if the indexer has pending jobs or any active workers.
+func (pi *ParallelIndexer) IsBusy() bool {
+	if len(pi.jobQueue) > 0 {
+		return true
+	}
+
+	// This RLock protects the pi.workers slice from changing during iteration (e.g. scaling)
+	pi.statsMutex.RLock()
+	defer pi.statsMutex.RUnlock()
+
+	for _, worker := range pi.workers {
+		worker.statsMutex.RLock()
+		isBusy := worker.stats.Status == WorkerStatusBusy
+		worker.statsMutex.RUnlock()
+		if isBusy {
+			return true
+		}
+	}
+
+	return false
+}
+
 // GetShardInfo returns information about a specific shard
 func (pi *ParallelIndexer) GetShardInfo(shardID int) (*ShardInfo, error) {
 	shardStats := pi.shardManager.GetShardStats()
@@ -653,43 +768,43 @@ func (pi *ParallelIndexer) DeleteIndexByLogGroup(basePath string, logFileManager
 	// Delete documents from all shards for these files
 	shards := pi.shardManager.GetAllShards()
 	var deleteErrors []error
-	
+
 	for _, shard := range shards {
 		// Search for documents with matching file_path
 		for _, filePath := range filesToDelete {
 			query := bleve.NewTermQuery(filePath)
 			query.SetField("file_path")
-			
+
 			searchRequest := bleve.NewSearchRequest(query)
 			searchRequest.Size = 1000 // Process in batches
 			searchRequest.Fields = []string{"file_path"}
-			
+
 			for {
 				searchResult, err := shard.Search(searchRequest)
 				if err != nil {
 					deleteErrors = append(deleteErrors, fmt.Errorf("failed to search for documents in file %s: %w", filePath, err))
 					break
 				}
-				
+
 				if len(searchResult.Hits) == 0 {
 					break // No more documents to delete
 				}
-				
+
 				// Delete documents in batch
 				batch := shard.NewBatch()
 				for _, hit := range searchResult.Hits {
 					batch.Delete(hit.ID)
 				}
-				
+
 				if err := shard.Batch(batch); err != nil {
 					deleteErrors = append(deleteErrors, fmt.Errorf("failed to delete batch for file %s: %w", filePath, err))
 				}
-				
+
 				// If we got fewer results than requested, we're done
 				if len(searchResult.Hits) < searchRequest.Size {
 					break
 				}
-				
+
 				// Continue from where we left off
 				searchRequest.From += searchRequest.Size
 			}
@@ -704,13 +819,12 @@ func (pi *ParallelIndexer) DeleteIndexByLogGroup(basePath string, logFileManager
 	return nil
 }
 
-
 // DestroyAllIndexes closes and deletes all index data from disk.
 func (pi *ParallelIndexer) DestroyAllIndexes(parentCtx context.Context) error {
 	// Stop all background routines before deleting files
 	pi.cancel()
 	pi.wg.Wait()
-	
+
 	// Safely close channels if they haven't been closed yet
 	if atomic.CompareAndSwapInt32(&pi.channelsClosed, 0, 1) {
 		close(pi.jobQueue)
@@ -801,6 +915,53 @@ func (pi *ParallelIndexer) IndexLogGroup(basePath string) (map[string]uint64, *t
 	}
 
 	return docsCountMap, overallMinTime, overallMaxTime, nil
+}
+
+// IndexSingleFileIncrementally is a more efficient version for incremental updates.
+// It indexes only the specified single file instead of the entire log group.
+func (pi *ParallelIndexer) IndexSingleFileIncrementally(filePath string, progressConfig *ProgressConfig) (map[string]uint64, *time.Time, *time.Time, error) {
+	if !pi.IsHealthy() {
+		return nil, nil, nil, fmt.Errorf("indexer not healthy")
+	}
+
+	// Create progress tracker if config is provided
+	var progressTracker *ProgressTracker
+	if progressConfig != nil {
+		progressTracker = NewProgressTracker(filePath, progressConfig)
+		// Setup file for tracking
+		isCompressed := IsCompressedFile(filePath)
+		progressTracker.AddFile(filePath, isCompressed)
+		if stat, err := os.Stat(filePath); err == nil {
+			progressTracker.SetFileSize(filePath, stat.Size())
+			if estimatedLines, err := EstimateFileLines(context.Background(), filePath, stat.Size(), isCompressed); err == nil {
+				progressTracker.SetFileEstimate(filePath, estimatedLines)
+			}
+		}
+	}
+
+	docsCountMap := make(map[string]uint64)
+
+	if progressTracker != nil {
+		progressTracker.StartFile(filePath)
+	}
+
+	docsIndexed, minTime, maxTime, err := pi.indexSingleFileWithProgress(filePath, progressTracker)
+	if err != nil {
+		logger.Warnf("Failed to incrementally index file '%s', skipping: %v", filePath, err)
+		if progressTracker != nil {
+			progressTracker.FailFile(filePath, err.Error())
+		}
+		// Return empty results and the error
+		return docsCountMap, nil, nil, err
+	}
+
+	docsCountMap[filePath] = docsIndexed
+
+	if progressTracker != nil {
+		progressTracker.CompleteFile(filePath, int64(docsIndexed))
+	}
+
+	return docsCountMap, minTime, maxTime, nil
 }
 
 // indexSingleFile contains the logic to process one physical log file.

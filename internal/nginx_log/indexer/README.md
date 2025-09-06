@@ -367,13 +367,13 @@ Based on comprehensive benchmarking on Apple M2 Pro:
 1. **Worker Count Configuration**
 ```go
 // CPU-bound workloads
-config.WorkerCount = runtime.NumCPU()
+config.WorkerCount = runtime.GOMAXPROCS(0)
 
 // I/O-bound workloads  
-config.WorkerCount = runtime.NumCPU() * 2
+config.WorkerCount = runtime.GOMAXPROCS(0) * 2
 
 // Memory-constrained environments
-config.WorkerCount = max(2, runtime.NumCPU()/2)
+config.WorkerCount = max(2, runtime.GOMAXPROCS(0)/2)
 ```
 
 2. **Shard Count Optimization**

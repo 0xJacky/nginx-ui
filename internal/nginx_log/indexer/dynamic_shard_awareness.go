@@ -99,7 +99,7 @@ type EnvironmentFactors struct {
 // analyzeEnvironmentFactors analyzes the current environment
 func (dsa *DynamicShardAwareness) analyzeEnvironmentFactors() EnvironmentFactors {
 	factors := EnvironmentFactors{
-		CPUCores: runtime.NumCPU(),
+		CPUCores: runtime.GOMAXPROCS(0), // Use GOMAXPROCS for container-aware processor count
 	}
 	
 	// Get memory info (simplified)
@@ -178,8 +178,8 @@ func (dsa *DynamicShardAwareness) analyzeExpectedLoad() string {
 		return "high"
 	}
 	
-	// Variable load if workers are significantly higher than CPU cores
-	if workerCount > runtime.NumCPU()*2 {
+	// Variable load if workers are significantly higher than available processors
+	if workerCount > runtime.GOMAXPROCS(0)*2 {
 		return "variable"
 	}
 	

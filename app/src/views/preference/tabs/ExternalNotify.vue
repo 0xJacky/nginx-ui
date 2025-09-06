@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { ExternalNotify } from '@/api/external_notify'
 import { StdCurd } from '@uozi-admin/curd'
-import { Button } from 'ant-design-vue'
 import externalNotify, { testMessage } from '@/api/external_notify'
 import columns from '../components/ExternalNotify/columns'
 
@@ -49,14 +48,14 @@ async function handleTestSingleMessage(record: ExternalNotify) {
     disable-search
   >
     <template #beforeActions="{ record }">
-      <Button
+      <AButton
         type="link"
         size="small"
         :loading="loadingStates[record.id] || false"
         @click="handleTestSingleMessage(record)"
       >
         {{ $gettext('Test') }}
-      </Button>
+      </AButton>
     </template>
   </StdCurd>
 </template>

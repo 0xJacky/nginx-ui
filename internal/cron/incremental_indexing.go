@@ -83,8 +83,8 @@ func performIncrementalIndexing() {
 // needsIncrementalIndexing checks if a log file needs incremental indexing
 func needsIncrementalIndexing(log *nginx_log.NginxLogWithIndex) bool {
 	// Skip if already indexing or queued
-	if log.IndexStatus == string(indexer.IndexStatusIndexing) || 
-	   log.IndexStatus == string(indexer.IndexStatusQueued) {
+	if log.IndexStatus == string(indexer.IndexStatusIndexing) ||
+		log.IndexStatus == string(indexer.IndexStatusQueued) {
 		return false
 	}
 
@@ -106,14 +106,14 @@ func needsIncrementalIndexing(log *nginx_log.NginxLogWithIndex) bool {
 
 	// File was modified after last index and size increased
 	if fileModTime.After(lastModified) && fileSize > log.LastSize {
-		logger.Debugf("File %s needs incremental indexing: mod_time=%s, size=%d", 
+		logger.Debugf("File %s needs incremental indexing: mod_time=%s, size=%d",
 			log.Path, fileModTime.Format("2006-01-02 15:04:05"), fileSize)
 		return true
 	}
 
 	// File size decreased - might be file rotation
 	if fileSize < log.LastSize {
-		logger.Debugf("File %s needs full re-indexing due to size decrease: old_size=%d, new_size=%d", 
+		logger.Debugf("File %s needs full re-indexing due to size decrease: old_size=%d, new_size=%d",
 			log.Path, log.LastSize, fileSize)
 		return true
 	}
@@ -131,7 +131,7 @@ func queueIncrementalIndexing(logPath string, modernIndexer interface{}, logFile
 	// Queue the indexing job asynchronously
 	go func() {
 		logger.Infof("Starting incremental indexing for file: %s", logPath)
-		
+
 		// Set status to indexing
 		if err := setFileIndexStatus(logPath, string(indexer.IndexStatusIndexing), logFileManager); err != nil {
 			logger.Errorf("Failed to set indexing status for %s: %v", logPath, err)
@@ -140,8 +140,8 @@ func queueIncrementalIndexing(logPath string, modernIndexer interface{}, logFile
 
 		// Perform incremental indexing
 		startTime := time.Now()
-		docsCountMap, minTime, maxTime, err := modernIndexer.(*indexer.ParallelIndexer).IndexLogGroupWithProgress(logPath, nil)
-		
+		docsCountMap, minTime, maxTime, err := modernIndexer.(*indexer.ParallelIndexer).IndexSingleFileIncrementally(logPath, nil)
+
 		if err != nil {
 			logger.Errorf("Failed incremental indexing for %s: %v", logPath, err)
 			// Set error status
@@ -184,18 +184,18 @@ func setFileIndexStatus(logPath, status string, logFileManager interface{}) erro
 	if logFileManager == nil {
 		return fmt.Errorf("log file manager not available")
 	}
-	
+
 	// Get persistence manager
 	lfm, ok := logFileManager.(*indexer.LogFileManager)
 	if !ok {
 		return fmt.Errorf("invalid log file manager type")
 	}
-	
+
 	persistence := lfm.GetPersistence()
 	if persistence == nil {
 		return fmt.Errorf("persistence manager not available")
 	}
-	
+
 	// Use enhanced SetIndexStatus method with queue position for queued status
 	queuePosition := 0
 	if status == string(indexer.IndexStatusQueued) {
@@ -203,6 +203,6 @@ func setFileIndexStatus(logPath, status string, logFileManager interface{}) erro
 		// They will be processed as they come
 		queuePosition = int(time.Now().Unix() % 1000) // Simple ordering by time
 	}
-	
+
 	return persistence.SetIndexStatus(logPath, status, queuePosition, "")
 }
