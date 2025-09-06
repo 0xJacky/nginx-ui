@@ -99,18 +99,18 @@ func NewParallelIndexer(config *Config, shardManager ShardManager) *ParallelInde
 	ao := NewAdaptiveOptimizer(config)
 
 	indexer := &ParallelIndexer{
-		config:             config,
-		shardManager:       actualShardManager,
-		metrics:            NewDefaultMetricsCollector(),
-		jobQueue:           make(chan *IndexJob, config.MaxQueueSize),
-		resultQueue:        make(chan *IndexResult, config.WorkerCount),
-		ctx:                ctx,
-		cancel:             cancel,
+		config:       config,
+		shardManager: actualShardManager,
+		metrics:      NewDefaultMetricsCollector(),
+		jobQueue:     make(chan *IndexJob, config.MaxQueueSize),
+		resultQueue:  make(chan *IndexResult, config.WorkerCount),
+		ctx:          ctx,
+		cancel:       cancel,
 		stats: &IndexStats{
 			WorkerStats: make([]*WorkerStats, config.WorkerCount),
 		},
 		adaptiveOptimizer:   ao,
-		zeroAllocProcessor: NewZeroAllocBatchProcessor(config),
+		zeroAllocProcessor:  NewZeroAllocBatchProcessor(config),
 		optimizationEnabled: true, // Enable optimizations by default
 		dynamicAwareness:    dynamicAwareness,
 	}
@@ -1425,7 +1425,7 @@ func (pi *ParallelIndexer) indexSingleFileWithProgress(filePath string, progress
 	}
 
 	// Just do one final progress update when done - no artificial delays
-	if progressTracker != nil && docsIndexed > 0 {
+	if docsIndexed > 0 {
 		if strings.HasSuffix(filePath, ".gz") {
 			progressTracker.UpdateFileProgress(filePath, int64(docsIndexed))
 		} else {

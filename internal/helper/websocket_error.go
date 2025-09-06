@@ -2,13 +2,17 @@ package helper
 
 import (
 	"errors"
-	"github.com/gorilla/websocket"
 	"strings"
 	"syscall"
+
+	"github.com/gorilla/websocket"
 )
 
 // IsUnexpectedWebsocketError checks if the error is an unexpected websocket error
 func IsUnexpectedWebsocketError(err error) bool {
+	if err == nil {
+		return false
+	}
 	// ignore: write: broken pipe
 	if errors.Is(err, syscall.EPIPE) {
 		return false

@@ -118,7 +118,7 @@ func NewAdaptiveOptimizer(config *Config) *AdaptiveOptimizer {
 		batchSizeController: &BatchSizeController{
 			baseBatchSize:    config.BatchSize,
 			minBatchSize:     max(100, config.BatchSize/4),
-			maxBatchSize:     config.BatchSize * 3,
+			maxBatchSize:     config.BatchSize * 4,  // Increased multiplier from 3x to 4x for better CPU utilization
 			adjustmentFactor: 0.2, // 20% adjustment steps
 			currentBatchSize: int32(config.BatchSize),
 			latencyThreshold: 5 * time.Second,

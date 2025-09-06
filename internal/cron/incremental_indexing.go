@@ -130,6 +130,14 @@ func queueIncrementalIndexing(logPath string, modernIndexer interface{}, logFile
 
 	// Queue the indexing job asynchronously
 	go func() {
+		defer func() {
+			// Ensure status is always updated, even on panic
+			if r := recover(); r != nil {
+				logger.Errorf("Recovered from panic during incremental indexing for %s: %v", logPath, r)
+				_ = setFileIndexStatus(logPath, string(indexer.IndexStatusError), logFileManager)
+			}
+		}()
+
 		logger.Infof("Starting incremental indexing for file: %s", logPath)
 
 		// Set status to indexing
@@ -159,8 +167,16 @@ func queueIncrementalIndexing(logPath string, modernIndexer interface{}, logFile
 
 		// Save indexing metadata
 		duration := time.Since(startTime)
-		if metadataManager, ok := logFileManager.(indexer.MetadataManager); ok {
-			if err := metadataManager.SaveIndexMetadata(logPath, totalDocsIndexed, startTime, duration, minTime, maxTime); err != nil {
+
+		if lfm, ok := logFileManager.(*indexer.LogFileManager); ok {
+			persistence := lfm.GetPersistence()
+			var existingDocCount uint64
+			if existingIndex, err := persistence.GetLogIndex(logPath); err == nil && existingIndex != nil {
+				existingDocCount = existingIndex.DocumentCount
+			}
+			finalDocCount := existingDocCount + totalDocsIndexed
+
+			if err := lfm.SaveIndexMetadata(logPath, finalDocCount, startTime, duration, minTime, maxTime); err != nil {
 				logger.Errorf("Failed to save incremental index metadata for %s: %v", logPath, err)
 			}
 		}
@@ -190,7 +206,6 @@ func setFileIndexStatus(logPath, status string, logFileManager interface{}) erro
 	if !ok {
 		return fmt.Errorf("invalid log file manager type")
 	}
-
 	persistence := lfm.GetPersistence()
 	if persistence == nil {
 		return fmt.Errorf("persistence manager not available")

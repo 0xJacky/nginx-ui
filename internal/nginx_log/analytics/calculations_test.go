@@ -10,6 +10,9 @@ import (
 )
 
 func TestService_GetDashboardAnalytics_HourlyStats(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping test in short mode")
+	}
 	mockSearcher := &MockSearcher{}
 	s := NewService(mockSearcher)
 
@@ -40,7 +43,7 @@ func TestService_GetDashboardAnalytics_HourlyStats(t *testing.T) {
 			{
 				Fields: map[string]interface{}{
 					"timestamp": float64(1640999500), // 2022-01-01 01:11:40
-					"ip":        "192.168.1.1",     // Same IP as first hit
+					"ip":        "192.168.1.1",       // Same IP as first hit
 					"bytes":     int64(512),
 				},
 			},
@@ -80,6 +83,9 @@ func TestService_GetDashboardAnalytics_HourlyStats(t *testing.T) {
 // Duplicate test functions removed - they exist in dashboard_test.go
 
 func TestService_calculateHourlyStats_HourlyInterval(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping test in short mode")
+	}
 	mockSearcher := &MockSearcher{}
 	s := NewService(mockSearcher).(*service)
 
@@ -116,6 +122,9 @@ func TestService_calculateHourlyStats_HourlyInterval(t *testing.T) {
 }
 
 func TestService_calculateDailyStats_DailyInterval(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping test in short mode")
+	}
 	mockSearcher := &MockSearcher{}
 	s := NewService(mockSearcher).(*service)
 
@@ -152,6 +161,9 @@ func TestService_calculateDailyStats_DailyInterval(t *testing.T) {
 }
 
 func TestService_calculateDashboardSummary_MonthlyData(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping test in short mode")
+	}
 	mockSearcher := &MockSearcher{}
 	s := NewService(mockSearcher).(*service)
 
@@ -181,7 +193,7 @@ func TestService_calculateDashboardSummary_MonthlyData(t *testing.T) {
 
 	assert.Equal(t, 50, summary.TotalUV)
 	assert.Equal(t, 830, summary.TotalPV)
-	assert.InDelta(t, 16.67, summary.AvgDailyUV, 0.01) // 50 total UV / 3 days
+	assert.InDelta(t, 16.67, summary.AvgDailyUV, 0.01)  // 50 total UV / 3 days
 	assert.InDelta(t, 276.67, summary.AvgDailyPV, 0.01) // (300+250+280)/3
 
 	// Peak hour should be hour 1 with 200 PV
@@ -190,6 +202,9 @@ func TestService_calculateDashboardSummary_MonthlyData(t *testing.T) {
 }
 
 func TestService_calculateTopFieldStats_Generic(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping test in short mode")
+	}
 	facet := &searcher.Facet{
 		Terms: []*searcher.FacetTerm{
 			{Term: "/api/users", Count: 100},
@@ -219,6 +234,9 @@ func TestService_calculateTopFieldStats_Generic(t *testing.T) {
 }
 
 func TestCalculateTopFieldStats_EmptyFacet(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping test in short mode")
+	}
 	result := calculateTopFieldStats[URLAccessStats](nil, 100, func(term string, count int, percent float64) URLAccessStats {
 		return URLAccessStats{URL: term, Visits: count, Percent: percent}
 	})
@@ -228,6 +246,9 @@ func TestCalculateTopFieldStats_EmptyFacet(t *testing.T) {
 }
 
 func TestCalculateTopFieldStats_ZeroHits(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping test in short mode")
+	}
 	facet := &searcher.Facet{
 		Terms: []*searcher.FacetTerm{
 			{Term: "/api/users", Count: 100},
@@ -243,6 +264,9 @@ func TestCalculateTopFieldStats_ZeroHits(t *testing.T) {
 }
 
 func TestService_ValidateTimeRange_Comprehensive(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping test in short mode")
+	}
 	mockSearcher := &MockSearcher{}
 	s := NewService(mockSearcher)
 
@@ -273,6 +297,9 @@ func TestService_ValidateTimeRange_Comprehensive(t *testing.T) {
 }
 
 func TestGetTopKeyValuesFromMap(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping test in short mode")
+	}
 	counts := map[string]int{
 		"200": 2,
 		"404": 1,
@@ -294,6 +321,9 @@ func TestGetTopKeyValuesFromMap(t *testing.T) {
 }
 
 func TestGetTopKeyValuesFromMap_WithLimit(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping test in short mode")
+	}
 	counts := map[string]int{
 		"a": 1,
 		"b": 2,
@@ -313,6 +343,9 @@ func TestGetTopKeyValuesFromMap_WithLimit(t *testing.T) {
 }
 
 func TestService_calculateBrowserStats_FromFacets(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping test in short mode")
+	}
 	result := &searcher.SearchResult{
 		TotalHits: 1000,
 		Facets: map[string]*searcher.Facet{
@@ -345,6 +378,9 @@ func TestService_calculateBrowserStats_FromFacets(t *testing.T) {
 }
 
 func TestService_calculateOSStats_FromFacets(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping test in short mode")
+	}
 	result := &searcher.SearchResult{
 		TotalHits: 800,
 		Facets: map[string]*searcher.Facet{
@@ -377,6 +413,9 @@ func TestService_calculateOSStats_FromFacets(t *testing.T) {
 }
 
 func TestService_GetVisitorsByCountry_Success(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping test in short mode")
+	}
 	mockSearcher := &MockSearcher{}
 	s := NewService(mockSearcher).(*service)
 
@@ -408,6 +447,9 @@ func TestService_GetVisitorsByCountry_Success(t *testing.T) {
 }
 
 func TestService_GetErrorDistribution_Success(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping test in short mode")
+	}
 	mockSearcher := &MockSearcher{}
 	s := NewService(mockSearcher).(*service)
 

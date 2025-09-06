@@ -35,7 +35,7 @@ func BenchmarkCPUUtilization(b *testing.B) {
 
 func benchmarkWorkerConfiguration(b *testing.B, workerCount, batchSize, queueSize int) {
 	b.Helper()
-	
+
 	// Create test configuration
 	cfg := &Config{
 		WorkerCount:  workerCount,
@@ -52,10 +52,10 @@ func benchmarkWorkerConfiguration(b *testing.B, workerCount, batchSize, queueSiz
 
 	for i := 0; i < b.N; i++ {
 		start := time.Now()
-		
+
 		// Simulate worker pipeline processing
 		simulateWorkerPipeline(cfg)
-		
+
 		elapsed := time.Since(start)
 		totalCPUTime += elapsed
 		measurements++
@@ -100,7 +100,7 @@ func simulateWorkerPipeline(cfg *Config) {
 						IP:        "127.0.0.1",
 					},
 				}},
-				Priority:  1,
+				Priority: 1,
 			}:
 			case <-ctx.Done():
 				return
@@ -142,10 +142,10 @@ func simulateWorker(ctx context.Context, workerID int, jobQueue <-chan *IndexJob
 			if !ok {
 				return
 			}
-			
+
 			// Simulate CPU-intensive work
 			simulateCPUWork()
-			
+
 			// Send result
 			select {
 			case resultQueue <- &IndexResult{
@@ -178,10 +178,10 @@ func simulateCPUWork() {
 // BenchmarkPipelineBottleneck identifies bottlenecks in the processing pipeline
 func BenchmarkPipelineBottleneck(b *testing.B) {
 	tests := []struct {
-		name          string
-		jobQueueSize  int
+		name            string
+		jobQueueSize    int
 		resultQueueSize int
-		workerCount   int
+		workerCount     int
 	}{
 		{"SmallQueues", 100, 10, 8},
 		{"MediumQueues", 1000, 100, 8},
@@ -198,16 +198,16 @@ func BenchmarkPipelineBottleneck(b *testing.B) {
 
 func benchmarkPipelineConfiguration(b *testing.B, jobQueueSize, resultQueueSize, workerCount int) {
 	b.ResetTimer()
-	
+
 	for i := 0; i < b.N; i++ {
 		// Simulate pipeline with different buffer sizes
 		jobQueue := make(chan *IndexJob, jobQueueSize)
 		resultQueue := make(chan *IndexResult, resultQueueSize)
-		
+
 		ctx, cancel := context.WithTimeout(context.Background(), 50*time.Millisecond)
-		
+
 		var wg sync.WaitGroup
-		
+
 		// Start workers
 		for w := 0; w < workerCount; w++ {
 			wg.Add(1)
@@ -225,11 +225,11 @@ func benchmarkPipelineConfiguration(b *testing.B, jobQueueSize, resultQueueSize,
 						}
 						select {
 						case resultQueue <- &IndexResult{
-					Processed:  1,
-					Succeeded:  1,
-					Failed:     0,
-					Throughput: 1.0,
-				}:
+							Processed:  1,
+							Succeeded:  1,
+							Failed:     0,
+							Throughput: 1.0,
+						}:
 						case <-ctx.Done():
 							return
 						}
@@ -239,7 +239,7 @@ func benchmarkPipelineConfiguration(b *testing.B, jobQueueSize, resultQueueSize,
 				}
 			}()
 		}
-		
+
 		// Feed jobs
 		go func() {
 			defer close(jobQueue)
@@ -253,29 +253,30 @@ func benchmarkPipelineConfiguration(b *testing.B, jobQueueSize, resultQueueSize,
 							IP:        "127.0.0.1",
 						},
 					}},
-					Priority:  1,
+					Priority: 1,
 				}:
 				case <-ctx.Done():
 					return
 				}
 			}
 		}()
-		
+
 		// Consume results
 		resultCount := 0
+	ResultLoop:
 		for resultCount < 1000 {
 			select {
 			case <-resultQueue:
 				resultCount++
 			case <-ctx.Done():
-				break
+				break ResultLoop
 			}
 		}
-		
+
 		cancel()
 		wg.Wait()
 	}
-	
+
 	b.ReportMetric(float64(jobQueueSize), "job_queue_size")
 	b.ReportMetric(float64(resultQueueSize), "result_queue_size")
 }
@@ -283,9 +284,9 @@ func benchmarkPipelineConfiguration(b *testing.B, jobQueueSize, resultQueueSize,
 // BenchmarkMemoryPressure tests performance under different memory conditions
 func BenchmarkMemoryPressure(b *testing.B) {
 	tests := []struct {
-		name        string
-		allocSize   int
-		allocCount  int
+		name       string
+		allocSize  int
+		allocCount int
 	}{
 		{"LowMemory", 1024, 100},
 		{"MediumMemory", 4096, 500},
@@ -299,14 +300,14 @@ func BenchmarkMemoryPressure(b *testing.B) {
 			for i := 0; i < test.allocCount; i++ {
 				allocations[i] = make([]byte, test.allocSize)
 			}
-			
+
 			b.ResetTimer()
-			
+
 			for i := 0; i < b.N; i++ {
 				// Simulate indexing work under memory pressure
 				simulateMemoryIntensiveWork()
 			}
-			
+
 			// Keep allocations alive until end
 			runtime.KeepAlive(allocations)
 		})
@@ -323,7 +324,7 @@ func simulateMemoryIntensiveWork() {
 			buffers[i][j] = byte(i + j)
 		}
 	}
-	
+
 	// Simulate some processing
 	sum := 0
 	for _, buf := range buffers {
@@ -331,7 +332,7 @@ func simulateMemoryIntensiveWork() {
 			sum += int(b)
 		}
 	}
-	
+
 	// Prevent optimization
 	if sum < 0 {
 		panic("unexpected")

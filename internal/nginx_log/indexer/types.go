@@ -61,13 +61,25 @@ type Config struct {
 // DefaultIndexerConfig returns default indexer configuration with processor optimization
 func DefaultIndexerConfig() *Config {
 	maxProcs := runtime.GOMAXPROCS(0)
+	
+	// Dynamically scale batch size based on CPU cores
+	// For multi-core systems, use larger batches to maximize CPU utilization
+	baseBatchSize := 1500
+	if maxProcs >= 16 {
+		baseBatchSize = 3000  // High-core systems (16+ cores)
+	} else if maxProcs >= 8 {
+		baseBatchSize = 2500  // Mid-range systems (8-15 cores)
+	} else if maxProcs >= 4 {
+		baseBatchSize = 2000  // Standard systems (4-7 cores)
+	}
+	
 	return &Config{
 		IndexPath:         "./log-index",
-		ShardCount:        4,
+		ShardCount:        max(4, maxProcs/2),      // Scale shards with CPU cores
 		WorkerCount:       maxProcs * 2,            // Optimized: Available processors * 2 for better utilization
-		BatchSize:         1500,                   // Optimized: Increased from 1000 to 1500 for better throughput
+		BatchSize:         baseBatchSize,           // Dynamically scaled based on CPU cores
 		FlushInterval:     5 * time.Second,
-		MaxQueueSize:      15000,                  // Optimized: Increased from 10000 to 15000
+		MaxQueueSize:      baseBatchSize * 10,      // Scale queue with batch size
 		EnableCompression: true,
 		MemoryQuota:       1024 * 1024 * 1024, // 1GB
 		MaxSegmentSize:    64 * 1024 * 1024,   // 64MB
@@ -84,9 +96,18 @@ func GetOptimizedConfig(scenario string) *Config {
 	switch scenario {
 	case "high_throughput":
 		// Maximize throughput at cost of higher latency
-		base.WorkerCount = maxProcs * 2
-		base.BatchSize = 2000
-		base.MaxQueueSize = 20000
+		// Aggressively utilize multi-core CPUs
+		base.WorkerCount = maxProcs * 3  // More workers for high-core systems
+		if maxProcs >= 16 {
+			base.BatchSize = 5000  // Very large batches for 16+ cores
+			base.MaxQueueSize = 50000
+		} else if maxProcs >= 8 {
+			base.BatchSize = 4000  // Large batches for 8+ cores
+			base.MaxQueueSize = 40000
+		} else {
+			base.BatchSize = 3000  // Standard high-throughput batch size
+			base.MaxQueueSize = 30000
+		}
 		base.FlushInterval = 10 * time.Second
 		
 	case "low_latency":
@@ -109,9 +130,38 @@ func GetOptimizedConfig(scenario string) *Config {
 		
 	case "cpu_intensive":
 		// CPU-heavy workloads (parsing, etc.)
-		base.WorkerCount = maxProcs * 3
-		base.BatchSize = 1000
-		base.MaxQueueSize = 25000
+		// Optimized for maximum CPU utilization on multi-core systems
+		base.WorkerCount = maxProcs * 4  // Even more workers for CPU-bound tasks
+		if maxProcs >= 16 {
+			base.BatchSize = 4500  // Large batches to keep all cores busy
+			base.MaxQueueSize = 45000
+		} else if maxProcs >= 8 {
+			base.BatchSize = 3500
+			base.MaxQueueSize = 35000
+		} else {
+			base.BatchSize = 2500
+			base.MaxQueueSize = 25000
+		}
+		
+	case "max_performance":
+		// Maximum performance mode - uses all available resources
+		// WARNING: This will consume significant CPU and memory
+		base.WorkerCount = maxProcs * 5  // Maximum workers
+		base.ShardCount = max(8, maxProcs)  // More shards for parallelism
+		if maxProcs >= 16 {
+			base.BatchSize = 6000  // Very large batches for maximum throughput
+			base.MaxQueueSize = 60000
+			base.MemoryQuota = 2 * 1024 * 1024 * 1024  // 2GB
+		} else if maxProcs >= 8 {
+			base.BatchSize = 5000
+			base.MaxQueueSize = 50000
+			base.MemoryQuota = 1536 * 1024 * 1024  // 1.5GB
+		} else {
+			base.BatchSize = 4000
+			base.MaxQueueSize = 40000
+		}
+		base.FlushInterval = 15 * time.Second  // Less frequent flushes for larger batches
+		base.MaxSegmentSize = 128 * 1024 * 1024  // 128MB segments
 	}
 	
 	return base
