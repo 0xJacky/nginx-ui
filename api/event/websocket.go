@@ -160,7 +160,7 @@ func Bus(c *gin.Context) {
 	}
 
 	hub := GetHub()
-	
+
 	// Safely register the client with timeout to prevent blocking
 	select {
 	case hub.register <- client:
@@ -239,7 +239,7 @@ func (c *Client) readPump() {
 			// Timeout - hub might be shutting down
 			logger.Warn("Failed to unregister client - hub may be shutting down")
 		}
-		
+
 		// Always close the connection and cancel context
 		c.conn.Close()
 		c.cancel()
@@ -252,28 +252,26 @@ func (c *Client) readPump() {
 		return nil
 	})
 
-	for {
+	// Launch a goroutine to handle context cancellation. When the context is done,
+	// it closes the connection, which in turn causes the ReadJSON call below to error out and
+	// allow the readPump to exit gracefully.
+	go func() {
 		select {
 		case <-c.ctx.Done():
-			// Context cancelled, exit gracefully
-			return
 		case <-kernel.Context.Done():
-			// Kernel context cancelled, exit gracefully
-			return
-		default:
-			// Set a short read deadline to check context regularly
-			c.conn.SetReadDeadline(time.Now().Add(5 * time.Second))
-			
-			var msg json.RawMessage
-			err := c.conn.ReadJSON(&msg)
-			if err != nil {
-				if helper.IsUnexpectedWebsocketError(err) {
-					logger.Error("Unexpected WebSocket error:", err)
-				}
-				return
-			}
-			// Handle incoming messages if needed
-			// For now, this is a one-way communication (server to client)
 		}
+		c.conn.Close()
+	}()
+
+	for {
+		var msg json.RawMessage
+		if err := c.conn.ReadJSON(&msg); err != nil {
+			if helper.IsUnexpectedWebsocketError(err) {
+				logger.Error("Unexpected WebSocket error:", err)
+			}
+			return
+		}
+		// Handle incoming messages if needed
+		// For now, this is a one-way communication (server to client)
 	}
 }

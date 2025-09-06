@@ -10,7 +10,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log"
-	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utlis"
+	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"github.com/nxadm/tail"
@@ -26,7 +26,7 @@ func getLogPath(control *controlStruct) (logPath string, err error) {
 	if control.Path != "" {
 		logPath = control.Path
 		// Check if logPath is under one of the paths in LogDirWhiteList
-		if !utlis.IsValidLogPath(logPath) {
+		if !utils.IsValidLogPath(logPath) {
 			return "", nginx_log.ErrLogPathIsNotUnderTheLogDirWhiteList
 		}
 		return
@@ -57,7 +57,7 @@ func getLogPath(control *controlStruct) (logPath string, err error) {
 	}
 
 	// check if logPath is under one of the paths in LogDirWhiteList
-	if !utlis.IsValidLogPath(logPath) {
+	if !utils.IsValidLogPath(logPath) {
 		return "", nginx_log.ErrLogPathIsNotUnderTheLogDirWhiteList
 	}
 	return

@@ -8,7 +8,7 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/cache"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
-	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utlis"
+	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
 	"github.com/uozi-tech/cosy/logger"
 )
 
@@ -27,7 +27,7 @@ func init() {
 func scanForLogDirectives(configPath string, content []byte) error {
 	// Step 1: Get nginx prefix
 	prefix := nginx.GetPrefix()
-	
+
 	// Step 2: Remove existing log paths - with timeout protection
 	removeSuccess := make(chan bool, 1)
 	go func() {
@@ -39,7 +39,7 @@ func scanForLogDirectives(configPath string, content []byte) error {
 		RemoveLogPathsFromConfig(configPath)
 		removeSuccess <- true
 	}()
-	
+
 	select {
 	case <-removeSuccess:
 		// Success - no logging needed
@@ -72,7 +72,7 @@ func scanForLogDirectives(configPath string, content []byte) error {
 			}
 
 			// Validate log path
-			if utlis.IsValidLogPath(logPath) {
+			if utils.IsValidLogPath(logPath) {
 				logType := "access"
 				if directiveType == "error_log" {
 					logType = "error"
@@ -89,7 +89,7 @@ func scanForLogDirectives(configPath string, content []byte) error {
 					AddLogPath(logPath, logType, filepath.Base(logPath), configPath)
 					addSuccess <- true
 				}()
-				
+
 				select {
 				case <-addSuccess:
 					// Success - no logging needed

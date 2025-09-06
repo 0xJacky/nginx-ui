@@ -25,25 +25,25 @@ func TestCheckNginxConfIncludeSites(t *testing.T) {
 	settings.NginxSettings.ConfigDir = "/etc/nginx"
 	settings.NginxSettings.ConfigPath = "./test_cases/4041.conf"
 	errors.As(CheckNginxConfIncludeSites(), &result)
-	assert.Equal(t, int32(4041), result.Code)
+	assert.Equal(t, int32(40402), result.Code)
 
 	// test 5001 nginx.conf parse error
 	settings.NginxSettings.ConfigDir = "/etc/nginx"
 	settings.NginxSettings.ConfigPath = "./test_cases/5001.conf"
 	errors.As(CheckNginxConfIncludeSites(), &result)
-	assert.Equal(t, int32(5001), result.Code)
+	assert.Equal(t, int32(50001), result.Code)
 
 	// test 4042 nginx.conf no http block
 	settings.NginxSettings.ConfigDir = "/etc/nginx"
 	settings.NginxSettings.ConfigPath = "./test_cases/no-http-block.conf"
 	errors.As(CheckNginxConfIncludeSites(), &result)
-	assert.Equal(t, int32(4042), result.Code)
+	assert.Equal(t, int32(40403), result.Code)
 
 	// test 4043 nginx.conf not include sites-enabled
 	settings.NginxSettings.ConfigDir = "/etc/nginx"
 	settings.NginxSettings.ConfigPath = "./test_cases/no-http-sites-enabled.conf"
 	errors.As(CheckNginxConfIncludeSites(), &result)
-	assert.Equal(t, int32(4043), result.Code)
+	assert.Equal(t, int32(40404), result.Code)
 }
 
 func TestCheckNginxConfIncludeStreams(t *testing.T) {
@@ -59,25 +59,25 @@ func TestCheckNginxConfIncludeStreams(t *testing.T) {
 	settings.NginxSettings.ConfigDir = "/etc/nginx"
 	settings.NginxSettings.ConfigPath = "./test_cases/4041.conf"
 	errors.As(CheckNginxConfIncludeStreams(), &result)
-	assert.Equal(t, int32(4041), result.Code)
+	assert.Equal(t, int32(40402), result.Code)
 
 	// test 5001 nginx.conf parse error
 	settings.NginxSettings.ConfigDir = "/etc/nginx"
 	settings.NginxSettings.ConfigPath = "./test_cases/5001.conf"
 	errors.As(CheckNginxConfIncludeStreams(), &result)
-	assert.Equal(t, int32(5001), result.Code)
+	assert.Equal(t, int32(50001), result.Code)
 
 	// test 4044 nginx.conf no stream block
 	settings.NginxSettings.ConfigDir = "/etc/nginx"
 	settings.NginxSettings.ConfigPath = "./test_cases/no-http-block.conf"
 	errors.As(CheckNginxConfIncludeStreams(), &result)
-	assert.Equal(t, int32(4044), result.Code)
+	assert.Equal(t, int32(40405), result.Code)
 
 	// test 4045 nginx.conf not include stream-enabled
 	settings.NginxSettings.ConfigDir = "/etc/nginx"
 	settings.NginxSettings.ConfigPath = "./test_cases/no-http-sites-enabled.conf"
 	errors.As(CheckNginxConfIncludeStreams(), &result)
-	assert.Equal(t, int32(4045), result.Code)
+	assert.Equal(t, int32(40406), result.Code)
 }
 
 func TestFixNginxConfIncludeSites(t *testing.T) {

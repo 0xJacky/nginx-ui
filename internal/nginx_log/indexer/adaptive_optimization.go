@@ -439,6 +439,13 @@ func (ao *AdaptiveOptimizer) getCurrentLatency() time.Duration {
 	return ao.avgLatency
 }
 
+func (ao *AdaptiveOptimizer) isIndexerBusy() bool {
+	if ao.activityPoller == nil {
+		return false
+	}
+	return ao.activityPoller.IsBusy()
+}
+
 func (ao *AdaptiveOptimizer) calculateAverageCPU() float64 {
 	if len(ao.cpuMonitor.measurements) == 0 {
 		return 0

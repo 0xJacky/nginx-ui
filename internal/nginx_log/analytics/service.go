@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/searcher"
-	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utlis"
+	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
 )
 
 // Service defines the interface for analytics operations
@@ -60,7 +60,7 @@ func (s *service) getCardinalityCounter() *searcher.CardinalityCounter {
 	if s.cardinalityCounter != nil {
 		return s.cardinalityCounter
 	}
-	
+
 	// Try to create a new cardinality counter from current shards
 	if ds, ok := s.searcher.(*searcher.DistributedSearcher); ok {
 		shards := ds.GetShards()
@@ -70,7 +70,7 @@ func (s *service) getCardinalityCounter() *searcher.CardinalityCounter {
 			return s.cardinalityCounter
 		}
 	}
-	
+
 	return nil
 }
 
@@ -79,7 +79,7 @@ func (s *service) ValidateLogPath(logPath string) error {
 	if logPath == "" {
 		return nil // Empty path is acceptable for global search
 	}
-	if !utlis.IsValidLogPath(logPath) {
+	if !utils.IsValidLogPath(logPath) {
 		return fmt.Errorf("log path is not under whitelist")
 	}
 	return nil
