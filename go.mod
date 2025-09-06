@@ -1,6 +1,6 @@
 module github.com/0xJacky/Nginx-UI
 
-go 1.25.0
+go 1.25.1
 
 require (
 	code.pfad.fr/risefront v1.0.0
@@ -8,10 +8,10 @@ require (
 	github.com/BurntSushi/toml v1.5.0
 	github.com/blevesearch/bleve/v2 v2.5.3
 	github.com/caarlos0/env/v11 v11.3.1
-	github.com/casdoor/casdoor-go-sdk v1.17.0
+	github.com/casdoor/casdoor-go-sdk v1.18.0
 	github.com/creack/pty v1.1.24
 	github.com/dgraph-io/ristretto/v2 v2.3.0
-	github.com/docker/docker v28.3.3+incompatible
+	github.com/docker/docker v28.4.0+incompatible
 	github.com/dustin/go-humanize v1.0.1
 	github.com/elliotchance/orderedmap/v3 v3.1.0
 	github.com/fsnotify/fsnotify v1.9.0
@@ -21,8 +21,8 @@ require (
 	github.com/gin-contrib/static v1.1.5
 	github.com/gin-gonic/gin v1.10.1
 	github.com/go-acme/lego/v4 v4.25.2
-	github.com/go-co-op/gocron/v2 v2.16.4
-	github.com/go-gormigrate/gormigrate/v2 v2.1.4
+	github.com/go-co-op/gocron/v2 v2.16.5
+	github.com/go-gormigrate/gormigrate/v2 v2.1.5
 	github.com/go-playground/validator/v10 v10.27.0
 	github.com/go-resty/resty/v2 v2.16.5
 	github.com/go-telegram-bot-api/telegram-bot-api v4.6.4+incompatible
@@ -30,7 +30,7 @@ require (
 	github.com/golang-jwt/jwt/v5 v5.3.0
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.3
-	github.com/mark3labs/mcp-go v0.38.0
+	github.com/mark3labs/mcp-go v0.39.1
 	github.com/minio/minio-go/v7 v7.0.95
 	github.com/minio/selfupdate v0.6.0
 	github.com/nikoksr/notify v1.3.0
