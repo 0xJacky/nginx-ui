@@ -11,6 +11,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/analytics"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/indexer"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/searcher"
+	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/blevesearch/bleve/v2"
 	"github.com/uozi-tech/cosy/logger"
 	cSettings "github.com/uozi-tech/cosy/settings"
@@ -24,12 +25,20 @@ var (
 	globalLogFileManager *indexer.LogFileManager
 	servicesInitialized  bool
 	servicesMutex        sync.RWMutex
+	shutdownCancel       context.CancelFunc
+	isShuttingDown       bool
 )
 
 // InitializeModernServices initializes the new modular services
 func InitializeModernServices(ctx context.Context) {
 	servicesMutex.Lock()
 	defer servicesMutex.Unlock()
+
+	// Check if advanced indexing is enabled
+	if !settings.NginxLogSettings.AdvancedIndexingEnabled {
+		logger.Info("Advanced indexing is disabled, skipping nginx_log services initialization")
+		return
+	}
 
 	if servicesInitialized {
 		logger.Info("Modern nginx log services already initialized, skipping")
@@ -38,8 +47,12 @@ func InitializeModernServices(ctx context.Context) {
 
 	logger.Info("Initializing modern nginx log services...")
 
+	// Create a cancellable context for services
+	serviceCtx, cancel := context.WithCancel(ctx)
+	shutdownCancel = cancel
+
 	// Initialize with default configuration directly
-	if err := initializeWithDefaults(ctx); err != nil {
+	if err := initializeWithDefaults(serviceCtx); err != nil {
 		logger.Errorf("Failed to initialize modern services: %v", err)
 		return
 	}
@@ -49,34 +62,12 @@ func InitializeModernServices(ctx context.Context) {
 	// Monitor context for shutdown
 	go func() {
 		logger.Info("Started nginx_log shutdown monitor goroutine")
-		<-ctx.Done()
-		logger.Info("Shutting down modern nginx log services...")
-
-		servicesMutex.Lock()
-		defer servicesMutex.Unlock()
-
-		// Stop services
-		if globalIndexer != nil {
-			if err := globalIndexer.Stop(); err != nil {
-				logger.Errorf("Failed to stop indexer: %v", err)
-			}
-		}
-
-		if globalAnalytics != nil {
-			if err := globalAnalytics.Stop(); err != nil {
-				logger.Errorf("Failed to stop analytics service: %v", err)
-			}
-		}
-
-		// Stop searcher if it exists
-		if globalSearcher != nil {
-			if err := globalSearcher.Stop(); err != nil {
-				logger.Errorf("Failed to stop searcher: %v", err)
-			}
-		}
-
-		servicesInitialized = false
-		logger.Info("Modern nginx log services shut down")
+		<-serviceCtx.Done()
+		logger.Info("Context cancelled, initiating shutdown...")
+		
+		// Use the same shutdown logic as manual stop
+		StopModernServices()
+		
 		logger.Info("Nginx_log shutdown monitor goroutine completed")
 	}()
 }
@@ -368,6 +359,62 @@ func updateSearcherShardsLocked() {
 		logger.Warn("globalSearcher is not a DistributedSearcher, cannot perform hot-swap")
 	}
 
+}
+
+// StopModernServices stops all running modern services
+func StopModernServices() {
+	servicesMutex.Lock()
+	defer servicesMutex.Unlock()
+
+	if !servicesInitialized {
+		logger.Info("Modern nginx log services not initialized, nothing to stop")
+		return
+	}
+
+	if isShuttingDown {
+		logger.Info("Modern nginx log services already shutting down")
+		return
+	}
+
+	logger.Info("Stopping modern nginx log services...")
+	isShuttingDown = true
+
+	// Cancel the service context to trigger graceful shutdown
+	if shutdownCancel != nil {
+		shutdownCancel()
+		// Wait a bit for graceful shutdown
+		time.Sleep(500 * time.Millisecond)
+	}
+
+	// Stop all services
+	if globalIndexer != nil {
+		if err := globalIndexer.Stop(); err != nil {
+			logger.Errorf("Failed to stop indexer: %v", err)
+		}
+		globalIndexer = nil
+	}
+
+	if globalAnalytics != nil {
+		if err := globalAnalytics.Stop(); err != nil {
+			logger.Errorf("Failed to stop analytics service: %v", err)
+		}
+		globalAnalytics = nil
+	}
+
+	if globalSearcher != nil {
+		if err := globalSearcher.Stop(); err != nil {
+			logger.Errorf("Failed to stop searcher: %v", err)
+		}
+		globalSearcher = nil
+	}
+
+	// Reset state
+	globalLogFileManager = nil
+	servicesInitialized = false
+	shutdownCancel = nil
+	isShuttingDown = false
+
+	logger.Info("Modern nginx log services stopped")
 }
 
 // DestroyAllIndexes completely removes all indexed data from disk.

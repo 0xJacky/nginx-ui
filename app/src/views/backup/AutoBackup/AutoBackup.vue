@@ -50,13 +50,13 @@ const columns: StdTableColumn[] = [
     title: () => $gettext('Backup Path'),
     dataIndex: 'backup_path',
     edit: {
-      type: (formData: AutoBackup) => {
-        if (formData.backup_type !== 'custom_dir')
+      type: (context: { formData: AutoBackup, column: StdTableColumn<any>, config: Record<any, any>, mode: 'add' | 'edit' }) => {
+        if (context.formData.backup_type !== 'custom_dir')
           return <div />
 
         return (
           <FormItem class="mb-0" required={true} label={$gettext('Backup Path')}>
-            <Input v-model:value={formData.backup_path} />
+            <Input v-model:value={context.formData.backup_path} />
           </FormItem>
         )
       },
@@ -92,14 +92,14 @@ const columns: StdTableColumn[] = [
     title: () => $gettext('Storage Configuration'),
     dataIndex: 'storage_type',
     edit: {
-      type: (formData: AutoBackup) => {
-        if (!formData.storage_type) {
-          formData.storage_type = 'local'
+      type: (context: { formData: AutoBackup, column: StdTableColumn<any>, config: Record<any, any>, mode: 'add' | 'edit' }) => {
+        if (!context.formData.storage_type) {
+          context.formData.storage_type = 'local'
         }
         return (
           <div>
             <div class="font-500 mb-4">{$gettext('Storage Configuration')}</div>
-            <StorageConfigEditor v-model={formData} />
+            <StorageConfigEditor v-model={context.formData} />
           </div>
         )
       },
@@ -141,12 +141,12 @@ const columns: StdTableColumn[] = [
       return text
     },
     edit: {
-      type: (formData: AutoBackup) => {
-        if (!formData.cron_expression) {
-          formData.cron_expression = '0 0 * * *'
+      type: (context: { formData: AutoBackup, column: StdTableColumn<any>, config: Record<any, any>, mode: 'add' | 'edit' }) => {
+        if (!context.formData.cron_expression) {
+          context.formData.cron_expression = '0 0 * * *'
         }
         return (
-          <CronEditor v-model={formData.cron_expression} />
+          <CronEditor v-model={context.formData.cron_expression} />
         )
       },
       formItem: {

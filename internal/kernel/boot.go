@@ -8,6 +8,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"reflect"
 	"runtime"
 
 	"github.com/0xJacky/Nginx-UI/internal/analytic"
@@ -31,6 +32,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/uozi-tech/cosy"
 	sqlite "github.com/uozi-tech/cosy-driver-sqlite"
+	"github.com/uozi-tech/cosy/kernel"
 	"github.com/uozi-tech/cosy/logger"
 	cModel "github.com/uozi-tech/cosy/model"
 	cSettings "github.com/uozi-tech/cosy/settings"
@@ -42,6 +44,10 @@ func Boot(ctx context.Context) {
 	defer recovery()
 
 	Context = ctx
+
+	if cSettings.SLSSettings.Enable() {
+		logger.InitAuditSLSProducer(ctx)
+	}
 
 	async := []func(){
 		InitJsExtensionType,
@@ -67,7 +73,8 @@ func Boot(ctx context.Context) {
 	}
 
 	for _, v := range syncs {
-		go v(ctx)
+		name := runtime.FuncForPC(reflect.ValueOf(v).Pointer()).Name()
+		go kernel.Run(ctx, name, v)
 	}
 }
 
@@ -96,7 +103,8 @@ func InitAfterDatabase(ctx context.Context) {
 	}
 
 	for _, v := range asyncs {
-		go v(ctx)
+		name := runtime.FuncForPC(reflect.ValueOf(v).Pointer()).Name()
+		go kernel.Run(ctx, name, v)
 	}
 }
 

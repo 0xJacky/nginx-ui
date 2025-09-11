@@ -52,8 +52,8 @@ const columns: StdTableColumn[] = [{
   title: () => $gettext('Configuration'),
   dataIndex: 'code',
   edit: {
-    type: (formData: DnsCredential) => {
-      return <DNSChallenge v-model:data={formData} />
+    type: (context: { formData: DnsCredential, column: StdTableColumn<any>, config: Record<any, any>, mode: 'add' | 'edit' }) => {
+      return <DNSChallenge v-model:data={context.formData} />
     },
     formItem: {
       hiddenLabelInEdit: true,

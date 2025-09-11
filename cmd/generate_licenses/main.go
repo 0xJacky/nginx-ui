@@ -108,53 +108,96 @@ func generateBackendLicenses() ([]License, error) {
 
 	log.Println("INFO: Collecting backend Go modules...")
 
-	// Get only direct and indirect dependencies, exclude workspace modules
-	cmd := exec.Command("go", "mod", "graph")
-	output, err := cmd.Output()
+	// Read go.mod file directly
+	goModPath := "go.mod"
+	data, err := os.ReadFile(goModPath)
 	if err != nil {
-		return nil, fmt.Errorf("failed to run go mod graph: %v", err)
+		return nil, fmt.Errorf("failed to read go.mod: %v", err)
 	}
 
-	// Parse module graph to get unique dependencies
+	// Parse go.mod content to extract dependencies
 	depMap := make(map[string]string) // path -> version
-	lines := strings.Split(string(output), "\n")
+	lines := strings.Split(string(data), "\n")
+	inRequireBlock := false
+	inReplaceBlock := false
+	
+	replaceMap := make(map[string]string) // original -> replacement
 
 	for _, line := range lines {
 		line = strings.TrimSpace(line)
-		if line == "" {
+		
+		// Handle require block
+		if strings.HasPrefix(line, "require (") {
+			inRequireBlock = true
+			continue
+		}
+		if strings.HasPrefix(line, "replace (") {
+			inReplaceBlock = true
+			continue
+		}
+		if line == ")" {
+			inRequireBlock = false
+			inReplaceBlock = false
 			continue
 		}
 
-		parts := strings.Fields(line)
-		if len(parts) != 2 {
+		// Parse replace directives
+		if inReplaceBlock || strings.HasPrefix(line, "replace ") {
+			if strings.Contains(line, "=>") {
+				parts := strings.Split(line, "=>")
+				if len(parts) == 2 {
+					original := strings.TrimSpace(parts[0])
+					replacement := strings.TrimSpace(parts[1])
+					
+					// Remove "replace " prefix if present
+					original = strings.TrimPrefix(original, "replace ")
+					
+					// Extract module path (before version if present)
+					if strings.Contains(original, " ") {
+						original = strings.Fields(original)[0]
+					}
+					if strings.Contains(replacement, " ") {
+						replacement = strings.Fields(replacement)[0]
+					}
+					
+					replaceMap[original] = replacement
+				}
+			}
 			continue
 		}
 
-		// Extract dependency info from "module@version dependency@version"
-		dep := parts[1]
-		if dep == "" || !strings.Contains(dep, "@") {
-			continue
-		}
+		// Parse dependencies in require block or single require line
+		if inRequireBlock || strings.HasPrefix(line, "require ") {
+			// Remove "require " prefix if present
+			line = strings.TrimPrefix(line, "require ")
+			
+			// Remove comments
+			if idx := strings.Index(line, "//"); idx != -1 {
+				line = line[:idx]
+			}
+			line = strings.TrimSpace(line)
+			
+			if line == "" {
+				continue
+			}
 
-		atIndex := strings.LastIndex(dep, "@")
-		if atIndex == -1 {
-			continue
-		}
-
-		path := dep[:atIndex]
-		version := dep[atIndex+1:]
-
-		// Skip our own module and workspace modules
-		if path == "" ||
-			strings.HasPrefix(path, "github.com/0xJacky/Nginx-UI") ||
-			strings.Contains(path, "git.uozi.org") ||
-			strings.Contains(path, "apple-store-helper") {
-			continue
-		}
-
-		// Only keep the first version we see (go mod graph shows all versions)
-		if _, exists := depMap[path]; !exists {
-			depMap[path] = version
+			// Parse "module version" format
+			parts := strings.Fields(line)
+			if len(parts) >= 2 {
+				path := parts[0]
+				version := parts[1]
+				
+				if path == "" {
+					continue
+				}
+				
+				// Apply replacements if they exist
+				if replacement, exists := replaceMap[path]; exists {
+					path = replacement
+				}
+				
+				depMap[path] = version
+			}
 		}
 	}
 

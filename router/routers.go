@@ -3,9 +3,8 @@ package router
 import (
 	"net/http"
 
-	"github.com/gin-contrib/pprof"
-
 	"github.com/0xJacky/Nginx-UI/api/analytic"
+	"github.com/0xJacky/Nginx-UI/api/audit"
 	"github.com/0xJacky/Nginx-UI/api/backup"
 	"github.com/0xJacky/Nginx-UI/api/certificate"
 	"github.com/0xJacky/Nginx-UI/api/cluster"
@@ -32,11 +31,13 @@ import (
 	"github.com/0xJacky/Nginx-UI/mcp"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
-	cSettings "github.com/uozi-tech/cosy/settings"
+	"github.com/uozi-tech/cosy/debug"
 )
 
 func InitRouter() {
 	r := cosy.GetEngine()
+
+	r.Use(audit.LoggingMiddleware())
 
 	r.SetTrustedProxies(nil)
 
@@ -75,9 +76,7 @@ func InitRouter() {
 		// Authorization required and not websocket request
 		g := root.Group("/", middleware.AuthRequired(), middleware.Proxy())
 		{
-			if cSettings.ServerSettings.RunMode == gin.DebugMode {
-				pprof.Register(g)
-			}
+			debug.InitRouter(g)
 			user.InitUserRouter(g)
 			analytic.InitRouter(g)
 			user.InitManageUserRouter(g)

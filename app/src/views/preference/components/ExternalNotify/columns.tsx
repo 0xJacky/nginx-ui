@@ -57,16 +57,16 @@ const columns: StdTableColumn[] = [
     dataIndex: 'config',
     title: () => $gettext('Config'),
     edit: {
-      type: (formData: ExternalNotify) => {
-        if (!formData.type) {
+      type: (context: { formData: ExternalNotify, column: StdTableColumn<any>, config: Record<any, any>, mode: 'add' | 'edit' }) => {
+        if (!context.formData.type) {
           return <div />
         }
 
-        if (!formData.config) {
-          formData.config = {}
+        if (!context.formData.config) {
+          context.formData.config = {}
         }
         return (
-          <ExternalNotifyEditor v-model={formData.config} type={formData.type} />
+          <ExternalNotifyEditor v-model={context.formData.config} type={context.formData.type} />
         )
       },
       formItem: {

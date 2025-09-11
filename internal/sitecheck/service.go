@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/cache"
+	"github.com/uozi-tech/cosy/kernel"
 	"github.com/uozi-tech/cosy/logger"
 )
 
@@ -127,27 +128,28 @@ func (s *Service) Start() {
 	}
 
 	s.running = true
-	logger.Info("Starting site checking service")
 
 	// Initial collection and check with delay to allow cache scanner to complete
-	go func() {
-		logger.Info("Started sitecheck initial collection goroutine")
+	go kernel.Run(s.ctx, "sitecheck initial collection goroutine", func(ctx context.Context) {
+		sl := logger.NewSessionLogger(ctx)
+		sl.Info("Started sitecheck initial collection goroutine")
 		// Give cache scanner more time to start up before checking
 		time.Sleep(5 * time.Second)
 
 		// Wait for cache scanner to collect sites with progressive backoff
 		s.waitForSiteCollection(s.ctx)
 		s.checker.CheckAllSites(s.ctx)
-		logger.Info("Sitecheck initial collection goroutine completed")
-	}()
+		sl.Info("Sitecheck initial collection goroutine completed")
+	})
 
 	// Start periodic checking (every 5 minutes)
 	s.ticker = time.NewTicker(5 * time.Minute)
-	go func() {
-		logger.Info("Started sitecheck periodicCheck goroutine")
+	go kernel.Run(s.ctx, "sitecheck periodic check goroutine", func(ctx context.Context) {
+		sl := logger.NewSessionLogger(ctx)
+		sl.Info("Started sitecheck periodicCheck goroutine")
 		s.periodicCheck()
-		logger.Info("Sitecheck periodicCheck goroutine completed")
-	}()
+		sl.Info("Sitecheck periodicCheck goroutine completed")
+	})
 }
 
 // Stop stops the site checking service
@@ -159,8 +161,10 @@ func (s *Service) Stop() {
 		return
 	}
 
+	sl := logger.NewSessionLogger(s.ctx)
+
 	s.running = false
-	logger.Info("Stopping site checking service")
+	sl.Info("Stopping site checking service")
 
 	if s.ticker != nil {
 		s.ticker.Stop()
@@ -177,12 +181,13 @@ func (s *Service) Restart() {
 
 // periodicCheck runs periodic site checks
 func (s *Service) periodicCheck() {
+	sl := logger.NewSessionLogger(s.ctx)
 	for {
 		select {
 		case <-s.ctx.Done():
 			return
 		case <-s.ticker.C:
-			logger.Debug("Starting periodic site check")
+			sl.Debug("Starting periodic site check")
 			s.checker.CollectSites() // Re-collect in case sites changed
 			s.checker.CheckAllSites(s.ctx)
 		}
@@ -192,11 +197,12 @@ func (s *Service) periodicCheck() {
 // RefreshSites manually triggers a site collection and check
 func (s *Service) RefreshSites() {
 	go func() {
-		logger.Info("Started sitecheck manual refresh goroutine")
+		sl := logger.NewSessionLogger(s.ctx)
+		sl.Info("Started sitecheck manual refresh goroutine")
 		logger.Info("Manually refreshing sites")
 		s.checker.CollectSites()
 		s.checker.CheckAllSites(s.ctx)
-		logger.Info("Sitecheck manual refresh goroutine completed")
+		sl.Info("Sitecheck manual refresh goroutine completed")
 	}()
 }
 

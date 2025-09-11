@@ -23,12 +23,12 @@ const (
 
 // IndexStatusDetails contains detailed status information
 type IndexStatusDetails struct {
-	Status        IndexStatus `json:"status"`
-	Message       string      `json:"message,omitempty"`
-	ErrorMessage  string      `json:"error_message,omitempty"`
-	ErrorTime     *time.Time  `json:"error_time,omitempty"`
-	RetryCount    int         `json:"retry_count,omitempty"`
-	QueuePosition int         `json:"queue_position,omitempty"`
+	Status        IndexStatus    `json:"status"`
+	Message       string         `json:"message,omitempty"`
+	ErrorMessage  string         `json:"error_message,omitempty"`
+	ErrorTime     *time.Time     `json:"error_time,omitempty"`
+	RetryCount    int            `json:"retry_count,omitempty"`
+	QueuePosition int            `json:"queue_position,omitempty"`
 	Progress      *IndexProgress `json:"progress,omitempty"`
 }
 
@@ -61,25 +61,25 @@ type Config struct {
 // DefaultIndexerConfig returns default indexer configuration with processor optimization
 func DefaultIndexerConfig() *Config {
 	maxProcs := runtime.GOMAXPROCS(0)
-	
+
 	// Dynamically scale batch size based on CPU cores
 	// Significantly increased batch sizes to maximize frontend indexing throughput
 	baseBatchSize := 15000
 	if maxProcs >= 16 {
-		baseBatchSize = 25000  // High-core systems (16+ cores) - maximum throughput
+		baseBatchSize = 25000 // High-core systems (16+ cores) - maximum throughput
 	} else if maxProcs >= 8 {
-		baseBatchSize = 20000  // Mid-range systems (8-15 cores) - high throughput
+		baseBatchSize = 20000 // Mid-range systems (8-15 cores) - high throughput
 	} else if maxProcs >= 4 {
-		baseBatchSize = 18000  // Standard systems (4-7 cores) - good throughput
+		baseBatchSize = 18000 // Standard systems (4-7 cores) - good throughput
 	}
-	
+
 	return &Config{
 		IndexPath:         "./log-index",
-		ShardCount:        max(4, maxProcs/2),      // Scale shards with CPU cores
-		WorkerCount:       maxProcs * 3,            // Optimized: 3x processors for better I/O-bound workload handling
-		BatchSize:         baseBatchSize,           // Dynamically scaled based on CPU cores
+		ShardCount:        max(4, maxProcs/2), // Scale shards with CPU cores
+		WorkerCount:       maxProcs * 3,       // Optimized: 3x processors for better I/O-bound workload handling
+		BatchSize:         baseBatchSize,      // Dynamically scaled based on CPU cores
 		FlushInterval:     5 * time.Second,
-		MaxQueueSize:      baseBatchSize * 10,      // Scale queue with batch size
+		MaxQueueSize:      baseBatchSize * 10, // Scale queue with batch size
 		EnableCompression: true,
 		MemoryQuota:       1024 * 1024 * 1024, // 1GB
 		MaxSegmentSize:    64 * 1024 * 1024,   // 64MB
@@ -92,48 +92,48 @@ func DefaultIndexerConfig() *Config {
 func GetOptimizedConfig(scenario string) *Config {
 	base := DefaultIndexerConfig()
 	maxProcs := runtime.GOMAXPROCS(0)
-	
+
 	switch scenario {
 	case "high_throughput":
 		// Maximize throughput at cost of higher latency
 		// Aggressively utilize multi-core CPUs
-		base.WorkerCount = maxProcs * 4  // Aggressive worker scaling for I/O-bound operations
+		base.WorkerCount = maxProcs * 4 // Aggressive worker scaling for I/O-bound operations
 		if maxProcs >= 16 {
-			base.BatchSize = 5000  // Very large batches for 16+ cores
+			base.BatchSize = 5000 // Very large batches for 16+ cores
 			base.MaxQueueSize = 50000
 		} else if maxProcs >= 8 {
-			base.BatchSize = 4000  // Large batches for 8+ cores
+			base.BatchSize = 4000 // Large batches for 8+ cores
 			base.MaxQueueSize = 40000
 		} else {
-			base.BatchSize = 3000  // Standard high-throughput batch size
+			base.BatchSize = 3000 // Standard high-throughput batch size
 			base.MaxQueueSize = 30000
 		}
 		base.FlushInterval = 10 * time.Second
-		
+
 	case "low_latency":
 		// Minimize latency with reasonable throughput
 		base.WorkerCount = int(float64(maxProcs) * 1.5)
 		base.BatchSize = 500
 		base.MaxQueueSize = 10000
 		base.FlushInterval = 2 * time.Second
-		
+
 	case "balanced":
 		// Balanced performance (same as default)
 		// Already set by DefaultIndexerConfig()
-		
+
 	case "memory_constrained":
 		// Reduce memory usage
 		base.WorkerCount = max(2, maxProcs/2)
 		base.BatchSize = 250
 		base.MaxQueueSize = 5000
 		base.MemoryQuota = 256 * 1024 * 1024 // 256MB
-		
+
 	case "cpu_intensive":
 		// CPU-heavy workloads (parsing, etc.)
 		// Optimized for maximum CPU utilization on multi-core systems
-		base.WorkerCount = maxProcs * 4  // Even more workers for CPU-bound tasks
+		base.WorkerCount = maxProcs * 4 // Even more workers for CPU-bound tasks
 		if maxProcs >= 16 {
-			base.BatchSize = 4500  // Large batches to keep all cores busy
+			base.BatchSize = 4500 // Large batches to keep all cores busy
 			base.MaxQueueSize = 45000
 		} else if maxProcs >= 8 {
 			base.BatchSize = 3500
@@ -142,28 +142,28 @@ func GetOptimizedConfig(scenario string) *Config {
 			base.BatchSize = 2500
 			base.MaxQueueSize = 25000
 		}
-		
+
 	case "max_performance":
 		// Maximum performance mode - uses all available resources
 		// WARNING: This will consume significant CPU and memory
-		base.WorkerCount = maxProcs * 5  // Maximum workers
-		base.ShardCount = max(8, maxProcs)  // More shards for parallelism
+		base.WorkerCount = maxProcs * 5    // Maximum workers
+		base.ShardCount = max(8, maxProcs) // More shards for parallelism
 		if maxProcs >= 16 {
-			base.BatchSize = 6000  // Very large batches for maximum throughput
+			base.BatchSize = 6000 // Very large batches for maximum throughput
 			base.MaxQueueSize = 60000
-			base.MemoryQuota = 2 * 1024 * 1024 * 1024  // 2GB
+			base.MemoryQuota = 2 * 1024 * 1024 * 1024 // 2GB
 		} else if maxProcs >= 8 {
 			base.BatchSize = 5000
 			base.MaxQueueSize = 50000
-			base.MemoryQuota = 1536 * 1024 * 1024  // 1.5GB
+			base.MemoryQuota = 1536 * 1024 * 1024 // 1.5GB
 		} else {
 			base.BatchSize = 4000
 			base.MaxQueueSize = 40000
 		}
-		base.FlushInterval = 15 * time.Second  // Less frequent flushes for larger batches
-		base.MaxSegmentSize = 128 * 1024 * 1024  // 128MB segments
+		base.FlushInterval = 15 * time.Second   // Less frequent flushes for larger batches
+		base.MaxSegmentSize = 128 * 1024 * 1024 // 128MB segments
 	}
-	
+
 	return base
 }
 
@@ -195,7 +195,7 @@ type LogDocument struct {
 	DeviceType   string   `json:"device_type,omitempty"`
 	RequestTime  float64  `json:"request_time,omitempty"`
 	UpstreamTime *float64 `json:"upstream_time,omitempty"`
-	FilePath     string   `json:"file_path"`      // Actual physical file path (e.g., /var/log/nginx/access.log.1.gz)
+	FilePath     string   `json:"file_path"`     // Actual physical file path (e.g., /var/log/nginx/access.log.1.gz)
 	MainLogPath  string   `json:"main_log_path"` // Main log group path (e.g., /var/log/nginx/access.log)
 	Raw          string   `json:"raw"`
 }

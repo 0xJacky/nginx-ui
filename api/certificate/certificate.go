@@ -14,6 +14,7 @@ import (
 	"github.com/go-acme/lego/v4/certcrypto"
 	"github.com/spf13/cast"
 	"github.com/uozi-tech/cosy"
+	"github.com/uozi-tech/cosy/logger"
 )
 
 type APICertificate struct {
@@ -57,6 +58,8 @@ func Transformer(certModel *model.Cert) (certificate *APICertificate) {
 }
 
 func GetCertList(c *gin.Context) {
+	s := logger.NewSessionLogger(c)
+	s.Info("GetCertList")
 	cosy.Core[model.Cert](c).SetFussy("name", "domain").
 		SetTransformer(func(m *model.Cert) any {
 			info, _ := cert.GetCertInfo(m.SSLCertificatePath)

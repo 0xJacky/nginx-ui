@@ -3,6 +3,8 @@ package nginx_log
 import (
 	"net/http"
 
+	"github.com/0xJacky/Nginx-UI/internal/kernel"
+	"github.com/0xJacky/Nginx-UI/internal/nginx_log"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
@@ -18,6 +20,9 @@ func EnableAdvancedIndexing(c *gin.Context) {
 		return
 	}
 
+	// Start the nginx_log services
+	nginx_log.InitializeModernServices(kernel.Context)
+
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Advanced indexing enabled successfully",
 	})
@@ -32,6 +37,9 @@ func DisableAdvancedIndexing(c *gin.Context) {
 		cosy.ErrHandler(c, err)
 		return
 	}
+
+	// Stop the nginx_log services
+	nginx_log.StopModernServices()
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Advanced indexing disabled successfully",
