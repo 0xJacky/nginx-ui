@@ -22,10 +22,10 @@ func TestStringPool(t *testing.T) {
 	// Test string interning
 	s1 := "test_string"
 	s2 := "test_string"
-	
+
 	interned1 := pool.Intern(s1)
 	interned2 := pool.Intern(s2)
-	
+
 	if interned1 != interned2 {
 		t.Error("Expected same interned strings")
 	}
@@ -34,7 +34,7 @@ func TestStringPool(t *testing.T) {
 	if pool.Size() == 0 {
 		t.Error("Expected non-zero pool size")
 	}
-	
+
 	pool.Clear()
 	if pool.Size() != 0 {
 		t.Error("Expected zero pool size after clear")
@@ -75,7 +75,7 @@ func TestWorkerPool(t *testing.T) {
 	// Test job submission and execution
 	var counter int64
 	var mu sync.Mutex
-	
+
 	for i := 0; i < 5; i++ {
 		success := pool.Submit(func() {
 			mu.Lock()
@@ -140,7 +140,7 @@ func TestMemoryOptimizer(t *testing.T) {
 	// Test stats retrieval
 	stats := mo.GetMemoryStats()
 	if stats == nil {
-		t.Error("Expected non-nil memory stats")
+		t.Fatal("Expected non-nil memory stats")
 	}
 
 	if stats.AllocMB < 0 {
@@ -262,7 +262,7 @@ func BenchmarkStringIntern(b *testing.B) {
 	pool := NewStringPool()
 	testStrings := []string{
 		"common_string_1",
-		"common_string_2", 
+		"common_string_2",
 		"common_string_3",
 		"common_string_1", // duplicate
 		"common_string_2", // duplicate

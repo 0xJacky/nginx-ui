@@ -243,12 +243,16 @@ func (cc *CardinalityCounter) collectTermsUsingPagination(ctx context.Context, r
 			boolQuery.AddMust(timeQuery)
 		}
 
-		// CRITICAL FIX: Add log path filters (this was missing!)
+		// Add log path filters, respecting UseMainLogPath
 		if len(req.LogPaths) > 0 {
 			logPathQuery := bleve.NewBooleanQuery()
+			fieldName := "file_path"
+			if req.UseMainLogPath {
+				fieldName = "main_log_path"
+			}
 			for _, logPath := range req.LogPaths {
 				termQuery := bleve.NewTermQuery(logPath)
-				termQuery.SetField("file_path")
+				termQuery.SetField(fieldName)
 				logPathQuery.AddShould(termQuery)
 			}
 			logPathQuery.SetMinShould(1)
@@ -305,200 +309,6 @@ func (cc *CardinalityCounter) collectTermsUsingPagination(ctx context.Context, r
 	}
 
 	return terms, uint64(processedDocs), nil
-}
-
-// countShardCardinality counts unique values in a single shard (legacy method)
-func (cc *CardinalityCounter) countShardCardinality(ctx context.Context, shard bleve.Index, shardID int, req *CardinalityRequest) (uint64, uint64, error) {
-	// For now, we'll use a small facet to get an estimate
-	// In the future, this could be optimized with direct index access
-	searchReq := bleve.NewSearchRequest(bleve.NewMatchAllQuery())
-	searchReq.Size = 0 // We don't need actual documents
-
-	// Add time range filter if specified
-	if req.StartTime != nil && req.EndTime != nil {
-		startTime := float64(*req.StartTime)
-		endTime := float64(*req.EndTime)
-		timeQuery := bleve.NewNumericRangeQuery(&startTime, &endTime)
-		timeQuery.SetField("timestamp")
-
-		boolQuery := bleve.NewBooleanQuery()
-		boolQuery.AddMust(searchReq.Query)
-		boolQuery.AddMust(timeQuery)
-		searchReq.Query = boolQuery
-	}
-
-	// Add custom query filter if provided
-	if req.Query != nil {
-		boolQuery := bleve.NewBooleanQuery()
-		boolQuery.AddMust(searchReq.Query)
-		boolQuery.AddMust(req.Query)
-		searchReq.Query = boolQuery
-	}
-
-	// Use a small facet just to get document count, not for cardinality
-	facet := bleve.NewFacetRequest(req.Field, 1) // Minimal size
-	searchReq.AddFacet(req.Field, facet)
-
-	result, err := shard.Search(searchReq)
-	if err != nil {
-		return 0, 0, err
-	}
-
-	return 0, result.Total, nil
-}
-
-// getShardTerms retrieves unique terms from a shard using multiple strategies to avoid FacetSize limits
-func (cc *CardinalityCounter) getShardTerms(ctx context.Context, shard bleve.Index, req *CardinalityRequest) (map[string]struct{}, error) {
-	// Try multiple approaches for maximum accuracy
-
-	// Strategy 1: Use large facet first (still more efficient than old 100k)
-	terms1, err1 := cc.getTermsUsingLargeFacet(ctx, shard, req)
-	if err1 != nil {
-		logger.Warnf("Large facet strategy failed: %v", err1)
-	}
-
-	// Strategy 2: Use pagination to get remaining terms
-	terms2, err2 := cc.getTermsUsingPagination(ctx, shard, req)
-	if err2 != nil {
-		logger.Warnf("Pagination strategy failed: %v", err2)
-	}
-
-	// Merge results from both strategies
-	allTerms := make(map[string]struct{})
-	for term := range terms1 {
-		allTerms[term] = struct{}{}
-	}
-	for term := range terms2 {
-		allTerms[term] = struct{}{}
-	}
-
-	logger.Infof("Combined strategies found %d unique terms for field '%s' (facet: %d, pagination: %d)",
-		len(allTerms), req.Field, len(terms1), len(terms2))
-
-	return allTerms, nil
-}
-
-// getTermsUsingLargeFacet uses a large facet to collect terms efficiently
-func (cc *CardinalityCounter) getTermsUsingLargeFacet(ctx context.Context, shard bleve.Index, req *CardinalityRequest) (map[string]struct{}, error) {
-	terms := make(map[string]struct{})
-
-	searchReq := bleve.NewSearchRequest(bleve.NewMatchAllQuery())
-	searchReq.Size = 0 // We don't need documents, just facets
-
-	// Add time range filter if specified
-	if req.StartTime != nil && req.EndTime != nil {
-		startTime := float64(*req.StartTime)
-		endTime := float64(*req.EndTime)
-		timeQuery := bleve.NewNumericRangeQuery(&startTime, &endTime)
-		timeQuery.SetField("timestamp")
-
-		boolQuery := bleve.NewBooleanQuery()
-		boolQuery.AddMust(searchReq.Query)
-		boolQuery.AddMust(timeQuery)
-		searchReq.Query = boolQuery
-	}
-
-	// Use a large facet size - larger than before but not excessive
-	facetSize := 50000 // Compromise: large enough for most cases, but not memory-killing
-	facet := bleve.NewFacetRequest(req.Field, facetSize)
-	searchReq.AddFacet(req.Field, facet)
-
-	result, err := shard.Search(searchReq)
-	if err != nil {
-		return terms, err
-	}
-
-	// Extract terms from facet result
-	if facetResult, ok := result.Facets[req.Field]; ok && facetResult.Terms != nil {
-		facetTerms := facetResult.Terms.Terms()
-		for _, term := range facetTerms {
-			terms[term.Term] = struct{}{}
-		}
-
-		logger.Debugf("Large facet collected %d terms (facet reports total: %d)", len(terms), facetResult.Total)
-
-		// If facet is truncated, we know we need pagination
-		if len(facetTerms) >= facetSize {
-			logger.Warnf("Facet truncated at %d terms, pagination needed for complete results", facetSize)
-		}
-	}
-
-	return terms, nil
-}
-
-// getTermsUsingPagination uses document pagination to collect all terms
-func (cc *CardinalityCounter) getTermsUsingPagination(ctx context.Context, shard bleve.Index, req *CardinalityRequest) (map[string]struct{}, error) {
-	terms := make(map[string]struct{})
-
-	// Use pagination approach to collect all terms without FacetSize limitation
-	// This iterates through result pages to get complete term list
-	pageSize := 5000 // Larger page size for efficiency
-	maxPages := 1000 // Higher limit to handle large datasets
-	processedDocs := 0
-
-	logger.Infof("Starting cardinality collection for field '%s' with pagination (pageSize=%d)", req.Field, pageSize)
-
-	for page := 0; page < maxPages; page++ {
-		searchReq := bleve.NewSearchRequest(bleve.NewMatchAllQuery())
-		searchReq.Size = pageSize
-		searchReq.From = page * pageSize
-		searchReq.Fields = []string{req.Field} // Only fetch the field we need
-
-		// Add time range filter if specified
-		if req.StartTime != nil && req.EndTime != nil {
-			startTime := float64(*req.StartTime)
-			endTime := float64(*req.EndTime)
-			timeQuery := bleve.NewNumericRangeQuery(&startTime, &endTime)
-			timeQuery.SetField("timestamp")
-
-			boolQuery := bleve.NewBooleanQuery()
-			boolQuery.AddMust(searchReq.Query)
-			boolQuery.AddMust(timeQuery)
-			searchReq.Query = boolQuery
-		}
-
-		result, err := shard.Search(searchReq)
-		if err != nil {
-			return terms, err
-		}
-
-		// If no more hits, we're done
-		if len(result.Hits) == 0 {
-			break
-		}
-
-		// Extract unique terms from documents
-		for _, hit := range result.Hits {
-			if fieldValue, ok := hit.Fields[req.Field]; ok {
-				if strValue, ok := fieldValue.(string); ok && strValue != "" {
-					terms[strValue] = struct{}{}
-				}
-			}
-		}
-
-		processedDocs += len(result.Hits)
-
-		// Progress logging every 50K documents
-		if processedDocs%50000 == 0 && processedDocs > 0 {
-			logger.Infof("Progress: processed %d documents, found %d unique terms for field '%s'",
-				processedDocs, len(terms), req.Field)
-		}
-
-		// If we got fewer results than pageSize, we've reached the end
-		if len(result.Hits) < pageSize {
-			logger.Infof("Completed: processed %d documents, found %d unique terms for field '%s'",
-				processedDocs, len(terms), req.Field)
-			break
-		}
-
-		// Increased safety limit for large datasets, but with warning
-		if len(terms) > 200000 {
-			logger.Warnf("Very large number of unique terms detected (%d), stopping collection for field %s. Consider using EstimateCardinality for better performance", len(terms), req.Field)
-			break
-		}
-	}
-
-	return terms, nil
 }
 
 // EstimateCardinality provides a fast cardinality estimate using sampling approach

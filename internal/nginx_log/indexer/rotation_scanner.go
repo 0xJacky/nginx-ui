@@ -15,13 +15,13 @@ import (
 
 // RotationScanner efficiently scans and prioritizes rotation logs for indexing
 type RotationScanner struct {
-	config          *RotationScanConfig
-	scanResults     map[string]*LogGroupScanResult
-	resultsMutex    sync.RWMutex
-	priorityQueue   []*RotationLogFileInfo
-	queueMutex      sync.Mutex
-	scanInProgress  bool
-	progressMutex   sync.Mutex
+	config         *RotationScanConfig
+	scanResults    map[string]*LogGroupScanResult
+	resultsMutex   sync.RWMutex
+	priorityQueue  []*RotationLogFileInfo
+	queueMutex     sync.Mutex
+	scanInProgress bool
+	progressMutex  sync.Mutex
 }
 
 // RotationScanConfig configures the rotation log scanner
@@ -31,27 +31,27 @@ type RotationScanConfig struct {
 	ScanTimeout        time.Duration `json:"scan_timeout"`
 	MinFileSize        int64         `json:"min_file_size"`
 	MaxFileAge         time.Duration `json:"max_file_age"`
-	
+
 	// Throughput optimization
-	PrioritizeBySize     bool     `json:"prioritize_by_size"`
-	PrioritizeByAge      bool     `json:"prioritize_by_age"`
-	PreferredExtensions  []string `json:"preferred_extensions"`
-	ExcludePatterns      []string `json:"exclude_patterns"`
-	
+	PrioritizeBySize    bool     `json:"prioritize_by_size"`
+	PrioritizeByAge     bool     `json:"prioritize_by_age"`
+	PreferredExtensions []string `json:"preferred_extensions"`
+	ExcludePatterns     []string `json:"exclude_patterns"`
+
 	// Performance settings
-	EnableParallelScan   bool `json:"enable_parallel_scan"`
-	ScanBatchSize        int  `json:"scan_batch_size"`
+	EnableParallelScan bool `json:"enable_parallel_scan"`
+	ScanBatchSize      int  `json:"scan_batch_size"`
 }
 
 // LogGroupScanResult contains the scan results for a log group
 type LogGroupScanResult struct {
-	BasePath       string         `json:"base_path"`
+	BasePath       string                 `json:"base_path"`
 	Files          []*RotationLogFileInfo `json:"files"`
-	TotalSize      int64          `json:"total_size"`
-	TotalFiles     int            `json:"total_files"`
-	ScanTime       time.Time      `json:"scan_time"`
-	ScanDuration   time.Duration  `json:"scan_duration"`
-	EstimatedLines int64          `json:"estimated_lines"`
+	TotalSize      int64                  `json:"total_size"`
+	TotalFiles     int                    `json:"total_files"`
+	ScanTime       time.Time              `json:"scan_time"`
+	ScanDuration   time.Duration          `json:"scan_duration"`
+	EstimatedLines int64                  `json:"estimated_lines"`
 }
 
 // LogFileInfo contains detailed information about a log file
@@ -84,7 +84,7 @@ func DefaultRotationScanConfig() *RotationScanConfig {
 	return &RotationScanConfig{
 		MaxConcurrentScans:  8,
 		ScanTimeout:         30 * time.Second,
-		MinFileSize:         1024,      // 1KB minimum
+		MinFileSize:         1024,                // 1KB minimum
 		MaxFileAge:          30 * 24 * time.Hour, // 30 days
 		PrioritizeBySize:    true,
 		PrioritizeByAge:     true,
@@ -112,7 +112,7 @@ func (rs *RotationScanner) ScanLogGroups(ctx context.Context, basePaths []string
 	}()
 
 	logger.Infof("🔍 Starting rotation log scan for %d log groups", len(basePaths))
-	
+
 	if rs.config.EnableParallelScan {
 		return rs.scanLogGroupsParallel(ctx, basePaths)
 	} else {
@@ -130,11 +130,11 @@ func (rs *RotationScanner) scanLogGroupsParallel(ctx context.Context, basePaths 
 		wg.Add(1)
 		go func(path string) {
 			defer wg.Done()
-			
+
 			select {
 			case semaphore <- struct{}{}:
 				defer func() { <-semaphore }()
-				
+
 				if err := rs.scanSingleLogGroup(ctx, path); err != nil {
 					errors <- fmt.Errorf("failed to scan %s: %w", path, err)
 				}
@@ -162,8 +162,8 @@ func (rs *RotationScanner) scanLogGroupsParallel(ctx context.Context, basePaths 
 
 	// Build priority queue from all scan results
 	rs.buildPriorityQueue()
-	
-	logger.Infof("✅ Rotation log scan completed: %d log groups, %d total files", 
+
+	logger.Infof("✅ Rotation log scan completed: %d log groups, %d total files",
 		len(rs.scanResults), len(rs.priorityQueue))
 
 	return nil
@@ -190,12 +190,12 @@ func (rs *RotationScanner) scanLogGroupsSequential(ctx context.Context, basePath
 // scanSingleLogGroup scans a single log group for rotation logs
 func (rs *RotationScanner) scanSingleLogGroup(ctx context.Context, basePath string) error {
 	start := time.Now()
-	
+
 	// Use optimized glob pattern for rotation logs
 	patterns := []string{
-		basePath,                    // Main log file
-		basePath + ".*",             // access.log.1, access.log.2.gz, etc.
-		basePath + "-*",             // access.log-20240101, etc.
+		basePath,        // Main log file
+		basePath + ".*", // access.log.1, access.log.2.gz, etc.
+		basePath + "-*", // access.log-20240101, etc.
 		strings.TrimSuffix(basePath, ".log") + ".*.log*", // For patterns like access.20240101.log.gz
 	}
 
@@ -277,7 +277,7 @@ func (rs *RotationScanner) scanSingleLogGroup(ctx context.Context, basePath stri
 	rs.scanResults[basePath] = result
 	rs.resultsMutex.Unlock()
 
-	logger.Debugf("📊 Scanned log group %s: %d files, %s total, %d estimated lines", 
+	logger.Debugf("📊 Scanned log group %s: %d files, %s total, %d estimated lines",
 		basePath, len(allFiles), formatSize(totalSize), estimatedLines)
 
 	return nil
@@ -335,14 +335,13 @@ func (rs *RotationScanner) extractRotationIndex(filePath, basePath string) int {
 
 	// Extract numeric suffix (e.g., access.log.1 -> 1)
 	suffix := strings.TrimPrefix(filePath, basePath)
-	
+
 	// Handle various rotation formats
 	if strings.HasPrefix(suffix, ".") {
 		suffix = strings.TrimPrefix(suffix, ".")
-		if strings.HasSuffix(suffix, ".gz") {
-			suffix = strings.TrimSuffix(suffix, ".gz")
-		}
-		
+		// Always trim optional ".gz" suffix
+		suffix = strings.TrimSuffix(suffix, ".gz")
+
 		// Try to parse as integer
 		var index int
 		if n, err := fmt.Sscanf(suffix, "%d", &index); n == 1 && err == nil {
@@ -361,7 +360,7 @@ func (rs *RotationScanner) calculatePriority(file *RotationLogFileInfo) int {
 	if rs.config.PrioritizeBySize {
 		// Larger files get higher priority (better throughput)
 		sizeMB := file.Size / (1024 * 1024)
-		priority += int(sizeMB / 10) * 10 // +10 points per 10MB
+		priority += int(sizeMB/10) * 10 // +10 points per 10MB
 	}
 
 	if rs.config.PrioritizeByAge {
@@ -390,25 +389,25 @@ func (rs *RotationScanner) calculatePriority(file *RotationLogFileInfo) int {
 // estimateLineCount estimates the number of log lines in a file
 func (rs *RotationScanner) estimateLineCount(size int64, isCompressed bool) int64 {
 	avgLineSize := int64(200) // Average nginx log line size in bytes
-	
+
 	if isCompressed {
 		// Assume 3x compression ratio for text logs
 		size = size * 3
 	}
-	
+
 	return size / avgLineSize
 }
 
 // shouldExcludeFile checks if file should be excluded based on patterns
 func (rs *RotationScanner) shouldExcludeFile(path string) bool {
 	filename := filepath.Base(path)
-	
+
 	for _, pattern := range rs.config.ExcludePatterns {
 		if matched, _ := filepath.Match(pattern, filename); matched {
 			return true
 		}
 	}
-	
+
 	return false
 }
 
@@ -416,12 +415,12 @@ func (rs *RotationScanner) shouldExcludeFile(path string) bool {
 func (rs *RotationScanner) GetScanResults() map[string]*LogGroupScanResult {
 	rs.resultsMutex.RLock()
 	defer rs.resultsMutex.RUnlock()
-	
+
 	results := make(map[string]*LogGroupScanResult)
 	for k, v := range rs.scanResults {
 		results[k] = v
 	}
-	
+
 	return results
 }
 
@@ -429,7 +428,7 @@ func (rs *RotationScanner) GetScanResults() map[string]*LogGroupScanResult {
 func (rs *RotationScanner) GetQueueSize() int {
 	rs.queueMutex.Lock()
 	defer rs.queueMutex.Unlock()
-	
+
 	return len(rs.priorityQueue)
 }
 
@@ -437,7 +436,7 @@ func (rs *RotationScanner) GetQueueSize() int {
 func (rs *RotationScanner) IsScanning() bool {
 	rs.progressMutex.Lock()
 	defer rs.progressMutex.Unlock()
-	
+
 	return rs.scanInProgress
 }
 
@@ -457,13 +456,6 @@ func formatSize(bytes int64) string {
 
 func minInt(a, b int) int {
 	if a < b {
-		return a
-	}
-	return b
-}
-
-func maxInt(a, b int) int {
-	if a > b {
 		return a
 	}
 	return b

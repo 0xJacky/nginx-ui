@@ -47,7 +47,8 @@ func NewObjectPool() *ObjectPool {
 		bufferPool: sync.Pool{
 			New: func() interface{} {
 				// Pre-allocate 4KB buffer for common operations
-				return make([]byte, 0, 4096)
+				b := make([]byte, 0, 4096)
+				return &b
 			},
 		},
 	}
@@ -117,18 +118,24 @@ func (p *ObjectPool) PutDocument(doc *Document) {
 }
 
 // GetBuffer returns a pooled byte buffer, reset and ready for use
-func (p *ObjectPool) GetBuffer() []byte {
-	buffer := p.bufferPool.Get().([]byte)
-	return buffer[:0] // Reset length, keep capacity
+func (p *ObjectPool) GetBuffer() *[]byte {
+	bufPtr := p.bufferPool.Get().(*[]byte)
+	b := *bufPtr
+	b = b[:0]
+	*bufPtr = b
+	return bufPtr
 }
 
 // PutBuffer returns a byte buffer to the pool
-func (p *ObjectPool) PutBuffer(buffer []byte) {
-	if buffer != nil && cap(buffer) > 0 {
-		// Only pool buffers with reasonable capacity to prevent memory bloat
-		if cap(buffer) <= 64*1024 { // Max 64KB
-			p.bufferPool.Put(buffer[:0])
-		}
+func (p *ObjectPool) PutBuffer(bufPtr *[]byte) {
+	if bufPtr == nil {
+		return
+	}
+	b := *bufPtr
+	if cap(b) > 0 && cap(b) <= 64*1024 { // Only keep reasonable buffers
+		b = b[:0]
+		*bufPtr = b
+		p.bufferPool.Put(bufPtr)
 	}
 }
 
@@ -136,11 +143,11 @@ func (p *ObjectPool) PutBuffer(buffer []byte) {
 type ZeroAllocBatchProcessor struct {
 	pool   *ObjectPool
 	config *Config
-	
+
 	// Metrics
 	allocationsAvoided int64
-	poolHitRate       float64
-	poolStats         sync.RWMutex
+	poolHitRate        float64
+	poolStats          sync.RWMutex
 }
 
 // NewZeroAllocBatchProcessor creates a new zero-allocation batch processor
@@ -155,25 +162,25 @@ func NewZeroAllocBatchProcessor(config *Config) *ZeroAllocBatchProcessor {
 func (z *ZeroAllocBatchProcessor) CreateJobBatch(documents []*Document, batchSize int) []*IndexJob {
 	jobCount := (len(documents) + batchSize - 1) / batchSize
 	jobs := make([]*IndexJob, 0, jobCount)
-	
+
 	for i := 0; i < len(documents); i += batchSize {
 		end := i + batchSize
 		if end > len(documents) {
 			end = len(documents)
 		}
-		
+
 		// Use pooled job
 		job := z.pool.GetIndexJob()
-		
+
 		// Add documents to job (reusing pre-allocated slice capacity)
 		for j := i; j < end; j++ {
 			job.Documents = append(job.Documents, documents[j])
 		}
 		job.Priority = 1
-		
+
 		jobs = append(jobs, job)
 	}
-	
+
 	return jobs
 }
 
@@ -181,33 +188,33 @@ func (z *ZeroAllocBatchProcessor) CreateJobBatch(documents []*Document, batchSiz
 func (z *ZeroAllocBatchProcessor) ProcessJobResults(results []*IndexResult) *IndexResult {
 	// Use pooled result for aggregation
 	aggregatedResult := z.pool.GetIndexResult()
-	
+
 	totalProcessed := 0
 	totalSucceeded := 0
 	totalFailed := 0
 	var totalDuration time.Duration
-	
+
 	for _, result := range results {
 		totalProcessed += result.Processed
 		totalSucceeded += result.Succeeded
 		totalFailed += result.Failed
 		totalDuration += result.Duration
-		
+
 		// Return individual result to pool
 		z.pool.PutIndexResult(result)
 	}
-	
+
 	// Set aggregated values
 	aggregatedResult.Processed = totalProcessed
 	aggregatedResult.Succeeded = totalSucceeded
 	aggregatedResult.Failed = totalFailed
 	aggregatedResult.Duration = totalDuration
-	
+
 	if totalProcessed > 0 {
 		aggregatedResult.ErrorRate = float64(totalFailed) / float64(totalProcessed)
 		aggregatedResult.Throughput = float64(totalSucceeded) / totalDuration.Seconds()
 	}
-	
+
 	return aggregatedResult
 }
 
@@ -222,11 +229,11 @@ func (z *ZeroAllocBatchProcessor) ReleaseBatch(jobs []*IndexJob) {
 func (z *ZeroAllocBatchProcessor) GetPoolStats() PoolStats {
 	z.poolStats.RLock()
 	defer z.poolStats.RUnlock()
-	
+
 	return PoolStats{
 		AllocationsAvoided: z.allocationsAvoided,
-		PoolHitRate:       z.poolHitRate,
-		ActiveObjects:     z.getActiveObjectCount(),
+		PoolHitRate:        z.poolHitRate,
+		ActiveObjects:      z.getActiveObjectCount(),
 	}
 }
 
@@ -238,8 +245,8 @@ func (z *ZeroAllocBatchProcessor) getActiveObjectCount() int {
 // PoolStats represents object pool statistics
 type PoolStats struct {
 	AllocationsAvoided int64   `json:"allocations_avoided"`
-	PoolHitRate       float64 `json:"pool_hit_rate"`
-	ActiveObjects     int     `json:"active_objects"`
+	PoolHitRate        float64 `json:"pool_hit_rate"`
+	ActiveObjects      int     `json:"active_objects"`
 }
 
 // GetPool returns the underlying object pool for direct access if needed

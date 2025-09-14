@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"context"
 	"crypto/md5"
+	"errors"
 	"fmt"
 	"io"
 	"runtime"
@@ -71,11 +72,11 @@ func NewOptimizedParser(config *Config, uaParser UserAgentParser, geoService Geo
 // ParseLine parses a single log line with zero-copy optimizations
 func (p *OptimizedParser) ParseLine(line string) (*AccessLogEntry, error) {
 	if len(line) == 0 {
-		return nil, fmt.Errorf(ErrEmptyLogLine)
+		return nil, errors.New(ErrEmptyLogLine)
 	}
 
 	if len(line) > p.config.MaxLineLength {
-		return nil, fmt.Errorf(ErrLineTooLong)
+		return nil, errors.New(ErrLineTooLong)
 	}
 
 	buf := p.pool.Get().(*parseBuffer)
@@ -327,13 +328,13 @@ func (p *OptimizedParser) parseLineOptimized(line []byte, buf *parseBuffer) erro
 	length := len(line)
 
 	if length < 20 {
-		return fmt.Errorf(ErrUnsupportedLogFormat)
+		return errors.New(ErrUnsupportedLogFormat)
 	}
 
 	// Parse IP address
 	pos = p.parseIP(line, pos, buf.entry)
 	if pos >= length {
-		return fmt.Errorf(ErrUnsupportedLogFormat)
+		return errors.New(ErrUnsupportedLogFormat)
 	}
 
 	// Skip remote user fields (- -)
@@ -346,21 +347,21 @@ func (p *OptimizedParser) parseLineOptimized(line []byte, buf *parseBuffer) erro
 	pos = p.skipSpaces(line, pos)
 	pos = p.parseTimestamp(line, pos, buf.entry)
 	if pos >= length {
-		return fmt.Errorf(ErrUnsupportedLogFormat)
+		return errors.New(ErrUnsupportedLogFormat)
 	}
 
 	// Parse request
 	pos = p.skipSpaces(line, pos)
 	pos = p.parseRequest(line, pos, buf.entry)
 	if pos >= length {
-		return fmt.Errorf(ErrUnsupportedLogFormat)
+		return errors.New(ErrUnsupportedLogFormat)
 	}
 
 	// Parse status code
 	pos = p.skipSpaces(line, pos)
 	pos = p.parseStatus(line, pos, buf.entry)
 	if pos >= length {
-		return fmt.Errorf(ErrUnsupportedLogFormat)
+		return errors.New(ErrUnsupportedLogFormat)
 	}
 
 	// Parse response size
@@ -392,7 +393,7 @@ func (p *OptimizedParser) parseLineOptimized(line []byte, buf *parseBuffer) erro
 	if pos < length {
 		pos = p.skipSpaces(line, pos)
 		if pos < length {
-			pos = p.parseUpstreamTime(line, pos, buf.entry)
+			_ = p.parseUpstreamTime(line, pos, buf.entry)
 		}
 	}
 
@@ -439,10 +440,10 @@ func (p *OptimizedParser) parseTimestamp(line []byte, pos int, entry *AccessLogE
 
 	if pos > start {
 		timeStr := bytesToString(line[start:pos])
-		
-		// Debug: log the timestamp string we're trying to parse  
+
+		// Debug: log the timestamp string we're trying to parse
 		// fmt.Printf("DEBUG: Parsing timestamp string: '%s'\n", timeStr)
-		
+
 		if t, err := time.Parse(p.config.TimeLayout, timeStr); err == nil {
 			entry.Timestamp = t.Unix()
 		} else {
@@ -453,7 +454,7 @@ func (p *OptimizedParser) parseTimestamp(line []byte, pos int, entry *AccessLogE
 				"2006-01-02 15:04:05",        // Simple datetime format
 				"02/Jan/2006:15:04:05",       // Without timezone
 			}
-			
+
 			parsed := false
 			for _, format := range formats {
 				if t, err := time.Parse(format, timeStr); err == nil {
@@ -462,7 +463,7 @@ func (p *OptimizedParser) parseTimestamp(line []byte, pos int, entry *AccessLogE
 					break
 				}
 			}
-			
+
 			// If all parsing attempts fail, keep timestamp as 0
 			if !parsed {
 				// Debug: log parsing failure

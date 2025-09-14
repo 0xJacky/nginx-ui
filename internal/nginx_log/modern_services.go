@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/analytics"
@@ -19,14 +20,15 @@ import (
 
 // Global instances for new services
 var (
-	globalSearcher       searcher.Searcher
-	globalAnalytics      analytics.Service
-	globalIndexer        *indexer.ParallelIndexer
-	globalLogFileManager *indexer.LogFileManager
-	servicesInitialized  bool
-	servicesMutex        sync.RWMutex
-	shutdownCancel       context.CancelFunc
-	isShuttingDown       bool
+	globalSearcher         searcher.Searcher
+	globalAnalytics        analytics.Service
+	globalIndexer          *indexer.ParallelIndexer
+	globalLogFileManager   *indexer.LogFileManager
+	servicesInitialized    bool
+	servicesMutex          sync.RWMutex
+	shutdownCancel         context.CancelFunc
+	isShuttingDown         bool
+	lastShardUpdateAttempt int64
 )
 
 // InitializeModernServices initializes the new modular services
@@ -64,10 +66,10 @@ func InitializeModernServices(ctx context.Context) {
 		logger.Info("Started nginx_log shutdown monitor goroutine")
 		<-serviceCtx.Done()
 		logger.Info("Context cancelled, initiating shutdown...")
-		
+
 		// Use the same shutdown logic as manual stop
 		StopModernServices()
-		
+
 		logger.Info("Nginx_log shutdown monitor goroutine completed")
 	}()
 }
@@ -87,7 +89,7 @@ func initializeWithDefaults(ctx context.Context) error {
 	indexerConfig := indexer.DefaultIndexerConfig()
 	// Use config directory for index path
 	indexerConfig.IndexPath = getConfigDirIndexPath()
-	shardManager := indexer.NewDefaultShardManager(indexerConfig)
+	shardManager := indexer.NewGroupedShardManager(indexerConfig)
 	globalIndexer = indexer.NewParallelIndexer(indexerConfig, shardManager)
 
 	// Start the indexer
@@ -149,6 +151,19 @@ func GetModernSearcher() searcher.Searcher {
 	isHealthy := globalSearcher.IsHealthy()
 	isRunning := globalSearcher.IsRunning()
 	logger.Debugf("GetModernSearcher: returning searcher, isHealthy: %v, isRunning: %v", isHealthy, isRunning)
+
+	// Auto-heal: if the searcher is running but unhealthy (likely zero shards),
+	// and the indexer is initialized, trigger an async shard swap (throttled).
+	if !isHealthy && isRunning && globalIndexer != nil {
+		now := time.Now().UnixNano()
+		prev := atomic.LoadInt64(&lastShardUpdateAttempt)
+		if now-prev > int64(5*time.Second) {
+			if atomic.CompareAndSwapInt64(&lastShardUpdateAttempt, prev, now) {
+				logger.Debugf("GetModernSearcher: unhealthy detected, scheduling UpdateSearcherShards()")
+				go UpdateSearcherShards()
+			}
+		}
+	}
 
 	return globalSearcher
 }

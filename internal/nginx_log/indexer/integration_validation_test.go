@@ -32,7 +32,7 @@ func TestOptimizedIntegrationValidation(t *testing.T) {
 	// Test 1: Validate optimized parsing
 	t.Log("Testing optimized parsing...")
 	ctx := context.Background()
-	
+
 	file, err := os.Open(tmpFile.Name())
 	if err != nil {
 		t.Fatalf("Failed to open test file: %v", err)
@@ -43,7 +43,7 @@ func TestOptimizedIntegrationValidation(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Optimized parsing failed: %v", err)
 	}
-	
+
 	if len(logDocs) != 3 {
 		t.Errorf("Expected 3 parsed documents, got %d", len(logDocs))
 	}
@@ -51,12 +51,12 @@ func TestOptimizedIntegrationValidation(t *testing.T) {
 	// Test 2: Validate single line parsing with SIMD optimization
 	t.Log("Testing SIMD-optimized single line parsing...")
 	testLine := `127.0.0.1 - - [25/Dec/2023:10:00:00 +0000] "GET /api/test HTTP/1.1" 200 1234 "-" "test-agent"`
-	
+
 	logDoc, err := ParseLogLine(testLine)
 	if err != nil {
 		t.Fatalf("SIMD-optimized parsing failed: %v", err)
 	}
-	
+
 	if logDoc.IP != "127.0.0.1" {
 		t.Errorf("Expected IP 127.0.0.1, got %s", logDoc.IP)
 	}
@@ -69,11 +69,11 @@ func TestOptimizedIntegrationValidation(t *testing.T) {
 
 	// Test 3: Validate optimized indexer with ProgressTracker
 	t.Log("Testing optimized indexer with ProgressTracker...")
-	
+
 	config := DefaultIndexerConfig()
-	shardManager := NewDefaultShardManager(config)
+	shardManager := NewGroupedShardManager(config)
 	indexer := NewParallelIndexer(config, shardManager)
-	
+
 	// Start the indexer
 	err = indexer.Start(context.Background())
 	if err != nil {
@@ -102,7 +102,7 @@ func TestOptimizedIntegrationValidation(t *testing.T) {
 	if docCount != 3 {
 		t.Errorf("Expected 3 indexed documents, got %d", docCount)
 	}
-	
+
 	if minTime == nil || maxTime == nil {
 		t.Errorf("Expected time ranges to be calculated, got minTime=%v, maxTime=%v", minTime, maxTime)
 	}
@@ -116,27 +116,27 @@ func TestOptimizedIntegrationValidation(t *testing.T) {
 
 	// Test 4: Validate incremental indexing method
 	t.Log("Testing IndexSingleFileIncrementally...")
-	
+
 	docsCountMap, minTime2, maxTime2, err := indexer.IndexSingleFileIncrementally(tmpFile.Name(), progressConfig)
 	if err != nil {
 		t.Fatalf("IndexSingleFileIncrementally failed: %v", err)
 	}
-	
+
 	if len(docsCountMap) != 1 {
 		t.Errorf("Expected 1 entry in docsCountMap, got %d", len(docsCountMap))
 	}
-	
+
 	if docsCount, exists := docsCountMap[tmpFile.Name()]; !exists || docsCount != 3 {
 		t.Errorf("Expected 3 documents for file %s, got %d (exists: %v)", tmpFile.Name(), docsCount, exists)
 	}
-	
+
 	if minTime2 == nil || maxTime2 == nil {
 		t.Errorf("Expected time ranges from incremental indexing, got minTime=%v, maxTime=%v", minTime2, maxTime2)
 	}
 
 	// Test 5: Validate optimization status
 	t.Log("Testing optimization status...")
-	
+
 	status := GetOptimizationStatus()
 	expectedKeys := []string{"parser_optimized", "simd_enabled", "memory_pools_enabled", "batch_processing"}
 	for _, key := range expectedKeys {
@@ -144,12 +144,12 @@ func TestOptimizedIntegrationValidation(t *testing.T) {
 			t.Errorf("Expected optimization status key %s to exist", key)
 		}
 	}
-	
+
 	t.Logf("Optimization status: %+v", status)
 
 	// Test 6: Validate production configuration
 	t.Log("Testing production configuration...")
-	
+
 	// Test the current indexer's configuration (which should have production optimizations)
 	currentConfig := indexer.GetConfig()
 	if currentConfig.WorkerCount <= 0 {
@@ -182,9 +182,9 @@ func TestOptimizationCompatibility(t *testing.T) {
 	tmpFile.Close()
 
 	config := DefaultIndexerConfig()
-	shardManager := NewDefaultShardManager(config)
+	shardManager := NewGroupedShardManager(config)
 	indexer := NewParallelIndexer(config, shardManager)
-	
+
 	err = indexer.Start(context.Background())
 	if err != nil {
 		t.Fatalf("Failed to start indexer: %v", err)
@@ -203,11 +203,11 @@ func TestOptimizationCompatibility(t *testing.T) {
 	if err != nil {
 		t.Fatalf("indexSingleFile failed: %v", err)
 	}
-	
+
 	if docCount != 1 {
 		t.Errorf("Expected 1 document, got %d", docCount)
 	}
-	
+
 	if minTime == nil || maxTime == nil {
 		t.Errorf("Expected time ranges, got minTime=%v, maxTime=%v", minTime, maxTime)
 	}

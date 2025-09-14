@@ -506,14 +506,6 @@ func (lm *LogFileManager) GetPersistence() *PersistenceManager {
 	return lm.persistence
 }
 
-// maxInt64 returns the maximum of two int64 values
-func maxInt64(a, b int64) int64 {
-	if a > b {
-		return a
-	}
-	return b
-}
-
 // GetAllLogsWithIndex returns all cached log paths with their index status (non-grouped)
 func (lm *LogFileManager) GetAllLogsWithIndex(filters ...func(*NginxLogWithIndex) bool) []*NginxLogWithIndex {
 	lm.cacheMutex.RLock()

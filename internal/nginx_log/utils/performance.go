@@ -10,9 +10,9 @@ import (
 
 // StringPool provides efficient string reuse and interning to reduce allocations and memory usage
 type StringPool struct {
-	pool    sync.Pool
-	intern  map[string]string // for string interning
-	mutex   sync.RWMutex     // for intern map
+	pool   sync.Pool
+	intern map[string]string // for string interning
+	mutex  sync.RWMutex      // for intern map
 }
 
 // NewStringPool creates a new string pool
@@ -20,7 +20,8 @@ func NewStringPool() *StringPool {
 	return &StringPool{
 		pool: sync.Pool{
 			New: func() interface{} {
-				return make([]byte, 0, 1024) // Pre-allocate 1KB
+				b := make([]byte, 0, 1024) // Pre-allocate 1KB
+				return &b
 			},
 		},
 		intern: make(map[string]string, 10000),
@@ -29,13 +30,15 @@ func NewStringPool() *StringPool {
 
 // Get retrieves a byte buffer from the pool
 func (sp *StringPool) Get() []byte {
-	return sp.pool.Get().([]byte)[:0]
+	b := sp.pool.Get().(*[]byte)
+	return (*b)[:0]
 }
 
 // Put returns a byte buffer to the pool
 func (sp *StringPool) Put(b []byte) {
 	if cap(b) < 32*1024 { // Don't keep very large buffers
-		sp.pool.Put(b)
+		b = b[:0]
+		sp.pool.Put(&b)
 	}
 }
 
@@ -98,7 +101,8 @@ func NewMemoryPool() *MemoryPool {
 		s := size // Capture for closure
 		pools[i] = &sync.Pool{
 			New: func() interface{} {
-				return make([]byte, 0, s)
+				b := make([]byte, 0, s)
+				return &b
 			},
 		}
 	}
@@ -114,8 +118,8 @@ func (mp *MemoryPool) Get(minSize int) []byte {
 	// Find the smallest pool that fits
 	for i, size := range mp.sizes {
 		if size >= minSize {
-			buf := mp.pools[i].Get().([]byte)
-			return buf[:0] // Reset length but keep capacity
+			buf := mp.pools[i].Get().(*[]byte)
+			return (*buf)[:0] // Reset length but keep capacity
 		}
 	}
 
@@ -132,7 +136,7 @@ func (mp *MemoryPool) Put(buf []byte) {
 		if capacity <= size {
 			// Reset buffer before returning to pool
 			buf = buf[:0]
-			mp.pools[i].Put(buf)
+			mp.pools[i].Put(&buf)
 			return
 		}
 	}
@@ -329,7 +333,6 @@ type PerformanceMetrics struct {
 	cacheHits       int64
 	cacheMisses     int64
 	errorCount      int64
-	mutex           sync.RWMutex
 }
 
 // NewPerformanceMetrics creates performance metrics tracker

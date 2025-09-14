@@ -12,7 +12,7 @@ import (
 
 // ProductionConfig provides production-ready configuration for nginx-ui log processing
 type ProductionConfig struct {
-	// Parser Configuration (Based on OPTIMIZATION_GUIDE.md recommendations)
+	// Parser Configuration
 	ParserConfig *parser.Config
 
 	// Memory Pool Configuration

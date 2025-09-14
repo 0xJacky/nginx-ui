@@ -3,7 +3,6 @@ package nginx_log
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"testing"
@@ -33,7 +32,7 @@ func BenchmarkRealisticProduction(b *testing.B) {
 
 func benchmarkCompleteProduction(b *testing.B, recordCount int) {
 	// Setup once
-	tempDir, err := ioutil.TempDir("", "benchmark_production_")
+	tempDir, err := os.MkdirTemp("", "benchmark_production_")
 	if err != nil {
 		b.Fatalf("Failed to create temp dir: %v", err)
 	}
@@ -47,7 +46,7 @@ func benchmarkCompleteProduction(b *testing.B, recordCount int) {
 
 	// Setup production environment
 	indexDir := filepath.Join(tempDir, "index")
-	
+
 	config := indexer.DefaultIndexerConfig()
 	config.IndexPath = indexDir
 	config.WorkerCount = 8
@@ -57,7 +56,7 @@ func benchmarkCompleteProduction(b *testing.B, recordCount int) {
 	// Create production-like services
 	geoService := &BenchGeoIPService{}
 	userAgentParser := parser.NewSimpleUserAgentParser()
-	
+
 	optimizedParser := parser.NewOptimizedParser(
 		&parser.Config{
 			MaxLineLength: 4 * 1024,
@@ -77,9 +76,9 @@ func benchmarkCompleteProduction(b *testing.B, recordCount int) {
 		iterIndexDir := filepath.Join(tempDir, fmt.Sprintf("index_%d", i))
 		iterConfig := *config
 		iterConfig.IndexPath = iterIndexDir
-		
+
 		result := runBenchmarkProduction(b, &iterConfig, optimizedParser, testLogFile)
-		
+
 		// Custom metrics
 		throughput := float64(recordCount) / result.Duration.Seconds()
 		b.ReportMetric(throughput, "records/sec")
@@ -98,15 +97,15 @@ type BenchResult struct {
 
 func runBenchmarkProduction(b *testing.B, config *indexer.Config, optimizedParser *parser.OptimizedParser, logFile string) *BenchResult {
 	start := time.Now()
-	
+
 	// Create indexer
 	if err := os.MkdirAll(config.IndexPath, 0755); err != nil {
 		b.Fatalf("Failed to create index dir: %v", err)
 	}
-	
-	shardManager := indexer.NewDefaultShardManager(config)
+
+	shardManager := indexer.NewGroupedShardManager(config)
 	indexerInstance := indexer.NewParallelIndexer(config, shardManager)
-	
+
 	ctx := context.Background()
 	if err := indexerInstance.Start(ctx); err != nil {
 		b.Fatalf("Failed to start indexer: %v", err)
@@ -128,7 +127,7 @@ func runBenchmarkProduction(b *testing.B, config *indexer.Config, optimizedParse
 	// Index (limit to avoid timeout in benchmarking)
 	maxToIndex := minVal(len(parseResult.Entries), 1000)
 	indexed := 0
-	
+
 	for i, entry := range parseResult.Entries[:maxToIndex] {
 		doc := &indexer.Document{
 			ID: fmt.Sprintf("doc_%d", i),
@@ -146,7 +145,7 @@ func runBenchmarkProduction(b *testing.B, config *indexer.Config, optimizedParse
 				Raw:         entry.Raw,
 			},
 		}
-		
+
 		if err := indexerInstance.IndexDocument(ctx, doc); err == nil {
 			indexed++
 		}
@@ -154,9 +153,9 @@ func runBenchmarkProduction(b *testing.B, config *indexer.Config, optimizedParse
 
 	// Flush
 	indexerInstance.FlushAll()
-	
+
 	duration := time.Since(start)
-	
+
 	return &BenchResult{
 		Duration:    duration,
 		Processed:   parseResult.Processed,
@@ -173,14 +172,14 @@ func generateBenchmarkLogFile(filename string, recordCount int) error {
 	defer file.Close()
 
 	baseTime := time.Now().Unix() - 3600
-	
+
 	for i := 0; i < recordCount; i++ {
 		timestamp := baseTime + int64(i%3600)
 		ip := fmt.Sprintf("10.0.%d.%d", (i/254)%256, i%254+1)
 		path := []string{"/", "/api", "/health", "/metrics"}[i%4]
 		status := []int{200, 200, 200, 404}[i%4]
 		size := 1000 + i%2000
-		
+
 		logLine := fmt.Sprintf(
 			`%s - - [%s] "GET %s HTTP/1.1" %d %d "-" "TestAgent/1.0" 0.%03d`,
 			ip,
@@ -190,12 +189,12 @@ func generateBenchmarkLogFile(filename string, recordCount int) error {
 			size,
 			i%1000,
 		)
-		
+
 		if _, err := fmt.Fprintln(file, logLine); err != nil {
 			return err
 		}
 	}
-	
+
 	return nil
 }
 
@@ -204,7 +203,7 @@ type BenchGeoIPService struct{}
 func (s *BenchGeoIPService) Search(ip string) (*parser.GeoLocation, error) {
 	return &parser.GeoLocation{
 		CountryCode: "US",
-		RegionCode:  "CA", 
+		RegionCode:  "CA",
 		Province:    "California",
 		City:        "San Francisco",
 	}, nil

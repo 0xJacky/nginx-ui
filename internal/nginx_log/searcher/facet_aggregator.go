@@ -4,49 +4,7 @@ import (
 	"context"
 	"sort"
 	"strings"
-
-	"github.com/blevesearch/bleve/v2/search"
 )
-
-// convertFacets converts Bleve facets to our facet format
-func (ds *DistributedSearcher) convertFacets(bleveFacets search.FacetResults) map[string]*Facet {
-	facets := make(map[string]*Facet)
-
-	for name, result := range bleveFacets {
-		facet := &Facet{
-			Field:   name,
-			Total:   result.Total,
-			Missing: result.Missing,
-			Other:   result.Other,
-			Terms:   make([]*FacetTerm, 0),
-		}
-
-		// Handle Terms facet
-		if result.Terms != nil {
-			for _, term := range result.Terms.Terms() {
-				facet.Terms = append(facet.Terms, &FacetTerm{
-					Term:  term.Term,
-					Count: term.Count,
-				})
-			}
-		}
-
-		facets[name] = facet
-	}
-
-	return facets
-}
-
-// mergeFacets merges facet results from multiple shards
-func (ds *DistributedSearcher) mergeFacets(combined, incoming map[string]*Facet) {
-	for field, incomingFacet := range incoming {
-		if existingFacet, exists := combined[field]; exists {
-			ds.mergeSingleFacet(existingFacet, incomingFacet)
-		} else {
-			combined[field] = ds.copyFacet(incomingFacet)
-		}
-	}
-}
 
 // mergeSingleFacet merges two facets for the same field
 func (ds *DistributedSearcher) mergeSingleFacet(existing, incoming *Facet) {
@@ -99,26 +57,6 @@ func (ds *DistributedSearcher) mergeSingleFacet(existing, incoming *Facet) {
 	existing.Terms = terms
 	// Set Total to the actual number of unique terms (not sum of totals)
 	existing.Total = len(termCounts)
-}
-
-// copyFacet creates a deep copy of a facet
-func (ds *DistributedSearcher) copyFacet(original *Facet) *Facet {
-	facet := &Facet{
-		Field:   original.Field,
-		Total:   original.Total,
-		Missing: original.Missing,
-		Other:   original.Other,
-		Terms:   make([]*FacetTerm, len(original.Terms)),
-	}
-
-	for i, term := range original.Terms {
-		facet.Terms[i] = &FacetTerm{
-			Term:  term.Term,
-			Count: term.Count,
-		}
-	}
-
-	return facet
 }
 
 // Aggregate performs aggregations on search results

@@ -295,6 +295,9 @@ type BatchWriterInterface interface {
 type ShardManager interface {
 	Initialize() error
 	GetShard(key string) (bleve.Index, int, error)
+	// GetShardForDocument routes by main log group and key; required for grouped manager
+	// mainLogPath must be non-empty
+	GetShardForDocument(mainLogPath string, key string) (bleve.Index, int, error)
 	GetShardByID(id int) (bleve.Index, error)
 	GetAllShards() []bleve.Index
 	GetShardStats() []*ShardInfo

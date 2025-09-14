@@ -41,6 +41,9 @@ type AdaptiveOptimizer struct {
 
 	// Activity Poller
 	activityPoller IndexerActivityPoller
+
+	// Concurrency-safe mirror of worker count
+	workerCount int64
 }
 
 // CPUMonitor monitors CPU utilization and suggests worker adjustments
@@ -51,9 +54,11 @@ type CPUMonitor struct {
 	maxWorkers          int
 	minWorkers          int
 
-	currentUtilization float64
-	measurements       []float64
-	measurementsMutex  sync.RWMutex
+	currentUtilization   float64
+	measurements         []float64
+	measurementsMutex    sync.RWMutex
+	maxSamples           int
+	lastValidUtilization float64
 }
 
 // BatchSizeController dynamically adjusts batch sizes based on performance metrics
@@ -78,8 +83,6 @@ type PerformanceHistory struct {
 	mutex      sync.RWMutex
 
 	movingAvgWindow int
-	avgThroughput   float64
-	avgLatency      time.Duration
 }
 
 // PerformanceSample represents a single performance measurement
@@ -110,19 +113,20 @@ func NewAdaptiveOptimizer(config *Config) *AdaptiveOptimizer {
 		cpuMonitor: &CPUMonitor{
 			targetUtilization:   0.75, // Target 75% CPU utilization (more conservative)
 			measurementInterval: 5 * time.Second,
-			adjustmentThreshold: 0.10, // Adjust if 10% deviation from target (more sensitive)
-			maxWorkers:          runtime.GOMAXPROCS(0) * 6, // Allow scaling up to 6x CPU cores for I/O-bound workloads
+			adjustmentThreshold: 0.10,                            // Adjust if 10% deviation from target (more sensitive)
+			maxWorkers:          runtime.GOMAXPROCS(0) * 6,       // Allow scaling up to 6x CPU cores for I/O-bound workloads
 			minWorkers:          max(2, runtime.GOMAXPROCS(0)/4), // Minimum 2 workers or 1/4 of cores for baseline performance
 			measurements:        make([]float64, 0, 12),          // 1 minute history at 5s intervals
+			maxSamples:          12,
 		},
 		batchSizeController: &BatchSizeController{
 			baseBatchSize:    config.BatchSize,
-			minBatchSize:     max(500, config.BatchSize/6),   // Higher minimum for throughput
-			maxBatchSize:     config.BatchSize * 6,          // Increased to 6x for maximum throughput
-			adjustmentFactor: 0.25, // 25% adjustment steps for faster scaling
+			minBatchSize:     max(500, config.BatchSize/6), // Higher minimum for throughput
+			maxBatchSize:     config.BatchSize * 6,         // Increased to 6x for maximum throughput
+			adjustmentFactor: 0.25,                         // 25% adjustment steps for faster scaling
 			currentBatchSize: int32(config.BatchSize),
-			latencyThreshold: 8 * time.Second,              // Higher latency tolerance for throughput
-			throughputTarget: 50.0, // Target 50 MB/s - higher throughput target
+			latencyThreshold: 8 * time.Second, // Higher latency tolerance for throughput
+			throughputTarget: 50.0,            // Target 50 MB/s - higher throughput target
 		},
 		performanceHistory: &PerformanceHistory{
 			samples:         make([]PerformanceSample, 0, 120), // 2 minutes of 1s samples
@@ -137,6 +141,9 @@ func NewAdaptiveOptimizer(config *Config) *AdaptiveOptimizer {
 	logger.Infof("Adaptive optimizer initialized: workers=[%d, %d, %d] (min, current, max), target_cpu=%.1f%%, threshold=%.1f%%",
 		ao.cpuMonitor.minWorkers, config.WorkerCount, ao.cpuMonitor.maxWorkers,
 		ao.cpuMonitor.targetUtilization*100, ao.cpuMonitor.adjustmentThreshold*100)
+
+	// Initialize atomic mirror of worker count
+	atomic.StoreInt64(&ao.workerCount, int64(config.WorkerCount))
 
 	return ao
 }
@@ -199,12 +206,21 @@ func (ao *AdaptiveOptimizer) measureAndAdjustCPU() {
 	cpuUsage := ao.getCurrentCPUUtilization()
 
 	ao.cpuMonitor.measurementsMutex.Lock()
-	ao.cpuMonitor.measurements = append(ao.cpuMonitor.measurements, cpuUsage)
-	if len(ao.cpuMonitor.measurements) > cap(ao.cpuMonitor.measurements) {
-		// Remove oldest measurement
-		ao.cpuMonitor.measurements = ao.cpuMonitor.measurements[1:]
+	// Filter spurious near-zero values using last valid utilization
+	if cpuUsage < 0.005 && ao.cpuMonitor.lastValidUtilization > 0 {
+		cpuUsage = ao.cpuMonitor.lastValidUtilization
+	}
+	// Maintain fixed-size window to avoid capacity growth
+	if ao.cpuMonitor.maxSamples > 0 && len(ao.cpuMonitor.measurements) == ao.cpuMonitor.maxSamples {
+		copy(ao.cpuMonitor.measurements, ao.cpuMonitor.measurements[1:])
+		ao.cpuMonitor.measurements[len(ao.cpuMonitor.measurements)-1] = cpuUsage
+	} else {
+		ao.cpuMonitor.measurements = append(ao.cpuMonitor.measurements, cpuUsage)
 	}
 	ao.cpuMonitor.currentUtilization = cpuUsage
+	if cpuUsage >= 0.005 {
+		ao.cpuMonitor.lastValidUtilization = cpuUsage
+	}
 	ao.cpuMonitor.measurementsMutex.Unlock()
 
 	// Calculate average CPU utilization
@@ -305,10 +321,11 @@ func (ao *AdaptiveOptimizer) adjustBatchSize(oldSize, newSize int, throughput fl
 	}
 
 	ao.batchSizeController.historyMutex.Lock()
-	ao.batchSizeController.adjustmentHistory = append(ao.batchSizeController.adjustmentHistory, adjustment)
-	if len(ao.batchSizeController.adjustmentHistory) > 50 {
-		// Keep only recent 50 adjustments
-		ao.batchSizeController.adjustmentHistory = ao.batchSizeController.adjustmentHistory[1:]
+	if len(ao.batchSizeController.adjustmentHistory) == 50 {
+		copy(ao.batchSizeController.adjustmentHistory, ao.batchSizeController.adjustmentHistory[1:])
+		ao.batchSizeController.adjustmentHistory[len(ao.batchSizeController.adjustmentHistory)-1] = adjustment
+	} else {
+		ao.batchSizeController.adjustmentHistory = append(ao.batchSizeController.adjustmentHistory, adjustment)
 	}
 	ao.batchSizeController.historyMutex.Unlock()
 
@@ -338,16 +355,17 @@ func (ao *AdaptiveOptimizer) recordPerformanceSample() {
 		Timestamp:   time.Now(),
 		Throughput:  ao.getCurrentThroughput(),
 		Latency:     ao.getCurrentLatency(),
-		CPUUsage:    ao.cpuMonitor.currentUtilization,
+		CPUUsage:    ao.GetCPUUtilization(),
 		BatchSize:   int(atomic.LoadInt32(&ao.batchSizeController.currentBatchSize)),
-		WorkerCount: ao.config.WorkerCount,
+		WorkerCount: int(atomic.LoadInt64(&ao.workerCount)),
 	}
 
 	ao.performanceHistory.mutex.Lock()
-	ao.performanceHistory.samples = append(ao.performanceHistory.samples, sample)
-	if len(ao.performanceHistory.samples) > ao.performanceHistory.maxSamples {
-		// Remove oldest sample
-		ao.performanceHistory.samples = ao.performanceHistory.samples[1:]
+	if ao.performanceHistory.maxSamples > 0 && len(ao.performanceHistory.samples) == ao.performanceHistory.maxSamples {
+		copy(ao.performanceHistory.samples, ao.performanceHistory.samples[1:])
+		ao.performanceHistory.samples[len(ao.performanceHistory.samples)-1] = sample
+	} else {
+		ao.performanceHistory.samples = append(ao.performanceHistory.samples, sample)
 	}
 
 	// Update moving averages
@@ -387,7 +405,7 @@ func (ao *AdaptiveOptimizer) GetOptimizationStats() AdaptiveOptimizationStats {
 		CurrentBatchSize:  int(atomic.LoadInt32(&ao.batchSizeController.currentBatchSize)),
 		AvgThroughput:     ao.avgThroughput,
 		AvgLatency:        ao.avgLatency,
-		CPUUtilization:    ao.cpuMonitor.currentUtilization,
+		CPUUtilization:    ao.GetCPUUtilization(),
 	}
 }
 
@@ -426,24 +444,17 @@ func (ao *AdaptiveOptimizer) getCurrentCPUUtilization() float64 {
 }
 
 func (ao *AdaptiveOptimizer) getCurrentThroughput() float64 {
-	// This would be implemented to get actual throughput from the indexer
 	ao.metricsMutex.RLock()
-	defer ao.metricsMutex.RUnlock()
-	return ao.avgThroughput
+	v := ao.avgThroughput
+	ao.metricsMutex.RUnlock()
+	return v
 }
 
 func (ao *AdaptiveOptimizer) getCurrentLatency() time.Duration {
-	// This would be implemented to get actual latency from the indexer
 	ao.metricsMutex.RLock()
-	defer ao.metricsMutex.RUnlock()
-	return ao.avgLatency
-}
-
-func (ao *AdaptiveOptimizer) isIndexerBusy() bool {
-	if ao.activityPoller == nil {
-		return false
-	}
-	return ao.activityPoller.IsBusy()
+	v := ao.avgLatency
+	ao.metricsMutex.RUnlock()
+	return v
 }
 
 func (ao *AdaptiveOptimizer) calculateAverageCPU() float64 {
@@ -452,8 +463,8 @@ func (ao *AdaptiveOptimizer) calculateAverageCPU() float64 {
 	}
 
 	sum := 0.0
-	for _, cpu := range ao.cpuMonitor.measurements {
-		sum += cpu
+	for _, usage := range ao.cpuMonitor.measurements {
+		sum += usage
 	}
 	return sum / float64(len(ao.cpuMonitor.measurements))
 }
@@ -490,13 +501,19 @@ func (ao *AdaptiveOptimizer) updateMovingAverages() {
 	windowSize := min(ao.performanceHistory.movingAvgWindow, len(ao.performanceHistory.samples))
 	recentSamples := ao.performanceHistory.samples[len(ao.performanceHistory.samples)-windowSize:]
 
-	ao.avgThroughput = ao.calculateAverageThroughput(recentSamples)
-	ao.avgLatency = ao.calculateAverageLatency(recentSamples)
+	avgThroughput := ao.calculateAverageThroughput(recentSamples)
+	avgLatency := ao.calculateAverageLatency(recentSamples)
+
+	ao.metricsMutex.Lock()
+	ao.avgThroughput = avgThroughput
+	ao.avgLatency = avgLatency
+	ao.metricsMutex.Unlock()
 }
 
 func (ao *AdaptiveOptimizer) suggestWorkerIncrease(currentCPU, targetCPU float64) {
 	// If already at max workers, do nothing.
-	if ao.config.WorkerCount >= ao.cpuMonitor.maxWorkers {
+	currentWorkers := int(atomic.LoadInt64(&ao.workerCount))
+	if currentWorkers >= ao.cpuMonitor.maxWorkers {
 		return
 	}
 
@@ -513,23 +530,24 @@ func (ao *AdaptiveOptimizer) suggestWorkerIncrease(currentCPU, targetCPU float64
 	increaseRatio := cpuUtilizationGap / targetCPU
 
 	// Limit increase to maximum 25% at a time and at least 1 worker
-	maxIncrease := max(1, int(float64(ao.config.WorkerCount)*0.25))
-	suggestedIncrease := max(1, int(float64(ao.config.WorkerCount)*increaseRatio))
+	maxIncrease := max(1, int(float64(currentWorkers)*0.25))
+	suggestedIncrease := max(1, int(float64(currentWorkers)*increaseRatio))
 	actualIncrease := min(maxIncrease, suggestedIncrease)
 
-	newWorkerCount := min(ao.cpuMonitor.maxWorkers, ao.config.WorkerCount+actualIncrease)
+	newWorkerCount := min(ao.cpuMonitor.maxWorkers, currentWorkers+actualIncrease)
 
-	if newWorkerCount > ao.config.WorkerCount {
+	if newWorkerCount > currentWorkers {
 		ao.adjustWorkerCount(newWorkerCount)
 		logger.Infof("Increased workers from %d to %d due to CPU underutilization",
-			ao.config.WorkerCount, newWorkerCount)
+			currentWorkers, newWorkerCount)
 	}
 }
 
 func (ao *AdaptiveOptimizer) suggestWorkerDecrease(currentCPU, targetCPU float64) {
 	// If already at min workers, do nothing.
-	if ao.config.WorkerCount <= ao.cpuMonitor.minWorkers {
-		logger.Debugf("Worker count is already at its minimum (%d), skipping decrease.", ao.config.WorkerCount)
+	currentWorkers := int(atomic.LoadInt64(&ao.workerCount))
+	if currentWorkers <= ao.cpuMonitor.minWorkers {
+		logger.Debugf("Worker count is already at its minimum (%d), skipping decrease.", currentWorkers)
 		return
 	}
 
@@ -541,36 +559,37 @@ func (ao *AdaptiveOptimizer) suggestWorkerDecrease(currentCPU, targetCPU float64
 	decreaseRatio := cpuOverUtilization / targetCPU // Use target CPU as base for more accurate calculation
 
 	// Limit decrease to maximum 25% at a time and at least 1 worker
-	maxDecrease := max(1, int(float64(ao.config.WorkerCount)*0.25))
-	suggestedDecrease := max(1, int(float64(ao.config.WorkerCount)*decreaseRatio*0.5)) // More conservative decrease
+	maxDecrease := max(1, int(float64(currentWorkers)*0.25))
+	suggestedDecrease := max(1, int(float64(currentWorkers)*decreaseRatio*0.5)) // More conservative decrease
 	actualDecrease := min(maxDecrease, suggestedDecrease)
 
-	newWorkerCount := max(ao.cpuMonitor.minWorkers, ao.config.WorkerCount-actualDecrease)
+	newWorkerCount := max(ao.cpuMonitor.minWorkers, currentWorkers-actualDecrease)
 
 	logger.Debugf("Worker decrease calculation: current=%d, suggested=%d, min=%d, new=%d",
-		ao.config.WorkerCount, suggestedDecrease, ao.cpuMonitor.minWorkers, newWorkerCount)
+		currentWorkers, suggestedDecrease, ao.cpuMonitor.minWorkers, newWorkerCount)
 
-	if newWorkerCount < ao.config.WorkerCount {
-		logger.Debugf("About to adjust worker count from %d to %d", ao.config.WorkerCount, newWorkerCount)
+	if newWorkerCount < currentWorkers {
+		logger.Debugf("About to adjust worker count from %d to %d", currentWorkers, newWorkerCount)
 		ao.adjustWorkerCount(newWorkerCount)
 		logger.Infof("Decreased workers from %d to %d due to CPU over-utilization",
-			ao.config.WorkerCount, newWorkerCount)
+			currentWorkers, newWorkerCount)
 	} else {
-		logger.Debugf("Worker count adjustment skipped: new=%d not less than current=%d", newWorkerCount, ao.config.WorkerCount)
+		logger.Debugf("Worker count adjustment skipped: new=%d not less than current=%d", newWorkerCount, currentWorkers)
 	}
 }
 
 // adjustWorkerCount dynamically adjusts the worker count at runtime
 func (ao *AdaptiveOptimizer) adjustWorkerCount(newCount int) {
-	if newCount <= 0 || newCount == ao.config.WorkerCount {
-		logger.Debugf("Skipping worker adjustment: newCount=%d, currentCount=%d", newCount, ao.config.WorkerCount)
+	oldCount := int(atomic.LoadInt64(&ao.workerCount))
+	if newCount <= 0 || newCount == oldCount {
+		logger.Debugf("Skipping worker adjustment: newCount=%d, currentCount=%d", newCount, oldCount)
 		return
 	}
 
-	logger.Infof("Adjusting worker count from %d to %d", ao.config.WorkerCount, newCount)
+	logger.Infof("Adjusting worker count from %d to %d", oldCount, newCount)
 
-	// Update configuration
-	oldCount := ao.config.WorkerCount
+	// Update atomic mirror then keep config in sync
+	atomic.StoreInt64(&ao.workerCount, int64(newCount))
 	ao.config.WorkerCount = newCount
 
 	// Notify the indexer about worker count change

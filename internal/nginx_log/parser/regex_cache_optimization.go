@@ -8,49 +8,49 @@ import (
 
 // RegexCache provides high-performance compiled regex caching
 type RegexCache struct {
-	cache    map[string]*CachedRegex
-	mutex    sync.RWMutex
-	maxSize  int
-	ttl      time.Duration
-	hits     int64
-	misses   int64
+	cache         map[string]*CachedRegex
+	mutex         sync.RWMutex
+	maxSize       int
+	ttl           time.Duration
+	hits          int64
+	misses        int64
 	cleanupTicker *time.Ticker
 	stopCleanup   chan struct{}
 }
 
 // CachedRegex represents a compiled regex with metadata
 type CachedRegex struct {
-	regex       *regexp.Regexp
-	pattern     string
-	compiledAt  time.Time
-	lastUsed    time.Time
-	useCount    int64
+	regex      *regexp.Regexp
+	pattern    string
+	compiledAt time.Time
+	lastUsed   time.Time
+	useCount   int64
 }
 
 // RegexCacheStats provides cache statistics
 type RegexCacheStats struct {
-	Size     int     `json:"size"`
-	MaxSize  int     `json:"max_size"`
-	Hits     int64   `json:"hits"`
-	Misses   int64   `json:"misses"`
-	HitRate  float64 `json:"hit_rate"`
-	TTL      string  `json:"ttl"`
+	Size    int     `json:"size"`
+	MaxSize int     `json:"max_size"`
+	Hits    int64   `json:"hits"`
+	Misses  int64   `json:"misses"`
+	HitRate float64 `json:"hit_rate"`
+	TTL     string  `json:"ttl"`
 }
 
 // Common nginx log parsing patterns - pre-compiled for performance
 var commonPatterns = map[string]string{
-	"ipv4":        `(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})`,
-	"ipv6":        `([0-9a-fA-F:]+:+[0-9a-fA-F:]*[0-9a-fA-F]+)`,
-	"timestamp":   `\[([^\]]+)\]`,
-	"method":      `"([A-Z]+)\s+`,
-	"path":        `\s+([^\s?"]+)`,
-	"protocol":    `\s+(HTTP/[0-9.]+)"`,
-	"status":      `"\s+(\d{3})\s+`,
-	"size":        `\s+(\d+|-)`,
-	"referer":     `"([^"]*)"`,
-	"user_agent":  `"([^"]*)"`,
-	"request_time": `\s+([\d.]+)$`,
-	"upstream_time": `\s+([\d.]+)\s*$`,
+	"ipv4":            `(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})`,
+	"ipv6":            `([0-9a-fA-F:]+:+[0-9a-fA-F:]*[0-9a-fA-F]+)`,
+	"timestamp":       `\[([^\]]+)\]`,
+	"method":          `"([A-Z]+)\s+`,
+	"path":            `\s+([^\s?"]+)`,
+	"protocol":        `\s+(HTTP/[0-9.]+)"`,
+	"status":          `"\s+(\d{3})\s+`,
+	"size":            `\s+(\d+|-)`,
+	"referer":         `"([^"]*)"`,
+	"user_agent":      `"([^"]*)"`,
+	"request_time":    `\s+([\d.]+)$`,
+	"upstream_time":   `\s+([\d.]+)\s*$`,
 	"combined_format": `^(\S+)\s+\S+\s+\S+\s+\[([^\]]+)\]\s+"([^"]+)"\s+(\d+)\s+(\d+|-)(?:\s+"([^"]*)")?(?:\s+"([^"]*)")?(?:\s+([\d.]+))?(?:\s+([\d.]+))?`,
 	"main_format":     `^(\S+)\s+\S+\s+\S+\s+\[([^\]]+)\]\s+"([^"]+)"\s+(\d+)\s+(\d+|-)`,
 }
@@ -76,11 +76,11 @@ func NewRegexCache(maxSize int, ttl time.Duration) *RegexCache {
 		ttl:         ttl,
 		stopCleanup: make(chan struct{}),
 	}
-	
+
 	// Start cleanup routine
 	cache.cleanupTicker = time.NewTicker(ttl / 4) // Clean every quarter of TTL
 	go cache.cleanupRoutine()
-	
+
 	return cache
 }
 
@@ -91,7 +91,7 @@ func (rc *RegexCache) PrecompileCommonPatterns() {
 		if err != nil {
 			continue // Skip invalid patterns
 		}
-		
+
 		rc.mutex.Lock()
 		rc.cache[name] = &CachedRegex{
 			regex:      regex,
@@ -120,7 +120,7 @@ func (rc *RegexCache) GetRegex(pattern string) (*regexp.Regexp, error) {
 		}
 	}
 	rc.mutex.RUnlock()
-	
+
 	// Cache miss or expired - compile new regex
 	regex, err := regexp.Compile(pattern)
 	if err != nil {
@@ -129,16 +129,16 @@ func (rc *RegexCache) GetRegex(pattern string) (*regexp.Regexp, error) {
 		rc.mutex.Unlock()
 		return nil, err
 	}
-	
+
 	// Store in cache
 	rc.mutex.Lock()
 	defer rc.mutex.Unlock()
-	
+
 	// Check if cache is full
 	if len(rc.cache) >= rc.maxSize {
 		rc.evictLeastUsed()
 	}
-	
+
 	rc.cache[pattern] = &CachedRegex{
 		regex:      regex,
 		pattern:    pattern,
@@ -147,7 +147,7 @@ func (rc *RegexCache) GetRegex(pattern string) (*regexp.Regexp, error) {
 		useCount:   1,
 	}
 	rc.misses++
-	
+
 	return regex, nil
 }
 
@@ -157,12 +157,12 @@ func (rc *RegexCache) GetCommonRegex(patternName string) (*regexp.Regexp, bool) 
 	if !exists {
 		return nil, false
 	}
-	
+
 	regex, err := rc.GetRegex(pattern)
 	if err != nil {
 		return nil, false
 	}
-	
+
 	return regex, true
 }
 
@@ -171,7 +171,7 @@ func (rc *RegexCache) evictLeastUsed() {
 	var oldestKey string
 	var oldestTime time.Time
 	var lowestCount int64 = -1
-	
+
 	for key, cached := range rc.cache {
 		if lowestCount == -1 || cached.useCount < lowestCount {
 			lowestCount = cached.useCount
@@ -182,7 +182,7 @@ func (rc *RegexCache) evictLeastUsed() {
 			oldestTime = cached.lastUsed
 		}
 	}
-	
+
 	if oldestKey != "" {
 		delete(rc.cache, oldestKey)
 	}
@@ -205,7 +205,7 @@ func (rc *RegexCache) cleanupRoutine() {
 func (rc *RegexCache) cleanup() {
 	rc.mutex.Lock()
 	defer rc.mutex.Unlock()
-	
+
 	now := time.Now()
 	for key, cached := range rc.cache {
 		if now.Sub(cached.compiledAt) > rc.ttl {
@@ -218,13 +218,13 @@ func (rc *RegexCache) cleanup() {
 func (rc *RegexCache) GetStats() RegexCacheStats {
 	rc.mutex.RLock()
 	defer rc.mutex.RUnlock()
-	
+
 	total := rc.hits + rc.misses
 	var hitRate float64
 	if total > 0 {
 		hitRate = float64(rc.hits) / float64(total)
 	}
-	
+
 	return RegexCacheStats{
 		Size:    len(rc.cache),
 		MaxSize: rc.maxSize,
@@ -239,7 +239,7 @@ func (rc *RegexCache) GetStats() RegexCacheStats {
 func (rc *RegexCache) Clear() {
 	rc.mutex.Lock()
 	defer rc.mutex.Unlock()
-	
+
 	rc.cache = make(map[string]*CachedRegex)
 	rc.hits = 0
 	rc.misses = 0
@@ -255,22 +255,22 @@ func (rc *RegexCache) Close() {
 type OptimizedRegexMatcher struct {
 	cache *RegexCache
 	// Pre-compiled common patterns for fastest access
-	ipv4Regex        *regexp.Regexp
-	timestampRegex   *regexp.Regexp
-	methodRegex      *regexp.Regexp
-	statusRegex      *regexp.Regexp
-	combinedRegex    *regexp.Regexp
-	mainRegex        *regexp.Regexp
+	ipv4Regex      *regexp.Regexp
+	timestampRegex *regexp.Regexp
+	methodRegex    *regexp.Regexp
+	statusRegex    *regexp.Regexp
+	combinedRegex  *regexp.Regexp
+	mainRegex      *regexp.Regexp
 }
 
 // NewOptimizedRegexMatcher creates a new optimized regex matcher
 func NewOptimizedRegexMatcher() *OptimizedRegexMatcher {
 	cache := GetGlobalRegexCache()
-	
+
 	matcher := &OptimizedRegexMatcher{
 		cache: cache,
 	}
-	
+
 	// Pre-compile most common patterns for direct access
 	matcher.ipv4Regex, _ = cache.GetCommonRegex("ipv4")
 	matcher.timestampRegex, _ = cache.GetCommonRegex("timestamp")
@@ -278,7 +278,7 @@ func NewOptimizedRegexMatcher() *OptimizedRegexMatcher {
 	matcher.statusRegex, _ = cache.GetCommonRegex("status")
 	matcher.combinedRegex, _ = cache.GetCommonRegex("combined_format")
 	matcher.mainRegex, _ = cache.GetCommonRegex("main_format")
-	
+
 	return matcher
 }
 
@@ -320,7 +320,7 @@ func (orm *OptimizedRegexMatcher) MatchPattern(pattern, text string) ([]string, 
 	if err != nil {
 		return nil, err
 	}
-	
+
 	return regex.FindStringSubmatch(text), nil
 }
 
@@ -330,12 +330,12 @@ func (orm *OptimizedRegexMatcher) DetectLogFormat(logLine string) string {
 	if orm.combinedRegex != nil && orm.combinedRegex.MatchString(logLine) {
 		return "combined"
 	}
-	
+
 	// Try main format
 	if orm.mainRegex != nil && orm.mainRegex.MatchString(logLine) {
 		return "main"
 	}
-	
+
 	return "unknown"
 }
 
@@ -356,15 +356,15 @@ type FastLogFormatDetector struct {
 // NewFastLogFormatDetector creates a new fast log format detector
 func NewFastLogFormatDetector() *FastLogFormatDetector {
 	cache := GetGlobalRegexCache()
-	
+
 	detector := &FastLogFormatDetector{}
 	detector.combinedRegex, _ = cache.GetCommonRegex("combined_format")
 	detector.mainRegex, _ = cache.GetCommonRegex("main_format")
-	
+
 	// Pre-compute pattern signatures for ultra-fast detection
-	detector.combinedPatternBytes = []byte(`" `)     // Look for quotes and spaces
-	detector.mainPatternBytes = []byte(`[`)          // Look for bracket patterns
-	
+	detector.combinedPatternBytes = []byte(`" `) // Look for quotes and spaces
+	detector.mainPatternBytes = []byte(`[`)      // Look for bracket patterns
+
 	return detector
 }
 
@@ -373,7 +373,7 @@ func (flfd *FastLogFormatDetector) DetectFormat(logLine []byte) string {
 	// Quick heuristic checks first (much faster than regex)
 	quoteCount := 0
 	bracketCount := 0
-	
+
 	for _, b := range logLine {
 		switch b {
 		case '"':
@@ -381,28 +381,28 @@ func (flfd *FastLogFormatDetector) DetectFormat(logLine []byte) string {
 		case '[', ']':
 			bracketCount++
 		}
-		
+
 		// Early termination - if we have enough quotes, likely combined format
 		if quoteCount >= 4 {
 			return "combined"
 		}
 	}
-	
+
 	// If we have brackets but few quotes, likely main format
 	if bracketCount >= 2 && quoteCount < 4 {
 		return "main"
 	}
-	
+
 	// Fallback to regex matching for edge cases
 	logLineStr := string(logLine)
 	if flfd.combinedRegex != nil && flfd.combinedRegex.MatchString(logLineStr) {
 		return "combined"
 	}
-	
+
 	if flfd.mainRegex != nil && flfd.mainRegex.MatchString(logLineStr) {
 		return "main"
 	}
-	
+
 	return "unknown"
 }
 
@@ -424,27 +424,27 @@ func (pp *PatternPool) GetPattern(pattern string) (*regexp.Regexp, error) {
 	pp.mutex.RLock()
 	pool, exists := pp.patterns[pattern]
 	pp.mutex.RUnlock()
-	
+
 	if !exists {
 		// Create new pool for this pattern
 		regex, err := regexp.Compile(pattern)
 		if err != nil {
 			return nil, err
 		}
-		
+
 		newPool := &sync.Pool{
 			New: func() interface{} {
-				// Each pool entry is a copy of the compiled regex
-				return regex.Copy()
+				// Reuse compiled regex; in Go 1.12+ it's safe for concurrent use
+				return regex
 			},
 		}
-		
+
 		pp.mutex.Lock()
 		pp.patterns[pattern] = newPool
 		pool = newPool
 		pp.mutex.Unlock()
 	}
-	
+
 	return pool.Get().(*regexp.Regexp), nil
 }
 
@@ -453,7 +453,7 @@ func (pp *PatternPool) PutPattern(pattern string, regex *regexp.Regexp) {
 	pp.mutex.RLock()
 	pool, exists := pp.patterns[pattern]
 	pp.mutex.RUnlock()
-	
+
 	if exists {
 		pool.Put(regex)
 	}

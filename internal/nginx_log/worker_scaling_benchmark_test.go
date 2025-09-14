@@ -67,7 +67,7 @@ func BenchmarkWorkerScaling(b *testing.B) {
 func benchmarkWorkerConfig(b *testing.B, recordCount int, configModifier func(*indexer.Config)) {
 	// Create temp directory
 	tempDir := b.TempDir()
-	
+
 	// Generate test data once
 	testLogFile := filepath.Join(tempDir, "access.log")
 	if err := generateBenchmarkLogData(testLogFile, recordCount); err != nil {
@@ -95,7 +95,7 @@ func benchmarkWorkerConfig(b *testing.B, recordCount int, configModifier func(*i
 		config := indexer.DefaultIndexerConfig()
 		config.IndexPath = indexDir
 		config.EnableMetrics = false // Disable for cleaner benchmarking
-		
+
 		// Apply configuration modifier
 		if configModifier != nil {
 			configModifier(config)
@@ -103,20 +103,20 @@ func benchmarkWorkerConfig(b *testing.B, recordCount int, configModifier func(*i
 
 		// Run the actual benchmark
 		result := runWorkerBenchmark(b, config, testLogFile, recordCount)
-		
+
 		// Report custom metrics
 		throughput := float64(recordCount) / result.Duration.Seconds()
 		mbPerSec := fileSizeMB / result.Duration.Seconds()
-		
+
 		b.ReportMetric(throughput, "records/sec")
 		b.ReportMetric(mbPerSec, "MB/sec")
 		b.ReportMetric(float64(config.WorkerCount), "workers")
 		b.ReportMetric(float64(result.Parsed), "parsed")
 		b.ReportMetric(float64(result.Indexed), "indexed")
-		
+
 		// Log configuration for verification
 		if i == 0 {
-			b.Logf("Config: Workers=%d, BatchSize=%d, Shards=%d", 
+			b.Logf("Config: Workers=%d, BatchSize=%d, Shards=%d",
 				config.WorkerCount, config.BatchSize, config.ShardCount)
 		}
 	}
@@ -130,11 +130,11 @@ type WorkerBenchResult struct {
 
 func runWorkerBenchmark(b *testing.B, config *indexer.Config, logFile string, expectedRecords int) *WorkerBenchResult {
 	start := time.Now()
-	
+
 	// Create production components
-	shardManager := indexer.NewDefaultShardManager(config)
+	shardManager := indexer.NewGroupedShardManager(config)
 	parallelIndexer := indexer.NewParallelIndexer(config, shardManager)
-	
+
 	ctx := context.Background()
 	if err := parallelIndexer.Start(ctx); err != nil {
 		b.Fatalf("Failed to start indexer: %v", err)
@@ -147,7 +147,7 @@ func runWorkerBenchmark(b *testing.B, config *indexer.Config, logFile string, ex
 		WorkerCount:   config.WorkerCount / 2, // Parser uses half of indexer workers
 		BatchSize:     1000,
 	}
-	
+
 	optimizedParser := parser.NewOptimizedParser(
 		parserConfig,
 		parser.NewSimpleUserAgentParser(),
@@ -169,7 +169,7 @@ func runWorkerBenchmark(b *testing.B, config *indexer.Config, logFile string, ex
 	// Index documents (limit to avoid timeout)
 	maxToIndex := minInt(len(parseResult.Entries), 5000)
 	indexed := 0
-	
+
 	for i, entry := range parseResult.Entries[:maxToIndex] {
 		doc := &indexer.Document{
 			ID: fmt.Sprintf("doc_%d", i),
@@ -187,7 +187,7 @@ func runWorkerBenchmark(b *testing.B, config *indexer.Config, logFile string, ex
 				Raw:         entry.Raw,
 			},
 		}
-		
+
 		if err := parallelIndexer.IndexDocument(ctx, doc); err == nil {
 			indexed++
 		}
@@ -195,9 +195,9 @@ func runWorkerBenchmark(b *testing.B, config *indexer.Config, logFile string, ex
 
 	// Flush
 	parallelIndexer.FlushAll()
-	
+
 	duration := time.Since(start)
-	
+
 	return &WorkerBenchResult{
 		Duration: duration,
 		Parsed:   parseResult.Processed,
@@ -213,14 +213,14 @@ func generateBenchmarkLogData(filename string, recordCount int) error {
 	defer file.Close()
 
 	baseTime := time.Now().Unix() - 86400
-	
+
 	for i := 0; i < recordCount; i++ {
 		timestamp := baseTime + int64(i%86400)
 		ip := fmt.Sprintf("192.168.%d.%d", (i/256)%256, i%256)
 		path := []string{"/", "/api/users", "/api/posts", "/health"}[i%4]
 		status := []int{200, 200, 200, 404}[i%4]
 		size := 1000 + i%5000
-		
+
 		logLine := fmt.Sprintf(
 			`%s - - [%s] "GET %s HTTP/1.1" %d %d "-" "Mozilla/5.0" 0.%03d`,
 			ip,
@@ -230,12 +230,12 @@ func generateBenchmarkLogData(filename string, recordCount int) error {
 			size,
 			i%1000,
 		)
-		
+
 		if _, err := fmt.Fprintln(file, logLine); err != nil {
 			return err
 		}
 	}
-	
+
 	return nil
 }
 

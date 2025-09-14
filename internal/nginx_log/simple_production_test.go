@@ -3,7 +3,6 @@ package nginx_log
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
 	"math/rand"
 	"os"
 	"path/filepath"
@@ -33,7 +32,7 @@ func runSimpleProductionTest(t *testing.T, recordCount int) {
 	t.Logf("🚀 Testing production throughput with %d records", recordCount)
 
 	// Create temp directory
-	tempDir, err := ioutil.TempDir("", "simple_production_test_")
+	tempDir, err := os.MkdirTemp("", "simple_production_test_")
 	if err != nil {
 		t.Fatalf("Failed to create temp dir: %v", err)
 	}
@@ -42,17 +41,17 @@ func runSimpleProductionTest(t *testing.T, recordCount int) {
 	// Generate test data
 	testLogFile := filepath.Join(tempDir, "access.log")
 	dataStart := time.Now()
-	
+
 	if err := generateSimpleLogFile(testLogFile, recordCount); err != nil {
 		t.Fatalf("Failed to generate test data: %v", err)
 	}
-	
+
 	dataTime := time.Since(dataStart)
 	t.Logf("📊 Generated %d records in %v", recordCount, dataTime)
 
 	// Setup production-like environment
 	setupStart := time.Now()
-	
+
 	indexDir := filepath.Join(tempDir, "index")
 	if err := os.MkdirAll(indexDir, 0755); err != nil {
 		t.Fatalf("Failed to create index dir: %v", err)
@@ -69,14 +68,14 @@ func runSimpleProductionTest(t *testing.T, recordCount int) {
 
 	// Run the actual production test
 	productionStart := time.Now()
-	
+
 	result := runActualProductionWorkflow(t, config, testLogFile, recordCount)
-	
+
 	productionTime := time.Since(productionStart)
-	
+
 	// Calculate metrics
 	throughput := float64(recordCount) / productionTime.Seconds()
-	
+
 	t.Logf("🏆 === PRODUCTION RESULTS ===")
 	t.Logf("📈 Records: %d", recordCount)
 	t.Logf("⏱️  Total Time: %v", productionTime)
@@ -104,7 +103,7 @@ func runActualProductionWorkflow(t *testing.T, config *indexer.Config, logFile s
 		parser.NewSimpleUserAgentParser(),
 		1000,
 	)
-	
+
 	optimizedParser := parser.NewOptimizedParser(
 		&parser.Config{
 			MaxLineLength: 8 * 1024,
@@ -116,9 +115,9 @@ func runActualProductionWorkflow(t *testing.T, config *indexer.Config, logFile s
 	)
 
 	// Create indexer
-	shardManager := indexer.NewDefaultShardManager(config)
+	shardManager := indexer.NewGroupedShardManager(config)
 	indexerInstance := indexer.NewParallelIndexer(config, shardManager)
-	
+
 	ctx := context.Background()
 	if err := indexerInstance.Start(ctx); err != nil {
 		t.Fatalf("Failed to start indexer: %v", err)
@@ -142,7 +141,7 @@ func runActualProductionWorkflow(t *testing.T, config *indexer.Config, logFile s
 	// Index a subset of documents (to avoid timeout while still being realistic)
 	maxToIndex := min(len(parseResult.Entries), 5000) // Limit for testing
 	indexed := 0
-	
+
 	for i, entry := range parseResult.Entries[:maxToIndex] {
 		doc := &indexer.Document{
 			ID: fmt.Sprintf("doc_%d", i),
@@ -167,11 +166,11 @@ func runActualProductionWorkflow(t *testing.T, config *indexer.Config, logFile s
 				Raw:         entry.Raw,
 			},
 		}
-		
+
 		if err := indexerInstance.IndexDocument(ctx, doc); err == nil {
 			indexed++
 		}
-		
+
 		// Progress feedback
 		if i%1000 == 0 && i > 0 {
 			t.Logf("📊 Indexed %d documents...", i)
@@ -197,7 +196,7 @@ func generateSimpleLogFile(filename string, recordCount int) error {
 	}
 	defer file.Close()
 
-	rand.Seed(time.Now().UnixNano())
+	// use global rng defaults; no explicit rand.Seed needed in Go 1.20+
 	baseTime := time.Now().Unix() - 3600 // 1 hour ago
 
 	for i := 0; i < recordCount; i++ {
@@ -206,7 +205,7 @@ func generateSimpleLogFile(filename string, recordCount int) error {
 		path := []string{"/", "/api/users", "/api/data", "/health"}[rand.Intn(4)]
 		status := []int{200, 200, 200, 404, 500}[rand.Intn(5)]
 		size := rand.Intn(5000) + 100
-		
+
 		logLine := fmt.Sprintf(
 			`%s - - [%s] "GET %s HTTP/1.1" %d %d "-" "Mozilla/5.0 Test" 0.123`,
 			ip,
@@ -215,12 +214,12 @@ func generateSimpleLogFile(filename string, recordCount int) error {
 			status,
 			size,
 		)
-		
+
 		if _, err := fmt.Fprintln(file, logLine); err != nil {
 			return err
 		}
 	}
-	
+
 	return nil
 }
 

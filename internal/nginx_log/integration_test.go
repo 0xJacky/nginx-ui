@@ -39,7 +39,6 @@ type IntegrationTestSuite struct {
 	analytics       analytics.Service
 	logFileManager  *TestLogFileManager
 	expectedMetrics map[string]*ExpectedFileMetrics
-	mu              sync.RWMutex
 	cleanup         func()
 }
 
@@ -48,7 +47,6 @@ type TestLogFileManager struct {
 	logCache       map[string]*indexer.NginxLogCache
 	cacheMutex     sync.RWMutex
 	indexingStatus map[string]bool
-	indexingMutex  sync.RWMutex
 	indexMetadata  map[string]*TestIndexMetadata
 	metadataMutex  sync.RWMutex
 }
@@ -189,7 +187,7 @@ func (suite *IntegrationTestSuite) generateSingleLogFile(t *testing.T, filepath 
 	uniquePaths := make(map[string]bool)
 	uniqueAgents := make(map[string]bool)
 
-	rand.Seed(time.Now().UnixNano() + int64(len(filepath))) // Different seed per file
+	// use global rng defaults; no explicit rand.Seed needed
 
 	for i := 0; i < TestRecordsPerFile; i++ {
 		// Generate log entry timestamp
@@ -243,7 +241,7 @@ func (suite *IntegrationTestSuite) InitializeServices(t *testing.T) {
 	// Initialize indexer
 	indexerConfig := indexer.DefaultIndexerConfig()
 	indexerConfig.IndexPath = suite.indexDir
-	shardManager := indexer.NewDefaultShardManager(indexerConfig)
+	shardManager := indexer.NewGroupedShardManager(indexerConfig)
 	suite.indexer = indexer.NewParallelIndexer(indexerConfig, shardManager)
 
 	err := suite.indexer.Start(suite.ctx)

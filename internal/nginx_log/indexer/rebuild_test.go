@@ -22,6 +22,10 @@ func (m *mockShardManagerForRebuild) GetShard(key string) (bleve.Index, int, err
 	return nil, 0, nil
 }
 
+func (m *mockShardManagerForRebuild) GetShardForDocument(mainLogPath string, key string) (bleve.Index, int, error) {
+	return m.GetShard(key)
+}
+
 func (m *mockShardManagerForRebuild) GetShardByID(id int) (bleve.Index, error) {
 	// Return nil for testing - we don't need actual shards for these tests
 	return nil, fmt.Errorf("shard not found")

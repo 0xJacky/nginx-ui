@@ -47,9 +47,6 @@ type ParallelIndexer struct {
 	zeroAllocProcessor  *ZeroAllocBatchProcessor
 	optimizationEnabled bool
 
-	// Dynamic shard awareness
-	dynamicAwareness *DynamicShardAwareness
-
 	// Rotation log scanning for optimized throughput
 	rotationScanner *RotationScanner
 }
@@ -71,26 +68,13 @@ func NewParallelIndexer(config *Config, shardManager ShardManager) *ParallelInde
 	ctx, cancel := context.WithCancel(context.Background())
 
 	// Initialize dynamic shard awareness
-	dynamicAwareness := NewDynamicShardAwareness(config)
+	// NOTE: dynamic shard awareness removed; GroupedShardManager is the default
 
-	// If no shard manager provided, use dynamic awareness to detect optimal type
+	// If no shard manager provided, use grouped shard manager by default (per SHARD_GROUPS_PLAN)
 	var actualShardManager ShardManager
 	if shardManager == nil {
-		detected, err := dynamicAwareness.DetectAndSetupShardManager()
-		if err != nil {
-			logger.Warnf("Failed to setup dynamic shard manager, using default: %v", err)
-			detected = NewDefaultShardManager(config)
-			detected.(*DefaultShardManager).Initialize()
-		}
-
-		// Type assertion to ShardManager interface
-		if sm, ok := detected.(ShardManager); ok {
-			actualShardManager = sm
-		} else {
-			// Fallback to default
-			actualShardManager = NewDefaultShardManager(config)
-			actualShardManager.(*DefaultShardManager).Initialize()
-		}
+		gsm := NewGroupedShardManager(config)
+		actualShardManager = gsm
 	} else {
 		actualShardManager = shardManager
 	}
@@ -110,8 +94,7 @@ func NewParallelIndexer(config *Config, shardManager ShardManager) *ParallelInde
 		},
 		adaptiveOptimizer:   ao,
 		zeroAllocProcessor:  NewZeroAllocBatchProcessor(config),
-		optimizationEnabled: true, // Enable optimizations by default
-		dynamicAwareness:    dynamicAwareness,
+		optimizationEnabled: true,                    // Enable optimizations by default
 		rotationScanner:     NewRotationScanner(nil), // Use default configuration
 	}
 
@@ -185,15 +168,7 @@ func (pi *ParallelIndexer) Start(ctx context.Context) error {
 	}
 
 	// Start dynamic shard awareness monitoring if enabled
-	if pi.dynamicAwareness != nil {
-		pi.dynamicAwareness.StartMonitoring(ctx)
-
-		if pi.dynamicAwareness.IsDynamic() {
-			logger.Info("Dynamic shard management is active with automatic scaling")
-		} else {
-			logger.Info("Static shard management is active")
-		}
-	}
+	// NOTE: dynamic shard awareness removed; GroupedShardManager is the default
 
 	return nil
 }
@@ -446,65 +421,6 @@ func (pi *ParallelIndexer) EnableOptimizations(enabled bool) {
 	} else if enabled && pi.adaptiveOptimizer != nil && atomic.LoadInt32(&pi.running) == 1 {
 		pi.adaptiveOptimizer.Start()
 	}
-}
-
-// GetDynamicShardInfo returns information about dynamic shard management
-func (pi *ParallelIndexer) GetDynamicShardInfo() *DynamicShardInfo {
-	if pi.dynamicAwareness == nil {
-		return &DynamicShardInfo{
-			IsEnabled:  false,
-			IsActive:   false,
-			ShardCount: pi.config.ShardCount,
-			ShardType:  "static",
-		}
-	}
-
-	isDynamic := pi.dynamicAwareness.IsDynamic()
-	shardManager := pi.dynamicAwareness.GetCurrentShardManager()
-
-	info := &DynamicShardInfo{
-		IsEnabled:  true,
-		IsActive:   isDynamic,
-		ShardCount: pi.config.ShardCount,
-		ShardType:  "static",
-	}
-
-	if isDynamic {
-		info.ShardType = "dynamic"
-
-		if enhancedManager, ok := shardManager.(*EnhancedDynamicShardManager); ok {
-			info.TargetShardCount = enhancedManager.GetTargetShardCount()
-			info.IsScaling = enhancedManager.IsScalingInProgress()
-			info.AutoScaleEnabled = enhancedManager.IsAutoScaleEnabled()
-
-			// Get scaling recommendation
-			recommendation := enhancedManager.GetScalingRecommendations()
-			info.Recommendation = recommendation
-
-			// Get shard health
-			info.ShardHealth = enhancedManager.GetShardHealth()
-		}
-	}
-
-	// Get performance analysis
-	analysis := pi.dynamicAwareness.GetPerformanceAnalysis()
-	info.PerformanceAnalysis = &analysis
-
-	return info
-}
-
-// DynamicShardInfo contains information about dynamic shard management status
-type DynamicShardInfo struct {
-	IsEnabled           bool                       `json:"is_enabled"`
-	IsActive            bool                       `json:"is_active"`
-	ShardType           string                     `json:"shard_type"` // "static" or "dynamic"
-	ShardCount          int                        `json:"shard_count"`
-	TargetShardCount    int                        `json:"target_shard_count,omitempty"`
-	IsScaling           bool                       `json:"is_scaling,omitempty"`
-	AutoScaleEnabled    bool                       `json:"auto_scale_enabled,omitempty"`
-	Recommendation      *ScalingRecommendation     `json:"recommendation,omitempty"`
-	ShardHealth         map[int]*ShardHealthStatus `json:"shard_health,omitempty"`
-	PerformanceAnalysis *PerformanceAnalysis       `json:"performance_analysis,omitempty"`
 }
 
 // FlushAll flushes all pending operations
@@ -779,7 +695,7 @@ func (pi *ParallelIndexer) DestroyAllIndexes(parentCtx context.Context) error {
 	atomic.StoreInt32(&pi.running, 0) // Mark as not running
 
 	var destructionErr error
-	if manager, ok := pi.shardManager.(*DefaultShardManager); ok {
+	if manager, ok := interface{}(pi.shardManager).(interface{ Destroy() error }); ok {
 		destructionErr = manager.Destroy()
 	} else {
 		destructionErr = fmt.Errorf("shard manager does not support destruction")
@@ -883,7 +799,7 @@ func (pi *ParallelIndexer) IndexLogGroupWithRotationScanning(basePaths []string,
 	var progressTracker *ProgressTracker
 	if progressConfig != nil {
 		progressTracker = NewProgressTracker("rotation-scan", progressConfig)
-		
+
 		// Add all discovered files to progress tracker
 		scanResults := pi.rotationScanner.GetScanResults()
 		for _, result := range scanResults {
@@ -929,7 +845,7 @@ func (pi *ParallelIndexer) IndexLogGroupWithRotationScanning(basePaths []string,
 				logger.Warnf("Failed to index file %s: %v", fileInfo.Path, err)
 				if progressTracker != nil {
 					// Skip error recording for now
-				_ = err
+					_ = err
 				}
 				continue
 			}
@@ -953,11 +869,11 @@ func (pi *ParallelIndexer) IndexLogGroupWithRotationScanning(basePaths []string,
 		}
 
 		// Report batch progress
-		logger.Infof("📊 Batch completed: %d/%d files processed (%.1f%% complete)", 
+		logger.Infof("📊 Batch completed: %d/%d files processed (%.1f%% complete)",
 			processedFiles, totalFiles, float64(processedFiles)/float64(totalFiles)*100)
 	}
 
-	logger.Infof("🎉 Optimized rotation log indexing completed: %d files, %d total documents", 
+	logger.Infof("🎉 Optimized rotation log indexing completed: %d files, %d total documents",
 		processedFiles, sumDocCounts(docsCountMap))
 
 	return docsCountMap, overallMinTime, overallMaxTime, nil
@@ -1073,30 +989,35 @@ func (w *indexWorker) processJob(job *IndexJob) *IndexResult {
 		Processed: len(job.Documents),
 	}
 
-	// Group documents by shard
-	shardDocs := make(map[int][]*Document)
+	// Group documents by mainLogPath then shard for grouped sharding
+	groupShardDocs := make(map[string]map[int][]*Document)
 
 	for _, doc := range job.Documents {
-		if doc.ID == "" {
+		if doc.ID == "" || doc.Fields == nil || doc.Fields.MainLogPath == "" {
 			result.Failed++
 			continue
 		}
 
-		_, shardID, err := w.indexer.shardManager.GetShard(doc.ID)
+		mainLogPath := doc.Fields.MainLogPath
+		_, shardID, err := w.indexer.shardManager.GetShardForDocument(mainLogPath, doc.ID)
 		if err != nil {
 			result.Failed++
 			continue
 		}
-
-		shardDocs[shardID] = append(shardDocs[shardID], doc)
+		if groupShardDocs[mainLogPath] == nil {
+			groupShardDocs[mainLogPath] = make(map[int][]*Document)
+		}
+		groupShardDocs[mainLogPath][shardID] = append(groupShardDocs[mainLogPath][shardID], doc)
 	}
 
-	// Index documents per shard
-	for shardID, docs := range shardDocs {
-		if err := w.indexShardDocuments(shardID, docs); err != nil {
-			result.Failed += len(docs)
-		} else {
-			result.Succeeded += len(docs)
+	// Index documents per group/shard
+	for _, shards := range groupShardDocs {
+		for shardID, docs := range shards {
+			if err := w.indexShardDocuments(shardID, docs); err != nil {
+				result.Failed += len(docs)
+			} else {
+				result.Succeeded += len(docs)
+			}
 		}
 	}
 
