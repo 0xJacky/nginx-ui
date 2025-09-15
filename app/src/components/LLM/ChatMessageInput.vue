@@ -132,7 +132,7 @@ function handleButtonClick() {
   .send-btn {
     position: absolute;
     right: 16px;
-    bottom: 16px;
+    bottom: 19px;
   }
 }
 

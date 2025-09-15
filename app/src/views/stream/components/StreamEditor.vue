@@ -9,6 +9,7 @@ import { ConfigStatus } from '@/constants'
 import { useStreamEditorStore } from '../store'
 
 const router = useRouter()
+const { message } = App.useApp()
 
 const store = useStreamEditorStore()
 const { name, status, configText, filepath, saving, parseErrorStatus, parseErrorMessage, advanceMode, loading, data } = storeToRefs(store)
@@ -18,6 +19,16 @@ const showHistory = ref(false)
 const upstreamTargets = computed(() => {
   return data.value.proxy_targets || []
 })
+
+async function save() {
+  try {
+    await store.save()
+    message.success($gettext('Saved successfully'))
+  }
+  catch {
+    // do nothing
+  }
+}
 </script>
 
 <template>
@@ -125,7 +136,7 @@ const upstreamTargets = computed(() => {
           <AButton
             type="primary"
             :loading="saving"
-            @click="store.save"
+            @click="save"
           >
             {{ $gettext('Save') }}
           </AButton>

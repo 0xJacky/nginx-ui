@@ -1,4 +1,3 @@
-<!-- Upstream cards component that displays upstream targets as cards instead of tags -->
 <script setup lang="ts">
 import type { ProxyTarget } from '@/api/site'
 import UpstreamDetailModal from '@/components/UpstreamDetailModal/UpstreamDetailModal.vue'
@@ -89,7 +88,7 @@ function getCardStatusColor(target: ProxyTarget): string {
 
 <style scoped lang="less">
 .upstream-cards {
-  padding: 0 12px;
+  padding: 24px 12px 0 12px;
   margin-bottom: 16px;
 
   .upstream-header {

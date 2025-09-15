@@ -8,8 +8,6 @@ import { useNgxConfigStore } from '@/components/NgxConfigEditor'
 import { ConfigStatus } from '@/constants'
 
 export const useStreamEditorStore = defineStore('streamEditor', () => {
-  const { message } = App.useApp()
-
   const name = ref('')
   const advanceMode = ref(false)
   const parseErrorStatus = ref(false)
@@ -67,8 +65,6 @@ export const useStreamEditorStore = defineStore('streamEditor', () => {
       })
 
       handleResponse(response)
-
-      message.success($gettext('Saved successfully'))
     }
     catch (error) {
       handleParseError(error as { error?: string, message: string })

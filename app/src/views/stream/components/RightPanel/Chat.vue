@@ -14,7 +14,7 @@ const { configText, filepath } = storeToRefs(store)
 <template>
   <div class="mt--6">
     <LLM
-      :content="configText"
+      :nginx-config="configText"
       :path="filepath"
       :height="chatHeight"
     />
