@@ -1318,3 +1318,77 @@ func sumDocCounts(docsCountMap map[string]uint64) uint64 {
 	}
 	return total
 }
+
+// CountDocsByMainLogPath returns the exact number of documents indexed for a given log group (main log path)
+// by querying all shards and summing results.
+func (pi *ParallelIndexer) CountDocsByMainLogPath(basePath string) (uint64, error) {
+	if !pi.IsHealthy() {
+		return 0, fmt.Errorf("indexer not healthy")
+	}
+
+	var total uint64
+	var errs []error
+
+	// Build term query on main_log_path
+	q := bleve.NewTermQuery(basePath)
+	q.SetField("main_log_path")
+
+	shards := pi.shardManager.GetAllShards()
+	for i, shard := range shards {
+		if shard == nil {
+			continue
+		}
+		req := bleve.NewSearchRequest(q)
+		// We only need counts
+		req.Size = 0
+
+		res, err := shard.Search(req)
+		if err != nil {
+			errs = append(errs, fmt.Errorf("shard %d search failed: %w", i, err))
+			continue
+		}
+		total += uint64(res.Total)
+	}
+
+	if len(errs) > 0 {
+		return total, fmt.Errorf("%d shard errors (partial count=%d), e.g. %v", len(errs), total, errs[0])
+	}
+	return total, nil
+}
+
+// CountDocsByFilePath returns the exact number of documents indexed for a specific physical log file path
+// by querying all shards and summing results.
+func (pi *ParallelIndexer) CountDocsByFilePath(filePath string) (uint64, error) {
+	if !pi.IsHealthy() {
+		return 0, fmt.Errorf("indexer not healthy")
+	}
+
+	var total uint64
+	var errs []error
+
+	// Build term query on file_path
+	q := bleve.NewTermQuery(filePath)
+	q.SetField("file_path")
+
+	shards := pi.shardManager.GetAllShards()
+	for i, shard := range shards {
+		if shard == nil {
+			continue
+		}
+		req := bleve.NewSearchRequest(q)
+		// We only need counts
+		req.Size = 0
+
+		res, err := shard.Search(req)
+		if err != nil {
+			errs = append(errs, fmt.Errorf("shard %d search failed: %w", i, err))
+			continue
+		}
+		total += uint64(res.Total)
+	}
+
+	if len(errs) > 0 {
+		return total, fmt.Errorf("%d shard errors (partial count=%d), e.g. %v", len(errs), total, errs[0])
+	}
+	return total, nil
+}

@@ -12,7 +12,7 @@ import (
 	"sync"
 	"sync/atomic"
 	"time"
-	
+
 	"github.com/uozi-tech/cosy/logger"
 )
 
@@ -269,9 +269,17 @@ func (rm *RebuildManager) rebuildLogGroup(ctx context.Context, logGroupPath stri
 		// Mark as completed
 		tracker.CompleteFile(file.Path, file.ProcessedLines)
 
-		// Update persistence
+		// Update persistence with exact doc count from Bleve
 		if rm.persistence != nil {
-			if err := rm.persistence.MarkFileAsIndexed(file.Path, file.DocumentCount, file.LastPosition); err != nil {
+			exactCount := file.DocumentCount
+			if rm.indexer != nil && rm.indexer.IsHealthy() {
+				if c, err := rm.indexer.CountDocsByFilePath(file.Path); err == nil {
+					exactCount = c
+				} else {
+					logger.Warnf("Falling back to computed count for %s due to count error: %v", file.Path, err)
+				}
+			}
+			if err := rm.persistence.MarkFileAsIndexed(file.Path, exactCount, file.LastPosition); err != nil {
 				// Log but don't fail
 				// logger.Warnf("Failed to update persistence for %s: %v", file.Path, err)
 			}
@@ -288,7 +296,7 @@ func (rm *RebuildManager) shouldProcessFile(file *LogGroupFile) (bool, string) {
 	if err != nil {
 		return true, fmt.Sprintf("cannot stat file (will process): %v", err)
 	}
-	
+
 	// For compressed files (.gz), check if we've already processed them and they haven't changed
 	if file.IsCompressed {
 		// Check if we have persistence information for this file
@@ -297,16 +305,16 @@ func (rm *RebuildManager) shouldProcessFile(file *LogGroupFile) (bool, string) {
 				// Check if file hasn't changed since last indexing
 				currentModTime := fileInfo.ModTime().Unix()
 				currentSize := fileInfo.Size()
-				
-				if info.LastModified == currentModTime && 
-				   info.LastSize == currentSize && 
-				   info.LastPosition == currentSize {
+
+				if info.LastModified == currentModTime &&
+					info.LastSize == currentSize &&
+					info.LastPosition == currentSize {
 					return false, "compressed file already fully indexed and unchanged"
 				}
 			}
 		}
 	}
-	
+
 	// For active log files (non-compressed), always process but may resume from checkpoint
 	if !file.IsCompressed {
 		// Check if file has grown or changed
@@ -314,30 +322,30 @@ func (rm *RebuildManager) shouldProcessFile(file *LogGroupFile) (bool, string) {
 			if info, err := rm.persistence.GetIncrementalInfo(file.Path); err == nil {
 				currentModTime := fileInfo.ModTime().Unix()
 				currentSize := fileInfo.Size()
-				
+
 				// File hasn't changed at all
-				if info.LastModified == currentModTime && 
-				   info.LastSize == currentSize && 
-				   info.LastPosition == currentSize {
+				if info.LastModified == currentModTime &&
+					info.LastSize == currentSize &&
+					info.LastPosition == currentSize {
 					return false, "active file unchanged since last indexing"
 				}
-				
+
 				// File has shrunk (possible log rotation)
 				if currentSize < info.LastSize {
 					return true, "active file appears to have been rotated (size decreased)"
 				}
-				
+
 				// File has grown or been modified
 				if currentSize > info.LastSize || currentModTime > info.LastModified {
 					return true, "active file has new content"
 				}
 			}
 		}
-		
+
 		// No persistence info available, process the file
 		return true, "no previous indexing record found for active file"
 	}
-	
+
 	// Default: process compressed files if no persistence info
 	return true, "no previous indexing record found for compressed file"
 }
@@ -346,7 +354,7 @@ func (rm *RebuildManager) shouldProcessFile(file *LogGroupFile) (bool, string) {
 type LogGroupFile struct {
 	Path           string
 	Size           int64
-	ModTime        int64  // Unix timestamp of file modification time
+	ModTime        int64 // Unix timestamp of file modification time
 	IsCompressed   bool
 	EstimatedLines int64
 	ProcessedLines int64
@@ -411,7 +419,7 @@ func (rm *RebuildManager) indexFile(ctx context.Context, file *LogGroupFile, tra
 	// Get checkpoint information from persistence layer
 	var startPosition int64 = 0
 	var resuming bool = false
-	
+
 	if rm.persistence != nil {
 		if info, err := rm.persistence.GetIncrementalInfo(file.Path); err == nil {
 			// Get current file modification time
@@ -419,35 +427,35 @@ func (rm *RebuildManager) indexFile(ctx context.Context, file *LogGroupFile, tra
 			if err != nil {
 				return fmt.Errorf("failed to stat file %s: %w", file.Path, err)
 			}
-			
+
 			currentModTime := fileInfo.ModTime().Unix()
 			currentSize := fileInfo.Size()
-			
+
 			// Check if file hasn't changed since last indexing
-			if info.LastIndexed > 0 && 
-			   info.LastModified == currentModTime && 
-			   info.LastSize == currentSize && 
-			   info.LastPosition == currentSize {
+			if info.LastIndexed > 0 &&
+				info.LastModified == currentModTime &&
+				info.LastSize == currentSize &&
+				info.LastPosition == currentSize {
 				// File hasn't changed and was fully indexed
-				logger.Infof("Skipping indexing for unchanged file %s (last indexed: %v)", 
+				logger.Infof("Skipping indexing for unchanged file %s (last indexed: %v)",
 					file.Path, time.Unix(info.LastIndexed, 0))
 				file.ProcessedLines = 0 // No new lines processed
 				file.DocumentCount = 0  // No new documents added
 				file.LastPosition = currentSize
 				return nil
 			}
-			
+
 			// Check if we should resume from a previous position
 			if info.LastPosition > 0 && info.LastPosition < currentSize {
 				// File has grown since last indexing
 				startPosition = info.LastPosition
 				resuming = true
-				logger.Infof("Resuming indexing from position %d for file %s (file size: %d -> %d)", 
+				logger.Infof("Resuming indexing from position %d for file %s (file size: %d -> %d)",
 					startPosition, file.Path, info.LastSize, currentSize)
 			} else if currentSize < info.LastSize {
 				// File has been truncated or rotated, start from beginning
 				startPosition = 0
-				logger.Infof("File %s has been truncated/rotated (size: %d -> %d), reindexing from start", 
+				logger.Infof("File %s has been truncated/rotated (size: %d -> %d), reindexing from start",
 					file.Path, info.LastSize, currentSize)
 			} else if info.LastPosition >= currentSize && currentSize > 0 {
 				// File size hasn't changed and we've already processed it completely
@@ -477,7 +485,7 @@ func (rm *RebuildManager) indexFile(ctx context.Context, file *LogGroupFile, tra
 	var currentPosition int64 = startPosition
 	var documentCount uint64 = 0
 	checkpointInterval := int64(1000) // Save checkpoint every 1000 lines
-	
+
 	scanner := bufio.NewScanner(reader)
 	for scanner.Scan() {
 		// Check context for cancellation
@@ -486,22 +494,22 @@ func (rm *RebuildManager) indexFile(ctx context.Context, file *LogGroupFile, tra
 			return ctx.Err()
 		default:
 		}
-		
+
 		line := scanner.Text()
 		currentPosition += int64(len(line)) + 1 // +1 for newline
-		
+
 		// Process the log line (parse and add to batch)
 		// This would typically involve:
 		// 1. Parse log entry using parser
 		// 2. Create search document
 		// 3. Add to batch
-		
+
 		processedLines++
 		documentCount++
-		
+
 		// Update progress
 		tracker.UpdateFileProgress(file.Path, processedLines)
-		
+
 		// Periodic checkpoint saving
 		if processedLines%checkpointInterval == 0 {
 			if rm.persistence != nil {
@@ -513,7 +521,7 @@ func (rm *RebuildManager) indexFile(ctx context.Context, file *LogGroupFile, tra
 				} else {
 					modTime = time.Now().Unix()
 				}
-				
+
 				info := &LogFileInfo{
 					Path:         file.Path,
 					LastPosition: currentPosition,
@@ -527,7 +535,7 @@ func (rm *RebuildManager) indexFile(ctx context.Context, file *LogGroupFile, tra
 			}
 		}
 	}
-	
+
 	if err := scanner.Err(); err != nil {
 		return fmt.Errorf("error reading file %s: %w", file.Path, err)
 	}
@@ -536,7 +544,7 @@ func (rm *RebuildManager) indexFile(ctx context.Context, file *LogGroupFile, tra
 	file.ProcessedLines = processedLines
 	file.DocumentCount = documentCount
 	file.LastPosition = currentPosition
-	
+
 	// Save final checkpoint
 	if rm.persistence != nil {
 		// Get current file info for accurate metadata
@@ -547,7 +555,7 @@ func (rm *RebuildManager) indexFile(ctx context.Context, file *LogGroupFile, tra
 		} else {
 			modTime = time.Now().Unix()
 		}
-		
+
 		info := &LogFileInfo{
 			Path:         file.Path,
 			LastPosition: currentPosition,
@@ -561,7 +569,7 @@ func (rm *RebuildManager) indexFile(ctx context.Context, file *LogGroupFile, tra
 	}
 
 	if resuming {
-		logger.Infof("Completed resumed indexing for %s: %d lines, %d documents", 
+		logger.Infof("Completed resumed indexing for %s: %d lines, %d documents",
 			file.Path, processedLines, documentCount)
 	}
 
@@ -578,7 +586,7 @@ func (rm *RebuildManager) openFileFromPosition(filePath string, startPosition in
 
 	// Check if file is compressed
 	isGzipped := strings.HasSuffix(filePath, ".gz")
-	
+
 	if isGzipped {
 		// For gzip files, we need to read from the beginning and skip to position
 		// This is because gzip doesn't support random seeking
@@ -587,7 +595,7 @@ func (rm *RebuildManager) openFileFromPosition(filePath string, startPosition in
 			file.Close()
 			return nil, fmt.Errorf("failed to create gzip reader: %w", err)
 		}
-		
+
 		if startPosition > 0 {
 			// Skip to the start position by reading and discarding bytes
 			_, err := io.CopyN(io.Discard, gzReader, startPosition)
@@ -597,7 +605,7 @@ func (rm *RebuildManager) openFileFromPosition(filePath string, startPosition in
 				return nil, fmt.Errorf("failed to seek to position %d in gzip file: %w", startPosition, err)
 			}
 		}
-		
+
 		// Return a wrapped reader that closes both gzReader and file
 		return &gzipReaderCloser{gzReader: gzReader, file: file}, nil
 	} else {

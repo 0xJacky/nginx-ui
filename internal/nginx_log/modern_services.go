@@ -100,6 +100,8 @@ func initializeWithDefaults(ctx context.Context) error {
 
 	// Initialize log file manager
 	globalLogFileManager = indexer.NewLogFileManager()
+	// Inject indexer for precise doc counting before persisting
+	globalLogFileManager.SetIndexer(globalIndexer)
 
 	servicesInitialized = true
 

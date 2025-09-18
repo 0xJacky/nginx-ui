@@ -55,6 +55,7 @@ type LogFileManager struct {
 	persistence    *PersistenceManager
 	indexingStatus map[string]bool
 	indexingMutex  sync.RWMutex
+	indexer        *ParallelIndexer
 }
 
 // NewLogFileManager creates a new log file manager
@@ -64,6 +65,11 @@ func NewLogFileManager() *LogFileManager {
 		persistence:    NewPersistenceManager(DefaultIncrementalConfig()),
 		indexingStatus: make(map[string]bool),
 	}
+}
+
+// SetIndexer injects the running ParallelIndexer so we can query exact doc counts before persisting
+func (lm *LogFileManager) SetIndexer(pi *ParallelIndexer) {
+	lm.indexer = pi
 }
 
 // AddLogPath adds a log path to the log cache with the source config file
@@ -436,7 +442,26 @@ func (lm *LogFileManager) SaveIndexMetadata(basePath string, documentCount uint6
 		logIndex.LastSize = fileInfo.Size()
 	}
 
-	// Update the record with the new metadata
+	// If indexer is available and healthy, query Bleve for exact document count
+	if lm.indexer != nil && lm.indexer.IsHealthy() {
+		// Decide whether this path is a main log path (group) or a specific file
+		mainPath := getMainLogPathFromFile(basePath)
+		if mainPath == basePath {
+			if exact, err := lm.indexer.CountDocsByMainLogPath(basePath); err == nil {
+				documentCount = exact
+			} else {
+				logger.Warnf("Falling back to provided documentCount for group %s due to count error: %v", basePath, err)
+			}
+		} else {
+			if exact, err := lm.indexer.CountDocsByFilePath(basePath); err == nil {
+				documentCount = exact
+			} else {
+				logger.Warnf("Falling back to provided documentCount for file %s due to count error: %v", basePath, err)
+			}
+		}
+	}
+
+	// Update the record with the (possibly corrected) metadata
 	logIndex.DocumentCount = documentCount
 	logIndex.LastIndexed = time.Now()
 	logIndex.IndexStartTime = &startTime
