@@ -52,7 +52,7 @@ const columns: StdTableColumn[] = [{
   title: () => $gettext('Configuration'),
   dataIndex: 'code',
   edit: {
-    type: (context: { formData: DnsCredential, column: StdTableColumn<any>, config: Record<any, any>, mode: 'add' | 'edit' }) => {
+    type: (context: { formData: DnsCredential }) => {
       return <DNSChallenge v-model:data={context.formData} />
     },
     formItem: {

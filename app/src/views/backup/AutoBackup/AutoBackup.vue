@@ -50,7 +50,7 @@ const columns: StdTableColumn[] = [
     title: () => $gettext('Backup Path'),
     dataIndex: 'backup_path',
     edit: {
-      type: (context: { formData: AutoBackup, column: StdTableColumn<any>, config: Record<any, any>, mode: 'add' | 'edit' }) => {
+      type: (context: { formData: AutoBackup }) => {
         if (context.formData.backup_type !== 'custom_dir')
           return <div />
 
@@ -92,7 +92,7 @@ const columns: StdTableColumn[] = [
     title: () => $gettext('Storage Configuration'),
     dataIndex: 'storage_type',
     edit: {
-      type: (context: { formData: AutoBackup, column: StdTableColumn<any>, config: Record<any, any>, mode: 'add' | 'edit' }) => {
+      type: (context: { formData: AutoBackup, column: StdTableColumn<AutoBackup>, config: Record<string, unknown>, mode: 'add' | 'edit' }) => {
         if (!context.formData.storage_type) {
           context.formData.storage_type = 'local'
         }
@@ -141,7 +141,7 @@ const columns: StdTableColumn[] = [
       return text
     },
     edit: {
-      type: (context: { formData: AutoBackup, column: StdTableColumn<any>, config: Record<any, any>, mode: 'add' | 'edit' }) => {
+      type: (context: { formData: AutoBackup, column: StdTableColumn<AutoBackup>, config: Record<string, unknown>, mode: 'add' | 'edit' }) => {
         if (!context.formData.cron_expression) {
           context.formData.cron_expression = '0 0 * * *'
         }
