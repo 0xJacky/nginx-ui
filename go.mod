@@ -8,7 +8,7 @@ require (
 	github.com/BurntSushi/toml v1.5.0
 	github.com/blevesearch/bleve/v2 v2.5.3
 	github.com/caarlos0/env/v11 v11.3.1
-	github.com/casdoor/casdoor-go-sdk v1.19.0
+	github.com/casdoor/casdoor-go-sdk v1.20.0
 	github.com/creack/pty v1.1.24
 	github.com/dgraph-io/ristretto/v2 v2.3.0
 	github.com/docker/docker v28.4.0+incompatible
@@ -19,13 +19,13 @@ require (
 	github.com/gin-contrib/cors v1.7.6
 	github.com/gin-contrib/static v1.1.5
 	github.com/gin-gonic/gin v1.10.1
-	github.com/go-acme/lego/v4 v4.25.2
+	github.com/go-acme/lego/v4 v4.26.0
 	github.com/go-co-op/gocron/v2 v2.16.5
 	github.com/go-gormigrate/gormigrate/v2 v2.1.5
 	github.com/go-playground/validator/v10 v10.27.0
 	github.com/go-resty/resty/v2 v2.16.5
 	github.com/go-telegram-bot-api/telegram-bot-api v4.6.4+incompatible
-	github.com/go-webauthn/webauthn v0.13.4
+	github.com/go-webauthn/webauthn v0.14.0
 	github.com/golang-jwt/jwt/v5 v5.3.0
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.3
@@ -39,14 +39,14 @@ require (
 	github.com/pquerna/otp v1.5.0
 	github.com/pretty66/websocketproxy v0.0.0-20220507015215-930b3a686308
 	github.com/samber/lo v1.51.0
-	github.com/sashabaranov/go-openai v1.41.1
+	github.com/sashabaranov/go-openai v1.41.2
 	github.com/shirou/gopsutil/v4 v4.25.8
 	github.com/spf13/afero v1.15.0
 	github.com/spf13/cast v1.10.0
 	github.com/stretchr/testify v1.11.1
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20250620092546-c3e307e36701
 	github.com/ulikunitz/xz v0.5.15
-	github.com/uozi-tech/cosy v1.26.1
+	github.com/uozi-tech/cosy v1.26.2
 	github.com/uozi-tech/cosy-driver-sqlite v0.2.1
 	github.com/urfave/cli/v3 v3.4.1
 	golang.org/x/crypto v0.42.0
@@ -67,7 +67,7 @@ require (
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/AdamSLevy/jsonrpc2/v14 v14.1.0 // indirect
 	github.com/Azure/azure-sdk-for-go v68.0.0+incompatible // indirect
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.19.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.19.1 // indirect
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.11.0 // indirect
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.11.2 // indirect
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dns/armdns v1.2.0 // indirect
@@ -87,11 +87,12 @@ require (
 	github.com/OpenDNS/vegadns2client v0.0.0-20180418235048-a3fa4a771d87 // indirect
 	github.com/RoaringBitmap/roaring/v2 v2.10.0 // indirect
 	github.com/akamai/AkamaiOPEN-edgegrid-golang v1.2.2 // indirect
+	github.com/akamai/AkamaiOPEN-edgegrid-golang/v11 v11.1.0 // indirect
 	github.com/alibabacloud-go/alibabacloud-gateway-spi v0.0.5 // indirect
-	github.com/alibabacloud-go/darabonba-openapi/v2 v2.1.11 // indirect
+	github.com/alibabacloud-go/darabonba-openapi/v2 v2.1.12 // indirect
 	github.com/alibabacloud-go/debug v1.0.1 // indirect
 	github.com/alibabacloud-go/endpoint-util v1.1.1 // indirect
-	github.com/alibabacloud-go/tea v1.3.11 // indirect
+	github.com/alibabacloud-go/tea v1.3.12 // indirect
 	github.com/alibabacloud-go/tea-utils/v2 v2.0.7 // indirect
 	github.com/aliyun/aliyun-log-go-sdk v0.1.108 // indirect
 	github.com/aliyun/credentials-go v1.4.7 // indirect
@@ -166,6 +167,7 @@ require (
 	github.com/gin-contrib/sse v1.1.0 // indirect
 	github.com/go-acme/alidns-20150109/v4 v4.6.0 // indirect
 	github.com/go-acme/tencentclouddnspod v1.1.10 // indirect
+	github.com/go-acme/tencentedgdeone v1.1.19 // indirect
 	github.com/go-errors/errors v1.5.1 // indirect
 	github.com/go-ini/ini v1.67.0 // indirect
 	github.com/go-jose/go-jose/v4 v4.1.2 // indirect
@@ -176,11 +178,12 @@ require (
 	github.com/go-logr/logr v1.4.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-ole/go-ole v1.3.0 // indirect
+	github.com/go-ozzo/ozzo-validation/v4 v4.3.0 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-sql-driver/mysql v1.9.3 // indirect
 	github.com/go-viper/mapstructure/v2 v2.4.0 // indirect
-	github.com/go-webauthn/x v0.1.24 // indirect
+	github.com/go-webauthn/x v0.1.25 // indirect
 	github.com/goccy/go-json v0.10.5 // indirect
 	github.com/goccy/go-yaml v1.18.0 // indirect
 	github.com/gofrs/flock v0.12.1 // indirect
@@ -201,7 +204,7 @@ require (
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-retryablehttp v0.7.8 // indirect
 	github.com/hashicorp/go-uuid v1.0.3 // indirect
-	github.com/huaweicloud/huaweicloud-sdk-go-v3 v0.1.167 // indirect
+	github.com/huaweicloud/huaweicloud-sdk-go-v3 v0.1.168 // indirect
 	github.com/iij/doapi v0.0.0-20190504054126-0bbf12d6d7df // indirect
 	github.com/imega/luaformatter v0.0.0-20211025140405-86b0a68d6bef // indirect
 	github.com/infobloxopen/infoblox-go-client/v2 v2.10.0 // indirect
@@ -252,7 +255,7 @@ require (
 	github.com/nrdcg/goacmedns v0.2.0 // indirect
 	github.com/nrdcg/goinwx v0.11.0 // indirect
 	github.com/nrdcg/mailinabox v0.2.0 // indirect
-	github.com/nrdcg/namesilo v0.2.1 // indirect
+	github.com/nrdcg/namesilo v0.5.0 // indirect
 	github.com/nrdcg/nodion v0.1.0 // indirect
 	github.com/nrdcg/oci-go-sdk/common/v1065 v1065.100.0 // indirect
 	github.com/nrdcg/oci-go-sdk/dns/v1065 v1065.100.0 // indirect
@@ -294,7 +297,7 @@ require (
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/smartystreets/go-aws-auth v0.0.0-20180515143844-0c1422d1fdb9 // indirect
 	github.com/smartystreets/gunit v1.1.3 // indirect
-	github.com/softlayer/softlayer-go v1.2.0 // indirect
+	github.com/softlayer/softlayer-go v1.2.1 // indirect
 	github.com/softlayer/xmlrpc v0.0.0-20200409220501-5f089df7cb7e // indirect
 	github.com/sony/gobreaker v1.0.0 // indirect
 	github.com/sony/sonyflake/v2 v2.2.0 // indirect
@@ -322,7 +325,7 @@ require (
 	github.com/x448/float16 v0.8.4 // indirect
 	github.com/yandex-cloud/go-genproto v0.23.0 // indirect
 	github.com/yandex-cloud/go-sdk/services/dns v0.0.12 // indirect
-	github.com/yandex-cloud/go-sdk/v2 v2.10.0 // indirect
+	github.com/yandex-cloud/go-sdk/v2 v2.11.0 // indirect
 	github.com/yosida95/uritemplate/v3 v3.0.2 // indirect
 	github.com/youmark/pkcs8 v0.0.0-20240726163527-a2c0da244d78 // indirect
 	github.com/yusufpapurcu/wmi v1.2.4 // indirect
