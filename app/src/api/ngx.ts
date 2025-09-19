@@ -163,6 +163,10 @@ const ngx = {
   get_modules(): Promise<NgxModule[]> {
     return http.get('/nginx/modules')
   },
+
+  refresh_modules(): Promise<{ message: string, modules: NgxModule[] }> {
+    return http.post('/nginx/modules/refresh')
+  },
 }
 
 export default ngx

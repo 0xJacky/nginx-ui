@@ -27,6 +27,7 @@ func InitRouter(r *gin.RouterGroup) {
 	r.POST("nginx/performance", UpdatePerformanceSettings)
 
 	r.GET("nginx/modules", GetModules)
+	r.POST("nginx/modules/refresh", RefreshModulesCache)
 }
 
 func InitWebSocketRouter(r *gin.RouterGroup) {

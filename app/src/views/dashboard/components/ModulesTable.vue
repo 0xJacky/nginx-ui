@@ -1,25 +1,47 @@
 <script setup lang="tsx">
 import type { TableColumnType } from 'ant-design-vue'
-import type { FilterResetProps } from 'ant-design-vue/es/table/interface'
-import { SearchOutlined } from '@ant-design/icons-vue'
-import { Button as AButton, Input as AInput } from 'ant-design-vue'
+import type { NgxModule } from '@/api/ngx'
+import { ReloadOutlined, SearchOutlined } from '@ant-design/icons-vue'
+import { Button as AButton, Input as AInput, message } from 'ant-design-vue'
+import ngx from '@/api/ngx'
 import { useGlobalStore } from '@/pinia'
 
 const globalStore = useGlobalStore()
-const { modules } = storeToRefs(globalStore)
+const { modules, modulesMap } = storeToRefs(globalStore)
 
-const searchText = ref('')
-const searchInput = ref<HTMLInputElement>()
+const keyword = ref('')
 
-function handleSearch(selectedKeys: string[], confirm: () => void) {
-  confirm()
-  searchText.value = selectedKeys[0]
+const isRefreshing = ref(false)
+
+async function refreshModules() {
+  try {
+    isRefreshing.value = true
+    const res = await ngx.refresh_modules()
+    const list = res.modules || []
+    modules.value = list
+    modulesMap.value = list.reduce((acc, m) => {
+      acc[m.name] = m
+      return acc
+    }, {} as Record<string, NgxModule>)
+    message.success($gettext('Modules cache refreshed'))
+  }
+  catch (err) {
+    console.error(err)
+  }
+  finally {
+    isRefreshing.value = false
+  }
 }
 
-function handleReset(clearFilters?: (param?: FilterResetProps) => void) {
-  clearFilters?.({ confirm: true })
-  searchText.value = ''
-}
+const filteredModules = computed<NgxModule[]>(() => {
+  const k = keyword.value.trim().toLowerCase()
+  if (!k)
+    return modules.value
+  return modules.value.filter(m =>
+    (m.name && m.name.toLowerCase().includes(k))
+    || (m.params && m.params.toLowerCase().includes(k)),
+  )
+})
 
 // Modules columns
 const modulesColumns: TableColumnType[] = [
@@ -27,49 +49,6 @@ const modulesColumns: TableColumnType[] = [
     title: $gettext('Module'),
     dataIndex: 'name',
     width: '800px',
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-      <div style="padding: 8px">
-        <AInput
-          ref={searchInput}
-          value={selectedKeys[0]}
-          placeholder={$gettext('Search module name')}
-          style="width: 188px; margin-bottom: 8px; display: block;"
-          onInput={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-          onPressEnter={() => handleSearch(selectedKeys as string[], confirm)}
-          class="mb-2"
-        />
-        <div class="flex justify-between">
-          <AButton
-            type="primary"
-            onClick={() => handleSearch(selectedKeys as string[], confirm)}
-            size="small"
-            class="mr-2"
-          >
-            {$gettext('Search')}
-          </AButton>
-          <AButton
-            onClick={() => handleReset(clearFilters)}
-            size="small"
-          >
-            {$gettext('Reset')}
-          </AButton>
-        </div>
-      </div>
-    ),
-    filterIcon: filtered => (
-      <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />
-    ),
-    onFilter: (value, record) =>
-      record.name && record.name.toString().toLowerCase().includes((value as string).toLowerCase()),
-    onFilterDropdownVisibleChange: visible => {
-      if (visible) {
-        setTimeout(() => {
-          if (searchInput.value) {
-            searchInput.value.focus()
-          }
-        }, 100)
-      }
-    },
     customRender: args => {
       return (
         <div>
@@ -112,10 +91,31 @@ const modulesColumns: TableColumnType[] = [
   <div class="overflow-x-auto">
     <ATable
       :columns="modulesColumns"
-      :data-source="modules"
+      :data-source="filteredModules"
       :pagination="false"
       size="middle"
       :scroll="{ x: '100%' }"
-    />
+    >
+      <template #title>
+        <div class="flex items-center justify-between gap-2">
+          <AInput
+            v-model:value="keyword"
+            :placeholder="$gettext('Search modules')"
+            style="max-width: 260px"
+            allow-clear
+          >
+            <template #prefix>
+              <SearchOutlined />
+            </template>
+          </AInput>
+          <div>
+            <AButton :loading="isRefreshing" @click="refreshModules">
+              <ReloadOutlined />
+              <span class="ml-1">{{ $gettext('Refresh Modules Cache') }}</span>
+            </AButton>
+          </div>
+        </div>
+      </template>
+    </ATable>
   </div>
 </template>

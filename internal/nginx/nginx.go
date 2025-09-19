@@ -123,36 +123,30 @@ func isProcessRunning(pidPath string) bool {
 	logger.Debugf("isProcessRunning pidPath: %s", pidPath)
 	// Check if PID file exists
 	if fileInfo, err := os.Stat(pidPath); err != nil || fileInfo.Size() == 0 {
-		logger.Debugf("isProcessRunning pidPath: %s, err: %v", pidPath, err)
 		return false
 	}
 
 	// Read PID from file
 	pidBytes, err := os.ReadFile(pidPath)
 	if err != nil {
-		logger.Debugf("isProcessRunning pidPath: %s, err: %v", pidPath, err)
 		return false
 	}
 
 	pidStr := strings.TrimSpace(string(pidBytes))
 	pid, err := strconv.Atoi(pidStr)
 	if err != nil {
-		logger.Debugf("isProcessRunning pidPath: %s, err: %v", pidPath, err)
 		return false
 	}
 
 	// Use gopsutil for cross-platform process existence check
 	exists, err := process.PidExists(int32(pid))
 	if err != nil {
-		logger.Debugf("isProcessRunning pidPath: %s, PidExists err: %v", pidPath, err)
 		return false
 	}
 
 	if exists {
-		logger.Debugf("isProcessRunning pidPath: %s, process exists", pidPath)
 		return true
 	}
 
-	logger.Debugf("isProcessRunning pidPath: %s, process does not exist", pidPath)
 	return false
 }
