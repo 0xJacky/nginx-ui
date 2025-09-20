@@ -30,11 +30,11 @@ defineExpose({
   open,
 })
 
+const otpModal = use2FAModal()
+
 function ok() {
   refForm.value.validate().then(() => {
     const { basePath, orig_name, new_name, sync_node_ids } = data.value
-
-    const otpModal = use2FAModal()
 
     otpModal.open().then(() => {
       // Note: API will handle URL encoding of path segments

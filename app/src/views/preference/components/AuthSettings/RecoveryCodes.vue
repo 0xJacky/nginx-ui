@@ -23,8 +23,9 @@ const newGenerated = ref(false)
 
 const codeSource = computed(() => codes.value?.map(code => code.code).join('\n'))
 
+const otpModal = use2FAModal()
+
 function clickGenerateRecoveryCodes() {
-  const otpModal = use2FAModal()
   otpModal.open().then(() => {
     recovery.generate().then(r => {
       _codes.value = r.codes
@@ -36,7 +37,6 @@ function clickGenerateRecoveryCodes() {
 }
 
 function clickViewRecoveryCodes() {
-  const otpModal = use2FAModal()
   otpModal.open().then(() => {
     recovery.view().then(r => {
       _codes.value = r.codes

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import BaseEditor from '@/components/BaseEditor'
 import ConfigLeftPanel from '@/views/config/components/ConfigLeftPanel.vue'
-import ConfigRightPanel from '@/views/config/components/ConfigRightPanel.vue'
+import ConfigRightPanel from './components/ConfigRightPanel/ConfigRightPanel.vue'
 
 // Use Vue 3.4+ useTemplateRef to get reference to left panel
 const leftPanelRef = useTemplateRef<InstanceType<typeof ConfigLeftPanel>>('leftPanel')

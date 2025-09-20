@@ -11,7 +11,7 @@ import TerminalStatusBar from './components/TerminalStatusBar.vue'
 import '@xterm/xterm/css/xterm.css'
 
 const terminalStore = useTerminalStore()
-const { open: openOtpModal, contextHolder } = use2FAModal()
+const { open: openOtpModal } = use2FAModal()
 const {
   createSession,
   destroySession,
@@ -191,7 +191,6 @@ const terminalMainContainerHeight = computed(() => {
 
 <template>
   <div>
-    <component :is="contextHolder" />
     <AConfigProvider :theme="terminalTheme">
       <AAlert
         v-if="insecureConnection"

@@ -11,7 +11,7 @@ interface ConfigRightPanelProps {
   origName: string
 }
 
-const props = defineProps<ConfigRightPanelProps>()
+defineProps<ConfigRightPanelProps>()
 const data = defineModel<Config>('data', { required: true })
 
 const activeKey = ref('basic')
@@ -41,14 +41,14 @@ const chatHeight = computed(() => {
         <ATabPane key="basic" :tab="$gettext('Basic')">
           <Basic
             v-model:data="data"
-            :add-mode="props.addMode"
-            :new-path="props.newPath"
-            :modified-at="props.modifiedAt"
-            :orig-name="props.origName"
+            :add-mode
+            :new-path
+            :modified-at
+            :orig-name
           />
         </ATabPane>
         <ATabPane key="chat" :tab="$gettext('Chat')">
-          <Chat v-model:data="data" :chat-height="chatHeight" />
+          <Chat v-model:data="data" :chat-height />
         </ATabPane>
       </ATabs>
     </ACard>

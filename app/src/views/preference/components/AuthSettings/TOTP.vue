@@ -49,8 +49,9 @@ function enroll(code: string) {
   })
 }
 
+const otpModal = use2FAModal()
+
 function reset2FA() {
-  const otpModal = use2FAModal()
   otpModal.open().then(() => {
     otp.reset().then(() => {
       resetting.value = false

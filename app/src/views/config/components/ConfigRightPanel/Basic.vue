@@ -33,8 +33,8 @@ const settings = useSettingsStore()
         name="name"
         :label="$gettext('Name')"
       >
-        <AInput v-if="props.addMode" v-model:value="data.name" />
-        <ConfigName v-else :name="data.name" :dir="data.dir" />
+        <AInput v-if="addMode" v-model:value="data.name" />
+        <ConfigName v-else :name="data.name" />
       </AFormItem>
       <AFormItem
         v-if="!props.addMode"

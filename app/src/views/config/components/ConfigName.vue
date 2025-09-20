@@ -2,12 +2,9 @@
 import config from '@/api/config'
 import use2FAModal from '@/components/TwoFA/use2FAModal'
 
-const props = defineProps<{
-  dir?: string
-}>()
-
 const name = defineModel<string>('name', { default: '' })
 
+const route = useRoute()
 const router = useRouter()
 const { message } = useGlobalApp()
 
@@ -20,18 +17,19 @@ function clickModify() {
   modify.value = true
 }
 
+const { open: openOtpModal } = use2FAModal()
+
 function save() {
   loading.value = true
-  const otpModal = use2FAModal()
 
-  otpModal.open().then(() => {
-    config.rename(props.dir!, name.value, buffer.value).then(() => {
+  openOtpModal().then(() => {
+    config.rename(route.query.basePath as string, name.value, buffer.value).then(() => {
       modify.value = false
       message.success($gettext('Renamed successfully'))
       router.push({
         path: `/config/${encodeURIComponent(buffer.value)}/edit`,
         query: {
-          basePath: encodeURIComponent(props.dir!),
+          basePath: encodeURIComponent(route.query.basePath as string),
         },
       })
     }).finally(() => {
@@ -42,24 +40,26 @@ function save() {
 </script>
 
 <template>
-  <div v-if="!modify" class="flex items-center">
-    <div class="mr-2">
-      {{ name }}
-    </div>
-    <div>
-      <AButton type="link" size="small" @click="clickModify">
-        {{ $gettext('Rename') }}
-      </AButton>
-    </div>
-  </div>
-  <div v-else>
-    <AInput v-model:value="buffer">
-      <template #suffix>
-        <AButton :disabled="buffer === name" type="link" size="small" :loading @click="save">
-          {{ $gettext('Save') }}
+  <div>
+    <div v-if="!modify" class="flex items-center">
+      <div class="mr-2">
+        {{ name }}
+      </div>
+      <div>
+        <AButton type="link" size="small" @click="clickModify">
+          {{ $gettext('Rename') }}
         </AButton>
-      </template>
-    </AInput>
+      </div>
+    </div>
+    <div v-else>
+      <AInput v-model:value="buffer">
+        <template #suffix>
+          <AButton :disabled="buffer === name" type="link" size="small" :loading @click="save">
+            {{ $gettext('Save') }}
+          </AButton>
+        </template>
+      </AInput>
+    </div>
   </div>
 </template>
 

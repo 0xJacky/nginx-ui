@@ -1,10 +1,10 @@
-import { Modal } from 'ant-design-vue'
 import twoFA from '@/api/2fa'
 import Authorization from '@/components/TwoFA/Authorization.vue'
-import { useUserStore } from '@/pinia'
+import { useAppStore, useUserStore } from '@/pinia'
 
 function use2FAModal() {
-  const [modal, contextHolder] = Modal.useModal()
+  const app = useAppStore()
+  const { modal } = storeToRefs(app)
   const refOTPAuthorization = ref<typeof Authorization>()
   // eslint-disable-next-line sonarjs/pseudo-random
   const randomId = Math.random().toString(36).substring(2, 8)
@@ -42,7 +42,7 @@ function use2FAModal() {
       injectStyles()
 
       // Create modal instance to be able to destroy it later
-      const modalInstance = modal.confirm({
+      const modalInstance = modal.value!.confirm({
         title: $gettext('Two-factor authentication required'),
         centered: true,
         maskClosable: false,
@@ -88,7 +88,7 @@ function use2FAModal() {
     })
   }
 
-  return { open, contextHolder }
+  return { open }
 }
 
 export default use2FAModal

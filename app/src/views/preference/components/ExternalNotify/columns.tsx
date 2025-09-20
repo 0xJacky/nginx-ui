@@ -57,7 +57,7 @@ const columns: StdTableColumn[] = [
     dataIndex: 'config',
     title: () => $gettext('Config'),
     edit: {
-      type: (context: { formData: ExternalNotify, column: StdTableColumn<any>, config: Record<any, any>, mode: 'add' | 'edit' }) => {
+      type: (context: { formData: ExternalNotify }) => {
         if (!context.formData.type) {
           return <div />
         }
