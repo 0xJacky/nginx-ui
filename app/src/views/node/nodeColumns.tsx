@@ -22,7 +22,7 @@ const columns: StdTableColumn[] = [{
   edit: {
     type: 'input',
     input: {
-      placeholder: () => 'https://10.0.0.1:9000',
+      placeholder: 'https://10.0.0.1:9000',
     },
   },
   width: 260,
