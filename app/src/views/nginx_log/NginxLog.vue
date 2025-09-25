@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { FileOutlined } from '@ant-design/icons-vue'
 import { useRouteQuery } from '@vueuse/router'
+import nginxLog from '@/api/nginx_log'
 import FooterToolBar from '@/components/FooterToolbar'
 import DashboardViewer from './dashboard/DashboardViewer.vue'
 import RawLogViewer from './raw/RawLogViewer.vue'
@@ -20,6 +21,20 @@ const logType = computed(() => {
 
 const viewMode = useRouteQuery<'raw' | 'structured' | 'dashboard'>('view', 'structured')
 
+// Advanced indexing status
+const isAdvancedIndexingEnabled = ref(false)
+
+onMounted(async () => {
+  try {
+    const res = await nginxLog.getAdvancedIndexingStatus()
+    isAdvancedIndexingEnabled.value = !!res.enabled
+  }
+  catch (err) {
+    console.error('Failed to get advanced indexing status:', err)
+    isAdvancedIndexingEnabled.value = false
+  }
+})
+
 // Check if this is an error log
 const isErrorLog = computed(() => {
   return logType.value === 'error' || logPath.value.includes('error.log') || logPath.value.includes('error_log')
@@ -29,6 +44,13 @@ const autoRefresh = ref(true)
 
 watch(logType, v => {
   if (v === 'error') {
+    viewMode.value = 'raw'
+  }
+}, { immediate: true })
+
+// Force raw view when advanced indexing is disabled
+watch(isAdvancedIndexingEnabled, enabled => {
+  if (!enabled) {
     viewMode.value = 'raw'
   }
 }, { immediate: true })
@@ -47,8 +69,8 @@ watch(logType, v => {
 
     <template #extra>
       <div class="flex items-center gap-4">
-        <!-- View Mode Toggle (hide for error logs) -->
-        <div v-if="!isErrorLog" class="flex items-center">
+        <!-- View Mode Toggle (hide for error logs or when advanced indexing is disabled) -->
+        <div v-if="!isErrorLog && isAdvancedIndexingEnabled" class="flex items-center">
           <ASegmented
             v-model:value="viewMode"
             :options="[
