@@ -87,7 +87,6 @@ func (n *ExternalMessage) GetTitle(lang string) string {
 
 	title, err := dict.Translate(n.Notification.Title)
 	if err != nil {
-		logger.Error(err)
 		return n.Notification.Title
 	}
 
@@ -110,7 +109,6 @@ func (n *ExternalMessage) GetContent(lang string) string {
 
 	content, err := dict.Translate(n.Notification.Content, n.Notification.Details)
 	if err != nil {
-		logger.Error(err)
 		return n.Notification.Content
 	}
 
