@@ -29,7 +29,7 @@ require (
 	github.com/golang-jwt/jwt/v5 v5.3.0
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.3
-	github.com/mark3labs/mcp-go v0.40.0
+	github.com/mark3labs/mcp-go v0.41.1
 	github.com/minio/minio-go/v7 v7.0.95
 	github.com/minio/selfupdate v0.6.0
 	github.com/nikoksr/notify v1.3.0
@@ -40,13 +40,13 @@ require (
 	github.com/pretty66/websocketproxy v0.0.0-20220507015215-930b3a686308
 	github.com/samber/lo v1.51.0
 	github.com/sashabaranov/go-openai v1.41.2
-	github.com/shirou/gopsutil/v4 v4.25.8
+	github.com/shirou/gopsutil/v4 v4.25.9
 	github.com/spf13/afero v1.15.0
 	github.com/spf13/cast v1.10.0
 	github.com/stretchr/testify v1.11.1
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20250620092546-c3e307e36701
 	github.com/ulikunitz/xz v0.5.15
-	github.com/uozi-tech/cosy v1.26.7
+	github.com/uozi-tech/cosy v1.26.15
 	github.com/uozi-tech/cosy-driver-sqlite v0.2.1
 	github.com/urfave/cli/v3 v3.4.1
 	golang.org/x/crypto v0.42.0
