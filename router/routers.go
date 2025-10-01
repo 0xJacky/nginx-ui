@@ -95,6 +95,7 @@ func InitRouter() {
 			notification.InitRouter(g)
 			external_notify.InitRouter(g)
 			backup.InitAutoBackupRouter(g)
+			nginxLog.InitRouter(g)
 		}
 
 		// Authorization required and websocket request
@@ -107,7 +108,7 @@ func InitRouter() {
 			{
 				terminal.InitRouter(o)
 			}
-			nginxLog.InitRouter(w)
+			nginxLog.InitWebSocketRouter(w)
 			upstream.InitRouter(w)
 			system.InitWebSocketRouter(w)
 			nginx.InitWebSocketRouter(w)

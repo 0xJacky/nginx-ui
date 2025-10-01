@@ -104,6 +104,7 @@
 | 配置                     | 环境变量                                       |
 |-------------------------|-----------------------------------------------|
 | AdvancedIndexingEnabled | NGINX_UI_NGINX_LOG_ADVANCED_INDEXING_ENABLED |
+| IndexPath               | NGINX_UI_NGINX_LOG_INDEX_PATH                |
 
 ## Node
 

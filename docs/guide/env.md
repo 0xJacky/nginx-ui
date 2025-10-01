@@ -93,6 +93,7 @@ Applicable for version v2.0.0-beta.37 and above.
 | Configuration Setting  | Environment Variable                   |
 |------------------------|---------------------------------------|
 | AdvancedIndexingEnabled | NGINX_UI_NGINX_LOG_ADVANCED_INDEXING_ENABLED |
+| IndexPath               | NGINX_UI_NGINX_LOG_INDEX_PATH                |
 
 ## Node
 | Configuration Setting | Environment Variable            |

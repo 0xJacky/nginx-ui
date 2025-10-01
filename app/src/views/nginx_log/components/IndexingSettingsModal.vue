@@ -134,6 +134,14 @@ function handleCancel() {
             </AListItem>
           </template>
         </AList>
+
+        <!-- Subtle note about Bleve index storage location -->
+        <div class="mt-2">
+          <ATypographyText type="secondary" class="text-xs">
+            {{ $gettext('* Index files are stored in the "log-index" directory within your Nginx UI config path by default.') }}
+            {{ $gettext('If you want to change the storage location, you can set the `IndexPath` of `nginx_log` section in the Nginx UI config.') }}
+          </ATypographyText>
+        </div>
       </div>
 
       <ADivider />

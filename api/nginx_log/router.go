@@ -4,7 +4,7 @@ import "github.com/gin-gonic/gin"
 
 // InitRouter registers all the nginx log related routes
 func InitRouter(r *gin.RouterGroup) {
-	r.GET("nginx_log", Log)
+
 	r.GET("nginx_logs", GetLogList)
 	r.POST("nginx_log/page", GetNginxLogPage)
 	r.POST("nginx_log/analytics", GetLogAnalytics)
@@ -19,4 +19,8 @@ func InitRouter(r *gin.RouterGroup) {
 	r.POST("nginx_log/settings/advanced_indexing/enable", EnableAdvancedIndexing)
 	r.POST("nginx_log/settings/advanced_indexing/disable", DisableAdvancedIndexing)
 	r.GET("nginx_log/settings/advanced_indexing/status", GetAdvancedIndexingStatus)
+}
+
+func InitWebSocketRouter(r *gin.RouterGroup) {
+	r.GET("nginx_log", Log)
 }

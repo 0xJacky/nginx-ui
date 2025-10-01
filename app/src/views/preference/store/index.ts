@@ -69,6 +69,7 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
     },
     nginx_log: {
       advanced_indexing_enabled: false,
+      index_path: '',
     },
     node: {
       name: '',

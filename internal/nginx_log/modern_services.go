@@ -124,6 +124,18 @@ func initializeWithDefaults(ctx context.Context) error {
 
 // getConfigDirIndexPath returns the index path relative to the config file directory
 func getConfigDirIndexPath() string {
+	// Use custom path if configured
+	if settings.NginxLogSettings.IndexPath != "" {
+		indexPath := settings.NginxLogSettings.IndexPath
+		// Ensure the directory exists
+		if err := os.MkdirAll(indexPath, 0755); err != nil {
+			logger.Warnf("Failed to create custom index directory at %s: %v, using default", indexPath, err)
+		} else {
+			logger.Infof("Using custom index path: %s", indexPath)
+			return indexPath
+		}
+	}
+
 	// Get the config file path from cosy settings
 	if cSettings.ConfPath != "" {
 		configDir := filepath.Dir(cSettings.ConfPath)
