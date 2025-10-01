@@ -87,6 +87,9 @@ func InitializeModernServices(ctx context.Context) {
 func initializeWithDefaults(ctx context.Context) error {
 	logger.Info("Initializing services with default configuration")
 
+	// Initialize global log parser singleton before starting indexer/searcher
+	indexer.InitLogParser()
+
 	// Create empty searcher (will be populated when indexes are available)
 	searcherConfig := searcher.DefaultSearcherConfig()
 	globalSearcher = searcher.NewDistributedSearcher(searcherConfig, []bleve.Index{})
