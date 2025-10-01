@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
+	"sort"
+	"strings"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -29,6 +32,12 @@ var (
 	shutdownCancel         context.CancelFunc
 	isShuttingDown         bool
 	lastShardUpdateAttempt int64
+)
+
+// Fallback storage when AdvancedIndexingEnabled is disabled
+var (
+	fallbackCache      = make(map[string]*NginxLogCache)
+	fallbackCacheMutex sync.RWMutex
 )
 
 // InitializeModernServices initializes the new modular services
@@ -229,23 +238,37 @@ const (
 
 // AddLogPath adds a log path to the log cache with the source config file
 func AddLogPath(path, logType, name, configFile string) {
-	manager := GetLogFileManager()
-	if manager != nil {
+	if manager := GetLogFileManager(); manager != nil {
 		manager.AddLogPath(path, logType, name, configFile)
-	} else {
-		// Only warn if during initialization (when it might be expected)
-		// Skip warning during shutdown or restart phases
+		return
 	}
+
+	// Fallback storage
+	fallbackCacheMutex.Lock()
+	fallbackCache[path] = &NginxLogCache{
+		Path:       path,
+		Type:       logType,
+		Name:       name,
+		ConfigFile: configFile,
+	}
+	fallbackCacheMutex.Unlock()
 }
 
 // RemoveLogPathsFromConfig removes all log paths associated with a specific config file
 func RemoveLogPathsFromConfig(configFile string) {
-	manager := GetLogFileManager()
-	if manager != nil {
+	if manager := GetLogFileManager(); manager != nil {
 		manager.RemoveLogPathsFromConfig(configFile)
-	} else {
-		// Silently skip if manager not available - this is normal during shutdown/restart
+		return
 	}
+
+	// Fallback removal
+	fallbackCacheMutex.Lock()
+	for p, entry := range fallbackCache {
+		if entry.ConfigFile == configFile {
+			delete(fallbackCache, p)
+		}
+	}
+	fallbackCacheMutex.Unlock()
 }
 
 // GetAllLogPaths returns all cached log paths, optionally filtered
@@ -253,7 +276,27 @@ func GetAllLogPaths(filters ...func(*NginxLogCache) bool) []*NginxLogCache {
 	if manager := GetLogFileManager(); manager != nil {
 		return manager.GetAllLogPaths(filters...)
 	}
-	return []*NginxLogCache{}
+
+	// Fallback list
+	fallbackCacheMutex.RLock()
+	defer fallbackCacheMutex.RUnlock()
+
+	var logs []*NginxLogCache
+	for _, entry := range fallbackCache {
+		include := true
+		for _, f := range filters {
+			if !f(entry) {
+				include = false
+				break
+			}
+		}
+		if include {
+			// Create a copy to avoid external mutation
+			e := *entry
+			logs = append(logs, &e)
+		}
+	}
+	return logs
 }
 
 // GetAllLogsWithIndex returns all cached log paths with their index status
@@ -261,7 +304,33 @@ func GetAllLogsWithIndex(filters ...func(*NginxLogWithIndex) bool) []*NginxLogWi
 	if manager := GetLogFileManager(); manager != nil {
 		return manager.GetAllLogsWithIndex(filters...)
 	}
-	return []*NginxLogWithIndex{}
+
+	// Fallback: produce basic entries without indexing metadata
+	fallbackCacheMutex.RLock()
+	defer fallbackCacheMutex.RUnlock()
+
+	result := make([]*NginxLogWithIndex, 0, len(fallbackCache))
+	for _, c := range fallbackCache {
+		lw := &NginxLogWithIndex{
+			Path:        c.Path,
+			Type:        c.Type,
+			Name:        c.Name,
+			ConfigFile:  c.ConfigFile,
+			IndexStatus: IndexStatusNotIndexed,
+		}
+
+		include := true
+		for _, f := range filters {
+			if !f(lw) {
+				include = false
+				break
+			}
+		}
+		if include {
+			result = append(result, lw)
+		}
+	}
+	return result
 }
 
 // GetAllLogsWithIndexGrouped returns logs grouped by their base name
@@ -269,7 +338,112 @@ func GetAllLogsWithIndexGrouped(filters ...func(*NginxLogWithIndex) bool) []*Ngi
 	if manager := GetLogFileManager(); manager != nil {
 		return manager.GetAllLogsWithIndexGrouped(filters...)
 	}
-	return []*NginxLogWithIndex{}
+
+	// Fallback grouping by base log name (handle simple rotation patterns)
+	fallbackCacheMutex.RLock()
+	defer fallbackCacheMutex.RUnlock()
+
+	grouped := make(map[string]*NginxLogWithIndex)
+	for _, c := range fallbackCache {
+		base := getBaseLogNameBasic(c.Path)
+		if existing, ok := grouped[base]; ok {
+			// Preserve most recent non-indexed default; nothing to aggregate in basic mode
+			_ = existing
+			continue
+		}
+		grouped[base] = &NginxLogWithIndex{
+			Path:        base,
+			Type:        c.Type,
+			Name:        filepath.Base(base),
+			ConfigFile:  c.ConfigFile,
+			IndexStatus: IndexStatusNotIndexed,
+		}
+	}
+
+	// Build slice and apply filters
+	keys := make([]string, 0, len(grouped))
+	for k := range grouped {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+
+	result := make([]*NginxLogWithIndex, 0, len(keys))
+	for _, k := range keys {
+		v := grouped[k]
+		include := true
+		for _, f := range filters {
+			if !f(v) {
+				include = false
+				break
+			}
+		}
+		if include {
+			result = append(result, v)
+		}
+	}
+	return result
+}
+
+// --- Fallback helpers ---
+
+// getBaseLogNameBasic attempts to derive the base log file for a rotated file name.
+// Mirrors the logic used by the indexer, simplified for basic mode.
+func getBaseLogNameBasic(filePath string) string {
+	dir := filepath.Dir(filePath)
+	filename := filepath.Base(filePath)
+
+	// Remove compression extensions
+	for _, ext := range []string{".gz", ".bz2", ".xz", ".lz4"} {
+		filename = strings.TrimSuffix(filename, ext)
+	}
+
+	// Check YYYY.MM.DD at end
+	parts := strings.Split(filename, ".")
+	if len(parts) >= 4 {
+		lastThree := strings.Join(parts[len(parts)-3:], ".")
+		if matched, _ := regexp.MatchString(`^\d{4}\.\d{2}\.\d{2}$`, lastThree); matched {
+			base := strings.Join(parts[:len(parts)-3], ".")
+			return filepath.Join(dir, base)
+		}
+	}
+
+	// Single-part date suffix (YYYYMMDD / YYYY-MM-DD / YYMMDD)
+	if len(parts) >= 2 {
+		last := parts[len(parts)-1]
+		if isFullDatePatternBasic(last) {
+			base := strings.Join(parts[:len(parts)-1], ".")
+			return filepath.Join(dir, base)
+		}
+	}
+
+	// Numbered rotation: access.log.1
+	if m := regexp.MustCompile(`^(.+)\.(\d{1,3})$`).FindStringSubmatch(filename); len(m) > 1 {
+		base := m[1]
+		return filepath.Join(dir, base)
+	}
+
+	// Middle-numbered rotation: access.1.log
+	if m := regexp.MustCompile(`^(.+)\.(\d{1,3})\.log$`).FindStringSubmatch(filename); len(m) > 1 {
+		base := m[1] + ".log"
+		return filepath.Join(dir, base)
+	}
+
+	// Fallback: return original path
+	return filePath
+}
+
+func isFullDatePatternBasic(s string) bool {
+	patterns := []string{
+		`^\d{8}$`,             // YYYYMMDD
+		`^\d{4}-\d{2}-\d{2}$`, // YYYY-MM-DD
+		`^\d{6}$`,             // YYMMDD
+	}
+	for _, p := range patterns {
+		if matched, _ := regexp.MatchString(p, s); matched {
+			return true
+		}
+	}
+	return false
 }
 
 // SetIndexingStatus sets the indexing status for a specific file path
@@ -375,7 +549,6 @@ func updateSearcherShardsLocked() {
 	} else {
 		logger.Warn("globalSearcher is not a DistributedSearcher, cannot perform hot-swap")
 	}
-
 }
 
 // StopModernServices stops all running modern services
@@ -384,16 +557,16 @@ func StopModernServices() {
 	defer servicesMutex.Unlock()
 
 	if !servicesInitialized {
-		logger.Info("Modern nginx log services not initialized, nothing to stop")
+		logger.Debug("Modern nginx log services not initialized, nothing to stop")
 		return
 	}
 
 	if isShuttingDown {
-		logger.Info("Modern nginx log services already shutting down")
+		logger.Debug("Modern nginx log services already shutting down")
 		return
 	}
 
-	logger.Info("Stopping modern nginx log services...")
+	logger.Debug("Stopping modern nginx log services...")
 	isShuttingDown = true
 
 	// Cancel the service context to trigger graceful shutdown
@@ -431,7 +604,7 @@ func StopModernServices() {
 	shutdownCancel = nil
 	isShuttingDown = false
 
-	logger.Info("Modern nginx log services stopped")
+	logger.Debug("Modern nginx log services stopped")
 }
 
 // DestroyAllIndexes completely removes all indexed data from disk.
@@ -440,7 +613,7 @@ func DestroyAllIndexes(ctx context.Context) error {
 	defer servicesMutex.RUnlock()
 
 	if !servicesInitialized || globalIndexer == nil {
-		logger.Warn("Cannot destroy indexes, services not initialized.")
+		logger.Debug("Cannot destroy indexes, services not initialized.")
 		return fmt.Errorf("services not initialized")
 	}
 

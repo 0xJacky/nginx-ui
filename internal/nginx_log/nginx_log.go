@@ -131,8 +131,3 @@ func isCommentedMatch(content []byte, match [][]byte) bool {
 
 	return false
 }
-
-// GetAllLogs returns all log paths
-func GetAllLogs(filters ...func(*NginxLogCache) bool) []*NginxLogCache {
-	return GetAllLogPaths(filters...)
-}

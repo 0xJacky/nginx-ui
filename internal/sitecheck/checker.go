@@ -93,7 +93,7 @@ func (sc *SiteChecker) CollectSites() {
 	sc.sites = make(map[string]*SiteInfo)
 
 	// Debug: log indexed sites count
-	logger.Infof("Found %d indexed sites", len(site.IndexedSites))
+	logger.Debugf("Found %d indexed sites", len(site.IndexedSites))
 
 	// Collect URLs from indexed sites, but only from enabled sites
 	for siteName, indexedSite := range site.IndexedSites {
@@ -143,7 +143,7 @@ func (sc *SiteChecker) CollectSites() {
 		}
 	}
 
-	logger.Infof("Collected %d enabled sites for checking", len(sc.sites))
+	logger.Debugf("Collected %d enabled sites for checking", len(sc.sites))
 }
 
 // loadAllSiteConfigs loads all site configs from database and caches them

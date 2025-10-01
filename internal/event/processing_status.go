@@ -95,7 +95,7 @@ func (m *ProcessingStatusManager) BroadcastCurrentStatus() {
 	m.mu.RLock()
 	defer m.mu.RUnlock()
 
-	logger.Info("Broadcasting current processing status to new client")
+	logger.Debug("Broadcasting current processing status to new client")
 	Publish(Event{
 		Type: TypeProcessingStatus,
 		Data: m.status,

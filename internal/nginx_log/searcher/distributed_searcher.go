@@ -519,21 +519,8 @@ func (ds *DistributedSearcher) SwapShards(newShards []bleve.Index) error {
 	}
 	ds.stats.mutex.Unlock()
 
-	logger.Infof("IndexAlias.Swap() completed: %d old shards -> %d new shards",
+	logger.Debugf("IndexAlias.Swap() completed: %d old shards -> %d new shards",
 		len(oldShards), len(newShards))
-
-	// Verify each new shard's document count for debugging
-	for i, shard := range newShards {
-		if shard != nil {
-			if docCount, err := shard.DocCount(); err != nil {
-				logger.Warnf("New shard %d: error getting doc count: %v", i, err)
-			} else {
-				logger.Infof("New shard %d: contains %d documents", i, docCount)
-			}
-		} else {
-			logger.Warnf("New shard %d: is nil", i)
-		}
-	}
 
 	// Test the searcher with a simple query to verify functionality
 	testCtx := context.Background()
@@ -546,7 +533,7 @@ func (ds *DistributedSearcher) SwapShards(newShards []bleve.Index) error {
 		logger.Errorf("Post-swap searcher test query failed: %v", err)
 		return fmt.Errorf("searcher test failed after shard swap: %w", err)
 	} else {
-		logger.Info("Post-swap searcher test query succeeded")
+		logger.Debug("Post-swap searcher test query succeeded")
 	}
 
 	return nil

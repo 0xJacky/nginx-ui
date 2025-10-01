@@ -133,19 +133,19 @@ func (s *Scanner) Initialize(ctx context.Context) error {
 
 	// Start background processes with WaitGroup tracking
 	s.wg.Go(func() {
-		logger.Info("Started cache watchForChanges goroutine")
+		logger.Debug("Started cache watchForChanges goroutine")
 		s.watchForChanges()
 		logger.Info("Cache watchForChanges goroutine completed")
 	})
 
 	s.wg.Go(func() {
-		logger.Info("Started cache periodicScan goroutine")
+		logger.Debug("Started cache periodicScan goroutine")
 		s.periodicScan()
 		logger.Info("Cache periodicScan goroutine completed")
 	})
 
 	s.wg.Go(func() {
-		logger.Info("Started cache handleShutdown goroutine")
+		logger.Debug("Started cache handleShutdown goroutine")
 		s.handleShutdown()
 		logger.Info("Cache handleShutdown goroutine completed")
 	})
@@ -153,9 +153,9 @@ func (s *Scanner) Initialize(ctx context.Context) error {
 	// Perform initial scan asynchronously to avoid blocking boot process
 	// Pass the context to ensure proper cancellation
 	s.wg.Go(func() {
-		logger.Info("Started cache initialScanAsync goroutine")
+		logger.Debug("Started cache initialScanAsync goroutine")
 		s.initialScanAsync(ctx)
-		logger.Info("Cache initialScanAsync goroutine completed")
+		logger.Debug("Cache initialScanAsync goroutine completed")
 	})
 
 	return nil
@@ -219,7 +219,7 @@ func (s *Scanner) periodicScan() {
 // handleShutdown listens for context cancellation and shuts down gracefully
 func (s *Scanner) handleShutdown() {
 	<-s.ctx.Done()
-	logger.Info("Shutting down Index Scanner")
+	logger.Debug("Shutting down Index Scanner")
 	// Note: Don't call s.Shutdown() here as it would cause deadlock
 	// Shutdown is called externally, this just handles cleanup
 }
@@ -243,8 +243,8 @@ func (s *Scanner) initialScanAsync(ctx context.Context) {
 	default:
 	}
 
-	logger.Info("Starting initial config scan...")
-	logger.Infof("Config path: %s", nginx.GetConfPath())
+	logger.Debug("Starting initial config scan...")
+	logger.Debugf("Config path: %s", nginx.GetConfPath())
 
 	// Perform the scan with the fresh context (not scanner's internal context)
 	if err := s.scanAllConfigsWithContext(ctx); err != nil {
@@ -252,7 +252,7 @@ func (s *Scanner) initialScanAsync(ctx context.Context) {
 		if ctx.Err() == nil {
 			logger.Errorf("Initial config scan failed: %v", err)
 		} else {
-			logger.Infof("Initial config scan cancelled due to context: %v", ctx.Err())
+			logger.Debugf("Initial config scan cancelled due to context: %v", ctx.Err())
 		}
 		// Signal completion even on error so waiting services don't hang
 		initialScanOnce.Do(func() {
@@ -263,7 +263,7 @@ func (s *Scanner) initialScanAsync(ctx context.Context) {
 		// Signal that initial scan is complete - this allows other services to proceed
 		// that depend on the scan callbacks to have been processed
 		initialScanOnce.Do(func() {
-			logger.Info("Initial config scan and callbacks completed - signaling completion")
+			logger.Debug("Initial config scan and callbacks completed - signaling completion")
 			close(initialScanComplete)
 		})
 	}
@@ -275,14 +275,14 @@ func (s *Scanner) scanAllConfigsWithContext(ctx context.Context) error {
 	defer s.setScanningState(false)
 
 	root := nginx.GetConfPath()
-	logger.Infof("Scanning config directory: %s", root)
+	logger.Debugf("Scanning config directory: %s", root)
 
 	// Create a timeout context for the scan operation
 	scanCtx, scanCancel := context.WithTimeout(ctx, 15*time.Second)
 	defer scanCancel()
 
 	// Scan all files in the config directory and subdirectories
-	logger.Info("Starting filepath.WalkDir scanning...")
+	logger.Debug("Starting filepath.WalkDir scanning...")
 
 	// Use a channel to communicate scan results
 	type scanResult struct {
@@ -311,7 +311,7 @@ func (s *Scanner) scanAllConfigsWithContext(ctx context.Context) error {
 	// Wait for scan to complete or timeout
 	select {
 	case result := <-resultChan:
-		logger.Infof("Scan completed successfully: dirs=%d, files=%d, error=%v",
+		logger.Debugf("Scan completed successfully: dirs=%d, files=%d, error=%v",
 			result.dirCount, result.fileCount, result.err)
 		return result.err
 	case <-scanCtx.Done():
@@ -320,7 +320,7 @@ func (s *Scanner) scanAllConfigsWithContext(ctx context.Context) error {
 		// Wait a bit more for cleanup
 		select {
 		case result := <-resultChan:
-			logger.Infof("Scan completed after timeout: dirs=%d, files=%d, error=%v",
+			logger.Debugf("Scan completed after timeout: dirs=%d, files=%d, error=%v",
 				result.dirCount, result.fileCount, result.err)
 			return result.err
 		case <-time.After(2 * time.Second):
@@ -807,7 +807,7 @@ func WaitForInitialScanComplete() {
 	// Add timeout to prevent infinite waiting
 	select {
 	case <-initialScanComplete:
-		logger.Info("Initial config scan completion confirmed")
+		logger.Debug("Initial config scan completion confirmed")
 	case <-time.After(30 * time.Second):
 		logger.Warn("Timeout waiting for initial config scan completion - proceeding anyway")
 	}

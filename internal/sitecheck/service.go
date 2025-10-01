@@ -43,14 +43,14 @@ func (s *Service) waitForSiteCollection(ctx context.Context) {
 
 	// First, wait for the initial cache scan to complete
 	// This is much more efficient than polling
-	logger.Info("Waiting for initial cache scan to complete before site collection...")
+	logger.Debug("Waiting for initial cache scan to complete before site collection...")
 	cache.WaitForInitialScanComplete()
-	logger.Infof("Initial cache scan completed after %v, now collecting sites", time.Since(startTime))
+	logger.Debugf("Initial cache scan completed after %v, now collecting sites", time.Since(startTime))
 
 	// Now collect sites - the cache scanning should have populated IndexedSites
 	s.checker.CollectSites()
 	siteCount := s.checker.GetSiteCount()
-	logger.Infof("Site collection completed: found %d sites after %v", siteCount, time.Since(startTime))
+	logger.Debugf("Site collection completed: found %d sites after %v", siteCount, time.Since(startTime))
 
 	// If no sites found after cache scan, do a brief fallback check
 	if siteCount == 0 {
@@ -75,13 +75,13 @@ func (s *Service) waitForSiteCollection(ctx context.Context) {
 				siteCount, time.Since(startTime))
 
 			if siteCount > 0 {
-				logger.Warnf("Site collection completed via fallback: found %d sites", siteCount)
+				logger.Debugf("Site collection completed via fallback: found %d sites", siteCount)
 				return
 			}
 
 			// Check if we've exceeded max fallback wait time
 			if time.Since(startTime) >= maxWaitTime {
-				logger.Warnf("Site collection fallback timeout after %v - proceeding with empty site list",
+				logger.Debugf("Site collection fallback timeout after %v - proceeding with empty site list",
 					time.Since(startTime))
 				return
 			}
@@ -132,23 +132,23 @@ func (s *Service) Start() {
 	// Initial collection and check with delay to allow cache scanner to complete
 	go kernel.Run(s.ctx, "sitecheck initial collection goroutine", func(ctx context.Context) {
 		sl := logger.NewSessionLogger(ctx)
-		sl.Info("Started sitecheck initial collection goroutine")
+		sl.Debug("Started sitecheck initial collection goroutine")
 		// Give cache scanner more time to start up before checking
 		time.Sleep(5 * time.Second)
 
 		// Wait for cache scanner to collect sites with progressive backoff
 		s.waitForSiteCollection(s.ctx)
 		s.checker.CheckAllSites(s.ctx)
-		sl.Info("Sitecheck initial collection goroutine completed")
+		sl.Debug("Sitecheck initial collection goroutine completed")
 	})
 
 	// Start periodic checking (every 5 minutes)
 	s.ticker = time.NewTicker(5 * time.Minute)
 	go kernel.Run(s.ctx, "sitecheck periodic check goroutine", func(ctx context.Context) {
 		sl := logger.NewSessionLogger(ctx)
-		sl.Info("Started sitecheck periodicCheck goroutine")
+		sl.Debug("Started sitecheck periodicCheck goroutine")
 		s.periodicCheck()
-		sl.Info("Sitecheck periodicCheck goroutine completed")
+		sl.Debug("Sitecheck periodicCheck goroutine completed")
 	})
 }
 
@@ -164,7 +164,7 @@ func (s *Service) Stop() {
 	sl := logger.NewSessionLogger(s.ctx)
 
 	s.running = false
-	sl.Info("Stopping site checking service")
+	sl.Debug("Stopping site checking service")
 
 	if s.ticker != nil {
 		s.ticker.Stop()
@@ -198,11 +198,11 @@ func (s *Service) periodicCheck() {
 func (s *Service) RefreshSites() {
 	go func() {
 		sl := logger.NewSessionLogger(s.ctx)
-		sl.Info("Started sitecheck manual refresh goroutine")
+		sl.Debug("Started sitecheck manual refresh goroutine")
 		logger.Info("Manually refreshing sites")
 		s.checker.CollectSites()
 		s.checker.CheckAllSites(s.ctx)
-		sl.Info("Sitecheck manual refresh goroutine completed")
+		sl.Debug("Sitecheck manual refresh goroutine completed")
 	}()
 }
 

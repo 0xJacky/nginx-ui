@@ -42,7 +42,7 @@ func (eb *Bus) SetWebSocketHub(hub WebSocketHub) {
 	eb.wsMutex.Lock()
 	defer eb.wsMutex.Unlock()
 	eb.wsHub = hub
-	logger.Info("WebSocket hub registered with event bus")
+	logger.Debug("WebSocket hub registered with event bus")
 }
 
 // Publish forwards an event directly to WebSocket clients
@@ -66,7 +66,7 @@ func (eb *Bus) Shutdown() {
 	defer eb.wsMutex.Unlock()
 
 	eb.wsHub = nil
-	logger.Info("Event bus shutdown completed")
+	logger.Debug("Event bus shutdown completed")
 }
 
 // Context returns the event bus context

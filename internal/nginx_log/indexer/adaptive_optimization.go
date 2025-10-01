@@ -202,6 +202,10 @@ func (ao *AdaptiveOptimizer) cpuMonitoringLoop() {
 
 // measureAndAdjustCPU measures current CPU utilization and suggests adjustments
 func (ao *AdaptiveOptimizer) measureAndAdjustCPU() {
+	// Only adjust when indexer is actively processing
+	if !ao.isIndexerBusy() {
+		return
+	}
 	// Get current CPU utilization
 	cpuUsage := ao.getCurrentCPUUtilization()
 
@@ -258,6 +262,10 @@ func (ao *AdaptiveOptimizer) batchOptimizationLoop() {
 
 // optimizeBatchSize analyzes performance and adjusts batch size
 func (ao *AdaptiveOptimizer) optimizeBatchSize() {
+	// Only adjust when indexer is actively processing
+	if !ao.isIndexerBusy() {
+		return
+	}
 	ao.performanceHistory.mutex.RLock()
 	if len(ao.performanceHistory.samples) < 5 {
 		ao.performanceHistory.mutex.RUnlock()
@@ -302,6 +310,10 @@ func (ao *AdaptiveOptimizer) calculateOptimalBatchSize(throughput float64, laten
 
 // adjustBatchSize applies the batch size adjustment
 func (ao *AdaptiveOptimizer) adjustBatchSize(oldSize, newSize int, throughput float64, latency time.Duration) {
+	// Only adjust when indexer is actively processing
+	if !ao.isIndexerBusy() {
+		return
+	}
 	atomic.StoreInt32(&ao.batchSizeController.currentBatchSize, int32(newSize))
 
 	var reason string
@@ -329,7 +341,7 @@ func (ao *AdaptiveOptimizer) adjustBatchSize(oldSize, newSize int, throughput fl
 	}
 	ao.batchSizeController.historyMutex.Unlock()
 
-	logger.Infof("Batch size adjusted: old_size=%d, new_size=%d, reason=%s", oldSize, newSize, reason)
+	logger.Debugf("Batch size adjusted: old_size=%d, new_size=%d, reason=%s", oldSize, newSize, reason)
 }
 
 // performanceTrackingLoop continuously tracks performance metrics
@@ -544,6 +556,10 @@ func (ao *AdaptiveOptimizer) suggestWorkerIncrease(currentCPU, targetCPU float64
 }
 
 func (ao *AdaptiveOptimizer) suggestWorkerDecrease(currentCPU, targetCPU float64) {
+	// If the indexer is not busy, don't adjust workers
+	if !ao.isIndexerBusy() {
+		return
+	}
 	// If already at min workers, do nothing.
 	currentWorkers := int(atomic.LoadInt64(&ao.workerCount))
 	if currentWorkers <= ao.cpuMonitor.minWorkers {
@@ -580,6 +596,11 @@ func (ao *AdaptiveOptimizer) suggestWorkerDecrease(currentCPU, targetCPU float64
 
 // adjustWorkerCount dynamically adjusts the worker count at runtime
 func (ao *AdaptiveOptimizer) adjustWorkerCount(newCount int) {
+	// Only adjust when indexer is actively processing
+	if !ao.isIndexerBusy() {
+		logger.Debugf("Skipping worker adjustment while idle: requested=%d", newCount)
+		return
+	}
 	oldCount := int(atomic.LoadInt64(&ao.workerCount))
 	if newCount <= 0 || newCount == oldCount {
 		logger.Debugf("Skipping worker adjustment: newCount=%d, currentCount=%d", newCount, oldCount)
@@ -618,4 +639,13 @@ func min(a, b int) int {
 		return a
 	}
 	return b
+}
+
+// isIndexerBusy reports whether the indexer is currently processing work.
+// When no poller is configured, it returns false to avoid unintended adjustments.
+func (ao *AdaptiveOptimizer) isIndexerBusy() bool {
+	if ao.activityPoller == nil {
+		return false
+	}
+	return ao.activityPoller.IsBusy()
 }
