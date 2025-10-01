@@ -49,8 +49,8 @@ onUnmounted(() => {
       minHeight: defaultHeight || '100vh',
       borderRadius: props.noBorderRadius ? '0' : '5px',
     }"
-    :readonly
-    :placeholder
+    :readonly="props.readonly"
+    :placeholder="props.placeholder"
     @init="init"
   />
 </template>

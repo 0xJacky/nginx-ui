@@ -5,7 +5,7 @@ import DirectiveAdd from './DirectiveAdd.vue'
 import DirectiveEditorItem from './DirectiveEditorItem.vue'
 import { useDirectiveStore } from './store'
 
-defineProps<{
+const props = defineProps<{
   readonly?: boolean
   context?: string
 }>()
@@ -46,8 +46,8 @@ function removeDirective(index: number) {
           v-model:directive="ngxDirectives[index]"
           v-auto-animate
           :index="index"
-          :readonly="readonly"
-          :context="context"
+          :readonly="props.readonly"
+          :context="props.context"
           @click="curIdx = index"
           @remove="removeDirective(index)"
         >
@@ -65,7 +65,7 @@ function removeDirective(index: number) {
     </Draggable>
 
     <DirectiveAdd
-      v-if="!readonly"
+      v-if="!props.readonly"
       v-auto-animate
       @save="addDirective"
     />
