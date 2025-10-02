@@ -46,7 +46,7 @@ require (
 	github.com/stretchr/testify v1.11.1
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20250620092546-c3e307e36701
 	github.com/ulikunitz/xz v0.5.15
-	github.com/uozi-tech/cosy v1.26.15
+	github.com/uozi-tech/cosy v1.26.16
 	github.com/uozi-tech/cosy-driver-sqlite v0.2.1
 	github.com/urfave/cli/v3 v3.4.1
 	golang.org/x/crypto v0.42.0
@@ -351,7 +351,7 @@ require (
 	google.golang.org/api v0.250.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20250922171735-9219d122eba9 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250922171735-9219d122eba9 // indirect
-	google.golang.org/protobuf v1.36.9 // indirect
+	google.golang.org/protobuf v1.36.10 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
 	gopkg.in/ns1/ns1-go.v2 v2.15.0 // indirect
 	gopkg.in/tomb.v1 v1.0.0-20141024135613-dd632973f1e7 // indirect

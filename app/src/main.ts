@@ -1,5 +1,5 @@
 import { autoAnimatePlugin } from '@formkit/auto-animate/vue'
-import { createCurdConfig } from '@uozi-admin/curd'
+import { createCosyProConfig } from '@uozi-admin/curd'
 import { createRequestConfig } from '@uozi-admin/request'
 import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
@@ -44,21 +44,7 @@ app.use(pinia)
     },
   })
   .use(setupInterceptors)
-  .use(createCurdConfig({
-    listApi: {
-      paginationMap: {
-        params: {
-          current: 'page',
-          pageSize: 'page_size',
-        },
-        response: {
-          total: 'total',
-          current: 'current_page',
-          pageSize: 'per_page',
-          totalPages: 'total_pages',
-        },
-      },
-    },
+  .use(createCosyProConfig({
     i18n: {
       legacy: false,
       locale: 'zh-CN',

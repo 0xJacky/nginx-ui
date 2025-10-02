@@ -125,6 +125,10 @@ export function setupResponseInterceptor() {
     },
 
     async error => {
+      // Ignore canceled requests (navigation, component unmount, deduped requests)
+      if (error?.code === 'ERR_CANCELED' || /canceled/i.test(error?.message || '')) {
+        return Promise.reject(error)
+      }
       // Setup stores and refs
       const user = useUserStore()
       const { secureSessionId } = storeToRefs(user)
@@ -155,11 +159,14 @@ export function setupResponseInterceptor() {
           console.error('Failed to parse blob error response as JSON', e)
         }
       }
+      console.error(error)
+      const errData = (error.response?.data as CosyError) || {
+        code: error?.code || 'NETWORK_ERROR',
+        message: error?.message || 'Network error',
+      }
+      await handleApiError(errData, dedupe)
 
-      const err = error.response?.data as CosyError
-      await handleApiError(err, dedupe)
-
-      return Promise.reject(error.response?.data)
+      return Promise.reject(error.response?.data ?? errData)
     },
   )
 }

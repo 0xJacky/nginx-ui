@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { DiskStat, LoadStat, MemStat } from '@/api/analytic'
 import analytic from '@/api/analytic'
-import upgrade from '@/api/upgrade'
 import { formatDateTime } from '@/lib/helper'
 
 interface StatusData {
@@ -38,30 +37,27 @@ function formatUptime(uptime: number) {
 // Format memory usage as "used percentage"
 function formatMemoryUsage(memory: MemStat | null) {
   if (!memory)
-    return '0B0%'
+    return '0B 0%'
 
-  // Use the pressure value as percentage (since you said we can get it directly)
-  const percentage = memory.pressure.toFixed(1)
+  // Use percentage provided by the backend; keep 1 decimal place
+  const percentage = typeof memory.pressure === 'number' ? memory.pressure.toFixed(1) : '0.0'
 
-  // Remove space from used size and combine without space
-  const usedSize = memory.used.replace(' ', '')
+  // Preserve space in formatted size and add a space before percentage
+  const usedSize = memory.used
 
-  return `${usedSize}${percentage}%`
+  return `${usedSize} ${percentage}%`
 }
 
 // Format disk usage as "used percentage"
 function formatDiskUsage(disk: DiskStat | null) {
   if (!disk)
-    return '0B0%'
+    return '0B 0%'
 
-  // Value is already formatted string like "39 GiB"
-  // Use the pre-calculated percentage from the API
-  const percentage = disk.percentage.toFixed(1)
+  // Already a formatted string like "39 GiB"; percentage comes from API
+  const percentage = typeof disk.percentage === 'number' ? disk.percentage.toFixed(1) : '0.0'
+  const usedSize = disk.used
 
-  // Remove space from used size and combine without space
-  const usedSize = disk.used.replace(' ', '')
-
-  return `${usedSize}${percentage}%`
+  return `${usedSize} ${percentage}%`
 }
 
 // Format CPU frequency
@@ -75,50 +71,46 @@ function formatCpuFreq(freq: number) {
   return `${freq.toFixed(0)}MHz`
 }
 
+// Format CPU text as "<count>x<freq>" with graceful fallbacks
+function formatCpu(cpuCount: number, freq: number) {
+  const hasCount = typeof cpuCount === 'number' && cpuCount > 0
+  const hasFreq = typeof freq === 'number' && freq > 0
+
+  if (hasCount && hasFreq)
+    return `${cpuCount}x${formatCpuFreq(freq)}`
+  if (hasCount && !hasFreq)
+    return `${cpuCount}x`
+  if (!hasCount && hasFreq)
+    return `${formatCpuFreq(freq)}`
+  return 'N/A'
+}
+
 // Update current timestamp
 function updateTimestamp() {
   statusData.value.timestamp = formatDateTime(new Date().toISOString())
 }
 
-// Initialize data from analytic init API
+// Initialize data from analytic init API (no fallbacks)
 async function initializeData() {
   try {
     const analyticData = await analytic.init()
 
-    // Set system info with fallbacks
     statusData.value.uptime = analyticData?.host?.uptime || 0
     statusData.value.loadAvg = analyticData?.loadavg || null
     statusData.value.memory = analyticData?.memory || null
     statusData.value.disk = analyticData?.disk || null
 
-    // Set CPU info with fallbacks
+    // System version is taken directly from host.platformVersion
+    statusData.value.version = analyticData?.host?.platformVersion || ''
+
     const cpuInfo = analyticData?.cpu?.info || []
     statusData.value.cpuCount = cpuInfo.length || 0
-
-    // Get CPU frequency from first CPU info with fallback
-    if (cpuInfo.length > 0 && cpuInfo[0].mhz) {
-      statusData.value.cpuFreq = cpuInfo[0].mhz
-    }
-    else {
-      statusData.value.cpuFreq = 0
-    }
-
-    // Try to get version from upgrade API, fallback to host platform version
-    try {
-      const versionData = await upgrade.current_version()
-      statusData.value.version = versionData?.cur_version?.version || analyticData?.host?.platformVersion || 'unknown'
-    }
-    catch (versionError) {
-      console.warn('Failed to get app version, using platform version:', versionError)
-      statusData.value.version = analyticData?.host?.platformVersion || 'unknown'
-    }
+    statusData.value.cpuFreq = (cpuInfo.length > 0 && cpuInfo[0].mhz) ? cpuInfo[0].mhz : 0
 
     updateTimestamp()
   }
   catch (error) {
     console.error('Failed to initialize terminal status bar:', error)
-    // Set default values on error
-    statusData.value.version = 'error'
     updateTimestamp()
   }
 }
@@ -200,7 +192,7 @@ onMounted(() => {
 
       <div class="status-item cpu">
         <span class="icon i-tabler-cpu" />
-        <span class="value">{{ statusData.cpuCount || 0 }}x{{ formatCpuFreq(statusData.cpuFreq || 0) }}</span>
+        <span class="value">{{ formatCpu(statusData.cpuCount || 0, statusData.cpuFreq || 0) }}</span>
       </div>
 
       <div class="status-item memory">
