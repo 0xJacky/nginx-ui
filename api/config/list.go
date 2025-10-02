@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"strconv"
 	"strings"
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
@@ -12,6 +11,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/cast"
 	"github.com/uozi-tech/cosy"
 )
 
@@ -41,7 +41,7 @@ func GetConfigs(c *gin.Context) {
 	search := c.Query("search")
 	sortBy := c.DefaultQuery("sort_by", "name")
 	order := c.DefaultQuery("order", "asc")
-	namespaceIDStr := c.Query("env_group_id")
+	namespaceId := cast.ToUint64(c.Query("namespace_id"))
 
 	// Get directory parameter
 	encodedDir := c.DefaultQuery("dir", "/")
@@ -55,20 +55,12 @@ func GetConfigs(c *gin.Context) {
 		dir = strings.TrimSuffix(dir, "/")
 	}
 
-	// Parse env_group_id
-	var namespaceID uint64
-	if namespaceIDStr != "" {
-		if id, err := strconv.ParseUint(namespaceIDStr, 10, 64); err == nil {
-			namespaceID = id
-		}
-	}
-
 	// Create options
 	options := &config.GenericListOptions{
 		Search:      search,
 		OrderBy:     sortBy,
 		Sort:        order,
-		NamespaceID: namespaceID,
+		NamespaceID: namespaceId,
 		IncludeDirs: true, // Keep directories for the list.go endpoint
 	}
 

@@ -18,7 +18,7 @@ func GetSiteList(c *gin.Context) {
 		Status:      c.Query("status"),
 		OrderBy:     c.Query("sort_by"),
 		Sort:        c.DefaultQuery("order", "desc"),
-		NamespaceID: cast.ToUint64(c.Query("env_group_id")),
+		NamespaceID: cast.ToUint64(c.Query("namespace_id")),
 	}
 
 	// Get sites from database
