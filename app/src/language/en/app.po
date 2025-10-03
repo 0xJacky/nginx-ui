@@ -297,7 +297,7 @@ msgid ""
 "certificate application will fail."
 msgstr ""
 
-#: src/constants/errors/nginx_log.ts:13
+#: src/constants/errors/nginx_log.ts:10
 msgid "Analytics service not available"
 msgstr ""
 
@@ -543,7 +543,7 @@ msgid ""
 "ready."
 msgstr ""
 
-#: src/constants/errors/nginx_log.ts:17
+#: src/constants/errors/nginx_log.ts:14
 msgid "Background log service not available"
 msgstr ""
 
@@ -748,7 +748,7 @@ msgstr ""
 msgid "Cannot access backup path {0}: {1}"
 msgstr ""
 
-#: src/constants/errors/nginx_log.ts:16
+#: src/constants/errors/nginx_log.ts:13
 msgid "Cannot access log file"
 msgstr ""
 
@@ -1197,6 +1197,10 @@ msgstr ""
 msgid "Config entry file not exist"
 msgstr ""
 
+#: src/constants/errors/user.ts:15
+msgid "Config not found"
+msgstr ""
+
 #: src/constants/errors/backup.ts:14
 msgid "Config path is empty"
 msgstr ""
@@ -1292,6 +1296,14 @@ msgstr ""
 
 #: src/views/system/Upgrade.vue:161
 msgid "Core Upgrade"
+msgstr ""
+
+#: src/constants/errors/docker.ts:15
+msgid "Could not find old container name"
+msgstr ""
+
+#: src/constants/errors/docker.ts:16
+msgid "Could not find temp container"
 msgstr ""
 
 #: src/views/nginx_log/dashboard/components/BrowserStatsTable.vue:18
@@ -1480,6 +1492,10 @@ msgstr ""
 msgid "Days"
 msgstr ""
 
+#: src/constants/errors/user.ts:16
+msgid "Db file not found"
+msgstr ""
+
 #: src/constants/errors/middleware.ts:3
 msgid "Decryption failed"
 msgstr ""
@@ -1633,8 +1649,16 @@ msgstr ""
 msgid "Device Type"
 msgstr ""
 
+#: src/constants/errors/upgrader.ts:4
+msgid "Digest file content is empty"
+msgstr ""
+
 #: src/views/preference/components/ExternalNotify/dingtalk.ts:5
 msgid "DingTalk"
+msgstr ""
+
+#: src/views/upstream/SocketList.vue:31
+msgid "Direct"
 msgstr ""
 
 #: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:72
@@ -1924,7 +1948,7 @@ msgstr ""
 msgid "Email (*)"
 msgstr ""
 
-#: src/constants/errors/nginx_log.ts:9
+#: src/constants/errors/nginx_log.parser.ts:2
 msgid "Empty log line"
 msgstr ""
 
@@ -2153,6 +2177,10 @@ msgstr ""
 msgid "Error processing content"
 msgstr ""
 
+#: src/constants/errors/upgrader.ts:5
+msgid "Executable binary file is empty"
+msgstr ""
+
 #: src/views/system/Upgrade.vue:195
 msgid "Executable Path"
 msgstr ""
@@ -2369,7 +2397,7 @@ msgstr ""
 msgid "Failed to decrypt Nginx UI directory: {0}"
 msgstr ""
 
-#: src/constants/errors/nginx_log.ts:22
+#: src/constants/errors/nginx_log.ts:19
 msgid "Failed to delete all indexes"
 msgstr ""
 
@@ -2381,7 +2409,7 @@ msgstr ""
 msgid "Failed to delete certificate from database: %{error}"
 msgstr ""
 
-#: src/constants/errors/nginx_log.ts:21
+#: src/constants/errors/nginx_log.ts:18
 msgid "Failed to delete file index"
 msgstr ""
 
@@ -2455,7 +2483,7 @@ msgstr ""
 msgid "Failed to get container id: {0}"
 msgstr ""
 
-#: src/constants/errors/nginx_log.ts:23
+#: src/constants/errors/nginx_log.ts:20
 msgid "Failed to get index status"
 msgstr ""
 
@@ -2463,11 +2491,15 @@ msgstr ""
 msgid "Failed to get Nginx performance settings"
 msgstr ""
 
+#: src/constants/errors/performance.ts:9
+msgid "Failed to get nginx.conf path"
+msgstr ""
+
 #: src/composables/useNginxPerformance.ts:49
 msgid "Failed to get performance data"
 msgstr ""
 
-#: src/constants/errors/nginx_log.ts:24
+#: src/constants/errors/nginx_log.ts:21
 msgid "Failed to get persistence stats"
 msgstr ""
 
@@ -2547,11 +2579,11 @@ msgstr ""
 msgid "Failed to read symlink: {0}"
 msgstr ""
 
-#: src/constants/errors/nginx_log.ts:20
+#: src/constants/errors/nginx_log.ts:17
 msgid "Failed to rebuild file index"
 msgstr ""
 
-#: src/constants/errors/nginx_log.ts:19
+#: src/constants/errors/nginx_log.ts:16
 msgid "Failed to rebuild index"
 msgstr ""
 
@@ -2651,7 +2683,7 @@ msgstr ""
 msgid "File or directory not found: {0}"
 msgstr ""
 
-#: src/constants/errors/nginx_log.ts:18
+#: src/constants/errors/nginx_log.ts:15
 msgid "File path is required"
 msgstr ""
 
@@ -2857,6 +2889,10 @@ msgstr ""
 msgid "GZIP Min Length"
 msgstr ""
 
+#: src/views/upstream/SocketList.vue:61
+msgid "Health Check"
+msgstr ""
+
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:365
 msgid "Health Check Configuration"
 msgstr ""
@@ -2867,6 +2903,10 @@ msgstr ""
 
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:301
 msgid "Health check configuration saved successfully"
+msgstr ""
+
+#: src/views/upstream/SocketList.vue:37
+msgid "Health Status"
 msgstr ""
 
 #: src/components/SensitiveString/SensitiveString.vue:40
@@ -2893,7 +2933,7 @@ msgstr ""
 msgid "History"
 msgstr ""
 
-#: src/routes/index.ts:50
+#: src/routes/index.ts:52
 msgid "Home"
 msgstr ""
 
@@ -3032,6 +3072,10 @@ msgstr ""
 msgid "Info"
 msgstr ""
 
+#: src/constants/errors/user.ts:17
+msgid "Init user not exists"
+msgstr ""
+
 #: src/language/constants.ts:25
 msgid "Initial core upgrader error"
 msgstr ""
@@ -3102,6 +3146,10 @@ msgstr ""
 msgid "Invalid claims type"
 msgstr ""
 
+#: src/constants/errors/version.ts:2
+msgid "Invalid commit SHA"
+msgstr ""
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:121
 msgid "Invalid file object"
 msgstr ""
@@ -3160,11 +3208,15 @@ msgstr ""
 msgid "Invalid security token format"
 msgstr ""
 
-#: src/constants/errors/nginx_log.ts:10
+#: src/constants/errors/notification.ts:6
+msgid "Invalid Telegram Chat ID: cannot be zero"
+msgstr ""
+
+#: src/constants/errors/nginx_log.parser.ts:5
 msgid "Invalid timestamp format"
 msgstr ""
 
-#: src/constants/errors/nginx_log.ts:26
+#: src/constants/errors/nginx_log.ts:23
 msgid "Invalid websocket message type"
 msgstr ""
 
@@ -3277,6 +3329,10 @@ msgstr ""
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:183
 msgid "Last Backup Time"
+msgstr ""
+
+#: src/views/upstream/SocketList.vue:52
+msgid "Last Check"
 msgstr ""
 
 #: src/views/system/Upgrade.vue:197
@@ -3437,11 +3493,11 @@ msgid ""
 "nginx-log.html for more information."
 msgstr ""
 
-#: src/constants/errors/nginx_log.ts:14
+#: src/constants/errors/nginx_log.ts:11
 msgid "Log file does not exist"
 msgstr ""
 
-#: src/constants/errors/nginx_log.ts:25
+#: src/constants/errors/nginx_log.ts:22
 msgid "Log file is not a regular file"
 msgstr ""
 
@@ -3453,7 +3509,7 @@ msgstr ""
 msgid "Log file not indexed yet"
 msgstr ""
 
-#: src/constants/errors/nginx_log.ts:12
+#: src/constants/errors/nginx_log.ts:9
 msgid "Log indexer not available"
 msgstr ""
 
@@ -3461,11 +3517,19 @@ msgstr ""
 msgid "Log indexing completed! Loading updated data..."
 msgstr ""
 
+#: src/constants/errors/nginx_log.parser.ts:3
+msgid "Log line exceeds maximum length"
+msgstr ""
+
 #: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:430
 msgid "Log List"
 msgstr ""
 
-#: src/constants/errors/nginx_log.ts:15
+#: src/constants/errors/nginx_log.indexer.ts:2
+msgid "Log parser is not initialized; call indexer.InitLogParser() before use"
+msgstr ""
+
+#: src/constants/errors/nginx_log.ts:12
 msgid "Log path is not under whitelist"
 msgstr ""
 
@@ -3687,15 +3751,15 @@ msgstr ""
 msgid "Model"
 msgstr ""
 
-#: src/constants/errors/nginx_log.ts:28
+#: src/constants/errors/nginx_log.ts:25
 msgid "Modern analytics service not available"
 msgstr ""
 
-#: src/constants/errors/nginx_log.ts:29
+#: src/constants/errors/nginx_log.ts:26
 msgid "Modern indexer service not available"
 msgstr ""
 
-#: src/constants/errors/nginx_log.ts:27
+#: src/constants/errors/nginx_log.ts:24
 msgid "Modern searcher service not available"
 msgstr ""
 
@@ -4081,6 +4145,10 @@ msgstr ""
 msgid "No Action"
 msgstr ""
 
+#: src/constants/errors/cert.ts:25
+msgid "No certificate available"
+msgstr ""
+
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:196
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:232
 msgid "No China geographic data available"
@@ -4091,6 +4159,10 @@ msgstr ""
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:127
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:95
 msgid "No data"
+msgstr ""
+
+#: src/views/upstream/SocketList.vue:42
+msgid "No Data"
 msgstr ""
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:820
@@ -4138,6 +4210,10 @@ msgstr ""
 
 #: src/views/preference/Preference.vue:64
 msgid "Node"
+msgstr ""
+
+#: src/constants/errors/analytic.ts:2
+msgid "Node analytics failed: {0}"
 msgstr ""
 
 #: src/views/preference/tabs/NodeSettings.vue:15
@@ -4969,6 +5045,10 @@ msgstr ""
 msgid "Reinstall"
 msgstr ""
 
+#: src/constants/errors/version.ts:3
+msgid "Release API request failed: {0}"
+msgstr ""
+
 #: src/views/system/Upgrade.vue:270
 msgid "Release Note"
 msgstr ""
@@ -5772,6 +5852,10 @@ msgstr ""
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:262
 msgid "Sleep time between cache manager iterations"
+msgstr ""
+
+#: src/views/upstream/SocketList.vue:18
+msgid "Socket"
 msgstr ""
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:735
@@ -6614,8 +6698,12 @@ msgstr ""
 msgid "Unsupported backup type: {0}"
 msgstr ""
 
-#: src/constants/errors/nginx_log.ts:11
+#: src/constants/errors/nginx_log.parser.ts:4
 msgid "Unsupported log format"
+msgstr ""
+
+#: src/constants/errors/upgrader.ts:6
+msgid "Update already in progress"
 msgstr ""
 
 #: src/views/user/UserProfile.vue:218
@@ -6657,6 +6745,14 @@ msgstr ""
 msgid "Upgraded successfully"
 msgstr ""
 
+#: src/constants/errors/upgrader.ts:3
+msgid "Upgrader core digest is empty"
+msgstr ""
+
+#: src/constants/errors/upgrader.ts:2
+msgid "Upgrader core downloadUrl is empty"
+msgstr ""
+
 #: src/views/node/BatchUpgrader.vue:88 src/views/system/Upgrade.vue:80
 msgid "Upgrading Nginx UI, please wait..."
 msgstr ""
@@ -6673,12 +6769,17 @@ msgstr ""
 msgid "Upload Folders"
 msgstr ""
 
-#: src/composables/useUpstreamStatus.ts:132
+#: src/composables/useUpstreamStatus.ts:132 src/routes/modules/upstream.ts:10
+#: src/views/upstream/SocketList.vue:25
 msgid "Upstream"
 msgstr ""
 
 #: src/components/NgxConfigEditor/NgxUpstream.vue:125
 msgid "Upstream Name"
+msgstr ""
+
+#: src/views/upstream/SocketList.vue:134
+msgid "Upstream Sockets"
 msgstr ""
 
 #: src/views/namespace/columns.ts:59
@@ -6935,7 +7036,7 @@ msgstr ""
 msgid "Workers"
 msgstr ""
 
-#: src/layouts/HeaderLayout.vue:61 src/routes/index.ts:59
+#: src/layouts/HeaderLayout.vue:61 src/routes/index.ts:61
 #: src/views/workspace/WorkSpace.vue:51
 msgid "Workspace"
 msgstr ""

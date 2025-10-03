@@ -12,4 +12,7 @@ export default {
   40401: () => $gettext('Session not found'),
   40402: () => $gettext('Token is empty'),
   50005: () => $gettext('Invalid claims type'),
+  50006: () => $gettext('Config not found'),
+  50007: () => $gettext('Db file not found'),
+  50008: () => $gettext('Init user not exists'),
 }

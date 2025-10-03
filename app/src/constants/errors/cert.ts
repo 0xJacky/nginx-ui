@@ -22,4 +22,5 @@ export default {
   50021: () => $gettext('Write private.key error: {0}'),
   50022: () => $gettext('Obtain cert error: {0}'),
   50023: () => $gettext('Revoke cert error: {0}'),
+  50031: () => $gettext('No certificate available'),
 }

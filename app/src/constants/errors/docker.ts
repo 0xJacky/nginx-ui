@@ -12,4 +12,6 @@ export default {
   500011: () => $gettext('Failed to inspect current container: {0}'),
   500012: () => $gettext('Failed to create temp container: {0}'),
   500013: () => $gettext('Failed to start temp container: {0}'),
+  500014: () => $gettext('Could not find old container name'),
+  500015: () => $gettext('Could not find temp container'),
 }

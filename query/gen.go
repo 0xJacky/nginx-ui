@@ -35,6 +35,7 @@ var (
 	Site           *site
 	SiteConfig     *siteConfig
 	Stream         *stream
+	UpstreamConfig *upstreamConfig
 	User           *user
 )
 
@@ -58,6 +59,7 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	Site = &Q.Site
 	SiteConfig = &Q.SiteConfig
 	Stream = &Q.Stream
+	UpstreamConfig = &Q.UpstreamConfig
 	User = &Q.User
 }
 
@@ -82,6 +84,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		Site:           newSite(db, opts...),
 		SiteConfig:     newSiteConfig(db, opts...),
 		Stream:         newStream(db, opts...),
+		UpstreamConfig: newUpstreamConfig(db, opts...),
 		User:           newUser(db, opts...),
 	}
 }
@@ -107,6 +110,7 @@ type Query struct {
 	Site           site
 	SiteConfig     siteConfig
 	Stream         stream
+	UpstreamConfig upstreamConfig
 	User           user
 }
 
@@ -133,6 +137,7 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		Site:           q.Site.clone(db),
 		SiteConfig:     q.SiteConfig.clone(db),
 		Stream:         q.Stream.clone(db),
+		UpstreamConfig: q.UpstreamConfig.clone(db),
 		User:           q.User.clone(db),
 	}
 }
@@ -166,6 +171,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		Site:           q.Site.replaceDB(db),
 		SiteConfig:     q.SiteConfig.replaceDB(db),
 		Stream:         q.Stream.replaceDB(db),
+		UpstreamConfig: q.UpstreamConfig.replaceDB(db),
 		User:           q.User.replaceDB(db),
 	}
 }
@@ -189,6 +195,7 @@ type queryCtx struct {
 	Site           *siteDo
 	SiteConfig     *siteConfigDo
 	Stream         *streamDo
+	UpstreamConfig *upstreamConfigDo
 	User           *userDo
 }
 
@@ -212,6 +219,7 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		Site:           q.Site.WithContext(ctx),
 		SiteConfig:     q.SiteConfig.WithContext(ctx),
 		Stream:         q.Stream.WithContext(ctx),
+		UpstreamConfig: q.UpstreamConfig.WithContext(ctx),
 		User:           q.User.WithContext(ctx),
 	}
 }

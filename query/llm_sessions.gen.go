@@ -32,7 +32,6 @@ func newLLMSession(db *gorm.DB, opts ...gen.DOOption) lLMSession {
 	_lLMSession.SessionID = field.NewString(tableName, "session_id")
 	_lLMSession.Title = field.NewString(tableName, "title")
 	_lLMSession.Path = field.NewString(tableName, "path")
-	_lLMSession.SessionType = field.NewString(tableName, "session_type")
 	_lLMSession.Messages = field.NewField(tableName, "messages")
 	_lLMSession.MessageCount = field.NewInt(tableName, "message_count")
 	_lLMSession.IsActive = field.NewBool(tableName, "is_active")
@@ -53,7 +52,6 @@ type lLMSession struct {
 	SessionID    field.String
 	Title        field.String
 	Path         field.String
-	SessionType  field.String
 	Messages     field.Field
 	MessageCount field.Int
 	IsActive     field.Bool
@@ -80,7 +78,6 @@ func (l *lLMSession) updateTableName(table string) *lLMSession {
 	l.SessionID = field.NewString(table, "session_id")
 	l.Title = field.NewString(table, "title")
 	l.Path = field.NewString(table, "path")
-	l.SessionType = field.NewString(table, "session_type")
 	l.Messages = field.NewField(table, "messages")
 	l.MessageCount = field.NewInt(table, "message_count")
 	l.IsActive = field.NewBool(table, "is_active")
@@ -103,12 +100,11 @@ func (l *lLMSession) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (l *lLMSession) fillFieldMap() {
-	l.fieldMap = make(map[string]field.Expr, 11)
+	l.fieldMap = make(map[string]field.Expr, 10)
 	l.fieldMap["id"] = l.ID
 	l.fieldMap["session_id"] = l.SessionID
 	l.fieldMap["title"] = l.Title
 	l.fieldMap["path"] = l.Path
-	l.fieldMap["session_type"] = l.SessionType
 	l.fieldMap["messages"] = l.Messages
 	l.fieldMap["message_count"] = l.MessageCount
 	l.fieldMap["is_active"] = l.IsActive

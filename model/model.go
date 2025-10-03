@@ -53,6 +53,7 @@ func GenerateAllModel() []any {
 		AutoBackup{},
 		SiteConfig{},
 		NginxLogIndex{},
+		UpstreamConfig{},
 	}
 }
 

@@ -32,12 +32,13 @@ type Service struct {
 	availabilityMap map[string]*Status     // key: host:port
 	configTargets   map[string][]string    // configPath -> []targetKeys
 	// Public upstream definitions storage
-	Upstreams      map[string]*Definition // key: upstream name
-	upstreamsMutex sync.RWMutex
-	targetsMutex   sync.RWMutex
-	lastUpdateTime time.Time
-	testInProgress bool
-	testMutex      sync.Mutex
+	Upstreams                map[string]*Definition // key: upstream name
+	upstreamsMutex           sync.RWMutex
+	targetsMutex             sync.RWMutex
+	lastUpdateTime         time.Time
+	testInProgress         bool
+	testMutex              sync.Mutex
+	disabledSocketsChecker func() map[string]bool
 }
 
 var (
@@ -236,18 +237,30 @@ func (s *Service) PerformAvailabilityTest() {
 
 	// logger.Debug("Performing availability test for", targetCount, "unique targets")
 
+	// Get disabled sockets from database
+	disabledSockets := make(map[string]bool)
+	if s.disabledSocketsChecker != nil {
+		disabledSockets = s.disabledSocketsChecker()
+	}
+
 	// Separate targets into traditional and consul groups from the start
 	s.targetsMutex.RLock()
 	regularTargetKeys := make([]string, 0, len(s.targets))
 	consulTargets := make([]ProxyTarget, 0, len(s.targets))
 
 	for _, targetInfo := range s.targets {
+		// Check if this socket is disabled
+		socketAddr := formatSocketAddress(targetInfo.ProxyTarget.Host, targetInfo.ProxyTarget.Port)
+		if disabledSockets[socketAddr] {
+			// logger.Debug("Skipping disabled socket:", socketAddr)
+			continue
+		}
+
 		if targetInfo.ProxyTarget.IsConsul {
 			consulTargets = append(consulTargets, targetInfo.ProxyTarget)
 		} else {
 			// Traditional target - use properly formatted socket address
-			key := formatSocketAddress(targetInfo.ProxyTarget.Host, targetInfo.ProxyTarget.Port)
-			regularTargetKeys = append(regularTargetKeys, key)
+			regularTargetKeys = append(regularTargetKeys, socketAddr)
 		}
 	}
 	s.targetsMutex.RUnlock()
@@ -275,6 +288,28 @@ func (s *Service) PerformAvailabilityTest() {
 	s.targetsMutex.Unlock()
 
 	// logger.Debug("Availability test completed for", len(results), "targets")
+}
+
+// findUpstreamNameForTarget finds which upstream a target belongs to
+func (s *Service) findUpstreamNameForTarget(target ProxyTarget) string {
+	s.upstreamsMutex.RLock()
+	defer s.upstreamsMutex.RUnlock()
+
+	targetKey := formatSocketAddress(target.Host, target.Port)
+	for name, upstream := range s.Upstreams {
+		for _, server := range upstream.Servers {
+			serverKey := formatSocketAddress(server.Host, server.Port)
+			if serverKey == targetKey {
+				return name
+			}
+		}
+	}
+	return ""
+}
+
+// SetDisabledSocketsChecker sets a callback function to check disabled sockets
+func (s *Service) SetDisabledSocketsChecker(checker func() map[string]bool) {
+	s.disabledSocketsChecker = checker
 }
 
 // ClearTargets clears all targets (useful for testing or reloading)

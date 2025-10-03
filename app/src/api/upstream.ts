@@ -19,6 +19,26 @@ export interface UpstreamAvailabilityResponse {
   target_count: number
 }
 
+export interface SocketInfo {
+  socket: string
+  host: string
+  port: string
+  type: string
+  is_consul: boolean
+  upstream_name: string
+  last_check: string
+  status: UpstreamStatus | null
+  enabled: boolean
+}
+
+export interface SocketListResponse {
+  data: SocketInfo[]
+}
+
+export interface UpdateSocketConfigRequest {
+  enabled: boolean
+}
+
 const upstream = {
   // HTTP GET interface to get all upstream availability results
   getAvailability(): Promise<UpstreamAvailabilityResponse> {
@@ -28,6 +48,16 @@ const upstream = {
   // WebSocket interface for real-time availability updates
   availabilityWebSocket() {
     return ws('/api/upstream/availability_ws')
+  },
+
+  // Get all sockets with their configuration and health status
+  getSocketList(): Promise<SocketListResponse> {
+    return http.get('/upstream/sockets')
+  },
+
+  // Update socket configuration
+  updateSocketConfig(socket: string, data: UpdateSocketConfigRequest) {
+    return http.put(`/upstream/socket/${encodeURIComponent(socket)}`, data)
   },
 }
 

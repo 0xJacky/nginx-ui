@@ -18,6 +18,7 @@ import { sitesRoutes } from './modules/sites'
 import { streamsRoutes } from './modules/streams'
 import { systemRoutes } from './modules/system'
 import { terminalRoutes } from './modules/terminal'
+import { upstreamRoutes } from './modules/upstream'
 import { userRoutes } from './modules/user'
 import 'nprogress/nprogress.css'
 
@@ -26,6 +27,7 @@ const mainLayoutChildren: RouteRecordRaw[] = [
   ...dashboardRoutes,
   ...sitesRoutes,
   ...streamsRoutes,
+  ...upstreamRoutes,
   ...configRoutes,
   ...certificatesRoutes,
   ...terminalRoutes,
