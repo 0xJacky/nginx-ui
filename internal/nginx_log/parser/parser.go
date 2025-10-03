@@ -5,7 +5,6 @@ import (
 	"bytes"
 	"context"
 	"crypto/md5"
-	"errors"
 	"fmt"
 	"io"
 	"runtime"
@@ -15,8 +14,8 @@ import (
 	"unsafe"
 )
 
-// OptimizedParser provides high-performance log parsing with zero-copy optimizations
-type OptimizedParser struct {
+// Parser provides high-performance log parsing with zero-copy optimizations
+type Parser struct {
 	config     *Config
 	uaParser   UserAgentParser
 	geoService GeoIPService
@@ -45,13 +44,13 @@ type parseBuffer struct {
 	lineBytes []byte
 }
 
-// NewOptimizedParser creates a new high-performance parser
-func NewOptimizedParser(config *Config, uaParser UserAgentParser, geoService GeoIPService) *OptimizedParser {
+// NewParser creates a new high-performance parser
+func NewParser(config *Config, uaParser UserAgentParser, geoService GeoIPService) *Parser {
 	if config == nil {
 		config = DefaultParserConfig()
 	}
 
-	return &OptimizedParser{
+	return &Parser{
 		config:     config,
 		uaParser:   uaParser,
 		geoService: geoService,
@@ -70,13 +69,13 @@ func NewOptimizedParser(config *Config, uaParser UserAgentParser, geoService Geo
 }
 
 // ParseLine parses a single log line with zero-copy optimizations
-func (p *OptimizedParser) ParseLine(line string) (*AccessLogEntry, error) {
+func (p *Parser) ParseLine(line string) (*AccessLogEntry, error) {
 	if len(line) == 0 {
-		return nil, errors.New(ErrEmptyLogLine)
+		return nil, ErrEmptyLogLine
 	}
 
 	if len(line) > p.config.MaxLineLength {
-		return nil, errors.New(ErrLineTooLong)
+		return nil, ErrLineTooLong
 	}
 
 	buf := p.pool.Get().(*parseBuffer)
@@ -112,12 +111,12 @@ func (p *OptimizedParser) ParseLine(line string) (*AccessLogEntry, error) {
 }
 
 // ParseLines parses multiple log lines with parallel processing
-func (p *OptimizedParser) ParseLines(lines []string) *ParseResult {
+func (p *Parser) ParseLines(lines []string) *ParseResult {
 	return p.ParseLinesWithContext(context.Background(), lines)
 }
 
 // ParseLinesWithContext parses lines with context support for cancellation
-func (p *OptimizedParser) ParseLinesWithContext(ctx context.Context, lines []string) *ParseResult {
+func (p *Parser) ParseLinesWithContext(ctx context.Context, lines []string) *ParseResult {
 	startTime := time.Now()
 	result := &ParseResult{
 		Entries:   make([]*AccessLogEntry, 0, len(lines)),
@@ -139,7 +138,7 @@ func (p *OptimizedParser) ParseLinesWithContext(ctx context.Context, lines []str
 }
 
 // ParseStream parses log entries from an io.Reader with streaming support
-func (p *OptimizedParser) ParseStream(ctx context.Context, reader io.Reader) (*ParseResult, error) {
+func (p *Parser) ParseStream(ctx context.Context, reader io.Reader) (*ParseResult, error) {
 	startTime := time.Now()
 	result := &ParseResult{
 		Entries: make([]*AccessLogEntry, 0),
@@ -196,7 +195,7 @@ func (p *OptimizedParser) ParseStream(ctx context.Context, reader io.Reader) (*P
 }
 
 // parseLinesSingleThreaded handles small datasets with single-threaded parsing
-func (p *OptimizedParser) parseLinesSingleThreaded(ctx context.Context, lines []string, startTime time.Time) *ParseResult {
+func (p *Parser) parseLinesSingleThreaded(ctx context.Context, lines []string, startTime time.Time) *ParseResult {
 	result := &ParseResult{
 		Entries:   make([]*AccessLogEntry, 0, len(lines)),
 		Processed: len(lines),
@@ -227,7 +226,7 @@ func (p *OptimizedParser) parseLinesSingleThreaded(ctx context.Context, lines []
 }
 
 // parseLinesParallel handles large datasets with parallel processing
-func (p *OptimizedParser) parseLinesParallel(ctx context.Context, lines []string, startTime time.Time) *ParseResult {
+func (p *Parser) parseLinesParallel(ctx context.Context, lines []string, startTime time.Time) *ParseResult {
 	numWorkers := p.config.WorkerCount
 	if numWorkers <= 0 {
 		numWorkers = runtime.NumCPU()
@@ -323,18 +322,18 @@ func (p *OptimizedParser) parseLinesParallel(ctx context.Context, lines []string
 }
 
 // parseLineOptimized performs optimized parsing of a single line
-func (p *OptimizedParser) parseLineOptimized(line []byte, buf *parseBuffer) error {
+func (p *Parser) parseLineOptimized(line []byte, buf *parseBuffer) error {
 	pos := 0
 	length := len(line)
 
 	if length < 20 {
-		return errors.New(ErrUnsupportedLogFormat)
+		return ErrUnsupportedLogFormat
 	}
 
 	// Parse IP address
 	pos = p.parseIP(line, pos, buf.entry)
 	if pos >= length {
-		return errors.New(ErrUnsupportedLogFormat)
+		return ErrUnsupportedLogFormat
 	}
 
 	// Skip remote user fields (- -)
@@ -347,21 +346,21 @@ func (p *OptimizedParser) parseLineOptimized(line []byte, buf *parseBuffer) erro
 	pos = p.skipSpaces(line, pos)
 	pos = p.parseTimestamp(line, pos, buf.entry)
 	if pos >= length {
-		return errors.New(ErrUnsupportedLogFormat)
+		return ErrUnsupportedLogFormat
 	}
 
 	// Parse request
 	pos = p.skipSpaces(line, pos)
 	pos = p.parseRequest(line, pos, buf.entry)
 	if pos >= length {
-		return errors.New(ErrUnsupportedLogFormat)
+		return ErrUnsupportedLogFormat
 	}
 
 	// Parse status code
 	pos = p.skipSpaces(line, pos)
 	pos = p.parseStatus(line, pos, buf.entry)
 	if pos >= length {
-		return errors.New(ErrUnsupportedLogFormat)
+		return ErrUnsupportedLogFormat
 	}
 
 	// Parse response size
@@ -401,7 +400,7 @@ func (p *OptimizedParser) parseLineOptimized(line []byte, buf *parseBuffer) erro
 }
 
 // Fast field parsing methods with zero-copy optimizations
-func (p *OptimizedParser) parseIP(line []byte, pos int, entry *AccessLogEntry) int {
+func (p *Parser) parseIP(line []byte, pos int, entry *AccessLogEntry) int {
 	start := pos
 	for pos < len(line) && line[pos] != ' ' {
 		pos++
@@ -427,7 +426,7 @@ func (p *OptimizedParser) parseIP(line []byte, pos int, entry *AccessLogEntry) i
 	return pos
 }
 
-func (p *OptimizedParser) parseTimestamp(line []byte, pos int, entry *AccessLogEntry) int {
+func (p *Parser) parseTimestamp(line []byte, pos int, entry *AccessLogEntry) int {
 	if pos >= len(line) || line[pos] != '[' {
 		return pos
 	}
@@ -479,7 +478,7 @@ func (p *OptimizedParser) parseTimestamp(line []byte, pos int, entry *AccessLogE
 	return pos
 }
 
-func (p *OptimizedParser) parseRequest(line []byte, pos int, entry *AccessLogEntry) int {
+func (p *Parser) parseRequest(line []byte, pos int, entry *AccessLogEntry) int {
 	if pos >= len(line) || line[pos] != '"' {
 		return pos
 	}
@@ -515,7 +514,7 @@ func (p *OptimizedParser) parseRequest(line []byte, pos int, entry *AccessLogEnt
 	return pos
 }
 
-func (p *OptimizedParser) parseStatus(line []byte, pos int, entry *AccessLogEntry) int {
+func (p *Parser) parseStatus(line []byte, pos int, entry *AccessLogEntry) int {
 	start := pos
 	for pos < len(line) && line[pos] >= '0' && line[pos] <= '9' {
 		pos++
@@ -530,7 +529,7 @@ func (p *OptimizedParser) parseStatus(line []byte, pos int, entry *AccessLogEntr
 	return pos
 }
 
-func (p *OptimizedParser) parseSize(line []byte, pos int, entry *AccessLogEntry) int {
+func (p *Parser) parseSize(line []byte, pos int, entry *AccessLogEntry) int {
 	start := pos
 	for pos < len(line) && ((line[pos] >= '0' && line[pos] <= '9') || line[pos] == '-') {
 		pos++
@@ -550,7 +549,7 @@ func (p *OptimizedParser) parseSize(line []byte, pos int, entry *AccessLogEntry)
 	return pos
 }
 
-func (p *OptimizedParser) parseReferer(line []byte, pos int, entry *AccessLogEntry) int {
+func (p *Parser) parseReferer(line []byte, pos int, entry *AccessLogEntry) int {
 	if pos >= len(line) || line[pos] != '"' {
 		return pos
 	}
@@ -572,7 +571,7 @@ func (p *OptimizedParser) parseReferer(line []byte, pos int, entry *AccessLogEnt
 	return pos
 }
 
-func (p *OptimizedParser) parseUserAgent(line []byte, pos int, entry *AccessLogEntry) int {
+func (p *Parser) parseUserAgent(line []byte, pos int, entry *AccessLogEntry) int {
 	if pos >= len(line) || line[pos] != '"' {
 		return pos
 	}
@@ -610,7 +609,7 @@ func (p *OptimizedParser) parseUserAgent(line []byte, pos int, entry *AccessLogE
 	return pos
 }
 
-func (p *OptimizedParser) parseRequestTime(line []byte, pos int, entry *AccessLogEntry) int {
+func (p *Parser) parseRequestTime(line []byte, pos int, entry *AccessLogEntry) int {
 	start := pos
 	for pos < len(line) && ((line[pos] >= '0' && line[pos] <= '9') || line[pos] == '.' || line[pos] == '-') {
 		pos++
@@ -628,7 +627,7 @@ func (p *OptimizedParser) parseRequestTime(line []byte, pos int, entry *AccessLo
 	return pos
 }
 
-func (p *OptimizedParser) parseUpstreamTime(line []byte, pos int, entry *AccessLogEntry) int {
+func (p *Parser) parseUpstreamTime(line []byte, pos int, entry *AccessLogEntry) int {
 	start := pos
 	for pos < len(line) && ((line[pos] >= '0' && line[pos] <= '9') || line[pos] == '.' || line[pos] == '-') {
 		pos++
@@ -647,26 +646,26 @@ func (p *OptimizedParser) parseUpstreamTime(line []byte, pos int, entry *AccessL
 }
 
 // Utility methods
-func (p *OptimizedParser) skipSpaces(line []byte, pos int) int {
+func (p *Parser) skipSpaces(line []byte, pos int) int {
 	for pos < len(line) && line[pos] == ' ' {
 		pos++
 	}
 	return pos
 }
 
-func (p *OptimizedParser) skipField(line []byte, pos int) int {
+func (p *Parser) skipField(line []byte, pos int) int {
 	for pos < len(line) && line[pos] != ' ' {
 		pos++
 	}
 	return pos
 }
 
-func (p *OptimizedParser) generateEntryID(line string) string {
+func (p *Parser) generateEntryID(line string) string {
 	hash := md5.Sum([]byte(line))
 	return fmt.Sprintf("%x", hash)[:16]
 }
 
-func (p *OptimizedParser) updateStats(result *ParseResult) {
+func (p *Parser) updateStats(result *ParseResult) {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 
@@ -682,7 +681,7 @@ func (p *OptimizedParser) updateStats(result *ParseResult) {
 }
 
 // GetStats returns current parsing statistics
-func (p *OptimizedParser) GetStats() *ParseStats {
+func (p *Parser) GetStats() *ParseStats {
 	p.mu.RLock()
 	defer p.mu.RUnlock()
 
@@ -691,7 +690,7 @@ func (p *OptimizedParser) GetStats() *ParseStats {
 }
 
 // ResetStats resets parsing statistics
-func (p *OptimizedParser) ResetStats() {
+func (p *Parser) ResetStats() {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 

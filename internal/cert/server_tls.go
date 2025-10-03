@@ -2,7 +2,6 @@ package cert
 
 import (
 	"crypto/tls"
-	"errors"
 	"sync/atomic"
 
 	cSettings "github.com/uozi-tech/cosy/settings"
@@ -30,7 +29,7 @@ func ReloadServerTLSCertificate() error {
 func GetServerTLSCertificate() (*tls.Certificate, error) {
 	cert, ok := tlsCert.Load().(*tls.Certificate)
 	if !ok {
-		return nil, errors.New("no certificate available")
+		return nil, ErrNoCertificateAvailable
 	}
 	return cert, nil
 }

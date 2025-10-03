@@ -323,8 +323,8 @@ func (mo *MemoryOptimizer) GetMemoryStats() *MemoryStats {
 	}
 }
 
-// PerformanceMetrics tracks general performance metrics
-type PerformanceMetrics struct {
+// Metrics tracks general performance metrics
+type Metrics struct {
 	operationCount  int64
 	processedItems  int64
 	processTime     int64 // nanoseconds
@@ -335,13 +335,13 @@ type PerformanceMetrics struct {
 	errorCount      int64
 }
 
-// NewPerformanceMetrics creates performance metrics tracker
-func NewPerformanceMetrics() *PerformanceMetrics {
-	return &PerformanceMetrics{}
+// NewMetrics creates performance metrics tracker
+func NewMetrics() *Metrics {
+	return &Metrics{}
 }
 
 // RecordOperation records operation metrics
-func (pm *PerformanceMetrics) RecordOperation(itemCount int, duration time.Duration, success bool) {
+func (pm *Metrics) RecordOperation(itemCount int, duration time.Duration, success bool) {
 	atomic.AddInt64(&pm.operationCount, 1)
 	atomic.AddInt64(&pm.processedItems, int64(itemCount))
 	atomic.AddInt64(&pm.processTime, int64(duration))
@@ -352,23 +352,23 @@ func (pm *PerformanceMetrics) RecordOperation(itemCount int, duration time.Durat
 }
 
 // RecordCacheHit records cache hit
-func (pm *PerformanceMetrics) RecordCacheHit() {
+func (pm *Metrics) RecordCacheHit() {
 	atomic.AddInt64(&pm.cacheHits, 1)
 }
 
 // RecordCacheMiss records cache miss
-func (pm *PerformanceMetrics) RecordCacheMiss() {
+func (pm *Metrics) RecordCacheMiss() {
 	atomic.AddInt64(&pm.cacheMisses, 1)
 }
 
 // RecordAllocation records memory allocation
-func (pm *PerformanceMetrics) RecordAllocation(size int64) {
+func (pm *Metrics) RecordAllocation(size int64) {
 	atomic.AddInt64(&pm.allocationCount, 1)
 	atomic.AddInt64(&pm.allocationSize, size)
 }
 
 // GetMetrics returns current metrics snapshot
-func (pm *PerformanceMetrics) GetMetrics() map[string]interface{} {
+func (pm *Metrics) GetMetrics() map[string]interface{} {
 	operations := atomic.LoadInt64(&pm.operationCount)
 	items := atomic.LoadInt64(&pm.processedItems)
 	timeNs := atomic.LoadInt64(&pm.processTime)
@@ -405,7 +405,7 @@ func (pm *PerformanceMetrics) GetMetrics() map[string]interface{} {
 }
 
 // Reset resets all metrics
-func (pm *PerformanceMetrics) Reset() {
+func (pm *Metrics) Reset() {
 	atomic.StoreInt64(&pm.operationCount, 0)
 	atomic.StoreInt64(&pm.processedItems, 0)
 	atomic.StoreInt64(&pm.processTime, 0)

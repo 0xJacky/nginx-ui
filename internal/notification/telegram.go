@@ -2,7 +2,6 @@ package notification
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -61,7 +60,7 @@ func init() {
 
 		// Check if chatIDInt is 0, which might indicate an empty or invalid input was parsed
 		if chatIDInt == 0 {
-			return errors.New("invalid Telegram Chat ID: cannot be zero")
+			return ErrTelegramChatIDZero
 		}
 
 		telegramService.AddReceivers(chatIDInt)

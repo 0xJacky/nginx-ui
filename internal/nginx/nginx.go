@@ -7,6 +7,8 @@ import (
 	"sync"
 	"time"
 
+	"math"
+
 	"github.com/0xJacky/Nginx-UI/internal/docker"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/shirou/gopsutil/v4/process"
@@ -135,6 +137,11 @@ func isProcessRunning(pidPath string) bool {
 	pidStr := strings.TrimSpace(string(pidBytes))
 	pid, err := strconv.Atoi(pidStr)
 	if err != nil {
+		return false
+	}
+
+	// Check that pid is within int32 and positive bounds
+	if pid <= 0 || pid > math.MaxInt32 {
 		return false
 	}
 

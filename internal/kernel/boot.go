@@ -97,8 +97,7 @@ func InitAfterDatabase(ctx context.Context) {
 		passkey.Init,
 		mcp.Init,
 		sitecheck.Init,
-		nginx_log.InitializeModernServices,
-		nginx_log.InitTaskRecovery,
+		nginx_log.InitializeServices,
 		user.InitTokenCache,
 	}
 

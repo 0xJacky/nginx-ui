@@ -10,6 +10,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/uozi-tech/cosy/logger"
 )
@@ -437,9 +438,12 @@ func (lm *LogFileManager) SaveIndexMetadata(basePath string, documentCount uint6
 	}
 
 	// Get file stats to update LastModified and LastSize
-	if fileInfo, err := os.Stat(basePath); err == nil {
-		logIndex.LastModified = fileInfo.ModTime()
-		logIndex.LastSize = fileInfo.Size()
+	// Validate log path before accessing it
+	if utils.IsValidLogPath(basePath) {
+		if fileInfo, err := os.Stat(basePath); err == nil {
+			logIndex.LastModified = fileInfo.ModTime()
+			logIndex.LastSize = fileInfo.Size()
+		}
 	}
 
 	// If indexer is available and healthy, query Bleve for exact document count

@@ -26,7 +26,7 @@ func (m *mockGeoIPService) Search(ip string) (*GeoLocation, error) {
 	}, nil
 }
 
-func TestOptimizedParser_ParseLine(t *testing.T) {
+func TestParser_ParseLine(t *testing.T) {
 	tests := []struct {
 		name     string
 		line     string
@@ -85,7 +85,7 @@ func TestOptimizedParser_ParseLine(t *testing.T) {
 	config := DefaultParserConfig()
 	config.StrictMode = false // Use non-strict mode to handle malformed lines gracefully
 	
-	parser := NewOptimizedParser(
+	parser := NewParser(
 		config,
 		NewSimpleUserAgentParser(),
 		&mockGeoIPService{},
@@ -128,7 +128,7 @@ func TestOptimizedParser_ParseLine(t *testing.T) {
 	}
 }
 
-func TestOptimizedParser_ParseLines(t *testing.T) {
+func TestParser_ParseLines(t *testing.T) {
 	lines := []string{
 		`127.0.0.1 - - [25/Dec/2023:10:00:00 +0000] "GET /index.html HTTP/1.1" 200 1234 "-" "Mozilla/5.0"`,
 		`192.168.1.1 - - [25/Dec/2023:10:00:01 +0000] "POST /api/data HTTP/1.1" 201 567 "-" "curl/7.68.0"`,
@@ -138,7 +138,7 @@ func TestOptimizedParser_ParseLines(t *testing.T) {
 	}
 
 	config := DefaultParserConfig()
-	parser := NewOptimizedParser(
+	parser := NewParser(
 		config,
 		NewSimpleUserAgentParser(),
 		&mockGeoIPService{},
@@ -163,7 +163,7 @@ func TestOptimizedParser_ParseLines(t *testing.T) {
 	}
 }
 
-func TestOptimizedParser_ParseStream(t *testing.T) {
+func TestParser_ParseStream(t *testing.T) {
 	logData := `127.0.0.1 - - [25/Dec/2023:10:00:00 +0000] "GET /index.html HTTP/1.1" 200 1234 "-" "Mozilla/5.0"
 192.168.1.1 - - [25/Dec/2023:10:00:01 +0000] "POST /api/data HTTP/1.1" 201 567 "-" "curl/7.68.0"
 10.0.0.1 - - [25/Dec/2023:10:00:02 +0000] "GET /style.css HTTP/1.1" 200 890 "-" "Mozilla/5.0"`
@@ -173,7 +173,7 @@ func TestOptimizedParser_ParseStream(t *testing.T) {
 	config := DefaultParserConfig()
 	config.BatchSize = 2 // Small batch size for testing
 	
-	parser := NewOptimizedParser(
+	parser := NewParser(
 		config,
 		NewSimpleUserAgentParser(),
 		&mockGeoIPService{},
@@ -199,14 +199,14 @@ func TestOptimizedParser_ParseStream(t *testing.T) {
 	}
 }
 
-func TestOptimizedParser_WithContext(t *testing.T) {
+func TestParser_WithContext(t *testing.T) {
 	lines := make([]string, 1000)
 	for i := range lines {
 		lines[i] = fmt.Sprintf(`127.0.0.%d - - [25/Dec/2023:10:00:00 +0000] "GET /test%d.html HTTP/1.1" 200 1234 "-" "Mozilla/5.0"`, i%255+1, i)
 	}
 
 	config := DefaultParserConfig()
-	parser := NewOptimizedParser(
+	parser := NewParser(
 		config,
 		NewSimpleUserAgentParser(),
 		&mockGeoIPService{},
@@ -376,11 +376,11 @@ func TestCachedUserAgentParser(t *testing.T) {
 	}
 }
 
-func BenchmarkOptimizedParser_ParseLine(b *testing.B) {
+func BenchmarkParser_ParseLine(b *testing.B) {
 	line := `127.0.0.1 - - [25/Dec/2023:10:00:00 +0000] "GET /index.html HTTP/1.1" 200 1234 "https://example.com" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"`
 	
 	config := DefaultParserConfig()
-	parser := NewOptimizedParser(
+	parser := NewParser(
 		config,
 		NewSimpleUserAgentParser(),
 		&mockGeoIPService{},
@@ -397,14 +397,14 @@ func BenchmarkOptimizedParser_ParseLine(b *testing.B) {
 	}
 }
 
-func BenchmarkOptimizedParser_ParseLines(b *testing.B) {
+func BenchmarkParser_ParseLines(b *testing.B) {
 	lines := make([]string, 1000)
 	for i := range lines {
 		lines[i] = fmt.Sprintf(`127.0.0.%d - - [25/Dec/2023:10:00:00 +0000] "GET /test%d.html HTTP/1.1" 200 1234 "-" "Mozilla/5.0"`, i%255+1, i)
 	}
 	
 	config := DefaultParserConfig()
-	parser := NewOptimizedParser(
+	parser := NewParser(
 		config,
 		NewSimpleUserAgentParser(),
 		&mockGeoIPService{},

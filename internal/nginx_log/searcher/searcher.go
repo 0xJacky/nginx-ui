@@ -14,13 +14,13 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 )
 
-// DistributedSearcher implements high-performance distributed search across multiple shards
-type DistributedSearcher struct {
+// Searcher implements high-performance distributed search across multiple shards
+type Searcher struct {
 	config       *Config
 	shards       []bleve.Index
 	indexAlias   bleve.IndexAlias // Index alias for global scoring
-	queryBuilder *QueryBuilderService
-	cache        *OptimizedSearchCache
+	queryBuilder *QueryBuilder
+	cache        *Cache
 	stats        *searcherStats
 
 	// Concurrency control
@@ -47,8 +47,8 @@ type searcherStats struct {
 	mutex      sync.RWMutex
 }
 
-// NewDistributedSearcher creates a new distributed searcher
-func NewDistributedSearcher(config *Config, shards []bleve.Index) *DistributedSearcher {
+// NewSearcher creates a new distributed searcher
+func NewSearcher(config *Config, shards []bleve.Index) *Searcher {
 	if config == nil {
 		config = DefaultSearcherConfig()
 	}
@@ -64,11 +64,11 @@ func NewDistributedSearcher(config *Config, shards []bleve.Index) *DistributedSe
 		}
 	}
 
-	searcher := &DistributedSearcher{
+	searcher := &Searcher{
 		config:       config,
 		shards:       shards,
 		indexAlias:   indexAlias,
-		queryBuilder: NewQueryBuilderService(),
+		queryBuilder: NewQueryBuilder(),
 		semaphore:    make(chan struct{}, config.MaxConcurrency),
 		stats: &searcherStats{
 			shardStats: make(map[int]*ShardSearchStats),
@@ -79,7 +79,7 @@ func NewDistributedSearcher(config *Config, shards []bleve.Index) *DistributedSe
 
 	// Initialize cache if enabled
 	if config.EnableCache {
-		searcher.cache = NewOptimizedSearchCache(int64(config.CacheSize))
+		searcher.cache = NewCache(int64(config.CacheSize))
 	}
 
 	// Initialize shard stats
@@ -94,27 +94,27 @@ func NewDistributedSearcher(config *Config, shards []bleve.Index) *DistributedSe
 }
 
 // Search performs a distributed search across all shards
-func (ds *DistributedSearcher) Search(ctx context.Context, req *SearchRequest) (*SearchResult, error) {
-	if atomic.LoadInt32(&ds.running) == 0 {
+func (s *Searcher) Search(ctx context.Context, req *SearchRequest) (*SearchResult, error) {
+	if atomic.LoadInt32(&s.running) == 0 {
 		return nil, fmt.Errorf("searcher is not running")
 	}
 
 	startTime := time.Now()
 	defer func() {
-		ds.recordSearchMetrics(time.Since(startTime), true)
+		s.recordSearchMetrics(time.Since(startTime), true)
 	}()
 
 	// Validate request
-	if err := ds.queryBuilder.ValidateSearchRequest(req); err != nil {
+	if err := s.queryBuilder.ValidateSearchRequest(req); err != nil {
 		return nil, fmt.Errorf("invalid search request: %w", err)
 	}
 
 	// Set defaults
-	ds.setRequestDefaults(req)
+	s.setRequestDefaults(req)
 
 	// Check cache if enabled
-	if ds.config.EnableCache && req.UseCache {
-		if cached := ds.getFromCache(req); cached != nil {
+	if s.config.EnableCache && req.UseCache {
+		if cached := s.getFromCache(req); cached != nil {
 			cached.FromCache = true
 			cached.CacheHit = true
 			return cached, nil
@@ -127,48 +127,48 @@ func (ds *DistributedSearcher) Search(ctx context.Context, req *SearchRequest) (
 		var cancel context.CancelFunc
 		searchCtx, cancel = context.WithTimeout(ctx, req.Timeout)
 		defer cancel()
-	} else if ds.config.TimeoutDuration > 0 {
+	} else if s.config.TimeoutDuration > 0 {
 		var cancel context.CancelFunc
-		searchCtx, cancel = context.WithTimeout(ctx, ds.config.TimeoutDuration)
+		searchCtx, cancel = context.WithTimeout(ctx, s.config.TimeoutDuration)
 		defer cancel()
 	}
 
 	// Acquire semaphore for concurrency control
 	select {
-	case ds.semaphore <- struct{}{}:
-		defer func() { <-ds.semaphore }()
+	case s.semaphore <- struct{}{}:
+		defer func() { <-s.semaphore }()
 	case <-searchCtx.Done():
 		return nil, fmt.Errorf("search timeout")
 	}
 
-	atomic.AddInt32(&ds.stats.activeSearches, 1)
-	defer atomic.AddInt32(&ds.stats.activeSearches, -1)
+	atomic.AddInt32(&s.stats.activeSearches, 1)
+	defer atomic.AddInt32(&s.stats.activeSearches, -1)
 
 	// Build query
-	query, err := ds.queryBuilder.BuildQuery(req)
+	query, err := s.queryBuilder.BuildQuery(req)
 	if err != nil {
 		return nil, fmt.Errorf("failed to build query: %w", err)
 	}
 
 	// Execute search across shards
-	result, err := ds.executeDistributedSearch(searchCtx, query, req)
+	result, err := s.executeDistributedSearch(searchCtx, query, req)
 	if err != nil {
-		ds.recordSearchMetrics(time.Since(startTime), false)
+		s.recordSearchMetrics(time.Since(startTime), false)
 		return nil, err
 	}
 
 	result.Duration = time.Since(startTime)
 
 	// Cache result if enabled
-	if ds.config.EnableCache && req.UseCache {
-		ds.cacheResult(req, result)
+	if s.config.EnableCache && req.UseCache {
+		s.cacheResult(req, result)
 	}
 
 	return result, nil
 }
 
 // SearchAsync performs asynchronous search
-func (ds *DistributedSearcher) SearchAsync(ctx context.Context, req *SearchRequest) (<-chan *SearchResult, <-chan error) {
+func (s *Searcher) SearchAsync(ctx context.Context, req *SearchRequest) (<-chan *SearchResult, <-chan error) {
 	resultChan := make(chan *SearchResult, 1)
 	errorChan := make(chan error, 1)
 
@@ -176,7 +176,7 @@ func (ds *DistributedSearcher) SearchAsync(ctx context.Context, req *SearchReque
 		defer close(resultChan)
 		defer close(errorChan)
 
-		result, err := ds.Search(ctx, req)
+		result, err := s.Search(ctx, req)
 		if err != nil {
 			errorChan <- err
 		} else {
@@ -188,8 +188,8 @@ func (ds *DistributedSearcher) SearchAsync(ctx context.Context, req *SearchReque
 }
 
 // executeDistributedSearch executes search across all healthy shards
-func (ds *DistributedSearcher) executeDistributedSearch(ctx context.Context, query query.Query, req *SearchRequest) (*SearchResult, error) {
-	healthyShards := ds.getHealthyShards()
+func (s *Searcher) executeDistributedSearch(ctx context.Context, query query.Query, req *SearchRequest) (*SearchResult, error) {
+	healthyShards := s.getHealthyShards()
 	if len(healthyShards) == 0 {
 		return nil, fmt.Errorf("no healthy shards available")
 	}
@@ -200,12 +200,12 @@ func (ds *DistributedSearcher) executeDistributedSearch(ctx context.Context, que
 	// narrowed alias. For now, rely on Bleve to skip shards quickly when the filter eliminates them.
 
 	// Use Bleve's native distributed search with global scoring for consistent pagination
-	return ds.executeGlobalScoringSearch(ctx, query, req)
+	return s.executeGlobalScoringSearch(ctx, query, req)
 }
 
 // executeGlobalScoringSearch uses Bleve's native distributed search with global scoring
 // This ensures consistent pagination by letting Bleve handle cross-shard ranking
-func (ds *DistributedSearcher) executeGlobalScoringSearch(ctx context.Context, query query.Query, req *SearchRequest) (*SearchResult, error) {
+func (s *Searcher) executeGlobalScoringSearch(ctx context.Context, query query.Query, req *SearchRequest) (*SearchResult, error) {
 	// Create search request with proper pagination
 	searchReq := bleve.NewSearchRequest(query)
 
@@ -217,7 +217,7 @@ func (ds *DistributedSearcher) executeGlobalScoringSearch(ctx context.Context, q
 	searchReq.From = req.Offset
 
 	// Configure the search request with proper sorting and other settings
-	ds.configureSearchRequest(searchReq, req)
+	s.configureSearchRequest(searchReq, req)
 
 	// Enable global scoring for distributed search consistency
 	// This is the key fix from Bleve documentation for distributed search
@@ -230,17 +230,17 @@ func (ds *DistributedSearcher) executeGlobalScoringSearch(ctx context.Context, q
 	}
 
 	// Execute search using Bleve's IndexAlias with global scoring
-	result, err := ds.indexAlias.SearchInContext(globalCtx, searchReq)
+	result, err := s.indexAlias.SearchInContext(globalCtx, searchReq)
 	if err != nil {
 		return nil, fmt.Errorf("global scoring search failed: %w", err)
 	}
 
 	// Convert Bleve result to our SearchResult format
-	return ds.convertBleveResult(result), nil
+	return s.convertBleveResult(result), nil
 }
 
 // convertBleveResult converts a Bleve SearchResult to our SearchResult format
-func (ds *DistributedSearcher) convertBleveResult(bleveResult *bleve.SearchResult) *SearchResult {
+func (s *Searcher) convertBleveResult(bleveResult *bleve.SearchResult) *SearchResult {
 	result := &SearchResult{
 		Hits:      make([]*SearchHit, 0, len(bleveResult.Hits)),
 		TotalHits: bleveResult.Total,
@@ -296,7 +296,7 @@ func (ds *DistributedSearcher) convertBleveResult(bleveResult *bleve.SearchResul
 }
 
 // configureSearchRequest sets up common search request configuration
-func (ds *DistributedSearcher) configureSearchRequest(searchReq *bleve.SearchRequest, req *SearchRequest) {
+func (s *Searcher) configureSearchRequest(searchReq *bleve.SearchRequest, req *SearchRequest) {
 	// Set up sorting with proper Bleve syntax
 	sortField := req.SortBy
 	if sortField == "" {
@@ -316,7 +316,7 @@ func (ds *DistributedSearcher) configureSearchRequest(searchReq *bleve.SearchReq
 	}
 
 	// Configure highlighting
-	if req.IncludeHighlighting && ds.config.EnableHighlighting {
+	if req.IncludeHighlighting && s.config.EnableHighlighting {
 		searchReq.Highlight = bleve.NewHighlight()
 		if len(req.Fields) > 0 {
 			for _, field := range req.Fields {
@@ -328,7 +328,7 @@ func (ds *DistributedSearcher) configureSearchRequest(searchReq *bleve.SearchReq
 	}
 
 	// Configure facets
-	if req.IncludeFacets && ds.config.EnableFaceting {
+	if req.IncludeFacets && s.config.EnableFaceting {
 		facetFields := req.FacetFields
 		if len(facetFields) == 0 {
 			// Default facet fields
@@ -355,50 +355,50 @@ func (ds *DistributedSearcher) configureSearchRequest(searchReq *bleve.SearchReq
 
 // Utility methods
 
-func (ds *DistributedSearcher) setRequestDefaults(req *SearchRequest) {
+func (s *Searcher) setRequestDefaults(req *SearchRequest) {
 	if req.Timeout == 0 {
-		req.Timeout = ds.config.TimeoutDuration
+		req.Timeout = s.config.TimeoutDuration
 	}
-	if req.UseCache && !ds.config.EnableCache {
+	if req.UseCache && !s.config.EnableCache {
 		req.UseCache = false
 	}
-	if !req.UseCache && ds.config.EnableCache {
+	if !req.UseCache && s.config.EnableCache {
 		req.UseCache = true
 	}
 }
 
-func (ds *DistributedSearcher) getHealthyShards() []int {
+func (s *Searcher) getHealthyShards() []int {
 	// With IndexAlias, Bleve handles shard health internally
 	// Return all shard IDs since the alias will route correctly
-	healthy := make([]int, len(ds.shards))
-	for i := range ds.shards {
+	healthy := make([]int, len(s.shards))
+	for i := range s.shards {
 		healthy[i] = i
 	}
 	return healthy
 }
 
-func (ds *DistributedSearcher) recordSearchMetrics(duration time.Duration, success bool) {
-	atomic.AddInt64(&ds.stats.totalSearches, 1)
-	atomic.AddInt64(&ds.stats.totalLatency, int64(duration))
+func (s *Searcher) recordSearchMetrics(duration time.Duration, success bool) {
+	atomic.AddInt64(&s.stats.totalSearches, 1)
+	atomic.AddInt64(&s.stats.totalLatency, int64(duration))
 
 	if success {
-		atomic.AddInt64(&ds.stats.successfulSearches, 1)
+		atomic.AddInt64(&s.stats.successfulSearches, 1)
 	} else {
-		atomic.AddInt64(&ds.stats.failedSearches, 1)
+		atomic.AddInt64(&s.stats.failedSearches, 1)
 	}
 
 	// Update min/max latency
 	durationNs := int64(duration)
 	for {
-		current := atomic.LoadInt64(&ds.stats.minLatency)
-		if durationNs >= current || atomic.CompareAndSwapInt64(&ds.stats.minLatency, current, durationNs) {
+		current := atomic.LoadInt64(&s.stats.minLatency)
+		if durationNs >= current || atomic.CompareAndSwapInt64(&s.stats.minLatency, current, durationNs) {
 			break
 		}
 	}
 
 	for {
-		current := atomic.LoadInt64(&ds.stats.maxLatency)
-		if durationNs <= current || atomic.CompareAndSwapInt64(&ds.stats.maxLatency, current, durationNs) {
+		current := atomic.LoadInt64(&s.stats.maxLatency)
+		if durationNs <= current || atomic.CompareAndSwapInt64(&s.stats.maxLatency, current, durationNs) {
 			break
 		}
 	}
@@ -406,94 +406,94 @@ func (ds *DistributedSearcher) recordSearchMetrics(duration time.Duration, succe
 
 // Health and statistics
 
-func (ds *DistributedSearcher) IsHealthy() bool {
-	healthy := ds.getHealthyShards()
+func (s *Searcher) IsHealthy() bool {
+	healthy := s.getHealthyShards()
 	return len(healthy) > 0
 }
 
 // IsRunning returns true if the searcher is currently running
-func (ds *DistributedSearcher) IsRunning() bool {
-	return atomic.LoadInt32(&ds.running) == 1
+func (s *Searcher) IsRunning() bool {
+	return atomic.LoadInt32(&s.running) == 1
 }
 
-func (ds *DistributedSearcher) GetStats() *Stats {
-	ds.stats.mutex.RLock()
-	defer ds.stats.mutex.RUnlock()
+func (s *Searcher) GetStats() *Stats {
+	s.stats.mutex.RLock()
+	defer s.stats.mutex.RUnlock()
 
 	stats := &Stats{
-		TotalSearches:      atomic.LoadInt64(&ds.stats.totalSearches),
-		SuccessfulSearches: atomic.LoadInt64(&ds.stats.successfulSearches),
-		FailedSearches:     atomic.LoadInt64(&ds.stats.failedSearches),
-		ActiveSearches:     atomic.LoadInt32(&ds.stats.activeSearches),
-		QueuedSearches:     len(ds.semaphore),
+		TotalSearches:      atomic.LoadInt64(&s.stats.totalSearches),
+		SuccessfulSearches: atomic.LoadInt64(&s.stats.successfulSearches),
+		FailedSearches:     atomic.LoadInt64(&s.stats.failedSearches),
+		ActiveSearches:     atomic.LoadInt32(&s.stats.activeSearches),
+		QueuedSearches:     len(s.semaphore),
 	}
 
 	// Calculate average latency
-	totalLatency := atomic.LoadInt64(&ds.stats.totalLatency)
+	totalLatency := atomic.LoadInt64(&s.stats.totalLatency)
 	if stats.TotalSearches > 0 {
 		stats.AverageLatency = time.Duration(totalLatency / stats.TotalSearches)
 	}
 
-	stats.MinLatency = time.Duration(atomic.LoadInt64(&ds.stats.minLatency))
-	stats.MaxLatency = time.Duration(atomic.LoadInt64(&ds.stats.maxLatency))
+	stats.MinLatency = time.Duration(atomic.LoadInt64(&s.stats.minLatency))
+	stats.MaxLatency = time.Duration(atomic.LoadInt64(&s.stats.maxLatency))
 
 	// Copy shard stats
-	stats.ShardStats = make([]*ShardSearchStats, 0, len(ds.stats.shardStats))
-	for _, stat := range ds.stats.shardStats {
+	stats.ShardStats = make([]*ShardSearchStats, 0, len(s.stats.shardStats))
+	for _, stat := range s.stats.shardStats {
 		statCopy := *stat
 		stats.ShardStats = append(stats.ShardStats, &statCopy)
 	}
 
 	// Add cache stats if cache is enabled
-	if ds.cache != nil {
-		stats.CacheStats = ds.cache.GetStats()
+	if s.cache != nil {
+		stats.CacheStats = s.cache.GetStats()
 	}
 
 	return stats
 }
 
-func (ds *DistributedSearcher) GetConfig() *Config {
-	return ds.config
+func (s *Searcher) GetConfig() *Config {
+	return s.config
 }
 
 // GetShards returns the underlying shards for cardinality counting
-func (ds *DistributedSearcher) GetShards() []bleve.Index {
-	return ds.shards
+func (s *Searcher) GetShards() []bleve.Index {
+	return s.shards
 }
 
 // SwapShards atomically replaces the current shards with new ones using IndexAlias.Swap()
 // This follows Bleve best practices for zero-downtime index updates
-func (ds *DistributedSearcher) SwapShards(newShards []bleve.Index) error {
-	if atomic.LoadInt32(&ds.running) == 0 {
+func (s *Searcher) SwapShards(newShards []bleve.Index) error {
+	if atomic.LoadInt32(&s.running) == 0 {
 		return fmt.Errorf("searcher is not running")
 	}
 
-	if ds.indexAlias == nil {
+	if s.indexAlias == nil {
 		return fmt.Errorf("indexAlias is nil")
 	}
 
 	// Store old shards for logging
-	oldShards := ds.shards
+	oldShards := s.shards
 
 	// Perform atomic swap using IndexAlias - this is the key Bleve operation
 	// that provides zero-downtime index updates
 	logger.Debugf("SwapShards: Starting atomic swap - old=%d, new=%d", len(oldShards), len(newShards))
 
 	swapStartTime := time.Now()
-	ds.indexAlias.Swap(newShards, oldShards)
+	s.indexAlias.Swap(newShards, oldShards)
 	swapDuration := time.Since(swapStartTime)
 
 	logger.Infof("IndexAlias.Swap completed in %v (old=%d shards, new=%d shards)",
 		swapDuration, len(oldShards), len(newShards))
 
 	// Update internal shards reference to match the IndexAlias
-	ds.shards = newShards
+	s.shards = newShards
 
 	// Clear cache after shard swap to prevent stale results
 	// Use goroutine to avoid potential deadlock during shard swap
-	if ds.cache != nil {
+	if s.cache != nil {
 		// Capture cache reference to avoid race condition
-		cache := ds.cache
+		cache := s.cache
 		go func() {
 			// Add a small delay to ensure shard swap is fully completed
 			time.Sleep(100 * time.Millisecond)
@@ -507,17 +507,17 @@ func (ds *DistributedSearcher) SwapShards(newShards []bleve.Index) error {
 	}
 
 	// Update shard stats for the new shards
-	ds.stats.mutex.Lock()
+	s.stats.mutex.Lock()
 	// Clear old shard stats
-	ds.stats.shardStats = make(map[int]*ShardSearchStats)
+	s.stats.shardStats = make(map[int]*ShardSearchStats)
 	// Initialize stats for new shards
 	for i := range newShards {
-		ds.stats.shardStats[i] = &ShardSearchStats{
+		s.stats.shardStats[i] = &ShardSearchStats{
 			ShardID:   i,
 			IsHealthy: true,
 		}
 	}
-	ds.stats.mutex.Unlock()
+	s.stats.mutex.Unlock()
 
 	logger.Debugf("IndexAlias.Swap() completed: %d old shards -> %d new shards",
 		len(oldShards), len(newShards))
@@ -529,7 +529,7 @@ func (ds *DistributedSearcher) SwapShards(newShards []bleve.Index) error {
 		Offset: 0,
 	}
 
-	if _, err := ds.Search(testCtx, testReq); err != nil {
+	if _, err := s.Search(testCtx, testReq); err != nil {
 		logger.Errorf("Post-swap searcher test query failed: %v", err)
 		return fmt.Errorf("searcher test failed after shard swap: %w", err)
 	} else {
@@ -540,31 +540,31 @@ func (ds *DistributedSearcher) SwapShards(newShards []bleve.Index) error {
 }
 
 // Stop gracefully stops the searcher and closes all bleve indexes
-func (ds *DistributedSearcher) Stop() error {
+func (s *Searcher) Stop() error {
 	var err error
 
-	ds.closeOnce.Do(func() {
+	s.closeOnce.Do(func() {
 		// Set running to 0
-		atomic.StoreInt32(&ds.running, 0)
+		atomic.StoreInt32(&s.running, 0)
 
 		// Close the index alias first (this doesn't close underlying indexes)
-		if ds.indexAlias != nil {
-			if closeErr := ds.indexAlias.Close(); closeErr != nil {
+		if s.indexAlias != nil {
+			if closeErr := s.indexAlias.Close(); closeErr != nil {
 				logger.Errorf("Failed to close index alias: %v", closeErr)
 				err = closeErr
 			}
-			ds.indexAlias = nil
+			s.indexAlias = nil
 		}
 
 		// DON'T close the underlying shards - they are managed by the indexer/shard manager
 		// The searcher is just a consumer of these shards, not the owner
 		// Clear the shards slice reference without closing the indexes
-		ds.shards = nil
+		s.shards = nil
 
 		// Close cache if it exists
-		if ds.cache != nil {
-			ds.cache.Close()
-			ds.cache = nil
+		if s.cache != nil {
+			s.cache.Close()
+			s.cache = nil
 		}
 	})
 

@@ -43,7 +43,7 @@ func performIncrementalIndexing() {
 	}
 
 	// Get modern indexer
-	modernIndexer := nginx_log.GetModernIndexer()
+	modernIndexer := nginx_log.GetIndexer()
 	if modernIndexer == nil {
 		logger.Warn("Modern indexer not available for incremental indexing")
 		return

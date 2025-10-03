@@ -203,7 +203,7 @@ func UpgradeStepTwo(ctx context.Context) (err error) {
 	// Get old container name from environment variable, fallback to settings if not available
 	currentContainerName := os.Getenv("NGINX_UI_CONTAINER_NAME")
 	if currentContainerName == "" {
-		return errors.New("could not find old container name")
+		return ErrOldContainerNameNotFound
 	}
 	// Get the current running temp container name
 	// Since we can't directly get our own container name from inside, we'll search all temp containers
@@ -228,7 +228,7 @@ func UpgradeStepTwo(ctx context.Context) (err error) {
 	}
 
 	if tempContainerName == "" {
-		return errors.New("could not find temp container")
+		return ErrTempContainerNotFound
 	}
 
 	// Get temp container info to get the new image

@@ -27,4 +27,5 @@ var (
 	ErrWritePrivateKey                   = e.New(50021, "write private.key error: {0}")
 	ErrObtainCert                        = e.New(50022, "obtain cert error: {0}")
 	ErrRevokeCert                        = e.New(50023, "revoke cert error: {0}")
+	ErrNoCertificateAvailable            = e.New(50031, "no certificate available")
 )

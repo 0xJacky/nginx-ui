@@ -7,9 +7,9 @@ import (
 	"testing"
 )
 
-// TestEnhancedObjectPool tests the enhanced object pool functionality
-func TestEnhancedObjectPool(t *testing.T) {
-	pool := NewEnhancedObjectPool(
+// TestObjectPool tests the enhanced object pool functionality
+func TestObjectPool(t *testing.T) {
+	pool := NewObjectPool(
 		func() *strings.Builder { return &strings.Builder{} },
 		func(sb *strings.Builder) { sb.Reset() },
 		10,
@@ -211,9 +211,9 @@ func TestPooledWorker(t *testing.T) {
 	}
 }
 
-// BenchmarkEnhancedObjectPool benchmarks the enhanced object pool
-func BenchmarkEnhancedObjectPool(b *testing.B) {
-	pool := NewEnhancedObjectPool(
+// BenchmarkObjectPool benchmarks the enhanced object pool
+func BenchmarkObjectPool(b *testing.B) {
+	pool := NewObjectPool(
 		func() *strings.Builder { return &strings.Builder{} },
 		func(sb *strings.Builder) { sb.Reset() },
 		100,

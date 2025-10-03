@@ -102,13 +102,13 @@ func BenchmarkSIMDvsRegularParsing(b *testing.B) {
 	// Setup parsers
 	config := DefaultParserConfig()
 	config.MaxLineLength = 16 * 1024
-	regularParser := NewOptimizedParser(
+	regularParser := NewParser(
 		config,
 		NewSimpleUserAgentParser(),
 		&mockGeoIPService{},
 	)
 	
-	simdParser := NewOptimizedLogLineParser()
+	simdParser := NewLogLineParser()
 
 	b.Run("Regular_SingleLine", func(b *testing.B) {
 		b.ResetTimer()
@@ -271,7 +271,7 @@ func BenchmarkObjectPooling(b *testing.B) {
 
 // BenchmarkSIMDScaleTest tests SIMD performance at different scales
 func BenchmarkSIMDScaleTest(b *testing.B) {
-	simdParser := NewOptimizedLogLineParser()
+	simdParser := NewLogLineParser()
 	
 	scales := []struct {
 		name  string
@@ -323,7 +323,7 @@ func generateTestLogLine(index int) string {
 // TestSIMDCorrectnessValidation validates SIMD operations produce correct results
 func TestSIMDCorrectnessValidation(t *testing.T) {
 	matcher := NewSIMDStringMatcher()
-	simdParser := NewOptimizedLogLineParser()
+	simdParser := NewLogLineParser()
 	
 	testCases := []struct {
 		name string

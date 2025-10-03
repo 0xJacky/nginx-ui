@@ -18,6 +18,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/site"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
+	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/uozi-tech/cosy/logger"
 )
 
@@ -50,7 +51,7 @@ func NewSiteChecker(options CheckOptions) *SiteChecker {
 		}).Dial,
 		TLSHandshakeTimeout: 5 * time.Second,
 		TLSClientConfig: &tls.Config{
-			InsecureSkipVerify: true, // Skip SSL verification for internal sites
+			InsecureSkipVerify: settings.HTTPSettings.InsecureSkipVerify,
 		},
 	}
 

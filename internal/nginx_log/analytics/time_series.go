@@ -44,17 +44,17 @@ type Searcher interface {
 	ClearCache() error
 }
 
-// OptimizedTimeSeriesProcessor provides high-performance time-series analytics
-type OptimizedTimeSeriesProcessor struct {
+// TimeSeriesProcessor provides high-performance time-series analytics
+type TimeSeriesProcessor struct {
 	bucketPools    map[int64]*BucketPool
 	visitorSets    map[int64]*VisitorSetPool
 	resultCache    *TimeSeriesCache
 	mutex          sync.RWMutex
 }
 
-// NewOptimizedTimeSeriesProcessor creates a new optimized processor
-func NewOptimizedTimeSeriesProcessor() *OptimizedTimeSeriesProcessor {
-	return &OptimizedTimeSeriesProcessor{
+// NewTimeSeriesProcessor creates a new optimized processor
+func NewTimeSeriesProcessor() *TimeSeriesProcessor {
+	return &TimeSeriesProcessor{
 		bucketPools: make(map[int64]*BucketPool),
 		visitorSets: make(map[int64]*VisitorSetPool),
 		resultCache: NewTimeSeriesCache(1000, 1800), // 1000 entries, 30min TTL
@@ -258,7 +258,7 @@ func getCurrentTimestamp() int64 {
 }
 
 // OptimizedGetVisitorsByTime provides optimized visitors by time calculation
-func (otsp *OptimizedTimeSeriesProcessor) OptimizedGetVisitorsByTime(
+func (otsp *TimeSeriesProcessor) OptimizedGetVisitorsByTime(
 	ctx context.Context, 
 	req *VisitorsByTimeRequest,
 	s Searcher,
@@ -341,7 +341,7 @@ func (otsp *OptimizedTimeSeriesProcessor) OptimizedGetVisitorsByTime(
 }
 
 // OptimizedGetTrafficByTime provides optimized traffic analytics
-func (otsp *OptimizedTimeSeriesProcessor) OptimizedGetTrafficByTime(
+func (otsp *TimeSeriesProcessor) OptimizedGetTrafficByTime(
 	ctx context.Context,
 	req *TrafficByTimeRequest,
 	s Searcher,
@@ -555,7 +555,7 @@ func logValue(x float64) float64 {
 }
 
 // getBucketPool gets or creates a bucket pool for the given interval
-func (otsp *OptimizedTimeSeriesProcessor) getBucketPool(interval int64) *BucketPool {
+func (otsp *TimeSeriesProcessor) getBucketPool(interval int64) *BucketPool {
 	otsp.mutex.RLock()
 	pool, exists := otsp.bucketPools[interval]
 	otsp.mutex.RUnlock()
@@ -598,24 +598,24 @@ type TrafficTimeValue struct {
 	UniqueVisitors int   `json:"unique_visitors"`
 }
 
-// AdvancedTimeSeriesProcessor provides advanced analytics with ML-like features
-type AdvancedTimeSeriesProcessor struct {
-	*OptimizedTimeSeriesProcessor
+// AnomalyDetector provides advanced analytics with ML-like features
+type AnomalyDetector struct {
+	*TimeSeriesProcessor
 	anomalyThreshold float64
 	trendWindow     int
 }
 
-// NewAdvancedTimeSeriesProcessor creates an advanced processor
-func NewAdvancedTimeSeriesProcessor() *AdvancedTimeSeriesProcessor {
-	return &AdvancedTimeSeriesProcessor{
-		OptimizedTimeSeriesProcessor: NewOptimizedTimeSeriesProcessor(),
+// NewAnomalyDetector creates an advanced processor
+func NewAnomalyDetector() *AnomalyDetector {
+	return &AnomalyDetector{
+		TimeSeriesProcessor: NewTimeSeriesProcessor(),
 		anomalyThreshold:            2.0, // 2 standard deviations
 		trendWindow:                10,   // 10 data points for trend
 	}
 }
 
 // DetectAnomalies detects anomalies in time-series data
-func (atsp *AdvancedTimeSeriesProcessor) DetectAnomalies(data []TimeValue) []AnomalyPoint {
+func (atsp *AnomalyDetector) DetectAnomalies(data []TimeValue) []AnomalyPoint {
 	if len(data) < 3 {
 		return nil
 	}
@@ -666,7 +666,7 @@ type AnomalyPoint struct {
 }
 
 // CalculateTrend calculates trend direction and strength
-func (atsp *AdvancedTimeSeriesProcessor) CalculateTrend(data []TimeValue) TrendAnalysis {
+func (atsp *AnomalyDetector) CalculateTrend(data []TimeValue) TrendAnalysis {
 	if len(data) < 2 {
 		return TrendAnalysis{Direction: "insufficient_data"}
 	}

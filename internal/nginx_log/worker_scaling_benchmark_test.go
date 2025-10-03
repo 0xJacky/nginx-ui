@@ -148,7 +148,7 @@ func runWorkerBenchmark(b *testing.B, config *indexer.Config, logFile string, ex
 		BatchSize:     1000,
 	}
 
-	optimizedParser := parser.NewOptimizedParser(
+	optimizedParser := parser.NewParser(
 		parserConfig,
 		parser.NewSimpleUserAgentParser(),
 		&MockGeoService{},
@@ -161,7 +161,7 @@ func runWorkerBenchmark(b *testing.B, config *indexer.Config, logFile string, ex
 	}
 	defer file.Close()
 
-	parseResult, err := optimizedParser.OptimizedParseStream(ctx, file)
+	parseResult, err := optimizedParser.ParseStream(ctx, file)
 	if err != nil {
 		b.Fatalf("Parsing failed: %v", err)
 	}

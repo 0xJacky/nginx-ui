@@ -7,7 +7,7 @@ import (
 )
 
 func TestMergeSingleFacet_UniqueTermsCount(t *testing.T) {
-	ds := &DistributedSearcher{}
+	ds := &Searcher{}
 	
 	// Create initial facet with some terms from shard 1
 	existing := &Facet{
@@ -66,7 +66,7 @@ func TestMergeSingleFacet_UniqueTermsCount(t *testing.T) {
 
 func TestMergeSingleFacet_WithLimitAndOther(t *testing.T) {
 	// DefaultFacetSize is 10 by default, so we'll use enough terms to exceed it
-	ds := &DistributedSearcher{}
+	ds := &Searcher{}
 	
 	existing := &Facet{
 		Field:   "path",

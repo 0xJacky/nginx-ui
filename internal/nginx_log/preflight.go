@@ -7,6 +7,8 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/event"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/indexer"
+	"github.com/0xJacky/Nginx-UI/internal/nginx_log/searcher"
+	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
 	"github.com/uozi-tech/cosy/logger"
 )
 
@@ -33,16 +35,16 @@ type PreflightResponse struct {
 	FileInfo    *FileInfo  `json:"file_info,omitempty"`
 }
 
-// PreflightService handles preflight checks for log files
-type PreflightService struct{}
+// Preflight handles preflight checks for log files
+type Preflight struct{}
 
-// NewPreflightService creates a new preflight service
-func NewPreflightService() *PreflightService {
-	return &PreflightService{}
+// NewPreflight creates a new preflight service
+func NewPreflight() *Preflight {
+	return &Preflight{}
 }
 
 // CheckLogPreflight performs preflight checks for a log file
-func (ps *PreflightService) CheckLogPreflight(logPath string) (*PreflightResponse, error) {
+func (ps *Preflight) CheckLogPreflight(logPath string) (*PreflightResponse, error) {
 	// Use default access log path if logPath is empty
 	if logPath == "" {
 		defaultLogPath := nginx.GetAccessLogPath()
@@ -53,7 +55,7 @@ func (ps *PreflightService) CheckLogPreflight(logPath string) (*PreflightRespons
 	}
 
 	// Get searcher to check index status
-	searcherService := GetModernSearcher()
+	searcherService := GetSearcher()
 	if searcherService == nil {
 		return nil, ErrModernSearcherNotAvailable
 	}
@@ -65,6 +67,19 @@ func (ps *PreflightService) CheckLogPreflight(logPath string) (*PreflightRespons
 	// First check if the file exists and get file info
 	var fileInfo *os.FileInfo
 	if logPath != "" {
+		// Validate log path before accessing it
+		if !utils.IsValidLogPath(logPath) {
+			return &PreflightResponse{
+				Available:   false,
+				IndexStatus: string(indexer.IndexStatusError),
+				Message:     fmt.Sprintf("Invalid log path: %s", logPath),
+				FileInfo: &FileInfo{
+					Exists:   false,
+					Readable: false,
+				},
+			}, nil
+		}
+
 		if stat, err := os.Stat(logPath); os.IsNotExist(err) {
 			// File doesn't exist - check for historical data
 			return ps.handleMissingFile(logPath, searcherService)
@@ -92,8 +107,8 @@ func (ps *PreflightService) CheckLogPreflight(logPath string) (*PreflightRespons
 }
 
 // handleMissingFile handles the case when a log file doesn't exist
-func (ps *PreflightService) handleMissingFile(logPath string, searcherService interface{}) (*PreflightResponse, error) {
-	searcherHealthy := searcherService.(interface{ IsHealthy() bool }).IsHealthy()
+func (ps *Preflight) handleMissingFile(logPath string, searcherService *searcher.Searcher) (*PreflightResponse, error) {
+	searcherHealthy := searcherService.IsHealthy()
 	logFileManager := GetLogFileManager()
 
 	if logFileManager != nil {
@@ -132,7 +147,7 @@ func (ps *PreflightService) handleMissingFile(logPath string, searcherService in
 }
 
 // buildPreflightResponse builds the preflight response for existing files
-func (ps *PreflightService) buildPreflightResponse(logPath string, fileInfo *os.FileInfo, searcherHealthy bool, currentStatus *event.ProcessingStatusData) (*PreflightResponse, error) {
+func (ps *Preflight) buildPreflightResponse(logPath string, fileInfo *os.FileInfo, searcherHealthy bool, currentStatus *event.ProcessingStatusData) (*PreflightResponse, error) {
 	logFileManager := GetLogFileManager()
 	var indexStatus string = string(indexer.IndexStatusNotIndexed)
 	var available bool = false

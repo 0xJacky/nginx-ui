@@ -10,14 +10,14 @@ import (
 
 func TestCardinalityCounter_CountCardinality(t *testing.T) {
 	// Create a mock cardinality counter with nil shards for testing
-	counter := NewCardinalityCounter(nil)
+	counter := NewCounter(nil)
 	
 	req := &CardinalityRequest{
 		Field: "path_exact",
 	}
 	
 	// Test that it handles nil shards gracefully
-	result, err := counter.CountCardinality(context.Background(), req)
+	result, err := counter.Count(context.Background(), req)
 	
 	// Should return error when IndexAlias is not available
 	assert.Error(t, err)
@@ -28,12 +28,12 @@ func TestCardinalityCounter_CountCardinality(t *testing.T) {
 }
 
 func TestCardinalityCounter_BatchCountCardinality(t *testing.T) {
-	counter := NewCardinalityCounter(nil)
+	counter := NewCounter(nil)
 	
 	fields := []string{"path_exact", "ip", "browser"}
 	baseReq := &CardinalityRequest{}
 	
-	results, err := counter.BatchCountCardinality(context.Background(), fields, baseReq)
+	results, err := counter.BatchCount(context.Background(), fields, baseReq)
 	
 	assert.NoError(t, err)
 	assert.Len(t, results, 3)
@@ -46,34 +46,34 @@ func TestCardinalityCounter_BatchCountCardinality(t *testing.T) {
 }
 
 func TestCardinalityRequest_Validation(t *testing.T) {
-	counter := NewCardinalityCounter(nil)
+	counter := NewCounter(nil)
 	
 	// Test empty field name
 	req := &CardinalityRequest{
 		Field: "",
 	}
 	
-	_, err := counter.CountCardinality(context.Background(), req)
+	_, err := counter.Count(context.Background(), req)
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "field name is required")
 }
 
 func TestCardinalityCounter_EstimateCardinality(t *testing.T) {
-	counter := NewCardinalityCounter(nil)
+	counter := NewCounter(nil)
 	
 	req := &CardinalityRequest{
 		Field: "test_field",
 	}
 	
 	// For now, EstimateCardinality should behave the same as CountCardinality
-	result, err := counter.EstimateCardinality(context.Background(), req)
+	result, err := counter.Estimate(context.Background(), req)
 	assert.NoError(t, err)
 	assert.NotNil(t, result)
 	assert.Equal(t, "test_field", result.Field)
 }
 
 func TestCardinalityRequest_TimeRange(t *testing.T) {
-	counter := NewCardinalityCounter(nil)
+	counter := NewCounter(nil)
 	
 	now := time.Now().Unix()
 	start := now - 3600 // 1 hour ago
@@ -84,7 +84,7 @@ func TestCardinalityRequest_TimeRange(t *testing.T) {
 		EndTime:   &now,
 	}
 	
-	result, err := counter.CountCardinality(context.Background(), req)
+	result, err := counter.Count(context.Background(), req)
 	assert.Error(t, err) // IndexAlias not available
 	assert.NotNil(t, result)
 	assert.Equal(t, "path_exact", result.Field)

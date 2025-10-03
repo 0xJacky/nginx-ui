@@ -6,8 +6,6 @@ import (
 	"io"
 	"net/http"
 	"time"
-
-	"github.com/pkg/errors"
 )
 
 type TCommit struct {
@@ -37,7 +35,7 @@ func getDevBuild() (data TRelease, err error) {
 		return
 	}
 	if len(commit.SHA) < 7 {
-		err = errors.New("invalid commit SHA")
+		err = ErrInvalidCommitSHA
 		return
 	}
 	shortSHA := commit.SHA[:7]

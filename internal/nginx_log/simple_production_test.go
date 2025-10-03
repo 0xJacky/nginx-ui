@@ -104,7 +104,7 @@ func runActualProductionWorkflow(t *testing.T, config *indexer.Config, logFile s
 		1000,
 	)
 
-	optimizedParser := parser.NewOptimizedParser(
+	optimizedParser := parser.NewParser(
 		&parser.Config{
 			MaxLineLength: 8 * 1024,
 			WorkerCount:   8,
@@ -131,7 +131,7 @@ func runActualProductionWorkflow(t *testing.T, config *indexer.Config, logFile s
 	}
 	defer file.Close()
 
-	parseResult, err := optimizedParser.OptimizedParseStream(ctx, file)
+	parseResult, err := optimizedParser.ParseStream(ctx, file)
 	if err != nil {
 		t.Fatalf("Parsing failed: %v", err)
 	}

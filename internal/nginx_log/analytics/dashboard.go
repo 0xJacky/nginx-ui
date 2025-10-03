@@ -370,7 +370,7 @@ func (s *service) calculateDashboardSummaryWithCardinality(ctx context.Context, 
 			UseMainLogPath: true, // Use main_log_path for efficient log group queries
 		}
 		
-		if uvResult, err := cardinalityCounter.CountCardinality(ctx, uvCardReq); err == nil {
+		if uvResult, err := cardinalityCounter.Count(ctx, uvCardReq); err == nil {
 			// Override the facet-limited UV count with accurate cardinality count
 			summary.TotalUV = int(uvResult.Cardinality)
 			
@@ -384,7 +384,7 @@ func (s *service) calculateDashboardSummaryWithCardinality(ctx context.Context, 
 			if result.Facets != nil && result.Facets["ip"] != nil {
 				facetUV = fmt.Sprintf("%d", result.Facets["ip"].Total)
 			}
-			logger.Infof("✓ Accurate UV count using CardinalityCounter: %d (was limited to %s by facet)", 
+			logger.Infof("✓ Accurate UV count using Counter: %d (was limited to %s by facet)", 
 				uvResult.Cardinality, facetUV)
 		} else {
 			logger.Errorf("Failed to count unique visitors with cardinality counter: %v", err)
@@ -399,7 +399,7 @@ func (s *service) calculateDashboardSummaryWithCardinality(ctx context.Context, 
 			UseMainLogPath: true, // Use main_log_path for efficient log group queries
 		}
 		
-		if pageResult, err := cardinalityCounter.CountCardinality(ctx, pageCardReq); err == nil {
+		if pageResult, err := cardinalityCounter.Count(ctx, pageCardReq); err == nil {
 			logger.Debugf("Accurate unique pages count: %d (vs Total PV: %d)", pageResult.Cardinality, summary.TotalPV)
 			
 			if pageResult.Cardinality <= uint64(summary.TotalPV) {
@@ -411,7 +411,7 @@ func (s *service) calculateDashboardSummaryWithCardinality(ctx context.Context, 
 			logger.Errorf("Failed to count unique pages: %v", err)
 		}
 	} else {
-		logger.Warnf("CardinalityCounter not available, UV count limited by facet size to %d", summary.TotalUV)
+		logger.Warnf("Counter not available, UV count limited by facet size to %d", summary.TotalUV)
 	}
 	
 	return summary

@@ -6,8 +6,8 @@ import (
 	"time"
 )
 
-// EnhancedObjectPool provides advanced object pooling with automatic cleanup and monitoring
-type EnhancedObjectPool[T any] struct {
+// ObjectPool provides advanced object pooling with automatic cleanup and monitoring
+type ObjectPool[T any] struct {
 	pool        sync.Pool
 	created     int64
 	reused      int64
@@ -17,9 +17,9 @@ type EnhancedObjectPool[T any] struct {
 	mutex       sync.RWMutex
 }
 
-// NewEnhancedObjectPool creates a new enhanced object pool
-func NewEnhancedObjectPool[T any](newFunc func() *T, resetFunc func(*T), maxSize int) *EnhancedObjectPool[T] {
-	return &EnhancedObjectPool[T]{
+// NewObjectPool creates a new enhanced object pool
+func NewObjectPool[T any](newFunc func() *T, resetFunc func(*T), maxSize int) *ObjectPool[T] {
+	return &ObjectPool[T]{
 		pool: sync.Pool{
 			New: func() interface{} {
 				return newFunc()
@@ -32,7 +32,7 @@ func NewEnhancedObjectPool[T any](newFunc func() *T, resetFunc func(*T), maxSize
 }
 
 // Get retrieves an object from the pool
-func (p *EnhancedObjectPool[T]) Get() *T {
+func (p *ObjectPool[T]) Get() *T {
 	obj := p.pool.Get().(*T)
 	
 	p.mutex.Lock()
@@ -43,7 +43,7 @@ func (p *EnhancedObjectPool[T]) Get() *T {
 }
 
 // Put returns an object to the pool after resetting it
-func (p *EnhancedObjectPool[T]) Put(obj *T) {
+func (p *ObjectPool[T]) Put(obj *T) {
 	if obj == nil {
 		return
 	}
@@ -57,7 +57,7 @@ func (p *EnhancedObjectPool[T]) Put(obj *T) {
 }
 
 // Stats returns pool statistics
-func (p *EnhancedObjectPool[T]) Stats() PoolStats {
+func (p *ObjectPool[T]) Stats() PoolStats {
 	p.mutex.RLock()
 	defer p.mutex.RUnlock()
 	
@@ -79,13 +79,13 @@ type PoolStats struct {
 
 // StringBuilderPool provides pooled string builders
 type StringBuilderPool struct {
-	pool *EnhancedObjectPool[strings.Builder]
+	pool *ObjectPool[strings.Builder]
 }
 
 // NewStringBuilderPool creates a new string builder pool
 func NewStringBuilderPool(initialCap, maxSize int) *StringBuilderPool {
 	return &StringBuilderPool{
-		pool: NewEnhancedObjectPool(
+		pool: NewObjectPool(
 			func() *strings.Builder { 
 				sb := &strings.Builder{}
 				sb.Grow(initialCap)
@@ -109,14 +109,14 @@ func (p *StringBuilderPool) Put(sb *strings.Builder) {
 
 // ByteSlicePool provides pooled byte slices
 type ByteSlicePool struct {
-	pools map[int]*EnhancedObjectPool[[]byte]
+	pools map[int]*ObjectPool[[]byte]
 	mutex sync.RWMutex
 }
 
 // NewByteSlicePool creates a new byte slice pool
 func NewByteSlicePool() *ByteSlicePool {
 	return &ByteSlicePool{
-		pools: make(map[int]*EnhancedObjectPool[[]byte]),
+		pools: make(map[int]*ObjectPool[[]byte]),
 	}
 }
 
@@ -133,7 +133,7 @@ func (p *ByteSlicePool) Get(size int) []byte {
 		p.mutex.Lock()
 		// Double-check after acquiring write lock
 		if pool, exists = p.pools[poolSize]; !exists {
-			pool = NewEnhancedObjectPool(
+			pool = NewObjectPool(
 				func() *[]byte {
 					slice := make([]byte, 0, poolSize)
 					return &slice
@@ -184,13 +184,13 @@ func nextPowerOf2(n int) int {
 
 // MapPool provides pooled maps
 type MapPool[K comparable, V any] struct {
-	pool *EnhancedObjectPool[map[K]V]
+	pool *ObjectPool[map[K]V]
 }
 
 // NewMapPool creates a new map pool
 func NewMapPool[K comparable, V any](initialSize, maxSize int) *MapPool[K, V] {
 	return &MapPool[K, V]{
-		pool: NewEnhancedObjectPool(
+		pool: NewObjectPool(
 			func() *map[K]V {
 				m := make(map[K]V, initialSize)
 				return &m
@@ -218,13 +218,13 @@ func (p *MapPool[K, V]) Put(m map[K]V) {
 
 // SlicePool provides pooled slices
 type SlicePool[T any] struct {
-	pool *EnhancedObjectPool[[]T]
+	pool *ObjectPool[[]T]
 }
 
 // NewSlicePool creates a new slice pool
 func NewSlicePool[T any](initialCap, maxSize int) *SlicePool[T] {
 	return &SlicePool[T]{
-		pool: NewEnhancedObjectPool(
+		pool: NewObjectPool(
 			func() *[]T {
 				slice := make([]T, 0, initialCap)
 				return &slice

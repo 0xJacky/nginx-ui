@@ -113,11 +113,7 @@ var ValidHTTPMethods = map[string]bool{
 	"CONNECT": true,
 }
 
-// Parser errors
+// Parser errors (moved to errors.go as Cosy Errors)
 const (
-	ErrEmptyLogLine         = "empty log line"
-	ErrUnsupportedLogFormat = "unsupported log format"
-	ErrInvalidTimestamp     = "invalid timestamp"
-	ErrInvalidStatus        = "invalid status code"
-	ErrLineTooLong          = "line too long"
+	ErrInvalidStatus = "invalid status code"
 )

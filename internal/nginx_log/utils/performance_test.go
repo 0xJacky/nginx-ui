@@ -151,8 +151,8 @@ func TestMemoryOptimizer(t *testing.T) {
 	mo.CheckMemoryUsage()
 }
 
-func TestPerformanceMetrics(t *testing.T) {
-	pm := NewPerformanceMetrics()
+func TestMetrics(t *testing.T) {
+	pm := NewMetrics()
 
 	// Record some operations
 	pm.RecordOperation(10, time.Millisecond*100, true)

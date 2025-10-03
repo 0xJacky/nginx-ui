@@ -12,7 +12,7 @@ import (
 
 // EnableAdvancedIndexing enables advanced indexing for nginx logs
 func EnableAdvancedIndexing(c *gin.Context) {
-	settings.NginxLogSettings.AdvancedIndexingEnabled = true
+	settings.NginxLogSettings.IndexingEnabled = true
 
 	err := settings.Save()
 	if err != nil {
@@ -21,7 +21,10 @@ func EnableAdvancedIndexing(c *gin.Context) {
 	}
 
 	// Start the nginx_log services
-	nginx_log.InitializeModernServices(kernel.Context)
+	nginx_log.InitializeServices(kernel.Context)
+
+	// Migrate fallback cache entries to LogFileManager
+	nginx_log.MigrateFallbackCache()
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Advanced indexing enabled successfully",
@@ -30,7 +33,7 @@ func EnableAdvancedIndexing(c *gin.Context) {
 
 // DisableAdvancedIndexing disables advanced indexing for nginx logs
 func DisableAdvancedIndexing(c *gin.Context) {
-	settings.NginxLogSettings.AdvancedIndexingEnabled = false
+	settings.NginxLogSettings.IndexingEnabled = false
 
 	err := settings.Save()
 	if err != nil {
@@ -39,7 +42,7 @@ func DisableAdvancedIndexing(c *gin.Context) {
 	}
 
 	// Stop the nginx_log services
-	nginx_log.StopModernServices()
+	nginx_log.StopServices()
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Advanced indexing disabled successfully",
@@ -48,7 +51,7 @@ func DisableAdvancedIndexing(c *gin.Context) {
 
 // GetAdvancedIndexingStatus returns the current status of advanced indexing
 func GetAdvancedIndexingStatus(c *gin.Context) {
-	enabled := settings.NginxLogSettings.AdvancedIndexingEnabled
+	enabled := settings.NginxLogSettings.IndexingEnabled
 
 	c.JSON(http.StatusOK, gin.H{
 		"enabled": enabled,

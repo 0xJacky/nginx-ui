@@ -35,7 +35,7 @@ type IntegrationTestSuite struct {
 	logFiles        []string
 	logFilePaths    []string
 	indexer         *indexer.ParallelIndexer
-	searcher        searcher.Searcher
+	searcher        *searcher.Searcher
 	analytics       analytics.Service
 	logFileManager  *TestLogFileManager
 	expectedMetrics map[string]*ExpectedFileMetrics
@@ -249,7 +249,7 @@ func (suite *IntegrationTestSuite) InitializeServices(t *testing.T) {
 
 	// Initialize searcher (empty initially)
 	searcherConfig := searcher.DefaultSearcherConfig()
-	suite.searcher = searcher.NewDistributedSearcher(searcherConfig, []bleve.Index{})
+	suite.searcher = searcher.NewSearcher(searcherConfig, []bleve.Index{})
 
 	// Initialize analytics
 	suite.analytics = analytics.NewService(suite.searcher)
@@ -496,18 +496,18 @@ func (suite *IntegrationTestSuite) updateSearcher(t *testing.T) {
 	newShards := suite.indexer.GetAllShards()
 	t.Logf("Updating searcher with %d shards", len(newShards))
 
-	if ds, ok := suite.searcher.(*searcher.DistributedSearcher); ok {
-		err := ds.SwapShards(newShards)
+	if suite.searcher != nil {
+		err := suite.searcher.SwapShards(newShards)
 		require.NoError(t, err)
 		t.Log("Searcher shards updated successfully")
 	} else {
-		t.Fatal("Searcher is not a DistributedSearcher")
+		t.Fatal("Searcher is not a Searcher")
 	}
 }
 
 // ValidateCardinalityCounter validates the accuracy of cardinality counting
 func (suite *IntegrationTestSuite) ValidateCardinalityCounter(t *testing.T, filePath string) {
-	t.Logf("Validating CardinalityCounter accuracy for: %s", filePath)
+	t.Logf("Validating Counter accuracy for: %s", filePath)
 
 	expected := suite.expectedMetrics[filePath]
 	require.NotNil(t, expected, "Expected metrics not found for file: %s", filePath)
@@ -521,20 +521,20 @@ func (suite *IntegrationTestSuite) ValidateCardinalityCounter(t *testing.T, file
 	// Test user agent cardinality
 	suite.testFieldCardinality(t, filePath, "http_user_agent", expected.UniqueAgents, "User agents")
 
-	t.Logf("CardinalityCounter validation completed for: %s", filePath)
+	t.Logf("Counter validation completed for: %s", filePath)
 }
 
 // testFieldCardinality tests cardinality counting for a specific field
 func (suite *IntegrationTestSuite) testFieldCardinality(t *testing.T, filePath string, field string, expectedCount uint64, fieldName string) {
-	if ds, ok := suite.searcher.(*searcher.DistributedSearcher); ok {
-		cardinalityCounter := searcher.NewCardinalityCounter(ds.GetShards())
+	if suite.searcher != nil {
+		cardinalityCounter := searcher.NewCounter(suite.searcher.GetShards())
 
 		req := &searcher.CardinalityRequest{
 			Field:    field,
 			LogPaths: []string{filePath},
 		}
 
-		result, err := cardinalityCounter.CountCardinality(suite.ctx, req)
+		result, err := cardinalityCounter.Count(suite.ctx, req)
 		require.NoError(t, err, "Failed to count cardinality for field: %s", field)
 
 		// Allow for small discrepancies due to indexing behavior
@@ -550,7 +550,7 @@ func (suite *IntegrationTestSuite) testFieldCardinality(t *testing.T, filePath s
 		t.Logf("✓ %s cardinality: expected=%d, actual=%d, total_docs=%d",
 			fieldName, expectedCount, result.Cardinality, result.TotalDocs)
 	} else {
-		t.Fatal("Searcher is not a DistributedSearcher")
+		t.Fatal("Searcher is not a Searcher")
 	}
 }
 

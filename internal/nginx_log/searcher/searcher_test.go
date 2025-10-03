@@ -5,9 +5,9 @@ import (
 	"time"
 )
 
-// TestOptimizedSearchCache tests the basic functionality of the optimized search cache
-func TestOptimizedSearchCache(t *testing.T) {
-	cache := NewOptimizedSearchCache(100)
+// TestSearchCache tests the basic functionality of the optimized search cache
+func TestSearchCache(t *testing.T) {
+	cache := NewCache(100)
 	defer cache.Close()
 
 	req := &SearchRequest{
@@ -69,7 +69,7 @@ func TestBasicSearcherConfig(t *testing.T) {
 }
 
 func TestQueryBuilderValidation(t *testing.T) {
-	qb := NewQueryBuilderService()
+	qb := NewQueryBuilder()
 
 	// Test valid request
 	validReq := &SearchRequest{
@@ -95,7 +95,7 @@ func TestQueryBuilderValidation(t *testing.T) {
 }
 
 func TestQueryBuilderCountriesFilter(t *testing.T) {
-	qb := NewQueryBuilderService()
+	qb := NewQueryBuilder()
 
 	tests := []struct {
 		name      string
@@ -179,10 +179,10 @@ func TestSearchRequestDefaults(t *testing.T) {
 }
 
 func TestCacheMiddleware(t *testing.T) {
-	cache := NewOptimizedSearchCache(100)
+	cache := NewCache(100)
 	defer cache.Close()
 
-	middleware := NewCacheMiddleware(cache, 5*time.Minute)
+	middleware := NewMiddleware(cache, 5*time.Minute)
 
 	if !middleware.IsEnabled() {
 		t.Error("middleware should be enabled by default")
@@ -202,7 +202,7 @@ func TestCacheMiddleware(t *testing.T) {
 }
 
 func TestQueryBuilder(t *testing.T) {
-	qb := NewQueryBuilderService()
+	qb := NewQueryBuilder()
 
 	// Test basic query building
 	req := &SearchRequest{
@@ -222,7 +222,7 @@ func TestQueryBuilder(t *testing.T) {
 }
 
 func TestSuggestionQuery(t *testing.T) {
-	qb := NewQueryBuilderService()
+	qb := NewQueryBuilder()
 
 	// Test suggestion query building
 	query, err := qb.BuildSuggestionQuery("test", "message")

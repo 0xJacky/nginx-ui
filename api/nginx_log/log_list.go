@@ -62,7 +62,7 @@ func GetLogList(c *gin.Context) {
 
 	// Try to get total document count from modern indexer if available
 	// The indexer is the source of truth for document counts.
-	indexer := nginx_log.GetModernIndexer()
+	indexer := nginx_log.GetIndexer()
 	if indexer != nil {
 		stats := indexer.GetStats()
 		if stats != nil {

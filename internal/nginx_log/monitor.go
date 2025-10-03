@@ -13,8 +13,8 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
 )
 
-// PerformanceThresholds defines minimum acceptable performance metrics
-type PerformanceThresholds struct {
+// Thresholds defines minimum acceptable performance metrics
+type Thresholds struct {
 	ParseStreamOpsPerSec  float64 `json:"parse_stream_ops_per_sec"`
 	SIMDOpsPerSec         float64 `json:"simd_ops_per_sec"`
 	MemoryPoolOpsPerSec   float64 `json:"memory_pool_ops_per_sec"`
@@ -23,9 +23,9 @@ type PerformanceThresholds struct {
 	MaxResponseTimeMS     float64 `json:"max_response_time_ms"`
 }
 
-// DefaultPerformanceThresholds returns the expected minimum performance levels
-func DefaultPerformanceThresholds() *PerformanceThresholds {
-	return &PerformanceThresholds{
+// DefaultThresholds returns the expected minimum performance levels
+func DefaultThresholds() *Thresholds {
+	return &Thresholds{
 		ParseStreamOpsPerSec: 500.0,     // 7-8x improvement target
 		SIMDOpsPerSec:        10000.0,   // 235x improvement target
 		MemoryPoolOpsPerSec:  100000.0,  // 48-81% improvement target
@@ -35,8 +35,8 @@ func DefaultPerformanceThresholds() *PerformanceThresholds {
 	}
 }
 
-// PerformanceMetrics represents current system performance
-type PerformanceMetrics struct {
+// Metrics represents current system performance
+type Metrics struct {
 	Timestamp             time.Time `json:"timestamp"`
 	ParseStreamRate       float64   `json:"parse_stream_rate"`
 	SIMDRate             float64   `json:"simd_rate"`
@@ -49,8 +49,8 @@ type PerformanceMetrics struct {
 	ErrorRate            float64   `json:"error_rate"`
 }
 
-// PerformanceAlert represents a performance issue alert
-type PerformanceAlert struct {
+// Alert represents a performance issue alert
+type Alert struct {
 	Level       string    `json:"level"`       // "warning", "critical"
 	Component   string    `json:"component"`   // "parser", "simd", "memory", "cache"
 	Message     string    `json:"message"`
@@ -60,40 +60,40 @@ type PerformanceAlert struct {
 	Suggestions []string  `json:"suggestions"`
 }
 
-// PerformanceMonitor provides real-time performance monitoring and alerting
-type PerformanceMonitor struct {
-	thresholds    *PerformanceThresholds
-	metrics       *PerformanceMetrics
-	alerts        []PerformanceAlert
-	alertCallback func(PerformanceAlert)
+// Monitor provides real-time performance monitoring and alerting
+type Monitor struct {
+	thresholds    *Thresholds
+	metrics       *Metrics
+	alerts        []Alert
+	alertCallback func(Alert)
 	mu           sync.RWMutex
 	running      bool
 	stopChan     chan struct{}
 }
 
-// NewPerformanceMonitor creates a new performance monitor
-func NewPerformanceMonitor(thresholds *PerformanceThresholds) *PerformanceMonitor {
+// NewMonitor creates a new performance monitor
+func NewMonitor(thresholds *Thresholds) *Monitor {
 	if thresholds == nil {
-		thresholds = DefaultPerformanceThresholds()
+		thresholds = DefaultThresholds()
 	}
 	
-	return &PerformanceMonitor{
+	return &Monitor{
 		thresholds: thresholds,
-		metrics:    &PerformanceMetrics{},
-		alerts:     make([]PerformanceAlert, 0),
+		metrics:    &Metrics{},
+		alerts:     make([]Alert, 0),
 		stopChan:   make(chan struct{}),
 	}
 }
 
 // SetAlertCallback sets a callback function for performance alerts
-func (pm *PerformanceMonitor) SetAlertCallback(callback func(PerformanceAlert)) {
+func (pm *Monitor) SetAlertCallback(callback func(Alert)) {
 	pm.mu.Lock()
 	defer pm.mu.Unlock()
 	pm.alertCallback = callback
 }
 
 // StartMonitoring begins continuous performance monitoring
-func (pm *PerformanceMonitor) StartMonitoring(ctx context.Context, interval time.Duration) {
+func (pm *Monitor) StartMonitoring(ctx context.Context, interval time.Duration) {
 	pm.mu.Lock()
 	if pm.running {
 		pm.mu.Unlock()
@@ -120,11 +120,11 @@ func (pm *PerformanceMonitor) StartMonitoring(ctx context.Context, interval time
 }
 
 // StopMonitoring stops the performance monitoring
-func (pm *PerformanceMonitor) StopMonitoring() {
+func (pm *Monitor) StopMonitoring() {
 	pm.stopMonitoring()
 }
 
-func (pm *PerformanceMonitor) stopMonitoring() {
+func (pm *Monitor) stopMonitoring() {
 	pm.mu.Lock()
 	defer pm.mu.Unlock()
 	
@@ -136,7 +136,7 @@ func (pm *PerformanceMonitor) stopMonitoring() {
 }
 
 // collectMetrics gathers current performance metrics
-func (pm *PerformanceMonitor) collectMetrics() {
+func (pm *Monitor) collectMetrics() {
 	pm.mu.Lock()
 	defer pm.mu.Unlock()
 
@@ -160,7 +160,7 @@ func (pm *PerformanceMonitor) collectMetrics() {
 	// Calculate response time
 	responseTime := float64(time.Since(startTime).Nanoseconds()) / 1e6
 
-	pm.metrics = &PerformanceMetrics{
+	pm.metrics = &Metrics{
 		Timestamp:       time.Now(),
 		ParseStreamRate: parseRate,
 		SIMDRate:       simdRate,
@@ -175,21 +175,21 @@ func (pm *PerformanceMonitor) collectMetrics() {
 }
 
 // benchmarkParseStream tests ParseStream performance
-func (pm *PerformanceMonitor) benchmarkParseStream() float64 {
+func (pm *Monitor) benchmarkParseStream() float64 {
 	ctx := context.Background()
 	testData := generateMonitoringTestData(100)
 	
 	config := parser.DefaultParserConfig()
 	config.BatchSize = 100
 	
-	optimizedParser := parser.NewOptimizedParser(
+	optimizedParser := parser.NewParser(
 		config,
 		parser.NewSimpleUserAgentParser(),
 		&mockMonitorGeoIPService{},
 	)
 	
 	start := time.Now()
-	result, err := optimizedParser.OptimizedParseStream(ctx, testData)
+	result, err := optimizedParser.ParseStream(ctx, testData)
 	if err != nil {
 		return 0.0
 	}
@@ -199,9 +199,9 @@ func (pm *PerformanceMonitor) benchmarkParseStream() float64 {
 }
 
 // benchmarkSIMD tests SIMD parser performance
-func (pm *PerformanceMonitor) benchmarkSIMD() float64 {
+func (pm *Monitor) benchmarkSIMD() float64 {
 	testLine := `192.168.1.100 - - [06/Sep/2025:10:00:00 +0000] "GET /monitor HTTP/1.1" 200 1024 "https://test.com" "Monitor/1.0"`
-	simdParser := parser.NewOptimizedLogLineParser()
+	simdParser := parser.NewLogLineParser()
 	
 	operations := 1000
 	start := time.Now()
@@ -215,7 +215,7 @@ func (pm *PerformanceMonitor) benchmarkSIMD() float64 {
 }
 
 // benchmarkMemoryPools tests memory pool performance
-func (pm *PerformanceMonitor) benchmarkMemoryPools() float64 {
+func (pm *Monitor) benchmarkMemoryPools() float64 {
 	operations := 1000
 	start := time.Now()
 	
@@ -235,7 +235,7 @@ func (pm *PerformanceMonitor) benchmarkMemoryPools() float64 {
 }
 
 // benchmarkRegexCache tests regex cache performance
-func (pm *PerformanceMonitor) benchmarkRegexCache() float64 {
+func (pm *Monitor) benchmarkRegexCache() float64 {
 	cache := parser.GetGlobalRegexCache()
 	operations := 1000
 	
@@ -252,32 +252,32 @@ func (pm *PerformanceMonitor) benchmarkRegexCache() float64 {
 }
 
 // getCacheHitRate gets current cache hit rate
-func (pm *PerformanceMonitor) getCacheHitRate() float64 {
+func (pm *Monitor) getCacheHitRate() float64 {
 	cache := parser.GetGlobalRegexCache()
 	stats := cache.GetStats()
 	return stats.HitRate
 }
 
 // getMemoryUsage returns current memory usage in MB (simplified)
-func (pm *PerformanceMonitor) getMemoryUsage() float64 {
+func (pm *Monitor) getMemoryUsage() float64 {
 	// In a real implementation, this would use runtime.MemStats
 	return 50.0 // Placeholder
 }
 
 // getTotalOperations returns total operations processed
-func (pm *PerformanceMonitor) getTotalOperations() int64 {
+func (pm *Monitor) getTotalOperations() int64 {
 	// In a real implementation, this would track actual operations
 	return int64(time.Since(time.Now()).Seconds()) // Placeholder
 }
 
 // checkThresholds compares current metrics against thresholds and generates alerts
-func (pm *PerformanceMonitor) checkThresholds() {
+func (pm *Monitor) checkThresholds() {
 	pm.mu.Lock()
 	defer pm.mu.Unlock()
 
 	// Check ParseStream performance
 	if pm.metrics.ParseStreamRate < pm.thresholds.ParseStreamOpsPerSec {
-		alert := PerformanceAlert{
+		alert := Alert{
 			Level:       "critical",
 			Component:   "parser",
 			Message:     "ParseStream performance below threshold",
@@ -285,7 +285,7 @@ func (pm *PerformanceMonitor) checkThresholds() {
 			ThresholdValue: pm.thresholds.ParseStreamOpsPerSec,
 			Timestamp:   time.Now(),
 			Suggestions: []string{
-				"Check if OptimizedParseStream is being used",
+				"Check if ParseStream is being used",
 				"Verify batch size configuration (recommended: 500-1500)",
 				"Monitor memory usage and GC pressure",
 				"Check for context cancellation overhead",
@@ -296,7 +296,7 @@ func (pm *PerformanceMonitor) checkThresholds() {
 
 	// Check SIMD performance
 	if pm.metrics.SIMDRate < pm.thresholds.SIMDOpsPerSec {
-		alert := PerformanceAlert{
+		alert := Alert{
 			Level:       "critical",
 			Component:   "simd",
 			Message:     "SIMD parsing performance below threshold",
@@ -315,7 +315,7 @@ func (pm *PerformanceMonitor) checkThresholds() {
 
 	// Check memory pool performance
 	if pm.metrics.MemoryPoolRate < pm.thresholds.MemoryPoolOpsPerSec {
-		alert := PerformanceAlert{
+		alert := Alert{
 			Level:       "warning",
 			Component:   "memory",
 			Message:     "Memory pool performance below threshold",
@@ -334,7 +334,7 @@ func (pm *PerformanceMonitor) checkThresholds() {
 
 	// Check regex cache performance
 	if pm.metrics.RegexCacheRate < pm.thresholds.RegexCacheOpsPerSec {
-		alert := PerformanceAlert{
+		alert := Alert{
 			Level:       "warning",
 			Component:   "cache",
 			Message:     "Regex cache performance below threshold",
@@ -353,7 +353,7 @@ func (pm *PerformanceMonitor) checkThresholds() {
 
 	// Check cache hit rate
 	if pm.metrics.CacheHitRate < 0.9 {
-		alert := PerformanceAlert{
+		alert := Alert{
 			Level:       "warning",
 			Component:   "cache",
 			Message:     "Cache hit rate is low",
@@ -371,7 +371,7 @@ func (pm *PerformanceMonitor) checkThresholds() {
 
 	// Check memory usage
 	if pm.metrics.MemoryUsageMB > pm.thresholds.MaxMemoryUsageMB {
-		alert := PerformanceAlert{
+		alert := Alert{
 			Level:       "critical",
 			Component:   "memory",
 			Message:     "Memory usage exceeds threshold",
@@ -390,7 +390,7 @@ func (pm *PerformanceMonitor) checkThresholds() {
 }
 
 // addAlert adds a new alert and triggers the callback
-func (pm *PerformanceMonitor) addAlert(alert PerformanceAlert) {
+func (pm *Monitor) addAlert(alert Alert) {
 	pm.alerts = append(pm.alerts, alert)
 	
 	// Keep only the last 100 alerts
@@ -405,19 +405,19 @@ func (pm *PerformanceMonitor) addAlert(alert PerformanceAlert) {
 }
 
 // GetCurrentMetrics returns the current performance metrics
-func (pm *PerformanceMonitor) GetCurrentMetrics() PerformanceMetrics {
+func (pm *Monitor) GetCurrentMetrics() Metrics {
 	pm.mu.RLock()
 	defer pm.mu.RUnlock()
 	return *pm.metrics
 }
 
 // GetRecentAlerts returns recent performance alerts
-func (pm *PerformanceMonitor) GetRecentAlerts(since time.Duration) []PerformanceAlert {
+func (pm *Monitor) GetRecentAlerts(since time.Duration) []Alert {
 	pm.mu.RLock()
 	defer pm.mu.RUnlock()
 	
 	cutoff := time.Now().Add(-since)
-	recent := make([]PerformanceAlert, 0)
+	recent := make([]Alert, 0)
 	
 	for _, alert := range pm.alerts {
 		if alert.Timestamp.After(cutoff) {
@@ -429,7 +429,7 @@ func (pm *PerformanceMonitor) GetRecentAlerts(since time.Duration) []Performance
 }
 
 // GetHealthStatus returns overall system health based on current metrics
-func (pm *PerformanceMonitor) GetHealthStatus() string {
+func (pm *Monitor) GetHealthStatus() string {
 	pm.mu.RLock()
 	defer pm.mu.RUnlock()
 	
@@ -454,9 +454,9 @@ func (pm *PerformanceMonitor) GetHealthStatus() string {
 	}
 }
 
-func (pm *PerformanceMonitor) getRecentAlertsInternal(since time.Duration) []PerformanceAlert {
+func (pm *Monitor) getRecentAlertsInternal(since time.Duration) []Alert {
 	cutoff := time.Now().Add(-since)
-	recent := make([]PerformanceAlert, 0)
+	recent := make([]Alert, 0)
 	
 	for _, alert := range pm.alerts {
 		if alert.Timestamp.After(cutoff) {
@@ -468,14 +468,14 @@ func (pm *PerformanceMonitor) getRecentAlertsInternal(since time.Duration) []Per
 }
 
 // ExportMetrics exports current metrics as JSON
-func (pm *PerformanceMonitor) ExportMetrics() ([]byte, error) {
+func (pm *Monitor) ExportMetrics() ([]byte, error) {
 	pm.mu.RLock()
 	defer pm.mu.RUnlock()
 	
 	export := struct {
-		Metrics    PerformanceMetrics   `json:"metrics"`
-		Thresholds PerformanceThresholds `json:"thresholds"`
-		Alerts     []PerformanceAlert   `json:"recent_alerts"`
+		Metrics    Metrics   `json:"metrics"`
+		Thresholds Thresholds `json:"thresholds"`
+		Alerts     []Alert   `json:"recent_alerts"`
 		Health     string               `json:"health_status"`
 	}{
 		Metrics:    *pm.metrics,
@@ -488,7 +488,7 @@ func (pm *PerformanceMonitor) ExportMetrics() ([]byte, error) {
 }
 
 // DefaultAlertHandler provides a default implementation for handling alerts
-func DefaultAlertHandler(alert PerformanceAlert) {
+func DefaultAlertHandler(alert Alert) {
 	log.Printf("PERFORMANCE ALERT [%s/%s]: %s (Current: %.2f, Threshold: %.2f)",
 		alert.Level, alert.Component, alert.Message, alert.CurrentValue, alert.ThresholdValue)
 	
@@ -499,9 +499,9 @@ func DefaultAlertHandler(alert PerformanceAlert) {
 
 // Example usage functions
 
-// StartOptimizationMonitoring starts monitoring with default configuration
-func StartOptimizationMonitoring(ctx context.Context) *PerformanceMonitor {
-	monitor := NewPerformanceMonitor(DefaultPerformanceThresholds())
+// StartMonitoring starts monitoring with default configuration
+func StartMonitoring(ctx context.Context) *Monitor {
+	monitor := NewMonitor(DefaultThresholds())
 	monitor.SetAlertCallback(DefaultAlertHandler)
 	
 	// Start monitoring every 30 seconds
@@ -510,8 +510,8 @@ func StartOptimizationMonitoring(ctx context.Context) *PerformanceMonitor {
 	return monitor
 }
 
-// GetPerformanceReport generates a comprehensive performance report
-func GetPerformanceReport(monitor *PerformanceMonitor) string {
+// GetReport generates a comprehensive performance report
+func GetReport(monitor *Monitor) string {
 	metrics := monitor.GetCurrentMetrics()
 	recentAlerts := monitor.GetRecentAlerts(time.Hour)
 	health := monitor.GetHealthStatus()

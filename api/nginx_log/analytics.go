@@ -83,7 +83,7 @@ func GetLogAnalytics(c *gin.Context) {
 	}
 
 	// Get modern analytics service
-	analyticsService := nginx_log.GetModernAnalytics()
+	analyticsService := nginx_log.GetAnalytics()
 	if analyticsService == nil {
 		cosy.ErrHandler(c, nginx_log.ErrModernAnalyticsNotAvailable)
 		return
@@ -130,7 +130,7 @@ func GetLogPreflight(c *gin.Context) {
 	logPath := c.Query("log_path")
 
 	// Create preflight service and perform check
-	preflightService := nginx_log.NewPreflightService()
+	preflightService := nginx_log.NewPreflight()
 	internalResponse, err := preflightService.CheckLogPreflight(logPath)
 	if err != nil {
 		cosy.ErrHandler(c, err)
@@ -170,13 +170,13 @@ func AdvancedSearchLogs(c *gin.Context) {
 		return
 	}
 
-	searcherService := nginx_log.GetModernSearcher()
+	searcherService := nginx_log.GetSearcher()
 	if searcherService == nil {
 		cosy.ErrHandler(c, nginx_log.ErrModernSearcherNotAvailable)
 		return
 	}
 
-	analyticsService := nginx_log.GetModernAnalytics()
+	analyticsService := nginx_log.GetAnalytics()
 	if analyticsService == nil {
 		cosy.ErrHandler(c, nginx_log.ErrModernAnalyticsNotAvailable)
 		return
@@ -304,7 +304,7 @@ func AdvancedSearchLogs(c *gin.Context) {
 		}
 	}
 
-	// 2. Calculate summary stats from the overall results using CardinalityCounter for accuracy
+	// 2. Calculate summary stats from the overall results using Counter for accuracy
 	pv := int(result.TotalHits)
 	var uv, uniquePages int
 	var facetUV, facetUniquePages int
@@ -321,18 +321,18 @@ func AdvancedSearchLogs(c *gin.Context) {
 		}
 	}
 
-	// Override with CardinalityCounter results for better accuracy
+	// Override with Counter results for better accuracy
 	if analyticsService != nil {
 		// Get cardinality counts for UV (unique IPs)
 		if uvResult := getCardinalityCount(ctx, "ip", searchReq); uvResult > 0 {
 			uv = uvResult
-			logger.Debugf("🔢 Search endpoint - UV from CardinalityCounter: %d (vs facet: %d)", uvResult, facetUV)
+			logger.Debugf("🔢 Search endpoint - UV from Counter: %d (vs facet: %d)", uvResult, facetUV)
 		}
 
 		// Get cardinality counts for Unique Pages (unique paths)
 		if upResult := getCardinalityCount(ctx, "path_exact", searchReq); upResult > 0 {
 			uniquePages = upResult
-			logger.Debugf("🔢 Search endpoint - Unique Pages from CardinalityCounter: %d (vs facet: %d)", upResult, facetUniquePages)
+			logger.Debugf("🔢 Search endpoint - Unique Pages from Counter: %d (vs facet: %d)", upResult, facetUniquePages)
 		}
 	}
 
@@ -381,13 +381,13 @@ func GetLogEntries(c *gin.Context) {
 		return
 	}
 
-	searcherService := nginx_log.GetModernSearcher()
+	searcherService := nginx_log.GetSearcher()
 	if searcherService == nil {
 		cosy.ErrHandler(c, nginx_log.ErrModernSearcherNotAvailable)
 		return
 	}
 
-	analyticsService := nginx_log.GetModernAnalytics()
+	analyticsService := nginx_log.GetAnalytics()
 	if analyticsService == nil {
 		cosy.ErrHandler(c, nginx_log.ErrModernAnalyticsNotAvailable)
 		return
@@ -521,7 +521,7 @@ func GetDashboardAnalytics(c *gin.Context) {
 
 	logger.Debugf("Dashboard API received log_path: '%s', start_date: '%s', end_date: '%s'", req.LogPath, req.StartDate, req.EndDate)
 
-	analyticsService := nginx_log.GetModernAnalytics()
+	analyticsService := nginx_log.GetAnalytics()
 	if analyticsService == nil {
 		cosy.ErrHandler(c, nginx_log.ErrModernAnalyticsNotAvailable)
 		return
@@ -628,7 +628,7 @@ func GetWorldMapData(c *gin.Context) {
 	logger.Debugf("WorldMapData request - Path: '%s', StartTime: %d, EndTime: %d, Limit: %d",
 		req.Path, req.StartTime, req.EndTime, req.Limit)
 
-	analyticsService := nginx_log.GetModernAnalytics()
+	analyticsService := nginx_log.GetAnalytics()
 	if analyticsService == nil {
 		cosy.ErrHandler(c, nginx_log.ErrModernAnalyticsNotAvailable)
 		return
@@ -729,7 +729,7 @@ func GetChinaMapData(c *gin.Context) {
 	logger.Debugf("ChinaMapData request - Path: '%s', StartTime: %d, EndTime: %d, Limit: %d",
 		req.Path, req.StartTime, req.EndTime, req.Limit)
 
-	analyticsService := nginx_log.GetModernAnalytics()
+	analyticsService := nginx_log.GetAnalytics()
 	if analyticsService == nil {
 		cosy.ErrHandler(c, nginx_log.ErrModernAnalyticsNotAvailable)
 		return
@@ -823,7 +823,7 @@ func GetGeoStats(c *gin.Context) {
 		return
 	}
 
-	analyticsService := nginx_log.GetModernAnalytics()
+	analyticsService := nginx_log.GetAnalytics()
 	if analyticsService == nil {
 		cosy.ErrHandler(c, nginx_log.ErrModernAnalyticsNotAvailable)
 		return
@@ -900,16 +900,17 @@ func getCardinalityCount(ctx context.Context, field string, searchReq *searcher.
 		cardReq.Field, cardReq.StartTime, cardReq.EndTime, cardReq.LogPaths)
 
 	// Try to get the searcher to access cardinality counter
-	searcherService := nginx_log.GetModernSearcher()
+	searcherService := nginx_log.GetSearcher()
 	if searcherService == nil {
 		logger.Debugf("🚨 getCardinalityCount: ModernSearcher not available for field %s", field)
 		return 0
 	}
 	logger.Debugf("🔍 getCardinalityCount: ModernSearcher available, type: %T", searcherService)
 
-	// Try to cast to DistributedSearcher to access CardinalityCounter
-	if ds, ok := searcherService.(*searcher.DistributedSearcher); ok {
-		logger.Debugf("🔍 getCardinalityCount: Successfully cast to DistributedSearcher")
+	// Use searcher to access Counter
+	if searcherService != nil {
+		ds := searcherService
+		logger.Debugf("🔍 getCardinalityCount: Successfully cast to Searcher")
 		shards := ds.GetShards()
 		logger.Debugf("🔍 getCardinalityCount: Retrieved %d shards", len(shards))
 		if len(shards) > 0 {
@@ -918,26 +919,26 @@ func getCardinalityCount(ctx context.Context, field string, searchReq *searcher.
 				logger.Debugf("🔍 getCardinalityCount: Shard %d: %v", i, shard != nil)
 			}
 
-			cardinalityCounter := searcher.NewCardinalityCounter(shards)
-			logger.Debugf("🔍 getCardinalityCount: Created CardinalityCounter")
-			result, err := cardinalityCounter.CountCardinality(ctx, cardReq)
+			cardinalityCounter := searcher.NewCounter(shards)
+			logger.Debugf("🔍 getCardinalityCount: Created Counter")
+			result, err := cardinalityCounter.Count(ctx, cardReq)
 			if err != nil {
-				logger.Debugf("🚨 getCardinalityCount: CardinalityCounter failed for field %s: %v", field, err)
+				logger.Debugf("🚨 getCardinalityCount: Counter failed for field %s: %v", field, err)
 				return 0
 			}
 
 			if result.Error != "" {
-				logger.Debugf("🚨 getCardinalityCount: CardinalityCounter returned error for field %s: %s", field, result.Error)
+				logger.Debugf("🚨 getCardinalityCount: Counter returned error for field %s: %s", field, result.Error)
 				return 0
 			}
 
 			logger.Debugf("✅ getCardinalityCount: Successfully got cardinality for field %s: %d", field, result.Cardinality)
 			return int(result.Cardinality)
 		} else {
-			logger.Debugf("🚨 getCardinalityCount: DistributedSearcher has no shards for field %s", field)
+			logger.Debugf("🚨 getCardinalityCount: Searcher has no shards for field %s", field)
 		}
 	} else {
-		logger.Debugf("🚨 getCardinalityCount: Searcher is not DistributedSearcher (type: %T) for field %s", searcherService, field)
+		logger.Debugf("🚨 getCardinalityCount: Searcher is not Searcher (type: %T) for field %s", searcherService, field)
 	}
 
 	return 0

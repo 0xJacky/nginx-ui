@@ -11,4 +11,5 @@ var (
 	ErrTemplateExecError  = e.New(51004, "failed to execute template: {0}")
 	ErrConfigParseError   = e.New(51005, "failed to parse nginx config: {0}")
 	ErrConfigBuildError   = e.New(51006, "failed to build nginx config: {0}")
+	ErrNginxConfPathEmpty = e.New(51007, "failed to get nginx.conf path")
 )

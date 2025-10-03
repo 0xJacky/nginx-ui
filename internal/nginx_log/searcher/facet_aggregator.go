@@ -7,7 +7,7 @@ import (
 )
 
 // mergeSingleFacet merges two facets for the same field
-func (ds *DistributedSearcher) mergeSingleFacet(existing, incoming *Facet) {
+func (ds *Searcher) mergeSingleFacet(existing, incoming *Facet) {
 	// Note: Do NOT sum Total values - it represents unique terms count, not document count
 	// The Total should be recalculated based on the actual number of unique terms after merging
 	existing.Missing += incoming.Missing
@@ -60,7 +60,7 @@ func (ds *DistributedSearcher) mergeSingleFacet(existing, incoming *Facet) {
 }
 
 // Aggregate performs aggregations on search results
-func (ds *DistributedSearcher) Aggregate(ctx context.Context, req *AggregationRequest) (*AggregationResult, error) {
+func (ds *Searcher) Aggregate(ctx context.Context, req *AggregationRequest) (*AggregationResult, error) {
 	// This is a simplified implementation
 	// In a full implementation, you would execute the aggregation across all shards
 	// and merge the results similar to how facets are handled
@@ -103,7 +103,7 @@ func (ds *DistributedSearcher) Aggregate(ctx context.Context, req *AggregationRe
 }
 
 // Suggest provides search suggestions
-func (ds *DistributedSearcher) Suggest(ctx context.Context, text string, field string, size int) ([]*Suggestion, error) {
+func (ds *Searcher) Suggest(ctx context.Context, text string, field string, size int) ([]*Suggestion, error) {
 	if size <= 0 || size > 100 {
 		size = 10
 	}
@@ -165,7 +165,7 @@ func (ds *DistributedSearcher) Suggest(ctx context.Context, text string, field s
 }
 
 // extractSuggestionTerms extracts potential suggestion terms from text
-func (ds *DistributedSearcher) extractSuggestionTerms(text string, query string) []string {
+func (ds *Searcher) extractSuggestionTerms(text string, query string) []string {
 	// Simple term extraction - this could be enhanced with NLP
 	terms := strings.Fields(text)
 
@@ -199,7 +199,7 @@ func isCommonWord(word string) bool {
 }
 
 // Analyze analyzes text using a specified analyzer
-func (ds *DistributedSearcher) Analyze(ctx context.Context, text string, analyzer string) ([]string, error) {
+func (ds *Searcher) Analyze(ctx context.Context, text string, analyzer string) ([]string, error) {
 	// This would typically use Bleve's analysis capabilities
 	// For now, provide a simple implementation
 
@@ -223,7 +223,7 @@ func (ds *DistributedSearcher) Analyze(ctx context.Context, text string, analyze
 }
 
 // Cache operations
-func (ds *DistributedSearcher) getFromCache(req *SearchRequest) *SearchResult {
+func (ds *Searcher) getFromCache(req *SearchRequest) *SearchResult {
 	if ds.cache == nil {
 		return nil
 	}
@@ -231,7 +231,7 @@ func (ds *DistributedSearcher) getFromCache(req *SearchRequest) *SearchResult {
 	return ds.cache.Get(req)
 }
 
-func (ds *DistributedSearcher) cacheResult(req *SearchRequest, result *SearchResult) {
+func (ds *Searcher) cacheResult(req *SearchRequest, result *SearchResult) {
 	if ds.cache == nil {
 		return
 	}
@@ -240,7 +240,7 @@ func (ds *DistributedSearcher) cacheResult(req *SearchRequest, result *SearchRes
 }
 
 // ClearCache clears the search cache
-func (ds *DistributedSearcher) ClearCache() error {
+func (ds *Searcher) ClearCache() error {
 	if ds.cache != nil {
 		ds.cache.Clear()
 	}
@@ -248,7 +248,7 @@ func (ds *DistributedSearcher) ClearCache() error {
 }
 
 // GetCacheStats returns cache statistics
-func (ds *DistributedSearcher) GetCacheStats() *CacheStats {
+func (ds *Searcher) GetCacheStats() *CacheStats {
 	if ds.cache != nil {
 		return ds.cache.GetStats()
 	}

@@ -203,8 +203,8 @@ type ShardSearcher interface {
 	IsShardHealthy(shardID int) bool
 }
 
-// Searcher defines the main search interface
-type Searcher interface {
+// SearcherInterface defines the main search interface
+type SearcherInterface interface {
 	Search(ctx context.Context, req *SearchRequest) (*SearchResult, error)
 	SearchAsync(ctx context.Context, req *SearchRequest) (<-chan *SearchResult, <-chan error)
 
@@ -273,8 +273,8 @@ type ShardInfo struct {
 	LastUpdated   int64  `json:"last_updated"`
 }
 
-// Query builder types for complex queries
-type QueryBuilder interface {
+// QueryBuilderInterface for complex queries
+type QueryBuilderInterface interface {
 	Query() query.Query
 }
 

@@ -71,7 +71,7 @@ export interface NginxSettings {
 }
 
 export interface NginxLogSettings {
-  advanced_indexing_enabled: boolean
+  indexing_enabled: boolean
   index_path: string
 }
 

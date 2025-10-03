@@ -2,7 +2,6 @@ package analytic
 
 import (
 	"encoding/json"
-	"errors"
 	"io"
 	"net/http"
 	"net/url"
@@ -15,6 +14,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/shirou/gopsutil/v4/load"
 	"github.com/shirou/gopsutil/v4/net"
+	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 )
 
@@ -107,7 +107,7 @@ func InitNode(node *model.Node) (n *Node, err error) {
 	bytes, _ := io.ReadAll(resp.Body)
 
 	if resp.StatusCode != http.StatusOK {
-		return n, errors.New(string(bytes))
+		return n, cosy.WrapErrorWithParams(ErrNodeAnalyticsFailed, string(bytes))
 	}
 
 	err = json.Unmarshal(bytes, &n.NodeInfo)

@@ -17,4 +17,6 @@ var (
 	ErrFailedToInspectCurrentContainer   = e.New(500011, "failed to inspect current container: {0}")
 	ErrFailedToCreateTempContainer       = e.New(500012, "failed to create temp container: {0}")
 	ErrFailedToStartTempContainer        = e.New(500013, "failed to start temp container: {0}")
+	ErrOldContainerNameNotFound          = e.New(500014, "could not find old container name")
+	ErrTempContainerNotFound             = e.New(500015, "could not find temp container")
 )

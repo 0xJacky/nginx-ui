@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"compress/gzip"
 	"context"
-	"errors"
 	"io"
 	"strings"
 	"sync"
@@ -17,11 +16,11 @@ import (
 
 // Global parser instances
 var (
-	logParser      *parser.OptimizedParser // Use the concrete type for both regular and single-line parsing
+	logParser      *parser.Parser // Use the concrete type for both regular and single-line parsing
 	parserInitOnce sync.Once
 )
 
-// InitLogParser initializes the global optimized parser once (singleton).
+// InitLogParser initializes the global parser once (singleton).
 func InitLogParser() {
 	parserInitOnce.Do(func() {
 		// Initialize the parser with production-ready configuration
@@ -45,8 +44,8 @@ func InitLogParser() {
 			geoIPService = parser.NewGeoLiteAdapter(geoService)
 		}
 
-		// Create the optimized parser with production configuration
-		logParser = parser.NewOptimizedParser(config, uaParser, geoIPService)
+		// Create the parser with production configuration
+		logParser = parser.NewParser(config, uaParser, geoIPService)
 
 		logger.Info("Nginx log processing optimization system initialized with production configuration")
 	})
@@ -64,10 +63,10 @@ func ParseLogLine(line string) (*LogDocument, error) {
 	}
 
 	if logParser == nil {
-		return nil, errors.New("log parser is not initialized; call indexer.InitLogParser() before use")
+		return nil, ErrLogParserNotInitialized
 	}
 
-	// Use optimized parser for single line processing
+	// Use parser for single line processing
 	entry, err := logParser.ParseLine(line)
 	if err != nil {
 		return nil, err
@@ -76,10 +75,10 @@ func ParseLogLine(line string) (*LogDocument, error) {
 	return convertToLogDocument(entry, ""), nil
 }
 
-// ParseLogStream parses a stream of log data using OptimizedParseStream (7-8x faster)
+// ParseLogStream parses a stream of log data using ParseStream (7-8x faster)
 func ParseLogStream(ctx context.Context, reader io.Reader, filePath string) ([]*LogDocument, error) {
 	if logParser == nil {
-		return nil, errors.New("log parser is not initialized; call indexer.InitLogParser() before use")
+		return nil, ErrLogParserNotInitialized
 	}
 	// Auto-detect and handle gzip files
 	actualReader, cleanup, err := createReaderForFile(reader, filePath)
@@ -91,8 +90,8 @@ func ParseLogStream(ctx context.Context, reader io.Reader, filePath string) ([]*
 		defer cleanup()
 	}
 
-	// Use OptimizedParseStream for batch processing with 70% memory reduction
-	parseResult, err := logParser.OptimizedParseStream(ctx, actualReader)
+	// Use ParseStream for batch processing with 70% memory reduction
+	parseResult, err := logParser.StreamParse(ctx, actualReader)
 	if err != nil {
 		return nil, err
 	}
@@ -104,7 +103,7 @@ func ParseLogStream(ctx context.Context, reader io.Reader, filePath string) ([]*
 		docs = append(docs, logDoc)
 	}
 
-	logger.Infof("OptimizedParseStream processed %d lines with %.2f%% error rate",
+	logger.Infof("ParseStream processed %d lines with %.2f%% error rate",
 		parseResult.Processed, parseResult.ErrorRate*100)
 
 	return docs, nil
@@ -113,7 +112,7 @@ func ParseLogStream(ctx context.Context, reader io.Reader, filePath string) ([]*
 // ParseLogStreamChunked processes large files using chunked processing for memory efficiency
 func ParseLogStreamChunked(ctx context.Context, reader io.Reader, filePath string, chunkSize int) ([]*LogDocument, error) {
 	if logParser == nil {
-		return nil, errors.New("log parser is not initialized; call indexer.InitLogParser() before use")
+		return nil, ErrLogParserNotInitialized
 	}
 	// Auto-detect and handle gzip files
 	actualReader, cleanup, err := createReaderForFile(reader, filePath)
@@ -143,7 +142,7 @@ func ParseLogStreamChunked(ctx context.Context, reader io.Reader, filePath strin
 // ParseLogStreamMemoryEfficient uses memory-efficient parsing for low memory environments
 func ParseLogStreamMemoryEfficient(ctx context.Context, reader io.Reader, filePath string) ([]*LogDocument, error) {
 	if logParser == nil {
-		return nil, errors.New("log parser is not initialized; call indexer.InitLogParser() before use")
+		return nil, ErrLogParserNotInitialized
 	}
 	// Auto-detect and handle gzip files
 	actualReader, cleanup, err := createReaderForFile(reader, filePath)
@@ -237,7 +236,7 @@ func GetOptimizationStatus() map[string]interface{} {
 		"parser_optimized":     true,
 		"simd_enabled":         true,
 		"memory_pools_enabled": true,
-		"batch_processing":     "OptimizedParseStream (7-8x faster)",
+		"batch_processing":     "ParseStream (7-8x faster)",
 		"single_line_parsing":  "SIMD (235x faster)",
 		"memory_efficiency":    "70% reduction in memory usage",
 		"status":               "Production ready",

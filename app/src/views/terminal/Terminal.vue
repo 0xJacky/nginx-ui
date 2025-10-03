@@ -43,7 +43,7 @@ function checkSecureConnection() {
 const sessionCallbacks: TerminalSessionCallbacks = {
   onInput: (_tabId: string, data: string) => {
     if (rightPanelRef.value && data.includes('\r')) {
-      const command = data.replace('\r', '').trim()
+      const command = data.replace(/\r/g, '').trim()
       if (command) {
         rightPanelRef.value.updateCurrentCommand(command)
       }

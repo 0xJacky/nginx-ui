@@ -2,20 +2,20 @@
 
 本節介紹 Nginx UI 中 Nginx 日誌處理和分析功能的設定選項。
 
-## 進階索引
+## 索引
 
-### AdvancedIndexingEnabled
+### IndexingEnabled
 
 - 類型: `boolean`
 - 預設值: `false`
-- 環境變數: `NGINX_UI_NGINX_LOG_ADVANCED_INDEXING_ENABLED`
+- 環境變數: `NGINX_UI_NGINX_LOG_INDEXING_ENABLED`
 - 版本: `>= v2.2.0`
 
-此選項啟用 Nginx 日誌的進階索引功能，提供高效能的日誌搜尋和分析能力。
+此選項啟用 Nginx 日誌的索引功能，提供高效能的日誌搜尋和分析能力。
 
 #### 關閉時的行為（基礎模式）
 
-當 `AdvancedIndexingEnabled` 為 `false` 時，Nginx UI 仍會從 Nginx 設定中發現日誌入口，並在日誌列表中顯示。在基礎模式下：
+當 `IndexingEnabled` 為 `false` 時，Nginx UI 仍會從 Nginx 設定中發現日誌入口，並在日誌列表中顯示。在基礎模式下：
 
 - 可檢視已偵測到的日誌檔列表（基於簡單的輪轉規則進行分組），但不提供索引指標、文件計數與分片搜尋等進階功能。
 - 依據解析出的存取/錯誤日誌路徑，即時檢視（tail）仍可使用。

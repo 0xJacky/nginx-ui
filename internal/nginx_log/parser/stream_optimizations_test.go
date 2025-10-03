@@ -14,7 +14,7 @@ func BenchmarkParseStreamComparison(b *testing.B) {
 
 	config := DefaultParserConfig()
 	config.MaxLineLength = 16 * 1024
-	parser := NewOptimizedParser(
+	parser := NewParser(
 		config,
 		NewCachedUserAgentParser(NewSimpleUserAgentParser(), 100),
 		&mockGeoIPService{},
@@ -33,7 +33,7 @@ func BenchmarkParseStreamComparison(b *testing.B) {
 		{
 			name: "Optimized_ParseStream",
 			fn: func(ctx context.Context, reader *strings.Reader) (*ParseResult, error) {
-				return parser.OptimizedParseStream(ctx, reader)
+				return parser.ParseStream(ctx, reader)
 			},
 		},
 		{
@@ -95,7 +95,7 @@ func BenchmarkStreamParsing_ScaleTest(b *testing.B) {
 
 	config := DefaultParserConfig()
 	config.MaxLineLength = 16 * 1024
-	parser := NewOptimizedParser(
+	parser := NewParser(
 		config,
 		NewCachedUserAgentParser(NewSimpleUserAgentParser(), 1000),
 		&mockGeoIPService{},
@@ -128,7 +128,7 @@ func BenchmarkStreamParsing_ScaleTest(b *testing.B) {
 				reader := strings.NewReader(logData)
 				ctx := context.Background()
 
-				result, err := parser.OptimizedParseStream(ctx, reader)
+				result, err := parser.ParseStream(ctx, reader)
 				if err != nil {
 					b.Fatal(err)
 				}
@@ -144,7 +144,7 @@ func BenchmarkStreamOptimizations_Individual(b *testing.B) {
 
 	config := DefaultParserConfig()
 	config.MaxLineLength = 16 * 1024
-	_ = NewOptimizedParser(
+	_ = NewParser(
 		config,
 		NewSimpleUserAgentParser(),
 		&mockGeoIPService{},
@@ -292,15 +292,15 @@ func generateBenchmarkLogData(lines int) string {
 	return builder.String()
 }
 
-// TestOptimizedParseStreamCorrectness verifies that optimized implementations produce correct results
-func TestOptimizedParseStreamCorrectness(t *testing.T) {
+// TestParseStreamCorrectness verifies that optimized implementations produce correct results
+func TestParseStreamCorrectness(t *testing.T) {
 	logData := `127.0.0.1 - - [25/Dec/2023:10:00:00 +0000] "GET /index.html HTTP/1.1" 200 1234 "https://example.com" "Mozilla/5.0"
 192.168.1.1 - - [25/Dec/2023:10:00:01 +0000] "POST /api/data HTTP/1.1" 201 567 "https://example.com" "curl/7.68.0"
 10.0.0.1 - - [25/Dec/2023:10:00:02 +0000] "GET /style.css HTTP/1.1" 200 890 "https://example.com" "Mozilla/5.0"`
 
 	config := DefaultParserConfig()
 	config.MaxLineLength = 16 * 1024
-	parser := NewOptimizedParser(
+	parser := NewParser(
 		config,
 		NewSimpleUserAgentParser(),
 		&mockGeoIPService{},
@@ -314,15 +314,15 @@ func TestOptimizedParseStreamCorrectness(t *testing.T) {
 		t.Fatalf("Original ParseStream failed: %v", err)
 	}
 
-	// Test optimized implementations
+	// Test stream implementations
 	implementations := []struct {
 		name string
 		fn   func(context.Context, *strings.Reader) (*ParseResult, error)
 	}{
 		{
-			"OptimizedParseStream",
+			"StreamParse",
 			func(ctx context.Context, reader *strings.Reader) (*ParseResult, error) {
-				return parser.OptimizedParseStream(ctx, reader)
+				return parser.StreamParse(ctx, reader)
 			},
 		},
 		{
@@ -436,7 +436,7 @@ func BenchmarkStreamBufferSizes(b *testing.B) {
 
 	config := DefaultParserConfig()
 	config.MaxLineLength = 16 * 1024
-	parser := NewOptimizedParser(
+	parser := NewParser(
 		config,
 		NewSimpleUserAgentParser(),
 		&mockGeoIPService{},

@@ -96,7 +96,7 @@ func (m *MockSearcher) Stop() error {
 	return args.Error(0)
 }
 
-// MockCardinalityCounter implements searcher.CardinalityCounter for testing
+// MockCardinalityCounter implements searcher.Counter for testing
 type MockCardinalityCounter struct {
 	mock.Mock
 }
@@ -134,7 +134,7 @@ func TestNewService(t *testing.T) {
 }
 
 // Helper function to create a service with a mock cardinality counter
-func createServiceWithCardinalityCounter(searcher searcher.Searcher, cardinalityCounter *searcher.CardinalityCounter) Service {
+func createServiceWithCardinalityCounter(searcher searcher.SearcherInterface, cardinalityCounter *searcher.Counter) Service {
 	return &service{
 		searcher:           searcher,
 		cardinalityCounter: cardinalityCounter,
@@ -555,7 +555,7 @@ func TestService_GetDashboardAnalytics_WithCardinalityCounter(t *testing.T) {
 	mockSearcher := &MockSearcher{}
 
 	// Create a mock cardinality counter for testing
-	mockCardinalityCounter := searcher.NewCardinalityCounter(nil)
+	mockCardinalityCounter := searcher.NewCounter(nil)
 	s := createServiceWithCardinalityCounter(mockSearcher, mockCardinalityCounter)
 
 	ctx := context.Background()
@@ -619,7 +619,7 @@ func TestService_GetDashboardAnalytics_WithCardinalityCounter(t *testing.T) {
 		return len(r.FacetFields) == 4 && r.FacetSize == 1000
 	})).Return(expectedResult, nil)
 
-	// The key test: CardinalityCounter should be called to get accurate UV count
+	// The key test: Counter should be called to get accurate UV count
 	// Note: We can't easily mock the cardinality counter because it's created internally
 	// This test verifies the logic works when cardinality counter is available
 

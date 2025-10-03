@@ -55,7 +55,7 @@ type PerfOpt struct {
 func UpdatePerfOpt(opt *PerfOpt) error {
 	confPath := nginx.GetConfEntryPath()
 	if confPath == "" {
-		return errors.New("failed to get nginx.conf path")
+		return ErrNginxConfPathEmpty
 	}
 
 	// Read the current configuration

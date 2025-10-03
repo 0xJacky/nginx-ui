@@ -45,17 +45,18 @@ type IndexProgress struct {
 
 // IndexerConfig holds configuration for the indexer
 type Config struct {
-	IndexPath         string        `json:"index_path"`
-	ShardCount        int           `json:"shard_count"`
-	WorkerCount       int           `json:"worker_count"`
-	BatchSize         int           `json:"batch_size"`
-	FlushInterval     time.Duration `json:"flush_interval"`
-	MaxQueueSize      int           `json:"max_queue_size"`
-	EnableCompression bool          `json:"enable_compression"`
-	MemoryQuota       int64         `json:"memory_quota"`      // Memory limit in bytes
-	MaxSegmentSize    int64         `json:"max_segment_size"`  // Maximum segment size
-	OptimizeInterval  time.Duration `json:"optimize_interval"` // Auto-optimization interval
-	EnableMetrics     bool          `json:"enable_metrics"`
+	IndexPath            string        `json:"index_path"`
+	ShardCount           int           `json:"shard_count"`
+	WorkerCount          int           `json:"worker_count"`
+	BatchSize            int           `json:"batch_size"`
+	FlushInterval        time.Duration `json:"flush_interval"`
+	MaxQueueSize         int           `json:"max_queue_size"`
+	EnableCompression    bool          `json:"enable_compression"`
+	MemoryQuota          int64         `json:"memory_quota"`           // Memory limit in bytes
+	MaxSegmentSize       int64         `json:"max_segment_size"`       // Maximum segment size
+	OptimizeInterval     time.Duration `json:"optimize_interval"`      // Auto-optimization interval
+	EnableMetrics        bool          `json:"enable_metrics"`
+	FileGroupConcurrency int           `json:"file_group_concurrency"` // Max concurrent files within a log group (0 = use WorkerCount)
 }
 
 // DefaultIndexerConfig returns default indexer configuration with processor optimization
@@ -74,22 +75,23 @@ func DefaultIndexerConfig() *Config {
 	}
 
 	return &Config{
-		IndexPath:         "./log-index",
-		ShardCount:        max(4, maxProcs/2), // Scale shards with CPU cores
-		WorkerCount:       maxProcs * 3,       // Optimized: 3x processors for better I/O-bound workload handling
-		BatchSize:         baseBatchSize,      // Dynamically scaled based on CPU cores
-		FlushInterval:     5 * time.Second,
-		MaxQueueSize:      baseBatchSize * 10, // Scale queue with batch size
-		EnableCompression: true,
-		MemoryQuota:       1024 * 1024 * 1024, // 1GB
-		MaxSegmentSize:    64 * 1024 * 1024,   // 64MB
-		OptimizeInterval:  30 * time.Minute,
-		EnableMetrics:     true,
+		IndexPath:            "./log-index",
+		ShardCount:           max(4, maxProcs/2), // Scale shards with CPU cores
+		WorkerCount:          maxProcs * 3,       // Optimized: 3x processors for better I/O-bound workload handling
+		BatchSize:            baseBatchSize,      // Dynamically scaled based on CPU cores
+		FlushInterval:        5 * time.Second,
+		MaxQueueSize:         baseBatchSize * 10, // Scale queue with batch size
+		EnableCompression:    true,
+		MemoryQuota:          1024 * 1024 * 1024,         // 1GB
+		MaxSegmentSize:       64 * 1024 * 1024,           // 64MB
+		OptimizeInterval:     30 * time.Minute,
+		EnableMetrics:        true,
+		FileGroupConcurrency: max(4, maxProcs), // Default: use CPU count for file-level parallelism
 	}
 }
 
-// GetOptimizedConfig returns configuration optimized for specific scenarios
-func GetOptimizedConfig(scenario string) *Config {
+// GetConfig returns configuration optimized for specific scenarios
+func GetConfig(scenario string) *Config {
 	base := DefaultIndexerConfig()
 	maxProcs := runtime.GOMAXPROCS(0)
 

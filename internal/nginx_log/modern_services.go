@@ -23,7 +23,7 @@ import (
 
 // Global instances for new services
 var (
-	globalSearcher         searcher.Searcher
+	globalSearcher         *searcher.Searcher
 	globalAnalytics        analytics.Service
 	globalIndexer          *indexer.ParallelIndexer
 	globalLogFileManager   *indexer.LogFileManager
@@ -34,20 +34,20 @@ var (
 	lastShardUpdateAttempt int64
 )
 
-// Fallback storage when AdvancedIndexingEnabled is disabled
+// Fallback storage when IndexingEnabled is disabled
 var (
 	fallbackCache      = make(map[string]*NginxLogCache)
 	fallbackCacheMutex sync.RWMutex
 )
 
-// InitializeModernServices initializes the new modular services
-func InitializeModernServices(ctx context.Context) {
+// InitializeServices initializes the new modular services
+func InitializeServices(ctx context.Context) {
 	servicesMutex.Lock()
 	defer servicesMutex.Unlock()
 
-	// Check if advanced indexing is enabled
-	if !settings.NginxLogSettings.AdvancedIndexingEnabled {
-		logger.Info("Advanced indexing is disabled, skipping nginx_log services initialization")
+	// Check if indexing is enabled
+	if !settings.NginxLogSettings.IndexingEnabled {
+		logger.Info("Indexing is disabled, skipping nginx_log services initialization")
 		return
 	}
 
@@ -70,6 +70,9 @@ func InitializeModernServices(ctx context.Context) {
 
 	logger.Info("Modern nginx log services initialization completed")
 
+	// Initialize task scheduler after services are ready
+	go InitTaskScheduler(serviceCtx)
+
 	// Monitor context for shutdown
 	go func() {
 		logger.Info("Started nginx_log shutdown monitor goroutine")
@@ -77,7 +80,7 @@ func InitializeModernServices(ctx context.Context) {
 		logger.Info("Context cancelled, initiating shutdown...")
 
 		// Use the same shutdown logic as manual stop
-		StopModernServices()
+		StopServices()
 
 		logger.Info("Nginx_log shutdown monitor goroutine completed")
 	}()
@@ -92,7 +95,7 @@ func initializeWithDefaults(ctx context.Context) error {
 
 	// Create empty searcher (will be populated when indexes are available)
 	searcherConfig := searcher.DefaultSearcherConfig()
-	globalSearcher = searcher.NewDistributedSearcher(searcherConfig, []bleve.Index{})
+	globalSearcher = searcher.NewSearcher(searcherConfig, []bleve.Index{})
 
 	// Initialize analytics with empty searcher
 	globalAnalytics = analytics.NewService(globalSearcher)
@@ -158,8 +161,8 @@ func getConfigDirIndexPath() string {
 	return "./log-index"
 }
 
-// GetModernSearcher returns the global searcher instance
-func GetModernSearcher() searcher.Searcher {
+// GetSearcher returns the global searcher instance
+func GetSearcher() *searcher.Searcher {
 	servicesMutex.RLock()
 	defer servicesMutex.RUnlock()
 
@@ -169,14 +172,14 @@ func GetModernSearcher() searcher.Searcher {
 	}
 
 	if globalSearcher == nil {
-		logger.Warn("GetModernSearcher: globalSearcher is nil even though services are initialized")
+		logger.Warn("GetSearcher: globalSearcher is nil even though services are initialized")
 		return nil
 	}
 
 	// Check searcher health status
 	isHealthy := globalSearcher.IsHealthy()
 	isRunning := globalSearcher.IsRunning()
-	logger.Debugf("GetModernSearcher: returning searcher, isHealthy: %v, isRunning: %v", isHealthy, isRunning)
+	logger.Debugf("GetSearcher: returning searcher, isHealthy: %v, isRunning: %v", isHealthy, isRunning)
 
 	// Auto-heal: if the searcher is running but unhealthy (likely zero shards),
 	// and the indexer is initialized, trigger an async shard swap (throttled).
@@ -185,7 +188,7 @@ func GetModernSearcher() searcher.Searcher {
 		prev := atomic.LoadInt64(&lastShardUpdateAttempt)
 		if now-prev > int64(5*time.Second) {
 			if atomic.CompareAndSwapInt64(&lastShardUpdateAttempt, prev, now) {
-				logger.Debugf("GetModernSearcher: unhealthy detected, scheduling UpdateSearcherShards()")
+				logger.Debugf("GetSearcher: unhealthy detected, scheduling UpdateSearcherShards()")
 				go UpdateSearcherShards()
 			}
 		}
@@ -194,8 +197,8 @@ func GetModernSearcher() searcher.Searcher {
 	return globalSearcher
 }
 
-// GetModernAnalytics returns the global analytics service instance
-func GetModernAnalytics() analytics.Service {
+// GetAnalytics returns the global analytics service instance
+func GetAnalytics() analytics.Service {
 	servicesMutex.RLock()
 	defer servicesMutex.RUnlock()
 
@@ -207,13 +210,12 @@ func GetModernAnalytics() analytics.Service {
 	return globalAnalytics
 }
 
-// GetModernIndexer returns the global indexer instance
-func GetModernIndexer() *indexer.ParallelIndexer {
+// GetIndexer returns the global indexer instance
+func GetIndexer() *indexer.ParallelIndexer {
 	servicesMutex.RLock()
 	defer servicesMutex.RUnlock()
 
 	if !servicesInitialized {
-		logger.Warn("Modern services not initialized, returning nil")
 		return nil
 	}
 
@@ -521,7 +523,7 @@ func updateSearcherShardsLocked() {
 	if globalSearcher == nil {
 		logger.Info("Creating initial searcher with IndexAlias")
 		searcherConfig := searcher.DefaultSearcherConfig()
-		globalSearcher = searcher.NewDistributedSearcher(searcherConfig, newShards)
+		globalSearcher = searcher.NewSearcher(searcherConfig, newShards)
 
 		if globalSearcher == nil {
 			logger.Error("Failed to create initial searcher instance")
@@ -539,7 +541,8 @@ func updateSearcherShardsLocked() {
 
 	// For subsequent updates, use hot-swap through IndexAlias
 	// This follows Bleve best practices for zero-downtime index updates
-	if ds, ok := globalSearcher.(*searcher.DistributedSearcher); ok {
+	if globalSearcher != nil {
+		ds := globalSearcher
 		oldShards := ds.GetShards()
 		logger.Debugf("updateSearcherShardsLocked: About to call SwapShards...")
 
@@ -559,15 +562,15 @@ func updateSearcherShardsLocked() {
 		logger.Infof("Post-swap searcher status: isHealthy: %v, isRunning: %v", isHealthy, isRunning)
 
 		// Note: We do NOT recreate the analytics service here since the searcher interface remains the same
-		// The CardinalityCounter will automatically use the new shards through the same IndexAlias
+		// The Counter will automatically use the new shards through the same IndexAlias
 
 	} else {
-		logger.Warn("globalSearcher is not a DistributedSearcher, cannot perform hot-swap")
+		logger.Warn("globalSearcher is not a Searcher, cannot perform hot-swap")
 	}
 }
 
-// StopModernServices stops all running modern services
-func StopModernServices() {
+// StopServices stops all running modern services
+func StopServices() {
 	servicesMutex.Lock()
 	defer servicesMutex.Unlock()
 
@@ -633,4 +636,41 @@ func DestroyAllIndexes(ctx context.Context) error {
 	}
 
 	return globalIndexer.DestroyAllIndexes(ctx)
+}
+
+// MigrateFallbackCache migrates all entries from fallback cache to LogFileManager
+// This is used when enabling advanced indexing after the application has started
+func MigrateFallbackCache() {
+	fallbackCacheMutex.RLock()
+	entries := make([]*NginxLogCache, 0, len(fallbackCache))
+	for _, entry := range fallbackCache {
+		// Create a copy to avoid race conditions
+		e := *entry
+		entries = append(entries, &e)
+	}
+	fallbackCacheMutex.RUnlock()
+
+	if len(entries) == 0 {
+		logger.Debug("No fallback cache entries to migrate")
+		return
+	}
+
+	manager := GetLogFileManager()
+	if manager == nil {
+		logger.Warn("Cannot migrate fallback cache: LogFileManager not initialized")
+		return
+	}
+
+	logger.Infof("Migrating %d log paths from fallback cache to LogFileManager", len(entries))
+
+	for _, entry := range entries {
+		manager.AddLogPath(entry.Path, entry.Type, entry.Name, entry.ConfigFile)
+	}
+
+	// Clear fallback cache after successful migration
+	fallbackCacheMutex.Lock()
+	fallbackCache = make(map[string]*NginxLogCache)
+	fallbackCacheMutex.Unlock()
+
+	logger.Info("Fallback cache migration completed successfully")
 }

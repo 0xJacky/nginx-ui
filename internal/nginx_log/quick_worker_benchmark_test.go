@@ -85,7 +85,7 @@ func runQuickWorkerTest(b *testing.B, config *indexer.Config, logFile string) *Q
 		BatchSize:     500,
 	}
 	
-	optimizedParser := parser.NewOptimizedParser(
+	optimizedParser := parser.NewParser(
 		parserConfig,
 		nil, // No UA parser for speed
 		nil, // No Geo service for speed
@@ -98,7 +98,7 @@ func runQuickWorkerTest(b *testing.B, config *indexer.Config, logFile string) *Q
 	}
 	defer file.Close()
 	
-	parseResult, err := optimizedParser.OptimizedParseStream(ctx, file)
+	parseResult, err := optimizedParser.ParseStream(ctx, file)
 	if err != nil {
 		b.Fatalf("Parsing failed: %v", err)
 	}

@@ -21,17 +21,17 @@ const logType = computed(() => {
 
 const viewMode = useRouteQuery<'raw' | 'structured' | 'dashboard'>('view', 'structured')
 
-// Advanced indexing status
-const isAdvancedIndexingEnabled = ref(false)
+// Indexing status
+const isIndexingEnabled = ref(false)
 
 onMounted(async () => {
   try {
     const res = await nginxLog.getAdvancedIndexingStatus()
-    isAdvancedIndexingEnabled.value = !!res.enabled
+    isIndexingEnabled.value = !!res.enabled
   }
   catch (err) {
-    console.error('Failed to get advanced indexing status:', err)
-    isAdvancedIndexingEnabled.value = false
+    console.error('Failed to get indexing status:', err)
+    isIndexingEnabled.value = false
   }
 })
 
@@ -42,16 +42,31 @@ const isErrorLog = computed(() => {
 
 const autoRefresh = ref(true)
 
-watch(logType, v => {
-  if (v === 'error') {
+watch(viewMode, v => {
+  if (v === 'structured' && (!isIndexingEnabled.value || isErrorLog.value)) {
     viewMode.value = 'raw'
   }
 }, { immediate: true })
 
-// Force raw view when advanced indexing is disabled
-watch(isAdvancedIndexingEnabled, enabled => {
-  if (!enabled) {
-    viewMode.value = 'raw'
+// View mode logic: set defaults based on log type and indexing status
+watch([isErrorLog, isIndexingEnabled], ([isError, enabled], [prevIsError, prevEnabled]) => {
+  // Only set default when conditions change or initial load
+  const isInitialLoad = prevIsError === undefined && prevEnabled === undefined
+  const conditionsChanged = isError !== prevIsError || enabled !== prevEnabled
+
+  if (isInitialLoad || conditionsChanged) {
+    if (isError) {
+      // Error logs always use raw mode
+      viewMode.value = 'raw'
+    }
+    else if (!enabled) {
+      // Indexing disabled: default to raw
+      viewMode.value = 'raw'
+    }
+    else if (enabled && logType.value === 'access') {
+      // Indexing enabled for access logs: default to structured
+      viewMode.value = 'structured'
+    }
   }
 }, { immediate: true })
 </script>
@@ -69,8 +84,8 @@ watch(isAdvancedIndexingEnabled, enabled => {
 
     <template #extra>
       <div class="flex items-center gap-4">
-        <!-- View Mode Toggle (hide for error logs or when advanced indexing is disabled) -->
-        <div v-if="!isErrorLog && isAdvancedIndexingEnabled" class="flex items-center">
+        <!-- View Mode Toggle (hide for error logs or when indexing is disabled) -->
+        <div v-if="!isErrorLog && isIndexingEnabled" class="flex items-center">
           <ASegmented
             v-model:value="viewMode"
             :options="[

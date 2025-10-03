@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/pkg/errors"
+	"github.com/uozi-tech/cosy"
 )
 
 type ReleaseType string
@@ -55,7 +56,7 @@ func getLatestRelease() (data TRelease, err error) {
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != 200 {
-		err = errors.New(string(body))
+		err = cosy.WrapErrorWithParams(ErrReleaseAPIFailed, string(body))
 		return
 	}
 	err = json.Unmarshal(body, &data)
@@ -80,7 +81,7 @@ func getLatestPrerelease() (data TRelease, err error) {
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != 200 {
-		err = errors.New(string(body))
+		err = cosy.WrapErrorWithParams(ErrReleaseAPIFailed, string(body))
 		return
 	}
 

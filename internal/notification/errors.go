@@ -8,4 +8,5 @@ var (
 	ErrInvalidNotifierConfig  = e.New(400001, "invalid notifier config")
 	ErrInvalidNotificationID  = e.New(400002, "invalid notification ID")
 	ErrExternalNotifyNotFound = e.New(404002, "external notification configuration not found")
+	ErrTelegramChatIDZero     = e.New(400003, "invalid Telegram Chat ID: cannot be zero")
 )

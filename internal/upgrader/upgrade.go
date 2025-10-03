@@ -142,14 +142,14 @@ func (u *Upgrader) DownloadLatestRelease(progressChan chan float64) (tarName str
 
 	downloadUrl := asset.BrowserDownloadUrl
 	if downloadUrl == "" {
-		err = errors.New("upgrader core downloadUrl is empty")
+		err = ErrDownloadUrlEmpty
 		return
 	}
 
 	// digest
 	digest, ok := assetsMap[fmt.Sprintf("nginx-ui-%s.tar.gz.digest", arch.Name)]
 	if !ok || digest.BrowserDownloadUrl == "" {
-		err = errors.New("upgrader core digest is empty")
+		err = ErrDigestEmpty
 		return
 	}
 
@@ -190,13 +190,13 @@ func (u *Upgrader) DownloadLatestRelease(progressChan chan float64) (tarName str
 	logger.Debug("DownloadLatestRelease digestFileContent", digestFileContent)
 
 	if digestFileContent == "" {
-		err = errors.New("digest file content is empty")
+		err = ErrDigestFileEmpty
 		return
 	}
 
 	exeSHA512 := helper.DigestSHA512(tarName)
 	if exeSHA512 == "" {
-		err = errors.New("executable binary file is empty")
+		err = ErrExecutableBinaryEmpty
 		return
 	}
 
@@ -212,7 +212,7 @@ var updateInProgress atomic.Bool
 
 func (u *Upgrader) PerformCoreUpgrade(tarPath string) (err error) {
 	if !updateInProgress.CompareAndSwap(false, true) {
-		return errors.New("update already in progress")
+		return ErrUpdateInProgress
 	}
 	defer updateInProgress.Store(false)
 

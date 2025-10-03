@@ -44,8 +44,8 @@ func DefaultThroughputOptimizerConfig() *ThroughputOptimizerConfig {
 	}
 }
 
-// OptimizedIndexMultipleLogGroups indexes multiple log groups using the best strategy
-func (to *ThroughputOptimizer) OptimizedIndexMultipleLogGroups(ctx context.Context, basePaths []string) (*OptimizedIndexingResult, error) {
+// IndexMultipleLogGroups indexes multiple log groups using the best strategy
+func (to *ThroughputOptimizer) IndexMultipleLogGroups(ctx context.Context, basePaths []string) (*OptimizedIndexingResult, error) {
 	start := time.Now()
 	
 	logger.Infof("🚀 Starting optimized indexing for %d log groups", len(basePaths))

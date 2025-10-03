@@ -30,7 +30,7 @@ func TestProductionScaleValidation(t *testing.T) {
 	config.WorkerCount = 12 // Utilize all CPU cores
 	config.BatchSize = 2000 // Larger batches for high volume
 	
-	parser := NewOptimizedParser(
+	parser := NewParser(
 		config,
 		NewCachedUserAgentParser(NewSimpleUserAgentParser(), 10000),
 		&mockGeoIPService{},
@@ -71,7 +71,7 @@ func TestProductionScaleValidation(t *testing.T) {
 				reader := strings.NewReader(logData)
 				ctx := context.Background()
 				
-				result, err := parser.OptimizedParseStream(ctx, reader)
+				result, err := parser.ParseStream(ctx, reader)
 				duration := time.Since(startTime)
 				
 				if err != nil {
@@ -148,7 +148,7 @@ func BenchmarkProductionScale(b *testing.B) {
 	config.WorkerCount = 12
 	config.BatchSize = 2000
 	
-	parser := NewOptimizedParser(
+	parser := NewParser(
 		config,
 		NewCachedUserAgentParser(NewSimpleUserAgentParser(), 10000),
 		&mockGeoIPService{},
@@ -161,7 +161,7 @@ func BenchmarkProductionScale(b *testing.B) {
 		{
 			"Optimized_ParseStream_100K",
 			func(ctx context.Context, reader *strings.Reader) (*ParseResult, error) {
-				return parser.OptimizedParseStream(ctx, reader)
+				return parser.ParseStream(ctx, reader)
 			},
 		},
 		{
@@ -406,7 +406,7 @@ func TestMemoryUsageValidation(t *testing.T) {
 	config.WorkerCount = 4
 	config.BatchSize = 1000
 	
-	parser := NewOptimizedParser(
+	parser := NewParser(
 		config,
 		NewCachedUserAgentParser(NewSimpleUserAgentParser(), 1000),
 		&mockGeoIPService{},
@@ -419,7 +419,7 @@ func TestMemoryUsageValidation(t *testing.T) {
 		{
 			"Optimized_ParseStream",
 			func(ctx context.Context, reader *strings.Reader) (*ParseResult, error) {
-				return parser.OptimizedParseStream(ctx, reader)
+				return parser.ParseStream(ctx, reader)
 			},
 		},
 		{

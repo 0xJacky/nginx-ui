@@ -52,9 +52,9 @@ func (m *mockSearcher) ClearCache() error {
 	return nil
 }
 
-// TestOptimizedTimeSeriesProcessor tests the optimized processor
-func TestOptimizedTimeSeriesProcessor(t *testing.T) {
-	processor := NewOptimizedTimeSeriesProcessor()
+// TestTimeSeriesProcessor tests the optimized processor
+func TestTimeSeriesProcessor(t *testing.T) {
+	processor := NewTimeSeriesProcessor()
 
 	if processor == nil {
 		t.Fatal("Failed to create optimized processor")
@@ -147,9 +147,9 @@ func TestTimeSeriesCache(t *testing.T) {
 	}
 }
 
-// TestOptimizedGetVisitorsByTime tests optimized visitors by time
-func TestOptimizedGetVisitorsByTime(t *testing.T) {
-	processor := NewOptimizedTimeSeriesProcessor()
+// TestGetVisitorsByTime tests optimized visitors by time
+func TestGetVisitorsByTime(t *testing.T) {
+	processor := NewTimeSeriesProcessor()
 	mockSearcher := &mockSearcher{}
 
 	req := &VisitorsByTimeRequest{
@@ -180,9 +180,9 @@ func TestOptimizedGetVisitorsByTime(t *testing.T) {
 	}
 }
 
-// TestOptimizedGetTrafficByTime tests optimized traffic by time
-func TestOptimizedGetTrafficByTime(t *testing.T) {
-	processor := NewOptimizedTimeSeriesProcessor()
+// TestGetTrafficByTime tests optimized traffic by time
+func TestGetTrafficByTime(t *testing.T) {
+	processor := NewTimeSeriesProcessor()
 	mockSearcher := &mockSearcher{}
 
 	req := &TrafficByTimeRequest{
@@ -257,9 +257,9 @@ func TestHyperLogLog(t *testing.T) {
 	}
 }
 
-// TestAdvancedTimeSeriesProcessor tests advanced analytics
-func TestAdvancedTimeSeriesProcessor(t *testing.T) {
-	processor := NewAdvancedTimeSeriesProcessor()
+// TestAnomalyDetector tests advanced analytics
+func TestAnomalyDetector(t *testing.T) {
+	processor := NewAnomalyDetector()
 
 	if processor == nil {
 		t.Fatal("Failed to create advanced processor")
@@ -291,7 +291,7 @@ func TestAdvancedTimeSeriesProcessor(t *testing.T) {
 
 // TestTrendAnalysis tests trend calculation
 func TestTrendAnalysis(t *testing.T) {
-	processor := NewAdvancedTimeSeriesProcessor()
+	processor := NewAnomalyDetector()
 
 	// Test increasing trend
 	increasingData := []TimeValue{
@@ -330,9 +330,9 @@ func TestTrendAnalysis(t *testing.T) {
 	}
 }
 
-// BenchmarkOptimizedTimeSeriesProcessing benchmarks the optimized processing
-func BenchmarkOptimizedTimeSeriesProcessing(b *testing.B) {
-	processor := NewOptimizedTimeSeriesProcessor()
+// BenchmarkTimeSeriesProcessing benchmarks the optimized processing
+func BenchmarkTimeSeriesProcessing(b *testing.B) {
+	processor := NewTimeSeriesProcessor()
 	mockSearcher := &mockSearcher{}
 
 	req := &VisitorsByTimeRequest{
@@ -433,7 +433,7 @@ func BenchmarkTimeSeriesCache(b *testing.B) {
 
 // BenchmarkAnomalyDetection benchmarks anomaly detection
 func BenchmarkAnomalyDetection(b *testing.B) {
-	processor := NewAdvancedTimeSeriesProcessor()
+	processor := NewAnomalyDetector()
 
 	// Generate test data
 	testData := make([]TimeValue, 100)
@@ -458,7 +458,7 @@ func BenchmarkAnomalyDetection(b *testing.B) {
 
 // BenchmarkTrendCalculation benchmarks trend calculation
 func BenchmarkTrendCalculation(b *testing.B) {
-	processor := NewAdvancedTimeSeriesProcessor()
+	processor := NewAnomalyDetector()
 
 	// Generate test data with trend
 	testData := make([]TimeValue, 50)

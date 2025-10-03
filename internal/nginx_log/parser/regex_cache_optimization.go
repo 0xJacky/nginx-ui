@@ -251,8 +251,8 @@ func (rc *RegexCache) Close() {
 	rc.Clear()
 }
 
-// OptimizedRegexMatcher provides optimized regex matching for log parsing
-type OptimizedRegexMatcher struct {
+// RegexMatcher provides optimized regex matching for log parsing
+type RegexMatcher struct {
 	cache *RegexCache
 	// Pre-compiled common patterns for fastest access
 	ipv4Regex      *regexp.Regexp
@@ -263,11 +263,11 @@ type OptimizedRegexMatcher struct {
 	mainRegex      *regexp.Regexp
 }
 
-// NewOptimizedRegexMatcher creates a new optimized regex matcher
-func NewOptimizedRegexMatcher() *OptimizedRegexMatcher {
+// NewRegexMatcher creates a new optimized regex matcher
+func NewRegexMatcher() *RegexMatcher {
 	cache := GetGlobalRegexCache()
 
-	matcher := &OptimizedRegexMatcher{
+	matcher := &RegexMatcher{
 		cache: cache,
 	}
 
@@ -283,7 +283,7 @@ func NewOptimizedRegexMatcher() *OptimizedRegexMatcher {
 }
 
 // MatchIPv4 matches IPv4 addresses using cached regex
-func (orm *OptimizedRegexMatcher) MatchIPv4(text string) []string {
+func (orm *RegexMatcher) MatchIPv4(text string) []string {
 	if orm.ipv4Regex != nil {
 		return orm.ipv4Regex.FindStringSubmatch(text)
 	}
@@ -291,7 +291,7 @@ func (orm *OptimizedRegexMatcher) MatchIPv4(text string) []string {
 }
 
 // MatchTimestamp matches timestamp patterns using cached regex
-func (orm *OptimizedRegexMatcher) MatchTimestamp(text string) []string {
+func (orm *RegexMatcher) MatchTimestamp(text string) []string {
 	if orm.timestampRegex != nil {
 		return orm.timestampRegex.FindStringSubmatch(text)
 	}
@@ -299,7 +299,7 @@ func (orm *OptimizedRegexMatcher) MatchTimestamp(text string) []string {
 }
 
 // MatchCombinedFormat matches complete combined log format
-func (orm *OptimizedRegexMatcher) MatchCombinedFormat(text string) []string {
+func (orm *RegexMatcher) MatchCombinedFormat(text string) []string {
 	if orm.combinedRegex != nil {
 		return orm.combinedRegex.FindStringSubmatch(text)
 	}
@@ -307,7 +307,7 @@ func (orm *OptimizedRegexMatcher) MatchCombinedFormat(text string) []string {
 }
 
 // MatchMainFormat matches main log format
-func (orm *OptimizedRegexMatcher) MatchMainFormat(text string) []string {
+func (orm *RegexMatcher) MatchMainFormat(text string) []string {
 	if orm.mainRegex != nil {
 		return orm.mainRegex.FindStringSubmatch(text)
 	}
@@ -315,7 +315,7 @@ func (orm *OptimizedRegexMatcher) MatchMainFormat(text string) []string {
 }
 
 // MatchPattern matches any pattern using the regex cache
-func (orm *OptimizedRegexMatcher) MatchPattern(pattern, text string) ([]string, error) {
+func (orm *RegexMatcher) MatchPattern(pattern, text string) ([]string, error) {
 	regex, err := orm.cache.GetRegex(pattern)
 	if err != nil {
 		return nil, err
@@ -325,7 +325,7 @@ func (orm *OptimizedRegexMatcher) MatchPattern(pattern, text string) ([]string, 
 }
 
 // DetectLogFormat detects nginx log format using cached patterns
-func (orm *OptimizedRegexMatcher) DetectLogFormat(logLine string) string {
+func (orm *RegexMatcher) DetectLogFormat(logLine string) string {
 	// Try combined format first (most common)
 	if orm.combinedRegex != nil && orm.combinedRegex.MatchString(logLine) {
 		return "combined"
@@ -340,7 +340,7 @@ func (orm *OptimizedRegexMatcher) DetectLogFormat(logLine string) string {
 }
 
 // GetCacheStats returns regex cache statistics
-func (orm *OptimizedRegexMatcher) GetCacheStats() RegexCacheStats {
+func (orm *RegexMatcher) GetCacheStats() RegexCacheStats {
 	return orm.cache.GetStats()
 }
 

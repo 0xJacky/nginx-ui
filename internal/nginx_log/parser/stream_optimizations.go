@@ -9,8 +9,8 @@ import (
 	"unsafe"
 )
 
-// OptimizedParseStream provides a high-performance streaming parser with zero-allocation optimizations
-func (p *OptimizedParser) OptimizedParseStream(ctx context.Context, reader io.Reader) (*ParseResult, error) {
+// ParseStream provides a high-performance streaming parser with zero-allocation optimizations
+func (p *Parser) StreamParse(ctx context.Context, reader io.Reader) (*ParseResult, error) {
 	startTime := time.Now()
 	
 	// Pre-allocate result with estimated capacity to reduce reallocations
@@ -54,7 +54,7 @@ func (p *OptimizedParser) OptimizedParseStream(ctx context.Context, reader io.Re
 
 		// Process full batches
 		if len(batch) >= p.config.BatchSize {
-			if err := p.processBatchOptimized(ctx, batch, result); err != nil {
+			if err := p.processBatch(ctx, batch, result); err != nil {
 				return result, err
 			}
 			// Reset batch slice but keep capacity
@@ -64,7 +64,7 @@ func (p *OptimizedParser) OptimizedParseStream(ctx context.Context, reader io.Re
 
 	// Process remaining lines
 	if len(batch) > 0 {
-		if err := p.processBatchOptimized(ctx, batch, result); err != nil {
+		if err := p.processBatch(ctx, batch, result); err != nil {
 			return result, err
 		}
 	}
@@ -83,8 +83,8 @@ func (p *OptimizedParser) OptimizedParseStream(ctx context.Context, reader io.Re
 	return result, nil
 }
 
-// processBatchOptimized processes a batch of lines with memory-efficient operations
-func (p *OptimizedParser) processBatchOptimized(ctx context.Context, batch []string, result *ParseResult) error {
+// processBatch processes a batch of lines with memory-efficient operations
+func (p *Parser) processBatch(ctx context.Context, batch []string, result *ParseResult) error {
 	batchResult := p.ParseLinesWithContext(ctx, batch)
 	
 	// Pre-grow the result.Entries slice to avoid multiple reallocations
@@ -150,7 +150,7 @@ func (sb *StreamBuffer) ReadLine(reader io.Reader) ([]byte, error) {
 }
 
 // ChunkedParseStream processes the stream in chunks for better memory usage
-func (p *OptimizedParser) ChunkedParseStream(ctx context.Context, reader io.Reader, chunkSize int) (*ParseResult, error) {
+func (p *Parser) ChunkedParseStream(ctx context.Context, reader io.Reader, chunkSize int) (*ParseResult, error) {
 	startTime := time.Now()
 	result := &ParseResult{
 		Entries: make([]*AccessLogEntry, 0, chunkSize),
@@ -199,7 +199,7 @@ func (p *OptimizedParser) ChunkedParseStream(ctx context.Context, reader io.Read
 			result.Processed++
 			
 			if len(batch) >= p.config.BatchSize {
-				if err := p.processBatchOptimized(ctx, batch, result); err != nil {
+				if err := p.processBatch(ctx, batch, result); err != nil {
 					return result, err
 				}
 				batch = batch[:0]
@@ -208,7 +208,7 @@ func (p *OptimizedParser) ChunkedParseStream(ctx context.Context, reader io.Read
 		
 		// Process remaining batch
 		if len(batch) > 0 {
-			if err := p.processBatchOptimized(ctx, batch, result); err != nil {
+			if err := p.processBatch(ctx, batch, result); err != nil {
 				return result, err
 			}
 		}
@@ -223,7 +223,7 @@ func (p *OptimizedParser) ChunkedParseStream(ctx context.Context, reader io.Read
 		line := string(remainder)
 		batch := []string{line}
 		result.Processed++
-		if err := p.processBatchOptimized(ctx, batch, result); err != nil {
+		if err := p.processBatch(ctx, batch, result); err != nil {
 			return result, err
 		}
 	}
@@ -294,7 +294,7 @@ func (lb *LineBuffer) Bytes() []byte {
 }
 
 // MemoryEfficientParseStream uses minimal memory allocations for streaming
-func (p *OptimizedParser) MemoryEfficientParseStream(ctx context.Context, reader io.Reader) (*ParseResult, error) {
+func (p *Parser) MemoryEfficientParseStream(ctx context.Context, reader io.Reader) (*ParseResult, error) {
 	startTime := time.Now()
 	result := &ParseResult{
 		Entries: make([]*AccessLogEntry, 0, 1000),
@@ -333,7 +333,7 @@ func (p *OptimizedParser) MemoryEfficientParseStream(ctx context.Context, reader
 		result.Processed++
 
 		if len(batch) >= p.config.BatchSize {
-			if err := p.processBatchOptimized(ctx, batch, result); err != nil {
+			if err := p.processBatch(ctx, batch, result); err != nil {
 				return result, err
 			}
 			batch = batch[:0]
@@ -342,7 +342,7 @@ func (p *OptimizedParser) MemoryEfficientParseStream(ctx context.Context, reader
 
 	// Process remaining lines
 	if len(batch) > 0 {
-		if err := p.processBatchOptimized(ctx, batch, result); err != nil {
+		if err := p.processBatch(ctx, batch, result); err != nil {
 			return result, err
 		}
 	}

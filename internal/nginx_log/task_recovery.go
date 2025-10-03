@@ -20,6 +20,8 @@ type TaskRecovery struct {
 	ctx            context.Context
 	cancel         context.CancelFunc
 	wg             sync.WaitGroup
+	taskLocks      map[string]*sync.Mutex // Per-log-group locks
+	locksMutex     sync.RWMutex           // Protects taskLocks map
 }
 
 // NewTaskRecovery creates a new task recovery manager
@@ -27,16 +29,16 @@ func NewTaskRecovery(parentCtx context.Context) *TaskRecovery {
 	ctx, cancel := context.WithCancel(parentCtx)
 	return &TaskRecovery{
 		logFileManager: GetLogFileManager(),
-		modernIndexer:  GetModernIndexer(),
+		modernIndexer:  GetIndexer(),
 		ctx:            ctx,
 		cancel:         cancel,
+		taskLocks:      make(map[string]*sync.Mutex),
 	}
 }
 
 // RecoverUnfinishedTasks recovers indexing tasks that were incomplete at last shutdown
 func (tr *TaskRecovery) RecoverUnfinishedTasks(ctx context.Context) error {
 	if tr.logFileManager == nil || tr.modernIndexer == nil {
-		logger.Warn("Cannot recover tasks: services not available")
 		return nil
 	}
 
@@ -73,6 +75,44 @@ func (tr *TaskRecovery) RecoverUnfinishedTasks(ctx context.Context) error {
 	return nil
 }
 
+// acquireTaskLock gets or creates a mutex for a specific log group
+func (tr *TaskRecovery) acquireTaskLock(logPath string) *sync.Mutex {
+	tr.locksMutex.Lock()
+	defer tr.locksMutex.Unlock()
+
+	if lock, exists := tr.taskLocks[logPath]; exists {
+		return lock
+	}
+
+	lock := &sync.Mutex{}
+	tr.taskLocks[logPath] = lock
+	return lock
+}
+
+// releaseTaskLock removes the mutex for a specific log group after completion
+func (tr *TaskRecovery) releaseTaskLock(logPath string) {
+	tr.locksMutex.Lock()
+	defer tr.locksMutex.Unlock()
+	delete(tr.taskLocks, logPath)
+}
+
+// isTaskInProgress checks if a task is currently running for a specific log group
+func (tr *TaskRecovery) isTaskInProgress(logPath string) bool {
+	tr.locksMutex.RLock()
+	defer tr.locksMutex.RUnlock()
+
+	if lock, exists := tr.taskLocks[logPath]; exists {
+		// Try to acquire the lock with TryLock
+		// If we can't acquire it, it means task is in progress
+		if lock.TryLock() {
+			lock.Unlock()
+			return false
+		}
+		return true
+	}
+	return false
+}
+
 // needsRecovery determines if a log file has an incomplete indexing task that needs recovery
 func (tr *TaskRecovery) needsRecovery(log *NginxLogWithIndex) bool {
 	// Check for incomplete states that indicate interrupted operations
@@ -103,6 +143,12 @@ func (tr *TaskRecovery) needsRecovery(log *NginxLogWithIndex) bool {
 
 // recoverTask recovers a single indexing task
 func (tr *TaskRecovery) recoverTask(ctx context.Context, logPath string, queuePosition int) error {
+	// Check if task is already in progress
+	if tr.isTaskInProgress(logPath) {
+		logger.Debugf("Skipping recovery for %s - task already in progress", logPath)
+		return nil
+	}
+
 	logger.Debugf("Recovering indexing task for: %s (queue position: %d)", logPath, queuePosition)
 
 	// Set status to queued with queue position
@@ -120,6 +166,14 @@ func (tr *TaskRecovery) recoverTask(ctx context.Context, logPath string, queuePo
 // executeRecoveredTask executes a recovered indexing task with proper global state and progress tracking
 func (tr *TaskRecovery) executeRecoveredTask(ctx context.Context, logPath string) {
 	defer tr.wg.Done() // Always decrement WaitGroup
+
+	// Acquire lock for this specific log group to prevent concurrent execution
+	lock := tr.acquireTaskLock(logPath)
+	lock.Lock()
+	defer func() {
+		lock.Unlock()
+		tr.releaseTaskLock(logPath)
+	}()
 
 	// Check context before starting
 	select {
@@ -311,6 +365,12 @@ func InitTaskRecovery(ctx context.Context) {
 
 	// Wait a bit for services to fully initialize
 	time.Sleep(3 * time.Second)
+
+	// Check if services are available
+	if GetLogFileManager() == nil || GetIndexer() == nil {
+		logger.Debug("Modern services not available, skipping task recovery")
+		return
+	}
 
 	globalTaskRecovery = NewTaskRecovery(ctx)
 	if err := globalTaskRecovery.RecoverUnfinishedTasks(ctx); err != nil {

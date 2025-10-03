@@ -14,6 +14,7 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
+	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/uozi-tech/cosy/logger"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
@@ -34,7 +35,7 @@ func NewEnhancedSiteChecker() *EnhancedSiteChecker {
 		}).Dial,
 		TLSHandshakeTimeout: 10 * time.Second,
 		TLSClientConfig: &tls.Config{
-			InsecureSkipVerify: true,
+			InsecureSkipVerify: settings.HTTPSettings.InsecureSkipVerify,
 		},
 	}
 
@@ -265,7 +266,7 @@ func (ec *EnhancedSiteChecker) checkGRPC(ctx context.Context, siteURL string, co
 
 		// For GRPCS, default to skip verification unless explicitly enabled
 		if config.Protocol == "grpcs" && !config.ValidateSSL {
-			tlsConfig.InsecureSkipVerify = true
+			tlsConfig.InsecureSkipVerify = settings.HTTPSettings.InsecureSkipVerify
 		}
 
 		// Load client certificate if provided

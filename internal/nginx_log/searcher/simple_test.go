@@ -5,9 +5,9 @@ import (
 	"time"
 )
 
-// TestOptimizedCache tests the basic functionality of the optimized cache
-func TestOptimizedCache(t *testing.T) {
-	cache := NewOptimizedSearchCache(100)
+// TestCache tests the basic functionality of the optimized cache
+func TestCache(t *testing.T) {
+	cache := NewCache(100)
 	defer cache.Close()
 
 	req := &SearchRequest{
@@ -52,8 +52,8 @@ func TestOptimizedCache(t *testing.T) {
 	t.Logf("Cache stats: Size=%d, HitRate=%.2f", stats.Size, stats.HitRate)
 }
 
-func BenchmarkOptimizedCacheKeyGeneration(b *testing.B) {
-	cache := NewOptimizedSearchCache(1000)
+func BenchmarkCacheKeyGeneration(b *testing.B) {
+	cache := NewCache(1000)
 	defer cache.Close()
 
 	req := &SearchRequest{
@@ -71,13 +71,13 @@ func BenchmarkOptimizedCacheKeyGeneration(b *testing.B) {
 	b.ReportAllocs()
 
 	for i := 0; i < b.N; i++ {
-		_ = cache.GenerateOptimizedKey(req)
+		_ = cache.GenerateKey(req)
 	}
 }
 
 // New tests to ensure cache key considers LogPaths and is order-insensitive
 func TestCacheKeyIncludesLogPathsAndOrderInsensitive(t *testing.T) {
-	cache := NewOptimizedSearchCache(100)
+	cache := NewCache(100)
 	defer cache.Close()
 
 	st := int64(1000)
@@ -107,8 +107,8 @@ func TestCacheKeyIncludesLogPathsAndOrderInsensitive(t *testing.T) {
 		StatusCodes:    []int{404, 200}, // different order
 	}
 
-	keyA := cache.GenerateOptimizedKey(reqA)
-	keyB := cache.GenerateOptimizedKey(reqB)
+	keyA := cache.GenerateKey(reqA)
+	keyB := cache.GenerateKey(reqB)
 
 	if keyA != keyB {
 		t.Fatalf("expected identical cache keys for order-insensitive params, got A=%s B=%s", keyA, keyB)
@@ -127,14 +127,14 @@ func TestCacheKeyIncludesLogPathsAndOrderInsensitive(t *testing.T) {
 		StatusCodes:    []int{200, 404},
 	}
 
-	keyC := cache.GenerateOptimizedKey(reqC)
+	keyC := cache.GenerateKey(reqC)
 	if keyA == keyC {
 		t.Fatalf("expected different cache keys when LogPaths differ, got A=%s C=%s", keyA, keyC)
 	}
 }
 
-func BenchmarkOptimizedCacheOperations(b *testing.B) {
-	cache := NewOptimizedSearchCache(10000)
+func BenchmarkCacheOperations(b *testing.B) {
+	cache := NewCache(10000)
 	defer cache.Close()
 
 	req := &SearchRequest{

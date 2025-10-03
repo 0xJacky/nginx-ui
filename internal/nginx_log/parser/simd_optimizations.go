@@ -517,27 +517,27 @@ func (sm *SIMDStringMatcher) BatchParseSIMD(lines [][]byte) []*AccessLogEntry {
 	return entries
 }
 
-// OptimizedLogLineParser provides a high-performance parser using SIMD operations
-type OptimizedLogLineParser struct {
+// LogLineParser provides a high-performance parser using SIMD operations
+type LogLineParser struct {
 	matcher *SIMDStringMatcher
 	pool    *AccessLogEntryPool
 }
 
-// NewOptimizedLogLineParser creates a new optimized parser
-func NewOptimizedLogLineParser() *OptimizedLogLineParser {
-	return &OptimizedLogLineParser{
+// NewLogLineParser creates a new optimized parser
+func NewLogLineParser() *LogLineParser {
+	return &LogLineParser{
 		matcher: NewSIMDStringMatcher(),
 		pool:    NewAccessLogEntryPool(),
 	}
 }
 
 // ParseLine parses a single log line with maximum performance
-func (olp *OptimizedLogLineParser) ParseLine(data []byte) *AccessLogEntry {
+func (olp *LogLineParser) ParseLine(data []byte) *AccessLogEntry {
 	return olp.matcher.ParseLogLineSIMD(data)
 }
 
 // ParseLines parses multiple lines efficiently
-func (olp *OptimizedLogLineParser) ParseLines(lines [][]byte) []*AccessLogEntry {
+func (olp *LogLineParser) ParseLines(lines [][]byte) []*AccessLogEntry {
 	return olp.matcher.BatchParseSIMD(lines)
 }
 

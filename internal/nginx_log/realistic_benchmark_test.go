@@ -57,7 +57,7 @@ func benchmarkCompleteProduction(b *testing.B, recordCount int) {
 	geoService := &BenchGeoIPService{}
 	userAgentParser := parser.NewSimpleUserAgentParser()
 
-	optimizedParser := parser.NewOptimizedParser(
+	optimizedParser := parser.NewParser(
 		&parser.Config{
 			MaxLineLength: 4 * 1024,
 			WorkerCount:   4,
@@ -95,7 +95,7 @@ type BenchResult struct {
 	SuccessRate float64
 }
 
-func runBenchmarkProduction(b *testing.B, config *indexer.Config, optimizedParser *parser.OptimizedParser, logFile string) *BenchResult {
+func runBenchmarkProduction(b *testing.B, config *indexer.Config, optimizedParser *parser.Parser, logFile string) *BenchResult {
 	start := time.Now()
 
 	// Create indexer
@@ -119,7 +119,7 @@ func runBenchmarkProduction(b *testing.B, config *indexer.Config, optimizedParse
 	}
 	defer file.Close()
 
-	parseResult, err := optimizedParser.OptimizedParseStream(ctx, file)
+	parseResult, err := optimizedParser.ParseStream(ctx, file)
 	if err != nil {
 		b.Fatalf("Parsing failed: %v", err)
 	}

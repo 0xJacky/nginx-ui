@@ -32,20 +32,20 @@ type Service interface {
 
 // service implements the Service interface
 type service struct {
-	searcher           searcher.Searcher
-	cardinalityCounter *searcher.CardinalityCounter
+	searcher           searcher.SearcherInterface
+	cardinalityCounter *searcher.Counter
 }
 
 // NewService creates a new analytics service
-func NewService(s searcher.Searcher) Service {
+func NewService(s searcher.SearcherInterface) Service {
 	// Try to extract shards from distributed searcher for cardinality counting
-	var cardinalityCounter *searcher.CardinalityCounter
+	var cardinalityCounter *searcher.Counter
 
-	if ds, ok := s.(*searcher.DistributedSearcher); ok {
+	if ds, ok := s.(*searcher.Searcher); ok {
 		shards := ds.GetShards()
 
 		if len(shards) > 0 {
-			cardinalityCounter = searcher.NewCardinalityCounter(shards)
+			cardinalityCounter = searcher.NewCounter(shards)
 		}
 	}
 
@@ -65,18 +65,18 @@ func (s *service) Stop() error {
 
 // getCardinalityCounter dynamically creates or returns a cardinality counter
 // This is necessary because shards may be updated after service initialization
-func (s *service) getCardinalityCounter() *searcher.CardinalityCounter {
+func (s *service) getCardinalityCounter() *searcher.Counter {
 	// If we already have a cardinality counter and it's still valid, use it
 	if s.cardinalityCounter != nil {
 		return s.cardinalityCounter
 	}
 
 	// Try to create a new cardinality counter from current shards
-	if ds, ok := s.searcher.(*searcher.DistributedSearcher); ok {
+	if ds, ok := s.searcher.(*searcher.Searcher); ok {
 		shards := ds.GetShards()
 		if len(shards) > 0 {
 			// Update our cached cardinality counter
-			s.cardinalityCounter = searcher.NewCardinalityCounter(shards)
+			s.cardinalityCounter = searcher.NewCounter(shards)
 			return s.cardinalityCounter
 		}
 	}

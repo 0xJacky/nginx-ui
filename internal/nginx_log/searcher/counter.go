@@ -12,45 +12,45 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 )
 
-// CardinalityCounter provides efficient unique value counting without large FacetSize
-type CardinalityCounter struct {
+// Counter provides efficient unique value counting without large FacetSize
+type Counter struct {
 	indexAlias bleve.IndexAlias // Use IndexAlias instead of individual shards
 	shards     []bleve.Index    // Keep shards for fallback if needed
 	mu         sync.RWMutex
 	stopOnce   sync.Once
 }
 
-// NewCardinalityCounter creates a new cardinality counter
-func NewCardinalityCounter(shards []bleve.Index) *CardinalityCounter {
+// NewCounter creates a new cardinality counter
+func NewCounter(shards []bleve.Index) *Counter {
 	var indexAlias bleve.IndexAlias
 	if len(shards) > 0 {
-		// Create IndexAlias for distributed search like DistributedSearcher does
+		// Create IndexAlias for distributed search like Searcher does
 		indexAlias = bleve.NewIndexAlias(shards...)
 
 		// Note: IndexAlias doesn't have SetIndexMapping method
 		// The mapping will be inherited from the constituent indices
-		logger.Debugf("Created IndexAlias for cardinality counter with %d shards", len(shards))
+		logger.Debugf("Created IndexAlias for counter with %d shards", len(shards))
 	}
 
-	return &CardinalityCounter{
+	return &Counter{
 		indexAlias: indexAlias,
 		shards:     shards,
 	}
 }
 
 // Stop gracefully closes the counter's resources, like the IndexAlias.
-func (cc *CardinalityCounter) Stop() error {
+func (c *Counter) Stop() error {
 	var err error
-	cc.stopOnce.Do(func() {
-		cc.mu.Lock()
-		defer cc.mu.Unlock()
+	c.stopOnce.Do(func() {
+		c.mu.Lock()
+		defer c.mu.Unlock()
 
-		if cc.indexAlias != nil {
-			logger.Debugf("Closing IndexAlias in CardinalityCounter")
-			err = cc.indexAlias.Close()
-			cc.indexAlias = nil
+		if c.indexAlias != nil {
+			logger.Debugf("Closing IndexAlias in Counter")
+			err = c.indexAlias.Close()
+			c.indexAlias = nil
 		}
-		cc.shards = nil
+		c.shards = nil
 	})
 	return err
 }
@@ -73,17 +73,17 @@ type CardinalityResult struct {
 	Error       string `json:"error,omitempty"`
 }
 
-// CountCardinality efficiently counts unique values using IndexAlias with global scoring
+// Count efficiently counts unique values using IndexAlias with global scoring
 // This leverages Bleve's distributed search optimizations and avoids FacetSize limits
-func (cc *CardinalityCounter) CountCardinality(ctx context.Context, req *CardinalityRequest) (*CardinalityResult, error) {
-	cc.mu.RLock()
-	defer cc.mu.RUnlock()
+func (c *Counter) Count(ctx context.Context, req *CardinalityRequest) (*CardinalityResult, error) {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
 
 	if req.Field == "" {
 		return nil, fmt.Errorf("field name is required")
 	}
 
-	if cc.indexAlias == nil {
+	if c.indexAlias == nil {
 		return &CardinalityResult{
 			Field: req.Field,
 			Error: "IndexAlias not available",
@@ -91,7 +91,7 @@ func (cc *CardinalityCounter) CountCardinality(ctx context.Context, req *Cardina
 	}
 
 	// Use IndexAlias with global scoring for consistent distributed search
-	uniqueTerms, totalDocs, err := cc.collectTermsUsingIndexAlias(ctx, req)
+	uniqueTerms, totalDocs, err := c.collectTermsUsingIndexAlias(ctx, req)
 	if err != nil {
 		return &CardinalityResult{
 			Field: req.Field,
@@ -110,14 +110,14 @@ func (cc *CardinalityCounter) CountCardinality(ctx context.Context, req *Cardina
 }
 
 // collectTermsUsingIndexAlias collects unique terms using IndexAlias with global scoring
-func (cc *CardinalityCounter) collectTermsUsingIndexAlias(ctx context.Context, req *CardinalityRequest) (map[string]struct{}, uint64, error) {
+func (c *Counter) collectTermsUsingIndexAlias(ctx context.Context, req *CardinalityRequest) (map[string]struct{}, uint64, error) {
 	uniqueTerms := make(map[string]struct{})
 
-	// Enable global scoring context like DistributedSearcher does
+	// Enable global scoring context like Searcher does
 	globalCtx := context.WithValue(ctx, search.SearchTypeKey, search.GlobalScoring)
 
 	// Strategy 1: Try large facet first (more efficient for most cases)
-	terms1, totalDocs, err1 := cc.collectTermsUsingLargeFacet(globalCtx, req)
+	terms1, totalDocs, err1 := c.collectTermsUsingLargeFacet(globalCtx, req)
 	if err1 != nil {
 		logger.Warnf("Large facet collection failed: %v", err1)
 	} else {
@@ -131,7 +131,7 @@ func (cc *CardinalityCounter) collectTermsUsingIndexAlias(ctx context.Context, r
 	needsPagination := len(terms1) >= 50000 || err1 != nil
 	if needsPagination {
 		logger.Infof("Using pagination to collect remaining terms...")
-		terms2, _, err2 := cc.collectTermsUsingPagination(globalCtx, req)
+		terms2, _, err2 := c.collectTermsUsingPagination(globalCtx, req)
 		if err2 != nil {
 			logger.Warnf("Pagination collection failed: %v", err2)
 		} else {
@@ -146,7 +146,7 @@ func (cc *CardinalityCounter) collectTermsUsingIndexAlias(ctx context.Context, r
 }
 
 // collectTermsUsingLargeFacet uses IndexAlias with a large facet to efficiently collect terms
-func (cc *CardinalityCounter) collectTermsUsingLargeFacet(ctx context.Context, req *CardinalityRequest) (map[string]struct{}, uint64, error) {
+func (c *Counter) collectTermsUsingLargeFacet(ctx context.Context, req *CardinalityRequest) (map[string]struct{}, uint64, error) {
 	terms := make(map[string]struct{})
 
 	// Build search request using IndexAlias with proper filtering
@@ -189,16 +189,16 @@ func (cc *CardinalityCounter) collectTermsUsingLargeFacet(ctx context.Context, r
 
 	// Debug: Log the constructed query
 	if queryBytes, err := json.Marshal(searchReq.Query); err == nil {
-		logger.Debugf("CardinalityCounter query: %s", string(queryBytes))
+		logger.Debugf("Counter query: %s", string(queryBytes))
 	}
 
 	// Execute search using IndexAlias with global scoring context
-	result, err := cc.indexAlias.SearchInContext(ctx, searchReq)
+	result, err := c.indexAlias.SearchInContext(ctx, searchReq)
 	if err != nil {
 		return terms, 0, fmt.Errorf("IndexAlias facet search failed: %w", err)
 	}
 
-	logger.Debugf("CardinalityCounter facet search result: Total=%d, Facets=%v", result.Total, result.Facets != nil)
+	logger.Debugf("Counter facet search result: Total=%d, Facets=%v", result.Total, result.Facets != nil)
 
 	// Extract terms from facet result
 	if facetResult, ok := result.Facets[req.Field]; ok && facetResult.Terms != nil {
@@ -220,7 +220,7 @@ func (cc *CardinalityCounter) collectTermsUsingLargeFacet(ctx context.Context, r
 }
 
 // collectTermsUsingPagination uses IndexAlias with pagination to collect all terms
-func (cc *CardinalityCounter) collectTermsUsingPagination(ctx context.Context, req *CardinalityRequest) (map[string]struct{}, uint64, error) {
+func (c *Counter) collectTermsUsingPagination(ctx context.Context, req *CardinalityRequest) (map[string]struct{}, uint64, error) {
 	terms := make(map[string]struct{})
 
 	pageSize := 10000 // Large page size for efficiency
@@ -265,7 +265,7 @@ func (cc *CardinalityCounter) collectTermsUsingPagination(ctx context.Context, r
 		searchReq.Fields = []string{req.Field}
 
 		// Execute with IndexAlias and global scoring
-		result, err := cc.indexAlias.SearchInContext(ctx, searchReq)
+		result, err := c.indexAlias.SearchInContext(ctx, searchReq)
 		if err != nil {
 			return terms, 0, fmt.Errorf("IndexAlias pagination search failed at page %d: %w", page, err)
 		}
@@ -311,11 +311,11 @@ func (cc *CardinalityCounter) collectTermsUsingPagination(ctx context.Context, r
 	return terms, uint64(processedDocs), nil
 }
 
-// EstimateCardinality provides a fast cardinality estimate using sampling approach
+// Estimate provides a fast cardinality estimate using sampling approach
 // This is useful for very large datasets where exact counting might be expensive
-func (cc *CardinalityCounter) EstimateCardinality(ctx context.Context, req *CardinalityRequest) (*CardinalityResult, error) {
-	cc.mu.RLock()
-	defer cc.mu.RUnlock()
+func (c *Counter) Estimate(ctx context.Context, req *CardinalityRequest) (*CardinalityResult, error) {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
 
 	if req.Field == "" {
 		return nil, fmt.Errorf("field name is required")
@@ -328,12 +328,12 @@ func (cc *CardinalityCounter) EstimateCardinality(ctx context.Context, req *Card
 	totalSampleDocs := uint64(0)
 
 	// Process each shard with sampling
-	for i, shard := range cc.shards {
+	for i, shard := range c.shards {
 		if shard == nil {
 			continue
 		}
 
-		shardSample, shardTotal, err := cc.sampleShardTerms(ctx, shard, req, sampleSize/len(cc.shards))
+		shardSample, shardTotal, err := c.sampleShardTerms(ctx, shard, req, sampleSize/len(c.shards))
 		if err != nil {
 			logger.Errorf("Failed to sample shard %d: %v", i, err)
 			continue
@@ -362,11 +362,11 @@ func (cc *CardinalityCounter) EstimateCardinality(ctx context.Context, req *Card
 
 	// For accurate results with large datasets, we use exact counting
 	// The sampling code above is kept for future statistical estimation
-	return cc.CountCardinality(ctx, req)
+	return c.Count(ctx, req)
 }
 
 // sampleShardTerms takes a statistical sample from a shard for cardinality estimation
-func (cc *CardinalityCounter) sampleShardTerms(ctx context.Context, shard bleve.Index, req *CardinalityRequest, sampleSize int) (map[string]struct{}, uint64, error) {
+func (c *Counter) sampleShardTerms(ctx context.Context, shard bleve.Index, req *CardinalityRequest, sampleSize int) (map[string]struct{}, uint64, error) {
 	terms := make(map[string]struct{})
 
 	searchReq := bleve.NewSearchRequest(bleve.NewMatchAllQuery())
@@ -403,8 +403,8 @@ func (cc *CardinalityCounter) sampleShardTerms(ctx context.Context, shard bleve.
 	return terms, result.Total, nil
 }
 
-// BatchCountCardinality counts cardinality for multiple fields efficiently
-func (cc *CardinalityCounter) BatchCountCardinality(ctx context.Context, fields []string, baseReq *CardinalityRequest) (map[string]*CardinalityResult, error) {
+// BatchCount counts cardinality for multiple fields efficiently
+func (c *Counter) BatchCount(ctx context.Context, fields []string, baseReq *CardinalityRequest) (map[string]*CardinalityResult, error) {
 	results := make(map[string]*CardinalityResult)
 
 	// Process fields in parallel
@@ -419,7 +419,7 @@ func (cc *CardinalityCounter) BatchCountCardinality(ctx context.Context, fields 
 			req := *baseReq // Copy base request
 			req.Field = f
 
-			result, err := cc.CountCardinality(ctx, &req)
+			result, err := c.Count(ctx, &req)
 			if err != nil {
 				result = &CardinalityResult{
 					Field: f,

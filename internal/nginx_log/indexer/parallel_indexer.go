@@ -507,13 +507,6 @@ func (pi *ParallelIndexer) Optimize() error {
 	return nil
 }
 
-// IndexLogFile reads and indexes a single log file using optimized processing
-// Now uses OptimizedParseStream for 7-8x faster performance and 70% memory reduction
-func (pi *ParallelIndexer) IndexLogFile(filePath string) error {
-	// Delegate to optimized implementation
-	return pi.OptimizedIndexLogFile(filePath)
-}
-
 // GetStats returns current indexer statistics
 func (pi *ParallelIndexer) GetStats() *IndexStats {
 	pi.statsMutex.RLock()
@@ -927,10 +920,10 @@ func (pi *ParallelIndexer) IndexSingleFileIncrementally(filePath string, progres
 }
 
 // indexSingleFile contains optimized logic to process one physical log file.
-// Now uses OptimizedParseStream for 7-8x faster performance and 70% memory reduction
+// Now uses ParseStream for 7-8x faster performance and 70% memory reduction
 func (pi *ParallelIndexer) indexSingleFile(filePath string) (uint64, *time.Time, *time.Time, error) {
 	// Delegate to optimized implementation
-	return pi.OptimizedIndexSingleFile(filePath)
+	return pi.IndexSingleFile(filePath)
 }
 
 // UpdateConfig updates the indexer configuration
@@ -1217,9 +1210,12 @@ func (pi *ParallelIndexer) IndexLogGroupWithProgress(basePath string, progressCo
 
 	// filepath.Glob might not match the base file itself if it has no extension,
 	// so we check for it explicitly and add it to the list.
-	info, err := os.Stat(basePath)
-	if err == nil && info.Mode().IsRegular() {
-		matches = append(matches, basePath)
+	// Validate log path before accessing it
+	if utils.IsValidLogPath(basePath) {
+		info, err := os.Stat(basePath)
+		if err == nil && info.Mode().IsRegular() {
+			matches = append(matches, basePath)
+		}
 	}
 
 	// Deduplicate file list
@@ -1228,10 +1224,13 @@ func (pi *ParallelIndexer) IndexLogGroupWithProgress(basePath string, progressCo
 	for _, match := range matches {
 		if _, ok := seen[match]; !ok {
 			// Further check if it's a file, not a directory. Glob can match dirs.
-			info, err := os.Stat(match)
-			if err == nil && info.Mode().IsRegular() {
-				seen[match] = struct{}{}
-				uniqueFiles = append(uniqueFiles, match)
+			// Validate log path before accessing it
+			if utils.IsValidLogPath(match) {
+				info, err := os.Stat(match)
+				if err == nil && info.Mode().IsRegular() {
+					seen[match] = struct{}{}
+					uniqueFiles = append(uniqueFiles, match)
+				}
 			}
 		}
 	}
@@ -1265,40 +1264,73 @@ func (pi *ParallelIndexer) IndexLogGroupWithProgress(basePath string, progressCo
 	}
 
 	docsCountMap := make(map[string]uint64)
+	var docsCountMu sync.RWMutex
 	var overallMinTime, overallMaxTime *time.Time
+	var timeMu sync.Mutex
 
-	// Process each file with progress tracking
-	for _, filePath := range uniqueFiles {
-		if progressTracker != nil {
-			progressTracker.StartFile(filePath)
-		}
-
-		docsIndexed, minTime, maxTime, err := pi.indexSingleFileWithProgress(filePath, progressTracker)
-		if err != nil {
-			logger.Warnf("Failed to index file '%s' in group '%s', skipping: %v", filePath, basePath, err)
-			if progressTracker != nil {
-				progressTracker.FailFile(filePath, err.Error())
-			}
-			continue // Continue with the next file
-		}
-
-		docsCountMap[filePath] = docsIndexed
-
-		if progressTracker != nil {
-			progressTracker.CompleteFile(filePath, int64(docsIndexed))
-		}
-
-		if minTime != nil {
-			if overallMinTime == nil || minTime.Before(*overallMinTime) {
-				overallMinTime = minTime
-			}
-		}
-		if maxTime != nil {
-			if overallMaxTime == nil || maxTime.After(*overallMaxTime) {
-				overallMaxTime = maxTime
-			}
+	// Process files in parallel with controlled concurrency
+	var fileWg sync.WaitGroup
+	// Use FileGroupConcurrency config if set, otherwise fallback to WorkerCount
+	maxConcurrency := pi.config.FileGroupConcurrency
+	if maxConcurrency <= 0 {
+		maxConcurrency = pi.config.WorkerCount
+		if maxConcurrency <= 0 {
+			maxConcurrency = 4 // Fallback default
 		}
 	}
+	fileSemaphore := make(chan struct{}, maxConcurrency)
+
+	logger.Infof("Processing %d files in log group %s with concurrency=%d", len(uniqueFiles), basePath, maxConcurrency)
+
+	for _, filePath := range uniqueFiles {
+		fileWg.Add(1)
+		go func(fp string) {
+			defer fileWg.Done()
+
+			// Acquire semaphore for controlled concurrency
+			fileSemaphore <- struct{}{}
+			defer func() { <-fileSemaphore }()
+
+			if progressTracker != nil {
+				progressTracker.StartFile(fp)
+			}
+
+			docsIndexed, minTime, maxTime, err := pi.indexSingleFileWithProgress(fp, progressTracker)
+			if err != nil {
+				logger.Warnf("Failed to index file '%s' in group '%s', skipping: %v", fp, basePath, err)
+				if progressTracker != nil {
+					progressTracker.FailFile(fp, err.Error())
+				}
+				return // Skip this file
+			}
+
+			// Thread-safe update of docsCountMap
+			docsCountMu.Lock()
+			docsCountMap[fp] = docsIndexed
+			docsCountMu.Unlock()
+
+			if progressTracker != nil {
+				progressTracker.CompleteFile(fp, int64(docsIndexed))
+			}
+
+			// Thread-safe update of time ranges
+			timeMu.Lock()
+			if minTime != nil {
+				if overallMinTime == nil || minTime.Before(*overallMinTime) {
+					overallMinTime = minTime
+				}
+			}
+			if maxTime != nil {
+				if overallMaxTime == nil || maxTime.After(*overallMaxTime) {
+					overallMaxTime = maxTime
+				}
+			}
+			timeMu.Unlock()
+		}(filePath)
+	}
+
+	// Wait for all files to complete
+	fileWg.Wait()
 
 	return docsCountMap, overallMinTime, overallMaxTime, nil
 }
@@ -1307,7 +1339,7 @@ func (pi *ParallelIndexer) IndexLogGroupWithProgress(basePath string, progressCo
 // Now uses the optimized implementation with full progress tracking integration
 func (pi *ParallelIndexer) indexSingleFileWithProgress(filePath string, progressTracker *ProgressTracker) (uint64, *time.Time, *time.Time, error) {
 	// Delegate to optimized implementation with progress tracking
-	return pi.OptimizedIndexSingleFileWithProgress(filePath, progressTracker)
+	return pi.IndexSingleFileWithProgress(filePath, progressTracker)
 }
 
 // sumDocCounts returns the total number of documents across all files

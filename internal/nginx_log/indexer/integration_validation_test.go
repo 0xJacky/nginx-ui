@@ -7,8 +7,8 @@ import (
 	"time"
 )
 
-// TestOptimizedIntegrationValidation validates the complete integration of optimizations
-func TestOptimizedIntegrationValidation(t *testing.T) {
+// TestIntegrationValidation validates the complete integration of optimizations
+func TestIntegrationValidation(t *testing.T) {
 	t.Log("=== Validating Optimized Indexer Integration ===")
 
 	// Create test log content
@@ -94,9 +94,9 @@ func TestOptimizedIntegrationValidation(t *testing.T) {
 	progressTracker := NewProgressTracker("test-group", progressConfig)
 
 	// Test optimized indexing with progress tracking
-	docCount, minTime, maxTime, err := indexer.OptimizedIndexSingleFileWithProgress(tmpFile.Name(), progressTracker)
+	docCount, minTime, maxTime, err := indexer.IndexSingleFileWithProgress(tmpFile.Name(), progressTracker)
 	if err != nil {
-		t.Fatalf("OptimizedIndexSingleFileWithProgress failed: %v", err)
+		t.Fatalf("IndexSingleFileWithProgress failed: %v", err)
 	}
 
 	if docCount != 3 {

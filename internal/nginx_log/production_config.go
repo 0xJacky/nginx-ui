@@ -32,7 +32,7 @@ type ProductionConfig struct {
 type PerformanceMonitoringConfig struct {
 	Enabled           bool          `json:"enabled"`
 	MonitorInterval   time.Duration `json:"monitor_interval"`
-	AlertThresholds   *PerformanceThresholds `json:"alert_thresholds"`
+	AlertThresholds   *Thresholds `json:"alert_thresholds"`
 	MetricsRetention  time.Duration `json:"metrics_retention"`
 	EnableAlerts      bool          `json:"enable_alerts"`
 }
@@ -94,7 +94,7 @@ func NewProductionConfig() *ProductionConfig {
 	monitoringConfig := &PerformanceMonitoringConfig{
 		Enabled:         true,
 		MonitorInterval: 30 * time.Second,
-		AlertThresholds: DefaultPerformanceThresholds(),
+		AlertThresholds: DefaultThresholds(),
 		MetricsRetention: 24 * time.Hour,
 		EnableAlerts:    true,
 	}
@@ -190,7 +190,7 @@ func ApplyConfiguration(ctx context.Context, config *ProductionConfig) error {
 
 	// Start performance monitoring if enabled
 	if config.MonitoringConfig.Enabled {
-		monitor := NewPerformanceMonitor(config.MonitoringConfig.AlertThresholds)
+		monitor := NewMonitor(config.MonitoringConfig.AlertThresholds)
 		monitor.SetAlertCallback(DefaultAlertHandler)
 		
 		go monitor.StartMonitoring(ctx, config.MonitoringConfig.MonitorInterval)

@@ -11,19 +11,12 @@ import (
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
-	"github.com/pkg/errors"
 	"github.com/uozi-tech/cosy"
 	sqlite "github.com/uozi-tech/cosy-driver-sqlite"
 	"github.com/uozi-tech/cosy/logger"
 	cSettings "github.com/uozi-tech/cosy/settings"
 	"github.com/urfave/cli/v3"
 	"golang.org/x/crypto/bcrypt"
-)
-
-var (
-	ErrConfigNotFound    = errors.New("config not found")
-	ErrDBFileNotFound    = errors.New("db file not found")
-	ErrInitUserNotExists = errors.New("init user not exists")
 )
 
 func generateRandomPassword(length int) (string, error) {

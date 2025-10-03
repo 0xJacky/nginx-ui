@@ -11,20 +11,20 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 )
 
-// QueryBuilderService provides high-level query building functionality
-type QueryBuilderService struct {
+// QueryBuilder provides high-level query building functionality
+type QueryBuilder struct {
 	defaultAnalyzer string
 }
 
-// NewQueryBuilderService creates a new query builder service
-func NewQueryBuilderService() *QueryBuilderService {
-	return &QueryBuilderService{
+// NewQueryBuilder creates a new query builder service
+func NewQueryBuilder() *QueryBuilder {
+	return &QueryBuilder{
 		defaultAnalyzer: "standard",
 	}
 }
 
 // BuildQuery builds a Bleve query from a SearchRequest
-func (qb *QueryBuilderService) BuildQuery(req *SearchRequest) (query.Query, error) {
+func (qb *QueryBuilder) BuildQuery(req *SearchRequest) (query.Query, error) {
 	if req == nil {
 		return nil, fmt.Errorf("search request cannot be nil")
 	}
@@ -105,7 +105,7 @@ func (qb *QueryBuilderService) BuildQuery(req *SearchRequest) (query.Query, erro
 }
 
 // buildTimeRangeQuery builds a time range query
-func (qb *QueryBuilderService) buildTimeRangeQuery(start, end *int64) query.Query {
+func (qb *QueryBuilder) buildTimeRangeQuery(start, end *int64) query.Query {
 	if start == nil && end == nil {
 		return nil
 	}
@@ -127,7 +127,7 @@ func (qb *QueryBuilderService) buildTimeRangeQuery(start, end *int64) query.Quer
 }
 
 // buildTermsQuery builds a terms query for multiple values
-func (qb *QueryBuilderService) buildTermsQuery(field string, terms []string) query.Query {
+func (qb *QueryBuilder) buildTermsQuery(field string, terms []string) query.Query {
 	if len(terms) == 0 {
 		return nil
 	}
@@ -151,7 +151,7 @@ func (qb *QueryBuilderService) buildTermsQuery(field string, terms []string) que
 }
 
 // buildStatusCodeQuery builds a status code query
-func (qb *QueryBuilderService) buildStatusCodeQuery(codes []int) query.Query {
+func (qb *QueryBuilder) buildStatusCodeQuery(codes []int) query.Query {
 	if len(codes) == 0 {
 		return nil
 	}
@@ -166,7 +166,7 @@ func (qb *QueryBuilderService) buildStatusCodeQuery(codes []int) query.Query {
 }
 
 // ValidateSearchRequest validates a search request
-func (qb *QueryBuilderService) ValidateSearchRequest(req *SearchRequest) error {
+func (qb *QueryBuilder) ValidateSearchRequest(req *SearchRequest) error {
 	if req == nil {
 		return fmt.Errorf("search request cannot be nil")
 	}
@@ -189,7 +189,7 @@ func (qb *QueryBuilderService) ValidateSearchRequest(req *SearchRequest) error {
 }
 
 // BuildSuggestionQuery builds a query for suggestions (simplified version)
-func (qb *QueryBuilderService) BuildSuggestionQuery(text, field string) (query.Query, error) {
+func (qb *QueryBuilder) BuildSuggestionQuery(text, field string) (query.Query, error) {
 	if text == "" {
 		return nil, fmt.Errorf("suggestion text cannot be empty")
 	}

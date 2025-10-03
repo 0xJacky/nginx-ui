@@ -13,9 +13,9 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 )
 
-// OptimizedIndexLogFile reads and indexes a single log file using OptimizedParseStream
+// IndexLogFile reads and indexes a single log file using ParseStream
 // This replaces the original IndexLogFile with 7-8x faster performance and 70% memory reduction
-func (pi *ParallelIndexer) OptimizedIndexLogFile(filePath string) error {
+func (pi *ParallelIndexer) IndexLogFile(filePath string) error {
 	if !pi.IsHealthy() {
 		return fmt.Errorf("indexer not healthy")
 	}
@@ -46,7 +46,7 @@ func (pi *ParallelIndexer) OptimizedIndexLogFile(filePath string) error {
 		}
 		logger.Infof("Processed large file %s with chunked processing", filePath)
 	} else {
-		// Use OptimizedParseStream for general purpose (7-8x faster)
+		// Use ParseStream for general purpose (7-8x faster)
 		logDocs, err = ParseLogStream(ctx, file, filePath)
 		if err != nil {
 			return fmt.Errorf("failed to parse file %s with optimized stream processing: %w", filePath, err)
@@ -55,19 +55,24 @@ func (pi *ParallelIndexer) OptimizedIndexLogFile(filePath string) error {
 	}
 
 	// Use efficient batch indexing with memory pools
-	return pi.indexOptimizedLogDocuments(logDocs, filePath)
+	return pi.indexLogDocuments(logDocs, filePath)
 }
 
-// OptimizedIndexSingleFile contains the optimized logic to process one physical log file.
+// IndexSingleFile contains the optimized logic to process one physical log file.
 // It returns the number of documents indexed from the file, and the min/max timestamps.
 // This provides 7-8x better performance than the original indexSingleFile
-func (pi *ParallelIndexer) OptimizedIndexSingleFile(filePath string) (uint64, *time.Time, *time.Time, error) {
-	return pi.OptimizedIndexSingleFileWithProgress(filePath, nil)
+func (pi *ParallelIndexer) IndexSingleFile(filePath string) (uint64, *time.Time, *time.Time, error) {
+	return pi.IndexSingleFileWithProgress(filePath, nil)
 }
 
-// OptimizedIndexSingleFileWithProgress processes a file with progress tracking integration
+// IndexSingleFileWithProgress processes a file with progress tracking integration
 // This maintains compatibility with the existing ProgressTracker system while providing optimized performance
-func (pi *ParallelIndexer) OptimizedIndexSingleFileWithProgress(filePath string, progressTracker *ProgressTracker) (uint64, *time.Time, *time.Time, error) {
+func (pi *ParallelIndexer) IndexSingleFileWithProgress(filePath string, progressTracker *ProgressTracker) (uint64, *time.Time, *time.Time, error) {
+	// Validate log path before accessing it
+	if !utils.IsValidLogPath(filePath) {
+		return 0, nil, nil, fmt.Errorf("invalid log path: %s", filePath)
+	}
+
 	file, err := os.Open(filePath)
 	if err != nil {
 		return 0, nil, nil, fmt.Errorf("failed to open log file %s: %w", filePath, err)
@@ -118,7 +123,7 @@ func (pi *ParallelIndexer) OptimizedIndexSingleFileWithProgress(filePath string,
 		logDocs, err = pi.parseLogStreamWithProgress(ctx, reader, filePath, "chunked", progressTracker)
 		logger.Infof("Using chunked processing for file %s (%d bytes)", filePath, fileSize)
 	} else {
-		// Use OptimizedParseStream for general purpose (7-8x faster, 70% memory reduction)
+		// Use ParseStream for general purpose (7-8x faster, 70% memory reduction)
 		logDocs, err = pi.parseLogStreamWithProgress(ctx, reader, filePath, "optimized", progressTracker)
 		logger.Infof("Using optimized stream processing for file %s (%d bytes)", filePath, fileSize)
 	}
@@ -215,7 +220,7 @@ func (pi *ParallelIndexer) OptimizedIndexSingleFileWithProgress(filePath string,
 
 	// Index documents efficiently using batch processing
 	if docCount > 0 {
-		if err := pi.indexOptimizedLogDocuments(logDocs, filePath); err != nil {
+		if err := pi.indexLogDocuments(logDocs, filePath); err != nil {
 			return docCount, minTime, maxTime, fmt.Errorf("failed to index documents for %s: %w", filePath, err)
 		}
 	}
@@ -311,8 +316,8 @@ func isValidLogEntry(doc *LogDocument) bool {
 	return true
 }
 
-// indexOptimizedLogDocuments efficiently indexes a batch of LogDocuments using memory pools
-func (pi *ParallelIndexer) indexOptimizedLogDocuments(logDocs []*LogDocument, filePath string) error {
+// indexLogDocuments efficiently indexes a batch of LogDocuments using memory pools
+func (pi *ParallelIndexer) indexLogDocuments(logDocs []*LogDocument, filePath string) error {
 	if len(logDocs) == 0 {
 		return nil
 	}
@@ -351,14 +356,14 @@ func (pi *ParallelIndexer) indexOptimizedLogDocuments(logDocs []*LogDocument, fi
 	return nil
 }
 
-// EnableOptimizedProcessing switches the indexer to use optimized processing methods
+// EnableProcessing switches the indexer to use optimized processing methods
 // This method provides a seamless upgrade path from the original implementation
-func (pi *ParallelIndexer) EnableOptimizedProcessing() {
+func (pi *ParallelIndexer) EnableProcessing() {
 	logger.Info("Enabling optimized log processing with 7-235x performance improvements")
 	
 	// The optimization is already enabled through the new methods
 	// This method serves as a configuration marker
-	logger.Info("Optimized log processing enabled - use OptimizedIndexLogFile and OptimizedIndexSingleFile methods")
+	logger.Info("Optimized log processing enabled - use IndexLogFile and IndexSingleFile methods")
 }
 
 // GetOptimizationStatus returns the current optimization status

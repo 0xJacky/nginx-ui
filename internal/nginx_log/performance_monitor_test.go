@@ -14,7 +14,7 @@ func TestPerformanceMonitor(t *testing.T) {
 
 	t.Run("BasicFunctionality", func(t *testing.T) {
 		// Create monitor with custom thresholds for testing
-		thresholds := &PerformanceThresholds{
+		thresholds := &Thresholds{
 			ParseStreamOpsPerSec: 100.0,    // Low threshold for testing
 			SIMDOpsPerSec:        1000.0,   // Low threshold for testing
 			MemoryPoolOpsPerSec:  10000.0,  // Low threshold for testing
@@ -23,7 +23,7 @@ func TestPerformanceMonitor(t *testing.T) {
 			MaxResponseTimeMS:    5000.0,   // High threshold for testing
 		}
 
-		monitor := NewPerformanceMonitor(thresholds)
+		monitor := NewMonitor(thresholds)
 
 		// Test metrics collection
 		monitor.collectMetrics()
@@ -56,7 +56,7 @@ func TestPerformanceMonitor(t *testing.T) {
 
 	t.Run("AlertGeneration", func(t *testing.T) {
 		// Create monitor with very high thresholds to trigger alerts
-		thresholds := &PerformanceThresholds{
+		thresholds := &Thresholds{
 			ParseStreamOpsPerSec: 1000000.0,  // Unrealistically high
 			SIMDOpsPerSec:        10000000.0, // Unrealistically high
 			MemoryPoolOpsPerSec:  100000000.0, // Unrealistically high
@@ -65,11 +65,11 @@ func TestPerformanceMonitor(t *testing.T) {
 			MaxResponseTimeMS:    0.1,         // Very low to trigger alert
 		}
 
-		monitor := NewPerformanceMonitor(thresholds)
+		monitor := NewMonitor(thresholds)
 		
 		// Set up alert collection
-		alertsReceived := make([]PerformanceAlert, 0)
-		monitor.SetAlertCallback(func(alert PerformanceAlert) {
+		alertsReceived := make([]Alert, 0)
+		monitor.SetAlertCallback(func(alert Alert) {
 			alertsReceived = append(alertsReceived, alert)
 		})
 
@@ -101,7 +101,7 @@ func TestPerformanceMonitor(t *testing.T) {
 	})
 
 	t.Run("MetricsExport", func(t *testing.T) {
-		monitor := NewPerformanceMonitor(DefaultPerformanceThresholds())
+		monitor := NewMonitor(DefaultThresholds())
 		monitor.collectMetrics()
 
 		// Test JSON export
@@ -117,7 +117,7 @@ func TestPerformanceMonitor(t *testing.T) {
 		t.Logf("Exported JSON length: %d bytes", len(jsonData))
 
 		// Test performance report generation
-		report := GetPerformanceReport(monitor)
+		report := GetReport(monitor)
 		if len(report) == 0 {
 			t.Error("Performance report is empty")
 		}
@@ -126,11 +126,11 @@ func TestPerformanceMonitor(t *testing.T) {
 	})
 
 	t.Run("ContinuousMonitoring", func(t *testing.T) {
-		monitor := NewPerformanceMonitor(DefaultPerformanceThresholds())
+		monitor := NewMonitor(DefaultThresholds())
 		
 		// Set up alert tracking
 		alertCount := 0
-		monitor.SetAlertCallback(func(alert PerformanceAlert) {
+		monitor.SetAlertCallback(func(alert Alert) {
 			alertCount++
 		})
 
@@ -158,9 +158,9 @@ func TestPerformanceMonitor(t *testing.T) {
 	})
 }
 
-// TestPerformanceThresholds tests the default thresholds configuration
-func TestPerformanceThresholds(t *testing.T) {
-	thresholds := DefaultPerformanceThresholds()
+// TestThresholds tests the default thresholds configuration
+func TestThresholds(t *testing.T) {
+	thresholds := DefaultThresholds()
 
 	// Verify default thresholds are reasonable
 	if thresholds.ParseStreamOpsPerSec < 100.0 {
@@ -194,7 +194,7 @@ func TestOptimizationMonitoringIntegration(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	monitor := StartOptimizationMonitoring(ctx)
+	monitor := StartMonitoring(ctx)
 
 	// Wait for some monitoring cycles
 	time.Sleep(1 * time.Second)
@@ -206,7 +206,7 @@ func TestOptimizationMonitoringIntegration(t *testing.T) {
 	}
 
 	// Get performance report
-	report := GetPerformanceReport(monitor)
+	report := GetReport(monitor)
 	if len(report) == 0 {
 		t.Error("Performance report generation failed")
 	}
@@ -228,7 +228,7 @@ func TestOptimizationMonitoringIntegration(t *testing.T) {
 
 // BenchmarkPerformanceMonitoring benchmarks the monitoring overhead
 func BenchmarkPerformanceMonitoring(b *testing.B) {
-	monitor := NewPerformanceMonitor(DefaultPerformanceThresholds())
+	monitor := NewMonitor(DefaultThresholds())
 	
 	b.ResetTimer()
 	

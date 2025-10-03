@@ -17,4 +17,7 @@ var (
 	ErrSessionNotFound         = e.New(40401, "session not found")
 	ErrTokenIsEmpty            = e.New(40402, "token is empty")
 	ErrInvalidClaimsType       = e.New(50005, "invalid claims type")
+	ErrConfigNotFound          = e.New(50006, "config not found")
+	ErrDBFileNotFound          = e.New(50007, "db file not found")
+	ErrInitUserNotExists       = e.New(50008, "init user not exists")
 )

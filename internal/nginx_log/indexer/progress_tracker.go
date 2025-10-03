@@ -11,6 +11,8 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
 )
 
 // ProgressTracker manages progress tracking for indexing operations
@@ -575,6 +577,12 @@ func (pt *ProgressTracker) getProgressLocked() ProgressNotification {
 func EstimateFileLines(ctx context.Context, filePath string, fileSize int64, isCompressed bool) (int64, error) {
 	if fileSize == 0 {
 		return 0, nil
+	}
+
+	// Validate log path before accessing it
+	if !utils.IsValidLogPath(filePath) {
+		// Return fallback estimate for invalid paths
+		return fileSize / 150, nil // Fallback: ~150 bytes per line
 	}
 
 	file, err := os.Open(filePath)

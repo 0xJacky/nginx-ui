@@ -81,7 +81,7 @@ func runCompleteProductionTest(t *testing.T, recordCount int) {
 		10000, // Large cache for production
 	)
 
-	optimizedParser := parser.NewOptimizedParser(
+	optimizedParser := parser.NewParser(
 		&parser.Config{
 			MaxLineLength: 16 * 1024,
 			WorkerCount:   12,
@@ -156,7 +156,7 @@ type ProductionResult struct {
 	Duration         time.Duration
 }
 
-func executeProductionRebuild(ctx context.Context, indexerInstance *indexer.ParallelIndexer, parser *parser.OptimizedParser, logFile string) (*ProductionResult, error) {
+func executeProductionRebuild(ctx context.Context, indexerInstance *indexer.ParallelIndexer, parser *parser.Parser, logFile string) (*ProductionResult, error) {
 	// Open log file
 	file, err := os.Open(logFile)
 	if err != nil {
@@ -168,7 +168,7 @@ func executeProductionRebuild(ctx context.Context, indexerInstance *indexer.Para
 	startTime := time.Now()
 
 	// Use optimized parse stream (same as production)
-	parseResult, err := parser.OptimizedParseStream(ctx, file)
+	parseResult, err := parser.ParseStream(ctx, file)
 	if err != nil {
 		return nil, fmt.Errorf("parsing failed: %w", err)
 	}

@@ -47,7 +47,7 @@ func TestDistributedSearcher_SwapShards(t *testing.T) {
 	// Create distributed searcher with initial shards
 	config := DefaultSearcherConfig()
 	initialShards := []bleve.Index{shard1}
-	searcher := NewDistributedSearcher(config, initialShards)
+	searcher := NewSearcher(config, initialShards)
 	require.NotNil(t, searcher)
 	defer searcher.Stop()
 
@@ -99,7 +99,7 @@ func TestDistributedSearcher_SwapShards_NotRunning(t *testing.T) {
 
 	// Create searcher and stop it
 	config := DefaultSearcherConfig()
-	searcher := NewDistributedSearcher(config, []bleve.Index{shard})
+	searcher := NewSearcher(config, []bleve.Index{shard})
 	require.NotNil(t, searcher)
 	
 	err = searcher.Stop()
@@ -124,7 +124,7 @@ func TestDistributedSearcher_SwapShards_NilIndexAlias(t *testing.T) {
 
 	// Create searcher
 	config := DefaultSearcherConfig()
-	searcher := NewDistributedSearcher(config, []bleve.Index{shard})
+	searcher := NewSearcher(config, []bleve.Index{shard})
 	require.NotNil(t, searcher)
 	defer searcher.Stop()
 
@@ -182,7 +182,7 @@ func TestDistributedSearcher_HotSwap_ZeroDowntime(t *testing.T) {
 	require.NoError(t, err)
 
 	// Start with generation 1
-	searcher := NewDistributedSearcher(DefaultSearcherConfig(), []bleve.Index{gen1Index})
+	searcher := NewSearcher(DefaultSearcherConfig(), []bleve.Index{gen1Index})
 	require.NotNil(t, searcher)
 	defer searcher.Stop()
 
@@ -233,7 +233,7 @@ func TestDistributedSearcher_SwapShards_StatsUpdate(t *testing.T) {
 	defer shard2.Close()
 
 	// Create searcher with one shard
-	searcher := NewDistributedSearcher(DefaultSearcherConfig(), []bleve.Index{shard1})
+	searcher := NewSearcher(DefaultSearcherConfig(), []bleve.Index{shard1})
 	require.NotNil(t, searcher)
 	defer searcher.Stop()
 

@@ -2,20 +2,20 @@
 
 This section covers configuration options for Nginx log processing and analysis features in Nginx UI.
 
-## Advanced Indexing
+## Indexing
 
-### AdvancedIndexingEnabled
+### IndexingEnabled
 
 - Type: `boolean`
 - Default: `false`
-- Environment Variable: `NGINX_UI_NGINX_LOG_ADVANCED_INDEXING_ENABLED`
+- Environment Variable: `NGINX_UI_NGINX_LOG_INDEXING_ENABLED`
 - Version: `>= v2.2.0`
 
-This option enables advanced indexing for Nginx logs, which provides high-performance log search and analysis capabilities.
+This option enables indexing for Nginx logs, which provides high-performance log search and analysis capabilities.
 
 #### Behavior When Disabled (Basic Mode)
 
-When `AdvancedIndexingEnabled` is set to `false`, Nginx UI still discovers log entries from your Nginx configuration and shows them in the Logs list. In this basic mode:
+When `IndexingEnabled` is set to `false`, Nginx UI still discovers log entries from your Nginx configuration and shows them in the Logs list. In this basic mode:
 
 - You can view the list of detected log files (grouped by simple rotation patterns), but advanced features like indexing metrics, document counts, and search shards are not available.
 - Real-time viewing (tail) continues to work based on resolved access/error log paths.

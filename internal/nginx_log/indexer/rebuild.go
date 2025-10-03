@@ -234,12 +234,17 @@ func (rm *RebuildManager) rebuildLogGroup(ctx context.Context, logGroupPath stri
 		}
 	}
 
-	// Process each file with smart change detection
+	// Process files in parallel with controlled concurrency
+	var fileWg sync.WaitGroup
+	fileSemaphore := make(chan struct{}, rm.config.MaxConcurrency)
+	var fileErrors []error
+	var fileErrMu sync.Mutex
+
 	for _, file := range files {
-		// Check context
+		// Check context before starting new file
 		if ctx.Err() != nil {
 			tracker.FailFile(file.Path, ctx.Err().Error())
-			return ctx.Err()
+			break
 		}
 
 		// Skip unchanged files (especially compressed archives)
@@ -251,39 +256,65 @@ func (rm *RebuildManager) rebuildLogGroup(ctx context.Context, logGroupPath stri
 			continue
 		}
 
-		// Create file-specific context with timeout
-		fileCtx, cancel := context.WithTimeout(ctx, rm.config.TimeoutPerFile)
+		fileWg.Add(1)
+		go func(f *LogGroupFile) {
+			defer fileWg.Done()
 
-		// Start processing
-		tracker.StartFile(file.Path)
+			// Acquire semaphore for controlled concurrency
+			fileSemaphore <- struct{}{}
+			defer func() { <-fileSemaphore }()
 
-		// Index the file
-		err := rm.indexFile(fileCtx, file, tracker)
-		cancel()
+			// Check context again inside goroutine
+			if ctx.Err() != nil {
+				tracker.FailFile(f.Path, ctx.Err().Error())
+				return
+			}
 
-		if err != nil {
-			tracker.FailFile(file.Path, err.Error())
-			return fmt.Errorf("failed to index file %s: %w", file.Path, err)
-		}
+			// Create file-specific context with timeout
+			fileCtx, cancel := context.WithTimeout(ctx, rm.config.TimeoutPerFile)
+			defer cancel()
 
-		// Mark as completed
-		tracker.CompleteFile(file.Path, file.ProcessedLines)
+			// Start processing
+			tracker.StartFile(f.Path)
 
-		// Update persistence with exact doc count from Bleve
-		if rm.persistence != nil {
-			exactCount := file.DocumentCount
-			if rm.indexer != nil && rm.indexer.IsHealthy() {
-				if c, err := rm.indexer.CountDocsByFilePath(file.Path); err == nil {
-					exactCount = c
-				} else {
-					logger.Warnf("Falling back to computed count for %s due to count error: %v", file.Path, err)
+			// Index the file
+			err := rm.indexFile(fileCtx, f, tracker)
+
+			if err != nil {
+				tracker.FailFile(f.Path, err.Error())
+				fileErrMu.Lock()
+				fileErrors = append(fileErrors, fmt.Errorf("failed to index file %s: %w", f.Path, err))
+				fileErrMu.Unlock()
+				return
+			}
+
+			// Mark as completed
+			tracker.CompleteFile(f.Path, f.ProcessedLines)
+
+			// Update persistence with exact doc count from Bleve
+			if rm.persistence != nil {
+				exactCount := f.DocumentCount
+				if rm.indexer != nil && rm.indexer.IsHealthy() {
+					if c, err := rm.indexer.CountDocsByFilePath(f.Path); err == nil {
+						exactCount = c
+					} else {
+						logger.Warnf("Falling back to computed count for %s due to count error: %v", f.Path, err)
+					}
+				}
+				if err := rm.persistence.MarkFileAsIndexed(f.Path, exactCount, f.LastPosition); err != nil {
+					// Log but don't fail
+					// logger.Warnf("Failed to update persistence for %s: %v", f.Path, err)
 				}
 			}
-			if err := rm.persistence.MarkFileAsIndexed(file.Path, exactCount, file.LastPosition); err != nil {
-				// Log but don't fail
-				// logger.Warnf("Failed to update persistence for %s: %v", file.Path, err)
-			}
-		}
+		}(file)
+	}
+
+	// Wait for all files to complete
+	fileWg.Wait()
+
+	// Check for file processing errors
+	if len(fileErrors) > 0 {
+		return fmt.Errorf("failed to index %d files in group %s: %v", len(fileErrors), logGroupPath, fileErrors[0])
 	}
 
 	return nil

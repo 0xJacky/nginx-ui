@@ -27,7 +27,7 @@ func TestOptimizationSystemIntegration(t *testing.T) {
 		config.MaxLineLength = 16 * 1024
 		config.BatchSize = 500
 
-		optimizedParser := parser.NewOptimizedParser(
+		optimizedParser := parser.NewParser(
 			config,
 			parser.NewCachedUserAgentParser(parser.NewSimpleUserAgentParser(), 1000),
 			&mockGeoIPService{},
@@ -36,10 +36,10 @@ func TestOptimizationSystemIntegration(t *testing.T) {
 		// Performance measurement
 		start := time.Now()
 		
-		// Test OptimizedParseStream
-		parseResult, err := optimizedParser.OptimizedParseStream(ctx, strings.NewReader(testLogData))
+		// Test ParseStream
+		parseResult, err := optimizedParser.ParseStream(ctx, strings.NewReader(testLogData))
 		if err != nil {
-			t.Fatalf("OptimizedParseStream failed: %v", err)
+			t.Fatalf("ParseStream failed: %v", err)
 		}
 		
 		optimizedParseTime := time.Since(start)
@@ -48,7 +48,7 @@ func TestOptimizationSystemIntegration(t *testing.T) {
 		// Test 2: SIMD Parser performance
 		start = time.Now()
 		
-		simdParser := parser.NewOptimizedLogLineParser()
+		simdParser := parser.NewLogLineParser()
 		lines := strings.Split(testLogData, "\n")
 		logBytes := make([][]byte, 0, len(lines))
 		
@@ -94,7 +94,7 @@ func TestOptimizationSystemIntegration(t *testing.T) {
 		}
 		
 		// Advanced analytics
-		advancedProcessor := analytics.NewAdvancedTimeSeriesProcessor()
+		advancedProcessor := analytics.NewAnomalyDetector()
 		anomalies := advancedProcessor.DetectAnomalies(timeSeriesData)
 		trend := advancedProcessor.CalculateTrend(timeSeriesData)
 		
@@ -171,7 +171,7 @@ func TestOptimizationSystemIntegration(t *testing.T) {
 		testLine := `192.168.1.100 - - [06/Sep/2025:10:00:00 +0000] "GET /test HTTP/1.1" 200 1024 "https://example.com" "Mozilla/5.0"`
 		
 		// Parse with optimized parser
-		optimizedTest, err := optimizedParser.OptimizedParseStream(ctx, strings.NewReader(testLine))
+		optimizedTest, err := optimizedParser.ParseStream(ctx, strings.NewReader(testLine))
 		if err != nil || len(optimizedTest.Entries) == 0 {
 			t.Errorf("Optimized parser failed on test line: %v", err)
 		} else {
@@ -276,7 +276,7 @@ func TestOptimizationSystemIntegration(t *testing.T) {
 			go func(id int) {
 				// SIMD parsing stress test
 				start := time.Now()
-				simdParser := parser.NewOptimizedLogLineParser()
+				simdParser := parser.NewLogLineParser()
 				
 				testLine := `192.168.1.100 - - [06/Sep/2025:10:00:00 +0000] "GET /stress HTTP/1.1" 200 1024 "https://test.com" "StressTest/1.0"`
 				
@@ -348,7 +348,7 @@ func TestOptimizationCorrectness(t *testing.T) {
 		// Standard parser
 		config := parser.DefaultParserConfig()
 		config.MaxLineLength = 16 * 1024
-		standardParser := parser.NewOptimizedParser(
+		standardParser := parser.NewParser(
 			config,
 			parser.NewSimpleUserAgentParser(),
 			&mockGeoIPService{},
@@ -360,13 +360,13 @@ func TestOptimizationCorrectness(t *testing.T) {
 		}
 		
 		// Optimized parser
-		optimizedResult, err := standardParser.OptimizedParseStream(ctx, strings.NewReader(testLogLine))
+		optimizedResult, err := standardParser.ParseStream(ctx, strings.NewReader(testLogLine))
 		if err != nil || len(optimizedResult.Entries) == 0 {
 			t.Fatalf("Optimized parser failed: %v", err)
 		}
 		
 		// SIMD parser
-		simdParser := parser.NewOptimizedLogLineParser()
+		simdParser := parser.NewLogLineParser()
 		simdEntry := simdParser.ParseLine([]byte(testLogLine))
 		if simdEntry == nil {
 			t.Fatal("SIMD parser returned nil")
