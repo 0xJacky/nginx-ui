@@ -1,10 +1,28 @@
 <script setup lang="ts">
 import { CheckCircleOutlined, CloseCircleOutlined, WarningOutlined } from '@ant-design/icons-vue'
+import GeoLiteDownload from '@/components/GeoLiteDownload'
+import AsyncErrorDisplay from './AsyncErrorDisplay.vue'
 import { useSelfCheckStore } from './store'
 
 const store = useSelfCheckStore()
 
 const { data, loading, fixing } = storeToRefs(store)
+
+const geoLiteModalVisible = ref(false)
+
+function handleFix(key: string) {
+  if (key === 'GeoLite-DB') {
+    geoLiteModalVisible.value = true
+  }
+  else {
+    store.fix(key)
+  }
+}
+
+function handleGeoLiteDownloadComplete() {
+  geoLiteModalVisible.value = false
+  store.check()
+}
 
 onMounted(() => {
   store.check()
@@ -26,7 +44,7 @@ onMounted(() => {
     <AList>
       <AListItem v-for="(item, index) in data" :key="index">
         <template v-if="item.status === 'error' && item.fixable" #actions>
-          <AButton type="link" size="small" :loading="fixing[item.key]" @click="store.fix(item.key)">
+          <AButton type="link" size="small" :loading="fixing[item.key]" @click="handleFix(item.key)">
             {{ $gettext('Attempt to fix') }}
           </AButton>
         </template>
@@ -39,9 +57,14 @@ onMounted(() => {
               {{ item.description?.() }}
             </div>
             <div v-if="item.status !== 'success' && item.err?.message" class="mt-1">
-              <ATag :color="item.status === 'warning' ? 'warning' : 'error'">
-                {{ $gettext(item.err?.message) }}
-              </ATag>
+              <Suspense>
+                <AsyncErrorDisplay :error="item.err" :status="item.status" />
+                <template #fallback>
+                  <ATag :color="item.status === 'warning' ? 'warning' : 'error'">
+                    {{ item.err.message }}
+                  </ATag>
+                </template>
+              </Suspense>
             </div>
           </template>
           <template #avatar>
@@ -54,6 +77,15 @@ onMounted(() => {
         </AListItemMeta>
       </AListItem>
     </AList>
+
+    <AModal
+      v-model:open="geoLiteModalVisible"
+      :title="$gettext('Download GeoLite2 Database')"
+      :footer="null"
+      width="600px"
+    >
+      <GeoLiteDownload @download-complete="handleGeoLiteDownloadComplete" />
+    </AModal>
   </ACard>
 </template>
 

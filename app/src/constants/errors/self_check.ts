@@ -21,4 +21,5 @@ export default {
   40417: () => $gettext('Access log path not exist'),
   40418: () => $gettext('Error log path not exist'),
   40419: () => $gettext('Conf.d directory not exists'),
+  40420: () => $gettext('GeoLite2 database not found at {0}. Log indexing requires GeoLite2 database for geographic IP analysis'),
 }

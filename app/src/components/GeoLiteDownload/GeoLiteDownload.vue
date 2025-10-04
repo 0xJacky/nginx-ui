@@ -156,10 +156,7 @@ defineExpose({
         <div class="space-y-2">
           <p>{{ $gettext('The GeoLite2 database is required for offline geographic IP analysis. Please download it to enable this feature.') }}</p>
           <p class="text-sm">
-            {{ $gettext('Alternatively, if you cannot download the database, you can manually place') }}
-            <code class="px-1 py-0.5 bg-gray-200 dark:bg-gray-700 rounded">GeoLite2-City.mmdb</code>
-            {{ $gettext('in the same directory as') }}
-            <code class="px-1 py-0.5 bg-gray-200 dark:bg-gray-700 rounded">app.ini</code>
+            {{ $gettext('Alternatively, if you cannot download the database, you can manually place GeoLite2-City.mmdb in the same directory as app.ini.') }}
           </p>
         </div>
       </template>
@@ -209,9 +206,6 @@ defineExpose({
           :percent="downloadProgressComputed"
           :status="downloadStatus"
         />
-        <ATypographyText v-if="downloadMessage" type="secondary" class="text-sm mt-2">
-          {{ downloadMessage }}
-        </ATypographyText>
       </div>
     </div>
   </div>

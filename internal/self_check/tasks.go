@@ -4,6 +4,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/translation"
+	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/elliotchance/orderedmap/v3"
 	"github.com/uozi-tech/cosy"
 )
@@ -149,6 +150,18 @@ func Init() {
 				"during OTA upgrades of Nginx UI to ensure container dependencies are also upgraded. " +
 				"If you don't need this feature, please add the environment variable NGINX_UI_IGNORE_DOCKER_SOCKET=true to the container."),
 			CheckFunc: CheckDockerSocket,
+		})
+	}
+
+	if settings.NginxLogSettings.IndexingEnabled {
+		selfCheckTasks = append(selfCheckTasks, &Task{
+			Key:  "GeoLite-DB",
+			Name: translation.C("GeoLite2 database available"),
+			Description: translation.C("Check if the GeoLite2 database is available when log indexing is enabled. " +
+				"The GeoLite2 database is required for geographic IP analysis in log indexing. " +
+				"You can download it from the Preference page or manually place GeoLite2-City.mmdb in the same directory as app.ini"),
+			CheckFunc: CheckGeoLiteDB,
+			FixFunc:   FixGeoLiteDB,
 		})
 	}
 
