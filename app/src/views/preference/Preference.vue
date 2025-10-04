@@ -5,6 +5,7 @@ import {
   AuthSettings,
   CertSettings,
   ExternalNotify,
+  GeoLiteSettings,
   HTTPSettings,
   LogrotateSettings,
   NginxSettings,
@@ -107,9 +108,15 @@ onMounted(() => {
         >
           <LogrotateSettings />
         </ATabPane>
+        <ATabPane
+          key="geolite"
+          :tab="$gettext('GeoLite')"
+        >
+          <GeoLiteSettings />
+        </ATabPane>
       </ATabs>
     </div>
-    <FooterToolBar v-if="activeKey !== 'external_notify'">
+    <FooterToolBar v-if="activeKey !== 'external_notify' && activeKey !== 'geolite'">
       <AButton
         type="primary"
         @click="systemSettingsStore.save"

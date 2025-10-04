@@ -1,20 +1,13 @@
-package geolite
+ package geolite
 
 import (
-	"bytes"
-	_ "embed"
 	"fmt"
-	"io"
 	"net"
 	"sync"
 
 	"github.com/oschwald/geoip2-golang"
-	"github.com/ulikunitz/xz"
 	"github.com/uozi-tech/cosy/geoip"
 )
-
-//go:embed GeoLite2-City.mmdb.xz
-var embeddedCityDB []byte
 
 type IPLocation struct {
 	RegionCode string `json:"region_code"`
@@ -41,33 +34,25 @@ func GetService() (*Service, error) {
 }
 
 func (s *Service) init() error {
-	// Load embedded compressed database
-	if len(embeddedCityDB) > 0 {
-		if err := s.loadEmbeddedCityDB(); err != nil {
-			return fmt.Errorf("failed to load embedded city database: %v", err)
-		}
-		return nil
+	// Load database from file (memory-mapped for efficiency)
+	dbPath := GetDBPath()
+
+	if !DBExists() {
+		return fmt.Errorf("GeoLite2 database not found at %s. Please download it first", dbPath)
 	}
 
-	return fmt.Errorf("no embedded GeoLite2 City database available")
+	if err := s.loadFromFile(dbPath); err != nil {
+		return fmt.Errorf("failed to load GeoLite2 database: %v", err)
+	}
+
+	return nil
 }
 
-func (s *Service) loadEmbeddedCityDB() error {
-	// Decompress the embedded database
-	xzReader, err := xz.NewReader(bytes.NewReader(embeddedCityDB))
+func (s *Service) loadFromFile(path string) error {
+	// Open database file with memory mapping (more efficient than loading into memory)
+	cityDB, err := geoip2.Open(path)
 	if err != nil {
-		return fmt.Errorf("failed to create xz reader: %v", err)
-	}
-
-	decompressedData, err := io.ReadAll(xzReader)
-	if err != nil {
-		return fmt.Errorf("failed to decompress database: %v", err)
-	}
-
-	// Create geoip2 reader from decompressed data
-	cityDB, err := geoip2.FromBytes(decompressedData)
-	if err != nil {
-		return fmt.Errorf("failed to create geoip2 reader: %v", err)
+		return fmt.Errorf("failed to open GeoLite2 database: %v", err)
 	}
 
 	s.cityDB = cityDB

@@ -1,5 +1,7 @@
 <script setup lang="tsx">
-import { CheckCircleOutlined, CloseCircleOutlined, HeartOutlined, InfoCircleOutlined, MailOutlined, ThunderboltOutlined, WarningOutlined } from '@ant-design/icons-vue'
+import { CheckCircleOutlined, CloseCircleOutlined, DownloadOutlined, HeartOutlined, InfoCircleOutlined, MailOutlined, ThunderboltOutlined, WarningOutlined } from '@ant-design/icons-vue'
+import geolite from '@/api/geolite'
+import GeoLiteDownload from '@/components/GeoLiteDownload'
 
 interface Props {
   loading?: boolean
@@ -17,6 +19,29 @@ withDefaults(defineProps<Props>(), {
 const emit = defineEmits<Emits>()
 
 const visible = defineModel<boolean>('visible', { required: true })
+
+// GeoLite database status
+const geoLiteDownloadRef = ref<InstanceType<typeof GeoLiteDownload>>()
+const geoLiteExists = ref(false)
+
+// Check GeoLite status when modal opens
+watch(visible, async newVal => {
+  if (newVal) {
+    try {
+      const status = await geolite.getStatus()
+      geoLiteExists.value = status.exists
+    }
+    catch (e) {
+      console.error('Failed to check GeoLite status:', e)
+      geoLiteExists.value = false
+    }
+  }
+})
+
+// Update GeoLite status when download completes
+function onGeoLiteDownloadComplete() {
+  geoLiteExists.value = true
+}
 
 const systemRequirements = [
   {
@@ -73,6 +98,7 @@ function handleCancel() {
     :title="$gettext('Enable Advanced Log Indexing')"
     :confirm-loading="loading"
     :ok-text="$gettext('Enable Indexing')"
+    :ok-button-props="{ disabled: !geoLiteExists }"
     :cancel-text="$gettext('Cancel')"
     width="720px"
     @ok="handleConfirm"
@@ -142,6 +168,21 @@ function handleCancel() {
             {{ $gettext('If you want to change the storage location, you can set the `IndexPath` of `nginx_log` section in the Nginx UI config.') }}
           </ATypographyText>
         </div>
+      </div>
+
+      <ADivider />
+
+      <!-- GeoLite Database Section -->
+      <div>
+        <ATypographyTitle :level="4" class="mb-3">
+          <DownloadOutlined class="mr-2 text-purple-500" />
+          {{ $gettext('GeoLite2 Database') }}
+        </ATypographyTitle>
+
+        <GeoLiteDownload
+          ref="geoLiteDownloadRef"
+          @download-complete="onGeoLiteDownloadComplete"
+        />
       </div>
 
       <ADivider />

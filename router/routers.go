@@ -12,6 +12,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/api/crypto"
 	"github.com/0xJacky/Nginx-UI/api/event"
 	"github.com/0xJacky/Nginx-UI/api/external_notify"
+	"github.com/0xJacky/Nginx-UI/api/geolite"
 	"github.com/0xJacky/Nginx-UI/api/license"
 	"github.com/0xJacky/Nginx-UI/api/llm"
 	"github.com/0xJacky/Nginx-UI/api/nginx"
@@ -96,6 +97,7 @@ func InitRouter() {
 			external_notify.InitRouter(g)
 			backup.InitAutoBackupRouter(g)
 			nginxLog.InitRouter(g)
+			g.GET("/geolite/status", geolite.GetStatus)
 		}
 
 		// Authorization required and websocket request
@@ -113,6 +115,7 @@ func InitRouter() {
 			system.InitWebSocketRouter(w)
 			nginx.InitWebSocketRouter(w)
 			cluster.InitWebSocketRouter(w)
+			w.GET("/geolite/download", geolite.DownloadGeoLiteDB)
 		}
 	}
 }

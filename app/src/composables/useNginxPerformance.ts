@@ -1,11 +1,12 @@
 import type { NginxPerformanceInfo } from '@/api/ngx'
 import ngx from '@/api/ngx'
+import { formatDateTime } from '@/lib/helper'
 
 export function useNginxPerformance() {
   const loading = ref(false)
   const error = ref('')
   const nginxInfo = ref<NginxPerformanceInfo | null>(null)
-  const lastUpdateTime = ref<Date | null>(null)
+  const lastUpdateTime = ref<string>('')
 
   // stub_status availability
   const stubStatusEnabled = ref(false)
@@ -16,12 +17,12 @@ export function useNginxPerformance() {
   const formattedUpdateTime = computed(() => {
     if (!lastUpdateTime.value)
       return $gettext('Unknown')
-    return lastUpdateTime.value.toLocaleString()
+    return formatDateTime(lastUpdateTime.value)
   })
 
   // Update the last update time
   function updateLastUpdateTime() {
-    lastUpdateTime.value = new Date()
+    lastUpdateTime.value = new Date().toISOString()
   }
 
   // Check stub_status availability and get initial data
