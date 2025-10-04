@@ -11,6 +11,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/uozi-tech/cosy"
+	"github.com/uozi-tech/cosy/logger"
 	cosysettings "github.com/uozi-tech/cosy/settings"
 )
 
@@ -239,20 +240,24 @@ func extractZipFile(file *zip.File, destDir string) error {
 				return nil
 			}
 
-			// Otherwise, fallback to creating a directory
-			if err := os.MkdirAll(filePath, 0755); err != nil {
-				return cosy.WrapErrorWithParams(ErrCreateDir, fmt.Sprintf("failed to create directory %s: %v", filePath, err))
-			}
+			// Skip symlinks that point to paths outside the allowed directories
+			logger.Warn("Skipping symlink outside allowed paths during restore",
+				"path", filePath,
+				"target", cleanLinkTarget,
+				"allowedConfPath", confPath,
+				"allowedModulesPath", modulesPath)
 			return nil
 		}
 
 		// For relative symlinks, verify they don't escape the destination directory
 		absLinkTarget := filepath.Clean(filepath.Join(filepath.Dir(filePath), cleanLinkTarget))
 		if !strings.HasPrefix(absLinkTarget, destDirAbs+string(os.PathSeparator)) {
-			// Create directory instead of symlink if the target is outside destination
-			if err := os.MkdirAll(filePath, 0755); err != nil {
-				return cosy.WrapErrorWithParams(ErrCreateDir, fmt.Sprintf("failed to create directory %s: %v", filePath, err))
-			}
+			// Skip relative symlinks that point outside the destination directory
+			logger.Warn("Skipping relative symlink pointing outside destination directory during restore",
+				"path", filePath,
+				"target", cleanLinkTarget,
+				"resolvedTarget", absLinkTarget,
+				"destinationDir", destDirAbs)
 			return nil
 		}
 
