@@ -2,9 +2,9 @@
 import { StdCurd } from '@uozi-admin/curd'
 import { message } from 'ant-design-vue'
 import site from '@/api/site'
+import InspectConfig from '@/components/InspectConfig'
 import NamespaceTabs from '@/components/NamespaceTabs'
 import { ConfigStatus } from '@/constants'
-import InspectConfig from '@/views/config/InspectConfig.vue'
 import columns from '@/views/site/site_list/columns'
 import SiteDuplicate from '@/views/site/site_list/SiteDuplicate.vue'
 
@@ -74,7 +74,7 @@ function handle_click_duplicate(name: string) {
         </AButton>
       </template>
       <template #beforeCardBody>
-        <InspectConfig ref="inspectConfig" />
+        <InspectConfig ref="inspectConfig" :namespace-id="namespaceId" />
         <NamespaceTabs v-model:active-key="namespaceId" />
       </template>
       <template #afterActions="{ record }">

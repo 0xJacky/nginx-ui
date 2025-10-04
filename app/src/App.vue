@@ -4,7 +4,7 @@ import en_US from 'ant-design-vue/es/locale/en_US'
 import zh_CN from 'ant-design-vue/es/locale/zh_CN'
 import zh_TW from 'ant-design-vue/es/locale/zh_TW'
 import loadTranslations from '@/api/translations'
-import AppProvider from '@/components/AppProvider.vue'
+import AppProvider from '@/components/AppProvider'
 import gettext from '@/gettext'
 import { useSettingsStore } from '@/pinia'
 

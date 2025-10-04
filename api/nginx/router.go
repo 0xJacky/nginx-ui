@@ -12,6 +12,7 @@ func InitRouter(r *gin.RouterGroup) {
 	r.POST("nginx/reload", Reload)
 	r.POST("nginx/restart", Restart)
 	r.POST("nginx/test", TestConfig)
+	r.POST("nginx/test_namespace", TestConfigWithNamespace)
 	r.GET("nginx/status", Status)
 	// Get detailed Nginx status information, including connection count, process information, etc. (Issue #850)
 	r.GET("nginx/detail_status", GetDetailStatus)

@@ -194,7 +194,7 @@ msgstr "Acción"
 #: src/views/certificate/ACMEUser.vue:131
 #: src/views/certificate/CertificateList/certColumns.tsx:92
 #: src/views/certificate/DNSCredential.vue:71
-#: src/views/config/configColumns.tsx:51 src/views/namespace/columns.ts:84
+#: src/views/config/configColumns.tsx:51 src/views/namespace/columns.ts:97
 #: src/views/nginx_log/NginxLogList.vue:332 src/views/node/nodeColumns.tsx:96
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:85
@@ -309,10 +309,6 @@ msgstr ""
 "Después, actualice esta página y haga clic en agregar clave de acceso "
 "nuevamente."
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:116
-msgid "All"
-msgstr "Todos"
-
 #: src/views/system/Licenses.vue:152
 msgid "All Components"
 msgstr "Todos los componentes"
@@ -410,7 +406,7 @@ msgstr "¿Estás seguro de que quieres eliminar permanentemente?"
 msgid "Are you sure you want to delete?"
 msgstr "¿Está seguro de que quiere borrar?"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:130
+#: src/components/NamespaceTabs/NamespaceTabs.vue:142
 msgid "Are you sure you want to reload Nginx on the following sync nodes?"
 msgstr ""
 "¿Estás seguro de que deseas recargar Nginx en los siguientes nodos de "
@@ -428,7 +424,7 @@ msgstr "¿Está seguro de que desea eliminar este elemento?"
 msgid "Are you sure you want to remove this location?"
 msgstr "¿Está seguro de que quiere borrar esta ubicación?"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:142
+#: src/components/NamespaceTabs/NamespaceTabs.vue:154
 msgid "Are you sure you want to restart Nginx on the following sync nodes?"
 msgstr ""
 "¿Estás seguro de que deseas reiniciar Nginx en los siguientes nodos de "
@@ -1309,9 +1305,15 @@ msgstr "Plantilla de configuración"
 msgid "Configuration"
 msgstr "Configuración"
 
-#: src/views/config/InspectConfig.vue:45
+#: src/components/InspectConfig/InspectConfig.vue:62
 msgid "Configuration file is test successful"
 msgstr "El archivo de configuración se probó exitosamente"
+
+#: src/components/InspectConfig/InspectConfig.vue:61
+msgid "Configuration file is test successful in isolated sandbox"
+msgstr ""
+"El archivo de configuración se ha probado con éxito en un entorno de "
+"sandbox aislado"
 
 #: src/components/ConfigHistory/ConfigHistory.vue:147
 msgid "Configuration History"
@@ -1462,7 +1464,7 @@ msgstr ""
 "automáticamente en tu computadora."
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:229
-#: src/views/namespace/columns.ts:72
+#: src/views/namespace/columns.ts:85
 #: src/views/notification/notificationColumns.tsx:51
 #: src/views/preference/components/AuthSettings/Passkey.vue:96
 #: src/views/preference/components/ExternalNotify/columns.tsx:80
@@ -1706,6 +1708,10 @@ msgstr "Demostración"
 #: src/views/config/components/ConfigRightPanel/Basic.vue:60
 msgid "Deploy"
 msgstr "Desplegar"
+
+#: src/views/namespace/columns.ts:72
+msgid "Deploy Mode"
+msgstr "Modo de despliegue"
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:735
 msgid "Descending"
@@ -2248,7 +2254,7 @@ msgstr "La configuración del entorno está vacía"
 msgid "Environment variables cleaned"
 msgstr "Variables de entorno limpiadas"
 
-#: src/constants/index.ts:23 src/views/config/InspectConfig.vue:63
+#: src/components/InspectConfig/InspectConfig.vue:80 src/constants/index.ts:23
 #: src/views/nginx_log/NginxLogList.vue:243
 #: src/views/notification/notificationColumns.tsx:14
 msgid "Error"
@@ -3612,9 +3618,10 @@ msgstr "Cargando datos..."
 msgid "Loading..."
 msgstr "Cargando..."
 
+#: src/components/NamespaceTabs/NamespaceTabs.vue:124
 #: src/components/NodeIndicator/NodeIndicator.vue:38
 #: src/components/NodeSelector/NodeSelector.vue:61 src/constants/index.ts:42
-#: src/views/backup/AutoBackup/AutoBackup.vue:74
+#: src/constants/index.ts:48 src/views/backup/AutoBackup/AutoBackup.vue:74
 #: src/views/backup/AutoBackup/AutoBackup.vue:83
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:48
 #: src/views/preference/tabs/NginxSettings.vue:55
@@ -4296,8 +4303,8 @@ msgid "Nginx.conf includes streams-enabled directory"
 msgstr "Nginx.conf incluye el directorio streams-enabled"
 
 #: src/components/LLM/ChatMessageInput.vue:61
-#: src/components/NamespaceTabs/NamespaceTabs.vue:132
 #: src/components/NamespaceTabs/NamespaceTabs.vue:144
+#: src/components/NamespaceTabs/NamespaceTabs.vue:156
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:102
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
 #: src/components/Notification/Notification.vue:109 src/language/curd.ts:40
@@ -4533,11 +4540,12 @@ msgstr "Apagado"
 msgid "Official Document"
 msgstr "Documentación oficial"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:160
+#: src/components/NamespaceTabs/NamespaceTabs.vue:172
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:84
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
 #: src/views/dashboard/Nodes.vue:159 src/views/node/nodeColumns.tsx:55
+#: src/views/upstream/SocketList.vue:46
 msgid "Offline"
 msgstr "Desconectado"
 
@@ -4570,12 +4578,13 @@ msgstr "Encendido"
 msgid "Once the verification is complete, the records will be removed."
 msgstr "Una vez que se complete la verificación, los registros se eliminarán."
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:160
+#: src/components/NamespaceTabs/NamespaceTabs.vue:172
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:64
 #: src/components/NodeSelector/NodeSelector.vue:78
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
 #: src/views/dashboard/Nodes.vue:152 src/views/node/nodeColumns.tsx:51
+#: src/views/upstream/SocketList.vue:46
 msgid "Online"
 msgstr "En línea"
 
@@ -5273,7 +5282,7 @@ msgid "Reload"
 msgstr "Recargar"
 
 #: src/components/NamespaceRender/NamespaceRender.vue:44
-#: src/components/NamespaceTabs/NamespaceTabs.vue:137 src/constants/index.ts:38
+#: src/components/NamespaceTabs/NamespaceTabs.vue:149 src/constants/index.ts:38
 #: src/views/node/Node.vue:208 src/views/node/Node.vue:216
 msgid "Reload Nginx"
 msgstr "Recargar Nginx"
@@ -5298,7 +5307,7 @@ msgstr "Error al recargar Nginx remoto"
 msgid "Reload Remote Nginx Success"
 msgstr "Reinicio remoto de Nginx exitoso"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:85
+#: src/components/NamespaceTabs/NamespaceTabs.vue:93
 msgid "Reload request failed, please check your network connection"
 msgstr "La solicitud de recarga falló, por favor verifique su conexión de red"
 
@@ -5310,7 +5319,7 @@ msgstr "Recargando"
 msgid "Reloading nginx"
 msgstr "Recargando Nginx"
 
-#: src/constants/index.ts:43
+#: src/constants/index.ts:43 src/constants/index.ts:49
 msgid "Remote"
 msgstr "Remoto"
 
@@ -5486,7 +5495,7 @@ msgstr "Respuestas"
 msgid "Restart"
 msgstr "Reiniciar"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:149
+#: src/components/NamespaceTabs/NamespaceTabs.vue:161
 #: src/views/node/Node.vue:229 src/views/node/Node.vue:237
 msgid "Restart Nginx"
 msgstr "Reiniciar Nginx"
@@ -5507,7 +5516,7 @@ msgstr "Error al reiniciar Nginx remoto"
 msgid "Restart Remote Nginx Success"
 msgstr "Reinicio remoto de Nginx exitoso"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:105
+#: src/components/NamespaceTabs/NamespaceTabs.vue:113
 msgid "Restart request failed, please check your network connection"
 msgstr "La solicitud de reinicio falló, por favor verifique su conexión de red"
 
@@ -6369,7 +6378,7 @@ msgid "Sync Config Success"
 msgstr "Configuración de sincronización exitosa"
 
 #: src/components/NamespaceRender/NamespaceRender.vue:53
-#: src/components/NamespaceTabs/NamespaceTabs.vue:123
+#: src/components/NamespaceTabs/NamespaceTabs.vue:135
 #: src/views/namespace/columns.ts:17 src/views/namespace/Namespace.vue:31
 msgid "Sync Nodes"
 msgstr "Nodos de sincronización"
@@ -7032,7 +7041,7 @@ msgstr "Actualización exitosa"
 #: src/views/certificate/ACMEUser.vue:124
 #: src/views/certificate/DNSCredential.vue:65
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
-#: src/views/config/configColumns.tsx:44 src/views/namespace/columns.ts:78
+#: src/views/config/configColumns.tsx:44 src/views/namespace/columns.ts:91
 #: src/views/node/nodeColumns.tsx:89
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:39
 #: src/views/site/site_list/columns.tsx:113 src/views/stream/columns.tsx:80
@@ -7233,8 +7242,8 @@ msgstr "Visitas"
 msgid "Waiting processes"
 msgstr "Procesos de espera"
 
-#: src/constants/index.ts:24 src/views/backup/components/BackupCreator.vue:138
-#: src/views/config/InspectConfig.vue:51
+#: src/components/InspectConfig/InspectConfig.vue:68 src/constants/index.ts:24
+#: src/views/backup/components/BackupCreator.vue:138
 #: src/views/notification/notificationColumns.tsx:21
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:88
 msgid "Warning"
@@ -7391,8 +7400,8 @@ msgstr "Escribir la clave privada del certificado a disco"
 msgid "Writing certificate to disk"
 msgstr "Escribir certificado a disco"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:131
 #: src/components/NamespaceTabs/NamespaceTabs.vue:143
+#: src/components/NamespaceTabs/NamespaceTabs.vue:155
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:101
 #: src/components/NgxConfigEditor/LocationEditor.vue:88
 #: src/views/nginx_log/indexing/IndexManagement.vue:31
@@ -7471,6 +7480,15 @@ msgstr "Sus llaves de acceso"
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:193
 msgid "Zero-allocation pipeline"
 msgstr "Canalización sin asignación"
+
+#~ msgid "Sandbox test successful"
+#~ msgstr "Prueba de sandbox exitosa"
+
+#~ msgid "Tested in isolated sandbox mode"
+#~ msgstr "Probado en modo sandbox aislado"
+
+#~ msgid "All"
+#~ msgstr "Todos"
 
 #~ msgid "Based on M2 Pro (12 cores) testing"
 #~ msgstr "Basado en pruebas con M2 Pro (12 núcleos)"

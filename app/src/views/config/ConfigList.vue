@@ -2,13 +2,13 @@
 import { StdTable } from '@uozi-admin/curd'
 import config from '@/api/config'
 import FooterToolBar from '@/components/FooterToolbar'
+import InspectConfig from '@/components/InspectConfig'
 import { useBreadcrumbs } from '@/composables/useBreadcrumbs'
 import { isProtectedPath } from '@/views/config/configUtils'
 import Delete from './components/Delete.vue'
 import Mkdir from './components/Mkdir.vue'
 import Rename from './components/Rename.vue'
 import configColumns from './configColumns'
-import InspectConfig from './InspectConfig.vue'
 
 const table = useTemplateRef('table')
 const route = useRoute()

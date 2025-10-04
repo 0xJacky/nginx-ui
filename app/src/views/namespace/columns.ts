@@ -1,7 +1,7 @@
 import type { StdTableColumn } from '@uozi-admin/curd'
 import { datetimeRender, maskRender } from '@uozi-admin/curd'
-import { PostSyncAction, UpstreamTestType } from '@/api/namespace'
-import { PostSyncActionMask, UpstreamTestTypeMask } from '@/constants'
+import { DeployMode, PostSyncAction, UpstreamTestType } from '@/api/namespace'
+import { DeployModeMask, PostSyncActionMask, UpstreamTestTypeMask } from '@/constants'
 import { useNodeAvailabilityStore } from '@/pinia/moudule/nodeAvailability'
 
 const columns: StdTableColumn[] = [{
@@ -68,6 +68,19 @@ const columns: StdTableColumn[] = [{
   },
   pure: true,
   width: 150,
+}, {
+  title: () => $gettext('Deploy Mode'),
+  dataIndex: 'deploy_mode',
+  customRender: maskRender(DeployModeMask),
+  edit: {
+    type: 'select',
+    select: {
+      mask: DeployModeMask,
+      defaultValue: DeployMode.Local,
+    },
+  },
+  pure: true,
+  width: 120,
 }, {
   title: () => $gettext('Created at'),
   dataIndex: 'created_at',

@@ -2,8 +2,8 @@
 import { ReloadOutlined } from '@ant-design/icons-vue'
 import ngx from '@/api/ngx'
 import { NginxStatus } from '@/constants'
+import { logLevel } from '@/constants/config'
 import { useGlobalStore } from '@/pinia'
-import { logLevel } from '@/views/config/constants'
 
 const global = useGlobalStore()
 const { nginxStatus: status } = storeToRefs(global)

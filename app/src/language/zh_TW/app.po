@@ -187,7 +187,7 @@ msgstr "操作"
 #: src/views/certificate/ACMEUser.vue:131
 #: src/views/certificate/CertificateList/certColumns.tsx:92
 #: src/views/certificate/DNSCredential.vue:71
-#: src/views/config/configColumns.tsx:51 src/views/namespace/columns.ts:84
+#: src/views/config/configColumns.tsx:51 src/views/namespace/columns.ts:97
 #: src/views/nginx_log/NginxLogList.vue:332 src/views/node/nodeColumns.tsx:96
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:85
@@ -298,10 +298,6 @@ msgstr "進階設定"
 msgid "Afterwards, refresh this page and click add passkey again."
 msgstr "之後，請重新整理此頁面並再次點擊新增通行金鑰。"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:116
-msgid "All"
-msgstr "全部"
-
 #: src/views/system/Licenses.vue:152
 msgid "All Components"
 msgstr "所有組件"
@@ -395,7 +391,7 @@ msgstr "確定要永久刪除嗎？"
 msgid "Are you sure you want to delete?"
 msgstr "您確定要刪除嗎？"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:130
+#: src/components/NamespaceTabs/NamespaceTabs.vue:142
 msgid "Are you sure you want to reload Nginx on the following sync nodes?"
 msgstr "您確定要在以下同步節點上重新載入 Nginx 嗎？"
 
@@ -411,7 +407,7 @@ msgstr "您確定要刪除此項目嗎？"
 msgid "Are you sure you want to remove this location?"
 msgstr "您確定要刪除此 Location 嗎？"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:142
+#: src/components/NamespaceTabs/NamespaceTabs.vue:154
 msgid "Are you sure you want to restart Nginx on the following sync nodes?"
 msgstr "您確定要在以下同步節點上重新啟動 Nginx 嗎？"
 
@@ -1243,9 +1239,13 @@ msgstr "配置模板"
 msgid "Configuration"
 msgstr "配置"
 
-#: src/views/config/InspectConfig.vue:45
+#: src/components/InspectConfig/InspectConfig.vue:62
 msgid "Configuration file is test successful"
 msgstr "設定檔案測試成功"
+
+#: src/components/InspectConfig/InspectConfig.vue:61
+msgid "Configuration file is test successful in isolated sandbox"
+msgstr "組態檔案在隔離的沙箱中測試成功"
 
 #: src/components/ConfigHistory/ConfigHistory.vue:147
 msgid "Configuration History"
@@ -1391,7 +1391,7 @@ msgid ""
 msgstr "建立系統備份，包括 Nginx 設定與 Nginx UI 設定。備份檔案將自動下載至您的電腦。"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:229
-#: src/views/namespace/columns.ts:72
+#: src/views/namespace/columns.ts:85
 #: src/views/notification/notificationColumns.tsx:51
 #: src/views/preference/components/AuthSettings/Passkey.vue:96
 #: src/views/preference/components/ExternalNotify/columns.tsx:80
@@ -1631,6 +1631,10 @@ msgstr "演示"
 #: src/views/config/components/ConfigRightPanel/Basic.vue:60
 msgid "Deploy"
 msgstr "部署"
+
+#: src/views/namespace/columns.ts:72
+msgid "Deploy Mode"
+msgstr "部署模式"
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:735
 msgid "Descending"
@@ -2161,7 +2165,7 @@ msgstr "環境配置為空"
 msgid "Environment variables cleaned"
 msgstr "環境變數已清理"
 
-#: src/constants/index.ts:23 src/views/config/InspectConfig.vue:63
+#: src/components/InspectConfig/InspectConfig.vue:80 src/constants/index.ts:23
 #: src/views/nginx_log/NginxLogList.vue:243
 #: src/views/notification/notificationColumns.tsx:14
 msgid "Error"
@@ -3489,9 +3493,10 @@ msgstr "資料載入中…"
 msgid "Loading..."
 msgstr "載入中..."
 
+#: src/components/NamespaceTabs/NamespaceTabs.vue:124
 #: src/components/NodeIndicator/NodeIndicator.vue:38
 #: src/components/NodeSelector/NodeSelector.vue:61 src/constants/index.ts:42
-#: src/views/backup/AutoBackup/AutoBackup.vue:74
+#: src/constants/index.ts:48 src/views/backup/AutoBackup/AutoBackup.vue:74
 #: src/views/backup/AutoBackup/AutoBackup.vue:83
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:48
 #: src/views/preference/tabs/NginxSettings.vue:55
@@ -4161,8 +4166,8 @@ msgid "Nginx.conf includes streams-enabled directory"
 msgstr "Nginx.conf 包含 streams-enabled 目錄"
 
 #: src/components/LLM/ChatMessageInput.vue:61
-#: src/components/NamespaceTabs/NamespaceTabs.vue:132
 #: src/components/NamespaceTabs/NamespaceTabs.vue:144
+#: src/components/NamespaceTabs/NamespaceTabs.vue:156
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:102
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
 #: src/components/Notification/Notification.vue:109 src/language/curd.ts:40
@@ -4385,11 +4390,12 @@ msgstr "關"
 msgid "Official Document"
 msgstr "官方文件"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:160
+#: src/components/NamespaceTabs/NamespaceTabs.vue:172
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:84
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
 #: src/views/dashboard/Nodes.vue:159 src/views/node/nodeColumns.tsx:55
+#: src/views/upstream/SocketList.vue:46
 msgid "Offline"
 msgstr "離線"
 
@@ -4422,12 +4428,13 @@ msgstr "開啟"
 msgid "Once the verification is complete, the records will be removed."
 msgstr "驗證完成後，記錄將被刪除。"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:160
+#: src/components/NamespaceTabs/NamespaceTabs.vue:172
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:64
 #: src/components/NodeSelector/NodeSelector.vue:78
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
 #: src/views/dashboard/Nodes.vue:152 src/views/node/nodeColumns.tsx:51
+#: src/views/upstream/SocketList.vue:46
 msgid "Online"
 msgstr "線上"
 
@@ -5094,7 +5101,7 @@ msgid "Reload"
 msgstr "重新載入"
 
 #: src/components/NamespaceRender/NamespaceRender.vue:44
-#: src/components/NamespaceTabs/NamespaceTabs.vue:137 src/constants/index.ts:38
+#: src/components/NamespaceTabs/NamespaceTabs.vue:149 src/constants/index.ts:38
 #: src/views/node/Node.vue:208 src/views/node/Node.vue:216
 msgid "Reload Nginx"
 msgstr "重新載入 Nginx"
@@ -5119,7 +5126,7 @@ msgstr "重新載入遠端 Nginx 錯誤"
 msgid "Reload Remote Nginx Success"
 msgstr "遠端 Nginx 重新載入成功"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:85
+#: src/components/NamespaceTabs/NamespaceTabs.vue:93
 msgid "Reload request failed, please check your network connection"
 msgstr "重新載入請求失敗，請檢查您的網路連線"
 
@@ -5131,7 +5138,7 @@ msgstr "重新載入中"
 msgid "Reloading nginx"
 msgstr "正在重新載入 Nginx"
 
-#: src/constants/index.ts:43
+#: src/constants/index.ts:43 src/constants/index.ts:49
 msgid "Remote"
 msgstr "遠端"
 
@@ -5304,7 +5311,7 @@ msgstr "回應"
 msgid "Restart"
 msgstr "重新啟動"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:149
+#: src/components/NamespaceTabs/NamespaceTabs.vue:161
 #: src/views/node/Node.vue:229 src/views/node/Node.vue:237
 msgid "Restart Nginx"
 msgstr "重新啟動 Nginx"
@@ -5325,7 +5332,7 @@ msgstr "遠端 Nginx 重啟錯誤"
 msgid "Restart Remote Nginx Success"
 msgstr "遠端 Nginx 重啟成功"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:105
+#: src/components/NamespaceTabs/NamespaceTabs.vue:113
 msgid "Restart request failed, please check your network connection"
 msgstr "重新啟動請求失敗，請檢查您的網路連線"
 
@@ -6165,7 +6172,7 @@ msgid "Sync Config Success"
 msgstr "同步設定成功"
 
 #: src/components/NamespaceRender/NamespaceRender.vue:53
-#: src/components/NamespaceTabs/NamespaceTabs.vue:123
+#: src/components/NamespaceTabs/NamespaceTabs.vue:135
 #: src/views/namespace/columns.ts:17 src/views/namespace/Namespace.vue:31
 msgid "Sync Nodes"
 msgstr "同步節點"
@@ -6767,7 +6774,7 @@ msgstr "更新成功"
 #: src/views/certificate/ACMEUser.vue:124
 #: src/views/certificate/DNSCredential.vue:65
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
-#: src/views/config/configColumns.tsx:44 src/views/namespace/columns.ts:78
+#: src/views/config/configColumns.tsx:44 src/views/namespace/columns.ts:91
 #: src/views/node/nodeColumns.tsx:89
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:39
 #: src/views/site/site_list/columns.tsx:113 src/views/stream/columns.tsx:80
@@ -6968,8 +6975,8 @@ msgstr "訪問量"
 msgid "Waiting processes"
 msgstr "等待過程"
 
-#: src/constants/index.ts:24 src/views/backup/components/BackupCreator.vue:138
-#: src/views/config/InspectConfig.vue:51
+#: src/components/InspectConfig/InspectConfig.vue:68 src/constants/index.ts:24
+#: src/views/backup/components/BackupCreator.vue:138
 #: src/views/notification/notificationColumns.tsx:21
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:88
 msgid "Warning"
@@ -7109,8 +7116,8 @@ msgstr "將憑證私鑰寫入磁碟"
 msgid "Writing certificate to disk"
 msgstr "將憑證寫入磁碟"
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:131
 #: src/components/NamespaceTabs/NamespaceTabs.vue:143
+#: src/components/NamespaceTabs/NamespaceTabs.vue:155
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:101
 #: src/components/NgxConfigEditor/LocationEditor.vue:88
 #: src/views/nginx_log/indexing/IndexManagement.vue:31
@@ -7178,6 +7185,15 @@ msgstr "您的通行金鑰"
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:193
 msgid "Zero-allocation pipeline"
 msgstr "零分配管道"
+
+#~ msgid "Sandbox test successful"
+#~ msgstr "沙盒測試成功"
+
+#~ msgid "Tested in isolated sandbox mode"
+#~ msgstr "已在隔離沙箱模式下測試"
+
+#~ msgid "All"
+#~ msgstr "全部"
 
 #~ msgid "Based on M2 Pro (12 cores) testing"
 #~ msgstr "基於 M2 Pro （12 核）測試"

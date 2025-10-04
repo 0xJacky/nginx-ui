@@ -1,10 +1,10 @@
 <script setup lang="tsx">
 import { StdCurd } from '@uozi-admin/curd'
 import stream from '@/api/stream'
+import InspectConfig from '@/components/InspectConfig'
 import NamespaceTabs from '@/components/NamespaceTabs'
-import InspectConfig from '@/views/config/InspectConfig.vue'
-import columns from '@/views/stream/columns'
-import StreamDuplicate from '@/views/stream/components/StreamDuplicate.vue'
+import columns from './columns'
+import StreamDuplicate from './components/StreamDuplicate.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -83,7 +83,7 @@ function handleAddStream() {
       </template>
 
       <template #beforeCardBody>
-        <InspectConfig ref="inspect_config" />
+        <InspectConfig ref="inspect_config" :namespace-id="namespaceId" />
         <NamespaceTabs v-model:active-key="namespaceId" />
       </template>
 

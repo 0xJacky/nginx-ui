@@ -43,7 +43,7 @@ const columns: ColumnsType<SocketInfo> = [
       }
       const status = record.status
       return h('div', { class: 'flex items-center' }, [
-        h(Tag, { color: status.online ? 'success' : 'error', class: 'mr-2' }, () => status.online ? 'Online' : 'Offline'),
+        h(Tag, { color: status.online ? 'success' : 'error', class: 'mr-2' }, () => status.online ? $gettext('Online') : $gettext('Offline')),
         status.online ? h('span', `${status.latency.toFixed(2)}ms`) : null,
       ])
     },

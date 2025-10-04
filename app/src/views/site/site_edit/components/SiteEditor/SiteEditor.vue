@@ -3,6 +3,7 @@ import { HistoryOutlined } from '@ant-design/icons-vue'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 import ConfigHistory from '@/components/ConfigHistory'
 import FooterToolBar from '@/components/FooterToolbar'
+import InspectConfig from '@/components/InspectConfig'
 import NgxConfigEditor from '@/components/NgxConfigEditor'
 import UpstreamCards from '@/components/UpstreamCards/UpstreamCards.vue'
 import { ConfigStatus } from '@/constants'
@@ -37,6 +38,9 @@ const upstreamTargets = computed(() => {
 
 const showHistory = ref(false)
 
+// Use Vue 3.4+ useTemplateRef for InspectConfig component
+const inspectConfigRef = useTemplateRef<InstanceType<typeof InspectConfig>>('inspectConfig')
+
 onMounted(() => {
   editorStore.init(name.value)
 })
@@ -45,6 +49,8 @@ async function save() {
   try {
     await editorStore.save()
     message.success($gettext('Saved successfully'))
+    // Run test after saving to verify configuration
+    inspectConfigRef.value?.test()
   }
   catch {
     // do nothing
@@ -106,6 +112,13 @@ async function save() {
         </div>
       </ASpace>
     </template>
+
+    <InspectConfig
+      ref="inspectConfig"
+      class="mb-0!"
+      banner
+      :namespace-id="data.namespace_id"
+    />
 
     <div class="card-body">
       <Transition name="slide-fade">

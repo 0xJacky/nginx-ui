@@ -14,11 +14,18 @@ export const UpstreamTestType = {
   Mirror: 'mirror',
 }
 
+// Deploy mode types
+export const DeployMode = {
+  Local: 'local',
+  Remote: 'remote',
+} as const
+
 export interface Namespace extends ModelBase {
   name: string
   sync_node_ids: number[]
   post_sync_action?: string
   upstream_test_type?: string
+  deploy_mode?: string
 }
 
 const baseUrl = '/namespaces'

@@ -93,10 +93,23 @@ func GetStreams(c *gin.Context) {
 
 	// Get streams with optional filtering
 	var streams []*model.Stream
-	if options.NamespaceID != 0 {
-		streams, err = s.Where(s.NamespaceID.Eq(options.NamespaceID)).Find()
+	if options.NamespaceID == 0 {
+		// Local tab: no namespace OR deploy_mode='local'
+		localNamespaceIDs := lo.Map(lo.Filter(namespaces, func(item *model.Namespace, _ int) bool {
+			return item.DeployMode == "local"
+		}), func(item *model.Namespace, _ int) uint64 {
+			return item.ID
+		})
+
+		db := cosy.UseDB(c)
+		if len(localNamespaceIDs) > 0 {
+			err = db.Where("namespace_id IS NULL OR namespace_id IN (?)", localNamespaceIDs).Find(&streams).Error
+		} else {
+			err = db.Where("namespace_id IS NULL").Find(&streams).Error
+		}
 	} else {
-		streams, err = s.Find()
+		// Remote tab: specific namespace
+		streams, err = s.Where(s.NamespaceID.Eq(options.NamespaceID)).Find()
 	}
 	if err != nil {
 		cosy.ErrHandler(c, err)

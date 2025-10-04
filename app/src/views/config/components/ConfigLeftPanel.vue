@@ -7,8 +7,8 @@ import ngx from '@/api/ngx'
 import CodeEditor from '@/components/CodeEditor'
 import { ConfigHistory } from '@/components/ConfigHistory'
 import FooterToolbar from '@/components/FooterToolbar'
+import InspectConfig from '@/components/InspectConfig'
 import { useBreadcrumbs } from '@/composables/useBreadcrumbs'
-import InspectConfig from '@/views/config/InspectConfig.vue'
 
 const route = useRoute()
 const router = useRouter()

@@ -169,7 +169,7 @@ msgstr ""
 #: src/views/certificate/CertificateList/certColumns.tsx:92
 #: src/views/certificate/DNSCredential.vue:71
 #: src/views/config/configColumns.tsx:51
-#: src/views/namespace/columns.ts:84
+#: src/views/namespace/columns.ts:97
 #: src/views/nginx_log/NginxLogList.vue:332
 #: src/views/node/nodeColumns.tsx:96
 #: src/views/notification/notificationColumns.tsx:72
@@ -285,10 +285,6 @@ msgstr ""
 msgid "Afterwards, refresh this page and click add passkey again."
 msgstr ""
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:116
-msgid "All"
-msgstr ""
-
 #: src/views/system/Licenses.vue:152
 msgid "All Components"
 msgstr ""
@@ -381,7 +377,7 @@ msgstr ""
 msgid "Are you sure you want to delete?"
 msgstr ""
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:130
+#: src/components/NamespaceTabs/NamespaceTabs.vue:142
 msgid "Are you sure you want to reload Nginx on the following sync nodes?"
 msgstr ""
 
@@ -397,7 +393,7 @@ msgstr ""
 msgid "Are you sure you want to remove this location?"
 msgstr ""
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:142
+#: src/components/NamespaceTabs/NamespaceTabs.vue:154
 msgid "Are you sure you want to restart Nginx on the following sync nodes?"
 msgstr ""
 
@@ -1186,8 +1182,12 @@ msgstr ""
 msgid "Configuration"
 msgstr ""
 
-#: src/views/config/InspectConfig.vue:45
+#: src/components/InspectConfig/InspectConfig.vue:62
 msgid "Configuration file is test successful"
+msgstr ""
+
+#: src/components/InspectConfig/InspectConfig.vue:61
+msgid "Configuration file is test successful in isolated sandbox"
 msgstr ""
 
 #: src/components/ConfigHistory/ConfigHistory.vue:147
@@ -1333,7 +1333,7 @@ msgid "Create system backups including Nginx configuration and Nginx UI settings
 msgstr ""
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:229
-#: src/views/namespace/columns.ts:72
+#: src/views/namespace/columns.ts:85
 #: src/views/notification/notificationColumns.tsx:51
 #: src/views/preference/components/AuthSettings/Passkey.vue:96
 #: src/views/preference/components/ExternalNotify/columns.tsx:80
@@ -1574,6 +1574,10 @@ msgstr ""
 
 #: src/views/config/components/ConfigRightPanel/Basic.vue:60
 msgid "Deploy"
+msgstr ""
+
+#: src/views/namespace/columns.ts:72
+msgid "Deploy Mode"
 msgstr ""
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:735
@@ -2107,8 +2111,8 @@ msgstr ""
 msgid "Environment variables cleaned"
 msgstr ""
 
+#: src/components/InspectConfig/InspectConfig.vue:80
 #: src/constants/index.ts:23
-#: src/views/config/InspectConfig.vue:63
 #: src/views/nginx_log/NginxLogList.vue:243
 #: src/views/notification/notificationColumns.tsx:14
 msgid "Error"
@@ -3413,9 +3417,11 @@ msgstr ""
 msgid "Loading..."
 msgstr ""
 
+#: src/components/NamespaceTabs/NamespaceTabs.vue:124
 #: src/components/NodeIndicator/NodeIndicator.vue:38
 #: src/components/NodeSelector/NodeSelector.vue:61
 #: src/constants/index.ts:42
+#: src/constants/index.ts:48
 #: src/views/backup/AutoBackup/AutoBackup.vue:74
 #: src/views/backup/AutoBackup/AutoBackup.vue:83
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:48
@@ -4084,8 +4090,8 @@ msgid "Nginx.conf includes streams-enabled directory"
 msgstr ""
 
 #: src/components/LLM/ChatMessageInput.vue:61
-#: src/components/NamespaceTabs/NamespaceTabs.vue:132
 #: src/components/NamespaceTabs/NamespaceTabs.vue:144
+#: src/components/NamespaceTabs/NamespaceTabs.vue:156
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:102
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
 #: src/components/Notification/Notification.vue:109
@@ -4303,12 +4309,13 @@ msgstr ""
 msgid "Official Document"
 msgstr ""
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:160
+#: src/components/NamespaceTabs/NamespaceTabs.vue:172
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:84
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
 #: src/views/dashboard/Nodes.vue:159
 #: src/views/node/nodeColumns.tsx:55
+#: src/views/upstream/SocketList.vue:46
 msgid "Offline"
 msgstr ""
 
@@ -4342,13 +4349,14 @@ msgstr ""
 msgid "Once the verification is complete, the records will be removed."
 msgstr ""
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:160
+#: src/components/NamespaceTabs/NamespaceTabs.vue:172
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:64
 #: src/components/NodeSelector/NodeSelector.vue:78
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
 #: src/views/dashboard/Nodes.vue:152
 #: src/views/node/nodeColumns.tsx:51
+#: src/views/upstream/SocketList.vue:46
 msgid "Online"
 msgstr ""
 
@@ -5001,7 +5009,7 @@ msgid "Reload"
 msgstr ""
 
 #: src/components/NamespaceRender/NamespaceRender.vue:44
-#: src/components/NamespaceTabs/NamespaceTabs.vue:137
+#: src/components/NamespaceTabs/NamespaceTabs.vue:149
 #: src/constants/index.ts:38
 #: src/views/node/Node.vue:208
 #: src/views/node/Node.vue:216
@@ -5028,7 +5036,7 @@ msgstr ""
 msgid "Reload Remote Nginx Success"
 msgstr ""
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:85
+#: src/components/NamespaceTabs/NamespaceTabs.vue:93
 msgid "Reload request failed, please check your network connection"
 msgstr ""
 
@@ -5041,6 +5049,7 @@ msgid "Reloading nginx"
 msgstr ""
 
 #: src/constants/index.ts:43
+#: src/constants/index.ts:49
 msgid "Remote"
 msgstr ""
 
@@ -5213,7 +5222,7 @@ msgstr ""
 msgid "Restart"
 msgstr ""
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:149
+#: src/components/NamespaceTabs/NamespaceTabs.vue:161
 #: src/views/node/Node.vue:229
 #: src/views/node/Node.vue:237
 msgid "Restart Nginx"
@@ -5235,7 +5244,7 @@ msgstr ""
 msgid "Restart Remote Nginx Success"
 msgstr ""
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:105
+#: src/components/NamespaceTabs/NamespaceTabs.vue:113
 msgid "Restart request failed, please check your network connection"
 msgstr ""
 
@@ -6067,7 +6076,7 @@ msgid "Sync Config Success"
 msgstr ""
 
 #: src/components/NamespaceRender/NamespaceRender.vue:53
-#: src/components/NamespaceTabs/NamespaceTabs.vue:123
+#: src/components/NamespaceTabs/NamespaceTabs.vue:135
 #: src/views/namespace/columns.ts:17
 #: src/views/namespace/Namespace.vue:31
 msgid "Sync Nodes"
@@ -6614,7 +6623,7 @@ msgstr ""
 #: src/views/certificate/DNSCredential.vue:65
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
 #: src/views/config/configColumns.tsx:44
-#: src/views/namespace/columns.ts:78
+#: src/views/namespace/columns.ts:91
 #: src/views/node/nodeColumns.tsx:89
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:39
 #: src/views/site/site_list/columns.tsx:113
@@ -6827,9 +6836,9 @@ msgstr ""
 msgid "Waiting processes"
 msgstr ""
 
+#: src/components/InspectConfig/InspectConfig.vue:68
 #: src/constants/index.ts:24
 #: src/views/backup/components/BackupCreator.vue:138
-#: src/views/config/InspectConfig.vue:51
 #: src/views/notification/notificationColumns.tsx:21
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:88
 msgid "Warning"
@@ -6951,8 +6960,8 @@ msgstr ""
 msgid "Writing certificate to disk"
 msgstr ""
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:131
 #: src/components/NamespaceTabs/NamespaceTabs.vue:143
+#: src/components/NamespaceTabs/NamespaceTabs.vue:155
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:101
 #: src/components/NgxConfigEditor/LocationEditor.vue:88
 #: src/views/nginx_log/indexing/IndexManagement.vue:31

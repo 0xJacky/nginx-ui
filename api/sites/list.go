@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/0xJacky/Nginx-UI/internal/site"
+	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
@@ -23,12 +24,20 @@ func GetSiteList(c *gin.Context) {
 
 	// Get sites from database
 	s := query.Site
-	sTx := s.Preload(s.Namespace)
-	if options.NamespaceID != 0 {
-		sTx = sTx.Where(s.NamespaceID.Eq(options.NamespaceID))
-	}
+	db := cosy.UseDB(c)
 
-	sites, err := sTx.Find()
+	var sites []*model.Site
+	var err error
+
+	if options.NamespaceID == 0 {
+		// Local tab: no namespace OR deploy_mode='local'
+		err = db.Where("namespace_id IS NULL OR namespace_id IN (?)",
+			db.Model(&model.Namespace{}).Where("deploy_mode = ?", "local").Select("id"),
+		).Preload("Namespace").Find(&sites).Error
+	} else {
+		// Remote tab: specific namespace
+		sites, err = s.Where(s.NamespaceID.Eq(options.NamespaceID)).Preload(s.Namespace).Find()
+	}
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

@@ -148,6 +148,10 @@ const ngx = {
     return http.post('/nginx/test')
   },
 
+  test_namespace(namespace_id?: number): Promise<{ message: string, level: number, namespace_id?: number }> {
+    return http.post('/nginx/test_namespace', { namespace_id })
+  },
+
   get_directives(): Promise<DirectiveMap> {
     return http.get('/nginx/directives')
   },

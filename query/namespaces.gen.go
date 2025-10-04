@@ -37,6 +37,7 @@ func newNamespace(db *gorm.DB, opts ...gen.DOOption) namespace {
 	_namespace.OrderID = field.NewInt(tableName, "order_id")
 	_namespace.PostSyncAction = field.NewString(tableName, "post_sync_action")
 	_namespace.UpstreamTestType = field.NewString(tableName, "upstream_test_type")
+	_namespace.DeployMode = field.NewString(tableName, "deploy_mode")
 
 	_namespace.fillFieldMap()
 
@@ -56,6 +57,7 @@ type namespace struct {
 	OrderID          field.Int
 	PostSyncAction   field.String
 	UpstreamTestType field.String
+	DeployMode       field.String
 
 	fieldMap map[string]field.Expr
 }
@@ -81,6 +83,7 @@ func (n *namespace) updateTableName(table string) *namespace {
 	n.OrderID = field.NewInt(table, "order_id")
 	n.PostSyncAction = field.NewString(table, "post_sync_action")
 	n.UpstreamTestType = field.NewString(table, "upstream_test_type")
+	n.DeployMode = field.NewString(table, "deploy_mode")
 
 	n.fillFieldMap()
 
@@ -97,7 +100,7 @@ func (n *namespace) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (n *namespace) fillFieldMap() {
-	n.fieldMap = make(map[string]field.Expr, 9)
+	n.fieldMap = make(map[string]field.Expr, 10)
 	n.fieldMap["id"] = n.ID
 	n.fieldMap["created_at"] = n.CreatedAt
 	n.fieldMap["updated_at"] = n.UpdatedAt
@@ -107,6 +110,7 @@ func (n *namespace) fillFieldMap() {
 	n.fieldMap["order_id"] = n.OrderID
 	n.fieldMap["post_sync_action"] = n.PostSyncAction
 	n.fieldMap["upstream_test_type"] = n.UpstreamTestType
+	n.fieldMap["deploy_mode"] = n.DeployMode
 }
 
 func (n namespace) clone(db *gorm.DB) namespace {

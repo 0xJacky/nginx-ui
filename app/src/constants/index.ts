@@ -44,6 +44,11 @@ export const UpstreamTestTypeMask = {
   mirror: () => $gettext('Mirror'),
 } as const
 
+export const DeployModeMask = {
+  local: () => $gettext('Local'),
+  remote: () => $gettext('Remote'),
+} as const
+
 export const PrivateKeyTypeMask = {
   2048: 'RSA2048',
   3072: 'RSA3072',
