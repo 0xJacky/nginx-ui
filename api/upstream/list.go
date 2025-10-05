@@ -115,6 +115,9 @@ func UpdateUpstreamConfig(c *gin.Context) {
 			cosy.ErrHandler(c, err)
 			return
 		}
+		// Invalidate cache after creating new config
+		service := upstream.GetUpstreamService()
+		service.InvalidateDisabledSocketsCache()
 	} else {
 		// Update existing config
 		if _, err := u.Where(u.Socket.Eq(name)).Update(u.Enabled, req.Enabled); err != nil {
@@ -123,6 +126,10 @@ func UpdateUpstreamConfig(c *gin.Context) {
 			return
 		}
 	}
+
+	// Invalidate the disabled sockets cache to ensure changes take effect immediately
+	service := upstream.GetUpstreamService()
+	service.InvalidateDisabledSocketsCache()
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Upstream config updated successfully",
