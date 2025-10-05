@@ -56,14 +56,6 @@ const currentNamespace = computed(() => {
   return namespaces.value.find(g => g.id === Number(modelValue.value))
 })
 
-// Filter namespaces for remote tabs
-const remoteNamespaces = computed(() => {
-  return namespaces.value.filter(ns =>
-    ns.deploy_mode === 'remote'
-    || (ns.sync_node_ids && ns.sync_node_ids.length > 0),
-  )
-})
-
 // Get the list of nodes in the current group
 const syncNodes = computed(() => {
   if (!currentNamespace.value)
@@ -120,10 +112,10 @@ async function handleRestartNginx() {
 
 <template>
   <div>
-    <ATabs :active-key="modelValue" @update:active-key="modelValue = $event">
+    <ATabs v-model:active-key="modelValue">
       <ATabPane :key="0" :tab="$gettext('Local')" />
       <ATabPane
-        v-for="ns in remoteNamespaces"
+        v-for="ns in namespaces"
         :key="ns.id"
         :tab="ns.name"
       />
