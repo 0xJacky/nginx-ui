@@ -98,6 +98,7 @@ func autoCert(certModel *model.Cert) {
 		ChallengeMethod:         certModel.ChallengeMethod,
 		DNSCredentialID:         certModel.DnsCredentialID,
 		KeyType:                 certModel.GetKeyType(),
+		ACMEUserID:              certModel.ACMEUserID,
 		NotBefore:               certInfo.NotBefore,
 		MustStaple:              certModel.MustStaple,
 		LegoDisableCNAMESupport: certModel.LegoDisableCNAMESupport,
