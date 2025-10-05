@@ -11,6 +11,7 @@ declare module 'vue' {
     AAlert: typeof import('ant-design-vue/es')['Alert']
     AApp: typeof import('ant-design-vue/es')['App']
     AAutoComplete: typeof import('ant-design-vue/es')['AutoComplete']
+    AAvatar: typeof import('ant-design-vue/es')['Avatar']
     ABadge: typeof import('ant-design-vue/es')['Badge']
     ABreadcrumb: typeof import('ant-design-vue/es')['Breadcrumb']
     ABreadcrumbItem: typeof import('ant-design-vue/es')['BreadcrumbItem']

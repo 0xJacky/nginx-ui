@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/cache"
+	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/uozi-tech/cosy/logger"
 )
 
@@ -32,13 +33,16 @@ type Service struct {
 	availabilityMap map[string]*Status     // key: host:port
 	configTargets   map[string][]string    // configPath -> []targetKeys
 	// Public upstream definitions storage
-	Upstreams                map[string]*Definition // key: upstream name
-	upstreamsMutex           sync.RWMutex
-	targetsMutex             sync.RWMutex
-	lastUpdateTime         time.Time
-	testInProgress         bool
-	testMutex              sync.Mutex
-	disabledSocketsChecker func() map[string]bool
+	Upstreams                   map[string]*Definition // key: upstream name
+	upstreamsMutex              sync.RWMutex
+	targetsMutex                sync.RWMutex
+	lastUpdateTime              time.Time
+	testInProgress              bool
+	testMutex                   sync.Mutex
+	cachedDisabledSockets       map[string]bool
+	disabledSocketsCacheMutex   sync.RWMutex
+	disabledSocketsCacheExpiry  time.Time
+	disabledSocketsCacheDuration time.Duration
 }
 
 var (
@@ -66,11 +70,12 @@ func formatSocketAddress(host, port string) string {
 func GetUpstreamService() *Service {
 	serviceOnce.Do(func() {
 		upstreamService = &Service{
-			targets:         make(map[string]*TargetInfo),
-			availabilityMap: make(map[string]*Status),
-			configTargets:   make(map[string][]string),
-			Upstreams:       make(map[string]*Definition),
-			lastUpdateTime:  time.Now(),
+			targets:                      make(map[string]*TargetInfo),
+			availabilityMap:              make(map[string]*Status),
+			configTargets:                make(map[string][]string),
+			Upstreams:                    make(map[string]*Definition),
+			lastUpdateTime:               time.Now(),
+			disabledSocketsCacheDuration: 30 * time.Second,
 		}
 	})
 	return upstreamService
@@ -237,11 +242,8 @@ func (s *Service) PerformAvailabilityTest() {
 
 	// logger.Debug("Performing availability test for", targetCount, "unique targets")
 
-	// Get disabled sockets from database
-	disabledSockets := make(map[string]bool)
-	if s.disabledSocketsChecker != nil {
-		disabledSockets = s.disabledSocketsChecker()
-	}
+	// Get disabled sockets from cache or database
+	disabledSockets := s.getDisabledSockets()
 
 	// Separate targets into traditional and consul groups from the start
 	s.targetsMutex.RLock()
@@ -307,9 +309,59 @@ func (s *Service) findUpstreamNameForTarget(target ProxyTarget) string {
 	return ""
 }
 
-// SetDisabledSocketsChecker sets a callback function to check disabled sockets
-func (s *Service) SetDisabledSocketsChecker(checker func() map[string]bool) {
-	s.disabledSocketsChecker = checker
+// getDisabledSockets queries the database for disabled sockets with caching
+func (s *Service) getDisabledSockets() map[string]bool {
+	// Check if cache is still valid
+	s.disabledSocketsCacheMutex.RLock()
+	if time.Now().Before(s.disabledSocketsCacheExpiry) && s.cachedDisabledSockets != nil {
+		// Return a copy of the cached data
+		result := make(map[string]bool, len(s.cachedDisabledSockets))
+		for k, v := range s.cachedDisabledSockets {
+			result[k] = v
+		}
+		s.disabledSocketsCacheMutex.RUnlock()
+		return result
+	}
+	s.disabledSocketsCacheMutex.RUnlock()
+
+	// Cache expired or not initialized, refresh from database
+	disabled := make(map[string]bool)
+
+	db := model.UseDB()
+	if db == nil {
+		return disabled
+	}
+
+	var configs []model.UpstreamConfig
+	if err := db.Where("enabled = ?", false).Find(&configs).Error; err != nil {
+		logger.Error("Failed to query disabled sockets:", err)
+		return disabled
+	}
+
+	for _, config := range configs {
+		disabled[config.Socket] = true
+	}
+
+	// Update cache
+	s.disabledSocketsCacheMutex.Lock()
+	s.cachedDisabledSockets = disabled
+	s.disabledSocketsCacheExpiry = time.Now().Add(s.disabledSocketsCacheDuration)
+	s.disabledSocketsCacheMutex.Unlock()
+
+	// Return a copy to prevent external modification
+	result := make(map[string]bool, len(disabled))
+	for k, v := range disabled {
+		result[k] = v
+	}
+	return result
+}
+
+// InvalidateDisabledSocketsCache invalidates the cache, forcing next read to refresh from database
+func (s *Service) InvalidateDisabledSocketsCache() {
+	s.disabledSocketsCacheMutex.Lock()
+	defer s.disabledSocketsCacheMutex.Unlock()
+	s.disabledSocketsCacheExpiry = time.Time{} // Set to zero time to force refresh
+	logger.Debug("Disabled sockets cache invalidated")
 }
 
 // ClearTargets clears all targets (useful for testing or reloading)
