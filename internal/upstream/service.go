@@ -87,6 +87,13 @@ func init() {
 
 // scanForProxyTargets is the callback function for cache scanner
 func scanForProxyTargets(configPath string, content []byte) error {
+	// Handle file removal - clean up targets from this config
+	if len(content) == 0 {
+		service := GetUpstreamService()
+		service.RemoveConfigTargets(configPath)
+		return nil
+	}
+
 	// logger.Debug("scanForProxyTargets", configPath)
 	// Parse proxy targets and upstream definitions from config content
 	result := ParseProxyTargetsAndUpstreamsFromRawContent(string(content))

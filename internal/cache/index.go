@@ -25,6 +25,69 @@ type CallbackInfo struct {
 	Callback ScanCallback
 }
 
+// PostScanCallback is called after all scan callbacks are executed
+type PostScanCallback func()
+
+// ScanConfig holds scanner configuration
+type ScanConfig struct {
+	PeriodicScanInterval    time.Duration
+	InitialScanTimeout      time.Duration
+	ScanTimeoutGrace        time.Duration
+	FileEventDebounce       time.Duration
+	MaxFileSize             int64
+	CallbackTimeout         time.Duration
+	PostCallbackTimeout     time.Duration
+	ShutdownTimeout         time.Duration
+	ForceCleanupTimeout     time.Duration
+	InitialScanWaitTimeout  time.Duration
+}
+
+// DefaultScanConfig returns default configuration
+func DefaultScanConfig() ScanConfig {
+	return ScanConfig{
+		PeriodicScanInterval:   5 * time.Minute,
+		InitialScanTimeout:     15 * time.Second,
+		ScanTimeoutGrace:       2 * time.Second,
+		FileEventDebounce:      100 * time.Millisecond,
+		MaxFileSize:            1024 * 1024, // 1MB
+		CallbackTimeout:        5 * time.Second,
+		PostCallbackTimeout:    10 * time.Second,
+		ShutdownTimeout:        10 * time.Second,
+		ForceCleanupTimeout:    3 * time.Second,
+		InitialScanWaitTimeout: 30 * time.Second,
+	}
+}
+
+var (
+	postScanCallbacks      = make([]PostScanCallback, 0)
+	postScanCallbacksMutex sync.RWMutex
+	scanConfig             = DefaultScanConfig()
+)
+
+// runWithTimeout executes a function with timeout and panic protection
+func runWithTimeout(fn func(), timeout time.Duration, name string) error {
+	done := make(chan struct{})
+	var panicErr error
+
+	go func() {
+		defer func() {
+			if r := recover(); r != nil {
+				panicErr = fmt.Errorf("panic: %v", r)
+				logger.Errorf("%s panic: %v", name, r)
+			}
+			close(done)
+		}()
+		fn()
+	}()
+
+	select {
+	case <-done:
+		return panicErr
+	case <-time.After(timeout):
+		return fmt.Errorf("timeout after %v", timeout)
+	}
+}
+
 // Scanner watches and scans nginx config files
 type Scanner struct {
 	ctx        context.Context
@@ -34,6 +97,56 @@ type Scanner struct {
 	scanning   bool
 	scanMutex  sync.RWMutex
 	wg         sync.WaitGroup // Track running goroutines
+	debouncer  *fileEventDebouncer
+}
+
+// fileEventDebouncer prevents rapid repeated scans of the same file
+type fileEventDebouncer struct {
+	mu      sync.Mutex
+	timers  map[string]*time.Timer
+	stopped bool
+}
+
+func newFileEventDebouncer() *fileEventDebouncer {
+	return &fileEventDebouncer{
+		timers: make(map[string]*time.Timer),
+	}
+}
+
+func (d *fileEventDebouncer) debounce(filePath string, delay time.Duration, fn func()) {
+	d.mu.Lock()
+	defer d.mu.Unlock()
+
+	// Don't create new timers if stopped
+	if d.stopped {
+		return
+	}
+
+	// Cancel existing timer if present
+	if timer, exists := d.timers[filePath]; exists {
+		timer.Stop()
+	}
+
+	// Create new timer
+	d.timers[filePath] = time.AfterFunc(delay, func() {
+		fn()
+		// Cleanup
+		d.mu.Lock()
+		delete(d.timers, filePath)
+		d.mu.Unlock()
+	})
+}
+
+func (d *fileEventDebouncer) stop() {
+	d.mu.Lock()
+	defer d.mu.Unlock()
+
+	d.stopped = true
+	// Stop and clear all pending timers
+	for path, timer := range d.timers {
+		timer.Stop()
+		delete(d.timers, path)
+	}
 }
 
 var (
@@ -42,8 +155,9 @@ var (
 	scanCallbacks      = make([]CallbackInfo, 0)
 	scanCallbacksMutex sync.RWMutex
 	// Channel to signal when initial scan and all callbacks are completed
-	initialScanComplete chan struct{}
-	initialScanOnce     sync.Once
+	initialScanComplete   chan struct{}
+	initialScanOnce       sync.Once
+	initialScanCompleteMu sync.Mutex // Protects initialScanComplete channel access
 )
 
 // InitScanner initializes the config scanner
@@ -64,28 +178,36 @@ func InitScanner(ctx context.Context) {
 	}
 }
 
+var (
+	excludedDirs     []string
+	excludedDirsOnce sync.Once
+)
+
+// getExcludedDirs returns cached list of excluded directories
+func getExcludedDirs() []string {
+	excludedDirsOnce.Do(func() {
+		excludedDirs = []string{
+			nginx.GetConfPath("ssl"),
+			nginx.GetConfPath("cache"),
+			nginx.GetConfPath("logs"),
+			nginx.GetConfPath("temp"),
+			nginx.GetConfPath("proxy_temp"),
+			nginx.GetConfPath("client_body_temp"),
+			nginx.GetConfPath("fastcgi_temp"),
+			nginx.GetConfPath("uwsgi_temp"),
+			nginx.GetConfPath("scgi_temp"),
+		}
+	})
+	return excludedDirs
+}
+
 // shouldSkipPath checks if a path should be skipped during scanning or watching
 func shouldSkipPath(path string) bool {
-	// Define directories to exclude from scanning/watching
-	excludedDirs := []string{
-		nginx.GetConfPath("ssl"),              // SSL certificates and keys
-		nginx.GetConfPath("cache"),            // Nginx cache files
-		nginx.GetConfPath("logs"),             // Log files directory
-		nginx.GetConfPath("temp"),             // Temporary files directory
-		nginx.GetConfPath("proxy_temp"),       // Proxy temporary files
-		nginx.GetConfPath("client_body_temp"), // Client body temporary files
-		nginx.GetConfPath("fastcgi_temp"),     // FastCGI temporary files
-		nginx.GetConfPath("uwsgi_temp"),       // uWSGI temporary files
-		nginx.GetConfPath("scgi_temp"),        // SCGI temporary files
-	}
-
-	// Check if path starts with any excluded directory
-	for _, excludedDir := range excludedDirs {
+	for _, excludedDir := range getExcludedDirs() {
 		if excludedDir != "" && strings.HasPrefix(path, excludedDir) {
 			return true
 		}
 	}
-
 	return false
 }
 
@@ -95,7 +217,9 @@ func GetScanner() *Scanner {
 	defer scannerInitMutex.Unlock()
 
 	if scanner == nil {
-		scanner = &Scanner{}
+		scanner = &Scanner{
+			debouncer: newFileEventDebouncer(),
+		}
 	}
 	return scanner
 }
@@ -111,11 +235,21 @@ func RegisterCallback(name string, callback ScanCallback) {
 	})
 }
 
+// RegisterPostScanCallback adds a callback to be executed after all scan callbacks complete
+func RegisterPostScanCallback(callback PostScanCallback) {
+	postScanCallbacksMutex.Lock()
+	defer postScanCallbacksMutex.Unlock()
+
+	postScanCallbacks = append(postScanCallbacks, callback)
+}
+
 // Initialize sets up the scanner and starts watching
 func (s *Scanner) Initialize(ctx context.Context) error {
-	// Initialize the completion channel for this scan cycle
+	// Initialize the completion channel for this scan cycle with lock protection
+	initialScanCompleteMu.Lock()
 	initialScanComplete = make(chan struct{})
 	initialScanOnce = sync.Once{} // Reset for this initialization
+	initialScanCompleteMu.Unlock()
 
 	// Create cancellable context for this scanner instance
 	s.ctx, s.cancel = context.WithCancel(ctx)
@@ -131,31 +265,18 @@ func (s *Scanner) Initialize(ctx context.Context) error {
 		return err
 	}
 
-	// Start background processes with WaitGroup tracking
+	// Start background processes
 	s.wg.Go(func() {
-		logger.Debug("Started cache watchForChanges goroutine")
 		s.watchForChanges()
-		logger.Info("Cache watchForChanges goroutine completed")
 	})
 
 	s.wg.Go(func() {
-		logger.Debug("Started cache periodicScan goroutine")
 		s.periodicScan()
-		logger.Info("Cache periodicScan goroutine completed")
-	})
-
-	s.wg.Go(func() {
-		logger.Debug("Started cache handleShutdown goroutine")
-		s.handleShutdown()
-		logger.Info("Cache handleShutdown goroutine completed")
 	})
 
 	// Perform initial scan asynchronously to avoid blocking boot process
-	// Pass the context to ensure proper cancellation
 	s.wg.Go(func() {
-		logger.Debug("Started cache initialScanAsync goroutine")
 		s.initialScanAsync(ctx)
-		logger.Debug("Cache initialScanAsync goroutine completed")
 	})
 
 	return nil
@@ -198,9 +319,9 @@ func (s *Scanner) watchAllDirectories() error {
 	})
 }
 
-// periodicScan runs periodic scans every 5 minutes
+// periodicScan runs periodic scans
 func (s *Scanner) periodicScan() {
-	s.scanTicker = time.NewTicker(5 * time.Minute)
+	s.scanTicker = time.NewTicker(scanConfig.PeriodicScanInterval)
 	defer s.scanTicker.Stop()
 
 	for {
@@ -214,14 +335,6 @@ func (s *Scanner) periodicScan() {
 			}
 		}
 	}
-}
-
-// handleShutdown listens for context cancellation and shuts down gracefully
-func (s *Scanner) handleShutdown() {
-	<-s.ctx.Done()
-	logger.Debug("Shutting down Index Scanner")
-	// Note: Don't call s.Shutdown() here as it would cause deadlock
-	// Shutdown is called externally, this just handles cleanup
 }
 
 // initialScanAsync performs the initial config scan asynchronously
@@ -278,7 +391,7 @@ func (s *Scanner) scanAllConfigsWithContext(ctx context.Context) error {
 	logger.Debugf("Scanning config directory: %s", root)
 
 	// Create a timeout context for the scan operation
-	scanCtx, scanCancel := context.WithTimeout(ctx, 15*time.Second)
+	scanCtx, scanCancel := context.WithTimeout(ctx, scanConfig.InitialScanTimeout)
 	defer scanCancel()
 
 	// Scan all files in the config directory and subdirectories
@@ -294,6 +407,13 @@ func (s *Scanner) scanAllConfigsWithContext(ctx context.Context) error {
 
 	// Run custom directory traversal in a goroutine to avoid WalkDir blocking issues
 	go func() {
+		defer func() {
+			if r := recover(); r != nil {
+				logger.Errorf("Scan goroutine panic: %v", r)
+				resultChan <- scanResult{err: fmt.Errorf("panic during scan: %v", r)}
+			}
+		}()
+
 		fileCount := 0
 		dirCount := 0
 
@@ -309,11 +429,12 @@ func (s *Scanner) scanAllConfigsWithContext(ctx context.Context) error {
 	}()
 
 	// Wait for scan to complete or timeout
+	var scanErr error
 	select {
 	case result := <-resultChan:
 		logger.Debugf("Scan completed successfully: dirs=%d, files=%d, error=%v",
 			result.dirCount, result.fileCount, result.err)
-		return result.err
+		scanErr = result.err
 	case <-scanCtx.Done():
 		logger.Warnf("Scan timed out after 25 seconds - cancelling")
 		scanCancel()
@@ -322,12 +443,19 @@ func (s *Scanner) scanAllConfigsWithContext(ctx context.Context) error {
 		case result := <-resultChan:
 			logger.Debugf("Scan completed after timeout: dirs=%d, files=%d, error=%v",
 				result.dirCount, result.fileCount, result.err)
-			return result.err
-		case <-time.After(2 * time.Second):
+			scanErr = result.err
+		case <-time.After(scanConfig.ScanTimeoutGrace):
 			logger.Warn("Scan failed to complete even after timeout - forcing return")
-			return ctx.Err()
+			scanErr = ctx.Err()
 		}
 	}
+
+	// Trigger post-scan callbacks once after all files are scanned
+	if scanErr == nil {
+		s.executePostScanCallbacks()
+	}
+
+	return scanErr
 }
 
 // watchForChanges handles file system events
@@ -377,9 +505,12 @@ func (s *Scanner) handleFileEvent(event fsnotify.Event) {
 		}
 	}
 
-	// Handle file changes
+	// Handle file removal - need to trigger rescan to update indices
 	if event.Has(fsnotify.Remove) {
 		logger.Debug("Config removed:", event.Name)
+		// Trigger callbacks with empty content to allow them to clean up their indices
+		// Don't skip post-scan for single file events (manual operations)
+		s.executeCallbacks(event.Name, []byte{}, false)
 		return
 	}
 
@@ -408,13 +539,21 @@ func (s *Scanner) handleFileEvent(event fsnotify.Event) {
 		logger.Debug("Directory changed:", event.Name)
 	} else {
 		logger.Debug("File changed:", event.Name)
-		time.Sleep(100 * time.Millisecond) // Allow file write to complete
-		s.scanSingleFile(event.Name)
+		// Use debouncer to avoid rapid repeated scans
+		s.debouncer.debounce(event.Name, scanConfig.FileEventDebounce, func() {
+			s.scanSingleFile(event.Name)
+		})
 	}
 }
 
 // scanSingleFile scans a single config file without recursion
+// skipPostScan: if true, skip post-scan callbacks (used during batch scans)
 func (s *Scanner) scanSingleFile(filePath string) error {
+	return s.scanSingleFileInternal(filePath, false)
+}
+
+// scanSingleFileInternal is the internal implementation with post-scan control
+func (s *Scanner) scanSingleFileInternal(filePath string, skipPostScan bool) error {
 	s.setScanningState(true)
 	defer s.setScanningState(false)
 
@@ -462,8 +601,8 @@ func (s *Scanner) scanSingleFile(filePath string) error {
 		return nil
 	}
 
-	// Skip files larger than 1MB before reading
-	if fileInfo.Size() > 1024*1024 {
+	// Skip files larger than max size before reading
+	if fileInfo.Size() > scanConfig.MaxFileSize {
 		logger.Debugf("Skipping large file: %s (size: %d bytes)", filePath, fileInfo.Size())
 		return nil
 	}
@@ -476,7 +615,7 @@ func (s *Scanner) scanSingleFile(filePath string) error {
 	}
 
 	// Execute callbacks
-	s.executeCallbacks(filePath, content)
+	s.executeCallbacks(filePath, content, skipPostScan)
 
 	return nil
 }
@@ -496,11 +635,13 @@ func (s *Scanner) setScanningState(scanning bool) {
 }
 
 // executeCallbacks runs all registered callbacks
-func (s *Scanner) executeCallbacks(filePath string, content []byte) {
+func (s *Scanner) executeCallbacks(filePath string, content []byte, skipPostScan bool) {
 	scanCallbacksMutex.RLock()
-	defer scanCallbacksMutex.RUnlock()
+	callbacksCopy := make([]CallbackInfo, len(scanCallbacks))
+	copy(callbacksCopy, scanCallbacks)
+	scanCallbacksMutex.RUnlock()
 
-	for i, callbackInfo := range scanCallbacks {
+	for i, callbackInfo := range callbacksCopy {
 		// Add timeout protection for each callback
 		done := make(chan error, 1)
 		go func() {
@@ -512,9 +653,29 @@ func (s *Scanner) executeCallbacks(filePath string, content []byte) {
 			if err != nil {
 				logger.Errorf("Callback error for %s in '%s': %v", filePath, callbackInfo.Name, err)
 			}
-		case <-time.After(5 * time.Second):
-			logger.Errorf("Callback [%d/%d] '%s' timed out after 5 seconds for: %s", i+1, len(scanCallbacks), callbackInfo.Name, filePath)
+		case <-time.After(scanConfig.CallbackTimeout):
+			logger.Errorf("Callback [%d/%d] '%s' timed out after %v for: %s", i+1, len(callbacksCopy), callbackInfo.Name, scanConfig.CallbackTimeout, filePath)
 			// Continue with next callback instead of blocking forever
+		}
+	}
+
+	// Execute post-scan callbacks only if not skipped (used for batch scans)
+	if !skipPostScan {
+		s.executePostScanCallbacks()
+	}
+}
+
+// executePostScanCallbacks runs all registered post-scan callbacks
+func (s *Scanner) executePostScanCallbacks() {
+	postScanCallbacksMutex.RLock()
+	postCallbacksCopy := make([]PostScanCallback, len(postScanCallbacks))
+	copy(postCallbacksCopy, postScanCallbacks)
+	postScanCallbacksMutex.RUnlock()
+
+	for i, callback := range postCallbacksCopy {
+		name := fmt.Sprintf("Post-scan callback [%d/%d]", i+1, len(postCallbacksCopy))
+		if err := runWithTimeout(callback, scanConfig.PostCallbackTimeout, name); err != nil {
+			logger.Errorf("%s error: %v", name, err)
 		}
 	}
 }
@@ -525,54 +686,51 @@ func (s *Scanner) ScanAllConfigs() error {
 	defer s.setScanningState(false)
 
 	root := nginx.GetConfPath()
+	fileCount := 0
+	dirCount := 0
 
-	// Scan all files in the config directory and subdirectories
-	return filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
-		if err != nil {
-			return err
-		}
+	// Use the unified recursive scan logic with no timeout
+	err := s.scanDirectoryRecursive(context.Background(), root, &fileCount, &dirCount)
 
-		// Skip excluded directories (ssl, cache, logs, temp, etc.)
-		if d.IsDir() && shouldSkipPath(path) {
-			return filepath.SkipDir
-		}
+	logger.Debugf("Scan completed: %d directories, %d files processed", dirCount, fileCount)
 
-		// Handle symlinks to directories specially
-		if d.Type()&os.ModeSymlink != 0 {
-			if targetInfo, err := os.Stat(path); err == nil && targetInfo.IsDir() {
-				// This is a symlink to a directory, we should traverse its contents
-				// but not process the symlink itself as a file
-				logger.Debug("Found symlink to directory, will traverse contents:", path)
+	// Trigger post-scan callbacks once after all files are scanned
+	if err == nil {
+		s.executePostScanCallbacks()
+	}
 
-				// Manually scan the symlink target directory since WalkDir doesn't follow symlinks
-				if err := s.scanSymlinkDirectory(path); err != nil {
-					logger.Error("Failed to scan symlink directory:", path, err)
-				}
-				return nil
-			}
-		}
-
-		// Only process regular files (not directories, not symlinks to directories)
-		if !d.IsDir() {
-			if err := s.scanSingleFile(path); err != nil {
-				logger.Error("Failed to scan config:", path, err)
-			}
-		}
-
-		return nil
-	})
+	return err
 }
 
 // scanDirectoryRecursive implements custom recursive directory traversal
 // to avoid filepath.WalkDir blocking issues on restart
 func (s *Scanner) scanDirectoryRecursive(ctx context.Context, root string, fileCount, dirCount *int) error {
+	visited := make(map[string]bool)
+	return s.scanDirectoryRecursiveInternal(ctx, root, fileCount, dirCount, visited)
+}
 
+// scanDirectoryRecursiveInternal is the internal implementation with symlink loop detection
+func (s *Scanner) scanDirectoryRecursiveInternal(ctx context.Context, root string, fileCount, dirCount *int, visited map[string]bool) error {
 	// Check for context cancellation
 	select {
 	case <-ctx.Done():
 		return ctx.Err()
 	default:
 	}
+
+	// Resolve symlinks and check for loops
+	realPath, err := filepath.EvalSymlinks(root)
+	if err != nil {
+		// If we can't resolve, use original path
+		realPath = root
+	}
+
+	// Check if already visited (prevents symlink loops)
+	if visited[realPath] {
+		logger.Debugf("Skipping already visited path (symlink loop): %s -> %s", root, realPath)
+		return nil
+	}
+	visited[realPath] = true
 
 	// Read directory entries
 	entries, err := os.ReadDir(root)
@@ -608,10 +766,10 @@ func (s *Scanner) scanDirectoryRecursive(ctx context.Context, root string, fileC
 				continue
 			}
 
-			// Recursively scan subdirectory
-			if err := s.scanDirectoryRecursive(ctx, fullPath, fileCount, dirCount); err != nil {
+			// Recursively scan subdirectory - continue on error to scan other directories
+			if err := s.scanDirectoryRecursiveInternal(ctx, fullPath, fileCount, dirCount, visited); err != nil {
 				logger.Errorf("Failed to scan subdirectory %s: %v", fullPath, err)
-				return err
+				// Continue with other directories instead of failing completely
 			}
 		} else {
 			(*fileCount)++
@@ -621,10 +779,9 @@ func (s *Scanner) scanDirectoryRecursive(ctx context.Context, root string, fileC
 				targetInfo, err := os.Stat(fullPath)
 				if err == nil {
 					if targetInfo.IsDir() {
-						// Recursively scan symlink directory
-						if err := s.scanDirectoryRecursive(ctx, fullPath, fileCount, dirCount); err != nil {
+						// Recursively scan symlink directory (with loop detection)
+						if err := s.scanDirectoryRecursiveInternal(ctx, fullPath, fileCount, dirCount, visited); err != nil {
 							logger.Errorf("Failed to scan symlink directory %s: %v", fullPath, err)
-							// Continue with other entries instead of failing completely
 						}
 						continue
 					}
@@ -633,60 +790,14 @@ func (s *Scanner) scanDirectoryRecursive(ctx context.Context, root string, fileC
 				}
 			}
 
-			// Process regular files
-			if err := s.scanSingleFile(fullPath); err != nil {
+			// Process regular files - skip post-scan during batch scan
+			if err := s.scanSingleFileInternal(fullPath, true); err != nil {
 				logger.Errorf("Failed to scan file %s: %v", fullPath, err)
-				// Continue with other files instead of failing completely
 			}
 		}
 	}
 
 	return nil
-}
-
-// scanSymlinkDirectory recursively scans a symlink directory and its contents
-func (s *Scanner) scanSymlinkDirectory(symlinkPath string) error {
-	logger.Debugf("scanSymlinkDirectory START: %s", symlinkPath)
-	// Resolve the symlink to get the actual target path
-	targetPath, err := filepath.EvalSymlinks(symlinkPath)
-	if err != nil {
-		logger.Errorf("Failed to resolve symlink %s: %v", symlinkPath, err)
-		return fmt.Errorf("failed to resolve symlink %s: %w", symlinkPath, err)
-	}
-
-	logger.Debug("Scanning symlink directory contents:", symlinkPath, "->", targetPath)
-
-	// Use WalkDir on the resolved target path
-	walkErr := filepath.WalkDir(targetPath, func(path string, d fs.DirEntry, err error) error {
-		logger.Debugf("scanSymlinkDirectory callback: %s (type: %s)", path, d.Type().String())
-		if err != nil {
-			return err
-		}
-
-		// Skip excluded directories
-		if d.IsDir() && shouldSkipPath(path) {
-			return filepath.SkipDir
-		}
-
-		// Only process regular files (not directories, not symlinks to directories)
-		if !d.IsDir() {
-			// Handle symlinks to directories (skip them)
-			if d.Type()&os.ModeSymlink != 0 {
-				if targetInfo, err := os.Stat(path); err == nil && targetInfo.IsDir() {
-					logger.Debug("Skipping symlink to directory in symlink scan:", path)
-					return nil
-				}
-			}
-
-			if err := s.scanSingleFile(path); err != nil {
-				logger.Error("Failed to scan config in symlink directory:", path, err)
-			}
-		}
-		logger.Debugf("scanSymlinkDirectory callback exit: %s", path)
-		return nil
-	})
-	logger.Debugf("scanSymlinkDirectory END: %s -> %s (error: %v)", symlinkPath, targetPath, walkErr)
-	return walkErr
 }
 
 // Shutdown cleans up scanner resources
@@ -696,6 +807,11 @@ func (s *Scanner) Shutdown() {
 	// Cancel context to signal all goroutines to stop
 	if s.cancel != nil {
 		s.cancel()
+	}
+
+	// Stop debouncer to prevent new scans
+	if s.debouncer != nil {
+		s.debouncer.stop()
 	}
 
 	// Close watcher first to stop file events
@@ -720,7 +836,7 @@ func (s *Scanner) Shutdown() {
 	select {
 	case <-done:
 		logger.Info("All scanner goroutines completed successfully")
-	case <-time.After(10 * time.Second):
+	case <-time.After(scanConfig.ShutdownTimeout):
 		logger.Warn("Timeout waiting for scanner goroutines to complete")
 	}
 
@@ -786,7 +902,7 @@ func ForceReleaseResources() {
 		select {
 		case <-done:
 			logger.Info("All scanner goroutines terminated successfully")
-		case <-time.After(3 * time.Second):
+		case <-time.After(scanConfig.ForceCleanupTimeout):
 			logger.Warn("Timeout waiting for scanner goroutines - proceeding with force cleanup")
 		}
 
@@ -797,7 +913,12 @@ func ForceReleaseResources() {
 // WaitForInitialScanComplete waits for the initial config scan and all callbacks to complete
 // This is useful for services that depend on site indexing to be ready
 func WaitForInitialScanComplete() {
-	if initialScanComplete == nil {
+	// Get channel reference with lock to avoid race
+	initialScanCompleteMu.Lock()
+	ch := initialScanComplete
+	initialScanCompleteMu.Unlock()
+
+	if ch == nil {
 		logger.Debug("Initial scan completion channel not initialized, returning immediately")
 		return
 	}
@@ -806,9 +927,9 @@ func WaitForInitialScanComplete() {
 
 	// Add timeout to prevent infinite waiting
 	select {
-	case <-initialScanComplete:
+	case <-ch:
 		logger.Debug("Initial config scan completion confirmed")
-	case <-time.After(30 * time.Second):
+	case <-time.After(scanConfig.InitialScanWaitTimeout):
 		logger.Warn("Timeout waiting for initial config scan completion - proceeding anyway")
 	}
 }

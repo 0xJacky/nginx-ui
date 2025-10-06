@@ -28,6 +28,13 @@ var (
 func Init(ctx context.Context) {
 	globalService = NewService(ctx, DefaultCheckOptions())
 
+	// Register post-scan callback to refresh sites when configs change
+	cache.RegisterPostScanCallback(func() {
+		if globalService != nil && globalService.IsRunning() {
+			globalService.RefreshSites()
+		}
+	})
+
 	globalService.Start()
 }
 
@@ -198,11 +205,10 @@ func (s *Service) periodicCheck() {
 func (s *Service) RefreshSites() {
 	go func() {
 		sl := logger.NewSessionLogger(s.ctx)
-		sl.Debug("Started sitecheck manual refresh goroutine")
-		logger.Info("Manually refreshing sites")
+		sl.Debug("Started sitecheck refresh goroutine")
 		s.checker.CollectSites()
 		s.checker.CheckAllSites(s.ctx)
-		sl.Debug("Sitecheck manual refresh goroutine completed")
+		sl.Debug("Sitecheck refresh goroutine completed")
 	}()
 }
 

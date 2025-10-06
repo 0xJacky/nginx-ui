@@ -20,26 +20,33 @@ type Index struct {
 }
 
 var (
-	IndexedSites = make(map[string]*Index)
+	IndexedSites   = make(map[string]*Index)
 	siteIndexMutex sync.RWMutex
 )
 
 func GetIndexedSite(path string) *Index {
 	siteIndexMutex.RLock()
 	defer siteIndexMutex.RUnlock()
-	
+
 	if site, ok := IndexedSites[path]; ok {
 		return site
 	}
 	return &Index{}
 }
 
-
 func init() {
 	cache.RegisterCallback("site.scanForSite", scanForSite)
 }
 
 func scanForSite(configPath string, content []byte) error {
+	// Handle file removal - clean up the index entry
+	if len(content) == 0 {
+		siteIndexMutex.Lock()
+		delete(IndexedSites, filepath.Base(configPath))
+		siteIndexMutex.Unlock()
+		return nil
+	}
+
 	// Regular expressions for server_name and listen directives
 	serverNameRegex := regexp.MustCompile(`(?m)server_name\s+([^;]+);`)
 	listenRegex := regexp.MustCompile(`(?m)listen\s+([^;]+);`)
@@ -60,7 +67,6 @@ func scanForSite(configPath string, content []byte) error {
 	type hostInfo struct {
 		hasSSL      bool
 		port        int
-		isPublic    bool // Whether this is a public-facing port
 		priority    int  // Higher priority for public ports
 		hasRedirect bool // Whether this server block has HTTPS redirect
 	}
@@ -113,7 +119,6 @@ func scanForSite(configPath string, content []byte) error {
 				listenValue := strings.TrimSpace(string(match[1]))
 				hasSSL := strings.Contains(listenValue, "ssl")
 				port := 80 // Default HTTP port
-				isPublic := true
 				priority := 1
 
 				if hasSSL {
@@ -135,13 +140,6 @@ func scanForSite(configPath string, content []byte) error {
 				listenParts := strings.Fields(listenValue)
 				if len(listenParts) > 0 {
 					addressPart := listenParts[0]
-
-					// Check if it's bound to a specific IP (not public)
-					if strings.Contains(addressPart, "127.0.0.1") ||
-						strings.Contains(addressPart, "localhost") {
-						isPublic = false
-						priority = 0 // Internal ports have lowest priority
-					}
 
 					// Extract port from various formats
 					var extractedPort int
@@ -186,7 +184,6 @@ func scanForSite(configPath string, content []byte) error {
 						hostMap[name] = hostInfo{
 							hasSSL:      hasSSL,
 							port:        port,
-							isPublic:    isPublic,
 							priority:    priority,
 							hasRedirect: hasRedirect,
 						}
@@ -198,11 +195,6 @@ func scanForSite(configPath string, content []byte) error {
 
 	// Generate URLs from the host map
 	for host, info := range hostMap {
-		// Skip internal/private addresses for URL generation
-		if !info.isPublic {
-			continue
-		}
-
 		protocol := "http"
 		defaultPort := 80
 
