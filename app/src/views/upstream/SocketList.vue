@@ -19,7 +19,6 @@ const columns: ColumnsType<SocketInfo> = [
     dataIndex: 'socket',
     key: 'socket',
     width: 200,
-    fixed: 'left',
   },
   {
     title: () => $gettext('Upstream'),
@@ -60,7 +59,7 @@ const columns: ColumnsType<SocketInfo> = [
   {
     title: () => $gettext('Health Check'),
     key: 'enabled',
-    width: 150,
+    width: 50,
     fixed: 'right',
   },
 ]
@@ -147,7 +146,7 @@ onUnmounted(() => {
       :pagination="{
         pageSize: 20,
         showSizeChanger: true,
-        showTotal: (total: number) => `Total ${total} items`,
+        showTotal: (total: number) => $gettext('Total %{total} items', { total: total.toLocaleString() }),
       }"
       :scroll="{ x: 1400 }"
       row-key="socket"
