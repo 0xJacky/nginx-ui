@@ -48,9 +48,9 @@ func scanForSite(configPath string, content []byte) error {
 	}
 
 	// Regular expressions for server_name and listen directives
-	serverNameRegex := regexp.MustCompile(`(?m)server_name\s+([^;]+);`)
-	listenRegex := regexp.MustCompile(`(?m)listen\s+([^;]+);`)
-	returnRegex := regexp.MustCompile(`(?m)return\s+30[1-8]\s+https://`)
+	serverNameRegex := regexp.MustCompile(`(?m)^[ \t]*server_name\s+([^;#]+);`)
+	listenRegex := regexp.MustCompile(`(?m)^[ \t]*listen\s+([^;#]+);`)
+	returnRegex := regexp.MustCompile(`(?m)^[ \t]*return\s+30[1-8]\s+https://[^\s;#]+`)
 
 	// Find server blocks
 	serverBlockRegex := regexp.MustCompile(`(?ms)server\s*\{[^\{]*((.*?\{.*?\})*?[^\}]*)\}`)
