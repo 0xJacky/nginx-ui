@@ -56,23 +56,19 @@ jobs:
           corepack enable
           corepack prepare pnpm@latest --activate
           pnpm install
-        working-directory: app
 
       - name: Check frontend code style
         run: |
-          pnpm run lint
-        working-directory: app
+          pnpm lint
 
       - name: Check frontend types
         run: |
-          pnpm run typecheck
-        working-directory: app
+          pnpm typecheck
 
       - name: Build
         run: |
           npx update-browserslist-db@latest
           pnpm build
-        working-directory: app
 
       - name: Compress frontend with xz
         run: |

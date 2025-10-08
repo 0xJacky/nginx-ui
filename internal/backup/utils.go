@@ -36,6 +36,11 @@ func ValidatePathAccess(path string) error {
 		// Clean the allowed path as well for consistent comparison
 		cleanAllowedPath := filepath.Clean(allowedPath)
 
+		// Special case: if allowed path is root directory, allow all paths
+		if cleanAllowedPath == string(filepath.Separator) {
+			return nil
+		}
+
 		// Check if the path is within the allowed path
 		if strings.HasPrefix(cleanPath, cleanAllowedPath) {
 			// Ensure it's actually a subdirectory or the same directory

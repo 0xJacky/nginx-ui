@@ -14,7 +14,7 @@
     {
       "label": "[App] Start Frontend",
       "type": "shell",
-      "command": "cd app && pnpm dev",
+      "command": "pnpm dev",
       "isBackground": true,
       "presentation": {
         "panel": "new"
@@ -24,7 +24,7 @@
     {
       "label": "[Docs] Start Documentation",
       "type": "shell",
-      "command": "cd docs && pnpm docs:dev",
+      "command": "pnpm docs:dev",
       "isBackground": true,
       "presentation": {
         "panel": "new"
@@ -48,7 +48,7 @@
     {
       "label": "[App] Gettext Extract",
       "type": "shell",
-      "command": "cd app && pnpm gettext:extract",
+      "command": "pnpm gettext:extract",
       "isBackground": true,
       "presentation": {
         "panel": "new"
@@ -58,7 +58,7 @@
     {
       "label": "[App] ESLint Fix",
       "type": "shell",
-      "command": "cd app && pnpm lint --fix",
+      "command": "pnpm lint --fix",
       "presentation": {
         "panel": "new"
       },
@@ -67,7 +67,7 @@
     {
       "label": "[App] Typecheck",
       "type": "shell",
-      "command": "cd app && pnpm typecheck",
+      "command": "pnpm typecheck",
       "presentation": {
         "panel": "new"
       },
@@ -76,7 +76,7 @@
     {
       "label": "[App] Build",
       "type": "shell",
-      "command": "cd app && pnpm build",
+      "command": "pnpm build",
       "presentation": {
         "panel": "new"
       },
