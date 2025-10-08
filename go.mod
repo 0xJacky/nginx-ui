@@ -1,6 +1,6 @@
 module github.com/0xJacky/Nginx-UI
 
-go 1.25.1
+go 1.25.2
 
 require (
 	code.pfad.fr/risefront v1.0.0
@@ -11,7 +11,7 @@ require (
 	github.com/casdoor/casdoor-go-sdk v1.20.0
 	github.com/creack/pty v1.1.24
 	github.com/dgraph-io/ristretto/v2 v2.3.0
-	github.com/docker/docker v28.4.0+incompatible
+	github.com/docker/docker v28.5.0+incompatible
 	github.com/dustin/go-humanize v1.0.1
 	github.com/elliotchance/orderedmap/v3 v3.1.0
 	github.com/fsnotify/fsnotify v1.9.0
@@ -22,7 +22,7 @@ require (
 	github.com/go-acme/lego/v4 v4.26.0
 	github.com/go-co-op/gocron/v2 v2.16.6
 	github.com/go-gormigrate/gormigrate/v2 v2.1.5
-	github.com/go-playground/validator/v10 v10.27.0
+	github.com/go-playground/validator/v10 v10.28.0
 	github.com/go-resty/resty/v2 v2.16.5
 	github.com/go-telegram-bot-api/telegram-bot-api v4.6.4+incompatible
 	github.com/go-webauthn/webauthn v0.14.0
@@ -50,8 +50,8 @@ require (
 	github.com/uozi-tech/cosy-driver-sqlite v0.2.1
 	github.com/urfave/cli/v3 v3.4.1
 	golang.org/x/crypto v0.42.0
-	golang.org/x/net v0.44.0
-	google.golang.org/grpc v1.75.1
+	golang.org/x/net v0.45.0
+	google.golang.org/grpc v1.76.0
 	gopkg.in/ini.v1 v1.67.0
 	gorm.io/driver/sqlite v1.6.0
 	gorm.io/gen v0.3.27
