@@ -8,28 +8,28 @@ import (
 	"github.com/uozi-tech/cosy/map2struct"
 )
 
-// @external_notifier(DingTalk)
-type DingTalk struct {
+// @external_notifier(Dingding)
+type Dingding struct {
 	AccessToken string `json:"access_token" title:"Access Token"`
 	Secret      string `json:"secret" title:"Secret (Optional)"`
 }
 
 func init() {
 	RegisterExternalNotifier("dingding", func(ctx context.Context, n *model.ExternalNotify, msg *ExternalMessage) error {
-		dingTalkConfig := &DingTalk{}
-		err := map2struct.WeakDecode(n.Config, dingTalkConfig)
+		dingdingConfig := &Dingding{}
+		err := map2struct.WeakDecode(n.Config, dingdingConfig)
 		if err != nil {
 			return err
 		}
-		if dingTalkConfig.AccessToken == "" {
+		if dingdingConfig.AccessToken == "" {
 			return ErrInvalidNotifierConfig
 		}
 
-		// Initialize DingTalk service
-		dingTalkService := dingding.New(&dingding.Config{
-			Token:  dingTalkConfig.AccessToken,
-			Secret: dingTalkConfig.Secret,
+		// Initialize Dingding service
+		dingdingService := dingding.New(&dingding.Config{
+			Token:  dingdingConfig.AccessToken,
+			Secret: dingdingConfig.Secret,
 		})
-		return dingTalkService.Send(ctx, msg.GetTitle(n.Language), msg.GetContent(n.Language))
+		return dingdingService.Send(ctx, msg.GetTitle(n.Language), msg.GetContent(n.Language))
 	})
 }
