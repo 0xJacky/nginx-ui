@@ -12,6 +12,7 @@ import (
 
 func encryptPassword(ctx *cosy.Ctx[model.User]) {
 	if ctx.Payload["password"] == nil {
+		delete(ctx.Payload, "password")
 		return
 	}
 	pwd := ctx.Payload["password"].(string)
