@@ -13,7 +13,7 @@ const { data } = storeToRefs(systemSettingsStore)
     <AFormItem :label="$gettext('Maintenance template (filename only)')">
       <AInput
         v-model:value="data.nginx.maintenance_template"
-        :placeholder="$gettext('enwikuna-maintenance.html')" />
+        :placeholder="$gettext('maintenance.html')" />
       <div class="text-secondary mt-1">
         {{$gettext('Mounted directory')}}: /etc/nginx/maintenance
       </div>
