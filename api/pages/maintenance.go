@@ -4,6 +4,7 @@ import (
 	"embed"
 	"html/template"
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/0xJacky/Nginx-UI/settings"
@@ -53,7 +54,15 @@ func MaintenancePage(c *gin.Context) {
 		return
 	}
 
-	// Parse template
+	// Try custom mounted HTML first (NGINX_UI_NGINX_MAINTENANCE_TEMPLATE)
+	if custom := strings.TrimSpace(settings.NginxSettings.MaintenanceTemplate); custom != "" {
+		if b, err := os.ReadFile(custom); err == nil {
+			c.Data(http.StatusServiceUnavailable, "text/html; charset=utf-8", b)
+			return
+		}
+	}
+
+	// Fallback: embedded template
 	tmpl, err := template.ParseFS(tmplFS, "maintenance.tmpl")
 	if err != nil {
 		c.String(http.StatusInternalServerError, "503 Service Unavailable")
