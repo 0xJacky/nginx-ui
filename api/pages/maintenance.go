@@ -14,6 +14,8 @@ import (
 //go:embed *.tmpl
 var tmplFS embed.FS
 
+const maintenanceMountDir = "/etc/nginx/maintenance"
+
 // MaintenancePageData maintenance page data structure
 type MaintenancePageData struct {
 	Title                string `json:"title"`
@@ -55,8 +57,11 @@ func MaintenancePage(c *gin.Context) {
 	}
 
 	// Try custom mounted HTML first (NGINX_UI_NGINX_MAINTENANCE_TEMPLATE)
-	if custom := strings.TrimSpace(settings.NginxSettings.MaintenanceTemplate); custom != "" {
-		if b, err := os.ReadFile(custom); err == nil {
+	if name := strings.TrimSpace(settings.NginxSettings.MaintenanceTemplate); name != "" {
+		name = filepath.Base(name)
+		full := filepath.Join(maintenanceMountDir, name)
+
+		if b, err := os.ReadFile(full); err == nil && len(b) > 0 {
 			c.Data(http.StatusServiceUnavailable, "text/html; charset=utf-8", b)
 			return
 		}
