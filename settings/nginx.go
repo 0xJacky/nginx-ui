@@ -13,6 +13,7 @@ type Nginx struct {
 	RestartCmd               string   `json:"restart_cmd" protected:"true"`
 	StubStatusPort           uint     `json:"stub_status_port" binding:"omitempty,min=1,max=65535"`
 	ContainerName            string   `json:"container_name" protected:"true"`
+	MaintenanceTemplate      string   `json:"maintenance_template"`
 }
 
 var NginxSettings = &Nginx{}
