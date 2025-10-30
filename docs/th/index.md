@@ -3,72 +3,72 @@
 layout: home
 
 title: Nginx UI
-titleTemplate: Yet another Nginx Web UI
+titleTemplate: อีกหนึ่ง Nginx Web UI
 
 hero:
     name: "Nginx UI"
-    text: "Yet another Nginx Web UI"
-    tagline: Intelligent, powerful, and fast.
+    text: "อีกหนึ่ง Nginx Web UI"
+    tagline: ฉลาด ทรงพลัง และรวดเร็ว
     image:
         src: /assets/icon.svg
         alt: Nginx UI
     actions:
         -   theme: brand
-            text: Get Started
+            text: เริ่มต้นใช้งาน
             link: /guide/about
         -   theme: alt
-            text: View on Github
+            text: ดูบน Github
             link: https://github.com/0xJacky/nginx-ui
 
 features:
     -   icon: 📊
-        title: Online Statistics for Server Indicators
-        details: Monitor CPU usage, memory usage, load average, and disk usage in real-time.
+        title: สถิติออนไลน์สำหรับตัวบ่งชี้เซิร์ฟเวอร์
+        details: ตรวจสอบการใช้งาน CPU, การใช้งานหน่วยความจำ, ค่าเฉลี่ยในการโหลด และการใช้งานดิสก์แบบเรียลไทม์.
     -   icon: 💾
-        title: Automatic Configuration Backup
-        details: Configurations are automatically backed up after modifications, allowing you to compare any versions or restore to any previous version.
+        title: การสำรองข้อมูลการกำหนดค่าอัตโนมัติ
+        details: การกำหนดค่าจะได้รับการสำรองข้อมูลโดยอัตโนมัติหลังจากการปรับเปลี่ยน ช่วยให้คุณสามารถเปรียบเทียบเวอร์ชันใดๆ หรือคืนค่าเป็นเวอร์ชันก่อนหน้าได้
     -   icon: 🔄
-        title: Cluster Management
-        details: Support for mirroring operations to multiple cluster nodes, easily manage multi-server environments.
+        title: การจัดการคลัสเตอร์
+        details: รองรับการดำเนินการมิเรอร์ไปยัง Node คลัสเตอร์หลาย ๆ Node จัดการสภาพแวดล้อมเซิร์ฟเวอร์หลายตัวได้อย่างง่ายดาย
     -   icon: 📤
-        title: Encrypted Configuration Export
-        details: Export encrypted Nginx / Nginx UI configurations for quick deployment and recovery to new environments.
+        title: การส่งออกการกำหนดค่าที่เข้ารหัส
+        details: ส่งออกการกำหนดค่า UI ของ Nginx / Nginx ที่เข้ารหัสเพื่อการปรับใช้และการกู้คืนอย่างรวดเร็วสู่สภาพแวดล้อมใหม่
     -   icon: 💬
-        title: Enhanced Online ChatGPT Assistant
-        details: Support for multiple models, including displaying Deepseek-R1's chain of thought to help you better understand and optimize configurations.
+        title: ผู้ช่วย ChatGPT ออนไลน์ที่ได้รับการปรับปรุง
+        details: รองรับโมเดลต่างๆ มากมาย รวมถึงการแสดงลำดับความคิดของ Deepseek-R1 เพื่อช่วยให้คุณเข้าใจและปรับแต่งการกำหนดค่าได้ดีขึ้น
     -   icon: 🔍
-        title: Code Completion
-        details: Code editor supports code completion, help you write configuration faster.
+        title: การกรอกโค้ดให้สมบูรณ์
+        details: ตัวแก้ไขโค้ดรองรับการเติมโค้ด ช่วยให้คุณเขียนการกำหนดค่าได้เร็วขึ้น
     -   icon: 🤖
-        title: MCP (Model Context Protocol)
-        details: Provides special interfaces for AI agents to interact with Nginx UI, enabling automated configuration management and service control.
+        title: MCP (โปรโตคอลบริบทโมเดล)
+        details: มอบอินเทอร์เฟซพิเศษสำหรับตัวแทน AI เพื่อโต้ตอบกับ Nginx UI ช่วยให้สามารถจัดการการกำหนดค่าและควบคุมบริการอัตโนมัติ
     -   icon: 🖱️
-        title: One-Click Deployment and Automatic Renewal
-        details: Easily deploy and auto-renew Let's Encrypt certificates with just one click.
+        title: การปรับใช้ด้วยการคลิกเพียงครั้งเดียวและการต่ออายุอัตโนมัติ
+        details: ปรับใช้และต่ออายุใบรับรอง Let's Encrypt ได้อย่างง่ายดายและอัตโนมัติเพียงคลิกเดียว
     -   icon: 🛠️
-        title: Online Editing Websites Configurations
-        details: Edit configurations using our NgxConfigEditor block editor or Ace Code Editor with nginx syntax highlighting.
+        title: การกำหนดค่าเว็บไซต์การแก้ไขออนไลน์
+        details: แก้ไขการกำหนดค่าโดยใช้ตัวแก้ไขบล็อก NgxConfigEditor หรือ Ace Code Editor พร้อมไฮไลต์ไวยากรณ์ nginx
     -   icon: 📜
-        title: Online View Nginx Logs
-        details: Access and view your Nginx logs directly online.
+        title: ดูบันทึก Nginx แบบออนไลน์
+        details: เข้าถึงและดูบันทึก Nginx ของคุณโดยตรงทางออนไลน์
     -   icon: 💻
-        title: Written in Go and Vue
-        details: The platform is built with Go and Vue, and distributed as a single executable binary.
+        title: เขียนด้วย Go และ Vue
+        details: แพลตฟอร์มนี้สร้างขึ้นด้วย Go และ Vue และเผยแพร่เป็นไฟล์ไบนารีที่ปฏิบัติการได้ไฟล์เดียว
     -   icon: 🔄
-        title: Automatically Test and Reload Configurations
-        details: Test configuration files and reload nginx automatically after saving changes.
+        title: ทดสอบและโหลดการกำหนดค่าใหม่โดยอัตโนมัติ
+        details: ทดสอบไฟล์กำหนดค่าและโหลด nginx ใหม่โดยอัตโนมัติหลังจากบันทึกการเปลี่ยนแปลง
     -   icon: 🖥️
-        title: Web Terminal
-        details: Access a web-based terminal for easy management.
+        title: เว็บเทอร์มินัล
+        details: เข้าถึงเทอร์มินัลบนเว็บเพื่อการจัดการที่ง่ายดาย
     -   icon: 🌙
-        title: Dark Mode
-        details: Enable dark mode for a comfortable user experience.
+        title: โหมดมืด
+        details: เปิดใช้งานโหมดมืดเพื่อประสบการณ์การใช้งานที่สะดวกสบาย
     -   icon: 📱
-        title: Responsive Web Design
-        details: Enjoy a seamless experience on any device with responsive web design.
+        title: การออกแบบเว็บไซต์แบบตอบสนอง
+        details: เพลิดเพลินกับประสบการณ์ที่ราบรื่นบนทุกอุปกรณ์ด้วยการออกแบบเว็บที่ตอบสนอง
     -   icon: 🔐
-        title: 2FA Authentication
-        details: Secure sensitive actions with two-factor authentication.
+        title: การยืนยันตัวตน 2FA
+        details: รักษาความปลอดภัยการดำเนินการที่ละเอียดอ่อนด้วยการยืนยันตัวตนแบบสองปัจจัย
 
 ---
 
