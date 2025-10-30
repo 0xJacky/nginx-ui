@@ -10,6 +10,16 @@ const { data } = storeToRefs(systemSettingsStore)
     <AFormItem :label="$gettext('Stub Status Port')">
       <AInputNumber v-model:value="data.nginx.stub_status_port" />
     </AFormItem>
+    <AFormItem
+      :label="$gettext('Maintenance Template Path')"
+      :help="$gettext('Absolute path to a custom maintenance HTML file (e.g., /etc/nginx/maintenance/enwikuna-maintenance.html). Leave empty to use the built-in template.')"
+    >
+      <AInput
+        v-model:value="data.nginx.maintenance_template"
+        :placeholder="$gettext('e.g., /etc/nginx/maintenance/enwikuna-maintenance.html')"
+        allowClear
+      />
+    </AFormItem>
     <AFormItem :label="$gettext('Nginx Access Log Path')">
       {{ data.nginx.access_log_path }}
     </AFormItem>
