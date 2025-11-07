@@ -1,11 +1,11 @@
- package geolite
+package geolite
 
 import (
 	"fmt"
-	"net"
+	"net/netip"
 	"sync"
 
-	"github.com/oschwald/geoip2-golang"
+	"github.com/oschwald/geoip2-golang/v2"
 	"github.com/uozi-tech/cosy/geoip"
 )
 
@@ -64,8 +64,8 @@ func (s *Service) Search(ipStr string) (*IPLocation, error) {
 		return nil, fmt.Errorf("no databases loaded")
 	}
 
-	ip := net.ParseIP(ipStr)
-	if ip == nil {
+	ip, err := netip.ParseAddr(ipStr)
+	if err != nil {
 		return nil, fmt.Errorf("invalid IP address: %s", ipStr)
 	}
 
@@ -78,27 +78,27 @@ func (s *Service) Search(ipStr string) (*IPLocation, error) {
 	if record, err := s.cityDB.City(ip); err == nil {
 		// Override country code from city database if cosy didn't provide it
 		if loc.RegionCode == "" {
-			loc.RegionCode = record.Country.IsoCode
+			loc.RegionCode = record.Country.ISOCode
 		}
 
 		if len(record.Subdivisions) > 0 {
-			loc.Province = record.Subdivisions[0].Names["en"]
+			loc.Province = record.Subdivisions[0].Names.English
 		}
 
-		loc.City = record.City.Names["en"]
+		loc.City = record.City.Names.English
 
 		// Get Chinese names for Chinese regions
 		if loc.RegionCode == "CN" || loc.RegionCode == "HK" ||
 			loc.RegionCode == "MO" || loc.RegionCode == "TW" {
 			if len(record.Subdivisions) > 0 {
-				if cnRegion := record.Subdivisions[0].Names["zh-CN"]; cnRegion != "" {
+				if cnRegion := record.Subdivisions[0].Names.SimplifiedChinese; cnRegion != "" {
 					loc.Province = cnRegion
 				}
 			} else {
 				// If it's a Chinese IP but has no province, mark it as "其它"
 				loc.Province = "其它"
 			}
-			if cnCity := record.City.Names["zh-CN"]; cnCity != "" {
+			if cnCity := record.City.Names.SimplifiedChinese; cnCity != "" {
 				loc.City = cnCity
 			}
 
@@ -122,8 +122,8 @@ func (s *Service) SearchWithISO(ipStr string) (*IPLocation, error) {
 		return nil, fmt.Errorf("no databases loaded")
 	}
 
-	ip := net.ParseIP(ipStr)
-	if ip == nil {
+	ip, err := netip.ParseAddr(ipStr)
+	if err != nil {
 		return nil, fmt.Errorf("invalid IP address: %s", ipStr)
 	}
 
@@ -136,14 +136,14 @@ func (s *Service) SearchWithISO(ipStr string) (*IPLocation, error) {
 	if record, err := s.cityDB.City(ip); err == nil {
 		// Override country code from city database if cosy didn't provide it
 		if loc.RegionCode == "" {
-			loc.RegionCode = record.Country.IsoCode
+			loc.RegionCode = record.Country.ISOCode
 		}
 
 		if len(record.Subdivisions) > 0 {
-			loc.RegionCode = record.Subdivisions[0].Names["en"]
+			loc.RegionCode = record.Subdivisions[0].Names.English
 		}
 
-		loc.RegionCode = record.City.Names["en"]
+		loc.RegionCode = record.City.Names.English
 
 		return loc, nil
 	}
