@@ -1,6 +1,6 @@
 module github.com/0xJacky/Nginx-UI
 
-go 1.25.3
+go 1.25.4
 
 require (
 	code.pfad.fr/risefront v1.0.0
@@ -35,6 +35,7 @@ require (
 	github.com/nikoksr/notify v1.3.0
 	github.com/nxadm/tail v1.4.11
 	github.com/oschwald/geoip2-golang v1.13.0
+	github.com/oschwald/geoip2-golang/v2 v2.0.0
 	github.com/pkg/errors v0.9.1
 	github.com/pquerna/otp v1.5.0
 	github.com/pretty66/websocketproxy v0.0.0-20220507015215-930b3a686308
@@ -264,7 +265,6 @@ require (
 	github.com/nzdjb/go-metaname v1.0.0 // indirect
 	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/opencontainers/image-spec v1.1.1 // indirect
-	github.com/oschwald/geoip2-golang/v2 v2.0.0 // indirect
 	github.com/oschwald/maxminddb-golang v1.13.1 // indirect
 	github.com/oschwald/maxminddb-golang/v2 v2.1.0 // indirect
 	github.com/ovh/go-ovh v1.9.0 // indirect
