@@ -34,7 +34,6 @@ require (
 	github.com/minio/selfupdate v0.6.0
 	github.com/nikoksr/notify v1.3.0
 	github.com/nxadm/tail v1.4.11
-	github.com/oschwald/geoip2-golang v1.13.0
 	github.com/oschwald/geoip2-golang/v2 v2.0.0
 	github.com/pkg/errors v0.9.1
 	github.com/pquerna/otp v1.5.0
@@ -265,7 +264,6 @@ require (
 	github.com/nzdjb/go-metaname v1.0.0 // indirect
 	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/opencontainers/image-spec v1.1.1 // indirect
-	github.com/oschwald/maxminddb-golang v1.13.1 // indirect
 	github.com/oschwald/maxminddb-golang/v2 v2.1.0 // indirect
 	github.com/ovh/go-ovh v1.9.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.4 // indirect
