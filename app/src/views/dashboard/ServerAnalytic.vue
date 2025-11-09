@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import type ReconnectingWebSocket from 'reconnecting-websocket'
 import type { CPUInfoStat, DiskStat, HostInfoStat, LoadStat, MemStat } from '@/api/analytic'
 import type { Series } from '@/components/Chart/types'
 import analytic from '@/api/analytic'
 import AreaChart from '@/components/Chart/AreaChart.vue'
 import RadialBarChart from '@/components/Chart/RadialBarChart.vue'
 import { bytesToSize } from '@/lib/helper'
+import { useWebSocket } from '@/lib/websocket'
 import { useSettingsStore } from '@/pinia'
 
-let websocket: ReconnectingWebSocket | WebSocket
+let websocket: WebSocket
 
 const settings = useSettingsStore()
 
@@ -85,7 +85,8 @@ onMounted(() => {
     disk_io_analytic[0].data = disk_io_analytic[0].data.concat(r.disk_io.writes)
     disk_io_analytic[1].data = disk_io_analytic[1].data.concat(r.disk_io.reads)
 
-    websocket = analytic.server()
+    const { ws } = useWebSocket(analytic.serverWebSocketUrl)
+    websocket = ws.value!
     websocket.onmessage = wsOnMessage
   })
 })

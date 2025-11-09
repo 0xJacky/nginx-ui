@@ -5,7 +5,7 @@ import dayjs from 'dayjs'
 
 import { marked } from 'marked'
 import upgrade from '@/api/upgrade'
-import websocket from '@/lib/websocket'
+import { useWebSocket } from '@/lib/websocket'
 import version from '@/version.json'
 
 const route = useRoute()
@@ -79,12 +79,13 @@ async function performUpgrade() {
 
   log($gettext('Upgrading Nginx UI, please wait...'))
 
-  const ws = websocket('/api/upgrade/perform', false)
+  const { ws } = useWebSocket('/api/upgrade/perform', false)
+  const socket = ws.value!
 
   let last = 0
 
-  ws.onopen = () => {
-    ws.send(JSON.stringify({
+  socket.onopen = () => {
+    socket.send(JSON.stringify({
       dry_run: dryRun.value,
       channel: channel.value,
       test_commit_and_restart: testCommitAndRestart.value,
@@ -93,7 +94,7 @@ async function performUpgrade() {
 
   let isFailed = false
 
-  ws.onmessage = async m => {
+  socket.onmessage = async m => {
     const r = JSON.parse(m.data)
     if (r.message)
       log(r.message)
@@ -116,13 +117,13 @@ async function performUpgrade() {
     }
   }
 
-  ws.onerror = () => {
+  socket.onerror = () => {
     isFailed = true
     progressStatus.value = 'exception'
     modalClosable.value = true
   }
 
-  ws.onclose = async () => {
+  socket.onclose = async () => {
     if (isFailed)
       return
 

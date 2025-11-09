@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import type ReconnectingWebSocket from 'reconnecting-websocket'
 import { ClockCircleOutlined, ReloadOutlined } from '@ant-design/icons-vue'
 import { storeToRefs } from 'pinia'
 import ngx from '@/api/ngx'
 import { useNginxPerformance } from '@/composables/useNginxPerformance'
 import { NginxStatus } from '@/constants'
-import ws from '@/lib/websocket'
+import { useWebSocket } from '@/lib/websocket'
 import { useGlobalStore } from '@/pinia'
 import ConnectionMetricsCard from './components/ConnectionMetricsCard.vue'
 import ParamsOptimization from './components/ParamsOptimization.vue'
@@ -32,7 +31,7 @@ const {
 } = useNginxPerformance()
 
 // WebSocket connection
-const wsInstance = shallowRef<WebSocket | ReconnectingWebSocket | null>(null)
+const wsInstance = shallowRef<WebSocket | null>(null)
 
 // Toggle stub_status module status
 async function toggleStubStatus() {
@@ -67,7 +66,8 @@ function connectWebSocket() {
   loading.value = true
 
   try {
-    const wsConnection = ws('api/nginx/detail_status/ws')
+    const { ws } = useWebSocket('/api/nginx/detail_status/ws', false)
+    const wsConnection = ws.value!
     wsInstance.value = wsConnection
 
     wsConnection.onmessage = event => {

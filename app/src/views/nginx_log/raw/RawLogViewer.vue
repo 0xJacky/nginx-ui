@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import type ReconnectingWebSocket from 'reconnecting-websocket'
 import type { NginxLogData } from '@/api/nginx_log'
 import { useElementSize } from '@vueuse/core'
 import { debounce } from 'lodash'
 import nginx_log from '@/api/nginx_log'
-import ws from '@/lib/websocket'
+import { useWebSocket } from '@/lib/websocket'
 
 interface Props {
   logPath: string
@@ -18,7 +17,7 @@ const props = defineProps<Props>()
 const logContainer = useTemplateRef('logContainer')
 
 // Reactive data
-let websocket: ReconnectingWebSocket | WebSocket
+let websocket: WebSocket
 // Line-based storage for virtualization
 const lines = ref<string[]>([])
 const tailFragment = ref('') // carry over partial line when appending
@@ -113,7 +112,8 @@ const bottomPaddingStyle = computed(() => ({ height: `${bottomPaddingPx.value}px
 
 // WebSocket functions
 function openWs() {
-  websocket = ws('/api/nginx_log')
+  const { ws } = useWebSocket('/api/nginx_log', false)
+  websocket = ws.value!
 
   websocket.onopen = () => {
     websocket.send(JSON.stringify(control.value))

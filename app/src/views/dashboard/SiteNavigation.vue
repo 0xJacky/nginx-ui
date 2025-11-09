@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type ReconnectingWebSocket from 'reconnecting-websocket'
 import type { SiteInfo } from '@/api/site_navigation'
 import { GlobalOutlined } from '@ant-design/icons-vue'
 import Sortable from 'sortablejs'
@@ -19,7 +18,7 @@ const configModalVisible = ref(false)
 const configTarget = ref<SiteInfo>()
 
 let sortableInstance: Sortable | null = null
-let websocket: ReconnectingWebSocket | WebSocket | null = null
+let websocket: WebSocket | null = null
 
 // Display sites - use draggable sites in settings mode, backend sorted sites otherwise
 const displaySites = computed(() => {
@@ -27,9 +26,11 @@ const displaySites = computed(() => {
 })
 
 // WebSocket connection
-function connectWebSocket() {
+async function connectWebSocket() {
   try {
-    websocket = siteNavigationApi.createWebSocket()
+    const { useWebSocket } = await import('@/lib/websocket')
+    const { ws } = useWebSocket(siteNavigationApi.websocketUrl)
+    websocket = ws.value!
 
     if (!websocket) {
       isConnected.value = false

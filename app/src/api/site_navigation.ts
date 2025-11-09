@@ -1,6 +1,5 @@
 import type { SiteStatusType } from '@/constants/site-status'
 import { http } from '@uozi-admin/request'
-import ws from '@/lib/websocket'
 
 export interface SiteInfo {
   id: number // primary identifier for API operations
@@ -144,8 +143,6 @@ export const siteNavigationApi = {
     return http.post(`/site_navigation/test_health_check/${id}`, { config })
   },
 
-  // WebSocket connection using lib/websocket
-  createWebSocket() {
-    return ws('/api/site_navigation_ws', true)
-  },
+  // WebSocket URL for real-time updates
+  websocketUrl: '/api/site_navigation_ws',
 }

@@ -1,5 +1,4 @@
 import { http } from '@uozi-admin/request'
-import ws from '@/lib/websocket'
 
 export interface UpstreamStatus {
   online: boolean
@@ -45,10 +44,8 @@ const upstream = {
     return http.get('/upstream/availability')
   },
 
-  // WebSocket interface for real-time availability updates
-  availabilityWebSocket() {
-    return ws('/api/upstream/availability_ws')
-  },
+  // WebSocket URL for real-time availability updates
+  availabilityWebSocketUrl: '/api/upstream/availability_ws',
 
   // Get all sockets with their configuration and health status
   getSocketList(): Promise<SocketListResponse> {

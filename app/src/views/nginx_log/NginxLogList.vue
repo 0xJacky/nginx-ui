@@ -10,8 +10,7 @@ import dayjs from 'dayjs'
 import nginxLog from '@/api/nginx_log'
 import { DevDebugPanel } from '@/components/DevDebugPanel'
 import { TabFilter } from '@/components/TabFilter'
-import { useWebSocketEventBus } from '@/composables/useWebSocketEventBus'
-import { useGlobalStore } from '@/pinia'
+import { useGlobalStore, useWebSocketEventBusStore } from '@/pinia'
 import IndexingSettingsModal from './components/IndexingSettingsModal.vue'
 import { useIndexProgress } from './composables/useIndexProgress'
 import IndexProgressBar from './indexing/components/IndexProgressBar.vue'
@@ -27,7 +26,8 @@ const advancedIndexingEnabled = ref(false)
 const enableIndexingLoading = ref(false)
 
 // WebSocket event bus and global store
-const { subscribe } = useWebSocketEventBus()
+const websocketEventBus = useWebSocketEventBusStore()
+const subscriptionIds = ref<string[]>([])
 const globalStore = useGlobalStore()
 const { nginxLogStatus, processingStatus } = storeToRefs(globalStore)
 
@@ -92,7 +92,7 @@ onMounted(async () => {
   await checkAdvancedIndexingStatus()
 
   // Subscribe to processing status events
-  subscribe('processing_status', data => {
+  subscriptionIds.value.push(websocketEventBus.subscribe('processing_status', data => {
     const wasIndexing = processingStatus.value?.nginx_log_indexing
     processingStatus.value = data
 
@@ -111,27 +111,33 @@ onMounted(async () => {
         }
       }, 500)
     }
-  })
+  }))
 
   // Subscribe to nginx log status events (backward compatibility)
-  subscribe('nginx_log_status', data => {
+  subscriptionIds.value.push(websocketEventBus.subscribe('nginx_log_status', data => {
     nginxLogStatus.value = data
-  })
+  }))
 
   // Subscribe to index ready events to refresh the list
-  subscribe('nginx_log_index_ready', () => {
+  subscriptionIds.value.push(websocketEventBus.subscribe('nginx_log_index_ready', () => {
     // Refresh the table data
     if (stdCurdRef.value) {
       setTimeout(() => {
         stdCurdRef.value.refresh()
       }, 1000)
     }
-  })
+  }))
 })
 
 onUnmounted(() => {
   // Clean up auto refresh timer
   stopAutoRefresh()
+
+  // Clean up WebSocket subscriptions
+  subscriptionIds.value.forEach(id => {
+    websocketEventBus.unsubscribe(id)
+  })
+  subscriptionIds.value = []
 })
 
 // Base columns that are always visible

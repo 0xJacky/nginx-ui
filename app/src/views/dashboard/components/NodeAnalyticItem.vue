@@ -1,35 +1,16 @@
 <script setup lang="ts">
-import type { Node } from '@/api/node'
+import type { AnalyticNode } from '@/api/node'
 import Icon, { ArrowDownOutlined, ArrowUpOutlined, DatabaseOutlined, LineChartOutlined, SendOutlined } from '@ant-design/icons-vue'
 import cpu from '@/assets/svg/cpu.svg?component'
 import memory from '@/assets/svg/memory.svg?component'
 import UsageProgressLine from '@/components/Chart/UsageProgressLine.vue'
 import { bytesToSize } from '@/lib/helper'
 
-interface ExtendedNode extends Node {
-  version?: string
-  avg_load?: {
-    load1: number
-    load5: number
-    load15: number
-  }
-  network?: {
-    bytesSent: number
-    bytesRecv: number
-  }
-  cpu_percent?: number
-  cpu_num?: number
-  memory_percent?: number
-  memory_total?: string
-  disk_percent?: number
-  disk_total?: string
-}
-
 defineProps<{
-  item: ExtendedNode
+  item: AnalyticNode
   currentNodeId?: number
   localVersion?: string
-  onLinkStart?: (item: ExtendedNode) => void
+  onLinkStart?: (item: AnalyticNode) => void
 }>()
 </script>
 

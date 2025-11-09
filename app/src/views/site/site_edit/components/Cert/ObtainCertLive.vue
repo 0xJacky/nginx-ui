@@ -2,7 +2,7 @@
 import type { Ref } from 'vue'
 import type { AutoCertOptions } from '@/api/auto_cert'
 import type { CertificateResult } from '@/api/cert'
-import websocket from '@/lib/websocket'
+import { useWebSocket } from '@/lib/websocket'
 import { useSiteEditorStore } from '../SiteEditor/store'
 
 const props = defineProps<{
@@ -45,17 +45,18 @@ async function issue_cert(config_name: string, server_name: string[], key_type: 
 
     log($gettext('Getting the certificate, please wait...'))
 
-    const ws = websocket(`/api/domain/${config_name}/cert`, false)
+    const { ws } = useWebSocket(`/api/domain/${config_name}/cert`, false)
+    const socket = ws.value!
 
-    ws.onopen = () => {
-      ws.send(JSON.stringify({
+    socket.onopen = () => {
+      socket.send(JSON.stringify({
         server_name,
         ...props.options,
         key_type,
       }))
     }
 
-    ws.onmessage = async m => {
+    socket.onmessage = async m => {
       const r = JSON.parse(m.data)
 
       log(T(r))

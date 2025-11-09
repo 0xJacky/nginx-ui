@@ -1,10 +1,10 @@
 import type { Editor } from 'ace-builds'
 import type { Point } from 'ace-builds-internal/document'
-import type ReconnectingWebSocket from 'reconnecting-websocket'
 import ace from 'ace-builds'
 import { debounce } from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
 import llm from '@/api/llm'
+import { useWebSocket } from '@/lib/websocket'
 
 function debug(...args: unknown[]) {
   if (import.meta.env.DEV) {
@@ -43,7 +43,7 @@ function useCodeCompletion() {
   const lastTriggerTime = ref<number>(0)
   const lastTriggerPosition = ref<{ row: number, column: number } | null>(null)
 
-  const ws = shallowRef<ReconnectingWebSocket>()
+  const ws = shallowRef<WebSocket>()
 
   // Check if the current file is a configuration file
   function checkIfConfigFile(filename: string, content: string): boolean {
@@ -496,7 +496,8 @@ function useCodeCompletion() {
       return
     }
 
-    ws.value = llm.code_completion()
+    const { ws: wsRef } = useWebSocket(llm.codeCompletionWebSocketUrl, false)
+    ws.value = wsRef.value!
 
     editorRef.value = editor
 

@@ -1,7 +1,6 @@
 import type { Container } from '@/language'
 import type { CosyError } from '@/lib/http'
 import { http } from '@uozi-admin/request'
-import ws from '@/lib/websocket'
 
 export const ReportStatus = {
   Success: 'success',
@@ -27,9 +26,7 @@ const selfCheck = {
   fix(taskName: string) {
     return http.post(`/self_check/${taskName}/fix`)
   },
-  websocket() {
-    return ws('/api/self_check/websocket', false)
-  },
+  websocketUrl: '/api/self_check/websocket',
   timeoutCheck() {
     return http.get('/self_check/timeout')
   },

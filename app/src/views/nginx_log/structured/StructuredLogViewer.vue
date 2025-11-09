@@ -5,8 +5,8 @@ import { DownOutlined, ExclamationCircleOutlined, ReloadOutlined } from '@ant-de
 import { Tag } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import nginx_log from '@/api/nginx_log'
-import { useWebSocketEventBus } from '@/composables/useWebSocketEventBus'
 import { bytesToSize } from '@/lib/helper'
+import { useWebSocketEventBusStore } from '@/pinia'
 import LoadingState from '../components/LoadingState.vue'
 import { useIndexProgress } from '../composables/useIndexProgress'
 import SearchFilters from './components/SearchFilters.vue'
@@ -31,7 +31,8 @@ const { message } = App.useApp()
 const route = useRoute()
 
 // WebSocket event bus for index ready notifications
-const { subscribe: subscribeToEvent } = useWebSocketEventBus()
+const websocketEventBus = useWebSocketEventBusStore()
+let indexReadySubscriptionId: string | null = null
 
 // Index progress tracking for this specific file
 const { isFileIndexing } = useIndexProgress()
@@ -609,7 +610,7 @@ onMounted(async () => {
   }
 
   // Subscribe to index ready notifications
-  subscribeToEvent('nginx_log_index_ready', data => {
+  indexReadySubscriptionId = websocketEventBus.subscribe('nginx_log_index_ready', data => {
     setTimeout(() => handleIndexReadyNotification(data), 1000)
   })
 
@@ -630,6 +631,12 @@ onMounted(async () => {
   catch {
     indexingStatus.value = 'failed'
     // Don't show any error messages - the empty page clearly indicates the issue
+  }
+})
+
+onUnmounted(() => {
+  if (indexReadySubscriptionId) {
+    websocketEventBus.unsubscribe(indexReadySubscriptionId)
   }
 })
 

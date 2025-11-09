@@ -1,6 +1,7 @@
 import type { FrontendTask } from '../types'
 import type { ReportStatusType } from '@/api/self_check'
 import selfCheck, { ReportStatus } from '@/api/self_check'
+import { useWebSocket } from '@/lib/websocket'
 
 /**
  * WebSocket Task
@@ -17,11 +18,13 @@ const WebsocketTask: FrontendTask = {
   check: async (): Promise<ReportStatusType> => {
     try {
       const connected = await new Promise<boolean>(resolve => {
-        const ws = selfCheck.websocket()
-        ws.onopen = () => {
+        const { ws } = useWebSocket(selfCheck.websocketUrl, false)
+        const socket = ws.value!
+        socket.onopen = () => {
+          socket.close()
           resolve(true)
         }
-        ws.onerror = () => {
+        socket.onerror = () => {
           resolve(false)
         }
         // Set a timeout for the connection attempt

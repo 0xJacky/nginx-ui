@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { NodeStatus } from '@/pinia/moudule/nodeAvailability'
+import type { AnalyticNode } from '@/api/node'
 import { useNodeAvailabilityStore } from '@/pinia/moudule/nodeAvailability'
 
 const props = defineProps<{
@@ -16,9 +16,10 @@ const data = computed(() => nodeStore.getAllNodes())
 const data_map = computed(() => {
   const nodes = nodeStore.getAllNodes()
   return nodes.reduce((acc, node) => {
-    acc[node.id] = node
+    if (node.id)
+      acc[node.id] = node
     return acc
-  }, {} as Record<number, NodeStatus>)
+  }, {} as Record<number, Partial<AnalyticNode>>)
 })
 
 const value = computed({

@@ -1,6 +1,4 @@
-import type ReconnectingWebSocket from 'reconnecting-websocket'
 import { http } from '@uozi-admin/request'
-import ws from '@/lib/websocket'
 
 export interface ChatComplicationMessage {
   role: string
@@ -41,9 +39,7 @@ const llm = {
   store_messages(data: { file_name?: string, messages?: ChatComplicationMessage[] }) {
     return http.post('/llm_messages', data)
   },
-  code_completion() {
-    return ws('/api/code_completion') as ReconnectingWebSocket
-  },
+  codeCompletionWebSocketUrl: '/api/code_completion',
   get_code_completion_enabled_status() {
     return http.get<{ enabled: boolean }>('/code_completion/enabled')
   },

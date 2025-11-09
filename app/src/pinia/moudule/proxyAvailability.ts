@@ -1,7 +1,5 @@
-import type ReconnectingWebSocket from 'reconnecting-websocket'
 import type { ProxyTarget } from '@/api/site'
 import type { UpstreamAvailabilityResponse, UpstreamStatus } from '@/api/upstream'
-import analytic from '@/api/analytic'
 import upstream from '@/api/upstream'
 import { useNodeAvailabilityStore } from './nodeAvailability'
 
@@ -25,8 +23,8 @@ export type ProxyAvailabilityResult = UpstreamStatus
 export const useProxyAvailabilityStore = defineStore('proxyAvailability', () => {
   const availabilityResults = ref<Record<string, ProxyAvailabilityResult>>({})
   const upstreamStatusMap = ref<UpstreamStatusMap>({})
-  const websocket = shallowRef<ReconnectingWebSocket | WebSocket>()
-  const nodeAnalyticsWebsocket = shallowRef<ReconnectingWebSocket | WebSocket>()
+  const websocket = shallowRef<WebSocket>()
+  const nodeAnalyticsWebsocket = shallowRef<WebSocket>()
   const isConnected = ref(false)
   const isNodeAnalyticsConnected = ref(false)
   const isInitialized = ref(false)
@@ -76,7 +74,7 @@ export const useProxyAvailabilityStore = defineStore('proxyAvailability', () => 
   }
 
   // Connect to WebSocket for real-time updates
-  function connectWebSocket() {
+  async function connectWebSocket() {
     if (websocket.value && isConnected.value) {
       return
     }
@@ -88,14 +86,15 @@ export const useProxyAvailabilityStore = defineStore('proxyAvailability', () => 
 
     try {
       // Create new WebSocket connection
-      const ws = upstream.availabilityWebSocket()
-      websocket.value = ws
+      const { useWebSocket } = await import('@/lib/websocket')
+      const { ws } = useWebSocket(upstream.availabilityWebSocketUrl)
+      websocket.value = ws.value!
 
-      ws.onopen = () => {
+      ws.value!.onopen = () => {
         isConnected.value = true
       }
 
-      ws.onmessage = (e: MessageEvent) => {
+      ws.value!.onmessage = (e: MessageEvent) => {
         try {
           const results = JSON.parse(e.data) as Record<string, ProxyAvailabilityResult>
           // Update availability results with latest data
@@ -107,71 +106,17 @@ export const useProxyAvailabilityStore = defineStore('proxyAvailability', () => 
         }
       }
 
-      ws.onclose = () => {
+      ws.value!.onclose = () => {
         isConnected.value = false
       }
 
-      ws.onerror = error => {
+      ws.value!.onerror = error => {
         console.error('Proxy availability WebSocket error:', error)
         isConnected.value = false
       }
     }
     catch (error) {
       console.error('Failed to create WebSocket connection:', error)
-    }
-  }
-
-  // Connect to node analytics WebSocket for multi-node upstream data
-  function connectNodeAnalyticsWebSocket() {
-    if (nodeAnalyticsWebsocket.value && isNodeAnalyticsConnected.value) {
-      return
-    }
-
-    // Close existing connection if any
-    if (nodeAnalyticsWebsocket.value) {
-      nodeAnalyticsWebsocket.value.close()
-    }
-
-    try {
-      // Create new WebSocket connection to node analytics
-      const ws = analytic.nodes()
-      nodeAnalyticsWebsocket.value = ws
-
-      ws.onopen = () => {
-        isNodeAnalyticsConnected.value = true
-      }
-
-      ws.onmessage = (e: MessageEvent) => {
-        try {
-          const nodeData = JSON.parse(e.data)
-
-          // Process each node's data
-          for (const [nodeIdStr, nodeInfo] of Object.entries(nodeData)) {
-            const nodeId = Number.parseInt(nodeIdStr)
-            if (nodeInfo && typeof nodeInfo === 'object' && 'upstream_status_map' in nodeInfo) {
-              const upstreamData = nodeInfo.upstream_status_map as Record<string, NodeUpstreamStatus>
-              updateUpstreamStatusMapFromNode(nodeId, upstreamData)
-            }
-          }
-
-          lastUpdateTime.value = new Date().toISOString()
-        }
-        catch (error) {
-          console.error('Failed to parse node analytics WebSocket message:', error)
-        }
-      }
-
-      ws.onclose = () => {
-        isNodeAnalyticsConnected.value = false
-      }
-
-      ws.onerror = error => {
-        console.error('Node analytics WebSocket error:', error)
-        isNodeAnalyticsConnected.value = false
-      }
-    }
-    catch (error) {
-      console.error('Failed to create node analytics WebSocket connection:', error)
     }
   }
 
@@ -184,7 +129,6 @@ export const useProxyAvailabilityStore = defineStore('proxyAvailability', () => 
 
     await initialize()
     connectWebSocket()
-    connectNodeAnalyticsWebSocket()
   }
 
   // Stop monitoring and cleanup
@@ -287,7 +231,6 @@ export const useProxyAvailabilityStore = defineStore('proxyAvailability', () => 
     startMonitoring,
     stopMonitoring,
     connectWebSocket,
-    connectNodeAnalyticsWebSocket,
     getAvailabilityResult,
     hasAvailabilityData,
     getAllTargets,

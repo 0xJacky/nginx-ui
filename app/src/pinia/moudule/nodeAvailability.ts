@@ -1,23 +1,53 @@
-import type ReconnectingWebSocket from 'reconnecting-websocket'
-import type { Node } from '@/api/node'
+import type { AnalyticNode, Node } from '@/api/node'
+import analytic from '@/api/analytic'
 import nodeApi from '@/api/node'
-import ws from '@/lib/websocket'
-
-export interface NodeStatus {
-  id: number
-  name: string
-  status: boolean
-  url?: string
-  token?: string
-  enabled?: boolean
-}
+import { useWebSocket } from '@/lib/websocket'
 
 export const useNodeAvailabilityStore = defineStore('nodeAvailability', () => {
-  const nodes = ref<Record<number, NodeStatus>>({})
-  const websocket = shallowRef<ReconnectingWebSocket | WebSocket>()
+  const nodes = ref<Record<string, Partial<AnalyticNode>>>({})
+  const websocket = shallowRef<WebSocket | null>(null)
   const isConnected = ref(false)
   const isInitialized = ref(false)
   const lastUpdateTime = ref<string>('')
+  const isConnecting = ref(false)
+  const nodeList = computed<Partial<AnalyticNode>[]>(() => Object.values(nodes.value))
+
+  const socket = useWebSocket<Record<string, Partial<AnalyticNode>>>(analytic.nodesWebSocketUrl, true, {
+    immediate: false,
+    autoClose: false,
+    onConnected(webSocket) {
+      websocket.value = webSocket
+      isConnected.value = true
+      isConnecting.value = false
+    },
+    onDisconnected() {
+      isConnected.value = false
+      isConnecting.value = false
+      websocket.value = null
+    },
+    onError(event) {
+      console.warn('Failed to connect to nodes WebSocket endpoint', event)
+      isConnected.value = false
+      isConnecting.value = false
+    },
+    onMessage(_, event) {
+      try {
+        const nodesData = JSON.parse(event.data) as Record<string, Partial<AnalyticNode>>
+
+        Object.keys(nodesData).forEach((nodeIdStr: string) => {
+          const nodeId = Number.parseInt(nodeIdStr)
+          const nodeData = nodesData[nodeIdStr]
+
+          nodes.value[nodeId] = nodeData
+        })
+
+        lastUpdateTime.value = new Date().toISOString()
+      }
+      catch (error) {
+        console.error('Error parsing WebSocket message:', error)
+      }
+    },
+  })
 
   // Initialize node data from API and WebSocket
   async function initialize() {
@@ -28,13 +58,13 @@ export const useNodeAvailabilityStore = defineStore('nodeAvailability', () => {
     try {
       // First, load the initial node data from API
       const response = await nodeApi.getList({ enabled: true })
-      const nodeMap: Record<number, NodeStatus> = {}
+      const nodeMap: Record<string, Partial<AnalyticNode>> = {}
 
       response.data.forEach((node: Node) => {
         nodeMap[node.id] = {
           id: node.id,
           name: node.name,
-          status: node.status ?? false,
+          status: node.status,
           url: node.url,
           token: node.token,
           enabled: true,
@@ -57,71 +87,27 @@ export const useNodeAvailabilityStore = defineStore('nodeAvailability', () => {
 
   // Connect to WebSocket for real-time updates
   function connectWebSocket() {
-    if (websocket.value && isConnected.value) {
+    const readyState = socket.ws.value?.readyState
+
+    if (readyState === WebSocket.OPEN) {
+      isConnected.value = true
+      isConnecting.value = false
       return
     }
 
-    // Close existing connection if any
-    if (websocket.value) {
-      websocket.value.close()
+    if (readyState === WebSocket.CONNECTING || isConnecting.value) {
+      isConnecting.value = true
+      return
     }
 
+    isConnecting.value = true
+
     try {
-      // Create new WebSocket connection
-      const socket = ws('/api/analytic/nodes', true)
-      websocket.value = socket
-
-      socket.onopen = () => {
-        isConnected.value = true
-      }
-
-      socket.onmessage = event => {
-        try {
-          const nodesData = JSON.parse(event.data)
-
-          // The /api/analytic/nodes endpoint returns an object with node IDs as keys
-          // Update existing nodes' status or create new ones if not exist
-          Object.keys(nodesData).forEach((nodeIdStr: string) => {
-            const nodeId = Number.parseInt(nodeIdStr)
-            const nodeData = nodesData[nodeIdStr]
-
-            // Update existing node or create new one
-            const existingNode = nodes.value[nodeId]
-            if (existingNode) {
-              // Update status for existing node
-              existingNode.status = nodeData.status ?? false
-            }
-            else {
-              // Create new node entry (this should be initialized from API call)
-              nodes.value[nodeId] = {
-                id: nodeId,
-                name: nodeData.name || `Node ${nodeId}`,
-                status: nodeData.status ?? false,
-                url: nodeData.url,
-                token: nodeData.token,
-                enabled: true,
-              }
-            }
-          })
-
-          lastUpdateTime.value = new Date().toISOString()
-        }
-        catch (error) {
-          console.error('Error parsing WebSocket message:', error)
-        }
-      }
-
-      socket.onclose = () => {
-        isConnected.value = false
-      }
-
-      socket.onerror = error => {
-        console.warn('Failed to connect to nodes WebSocket endpoint', error)
-        isConnected.value = false
-      }
+      socket.open()
     }
     catch (error) {
       console.error('Failed to create WebSocket connection:', error)
+      isConnecting.value = false
     }
   }
 
@@ -132,25 +118,27 @@ export const useNodeAvailabilityStore = defineStore('nodeAvailability', () => {
 
   // Stop monitoring and cleanup
   function stopMonitoring() {
-    if (websocket.value) {
-      websocket.value.close()
-      websocket.value = undefined
-      isConnected.value = false
+    if (socket.ws.value && socket.ws.value.readyState !== WebSocket.CLOSED) {
+      socket.close()
     }
+
+    websocket.value = null
+    isConnected.value = false
+    isConnecting.value = false
   }
 
   // Get node status by ID
-  function getNodeStatus(nodeId: number): NodeStatus | undefined {
+  function getNodeStatus(nodeId: number): Partial<AnalyticNode> | undefined {
     return nodes.value[nodeId]
   }
 
   // Get all nodes as array
-  function getAllNodes(): NodeStatus[] {
+  function getAllNodes(): Partial<AnalyticNode>[] {
     return Object.values(nodes.value)
   }
 
   // Get enabled nodes only
-  function getEnabledNodes(): NodeStatus[] {
+  function getEnabledNodes(): Partial<AnalyticNode>[] {
     return Object.values(nodes.value).filter(node => node.enabled)
   }
 
@@ -175,9 +163,11 @@ export const useNodeAvailabilityStore = defineStore('nodeAvailability', () => {
 
   return {
     nodes: readonly(nodes),
+    nodeList,
     isConnected: readonly(isConnected),
     isInitialized: readonly(isInitialized),
     lastUpdateTime: readonly(lastUpdateTime),
+    isConnecting: readonly(isConnecting),
     initialize,
     startMonitoring,
     stopMonitoring,

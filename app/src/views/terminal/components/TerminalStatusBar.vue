@@ -2,6 +2,7 @@
 import type { DiskStat, LoadStat, MemStat } from '@/api/analytic'
 import analytic from '@/api/analytic'
 import { formatDateTime } from '@/lib/helper'
+import { useWebSocket } from '@/lib/websocket'
 
 interface StatusData {
   version: string
@@ -118,8 +119,8 @@ async function initializeData() {
 // Connect to WebSocket for real-time updates
 function connectWebSocket() {
   try {
-    const ws = analytic.server()
-    websocket.value = ws as WebSocket
+    const { ws } = useWebSocket(analytic.serverWebSocketUrl)
+    websocket.value = ws.value!
 
     if (websocket.value) {
       websocket.value.onmessage = event => {

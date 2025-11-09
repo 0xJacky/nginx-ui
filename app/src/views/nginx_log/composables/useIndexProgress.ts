@@ -1,5 +1,5 @@
 import type { IndexProgress } from '../indexing/components/IndexProgressBar.vue'
-import { useWebSocketEventBus } from '@/composables/useWebSocketEventBus'
+import { useWebSocketEventBusStore } from '@/pinia'
 
 export interface IndexProgressData {
   log_path: string
@@ -20,7 +20,8 @@ export interface IndexCompleteData {
 }
 
 export function useIndexProgress() {
-  const { subscribe } = useWebSocketEventBus()
+  const websocketEventBus = useWebSocketEventBusStore()
+  const subscriptionIds = ref<string[]>([])
 
   // Store progress for each log file
   const progressMap = ref<Map<string, IndexProgress>>(new Map())
@@ -39,7 +40,7 @@ export function useIndexProgress() {
   })
 
   // Subscribe to progress events
-  subscribe<IndexProgressData>('nginx_log_index_progress', data => {
+  subscriptionIds.value.push(websocketEventBus.subscribe<IndexProgressData>('nginx_log_index_progress', data => {
     // Ignore status_update events - these are just status changes, not actual progress
     if (data.stage === 'status_update') {
       // If there's no actual indexing progress, remove any existing progress bar
@@ -63,10 +64,10 @@ export function useIndexProgress() {
 
     // Update global progress
     updateGlobalProgress()
-  })
+  }))
 
   // Subscribe to completion events
-  subscribe<IndexCompleteData>('nginx_log_index_complete', data => {
+  subscriptionIds.value.push(websocketEventBus.subscribe<IndexCompleteData>('nginx_log_index_complete', data => {
     if (data.success) {
       // Keep progress for a short time to show completion, then remove
       setTimeout(() => {
@@ -92,17 +93,27 @@ export function useIndexProgress() {
         updateGlobalProgress()
       }, 5000)
     }
-  })
+  }))
 
   // Subscribe to processing status events for global state
-  subscribe<{ nginx_log_indexing: boolean }>('processing_status', data => {
+  subscriptionIds.value.push(websocketEventBus.subscribe<{ nginx_log_indexing: boolean }>('processing_status', data => {
     isGlobalIndexing.value = data.nginx_log_indexing
     if (!data.nginx_log_indexing) {
       // Clear all progress when indexing stops
       progressMap.value.clear()
       updateGlobalProgress()
     }
-  })
+  }))
+
+  // Auto cleanup on unmount
+  if (getCurrentInstance()) {
+    onUnmounted(() => {
+      subscriptionIds.value.forEach(id => {
+        websocketEventBus.unsubscribe(id)
+      })
+      subscriptionIds.value = []
+    })
+  }
 
   function updateGlobalProgress() {
     const activeFiles = Array.from(progressMap.value.values())

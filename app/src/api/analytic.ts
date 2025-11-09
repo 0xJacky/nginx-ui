@@ -1,5 +1,4 @@
 import { http } from '@uozi-admin/request'
-import ws from '@/lib/websocket'
 
 export interface CPUInfoStat {
   cpu: number
@@ -120,12 +119,8 @@ const analytic = {
   init(): Promise<AnalyticInit> {
     return http.get('/analytic/init')
   },
-  server() {
-    return ws('/api/analytic')
-  },
-  nodes() {
-    return ws('/api/analytic/nodes')
-  },
+  serverWebSocketUrl: '/api/analytic',
+  nodesWebSocketUrl: '/api/analytic/nodes',
 }
 
 export default analytic

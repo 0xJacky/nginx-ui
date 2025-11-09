@@ -2,7 +2,7 @@
 import type { Cert } from '@/api/cert'
 import cert from '@/api/cert'
 import { AutoCertState } from '@/constants'
-import websocket from '@/lib/websocket'
+import { useWebSocket } from '@/lib/websocket'
 
 const props = defineProps<{
   id: number
@@ -42,9 +42,10 @@ function handleConfirm() {
 
   if (shouldRevoke.value) {
     // Revoke certificate using WebSocket
-    const ws = websocket(`/api/certs/${props.id}/revoke`, false)
+    const { ws } = useWebSocket(`/api/certs/${props.id}/revoke`, false)
+    const socket = ws.value!
 
-    ws.onmessage = m => {
+    socket.onmessage = m => {
       const response = JSON.parse(m.data)
 
       if (response.status === 'success') {
@@ -60,7 +61,7 @@ function handleConfirm() {
       }
     }
 
-    ws.onerror = () => {
+    socket.onerror = () => {
       message.error($gettext('WebSocket connection error'))
       confirmLoading.value = false
     }

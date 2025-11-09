@@ -3,9 +3,7 @@ import type { Ref } from 'vue'
 import type { Namespace } from '@/api/namespace'
 import type { Node } from '@/api/node'
 import Icon, { LinkOutlined, ThunderboltOutlined } from '@ant-design/icons-vue'
-import analytic from '@/api/analytic'
 import namespaceApi from '@/api/namespace'
-import nodeApi from '@/api/node'
 import logo from '@/assets/img/logo.png'
 import pulse from '@/assets/svg/pulse.svg?component'
 import NamespaceTabs from '@/components/NamespaceTabs'
@@ -16,18 +14,8 @@ import { version } from '@/version.json'
 import NodeAnalyticItem from './components/NodeAnalyticItem.vue'
 
 const nodeStore = useNodeAvailabilityStore()
-const data = ref([]) as Ref<Node[]>
+const { nodeList } = storeToRefs(nodeStore)
 const activeNamespaceKey = ref<string | number>(0)
-
-const nodeMap = computed(() => {
-  const o = {} as Record<number, Node>
-
-  data.value.forEach(v => {
-    o[v.id] = v
-  })
-
-  return o
-})
 
 // Get namespaces to filter nodes
 const namespaces = ref([]) as Ref<Namespace[]>
@@ -35,7 +23,7 @@ const namespaces = ref([]) as Ref<Namespace[]>
 // Filtered nodes based on active namespace
 const filteredNodes = computed(() => {
   if (activeNamespaceKey.value === 0) {
-    return data.value
+    return nodeList.value
   }
 
   const currentNamespace = namespaces.value.find(ns => ns.id === Number(activeNamespaceKey.value))
@@ -43,7 +31,8 @@ const filteredNodes = computed(() => {
     return []
   }
 
-  return data.value.filter(node => currentNamespace.sync_node_ids.includes(node.id))
+  return nodeList.value
+    .filter(node => currentNamespace.sync_node_ids.includes(node.id ?? 0))
 })
 
 // Load all namespaces (handle pagination)
@@ -74,38 +63,7 @@ async function loadAllNamespaces() {
 }
 
 onMounted(() => {
-  nodeApi.getList({ enabled: true }).then(r => {
-    data.value.push(...r.data)
-  })
-
   loadAllNamespaces()
-})
-
-onMounted(() => {
-  const websocket = analytic.nodes()
-  websocket.onmessage = async m => {
-    const nodes = JSON.parse(m.data)
-
-    Object.keys(nodes).forEach((v: string) => {
-      const key = Number.parseInt(v)
-
-      // update node online status
-      if (nodeMap.value[key]) {
-        Object.assign(nodeMap.value[key], nodes[key])
-        nodeMap.value[key].response_at = new Date()
-
-        // Also update global store
-        const nodeStatus = nodeStore.getNodeStatus(key)
-        if (nodeStatus) {
-          nodeStatus.status = nodes[key].status ?? false
-        }
-      }
-    })
-  }
-
-  onUnmounted(() => {
-    websocket.close()
-  })
 })
 
 const settingsStore = useSettingsStore()
@@ -120,7 +78,7 @@ const visible = computed(() => {
   if (node.value.id > 0)
     return false
   else
-    return data.value?.length
+    return nodeList.value.length
 })
 </script>
 

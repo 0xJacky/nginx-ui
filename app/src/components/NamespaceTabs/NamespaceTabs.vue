@@ -53,7 +53,7 @@ const loading = ref({
 const currentNamespace = computed(() => {
   if (!modelValue.value || modelValue.value === 0)
     return null
-  return namespaces.value.find(g => g.id === Number(modelValue.value))
+  return namespaces.value.find(g => g.id === modelValue.value)
 })
 
 // Get the list of nodes in the current group
@@ -74,7 +74,7 @@ async function handleReloadNginx() {
   if (!currentNamespace.value || !syncNodes.value.length)
     return
 
-  const nodeIds = syncNodes.value.map(node => node.id)
+  const nodeIds = syncNodes.value.map(node => node.id).filter(id => id !== undefined)
 
   loading.value.reload = true
   try {
@@ -94,7 +94,7 @@ async function handleRestartNginx() {
   if (!currentNamespace.value || !syncNodes.value.length)
     return
 
-  const nodeIds = syncNodes.value.map(node => node.id)
+  const nodeIds = syncNodes.value.map(node => node.id).filter(id => id !== undefined)
 
   loading.value.restart = true
   try {

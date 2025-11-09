@@ -4,7 +4,7 @@ import type { ReleaseInfo } from '@/api/upgrade'
 import { cloneDeep } from 'lodash'
 import { marked } from 'marked'
 import upgrade from '@/api/upgrade'
-import websocket from '@/lib/websocket'
+import { useWebSocket } from '@/lib/websocket'
 
 const emit = defineEmits(['success'])
 
@@ -91,19 +91,20 @@ async function performUpgrade() {
 
   for (let i = 0; i < nodesNum; i++) {
     await new Promise(resolve => {
-      const ws = websocket(`/api/upgrade/perform?x_node_id=${nodeIds.value[i]}`, false)
+      const { ws } = useWebSocket(`/api/upgrade/perform?x_node_id=${nodeIds.value[i]}`, false)
+      const socket = ws.value!
 
       let last = 0
 
-      ws.onopen = () => {
-        ws.send(JSON.stringify({
+      socket.onopen = () => {
+        socket.send(JSON.stringify({
           dry_run: dryRun.value,
           channel: channel.value,
         }))
       }
       let isFailed = false
 
-      ws.onmessage = async m => {
+      socket.onmessage = async m => {
         const r = JSON.parse(m.data)
         if (r.message)
           log(r.message)
@@ -125,11 +126,11 @@ async function performUpgrade() {
         }
       }
 
-      ws.onerror = () => {
+      socket.onerror = () => {
         resolve({})
       }
 
-      ws.onclose = async () => {
+      socket.onclose = async () => {
         resolve({})
 
         progressPercent.value = 100 * ((i + 1) / nodesNum)

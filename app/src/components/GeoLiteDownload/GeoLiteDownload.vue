@@ -3,7 +3,7 @@ import type { Ref } from 'vue'
 import { CheckCircleOutlined, DownloadOutlined, InfoCircleOutlined } from '@ant-design/icons-vue'
 import geolite from '@/api/geolite'
 import { formatDateTime } from '@/lib/helper'
-import websocket from '@/lib/websocket'
+import { useWebSocket } from '@/lib/websocket'
 
 interface Emits {
   (e: 'downloadComplete'): void
@@ -55,16 +55,17 @@ function downloadGeoLiteDB() {
   downloadProgress.value = 0
   downloadMessage.value = $gettext('Starting download...')
 
-  const ws = websocket('/api/geolite/download', false)
+  const { ws } = useWebSocket('/api/geolite/download', false)
+  const socket = ws.value!
 
   let isFailed = false
   let currentPhase = 'download' // 'download' or 'decompress'
 
-  ws.onopen = () => {
-    // WebSocket connected, server will start download
+  socket.onopen = () => {
+    socket.send('start')
   }
 
-  ws.onmessage = async m => {
+  socket.onmessage = async m => {
     const r = JSON.parse(m.data)
 
     // Update message and detect phase changes
@@ -99,13 +100,13 @@ function downloadGeoLiteDB() {
     }
   }
 
-  ws.onerror = () => {
+  socket.onerror = () => {
     isFailed = true
     downloadStatus.value = 'exception'
     downloadMessage.value = $gettext('Download failed')
   }
 
-  ws.onclose = async () => {
+  socket.onclose = async () => {
     if (isFailed) {
       downloading.value = false
       return

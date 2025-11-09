@@ -1,14 +1,13 @@
-import type ReconnectingWebSocket from 'reconnecting-websocket'
 import type { TerminalTab } from '@/pinia/moudule/terminal'
 import { FitAddon } from '@xterm/addon-fit'
 import { Terminal } from '@xterm/xterm'
 import { throttle } from 'lodash'
-import ws from '@/lib/websocket'
+import { useWebSocket } from '@/lib/websocket'
 
 export interface TerminalSession {
   tab: TerminalTab
   terminal: Terminal
-  websocket: ReconnectingWebSocket | WebSocket
+  websocket: WebSocket
   fitAddon: FitAddon
   ping?: ReturnType<typeof setTimeout>
   isWebSocketReady: boolean
@@ -48,7 +47,8 @@ export function useTerminalSession() {
     const fitAddon = new FitAddon()
     terminal.loadAddon(fitAddon)
 
-    const websocket = ws(`/api/pty?X-Secure-Session-ID=${secureSessionId}`, false)
+    const { ws } = useWebSocket(`/api/pty?X-Secure-Session-ID=${secureSessionId}`, false)
+    const websocket = ws.value!
 
     const session: TerminalSession = {
       tab,

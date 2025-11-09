@@ -6,9 +6,8 @@ import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import notificationApi from '@/api/notification'
 import { detailRender } from '@/components/Notification/detailRender'
-import { useWebSocketEventBus } from '@/composables/useWebSocketEventBus'
 import { NotificationTypeT } from '@/constants'
-import { useUserStore } from '@/pinia'
+import { useUserStore, useWebSocketEventBusStore } from '@/pinia'
 import notifications from './notifications'
 
 defineProps<{
@@ -25,10 +24,11 @@ const { unreadCount } = storeToRefs(useUserStore())
 
 const data = ref([]) as Ref<Notification[]>
 
-const { subscribe } = useWebSocketEventBus()
+const websocketEventBus = useWebSocketEventBusStore()
+let notificationSubscriptionId: string | null = null
 
 onMounted(() => {
-  subscribe('notification', (data: Notification) => {
+  notificationSubscriptionId = websocketEventBus.subscribe('notification', (data: Notification) => {
     const typeTrans = {
       0: 'error',
       1: 'warning',
@@ -41,6 +41,12 @@ onMounted(() => {
       description: detailRender({ text: data.details, record: data }),
     })
   })
+})
+
+onUnmounted(() => {
+  if (notificationSubscriptionId) {
+    websocketEventBus.unsubscribe(notificationSubscriptionId)
+  }
 })
 
 function init() {

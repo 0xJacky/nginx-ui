@@ -38,7 +38,6 @@ type NodeStat struct {
 }
 
 type Node struct {
-	NodeID int `json:"node_id,omitempty"`
 	*model.Node
 	NodeStat
 	NodeInfo

@@ -1,17 +1,23 @@
 <script setup lang="tsx">
 import { SyncOutlined } from '@ant-design/icons-vue'
-import { useWebSocketEventBus } from '@/composables/useWebSocketEventBus'
-import { useGlobalStore } from '@/pinia'
+import { useGlobalStore, useWebSocketEventBusStore } from '@/pinia'
 
-const { subscribe } = useWebSocketEventBus()
+const websocketEventBus = useWebSocketEventBusStore()
+let processingStatusSubscriptionId: string | null = null
 
 const globalStore = useGlobalStore()
 const { processingStatus } = storeToRefs(globalStore)
 
 onMounted(() => {
-  subscribe('processing_status', data => {
+  processingStatusSubscriptionId = websocketEventBus.subscribe('processing_status', data => {
     processingStatus.value = data
   })
+})
+
+onUnmounted(() => {
+  if (processingStatusSubscriptionId) {
+    websocketEventBus.unsubscribe(processingStatusSubscriptionId)
+  }
 })
 
 const isProcessing = computed(() => {
