@@ -10,16 +10,6 @@ export function useUpstreamStatus(namespaceId?: Ref<number | undefined>) {
   const nodeStore = useNodeAvailabilityStore()
   const nodeGroupStore = useNodeGroupStore()
 
-  // Initialize stores on mount
-  onMounted(() => {
-    proxyStore.startMonitoring()
-    nodeGroupStore.initialize()
-  })
-
-  onUnmounted(() => {
-    proxyStore.stopMonitoring()
-  })
-
   // Check if should show multi-node display based on group configuration
   const shouldShowMultiNodeDisplay = computed(() => {
     if (!namespaceId?.value) {
