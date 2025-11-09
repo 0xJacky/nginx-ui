@@ -130,7 +130,7 @@ function getStatusClass(status: string): string {
         </div>
       </div>
 
-      <div v-if="!settingsMode" class="site-status">
+      <div v-if="!settingsMode && site.health_check_enabled" class="site-status">
         <div
           class="status-indicator"
           :class="getStatusClass(site.status)"
@@ -293,11 +293,11 @@ function getStatusClass(status: string): string {
 }
 
 .site-card-config {
-  @apply absolute top-2 right-2;
+  @apply absolute top-3 right-3 opacity-50;
 }
 
 .drag-handle {
-  @apply absolute bottom-2 right-2 opacity-50 hover:opacity-100 transition-opacity;
+  @apply absolute bottom-3 right-3 opacity-50 hover:opacity-100 transition-opacity;
 }
 
 .drag-dots {

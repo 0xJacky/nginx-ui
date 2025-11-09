@@ -12,6 +12,7 @@ import (
 	"github.com/spf13/cast"
 	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
+	"gorm.io/gorm/clause"
 )
 
 // GetSiteNavigation returns all sites for navigation dashboard
@@ -54,16 +55,26 @@ func UpdateSiteOrder(c *gin.Context) {
 }
 
 // updateSiteOrderBatchByIds updates site order in batch using IDs
+// Uses INSERT INTO ... ON DUPLICATE KEY UPDATE for better performance
 func updateSiteOrderBatchByIds(orderedIds []uint64) error {
-	sc := query.SiteConfig
-
-	for i, id := range orderedIds {
-		if _, err := sc.Where(sc.ID.Eq(id)).Update(sc.CustomOrder, i); err != nil {
-			return err
-		}
+	if len(orderedIds) == 0 {
+		return nil
 	}
 
-	return nil
+	sc := query.SiteConfig
+
+	records := make([]*model.SiteConfig, 0, len(orderedIds))
+	for i, id := range orderedIds {
+		records = append(records, &model.SiteConfig{
+			Model:       model.Model{ID: id},
+			CustomOrder: i,
+		})
+	}
+
+	return sc.Clauses(clause.OnConflict{
+		Columns:   []clause.Column{{Name: "id"}},
+		DoUpdates: clause.AssignmentColumns([]string{"custom_order"}),
+	}).Create(records...)
 }
 
 // GetHealthCheck gets health check configuration for a site
@@ -102,41 +113,7 @@ func ensureHealthCheckConfig(siteConfig *model.SiteConfig) {
 
 // UpdateHealthCheck updates health check configuration for a site
 func UpdateHealthCheck(c *gin.Context) {
-	id := cast.ToUint64(c.Param("id"))
-
-	var req model.SiteConfig
-
-	if !cosy.BindAndValid(c, &req) {
-		return
-	}
-
-	sc := query.SiteConfig
-	siteConfig, err := sc.Where(sc.ID.Eq(id)).First()
-	if err != nil {
-		cosy.ErrHandler(c, err)
-		return
-	}
-
-	siteConfig.HealthCheckEnabled = req.HealthCheckEnabled
-	siteConfig.CheckInterval = req.CheckInterval
-	siteConfig.Timeout = req.Timeout
-	siteConfig.UserAgent = req.UserAgent
-	siteConfig.MaxRedirects = req.MaxRedirects
-	siteConfig.FollowRedirects = req.FollowRedirects
-	siteConfig.CheckFavicon = req.CheckFavicon
-
-	if req.HealthCheckConfig != nil {
-		siteConfig.HealthCheckConfig = req.HealthCheckConfig
-	}
-
-	if err = query.SiteConfig.Save(siteConfig); err != nil {
-		cosy.ErrHandler(c, err)
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{
-		"message": "Health check configuration updated successfully",
-	})
+	cosy.Core[model.SiteConfig](c).Modify()
 }
 
 // TestHealthCheck tests a health check configuration without saving it

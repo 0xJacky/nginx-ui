@@ -33,19 +33,19 @@ type HealthCheckConfig struct {
 
 type SiteConfig struct {
 	Model
-	Host               string             `gorm:"index" json:"host"`            // host:port format
-	Port               int                `gorm:"index" json:"port"`            // port number
-	Scheme             string             `gorm:"default:'http'" json:"scheme"` // http, https, grpc, grpcs
-	DisplayURL         string             `json:"display_url"`                  // computed URL for display
-	CustomOrder        int                `gorm:"default:0" json:"custom_order"`
-	HealthCheckEnabled bool               `gorm:"default:true" json:"health_check_enabled"`
-	CheckInterval      int                `gorm:"default:300" json:"check_interval"` // seconds
-	Timeout            int                `gorm:"default:10" json:"timeout"`         // seconds
-	UserAgent          string             `gorm:"default:'Nginx-UI Site Checker/1.0'" json:"user_agent"`
-	MaxRedirects       int                `gorm:"default:3" json:"max_redirects"`
-	FollowRedirects    bool               `gorm:"default:true" json:"follow_redirects"`
-	CheckFavicon       bool               `gorm:"default:true" json:"check_favicon"`
-	HealthCheckConfig  *HealthCheckConfig `gorm:"serializer:json" json:"health_check_config"`
+	Host               string             `gorm:"index" json:"host" cosy:"all:omitempty"`            // host:port format
+	Port               int                `gorm:"index" json:"port" cosy:"all:omitempty"`            // port number
+	Scheme             string             `gorm:"default:'http'" json:"scheme" cosy:"all:omitempty"` // http, https, grpc, grpcs
+	DisplayURL         string             `json:"display_url" cosy:"all:omitempty"`                  // computed URL for display
+	CustomOrder        int                `gorm:"default:0" json:"custom_order" cosy:"all:omitempty"`
+	HealthCheckEnabled bool               `gorm:"default:true" json:"health_check_enabled" cosy:"all:omitempty"`
+	CheckInterval      int                `gorm:"default:300" json:"check_interval" cosy:"all:omitempty"` // seconds
+	Timeout            int                `gorm:"default:10" json:"timeout" cosy:"all:omitempty"`         // seconds
+	UserAgent          string             `gorm:"default:'Nginx-UI Site Checker/1.0'" json:"user_agent" cosy:"all:omitempty"`
+	MaxRedirects       int                `gorm:"default:3" json:"max_redirects" cosy:"all:omitempty"`
+	FollowRedirects    bool               `gorm:"default:true" json:"follow_redirects" cosy:"all:omitempty"`
+	CheckFavicon       bool               `gorm:"default:true" json:"check_favicon" cosy:"all:omitempty"`
+	HealthCheckConfig  *HealthCheckConfig `gorm:"serializer:json" json:"health_check_config" cosy:"all:omitempty"`
 }
 
 // GetURL returns the computed URL for this site config

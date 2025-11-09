@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { SiteInfo } from '@/api/site_navigation'
 import { GlobalOutlined } from '@ant-design/icons-vue'
-import Sortable from 'sortablejs'
+import VueDraggable from 'vuedraggable'
 import { siteNavigationApi } from '@/api/site_navigation'
+import { useWebSocket } from '@/lib/websocket'
 import SiteCard from './components/SiteCard.vue'
 import SiteHealthCheckModal from './components/SiteHealthCheckModal.vue'
 import SiteNavigationToolbar from './components/SiteNavigationToolbar.vue'
@@ -11,64 +12,26 @@ const sites = ref<SiteInfo[]>([])
 const { message } = useGlobalApp()
 const loading = ref(true)
 const refreshing = ref(false)
-const isConnected = ref(false)
 const settingsMode = ref(false)
 const draggableSites = ref<SiteInfo[]>([])
 const configModalVisible = ref(false)
 const configTarget = ref<SiteInfo>()
 
-let sortableInstance: Sortable | null = null
-let websocket: WebSocket | null = null
+watch(sites, newSites => {
+  if (!settingsMode.value) {
+    draggableSites.value = newSites
+  }
+}, { immediate: true })
 
-// Display sites - use draggable sites in settings mode, backend sorted sites otherwise
-const displaySites = computed(() => {
-  return settingsMode.value ? draggableSites.value : sites.value
+const { status, data, send, close } = useWebSocket(siteNavigationApi.websocketUrl)
+const isConnected = computed(() => status.value === 'OPEN')
+
+watch(data, newData => {
+  if (newData.type === 'initial' || newData.type === 'update') {
+    sites.value = newData.data || []
+  }
 })
 
-// WebSocket connection
-async function connectWebSocket() {
-  try {
-    const { useWebSocket } = await import('@/lib/websocket')
-    const { ws } = useWebSocket(siteNavigationApi.websocketUrl)
-    websocket = ws.value!
-
-    if (!websocket) {
-      isConnected.value = false
-      return
-    }
-
-    websocket.onopen = () => {
-      isConnected.value = true
-    }
-
-    websocket.onmessage = (event: MessageEvent) => {
-      try {
-        const data = JSON.parse(event.data)
-        if (data.type === 'initial' || data.type === 'update') {
-          sites.value = data.data || []
-        }
-      }
-      catch (error) {
-        console.error('Failed to parse WebSocket message:', error)
-      }
-    }
-
-    websocket.onclose = () => {
-      isConnected.value = false
-    }
-
-    websocket.onerror = error => {
-      console.error('Site navigation WebSocket error:', error)
-      isConnected.value = false
-    }
-  }
-  catch (error) {
-    console.error('Failed to connect WebSocket:', error)
-    isConnected.value = false
-  }
-}
-
-// Load sites via HTTP (fallback)
 async function loadSites() {
   try {
     loading.value = true
@@ -83,19 +46,11 @@ async function loadSites() {
   }
 }
 
-// Refresh sites
 async function handleRefresh() {
   try {
     refreshing.value = true
-
-    // Only use WebSocket refresh
-    if (websocket && isConnected.value) {
-      websocket.send(JSON.stringify({ type: 'refresh' }))
-      message.success($gettext('Site refresh initiated'))
-    }
-    else {
-      message.warning($gettext('WebSocket not connected, please wait for connection'))
-    }
+    send(JSON.stringify({ type: 'refresh' }))
+    message.success($gettext('Site refresh initiated'))
   }
   catch (error) {
     console.error('Failed to refresh sites:', error)
@@ -106,61 +61,20 @@ async function handleRefresh() {
   }
 }
 
-// Toggle settings mode
 function toggleSettingsMode() {
   settingsMode.value = !settingsMode.value
-
   if (settingsMode.value) {
     draggableSites.value = [...sites.value]
-    nextTick(() => initSortable())
-  }
-  else {
-    destroySortable()
   }
 }
 
-// Initialize sortable
-function initSortable() {
-  const gridElement = document.querySelector('.site-grid')
-  if (gridElement && !sortableInstance) {
-    sortableInstance = new Sortable(gridElement as HTMLElement, {
-      animation: 150,
-      ghostClass: 'site-card-ghost',
-      chosenClass: 'site-card-chosen',
-      dragClass: 'site-card-drag',
-      onEnd: () => {
-        // Update draggableSites order based on DOM order
-        const cards = Array.from(gridElement.children)
-        const newOrder = cards.map(card => {
-          const url = card.getAttribute('data-url')
-          return draggableSites.value.find(site => site.url === url)!
-        })
-        draggableSites.value = newOrder
-      },
-    })
-  }
-}
-
-// Destroy sortable
-function destroySortable() {
-  if (sortableInstance) {
-    sortableInstance.destroy()
-    sortableInstance = null
-  }
-}
-
-// Save order
 async function saveOrder() {
   try {
     const orderedIds = draggableSites.value.map(site => site.id)
     await siteNavigationApi.updateOrder(orderedIds)
     message.success($gettext('Order saved successfully'))
-
-    // Update sites.value immediately to reflect the new order
     sites.value = [...draggableSites.value]
-
     settingsMode.value = false
-    destroySortable()
   }
   catch (error) {
     console.error('Failed to save order:', error)
@@ -168,20 +82,16 @@ async function saveOrder() {
   }
 }
 
-// Cancel settings mode
 function cancelSettingsMode() {
+  draggableSites.value = [...sites.value]
   settingsMode.value = false
-  destroySortable()
-  draggableSites.value = []
 }
 
-// Open config modal
 function openConfigModal(site: SiteInfo) {
   configTarget.value = site
   configModalVisible.value = true
 }
 
-// Handle health check config save
 async function handleConfigSave(config: import('@/api/site_navigation').HealthCheckConfig) {
   try {
     if (configTarget.value) {
@@ -195,38 +105,37 @@ async function handleConfigSave(config: import('@/api/site_navigation').HealthCh
   }
 }
 
+const mounted = ref(false)
+
 onMounted(async () => {
-  // First load data via HTTP
   await loadSites()
-  // Then connect WebSocket for real-time updates
-  connectWebSocket()
+  mounted.value = true
 })
 
 onUnmounted(() => {
-  destroySortable()
-  if (websocket) {
-    websocket.close()
-  }
+  close()
 })
 </script>
 
 <template>
   <div class="site-navigation">
-    <SiteNavigationToolbar
-      :is-connected="isConnected"
-      :refreshing="refreshing"
-      :settings-mode="settingsMode"
-      @refresh="handleRefresh"
-      @toggle-settings="toggleSettingsMode"
-      @save-order="saveOrder"
-      @cancel-settings="cancelSettingsMode"
-    />
+    <Teleport v-if="mounted" to=".action">
+      <SiteNavigationToolbar
+        :is-connected="isConnected"
+        :refreshing="refreshing"
+        :settings-mode="settingsMode"
+        @refresh="handleRefresh"
+        @toggle-settings="toggleSettingsMode"
+        @save-order="saveOrder"
+        @cancel-settings="cancelSettingsMode"
+      />
+    </Teleport>
 
     <div v-if="loading" class="flex items-center justify-center py-12">
       <ASpin size="large" />
     </div>
 
-    <div v-else-if="displaySites.length === 0" class="empty-state">
+    <div v-else-if="draggableSites.length === 0" class="empty-state">
       <GlobalOutlined class="text-6xl text-gray-400 mb-4" />
       <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
         {{ $gettext('No sites found') }}
@@ -236,15 +145,25 @@ onUnmounted(() => {
       </p>
     </div>
 
-    <div v-else class="site-grid">
-      <SiteCard
-        v-for="site in displaySites"
-        :key="site.id"
-        :site="site"
-        :settings-mode="settingsMode"
-        @open-config="openConfigModal"
-      />
-    </div>
+    <VueDraggable
+      v-else
+      v-model="draggableSites"
+      :disabled="!settingsMode"
+      class="site-grid"
+      item-key="id"
+      :animation="150"
+      ghost-class="site-card-ghost"
+      chosen-class="site-card-chosen"
+      drag-class="site-card-drag"
+    >
+      <template #item="{ element }">
+        <SiteCard
+          :site="element"
+          :settings-mode="settingsMode"
+          @open-config="openConfigModal"
+        />
+      </template>
+    </VueDraggable>
 
     <SiteHealthCheckModal
       v-model:open="configModalVisible"
@@ -256,10 +175,6 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-.site-navigation {
-  @apply p-6;
-}
-
 .empty-state {
   @apply flex flex-col items-center justify-center py-16 text-center;
 }

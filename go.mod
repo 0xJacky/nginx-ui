@@ -8,7 +8,7 @@ require (
 	github.com/BurntSushi/toml v1.5.0
 	github.com/blevesearch/bleve/v2 v2.5.4
 	github.com/caarlos0/env/v11 v11.3.1
-	github.com/casdoor/casdoor-go-sdk v1.29.0
+	github.com/casdoor/casdoor-go-sdk v1.30.0
 	github.com/creack/pty v1.1.24
 	github.com/dgraph-io/ristretto/v2 v2.3.0
 	github.com/docker/docker v28.5.2+incompatible
@@ -25,7 +25,7 @@ require (
 	github.com/go-playground/validator/v10 v10.28.0
 	github.com/go-resty/resty/v2 v2.16.5
 	github.com/go-telegram-bot-api/telegram-bot-api v4.6.4+incompatible
-	github.com/go-webauthn/webauthn v0.14.0
+	github.com/go-webauthn/webauthn v0.15.0
 	github.com/golang-jwt/jwt/v5 v5.3.0
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674
@@ -46,7 +46,7 @@ require (
 	github.com/stretchr/testify v1.11.1
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20250620092546-c3e307e36701
 	github.com/ulikunitz/xz v0.5.15
-	github.com/uozi-tech/cosy v1.27.2
+	github.com/uozi-tech/cosy v1.27.3
 	github.com/uozi-tech/cosy-driver-sqlite v0.2.1
 	github.com/urfave/cli/v3 v3.5.0
 	golang.org/x/crypto v0.43.0
@@ -84,7 +84,7 @@ require (
 	github.com/Azure/go-autorest/tracing v0.6.1 // indirect
 	github.com/AzureAD/microsoft-authentication-library-for-go v1.6.0 // indirect
 	github.com/Microsoft/go-winio v0.6.2 // indirect
-	github.com/RoaringBitmap/roaring/v2 v2.14.0 // indirect
+	github.com/RoaringBitmap/roaring/v2 v2.14.2 // indirect
 	github.com/akamai/AkamaiOPEN-edgegrid-golang/v11 v11.1.0 // indirect
 	github.com/alibabacloud-go/alibabacloud-gateway-spi v0.0.5 // indirect
 	github.com/alibabacloud-go/darabonba-openapi/v2 v2.1.13 // indirect
@@ -93,7 +93,7 @@ require (
 	github.com/alibabacloud-go/tea v1.3.13 // indirect
 	github.com/alibabacloud-go/tea-utils/v2 v2.0.7 // indirect
 	github.com/aliyun/aliyun-log-go-sdk v0.1.111 // indirect
-	github.com/aliyun/credentials-go v1.4.7 // indirect
+	github.com/aliyun/credentials-go v1.4.8 // indirect
 	github.com/aws/aws-sdk-go-v2 v1.39.6 // indirect
 	github.com/aws/aws-sdk-go-v2/config v1.31.17 // indirect
 	github.com/aws/aws-sdk-go-v2/credentials v1.18.21 // indirect
@@ -115,13 +115,13 @@ require (
 	github.com/benbjohnson/clock v1.3.5 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bits-and-blooms/bitset v1.24.3 // indirect
-	github.com/blevesearch/bleve_index_api v1.2.10 // indirect
+	github.com/blevesearch/bleve_index_api v1.2.11 // indirect
 	github.com/blevesearch/geo v0.2.4 // indirect
-	github.com/blevesearch/go-faiss v1.0.25 // indirect
+	github.com/blevesearch/go-faiss v1.0.26 // indirect
 	github.com/blevesearch/go-porterstemmer v1.0.3 // indirect
 	github.com/blevesearch/gtreap v0.1.1 // indirect
 	github.com/blevesearch/mmap-go v1.0.4 // indirect
-	github.com/blevesearch/scorch_segment_api/v2 v2.3.12 // indirect
+	github.com/blevesearch/scorch_segment_api/v2 v2.3.13 // indirect
 	github.com/blevesearch/segment v0.9.1 // indirect
 	github.com/blevesearch/snowballstem v0.9.0 // indirect
 	github.com/blevesearch/upsidedown_store_api v1.0.2 // indirect
@@ -131,7 +131,7 @@ require (
 	github.com/blevesearch/zapx/v13 v13.4.2 // indirect
 	github.com/blevesearch/zapx/v14 v14.4.2 // indirect
 	github.com/blevesearch/zapx/v15 v15.4.2 // indirect
-	github.com/blevesearch/zapx/v16 v16.2.6 // indirect
+	github.com/blevesearch/zapx/v16 v16.2.7 // indirect
 	github.com/blinkbean/dingtalk v1.1.3 // indirect
 	github.com/boombuler/barcode v1.1.0 // indirect
 	github.com/bsm/redislock v0.9.4 // indirect
@@ -182,7 +182,7 @@ require (
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-sql-driver/mysql v1.9.3 // indirect
 	github.com/go-viper/mapstructure/v2 v2.4.0 // indirect
-	github.com/go-webauthn/x v0.1.25 // indirect
+	github.com/go-webauthn/x v0.1.26 // indirect
 	github.com/goccy/go-json v0.10.5 // indirect
 	github.com/goccy/go-yaml v1.18.0 // indirect
 	github.com/gofrs/flock v0.13.0 // indirect
@@ -225,7 +225,7 @@ require (
 	github.com/labbsr0x/goh v1.0.1 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
 	github.com/lib/pq v1.10.9 // indirect
-	github.com/linode/linodego v1.60.0 // indirect
+	github.com/linode/linodego v1.61.0 // indirect
 	github.com/liquidweb/liquidweb-cli v0.7.0 // indirect
 	github.com/liquidweb/liquidweb-go v1.6.4 // indirect
 	github.com/lufia/plan9stats v0.0.0-20251013123823-9fd1530e3ec3 // indirect
@@ -280,7 +280,7 @@ require (
 	github.com/prometheus/procfs v0.19.2 // indirect
 	github.com/prometheus/prometheus v0.307.3 // indirect
 	github.com/quic-go/qpack v0.5.1 // indirect
-	github.com/quic-go/quic-go v0.55.0 // indirect
+	github.com/quic-go/quic-go v0.56.0 // indirect
 	github.com/redis/go-redis/v9 v9.16.0 // indirect
 	github.com/regfish/regfish-dnsapi-go v0.1.1 // indirect
 	github.com/robfig/cron/v3 v3.0.1 // indirect
@@ -341,11 +341,11 @@ require (
 	go.uber.org/zap v1.27.0 // indirect
 	go.yaml.in/yaml/v2 v2.4.3 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
-	golang.org/x/arch v0.22.0 // indirect
+	golang.org/x/arch v0.23.0 // indirect
 	golang.org/x/mod v0.29.0 // indirect
-	golang.org/x/oauth2 v0.32.0 // indirect
-	golang.org/x/sync v0.17.0 // indirect
-	golang.org/x/sys v0.37.0 // indirect
+	golang.org/x/oauth2 v0.33.0 // indirect
+	golang.org/x/sync v0.18.0 // indirect
+	golang.org/x/sys v0.38.0 // indirect
 	golang.org/x/text v0.30.0 // indirect
 	golang.org/x/time v0.14.0 // indirect
 	golang.org/x/tools v0.38.0 // indirect

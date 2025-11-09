@@ -4,12 +4,10 @@ import { CloseOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import { siteNavigationApi } from '@/api/site_navigation'
 
 interface Props {
-  open: boolean
   site?: SiteInfo
 }
 
 interface Emits {
-  (e: 'update:open', value: boolean): void
   (e: 'save', config: EnhancedHealthCheckConfig): void
   (e: 'refresh'): void
 }
@@ -18,12 +16,8 @@ const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
 const { message } = useGlobalApp()
 
+const visible = defineModel<boolean>('open', { required: true })
 const testing = ref(false)
-
-const visible = computed({
-  get: () => props.open,
-  set: value => emit('update:open', value),
-})
 
 const formData = ref<EnhancedHealthCheckConfig>({
   // Basic settings (health check is always enabled)
@@ -76,8 +70,8 @@ async function loadExistingConfig() {
 
     // Convert backend config to frontend format
     formData.value = {
-      // Basic settings (health check is always enabled)
-      enabled: true,
+      // Basic settings
+      enabled: config.health_check_enabled ?? true,
       interval: config.check_interval ?? 300,
       timeout: config.timeout ?? 10,
       userAgent: config.user_agent ?? 'Nginx-UI Enhanced Checker/2.0',
@@ -268,7 +262,7 @@ async function handleSave() {
     // Create the config object for the backend
     const backendConfig = {
       url: props.site.url,
-      health_check_enabled: true, // Always enabled
+      health_check_enabled: config.enabled,
       check_interval: config.interval,
       timeout: config.timeout,
       user_agent: config.userAgent,
@@ -276,7 +270,7 @@ async function handleSave() {
       follow_redirects: config.followRedirects,
       check_favicon: config.checkFavicon,
 
-      // Enhanced health check config (always included)
+      // Enhanced health check config
       health_check_config: {
         protocol: config.protocol,
         method: config.method,
@@ -366,7 +360,7 @@ async function handleTest() {
     width="800px"
     @cancel="handleCancel"
   >
-    <div class="p-2">
+    <div>
       <AForm
         :model="formData"
         layout="vertical"
@@ -374,6 +368,18 @@ async function handleTest() {
         :wrapper-col="{ span: 24 }"
       >
         <div>
+          <!-- Enable/Disable Health Check -->
+          <AFormItem :label="$gettext('Enable Health Check')">
+            <div class="flex items-center gap-2">
+              <ASwitch v-model:checked="formData.enabled" />
+              <span class="text-sm text-gray-500 dark:text-gray-400">
+                {{ formData.enabled ? $gettext('Health check is enabled') : $gettext('Health check is disabled') }}
+              </span>
+            </div>
+          </AFormItem>
+
+          <ADivider />
+
           <!-- Protocol Selection -->
           <AFormItem :label="$gettext('Protocol')">
             <ARadioGroup v-model:value="formData.protocol">

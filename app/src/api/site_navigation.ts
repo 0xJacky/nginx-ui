@@ -3,6 +3,7 @@ import { http } from '@uozi-admin/request'
 
 export interface SiteInfo {
   id: number // primary identifier for API operations
+  health_check_enabled: boolean // whether health check is enabled
   host: string // host:port format
   port: number
   scheme: string // http, https, grpc, grpcs
@@ -23,6 +24,7 @@ export interface SiteInfo {
 }
 
 export interface HealthCheckConfig {
+  health_check_enabled?: boolean
   check_interval?: number
   timeout?: number
   user_agent?: string
@@ -135,7 +137,7 @@ export const siteNavigationApi = {
 
   // Update health check configuration
   updateHealthCheck(id: number, config: HealthCheckConfig): Promise<{ message: string }> {
-    return http.put(`/site_navigation/health_check/${id}`, config)
+    return http.post(`/site_navigation/health_check/${id}`, config)
   },
 
   // Test health check configuration

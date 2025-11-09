@@ -30,8 +30,8 @@ func applyCustomOrdering(sites []*SiteInfo) []*SiteInfo {
 
 	// Sort sites based on custom order, with fallback to default ordering
 	sort.Slice(sites, func(i, j int) bool {
-		orderI, hasOrderI := orderMap[sites[i].URL]
-		orderJ, hasOrderJ := orderMap[sites[j].URL]
+		orderI, hasOrderI := orderMap[sites[i].DisplayURL]
+		orderJ, hasOrderJ := orderMap[sites[j].DisplayURL]
 
 		// If both have custom order, use custom order
 		if hasOrderI && hasOrderJ {
@@ -91,5 +91,5 @@ func defaultCompare(a, b *SiteInfo) bool {
 	}
 
 	// Final sort: by URL (for complete stability)
-	return a.URL < b.URL
+	return a.DisplayURL < b.DisplayURL
 }

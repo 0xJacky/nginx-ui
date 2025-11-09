@@ -25,10 +25,6 @@ defineEmits<Emits>()
 
 <template>
   <div class="site-navigation-header">
-    <h2 class="text-2xl font-500 text-gray-900 dark:text-gray-100 mb-4">
-      {{ $gettext('Site Navigation') }}
-    </h2>
-
     <div class="flex items-center gap-4">
       <div class="flex items-center gap-2">
         <div
@@ -44,7 +40,6 @@ defineEmits<Emits>()
         <AButton
           v-if="settingsMode"
           type="primary"
-          size="small"
           @click="$emit('saveOrder')"
         >
           <template #icon>
@@ -55,37 +50,31 @@ defineEmits<Emits>()
 
         <AButton
           v-if="settingsMode"
-          size="small"
           @click="$emit('cancelSettings')"
         >
           <template #icon>
             <CloseOutlined />
           </template>
-          {{ $gettext('Cancel') }}
         </AButton>
 
         <AButton
           v-if="!settingsMode"
           type="primary"
-          size="small"
           :loading="refreshing"
           @click="$emit('refresh')"
         >
           <template #icon>
             <ReloadOutlined />
           </template>
-          {{ $gettext('Refresh') }}
         </AButton>
 
         <AButton
           v-if="!settingsMode"
-          size="small"
           @click="$emit('toggleSettings')"
         >
           <template #icon>
             <SettingOutlined />
           </template>
-          {{ $gettext('Settings') }}
         </AButton>
       </div>
     </div>
@@ -94,7 +83,7 @@ defineEmits<Emits>()
 
 <style scoped>
 .site-navigation-header {
-  @apply flex items-center justify-between mb-6;
+  @apply flex items-center justify-end;
 }
 
 /* Responsive design */

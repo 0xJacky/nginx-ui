@@ -74,7 +74,6 @@ func (wm *WSManager) BroadcastUpdate(sites []*sitecheck.SiteInfo) {
 	for conn := range wm.connections {
 		go func(c *websocket.Conn) {
 			if err := sendSiteData(c, MessageTypeUpdate, sites); err != nil {
-				logger.Error("Failed to send broadcast update:", err)
 				wm.RemoveConnection(c)
 				c.Close()
 			}

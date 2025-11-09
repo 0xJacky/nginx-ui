@@ -18,7 +18,7 @@ func InitRouter(r *gin.RouterGroup) {
 	r.GET("site_navigation/status", GetSiteNavigationStatus)
 	r.POST("site_navigation/order", UpdateSiteOrder)
 	r.GET("site_navigation/health_check/:id", GetHealthCheck)
-	r.PUT("site_navigation/health_check/:id", UpdateHealthCheck)
+	r.POST("site_navigation/health_check/:id", UpdateHealthCheck)
 	r.POST("site_navigation/test_health_check/:id", TestHealthCheck)
 	r.GET("site_navigation_ws", SiteNavigationWebSocket)
 

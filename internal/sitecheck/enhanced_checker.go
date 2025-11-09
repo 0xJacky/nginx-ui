@@ -84,16 +84,9 @@ func (ec *EnhancedSiteChecker) checkHTTP(ctx context.Context, siteURL string, co
 	// Create request
 	req, err := http.NewRequestWithContext(ctx, config.Method, checkURL, nil)
 	if err != nil {
-		// Parse URL components for error case
-		scheme, hostPort := parseURLComponents(siteURL, config.Protocol)
-
 		return &SiteInfo{
-			URL:                 siteURL,
-			Status:              StatusError,
-			Error:               fmt.Sprintf("Failed to create request: %v", err),
-			HealthCheckProtocol: config.Protocol,
-			Scheme:              scheme,
-			HostPort:            hostPort,
+			Status: StatusError,
+			Error:  fmt.Sprintf("Failed to create request: %v", err),
 		}, err
 	}
 
@@ -147,17 +140,10 @@ func (ec *EnhancedSiteChecker) checkHTTP(ctx context.Context, siteURL string, co
 	// Make request
 	resp, err := client.Do(req)
 	if err != nil {
-		// Parse URL components for error case
-		scheme, hostPort := parseURLComponents(siteURL, config.Protocol)
-
 		return &SiteInfo{
-			URL:                 siteURL,
-			Status:              StatusError,
-			ResponseTime:        time.Since(startTime).Milliseconds(),
-			Error:               err.Error(),
-			HealthCheckProtocol: config.Protocol,
-			Scheme:              scheme,
-			HostPort:            hostPort,
+			Status:       StatusError,
+			ResponseTime: time.Since(startTime).Milliseconds(),
+			Error:        err.Error(),
 		}, err
 	}
 	defer resp.Body.Close()
@@ -202,26 +188,15 @@ func (ec *EnhancedSiteChecker) checkHTTP(ctx context.Context, siteURL string, co
 		}
 	}
 
-	// Parse URL components for legacy fields
-	_, hostPort := parseURLComponents(siteURL, config.Protocol)
-
 	// Get or create site config to get ID
 	siteConfig := getOrCreateSiteConfigForURL(siteURL)
 
 	return &SiteInfo{
-		ID:           siteConfig.ID,
-		Host:         siteConfig.Host,
-		Port:         siteConfig.Port,
-		Scheme:       siteConfig.Scheme,
-		DisplayURL:   siteConfig.GetURL(),
+		SiteConfig:   *siteConfig,
 		Status:       status,
 		StatusCode:   resp.StatusCode,
 		ResponseTime: responseTime,
 		Error:        errorMsg,
-		// Legacy fields for backward compatibility
-		URL:                 siteURL,
-		HealthCheckProtocol: config.Protocol,
-		HostPort:            hostPort,
 	}, nil
 }
 
@@ -242,16 +217,9 @@ func (ec *EnhancedSiteChecker) checkGRPC(ctx context.Context, siteURL string, co
 	// Parse URL to get host and port
 	parsedURL, err := parseGRPCURL(siteURL)
 	if err != nil {
-		// Parse URL components for error case
-		scheme, hostPort := parseURLComponents(siteURL, config.Protocol)
-
 		return &SiteInfo{
-			URL:                 siteURL,
-			Status:              StatusError,
-			Error:               fmt.Sprintf("Invalid gRPC URL: %v", err),
-			HealthCheckProtocol: config.Protocol,
-			Scheme:              scheme,
-			HostPort:            hostPort,
+			Status: StatusError,
+			Error:  fmt.Sprintf("Invalid gRPC URL: %v", err),
 		}, err
 	}
 
@@ -284,11 +252,8 @@ func (ec *EnhancedSiteChecker) checkGRPC(ctx context.Context, siteURL string, co
 		opts = append(opts, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	}
 
-	// Create connection with shorter timeout for faster failure detection
-	dialCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
-	defer cancel()
-
-	conn, err := grpc.DialContext(dialCtx, parsedURL.Host, opts...)
+	// Create gRPC client (connection established lazily on first RPC call)
+	conn, err := grpc.NewClient(parsedURL.Host, opts...)
 	if err != nil {
 		errorMsg := fmt.Sprintf("Failed to connect to gRPC server: %v", err)
 
@@ -301,17 +266,10 @@ func (ec *EnhancedSiteChecker) checkGRPC(ctx context.Context, siteURL string, co
 			errorMsg = fmt.Sprintf("Protocol mismatch - %s may not be a gRPC server or wrong TLS configuration", parsedURL.Host)
 		}
 
-		// Parse URL components for error case
-		scheme, hostPort := parseURLComponents(siteURL, config.Protocol)
-
 		return &SiteInfo{
-			URL:                 siteURL,
-			Status:              StatusError,
-			ResponseTime:        time.Since(startTime).Milliseconds(),
-			Error:               errorMsg,
-			HealthCheckProtocol: config.Protocol,
-			Scheme:              scheme,
-			HostPort:            hostPort,
+			Status:       StatusError,
+			ResponseTime: time.Since(startTime).Milliseconds(),
+			Error:        errorMsg,
 		}, err
 	}
 	defer conn.Close()
@@ -347,17 +305,10 @@ func (ec *EnhancedSiteChecker) checkGRPC(ctx context.Context, siteURL string, co
 			errorMsg = "Connection lost during health check"
 		}
 
-		// Parse URL components for error case
-		scheme, hostPort := parseURLComponents(siteURL, config.Protocol)
-
 		return &SiteInfo{
-			URL:                 siteURL,
-			Status:              StatusError,
-			ResponseTime:        responseTime,
-			Error:               errorMsg,
-			HealthCheckProtocol: config.Protocol,
-			Scheme:              scheme,
-			HostPort:            hostPort,
+			Status:       StatusError,
+			ResponseTime: responseTime,
+			Error:        errorMsg,
 		}, err
 	}
 
@@ -367,16 +318,9 @@ func (ec *EnhancedSiteChecker) checkGRPC(ctx context.Context, siteURL string, co
 		status = StatusOnline
 	}
 
-	// Parse URL components
-	scheme, hostPort := parseURLComponents(siteURL, config.Protocol)
-
 	return &SiteInfo{
-		URL:                 siteURL,
-		Status:              status,
-		ResponseTime:        responseTime,
-		HealthCheckProtocol: config.Protocol,
-		Scheme:              scheme,
-		HostPort:            hostPort,
+		Status:       status,
+		ResponseTime: responseTime,
 	}, nil
 }
 

@@ -21,6 +21,36 @@ type PerformanceClient struct {
 	ctx    context.Context
 	cancel context.CancelFunc
 	mutex  sync.RWMutex
+	closed bool
+}
+
+func (c *PerformanceClient) trySend(message interface{}) bool {
+	c.mutex.RLock()
+	if c.closed {
+		c.mutex.RUnlock()
+		return false
+	}
+
+	select {
+	case c.send <- message:
+		c.mutex.RUnlock()
+		return true
+	default:
+		c.mutex.RUnlock()
+		return false
+	}
+}
+
+func (c *PerformanceClient) closeSendChannel() {
+	c.mutex.Lock()
+	if c.closed {
+		c.mutex.Unlock()
+		return
+	}
+
+	close(c.send)
+	c.closed = true
+	c.mutex.Unlock()
 }
 
 // PerformanceHub manages WebSocket connections for Nginx performance monitoring
@@ -60,20 +90,18 @@ func (h *PerformanceHub) run() {
 		case client := <-h.register:
 			h.mutex.Lock()
 			h.clients[client] = true
+			currentClients := len(h.clients)
 			h.mutex.Unlock()
-			logger.Debug("Nginx performance client connected, total clients:", len(h.clients))
+			logger.Debug("Nginx performance client connected, total clients:", currentClients)
 
 			// Send initial data to the new client
 			go h.sendPerformanceDataToClient(client)
 
 		case client := <-h.unregister:
-			h.mutex.Lock()
-			if _, ok := h.clients[client]; ok {
-				delete(h.clients, client)
-				close(client.send)
+			currentClients, removed := h.removeClient(client)
+			if removed {
+				logger.Debug("Nginx performance client disconnected, total clients:", currentClients)
 			}
-			h.mutex.Unlock()
-			logger.Debug("Nginx performance client disconnected, total clients:", len(h.clients))
 
 		case <-h.ticker.C:
 			// Send performance data to all connected clients
@@ -82,24 +110,55 @@ func (h *PerformanceHub) run() {
 		case <-kernel.Context.Done():
 			logger.Debug("PerformanceHub: Context cancelled, closing WebSocket")
 			// Shutdown all clients
-			h.mutex.Lock()
-			for client := range h.clients {
-				close(client.send)
-				delete(h.clients, client)
+			for _, client := range h.activeClients() {
+				h.removeClient(client)
 			}
-			h.mutex.Unlock()
 			return
 		}
 	}
 }
 
+func (h *PerformanceHub) activeClients() []*PerformanceClient {
+	h.mutex.RLock()
+	if len(h.clients) == 0 {
+		h.mutex.RUnlock()
+		return nil
+	}
+
+	clients := make([]*PerformanceClient, 0, len(h.clients))
+	for client := range h.clients {
+		clients = append(clients, client)
+	}
+	h.mutex.RUnlock()
+	return clients
+}
+
+func (h *PerformanceHub) removeClient(client *PerformanceClient) (remaining int, removed bool) {
+	h.mutex.Lock()
+	_, removed = h.clients[client]
+	if removed {
+		delete(h.clients, client)
+	}
+	remaining = len(h.clients)
+	h.mutex.Unlock()
+
+	if removed {
+		client.closeSendChannel()
+	}
+	return remaining, removed
+}
+
 // sendPerformanceDataToClient sends performance data to a specific client
 func (h *PerformanceHub) sendPerformanceDataToClient(client *PerformanceClient) {
+	select {
+	case <-client.ctx.Done():
+		return
+	default:
+	}
+
 	response := performance.GetPerformanceData()
 
-	select {
-	case client.send <- response:
-	default:
+	if !client.trySend(response) {
 		// Channel is full, remove client
 		h.unregister <- client
 	}
@@ -107,27 +166,20 @@ func (h *PerformanceHub) sendPerformanceDataToClient(client *PerformanceClient) 
 
 // broadcastPerformanceData sends performance data to all connected clients
 func (h *PerformanceHub) broadcastPerformanceData() {
-	h.mutex.RLock()
-
-	// Check if there are any connected clients
-	if len(h.clients) == 0 {
-		h.mutex.RUnlock()
+	clients := h.activeClients()
+	if len(clients) == 0 {
 		return
 	}
 
-	// Only get performance data if there are connected clients
 	response := performance.GetPerformanceData()
 
-	for client := range h.clients {
-		select {
-		case client.send <- response:
-		default:
-			// Channel is full, remove client
-			close(client.send)
-			delete(h.clients, client)
+	for _, client := range clients {
+		if client.trySend(response) {
+			continue
 		}
+
+		h.removeClient(client)
 	}
-	h.mutex.RUnlock()
 }
 
 // WebSocket upgrader configuration

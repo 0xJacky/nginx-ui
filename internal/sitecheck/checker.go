@@ -120,24 +120,15 @@ func (sc *SiteChecker) CollectSites() {
 				}
 
 				// Parse URL components for legacy fields
-				_, hostPort := parseURLComponents(url, protocol)
 
 				// Get or create site config to get ID
 				siteConfig := getOrCreateSiteConfigForURL(url)
 
 				siteInfo := &SiteInfo{
-					ID:          siteConfig.ID,
-					Host:        siteConfig.Host,
-					Port:        siteConfig.Port,
-					Scheme:      siteConfig.Scheme,
-					DisplayURL:  siteConfig.GetURL(),
+					SiteConfig:  *siteConfig,
 					Name:        extractDomainName(url),
 					Status:      StatusChecking,
 					LastChecked: time.Now().Unix(),
-					// Legacy fields for backward compatibility
-					URL:                 url,
-					HealthCheckProtocol: protocol,
-					HostPort:            hostPort,
 				}
 				sc.sites[url] = siteInfo
 			}
@@ -301,22 +292,42 @@ func getOrCreateSiteConfigForURL(url string) *model.SiteConfig {
 func (sc *SiteChecker) CheckSite(ctx context.Context, siteURL string) (*SiteInfo, error) {
 	// Try enhanced health check first if config exists
 	config, err := LoadSiteConfig(siteURL)
+
+	// If health check is disabled, return a SiteInfo without status
+	if err == nil && config != nil && !config.HealthCheckEnabled {
+		protocol := "http"
+		if config.HealthCheckConfig != nil && config.HealthCheckConfig.Protocol != "" {
+			protocol = config.HealthCheckConfig.Protocol
+		}
+
+		siteInfo := &SiteInfo{
+			SiteConfig: *config,
+			Name:       extractDomainName(siteURL),
+			Title:      config.DisplayURL,
+		}
+
+		// Try to get favicon if enabled and not a gRPC check
+		if sc.options.CheckFavicon && !isGRPCProtocol(protocol) {
+			faviconURL, faviconData := sc.tryGetFavicon(ctx, siteURL)
+			siteInfo.FaviconURL = faviconURL
+			siteInfo.FaviconData = faviconData
+		}
+
+		return siteInfo, nil
+	}
+
 	if err == nil && config != nil && config.HealthCheckConfig != nil {
 		enhancedChecker := NewEnhancedSiteChecker()
 		siteInfo, err := enhancedChecker.CheckSiteWithConfig(ctx, siteURL, config.HealthCheckConfig)
 		if err == nil && siteInfo != nil {
 			// Fill in additional details
+			siteInfo.ID = config.ID
+			siteInfo.HealthCheckEnabled = config.HealthCheckEnabled
 			siteInfo.Name = extractDomainName(siteURL)
 			siteInfo.LastChecked = time.Now().Unix()
 
 			// Set health check protocol and display URL
-			siteInfo.HealthCheckProtocol = config.HealthCheckConfig.Protocol
 			siteInfo.DisplayURL = generateDisplayURL(siteURL, config.HealthCheckConfig.Protocol)
-
-			// Parse URL components
-			scheme, hostPort := parseURLComponents(siteURL, config.HealthCheckConfig.Protocol)
-			siteInfo.Scheme = scheme
-			siteInfo.HostPort = hostPort
 
 			// Try to get favicon if enabled and not a gRPC check
 			if sc.options.CheckFavicon && !isGRPCProtocol(config.HealthCheckConfig.Protocol) {
@@ -350,53 +361,31 @@ func (sc *SiteChecker) checkSiteBasic(ctx context.Context, siteURL string, origi
 
 	resp, err := sc.client.Do(req)
 	if err != nil {
-		// Parse URL components for legacy fields
-		_, hostPort := parseURLComponents(siteURL, originalProtocol)
-
 		// Get or create site config to get ID
 		siteConfig := getOrCreateSiteConfigForURL(siteURL)
 
 		return &SiteInfo{
-			ID:           siteConfig.ID,
-			Host:         siteConfig.Host,
-			Port:         siteConfig.Port,
-			Scheme:       siteConfig.Scheme,
-			DisplayURL:   siteConfig.GetURL(),
+			SiteConfig:   *siteConfig,
 			Name:         extractDomainName(siteURL),
 			Status:       StatusOffline,
 			ResponseTime: time.Since(start).Milliseconds(),
 			LastChecked:  time.Now().Unix(),
 			Error:        err.Error(),
-			// Legacy fields for backward compatibility
-			URL:                 siteURL,
-			HealthCheckProtocol: originalProtocol,
-			HostPort:            hostPort,
 		}, nil
 	}
 	defer resp.Body.Close()
 
 	responseTime := time.Since(start).Milliseconds()
 
-	// Parse URL components for legacy fields
-	_, hostPort := parseURLComponents(siteURL, originalProtocol)
-
 	// Get or create site config to get ID
 	siteConfig := getOrCreateSiteConfigForURL(siteURL)
 
 	siteInfo := &SiteInfo{
-		ID:           siteConfig.ID,
-		Host:         siteConfig.Host,
-		Port:         siteConfig.Port,
-		Scheme:       siteConfig.Scheme,
-		DisplayURL:   siteConfig.GetURL(),
+		SiteConfig:   *siteConfig,
 		Name:         extractDomainName(siteURL),
 		StatusCode:   resp.StatusCode,
 		ResponseTime: responseTime,
 		LastChecked:  time.Now().Unix(),
-		// Legacy fields for backward compatibility
-		URL:                 siteURL,
-		HealthCheckProtocol: originalProtocol,
-		HostPort:            hostPort,
 	}
 
 	// Determine status based on status code
