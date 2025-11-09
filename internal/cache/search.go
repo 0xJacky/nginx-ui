@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/blevesearch/bleve/v2"
-	"github.com/blevesearch/bleve/v2/analysis/lang/en"
 	"github.com/blevesearch/bleve/v2/mapping"
 	"github.com/blevesearch/bleve/v2/search/query"
 	"github.com/gabriel-vasile/mimetype"
@@ -158,13 +157,14 @@ func (si *SearchIndexer) cleanup() {
 func (si *SearchIndexer) createIndexMapping() mapping.IndexMapping {
 	docMapping := bleve.NewDocumentMapping()
 
-	// Text fields with standard analyzer
+	// Text fields with standard analyzer (better for mixed content including numbers)
+	// Standard analyzer doesn't do aggressive stemming like en analyzer
 	textField := bleve.NewTextFieldMapping()
-	textField.Analyzer = en.AnalyzerName
+	textField.Analyzer = "standard"
 	textField.Store = true
 	textField.Index = true
 
-	// Keyword fields for exact match
+	// Keyword fields for exact match (no analysis, exact term matching)
 	keywordField := bleve.NewKeywordFieldMapping()
 	keywordField.Store = true
 	keywordField.Index = true
@@ -179,8 +179,8 @@ func (si *SearchIndexer) createIndexMapping() mapping.IndexMapping {
 		"id":         keywordField,
 		"type":       keywordField,
 		"path":       keywordField,
-		"name":       textField,
-		"content":    textField,
+		"name":       textField, // Use text field with standard analyzer
+		"content":    textField, // Use text field with standard analyzer
 		"updated_at": dateField,
 	}
 
@@ -190,7 +190,7 @@ func (si *SearchIndexer) createIndexMapping() mapping.IndexMapping {
 
 	indexMapping := bleve.NewIndexMapping()
 	indexMapping.DefaultMapping = docMapping
-	indexMapping.DefaultAnalyzer = en.AnalyzerName
+	indexMapping.DefaultAnalyzer = "standard"
 
 	return indexMapping
 }
@@ -365,6 +365,26 @@ func (si *SearchIndexer) searchWithType(ctx context.Context, queryStr string, do
 	}
 }
 
+// isNumericQuery checks if the query string is primarily numeric
+// This helps us apply different search strategies for numbers vs text
+func isNumericQuery(queryStr string) bool {
+	if len(queryStr) == 0 {
+		return false
+	}
+
+	// Count numeric characters
+	numericCount := 0
+	for _, ch := range queryStr {
+		if ch >= '0' && ch <= '9' {
+			numericCount++
+		}
+	}
+
+	// If more than 50% of characters are digits, treat as numeric query
+	// This handles cases like "9005", "port:9005", "192.168.1.1", etc.
+	return float64(numericCount)/float64(len(queryStr)) > 0.5
+}
+
 // buildQuery builds a search query with optional type filtering
 func (si *SearchIndexer) buildQuery(queryStr string, docType string) query.Query {
 	mainQuery := bleve.NewBooleanQuery()
@@ -376,6 +396,9 @@ func (si *SearchIndexer) buildQuery(queryStr string, docType string) query.Query
 		mainQuery.AddMust(typeQuery)
 	}
 
+	// Determine if this is a numeric query
+	isNumeric := isNumericQuery(queryStr)
+
 	// Add text search across name and content fields only
 	textQuery := bleve.NewBooleanQuery()
 	searchFields := []string{"name", "content"}
@@ -384,30 +407,62 @@ func (si *SearchIndexer) buildQuery(queryStr string, docType string) query.Query
 		// Create a boolean query for this field to combine multiple query types
 		fieldQuery := bleve.NewBooleanQuery()
 
-		// 1. Exact match query (highest priority)
-		matchQuery := bleve.NewMatchQuery(queryStr)
-		matchQuery.SetField(field)
-		matchQuery.SetBoost(3.0) // Higher boost for exact matches
-		fieldQuery.AddShould(matchQuery)
+		if isNumeric {
+			// Numeric query strategy: prioritize exact matches and prefix matches
+			// Avoid fuzzy matching to prevent false positives
 
-		// 2. Prefix query for partial matches (e.g., "access" matches "access_log")
-		prefixQuery := bleve.NewPrefixQuery(queryStr)
-		prefixQuery.SetField(field)
-		prefixQuery.SetBoost(2.0) // Medium boost for prefix matches
-		fieldQuery.AddShould(prefixQuery)
+			// 1. Term query for exact token match (highest priority for numbers)
+			termQuery := bleve.NewTermQuery(queryStr)
+			termQuery.SetField(field)
+			termQuery.SetBoost(10.0) // Highest boost for exact term matches
+			fieldQuery.AddShould(termQuery)
 
-		// 3. Wildcard query for more flexible matching
-		wildcardQuery := bleve.NewWildcardQuery("*" + queryStr + "*")
-		wildcardQuery.SetField(field)
-		wildcardQuery.SetBoost(1.5) // Lower boost for wildcard matches
-		fieldQuery.AddShould(wildcardQuery)
+			// 2. Prefix query for partial matches (e.g., "9005" matches "90051234")
+			prefixQuery := bleve.NewPrefixQuery(queryStr)
+			prefixQuery.SetField(field)
+			prefixQuery.SetBoost(5.0) // High boost for prefix matches
+			fieldQuery.AddShould(prefixQuery)
 
-		// 4. Fuzzy match query (allows 1 character difference)
-		fuzzyQuery := bleve.NewFuzzyQuery(queryStr)
-		fuzzyQuery.SetField(field)
-		fuzzyQuery.SetFuzziness(1)
-		fuzzyQuery.SetBoost(1.0) // Lowest boost for fuzzy matches
-		fieldQuery.AddShould(fuzzyQuery)
+			// 3. Wildcard query for substring matching (e.g., "9005" in "listen 9005;")
+			wildcardQuery := bleve.NewWildcardQuery("*" + queryStr + "*")
+			wildcardQuery.SetField(field)
+			wildcardQuery.SetBoost(2.0) // Lower boost for wildcard matches
+			fieldQuery.AddShould(wildcardQuery)
+
+		} else {
+			// Text query strategy: more flexible matching with fuzzy support
+
+			// 1. Term query for exact token match (highest priority)
+			termQuery := bleve.NewTermQuery(strings.ToLower(queryStr))
+			termQuery.SetField(field)
+			termQuery.SetBoost(8.0) // High boost for exact matches
+			fieldQuery.AddShould(termQuery)
+
+			// 2. Match query for analyzed text search (handles case-insensitive, etc.)
+			matchQuery := bleve.NewMatchQuery(queryStr)
+			matchQuery.SetField(field)
+			matchQuery.SetBoost(4.0) // Medium-high boost for match queries
+			fieldQuery.AddShould(matchQuery)
+
+			// 3. Prefix query for partial matches (e.g., "access" matches "access_log")
+			prefixQuery := bleve.NewPrefixQuery(strings.ToLower(queryStr))
+			prefixQuery.SetField(field)
+			prefixQuery.SetBoost(3.0) // Medium boost for prefix matches
+			fieldQuery.AddShould(prefixQuery)
+
+			// 4. Wildcard query for more flexible matching
+			wildcardQuery := bleve.NewWildcardQuery("*" + strings.ToLower(queryStr) + "*")
+			wildcardQuery.SetField(field)
+			wildcardQuery.SetBoost(2.0) // Lower boost for wildcard matches
+			fieldQuery.AddShould(wildcardQuery)
+
+			// 5. Fuzzy match query (allows 1 character difference) - only for text queries
+			fuzzyQuery := bleve.NewFuzzyQuery(queryStr)
+			fuzzyQuery.SetField(field)
+			fuzzyQuery.SetFuzziness(1)
+			fuzzyQuery.SetBoost(1.0) // Lowest boost for fuzzy matches
+			fieldQuery.AddShould(fuzzyQuery)
+		}
 
 		textQuery.AddShould(fieldQuery)
 	}

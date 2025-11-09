@@ -272,7 +272,7 @@ func SiteStatusMapBuilder(maintenanceSuffix string) StatusMapBuilder {
 // DefaultFilterMatcher provides the standard filtering logic with name search
 func DefaultFilterMatcher(fileName string, status Status, namespaceID uint64, options *GenericListOptions) bool {
 	// Exact name matching
-	if options.Name != "" && fileName != options.Name {
+	if options.Name != "" && !strings.Contains(fileName, options.Name) {
 		return false
 	}
 	if options.Status != "" && status != Status(options.Status) {
