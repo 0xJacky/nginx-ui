@@ -68,6 +68,15 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
         await buildConfig()
       }
 
+      if (data.value.sync_node_ids === null) {
+        data.value.sync_node_ids = []
+      }
+
+      // @ts-expect-error allow comparing with empty string for legacy data
+      if (data.value.namespace_id === '') {
+        data.value.namespace_id = 0
+      }
+
       const response = await site.updateItem(encodeURIComponent(name.value), {
         content: configText.value,
         overwrite: true,

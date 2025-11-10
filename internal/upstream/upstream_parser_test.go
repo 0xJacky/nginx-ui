@@ -753,3 +753,155 @@ func TestGrpcPassPortDefaults(t *testing.T) {
 		})
 	}
 }
+
+// New tests covering `set $var ...;` with proxy_pass/grpc_pass
+func TestSetVariableProxyPass_HTTP(t *testing.T) {
+	config := `
+server {
+    listen 80;
+    set $target http://example.com;
+    location / {
+        proxy_pass $target;
+    }
+}`
+
+	targets := ParseProxyTargetsFromRawContent(config)
+
+	expected := ProxyTarget{Host: "example.com", Port: "80", Type: "proxy_pass"}
+	if len(targets) != 1 {
+		t.Fatalf("Expected 1 target, got %d", len(targets))
+	}
+	got := targets[0]
+	if got.Host != expected.Host || got.Port != expected.Port || got.Type != expected.Type {
+		t.Errorf("Unexpected target: got=%+v expected=%+v", got, expected)
+	}
+}
+
+func TestSetVariableProxyPass_HTTPS(t *testing.T) {
+	config := `
+server {
+    listen 80;
+    set $target https://example.com;
+    location / {
+        proxy_pass $target;
+    }
+}`
+
+	targets := ParseProxyTargetsFromRawContent(config)
+
+	expected := ProxyTarget{Host: "example.com", Port: "443", Type: "proxy_pass"}
+	if len(targets) != 1 {
+		t.Fatalf("Expected 1 target, got %d", len(targets))
+	}
+	got := targets[0]
+	if got.Host != expected.Host || got.Port != expected.Port || got.Type != expected.Type {
+		t.Errorf("Unexpected target: got=%+v expected=%+v", got, expected)
+	}
+}
+
+func TestSetVariableProxyPass_QuotedValue(t *testing.T) {
+	config := `
+server {
+    listen 80;
+    set $target "http://example.com:9090";
+    location / {
+        proxy_pass $target;
+    }
+}`
+
+	targets := ParseProxyTargetsFromRawContent(config)
+
+	expected := ProxyTarget{Host: "example.com", Port: "9090", Type: "proxy_pass"}
+	if len(targets) != 1 {
+		t.Fatalf("Expected 1 target, got %d", len(targets))
+	}
+	got := targets[0]
+	if got.Host != expected.Host || got.Port != expected.Port || got.Type != expected.Type {
+		t.Errorf("Unexpected target: got=%+v expected=%+v", got, expected)
+	}
+}
+
+func TestSetVariableProxyPass_UnresolvableIgnored(t *testing.T) {
+	config := `
+server {
+    listen 80;
+    set $target http://example.com$request_uri;
+    location / {
+        proxy_pass $target;
+    }
+}`
+
+	targets := ParseProxyTargetsFromRawContent(config)
+
+	// Because the variable value contains nginx variables, it should be ignored
+	if len(targets) != 0 {
+		t.Errorf("Expected 0 targets, got %d", len(targets))
+		for i, target := range targets {
+			t.Logf("Target %d: %+v", i, target)
+		}
+	}
+}
+
+func TestSetVariableProxyPass_UpstreamReferenceIgnored(t *testing.T) {
+	config := `
+upstream api-1 {
+    server 127.0.0.1:9000;
+    keepalive 16;
+}
+server {
+    listen 80;
+    set $target http://api-1/;
+    location / {
+        proxy_pass $target;
+    }
+}`
+
+	targets := ParseProxyTargetsFromRawContent(config)
+
+	// Expect only upstream servers, and proxy_pass via $target should be ignored
+	expectedTargets := []ProxyTarget{
+		{Host: "127.0.0.1", Port: "9000", Type: "upstream"},
+	}
+
+	if len(targets) != len(expectedTargets) {
+		t.Errorf("Expected %d targets, got %d", len(expectedTargets), len(targets))
+		for i, target := range targets {
+			t.Logf("Target %d: %+v", i, target)
+		}
+		return
+	}
+
+	targetMap := make(map[string]ProxyTarget)
+	for _, target := range targets {
+		key := formatSocketAddress(target.Host, target.Port) + ":" + target.Type
+		targetMap[key] = target
+	}
+	for _, expected := range expectedTargets {
+		key := formatSocketAddress(expected.Host, expected.Port) + ":" + expected.Type
+		if _, found := targetMap[key]; !found {
+			t.Errorf("Expected target not found: %+v", expected)
+		}
+	}
+}
+
+func TestSetVariableGrpcPass(t *testing.T) {
+	config := `
+server {
+    listen 80 http2;
+    set $g grpc://127.0.0.1:9090;
+    location /svc/ {
+        grpc_pass $g;
+    }
+}`
+
+	targets := ParseProxyTargetsFromRawContent(config)
+
+	expected := ProxyTarget{Host: "127.0.0.1", Port: "9090", Type: "grpc_pass"}
+	if len(targets) != 1 {
+		t.Fatalf("Expected 1 target, got %d", len(targets))
+	}
+	got := targets[0]
+	if got.Host != expected.Host || got.Port != expected.Port || got.Type != expected.Type {
+		t.Errorf("Unexpected target: got=%+v expected=%+v", got, expected)
+	}
+}

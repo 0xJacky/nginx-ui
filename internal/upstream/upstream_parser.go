@@ -42,6 +42,7 @@ func ParseProxyTargetsAndUpstreamsFromRawContent(content string) *ParseResult {
 	upstreams := make(map[string][]ProxyTarget)
 
 	// First, collect all upstream names and their contexts
+	// Also collect literal variable assignments from `set $var value;`
 	upstreamNames := make(map[string]bool)
 	upstreamContexts := make(map[string]*TheUpstreamContext)
 	upstreamRegex := regexp.MustCompile(`(?s)upstream\s+([^\s]+)\s*\{([^}]+)\}`)
@@ -92,13 +93,24 @@ func ParseProxyTargetsAndUpstreamsFromRawContent(content string) *ParseResult {
 		}
 	}
 
+	// Collect simple literal variables defined via `set $var value;`
+	// Only variables with literal values (no nginx variables inside) are recorded.
+	variableValues := extractLiteralSetVariables(content)
+
 	// Parse proxy_pass directives, but skip upstream references
 	proxyPassRegex := regexp.MustCompile(`(?m)^\s*proxy_pass\s+([^;]+);`)
 	proxyMatches := proxyPassRegex.FindAllStringSubmatch(content, -1)
 
 	for _, match := range proxyMatches {
 		if len(match) >= 2 {
-			proxyPassURL := strings.TrimSpace(match[1])
+			rawValue := strings.TrimSpace(match[1])
+
+			// If the value is a single variable like `$target`, try to resolve it from `set $target ...;`
+			if resolved, ok := resolveSingleVariable(rawValue, variableValues); ok {
+				rawValue = resolved
+			}
+
+			proxyPassURL := rawValue
 			// Skip if this proxy_pass references an upstream
 			if !isUpstreamReference(proxyPassURL, upstreamNames) {
 				target := parseProxyPassURL(proxyPassURL, "proxy_pass")
@@ -115,7 +127,14 @@ func ParseProxyTargetsAndUpstreamsFromRawContent(content string) *ParseResult {
 
 	for _, match := range grpcMatches {
 		if len(match) >= 2 {
-			grpcPassURL := strings.TrimSpace(match[1])
+			rawValue := strings.TrimSpace(match[1])
+
+			// If the value is a single variable like `$target`, try to resolve it from `set $target ...;`
+			if resolved, ok := resolveSingleVariable(rawValue, variableValues); ok {
+				rawValue = resolved
+			}
+
+			grpcPassURL := rawValue
 			// Skip if this grpc_pass references an upstream
 			if !isUpstreamReference(grpcPassURL, upstreamNames) {
 				target := parseProxyPassURL(grpcPassURL, "grpc_pass")
@@ -390,4 +409,64 @@ func isUpstreamReference(passURL string, upstreamNames map[string]bool) bool {
 	}
 
 	return false
+}
+
+// extractLiteralSetVariables parses `set $var value;` directives from the entire content and
+// returns a map of variable name to its literal value. Values containing nginx variables are ignored.
+func extractLiteralSetVariables(content string) map[string]string {
+	result := make(map[string]string)
+
+	// Capture variable name and raw value (without trailing semicolon)
+	setRegex := regexp.MustCompile(`(?m)^\s*set\s+\$([A-Za-z0-9_]+)\s+([^;]+);`)
+	matches := setRegex.FindAllStringSubmatch(content, -1)
+	for _, m := range matches {
+		if len(m) < 3 {
+			continue
+		}
+		name := m[1]
+		value := strings.TrimSpace(m[2])
+
+		// Remove surrounding quotes if any
+		if len(value) >= 2 {
+			if (strings.HasPrefix(value, `"`) && strings.HasSuffix(value, `"`)) ||
+				(strings.HasPrefix(value, `'`) && strings.HasSuffix(value, `'`)) {
+				value = strings.Trim(value, `"'`)
+			}
+		}
+
+		// Ignore values containing nginx variables unless it is a single variable reference
+		if strings.Contains(value, "$") {
+			// Support simple indirection: set $a $b;
+			if resolved, ok := resolveSingleVariable(value, result); ok {
+				result[name] = resolved
+			}
+			continue
+		}
+
+		// Record literal value
+		result[name] = value
+	}
+	return result
+}
+
+// resolveSingleVariable resolves an expression that is exactly a single variable like `$target`
+// using the provided map. Returns (resolvedValue, true) if resolvable; otherwise ("", false).
+func resolveSingleVariable(expr string, variables map[string]string) (string, bool) {
+	expr = strings.TrimSpace(expr)
+	// Match exactly `$varName` with optional surrounding spaces
+	varOnlyRegex := regexp.MustCompile(`^\$([A-Za-z0-9_]+)$`)
+	sub := varOnlyRegex.FindStringSubmatch(expr)
+	if len(sub) < 2 {
+		return "", false
+	}
+	name := sub[1]
+	val, ok := variables[name]
+	if !ok {
+		return "", false
+	}
+	// Guard against cyclic or unresolved values that still contain variables
+	if strings.Contains(val, "$") {
+		return "", false
+	}
+	return val, true
 }
