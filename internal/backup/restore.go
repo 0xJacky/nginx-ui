@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"syscall"
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/settings"
@@ -345,9 +346,9 @@ func verifyHashes(restoreDir, nginxUIZipPath, nginxZipPath string) (bool, error)
 // parseHashInfo parses hash info from content string
 func parseHashInfo(content string) HashInfo {
 	info := HashInfo{}
-	lines := strings.Split(content, "\n")
+	lines := strings.SplitSeq(content, "\n")
 
-	for _, line := range lines {
+	for line := range lines {
 		line = strings.TrimSpace(line)
 		if line == "" {
 			continue
@@ -383,22 +384,31 @@ func restoreNginxConfigs(nginxBackupDir string) error {
 		return ErrNginxConfigDirEmpty
 	}
 
+	logger.Infof("Starting Nginx config restore from %s to %s", nginxBackupDir, destDir)
+
 	// Recursively clean destination directory preserving the directory structure
+	logger.Info("Cleaning destination directory before restore")
 	if err := cleanDirectoryPreservingStructure(destDir); err != nil {
+		logger.Errorf("Failed to clean directory %s: %v", destDir, err)
 		return cosy.WrapErrorWithParams(ErrCopyNginxConfigDir, "failed to clean directory: "+err.Error())
 	}
 
 	// Copy files from backup to nginx config directory
+	logger.Infof("Copying backup files to destination: %s", destDir)
 	if err := copyDirectory(nginxBackupDir, destDir); err != nil {
+		logger.Errorf("Failed to copy backup files: %v", err)
 		return err
 	}
 
+	logger.Info("Nginx config restore completed successfully")
 	return nil
 }
 
-// cleanDirectoryPreservingStructure removes all files and symlinks in a directory
-// but preserves the directory structure itself
+// cleanDirectoryPreservingStructure removes all files and subdirectories in a directory
+// but preserves the directory structure itself and handles mount points correctly.
 func cleanDirectoryPreservingStructure(dir string) error {
+	logger.Infof("Cleaning directory: %s", dir)
+
 	entries, err := os.ReadDir(dir)
 	if err != nil {
 		return err
@@ -406,9 +416,111 @@ func cleanDirectoryPreservingStructure(dir string) error {
 
 	for _, entry := range entries {
 		path := filepath.Join(dir, entry.Name())
-		err = os.RemoveAll(path)
-		if err != nil {
+
+		if err := removeOrClearPath(path, entry.IsDir()); err != nil {
 			return err
+		}
+	}
+
+	logger.Infof("Successfully cleaned directory: %s", dir)
+	return nil
+}
+
+// removeOrClearPath removes a path or clears it if it's a mount point
+func removeOrClearPath(path string, isDir bool) error {
+	// Try to remove the path first
+	err := os.RemoveAll(path)
+	if err == nil {
+		return nil
+	}
+
+	// Handle removal failures
+	if !isDeviceBusyError(err) {
+		return fmt.Errorf("failed to remove %s: %w", path, err)
+	}
+
+	// Device busy - check if it's a mount point or directory
+	if !isDir {
+		return fmt.Errorf("file is busy and cannot be removed: %s: %w", path, err)
+	}
+
+	logger.Warnf("Path is busy (mount point): %s, clearing contents only", path)
+	return clearDirectoryContents(path)
+}
+
+// isMountPoint checks if a path is a mount point by comparing device IDs
+// or checking /proc/mounts on Linux systems
+func isMountPoint(path string) bool {
+	if isDeviceDifferent(path) {
+		return true
+	}
+
+	return isInMountTable(path)
+}
+
+// isDeviceDifferent and isInMountTable are implemented in platform-specific files:
+// - restore_unix.go for Linux/Unix systems
+// - restore_windows.go for Windows systems
+
+// unescapeOctal converts octal escape sequences like \040 to their character equivalents
+func unescapeOctal(s string) string {
+	var result strings.Builder
+
+	for i := 0; i < len(s); i++ {
+		if char, skip := tryParseOctal(s, i); skip > 0 {
+			result.WriteByte(char)
+			i += skip - 1 // -1 because loop will increment
+			continue
+		}
+		result.WriteByte(s[i])
+	}
+
+	return result.String()
+}
+
+// tryParseOctal attempts to parse octal sequence at position i
+// returns (char, skip) where skip > 0 if successful
+func tryParseOctal(s string, i int) (byte, int) {
+	if s[i] != '\\' || i+3 >= len(s) {
+		return 0, 0
+	}
+
+	var char byte
+	if _, err := fmt.Sscanf(s[i:i+4], "\\%03o", &char); err == nil {
+		return char, 4
+	}
+
+	return 0, 0
+}
+
+// isDeviceBusyError checks if an error is a "device or resource busy" error
+func isDeviceBusyError(err error) bool {
+	if err == nil {
+		return false
+	}
+
+	if errno, ok := err.(syscall.Errno); ok && errno == syscall.EBUSY {
+		return true
+	}
+
+	errMsg := err.Error()
+	return strings.Contains(errMsg, "device or resource busy") ||
+		strings.Contains(errMsg, "resource busy")
+}
+
+// clearDirectoryContents removes all files and subdirectories within a directory
+// but preserves the directory itself. This is useful for cleaning mount points.
+func clearDirectoryContents(dir string) error {
+	entries, err := os.ReadDir(dir)
+	if err != nil {
+		return err
+	}
+
+	for _, entry := range entries {
+		path := filepath.Join(dir, entry.Name())
+
+		if err := removeOrClearPath(path, entry.IsDir()); err != nil {
+			logger.Warnf("Failed to clear %s: %v, continuing", path, err)
 		}
 	}
 

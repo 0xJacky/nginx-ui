@@ -159,7 +159,7 @@ func copyDirectory(src, dst string) error {
 	}
 
 	// Create destination directory with same permissions as source
-	if err := os.MkdirAll(dst, srcInfo.Mode()); err != nil {
+	if err := os.MkdirAll(dst, 0755); err != nil {
 		return err
 	}
 
@@ -192,7 +192,7 @@ func copyDirectory(src, dst string) error {
 
 		// Create directories with original permissions
 		if info.IsDir() {
-			return os.MkdirAll(targetPath, info.Mode())
+			return os.MkdirAll(targetPath, 0755)
 		}
 
 		// Copy regular files
