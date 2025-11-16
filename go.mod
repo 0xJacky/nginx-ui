@@ -6,9 +6,9 @@ require (
 	code.pfad.fr/risefront v1.0.0
 	github.com/0xJacky/pofile v1.1.1
 	github.com/BurntSushi/toml v1.5.0
-	github.com/blevesearch/bleve/v2 v2.5.4
+	github.com/blevesearch/bleve/v2 v2.5.5
 	github.com/caarlos0/env/v11 v11.3.1
-	github.com/casdoor/casdoor-go-sdk v1.30.0
+	github.com/casdoor/casdoor-go-sdk v1.31.0
 	github.com/creack/pty v1.1.24
 	github.com/dgraph-io/ristretto/v2 v2.3.0
 	github.com/docker/docker v28.5.2+incompatible
@@ -46,11 +46,11 @@ require (
 	github.com/stretchr/testify v1.11.1
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20250620092546-c3e307e36701
 	github.com/ulikunitz/xz v0.5.15
-	github.com/uozi-tech/cosy v1.27.3
+	github.com/uozi-tech/cosy v1.27.7
 	github.com/uozi-tech/cosy-driver-sqlite v0.2.1
-	github.com/urfave/cli/v3 v3.5.0
-	golang.org/x/crypto v0.43.0
-	golang.org/x/net v0.46.0
+	github.com/urfave/cli/v3 v3.6.0
+	golang.org/x/crypto v0.44.0
+	golang.org/x/net v0.47.0
 	google.golang.org/grpc v1.76.0
 	gopkg.in/ini.v1 v1.67.0
 	gorm.io/driver/sqlite v1.6.0
@@ -346,7 +346,7 @@ require (
 	golang.org/x/oauth2 v0.33.0 // indirect
 	golang.org/x/sync v0.18.0 // indirect
 	golang.org/x/sys v0.38.0 // indirect
-	golang.org/x/text v0.30.0 // indirect
+	golang.org/x/text v0.31.0 // indirect
 	golang.org/x/time v0.14.0 // indirect
 	golang.org/x/tools v0.38.0 // indirect
 	google.golang.org/api v0.255.0 // indirect
