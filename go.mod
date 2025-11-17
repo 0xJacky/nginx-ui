@@ -48,7 +48,7 @@ require (
 	github.com/ulikunitz/xz v0.5.15
 	github.com/uozi-tech/cosy v1.27.7
 	github.com/uozi-tech/cosy-driver-sqlite v0.2.1
-	github.com/urfave/cli/v3 v3.6.0
+	github.com/urfave/cli/v3 v3.6.1
 	golang.org/x/crypto v0.44.0
 	golang.org/x/net v0.47.0
 	google.golang.org/grpc v1.76.0
