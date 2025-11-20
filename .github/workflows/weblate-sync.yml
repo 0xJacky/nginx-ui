@@ -18,7 +18,7 @@ jobs:
         ahead: ${{ steps.check.outputs.ahead }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: ${{ env.DEVELOP_BRANCH }}
           clean: false
@@ -46,7 +46,7 @@ jobs:
       WEBLATE_TOKEN: ${{ secrets.WEBLATE_TOKEN }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup python
         uses: actions/setup-python@v6
@@ -69,7 +69,7 @@ jobs:
     if: ${{ needs.check.outputs.ahead > 0 || needs.check.outputs.behind > 0 && always() }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: ${{ env.DEVELOP_BRANCH }}
           fetch-depth: 0
