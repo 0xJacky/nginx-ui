@@ -16,7 +16,7 @@ jobs:
     if: github.event.pull_request.merged == true || github.event.action == 'published' || github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup Python
         uses: actions/setup-python@v6
