@@ -2,6 +2,7 @@
 import type { Cert } from '@/api/cert'
 import { CopyOutlined, InboxOutlined } from '@ant-design/icons-vue'
 import { useClipboard } from '@vueuse/core'
+import config from '@/api/config'
 import CodeEditor from '@/components/CodeEditor'
 import CertificateFileUpload from './CertificateFileUpload.vue'
 
@@ -19,6 +20,85 @@ const { message } = App.useApp()
 const data = defineModel<Cert>('data', { required: true })
 
 const { copy } = useClipboard()
+
+// Lazy load nginx config base path
+const nginxBasePath = ref<string>('')
+const basePathLoaded = ref(false)
+
+async function loadNginxBasePath() {
+  if (basePathLoaded.value)
+    return
+
+  try {
+    const res = await config.get_base_path()
+    nginxBasePath.value = res.base_path
+    basePathLoaded.value = true
+  }
+  catch (error) {
+    console.error('Failed to load nginx base path:', error)
+    message.warning($gettext('Failed to load nginx configuration path'))
+  }
+}
+
+// Generate slug from name or filename
+function generateSlug(text: string): string {
+  let result = text
+    .toLowerCase()
+    .replace(/\s+/g, '_') // Replace spaces with underscores
+    .replace(/[^a-z0-9_./-]/g, '') // Remove invalid characters
+
+  // Remove leading dots
+  while (result.startsWith('.')) {
+    result = result.slice(1)
+  }
+
+  // Remove trailing dots
+  while (result.endsWith('.')) {
+    result = result.slice(0, -1)
+  }
+
+  return result
+}
+
+// Auto-generate certificate paths and name
+async function autoGeneratePaths(fileName: string, _type: 'certificate' | 'key') {
+  // Only generate paths in add mode
+  if (data.value.id)
+    return
+
+  await loadNginxBasePath()
+
+  if (!nginxBasePath.value)
+    return
+
+  // Extract base name from filename (remove extension)
+  const baseName = fileName.replace(/\.(crt|pem|cer|cert|key|private)$/i, '')
+
+  // Auto-fill name if empty
+  if (!data.value.name) {
+    data.value.name = baseName
+  }
+
+  // Generate directory name from cert name or filename
+  const slug = data.value.name
+    ? generateSlug(data.value.name)
+    : generateSlug(baseName)
+
+  if (!slug)
+    return
+
+  const certDir = `${nginxBasePath.value}/ssl/${slug}`
+
+  // Auto-fill certificate path if empty
+  if (!data.value.ssl_certificate_path) {
+    data.value.ssl_certificate_path = `${certDir}/fullchain.cer`
+  }
+
+  // Auto-fill key path if empty
+  if (!data.value.ssl_certificate_key_path) {
+    data.value.ssl_certificate_key_path = `${certDir}/private.key`
+  }
+}
 
 async function copyToClipboard(text: string, label: string) {
   if (!text) {
@@ -40,13 +120,23 @@ const isDragOverCert = ref(false)
 const isDragOverKey = ref(false)
 
 // Handle certificate file upload
-function handleCertificateUpload(content: string) {
+function handleCertificateUpload(content: string, fileName?: string) {
   data.value.ssl_certificate = content
+
+  // Auto-generate paths if in add mode
+  if (fileName) {
+    autoGeneratePaths(fileName, 'certificate')
+  }
 }
 
 // Handle private key file upload
-function handlePrivateKeyUpload(content: string) {
+function handlePrivateKeyUpload(content: string, fileName?: string) {
   data.value.ssl_certificate_key = content
+
+  // Auto-generate paths if in add mode
+  if (fileName) {
+    autoGeneratePaths(fileName, 'key')
+  }
 }
 
 // Drag and drop handlers
@@ -95,10 +185,10 @@ function handleDrop(e: DragEvent, type: 'certificate' | 'key') {
     reader.onload = e => {
       const content = e.target?.result as string
       if (type === 'certificate') {
-        handleCertificateUpload(content)
+        handleCertificateUpload(content, file.name)
       }
       else {
-        handlePrivateKeyUpload(content)
+        handlePrivateKeyUpload(content, file.name)
       }
     }
     reader.readAsText(file)
@@ -131,7 +221,7 @@ function handleDrop(e: DragEvent, type: 'certificate' | 'key') {
       <CertificateFileUpload
         v-if="!readonly"
         type="certificate"
-        @upload="handleCertificateUpload"
+        @upload="(content, fileName) => handleCertificateUpload(content, fileName)"
       />
 
       <div
@@ -192,7 +282,7 @@ function handleDrop(e: DragEvent, type: 'certificate' | 'key') {
       <CertificateFileUpload
         v-if="!readonly"
         type="key"
-        @upload="handlePrivateKeyUpload"
+        @upload="(content, fileName) => handlePrivateKeyUpload(content, fileName)"
       />
 
       <div

@@ -11,7 +11,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const emit = defineEmits<{
-  upload: [content: string]
+  upload: [content: string, fileName: string]
 }>()
 
 const { message } = App.useApp()
@@ -96,7 +96,7 @@ async function handleFileUpload(file: File) {
       }
     }
 
-    emit('upload', content)
+    emit('upload', content, file.name)
     message.success($gettext('File uploaded successfully'))
   }
   catch (error) {
