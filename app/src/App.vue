@@ -95,6 +95,68 @@ loadTranslations(route)
       padding-bottom: 0;
     }
   }
+
+  // 暗夜模式滚动条样式
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #1a1a1a;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #3a3a3a;
+    border-radius: 4px;
+    transition: background 0.3s ease;
+
+    &:hover {
+      background: #4a4a4a;
+    }
+
+    &:active {
+      background: #555555;
+    }
+  }
+
+  // Firefox 滚动条样式
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #3a3a3a #1a1a1a;
+  }
+}
+
+// 浅色模式滚动条样式
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d0d0d0;
+  border-radius: 4px;
+  transition: background 0.3s ease;
+
+  &:hover {
+    background: #b0b0b0;
+  }
+
+  &:active {
+    background: #909090;
+  }
+}
+
+// Firefox 滚动条样式
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #d0d0d0 #f0f0f0;
 }
 
 .ant-layout-header {
