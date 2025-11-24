@@ -241,7 +241,6 @@ function handleDrop(e: DragEvent, type: 'certificate' | 'key') {
     width: 100%;
 
     .label-text {
-      font-weight: 500;
       color: rgba(0, 0, 0, 0.85);
     }
   }
@@ -277,6 +276,32 @@ function handleDrop(e: DragEvent, type: 'certificate' | 'key') {
           font-size: 16px;
           margin: 0;
           font-weight: 500;
+        }
+      }
+    }
+  }
+}
+
+// 暗夜模式适配
+.dark {
+  .certificate-content-editor {
+    .label-with-copy {
+      .label-text {
+        color: rgba(255, 255, 255, 0.85);
+      }
+    }
+
+    .code-editor-container {
+      .drag-overlay {
+        background-color: rgba(64, 169, 255, 0.15);
+        border-color: #177ddc;
+
+        .drag-content {
+          color: #40a9ff;
+
+          p {
+            color: #40a9ff;
+          }
         }
       }
     }

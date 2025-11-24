@@ -98,7 +98,5 @@ function handleRenewed() {
 </template>
 
 <style scoped lang="less">
-.auto-cert-management {
-  margin-bottom: 24px;
-}
+
 </style>

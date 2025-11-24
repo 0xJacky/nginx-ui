@@ -143,7 +143,7 @@ const uploadText = computed(() => {
       </template>
       {{ uploadText }}
     </AButton>
-    <span class="ml-2 text-gray-500 text-sm">
+    <span class="ml-2 text-gray-500 text-sm hint-text">
       {{ $gettext('or drag file to editor below') }}
     </span>
   </div>
@@ -152,5 +152,18 @@ const uploadText = computed(() => {
 <style scoped lang="less">
 .certificate-file-upload {
   margin-bottom: 12px;
+
+  .hint-text {
+    color: rgba(0, 0, 0, 0.45);
+  }
+}
+
+// 暗夜模式适配
+.dark {
+  .certificate-file-upload {
+    .hint-text {
+      color: rgba(255, 255, 255, 0.45);
+    }
+  }
 }
 </style>
