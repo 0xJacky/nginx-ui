@@ -180,7 +180,7 @@ jobs:
         with:
           path: |
             ~/go/pkg/mod
-          key: go-${{ runner.os }}-${{ runner.arch }}-mod-${{ hashFiles('go.mod') }}
+          key: go-${{ runner.os }}-${{ runner.arch }}-mod-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             go-${{ runner.os }}-${{ runner.arch }}-mod-
 
@@ -189,7 +189,7 @@ jobs:
         with:
           path: |
             ~/.cache/go-build
-          key: go-${{ runner.os }}-${{ runner.arch }}-${{ env.CACHE_NAME }}-${{ hashFiles('go.mod') }}
+          key: go-${{ runner.os }}-${{ runner.arch }}-${{ env.CACHE_NAME }}-${{ hashFiles('**/go.sum') }}
           restore-keys: |
               go-${{ runner.os }}-${{ runner.arch }}-${{ env.CACHE_NAME }}-
 
@@ -343,7 +343,7 @@ jobs:
           path: |
             ~/go/pkg/mod
             ~/.cache/go-build
-          key: go-${{ runner.os }}-${{ runner.arch }}-${{ env.CACHE_NAME }}-${{ hashFiles('go.mod') }}
+          key: go-${{ runner.os }}-${{ runner.arch }}-${{ env.CACHE_NAME }}-${{ hashFiles('go.sum') }}
           restore-keys: |
             go-${{ runner.os }}-${{ runner.arch }}-${{ env.CACHE_NAME }}-
 
