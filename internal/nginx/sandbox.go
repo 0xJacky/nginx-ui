@@ -161,48 +161,61 @@ func generateSandboxConfig(namespace *NamespaceInfo, siteFiles, streamFiles []st
 func replaceIncludeDirectives(mainConf string, sandboxDir string, siteIncludeLines, streamIncludeLines []string) string {
 	lines := strings.Split(mainConf, "\n")
 	var result []string
-	insideHTTP := false
-	insideStream := false
+	httpDepth := 0
+	streamDepth := 0
 	httpIncludesAdded := false
 	streamIncludesAdded := false
+
+	includeRx := regexp.MustCompile(`(?i)^\s*include\s+([^;#]+);`)
+	httpOpenRx := regexp.MustCompile(`(?i)^\s*http\s*\{`)
+	streamOpenRx := regexp.MustCompile(`(?i)^\s*stream\s*\{`)
 
 	for _, line := range lines {
 		trimmed := strings.TrimSpace(line)
 
-		// Track http and stream blocks
-		if strings.HasPrefix(trimmed, "http") && strings.Contains(trimmed, "{") {
-			insideHTTP = true
-			result = append(result, line)
-			continue
-		}
-		if strings.HasPrefix(trimmed, "stream") && strings.Contains(trimmed, "{") {
-			insideStream = true
+		// Skip processing for comment-only lines
+		if strings.HasPrefix(trimmed, "#") {
 			result = append(result, line)
 			continue
 		}
 
-		// Handle include directives
-		if strings.Contains(trimmed, "include") {
-			isSitesEnabled := strings.Contains(trimmed, "sites-enabled")
-			isStreamsEnabled := strings.Contains(trimmed, "streams-enabled")
+		// Detect opening of http/stream blocks
+		if httpOpenRx.MatchString(line) {
+			httpDepth = 1
+			httpIncludesAdded = false
+			result = append(result, line)
+			continue
+		}
+		if streamOpenRx.MatchString(line) {
+			streamDepth = 1
+			streamIncludesAdded = false
+			result = append(result, line)
+			continue
+		}
+
+		// Handle include directives (non-comment)
+		if includeRx.MatchString(line) {
+			isSitesEnabled := strings.Contains(line, "sites-enabled")
+			isStreamsEnabled := strings.Contains(line, "streams-enabled")
 
 			// If it's sites-enabled or streams-enabled, replace it
 			if isSitesEnabled || isStreamsEnabled {
 				// Add our sandbox-specific includes at the first occurrence
-				if insideHTTP && isSitesEnabled && !httpIncludesAdded {
+				if httpDepth > 0 && isSitesEnabled && !httpIncludesAdded {
 					result = append(result, "    # Sandbox-specific includes (generated for isolated testing)")
 					result = append(result, siteIncludeLines...)
 					httpIncludesAdded = true
 				}
-				if insideStream && isStreamsEnabled && !streamIncludesAdded {
+				if streamDepth > 0 && isStreamsEnabled && !streamIncludesAdded {
 					result = append(result, "    # Sandbox-specific includes (generated for isolated testing)")
 					result = append(result, streamIncludeLines...)
 					streamIncludesAdded = true
 				}
-				continue // Skip the original include line
+				// Skip the original include line
+				continue
 			}
 
-			// Rewrite includes to sandbox paths
+			// Rewrite other includes to sandbox paths
 			normalized := rewriteIncludeLineToSandbox(line, sandboxDir)
 			if normalized != "" {
 				result = append(result, normalized)
@@ -210,28 +223,31 @@ func replaceIncludeDirectives(mainConf string, sandboxDir string, siteIncludeLin
 			continue
 		}
 
-		// Detect end of http/stream block
-		if strings.Contains(line, "}") {
-			if insideHTTP {
-				// Add includes before closing http block if not added yet
-				if !httpIncludesAdded {
-					result = append(result, "    # Sandbox-specific includes (generated for isolated testing)")
-					result = append(result, siteIncludeLines...)
-					httpIncludesAdded = true
-				}
-				insideHTTP = false
+		// Before appending this line, check if it closes http/stream top-level block.
+		openCount := strings.Count(line, "{")
+		closeCount := strings.Count(line, "}")
+
+		// If current httpDepth will reach zero after this line, inject includes BEFORE the closing brace line.
+		if httpDepth > 0 {
+			newDepth := httpDepth + openCount - closeCount
+			if newDepth == 0 && !httpIncludesAdded {
+				result = append(result, "    # Sandbox-specific includes (generated for isolated testing)")
+				result = append(result, siteIncludeLines...)
+				httpIncludesAdded = true
 			}
-			if insideStream {
-				// Add includes before closing stream block if not added yet
-				if !streamIncludesAdded {
-					result = append(result, "    # Sandbox-specific includes (generated for isolated testing)")
-					result = append(result, streamIncludeLines...)
-					streamIncludesAdded = true
-				}
-				insideStream = false
+			httpDepth = newDepth
+		}
+		if streamDepth > 0 {
+			newDepth := streamDepth + openCount - closeCount
+			if newDepth == 0 && !streamIncludesAdded {
+				result = append(result, "    # Sandbox-specific includes (generated for isolated testing)")
+				result = append(result, streamIncludeLines...)
+				streamIncludesAdded = true
 			}
+			streamDepth = newDepth
 		}
 
+		// Append current line
 		result = append(result, line)
 	}
 

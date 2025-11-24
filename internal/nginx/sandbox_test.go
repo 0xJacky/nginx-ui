@@ -16,18 +16,18 @@ func TestNormalizeIncludeLineRelativeTo(t *testing.T) {
 	sandboxDir := "/tmp/sbx"
 
 	tests := []struct {
-		name string
-		in   string
+		name       string
+		in         string
 		wantPrefix string
 	}{
 		{
-			name: "relative simple file",
-			in:   "    include mime.types;",
+			name:       "relative simple file",
+			in:         "    include mime.types;",
 			wantPrefix: "    include ",
 		},
 		{
-			name: "relative path with subdir",
-			in:   "include ../common/snippets/*.conf;",
+			name:       "relative path with subdir",
+			in:         "include ../common/snippets/*.conf;",
 			wantPrefix: "include ",
 		},
 	}
@@ -69,6 +69,11 @@ events {
 }
 
 http {
+    server {
+        location / {
+            return 200;
+        }
+    }
     include       mime.types;
     include       /etc/nginx/conf.d/*.conf;
     include       /etc/nginx/sites-enabled/*;
@@ -82,6 +87,43 @@ stream {
 	streamLines := []string{"    include /tmp/sbx/streams-enabled/s1.conf;"}
 
 	out := replaceIncludeDirectives(mainConf, "/tmp/sbx", siteLines, streamLines)
+
+	// ensure site includes inserted before closing http brace (inside block)
+	lines := strings.Split(out, "\n")
+	httpStart := -1
+	httpClose := -1
+	inHttp := false
+	depth := 0
+	for i, l := range lines {
+		if strings.Contains(l, "http {") && httpStart == -1 {
+			httpStart = i
+			inHttp = true
+			depth = 1
+			continue
+		}
+		if inHttp {
+			depth += strings.Count(l, "{")
+			depth -= strings.Count(l, "}")
+			if depth == 0 {
+				httpClose = i
+				inHttp = false
+				break
+			}
+		}
+	}
+	if httpStart == -1 || httpClose == -1 {
+		t.Fatal("failed to locate http block bounds")
+	}
+	incIdx := -1
+	for i := httpStart; i <= httpClose; i++ {
+		if strings.Contains(lines[i], "/tmp/sbx/sites-enabled/a.conf;") {
+			incIdx = i
+			break
+		}
+	}
+	if incIdx == -1 || incIdx >= httpClose {
+		t.Fatalf("sandbox site include should be inside http block before closing brace, got index=%d close=%d", incIdx, httpClose)
+	}
 
 	if strings.Contains(out, "/etc/nginx/sites-enabled/*") {
 		t.Fatal("sites-enabled wildcard should be replaced by sandbox files")
