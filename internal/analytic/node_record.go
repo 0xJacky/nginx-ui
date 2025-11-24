@@ -69,8 +69,8 @@ func getRetryState(nodeID uint64) *NodeRetryState {
 
 // updateNodeStatus directly updates node status without condition checks
 func updateNodeStatus(nodeID uint64, status bool, reason string) {
-	mutex.Lock()
-	defer mutex.Unlock()
+	nodeMapMu.Lock()
+	defer nodeMapMu.Unlock()
 
 	now := time.Now()
 	if NodeMap[nodeID] == nil {
@@ -131,8 +131,8 @@ func markConnectionSuccess(nodeID uint64) {
 }
 
 func logCurrentNodeStatus(prefix string) {
-	mutex.Lock()
-	defer mutex.Unlock()
+	nodeMapMu.Lock()
+	defer nodeMapMu.Unlock()
 	if NodeMap != nil {
 		logger.Debugf("%s: NodeMap contains %d nodes", prefix, len(NodeMap))
 	}
@@ -219,13 +219,13 @@ func cleanupDisabledNodes(enabledEnvIDs []uint64) {
 	}
 	retryMutex.Unlock()
 
-	mutex.Lock()
+	nodeMapMu.Lock()
 	for envID := range NodeMap {
 		if !enabledMap[envID] {
 			delete(NodeMap, envID)
 		}
 	}
-	mutex.Unlock()
+	nodeMapMu.Unlock()
 }
 
 // getEnabledNodes retrieves enabled nodes from cache or database
@@ -287,11 +287,11 @@ func RetrieveNodesStatus(ctx context.Context) {
 	logger.Info("RetrieveNodesStatus start")
 	defer logger.Info("RetrieveNodesStatus exited")
 
-	mutex.Lock()
+	nodeMapMu.Lock()
 	if NodeMap == nil {
 		NodeMap = make(TNodeMap)
 	}
-	mutex.Unlock()
+	nodeMapMu.Unlock()
 
 	envCheckTicker := time.NewTicker(30 * time.Second)
 	defer envCheckTicker.Stop()
@@ -396,8 +396,8 @@ func RetrieveNodesStatus(ctx context.Context) {
 }
 
 func checkNodeTimeouts(timeout time.Duration) {
-	mutex.Lock()
-	defer mutex.Unlock()
+	nodeMapMu.Lock()
+	defer nodeMapMu.Unlock()
 	now := time.Now()
 	for _, node := range NodeMap {
 		if node != nil && node.Status && now.Sub(node.ResponseAt) > timeout {
@@ -445,7 +445,7 @@ func nodeAnalyticRecord(nodeModel *model.Node, ctx context.Context) error {
 
 	node, err := InitNode(nodeModel)
 	if err != nil {
-		mutex.Lock()
+		nodeMapMu.Lock()
 		if NodeMap[nodeModel.ID] == nil {
 			NodeMap[nodeModel.ID] = &Node{
 				Node:     nodeModel,
@@ -455,13 +455,13 @@ func nodeAnalyticRecord(nodeModel *model.Node, ctx context.Context) error {
 			NodeMap[nodeModel.ID].Status = false
 			NodeMap[nodeModel.ID].ResponseAt = time.Now()
 		}
-		mutex.Unlock()
+		nodeMapMu.Unlock()
 		return err
 	}
 
-	mutex.Lock()
+	nodeMapMu.Lock()
 	NodeMap[nodeModel.ID] = node
-	mutex.Unlock()
+	nodeMapMu.Unlock()
 
 	u, err := nodeModel.GetWebSocketURL("/api/analytic/intro")
 	if err != nil {
@@ -515,7 +515,7 @@ func nodeAnalyticRecord(nodeModel *model.Node, ctx context.Context) error {
 			return nil
 		}
 
-		mutex.Lock()
+		nodeMapMu.Lock()
 		if NodeMap[nodeModel.ID] == nil {
 			NodeMap[nodeModel.ID] = &Node{
 				Node:     nodeModel,
@@ -535,6 +535,6 @@ func nodeAnalyticRecord(nodeModel *model.Node, ctx context.Context) error {
 			NodeMap[nodeModel.ID].Status = true
 			NodeMap[nodeModel.ID].ResponseAt = time.Now()
 		}
-		mutex.Unlock()
+		nodeMapMu.Unlock()
 	}
 }

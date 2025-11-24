@@ -107,8 +107,9 @@ func GetNodesAnalytic(c *gin.Context) {
 	defer ws.Close()
 
 	for {
-		// Send NodeMap data to client
-		err = ws.WriteJSON(analytic.NodeMap)
+		// Send snapshot of NodeMap data to client to avoid concurrent access
+		nodeSnapshot := analytic.SnapshotNodeMap()
+		err = ws.WriteJSON(nodeSnapshot)
 		if err != nil {
 			if helper.IsUnexpectedWebsocketError(err) {
 				logger.Error(err)

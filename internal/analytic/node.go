@@ -43,7 +43,7 @@ type Node struct {
 	NodeInfo
 }
 
-var mutex sync.Mutex
+var nodeMapMu sync.RWMutex
 
 type TNodeMap map[uint64]*Node
 
@@ -51,6 +51,46 @@ var NodeMap TNodeMap
 
 func init() {
 	NodeMap = make(TNodeMap)
+}
+
+func cloneNode(n *Node) *Node {
+	if n == nil {
+		return nil
+	}
+
+	cloned := *n
+
+	if n.Node != nil {
+		nodeCopy := *n.Node
+		cloned.Node = &nodeCopy
+	}
+
+	if n.UpstreamStatusMap != nil {
+		upstreams := make(map[string]*upstream.Status, len(n.UpstreamStatusMap))
+		for key, status := range n.UpstreamStatusMap {
+			if status == nil {
+				upstreams[key] = nil
+				continue
+			}
+			statusCopy := *status
+			upstreams[key] = &statusCopy
+		}
+		cloned.UpstreamStatusMap = upstreams
+	}
+
+	return &cloned
+}
+
+func SnapshotNodeMap() TNodeMap {
+	nodeMapMu.RLock()
+	defer nodeMapMu.RUnlock()
+
+	snapshot := make(TNodeMap, len(NodeMap))
+	for id, node := range NodeMap {
+		snapshot[id] = cloneNode(node)
+	}
+
+	return snapshot
 }
 
 func GetNode(node *model.Node) (n *Node) {
@@ -64,12 +104,23 @@ func GetNode(node *model.Node) (n *Node) {
 			Node: node,
 		}
 	}
-	n, ok := NodeMap[node.ID]
-	if !ok {
-		n = &Node{}
+	nodeMapMu.RLock()
+	cached, ok := NodeMap[node.ID]
+	nodeMapMu.RUnlock()
+	if !ok || cached == nil {
+		return &Node{
+			Node: node,
+		}
 	}
-	n.Node = node
-	return n
+
+	cloned := cloneNode(cached)
+	if cloned == nil {
+		return &Node{
+			Node: node,
+		}
+	}
+	cloned.Node = node
+	return cloned
 }
 
 func InitNode(node *model.Node) (n *Node, err error) {
