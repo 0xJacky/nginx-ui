@@ -355,18 +355,11 @@ async function handleTest() {
 
 <template>
   <AModal
-    v-model:open="visible"
-    :title="`${$gettext('Health Check Configuration')} - ${site?.name || getTestUrl()}`"
-    width="800px"
-    @cancel="handleCancel"
+    v-model:open="visible" :title="`${$gettext('Health Check Configuration')} - ${site?.name || getTestUrl()}`"
+    width="800px" @cancel="handleCancel"
   >
     <div>
-      <AForm
-        :model="formData"
-        layout="vertical"
-        :label-col="{ span: 24 }"
-        :wrapper-col="{ span: 24 }"
-      >
+      <AForm :model="formData" layout="vertical" :label-col="{ span: 24 }" :wrapper-col="{ span: 24 }">
         <div>
           <!-- Enable/Disable Health Check -->
           <AFormItem :label="$gettext('Enable Health Check')">
@@ -450,18 +443,12 @@ async function handleTest() {
             </AFormItem>
 
             <AFormItem v-if="formData.method !== 'GET'" :label="$gettext('Request Body')">
-              <ATextarea
-                v-model:value="formData.body"
-                :rows="3"
-                placeholder="{&quot;key&quot;: &quot;value&quot;}"
-              />
+              <ATextarea v-model:value="formData.body" :rows="3" />
             </AFormItem>
 
             <AFormItem :label="$gettext('Expected Status Codes')">
               <ASelect
-                v-model:value="formData.expectedStatus"
-                mode="multiple"
-                style="width: 100%"
+                v-model:value="formData.expectedStatus" mode="multiple" style="width: 100%"
                 placeholder="200, 201, 204..."
               >
                 <ASelectOption :value="200">
@@ -505,16 +492,11 @@ async function handleTest() {
               v-if="['grpc', 'grpcs'].includes(formData.protocol)"
               :message="formData.protocol === 'grpcs'
                 ? $gettext('gRPCS uses TLS encryption. Server must implement gRPC Health Check service. For testing, SSL validation is disabled by default.')
-                : $gettext('gRPC health check requires server to implement gRPC Health Check service (grpc.health.v1.Health).')"
-              type="info"
-              show-icon
-              class="mb-4"
+                : $gettext('gRPC health check requires server to implement gRPC Health Check service (grpc.health.v1.Health).')" type="info" show-icon class="mb-4"
             />
             <AAlert
               :message="$gettext('Note: If the server does not support gRPC Reflection, health checks may fail. Please ensure your gRPC server has Reflection enabled.')"
-              type="warning"
-              show-icon
-              class="mb-4"
+              type="warning" show-icon class="mb-4"
             />
             <ARow :gutter="16">
               <ACol :span="12">
@@ -536,22 +518,12 @@ async function handleTest() {
               <ARow :gutter="16">
                 <ACol :span="12">
                   <AFormItem :label="$gettext('Check Interval (seconds)')">
-                    <AInputNumber
-                      v-model:value="formData.interval"
-                      :min="30"
-                      :max="3600"
-                      style="width: 100%"
-                    />
+                    <AInputNumber v-model:value="formData.interval" :min="30" :max="3600" style="width: 100%" />
                   </AFormItem>
                 </ACol>
                 <ACol :span="12">
                   <AFormItem :label="$gettext('Timeout (seconds)')">
-                    <AInputNumber
-                      v-model:value="formData.timeout"
-                      :min="5"
-                      :max="60"
-                      style="width: 100%"
-                    />
+                    <AInputNumber v-model:value="formData.timeout" :min="5" :max="60" style="width: 100%" />
                   </AFormItem>
                 </ACol>
               </ARow>
@@ -564,12 +536,7 @@ async function handleTest() {
                 <ARow :gutter="16">
                   <ACol :span="12">
                     <AFormItem :label="$gettext('Max Redirects')">
-                      <AInputNumber
-                        v-model:value="formData.maxRedirects"
-                        :min="0"
-                        :max="10"
-                        style="width: 100%"
-                      />
+                      <AInputNumber v-model:value="formData.maxRedirects" :min="0" :max="10" style="width: 100%" />
                     </AFormItem>
                   </ACol>
                   <ACol :span="12">
@@ -648,68 +615,68 @@ async function handleTest() {
 </template>
 
 <style scoped>
-.grpc-help-content {
-  font-size: 14px;
-  line-height: 1.6;
-}
+  .grpc-help-content {
+    font-size: 14px;
+    line-height: 1.6;
+  }
 
-.grpc-help-content h4 {
-  color: #1890ff;
-  margin: 16px 0 8px 0;
-  font-size: 16px;
-  font-weight: 600;
-}
+  .grpc-help-content h4 {
+    color: #1890ff;
+    margin: 16px 0 8px 0;
+    font-size: 16px;
+    font-weight: 600;
+  }
 
-.grpc-help-content h5 {
-  color: #595959;
-  margin: 12px 0 4px 0;
-  font-size: 14px;
-  font-weight: 500;
-}
+  .grpc-help-content h5 {
+    color: #595959;
+    margin: 12px 0 4px 0;
+    font-size: 14px;
+    font-weight: 500;
+  }
 
-.grpc-help-content p {
-  margin: 8px 0;
-  color: #595959;
-}
+  .grpc-help-content p {
+    margin: 8px 0;
+    color: #595959;
+  }
 
-.code-examples {
-  margin: 16px 0;
-}
+  .code-examples {
+    margin: 16px 0;
+  }
 
-.code-examples pre {
-  background-color: #f6f8fa;
-  border: 1px solid #e1e4e8;
-  border-radius: 6px;
-  padding: 12px;
-  margin: 8px 0;
-  overflow-x: auto;
-  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-  font-size: 13px;
-  line-height: 1.4;
-}
+  .code-examples pre {
+    background-color: #f6f8fa;
+    border: 1px solid #e1e4e8;
+    border-radius: 6px;
+    padding: 12px;
+    margin: 8px 0;
+    overflow-x: auto;
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    font-size: 13px;
+    line-height: 1.4;
+  }
 
-.code-examples code {
-  color: #24292e;
-  background: transparent;
-  border: none;
-  padding: 0;
-}
+  .code-examples code {
+    color: #24292e;
+    background: transparent;
+    border: none;
+    padding: 0;
+  }
 
-.dark .code-examples pre {
-  background-color: #161b22;
-  border-color: #30363d;
-}
+  .dark .code-examples pre {
+    background-color: #161b22;
+    border-color: #30363d;
+  }
 
-.dark .code-examples code {
-  color: #e6edf3;
-}
+  .dark .code-examples code {
+    color: #e6edf3;
+  }
 
-.dark .grpc-help-content h4 {
-  color: #58a6ff;
-}
+  .dark .grpc-help-content h4 {
+    color: #58a6ff;
+  }
 
-.dark .grpc-help-content h5,
-.dark .grpc-help-content p {
-  color: #c9d1d9;
-}
+  .dark .grpc-help-content h5,
+  .dark .grpc-help-content p {
+    color: #c9d1d9;
+  }
 </style>

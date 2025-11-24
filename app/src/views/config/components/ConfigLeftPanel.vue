@@ -246,6 +246,7 @@ function openHistory() {
       <AButton
         v-if="!addMode && data.filepath"
         type="link"
+        size="small"
         @click="openHistory"
       >
         <template #icon>
