@@ -293,24 +293,25 @@ func (sc *SiteChecker) CheckSite(ctx context.Context, siteURL string) (*SiteInfo
 	// Try enhanced health check first if config exists
 	config, err := LoadSiteConfig(siteURL)
 
-	// If health check is disabled, return a SiteInfo without status
+	// If health check is disabled, return cached metadata without issuing any network requests (#1446)
 	if err == nil && config != nil && !config.HealthCheckEnabled {
-		protocol := "http"
-		if config.HealthCheckConfig != nil && config.HealthCheckConfig.Protocol != "" {
-			protocol = config.HealthCheckConfig.Protocol
-		}
-
 		siteInfo := &SiteInfo{
 			SiteConfig: *config,
 			Name:       extractDomainName(siteURL),
 			Title:      config.DisplayURL,
 		}
 
-		// Try to get favicon if enabled and not a gRPC check
-		if sc.options.CheckFavicon && !isGRPCProtocol(protocol) {
-			faviconURL, faviconData := sc.tryGetFavicon(ctx, siteURL)
-			siteInfo.FaviconURL = faviconURL
-			siteInfo.FaviconData = faviconData
+		if existing := sc.getExistingSiteSnapshot(siteURL); existing != nil {
+			siteInfo.FaviconURL = existing.FaviconURL
+			siteInfo.FaviconData = existing.FaviconData
+			siteInfo.Status = existing.Status
+			siteInfo.StatusCode = existing.StatusCode
+			siteInfo.ResponseTime = existing.ResponseTime
+			siteInfo.LastChecked = existing.LastChecked
+			siteInfo.Error = existing.Error
+			if siteInfo.Title == "" {
+				siteInfo.Title = existing.Title
+			}
 		}
 
 		return siteInfo, nil
@@ -520,6 +521,20 @@ func (sc *SiteChecker) GetSitesList() []*SiteInfo {
 		result = append(result, site)
 	}
 	return result
+}
+
+// getExistingSiteSnapshot returns a copy of the last known site info, if present.
+func (sc *SiteChecker) getExistingSiteSnapshot(siteURL string) *SiteInfo {
+	sc.mu.RLock()
+	defer sc.mu.RUnlock()
+
+	existing, ok := sc.sites[siteURL]
+	if !ok || existing == nil {
+		return nil
+	}
+
+	clone := *existing
+	return &clone
 }
 
 // extractDomainName extracts domain name from URL
