@@ -45,14 +45,7 @@ func GetNodeList(c *gin.Context) {
 		return analytic.GetNode(m)
 	})
 
-	data, ok := core.ListAllData()
-	if !ok {
-		return
-	}
-
-	c.JSON(http.StatusOK, model.DataList{
-		Data: data,
-	})
+	core.List()
 }
 
 func AddNode(c *gin.Context) {

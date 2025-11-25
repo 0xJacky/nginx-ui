@@ -3,7 +3,6 @@ package nginx
 import (
 	"os"
 	"path/filepath"
-	"regexp"
 	"runtime"
 	"strings"
 
@@ -35,6 +34,53 @@ func resolvePath(path string) string {
 	return path
 }
 
+func extractConfigureArg(out, flag string) string {
+	if out == "" || flag == "" {
+		return ""
+	}
+
+	if !strings.HasPrefix(flag, "--") {
+		flag = "--" + flag
+	}
+
+	needle := flag + "="
+	idx := strings.Index(out, needle)
+	if idx == -1 {
+		return ""
+	}
+
+	start := idx + len(needle)
+	if start >= len(out) {
+		return ""
+	}
+
+	value := out[start:]
+	value = strings.TrimLeft(value, " \t")
+	if value == "" {
+		return ""
+	}
+
+	if value[0] == '"' || value[0] == '\'' {
+		quoteChar := value[0]
+		rest := value[1:]
+		closingIdx := strings.IndexByte(rest, quoteChar)
+		if closingIdx == -1 {
+			return strings.TrimSpace(rest)
+		}
+		return strings.TrimSpace(rest[:closingIdx])
+	}
+
+	cut := len(value)
+	if idx := strings.Index(value, " --"); idx != -1 && idx < cut {
+		cut = idx
+	}
+	if idx := strings.IndexAny(value, "\r\n"); idx != -1 && idx < cut {
+		cut = idx
+	}
+
+	return strings.TrimSpace(value[:cut])
+}
+
 // GetPrefix returns the prefix of the nginx executable
 func GetPrefix() string {
 	if nginxPrefix != "" {
@@ -42,9 +88,8 @@ func GetPrefix() string {
 	}
 
 	out := getNginxV()
-	r, _ := regexp.Compile(`--prefix=(\S+)`)
-	match := r.FindStringSubmatch(out)
-	if len(match) < 1 {
+	prefix := extractConfigureArg(out, "--prefix")
+	if prefix == "" {
 		logger.Debug("nginx.GetPrefix len(match) < 1")
 		if runtime.GOOS == "windows" {
 			nginxPrefix = GetNginxExeDir()
@@ -54,7 +99,7 @@ func GetPrefix() string {
 		return nginxPrefix
 	}
 
-	nginxPrefix = resolvePath(match[1])
+	nginxPrefix = resolvePath(prefix)
 	return nginxPrefix
 }
 
@@ -62,62 +107,57 @@ func GetPrefix() string {
 // It tries to derive it from `nginx -V --conf-path=...`.
 // If parsing fails, it falls back to a reasonable default instead of returning "".
 func GetConfPath(dir ...string) (confPath string) {
-    if settings.NginxSettings.ConfigDir == "" {
-        out := getNginxV()
-        r, _ := regexp.Compile(`--conf-path=([^\s]+)`)
-        match := r.FindStringSubmatch(out)
-		
-        if len(match) > 1 {
-            fullConf := match[1]
-            confPath = filepath.Dir(fullConf)
-        } else {
-            if runtime.GOOS == "windows" {
-                confPath = GetPrefix()
-            } else {
-                confPath = "/etc/nginx"
-            }
-			
-            logger.Debug("nginx.GetConfPath fallback used", "base", confPath)
-        }
-    } else {
-        confPath = settings.NginxSettings.ConfigDir
-    }
+	if settings.NginxSettings.ConfigDir == "" {
+		out := getNginxV()
+		fullConf := extractConfigureArg(out, "--conf-path")
 
-    confPath = resolvePath(confPath)
+		if fullConf != "" {
+			confPath = filepath.Dir(fullConf)
+		} else {
+			if runtime.GOOS == "windows" {
+				confPath = GetPrefix()
+			} else {
+				confPath = "/etc/nginx"
+			}
 
-    joined := filepath.Clean(filepath.Join(confPath, filepath.Join(dir...)))
-    if !helper.IsUnderDirectory(joined, confPath) {
-        return confPath
-    }
-    return joined
+			logger.Debug("nginx.GetConfPath fallback used", "base", confPath)
+		}
+	} else {
+		confPath = settings.NginxSettings.ConfigDir
+	}
+
+	confPath = resolvePath(confPath)
+
+	joined := filepath.Clean(filepath.Join(confPath, filepath.Join(dir...)))
+	if !helper.IsUnderDirectory(joined, confPath) {
+		return confPath
+	}
+	return joined
 }
 
 // GetConfEntryPath returns the absolute path to the main nginx.conf.
 // It prefers the value from `nginx -V --conf-path=...`.
 // If that can't be parsed, it falls back to "<confDir>/nginx.conf".
 func GetConfEntryPath() (path string) {
-    if settings.NginxSettings.ConfigPath == "" {
-        out := getNginxV()
-        r, _ := regexp.Compile(`--conf-path=([^\s]+)`)
-        match := r.FindStringSubmatch(out)
+	if settings.NginxSettings.ConfigPath == "" {
+		out := getNginxV()
+		path = extractConfigureArg(out, "--conf-path")
 
-        if len(match) > 1 {
-            path = match[1]
-        } else {
-            baseDir := GetConfPath()
-			
-            if baseDir != "" {
-                path = filepath.Join(baseDir, "nginx.conf")
-            } else {
-                logger.Error("nginx.GetConfEntryPath: cannot determine nginx.conf path")
-                path = ""
-            }
-        }
-    } else {
-        path = settings.NginxSettings.ConfigPath
-    }
+		if path == "" {
+			baseDir := GetConfPath()
 
-    return resolvePath(path)
+			if baseDir != "" {
+				path = filepath.Join(baseDir, "nginx.conf")
+			} else {
+				logger.Error("nginx.GetConfEntryPath: cannot determine nginx.conf path")
+				path = ""
+			}
+		}
+	} else {
+		path = settings.NginxSettings.ConfigPath
+	}
+
+	return resolvePath(path)
 }
 
 // GetPIDPath returns the nginx master process PID file path.
@@ -125,37 +165,34 @@ func GetConfEntryPath() (path string) {
 // If that fails (which often happens in container images), we probe common
 // locations like /run/nginx.pid and /var/run/nginx.pid instead of just failing.
 func GetPIDPath() (path string) {
-    if settings.NginxSettings.PIDPath == "" {
-        out := getNginxV()
-        r, _ := regexp.Compile(`--pid-path=([^\s]+)`)
-        match := r.FindStringSubmatch(out)
+	if settings.NginxSettings.PIDPath == "" {
+		out := getNginxV()
+		path = extractConfigureArg(out, "--pid-path")
 
-        if len(match) > 1 {
-            path = match[1]
-        } else {
-            candidates := []string{
-                "/var/run/nginx.pid",
-                "/run/nginx.pid",
-            }
+		if path == "" {
+			candidates := []string{
+				"/var/run/nginx.pid",
+				"/run/nginx.pid",
+			}
 
-            for _, c := range candidates {
-                if _, err := os.Stat(c); err == nil {
-                    logger.Debug("GetPIDPath fallback hit", "path", c)
-                    path = c
-                    break
-                }
-            }
+			for _, c := range candidates {
+				if _, err := os.Stat(c); err == nil {
+					logger.Debug("GetPIDPath fallback hit", "path", c)
+					path = c
+					break
+				}
+			}
 
-            if path == "" {
-                logger.Error("GetPIDPath: could not determine PID path")
-                return ""
-            }
-        }
-    } else {
-        path = settings.NginxSettings.PIDPath
-    }
+			if path == "" {
+				logger.Error("GetPIDPath: could not determine PID path")
+				return ""
+			}
+		}
+	} else {
+		path = settings.NginxSettings.PIDPath
+	}
 
-    return resolvePath(path)
+	return resolvePath(path)
 }
 
 // GetSbinPath returns the path of the nginx executable
@@ -169,10 +206,8 @@ func GetAccessLogPath() (path string) {
 
 	if path == "" {
 		out := getNginxV()
-		r, _ := regexp.Compile(`--http-log-path=(\S+)`)
-		match := r.FindStringSubmatch(out)
-		if len(match) > 1 {
-			path = match[1]
+		path = extractConfigureArg(out, "--http-log-path")
+		if path != "" {
 			resolvedPath := resolvePath(path)
 
 			// Check if the matched path exists but is not a regular file
@@ -200,10 +235,8 @@ func GetErrorLogPath() string {
 
 	if path == "" {
 		out := getNginxV()
-		r, _ := regexp.Compile(`--error-log-path=(\S+)`)
-		match := r.FindStringSubmatch(out)
-		if len(match) > 1 {
-			path = match[1]
+		path = extractConfigureArg(out, "--error-log-path")
+		if path != "" {
 			resolvedPath := resolvePath(path)
 
 			// Check if the matched path exists but is not a regular file
@@ -230,16 +263,8 @@ func GetModulesPath() string {
 	// First try to get from nginx -V output
 	out := getNginxV()
 	if out != "" {
-		// Look for --modules-path in the output
-		if strings.Contains(out, "--modules-path=") {
-			parts := strings.Split(out, "--modules-path=")
-			if len(parts) > 1 {
-				// Extract the path
-				path := strings.Split(parts[1], " ")[0]
-				// Remove quotes if present
-				path = strings.Trim(path, "\"")
-				return resolvePath(path)
-			}
+		if path := extractConfigureArg(out, "--modules-path"); path != "" {
+			return resolvePath(path)
 		}
 	}
 
