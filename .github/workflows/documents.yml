@@ -59,10 +59,13 @@ jobs:
           name: dist
           path: docs/.vitepress/dist
 
+      - name: Install Wrangler
+        if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' || github.event_name == 'release' || github.event_name == 'workflow_dispatch' || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success'))
+        run: pnpm add -w wrangler
+
       - name: Deploy
-        if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' || github.event_name == 'release' || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success'))
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CF_API_TOKEN }}
-          accountId: ${{ secrets.CF_ACCOUNT_ID }}
-          command: pages deploy "docs/.vitepress/dist/" --commit-dirty=true --project-name=nginxui
+        if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' || github.event_name == 'release' || github.event_name == 'workflow_dispatch' || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success'))
+        run: pnpm wrangler pages deploy "docs/.vitepress/dist/" --commit-dirty=true --project-name=nginxui
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
