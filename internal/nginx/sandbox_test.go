@@ -5,6 +5,7 @@ import (
 	"runtime"
 	"strings"
 	"testing"
+	"time"
 )
 
 func TestNormalizeIncludeLineRelativeTo(t *testing.T) {
@@ -140,5 +141,20 @@ stream {
 	// mime.types should be kept (possibly normalized)
 	if !strings.Contains(strings.ToLower(out), "include") {
 		t.Fatal("expected include directives to remain")
+	}
+}
+
+func TestSandboxTestConfigWithPathsNilNamespaceReturns(t *testing.T) {
+	done := make(chan struct{})
+
+	go func() {
+		_, _ = SandboxTestConfigWithPaths(nil, nil, nil)
+		close(done)
+	}()
+
+	select {
+	case <-done:
+	case <-time.After(2 * time.Second):
+		t.Fatal("SandboxTestConfigWithPaths should fall back to TestConfig without blocking when namespace is nil")
 	}
 }
