@@ -25,6 +25,7 @@ var (
 	Config         *config
 	ConfigBackup   *configBackup
 	DnsCredential  *dnsCredential
+	DnsDomain      *dnsDomain
 	ExternalNotify *externalNotify
 	LLMSession     *lLMSession
 	Namespace      *namespace
@@ -49,6 +50,7 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	Config = &Q.Config
 	ConfigBackup = &Q.ConfigBackup
 	DnsCredential = &Q.DnsCredential
+	DnsDomain = &Q.DnsDomain
 	ExternalNotify = &Q.ExternalNotify
 	LLMSession = &Q.LLMSession
 	Namespace = &Q.Namespace
@@ -74,6 +76,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		Config:         newConfig(db, opts...),
 		ConfigBackup:   newConfigBackup(db, opts...),
 		DnsCredential:  newDnsCredential(db, opts...),
+		DnsDomain:      newDnsDomain(db, opts...),
 		ExternalNotify: newExternalNotify(db, opts...),
 		LLMSession:     newLLMSession(db, opts...),
 		Namespace:      newNamespace(db, opts...),
@@ -100,6 +103,7 @@ type Query struct {
 	Config         config
 	ConfigBackup   configBackup
 	DnsCredential  dnsCredential
+	DnsDomain      dnsDomain
 	ExternalNotify externalNotify
 	LLMSession     lLMSession
 	Namespace      namespace
@@ -127,6 +131,7 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		Config:         q.Config.clone(db),
 		ConfigBackup:   q.ConfigBackup.clone(db),
 		DnsCredential:  q.DnsCredential.clone(db),
+		DnsDomain:      q.DnsDomain.clone(db),
 		ExternalNotify: q.ExternalNotify.clone(db),
 		LLMSession:     q.LLMSession.clone(db),
 		Namespace:      q.Namespace.clone(db),
@@ -161,6 +166,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		Config:         q.Config.replaceDB(db),
 		ConfigBackup:   q.ConfigBackup.replaceDB(db),
 		DnsCredential:  q.DnsCredential.replaceDB(db),
+		DnsDomain:      q.DnsDomain.replaceDB(db),
 		ExternalNotify: q.ExternalNotify.replaceDB(db),
 		LLMSession:     q.LLMSession.replaceDB(db),
 		Namespace:      q.Namespace.replaceDB(db),
@@ -185,6 +191,7 @@ type queryCtx struct {
 	Config         *configDo
 	ConfigBackup   *configBackupDo
 	DnsCredential  *dnsCredentialDo
+	DnsDomain      *dnsDomainDo
 	ExternalNotify *externalNotifyDo
 	LLMSession     *lLMSessionDo
 	Namespace      *namespaceDo
@@ -209,6 +216,7 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		Config:         q.Config.WithContext(ctx),
 		ConfigBackup:   q.ConfigBackup.WithContext(ctx),
 		DnsCredential:  q.DnsCredential.WithContext(ctx),
+		DnsDomain:      q.DnsDomain.WithContext(ctx),
 		ExternalNotify: q.ExternalNotify.WithContext(ctx),
 		LLMSession:     q.LLMSession.WithContext(ctx),
 		Namespace:      q.Namespace.WithContext(ctx),

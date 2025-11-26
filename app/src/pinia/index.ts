@@ -1,4 +1,5 @@
 import { useAppStore } from './moudule/app'
+import { useDnsStore } from './moudule/dns'
 import { useGlobalStore } from './moudule/global'
 import { useProxyAvailabilityStore } from './moudule/proxyAvailability'
 import { useSettingsStore } from './moudule/settings'
@@ -11,6 +12,7 @@ export type { EventHandler, EventSubscription, WebSocketMessage } from './moudul
 
 export {
   useAppStore,
+  useDnsStore,
   useGlobalStore,
   useProxyAvailabilityStore,
   useSettingsStore,

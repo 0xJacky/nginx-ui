@@ -41,3 +41,14 @@ By default, Nginx UI will automatically renew the certificate every 7 days.
 This option is used to set the port for backend listening in the HTTP01 challenge mode when obtaining Let's Encrypt
 certificates. The HTTP01 challenge is a domain validation method used by Let's Encrypt to verify that you control the
 domain for which you're requesting a certificate.
+
+## DNS Domain Management
+
+- Version：`>= v2.2.2`
+- Supported providers: Alibaba Cloud DNS, Tencent Cloud DNS, Cloudflare
+
+You can now register DNS domains inside Nginx-UI (Certificates → DNS Domains) and bind them to an existing DNS Credential.
+For every registered domain the UI exposes a full DNS record management experience (list, create, update, delete) that talks directly to the provider's API.
+This allows you to verify domains for certificate issuance and perform day-to-day DNS maintenance without leaving the dashboard.
+
+> Make sure the selected DNS Credential contains the API tokens and permissions required by the provider to edit DNS records.

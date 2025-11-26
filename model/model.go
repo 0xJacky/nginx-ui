@@ -42,6 +42,7 @@ func GenerateAllModel() []any {
 		Site{},
 		Stream{},
 		DnsCredential{},
+		DnsDomain{},
 		Node{},
 		Notification{},
 		AcmeUser{},

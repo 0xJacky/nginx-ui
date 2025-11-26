@@ -8,6 +8,7 @@ import { backupRoutes } from './modules/backup'
 import { certificatesRoutes } from './modules/certificates'
 import { configRoutes } from './modules/config'
 import { dashboardRoutes } from './modules/dashboard'
+import { dnsRoutes } from './modules/dns'
 import { errorRoutes } from './modules/error'
 import { namespacesRoutes } from './modules/namespaces'
 import { nginxLogRoutes } from './modules/nginx_log'
@@ -30,6 +31,7 @@ const mainLayoutChildren: RouteRecordRaw[] = [
   ...upstreamRoutes,
   ...configRoutes,
   ...certificatesRoutes,
+  ...dnsRoutes,
   ...terminalRoutes,
   ...nginxLogRoutes,
   ...namespacesRoutes,

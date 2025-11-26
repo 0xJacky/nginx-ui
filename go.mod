@@ -6,9 +6,14 @@ require (
 	code.pfad.fr/risefront v1.0.0
 	github.com/0xJacky/pofile v1.1.1
 	github.com/BurntSushi/toml v1.5.0
+	github.com/alibabacloud-go/alidns-20150109/v4 v4.7.0
+	github.com/alibabacloud-go/darabonba-openapi/v2 v2.1.13
+	github.com/alibabacloud-go/tea v1.3.13
+	github.com/alibabacloud-go/tea-utils/v2 v2.0.8
 	github.com/blevesearch/bleve/v2 v2.5.5
 	github.com/caarlos0/env/v11 v11.3.1
 	github.com/casdoor/casdoor-go-sdk v1.37.0
+	github.com/cloudflare/cloudflare-go v0.116.0
 	github.com/creack/pty v1.1.24
 	github.com/dgraph-io/ristretto/v2 v2.3.0
 	github.com/docker/docker v28.5.2+incompatible
@@ -44,6 +49,8 @@ require (
 	github.com/spf13/afero v1.15.0
 	github.com/spf13/cast v1.10.0
 	github.com/stretchr/testify v1.11.1
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.3.3
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/dnspod v1.3.3
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20250620092546-c3e307e36701
 	github.com/ulikunitz/xz v0.5.15
 	github.com/uozi-tech/cosy v1.27.7
@@ -87,11 +94,8 @@ require (
 	github.com/RoaringBitmap/roaring/v2 v2.14.4 // indirect
 	github.com/akamai/AkamaiOPEN-edgegrid-golang/v11 v11.1.0 // indirect
 	github.com/alibabacloud-go/alibabacloud-gateway-spi v0.0.5 // indirect
-	github.com/alibabacloud-go/darabonba-openapi/v2 v2.1.13 // indirect
 	github.com/alibabacloud-go/debug v1.0.1 // indirect
 	github.com/alibabacloud-go/endpoint-util v1.1.1 // indirect
-	github.com/alibabacloud-go/tea v1.3.13 // indirect
-	github.com/alibabacloud-go/tea-utils/v2 v2.0.8 // indirect
 	github.com/aliyun/aliyun-log-go-sdk v0.1.112 // indirect
 	github.com/aliyun/credentials-go v1.4.7 // indirect
 	github.com/aws/aws-sdk-go-v2 v1.40.0 // indirect
@@ -307,7 +311,6 @@ require (
 	github.com/stretchr/objx v0.5.3 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
 	github.com/technoweenie/multipartstreamer v1.0.1 // indirect
-	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.3.2 // indirect
 	github.com/timtadh/data-structures v0.6.2 // indirect
 	github.com/timtadh/lexmachine v0.2.3 // indirect
 	github.com/tinylib/msgp v1.5.0 // indirect
