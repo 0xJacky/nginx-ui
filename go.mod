@@ -8,7 +8,7 @@ require (
 	github.com/BurntSushi/toml v1.5.0
 	github.com/blevesearch/bleve/v2 v2.5.5
 	github.com/caarlos0/env/v11 v11.3.1
-	github.com/casdoor/casdoor-go-sdk v1.37.0
+	github.com/casdoor/casdoor-go-sdk v1.38.0
 	github.com/creack/pty v1.1.24
 	github.com/dgraph-io/ristretto/v2 v2.3.0
 	github.com/docker/docker v28.5.2+incompatible
@@ -20,7 +20,7 @@ require (
 	github.com/gin-contrib/static v1.1.5
 	github.com/gin-gonic/gin v1.11.0
 	github.com/go-acme/lego/v4 v4.28.1
-	github.com/go-co-op/gocron/v2 v2.18.0
+	github.com/go-co-op/gocron/v2 v2.18.1
 	github.com/go-gormigrate/gormigrate/v2 v2.1.5
 	github.com/go-playground/validator/v10 v10.28.0
 	github.com/go-resty/resty/v2 v2.17.0
