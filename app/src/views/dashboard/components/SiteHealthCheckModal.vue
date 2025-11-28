@@ -131,7 +131,7 @@ const statusCodeGroups: StatusCodeGroup[] = [
       createStatusOption(415, 'Unsupported Media Type'),
       createStatusOption(416, 'Range Not Satisfiable'),
       createStatusOption(417, 'Expectation Failed'),
-      createStatusOption(418, "I'm a teapot"),
+      createStatusOption(418, 'I\'m a teapot'),
       createStatusOption(421, 'Misdirected Request'),
       createStatusOption(422, 'Unprocessable Content'),
       createStatusOption(423, 'Locked'),
