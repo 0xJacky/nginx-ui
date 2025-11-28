@@ -44,8 +44,12 @@ func init() {
 }
 
 func handlePo(langCode string) {
-	fs, _ := app.GetDistFS()
-	file, err := fs.Open(fmt.Sprintf("src/language/%s/app.po", langCode))
+	fsys, err := app.GetDistFS()
+	if err != nil {
+		log.Fatalln("Failed to get DistFS:", err)
+	}
+
+	file, err := fsys.Open(fmt.Sprintf("src/language/%s/app.po", langCode))
 
 	if err != nil {
 		log.Fatalln(err)
