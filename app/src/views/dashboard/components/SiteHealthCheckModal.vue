@@ -469,6 +469,9 @@ async function handleTest() {
                 <ASelectOption :value="304">
                   304 Not Modified
                 </ASelectOption>
+                <ASelectOption :value="401">
+                  401 Unauthorized
+                </ASelectOption>
               </ASelect>
             </AFormItem>
 
