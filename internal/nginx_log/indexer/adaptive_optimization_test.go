@@ -7,6 +7,14 @@ import (
 	"time"
 )
 
+type mockActivityPoller struct {
+	busy bool
+}
+
+func (m mockActivityPoller) IsBusy() bool {
+	return m.busy
+}
+
 // Test helper to create adaptive optimizer with mock config
 func createTestAdaptiveOptimizer(workerCount int) *AdaptiveOptimizer {
 	config := &Config{
@@ -14,7 +22,9 @@ func createTestAdaptiveOptimizer(workerCount int) *AdaptiveOptimizer {
 		BatchSize:   1000,
 	}
 
-	return NewAdaptiveOptimizer(config)
+	ao := NewAdaptiveOptimizer(config)
+	ao.SetActivityPoller(mockActivityPoller{busy: true})
+	return ao
 }
 
 func TestAdaptiveOptimizer_NewAdaptiveOptimizer(t *testing.T) {

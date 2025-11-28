@@ -11,6 +11,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/blevesearch/bleve/v2"
+	"github.com/google/uuid"
 	"github.com/uozi-tech/cosy/logger"
 )
 
@@ -429,6 +430,12 @@ func (gsm *GroupedShardManager) openOrCreateShard(groupBase string, shardID int)
 // loadExistingGroups scans the database for existing main_log_path groups and opens their shards.
 // This ensures that after process restart, previously built indices are immediately available.
 func (gsm *GroupedShardManager) loadExistingGroups() error {
+	// Query generator isn't always initialized in tests; avoid nil dereference.
+	if query.NginxLogIndex == nil || query.Q == nil || !query.Q.Available() {
+		logger.Debugf("loadExistingGroups: query builder not initialized, skipping preload")
+		return nil
+	}
+
 	// Fetch all enabled index records ordered by creation time so the first seen per main_log_path
 	// becomes the canonical UUID for the group (consistent with getOrCreateUUID logic)
 	q := query.NginxLogIndex
@@ -533,6 +540,10 @@ func (gsm *GroupedShardManager) getOrCreateUUID(mainLogPath string) (string, err
 	}
 	gsm.mu.RUnlock()
 
+	if query.NginxLogIndex == nil || query.Q == nil || !query.Q.Available() {
+		return deterministicUUIDFromPath(mainLogPath), nil
+	}
+
 	q := query.NginxLogIndex
 	// Get the first record in ascending order of creation time
 	record, err := q.Where(q.MainLogPath.Eq(mainLogPath)).Order(q.CreatedAt).First()
@@ -572,4 +583,8 @@ func defaultHashFunc(key string, shardCount int) int {
 		hash *= 16777619
 	}
 	return int(hash % uint32(shardCount))
+}
+
+func deterministicUUIDFromPath(path string) string {
+	return uuid.NewMD5(uuid.Nil, []byte(path)).String()
 }
