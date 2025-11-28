@@ -28,6 +28,10 @@ func handleNginxConfigEnable(ctx context.Context, request mcp.CallToolRequest) (
 	baseDir := args["base_dir"].(string)
 	overwrite := args["overwrite"].(bool)
 
+	if name == "" {
+		return nil, fmt.Errorf("argument 'name' is required")
+	}
+
 	// Default to sites-available if base_dir is not provided
 	if baseDir == "" {
 		baseDir = "sites-available"
@@ -38,18 +42,26 @@ func handleNginxConfigEnable(ctx context.Context, request mcp.CallToolRequest) (
 	srcDir := nginx.GetConfPath(baseDir)
 	srcPath := filepath.Join(srcDir, name)
 
+	// Ensure the resolved source path is actually inside the intended directory
+	if !helper.IsUnderDirectory(srcPath, srcDir) {
+		return nil, config.ErrPathIsNotUnderTheNginxConfDir
+	}
+
 	// Validate Source Exists
 	if _, err := os.Stat(srcPath); err != nil {
 		return nil, fmt.Errorf("source configuration file not found at %s: %w", srcPath, err)
 	}
 
-	// Resolve Destination Path (e.g., /etc/nginx/sites-enabled/my-site)
-	// This is where the symlink will be created.
-	dstDir := nginx.GetConfPath("sites-enabled")
-	dstPath := filepath.Join(dstDir, name)
+	sitesEnabledDir := nginx.GetConfPath("sites-enabled")
+	dstPath := nginx.GetConfSymlinkPath(filepath.Join(sitesEnabledDir, name))
+
+	// Ensure the link we are about to create doesn't point outside sites-enabled
+	if !helper.IsUnderDirectory(dstPath, sitesEnabledDir) {
+		return nil, config.ErrPathIsNotUnderTheNginxConfDir
+	}
 
 	// Ensure destination directory exists
-	if !helper.FileExists(dstDir) {
+	if !helper.FileExists(sitesEnabledDir) {
 		if err := os.MkdirAll(dstDir, 0755); err != nil {
 			return nil, fmt.Errorf("failed to create sites-enabled directory: %w", err)
 		}
