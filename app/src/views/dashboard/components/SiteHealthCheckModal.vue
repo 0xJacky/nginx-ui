@@ -73,7 +73,7 @@ function createStatusOption(code: number, description: string): StatusCodeOption
 
 const statusCodeGroups: StatusCodeGroup[] = [
   {
-    title: 'Informational Responses (1xx)',
+    title: $gettext('Informational Responses (1xx)'),
     options: [
       createStatusOption(100, 'Continue'),
       createStatusOption(101, 'Switching Protocols'),
@@ -82,7 +82,7 @@ const statusCodeGroups: StatusCodeGroup[] = [
     ],
   },
   {
-    title: 'Successful Responses (2xx)',
+    title: $gettext('Successful Responses (2xx)'),
     options: [
       createStatusOption(200, 'OK'),
       createStatusOption(201, 'Created'),
@@ -97,7 +97,7 @@ const statusCodeGroups: StatusCodeGroup[] = [
     ],
   },
   {
-    title: 'Redirection Messages (3xx)',
+    title: $gettext('Redirection Messages (3xx)'),
     options: [
       createStatusOption(300, 'Multiple Choices'),
       createStatusOption(301, 'Moved Permanently'),
@@ -111,7 +111,7 @@ const statusCodeGroups: StatusCodeGroup[] = [
     ],
   },
   {
-    title: 'Client Error Responses (4xx)',
+    title: $gettext('Client Error Responses (4xx)'),
     options: [
       createStatusOption(400, 'Bad Request'),
       createStatusOption(401, 'Unauthorized'),
@@ -145,7 +145,7 @@ const statusCodeGroups: StatusCodeGroup[] = [
     ],
   },
   {
-    title: 'Server Error Responses (5xx)',
+    title: $gettext('Server Error Responses (5xx)'),
     options: [
       createStatusOption(500, 'Internal Server Error'),
       createStatusOption(501, 'Not Implemented'),

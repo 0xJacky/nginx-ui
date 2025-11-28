@@ -96,7 +96,7 @@ msgid "[Nginx UI] Writing certificate to disk"
 msgstr "[Nginx UI] Đang ghi chứng chỉ vào ổ đĩa"
 
 #: src/views/certificate/components/CertificateBasicInfo.vue:29
-#: src/views/certificate/components/CertificateContentEditor.vue:30
+#: src/views/certificate/components/CertificateContentEditor.vue:110
 msgid "{label} copied to clipboard"
 msgstr "{label} đã được sao chép vào bảng nhớ tạm"
 
@@ -120,7 +120,7 @@ msgstr ""
 "* Số liệu hiệu suất được đo trên Apple M2 Pro (12 lõi) với 32GB RAM. Hiệu "
 "suất thực tế có thể thay đổi tùy theo cấu hình phần cứng của bạn."
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:804
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:811
 msgid "%{start}-%{end} of %{total} items"
 msgstr "%{start}-%{end} trong %{total} mục"
 
@@ -184,7 +184,7 @@ msgstr "Hành động"
 #: src/views/certificate/CertificateList/certColumns.tsx:92
 #: src/views/certificate/DNSCredential.vue:71
 #: src/views/config/configColumns.tsx:51 src/views/namespace/columns.ts:97
-#: src/views/nginx_log/NginxLogList.vue:332 src/views/node/nodeColumns.tsx:96
+#: src/views/nginx_log/NginxLogList.vue:338 src/views/node/nodeColumns.tsx:96
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:85
 #: src/views/site/site_list/columns.tsx:160 src/views/stream/columns.tsx:123
@@ -228,7 +228,7 @@ msgstr "Thêm Directive"
 msgid "Add Domain"
 msgstr "Thêm tên miền"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:441
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:548
 msgid "Add Header"
 msgstr "Thêm tiêu đề"
 
@@ -266,11 +266,11 @@ msgstr "Bổ sung"
 msgid "Advance Mode"
 msgstr "Nâng cao"
 
-#: src/views/nginx_log/NginxLogList.vue:391
+#: src/views/nginx_log/NginxLogList.vue:397
 msgid "Advanced indexing enabled but failed to start rebuild"
 msgstr "Đã bật lập chỉ mục nâng cao nhưng không thể bắt đầu xây dựng lại"
 
-#: src/views/nginx_log/NginxLogList.vue:382
+#: src/views/nginx_log/NginxLogList.vue:388
 msgid "Advanced indexing enabled successfully"
 msgstr "Đã bật lập chỉ mục nâng cao thành công"
 
@@ -288,7 +288,7 @@ msgstr "Hệ thống phân bổ bộ nhớ nâng cao"
 msgid "Advanced search & filtering"
 msgstr "Tìm kiếm & lọc nâng cao"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:529
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:622
 msgid "Advanced Settings"
 msgstr "Cài đặt nâng cao"
 
@@ -313,7 +313,7 @@ msgstr ""
 "Tất cả các tên miền phụ được chọn phải thuộc cùng một Nhà cung cấp DNS, nếu "
 "không, việc xin cấp chứng chỉ sẽ thất bại."
 
-#: src/components/GeoLiteDownload/GeoLiteDownload.vue:159
+#: src/components/GeoLiteDownload/GeoLiteDownload.vue:160
 msgid ""
 "Alternatively, if you cannot download the database, you can manually place "
 "GeoLite2-City.mmdb in the same directory as app.ini."
@@ -363,7 +363,7 @@ msgstr "Ứng dụng"
 msgid "Apply"
 msgstr "Áp dụng"
 
-#: src/views/system/Upgrade.vue:194
+#: src/views/system/Upgrade.vue:195
 msgid "Arch"
 msgstr "Kiến trúc"
 
@@ -383,7 +383,7 @@ msgstr "Bạn có chắc chắn muốn tạo mã khôi phục mới không?"
 msgid "Are you sure to reset 2FA?"
 msgstr "Bạn có chắc chắn muốn đặt lại xác thực hai yếu tố không?"
 
-#: src/components/Notification/Notification.vue:111
+#: src/components/Notification/Notification.vue:117
 #: src/views/notification/Notification.vue:40
 msgid "Are you sure you want to clear all notifications?"
 msgstr "Bạn có chắc chắn muốn xóa tất cả thông báo không?"
@@ -425,7 +425,7 @@ msgstr "Bạn có chắc chắn muốn khởi động lại Nginx trên các nú
 msgid "Are you sure you want to restore?"
 msgstr "Bạn có chắc chắn muốn khôi phục không?"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:735
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:742
 msgid "Ascending"
 msgstr "Tăng dần"
 
@@ -517,7 +517,7 @@ msgstr "Đã bật tự động gia hạn SSL cho %{name}"
 msgid "AutoCert is running, please wait..."
 msgstr "AutoCert đang chạy, vui lòng chờ..."
 
-#: src/components/ProcessingStatus/ProcessingStatus.vue:38
+#: src/components/ProcessingStatus/ProcessingStatus.vue:44
 msgid "AutoCert is running..."
 msgstr "AutoCert đang chạy..."
 
@@ -537,12 +537,12 @@ msgstr "Độ trễ trung bình"
 msgid "Avg Daily UV"
 msgstr "UV trung bình hàng ngày"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:786
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:793
 msgid "Avg/PV"
 msgstr "TB/PV"
 
 #: src/views/certificate/components/CertificateActions.vue:22
-#: src/views/config/components/ConfigLeftPanel.vue:273
+#: src/views/config/components/ConfigLeftPanel.vue:274
 #: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
 #: src/views/nginx_log/NginxLog.vue:129
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:183
@@ -562,7 +562,7 @@ msgstr "Quay lại danh sách"
 msgid "Backend"
 msgstr "Backend"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:569
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:570
 msgid ""
 "Background indexing in progress. Data will be updated automatically when "
 "ready."
@@ -671,7 +671,7 @@ msgstr "Chỉnh sửa hàng loạt"
 msgid "Batch Modify"
 msgstr "Chỉnh sửa hàng loạt"
 
-#: src/views/node/BatchUpgrader.vue:153
+#: src/views/node/BatchUpgrader.vue:154
 msgid "Batch Upgrade"
 msgstr "Nâng cấp hàng loạt"
 
@@ -685,8 +685,8 @@ msgstr "Khối là nil"
 
 #: src/views/nginx_log/dashboard/components/BrowserStatsTable.vue:13
 #: src/views/nginx_log/structured/components/SearchFilters.vue:137
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:256
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:522
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:257
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:523
 msgid "Browser"
 msgstr "Trình duyệt"
 
@@ -763,8 +763,7 @@ msgstr ""
 #: src/components/NgxConfigEditor/NgxServer.vue:61
 #: src/components/NgxConfigEditor/NgxUpstream.vue:32 src/language/curd.ts:37
 #: src/views/config/components/Delete.vue:98
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:632
-#: src/views/dashboard/components/SiteNavigationToolbar.vue:64
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:710
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:102
 #: src/views/nginx_log/indexing/IndexManagement.vue:33
 #: src/views/nginx_log/indexing/IndexManagement.vue:59
@@ -878,8 +877,8 @@ msgstr "Lỗi phân tích chứng chỉ"
 msgid "Certificate path is empty"
 msgstr "Đường dẫn chứng chỉ trống"
 
-#: src/views/certificate/components/RemoveCert.vue:51
-#: src/views/certificate/components/RemoveCert.vue:71
+#: src/views/certificate/components/RemoveCert.vue:52
+#: src/views/certificate/components/RemoveCert.vue:72
 msgid "Certificate removed successfully"
 msgstr "Đã xóa chứng chỉ thành công"
 
@@ -940,7 +939,7 @@ msgstr[0] "Chứng chỉ đã thay đổi"
 msgid "Changed Path"
 msgstr "Đường dẫn đã thay đổi"
 
-#: src/views/node/BatchUpgrader.vue:160 src/views/system/Upgrade.vue:206
+#: src/views/node/BatchUpgrader.vue:161 src/views/system/Upgrade.vue:207
 msgid "Channel"
 msgstr "Kênh"
 
@@ -959,11 +958,11 @@ msgstr "Trò chuyện cho %{path}"
 msgid "Check"
 msgstr "Kiểm tra"
 
-#: src/views/system/Upgrade.vue:203
+#: src/views/system/Upgrade.vue:204
 msgid "Check again"
 msgstr "Kiểm tra lại"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:592
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:670
 msgid "Check Favicon"
 msgstr "Kiểm tra favicon"
 
@@ -1100,7 +1099,7 @@ msgstr ""
 "Kiểm tra xem các thư mục streams-available và streams-enabled có nằm trong "
 "thư mục cấu hình nginx không"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:532
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:625
 msgid "Check Interval (seconds)"
 msgstr "Khoảng thời gian kiểm tra (giây)"
 
@@ -1122,12 +1121,12 @@ msgid "Cleaning environment variables"
 msgstr "Xoá các biến môi trường"
 
 #: src/components/LLM/ChatMessageInput.vue:67
-#: src/components/Notification/Notification.vue:116
+#: src/components/Notification/Notification.vue:122
 #: src/views/notification/Notification.vue:45
 msgid "Clear"
 msgstr "Xoá"
 
-#: src/components/Notification/Notification.vue:69
+#: src/components/Notification/Notification.vue:75
 #: src/views/notification/Notification.vue:13
 msgid "Cleared successfully"
 msgstr "Đã xóa thành công"
@@ -1153,15 +1152,19 @@ msgstr "Bấm để sao chép"
 msgid "Client Body Buffer Size"
 msgstr "Kích thước bộ đệm thân máy khách"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:614
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:692
 msgid "Client Certificate"
 msgstr "Chứng chỉ khách hàng"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:114
+msgid "Client Error Responses (4xx)"
+msgstr "Phản hồi lỗi từ máy khách (4xx)"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:117
 msgid "Client Header Buffer Size"
 msgstr "Kích thước bộ đệm tiêu đề máy khách"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:619
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:697
 msgid "Client Key"
 msgstr "Khóa khách hàng"
 
@@ -1328,8 +1331,8 @@ msgstr "Xác nhận mật khẩu mới"
 msgid "Confirmation Required"
 msgstr "Yêu cầu xác nhận"
 
-#: src/views/dashboard/components/NodeAnalyticItem.vue:97
-#: src/views/dashboard/components/SiteNavigationToolbar.vue:39
+#: src/views/dashboard/components/NodeAnalyticItem.vue:78
+#: src/views/dashboard/components/SiteNavigationToolbar.vue:35
 msgid "Connected"
 msgstr "Đã kết nối"
 
@@ -1373,7 +1376,7 @@ msgstr "Sao chép"
 msgid "Copy Codes"
 msgstr "Sao chép mã"
 
-#: src/views/system/Upgrade.vue:161
+#: src/views/system/Upgrade.vue:162
 msgid "Core Upgrade"
 msgstr "Cập nhật core"
 
@@ -1401,7 +1404,7 @@ msgstr "Quốc gia / Vùng"
 msgid "CPU"
 msgstr "CPU"
 
-#: src/views/dashboard/ServerAnalytic.vue:308
+#: src/views/dashboard/ServerAnalytic.vue:309
 msgid "CPU Status"
 msgstr "Trạng thái CPU"
 
@@ -1413,7 +1416,7 @@ msgstr "Mức sử dụng CPU"
 msgid "CPU usage is relatively high, consider optimizing Nginx configuration"
 msgstr "Mức sử dụng CPU tương đối cao, hãy cân nhắc tối ưu cấu hình Nginx"
 
-#: src/views/dashboard/ServerAnalytic.vue:199
+#: src/views/dashboard/ServerAnalytic.vue:200
 msgid "CPU:"
 msgstr "CPU:"
 
@@ -1498,7 +1501,7 @@ msgstr "Mật khẩu hiện tại"
 msgid "Current usage"
 msgstr "Mức sử dụng hiện tại"
 
-#: src/views/system/Upgrade.vue:181
+#: src/views/system/Upgrade.vue:182
 msgid "Current Version"
 msgstr "Phiên bản hiện tại"
 
@@ -1524,7 +1527,7 @@ msgstr "Tên miền tùy chỉnh"
 msgid "Custom Domains Certificate"
 msgstr "Chứng chỉ Tên miền Tùy chỉnh"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:426
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:533
 msgid "Custom Headers"
 msgstr "Tiêu đề tùy chỉnh"
 
@@ -1585,7 +1588,7 @@ msgstr "Giải nén thành công nhưng không thể xóa tệp đã nén: {0}"
 msgid "Decryption failed"
 msgstr "Giải mã thất bại"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:840
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:847
 msgid "Default range"
 msgstr "Phạm vi mặc định"
 
@@ -1597,7 +1600,7 @@ msgstr "Xác định tên và kích thước vùng bộ nhớ dùng chung, ví d
 #: src/components/LLM/LLMSessionTabs.vue:384
 #: src/components/NgxConfigEditor/NgxServer.vue:110
 #: src/components/NgxConfigEditor/NgxUpstream.vue:78 src/language/curd.ts:9
-#: src/views/certificate/components/RemoveCert.vue:99
+#: src/views/certificate/components/RemoveCert.vue:100
 #: src/views/config/components/Delete.vue:65
 #: src/views/config/components/Delete.vue:97
 #: src/views/config/ConfigList.vue:199
@@ -1614,7 +1617,7 @@ msgstr "Xóa %{path} trên %{node_name} thất bại"
 msgid "Delete %{path} on %{node_name} successfully"
 msgstr "Đã xóa %{path} trên %{node_name} thành công"
 
-#: src/views/certificate/components/RemoveCert.vue:104
+#: src/views/certificate/components/RemoveCert.vue:105
 msgid "Delete Certificate"
 msgstr "Xóa chứng chỉ"
 
@@ -1691,7 +1694,7 @@ msgstr "Triển khai"
 msgid "Deploy Mode"
 msgstr "Chế độ triển khai"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:735
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:742
 msgid "Descending"
 msgstr "Giảm dần"
 
@@ -1712,11 +1715,11 @@ msgstr "Tệp đích: {0} đã tồn tại"
 msgid "Details"
 msgstr "Chi tiết"
 
-#: src/views/system/Upgrade.vue:215
+#: src/views/system/Upgrade.vue:216
 msgid "Dev"
 msgstr "Dev"
 
-#: src/views/node/BatchUpgrader.vue:171
+#: src/views/node/BatchUpgrader.vue:172
 msgid "Development"
 msgstr "Phát triển"
 
@@ -1725,8 +1728,8 @@ msgid "Development Mode"
 msgstr "Chế độ phát triển"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:169
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:288
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:524
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:289
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:525
 msgid "Device"
 msgstr "Thiết bị"
 
@@ -1741,6 +1744,10 @@ msgstr "Loại thiết bị"
 #: src/constants/errors/upgrader.ts:4
 msgid "Digest file content is empty"
 msgstr "Nội dung tệp tiêu đề trống"
+
+#: src/views/preference/components/ExternalNotify/dingding.ts:5
+msgid "Dingding"
+msgstr "Dingding"
 
 #: src/views/preference/components/ExternalNotify/dingtalk.ts:5
 msgid "DingTalk"
@@ -1855,11 +1862,11 @@ msgstr "Đã tắt"
 msgid "Disabled successfully"
 msgstr "Đã tắt thành công"
 
-#: src/views/dashboard/components/SiteNavigationToolbar.vue:39
+#: src/views/dashboard/components/SiteNavigationToolbar.vue:35
 msgid "Disconnected"
 msgstr "Ngắt kết nối"
 
-#: src/views/dashboard/ServerAnalytic.vue:373
+#: src/views/dashboard/ServerAnalytic.vue:374
 msgid "Disk IO"
 msgstr "Disk IO"
 
@@ -1873,7 +1880,7 @@ msgstr "Xác thực DNS"
 msgid "DNS Provider"
 msgstr "Nhà cung cấp DNS"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:600
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:678
 msgid "DNS Resolver"
 msgstr "Bộ phân giải DNS"
 
@@ -1928,7 +1935,7 @@ msgid "Document"
 msgid_plural "Documents"
 msgstr[0] "Tài liệu"
 
-#: src/views/nginx_log/NginxLogList.vue:292
+#: src/views/nginx_log/NginxLogList.vue:298
 msgid "Document Count"
 msgstr "Số lượng tài liệu"
 
@@ -1946,15 +1953,15 @@ msgstr ""
 msgid "Download Certificate Files"
 msgstr "Tải xuống tệp chứng chỉ"
 
-#: src/components/GeoLiteDownload/GeoLiteDownload.vue:116
+#: src/components/GeoLiteDownload/GeoLiteDownload.vue:117
 msgid "Download complete"
 msgstr "Tải xuống hoàn tất"
 
-#: src/components/GeoLiteDownload/GeoLiteDownload.vue:105
+#: src/components/GeoLiteDownload/GeoLiteDownload.vue:106
 msgid "Download failed"
 msgstr "Tải xuống thất bại"
 
-#: src/components/GeoLiteDownload/GeoLiteDownload.vue:186
+#: src/components/GeoLiteDownload/GeoLiteDownload.vue:187
 #: src/components/SelfCheck/SelfCheck.vue:83
 msgid "Download GeoLite2 Database"
 msgstr "Tải xuống cơ sở dữ liệu GeoLite2"
@@ -1967,15 +1974,15 @@ msgstr "Đã có lỗi xảy ra khi tải về phiên bản mới nhất"
 msgid "Downloading latest release"
 msgstr "Đang tải phiên bản mới nhất"
 
-#: src/views/certificate/components/CertificateContentEditor.vue:158
+#: src/views/certificate/components/CertificateContentEditor.vue:248
 msgid "Drop certificate file here"
 msgstr "Thả tệp chứng chỉ vào đây"
 
-#: src/views/certificate/components/CertificateContentEditor.vue:219
+#: src/views/certificate/components/CertificateContentEditor.vue:309
 msgid "Drop private key file here"
 msgstr "Thả tệp khóa riêng tư vào đây"
 
-#: src/views/node/BatchUpgrader.vue:192 src/views/system/Upgrade.vue:236
+#: src/views/node/BatchUpgrader.vue:193 src/views/system/Upgrade.vue:237
 msgid "Dry run mode enabled"
 msgstr "Đã bật chế độ Dry run"
 
@@ -2066,7 +2073,7 @@ msgstr "bật"
 msgid "Enable 2FA successfully"
 msgstr "Bật 2FA thành công"
 
-#: src/views/nginx_log/NginxLogList.vue:468
+#: src/views/nginx_log/NginxLogList.vue:474
 msgid "Enable Advanced Indexing"
 msgstr "Bật lập chỉ mục nâng cao"
 
@@ -2085,6 +2092,10 @@ msgstr "Bật hoàn thành mã"
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:68
 msgid "Enable compression for content transfer"
 msgstr "Bật nén để chuyển nội dung"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:473
+msgid "Enable Health Check"
+msgstr "Bật kiểm tra tình trạng"
 
 #: src/views/preference/tabs/ServerSettings.vue:52
 msgid "Enable HTTP/2"
@@ -2241,7 +2252,7 @@ msgid "Environment variables cleaned"
 msgstr "Đã dọn dẹp biến môi trường"
 
 #: src/components/InspectConfig/InspectConfig.vue:80 src/constants/index.ts:23
-#: src/views/nginx_log/NginxLogList.vue:243
+#: src/views/nginx_log/NginxLogList.vue:249
 #: src/views/notification/notificationColumns.tsx:14
 msgid "Error"
 msgstr "Lỗi"
@@ -2258,7 +2269,7 @@ msgstr "Lỗi khởi tạo trình xem khác biệt"
 msgid "Error Log"
 msgstr "Nhật ký lỗi"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:665
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:672
 msgid "Error Log Detected"
 msgstr "Đã phát hiện nhật ký lỗi"
 
@@ -2271,7 +2282,7 @@ msgstr "Đường dẫn nhật ký lỗi không tồn tại"
 msgid "Error Logs"
 msgstr "Log lỗi"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:668
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:675
 msgid ""
 "Error logs do not support structured analysis as they contain free-form "
 "text messages."
@@ -2291,7 +2302,7 @@ msgstr "Lỗi xử lý nội dung"
 msgid "Executable binary file is empty"
 msgstr "Tập tin nhị phân thực thi đang trống"
 
-#: src/views/system/Upgrade.vue:195
+#: src/views/system/Upgrade.vue:196
 msgid "Executable Path"
 msgstr "Đường dẫn thực thi"
 
@@ -2315,11 +2326,11 @@ msgstr "Mở rộng"
 msgid "Expected Performance"
 msgstr "Hiệu suất dự kiến"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:454
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:557
 msgid "Expected Status Codes"
 msgstr "Mã trạng thái mong đợi"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:484
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:582
 msgid "Expected Text"
 msgstr "Văn bản mong đợi"
 
@@ -2369,7 +2380,7 @@ msgstr "Kiểm tra thông báo bên ngoài"
 msgid "External Notify"
 msgstr "Thông báo bên ngoài"
 
-#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:81
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:82
 msgid "Fail to obtain certificate"
 msgstr "Không thể lấy chứng chỉ"
 
@@ -2427,7 +2438,7 @@ msgid "Failed to copy Nginx config directory: {0}"
 msgstr "Không thể sao chép thư mục cấu hình Nginx: {0}"
 
 #: src/views/certificate/components/CertificateBasicInfo.vue:33
-#: src/views/certificate/components/CertificateContentEditor.vue:34
+#: src/views/certificate/components/CertificateContentEditor.vue:114
 msgid "Failed to copy to clipboard"
 msgstr "Sao chép vào bộ nhớ tạm thất bại"
 
@@ -2523,7 +2534,7 @@ msgstr "Không thể giải mã thư mục Nginx UI: {0}"
 msgid "Failed to delete all indexes"
 msgstr "Không thể xóa tất cả các chỉ mục"
 
-#: src/views/certificate/components/RemoveCert.vue:76
+#: src/views/certificate/components/RemoveCert.vue:77
 msgid "Failed to delete certificate"
 msgstr "Xóa chứng chỉ không thành công"
 
@@ -2557,7 +2568,7 @@ msgstr "Không thể tải xuống cơ sở dữ liệu GeoLite2: {0}"
 msgid "Failed to enable %{msg}"
 msgstr "Không thể bật %{msg}"
 
-#: src/views/nginx_log/NginxLogList.vue:401
+#: src/views/nginx_log/NginxLogList.vue:407
 msgid "Failed to enable advanced indexing"
 msgstr "Không thể bật lập chỉ mục nâng cao"
 
@@ -2649,6 +2660,10 @@ msgstr "Không thể kiểm tra container hiện tại: {0}"
 msgid "Failed to load history records"
 msgstr "Không thể tải bản ghi lịch sử"
 
+#: src/views/certificate/components/CertificateContentEditor.vue:39
+msgid "Failed to load nginx configuration path"
+msgstr "Không thể tải đường dẫn cấu hình nginx"
+
 #: src/constants/errors/geolite.ts:8
 msgid "Failed to open file: {0}"
 msgstr "Không thể mở tệp: {0}"
@@ -2725,7 +2740,7 @@ msgstr "Không thể xây dựng lại chỉ mục tệp"
 msgid "Failed to rebuild index"
 msgstr "Không thể xây dựng lại chỉ mục"
 
-#: src/views/dashboard/SiteNavigation.vue:101
+#: src/views/dashboard/SiteNavigation.vue:86
 msgid "Failed to refresh sites"
 msgstr "Không thể làm mới trang web"
 
@@ -2733,7 +2748,7 @@ msgstr "Không thể làm mới trang web"
 msgid "Failed to restore Nginx configs: {0}"
 msgstr "Khôi phục cấu hình Nginx thất bại: {0}"
 
-#: src/views/certificate/components/RemoveCert.vue:58
+#: src/views/certificate/components/RemoveCert.vue:59
 msgid "Failed to revoke certificate"
 msgstr "Không thể thu hồi chứng chỉ"
 
@@ -2741,7 +2756,7 @@ msgstr "Không thể thu hồi chứng chỉ"
 msgid "Failed to revoke certificate: %{error}"
 msgstr "Không thể thu hồi chứng chỉ: %{error}"
 
-#: src/views/dashboard/SiteNavigation.vue:193
+#: src/views/dashboard/SiteNavigation.vue:133
 msgid "Failed to save configuration"
 msgstr "Lưu cấu hình thất bại"
 
@@ -2749,7 +2764,7 @@ msgstr "Lưu cấu hình thất bại"
 msgid "Failed to save downloaded file: {0}"
 msgstr "Không thể lưu tệp đã tải xuống: {0}"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:310
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:412
 msgid "Failed to save health check configuration"
 msgstr "Không thể lưu cấu hình kiểm tra trạng thái"
 
@@ -2757,7 +2772,7 @@ msgstr "Không thể lưu cấu hình kiểm tra trạng thái"
 msgid "Failed to save Nginx performance settings"
 msgstr "Không thể lưu cài đặt hiệu suất Nginx"
 
-#: src/views/dashboard/SiteNavigation.vue:166
+#: src/views/dashboard/SiteNavigation.vue:110
 msgid "Failed to save order"
 msgstr "Lưu thứ tự thất bại"
 
@@ -2869,7 +2884,7 @@ msgstr "thư mục"
 msgid "Folder"
 msgstr "Thư mục"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:572
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:650
 msgid "Follow Redirects"
 msgstr "Theo dõi chuyển hướng"
 
@@ -2894,7 +2909,7 @@ msgstr "Dành cho người dùng Trung Quốc: https://cloud.nginxui.com/"
 msgid "For commercial or professional use, contact"
 msgstr "Để sử dụng thương mại hoặc chuyên nghiệp, vui lòng liên hệ"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:670
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:677
 msgid "For error logs, please use the Raw Log Viewer for better viewing experience."
 msgstr ""
 "Đối với nhật ký lỗi, vui lòng sử dụng Trình xem Nhật ký Thô để có trải "
@@ -2920,7 +2935,7 @@ msgstr ""
 msgid "Form parse failed"
 msgstr "Phân tích biểu mẫu thất bại"
 
-#: src/views/config/components/ConfigLeftPanel.vue:276
+#: src/views/config/components/ConfigLeftPanel.vue:277
 msgid "Format Code"
 msgstr "Định dạng code"
 
@@ -2936,7 +2951,7 @@ msgstr "Định dạng: phút giờ ngày tháng thứ_trong_tuần"
 msgid "Friday"
 msgstr "Thứ Sáu"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:837
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:844
 msgid "From indexed logs"
 msgstr "Từ nhật ký đã lập chỉ mục"
 
@@ -2990,7 +3005,7 @@ msgstr "Cơ sở dữ liệu GeoLite2"
 msgid "GeoLite2 database available"
 msgstr "Cơ sở dữ liệu GeoLite2 có sẵn"
 
-#: src/components/GeoLiteDownload/GeoLiteDownload.vue:167
+#: src/components/GeoLiteDownload/GeoLiteDownload.vue:168
 msgid "GeoLite2 Database Installed"
 msgstr "Cơ sở dữ liệu GeoLite2 đã được cài đặt"
 
@@ -3006,7 +3021,7 @@ msgstr ""
 "Cơ sở dữ liệu GeoLite2 không tìm thấy tại {0}. Việc lập chỉ mục nhật ký yêu "
 "cầu cơ sở dữ liệu GeoLite2 để phân tích địa lý IP"
 
-#: src/components/GeoLiteDownload/GeoLiteDownload.vue:149
+#: src/components/GeoLiteDownload/GeoLiteDownload.vue:150
 msgid "GeoLite2 Database Required"
 msgstr "Cần có cơ sở dữ liệu GeoLite2"
 
@@ -3022,7 +3037,7 @@ msgstr "Không thể lấy dữ liệu"
 msgid "Get dns credential error: {0}"
 msgstr "Lỗi khi lấy thông tin xác thực DNS: {0}"
 
-#: src/views/node/BatchUpgrader.vue:181 src/views/system/Upgrade.vue:187
+#: src/views/node/BatchUpgrader.vue:182 src/views/system/Upgrade.vue:188
 msgid "Get release information error"
 msgstr "Lỗi lấy thông tin phát hành"
 
@@ -3043,7 +3058,7 @@ msgstr "Bản đồ Truy cập Toàn cầu"
 msgid "Global Map"
 msgstr "Bản đồ Thế giới"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:675
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:682
 msgid "Go to Raw Log Viewer"
 msgstr "Đi đến Trình xem Nhật ký Thô"
 
@@ -3051,7 +3066,7 @@ msgstr "Đi đến Trình xem Nhật ký Thô"
 msgid "Gotify"
 msgstr "Gotify"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:502
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:600
 msgid ""
 "gRPC health check requires server to implement gRPC Health Check service "
 "(grpc.health.v1.Health)."
@@ -3059,7 +3074,7 @@ msgstr ""
 "Kiểm tra sức khỏe gRPC yêu cầu máy chủ triển khai dịch vụ kiểm tra sức khỏe "
 "gRPC (grpc.health.v1.Health)."
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:501
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:599
 msgid ""
 "gRPCS uses TLS encryption. Server must implement gRPC Health Check service. "
 "For testing, SSL validation is disabled by default."
@@ -3083,17 +3098,25 @@ msgstr "Độ dài tối thiểu GZIP"
 msgid "Health Check"
 msgstr "Kiểm tra sức khỏe"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:365
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:466
 msgid "Health Check Configuration"
 msgstr "Cấu hình kiểm tra trạng thái"
 
-#: src/views/dashboard/SiteNavigation.vue:188
+#: src/views/dashboard/SiteNavigation.vue:128
 msgid "Health check configuration saved"
 msgstr "Đã lưu cấu hình kiểm tra trạng thái"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:301
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:403
 msgid "Health check configuration saved successfully"
 msgstr "Cấu hình kiểm tra sức khỏe đã được lưu thành công"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:477
+msgid "Health check is disabled"
+msgstr "Kiểm tra trạng thái đã bị vô hiệu hóa"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:477
+msgid "Health check is enabled"
+msgstr "Kiểm tra tình trạng đã được bật"
 
 #: src/views/upstream/SocketList.vue:36
 msgid "Health Status"
@@ -3117,7 +3140,7 @@ msgstr "Cao"
 msgid "Higher value means better connection reuse"
 msgstr "Giá trị cao hơn có nghĩa là tái sử dụng kết nối tốt hơn"
 
-#: src/views/config/components/ConfigLeftPanel.vue:254
+#: src/views/config/components/ConfigLeftPanel.vue:255
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:94
 #: src/views/stream/components/StreamEditor.vue:68
 msgid "History"
@@ -3144,7 +3167,7 @@ msgstr "HTTP"
 msgid "HTTP Challenge Port"
 msgstr "Cổng thử thách HTTP"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:399
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:506
 msgid "HTTP Method"
 msgstr "Phương thức HTTP"
 
@@ -3227,7 +3250,7 @@ msgstr "Quét chỉ mục tăng dần"
 msgid "Index and statistics rebuild started successfully"
 msgstr "Đã bắt đầu xây dựng lại chỉ mục và thống kê thành công"
 
-#: src/views/nginx_log/NginxLogList.vue:202
+#: src/views/nginx_log/NginxLogList.vue:208
 msgid "Index failed"
 msgstr "Lập chỉ mục thất bại"
 
@@ -3235,29 +3258,29 @@ msgstr "Lập chỉ mục thất bại"
 msgid "Index failed, please try rebuilding"
 msgstr "Lập chỉ mục thất bại, vui lòng thử xây dựng lại"
 
-#: src/views/nginx_log/NginxLogList.vue:387
+#: src/views/nginx_log/NginxLogList.vue:393
 msgid "Index rebuild initiated"
 msgstr "Đã khởi động tái lập chỉ mục"
 
-#: src/views/nginx_log/NginxLogList.vue:171
+#: src/views/nginx_log/NginxLogList.vue:177
 msgid "Index Status"
 msgstr "Trạng thái chỉ mục"
 
-#: src/views/nginx_log/NginxLogList.vue:239
+#: src/views/nginx_log/NginxLogList.vue:245
 msgid "Indexed"
 msgstr "Đã lập chỉ mục"
 
 #: src/views/nginx_log/indexing/components/IndexProgressBar.vue:52
-#: src/views/nginx_log/NginxLogList.vue:235
+#: src/views/nginx_log/NginxLogList.vue:241
 msgid "Indexing"
 msgstr "Đang lập chỉ mục"
 
 #: src/views/nginx_log/components/LoadingState.vue:33
-#: src/views/nginx_log/NginxLogList.vue:457
+#: src/views/nginx_log/NginxLogList.vue:463
 msgid "Indexing logs..."
 msgstr "Đang lập chỉ mục nhật ký..."
 
-#: src/components/ProcessingStatus/ProcessingStatus.vue:31
+#: src/components/ProcessingStatus/ProcessingStatus.vue:37
 #: src/views/nginx_log/components/LoadingState.vue:71
 msgid "Indexing..."
 msgstr "Đang lập chỉ mục..."
@@ -3269,6 +3292,10 @@ msgstr "Chỉ số"
 #: src/constants/index.ts:25 src/views/notification/notificationColumns.tsx:28
 msgid "Info"
 msgstr "Thông tin"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:76
+msgid "Informational Responses (1xx)"
+msgstr "Phản hồi thông tin (1xx)"
 
 #: src/constants/errors/user.ts:17
 msgid "Init user not exists"
@@ -3297,7 +3324,7 @@ msgstr "Bỏ qua xác minh không an toàn"
 #: src/routes/modules/auth.ts:8
 #: src/views/install/components/InstallForm.vue:110
 #: src/views/install/components/InstallHeader.vue:9
-#: src/views/system/Upgrade.vue:149
+#: src/views/system/Upgrade.vue:150
 msgid "Install"
 msgstr "Cài đặt"
 
@@ -3420,13 +3447,13 @@ msgstr "Định dạng dấu thời gian không hợp lệ"
 msgid "Invalid websocket message type"
 msgstr "Loại tin nhắn WebSocket không hợp lệ"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:193
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:194
 #: src/views/preference/tabs/AuthSettings.vue:15
 msgid "IP"
 msgstr "IP"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:77
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:517
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:518
 msgid "IP Address"
 msgstr "Địa chỉ IP"
 
@@ -3487,7 +3514,7 @@ msgstr "Lark"
 msgid "Lark Custom"
 msgstr "Lark Tùy chỉnh"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:314
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:315
 msgid "Last 12 hours"
 msgstr "12 giờ trước"
 
@@ -3495,29 +3522,29 @@ msgstr "12 giờ trước"
 msgid "Last 14 days"
 msgstr "14 ngày trước"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:310
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:311
 msgid "Last 15 minutes"
 msgstr "15 phút trước"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:315
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:316
 msgid "Last 24 hours"
 msgstr "24 giờ qua"
 
 #: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:23
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:317
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:318
 msgid "Last 30 days"
 msgstr "30 ngày qua"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:311
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:312
 msgid "Last 30 minutes"
 msgstr "30 phút trước"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:313
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:314
 msgid "Last 4 hours"
 msgstr "4 giờ trước"
 
 #: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:21
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:316
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:317
 msgid "Last 7 days"
 msgstr "7 ngày trước"
 
@@ -3537,15 +3564,15 @@ msgstr "Thời gian sao lưu cuối cùng"
 msgid "Last Check"
 msgstr "Lần kiểm tra cuối"
 
-#: src/views/system/Upgrade.vue:197
+#: src/views/system/Upgrade.vue:198
 msgid "Last checked at"
 msgstr "Kiểm tra lần cuối lúc"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:312
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:313
 msgid "Last hour"
 msgstr "Giờ qua"
 
-#: src/views/nginx_log/NginxLogList.vue:252
+#: src/views/nginx_log/NginxLogList.vue:258
 msgid "Last Indexed"
 msgstr "Lần lập chỉ mục cuối"
 
@@ -3557,7 +3584,7 @@ msgstr "Tháng trước"
 msgid "Last update"
 msgstr "Cập nhật cuối cùng"
 
-#: src/components/GeoLiteDownload/GeoLiteDownload.vue:198
+#: src/components/GeoLiteDownload/GeoLiteDownload.vue:199
 msgid "Last updated:"
 msgstr "Lần cập nhật cuối:"
 
@@ -3585,10 +3612,10 @@ msgstr "Để trống nếu nhà cung cấp ACME của bạn không yêu cầu"
 msgid "Leave blank if you don't need this."
 msgstr "Để trống nếu bạn không cần cái này."
 
-#: src/views/certificate/components/CertificateContentEditor.vue:150
-#: src/views/certificate/components/CertificateContentEditor.vue:168
-#: src/views/certificate/components/CertificateContentEditor.vue:211
-#: src/views/certificate/components/CertificateContentEditor.vue:229
+#: src/views/certificate/components/CertificateContentEditor.vue:240
+#: src/views/certificate/components/CertificateContentEditor.vue:258
+#: src/views/certificate/components/CertificateContentEditor.vue:301
+#: src/views/certificate/components/CertificateContentEditor.vue:319
 msgid "Leave blank will not change anything"
 msgstr "Để trống sẽ không thay đổi bất cứ điều gì"
 
@@ -3612,8 +3639,8 @@ msgstr "Phân phối giấy phép"
 msgid "License Types"
 msgstr "Loại giấy phép"
 
-#: src/views/dashboard/components/NodeAnalyticItem.vue:114
-#: src/views/dashboard/components/NodeAnalyticItem.vue:97
+#: src/views/dashboard/components/NodeAnalyticItem.vue:78
+#: src/views/dashboard/components/NodeAnalyticItem.vue:95
 msgid "Link"
 msgstr "Liên kết"
 
@@ -3625,7 +3652,7 @@ msgstr "Danh sách"
 msgid "Listening"
 msgstr "Đang lắng nghe"
 
-#: src/views/dashboard/ServerAnalytic.vue:187
+#: src/views/dashboard/ServerAnalytic.vue:188
 msgid "Load Average:"
 msgstr "Tải trung bình:"
 
@@ -3669,7 +3696,7 @@ msgstr "Đang tải..."
 
 #: src/components/NamespaceTabs/NamespaceTabs.vue:116
 #: src/components/NodeIndicator/NodeIndicator.vue:38
-#: src/components/NodeSelector/NodeSelector.vue:61 src/constants/index.ts:42
+#: src/components/NodeSelector/NodeSelector.vue:62 src/constants/index.ts:42
 #: src/constants/index.ts:48 src/views/backup/AutoBackup/AutoBackup.vue:74
 #: src/views/backup/AutoBackup/AutoBackup.vue:83
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:48
@@ -3712,7 +3739,7 @@ msgstr "Tập tin nhật ký không tồn tại"
 msgid "Log file is not a regular file"
 msgstr "Tập tin nhật ký không phải là tập tin thông thường"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:852
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:859
 msgid "Log file not available"
 msgstr "Tệp nhật ký không có sẵn"
 
@@ -3724,7 +3751,7 @@ msgstr "Tệp nhật ký chưa được lập chỉ mục"
 msgid "Log indexer not available"
 msgstr "Bộ lập chỉ mục nhật ký không khả dụng"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:585
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:586
 msgid "Log indexing completed! Loading updated data..."
 msgstr "Lập chỉ mục nhật ký hoàn tất! Đang tải dữ liệu cập nhật..."
 
@@ -3732,7 +3759,7 @@ msgstr "Lập chỉ mục nhật ký hoàn tất! Đang tải dữ liệu cập 
 msgid "Log line exceeds maximum length"
 msgstr "Dòng nhật ký vượt quá độ dài tối đa"
 
-#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:430
+#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:436
 msgid "Log List"
 msgstr "Danh sách nhật ký"
 
@@ -3785,7 +3812,7 @@ msgid "Low"
 msgstr "Thấp"
 
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:51
-#: src/composables/useUpstreamStatus.ts:156
+#: src/composables/useUpstreamStatus.ts:146
 msgid "Main Node"
 msgstr "Nút chính"
 
@@ -3880,7 +3907,7 @@ msgstr "Số lần thử tối đa"
 msgid "Max Concurrent Connections"
 msgstr "Kết nối đồng thời tối đa"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:560
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:643
 msgid "Max Redirects"
 msgstr "Chuyển hướng tối đa"
 
@@ -3913,13 +3940,13 @@ msgstr "Kích thước tối đa của bộ nhớ đệm"
 msgid "Maximum worker process number:"
 msgstr "Số lượng tiến trình worker tối đa:"
 
-#: src/views/dashboard/ServerAnalytic.vue:227
 #: src/views/dashboard/ServerAnalytic.vue:228
+#: src/views/dashboard/ServerAnalytic.vue:229
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:54
 msgid "Memory"
 msgstr "Memory"
 
-#: src/views/dashboard/ServerAnalytic.vue:216
+#: src/views/dashboard/ServerAnalytic.vue:217
 msgid "Memory and Storage"
 msgstr "Memory và Storage"
 
@@ -3932,11 +3959,11 @@ msgid "Memory Usage (RSS)"
 msgstr "Mức sử dụng bộ nhớ (RSS)"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:92
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:518
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:519
 msgid "Method"
 msgstr "Phương pháp"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:520
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:613
 msgid "Method Name"
 msgstr "Tên phương thức"
 
@@ -4058,7 +4085,7 @@ msgstr "Không có"
 #: src/views/config/components/Delete.vue:123
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:17 src/views/namespace/columns.ts:9
-#: src/views/nginx_log/NginxLogList.vue:149 src/views/node/nodeColumns.tsx:8
+#: src/views/nginx_log/NginxLogList.vue:155 src/views/node/nodeColumns.tsx:8
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:81
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:36
 #: src/views/site/site_list/columns.tsx:30
@@ -4089,11 +4116,11 @@ msgstr "Không gian tên"
 msgid "Need to enable the stub_status module"
 msgstr "Cần bật module stub_status"
 
-#: src/views/dashboard/ServerAnalytic.vue:334
+#: src/views/dashboard/ServerAnalytic.vue:335
 msgid "Network"
 msgstr "Mạng"
 
-#: src/views/dashboard/ServerAnalytic.vue:276
+#: src/views/dashboard/ServerAnalytic.vue:277
 msgid "Network Statistics"
 msgstr "Thống kê mạng"
 
@@ -4129,7 +4156,7 @@ msgstr "Đường dẫn mới"
 msgid "New transport error: {0}"
 msgstr "Lỗi vận chuyển mới: {0}"
 
-#: src/views/system/Upgrade.vue:229
+#: src/views/system/Upgrade.vue:230
 msgid "New version released"
 msgstr "Đã có phiên bản mới"
 
@@ -4259,7 +4286,7 @@ msgstr "Nhật ký Nginx"
 msgid "Nginx Log Directory Whitelist"
 msgstr "Danh sách trắng thư mục nhật ký Nginx"
 
-#: src/components/ProcessingStatus/ProcessingStatus.vue:45
+#: src/components/ProcessingStatus/ProcessingStatus.vue:51
 msgid "Nginx Log Indexing..."
 msgstr "Đang lập chỉ mục nhật ký Nginx..."
 
@@ -4355,7 +4382,7 @@ msgstr "Nginx.conf bao gồm thư mục streams-enabled"
 #: src/components/NamespaceTabs/NamespaceTabs.vue:148
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:102
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
-#: src/components/Notification/Notification.vue:109 src/language/curd.ts:40
+#: src/components/Notification/Notification.vue:115 src/language/curd.ts:40
 #: src/views/notification/Notification.vue:38
 #: src/views/preference/tabs/AuthSettings.vue:128
 #: src/views/preference/tabs/CertSettings.vue:73
@@ -4388,7 +4415,7 @@ msgstr "Không có dữ liệu"
 msgid "No Data"
 msgstr "Không có dữ liệu"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:820
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:827
 msgid "No entries in current page"
 msgstr "Không có mục nào trong trang hiện tại"
 
@@ -4397,7 +4424,7 @@ msgstr "Không có mục nào trong trang hiện tại"
 msgid "No geographic data available"
 msgstr "Không có dữ liệu địa lý"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:566
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:567
 msgid "No logs found in the selected time range."
 msgstr "Không tìm thấy nhật ký trong khoảng thời gian đã chọn."
 
@@ -4413,7 +4440,7 @@ msgstr "Không có bản ghi nào được chọn"
 msgid "No servers configured"
 msgstr "Không có máy chủ nào được cấu hình"
 
-#: src/views/dashboard/SiteNavigation.vue:231
+#: src/views/dashboard/SiteNavigation.vue:170
 msgid "No sites found"
 msgstr "Không tìm thấy trang web nào"
 
@@ -4425,7 +4452,7 @@ msgstr ""
 "Không tìm thấy địa chỉ IP cụ thể trong cấu hình server_name. Vui lòng chỉ "
 "định địa chỉ IP máy chủ bên dưới để lấy chứng chỉ."
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:829
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:836
 msgid "No structured log data available"
 msgstr "Không có dữ liệu nhật ký có cấu trúc nào khả dụng"
 
@@ -4453,7 +4480,7 @@ msgstr "Bí mật nút"
 msgid "Node Status"
 msgstr "Trạng thái nút"
 
-#: src/routes/modules/nodes.ts:11 src/views/dashboard/Nodes.vue:131
+#: src/routes/modules/nodes.ts:11 src/views/dashboard/Nodes.vue:89
 #: src/views/node/Node.vue:130
 msgid "Nodes"
 msgstr "Nút"
@@ -4462,7 +4489,7 @@ msgstr "Nút"
 msgid "Not After"
 msgstr "Không phải sau khi"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:489
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:587
 msgid "Not Expected Text"
 msgstr "Văn bản không mong muốn"
 
@@ -4470,7 +4497,7 @@ msgstr "Văn bản không mong muốn"
 msgid "Not Found"
 msgstr "Không tìm thấy"
 
-#: src/views/nginx_log/NginxLogList.vue:227
+#: src/views/nginx_log/NginxLogList.vue:233
 msgid "Not Indexed"
 msgstr "Chưa được lập chỉ mục"
 
@@ -4501,7 +4528,7 @@ msgstr ""
 "Lưu ý, nếu tệp cấu hình bao gồm các cấu hình hoặc chứng chỉ khác, vui lòng "
 "đồng bộ chúng với các nút từ xa trước."
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:508
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:603
 msgid ""
 "Note: If the server does not support gRPC Reflection, health checks may "
 "fail. Please ensure your gRPC server has Reflection enabled."
@@ -4510,7 +4537,7 @@ msgstr ""
 "có thể thất bại. Hãy đảm bảo rằng máy chủ gRPC của bạn đã bật Reflection."
 
 #: src/views/certificate/components/CertificateBasicInfo.vue:24
-#: src/views/certificate/components/CertificateContentEditor.vue:25
+#: src/views/certificate/components/CertificateContentEditor.vue:105
 msgid "Nothing to copy"
 msgstr "Không có gì để sao chép"
 
@@ -4518,7 +4545,7 @@ msgstr "Không có gì để sao chép"
 msgid "Notification"
 msgstr "Thông báo"
 
-#: src/components/Notification/Notification.vue:107
+#: src/components/Notification/Notification.vue:113
 #: src/routes/modules/notifications.ts:10
 msgid "Notifications"
 msgstr "Thông báo"
@@ -4585,9 +4612,9 @@ msgstr "Tài liệu chính thức"
 
 #: src/components/NamespaceTabs/NamespaceTabs.vue:164
 #: src/components/NodeCard/NodeCard.vue:51
-#: src/components/NodeSelector/NodeSelector.vue:84
+#: src/components/NodeSelector/NodeSelector.vue:85
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
-#: src/views/dashboard/Nodes.vue:159 src/views/node/nodeColumns.tsx:55
+#: src/views/dashboard/Nodes.vue:117 src/views/node/nodeColumns.tsx:55
 #: src/views/upstream/SocketList.vue:45
 msgid "Offline"
 msgstr "Ngoại tuyến"
@@ -4599,7 +4626,7 @@ msgstr "Phân tích GeoIP ngoại tuyến"
 #: src/components/LLM/ChatMessageInput.vue:62
 #: src/components/NgxConfigEditor/NgxServer.vue:60
 #: src/components/NgxConfigEditor/NgxUpstream.vue:31
-#: src/components/Notification/Notification.vue:110 src/language/curd.ts:15
+#: src/components/Notification/Notification.vue:116 src/language/curd.ts:15
 #: src/views/backup/components/BackupCreator.vue:149
 #: src/views/notification/Notification.vue:39
 #: src/views/site/components/SiteStatusSelect.vue:123
@@ -4623,10 +4650,10 @@ msgstr "Sau khi quá trình xác minh hoàn tất, bản ghi sẽ bị xóa."
 
 #: src/components/NamespaceTabs/NamespaceTabs.vue:164
 #: src/components/NodeCard/NodeCard.vue:51
-#: src/components/NodeSelector/NodeSelector.vue:64
-#: src/components/NodeSelector/NodeSelector.vue:78
+#: src/components/NodeSelector/NodeSelector.vue:65
+#: src/components/NodeSelector/NodeSelector.vue:79
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
-#: src/views/dashboard/Nodes.vue:152 src/views/node/nodeColumns.tsx:51
+#: src/views/dashboard/Nodes.vue:110 src/views/node/nodeColumns.tsx:51
 #: src/views/upstream/SocketList.vue:45
 msgid "Online"
 msgstr "Trực tuyến"
@@ -4671,7 +4698,7 @@ msgstr "hoặc kéo tệp vào trình soạn thảo bên dưới"
 msgid "Or enter the secret: %{secret}"
 msgstr "Hoặc nhập mã bí mật: %{secret}"
 
-#: src/views/dashboard/SiteNavigation.vue:156
+#: src/views/dashboard/SiteNavigation.vue:104
 msgid "Order saved successfully"
 msgstr "Đã lưu thứ tự thành công"
 
@@ -4680,13 +4707,13 @@ msgid "Original name"
 msgstr "Tên gốc"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:153
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:272
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:523
-#: src/views/system/Upgrade.vue:193
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:273
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:524
+#: src/views/system/Upgrade.vue:194
 msgid "OS"
 msgstr "Hệ điều hành"
 
-#: src/views/dashboard/ServerAnalytic.vue:193
+#: src/views/dashboard/ServerAnalytic.vue:194
 msgid "OS:"
 msgstr "Hệ điều hành:"
 
@@ -4777,9 +4804,9 @@ msgstr "Mật khẩu không khớp"
 #: src/language/curd.ts:61
 #: src/views/config/components/ConfigRightPanel/Basic.vue:41
 #: src/views/config/components/Delete.vue:124
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:420
-#: src/views/nginx_log/NginxLogList.vue:158
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:519
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:527
+#: src/views/nginx_log/NginxLogList.vue:164
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:520
 msgid "Path"
 msgstr "Đường dẫn"
 
@@ -4816,7 +4843,7 @@ msgstr "Đang chờ"
 msgid "Percentage"
 msgstr "Phần trăm"
 
-#: src/views/node/BatchUpgrader.vue:245
+#: src/views/node/BatchUpgrader.vue:246
 msgid "Perform"
 msgstr "Thực hiện"
 
@@ -5041,8 +5068,8 @@ msgstr "Trình quét cổng"
 msgid "Post-sync Action"
 msgstr "Hành động sau đồng bộ"
 
-#: src/views/node/BatchUpgrader.vue:168 src/views/node/BatchUpgrader.vue:224
-#: src/views/system/Upgrade.vue:212 src/views/system/Upgrade.vue:266
+#: src/views/node/BatchUpgrader.vue:169 src/views/node/BatchUpgrader.vue:225
+#: src/views/system/Upgrade.vue:213 src/views/system/Upgrade.vue:267
 msgid "Pre-release"
 msgstr "Bản phát hành trước"
 
@@ -5103,7 +5130,7 @@ msgstr "Đội ngũ phát triển"
 msgid "Protected Directory"
 msgstr "Thư mục được bảo vệ"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:378
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:485
 msgid "Protocol"
 msgstr "Giao thức"
 
@@ -5132,7 +5159,7 @@ msgstr "Tỉnh / Vùng"
 msgid "Proxy"
 msgstr "Proxy"
 
-#: src/composables/useUpstreamStatus.ts:132
+#: src/composables/useUpstreamStatus.ts:122
 msgid "Proxy Pass"
 msgstr "Chuyển tiếp Proxy"
 
@@ -5148,13 +5175,13 @@ msgstr "Yêu cầu của CA công cộng:"
 msgid "Public Security Number"
 msgstr "Số An ninh Công cộng"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:762
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:769
 msgid "PV"
 msgstr "Lượt xem trang"
 
-#: src/views/nginx_log/NginxLogList.vue:208
-#: src/views/nginx_log/NginxLogList.vue:209
-#: src/views/nginx_log/NginxLogList.vue:231
+#: src/views/nginx_log/NginxLogList.vue:214
+#: src/views/nginx_log/NginxLogList.vue:215
+#: src/views/nginx_log/NginxLogList.vue:237
 msgid "Queued"
 msgstr "Đang xếp hàng"
 
@@ -5163,7 +5190,7 @@ msgid "Queued for indexing..."
 msgstr "Đang xếp hàng để lập chỉ mục..."
 
 #: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:51
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:701
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:708
 msgid "Quick Select"
 msgstr "Chọn nhanh"
 
@@ -5171,7 +5198,7 @@ msgstr "Chọn nhanh"
 msgid "Raw"
 msgstr "Thô"
 
-#: src/components/GeoLiteDownload/GeoLiteDownload.vue:195
+#: src/components/GeoLiteDownload/GeoLiteDownload.vue:196
 msgid "Re-download Database"
 msgstr "Tải lại cơ sở dữ liệu"
 
@@ -5185,7 +5212,7 @@ msgid "Read requests"
 msgstr "Yêu cầu đọc"
 
 #: src/views/dashboard/ServerAnalytic.vue:37
-#: src/views/dashboard/ServerAnalytic.vue:390
+#: src/views/dashboard/ServerAnalytic.vue:391
 msgid "Reads"
 msgstr "Đọc"
 
@@ -5193,7 +5220,7 @@ msgstr "Đọc"
 msgid "Real-time analytics dashboard"
 msgstr "Bảng điều khiển phân tích thời gian thực"
 
-#: src/views/nginx_log/NginxLogList.vue:495
+#: src/views/nginx_log/NginxLogList.vue:501
 msgid "Rebuild"
 msgstr "Xây dựng lại"
 
@@ -5209,7 +5236,7 @@ msgstr "Xây dựng lại chỉ mục tệp"
 msgid "Rebuild Index"
 msgstr "Xây dựng lại chỉ mục"
 
-#: src/views/dashboard/ServerAnalytic.vue:341
+#: src/views/dashboard/ServerAnalytic.vue:342
 #: src/views/dashboard/ServerAnalytic.vue:35
 msgid "Receive"
 msgstr "Nhận"
@@ -5242,13 +5269,16 @@ msgstr ""
 msgid "Recursive Nameservers"
 msgstr "Máy chủ tên đệ quy"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:100
+msgid "Redirection Messages (3xx)"
+msgstr "Thông điệp chuyển hướng (3xx)"
+
 #: src/views/nginx_log/structured/components/SearchFilters.vue:185
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:298
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:299
 msgid "Referer"
 msgstr "Người giới thiệu"
 
 #: src/language/curd.ts:70
-#: src/views/dashboard/components/SiteNavigationToolbar.vue:77
 msgid "Refresh"
 msgstr "Làm mới"
 
@@ -5296,7 +5326,7 @@ msgstr "Đăng ký người dùng"
 msgid "Registration Status"
 msgstr "Trạng thái đăng ký"
 
-#: src/views/system/Upgrade.vue:151
+#: src/views/system/Upgrade.vue:152
 msgid "Reinstall"
 msgstr "Cài đặt lại"
 
@@ -5304,7 +5334,7 @@ msgstr "Cài đặt lại"
 msgid "Release API request failed: {0}"
 msgstr "Yêu cầu API phát hành không thành công: {0}"
 
-#: src/views/system/Upgrade.vue:270
+#: src/views/system/Upgrade.vue:271
 msgid "Release Note"
 msgstr "Ghi chú phát hành"
 
@@ -5365,7 +5395,7 @@ msgstr "Xóa"
 msgid "Remove successfully"
 msgstr "Xóa thành công"
 
-#: src/components/Notification/Notification.vue:78
+#: src/components/Notification/Notification.vue:84
 msgid "Removed successfully"
 msgstr "Đã xóa thành công"
 
@@ -5462,11 +5492,11 @@ msgstr "Gia hạn chứng chỉ thành công"
 msgid "Renew successfully"
 msgstr "Gia hạn thành công"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:217
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:218
 msgid "Request"
 msgstr "Yêu cầu"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:446
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:553
 msgid "Request Body"
 msgstr "Nội dung Yêu cầu"
 
@@ -5492,7 +5522,7 @@ msgstr "Yêu cầu mỗi kết nối"
 
 #: src/language/curd.ts:13
 #: src/views/nginx_log/structured/components/SearchFilters.vue:214
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:738
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:745
 msgid "Reset"
 msgstr "Đặt lại"
 
@@ -5500,7 +5530,7 @@ msgstr "Đặt lại"
 msgid "Reset 2FA"
 msgstr "Đặt lại 2FA"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:844
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:851
 msgid "Reset Search"
 msgstr "Đặt lại tìm kiếm"
 
@@ -5587,7 +5617,7 @@ msgstr "Khôi phục phiên bản này"
 msgid "Restored successfully"
 msgstr "Khôi phục thành công"
 
-#: src/views/certificate/components/RemoveCert.vue:107
+#: src/views/certificate/components/RemoveCert.vue:108
 #: src/views/certificate/components/RemoveCert.vue:36
 msgid "Revoke"
 msgstr "Thu hồi"
@@ -5600,11 +5630,11 @@ msgstr "Lỗi thu hồi chứng chỉ: {0}"
 msgid "Revoke Old Certificate"
 msgstr "Thu hồi chứng chỉ cũ"
 
-#: src/views/certificate/components/RemoveCert.vue:121
+#: src/views/certificate/components/RemoveCert.vue:122
 msgid "Revoke this certificate"
 msgstr "Thu hồi chứng chỉ này"
 
-#: src/views/certificate/components/RemoveCert.vue:129
+#: src/views/certificate/components/RemoveCert.vue:130
 msgid ""
 "Revoking a certificate will affect any services currently using it. This "
 "action cannot be undone."
@@ -5728,9 +5758,9 @@ msgstr "Thứ Bảy"
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:132
 #: src/language/curd.ts:18
 #: src/views/certificate/components/CertificateActions.vue:29
-#: src/views/config/components/ConfigLeftPanel.vue:282
+#: src/views/config/components/ConfigLeftPanel.vue:283
 #: src/views/config/components/ConfigName.vue:58
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:635
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:713
 #: src/views/preference/components/AuthSettings/Passkey.vue:131
 #: src/views/preference/Preference.vue:124
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
@@ -5744,7 +5774,7 @@ msgstr "Lưu"
 msgid "Save Directive"
 msgstr "Lưu Directive"
 
-#: src/views/dashboard/components/SiteNavigationToolbar.vue:53
+#: src/views/dashboard/components/SiteNavigationToolbar.vue:48
 msgid "Save Order"
 msgstr "Lưu thứ tự"
 
@@ -5863,7 +5893,7 @@ msgstr "Tên mô-đun tìm kiếm"
 msgid "Search modules"
 msgstr "Tìm kiếm mô-đun"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:835
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:842
 msgid "Search range"
 msgstr "Phạm vi tìm kiếm"
 
@@ -5922,7 +5952,7 @@ msgid "Self check failed, Nginx UI may not work properly"
 msgstr "Tự kiểm tra thất bại, giao diện Nginx có thể không hoạt động bình thường"
 
 #: src/views/dashboard/ServerAnalytic.vue:35
-#: src/views/dashboard/ServerAnalytic.vue:351
+#: src/views/dashboard/ServerAnalytic.vue:352
 msgid "Send"
 msgstr "Gửi"
 
@@ -5938,7 +5968,11 @@ msgstr "Máy chủ"
 msgid "Server error"
 msgstr "Lỗi máy chủ"
 
-#: src/views/dashboard/ServerAnalytic.vue:179
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:148
+msgid "Server Error Responses (5xx)"
+msgstr "Phản hồi lỗi máy chủ (5xx)"
+
+#: src/views/dashboard/ServerAnalytic.vue:180
 msgid "Server Info"
 msgstr "Thông tin máy chủ"
 
@@ -5962,7 +5996,7 @@ msgstr "không tìm thấy server_name trong directives"
 msgid "ServerIdx out of range"
 msgstr "ServerIdx nằm ngoài phạm vi"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:515
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:608
 msgid "Service Name"
 msgstr "Tên dịch vụ"
 
@@ -6001,10 +6035,6 @@ msgstr "Đặt biến môi trường"
 #: src/language/constants.ts:10
 msgid "Setting HTTP01 challenge provider"
 msgstr "Đang thiết lập nhà cung cấp thử thách HTTP01"
-
-#: src/views/dashboard/components/SiteNavigationToolbar.vue:88
-msgid "Settings"
-msgstr "Cài đặt"
 
 #: src/constants/errors/nginx_log.ts:8
 msgid ""
@@ -6066,15 +6096,11 @@ msgstr "Trang web đang trong chế độ bảo trì"
 msgid "Site Logs"
 msgstr "Nhật ký trang web"
 
-#: src/views/dashboard/components/SiteNavigationToolbar.vue:29
-msgid "Site Navigation"
-msgstr "Điều hướng trang web"
-
 #: src/constants/errors/site.ts:2
 msgid "Site not found"
 msgstr "Không tìm thấy trang web"
 
-#: src/views/dashboard/SiteNavigation.vue:93
+#: src/views/dashboard/SiteNavigation.vue:82
 msgid "Site refresh initiated"
 msgstr "Đã khởi động làm mới trang web"
 
@@ -6090,7 +6116,7 @@ msgstr "Thư mục trang web tồn tại"
 msgid "Sites List"
 msgstr "Danh sách Website"
 
-#: src/views/dashboard/SiteNavigation.vue:234
+#: src/views/dashboard/SiteNavigation.vue:173
 msgid ""
 "Sites will appear here once you configure nginx server blocks with valid "
 "server_name directives."
@@ -6107,8 +6133,8 @@ msgid "Sites-enabled directory not exist"
 msgstr "Thư mục sites-enabled không tồn tại"
 
 #: src/language/curd.ts:62
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:248
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:521
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:249
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:522
 msgid "Size"
 msgstr "Kích thước"
 
@@ -6128,11 +6154,11 @@ msgstr "Thời gian chờ giữa các lần lặp của trình quản lý bộ n
 msgid "Socket"
 msgstr "Socket"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:735
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:742
 msgid "Sorted by"
 msgstr "Sắp xếp theo"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:605
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:683
 msgid "Source IP"
 msgstr "IP nguồn"
 
@@ -6144,8 +6170,8 @@ msgstr "Nhà tài trợ"
 msgid "SSD storage for better I/O performance"
 msgstr "Lưu trữ SSD để hiệu suất I/O tốt hơn"
 
-#: src/views/certificate/components/CertificateContentEditor.vue:119
-#: src/views/certificate/components/CertificateContentEditor.vue:124
+#: src/views/certificate/components/CertificateContentEditor.vue:209
+#: src/views/certificate/components/CertificateContentEditor.vue:214
 msgid "SSL Certificate Content"
 msgstr "Nội dung chứng chỉ SSL"
 
@@ -6157,8 +6183,8 @@ msgstr "Tệp chứng chỉ SSL phải nằm trong thư mục cấu hình Nginx:
 msgid "SSL certificate file not found"
 msgstr "Không tìm thấy tệp chứng chỉ SSL"
 
-#: src/views/certificate/components/CertificateContentEditor.vue:180
-#: src/views/certificate/components/CertificateContentEditor.vue:185
+#: src/views/certificate/components/CertificateContentEditor.vue:270
+#: src/views/certificate/components/CertificateContentEditor.vue:275
 msgid "SSL Certificate Key Content"
 msgstr "Nội dung khóa chứng chỉ SSL"
 
@@ -6199,8 +6225,8 @@ msgstr "Đường dẫn khóa SSL là bắt buộc khi bật HTTPS"
 msgid "SSO Login"
 msgstr "Đăng nhập SSO"
 
-#: src/views/node/BatchUpgrader.vue:165 src/views/node/BatchUpgrader.vue:218
-#: src/views/system/Upgrade.vue:209 src/views/system/Upgrade.vue:260
+#: src/views/node/BatchUpgrader.vue:166 src/views/node/BatchUpgrader.vue:219
+#: src/views/system/Upgrade.vue:210 src/views/system/Upgrade.vue:261
 msgid "Stable"
 msgstr "Ổn định"
 
@@ -6232,8 +6258,8 @@ msgstr "Tĩnh"
 #: src/views/certificate/CertificateList/certColumns.tsx:63
 #: src/views/dashboard/components/ModulesTable.vue:75
 #: src/views/nginx_log/structured/components/SearchFilters.vue:106
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:240
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:520
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:241
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:521
 #: src/views/node/nodeColumns.tsx:43
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:29
 #: src/views/site/site_list/columns.tsx:120 src/views/stream/columns.tsx:87
@@ -6248,8 +6274,8 @@ msgstr "Cập nhật trạng thái thành công"
 msgid "Stopped"
 msgstr "Đã dừng"
 
-#: src/views/dashboard/ServerAnalytic.vue:257
 #: src/views/dashboard/ServerAnalytic.vue:258
+#: src/views/dashboard/ServerAnalytic.vue:259
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:60
 msgid "Storage"
 msgstr "Storage"
@@ -6319,12 +6345,16 @@ msgstr "Stub_status chưa được bật"
 msgid "Success"
 msgstr "Thành công"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:85
+msgid "Successful Responses (2xx)"
+msgstr "Phản hồi thành công (2xx)"
+
 #: src/views/backup/AutoBackup/components/CronEditor.vue:121
 #: src/views/backup/AutoBackup/components/CronEditor.vue:26
 msgid "Sunday"
 msgstr "Chủ nhật"
 
-#: src/components/SelfCheck/tasks/frontend/websocket.ts:13
+#: src/components/SelfCheck/tasks/frontend/websocket.ts:14
 msgid ""
 "Support communication with the backend through the WebSocket protocol. If "
 "your Nginx UI is being used via an Nginx reverse proxy, please refer to "
@@ -6349,8 +6379,8 @@ msgstr "Hỗ trợ tải lên toàn bộ thư mục"
 msgid "Supported file type: .zip"
 msgstr "Loại tệp được hỗ trợ: .zip"
 
-#: src/views/dashboard/ServerAnalytic.vue:242
 #: src/views/dashboard/ServerAnalytic.vue:243
+#: src/views/dashboard/ServerAnalytic.vue:244
 msgid "Swap"
 msgstr "Swap"
 
@@ -6482,16 +6512,16 @@ msgstr "Trợ lý Terminal"
 msgid "Terminal Start Command"
 msgstr "Lệnh Khởi động Terminal"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:638
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:716
 #: src/views/preference/tabs/ExternalNotify.vue:57
 msgid "Test"
 msgstr "Kiểm tra"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:349
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:451
 msgid "Test failed: %{error}"
 msgstr "Kiểm tra thất bại: %{error}"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:354
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:456
 msgid "Test failed: Unable to perform health check"
 msgstr "Kiểm tra thất bại: Không thể thực hiện kiểm tra tình trạng"
 
@@ -6504,7 +6534,7 @@ msgstr "Gửi tin nhắn kiểm tra thành công"
 msgid "Test S3 Connection"
 msgstr "Kiểm tra kết nối S3"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:346
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:448
 msgid "Test successful! Response time: %{response_time}ms"
 msgstr "Kiểm tra thành công! Thời gian phản hồi: %{response_time}ms"
 
@@ -6518,7 +6548,7 @@ msgstr ""
 "nếu đã hơn 1 tuần hoặc khoảng thời gian bạn đặt trong cài đặt kể từ lần "
 "phát hành cuối cùng."
 
-#: src/components/GeoLiteDownload/GeoLiteDownload.vue:157
+#: src/components/GeoLiteDownload/GeoLiteDownload.vue:158
 msgid ""
 "The GeoLite2 database is required for offline geographic IP analysis. "
 "Please download it to enable this feature."
@@ -6542,11 +6572,11 @@ msgstr ""
 "Số ICP chỉ được chứa chữ cái, unicode, số, dấu gạch ngang, dấu gạch dài, "
 "dấu hai chấm và dấu chấm."
 
-#: src/views/certificate/components/CertificateContentEditor.vue:115
+#: src/views/certificate/components/CertificateContentEditor.vue:205
 msgid "The input is not a SSL Certificate"
 msgstr "Đầu vào không phải là Chứng chỉ SSL"
 
-#: src/views/certificate/components/CertificateContentEditor.vue:176
+#: src/views/certificate/components/CertificateContentEditor.vue:266
 msgid "The input is not a SSL Certificate Key"
 msgstr "Đầu vào không phải là Khóa Chứng chỉ SSL"
 
@@ -6601,7 +6631,7 @@ msgstr ""
 "Số Công an chỉ được chứa chữ cái, unicode, số, dấu gạch ngang, dấu gạch "
 "dài, dấu hai chấm và dấu chấm."
 
-#: src/views/dashboard/components/NodeAnalyticItem.vue:105
+#: src/views/dashboard/components/NodeAnalyticItem.vue:86
 msgid ""
 "The remote Nginx UI version is not compatible with the local Nginx UI "
 "version. To avoid potential errors, please upgrade the remote Nginx UI to "
@@ -6715,7 +6745,7 @@ msgstr "Tháng này"
 msgid "This notification is disabled"
 msgstr "Thông báo này đã bị vô hiệu hóa"
 
-#: src/views/certificate/components/RemoveCert.vue:115
+#: src/views/certificate/components/RemoveCert.vue:116
 msgid ""
 "This operation will only remove the certificate from the database. The "
 "certificate files on the file system will not be deleted."
@@ -6790,7 +6820,7 @@ msgstr ""
 "Thao tác này sẽ khôi phục các tệp cấu hình và cơ sở dữ liệu. Giao diện "
 "Nginx sẽ khởi động lại sau khi quá trình khôi phục hoàn tất."
 
-#: src/views/node/BatchUpgrader.vue:186
+#: src/views/node/BatchUpgrader.vue:187
 msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr ""
 "Thao tác này sẽ nâng cấp hoặc cài đặt lại Nginx UI trên %{nodeNames} lên "
@@ -6804,17 +6834,17 @@ msgstr "Hạn chế"
 msgid "Thursday"
 msgstr "Thứ Năm"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:184
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:516
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:185
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:517
 msgid "Time"
 msgstr "Thời gian"
 
-#: src/views/nginx_log/NginxLogList.vue:305
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:689
+#: src/views/nginx_log/NginxLogList.vue:311
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:696
 msgid "Time Range"
 msgstr "Phạm vi thời gian"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:542
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:630
 msgid "Timeout (seconds)"
 msgstr "Thời gian chờ (giây)"
 
@@ -6839,7 +6869,7 @@ msgstr "Tiêu đề"
 msgid "to confirm deletion"
 msgstr "để xác nhận xóa"
 
-#: src/views/certificate/components/RemoveCert.vue:133
+#: src/views/certificate/components/RemoveCert.vue:134
 msgid "To confirm revocation, please type \"Revoke\" in the field below:"
 msgstr "Để xác nhận thu hồi, vui lòng nhập \"Thu hồi\" vào trường bên dưới:"
 
@@ -6884,7 +6914,7 @@ msgstr ""
 "lmdeploy. Chúng cung cấp một điểm cuối API tương thích với OpenAI, vì vậy "
 "chỉ cần đặt baseUrl thành API cục bộ của bạn."
 
-#: src/views/dashboard/NginxDashBoard.vue:57
+#: src/views/dashboard/NginxDashBoard.vue:56
 msgid "Toggle failed"
 msgstr "Chuyển đổi thất bại"
 
@@ -6914,10 +6944,6 @@ msgstr "10 URL hàng đầu"
 msgid "Total"
 msgstr "Tổng"
 
-#: src/views/upstream/SocketList.vue:149
-msgid "Total %{total} items"
-msgstr "Tổng %{total} mục"
-
 #: src/views/system/Licenses.vue:107
 msgid "Total Components"
 msgstr "Tổng số thành phần"
@@ -6927,7 +6953,7 @@ msgstr "Tổng số thành phần"
 msgid "Total connections"
 msgstr "Tổng số kết nối"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:756
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:763
 msgid "Total Entries"
 msgstr "Tổng số mục"
 
@@ -6948,7 +6974,7 @@ msgstr "Tổng số tiến trình Nginx"
 msgid "Total PV"
 msgstr "Tổng PV"
 
-#: src/views/dashboard/ServerAnalytic.vue:283
+#: src/views/dashboard/ServerAnalytic.vue:284
 msgid "Total Receive"
 msgstr "Tổng nhận"
 
@@ -6961,7 +6987,7 @@ msgstr "Tổng số yêu cầu"
 msgid "Total Requests / Total Connections"
 msgstr "Tổng số yêu cầu / Tổng số kết nối"
 
-#: src/views/dashboard/ServerAnalytic.vue:289
+#: src/views/dashboard/ServerAnalytic.vue:290
 msgid "Total Send"
 msgstr "Tổng gửi"
 
@@ -6981,7 +7007,7 @@ msgstr ""
 "TOTP là một phương pháp xác thực hai yếu tố sử dụng thuật toán mật khẩu một "
 "lần dựa trên thời gian."
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:774
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:781
 msgid "Traffic"
 msgstr "Lưu lượng"
 
@@ -6993,11 +7019,11 @@ msgstr "Đang dịch lỗi..."
 msgid "Trash"
 msgstr "Thùng rác"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:822
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:829
 msgid "Try adjusting your search criteria or navigate to different pages."
 msgstr "Hãy thử điều chỉnh tiêu chí tìm kiếm hoặc điều hướng đến các trang khác."
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:832
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:839
 msgid "Try adjusting your search criteria or time range."
 msgstr "Hãy thử điều chỉnh tiêu chí tìm kiếm hoặc khoảng thời gian."
 
@@ -7009,11 +7035,11 @@ msgstr "Thứ Ba"
 msgid "Two-factor authentication required"
 msgstr "Yêu cầu xác thực hai yếu tố"
 
-#: src/composables/useUpstreamStatus.ts:132
+#: src/composables/useUpstreamStatus.ts:122
 #: src/views/certificate/CertificateList/certColumns.tsx:24
 #: src/views/config/components/Delete.vue:122
 #: src/views/dashboard/components/ModulesTable.vue:62
-#: src/views/nginx_log/NginxLogList.vue:140
+#: src/views/nginx_log/NginxLogList.vue:146
 #: src/views/notification/notificationColumns.tsx:8
 #: src/views/preference/components/ExternalNotify/columns.tsx:19
 msgid "Type"
@@ -7043,7 +7069,7 @@ msgstr "Nhập hoặc chọn mã trạng thái"
 msgid "Type your message here..."
 msgstr "Nhập tin nhắn của bạn vào đây..."
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:780
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:787
 msgid "Unique Pages"
 msgstr "Trang duy nhất"
 
@@ -7090,12 +7116,12 @@ msgid "Updated at"
 msgstr "Ngày cập nhật"
 
 #: src/routes/modules/system.ts:26 src/views/node/Node.vue:187
-#: src/views/node/Node.vue:195 src/views/system/Upgrade.vue:153
-#: src/views/system/Upgrade.vue:158
+#: src/views/node/Node.vue:195 src/views/system/Upgrade.vue:154
+#: src/views/system/Upgrade.vue:159
 msgid "Upgrade"
 msgstr "Cập nhật"
 
-#: src/views/node/BatchUpgrader.vue:137
+#: src/views/node/BatchUpgrader.vue:138
 msgid "Upgraded Nginx UI on %{node} successfully 🎉"
 msgstr "Nâng cấp Nginx UI trên %{node} thành công 🎉"
 
@@ -7127,7 +7153,7 @@ msgstr "Tải lên tệp"
 msgid "Upload Folders"
 msgstr "Tải lên thư mục"
 
-#: src/composables/useUpstreamStatus.ts:132 src/routes/modules/upstream.ts:10
+#: src/composables/useUpstreamStatus.ts:122 src/routes/modules/upstream.ts:10
 #: src/views/upstream/SocketList.vue:24
 msgid "Upstream"
 msgstr "Ngược dòng"
@@ -7144,7 +7170,7 @@ msgstr "Các cổng Upstream"
 msgid "Upstream Test Type"
 msgstr "Loại kiểm tra upstream"
 
-#: src/views/dashboard/ServerAnalytic.vue:183
+#: src/views/dashboard/ServerAnalytic.vue:184
 msgid "Uptime:"
 msgstr "Thời gian hoạt động:"
 
@@ -7169,7 +7195,7 @@ msgstr "Sử dụng đường dẫn tạm thời"
 msgid "User"
 msgstr "Người dùng"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:553
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:636
 #: src/views/nginx_log/structured/components/SearchFilters.vue:200
 msgid "User Agent"
 msgstr "Trình duyệt người dùng"
@@ -7203,7 +7229,7 @@ msgstr "Username (*)"
 msgid "Username length cannot exceed 255 characters"
 msgstr "Độ dài tên người dùng không được vượt quá 255 ký tự"
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:768
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:775
 msgid "UV"
 msgstr "Lượt truy cập duy nhất"
 
@@ -7213,7 +7239,7 @@ msgstr "Lượt truy cập duy nhất"
 msgid "Valid"
 msgstr "Hợp lệ"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:580
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:658
 msgid "Validate SSL Certificate"
 msgstr "Xác thực chứng chỉ SSL"
 
@@ -7226,7 +7252,7 @@ msgstr "Giá trị"
 msgid "Verify Backup File Integrity"
 msgstr "Xác minh tính toàn vẹn của tệp sao lưu"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:586
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:664
 msgid "Verify Hostname"
 msgstr "Xác minh tên máy chủ"
 
@@ -7238,18 +7264,18 @@ msgstr "Xác minh các yêu cầu hệ thống"
 msgid "Version"
 msgstr "Phiên bản"
 
-#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:484
+#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:490
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:108
 #: src/views/system/Licenses.vue:180 src/views/system/Licenses.vue:215
 #: src/views/system/Licenses.vue:250
 msgid "View"
 msgstr "Xem"
 
-#: src/components/Notification/Notification.vue:179
+#: src/components/Notification/Notification.vue:185
 msgid "View all notifications"
 msgstr "Xem tất cả thông báo"
 
-#: src/views/node/BatchUpgrader.vue:235 src/views/system/Upgrade.vue:278
+#: src/views/node/BatchUpgrader.vue:236 src/views/system/Upgrade.vue:279
 msgid "View on GitHub"
 msgstr "Xem trên GitHub"
 
@@ -7337,13 +7363,9 @@ msgstr "WebAuthn"
 msgid "WebAuthn settings are not configured"
 msgstr "Cài đặt WebAuthn chưa được cấu hình"
 
-#: src/views/certificate/components/RemoveCert.vue:64
+#: src/views/certificate/components/RemoveCert.vue:65
 msgid "WebSocket connection error"
 msgstr "Lỗi kết nối WebSocket"
-
-#: src/views/dashboard/SiteNavigation.vue:96
-msgid "WebSocket not connected, please wait for connection"
-msgstr "WebSocket chưa được kết nối, vui lòng chờ kết nối"
 
 #: src/views/preference/components/ExternalNotify/wecom.ts:5
 msgid "WeCom"
@@ -7423,7 +7445,7 @@ msgid "Write private.key error: {0}"
 msgstr "Lỗi ghi private.key: {0}"
 
 #: src/views/dashboard/ServerAnalytic.vue:37
-#: src/views/dashboard/ServerAnalytic.vue:380
+#: src/views/dashboard/ServerAnalytic.vue:381
 msgid "Writes"
 msgstr "Ghi"
 
@@ -7459,11 +7481,11 @@ msgstr ""
 msgid "You are not allowed to delete a file outside of the nginx config path"
 msgstr "Bạn không được phép xóa một tệp bên ngoài đường dẫn cấu hình nginx"
 
-#: src/views/system/Upgrade.vue:223
+#: src/views/system/Upgrade.vue:224
 msgid "You are using the latest version"
 msgstr "Bạn đang sử dụng phiên bản mới nhất"
 
-#: src/views/system/Upgrade.vue:179
+#: src/views/system/Upgrade.vue:180
 msgid "You can check Nginx UI upgrade at this page."
 msgstr "Bạn có thể kiểm tra nâng cấp Nginx UI tại trang này"
 
@@ -7511,6 +7533,18 @@ msgstr "Khóa truy cập của bạn"
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:234
 msgid "Zero-allocation pipeline"
 msgstr "Đường ống không cấp phát"
+
+#~ msgid "Settings"
+#~ msgstr "Cài đặt"
+
+#~ msgid "Site Navigation"
+#~ msgstr "Điều hướng trang web"
+
+#~ msgid "Total %{total} items"
+#~ msgstr "Tổng %{total} mục"
+
+#~ msgid "WebSocket not connected, please wait for connection"
+#~ msgstr "WebSocket chưa được kết nối, vui lòng chờ kết nối"
 
 #~ msgid "in the same directory as"
 #~ msgstr "trong cùng thư mục với"
