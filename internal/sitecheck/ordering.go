@@ -2,6 +2,7 @@ package sitecheck
 
 import (
 	"sort"
+	"strings"
 
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/uozi-tech/cosy/logger"
@@ -24,18 +25,31 @@ func applyCustomOrdering(sites []*SiteInfo) []*SiteInfo {
 
 	// Create a map of URL to custom order
 	orderMap := make(map[string]int)
+	hasCustomOrder := false
 	for _, config := range configs {
 		orderMap[config.GetURL()] = config.CustomOrder
+		if config.CustomOrder != 0 {
+			hasCustomOrder = true
+		}
+	}
+
+	if !hasCustomOrder {
+		return applyDefaultOrdering(sites)
 	}
 
 	// Sort sites based on custom order, with fallback to default ordering
 	sort.Slice(sites, func(i, j int) bool {
-		orderI, hasOrderI := orderMap[sites[i].DisplayURL]
-		orderJ, hasOrderJ := orderMap[sites[j].DisplayURL]
+		urlI := sites[i].GetURL()
+		urlJ := sites[j].GetURL()
+		orderI, hasOrderI := orderMap[urlI]
+		orderJ, hasOrderJ := orderMap[urlJ]
 
 		// If both have custom order, use custom order
 		if hasOrderI && hasOrderJ {
-			return orderI < orderJ
+			if orderI != orderJ {
+				return orderI < orderJ
+			}
+			return compareByName(sites[i], sites[j])
 		}
 
 		// If only one has custom order, it comes first
@@ -47,7 +61,7 @@ func applyCustomOrdering(sites []*SiteInfo) []*SiteInfo {
 		}
 
 		// If neither has custom order, use default ordering
-		return defaultCompare(sites[i], sites[j])
+		return compareByName(sites[i], sites[j])
 	})
 
 	return sites
@@ -55,41 +69,20 @@ func applyCustomOrdering(sites []*SiteInfo) []*SiteInfo {
 
 // applyDefaultOrdering applies the default stable sorting
 func applyDefaultOrdering(sites []*SiteInfo) []*SiteInfo {
-	sort.Slice(sites, func(i, j int) bool {
-		return defaultCompare(sites[i], sites[j])
+	sort.SliceStable(sites, func(i, j int) bool {
+		return compareByName(sites[i], sites[j])
 	})
 	return sites
 }
 
-// defaultCompare implements the default site comparison logic
-func defaultCompare(a, b *SiteInfo) bool {
-	// Primary sort: by status (online > checking > error > offline)
-	statusPriority := map[string]int{
-		"online":   4,
-		"checking": 3,
-		"error":    2,
-		"offline":  1,
+func compareByName(a, b *SiteInfo) bool {
+	nameA := strings.ToLower(strings.TrimSpace(a.Name))
+	nameB := strings.ToLower(strings.TrimSpace(b.Name))
+	if nameA != nameB {
+		return nameA < nameB
 	}
 
-	priorityA := statusPriority[a.Status]
-	priorityB := statusPriority[b.Status]
-
-	if priorityA != priorityB {
-		return priorityA > priorityB
-	}
-
-	// Secondary sort: by response time (faster first, for online sites)
-	if a.Status == "online" && b.Status == "online" {
-		if a.ResponseTime != b.ResponseTime {
-			return a.ResponseTime < b.ResponseTime
-		}
-	}
-
-	// Tertiary sort: by name (alphabetical, stable)
-	if a.Name != b.Name {
-		return a.Name < b.Name
-	}
-
-	// Final sort: by URL (for complete stability)
-	return a.DisplayURL < b.DisplayURL
+	urlA := strings.ToLower(strings.TrimSpace(a.GetURL()))
+	urlB := strings.ToLower(strings.TrimSpace(b.GetURL()))
+	return urlA < urlB
 }

@@ -233,7 +233,7 @@ msgstr "ディレクティブを追加"
 msgid "Add Domain"
 msgstr "ドメインを追加"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:440
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:548
 msgid "Add Header"
 msgstr "ヘッダーを追加"
 
@@ -295,7 +295,7 @@ msgstr "高度なメモリプーリングシステム"
 msgid "Advanced search & filtering"
 msgstr "高度な検索とフィルタリング"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:517
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:622
 msgid "Advanced Settings"
 msgstr "詳細設定"
 
@@ -773,7 +773,7 @@ msgstr ""
 #: src/components/NgxConfigEditor/NgxServer.vue:61
 #: src/components/NgxConfigEditor/NgxUpstream.vue:32 src/language/curd.ts:37
 #: src/views/config/components/Delete.vue:98
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:605
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:710
 #: src/views/dns/DNSRecordManager.vue:194
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:102
 #: src/views/nginx_log/indexing/IndexManagement.vue:33
@@ -973,7 +973,7 @@ msgstr "チェック"
 msgid "Check again"
 msgstr "再確認"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:565
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:670
 msgid "Check Favicon"
 msgstr "ファビコンをチェック"
 
@@ -1097,7 +1097,7 @@ msgid ""
 "the nginx configuration directory"
 msgstr "nginxの設定ディレクトリにstreams-availableとstreams-enabledディレクトリがあるか確認する"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:520
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:625
 msgid "Check Interval (seconds)"
 msgstr "チェック間隔（秒）"
 
@@ -1150,15 +1150,19 @@ msgstr "クリックしてコピーします"
 msgid "Client Body Buffer Size"
 msgstr "クライアントボディバッファサイズ"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:587
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:692
 msgid "Client Certificate"
 msgstr "クライアント証明書"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:114
+msgid "Client Error Responses (4xx)"
+msgstr "クライアントエラーレスポンス (4xx)"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:117
 msgid "Client Header Buffer Size"
 msgstr "クライアントヘッダーバッファサイズ"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:592
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:697
 msgid "Client Key"
 msgstr "クライアントキー"
 
@@ -1524,7 +1528,7 @@ msgstr "カスタムドメイン"
 msgid "Custom Domains Certificate"
 msgstr "カスタムドメイン証明書"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:425
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:533
 msgid "Custom Headers"
 msgstr "カスタムヘッダー"
 
@@ -1876,7 +1880,8 @@ msgstr "DNS"
 msgid "DNS Credentials"
 msgstr "DNS 認証情報"
 
-#: src/routes/modules/dns.ts:28 src/views/dns/DNSDomainList.vue:202
+#: src/routes/modules/dns.ts:28
+#: src/views/dns/DNSDomainList.vue:202
 msgid "DNS Domains"
 msgstr "DNS ドメイン"
 
@@ -1891,13 +1896,14 @@ msgstr "DNSプロバイダー"
 
 #: src/views/dns/DNSDomainList.vue:218
 msgid "DNS Provider Support"
-msgstr "DNSプロバイダーサポート"
+msgstr "DNSプロバイダーのサポート"
 
-#: src/routes/modules/dns.ts:36 src/views/dns/DNSRecordManager.vue:45
+#: src/routes/modules/dns.ts:36
+#: src/views/dns/DNSRecordManager.vue:45
 msgid "DNS Records"
 msgstr "DNSレコード"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:573
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:678
 msgid "DNS Resolver"
 msgstr "DNSリゾルバ"
 
@@ -2111,7 +2117,7 @@ msgstr "コード補完を有効にする"
 msgid "Enable compression for content transfer"
 msgstr "コンテンツ転送の圧縮を有効にする"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:365
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:473
 msgid "Enable Health Check"
 msgstr "ヘルスチェックを有効にする"
 
@@ -2341,11 +2347,11 @@ msgstr "展開"
 msgid "Expected Performance"
 msgstr "期待されるパフォーマンス"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:449
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:557
 msgid "Expected Status Codes"
 msgstr "予期されるステータスコード"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:477
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:582
 msgid "Expected Text"
 msgstr "予期されるテキスト"
 
@@ -2751,7 +2757,7 @@ msgstr "ファイルインデックスの再構築に失敗しました"
 msgid "Failed to rebuild index"
 msgstr "インデックスの再構築に失敗しました"
 
-#: src/views/dashboard/SiteNavigation.vue:57
+#: src/views/dashboard/SiteNavigation.vue:86
 msgid "Failed to refresh sites"
 msgstr "サイトの更新に失敗しました"
 
@@ -2767,7 +2773,7 @@ msgstr "証明書の失効に失敗しました"
 msgid "Failed to revoke certificate: %{error}"
 msgstr "証明書の失効に失敗しました: %{error}"
 
-#: src/views/dashboard/SiteNavigation.vue:104
+#: src/views/dashboard/SiteNavigation.vue:133
 msgid "Failed to save configuration"
 msgstr "設定の保存に失敗しました"
 
@@ -2775,7 +2781,7 @@ msgstr "設定の保存に失敗しました"
 msgid "Failed to save downloaded file: {0}"
 msgstr "ダウンロードしたファイルの保存に失敗しました: {0}"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:304
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:412
 msgid "Failed to save health check configuration"
 msgstr "ヘルスチェック設定の保存に失敗しました"
 
@@ -2783,7 +2789,7 @@ msgstr "ヘルスチェック設定の保存に失敗しました"
 msgid "Failed to save Nginx performance settings"
 msgstr "Nginxのパフォーマンス設定の保存に失敗しました"
 
-#: src/views/dashboard/SiteNavigation.vue:81
+#: src/views/dashboard/SiteNavigation.vue:110
 msgid "Failed to save order"
 msgstr "順序の保存に失敗しました"
 
@@ -2895,7 +2901,7 @@ msgstr "フォルダ"
 msgid "Folder"
 msgstr "フォルダ"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:545
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:650
 msgid "Follow Redirects"
 msgstr "リダイレクトをフォロー"
 
@@ -3069,13 +3075,13 @@ msgstr "生ログビューアへ移動"
 msgid "Gotify"
 msgstr "Gotify"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:495
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:600
 msgid ""
 "gRPC health check requires server to implement gRPC Health Check service "
 "(grpc.health.v1.Health)."
 msgstr "gRPCヘルスチェックでは、サーバーがgRPCヘルスチェックサービス（grpc.health.v1.Health）を実装している必要があります。"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:494
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:599
 msgid ""
 "gRPCS uses TLS encryption. Server must implement gRPC Health Check service. "
 "For testing, SSL validation is disabled by default."
@@ -3099,23 +3105,23 @@ msgstr "GZIP最小長"
 msgid "Health Check"
 msgstr "ヘルスチェック"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:358
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:466
 msgid "Health Check Configuration"
 msgstr "ヘルスチェック設定"
 
-#: src/views/dashboard/SiteNavigation.vue:99
+#: src/views/dashboard/SiteNavigation.vue:128
 msgid "Health check configuration saved"
 msgstr "ヘルスチェック設定が保存されました"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:295
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:403
 msgid "Health check configuration saved successfully"
 msgstr "ヘルスチェック設定が正常に保存されました"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:369
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:477
 msgid "Health check is disabled"
 msgstr "ヘルスチェックは無効です"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:369
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:477
 msgid "Health check is enabled"
 msgstr "ヘルスチェックが有効です"
 
@@ -3173,7 +3179,7 @@ msgstr "HTTP"
 msgid "HTTP Challenge Port"
 msgstr "HTTPチャレンジポート"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:398
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:506
 msgid "HTTP Method"
 msgstr "HTTPメソッド"
 
@@ -3290,6 +3296,10 @@ msgstr "指標"
 #: src/constants/index.ts:25 src/views/notification/notificationColumns.tsx:28
 msgid "Info"
 msgstr "情報"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:76
+msgid "Informational Responses (1xx)"
+msgstr "情報応答 (1xx)"
 
 #: src/constants/errors/user.ts:17
 msgid "Init user not exists"
@@ -3835,7 +3845,7 @@ msgstr "設定管理"
 
 #: src/views/dns/DNSDomainList.vue:210
 msgid "Manage Records"
-msgstr "レコードを管理"
+msgstr "レコードの管理"
 
 #: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:45
 msgid "Manage Sites"
@@ -3895,7 +3905,7 @@ msgstr "最大試行回数"
 msgid "Max Concurrent Connections"
 msgstr "最大同時接続数"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:538
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:643
 msgid "Max Redirects"
 msgstr "最大リダイレクト数"
 
@@ -3951,7 +3961,7 @@ msgstr "メモリ使用量 (RSS)"
 msgid "Method"
 msgstr "メソッド"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:508
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:613
 msgid "Method Name"
 msgstr "メソッド名"
 
@@ -4106,7 +4116,7 @@ msgstr "名前空間"
 msgid ""
 "Need more DNS providers? Support us through donations or contact us for "
 "commercial collaboration"
-msgstr "さらに多くのDNSプロバイダーが必要ですか？寄付でサポートするか、商用協力のためにお問い合わせください"
+msgstr "さらに多くのDNSプロバイダーが必要ですか？寄付でサポートするか、商業協力のためにご連絡ください"
 
 #: src/views/dashboard/NginxDashBoard.vue:195
 msgid "Need to enable the stub_status module"
@@ -4434,7 +4444,7 @@ msgstr "選択されたレコードがありません"
 msgid "No servers configured"
 msgstr "サーバーが設定されていません"
 
-#: src/views/dashboard/SiteNavigation.vue:141
+#: src/views/dashboard/SiteNavigation.vue:170
 msgid "No sites found"
 msgstr "サイトが見つかりません"
 
@@ -4481,7 +4491,7 @@ msgstr "ノード"
 msgid "Not After"
 msgstr "有効期限"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:482
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:587
 msgid "Not Expected Text"
 msgstr "予期しないテキスト"
 
@@ -4518,7 +4528,7 @@ msgid ""
 "certificates, please synchronize them to the remote nodes in advance."
 msgstr "設定ファイルに他の設定や証明書が含まれている場合は、事前にリモートノードに同期してください。"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:498
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:603
 msgid ""
 "Note: If the server does not support gRPC Reflection, health checks may "
 "fail. Please ensure your gRPC server has Reflection enabled."
@@ -4682,7 +4692,7 @@ msgstr "またはファイルを下のエディタにドラッグ"
 msgid "Or enter the secret: %{secret}"
 msgstr "またはシークレットを入力してください: %{secret}"
 
-#: src/views/dashboard/SiteNavigation.vue:75
+#: src/views/dashboard/SiteNavigation.vue:104
 msgid "Order saved successfully"
 msgstr "順序が正常に保存されました"
 
@@ -4786,7 +4796,7 @@ msgstr "パスワードが一致しません"
 #: src/language/curd.ts:61
 #: src/views/config/components/ConfigRightPanel/Basic.vue:41
 #: src/views/config/components/Delete.vue:124
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:419
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:527
 #: src/views/nginx_log/NginxLogList.vue:164
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:520
 msgid "Path"
@@ -5111,7 +5121,7 @@ msgstr "プロジェクトチーム"
 msgid "Protected Directory"
 msgstr "保護されたディレクトリ"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:377
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:485
 msgid "Protocol"
 msgstr "プロトコル"
 
@@ -5264,6 +5274,10 @@ msgstr "リカバリーコードは、2FAデバイスへのアクセスを失っ
 #: src/views/preference/tabs/CertSettings.vue:40
 msgid "Recursive Nameservers"
 msgstr "再帰的ネームサーバー"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:100
+msgid "Redirection Messages (3xx)"
+msgstr "リダイレクトメッセージ (3xx)"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:185
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:299
@@ -5486,7 +5500,7 @@ msgstr "証明書の更新に成功しました"
 msgid "Request"
 msgstr "リクエスト"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:445
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:553
 msgid "Request Body"
 msgstr "リクエストボディ"
 
@@ -5745,7 +5759,7 @@ msgstr "土曜日"
 #: src/views/certificate/components/CertificateActions.vue:29
 #: src/views/config/components/ConfigLeftPanel.vue:283
 #: src/views/config/components/ConfigName.vue:58
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:608
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:713
 #: src/views/dns/DNSRecordManager.vue:197
 #: src/views/preference/components/AuthSettings/Passkey.vue:131
 #: src/views/preference/Preference.vue:124
@@ -5961,6 +5975,10 @@ msgstr "サーバー"
 msgid "Server error"
 msgstr "サーバーエラー"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:148
+msgid "Server Error Responses (5xx)"
+msgstr "サーバーエラーレスポンス (5xx)"
+
 #: src/views/dashboard/ServerAnalytic.vue:180
 msgid "Server Info"
 msgstr "サーバー情報"
@@ -5985,7 +6003,7 @@ msgstr "ディレクティブに server_name が見つかりません"
 msgid "ServerIdx out of range"
 msgstr "ServerIdx が範囲外です"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:503
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:608
 msgid "Service Name"
 msgstr "サービス名"
 
@@ -6087,7 +6105,7 @@ msgstr "サイトログ"
 msgid "Site not found"
 msgstr "サイトが見つかりません"
 
-#: src/views/dashboard/SiteNavigation.vue:53
+#: src/views/dashboard/SiteNavigation.vue:82
 msgid "Site refresh initiated"
 msgstr "サイトの更新を開始しました"
 
@@ -6103,7 +6121,7 @@ msgstr "サイトディレクトリが存在します"
 msgid "Sites List"
 msgstr "サイト一覧"
 
-#: src/views/dashboard/SiteNavigation.vue:144
+#: src/views/dashboard/SiteNavigation.vue:173
 msgid ""
 "Sites will appear here once you configure nginx server blocks with valid "
 "server_name directives."
@@ -6143,7 +6161,7 @@ msgstr "ソケット"
 msgid "Sorted by"
 msgstr "並べ替え基準"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:578
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:683
 msgid "Source IP"
 msgstr "送信元IP"
 
@@ -6328,6 +6346,10 @@ msgstr "Stub_status が有効になっていません"
 msgid "Success"
 msgstr "成功"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:85
+msgid "Successful Responses (2xx)"
+msgstr "成功レスポンス (2xx)"
+
 #: src/views/backup/AutoBackup/components/CronEditor.vue:121
 #: src/views/backup/AutoBackup/components/CronEditor.vue:26
 msgid "Sunday"
@@ -6490,16 +6512,16 @@ msgstr "ターミナルアシスタント"
 msgid "Terminal Start Command"
 msgstr "ターミナル起動コマンド"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:611
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:716
 #: src/views/preference/tabs/ExternalNotify.vue:57
 msgid "Test"
 msgstr "テスト"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:343
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:451
 msgid "Test failed: %{error}"
 msgstr "テスト失敗: %{error}"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:348
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:456
 msgid "Test failed: Unable to perform health check"
 msgstr "テスト失敗: ヘルスチェックを実行できませんでした"
 
@@ -6512,7 +6534,7 @@ msgstr "テストメッセージが正常に送信されました"
 msgid "Test S3 Connection"
 msgstr "S3接続をテスト"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:340
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:448
 msgid "Test successful! Response time: %{response_time}ms"
 msgstr "テスト成功！ 応答時間: %{response_time}ms"
 
@@ -6785,7 +6807,7 @@ msgstr "時間"
 msgid "Time Range"
 msgstr "時間範囲"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:525
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:630
 msgid "Timeout (seconds)"
 msgstr "タイムアウト（秒）"
 
@@ -6879,10 +6901,6 @@ msgstr "トップ10 URL"
 msgid "Total"
 msgstr "合計"
 
-#: src/views/upstream/SocketList.vue:149
-msgid "Total %{total} items"
-msgstr "合計 %{total} 項目"
-
 #: src/views/system/Licenses.vue:107
 msgid "Total Components"
 msgstr "コンポーネントの合計"
@@ -6970,7 +6988,7 @@ msgstr "TTL"
 
 #: src/views/dns/components/DNSRecordForm.vue:55
 msgid "TTL (seconds)"
-msgstr "TTL（秒）"
+msgstr "TTL (秒)"
 
 #: src/views/backup/AutoBackup/components/CronEditor.vue:28
 msgid "Tuesday"
@@ -7147,7 +7165,7 @@ msgstr "一時パスを使用"
 msgid "User"
 msgstr "ユーザー"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:531
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:636
 #: src/views/nginx_log/structured/components/SearchFilters.vue:200
 msgid "User Agent"
 msgstr "ユーザーエージェント"
@@ -7191,7 +7209,7 @@ msgstr "ユニークビジター"
 msgid "Valid"
 msgstr "有効"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:553
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:658
 msgid "Validate SSL Certificate"
 msgstr "SSL証明書を検証"
 
@@ -7206,7 +7224,7 @@ msgstr "値"
 msgid "Verify Backup File Integrity"
 msgstr "バックアップファイルの整合性を確認"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:559
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:664
 msgid "Verify Hostname"
 msgstr "ホスト名を確認"
 
@@ -7483,6 +7501,9 @@ msgstr "ゼロアロケーションパイプライン"
 
 #~ msgid "Site Navigation"
 #~ msgstr "サイトナビゲーション"
+
+#~ msgid "Total %{total} items"
+#~ msgstr "合計 %{total} 項目"
 
 #~ msgid "WebSocket not connected, please wait for connection"
 #~ msgstr "WebSocketが接続されていません、接続を待ってください"

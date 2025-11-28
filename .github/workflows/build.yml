@@ -70,30 +70,12 @@ jobs:
           npx update-browserslist-db@latest
           pnpm build
 
-      - name: Compress frontend with xz
-        run: |
-          # Create compressed archive of the entire dist directory
-          tar -C app -cf - dist | xz -9 -c > app/dist.tar.xz
-
-          # Verify compression worked and show savings (macOS compatible)
-          ORIGINAL_SIZE=$(find app/dist -type f -exec stat -f%z {} \; | awk '{total += $1} END {print total}')
-          COMPRESSED_SIZE=$(stat -f%z app/dist.tar.xz)
-          
-          if [[ $ORIGINAL_SIZE -gt 0 ]]; then
-            SAVINGS=$((100 - COMPRESSED_SIZE * 100 / ORIGINAL_SIZE))
-            echo "Original size: ${ORIGINAL_SIZE} bytes"
-            echo "Compressed size: ${COMPRESSED_SIZE} bytes"
-            echo "Compression savings: ${SAVINGS}%"
-          else
-            echo "Compressed size: ${COMPRESSED_SIZE} bytes"
-          fi
-
       - name: Archive app artifacts
         uses: actions/upload-artifact@v5
         with:
           name: app-dist
           path: |
-            app/dist.tar.xz
+            app/dist
 
       - name: Prepare publish
         if: github.event_name == 'release'
@@ -197,7 +179,19 @@ jobs:
         uses: actions/download-artifact@v6
         with:
           name: app-dist
-          path: app/dist.tar.xz
+          path: frontend-dist
+
+      - name: Prepare frontend assets
+        run: |
+          rm -rf app/dist
+          mkdir -p app
+          if [[ -d frontend-dist/app/dist ]]; then
+            mv frontend-dist/app/dist app/dist
+          elif [[ -d frontend-dist/dist ]]; then
+            mv frontend-dist/dist app/dist
+          else
+            mv frontend-dist app/dist
+          fi
 
       - name: Generate files
         env:
@@ -351,7 +345,19 @@ jobs:
         uses: actions/download-artifact@v6
         with:
           name: app-dist
-          path: app/dist.tar.xz
+          path: frontend-dist
+
+      - name: Prepare frontend assets
+        run: |
+          rm -rf app/dist
+          mkdir -p app
+          if [[ -d frontend-dist/app/dist ]]; then
+            mv frontend-dist/app/dist app/dist
+          elif [[ -d frontend-dist/dist ]]; then
+            mv frontend-dist/dist app/dist
+          else
+            mv frontend-dist app/dist
+          fi
 
       - name: Generate files
         run: go generate cmd/version/generate.go

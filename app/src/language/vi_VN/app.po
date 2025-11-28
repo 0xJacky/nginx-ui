@@ -230,7 +230,7 @@ msgstr "Thêm Directive"
 msgid "Add Domain"
 msgstr "Thêm tên miền"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:440
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:548
 msgid "Add Header"
 msgstr "Thêm tiêu đề"
 
@@ -294,7 +294,7 @@ msgstr "Hệ thống phân bổ bộ nhớ nâng cao"
 msgid "Advanced search & filtering"
 msgstr "Tìm kiếm & lọc nâng cao"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:517
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:622
 msgid "Advanced Settings"
 msgstr "Cài đặt nâng cao"
 
@@ -781,7 +781,7 @@ msgstr ""
 #: src/components/NgxConfigEditor/NgxServer.vue:61
 #: src/components/NgxConfigEditor/NgxUpstream.vue:32 src/language/curd.ts:37
 #: src/views/config/components/Delete.vue:98
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:605
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:710
 #: src/views/dns/DNSRecordManager.vue:194
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:102
 #: src/views/nginx_log/indexing/IndexManagement.vue:33
@@ -981,7 +981,7 @@ msgstr "Kiểm tra"
 msgid "Check again"
 msgstr "Kiểm tra lại"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:565
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:670
 msgid "Check Favicon"
 msgstr "Kiểm tra favicon"
 
@@ -1118,7 +1118,7 @@ msgstr ""
 "Kiểm tra xem các thư mục streams-available và streams-enabled có nằm trong "
 "thư mục cấu hình nginx không"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:520
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:625
 msgid "Check Interval (seconds)"
 msgstr "Khoảng thời gian kiểm tra (giây)"
 
@@ -1171,15 +1171,19 @@ msgstr "Bấm để sao chép"
 msgid "Client Body Buffer Size"
 msgstr "Kích thước bộ đệm thân máy khách"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:587
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:692
 msgid "Client Certificate"
 msgstr "Chứng chỉ khách hàng"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:114
+msgid "Client Error Responses (4xx)"
+msgstr "Phản hồi lỗi từ máy khách (4xx)"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:117
 msgid "Client Header Buffer Size"
 msgstr "Kích thước bộ đệm tiêu đề máy khách"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:592
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:697
 msgid "Client Key"
 msgstr "Khóa khách hàng"
 
@@ -1547,7 +1551,7 @@ msgstr "Tên miền tùy chỉnh"
 msgid "Custom Domains Certificate"
 msgstr "Chứng chỉ Tên miền Tùy chỉnh"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:425
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:533
 msgid "Custom Headers"
 msgstr "Tiêu đề tùy chỉnh"
 
@@ -1899,7 +1903,8 @@ msgstr "DNS"
 msgid "DNS Credentials"
 msgstr "Xác thực DNS"
 
-#: src/routes/modules/dns.ts:28 src/views/dns/DNSDomainList.vue:202
+#: src/routes/modules/dns.ts:28
+#: src/views/dns/DNSDomainList.vue:202
 msgid "DNS Domains"
 msgstr "Tên miền DNS"
 
@@ -1916,11 +1921,12 @@ msgstr "Nhà cung cấp DNS"
 msgid "DNS Provider Support"
 msgstr "Hỗ trợ nhà cung cấp DNS"
 
-#: src/routes/modules/dns.ts:36 src/views/dns/DNSRecordManager.vue:45
+#: src/routes/modules/dns.ts:36
+#: src/views/dns/DNSRecordManager.vue:45
 msgid "DNS Records"
 msgstr "Bản ghi DNS"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:573
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:678
 msgid "DNS Resolver"
 msgstr "Bộ phân giải DNS"
 
@@ -2138,7 +2144,7 @@ msgstr "Bật hoàn thành mã"
 msgid "Enable compression for content transfer"
 msgstr "Bật nén để chuyển nội dung"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:365
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:473
 msgid "Enable Health Check"
 msgstr "Bật kiểm tra tình trạng"
 
@@ -2371,11 +2377,11 @@ msgstr "Mở rộng"
 msgid "Expected Performance"
 msgstr "Hiệu suất dự kiến"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:449
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:557
 msgid "Expected Status Codes"
 msgstr "Mã trạng thái mong đợi"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:477
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:582
 msgid "Expected Text"
 msgstr "Văn bản mong đợi"
 
@@ -2785,7 +2791,7 @@ msgstr "Không thể xây dựng lại chỉ mục tệp"
 msgid "Failed to rebuild index"
 msgstr "Không thể xây dựng lại chỉ mục"
 
-#: src/views/dashboard/SiteNavigation.vue:57
+#: src/views/dashboard/SiteNavigation.vue:86
 msgid "Failed to refresh sites"
 msgstr "Không thể làm mới trang web"
 
@@ -2801,7 +2807,7 @@ msgstr "Không thể thu hồi chứng chỉ"
 msgid "Failed to revoke certificate: %{error}"
 msgstr "Không thể thu hồi chứng chỉ: %{error}"
 
-#: src/views/dashboard/SiteNavigation.vue:104
+#: src/views/dashboard/SiteNavigation.vue:133
 msgid "Failed to save configuration"
 msgstr "Lưu cấu hình thất bại"
 
@@ -2809,7 +2815,7 @@ msgstr "Lưu cấu hình thất bại"
 msgid "Failed to save downloaded file: {0}"
 msgstr "Không thể lưu tệp đã tải xuống: {0}"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:304
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:412
 msgid "Failed to save health check configuration"
 msgstr "Không thể lưu cấu hình kiểm tra trạng thái"
 
@@ -2817,7 +2823,7 @@ msgstr "Không thể lưu cấu hình kiểm tra trạng thái"
 msgid "Failed to save Nginx performance settings"
 msgstr "Không thể lưu cài đặt hiệu suất Nginx"
 
-#: src/views/dashboard/SiteNavigation.vue:81
+#: src/views/dashboard/SiteNavigation.vue:110
 msgid "Failed to save order"
 msgstr "Lưu thứ tự thất bại"
 
@@ -2929,7 +2935,7 @@ msgstr "thư mục"
 msgid "Folder"
 msgstr "Thư mục"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:545
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:650
 msgid "Follow Redirects"
 msgstr "Theo dõi chuyển hướng"
 
@@ -3111,7 +3117,7 @@ msgstr "Đi đến Trình xem Nhật ký Thô"
 msgid "Gotify"
 msgstr "Gotify"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:495
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:600
 msgid ""
 "gRPC health check requires server to implement gRPC Health Check service "
 "(grpc.health.v1.Health)."
@@ -3119,7 +3125,7 @@ msgstr ""
 "Kiểm tra sức khỏe gRPC yêu cầu máy chủ triển khai dịch vụ kiểm tra sức khỏe "
 "gRPC (grpc.health.v1.Health)."
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:494
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:599
 msgid ""
 "gRPCS uses TLS encryption. Server must implement gRPC Health Check service. "
 "For testing, SSL validation is disabled by default."
@@ -3143,23 +3149,23 @@ msgstr "Độ dài tối thiểu GZIP"
 msgid "Health Check"
 msgstr "Kiểm tra sức khỏe"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:358
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:466
 msgid "Health Check Configuration"
 msgstr "Cấu hình kiểm tra trạng thái"
 
-#: src/views/dashboard/SiteNavigation.vue:99
+#: src/views/dashboard/SiteNavigation.vue:128
 msgid "Health check configuration saved"
 msgstr "Đã lưu cấu hình kiểm tra trạng thái"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:295
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:403
 msgid "Health check configuration saved successfully"
 msgstr "Cấu hình kiểm tra sức khỏe đã được lưu thành công"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:369
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:477
 msgid "Health check is disabled"
 msgstr "Kiểm tra trạng thái đã bị vô hiệu hóa"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:369
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:477
 msgid "Health check is enabled"
 msgstr "Kiểm tra tình trạng đã được bật"
 
@@ -3202,7 +3208,7 @@ msgstr "Máy chủ"
 
 #: src/views/dns/components/DNSRecordFilter.vue:45
 msgid "Host, e.g. @ or www"
-msgstr "Máy chủ, ví dụ @ hoặc www"
+msgstr "Máy chủ, vd: @ hoặc www"
 
 #: src/views/backup/AutoBackup/components/CronEditor.vue:159
 #: src/views/nginx_log/dashboard/components/HourlyChart.vue:87
@@ -3217,7 +3223,7 @@ msgstr "HTTP"
 msgid "HTTP Challenge Port"
 msgstr "Cổng thử thách HTTP"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:398
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:506
 msgid "HTTP Method"
 msgstr "Phương thức HTTP"
 
@@ -3342,6 +3348,10 @@ msgstr "Chỉ số"
 #: src/constants/index.ts:25 src/views/notification/notificationColumns.tsx:28
 msgid "Info"
 msgstr "Thông tin"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:76
+msgid "Informational Responses (1xx)"
+msgstr "Phản hồi thông tin (1xx)"
 
 #: src/constants/errors/user.ts:17
 msgid "Init user not exists"
@@ -3957,7 +3967,7 @@ msgstr "Số lần thử tối đa"
 msgid "Max Concurrent Connections"
 msgstr "Kết nối đồng thời tối đa"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:538
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:643
 msgid "Max Redirects"
 msgstr "Chuyển hướng tối đa"
 
@@ -4013,7 +4023,7 @@ msgstr "Mức sử dụng bộ nhớ (RSS)"
 msgid "Method"
 msgstr "Phương pháp"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:508
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:613
 msgid "Method Name"
 msgstr "Tên phương thức"
 
@@ -4500,7 +4510,7 @@ msgstr "Không có bản ghi nào được chọn"
 msgid "No servers configured"
 msgstr "Không có máy chủ nào được cấu hình"
 
-#: src/views/dashboard/SiteNavigation.vue:141
+#: src/views/dashboard/SiteNavigation.vue:170
 msgid "No sites found"
 msgstr "Không tìm thấy trang web nào"
 
@@ -4549,7 +4559,7 @@ msgstr "Nút"
 msgid "Not After"
 msgstr "Không phải sau khi"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:482
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:587
 msgid "Not Expected Text"
 msgstr "Văn bản không mong muốn"
 
@@ -4588,7 +4598,7 @@ msgstr ""
 "Lưu ý, nếu tệp cấu hình bao gồm các cấu hình hoặc chứng chỉ khác, vui lòng "
 "đồng bộ chúng với các nút từ xa trước."
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:498
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:603
 msgid ""
 "Note: If the server does not support gRPC Reflection, health checks may "
 "fail. Please ensure your gRPC server has Reflection enabled."
@@ -4754,7 +4764,7 @@ msgstr "hoặc kéo tệp vào trình soạn thảo bên dưới"
 msgid "Or enter the secret: %{secret}"
 msgstr "Hoặc nhập mã bí mật: %{secret}"
 
-#: src/views/dashboard/SiteNavigation.vue:75
+#: src/views/dashboard/SiteNavigation.vue:104
 msgid "Order saved successfully"
 msgstr "Đã lưu thứ tự thành công"
 
@@ -4860,7 +4870,7 @@ msgstr "Mật khẩu không khớp"
 #: src/language/curd.ts:61
 #: src/views/config/components/ConfigRightPanel/Basic.vue:41
 #: src/views/config/components/Delete.vue:124
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:419
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:527
 #: src/views/nginx_log/NginxLogList.vue:164
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:520
 msgid "Path"
@@ -5191,7 +5201,7 @@ msgstr "Đội ngũ phát triển"
 msgid "Protected Directory"
 msgstr "Thư mục được bảo vệ"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:377
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:485
 msgid "Protocol"
 msgstr "Giao thức"
 
@@ -5221,7 +5231,7 @@ msgstr "Tỉnh / Vùng"
 #: src/views/dns/components/DNSRecordTable.vue:51
 #: src/views/dns/components/DNSRecordTable.vue:81
 msgid "Proxied"
-msgstr "Được ủy quyền"
+msgstr "Được proxy"
 
 #: src/views/certificate/ACMEUser.vue:63
 msgid "Proxy"
@@ -5319,7 +5329,7 @@ msgstr "Đề xuất:"
 
 #: src/views/dns/DNSRecordManager.vue:100
 msgid "Record created"
-msgstr "Bản ghi đã được tạo"
+msgstr "Đã tạo bản ghi"
 
 #: src/views/dns/DNSRecordManager.vue:107
 msgid "Record deleted"
@@ -5348,6 +5358,10 @@ msgstr ""
 #: src/views/preference/tabs/CertSettings.vue:40
 msgid "Recursive Nameservers"
 msgstr "Máy chủ tên đệ quy"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:100
+msgid "Redirection Messages (3xx)"
+msgstr "Thông điệp chuyển hướng (3xx)"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:185
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:299
@@ -5572,7 +5586,7 @@ msgstr "Gia hạn thành công"
 msgid "Request"
 msgstr "Yêu cầu"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:445
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:553
 msgid "Request Body"
 msgstr "Nội dung Yêu cầu"
 
@@ -5836,7 +5850,7 @@ msgstr "Thứ Bảy"
 #: src/views/certificate/components/CertificateActions.vue:29
 #: src/views/config/components/ConfigLeftPanel.vue:283
 #: src/views/config/components/ConfigName.vue:58
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:608
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:713
 #: src/views/dns/DNSRecordManager.vue:197
 #: src/views/preference/components/AuthSettings/Passkey.vue:131
 #: src/views/preference/Preference.vue:124
@@ -6054,6 +6068,10 @@ msgstr "Máy chủ"
 msgid "Server error"
 msgstr "Lỗi máy chủ"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:148
+msgid "Server Error Responses (5xx)"
+msgstr "Phản hồi lỗi máy chủ (5xx)"
+
 #: src/views/dashboard/ServerAnalytic.vue:180
 msgid "Server Info"
 msgstr "Thông tin máy chủ"
@@ -6078,7 +6096,7 @@ msgstr "không tìm thấy server_name trong directives"
 msgid "ServerIdx out of range"
 msgstr "ServerIdx nằm ngoài phạm vi"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:503
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:608
 msgid "Service Name"
 msgstr "Tên dịch vụ"
 
@@ -6182,7 +6200,7 @@ msgstr "Nhật ký trang web"
 msgid "Site not found"
 msgstr "Không tìm thấy trang web"
 
-#: src/views/dashboard/SiteNavigation.vue:53
+#: src/views/dashboard/SiteNavigation.vue:82
 msgid "Site refresh initiated"
 msgstr "Đã khởi động làm mới trang web"
 
@@ -6198,7 +6216,7 @@ msgstr "Thư mục trang web tồn tại"
 msgid "Sites List"
 msgstr "Danh sách Website"
 
-#: src/views/dashboard/SiteNavigation.vue:144
+#: src/views/dashboard/SiteNavigation.vue:173
 msgid ""
 "Sites will appear here once you configure nginx server blocks with valid "
 "server_name directives."
@@ -6240,7 +6258,7 @@ msgstr "Socket"
 msgid "Sorted by"
 msgstr "Sắp xếp theo"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:578
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:683
 msgid "Source IP"
 msgstr "IP nguồn"
 
@@ -6427,6 +6445,10 @@ msgstr "Stub_status chưa được bật"
 msgid "Success"
 msgstr "Thành công"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:85
+msgid "Successful Responses (2xx)"
+msgstr "Phản hồi thành công (2xx)"
+
 #: src/views/backup/AutoBackup/components/CronEditor.vue:121
 #: src/views/backup/AutoBackup/components/CronEditor.vue:26
 msgid "Sunday"
@@ -6590,16 +6612,16 @@ msgstr "Trợ lý Terminal"
 msgid "Terminal Start Command"
 msgstr "Lệnh Khởi động Terminal"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:611
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:716
 #: src/views/preference/tabs/ExternalNotify.vue:57
 msgid "Test"
 msgstr "Kiểm tra"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:343
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:451
 msgid "Test failed: %{error}"
 msgstr "Kiểm tra thất bại: %{error}"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:348
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:456
 msgid "Test failed: Unable to perform health check"
 msgstr "Kiểm tra thất bại: Không thể thực hiện kiểm tra tình trạng"
 
@@ -6612,7 +6634,7 @@ msgstr "Gửi tin nhắn kiểm tra thành công"
 msgid "Test S3 Connection"
 msgstr "Kiểm tra kết nối S3"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:340
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:448
 msgid "Test successful! Response time: %{response_time}ms"
 msgstr "Kiểm tra thành công! Thời gian phản hồi: %{response_time}ms"
 
@@ -6922,7 +6944,7 @@ msgstr "Thời gian"
 msgid "Time Range"
 msgstr "Phạm vi thời gian"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:525
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:630
 msgid "Timeout (seconds)"
 msgstr "Thời gian chờ (giây)"
 
@@ -7021,10 +7043,6 @@ msgstr "10 URL hàng đầu"
 #: src/language/curd.ts:5
 msgid "Total"
 msgstr "Tổng"
-
-#: src/views/upstream/SocketList.vue:149
-msgid "Total %{total} items"
-msgstr "Tổng %{total} mục"
 
 #: src/views/system/Licenses.vue:107
 msgid "Total Components"
@@ -7274,7 +7292,7 @@ msgstr "URL"
 
 #: src/views/dns/components/DNSRecordForm.vue:50
 msgid "Use @ for root"
-msgstr "Dùng @ cho bản ghi gốc"
+msgstr "Sử dụng @ cho gốc"
 
 #: src/components/TwoFA/Authorization.vue:121
 msgid "Use OTP"
@@ -7292,7 +7310,7 @@ msgstr "Sử dụng đường dẫn tạm thời"
 msgid "User"
 msgstr "Người dùng"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:531
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:636
 #: src/views/nginx_log/structured/components/SearchFilters.vue:200
 msgid "User Agent"
 msgstr "Trình duyệt người dùng"
@@ -7336,7 +7354,7 @@ msgstr "Lượt truy cập duy nhất"
 msgid "Valid"
 msgstr "Hợp lệ"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:553
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:658
 msgid "Validate SSL Certificate"
 msgstr "Xác thực chứng chỉ SSL"
 
@@ -7351,7 +7369,7 @@ msgstr "Giá trị"
 msgid "Verify Backup File Integrity"
 msgstr "Xác minh tính toàn vẹn của tệp sao lưu"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:559
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:664
 msgid "Verify Hostname"
 msgstr "Xác minh tên máy chủ"
 
@@ -7645,6 +7663,9 @@ msgstr "Đường ống không cấp phát"
 
 #~ msgid "Site Navigation"
 #~ msgstr "Điều hướng trang web"
+
+#~ msgid "Total %{total} items"
+#~ msgstr "Tổng %{total} mục"
 
 #~ msgid "WebSocket not connected, please wait for connection"
 #~ msgstr "WebSocket chưa được kết nối, vui lòng chờ kết nối"

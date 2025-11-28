@@ -230,7 +230,7 @@ msgstr "在下面添加指令"
 msgid "Add Domain"
 msgstr "添加域名"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:440
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:548
 msgid "Add Header"
 msgstr "添加标头"
 
@@ -292,7 +292,7 @@ msgstr "高级内存池系统"
 msgid "Advanced search & filtering"
 msgstr "高级搜索和筛选"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:517
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:622
 msgid "Advanced Settings"
 msgstr "高级设置"
 
@@ -379,7 +379,7 @@ msgstr "您确定要立即删除这个 Passkey 吗？"
 
 #: src/views/dns/components/DNSRecordTable.vue:90
 msgid "Are you sure to delete this record?"
-msgstr "确定要删除此记录吗？"
+msgstr "确定要删除这条记录吗？"
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:155
 msgid "Are you sure to generate new recovery codes?"
@@ -764,7 +764,7 @@ msgstr "基于 worker_processes * worker_connections 计算得出。实际性能
 #: src/components/NgxConfigEditor/NgxServer.vue:61
 #: src/components/NgxConfigEditor/NgxUpstream.vue:32 src/language/curd.ts:37
 #: src/views/config/components/Delete.vue:98
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:605
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:710
 #: src/views/dns/DNSRecordManager.vue:194
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:102
 #: src/views/nginx_log/indexing/IndexManagement.vue:33
@@ -964,7 +964,7 @@ msgstr "检查"
 msgid "Check again"
 msgstr "重新检查"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:565
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:670
 msgid "Check Favicon"
 msgstr "检查网站图标"
 
@@ -1081,7 +1081,7 @@ msgid ""
 "the nginx configuration directory"
 msgstr "检查 Nginx 配置目录下是否有 streams-available 和 streams-enabled 目录"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:520
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:625
 msgid "Check Interval (seconds)"
 msgstr "检查间隔（秒）"
 
@@ -1134,15 +1134,19 @@ msgstr "点击复制"
 msgid "Client Body Buffer Size"
 msgstr "客户端请求体缓冲区大小"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:587
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:692
 msgid "Client Certificate"
 msgstr "客户端证书"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:114
+msgid "Client Error Responses (4xx)"
+msgstr "客户端错误响应 (4xx)"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:117
 msgid "Client Header Buffer Size"
 msgstr "客户端请求头缓冲区大小"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:592
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:697
 msgid "Client Key"
 msgstr "客户端密钥"
 
@@ -1508,7 +1512,7 @@ msgstr "自定义域名"
 msgid "Custom Domains Certificate"
 msgstr "自定义域名证书"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:425
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:533
 msgid "Custom Headers"
 msgstr "自定义标头"
 
@@ -1860,13 +1864,14 @@ msgstr "DNS"
 msgid "DNS Credentials"
 msgstr "DNS 凭证"
 
-#: src/routes/modules/dns.ts:28 src/views/dns/DNSDomainList.vue:202
+#: src/routes/modules/dns.ts:28
+#: src/views/dns/DNSDomainList.vue:202
 msgid "DNS Domains"
 msgstr "DNS 域名"
 
 #: src/views/dns/components/DNSRecordTable.vue:81
 msgid "DNS Only"
-msgstr "仅 DNS"
+msgstr "仅DNS"
 
 #: src/components/AutoCertForm/DNSChallenge.vue:98
 #: src/views/dns/components/DNSChallenge.vue:60
@@ -1877,11 +1882,12 @@ msgstr "DNS 提供商"
 msgid "DNS Provider Support"
 msgstr "DNS 提供商支持"
 
-#: src/routes/modules/dns.ts:36 src/views/dns/DNSRecordManager.vue:45
+#: src/routes/modules/dns.ts:36
+#: src/views/dns/DNSRecordManager.vue:45
 msgid "DNS Records"
 msgstr "DNS 记录"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:573
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:678
 msgid "DNS Resolver"
 msgstr "DNS 解析器"
 
@@ -2095,7 +2101,7 @@ msgstr "启动代码补全"
 msgid "Enable compression for content transfer"
 msgstr "启用内容传输压缩"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:365
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:473
 msgid "Enable Health Check"
 msgstr "启用健康检查"
 
@@ -2323,11 +2329,11 @@ msgstr "展开"
 msgid "Expected Performance"
 msgstr "预期性能"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:449
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:557
 msgid "Expected Status Codes"
 msgstr "预期状态码"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:477
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:582
 msgid "Expected Text"
 msgstr "预期文本"
 
@@ -2655,7 +2661,7 @@ msgstr "加载历史记录失败"
 
 #: src/views/certificate/components/CertificateContentEditor.vue:39
 msgid "Failed to load nginx configuration path"
-msgstr "加载nginx配置路径失败"
+msgstr "加载 nginx 配置路径失败"
 
 #: src/constants/errors/geolite.ts:8
 msgid "Failed to open file: {0}"
@@ -2733,7 +2739,7 @@ msgstr "重建文件索引失败"
 msgid "Failed to rebuild index"
 msgstr "重建索引失败"
 
-#: src/views/dashboard/SiteNavigation.vue:57
+#: src/views/dashboard/SiteNavigation.vue:86
 msgid "Failed to refresh sites"
 msgstr "刷新站点失败"
 
@@ -2749,7 +2755,7 @@ msgstr "证书撤销失败"
 msgid "Failed to revoke certificate: %{error}"
 msgstr "撤销证书失败：%{error}"
 
-#: src/views/dashboard/SiteNavigation.vue:104
+#: src/views/dashboard/SiteNavigation.vue:133
 msgid "Failed to save configuration"
 msgstr "保存配置失败"
 
@@ -2757,7 +2763,7 @@ msgstr "保存配置失败"
 msgid "Failed to save downloaded file: {0}"
 msgstr "保存下载的文件失败: {0}"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:304
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:412
 msgid "Failed to save health check configuration"
 msgstr "保存健康检查配置失败"
 
@@ -2765,7 +2771,7 @@ msgstr "保存健康检查配置失败"
 msgid "Failed to save Nginx performance settings"
 msgstr "保存 Nginx 性能参数失败"
 
-#: src/views/dashboard/SiteNavigation.vue:81
+#: src/views/dashboard/SiteNavigation.vue:110
 msgid "Failed to save order"
 msgstr "保存顺序失败"
 
@@ -2877,7 +2883,7 @@ msgstr "文件夹"
 msgid "Folder"
 msgstr "文件夹"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:545
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:650
 msgid "Follow Redirects"
 msgstr "跟随重定向"
 
@@ -3049,13 +3055,13 @@ msgstr "转到原始日志查看器"
 msgid "Gotify"
 msgstr "Gotify"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:495
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:600
 msgid ""
 "gRPC health check requires server to implement gRPC Health Check service "
 "(grpc.health.v1.Health)."
 msgstr "gRPC 健康检查要求服务器实现 gRPC 健康检查服务（grpc.health.v1.Health）。"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:494
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:599
 msgid ""
 "gRPCS uses TLS encryption. Server must implement gRPC Health Check service. "
 "For testing, SSL validation is disabled by default."
@@ -3077,23 +3083,23 @@ msgstr "GZIP 最小长度"
 msgid "Health Check"
 msgstr "健康检查"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:358
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:466
 msgid "Health Check Configuration"
 msgstr "健康检查配置"
 
-#: src/views/dashboard/SiteNavigation.vue:99
+#: src/views/dashboard/SiteNavigation.vue:128
 msgid "Health check configuration saved"
 msgstr "健康检查配置已保存"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:295
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:403
 msgid "Health check configuration saved successfully"
 msgstr "健康检查配置保存成功"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:369
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:477
 msgid "Health check is disabled"
 msgstr "健康检查已禁用"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:369
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:477
 msgid "Health check is enabled"
 msgstr "健康检查已启用"
 
@@ -3151,7 +3157,7 @@ msgstr "HTTP"
 msgid "HTTP Challenge Port"
 msgstr "HTTP Challenge 监听端口"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:398
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:506
 msgid "HTTP Method"
 msgstr "HTTP 方法"
 
@@ -3268,6 +3274,10 @@ msgstr "指示器"
 #: src/constants/index.ts:25 src/views/notification/notificationColumns.tsx:28
 msgid "Info"
 msgstr "信息"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:76
+msgid "Informational Responses (1xx)"
+msgstr "信息响应 (1xx)"
 
 #: src/constants/errors/user.ts:17
 msgid "Init user not exists"
@@ -3870,7 +3880,7 @@ msgstr "最大尝试次数"
 msgid "Max Concurrent Connections"
 msgstr "最大并发连接数"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:538
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:643
 msgid "Max Redirects"
 msgstr "最大重定向次数"
 
@@ -3926,7 +3936,7 @@ msgstr "内存使用量（RSS）"
 msgid "Method"
 msgstr "方法"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:508
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:613
 msgid "Method Name"
 msgstr "方法名称"
 
@@ -4409,7 +4419,7 @@ msgstr "未选择记录"
 msgid "No servers configured"
 msgstr "未配置服务器"
 
-#: src/views/dashboard/SiteNavigation.vue:141
+#: src/views/dashboard/SiteNavigation.vue:170
 msgid "No sites found"
 msgstr "未找到站点"
 
@@ -4456,7 +4466,7 @@ msgstr "节点"
 msgid "Not After"
 msgstr "有效期"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:482
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:587
 msgid "Not Expected Text"
 msgstr "非预期文本"
 
@@ -4493,7 +4503,7 @@ msgid ""
 "certificates, please synchronize them to the remote nodes in advance."
 msgstr "注意，如果配置文件中包含其他配置或证书，请提前将它们同步到远程节点。"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:498
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:603
 msgid ""
 "Note: If the server does not support gRPC Reflection, health checks may "
 "fail. Please ensure your gRPC server has Reflection enabled."
@@ -4655,7 +4665,7 @@ msgstr "或将文件拖拽到下方编辑器"
 msgid "Or enter the secret: %{secret}"
 msgstr "或输入密钥：%{secret}"
 
-#: src/views/dashboard/SiteNavigation.vue:75
+#: src/views/dashboard/SiteNavigation.vue:104
 msgid "Order saved successfully"
 msgstr "顺序保存成功"
 
@@ -4757,7 +4767,7 @@ msgstr "密码不匹配"
 #: src/language/curd.ts:61
 #: src/views/config/components/ConfigRightPanel/Basic.vue:41
 #: src/views/config/components/Delete.vue:124
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:419
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:527
 #: src/views/nginx_log/NginxLogList.vue:164
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:520
 msgid "Path"
@@ -5080,7 +5090,7 @@ msgstr "项目团队"
 msgid "Protected Directory"
 msgstr "受保护目录"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:377
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:485
 msgid "Protocol"
 msgstr "协议"
 
@@ -5233,6 +5243,10 @@ msgstr "恢复代码用于在您无法访问双重身份验证设备时登录您
 #: src/views/preference/tabs/CertSettings.vue:40
 msgid "Recursive Nameservers"
 msgstr "递归域名服务器"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:100
+msgid "Redirection Messages (3xx)"
+msgstr "重定向消息 (3xx)"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:185
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:299
@@ -5455,7 +5469,7 @@ msgstr "更新成功"
 msgid "Request"
 msgstr "请求"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:445
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:553
 msgid "Request Body"
 msgstr "请求体"
 
@@ -5714,7 +5728,7 @@ msgstr "星期六"
 #: src/views/certificate/components/CertificateActions.vue:29
 #: src/views/config/components/ConfigLeftPanel.vue:283
 #: src/views/config/components/ConfigName.vue:58
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:608
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:713
 #: src/views/dns/DNSRecordManager.vue:197
 #: src/views/preference/components/AuthSettings/Passkey.vue:131
 #: src/views/preference/Preference.vue:124
@@ -5930,6 +5944,10 @@ msgstr "服务器"
 msgid "Server error"
 msgstr "服务器错误"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:148
+msgid "Server Error Responses (5xx)"
+msgstr "服务器错误响应 (5xx)"
+
 #: src/views/dashboard/ServerAnalytic.vue:180
 msgid "Server Info"
 msgstr "服务器信息"
@@ -5954,7 +5972,7 @@ msgstr "未在指令集合中找到 server_name"
 msgid "ServerIdx out of range"
 msgstr "Server Index 超出范围"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:503
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:608
 msgid "Service Name"
 msgstr "服务名称"
 
@@ -6056,7 +6074,7 @@ msgstr "站点列表"
 msgid "Site not found"
 msgstr "网站未找到"
 
-#: src/views/dashboard/SiteNavigation.vue:53
+#: src/views/dashboard/SiteNavigation.vue:82
 msgid "Site refresh initiated"
 msgstr "站点刷新已启动"
 
@@ -6072,7 +6090,7 @@ msgstr "网站目录存在"
 msgid "Sites List"
 msgstr "站点列表"
 
-#: src/views/dashboard/SiteNavigation.vue:144
+#: src/views/dashboard/SiteNavigation.vue:173
 msgid ""
 "Sites will appear here once you configure nginx server blocks with valid "
 "server_name directives."
@@ -6112,7 +6130,7 @@ msgstr "套接字"
 msgid "Sorted by"
 msgstr "排序方式"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:578
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:683
 msgid "Source IP"
 msgstr "源 IP"
 
@@ -6297,6 +6315,10 @@ msgstr "未启用 stub_status"
 msgid "Success"
 msgstr "成功"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:85
+msgid "Successful Responses (2xx)"
+msgstr "成功响应 (2xx)"
+
 #: src/views/backup/AutoBackup/components/CronEditor.vue:121
 #: src/views/backup/AutoBackup/components/CronEditor.vue:26
 msgid "Sunday"
@@ -6458,16 +6480,16 @@ msgstr "终端助手"
 msgid "Terminal Start Command"
 msgstr "终端启动命令"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:611
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:716
 #: src/views/preference/tabs/ExternalNotify.vue:57
 msgid "Test"
 msgstr "测试"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:343
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:451
 msgid "Test failed: %{error}"
 msgstr "测试失败: %{error}"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:348
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:456
 msgid "Test failed: Unable to perform health check"
 msgstr "测试失败：无法执行健康检查"
 
@@ -6480,7 +6502,7 @@ msgstr "测试消息发送成功"
 msgid "Test S3 Connection"
 msgstr "测试 S3 连接"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:340
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:448
 msgid "Test successful! Response time: %{response_time}ms"
 msgstr "测试成功！响应时间：%{response_time}毫秒"
 
@@ -6744,7 +6766,7 @@ msgstr "时间"
 msgid "Time Range"
 msgstr "时间范围"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:525
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:630
 msgid "Timeout (seconds)"
 msgstr "超时时间（秒）"
 
@@ -6833,10 +6855,6 @@ msgstr "前 10 个 URL"
 #: src/language/curd.ts:5
 msgid "Total"
 msgstr "总计"
-
-#: src/views/upstream/SocketList.vue:149
-msgid "Total %{total} items"
-msgstr "总计 %{total} 项"
 
 #: src/views/system/Licenses.vue:107
 msgid "Total Components"
@@ -7102,7 +7120,7 @@ msgstr "使用临时路径"
 msgid "User"
 msgstr "用户"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:531
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:636
 #: src/views/nginx_log/structured/components/SearchFilters.vue:200
 msgid "User Agent"
 msgstr "用户代理"
@@ -7146,7 +7164,7 @@ msgstr "独立访客"
 msgid "Valid"
 msgstr "有效的"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:553
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:658
 msgid "Validate SSL Certificate"
 msgstr "验证 SSL 证书"
 
@@ -7161,7 +7179,7 @@ msgstr "值"
 msgid "Verify Backup File Integrity"
 msgstr "验证备份文件的完整性"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:559
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:664
 msgid "Verify Hostname"
 msgstr "验证主机名"
 
@@ -7435,6 +7453,9 @@ msgstr "零分配管道"
 
 #~ msgid "Site Navigation"
 #~ msgstr "站点导航"
+
+#~ msgid "Total %{total} items"
+#~ msgstr "总计 %{total} 项"
 
 #~ msgid "WebSocket not connected, please wait for connection"
 #~ msgstr "WebSocket 未连接，请等待连接"

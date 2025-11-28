@@ -12,7 +12,7 @@ import (
 // ParseStream provides a high-performance streaming parser with zero-allocation optimizations
 func (p *Parser) StreamParse(ctx context.Context, reader io.Reader) (*ParseResult, error) {
 	startTime := time.Now()
-	
+
 	// Pre-allocate result with estimated capacity to reduce reallocations
 	result := &ParseResult{
 		Entries: make([]*AccessLogEntry, 0, 10000), // Pre-allocate for better performance
@@ -86,11 +86,11 @@ func (p *Parser) StreamParse(ctx context.Context, reader io.Reader) (*ParseResul
 // processBatch processes a batch of lines with memory-efficient operations
 func (p *Parser) processBatch(ctx context.Context, batch []string, result *ParseResult) error {
 	batchResult := p.ParseLinesWithContext(ctx, batch)
-	
+
 	// Pre-grow the result.Entries slice to avoid multiple reallocations
 	currentLen := len(result.Entries)
 	newLen := currentLen + len(batchResult.Entries)
-	
+
 	// Grow the slice efficiently
 	if cap(result.Entries) < newLen {
 		newEntries := make([]*AccessLogEntry, newLen, newLen*2) // Double capacity for future growth
@@ -99,13 +99,13 @@ func (p *Parser) processBatch(ctx context.Context, batch []string, result *Parse
 	} else {
 		result.Entries = result.Entries[:newLen]
 	}
-	
+
 	// Copy batch results efficiently
 	copy(result.Entries[currentLen:], batchResult.Entries)
-	
+
 	result.Succeeded += batchResult.Succeeded
 	result.Failed += batchResult.Failed
-	
+
 	return nil
 }
 
@@ -127,7 +127,7 @@ func (sb *StreamBuffer) ReadLine(reader io.Reader) ([]byte, error) {
 	// Reset buffer for reuse
 	sb.data = sb.data[:0]
 	sb.offset = 0
-	
+
 	buf := make([]byte, 1)
 	for {
 		n, err := reader.Read(buf)
@@ -140,11 +140,11 @@ func (sb *StreamBuffer) ReadLine(reader io.Reader) ([]byte, error) {
 		if n == 0 {
 			continue
 		}
-		
+
 		if buf[0] == '\n' {
 			return sb.data, nil
 		}
-		
+
 		sb.data = append(sb.data, buf[0])
 	}
 }
@@ -158,7 +158,7 @@ func (p *Parser) ChunkedParseStream(ctx context.Context, reader io.Reader, chunk
 
 	buffer := make([]byte, chunkSize)
 	remainder := make([]byte, 0, 1024)
-	
+
 	for {
 		// Check context periodically
 		select {
@@ -178,10 +178,13 @@ func (p *Parser) ChunkedParseStream(ctx context.Context, reader io.Reader, chunk
 		// Combine remainder with new data
 		data := append(remainder, buffer[:n]...)
 		lines := bytes.Split(data, []byte("\n"))
-		
+
 		// Keep the last incomplete line as remainder
 		if err != io.EOF {
-			remainder = append(remainder[:0], lines[len(lines)-1]...)
+			lastLine := lines[len(lines)-1]
+			newRemainder := make([]byte, len(lastLine))
+			copy(newRemainder, lastLine)
+			remainder = newRemainder
 			lines = lines[:len(lines)-1]
 		} else {
 			remainder = remainder[:0]
@@ -193,11 +196,11 @@ func (p *Parser) ChunkedParseStream(ctx context.Context, reader io.Reader, chunk
 			if len(lineBytes) == 0 {
 				continue
 			}
-			
+
 			line := string(lineBytes)
 			batch = append(batch, line)
 			result.Processed++
-			
+
 			if len(batch) >= p.config.BatchSize {
 				if err := p.processBatch(ctx, batch, result); err != nil {
 					return result, err
@@ -205,19 +208,19 @@ func (p *Parser) ChunkedParseStream(ctx context.Context, reader io.Reader, chunk
 				batch = batch[:0]
 			}
 		}
-		
+
 		// Process remaining batch
 		if len(batch) > 0 {
 			if err := p.processBatch(ctx, batch, result); err != nil {
 				return result, err
 			}
 		}
-		
+
 		if err == io.EOF {
 			break
 		}
 	}
-	
+
 	// Process any remaining data
 	if len(remainder) > 0 {
 		line := string(remainder)
@@ -322,7 +325,7 @@ func (p *Parser) MemoryEfficientParseStream(ctx context.Context, reader io.Reade
 
 		lineBuffer.Reset()
 		lineBuffer.Append(scanner.Bytes())
-		
+
 		if lineBuffer.Bytes() == nil || len(lineBuffer.Bytes()) == 0 {
 			continue
 		}

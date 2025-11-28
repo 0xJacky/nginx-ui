@@ -143,11 +143,7 @@ onUnmounted(() => {
       :columns="columns"
       :data-source="enrichedDataSource"
       :loading="loading"
-      :pagination="{
-        pageSize: 20,
-        showSizeChanger: true,
-        showTotal: (total: number) => $gettext('Total %{total} items', { total: total.toLocaleString() }),
-      }"
+      :pagination="false"
       :scroll="{ x: 1400 }"
       row-key="socket"
     >

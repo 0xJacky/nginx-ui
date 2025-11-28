@@ -240,7 +240,7 @@ msgstr "Добавить директиву ниже"
 msgid "Add Domain"
 msgstr "Добавить домен"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:440
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:548
 msgid "Add Header"
 msgstr "Добавить заголовок"
 
@@ -304,7 +304,7 @@ msgstr "Продвинутая система пула памяти"
 msgid "Advanced search & filtering"
 msgstr "Расширенный поиск и фильтрация"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:517
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:622
 msgid "Advanced Settings"
 msgstr "Дополнительные настройки"
 
@@ -803,7 +803,7 @@ msgstr ""
 #: src/components/NgxConfigEditor/NgxServer.vue:61
 #: src/components/NgxConfigEditor/NgxUpstream.vue:32 src/language/curd.ts:37
 #: src/views/config/components/Delete.vue:98
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:605
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:710
 #: src/views/dns/DNSRecordManager.vue:194
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:102
 #: src/views/nginx_log/indexing/IndexManagement.vue:33
@@ -1005,7 +1005,7 @@ msgstr "Проверить"
 msgid "Check again"
 msgstr "Проверить повторно"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:565
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:670
 msgid "Check Favicon"
 msgstr "Проверить фавикон"
 
@@ -1142,7 +1142,7 @@ msgstr ""
 "Проверьте, находятся ли каталоги streams-available и streams-enabled в "
 "каталоге конфигурации nginx"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:520
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:625
 msgid "Check Interval (seconds)"
 msgstr "Интервал проверки (секунды)"
 
@@ -1197,15 +1197,19 @@ msgstr "Нажмите, чтобы скопировать"
 msgid "Client Body Buffer Size"
 msgstr "Размер буфера корпуса клиента"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:587
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:692
 msgid "Client Certificate"
 msgstr "Клиентский сертификат"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:114
+msgid "Client Error Responses (4xx)"
+msgstr "Ошибки клиента (4xx)"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:117
 msgid "Client Header Buffer Size"
 msgstr "Размер буфера заголовков клиента"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:592
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:697
 msgid "Client Key"
 msgstr "Ключ клиента"
 
@@ -1576,7 +1580,7 @@ msgstr "Пользовательские домены"
 msgid "Custom Domains Certificate"
 msgstr "Сертификат для пользовательских доменов"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:425
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:533
 msgid "Custom Headers"
 msgstr "Пользовательские заголовки"
 
@@ -1928,9 +1932,10 @@ msgstr "DNS"
 msgid "DNS Credentials"
 msgstr "DNS учетные данные"
 
-#: src/routes/modules/dns.ts:28 src/views/dns/DNSDomainList.vue:202
+#: src/routes/modules/dns.ts:28
+#: src/views/dns/DNSDomainList.vue:202
 msgid "DNS Domains"
-msgstr "DNS-домены"
+msgstr "Домены DNS"
 
 #: src/views/dns/components/DNSRecordTable.vue:81
 msgid "DNS Only"
@@ -1945,11 +1950,12 @@ msgstr "Провайдер DNS"
 msgid "DNS Provider Support"
 msgstr "Поддержка DNS-провайдера"
 
-#: src/routes/modules/dns.ts:36 src/views/dns/DNSRecordManager.vue:45
+#: src/routes/modules/dns.ts:36
+#: src/views/dns/DNSRecordManager.vue:45
 msgid "DNS Records"
 msgstr "DNS-записи"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:573
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:678
 msgid "DNS Resolver"
 msgstr "DNS-резолвер"
 
@@ -2166,7 +2172,7 @@ msgstr "Включить автодополнение кода"
 msgid "Enable compression for content transfer"
 msgstr "Включить сжатие для передачи контента"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:365
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:473
 msgid "Enable Health Check"
 msgstr "Включить проверку работоспособности"
 
@@ -2403,11 +2409,11 @@ msgstr "Развернуть"
 msgid "Expected Performance"
 msgstr "Ожидаемая производительность"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:449
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:557
 msgid "Expected Status Codes"
 msgstr "Ожидаемые коды состояния"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:477
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:582
 msgid "Expected Text"
 msgstr "Ожидаемый текст"
 
@@ -2817,7 +2823,7 @@ msgstr "Не удалось перестроить индекс файла"
 msgid "Failed to rebuild index"
 msgstr "Не удалось перестроить индекс"
 
-#: src/views/dashboard/SiteNavigation.vue:57
+#: src/views/dashboard/SiteNavigation.vue:86
 msgid "Failed to refresh sites"
 msgstr "Не удалось обновить сайты"
 
@@ -2833,7 +2839,7 @@ msgstr "Не удалось отозвать сертификат"
 msgid "Failed to revoke certificate: %{error}"
 msgstr "Не удалось отозвать сертификат: %{error}"
 
-#: src/views/dashboard/SiteNavigation.vue:104
+#: src/views/dashboard/SiteNavigation.vue:133
 msgid "Failed to save configuration"
 msgstr "Не удалось сохранить конфигурацию"
 
@@ -2841,7 +2847,7 @@ msgstr "Не удалось сохранить конфигурацию"
 msgid "Failed to save downloaded file: {0}"
 msgstr "Не удалось сохранить загруженный файл: {0}"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:304
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:412
 msgid "Failed to save health check configuration"
 msgstr "Не удалось сохранить конфигурацию проверки работоспособности"
 
@@ -2849,7 +2855,7 @@ msgstr "Не удалось сохранить конфигурацию пров
 msgid "Failed to save Nginx performance settings"
 msgstr "Не удалось сохранить настройки производительности Nginx"
 
-#: src/views/dashboard/SiteNavigation.vue:81
+#: src/views/dashboard/SiteNavigation.vue:110
 msgid "Failed to save order"
 msgstr "Не удалось сохранить порядок"
 
@@ -2961,7 +2967,7 @@ msgstr "папка"
 msgid "Folder"
 msgstr "Папка"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:545
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:650
 msgid "Follow Redirects"
 msgstr "Следовать перенаправлениям"
 
@@ -3144,7 +3150,7 @@ msgstr "Перейти к просмотру сырых логов"
 msgid "Gotify"
 msgstr "Gotify"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:495
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:600
 msgid ""
 "gRPC health check requires server to implement gRPC Health Check service "
 "(grpc.health.v1.Health)."
@@ -3152,7 +3158,7 @@ msgstr ""
 "Проверка работоспособности gRPC требует, чтобы сервер реализовал службу "
 "проверки работоспособности gRPC (grpc.health.v1.Health)."
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:494
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:599
 msgid ""
 "gRPCS uses TLS encryption. Server must implement gRPC Health Check service. "
 "For testing, SSL validation is disabled by default."
@@ -3177,23 +3183,23 @@ msgstr "Минимальная длина GZIP"
 msgid "Health Check"
 msgstr "Проверка состояния"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:358
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:466
 msgid "Health Check Configuration"
 msgstr "Конфигурация проверки работоспособности"
 
-#: src/views/dashboard/SiteNavigation.vue:99
+#: src/views/dashboard/SiteNavigation.vue:128
 msgid "Health check configuration saved"
 msgstr "Конфигурация проверки работоспособности сохранена"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:295
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:403
 msgid "Health check configuration saved successfully"
 msgstr "Конфигурация проверки работоспособности успешно сохранена"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:369
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:477
 msgid "Health check is disabled"
 msgstr "Проверка работоспособности отключена"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:369
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:477
 msgid "Health check is enabled"
 msgstr "Проверка работоспособности включена"
 
@@ -3236,7 +3242,7 @@ msgstr "Хост"
 
 #: src/views/dns/components/DNSRecordFilter.vue:45
 msgid "Host, e.g. @ or www"
-msgstr "Хост, например @ или www"
+msgstr "Хост, напр. @ или www"
 
 #: src/views/backup/AutoBackup/components/CronEditor.vue:159
 #: src/views/nginx_log/dashboard/components/HourlyChart.vue:87
@@ -3251,7 +3257,7 @@ msgstr "HTTP"
 msgid "HTTP Challenge Port"
 msgstr "Порт HTTP Challenge"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:398
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:506
 msgid "HTTP Method"
 msgstr "HTTP-метод"
 
@@ -3377,6 +3383,10 @@ msgstr "Индикатор"
 #: src/constants/index.ts:25 src/views/notification/notificationColumns.tsx:28
 msgid "Info"
 msgstr "Информация"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:76
+msgid "Informational Responses (1xx)"
+msgstr "Информационные ответы (1xx)"
 
 #: src/constants/errors/user.ts:17
 msgid "Init user not exists"
@@ -3992,7 +4002,7 @@ msgstr "Максимальное количество попыток"
 msgid "Max Concurrent Connections"
 msgstr "Максимальное количество одновременных подключений"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:538
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:643
 msgid "Max Redirects"
 msgstr "Максимальное количество перенаправлений"
 
@@ -4048,7 +4058,7 @@ msgstr "Использование памяти (RSS)"
 msgid "Method"
 msgstr "Метод"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:508
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:613
 msgid "Method Name"
 msgstr "Имя метода"
 
@@ -4535,7 +4545,7 @@ msgstr "Нет выбранных записей"
 msgid "No servers configured"
 msgstr "Серверы не настроены"
 
-#: src/views/dashboard/SiteNavigation.vue:141
+#: src/views/dashboard/SiteNavigation.vue:170
 msgid "No sites found"
 msgstr "Сайты не найдены"
 
@@ -4584,7 +4594,7 @@ msgstr "Узлы"
 msgid "Not After"
 msgstr "Не позднее"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:482
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:587
 msgid "Not Expected Text"
 msgstr "Неожиданный текст"
 
@@ -4623,7 +4633,7 @@ msgstr ""
 "Примечание: если файл конфигурации включает другие настройки или "
 "сертификаты, пожалуйста, заранее синхронизируйте их с удалёнными узлами."
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:498
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:603
 msgid ""
 "Note: If the server does not support gRPC Reflection, health checks may "
 "fail. Please ensure your gRPC server has Reflection enabled."
@@ -4792,7 +4802,7 @@ msgstr "или перетащите файл в редактор ниже"
 msgid "Or enter the secret: %{secret}"
 msgstr "Или введите секрет: %{secret}"
 
-#: src/views/dashboard/SiteNavigation.vue:75
+#: src/views/dashboard/SiteNavigation.vue:104
 msgid "Order saved successfully"
 msgstr "Порядок успешно сохранён"
 
@@ -4898,7 +4908,7 @@ msgstr "Пароли не совпадают"
 #: src/language/curd.ts:61
 #: src/views/config/components/ConfigRightPanel/Basic.vue:41
 #: src/views/config/components/Delete.vue:124
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:419
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:527
 #: src/views/nginx_log/NginxLogList.vue:164
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:520
 msgid "Path"
@@ -5242,7 +5252,7 @@ msgstr "Команда проекта"
 msgid "Protected Directory"
 msgstr "Защищённая директория"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:377
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:485
 msgid "Protocol"
 msgstr "Протокол"
 
@@ -5400,6 +5410,10 @@ msgstr ""
 #: src/views/preference/tabs/CertSettings.vue:40
 msgid "Recursive Nameservers"
 msgstr "Рекурсивные DNS"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:100
+msgid "Redirection Messages (3xx)"
+msgstr "Сообщения о перенаправлении (3xx)"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:185
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:299
@@ -5624,7 +5638,7 @@ msgstr "Успешно обновлено"
 msgid "Request"
 msgstr "Запрос"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:445
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:553
 msgid "Request Body"
 msgstr "Тело запроса"
 
@@ -5888,7 +5902,7 @@ msgstr "Суббота"
 #: src/views/certificate/components/CertificateActions.vue:29
 #: src/views/config/components/ConfigLeftPanel.vue:283
 #: src/views/config/components/ConfigName.vue:58
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:608
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:713
 #: src/views/dns/DNSRecordManager.vue:197
 #: src/views/preference/components/AuthSettings/Passkey.vue:131
 #: src/views/preference/Preference.vue:124
@@ -6108,6 +6122,10 @@ msgstr "Сервер"
 msgid "Server error"
 msgstr "Ошибка сервера"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:148
+msgid "Server Error Responses (5xx)"
+msgstr "Ошибки сервера (5xx)"
+
 #: src/views/dashboard/ServerAnalytic.vue:180
 msgid "Server Info"
 msgstr "Информация о сервере"
@@ -6132,7 +6150,7 @@ msgstr "server_name не нашел в директивах"
 msgid "ServerIdx out of range"
 msgstr "ServerIdx вне диапазона"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:503
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:608
 msgid "Service Name"
 msgstr "Название сервиса"
 
@@ -6236,7 +6254,7 @@ msgstr "Журналы сайта"
 msgid "Site not found"
 msgstr "Сайт не найден"
 
-#: src/views/dashboard/SiteNavigation.vue:53
+#: src/views/dashboard/SiteNavigation.vue:82
 msgid "Site refresh initiated"
 msgstr "Обновление сайта запущено"
 
@@ -6252,7 +6270,7 @@ msgstr "Каталог сайтов существует"
 msgid "Sites List"
 msgstr "Список сайтов"
 
-#: src/views/dashboard/SiteNavigation.vue:144
+#: src/views/dashboard/SiteNavigation.vue:173
 msgid ""
 "Sites will appear here once you configure nginx server blocks with valid "
 "server_name directives."
@@ -6294,7 +6312,7 @@ msgstr "Сокет"
 msgid "Sorted by"
 msgstr "Сортировка по"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:578
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:683
 msgid "Source IP"
 msgstr "Исходный IP"
 
@@ -6481,6 +6499,10 @@ msgstr "Stub_status не включен"
 msgid "Success"
 msgstr "Успех"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:85
+msgid "Successful Responses (2xx)"
+msgstr "Успешные ответы (2xx)"
+
 #: src/views/backup/AutoBackup/components/CronEditor.vue:121
 #: src/views/backup/AutoBackup/components/CronEditor.vue:26
 msgid "Sunday"
@@ -6644,16 +6666,16 @@ msgstr "Терминальный помощник"
 msgid "Terminal Start Command"
 msgstr "Терминальная команда запуска"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:611
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:716
 #: src/views/preference/tabs/ExternalNotify.vue:57
 msgid "Test"
 msgstr "Тест"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:343
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:451
 msgid "Test failed: %{error}"
 msgstr "Тест не пройден: %{error}"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:348
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:456
 msgid "Test failed: Unable to perform health check"
 msgstr "Тест не удался: Невозможно выполнить проверку состояния"
 
@@ -6666,7 +6688,7 @@ msgstr "Тестовое сообщение успешно отправлено"
 msgid "Test S3 Connection"
 msgstr "Проверить подключение S3"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:340
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:448
 msgid "Test successful! Response time: %{response_time}ms"
 msgstr "Тест успешен! Время отклика: %{response_time}мс"
 
@@ -6978,7 +7000,7 @@ msgstr "Время"
 msgid "Time Range"
 msgstr "Временной диапазон"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:525
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:630
 msgid "Timeout (seconds)"
 msgstr "Таймаут (секунды)"
 
@@ -7077,10 +7099,6 @@ msgstr "Топ 10 URL-адресов"
 #: src/language/curd.ts:5
 msgid "Total"
 msgstr "Всего"
-
-#: src/views/upstream/SocketList.vue:149
-msgid "Total %{total} items"
-msgstr "Всего %{total} элементов"
 
 #: src/views/system/Licenses.vue:107
 msgid "Total Components"
@@ -7348,7 +7366,7 @@ msgstr "Использовать временный путь"
 msgid "User"
 msgstr "Пользователь"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:531
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:636
 #: src/views/nginx_log/structured/components/SearchFilters.vue:200
 msgid "User Agent"
 msgstr "Пользовательский агент"
@@ -7392,7 +7410,7 @@ msgstr "Уникальные посетители"
 msgid "Valid"
 msgstr "Действительный"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:553
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:658
 msgid "Validate SSL Certificate"
 msgstr "Проверить SSL-сертификат"
 
@@ -7407,7 +7425,7 @@ msgstr "Значение"
 msgid "Verify Backup File Integrity"
 msgstr "Проверить целостность файла резервной копии"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:559
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:664
 msgid "Verify Hostname"
 msgstr "Проверить имя хоста"
 
@@ -7706,6 +7724,9 @@ msgstr "Конвейер без выделения памяти"
 
 #~ msgid "Site Navigation"
 #~ msgstr "Навигация по сайту"
+
+#~ msgid "Total %{total} items"
+#~ msgstr "Всего %{total} элементов"
 
 #~ msgid "WebSocket not connected, please wait for connection"
 #~ msgstr "WebSocket не подключен, пожалуйста, дождитесь подключения"

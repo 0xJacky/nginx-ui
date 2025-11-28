@@ -8,6 +8,7 @@ export interface SiteInfo {
   port: number
   scheme: string // http, https, grpc, grpcs
   display_url: string // computed URL for display
+  custom_order: number
   name: string
   status: SiteStatusType
   status_code: number

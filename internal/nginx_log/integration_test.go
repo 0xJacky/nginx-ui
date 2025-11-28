@@ -13,6 +13,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/analytics"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/indexer"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/searcher"
+	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/blevesearch/bleve/v2"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -94,6 +95,9 @@ func NewIntegrationTestSuite(t *testing.T) *IntegrationTestSuite {
 
 	err = os.MkdirAll(logsDir, 0755)
 	require.NoError(t, err)
+
+	// Allow indexer to access generated test logs.
+	settings.NginxSettings.LogDirWhiteList = []string{logsDir}
 
 	suite := &IntegrationTestSuite{
 		ctx:             ctx,
@@ -237,6 +241,8 @@ func (suite *IntegrationTestSuite) generateSingleLogFile(t *testing.T, filepath 
 // InitializeServices initializes all nginx_log services for testing
 func (suite *IntegrationTestSuite) InitializeServices(t *testing.T) {
 	t.Log("Initializing test services...")
+
+	indexer.InitLogParser()
 
 	// Initialize indexer
 	indexerConfig := indexer.DefaultIndexerConfig()

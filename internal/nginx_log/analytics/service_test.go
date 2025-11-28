@@ -616,7 +616,11 @@ func TestService_GetDashboardAnalytics_WithCardinalityCounter(t *testing.T) {
 
 	// Mock main search result
 	mockSearcher.On("Search", ctx, mock.MatchedBy(func(r *searcher.SearchRequest) bool {
-		return len(r.FacetFields) == 4 && r.FacetSize == 1000
+		return len(r.FacetFields) == 3 &&
+			r.FacetSize == 50 &&
+			r.FacetFields[0] == "browser" &&
+			r.FacetFields[1] == "os" &&
+			r.FacetFields[2] == "device_type"
 	})).Return(expectedResult, nil)
 
 	// The key test: Counter should be called to get accurate UV count

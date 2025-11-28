@@ -231,7 +231,7 @@ msgstr "아래에 지시문 추가"
 msgid "Add Domain"
 msgstr "도메인 추가"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:440
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:548
 msgid "Add Header"
 msgstr "헤더 추가"
 
@@ -293,7 +293,7 @@ msgstr "고급 메모리 풀링 시스템"
 msgid "Advanced search & filtering"
 msgstr "고급 검색 및 필터링"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:517
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:622
 msgid "Advanced Settings"
 msgstr "고급 설정"
 
@@ -771,7 +771,7 @@ msgstr ""
 #: src/components/NgxConfigEditor/NgxServer.vue:61
 #: src/components/NgxConfigEditor/NgxUpstream.vue:32 src/language/curd.ts:37
 #: src/views/config/components/Delete.vue:98
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:605
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:710
 #: src/views/dns/DNSRecordManager.vue:194
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:102
 #: src/views/nginx_log/indexing/IndexManagement.vue:33
@@ -972,7 +972,7 @@ msgstr "확인"
 msgid "Check again"
 msgstr "다시 확인"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:565
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:670
 msgid "Check Favicon"
 msgstr "파비콘 확인"
 
@@ -1094,7 +1094,7 @@ msgid ""
 "the nginx configuration directory"
 msgstr "nginx 구성 디렉터리 아래에 streams-available 및 streams-enabled 디렉터리가 있는지 확인하세요"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:520
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:625
 msgid "Check Interval (seconds)"
 msgstr "확인 간격 (초)"
 
@@ -1147,15 +1147,19 @@ msgstr "복사하려면 클릭하십시오"
 msgid "Client Body Buffer Size"
 msgstr "클라이언트 신체 버퍼 크기"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:587
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:692
 msgid "Client Certificate"
 msgstr "클라이언트 인증서"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:114
+msgid "Client Error Responses (4xx)"
+msgstr "클라이언트 오류 응답 (4xx)"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:117
 msgid "Client Header Buffer Size"
 msgstr "클라이언트 헤더 버퍼 크기"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:592
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:697
 msgid "Client Key"
 msgstr "클라이언트 키"
 
@@ -1521,7 +1525,7 @@ msgstr "사용자 정의 도메인"
 msgid "Custom Domains Certificate"
 msgstr "사용자 정의 도메인 인증서"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:425
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:533
 msgid "Custom Headers"
 msgstr "사용자 정의 헤더"
 
@@ -1873,7 +1877,8 @@ msgstr "DNS"
 msgid "DNS Credentials"
 msgstr "DNS 인증 정보"
 
-#: src/routes/modules/dns.ts:28 src/views/dns/DNSDomainList.vue:202
+#: src/routes/modules/dns.ts:28
+#: src/views/dns/DNSDomainList.vue:202
 msgid "DNS Domains"
 msgstr "DNS 도메인"
 
@@ -1890,11 +1895,12 @@ msgstr "DNS 제공자"
 msgid "DNS Provider Support"
 msgstr "DNS 공급자 지원"
 
-#: src/routes/modules/dns.ts:36 src/views/dns/DNSRecordManager.vue:45
+#: src/routes/modules/dns.ts:36
+#: src/views/dns/DNSRecordManager.vue:45
 msgid "DNS Records"
 msgstr "DNS 레코드"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:573
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:678
 msgid "DNS Resolver"
 msgstr "DNS 확인자"
 
@@ -2110,7 +2116,7 @@ msgstr "코드 완성 활성화"
 msgid "Enable compression for content transfer"
 msgstr "콘텐츠 전송 압축 활성화"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:365
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:473
 msgid "Enable Health Check"
 msgstr "헬스 체크 활성화"
 
@@ -2340,11 +2346,11 @@ msgstr "확장"
 msgid "Expected Performance"
 msgstr "예상 성능"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:449
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:557
 msgid "Expected Status Codes"
 msgstr "예상 상태 코드"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:477
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:582
 msgid "Expected Text"
 msgstr "예상 텍스트"
 
@@ -2750,7 +2756,7 @@ msgstr "파일 인덱스 재구성 실패"
 msgid "Failed to rebuild index"
 msgstr "인덱스 재구성 실패"
 
-#: src/views/dashboard/SiteNavigation.vue:57
+#: src/views/dashboard/SiteNavigation.vue:86
 msgid "Failed to refresh sites"
 msgstr "사이트 새로 고침 실패"
 
@@ -2766,7 +2772,7 @@ msgstr "인증서 취소에 실패했습니다"
 msgid "Failed to revoke certificate: %{error}"
 msgstr "인증서 취소 실패: %{error}"
 
-#: src/views/dashboard/SiteNavigation.vue:104
+#: src/views/dashboard/SiteNavigation.vue:133
 msgid "Failed to save configuration"
 msgstr "구성 저장 실패"
 
@@ -2774,7 +2780,7 @@ msgstr "구성 저장 실패"
 msgid "Failed to save downloaded file: {0}"
 msgstr "다운로드한 파일을 저장하는 데 실패했습니다: {0}"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:304
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:412
 msgid "Failed to save health check configuration"
 msgstr "상태 확인 구성 저장 실패"
 
@@ -2782,7 +2788,7 @@ msgstr "상태 확인 구성 저장 실패"
 msgid "Failed to save Nginx performance settings"
 msgstr "Nginx 성능 설정 저장 실패"
 
-#: src/views/dashboard/SiteNavigation.vue:81
+#: src/views/dashboard/SiteNavigation.vue:110
 msgid "Failed to save order"
 msgstr "순서 저장 실패"
 
@@ -2894,7 +2900,7 @@ msgstr "폴더"
 msgid "Folder"
 msgstr "폴더"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:545
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:650
 msgid "Follow Redirects"
 msgstr "리디렉션 따르기"
 
@@ -3068,13 +3074,13 @@ msgstr "원시 로그 뷰어로 이동"
 msgid "Gotify"
 msgstr "Gotify"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:495
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:600
 msgid ""
 "gRPC health check requires server to implement gRPC Health Check service "
 "(grpc.health.v1.Health)."
 msgstr "gRPC 상태 확인을 위해서는 서버가 gRPC 상태 확인 서비스(grpc.health.v1.Health)를 구현해야 합니다."
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:494
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:599
 msgid ""
 "gRPCS uses TLS encryption. Server must implement gRPC Health Check service. "
 "For testing, SSL validation is disabled by default."
@@ -3098,25 +3104,25 @@ msgstr "GZIP 최소 길이"
 msgid "Health Check"
 msgstr "건강 점검"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:358
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:466
 msgid "Health Check Configuration"
 msgstr "상태 확인 구성"
 
-#: src/views/dashboard/SiteNavigation.vue:99
+#: src/views/dashboard/SiteNavigation.vue:128
 msgid "Health check configuration saved"
 msgstr "헬스 체크 설정이 저장되었습니다"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:295
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:403
 msgid "Health check configuration saved successfully"
 msgstr "헬스 체크 구성이 성공적으로 저장되었습니다"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:369
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:477
 msgid "Health check is disabled"
 msgstr "상태 확인이 비활성화되었습니다"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:369
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:477
 msgid "Health check is enabled"
-msgstr "헬스 체크가 활성화되었습니다"
+msgstr "상태 확인이 활성화되었습니다"
 
 #: src/views/upstream/SocketList.vue:36
 msgid "Health Status"
@@ -3172,7 +3178,7 @@ msgstr "HTTP"
 msgid "HTTP Challenge Port"
 msgstr "HTTP 검증 포트"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:398
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:506
 msgid "HTTP Method"
 msgstr "HTTP 메소드"
 
@@ -3289,6 +3295,10 @@ msgstr "지표"
 #: src/constants/index.ts:25 src/views/notification/notificationColumns.tsx:28
 msgid "Info"
 msgstr "정보"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:76
+msgid "Informational Responses (1xx)"
+msgstr "정보 응답 (1xx)"
 
 #: src/constants/errors/user.ts:17
 msgid "Init user not exists"
@@ -3891,7 +3901,7 @@ msgstr "최대 시도 횟수"
 msgid "Max Concurrent Connections"
 msgstr "최대 동시 연결 수"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:538
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:643
 msgid "Max Redirects"
 msgstr "최대 리디렉션 수"
 
@@ -3947,7 +3957,7 @@ msgstr "메모리 사용량 (RSS)"
 msgid "Method"
 msgstr "방법"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:508
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:613
 msgid "Method Name"
 msgstr "메서드 이름"
 
@@ -4102,7 +4112,7 @@ msgstr "네임스페이스"
 msgid ""
 "Need more DNS providers? Support us through donations or contact us for "
 "commercial collaboration"
-msgstr "더 많은 DNS 공급자가 필요하신가요? 기부를 통해 지원하거나 상업적 협력을 위해 문의해 주세요"
+msgstr "더 많은 DNS 제공자가 필요하신가요? 기부를 통해 지원하거나 상업적 협력을 위해 문의해 주세요"
 
 #: src/views/dashboard/NginxDashBoard.vue:195
 msgid "Need to enable the stub_status module"
@@ -4430,7 +4440,7 @@ msgstr "선택된 기록이 없습니다"
 msgid "No servers configured"
 msgstr "서버가 구성되지 않았습니다"
 
-#: src/views/dashboard/SiteNavigation.vue:141
+#: src/views/dashboard/SiteNavigation.vue:170
 msgid "No sites found"
 msgstr "사이트를 찾을 수 없음"
 
@@ -4477,7 +4487,7 @@ msgstr "노드"
 msgid "Not After"
 msgstr "만료일"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:482
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:587
 msgid "Not Expected Text"
 msgstr "예상하지 않은 텍스트"
 
@@ -4514,7 +4524,7 @@ msgid ""
 "certificates, please synchronize them to the remote nodes in advance."
 msgstr "구성 파일에 다른 구성이나 인증서가 포함되어 있는 경우, 미리 원격 노드에 동기화하십시오."
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:498
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:603
 msgid ""
 "Note: If the server does not support gRPC Reflection, health checks may "
 "fail. Please ensure your gRPC server has Reflection enabled."
@@ -4678,7 +4688,7 @@ msgstr "또는 파일을 아래 편집기로 드래그하세요"
 msgid "Or enter the secret: %{secret}"
 msgstr "또는 시크릿을 입력하세요: %{secret}"
 
-#: src/views/dashboard/SiteNavigation.vue:75
+#: src/views/dashboard/SiteNavigation.vue:104
 msgid "Order saved successfully"
 msgstr "순서가 성공적으로 저장되었습니다"
 
@@ -4782,7 +4792,7 @@ msgstr "비밀번호가 일치하지 않습니다"
 #: src/language/curd.ts:61
 #: src/views/config/components/ConfigRightPanel/Basic.vue:41
 #: src/views/config/components/Delete.vue:124
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:419
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:527
 #: src/views/nginx_log/NginxLogList.vue:164
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:520
 msgid "Path"
@@ -5105,7 +5115,7 @@ msgstr "프로젝트 팀"
 msgid "Protected Directory"
 msgstr "보호된 디렉터리"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:377
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:485
 msgid "Protocol"
 msgstr "프로토콜"
 
@@ -5231,7 +5241,7 @@ msgstr "권장:"
 
 #: src/views/dns/DNSRecordManager.vue:100
 msgid "Record created"
-msgstr "레코드 생성됨"
+msgstr "레코드가 생성되었습니다"
 
 #: src/views/dns/DNSRecordManager.vue:107
 msgid "Record deleted"
@@ -5239,7 +5249,7 @@ msgstr "레코드 삭제됨"
 
 #: src/views/dns/DNSRecordManager.vue:96
 msgid "Record updated"
-msgstr "레코드 업데이트됨"
+msgstr "레코드가 업데이트되었습니다"
 
 #: src/components/TwoFA/Authorization.vue:79
 msgid "Recovery"
@@ -5258,6 +5268,10 @@ msgstr "복구 코드는 2FA 장치에 대한 접근 권한을 잃었을 때 계
 #: src/views/preference/tabs/CertSettings.vue:40
 msgid "Recursive Nameservers"
 msgstr "재귀적 네임서버"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:100
+msgid "Redirection Messages (3xx)"
+msgstr "리디렉션 메시지 (3xx)"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:185
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:299
@@ -5480,7 +5494,7 @@ msgstr "성공적으로 갱신됨"
 msgid "Request"
 msgstr "요청"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:445
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:553
 msgid "Request Body"
 msgstr "요청 본문"
 
@@ -5741,7 +5755,7 @@ msgstr "토요일"
 #: src/views/certificate/components/CertificateActions.vue:29
 #: src/views/config/components/ConfigLeftPanel.vue:283
 #: src/views/config/components/ConfigName.vue:58
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:608
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:713
 #: src/views/dns/DNSRecordManager.vue:197
 #: src/views/preference/components/AuthSettings/Passkey.vue:131
 #: src/views/preference/Preference.vue:124
@@ -5957,6 +5971,10 @@ msgstr "서버"
 msgid "Server error"
 msgstr "서버 오류"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:148
+msgid "Server Error Responses (5xx)"
+msgstr "서버 오류 응답 (5xx)"
+
 #: src/views/dashboard/ServerAnalytic.vue:180
 msgid "Server Info"
 msgstr "서버 정보"
@@ -5981,7 +5999,7 @@ msgstr "directives에서 server_name을 찾을 수 없습니다"
 msgid "ServerIdx out of range"
 msgstr "ServerIdx 범위를 벗어남"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:503
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:608
 msgid "Service Name"
 msgstr "서비스 이름"
 
@@ -6083,7 +6101,7 @@ msgstr "사이트 로그"
 msgid "Site not found"
 msgstr "사이트를 찾을 수 없음"
 
-#: src/views/dashboard/SiteNavigation.vue:53
+#: src/views/dashboard/SiteNavigation.vue:82
 msgid "Site refresh initiated"
 msgstr "사이트 새로 고침 시작됨"
 
@@ -6099,7 +6117,7 @@ msgstr "사이트 디렉터리가 존재합니다"
 msgid "Sites List"
 msgstr "사이트 목록"
 
-#: src/views/dashboard/SiteNavigation.vue:144
+#: src/views/dashboard/SiteNavigation.vue:173
 msgid ""
 "Sites will appear here once you configure nginx server blocks with valid "
 "server_name directives."
@@ -6139,7 +6157,7 @@ msgstr "소켓"
 msgid "Sorted by"
 msgstr "정렬 기준"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:578
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:683
 msgid "Source IP"
 msgstr "소스 IP"
 
@@ -6324,6 +6342,10 @@ msgstr "Stub_status가 활성화되지 않았습니다"
 msgid "Success"
 msgstr "성공"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:85
+msgid "Successful Responses (2xx)"
+msgstr "성공 응답 (2xx)"
+
 #: src/views/backup/AutoBackup/components/CronEditor.vue:121
 #: src/views/backup/AutoBackup/components/CronEditor.vue:26
 msgid "Sunday"
@@ -6486,16 +6508,16 @@ msgstr "터미널 어시스턴트"
 msgid "Terminal Start Command"
 msgstr "터미널 시작 명령"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:611
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:716
 #: src/views/preference/tabs/ExternalNotify.vue:57
 msgid "Test"
 msgstr "테스트"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:343
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:451
 msgid "Test failed: %{error}"
 msgstr "테스트 실패: %{error}"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:348
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:456
 msgid "Test failed: Unable to perform health check"
 msgstr "테스트 실패: 상태 확인을 수행할 수 없음"
 
@@ -6508,7 +6530,7 @@ msgstr "테스트 메시지가 성공적으로 전송되었습니다"
 msgid "Test S3 Connection"
 msgstr "S3 연결 테스트"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:340
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:448
 msgid "Test successful! Response time: %{response_time}ms"
 msgstr "테스트 성공! 응답 시간: %{response_time}ms"
 
@@ -6780,7 +6802,7 @@ msgstr "시간"
 msgid "Time Range"
 msgstr "시간 범위"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:525
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:630
 msgid "Timeout (seconds)"
 msgstr "시간 초과 (초)"
 
@@ -6872,10 +6894,6 @@ msgstr "상위 10 개 URL"
 msgid "Total"
 msgstr "총계"
 
-#: src/views/upstream/SocketList.vue:149
-msgid "Total %{total} items"
-msgstr "총 %{total} 항목"
-
 #: src/views/system/Licenses.vue:107
 msgid "Total Components"
 msgstr "총 구성 요소"
@@ -6963,7 +6981,7 @@ msgstr "TTL"
 
 #: src/views/dns/components/DNSRecordForm.vue:55
 msgid "TTL (seconds)"
-msgstr "TTL(초)"
+msgstr "TTL (초)"
 
 #: src/views/backup/AutoBackup/components/CronEditor.vue:28
 msgid "Tuesday"
@@ -7140,7 +7158,7 @@ msgstr "임시 경로 사용"
 msgid "User"
 msgstr "사용자"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:531
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:636
 #: src/views/nginx_log/structured/components/SearchFilters.vue:200
 msgid "User Agent"
 msgstr "사용자 에이전트"
@@ -7184,7 +7202,7 @@ msgstr "고유 방문자"
 msgid "Valid"
 msgstr "유효함"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:553
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:658
 msgid "Validate SSL Certificate"
 msgstr "SSL 인증서 검증"
 
@@ -7199,7 +7217,7 @@ msgstr "값"
 msgid "Verify Backup File Integrity"
 msgstr "백업 파일 무결성 확인"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:559
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:664
 msgid "Verify Hostname"
 msgstr "호스트 이름 확인"
 
@@ -7477,6 +7495,9 @@ msgstr "할당 없는 파이프라인"
 
 #~ msgid "Site Navigation"
 #~ msgstr "사이트 네비게이션"
+
+#~ msgid "Total %{total} items"
+#~ msgstr "총 %{total} 항목"
 
 #~ msgid "WebSocket not connected, please wait for connection"
 #~ msgstr "WebSocket이 연결되지 않았습니다. 연결을 기다려 주세요"

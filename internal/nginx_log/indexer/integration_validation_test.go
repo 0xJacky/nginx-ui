@@ -3,8 +3,11 @@ package indexer
 import (
 	"context"
 	"os"
+	"path/filepath"
 	"testing"
 	"time"
+
+	"github.com/0xJacky/Nginx-UI/settings"
 )
 
 // TestIntegrationValidation validates the complete integration of optimizations
@@ -23,6 +26,9 @@ func TestIntegrationValidation(t *testing.T) {
 	}
 	defer os.Remove(tmpFile.Name())
 	defer tmpFile.Close()
+
+	// Allow tests to operate on the temporary log path by whitelisting its directory.
+	settings.NginxSettings.LogDirWhiteList = []string{filepath.Dir(tmpFile.Name())}
 
 	if _, err := tmpFile.WriteString(testLogContent); err != nil {
 		t.Fatalf("Failed to write test content: %v", err)
@@ -175,6 +181,8 @@ func TestOptimizationCompatibility(t *testing.T) {
 	}
 	defer os.Remove(tmpFile.Name())
 	defer tmpFile.Close()
+
+	settings.NginxSettings.LogDirWhiteList = []string{filepath.Dir(tmpFile.Name())}
 
 	if _, err := tmpFile.WriteString(testLogContent); err != nil {
 		t.Fatalf("Failed to write test content: %v", err)

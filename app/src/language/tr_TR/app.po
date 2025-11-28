@@ -236,7 +236,7 @@ msgstr "Direktifi Aşağıya Ekleyin"
 msgid "Add Domain"
 msgstr "Alan Adı Ekle"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:440
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:548
 msgid "Add Header"
 msgstr "Başlık Ekle"
 
@@ -300,7 +300,7 @@ msgstr "Gelişmiş bellek havuzu sistemi"
 msgid "Advanced search & filtering"
 msgstr "Gelişmiş arama ve filtreleme"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:517
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:622
 msgid "Advanced Settings"
 msgstr "Gelişmiş Ayarlar"
 
@@ -791,7 +791,7 @@ msgstr ""
 #: src/components/NgxConfigEditor/NgxServer.vue:61
 #: src/components/NgxConfigEditor/NgxUpstream.vue:32 src/language/curd.ts:37
 #: src/views/config/components/Delete.vue:98
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:605
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:710
 #: src/views/dns/DNSRecordManager.vue:194
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:102
 #: src/views/nginx_log/indexing/IndexManagement.vue:33
@@ -993,7 +993,7 @@ msgstr "Kontrol et"
 msgid "Check again"
 msgstr "Tekrar kontrol et"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:565
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:670
 msgid "Check Favicon"
 msgstr "Favicon'ı kontrol et"
 
@@ -1138,7 +1138,7 @@ msgstr ""
 "streams-available ve streams-enabled dizinlerinin nginx yapılandırma dizini "
 "altında olup olmadığını kontrol edin"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:520
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:625
 msgid "Check Interval (seconds)"
 msgstr "Kontrol Aralığı (saniye)"
 
@@ -1191,15 +1191,19 @@ msgstr "Kopyala için tıklayın"
 msgid "Client Body Buffer Size"
 msgstr "İstemci gövdesi arabellek boyutu"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:587
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:692
 msgid "Client Certificate"
 msgstr "İstemci Sertifikası"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:114
+msgid "Client Error Responses (4xx)"
+msgstr "İstemci Hata Yanıtları (4xx)"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:117
 msgid "Client Header Buffer Size"
 msgstr "İstemci Başlık Arabellek Boyutu"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:592
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:697
 msgid "Client Key"
 msgstr "İstemci Anahtarı"
 
@@ -1569,7 +1573,7 @@ msgstr "Özel Alan Adları"
 msgid "Custom Domains Certificate"
 msgstr "Özel Alan Adı Sertifikası"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:425
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:533
 msgid "Custom Headers"
 msgstr "Özel Başlıklar"
 
@@ -1923,7 +1927,8 @@ msgstr "DNS"
 msgid "DNS Credentials"
 msgstr "DNS Kimlik Bilgileri"
 
-#: src/routes/modules/dns.ts:28 src/views/dns/DNSDomainList.vue:202
+#: src/routes/modules/dns.ts:28
+#: src/views/dns/DNSDomainList.vue:202
 msgid "DNS Domains"
 msgstr "DNS Alanları"
 
@@ -1940,11 +1945,12 @@ msgstr "DNS Sağlayıcısı"
 msgid "DNS Provider Support"
 msgstr "DNS Sağlayıcı Desteği"
 
-#: src/routes/modules/dns.ts:36 src/views/dns/DNSRecordManager.vue:45
+#: src/routes/modules/dns.ts:36
+#: src/views/dns/DNSRecordManager.vue:45
 msgid "DNS Records"
 msgstr "DNS Kayıtları"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:573
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:678
 msgid "DNS Resolver"
 msgstr "DNS Çözümleyici"
 
@@ -2163,7 +2169,7 @@ msgstr "Kod Tamamlamayı Etkinleştir"
 msgid "Enable compression for content transfer"
 msgstr "İçerik transferi için sıkıştırmayı etkinleştir"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:365
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:473
 msgid "Enable Health Check"
 msgstr "Sağlık Kontrolünü Etkinleştir"
 
@@ -2398,11 +2404,11 @@ msgstr "Genişlet"
 msgid "Expected Performance"
 msgstr "Beklenen Performans"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:449
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:557
 msgid "Expected Status Codes"
 msgstr "Beklenen Durum Kodları"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:477
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:582
 msgid "Expected Text"
 msgstr "Beklenen Metin"
 
@@ -2812,7 +2818,7 @@ msgstr "Dosya indeksi yeniden oluşturulamadı"
 msgid "Failed to rebuild index"
 msgstr "Dizin yeniden oluşturulamadı"
 
-#: src/views/dashboard/SiteNavigation.vue:57
+#: src/views/dashboard/SiteNavigation.vue:86
 msgid "Failed to refresh sites"
 msgstr "Siteler yenilenemedi"
 
@@ -2828,7 +2834,7 @@ msgstr "Sertifika iptal edilemedi"
 msgid "Failed to revoke certificate: %{error}"
 msgstr "Sertifika iptal edilemedi: %{error}"
 
-#: src/views/dashboard/SiteNavigation.vue:104
+#: src/views/dashboard/SiteNavigation.vue:133
 msgid "Failed to save configuration"
 msgstr "Yapılandırma kaydedilemedi"
 
@@ -2836,7 +2842,7 @@ msgstr "Yapılandırma kaydedilemedi"
 msgid "Failed to save downloaded file: {0}"
 msgstr "İndirilen dosya kaydedilirken hata oluştu: {0}"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:304
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:412
 msgid "Failed to save health check configuration"
 msgstr "Sağlık kontrol yapılandırması kaydedilemedi"
 
@@ -2844,7 +2850,7 @@ msgstr "Sağlık kontrol yapılandırması kaydedilemedi"
 msgid "Failed to save Nginx performance settings"
 msgstr "Nginx performans ayarları kaydedilemedi"
 
-#: src/views/dashboard/SiteNavigation.vue:81
+#: src/views/dashboard/SiteNavigation.vue:110
 msgid "Failed to save order"
 msgstr "Sıralama kaydedilemedi"
 
@@ -2956,7 +2962,7 @@ msgstr "klasör"
 msgid "Folder"
 msgstr "Klasör"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:545
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:650
 msgid "Follow Redirects"
 msgstr "Yönlendirmeleri takip et"
 
@@ -3139,7 +3145,7 @@ msgstr "Ham Log Görüntüleyiciye Git"
 msgid "Gotify"
 msgstr "Gotify"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:495
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:600
 msgid ""
 "gRPC health check requires server to implement gRPC Health Check service "
 "(grpc.health.v1.Health)."
@@ -3147,7 +3153,7 @@ msgstr ""
 "gRPC sağlık kontrolü, sunucunun gRPC Sağlık Kontrol hizmetini "
 "(grpc.health.v1.Health) uygulamasını gerektirir."
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:494
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:599
 msgid ""
 "gRPCS uses TLS encryption. Server must implement gRPC Health Check service. "
 "For testing, SSL validation is disabled by default."
@@ -3171,23 +3177,23 @@ msgstr "GZIP Minimum Uzunluk"
 msgid "Health Check"
 msgstr "Sağlık Kontrolü"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:358
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:466
 msgid "Health Check Configuration"
 msgstr "Sağlık Kontrolü Yapılandırması"
 
-#: src/views/dashboard/SiteNavigation.vue:99
+#: src/views/dashboard/SiteNavigation.vue:128
 msgid "Health check configuration saved"
 msgstr "Sağlık kontrolü yapılandırması kaydedildi"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:295
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:403
 msgid "Health check configuration saved successfully"
 msgstr "Sağlık kontrol yapılandırması başarıyla kaydedildi"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:369
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:477
 msgid "Health check is disabled"
 msgstr "Sağlık kontrolü devre dışı"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:369
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:477
 msgid "Health check is enabled"
 msgstr "Sağlık kontrolü etkinleştirildi"
 
@@ -3230,7 +3236,7 @@ msgstr "Host"
 
 #: src/views/dns/components/DNSRecordFilter.vue:45
 msgid "Host, e.g. @ or www"
-msgstr "Host, örneğin @ veya www"
+msgstr "Host, örn. @ veya www"
 
 #: src/views/backup/AutoBackup/components/CronEditor.vue:159
 #: src/views/nginx_log/dashboard/components/HourlyChart.vue:87
@@ -3245,7 +3251,7 @@ msgstr "HTTP"
 msgid "HTTP Challenge Port"
 msgstr "HTTP Doğrulama Bağlantı Noktası"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:398
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:506
 msgid "HTTP Method"
 msgstr "HTTP Yöntemi"
 
@@ -3375,6 +3381,10 @@ msgstr "Gösterge"
 #: src/constants/index.ts:25 src/views/notification/notificationColumns.tsx:28
 msgid "Info"
 msgstr "Bilgi"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:76
+msgid "Informational Responses (1xx)"
+msgstr "Bilgilendirme Yanıtları (1xx)"
 
 #: src/constants/errors/user.ts:17
 msgid "Init user not exists"
@@ -3989,7 +3999,7 @@ msgstr "Maksimum Deneme Sayısı"
 msgid "Max Concurrent Connections"
 msgstr "Maksimum Eşzamanlı Bağlantı"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:538
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:643
 msgid "Max Redirects"
 msgstr "Maksimum Yönlendirme"
 
@@ -4045,7 +4055,7 @@ msgstr "Bellek Kullanımı (RSS)"
 msgid "Method"
 msgstr "Yöntem"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:508
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:613
 msgid "Method Name"
 msgstr "Metot Adı"
 
@@ -4532,7 +4542,7 @@ msgstr "Hiçbir kayıt seçilmedi"
 msgid "No servers configured"
 msgstr "Yapılandırılmış sunucu yok"
 
-#: src/views/dashboard/SiteNavigation.vue:141
+#: src/views/dashboard/SiteNavigation.vue:170
 msgid "No sites found"
 msgstr "Site bulunamadı"
 
@@ -4581,7 +4591,7 @@ msgstr "Düğümler"
 msgid "Not After"
 msgstr "Sonra Değil"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:482
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:587
 msgid "Not Expected Text"
 msgstr "Beklenmeyen Metin"
 
@@ -4620,7 +4630,7 @@ msgstr ""
 "Not: Eğer yapılandırma dosyası başka yapılandırmalar veya sertifikalar "
 "içeriyorsa, lütfen bunları uzak düğümlere önceden senkronize edin."
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:498
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:603
 msgid ""
 "Note: If the server does not support gRPC Reflection, health checks may "
 "fail. Please ensure your gRPC server has Reflection enabled."
@@ -4788,7 +4798,7 @@ msgstr "veya dosyayı aşağıdaki düzenleyiciye sürükleyin"
 msgid "Or enter the secret: %{secret}"
 msgstr "Veya gizli anahtarı girin: %{secret}"
 
-#: src/views/dashboard/SiteNavigation.vue:75
+#: src/views/dashboard/SiteNavigation.vue:104
 msgid "Order saved successfully"
 msgstr "Sıra başarıyla kaydedildi"
 
@@ -4893,7 +4903,7 @@ msgstr "Şifreler eşleşmiyor"
 #: src/language/curd.ts:61
 #: src/views/config/components/ConfigRightPanel/Basic.vue:41
 #: src/views/config/components/Delete.vue:124
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:419
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:527
 #: src/views/nginx_log/NginxLogList.vue:164
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:520
 msgid "Path"
@@ -5233,7 +5243,7 @@ msgstr "Proje Ekibi"
 msgid "Protected Directory"
 msgstr "Korumalı Dizin"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:377
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:485
 msgid "Protocol"
 msgstr "Protokol"
 
@@ -5263,7 +5273,7 @@ msgstr "İl / Bölge"
 #: src/views/dns/components/DNSRecordTable.vue:51
 #: src/views/dns/components/DNSRecordTable.vue:81
 msgid "Proxied"
-msgstr "Proxy Edilmiş"
+msgstr "Proxy'li"
 
 #: src/views/certificate/ACMEUser.vue:63
 msgid "Proxy"
@@ -5390,6 +5400,10 @@ msgstr ""
 #: src/views/preference/tabs/CertSettings.vue:40
 msgid "Recursive Nameservers"
 msgstr "Özyinelemeli İsim Sunucuları"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:100
+msgid "Redirection Messages (3xx)"
+msgstr "Yönlendirme Mesajları (3xx)"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:185
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:299
@@ -5624,7 +5638,7 @@ msgstr "Başarıyla yenilendi"
 msgid "Request"
 msgstr "İstek"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:445
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:553
 msgid "Request Body"
 msgstr "İstek Gövdesi"
 
@@ -5887,7 +5901,7 @@ msgstr "Cumartesi"
 #: src/views/certificate/components/CertificateActions.vue:29
 #: src/views/config/components/ConfigLeftPanel.vue:283
 #: src/views/config/components/ConfigName.vue:58
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:608
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:713
 #: src/views/dns/DNSRecordManager.vue:197
 #: src/views/preference/components/AuthSettings/Passkey.vue:131
 #: src/views/preference/Preference.vue:124
@@ -6105,6 +6119,10 @@ msgstr "Sunucu"
 msgid "Server error"
 msgstr "Sunucu hatası"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:148
+msgid "Server Error Responses (5xx)"
+msgstr "Sunucu Hata Yanıtları (5xx)"
+
 #: src/views/dashboard/ServerAnalytic.vue:180
 msgid "Server Info"
 msgstr "Sunucu Bilgisi"
@@ -6129,7 +6147,7 @@ msgstr "Yönergelerde server_name bulunamadı"
 msgid "ServerIdx out of range"
 msgstr "ServerIdx aralık dışında"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:503
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:608
 msgid "Service Name"
 msgstr "Servis Adı"
 
@@ -6235,7 +6253,7 @@ msgstr "Site Kayıtları"
 msgid "Site not found"
 msgstr "Site bulunamadı"
 
-#: src/views/dashboard/SiteNavigation.vue:53
+#: src/views/dashboard/SiteNavigation.vue:82
 msgid "Site refresh initiated"
 msgstr "Site yenileme başlatıldı"
 
@@ -6251,7 +6269,7 @@ msgstr "Siteler dizini mevcut"
 msgid "Sites List"
 msgstr "Site Listesi"
 
-#: src/views/dashboard/SiteNavigation.vue:144
+#: src/views/dashboard/SiteNavigation.vue:173
 msgid ""
 "Sites will appear here once you configure nginx server blocks with valid "
 "server_name directives."
@@ -6293,7 +6311,7 @@ msgstr "Soket"
 msgid "Sorted by"
 msgstr "Sıralama ölçütü"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:578
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:683
 msgid "Source IP"
 msgstr "Kaynak IP"
 
@@ -6480,6 +6498,10 @@ msgstr "Stub_status etkin değil"
 msgid "Success"
 msgstr "Başarı"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:85
+msgid "Successful Responses (2xx)"
+msgstr "Başarılı Yanıtlar (2xx)"
+
 #: src/views/backup/AutoBackup/components/CronEditor.vue:121
 #: src/views/backup/AutoBackup/components/CronEditor.vue:26
 msgid "Sunday"
@@ -6643,16 +6665,16 @@ msgstr "Terminal Asistanı"
 msgid "Terminal Start Command"
 msgstr "Terminal Başlatma Komutu"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:611
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:716
 #: src/views/preference/tabs/ExternalNotify.vue:57
 msgid "Test"
 msgstr "Test"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:343
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:451
 msgid "Test failed: %{error}"
 msgstr "Test başarısız: %{error}"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:348
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:456
 msgid "Test failed: Unable to perform health check"
 msgstr "Test başarısız: Sağlık kontrolü yapılamadı"
 
@@ -6665,7 +6687,7 @@ msgstr "Test mesajı başarıyla gönderildi"
 msgid "Test S3 Connection"
 msgstr "S3 Bağlantısını Test Et"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:340
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:448
 msgid "Test successful! Response time: %{response_time}ms"
 msgstr "Test başarılı! Yanıt süresi: %{response_time}ms"
 
@@ -6975,7 +6997,7 @@ msgstr "Zaman"
 msgid "Time Range"
 msgstr "Zaman Aralığı"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:525
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:630
 msgid "Timeout (seconds)"
 msgstr "Zaman aşımı (saniye)"
 
@@ -7074,10 +7096,6 @@ msgstr "En İyi 10 URL"
 #: src/language/curd.ts:5
 msgid "Total"
 msgstr "Toplam"
-
-#: src/views/upstream/SocketList.vue:149
-msgid "Total %{total} items"
-msgstr "Toplam %{total} öğe"
 
 #: src/views/system/Licenses.vue:107
 msgid "Total Components"
@@ -7345,7 +7363,7 @@ msgstr "Geçici Yol Kullan"
 msgid "User"
 msgstr "Kullanıcı"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:531
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:636
 #: src/views/nginx_log/structured/components/SearchFilters.vue:200
 msgid "User Agent"
 msgstr "Kullanıcı Aracısı"
@@ -7389,7 +7407,7 @@ msgstr "Benzersiz Ziyaretçi"
 msgid "Valid"
 msgstr "Geçerli"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:553
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:658
 msgid "Validate SSL Certificate"
 msgstr "SSL Sertifikasını Doğrula"
 
@@ -7404,7 +7422,7 @@ msgstr "Değer"
 msgid "Verify Backup File Integrity"
 msgstr "Yedek Dosya Bütünlüğünü Doğrula"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:559
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:664
 msgid "Verify Hostname"
 msgstr "Ana bilgisayar adını doğrula"
 
@@ -7703,6 +7721,9 @@ msgstr "Tahsisatsız boru hattı"
 
 #~ msgid "Site Navigation"
 #~ msgstr "Site Gezintisi"
+
+#~ msgid "Total %{total} items"
+#~ msgstr "Toplam %{total} öğe"
 
 #~ msgid "WebSocket not connected, please wait for connection"
 #~ msgstr "WebSocket bağlı değil, lütfen bağlantı için bekleyin"
