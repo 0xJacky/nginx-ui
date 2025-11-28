@@ -54,6 +54,114 @@ const formData = ref<EnhancedHealthCheckConfig>({
   clientKey: '',
 })
 
+interface StatusCodeOption {
+  value: number
+  label: string
+}
+
+interface StatusCodeGroup {
+  title: string
+  options: StatusCodeOption[]
+}
+
+function createStatusOption(code: number, description: string): StatusCodeOption {
+  return {
+    value: code,
+    label: `${code} ${description}`,
+  }
+}
+
+const statusCodeGroups: StatusCodeGroup[] = [
+  {
+    title: 'Informational Responses (1xx)',
+    options: [
+      createStatusOption(100, 'Continue'),
+      createStatusOption(101, 'Switching Protocols'),
+      createStatusOption(102, 'Processing'),
+      createStatusOption(103, 'Early Hints'),
+    ],
+  },
+  {
+    title: 'Successful Responses (2xx)',
+    options: [
+      createStatusOption(200, 'OK'),
+      createStatusOption(201, 'Created'),
+      createStatusOption(202, 'Accepted'),
+      createStatusOption(203, 'Non-Authoritative Information'),
+      createStatusOption(204, 'No Content'),
+      createStatusOption(205, 'Reset Content'),
+      createStatusOption(206, 'Partial Content'),
+      createStatusOption(207, 'Multi-Status'),
+      createStatusOption(208, 'Already Reported'),
+      createStatusOption(226, 'IM Used'),
+    ],
+  },
+  {
+    title: 'Redirection Messages (3xx)',
+    options: [
+      createStatusOption(300, 'Multiple Choices'),
+      createStatusOption(301, 'Moved Permanently'),
+      createStatusOption(302, 'Found'),
+      createStatusOption(303, 'See Other'),
+      createStatusOption(304, 'Not Modified'),
+      createStatusOption(305, 'Use Proxy'),
+      createStatusOption(306, 'Switch Proxy (Unused)'),
+      createStatusOption(307, 'Temporary Redirect'),
+      createStatusOption(308, 'Permanent Redirect'),
+    ],
+  },
+  {
+    title: 'Client Error Responses (4xx)',
+    options: [
+      createStatusOption(400, 'Bad Request'),
+      createStatusOption(401, 'Unauthorized'),
+      createStatusOption(402, 'Payment Required'),
+      createStatusOption(403, 'Forbidden'),
+      createStatusOption(404, 'Not Found'),
+      createStatusOption(405, 'Method Not Allowed'),
+      createStatusOption(406, 'Not Acceptable'),
+      createStatusOption(407, 'Proxy Authentication Required'),
+      createStatusOption(408, 'Request Timeout'),
+      createStatusOption(409, 'Conflict'),
+      createStatusOption(410, 'Gone'),
+      createStatusOption(411, 'Length Required'),
+      createStatusOption(412, 'Precondition Failed'),
+      createStatusOption(413, 'Payload Too Large'),
+      createStatusOption(414, 'URI Too Long'),
+      createStatusOption(415, 'Unsupported Media Type'),
+      createStatusOption(416, 'Range Not Satisfiable'),
+      createStatusOption(417, 'Expectation Failed'),
+      createStatusOption(418, 'I\'m a teapot'),
+      createStatusOption(421, 'Misdirected Request'),
+      createStatusOption(422, 'Unprocessable Content'),
+      createStatusOption(423, 'Locked'),
+      createStatusOption(424, 'Failed Dependency'),
+      createStatusOption(425, 'Too Early'),
+      createStatusOption(426, 'Upgrade Required'),
+      createStatusOption(428, 'Precondition Required'),
+      createStatusOption(429, 'Too Many Requests'),
+      createStatusOption(431, 'Request Header Fields Too Large'),
+      createStatusOption(451, 'Unavailable For Legal Reasons'),
+    ],
+  },
+  {
+    title: 'Server Error Responses (5xx)',
+    options: [
+      createStatusOption(500, 'Internal Server Error'),
+      createStatusOption(501, 'Not Implemented'),
+      createStatusOption(502, 'Bad Gateway'),
+      createStatusOption(503, 'Service Unavailable'),
+      createStatusOption(504, 'Gateway Timeout'),
+      createStatusOption(505, 'HTTP Version Not Supported'),
+      createStatusOption(506, 'Variant Also Negotiates'),
+      createStatusOption(507, 'Insufficient Storage'),
+      createStatusOption(508, 'Loop Detected'),
+      createStatusOption(510, 'Not Extended'),
+      createStatusOption(511, 'Network Authentication Required'),
+    ],
+  },
+]
+
 // Load existing config when site changes
 watchEffect(async () => {
   if (props.site) {
@@ -448,27 +556,24 @@ async function handleTest() {
 
             <AFormItem :label="$gettext('Expected Status Codes')">
               <ASelect
-                v-model:value="formData.expectedStatus" mode="multiple" style="width: 100%"
+                v-model:value="formData.expectedStatus"
+                mode="multiple"
+                style="width: 100%"
                 placeholder="200, 201, 204..."
               >
-                <ASelectOption :value="200">
-                  200 OK
-                </ASelectOption>
-                <ASelectOption :value="201">
-                  201 Created
-                </ASelectOption>
-                <ASelectOption :value="204">
-                  204 No Content
-                </ASelectOption>
-                <ASelectOption :value="301">
-                  301 Moved Permanently
-                </ASelectOption>
-                <ASelectOption :value="302">
-                  302 Found
-                </ASelectOption>
-                <ASelectOption :value="304">
-                  304 Not Modified
-                </ASelectOption>
+                <ASelectOptGroup
+                  v-for="group in statusCodeGroups"
+                  :key="group.title"
+                  :label="group.title"
+                >
+                  <ASelectOption
+                    v-for="option in group.options"
+                    :key="option.value"
+                    :value="option.value"
+                  >
+                    {{ option.label }}
+                  </ASelectOption>
+                </ASelectOptGroup>
               </ASelect>
             </AFormItem>
 
