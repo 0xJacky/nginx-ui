@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/mark3labs/mcp-go/mcp"
@@ -62,7 +63,7 @@ func handleNginxConfigEnable(ctx context.Context, request mcp.CallToolRequest) (
 
 	// Ensure destination directory exists
 	if !helper.FileExists(sitesEnabledDir) {
-		if err := os.MkdirAll(dstDir, 0755); err != nil {
+		if err := os.MkdirAll(sitesEnabledDir, 0755); err != nil {
 			return nil, fmt.Errorf("failed to create sites-enabled directory: %w", err)
 		}
 	}
