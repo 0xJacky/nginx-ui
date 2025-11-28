@@ -67,13 +67,13 @@ interface StatusCodeGroup {
 function createStatusOption(code: number, description: string): StatusCodeOption {
   return {
     value: code,
-    label: `${code} ${$gettext(description)}`,
+    label: `${code} ${description}`,
   }
 }
 
 const statusCodeGroups: StatusCodeGroup[] = [
   {
-    title: $gettext('Informational Responses (1xx)'),
+    title: 'Informational Responses (1xx)',
     options: [
       createStatusOption(100, 'Continue'),
       createStatusOption(101, 'Switching Protocols'),
@@ -82,7 +82,7 @@ const statusCodeGroups: StatusCodeGroup[] = [
     ],
   },
   {
-    title: $gettext('Successful Responses (2xx)'),
+    title: 'Successful Responses (2xx)',
     options: [
       createStatusOption(200, 'OK'),
       createStatusOption(201, 'Created'),
@@ -97,7 +97,7 @@ const statusCodeGroups: StatusCodeGroup[] = [
     ],
   },
   {
-    title: $gettext('Redirection Messages (3xx)'),
+    title: 'Redirection Messages (3xx)',
     options: [
       createStatusOption(300, 'Multiple Choices'),
       createStatusOption(301, 'Moved Permanently'),
@@ -111,7 +111,7 @@ const statusCodeGroups: StatusCodeGroup[] = [
     ],
   },
   {
-    title: $gettext('Client Error Responses (4xx)'),
+    title: 'Client Error Responses (4xx)',
     options: [
       createStatusOption(400, 'Bad Request'),
       createStatusOption(401, 'Unauthorized'),
@@ -145,7 +145,7 @@ const statusCodeGroups: StatusCodeGroup[] = [
     ],
   },
   {
-    title: $gettext('Server Error Responses (5xx)'),
+    title: 'Server Error Responses (5xx)',
     options: [
       createStatusOption(500, 'Internal Server Error'),
       createStatusOption(501, 'Not Implemented'),
@@ -556,30 +556,24 @@ async function handleTest() {
 
             <AFormItem :label="$gettext('Expected Status Codes')">
               <ASelect
-                v-model:value="formData.expectedStatus" mode="multiple" style="width: 100%"
+                v-model:value="formData.expectedStatus"
+                mode="multiple"
+                style="width: 100%"
                 placeholder="200, 201, 204..."
               >
-                <ASelectOption :value="200">
-                  200 OK
-                </ASelectOption>
-                <ASelectOption :value="201">
-                  201 Created
-                </ASelectOption>
-                <ASelectOption :value="204">
-                  204 No Content
-                </ASelectOption>
-                <ASelectOption :value="301">
-                  301 Moved Permanently
-                </ASelectOption>
-                <ASelectOption :value="302">
-                  302 Found
-                </ASelectOption>
-                <ASelectOption :value="304">
-                  304 Not Modified
-                </ASelectOption>
-                <ASelectOption :value="401">
-                  401 Unauthorized
-                </ASelectOption>
+                <ASelectOptGroup
+                  v-for="group in statusCodeGroups"
+                  :key="group.title"
+                  :label="group.title"
+                >
+                  <ASelectOption
+                    v-for="option in group.options"
+                    :key="option.value"
+                    :value="option.value"
+                  >
+                    {{ option.label }}
+                  </ASelectOption>
+                </ASelectOptGroup>
               </ASelect>
             </AFormItem>
 
