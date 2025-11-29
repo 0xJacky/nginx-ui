@@ -129,9 +129,12 @@ func needsIncrementalIndexing(log *nginx_log.NginxLogWithIndex, persistence logI
 	// Fallback: use aggregated data cautiously by clamping the stored size so grouped entries
 	// do not trigger false positives when rotation files are aggregated together.
 	lastModified := time.Unix(log.LastModified, 0)
-	lastSize := log.LastSize
-	if lastSize == 0 || lastSize > fileSize {
-		lastSize = fileSize
+	rawLastSize := log.LastSize
+	clampedLastSize := rawLastSize
+	if clampedLastSize == 0 {
+		clampedLastSize = fileSize
+	} else if clampedLastSize > fileSize {
+		clampedLastSize = fileSize
 	}
 
 	// If the file was never indexed, queue it once.
@@ -139,15 +142,15 @@ func needsIncrementalIndexing(log *nginx_log.NginxLogWithIndex, persistence logI
 		return true
 	}
 
-	if fileModTime.After(lastModified) && fileSize > lastSize {
+	if fileModTime.After(lastModified) && fileSize > clampedLastSize {
 		logger.Debugf("File %s needs incremental indexing (fallback path): mod_time=%s, size=%d",
 			log.Path, fileModTime.Format("2006-01-02 15:04:05"), fileSize)
 		return true
 	}
 
-	if fileSize < lastSize {
-		logger.Debugf("File %s needs full re-indexing (fallback path) due to size decrease: old_size=%d, new_size=%d",
-			log.Path, lastSize, fileSize)
+	if fileSize < clampedLastSize {
+		logger.Debugf("File %s needs full re-indexing (fallback path) due to size decrease: old_size=%d (raw=%d), new_size=%d",
+			log.Path, clampedLastSize, rawLastSize, fileSize)
 		return true
 	}
 

@@ -11,6 +11,37 @@ import (
 	"github.com/0xJacky/Nginx-UI/model"
 )
 
+// Test that grouped (aggregated) log metadata with oversized LastSize values
+// does not incorrectly trigger rotation detection in the fallback path.
+func TestNeedsIncrementalIndexingAggregatedSizeRespectsClamp(t *testing.T) {
+	t.Parallel()
+
+	tmpDir := t.TempDir()
+	logPath := filepath.Join(tmpDir, "access.log")
+
+	if err := os.WriteFile(logPath, []byte("nginx-ui"), 0o644); err != nil {
+		t.Fatalf("failed to create temp log file: %v", err)
+	}
+
+	info, err := os.Stat(logPath)
+	if err != nil {
+		t.Fatalf("failed to stat temp log file: %v", err)
+	}
+
+	// Simulate aggregated metadata where LastSize is larger than the live file.
+	logEntry := &nginx_log.NginxLogWithIndex{
+		Path:         logPath,
+		Type:         "access",
+		LastModified: info.ModTime().Unix(),
+		LastIndexed:  time.Now().Unix(),
+		LastSize:     info.Size() * 5,
+	}
+
+	if needsIncrementalIndexing(logEntry, nil) {
+		t.Fatalf("aggregated size should not trigger re-indexing when clamped")
+	}
+}
+
 type stubLogIndexProvider struct {
 	idx *model.NginxLogIndex
 	err error
