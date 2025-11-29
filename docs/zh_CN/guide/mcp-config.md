@@ -53,3 +53,9 @@ MCP 配置文件管理模块提供了一系列工具和资源，用于管理 Ngi
 - 类型：`tool`
 - 名称：`nginx_config_history`
 - 描述：获取配置文件的修改历史记录
+
+### 启用配置文件
+
+- 类型：`tool`
+- 名称：`nginx_config_enable`
+- 描述：启用之前创建的 Nginx 配置文件（在 sites-enabled 中创建符号链接）
