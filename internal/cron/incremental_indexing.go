@@ -7,9 +7,15 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/indexer"
+	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/go-co-op/gocron/v2"
 	"github.com/uozi-tech/cosy/logger"
 )
+
+// logIndexProvider provides access to stored per-file index metadata.
+type logIndexProvider interface {
+	GetLogIndex(path string) (*model.NginxLogIndex, error)
+}
 
 // setupIncrementalIndexingJob sets up the periodic incremental log indexing job
 func setupIncrementalIndexingJob(s gocron.Scheduler) (gocron.Job, error) {
@@ -42,6 +48,12 @@ func performIncrementalIndexing() {
 		return
 	}
 
+	persistence := logFileManager.GetPersistence()
+	if persistence == nil {
+		logger.Warn("Persistence manager not available for incremental indexing")
+		return
+	}
+
 	// Get modern indexer
 	modernIndexer := nginx_log.GetIndexer()
 	if modernIndexer == nil {
@@ -64,7 +76,7 @@ func performIncrementalIndexing() {
 	changedCount := 0
 	for _, log := range allLogs {
 		// Check if file needs incremental indexing
-		if needsIncrementalIndexing(log) {
+		if needsIncrementalIndexing(log, persistence) {
 			if err := queueIncrementalIndexing(log.Path, modernIndexer, logFileManager); err != nil {
 				logger.Errorf("Failed to queue incremental indexing for %s: %v", log.Path, err)
 			} else {
@@ -81,7 +93,7 @@ func performIncrementalIndexing() {
 }
 
 // needsIncrementalIndexing checks if a log file needs incremental indexing
-func needsIncrementalIndexing(log *nginx_log.NginxLogWithIndex) bool {
+func needsIncrementalIndexing(log *nginx_log.NginxLogWithIndex, persistence logIndexProvider) bool {
 	// Skip if already indexing or queued
 	if log.IndexStatus == string(indexer.IndexStatusIndexing) ||
 		log.IndexStatus == string(indexer.IndexStatusQueued) {
@@ -99,22 +111,43 @@ func needsIncrementalIndexing(log *nginx_log.NginxLogWithIndex) bool {
 		return false
 	}
 
-	// Check if file has been modified since last index
 	fileModTime := fileInfo.ModTime()
 	fileSize := fileInfo.Size()
-	lastModified := time.Unix(log.LastModified, 0)
 
-	// File was modified after last index and size increased
-	if fileModTime.After(lastModified) && fileSize > log.LastSize {
-		logger.Debugf("File %s needs incremental indexing: mod_time=%s, size=%d",
+	if persistence != nil {
+		if logIndex, err := persistence.GetLogIndex(log.Path); err == nil {
+			if logIndex.NeedsIndexing(fileModTime, fileSize) {
+				logger.Debugf("File %s needs incremental indexing based on persisted metadata", log.Path)
+				return true
+			}
+			return false
+		} else {
+			logger.Debugf("Could not load persisted metadata for %s: %v", log.Path, err)
+		}
+	}
+
+	// Fallback: use aggregated data cautiously by clamping the stored size so grouped entries
+	// do not trigger false positives when rotation files are aggregated together.
+	lastModified := time.Unix(log.LastModified, 0)
+	lastSize := log.LastSize
+	if lastSize == 0 || lastSize > fileSize {
+		lastSize = fileSize
+	}
+
+	// If the file was never indexed, queue it once.
+	if log.LastIndexed == 0 {
+		return true
+	}
+
+	if fileModTime.After(lastModified) && fileSize > lastSize {
+		logger.Debugf("File %s needs incremental indexing (fallback path): mod_time=%s, size=%d",
 			log.Path, fileModTime.Format("2006-01-02 15:04:05"), fileSize)
 		return true
 	}
 
-	// File size decreased - might be file rotation
-	if fileSize < log.LastSize {
-		logger.Debugf("File %s needs full re-indexing due to size decrease: old_size=%d, new_size=%d",
-			log.Path, log.LastSize, fileSize)
+	if fileSize < lastSize {
+		logger.Debugf("File %s needs full re-indexing (fallback path) due to size decrease: old_size=%d, new_size=%d",
+			log.Path, lastSize, fileSize)
 		return true
 	}
 
