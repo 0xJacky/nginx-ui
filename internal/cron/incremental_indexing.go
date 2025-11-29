@@ -129,7 +129,8 @@ func needsIncrementalIndexing(log *nginx_log.NginxLogWithIndex, persistence logI
 	// Fallback: use aggregated data cautiously by clamping the stored size so grouped entries
 	// do not trigger false positives when rotation files are aggregated together.
 	lastModified := time.Unix(log.LastModified, 0)
-	lastSize := log.LastSize
+	rawLastSize := log.LastSize
+	lastSize := rawLastSize
 	if lastSize == 0 || lastSize > fileSize {
 		lastSize = fileSize
 	}
@@ -145,9 +146,9 @@ func needsIncrementalIndexing(log *nginx_log.NginxLogWithIndex, persistence logI
 		return true
 	}
 
-	if fileSize < lastSize {
+	if rawLastSize > 0 && fileSize < rawLastSize {
 		logger.Debugf("File %s needs full re-indexing (fallback path) due to size decrease: old_size=%d, new_size=%d",
-			log.Path, lastSize, fileSize)
+			log.Path, rawLastSize, fileSize)
 		return true
 	}
 
