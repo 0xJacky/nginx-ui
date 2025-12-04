@@ -108,15 +108,31 @@ type BatchAdjustment struct {
 func NewAdaptiveOptimizer(config *Config) *AdaptiveOptimizer {
 	ctx, cancel := context.WithCancel(context.Background())
 
+	// Derive worker range from the configured worker count. We deliberately
+	// treat the configured WorkerCount as the *maximum* concurrency the user
+	// (or defaults) allow, and let the optimizer scale down when CPU is
+	// saturated, then back up again, but never beyond this cap.
+	maxProcs := runtime.GOMAXPROCS(0)
+	initialWorkers := config.WorkerCount
+	if initialWorkers <= 0 {
+		if maxProcs > 0 {
+			initialWorkers = maxProcs
+		} else {
+			initialWorkers = 2
+		}
+	}
+	minWorkers := max(2, initialWorkers/4)
+
 	ao := &AdaptiveOptimizer{
 		config: config,
 		cpuMonitor: &CPUMonitor{
-			targetUtilization:   0.75, // Target 75% CPU utilization (more conservative)
-			measurementInterval: 5 * time.Second,
-			adjustmentThreshold: 0.10,                            // Adjust if 10% deviation from target (more sensitive)
-			maxWorkers:          runtime.GOMAXPROCS(0) * 6,       // Allow scaling up to 6x CPU cores for I/O-bound workloads
-			minWorkers:          max(2, runtime.GOMAXPROCS(0)/4), // Minimum 2 workers or 1/4 of cores for baseline performance
-			measurements:        make([]float64, 0, 12),          // 1 minute history at 5s intervals
+			// Keep target utilization, but relax thresholds to reduce oscillation.
+			targetUtilization:   0.75,               // Target 75% CPU utilization
+			measurementInterval: 5 * time.Second,    // Sample every 5 seconds
+			adjustmentThreshold: 0.10,               // Adjust if 10% deviation from target
+			maxWorkers:          initialWorkers,     // Never scale above configured WorkerCount
+			minWorkers:          minWorkers,         // Minimum 2 workers or 1/4 of configured workers
+			measurements:        make([]float64, 0, 12), // 1 minute history at 5s intervals
 			maxSamples:          12,
 		},
 		batchSizeController: &BatchSizeController{

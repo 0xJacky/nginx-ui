@@ -8,6 +8,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/indexer"
 	"github.com/0xJacky/Nginx-UI/model"
+	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/go-co-op/gocron/v2"
 	"github.com/uozi-tech/cosy/logger"
 )
@@ -21,11 +22,15 @@ type logIndexProvider interface {
 func setupIncrementalIndexingJob(s gocron.Scheduler) (gocron.Job, error) {
 	logger.Info("Setting up incremental log indexing job")
 
-	// Run every 5 minutes to check for log file changes
+	// Determine interval from settings, falling back to a conservative default
+	interval := settings.NginxLogSettings.GetIncrementalIndexInterval()
+
+	// Run periodically to check for log file changes using incremental indexing
 	job, err := s.NewJob(
-		gocron.DurationJob(5*time.Minute),
+		gocron.DurationJob(interval),
 		gocron.NewTask(performIncrementalIndexing),
 		gocron.WithName("incremental_log_indexing"),
+		gocron.WithSingletonMode(gocron.LimitModeWait), // Prevent overlapping executions
 		gocron.WithStartAt(gocron.WithStartImmediately()),
 	)
 
@@ -33,7 +38,7 @@ func setupIncrementalIndexingJob(s gocron.Scheduler) (gocron.Job, error) {
 		return nil, err
 	}
 
-	logger.Info("Incremental log indexing job scheduled to run every 5 minutes")
+	logger.Infof("Incremental log indexing job scheduled to run every %s", interval)
 	return job, nil
 }
 
@@ -73,20 +78,41 @@ func performIncrementalIndexing() {
 		return log.Type == "access"
 	})
 
+	// Process files sequentially to avoid overwhelming the system
+	// This is more conservative but prevents concurrent file indexing from consuming too much CPU
 	changedCount := 0
 	for _, log := range allLogs {
 		// Check if file needs incremental indexing
 		if needsIncrementalIndexing(log, persistence) {
-			if err := queueIncrementalIndexing(log.Path, modernIndexer, logFileManager); err != nil {
-				logger.Errorf("Failed to queue incremental indexing for %s: %v", log.Path, err)
+			logger.Infof("Starting incremental indexing for file: %s", log.Path)
+
+			// Set status to indexing
+			if err := setFileIndexStatus(log.Path, string(indexer.IndexStatusIndexing), logFileManager); err != nil {
+				logger.Errorf("Failed to set indexing status for %s: %v", log.Path, err)
+				continue
+			}
+
+			// Perform incremental indexing synchronously (one file at a time)
+			if err := performSingleFileIncrementalIndexing(log.Path, modernIndexer, logFileManager); err != nil {
+				logger.Errorf("Failed incremental indexing for %s: %v", log.Path, err)
+				// Set error status
+				if statusErr := setFileIndexStatus(log.Path, string(indexer.IndexStatusError), logFileManager); statusErr != nil {
+					logger.Errorf("Failed to set error status for %s: %v", log.Path, statusErr)
+				}
 			} else {
 				changedCount++
+				// Set status to indexed
+				if err := setFileIndexStatus(log.Path, string(indexer.IndexStatusIndexed), logFileManager); err != nil {
+					logger.Errorf("Failed to set indexed status for %s: %v", log.Path, err)
+				}
 			}
 		}
 	}
 
 	if changedCount > 0 {
-		logger.Infof("Queued %d log files for incremental indexing", changedCount)
+		logger.Infof("Completed incremental indexing for %d log files", changedCount)
+		// Update searcher shards once after all files are processed
+		nginx_log.UpdateSearcherShards()
 	} else {
 		logger.Debug("No log files need incremental indexing")
 	}
@@ -113,6 +139,23 @@ func needsIncrementalIndexing(log *nginx_log.NginxLogWithIndex, persistence logI
 
 	fileModTime := fileInfo.ModTime()
 	fileSize := fileInfo.Size()
+
+	// CRITICAL FIX: For large files (>100MB), add additional check to prevent excessive re-indexing
+	// If the file was recently indexed (within last 30 minutes), skip it even if size increased slightly
+	// This prevents the "infinite indexing" issue reported in #1455
+	const largeFileThreshold = 100 * 1024 * 1024 // 100MB
+	const recentIndexThreshold = 30 * time.Minute
+
+	if fileSize > largeFileThreshold && log.LastIndexed > 0 {
+		lastIndexTime := time.Unix(log.LastIndexed, 0)
+		timeSinceLastIndex := time.Since(lastIndexTime)
+
+		if timeSinceLastIndex < recentIndexThreshold {
+			logger.Debugf("Skipping large file %s (%d bytes): recently indexed %v ago (threshold: %v)",
+				log.Path, fileSize, timeSinceLastIndex, recentIndexThreshold)
+			return false
+		}
+	}
 
 	if persistence != nil {
 		if logIndex, err := persistence.GetLogIndex(log.Path); err == nil {
@@ -157,96 +200,66 @@ func needsIncrementalIndexing(log *nginx_log.NginxLogWithIndex, persistence logI
 	return false
 }
 
-// queueIncrementalIndexing queues a file for incremental indexing
-func queueIncrementalIndexing(logPath string, modernIndexer interface{}, logFileManager interface{}) error {
-	// Set the file status to queued
-	if err := setFileIndexStatus(logPath, string(indexer.IndexStatusQueued), logFileManager); err != nil {
-		return err
-	}
-
-	// Queue the indexing job asynchronously
-	go func() {
-		defer func() {
-			// Ensure status is always updated, even on panic
-			if r := recover(); r != nil {
-				logger.Errorf("Recovered from panic during incremental indexing for %s: %v", logPath, r)
-				_ = setFileIndexStatus(logPath, string(indexer.IndexStatusError), logFileManager)
-			}
-		}()
-
-		logger.Infof("Starting incremental indexing for file: %s", logPath)
-
-		// Set status to indexing
-		if err := setFileIndexStatus(logPath, string(indexer.IndexStatusIndexing), logFileManager); err != nil {
-			logger.Errorf("Failed to set indexing status for %s: %v", logPath, err)
-			return
+// performSingleFileIncrementalIndexing performs incremental indexing for a single file synchronously
+func performSingleFileIncrementalIndexing(logPath string, modernIndexer interface{}, logFileManager interface{}) error {
+	defer func() {
+		// Ensure status is always updated, even on panic
+		if r := recover(); r != nil {
+			logger.Errorf("Recovered from panic during incremental indexing for %s: %v", logPath, r)
+			_ = setFileIndexStatus(logPath, string(indexer.IndexStatusError), logFileManager)
 		}
-
-		// Perform incremental indexing
-		startTime := time.Now()
-		docsCountMap, minTime, maxTime, err := modernIndexer.(*indexer.ParallelIndexer).IndexSingleFileIncrementally(logPath, nil)
-
-		if err != nil {
-			logger.Errorf("Failed incremental indexing for %s: %v", logPath, err)
-			// Set error status
-			if statusErr := setFileIndexStatus(logPath, string(indexer.IndexStatusError), logFileManager); statusErr != nil {
-				logger.Errorf("Failed to set error status for %s: %v", logPath, statusErr)
-			}
-			return
-		}
-
-		// Calculate total documents indexed
-		var totalDocsIndexed uint64
-		for _, docCount := range docsCountMap {
-			totalDocsIndexed += docCount
-		}
-
-		// Save indexing metadata
-		duration := time.Since(startTime)
-
-		if lfm, ok := logFileManager.(*indexer.LogFileManager); ok {
-			persistence := lfm.GetPersistence()
-			var existingDocCount uint64
-
-			existingIndex, err := persistence.GetLogIndex(logPath)
-			if err != nil {
-				logger.Warnf("Could not get existing log index for %s: %v", logPath, err)
-			}
-
-			// Determine if the file was rotated by checking if the current size is smaller than the last recorded size.
-			// This is a strong indicator of log rotation.
-			fileInfo, statErr := os.Stat(logPath)
-			isRotated := false
-			if statErr == nil && existingIndex != nil && fileInfo.Size() < existingIndex.LastSize {
-				isRotated = true
-				logger.Infof("Log rotation detected for %s: new size %d is smaller than last size %d. Resetting document count.",
-					logPath, fileInfo.Size(), existingIndex.LastSize)
-			}
-
-			if existingIndex != nil && !isRotated {
-				// If it's a normal incremental update (not a rotation), we build upon the existing count.
-				existingDocCount = existingIndex.DocumentCount
-			}
-			// If the file was rotated, existingDocCount remains 0, effectively starting the count over for the new file.
-
-			finalDocCount := existingDocCount + totalDocsIndexed
-
-			if err := lfm.SaveIndexMetadata(logPath, finalDocCount, startTime, duration, minTime, maxTime); err != nil {
-				logger.Errorf("Failed to save incremental index metadata for %s: %v", logPath, err)
-			}
-		}
-
-		// Set status to indexed
-		if err := setFileIndexStatus(logPath, string(indexer.IndexStatusIndexed), logFileManager); err != nil {
-			logger.Errorf("Failed to set indexed status for %s: %v", logPath, err)
-		}
-
-		// Update searcher shards
-		nginx_log.UpdateSearcherShards()
-
-		logger.Infof("Successfully completed incremental indexing for %s, Documents: %d", logPath, totalDocsIndexed)
 	}()
 
+	// Perform incremental indexing
+	startTime := time.Now()
+	docsCountMap, minTime, maxTime, err := modernIndexer.(*indexer.ParallelIndexer).IndexSingleFileIncrementally(logPath, nil)
+
+	if err != nil {
+		return fmt.Errorf("indexing failed: %w", err)
+	}
+
+	// Calculate total documents indexed
+	var totalDocsIndexed uint64
+	for _, docCount := range docsCountMap {
+		totalDocsIndexed += docCount
+	}
+
+	// Save indexing metadata
+	duration := time.Since(startTime)
+
+	if lfm, ok := logFileManager.(*indexer.LogFileManager); ok {
+		persistence := lfm.GetPersistence()
+		var existingDocCount uint64
+
+		existingIndex, err := persistence.GetLogIndex(logPath)
+		if err != nil {
+			logger.Warnf("Could not get existing log index for %s: %v", logPath, err)
+		}
+
+		// Determine if the file was rotated by checking if the current size is smaller than the last recorded size.
+		// This is a strong indicator of log rotation.
+		fileInfo, statErr := os.Stat(logPath)
+		isRotated := false
+		if statErr == nil && existingIndex != nil && fileInfo.Size() < existingIndex.LastSize {
+			isRotated = true
+			logger.Infof("Log rotation detected for %s: new size %d is smaller than last size %d. Resetting document count.",
+				logPath, fileInfo.Size(), existingIndex.LastSize)
+		}
+
+		if existingIndex != nil && !isRotated {
+			// If it's a normal incremental update (not a rotation), we build upon the existing count.
+			existingDocCount = existingIndex.DocumentCount
+		}
+		// If the file was rotated, existingDocCount remains 0, effectively starting the count over for the new file.
+
+		finalDocCount := existingDocCount + totalDocsIndexed
+
+		if err := lfm.SaveIndexMetadata(logPath, finalDocCount, startTime, duration, minTime, maxTime); err != nil {
+			return fmt.Errorf("failed to save metadata: %w", err)
+		}
+	}
+
+	logger.Infof("Successfully completed incremental indexing for %s, Documents: %d", logPath, totalDocsIndexed)
 	return nil
 }
 
