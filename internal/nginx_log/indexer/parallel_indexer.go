@@ -872,8 +872,10 @@ func (pi *ParallelIndexer) IndexLogGroupWithRotationScanning(basePaths []string,
 	return docsCountMap, overallMinTime, overallMaxTime, nil
 }
 
-// IndexSingleFileIncrementally is a more efficient version for incremental updates.
-// It indexes only the specified single file instead of the entire log group.
+// IndexSingleFileIncrementally indexes a single file (not the entire log group).
+// Note: The actual incremental logic (using LastPosition) is implemented in the cron job layer
+// to have access to persistence. This method performs a full file scan.
+// For true incremental behavior, see internal/cron/incremental_indexing.go
 func (pi *ParallelIndexer) IndexSingleFileIncrementally(filePath string, progressConfig *ProgressConfig) (map[string]uint64, *time.Time, *time.Time, error) {
 	if !pi.IsHealthy() {
 		return nil, nil, nil, fmt.Errorf("indexer not healthy")
