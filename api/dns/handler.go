@@ -17,9 +17,6 @@ func ListDomains(c *gin.Context) {
 	cosy.Core[model.DnsDomain](c).
 		SetPreloads("DnsCredential").
 		SetFussy("domain", "description").
-		SetTransformer(func(domain *model.DnsDomain) any {
-			return newDomainResponse(domain)
-		}).
 		PagingList()
 }
 

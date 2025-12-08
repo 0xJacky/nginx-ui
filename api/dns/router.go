@@ -14,7 +14,6 @@ func InitRouter(r *gin.RouterGroup) {
 		group.GET("/domains", ListDomains)
 		group.GET("/domains/:id", GetDomain)
 		group.POST("/domains", CreateDomain)
-		group.PUT("/domains/:id", UpdateDomain)
 		group.POST("/domains/:id", UpdateDomain)
 		group.DELETE("/domains/:id", DeleteDomain)
 

@@ -17,21 +17,10 @@ const router = useRouter()
 
 type SelectOptionList = NonNullable<SelectProps['options']>
 
-interface LegacyDnsCredential {
-  id: number
-  name?: string
-  provider?: string
-  config?: {
-    name?: string
-    code?: string
-  }
-}
-
 interface DomainForm extends Omit<DNSDomain, 'dns_credential_id'> {
   dns_credential_id?: number
   selected_provider?: string
   provider_initialized?: boolean
-  dns_credential?: LegacyDnsCredential
 }
 
 const dnsProviders = ref<DNSProvider[]>([])
@@ -97,14 +86,12 @@ interface DomainEditContext {
 }
 
 function resolveProviderName(record: DomainForm) {
-  return record.credential?.provider
-    ?? record.dns_credential?.provider
-    ?? record.dns_credential?.config?.name
+  return record.dns_credential?.provider
     ?? ''
 }
 
 function resolveCredentialName(record: DomainForm) {
-  return record.credential?.name ?? record.dns_credential?.name ?? '--'
+  return record.dns_credential?.name ?? '-'
 }
 
 const columns: StdTableColumn[] = [{

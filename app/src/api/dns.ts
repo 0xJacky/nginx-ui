@@ -6,7 +6,7 @@ export interface DNSDomain extends ModelBase {
   domain: string
   description?: string
   dns_credential_id: number
-  credential?: {
+  dns_credential?: {
     id: number
     name: string
     provider: string

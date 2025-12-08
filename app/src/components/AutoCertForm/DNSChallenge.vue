@@ -23,6 +23,7 @@ const code = computed(() => {
 
 const providerIdx = ref<number>()
 function init() {
+  providerIdx.value = undefined
   providers.value?.forEach((v: DNSProvider, k: number) => {
     if (v.code === code.value)
       providerIdx.value = k
@@ -38,8 +39,15 @@ const mounted = ref(false)
 watch(code, init)
 
 watch(current, () => {
-  if (!current.value)
+  if (!current.value) {
+    credentials.value = []
+    if (mounted.value) {
+      data.value.code = undefined
+      data.value.provider = undefined
+      data.value.dns_credential_id = undefined
+    }
     return
+  }
   credentials.value = []
   data.value.code = current.value.code
   data.value.provider = current.value.name
@@ -65,9 +73,19 @@ onMounted(async () => {
 
   if (data.value.dns_credential_id) {
     await dns_credential.getItem(data.value.dns_credential_id).then(r => {
-      data.value.code = r.code
-      data.value.provider = r.provider
-      providerIdx.value = providers.value.findIndex(v => v.code === r.code)
+      const idx = providers.value.findIndex(v => v.code === r.code)
+      if (idx > -1) {
+        data.value.code = r.code
+        data.value.provider = r.provider
+        providerIdx.value = idx
+      }
+      else {
+        // provider not supported anymore; clear existing selection to keep form consistent
+        data.value.code = undefined
+        data.value.provider = undefined
+        data.value.dns_credential_id = undefined
+        providerIdx.value = undefined
+      }
     })
   }
 

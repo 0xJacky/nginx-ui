@@ -2,8 +2,9 @@
 import type { DNSRecord, RecordListParams, RecordPayload } from '@/api/dns'
 import { PlusOutlined, ReloadOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import FooterToolBar from '@/components/FooterToolbar'
 import { useDnsStore } from '@/pinia/moudule/dns'
 import DNSRecordFilter from '@/views/dns/components/DNSRecordFilter.vue'
 import DNSRecordForm from '@/views/dns/components/DNSRecordForm.vue'
@@ -11,6 +12,7 @@ import DNSRecordTable from '@/views/dns/components/DNSRecordTable.vue'
 
 const route = useRoute()
 const store = useDnsStore()
+const router = useRouter()
 
 const filters = ref<RecordListParams>({
   name: '',
@@ -37,7 +39,7 @@ const formModel = ref<RecordPayload>({
 })
 
 const showProxiedToggle = computed(() => {
-  const provider = store.currentDomain?.credential?.provider ?? ''
+  const provider = store.currentDomain?.dns_credential?.provider ?? ''
   return provider.toLowerCase().includes('cloudflare')
 })
 
@@ -138,6 +140,10 @@ function handlePageSizeChange(current: number, size: number) {
 onMounted(() => {
   initData()
 })
+
+onBeforeUnmount(() => {
+  store.resetRecords()
+})
 </script>
 
 <template>
@@ -145,9 +151,9 @@ onMounted(() => {
     <ACard>
       <template #title>
         <ASpace align="center">
-          <strong>{{ pageTitle }}</strong>
-          <ATag v-if="store.currentDomain?.credential?.provider">
-            {{ store.currentDomain?.credential?.provider }}
+          {{ pageTitle }}
+          <ATag v-if="store.currentDomain?.dns_credential?.provider">
+            {{ store.currentDomain?.dns_credential?.provider }}
           </ATag>
         </ASpace>
       </template>
@@ -211,6 +217,12 @@ onMounted(() => {
         </ASpace>
       </template>
     </ADrawer>
+
+    <FooterToolBar>
+      <AButton @click="router.push('/dns/domains')">
+        {{ $gettext('Back') }}
+      </AButton>
+    </FooterToolBar>
   </div>
 </template>
 

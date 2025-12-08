@@ -2,8 +2,6 @@ package dns
 
 import (
 	"github.com/0xJacky/Nginx-UI/internal/dns"
-	"github.com/0xJacky/Nginx-UI/model"
-	"github.com/samber/lo"
 )
 
 type domainListQuery struct {
@@ -34,43 +32,6 @@ type recordRequest struct {
 	Priority *int   `json:"priority"`
 	Weight   *int   `json:"weight"`
 	Proxied  *bool  `json:"proxied"`
-}
-
-type domainResponse struct {
-	ID              uint64             `json:"id"`
-	Domain          string             `json:"domain"`
-	Description     string             `json:"description"`
-	DnsCredentialID uint64             `json:"dns_credential_id"`
-	Credential      *credentialSummary `json:"credential,omitempty"`
-	CreatedAt       string             `json:"created_at"`
-	UpdatedAt       string             `json:"updated_at"`
-}
-
-type credentialSummary struct {
-	ID       uint64 `json:"id"`
-	Name     string `json:"name"`
-	Provider string `json:"provider"`
-}
-
-func newDomainResponse(domain *model.DnsDomain) domainResponse {
-	resp := domainResponse{
-		ID:              domain.ID,
-		Domain:          domain.Domain,
-		Description:     domain.Description,
-		DnsCredentialID: domain.DnsCredentialID,
-		CreatedAt:       domain.CreatedAt.Format(timeFormat),
-		UpdatedAt:       domain.UpdatedAt.Format(timeFormat),
-	}
-
-	if domain.DnsCredential != nil {
-		resp.Credential = lo.ToPtr(credentialSummary{
-			ID:       domain.DnsCredential.ID,
-			Name:     domain.DnsCredential.Name,
-			Provider: domain.DnsCredential.Provider,
-		})
-	}
-
-	return resp
 }
 
 func toRecordInput(req recordRequest) dns.RecordInput {
