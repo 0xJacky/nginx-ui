@@ -186,8 +186,10 @@ msgstr "操作"
 #: src/views/backup/AutoBackup/AutoBackup.vue:273
 #: src/views/certificate/ACMEUser.vue:131
 #: src/views/certificate/CertificateList/certColumns.tsx:92
-#: src/views/certificate/DNSCredential.vue:71
-#: src/views/config/configColumns.tsx:51 src/views/namespace/columns.ts:97
+#: src/views/config/configColumns.tsx:51
+#: src/views/dns/components/DNSRecordTable.vue:41
+#: src/views/dns/DDNSManager.vue:91 src/views/dns/DNSCredential.vue:71
+#: src/views/dns/DNSDomainList.vue:211 src/views/namespace/columns.ts:97
 #: src/views/nginx_log/NginxLogList.vue:338 src/views/node/nodeColumns.tsx:96
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:85
@@ -241,6 +243,10 @@ msgstr "添加標頭"
 msgid "Add Location"
 msgstr "新增 Location"
 
+#: src/views/dns/DNSRecordManager.vue:171
+msgid "Add Record"
+msgstr "新增記錄"
+
 #: src/components/NgxConfigEditor/NgxServer.vue:92
 msgid "Add Server"
 msgstr "新增伺服器"
@@ -261,7 +267,7 @@ msgstr "添加上游"
 msgid "Added successfully"
 msgstr "新增成功"
 
-#: src/views/certificate/components/DNSChallenge.vue:97
+#: src/views/dns/components/DNSChallenge.vue:98
 msgid "Additional"
 msgstr "其他設定"
 
@@ -297,6 +303,10 @@ msgstr "進階設定"
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:105
 msgid "Afterwards, refresh this page and click add passkey again."
 msgstr "之後，請重新整理此頁面並再次點擊新增通行金鑰。"
+
+#: src/views/dns/components/DNSRecordFilter.vue:55
+msgid "All"
+msgstr "全部"
 
 #: src/views/system/Licenses.vue:152
 msgid "All Components"
@@ -335,7 +345,7 @@ msgstr "任何可訪問的 IP 地址均可用於私有證書頒發機構"
 msgid "API Base Url"
 msgstr "API 基礎網址"
 
-#: src/views/certificate/components/DNSChallenge.vue:70
+#: src/views/dns/components/DNSChallenge.vue:71
 msgid "API Document"
 msgstr "API 文件"
 
@@ -370,6 +380,10 @@ msgstr "您確定要刪除這個被停用的 IP 嗎？"
 #: src/views/preference/components/AuthSettings/Passkey.vue:114
 msgid "Are you sure to delete this passkey immediately?"
 msgstr "您確定要刪除這個被停用的通行金鑰嗎？"
+
+#: src/views/dns/components/DNSRecordTable.vue:90
+msgid "Are you sure to delete this record?"
+msgstr "確定要刪除這條記錄嗎？"
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:155
 msgid "Are you sure to generate new recovery codes?"
@@ -540,7 +554,7 @@ msgstr "平均 /PV"
 #: src/views/certificate/components/CertificateActions.vue:22
 #: src/views/config/components/ConfigLeftPanel.vue:274
 #: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
-#: src/views/nginx_log/NginxLog.vue:129
+#: src/views/dns/DNSRecordManager.vue:223 src/views/nginx_log/NginxLog.vue:129
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:183
 #: src/views/stream/components/StreamEditor.vue:147
 msgid "Back"
@@ -686,6 +700,10 @@ msgstr "瀏覽器"
 msgid "Browser Statistics"
 msgstr "瀏覽器統計"
 
+#: src/views/dns/DNSDomainList.vue:257
+msgid "Business contact:"
+msgstr "商務聯繫："
+
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:316
 msgid ""
 "By enabling advanced indexing, you acknowledge that your system meets the "
@@ -751,6 +769,7 @@ msgstr "基於 worker_processes * worker_connections 計算得出。實際效能
 #: src/components/NgxConfigEditor/NgxUpstream.vue:32 src/language/curd.ts:37
 #: src/views/config/components/Delete.vue:98
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:710
+#: src/views/dns/DDNSManager.vue:244 src/views/dns/DNSRecordManager.vue:212
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:102
 #: src/views/nginx_log/indexing/IndexManagement.vue:33
 #: src/views/nginx_log/indexing/IndexManagement.vue:59
@@ -896,7 +915,7 @@ msgstr "證書類型"
 msgid "Certificates"
 msgstr "憑證"
 
-#: src/routes/modules/certificates.ts:36
+#: src/routes/modules/certificates.ts:28
 msgid "Certificates List"
 msgstr "憑證列表"
 
@@ -1254,7 +1273,7 @@ msgstr "設定路徑為空"
 msgid "Config Template"
 msgstr "配置模板"
 
-#: src/views/certificate/DNSCredential.vue:52
+#: src/views/dns/DNSCredential.vue:52
 msgid "Configuration"
 msgstr "配置"
 
@@ -1281,6 +1300,14 @@ msgstr "設定名稱"
 #: src/views/config/ConfigList.vue:112
 msgid "Configurations"
 msgstr "設定"
+
+#: src/views/dns/DDNSManager.vue:201
+msgid "Configure"
+msgstr "配置"
+
+#: src/views/dns/DDNSManager.vue:211
+msgid "Configure DDNS"
+msgstr "配置 DDNS"
 
 #: src/views/site/site_add/SiteAdd.vue:81
 msgid "Configure SSL"
@@ -1403,6 +1430,10 @@ msgstr "建立檔案"
 msgid "Create Folder"
 msgstr "建立資料夾"
 
+#: src/views/dns/DNSRecordManager.vue:200
+msgid "Create Record"
+msgstr "建立記錄"
+
 #: src/views/backup/components/BackupCreator.vue:75
 msgid ""
 "Create system backups including Nginx configuration and Nginx UI settings. "
@@ -1426,11 +1457,12 @@ msgstr "建立成功"
 msgid "Creating client facilitates communication with the CA server"
 msgstr "建立客戶端方便與 CA 伺服器通訊"
 
-#: src/components/AutoCertForm/DNSChallenge.vue:105
+#: src/components/AutoCertForm/DNSChallenge.vue:131
+#: src/views/dns/DDNSManager.vue:65 src/views/dns/DNSDomainList.vue:109
 msgid "Credential"
 msgstr "認證"
 
-#: src/views/certificate/components/DNSChallenge.vue:86
+#: src/routes/modules/dns.ts:20 src/views/dns/components/DNSChallenge.vue:87
 msgid "Credentials"
 msgstr "認證資訊"
 
@@ -1545,6 +1577,18 @@ msgstr "天"
 msgid "Db file not found"
 msgstr "資料庫檔案未找到"
 
+#: src/routes/modules/dns.ts:36
+msgid "DDNS"
+msgstr "DDNS"
+
+#: src/views/dns/DDNSManager.vue:153
+msgid "DDNS Overview"
+msgstr "DDNS 概覽"
+
+#: src/views/dns/DDNSManager.vue:135
+msgid "DDNS saved"
+msgstr "DDNS 已儲存"
+
 #: src/constants/errors/geolite.ts:12
 msgid "Decompression succeeded but failed to delete compressed file: {0}"
 msgstr "解壓成功但刪除壓縮檔案失敗: {0}"
@@ -1569,6 +1613,7 @@ msgstr "定義共享記憶體區域名稱和大小，例如 proxy_cache:10m"
 #: src/views/config/components/Delete.vue:65
 #: src/views/config/components/Delete.vue:97
 #: src/views/config/ConfigList.vue:199
+#: src/views/dns/components/DNSRecordTable.vue:94
 #: src/views/site/site_list/SiteList.vue:100
 #: src/views/stream/StreamList.vue:110
 msgid "Delete"
@@ -1810,7 +1855,8 @@ msgid "Disable stream %{name} from %{node} successfully"
 msgstr "已成功從 %{node} 停用串流 %{name}"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:175
-#: src/views/node/nodeColumns.tsx:60 src/views/node/nodeColumns.tsx:78
+#: src/views/dns/DDNSManager.vue:175 src/views/node/nodeColumns.tsx:60
+#: src/views/node/nodeColumns.tsx:78
 #: src/views/preference/tabs/HTTPSettings.vue:24
 #: src/views/preference/tabs/NodeSettings.vue:25
 #: src/views/preference/tabs/NodeSettings.vue:30
@@ -1835,15 +1881,34 @@ msgstr "已斷開連接"
 msgid "Disk IO"
 msgstr "磁碟 IO"
 
-#: src/routes/modules/certificates.ts:28
-#: src/views/certificate/DNSCredential.vue:79
+#: src/routes/modules/dns.ts:11
+msgid "DNS"
+msgstr "DNS"
+
+#: src/views/dns/DNSCredential.vue:79
 msgid "DNS Credentials"
 msgstr "DNS 認證"
 
-#: src/components/AutoCertForm/DNSChallenge.vue:95
-#: src/views/certificate/components/DNSChallenge.vue:59
+#: src/routes/modules/dns.ts:28 src/views/dns/DNSDomainList.vue:228
+msgid "DNS Domains"
+msgstr "DNS 網域"
+
+#: src/views/dns/components/DNSRecordTable.vue:81
+msgid "DNS Only"
+msgstr "僅DNS"
+
+#: src/components/AutoCertForm/DNSChallenge.vue:121
+#: src/views/dns/components/DNSChallenge.vue:60
 msgid "DNS Provider"
 msgstr "DNS 供應商"
+
+#: src/views/dns/DNSDomainList.vue:244
+msgid "DNS Provider Support"
+msgstr "DNS 供應商支援"
+
+#: src/routes/modules/dns.ts:44 src/views/dns/DNSRecordManager.vue:58
+msgid "DNS Records"
+msgstr "DNS 記錄"
 
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:678
 msgid "DNS Resolver"
@@ -1905,6 +1970,7 @@ msgid "Document Count"
 msgstr "文件數量"
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:119
+#: src/views/dns/DDNSManager.vue:60 src/views/dns/DNSDomainList.vue:98
 msgid "Domain"
 msgstr "網域"
 
@@ -1990,7 +2056,7 @@ msgstr "EAB HMAC 密鑰"
 msgid "EAB Key ID"
 msgstr "EAB 密鑰 ID"
 
-#: src/language/curd.ts:8
+#: src/language/curd.ts:8 src/views/dns/components/DNSRecordTable.vue:87
 msgid "Edit"
 msgstr "編輯"
 
@@ -2003,6 +2069,10 @@ msgstr "編輯 %{n}"
 #: src/views/config/components/ConfigLeftPanel.vue:242
 msgid "Edit Configuration"
 msgstr "編輯設定"
+
+#: src/views/dns/DNSRecordManager.vue:200
+msgid "Edit Record"
+msgstr "編輯記錄"
 
 #: src/routes/modules/sites.ts:34
 msgid "Edit Site"
@@ -2053,6 +2123,10 @@ msgstr "啟用代碼補全"
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:68
 msgid "Enable compression for content transfer"
 msgstr "啟用內容傳輸壓縮"
+
+#: src/views/dns/DDNSManager.vue:218
+msgid "Enable DDNS"
+msgstr "啟用 DDNS"
 
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:473
 msgid "Enable Health Check"
@@ -2141,7 +2215,8 @@ msgid "Enable TOTP"
 msgstr "啟用 TOTP"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:174
-#: src/views/node/nodeColumns.tsx:69 src/views/node/nodeColumns.tsx:75
+#: src/views/dns/DDNSManager.vue:175 src/views/node/nodeColumns.tsx:69
+#: src/views/node/nodeColumns.tsx:75
 #: src/views/preference/components/ExternalNotify/columns.tsx:47
 #: src/views/preference/tabs/HTTPSettings.vue:24
 #: src/views/preference/tabs/LogrotateSettings.vue:20
@@ -3084,13 +3159,18 @@ msgstr "數值越高表示連線重複使用率越好"
 msgid "History"
 msgstr "歷史"
 
-#: src/routes/index.ts:52
+#: src/routes/index.ts:54
 msgid "Home"
 msgstr "首頁"
 
+#: src/views/dns/components/DNSRecordFilter.vue:42
 #: src/views/preference/tabs/ServerSettings.vue:19
 msgid "Host"
 msgstr "主機"
+
+#: src/views/dns/components/DNSRecordFilter.vue:45
+msgid "Host, e.g. @ or www"
+msgstr "主機，例如 @ 或 www"
 
 #: src/views/backup/AutoBackup/components/CronEditor.vue:159
 #: src/views/nginx_log/dashboard/components/HourlyChart.vue:87
@@ -3157,7 +3237,7 @@ msgstr "如果您的域名有 CNAME 記錄且無法取得證書，您需要啟�
 msgid "Import"
 msgstr "匯入"
 
-#: src/routes/modules/certificates.ts:54
+#: src/routes/modules/certificates.ts:46
 #: src/views/certificate/CertificateEditor.vue:84
 msgid "Import Certificate"
 msgstr "匯入憑證"
@@ -3276,9 +3356,14 @@ msgid ""
 "restart the Nginx UI."
 msgstr "系統啟動 10 分鐘後不允許安裝，請重新啟動 Nginx UI。"
 
+#: src/views/dns/DDNSManager.vue:79
 #: src/views/preference/tabs/LogrotateSettings.vue:26
 msgid "Interval"
 msgstr "間隔"
+
+#: src/views/dns/DDNSManager.vue:232
+msgid "Interval (seconds)"
+msgstr "間隔（秒）"
 
 #: src/views/certificate/ACMEUser.vue:166
 msgid "Invalid"
@@ -3505,6 +3590,10 @@ msgstr "最後索引時間"
 #: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:26
 msgid "Last month"
 msgstr "上個月"
+
+#: src/views/dns/DDNSManager.vue:87
+msgid "Last run"
+msgstr "上次執行"
 
 #: src/views/dashboard/NginxDashBoard.vue:138
 msgid "Last update"
@@ -3766,6 +3855,10 @@ msgstr "在取得憑證前，請確保您已將 .well-known 目錄反向代理�
 msgid "Manage Configs"
 msgstr "管理設定"
 
+#: src/views/dns/DNSDomainList.vue:236
+msgid "Manage Records"
+msgstr "管理記錄"
+
 #: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:45
 msgid "Manage Sites"
 msgstr "管理網站"
@@ -3936,7 +4029,7 @@ msgstr "修改於"
 msgid "Modify"
 msgstr "修改"
 
-#: src/routes/modules/certificates.ts:44
+#: src/routes/modules/certificates.ts:36
 #: src/views/certificate/CertificateEditor.vue:84
 msgid "Modify Certificate"
 msgstr "修改憑證"
@@ -3997,11 +4090,13 @@ msgstr "不適用"
 #: src/views/certificate/components/CertificateBasicInfo.vue:44
 #: src/views/certificate/components/CertificateBasicInfo.vue:58
 #: src/views/certificate/components/CertificateBasicInfo.vue:70
-#: src/views/certificate/DNSCredential.vue:17
 #: src/views/config/components/ConfigRightPanel/Basic.vue:34
 #: src/views/config/components/Delete.vue:123
 #: src/views/config/components/Mkdir.vue:64
-#: src/views/config/configColumns.tsx:17 src/views/namespace/columns.ts:9
+#: src/views/config/configColumns.tsx:17
+#: src/views/dns/components/DNSRecordForm.vue:63
+#: src/views/dns/components/DNSRecordTable.vue:17
+#: src/views/dns/DNSCredential.vue:17 src/views/namespace/columns.ts:9
 #: src/views/nginx_log/NginxLogList.vue:155 src/views/node/nodeColumns.tsx:8
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:81
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:36
@@ -4028,6 +4123,12 @@ msgstr "命名空間"
 #: src/routes/modules/namespaces.ts:10 src/views/namespace/Namespace.vue:19
 msgid "Namespaces"
 msgstr "命名空間"
+
+#: src/views/dns/DNSDomainList.vue:251
+msgid ""
+"Need more DNS providers? Support us through donations or contact us for "
+"commercial collaboration"
+msgstr "需要更多DNS供應商？透過捐贈支持我們或聯繫我們進行商業合作"
 
 #: src/views/dashboard/NginxDashBoard.vue:195
 msgid "Need to enable the stub_status module"
@@ -4419,6 +4520,10 @@ msgstr "未索引"
 msgid "Not Loaded"
 msgstr "未載入"
 
+#: src/views/dns/DDNSManager.vue:102
+msgid "Not run yet"
+msgstr "尚未執行"
+
 #: src/components/AutoCertForm/AutoCertForm.vue:230
 msgid "Not supported for IP certificates"
 msgstr "不支援 IP 證書"
@@ -4428,7 +4533,7 @@ msgid "Not Valid Before: %{date}"
 msgstr "此前無效：%{date}"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:150
-#: src/views/certificate/DNSCredential.vue:89
+#: src/views/dns/DNSCredential.vue:89
 msgid "Note"
 msgstr "備註"
 
@@ -4550,10 +4655,6 @@ msgstr "確定"
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:163
 msgid "On"
 msgstr "開啟"
-
-#: src/views/certificate/DNSCredential.vue:99
-msgid "Once the verification is complete, the records will be removed."
-msgstr "驗證完成後，記錄將被刪除。"
 
 #: src/components/NamespaceTabs/NamespaceTabs.vue:164
 #: src/components/NodeCard/NodeCard.vue:51
@@ -4841,7 +4942,7 @@ msgstr "請正確填寫所有欄位"
 msgid "Please fill in required S3 configuration fields"
 msgstr "請填寫必填的 S3 配置欄位"
 
-#: src/views/certificate/DNSCredential.vue:93
+#: src/views/dns/DNSCredential.vue:93
 msgid ""
 "Please fill in the API authentication credentials provided by your DNS "
 "provider."
@@ -4898,7 +4999,7 @@ msgstr "請輸入您的使用者名稱！"
 msgid "Please log in."
 msgstr "請登入。"
 
-#: src/views/certificate/DNSCredential.vue:102
+#: src/views/dns/DNSCredential.vue:96
 msgid "Please note that the unit of time configurations below are all in seconds."
 msgstr "請注意，以下時間設定單位均為秒。"
 
@@ -4978,6 +5079,11 @@ msgstr "偏好設定"
 msgid "Preparing lego configurations"
 msgstr "準備 Lego 設定"
 
+#: src/views/dns/components/DNSRecordForm.vue:81
+#: src/views/dns/components/DNSRecordTable.vue:33
+msgid "Priority"
+msgstr "優先級"
+
 #: src/components/AutoCertForm/AutoCertForm.vue:206
 msgid "Private CA:"
 msgstr "私有 CA："
@@ -5038,7 +5144,8 @@ msgid ""
 "proxy."
 msgstr "協議配置僅在直接連接時生效。如果使用反向代理，請在反向代理中單獨配置協議。"
 
-#: src/views/certificate/DNSCredential.vue:26
+#: src/views/dns/DDNSManager.vue:70 src/views/dns/DNSCredential.vue:26
+#: src/views/dns/DNSDomainList.vue:177 src/views/dns/DNSDomainList.vue:198
 msgid "Provider"
 msgstr "供應商"
 
@@ -5049,6 +5156,12 @@ msgstr "未找到提供者：{0}"
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:59
 msgid "Province / Region"
 msgstr "省份 / 地區"
+
+#: src/views/dns/components/DNSRecordForm.vue:87
+#: src/views/dns/components/DNSRecordTable.vue:51
+#: src/views/dns/components/DNSRecordTable.vue:81
+msgid "Proxied"
+msgstr "已代理"
 
 #: src/views/certificate/ACMEUser.vue:63
 msgid "Proxy"
@@ -5144,6 +5257,22 @@ msgstr "重新檢查"
 msgid "Recommended:"
 msgstr "推薦："
 
+#: src/views/dns/DNSRecordManager.vue:113
+msgid "Record created"
+msgstr "記錄已建立"
+
+#: src/views/dns/DNSRecordManager.vue:120
+msgid "Record deleted"
+msgstr "記錄已刪除"
+
+#: src/views/dns/DNSRecordManager.vue:109
+msgid "Record updated"
+msgstr "記錄已更新"
+
+#: src/views/dns/DDNSManager.vue:221
+msgid "Records"
+msgstr "記錄"
+
 #: src/components/TwoFA/Authorization.vue:79
 msgid "Recovery"
 msgstr "恢復"
@@ -5171,7 +5300,8 @@ msgstr "重新導向訊息 (3xx)"
 msgid "Referer"
 msgstr "來源"
 
-#: src/language/curd.ts:70
+#: src/language/curd.ts:70 src/views/dns/DDNSManager.vue:161
+#: src/views/dns/DNSRecordManager.vue:165
 msgid "Refresh"
 msgstr "重新整理"
 
@@ -5411,7 +5541,7 @@ msgstr "請求參數錯誤"
 msgid "Requests Per Connection"
 msgstr "每連線請求數量"
 
-#: src/language/curd.ts:13
+#: src/language/curd.ts:13 src/views/dns/components/DNSRecordFilter.vue:65
 #: src/views/nginx_log/structured/components/SearchFilters.vue:214
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:745
 msgid "Reset"
@@ -5647,6 +5777,7 @@ msgstr "星期六"
 #: src/views/config/components/ConfigLeftPanel.vue:283
 #: src/views/config/components/ConfigName.vue:58
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:713
+#: src/views/dns/DDNSManager.vue:247 src/views/dns/DNSRecordManager.vue:215
 #: src/views/preference/components/AuthSettings/Passkey.vue:131
 #: src/views/preference/Preference.vue:124
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
@@ -5752,12 +5883,13 @@ msgstr "計劃"
 msgid "Schedule Type"
 msgstr "計劃類型"
 
-#: src/views/certificate/components/DNSChallenge.vue:77
+#: src/views/dns/components/DNSChallenge.vue:78
 msgid "SDK"
 msgstr "SDK"
 
 #: src/language/constants.ts:62 src/language/curd.ts:12
 #: src/views/config/configColumns.tsx:5
+#: src/views/dns/components/DNSRecordFilter.vue:62
 #: src/views/nginx_log/structured/components/SearchFilters.vue:217
 #: src/views/site/site_list/columns.tsx:17 src/views/stream/columns.tsx:13
 msgid "Search"
@@ -5814,9 +5946,17 @@ msgstr "選擇一個預定義的 CA 目錄或輸入自訂目錄。留空則使�
 msgid "Select all"
 msgstr "全選"
 
+#: src/language/constants.ts:68
+msgid "Select Credential"
+msgstr "選擇憑證"
+
 #: src/views/certificate/ACMEUser.vue:45
 msgid "Select or enter a CA directory URL"
 msgstr "選擇或輸入 CA 目錄 URL"
+
+#: src/language/constants.ts:67
+msgid "Select Provider"
+msgstr "選擇提供商"
 
 #: src/language/curd.ts:59
 msgid "Selected {count} files"
@@ -6137,6 +6277,7 @@ msgstr "靜態"
 #: src/views/certificate/ACMEUser.vue:75
 #: src/views/certificate/CertificateList/certColumns.tsx:63
 #: src/views/dashboard/components/ModulesTable.vue:75
+#: src/views/dns/DDNSManager.vue:75
 #: src/views/nginx_log/structured/components/SearchFilters.vue:106
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:241
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:521
@@ -6363,6 +6504,10 @@ msgstr "系統恢復"
 #: src/views/install/components/InstallView.vue:44
 msgid "System restored successfully."
 msgstr "系統已成功恢復。"
+
+#: src/views/dns/DDNSManager.vue:83
+msgid "Targets"
+msgstr "目標"
 
 #: src/constants/errors/self_check.ts:3
 msgid "Task is not fixable"
@@ -6845,6 +6990,14 @@ msgstr "嘗試調整搜索條件或導航到其他頁面。"
 msgid "Try adjusting your search criteria or time range."
 msgstr "嘗試調整您的搜尋條件或時間範圍。"
 
+#: src/views/dns/components/DNSRecordTable.vue:29
+msgid "TTL"
+msgstr "TTL"
+
+#: src/views/dns/components/DNSRecordForm.vue:78
+msgid "TTL (seconds)"
+msgstr "TTL（秒）"
+
 #: src/views/backup/AutoBackup/components/CronEditor.vue:28
 msgid "Tuesday"
 msgstr "星期二"
@@ -6857,6 +7010,9 @@ msgstr "需要多重因素驗證"
 #: src/views/certificate/CertificateList/certColumns.tsx:24
 #: src/views/config/components/Delete.vue:122
 #: src/views/dashboard/components/ModulesTable.vue:62
+#: src/views/dns/components/DNSRecordFilter.vue:49
+#: src/views/dns/components/DNSRecordForm.vue:57
+#: src/views/dns/components/DNSRecordTable.vue:21
 #: src/views/nginx_log/NginxLogList.vue:146
 #: src/views/notification/notificationColumns.tsx:8
 #: src/views/preference/components/ExternalNotify/columns.tsx:19
@@ -6866,6 +7022,10 @@ msgstr "類型"
 #: src/views/config/components/Delete.vue:129
 msgid "Type %{delete} to confirm"
 msgstr "輸入 %{delete} 以確認"
+
+#: src/views/dns/DDNSManager.vue:228
+msgid "Type or select A/AAAA records"
+msgstr "輸入或選擇 A/AAAA 記錄"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:142
 msgid "Type or select browser"
@@ -6922,9 +7082,9 @@ msgstr "更新成功"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:236
 #: src/views/certificate/ACMEUser.vue:124
-#: src/views/certificate/DNSCredential.vue:65
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
-#: src/views/config/configColumns.tsx:44 src/views/namespace/columns.ts:91
+#: src/views/config/configColumns.tsx:44 src/views/dns/DNSCredential.vue:65
+#: src/views/dns/DNSDomainList.vue:205 src/views/namespace/columns.ts:91
 #: src/views/node/nodeColumns.tsx:89
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:39
 #: src/views/site/site_list/columns.tsx:113 src/views/stream/columns.tsx:80
@@ -6997,6 +7157,10 @@ msgstr "運作時間："
 msgid "URL"
 msgstr "URL"
 
+#: src/views/dns/components/DNSRecordForm.vue:64
+msgid "Use @ for root"
+msgstr "使用 @ 表示根域名"
+
 #: src/components/TwoFA/Authorization.vue:121
 msgid "Use OTP"
 msgstr "使用一次性密碼"
@@ -7062,6 +7226,8 @@ msgid "Validate SSL Certificate"
 msgstr "驗證 SSL 憑證"
 
 #: src/views/dashboard/components/PerformanceTablesCard.vue:22
+#: src/views/dns/components/DNSRecordForm.vue:66
+#: src/views/dns/components/DNSRecordTable.vue:25
 msgid "Value"
 msgstr "數值"
 
@@ -7153,12 +7319,6 @@ msgstr ""
 msgid "We do not accept any feature requests"
 msgstr "我們不接受任何功能請求"
 
-#: src/views/certificate/DNSCredential.vue:96
-msgid ""
-"We will add one or more TXT records to the DNS records of your domain for "
-"ownership verification."
-msgstr "我們將在您的網域的 DNS 記錄中新增一個或多個 TXT 記錄以進行所有權驗證。"
-
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:142
 msgid ""
 "We will remove the HTTPChallenge configuration from this file and reload "
@@ -7192,6 +7352,11 @@ msgstr "每週"
 #: src/views/backup/AutoBackup/AutoBackup.vue:134
 msgid "Weekly on %{day} at %{time}"
 msgstr "每週 %{day} 的 %{time}"
+
+#: src/views/dns/components/DNSRecordForm.vue:84
+#: src/views/dns/components/DNSRecordTable.vue:37
+msgid "Weight"
+msgstr "權重"
 
 #: src/views/certificate/ACMEUser.vue:119
 msgid ""
@@ -7236,7 +7401,7 @@ msgstr "worker 行程"
 msgid "Workers"
 msgstr "worker"
 
-#: src/layouts/HeaderLayout.vue:61 src/routes/index.ts:61
+#: src/layouts/HeaderLayout.vue:61 src/routes/index.ts:63
 #: src/views/workspace/WorkSpace.vue:51
 msgid "Workspace"
 msgstr "工作區"
@@ -7332,6 +7497,14 @@ msgstr "您的通行金鑰"
 msgid "Zero-allocation pipeline"
 msgstr "零分配管道"
 
+#~ msgid "Once the verification is complete, the records will be removed."
+#~ msgstr "驗證完成後，記錄將被刪除。"
+
+#~ msgid ""
+#~ "We will add one or more TXT records to the DNS records of your domain for "
+#~ "ownership verification."
+#~ msgstr "我們將在您的網域的 DNS 記錄中新增一個或多個 TXT 記錄以進行所有權驗證。"
+
 #~ msgid "Settings"
 #~ msgstr "設定"
 
@@ -7352,9 +7525,6 @@ msgstr "零分配管道"
 
 #~ msgid "Tested in isolated sandbox mode"
 #~ msgstr "已在隔離沙箱模式下測試"
-
-#~ msgid "All"
-#~ msgstr "全部"
 
 #~ msgid "Based on M2 Pro (12 cores) testing"
 #~ msgstr "基於 M2 Pro （12 核）測試"
@@ -7553,9 +7723,6 @@ msgstr "零分配管道"
 
 #~ msgid "Are you sure you want to apply to all selected?"
 #~ msgstr "您確定要應用於所有選擇項目嗎？"
-
-#~ msgid "Are you sure you want to delete this item?"
-#~ msgstr "您確定要刪除此項目嗎？"
 
 #~ msgid "Are you sure you want to recover this item?"
 #~ msgstr "您確定要恢復此項目嗎？"
@@ -7794,9 +7961,6 @@ msgstr "零分配管道"
 
 #~ msgid "Dark"
 #~ msgstr "深色"
-
-#~ msgid "Light"
-#~ msgstr "淺色"
 
 #~ msgid "Theme"
 #~ msgstr "主題"

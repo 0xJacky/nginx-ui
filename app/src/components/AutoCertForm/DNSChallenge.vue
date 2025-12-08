@@ -5,6 +5,7 @@ import type { Ref } from 'vue'
 import type { AutoCertOptions, DNSProvider } from '@/api/auto_cert'
 import auto_cert from '@/api/auto_cert'
 import dns_credential from '@/api/dns_credential'
+import { filterAllowedDnsProviders } from '@/constants/dns_providers'
 
 const providers = ref([]) as Ref<DNSProvider[]>
 const credentials = ref<SelectProps['options']>([])
@@ -20,8 +21,9 @@ const code = computed(() => {
   return data.value.code
 })
 
-const providerIdx = ref<number>()
+const providerIdx = ref<number | undefined>(undefined)
 function init() {
+  providerIdx.value = undefined
   providers.value?.forEach((v: DNSProvider, k: number) => {
     if (v.code === code.value)
       providerIdx.value = k
@@ -29,7 +31,12 @@ function init() {
 }
 
 const current = computed(() => {
-  return providers.value?.[providerIdx.value || -1]
+  const idx = providerIdx.value
+  if (idx === undefined || idx === null)
+    return undefined
+  if (idx < 0 || idx >= providers.value.length)
+    return undefined
+  return providers.value?.[idx]
 })
 
 const mounted = ref(false)
@@ -37,9 +44,19 @@ const mounted = ref(false)
 watch(code, init)
 
 watch(current, () => {
+  if (!current.value) {
+    credentials.value = []
+    if (mounted.value) {
+      data.value.code = undefined
+      data.value.provider = undefined
+      data.value.dns_credential_id = undefined
+    }
+    return
+  }
   credentials.value = []
   data.value.code = current.value.code
-  data.value.provider = current.value.name
+  // Keep provider consistent with credential records (prefer provider/code over display name).
+  data.value.provider = current.value.provider || current.value.code || current.value.name
   if (mounted.value)
     data.value.dns_credential_id = undefined
 
@@ -55,16 +72,26 @@ watch(current, () => {
 
 onMounted(async () => {
   await auto_cert.get_dns_providers().then(r => {
-    providers.value = r
+    providers.value = filterAllowedDnsProviders(r)
   }).then(() => {
     init()
   })
 
   if (data.value.dns_credential_id) {
     await dns_credential.getItem(data.value.dns_credential_id).then(r => {
-      data.value.code = r.code
-      data.value.provider = r.provider
-      providerIdx.value = providers.value.findIndex(v => v.code === r.code)
+      const idx = providers.value.findIndex(v => v.code === r.code)
+      if (idx > -1) {
+        data.value.code = r.code
+        data.value.provider = r.provider
+        providerIdx.value = idx
+      }
+      else {
+        // provider not supported anymore; clear existing selection to keep form consistent
+        data.value.code = undefined
+        data.value.provider = undefined
+        data.value.dns_credential_id = undefined
+        providerIdx.value = undefined
+      }
     })
   }
 
@@ -101,12 +128,12 @@ function filterOption(input: string, option?: DefaultOptionType) {
       />
     </AFormItem>
     <AFormItem
-      v-if="(providerIdx ?? -1) > -1"
+      v-if="(providerIdx !== undefined && providerIdx !== null && providerIdx > -1)"
       :label="$gettext('Credential')"
       :rules="[{ required: true }]"
     >
       <ASelect
-        v-model:value="data.dns_credential_id as any"
+        v-model:value="(data.dns_credential_id as any)"
         :options="credentials"
       />
     </AFormItem>

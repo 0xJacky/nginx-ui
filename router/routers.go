@@ -10,6 +10,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/api/cluster"
 	"github.com/0xJacky/Nginx-UI/api/config"
 	"github.com/0xJacky/Nginx-UI/api/crypto"
+	dnsapi "github.com/0xJacky/Nginx-UI/api/dns"
 	"github.com/0xJacky/Nginx-UI/api/event"
 	"github.com/0xJacky/Nginx-UI/api/external_notify"
 	"github.com/0xJacky/Nginx-UI/api/geolite"
@@ -89,6 +90,7 @@ func InitRouter() {
 			certificate.InitCertificateRouter(g)
 			certificate.InitDNSCredentialRouter(g)
 			certificate.InitAcmeUserRouter(g)
+			dnsapi.InitRouter(g)
 			system.InitPrivateRouter(g)
 			settings.InitRouter(g)
 			llm.InitRouter(g)

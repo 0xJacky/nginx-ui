@@ -192,8 +192,10 @@ msgstr "Дія"
 #: src/views/backup/AutoBackup/AutoBackup.vue:273
 #: src/views/certificate/ACMEUser.vue:131
 #: src/views/certificate/CertificateList/certColumns.tsx:92
-#: src/views/certificate/DNSCredential.vue:71
-#: src/views/config/configColumns.tsx:51 src/views/namespace/columns.ts:97
+#: src/views/config/configColumns.tsx:51
+#: src/views/dns/components/DNSRecordTable.vue:41
+#: src/views/dns/DDNSManager.vue:91 src/views/dns/DNSCredential.vue:71
+#: src/views/dns/DNSDomainList.vue:211 src/views/namespace/columns.ts:97
 #: src/views/nginx_log/NginxLogList.vue:338 src/views/node/nodeColumns.tsx:96
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:85
@@ -247,6 +249,10 @@ msgstr "Додати заголовок"
 msgid "Add Location"
 msgstr "Додати локацію"
 
+#: src/views/dns/DNSRecordManager.vue:171
+msgid "Add Record"
+msgstr "Додати запис"
+
 #: src/components/NgxConfigEditor/NgxServer.vue:92
 msgid "Add Server"
 msgstr "Додати сервер"
@@ -267,7 +273,7 @@ msgstr "Додати upstream"
 msgid "Added successfully"
 msgstr "Успішно додано"
 
-#: src/views/certificate/components/DNSChallenge.vue:97
+#: src/views/dns/components/DNSChallenge.vue:98
 msgid "Additional"
 msgstr "Додатково"
 
@@ -305,6 +311,10 @@ msgstr "Розширені налаштування"
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:105
 msgid "Afterwards, refresh this page and click add passkey again."
 msgstr "Після цього оновіть цю сторінку та натисніть «Додати ключ доступу» знову."
+
+#: src/views/dns/components/DNSRecordFilter.vue:55
+msgid "All"
+msgstr "Усі"
 
 #: src/views/system/Licenses.vue:152
 msgid "All Components"
@@ -349,7 +359,7 @@ msgstr ""
 msgid "API Base Url"
 msgstr "Базова URL-адреса API"
 
-#: src/views/certificate/components/DNSChallenge.vue:70
+#: src/views/dns/components/DNSChallenge.vue:71
 msgid "API Document"
 msgstr "API Документація"
 
@@ -384,6 +394,10 @@ msgstr "Ви впевнені, що хочите видалити цю забо�
 #: src/views/preference/components/AuthSettings/Passkey.vue:114
 msgid "Are you sure to delete this passkey immediately?"
 msgstr "Ви впевнені, що хочете видалити цей ключ?"
+
+#: src/views/dns/components/DNSRecordTable.vue:90
+msgid "Are you sure to delete this record?"
+msgstr "Ви впевнені, що хочете видалити цей запис?"
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:155
 msgid "Are you sure to generate new recovery codes?"
@@ -558,7 +572,7 @@ msgstr "Середн./PV"
 #: src/views/certificate/components/CertificateActions.vue:22
 #: src/views/config/components/ConfigLeftPanel.vue:274
 #: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
-#: src/views/nginx_log/NginxLog.vue:129
+#: src/views/dns/DNSRecordManager.vue:223 src/views/nginx_log/NginxLog.vue:129
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:183
 #: src/views/stream/components/StreamEditor.vue:147
 msgid "Back"
@@ -714,6 +728,10 @@ msgstr "Браузер"
 msgid "Browser Statistics"
 msgstr "Статистика браузера"
 
+#: src/views/dns/DNSDomainList.vue:257
+msgid "Business contact:"
+msgstr "Діловий контакт:"
+
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:316
 msgid ""
 "By enabling advanced indexing, you acknowledge that your system meets the "
@@ -785,6 +803,7 @@ msgstr ""
 #: src/components/NgxConfigEditor/NgxUpstream.vue:32 src/language/curd.ts:37
 #: src/views/config/components/Delete.vue:98
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:710
+#: src/views/dns/DDNSManager.vue:244 src/views/dns/DNSRecordManager.vue:212
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:102
 #: src/views/nginx_log/indexing/IndexManagement.vue:33
 #: src/views/nginx_log/indexing/IndexManagement.vue:59
@@ -930,7 +949,7 @@ msgstr "Тип сертифіката"
 msgid "Certificates"
 msgstr "Сертифікати"
 
-#: src/routes/modules/certificates.ts:36
+#: src/routes/modules/certificates.ts:28
 msgid "Certificates List"
 msgstr "Список сертифікатів"
 
@@ -1309,7 +1328,7 @@ msgstr "Конфігурація порожній"
 msgid "Config Template"
 msgstr "Шаблон конфігурації"
 
-#: src/views/certificate/DNSCredential.vue:52
+#: src/views/dns/DNSCredential.vue:52
 msgid "Configuration"
 msgstr "Конфігурація"
 
@@ -1336,6 +1355,14 @@ msgstr "Назва конфігурації"
 #: src/views/config/ConfigList.vue:112
 msgid "Configurations"
 msgstr "Конфігурації"
+
+#: src/views/dns/DDNSManager.vue:201
+msgid "Configure"
+msgstr "Налаштувати"
+
+#: src/views/dns/DDNSManager.vue:211
+msgid "Configure DDNS"
+msgstr "Налаштувати DDNS"
 
 #: src/views/site/site_add/SiteAdd.vue:81
 msgid "Configure SSL"
@@ -1460,6 +1487,10 @@ msgstr "Створити файл"
 msgid "Create Folder"
 msgstr "Створити папку"
 
+#: src/views/dns/DNSRecordManager.vue:200
+msgid "Create Record"
+msgstr "Створити запис"
+
 #: src/views/backup/components/BackupCreator.vue:75
 msgid ""
 "Create system backups including Nginx configuration and Nginx UI settings. "
@@ -1486,11 +1517,12 @@ msgstr "Успішно створено"
 msgid "Creating client facilitates communication with the CA server"
 msgstr "Створення клієнта сприяє комунікації з сервером CA"
 
-#: src/components/AutoCertForm/DNSChallenge.vue:105
+#: src/components/AutoCertForm/DNSChallenge.vue:131
+#: src/views/dns/DDNSManager.vue:65 src/views/dns/DNSDomainList.vue:109
 msgid "Credential"
 msgstr "Облікові дані"
 
-#: src/views/certificate/components/DNSChallenge.vue:86
+#: src/routes/modules/dns.ts:20 src/views/dns/components/DNSChallenge.vue:87
 msgid "Credentials"
 msgstr "Повноваження"
 
@@ -1641,6 +1673,18 @@ msgstr "Дні"
 msgid "Db file not found"
 msgstr "Файл бази даних не знайдено"
 
+#: src/routes/modules/dns.ts:36
+msgid "DDNS"
+msgstr "DDNS"
+
+#: src/views/dns/DDNSManager.vue:153
+msgid "DDNS Overview"
+msgstr "Огляд DDNS"
+
+#: src/views/dns/DDNSManager.vue:135
+msgid "DDNS saved"
+msgstr "DDNS збережено"
+
 #: src/constants/errors/geolite.ts:12
 msgid "Decompression succeeded but failed to delete compressed file: {0}"
 msgstr "Розпакування успішне, але не вдалося видалити стиснений файл: {0}"
@@ -1665,6 +1709,7 @@ msgstr "Вкажіть назву та розмір зони спільної п
 #: src/views/config/components/Delete.vue:65
 #: src/views/config/components/Delete.vue:97
 #: src/views/config/ConfigList.vue:199
+#: src/views/dns/components/DNSRecordTable.vue:94
 #: src/views/site/site_list/SiteList.vue:100
 #: src/views/stream/StreamList.vue:110
 msgid "Delete"
@@ -1942,7 +1987,8 @@ msgid "Disable stream %{name} from %{node} successfully"
 msgstr "Потік %{name} успішно вимкнено з %{node}"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:175
-#: src/views/node/nodeColumns.tsx:60 src/views/node/nodeColumns.tsx:78
+#: src/views/dns/DDNSManager.vue:175 src/views/node/nodeColumns.tsx:60
+#: src/views/node/nodeColumns.tsx:78
 #: src/views/preference/tabs/HTTPSettings.vue:24
 #: src/views/preference/tabs/NodeSettings.vue:25
 #: src/views/preference/tabs/NodeSettings.vue:30
@@ -1967,15 +2013,34 @@ msgstr "Відключено"
 msgid "Disk IO"
 msgstr "Дисковий ввід/вивід"
 
-#: src/routes/modules/certificates.ts:28
-#: src/views/certificate/DNSCredential.vue:79
+#: src/routes/modules/dns.ts:11
+msgid "DNS"
+msgstr "DNS"
+
+#: src/views/dns/DNSCredential.vue:79
 msgid "DNS Credentials"
 msgstr "DNS облікові дані"
 
-#: src/components/AutoCertForm/DNSChallenge.vue:95
-#: src/views/certificate/components/DNSChallenge.vue:59
+#: src/routes/modules/dns.ts:28 src/views/dns/DNSDomainList.vue:228
+msgid "DNS Domains"
+msgstr "Домени DNS"
+
+#: src/views/dns/components/DNSRecordTable.vue:81
+msgid "DNS Only"
+msgstr "Лише DNS"
+
+#: src/components/AutoCertForm/DNSChallenge.vue:121
+#: src/views/dns/components/DNSChallenge.vue:60
 msgid "DNS Provider"
 msgstr "DNS-провайдер"
+
+#: src/views/dns/DNSDomainList.vue:244
+msgid "DNS Provider Support"
+msgstr "Підтримка DNS-провайдера"
+
+#: src/routes/modules/dns.ts:44 src/views/dns/DNSRecordManager.vue:58
+msgid "DNS Records"
+msgstr "DNS-записи"
 
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:678
 msgid "DNS Resolver"
@@ -2037,6 +2102,7 @@ msgid "Document Count"
 msgstr "Кількість документів"
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:119
+#: src/views/dns/DDNSManager.vue:60 src/views/dns/DNSDomainList.vue:98
 msgid "Domain"
 msgstr "Домен"
 
@@ -2125,7 +2191,7 @@ msgstr "Ключ HMAC EAB"
 msgid "EAB Key ID"
 msgstr "ID ключа EAB"
 
-#: src/language/curd.ts:8
+#: src/language/curd.ts:8 src/views/dns/components/DNSRecordTable.vue:87
 msgid "Edit"
 msgstr "Редагувати"
 
@@ -2138,6 +2204,10 @@ msgstr "Редагувати %{n}"
 #: src/views/config/components/ConfigLeftPanel.vue:242
 msgid "Edit Configuration"
 msgstr "Редагувати конфігурацію"
+
+#: src/views/dns/DNSRecordManager.vue:200
+msgid "Edit Record"
+msgstr "Редагувати запис"
 
 #: src/routes/modules/sites.ts:34
 msgid "Edit Site"
@@ -2188,6 +2258,10 @@ msgstr "Увімкнути автодоповнення коду"
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:68
 msgid "Enable compression for content transfer"
 msgstr "Увімкнути стиснення для передачі вмісту"
+
+#: src/views/dns/DDNSManager.vue:218
+msgid "Enable DDNS"
+msgstr "Увімкнути DDNS"
 
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:473
 msgid "Enable Health Check"
@@ -2276,7 +2350,8 @@ msgid "Enable TOTP"
 msgstr "Увімкнути TOTP"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:174
-#: src/views/node/nodeColumns.tsx:69 src/views/node/nodeColumns.tsx:75
+#: src/views/dns/DDNSManager.vue:175 src/views/node/nodeColumns.tsx:69
+#: src/views/node/nodeColumns.tsx:75
 #: src/views/preference/components/ExternalNotify/columns.tsx:47
 #: src/views/preference/tabs/HTTPSettings.vue:24
 #: src/views/preference/tabs/LogrotateSettings.vue:20
@@ -3246,13 +3321,18 @@ msgstr "Вище значення означає краще повторне в�
 msgid "History"
 msgstr "Історія"
 
-#: src/routes/index.ts:52
+#: src/routes/index.ts:54
 msgid "Home"
 msgstr "Головна"
 
+#: src/views/dns/components/DNSRecordFilter.vue:42
 #: src/views/preference/tabs/ServerSettings.vue:19
 msgid "Host"
 msgstr "Хост"
+
+#: src/views/dns/components/DNSRecordFilter.vue:45
+msgid "Host, e.g. @ or www"
+msgstr "Хост, напр. @ або www"
 
 #: src/views/backup/AutoBackup/components/CronEditor.vue:159
 #: src/views/nginx_log/dashboard/components/HourlyChart.vue:87
@@ -3326,7 +3406,7 @@ msgstr ""
 msgid "Import"
 msgstr "Імпорт"
 
-#: src/routes/modules/certificates.ts:54
+#: src/routes/modules/certificates.ts:46
 #: src/views/certificate/CertificateEditor.vue:84
 msgid "Import Certificate"
 msgstr "Імпортувати сертифікат"
@@ -3449,9 +3529,14 @@ msgstr ""
 "Після 10 хвилин після запуску системи установка заборонена. Будь ласка, "
 "перезапустіть Nginx UI."
 
+#: src/views/dns/DDNSManager.vue:79
 #: src/views/preference/tabs/LogrotateSettings.vue:26
 msgid "Interval"
 msgstr "Інтервал"
+
+#: src/views/dns/DDNSManager.vue:232
+msgid "Interval (seconds)"
+msgstr "Інтервал (секунди)"
 
 #: src/views/certificate/ACMEUser.vue:166
 msgid "Invalid"
@@ -3680,6 +3765,10 @@ msgstr "Останнє індексування"
 #: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:26
 msgid "Last month"
 msgstr "Минулий місяць"
+
+#: src/views/dns/DDNSManager.vue:87
+msgid "Last run"
+msgstr "Останній запуск"
 
 #: src/views/dashboard/NginxDashBoard.vue:138
 msgid "Last update"
@@ -3950,6 +4039,10 @@ msgstr ""
 msgid "Manage Configs"
 msgstr "Керування конфігураціями"
 
+#: src/views/dns/DNSDomainList.vue:236
+msgid "Manage Records"
+msgstr "Керування записами"
+
 #: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:45
 msgid "Manage Sites"
 msgstr "Керування сайтами"
@@ -4120,7 +4213,7 @@ msgstr "Змінено"
 msgid "Modify"
 msgstr "Змінити"
 
-#: src/routes/modules/certificates.ts:44
+#: src/routes/modules/certificates.ts:36
 #: src/views/certificate/CertificateEditor.vue:84
 msgid "Modify Certificate"
 msgstr "Редагувати сертифікат"
@@ -4181,11 +4274,13 @@ msgstr "Н/Д"
 #: src/views/certificate/components/CertificateBasicInfo.vue:44
 #: src/views/certificate/components/CertificateBasicInfo.vue:58
 #: src/views/certificate/components/CertificateBasicInfo.vue:70
-#: src/views/certificate/DNSCredential.vue:17
 #: src/views/config/components/ConfigRightPanel/Basic.vue:34
 #: src/views/config/components/Delete.vue:123
 #: src/views/config/components/Mkdir.vue:64
-#: src/views/config/configColumns.tsx:17 src/views/namespace/columns.ts:9
+#: src/views/config/configColumns.tsx:17
+#: src/views/dns/components/DNSRecordForm.vue:63
+#: src/views/dns/components/DNSRecordTable.vue:17
+#: src/views/dns/DNSCredential.vue:17 src/views/namespace/columns.ts:9
 #: src/views/nginx_log/NginxLogList.vue:155 src/views/node/nodeColumns.tsx:8
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:81
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:36
@@ -4212,6 +4307,14 @@ msgstr "Простір імен"
 #: src/routes/modules/namespaces.ts:10 src/views/namespace/Namespace.vue:19
 msgid "Namespaces"
 msgstr "Простори імен"
+
+#: src/views/dns/DNSDomainList.vue:251
+msgid ""
+"Need more DNS providers? Support us through donations or contact us for "
+"commercial collaboration"
+msgstr ""
+"Потрібно більше DNS-провайдерів? Підтримайте нас через пожертви або "
+"зв’яжіться з нами для комерційної співпраці"
 
 #: src/views/dashboard/NginxDashBoard.vue:195
 msgid "Need to enable the stub_status module"
@@ -4607,6 +4710,10 @@ msgstr "Не індексовано"
 msgid "Not Loaded"
 msgstr "Не завантажено"
 
+#: src/views/dns/DDNSManager.vue:102
+msgid "Not run yet"
+msgstr "Ще не запущено"
+
 #: src/components/AutoCertForm/AutoCertForm.vue:230
 msgid "Not supported for IP certificates"
 msgstr "Не підтримується для IP-сертифікатів"
@@ -4616,7 +4723,7 @@ msgid "Not Valid Before: %{date}"
 msgstr "Не дійсний до: %{date}"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:150
-#: src/views/certificate/DNSCredential.vue:89
+#: src/views/dns/DNSCredential.vue:89
 msgid "Note"
 msgstr "Примітка"
 
@@ -4747,10 +4854,6 @@ msgstr "Гаразд"
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:163
 msgid "On"
 msgstr "Увімкнено"
-
-#: src/views/certificate/DNSCredential.vue:99
-msgid "Once the verification is complete, the records will be removed."
-msgstr "Після завершення перевірки записи будуть видалені."
 
 #: src/components/NamespaceTabs/NamespaceTabs.vue:164
 #: src/components/NodeCard/NodeCard.vue:51
@@ -5044,7 +5147,7 @@ msgstr "Будь ласка, заповніть усі поля правильн
 msgid "Please fill in required S3 configuration fields"
 msgstr "Будь ласка, заповніть обов’язкові поля конфігурації S3"
 
-#: src/views/certificate/DNSCredential.vue:93
+#: src/views/dns/DNSCredential.vue:93
 msgid ""
 "Please fill in the API authentication credentials provided by your DNS "
 "provider."
@@ -5110,7 +5213,7 @@ msgstr "Будь ласка, введіть ваше ім'я користува�
 msgid "Please log in."
 msgstr "Будь ласка, увійдіть."
 
-#: src/views/certificate/DNSCredential.vue:102
+#: src/views/dns/DNSCredential.vue:96
 msgid "Please note that the unit of time configurations below are all in seconds."
 msgstr ""
 "Будь ласка, зверніть увагу, що одиницею виміру часу в наведених нижче "
@@ -5194,6 +5297,11 @@ msgstr "Налаштування"
 msgid "Preparing lego configurations"
 msgstr "Підготовка конфігурацій Lego"
 
+#: src/views/dns/components/DNSRecordForm.vue:81
+#: src/views/dns/components/DNSRecordTable.vue:33
+msgid "Priority"
+msgstr "Пріоритет"
+
 #: src/components/AutoCertForm/AutoCertForm.vue:206
 msgid "Private CA:"
 msgstr "Приватний CA:"
@@ -5257,7 +5365,8 @@ msgstr ""
 "використовуєте зворотний проксі, налаштуйте протокол окремо у зворотному "
 "проксі."
 
-#: src/views/certificate/DNSCredential.vue:26
+#: src/views/dns/DDNSManager.vue:70 src/views/dns/DNSCredential.vue:26
+#: src/views/dns/DNSDomainList.vue:177 src/views/dns/DNSDomainList.vue:198
 msgid "Provider"
 msgstr "Провайдер"
 
@@ -5268,6 +5377,12 @@ msgstr "Постачальника не знайдено: {0}"
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:59
 msgid "Province / Region"
 msgstr "Провінція / Регіон"
+
+#: src/views/dns/components/DNSRecordForm.vue:87
+#: src/views/dns/components/DNSRecordTable.vue:51
+#: src/views/dns/components/DNSRecordTable.vue:81
+msgid "Proxied"
+msgstr "Проксі"
 
 #: src/views/certificate/ACMEUser.vue:63
 msgid "Proxy"
@@ -5363,6 +5478,22 @@ msgstr "Перевірити знову"
 msgid "Recommended:"
 msgstr "Рекомендовано:"
 
+#: src/views/dns/DNSRecordManager.vue:113
+msgid "Record created"
+msgstr "Запис створено"
+
+#: src/views/dns/DNSRecordManager.vue:120
+msgid "Record deleted"
+msgstr "Запис видалено"
+
+#: src/views/dns/DNSRecordManager.vue:109
+msgid "Record updated"
+msgstr "Запис оновлено"
+
+#: src/views/dns/DDNSManager.vue:221
+msgid "Records"
+msgstr "Записи"
+
 #: src/components/TwoFA/Authorization.vue:79
 msgid "Recovery"
 msgstr "Відновлення"
@@ -5393,7 +5524,8 @@ msgstr "Повідомлення про перенаправлення (3xx)"
 msgid "Referer"
 msgstr "Реферер"
 
-#: src/language/curd.ts:70
+#: src/language/curd.ts:70 src/views/dns/DDNSManager.vue:161
+#: src/views/dns/DNSRecordManager.vue:165
 msgid "Refresh"
 msgstr "Оновити"
 
@@ -5637,7 +5769,7 @@ msgstr "Запит з неправильними параметрами"
 msgid "Requests Per Connection"
 msgstr "Запитів на зʼєднання"
 
-#: src/language/curd.ts:13
+#: src/language/curd.ts:13 src/views/dns/components/DNSRecordFilter.vue:65
 #: src/views/nginx_log/structured/components/SearchFilters.vue:214
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:745
 msgid "Reset"
@@ -5880,6 +6012,7 @@ msgstr "Субота"
 #: src/views/config/components/ConfigLeftPanel.vue:283
 #: src/views/config/components/ConfigName.vue:58
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:713
+#: src/views/dns/DDNSManager.vue:247 src/views/dns/DNSRecordManager.vue:215
 #: src/views/preference/components/AuthSettings/Passkey.vue:131
 #: src/views/preference/Preference.vue:124
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
@@ -5987,12 +6120,13 @@ msgstr "Розклад"
 msgid "Schedule Type"
 msgstr "Тип розкладу"
 
-#: src/views/certificate/components/DNSChallenge.vue:77
+#: src/views/dns/components/DNSChallenge.vue:78
 msgid "SDK"
 msgstr "SDK"
 
 #: src/language/constants.ts:62 src/language/curd.ts:12
 #: src/views/config/configColumns.tsx:5
+#: src/views/dns/components/DNSRecordFilter.vue:62
 #: src/views/nginx_log/structured/components/SearchFilters.vue:217
 #: src/views/site/site_list/columns.tsx:17 src/views/stream/columns.tsx:13
 msgid "Search"
@@ -6051,9 +6185,17 @@ msgstr ""
 msgid "Select all"
 msgstr "Вибрати все"
 
+#: src/language/constants.ts:68
+msgid "Select Credential"
+msgstr "Виберіть облікові дані"
+
 #: src/views/certificate/ACMEUser.vue:45
 msgid "Select or enter a CA directory URL"
 msgstr "Виберіть або введіть URL-адресу каталогу CA"
+
+#: src/language/constants.ts:67
+msgid "Select Provider"
+msgstr "Виберіть постачальника"
 
 #: src/language/curd.ts:59
 msgid "Selected {count} files"
@@ -6382,6 +6524,7 @@ msgstr "Статичний"
 #: src/views/certificate/ACMEUser.vue:75
 #: src/views/certificate/CertificateList/certColumns.tsx:63
 #: src/views/dashboard/components/ModulesTable.vue:75
+#: src/views/dns/DDNSManager.vue:75
 #: src/views/nginx_log/structured/components/SearchFilters.vue:106
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:241
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:521
@@ -6612,6 +6755,10 @@ msgstr "Відновлення системи"
 #: src/views/install/components/InstallView.vue:44
 msgid "System restored successfully."
 msgstr "Систему успішно відновлено."
+
+#: src/views/dns/DDNSManager.vue:83
+msgid "Targets"
+msgstr "Цілі"
 
 #: src/constants/errors/self_check.ts:3
 msgid "Task is not fixable"
@@ -7152,6 +7299,14 @@ msgstr "Спробуйте змінити критерії пошуку або �
 msgid "Try adjusting your search criteria or time range."
 msgstr "Спробуйте змінити критерії пошуку або часовий діапазон."
 
+#: src/views/dns/components/DNSRecordTable.vue:29
+msgid "TTL"
+msgstr "TTL"
+
+#: src/views/dns/components/DNSRecordForm.vue:78
+msgid "TTL (seconds)"
+msgstr "TTL (секунди)"
+
 #: src/views/backup/AutoBackup/components/CronEditor.vue:28
 msgid "Tuesday"
 msgstr "Вівторок"
@@ -7164,6 +7319,9 @@ msgstr "Потрібна двофакторна аутентифікація"
 #: src/views/certificate/CertificateList/certColumns.tsx:24
 #: src/views/config/components/Delete.vue:122
 #: src/views/dashboard/components/ModulesTable.vue:62
+#: src/views/dns/components/DNSRecordFilter.vue:49
+#: src/views/dns/components/DNSRecordForm.vue:57
+#: src/views/dns/components/DNSRecordTable.vue:21
 #: src/views/nginx_log/NginxLogList.vue:146
 #: src/views/notification/notificationColumns.tsx:8
 #: src/views/preference/components/ExternalNotify/columns.tsx:19
@@ -7173,6 +7331,10 @@ msgstr "Тип"
 #: src/views/config/components/Delete.vue:129
 msgid "Type %{delete} to confirm"
 msgstr "Введіть %{delete} для підтвердження"
+
+#: src/views/dns/DDNSManager.vue:228
+msgid "Type or select A/AAAA records"
+msgstr "Введіть або виберіть записи A/AAAA"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:142
 msgid "Type or select browser"
@@ -7229,9 +7391,9 @@ msgstr "Успішно оновлено"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:236
 #: src/views/certificate/ACMEUser.vue:124
-#: src/views/certificate/DNSCredential.vue:65
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
-#: src/views/config/configColumns.tsx:44 src/views/namespace/columns.ts:91
+#: src/views/config/configColumns.tsx:44 src/views/dns/DNSCredential.vue:65
+#: src/views/dns/DNSDomainList.vue:205 src/views/namespace/columns.ts:91
 #: src/views/node/nodeColumns.tsx:89
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:39
 #: src/views/site/site_list/columns.tsx:113 src/views/stream/columns.tsx:80
@@ -7304,6 +7466,10 @@ msgstr "Час роботи:"
 msgid "URL"
 msgstr "URL"
 
+#: src/views/dns/components/DNSRecordForm.vue:64
+msgid "Use @ for root"
+msgstr "Використовуйте @ для кореня"
+
 #: src/components/TwoFA/Authorization.vue:121
 msgid "Use OTP"
 msgstr "Використовувати OTP"
@@ -7369,6 +7535,8 @@ msgid "Validate SSL Certificate"
 msgstr "Перевірити SSL-сертифікат"
 
 #: src/views/dashboard/components/PerformanceTablesCard.vue:22
+#: src/views/dns/components/DNSRecordForm.vue:66
+#: src/views/dns/components/DNSRecordTable.vue:25
 msgid "Value"
 msgstr "Значення"
 
@@ -7465,14 +7633,6 @@ msgstr ""
 msgid "We do not accept any feature requests"
 msgstr "Ми не приймаємо жодних запитів на функції"
 
-#: src/views/certificate/DNSCredential.vue:96
-msgid ""
-"We will add one or more TXT records to the DNS records of your domain for "
-"ownership verification."
-msgstr ""
-"Ми додамо один або кілька TXT-записів до DNS-записів вашого домену для "
-"підтвердження власності."
-
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:142
 msgid ""
 "We will remove the HTTPChallenge configuration from this file and reload "
@@ -7508,6 +7668,11 @@ msgstr "Щотижня"
 #: src/views/backup/AutoBackup/AutoBackup.vue:134
 msgid "Weekly on %{day} at %{time}"
 msgstr "Щотижня в %{day} о %{time}"
+
+#: src/views/dns/components/DNSRecordForm.vue:84
+#: src/views/dns/components/DNSRecordTable.vue:37
+msgid "Weight"
+msgstr "Вага"
 
 #: src/views/certificate/ACMEUser.vue:119
 msgid ""
@@ -7559,7 +7724,7 @@ msgstr "Робочі процеси"
 msgid "Workers"
 msgstr "Робочі процеси"
 
-#: src/layouts/HeaderLayout.vue:61 src/routes/index.ts:61
+#: src/layouts/HeaderLayout.vue:61 src/routes/index.ts:63
 #: src/views/workspace/WorkSpace.vue:51
 msgid "Workspace"
 msgstr "Робоча область"
@@ -7662,6 +7827,16 @@ msgstr "Ваші ключі доступу"
 msgid "Zero-allocation pipeline"
 msgstr "Конвеєр без виділення пам’яті"
 
+#~ msgid "Once the verification is complete, the records will be removed."
+#~ msgstr "Після завершення перевірки записи будуть видалені."
+
+#~ msgid ""
+#~ "We will add one or more TXT records to the DNS records of your domain for "
+#~ "ownership verification."
+#~ msgstr ""
+#~ "Ми додамо один або кілька TXT-записів до DNS-записів вашого домену для "
+#~ "підтвердження власності."
+
 #~ msgid "Settings"
 #~ msgstr "Налаштування"
 
@@ -7682,9 +7857,6 @@ msgstr "Конвеєр без виділення пам’яті"
 
 #~ msgid "Tested in isolated sandbox mode"
 #~ msgstr "Протестовано в ізольованому пісочниці"
-
-#~ msgid "All"
-#~ msgstr "Усі"
 
 #~ msgid "Based on M2 Pro (12 cores) testing"
 #~ msgstr "На основі тестування M2 Pro (12 ядер)"
@@ -7889,9 +8061,6 @@ msgstr "Конвеєр без виділення пам’яті"
 
 #~ msgid "Are you sure you want to apply to all selected?"
 #~ msgstr "Ви впевнені, що бажаєте застосувати до всіх вибраних?"
-
-#~ msgid "Are you sure you want to delete this item?"
-#~ msgstr "Ви впевнені, що хочете видалити цей елемент?"
 
 #~ msgid "Are you sure you want to recover this item?"
 #~ msgstr "Ви впевнені, що бажаєте відновити цей елемент?"

@@ -182,8 +182,10 @@ msgstr "Hành động"
 #: src/views/backup/AutoBackup/AutoBackup.vue:273
 #: src/views/certificate/ACMEUser.vue:131
 #: src/views/certificate/CertificateList/certColumns.tsx:92
-#: src/views/certificate/DNSCredential.vue:71
-#: src/views/config/configColumns.tsx:51 src/views/namespace/columns.ts:97
+#: src/views/config/configColumns.tsx:51
+#: src/views/dns/components/DNSRecordTable.vue:41
+#: src/views/dns/DDNSManager.vue:91 src/views/dns/DNSCredential.vue:71
+#: src/views/dns/DNSDomainList.vue:211 src/views/namespace/columns.ts:97
 #: src/views/nginx_log/NginxLogList.vue:338 src/views/node/nodeColumns.tsx:96
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:85
@@ -237,6 +239,10 @@ msgstr "Thêm tiêu đề"
 msgid "Add Location"
 msgstr "Thêm Location"
 
+#: src/views/dns/DNSRecordManager.vue:171
+msgid "Add Record"
+msgstr "Thêm bản ghi"
+
 #: src/components/NgxConfigEditor/NgxServer.vue:92
 msgid "Add Server"
 msgstr "Thêm máy chủ"
@@ -257,7 +263,7 @@ msgstr "Thêm upstream"
 msgid "Added successfully"
 msgstr "Đã thêm thành công"
 
-#: src/views/certificate/components/DNSChallenge.vue:97
+#: src/views/dns/components/DNSChallenge.vue:98
 msgid "Additional"
 msgstr "Bổ sung"
 
@@ -295,6 +301,10 @@ msgstr "Cài đặt nâng cao"
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:105
 msgid "Afterwards, refresh this page and click add passkey again."
 msgstr "Sau đó, làm mới trang này và nhấp vào thêm khóa truy cập một lần nữa."
+
+#: src/views/dns/components/DNSRecordFilter.vue:55
+msgid "All"
+msgstr "Tất cả"
 
 #: src/views/system/Licenses.vue:152
 msgid "All Components"
@@ -339,7 +349,7 @@ msgstr ""
 msgid "API Base Url"
 msgstr "URL Cơ sở API"
 
-#: src/views/certificate/components/DNSChallenge.vue:70
+#: src/views/dns/components/DNSChallenge.vue:71
 msgid "API Document"
 msgstr "Tài liệu API"
 
@@ -374,6 +384,10 @@ msgstr "Bạn có chắc chắn muốn xóa IP bị cấm này ngay lập tức 
 #: src/views/preference/components/AuthSettings/Passkey.vue:114
 msgid "Are you sure to delete this passkey immediately?"
 msgstr "Bạn có chắc chắn muốn xóa ngay lập tức khóa truy cập này không?"
+
+#: src/views/dns/components/DNSRecordTable.vue:90
+msgid "Are you sure to delete this record?"
+msgstr "Bạn có chắc chắn muốn xóa bản ghi này không?"
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:155
 msgid "Are you sure to generate new recovery codes?"
@@ -544,7 +558,7 @@ msgstr "TB/PV"
 #: src/views/certificate/components/CertificateActions.vue:22
 #: src/views/config/components/ConfigLeftPanel.vue:274
 #: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
-#: src/views/nginx_log/NginxLog.vue:129
+#: src/views/dns/DNSRecordManager.vue:223 src/views/nginx_log/NginxLog.vue:129
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:183
 #: src/views/stream/components/StreamEditor.vue:147
 msgid "Back"
@@ -694,6 +708,10 @@ msgstr "Trình duyệt"
 msgid "Browser Statistics"
 msgstr "Thống kê trình duyệt"
 
+#: src/views/dns/DNSDomainList.vue:257
+msgid "Business contact:"
+msgstr "Liên hệ kinh doanh:"
+
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:316
 msgid ""
 "By enabling advanced indexing, you acknowledge that your system meets the "
@@ -764,6 +782,7 @@ msgstr ""
 #: src/components/NgxConfigEditor/NgxUpstream.vue:32 src/language/curd.ts:37
 #: src/views/config/components/Delete.vue:98
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:710
+#: src/views/dns/DDNSManager.vue:244 src/views/dns/DNSRecordManager.vue:212
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:102
 #: src/views/nginx_log/indexing/IndexManagement.vue:33
 #: src/views/nginx_log/indexing/IndexManagement.vue:59
@@ -909,7 +928,7 @@ msgstr "Loại chứng chỉ"
 msgid "Certificates"
 msgstr "Chứng chỉ"
 
-#: src/routes/modules/certificates.ts:36
+#: src/routes/modules/certificates.ts:28
 msgid "Certificates List"
 msgstr "Danh sách chứng chỉ"
 
@@ -1287,7 +1306,7 @@ msgstr "Đường dẫn cấu hình trống"
 msgid "Config Template"
 msgstr "Mẫu cấu hình"
 
-#: src/views/certificate/DNSCredential.vue:52
+#: src/views/dns/DNSCredential.vue:52
 msgid "Configuration"
 msgstr "Cấu hình"
 
@@ -1314,6 +1333,14 @@ msgstr "Tên cấu hình"
 #: src/views/config/ConfigList.vue:112
 msgid "Configurations"
 msgstr "Cấu hình"
+
+#: src/views/dns/DDNSManager.vue:201
+msgid "Configure"
+msgstr "Cấu hình"
+
+#: src/views/dns/DDNSManager.vue:211
+msgid "Configure DDNS"
+msgstr "Cấu hình DDNS"
 
 #: src/views/site/site_add/SiteAdd.vue:81
 msgid "Configure SSL"
@@ -1436,6 +1463,10 @@ msgstr "Tạo tệp"
 msgid "Create Folder"
 msgstr "Tạo thư mục"
 
+#: src/views/dns/DNSRecordManager.vue:200
+msgid "Create Record"
+msgstr "Tạo bản ghi"
+
 #: src/views/backup/components/BackupCreator.vue:75
 msgid ""
 "Create system backups including Nginx configuration and Nginx UI settings. "
@@ -1461,11 +1492,12 @@ msgstr "Tạo thành công"
 msgid "Creating client facilitates communication with the CA server"
 msgstr "Tạo client để giao tiếp với CA server"
 
-#: src/components/AutoCertForm/DNSChallenge.vue:105
+#: src/components/AutoCertForm/DNSChallenge.vue:131
+#: src/views/dns/DDNSManager.vue:65 src/views/dns/DNSDomainList.vue:109
 msgid "Credential"
 msgstr "Chứng chỉ"
 
-#: src/views/certificate/components/DNSChallenge.vue:86
+#: src/routes/modules/dns.ts:20 src/views/dns/components/DNSChallenge.vue:87
 msgid "Credentials"
 msgstr "Chứng chỉ"
 
@@ -1580,6 +1612,18 @@ msgstr "Ngày"
 msgid "Db file not found"
 msgstr "Tệp cơ sở dữ liệu không tìm thấy"
 
+#: src/routes/modules/dns.ts:36
+msgid "DDNS"
+msgstr "DDNS"
+
+#: src/views/dns/DDNSManager.vue:153
+msgid "DDNS Overview"
+msgstr "Tổng quan DDNS"
+
+#: src/views/dns/DDNSManager.vue:135
+msgid "DDNS saved"
+msgstr "Đã lưu DDNS"
+
 #: src/constants/errors/geolite.ts:12
 msgid "Decompression succeeded but failed to delete compressed file: {0}"
 msgstr "Giải nén thành công nhưng không thể xóa tệp đã nén: {0}"
@@ -1604,6 +1648,7 @@ msgstr "Xác định tên và kích thước vùng bộ nhớ dùng chung, ví d
 #: src/views/config/components/Delete.vue:65
 #: src/views/config/components/Delete.vue:97
 #: src/views/config/ConfigList.vue:199
+#: src/views/dns/components/DNSRecordTable.vue:94
 #: src/views/site/site_list/SiteList.vue:100
 #: src/views/stream/StreamList.vue:110
 msgid "Delete"
@@ -1845,7 +1890,8 @@ msgid "Disable stream %{name} from %{node} successfully"
 msgstr "Đã vô hiệu hóa luồng %{name} từ %{node} thành công"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:175
-#: src/views/node/nodeColumns.tsx:60 src/views/node/nodeColumns.tsx:78
+#: src/views/dns/DDNSManager.vue:175 src/views/node/nodeColumns.tsx:60
+#: src/views/node/nodeColumns.tsx:78
 #: src/views/preference/tabs/HTTPSettings.vue:24
 #: src/views/preference/tabs/NodeSettings.vue:25
 #: src/views/preference/tabs/NodeSettings.vue:30
@@ -1870,15 +1916,34 @@ msgstr "Ngắt kết nối"
 msgid "Disk IO"
 msgstr "Disk IO"
 
-#: src/routes/modules/certificates.ts:28
-#: src/views/certificate/DNSCredential.vue:79
+#: src/routes/modules/dns.ts:11
+msgid "DNS"
+msgstr "DNS"
+
+#: src/views/dns/DNSCredential.vue:79
 msgid "DNS Credentials"
 msgstr "Xác thực DNS"
 
-#: src/components/AutoCertForm/DNSChallenge.vue:95
-#: src/views/certificate/components/DNSChallenge.vue:59
+#: src/routes/modules/dns.ts:28 src/views/dns/DNSDomainList.vue:228
+msgid "DNS Domains"
+msgstr "Tên miền DNS"
+
+#: src/views/dns/components/DNSRecordTable.vue:81
+msgid "DNS Only"
+msgstr "Chỉ DNS"
+
+#: src/components/AutoCertForm/DNSChallenge.vue:121
+#: src/views/dns/components/DNSChallenge.vue:60
 msgid "DNS Provider"
 msgstr "Nhà cung cấp DNS"
+
+#: src/views/dns/DNSDomainList.vue:244
+msgid "DNS Provider Support"
+msgstr "Hỗ trợ nhà cung cấp DNS"
+
+#: src/routes/modules/dns.ts:44 src/views/dns/DNSRecordManager.vue:58
+msgid "DNS Records"
+msgstr "Bản ghi DNS"
 
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:678
 msgid "DNS Resolver"
@@ -1940,6 +2005,7 @@ msgid "Document Count"
 msgstr "Số lượng tài liệu"
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:119
+#: src/views/dns/DDNSManager.vue:60 src/views/dns/DNSDomainList.vue:98
 msgid "Domain"
 msgstr "Tên miền"
 
@@ -2029,7 +2095,7 @@ msgstr "Khóa HMAC EAB"
 msgid "EAB Key ID"
 msgstr "ID khóa EAB"
 
-#: src/language/curd.ts:8
+#: src/language/curd.ts:8 src/views/dns/components/DNSRecordTable.vue:87
 msgid "Edit"
 msgstr "Chỉnh sửa"
 
@@ -2042,6 +2108,10 @@ msgstr "Sửa %{n}"
 #: src/views/config/components/ConfigLeftPanel.vue:242
 msgid "Edit Configuration"
 msgstr "Sửa cấu hình"
+
+#: src/views/dns/DNSRecordManager.vue:200
+msgid "Edit Record"
+msgstr "Chỉnh sửa bản ghi"
 
 #: src/routes/modules/sites.ts:34
 msgid "Edit Site"
@@ -2092,6 +2162,10 @@ msgstr "Bật hoàn thành mã"
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:68
 msgid "Enable compression for content transfer"
 msgstr "Bật nén để chuyển nội dung"
+
+#: src/views/dns/DDNSManager.vue:218
+msgid "Enable DDNS"
+msgstr "Bật DDNS"
 
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:473
 msgid "Enable Health Check"
@@ -2180,7 +2254,8 @@ msgid "Enable TOTP"
 msgstr "Bật TOTP"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:174
-#: src/views/node/nodeColumns.tsx:69 src/views/node/nodeColumns.tsx:75
+#: src/views/dns/DDNSManager.vue:175 src/views/node/nodeColumns.tsx:69
+#: src/views/node/nodeColumns.tsx:75
 #: src/views/preference/components/ExternalNotify/columns.tsx:47
 #: src/views/preference/tabs/HTTPSettings.vue:24
 #: src/views/preference/tabs/LogrotateSettings.vue:20
@@ -3146,13 +3221,18 @@ msgstr "Giá trị cao hơn có nghĩa là tái sử dụng kết nối tốt h�
 msgid "History"
 msgstr "Lịch sử"
 
-#: src/routes/index.ts:52
+#: src/routes/index.ts:54
 msgid "Home"
 msgstr "Trang chủ"
 
+#: src/views/dns/components/DNSRecordFilter.vue:42
 #: src/views/preference/tabs/ServerSettings.vue:19
 msgid "Host"
 msgstr "Máy chủ"
+
+#: src/views/dns/components/DNSRecordFilter.vue:45
+msgid "Host, e.g. @ or www"
+msgstr "Máy chủ, vd: @ hoặc www"
 
 #: src/views/backup/AutoBackup/components/CronEditor.vue:159
 #: src/views/nginx_log/dashboard/components/HourlyChart.vue:87
@@ -3225,7 +3305,7 @@ msgstr ""
 msgid "Import"
 msgstr "Nhập"
 
-#: src/routes/modules/certificates.ts:54
+#: src/routes/modules/certificates.ts:46
 #: src/views/certificate/CertificateEditor.vue:84
 msgid "Import Certificate"
 msgstr "Nhập chứng chỉ"
@@ -3348,9 +3428,14 @@ msgstr ""
 "Không được phép cài đặt sau 10 phút khởi động hệ thống, vui lòng khởi động "
 "lại Nginx UI."
 
+#: src/views/dns/DDNSManager.vue:79
 #: src/views/preference/tabs/LogrotateSettings.vue:26
 msgid "Interval"
 msgstr "Khoảng thời gian"
+
+#: src/views/dns/DDNSManager.vue:232
+msgid "Interval (seconds)"
+msgstr "Khoảng thời gian (giây)"
 
 #: src/views/certificate/ACMEUser.vue:166
 msgid "Invalid"
@@ -3579,6 +3664,10 @@ msgstr "Lần lập chỉ mục cuối"
 #: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:26
 msgid "Last month"
 msgstr "Tháng trước"
+
+#: src/views/dns/DDNSManager.vue:87
+msgid "Last run"
+msgstr "Lần chạy cuối"
 
 #: src/views/dashboard/NginxDashBoard.vue:138
 msgid "Last update"
@@ -3849,6 +3938,10 @@ msgstr ""
 msgid "Manage Configs"
 msgstr "Quản lý cấu hình"
 
+#: src/views/dns/DNSDomainList.vue:236
+msgid "Manage Records"
+msgstr "Quản lý bản ghi"
+
 #: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:45
 msgid "Manage Sites"
 msgstr "Quản lý Website"
@@ -4019,7 +4112,7 @@ msgstr "Đã sửa đổi lúc"
 msgid "Modify"
 msgstr "Sửa đổi"
 
-#: src/routes/modules/certificates.ts:44
+#: src/routes/modules/certificates.ts:36
 #: src/views/certificate/CertificateEditor.vue:84
 msgid "Modify Certificate"
 msgstr "Sửa đổi chứng chỉ"
@@ -4080,11 +4173,13 @@ msgstr "Không có"
 #: src/views/certificate/components/CertificateBasicInfo.vue:44
 #: src/views/certificate/components/CertificateBasicInfo.vue:58
 #: src/views/certificate/components/CertificateBasicInfo.vue:70
-#: src/views/certificate/DNSCredential.vue:17
 #: src/views/config/components/ConfigRightPanel/Basic.vue:34
 #: src/views/config/components/Delete.vue:123
 #: src/views/config/components/Mkdir.vue:64
-#: src/views/config/configColumns.tsx:17 src/views/namespace/columns.ts:9
+#: src/views/config/configColumns.tsx:17
+#: src/views/dns/components/DNSRecordForm.vue:63
+#: src/views/dns/components/DNSRecordTable.vue:17
+#: src/views/dns/DNSCredential.vue:17 src/views/namespace/columns.ts:9
 #: src/views/nginx_log/NginxLogList.vue:155 src/views/node/nodeColumns.tsx:8
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:81
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:36
@@ -4111,6 +4206,14 @@ msgstr "Không gian tên"
 #: src/routes/modules/namespaces.ts:10 src/views/namespace/Namespace.vue:19
 msgid "Namespaces"
 msgstr "Không gian tên"
+
+#: src/views/dns/DNSDomainList.vue:251
+msgid ""
+"Need more DNS providers? Support us through donations or contact us for "
+"commercial collaboration"
+msgstr ""
+"Cần thêm nhà cung cấp DNS? Hãy hỗ trợ chúng tôi qua quyên góp hoặc liên hệ "
+"để hợp tác thương mại"
 
 #: src/views/dashboard/NginxDashBoard.vue:195
 msgid "Need to enable the stub_status module"
@@ -4506,6 +4609,10 @@ msgstr "Chưa được lập chỉ mục"
 msgid "Not Loaded"
 msgstr "Chưa tải"
 
+#: src/views/dns/DDNSManager.vue:102
+msgid "Not run yet"
+msgstr "Chưa được chạy"
+
 #: src/components/AutoCertForm/AutoCertForm.vue:230
 msgid "Not supported for IP certificates"
 msgstr "Không hỗ trợ cho chứng chỉ IP"
@@ -4515,7 +4622,7 @@ msgid "Not Valid Before: %{date}"
 msgstr "Không hợp lệ trước: %{date}"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:150
-#: src/views/certificate/DNSCredential.vue:89
+#: src/views/dns/DNSCredential.vue:89
 msgid "Note"
 msgstr "Ghi chú"
 
@@ -4643,10 +4750,6 @@ msgstr "Đồng ý"
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:163
 msgid "On"
 msgstr "Bật"
-
-#: src/views/certificate/DNSCredential.vue:99
-msgid "Once the verification is complete, the records will be removed."
-msgstr "Sau khi quá trình xác minh hoàn tất, bản ghi sẽ bị xóa."
 
 #: src/components/NamespaceTabs/NamespaceTabs.vue:164
 #: src/components/NodeCard/NodeCard.vue:51
@@ -4940,7 +5043,7 @@ msgstr "Vui lòng điền đầy đủ và chính xác tất cả các trường
 msgid "Please fill in required S3 configuration fields"
 msgstr "Vui lòng điền vào các trường cấu hình S3 bắt buộc"
 
-#: src/views/certificate/DNSCredential.vue:93
+#: src/views/dns/DNSCredential.vue:93
 msgid ""
 "Please fill in the API authentication credentials provided by your DNS "
 "provider."
@@ -5001,7 +5104,7 @@ msgstr "Vui lòng nhập username!"
 msgid "Please log in."
 msgstr "Vui lòng đăng nhập."
 
-#: src/views/certificate/DNSCredential.vue:102
+#: src/views/dns/DNSCredential.vue:96
 msgid "Please note that the unit of time configurations below are all in seconds."
 msgstr "Lưu ý đơn vị cấu hình thời gian bên dưới được tính bằng giây."
 
@@ -5081,6 +5184,11 @@ msgstr "Cài đặt"
 msgid "Preparing lego configurations"
 msgstr "Chuẩn bị cấu hình Lego"
 
+#: src/views/dns/components/DNSRecordForm.vue:81
+#: src/views/dns/components/DNSRecordTable.vue:33
+msgid "Priority"
+msgstr "Ưu tiên"
+
 #: src/components/AutoCertForm/AutoCertForm.vue:206
 msgid "Private CA:"
 msgstr "CA riêng:"
@@ -5143,7 +5251,8 @@ msgstr ""
 "Cấu hình giao thức chỉ có hiệu lực khi kết nối trực tiếp. Nếu sử dụng proxy "
 "ngược, vui lòng cấu hình giao thức riêng trong proxy ngược."
 
-#: src/views/certificate/DNSCredential.vue:26
+#: src/views/dns/DDNSManager.vue:70 src/views/dns/DNSCredential.vue:26
+#: src/views/dns/DNSDomainList.vue:177 src/views/dns/DNSDomainList.vue:198
 msgid "Provider"
 msgstr "Nhà cung cấp"
 
@@ -5154,6 +5263,12 @@ msgstr "Không tìm thấy nhà cung cấp: {0}"
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:59
 msgid "Province / Region"
 msgstr "Tỉnh / Vùng"
+
+#: src/views/dns/components/DNSRecordForm.vue:87
+#: src/views/dns/components/DNSRecordTable.vue:51
+#: src/views/dns/components/DNSRecordTable.vue:81
+msgid "Proxied"
+msgstr "Được proxy"
 
 #: src/views/certificate/ACMEUser.vue:63
 msgid "Proxy"
@@ -5249,6 +5364,22 @@ msgstr "Kiểm tra lại"
 msgid "Recommended:"
 msgstr "Đề xuất:"
 
+#: src/views/dns/DNSRecordManager.vue:113
+msgid "Record created"
+msgstr "Đã tạo bản ghi"
+
+#: src/views/dns/DNSRecordManager.vue:120
+msgid "Record deleted"
+msgstr "Đã xóa bản ghi"
+
+#: src/views/dns/DNSRecordManager.vue:109
+msgid "Record updated"
+msgstr "Bản ghi đã được cập nhật"
+
+#: src/views/dns/DDNSManager.vue:221
+msgid "Records"
+msgstr "Bản ghi"
+
 #: src/components/TwoFA/Authorization.vue:79
 msgid "Recovery"
 msgstr "Khôi phục"
@@ -5278,7 +5409,8 @@ msgstr "Thông điệp chuyển hướng (3xx)"
 msgid "Referer"
 msgstr "Người giới thiệu"
 
-#: src/language/curd.ts:70
+#: src/language/curd.ts:70 src/views/dns/DDNSManager.vue:161
+#: src/views/dns/DNSRecordManager.vue:165
 msgid "Refresh"
 msgstr "Làm mới"
 
@@ -5520,7 +5652,7 @@ msgstr "Yêu cầu có chứa tham số sai"
 msgid "Requests Per Connection"
 msgstr "Yêu cầu mỗi kết nối"
 
-#: src/language/curd.ts:13
+#: src/language/curd.ts:13 src/views/dns/components/DNSRecordFilter.vue:65
 #: src/views/nginx_log/structured/components/SearchFilters.vue:214
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:745
 msgid "Reset"
@@ -5761,6 +5893,7 @@ msgstr "Thứ Bảy"
 #: src/views/config/components/ConfigLeftPanel.vue:283
 #: src/views/config/components/ConfigName.vue:58
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:713
+#: src/views/dns/DDNSManager.vue:247 src/views/dns/DNSRecordManager.vue:215
 #: src/views/preference/components/AuthSettings/Passkey.vue:131
 #: src/views/preference/Preference.vue:124
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
@@ -5866,12 +5999,13 @@ msgstr "Lịch trình"
 msgid "Schedule Type"
 msgstr "Loại lịch trình"
 
-#: src/views/certificate/components/DNSChallenge.vue:77
+#: src/views/dns/components/DNSChallenge.vue:78
 msgid "SDK"
 msgstr "SDK"
 
 #: src/language/constants.ts:62 src/language/curd.ts:12
 #: src/views/config/configColumns.tsx:5
+#: src/views/dns/components/DNSRecordFilter.vue:62
 #: src/views/nginx_log/structured/components/SearchFilters.vue:217
 #: src/views/site/site_list/columns.tsx:17 src/views/stream/columns.tsx:13
 msgid "Search"
@@ -5930,9 +6064,17 @@ msgstr ""
 msgid "Select all"
 msgstr "Chọn tất cả"
 
+#: src/language/constants.ts:68
+msgid "Select Credential"
+msgstr "Chọn thông tin xác thực"
+
 #: src/views/certificate/ACMEUser.vue:45
 msgid "Select or enter a CA directory URL"
 msgstr "Chọn hoặc nhập URL thư mục CA"
+
+#: src/language/constants.ts:67
+msgid "Select Provider"
+msgstr "Chọn nhà cung cấp"
 
 #: src/language/curd.ts:59
 msgid "Selected {count} files"
@@ -6257,6 +6399,7 @@ msgstr "Tĩnh"
 #: src/views/certificate/ACMEUser.vue:75
 #: src/views/certificate/CertificateList/certColumns.tsx:63
 #: src/views/dashboard/components/ModulesTable.vue:75
+#: src/views/dns/DDNSManager.vue:75
 #: src/views/nginx_log/structured/components/SearchFilters.vue:106
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:241
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:521
@@ -6487,6 +6630,10 @@ msgstr "Khôi phục hệ thống"
 #: src/views/install/components/InstallView.vue:44
 msgid "System restored successfully."
 msgstr "Hệ thống đã được khôi phục thành công."
+
+#: src/views/dns/DDNSManager.vue:83
+msgid "Targets"
+msgstr "Mục tiêu"
 
 #: src/constants/errors/self_check.ts:3
 msgid "Task is not fixable"
@@ -7027,6 +7174,14 @@ msgstr "Hãy thử điều chỉnh tiêu chí tìm kiếm hoặc điều hướn
 msgid "Try adjusting your search criteria or time range."
 msgstr "Hãy thử điều chỉnh tiêu chí tìm kiếm hoặc khoảng thời gian."
 
+#: src/views/dns/components/DNSRecordTable.vue:29
+msgid "TTL"
+msgstr "TTL"
+
+#: src/views/dns/components/DNSRecordForm.vue:78
+msgid "TTL (seconds)"
+msgstr "TTL (giây)"
+
 #: src/views/backup/AutoBackup/components/CronEditor.vue:28
 msgid "Tuesday"
 msgstr "Thứ Ba"
@@ -7039,6 +7194,9 @@ msgstr "Yêu cầu xác thực hai yếu tố"
 #: src/views/certificate/CertificateList/certColumns.tsx:24
 #: src/views/config/components/Delete.vue:122
 #: src/views/dashboard/components/ModulesTable.vue:62
+#: src/views/dns/components/DNSRecordFilter.vue:49
+#: src/views/dns/components/DNSRecordForm.vue:57
+#: src/views/dns/components/DNSRecordTable.vue:21
 #: src/views/nginx_log/NginxLogList.vue:146
 #: src/views/notification/notificationColumns.tsx:8
 #: src/views/preference/components/ExternalNotify/columns.tsx:19
@@ -7048,6 +7206,10 @@ msgstr "Loại"
 #: src/views/config/components/Delete.vue:129
 msgid "Type %{delete} to confirm"
 msgstr "Nhập %{delete} để xác nhận"
+
+#: src/views/dns/DDNSManager.vue:228
+msgid "Type or select A/AAAA records"
+msgstr "Nhập hoặc chọn bản ghi A/AAAA"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:142
 msgid "Type or select browser"
@@ -7104,9 +7266,9 @@ msgstr "Cập nhật thành công"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:236
 #: src/views/certificate/ACMEUser.vue:124
-#: src/views/certificate/DNSCredential.vue:65
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
-#: src/views/config/configColumns.tsx:44 src/views/namespace/columns.ts:91
+#: src/views/config/configColumns.tsx:44 src/views/dns/DNSCredential.vue:65
+#: src/views/dns/DNSDomainList.vue:205 src/views/namespace/columns.ts:91
 #: src/views/node/nodeColumns.tsx:89
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:39
 #: src/views/site/site_list/columns.tsx:113 src/views/stream/columns.tsx:80
@@ -7179,6 +7341,10 @@ msgstr "Thời gian hoạt động:"
 msgid "URL"
 msgstr "URL"
 
+#: src/views/dns/components/DNSRecordForm.vue:64
+msgid "Use @ for root"
+msgstr "Sử dụng @ cho gốc"
+
 #: src/components/TwoFA/Authorization.vue:121
 msgid "Use OTP"
 msgstr "Sử dụng OTP"
@@ -7244,6 +7410,8 @@ msgid "Validate SSL Certificate"
 msgstr "Xác thực chứng chỉ SSL"
 
 #: src/views/dashboard/components/PerformanceTablesCard.vue:22
+#: src/views/dns/components/DNSRecordForm.vue:66
+#: src/views/dns/components/DNSRecordTable.vue:25
 msgid "Value"
 msgstr "Giá trị"
 
@@ -7339,14 +7507,6 @@ msgstr ""
 msgid "We do not accept any feature requests"
 msgstr "Chúng tôi không chấp nhận bất kỳ yêu cầu tính năng nào"
 
-#: src/views/certificate/DNSCredential.vue:96
-msgid ""
-"We will add one or more TXT records to the DNS records of your domain for "
-"ownership verification."
-msgstr ""
-"Chúng tôi sẽ thêm một hoặc nhiều bản ghi TXT để xác minh quyền sở hữu tên "
-"miền của bạn."
-
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:142
 msgid ""
 "We will remove the HTTPChallenge configuration from this file and reload "
@@ -7382,6 +7542,11 @@ msgstr "Hàng tuần"
 #: src/views/backup/AutoBackup/AutoBackup.vue:134
 msgid "Weekly on %{day} at %{time}"
 msgstr "Hàng tuần vào %{day} lúc %{time}"
+
+#: src/views/dns/components/DNSRecordForm.vue:84
+#: src/views/dns/components/DNSRecordTable.vue:37
+msgid "Weight"
+msgstr "Trọng lượng"
 
 #: src/views/certificate/ACMEUser.vue:119
 msgid ""
@@ -7431,7 +7596,7 @@ msgstr "Tiến trình công nhân"
 msgid "Workers"
 msgstr "Công nhân"
 
-#: src/layouts/HeaderLayout.vue:61 src/routes/index.ts:61
+#: src/layouts/HeaderLayout.vue:61 src/routes/index.ts:63
 #: src/views/workspace/WorkSpace.vue:51
 msgid "Workspace"
 msgstr "Không gian làm việc"
@@ -7534,6 +7699,16 @@ msgstr "Khóa truy cập của bạn"
 msgid "Zero-allocation pipeline"
 msgstr "Đường ống không cấp phát"
 
+#~ msgid "Once the verification is complete, the records will be removed."
+#~ msgstr "Sau khi quá trình xác minh hoàn tất, bản ghi sẽ bị xóa."
+
+#~ msgid ""
+#~ "We will add one or more TXT records to the DNS records of your domain for "
+#~ "ownership verification."
+#~ msgstr ""
+#~ "Chúng tôi sẽ thêm một hoặc nhiều bản ghi TXT để xác minh quyền sở hữu tên "
+#~ "miền của bạn."
+
 #~ msgid "Settings"
 #~ msgstr "Cài đặt"
 
@@ -7554,9 +7729,6 @@ msgstr "Đường ống không cấp phát"
 
 #~ msgid "Tested in isolated sandbox mode"
 #~ msgstr "Đã kiểm tra trong chế độ sandbox cách ly"
-
-#~ msgid "All"
-#~ msgstr "Tất cả"
 
 #~ msgid "Based on M2 Pro (12 cores) testing"
 #~ msgstr "Dựa trên thử nghiệm M2 Pro (12 lõi)"
@@ -7761,9 +7933,6 @@ msgstr "Đường ống không cấp phát"
 
 #~ msgid "Are you sure you want to apply to all selected?"
 #~ msgstr "Bạn có chắc chắn muốn áp dụng cho tất cả các mục đã chọn không?"
-
-#~ msgid "Are you sure you want to delete this item?"
-#~ msgstr "Bạn có chắc chắn muốn xóa mục này không?"
 
 #~ msgid "Are you sure you want to recover this item?"
 #~ msgstr "Bạn có chắc chắn muốn khôi phục mục này không?"

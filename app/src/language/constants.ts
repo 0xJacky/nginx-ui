@@ -63,4 +63,7 @@ export const msg = [
 
   $gettext('Access Log'),
   $gettext('Error Log'),
+
+  $gettext('Select Provider'),
+  $gettext('Select Credential'),
 ]

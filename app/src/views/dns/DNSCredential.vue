@@ -93,12 +93,6 @@ const columns: StdTableColumn[] = [{
             {{ $gettext('Please fill in the API authentication credentials provided by your DNS provider.') }}
           </p>
           <p>
-            {{ $gettext('We will add one or more TXT records to the DNS records of your domain for ownership verification.') }}
-          </p>
-          <p>
-            {{ $gettext('Once the verification is complete, the records will be removed.') }}
-          </p>
-          <p>
             {{ $gettext('Please note that the unit of time configurations below are all in seconds.') }}
           </p>
         </template>
