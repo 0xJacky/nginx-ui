@@ -30,7 +30,7 @@ function init() {
 }
 
 const current = computed(() => {
-  return providers.value?.[providerIdx.value || -1]
+  return providers.value?.[providerIdx.value ?? -1]
 })
 
 const mounted = ref(false)
@@ -104,12 +104,12 @@ function filterOption(input: string, option?: DefaultOptionType) {
       />
     </AFormItem>
     <AFormItem
-      v-if="(providerIdx ?? -1) > -1"
+      v-if="((providerIdx ?? -1) > -1)"
       :label="$gettext('Credential')"
       :rules="[{ required: true }]"
     >
       <ASelect
-        v-model:value="data.dns_credential_id as any"
+        v-model:value="(data.dns_credential_id as any)"
         :options="credentials"
       />
     </AFormItem>

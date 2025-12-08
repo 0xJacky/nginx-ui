@@ -19,7 +19,7 @@ func TestDomainLifecycle(t *testing.T) {
 
 	q := setupTestQuery(t)
 	ctx := context.Background()
-	service := dnsSvc.NewService(q)
+	service := dnsSvc.NewService()
 
 	cred := createCredential(t, q)
 
@@ -135,6 +135,3 @@ func (m *mockProvider) UpdateRecord(ctx context.Context, domain string, recordID
 func (m *mockProvider) DeleteRecord(ctx context.Context, domain string, recordID string) error {
 	return nil
 }
-
-
-

@@ -17,10 +17,21 @@ const router = useRouter()
 
 type SelectOptionList = NonNullable<SelectProps['options']>
 
+interface LegacyDnsCredential {
+  id: number
+  name?: string
+  provider?: string
+  config?: {
+    name?: string
+    code?: string
+  }
+}
+
 interface DomainForm extends Omit<DNSDomain, 'dns_credential_id'> {
   dns_credential_id?: number
   selected_provider?: string
   provider_initialized?: boolean
+  dns_credential?: LegacyDnsCredential
 }
 
 const dnsProviders = ref<DNSProvider[]>([])
@@ -85,6 +96,17 @@ interface DomainEditContext {
   mode: 'add' | 'edit'
 }
 
+function resolveProviderName(record: DomainForm) {
+  return record.credential?.provider
+    ?? record.dns_credential?.provider
+    ?? record.dns_credential?.config?.name
+    ?? ''
+}
+
+function resolveCredentialName(record: DomainForm) {
+  return record.credential?.name ?? record.dns_credential?.name ?? '--'
+}
+
 const columns: StdTableColumn[] = [{
   title: () => $gettext('Domain'),
   dataIndex: 'domain',
@@ -100,14 +122,14 @@ const columns: StdTableColumn[] = [{
   title: () => $gettext('Credential'),
   dataIndex: 'dns_credential_id',
   customRender: ({ record }: CustomRenderArgs & { record: DNSDomain }) => {
-    return record.credential?.name ?? '--'
+    return resolveCredentialName(record as DomainForm)
   },
   edit: {
     type: (context: DomainEditContext) => {
       const formData = context.formData
       if (!formData.provider_initialized) {
         formData.selected_provider = context.mode === 'edit'
-          ? formData.credential?.provider ?? ''
+          ? resolveProviderName(formData)
           : ''
         formData.provider_initialized = true
       }
@@ -118,6 +140,23 @@ const columns: StdTableColumn[] = [{
         set: (value: string) => {
           formData.selected_provider = value
         },
+      })
+
+      const mergedProviderOptions = computed<SelectOptionList>(() => {
+        const base = providerOptions.value
+        if (
+          providerRef.value
+          && !base.some(option => option.value === providerRef.value)
+        ) {
+          return [
+            ...base,
+            {
+              label: providerRef.value,
+              value: providerRef.value,
+            },
+          ]
+        }
+        return base
       })
 
       if (providerRef.value)
@@ -151,7 +190,7 @@ const columns: StdTableColumn[] = [{
           <FormItem label={$gettext('Provider')} required>
             <Select
               value={providerRef.value || undefined}
-              options={providerOptions.value}
+              options={mergedProviderOptions.value}
               placeholder={$gettext('Select Provider')}
               showSearch
               filterOption={filterOption}
@@ -172,7 +211,7 @@ const columns: StdTableColumn[] = [{
   title: () => $gettext('Provider'),
   dataIndex: 'credential.provider',
   customRender: ({ record }: CustomRenderArgs & { record: DNSDomain }) => {
-    return record.credential?.provider ?? '--'
+    return resolveProviderName(record as DomainForm) || '--'
   },
   pure: true,
 }, {

@@ -2,6 +2,7 @@ package dns
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/samber/lo"
@@ -13,97 +14,45 @@ import (
 )
 
 func ListDomains(c *gin.Context) {
-	var params domainListQuery
-	_ = c.ShouldBindQuery(&params)
-
-	svc := dnsService.NewService()
-	domains, total, err := svc.ListDomains(
-		c.Request.Context(),
-		dnsService.DomainListOptions{
-			Page:          params.Page,
-			PerPage:       params.PerPage,
-			Keyword:       params.Keyword,
-			DnsCredential: params.CredentialID,
-		},
-	)
-	if err != nil {
-		cosy.ErrHandler(c, err)
-		return
-	}
-
-	responses := lo.Map(domains, func(domain *model.DnsDomain, _ int) domainResponse {
-		return newDomainResponse(domain)
-	})
-
-	c.JSON(http.StatusOK, gin.H{
-		"data":       responses,
-		"pagination": buildPagination(params.Page, params.PerPage, total),
-	})
+	cosy.Core[model.DnsDomain](c).
+		SetPreloads("DnsCredential").
+		SetFussy("domain", "description").
+		SetTransformer(func(domain *model.DnsDomain) any {
+			return newDomainResponse(domain)
+		}).
+		PagingList()
 }
 
 func GetDomain(c *gin.Context) {
-	id := cast.ToUint64(c.Param("id"))
-	svc := dnsService.NewService()
-
-	domain, err := svc.GetDomain(c.Request.Context(), id)
-	if err != nil {
-		cosy.ErrHandler(c, err)
-		return
-	}
-
-	c.JSON(http.StatusOK, newDomainResponse(domain))
+	cosy.Core[model.DnsDomain](c).
+		SetPreloads("DnsCredential").
+		Get()
 }
 
 func CreateDomain(c *gin.Context) {
-	var payload domainRequest
-	if !cosy.BindAndValid(c, &payload) {
-		return
-	}
-
-	svc := dnsService.NewService()
-	domain, err := svc.CreateDomain(c.Request.Context(), dnsService.DomainInput{
-		Domain:          payload.Domain,
-		Description:     payload.Description,
-		DnsCredentialID: payload.DnsCredentialID,
-	})
-	if err != nil {
-		cosy.ErrHandler(c, err)
-		return
-	}
-
-	c.JSON(http.StatusCreated, newDomainResponse(domain))
+	cosy.Core[model.DnsDomain](c).
+		SetValidRules(gin.H{
+			"domain":            "required",
+			"description":       "omitempty",
+			"dns_credential_id": "required",
+		}).
+		BeforeExecuteHook(domainMutationHook(dnsService.NewService(), false)).
+		Create()
 }
 
 func UpdateDomain(c *gin.Context) {
-	var payload domainRequest
-	if !cosy.BindAndValid(c, &payload) {
-		return
-	}
-
-	id := cast.ToUint64(c.Param("id"))
-	svc := dnsService.NewService()
-
-	domain, err := svc.UpdateDomain(c.Request.Context(), id, dnsService.DomainInput{
-		Domain:          payload.Domain,
-		Description:     payload.Description,
-		DnsCredentialID: payload.DnsCredentialID,
-	})
-	if err != nil {
-		cosy.ErrHandler(c, err)
-		return
-	}
-
-	c.JSON(http.StatusOK, newDomainResponse(domain))
+	cosy.Core[model.DnsDomain](c).
+		SetValidRules(gin.H{
+			"domain":            "required",
+			"description":       "omitempty",
+			"dns_credential_id": "required",
+		}).
+		BeforeExecuteHook(domainMutationHook(dnsService.NewService(), true)).
+		Modify()
 }
 
 func DeleteDomain(c *gin.Context) {
-	id := cast.ToUint64(c.Param("id"))
-	svc := dnsService.NewService()
-	if err := svc.DeleteDomain(c.Request.Context(), id); err != nil {
-		cosy.ErrHandler(c, err)
-		return
-	}
-	c.Status(http.StatusNoContent)
+	cosy.Core[model.DnsDomain](c).Destroy()
 }
 
 func ListRecords(c *gin.Context) {
@@ -131,18 +80,8 @@ func ListRecords(c *gin.Context) {
 	perPage := lo.If(params.PerPage <= 0, 50).Else(params.PerPage)
 
 	total := len(records)
-	start := (page - 1) * perPage
-	if start < 0 {
-		start = 0
-	}
-	if start > total {
-		start = total
-	}
-
-	end := start + perPage
-	if end > total {
-		end = total
-	}
+	start := max((page-1)*perPage, 0)
+	end := min(start+perPage, total)
 
 	var pagedRecords []dnsService.Record
 	if total == 0 {
@@ -220,5 +159,38 @@ func buildPagination(page, perPage int, total int64) model.Pagination {
 		PerPage:     perPage,
 		CurrentPage: page,
 		TotalPages:  totalPages,
+	}
+}
+
+func domainMutationHook(svc *dnsService.Service, isUpdate bool) func(ctx *cosy.Ctx[model.DnsDomain]) {
+	return func(ctx *cosy.Ctx[model.DnsDomain]) {
+		normalized, err := dnsService.NormalizeDomain(ctx.Model.Domain)
+		if err != nil {
+			ctx.AbortWithError(err)
+			return
+		}
+
+		credential, err := dnsService.LoadCredential(ctx.Request.Context(), ctx.Model.DnsCredentialID)
+		if err != nil {
+			ctx.AbortWithError(err)
+			return
+		}
+
+		excludeID := uint64(0)
+		if isUpdate {
+			if ctx.ID == 0 {
+				ctx.ID = ctx.GetParamID()
+			}
+			excludeID = ctx.ID
+		}
+
+		if err := dnsService.EnsureDomainUnique(ctx.Request.Context(), normalized, credential.ID, excludeID); err != nil {
+			ctx.AbortWithError(err)
+			return
+		}
+
+		ctx.Model.Domain = normalized
+		ctx.Model.Description = strings.TrimSpace(ctx.Model.Description)
+		ctx.Model.DnsCredentialID = credential.ID
 	}
 }

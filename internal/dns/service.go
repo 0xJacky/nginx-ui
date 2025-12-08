@@ -38,6 +38,21 @@ type RecordListOptions struct {
 	Filter RecordFilter
 }
 
+// NormalizeDomain trims and validates a domain value for persistence.
+func NormalizeDomain(value string) (string, error) {
+	return normalizeDomain(value)
+}
+
+// EnsureDomainUnique verifies the domain is unique under the given credential, excluding an existing ID when provided.
+func EnsureDomainUnique(ctx context.Context, domain string, credentialID uint64, excludeID uint64) error {
+	return ensureDomainUnique(ctx, domain, credentialID, excludeID)
+}
+
+// LoadCredential fetches a DNS credential by ID with consistent error mapping.
+func LoadCredential(ctx context.Context, id uint64) (*model.DnsCredential, error) {
+	return loadCredential(ctx, id)
+}
+
 // Service implements domain and record operations.
 type Service struct{}
 
