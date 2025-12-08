@@ -4,6 +4,7 @@ import { computed } from 'vue'
 
 const props = defineProps<{
   showProxied?: boolean
+  valueSuggestions?: string[]
 }>()
 
 const formModel = defineModel<RecordPayload>('record', {
@@ -36,6 +37,19 @@ const showWeight = computed(() => {
   const type = formModel.value.type.toUpperCase()
   return ['SRV'].includes(type)
 })
+
+const isValueAutocompleteEnabled = computed(() => {
+  const type = formModel.value.type?.toUpperCase?.() ?? ''
+  return type === 'A' || type === 'CNAME'
+})
+
+function handleValueKeydown(event: KeyboardEvent) {
+  if (!isValueAutocompleteEnabled.value)
+    return
+  if (event.key === 'Enter') {
+    event.preventDefault()
+  }
+}
 </script>
 
 <template>
@@ -50,7 +64,16 @@ const showWeight = computed(() => {
       <AInput v-model:value="formModel.name" :placeholder="$gettext('Use @ for root')" />
     </AFormItem>
     <AFormItem :label="$gettext('Value')" :rules="[{ required: true }]">
-      <ATextarea v-model:value="formModel.content" auto-size />
+      <AAutoComplete
+        v-if="isValueAutocompleteEnabled"
+        v-model:value="formModel.content"
+        :options="(props.valueSuggestions ?? []).filter(Boolean).map(value => ({ value }))"
+        :filter-option="(input, option) => option?.value?.toLowerCase().includes(input.toLowerCase()) ?? false"
+        style="width: 100%;"
+      >
+        <ATextarea v-model:value="formModel.content" auto-size @keydown.enter="handleValueKeydown" />
+      </AAutoComplete>
+      <ATextarea v-else v-model:value="formModel.content" auto-size />
     </AFormItem>
     <AFormItem :label="$gettext('TTL (seconds)')" :rules="[{ required: true, type: 'number', min: 1 }]">
       <AInputNumber v-model:value="formModel.ttl" :min="1" :step="60" style="width: 100%;" />

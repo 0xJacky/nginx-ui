@@ -41,6 +41,17 @@ const showProxiedToggle = computed(() => {
   return provider.toLowerCase().includes('cloudflare')
 })
 
+const contentSuggestions = computed(() => {
+  const unique = new Set<string>()
+  store.records.forEach(record => {
+    const type = record.type?.toUpperCase?.() ?? ''
+    if (record.content && (type === 'A' || type === 'CNAME')) {
+      unique.add(record.content)
+    }
+  })
+  return Array.from(unique)
+})
+
 const pageTitle = computed(() => {
   return store.currentDomain?.domain ?? $gettext('DNS Records')
 })
@@ -187,6 +198,7 @@ onMounted(() => {
       <DNSRecordForm
         v-model:record="formModel"
         :show-proxied="showProxiedToggle"
+        :value-suggestions="contentSuggestions"
       />
       <template #footer>
         <ASpace>
