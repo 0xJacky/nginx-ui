@@ -101,20 +101,20 @@ func (sc *SiteChecker) CollectSites() {
 		// Check site status - only collect from enabled sites
 		siteStatus := site.GetSiteStatus(siteName)
 		if siteStatus != site.StatusEnabled {
-			// logger.Debugf("Skipping site %s (status: %s) - only collecting from enabled sites", siteName, siteStatus)
+			logger.Debugf("Skipping site %s (status: %s) - only collecting from enabled sites", siteName, siteStatus)
 			continue
 		}
 
-		// logger.Debugf("Processing enabled site: %s with %d URLs", siteName, len(indexedSite.Urls))
+		logger.Debugf("Processing enabled site: %s with %d URLs", siteName, len(indexedSite.Urls))
 		for _, url := range indexedSite.Urls {
 			if url != "" {
-				// logger.Debugf("Adding site URL: %s", url)
+				logger.Debugf("Adding site URL: %s", url)
 				// Load site config to determine display URL
 				config, err := LoadSiteConfig(url)
 				protocol := "http" // default protocol
 				if err == nil && config != nil && config.HealthCheckConfig != nil && config.HealthCheckConfig.Protocol != "" {
 					protocol = config.HealthCheckConfig.Protocol
-					// logger.Debugf("Site %s using protocol: %s", url, protocol)
+					logger.Debugf("Site %s using protocol: %s", url, protocol)
 				} else {
 					logger.Debugf("Site %s using default protocol: %s (config error: %v)", url, protocol, err)
 				}
@@ -616,22 +616,75 @@ func (sc *SiteChecker) downloadFavicon(ctx context.Context, faviconURL string) s
 		return ""
 	}
 
-	// Get content type
-	contentType := resp.Header.Get("Content-Type")
-	if contentType == "" {
-		// Try to determine from URL extension
-		if strings.HasSuffix(faviconURL, ".png") {
-			contentType = "image/png"
-		} else if strings.HasSuffix(faviconURL, ".ico") {
-			contentType = "image/x-icon"
-		} else {
-			contentType = "image/x-icon" // default
-		}
+	headerContentType := normalizeContentType(resp.Header.Get("Content-Type"))
+	inferredContentType := inferContentTypeFromURL(faviconURL)
+	sniffedContentType := normalizeContentType(http.DetectContentType(body))
+
+	contentType := headerContentType
+	if !isAllowedFaviconContentType(contentType) && isAllowedFaviconContentType(sniffedContentType) {
+		contentType = sniffedContentType
+	}
+	if !isAllowedFaviconContentType(contentType) &&
+		headerContentType == "" &&
+		isUnknownContentType(sniffedContentType) &&
+		isAllowedFaviconContentType(inferredContentType) {
+		contentType = inferredContentType
+	}
+	if !isAllowedFaviconContentType(contentType) {
+		return ""
 	}
 
-	// Encode as data URL
 	encoded := base64.StdEncoding.EncodeToString(body)
 	return fmt.Sprintf("data:%s;base64,%s", contentType, encoded)
+}
+
+func normalizeContentType(contentType string) string {
+	if contentType == "" {
+		return ""
+	}
+	if semi := strings.Index(contentType, ";"); semi != -1 {
+		contentType = contentType[:semi]
+	}
+	return strings.TrimSpace(strings.ToLower(contentType))
+}
+
+func inferContentTypeFromURL(faviconURL string) string {
+	lower := strings.ToLower(faviconURL)
+	switch {
+	case strings.HasSuffix(lower, ".png"):
+		return "image/png"
+	case strings.HasSuffix(lower, ".jpg"), strings.HasSuffix(lower, ".jpeg"):
+		return "image/jpeg"
+	case strings.HasSuffix(lower, ".webp"):
+		return "image/webp"
+	case strings.HasSuffix(lower, ".gif"):
+		return "image/gif"
+	case strings.HasSuffix(lower, ".svg"):
+		return "image/svg+xml"
+	case strings.HasSuffix(lower, ".ico"):
+		return "image/x-icon"
+	default:
+		return ""
+	}
+}
+
+func isAllowedFaviconContentType(contentType string) bool {
+	switch contentType {
+	case "image/png",
+		"image/jpeg",
+		"image/webp",
+		"image/gif",
+		"image/svg+xml",
+		"image/x-icon",
+		"image/vnd.microsoft.icon":
+		return true
+	default:
+		return false
+	}
+}
+
+func isUnknownContentType(contentType string) bool {
+	return contentType == "" || contentType == "application/octet-stream"
 }
 
 // generateDisplayURL generates the URL to display in UI based on health check protocol

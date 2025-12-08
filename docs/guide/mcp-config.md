@@ -46,6 +46,12 @@ The MCP Configuration File Management module provides a set of tools and resourc
 - Type: `tool`
 - Name: `nginx_config_history`
 
+### Enable Configuration File
+
+- Type: `tool`
+- Name: `nginx_config_enable`
+- Description: Enable a previously created Nginx configuration (creates symlink in sites-enabled)
+
 ## Usage Examples
 
 Here are some examples of using MCP Configuration File Management features:
@@ -117,6 +123,30 @@ Example response:
     "path": "/etc/nginx/conf.d/default.conf",
     "content": "server {\n    listen 80;\n    server_name example.com;\n    location / {\n        root /usr/share/nginx/html;\n        index index.html;\n    }\n}"
   }
+}
+```
+
+### Enable Configuration File
+
+```json
+{
+  "tool": "nginx_config_enable",
+  "parameters": {
+    "name": "my-site.conf",
+    "base_dir": "sites-available",
+    "overwrite": false
+  }
+}
+```
+
+Example response:
+
+```json
+{
+  "status": "success",
+  "message": "Site enabled and Nginx reloaded successfully",
+  "source": "/etc/nginx/sites-available/my-site.conf",
+  "destination": "/etc/nginx/sites-enabled/my-site.conf"
 }
 ```
 

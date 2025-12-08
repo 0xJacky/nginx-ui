@@ -46,6 +46,12 @@ MCP 配置文件管理模組提供了一系列工具和資源，用於管理 Ngi
 - 類型：`tool`
 - 名稱：`nginx_config_history`
 
+### 啟用配置文件
+
+- 類型：`tool`
+- 名稱：`nginx_config_enable`
+- 描述：啟用之前創建的 Nginx 配置文件（在 sites-enabled 中創建符號連結）
+
 ## 使用示例
 
 以下是一些使用 MCP 配置文件管理功能的示例：
@@ -117,6 +123,30 @@ MCP 配置文件管理模組提供了一系列工具和資源，用於管理 Ngi
     "path": "/etc/nginx/conf.d/default.conf",
     "content": "server {\n    listen 80;\n    server_name example.com;\n    location / {\n        root /usr/share/nginx/html;\n        index index.html;\n    }\n}"
   }
+}
+```
+
+### 啟用配置文件
+
+```json
+{
+  "tool": "nginx_config_enable",
+  "parameters": {
+    "name": "my-site.conf",
+    "base_dir": "sites-available",
+    "overwrite": false
+  }
+}
+```
+
+返回結果示例：
+
+```json
+{
+  "status": "success",
+  "message": "Site enabled and Nginx reloaded successfully",
+  "source": "/etc/nginx/sites-available/my-site.conf",
+  "destination": "/etc/nginx/sites-enabled/my-site.conf"
 }
 ```
 

@@ -438,9 +438,41 @@ func copyConfigBaseExceptSitesStreams(sandboxDir string) error {
 		if rel == "." {
 			return nil
 		}
+		base := filepath.Base(path)
+
+		// Handle symlinked entries (including symlinks to directories such as /etc/nginx/modules)
+		lstatInfo, lErr := os.Lstat(path)
+		if lErr != nil {
+			return lErr
+		}
+		if lstatInfo.Mode()&os.ModeSymlink != 0 {
+			// Respect blacklist for sites/streams even when symlinked
+			if strings.HasPrefix(base, "sites-") || strings.HasPrefix(base, "streams-") {
+				return nil
+			}
+			target, tErr := os.Readlink(path)
+			if tErr != nil {
+				return tErr
+			}
+			if !filepath.IsAbs(target) {
+				target = filepath.Join(filepath.Dir(path), target)
+			}
+			// If the symlink points to a directory, recreate the symlink and stop processing this entry
+			if tStat, sErr := os.Stat(target); sErr == nil && tStat.IsDir() {
+				dst := filepath.Join(sandboxDir, rel)
+				if mkErr := os.MkdirAll(filepath.Dir(dst), 0755); mkErr != nil {
+					return mkErr
+				}
+				// Ignore existing symlink if already created
+				if syErr := os.Symlink(target, dst); syErr != nil && !os.IsExist(syErr) {
+					return syErr
+				}
+				return nil
+			}
+		}
+
 		// Skip blacklisted directories
 		if d.IsDir() {
-			base := filepath.Base(path)
 			if strings.HasPrefix(base, "sites-") || strings.HasPrefix(base, "streams-") {
 				return filepath.SkipDir
 			}
@@ -453,10 +485,6 @@ func copyConfigBaseExceptSitesStreams(sandboxDir string) error {
 		}
 		// Copy regular file (follow symlinks by reading content)
 		dst := filepath.Join(sandboxDir, rel)
-		info, sErr := os.Lstat(path)
-		if sErr != nil {
-			return sErr
-		}
-		return copyFile(path, dst, info.Mode())
+		return copyFile(path, dst, lstatInfo.Mode())
 	})
 }

@@ -5,6 +5,7 @@ import (
 	"compress/gzip"
 	"context"
 	"io"
+	"runtime"
 	"strings"
 	"sync"
 
@@ -27,7 +28,22 @@ func InitLogParser() {
 		config := parser.DefaultParserConfig()
 		config.MaxLineLength = 16 * 1024 // 16KB for large log lines
 		config.BatchSize = 15000         // Maximum batch size for highest frontend throughput
-		config.WorkerCount = 24          // Match CPU core count for high-throughput
+
+		// Derive parser worker count from available CPUs, with sane limits so that
+		// small machines are not overwhelmed while larger hosts can still use
+		// parallel parsing effectively.
+		maxProcs := runtime.GOMAXPROCS(0)
+		if maxProcs <= 0 {
+			maxProcs = runtime.NumCPU()
+		}
+		workerCount := maxProcs
+		if workerCount < 4 {
+			workerCount = 4
+		}
+		if workerCount > 16 {
+			workerCount = 16
+		}
+		config.WorkerCount = workerCount
 		// Note: Caching is handled by the CachedUserAgentParser
 
 		// Initialize user agent parser with caching (10,000 cache size for production)

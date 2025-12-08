@@ -83,7 +83,20 @@ func TestAdaptiveOptimizer_SetWorkerCountChangeCallback(t *testing.T) {
 }
 
 func TestAdaptiveOptimizer_suggestWorkerIncrease(t *testing.T) {
-	ao := createTestAdaptiveOptimizer(4)
+	// Use higher initial worker count so there's room to increase
+	// Since maxWorkers is now set to config.WorkerCount, we need to start with a config
+	// where WorkerCount is higher than the current workers to test the increase logic
+	config := &Config{
+		WorkerCount: 16, // Set max to 16 so we can increase from current
+		BatchSize:   1000,
+	}
+
+	ao := NewAdaptiveOptimizer(config)
+	ao.SetActivityPoller(mockActivityPoller{busy: true})
+
+	// Manually set current workers to a lower value to allow increase
+	atomic.StoreInt64(&ao.workerCount, 8)
+	ao.config.WorkerCount = 16 // Keep max at 16
 
 	var actualOldCount, actualNewCount int
 	var callbackCalled bool
@@ -104,13 +117,17 @@ func TestAdaptiveOptimizer_suggestWorkerIncrease(t *testing.T) {
 		t.Error("Expected worker count change callback to be called")
 	}
 
-	if actualOldCount != 4 {
-		t.Errorf("Expected old worker count 4, got %d", actualOldCount)
+	if actualOldCount != 8 {
+		t.Errorf("Expected old worker count 8, got %d", actualOldCount)
 	}
 
-	// Should increase workers, but not more than max allowed
-	if actualNewCount <= 4 {
-		t.Errorf("Expected new worker count to be greater than 4, got %d", actualNewCount)
+	// Should increase workers, but not more than max allowed (16)
+	if actualNewCount <= 8 {
+		t.Errorf("Expected new worker count to be greater than 8, got %d", actualNewCount)
+	}
+
+	if actualNewCount > 16 {
+		t.Errorf("Expected new worker count to not exceed max 16, got %d", actualNewCount)
 	}
 
 	// Verify config was updated

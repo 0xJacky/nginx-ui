@@ -74,10 +74,23 @@ func DefaultIndexerConfig() *Config {
 		baseBatchSize = 18000 // Standard systems (4-7 cores) - good throughput
 	}
 
+	// Derive conservative, CPU-aware defaults to avoid oversubscribing small machines.
+	// Treat GOMAXPROCS as the upper bound for CPU-bound worker concurrency.
+	workerCount := maxProcs
+	if workerCount < 2 {
+		workerCount = 2
+	}
+
+	// Limit file-level concurrency to at most half of the logical CPUs by default.
+	fileGroupConcurrency := maxProcs / 2
+	if fileGroupConcurrency < 2 {
+		fileGroupConcurrency = 2
+	}
+
 	return &Config{
 		IndexPath:            "./log-index",
 		ShardCount:           max(4, maxProcs/2), // Scale shards with CPU cores
-		WorkerCount:          maxProcs * 3,       // Optimized: 3x processors for better I/O-bound workload handling
+		WorkerCount:          workerCount,        // One worker per logical CPU by default (min 2)
 		BatchSize:            baseBatchSize,      // Dynamically scaled based on CPU cores
 		FlushInterval:        5 * time.Second,
 		MaxQueueSize:         baseBatchSize * 10, // Scale queue with batch size
@@ -86,7 +99,7 @@ func DefaultIndexerConfig() *Config {
 		MaxSegmentSize:       64 * 1024 * 1024,           // 64MB
 		OptimizeInterval:     30 * time.Minute,
 		EnableMetrics:        true,
-		FileGroupConcurrency: max(4, maxProcs), // Default: use CPU count for file-level parallelism
+		FileGroupConcurrency: fileGroupConcurrency, // Default: up to 50% of logical CPUs for file-level parallelism
 	}
 }
 
