@@ -84,7 +84,7 @@ func ListRecords(c *gin.Context) {
 	end := min(start+perPage, total)
 
 	var pagedRecords []dnsService.Record
-	if total == 0 {
+	if total == 0 || start >= total {
 		pagedRecords = []dnsService.Record{}
 	} else {
 		pagedRecords = records[start:end]
