@@ -29,6 +29,14 @@ export const dnsRoutes: RouteRecordRaw[] = [
         },
       },
       {
+        path: 'ddns',
+        name: 'DNS DDNS',
+        component: () => import('@/views/dns/DDNSManager.vue'),
+        meta: {
+          name: () => $gettext('DDNS'),
+        },
+      },
+      {
         path: 'domains/:id/records',
         name: 'DNS Domain Records',
         component: () => import('@/views/dns/DNSRecordManager.vue'),

@@ -21,6 +21,10 @@ func InitRouter(r *gin.RouterGroup) {
 		group.POST("/domains/:id/records", CreateRecord)
 		group.PUT("/domains/:id/records/:record_id", UpdateRecord)
 		group.DELETE("/domains/:id/records/:record_id", DeleteRecord)
+
+		group.GET("/domains/:id/ddns", GetDDNSConfig)
+		group.PUT("/domains/:id/ddns", UpdateDDNSConfig)
+
+		group.GET("/ddns", ListDDNSConfig)
 	}
 }
-

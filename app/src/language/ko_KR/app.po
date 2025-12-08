@@ -185,9 +185,9 @@ msgstr "작업"
 #: src/views/certificate/CertificateList/certColumns.tsx:92
 #: src/views/config/configColumns.tsx:51
 #: src/views/dns/components/DNSRecordTable.vue:41
-#: src/views/dns/DNSCredential.vue:71 src/views/dns/DNSDomainList.vue:185
-#: src/views/namespace/columns.ts:97 src/views/nginx_log/NginxLogList.vue:338
-#: src/views/node/nodeColumns.tsx:96
+#: src/views/dns/DDNSManager.vue:91 src/views/dns/DNSCredential.vue:71
+#: src/views/dns/DNSDomainList.vue:211 src/views/namespace/columns.ts:97
+#: src/views/nginx_log/NginxLogList.vue:338 src/views/node/nodeColumns.tsx:96
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:85
 #: src/views/site/site_list/columns.tsx:160 src/views/stream/columns.tsx:123
@@ -240,7 +240,7 @@ msgstr "헤더 추가"
 msgid "Add Location"
 msgstr "위치 추가"
 
-#: src/views/dns/DNSRecordManager.vue:154
+#: src/views/dns/DNSRecordManager.vue:171
 msgid "Add Record"
 msgstr "레코드 추가"
 
@@ -553,7 +553,7 @@ msgstr "평균/PV"
 #: src/views/certificate/components/CertificateActions.vue:22
 #: src/views/config/components/ConfigLeftPanel.vue:274
 #: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
-#: src/views/nginx_log/NginxLog.vue:129
+#: src/views/dns/DNSRecordManager.vue:223 src/views/nginx_log/NginxLog.vue:129
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:183
 #: src/views/stream/components/StreamEditor.vue:147
 msgid "Back"
@@ -699,7 +699,7 @@ msgstr "브라우저"
 msgid "Browser Statistics"
 msgstr "브라우저 통계"
 
-#: src/views/dns/DNSDomainList.vue:231
+#: src/views/dns/DNSDomainList.vue:257
 msgid "Business contact:"
 msgstr "비즈니스 연락처:"
 
@@ -772,7 +772,7 @@ msgstr ""
 #: src/components/NgxConfigEditor/NgxUpstream.vue:32 src/language/curd.ts:37
 #: src/views/config/components/Delete.vue:98
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:710
-#: src/views/dns/DNSRecordManager.vue:194
+#: src/views/dns/DDNSManager.vue:244 src/views/dns/DNSRecordManager.vue:212
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:102
 #: src/views/nginx_log/indexing/IndexManagement.vue:33
 #: src/views/nginx_log/indexing/IndexManagement.vue:59
@@ -1310,6 +1310,14 @@ msgstr "구성 이름"
 msgid "Configurations"
 msgstr "구성들"
 
+#: src/views/dns/DDNSManager.vue:201
+msgid "Configure"
+msgstr "구성"
+
+#: src/views/dns/DDNSManager.vue:211
+msgid "Configure DDNS"
+msgstr "DDNS 구성"
+
 #: src/views/site/site_add/SiteAdd.vue:81
 msgid "Configure SSL"
 msgstr "SSL 구성하기"
@@ -1431,7 +1439,7 @@ msgstr "파일 생성"
 msgid "Create Folder"
 msgstr "폴더 생성"
 
-#: src/views/dns/DNSRecordManager.vue:183
+#: src/views/dns/DNSRecordManager.vue:200
 msgid "Create Record"
 msgstr "레코드 생성"
 
@@ -1458,8 +1466,8 @@ msgstr "성공적으로 생성됨"
 msgid "Creating client facilitates communication with the CA server"
 msgstr "클라이언트 생성은 CA 서버와의 통신을 용이하게 합니다"
 
-#: src/components/AutoCertForm/DNSChallenge.vue:108
-#: src/views/dns/DNSDomainList.vue:100
+#: src/components/AutoCertForm/DNSChallenge.vue:131
+#: src/views/dns/DDNSManager.vue:65 src/views/dns/DNSDomainList.vue:109
 msgid "Credential"
 msgstr "인증 정보"
 
@@ -1577,6 +1585,18 @@ msgstr "일"
 #: src/constants/errors/user.ts:16
 msgid "Db file not found"
 msgstr "데이터베이스 파일을 찾을 수 없습니다"
+
+#: src/routes/modules/dns.ts:36
+msgid "DDNS"
+msgstr "DDNS"
+
+#: src/views/dns/DDNSManager.vue:153
+msgid "DDNS Overview"
+msgstr "DDNS 개요"
+
+#: src/views/dns/DDNSManager.vue:135
+msgid "DDNS saved"
+msgstr "DDNS 저장됨"
 
 #: src/constants/errors/geolite.ts:12
 msgid "Decompression succeeded but failed to delete compressed file: {0}"
@@ -1844,7 +1864,8 @@ msgid "Disable stream %{name} from %{node} successfully"
 msgstr "스트림 %{name}을(를) %{node}에서 비활성화했습니다"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:175
-#: src/views/node/nodeColumns.tsx:60 src/views/node/nodeColumns.tsx:78
+#: src/views/dns/DDNSManager.vue:175 src/views/node/nodeColumns.tsx:60
+#: src/views/node/nodeColumns.tsx:78
 #: src/views/preference/tabs/HTTPSettings.vue:24
 #: src/views/preference/tabs/NodeSettings.vue:25
 #: src/views/preference/tabs/NodeSettings.vue:30
@@ -1877,8 +1898,7 @@ msgstr "DNS"
 msgid "DNS Credentials"
 msgstr "DNS 인증 정보"
 
-#: src/routes/modules/dns.ts:28
-#: src/views/dns/DNSDomainList.vue:202
+#: src/routes/modules/dns.ts:28 src/views/dns/DNSDomainList.vue:228
 msgid "DNS Domains"
 msgstr "DNS 도메인"
 
@@ -1886,17 +1906,16 @@ msgstr "DNS 도메인"
 msgid "DNS Only"
 msgstr "DNS 전용"
 
-#: src/components/AutoCertForm/DNSChallenge.vue:98
+#: src/components/AutoCertForm/DNSChallenge.vue:121
 #: src/views/dns/components/DNSChallenge.vue:60
 msgid "DNS Provider"
 msgstr "DNS 제공자"
 
-#: src/views/dns/DNSDomainList.vue:218
+#: src/views/dns/DNSDomainList.vue:244
 msgid "DNS Provider Support"
 msgstr "DNS 공급자 지원"
 
-#: src/routes/modules/dns.ts:36
-#: src/views/dns/DNSRecordManager.vue:45
+#: src/routes/modules/dns.ts:44 src/views/dns/DNSRecordManager.vue:58
 msgid "DNS Records"
 msgstr "DNS 레코드"
 
@@ -1960,7 +1979,7 @@ msgid "Document Count"
 msgstr "문서 수"
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:119
-#: src/views/dns/DNSDomainList.vue:89
+#: src/views/dns/DDNSManager.vue:60 src/views/dns/DNSDomainList.vue:98
 msgid "Domain"
 msgstr "도메인"
 
@@ -2062,7 +2081,7 @@ msgstr "%{n} 편집"
 msgid "Edit Configuration"
 msgstr "구성 편집"
 
-#: src/views/dns/DNSRecordManager.vue:183
+#: src/views/dns/DNSRecordManager.vue:200
 msgid "Edit Record"
 msgstr "레코드 편집"
 
@@ -2115,6 +2134,10 @@ msgstr "코드 완성 활성화"
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:68
 msgid "Enable compression for content transfer"
 msgstr "콘텐츠 전송 압축 활성화"
+
+#: src/views/dns/DDNSManager.vue:218
+msgid "Enable DDNS"
+msgstr "DDNS 활성화"
 
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:473
 msgid "Enable Health Check"
@@ -2203,7 +2226,8 @@ msgid "Enable TOTP"
 msgstr "TOTP 활성화"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:174
-#: src/views/node/nodeColumns.tsx:69 src/views/node/nodeColumns.tsx:75
+#: src/views/dns/DDNSManager.vue:175 src/views/node/nodeColumns.tsx:69
+#: src/views/node/nodeColumns.tsx:75
 #: src/views/preference/components/ExternalNotify/columns.tsx:47
 #: src/views/preference/tabs/HTTPSettings.vue:24
 #: src/views/preference/tabs/LogrotateSettings.vue:20
@@ -3349,9 +3373,14 @@ msgid ""
 "restart the Nginx UI."
 msgstr "시스템 시작 후 10분이 지나면 설치가 허용되지 않습니다. Nginx UI를 다시 시작하세요."
 
+#: src/views/dns/DDNSManager.vue:79
 #: src/views/preference/tabs/LogrotateSettings.vue:26
 msgid "Interval"
 msgstr "간격"
+
+#: src/views/dns/DDNSManager.vue:232
+msgid "Interval (seconds)"
+msgstr "간격(초)"
 
 #: src/views/certificate/ACMEUser.vue:166
 msgid "Invalid"
@@ -3578,6 +3607,10 @@ msgstr "마지막 인덱싱"
 #: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:26
 msgid "Last month"
 msgstr "지난달"
+
+#: src/views/dns/DDNSManager.vue:87
+msgid "Last run"
+msgstr "마지막 실행"
 
 #: src/views/dashboard/NginxDashBoard.vue:138
 msgid "Last update"
@@ -3839,7 +3872,7 @@ msgstr "인증서를 받기 전에 .well-known 디렉터리에 대한 역방향 
 msgid "Manage Configs"
 msgstr "구성 관리"
 
-#: src/views/dns/DNSDomainList.vue:210
+#: src/views/dns/DNSDomainList.vue:236
 msgid "Manage Records"
 msgstr "레코드 관리"
 
@@ -4078,7 +4111,7 @@ msgstr "해당 없음"
 #: src/views/config/components/Delete.vue:123
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:17
-#: src/views/dns/components/DNSRecordForm.vue:49
+#: src/views/dns/components/DNSRecordForm.vue:63
 #: src/views/dns/components/DNSRecordTable.vue:17
 #: src/views/dns/DNSCredential.vue:17 src/views/namespace/columns.ts:9
 #: src/views/nginx_log/NginxLogList.vue:155 src/views/node/nodeColumns.tsx:8
@@ -4108,7 +4141,7 @@ msgstr "네임스페이스"
 msgid "Namespaces"
 msgstr "네임스페이스"
 
-#: src/views/dns/DNSDomainList.vue:225
+#: src/views/dns/DNSDomainList.vue:251
 msgid ""
 "Need more DNS providers? Support us through donations or contact us for "
 "commercial collaboration"
@@ -4503,6 +4536,10 @@ msgstr "인덱스되지 않음"
 #: src/views/dashboard/components/ModulesTable.vue:84
 msgid "Not Loaded"
 msgstr "로드되지 않음"
+
+#: src/views/dns/DDNSManager.vue:102
+msgid "Not run yet"
+msgstr "아직 실행되지 않음"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:230
 msgid "Not supported for IP certificates"
@@ -5061,7 +5098,7 @@ msgstr "환경설정"
 msgid "Preparing lego configurations"
 msgstr "Lego 설정 준비 중"
 
-#: src/views/dns/components/DNSRecordForm.vue:58
+#: src/views/dns/components/DNSRecordForm.vue:81
 #: src/views/dns/components/DNSRecordTable.vue:33
 msgid "Priority"
 msgstr "우선순위"
@@ -5126,8 +5163,8 @@ msgid ""
 "proxy."
 msgstr "프로토콜 설정은 직접 연결할 때만 적용됩니다. 리버스 프록시를 사용하는 경우 리버스 프록시에서 별도로 프로토콜을 구성하세요."
 
-#: src/views/dns/DNSCredential.vue:26 src/views/dns/DNSDomainList.vue:151
-#: src/views/dns/DNSDomainList.vue:172
+#: src/views/dns/DDNSManager.vue:70 src/views/dns/DNSCredential.vue:26
+#: src/views/dns/DNSDomainList.vue:177 src/views/dns/DNSDomainList.vue:198
 msgid "Provider"
 msgstr "제공자"
 
@@ -5139,7 +5176,7 @@ msgstr "공급자를 찾을 수 없음: {0}"
 msgid "Province / Region"
 msgstr "지역 / 지역"
 
-#: src/views/dns/components/DNSRecordForm.vue:64
+#: src/views/dns/components/DNSRecordForm.vue:87
 #: src/views/dns/components/DNSRecordTable.vue:51
 #: src/views/dns/components/DNSRecordTable.vue:81
 msgid "Proxied"
@@ -5239,17 +5276,21 @@ msgstr "재확인"
 msgid "Recommended:"
 msgstr "권장:"
 
-#: src/views/dns/DNSRecordManager.vue:100
+#: src/views/dns/DNSRecordManager.vue:113
 msgid "Record created"
 msgstr "레코드가 생성되었습니다"
 
-#: src/views/dns/DNSRecordManager.vue:107
+#: src/views/dns/DNSRecordManager.vue:120
 msgid "Record deleted"
 msgstr "레코드 삭제됨"
 
-#: src/views/dns/DNSRecordManager.vue:96
+#: src/views/dns/DNSRecordManager.vue:109
 msgid "Record updated"
 msgstr "레코드가 업데이트되었습니다"
+
+#: src/views/dns/DDNSManager.vue:221
+msgid "Records"
+msgstr "레코드"
 
 #: src/components/TwoFA/Authorization.vue:79
 msgid "Recovery"
@@ -5278,7 +5319,8 @@ msgstr "리디렉션 메시지 (3xx)"
 msgid "Referer"
 msgstr "리퍼러"
 
-#: src/language/curd.ts:70 src/views/dns/DNSRecordManager.vue:148
+#: src/language/curd.ts:70 src/views/dns/DDNSManager.vue:161
+#: src/views/dns/DNSRecordManager.vue:165
 msgid "Refresh"
 msgstr "새로 고침"
 
@@ -5756,7 +5798,7 @@ msgstr "토요일"
 #: src/views/config/components/ConfigLeftPanel.vue:283
 #: src/views/config/components/ConfigName.vue:58
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:713
-#: src/views/dns/DNSRecordManager.vue:197
+#: src/views/dns/DDNSManager.vue:247 src/views/dns/DNSRecordManager.vue:215
 #: src/views/preference/components/AuthSettings/Passkey.vue:131
 #: src/views/preference/Preference.vue:124
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
@@ -6256,6 +6298,7 @@ msgstr "정적"
 #: src/views/certificate/ACMEUser.vue:75
 #: src/views/certificate/CertificateList/certColumns.tsx:63
 #: src/views/dashboard/components/ModulesTable.vue:75
+#: src/views/dns/DDNSManager.vue:75
 #: src/views/nginx_log/structured/components/SearchFilters.vue:106
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:241
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:521
@@ -6483,6 +6526,10 @@ msgstr "시스템 복원"
 #: src/views/install/components/InstallView.vue:44
 msgid "System restored successfully."
 msgstr "시스템이 성공적으로 복원되었습니다."
+
+#: src/views/dns/DDNSManager.vue:83
+msgid "Targets"
+msgstr "대상"
 
 #: src/constants/errors/self_check.ts:3
 msgid "Task is not fixable"
@@ -6979,7 +7026,7 @@ msgstr "검색 조건이나 시간 범위를 조정해 보세요."
 msgid "TTL"
 msgstr "TTL"
 
-#: src/views/dns/components/DNSRecordForm.vue:55
+#: src/views/dns/components/DNSRecordForm.vue:78
 msgid "TTL (seconds)"
 msgstr "TTL (초)"
 
@@ -6996,7 +7043,7 @@ msgstr "2단계 인증이 필요합니다"
 #: src/views/config/components/Delete.vue:122
 #: src/views/dashboard/components/ModulesTable.vue:62
 #: src/views/dns/components/DNSRecordFilter.vue:49
-#: src/views/dns/components/DNSRecordForm.vue:43
+#: src/views/dns/components/DNSRecordForm.vue:57
 #: src/views/dns/components/DNSRecordTable.vue:21
 #: src/views/nginx_log/NginxLogList.vue:146
 #: src/views/notification/notificationColumns.tsx:8
@@ -7007,6 +7054,10 @@ msgstr "유형"
 #: src/views/config/components/Delete.vue:129
 msgid "Type %{delete} to confirm"
 msgstr "확인하려면 %{delete}를 입력하세요"
+
+#: src/views/dns/DDNSManager.vue:228
+msgid "Type or select A/AAAA records"
+msgstr "A/AAAA 레코드 입력 또는 선택"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:142
 msgid "Type or select browser"
@@ -7065,7 +7116,7 @@ msgstr "성공적으로 업데이트되었습니다"
 #: src/views/certificate/ACMEUser.vue:124
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
 #: src/views/config/configColumns.tsx:44 src/views/dns/DNSCredential.vue:65
-#: src/views/dns/DNSDomainList.vue:179 src/views/namespace/columns.ts:91
+#: src/views/dns/DNSDomainList.vue:205 src/views/namespace/columns.ts:91
 #: src/views/node/nodeColumns.tsx:89
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:39
 #: src/views/site/site_list/columns.tsx:113 src/views/stream/columns.tsx:80
@@ -7138,7 +7189,7 @@ msgstr "가동 시간:"
 msgid "URL"
 msgstr "URL"
 
-#: src/views/dns/components/DNSRecordForm.vue:50
+#: src/views/dns/components/DNSRecordForm.vue:64
 msgid "Use @ for root"
 msgstr "루트에는 @ 사용"
 
@@ -7207,7 +7258,7 @@ msgid "Validate SSL Certificate"
 msgstr "SSL 인증서 검증"
 
 #: src/views/dashboard/components/PerformanceTablesCard.vue:22
-#: src/views/dns/components/DNSRecordForm.vue:52
+#: src/views/dns/components/DNSRecordForm.vue:66
 #: src/views/dns/components/DNSRecordTable.vue:25
 msgid "Value"
 msgstr "값"
@@ -7334,7 +7385,7 @@ msgstr "매주"
 msgid "Weekly on %{day} at %{time}"
 msgstr "매주 %{day} %{time}"
 
-#: src/views/dns/components/DNSRecordForm.vue:61
+#: src/views/dns/components/DNSRecordForm.vue:84
 #: src/views/dns/components/DNSRecordTable.vue:37
 msgid "Weight"
 msgstr "가중치"

@@ -24,6 +24,36 @@ export interface DNSRecord {
   proxied?: boolean
 }
 
+export interface DDNSRecordTarget {
+  id: string
+  name: string
+  type: string
+}
+
+export interface DDNSConfig {
+  enabled: boolean
+  interval_seconds: number
+  targets: DDNSRecordTarget[]
+  last_ipv4?: string
+  last_ipv6?: string
+  last_run_at?: string
+  last_error?: string
+}
+
+export interface DDNSDomainItem {
+  id: number
+  domain: string
+  credential_name?: string
+  credential_provider?: string
+  config: DDNSConfig
+}
+
+export interface UpdateDDNSPayload {
+  enabled: boolean
+  interval_seconds: number
+  record_ids: string[]
+}
+
 export interface DomainListParams {
   keyword?: string
   credential_id?: number
@@ -48,23 +78,32 @@ export interface RecordPayload {
   proxied?: boolean
 }
 
-const baseUrl = '/dns/domains'
+const baseDomainUrl = '/dns/domains'
 
-const domainApi = useCurdApi<DNSDomain>(baseUrl)
+const domainApi = useCurdApi<DNSDomain>(baseDomainUrl)
 
 export const dnsApi = {
   ...domainApi,
   listRecords(domainId: number, params?: RecordListParams) {
-    return http.get<{ data: DNSRecord[], pagination: Pagination }>(`${baseUrl}/${domainId}/records`, { params })
+    return http.get<{ data: DNSRecord[], pagination: Pagination }>(`${baseDomainUrl}/${domainId}/records`, { params })
   },
   createRecord(domainId: number, payload: RecordPayload) {
-    return http.post<DNSRecord>(`${baseUrl}/${domainId}/records`, payload)
+    return http.post<DNSRecord>(`${baseDomainUrl}/${domainId}/records`, payload)
   },
   updateRecord(domainId: number, recordId: string, payload: RecordPayload) {
-    return http.put<DNSRecord>(`${baseUrl}/${domainId}/records/${recordId}`, payload)
+    return http.put<DNSRecord>(`${baseDomainUrl}/${domainId}/records/${recordId}`, payload)
   },
   deleteRecord(domainId: number, recordId: string) {
-    return http.delete(`${baseUrl}/${domainId}/records/${recordId}`)
+    return http.delete(`${baseDomainUrl}/${domainId}/records/${recordId}`)
+  },
+  getDDNSConfig(domainId: number) {
+    return http.get<DDNSConfig>(`${baseDomainUrl}/${domainId}/ddns`)
+  },
+  updateDDNSConfig(domainId: number, payload: UpdateDDNSPayload) {
+    return http.put<DDNSConfig>(`${baseDomainUrl}/${domainId}/ddns`, payload)
+  },
+  listDDNS() {
+    return http.get<{ data: DDNSDomainItem[] }>(`/dns/ddns`)
   },
 }
 

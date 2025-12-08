@@ -21,7 +21,7 @@ const code = computed(() => {
   return data.value.code
 })
 
-const providerIdx = ref<number>()
+const providerIdx = ref<number | undefined>(undefined)
 function init() {
   providerIdx.value = undefined
   providers.value?.forEach((v: DNSProvider, k: number) => {
@@ -31,7 +31,12 @@ function init() {
 }
 
 const current = computed(() => {
-  return providers.value?.[providerIdx.value ?? -1]
+  const idx = providerIdx.value
+  if (idx === undefined || idx === null)
+    return undefined
+  if (idx < 0 || idx >= providers.value.length)
+    return undefined
+  return providers.value?.[idx]
 })
 
 const mounted = ref(false)
@@ -50,7 +55,8 @@ watch(current, () => {
   }
   credentials.value = []
   data.value.code = current.value.code
-  data.value.provider = current.value.name
+  // Keep provider consistent with credential records (prefer provider/code over display name).
+  data.value.provider = current.value.provider || current.value.code || current.value.name
   if (mounted.value)
     data.value.dns_credential_id = undefined
 
@@ -122,7 +128,7 @@ function filterOption(input: string, option?: DefaultOptionType) {
       />
     </AFormItem>
     <AFormItem
-      v-if="((providerIdx ?? -1) > -1)"
+      v-if="(providerIdx !== undefined && providerIdx !== null && providerIdx > -1)"
       :label="$gettext('Credential')"
       :rules="[{ required: true }]"
     >

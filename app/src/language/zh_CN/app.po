@@ -184,9 +184,9 @@ msgstr "操作"
 #: src/views/certificate/CertificateList/certColumns.tsx:92
 #: src/views/config/configColumns.tsx:51
 #: src/views/dns/components/DNSRecordTable.vue:41
-#: src/views/dns/DNSCredential.vue:71 src/views/dns/DNSDomainList.vue:185
-#: src/views/namespace/columns.ts:97 src/views/nginx_log/NginxLogList.vue:338
-#: src/views/node/nodeColumns.tsx:96
+#: src/views/dns/DDNSManager.vue:91 src/views/dns/DNSCredential.vue:71
+#: src/views/dns/DNSDomainList.vue:211 src/views/namespace/columns.ts:97
+#: src/views/nginx_log/NginxLogList.vue:338 src/views/node/nodeColumns.tsx:96
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:85
 #: src/views/site/site_list/columns.tsx:160 src/views/stream/columns.tsx:123
@@ -239,7 +239,7 @@ msgstr "添加标头"
 msgid "Add Location"
 msgstr "添加 Location"
 
-#: src/views/dns/DNSRecordManager.vue:154
+#: src/views/dns/DNSRecordManager.vue:171
 msgid "Add Record"
 msgstr "添加记录"
 
@@ -550,7 +550,7 @@ msgstr "平均/PV"
 #: src/views/certificate/components/CertificateActions.vue:22
 #: src/views/config/components/ConfigLeftPanel.vue:274
 #: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
-#: src/views/nginx_log/NginxLog.vue:129
+#: src/views/dns/DNSRecordManager.vue:223 src/views/nginx_log/NginxLog.vue:129
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:183
 #: src/views/stream/components/StreamEditor.vue:147
 msgid "Back"
@@ -696,7 +696,7 @@ msgstr "浏览器"
 msgid "Browser Statistics"
 msgstr "浏览器统计"
 
-#: src/views/dns/DNSDomainList.vue:231
+#: src/views/dns/DNSDomainList.vue:257
 msgid "Business contact:"
 msgstr "商务联系："
 
@@ -765,7 +765,7 @@ msgstr "基于 worker_processes * worker_connections 计算得出。实际性能
 #: src/components/NgxConfigEditor/NgxUpstream.vue:32 src/language/curd.ts:37
 #: src/views/config/components/Delete.vue:98
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:710
-#: src/views/dns/DNSRecordManager.vue:194
+#: src/views/dns/DDNSManager.vue:244 src/views/dns/DNSRecordManager.vue:212
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:102
 #: src/views/nginx_log/indexing/IndexManagement.vue:33
 #: src/views/nginx_log/indexing/IndexManagement.vue:59
@@ -1297,6 +1297,14 @@ msgstr "配置名称"
 msgid "Configurations"
 msgstr "配置"
 
+#: src/views/dns/DDNSManager.vue:201
+msgid "Configure"
+msgstr "配置"
+
+#: src/views/dns/DDNSManager.vue:211
+msgid "Configure DDNS"
+msgstr "配置 DDNS"
+
 #: src/views/site/site_add/SiteAdd.vue:81
 msgid "Configure SSL"
 msgstr "配置 SSL"
@@ -1418,7 +1426,7 @@ msgstr "创建文件"
 msgid "Create Folder"
 msgstr "创建文件夹"
 
-#: src/views/dns/DNSRecordManager.vue:183
+#: src/views/dns/DNSRecordManager.vue:200
 msgid "Create Record"
 msgstr "创建记录"
 
@@ -1445,8 +1453,8 @@ msgstr "创建成功"
 msgid "Creating client facilitates communication with the CA server"
 msgstr "正在创建客户端用于与 CA 服务器通信"
 
-#: src/components/AutoCertForm/DNSChallenge.vue:108
-#: src/views/dns/DNSDomainList.vue:100
+#: src/components/AutoCertForm/DNSChallenge.vue:131
+#: src/views/dns/DDNSManager.vue:65 src/views/dns/DNSDomainList.vue:109
 msgid "Credential"
 msgstr "DNS 凭证"
 
@@ -1564,6 +1572,18 @@ msgstr "天"
 #: src/constants/errors/user.ts:16
 msgid "Db file not found"
 msgstr "数据库文件未找到"
+
+#: src/routes/modules/dns.ts:36
+msgid "DDNS"
+msgstr "DDNS"
+
+#: src/views/dns/DDNSManager.vue:153
+msgid "DDNS Overview"
+msgstr "DDNS 概览"
+
+#: src/views/dns/DDNSManager.vue:135
+msgid "DDNS saved"
+msgstr "DDNS 已保存"
 
 #: src/constants/errors/geolite.ts:12
 msgid "Decompression succeeded but failed to delete compressed file: {0}"
@@ -1831,7 +1851,8 @@ msgid "Disable stream %{name} from %{node} successfully"
 msgstr "在 %{node} 上禁用 %{name} 成功"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:175
-#: src/views/node/nodeColumns.tsx:60 src/views/node/nodeColumns.tsx:78
+#: src/views/dns/DDNSManager.vue:175 src/views/node/nodeColumns.tsx:60
+#: src/views/node/nodeColumns.tsx:78
 #: src/views/preference/tabs/HTTPSettings.vue:24
 #: src/views/preference/tabs/NodeSettings.vue:25
 #: src/views/preference/tabs/NodeSettings.vue:30
@@ -1864,8 +1885,7 @@ msgstr "DNS"
 msgid "DNS Credentials"
 msgstr "DNS 凭证"
 
-#: src/routes/modules/dns.ts:28
-#: src/views/dns/DNSDomainList.vue:202
+#: src/routes/modules/dns.ts:28 src/views/dns/DNSDomainList.vue:228
 msgid "DNS Domains"
 msgstr "DNS 域名"
 
@@ -1873,17 +1893,16 @@ msgstr "DNS 域名"
 msgid "DNS Only"
 msgstr "仅DNS"
 
-#: src/components/AutoCertForm/DNSChallenge.vue:98
+#: src/components/AutoCertForm/DNSChallenge.vue:121
 #: src/views/dns/components/DNSChallenge.vue:60
 msgid "DNS Provider"
 msgstr "DNS 提供商"
 
-#: src/views/dns/DNSDomainList.vue:218
+#: src/views/dns/DNSDomainList.vue:244
 msgid "DNS Provider Support"
 msgstr "DNS 提供商支持"
 
-#: src/routes/modules/dns.ts:36
-#: src/views/dns/DNSRecordManager.vue:45
+#: src/routes/modules/dns.ts:44 src/views/dns/DNSRecordManager.vue:58
 msgid "DNS Records"
 msgstr "DNS 记录"
 
@@ -1947,7 +1966,7 @@ msgid "Document Count"
 msgstr "文档数量"
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:119
-#: src/views/dns/DNSDomainList.vue:89
+#: src/views/dns/DDNSManager.vue:60 src/views/dns/DNSDomainList.vue:98
 msgid "Domain"
 msgstr "域名"
 
@@ -2047,7 +2066,7 @@ msgstr "编辑 %{n}"
 msgid "Edit Configuration"
 msgstr "编辑配置"
 
-#: src/views/dns/DNSRecordManager.vue:183
+#: src/views/dns/DNSRecordManager.vue:200
 msgid "Edit Record"
 msgstr "编辑记录"
 
@@ -2100,6 +2119,10 @@ msgstr "启动代码补全"
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:68
 msgid "Enable compression for content transfer"
 msgstr "启用内容传输压缩"
+
+#: src/views/dns/DDNSManager.vue:218
+msgid "Enable DDNS"
+msgstr "启用 DDNS"
 
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:473
 msgid "Enable Health Check"
@@ -2188,7 +2211,8 @@ msgid "Enable TOTP"
 msgstr "启用 TOTP"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:174
-#: src/views/node/nodeColumns.tsx:69 src/views/node/nodeColumns.tsx:75
+#: src/views/dns/DDNSManager.vue:175 src/views/node/nodeColumns.tsx:69
+#: src/views/node/nodeColumns.tsx:75
 #: src/views/preference/components/ExternalNotify/columns.tsx:47
 #: src/views/preference/tabs/HTTPSettings.vue:24
 #: src/views/preference/tabs/LogrotateSettings.vue:20
@@ -3328,9 +3352,14 @@ msgid ""
 "restart the Nginx UI."
 msgstr "系统启动 10 分钟后不允许安装，请重启 Nginx UI。"
 
+#: src/views/dns/DDNSManager.vue:79
 #: src/views/preference/tabs/LogrotateSettings.vue:26
 msgid "Interval"
 msgstr "间隔"
+
+#: src/views/dns/DDNSManager.vue:232
+msgid "Interval (seconds)"
+msgstr "间隔（秒）"
 
 #: src/views/certificate/ACMEUser.vue:166
 msgid "Invalid"
@@ -3557,6 +3586,10 @@ msgstr "最后索引时间"
 #: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:26
 msgid "Last month"
 msgstr "上个月"
+
+#: src/views/dns/DDNSManager.vue:87
+msgid "Last run"
+msgstr "上次运行"
 
 #: src/views/dashboard/NginxDashBoard.vue:138
 msgid "Last update"
@@ -3818,7 +3851,7 @@ msgstr "在获取签发证书前，请确保配置文件中已将 .well-known �
 msgid "Manage Configs"
 msgstr "配置管理"
 
-#: src/views/dns/DNSDomainList.vue:210
+#: src/views/dns/DNSDomainList.vue:236
 msgid "Manage Records"
 msgstr "管理记录"
 
@@ -4057,7 +4090,7 @@ msgstr "不适用"
 #: src/views/config/components/Delete.vue:123
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:17
-#: src/views/dns/components/DNSRecordForm.vue:49
+#: src/views/dns/components/DNSRecordForm.vue:63
 #: src/views/dns/components/DNSRecordTable.vue:17
 #: src/views/dns/DNSCredential.vue:17 src/views/namespace/columns.ts:9
 #: src/views/nginx_log/NginxLogList.vue:155 src/views/node/nodeColumns.tsx:8
@@ -4087,7 +4120,7 @@ msgstr "命名空间"
 msgid "Namespaces"
 msgstr "命名空间"
 
-#: src/views/dns/DNSDomainList.vue:225
+#: src/views/dns/DNSDomainList.vue:251
 msgid ""
 "Need more DNS providers? Support us through donations or contact us for "
 "commercial collaboration"
@@ -4482,6 +4515,10 @@ msgstr "未索引"
 #: src/views/dashboard/components/ModulesTable.vue:84
 msgid "Not Loaded"
 msgstr "未加载"
+
+#: src/views/dns/DDNSManager.vue:102
+msgid "Not run yet"
+msgstr "尚未运行"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:230
 msgid "Not supported for IP certificates"
@@ -5036,7 +5073,7 @@ msgstr "偏好设置"
 msgid "Preparing lego configurations"
 msgstr "正在准备 Lego 的配置"
 
-#: src/views/dns/components/DNSRecordForm.vue:58
+#: src/views/dns/components/DNSRecordForm.vue:81
 #: src/views/dns/components/DNSRecordTable.vue:33
 msgid "Priority"
 msgstr "优先级"
@@ -5101,8 +5138,8 @@ msgid ""
 "proxy."
 msgstr "协议配置仅在直接连接时生效。如果使用反向代理，请在反向代理中单独配置协议。"
 
-#: src/views/dns/DNSCredential.vue:26 src/views/dns/DNSDomainList.vue:151
-#: src/views/dns/DNSDomainList.vue:172
+#: src/views/dns/DDNSManager.vue:70 src/views/dns/DNSCredential.vue:26
+#: src/views/dns/DNSDomainList.vue:177 src/views/dns/DNSDomainList.vue:198
 msgid "Provider"
 msgstr "提供商"
 
@@ -5114,7 +5151,7 @@ msgstr "未找到提供商：{0}"
 msgid "Province / Region"
 msgstr "省份 / 地区"
 
-#: src/views/dns/components/DNSRecordForm.vue:64
+#: src/views/dns/components/DNSRecordForm.vue:87
 #: src/views/dns/components/DNSRecordTable.vue:51
 #: src/views/dns/components/DNSRecordTable.vue:81
 msgid "Proxied"
@@ -5214,17 +5251,21 @@ msgstr "重新检查"
 msgid "Recommended:"
 msgstr "推荐："
 
-#: src/views/dns/DNSRecordManager.vue:100
+#: src/views/dns/DNSRecordManager.vue:113
 msgid "Record created"
 msgstr "记录已创建"
 
-#: src/views/dns/DNSRecordManager.vue:107
+#: src/views/dns/DNSRecordManager.vue:120
 msgid "Record deleted"
 msgstr "记录已删除"
 
-#: src/views/dns/DNSRecordManager.vue:96
+#: src/views/dns/DNSRecordManager.vue:109
 msgid "Record updated"
 msgstr "记录已更新"
+
+#: src/views/dns/DDNSManager.vue:221
+msgid "Records"
+msgstr "记录"
 
 #: src/components/TwoFA/Authorization.vue:79
 msgid "Recovery"
@@ -5253,7 +5294,8 @@ msgstr "重定向消息 (3xx)"
 msgid "Referer"
 msgstr "来源"
 
-#: src/language/curd.ts:70 src/views/dns/DNSRecordManager.vue:148
+#: src/language/curd.ts:70 src/views/dns/DDNSManager.vue:161
+#: src/views/dns/DNSRecordManager.vue:165
 msgid "Refresh"
 msgstr "刷新"
 
@@ -5729,7 +5771,7 @@ msgstr "星期六"
 #: src/views/config/components/ConfigLeftPanel.vue:283
 #: src/views/config/components/ConfigName.vue:58
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:713
-#: src/views/dns/DNSRecordManager.vue:197
+#: src/views/dns/DDNSManager.vue:247 src/views/dns/DNSRecordManager.vue:215
 #: src/views/preference/components/AuthSettings/Passkey.vue:131
 #: src/views/preference/Preference.vue:124
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
@@ -6229,6 +6271,7 @@ msgstr "静态"
 #: src/views/certificate/ACMEUser.vue:75
 #: src/views/certificate/CertificateList/certColumns.tsx:63
 #: src/views/dashboard/components/ModulesTable.vue:75
+#: src/views/dns/DDNSManager.vue:75
 #: src/views/nginx_log/structured/components/SearchFilters.vue:106
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:241
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:521
@@ -6455,6 +6498,10 @@ msgstr "系统还原"
 #: src/views/install/components/InstallView.vue:44
 msgid "System restored successfully."
 msgstr "系统恢复成功。"
+
+#: src/views/dns/DDNSManager.vue:83
+msgid "Targets"
+msgstr "目标"
 
 #: src/constants/errors/self_check.ts:3
 msgid "Task is not fixable"
@@ -6941,7 +6988,7 @@ msgstr "尝试调整您的搜索条件或时间范围。"
 msgid "TTL"
 msgstr "TTL"
 
-#: src/views/dns/components/DNSRecordForm.vue:55
+#: src/views/dns/components/DNSRecordForm.vue:78
 msgid "TTL (seconds)"
 msgstr "TTL（秒）"
 
@@ -6958,7 +7005,7 @@ msgstr "需要两步验证"
 #: src/views/config/components/Delete.vue:122
 #: src/views/dashboard/components/ModulesTable.vue:62
 #: src/views/dns/components/DNSRecordFilter.vue:49
-#: src/views/dns/components/DNSRecordForm.vue:43
+#: src/views/dns/components/DNSRecordForm.vue:57
 #: src/views/dns/components/DNSRecordTable.vue:21
 #: src/views/nginx_log/NginxLogList.vue:146
 #: src/views/notification/notificationColumns.tsx:8
@@ -6969,6 +7016,10 @@ msgstr "类型"
 #: src/views/config/components/Delete.vue:129
 msgid "Type %{delete} to confirm"
 msgstr "输入 %{delete} 以确认"
+
+#: src/views/dns/DDNSManager.vue:228
+msgid "Type or select A/AAAA records"
+msgstr "输入或选择 A/AAAA 记录"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:142
 msgid "Type or select browser"
@@ -7027,7 +7078,7 @@ msgstr "更新成功"
 #: src/views/certificate/ACMEUser.vue:124
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
 #: src/views/config/configColumns.tsx:44 src/views/dns/DNSCredential.vue:65
-#: src/views/dns/DNSDomainList.vue:179 src/views/namespace/columns.ts:91
+#: src/views/dns/DNSDomainList.vue:205 src/views/namespace/columns.ts:91
 #: src/views/node/nodeColumns.tsx:89
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:39
 #: src/views/site/site_list/columns.tsx:113 src/views/stream/columns.tsx:80
@@ -7100,7 +7151,7 @@ msgstr "运行时间:"
 msgid "URL"
 msgstr "URL"
 
-#: src/views/dns/components/DNSRecordForm.vue:50
+#: src/views/dns/components/DNSRecordForm.vue:64
 msgid "Use @ for root"
 msgstr "使用 @ 表示根域名"
 
@@ -7169,7 +7220,7 @@ msgid "Validate SSL Certificate"
 msgstr "验证 SSL 证书"
 
 #: src/views/dashboard/components/PerformanceTablesCard.vue:22
-#: src/views/dns/components/DNSRecordForm.vue:52
+#: src/views/dns/components/DNSRecordForm.vue:66
 #: src/views/dns/components/DNSRecordTable.vue:25
 msgid "Value"
 msgstr "值"
@@ -7296,7 +7347,7 @@ msgstr "每周"
 msgid "Weekly on %{day} at %{time}"
 msgstr "每周%{day}的%{time}"
 
-#: src/views/dns/components/DNSRecordForm.vue:61
+#: src/views/dns/components/DNSRecordForm.vue:84
 #: src/views/dns/components/DNSRecordTable.vue:37
 msgid "Weight"
 msgstr "权重"

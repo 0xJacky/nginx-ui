@@ -189,9 +189,9 @@ msgstr "إجراء"
 #: src/views/certificate/CertificateList/certColumns.tsx:92
 #: src/views/config/configColumns.tsx:51
 #: src/views/dns/components/DNSRecordTable.vue:41
-#: src/views/dns/DNSCredential.vue:71 src/views/dns/DNSDomainList.vue:185
-#: src/views/namespace/columns.ts:97 src/views/nginx_log/NginxLogList.vue:338
-#: src/views/node/nodeColumns.tsx:96
+#: src/views/dns/DDNSManager.vue:91 src/views/dns/DNSCredential.vue:71
+#: src/views/dns/DNSDomainList.vue:211 src/views/namespace/columns.ts:97
+#: src/views/nginx_log/NginxLogList.vue:338 src/views/node/nodeColumns.tsx:96
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:85
 #: src/views/site/site_list/columns.tsx:160 src/views/stream/columns.tsx:123
@@ -244,7 +244,7 @@ msgstr "إضافة رأس"
 msgid "Add Location"
 msgstr "أضف مكان"
 
-#: src/views/dns/DNSRecordManager.vue:154
+#: src/views/dns/DNSRecordManager.vue:171
 msgid "Add Record"
 msgstr "إضافة سجل"
 
@@ -559,7 +559,7 @@ msgstr "متوسط/زيارة الصفحة"
 #: src/views/certificate/components/CertificateActions.vue:22
 #: src/views/config/components/ConfigLeftPanel.vue:274
 #: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
-#: src/views/nginx_log/NginxLog.vue:129
+#: src/views/dns/DNSRecordManager.vue:223 src/views/nginx_log/NginxLog.vue:129
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:183
 #: src/views/stream/components/StreamEditor.vue:147
 msgid "Back"
@@ -707,7 +707,7 @@ msgstr "المتصفح"
 msgid "Browser Statistics"
 msgstr "إحصائيات المتصفح"
 
-#: src/views/dns/DNSDomainList.vue:231
+#: src/views/dns/DNSDomainList.vue:257
 msgid "Business contact:"
 msgstr "اتصال تجاري:"
 
@@ -780,7 +780,7 @@ msgstr ""
 #: src/components/NgxConfigEditor/NgxUpstream.vue:32 src/language/curd.ts:37
 #: src/views/config/components/Delete.vue:98
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:710
-#: src/views/dns/DNSRecordManager.vue:194
+#: src/views/dns/DDNSManager.vue:244 src/views/dns/DNSRecordManager.vue:212
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:102
 #: src/views/nginx_log/indexing/IndexManagement.vue:33
 #: src/views/nginx_log/indexing/IndexManagement.vue:59
@@ -1340,6 +1340,14 @@ msgstr "اسم التكوين"
 msgid "Configurations"
 msgstr "التكوينات"
 
+#: src/views/dns/DDNSManager.vue:201
+msgid "Configure"
+msgstr "تكوين"
+
+#: src/views/dns/DDNSManager.vue:211
+msgid "Configure DDNS"
+msgstr "تكوين DDNS"
+
 #: src/views/site/site_add/SiteAdd.vue:81
 msgid "Configure SSL"
 msgstr "تكوين SSL"
@@ -1461,7 +1469,7 @@ msgstr "إنشاء ملف"
 msgid "Create Folder"
 msgstr "إنشاء مجلد"
 
-#: src/views/dns/DNSRecordManager.vue:183
+#: src/views/dns/DNSRecordManager.vue:200
 msgid "Create Record"
 msgstr "إنشاء سجل"
 
@@ -1490,8 +1498,8 @@ msgstr "تم الإنشاء بنجاح"
 msgid "Creating client facilitates communication with the CA server"
 msgstr "يؤدي إنشاء العميل إلى تسهيل الاتصال بخادم CA"
 
-#: src/components/AutoCertForm/DNSChallenge.vue:108
-#: src/views/dns/DNSDomainList.vue:100
+#: src/components/AutoCertForm/DNSChallenge.vue:131
+#: src/views/dns/DDNSManager.vue:65 src/views/dns/DNSDomainList.vue:109
 msgid "Credential"
 msgstr "بيان الاعتماد"
 
@@ -1609,6 +1617,18 @@ msgstr "أيام"
 #: src/constants/errors/user.ts:16
 msgid "Db file not found"
 msgstr "ملف قاعدة البيانات غير موجود"
+
+#: src/routes/modules/dns.ts:36
+msgid "DDNS"
+msgstr "DDNS"
+
+#: src/views/dns/DDNSManager.vue:153
+msgid "DDNS Overview"
+msgstr "نظرة عامة على DDNS"
+
+#: src/views/dns/DDNSManager.vue:135
+msgid "DDNS saved"
+msgstr "تم حفظ DDNS"
 
 #: src/constants/errors/geolite.ts:12
 msgid "Decompression succeeded but failed to delete compressed file: {0}"
@@ -1876,7 +1896,8 @@ msgid "Disable stream %{name} from %{node} successfully"
 msgstr "تم تعطيل الدفق %{name} من %{node} بنجاح"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:175
-#: src/views/node/nodeColumns.tsx:60 src/views/node/nodeColumns.tsx:78
+#: src/views/dns/DDNSManager.vue:175 src/views/node/nodeColumns.tsx:60
+#: src/views/node/nodeColumns.tsx:78
 #: src/views/preference/tabs/HTTPSettings.vue:24
 #: src/views/preference/tabs/NodeSettings.vue:25
 #: src/views/preference/tabs/NodeSettings.vue:30
@@ -1909,8 +1930,7 @@ msgstr "DNS"
 msgid "DNS Credentials"
 msgstr "بيانات اعتماد DNS"
 
-#: src/routes/modules/dns.ts:28
-#: src/views/dns/DNSDomainList.vue:202
+#: src/routes/modules/dns.ts:28 src/views/dns/DNSDomainList.vue:228
 msgid "DNS Domains"
 msgstr "نطاقات DNS"
 
@@ -1918,17 +1938,16 @@ msgstr "نطاقات DNS"
 msgid "DNS Only"
 msgstr "DNS فقط"
 
-#: src/components/AutoCertForm/DNSChallenge.vue:98
+#: src/components/AutoCertForm/DNSChallenge.vue:121
 #: src/views/dns/components/DNSChallenge.vue:60
 msgid "DNS Provider"
 msgstr "مزود DNS"
 
-#: src/views/dns/DNSDomainList.vue:218
+#: src/views/dns/DNSDomainList.vue:244
 msgid "DNS Provider Support"
 msgstr "دعم موفر DNS"
 
-#: src/routes/modules/dns.ts:36
-#: src/views/dns/DNSRecordManager.vue:45
+#: src/routes/modules/dns.ts:44 src/views/dns/DNSRecordManager.vue:58
 msgid "DNS Records"
 msgstr "سجلات DNS"
 
@@ -1997,7 +2016,7 @@ msgid "Document Count"
 msgstr "عدد المستندات"
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:119
-#: src/views/dns/DNSDomainList.vue:89
+#: src/views/dns/DDNSManager.vue:60 src/views/dns/DNSDomainList.vue:98
 msgid "Domain"
 msgstr "نطاق"
 
@@ -2099,7 +2118,7 @@ msgstr "تعديل %{n}"
 msgid "Edit Configuration"
 msgstr "تعديل التكوين"
 
-#: src/views/dns/DNSRecordManager.vue:183
+#: src/views/dns/DNSRecordManager.vue:200
 msgid "Edit Record"
 msgstr "تعديل السجل"
 
@@ -2152,6 +2171,10 @@ msgstr "تمكين إكمال التعليمات البرمجية"
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:68
 msgid "Enable compression for content transfer"
 msgstr "تمكين الضغط لنقل المحتوى"
+
+#: src/views/dns/DDNSManager.vue:218
+msgid "Enable DDNS"
+msgstr "تمكين DDNS"
 
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:473
 msgid "Enable Health Check"
@@ -2240,7 +2263,8 @@ msgid "Enable TOTP"
 msgstr "تفعيل TOTP"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:174
-#: src/views/node/nodeColumns.tsx:69 src/views/node/nodeColumns.tsx:75
+#: src/views/dns/DDNSManager.vue:175 src/views/node/nodeColumns.tsx:69
+#: src/views/node/nodeColumns.tsx:75
 #: src/views/preference/components/ExternalNotify/columns.tsx:47
 #: src/views/preference/tabs/HTTPSettings.vue:24
 #: src/views/preference/tabs/LogrotateSettings.vue:20
@@ -3407,9 +3431,14 @@ msgstr ""
 "لا يُسمح بالتثبيت بعد 10 دقائق من بدء تشغيل النظام، يرجى إعادة تشغيل واجهة "
 "Nginx."
 
+#: src/views/dns/DDNSManager.vue:79
 #: src/views/preference/tabs/LogrotateSettings.vue:26
 msgid "Interval"
 msgstr "فترة"
+
+#: src/views/dns/DDNSManager.vue:232
+msgid "Interval (seconds)"
+msgstr "الفاصل الزمني (بالثواني)"
 
 #: src/views/certificate/ACMEUser.vue:166
 msgid "Invalid"
@@ -3638,6 +3667,10 @@ msgstr "آخر فهرسة"
 #: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:26
 msgid "Last month"
 msgstr "الشهر الماضي"
+
+#: src/views/dns/DDNSManager.vue:87
+msgid "Last run"
+msgstr "آخر تشغيل"
 
 #: src/views/dashboard/NginxDashBoard.vue:138
 msgid "Last update"
@@ -3905,7 +3938,7 @@ msgstr ""
 msgid "Manage Configs"
 msgstr "إدارة التكوينات"
 
-#: src/views/dns/DNSDomainList.vue:210
+#: src/views/dns/DNSDomainList.vue:236
 msgid "Manage Records"
 msgstr "إدارة السجلات"
 
@@ -4144,7 +4177,7 @@ msgstr "غير متاح"
 #: src/views/config/components/Delete.vue:123
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:17
-#: src/views/dns/components/DNSRecordForm.vue:49
+#: src/views/dns/components/DNSRecordForm.vue:63
 #: src/views/dns/components/DNSRecordTable.vue:17
 #: src/views/dns/DNSCredential.vue:17 src/views/namespace/columns.ts:9
 #: src/views/nginx_log/NginxLogList.vue:155 src/views/node/nodeColumns.tsx:8
@@ -4174,7 +4207,7 @@ msgstr "مساحة الاسم"
 msgid "Namespaces"
 msgstr "مساحات الأسماء"
 
-#: src/views/dns/DNSDomainList.vue:225
+#: src/views/dns/DNSDomainList.vue:251
 msgid ""
 "Need more DNS providers? Support us through donations or contact us for "
 "commercial collaboration"
@@ -4573,6 +4606,10 @@ msgstr "غير مفهرس"
 #: src/views/dashboard/components/ModulesTable.vue:84
 msgid "Not Loaded"
 msgstr "غير محمل"
+
+#: src/views/dns/DDNSManager.vue:102
+msgid "Not run yet"
+msgstr "لم يتم تشغيله بعد"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:230
 msgid "Not supported for IP certificates"
@@ -5140,7 +5177,7 @@ msgstr "تفضيل"
 msgid "Preparing lego configurations"
 msgstr "تحضير تكوينات Lego"
 
-#: src/views/dns/components/DNSRecordForm.vue:58
+#: src/views/dns/components/DNSRecordForm.vue:81
 #: src/views/dns/components/DNSRecordTable.vue:33
 msgid "Priority"
 msgstr "الأولوية"
@@ -5207,8 +5244,8 @@ msgstr ""
 "إعدادات البروتوكول تتأثر فقط عند الاتصال المباشر. إذا كنت تستخدم خادم وكيل "
 "عكسي، يرجى تكوين البروتوكول بشكل منفصل في خادم الوكيل العكسي."
 
-#: src/views/dns/DNSCredential.vue:26 src/views/dns/DNSDomainList.vue:151
-#: src/views/dns/DNSDomainList.vue:172
+#: src/views/dns/DDNSManager.vue:70 src/views/dns/DNSCredential.vue:26
+#: src/views/dns/DNSDomainList.vue:177 src/views/dns/DNSDomainList.vue:198
 msgid "Provider"
 msgstr "مزود"
 
@@ -5220,7 +5257,7 @@ msgstr "لم يتم العثور على المزود: {0}"
 msgid "Province / Region"
 msgstr "المحافظة / المنطقة"
 
-#: src/views/dns/components/DNSRecordForm.vue:64
+#: src/views/dns/components/DNSRecordForm.vue:87
 #: src/views/dns/components/DNSRecordTable.vue:51
 #: src/views/dns/components/DNSRecordTable.vue:81
 msgid "Proxied"
@@ -5320,17 +5357,21 @@ msgstr "إعادة التحقق"
 msgid "Recommended:"
 msgstr "مُوصى به:"
 
-#: src/views/dns/DNSRecordManager.vue:100
+#: src/views/dns/DNSRecordManager.vue:113
 msgid "Record created"
 msgstr "تم إنشاء السجل"
 
-#: src/views/dns/DNSRecordManager.vue:107
+#: src/views/dns/DNSRecordManager.vue:120
 msgid "Record deleted"
 msgstr "تم حذف السجل"
 
-#: src/views/dns/DNSRecordManager.vue:96
+#: src/views/dns/DNSRecordManager.vue:109
 msgid "Record updated"
 msgstr "تم تحديث السجل"
+
+#: src/views/dns/DDNSManager.vue:221
+msgid "Records"
+msgstr "السجلات"
 
 #: src/components/TwoFA/Authorization.vue:79
 msgid "Recovery"
@@ -5361,7 +5402,8 @@ msgstr "رسائل إعادة التوجيه (3xx)"
 msgid "Referer"
 msgstr "المرجع"
 
-#: src/language/curd.ts:70 src/views/dns/DNSRecordManager.vue:148
+#: src/language/curd.ts:70 src/views/dns/DDNSManager.vue:161
+#: src/views/dns/DNSRecordManager.vue:165
 msgid "Refresh"
 msgstr "تحديث"
 
@@ -5841,7 +5883,7 @@ msgstr "السبت"
 #: src/views/config/components/ConfigLeftPanel.vue:283
 #: src/views/config/components/ConfigName.vue:58
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:713
-#: src/views/dns/DNSRecordManager.vue:197
+#: src/views/dns/DDNSManager.vue:247 src/views/dns/DNSRecordManager.vue:215
 #: src/views/preference/components/AuthSettings/Passkey.vue:131
 #: src/views/preference/Preference.vue:124
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
@@ -6347,6 +6389,7 @@ msgstr "ثابت"
 #: src/views/certificate/ACMEUser.vue:75
 #: src/views/certificate/CertificateList/certColumns.tsx:63
 #: src/views/dashboard/components/ModulesTable.vue:75
+#: src/views/dns/DDNSManager.vue:75
 #: src/views/nginx_log/structured/components/SearchFilters.vue:106
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:241
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:521
@@ -6576,6 +6619,10 @@ msgstr "استعادة النظام"
 #: src/views/install/components/InstallView.vue:44
 msgid "System restored successfully."
 msgstr "تم استعادة النظام بنجاح."
+
+#: src/views/dns/DDNSManager.vue:83
+msgid "Targets"
+msgstr "الأهداف"
 
 #: src/constants/errors/self_check.ts:3
 msgid "Task is not fixable"
@@ -7109,7 +7156,7 @@ msgstr "حاول تعديل معايير البحث أو النطاق الزمن
 msgid "TTL"
 msgstr "TTL"
 
-#: src/views/dns/components/DNSRecordForm.vue:55
+#: src/views/dns/components/DNSRecordForm.vue:78
 msgid "TTL (seconds)"
 msgstr "TTL (ثواني)"
 
@@ -7126,7 +7173,7 @@ msgstr "يتطلب المصادقة الثنائية"
 #: src/views/config/components/Delete.vue:122
 #: src/views/dashboard/components/ModulesTable.vue:62
 #: src/views/dns/components/DNSRecordFilter.vue:49
-#: src/views/dns/components/DNSRecordForm.vue:43
+#: src/views/dns/components/DNSRecordForm.vue:57
 #: src/views/dns/components/DNSRecordTable.vue:21
 #: src/views/nginx_log/NginxLogList.vue:146
 #: src/views/notification/notificationColumns.tsx:8
@@ -7137,6 +7184,10 @@ msgstr "نوع"
 #: src/views/config/components/Delete.vue:129
 msgid "Type %{delete} to confirm"
 msgstr "اكتب %{delete} للتأكيد"
+
+#: src/views/dns/DDNSManager.vue:228
+msgid "Type or select A/AAAA records"
+msgstr "اكتب أو حدد سجلات A/AAAA"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:142
 msgid "Type or select browser"
@@ -7195,7 +7246,7 @@ msgstr "تم التحديث بنجاح"
 #: src/views/certificate/ACMEUser.vue:124
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
 #: src/views/config/configColumns.tsx:44 src/views/dns/DNSCredential.vue:65
-#: src/views/dns/DNSDomainList.vue:179 src/views/namespace/columns.ts:91
+#: src/views/dns/DNSDomainList.vue:205 src/views/namespace/columns.ts:91
 #: src/views/node/nodeColumns.tsx:89
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:39
 #: src/views/site/site_list/columns.tsx:113 src/views/stream/columns.tsx:80
@@ -7268,7 +7319,7 @@ msgstr "مدة التشغيل:"
 msgid "URL"
 msgstr "عنوان URL"
 
-#: src/views/dns/components/DNSRecordForm.vue:50
+#: src/views/dns/components/DNSRecordForm.vue:64
 msgid "Use @ for root"
 msgstr "استخدم @ للجذر"
 
@@ -7337,7 +7388,7 @@ msgid "Validate SSL Certificate"
 msgstr "التحقق من صحة شهادة SSL"
 
 #: src/views/dashboard/components/PerformanceTablesCard.vue:22
-#: src/views/dns/components/DNSRecordForm.vue:52
+#: src/views/dns/components/DNSRecordForm.vue:66
 #: src/views/dns/components/DNSRecordTable.vue:25
 msgid "Value"
 msgstr "القيمة"
@@ -7469,7 +7520,7 @@ msgstr "أسبوعي"
 msgid "Weekly on %{day} at %{time}"
 msgstr "أسبوعيًا يوم %{day} الساعة %{time}"
 
-#: src/views/dns/components/DNSRecordForm.vue:61
+#: src/views/dns/components/DNSRecordForm.vue:84
 #: src/views/dns/components/DNSRecordTable.vue:37
 msgid "Weight"
 msgstr "الوزن"

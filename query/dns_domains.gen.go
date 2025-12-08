@@ -35,6 +35,7 @@ func newDnsDomain(db *gorm.DB, opts ...gen.DOOption) dnsDomain {
 	_dnsDomain.Domain = field.NewString(tableName, "domain")
 	_dnsDomain.Description = field.NewString(tableName, "description")
 	_dnsDomain.DnsCredentialID = field.NewUint64(tableName, "dns_credential_id")
+	_dnsDomain.DDNSConfig = field.NewField(tableName, "ddns_config")
 	_dnsDomain.DnsCredential = dnsDomainBelongsToDnsCredential{
 		db: db.Session(&gorm.Session{}),
 
@@ -57,6 +58,7 @@ type dnsDomain struct {
 	Domain          field.String
 	Description     field.String
 	DnsCredentialID field.Uint64
+	DDNSConfig      field.Field
 	DnsCredential   dnsDomainBelongsToDnsCredential
 
 	fieldMap map[string]field.Expr
@@ -81,6 +83,7 @@ func (d *dnsDomain) updateTableName(table string) *dnsDomain {
 	d.Domain = field.NewString(table, "domain")
 	d.Description = field.NewString(table, "description")
 	d.DnsCredentialID = field.NewUint64(table, "dns_credential_id")
+	d.DDNSConfig = field.NewField(table, "ddns_config")
 
 	d.fillFieldMap()
 
@@ -97,7 +100,7 @@ func (d *dnsDomain) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (d *dnsDomain) fillFieldMap() {
-	d.fieldMap = make(map[string]field.Expr, 8)
+	d.fieldMap = make(map[string]field.Expr, 9)
 	d.fieldMap["id"] = d.ID
 	d.fieldMap["created_at"] = d.CreatedAt
 	d.fieldMap["updated_at"] = d.UpdatedAt
@@ -105,6 +108,7 @@ func (d *dnsDomain) fillFieldMap() {
 	d.fieldMap["domain"] = d.Domain
 	d.fieldMap["description"] = d.Description
 	d.fieldMap["dns_credential_id"] = d.DnsCredentialID
+	d.fieldMap["ddns_config"] = d.DDNSConfig
 
 }
 

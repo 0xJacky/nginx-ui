@@ -47,6 +47,11 @@ func InitCronJobs(ctx context.Context) {
 		logger.Fatalf("AutoBackup Err: %v\n", err)
 	}
 
+	// Initialize DDNS jobs
+	if err := setupDDNSJobs(s); err != nil {
+		logger.Fatalf("DDNS Err: %v\n", err)
+	}
+
 	// Initialize upstream availability testing job
 	_, err = setupUpstreamAvailabilityJob(s)
 	if err != nil {

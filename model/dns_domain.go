@@ -8,7 +8,5 @@ type DnsDomain struct {
 	Description     string         `json:"description"`
 	DnsCredentialID uint64         `json:"dns_credential_id" gorm:"not null;uniqueIndex:idx_dns_domain_credential"`
 	DnsCredential   *DnsCredential `json:"dns_credential,omitempty" gorm:"constraint:OnDelete:CASCADE;"`
+	DDNSConfig      *DDNSConfig    `json:"ddns_config,omitempty" gorm:"column:ddns_config;serializer:json"`
 }
-
-
-

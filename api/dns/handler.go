@@ -9,6 +9,7 @@ import (
 	"github.com/spf13/cast"
 	"github.com/uozi-tech/cosy"
 
+	"github.com/0xJacky/Nginx-UI/internal/cron"
 	dnsService "github.com/0xJacky/Nginx-UI/internal/dns"
 	"github.com/0xJacky/Nginx-UI/model"
 )
@@ -140,6 +141,104 @@ func DeleteRecord(c *gin.Context) {
 	}
 
 	c.Status(http.StatusNoContent)
+}
+
+// GetDDNSConfig returns the DDNS configuration for a domain.
+func GetDDNSConfig(c *gin.Context) {
+	domainID := cast.ToUint64(c.Param("id"))
+	svc := dnsService.NewService()
+
+	cfg, err := svc.GetDDNSConfig(c.Request.Context(), domainID)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, toDDNSResponse(cfg))
+}
+
+// ListDDNSConfig returns DDNS overview for all domains.
+func ListDDNSConfig(c *gin.Context) {
+	ctx := c.Request.Context()
+	domains, err := dnsService.ListDDNSDomains(ctx)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	items := make([]ddnsDomainItem, 0, len(domains))
+	for _, domain := range domains {
+		cfg := domain.DDNSConfig
+		if cfg == nil {
+			cfg = &model.DDNSConfig{
+				Enabled:         false,
+				IntervalSeconds: dnsService.DefaultDDNSInterval(),
+				Targets:         []model.DDNSRecordTarget{},
+			}
+		} else if cfg.IntervalSeconds <= 0 {
+			cfg.IntervalSeconds = dnsService.DefaultDDNSInterval()
+		}
+
+		credName := ""
+		credProvider := ""
+		if domain.DnsCredential != nil {
+			credName = domain.DnsCredential.Name
+			credProvider = domain.DnsCredential.Provider
+		}
+
+		item := ddnsDomainItem{
+			ID:                 domain.ID,
+			Domain:             domain.Domain,
+			CredentialName:     credName,
+			CredentialProvider: credProvider,
+			Config:             toDDNSResponse(cfg),
+		}
+		items = append(items, item)
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"data": items,
+	})
+}
+
+// UpdateDDNSConfig updates DDNS settings for a domain and restarts its schedule.
+func UpdateDDNSConfig(c *gin.Context) {
+	domainID := cast.ToUint64(c.Param("id"))
+
+	var payload ddnsConfigRequest
+	if !cosy.BindAndValid(c, &payload) {
+		return
+	}
+
+	if payload.Enabled && len(payload.RecordIDs) == 0 {
+		cosy.ErrHandler(c, dnsService.ErrDDNSTargetRequired)
+		return
+	}
+
+	svc := dnsService.NewService()
+	cfg, err := svc.UpdateDDNSConfig(c.Request.Context(), domainID, dnsService.DDNSUpdateInput{
+		Enabled:         payload.Enabled,
+		IntervalSeconds: payload.IntervalSeconds,
+		RecordIDs:       payload.RecordIDs,
+	})
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	if cfg.Enabled {
+		if err := cron.AddOrUpdateDDNSJob(domainID, cfg.IntervalSeconds); err != nil {
+			cosy.ErrHandler(c, err)
+			return
+		}
+	} else {
+		if err := cron.RemoveDDNSJob(domainID); err != nil {
+			cosy.ErrHandler(c, err)
+			return
+		}
+	}
+
+	c.JSON(http.StatusOK, toDDNSResponse(cfg))
 }
 
 func buildPagination(page, perPage int, total int64) model.Pagination {
