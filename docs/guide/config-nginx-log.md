@@ -28,6 +28,14 @@ When `IndexingEnabled` is set to `false`, Nginx UI still discovers log entries f
 - By default, Bleve index files are stored in the `log-index` directory located under your Nginx UI config directory (for example, `/usr/local/nginx-ui/log-index`).
 - If the config directory cannot be determined, the fallback path is `./log-index` relative to the application.
 
+### IncrementalIndexInterval
+
+- Type: `int` (minutes)
+- Default: `15` when the value is `0` or negative
+- Version: `>= v2.2.0`
+
+Controls how frequently the incremental indexing job scans access logs for new entries. Lower values keep analytics closer to real time but increase background CPU usage; higher values reduce CPU load at the cost of staler analytics data. Set `0` or a negative value to use the safe default of 15 minutes.
+
 ## System Requirements
 
 ### Minimum Requirements
