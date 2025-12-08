@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	aliclient "github.com/alibabacloud-go/alidns-20150109/v4/client"
+	aliclient "github.com/alibabacloud-go/alidns-20150109/v5/client"
 	openapi "github.com/alibabacloud-go/darabonba-openapi/v2/client"
 	utilruntime "github.com/alibabacloud-go/tea-utils/v2/service"
 	"github.com/alibabacloud-go/tea/dara"
