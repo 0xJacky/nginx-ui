@@ -8,7 +8,7 @@ import acme_user from '@/api/acme_user'
 
 const { message } = App.useApp()
 
-const columns: StdTableColumn[] = [
+const columns: ComputedRef<StdTableColumn[]> = computed(() => [
   {
     title: () => $gettext('Name'),
     dataIndex: 'name',
@@ -42,7 +42,7 @@ const columns: StdTableColumn[] = [
     edit: {
       type: 'autoComplete',
       autoComplete: {
-        placeholder: () => $gettext('Select or enter a CA directory URL'),
+        placeholder: $gettext('Select or enter a CA directory URL'),
         allowClear: true,
         options: [
           {
@@ -132,7 +132,7 @@ const columns: StdTableColumn[] = [
     dataIndex: 'actions',
     fixed: 'right',
   },
-]
+])
 
 function register(id: number, data: AcmeUser) {
   acme_user.register(id).then(r => {

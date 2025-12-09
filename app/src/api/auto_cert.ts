@@ -30,6 +30,7 @@ export interface AutoCertOptions {
   key_type: string
   acme_user_id?: number
   provider?: string
+  provider_code?: string
   must_staple?: boolean
   lego_disable_cname_support?: boolean
   revoke_old?: boolean

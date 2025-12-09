@@ -24,7 +24,7 @@ const columns: StdTableColumn[] = [{
   search: true,
 }, {
   title: () => $gettext('Provider'),
-  dataIndex: 'provider',
+  dataIndex: 'provider_code',
   customRender: ({ record }: CustomRenderArgs) => {
     return record.provider
   },
@@ -34,7 +34,7 @@ const columns: StdTableColumn[] = [{
     type: 'select',
     select: {
       remote: {
-        valueKey: 'name',
+        valueKey: 'code',
         labelKey: 'name',
         api: async () => {
           return {

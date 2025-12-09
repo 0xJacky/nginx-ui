@@ -35,6 +35,7 @@ watch(current, () => {
   if (current.value) {
     data.value.code = current.value.code!
     data.value.provider = current.value.name!
+    data.value.provider_code = current.value.code
 
     auto_cert.get_dns_provider(data.value.code).then(r => {
       Object.assign(current.value!, r)
@@ -50,7 +51,10 @@ const options = computed<SelectProps['options']>(() => {
 })
 
 function filterOption(input: string, option?: DefaultOptionType) {
-  return option?.label.toLowerCase().includes(input.toLowerCase())
+  const needle = input.toLowerCase()
+  const label = option?.label?.toString().toLowerCase() ?? ''
+  const value = option?.value?.toString().toLowerCase() ?? ''
+  return label.includes(needle) || value.includes(needle)
 }
 </script>
 

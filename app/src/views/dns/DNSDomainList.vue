@@ -31,11 +31,12 @@ const credentialLoadingMap = reactive<Record<string, boolean>>({})
 const providerOptions = computed<SelectOptionList>(() => {
   const list: SelectOptionList = []
   dnsProviders.value.forEach(provider => {
-    const label = provider.name ?? provider.provider ?? ''
-    if (label) {
+    const code = provider.code ?? provider.provider ?? ''
+    const label = provider.name ?? provider.provider ?? code
+    if (code) {
       list.push({
         label,
-        value: label,
+        value: code,
       })
     }
   })
@@ -57,20 +58,20 @@ function clearCredentialSelection(formData: DomainForm) {
   formData.dns_credential_id = undefined
 }
 
-async function ensureCredentialOptions(provider: string) {
-  if (!provider || credentialOptions[provider])
+async function ensureCredentialOptions(providerCode: string) {
+  if (!providerCode || credentialOptions[providerCode])
     return
-  credentialLoadingMap[provider] = true
+  credentialLoadingMap[providerCode] = true
   try {
-    const response = await dns_credential.getList({ provider })
+    const response = await dns_credential.getList({ provider_code: providerCode })
     const list = response?.data ?? []
-    credentialOptions[provider] = list.map(item => ({
+    credentialOptions[providerCode] = list.map(item => ({
       label: item.name,
       value: item.id,
     }))
   }
   finally {
-    credentialLoadingMap[provider] = false
+    credentialLoadingMap[providerCode] = false
   }
 }
 
@@ -87,6 +88,11 @@ interface DomainEditContext {
 
 function resolveProviderName(record: DomainForm) {
   return record.dns_credential?.provider
+    ?? ''
+}
+
+function resolveProviderCode(record: DomainForm) {
+  return record.dns_credential?.provider_code
     ?? ''
 }
 
@@ -116,7 +122,7 @@ const columns: StdTableColumn[] = [{
       const formData = context.formData
       if (!formData.provider_initialized) {
         formData.selected_provider = context.mode === 'edit'
-          ? resolveProviderName(formData)
+          ? (resolveProviderCode(formData) || resolveProviderName(formData))
           : ''
         formData.provider_initialized = true
       }

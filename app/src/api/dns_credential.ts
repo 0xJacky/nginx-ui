@@ -6,6 +6,7 @@ export interface DnsCredential extends ModelBase {
   name: string
   config?: DNSProvider
   provider: string
+  provider_code?: string
   code: string
   configuration: DNSProvider['configuration']
 }

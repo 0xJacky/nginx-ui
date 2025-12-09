@@ -48,18 +48,20 @@ watch(current, () => {
     if (mounted.value) {
       data.value.code = undefined
       data.value.provider = undefined
+      data.value.provider_code = undefined
       data.value.dns_credential_id = undefined
     }
     return
   }
   credentials.value = []
   data.value.code = current.value.code
-  // Keep provider consistent with credential records (prefer provider/code over display name).
-  data.value.provider = current.value.provider || current.value.code || current.value.name
+  // Use display name for credential query; fall back to provider/code if missing.
+  data.value.provider = current.value.name || current.value.provider || current.value.code
+  data.value.provider_code = current.value.code
   if (mounted.value)
     data.value.dns_credential_id = undefined
 
-  dns_credential.getList({ provider: data.value.provider }).then(r => {
+  dns_credential.getList({ provider_code: data.value.provider_code || current.value.code }).then(r => {
     r.data.forEach(v => {
       credentials.value?.push({
         value: v.id,
@@ -82,12 +84,14 @@ onMounted(async () => {
       if (idx > -1) {
         data.value.code = r.code
         data.value.provider = r.provider
+        data.value.provider_code = r.provider_code || r.code
         providerIdx.value = idx
       }
       else {
         // provider not supported anymore; clear existing selection to keep form consistent
         data.value.code = undefined
         data.value.provider = undefined
+        data.value.provider_code = undefined
         data.value.dns_credential_id = undefined
         providerIdx.value = undefined
       }
@@ -112,7 +116,10 @@ const options = computed<SelectProps['options']>(() => {
 })
 
 function filterOption(input: string, option?: DefaultOptionType) {
-  return option?.label.toLowerCase().includes(input.toLowerCase())
+  const needle = input.toLowerCase()
+  const label = option?.label?.toString().toLowerCase() ?? ''
+  const value = option?.value?.toString().toLowerCase() ?? ''
+  return label.includes(needle) || value.includes(needle)
 }
 </script>
 

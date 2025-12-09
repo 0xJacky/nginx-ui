@@ -10,6 +10,7 @@ export interface DNSDomain extends ModelBase {
     id: number
     name: string
     provider: string
+    provider_code?: string
   }
 }
 

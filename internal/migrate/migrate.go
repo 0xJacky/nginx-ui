@@ -10,6 +10,7 @@ var Migrations = []*gormigrate.Migration{
 	UpdateCertDomains,
 	RenameEnvGroupsToNamespaces,
 	RenameEnvironmentsToNodes,
+	AddProviderCodeToDnsCredentials,
 }
 
 var BeforeAutoMigrate = []*gormigrate.Migration{

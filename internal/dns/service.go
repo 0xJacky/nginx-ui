@@ -315,11 +315,16 @@ func toProviderCredential(credential *model.DnsCredential) (*Credential, error) 
 		}
 	}
 
+	code := credential.Config.Code
+	if code == "" {
+		code = credential.ProviderCode
+	}
+
 	return &Credential{
 		ID:         credential.ID,
 		Name:       credential.Name,
 		Provider:   credential.Provider,
-		Code:       credential.Config.Code,
+		Code:       code,
 		Values:     values,
 		Additional: additional,
 	}, nil
