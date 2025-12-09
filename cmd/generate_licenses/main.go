@@ -34,10 +34,16 @@ type ComponentInfo struct {
 func main() {
 	log.Println("Generating license information...")
 
+	repoRoot, err := locateRepoRoot()
+	if err != nil {
+		log.Fatalf("Error locating repository root: %v", err)
+	}
+	log.Printf("INFO: Repository root resolved to %s", repoRoot)
+
 	var info ComponentInfo
 
 	// Generate backend licenses
-	backendLicenses, err := generateBackendLicenses()
+	backendLicenses, err := generateBackendLicenses(repoRoot)
 	if err != nil {
 		log.Printf("Error generating backend licenses: %v", err)
 	} else {
@@ -46,7 +52,7 @@ func main() {
 	}
 
 	// Generate frontend licenses
-	frontendLicenses, err := generateFrontendLicenses()
+	frontendLicenses, err := generateFrontendLicenses(repoRoot)
 	if err != nil {
 		log.Printf("Error generating frontend licenses: %v", err)
 	} else {
@@ -83,7 +89,7 @@ func main() {
 		compressed.Len(), float64(compressed.Len())/float64(len(jsonData))*100)
 
 	// Write compressed data to file
-	outputPath := "internal/license/licenses.xz"
+	outputPath := filepath.Join(repoRoot, "internal", "license", "licenses.xz")
 	log.Printf("INFO: Writing compressed data to %s", outputPath)
 	err = os.MkdirAll(filepath.Dir(outputPath), 0755)
 	if err != nil {
@@ -103,16 +109,19 @@ func main() {
 	log.Printf("  - Output file: %s", outputPath)
 }
 
-func generateBackendLicenses() ([]License, error) {
+func generateBackendLicenses(repoRoot string) ([]License, error) {
 	var licenses []License
 
 	log.Println("INFO: Collecting backend Go modules...")
 
-	// Read go.mod file directly
-	goModPath := "go.mod"
+	goModPath := filepath.Join(repoRoot, "go.mod")
+	if _, err := os.Stat(goModPath); err != nil {
+		return nil, fmt.Errorf("failed to locate go.mod at %s: %v", goModPath, err)
+	}
+
 	data, err := os.ReadFile(goModPath)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read go.mod: %v", err)
+		return nil, fmt.Errorf("failed to read go.mod at %s: %v", goModPath, err)
 	}
 
 	// Parse go.mod content to extract dependencies
@@ -120,12 +129,12 @@ func generateBackendLicenses() ([]License, error) {
 	lines := strings.Split(string(data), "\n")
 	inRequireBlock := false
 	inReplaceBlock := false
-	
+
 	replaceMap := make(map[string]string) // original -> replacement
 
 	for _, line := range lines {
 		line = strings.TrimSpace(line)
-		
+
 		// Handle require block
 		if strings.HasPrefix(line, "require (") {
 			inRequireBlock = true
@@ -148,10 +157,10 @@ func generateBackendLicenses() ([]License, error) {
 				if len(parts) == 2 {
 					original := strings.TrimSpace(parts[0])
 					replacement := strings.TrimSpace(parts[1])
-					
+
 					// Remove "replace " prefix if present
 					original = strings.TrimPrefix(original, "replace ")
-					
+
 					// Extract module path (before version if present)
 					if strings.Contains(original, " ") {
 						original = strings.Fields(original)[0]
@@ -159,7 +168,7 @@ func generateBackendLicenses() ([]License, error) {
 					if strings.Contains(replacement, " ") {
 						replacement = strings.Fields(replacement)[0]
 					}
-					
+
 					replaceMap[original] = replacement
 				}
 			}
@@ -170,13 +179,13 @@ func generateBackendLicenses() ([]License, error) {
 		if inRequireBlock || strings.HasPrefix(line, "require ") {
 			// Remove "require " prefix if present
 			line = strings.TrimPrefix(line, "require ")
-			
+
 			// Remove comments
 			if idx := strings.Index(line, "//"); idx != -1 {
 				line = line[:idx]
 			}
 			line = strings.TrimSpace(line)
-			
+
 			if line == "" {
 				continue
 			}
@@ -186,16 +195,16 @@ func generateBackendLicenses() ([]License, error) {
 			if len(parts) >= 2 {
 				path := parts[0]
 				version := parts[1]
-				
+
 				if path == "" {
 					continue
 				}
-				
+
 				// Apply replacements if they exist
 				if replacement, exists := replaceMap[path]; exists {
 					path = replacement
 				}
-				
+
 				depMap[path] = version
 			}
 		}
@@ -303,13 +312,13 @@ func generateBackendLicenses() ([]License, error) {
 	return licenses, nil
 }
 
-func generateFrontendLicenses() ([]License, error) {
+func generateFrontendLicenses(repoRoot string) ([]License, error) {
 	var licenses []License
 
 	log.Println("INFO: Collecting frontend npm packages...")
 
 	// Read package.json
-	packagePath := "app/package.json"
+	packagePath := filepath.Join(repoRoot, "app", "package.json")
 	if _, err := os.Stat(packagePath); os.IsNotExist(err) {
 		return nil, fmt.Errorf("package.json not found at %s", packagePath)
 	}
@@ -759,4 +768,49 @@ func getGoVersion() string {
 	}
 
 	return "Unknown"
+}
+
+// locateRepoRoot returns the directory containing go.mod so relative paths stay stable.
+func locateRepoRoot() (string, error) {
+	goModPath, err := locateGoModPath()
+	if err != nil {
+		return "", err
+	}
+	return filepath.Dir(goModPath), nil
+}
+
+// locateGoModPath finds the module root so the tool works from any working directory.
+func locateGoModPath() (string, error) {
+	// Prefer go env GOMOD which respects module-aware mode.
+	cmd := exec.Command("go", "env", "GOMOD")
+	output, err := cmd.Output()
+	if err == nil {
+		path := strings.TrimSpace(string(output))
+		if path != "" {
+			if _, statErr := os.Stat(path); statErr == nil {
+				return path, nil
+			}
+		}
+	}
+
+	// Fallback: walk upwards from the current working directory.
+	dir, err := os.Getwd()
+	if err != nil {
+		return "", err
+	}
+
+	for {
+		candidate := filepath.Join(dir, "go.mod")
+		if info, statErr := os.Stat(candidate); statErr == nil && !info.IsDir() {
+			return candidate, nil
+		}
+
+		parent := filepath.Dir(dir)
+		if parent == dir {
+			break
+		}
+		dir = parent
+	}
+
+	return "", fmt.Errorf("go.mod not found from current directory or parents")
 }
