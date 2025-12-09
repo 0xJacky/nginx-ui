@@ -2,6 +2,7 @@ package site
 
 import (
 	"net"
+	"os"
 	"path/filepath"
 	"regexp"
 	"strconv"
@@ -9,7 +10,9 @@ import (
 	"sync"
 
 	"github.com/0xJacky/Nginx-UI/internal/cache"
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/upstream"
+	"github.com/uozi-tech/cosy/logger"
 )
 
 type Index struct {
@@ -50,7 +53,25 @@ func scanForSite(configPath string, content []byte) error {
 	// Regular expressions for server_name and listen directives
 	serverNameRegex := regexp.MustCompile(`(?m)^[ \t]*server_name\s+([^;#]+);`)
 	listenRegex := regexp.MustCompile(`(?m)^[ \t]*listen\s+([^;#]+);`)
+	includeRegex := regexp.MustCompile(`(?m)^[ \t]*include\s+([^;#]+);`)
 	returnRegex := regexp.MustCompile(`(?m)^[ \t]*return\s+30[1-8]\s+https://[^\s;#]+`)
+
+	baseDir := filepath.Dir(configPath)
+	baseAbs, err := filepath.Abs(baseDir)
+	if err != nil {
+		logger.Debugf("Failed to resolve base path for config %s: %v", configPath, err)
+		return err
+	}
+
+	allowedRoot := baseAbs
+	if confRoot := nginx.GetConfPath(); confRoot != "" {
+		confRootAbs, err := filepath.Abs(confRoot)
+		if err != nil {
+			logger.Debugf("Failed to resolve nginx conf root %s: %v", confRoot, err)
+		} else {
+			allowedRoot = confRootAbs
+		}
+	}
 
 	// Find server blocks
 	serverBlockRegex := regexp.MustCompile(`(?ms)server\s*\{[^\{]*((.*?\{.*?\})*?[^\}]*)\}`)
@@ -111,8 +132,67 @@ func scanForSite(configPath string, content []byte) error {
 		// Check if this server block has HTTPS redirect
 		hasRedirect := returnRegex.Match(serverBlockContent)
 
-		// Check if SSL is enabled and extract port
+		// Collect listen directives from this server block and its includes
 		listenMatches := listenRegex.FindAllSubmatch(serverBlockContent, -1)
+
+		// Parse includes inside the server block (common pattern: listen is placed in snippet)
+		includeMatches := includeRegex.FindAllSubmatch(serverBlockContent, -1)
+		for _, match := range includeMatches {
+			if len(match) < 2 {
+				continue
+			}
+			includePath := strings.TrimSpace(string(match[1]))
+			includePath = strings.Trim(includePath, `"'`)
+			// Skip wildcard includes for now; they can represent multiple files
+			if strings.Contains(includePath, "*") {
+				logger.Debugf("Skipping wildcard include in site scan: %s", includePath)
+				continue
+			}
+
+			// Resolve relative paths: prefer same directory; fallback to nginx root (allowedRoot)
+			if !filepath.IsAbs(includePath) {
+				candidate := filepath.Join(baseDir, includePath)
+				if _, err := os.Stat(candidate); err != nil {
+					altCandidate := filepath.Join(allowedRoot, includePath)
+					if _, altErr := os.Stat(altCandidate); altErr == nil {
+						candidate = altCandidate
+					}
+				}
+				includePath = candidate
+			}
+
+			includePath = filepath.Clean(includePath)
+			includeAbs, err := filepath.Abs(includePath)
+			if err != nil {
+				logger.Debugf("Failed to resolve absolute path for include during site scan: %s, error: %v", includePath, err)
+				continue
+			}
+
+			rel, err := filepath.Rel(allowedRoot, includeAbs)
+			if err != nil || strings.HasPrefix(rel, ".."+string(filepath.Separator)) || rel == ".." {
+				logger.Debugf("Blocked include outside base config directory during site scan: %s", includeAbs)
+				continue
+			}
+
+			includeContent, err := os.ReadFile(includeAbs)
+			if err != nil {
+				logger.Debugf("Failed to read include file during site scan: %s, error: %v", includeAbs, err)
+				continue
+			}
+
+			includeListens := listenRegex.FindAllSubmatch(includeContent, -1)
+			if len(includeListens) == 0 {
+				logger.Debugf("No listen directives found in include file during site scan: %s", includePath)
+				continue
+			}
+			listenMatches = append(listenMatches, includeListens...)
+		}
+
+		// If no listen directives were found, assume default HTTP :80 to keep site visible
+		if len(listenMatches) == 0 {
+			logger.Debugf("No listen directive found for server block in %s, defaulting to :80 http", configPath)
+			listenMatches = append(listenMatches, [][]byte{{}, []byte("80")})
+		}
 
 		for _, match := range listenMatches {
 			if len(match) >= 2 {
