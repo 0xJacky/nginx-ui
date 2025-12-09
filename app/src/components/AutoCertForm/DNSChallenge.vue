@@ -5,7 +5,6 @@ import type { Ref } from 'vue'
 import type { AutoCertOptions, DNSProvider } from '@/api/auto_cert'
 import auto_cert from '@/api/auto_cert'
 import dns_credential from '@/api/dns_credential'
-import { filterAllowedDnsProviders } from '@/constants/dns_providers'
 
 const providers = ref([]) as Ref<DNSProvider[]>
 const credentials = ref<SelectProps['options']>([])
@@ -72,7 +71,7 @@ watch(current, () => {
 
 onMounted(async () => {
   await auto_cert.get_dns_providers().then(r => {
-    providers.value = filterAllowedDnsProviders(r)
+    providers.value = r
   }).then(() => {
     init()
   })

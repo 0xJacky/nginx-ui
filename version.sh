@@ -12,9 +12,11 @@ while true; do
         # Show confirmation prompt with original input
         echo "You entered version: ${VERSION}"
         read -p "Is this correct? [Y/n] " confirm
-        case ${confirm,,} in
-            y|yes|"") break ;;
-            n|no)
+        case "$confirm" in
+            [Yy]|[Yy][Ee][Ss]|"")
+                break
+                ;;
+            [Nn]|[Nn][Oo])
                 echo "Restarting version input..."
                 continue
                 ;;
