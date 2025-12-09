@@ -119,10 +119,14 @@ func (sc *SiteChecker) CollectSites() {
 					logger.Debugf("Site %s using default protocol: %s (config error: %v)", url, protocol, err)
 				}
 
-				// Parse URL components for legacy fields
+				displayURL := url
+				if friendly := indexedSite.GetDisplayURL(url); friendly != "" {
+					displayURL = friendly
+				}
 
 				// Get or create site config to get ID
 				siteConfig := getOrCreateSiteConfigForURL(url)
+				siteConfig.DisplayURL = displayURL
 
 				siteInfo := &SiteInfo{
 					SiteConfig:  *siteConfig,
@@ -542,6 +546,9 @@ func extractDomainName(siteURL string) string {
 	parsed, err := url.Parse(siteURL)
 	if err != nil {
 		return siteURL
+	}
+	if hostname := parsed.Hostname(); hostname != "" {
+		return hostname
 	}
 	return parsed.Host
 }

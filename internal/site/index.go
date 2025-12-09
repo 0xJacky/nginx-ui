@@ -19,6 +19,7 @@ type Index struct {
 	Path         string
 	Content      string
 	Urls         []string
+	DisplayURLs  map[string]string
 	ProxyTargets []ProxyTarget
 }
 
@@ -35,6 +36,14 @@ func GetIndexedSite(path string) *Index {
 		return site
 	}
 	return &Index{}
+}
+
+// GetDisplayURL returns a friendly display URL for the given raw URL if available.
+func (i *Index) GetDisplayURL(rawURL string) string {
+	if i == nil || len(i.DisplayURLs) == 0 {
+		return ""
+	}
+	return i.DisplayURLs[rawURL]
 }
 
 func init() {
@@ -81,6 +90,7 @@ func scanForSite(configPath string, content []byte) error {
 		Path:         configPath,
 		Content:      string(content),
 		Urls:         []string{},
+		DisplayURLs:  make(map[string]string),
 		ProxyTargets: []ProxyTarget{},
 	}
 
@@ -90,6 +100,7 @@ func scanForSite(configPath string, content []byte) error {
 		port        int
 		priority    int  // Higher priority for public ports
 		hasRedirect bool // Whether this server block has HTTPS redirect
+		behindProxy bool // Whether the listener expects proxy protocol
 	}
 	hostMap := make(map[string]hostInfo)
 
@@ -104,26 +115,7 @@ func scanForSite(configPath string, content []byte) error {
 
 		// Get all server names
 		serverNames := strings.Fields(string(serverNameMatches[1]))
-		var validServerNames []string
-
-		// Filter valid domain names and IPs
-		for _, name := range serverNames {
-			// Skip placeholder names
-			if name == "_" || name == "localhost" {
-				continue
-			}
-
-			// Check if it's a valid IP
-			if net.ParseIP(name) != nil {
-				validServerNames = append(validServerNames, name)
-				continue
-			}
-
-			// Basic domain validation
-			if isValidDomain(name) {
-				validServerNames = append(validServerNames, name)
-			}
-		}
+		validServerNames := extractValidServerNames(serverNames)
 
 		if len(validServerNames) == 0 {
 			continue
@@ -198,6 +190,7 @@ func scanForSite(configPath string, content []byte) error {
 			if len(match) >= 2 {
 				listenValue := strings.TrimSpace(string(match[1]))
 				hasSSL := strings.Contains(listenValue, "ssl")
+				hasProxyProtocol := strings.Contains(listenValue, "proxy_protocol")
 				port := 80 // Default HTTP port
 				priority := 1
 
@@ -258,16 +251,23 @@ func scanForSite(configPath string, content []byte) error {
 					// 1. Host doesn't exist yet
 					// 2. New entry has higher priority (SSL > redirect > plain HTTP, public > private)
 					// 3. Same priority but adding SSL
-					if !exists ||
+					shouldReplace := !exists ||
 						priority > info.priority ||
-						(priority == info.priority && hasSSL && !info.hasSSL) {
-						hostMap[name] = hostInfo{
+						(priority == info.priority && hasSSL && !info.hasSSL)
+
+					if shouldReplace {
+						info = hostInfo{
 							hasSSL:      hasSSL,
 							port:        port,
 							priority:    priority,
 							hasRedirect: hasRedirect,
+							behindProxy: hasProxyProtocol,
 						}
+					} else if hasProxyProtocol {
+						info.behindProxy = true
 					}
+
+					hostMap[name] = info
 				}
 			}
 		}
@@ -296,6 +296,17 @@ func scanForSite(configPath string, content []byte) error {
 		}
 
 		siteIndex.Urls = append(siteIndex.Urls, url)
+
+		displayPort := info.port
+		if info.behindProxy {
+			displayPort = defaultPort
+		}
+
+		displayURL := protocol + "://" + host
+		if displayPort != defaultPort {
+			displayURL += ":" + strconv.Itoa(displayPort)
+		}
+		siteIndex.DisplayURLs[url] = displayURL
 	}
 
 	// Parse proxy targets from the configuration content
@@ -311,8 +322,79 @@ func scanForSite(configPath string, content []byte) error {
 	return nil
 }
 
+func extractValidServerNames(serverNames []string) []string {
+	validServerNames := make([]string, 0, len(serverNames))
+	wildcardFallback := make([]string, 0)
+	seen := make(map[string]struct{})
+	wildcardSeen := make(map[string]struct{})
+
+	for _, rawName := range serverNames {
+		name := cleanServerName(rawName)
+		if name == "" || name == "_" || name == "localhost" {
+			continue
+		}
+
+		if ip := net.ParseIP(name); ip != nil {
+			if _, exists := seen[name]; !exists {
+				seen[name] = struct{}{}
+				validServerNames = append(validServerNames, name)
+			}
+			continue
+		}
+
+		if strings.HasPrefix(name, "~") {
+			logger.Debugf("Skipping regex based server_name pattern: %s", name)
+			continue
+		}
+
+		if strings.HasPrefix(name, "*.") {
+			sanitized := strings.TrimPrefix(name, "*.")
+			if sanitized != "" && isValidDomain(sanitized) {
+				if _, exists := wildcardSeen[sanitized]; !exists {
+					wildcardSeen[sanitized] = struct{}{}
+					wildcardFallback = append(wildcardFallback, sanitized)
+				}
+			}
+			continue
+		}
+
+		if strings.ContainsAny(name, "*?") {
+			logger.Debugf("Skipping unsupported wildcard server_name pattern: %s", name)
+			continue
+		}
+
+		if isValidDomain(name) {
+			if _, exists := seen[name]; !exists {
+				seen[name] = struct{}{}
+				validServerNames = append(validServerNames, name)
+			}
+		}
+	}
+
+	if len(validServerNames) == 0 && len(wildcardFallback) > 0 {
+		logger.Debugf("Using sanitized wildcard server_name entries: %v", wildcardFallback)
+		for _, fallback := range wildcardFallback {
+			if _, exists := seen[fallback]; !exists {
+				seen[fallback] = struct{}{}
+				validServerNames = append(validServerNames, fallback)
+			}
+		}
+	}
+
+	return validServerNames
+}
+
+func cleanServerName(name string) string {
+	cleaned := strings.TrimSpace(name)
+	cleaned = strings.Trim(cleaned, "\"'")
+	cleaned = strings.Trim(cleaned, ";")
+	cleaned = strings.TrimSpace(cleaned)
+	return strings.ToLower(cleaned)
+}
+
 // isValidDomain performs a basic validation of domain names
 func isValidDomain(domain string) bool {
-	// Basic validation: contains at least one dot and no spaces
-	return strings.Contains(domain, ".") && !strings.Contains(domain, " ")
+	// Basic validation: contains at least one dot and no spaces or wildcard characters
+	return strings.Contains(domain, ".") &&
+		!strings.ContainsAny(domain, " *\t\n")
 }
