@@ -627,7 +627,7 @@ jobs:
           echo "Formula syntax is valid"
 
       - name: Create Pull Request to homebrew-tools
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ secrets.HOMEBREW_GITHUB_TOKEN }}
           path: homebrew-tools
