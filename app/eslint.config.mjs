@@ -67,6 +67,8 @@ export default createConfig(
       'sonarjs/no-nested-functions': 'off',
 
       'eslint-comments/no-unlimited-disable': 'off',
+
+      'pnpm/json-enforce-catalog': 'off',
     },
   },
 )
