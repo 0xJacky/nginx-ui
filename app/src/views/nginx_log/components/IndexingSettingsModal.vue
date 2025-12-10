@@ -21,7 +21,6 @@ const emit = defineEmits<Emits>()
 const visible = defineModel<boolean>('visible', { required: true })
 
 // GeoLite database status
-const geoLiteDownloadRef = ref<InstanceType<typeof GeoLiteDownload>>()
 const geoLiteExists = ref(false)
 
 // Check GeoLite status when modal opens

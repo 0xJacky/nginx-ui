@@ -29,7 +29,6 @@ const terminalTheme = computed(() => {
 
 const insecureConnection = ref(false)
 const rightPanelRef = ref<InstanceType<typeof TerminalRightPanel>>()
-const terminalLayoutRef = ref<HTMLElement>()
 
 function checkSecureConnection() {
   const hostname = window.location.hostname
