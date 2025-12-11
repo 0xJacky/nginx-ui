@@ -179,7 +179,6 @@ function handleCancel() {
         </ATypographyTitle>
 
         <GeoLiteDownload
-          ref="geoLiteDownloadRef"
           @download-complete="onGeoLiteDownloadComplete"
         />
       </div>

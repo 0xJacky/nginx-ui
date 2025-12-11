@@ -198,7 +198,7 @@ const terminalMainContainerHeight = computed(() => {
         show-icon
         :message="$gettext('You are accessing this terminal over an insecure HTTP connection on a non-localhost domain. This may expose sensitive information.')"
       />
-      <div ref="terminalLayoutRef" class="terminal-layout">
+      <div class="terminal-layout">
         <div class="terminal-container" :style="{ height: terminalMainContainerHeight }">
           <TerminalHeader
             :tabs="terminalStore.tabs"

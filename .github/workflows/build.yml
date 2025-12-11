@@ -299,6 +299,140 @@ jobs:
 
           echo "Upload completed successfully"
 
+  build_termux:
+    runs-on: ubuntu-latest
+    needs: build_app
+    env:
+      CGO_ENABLED: 1
+      GOOS: android
+      GOARCH: arm64
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: ^1.25.5
+          cache: false
+
+      - name: Setup environment
+        id: info_termux
+        run: |
+          export _NAME=$(jq ".termux[\"$GOARCH\"].name" -r < .github/build/build_info.json)
+          export _ARTIFACT=nginx-ui-$_NAME
+          export _BINARY=nginx-ui
+          echo "GOOS: $GOOS, GOARCH: $GOARCH, RELEASE_NAME: $_NAME, ARTIFACT_NAME: $_ARTIFACT, BINARY_NAME: $_BINARY"
+          echo "CACHE_NAME=$_NAME" >> $GITHUB_ENV
+          echo "DIST=nginx-ui-$_NAME" >> $GITHUB_ENV
+          echo "ARTIFACT=$_ARTIFACT" >> $GITHUB_ENV
+          echo "BINARY_NAME=$_BINARY" >> $GITHUB_ENV
+
+      - name: Setup Go modules cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/go/pkg/mod
+          key: go-${{ runner.os }}-${{ runner.arch }}-mod-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            go-${{ runner.os }}-${{ runner.arch }}-mod-
+
+      - name: Setup Go build cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/go-build
+          key: go-${{ runner.os }}-${{ runner.arch }}-${{ env.CACHE_NAME }}-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+              go-${{ runner.os }}-${{ runner.arch }}-${{ env.CACHE_NAME }}-
+
+      - name: Download app artifacts
+        uses: actions/download-artifact@v6
+        with:
+          name: app-dist
+          path: frontend-dist
+
+      - name: Prepare frontend assets
+        run: |
+          rm -rf app/dist
+          mkdir -p app
+          if [[ -d frontend-dist/app/dist ]]; then
+            mv frontend-dist/app/dist app/dist
+          elif [[ -d frontend-dist/dist ]]; then
+            mv frontend-dist/dist app/dist
+          else
+            mv frontend-dist app/dist
+          fi
+
+      - name: Generate files
+        env:
+          GOOS: linux
+          GOARCH: amd64
+        run: go generate cmd/version/generate.go
+
+      - name: Set up Android NDK
+        id: ndk
+        uses: nttld/setup-ndk@v1
+        with:
+          ndk-version: r27c
+
+      - name: Configure Android toolchain
+        run: |
+          API_LEVEL=24
+          TOOLCHAIN="${{ steps.ndk.outputs.ndk-path }}/toolchains/llvm/prebuilt/linux-x86_64/bin"
+          echo "PATH=$TOOLCHAIN:$PATH" >> $GITHUB_ENV
+          echo "ANDROID_API_LEVEL=$API_LEVEL" >> $GITHUB_ENV
+          echo "CC=aarch64-linux-android${API_LEVEL}-clang" >> $GITHUB_ENV
+          echo "CXX=aarch64-linux-android${API_LEVEL}-clang++" >> $GITHUB_ENV
+          echo "LD_FLAGS=-w" >> $GITHUB_ENV
+          echo "GOOS=android" >> $GITHUB_ENV
+          echo "GOARCH=arm64" >> $GITHUB_ENV
+          echo "CGO_ENABLED=1" >> $GITHUB_ENV
+
+      - name: Build
+        env:
+          GOOS: android
+          GOARCH: arm64
+          CGO_ENABLED: 1
+        run: |
+          mkdir -p dist
+          go build -trimpath -tags=jsoniter -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/settings.buildTime=$(date +%s)'" -o dist/$BINARY_NAME -v main.go
+
+      - name: Archive backend artifacts
+        uses: actions/upload-artifact@v5
+        with:
+          name: ${{ env.ARTIFACT }}
+          path: dist/${{ env.BINARY_NAME }}
+
+      - name: Prepare publish
+        run: |
+          cp README*.md ./dist
+          find dist -printf '%P\n' | tar -C dist --no-recursion -zcvf ${{ env.DIST }}.tar.gz -T -
+          openssl dgst -sha512 ${{ env.DIST }}.tar.gz | sed 's/([^)]*)//g' | awk '{print $NF}' >> ${{ env.DIST }}.tar.gz.digest
+
+      - name: Publish
+        uses: softprops/action-gh-release@v2
+        if: github.event_name == 'release'
+        with:
+          files: |
+            ${{ env.DIST }}.tar.gz
+            ${{ env.DIST }}.tar.gz.digest
+
+      - name: Upload to R2 using S3 API
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/dev'
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_REGION: us-east-1
+        run: |
+          echo "Uploading ${{ env.DIST }}.tar.gz to R2..."
+          aws s3 cp ./${{ env.DIST }}.tar.gz s3://nginx-ui-dev-build/${{ env.DIST }}.tar.gz --endpoint-url=${{ secrets.R2_S3_API_ENDPOINT }}
+
+          echo "Uploading ${{ env.DIST }}.tar.gz.digest to R2..."
+          aws s3 cp ./${{ env.DIST }}.tar.gz.digest s3://nginx-ui-dev-build/${{ env.DIST }}.tar.gz.digest --endpoint-url=${{ secrets.R2_S3_API_ENDPOINT }}
+
+          echo "Upload completed successfully"
+
   build_macos_native:
     runs-on: macos-latest
     needs: build_app
