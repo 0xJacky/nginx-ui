@@ -49,11 +49,11 @@ require (
 	github.com/spf13/afero v1.15.0
 	github.com/spf13/cast v1.10.0
 	github.com/stretchr/testify v1.11.1
-	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.3.10
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.3.11
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/dnspod v1.3.8
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20250620092546-c3e307e36701
 	github.com/ulikunitz/xz v0.5.15
-	github.com/uozi-tech/cosy v1.27.7
+	github.com/uozi-tech/cosy v1.27.9
 	github.com/uozi-tech/cosy-driver-sqlite v0.2.1
 	github.com/urfave/cli/v3 v3.6.1
 	golang.org/x/crypto v0.46.0
@@ -231,6 +231,8 @@ require (
 	github.com/labbsr0x/bindman-dns-webhook v1.0.2 // indirect
 	github.com/labbsr0x/goh v1.0.1 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
+	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible // indirect
+	github.com/lestrrat-go/strftime v1.1.1 // indirect
 	github.com/lib/pq v1.10.9 // indirect
 	github.com/linode/linodego v1.61.0 // indirect
 	github.com/liquidweb/liquidweb-cli v0.7.0 // indirect
