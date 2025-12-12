@@ -37,7 +37,7 @@ require (
 	github.com/mark3labs/mcp-go v0.43.2
 	github.com/minio/minio-go/v7 v7.0.97
 	github.com/minio/selfupdate v0.6.0
-	github.com/nikoksr/notify v1.3.0
+	github.com/nikoksr/notify v1.4.0
 	github.com/nxadm/tail v1.4.11
 	github.com/oschwald/geoip2-golang/v2 v2.0.1
 	github.com/pkg/errors v0.9.1
