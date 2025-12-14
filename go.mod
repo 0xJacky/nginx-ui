@@ -12,7 +12,7 @@ require (
 	github.com/alibabacloud-go/tea-utils/v2 v2.0.9
 	github.com/blevesearch/bleve/v2 v2.5.6
 	github.com/caarlos0/env/v11 v11.3.1
-	github.com/casdoor/casdoor-go-sdk v1.39.0
+	github.com/casdoor/casdoor-go-sdk v1.40.0
 	github.com/cloudflare/cloudflare-go/v6 v6.4.0
 	github.com/creack/pty v1.1.24
 	github.com/dgraph-io/ristretto/v2 v2.3.0
@@ -20,14 +20,14 @@ require (
 	github.com/dustin/go-humanize v1.0.1
 	github.com/elliotchance/orderedmap/v3 v3.1.0
 	github.com/fsnotify/fsnotify v1.9.0
-	github.com/gabriel-vasile/mimetype v1.4.11
+	github.com/gabriel-vasile/mimetype v1.4.12
 	github.com/gin-contrib/cors v1.7.6
 	github.com/gin-contrib/static v1.1.5
 	github.com/gin-gonic/gin v1.11.0
 	github.com/go-acme/lego/v4 v4.29.0
-	github.com/go-co-op/gocron/v2 v2.18.2
+	github.com/go-co-op/gocron/v2 v2.19.0
 	github.com/go-gormigrate/gormigrate/v2 v2.1.5
-	github.com/go-playground/validator/v10 v10.28.0
+	github.com/go-playground/validator/v10 v10.29.0
 	github.com/go-resty/resty/v2 v2.17.0
 	github.com/go-telegram-bot-api/telegram-bot-api v4.6.4+incompatible
 	github.com/go-webauthn/webauthn v0.15.0
@@ -49,7 +49,7 @@ require (
 	github.com/spf13/afero v1.15.0
 	github.com/spf13/cast v1.10.0
 	github.com/stretchr/testify v1.11.1
-	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.3.11
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.3.12
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/dnspod v1.3.8
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20250620092546-c3e307e36701
 	github.com/ulikunitz/xz v0.5.15
