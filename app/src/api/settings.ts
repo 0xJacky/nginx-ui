@@ -110,12 +110,22 @@ export interface BannedIP {
   expired_at: string
 }
 
+export interface OIDCSettings {
+  client_id: string
+  client_secret: string
+  endpoint: string
+  redirect_uri: string
+  scopes: string
+  identifier: string
+}
+
 export interface Settings {
   app: AppSettings
   server: ServerSettings
   database: DatabaseSettings
   auth: AuthSettings
   casdoor: CasdoorSettings
+  oidc: OIDCSettings
   cert: CertSettings
   http: HTTPSettings
   logrotate: LogrotateSettings

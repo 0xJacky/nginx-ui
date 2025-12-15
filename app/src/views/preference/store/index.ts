@@ -38,6 +38,14 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
       application: '',
       redirect_uri: '',
     },
+    oidc: {
+      client_id: '',
+      client_secret: '',
+      endpoint: '',
+      redirect_uri: '',
+      scopes: '',
+      identifier: '',
+    },
     cert: {
       email: '',
       ca_dir: '',

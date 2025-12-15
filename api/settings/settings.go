@@ -52,6 +52,7 @@ func GetSettings(c *gin.Context) {
 		"database":  settings.DatabaseSettings,
 		"auth":      settings.AuthSettings,
 		"casdoor":   settings.CasdoorSettings,
+		"oidc":      settings.OIDCSettings,
 		"cert":      settings.CertSettings,
 		"http":      settings.HTTPSettings,
 		"logrotate": settings.LogrotateSettings,
@@ -74,6 +75,7 @@ func SaveSettings(c *gin.Context) {
 		Openai    settings.OpenAI    `json:"openai"`
 		Logrotate settings.Logrotate `json:"logrotate"`
 		Nginx     settings.Nginx     `json:"nginx"`
+		Oidc      settings.OIDC      `json:"oidc"`
 	}
 
 	if !cosy.BindAndValid(c, &json) {
@@ -130,6 +132,7 @@ func SaveSettings(c *gin.Context) {
 	cSettings.ProtectedFill(settings.OpenAISettings, &json.Openai)
 	cSettings.ProtectedFill(settings.LogrotateSettings, &json.Logrotate)
 	cSettings.ProtectedFill(settings.NginxSettings, &json.Nginx)
+	cSettings.ProtectedFill(settings.OIDCSettings, &json.Oidc)
 
 	err := settings.Save()
 	if err != nil {

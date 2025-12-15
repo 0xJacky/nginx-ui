@@ -1,10 +1,11 @@
 package settings
 
 import (
-	"github.com/stretchr/testify/assert"
-	cSettings "github.com/uozi-tech/cosy/settings"
 	"os"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+	cSettings "github.com/uozi-tech/cosy/settings"
 )
 
 func TestSetup(t *testing.T) {
@@ -35,6 +36,14 @@ func TestSetup(t *testing.T) {
 	_ = os.Setenv("NGINX_UI_CASDOOR_ORGANIZATION", "org1")
 	_ = os.Setenv("NGINX_UI_CASDOOR_APPLICATION", "app1")
 	_ = os.Setenv("NGINX_UI_CASDOOR_REDIRECT_URI", "https://redirect.example.com")
+
+	// Oidc
+	_ = os.Setenv("NGINX_UI_OIDC_CLIENT_ID", "clientId")
+	_ = os.Setenv("NGINX_UI_OIDC_CLIENT_SECRET", "clientSecret")
+	_ = os.Setenv("NGINX_UI_OIDC_ENDPOINT", "https://casdoor.example.com/oidc")
+	_ = os.Setenv("NGINX_UI_OIDC_REDIRECT_URI", "https://redirect.example.com")
+	_ = os.Setenv("NGINX_UI_OIDC_SCOPES", "openid profile email username")
+	_ = os.Setenv("NGINX_UI_OIDC_IDENTIFIER", "username")
 
 	// Cert
 	_ = os.Setenv("NGINX_UI_CERT_EMAIL", "test")
@@ -117,6 +126,14 @@ func TestSetup(t *testing.T) {
 	assert.Equal(t, "org1", CasdoorSettings.Organization)
 	assert.Equal(t, "app1", CasdoorSettings.Application)
 	assert.Equal(t, "https://redirect.example.com", CasdoorSettings.RedirectUri)
+
+	// Oidc
+	assert.Equal(t, "clientId", OIDCSettings.ClientId)
+	assert.Equal(t, "clientSecret", OIDCSettings.ClientSecret)
+	assert.Equal(t, "https://casdoor.example.com/oidc", OIDCSettings.Endpoint)
+	assert.Equal(t, "https://redirect.example.com", OIDCSettings.RedirectUri)
+	assert.Equal(t, "openid profile email username", OIDCSettings.Scopes)
+	assert.Equal(t, "username", OIDCSettings.Identifier)
 
 	// Cert
 	assert.Equal(t, "test", CertSettings.Email)

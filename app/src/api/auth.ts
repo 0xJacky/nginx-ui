@@ -31,6 +31,15 @@ const auth = {
         login(r.token, r.short_token)
       })
   },
+  async oidc_login(code?: string, state?: string) {
+    await http.post('/oidc_callback', {
+      code,
+      state,
+    })
+      .then((r: AuthResponse) => {
+        login(r.token, r.short_token)
+      })
+  },
   async logout() {
     return http.delete('/logout').then(async () => {
       logout()
@@ -38,6 +47,9 @@ const auth = {
   },
   async get_casdoor_uri(): Promise<{ uri: string }> {
     return http.get('/casdoor_uri')
+  },
+  async get_oidc_uri(): Promise<{ uri: string }> {
+    return http.get('/oidc_uri')
   },
   begin_passkey_login() {
     return http.get('/begin_passkey_login')
