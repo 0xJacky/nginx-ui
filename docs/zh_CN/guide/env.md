@@ -46,6 +46,17 @@
 | Application     | NGINX_UI_CASDOOR_APPLICATION      |
 | RedirectUri     | NGINX_UI_CASDOOR_REDIRECT_URI     |
 
+## Oidc
+
+| 配置              | 环境变量                     |
+|-----------------|-----------------------------|
+| Endpoint        | NGINX_UI_OIDC_ENDPOINT      |
+| ClientId        | NGINX_UI_OIDC_CLIENT_ID     |
+| ClientSecret    | NGINX_UI_OIDC_CLIENT_SECRET |
+| RedirectUri     | NGINX_UI_OIDC_REDIRECT_URI  |
+| Scopes          | NGINX_UI_OIDC_SCOPES        |
+| Identifier      | NGINX_UI_OIDC_IDENTIFIER    |
+
 ## Cert
 
 | 配置                   | 环境变量                                |

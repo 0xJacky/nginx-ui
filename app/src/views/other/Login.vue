@@ -134,6 +134,11 @@ async function handleLoginSuccess(options: LoginSuccessOptions = {}) {
     await settingsStore.set_language(userStore.info?.language)
   }
 
+  if (window.location.search) {
+    const newUrl = window.location.pathname + window.location.hash
+    window.history.replaceState(null, '', newUrl)
+  }
+
   const next = (route.query?.next || '').toString() || '/'
   await router.push(next)
 }
@@ -187,17 +192,46 @@ auth.get_casdoor_uri()
     }
   })
 
+const has_oidc = ref(false)
+const oidc_uri = ref('')
+
+auth.get_oidc_uri()
+  .then(r => {
+    if (r?.uri) {
+      has_oidc.value = true
+      oidc_uri.value = r.uri
+    }
+  })
+
 function loginWithCasdoor() {
   window.location.href = casdoor_uri.value
 }
 
-if (route.query?.code !== undefined && route.query?.state !== undefined) {
+function loginWithOIDC() {
+  window.location.href = oidc_uri.value
+}
+
+const searchParams = new URLSearchParams(window.location.search)
+const query = route.query
+const code = query?.code?.toString() ?? searchParams.get('code')
+const state = query?.state?.toString() ?? searchParams.get('state')
+
+if (code && state) {
   loading.value = true
-  auth.casdoor_login(route.query?.code?.toString(), route.query?.state?.toString()).then(async () => {
-    await handleLoginSuccess()
-  }).finally(() => {
-    loading.value = false
-  })
+  if (state.startsWith('nginx-ui-oidc_')) {
+    auth.oidc_login(code, state).then(async () => {
+      await handleLoginSuccess()
+    }).finally(() => {
+      loading.value = false
+    })
+  }
+  else {
+    auth.casdoor_login(code, state).then(async () => {
+      await handleLoginSuccess()
+    }).finally(() => {
+      loading.value = false
+    })
+  }
 }
 
 function handleOTPSubmit(code: string, recovery: string) {
@@ -290,6 +324,15 @@ async function handlePasskeyLogin() {
                 @click="loginWithCasdoor"
               >
                 {{ $gettext('SSO Login') }}
+              </AButton>
+              <AButton
+                v-if="has_oidc"
+                block
+                :loading="loading"
+                class="mb-5"
+                @click="loginWithOIDC"
+              >
+                {{ $gettext('OIDC Login') }}
               </AButton>
             </template>
             <div v-else>

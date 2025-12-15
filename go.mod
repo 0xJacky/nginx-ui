@@ -14,6 +14,7 @@ require (
 	github.com/caarlos0/env/v11 v11.3.1
 	github.com/casdoor/casdoor-go-sdk v1.40.0
 	github.com/cloudflare/cloudflare-go/v6 v6.4.0
+	github.com/coreos/go-oidc/v3 v3.17.0
 	github.com/creack/pty v1.1.24
 	github.com/dgraph-io/ristretto/v2 v2.3.0
 	github.com/docker/docker v28.5.2+incompatible
@@ -58,6 +59,7 @@ require (
 	github.com/urfave/cli/v3 v3.6.1
 	golang.org/x/crypto v0.46.0
 	golang.org/x/net v0.48.0
+	golang.org/x/oauth2 v0.33.0
 	google.golang.org/grpc v1.77.0
 	gopkg.in/ini.v1 v1.67.0
 	gorm.io/datatypes v1.2.7
@@ -353,7 +355,6 @@ require (
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
 	golang.org/x/arch v0.23.0 // indirect
 	golang.org/x/mod v0.30.0 // indirect
-	golang.org/x/oauth2 v0.33.0 // indirect
 	golang.org/x/sync v0.19.0 // indirect
 	golang.org/x/sys v0.39.0 // indirect
 	golang.org/x/text v0.32.0 // indirect

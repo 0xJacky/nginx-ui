@@ -40,6 +40,7 @@ var envPrefixMap = map[string]interface{}{
 	"TERMINAL":  TerminalSettings,
 	"WEBAUTHN":  WebAuthnSettings,
 	"BACKUP":    BackupSettings,
+	"OIDC":      OIDCSettings,
 }
 
 func init() {
@@ -50,6 +51,7 @@ func init() {
 	sections.Set("auth", AuthSettings)
 	sections.Set("backup", BackupSettings)
 	sections.Set("casdoor", CasdoorSettings)
+	sections.Set("oidc", OIDCSettings)
 	sections.Set("cert", CertSettings)
 	sections.Set("cluster", ClusterSettings)
 	sections.Set("crypto", CryptoSettings)
