@@ -55,6 +55,7 @@ Nginx 網路管理介面，由 [0xJacky](https://jackyu.cn/)、[Hintay](https://
     </li>
     <li><a href="#nginx-反向代理設定範例">Nginx 反向代理設定範例</a></li>
     <li><a href="#貢獻">貢獻</a></li>
+    <li><a href="#贊助">贊助</a></li>
     <li><a href="#開源軟體授權條款">開源軟體授權條款</a></li>
   </ol>
 </details>
@@ -305,6 +306,21 @@ server {
 3. 提交您的修改 (`git commit -m 'Add some AmazingFeature'`)
 4. 推送到您的分支 (`git push origin feature/AmazingFeature`)
 5. 建立一個 Pull Request
+
+## 贊助
+
+如果您覺得本專案對您有幫助，請考慮贊助我們以支援持續的開發和維護。
+
+[![GitHub Sponsors](https://img.shields.io/badge/GitHub-Sponsors-ea4aaa?style=for-the-badge&logo=github-sponsors&logoColor=white)](https://github.com/sponsors/nginxui)
+[![Afdian](https://img.shields.io/badge/爱发电-Support-946ce6?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMMTMuMDkgOC4yNkwyMCA5TDEzLjA5IDE1Ljc0TDEyIDIyTDEwLjkxIDE1Ljc0TDQgOUwxMC45MSA4LjI2TDEyIDJaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K)](https://afdian.com/a/nginxui)
+
+### 工具支援
+
+<a href="https://www.jetbrains.com/?from=nginx-ui" target="_blank">
+  <img src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg" alt="JetBrains Logo" width="200px">
+</a>
+
+感謝 [JetBrains](https://www.jetbrains.com/?from=nginx-ui) 為我們提供免費的開源軟體授權條款支援。
 
 ## 開源軟體授權條款
 

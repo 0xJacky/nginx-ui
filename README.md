@@ -41,6 +41,15 @@ Your support helps us:
 - 🌐 Provide better community support
 - 💻 Maintain infrastructure and demo servers
 
+### Tooling Support
+
+<a href="https://www.jetbrains.com/?from=nginx-ui" target="_blank">
+  <img src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg" alt="JetBrains Logo" width="200px">
+</a>
+
+Thanks to [JetBrains](https://www.jetbrains.com/?from=nginx-ui) for supporting us with free open source licenses.
+
+
 ## Stargazers over time
 
 [![Stargazers over time](https://starchart.cc/0xJacky/nginx-ui.svg)](https://starchart.cc/0xJacky/nginx-ui)
