@@ -40,7 +40,7 @@ require (
 	github.com/minio/selfupdate v0.6.0
 	github.com/nikoksr/notify v1.5.0
 	github.com/nxadm/tail v1.4.11
-	github.com/oschwald/geoip2-golang/v2 v2.0.1
+	github.com/oschwald/geoip2-golang/v2 v2.1.0
 	github.com/pkg/errors v0.9.1
 	github.com/pquerna/otp v1.5.0
 	github.com/pretty66/websocketproxy v0.0.0-20220507015215-930b3a686308
@@ -50,7 +50,7 @@ require (
 	github.com/spf13/afero v1.15.0
 	github.com/spf13/cast v1.10.0
 	github.com/stretchr/testify v1.11.1
-	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.3.16
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.3.18
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/dnspod v1.3.16
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20250620092546-c3e307e36701
 	github.com/ulikunitz/xz v0.5.15
@@ -60,7 +60,7 @@ require (
 	golang.org/x/crypto v0.46.0
 	golang.org/x/net v0.48.0
 	golang.org/x/oauth2 v0.34.0
-	google.golang.org/grpc v1.77.0
+	google.golang.org/grpc v1.78.0
 	gopkg.in/ini.v1 v1.67.0
 	gorm.io/datatypes v1.2.7
 	gorm.io/driver/sqlite v1.6.0
