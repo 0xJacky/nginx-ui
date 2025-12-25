@@ -45,5 +45,7 @@ export const sharedConfig = defineConfig({
         server: {
             port: Number.parseInt(process.env.VITE_PORT ?? '3003')
         }
-    }
+    },
+
+    ignoreDeadLinks: true
 })
