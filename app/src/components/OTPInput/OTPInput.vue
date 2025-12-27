@@ -29,7 +29,7 @@ defineExpose({
     v-model:value="data"
     input-classes="otp-input"
     :num-inputs="6"
-    input-type="number"
+    input-mode="numeric"
     should-auto-focus
     should-focus-order
     @on-complete="onComplete"
