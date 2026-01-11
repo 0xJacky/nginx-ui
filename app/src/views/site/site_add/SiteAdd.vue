@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { DNSDomain, DNSRecord } from '@/api/dns'
+import type { NgxDirective, NgxServer } from '@/api/ngx'
 import ngx from '@/api/ngx'
 import site from '@/api/site'
 import NgxConfigEditor, { DirectiveEditor, LocationEditor, useNgxConfigStore } from '@/components/NgxConfigEditor'
@@ -6,9 +8,13 @@ import { ConfigStatus } from '@/constants'
 import Cert from '../site_edit/components/Cert'
 import EnableTLS from '../site_edit/components/EnableTLS'
 import { useSiteEditorStore } from '../site_edit/components/SiteEditor/store'
+import DNSRecordIntegration from './components/DNSRecordIntegration.vue'
 
 const currentStep = ref(0)
 const { message } = useGlobalApp()
+
+// DNS record integration state
+const selectedDNSRecord = ref<{ record: DNSRecord, domain: DNSDomain } | null>(null)
 
 onMounted(() => {
   init()
@@ -27,11 +33,22 @@ function init() {
 
 async function save() {
   const r = await ngx.build_config(ngxConfig.value)
-  await site.updateItem(ngxConfig.value.name, {
+
+  const payload: Record<string, unknown> = {
     name: ngxConfig.value.name,
     content: r.content,
-    overwrite: currentStep.value === 1, // only overwrite when step 2 is completed
-  })
+    overwrite: true, // Always overwrite to avoid conflicts during multi-step process
+  }
+
+  // Include DNS information if a record was selected/created in step 1
+  if (selectedDNSRecord.value) {
+    payload.dns_domain_id = selectedDNSRecord.value.domain.id
+    payload.dns_record_id = selectedDNSRecord.value.record.id
+    payload.dns_record_name = selectedDNSRecord.value.record.name
+    payload.dns_record_type = selectedDNSRecord.value.record.type
+  }
+
+  await site.updateItem(ngxConfig.value.name, payload)
 
   message.success($gettext('Saved successfully'))
 
@@ -54,8 +71,11 @@ function createAnother() {
 const hasServerName = computed(() => {
   const servers = ngxConfig.value.servers
 
-  for (const server of Object.values(servers)) {
-    for (const directive of Object.values(server.directives!)) {
+  for (const server of Object.values(servers) as NgxServer[]) {
+    if (!server.directives)
+      continue
+
+    for (const directive of Object.values(server.directives) as NgxDirective[]) {
       if (directive.directive === 'server_name' && directive.params.trim() !== '')
         return true
     }
@@ -64,8 +84,77 @@ const hasServerName = computed(() => {
   return false
 })
 
+// Get server_name value for DNS integration
+const serverNameValue = computed(() => {
+  const servers = ngxConfig.value.servers
+
+  for (const server of Object.values(servers) as NgxServer[]) {
+    if (!server.directives)
+      continue
+
+    for (const directive of Object.values(server.directives) as NgxDirective[]) {
+      if (directive.directive === 'server_name' && directive.params.trim() !== '') {
+        // Return first domain from server_name
+        const names = directive.params.trim().split(/\s+/)
+        return names[0] || ''
+      }
+    }
+  }
+
+  return ''
+})
+
+// Update server_name directive with DNS name
+function updateServerNameWithDNS(dnsName: string) {
+  const servers = ngxConfig.value.servers
+
+  for (const server of Object.values(servers) as NgxServer[]) {
+    if (!server.directives)
+      continue
+
+    for (const directive of Object.values(server.directives) as NgxDirective[]) {
+      if (directive.directive === 'server_name') {
+        directive.params = dnsName
+        break
+      }
+    }
+  }
+}
+
+// Get full DNS name (record.domain)
+function getFullDNSName(record: DNSRecord, domain: DNSDomain): string {
+  if (record.name === '@' || record.name === domain.domain) {
+    return domain.domain
+  }
+  return `${record.name}.${domain.domain}`
+}
+
+// Handle DNS record selection
+function onDNSRecordSelected(record: DNSRecord, domain: DNSDomain) {
+  selectedDNSRecord.value = { record, domain }
+  const fullDNSName = getFullDNSName(record, domain)
+  updateServerNameWithDNS(fullDNSName)
+  message.info($gettext('DNS record selected: %{name}').replace('%{name}', record.name))
+}
+
+// Handle DNS record creation
+function onDNSRecordCreated(record: DNSRecord, domain: DNSDomain) {
+  selectedDNSRecord.value = { record, domain }
+  const fullDNSName = getFullDNSName(record, domain)
+  updateServerNameWithDNS(fullDNSName)
+  message.success($gettext('DNS record created and linked successfully'))
+}
+
+// Handle DNS record cleared
+function onDNSRecordCleared() {
+  selectedDNSRecord.value = null
+}
+
 async function next() {
-  await save()
+  // Only save on the final step (step 2 -> step 3)
+  if (currentStep.value === 2) {
+    await save()
+  }
   currentStep.value++
 }
 </script>
@@ -78,6 +167,7 @@ async function next() {
         size="small"
       >
         <AStep :title="$gettext('Base information')" />
+        <AStep :title="$gettext('DNS Record')" />
         <AStep :title="$gettext('Configure SSL')" />
         <AStep :title="$gettext('Finished')" />
       </ASteps>
@@ -106,7 +196,18 @@ async function next() {
         />
       </div>
 
-      <template v-else-if="currentStep === 1">
+      <!-- DNS Record Integration Step -->
+      <div v-else-if="currentStep === 1" class="mb-6">
+        <DNSRecordIntegration
+          v-if="hasServerName"
+          :server-name="serverNameValue"
+          @record-created="onDNSRecordCreated"
+          @record-selected="onDNSRecordSelected"
+          @cleared="onDNSRecordCleared"
+        />
+      </div>
+
+      <template v-else-if="currentStep === 2">
         <EnableTLS />
 
         <NgxConfigEditor>
@@ -122,19 +223,34 @@ async function next() {
         <br>
       </template>
 
-      <ASpace v-if="currentStep < 2">
+      <ASpace v-if="currentStep < 3">
         <AButton
+          v-if="currentStep === 0"
           type="primary"
           :disabled="!ngxConfig.name || !hasServerName"
           @click="next"
         >
           {{ $gettext('Next') }}
         </AButton>
+        <AButton
+          v-else
+          type="primary"
+          @click="next"
+        >
+          {{ $gettext('Next') }}
+        </AButton>
+        <AButton
+          v-if="currentStep === 1"
+          @click="currentStep--"
+        >
+          {{ $gettext('Back') }}
+        </AButton>
       </ASpace>
       <AResult
-        v-else-if="currentStep === 2"
+        v-else-if="currentStep === 3"
         status="success"
         :title="$gettext('Site Config Created Successfully')"
+        :sub-title="selectedDNSRecord ? $gettext('DNS record has been linked: %{name}').replace('%{name}', selectedDNSRecord.record.name) : undefined"
       >
         <template #extra>
           <AButton
