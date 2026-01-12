@@ -529,7 +529,7 @@ async function recreateRecord() {
       <AForm layout="vertical">
         <AFormItem :label="$gettext('DNS Domain')">
           <ASelect
-            v-model:value="selectedDomainId as any"
+            v-model:value="selectedDomainId"
             :placeholder="$gettext('Select DNS domain')"
             :loading="loading"
             allow-clear
@@ -554,7 +554,7 @@ async function recreateRecord() {
         >
           <ASpace direction="vertical" style="width: 100%">
             <ASelect
-              v-model:value="selectedRecordId as any"
+              v-model:value="selectedRecordId"
               :placeholder="$gettext('Select existing record')"
               :loading="loading"
               :disabled="createNewRecord"
