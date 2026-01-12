@@ -33,14 +33,14 @@ const recordTypes = ['A', 'AAAA', 'CNAME']
 
 // Computed properties for v-model bindings to handle null values
 const selectedDomainValue = computed({
-  get: () => selectedDomainId.value,
+  get: () => selectedDomainId.value ?? undefined,
   set: val => {
     selectedDomainId.value = typeof val === 'number' ? val : null
   },
 })
 
 const selectedRecordValue = computed({
-  get: () => selectedRecordId.value,
+  get: () => selectedRecordId.value ?? undefined,
   set: val => {
     selectedRecordId.value = typeof val === 'string' ? val : null
   },
