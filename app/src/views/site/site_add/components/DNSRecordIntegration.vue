@@ -31,6 +31,21 @@ const newRecordForm = reactive({
 
 const recordTypes = ['A', 'AAAA', 'CNAME']
 
+// Computed properties for v-model bindings to handle null values
+const selectedDomainValue = computed({
+  get: () => selectedDomainId.value,
+  set: (val) => {
+    selectedDomainId.value = typeof val === 'number' ? val : null
+  },
+})
+
+const selectedRecordValue = computed({
+  get: () => selectedRecordId.value,
+  set: (val) => {
+    selectedRecordId.value = typeof val === 'string' ? val : null
+  },
+})
+
 // Watch for server name changes to extract domain
 watch(() => props.serverName, newServerName => {
   if (!newServerName)
@@ -235,7 +250,7 @@ defineExpose({
     <AForm layout="vertical">
       <AFormItem :label="$gettext('DNS Domain')">
         <ASelect
-          v-model:value="selectedDomainId"
+          v-model:value="selectedDomainValue"
           :placeholder="$gettext('Select DNS domain')"
           :loading="loading"
           allow-clear
@@ -260,7 +275,7 @@ defineExpose({
       >
         <ASpace direction="vertical" style="width: 100%">
           <ASelect
-            v-model:value="selectedRecordId"
+            v-model:value="selectedRecordValue"
             :placeholder="$gettext('Select existing record')"
             :loading="loading"
             :disabled="createNewRecord"

@@ -27,6 +27,21 @@ const newRecordForm = reactive({
 
 const recordTypes = ['A', 'AAAA', 'CNAME']
 
+// Computed properties for v-model bindings to handle null values
+const selectedDomainValue = computed({
+  get: () => selectedDomainId.value,
+  set: (val) => {
+    selectedDomainId.value = typeof val === 'number' ? val : null
+  },
+})
+
+const selectedRecordValue = computed({
+  get: () => selectedRecordId.value,
+  set: (val) => {
+    selectedRecordId.value = typeof val === 'string' ? val : null
+  },
+})
+
 // Get server_name value from config
 const serverNameValue = computed(() => {
   const servers = ngxConfig.value.servers
@@ -529,7 +544,7 @@ async function recreateRecord() {
       <AForm layout="vertical">
         <AFormItem :label="$gettext('DNS Domain')">
           <ASelect
-            v-model:value="selectedDomainId"
+            v-model:value="selectedDomainValue"
             :placeholder="$gettext('Select DNS domain')"
             :loading="loading"
             allow-clear
@@ -554,7 +569,7 @@ async function recreateRecord() {
         >
           <ASpace direction="vertical" style="width: 100%">
             <ASelect
-              v-model:value="selectedRecordId"
+              v-model:value="selectedRecordValue"
               :placeholder="$gettext('Select existing record')"
               :loading="loading"
               :disabled="createNewRecord"
