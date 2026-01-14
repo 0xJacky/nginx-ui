@@ -20,6 +20,8 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
   const filename = ref('')
   const filepath = ref('')
   const issuingCert = ref(false)
+  const dnsLinked = ref(false) // Track if DNS is linked
+  const linkedDNSName = ref('') // Store linked DNS name
 
   const ngxConfigStore = useNgxConfigStore()
   const { ngxConfig, configText, curServerIdx, curServer, curServerDirectives, curDirectivesMap } = storeToRefs(ngxConfigStore)
@@ -83,6 +85,10 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
         namespace_id: data.value.namespace_id,
         sync_node_ids: data.value.sync_node_ids,
         post_action: 'reload_nginx',
+        dns_domain_id: data.value.dns_domain_id,
+        dns_record_id: data.value.dns_record_id,
+        dns_record_name: data.value.dns_record_name,
+        dns_record_type: data.value.dns_record_type,
       })
 
       handleResponse(response)
@@ -236,6 +242,8 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
     isIpCertificate,
     needsManualIpInput,
     hasServers,
+    dnsLinked,
+    linkedDNSName,
     init,
     save,
     handleModeChange,

@@ -5,6 +5,7 @@ import { useSiteEditorStore } from '../SiteEditor/store'
 import Basic from './Basic.vue'
 import Chat from './Chat.vue'
 import ConfigTemplate from './ConfigTemplate.vue'
+import DNS from './DNS.vue'
 
 const activeKey = ref('basic')
 
@@ -42,6 +43,9 @@ watch(advanceMode, val => {
       >
         <ATabPane key="basic" :tab="$gettext('Basic')">
           <Basic />
+        </ATabPane>
+        <ATabPane key="dns" :tab="$gettext('DNS')">
+          <DNS />
         </ATabPane>
         <ATabPane
           v-if="!advanceMode"

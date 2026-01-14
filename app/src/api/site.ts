@@ -29,6 +29,11 @@ export interface Site extends ModelBase {
   urls?: string[]
   proxy_targets?: ProxyTarget[]
   status: SiteStatus
+  dns_domain_id?: number | null
+  dns_record_id?: string | null
+  dns_record_name?: string | null
+  dns_record_type?: string | null
+  dns_record_exists?: boolean | null
 }
 
 export interface AutoCertRequest {

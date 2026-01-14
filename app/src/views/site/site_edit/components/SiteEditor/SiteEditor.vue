@@ -29,7 +29,13 @@ const {
   certInfoMap,
   advanceMode,
   curSupportSSL,
+  dnsLinked,
+  linkedDNSName,
 } = storeToRefs(editorStore)
+
+// Provide DNS link status to child components
+provide('dnsLinked', dnsLinked)
+provide('linkedDNSName', linkedDNSName)
 
 // Get upstream targets from backend API data
 const upstreamTargets = computed(() => {

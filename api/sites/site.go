@@ -1,10 +1,13 @@
 package sites
 
 import (
+	"context"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/cert"
+	"github.com/0xJacky/Nginx-UI/internal/dns"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/site"
@@ -49,6 +52,32 @@ func buildProxyTargets(fileName string) []site.ProxyTarget {
 	return proxyTargets
 }
 
+// checkDNSRecordExists verifies if a linked DNS record still exists
+func checkDNSRecordExists(domainID int, recordID string) bool {
+	if domainID == 0 || recordID == "" {
+		return false
+	}
+
+	svc := dns.NewService()
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	records, err := svc.ListRecords(ctx, uint64(domainID), dns.RecordListOptions{})
+	if err != nil {
+		logger.Warn("Failed to list DNS records:", err)
+		return false
+	}
+
+	// Check if recordID exists in the list
+	for _, record := range records {
+		if record.ID == recordID {
+			return true
+		}
+	}
+
+	return false
+}
+
 func GetSite(c *gin.Context) {
 	name := helper.UnescapeURL(c.Param("name"))
 
@@ -71,6 +100,16 @@ func GetSite(c *gin.Context) {
 	certModel, err := model.FirstCert(name)
 	if err != nil {
 		logger.Warn(err)
+	}
+
+	// Check DNS record existence if linked
+	if siteModel.DNSDomainID != nil && siteModel.DNSRecordID != nil {
+		exists := checkDNSRecordExists(*siteModel.DNSDomainID, *siteModel.DNSRecordID)
+		siteModel.DNSRecordExists = &exists
+		// Update in database
+		if err := query.Site.Save(siteModel); err != nil {
+			logger.Warn("Failed to update DNS record exists status:", err)
+		}
 	}
 
 	if siteModel.Advanced {
@@ -131,11 +170,15 @@ func SaveSite(c *gin.Context) {
 	name := helper.UnescapeURL(c.Param("name"))
 
 	var json struct {
-		Content     string   `json:"content" binding:"required"`
-		NamespaceID uint64   `json:"namespace_id"`
-		SyncNodeIDs []uint64 `json:"sync_node_ids"`
-		Overwrite   bool     `json:"overwrite"`
-		PostAction  string   `json:"post_action"`
+		Content       string   `json:"content" binding:"required"`
+		NamespaceID   uint64   `json:"namespace_id"`
+		SyncNodeIDs   []uint64 `json:"sync_node_ids"`
+		Overwrite     bool     `json:"overwrite"`
+		PostAction    string   `json:"post_action"`
+		DNSDomainID   *int     `json:"dns_domain_id"`
+		DNSRecordID   *string  `json:"dns_record_id"`
+		DNSRecordName *string  `json:"dns_record_name"`
+		DNSRecordType *string  `json:"dns_record_type"`
 	}
 
 	if !cosy.BindAndValid(c, &json) {
@@ -146,6 +189,32 @@ func SaveSite(c *gin.Context) {
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
+	}
+
+	// Update DNS link information after file is saved
+	path := nginx.GetConfPath("sites-available", name)
+	s := query.Site
+	siteModel, err := s.Where(s.Path.Eq(path)).FirstOrCreate()
+	if err != nil {
+		logger.Warn("Failed to find or create site for DNS update:", err)
+	} else {
+		// Update DNS fields
+		siteModel.DNSDomainID = json.DNSDomainID
+		siteModel.DNSRecordID = json.DNSRecordID
+		siteModel.DNSRecordName = json.DNSRecordName
+		siteModel.DNSRecordType = json.DNSRecordType
+
+		// Check if record exists if DNS info is provided
+		if json.DNSDomainID != nil && json.DNSRecordID != nil {
+			exists := checkDNSRecordExists(*json.DNSDomainID, *json.DNSRecordID)
+			siteModel.DNSRecordExists = &exists
+		} else {
+			siteModel.DNSRecordExists = nil
+		}
+
+		if err := s.Save(siteModel); err != nil {
+			logger.Warn("Failed to save DNS link information:", err)
+		}
 	}
 
 	GetSite(c)

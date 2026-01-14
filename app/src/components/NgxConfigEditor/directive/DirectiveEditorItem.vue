@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { NgxDirective } from '@/api/ngx'
-import { DeleteOutlined, HolderOutlined, InfoCircleOutlined } from '@ant-design/icons-vue'
+import { DeleteOutlined, HolderOutlined, InfoCircleOutlined, LockOutlined } from '@ant-design/icons-vue'
 import config from '@/api/config'
 import CodeEditor from '@/components/CodeEditor'
 import { Include } from '..'
@@ -15,6 +15,9 @@ const props = defineProps<{
 
 const emit = defineEmits(['remove'])
 const { message } = useGlobalApp()
+
+// Try to inject DNS link status if provided by site editor
+const dnsLinked = inject<Ref<boolean>>('dnsLinked', ref(false))
 
 const directiveStore = useDirectiveStore()
 const { curIdx } = storeToRefs(directiveStore)
@@ -51,6 +54,19 @@ function save() {
 
 const onHover = ref(false)
 const showComment = ref(false)
+
+// Check if this directive is server_name and DNS is linked
+const isDNSLinkedServerName = computed(() => {
+  if (directive.value.directive !== 'server_name')
+    return false
+
+  return dnsLinked.value
+})
+
+// Determine if input should be readonly
+const isInputReadonly = computed(() => {
+  return props.readonly || isDNSLinkedServerName.value
+})
 </script>
 
 <template>
@@ -74,6 +90,7 @@ const showComment = ref(false)
       <AInput
         v-else
         v-model:value="directive.params"
+        :readonly="isInputReadonly"
         @click="curIdx = index"
       >
         <template #addonBefore>
@@ -81,6 +98,11 @@ const showComment = ref(false)
           {{ directive.directive }}
         </template>
         <template #suffix>
+          <!-- DNS Lock Indicator -->
+          <ATooltip v-if="isDNSLinkedServerName" :title="$gettext('Server name is controlled by linked DNS record')">
+            <LockOutlined class="text-blue-500 mr-2" />
+          </ATooltip>
+
           <slot
             name="suffix"
             :directive="directive"
@@ -96,7 +118,7 @@ const showComment = ref(false)
       </AInput>
 
       <APopconfirm
-        v-if="!readonly"
+        v-if="!readonly && !isDNSLinkedServerName"
         :title="$gettext('Are you sure you want to remove this directive?')"
         :ok-text="$gettext('Yes')"
         :cancel-text="$gettext('No')"
@@ -108,6 +130,16 @@ const showComment = ref(false)
           </template>
         </AButton>
       </APopconfirm>
+      <ATooltip
+        v-else-if="isDNSLinkedServerName"
+        :title="$gettext('Cannot delete server_name while DNS is linked. Clear DNS link first.')"
+      >
+        <AButton disabled>
+          <template #icon>
+            <DeleteOutlined style="font-size: 14px;" />
+          </template>
+        </AButton>
+      </ATooltip>
     </div>
     <div
       v-if="showComment"
