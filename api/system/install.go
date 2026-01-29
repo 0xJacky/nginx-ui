@@ -23,21 +23,22 @@ func init() {
 	startupTime = time.Now()
 }
 
-func installLockStatus() bool {
+// InstallLockStatus checks if the system is installed
+func InstallLockStatus() bool {
 	return settings.NodeSettings.SkipInstallation || cSettings.AppSettings.JwtSecret != ""
 }
 
-// Check if installation time limit (10 minutes) is exceeded
-func isInstallTimeoutExceeded() bool {
+// IsInstallTimeoutExceeded checks if installation time limit (10 minutes) is exceeded
+func IsInstallTimeoutExceeded() bool {
 	return time.Since(startupTime) > 10*time.Minute
 }
 
 func InstallLockCheck(c *gin.Context) {
-	locked := installLockStatus()
+	locked := InstallLockStatus()
 	timeout := false
 
 	if !locked {
-		timeout = isInstallTimeoutExceeded()
+		timeout = IsInstallTimeoutExceeded()
 	}
 
 	c.JSON(http.StatusOK, gin.H{
@@ -54,7 +55,7 @@ type InstallJson struct {
 
 func InstallNginxUI(c *gin.Context) {
 	// Visit this api after installed is forbidden
-	if installLockStatus() {
+	if InstallLockStatus() {
 		c.JSON(http.StatusForbidden, gin.H{
 			"error": "installed",
 		})
@@ -62,7 +63,7 @@ func InstallNginxUI(c *gin.Context) {
 	}
 
 	// Check if installation time limit (10 minutes) is exceeded
-	if isInstallTimeoutExceeded() {
+	if IsInstallTimeoutExceeded() {
 		cosy.ErrHandler(c, system.ErrInstallTimeout)
 		return
 	}

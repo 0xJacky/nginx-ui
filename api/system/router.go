@@ -6,7 +6,7 @@ import (
 )
 
 func authIfInstalled(ctx *gin.Context) {
-	if installLockStatus() || isInstallTimeoutExceeded() {
+	if InstallLockStatus() || IsInstallTimeoutExceeded() {
 		middleware.AuthRequired()(ctx)
 	} else {
 		ctx.Next()

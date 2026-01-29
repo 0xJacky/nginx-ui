@@ -1,13 +1,27 @@
 package backup
 
 import (
+	"github.com/0xJacky/Nginx-UI/api/system"
 	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/gin-gonic/gin"
 )
 
+// authIfInstalled requires auth if system is installed
+func authIfInstalled(ctx *gin.Context) {
+	if system.InstallLockStatus() || system.IsInstallTimeoutExceeded() {
+		middleware.AuthRequired()(ctx)
+	} else {
+		ctx.Next()
+	}
+}
+
 func InitRouter(r *gin.RouterGroup) {
-	r.GET("/backup", CreateBackup)
-	r.POST("/restore", middleware.EncryptedForm(), RestoreBackup)
+	// Backup always requires authentication (contains sensitive data)
+	r.GET("/backup", middleware.AuthRequired(), CreateBackup)
+
+	// Restore requires auth only after installation
+	// This allows restoring backup during initial setup
+	r.POST("/restore", authIfInstalled, middleware.EncryptedForm(), RestoreBackup)
 }
 
 func InitAutoBackupRouter(r *gin.RouterGroup) {
