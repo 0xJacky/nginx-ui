@@ -1,5 +1,5 @@
 <div align="center">
-      <img src="resources/logo.png" alt="Nginx UI Logo">
+      <img src="/resources/logo.png" alt="Nginx UI Logo">
 </div>
 
 # Nginx UI
@@ -81,7 +81,7 @@
 
 ## プロジェクトについて
 
-![ダッシュボード](resources/screenshots/dashboard_en.png)
+![ダッシュボード](/resources/screenshots/dashboard_en.png)
 
 ### デモ
 URL：[https://demo.nginxui.com](https://demo.nginxui.com)
@@ -90,42 +90,45 @@ URL：[https://demo.nginxui.com](https://demo.nginxui.com)
 
 ### 機能
 
-- サーバーの CPU 使用率、メモリ使用率、ロードアベレージ、ディスク使用率 とかの指標をオンラインで見られるんやで。  
-- 設定変更したら自動でバックアップ作ってくれて、バージョン比較＆復元もできるんやわ。  
-- クラスタ管理で複数ノードへのミラーリング操作もサポートしてるから、大規模環境でも楽勝や。  
-- 暗号化した Nginx / Nginx UI の設定をエクスポートして、新環境へのデプロイ＆復旧がサクッとできるで。  
-- オンライン ChatGPT アシスタント（Deepseek-R1 のチェインオブソート表示付き）で設定の最適化や理解をサポートしてくれるんや。  
-- MCP（Model Context Protocol）で AI エージェントが Nginx UI と連携できる特別インターフェースもあるから、自動化もバッチリや。  
-- ワンクリックで Let’s Encrypt 証明書の発行＆自動更新もしてくれるし。  
-- 自社開発の **NgxConfigEditor**（ブロックエディタ）か、**Ace Code Editor**（LLM コード補完＆シンタックスハイライト付き）で nginx 設定を直感的に編集でけるんや。  
-- Nginx ログのオンライン閲覧機能もあるで。  
-- Go と Vue で書かれとって、配布物は単一バイナリだからセットアップも簡単や。  
-- 保存時に設定テスト→nginx 再読み込みまで自動でやってくれるで。  
+- CPU 使用率、メモリ使用率、ロードアベレージ、ディスク使用率などのサーバー指標をオンラインで確認可能
+- 設定変更時に自動でバックアップを作成し、バージョン比較や復元に対応  
+- 複数ノード間での設定ミラーリングをサポートし、マルチサーバー環境を容易に管理可能
+- 暗号化された Nginx / Nginx UI の設定をエクスポートし、新しい環境への迅速なデプロイや復旧が可能
+- オンライン ChatGPT アシスタントを搭載。DeepSeek-R1 の Chain-of-Thought 表示に対応し、設定の理解と最適化を支援
+- MCP（Model Context Protocol）で AI エージェントが Nginx UI と連携するための専用インターフェースを提供し、設定管理やサービス制御の自動化を実現
+- Let’s Encrypt 証明書の発行および自動更新をワンクリックで実行可能
+- 自社開発の **NgxConfigEditor**（ブロックエディタ）および、LLM によるコード補完と nginx 設定のシンタックスハイライトに対応した **Ace Code Editor** を搭載 
+- Web UI 上から Nginx ログを直接確認可能 
+- Go と Vue で実装され、単一の実行バイナリとして配布  
+- 設定保存時に設定テストを自動実行し、成功時のみ nginx を再読み込み  
 - Web ターミナル  
 - ダークモード対応  
 - レスポンシブデザイン  
 
 ### 多言語化
 
-公式でサポートしてんのは：  
+下記の言語を公式でサポートしています：  
 - 英語  
 - 簡体字中国語  
 - 繁體字中国語  
 
 
-非ネイティブの英語話者やから完璧ちゃうかもしれへんけど、気づいたことあったらフィードバックしてや！  
+非ネイティブによる翻訳のため、不自然な表現が含まれている可能性があります。  
+お気づきの点がございましたら、ぜひフィードバックをお寄せください。
 
-コミュニティのおかげで他の言語もいろいろ揃っとるで。翻訳に参加したい人は [Weblate](https://weblate.nginxui.com) 見てみてな。
+コミュニティのご協力により、他の言語の翻訳も多数提供されています。  
+翻訳にご参加いただける方は、[Weblate](https://weblate.nginxui.com) をご覧ください。
 
 
 ## はじめに
 
 ### 使用前の注意
 
-Nginx UIはDebian系Webサーバ設定ファイルの標準に準拠します。
-作成されたサイト設定ファイルは、自動検出されたNginx設定フォルダ内の`sites-available`に配置されます。有効化されたサイトは`sites-enabled`にシンボリックリンクが作成されます。
+Nginx UI は、Debian 系 Web サーバーの設定ファイル構成標準に準拠しています。  
+作成されたサイト設定ファイルは、自動的に検出された Nginx の設定ディレクトリ内の `sites-available` に配置されます。  
+有効化されたサイトについては、`sites-enabled` にシンボリックリンクが作成されます
 
-非Debian系（Ubuntu以外）の場合は、以下のように`nginx.conf`をDebianスタイルに変更してください。
+Debian 系以外のディストリビューション（Ubuntu を除く）を使用している場合は、以下の例を参考に `nginx.conf` を Debian スタイルの構成に変更してください。
 
 ```nginx
 http {
@@ -139,7 +142,7 @@ http {
 
 ### インストール
 
-Nginx UIは以下のプラットフォームで利用可能です:
+Nginx UI は以下のプラットフォームで利用可能です：
 
 - macOS 11 Big Sur and later (amd64 / arm64)
 - Windows 10 and later (amd64 / arm64)
@@ -171,7 +174,7 @@ nginx-ui -config app.ini
 ```shell
 nohup ./nginx-ui -config app.ini &
 ```
-以下のコマンドでNginx UIを停止する。
+以下のコマンドで Nginx UI を停止します。
 
 ```shell
 kill -9 $(ps -aux | grep nginx-ui | grep -v grep | awk '{print $2}')
@@ -304,8 +307,8 @@ go build -tags=jsoniter -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/sett
 ```shell
 bash -c "$(curl -L https://cloud.nginxui.com/install.sh)" @ install
 ```
-デフォルトのリスニングポートは `9000`、HTTP チャレンジポートは `9180` です。
-競合する場合は `/usr/local/etc/nginx-ui/app.ini` を編集し、`systemctl restart nginx-ui` を実行してください。
+デフォルトのリスニングポートは `9000`、HTTP チャレンジ用ポートは `9180` です。  
+ポートが競合する場合は `/usr/local/etc/nginx-ui/app.ini` を編集し、`systemctl restart nginx-ui` を実行してください。
 
 **設定・DB を残してアンインストール**
 
@@ -360,10 +363,10 @@ server {
 
 ## 貢献方法
 
-オープンソースコミュニティへの貢献は**大歓迎**です。
-改善提案がある場合はリポジトリをフォークし、プルリクエストを作成してください。
-Issueに「enhancement」タグをつけて提案することもできます。
-スターもよろしくお願いします！
+オープンソースコミュニティへの貢献は **大歓迎** です。  
+改善提案がある場合は、リポジトリをフォークし、プルリクエストを作成してください。  
+Issue に「enhancement」タグを付けて提案することもできます。  
+スターもぜひお願いします。
 
 1. リポジトリをフォーク
 2. フィーチャーブランチ作成 (`git checkout -b feature/AmazingFeature`)
