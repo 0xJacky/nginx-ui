@@ -126,7 +126,7 @@ URL：[https://demo.nginxui.com](https://demo.nginxui.com)
 
 Nginx UI は、Debian 系 Web サーバーの設定ファイル構成標準に準拠しています。  
 作成されたサイト設定ファイルは、自動的に検出された Nginx の設定ディレクトリ内の `sites-available` に配置されます。  
-有効化されたサイトについては、`sites-enabled` にシンボリックリンクが作成されます
+有効化されたサイトについては、`sites-enabled` にシンボリックリンクが作成されます。
 
 Debian 系以外のディストリビューション（Ubuntu を除く）を使用している場合は、以下の例を参考に `nginx.conf` を Debian スタイルの構成に変更してください。
 
