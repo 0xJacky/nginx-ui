@@ -13,6 +13,10 @@ func GetClient() (*openai.Client, error) {
 		config = openai.DefaultAzureConfig(settings.OpenAISettings.Token, settings.OpenAISettings.BaseUrl)
 	} else {
 		config = openai.DefaultConfig(settings.OpenAISettings.Token)
+		// For non-Azure configurations, use custom BaseUrl if provided
+		if settings.OpenAISettings.BaseUrl != "" {
+			config.BaseURL = settings.OpenAISettings.BaseUrl
+		}
 	}
 
 	if settings.OpenAISettings.Proxy != "" {
@@ -23,10 +27,6 @@ func GetClient() (*openai.Client, error) {
 		config.HTTPClient = &http.Client{
 			Transport: t,
 		}
-	}
-
-	if settings.OpenAISettings.BaseUrl != "" {
-		config.BaseURL = settings.OpenAISettings.BaseUrl
 	}
 
 	return openai.NewClientWithConfig(config), nil
