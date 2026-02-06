@@ -289,8 +289,12 @@ func isValidLogEntry(doc *LogDocument) bool {
 	// Check HTTP method if present
 	if doc.Method != "" {
 		validMethods := map[string]bool{
+			// Standard HTTP methods
 			"GET": true, "POST": true, "PUT": true, "DELETE": true,
 			"HEAD": true, "OPTIONS": true, "PATCH": true, "CONNECT": true, "TRACE": true,
+			// WebDAV methods (RFC 4918)
+			"PROPFIND": true, "PROPPATCH": true, "MKCOL": true,
+			"COPY": true, "MOVE": true, "LOCK": true, "UNLOCK": true,
 		}
 		if !validMethods[doc.Method] {
 			return false
