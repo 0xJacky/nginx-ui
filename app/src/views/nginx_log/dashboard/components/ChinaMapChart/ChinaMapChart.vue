@@ -211,7 +211,7 @@ watch(theme, () => {
 
         <!-- Table on right (or bottom on small screens) -->
         <div class="lg:col-span-1 flex flex-col justify-center">
-          <div class="mb-3 text-sm font-bold text-gray-800">
+          <div class="table-title">
             {{ $gettext('Top 10 Provinces / Regions') }}
           </div>
           <ATable
@@ -247,7 +247,7 @@ watch(theme, () => {
 
         <!-- Table on right (or bottom on small screens) -->
         <div class="lg:col-span-1 flex flex-col justify-center">
-          <div class="mb-3 text-sm font-bold text-gray-800">
+          <div class="table-title">
             {{ $gettext('Top 10 Provinces / Regions') }}
           </div>
           <ATable
@@ -318,5 +318,12 @@ watch(theme, () => {
   font-size: 11px;
   color: var(--ant-color-text-tertiary);
   line-height: 1.4;
+}
+
+.table-title {
+  margin-bottom: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ant-color-text);
 }
 </style>

@@ -232,7 +232,7 @@ const columns = computed(() => {
 
         <!-- Table on right (or bottom on small screens) -->
         <div class="lg:col-span-1 flex flex-col justify-center">
-          <div class="mb-3 text-sm font-bold text-gray-800">
+          <div class="table-title">
             {{ $gettext('Top 10 Countries / Regions') }}
           </div>
           <ATable
@@ -268,7 +268,7 @@ const columns = computed(() => {
 
         <!-- Table on right (or bottom on small screens) -->
         <div class="lg:col-span-1 flex flex-col justify-center">
-          <div class="mb-3 text-sm font-bold text-gray-800">
+          <div class="table-title">
             {{ $gettext('Top 10 Countries / Regions') }}
           </div>
           <ATable
@@ -294,5 +294,12 @@ const columns = computed(() => {
   justify-content: center;
   align-items: center;
   height: 300px;
+}
+
+.table-title {
+  margin-bottom: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ant-color-text);
 }
 </style>
