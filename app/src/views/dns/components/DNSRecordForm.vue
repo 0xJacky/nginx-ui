@@ -4,6 +4,7 @@ import { computed } from 'vue'
 
 const props = defineProps<{
   showProxied?: boolean
+  showComment?: boolean
   valueSuggestions?: string[]
 }>()
 
@@ -86,6 +87,13 @@ function handleValueKeydown(event: KeyboardEvent) {
     </AFormItem>
     <AFormItem v-if="props.showProxied" :label="$gettext('Proxied')">
       <ASwitch v-model:checked="formModel.proxied" />
+    </AFormItem>
+    <AFormItem v-if="props.showComment" :label="$gettext('Comment')">
+      <ATextarea
+        v-model:value="formModel.comment"
+        :placeholder="$gettext('Optional comment for this DNS record')"
+        :auto-size="{ minRows: 2, maxRows: 4 }"
+      />
     </AFormItem>
   </AForm>
 </template>

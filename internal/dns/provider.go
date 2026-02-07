@@ -18,6 +18,7 @@ type Record struct {
 	Priority *int   `json:"priority,omitempty"`
 	Weight   *int   `json:"weight,omitempty"`
 	Proxied  *bool  `json:"proxied,omitempty"`
+	Comment  string `json:"comment,omitempty"`
 }
 
 // RecordFilter allows narrowing down provider queries.
@@ -35,6 +36,7 @@ type RecordInput struct {
 	Priority *int   `json:"priority,omitempty"`
 	Weight   *int   `json:"weight,omitempty"`
 	Proxied  *bool  `json:"proxied,omitempty"`
+	Comment  string `json:"comment,omitempty"`
 }
 
 // Credential holds the secrets and metadata bound to a DNS provider.

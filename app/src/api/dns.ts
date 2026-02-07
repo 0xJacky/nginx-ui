@@ -23,6 +23,7 @@ export interface DNSRecord {
   priority?: number
   weight?: number
   proxied?: boolean
+  comment?: string
 }
 
 export interface DDNSRecordTarget {
@@ -77,6 +78,7 @@ export interface RecordPayload {
   priority?: number
   weight?: number
   proxied?: boolean
+  comment?: string
 }
 
 const baseDomainUrl = '/dns/domains'

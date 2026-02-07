@@ -107,6 +107,7 @@ func (p *provider) ListRecords(ctx context.Context, domain string, filter dns.Re
 			TTL:      int(record.TTL),
 			Priority: toOptionalPriority(record.Priority),
 			Proxied:  &proxied,
+			Comment:  record.Comment,
 		})
 	}
 
@@ -139,6 +140,10 @@ func (p *provider) CreateRecord(ctx context.Context, domain string, input dns.Re
 		body.Priority = cf.F(value)
 	}
 
+	if input.Comment != "" {
+		body.Comment = cf.F(input.Comment)
+	}
+
 	record, err := p.client.DNS.Records.New(ctx, cfdns.RecordNewParams{
 		ZoneID: cf.F(zoneID),
 		Body:   body,
@@ -155,6 +160,7 @@ func (p *provider) CreateRecord(ctx context.Context, domain string, input dns.Re
 		TTL:      int(record.TTL),
 		Priority: toOptionalPriority(record.Priority),
 		Proxied:  boolPtr(record.Proxied),
+		Comment:  record.Comment,
 	}, nil
 }
 
@@ -180,6 +186,9 @@ func (p *provider) UpdateRecord(ctx context.Context, domain string, recordID str
 		body.Priority = cf.F(value)
 	}
 
+	// Always set comment, including empty string to allow clearing
+	body.Comment = cf.F(input.Comment)
+
 	record, err := p.client.DNS.Records.Update(ctx, recordID, cfdns.RecordUpdateParams{
 		ZoneID: cf.F(zoneID),
 		Body:   body,
@@ -196,6 +205,7 @@ func (p *provider) UpdateRecord(ctx context.Context, domain string, recordID str
 		TTL:      int(record.TTL),
 		Priority: toOptionalPriority(record.Priority),
 		Proxied:  boolPtr(record.Proxied),
+		Comment:  record.Comment,
 	}, nil
 }
 

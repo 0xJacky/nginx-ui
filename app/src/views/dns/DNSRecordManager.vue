@@ -38,10 +38,14 @@ const formModel = ref<RecordPayload>({
   ttl: 600,
 })
 
-const showProxiedToggle = computed(() => {
+const isCloudflare = computed(() => {
   const provider = store.currentDomain?.dns_credential?.provider ?? ''
   return provider.toLowerCase().includes('cloudflare')
 })
+
+const showProxiedToggle = computed(() => isCloudflare.value)
+
+const showCommentField = computed(() => isCloudflare.value)
 
 const contentSuggestions = computed(() => {
   const unique = new Set<string>()
@@ -99,6 +103,7 @@ function openEditDrawer(record: DNSRecord) {
     priority: record.priority,
     weight: record.weight,
     proxied: record.proxied,
+    comment: record.comment,
   }
   isDrawerOpen.value = true
 }
@@ -179,6 +184,7 @@ onBeforeUnmount(() => {
         :records="store.records"
         :loading="store.recordsLoading"
         :show-proxied="showProxiedToggle"
+        :show-comment="showCommentField"
         @edit="openEditDrawer"
         @delete="handleDelete"
       />
@@ -204,6 +210,7 @@ onBeforeUnmount(() => {
       <DNSRecordForm
         v-model:record="formModel"
         :show-proxied="showProxiedToggle"
+        :show-comment="showCommentField"
         :value-suggestions="contentSuggestions"
       />
       <template #footer>

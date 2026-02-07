@@ -33,6 +33,7 @@ type recordRequest struct {
 	Priority *int   `json:"priority"`
 	Weight   *int   `json:"weight"`
 	Proxied  *bool  `json:"proxied"`
+	Comment  string `json:"comment"`
 }
 
 func toRecordInput(req recordRequest) dns.RecordInput {
@@ -44,6 +45,7 @@ func toRecordInput(req recordRequest) dns.RecordInput {
 		Priority: req.Priority,
 		Weight:   req.Weight,
 		Proxied:  req.Proxied,
+		Comment:  req.Comment,
 	}
 }
 
