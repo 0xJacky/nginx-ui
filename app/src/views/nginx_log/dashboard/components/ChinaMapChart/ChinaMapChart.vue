@@ -94,6 +94,18 @@ const backgroundColor = computed(() => {
   return theme.value === 'dark' ? 'transparent' : '#fff'
 })
 
+// Color scheme for visualMap - darker colors for dark mode to maintain contrast
+const visualMapColors = computed(() => {
+  return theme.value === 'dark'
+    ? ['#3d2317', '#8b4513', '#d4380d', '#ff7a45', '#ffbb96'] // Dark mode: darker base, brighter highlights
+    : ['#fff2e8', '#ffbb96', '#ff7a45', '#fa541c', '#d4380d'] // Light mode: original colors
+})
+
+// Default area color for regions without data
+const areaColor = computed(() => {
+  return theme.value === 'dark' ? '#2a2a2a' : '#f5f5f5'
+})
+
 const mapOption = computed((): EChartsOption => {
   if (!props.data) {
     return {}
@@ -137,7 +149,7 @@ const mapOption = computed((): EChartsOption => {
         color: fontColor.value,
       },
       inRange: {
-        color: ['#fff2e8', '#ffbb96', '#ff7a45', '#fa541c', '#d4380d'],
+        color: visualMapColors.value,
       },
       calculable: false,
     },
@@ -153,11 +165,12 @@ const mapOption = computed((): EChartsOption => {
             color: fontColor.value,
           },
           itemStyle: {
-            areaColor: '#f7d794',
+            areaColor: theme.value === 'dark' ? '#5c3a2a' : '#f7d794',
           },
         },
         data: chartData,
         itemStyle: {
+          areaColor: areaColor.value,
           borderColor: theme.value === 'dark' ? '#555' : '#ddd',
           borderWidth: 0.5,
         },
