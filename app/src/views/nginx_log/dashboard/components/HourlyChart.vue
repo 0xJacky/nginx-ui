@@ -115,6 +115,7 @@ const hourlyChartOptions = computed(() => {
       opacity: 1,
     },
     tooltip: {
+      theme: theme.value === 'dark' ? 'dark' : 'light',
       y: {
         formatter(val: number) {
           return val.toLocaleString()

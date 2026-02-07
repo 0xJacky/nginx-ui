@@ -50,6 +50,31 @@ const backgroundColor = computed(() => {
   return theme.value === 'dark' ? 'transparent' : '#fff'
 })
 
+// Color scheme for visualMap - brighter colors for dark mode to maintain visibility
+const visualMapColors = computed(() => {
+  return theme.value === 'dark'
+    ? ['#003a70', '#1890ff', '#69c0ff'] // Dark mode: visible blue gradient
+    : ['#e6f3ff', '#1890ff', '#0050b3'] // Light mode: original colors
+})
+
+// Default area color for regions without data
+const areaColor = computed(() => {
+  return theme.value === 'dark' ? '#2a2a2a' : '#f5f5f5'
+})
+
+// Tooltip style for dark mode
+const tooltipBgColor = computed(() => {
+  return theme.value === 'dark' ? 'rgba(50, 50, 50, 0.9)' : 'rgba(255, 255, 255, 0.9)'
+})
+
+const tooltipBorderColor = computed(() => {
+  return theme.value === 'dark' ? '#555' : '#ccc'
+})
+
+const tooltipTextColor = computed(() => {
+  return theme.value === 'dark' ? '#e0e0e0' : '#333'
+})
+
 const mapOption = computed((): EChartsOption => {
   if (!props.data) {
     return {}
@@ -75,6 +100,11 @@ const mapOption = computed((): EChartsOption => {
     backgroundColor: backgroundColor.value,
     tooltip: {
       trigger: 'item',
+      backgroundColor: tooltipBgColor.value,
+      borderColor: tooltipBorderColor.value,
+      textStyle: {
+        color: tooltipTextColor.value,
+      },
       formatter: params => {
         const data = params.data as { rawData?: GeoData, name?: string, value?: number, code?: string, localizedName?: string }
         if (data && data.rawData) {
@@ -105,7 +135,7 @@ const mapOption = computed((): EChartsOption => {
         color: fontColor.value,
       },
       inRange: {
-        color: ['#e6f3ff', '#1890ff', '#0050b3'],
+        color: visualMapColors.value,
       },
       calculable: false,
     },
@@ -133,10 +163,13 @@ const mapOption = computed((): EChartsOption => {
               return countryCode ? translateCountry(countryCode) : englishName
             },
           },
-          itemStyle: {},
+          itemStyle: {
+            areaColor: theme.value === 'dark' ? '#3a5a7c' : '#ffd666',
+          },
         },
         data: chartData,
         itemStyle: {
+          areaColor: areaColor.value,
           borderColor: theme.value === 'dark' ? '#555' : '#ddd',
           borderWidth: 0.5,
         },
@@ -232,7 +265,7 @@ const columns = computed(() => {
 
         <!-- Table on right (or bottom on small screens) -->
         <div class="lg:col-span-1 flex flex-col justify-center">
-          <div class="mb-3 text-sm font-bold text-gray-800">
+          <div class="table-title">
             {{ $gettext('Top 10 Countries / Regions') }}
           </div>
           <ATable
@@ -268,7 +301,7 @@ const columns = computed(() => {
 
         <!-- Table on right (or bottom on small screens) -->
         <div class="lg:col-span-1 flex flex-col justify-center">
-          <div class="mb-3 text-sm font-bold text-gray-800">
+          <div class="table-title">
             {{ $gettext('Top 10 Countries / Regions') }}
           </div>
           <ATable
@@ -294,5 +327,12 @@ const columns = computed(() => {
   justify-content: center;
   align-items: center;
   height: 300px;
+}
+
+.table-title {
+  margin-bottom: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ant-color-text);
 }
 </style>

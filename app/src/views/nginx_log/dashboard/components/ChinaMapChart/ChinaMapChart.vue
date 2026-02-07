@@ -94,6 +94,31 @@ const backgroundColor = computed(() => {
   return theme.value === 'dark' ? 'transparent' : '#fff'
 })
 
+// Color scheme for visualMap - brighter colors for dark mode to maintain visibility
+const visualMapColors = computed(() => {
+  return theme.value === 'dark'
+    ? ['#612500', '#ad4e00', '#d4380d', '#ff7a45', '#ffbb96'] // Dark mode: visible orange gradient
+    : ['#fff2e8', '#ffbb96', '#ff7a45', '#fa541c', '#d4380d'] // Light mode: original colors
+})
+
+// Default area color for regions without data
+const areaColor = computed(() => {
+  return theme.value === 'dark' ? '#2a2a2a' : '#f5f5f5'
+})
+
+// Tooltip style for dark mode
+const tooltipBgColor = computed(() => {
+  return theme.value === 'dark' ? 'rgba(50, 50, 50, 0.9)' : 'rgba(255, 255, 255, 0.9)'
+})
+
+const tooltipBorderColor = computed(() => {
+  return theme.value === 'dark' ? '#555' : '#ccc'
+})
+
+const tooltipTextColor = computed(() => {
+  return theme.value === 'dark' ? '#e0e0e0' : '#333'
+})
+
 const mapOption = computed((): EChartsOption => {
   if (!props.data) {
     return {}
@@ -111,6 +136,11 @@ const mapOption = computed((): EChartsOption => {
     backgroundColor: backgroundColor.value,
     tooltip: {
       trigger: 'item',
+      backgroundColor: tooltipBgColor.value,
+      borderColor: tooltipBorderColor.value,
+      textStyle: {
+        color: tooltipTextColor.value,
+      },
       formatter: params => {
         if (params.data) {
           const item = props.data?.find(d => d.name === params.data.name)
@@ -137,7 +167,7 @@ const mapOption = computed((): EChartsOption => {
         color: fontColor.value,
       },
       inRange: {
-        color: ['#fff2e8', '#ffbb96', '#ff7a45', '#fa541c', '#d4380d'],
+        color: visualMapColors.value,
       },
       calculable: false,
     },
@@ -153,11 +183,12 @@ const mapOption = computed((): EChartsOption => {
             color: fontColor.value,
           },
           itemStyle: {
-            areaColor: '#f7d794',
+            areaColor: theme.value === 'dark' ? '#5c3a2a' : '#f7d794',
           },
         },
         data: chartData,
         itemStyle: {
+          areaColor: areaColor.value,
           borderColor: theme.value === 'dark' ? '#555' : '#ddd',
           borderWidth: 0.5,
         },
@@ -211,7 +242,7 @@ watch(theme, () => {
 
         <!-- Table on right (or bottom on small screens) -->
         <div class="lg:col-span-1 flex flex-col justify-center">
-          <div class="mb-3 text-sm font-bold text-gray-800">
+          <div class="table-title">
             {{ $gettext('Top 10 Provinces / Regions') }}
           </div>
           <ATable
@@ -247,7 +278,7 @@ watch(theme, () => {
 
         <!-- Table on right (or bottom on small screens) -->
         <div class="lg:col-span-1 flex flex-col justify-center">
-          <div class="mb-3 text-sm font-bold text-gray-800">
+          <div class="table-title">
             {{ $gettext('Top 10 Provinces / Regions') }}
           </div>
           <ATable
@@ -318,5 +349,12 @@ watch(theme, () => {
   font-size: 11px;
   color: var(--ant-color-text-tertiary);
   line-height: 1.4;
+}
+
+.table-title {
+  margin-bottom: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ant-color-text);
 }
 </style>
