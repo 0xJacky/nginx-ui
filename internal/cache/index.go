@@ -373,7 +373,9 @@ func isConfigFilePath(filePath string) bool {
 			return true
 		}
 		// Check if path starts with this directory name (after config root)
-		if strings.HasPrefix(lowerRelativePath, sep+pattern+sep) || strings.HasPrefix(lowerRelativePath, pattern+sep) {
+		// Note: We only check pattern+sep here because sep+pattern+sep is already covered
+		// by the Contains check above (if a string starts with X, it contains X)
+		if strings.HasPrefix(lowerRelativePath, pattern+sep) {
 			return true
 		}
 	}
