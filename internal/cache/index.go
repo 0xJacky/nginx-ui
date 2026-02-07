@@ -368,14 +368,10 @@ func isConfigFilePath(filePath string) bool {
 	// are typically config files. Use separator-bounded matching to avoid false positives
 	// like "myconf.db" matching "conf.d" across the name/extension boundary
 	for _, pattern := range configDirPatterns {
-		// Check if pattern appears in the middle of path (with slashes on both sides)
+		// Check if pattern appears in the path (with slashes on both sides)
+		// This covers both middle-of-path and start-of-path cases since relativePath
+		// always starts with a separator after TrimPrefix from a Clean'd configRoot
 		if strings.Contains(lowerRelativePath, sep+pattern+sep) {
-			return true
-		}
-		// Check if path starts with this directory name (after config root)
-		// Note: We only check pattern+sep here because sep+pattern+sep is already covered
-		// by the Contains check above (if a string starts with X, it contains X)
-		if strings.HasPrefix(lowerRelativePath, pattern+sep) {
 			return true
 		}
 	}
