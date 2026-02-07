@@ -106,6 +106,19 @@ const areaColor = computed(() => {
   return theme.value === 'dark' ? '#2a2a2a' : '#f5f5f5'
 })
 
+// Tooltip style for dark mode
+const tooltipBgColor = computed(() => {
+  return theme.value === 'dark' ? 'rgba(50, 50, 50, 0.9)' : 'rgba(255, 255, 255, 0.9)'
+})
+
+const tooltipBorderColor = computed(() => {
+  return theme.value === 'dark' ? '#555' : '#ccc'
+})
+
+const tooltipTextColor = computed(() => {
+  return theme.value === 'dark' ? '#e0e0e0' : '#333'
+})
+
 const mapOption = computed((): EChartsOption => {
   if (!props.data) {
     return {}
@@ -123,6 +136,11 @@ const mapOption = computed((): EChartsOption => {
     backgroundColor: backgroundColor.value,
     tooltip: {
       trigger: 'item',
+      backgroundColor: tooltipBgColor.value,
+      borderColor: tooltipBorderColor.value,
+      textStyle: {
+        color: tooltipTextColor.value,
+      },
       formatter: params => {
         if (params.data) {
           const item = props.data?.find(d => d.name === params.data.name)
