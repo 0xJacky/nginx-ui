@@ -104,6 +104,15 @@ func FixNginxConfIncludeSites() error {
 	// find http block
 	for _, v := range c.Block.Directives {
 		if v.GetName() == "http" {
+			// check if sites-enabled include already exists
+			for _, directive := range v.GetBlock().GetDirectives() {
+				if directive.GetName() == "include" && len(directive.GetParameters()) > 0 &&
+					strings.Contains(directive.GetParameters()[0].Value, "sites-enabled") {
+					// already exists, nothing to do
+					return nil
+				}
+			}
+
 			// add include sites-enabled/* to http block
 			includeDirective := &config.Directive{
 				Name:       "include",
@@ -149,6 +158,15 @@ func FixNginxConfIncludeStreams() error {
 	// find stream block
 	for _, v := range c.Block.Directives {
 		if v.GetName() == "stream" {
+			// check if streams-enabled include already exists
+			for _, directive := range v.GetBlock().GetDirectives() {
+				if directive.GetName() == "include" && len(directive.GetParameters()) > 0 &&
+					strings.Contains(directive.GetParameters()[0].Value, "streams-enabled") {
+					// already exists, nothing to do
+					return nil
+				}
+			}
+
 			// add include streams-enabled/* to stream block
 			includeDirective := &config.Directive{
 				Name:       "include",
@@ -226,6 +244,15 @@ func FixNginxConfIncludeConfD() error {
 	// find http block
 	for _, v := range c.Block.Directives {
 		if v.GetName() == "http" {
+			// check if conf.d include already exists
+			for _, directive := range v.GetBlock().GetDirectives() {
+				if directive.GetName() == "include" && len(directive.GetParameters()) > 0 &&
+					strings.Contains(directive.GetParameters()[0].Value, "conf.d") {
+					// already exists, nothing to do
+					return nil
+				}
+			}
+
 			// add include conf.d/*.conf to http block
 			includeDirective := &config.Directive{
 				Name:       "include",

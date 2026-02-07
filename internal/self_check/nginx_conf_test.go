@@ -121,3 +121,55 @@ func TestFixNginxConfIncludeSites(t *testing.T) {
 		}
 	}
 }
+
+func TestFixNginxConfNoDuplicateIncludes(t *testing.T) {
+	logger.Init("debug")
+	settings.NginxSettings.ConfigDir = "/etc/nginx"
+
+	// copy ok.conf to test file (it already has all includes)
+	content, err := os.ReadFile("./test_cases/ok.conf")
+	assert.Nil(t, err)
+
+	testFile := "./test_cases/test-no-duplicate.conf"
+	err = os.WriteFile(testFile, content, 0644)
+	assert.Nil(t, err)
+
+	settings.NginxSettings.ConfigPath = testFile
+	var result *cosy.Error
+
+	// Call fix functions multiple times - should not create duplicates
+	for i := 0; i < 3; i++ {
+		errors.As(FixNginxConfIncludeSites(), &result)
+		assert.Nil(t, result, "FixNginxConfIncludeSites should not fail on iteration %d", i)
+
+		errors.As(FixNginxConfIncludeStreams(), &result)
+		assert.Nil(t, result, "FixNginxConfIncludeStreams should not fail on iteration %d", i)
+
+		errors.As(FixNginxConfIncludeConfD(), &result)
+		assert.Nil(t, result, "FixNginxConfIncludeConfD should not fail on iteration %d", i)
+	}
+
+	// Read the final content and verify no duplicates
+	finalContent, err := os.ReadFile(testFile)
+	assert.Nil(t, err)
+
+	// Count occurrences of include directives
+	sitesEnabledCount := strings.Count(string(finalContent), "sites-enabled")
+	streamsEnabledCount := strings.Count(string(finalContent), "streams-enabled")
+	confDCount := strings.Count(string(finalContent), "conf.d")
+
+	assert.Equal(t, 1, sitesEnabledCount, "sites-enabled should appear exactly once")
+	assert.Equal(t, 1, streamsEnabledCount, "streams-enabled should appear exactly once")
+	assert.Equal(t, 1, confDCount, "conf.d should appear exactly once")
+
+	// cleanup test file and backup files
+	_ = os.Remove(testFile)
+	files, err := os.ReadDir("./test_cases")
+	assert.Nil(t, err)
+
+	for _, file := range files {
+		if strings.Contains(file.Name(), ".bak.") || strings.Contains(file.Name(), "test-no-duplicate") {
+			_ = os.Remove("./test_cases/" + file.Name())
+		}
+	}
+}
