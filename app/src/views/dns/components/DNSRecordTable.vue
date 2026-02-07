@@ -44,9 +44,19 @@ const baseColumns = [{
   fixed: 'right',
 }]
 
+const commentColumn = {
+  title: $gettext('Comment'),
+  dataIndex: 'comment',
+  width: 200,
+  ellipsis: true,
+}
+
 const columns = computed(() => {
   const list = baseColumns.slice()
   if (props.showProxied) {
+    // Insert comment column before actions column
+    list.splice(list.length - 1, 0, commentColumn)
+    // Insert proxied column before actions column
     list.splice(list.length - 1, 0, {
       title: $gettext('Proxied'),
       dataIndex: 'proxied',
