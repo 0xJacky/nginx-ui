@@ -265,21 +265,11 @@ func shouldWatchDirectory(dirPath string) bool {
 	}
 	lowerRelativePath := strings.ToLower(relativePath)
 
-	// Known directories that typically contain nginx config files
-	configDirPatterns := []string{
-		"sites-available", "sites-enabled",
-		"streams-available", "streams-enabled",
-		"conf.d", "snippets", "modules-enabled",
-	}
-	for _, pattern := range configDirPatterns {
-		if strings.Contains(lowerRelativePath, pattern) {
-			return true
-		}
-	}
-
-	// Check static directory patterns against the relative path only
+	// Check static directory patterns FIRST against the relative path only
 	// This ensures patterns like "/vendor/" only match directories within the config tree,
 	// not ancestor directories in the config root path itself
+	// Static directory check must come before config dir check to prevent
+	// paths like /etc/nginx/conf.d/myapp/node_modules/ from being watched
 	sep := string(filepath.Separator)
 	for _, name := range staticDirNames {
 		// Check if pattern appears in the middle of path (with slashes on both sides)
@@ -289,6 +279,19 @@ func shouldWatchDirectory(dirPath string) bool {
 		// Check if path ends with this directory name (with leading slash)
 		if strings.HasSuffix(lowerRelativePath, sep+name) {
 			return false
+		}
+	}
+
+	// Known directories that typically contain nginx config files
+	// This check comes after static dir check to ensure static subdirs are still filtered
+	configDirPatterns := []string{
+		"sites-available", "sites-enabled",
+		"streams-available", "streams-enabled",
+		"conf.d", "snippets", "modules-enabled",
+	}
+	for _, pattern := range configDirPatterns {
+		if strings.Contains(lowerRelativePath, pattern) {
+			return true
 		}
 	}
 
@@ -302,14 +305,35 @@ func isConfigFilePath(filePath string) bool {
 	ext := strings.ToLower(filepath.Ext(filePath))
 	baseName := strings.ToLower(filepath.Base(filePath))
 
-	// Check for common nginx config file patterns
+	// Use relative path to avoid matching ancestor directories in the config root
+	// e.g., if config root is /srv/conf.d/nginx/, we don't want to match "conf.d"
+	// in the ancestor portion of the path
+	configRoot := nginx.GetConfPath()
+	relativePath := filePath
+	if strings.HasPrefix(filePath, configRoot) {
+		relativePath = strings.TrimPrefix(filePath, configRoot)
+	}
+	lowerRelativePath := strings.ToLower(relativePath)
+	sep := string(filepath.Separator)
+
+	// Check static directory patterns FIRST against the relative path
+	// This must come before config dir check to prevent files in
+	// /etc/nginx/sites-enabled/project/dist/bundle.js from being treated as config
+	for _, name := range staticDirNames {
+		// Check if pattern appears in the path (with slashes on both sides)
+		if strings.Contains(lowerRelativePath, sep+name+sep) {
+			return false
+		}
+	}
+
+	// Check for common nginx config file patterns using relative path
 	// Files with no extension in sites-available/sites-enabled/streams-available/streams-enabled
 	// are typically config files
-	if strings.Contains(filePath, "sites-available") ||
-		strings.Contains(filePath, "sites-enabled") ||
-		strings.Contains(filePath, "streams-available") ||
-		strings.Contains(filePath, "streams-enabled") ||
-		strings.Contains(filePath, "conf.d") {
+	if strings.Contains(lowerRelativePath, "sites-available") ||
+		strings.Contains(lowerRelativePath, "sites-enabled") ||
+		strings.Contains(lowerRelativePath, "streams-available") ||
+		strings.Contains(lowerRelativePath, "streams-enabled") ||
+		strings.Contains(lowerRelativePath, "conf.d") {
 		return true
 	}
 
@@ -366,23 +390,6 @@ func isConfigFilePath(filePath string) bool {
 	}
 	if nonConfigExtensions[ext] {
 		return false
-	}
-
-	// For files with no extension or unknown extensions, check if they're in a suspicious directory
-	// that likely contains static assets (any directory with common static asset names)
-	// Use relative path to avoid matching ancestor directories in the config root
-	configRoot := nginx.GetConfPath()
-	relativePath := filePath
-	if strings.HasPrefix(filePath, configRoot) {
-		relativePath = strings.TrimPrefix(filePath, configRoot)
-	}
-	lowerRelativePath := strings.ToLower(relativePath)
-	sep := string(filepath.Separator)
-	for _, name := range staticDirNames {
-		// Check if pattern appears in the path (with slashes on both sides)
-		if strings.Contains(lowerRelativePath, sep+name+sep) {
-			return false
-		}
 	}
 
 	// For files without recognized extensions that passed all filters,
