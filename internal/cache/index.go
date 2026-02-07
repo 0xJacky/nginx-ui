@@ -247,6 +247,55 @@ var staticDirNames = []string{
 	"__macosx",
 }
 
+// configDirPatterns contains directory names that typically contain nginx config files.
+// Used with path-separator boundaries to avoid false positives.
+var configDirPatterns = []string{
+	"sites-available", "sites-enabled",
+	"streams-available", "streams-enabled",
+	"conf.d", "snippets", "modules-enabled",
+}
+
+// configFilePatterns contains common nginx config file names without extension.
+var configFilePatterns = []string{
+	"nginx.conf",
+	"mime.types",
+	"fastcgi_params",
+	"fastcgi.conf",
+	"scgi_params",
+	"uwsgi_params",
+	"koi-utf",
+	"koi-win",
+	"win-utf",
+	"proxy_params",
+}
+
+// nonConfigExtensions contains file extensions that are definitely not config files.
+// This is a safeguard for files that might be in the root nginx directory.
+var nonConfigExtensions = map[string]bool{
+	// Web assets
+	".html": true, ".htm": true, ".css": true, ".js": true, ".jsx": true, ".ts": true, ".tsx": true,
+	".json": true, ".xml": true, ".svg": true, ".map": true, ".woff": true, ".woff2": true,
+	".ttf": true, ".eot": true, ".otf": true,
+	// Images
+	".png": true, ".jpg": true, ".jpeg": true, ".gif": true, ".ico": true, ".webp": true,
+	".bmp": true, ".tiff": true, ".avif": true,
+	// Archives
+	".zip": true, ".tar": true, ".gz": true, ".bz2": true, ".xz": true, ".rar": true, ".7z": true,
+	// Documents
+	".pdf": true, ".doc": true, ".docx": true, ".xls": true, ".xlsx": true, ".ppt": true, ".pptx": true,
+	// Media
+	".mp3": true, ".mp4": true, ".avi": true, ".mov": true, ".wmv": true, ".flv": true, ".webm": true,
+	".ogg": true, ".wav": true,
+	// Other binaries
+	".exe": true, ".dll": true, ".so": true, ".dylib": true, ".bin": true,
+	// Source code (not nginx config)
+	".py": true, ".rb": true, ".php": true, ".java": true, ".go": true, ".rs": true, ".c": true, ".cpp": true,
+	".h": true, ".hpp": true, ".sh": true, ".bat": true, ".ps1": true,
+	// Data files
+	".db": true, ".sqlite": true, ".sql": true, ".csv": true, ".yml": true, ".yaml": true, ".toml": true,
+	".md": true, ".txt": true, ".log": true, ".lock": true,
+}
+
 // shouldWatchDirectory checks if a directory should be watched for config file changes
 // This prevents watching static asset directories that can contain thousands of files
 func shouldWatchDirectory(dirPath string) bool {
@@ -318,11 +367,6 @@ func isConfigFilePath(filePath string) bool {
 	// Files in sites-available/sites-enabled/streams-available/streams-enabled/conf.d
 	// are typically config files. Use separator-bounded matching to avoid false positives
 	// like "myconf.db" matching "conf.d" across the name/extension boundary
-	configDirPatterns := []string{
-		"sites-available", "sites-enabled",
-		"streams-available", "streams-enabled",
-		"conf.d", "snippets", "modules-enabled",
-	}
 	for _, pattern := range configDirPatterns {
 		// Check if pattern appears in the middle of path (with slashes on both sides)
 		if strings.Contains(lowerRelativePath, sep+pattern+sep) {
@@ -341,19 +385,7 @@ func isConfigFilePath(filePath string) bool {
 
 	// Common nginx config file patterns without extension
 	// nginx.conf, mime.types, fastcgi_params, etc.
-	configPatterns := []string{
-		"nginx.conf",
-		"mime.types",
-		"fastcgi_params",
-		"fastcgi.conf",
-		"scgi_params",
-		"uwsgi_params",
-		"koi-utf",
-		"koi-win",
-		"win-utf",
-		"proxy_params",
-	}
-	for _, pattern := range configPatterns {
+	for _, pattern := range configFilePatterns {
 		if baseName == pattern {
 			return true
 		}
@@ -361,30 +393,6 @@ func isConfigFilePath(filePath string) bool {
 
 	// Exclude common static asset extensions that are definitely not config files
 	// This is a safeguard for files that might be in the root nginx directory
-	nonConfigExtensions := map[string]bool{
-		// Web assets
-		".html": true, ".htm": true, ".css": true, ".js": true, ".jsx": true, ".ts": true, ".tsx": true,
-		".json": true, ".xml": true, ".svg": true, ".map": true, ".woff": true, ".woff2": true,
-		".ttf": true, ".eot": true, ".otf": true,
-		// Images
-		".png": true, ".jpg": true, ".jpeg": true, ".gif": true, ".ico": true, ".webp": true,
-		".bmp": true, ".tiff": true, ".avif": true,
-		// Archives
-		".zip": true, ".tar": true, ".gz": true, ".bz2": true, ".xz": true, ".rar": true, ".7z": true,
-		// Documents
-		".pdf": true, ".doc": true, ".docx": true, ".xls": true, ".xlsx": true, ".ppt": true, ".pptx": true,
-		// Media
-		".mp3": true, ".mp4": true, ".avi": true, ".mov": true, ".wmv": true, ".flv": true, ".webm": true,
-		".ogg": true, ".wav": true,
-		// Other binaries
-		".exe": true, ".dll": true, ".so": true, ".dylib": true, ".bin": true,
-		// Source code (not nginx config)
-		".py": true, ".rb": true, ".php": true, ".java": true, ".go": true, ".rs": true, ".c": true, ".cpp": true,
-		".h": true, ".hpp": true, ".sh": true, ".bat": true, ".ps1": true,
-		// Data files
-		".db": true, ".sqlite": true, ".sql": true, ".csv": true, ".yml": true, ".yaml": true, ".toml": true,
-		".md": true, ".txt": true, ".log": true, ".lock": true,
-	}
 	if nonConfigExtensions[ext] {
 		return false
 	}
