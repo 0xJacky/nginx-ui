@@ -280,13 +280,14 @@ func shouldWatchDirectory(dirPath string) bool {
 	// Check static directory patterns against the relative path only
 	// This ensures patterns like "/vendor/" only match directories within the config tree,
 	// not ancestor directories in the config root path itself
+	sep := string(filepath.Separator)
 	for _, name := range staticDirNames {
 		// Check if pattern appears in the middle of path (with slashes on both sides)
-		if strings.Contains(lowerRelativePath, "/"+name+"/") {
+		if strings.Contains(lowerRelativePath, sep+name+sep) {
 			return false
 		}
 		// Check if path ends with this directory name (with leading slash)
-		if strings.HasSuffix(lowerRelativePath, "/"+name) {
+		if strings.HasSuffix(lowerRelativePath, sep+name) {
 			return false
 		}
 	}
@@ -376,9 +377,10 @@ func isConfigFilePath(filePath string) bool {
 		relativePath = strings.TrimPrefix(filePath, configRoot)
 	}
 	lowerRelativePath := strings.ToLower(relativePath)
+	sep := string(filepath.Separator)
 	for _, name := range staticDirNames {
 		// Check if pattern appears in the path (with slashes on both sides)
-		if strings.Contains(lowerRelativePath, "/"+name+"/") {
+		if strings.Contains(lowerRelativePath, sep+name+sep) {
 			return false
 		}
 	}
