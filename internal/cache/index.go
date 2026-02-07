@@ -265,11 +265,9 @@ func shouldWatchDirectory(dirPath string) bool {
 	}
 	lowerRelativePath := strings.ToLower(relativePath)
 
-	// Check static directory patterns FIRST against the relative path only
+	// Check static directory patterns against the relative path only
 	// This ensures patterns like "/vendor/" only match directories within the config tree,
 	// not ancestor directories in the config root path itself
-	// Static directory check must come before config dir check to prevent
-	// paths like /etc/nginx/conf.d/myapp/node_modules/ from being watched
 	sep := string(filepath.Separator)
 	for _, name := range staticDirNames {
 		// Check if pattern appears in the middle of path (with slashes on both sides)
@@ -282,19 +280,9 @@ func shouldWatchDirectory(dirPath string) bool {
 		}
 	}
 
-	// Known directories that typically contain nginx config files
-	// This check comes after static dir check to ensure static subdirs are still filtered
-	configDirPatterns := []string{
-		"sites-available", "sites-enabled",
-		"streams-available", "streams-enabled",
-		"conf.d", "snippets", "modules-enabled",
-	}
-	for _, pattern := range configDirPatterns {
-		if strings.Contains(lowerRelativePath, pattern) {
-			return true
-		}
-	}
-
+	// All directories that pass the static directory filter should be watched
+	// This includes known config directories (sites-available, conf.d, etc.) and any other
+	// directories that might contain nginx config files
 	return true
 }
 
@@ -326,15 +314,24 @@ func isConfigFilePath(filePath string) bool {
 		}
 	}
 
-	// Check for common nginx config file patterns using relative path
-	// Files with no extension in sites-available/sites-enabled/streams-available/streams-enabled
-	// are typically config files
-	if strings.Contains(lowerRelativePath, "sites-available") ||
-		strings.Contains(lowerRelativePath, "sites-enabled") ||
-		strings.Contains(lowerRelativePath, "streams-available") ||
-		strings.Contains(lowerRelativePath, "streams-enabled") ||
-		strings.Contains(lowerRelativePath, "conf.d") {
-		return true
+	// Check for common nginx config file patterns using relative path with path-separator boundaries
+	// Files in sites-available/sites-enabled/streams-available/streams-enabled/conf.d
+	// are typically config files. Use separator-bounded matching to avoid false positives
+	// like "myconf.db" matching "conf.d" across the name/extension boundary
+	configDirPatterns := []string{
+		"sites-available", "sites-enabled",
+		"streams-available", "streams-enabled",
+		"conf.d", "snippets", "modules-enabled",
+	}
+	for _, pattern := range configDirPatterns {
+		// Check if pattern appears in the middle of path (with slashes on both sides)
+		if strings.Contains(lowerRelativePath, sep+pattern+sep) {
+			return true
+		}
+		// Check if path starts with this directory name (after config root)
+		if strings.HasPrefix(lowerRelativePath, sep+pattern+sep) || strings.HasPrefix(lowerRelativePath, pattern+sep) {
+			return true
+		}
 	}
 
 	// Files with .conf extension are config files
