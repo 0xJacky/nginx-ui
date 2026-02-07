@@ -50,10 +50,10 @@ const backgroundColor = computed(() => {
   return theme.value === 'dark' ? 'transparent' : '#fff'
 })
 
-// Color scheme for visualMap - darker colors for dark mode to maintain contrast
+// Color scheme for visualMap - brighter colors for dark mode to maintain visibility
 const visualMapColors = computed(() => {
   return theme.value === 'dark'
-    ? ['#1a3a5c', '#1890ff', '#69c0ff'] // Dark mode: darker base, brighter highlights
+    ? ['#003a70', '#1890ff', '#69c0ff'] // Dark mode: visible blue gradient
     : ['#e6f3ff', '#1890ff', '#0050b3'] // Light mode: original colors
 })
 
