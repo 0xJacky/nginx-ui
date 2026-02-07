@@ -451,7 +451,8 @@ export const useLLMStore = defineStore('llm', () => {
 
     try {
       const sessionStore = useLLMSessionStore()
-      await sessionStore.generateSessionTitle(currentSessionId.value)
+      // Pass messages to generate title on main node
+      await sessionStore.generateSessionTitle(currentSessionId.value, messages.value)
     }
     catch (error) {
       console.error('Failed to auto-generate session title:', error)

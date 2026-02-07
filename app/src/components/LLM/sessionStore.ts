@@ -114,16 +114,20 @@ export const useLLMSessionStore = defineStore('llm-session', () => {
     }
   }
 
-  async function generateSessionTitle(sessionId: string) {
+  async function generateSessionTitle(sessionId: string, messages: ChatComplicationMessage[]) {
     try {
       // Skip if typewriter is already in progress for this session
       if (typewriterInProgress.value.has(sessionId)) {
         return
       }
 
-      const response = await llm.generate_session_title(sessionId)
+      // Step 1: Generate title on main node (no proxy)
+      const response = await llm.generate_title(messages)
 
-      // Update the session in the local store with typewriter effect
+      // Step 2: Update session via proxy to persist the title
+      await llm.update_session(sessionId, { title: response.title })
+
+      // Step 3: Update local store with typewriter effect
       const index = sessions.value.findIndex(s => s.session_id === sessionId)
       if (index !== -1) {
         await typewriterEffect(sessionId, response.title)

@@ -10,8 +10,7 @@ func InitRouter(r *gin.RouterGroup) {
 	r.PUT("llm_sessions/:session_id", UpdateLLMSession)
 	r.DELETE("llm_sessions/:session_id", DeleteLLMSession)
 	r.POST("llm_sessions/:session_id/duplicate", DuplicateLLMSession)
-	r.POST("llm_sessions/:session_id/generate_title", GenerateSessionTitle)
-	
+
 	// Compatibility endpoints for legacy file-based sessions
 	r.GET("llm_messages", GetLLMSessionByPath)
 	r.POST("llm_messages", CreateOrUpdateLLMSessionByPath)
@@ -24,4 +23,6 @@ func InitLocalRouter(r *gin.RouterGroup) {
 	// Code Completion
 	r.GET("code_completion", CodeCompletion)
 	r.GET("code_completion/enabled", GetCodeCompletionEnabledStatus)
+	// Generate title from messages - uses local LLM config
+	r.POST("generate_title", GenerateTitle)
 }

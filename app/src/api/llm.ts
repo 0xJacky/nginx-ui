@@ -74,8 +74,8 @@ const llm = {
   duplicate_session(sessionId: string) {
     return http.post<LLMSessionResponse>(`/llm_sessions/${sessionId}/duplicate`)
   },
-  generate_session_title(sessionId: string) {
-    return http.post<{ title: string, message: string }>(`/llm_sessions/${sessionId}/generate_title`)
+  generate_title(messages: ChatComplicationMessage[]) {
+    return http.post<{ title: string }>('/generate_title', { messages })
   },
 }
 

@@ -357,36 +357,24 @@ func CreateOrUpdateLLMSessionByPath(c *gin.Context) {
 	})
 }
 
-// GenerateSessionTitle generates a title for a session based on its context
-func GenerateSessionTitle(c *gin.Context) {
-	sessionID := c.Param("session_id")
-	
-	g := query.LLMSession
-	session, err := g.Where(g.SessionID.Eq(sessionID)).First()
-	if err != nil {
-		cosy.ErrHandler(c, err)
+// GenerateTitle generates a title based on messages (runs on main node only)
+func GenerateTitle(c *gin.Context) {
+	var json struct {
+		Messages []openai.ChatCompletionMessage `json:"messages" binding:"required"`
+	}
+
+	if !cosy.BindAndValid(c, &json) {
 		return
 	}
 
-	// Generate title based on session messages
-	title, err := llm.GenerateSessionTitle(session.Messages)
+	title, err := llm.GenerateSessionTitle(json.Messages)
 	if err != nil {
-		logger.Error("Failed to generate session title:", err)
-		cosy.ErrHandler(c, err)
-		return
-	}
-
-	// Update the session with the new title
-	session.Title = title
-	err = g.Save(session)
-	if err != nil {
-		logger.Error("Failed to save session with new title:", err)
+		logger.Error("Failed to generate title:", err)
 		cosy.ErrHandler(c, err)
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"title": title,
-		"message": "Title generated successfully",
 	})
 }
