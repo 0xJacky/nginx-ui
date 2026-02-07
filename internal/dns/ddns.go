@@ -307,6 +307,7 @@ func (s *Service) runDDNSUpdate(ctx context.Context, domainID uint64) error {
 			Priority: record.Priority,
 			Weight:   record.Weight,
 			Proxied:  record.Proxied,
+			Comment:  record.Comment,
 		}))
 		cancel()
 

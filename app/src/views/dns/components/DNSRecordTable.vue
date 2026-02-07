@@ -6,6 +6,7 @@ const props = defineProps<{
   records: DNSRecord[]
   loading?: boolean
   showProxied?: boolean
+  showComment?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -53,10 +54,12 @@ const commentColumn = {
 
 const columns = computed(() => {
   const list = baseColumns.slice()
-  if (props.showProxied) {
-    // Insert comment column before actions column
+  // Insert comment column before actions column if showComment is enabled
+  if (props.showComment) {
     list.splice(list.length - 1, 0, commentColumn)
-    // Insert proxied column before actions column
+  }
+  // Insert proxied column before actions column if showProxied is enabled
+  if (props.showProxied) {
     list.splice(list.length - 1, 0, {
       title: $gettext('Proxied'),
       dataIndex: 'proxied',

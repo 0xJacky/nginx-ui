@@ -185,6 +185,7 @@ onBeforeUnmount(() => {
         :records="store.records"
         :loading="store.recordsLoading"
         :show-proxied="showProxiedToggle"
+        :show-comment="showCommentField"
         @edit="openEditDrawer"
         @delete="handleDelete"
       />
