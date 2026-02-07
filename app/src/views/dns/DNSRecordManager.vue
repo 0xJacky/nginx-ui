@@ -38,15 +38,14 @@ const formModel = ref<RecordPayload>({
   ttl: 600,
 })
 
-const showProxiedToggle = computed(() => {
+const isCloudflare = computed(() => {
   const provider = store.currentDomain?.dns_credential?.provider ?? ''
   return provider.toLowerCase().includes('cloudflare')
 })
 
-const showCommentField = computed(() => {
-  const provider = store.currentDomain?.dns_credential?.provider ?? ''
-  return provider.toLowerCase().includes('cloudflare')
-})
+const showProxiedToggle = computed(() => isCloudflare.value)
+
+const showCommentField = computed(() => isCloudflare.value)
 
 const contentSuggestions = computed(() => {
   const unique = new Set<string>()
