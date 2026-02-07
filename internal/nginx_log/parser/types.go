@@ -100,8 +100,9 @@ func DefaultParserConfig() *Config {
 	}
 }
 
-// ValidHTTPMethods Valid HTTP methods
+// ValidHTTPMethods Valid HTTP methods including WebDAV methods
 var ValidHTTPMethods = map[string]bool{
+	// Standard HTTP methods
 	"GET":     true,
 	"POST":    true,
 	"PUT":     true,
@@ -111,6 +112,14 @@ var ValidHTTPMethods = map[string]bool{
 	"PATCH":   true,
 	"TRACE":   true,
 	"CONNECT": true,
+	// WebDAV methods (RFC 4918)
+	"PROPFIND":  true,
+	"PROPPATCH": true,
+	"MKCOL":     true,
+	"COPY":      true,
+	"MOVE":      true,
+	"LOCK":      true,
+	"UNLOCK":    true,
 }
 
 // Parser errors (moved to errors.go as Cosy Errors)

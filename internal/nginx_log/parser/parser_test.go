@@ -80,6 +80,37 @@ func TestParser_ParseLine(t *testing.T) {
 					entry.BytesSent == 0
 			},
 		},
+		{
+			name: "WebDAV PROPFIND method",
+			line: `192.168.1.100 - - [25/Dec/2023:10:00:00 +0000] "PROPFIND /webdav/ HTTP/1.1" 207 1234 "-" "davfs2/1.5.4"`,
+			validate: func(entry *AccessLogEntry) bool {
+				return entry.IP == "192.168.1.100" &&
+					entry.Method == "PROPFIND" &&
+					entry.Path == "/webdav/" &&
+					entry.Status == 207 &&
+					entry.BytesSent == 1234
+			},
+		},
+		{
+			name: "WebDAV MKCOL method",
+			line: `10.0.0.5 - - [25/Dec/2023:10:00:00 +0000] "MKCOL /webdav/newdir/ HTTP/1.1" 201 0 "-" "WebDAVClient/1.0"`,
+			validate: func(entry *AccessLogEntry) bool {
+				return entry.IP == "10.0.0.5" &&
+					entry.Method == "MKCOL" &&
+					entry.Path == "/webdav/newdir/" &&
+					entry.Status == 201
+			},
+		},
+		{
+			name: "WebDAV LOCK method",
+			line: `172.16.0.1 - - [25/Dec/2023:10:00:00 +0000] "LOCK /webdav/file.txt HTTP/1.1" 200 512 "-" "Microsoft-WebDAV"`,
+			validate: func(entry *AccessLogEntry) bool {
+				return entry.IP == "172.16.0.1" &&
+					entry.Method == "LOCK" &&
+					entry.Path == "/webdav/file.txt" &&
+					entry.Status == 200
+			},
+		},
 	}
 
 	config := DefaultParserConfig()
