@@ -212,7 +212,13 @@ func getExcludedDirs() []string {
 // shouldSkipPath checks if a path should be skipped during scanning or watching
 func shouldSkipPath(path string) bool {
 	for _, excludedDir := range getExcludedDirs() {
-		if excludedDir != "" && strings.HasPrefix(path, excludedDir) {
+		if excludedDir == "" {
+			continue
+		}
+		// Check for exact match or match with path separator to avoid false positives
+		// e.g., excludedDir="/etc/nginx/html" should match "/etc/nginx/html/file"
+		// but NOT "/etc/nginx/html-configs/file"
+		if path == excludedDir || strings.HasPrefix(path, excludedDir+string(filepath.Separator)) {
 			return true
 		}
 	}
@@ -243,27 +249,56 @@ func shouldWatchDirectory(dirPath string) bool {
 	}
 
 	// Directories that typically contain static assets - should not be watched
+	// Only use slash-terminated patterns with Contains to ensure we match complete
+	// path components, avoiding false positives like "/json" matching "/js"
 	staticDirPatterns := []string{
-		"/dist/", "/dist",
-		"/build/", "/build",
-		"/node_modules/", "/node_modules",
-		"/__pycache__/", "/__pycache__",
-		"/.git/", "/.git",
-		"/vendor/", "/vendor",
-		"/assets/", "/assets",
-		"/static/", "/static",
-		"/public/", "/public",
-		"/media/", "/media",
-		"/uploads/", "/uploads",
-		"/images/", "/images",
-		"/img/", "/img",
-		"/css/", "/css",
-		"/js/", "/js",
-		"/fonts/", "/fonts",
-		"/__macosx/", "/__macosx",
+		"/dist/",
+		"/build/",
+		"/node_modules/",
+		"/__pycache__/",
+		"/.git/",
+		"/vendor/",
+		"/assets/",
+		"/static/",
+		"/public/",
+		"/media/",
+		"/uploads/",
+		"/images/",
+		"/img/",
+		"/css/",
+		"/js/",
+		"/fonts/",
+		"/__macosx/",
 	}
 	for _, pattern := range staticDirPatterns {
-		if strings.HasSuffix(lowerPath, pattern) || strings.Contains(lowerPath, pattern) {
+		if strings.Contains(lowerPath, pattern) {
+			return false
+		}
+	}
+
+	// Also check if directory name ends with these patterns (for directories at end of path)
+	// Use slash-prefixed patterns to ensure complete path component matching
+	staticDirSuffixes := []string{
+		"/dist",
+		"/build",
+		"/node_modules",
+		"/__pycache__",
+		"/.git",
+		"/vendor",
+		"/assets",
+		"/static",
+		"/public",
+		"/media",
+		"/uploads",
+		"/images",
+		"/img",
+		"/css",
+		"/js",
+		"/fonts",
+		"/__macosx",
+	}
+	for _, suffix := range staticDirSuffixes {
+		if strings.HasSuffix(lowerPath, suffix) {
 			return false
 		}
 	}
