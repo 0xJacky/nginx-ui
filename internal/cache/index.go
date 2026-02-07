@@ -225,6 +225,28 @@ func shouldSkipPath(path string) bool {
 	return false
 }
 
+// staticDirNames contains directory names that typically contain static assets and should not be watched.
+// This single list is used for both Contains (with "/" suffix) and HasSuffix (with "/" prefix) checks.
+var staticDirNames = []string{
+	"dist",
+	"build",
+	"node_modules",
+	"__pycache__",
+	".git",
+	"vendor",
+	"assets",
+	"static",
+	"public",
+	"media",
+	"uploads",
+	"images",
+	"img",
+	"css",
+	"js",
+	"fonts",
+	"__macosx",
+}
+
 // shouldWatchDirectory checks if a directory should be watched for config file changes
 // This prevents watching static asset directories that can contain thousands of files
 func shouldWatchDirectory(dirPath string) bool {
@@ -233,8 +255,15 @@ func shouldWatchDirectory(dirPath string) bool {
 		return false
 	}
 
-	// Get directory name for pattern matching
-	lowerPath := strings.ToLower(dirPath)
+	// Get the path relative to the nginx config root to avoid matching ancestor directories
+	// e.g., if config root is /opt/vendor/nginx/conf, we don't want to match "/vendor/"
+	// in the ancestor portion of the path
+	configRoot := nginx.GetConfPath()
+	relativePath := dirPath
+	if strings.HasPrefix(dirPath, configRoot) {
+		relativePath = strings.TrimPrefix(dirPath, configRoot)
+	}
+	lowerRelativePath := strings.ToLower(relativePath)
 
 	// Known directories that typically contain nginx config files
 	configDirPatterns := []string{
@@ -243,62 +272,21 @@ func shouldWatchDirectory(dirPath string) bool {
 		"conf.d", "snippets", "modules-enabled",
 	}
 	for _, pattern := range configDirPatterns {
-		if strings.Contains(lowerPath, pattern) {
+		if strings.Contains(lowerRelativePath, pattern) {
 			return true
 		}
 	}
 
-	// Directories that typically contain static assets - should not be watched
-	// Only use slash-terminated patterns with Contains to ensure we match complete
-	// path components, avoiding false positives like "/json" matching "/js"
-	staticDirPatterns := []string{
-		"/dist/",
-		"/build/",
-		"/node_modules/",
-		"/__pycache__/",
-		"/.git/",
-		"/vendor/",
-		"/assets/",
-		"/static/",
-		"/public/",
-		"/media/",
-		"/uploads/",
-		"/images/",
-		"/img/",
-		"/css/",
-		"/js/",
-		"/fonts/",
-		"/__macosx/",
-	}
-	for _, pattern := range staticDirPatterns {
-		if strings.Contains(lowerPath, pattern) {
+	// Check static directory patterns against the relative path only
+	// This ensures patterns like "/vendor/" only match directories within the config tree,
+	// not ancestor directories in the config root path itself
+	for _, name := range staticDirNames {
+		// Check if pattern appears in the middle of path (with slashes on both sides)
+		if strings.Contains(lowerRelativePath, "/"+name+"/") {
 			return false
 		}
-	}
-
-	// Also check if directory name ends with these patterns (for directories at end of path)
-	// Use slash-prefixed patterns to ensure complete path component matching
-	staticDirSuffixes := []string{
-		"/dist",
-		"/build",
-		"/node_modules",
-		"/__pycache__",
-		"/.git",
-		"/vendor",
-		"/assets",
-		"/static",
-		"/public",
-		"/media",
-		"/uploads",
-		"/images",
-		"/img",
-		"/css",
-		"/js",
-		"/fonts",
-		"/__macosx",
-	}
-	for _, suffix := range staticDirSuffixes {
-		if strings.HasSuffix(lowerPath, suffix) {
+		// Check if path ends with this directory name (with leading slash)
+		if strings.HasSuffix(lowerRelativePath, "/"+name) {
 			return false
 		}
 	}
@@ -381,14 +369,16 @@ func isConfigFilePath(filePath string) bool {
 
 	// For files with no extension or unknown extensions, check if they're in a suspicious directory
 	// that likely contains static assets (any directory with common static asset names)
-	lowerPath := strings.ToLower(filePath)
-	staticDirPatterns := []string{
-		"/dist/", "/build/", "/node_modules/", "/__pycache__/", "/.git/",
-		"/vendor/", "/assets/", "/static/", "/public/", "/media/",
-		"/uploads/", "/images/", "/img/", "/css/", "/js/", "/fonts/",
+	// Use relative path to avoid matching ancestor directories in the config root
+	configRoot := nginx.GetConfPath()
+	relativePath := filePath
+	if strings.HasPrefix(filePath, configRoot) {
+		relativePath = strings.TrimPrefix(filePath, configRoot)
 	}
-	for _, pattern := range staticDirPatterns {
-		if strings.Contains(lowerPath, pattern) {
+	lowerRelativePath := strings.ToLower(relativePath)
+	for _, name := range staticDirNames {
+		// Check if pattern appears in the path (with slashes on both sides)
+		if strings.Contains(lowerRelativePath, "/"+name+"/") {
 			return false
 		}
 	}
