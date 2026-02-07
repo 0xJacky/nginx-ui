@@ -110,6 +110,7 @@ const dailyChartOptions = computed(() => {
       },
     },
     tooltip: {
+      theme: theme.value === 'dark' ? 'dark' : 'light',
       shared: true,
       intersect: false,
     },
