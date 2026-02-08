@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"strings"
 
+	"github.com/0xJacky/Nginx-UI/internal/docker"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/uozi-tech/cosy/logger"
@@ -161,35 +162,65 @@ func GetConfEntryPath() (path string) {
 }
 
 // GetPIDPath returns the nginx master process PID file path.
-// We try to read it from `nginx -V --pid-path=...`.
-// If that fails (which often happens in container images), we probe common
-// locations like /run/nginx.pid and /var/run/nginx.pid instead of just failing.
+// Resolution order:
+//  1. User override via settings (PIDPath)
+//  2. Compile-time default from `nginx -V --pid-path=...`
+//  3. Runtime override from `nginx -T` pid directive (handles nginx-unprivileged etc.)
+//  4. Probing common candidate paths (Docker-aware)
 func GetPIDPath() (path string) {
-	if settings.NginxSettings.PIDPath == "" {
-		out := getNginxV()
-		path = extractConfigureArg(out, "--pid-path")
+	if settings.NginxSettings.PIDPath != "" {
+		return resolvePath(settings.NginxSettings.PIDPath)
+	}
 
-		if path == "" {
-			candidates := []string{
-				"/var/run/nginx.pid",
-				"/run/nginx.pid",
+	// Try compile-time default from nginx -V
+	out := getNginxV()
+	path = extractConfigureArg(out, "--pid-path")
+
+	// When running in another container, verify the path actually exists there.
+	// Docker images like nginx-unprivileged override the compile-time pid-path
+	// at runtime via the "pid" directive in nginx.conf (e.g., pid /tmp/nginx.pid).
+	if path != "" && settings.NginxSettings.RunningInAnotherContainer() {
+		if !docker.StatPath(path) {
+			logger.Debug("GetPIDPath: compile-time pid-path not found in container, trying nginx -T", "path", path)
+			if tPath := getPIDPathFromNginxT(); tPath != "" {
+				return resolvePath(tPath)
 			}
+		}
+	}
 
-			for _, c := range candidates {
+	// If nginx -V didn't provide a path, try nginx -T
+	if path == "" {
+		path = getPIDPathFromNginxT()
+	}
+
+	// Fallback: probe common candidate locations
+	if path == "" {
+		candidates := []string{
+			"/var/run/nginx.pid",
+			"/run/nginx.pid",
+			"/tmp/nginx.pid",
+		}
+
+		for _, c := range candidates {
+			if settings.NginxSettings.RunningInAnotherContainer() {
+				if docker.StatPath(c) {
+					logger.Debug("GetPIDPath fallback hit (docker)", "path", c)
+					path = c
+					break
+				}
+			} else {
 				if _, err := os.Stat(c); err == nil {
 					logger.Debug("GetPIDPath fallback hit", "path", c)
 					path = c
 					break
 				}
 			}
-
-			if path == "" {
-				logger.Error("GetPIDPath: could not determine PID path")
-				return ""
-			}
 		}
-	} else {
-		path = settings.NginxSettings.PIDPath
+
+		if path == "" {
+			logger.Error("GetPIDPath: could not determine PID path")
+			return ""
+		}
 	}
 
 	return resolvePath(path)

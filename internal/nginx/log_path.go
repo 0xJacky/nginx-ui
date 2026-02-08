@@ -9,7 +9,7 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 )
 
-// Regular expressions for parsing log directives from nginx -T output
+// Regular expressions for parsing directives from nginx -T output
 const (
 	// AccessLogRegexPattern matches access_log directive with unquoted path
 	// Matches: access_log /path/to/file
@@ -18,16 +18,22 @@ const (
 	// ErrorLogRegexPattern matches error_log directive with unquoted path
 	// Matches: error_log /path/to/file
 	ErrorLogRegexPattern = `(?m)^\s*error_log\s+([^\s;]+)`
+
+	// PIDRegexPattern matches pid directive with unquoted path
+	// Matches: pid /path/to/file;
+	PIDRegexPattern = `(?m)^\s*pid\s+([^\s;]+)`
 )
 
 var (
 	accessLogRegex *regexp.Regexp
 	errorLogRegex  *regexp.Regexp
+	pidRegex       *regexp.Regexp
 )
 
 func init() {
 	accessLogRegex = regexp.MustCompile(AccessLogRegexPattern)
 	errorLogRegex = regexp.MustCompile(ErrorLogRegexPattern)
+	pidRegex = regexp.MustCompile(PIDRegexPattern)
 }
 
 // isValidRegularFile checks if the given path is a valid regular file
@@ -139,5 +145,41 @@ func getErrorLogPathFromNginxT() string {
 	}
 
 	logger.Error("nginx.getErrorLogPathFromNginxT: no valid error_log file found")
+	return ""
+}
+
+// getPIDPathFromNginxT extracts the pid file path from nginx -T output.
+// This is needed because nginx -V returns the compile-time default --pid-path,
+// but Docker images like nginx-unprivileged override this at runtime via the
+// "pid" directive in nginx.conf (e.g., pid /tmp/nginx.pid;).
+func getPIDPathFromNginxT() string {
+	output := getNginxT()
+	if output == "" {
+		logger.Error("nginx.getPIDPathFromNginxT: nginx -T output is empty")
+		return ""
+	}
+
+	lines := strings.Split(output, "\n")
+
+	for _, line := range lines {
+		// Skip commented lines
+		if isCommentedLine(line) {
+			continue
+		}
+
+		matches := pidRegex.FindStringSubmatch(line)
+		if len(matches) >= 2 {
+			pidPath := matches[1]
+
+			// Handle relative paths
+			if !filepath.IsAbs(pidPath) {
+				pidPath = filepath.Join(GetPrefix(), pidPath)
+			}
+
+			return resolvePath(pidPath)
+		}
+	}
+
+	logger.Debug("nginx.getPIDPathFromNginxT: no pid directive found in nginx -T output")
 	return ""
 }

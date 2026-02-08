@@ -637,3 +637,153 @@ http {
 		}
 	}
 }
+
+func TestPIDRegexParsing(t *testing.T) {
+	testCases := []struct {
+		name         string
+		nginxTOutput string
+		expectedPath string
+		shouldMatch  bool
+	}{
+		{
+			name:         "standard pid path",
+			nginxTOutput: "pid        /var/run/nginx.pid;",
+			expectedPath: "/var/run/nginx.pid",
+			shouldMatch:  true,
+		},
+		{
+			name:         "nginx-unprivileged pid path",
+			nginxTOutput: "pid /tmp/nginx.pid;",
+			expectedPath: "/tmp/nginx.pid",
+			shouldMatch:  true,
+		},
+		{
+			name:         "indented pid directive",
+			nginxTOutput: "    pid  /run/nginx.pid;",
+			expectedPath: "/run/nginx.pid",
+			shouldMatch:  true,
+		},
+		{
+			name:         "no pid directive",
+			nginxTOutput: "worker_processes  auto;",
+			expectedPath: "",
+			shouldMatch:  false,
+		},
+		{
+			name:         "commented pid directive should not match",
+			nginxTOutput: "# pid  /var/run/nginx.pid;",
+			expectedPath: "",
+			shouldMatch:  false,
+		},
+		{
+			name:         "pid in full config",
+			nginxTOutput: "user  nginx;\nworker_processes  auto;\npid /tmp/nginx.pid;\nevents {\n    worker_connections 1024;\n}",
+			expectedPath: "/tmp/nginx.pid",
+			shouldMatch:  true,
+		},
+		{
+			name:         "commented pid followed by real pid",
+			nginxTOutput: "# pid /var/run/nginx.pid;\npid /tmp/nginx.pid;",
+			expectedPath: "/tmp/nginx.pid",
+			shouldMatch:  true,
+		},
+	}
+
+	pidRegex := regexp.MustCompile(PIDRegexPattern)
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			// Filter out commented lines (same as getPIDPathFromNginxT does)
+			var firstMatch string
+			for _, line := range regexp.MustCompile(`\n`).Split(tc.nginxTOutput, -1) {
+				if isCommentedLine(line) {
+					continue
+				}
+				matches := pidRegex.FindStringSubmatch(line)
+				if len(matches) >= 2 {
+					firstMatch = matches[1]
+					break
+				}
+			}
+
+			if tc.shouldMatch {
+				if firstMatch == "" {
+					t.Errorf("Expected to find pid directive, but found none")
+					return
+				}
+				if firstMatch != tc.expectedPath {
+					t.Errorf("Expected pid path %s, got %s", tc.expectedPath, firstMatch)
+				}
+			} else {
+				if firstMatch != "" {
+					t.Errorf("Expected no pid directive, but found: %s", firstMatch)
+				}
+			}
+		})
+	}
+}
+
+func TestPIDPathFromMockConfigs(t *testing.T) {
+	pidRegex := regexp.MustCompile(PIDRegexPattern)
+
+	testCases := []struct {
+		name         string
+		config       string
+		expectedPath string
+	}{
+		{
+			name:         "standard nginx config",
+			config:       mockNginxTOutput,
+			expectedPath: "/var/run/nginx.pid",
+		},
+		{
+			name:         "config with relative paths",
+			config:       mockNginxTOutputRelative,
+			expectedPath: "/var/run/nginx.pid",
+		},
+		{
+			name: "nginx-unprivileged config",
+			config: `
+user  nginx;
+worker_processes  auto;
+
+error_log  /var/log/nginx/error.log notice;
+pid        /tmp/nginx.pid;
+
+events {
+    worker_connections  1024;
+}
+
+http {
+    access_log  /var/log/nginx/access.log  main;
+}
+`,
+			expectedPath: "/tmp/nginx.pid",
+		},
+		{
+			name:         "config without pid directive",
+			config:       mockNginxTOutputOff,
+			expectedPath: "",
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			var foundPath string
+			for _, line := range regexp.MustCompile(`\n`).Split(tc.config, -1) {
+				if isCommentedLine(line) {
+					continue
+				}
+				matches := pidRegex.FindStringSubmatch(line)
+				if len(matches) >= 2 {
+					foundPath = matches[1]
+					break
+				}
+			}
+
+			if foundPath != tc.expectedPath {
+				t.Errorf("Expected pid path %q, got %q", tc.expectedPath, foundPath)
+			}
+		})
+	}
+}
