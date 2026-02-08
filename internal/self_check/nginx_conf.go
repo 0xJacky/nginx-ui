@@ -128,6 +128,13 @@ func FixNginxConfIncludeSites() error {
 	}
 
 	// if no http block, append http block with include sites-enabled/*
+	// create a backup file (+.bak.timestamp) before modifying
+	backupPath := fmt.Sprintf("%s.bak.%d", path, time.Now().Unix())
+	err = os.WriteFile(backupPath, content, 0644)
+	if err != nil {
+		return ErrFailedToCreateBackup
+	}
+
 	content = append(content, fmt.Appendf(nil, "\nhttp {\n\tinclude %s;\n}\n", resolvePath("sites-enabled/*"))...)
 	return os.WriteFile(path, content, 0644)
 }
@@ -181,6 +188,13 @@ func FixNginxConfIncludeStreams() error {
 	}
 
 	// if no stream block, append stream block with include streams-enabled/*
+	// create a backup file (+.bak.timestamp) before modifying
+	backupPath := fmt.Sprintf("%s.bak.%d", path, time.Now().Unix())
+	err = os.WriteFile(backupPath, content, 0644)
+	if err != nil {
+		return ErrFailedToCreateBackup
+	}
+
 	content = append(content, fmt.Appendf(nil, "\nstream {\n\tinclude %s;\n}\n", resolvePath("streams-enabled/*"))...)
 	return os.WriteFile(path, content, 0644)
 }
@@ -268,6 +282,13 @@ func FixNginxConfIncludeConfD() error {
 	}
 
 	// if no http block, append http block with include conf.d/*.conf
+	// create a backup file (+.bak.timestamp) before modifying
+	backupPath := fmt.Sprintf("%s.bak.%d", path, time.Now().Unix())
+	err = os.WriteFile(backupPath, content, 0644)
+	if err != nil {
+		return ErrFailedToCreateBackup
+	}
+
 	content = append(content, fmt.Appendf(nil, "\nhttp {\n\tinclude %s;\n}\n", resolvePath("conf.d/*"))...)
 	return os.WriteFile(path, content, 0644)
 }
