@@ -87,13 +87,6 @@ func FixNginxConfIncludeSites() error {
 		return ErrFailedToReadNginxConf
 	}
 
-	// create a backup file (+.bak.timestamp)
-	backupPath := fmt.Sprintf("%s.bak.%d", path, time.Now().Unix())
-	err = os.WriteFile(backupPath, content, 0644)
-	if err != nil {
-		return ErrFailedToCreateBackup
-	}
-
 	// parse nginx.conf
 	p := parser.NewStringParser(string(content), parser.WithSkipValidDirectivesErr())
 	c, err := p.Parse()
@@ -104,13 +97,20 @@ func FixNginxConfIncludeSites() error {
 	// find http block
 	for _, v := range c.Block.Directives {
 		if v.GetName() == "http" {
-			// check if sites-enabled include already exists
+			// check if sites-enabled/* include already exists
 			for _, directive := range v.GetBlock().GetDirectives() {
 				if directive.GetName() == "include" && len(directive.GetParameters()) > 0 &&
-					strings.Contains(directive.GetParameters()[0].Value, "sites-enabled") {
+					strings.Contains(directive.GetParameters()[0].Value, "sites-enabled/*") {
 					// already exists, nothing to do
 					return nil
 				}
+			}
+
+			// create a backup file (+.bak.timestamp)
+			backupPath := fmt.Sprintf("%s.bak.%d", path, time.Now().Unix())
+			err = os.WriteFile(backupPath, content, 0644)
+			if err != nil {
+				return ErrFailedToCreateBackup
 			}
 
 			// add include sites-enabled/* to http block
@@ -141,13 +141,6 @@ func FixNginxConfIncludeStreams() error {
 		return ErrFailedToReadNginxConf
 	}
 
-	// create a backup file (+.bak.timestamp)
-	backupPath := fmt.Sprintf("%s.bak.%d", path, time.Now().Unix())
-	err = os.WriteFile(backupPath, content, 0644)
-	if err != nil {
-		return ErrFailedToCreateBackup
-	}
-
 	// parse nginx.conf
 	p := parser.NewStringParser(string(content), parser.WithSkipValidDirectivesErr())
 	c, err := p.Parse()
@@ -158,13 +151,20 @@ func FixNginxConfIncludeStreams() error {
 	// find stream block
 	for _, v := range c.Block.Directives {
 		if v.GetName() == "stream" {
-			// check if streams-enabled include already exists
+			// check if streams-enabled/* include already exists
 			for _, directive := range v.GetBlock().GetDirectives() {
 				if directive.GetName() == "include" && len(directive.GetParameters()) > 0 &&
-					strings.Contains(directive.GetParameters()[0].Value, "streams-enabled") {
+					strings.Contains(directive.GetParameters()[0].Value, "streams-enabled/*") {
 					// already exists, nothing to do
 					return nil
 				}
+			}
+
+			// create a backup file (+.bak.timestamp)
+			backupPath := fmt.Sprintf("%s.bak.%d", path, time.Now().Unix())
+			err = os.WriteFile(backupPath, content, 0644)
+			if err != nil {
+				return ErrFailedToCreateBackup
 			}
 
 			// add include streams-enabled/* to stream block
@@ -227,13 +227,6 @@ func FixNginxConfIncludeConfD() error {
 		return ErrFailedToReadNginxConf
 	}
 
-	// create a backup file (+.bak.timestamp)
-	backupPath := fmt.Sprintf("%s.bak.%d", path, time.Now().Unix())
-	err = os.WriteFile(backupPath, content, 0644)
-	if err != nil {
-		return ErrFailedToCreateBackup
-	}
-
 	// parse nginx.conf
 	p := parser.NewStringParser(string(content), parser.WithSkipValidDirectivesErr())
 	c, err := p.Parse()
@@ -244,13 +237,20 @@ func FixNginxConfIncludeConfD() error {
 	// find http block
 	for _, v := range c.Block.Directives {
 		if v.GetName() == "http" {
-			// check if conf.d include already exists
+			// check if conf.d/* include already exists
 			for _, directive := range v.GetBlock().GetDirectives() {
 				if directive.GetName() == "include" && len(directive.GetParameters()) > 0 &&
-					strings.Contains(directive.GetParameters()[0].Value, "conf.d") {
+					strings.Contains(directive.GetParameters()[0].Value, "conf.d/*") {
 					// already exists, nothing to do
 					return nil
 				}
+			}
+
+			// create a backup file (+.bak.timestamp)
+			backupPath := fmt.Sprintf("%s.bak.%d", path, time.Now().Unix())
+			err = os.WriteFile(backupPath, content, 0644)
+			if err != nil {
+				return ErrFailedToCreateBackup
 			}
 
 			// add include conf.d/*.conf to http block
