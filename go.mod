@@ -1,19 +1,19 @@
 module github.com/0xJacky/Nginx-UI
 
-go 1.25.7
+go 1.26.0
 
 require (
 	code.pfad.fr/risefront v1.0.0
 	github.com/0xJacky/pofile v1.1.1
 	github.com/BurntSushi/toml v1.6.0
 	github.com/alibabacloud-go/alidns-20150109/v5 v5.3.1
-	github.com/alibabacloud-go/darabonba-openapi/v2 v2.1.14
+	github.com/alibabacloud-go/darabonba-openapi/v2 v2.1.15
 	github.com/alibabacloud-go/tea v1.4.0
 	github.com/alibabacloud-go/tea-utils/v2 v2.0.9
 	github.com/blevesearch/bleve/v2 v2.5.7
 	github.com/caarlos0/env/v11 v11.3.1
 	github.com/casdoor/casdoor-go-sdk v1.44.0
-	github.com/cloudflare/cloudflare-go/v6 v6.6.0
+	github.com/cloudflare/cloudflare-go/v6 v6.7.0
 	github.com/coreos/go-oidc/v3 v3.17.0
 	github.com/creack/pty v1.1.24
 	github.com/dgraph-io/ristretto/v2 v2.4.0
@@ -50,17 +50,17 @@ require (
 	github.com/spf13/afero v1.15.0
 	github.com/spf13/cast v1.10.0
 	github.com/stretchr/testify v1.11.1
-	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.3.45
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.3.48
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/dnspod v1.3.24
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20250620092546-c3e307e36701
 	github.com/ulikunitz/xz v0.5.15
 	github.com/uozi-tech/cosy v1.28.0
 	github.com/uozi-tech/cosy-driver-sqlite v0.2.1
 	github.com/urfave/cli/v3 v3.6.2
-	golang.org/x/crypto v0.47.0
-	golang.org/x/net v0.49.0
-	golang.org/x/oauth2 v0.34.0
-	google.golang.org/grpc v1.78.0
+	golang.org/x/crypto v0.48.0
+	golang.org/x/net v0.50.0
+	golang.org/x/oauth2 v0.35.0
+	google.golang.org/grpc v1.79.0
 	gopkg.in/ini.v1 v1.67.1
 	gorm.io/datatypes v1.2.7
 	gorm.io/driver/sqlite v1.6.0
@@ -359,8 +359,8 @@ require (
 	golang.org/x/arch v0.23.0 // indirect
 	golang.org/x/mod v0.32.0 // indirect
 	golang.org/x/sync v0.19.0 // indirect
-	golang.org/x/sys v0.40.0 // indirect
-	golang.org/x/text v0.33.0 // indirect
+	golang.org/x/sys v0.41.0 // indirect
+	golang.org/x/text v0.34.0 // indirect
 	golang.org/x/time v0.14.0 // indirect
 	golang.org/x/tools v0.41.0 // indirect
 	google.golang.org/api v0.263.0 // indirect
