@@ -36,6 +36,11 @@ func newSite(db *gorm.DB, opts ...gen.DOOption) site {
 	_site.Advanced = field.NewBool(tableName, "advanced")
 	_site.NamespaceID = field.NewUint64(tableName, "namespace_id")
 	_site.SyncNodeIDs = field.NewField(tableName, "sync_node_ids")
+	_site.DNSDomainID = field.NewInt(tableName, "dns_domain_id")
+	_site.DNSRecordID = field.NewString(tableName, "dns_record_id")
+	_site.DNSRecordName = field.NewString(tableName, "dns_record_name")
+	_site.DNSRecordType = field.NewString(tableName, "dns_record_type")
+	_site.DNSRecordExists = field.NewBool(tableName, "dns_record_exists")
 	_site.Namespace = siteBelongsToNamespace{
 		db: db.Session(&gorm.Session{}),
 
@@ -50,16 +55,21 @@ func newSite(db *gorm.DB, opts ...gen.DOOption) site {
 type site struct {
 	siteDo
 
-	ALL         field.Asterisk
-	ID          field.Uint64
-	CreatedAt   field.Time
-	UpdatedAt   field.Time
-	DeletedAt   field.Field
-	Path        field.String
-	Advanced    field.Bool
-	NamespaceID field.Uint64
-	SyncNodeIDs field.Field
-	Namespace   siteBelongsToNamespace
+	ALL             field.Asterisk
+	ID              field.Uint64
+	CreatedAt       field.Time
+	UpdatedAt       field.Time
+	DeletedAt       field.Field
+	Path            field.String
+	Advanced        field.Bool
+	NamespaceID     field.Uint64
+	SyncNodeIDs     field.Field
+	DNSDomainID     field.Int
+	DNSRecordID     field.String
+	DNSRecordName   field.String
+	DNSRecordType   field.String
+	DNSRecordExists field.Bool
+	Namespace       siteBelongsToNamespace
 
 	fieldMap map[string]field.Expr
 }
@@ -84,6 +94,11 @@ func (s *site) updateTableName(table string) *site {
 	s.Advanced = field.NewBool(table, "advanced")
 	s.NamespaceID = field.NewUint64(table, "namespace_id")
 	s.SyncNodeIDs = field.NewField(table, "sync_node_ids")
+	s.DNSDomainID = field.NewInt(table, "dns_domain_id")
+	s.DNSRecordID = field.NewString(table, "dns_record_id")
+	s.DNSRecordName = field.NewString(table, "dns_record_name")
+	s.DNSRecordType = field.NewString(table, "dns_record_type")
+	s.DNSRecordExists = field.NewBool(table, "dns_record_exists")
 
 	s.fillFieldMap()
 
@@ -100,7 +115,7 @@ func (s *site) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (s *site) fillFieldMap() {
-	s.fieldMap = make(map[string]field.Expr, 9)
+	s.fieldMap = make(map[string]field.Expr, 14)
 	s.fieldMap["id"] = s.ID
 	s.fieldMap["created_at"] = s.CreatedAt
 	s.fieldMap["updated_at"] = s.UpdatedAt
@@ -109,6 +124,11 @@ func (s *site) fillFieldMap() {
 	s.fieldMap["advanced"] = s.Advanced
 	s.fieldMap["namespace_id"] = s.NamespaceID
 	s.fieldMap["sync_node_ids"] = s.SyncNodeIDs
+	s.fieldMap["dns_domain_id"] = s.DNSDomainID
+	s.fieldMap["dns_record_id"] = s.DNSRecordID
+	s.fieldMap["dns_record_name"] = s.DNSRecordName
+	s.fieldMap["dns_record_type"] = s.DNSRecordType
+	s.fieldMap["dns_record_exists"] = s.DNSRecordExists
 
 }
 
