@@ -585,7 +585,7 @@ jobs:
           cp -rp ./resources ./dist
 
       - name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: ./dist
           file: ./dist/Dockerfile
@@ -600,7 +600,7 @@ jobs:
           cp -rp ./resources ./dist
 
       - name: Build and push demo
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         if: github.ref == 'refs/heads/dev'
         with:
           context: ./dist
