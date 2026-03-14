@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { TerminalSessionCallbacks } from '@/composables/useTerminalSession'
 import { theme } from 'ant-design-vue'
+import settings from '@/api/settings'
 import use2FAModal from '@/components/TwoFA/use2FAModal'
 import { useTerminalSession } from '@/composables/useTerminalSession'
 import { useTerminalStore } from '@/pinia'
@@ -28,6 +29,7 @@ const terminalTheme = computed(() => {
 })
 
 const insecureConnection = ref(false)
+const isDemoTerminal = ref(false)
 const rightPanelRef = ref<InstanceType<typeof TerminalRightPanel>>()
 
 function checkSecureConnection() {
@@ -36,6 +38,16 @@ function checkSecureConnection() {
 
   if ((hostname !== 'localhost' && hostname !== '127.0.0.1') && protocol !== 'https:') {
     insecureConnection.value = true
+  }
+}
+
+async function loadTerminalMode() {
+  try {
+    const appSettings = await settings.get()
+    isDemoTerminal.value = appSettings.node.demo
+  }
+  catch (error) {
+    console.error('Failed to load terminal mode:', error)
   }
 }
 
@@ -94,6 +106,7 @@ function closeTab(tabId: string) {
 
 onMounted(() => {
   checkSecureConnection()
+  loadTerminalMode()
   updateWindowWidth()
   window.addEventListener('resize', updateWindowWidth)
 
@@ -191,6 +204,13 @@ const terminalMainContainerHeight = computed(() => {
 <template>
   <div>
     <AConfigProvider :theme="terminalTheme">
+      <AAlert
+        v-if="isDemoTerminal"
+        class="mb-6"
+        type="info"
+        show-icon
+        :message="$gettext('Demo mode is enabled. This terminal only allows a small set of safe read-only commands.')"
+      />
       <AAlert
         v-if="insecureConnection"
         class="mb-6"

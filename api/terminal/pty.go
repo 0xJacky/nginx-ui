@@ -3,6 +3,7 @@ package terminal
 import (
 	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/0xJacky/Nginx-UI/internal/pty"
+	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"github.com/uozi-tech/cosy/logger"
@@ -21,7 +22,12 @@ func Pty(c *gin.Context) {
 
 	defer ws.Close()
 
-	p, err := pty.NewPipeLine(ws)
+	var p pty.Runner
+	if settings.NodeSettings.Demo {
+		p, err = pty.NewRestrictedPipeline(ws)
+	} else {
+		p, err = pty.NewPipeLine(ws)
+	}
 
 	if err != nil {
 		logger.Error(err)
@@ -39,6 +45,4 @@ func Pty(c *gin.Context) {
 	if err != nil {
 		logger.Error(err)
 	}
-
-	return
 }

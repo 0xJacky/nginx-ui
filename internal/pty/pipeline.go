@@ -27,7 +27,7 @@ type Message struct {
 
 const bufferSize = 2048
 
-func NewPipeLine(conn *websocket.Conn) (p *Pipeline, err error) {
+func NewPipeLine(conn *websocket.Conn) (p Runner, err error) {
 	c := exec.Command(settings.TerminalSettings.StartCmd)
 
 	ptmx, err := pty.StartWithSize(c, &pty.Winsize{Cols: 90, Rows: 60})
