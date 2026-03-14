@@ -180,8 +180,8 @@ importers:
         specifier: ^1.15.9
         version: 1.15.9
       '@vitejs/plugin-legacy':
-        specifier: ^7.2.1
-        version: 7.2.1(terser@5.44.0)(vite@7.3.1(@types/node@25.5.0)(jiti@2.6.1)(less@4.6.4)(terser@5.44.0)(yaml@2.8.2))
+        specifier: ^8.0.0
+        version: 8.0.0(terser@5.44.0)(vite@7.3.1(@types/node@25.5.0)(jiti@2.6.1)(less@4.6.4)(terser@5.44.0)(yaml@2.8.2))
       '@vitejs/plugin-vue':
         specifier: ^6.0.5
         version: 6.0.5(vite@7.3.1(@types/node@25.5.0)(jiti@2.6.1)(less@4.6.4)(terser@5.44.0)(yaml@2.8.2))(vue@3.5.30(typescript@5.9.3))
@@ -2007,12 +2007,12 @@ packages:
     peerDependencies:
       lodash-es: '>=4.17.21'
 
-  '@vitejs/plugin-legacy@7.2.1':
-    resolution: {integrity: sha512-CaXb/y0mlfu7jQRELEJJc2/5w2bX2m1JraARgFnvSB2yfvnCNJVWWlqAo6WjnKoepOwKx8gs0ugJThPLKCOXIg==}
+  '@vitejs/plugin-legacy@8.0.0':
+    resolution: {integrity: sha512-o5BmEuu4N+woyv+yUsiDrMUfMntJ1kEJITUYLd2ELOAETObwkWNFn5GNIQLLGx8liaobIvoXeSRiM/aYVIaeTQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
     peerDependencies:
       terser: ^5.16.0
-      vite: ^7.0.0
+      vite: ^8.0.0
 
   '@vitejs/plugin-vue-jsx@5.1.5':
     resolution: {integrity: sha512-jIAsvHOEtWpslLOI2MeElGFxH7M8pM83BU/Tor4RLyiwH0FM4nUW3xdvbw20EeU9wc5IspQwMq225K3CMnJEpA==}
@@ -2412,11 +2412,6 @@ packages:
 
   babel-plugin-polyfill-corejs2@0.4.16:
     resolution: {integrity: sha512-xaVwwSfebXf0ooE11BJovZYKhFjIvQo7TsyVpETuIeH2JHv0k/T6Y5j22pPTvqYqmpkxdlPAJlyJ0tfOJAoMxw==}
-    peerDependencies:
-      '@babel/core': ^7.4.0 || ^8.0.0-0 <8.0.0
-
-  babel-plugin-polyfill-corejs3@0.13.0:
-    resolution: {integrity: sha512-U+GNwMdSFgzVmfhNm8GJUX88AadB3uo9KpJqS3FaqNIPKgySuvMb+bHPsOmmuWyIcuqZj/pzt1RUIUZns4y2+A==}
     peerDependencies:
       '@babel/core': ^7.4.0 || ^8.0.0-0 <8.0.0
 
@@ -4738,7 +4733,7 @@ packages:
     engines: {node: '>=18'}
 
   xlsx@https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz:
-    resolution: {tarball: https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz}
+    resolution: {integrity: sha512-oLDq3jw7AcLqKWH2AhCpVTZl8mf6X2YReP+Neh0SJUzV/BdZYjth94tG5toiMB1PPrYtxOCfaoUCkvtuH+3AJA==, tarball: https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz}
     version: 0.20.3
     engines: {node: '>=0.8'}
     hasBin: true
@@ -6589,13 +6584,13 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@vitejs/plugin-legacy@7.2.1(terser@5.44.0)(vite@7.3.1(@types/node@25.5.0)(jiti@2.6.1)(less@4.6.4)(terser@5.44.0)(yaml@2.8.2))':
+  '@vitejs/plugin-legacy@8.0.0(terser@5.44.0)(vite@7.3.1(@types/node@25.5.0)(jiti@2.6.1)(less@4.6.4)(terser@5.44.0)(yaml@2.8.2))':
     dependencies:
       '@babel/core': 7.29.0
       '@babel/plugin-transform-dynamic-import': 7.27.1(@babel/core@7.29.0)
       '@babel/plugin-transform-modules-systemjs': 7.29.0(@babel/core@7.29.0)
       '@babel/preset-env': 7.29.0(@babel/core@7.29.0)
-      babel-plugin-polyfill-corejs3: 0.13.0(@babel/core@7.29.0)
+      babel-plugin-polyfill-corejs3: 0.14.1(@babel/core@7.29.0)
       babel-plugin-polyfill-regenerator: 0.6.7(@babel/core@7.29.0)
       browserslist: 4.28.1
       browserslist-to-esbuild: 2.1.1(browserslist@4.28.1)
@@ -7072,14 +7067,6 @@ snapshots:
       '@babel/core': 7.29.0
       '@babel/helper-define-polyfill-provider': 0.6.7(@babel/core@7.29.0)
       semver: 6.3.1
-    transitivePeerDependencies:
-      - supports-color
-
-  babel-plugin-polyfill-corejs3@0.13.0(@babel/core@7.29.0):
-    dependencies:
-      '@babel/core': 7.29.0
-      '@babel/helper-define-polyfill-provider': 0.6.7(@babel/core@7.29.0)
-      core-js-compat: 3.48.0
     transitivePeerDependencies:
       - supports-color
 
