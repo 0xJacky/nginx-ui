@@ -1,6 +1,7 @@
 import type { ProxyTarget } from '@/api/site'
 import type { UpstreamAvailabilityResponse, UpstreamStatus } from '@/api/upstream'
 import upstream from '@/api/upstream'
+import { useWebSocket } from '@/lib/websocket'
 import { useNodeAvailabilityStore } from './nodeAvailability'
 
 // Extended types for multi-node support
@@ -86,7 +87,6 @@ export const useProxyAvailabilityStore = defineStore('proxyAvailability', () => 
 
     try {
       // Create new WebSocket connection
-      const { useWebSocket } = await import('@/lib/websocket')
       const { ws } = useWebSocket(upstream.availabilityWebSocketUrl)
       websocket.value = ws.value!
 
