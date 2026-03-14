@@ -1,8 +1,6 @@
 package cron
 
 import (
-	"time"
-
 	"github.com/0xJacky/Nginx-UI/internal/logrotate"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/go-co-op/gocron/v2"
@@ -17,13 +15,20 @@ func setupLogrotateJob(scheduler gocron.Scheduler) {
 	if !settings.LogrotateSettings.Enabled {
 		return
 	}
+	if !settings.LogrotateSettings.HasValidInterval() {
+		logger.Warnf("Skip logrotate job: %s, got %d",
+			settings.InvalidLogrotateIntervalMessage, settings.LogrotateSettings.Interval)
+		logrotateJobInstance = nil
+		return
+	}
 	var err error
 	logrotateJobInstance, err = scheduler.NewJob(
-		gocron.DurationJob(time.Duration(settings.LogrotateSettings.Interval)*time.Minute),
+		gocron.DurationJob(settings.LogrotateSettings.GetInterval()),
 		gocron.NewTask(logrotate.Exec),
 		gocron.WithSingletonMode(gocron.LimitModeWait))
 	if err != nil {
-		logger.Fatalf("LogRotate Job: Err: %v\n", err)
+		logger.Errorf("LogRotate Job: Err: %v", err)
+		logrotateJobInstance = nil
 	}
 }
 
