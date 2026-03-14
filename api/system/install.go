@@ -74,11 +74,11 @@ func InstallNginxUI(c *gin.Context) {
 		return
 	}
 
-	cSettings.AppSettings.JwtSecret = uuid.New().String()
-	settings.NodeSettings.Secret = uuid.New().String()
-	settings.CertSettings.Email = json.Email
-
-	err := settings.Save()
+	err := settings.Update(func() {
+		cSettings.AppSettings.JwtSecret = uuid.New().String()
+		settings.NodeSettings.Secret = uuid.New().String()
+		settings.CertSettings.Email = json.Email
+	})
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

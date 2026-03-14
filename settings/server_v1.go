@@ -97,7 +97,6 @@ func mergeStructs(src, dst interface{}) {
 			dstField.Set(srcField)
 		}
 	}
-	return
 }
 
 func migrate(confPath string) {
@@ -191,7 +190,7 @@ func migrate(confPath string) {
 		}
 	}
 
-	err = Conf.SaveTo(confPath)
+	err = saveConfAtomically(Conf, confPath)
 	if err != nil {
 		logger.Fatalf("Fail to save the migrated settings: %v", err)
 		return

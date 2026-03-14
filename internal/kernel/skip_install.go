@@ -23,18 +23,24 @@ type predefinedUser struct {
 func skipInstall() {
 	logger.Info("Skip installation mode enabled")
 
-	if cSettings.AppSettings.JwtSecret == "" {
-		cSettings.AppSettings.JwtSecret = uuid.New().String()
-	}
+	var nodeSecret string
 
-	if settings.NodeSettings.Secret == "" {
-		settings.NodeSettings.Secret = uuid.New().String()
-		logger.Infof("Secret: %s", settings.NodeSettings.Secret)
-	}
+	err := settings.Update(func() {
+		if cSettings.AppSettings.JwtSecret == "" {
+			cSettings.AppSettings.JwtSecret = uuid.New().String()
+		}
 
-	err := settings.Save()
+		if settings.NodeSettings.Secret == "" {
+			nodeSecret = uuid.New().String()
+			settings.NodeSettings.Secret = nodeSecret
+		}
+	})
 	if err != nil {
 		logger.Fatal(err)
+	}
+
+	if nodeSecret != "" {
+		logger.Infof("Secret: %s", nodeSecret)
 	}
 }
 

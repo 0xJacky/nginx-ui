@@ -12,9 +12,9 @@ import (
 
 // EnableAdvancedIndexing enables advanced indexing for nginx logs
 func EnableAdvancedIndexing(c *gin.Context) {
-	settings.NginxLogSettings.IndexingEnabled = true
-
-	err := settings.Save()
+	err := settings.Update(func() {
+		settings.NginxLogSettings.IndexingEnabled = true
+	})
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
@@ -33,9 +33,9 @@ func EnableAdvancedIndexing(c *gin.Context) {
 
 // DisableAdvancedIndexing disables advanced indexing for nginx logs
 func DisableAdvancedIndexing(c *gin.Context) {
-	settings.NginxLogSettings.IndexingEnabled = false
-
-	err := settings.Save()
+	err := settings.Update(func() {
+		settings.NginxLogSettings.IndexingEnabled = false
+	})
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

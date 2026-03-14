@@ -2,7 +2,9 @@ package settings
 
 import (
 	"log"
+	"os"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/helper"
@@ -10,12 +12,14 @@ import (
 	"github.com/elliotchance/orderedmap/v3"
 	"github.com/spf13/cast"
 	"github.com/uozi-tech/cosy/settings"
+	"gopkg.in/ini.v1"
 )
 
 var (
 	buildTime    string
 	LastModified string
 	EnvPrefix    = "NGINX_UI_"
+	settingsMu   sync.Mutex
 )
 
 var sections = orderedmap.NewOrderedMap[string, any]()
@@ -100,16 +104,91 @@ func Init(confPath string) {
 	}
 }
 
+func Update(fn func()) (err error) {
+	settingsMu.Lock()
+	defer settingsMu.Unlock()
+
+	fn()
+
+	return saveLocked()
+}
+
 func Save() (err error) {
-	// fix unable to save empty slice
+	settingsMu.Lock()
+	defer settingsMu.Unlock()
+
+	return saveLocked()
+}
+
+func saveLocked() (err error) {
+	// "fix" unable to save empty slice
 	if len(CertSettings.RecursiveNameservers) == 0 {
 		settings.Conf.Section("cert").Key("RecursiveNameservers").SetValue("")
 	}
 
-	err = settings.Save()
+	settings.ReflectFrom("app", settings.AppSettings)
+	settings.ReflectFrom("server", settings.ServerSettings)
+	settings.ReflectFrom("log", settings.LogSettings)
+	settings.ReflectFrom("sls", settings.SLSSettings)
+
+	for name, ptr := range sections.AllFromFront() {
+		settings.ReflectFrom(name, ptr)
+	}
+
+	err = saveConfAtomically(settings.Conf, settings.ConfPath)
 	if err != nil {
 		return
 	}
+
+	err = settings.Reload()
+	if err != nil {
+		return
+	}
+
+	err = settings.MapTo("app", settings.AppSettings)
+	if err != nil {
+		return
+	}
+
+	err = settings.MapTo("server", settings.ServerSettings)
+	if err != nil {
+		return
+	}
+
+	err = settings.MapTo("log", settings.LogSettings)
+	if err != nil {
+		return
+	}
+
+	err = settings.MapTo("sls", settings.SLSSettings)
+	if err != nil {
+		return
+	}
+
+	for name, ptr := range sections.AllFromFront() {
+		err = settings.MapTo(name, ptr)
+		if err != nil {
+			return
+		}
+	}
+
+	return
+}
+
+func saveConfAtomically(conf *ini.File, confPath string) (err error) {
+	tmpPath := confPath + ".tmp"
+
+	err = conf.SaveTo(tmpPath)
+	if err != nil {
+		return
+	}
+
+	err = os.Rename(tmpPath, confPath)
+	if err != nil {
+		_ = os.Remove(tmpPath)
+		return
+	}
+
 	return
 }
 

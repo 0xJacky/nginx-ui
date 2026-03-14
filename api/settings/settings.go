@@ -123,18 +123,18 @@ func SaveSettings(c *gin.Context) {
 		return
 	}
 
-	cSettings.ProtectedFill(cSettings.AppSettings, &json.App)
-	cSettings.ProtectedFill(cSettings.ServerSettings, &json.Server)
-	cSettings.ProtectedFill(settings.AuthSettings, &json.Auth)
-	cSettings.ProtectedFill(settings.CertSettings, &json.Cert)
-	cSettings.ProtectedFill(settings.HTTPSettings, &json.Http)
-	cSettings.ProtectedFill(settings.NodeSettings, &json.Node)
-	cSettings.ProtectedFill(settings.OpenAISettings, &json.Openai)
-	cSettings.ProtectedFill(settings.LogrotateSettings, &json.Logrotate)
-	cSettings.ProtectedFill(settings.NginxSettings, &json.Nginx)
-	cSettings.ProtectedFill(settings.OIDCSettings, &json.Oidc)
-
-	err := settings.Save()
+	err := settings.Update(func() {
+		cSettings.ProtectedFill(cSettings.AppSettings, &json.App)
+		cSettings.ProtectedFill(cSettings.ServerSettings, &json.Server)
+		cSettings.ProtectedFill(settings.AuthSettings, &json.Auth)
+		cSettings.ProtectedFill(settings.CertSettings, &json.Cert)
+		cSettings.ProtectedFill(settings.HTTPSettings, &json.Http)
+		cSettings.ProtectedFill(settings.NodeSettings, &json.Node)
+		cSettings.ProtectedFill(settings.OpenAISettings, &json.Openai)
+		cSettings.ProtectedFill(settings.LogrotateSettings, &json.Logrotate)
+		cSettings.ProtectedFill(settings.NginxSettings, &json.Nginx)
+		cSettings.ProtectedFill(settings.OIDCSettings, &json.Oidc)
+	})
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

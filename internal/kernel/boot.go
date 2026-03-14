@@ -133,9 +133,9 @@ func InitNodeSecret() {
 	if settings.NodeSettings.Secret == "" {
 		logger.Info("Secret is empty, generating...")
 		uuidStr := uuid.New().String()
-		settings.NodeSettings.Secret = uuidStr
-
-		err := settings.Save()
+		err := settings.Update(func() {
+			settings.NodeSettings.Secret = uuidStr
+		})
 		if err != nil {
 			logger.Error("Error save settings", err)
 		}
@@ -153,9 +153,11 @@ func InitCryptoSecret() {
 			return
 		}
 
-		settings.CryptoSettings.Secret = hex.EncodeToString(key)
+		secret := hex.EncodeToString(key)
 
-		err := settings.Save()
+		err := settings.Update(func() {
+			settings.CryptoSettings.Secret = secret
+		})
 		if err != nil {
 			logger.Error("Error save settings", err)
 		}
