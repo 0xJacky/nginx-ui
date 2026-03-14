@@ -3,11 +3,11 @@ package nginx_log
 import (
 	"encoding/json"
 	"io"
-	"net/http"
 	"os"
 	"runtime"
 
 	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
@@ -171,9 +171,7 @@ func handleLogControl(ws *websocket.Conn, controlChan chan controlStruct, errCha
 // Log handles websocket connection for real-time log viewing
 func Log(c *gin.Context) {
 	var upGrader = websocket.Upgrader{
-		CheckOrigin: func(r *http.Request) bool {
-			return true
-		},
+		CheckOrigin: middleware.CheckWebSocketOrigin,
 	}
 	// upgrade http to websocket
 	ws, err := upGrader.Upgrade(c.Writer, c.Request, nil)

@@ -6,30 +6,48 @@ import user from '@/api/user'
 export const useUserStore = defineStore('user', () => {
   const cookies = useCookies(['nginx-ui'])
 
+  function getCookieOptions(maxAge: number) {
+    return {
+      path: '/',
+      maxAge,
+      sameSite: 'lax' as const,
+      secure: window.location.protocol === 'https:',
+    }
+  }
+
   const token = ref('')
   const shortToken = ref('')
 
   watch(token, v => {
-    cookies.set('token', v, { maxAge: 86400 })
+    if (v)
+      cookies.set('token', v, getCookieOptions(86400))
+    else
+      cookies.remove('token', { path: '/' })
   })
 
   watch(shortToken, v => {
-    cookies.set('short_token', v, { maxAge: 86400 })
+    if (v)
+      cookies.set('short_token', v, getCookieOptions(86400))
+    else
+      cookies.remove('short_token', { path: '/' })
   })
 
   const secureSessionId = ref('')
 
   watch(secureSessionId, v => {
-    cookies.set('secure_session_id', v, { maxAge: 60 * 3 })
+    if (v)
+      cookies.set('secure_session_id', v, getCookieOptions(60 * 3))
+    else
+      cookies.remove('secure_session_id', { path: '/' })
   })
 
   function handleCookieChange({ name, value }: CookieChangeOptions) {
     if (name === 'token')
-      token.value = value
+      token.value = value || ''
     else if (name === 'short_token')
-      shortToken.value = value
+      shortToken.value = value || ''
     else if (name === 'secure_session_id')
-      secureSessionId.value = value
+      secureSessionId.value = value || ''
   }
 
   cookies.addChangeListener(handleCookieChange)

@@ -1,9 +1,8 @@
 package certificate
 
 import (
-	"net/http"
-
 	"github.com/0xJacky/Nginx-UI/internal/cert"
+	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/0xJacky/Nginx-UI/internal/translation"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
@@ -41,9 +40,7 @@ func RevokeCert(c *gin.Context) {
 	id := cast.ToUint64(c.Param("id"))
 
 	var upGrader = websocket.Upgrader{
-		CheckOrigin: func(r *http.Request) bool {
-			return true
-		},
+		CheckOrigin: middleware.CheckWebSocketOrigin,
 	}
 
 	// upgrade http to websocket

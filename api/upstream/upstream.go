@@ -8,6 +8,7 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/kernel"
+	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/0xJacky/Nginx-UI/internal/upstream"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
@@ -43,9 +44,7 @@ func GetUpstreamDefinitions(c *gin.Context) {
 // AvailabilityWebSocket handles WebSocket connections for real-time availability monitoring
 func AvailabilityWebSocket(c *gin.Context) {
 	var upGrader = websocket.Upgrader{
-		CheckOrigin: func(r *http.Request) bool {
-			return true
-		},
+		CheckOrigin: middleware.CheckWebSocketOrigin,
 	}
 
 	// Upgrade HTTP to WebSocket

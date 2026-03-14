@@ -1,10 +1,10 @@
 package sites
 
 import (
-	"net/http"
 	"sync"
 
 	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/0xJacky/Nginx-UI/internal/sitecheck"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
@@ -37,9 +37,7 @@ type PongMessage struct {
 }
 
 var upgrader = websocket.Upgrader{
-	CheckOrigin: func(r *http.Request) bool {
-		return true
-	},
+	CheckOrigin: middleware.CheckWebSocketOrigin,
 }
 
 // WSManager WebSocket connection manager

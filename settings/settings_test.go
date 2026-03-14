@@ -63,6 +63,7 @@ func TestSetup(t *testing.T) {
 	// Http
 	_ = os.Setenv("NGINX_UI_HTTP_GITHUB_PROXY", "http://proxy.example.com")
 	_ = os.Setenv("NGINX_UI_HTTP_INSECURE_SKIP_VERIFY", "true")
+	_ = os.Setenv("NGINX_UI_HTTP_WEBSOCKET_TRUSTED_ORIGINS", "http://localhost:5173,https://admin.example.com")
 
 	// Logrotate
 	_ = os.Setenv("NGINX_UI_LOGROTATE_ENABLED", "true")
@@ -155,6 +156,7 @@ func TestSetup(t *testing.T) {
 	// Http
 	assert.Equal(t, "http://proxy.example.com", HTTPSettings.GithubProxy)
 	assert.Equal(t, true, HTTPSettings.InsecureSkipVerify)
+	assert.Equal(t, []string{"http://localhost:5173", "https://admin.example.com"}, HTTPSettings.WebSocketTrustedOrigins)
 
 	// Logrotate
 	assert.Equal(t, true, LogrotateSettings.Enabled)

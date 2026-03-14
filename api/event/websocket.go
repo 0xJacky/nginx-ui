@@ -3,13 +3,13 @@ package event
 import (
 	"context"
 	"encoding/json"
-	"net/http"
 	"sync"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/event"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/kernel"
+	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"github.com/uozi-tech/cosy/logger"
@@ -133,9 +133,7 @@ func (h *Hub) run() {
 
 // WebSocket upgrader configuration
 var upgrader = websocket.Upgrader{
-	CheckOrigin: func(r *http.Request) bool {
-		return true
-	},
+	CheckOrigin:     middleware.CheckWebSocketOrigin,
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
 }

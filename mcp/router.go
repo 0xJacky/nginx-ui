@@ -11,7 +11,7 @@ func InitRouter(r *gin.Engine) {
 		func(c *gin.Context) {
 			mcp.ServeHTTP(c)
 		})
-	r.Any("/mcp_message", middleware.IPWhiteList(),
+	r.Any("/mcp_message", middleware.IPWhiteList(), middleware.AuthRequired(),
 		func(c *gin.Context) {
 			mcp.ServeHTTP(c)
 		})
