@@ -71,7 +71,7 @@ jobs:
           pnpm build
 
       - name: Archive app artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: app-dist
           path: |
@@ -176,7 +176,7 @@ jobs:
               go-${{ runner.os }}-${{ runner.arch }}-${{ env.CACHE_NAME }}-
 
       - name: Download app artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: app-dist
           path: frontend-dist
@@ -255,7 +255,7 @@ jobs:
           go build -trimpath -tags=jsoniter -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/settings.buildTime=$(date +%s)'" -o dist/$BINARY_NAME -v main.go
 
       - name: Archive backend artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.ARTIFACT }}
           path: dist/${{ env.BINARY_NAME }}
@@ -347,7 +347,7 @@ jobs:
               go-${{ runner.os }}-${{ runner.arch }}-${{ env.CACHE_NAME }}-
 
       - name: Download app artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: app-dist
           path: frontend-dist
@@ -399,7 +399,7 @@ jobs:
           go build -trimpath -tags=jsoniter -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/settings.buildTime=$(date +%s)'" -o dist/$BINARY_NAME -v main.go
 
       - name: Archive backend artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.ARTIFACT }}
           path: dist/${{ env.BINARY_NAME }}
@@ -476,7 +476,7 @@ jobs:
             go-${{ runner.os }}-${{ runner.arch }}-${{ env.CACHE_NAME }}-
 
       - name: Download app artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: app-dist
           path: frontend-dist
@@ -502,7 +502,7 @@ jobs:
           go build -trimpath -tags=jsoniter -ldflags "-w -X 'github.com/0xJacky/Nginx-UI/settings.buildTime=$(date +%s)'" -o dist/$BINARY_NAME -v main.go
 
       - name: Archive backend artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.ARTIFACT }}
           path: dist/${{ env.BINARY_NAME }}
@@ -562,7 +562,7 @@ jobs:
             type=raw,value=latest,enable=${{ github.event_name == 'release' && !github.event.release.prerelease }}
 
       - name: Download artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           path: ./dist
 
