@@ -186,7 +186,7 @@ export function useTerminalSession() {
   }
 
   const hasAnyConnectionLoss = computed(() => {
-    return Array.from(sessions.values()).some(session => session.lostConnection)
+    return [...sessions.values()].some(session => session.lostConnection)
   })
 
   return {

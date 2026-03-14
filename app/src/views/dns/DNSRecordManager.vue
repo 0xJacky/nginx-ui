@@ -55,7 +55,7 @@ const contentSuggestions = computed(() => {
       unique.add(record.content)
     }
   })
-  return Array.from(unique)
+  return [...unique]
 })
 
 const pageTitle = computed(() => {

@@ -116,7 +116,7 @@ export function useIndexProgress() {
   }
 
   function updateGlobalProgress() {
-    const activeFiles = Array.from(progressMap.value.values())
+    const activeFiles = [...progressMap.value.values()]
     globalProgress.value.totalFiles = activeFiles.length
     globalProgress.value.completedFiles = activeFiles.filter(p => p.status === 'completed').length
 

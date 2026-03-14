@@ -15,7 +15,6 @@ import (
 
 const ExpiredTime = 24 * time.Hour
 
-
 type JWTClaims struct {
 	Name   string `json:"name"`
 	UserID uint64 `json:"user_id"`
@@ -35,10 +34,55 @@ func GetUser(name string) (user *model.User, err error) {
 func DeleteToken(token string) {
 	// Remove from cache first
 	InvalidateTokenCache(token)
-	
+
 	// Remove from database
 	q := query.AuthToken
 	_, _ = q.Where(q.Token.Eq(token)).Delete()
+}
+
+func DeleteUserTokens(userID uint64) {
+	if userID == 0 {
+		return
+	}
+
+	InvalidateUserCache(userID)
+
+	db := model.UseDB()
+	if db == nil {
+		return
+	}
+
+	var authTokens []model.AuthToken
+	if err := db.Where("user_id = ?", userID).Find(&authTokens).Error; err != nil {
+		logger.Error(err)
+		return
+	}
+
+	for _, authToken := range authTokens {
+		if authToken.Token != "" {
+			InvalidateTokenCache(authToken.Token)
+		}
+	}
+
+	if err := db.Where("user_id = ?", userID).Delete(&model.AuthToken{}).Error; err != nil {
+		logger.Error(err)
+	}
+}
+
+func getActiveUserByID(userID uint64) (*model.User, bool) {
+	u := query.User
+	user, err := u.FirstByID(userID)
+	if err != nil {
+		return nil, false
+	}
+
+	if !user.Status {
+		DeleteUserTokens(user.ID)
+		return nil, false
+	}
+
+	CacheUser(user)
+	return user, true
 }
 
 func GetTokenUser(token string) (*model.User, bool) {
@@ -50,19 +94,7 @@ func GetTokenUser(token string) (*model.User, bool) {
 
 	// Try to get from cache first
 	if tokenData, found := GetCachedTokenData(token); found {
-		// Get user from cache or database
-		if user, userFound := GetCachedUser(tokenData.UserID); userFound {
-			return user, true
-		}
-		
-		// User not in cache, load from database and cache it
-		u := query.User
-		user, err := u.FirstByID(tokenData.UserID)
-		if err == nil {
-			CacheUser(user)
-			return user, true
-		}
-		return nil, false
+		return getActiveUserByID(tokenData.UserID)
 	}
 
 	// Not in cache, load from database
@@ -80,14 +112,7 @@ func GetTokenUser(token string) (*model.User, bool) {
 	// Cache the token data
 	CacheToken(authToken)
 
-	// Get user and cache it
-	u := query.User
-	user, err := u.FirstByID(authToken.UserID)
-	if err == nil {
-		CacheUser(user)
-		return user, true
-	}
-	return user, err == nil
+	return getActiveUserByID(authToken.UserID)
 }
 
 func GetTokenUserByShortToken(shortToken string) (*model.User, bool) {
@@ -97,19 +122,7 @@ func GetTokenUserByShortToken(shortToken string) (*model.User, bool) {
 
 	// Try to get from cache first
 	if tokenData, found := GetCachedShortTokenData(shortToken); found {
-		// Get user from cache or database
-		if user, userFound := GetCachedUser(tokenData.UserID); userFound {
-			return user, true
-		}
-		
-		// User not in cache, load from database and cache it
-		u := query.User
-		user, err := u.FirstByID(tokenData.UserID)
-		if err == nil {
-			CacheUser(user)
-			return user, true
-		}
-		return nil, false
+		return getActiveUserByID(tokenData.UserID)
 	}
 
 	// Not in cache, load from database
@@ -128,14 +141,7 @@ func GetTokenUserByShortToken(shortToken string) (*model.User, bool) {
 	// Cache the token data
 	CacheToken(&authToken)
 
-	// Get user and cache it
-	u := query.User
-	user, err := u.FirstByID(authToken.UserID)
-	if err == nil {
-		CacheUser(user)
-		return user, true
-	}
-	return user, err == nil
+	return getActiveUserByID(authToken.UserID)
 }
 
 type AccessTokenPayload struct {
@@ -213,4 +219,3 @@ func ValidateJWT(tokenStr string) (claims *JWTClaims, err error) {
 	}
 	return nil, ErrInvalidClaimsType
 }
-

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { ApexOptions } from 'apexcharts'
 import type { Ref } from 'vue'
 import type { Series } from '@/components/Chart/types'
 import { storeToRefs } from 'pinia'
@@ -20,7 +21,7 @@ function fontColor() {
 
 const chart: Ref<ApexCharts | undefined> = ref()
 
-let chartOptions = {
+let chartOptions: ApexOptions = {
   chart: {
     type: 'area',
     zoom: {

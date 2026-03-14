@@ -611,7 +611,7 @@ onMounted(async () => {
 
   // Subscribe to index ready notifications
   indexReadySubscriptionId = websocketEventBus.subscribe('nginx_log_index_ready', data => {
-    setTimeout(() => handleIndexReadyNotification(data), 1000)
+    setTimeout(handleIndexReadyNotification, 1000, data)
   })
 
   indexingStatus.value = 'indexing'

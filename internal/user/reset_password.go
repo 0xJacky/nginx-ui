@@ -82,8 +82,7 @@ func ResetInitUserPassword(ctx context.Context, command *cli.Command) error {
 		return err
 	}
 
-	a := query.AuthToken
-	_, _ = a.Where(a.UserID.Eq(1)).Delete()
+	DeleteUserTokens(1)
 
 	logger.Infof("User: %s, Password: %s", user.Name, pwd)
 	return nil

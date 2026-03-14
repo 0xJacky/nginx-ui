@@ -178,7 +178,7 @@ function handleDrop(e: DragEvent, type: 'certificate' | 'key') {
     isDragOverKey.value = false
   }
 
-  const files = Array.from(e.dataTransfer?.files || [])
+  const files = [...e.dataTransfer?.files || []]
   if (files.length > 0) {
     const file = files[0]
     const reader = new FileReader()

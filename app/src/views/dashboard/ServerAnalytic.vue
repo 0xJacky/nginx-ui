@@ -78,12 +78,12 @@ onMounted(() => {
     net.last_recv = r.network.init.bytesRecv
     net.last_sent = r.network.init.bytesSent
 
-    cpu_analytic_series[0].data = cpu_analytic_series[0].data.concat(r.cpu.user)
-    cpu_analytic_series[1].data = cpu_analytic_series[1].data.concat(r.cpu.total)
-    net_analytic[0].data = net_analytic[0].data.concat(r.network.bytesRecv)
-    net_analytic[1].data = net_analytic[1].data.concat(r.network.bytesSent)
-    disk_io_analytic[0].data = disk_io_analytic[0].data.concat(r.disk_io.writes)
-    disk_io_analytic[1].data = disk_io_analytic[1].data.concat(r.disk_io.reads)
+    cpu_analytic_series[0].data = [...cpu_analytic_series[0].data, ...r.cpu.user]
+    cpu_analytic_series[1].data = [...cpu_analytic_series[1].data, ...r.cpu.total]
+    net_analytic[0].data = [...net_analytic[0].data, ...r.network.bytesRecv]
+    net_analytic[1].data = [...net_analytic[1].data, ...r.network.bytesSent]
+    disk_io_analytic[0].data = [...disk_io_analytic[0].data, ...r.disk_io.writes]
+    disk_io_analytic[1].data = [...disk_io_analytic[1].data, ...r.disk_io.reads]
 
     const { ws } = useWebSocket(analytic.serverWebSocketUrl)
     websocket = ws.value!

@@ -117,7 +117,7 @@ export const useLLMStore = defineStore('llm', () => {
 
   // Update the last assistant message content (for streaming)
   function updateLastAssistantMessage(content: string) {
-    const lastMessage = messages.value[messages.value.length - 1]
+    const lastMessage = messages.value.at(-1)
     if (lastMessage && lastMessage.role === 'assistant') {
       lastMessage.content = content
     }
@@ -374,7 +374,8 @@ export const useLLMStore = defineStore('llm', () => {
     catch (error) {
       console.error('Chat request failed:', error)
       // Remove the empty assistant message on error
-      if (messages.value.length > 0 && messages.value[messages.value.length - 1].content === '') {
+      const lastMessage = messages.value.at(-1)
+      if (lastMessage?.content === '') {
         messages.value.pop()
       }
     }

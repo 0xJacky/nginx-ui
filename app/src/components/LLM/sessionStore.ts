@@ -18,7 +18,7 @@ export const useLLMSessionStore = defineStore('llm-session', () => {
   })
 
   const sortedSessions = computed(() => {
-    return [...sessions.value].sort((a, b) => {
+    return sessions.value.toSorted((a, b) => {
       return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
     })
   })

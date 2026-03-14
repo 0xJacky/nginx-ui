@@ -58,9 +58,8 @@ function setContent() {
     }
     else if (props.records.length === 2) {
       // Compare two records - sort by time
-      const sorted = [...props.records].sort((a, b) =>
-        new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),
-      )
+      const sorted = props.records.toSorted((a, b) =>
+        new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
       originalText.value = sorted[0]?.content || ''
       modifiedText.value = sorted[1]?.content || ''
       originalTitle.value = `${sorted[0]?.name || ''} (${formatDateTime(sorted[0]?.created_at || '')})`

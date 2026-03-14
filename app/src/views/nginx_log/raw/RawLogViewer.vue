@@ -134,7 +134,7 @@ function addLog(data: string, prepend: boolean = false) {
   // Prepend: keep viewport stable by compensating with added lines
   if (prepend) {
     const parts = data.split('\n')
-    if (parts.length && parts[parts.length - 1] === '')
+    if (parts.length && parts.at(-1) === '')
       parts.pop()
 
     const addedCount = parts.length
@@ -142,7 +142,7 @@ function addLog(data: string, prepend: boolean = false) {
       return
 
     const prevScrollTop = elem?.scrollTop ?? 0
-    lines.value = parts.concat(lines.value)
+    lines.value = [...parts, ...lines.value]
     nextTick(() => {
       if (elem)
         elem.scrollTop = prevScrollTop + addedCount * lineHeight.value

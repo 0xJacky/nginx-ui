@@ -45,7 +45,7 @@ const recordOptions = computed(() => {
     })
   })
 
-  return Array.from(opts.values())
+  return [...opts.values()]
 })
 
 function filterRecordOption(input: string, option?: { label: string, value: string }) {

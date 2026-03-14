@@ -131,7 +131,7 @@ export const useWebSocketEventBusStore = defineStore('websocketEventBus', () => 
   }
 
   // Get all subscriptions for debugging
-  const allSubscriptions = computed(() => Array.from(subscriptions.value.values()))
+  const allSubscriptions = computed(() => [...subscriptions.value.values()])
 
   return {
     // State (readonly)

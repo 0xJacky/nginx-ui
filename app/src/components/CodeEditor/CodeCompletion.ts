@@ -159,7 +159,7 @@ function useCodeCompletion() {
   }
 
   function checkWordBoundary(beforeCursor: string, afterCursor: string): boolean {
-    if (afterCursor.match(/^\w/) && !beforeCursor.endsWith('{')) {
+    if (/^\w/.test(afterCursor) && !beforeCursor.endsWith('{')) {
       debug('Skipping completion: cursor in middle of word')
       return false
     }

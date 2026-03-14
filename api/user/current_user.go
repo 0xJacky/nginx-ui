@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/0xJacky/Nginx-UI/api"
+	internalUser "github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
@@ -33,6 +34,7 @@ func UpdateCurrentUser(c *gin.Context) {
 				return
 			}
 
+			internalUser.InvalidateUserCache(user.ID)
 			c.JSON(http.StatusOK, user)
 		})
 }
@@ -70,6 +72,7 @@ func UpdateCurrentUserPassword(c *gin.Context) {
 		return
 	}
 
+	internalUser.DeleteUserTokens(user.ID)
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",
 	})
@@ -96,6 +99,7 @@ func UpdateCurrentUserLanguage(c *gin.Context) {
 		return
 	}
 
+	internalUser.InvalidateUserCache(user.ID)
 	c.JSON(http.StatusOK, gin.H{
 		"language": json.Language,
 	})

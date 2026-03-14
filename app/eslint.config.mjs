@@ -5,7 +5,10 @@ import autoImport from './.eslint-auto-import.mjs'
 export default createConfig(
   {
     stylistic: true,
-    ignores: ['**/version.json', 'tsconfig.json', 'tsconfig.node.json', '.eslint-auto-import.mjs', '**/china.json', '**/world.json'],
+    ignores: ['**/*.md', '**/version.json', 'tsconfig.json', 'tsconfig.node.json', '.eslint-auto-import.mjs', '**/china.json', '**/world.json'],
+    plugins: {
+      sonarjs,
+    },
     languageOptions: {
       globals: {
         ...autoImport.globals,
@@ -15,7 +18,6 @@ export default createConfig(
       },
     },
   },
-  sonarjs.configs.recommended,
   {
     name: '@nginx-ui/eslint-config',
     rules: {
@@ -65,6 +67,8 @@ export default createConfig(
       'sonarjs/no-nested-template-literals': 'off',
       'sonarjs/pseudo-random': 'warn',
       'sonarjs/no-nested-functions': 'off',
+      'sonarjs/unused-import': 'off',
+      'e18e/prefer-static-regex': 'off',
 
       'eslint-comments/no-unlimited-disable': 'off',
 
