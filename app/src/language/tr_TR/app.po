@@ -109,7 +109,7 @@ msgstr "{label} panoya kopyalandı"
 msgid "* Includes nodes from group %{groupName} and manually selected nodes"
 msgstr "* %{groupName} grubundan düğümler ve manuel olarak seçilen düğümler içerir"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:167
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:166
 msgid ""
 "* Index files are stored in the \"log-index\" directory within your Nginx "
 "UI config path by default."
@@ -117,7 +117,7 @@ msgstr ""
 "* Dizin dosyaları varsayılan olarak NGINX UI yapılandırma yolunuzdaki "
 "\"log-index\" dizininde saklanır."
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:217
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:215
 msgid ""
 "* Performance metrics measured on Apple M2 Pro (12-core) with 32GB RAM. "
 "Actual performance may vary based on your hardware configuration."
@@ -130,15 +130,21 @@ msgstr ""
 msgid "%{start}-%{end} of %{total} items"
 msgstr "%{total} öğenin %{start}-%{end} arası"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:49
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:48
 msgid "1 core minimum"
 msgstr "Minimum 1 çekirdek"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:55
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:338
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:508
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:632
+msgid "192.168.1.1"
+msgstr ""
+
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:54
 msgid "1GB RAM minimum"
 msgstr "En az 1 GB RAM"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:50
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:49
 msgid "2+ cores recommended"
 msgstr "2+ çekirdek önerilir"
 
@@ -155,7 +161,7 @@ msgstr "İki aşamalı kimlik doğrulaması(2FA)"
 msgid "2FA Settings"
 msgstr "2FA Ayarları"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:56
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:55
 msgid "4GB+ RAM recommended"
 msgstr "4 GB RAM veya daha fazlası önerilir"
 
@@ -189,9 +195,9 @@ msgstr "Eylem"
 #: src/views/certificate/ACMEUser.vue:131
 #: src/views/certificate/CertificateList/certColumns.tsx:92
 #: src/views/config/configColumns.tsx:51
-#: src/views/dns/components/DNSRecordTable.vue:41
+#: src/views/dns/components/DNSRecordTable.vue:42
 #: src/views/dns/DDNSManager.vue:91 src/views/dns/DNSCredential.vue:71
-#: src/views/dns/DNSDomainList.vue:211 src/views/namespace/columns.ts:97
+#: src/views/dns/DNSDomainList.vue:217 src/views/namespace/columns.ts:97
 #: src/views/nginx_log/NginxLogList.vue:338 src/views/node/nodeColumns.tsx:96
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:85
@@ -245,7 +251,7 @@ msgstr "Başlık Ekle"
 msgid "Add Location"
 msgstr "Konum ekle"
 
-#: src/views/dns/DNSRecordManager.vue:171
+#: src/views/dns/DNSRecordManager.vue:176
 msgid "Add Record"
 msgstr "Kayıt Ekle"
 
@@ -253,7 +259,7 @@ msgstr "Kayıt Ekle"
 msgid "Add Server"
 msgstr "Sunucu Ekle"
 
-#: src/routes/modules/sites.ts:26 src/views/site/site_add/SiteAdd.vue:74
+#: src/routes/modules/sites.ts:26 src/views/site/site_add/SiteAdd.vue:163
 msgid "Add Site"
 msgstr "Site Ekle"
 
@@ -269,11 +275,11 @@ msgstr "Upstream ekle"
 msgid "Added successfully"
 msgstr "Başarıyla eklendi"
 
-#: src/views/dns/components/DNSChallenge.vue:98
+#: src/views/dns/components/DNSChallenge.vue:101
 msgid "Additional"
 msgstr "İlave bilgi"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:107
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:113
 #: src/views/stream/components/StreamEditor.vue:80
 msgid "Advance Mode"
 msgstr "Gelişmiş Mod"
@@ -286,17 +292,17 @@ msgstr "Gelişmiş indeksleme etkinleştirildi ancak yeniden oluşturma başlat�
 msgid "Advanced indexing enabled successfully"
 msgstr "Gelişmiş indeksleme başarıyla etkinleştirildi"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:294
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:292
 msgid "Advanced log indexing features are free and open source for all users"
 msgstr ""
 "Gelişmiş log indeksleme özellikleri tüm kullanıcılar için ücretsiz ve açık "
 "kaynaklıdır"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:81
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:80
 msgid "Advanced memory pooling system"
 msgstr "Gelişmiş bellek havuzu sistemi"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:242
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:240
 msgid "Advanced search & filtering"
 msgstr "Gelişmiş arama ve filtreleme"
 
@@ -355,7 +361,7 @@ msgstr ""
 msgid "API Base Url"
 msgstr "API Temel Bağlantı Adresi"
 
-#: src/views/dns/components/DNSChallenge.vue:71
+#: src/views/dns/components/DNSChallenge.vue:74
 msgid "API Document"
 msgstr "API Dökümanı"
 
@@ -391,7 +397,7 @@ msgstr "Bu yasaklı IP'yi hemen sileceğinizden emin misiniz?"
 msgid "Are you sure to delete this passkey immediately?"
 msgstr "Bu geçiş anahtarını hemen silmek istediğinizden emin misiniz?"
 
-#: src/views/dns/components/DNSRecordTable.vue:90
+#: src/views/dns/components/DNSRecordTable.vue:103
 msgid "Are you sure to delete this record?"
 msgstr "Bu kaydı silmek istediğinizden emin misiniz?"
 
@@ -427,7 +433,7 @@ msgstr ""
 "Aşağıdaki senkronizasyon düğümlerinde Nginx'i yeniden yüklemek "
 "istediğinizden emin misiniz?"
 
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:100
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:122
 msgid "Are you sure you want to remove this directive?"
 msgstr "Bu yönergeyi kaldırmak istediğinizden emin misiniz?"
 
@@ -457,7 +463,7 @@ msgstr "Artan"
 msgid "Assistant"
 msgstr "Asistan"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:61
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:60
 msgid "At least 20GB available disk space"
 msgstr "En az 20 GB kullanılabilir disk alanı"
 
@@ -477,7 +483,7 @@ msgstr "Kimlik Doğrulama"
 msgid "Authenticate with a passkey"
 msgstr "Geçiş anahtarıyla kimlik doğrulama"
 
-#: src/views/other/Login.vue:259
+#: src/views/other/Login.vue:293
 msgid "Authenticating..."
 msgstr "Kimlik doğrulama..."
 
@@ -545,13 +551,19 @@ msgstr "AutoCert çalışıyor, lütfen bekleyin..."
 msgid "AutoCert is running..."
 msgstr "AutoCert çalışıyor..."
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:262
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:260
 msgid "Automated log rotation detection"
 msgstr "Otomatik log döngüsü tespiti"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:332
 msgid "Automatic Restart"
 msgstr "Otomatik Yeniden Başlatma"
+
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:331
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:625
+#, fuzzy
+msgid "Automatically extracted from server_name"
+msgstr "\"Site ve akış yapılandırmalarından otomatik olarak dizinlendi.\""
 
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:36
 msgid "Average Latency"
@@ -568,8 +580,9 @@ msgstr "Ort./PV"
 #: src/views/certificate/components/CertificateActions.vue:22
 #: src/views/config/components/ConfigLeftPanel.vue:274
 #: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
-#: src/views/dns/DNSRecordManager.vue:223 src/views/nginx_log/NginxLog.vue:129
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:183
+#: src/views/dns/DNSRecordManager.vue:230 src/views/nginx_log/NginxLog.vue:129
+#: src/views/site/site_add/SiteAdd.vue:246
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:189
 #: src/views/stream/components/StreamEditor.vue:147
 msgid "Back"
 msgstr "Geri"
@@ -668,17 +681,17 @@ msgstr "Şu Zamana Kadar Yasaklı"
 msgid "Bark"
 msgstr "Bark"
 
-#: src/views/site/site_add/SiteAdd.vue:80
+#: src/views/site/site_add/SiteAdd.vue:169
 msgid "Base information"
 msgstr "Temel bilgiler"
 
 #: src/views/config/components/ConfigRightPanel/ConfigRightPanel.vue:41
-#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:43
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:44
 #: src/views/stream/components/RightPanel/RightPanel.vue:31
 msgid "Basic"
 msgstr "Temel"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:110
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:116
 #: src/views/stream/components/StreamEditor.vue:83
 msgid "Basic Mode"
 msgstr "Temel Mod"
@@ -718,11 +731,11 @@ msgstr "Tarayıcı"
 msgid "Browser Statistics"
 msgstr "Tarayıcı İstatistikleri"
 
-#: src/views/dns/DNSDomainList.vue:257
+#: src/views/dns/DNSDomainList.vue:263
 msgid "Business contact:"
 msgstr "İş iletişimi:"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:316
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:314
 msgid ""
 "By enabling advanced indexing, you acknowledge that your system meets the "
 "requirements and understand the performance implications. This will start "
@@ -792,8 +805,8 @@ msgstr ""
 #: src/components/NgxConfigEditor/NgxUpstream.vue:32 src/language/curd.ts:37
 #: src/views/config/components/Delete.vue:98
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:710
-#: src/views/dns/DDNSManager.vue:244 src/views/dns/DNSRecordManager.vue:212
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:102
+#: src/views/dns/DDNSManager.vue:244 src/views/dns/DNSRecordManager.vue:219
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:101
 #: src/views/nginx_log/indexing/IndexManagement.vue:33
 #: src/views/nginx_log/indexing/IndexManagement.vue:59
 #: src/views/preference/components/AuthSettings/Passkey.vue:142
@@ -828,6 +841,10 @@ msgstr "Karşılaştırılamaz: Eksik İçerik"
 #: src/constants/errors/config.ts:6
 msgid "Cannot delete protected path"
 msgstr "Korunan yol silinemez"
+
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:135
+msgid "Cannot delete server_name while DNS is linked. Clear DNS link first."
+msgstr ""
 
 #: src/views/dashboard/NginxDashBoard.vue:154
 msgid "Cannot get performance data in this state"
@@ -975,7 +992,7 @@ msgid "Channel"
 msgstr "Kanal"
 
 #: src/views/config/components/ConfigRightPanel/ConfigRightPanel.vue:50
-#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:53
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:57
 #: src/views/stream/components/RightPanel/RightPanel.vue:34
 msgid "Chat"
 msgstr "Sohbet"
@@ -1142,7 +1159,7 @@ msgstr ""
 msgid "Check Interval (seconds)"
 msgstr "Kontrol Aralığı (saniye)"
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:181
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:212
 #: src/views/nginx_log/dashboard/components/GeoMapChart.vue:47
 msgid "China Access Map"
 msgstr "Çin Erişim Haritası"
@@ -1162,7 +1179,13 @@ msgstr "Ortam değişkenlerini temizleme"
 #: src/components/LLM/ChatMessageInput.vue:67
 #: src/components/Notification/Notification.vue:122
 #: src/views/notification/Notification.vue:45
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:480
 msgid "Clear"
+msgstr "Temizle"
+
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:538
+#, fuzzy
+msgid "Clear Link"
 msgstr "Temizle"
 
 #: src/components/Notification/Notification.vue:75
@@ -1251,7 +1274,13 @@ msgstr "Komut"
 msgid "Command exited with unexpected exit code: {0}, error: {1}"
 msgstr "Komut beklenmeyen çıkış kodu ile sonlandı: {0}, hata: {1}"
 
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:118
+#: src/views/dns/components/DNSRecordForm.vue:91
+#: src/views/dns/components/DNSRecordTable.vue:49
+#, fuzzy
+msgid "Comment"
+msgstr "Yorumlar"
+
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:150
 #: src/components/NgxConfigEditor/LocationEditor.vue:104
 #: src/components/NgxConfigEditor/LocationEditor.vue:135
 #: src/components/NgxConfigEditor/NgxServer.vue:123
@@ -1274,7 +1303,7 @@ msgstr "Seçili karşılaştırın"
 msgid "Compare with Current"
 msgstr "Mevcut ile karşılaştırın"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:71
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:70
 msgid "Complete indexing with search capabilities"
 msgstr "Arama yetenekleriyle tam indeksleme"
 
@@ -1282,7 +1311,7 @@ msgstr "Arama yetenekleriyle tam indeksleme"
 msgid "components"
 msgstr "bileşenler"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:270
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:268
 msgid "Compressed log file support"
 msgstr "Sıkıştırılmış günlük dosyası desteği"
 
@@ -1322,7 +1351,7 @@ msgstr "Yapılandırma bulunamadı"
 msgid "Config path is empty"
 msgstr "Yapılandırma yolu boş"
 
-#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:49
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:53
 msgid "Config Template"
 msgstr "Yapılandırma Şablonu"
 
@@ -1346,7 +1375,7 @@ msgstr "Yapılandırma Geçmişi"
 msgid "Configuration information"
 msgstr "Yapılandırma bilgileri"
 
-#: src/views/site/site_add/SiteAdd.vue:86
+#: src/views/site/site_add/SiteAdd.vue:176
 msgid "Configuration Name"
 msgstr "Yapılandırma Adı"
 
@@ -1362,7 +1391,7 @@ msgstr "Yapılandır"
 msgid "Configure DDNS"
 msgstr "DDNS Yapılandır"
 
-#: src/views/site/site_add/SiteAdd.vue:81
+#: src/views/site/site_add/SiteAdd.vue:171
 msgid "Configure SSL"
 msgstr "SSL'yi Yapılandırma"
 
@@ -1374,7 +1403,7 @@ msgstr "Silme Onayı"
 msgid "Confirm New Password"
 msgstr "Yeni Şifreyi Onayla"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:315
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:313
 msgid "Confirmation Required"
 msgstr "Onay Gerekli"
 
@@ -1399,7 +1428,7 @@ msgstr "Bağlantı zaman aşımı süresi"
 msgid "Container status unknown"
 msgstr "Kapsayıcı durumu bilinmiyor"
 
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:123
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:155
 #: src/components/NgxConfigEditor/LocationEditor.vue:116
 #: src/components/NgxConfigEditor/LocationEditor.vue:144
 msgid "Content"
@@ -1443,11 +1472,11 @@ msgstr "Geçici kapsayıcı bulunamadı"
 msgid "Count"
 msgstr "Sayı"
 
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:174
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:207
 msgid "Country / Region"
 msgstr "Ülke / Bölge"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:48
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:47
 msgid "CPU"
 msgstr "İşlemci"
 
@@ -1469,13 +1498,19 @@ msgstr ""
 msgid "CPU:"
 msgstr "CPU:"
 
-#: src/views/site/site_add/SiteAdd.vue:147
+#: src/views/site/site_add/SiteAdd.vue:263
 msgid "Create Another"
 msgstr "Bir Başka Oluştur"
 
 #: src/views/backup/components/BackupCreator.vue:86
 msgid "Create Backup"
 msgstr "Yedek Oluştur"
+
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:365
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:659
+#, fuzzy
+msgid "Create DNS Record"
+msgstr "Kayıt Oluştur"
 
 #: src/views/config/ConfigList.vue:130
 msgid "Create File"
@@ -1485,7 +1520,13 @@ msgstr "Dosya Oluştur"
 msgid "Create Folder"
 msgstr "Klasör Ekle"
 
-#: src/views/dns/DNSRecordManager.vue:200
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:305
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:599
+#, fuzzy
+msgid "Create new DNS record"
+msgstr "Kayıt Oluştur"
+
+#: src/views/dns/DNSRecordManager.vue:206
 msgid "Create Record"
 msgstr "Kayıt Oluştur"
 
@@ -1514,12 +1555,12 @@ msgstr "Başarıyla oluşturuldu"
 msgid "Creating client facilitates communication with the CA server"
 msgstr "İstemci oluşturmak, CA sunucusuyla iletişimi kolaylaştırır"
 
-#: src/components/AutoCertForm/DNSChallenge.vue:131
-#: src/views/dns/DDNSManager.vue:65 src/views/dns/DNSDomainList.vue:109
+#: src/components/AutoCertForm/DNSChallenge.vue:138
+#: src/views/dns/DDNSManager.vue:65 src/views/dns/DNSDomainList.vue:115
 msgid "Credential"
 msgstr "Kimlik bilgisi"
 
-#: src/routes/modules/dns.ts:20 src/views/dns/components/DNSChallenge.vue:87
+#: src/routes/modules/dns.ts:20 src/views/dns/components/DNSChallenge.vue:90
 msgid "Credentials"
 msgstr "Kimlik bilgileri"
 
@@ -1527,7 +1568,7 @@ msgstr "Kimlik bilgileri"
 msgid "Cron Expression"
 msgstr "Cron İfadesi"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:266
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:264
 msgid "Cross-file timeline correlation"
 msgstr "Çapraz dosya zaman çizelgesi korelasyonu"
 
@@ -1672,7 +1713,7 @@ msgstr ""
 #: src/views/config/components/Delete.vue:65
 #: src/views/config/components/Delete.vue:97
 #: src/views/config/ConfigList.vue:199
-#: src/views/dns/components/DNSRecordTable.vue:94
+#: src/views/dns/components/DNSRecordTable.vue:107
 #: src/views/site/site_list/SiteList.vue:100
 #: src/views/stream/StreamList.vue:110
 msgid "Delete"
@@ -1920,7 +1961,7 @@ msgstr "Akış %{name}, %{node} üzerinden başarıyla devre dışı bırakıld�
 #: src/views/preference/tabs/NodeSettings.vue:25
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:162
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:75
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:81
 #: src/views/site/site_list/columns.tsx:146 src/views/stream/columns.tsx:112
 #: src/views/stream/components/StreamEditor.vue:55
 #: src/views/user/userColumns.tsx:39
@@ -1941,6 +1982,7 @@ msgid "Disk IO"
 msgstr "Disk IO"
 
 #: src/routes/modules/dns.ts:11
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:47
 msgid "DNS"
 msgstr "DNS"
 
@@ -1948,24 +1990,75 @@ msgstr "DNS"
 msgid "DNS Credentials"
 msgstr "DNS Kimlik Bilgileri"
 
-#: src/routes/modules/dns.ts:28 src/views/dns/DNSDomainList.vue:228
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:251
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:545
+#, fuzzy
+msgid "DNS Domain"
+msgstr "DNS Alanları"
+
+#: src/routes/modules/dns.ts:28 src/views/dns/DNSDomainList.vue:234
 msgid "DNS Domains"
 msgstr "DNS Alanları"
 
-#: src/views/dns/components/DNSRecordTable.vue:81
+#: src/views/dns/components/DNSRecordTable.vue:94
 msgid "DNS Only"
 msgstr "Yalnızca DNS"
 
-#: src/components/AutoCertForm/DNSChallenge.vue:121
-#: src/views/dns/components/DNSChallenge.vue:60
+#: src/components/AutoCertForm/DNSChallenge.vue:128
+#: src/views/dns/components/DNSChallenge.vue:63
 msgid "DNS Provider"
 msgstr "DNS Sağlayıcısı"
 
-#: src/views/dns/DNSDomainList.vue:244
+#: src/views/dns/DNSDomainList.vue:250
 msgid "DNS Provider Support"
 msgstr "DNS Sağlayıcı Desteği"
 
-#: src/routes/modules/dns.ts:44 src/views/dns/DNSRecordManager.vue:58
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:274
+#: src/views/site/site_add/SiteAdd.vue:170
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:568
+#, fuzzy
+msgid "DNS Record"
+msgstr "DNS Kayıtları"
+
+#: src/views/site/site_add/SiteAdd.vue:145
+#, fuzzy
+msgid "DNS record created and linked successfully"
+msgstr "Nginx başarıyla yeniden yüklendi"
+
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:213
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:340
+#, fuzzy
+msgid "DNS record created successfully"
+msgstr "Başarıyla oluşturuldu"
+
+#: src/views/site/site_add/SiteAdd.vue:253
+msgid "DNS record has been linked: %{name}"
+msgstr ""
+
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:245
+msgid "DNS Record Integration (Optional)"
+msgstr ""
+
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:288
+msgid "DNS record linked and server_name updated: %{name}"
+msgstr ""
+
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:489
+#, fuzzy
+msgid "DNS Record Missing"
+msgstr "DNS Kayıtları"
+
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:403
+#, fuzzy
+msgid "DNS record recreated successfully"
+msgstr "Başarıyla oluşturuldu"
+
+#: src/views/site/site_add/SiteAdd.vue:137
+#, fuzzy
+msgid "DNS record selected: %{name}"
+msgstr "Hiçbir kayıt seçilmedi"
+
+#: src/routes/modules/dns.ts:44 src/views/dns/DNSRecordManager.vue:62
 msgid "DNS Records"
 msgstr "DNS Kayıtları"
 
@@ -2029,7 +2122,7 @@ msgid "Document Count"
 msgstr "Belge Sayısı"
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:119
-#: src/views/dns/DDNSManager.vue:60 src/views/dns/DNSDomainList.vue:98
+#: src/views/dns/DDNSManager.vue:60 src/views/dns/DNSDomainList.vue:104
 msgid "Domain"
 msgstr "Alan Adı"
 
@@ -2104,7 +2197,7 @@ msgstr "Başarıyla yerel kopya oluşturuldu"
 msgid "Dynamic"
 msgstr "Dinamik"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:238
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:236
 msgid "Dynamic shard management"
 msgstr "Dinamik parça yönetimi"
 
@@ -2120,11 +2213,11 @@ msgstr "EAB HMAC Anahtarı"
 msgid "EAB Key ID"
 msgstr "EAB Anahtar Kimliği"
 
-#: src/language/curd.ts:8 src/views/dns/components/DNSRecordTable.vue:87
+#: src/language/curd.ts:8 src/views/dns/components/DNSRecordTable.vue:100
 msgid "Edit"
 msgstr "Düzenle"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:64
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:70
 #: src/views/stream/components/StreamEditor.vue:44
 msgid "Edit %{n}"
 msgstr "Düzenle %{n}"
@@ -2134,7 +2227,7 @@ msgstr "Düzenle %{n}"
 msgid "Edit Configuration"
 msgstr "Yapılandırmayı Düzenle"
 
-#: src/views/dns/DNSRecordManager.vue:200
+#: src/views/dns/DNSRecordManager.vue:206
 msgid "Edit Record"
 msgstr "Kaydı Düzenle"
 
@@ -2172,7 +2265,7 @@ msgstr "2FA'yı başarıyla etkinleştirildi"
 msgid "Enable Advanced Indexing"
 msgstr "Gelişmiş Dizinlemeyi Etkinleştir"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:98
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:97
 msgid "Enable Advanced Log Indexing"
 msgstr "Gelişmiş Log Dizinlemeyi Etkinleştir"
 
@@ -2208,9 +2301,16 @@ msgstr "HTTP/3'ü Etkinleştir"
 msgid "Enable HTTPS"
 msgstr "HTTPS'yi Etkinleştir"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:100
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:99
 msgid "Enable Indexing"
 msgstr "Dizinlemeyi Etkinleştir"
+
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:353
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:522
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:647
+#, fuzzy
+msgid "Enable Proxy (Cloudflare)"
+msgstr "Proxy Önbelleğini Etkinleştir"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:113
 msgid "Enable Proxy Cache"
@@ -2287,7 +2387,7 @@ msgstr "TOTP'yi Etkinleştir"
 #: src/views/preference/tabs/NodeSettings.vue:25
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:159
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:69
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:75
 #: src/views/site/site_list/columns.tsx:142 src/views/stream/columns.tsx:108
 #: src/views/stream/components/RightPanel/Basic.vue:24
 #: src/views/stream/components/StreamEditor.vue:49
@@ -2296,7 +2396,7 @@ msgid "Enabled"
 msgstr "Etkin"
 
 #: src/views/site/components/SiteStatusSelect.vue:54
-#: src/views/site/site_add/SiteAdd.vue:39
+#: src/views/site/site_add/SiteAdd.vue:56
 #: src/views/stream/components/StreamStatusSelect.vue:27
 msgid "Enabled successfully"
 msgstr "Başarıyla etkinleştirildi"
@@ -2311,7 +2411,7 @@ msgstr ""
 "En iyi performans için QUIC protokolüne dayalı HTTP/3 desteğini "
 "etkinleştirir"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:111
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:110
 msgid ""
 "Enabling advanced log indexing will consume significant computational "
 "resources including CPU and memory. Please ensure your system meets the "
@@ -2392,7 +2492,7 @@ msgstr ""
 "Hata günlükleri serbest metin mesajları içerdiğinden yapılandırılmış "
 "analizi desteklemez."
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:274
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:272
 msgid "Error pattern recognition"
 msgstr "Hata deseni tanıma"
 
@@ -2424,7 +2524,7 @@ msgstr "Her ayın %{day} günü %{time} saatinde çalıştır"
 msgid "Expand"
 msgstr "Genişlet"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:194
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:192
 msgid "Expected Performance"
 msgstr "Beklenen Performans"
 
@@ -2554,6 +2654,12 @@ msgstr "Yedek dosyası oluşturulamadı: {0}"
 
 #: src/constants/errors/backup.ts:43
 msgid "Failed to create directory: {0}"
+msgstr "Dizin oluşturulamadı: {0}"
+
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:222
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:360
+#, fuzzy
+msgid "Failed to create DNS record"
 msgstr "Dizin oluşturulamadı: {0}"
 
 #: src/constants/errors/backup.ts:45 src/constants/errors/geolite.ts:6
@@ -2758,6 +2864,12 @@ msgstr "Konteyner denetlenemedi: {0}"
 msgid "Failed to inspect current container: {0}"
 msgstr "Mevcut konteyner incelenirken hata oluştu: {0}"
 
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:137
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:166
+#, fuzzy
+msgid "Failed to load DNS records"
+msgstr "Geçmiş kayıtları yüklenemedi"
+
 #: src/components/ConfigHistory/ConfigHistory.vue:83
 msgid "Failed to load history records"
 msgstr "Geçmiş kayıtları yüklenemedi"
@@ -2842,6 +2954,11 @@ msgstr "Dosya indeksi yeniden oluşturulamadı"
 msgid "Failed to rebuild index"
 msgstr "Dizin yeniden oluşturulamadı"
 
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:429
+#, fuzzy
+msgid "Failed to recreate DNS record"
+msgstr "Dizin oluşturulamadı: {0}"
+
 #: src/views/dashboard/SiteNavigation.vue:86
 msgid "Failed to refresh sites"
 msgstr "Siteler yenilenemedi"
@@ -2918,7 +3035,7 @@ msgstr "Şifrelenmiş dosya yazma hatası: {0}"
 msgid "Failed to write security key file: {0}"
 msgstr "Güvenlik anahtarı dosyası yazılamadı: {0}"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:228
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:226
 msgid "Features"
 msgstr "Özellikler"
 
@@ -2970,7 +3087,7 @@ msgstr "Filtre"
 msgid "Filter log content"
 msgstr "Günlük içeriğini filtrele"
 
-#: src/language/constants.ts:19 src/views/site/site_add/SiteAdd.vue:82
+#: src/language/constants.ts:19 src/views/site/site_add/SiteAdd.vue:172
 msgid "Finished"
 msgstr "Bitmiş"
 
@@ -3007,7 +3124,7 @@ msgstr "Çin kullanıcıları için"
 msgid "For Chinese user: https://cloud.nginxui.com/"
 msgstr "Çinli kullanıcılar için: https://cloud.nginxui.com/"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:306
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:304
 msgid "For commercial or professional use, contact"
 msgstr "Ticari veya profesyonel kullanım için iletişime geçin"
 
@@ -3066,7 +3183,7 @@ msgstr "Önyüz"
 msgid "Full Text Search"
 msgstr "Tam Metin Arama"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:258
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:256
 msgid "Full-text search support"
 msgstr "Tam metin arama desteği"
 
@@ -3099,7 +3216,7 @@ msgstr "Hesap kaydı için özel anahtar oluşturuluyor"
 msgid "GeoLite"
 msgstr "GeoLite"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:179
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:178
 #: src/views/preference/tabs/GeoLiteSettings.vue:7
 msgid "GeoLite2 Database"
 msgstr "GeoLite2 Veritabanı"
@@ -3153,7 +3270,7 @@ msgid "Github Proxy"
 msgstr "Github Proxy"
 
 #: src/views/nginx_log/dashboard/components/GeoMapChart.vue:47
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:202
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:235
 msgid "Global Access Map"
 msgstr "Küresel Erişim Haritası"
 
@@ -3234,8 +3351,8 @@ msgid "Hide Assistant"
 msgstr "Asistanı gizle"
 
 #: src/composables/useGeoTranslation.ts:165
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:135
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:103
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:165
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:133
 msgid "High"
 msgstr "Yüksek"
 
@@ -3244,7 +3361,7 @@ msgid "Higher value means better connection reuse"
 msgstr "Daha yüksek bir değer, daha iyi bağlantı yeniden kullanımı anlamına gelir"
 
 #: src/views/config/components/ConfigLeftPanel.vue:255
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:94
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:100
 #: src/views/stream/components/StreamEditor.vue:68
 msgid "History"
 msgstr "Geçmiş"
@@ -3312,7 +3429,7 @@ msgstr ""
 "Eski sertifikayı otomatik olarak iptal etmek istiyorsanız, bu seçeneği "
 "etkinleştirin."
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:168
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:167
 msgid ""
 "If you want to change the storage location, you can set the `IndexPath` of "
 "`nginx_log` section in the Nginx UI config."
@@ -3355,7 +3472,7 @@ msgstr ""
 "Ana süreç, çalışan süreçler, önbellek süreçleri ve diğer Nginx süreçlerini "
 "içerir"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:254
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:252
 msgid "Incremental index scanning"
 msgstr "Artımlı indeks tarama"
 
@@ -3575,6 +3692,13 @@ msgstr "IP"
 msgid "IP Address"
 msgstr "IP Adresi"
 
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:335
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:504
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:629
+#, fuzzy
+msgid "IP Address / Target"
+msgstr "IP Adresi"
+
 #: src/components/AutoCertForm/AutoCertForm.vue:123
 msgid "IP Certificate Notice"
 msgstr "IP Sertifika Bildirimi"
@@ -3766,6 +3890,23 @@ msgstr "Lisans Türleri"
 msgid "Link"
 msgstr "Bağlantı"
 
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:456
+msgid ""
+"Link this site to a DNS record. The server_name will be used for the DNS "
+"record name."
+msgstr ""
+
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:247
+msgid ""
+"Link this site to a DNS record. The server_name will be used for the DNS "
+"record name. You can skip this step if DNS is already configured."
+msgstr ""
+
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:466
+#, fuzzy
+msgid "Linked DNS Record"
+msgstr "DNS Kayıtları"
+
 #: src/language/curd.ts:23
 msgid "List"
 msgstr "Liste"
@@ -3894,7 +4035,7 @@ msgstr ""
 msgid "Log path is not under whitelist"
 msgstr "Günlük yolu beyaz listede değil"
 
-#: src/routes/modules/auth.ts:14 src/views/other/Login.vue:317
+#: src/routes/modules/auth.ts:14 src/views/other/Login.vue:360
 msgid "Login"
 msgstr "Giriş"
 
@@ -3927,8 +4068,8 @@ msgstr ""
 "belirlediğiniz dakika aralığında logrotate komutunu çalıştıracaktır."
 
 #: src/composables/useGeoTranslation.ts:166
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:135
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:103
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:165
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:133
 msgid "Low"
 msgstr "Düşük"
 
@@ -3938,7 +4079,7 @@ msgid "Main Node"
 msgstr "Ana Düğüm"
 
 #: src/views/site/components/SiteStatusSelect.vue:165
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:81
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:87
 #: src/views/site/site_list/columns.tsx:150
 msgid "Maintenance"
 msgstr "Bakım"
@@ -3970,7 +4111,7 @@ msgstr ""
 msgid "Manage Configs"
 msgstr "Yapılandırmaları Yönet"
 
-#: src/views/dns/DNSDomainList.vue:236
+#: src/views/dns/DNSDomainList.vue:242
 msgid "Manage Records"
 msgstr "Kayıtları Yönet"
 
@@ -4067,7 +4208,7 @@ msgstr "Maksimum çalışan işlem sayısı:"
 
 #: src/views/dashboard/ServerAnalytic.vue:228
 #: src/views/dashboard/ServerAnalytic.vue:229
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:54
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:53
 msgid "Memory"
 msgstr "Bellek"
 
@@ -4075,7 +4216,7 @@ msgstr "Bellek"
 msgid "Memory and Storage"
 msgstr "Bellek ve Depolama"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:79
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:78
 msgid "Memory Design"
 msgstr "Bellek Tasarımı"
 
@@ -4104,7 +4245,7 @@ msgstr "Minimum Boş Alan"
 msgid "Minimum free space in the cache directory"
 msgstr "Önbellek dizinindeki minimum boş alan"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:143
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:142
 msgid "Minimum:"
 msgstr "Minimum:"
 
@@ -4149,7 +4290,7 @@ msgstr "Değiştir"
 msgid "Modify Certificate"
 msgstr "Sertifikayı Düzenle"
 
-#: src/views/site/site_add/SiteAdd.vue:144
+#: src/views/site/site_add/SiteAdd.vue:260
 msgid "Modify Config"
 msgstr "Yapılandırmayı Düzenle"
 
@@ -4181,7 +4322,7 @@ msgstr "Her ayın %{day} günü %{time} saatinde"
 msgid "Mozilla/5.0..."
 msgstr "Mozilla/5.0..."
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:278
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:276
 msgid "Multi-dimensional data visualization"
 msgstr "Çok boyutlu veri görselleştirme"
 
@@ -4209,8 +4350,8 @@ msgstr "Yok"
 #: src/views/config/components/Delete.vue:123
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:17
-#: src/views/dns/components/DNSRecordForm.vue:63
-#: src/views/dns/components/DNSRecordTable.vue:17
+#: src/views/dns/components/DNSRecordForm.vue:64
+#: src/views/dns/components/DNSRecordTable.vue:18
 #: src/views/dns/DNSCredential.vue:17 src/views/namespace/columns.ts:9
 #: src/views/nginx_log/NginxLogList.vue:155 src/views/node/nodeColumns.tsx:8
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:81
@@ -4239,7 +4380,7 @@ msgstr "İsim alanı"
 msgid "Namespaces"
 msgstr "İsim Alanları"
 
-#: src/views/dns/DNSDomainList.vue:251
+#: src/views/dns/DNSDomainList.vue:257
 msgid ""
 "Need more DNS providers? Support us through donations or contact us for "
 "commercial collaboration"
@@ -4297,7 +4438,8 @@ msgstr "Yeni sürüm yayınlandı"
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:184
 #: src/views/install/components/InstallView.vue:96
-#: src/views/site/site_add/SiteAdd.vue:131
+#: src/views/site/site_add/SiteAdd.vue:233
+#: src/views/site/site_add/SiteAdd.vue:240
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:225
 msgid "Next"
 msgstr "Sonraki"
@@ -4359,7 +4501,7 @@ msgstr "Nginx yapılandırma giriş dosyası mevcut"
 msgid "Nginx configuration has been restored"
 msgstr "Nginx yapılandırması geri yüklendi"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:135
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:141
 #: src/views/stream/components/StreamEditor.vue:105
 msgid "Nginx Configuration Parse Error"
 msgstr "Nginx Yapılandırma Ayrıştırma Hatası"
@@ -4515,7 +4657,7 @@ msgstr "Nginx.conf, streams-enabled dizinini içerir"
 #: src/components/LLM/ChatMessageInput.vue:61
 #: src/components/NamespaceTabs/NamespaceTabs.vue:136
 #: src/components/NamespaceTabs/NamespaceTabs.vue:148
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:102
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:124
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
 #: src/components/Notification/Notification.vue:115 src/language/curd.ts:40
 #: src/views/notification/Notification.vue:38
@@ -4534,15 +4676,15 @@ msgstr "Eylem Yok"
 msgid "No certificate available"
 msgstr "Kullanılabilir sertifika yok"
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:196
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:232
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:227
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:263
 msgid "No China geographic data available"
 msgstr "Çin coğrafi verisi mevcut değil"
 
 #: src/composables/useGeoTranslation.ts:169
 #: src/views/dashboard/NginxDashBoard.vue:202
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:127
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:95
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:157
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:125
 msgid "No data"
 msgstr "Veri yok"
 
@@ -4550,12 +4692,18 @@ msgstr "Veri yok"
 msgid "No Data"
 msgstr "Veri yok"
 
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:372
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:666
+#, fuzzy
+msgid "No DNS domains available"
+msgstr "Coğrafi veri mevcut değil"
+
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:827
 msgid "No entries in current page"
 msgstr "Geçerli sayfada hiçbir giriş yok"
 
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:217
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:253
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:250
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:286
 msgid "No geographic data available"
 msgstr "Coğrafi veri mevcut değil"
 
@@ -4760,9 +4908,14 @@ msgstr "Resmi Belge"
 msgid "Offline"
 msgstr "Çevrimdışı"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:250
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:248
 msgid "Offline GeoIP analysis"
 msgstr "Çevrimdışı GeoIP analizi"
+
+#: src/views/other/Login.vue:335
+#, fuzzy
+msgid "OIDC Login"
+msgstr "SSO Girişi"
 
 #: src/components/LLM/ChatMessageInput.vue:62
 #: src/components/NgxConfigEditor/NgxServer.vue:60
@@ -4807,7 +4960,7 @@ msgstr "Sadece ZIP dosyalarına izin verilir"
 msgid "Open"
 msgstr "Açık"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:287
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:285
 msgid "Open Source Limitation"
 msgstr "Açık Kaynak Sınırlaması"
 
@@ -4823,7 +4976,11 @@ msgstr "İşletim Sistemi"
 msgid "Operating System Statistics"
 msgstr "İşletim Sistemi İstatistikleri"
 
-#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:326
+#: src/views/dns/components/DNSRecordForm.vue:94
+msgid "Optional comment for this DNS record"
+msgstr ""
+
+#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:369
 msgid "Or"
 msgstr "Veya"
 
@@ -4893,7 +5050,7 @@ msgstr "Parametreler"
 msgid "Params Optimization"
 msgstr "Parametre Optimizasyonu"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:74
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:73
 msgid "Parser Performance"
 msgstr "Ayrıştırıcı Performansı"
 
@@ -4911,7 +5068,7 @@ msgstr ""
 "kimliğinizi doğrulayan WebAuthn kimlik bilgileridir. Bir şifre yerine veya "
 "iki faktörlü kimlik doğrulama (2FA) yöntemi olarak kullanılabilirler."
 
-#: src/views/other/Login.vue:278 src/views/user/userColumns.tsx:16
+#: src/views/other/Login.vue:312 src/views/user/userColumns.tsx:16
 msgid "Password"
 msgstr "Şifre"
 
@@ -4969,13 +5126,13 @@ msgstr "Beklemede"
 
 #: src/composables/useGeoTranslation.ts:168
 #: src/views/nginx_log/dashboard/components/BrowserStatsTable.vue:26
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:122
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:152
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:72
 #: src/views/nginx_log/dashboard/components/DeviceStatsTable.vue:25
 #: src/views/nginx_log/dashboard/components/OSStatsTable.vue:26
 #: src/views/nginx_log/dashboard/components/TopUrlsTable.vue:27
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:187
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:87
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:117
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:220
 msgid "Percentage"
 msgstr "Yüzde"
 
@@ -5014,6 +5171,20 @@ msgstr "PID yolu mevcut değil"
 #: src/constants/errors/crypto.ts:2
 msgid "Plain text is empty"
 msgstr "Düz metin boş"
+
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:373
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:667
+msgid "Please add a DNS domain first in the DNS management section."
+msgstr ""
+
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:446
+#, fuzzy
+msgid ""
+"Please configure server_name directive in the configuration before linking "
+"DNS records."
+msgstr ""
+"Lütfen aşağıdaki zaman yapılandırmalarının birimlerinin saniye cinsinden "
+"olduğunu unutmayın."
 
 #: src/views/dashboard/NginxDashBoard.vue:196
 msgid ""
@@ -5071,6 +5242,12 @@ msgstr "Lütfen sunucu IP adresini girin"
 #: src/language/curd.ts:24
 msgid "Please fill all fields correctly"
 msgstr "Lütfen tüm alanları doğru şekilde doldurun"
+
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:193
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:320
+#, fuzzy
+msgid "Please fill in all required fields"
+msgstr "Lütfen gerekli S3 yapılandırma alanlarını doldurun"
 
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:23
 msgid "Please fill in required S3 configuration fields"
@@ -5203,7 +5380,7 @@ msgstr "Port"
 msgid "Port 80 must be open for HTTP-01 challenge validation"
 msgstr "HTTP-01 challenge doğrulaması için 80 numaralı port açık olmalıdır"
 
-#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:56
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:60
 #: src/views/stream/components/RightPanel/RightPanel.vue:37
 msgid "Port Scanner"
 msgstr "Port Tarayıcı"
@@ -5226,8 +5403,8 @@ msgstr "Tercih"
 msgid "Preparing lego configurations"
 msgstr "Lego yapılandırmaları hazırlanıyor"
 
-#: src/views/dns/components/DNSRecordForm.vue:81
-#: src/views/dns/components/DNSRecordTable.vue:33
+#: src/views/dns/components/DNSRecordForm.vue:82
+#: src/views/dns/components/DNSRecordTable.vue:34
 msgid "Priority"
 msgstr "Öncelik"
 
@@ -5260,7 +5437,7 @@ msgstr "Süreç bilgisi"
 msgid "Processing {count}/{total}"
 msgstr "İşleniyor {count}/{total}"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:69
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:68
 msgid "Production Pipeline"
 msgstr "Üretim Hattı"
 
@@ -5294,7 +5471,7 @@ msgstr ""
 "Ters proxy kullanıyorsanız, protokolü ters proxyda ayrı olarak yapılandırın."
 
 #: src/views/dns/DDNSManager.vue:70 src/views/dns/DNSCredential.vue:26
-#: src/views/dns/DNSDomainList.vue:177 src/views/dns/DNSDomainList.vue:198
+#: src/views/dns/DNSDomainList.vue:183 src/views/dns/DNSDomainList.vue:204
 msgid "Provider"
 msgstr "Sağlayıcı"
 
@@ -5306,9 +5483,12 @@ msgstr "Sağlayıcı bulunamadı: {0}"
 msgid "Province / Region"
 msgstr "İl / Bölge"
 
-#: src/views/dns/components/DNSRecordForm.vue:87
-#: src/views/dns/components/DNSRecordTable.vue:51
-#: src/views/dns/components/DNSRecordTable.vue:81
+#: src/views/dns/components/DNSRecordForm.vue:88
+#: src/views/dns/components/DNSRecordTable.vue:64
+#: src/views/dns/components/DNSRecordTable.vue:94
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:296
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:475
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:590
 msgid "Proxied"
 msgstr "Proxy'li"
 
@@ -5373,7 +5553,7 @@ msgstr "Okuma istekleri"
 msgid "Reads"
 msgstr "Okumalar"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:246
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:244
 msgid "Real-time analytics dashboard"
 msgstr "Gerçek zamanlı analiz panosu"
 
@@ -5402,19 +5582,31 @@ msgstr "Al"
 msgid "Recheck"
 msgstr "Yeniden kontrol et"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:151
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:150
 msgid "Recommended:"
 msgstr "Önerilen:"
 
-#: src/views/dns/DNSRecordManager.vue:113
+#: src/views/dns/DNSRecordManager.vue:118
 msgid "Record created"
 msgstr "Kayıt oluşturuldu"
 
-#: src/views/dns/DNSRecordManager.vue:120
+#: src/views/dns/DNSRecordManager.vue:125
 msgid "Record deleted"
 msgstr "Kayıt silindi"
 
-#: src/views/dns/DNSRecordManager.vue:109
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:325
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:619
+#, fuzzy
+msgid "Record Name"
+msgstr "Metot Adı"
+
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:311
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:605
+#, fuzzy
+msgid "Record Type"
+msgstr "Kayıt güncellendi"
+
+#: src/views/dns/DNSRecordManager.vue:114
 msgid "Record updated"
 msgstr "Kayıt güncellendi"
 
@@ -5438,6 +5630,11 @@ msgstr ""
 "Kurtarma kodları, 2FA cihazınıza erişimi kaybettiğinizde hesabınıza erişmek "
 "için kullanılır. Her kod yalnızca bir kez kullanılabilir."
 
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:535
+#, fuzzy
+msgid "Recreate DNS Record"
+msgstr "Kayıt Oluştur"
+
 #: src/views/preference/tabs/CertSettings.vue:40
 msgid "Recursive Nameservers"
 msgstr "Özyinelemeli İsim Sunucuları"
@@ -5452,7 +5649,7 @@ msgid "Referer"
 msgstr "Referer"
 
 #: src/language/curd.ts:70 src/views/dns/DDNSManager.vue:161
-#: src/views/dns/DNSRecordManager.vue:165
+#: src/views/dns/DNSRecordManager.vue:170
 msgid "Refresh"
 msgstr "Yenile"
 
@@ -5727,7 +5924,7 @@ msgstr ""
 "Resident Set Size: Fiziksel bellekte gerçekte bulunan bellek, paylaşılan "
 "tüm kütüphane belleğini içerir ve birden fazla işlem için tekrar hesaplanır"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:110
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:109
 msgid "Resource Usage Warning"
 msgstr "Kaynak Kullanımı Uyarısı"
 
@@ -5824,6 +6021,11 @@ msgid ""
 msgstr ""
 "Bir sertifikanın iptal edilmesi, şu anda onu kullanan tüm hizmetleri "
 "etkileyecektir. Bu işlem geri alınamaz."
+
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:356
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:650
+msgid "Route traffic through proxy for additional protection and features"
+msgstr ""
 
 #: src/views/preference/tabs/AuthSettings.vue:72
 msgid "RP Display Name"
@@ -5938,17 +6140,17 @@ msgid "Saturday"
 msgstr "Cumartesi"
 
 #: src/components/LLM/ChatMessage.vue:244
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:132
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:164
 #: src/language/curd.ts:18
 #: src/views/certificate/components/CertificateActions.vue:29
 #: src/views/config/components/ConfigLeftPanel.vue:283
 #: src/views/config/components/ConfigName.vue:58
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:713
-#: src/views/dns/DDNSManager.vue:247 src/views/dns/DNSRecordManager.vue:215
+#: src/views/dns/DDNSManager.vue:247 src/views/dns/DNSRecordManager.vue:222
 #: src/views/preference/components/AuthSettings/Passkey.vue:131
 #: src/views/preference/Preference.vue:124
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:190
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:196
 #: src/views/stream/components/ConfigName.vue:52
 #: src/views/stream/components/StreamEditor.vue:154
 msgid "Save"
@@ -6002,14 +6204,14 @@ msgstr "Başarıyla kaydedildi"
 
 #: src/language/curd.ts:35 src/views/certificate/CertificateEditor.vue:49
 #: src/views/certificate/components/RenewCert.vue:26
-#: src/views/preference/store/index.ts:124
+#: src/views/preference/store/index.ts:132
 msgid "Save successfully"
 msgstr "Başarıyla kaydedildi"
 
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:48
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:51
 #: src/language/curd.ts:28 src/views/config/components/ConfigLeftPanel.vue:198
-#: src/views/site/site_add/SiteAdd.vue:36
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:51
+#: src/views/site/site_add/SiteAdd.vue:53
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:57
 #: src/views/stream/components/StreamEditor.vue:30
 msgid "Saved successfully"
 msgstr "Başarıyla kaydedildi"
@@ -6050,7 +6252,7 @@ msgstr "Zamanlama"
 msgid "Schedule Type"
 msgstr "Zamanlama Türü"
 
-#: src/views/dns/components/DNSChallenge.vue:78
+#: src/views/dns/components/DNSChallenge.vue:81
 msgid "SDK"
 msgstr "SDK"
 
@@ -6119,6 +6321,17 @@ msgstr "Tümünü seç"
 msgid "Select Credential"
 msgstr "Kimlik Bilgilerini Seç"
 
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:254
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:548
+#, fuzzy
+msgid "Select DNS domain"
+msgstr "DNS Alanları"
+
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:279
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:573
+msgid "Select existing record"
+msgstr ""
+
 #: src/views/certificate/ACMEUser.vue:45
 msgid "Select or enter a CA directory URL"
 msgstr "Bir CA dizini URL'si seçin veya girin"
@@ -6172,6 +6385,10 @@ msgstr "Sunucu Bilgisi"
 #: src/components/AutoCertForm/AutoCertForm.vue:178
 msgid "Server IP Address"
 msgstr "Sunucu IP Adresi"
+
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:102
+msgid "Server name is controlled by linked DNS record"
+msgstr ""
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:99
 msgid "Server Names Hash Bucket Size"
@@ -6263,11 +6480,11 @@ msgstr "Göster"
 msgid "Show Assistant"
 msgstr "Asistanı Göster"
 
-#: src/views/other/Login.vue:335
+#: src/views/other/Login.vue:378
 msgid "Sign in with a passkey"
 msgstr "Bir anahtarla oturum aç"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:76
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:75
 msgid "SIMD-optimized stream processing"
 msgstr "SIMD ile optimize edilmiş akış işleme"
 
@@ -6275,9 +6492,13 @@ msgstr "SIMD ile optimize edilmiş akış işleme"
 msgid "Single Directive"
 msgstr "Tek Direktif"
 
-#: src/views/site/site_add/SiteAdd.vue:137
+#: src/views/site/site_add/SiteAdd.vue:252
 msgid "Site Config Created Successfully"
 msgstr "Site Yapılandırması Başarıyla Oluşturuldu"
+
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:426
+msgid "Site configuration updated with recreated DNS record"
+msgstr ""
 
 #: src/constants/errors/site.ts:4
 msgid "Site is enabled"
@@ -6314,10 +6535,10 @@ msgstr "Site Listesi"
 #: src/views/dashboard/SiteNavigation.vue:173
 msgid ""
 "Sites will appear here once you configure nginx server blocks with valid "
-"server_name directives."
+"server_name (localhost excluded) directives."
 msgstr ""
-"Geçerli server_name yönergeleriyle nginx sunucu bloklarını "
-"yapılandırdığınızda siteler burada görünecektir."
+"Geçerli server_name yönergeleriyle (localhost hariç) nginx sunucu "
+"bloklarını yapılandırdığınızda siteler burada görünecektir."
 
 #: src/constants/errors/self_check.ts:11
 msgid "Sites-available directory not exist"
@@ -6361,7 +6582,7 @@ msgstr "Kaynak IP"
 msgid "Sponsor"
 msgstr "Sponsor"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:62
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:61
 msgid "SSD storage for better I/O performance"
 msgstr "Daha iyi G/Ç performansı için SSD depolama"
 
@@ -6416,7 +6637,7 @@ msgstr "SSL Anahtar Yolu"
 msgid "SSL key path is required when HTTPS is enabled"
 msgstr "HTTPS etkinleştirildiğinde SSL anahtar yolu gereklidir"
 
-#: src/views/other/Login.vue:292
+#: src/views/other/Login.vue:326
 msgid "SSO Login"
 msgstr "SSO Girişi"
 
@@ -6472,7 +6693,7 @@ msgstr "Durduruldu"
 
 #: src/views/dashboard/ServerAnalytic.vue:258
 #: src/views/dashboard/ServerAnalytic.vue:259
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:60
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:59
 msgid "Storage"
 msgstr "Depolama"
 
@@ -6672,7 +6893,7 @@ msgstr "Sistem Kontrolü"
 msgid "System Initial User"
 msgstr "Sistem Başlangıç Kullanıcısı"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:121
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:120
 msgid "System Requirements"
 msgstr "Sistem Gereksinimleri"
 
@@ -6683,6 +6904,12 @@ msgstr "Sistem Geri Yükleme"
 #: src/views/install/components/InstallView.vue:44
 msgid "System restored successfully."
 msgstr "Sistem başarıyla geri yüklendi."
+
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:338
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:508
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:632
+msgid "target.example.com"
+msgstr ""
 
 #: src/views/dns/DDNSManager.vue:83
 msgid "Targets"
@@ -6780,6 +7007,12 @@ msgstr "Girdi bir SSL Sertifikası değil"
 msgid "The input is not a SSL Certificate Key"
 msgstr "Girdi bir SSL Sertifika Anahtarı değil"
 
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:498
+msgid ""
+"The linked DNS record was deleted from the DNS server. You can recreate it "
+"or clear the link."
+msgstr ""
+
 #: src/constants/errors/nginx_log.ts:2
 msgid ""
 "The log path is not under the paths in "
@@ -6811,7 +7044,8 @@ msgstr ""
 "Düğüm adı yalnızca harfler, unicode, sayılar, kısa çizgiler, uzun çizgiler, "
 "iki nokta üst üste ve noktalar içermelidir."
 
-#: src/views/site/site_add/SiteAdd.vue:96
+#: src/views/site/site_add/SiteAdd.vue:186
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:445
 msgid "The parameter of server_name is required"
 msgstr "server_name parametresi gereklidir"
 
@@ -7126,13 +7360,13 @@ msgstr "Token boş"
 msgid "Token is not valid"
 msgstr "Token geçerli değil"
 
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:236
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:272
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:269
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:305
 msgid "Top 10 Countries / Regions"
 msgstr "En İyi 10 Ülke / Bölge"
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:215
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:251
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:246
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:282
 msgid "Top 10 Provinces / Regions"
 msgstr "En İyi 10 İl / Bölge"
 
@@ -7227,11 +7461,14 @@ msgstr "Arama kriterlerinizi ayarlamayı veya farklı sayfalara gitmeyi deneyin.
 msgid "Try adjusting your search criteria or time range."
 msgstr "Arama kriterlerinizi veya zaman aralığınızı ayarlamayı deneyin."
 
-#: src/views/dns/components/DNSRecordTable.vue:29
+#: src/views/dns/components/DNSRecordTable.vue:30
 msgid "TTL"
 msgstr "TTL"
 
-#: src/views/dns/components/DNSRecordForm.vue:78
+#: src/views/dns/components/DNSRecordForm.vue:79
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:342
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:511
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:636
 msgid "TTL (seconds)"
 msgstr "TTL (saniye)"
 
@@ -7248,8 +7485,8 @@ msgstr "İki faktörlü kimlik doğrulama gerekiyor"
 #: src/views/config/components/Delete.vue:122
 #: src/views/dashboard/components/ModulesTable.vue:62
 #: src/views/dns/components/DNSRecordFilter.vue:49
-#: src/views/dns/components/DNSRecordForm.vue:57
-#: src/views/dns/components/DNSRecordTable.vue:21
+#: src/views/dns/components/DNSRecordForm.vue:58
+#: src/views/dns/components/DNSRecordTable.vue:22
 #: src/views/nginx_log/NginxLogList.vue:146
 #: src/views/notification/notificationColumns.tsx:8
 #: src/views/preference/components/ExternalNotify/columns.tsx:19
@@ -7321,7 +7558,7 @@ msgstr "Başarıyla güncellendi"
 #: src/views/certificate/ACMEUser.vue:124
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
 #: src/views/config/configColumns.tsx:44 src/views/dns/DNSCredential.vue:65
-#: src/views/dns/DNSDomainList.vue:205 src/views/namespace/columns.ts:91
+#: src/views/dns/DNSDomainList.vue:211 src/views/namespace/columns.ts:91
 #: src/views/node/nodeColumns.tsx:89
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:39
 #: src/views/site/site_list/columns.tsx:113 src/views/stream/columns.tsx:80
@@ -7394,7 +7631,7 @@ msgstr "Çalışma Süresi:"
 msgid "URL"
 msgstr "URL"
 
-#: src/views/dns/components/DNSRecordForm.vue:64
+#: src/views/dns/components/DNSRecordForm.vue:65
 msgid "Use @ for root"
 msgstr "Kök için @ kullanın"
 
@@ -7435,7 +7672,7 @@ msgstr "Kullanıcı OTP'yi 2FA olarak etkinleştirmedi"
 msgid "User Profile"
 msgstr "Kullanıcı Profili"
 
-#: src/views/other/Login.vue:268 src/views/user/userColumns.tsx:7
+#: src/views/other/Login.vue:302 src/views/user/userColumns.tsx:7
 #: src/views/user/UserProfile.vue:127 src/views/user/UserProfile.vue:131
 msgid "Username"
 msgstr "Kullanıcı Adı"
@@ -7463,8 +7700,8 @@ msgid "Validate SSL Certificate"
 msgstr "SSL Sertifikasını Doğrula"
 
 #: src/views/dashboard/components/PerformanceTablesCard.vue:22
-#: src/views/dns/components/DNSRecordForm.vue:66
-#: src/views/dns/components/DNSRecordTable.vue:25
+#: src/views/dns/components/DNSRecordForm.vue:67
+#: src/views/dns/components/DNSRecordTable.vue:26
 msgid "Value"
 msgstr "Değer"
 
@@ -7513,13 +7750,13 @@ msgid "Viewed"
 msgstr "Görüntülendi"
 
 #: src/composables/useGeoTranslation.ts:167
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:121
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:146
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:151
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:176
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:64
 #: src/views/nginx_log/dashboard/components/TopUrlsTable.vue:19
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:114
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:179
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:86
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:116
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:144
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:212
 msgid "Visits"
 msgstr "Ziyaretler"
 
@@ -7556,7 +7793,7 @@ msgstr ""
 "sertifika yetkilileri özel IP'ler için sertifika veremez. Kamu IP adresi "
 "kullanın veya özel bir sertifika yetkilisi kullanmayı düşünün."
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:300
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:298
 msgid "We do not accept any feature requests"
 msgstr "Herhangi bir özellik talebini kabul etmiyoruz"
 
@@ -7596,8 +7833,8 @@ msgstr "Haftalık"
 msgid "Weekly on %{day} at %{time}"
 msgstr "Haftalık olarak %{day} günü %{time}"
 
-#: src/views/dns/components/DNSRecordForm.vue:84
-#: src/views/dns/components/DNSRecordTable.vue:37
+#: src/views/dns/components/DNSRecordForm.vue:85
+#: src/views/dns/components/DNSRecordTable.vue:38
 msgid "Weight"
 msgstr "Ağırlık"
 
@@ -7680,7 +7917,7 @@ msgstr "Sertifika diske yazılıyor"
 
 #: src/components/NamespaceTabs/NamespaceTabs.vue:135
 #: src/components/NamespaceTabs/NamespaceTabs.vue:147
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:101
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:123
 #: src/components/NgxConfigEditor/LocationEditor.vue:88
 #: src/views/nginx_log/indexing/IndexManagement.vue:31
 #: src/views/nginx_log/indexing/IndexManagement.vue:57
@@ -7689,7 +7926,7 @@ msgstr "Sertifika diske yazılıyor"
 msgid "Yes"
 msgstr "Evet"
 
-#: src/views/terminal/Terminal.vue:200
+#: src/views/terminal/Terminal.vue:199
 msgid ""
 "You are accessing this terminal over an insecure HTTP connection on a "
 "non-localhost domain. This may expose sensitive information."
@@ -7753,7 +7990,7 @@ msgstr "Eski kodlarınız artık çalışmayacak."
 msgid "Your passkeys"
 msgstr "Geçiş Anahtarlarınız"
 
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:234
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:232
 msgid "Zero-allocation pipeline"
 msgstr "Tahsisatsız boru hattı"
 
@@ -8046,9 +8283,6 @@ msgstr "Tahsisatsız boru hattı"
 #, fuzzy
 #~ msgid "AutoCert is running, please wait"
 #~ msgstr "Bu Otomatik Sertifika öğesi geçersizdir, lütfen kaldırın."
-
-#~ msgid "Automatically indexed from site and stream configurations."
-#~ msgstr "\"Site ve akış yapılandırmalarından otomatik olarak dizinlendi.\""
 
 #, fuzzy
 #~ msgid "Nginx Conf Include Conf.d"

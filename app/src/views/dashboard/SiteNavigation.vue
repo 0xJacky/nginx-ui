@@ -170,7 +170,7 @@ onUnmounted(() => {
         {{ $gettext('No sites found') }}
       </h3>
       <p class="text-gray-600 dark:text-gray-400 text-center max-w-md">
-        {{ $gettext('Sites will appear here once you configure nginx server blocks with valid server_name directives.') }}
+        {{ $gettext('Sites will appear here once you configure nginx server blocks with valid server_name (localhost excluded) directives.') }}
       </p>
     </div>
 
