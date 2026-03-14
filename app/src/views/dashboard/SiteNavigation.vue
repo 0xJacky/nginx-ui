@@ -31,7 +31,7 @@ function hasCustomOrdering(siteList: SiteInfo[]): boolean {
 }
 
 function sortSitesByName(siteList: SiteInfo[]): SiteInfo[] {
-  return [...siteList].sort((a, b) => {
+  return siteList.toSorted((a, b) => {
     const nameCompare = (a.name || '').localeCompare(b.name || '', undefined, { sensitivity: 'base' })
     if (nameCompare !== 0) {
       return nameCompare
