@@ -95,6 +95,16 @@ export const useDnsStore = defineStore('dns-store', {
         this.ddnsLoading = false
       }
     },
+    async deleteDDNSConfig(domainId: number) {
+      this.ddnsLoading = true
+      try {
+        await dnsApi.deleteDDNSConfig(domainId)
+        this.ddnsConfig = undefined
+      }
+      finally {
+        this.ddnsLoading = false
+      }
+    },
     resetRecords() {
       this.records = []
       this.recordsPagination = undefined

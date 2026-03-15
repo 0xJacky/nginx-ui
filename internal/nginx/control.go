@@ -56,8 +56,16 @@ func (t *ControlResult) GetOutput() string {
 	return strings.Join([]string{t.stdOut, t.stdErr.Error()}, " ")
 }
 
+func (t *ControlResult) GetStdOut() string {
+	return t.stdOut
+}
+
 func (t *ControlResult) GetError() error {
 	return cosy.WrapErrorWithParams(ErrNginx, t.GetOutput())
+}
+
+func (t *ControlResult) GetStdErr() error {
+	return t.stdErr
 }
 
 func (t *ControlResult) GetLevel() int {

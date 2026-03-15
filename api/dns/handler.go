@@ -241,6 +241,24 @@ func UpdateDDNSConfig(c *gin.Context) {
 	c.JSON(http.StatusOK, toDDNSResponse(cfg))
 }
 
+// DeleteDDNSConfig removes DDNS settings for a domain and stops its schedule.
+func DeleteDDNSConfig(c *gin.Context) {
+	domainID := cast.ToUint64(c.Param("id"))
+
+	svc := dnsService.NewService()
+	if err := svc.DeleteDDNSConfig(c.Request.Context(), domainID); err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	if err := cron.RemoveDDNSJob(domainID); err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	c.Status(http.StatusNoContent)
+}
+
 func buildPagination(page, perPage int, total int64) model.Pagination {
 	page = lo.If(page < 1, 1).Else(page)
 	perPage = lo.If(perPage <= 0, 50).Else(perPage)

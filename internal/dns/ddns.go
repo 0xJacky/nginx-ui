@@ -209,6 +209,18 @@ func (s *Service) UpdateDDNSConfig(ctx context.Context, domainID uint64, input D
 	return cfg, nil
 }
 
+// DeleteDDNSConfig removes DDNS configuration for the given domain.
+func (s *Service) DeleteDDNSConfig(ctx context.Context, domainID uint64) error {
+	if _, err := loadDomain(ctx, domainID); err != nil {
+		return err
+	}
+
+	return model.UseDB().WithContext(ctx).
+		Model(&model.DnsDomain{}).
+		Where("id = ?", domainID).
+		Update("ddns_config", nil).Error
+}
+
 // ListEnabledDDNSSchedules returns schedules for enabled DDNS domains.
 func ListEnabledDDNSSchedules(ctx context.Context) ([]DDNSSchedule, error) {
 	domains, err := query.DnsDomain.WithContext(ctx).Find()

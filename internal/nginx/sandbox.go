@@ -20,30 +20,42 @@ type NamespaceInfo struct {
 	DeployMode string
 }
 
-// SandboxTestConfigWithPaths tests nginx config in an isolated sandbox with provided paths
-func SandboxTestConfigWithPaths(namespace *NamespaceInfo, sitePaths, streamPaths []string) (stdOut string, stdErr error) {
+// SandboxTestConfigWithPaths tests nginx config in an isolated sandbox with provided paths.
+func SandboxTestConfigWithPaths(namespace *NamespaceInfo, sitePaths, streamPaths []string) TestConfigResult {
 	// If custom test command is set, use it (no sandbox support)
 	if settings.NginxSettings.TestConfigCmd != "" {
 		mutex.Lock()
 		defer mutex.Unlock()
-		return execShell(settings.NginxSettings.TestConfigCmd)
+		stdOut, stdErr := execShell(settings.NginxSettings.TestConfigCmd)
+		result := NewTestConfigResult(stdOut, stdErr, TestScopeNamespaceSandbox, SandboxStatusSkipped)
+		result.Message = strings.TrimSpace(strings.Join([]string{
+			"Sandbox validation skipped because a custom test command is configured.",
+			result.Message,
+		}, "\n"))
+		return result
 	}
 
 	// Skip local test for remote-only namespaces
 	if namespace != nil && namespace.DeployMode == "remote" {
-		return "Config validation skipped for remote-only namespace", nil
+		return TestConfigResult{
+			Message:       "Config validation skipped for remote-only namespace",
+			Level:         Notice,
+			TestScope:     TestScopeNamespaceSandbox,
+			SandboxStatus: SandboxStatusSkipped,
+		}
 	}
 
 	// If namespace is nil, directly test in real directory (no sandbox)
 	if namespace == nil {
-		return TestConfig()
+		stdOut, stdErr := TestConfig()
+		return NewTestConfigResult(stdOut, stdErr, TestScopeGlobal, "")
 	}
 
 	// Create sandbox and test
 	sandbox, err := createSandbox(namespace, sitePaths, streamPaths)
 	if err != nil {
 		logger.Errorf("Failed to create sandbox: %v", err)
-		return TestConfig() // Fallback to normal test
+		return NewSandboxBuildFailureResult(err)
 	}
 	defer sandbox.Cleanup()
 
@@ -56,7 +68,8 @@ func SandboxTestConfigWithPaths(namespace *NamespaceInfo, sitePaths, streamPaths
 		sbin = "nginx"
 	}
 
-	return execCommand(sbin, "-t", "-c", sandbox.ConfigPath)
+	stdOut, stdErr := execCommand(sbin, "-t", "-c", sandbox.ConfigPath)
+	return NewTestConfigResult(stdOut, stdErr, TestScopeNamespaceSandbox, SandboxStatusOK)
 }
 
 // Sandbox represents an isolated nginx test environment
@@ -78,6 +91,7 @@ func createSandbox(namespace *NamespaceInfo, sitePaths, streamPaths []string) (*
 		Dir:       tempDir,
 		Namespace: namespace,
 	}
+	builder := newSandboxBuilder(tempDir)
 
 	// Copy full nginx conf directory to sandbox, excluding sites-* and streams-*
 	if err := copyConfigBaseExceptSitesStreams(tempDir); err != nil {
@@ -96,14 +110,14 @@ func createSandbox(namespace *NamespaceInfo, sitePaths, streamPaths []string) (*
 	}
 
 	// Collect and copy only enabled sites/streams for the given namespace
-	siteFiles, streamFiles, err := collectAndCopyNamespaceEnabled(namespace, sitePaths, streamPaths, tempDir)
+	siteFiles, streamFiles, err := collectAndCopyNamespaceEnabled(namespace, sitePaths, streamPaths, builder)
 	if err != nil {
 		os.RemoveAll(tempDir)
 		return nil, fmt.Errorf("failed to collect/copy namespace configs: %w", err)
 	}
 
 	// Generate sandbox nginx.conf
-	configContent, err := generateSandboxConfig(namespace, siteFiles, streamFiles, tempDir)
+	configContent, err := generateSandboxConfig(namespace, siteFiles, streamFiles, builder)
 	if err != nil {
 		os.RemoveAll(tempDir)
 		return nil, fmt.Errorf("failed to generate sandbox config: %w", err)
@@ -131,8 +145,8 @@ func (s *Sandbox) Cleanup() {
 	}
 }
 
-// generateSandboxConfig generates a minimal nginx.conf that only includes configs from specified paths
-func generateSandboxConfig(namespace *NamespaceInfo, siteFiles, streamFiles []string, sandboxDir string) (string, error) {
+// generateSandboxConfig generates a minimal nginx.conf that only includes configs from specified paths.
+func generateSandboxConfig(namespace *NamespaceInfo, siteFiles, streamFiles []string, builder *sandboxBuilder) (string, error) {
 	// Read the main nginx.conf to get basic structure
 	mainConfPath := GetConfEntryPath()
 	mainConf, err := os.ReadFile(mainConfPath)
@@ -145,22 +159,25 @@ func generateSandboxConfig(namespace *NamespaceInfo, siteFiles, streamFiles []st
 	// Generate include patterns based on provided paths
 	siteIncludeLines := make([]string, 0, len(siteFiles))
 	for _, f := range siteFiles {
-		siteIncludeLines = append(siteIncludeLines, fmt.Sprintf("    include %s;", filepath.Join(sandboxDir, "sites-enabled", f)))
+		siteIncludeLines = append(siteIncludeLines, fmt.Sprintf("    include %s;", filepath.Join(builder.sandboxDir, "sites-enabled", f)))
 	}
 	streamIncludeLines := make([]string, 0, len(streamFiles))
 	for _, f := range streamFiles {
-		streamIncludeLines = append(streamIncludeLines, fmt.Sprintf("    include %s;", filepath.Join(sandboxDir, "streams-enabled", f)))
+		streamIncludeLines = append(streamIncludeLines, fmt.Sprintf("    include %s;", filepath.Join(builder.sandboxDir, "streams-enabled", f)))
 	}
 
 	// Replace include directives with sandbox-specific ones
-	sandboxConf := replaceIncludeDirectives(mainConfStr, sandboxDir, siteIncludeLines, streamIncludeLines)
+	sandboxConf, err := replaceIncludeDirectives(mainConfStr, mainConfPath, builder, siteIncludeLines, streamIncludeLines)
+	if err != nil {
+		return "", err
+	}
 
 	return sandboxConf, nil
 }
 
-// replaceIncludeDirectives replaces only sites-enabled and streams-enabled includes
+// replaceIncludeDirectives replaces only sites-enabled and streams-enabled includes.
 // Rewrites other includes to point to copied files under sandboxDir, preserving isolation.
-func replaceIncludeDirectives(mainConf string, sandboxDir string, siteIncludeLines, streamIncludeLines []string) string {
+func replaceIncludeDirectives(mainConf string, sourcePath string, builder *sandboxBuilder, siteIncludeLines, streamIncludeLines []string) (string, error) {
 	lines := strings.Split(mainConf, "\n")
 	var result []string
 	httpDepth := 0
@@ -218,7 +235,10 @@ func replaceIncludeDirectives(mainConf string, sandboxDir string, siteIncludeLin
 			}
 
 			// Rewrite other includes to sandbox paths
-			normalized := rewriteIncludeLineToSandbox(line, sandboxDir)
+			normalized, err := builder.rewriteIncludeLine(line, filepath.Dir(sourcePath))
+			if err != nil {
+				return "", err
+			}
 			if normalized != "" {
 				result = append(result, normalized)
 			}
@@ -253,44 +273,13 @@ func replaceIncludeDirectives(mainConf string, sandboxDir string, siteIncludeLin
 		result = append(result, line)
 	}
 
-	return strings.Join(result, "\n")
-}
-
-// rewriteIncludeLineToSandbox rewrites include lines to point to files/directories inside sandboxDir.
-// If an include path is relative, it will be rewritten relative to the nginx conf dir inside sandbox.
-func rewriteIncludeLineToSandbox(line string, sandboxDir string) string {
-	includeRegex := regexp.MustCompile(`(?i)include\s+([^;#]+);`)
-	matches := includeRegex.FindStringSubmatch(line)
-	if len(matches) < 2 {
-		return line
-	}
-	path := strings.TrimSpace(matches[1])
-
-	confBase := GetConfPath()
-	var rewritten string
-	if filepath.IsAbs(path) {
-		// If absolute under confBase, map to sandbox
-		if helper.IsUnderDirectory(path, confBase) {
-			rel, err := filepath.Rel(confBase, path)
-			if err == nil {
-				rewritten = filepath.Join(sandboxDir, rel)
-			}
-		}
-	} else {
-		// Relative includes should point inside sandbox conf root
-		rewritten = filepath.Join(sandboxDir, path)
-	}
-	if rewritten == "" {
-		rewritten = path
-	}
-	trimmed := includeRegex.ReplaceAllString(line, "include "+rewritten+";")
-	return trimmed
+	return strings.Join(result, "\n"), nil
 }
 
 // collectAndCopyNamespaceEnabled collects and copies enabled site/stream configs based on provided paths.
 // It rewrites relative includes to absolute, and writes them into sandboxDir/{sites-enabled,streams-enabled}.
 // Returns the written file names.
-func collectAndCopyNamespaceEnabled(_ *NamespaceInfo, sitePaths, streamPaths []string, sandboxDir string) (siteFiles, streamFiles []string, err error) {
+func collectAndCopyNamespaceEnabled(_ *NamespaceInfo, sitePaths, streamPaths []string, builder *sandboxBuilder) (siteFiles, streamFiles []string, err error) {
 	// Helper to process and write a single config by kind and name
 	readSourceAndWrite := func(kind, name string) (writtenName string, wErr error) {
 		var enabledCandidates []string
@@ -340,10 +329,10 @@ func collectAndCopyNamespaceEnabled(_ *NamespaceInfo, sitePaths, streamPaths []s
 		}
 
 		// Rewrite include lines to sandbox paths (resolve relative to source dir first)
-		absRewriter := regexp.MustCompile(`(?m)^[ \t]*include\s+([^;#]+);`)
-		rewritten := absRewriter.ReplaceAllStringFunc(string(content), func(m string) string {
-			return normalizeIncludeLineRelativeTo(m, filepath.Dir(srcPath), sandboxDir)
-		})
+		rewritten, rErr := builder.rewriteConfigContent(string(content), srcPath)
+		if rErr != nil {
+			return "", fmt.Errorf("rewrite sandbox %s: %w", kind, rErr)
+		}
 
 		// Compute destination file name respecting platform symlink naming
 		var destName string
@@ -354,7 +343,7 @@ func collectAndCopyNamespaceEnabled(_ *NamespaceInfo, sitePaths, streamPaths []s
 			destName = filepath.Base(GetConfSymlinkPath(GetConfPath("streams-enabled", name)))
 		}
 
-		destDir := filepath.Join(sandboxDir, kind+"s-enabled")
+		destDir := filepath.Join(builder.sandboxDir, kind+"s-enabled")
 		if err := os.WriteFile(filepath.Join(destDir, destName), []byte(rewritten), 0644); err != nil {
 			return "", fmt.Errorf("write sandbox %s: %w", kind, err)
 		}
@@ -384,29 +373,202 @@ func collectAndCopyNamespaceEnabled(_ *NamespaceInfo, sitePaths, streamPaths []s
 	return siteFiles, streamFiles, nil
 }
 
-// normalizeIncludeLineRelativeTo rewrites a single include line:
-// - resolves relative paths against baseDir
-// - if the resolved path is under confBase, map to sandboxDir mirror; else keep as is
-func normalizeIncludeLineRelativeTo(line, baseDir, sandboxDir string) string {
+type sandboxBuilder struct {
+	sandboxDir string
+	confBase   string
+	mirrored   map[string]bool
+}
+
+func newSandboxBuilder(sandboxDir string) *sandboxBuilder {
+	return &sandboxBuilder{
+		sandboxDir: sandboxDir,
+		confBase:   GetConfPath(),
+		mirrored:   map[string]bool{},
+	}
+}
+
+func (b *sandboxBuilder) rewriteConfigContent(content string, sourcePath string) (string, error) {
+	includeRegex := regexp.MustCompile(`(?m)^[ \t]*include\s+([^;#]+);`)
+	var rewriteErr error
+
+	rewritten := includeRegex.ReplaceAllStringFunc(content, func(match string) string {
+		if rewriteErr != nil {
+			return match
+		}
+
+		line, err := b.rewriteIncludeLine(match, filepath.Dir(sourcePath))
+		if err != nil {
+			rewriteErr = err
+			return match
+		}
+
+		return line
+	})
+
+	if rewriteErr != nil {
+		return "", rewriteErr
+	}
+
+	return rewritten, nil
+}
+
+func (b *sandboxBuilder) rewriteIncludeLine(line string, baseDir string) (string, error) {
 	includeRegex := regexp.MustCompile(`(?i)include\s+([^;#]+);`)
 	matches := includeRegex.FindStringSubmatch(line)
 	if len(matches) < 2 {
-		return line
+		return line, nil
 	}
-	path := strings.TrimSpace(matches[1])
 
-	// If relative, make absolute to source file dir
-	resolved := path
-	if !filepath.IsAbs(resolved) {
-		resolved = filepath.Clean(filepath.Join(baseDir, resolved))
+	includePath := strings.TrimSpace(matches[1])
+	resolvedPath, matchedFiles, err := b.resolveIncludePath(includePath, baseDir)
+	if err != nil {
+		return "", err
 	}
-	confBase := GetConfPath()
-	if helper.IsUnderDirectory(resolved, confBase) {
-		if rel, err := filepath.Rel(confBase, resolved); err == nil {
-			resolved = filepath.Join(sandboxDir, rel)
+
+	if helper.IsUnderDirectory(resolvedPath, b.confBase) {
+		for _, matchedFile := range matchedFiles {
+			if err := b.mirrorDependency(matchedFile); err != nil {
+				return "", err
+			}
+		}
+
+		rel, err := filepath.Rel(b.confBase, resolvedPath)
+		if err == nil {
+			resolvedPath = filepath.Join(b.sandboxDir, rel)
 		}
 	}
-	return includeRegex.ReplaceAllString(line, "include "+resolved+";")
+
+	return includeRegex.ReplaceAllString(line, "include "+resolvedPath+";"), nil
+}
+
+func (b *sandboxBuilder) resolveIncludePath(includePath string, baseDir string) (string, []string, error) {
+	if filepath.IsAbs(includePath) {
+		matches, err := matchIncludePattern(includePath)
+		if err != nil {
+			return "", nil, err
+		}
+		if len(matches) == 0 && helper.IsUnderDirectory(includePath, b.confBase) {
+			return "", nil, newSandboxIncludeError(baseDir, includePath)
+		}
+		return includePath, matches, nil
+	}
+
+	candidates := uniqueSandboxCandidates(
+		filepath.Clean(filepath.Join(baseDir, includePath)),
+		filepath.Clean(filepath.Join(b.confBase, includePath)),
+	)
+
+	for _, candidate := range candidates {
+		matches, err := matchIncludePattern(candidate)
+		if err != nil {
+			return "", nil, err
+		}
+		if len(matches) > 0 {
+			return candidate, matches, nil
+		}
+	}
+
+	if len(candidates) == 0 {
+		return includePath, nil, nil
+	}
+
+	return "", nil, newSandboxIncludeError(baseDir, includePath)
+}
+
+func (b *sandboxBuilder) mirrorDependency(sourcePath string) error {
+	sourcePath = filepath.Clean(sourcePath)
+	if !helper.IsUnderDirectory(sourcePath, b.confBase) {
+		return nil
+	}
+	if b.mirrored[sourcePath] {
+		return nil
+	}
+	b.mirrored[sourcePath] = true
+
+	data, err := os.ReadFile(sourcePath)
+	if err != nil {
+		return &SandboxBuildError{
+			Category: ErrorCategorySandboxBuildError,
+			Message:  fmt.Sprintf("failed to read sandbox dependency %s: %v", sourcePath, err),
+		}
+	}
+
+	rewritten, err := b.rewriteConfigContent(string(data), sourcePath)
+	if err != nil {
+		return err
+	}
+
+	rel, err := filepath.Rel(b.confBase, sourcePath)
+	if err != nil {
+		return &SandboxBuildError{
+			Category: ErrorCategorySandboxBuildError,
+			Message:  fmt.Sprintf("failed to resolve sandbox dependency path %s: %v", sourcePath, err),
+		}
+	}
+
+	destPath := filepath.Join(b.sandboxDir, rel)
+	if err := os.MkdirAll(filepath.Dir(destPath), 0755); err != nil {
+		return &SandboxBuildError{
+			Category: ErrorCategorySandboxBuildError,
+			Message:  fmt.Sprintf("failed to create sandbox dependency dir for %s: %v", sourcePath, err),
+		}
+	}
+
+	if err := os.WriteFile(destPath, []byte(rewritten), 0644); err != nil {
+		return &SandboxBuildError{
+			Category: ErrorCategorySandboxBuildError,
+			Message:  fmt.Sprintf("failed to write sandbox dependency %s: %v", sourcePath, err),
+		}
+	}
+
+	return nil
+}
+
+func matchIncludePattern(pattern string) ([]string, error) {
+	if strings.ContainsAny(pattern, "*?[") {
+		matches, err := filepath.Glob(pattern)
+		if err != nil {
+			return nil, &SandboxBuildError{
+				Category: ErrorCategorySandboxBuildError,
+				Message:  fmt.Sprintf("invalid include pattern %s: %v", pattern, err),
+			}
+		}
+
+		var existing []string
+		for _, match := range matches {
+			info, statErr := os.Stat(match)
+			if statErr == nil && !info.IsDir() {
+				existing = append(existing, match)
+			}
+		}
+
+		return existing, nil
+	}
+
+	info, err := os.Stat(pattern)
+	if err != nil || info.IsDir() {
+		return nil, nil
+	}
+
+	return []string{pattern}, nil
+}
+
+func uniqueSandboxCandidates(paths ...string) []string {
+	seen := map[string]struct{}{}
+	result := make([]string, 0, len(paths))
+
+	for _, path := range paths {
+		if path == "" {
+			continue
+		}
+		if _, ok := seen[path]; ok {
+			continue
+		}
+		seen[path] = struct{}{}
+		result = append(result, path)
+	}
+
+	return result
 }
 
 // copyConfigBaseExceptSitesStreams copies the entire nginx conf directory into sandboxDir,

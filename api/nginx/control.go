@@ -9,6 +9,17 @@ import (
 	"github.com/uozi-tech/cosy"
 )
 
+func buildNamespaceTestConfigResponse(namespaceID uint64, result nginx.TestConfigResult) gin.H {
+	return gin.H{
+		"message":        result.Message,
+		"level":          result.Level,
+		"namespace_id":   namespaceID,
+		"test_scope":     result.TestScope,
+		"sandbox_status": result.SandboxStatus,
+		"error_category": result.ErrorCategory,
+	}
+}
+
 // Reload reloads the nginx
 func Reload(c *gin.Context) {
 	nginx.Control(nginx.Reload).Resp(c)
@@ -17,10 +28,8 @@ func Reload(c *gin.Context) {
 // TestConfig tests the nginx config
 func TestConfig(c *gin.Context) {
 	lastResult := nginx.Control(nginx.TestConfig)
-	c.JSON(http.StatusOK, gin.H{
-		"message": lastResult.GetOutput(),
-		"level":   lastResult.GetLevel(),
-	})
+	result := nginx.NewTestConfigResult(lastResult.GetStdOut(), lastResult.GetStdErr(), nginx.TestScopeGlobal, "")
+	c.JSON(http.StatusOK, result)
 }
 
 // TestConfigWithNamespace tests nginx config in isolated sandbox for a specific namespace
@@ -73,15 +82,8 @@ func TestConfigWithNamespace(c *gin.Context) {
 	}
 
 	// Use sandbox test with namespace-specific paths
-	result := nginx.Control(func() (string, error) {
-		return nginx.SandboxTestConfigWithPaths(namespaceInfo, sitePaths, streamPaths)
-	})
-
-	c.JSON(http.StatusOK, gin.H{
-		"message":      result.GetOutput(),
-		"level":        result.GetLevel(),
-		"namespace_id": req.NamespaceID,
-	})
+	result := nginx.SandboxTestConfigWithPaths(namespaceInfo, sitePaths, streamPaths)
+	c.JSON(http.StatusOK, buildNamespaceTestConfigResponse(req.NamespaceID, result))
 }
 
 // Restart restarts the nginx

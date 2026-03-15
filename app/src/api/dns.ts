@@ -108,6 +108,9 @@ export const dnsApi = {
   listDDNS() {
     return http.get<{ data: DDNSDomainItem[] }>(`/dns/ddns`)
   },
+  deleteDDNSConfig(domainId: number) {
+    return http.delete(`${baseDomainUrl}/${domainId}/ddns`)
+  },
 }
 
 export type { DnsCredential }

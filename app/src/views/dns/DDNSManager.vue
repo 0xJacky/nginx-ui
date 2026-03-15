@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { DDNSDomainItem, DNSRecord, UpdateDDNSPayload } from '@/api/dns'
-import { ReloadOutlined } from '@ant-design/icons-vue'
+import { DeleteOutlined, ReloadOutlined, SearchOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import { computed, onMounted, ref } from 'vue'
@@ -11,9 +11,11 @@ const store = useDnsStore()
 
 const loading = computed(() => store.ddnsListLoading)
 const items = computed(() => store.ddnsList)
+const searchKeyword = ref('')
 
 const drawerOpen = ref(false)
 const saving = ref(false)
+const deletingDomainId = ref<number | null>(null)
 const currentDomain = ref<DDNSDomainItem | null>(null)
 const ddnsForm = ref<UpdateDDNSPayload>({
   enabled: false,
@@ -23,6 +25,14 @@ const ddnsForm = ref<UpdateDDNSPayload>({
 
 const records = ref<DNSRecord[]>([])
 const recordsLoading = ref(false)
+
+const filteredItems = computed(() => {
+  const keyword = searchKeyword.value.trim().toLowerCase()
+  if (!keyword)
+    return items.value
+
+  return items.value.filter(item => matchKeyword(item, keyword))
+})
 
 const recordOptions = computed(() => {
   const opts = new Map<string, { value: string, label: string }>()
@@ -53,6 +63,34 @@ function filterRecordOption(input: string, option?: { label: string, value: stri
     return false
   const keyword = input.toLowerCase()
   return option.label.toLowerCase().includes(keyword)
+}
+
+function normalizeText(value?: string | null) {
+  return value?.toLowerCase().trim() ?? ''
+}
+
+function hasDDNSConfig(item: DDNSDomainItem) {
+  const config = item.config
+  return config.enabled
+    || Boolean(config.targets?.length)
+    || Boolean(config.last_run_at)
+    || Boolean(config.last_error)
+    || Boolean(config.last_ipv4)
+    || Boolean(config.last_ipv6)
+}
+
+function matchKeyword(item: DDNSDomainItem, keyword: string) {
+  const targetText = item.config.targets
+    ?.map(target => `${target.name} ${target.type}`)
+    .join(' ')
+
+  return [
+    item.domain,
+    item.credential_name,
+    item.credential_provider,
+    targetText,
+    item.config.enabled ? 'enabled' : 'disabled',
+  ].some(value => normalizeText(value).includes(keyword))
 }
 
 const columns = [
@@ -105,6 +143,7 @@ function formatTime(value?: string) {
 
 async function openDrawer(record: DDNSDomainItem) {
   currentDomain.value = record
+  records.value = []
   ddnsForm.value = {
     enabled: record.config.enabled,
     interval_seconds: record.config.interval_seconds,
@@ -125,6 +164,12 @@ async function loadRecords(domainId: number) {
   }
 }
 
+function closeDrawer() {
+  drawerOpen.value = false
+  currentDomain.value = null
+  records.value = []
+}
+
 async function saveDDNS() {
   if (!currentDomain.value)
     return
@@ -133,10 +178,24 @@ async function saveDDNS() {
     await store.updateDDNSConfig(currentDomain.value.id, ddnsForm.value)
     await store.refreshDDNSItem(currentDomain.value.id)
     message.success($gettext('DDNS saved'))
-    drawerOpen.value = false
+    closeDrawer()
   }
   finally {
     saving.value = false
+  }
+}
+
+async function deleteDDNS(record: DDNSDomainItem) {
+  deletingDomainId.value = record.id
+  try {
+    await store.deleteDDNSConfig(record.id)
+    await store.refreshDDNSItem(record.id)
+    if (currentDomain.value?.id === record.id)
+      closeDrawer()
+    message.success($gettext('DDNS config deleted'))
+  }
+  finally {
+    deletingDomainId.value = null
   }
 }
 
@@ -147,27 +206,40 @@ onMounted(() => {
 
 <template>
   <div class="ddns-page">
-    <ACard>
+    <ACard class="ddns-card">
       <template #title>
         <ASpace align="center">
           {{ $gettext('DDNS Overview') }}
         </ASpace>
       </template>
       <template #extra>
-        <AButton type="link" size="small" :loading="loading" @click="init">
-          <template #icon>
-            <ReloadOutlined />
-          </template>
-          {{ $gettext('Refresh') }}
-        </AButton>
+        <div class="toolbar">
+          <AInput
+            v-model:value="searchKeyword"
+            allow-clear
+            :placeholder="$gettext('Search domain, provider or target')"
+            class="toolbar-search"
+          >
+            <template #prefix>
+              <SearchOutlined />
+            </template>
+          </AInput>
+          <AButton size="small" :loading="loading" @click="init">
+            <template #icon>
+              <ReloadOutlined />
+            </template>
+            {{ $gettext('Refresh') }}
+          </AButton>
+        </div>
       </template>
 
       <ATable
         :loading="loading"
-        :data-source="items"
+        :data-source="filteredItems"
         :columns="columns"
         row-key="id"
         :pagination="false"
+        :scroll="{ x: 960 }"
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'status'">
@@ -196,10 +268,28 @@ onMounted(() => {
             </div>
           </template>
           <template v-else-if="column.key === 'actions'">
-            <ASpace>
+            <ASpace size="small" wrap>
               <AButton size="small" type="link" @click="openDrawer(record as DDNSDomainItem)">
                 {{ $gettext('Configure') }}
               </AButton>
+              <APopconfirm
+                :title="$gettext('Are you sure to delete this DDNS config?')"
+                :disabled="!hasDDNSConfig(record as DDNSDomainItem)"
+                @confirm="deleteDDNS(record as DDNSDomainItem)"
+              >
+                <AButton
+                  size="small"
+                  type="link"
+                  danger
+                  :disabled="!hasDDNSConfig(record as DDNSDomainItem)"
+                  :loading="deletingDomainId === (record as DDNSDomainItem).id"
+                >
+                  <template #icon>
+                    <DeleteOutlined />
+                  </template>
+                  {{ $gettext('Delete') }}
+                </AButton>
+              </APopconfirm>
             </ASpace>
           </template>
         </template>
@@ -210,7 +300,7 @@ onMounted(() => {
       :open="drawerOpen"
       :title="currentDomain ? `${$gettext('Configure DDNS')} - ${currentDomain.domain}` : ''"
       width="520"
-      @close="drawerOpen = false"
+      @close="closeDrawer"
     >
       <ASkeleton v-if="recordsLoading" active />
       <template v-else>
@@ -240,7 +330,7 @@ onMounted(() => {
           </AFormItem>
         </AForm>
         <div class="flex gap-2 mt-4">
-          <AButton @click="drawerOpen = false">
+          <AButton @click="closeDrawer">
             {{ $gettext('Cancel') }}
           </AButton>
           <AButton type="primary" :loading="saving" @click="saveDDNS">
@@ -255,5 +345,23 @@ onMounted(() => {
 <style scoped>
 .ddns-page {
   padding-bottom: 16px;
+}
+
+.ddns-card :deep(.ant-card-head) {
+  padding-inline: 20px;
+}
+
+.ddns-card :deep(.ant-card-body) {
+  padding: 20px;
+}
+
+.toolbar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.toolbar-search {
+  width: min(320px, 55vw);
 }
 </style>

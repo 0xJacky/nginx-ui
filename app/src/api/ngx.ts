@@ -111,6 +111,15 @@ export interface NgxModule {
   loaded: boolean
 }
 
+export interface NgxTestResult {
+  message: string
+  level: number
+  namespace_id?: number
+  test_scope?: 'global' | 'namespace_sandbox'
+  sandbox_status?: 'ok' | 'skipped' | 'failed'
+  error_category?: 'missing_include' | 'sandbox_build_error' | 'syntax_error' | 'nginx_runtime_error'
+}
+
 const ngx = {
   build_config(ngxConfig: NgxConfig) {
     return http.post('/ngx/build_config', ngxConfig)
@@ -144,11 +153,11 @@ const ngx = {
     return http.post('/nginx/restart')
   },
 
-  test() {
+  test(): Promise<NgxTestResult> {
     return http.post('/nginx/test')
   },
 
-  test_namespace(namespace_id?: number): Promise<{ message: string, level: number, namespace_id?: number }> {
+  test_namespace(namespace_id?: number): Promise<NgxTestResult> {
     return http.post('/nginx/test_namespace', { namespace_id })
   },
 

@@ -24,6 +24,7 @@ func InitRouter(r *gin.RouterGroup) {
 
 		group.GET("/domains/:id/ddns", GetDDNSConfig)
 		group.PUT("/domains/:id/ddns", UpdateDDNSConfig)
+		group.DELETE("/domains/:id/ddns", DeleteDDNSConfig)
 
 		group.GET("/ddns", ListDDNSConfig)
 	}
