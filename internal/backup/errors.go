@@ -19,6 +19,8 @@ var (
 	ErrGenerateIV        = e.New(4012, "Failed to generate initialization vector: {0}")
 	ErrCreateBackupFile  = e.New(4013, "Failed to create backup file: {0}")
 	ErrCleanupTempDir    = e.New(4014, "Failed to cleanup temporary directory: {0}")
+	ErrCreateManifest    = e.New(4015, "Failed to create backup manifest: {0}")
+	ErrCreateManifestSig = e.New(4016, "Failed to create backup manifest signature: {0}")
 
 	ErrConfigPathEmpty     = e.New(4101, "Config path is empty")
 	ErrCopyConfigFile      = e.New(4102, "Failed to copy config file: {0}")
@@ -67,6 +69,14 @@ var (
 	ErrReadHashFile       = e.New(4801, "Failed to read hash info file: {0}")
 	ErrCalculateUIHash    = e.New(4802, "Failed to calculate Nginx UI hash: {0}")
 	ErrCalculateNginxHash = e.New(4803, "Failed to calculate Nginx hash: {0}")
+	ErrReadManifest       = e.New(4804, "Failed to read backup manifest: {0}")
+	ErrReadManifestSig    = e.New(4805, "Failed to read backup manifest signature: {0}")
+	ErrInvalidManifest    = e.New(4806, "Invalid backup manifest: {0}")
+	ErrInvalidManifestSig = e.New(4807, "Invalid backup manifest signature")
+	ErrBackupIntegrity    = e.New(4808, "Backup integrity verification failed")
+	ErrUnsupportedFormat  = e.New(4809, "This backup uses an unsupported legacy format. Please create a new backup with a newer version before restoring.")
+	ErrMissingManifest    = e.New(4810, "Backup manifest is missing required file entry: {0}")
+	ErrSigningKeyMissing  = e.New(4811, "Backup signing key is unavailable")
 
 	ErrAutoBackupPathRequired       = e.New(4903, "Backup path is required for custom directory backup")
 	ErrAutoBackupS3ConfigIncomplete = e.New(4904, "S3 configuration is incomplete: missing {0}")

@@ -47,14 +47,11 @@ func Restore(options RestoreOptions) (RestoreResult, error) {
 		return RestoreResult{}, cosy.WrapErrorWithParams(ErrExtractArchive, err.Error())
 	}
 
-	// Decrypt the extracted files
-	hashInfoPath := filepath.Join(options.RestoreDir, HashInfoFile)
 	nginxUIZipPath := filepath.Join(options.RestoreDir, NginxUIZipName)
 	nginxZipPath := filepath.Join(options.RestoreDir, NginxZipName)
 
-	// Decrypt hash info file
-	if err := decryptFile(hashInfoPath, options.AESKey, options.AESIv); err != nil {
-		return RestoreResult{}, cosy.WrapErrorWithParams(ErrDecryptFile, err.Error())
+	if err := verifyBackupManifest(options.RestoreDir); err != nil {
+		return RestoreResult{}, err
 	}
 
 	// Decrypt nginx-ui.zip
@@ -93,16 +90,7 @@ func Restore(options RestoreOptions) (RestoreResult, error) {
 		RestoreDir:      options.RestoreDir,
 		NginxUIRestored: false,
 		NginxRestored:   false,
-		HashMatch:       false,
-	}
-
-	// Verify hashes if requested
-	if options.VerifyHash {
-		hashMatch, err := verifyHashes(options.RestoreDir, nginxUIZipPath, nginxZipPath)
-		if err != nil {
-			return result, cosy.WrapErrorWithParams(ErrVerifyHashes, err.Error())
-		}
-		result.HashMatch = hashMatch
+		HashMatch:       true,
 	}
 
 	// Restore nginx configs if requested
@@ -315,66 +303,6 @@ func extractZipFile(file *zip.File, destDir string) error {
 	}
 
 	return nil
-}
-
-// verifyHashes verifies the hashes of the extracted zip files
-func verifyHashes(restoreDir, nginxUIZipPath, nginxZipPath string) (bool, error) {
-	hashFile := filepath.Join(restoreDir, HashInfoFile)
-	hashContent, err := os.ReadFile(hashFile)
-	if err != nil {
-		return false, cosy.WrapErrorWithParams(ErrReadHashFile, err.Error())
-	}
-
-	hashInfo := parseHashInfo(string(hashContent))
-
-	// Calculate hash for nginx-ui.zip
-	nginxUIHash, err := calculateFileHash(nginxUIZipPath)
-	if err != nil {
-		return false, cosy.WrapErrorWithParams(ErrCalculateUIHash, err.Error())
-	}
-
-	// Calculate hash for nginx.zip
-	nginxHash, err := calculateFileHash(nginxZipPath)
-	if err != nil {
-		return false, cosy.WrapErrorWithParams(ErrCalculateNginxHash, err.Error())
-	}
-
-	// Verify hashes
-	return hashInfo.NginxUIHash == nginxUIHash && hashInfo.NginxHash == nginxHash, nil
-}
-
-// parseHashInfo parses hash info from content string
-func parseHashInfo(content string) HashInfo {
-	info := HashInfo{}
-	lines := strings.SplitSeq(content, "\n")
-
-	for line := range lines {
-		line = strings.TrimSpace(line)
-		if line == "" {
-			continue
-		}
-
-		parts := strings.SplitN(line, ":", 2)
-		if len(parts) != 2 {
-			continue
-		}
-
-		key := strings.TrimSpace(parts[0])
-		value := strings.TrimSpace(parts[1])
-
-		switch key {
-		case "nginx-ui_hash":
-			info.NginxUIHash = value
-		case "nginx_hash":
-			info.NginxHash = value
-		case "timestamp":
-			info.Timestamp = value
-		case "version":
-			info.Version = value
-		}
-	}
-
-	return info
 }
 
 // restoreNginxConfigs restores nginx configuration files

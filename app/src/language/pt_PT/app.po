@@ -137,7 +137,7 @@ msgstr "Mínimo de 1 núcleo"
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:508
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:632
 msgid "192.168.1.1"
-msgstr ""
+msgstr "192.168.1.1"
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:54
 msgid "1GB RAM minimum"
@@ -562,9 +562,8 @@ msgstr "Reinício Automático"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:331
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:625
-#, fuzzy
 msgid "Automatically extracted from server_name"
-msgstr "Indexado automaticamente a partir das configurações de site e stream."
+msgstr "Extraído automaticamente de server_name"
 
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:36
 msgid "Average Latency"
@@ -850,6 +849,8 @@ msgstr "Não é possível eliminar o caminho protegido"
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:135
 msgid "Cannot delete server_name while DNS is linked. Clear DNS link first."
 msgstr ""
+"Não é possível eliminar server_name enquanto o DNS está vinculado. Remova "
+"primeiro a ligação DNS."
 
 #: src/views/dashboard/NginxDashBoard.vue:154
 msgid "Cannot get performance data in this state"
@@ -1187,9 +1188,8 @@ msgid "Clear"
 msgstr "Limpar"
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:538
-#, fuzzy
 msgid "Clear Link"
-msgstr "Limpar"
+msgstr "Limpar ligação"
 
 #: src/components/Notification/Notification.vue:75
 #: src/views/notification/Notification.vue:13
@@ -1279,9 +1279,8 @@ msgstr "O comando terminou com um código de saída inesperado: {0}, erro: {1}"
 
 #: src/views/dns/components/DNSRecordForm.vue:91
 #: src/views/dns/components/DNSRecordTable.vue:49
-#, fuzzy
 msgid "Comment"
-msgstr "Comentários"
+msgstr "Comentário"
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:150
 #: src/components/NgxConfigEditor/LocationEditor.vue:104
@@ -1513,9 +1512,8 @@ msgstr "Criar cópia de segurança"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:365
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:659
-#, fuzzy
 msgid "Create DNS Record"
-msgstr "Criar registo"
+msgstr "Criar registo DNS"
 
 #: src/views/config/ConfigList.vue:130
 msgid "Create File"
@@ -1527,9 +1525,8 @@ msgstr "Criar Pasta"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:305
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:599
-#, fuzzy
 msgid "Create new DNS record"
-msgstr "Criar registo"
+msgstr "Criar novo registo DNS"
 
 #: src/views/dns/DNSRecordManager.vue:206
 msgid "Create Record"
@@ -2006,9 +2003,8 @@ msgstr "Credenciais DNS"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:251
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:545
-#, fuzzy
 msgid "DNS Domain"
-msgstr "Domínios DNS"
+msgstr "Domínio DNS"
 
 #: src/routes/modules/dns.ts:28 src/views/dns/DNSDomainList.vue:234
 msgid "DNS Domains"
@@ -2030,47 +2026,41 @@ msgstr "Suporte de provedor de DNS"
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:274
 #: src/views/site/site_add/SiteAdd.vue:170
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:568
-#, fuzzy
 msgid "DNS Record"
-msgstr "Registros DNS"
+msgstr "Registo DNS"
 
 #: src/views/site/site_add/SiteAdd.vue:145
-#, fuzzy
 msgid "DNS record created and linked successfully"
-msgstr "Nginx recarregado com sucesso"
+msgstr "Registo DNS criado e vinculado com sucesso"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:213
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:340
-#, fuzzy
 msgid "DNS record created successfully"
-msgstr "Criado com sucesso"
+msgstr "Registo DNS criado com sucesso"
 
 #: src/views/site/site_add/SiteAdd.vue:253
 msgid "DNS record has been linked: %{name}"
-msgstr ""
+msgstr "O registo DNS foi ligado: %{name}"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:245
 msgid "DNS Record Integration (Optional)"
-msgstr ""
+msgstr "Integração de Registo DNS (Opcional)"
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:288
 msgid "DNS record linked and server_name updated: %{name}"
-msgstr ""
+msgstr "Registo DNS ligado e server_name atualizado: %{name}"
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:489
-#, fuzzy
 msgid "DNS Record Missing"
-msgstr "Registros DNS"
+msgstr "Registo DNS em falta"
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:403
-#, fuzzy
 msgid "DNS record recreated successfully"
-msgstr "Criado com sucesso"
+msgstr "Registo DNS recriado com sucesso"
 
 #: src/views/site/site_add/SiteAdd.vue:137
-#, fuzzy
 msgid "DNS record selected: %{name}"
-msgstr "Nenhum registo selecionado"
+msgstr "Registo DNS selecionado: %{name}"
 
 #: src/routes/modules/dns.ts:44 src/views/dns/DNSRecordManager.vue:62
 msgid "DNS Records"
@@ -2320,9 +2310,8 @@ msgstr "Ativar indexação"
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:353
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:522
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:647
-#, fuzzy
 msgid "Enable Proxy (Cloudflare)"
-msgstr "Ativar cache de proxy"
+msgstr "Ativar Proxy (Cloudflare)"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:113
 msgid "Enable Proxy Cache"
@@ -2668,9 +2657,8 @@ msgstr "Falha ao criar diretório: {0}"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:222
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:360
-#, fuzzy
 msgid "Failed to create DNS record"
-msgstr "Falha ao criar diretório: {0}"
+msgstr "Falha ao criar o registo DNS"
 
 #: src/constants/errors/backup.ts:45 src/constants/errors/geolite.ts:6
 msgid "Failed to create file: {0}"
@@ -2876,9 +2864,8 @@ msgstr "Falha ao inspecionar o contentor atual: {0}"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:137
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:166
-#, fuzzy
 msgid "Failed to load DNS records"
-msgstr "Falha ao carregar registros históricos"
+msgstr "Falha ao carregar registros DNS"
 
 #: src/components/ConfigHistory/ConfigHistory.vue:83
 msgid "Failed to load history records"
@@ -2965,9 +2952,8 @@ msgid "Failed to rebuild index"
 msgstr "Falha ao reconstruir o índice"
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:429
-#, fuzzy
 msgid "Failed to recreate DNS record"
-msgstr "Falha ao criar diretório: {0}"
+msgstr "Falha ao recriar o registro DNS"
 
 #: src/views/dashboard/SiteNavigation.vue:86
 msgid "Failed to refresh sites"
@@ -3704,9 +3690,8 @@ msgstr "Endereço IP"
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:335
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:504
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:629
-#, fuzzy
 msgid "IP Address / Target"
-msgstr "Endereço IP"
+msgstr "Endereço IP / Destino"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:123
 msgid "IP Certificate Notice"
@@ -3904,17 +3889,20 @@ msgid ""
 "Link this site to a DNS record. The server_name will be used for the DNS "
 "record name."
 msgstr ""
+"Vincule este site a um registo DNS. O server_name será utilizado como nome "
+"do registo DNS."
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:247
 msgid ""
 "Link this site to a DNS record. The server_name will be used for the DNS "
 "record name. You can skip this step if DNS is already configured."
 msgstr ""
+"Ligue este site a um registo DNS. O server_name será utilizado como nome do "
+"registo DNS. Pode saltar este passo se o DNS já estiver configurado."
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:466
-#, fuzzy
 msgid "Linked DNS Record"
-msgstr "Registros DNS"
+msgstr "Registo DNS vinculado"
 
 #: src/language/curd.ts:23
 msgid "List"
@@ -4704,9 +4692,8 @@ msgstr "Sem dados"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:372
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:666
-#, fuzzy
 msgid "No DNS domains available"
-msgstr "Nenhum dado geográfico disponível"
+msgstr "Nenhum domínio DNS disponível"
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:827
 msgid "No entries in current page"
@@ -4924,9 +4911,8 @@ msgid "Offline GeoIP analysis"
 msgstr "Análise GeoIP offline"
 
 #: src/views/other/Login.vue:335
-#, fuzzy
 msgid "OIDC Login"
-msgstr "Autenticação SSO"
+msgstr "Login OIDC"
 
 #: src/components/LLM/ChatMessageInput.vue:62
 #: src/components/NgxConfigEditor/NgxServer.vue:60
@@ -4989,7 +4975,7 @@ msgstr "Estatísticas do sistema operativo"
 
 #: src/views/dns/components/DNSRecordForm.vue:94
 msgid "Optional comment for this DNS record"
-msgstr ""
+msgstr "Comentário opcional para este registo DNS"
 
 #: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:369
 msgid "Or"
@@ -5187,14 +5173,15 @@ msgstr "O texto simples está vazio"
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:373
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:667
 msgid "Please add a DNS domain first in the DNS management section."
-msgstr ""
+msgstr "Por favor, adicione um domínio DNS primeiro na seção de gestão de DNS"
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:446
-#, fuzzy
 msgid ""
 "Please configure server_name directive in the configuration before linking "
 "DNS records."
-msgstr "Note que as definições da unidade de tempo abaixo estão todas em segundos."
+msgstr ""
+"Por favor, configure a diretiva server_name na configuração antes de "
+"vincular registros DNS."
 
 #: src/views/dashboard/NginxDashBoard.vue:196
 msgid ""
@@ -5255,9 +5242,8 @@ msgstr "Por favor, preencha todos os campos corretamente"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:193
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:320
-#, fuzzy
 msgid "Please fill in all required fields"
-msgstr "Por favor, preencha os campos de configuração do S3 necessários"
+msgstr "Por favor, preencha todos os campos obrigatórios"
 
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:23
 msgid "Please fill in required S3 configuration fields"
@@ -5606,15 +5592,13 @@ msgstr "Registo eliminado"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:325
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:619
-#, fuzzy
 msgid "Record Name"
-msgstr "Nome do método"
+msgstr "Nome do registo"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:311
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:605
-#, fuzzy
 msgid "Record Type"
-msgstr "Registo atualizado"
+msgstr "Tipo de registo"
 
 #: src/views/dns/DNSRecordManager.vue:114
 msgid "Record updated"
@@ -5641,9 +5625,8 @@ msgstr ""
 "acesso ao seu dispositivo 2FA. Cada código só pode ser utilizado uma vez."
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:535
-#, fuzzy
 msgid "Recreate DNS Record"
-msgstr "Criar registo"
+msgstr "Recriar registo DNS"
 
 #: src/views/preference/tabs/CertSettings.vue:40
 msgid "Recursive Nameservers"
@@ -6027,6 +6010,8 @@ msgstr ""
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:650
 msgid "Route traffic through proxy for additional protection and features"
 msgstr ""
+"Encaminhar o tráfego através de um proxy para proteção adicional e "
+"funcionalidades"
 
 #: src/views/preference/tabs/AuthSettings.vue:72
 msgid "RP Display Name"
@@ -6326,14 +6311,13 @@ msgstr "Selecionar credencial"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:254
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:548
-#, fuzzy
 msgid "Select DNS domain"
-msgstr "Domínios DNS"
+msgstr "Selecionar domínio DNS"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:279
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:573
 msgid "Select existing record"
-msgstr ""
+msgstr "Selecionar registo existente"
 
 #: src/views/certificate/ACMEUser.vue:45
 msgid "Select or enter a CA directory URL"
@@ -6393,7 +6377,7 @@ msgstr "Endereço IP do servidor"
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:102
 msgid "Server name is controlled by linked DNS record"
-msgstr ""
+msgstr "O nome do servidor é controlado pelo registo DNS vinculado"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:99
 msgid "Server Names Hash Bucket Size"
@@ -6501,7 +6485,7 @@ msgstr "Configuração do site criada com sucesso"
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:426
 msgid "Site configuration updated with recreated DNS record"
-msgstr ""
+msgstr "Configuração do site atualizada com o registo DNS recriado"
 
 #: src/constants/errors/site.ts:4
 msgid "Site is enabled"
@@ -6916,7 +6900,7 @@ msgstr "Sistema restaurado com sucesso."
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:508
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:632
 msgid "target.example.com"
-msgstr ""
+msgstr "target.example.com"
 
 #: src/views/dns/DDNSManager.vue:83
 msgid "Targets"
@@ -7019,6 +7003,8 @@ msgid ""
 "The linked DNS record was deleted from the DNS server. You can recreate it "
 "or clear the link."
 msgstr ""
+"O registo DNS ligado foi eliminado do servidor DNS. Pode recriá-lo ou "
+"limpar a ligação."
 
 #: src/constants/errors/nginx_log.ts:2
 msgid ""

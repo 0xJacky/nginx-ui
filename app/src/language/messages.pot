@@ -527,7 +527,7 @@ msgstr ""
 msgid "Automated log rotation detection"
 msgstr ""
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:332
+#: src/components/SystemRestore/SystemRestoreContent.vue:340
 msgid "Automatic Restart"
 msgstr ""
 
@@ -586,11 +586,7 @@ msgstr ""
 msgid "Backup"
 msgstr ""
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:155
-msgid "Backup file integrity check failed, it may have been tampered with"
-msgstr ""
-
-#: src/constants/errors/backup.ts:38
+#: src/constants/errors/backup.ts:40
 msgid "Backup file not found: {0}"
 msgstr ""
 
@@ -598,24 +594,36 @@ msgstr ""
 msgid "Backup has been downloaded successfully"
 msgstr ""
 
+#: src/constants/errors/backup.ts:61
+msgid "Backup integrity verification failed"
+msgstr ""
+
+#: src/constants/errors/backup.ts:63
+msgid "Backup manifest is missing required file entry: {0}"
+msgstr ""
+
 #: src/views/backup/AutoBackup/AutoBackup.vue:50
 msgid "Backup Path"
 msgstr ""
 
-#: src/constants/errors/backup.ts:63
+#: src/constants/errors/backup.ts:73
 msgid "Backup path does not exist: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:65
+#: src/constants/errors/backup.ts:75
 msgid "Backup path is not a directory: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:55
+#: src/constants/errors/backup.ts:65
 msgid "Backup path is required for custom directory backup"
 msgstr ""
 
 #: src/views/backup/AutoBackup/components/CronEditor.vue:141
 msgid "Backup Schedule"
+msgstr ""
+
+#: src/constants/errors/backup.ts:64
+msgid "Backup signing key is unavailable"
 msgstr ""
 
 #: src/components/Notification/notifications.ts:38
@@ -779,7 +787,7 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: src/constants/errors/backup.ts:64
+#: src/constants/errors/backup.ts:74
 msgid "Cannot access backup path {0}: {1}"
 msgstr ""
 
@@ -787,7 +795,7 @@ msgstr ""
 msgid "Cannot access log file"
 msgstr ""
 
-#: src/constants/errors/backup.ts:67
+#: src/constants/errors/backup.ts:77
 msgid "Cannot access storage path {0}: {1}"
 msgstr ""
 
@@ -1073,8 +1081,8 @@ msgstr ""
 msgid "Cleared successfully"
 msgstr ""
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:194
-#: src/components/SystemRestore/SystemRestoreContent.vue:271
+#: src/components/SystemRestore/SystemRestoreContent.vue:196
+#: src/components/SystemRestore/SystemRestoreContent.vue:279
 msgid "Click or drag backup file to this area to upload"
 msgstr ""
 
@@ -1229,7 +1237,7 @@ msgstr ""
 msgid "Config not found"
 msgstr ""
 
-#: src/constants/errors/backup.ts:14
+#: src/constants/errors/backup.ts:16
 msgid "Config path is empty"
 msgstr ""
 
@@ -2466,15 +2474,15 @@ msgstr ""
 msgid "Failed to build nginx config: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:17
+#: src/constants/errors/backup.ts:19
 msgid "Failed to calculate hash: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:54
+#: src/constants/errors/backup.ts:56
 msgid "Failed to calculate Nginx hash: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:53
+#: src/constants/errors/backup.ts:55
 msgid "Failed to calculate Nginx UI hash: {0}"
 msgstr ""
 
@@ -2482,19 +2490,19 @@ msgstr ""
 msgid "Failed to cleanup temporary directory: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:15
+#: src/constants/errors/backup.ts:17
 msgid "Failed to copy config file: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:16
+#: src/constants/errors/backup.ts:18
 msgid "Failed to copy database file: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:31
+#: src/constants/errors/backup.ts:33
 msgid "Failed to copy file content: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:19
+#: src/constants/errors/backup.ts:21
 msgid "Failed to copy Nginx config directory: {0}"
 msgstr ""
 
@@ -2511,7 +2519,15 @@ msgstr ""
 msgid "Failed to create backup file: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:43
+#: src/constants/errors/backup.ts:15
+msgid "Failed to create backup manifest signature: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:14
+msgid "Failed to create backup manifest: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:45
 msgid "Failed to create directory: {0}"
 msgstr ""
 
@@ -2520,7 +2536,7 @@ msgstr ""
 msgid "Failed to create DNS record"
 msgstr ""
 
-#: src/constants/errors/backup.ts:45
+#: src/constants/errors/backup.ts:47
 #: src/constants/errors/geolite.ts:6
 msgid "Failed to create file: {0}"
 msgstr ""
@@ -2529,19 +2545,19 @@ msgstr ""
 msgid "Failed to create hash info file: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:44
+#: src/constants/errors/backup.ts:46
 msgid "Failed to create parent directory: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:32
+#: src/constants/errors/backup.ts:34
 msgid "Failed to create restore directory: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:66
+#: src/constants/errors/backup.ts:76
 msgid "Failed to create storage directory {0}: {1}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:47
+#: src/constants/errors/backup.ts:49
 msgid "Failed to create symbolic link: {0}"
 msgstr ""
 
@@ -2565,15 +2581,15 @@ msgstr ""
 msgid "Failed to create zip archive: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:28
+#: src/constants/errors/backup.ts:30
 msgid "Failed to create zip entry: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:27
+#: src/constants/errors/backup.ts:29
 msgid "Failed to create zip file: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:30
+#: src/constants/errors/backup.ts:32
 msgid "Failed to create zip header: {0}"
 msgstr ""
 
@@ -2581,19 +2597,19 @@ msgstr ""
 msgid "Failed to decompress GeoLite2 database: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:25
+#: src/constants/errors/backup.ts:27
 msgid "Failed to decrypt data: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:50
+#: src/constants/errors/backup.ts:52
 msgid "Failed to decrypt file: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:35
+#: src/constants/errors/backup.ts:37
 msgid "Failed to decrypt Nginx directory: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:34
+#: src/constants/errors/backup.ts:36
 msgid "Failed to decrypt Nginx UI directory: {0}"
 msgstr ""
 
@@ -2643,11 +2659,11 @@ msgstr ""
 msgid "Failed to enable maintenance mode %{msg}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:24
+#: src/constants/errors/backup.ts:26
 msgid "Failed to encrypt data: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:22
+#: src/constants/errors/backup.ts:24
 msgid "Failed to encrypt file: {0}"
 msgstr ""
 
@@ -2667,7 +2683,7 @@ msgstr ""
 msgid "Failed to execute template: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:33
+#: src/constants/errors/backup.ts:35
 msgid "Failed to extract archive: {0}"
 msgstr ""
 
@@ -2740,15 +2756,15 @@ msgstr ""
 msgid "Failed to open file: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:29
+#: src/constants/errors/backup.ts:31
 msgid "Failed to open source file: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:46
+#: src/constants/errors/backup.ts:48
 msgid "Failed to open zip entry: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:42
+#: src/constants/errors/backup.ts:44
 msgid "Failed to open zip file: {0}"
 msgstr ""
 
@@ -2768,11 +2784,19 @@ msgstr ""
 msgid "Failed to pull image: {0}"
 msgstr ""
 
+#: src/constants/errors/backup.ts:58
+msgid "Failed to read backup manifest signature: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:57
+msgid "Failed to read backup manifest: {0}"
+msgstr ""
+
 #: src/constants/errors/geolite.ts:11
 msgid "Failed to read compressed data: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:49
+#: src/constants/errors/backup.ts:51
 msgid "Failed to read encrypted file: {0}"
 msgstr ""
 
@@ -2780,11 +2804,11 @@ msgstr ""
 msgid "Failed to read file"
 msgstr ""
 
-#: src/constants/errors/backup.ts:21
+#: src/constants/errors/backup.ts:23
 msgid "Failed to read file: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:52
+#: src/constants/errors/backup.ts:54
 msgid "Failed to read hash info file: {0}"
 msgstr ""
 
@@ -2800,7 +2824,7 @@ msgstr ""
 msgid "Failed to read response body: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:20
+#: src/constants/errors/backup.ts:22
 msgid "Failed to read symlink: {0}"
 msgstr ""
 
@@ -2820,7 +2844,7 @@ msgstr ""
 msgid "Failed to refresh sites"
 msgstr ""
 
-#: src/constants/errors/backup.ts:37
+#: src/constants/errors/backup.ts:39
 msgid "Failed to restore Nginx configs: {0}"
 msgstr ""
 
@@ -2868,11 +2892,11 @@ msgstr ""
 msgid "Failed to upload file"
 msgstr ""
 
-#: src/constants/errors/backup.ts:36
+#: src/constants/errors/backup.ts:38
 msgid "Failed to verify hashes: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:58
+#: src/constants/errors/backup.ts:68
 msgid "Failed to write backup file: {0}"
 msgstr ""
 
@@ -2880,15 +2904,15 @@ msgstr ""
 msgid "Failed to write decompressed data: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:51
+#: src/constants/errors/backup.ts:53
 msgid "Failed to write decrypted file: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:23
+#: src/constants/errors/backup.ts:25
 msgid "Failed to write encrypted file: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:59
+#: src/constants/errors/backup.ts:69
 msgid "Failed to write security key file: {0}"
 msgstr ""
 
@@ -3398,12 +3422,20 @@ msgstr ""
 msgid "Invalid"
 msgstr ""
 
-#: src/constants/errors/backup.ts:41
+#: src/constants/errors/backup.ts:43
 msgid "Invalid AES IV format: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:40
+#: src/constants/errors/backup.ts:42
 msgid "Invalid AES key format: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:60
+msgid "Invalid backup manifest signature"
+msgstr ""
+
+#: src/constants/errors/backup.ts:59
+msgid "Invalid backup manifest: {0}"
 msgstr ""
 
 #: src/views/certificate/components/CertificateDownload.vue:54
@@ -3423,7 +3455,7 @@ msgstr ""
 msgid "Invalid file object"
 msgstr ""
 
-#: src/constants/errors/backup.ts:48
+#: src/constants/errors/backup.ts:50
 msgid "Invalid file path: {0}"
 msgstr ""
 
@@ -3448,7 +3480,7 @@ msgstr ""
 msgid "Invalid otp code"
 msgstr ""
 
-#: src/constants/errors/backup.ts:26
+#: src/constants/errors/backup.ts:28
 msgid "Invalid padding in decrypted data"
 msgstr ""
 
@@ -3456,7 +3488,7 @@ msgstr ""
 msgid "Invalid passcode or recovery code"
 msgstr ""
 
-#: src/constants/errors/backup.ts:61
+#: src/constants/errors/backup.ts:71
 msgid "Invalid path: {0}"
 msgstr ""
 
@@ -3473,7 +3505,7 @@ msgstr ""
 msgid "Invalid request format"
 msgstr ""
 
-#: src/constants/errors/backup.ts:39
+#: src/constants/errors/backup.ts:41
 msgid "Invalid security token format"
 msgstr ""
 
@@ -4271,7 +4303,7 @@ msgstr ""
 msgid "Nginx conf not include stream-enabled"
 msgstr ""
 
-#: src/constants/errors/backup.ts:18
+#: src/constants/errors/backup.ts:20
 msgid "Nginx config directory is not set"
 msgstr ""
 
@@ -4423,7 +4455,7 @@ msgstr ""
 msgid "Nginx UI configuration has been restored"
 msgstr ""
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:336
+#: src/components/SystemRestore/SystemRestoreContent.vue:344
 msgid "Nginx UI configuration has been restored and will restart automatically in a few seconds."
 msgstr ""
 
@@ -4723,6 +4755,11 @@ msgstr ""
 msgid "Online Count"
 msgstr ""
 
+#: src/components/SystemRestore/SystemRestoreContent.vue:180
+#: src/components/SystemRestore/SystemRestoreContent.vue:263
+msgid "Only backups created by versions that support signed manifests can be restored. Legacy backups are no longer supported."
+msgstr ""
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:78
 msgid "Only zip files are allowed"
 msgstr ""
@@ -4870,7 +4907,7 @@ msgstr ""
 msgid "Path"
 msgstr ""
 
-#: src/constants/errors/backup.ts:62
+#: src/constants/errors/backup.ts:72
 msgid "Path not in granted access paths: {0}"
 msgstr ""
 
@@ -4985,8 +5022,8 @@ msgstr ""
 msgid "Please enter the security token"
 msgstr ""
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:210
-#: src/components/SystemRestore/SystemRestoreContent.vue:287
+#: src/components/SystemRestore/SystemRestoreContent.vue:212
+#: src/components/SystemRestore/SystemRestoreContent.vue:295
 msgid "Please enter the security token received during backup"
 msgstr ""
 
@@ -5698,13 +5735,13 @@ msgstr ""
 msgid "Restore from Backup"
 msgstr ""
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:223
-#: src/components/SystemRestore/SystemRestoreContent.vue:300
+#: src/components/SystemRestore/SystemRestoreContent.vue:225
+#: src/components/SystemRestore/SystemRestoreContent.vue:308
 msgid "Restore Nginx Configuration"
 msgstr ""
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:234
-#: src/components/SystemRestore/SystemRestoreContent.vue:311
+#: src/components/SystemRestore/SystemRestoreContent.vue:236
+#: src/components/SystemRestore/SystemRestoreContent.vue:319
 msgid "Restore Nginx UI Configuration"
 msgstr ""
 
@@ -5795,7 +5832,7 @@ msgstr ""
 msgid "S3 bucket name"
 msgstr ""
 
-#: src/constants/errors/backup.ts:56
+#: src/constants/errors/backup.ts:66
 msgid "S3 configuration is incomplete: missing {0}"
 msgstr ""
 
@@ -5847,7 +5884,7 @@ msgstr ""
 msgid "S3 secret access key is required"
 msgstr ""
 
-#: src/constants/errors/backup.ts:60
+#: src/constants/errors/backup.ts:70
 msgid "S3 upload failed: {0}"
 msgstr ""
 
@@ -6017,8 +6054,8 @@ msgstr ""
 msgid "Security Settings"
 msgstr ""
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:207
-#: src/components/SystemRestore/SystemRestoreContent.vue:284
+#: src/components/SystemRestore/SystemRestoreContent.vue:209
+#: src/components/SystemRestore/SystemRestoreContent.vue:292
 msgid "Security Token"
 msgstr ""
 
@@ -6356,8 +6393,8 @@ msgstr ""
 msgid "Start Date"
 msgstr ""
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:246
-#: src/components/SystemRestore/SystemRestoreContent.vue:323
+#: src/components/SystemRestore/SystemRestoreContent.vue:248
+#: src/components/SystemRestore/SystemRestoreContent.vue:331
 msgid "Start Restore"
 msgstr ""
 
@@ -6485,8 +6522,8 @@ msgstr ""
 msgid "Support uploading entire folders"
 msgstr ""
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:197
-#: src/components/SystemRestore/SystemRestoreContent.vue:274
+#: src/components/SystemRestore/SystemRestoreContent.vue:199
+#: src/components/SystemRestore/SystemRestoreContent.vue:282
 msgid "Supported file type: .zip"
 msgstr ""
 
@@ -6596,7 +6633,7 @@ msgstr ""
 msgid "System Requirements"
 msgstr ""
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:174
+#: src/components/SystemRestore/SystemRestoreContent.vue:170
 msgid "System Restore"
 msgstr ""
 
@@ -6769,6 +6806,10 @@ msgstr ""
 msgid "This Auto Cert item is invalid, please remove it."
 msgstr ""
 
+#: src/constants/errors/backup.ts:62
+msgid "This backup uses an unsupported legacy format. Please create a new backup with a newer version before restoring."
+msgstr ""
+
 #: src/views/certificate/components/AutoCertManagement.vue:35
 msgid "This certificate is managed by Nginx UI"
 msgstr ""
@@ -6855,13 +6896,13 @@ msgstr ""
 msgid "This will rebuild the index data for this specific file: %{path}"
 msgstr ""
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:227
-#: src/components/SystemRestore/SystemRestoreContent.vue:304
+#: src/components/SystemRestore/SystemRestoreContent.vue:229
+#: src/components/SystemRestore/SystemRestoreContent.vue:312
 msgid "This will restore all Nginx configuration files. Nginx will restart after the restoration is complete."
 msgstr ""
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:238
-#: src/components/SystemRestore/SystemRestoreContent.vue:315
+#: src/components/SystemRestore/SystemRestoreContent.vue:240
+#: src/components/SystemRestore/SystemRestoreContent.vue:323
 msgid "This will restore configuration files and database. Nginx UI will restart after the restoration is complete."
 msgstr ""
 
@@ -7108,7 +7149,7 @@ msgstr ""
 msgid "Unknown"
 msgstr ""
 
-#: src/constants/errors/backup.ts:57
+#: src/constants/errors/backup.ts:67
 msgid "Unsupported backup type: {0}"
 msgstr ""
 
@@ -7293,9 +7334,9 @@ msgstr ""
 msgid "Value"
 msgstr ""
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:216
-#: src/components/SystemRestore/SystemRestoreContent.vue:293
-msgid "Verify Backup File Integrity"
+#: src/components/SystemRestore/SystemRestoreContent.vue:218
+#: src/components/SystemRestore/SystemRestoreContent.vue:301
+msgid "Verify Backup File Integrity (required)"
 msgstr ""
 
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:664
@@ -7365,8 +7406,8 @@ msgstr ""
 msgid "Warning"
 msgstr ""
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:178
-#: src/components/SystemRestore/SystemRestoreContent.vue:255
+#: src/components/SystemRestore/SystemRestoreContent.vue:174
+#: src/components/SystemRestore/SystemRestoreContent.vue:257
 msgid "Warning: Restore operation will overwrite current configurations. Make sure you have a valid backup file and security token, and carefully select what to restore."
 msgstr ""
 
@@ -7505,11 +7546,11 @@ msgstr ""
 msgid "You can check Nginx UI upgrade at this page."
 msgstr ""
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:339
+#: src/components/SystemRestore/SystemRestoreContent.vue:347
 msgid "You can close this dialog in %{countdown} seconds"
 msgstr ""
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:342
+#: src/components/SystemRestore/SystemRestoreContent.vue:350
 msgid "You can close this dialog now"
 msgstr ""
 

@@ -1,7 +1,6 @@
 package backup
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 
@@ -59,18 +58,6 @@ func backupNginxFiles(destDir string) error {
 	// Copy nginx config directory
 	if err := copyDirectory(nginxConfigDir, destDir); err != nil {
 		return cosy.WrapErrorWithParams(ErrCopyNginxConfigDir, err.Error())
-	}
-
-	return nil
-}
-
-// writeHashInfoFile creates a hash information file for verification
-func writeHashInfoFile(hashFilePath string, info HashInfo) error {
-	content := fmt.Sprintf("nginx-ui_hash: %s\nnginx_hash: %s\ntimestamp: %s\nversion: %s\n",
-		info.NginxUIHash, info.NginxHash, info.Timestamp, info.Version)
-
-	if err := os.WriteFile(hashFilePath, []byte(content), 0644); err != nil {
-		return cosy.WrapErrorWithParams(ErrCreateHashFile, err.Error())
 	}
 
 	return nil

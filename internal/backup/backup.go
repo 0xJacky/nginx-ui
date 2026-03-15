@@ -15,11 +15,10 @@ import (
 
 // Constants for backup directory and file naming conventions
 const (
-	NginxUIDir     = "nginx-ui"      // Directory name for Nginx UI files in backup
-	NginxDir       = "nginx"         // Directory name for Nginx config files in backup
-	HashInfoFile   = "hash_info.txt" // Filename for hash verification information
-	NginxUIZipName = "nginx-ui.zip"  // Filename for Nginx UI archive within backup
-	NginxZipName   = "nginx.zip"     // Filename for Nginx config archive within backup
+	NginxUIDir     = "nginx-ui"     // Directory name for Nginx UI files in backup
+	NginxDir       = "nginx"        // Directory name for Nginx config files in backup
+	NginxUIZipName = "nginx-ui.zip" // Filename for Nginx UI archive within backup
+	NginxZipName   = "nginx.zip"    // Filename for Nginx config archive within backup
 )
 
 // Result contains the complete results of a backup operation.
@@ -29,15 +28,6 @@ type Result struct {
 	BackupName    string `json:"name"`    // Generated backup filename with timestamp
 	AESKey        string `json:"aes_key"` // Base64 encoded AES encryption key
 	AESIv         string `json:"aes_iv"`  // Base64 encoded AES initialization vector
-}
-
-// HashInfo contains cryptographic hash information for backup verification.
-// This structure ensures backup integrity and provides metadata for restoration.
-type HashInfo struct {
-	NginxUIHash string `json:"nginx_ui_hash"` // SHA-256 hash of Nginx UI files archive
-	NginxHash   string `json:"nginx_hash"`    // SHA-256 hash of Nginx config files archive
-	Timestamp   string `json:"timestamp"`     // Backup creation timestamp
-	Version     string `json:"version"`       // Nginx UI version at backup time
 }
 
 // Backup creates a comprehensive backup of nginx-ui configuration, database files,
@@ -112,7 +102,15 @@ func Backup() (Result, error) {
 		return Result{}, cosy.WrapErrorWithParams(ErrCreateZipArchive, err.Error())
 	}
 
-	// Calculate cryptographic hashes for integrity verification
+	// Encrypt all backup components for security
+	if err := encryptFile(nginxUIZipPath, key, iv); err != nil {
+		return Result{}, cosy.WrapErrorWithParams(ErrEncryptNginxUIDir, err.Error())
+	}
+
+	if err := encryptFile(nginxZipPath, key, iv); err != nil {
+		return Result{}, cosy.WrapErrorWithParams(ErrEncryptNginxDir, err.Error())
+	}
+
 	nginxUIHash, err := calculateFileHash(nginxUIZipPath)
 	if err != nil {
 		return Result{}, cosy.WrapErrorWithParams(ErrCalculateHash, err.Error())
@@ -123,34 +121,32 @@ func Backup() (Result, error) {
 		return Result{}, cosy.WrapErrorWithParams(ErrCalculateHash, err.Error())
 	}
 
-	// Gather version information for backup metadata
+	nginxUIStat, err := os.Stat(nginxUIZipPath)
+	if err != nil {
+		return Result{}, cosy.WrapErrorWithParams(ErrReadFile, err.Error())
+	}
+
+	nginxStat, err := os.Stat(nginxZipPath)
+	if err != nil {
+		return Result{}, cosy.WrapErrorWithParams(ErrReadFile, err.Error())
+	}
+
 	versionInfo := version.GetVersionInfo()
+	manifest := newManifest(timestamp, versionInfo.Version, []ManifestEntry{
+		{
+			Name:   NginxUIZipName,
+			SHA256: nginxUIHash,
+			Size:   nginxUIStat.Size(),
+		},
+		{
+			Name:   NginxZipName,
+			SHA256: nginxHash,
+			Size:   nginxStat.Size(),
+		},
+	})
 
-	// Create hash verification file with metadata
-	hashInfo := HashInfo{
-		NginxUIHash: nginxUIHash,
-		NginxHash:   nginxHash,
-		Timestamp:   timestamp,
-		Version:     versionInfo.Version,
-	}
-
-	// Write hash information to verification file
-	hashInfoPath := filepath.Join(tempDir, HashInfoFile)
-	if err := writeHashInfoFile(hashInfoPath, hashInfo); err != nil {
-		return Result{}, cosy.WrapErrorWithParams(ErrCreateHashFile, err.Error())
-	}
-
-	// Encrypt all backup components for security
-	if err := encryptFile(hashInfoPath, key, iv); err != nil {
-		return Result{}, cosy.WrapErrorWithParams(ErrEncryptFile, HashInfoFile)
-	}
-
-	if err := encryptFile(nginxUIZipPath, key, iv); err != nil {
-		return Result{}, cosy.WrapErrorWithParams(ErrEncryptNginxUIDir, err.Error())
-	}
-
-	if err := encryptFile(nginxZipPath, key, iv); err != nil {
-		return Result{}, cosy.WrapErrorWithParams(ErrEncryptNginxDir, err.Error())
+	if err := writeManifestFiles(tempDir, manifest); err != nil {
+		return Result{}, err
 	}
 
 	// Clean up unencrypted directories to prevent duplication in final archive

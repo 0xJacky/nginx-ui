@@ -14,6 +14,9 @@ import (
 func init() {
 	// Initialize logging system to avoid nil pointer exceptions during tests
 	cosylogger.Init("debug")
+	if settings.CryptoSettings.Secret == "" {
+		settings.CryptoSettings.Secret = "backup-test-signing-secret"
+	}
 
 	// Clean up backup files at the start of tests
 	cleanupBackupFiles()
@@ -180,8 +183,10 @@ func TestBackupAndRestore(t *testing.T) {
 	_, err = os.Stat(nginxDir)
 	assert.NoError(t, err)
 
-	// Verify hash info exists
-	_, err = os.Stat(filepath.Join(restoreDir, HashInfoFile))
+	// Verify manifest files exist
+	_, err = os.Stat(filepath.Join(restoreDir, ManifestFile))
+	assert.NoError(t, err)
+	_, err = os.Stat(filepath.Join(restoreDir, ManifestSignatureFile))
 	assert.NoError(t, err)
 }
 
@@ -432,6 +437,107 @@ func TestCreateZipArchive(t *testing.T) {
 		assert.NoError(t, err)
 		assert.Equal(t, testContent, content)
 	}
+}
+
+func TestRestoreRejectsLegacyBackupFormat(t *testing.T) {
+	tempDir, err := os.MkdirTemp("", "legacy-backup-test-*")
+	assert.NoError(t, err)
+	defer os.RemoveAll(tempDir)
+
+	legacySourceDir := filepath.Join(tempDir, "legacy")
+	err = os.MkdirAll(legacySourceDir, 0755)
+	assert.NoError(t, err)
+
+	legacyBackupPath := filepath.Join(tempDir, "legacy-backup.zip")
+	err = createZipArchive(legacyBackupPath, legacySourceDir)
+	assert.NoError(t, err)
+
+	key, err := GenerateAESKey()
+	assert.NoError(t, err)
+	iv, err := GenerateIV()
+	assert.NoError(t, err)
+
+	restoreDir := filepath.Join(tempDir, "restore")
+	_, err = Restore(RestoreOptions{
+		BackupPath:     legacyBackupPath,
+		AESKey:         key,
+		AESIv:          iv,
+		RestoreDir:     restoreDir,
+		RestoreNginx:   false,
+		RestoreNginxUI: false,
+		VerifyHash:     false,
+	})
+	assert.ErrorContains(t, err, ErrUnsupportedFormat.Error())
+}
+
+func TestRestoreRejectsTamperedManifestSignature(t *testing.T) {
+	tempDir, err := os.MkdirTemp("", "tampered-backup-test-*")
+	assert.NoError(t, err)
+	defer os.RemoveAll(tempDir)
+
+	configPath := filepath.Join(tempDir, "config.ini")
+	err = os.WriteFile(configPath, []byte("[app]\nName = Nginx UI Test\n"), 0644)
+	assert.NoError(t, err)
+
+	dbName := settings.DatabaseSettings.GetName()
+	dbPath := filepath.Join(tempDir, dbName+".db")
+	err = os.WriteFile(dbPath, []byte("CREATE TABLE users (id INT, name TEXT);"), 0644)
+	assert.NoError(t, err)
+
+	nginxConfigDir := filepath.Join(tempDir, "nginx")
+	err = os.MkdirAll(nginxConfigDir, 0755)
+	assert.NoError(t, err)
+	err = os.WriteFile(filepath.Join(nginxConfigDir, "nginx.conf"), []byte("events {}\nhttp {}\n"), 0644)
+	assert.NoError(t, err)
+
+	originalConfPath := cosysettings.ConfPath
+	originalNginxConfigDir := settings.NginxSettings.ConfigDir
+	originalCryptoSecret := settings.CryptoSettings.Secret
+	cosysettings.ConfPath = configPath
+	settings.NginxSettings.ConfigDir = nginxConfigDir
+	settings.CryptoSettings.Secret = "tampered-manifest-test-secret"
+	defer func() {
+		cosysettings.ConfPath = originalConfPath
+		settings.NginxSettings.ConfigDir = originalNginxConfigDir
+		settings.CryptoSettings.Secret = originalCryptoSecret
+	}()
+
+	backupResult, err := Backup()
+	assert.NoError(t, err)
+
+	backupPath := filepath.Join(tempDir, backupResult.BackupName)
+	err = os.WriteFile(backupPath, backupResult.BackupContent, 0644)
+	assert.NoError(t, err)
+
+	extractedDir := filepath.Join(tempDir, "extracted")
+	err = os.MkdirAll(extractedDir, 0755)
+	assert.NoError(t, err)
+	err = extractZipArchive(backupPath, extractedDir)
+	assert.NoError(t, err)
+
+	err = os.WriteFile(filepath.Join(extractedDir, ManifestSignatureFile), []byte("00"), 0644)
+	assert.NoError(t, err)
+
+	tamperedBackupPath := filepath.Join(tempDir, "tampered.zip")
+	err = createZipArchive(tamperedBackupPath, extractedDir)
+	assert.NoError(t, err)
+
+	key, err := DecodeFromBase64(backupResult.AESKey)
+	assert.NoError(t, err)
+	iv, err := DecodeFromBase64(backupResult.AESIv)
+	assert.NoError(t, err)
+
+	restoreDir := filepath.Join(tempDir, "restore")
+	_, err = Restore(RestoreOptions{
+		BackupPath:     tamperedBackupPath,
+		AESKey:         key,
+		AESIv:          iv,
+		RestoreDir:     restoreDir,
+		RestoreNginx:   false,
+		RestoreNginxUI: false,
+		VerifyHash:     true,
+	})
+	assert.ErrorContains(t, err, ErrInvalidManifestSig.Error())
 }
 
 func TestHashCalculation(t *testing.T) {

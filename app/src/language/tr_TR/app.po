@@ -138,7 +138,7 @@ msgstr "Minimum 1 çekirdek"
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:508
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:632
 msgid "192.168.1.1"
-msgstr ""
+msgstr "192.168.1.1"
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:54
 msgid "1GB RAM minimum"
@@ -555,15 +555,14 @@ msgstr "AutoCert çalışıyor..."
 msgid "Automated log rotation detection"
 msgstr "Otomatik log döngüsü tespiti"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:332
+#: src/components/SystemRestore/SystemRestoreContent.vue:340
 msgid "Automatic Restart"
 msgstr "Otomatik Yeniden Başlatma"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:331
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:625
-#, fuzzy
 msgid "Automatically extracted from server_name"
-msgstr "\"Site ve akış yapılandırmalarından otomatik olarak dizinlendi.\""
+msgstr "server_name'dan otomatik olarak çıkarıldı"
 
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:36
 msgid "Average Latency"
@@ -615,11 +614,7 @@ msgstr "Arka plan günlük hizmeti mevcut değil"
 msgid "Backup"
 msgstr "Yedekleme"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:155
-msgid "Backup file integrity check failed, it may have been tampered with"
-msgstr "Yedek dosya bütünlük kontrolü başarısız oldu, dosya değiştirilmiş olabilir"
-
-#: src/constants/errors/backup.ts:38
+#: src/constants/errors/backup.ts:40
 msgid "Backup file not found: {0}"
 msgstr "Yedek dosya bulunamadı: {0}"
 
@@ -627,25 +622,37 @@ msgstr "Yedek dosya bulunamadı: {0}"
 msgid "Backup has been downloaded successfully"
 msgstr "Yedek başarıyla indirildi"
 
+#: src/constants/errors/backup.ts:61
+msgid "Backup integrity verification failed"
+msgstr "Yedek bütünlük doğrulaması başarısız oldu"
+
+#: src/constants/errors/backup.ts:63
+msgid "Backup manifest is missing required file entry: {0}"
+msgstr "Yedek bildiriminde gerekli dosya girişi eksik: {0}"
+
 #: src/views/backup/AutoBackup/AutoBackup.vue:50
 msgid "Backup Path"
 msgstr "Yedekleme Yolu"
 
-#: src/constants/errors/backup.ts:63
+#: src/constants/errors/backup.ts:73
 msgid "Backup path does not exist: {0}"
 msgstr "Yedekleme yolu mevcut değil: {0}"
 
-#: src/constants/errors/backup.ts:65
+#: src/constants/errors/backup.ts:75
 msgid "Backup path is not a directory: {0}"
 msgstr "Yedekleme yolu bir dizin değil: {0}"
 
-#: src/constants/errors/backup.ts:55
+#: src/constants/errors/backup.ts:65
 msgid "Backup path is required for custom directory backup"
 msgstr "Özel dizin yedeklemesi için yedekleme yolu gereklidir"
 
 #: src/views/backup/AutoBackup/components/CronEditor.vue:141
 msgid "Backup Schedule"
 msgstr "Yedekleme Zamanlaması"
+
+#: src/constants/errors/backup.ts:64
+msgid "Backup signing key is unavailable"
+msgstr "Yedekleme imza anahtarı mevcut değil"
 
 #: src/components/Notification/notifications.ts:38
 msgid "Backup task %{backup_name} completed successfully, file: %{file_path}"
@@ -818,7 +825,7 @@ msgstr ""
 msgid "Cancel"
 msgstr "İptal"
 
-#: src/constants/errors/backup.ts:64
+#: src/constants/errors/backup.ts:74
 msgid "Cannot access backup path {0}: {1}"
 msgstr "Yedekleme yolu {0} erişilemiyor: {1}"
 
@@ -826,7 +833,7 @@ msgstr "Yedekleme yolu {0} erişilemiyor: {1}"
 msgid "Cannot access log file"
 msgstr "Günlük dosyasına erişilemiyor"
 
-#: src/constants/errors/backup.ts:67
+#: src/constants/errors/backup.ts:77
 msgid "Cannot access storage path {0}: {1}"
 msgstr "Depolama yolu {0} erişilemiyor: {1}"
 
@@ -845,6 +852,8 @@ msgstr "Korunan yol silinemez"
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:135
 msgid "Cannot delete server_name while DNS is linked. Clear DNS link first."
 msgstr ""
+"DNS bağlantısı varken server_name silinemez. Önce DNS bağlantısını "
+"temizleyin."
 
 #: src/views/dashboard/NginxDashBoard.vue:154
 msgid "Cannot get performance data in this state"
@@ -1184,17 +1193,16 @@ msgid "Clear"
 msgstr "Temizle"
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:538
-#, fuzzy
 msgid "Clear Link"
-msgstr "Temizle"
+msgstr "Bağlantıyı Temizle"
 
 #: src/components/Notification/Notification.vue:75
 #: src/views/notification/Notification.vue:13
 msgid "Cleared successfully"
 msgstr "Başarıyla temizlendi"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:194
-#: src/components/SystemRestore/SystemRestoreContent.vue:271
+#: src/components/SystemRestore/SystemRestoreContent.vue:196
+#: src/components/SystemRestore/SystemRestoreContent.vue:279
 msgid "Click or drag backup file to this area to upload"
 msgstr "Yüklemek için bu alana yedekleme dosyasını tıklayın veya sürükleyin"
 
@@ -1276,9 +1284,8 @@ msgstr "Komut beklenmeyen çıkış kodu ile sonlandı: {0}, hata: {1}"
 
 #: src/views/dns/components/DNSRecordForm.vue:91
 #: src/views/dns/components/DNSRecordTable.vue:49
-#, fuzzy
 msgid "Comment"
-msgstr "Yorumlar"
+msgstr "Yorum"
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:150
 #: src/components/NgxConfigEditor/LocationEditor.vue:104
@@ -1347,7 +1354,7 @@ msgstr "Yapılandırma giriş dosyası mevcut değil"
 msgid "Config not found"
 msgstr "Yapılandırma bulunamadı"
 
-#: src/constants/errors/backup.ts:14
+#: src/constants/errors/backup.ts:16
 msgid "Config path is empty"
 msgstr "Yapılandırma yolu boş"
 
@@ -1508,9 +1515,8 @@ msgstr "Yedek Oluştur"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:365
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:659
-#, fuzzy
 msgid "Create DNS Record"
-msgstr "Kayıt Oluştur"
+msgstr "DNS Kaydı Oluştur"
 
 #: src/views/config/ConfigList.vue:130
 msgid "Create File"
@@ -1522,9 +1528,8 @@ msgstr "Klasör Ekle"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:305
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:599
-#, fuzzy
 msgid "Create new DNS record"
-msgstr "Kayıt Oluştur"
+msgstr "Yeni DNS kaydı oluştur"
 
 #: src/views/dns/DNSRecordManager.vue:206
 msgid "Create Record"
@@ -2000,9 +2005,8 @@ msgstr "DNS Kimlik Bilgileri"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:251
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:545
-#, fuzzy
 msgid "DNS Domain"
-msgstr "DNS Alanları"
+msgstr "DNS Alan Adı"
 
 #: src/routes/modules/dns.ts:28 src/views/dns/DNSDomainList.vue:234
 msgid "DNS Domains"
@@ -2024,47 +2028,41 @@ msgstr "DNS Sağlayıcı Desteği"
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:274
 #: src/views/site/site_add/SiteAdd.vue:170
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:568
-#, fuzzy
 msgid "DNS Record"
-msgstr "DNS Kayıtları"
+msgstr "DNS Kaydı"
 
 #: src/views/site/site_add/SiteAdd.vue:145
-#, fuzzy
 msgid "DNS record created and linked successfully"
-msgstr "Nginx başarıyla yeniden yüklendi"
+msgstr "DNS kaydı başarıyla oluşturuldu ve bağlandı"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:213
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:340
-#, fuzzy
 msgid "DNS record created successfully"
-msgstr "Başarıyla oluşturuldu"
+msgstr "DNS kaydı başarıyla oluşturuldu"
 
 #: src/views/site/site_add/SiteAdd.vue:253
 msgid "DNS record has been linked: %{name}"
-msgstr ""
+msgstr "DNS kaydı bağlandı: %{name}"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:245
 msgid "DNS Record Integration (Optional)"
-msgstr ""
+msgstr "DNS Kaydı Entegrasyonu (İsteğe Bağlı)"
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:288
 msgid "DNS record linked and server_name updated: %{name}"
-msgstr ""
+msgstr "DNS kaydı bağlandı ve server_name güncellendi: %{name}"
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:489
-#, fuzzy
 msgid "DNS Record Missing"
-msgstr "DNS Kayıtları"
+msgstr "DNS Kaydı Eksik"
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:403
-#, fuzzy
 msgid "DNS record recreated successfully"
-msgstr "Başarıyla oluşturuldu"
+msgstr "DNS kaydı başarıyla yeniden oluşturuldu"
 
 #: src/views/site/site_add/SiteAdd.vue:137
-#, fuzzy
 msgid "DNS record selected: %{name}"
-msgstr "Hiçbir kayıt seçilmedi"
+msgstr "DNS kaydı seçildi: %{name}"
 
 #: src/routes/modules/dns.ts:44 src/views/dns/DNSRecordManager.vue:62
 msgid "DNS Records"
@@ -2316,9 +2314,8 @@ msgstr "Dizinlemeyi Etkinleştir"
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:353
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:522
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:647
-#, fuzzy
 msgid "Enable Proxy (Cloudflare)"
-msgstr "Proxy Önbelleğini Etkinleştir"
+msgstr "Proxy'yi Etkinleştir (Cloudflare)"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:113
 msgid "Enable Proxy Cache"
@@ -2615,15 +2612,15 @@ msgstr "Nginx UI dosyalarının yedeklenmesi başarısız oldu: {0}"
 msgid "Failed to build nginx config: {0}"
 msgstr "nginx yapılandırması oluşturulamadı: {0}"
 
-#: src/constants/errors/backup.ts:17
+#: src/constants/errors/backup.ts:19
 msgid "Failed to calculate hash: {0}"
 msgstr "Hash hesaplanamadı: {0}"
 
-#: src/constants/errors/backup.ts:54
+#: src/constants/errors/backup.ts:56
 msgid "Failed to calculate Nginx hash: {0}"
 msgstr "Nginx hash hesaplama başarısız: {0}"
 
-#: src/constants/errors/backup.ts:53
+#: src/constants/errors/backup.ts:55
 msgid "Failed to calculate Nginx UI hash: {0}"
 msgstr "Nginx UI hash hesaplama başarısız: {0}"
 
@@ -2631,19 +2628,19 @@ msgstr "Nginx UI hash hesaplama başarısız: {0}"
 msgid "Failed to cleanup temporary directory: {0}"
 msgstr "Geçici dizin temizleme başarısız oldu: {0}"
 
-#: src/constants/errors/backup.ts:15
+#: src/constants/errors/backup.ts:17
 msgid "Failed to copy config file: {0}"
 msgstr "Yapılandırma dosyası kopyalanamadı: {0}"
 
-#: src/constants/errors/backup.ts:16
+#: src/constants/errors/backup.ts:18
 msgid "Failed to copy database file: {0}"
 msgstr "Veritabanı dosyası kopyalanamadı: {0}"
 
-#: src/constants/errors/backup.ts:31
+#: src/constants/errors/backup.ts:33
 msgid "Failed to copy file content: {0}"
 msgstr "Dosya içeriği kopyalanamadı: {0}"
 
-#: src/constants/errors/backup.ts:19
+#: src/constants/errors/backup.ts:21
 msgid "Failed to copy Nginx config directory: {0}"
 msgstr "Nginx yapılandırma dizini kopyalanamadı: {0}"
 
@@ -2660,17 +2657,24 @@ msgstr "Yedek oluşturma başarısız oldu"
 msgid "Failed to create backup file: {0}"
 msgstr "Yedek dosyası oluşturulamadı: {0}"
 
-#: src/constants/errors/backup.ts:43
+#: src/constants/errors/backup.ts:15
+msgid "Failed to create backup manifest signature: {0}"
+msgstr "Yedek bildirim imzası oluşturulamadı: {0}"
+
+#: src/constants/errors/backup.ts:14
+msgid "Failed to create backup manifest: {0}"
+msgstr "Yedek bildirimi oluşturulamadı: {0}"
+
+#: src/constants/errors/backup.ts:45
 msgid "Failed to create directory: {0}"
 msgstr "Dizin oluşturulamadı: {0}"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:222
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:360
-#, fuzzy
 msgid "Failed to create DNS record"
-msgstr "Dizin oluşturulamadı: {0}"
+msgstr "DNS kaydı oluşturulamadı"
 
-#: src/constants/errors/backup.ts:45 src/constants/errors/geolite.ts:6
+#: src/constants/errors/backup.ts:47 src/constants/errors/geolite.ts:6
 msgid "Failed to create file: {0}"
 msgstr "Dosya oluşturulamadı: {0}"
 
@@ -2678,19 +2682,19 @@ msgstr "Dosya oluşturulamadı: {0}"
 msgid "Failed to create hash info file: {0}"
 msgstr "Hash bilgi dosyası oluşturulamadı: {0}"
 
-#: src/constants/errors/backup.ts:44
+#: src/constants/errors/backup.ts:46
 msgid "Failed to create parent directory: {0}"
 msgstr "Üst dizin oluşturulamadı: {0}"
 
-#: src/constants/errors/backup.ts:32
+#: src/constants/errors/backup.ts:34
 msgid "Failed to create restore directory: {0}"
 msgstr "Geri yükleme dizini oluşturulamadı: {0}"
 
-#: src/constants/errors/backup.ts:66
+#: src/constants/errors/backup.ts:76
 msgid "Failed to create storage directory {0}: {1}"
 msgstr "Depolama dizini oluşturulamadı {0}: {1}"
 
-#: src/constants/errors/backup.ts:47
+#: src/constants/errors/backup.ts:49
 msgid "Failed to create symbolic link: {0}"
 msgstr "Sembolik bağlantı oluşturulamadı: {0}"
 
@@ -2714,15 +2718,15 @@ msgstr "xz okuyucu oluşturulamadı: {0}"
 msgid "Failed to create zip archive: {0}"
 msgstr "ZIP arşivi oluşturulamadı: {0}"
 
-#: src/constants/errors/backup.ts:28
+#: src/constants/errors/backup.ts:30
 msgid "Failed to create zip entry: {0}"
 msgstr "ZIP girişi oluşturulamadı: {0}"
 
-#: src/constants/errors/backup.ts:27
+#: src/constants/errors/backup.ts:29
 msgid "Failed to create zip file: {0}"
 msgstr "ZIP dosyası oluşturulamadı: {0}"
 
-#: src/constants/errors/backup.ts:30
+#: src/constants/errors/backup.ts:32
 msgid "Failed to create zip header: {0}"
 msgstr "ZIP başlığı oluşturulamadı: {0}"
 
@@ -2730,19 +2734,19 @@ msgstr "ZIP başlığı oluşturulamadı: {0}"
 msgid "Failed to decompress GeoLite2 database: {0}"
 msgstr "GeoLite2 veritabanını açma hatası: {0}"
 
-#: src/constants/errors/backup.ts:25
+#: src/constants/errors/backup.ts:27
 msgid "Failed to decrypt data: {0}"
 msgstr "Veri şifresi çözülemedi: {0}"
 
-#: src/constants/errors/backup.ts:50
+#: src/constants/errors/backup.ts:52
 msgid "Failed to decrypt file: {0}"
 msgstr "Dosya çözülemedi: {0}"
 
-#: src/constants/errors/backup.ts:35
+#: src/constants/errors/backup.ts:37
 msgid "Failed to decrypt Nginx directory: {0}"
 msgstr "Nginx dizini şifre çözme başarısız: {0}"
 
-#: src/constants/errors/backup.ts:34
+#: src/constants/errors/backup.ts:36
 msgid "Failed to decrypt Nginx UI directory: {0}"
 msgstr "Nginx UI dizininin şifresi çözülemedi: {0}"
 
@@ -2792,11 +2796,11 @@ msgstr "Gelişmiş indeksleme etkinleştirilemedi"
 msgid "Failed to enable maintenance mode %{msg}"
 msgstr "Bakım modu etkinleştirilemedi: %{msg}"
 
-#: src/constants/errors/backup.ts:24
+#: src/constants/errors/backup.ts:26
 msgid "Failed to encrypt data: {0}"
 msgstr "Veri şifreleme başarısız: {0}"
 
-#: src/constants/errors/backup.ts:22
+#: src/constants/errors/backup.ts:24
 msgid "Failed to encrypt file: {0}"
 msgstr "Dosya şifreleme başarısız: {0}"
 
@@ -2816,7 +2820,7 @@ msgstr "Komut çalıştırılamadı: {0}"
 msgid "Failed to execute template: {0}"
 msgstr "Şablon çalıştırılamadı: {0}"
 
-#: src/constants/errors/backup.ts:33
+#: src/constants/errors/backup.ts:35
 msgid "Failed to extract archive: {0}"
 msgstr "Arşiv çıkarılamadı: {0}"
 
@@ -2874,9 +2878,8 @@ msgstr "Mevcut konteyner incelenirken hata oluştu: {0}"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:137
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:166
-#, fuzzy
 msgid "Failed to load DNS records"
-msgstr "Geçmiş kayıtları yüklenemedi"
+msgstr "DNS kayıtları yüklenemedi"
 
 #: src/components/ConfigHistory/ConfigHistory.vue:83
 msgid "Failed to load history records"
@@ -2890,15 +2893,15 @@ msgstr "nginx yapılandırma yolu yüklenemedi"
 msgid "Failed to open file: {0}"
 msgstr "Dosya açılamadı: {0}"
 
-#: src/constants/errors/backup.ts:29
+#: src/constants/errors/backup.ts:31
 msgid "Failed to open source file: {0}"
 msgstr "Kaynak dosya açılamadı: {0}"
 
-#: src/constants/errors/backup.ts:46
+#: src/constants/errors/backup.ts:48
 msgid "Failed to open zip entry: {0}"
 msgstr "ZIP girişi açılamadı: {0}"
 
-#: src/constants/errors/backup.ts:42
+#: src/constants/errors/backup.ts:44
 msgid "Failed to open zip file: {0}"
 msgstr "ZIP dosyası açılamadı: {0}"
 
@@ -2918,11 +2921,19 @@ msgstr "Şablon ayrıştırma başarısız: {0}"
 msgid "Failed to pull image: {0}"
 msgstr "Görüntü çekme başarısız: {0}"
 
+#: src/constants/errors/backup.ts:58
+msgid "Failed to read backup manifest signature: {0}"
+msgstr "Yedek bildirim imzası okunamadı: {0}"
+
+#: src/constants/errors/backup.ts:57
+msgid "Failed to read backup manifest: {0}"
+msgstr "Yedek bildirim dosyası okunamadı: {0}"
+
 #: src/constants/errors/geolite.ts:11
 msgid "Failed to read compressed data: {0}"
 msgstr "Sıkıştırılmış veriler okunamadı: {0}"
 
-#: src/constants/errors/backup.ts:49
+#: src/constants/errors/backup.ts:51
 msgid "Failed to read encrypted file: {0}"
 msgstr "Şifrelenmiş dosya okunamadı: {0}"
 
@@ -2930,11 +2941,11 @@ msgstr "Şifrelenmiş dosya okunamadı: {0}"
 msgid "Failed to read file"
 msgstr "Dosya okunamadı"
 
-#: src/constants/errors/backup.ts:21
+#: src/constants/errors/backup.ts:23
 msgid "Failed to read file: {0}"
 msgstr "Dosya okunamadı: {0}"
 
-#: src/constants/errors/backup.ts:52
+#: src/constants/errors/backup.ts:54
 msgid "Failed to read hash info file: {0}"
 msgstr "Hash bilgi dosyası okunamadı: {0}"
 
@@ -2950,7 +2961,7 @@ msgstr "Çıktı okunamadı: {0}"
 msgid "Failed to read response body: {0}"
 msgstr "Yanıt gövdesi okunamadı: {0}"
 
-#: src/constants/errors/backup.ts:20
+#: src/constants/errors/backup.ts:22
 msgid "Failed to read symlink: {0}"
 msgstr "Sembolik bağlantı okunamadı: {0}"
 
@@ -2963,15 +2974,14 @@ msgid "Failed to rebuild index"
 msgstr "Dizin yeniden oluşturulamadı"
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:429
-#, fuzzy
 msgid "Failed to recreate DNS record"
-msgstr "Dizin oluşturulamadı: {0}"
+msgstr "DNS kaydı yeniden oluşturulamadı"
 
 #: src/views/dashboard/SiteNavigation.vue:86
 msgid "Failed to refresh sites"
 msgstr "Siteler yenilenemedi"
 
-#: src/constants/errors/backup.ts:37
+#: src/constants/errors/backup.ts:39
 msgid "Failed to restore Nginx configs: {0}"
 msgstr "Nginx yapılandırmaları geri yüklenemedi: {0}"
 
@@ -3019,11 +3029,11 @@ msgstr "Durum güncellenemedi"
 msgid "Failed to upload file"
 msgstr "Dosya yüklenemedi"
 
-#: src/constants/errors/backup.ts:36
+#: src/constants/errors/backup.ts:38
 msgid "Failed to verify hashes: {0}"
 msgstr "Hash doğrulama başarısız: {0}"
 
-#: src/constants/errors/backup.ts:58
+#: src/constants/errors/backup.ts:68
 msgid "Failed to write backup file: {0}"
 msgstr "Yedek dosyası yazılamadı: {0}"
 
@@ -3031,15 +3041,15 @@ msgstr "Yedek dosyası yazılamadı: {0}"
 msgid "Failed to write decompressed data: {0}"
 msgstr "Sıkıştırılmamış verilerin yazılması başarısız oldu: {0}"
 
-#: src/constants/errors/backup.ts:51
+#: src/constants/errors/backup.ts:53
 msgid "Failed to write decrypted file: {0}"
 msgstr "Şifresi çözülmüş dosya yazılamadı: {0}"
 
-#: src/constants/errors/backup.ts:23
+#: src/constants/errors/backup.ts:25
 msgid "Failed to write encrypted file: {0}"
 msgstr "Şifrelenmiş dosya yazma hatası: {0}"
 
-#: src/constants/errors/backup.ts:59
+#: src/constants/errors/backup.ts:69
 msgid "Failed to write security key file: {0}"
 msgstr "Güvenlik anahtarı dosyası yazılamadı: {0}"
 
@@ -3599,13 +3609,21 @@ msgstr "Aralık (saniye)"
 msgid "Invalid"
 msgstr "Geçersiz"
 
-#: src/constants/errors/backup.ts:41
+#: src/constants/errors/backup.ts:43
 msgid "Invalid AES IV format: {0}"
 msgstr "Geçersiz AES IV biçimi: {0}"
 
-#: src/constants/errors/backup.ts:40
+#: src/constants/errors/backup.ts:42
 msgid "Invalid AES key format: {0}"
 msgstr "Geçersiz AES anahtar biçimi: {0}"
+
+#: src/constants/errors/backup.ts:60
+msgid "Invalid backup manifest signature"
+msgstr "Geçersiz yedek manifestosu imzası"
+
+#: src/constants/errors/backup.ts:59
+msgid "Invalid backup manifest: {0}"
+msgstr "Geçersiz yedek bildirimi: {0}"
 
 #: src/views/certificate/components/CertificateDownload.vue:54
 #: src/views/certificate/components/CertificateFileUpload.vue:88
@@ -3624,7 +3642,7 @@ msgstr "Geçersiz commit SHA"
 msgid "Invalid file object"
 msgstr "Geçersiz dosya nesnesi"
 
-#: src/constants/errors/backup.ts:48
+#: src/constants/errors/backup.ts:50
 msgid "Invalid file path: {0}"
 msgstr "Geçersiz dosya yolu: {0}"
 
@@ -3649,7 +3667,7 @@ msgstr "Geçersiz bildirim yapılandırması"
 msgid "Invalid otp code"
 msgstr "Geçersiz OTP kodu"
 
-#: src/constants/errors/backup.ts:26
+#: src/constants/errors/backup.ts:28
 msgid "Invalid padding in decrypted data"
 msgstr "Şifresi çözülmüş veride geçersiz dolgu"
 
@@ -3657,7 +3675,7 @@ msgstr "Şifresi çözülmüş veride geçersiz dolgu"
 msgid "Invalid passcode or recovery code"
 msgstr "Geçersiz parola veya kurtarma kodu"
 
-#: src/constants/errors/backup.ts:61
+#: src/constants/errors/backup.ts:71
 msgid "Invalid path: {0}"
 msgstr "Geçersiz yol: {0}"
 
@@ -3674,7 +3692,7 @@ msgstr "Geçersiz kurtarma kodu"
 msgid "Invalid request format"
 msgstr "Geçersiz istek biçimi"
 
-#: src/constants/errors/backup.ts:39
+#: src/constants/errors/backup.ts:41
 msgid "Invalid security token format"
 msgstr "Geçersiz güvenlik belirteci biçimi"
 
@@ -3703,9 +3721,8 @@ msgstr "IP Adresi"
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:335
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:504
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:629
-#, fuzzy
 msgid "IP Address / Target"
-msgstr "IP Adresi"
+msgstr "IP Adresi / Hedef"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:123
 msgid "IP Certificate Notice"
@@ -3903,17 +3920,20 @@ msgid ""
 "Link this site to a DNS record. The server_name will be used for the DNS "
 "record name."
 msgstr ""
+"Bu siteyi bir DNS kaydına bağlayın. server_name, DNS kaydı adı olarak "
+"kullanılacaktır."
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:247
 msgid ""
 "Link this site to a DNS record. The server_name will be used for the DNS "
 "record name. You can skip this step if DNS is already configured."
 msgstr ""
+"Bu siteyi bir DNS kaydına bağlayın. server_name, DNS kaydı adı olarak "
+"kullanılacaktır. DNS zaten yapılandırılmışsa bu adımı atlayabilirsiniz."
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:466
-#, fuzzy
 msgid "Linked DNS Record"
-msgstr "DNS Kayıtları"
+msgstr "Bağlantılı DNS Kaydı"
 
 #: src/language/curd.ts:23
 msgid "List"
@@ -4493,7 +4513,7 @@ msgstr "Nginx yapılandırması sites-enabled içermiyor"
 msgid "Nginx conf not include stream-enabled"
 msgstr "Nginx yapılandırması stream-enabled içermiyor"
 
-#: src/constants/errors/backup.ts:18
+#: src/constants/errors/backup.ts:20
 msgid "Nginx config directory is not set"
 msgstr "Nginx yapılandırma dizini ayarlanmamış"
 
@@ -4642,7 +4662,7 @@ msgstr "Nginx UI zaten yüklü"
 msgid "Nginx UI configuration has been restored"
 msgstr "Nginx UI yapılandırması geri yüklendi"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:336
+#: src/components/SystemRestore/SystemRestoreContent.vue:344
 msgid ""
 "Nginx UI configuration has been restored and will restart automatically in "
 "a few seconds."
@@ -4702,9 +4722,8 @@ msgstr "Veri yok"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:372
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:666
-#, fuzzy
 msgid "No DNS domains available"
-msgstr "Coğrafi veri mevcut değil"
+msgstr "Kullanılabilir DNS alan adı yok"
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:827
 msgid "No entries in current page"
@@ -4921,9 +4940,8 @@ msgid "Offline GeoIP analysis"
 msgstr "Çevrimdışı GeoIP analizi"
 
 #: src/views/other/Login.vue:335
-#, fuzzy
 msgid "OIDC Login"
-msgstr "SSO Girişi"
+msgstr "OIDC Girişi"
 
 #: src/components/LLM/ChatMessageInput.vue:62
 #: src/components/NgxConfigEditor/NgxServer.vue:60
@@ -4960,6 +4978,15 @@ msgstr "Çevrimiçi"
 msgid "Online Count"
 msgstr "Çevrimiçi Sayısı"
 
+#: src/components/SystemRestore/SystemRestoreContent.vue:180
+#: src/components/SystemRestore/SystemRestoreContent.vue:263
+msgid ""
+"Only backups created by versions that support signed manifests can be "
+"restored. Legacy backups are no longer supported."
+msgstr ""
+"Yalnızca imzalı bildirimleri destekleyen sürümler tarafından oluşturulan "
+"yedeklemeler geri yüklenebilir. Eski yedeklemeler artık desteklenmemektedir."
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:78
 msgid "Only zip files are allowed"
 msgstr "Sadece ZIP dosyalarına izin verilir"
@@ -4986,7 +5013,7 @@ msgstr "İşletim Sistemi İstatistikleri"
 
 #: src/views/dns/components/DNSRecordForm.vue:94
 msgid "Optional comment for this DNS record"
-msgstr ""
+msgstr "Bu DNS kaydı için isteğe bağlı yorum"
 
 #: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:369
 msgid "Or"
@@ -5111,7 +5138,7 @@ msgstr "Şifreler eşleşmiyor"
 msgid "Path"
 msgstr "Yol"
 
-#: src/constants/errors/backup.ts:62
+#: src/constants/errors/backup.ts:72
 msgid "Path not in granted access paths: {0}"
 msgstr "Yol, verilen erişim yollarında değil: {0}"
 
@@ -5183,16 +5210,15 @@ msgstr "Düz metin boş"
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:373
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:667
 msgid "Please add a DNS domain first in the DNS management section."
-msgstr ""
+msgstr "Lütfen önce DNS yönetimi bölümünde bir DNS alanı ekleyin"
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:446
-#, fuzzy
 msgid ""
 "Please configure server_name directive in the configuration before linking "
 "DNS records."
 msgstr ""
-"Lütfen aşağıdaki zaman yapılandırmalarının birimlerinin saniye cinsinden "
-"olduğunu unutmayın."
+"DNS kayıtlarını bağlamadan önce yapılandırmada server_name yönergesini "
+"yapılandırın."
 
 #: src/views/dashboard/NginxDashBoard.vue:196
 msgid ""
@@ -5238,8 +5264,8 @@ msgstr "Lütfen OTP kodunu girin:"
 msgid "Please enter the security token"
 msgstr "Lütfen güvenlik belirtecini girin"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:210
-#: src/components/SystemRestore/SystemRestoreContent.vue:287
+#: src/components/SystemRestore/SystemRestoreContent.vue:212
+#: src/components/SystemRestore/SystemRestoreContent.vue:295
 msgid "Please enter the security token received during backup"
 msgstr "Lütfen yedekleme sırasında alınan güvenlik belirtecini girin"
 
@@ -5253,9 +5279,8 @@ msgstr "Lütfen tüm alanları doğru şekilde doldurun"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:193
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:320
-#, fuzzy
 msgid "Please fill in all required fields"
-msgstr "Lütfen gerekli S3 yapılandırma alanlarını doldurun"
+msgstr "Lütfen tüm zorunlu alanları doldurun"
 
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:23
 msgid "Please fill in required S3 configuration fields"
@@ -5604,15 +5629,13 @@ msgstr "Kayıt silindi"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:325
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:619
-#, fuzzy
 msgid "Record Name"
-msgstr "Metot Adı"
+msgstr "Kayıt Adı"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:311
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:605
-#, fuzzy
 msgid "Record Type"
-msgstr "Kayıt güncellendi"
+msgstr "Kayıt Türü"
 
 #: src/views/dns/DNSRecordManager.vue:114
 msgid "Record updated"
@@ -5639,9 +5662,8 @@ msgstr ""
 "için kullanılır. Her kod yalnızca bir kez kullanılabilir."
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:535
-#, fuzzy
 msgid "Recreate DNS Record"
-msgstr "Kayıt Oluştur"
+msgstr "DNS Kaydını Yeniden Oluştur"
 
 #: src/views/preference/tabs/CertSettings.vue:40
 msgid "Recursive Nameservers"
@@ -5986,13 +6008,13 @@ msgstr "Geri yükleme başarıyla tamamlandı"
 msgid "Restore from Backup"
 msgstr "Yedekten Geri Yükle"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:223
-#: src/components/SystemRestore/SystemRestoreContent.vue:300
+#: src/components/SystemRestore/SystemRestoreContent.vue:225
+#: src/components/SystemRestore/SystemRestoreContent.vue:308
 msgid "Restore Nginx Configuration"
 msgstr "Nginx Yapılandırmasını Geri Yükle"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:234
-#: src/components/SystemRestore/SystemRestoreContent.vue:311
+#: src/components/SystemRestore/SystemRestoreContent.vue:236
+#: src/components/SystemRestore/SystemRestoreContent.vue:319
 msgid "Restore Nginx UI Configuration"
 msgstr "Nginx UI Yapılandırmasını Geri Yükle"
 
@@ -6033,7 +6055,7 @@ msgstr ""
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:356
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:650
 msgid "Route traffic through proxy for additional protection and features"
-msgstr ""
+msgstr "Ekstra koruma ve özellikler için trafiği bir proxy üzerinden yönlendirin"
 
 #: src/views/preference/tabs/AuthSettings.vue:72
 msgid "RP Display Name"
@@ -6087,7 +6109,7 @@ msgstr "S3 kovası gereklidir"
 msgid "S3 bucket name"
 msgstr "S3 kova adı"
 
-#: src/constants/errors/backup.ts:56
+#: src/constants/errors/backup.ts:66
 msgid "S3 configuration is incomplete: missing {0}"
 msgstr "S3 yapılandırması eksik: {0} eksik"
 
@@ -6139,7 +6161,7 @@ msgstr "S3 Gizli Erişim Anahtarı"
 msgid "S3 secret access key is required"
 msgstr "S3 gizli erişim anahtarı gereklidir"
 
-#: src/constants/errors/backup.ts:60
+#: src/constants/errors/backup.ts:70
 msgid "S3 upload failed: {0}"
 msgstr "S3 yükleme başarısız: {0}"
 
@@ -6304,8 +6326,8 @@ msgstr "Gizli kod kopyalandı"
 msgid "Security Settings"
 msgstr "Güvenlik Ayarları"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:207
-#: src/components/SystemRestore/SystemRestoreContent.vue:284
+#: src/components/SystemRestore/SystemRestoreContent.vue:209
+#: src/components/SystemRestore/SystemRestoreContent.vue:292
 msgid "Security Token"
 msgstr "Güvenlik Belirteci"
 
@@ -6331,14 +6353,13 @@ msgstr "Kimlik Bilgilerini Seç"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:254
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:548
-#, fuzzy
 msgid "Select DNS domain"
-msgstr "DNS Alanları"
+msgstr "DNS alan adı seç"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:279
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:573
 msgid "Select existing record"
-msgstr ""
+msgstr "Mevcut kaydı seç"
 
 #: src/views/certificate/ACMEUser.vue:45
 msgid "Select or enter a CA directory URL"
@@ -6396,7 +6417,7 @@ msgstr "Sunucu IP Adresi"
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:102
 msgid "Server name is controlled by linked DNS record"
-msgstr ""
+msgstr "Sunucu adı bağlantılı DNS kaydı tarafından kontrol ediliyor"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:99
 msgid "Server Names Hash Bucket Size"
@@ -6506,7 +6527,7 @@ msgstr "Site Yapılandırması Başarıyla Oluşturuldu"
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:426
 msgid "Site configuration updated with recreated DNS record"
-msgstr ""
+msgstr "Yeniden oluşturulan DNS kaydı ile site yapılandırması güncellendi"
 
 #: src/constants/errors/site.ts:4
 msgid "Site is enabled"
@@ -6662,8 +6683,8 @@ msgstr "Başla"
 msgid "Start Date"
 msgstr "Başlangıç Tarihi"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:246
-#: src/components/SystemRestore/SystemRestoreContent.vue:323
+#: src/components/SystemRestore/SystemRestoreContent.vue:248
+#: src/components/SystemRestore/SystemRestoreContent.vue:331
 msgid "Start Restore"
 msgstr "Geri Yüklemeyi Başlat"
 
@@ -6799,8 +6820,8 @@ msgstr "Tek veya toplu dosya yüklemeyi destekler"
 msgid "Support uploading entire folders"
 msgstr "Tüm klasörlerin yüklenmesini destekler"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:197
-#: src/components/SystemRestore/SystemRestoreContent.vue:274
+#: src/components/SystemRestore/SystemRestoreContent.vue:199
+#: src/components/SystemRestore/SystemRestoreContent.vue:282
 msgid "Supported file type: .zip"
 msgstr "Desteklenen dosya türü: .zip"
 
@@ -6905,7 +6926,7 @@ msgstr "Sistem Başlangıç Kullanıcısı"
 msgid "System Requirements"
 msgstr "Sistem Gereksinimleri"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:174
+#: src/components/SystemRestore/SystemRestoreContent.vue:170
 msgid "System Restore"
 msgstr "Sistem Geri Yükleme"
 
@@ -6917,7 +6938,7 @@ msgstr "Sistem başarıyla geri yüklendi."
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:508
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:632
 msgid "target.example.com"
-msgstr ""
+msgstr "target.example.com"
 
 #: src/views/dns/DDNSManager.vue:83
 msgid "Targets"
@@ -7020,6 +7041,8 @@ msgid ""
 "The linked DNS record was deleted from the DNS server. You can recreate it "
 "or clear the link."
 msgstr ""
+"Bağlantılı DNS kaydı DNS sunucusundan silindi. Yeniden oluşturabilir veya "
+"bağlantıyı temizleyebilirsiniz."
 
 #: src/constants/errors/nginx_log.ts:2
 msgid ""
@@ -7130,6 +7153,14 @@ msgstr "Üçüncü Taraf Bileşenler"
 #: src/views/certificate/components/AutoCertManagement.vue:45
 msgid "This Auto Cert item is invalid, please remove it."
 msgstr "Bu Otomatik Sertifika öğesi geçersiz, lütfen kaldırın."
+
+#: src/constants/errors/backup.ts:62
+msgid ""
+"This backup uses an unsupported legacy format. Please create a new backup "
+"with a newer version before restoring."
+msgstr ""
+"Bu yedekleme, desteklenmeyen eski bir biçim kullanıyor. Geri yüklemeden "
+"önce daha yeni bir sürümle yeni bir yedekleme oluşturun."
 
 #: src/views/certificate/components/AutoCertManagement.vue:35
 msgid "This certificate is managed by Nginx UI"
@@ -7244,8 +7275,8 @@ msgstr ""
 msgid "This will rebuild the index data for this specific file: %{path}"
 msgstr "Bu, bu belirli dosya için indeks verilerini yeniden oluşturacaktır: %{path}"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:227
-#: src/components/SystemRestore/SystemRestoreContent.vue:304
+#: src/components/SystemRestore/SystemRestoreContent.vue:229
+#: src/components/SystemRestore/SystemRestoreContent.vue:312
 msgid ""
 "This will restore all Nginx configuration files. Nginx will restart after "
 "the restoration is complete."
@@ -7253,8 +7284,8 @@ msgstr ""
 "Bu, tüm Nginx yapılandırma dosyalarını geri yükleyecektir. Geri yükleme "
 "tamamlandıktan sonra Nginx yeniden başlatılacaktır."
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:238
-#: src/components/SystemRestore/SystemRestoreContent.vue:315
+#: src/components/SystemRestore/SystemRestoreContent.vue:240
+#: src/components/SystemRestore/SystemRestoreContent.vue:323
 msgid ""
 "This will restore configuration files and database. Nginx UI will restart "
 "after the restoration is complete."
@@ -7538,7 +7569,7 @@ msgstr "Benzersiz Sayfalar"
 msgid "Unknown"
 msgstr "Bilinmeyen"
 
-#: src/constants/errors/backup.ts:57
+#: src/constants/errors/backup.ts:67
 msgid "Unsupported backup type: {0}"
 msgstr "Desteklenmeyen yedekleme türü: {0}"
 
@@ -7713,10 +7744,10 @@ msgstr "SSL Sertifikasını Doğrula"
 msgid "Value"
 msgstr "Değer"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:216
-#: src/components/SystemRestore/SystemRestoreContent.vue:293
-msgid "Verify Backup File Integrity"
-msgstr "Yedek Dosya Bütünlüğünü Doğrula"
+#: src/components/SystemRestore/SystemRestoreContent.vue:218
+#: src/components/SystemRestore/SystemRestoreContent.vue:301
+msgid "Verify Backup File Integrity (required)"
+msgstr "Yedek Dosya Bütünlüğünü Doğrula (gerekli)"
 
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:664
 msgid "Verify Hostname"
@@ -7780,8 +7811,8 @@ msgstr "Bekleme süreçleri"
 msgid "Warning"
 msgstr "Uyarı"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:178
-#: src/components/SystemRestore/SystemRestoreContent.vue:255
+#: src/components/SystemRestore/SystemRestoreContent.vue:174
+#: src/components/SystemRestore/SystemRestoreContent.vue:257
 msgid ""
 "Warning: Restore operation will overwrite current configurations. Make sure "
 "you have a valid backup file and security token, and carefully select what "
@@ -7955,11 +7986,11 @@ msgstr "En son sürümü kullanıyorsunuz"
 msgid "You can check Nginx UI upgrade at this page."
 msgstr "Bu sayfada Nginx UI güncellemesini kontrol edebilirsiniz."
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:339
+#: src/components/SystemRestore/SystemRestoreContent.vue:347
 msgid "You can close this dialog in %{countdown} seconds"
 msgstr "Bu iletişim kutusunu %{countdown} saniye içinde kapatabilirsiniz"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:342
+#: src/components/SystemRestore/SystemRestoreContent.vue:350
 msgid "You can close this dialog now"
 msgstr "Şimdi bu iletişim kutusunu kapatabilirsiniz"
 
@@ -8001,6 +8032,9 @@ msgstr "Geçiş Anahtarlarınız"
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:232
 msgid "Zero-allocation pipeline"
 msgstr "Tahsisatsız boru hattı"
+
+#~ msgid "Backup file integrity check failed, it may have been tampered with"
+#~ msgstr "Yedek dosya bütünlük kontrolü başarısız oldu, dosya değiştirilmiş olabilir"
 
 #~ msgid "Once the verification is complete, the records will be removed."
 #~ msgstr "Doğrulama tamamlandığında, kayıtlar kaldırılacaktır."

@@ -1,9 +1,9 @@
 package backup
 
 import (
+	"encoding/json"
 	"os"
 	"path/filepath"
-	"strings"
 	"testing"
 
 	"github.com/0xJacky/Nginx-UI/internal/version"
@@ -96,22 +96,15 @@ func TestBackupVersion(t *testing.T) {
 	assert.NoError(t, err)
 	assert.True(t, restoreResult.HashMatch, "Hash should match")
 
-	// Check hash_info.txt file
-	hashInfoPath := filepath.Join(restoreDir, HashInfoFile)
-	hashInfoContent, err := os.ReadFile(hashInfoPath)
+	manifestPath := filepath.Join(restoreDir, ManifestFile)
+	manifestContent, err := os.ReadFile(manifestPath)
 	assert.NoError(t, err)
 
-	// Verify version information
 	versionInfo := version.GetVersionInfo()
 	expectedVersion := versionInfo.Version
 
-	// Check if hash_info.txt contains version info
-	hashInfoStr := string(hashInfoContent)
-	t.Logf("Hash info content: %s", hashInfoStr)
-
-	assert.True(t, strings.Contains(hashInfoStr, "version: "), "Hash info should contain version field")
-
-	// Parse hash_info.txt content
-	info := parseHashInfo(hashInfoStr)
-	assert.Equal(t, expectedVersion, info.Version, "Backup version should match current version")
+	var manifest Manifest
+	err = json.Unmarshal(manifestContent, &manifest)
+	assert.NoError(t, err)
+	assert.Equal(t, expectedVersion, manifest.Version, "Backup version should match current version")
 }

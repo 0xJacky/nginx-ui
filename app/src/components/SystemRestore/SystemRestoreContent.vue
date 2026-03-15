@@ -151,10 +151,6 @@ async function doRestore() {
       })
     }
 
-    if (data.hash_match === false && formModel.verifyHash) {
-      message.warning($gettext('Backup file integrity check failed, it may have been tampered with'))
-    }
-
     // Reset form after successful restore
     uploadFiles.value = []
     formModel.securityToken = ''
@@ -176,6 +172,12 @@ async function doRestore() {
         show-icon
         type="warning"
         :message="$gettext('Warning: Restore operation will overwrite current configurations. Make sure you have a valid backup file and security token, and carefully select what to restore.')"
+        class="mb-4"
+      />
+      <AAlert
+        show-icon
+        type="info"
+        :message="$gettext('Only backups created by versions that support signed manifests can be restored. Legacy backups are no longer supported.')"
         class="mb-4"
       />
 
@@ -213,7 +215,7 @@ async function doRestore() {
 
         <AFormItem>
           <ACheckbox v-model:checked="formModel.verifyHash" :disabled="true">
-            {{ $gettext('Verify Backup File Integrity') }}
+            {{ $gettext('Verify Backup File Integrity (required)') }}
           </ACheckbox>
         </AFormItem>
 
@@ -255,6 +257,12 @@ async function doRestore() {
         :message="$gettext('Warning: Restore operation will overwrite current configurations. Make sure you have a valid backup file and security token, and carefully select what to restore.')"
         class="mb-4"
       />
+      <AAlert
+        show-icon
+        type="info"
+        :message="$gettext('Only backups created by versions that support signed manifests can be restored. Legacy backups are no longer supported.')"
+        class="mb-4"
+      />
 
       <AUploadDragger
         :file-list="uploadFiles"
@@ -290,7 +298,7 @@ async function doRestore() {
 
         <AFormItem>
           <ACheckbox v-model:checked="formModel.verifyHash" :disabled="true">
-            {{ $gettext('Verify Backup File Integrity') }}
+            {{ $gettext('Verify Backup File Integrity (required)') }}
           </ACheckbox>
         </AFormItem>
 

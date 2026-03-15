@@ -132,7 +132,7 @@ msgstr "Tối thiểu 1 lõi"
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:508
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:632
 msgid "192.168.1.1"
-msgstr ""
+msgstr "192.168.1.1"
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:54
 msgid "1GB RAM minimum"
@@ -545,15 +545,14 @@ msgstr "AutoCert đang chạy..."
 msgid "Automated log rotation detection"
 msgstr "Phát hiện luân chuyển nhật ký tự động"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:332
+#: src/components/SystemRestore/SystemRestoreContent.vue:340
 msgid "Automatic Restart"
 msgstr "Khởi động lại tự động"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:331
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:625
-#, fuzzy
 msgid "Automatically extracted from server_name"
-msgstr "\"Được lập chỉ mục tự động từ cấu hình trang web và luồng.\""
+msgstr "Được tự động trích xuất từ server_name"
 
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:36
 msgid "Average Latency"
@@ -605,11 +604,7 @@ msgstr "Dịch vụ nhật ký nền không khả dụng"
 msgid "Backup"
 msgstr "Sao lưu"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:155
-msgid "Backup file integrity check failed, it may have been tampered with"
-msgstr "Kiểm tra tính toàn vẹn của tập tin sao lưu thất bại, có thể đã bị can thiệp"
-
-#: src/constants/errors/backup.ts:38
+#: src/constants/errors/backup.ts:40
 msgid "Backup file not found: {0}"
 msgstr "Không tìm thấy tệp sao lưu: {0}"
 
@@ -617,25 +612,37 @@ msgstr "Không tìm thấy tệp sao lưu: {0}"
 msgid "Backup has been downloaded successfully"
 msgstr "Đã tải xuống bản sao lưu thành công"
 
+#: src/constants/errors/backup.ts:61
+msgid "Backup integrity verification failed"
+msgstr "Xác minh tính toàn vẹn của bản sao lưu thất bại"
+
+#: src/constants/errors/backup.ts:63
+msgid "Backup manifest is missing required file entry: {0}"
+msgstr "Bản kê khai sao lưu thiếu mục tệp bắt buộc: {0}"
+
 #: src/views/backup/AutoBackup/AutoBackup.vue:50
 msgid "Backup Path"
 msgstr "Đường dẫn sao lưu"
 
-#: src/constants/errors/backup.ts:63
+#: src/constants/errors/backup.ts:73
 msgid "Backup path does not exist: {0}"
 msgstr "Đường dẫn sao lưu không tồn tại: {0}"
 
-#: src/constants/errors/backup.ts:65
+#: src/constants/errors/backup.ts:75
 msgid "Backup path is not a directory: {0}"
 msgstr "Đường dẫn sao lưu không phải là thư mục: {0}"
 
-#: src/constants/errors/backup.ts:55
+#: src/constants/errors/backup.ts:65
 msgid "Backup path is required for custom directory backup"
 msgstr "Đường dẫn sao lưu là bắt buộc để sao lưu thư mục tùy chỉnh"
 
 #: src/views/backup/AutoBackup/components/CronEditor.vue:141
 msgid "Backup Schedule"
 msgstr "Lịch trình sao lưu"
+
+#: src/constants/errors/backup.ts:64
+msgid "Backup signing key is unavailable"
+msgstr "Khóa ký sao lưu không khả dụng"
 
 #: src/components/Notification/notifications.ts:38
 msgid "Backup task %{backup_name} completed successfully, file: %{file_path}"
@@ -808,7 +815,7 @@ msgstr ""
 msgid "Cancel"
 msgstr "Huỷ"
 
-#: src/constants/errors/backup.ts:64
+#: src/constants/errors/backup.ts:74
 msgid "Cannot access backup path {0}: {1}"
 msgstr "Không thể truy cập đường dẫn sao lưu {0}: {1}"
 
@@ -816,7 +823,7 @@ msgstr "Không thể truy cập đường dẫn sao lưu {0}: {1}"
 msgid "Cannot access log file"
 msgstr "Không thể truy cập tệp nhật ký"
 
-#: src/constants/errors/backup.ts:67
+#: src/constants/errors/backup.ts:77
 msgid "Cannot access storage path {0}: {1}"
 msgstr "Không thể truy cập đường dẫn lưu trữ {0}: {1}"
 
@@ -835,6 +842,8 @@ msgstr "Không thể xóa đường dẫn được bảo vệ"
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:135
 msgid "Cannot delete server_name while DNS is linked. Clear DNS link first."
 msgstr ""
+"Không thể xóa server_name khi DNS đang được liên kết. Hãy xóa liên kết DNS "
+"trước."
 
 #: src/views/dashboard/NginxDashBoard.vue:154
 msgid "Cannot get performance data in this state"
@@ -1164,17 +1173,16 @@ msgid "Clear"
 msgstr "Xoá"
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:538
-#, fuzzy
 msgid "Clear Link"
-msgstr "Xoá"
+msgstr "Xóa liên kết"
 
 #: src/components/Notification/Notification.vue:75
 #: src/views/notification/Notification.vue:13
 msgid "Cleared successfully"
 msgstr "Đã xóa thành công"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:194
-#: src/components/SystemRestore/SystemRestoreContent.vue:271
+#: src/components/SystemRestore/SystemRestoreContent.vue:196
+#: src/components/SystemRestore/SystemRestoreContent.vue:279
 msgid "Click or drag backup file to this area to upload"
 msgstr "Nhấp hoặc kéo tệp sao lưu vào khu vực này để tải lên"
 
@@ -1256,7 +1264,6 @@ msgstr "Lệnh thoát với mã lỗi không mong muốn: {0}, lỗi: {1}"
 
 #: src/views/dns/components/DNSRecordForm.vue:91
 #: src/views/dns/components/DNSRecordTable.vue:49
-#, fuzzy
 msgid "Comment"
 msgstr "Bình luận"
 
@@ -1327,7 +1334,7 @@ msgstr "Tệp nhập cấu hình không tồn tại"
 msgid "Config not found"
 msgstr "Không tìm thấy cấu hình"
 
-#: src/constants/errors/backup.ts:14
+#: src/constants/errors/backup.ts:16
 msgid "Config path is empty"
 msgstr "Đường dẫn cấu hình trống"
 
@@ -1486,9 +1493,8 @@ msgstr "Tạo bản sao lưu"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:365
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:659
-#, fuzzy
 msgid "Create DNS Record"
-msgstr "Tạo bản ghi"
+msgstr "Tạo bản ghi DNS"
 
 #: src/views/config/ConfigList.vue:130
 msgid "Create File"
@@ -1500,9 +1506,8 @@ msgstr "Tạo thư mục"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:305
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:599
-#, fuzzy
 msgid "Create new DNS record"
-msgstr "Tạo bản ghi"
+msgstr "Tạo bản ghi DNS mới"
 
 #: src/views/dns/DNSRecordManager.vue:206
 msgid "Create Record"
@@ -1976,7 +1981,6 @@ msgstr "Xác thực DNS"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:251
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:545
-#, fuzzy
 msgid "DNS Domain"
 msgstr "Tên miền DNS"
 
@@ -2000,47 +2004,41 @@ msgstr "Hỗ trợ nhà cung cấp DNS"
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:274
 #: src/views/site/site_add/SiteAdd.vue:170
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:568
-#, fuzzy
 msgid "DNS Record"
 msgstr "Bản ghi DNS"
 
 #: src/views/site/site_add/SiteAdd.vue:145
-#, fuzzy
 msgid "DNS record created and linked successfully"
-msgstr "Nginx đã tải lại thành công"
+msgstr "Bản ghi DNS đã được tạo và liên kết thành công"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:213
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:340
-#, fuzzy
 msgid "DNS record created successfully"
-msgstr "Tạo thành công"
+msgstr "Đã tạo bản ghi DNS thành công"
 
 #: src/views/site/site_add/SiteAdd.vue:253
 msgid "DNS record has been linked: %{name}"
-msgstr ""
+msgstr "Bản ghi DNS đã được liên kết: %{name}"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:245
 msgid "DNS Record Integration (Optional)"
-msgstr ""
+msgstr "Tích hợp Bản ghi DNS (Tùy chọn)"
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:288
 msgid "DNS record linked and server_name updated: %{name}"
-msgstr ""
+msgstr "Bản ghi DNS đã được liên kết và server_name đã cập nhật: %{name}"
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:489
-#, fuzzy
 msgid "DNS Record Missing"
-msgstr "Bản ghi DNS"
+msgstr "Bản ghi DNS bị thiếu"
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:403
-#, fuzzy
 msgid "DNS record recreated successfully"
-msgstr "Tạo thành công"
+msgstr "Đã tạo lại bản ghi DNS thành công"
 
 #: src/views/site/site_add/SiteAdd.vue:137
-#, fuzzy
 msgid "DNS record selected: %{name}"
-msgstr "Không có bản ghi nào được chọn"
+msgstr "Đã chọn bản ghi DNS: %{name}"
 
 #: src/routes/modules/dns.ts:44 src/views/dns/DNSRecordManager.vue:62
 msgid "DNS Records"
@@ -2291,9 +2289,8 @@ msgstr "Bật lập chỉ mục"
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:353
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:522
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:647
-#, fuzzy
 msgid "Enable Proxy (Cloudflare)"
-msgstr "Bật bộ nhớ đệm proxy"
+msgstr "Bật Proxy (Cloudflare)"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:113
 msgid "Enable Proxy Cache"
@@ -2588,15 +2585,15 @@ msgstr "Sao lưu tệp Nginx UI không thành công: {0}"
 msgid "Failed to build nginx config: {0}"
 msgstr "Không thể xây dựng cấu hình nginx: {0}"
 
-#: src/constants/errors/backup.ts:17
+#: src/constants/errors/backup.ts:19
 msgid "Failed to calculate hash: {0}"
 msgstr "Không thể tính toán hash: {0}"
 
-#: src/constants/errors/backup.ts:54
+#: src/constants/errors/backup.ts:56
 msgid "Failed to calculate Nginx hash: {0}"
 msgstr "Không thể tính toán băm Nginx: {0}"
 
-#: src/constants/errors/backup.ts:53
+#: src/constants/errors/backup.ts:55
 msgid "Failed to calculate Nginx UI hash: {0}"
 msgstr "Không thể tính toán băm giao diện người dùng Nginx: {0}"
 
@@ -2604,19 +2601,19 @@ msgstr "Không thể tính toán băm giao diện người dùng Nginx: {0}"
 msgid "Failed to cleanup temporary directory: {0}"
 msgstr "Không thể dọn dẹp thư mục tạm thời: {0}"
 
-#: src/constants/errors/backup.ts:15
+#: src/constants/errors/backup.ts:17
 msgid "Failed to copy config file: {0}"
 msgstr "Không thể sao chép tệp cấu hình: {0}"
 
-#: src/constants/errors/backup.ts:16
+#: src/constants/errors/backup.ts:18
 msgid "Failed to copy database file: {0}"
 msgstr "Không thể sao chép tệp cơ sở dữ liệu: {0}"
 
-#: src/constants/errors/backup.ts:31
+#: src/constants/errors/backup.ts:33
 msgid "Failed to copy file content: {0}"
 msgstr "Không thể sao chép nội dung tệp: {0}"
 
-#: src/constants/errors/backup.ts:19
+#: src/constants/errors/backup.ts:21
 msgid "Failed to copy Nginx config directory: {0}"
 msgstr "Không thể sao chép thư mục cấu hình Nginx: {0}"
 
@@ -2633,17 +2630,24 @@ msgstr "Không thể tạo bản sao lưu"
 msgid "Failed to create backup file: {0}"
 msgstr "Không thể tạo tệp sao lưu: {0}"
 
-#: src/constants/errors/backup.ts:43
+#: src/constants/errors/backup.ts:15
+msgid "Failed to create backup manifest signature: {0}"
+msgstr "Không thể tạo chữ ký bản kê khai sao lưu: {0}"
+
+#: src/constants/errors/backup.ts:14
+msgid "Failed to create backup manifest: {0}"
+msgstr "Không thể tạo bản kê khai sao lưu: {0}"
+
+#: src/constants/errors/backup.ts:45
 msgid "Failed to create directory: {0}"
 msgstr "Không thể tạo thư mục: {0}"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:222
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:360
-#, fuzzy
 msgid "Failed to create DNS record"
-msgstr "Không thể tạo thư mục: {0}"
+msgstr "Không thể tạo bản ghi DNS"
 
-#: src/constants/errors/backup.ts:45 src/constants/errors/geolite.ts:6
+#: src/constants/errors/backup.ts:47 src/constants/errors/geolite.ts:6
 msgid "Failed to create file: {0}"
 msgstr "Không thể tạo tệp: {0}"
 
@@ -2651,19 +2655,19 @@ msgstr "Không thể tạo tệp: {0}"
 msgid "Failed to create hash info file: {0}"
 msgstr "Không thể tạo tệp thông tin băm: {0}"
 
-#: src/constants/errors/backup.ts:44
+#: src/constants/errors/backup.ts:46
 msgid "Failed to create parent directory: {0}"
 msgstr "Không thể tạo thư mục cha: {0}"
 
-#: src/constants/errors/backup.ts:32
+#: src/constants/errors/backup.ts:34
 msgid "Failed to create restore directory: {0}"
 msgstr "Không thể tạo thư mục khôi phục: {0}"
 
-#: src/constants/errors/backup.ts:66
+#: src/constants/errors/backup.ts:76
 msgid "Failed to create storage directory {0}: {1}"
 msgstr "Không thể tạo thư mục lưu trữ {0}: {1}"
 
-#: src/constants/errors/backup.ts:47
+#: src/constants/errors/backup.ts:49
 msgid "Failed to create symbolic link: {0}"
 msgstr "Không thể tạo liên kết tượng trưng: {0}"
 
@@ -2687,15 +2691,15 @@ msgstr "Không thể tạo trình đọc xz: {0}"
 msgid "Failed to create zip archive: {0}"
 msgstr "Không thể tạo tệp nén ZIP: {0}"
 
-#: src/constants/errors/backup.ts:28
+#: src/constants/errors/backup.ts:30
 msgid "Failed to create zip entry: {0}"
 msgstr "Không thể tạo mục ZIP: {0}"
 
-#: src/constants/errors/backup.ts:27
+#: src/constants/errors/backup.ts:29
 msgid "Failed to create zip file: {0}"
 msgstr "Không thể tạo tệp ZIP: {0}"
 
-#: src/constants/errors/backup.ts:30
+#: src/constants/errors/backup.ts:32
 msgid "Failed to create zip header: {0}"
 msgstr "Không thể tạo tiêu đề ZIP: {0}"
 
@@ -2703,19 +2707,19 @@ msgstr "Không thể tạo tiêu đề ZIP: {0}"
 msgid "Failed to decompress GeoLite2 database: {0}"
 msgstr "Thất bại khi giải nén cơ sở dữ liệu GeoLite2: {0}"
 
-#: src/constants/errors/backup.ts:25
+#: src/constants/errors/backup.ts:27
 msgid "Failed to decrypt data: {0}"
 msgstr "Giải mã dữ liệu thất bại: {0}"
 
-#: src/constants/errors/backup.ts:50
+#: src/constants/errors/backup.ts:52
 msgid "Failed to decrypt file: {0}"
 msgstr "Giải mã tệp thất bại: {0}"
 
-#: src/constants/errors/backup.ts:35
+#: src/constants/errors/backup.ts:37
 msgid "Failed to decrypt Nginx directory: {0}"
 msgstr "Giải mã thư mục Nginx thất bại: {0}"
 
-#: src/constants/errors/backup.ts:34
+#: src/constants/errors/backup.ts:36
 msgid "Failed to decrypt Nginx UI directory: {0}"
 msgstr "Không thể giải mã thư mục Nginx UI: {0}"
 
@@ -2765,11 +2769,11 @@ msgstr "Không thể bật lập chỉ mục nâng cao"
 msgid "Failed to enable maintenance mode %{msg}"
 msgstr "Không thể bật chế độ bảo trì %{msg}"
 
-#: src/constants/errors/backup.ts:24
+#: src/constants/errors/backup.ts:26
 msgid "Failed to encrypt data: {0}"
 msgstr "Không thể mã hóa dữ liệu: {0}"
 
-#: src/constants/errors/backup.ts:22
+#: src/constants/errors/backup.ts:24
 msgid "Failed to encrypt file: {0}"
 msgstr "Không thể mã hóa tệp: {0}"
 
@@ -2789,7 +2793,7 @@ msgstr "Không thể thực thi lệnh: {0}"
 msgid "Failed to execute template: {0}"
 msgstr "Không thể thực thi mẫu: {0}"
 
-#: src/constants/errors/backup.ts:33
+#: src/constants/errors/backup.ts:35
 msgid "Failed to extract archive: {0}"
 msgstr "Không thể giải nén tệp lưu trữ: {0}"
 
@@ -2847,9 +2851,8 @@ msgstr "Không thể kiểm tra container hiện tại: {0}"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:137
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:166
-#, fuzzy
 msgid "Failed to load DNS records"
-msgstr "Không thể tải bản ghi lịch sử"
+msgstr "Không thể tải bản ghi DNS"
 
 #: src/components/ConfigHistory/ConfigHistory.vue:83
 msgid "Failed to load history records"
@@ -2863,15 +2866,15 @@ msgstr "Không thể tải đường dẫn cấu hình nginx"
 msgid "Failed to open file: {0}"
 msgstr "Không thể mở tệp: {0}"
 
-#: src/constants/errors/backup.ts:29
+#: src/constants/errors/backup.ts:31
 msgid "Failed to open source file: {0}"
 msgstr "Không thể mở tệp nguồn: {0}"
 
-#: src/constants/errors/backup.ts:46
+#: src/constants/errors/backup.ts:48
 msgid "Failed to open zip entry: {0}"
 msgstr "Không thể mở mục ZIP: {0}"
 
-#: src/constants/errors/backup.ts:42
+#: src/constants/errors/backup.ts:44
 msgid "Failed to open zip file: {0}"
 msgstr "Không thể mở tệp ZIP: {0}"
 
@@ -2891,11 +2894,19 @@ msgstr "Phân tích mẫu thất bại: {0}"
 msgid "Failed to pull image: {0}"
 msgstr "Không thể tải hình ảnh: {0}"
 
+#: src/constants/errors/backup.ts:58
+msgid "Failed to read backup manifest signature: {0}"
+msgstr "Không thể đọc chữ ký bản kê khai sao lưu: {0}"
+
+#: src/constants/errors/backup.ts:57
+msgid "Failed to read backup manifest: {0}"
+msgstr "Không thể đọc tệp kê khai sao lưu: {0}"
+
 #: src/constants/errors/geolite.ts:11
 msgid "Failed to read compressed data: {0}"
 msgstr "Không thể đọc dữ liệu nén: {0}"
 
-#: src/constants/errors/backup.ts:49
+#: src/constants/errors/backup.ts:51
 msgid "Failed to read encrypted file: {0}"
 msgstr "Không thể đọc tệp đã mã hóa: {0}"
 
@@ -2903,11 +2914,11 @@ msgstr "Không thể đọc tệp đã mã hóa: {0}"
 msgid "Failed to read file"
 msgstr "Không thể đọc tệp"
 
-#: src/constants/errors/backup.ts:21
+#: src/constants/errors/backup.ts:23
 msgid "Failed to read file: {0}"
 msgstr "Không thể đọc tệp: {0}"
 
-#: src/constants/errors/backup.ts:52
+#: src/constants/errors/backup.ts:54
 msgid "Failed to read hash info file: {0}"
 msgstr "Không thể đọc tệp thông tin băm: {0}"
 
@@ -2923,7 +2934,7 @@ msgstr "Không thể đọc đầu ra: {0}"
 msgid "Failed to read response body: {0}"
 msgstr "Không thể đọc nội dung phản hồi: {0}"
 
-#: src/constants/errors/backup.ts:20
+#: src/constants/errors/backup.ts:22
 msgid "Failed to read symlink: {0}"
 msgstr "Không thể đọc liên kết tượng trưng: {0}"
 
@@ -2936,15 +2947,14 @@ msgid "Failed to rebuild index"
 msgstr "Không thể xây dựng lại chỉ mục"
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:429
-#, fuzzy
 msgid "Failed to recreate DNS record"
-msgstr "Không thể tạo thư mục: {0}"
+msgstr "Không thể tạo lại bản ghi DNS"
 
 #: src/views/dashboard/SiteNavigation.vue:86
 msgid "Failed to refresh sites"
 msgstr "Không thể làm mới trang web"
 
-#: src/constants/errors/backup.ts:37
+#: src/constants/errors/backup.ts:39
 msgid "Failed to restore Nginx configs: {0}"
 msgstr "Khôi phục cấu hình Nginx thất bại: {0}"
 
@@ -2992,11 +3002,11 @@ msgstr "Cập nhật trạng thái thất bại"
 msgid "Failed to upload file"
 msgstr "Tải lên tệp thất bại"
 
-#: src/constants/errors/backup.ts:36
+#: src/constants/errors/backup.ts:38
 msgid "Failed to verify hashes: {0}"
 msgstr "Không thể xác minh băm: {0}"
 
-#: src/constants/errors/backup.ts:58
+#: src/constants/errors/backup.ts:68
 msgid "Failed to write backup file: {0}"
 msgstr "Không thể ghi tệp sao lưu: {0}"
 
@@ -3004,15 +3014,15 @@ msgstr "Không thể ghi tệp sao lưu: {0}"
 msgid "Failed to write decompressed data: {0}"
 msgstr "Không thể ghi dữ liệu đã giải nén: {0}"
 
-#: src/constants/errors/backup.ts:51
+#: src/constants/errors/backup.ts:53
 msgid "Failed to write decrypted file: {0}"
 msgstr "Không thể ghi tệp đã giải mã: {0}"
 
-#: src/constants/errors/backup.ts:23
+#: src/constants/errors/backup.ts:25
 msgid "Failed to write encrypted file: {0}"
 msgstr "Không thể ghi tệp đã mã hóa: {0}"
 
-#: src/constants/errors/backup.ts:59
+#: src/constants/errors/backup.ts:69
 msgid "Failed to write security key file: {0}"
 msgstr "Không thể ghi tệp khóa bảo mật: {0}"
 
@@ -3566,13 +3576,21 @@ msgstr "Khoảng thời gian (giây)"
 msgid "Invalid"
 msgstr "Không hợp lệ"
 
-#: src/constants/errors/backup.ts:41
+#: src/constants/errors/backup.ts:43
 msgid "Invalid AES IV format: {0}"
 msgstr "Định dạng AES IV không hợp lệ: {0}"
 
-#: src/constants/errors/backup.ts:40
+#: src/constants/errors/backup.ts:42
 msgid "Invalid AES key format: {0}"
 msgstr "Định dạng khóa AES không hợp lệ: {0}"
+
+#: src/constants/errors/backup.ts:60
+msgid "Invalid backup manifest signature"
+msgstr "Chữ ký bản kê khai sao lưu không hợp lệ"
+
+#: src/constants/errors/backup.ts:59
+msgid "Invalid backup manifest: {0}"
+msgstr "Bản kê khai sao lưu không hợp lệ: {0}"
 
 #: src/views/certificate/components/CertificateDownload.vue:54
 #: src/views/certificate/components/CertificateFileUpload.vue:88
@@ -3591,7 +3609,7 @@ msgstr "SHA cam kết không hợp lệ"
 msgid "Invalid file object"
 msgstr "Đối tượng tệp không hợp lệ"
 
-#: src/constants/errors/backup.ts:48
+#: src/constants/errors/backup.ts:50
 msgid "Invalid file path: {0}"
 msgstr "Đường dẫn tệp không hợp lệ: {0}"
 
@@ -3616,7 +3634,7 @@ msgstr "Cấu hình thông báo không hợp lệ"
 msgid "Invalid otp code"
 msgstr "Mã OTP không hợp lệ"
 
-#: src/constants/errors/backup.ts:26
+#: src/constants/errors/backup.ts:28
 msgid "Invalid padding in decrypted data"
 msgstr "Đệm không hợp lệ trong dữ liệu đã giải mã"
 
@@ -3624,7 +3642,7 @@ msgstr "Đệm không hợp lệ trong dữ liệu đã giải mã"
 msgid "Invalid passcode or recovery code"
 msgstr "Mã xác thực hoặc mã khôi phục không hợp lệ"
 
-#: src/constants/errors/backup.ts:61
+#: src/constants/errors/backup.ts:71
 msgid "Invalid path: {0}"
 msgstr "Đường dẫn không hợp lệ: {0}"
 
@@ -3641,7 +3659,7 @@ msgstr "Mã khôi phục không hợp lệ"
 msgid "Invalid request format"
 msgstr "Định dạng yêu cầu không hợp lệ"
 
-#: src/constants/errors/backup.ts:39
+#: src/constants/errors/backup.ts:41
 msgid "Invalid security token format"
 msgstr "Định dạng mã bảo mật không hợp lệ"
 
@@ -3670,9 +3688,8 @@ msgstr "Địa chỉ IP"
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:335
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:504
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:629
-#, fuzzy
 msgid "IP Address / Target"
-msgstr "Địa chỉ IP"
+msgstr "Địa chỉ IP / Mục tiêu"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:123
 msgid "IP Certificate Notice"
@@ -3870,17 +3887,20 @@ msgid ""
 "Link this site to a DNS record. The server_name will be used for the DNS "
 "record name."
 msgstr ""
+"Liên kết trang web này với một bản ghi DNS. server_name sẽ được sử dụng làm "
+"tên bản ghi DNS."
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:247
 msgid ""
 "Link this site to a DNS record. The server_name will be used for the DNS "
 "record name. You can skip this step if DNS is already configured."
 msgstr ""
+"Liên kết trang web này với một bản ghi DNS. server_name sẽ được sử dụng làm "
+"tên bản ghi DNS. Bạn có thể bỏ qua bước này nếu DNS đã được cấu hình."
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:466
-#, fuzzy
 msgid "Linked DNS Record"
-msgstr "Bản ghi DNS"
+msgstr "Bản ghi DNS được liên kết"
 
 #: src/language/curd.ts:23
 msgid "List"
@@ -4461,7 +4481,7 @@ msgstr "Cấu hình Nginx không bao gồm sites-enabled"
 msgid "Nginx conf not include stream-enabled"
 msgstr "Cấu hình Nginx không bao gồm stream-enabled"
 
-#: src/constants/errors/backup.ts:18
+#: src/constants/errors/backup.ts:20
 msgid "Nginx config directory is not set"
 msgstr "Thư mục cấu hình Nginx chưa được thiết lập"
 
@@ -4610,7 +4630,7 @@ msgstr "Nginx UI đã được cài đặt"
 msgid "Nginx UI configuration has been restored"
 msgstr "Cấu hình Nginx UI đã được khôi phục"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:336
+#: src/components/SystemRestore/SystemRestoreContent.vue:344
 msgid ""
 "Nginx UI configuration has been restored and will restart automatically in "
 "a few seconds."
@@ -4670,9 +4690,8 @@ msgstr "Không có dữ liệu"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:372
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:666
-#, fuzzy
 msgid "No DNS domains available"
-msgstr "Không có dữ liệu địa lý"
+msgstr "Không có tên miền DNS nào khả dụng"
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:827
 msgid "No entries in current page"
@@ -4887,9 +4906,8 @@ msgid "Offline GeoIP analysis"
 msgstr "Phân tích GeoIP ngoại tuyến"
 
 #: src/views/other/Login.vue:335
-#, fuzzy
 msgid "OIDC Login"
-msgstr "Đăng nhập SSO"
+msgstr "Đăng nhập OIDC"
 
 #: src/components/LLM/ChatMessageInput.vue:62
 #: src/components/NgxConfigEditor/NgxServer.vue:60
@@ -4926,6 +4944,15 @@ msgstr "Trực tuyến"
 msgid "Online Count"
 msgstr "Số lượng trực tuyến"
 
+#: src/components/SystemRestore/SystemRestoreContent.vue:180
+#: src/components/SystemRestore/SystemRestoreContent.vue:263
+msgid ""
+"Only backups created by versions that support signed manifests can be "
+"restored. Legacy backups are no longer supported."
+msgstr ""
+"Chỉ có thể khôi phục các bản sao lưu được tạo bởi các phiên bản hỗ trợ bản "
+"kê khai đã ký. Các bản sao lưu cũ không còn được hỗ trợ."
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:78
 msgid "Only zip files are allowed"
 msgstr "Chỉ cho phép tệp zip"
@@ -4952,7 +4979,7 @@ msgstr "Thống kê hệ điều hành"
 
 #: src/views/dns/components/DNSRecordForm.vue:94
 msgid "Optional comment for this DNS record"
-msgstr ""
+msgstr "Bình luận tùy chọn cho bản ghi DNS này"
 
 #: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:369
 msgid "Or"
@@ -5078,7 +5105,7 @@ msgstr "Mật khẩu không khớp"
 msgid "Path"
 msgstr "Đường dẫn"
 
-#: src/constants/errors/backup.ts:62
+#: src/constants/errors/backup.ts:72
 msgid "Path not in granted access paths: {0}"
 msgstr "Đường dẫn không nằm trong các đường dẫn truy cập được cấp: {0}"
 
@@ -5150,14 +5177,15 @@ msgstr "Văn bản thuần túy trống"
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:373
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:667
 msgid "Please add a DNS domain first in the DNS management section."
-msgstr ""
+msgstr "Vui lòng thêm tên miền DNS trước trong phần quản lý DNS"
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:446
-#, fuzzy
 msgid ""
 "Please configure server_name directive in the configuration before linking "
 "DNS records."
-msgstr "Lưu ý đơn vị cấu hình thời gian bên dưới được tính bằng giây."
+msgstr ""
+"Vui lòng cấu hình chỉ thị server_name trong cấu hình trước khi liên kết các "
+"bản ghi DNS."
 
 #: src/views/dashboard/NginxDashBoard.vue:196
 msgid ""
@@ -5203,8 +5231,8 @@ msgstr "Vui lòng nhập mã OTP:"
 msgid "Please enter the security token"
 msgstr "Vui lòng nhập mã bảo mật"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:210
-#: src/components/SystemRestore/SystemRestoreContent.vue:287
+#: src/components/SystemRestore/SystemRestoreContent.vue:212
+#: src/components/SystemRestore/SystemRestoreContent.vue:295
 msgid "Please enter the security token received during backup"
 msgstr "Vui lòng nhập mã bảo mật nhận được trong quá trình sao lưu"
 
@@ -5218,9 +5246,8 @@ msgstr "Vui lòng điền đầy đủ và chính xác tất cả các trường
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:193
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:320
-#, fuzzy
 msgid "Please fill in all required fields"
-msgstr "Vui lòng điền vào các trường cấu hình S3 bắt buộc"
+msgstr "Vui lòng điền đầy đủ các trường bắt buộc"
 
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:23
 msgid "Please fill in required S3 configuration fields"
@@ -5560,15 +5587,13 @@ msgstr "Đã xóa bản ghi"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:325
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:619
-#, fuzzy
 msgid "Record Name"
-msgstr "Tên phương thức"
+msgstr "Tên bản ghi"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:311
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:605
-#, fuzzy
 msgid "Record Type"
-msgstr "Bản ghi đã được cập nhật"
+msgstr "Loại bản ghi"
 
 #: src/views/dns/DNSRecordManager.vue:114
 msgid "Record updated"
@@ -5595,9 +5620,8 @@ msgstr ""
 "quyền truy cập vào thiết bị 2FA. Mỗi mã chỉ có thể sử dụng một lần."
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:535
-#, fuzzy
 msgid "Recreate DNS Record"
-msgstr "Tạo bản ghi"
+msgstr "Tạo lại bản ghi DNS"
 
 #: src/views/preference/tabs/CertSettings.vue:40
 msgid "Recursive Nameservers"
@@ -5933,13 +5957,13 @@ msgstr "Khôi phục hoàn tất thành công"
 msgid "Restore from Backup"
 msgstr "Khôi phục từ bản sao lưu"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:223
-#: src/components/SystemRestore/SystemRestoreContent.vue:300
+#: src/components/SystemRestore/SystemRestoreContent.vue:225
+#: src/components/SystemRestore/SystemRestoreContent.vue:308
 msgid "Restore Nginx Configuration"
 msgstr "Khôi phục cấu hình Nginx"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:234
-#: src/components/SystemRestore/SystemRestoreContent.vue:311
+#: src/components/SystemRestore/SystemRestoreContent.vue:236
+#: src/components/SystemRestore/SystemRestoreContent.vue:319
 msgid "Restore Nginx UI Configuration"
 msgstr "Khôi phục cấu hình Nginx UI"
 
@@ -5980,7 +6004,7 @@ msgstr ""
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:356
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:650
 msgid "Route traffic through proxy for additional protection and features"
-msgstr ""
+msgstr "Định tuyến lưu lượng qua proxy để có thêm tính năng bảo vệ và chức năng"
 
 #: src/views/preference/tabs/AuthSettings.vue:72
 msgid "RP Display Name"
@@ -6034,7 +6058,7 @@ msgstr "Yêu cầu phải có S3 bucket"
 msgid "S3 bucket name"
 msgstr "Tên bucket S3"
 
-#: src/constants/errors/backup.ts:56
+#: src/constants/errors/backup.ts:66
 msgid "S3 configuration is incomplete: missing {0}"
 msgstr "Cấu hình S3 không đầy đủ: thiếu {0}"
 
@@ -6086,7 +6110,7 @@ msgstr "Khóa truy cập bí mật S3"
 msgid "S3 secret access key is required"
 msgstr "Yêu cầu khóa truy cập bí mật S3"
 
-#: src/constants/errors/backup.ts:60
+#: src/constants/errors/backup.ts:70
 msgid "S3 upload failed: {0}"
 msgstr "Tải lên S3 thất bại: {0}"
 
@@ -6251,8 +6275,8 @@ msgstr "Mật khẩu đã được sao chép"
 msgid "Security Settings"
 msgstr "Cài đặt bảo mật"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:207
-#: src/components/SystemRestore/SystemRestoreContent.vue:284
+#: src/components/SystemRestore/SystemRestoreContent.vue:209
+#: src/components/SystemRestore/SystemRestoreContent.vue:292
 msgid "Security Token"
 msgstr "Mã bảo mật"
 
@@ -6278,14 +6302,13 @@ msgstr "Chọn thông tin xác thực"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:254
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:548
-#, fuzzy
 msgid "Select DNS domain"
-msgstr "Tên miền DNS"
+msgstr "Chọn tên miền DNS"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:279
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:573
 msgid "Select existing record"
-msgstr ""
+msgstr "Chọn bản ghi hiện có"
 
 #: src/views/certificate/ACMEUser.vue:45
 msgid "Select or enter a CA directory URL"
@@ -6343,7 +6366,7 @@ msgstr "Địa chỉ IP máy chủ"
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:102
 msgid "Server name is controlled by linked DNS record"
-msgstr ""
+msgstr "Tên máy chủ được kiểm soát bởi bản ghi DNS được liên kết"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:99
 msgid "Server Names Hash Bucket Size"
@@ -6451,7 +6474,7 @@ msgstr "Cấu hình trang web đã được tạo thành công"
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:426
 msgid "Site configuration updated with recreated DNS record"
-msgstr ""
+msgstr "Cấu hình trang web đã được cập nhật với bản ghi DNS được tạo lại"
 
 #: src/constants/errors/site.ts:4
 msgid "Site is enabled"
@@ -6607,8 +6630,8 @@ msgstr "Bắt đầu"
 msgid "Start Date"
 msgstr "Ngày bắt đầu"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:246
-#: src/components/SystemRestore/SystemRestoreContent.vue:323
+#: src/components/SystemRestore/SystemRestoreContent.vue:248
+#: src/components/SystemRestore/SystemRestoreContent.vue:331
 msgid "Start Restore"
 msgstr "Bắt đầu khôi phục"
 
@@ -6744,8 +6767,8 @@ msgstr "Hỗ trợ tải lên một hoặc nhiều tệp"
 msgid "Support uploading entire folders"
 msgstr "Hỗ trợ tải lên toàn bộ thư mục"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:197
-#: src/components/SystemRestore/SystemRestoreContent.vue:274
+#: src/components/SystemRestore/SystemRestoreContent.vue:199
+#: src/components/SystemRestore/SystemRestoreContent.vue:282
 msgid "Supported file type: .zip"
 msgstr "Loại tệp được hỗ trợ: .zip"
 
@@ -6850,7 +6873,7 @@ msgstr "Người dùng ban đầu của hệ thống"
 msgid "System Requirements"
 msgstr "Yêu cầu hệ thống"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:174
+#: src/components/SystemRestore/SystemRestoreContent.vue:170
 msgid "System Restore"
 msgstr "Khôi phục hệ thống"
 
@@ -6862,7 +6885,7 @@ msgstr "Hệ thống đã được khôi phục thành công."
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:508
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:632
 msgid "target.example.com"
-msgstr ""
+msgstr "target.example.com"
 
 #: src/views/dns/DDNSManager.vue:83
 msgid "Targets"
@@ -6965,6 +6988,8 @@ msgid ""
 "The linked DNS record was deleted from the DNS server. You can recreate it "
 "or clear the link."
 msgstr ""
+"Bản ghi DNS được liên kết đã bị xóa khỏi máy chủ DNS. Bạn có thể tạo lại nó "
+"hoặc xóa liên kết."
 
 #: src/constants/errors/nginx_log.ts:2
 msgid ""
@@ -7075,6 +7100,14 @@ msgstr "Thành phần bên thứ ba"
 #: src/views/certificate/components/AutoCertManagement.vue:45
 msgid "This Auto Cert item is invalid, please remove it."
 msgstr "Mục Chứng chỉ tự động này không hợp lệ, vui lòng xóa nó"
+
+#: src/constants/errors/backup.ts:62
+msgid ""
+"This backup uses an unsupported legacy format. Please create a new backup "
+"with a newer version before restoring."
+msgstr ""
+"Bản sao lưu này sử dụng định dạng cũ không được hỗ trợ. Vui lòng tạo bản "
+"sao lưu mới với phiên bản mới hơn trước khi khôi phục."
 
 #: src/views/certificate/components/AutoCertManagement.vue:35
 msgid "This certificate is managed by Nginx UI"
@@ -7189,8 +7222,8 @@ msgstr ""
 msgid "This will rebuild the index data for this specific file: %{path}"
 msgstr "Điều này sẽ xây dựng lại dữ liệu chỉ mục cho tệp cụ thể này: %{path}"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:227
-#: src/components/SystemRestore/SystemRestoreContent.vue:304
+#: src/components/SystemRestore/SystemRestoreContent.vue:229
+#: src/components/SystemRestore/SystemRestoreContent.vue:312
 msgid ""
 "This will restore all Nginx configuration files. Nginx will restart after "
 "the restoration is complete."
@@ -7198,8 +7231,8 @@ msgstr ""
 "Điều này sẽ khôi phục tất cả các tệp cấu hình Nginx. Nginx sẽ khởi động lại "
 "sau khi quá trình khôi phục hoàn tất."
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:238
-#: src/components/SystemRestore/SystemRestoreContent.vue:315
+#: src/components/SystemRestore/SystemRestoreContent.vue:240
+#: src/components/SystemRestore/SystemRestoreContent.vue:323
 msgid ""
 "This will restore configuration files and database. Nginx UI will restart "
 "after the restoration is complete."
@@ -7483,7 +7516,7 @@ msgstr "Trang duy nhất"
 msgid "Unknown"
 msgstr "Không xác định"
 
-#: src/constants/errors/backup.ts:57
+#: src/constants/errors/backup.ts:67
 msgid "Unsupported backup type: {0}"
 msgstr "Loại sao lưu không được hỗ trợ: {0}"
 
@@ -7658,10 +7691,10 @@ msgstr "Xác thực chứng chỉ SSL"
 msgid "Value"
 msgstr "Giá trị"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:216
-#: src/components/SystemRestore/SystemRestoreContent.vue:293
-msgid "Verify Backup File Integrity"
-msgstr "Xác minh tính toàn vẹn của tệp sao lưu"
+#: src/components/SystemRestore/SystemRestoreContent.vue:218
+#: src/components/SystemRestore/SystemRestoreContent.vue:301
+msgid "Verify Backup File Integrity (required)"
+msgstr "Kiểm tra tính toàn vẹn của tệp sao lưu (bắt buộc)"
 
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:664
 msgid "Verify Hostname"
@@ -7725,8 +7758,8 @@ msgstr "Quá trình chờ đợi"
 msgid "Warning"
 msgstr "Lưu ý"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:178
-#: src/components/SystemRestore/SystemRestoreContent.vue:255
+#: src/components/SystemRestore/SystemRestoreContent.vue:174
+#: src/components/SystemRestore/SystemRestoreContent.vue:257
 msgid ""
 "Warning: Restore operation will overwrite current configurations. Make sure "
 "you have a valid backup file and security token, and carefully select what "
@@ -7897,11 +7930,11 @@ msgstr "Bạn đang sử dụng phiên bản mới nhất"
 msgid "You can check Nginx UI upgrade at this page."
 msgstr "Bạn có thể kiểm tra nâng cấp Nginx UI tại trang này"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:339
+#: src/components/SystemRestore/SystemRestoreContent.vue:347
 msgid "You can close this dialog in %{countdown} seconds"
 msgstr "Bạn có thể đóng hộp thoại này sau %{countdown} giây"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:342
+#: src/components/SystemRestore/SystemRestoreContent.vue:350
 msgid "You can close this dialog now"
 msgstr "Bạn có thể đóng hộp thoại này ngay bây giờ"
 
@@ -7941,6 +7974,9 @@ msgstr "Khóa truy cập của bạn"
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:232
 msgid "Zero-allocation pipeline"
 msgstr "Đường ống không cấp phát"
+
+#~ msgid "Backup file integrity check failed, it may have been tampered with"
+#~ msgstr "Kiểm tra tính toàn vẹn của tập tin sao lưu thất bại, có thể đã bị can thiệp"
 
 #~ msgid "Once the verification is complete, the records will be removed."
 #~ msgstr "Sau khi quá trình xác minh hoàn tất, bản ghi sẽ bị xóa."

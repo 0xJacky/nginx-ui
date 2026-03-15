@@ -143,7 +143,7 @@ msgstr "Mínimo 1 núcleo"
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:508
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:632
 msgid "192.168.1.1"
-msgstr ""
+msgstr "192.168.1.1"
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:54
 msgid "1GB RAM minimum"
@@ -562,15 +562,14 @@ msgstr "AutoCert está en ejecución..."
 msgid "Automated log rotation detection"
 msgstr "Detección automática de rotación de registros"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:332
+#: src/components/SystemRestore/SystemRestoreContent.vue:340
 msgid "Automatic Restart"
 msgstr "Reinicio automático"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:331
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:625
-#, fuzzy
 msgid "Automatically extracted from server_name"
-msgstr "\"Indexado automáticamente desde configuraciones de sitio y transmisión.\""
+msgstr "Extraído automáticamente de server_name"
 
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:36
 msgid "Average Latency"
@@ -622,13 +621,7 @@ msgstr "Servicio de registro en segundo plano no disponible"
 msgid "Backup"
 msgstr "Copia de seguridad"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:155
-msgid "Backup file integrity check failed, it may have been tampered with"
-msgstr ""
-"La verificación de integridad del archivo de respaldo falló, puede haber "
-"sido alterado"
-
-#: src/constants/errors/backup.ts:38
+#: src/constants/errors/backup.ts:40
 msgid "Backup file not found: {0}"
 msgstr "Archivo de copia de seguridad no encontrado: {0}"
 
@@ -636,19 +629,27 @@ msgstr "Archivo de copia de seguridad no encontrado: {0}"
 msgid "Backup has been downloaded successfully"
 msgstr "La copia de seguridad se ha descargado correctamente"
 
+#: src/constants/errors/backup.ts:61
+msgid "Backup integrity verification failed"
+msgstr "Falló la verificación de integridad de la copia de seguridad"
+
+#: src/constants/errors/backup.ts:63
+msgid "Backup manifest is missing required file entry: {0}"
+msgstr "Falta la entrada de archivo requerida en el manifiesto de respaldo: {0}"
+
 #: src/views/backup/AutoBackup/AutoBackup.vue:50
 msgid "Backup Path"
 msgstr "Ruta de copia de seguridad"
 
-#: src/constants/errors/backup.ts:63
+#: src/constants/errors/backup.ts:73
 msgid "Backup path does not exist: {0}"
 msgstr "La ruta de copia de seguridad no existe: {0}"
 
-#: src/constants/errors/backup.ts:65
+#: src/constants/errors/backup.ts:75
 msgid "Backup path is not a directory: {0}"
 msgstr "La ruta de copia de seguridad no es un directorio: {0}"
 
-#: src/constants/errors/backup.ts:55
+#: src/constants/errors/backup.ts:65
 msgid "Backup path is required for custom directory backup"
 msgstr ""
 "La ruta de respaldo es necesaria para el respaldo de directorio "
@@ -657,6 +658,10 @@ msgstr ""
 #: src/views/backup/AutoBackup/components/CronEditor.vue:141
 msgid "Backup Schedule"
 msgstr "Programa de copia de seguridad"
+
+#: src/constants/errors/backup.ts:64
+msgid "Backup signing key is unavailable"
+msgstr "La clave de firma de copia de seguridad no está disponible"
 
 #: src/components/Notification/notifications.ts:38
 msgid "Backup task %{backup_name} completed successfully, file: %{file_path}"
@@ -837,7 +842,7 @@ msgstr ""
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: src/constants/errors/backup.ts:64
+#: src/constants/errors/backup.ts:74
 msgid "Cannot access backup path {0}: {1}"
 msgstr "No se puede acceder a la ruta de copia de seguridad {0}: {1}"
 
@@ -845,7 +850,7 @@ msgstr "No se puede acceder a la ruta de copia de seguridad {0}: {1}"
 msgid "Cannot access log file"
 msgstr "No se puede acceder al archivo de registro"
 
-#: src/constants/errors/backup.ts:67
+#: src/constants/errors/backup.ts:77
 msgid "Cannot access storage path {0}: {1}"
 msgstr "No se puede acceder a la ruta de almacenamiento {0}: {1}"
 
@@ -864,6 +869,8 @@ msgstr "No se puede eliminar la ruta protegida"
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:135
 msgid "Cannot delete server_name while DNS is linked. Clear DNS link first."
 msgstr ""
+"No se puede eliminar server_name mientras DNS está vinculado. Elimine el "
+"vínculo de DNS primero."
 
 #: src/views/dashboard/NginxDashBoard.vue:154
 msgid "Cannot get performance data in this state"
@@ -1200,17 +1207,16 @@ msgid "Clear"
 msgstr "Borrar"
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:538
-#, fuzzy
 msgid "Clear Link"
-msgstr "Borrar"
+msgstr "Borrar enlace"
 
 #: src/components/Notification/Notification.vue:75
 #: src/views/notification/Notification.vue:13
 msgid "Cleared successfully"
 msgstr "Limpiado exitoso"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:194
-#: src/components/SystemRestore/SystemRestoreContent.vue:271
+#: src/components/SystemRestore/SystemRestoreContent.vue:196
+#: src/components/SystemRestore/SystemRestoreContent.vue:279
 msgid "Click or drag backup file to this area to upload"
 msgstr ""
 "Haga clic o arrastre el archivo de copia de seguridad a esta área para "
@@ -1294,9 +1300,8 @@ msgstr "El comando terminó con un código de salida inesperado: {0}, error: {1}
 
 #: src/views/dns/components/DNSRecordForm.vue:91
 #: src/views/dns/components/DNSRecordTable.vue:49
-#, fuzzy
 msgid "Comment"
-msgstr "Comentarios"
+msgstr "Comentario"
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:150
 #: src/components/NgxConfigEditor/LocationEditor.vue:104
@@ -1365,7 +1370,7 @@ msgstr "El archivo de entrada de configuración no existe"
 msgid "Config not found"
 msgstr "Configuración no encontrada"
 
-#: src/constants/errors/backup.ts:14
+#: src/constants/errors/backup.ts:16
 msgid "Config path is empty"
 msgstr "La ruta de configuración está vacía"
 
@@ -1528,9 +1533,8 @@ msgstr "Crear copia de seguridad"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:365
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:659
-#, fuzzy
 msgid "Create DNS Record"
-msgstr "Crear registro"
+msgstr "Crear registro DNS"
 
 #: src/views/config/ConfigList.vue:130
 msgid "Create File"
@@ -1542,9 +1546,8 @@ msgstr "Crear carpeta"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:305
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:599
-#, fuzzy
 msgid "Create new DNS record"
-msgstr "Crear registro"
+msgstr "Crear nuevo registro DNS"
 
 #: src/views/dns/DNSRecordManager.vue:206
 msgid "Create Record"
@@ -2023,9 +2026,8 @@ msgstr "Credenciales de DNS"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:251
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:545
-#, fuzzy
 msgid "DNS Domain"
-msgstr "Dominios DNS"
+msgstr "Dominio DNS"
 
 #: src/routes/modules/dns.ts:28 src/views/dns/DNSDomainList.vue:234
 msgid "DNS Domains"
@@ -2047,47 +2049,41 @@ msgstr "Soporte de proveedor de DNS"
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:274
 #: src/views/site/site_add/SiteAdd.vue:170
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:568
-#, fuzzy
 msgid "DNS Record"
-msgstr "Registros DNS"
+msgstr "Registro DNS"
 
 #: src/views/site/site_add/SiteAdd.vue:145
-#, fuzzy
 msgid "DNS record created and linked successfully"
-msgstr "Nginx recargado con éxito"
+msgstr "Registro DNS creado y vinculado con éxito"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:213
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:340
-#, fuzzy
 msgid "DNS record created successfully"
-msgstr "Creado con éxito"
+msgstr "Registro DNS creado con éxito"
 
 #: src/views/site/site_add/SiteAdd.vue:253
 msgid "DNS record has been linked: %{name}"
-msgstr ""
+msgstr "El registro DNS ha sido vinculado: %{name}"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:245
 msgid "DNS Record Integration (Optional)"
-msgstr ""
+msgstr "Integración de registros DNS (Opcional)"
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:288
 msgid "DNS record linked and server_name updated: %{name}"
-msgstr ""
+msgstr "Registro DNS vinculado y server_name actualizado: %{name}"
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:489
-#, fuzzy
 msgid "DNS Record Missing"
-msgstr "Registros DNS"
+msgstr "Registro DNS faltante"
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:403
-#, fuzzy
 msgid "DNS record recreated successfully"
-msgstr "Creado con éxito"
+msgstr "Registro DNS recreado con éxito"
 
 #: src/views/site/site_add/SiteAdd.vue:137
-#, fuzzy
 msgid "DNS record selected: %{name}"
-msgstr "No se han seleccionado registros"
+msgstr "Registro DNS seleccionado: %{name}"
 
 #: src/routes/modules/dns.ts:44 src/views/dns/DNSRecordManager.vue:62
 msgid "DNS Records"
@@ -2340,9 +2336,8 @@ msgstr "Habilitar indexación"
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:353
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:522
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:647
-#, fuzzy
 msgid "Enable Proxy (Cloudflare)"
-msgstr "Habilitar caché de proxy"
+msgstr "Habilitar proxy (Cloudflare)"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:113
 msgid "Enable Proxy Cache"
@@ -2643,15 +2638,15 @@ msgstr "Error al hacer copia de seguridad de los archivos de Nginx UI: {0}"
 msgid "Failed to build nginx config: {0}"
 msgstr "Error al construir la configuración de nginx: {0}"
 
-#: src/constants/errors/backup.ts:17
+#: src/constants/errors/backup.ts:19
 msgid "Failed to calculate hash: {0}"
 msgstr "Error al calcular el hash: {0}"
 
-#: src/constants/errors/backup.ts:54
+#: src/constants/errors/backup.ts:56
 msgid "Failed to calculate Nginx hash: {0}"
 msgstr "Error al calcular el hash de Nginx: {0}"
 
-#: src/constants/errors/backup.ts:53
+#: src/constants/errors/backup.ts:55
 msgid "Failed to calculate Nginx UI hash: {0}"
 msgstr "Error al calcular el hash de Nginx UI: {0}"
 
@@ -2659,19 +2654,19 @@ msgstr "Error al calcular el hash de Nginx UI: {0}"
 msgid "Failed to cleanup temporary directory: {0}"
 msgstr "Error al limpiar el directorio temporal: {0}"
 
-#: src/constants/errors/backup.ts:15
+#: src/constants/errors/backup.ts:17
 msgid "Failed to copy config file: {0}"
 msgstr "Error al copiar el archivo de configuración: {0}"
 
-#: src/constants/errors/backup.ts:16
+#: src/constants/errors/backup.ts:18
 msgid "Failed to copy database file: {0}"
 msgstr "Error al copiar el archivo de la base de datos: {0}"
 
-#: src/constants/errors/backup.ts:31
+#: src/constants/errors/backup.ts:33
 msgid "Failed to copy file content: {0}"
 msgstr "Error al copiar el contenido del archivo: {0}"
 
-#: src/constants/errors/backup.ts:19
+#: src/constants/errors/backup.ts:21
 msgid "Failed to copy Nginx config directory: {0}"
 msgstr "Error al copiar el directorio de configuración de Nginx: {0}"
 
@@ -2688,17 +2683,24 @@ msgstr "No se pudo crear la copia de seguridad"
 msgid "Failed to create backup file: {0}"
 msgstr "Error al crear el archivo de respaldo: {0}"
 
-#: src/constants/errors/backup.ts:43
+#: src/constants/errors/backup.ts:15
+msgid "Failed to create backup manifest signature: {0}"
+msgstr "Error al crear la firma del manifiesto de copia de seguridad: {0}"
+
+#: src/constants/errors/backup.ts:14
+msgid "Failed to create backup manifest: {0}"
+msgstr "Error al crear el manifiesto de copia de seguridad: {0}"
+
+#: src/constants/errors/backup.ts:45
 msgid "Failed to create directory: {0}"
 msgstr "Error al crear el directorio: {0}"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:222
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:360
-#, fuzzy
 msgid "Failed to create DNS record"
-msgstr "Error al crear el directorio: {0}"
+msgstr "Error al crear el registro DNS"
 
-#: src/constants/errors/backup.ts:45 src/constants/errors/geolite.ts:6
+#: src/constants/errors/backup.ts:47 src/constants/errors/geolite.ts:6
 msgid "Failed to create file: {0}"
 msgstr "Error al crear el archivo: {0}"
 
@@ -2706,19 +2708,19 @@ msgstr "Error al crear el archivo: {0}"
 msgid "Failed to create hash info file: {0}"
 msgstr "Error al crear el archivo de información de hash: {0}"
 
-#: src/constants/errors/backup.ts:44
+#: src/constants/errors/backup.ts:46
 msgid "Failed to create parent directory: {0}"
 msgstr "Error al crear el directorio principal: {0}"
 
-#: src/constants/errors/backup.ts:32
+#: src/constants/errors/backup.ts:34
 msgid "Failed to create restore directory: {0}"
 msgstr "Error al crear el directorio de restauración: {0}"
 
-#: src/constants/errors/backup.ts:66
+#: src/constants/errors/backup.ts:76
 msgid "Failed to create storage directory {0}: {1}"
 msgstr "Error al crear el directorio de almacenamiento {0}: {1}"
 
-#: src/constants/errors/backup.ts:47
+#: src/constants/errors/backup.ts:49
 msgid "Failed to create symbolic link: {0}"
 msgstr "Error al crear el enlace simbólico: {0}"
 
@@ -2742,15 +2744,15 @@ msgstr "Error al crear el lector xz: {0}"
 msgid "Failed to create zip archive: {0}"
 msgstr "Error al crear el archivo ZIP: {0}"
 
-#: src/constants/errors/backup.ts:28
+#: src/constants/errors/backup.ts:30
 msgid "Failed to create zip entry: {0}"
 msgstr "Error al crear la entrada ZIP: {0}"
 
-#: src/constants/errors/backup.ts:27
+#: src/constants/errors/backup.ts:29
 msgid "Failed to create zip file: {0}"
 msgstr "Error al crear el archivo ZIP: {0}"
 
-#: src/constants/errors/backup.ts:30
+#: src/constants/errors/backup.ts:32
 msgid "Failed to create zip header: {0}"
 msgstr "Error al crear la cabecera ZIP: {0}"
 
@@ -2758,19 +2760,19 @@ msgstr "Error al crear la cabecera ZIP: {0}"
 msgid "Failed to decompress GeoLite2 database: {0}"
 msgstr "Error al descomprimir la base de datos GeoLite2: {0}"
 
-#: src/constants/errors/backup.ts:25
+#: src/constants/errors/backup.ts:27
 msgid "Failed to decrypt data: {0}"
 msgstr "Error al descifrar los datos: {0}"
 
-#: src/constants/errors/backup.ts:50
+#: src/constants/errors/backup.ts:52
 msgid "Failed to decrypt file: {0}"
 msgstr "Error al descifrar el archivo: {0}"
 
-#: src/constants/errors/backup.ts:35
+#: src/constants/errors/backup.ts:37
 msgid "Failed to decrypt Nginx directory: {0}"
 msgstr "Error al descifrar el directorio de Nginx: {0}"
 
-#: src/constants/errors/backup.ts:34
+#: src/constants/errors/backup.ts:36
 msgid "Failed to decrypt Nginx UI directory: {0}"
 msgstr "Error al descifrar el directorio de Nginx UI: {0}"
 
@@ -2820,11 +2822,11 @@ msgstr "Error al habilitar la indexación avanzada"
 msgid "Failed to enable maintenance mode %{msg}"
 msgstr "No se pudo activar el modo de mantenimiento: %{msg}"
 
-#: src/constants/errors/backup.ts:24
+#: src/constants/errors/backup.ts:26
 msgid "Failed to encrypt data: {0}"
 msgstr "Error al cifrar los datos: {0}"
 
-#: src/constants/errors/backup.ts:22
+#: src/constants/errors/backup.ts:24
 msgid "Failed to encrypt file: {0}"
 msgstr "Error al cifrar el archivo: {0}"
 
@@ -2844,7 +2846,7 @@ msgstr "Error al ejecutar el comando: {0}"
 msgid "Failed to execute template: {0}"
 msgstr "Error al ejecutar la plantilla: {0}"
 
-#: src/constants/errors/backup.ts:33
+#: src/constants/errors/backup.ts:35
 msgid "Failed to extract archive: {0}"
 msgstr "Error al extraer el archivo: {0}"
 
@@ -2902,9 +2904,8 @@ msgstr "Error al inspeccionar el contenedor actual: {0}"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:137
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:166
-#, fuzzy
 msgid "Failed to load DNS records"
-msgstr "Error al cargar los registros históricos"
+msgstr "Error al cargar los registros DNS"
 
 #: src/components/ConfigHistory/ConfigHistory.vue:83
 msgid "Failed to load history records"
@@ -2918,15 +2919,15 @@ msgstr "Error al cargar la ruta de configuración de nginx"
 msgid "Failed to open file: {0}"
 msgstr "Error al abrir el archivo: {0}"
 
-#: src/constants/errors/backup.ts:29
+#: src/constants/errors/backup.ts:31
 msgid "Failed to open source file: {0}"
 msgstr "Error al abrir el archivo fuente: {0}"
 
-#: src/constants/errors/backup.ts:46
+#: src/constants/errors/backup.ts:48
 msgid "Failed to open zip entry: {0}"
 msgstr "Error al abrir la entrada ZIP: {0}"
 
-#: src/constants/errors/backup.ts:42
+#: src/constants/errors/backup.ts:44
 msgid "Failed to open zip file: {0}"
 msgstr "Error al abrir el archivo ZIP: {0}"
 
@@ -2946,11 +2947,19 @@ msgstr "Error al analizar la plantilla: {0}"
 msgid "Failed to pull image: {0}"
 msgstr "Error al descargar la imagen: {0}"
 
+#: src/constants/errors/backup.ts:58
+msgid "Failed to read backup manifest signature: {0}"
+msgstr "Error al leer la firma del manifiesto de copia de seguridad: {0}"
+
+#: src/constants/errors/backup.ts:57
+msgid "Failed to read backup manifest: {0}"
+msgstr "Error al leer el manifiesto de copia de seguridad: {0}"
+
 #: src/constants/errors/geolite.ts:11
 msgid "Failed to read compressed data: {0}"
 msgstr "Error al leer los datos comprimidos: {0}"
 
-#: src/constants/errors/backup.ts:49
+#: src/constants/errors/backup.ts:51
 msgid "Failed to read encrypted file: {0}"
 msgstr "Error al leer el archivo cifrado: {0}"
 
@@ -2958,11 +2967,11 @@ msgstr "Error al leer el archivo cifrado: {0}"
 msgid "Failed to read file"
 msgstr "Error al leer el archivo"
 
-#: src/constants/errors/backup.ts:21
+#: src/constants/errors/backup.ts:23
 msgid "Failed to read file: {0}"
 msgstr "Error al leer el archivo: {0}"
 
-#: src/constants/errors/backup.ts:52
+#: src/constants/errors/backup.ts:54
 msgid "Failed to read hash info file: {0}"
 msgstr "Error al leer el archivo de información de hash: {0}"
 
@@ -2978,7 +2987,7 @@ msgstr "Error al leer la salida: {0}"
 msgid "Failed to read response body: {0}"
 msgstr "Error al leer el cuerpo de la respuesta: {0}"
 
-#: src/constants/errors/backup.ts:20
+#: src/constants/errors/backup.ts:22
 msgid "Failed to read symlink: {0}"
 msgstr "Error al leer el enlace simbólico: {0}"
 
@@ -2991,15 +3000,14 @@ msgid "Failed to rebuild index"
 msgstr "Error al reconstruir el índice"
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:429
-#, fuzzy
 msgid "Failed to recreate DNS record"
-msgstr "Error al crear el directorio: {0}"
+msgstr "Error al recrear el registro DNS"
 
 #: src/views/dashboard/SiteNavigation.vue:86
 msgid "Failed to refresh sites"
 msgstr "Error al actualizar los sitios"
 
-#: src/constants/errors/backup.ts:37
+#: src/constants/errors/backup.ts:39
 msgid "Failed to restore Nginx configs: {0}"
 msgstr "Error al restaurar las configuraciones de Nginx: {0}"
 
@@ -3047,11 +3055,11 @@ msgstr "Error al actualizar el estado"
 msgid "Failed to upload file"
 msgstr "Error al subir el archivo"
 
-#: src/constants/errors/backup.ts:36
+#: src/constants/errors/backup.ts:38
 msgid "Failed to verify hashes: {0}"
 msgstr "Error al verificar los hashes: {0}"
 
-#: src/constants/errors/backup.ts:58
+#: src/constants/errors/backup.ts:68
 msgid "Failed to write backup file: {0}"
 msgstr "Error al escribir el archivo de respaldo: {0}"
 
@@ -3059,15 +3067,15 @@ msgstr "Error al escribir el archivo de respaldo: {0}"
 msgid "Failed to write decompressed data: {0}"
 msgstr "Error al escribir los datos descomprimidos: {0}"
 
-#: src/constants/errors/backup.ts:51
+#: src/constants/errors/backup.ts:53
 msgid "Failed to write decrypted file: {0}"
 msgstr "Error al escribir el archivo desencriptado: {0}"
 
-#: src/constants/errors/backup.ts:23
+#: src/constants/errors/backup.ts:25
 msgid "Failed to write encrypted file: {0}"
 msgstr "Error al escribir el archivo cifrado: {0}"
 
-#: src/constants/errors/backup.ts:59
+#: src/constants/errors/backup.ts:69
 msgid "Failed to write security key file: {0}"
 msgstr "Error al escribir el archivo de clave de seguridad: {0}"
 
@@ -3625,13 +3633,21 @@ msgstr "Intervalo (segundos)"
 msgid "Invalid"
 msgstr "Inválido"
 
-#: src/constants/errors/backup.ts:41
+#: src/constants/errors/backup.ts:43
 msgid "Invalid AES IV format: {0}"
 msgstr "Formato de IV de AES no válido: {0}"
 
-#: src/constants/errors/backup.ts:40
+#: src/constants/errors/backup.ts:42
 msgid "Invalid AES key format: {0}"
 msgstr "Formato de clave AES no válido: {0}"
+
+#: src/constants/errors/backup.ts:60
+msgid "Invalid backup manifest signature"
+msgstr "Firma del manifiesto de respaldo no válida"
+
+#: src/constants/errors/backup.ts:59
+msgid "Invalid backup manifest: {0}"
+msgstr "Manifiesto de copia de seguridad no válido: {0}"
 
 #: src/views/certificate/components/CertificateDownload.vue:54
 #: src/views/certificate/components/CertificateFileUpload.vue:88
@@ -3650,7 +3666,7 @@ msgstr "SHA de confirmación no válido"
 msgid "Invalid file object"
 msgstr "Objeto de archivo no válido"
 
-#: src/constants/errors/backup.ts:48
+#: src/constants/errors/backup.ts:50
 msgid "Invalid file path: {0}"
 msgstr "Ruta de archivo no válida: {0}"
 
@@ -3675,7 +3691,7 @@ msgstr "Configuración de notificador no válida"
 msgid "Invalid otp code"
 msgstr "Código OTP inválido"
 
-#: src/constants/errors/backup.ts:26
+#: src/constants/errors/backup.ts:28
 msgid "Invalid padding in decrypted data"
 msgstr "Relleno no válido en los datos descifrados"
 
@@ -3683,7 +3699,7 @@ msgstr "Relleno no válido en los datos descifrados"
 msgid "Invalid passcode or recovery code"
 msgstr "Código de acceso o código de recuperación inválido"
 
-#: src/constants/errors/backup.ts:61
+#: src/constants/errors/backup.ts:71
 msgid "Invalid path: {0}"
 msgstr "Ruta no válida: {0}"
 
@@ -3700,7 +3716,7 @@ msgstr "Código de recuperación no válido"
 msgid "Invalid request format"
 msgstr "Formato de solicitud no válido"
 
-#: src/constants/errors/backup.ts:39
+#: src/constants/errors/backup.ts:41
 msgid "Invalid security token format"
 msgstr "Formato de token de seguridad no válido"
 
@@ -3729,9 +3745,8 @@ msgstr "Dirección IP"
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:335
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:504
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:629
-#, fuzzy
 msgid "IP Address / Target"
-msgstr "Dirección IP"
+msgstr "Dirección IP / Destino"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:123
 msgid "IP Certificate Notice"
@@ -3929,17 +3944,21 @@ msgid ""
 "Link this site to a DNS record. The server_name will be used for the DNS "
 "record name."
 msgstr ""
+"Vincule este sitio a un registro DNS. El server_name se utilizará como "
+"nombre del registro DNS."
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:247
 msgid ""
 "Link this site to a DNS record. The server_name will be used for the DNS "
 "record name. You can skip this step if DNS is already configured."
 msgstr ""
+"Vincula este sitio a un registro DNS. El server_name se utilizará como "
+"nombre del registro DNS. Puedes omitir este paso si el DNS ya está "
+"configurado."
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:466
-#, fuzzy
 msgid "Linked DNS Record"
-msgstr "Registros DNS"
+msgstr "Registro DNS vinculado"
 
 #: src/language/curd.ts:23
 msgid "List"
@@ -4521,7 +4540,7 @@ msgstr "La configuración de Nginx no incluye sites-enabled"
 msgid "Nginx conf not include stream-enabled"
 msgstr "La configuración de Nginx no incluye stream-enabled"
 
-#: src/constants/errors/backup.ts:18
+#: src/constants/errors/backup.ts:20
 msgid "Nginx config directory is not set"
 msgstr "El directorio de configuración de Nginx no está establecido"
 
@@ -4670,7 +4689,7 @@ msgstr "Nginx UI ya está instalado"
 msgid "Nginx UI configuration has been restored"
 msgstr "La configuración de Nginx UI ha sido restaurada"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:336
+#: src/components/SystemRestore/SystemRestoreContent.vue:344
 msgid ""
 "Nginx UI configuration has been restored and will restart automatically in "
 "a few seconds."
@@ -4730,9 +4749,8 @@ msgstr "Sin datos"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:372
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:666
-#, fuzzy
 msgid "No DNS domains available"
-msgstr "No hay datos geográficos disponibles"
+msgstr "No hay dominios DNS disponibles"
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:827
 msgid "No entries in current page"
@@ -4952,9 +4970,8 @@ msgid "Offline GeoIP analysis"
 msgstr "Análisis GeoIP sin conexión"
 
 #: src/views/other/Login.vue:335
-#, fuzzy
 msgid "OIDC Login"
-msgstr "Acceso SSO"
+msgstr "Inicio de sesión OIDC"
 
 #: src/components/LLM/ChatMessageInput.vue:62
 #: src/components/NgxConfigEditor/NgxServer.vue:60
@@ -4991,6 +5008,16 @@ msgstr "En línea"
 msgid "Online Count"
 msgstr "Recuento en línea"
 
+#: src/components/SystemRestore/SystemRestoreContent.vue:180
+#: src/components/SystemRestore/SystemRestoreContent.vue:263
+msgid ""
+"Only backups created by versions that support signed manifests can be "
+"restored. Legacy backups are no longer supported."
+msgstr ""
+"Solo se pueden restaurar copias de seguridad creadas por versiones que "
+"admiten manifiestos firmados. Las copias de seguridad heredadas ya no son "
+"compatibles."
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:78
 msgid "Only zip files are allowed"
 msgstr "Solo se permiten archivos ZIP"
@@ -5017,7 +5044,7 @@ msgstr "Estadísticas del sistema operativo"
 
 #: src/views/dns/components/DNSRecordForm.vue:94
 msgid "Optional comment for this DNS record"
-msgstr ""
+msgstr "Comentario opcional para este registro DNS"
 
 #: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:369
 msgid "Or"
@@ -5143,7 +5170,7 @@ msgstr "Las contraseñas no coinciden"
 msgid "Path"
 msgstr "Ruta"
 
-#: src/constants/errors/backup.ts:62
+#: src/constants/errors/backup.ts:72
 msgid "Path not in granted access paths: {0}"
 msgstr "La ruta no está en las rutas de acceso concedidas: {0}"
 
@@ -5215,16 +5242,15 @@ msgstr "El texto plano está vacío"
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:373
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:667
 msgid "Please add a DNS domain first in the DNS management section."
-msgstr ""
+msgstr "Por favor, agregue un dominio DNS primero en la sección de gestión de DNS"
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:446
-#, fuzzy
 msgid ""
 "Please configure server_name directive in the configuration before linking "
 "DNS records."
 msgstr ""
-"Tenga en cuenta que las siguientes configuraciones de unidades de tiempo "
-"están todas en segundos."
+"Por favor, configure la directiva server_name en la configuración antes de "
+"vincular registros DNS."
 
 #: src/views/dashboard/NginxDashBoard.vue:196
 msgid ""
@@ -5270,8 +5296,8 @@ msgstr "Por favor, ingrese el código OTP:"
 msgid "Please enter the security token"
 msgstr "Por favor, introduzca el token de seguridad"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:210
-#: src/components/SystemRestore/SystemRestoreContent.vue:287
+#: src/components/SystemRestore/SystemRestoreContent.vue:212
+#: src/components/SystemRestore/SystemRestoreContent.vue:295
 msgid "Please enter the security token received during backup"
 msgstr ""
 "Por favor, introduzca el token de seguridad recibido durante la copia de "
@@ -5287,9 +5313,8 @@ msgstr "Por favor, complete todos los campos correctamente"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:193
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:320
-#, fuzzy
 msgid "Please fill in all required fields"
-msgstr "Por favor, complete los campos de configuración de S3 requeridos"
+msgstr "Por favor complete todos los campos obligatorios"
 
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:23
 msgid "Please fill in required S3 configuration fields"
@@ -5641,15 +5666,13 @@ msgstr "Registro eliminado"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:325
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:619
-#, fuzzy
 msgid "Record Name"
-msgstr "Nombre del método"
+msgstr "Nombre del registro"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:311
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:605
-#, fuzzy
 msgid "Record Type"
-msgstr "Registro actualizado"
+msgstr "Tipo de registro"
 
 #: src/views/dns/DNSRecordManager.vue:114
 msgid "Record updated"
@@ -5677,9 +5700,8 @@ msgstr ""
 "vez."
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:535
-#, fuzzy
 msgid "Recreate DNS Record"
-msgstr "Crear registro"
+msgstr "Recrear registro DNS"
 
 #: src/views/preference/tabs/CertSettings.vue:40
 msgid "Recursive Nameservers"
@@ -6015,13 +6037,13 @@ msgstr "Restauración completada con éxito"
 msgid "Restore from Backup"
 msgstr "Restaurar desde copia de seguridad"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:223
-#: src/components/SystemRestore/SystemRestoreContent.vue:300
+#: src/components/SystemRestore/SystemRestoreContent.vue:225
+#: src/components/SystemRestore/SystemRestoreContent.vue:308
 msgid "Restore Nginx Configuration"
 msgstr "Restaurar configuración de Nginx"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:234
-#: src/components/SystemRestore/SystemRestoreContent.vue:311
+#: src/components/SystemRestore/SystemRestoreContent.vue:236
+#: src/components/SystemRestore/SystemRestoreContent.vue:319
 msgid "Restore Nginx UI Configuration"
 msgstr "Restaurar configuración de Nginx UI"
 
@@ -6063,6 +6085,8 @@ msgstr ""
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:650
 msgid "Route traffic through proxy for additional protection and features"
 msgstr ""
+"Enrutar el tráfico a través de un proxy para obtener protección y funciones "
+"adicionales"
 
 #: src/views/preference/tabs/AuthSettings.vue:72
 msgid "RP Display Name"
@@ -6116,7 +6140,7 @@ msgstr "Se requiere el bucket S3"
 msgid "S3 bucket name"
 msgstr "Nombre del bucket S3"
 
-#: src/constants/errors/backup.ts:56
+#: src/constants/errors/backup.ts:66
 msgid "S3 configuration is incomplete: missing {0}"
 msgstr "La configuración de S3 está incompleta: falta {0}"
 
@@ -6168,7 +6192,7 @@ msgstr "Clave de acceso secreta de S3"
 msgid "S3 secret access key is required"
 msgstr "Se requiere la clave de acceso secreta de S3"
 
-#: src/constants/errors/backup.ts:60
+#: src/constants/errors/backup.ts:70
 msgid "S3 upload failed: {0}"
 msgstr "Error al subir a S3: {0}"
 
@@ -6335,8 +6359,8 @@ msgstr "El secreto ha sido copiado"
 msgid "Security Settings"
 msgstr "Configuración de seguridad"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:207
-#: src/components/SystemRestore/SystemRestoreContent.vue:284
+#: src/components/SystemRestore/SystemRestoreContent.vue:209
+#: src/components/SystemRestore/SystemRestoreContent.vue:292
 msgid "Security Token"
 msgstr "Token de seguridad"
 
@@ -6362,14 +6386,13 @@ msgstr "Seleccionar credencial"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:254
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:548
-#, fuzzy
 msgid "Select DNS domain"
-msgstr "Dominios DNS"
+msgstr "Seleccionar dominio DNS"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:279
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:573
 msgid "Select existing record"
-msgstr ""
+msgstr "Seleccionar registro existente"
 
 #: src/views/certificate/ACMEUser.vue:45
 msgid "Select or enter a CA directory URL"
@@ -6429,7 +6452,7 @@ msgstr "Dirección IP del servidor"
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:102
 msgid "Server name is controlled by linked DNS record"
-msgstr ""
+msgstr "El nombre del servidor está controlado por el registro DNS vinculado"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:99
 msgid "Server Names Hash Bucket Size"
@@ -6539,7 +6562,7 @@ msgstr "Configuración del sitio creada con éxito"
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:426
 msgid "Site configuration updated with recreated DNS record"
-msgstr ""
+msgstr "Configuración del sitio actualizada con el registro DNS recreado"
 
 #: src/constants/errors/site.ts:4
 msgid "Site is enabled"
@@ -6699,8 +6722,8 @@ msgstr "Inicio"
 msgid "Start Date"
 msgstr "Fecha de inicio"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:246
-#: src/components/SystemRestore/SystemRestoreContent.vue:323
+#: src/components/SystemRestore/SystemRestoreContent.vue:248
+#: src/components/SystemRestore/SystemRestoreContent.vue:331
 msgid "Start Restore"
 msgstr "Iniciar restauración"
 
@@ -6836,8 +6859,8 @@ msgstr "Soporta carga única o múltiple de archivos"
 msgid "Support uploading entire folders"
 msgstr "Soporta la carga de carpetas completas"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:197
-#: src/components/SystemRestore/SystemRestoreContent.vue:274
+#: src/components/SystemRestore/SystemRestoreContent.vue:199
+#: src/components/SystemRestore/SystemRestoreContent.vue:282
 msgid "Supported file type: .zip"
 msgstr "Tipo de archivo admitido: .zip"
 
@@ -6942,7 +6965,7 @@ msgstr "Usuario inicial del sistema"
 msgid "System Requirements"
 msgstr "Requisitos del sistema"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:174
+#: src/components/SystemRestore/SystemRestoreContent.vue:170
 msgid "System Restore"
 msgstr "Restauración del sistema"
 
@@ -6954,7 +6977,7 @@ msgstr "Sistema restaurado correctamente."
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:508
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:632
 msgid "target.example.com"
-msgstr ""
+msgstr "target.example.com"
 
 #: src/views/dns/DDNSManager.vue:83
 msgid "Targets"
@@ -7058,6 +7081,8 @@ msgid ""
 "The linked DNS record was deleted from the DNS server. You can recreate it "
 "or clear the link."
 msgstr ""
+"El registro DNS vinculado fue eliminado del servidor DNS. Puedes recrearlo "
+"o borrar el enlace."
 
 #: src/constants/errors/nginx_log.ts:2
 msgid ""
@@ -7168,6 +7193,15 @@ msgstr "Componentes de terceros"
 #: src/views/certificate/components/AutoCertManagement.vue:45
 msgid "This Auto Cert item is invalid, please remove it."
 msgstr "Este elemento de Auto Cert es inválido, elimínelo por favor."
+
+#: src/constants/errors/backup.ts:62
+msgid ""
+"This backup uses an unsupported legacy format. Please create a new backup "
+"with a newer version before restoring."
+msgstr ""
+"Esta copia de seguridad utiliza un formato heredado no compatible. Por "
+"favor, cree una nueva copia de seguridad con una versión más reciente antes "
+"de restaurar."
 
 #: src/views/certificate/components/AutoCertManagement.vue:35
 msgid "This certificate is managed by Nginx UI"
@@ -7287,8 +7321,8 @@ msgstr ""
 msgid "This will rebuild the index data for this specific file: %{path}"
 msgstr "Esto reconstruirá los datos del índice para este archivo específico: %{path}"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:227
-#: src/components/SystemRestore/SystemRestoreContent.vue:304
+#: src/components/SystemRestore/SystemRestoreContent.vue:229
+#: src/components/SystemRestore/SystemRestoreContent.vue:312
 msgid ""
 "This will restore all Nginx configuration files. Nginx will restart after "
 "the restoration is complete."
@@ -7296,8 +7330,8 @@ msgstr ""
 "Esto restaurará todos los archivos de configuración de Nginx. Nginx se "
 "reiniciará después de que se complete la restauración."
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:238
-#: src/components/SystemRestore/SystemRestoreContent.vue:315
+#: src/components/SystemRestore/SystemRestoreContent.vue:240
+#: src/components/SystemRestore/SystemRestoreContent.vue:323
 msgid ""
 "This will restore configuration files and database. Nginx UI will restart "
 "after the restoration is complete."
@@ -7583,7 +7617,7 @@ msgstr "Páginas únicas"
 msgid "Unknown"
 msgstr "Desconocido"
 
-#: src/constants/errors/backup.ts:57
+#: src/constants/errors/backup.ts:67
 msgid "Unsupported backup type: {0}"
 msgstr "Tipo de copia de seguridad no admitido: {0}"
 
@@ -7758,10 +7792,10 @@ msgstr "Validar certificado SSL"
 msgid "Value"
 msgstr "Valor"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:216
-#: src/components/SystemRestore/SystemRestoreContent.vue:293
-msgid "Verify Backup File Integrity"
-msgstr "Verificar integridad del archivo de respaldo"
+#: src/components/SystemRestore/SystemRestoreContent.vue:218
+#: src/components/SystemRestore/SystemRestoreContent.vue:301
+msgid "Verify Backup File Integrity (required)"
+msgstr "Verificar la integridad del archivo de respaldo (requerido)"
 
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:664
 msgid "Verify Hostname"
@@ -7825,8 +7859,8 @@ msgstr "Procesos de espera"
 msgid "Warning"
 msgstr "Advertencia"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:178
-#: src/components/SystemRestore/SystemRestoreContent.vue:255
+#: src/components/SystemRestore/SystemRestoreContent.vue:174
+#: src/components/SystemRestore/SystemRestoreContent.vue:257
 msgid ""
 "Warning: Restore operation will overwrite current configurations. Make sure "
 "you have a valid backup file and security token, and carefully select what "
@@ -8002,11 +8036,11 @@ msgstr "Estás usando la última versión"
 msgid "You can check Nginx UI upgrade at this page."
 msgstr "Puede consultar la actualización de Nginx UI en esta página."
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:339
+#: src/components/SystemRestore/SystemRestoreContent.vue:347
 msgid "You can close this dialog in %{countdown} seconds"
 msgstr "Puedes cerrar este diálogo en %{countdown} segundos"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:342
+#: src/components/SystemRestore/SystemRestoreContent.vue:350
 msgid "You can close this dialog now"
 msgstr "Ahora puede cerrar este cuadro de diálogo"
 
@@ -8049,6 +8083,11 @@ msgstr "Sus llaves de acceso"
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:232
 msgid "Zero-allocation pipeline"
 msgstr "Canalización sin asignación"
+
+#~ msgid "Backup file integrity check failed, it may have been tampered with"
+#~ msgstr ""
+#~ "La verificación de integridad del archivo de respaldo falló, puede haber "
+#~ "sido alterado"
 
 #~ msgid "Once the verification is complete, the records will be removed."
 #~ msgstr "Una vez que se complete la verificación, los registros se eliminarán."
