@@ -68,6 +68,38 @@ func ResolveConfPathInDir(dir string, parts ...string) (string, error) {
 	return resolvedPath, nil
 }
 
+// ResolveConfPathInDirPreserveLeaf resolves a user-controlled path under a fixed nginx config
+// subdirectory while preserving the final path component as-is.
+// This is useful for paths whose leaf is expected to be a symlink, such as sites-enabled entries.
+func ResolveConfPathInDirPreserveLeaf(dir string, parts ...string) (string, error) {
+	basePath, err := ResolveConfPath(dir)
+	if err != nil {
+		return "", err
+	}
+
+	resolvedParts := []string{basePath}
+	for _, part := range parts {
+		normalized := normalizeConfRelativePath(part)
+		if normalized == "" {
+			continue
+		}
+
+		resolvedParts = append(resolvedParts, normalized)
+	}
+
+	resolvedPath := filepath.Clean(filepath.Join(resolvedParts...))
+	parentPath := filepath.Dir(resolvedPath)
+	if resolvedPath == basePath {
+		parentPath = basePath
+	}
+
+	if !helper.IsUnderDirectory(parentPath, basePath) {
+		return "", cosy.WrapErrorWithParams(ErrPathIsNotUnderTheNginxConfDir, resolvedPath, basePath)
+	}
+
+	return resolvedPath, nil
+}
+
 // ResolveAbsoluteOrRelativeConfPath validates an absolute path or resolves a relative one.
 func ResolveAbsoluteOrRelativeConfPath(path string) (string, error) {
 	confPath := filepath.Clean(nginx.GetConfPath())

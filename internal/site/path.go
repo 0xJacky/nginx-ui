@@ -10,7 +10,7 @@ func ResolveAvailablePath(name string) (string, error) {
 }
 
 func ResolveEnabledPath(name string) (string, error) {
-	return config.ResolveConfPathInDir("sites-enabled", name)
+	return config.ResolveConfPathInDirPreserveLeaf("sites-enabled", name)
 }
 
 func resolveEnabledSymlinkPath(name string) (string, error) {

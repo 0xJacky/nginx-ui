@@ -10,7 +10,7 @@ func ResolveAvailablePath(name string) (string, error) {
 }
 
 func ResolveEnabledPath(name string) (string, error) {
-	return config.ResolveConfPathInDir("streams-enabled", name)
+	return config.ResolveConfPathInDirPreserveLeaf("streams-enabled", name)
 }
 
 func resolveEnabledSymlinkPath(name string) (string, error) {
