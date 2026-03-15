@@ -152,18 +152,24 @@ function cancel() {
 <style scoped lang="less">
 .delete-modal-content {
   .item-info {
-    background-color: #fafafa;
+    background-color: var(--ant-color-fill-alter);
+    color: var(--ant-color-text);
     padding: 12px;
     border-radius: 6px;
-    border: 1px solid #e8e8e8;
+    border: 1px solid var(--ant-color-border-secondary);
 
     p {
       margin: 0;
       line-height: 1.5;
+      word-break: break-word;
 
       &:not(:last-child) {
         margin-bottom: 8px;
       }
+    }
+
+    strong {
+      color: var(--ant-color-text-secondary);
     }
   }
 }
