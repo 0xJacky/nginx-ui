@@ -6,4 +6,5 @@ export default {
   50010: () => $gettext('Cannot delete protected path'),
   50011: () => $gettext('File or directory not found: {0}'),
   50012: () => $gettext('You are not allowed to delete a file outside of the nginx config path'),
+  50013: () => $gettext('Cannot delete the nginx config directory'),
 }
