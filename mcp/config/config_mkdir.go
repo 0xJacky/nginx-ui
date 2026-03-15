@@ -6,8 +6,6 @@ import (
 	"os"
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
-	"github.com/0xJacky/Nginx-UI/internal/helper"
-	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
@@ -25,12 +23,12 @@ func handleNginxConfigMkdir(ctx context.Context, request mcp.CallToolRequest) (*
 	basePath := args["base_path"].(string)
 	folderName := args["folder_name"].(string)
 
-	fullPath := nginx.GetConfPath(basePath, folderName)
-	if !helper.IsUnderDirectory(fullPath, nginx.GetConfPath()) {
-		return nil, config.ErrPathIsNotUnderTheNginxConfDir
+	fullPath, err := config.ResolveConfPath(basePath, folderName)
+	if err != nil {
+		return nil, err
 	}
 
-	err := os.Mkdir(fullPath, 0755)
+	err = os.Mkdir(fullPath, 0755)
 	if err != nil {
 		return nil, err
 	}

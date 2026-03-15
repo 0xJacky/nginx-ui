@@ -7,8 +7,6 @@ import (
 	"path/filepath"
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
-	"github.com/0xJacky/Nginx-UI/internal/helper"
-	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/mark3labs/mcp-go/mcp"
 )
@@ -25,9 +23,9 @@ func handleNginxConfigGet(ctx context.Context, request mcp.CallToolRequest) (*mc
 	args := request.GetArguments()
 	relativePath := args["relative_path"].(string)
 
-	absPath := nginx.GetConfPath(relativePath)
-	if !helper.IsUnderDirectory(absPath, nginx.GetConfPath()) {
-		return nil, config.ErrPathIsNotUnderTheNginxConfDir
+	absPath, err := config.ResolveAbsoluteOrRelativeConfPath(relativePath)
+	if err != nil {
+		return nil, err
 	}
 
 	stat, err := os.Stat(absPath)

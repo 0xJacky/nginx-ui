@@ -40,12 +40,9 @@ func handleNginxConfigEnable(ctx context.Context, request mcp.CallToolRequest) (
 
 	// Resolve Source Path (e.g., /etc/nginx/sites-available/my-site)
 	// This is the file that must already exist.
-	srcDir := nginx.GetConfPath(baseDir)
-	srcPath := filepath.Join(srcDir, name)
-
-	// Ensure the resolved source path is actually inside the intended directory
-	if !helper.IsUnderDirectory(srcPath, srcDir) {
-		return nil, config.ErrPathIsNotUnderTheNginxConfDir
+	srcPath, err := config.ResolveConfPath(baseDir, name)
+	if err != nil {
+		return nil, err
 	}
 
 	// Validate Source Exists
@@ -54,7 +51,11 @@ func handleNginxConfigEnable(ctx context.Context, request mcp.CallToolRequest) (
 	}
 
 	sitesEnabledDir := nginx.GetConfPath("sites-enabled")
-	dstPath := nginx.GetConfSymlinkPath(filepath.Join(sitesEnabledDir, name))
+	dstTargetPath, err := config.ResolveConfPath("sites-enabled", name)
+	if err != nil {
+		return nil, err
+	}
+	dstPath := nginx.GetConfSymlinkPath(filepath.Join(sitesEnabledDir, filepath.Base(dstTargetPath)))
 
 	// Ensure the link we are about to create doesn't point outside sites-enabled
 	if !helper.IsUnderDirectory(dstPath, sitesEnabledDir) {

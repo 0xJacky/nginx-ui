@@ -81,7 +81,12 @@ func checkDNSRecordExists(domainID int, recordID string) bool {
 func GetSite(c *gin.Context) {
 	name := helper.UnescapeURL(c.Param("name"))
 
-	path := nginx.GetConfPath("sites-available", name)
+	path, err := site.ResolveAvailablePath(name)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
 	file, err := os.Stat(path)
 	if os.IsNotExist(err) {
 		c.JSON(http.StatusNotFound, gin.H{
@@ -192,7 +197,12 @@ func SaveSite(c *gin.Context) {
 	}
 
 	// Update DNS link information after file is saved
-	path := nginx.GetConfPath("sites-available", name)
+	path, err := site.ResolveAvailablePath(name)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
 	s := query.Site
 	siteModel, err := s.Where(s.Path.Eq(path)).FirstOrCreate()
 	if err != nil {
@@ -244,7 +254,12 @@ func EnableSite(c *gin.Context) {
 	name := helper.UnescapeURL(c.Param("name"))
 
 	// Check if the site is in maintenance mode, if yes, disable maintenance mode first
-	maintenanceConfigPath := nginx.GetConfPath("sites-enabled", name+site.MaintenanceSuffix)
+	maintenanceConfigPath, err := site.ResolveEnabledPath(name + site.MaintenanceSuffix)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
 	if _, err := os.Stat(maintenanceConfigPath); err == nil {
 		// Site is in maintenance mode, disable it first
 		err := site.DisableMaintenance(name)
@@ -255,7 +270,7 @@ func EnableSite(c *gin.Context) {
 	}
 
 	// Then enable the site normally
-	err := site.Enable(name)
+	err = site.Enable(name)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
@@ -270,7 +285,12 @@ func DisableSite(c *gin.Context) {
 	name := helper.UnescapeURL(c.Param("name"))
 
 	// Check if the site is in maintenance mode, if yes, disable maintenance mode first
-	maintenanceConfigPath := nginx.GetConfPath("sites-enabled", name+site.MaintenanceSuffix)
+	maintenanceConfigPath, err := site.ResolveEnabledPath(name + site.MaintenanceSuffix)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
 	if _, err := os.Stat(maintenanceConfigPath); err == nil {
 		// Site is in maintenance mode, disable it first
 		err := site.DisableMaintenance(name)
@@ -281,7 +301,7 @@ func DisableSite(c *gin.Context) {
 	}
 
 	// Then disable the site normally
-	err := site.Disable(name)
+	err = site.Disable(name)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
@@ -312,7 +332,12 @@ func BatchUpdateSites(c *gin.Context) {
 			effectedPath := make([]string, len(ctx.BatchEffectedIDs))
 			var sites []*model.Site
 			for i, name := range ctx.BatchEffectedIDs {
-				path := nginx.GetConfPath("sites-available", name)
+				path, err := site.ResolveAvailablePath(name)
+				if err != nil {
+					ctx.AbortWithError(err)
+					return
+				}
+
 				effectedPath[i] = path
 				sites = append(sites, &model.Site{
 					Path: path,
@@ -334,7 +359,12 @@ func EnableMaintenanceSite(c *gin.Context) {
 	name := helper.UnescapeURL(c.Param("name"))
 
 	// If site is already enabled, disable the normal site first
-	enabledConfigPath := nginx.GetConfPath("sites-enabled", name)
+	enabledConfigPath, err := site.ResolveEnabledPath(name)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
 	if _, err := os.Stat(enabledConfigPath); err == nil {
 		// Site is already enabled, disable normal site first
 		err := site.Disable(name)
@@ -345,7 +375,7 @@ func EnableMaintenanceSite(c *gin.Context) {
 	}
 
 	// Then enable maintenance mode
-	err := site.EnableMaintenance(name)
+	err = site.EnableMaintenance(name)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

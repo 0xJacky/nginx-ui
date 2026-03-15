@@ -2,14 +2,12 @@ package config
 
 import (
 	"net/http"
-	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
-	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
@@ -39,20 +37,17 @@ func Rename(c *gin.Context) {
 
 	decodedOrigName := helper.UnescapeURL(json.OrigName)
 
-	decodedNewName, err := url.QueryUnescape(json.NewName)
+	decodedNewName := helper.UnescapeURL(json.NewName)
+
+	origFullPath, err := config.ResolveConfPath(decodedBasePath, decodedOrigName)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
 	}
 
-	origFullPath := nginx.GetConfPath(decodedBasePath, decodedOrigName)
-	newFullPath := nginx.GetConfPath(decodedBasePath, decodedNewName)
-	if !helper.IsUnderDirectory(origFullPath, nginx.GetConfPath()) ||
-		!helper.IsUnderDirectory(newFullPath, nginx.GetConfPath()) {
-		c.JSON(http.StatusForbidden, gin.H{
-			"message": "you are not allowed to rename a file " +
-				"outside of the nginx config path",
-		})
+	newFullPath, err := config.ResolveConfPath(decodedBasePath, decodedNewName)
+	if err != nil {
+		cosy.ErrHandler(c, err)
 		return
 	}
 

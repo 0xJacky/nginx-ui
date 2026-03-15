@@ -16,8 +16,15 @@ import (
 
 // Enable enables a site by creating a symlink in sites-enabled
 func Enable(name string) (err error) {
-	configFilePath := nginx.GetConfPath("streams-available", name)
-	enabledConfigFilePath := nginx.GetConfSymlinkPath(nginx.GetConfPath("streams-enabled", name))
+	configFilePath, err := ResolveAvailablePath(name)
+	if err != nil {
+		return err
+	}
+
+	enabledConfigFilePath, err := resolveEnabledSymlinkPath(name)
+	if err != nil {
+		return err
+	}
 
 	_, err = os.Stat(configFilePath)
 	if err != nil {

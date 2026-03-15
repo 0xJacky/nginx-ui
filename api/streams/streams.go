@@ -264,7 +264,12 @@ func BatchUpdateStreams(c *gin.Context) {
 			effectedPath := make([]string, len(ctx.BatchEffectedIDs))
 			var streams []*model.Stream
 			for i, name := range ctx.BatchEffectedIDs {
-				path := nginx.GetConfPath("streams-available", name)
+				path, err := stream.ResolveAvailablePath(name)
+				if err != nil {
+					ctx.AbortWithError(err)
+					return
+				}
+
 				effectedPath[i] = path
 				streams = append(streams, &model.Stream{
 					Path: path,

@@ -6,7 +6,6 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
-	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
 )
@@ -26,7 +25,11 @@ func DeleteConfig(c *gin.Context) {
 	decodedBasePath := helper.UnescapeURL(json.BasePath)
 	decodedName := helper.UnescapeURL(json.Name)
 
-	fullPath := nginx.GetConfPath(decodedBasePath, decodedName)
+	fullPath, err := config.ResolveConfPath(decodedBasePath, decodedName)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
 
 	// Check if path is under nginx config directory
 	if err := config.ValidateDeletePath(fullPath); err != nil {

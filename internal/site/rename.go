@@ -16,8 +16,15 @@ import (
 )
 
 func Rename(oldName string, newName string) (err error) {
-	oldPath := nginx.GetConfPath("sites-available", oldName)
-	newPath := nginx.GetConfPath("sites-available", newName)
+	oldPath, err := ResolveAvailablePath(oldName)
+	if err != nil {
+		return err
+	}
+
+	newPath, err := ResolveAvailablePath(newName)
+	if err != nil {
+		return err
+	}
 
 	if oldPath == newPath {
 		return
@@ -37,10 +44,19 @@ func Rename(oldName string, newName string) (err error) {
 	}
 
 	// recreate a soft link
-	oldEnabledConfigFilePath := nginx.GetConfPath("sites-enabled", oldName)
+	oldEnabledConfigFilePath, err := ResolveEnabledPath(oldName)
+	if err != nil {
+		return err
+	}
+
 	if helper.SymbolLinkExists(oldEnabledConfigFilePath) {
 		_ = os.Remove(oldEnabledConfigFilePath)
-		newEnabledConfigFilePath := nginx.GetConfPath("sites-enabled", newName)
+		var newEnabledConfigFilePath string
+		newEnabledConfigFilePath, err = ResolveEnabledPath(newName)
+		if err != nil {
+			return err
+		}
+
 		err = os.Symlink(newPath, newEnabledConfigFilePath)
 		if err != nil {
 			return

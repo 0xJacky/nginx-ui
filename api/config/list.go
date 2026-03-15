@@ -8,7 +8,6 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
-	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
@@ -55,6 +54,12 @@ func GetConfigs(c *gin.Context) {
 		dir = strings.TrimSuffix(dir, "/")
 	}
 
+	fullDir, err := config.ResolveConfPath(dir)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
 	// Create options
 	options := &config.GenericListOptions{
 		Search:      search,
@@ -65,7 +70,7 @@ func GetConfigs(c *gin.Context) {
 	}
 
 	// Get config files from directory and create entities
-	configFiles, err := os.ReadDir(nginx.GetConfPath(dir))
+	configFiles, err := os.ReadDir(fullDir)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
@@ -82,7 +87,7 @@ func GetConfigs(c *gin.Context) {
 		// For generic config files, we don't have database records
 		// so namespaceID and namespace will be 0 and nil
 		entity := &FileEntity{
-			path:        filepath.Join(nginx.GetConfPath(dir), file.Name()),
+			path:        filepath.Join(fullDir, file.Name()),
 			namespaceID: 0,
 			namespace:   nil,
 		}

@@ -22,6 +22,10 @@ type RestoreResponse struct {
 	HashMatch       bool `json:"hash_match"`
 }
 
+func uploadedBackupPath(tempDir string) string {
+	return filepath.Join(tempDir, "uploaded-backup.zip")
+}
+
 // RestoreBackup restores from uploaded backup and security info
 func RestoreBackup(c *gin.Context) {
 	// Get restore options
@@ -74,7 +78,7 @@ func RestoreBackup(c *gin.Context) {
 	defer os.RemoveAll(tempDir)
 
 	// Save backup file
-	backupPath := filepath.Join(tempDir, backupFile.Filename)
+	backupPath := uploadedBackupPath(tempDir)
 	if err := c.SaveUploadedFile(backupFile, backupPath); err != nil {
 		cosy.ErrHandler(c, cosy.WrapErrorWithParams(backup.ErrCreateBackupFile, err.Error()))
 		return

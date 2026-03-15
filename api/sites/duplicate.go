@@ -3,6 +3,7 @@ package sites
 import (
 	"net/http"
 
+	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/site"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
@@ -10,7 +11,7 @@ import (
 
 func DuplicateSite(c *gin.Context) {
 	// Source name
-	src := c.Param("name")
+	src := helper.UnescapeURL(c.Param("name"))
 
 	// Destination name
 	var json struct {

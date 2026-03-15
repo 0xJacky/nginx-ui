@@ -2,8 +2,10 @@ package config
 
 import (
 	"os"
+	"path/filepath"
 	"strings"
 
+	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/query"
 )
@@ -88,17 +90,15 @@ func ValidateDeletePath(fullPath string) error {
 	if !IsUnderNginxConfDir(fullPath, nginxConfPath) {
 		return ErrDeletePathNotUnderNginxConfDir
 	}
+	if filepath.Clean(fullPath) == filepath.Clean(nginxConfPath) {
+		return ErrCannotDeleteNginxConfDir
+	}
 	return nil
 }
 
 // IsUnderNginxConfDir checks if the given path is under nginx config directory
 func IsUnderNginxConfDir(path, nginxConfPath string) bool {
-	// Normalize paths
-	path = strings.TrimSuffix(path, "/")
-	nginxConfPath = strings.TrimSuffix(nginxConfPath, "/")
-
-	// Check if path starts with nginx config path
-	return strings.HasPrefix(path, nginxConfPath)
+	return helper.IsUnderDirectory(path, nginxConfPath)
 }
 
 // CheckFileExists checks if file or directory exists and returns file info

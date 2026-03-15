@@ -3,7 +3,6 @@ package stream
 import (
 	"encoding/json"
 
-	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
@@ -13,7 +12,12 @@ import (
 
 // getSyncData returns the nodes that need to be synchronized by stream name and the post-sync action
 func getSyncData(name string) (nodes []*model.Node, postSyncAction string) {
-	configFilePath := nginx.GetConfPath("streams-available", name)
+	configFilePath, err := ResolveAvailablePath(name)
+	if err != nil {
+		logger.Error(err)
+		return
+	}
+
 	s := query.Stream
 	stream, err := s.Where(s.Path.Eq(configFilePath)).
 		Preload(s.Namespace).First()

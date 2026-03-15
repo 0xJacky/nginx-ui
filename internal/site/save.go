@@ -19,7 +19,11 @@ import (
 
 // Save saves a site configuration file
 func Save(name string, content string, overwrite bool, namespaceId uint64, syncNodeIds []uint64, postAction string) (err error) {
-	path := nginx.GetConfPath("sites-available", name)
+	path, err := ResolveAvailablePath(name)
+	if err != nil {
+		return err
+	}
+
 	if !overwrite && helper.FileExists(path) {
 		return ErrDstFileExists
 	}
@@ -34,7 +38,11 @@ func Save(name string, content string, overwrite bool, namespaceId uint64, syncN
 		return
 	}
 
-	enabledConfigFilePath := nginx.GetConfPath("sites-enabled", name)
+	enabledConfigFilePath, err := ResolveEnabledPath(name)
+	if err != nil {
+		return err
+	}
+
 	if helper.FileExists(enabledConfigFilePath) {
 		// Test nginx configuration
 		c := nginx.Control(nginx.TestConfig)
@@ -113,7 +121,12 @@ func syncSave(name string, content string) {
 			nodesMutex.Unlock()
 
 			// Check if the site is enabled, if so then enable it on the remote node
-			enabledConfigFilePath := nginx.GetConfPath("sites-enabled", name)
+			enabledConfigFilePath, err := ResolveEnabledPath(name)
+			if err != nil {
+				logger.Error(err)
+				return
+			}
+
 			if helper.FileExists(enabledConfigFilePath) {
 				syncEnable(name)
 			}

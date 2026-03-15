@@ -22,7 +22,11 @@ type Info struct {
 // GetStreamInfo retrieves comprehensive information about a stream
 func GetStreamInfo(name string) (*Info, error) {
 	// Get the absolute path to the stream configuration file
-	path := nginx.GetConfPath("streams-available", name)
+	path, err := ResolveAvailablePath(name)
+	if err != nil {
+		return nil, err
+	}
+
 	fileInfo, err := os.Stat(path)
 	if os.IsNotExist(err) {
 		return nil, ErrStreamNotFound
@@ -33,7 +37,12 @@ func GetStreamInfo(name string) (*Info, error) {
 
 	// Check if the stream is enabled
 	status := config.StatusEnabled
-	if _, err := os.Stat(nginx.GetConfPath("streams-enabled", name)); os.IsNotExist(err) {
+	enabledPath, err := ResolveEnabledPath(name)
+	if err != nil {
+		return nil, err
+	}
+
+	if _, err := os.Stat(enabledPath); os.IsNotExist(err) {
 		status = config.StatusDisabled
 	}
 
@@ -73,7 +82,11 @@ func GetStreamInfo(name string) (*Info, error) {
 // SaveStreamConfig saves stream configuration with database update
 func SaveStreamConfig(name, content string, namespaceID uint64, syncNodeIDs []uint64, overwrite bool, postAction string) error {
 	// Get stream from database or create if not exists
-	path := nginx.GetConfPath("streams-available", name)
+	path, err := ResolveAvailablePath(name)
+	if err != nil {
+		return err
+	}
+
 	s := query.Stream
 	streamModel, err := s.Where(s.Path.Eq(path)).FirstOrCreate()
 	if err != nil {

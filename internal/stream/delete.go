@@ -7,7 +7,6 @@ import (
 	"runtime"
 
 	"github.com/0xJacky/Nginx-UI/internal/helper"
-	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -17,7 +16,10 @@ import (
 
 // Delete deletes a site by removing the file in sites-available
 func Delete(name string) (err error) {
-	availablePath := nginx.GetConfPath("streams-available", name)
+	availablePath, err := ResolveAvailablePath(name)
+	if err != nil {
+		return err
+	}
 
 	syncDelete(name)
 
@@ -27,7 +29,10 @@ func Delete(name string) (err error) {
 		return
 	}
 
-	enabledPath := nginx.GetConfPath("streams-enabled", name)
+	enabledPath, err := ResolveEnabledPath(name)
+	if err != nil {
+		return err
+	}
 
 	if !helper.FileExists(availablePath) {
 		return ErrStreamNotFound

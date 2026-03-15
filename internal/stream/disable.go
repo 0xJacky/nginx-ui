@@ -16,7 +16,11 @@ import (
 
 // Disable disables a site by removing the symlink in sites-enabled
 func Disable(name string) (err error) {
-	enabledConfigFilePath := nginx.GetConfSymlinkPath(nginx.GetConfPath("streams-enabled", name))
+	enabledConfigFilePath, err := resolveEnabledSymlinkPath(name)
+	if err != nil {
+		return err
+	}
+
 	_, err = os.Stat(enabledConfigFilePath)
 	if err != nil {
 		return

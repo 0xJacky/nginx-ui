@@ -7,7 +7,6 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
-	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
@@ -30,11 +29,10 @@ func EditConfig(c *gin.Context) {
 		return
 	}
 
-	var absPath string
-	if filepath.IsAbs(json.Path) {
-		absPath = json.Path
-	} else {
-		absPath = nginx.GetConfPath(json.Path)
+	absPath, err := config.ResolveAbsoluteOrRelativeConfPath(json.Path)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
 	}
 
 	if !helper.FileExists(absPath) {

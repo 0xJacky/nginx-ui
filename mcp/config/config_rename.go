@@ -9,7 +9,6 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
-	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/mark3labs/mcp-go/mcp"
@@ -51,11 +50,14 @@ func handleNginxConfigRename(ctx context.Context, request mcp.CallToolRequest) (
 		return mcp.NewToolResultText(string(jsonResult)), nil
 	}
 
-	origFullPath := nginx.GetConfPath(basePath, origName)
-	newFullPath := nginx.GetConfPath(basePath, newName)
-	if !helper.IsUnderDirectory(origFullPath, nginx.GetConfPath()) ||
-		!helper.IsUnderDirectory(newFullPath, nginx.GetConfPath()) {
-		return nil, config.ErrPathIsNotUnderTheNginxConfDir
+	origFullPath, err := config.ResolveConfPath(basePath, origName)
+	if err != nil {
+		return nil, err
+	}
+
+	newFullPath, err := config.ResolveConfPath(basePath, newName)
+	if err != nil {
+		return nil, err
 	}
 
 	stat, err := os.Stat(origFullPath)

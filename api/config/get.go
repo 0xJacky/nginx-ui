@@ -7,7 +7,6 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
-	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
@@ -16,15 +15,9 @@ import (
 func GetConfig(c *gin.Context) {
 	path := helper.UnescapeURL(c.Query("path"))
 
-	var absPath string
-	if filepath.IsAbs(path) {
-		absPath = path
-	} else {
-		absPath = nginx.GetConfPath(path)
-	}
-
-	if !helper.IsUnderDirectory(absPath, nginx.GetConfPath()) {
-		cosy.ErrHandler(c, cosy.WrapErrorWithParams(config.ErrPathIsNotUnderTheNginxConfDir, absPath, nginx.GetConfPath()))
+	absPath, err := config.ResolveAbsoluteOrRelativeConfPath(path)
+	if err != nil {
+		cosy.ErrHandler(c, err)
 		return
 	}
 

@@ -39,6 +39,10 @@ func IsValidLogPath(logPath string) bool {
 			return false
 		}
 
+		if !isLogPathUnderWhiteList(resolvedPath) {
+			return false
+		}
+
 		// Check the resolved target file
 		targetInfo, err := os.Stat(resolvedPath)
 		if err != nil {

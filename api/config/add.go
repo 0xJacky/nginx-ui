@@ -3,7 +3,6 @@ package config
 import (
 	"net/http"
 	"os"
-	"path/filepath"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
@@ -32,12 +31,15 @@ func AddConfig(c *gin.Context) {
 	decodedBaseDir := helper.UnescapeURL(json.BaseDir)
 	decodedName := helper.UnescapeURL(name)
 
-	dir := nginx.GetConfPath(decodedBaseDir)
-	path := filepath.Join(dir, decodedName)
-	if !helper.IsUnderDirectory(path, nginx.GetConfPath()) {
-		c.JSON(http.StatusForbidden, gin.H{
-			"message": "filepath is not under the nginx conf path",
-		})
+	dir, err := config.ResolveConfPath(decodedBaseDir)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	path, err := config.ResolveConfPath(decodedBaseDir, decodedName)
+	if err != nil {
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -50,14 +52,14 @@ func AddConfig(c *gin.Context) {
 
 	// check if the dir exists, if not, use mkdirAll to create the dir
 	if !helper.FileExists(dir) {
-		err := os.MkdirAll(dir, 0755)
+		err = os.MkdirAll(dir, 0755)
 		if err != nil {
 			cosy.ErrHandler(c, err)
 			return
 		}
 	}
 
-	err := os.WriteFile(path, []byte(content), 0644)
+	err = os.WriteFile(path, []byte(content), 0644)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

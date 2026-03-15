@@ -11,4 +11,5 @@ var (
 	ErrCannotDeleteProtectedPath      = e.New(50010, "cannot delete protected path")
 	ErrFileNotFound                   = e.New(50011, "file or directory not found: {0}")
 	ErrDeletePathNotUnderNginxConfDir = e.New(50012, "you are not allowed to delete a file outside of the nginx config path")
+	ErrCannotDeleteNginxConfDir       = e.New(50013, "cannot delete the nginx config directory")
 )

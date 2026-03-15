@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
-	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
 )
@@ -24,15 +24,12 @@ func Mkdir(c *gin.Context) {
 
 	decodedFolderName := helper.UnescapeURL(json.FolderName)
 
-	fullPath := nginx.GetConfPath(decodedBasePath, decodedFolderName)
-	if !helper.IsUnderDirectory(fullPath, nginx.GetConfPath()) {
-		c.JSON(http.StatusForbidden, gin.H{
-			"message": "You are not allowed to create a folder " +
-				"outside of the nginx configuration directory",
-		})
+	fullPath, err := config.ResolveConfPath(decodedBasePath, decodedFolderName)
+	if err != nil {
+		cosy.ErrHandler(c, err)
 		return
 	}
-	err := os.Mkdir(fullPath, 0755)
+	err = os.Mkdir(fullPath, 0755)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"os"
-	"path/filepath"
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
@@ -48,10 +47,14 @@ func handleNginxConfigAdd(ctx context.Context, request mcp.CallToolRequest) (*mc
 		}
 	}
 
-	dir := nginx.GetConfPath(baseDir)
-	path := filepath.Join(dir, name)
-	if !helper.IsUnderDirectory(path, nginx.GetConfPath()) {
-		return nil, config.ErrPathIsNotUnderTheNginxConfDir
+	dir, err := config.ResolveConfPath(baseDir)
+	if err != nil {
+		return nil, err
+	}
+
+	path, err := config.ResolveConfPath(baseDir, name)
+	if err != nil {
+		return nil, err
 	}
 
 	if !overwrite && helper.FileExists(path) {
@@ -66,7 +69,7 @@ func handleNginxConfigAdd(ctx context.Context, request mcp.CallToolRequest) (*mc
 		}
 	}
 
-	err := os.WriteFile(path, []byte(content), 0644)
+	err = os.WriteFile(path, []byte(content), 0644)
 	if err != nil {
 		return nil, err
 	}

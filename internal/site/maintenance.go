@@ -25,17 +25,23 @@ const MaintenanceSuffix = "_nginx_ui_maintenance"
 // EnableMaintenance enables maintenance mode for a site
 func EnableMaintenance(name string) (err error) {
 	// Check if the site exists in sites-available
-	configFilePath := nginx.GetConfPath("sites-available", name)
+	configFilePath, err := ResolveAvailablePath(name)
 	_, err = os.Stat(configFilePath)
 	if err != nil {
 		return
 	}
 
 	// Path for the maintenance configuration file
-	maintenanceConfigPath := nginx.GetConfPath("sites-enabled", name+MaintenanceSuffix)
+	maintenanceConfigPath, err := ResolveEnabledPath(name + MaintenanceSuffix)
+	if err != nil {
+		return err
+	}
 
 	// Path for original configuration in sites-enabled
-	originalEnabledPath := nginx.GetConfPath("sites-enabled", name)
+	originalEnabledPath, err := ResolveEnabledPath(name)
+	if err != nil {
+		return err
+	}
 
 	// Check if the site is already in maintenance mode
 	if helper.FileExists(maintenanceConfigPath) {
@@ -100,15 +106,22 @@ func EnableMaintenance(name string) (err error) {
 // DisableMaintenance disables maintenance mode for a site
 func DisableMaintenance(name string) (err error) {
 	// Check if the site is in maintenance mode
-	maintenanceConfigPath := nginx.GetConfPath("sites-enabled", name+MaintenanceSuffix)
+	maintenanceConfigPath, err := ResolveEnabledPath(name + MaintenanceSuffix)
 	_, err = os.Stat(maintenanceConfigPath)
 	if err != nil {
 		return
 	}
 
 	// Original configuration paths
-	configFilePath := nginx.GetConfPath("sites-available", name)
-	enabledConfigFilePath := nginx.GetConfPath("sites-enabled", name)
+	configFilePath, err := ResolveAvailablePath(name)
+	if err != nil {
+		return err
+	}
+
+	enabledConfigFilePath, err := ResolveEnabledPath(name)
+	if err != nil {
+		return err
+	}
 
 	// Check if the original configuration exists
 	_, err = os.Stat(configFilePath)
@@ -245,7 +258,7 @@ func createMaintenanceConfig(conf *config.Config) string {
 		locationContent.WriteString("proxy_set_header X-Real-IP $remote_addr;\n")
 		locationContent.WriteString("proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n")
 		locationContent.WriteString("proxy_set_header X-Forwarded-Proto $scheme;\n")
-		locationContent.WriteString(fmt.Sprintf("rewrite ^ /pages/maintenance break;\n"))
+		locationContent.WriteString("rewrite ^ /pages/maintenance break;\n")
 		locationContent.WriteString(fmt.Sprintf("proxy_pass %s://127.0.0.1:%d;\n", schema, nginxUIPort))
 
 		location.Content = locationContent.String()
