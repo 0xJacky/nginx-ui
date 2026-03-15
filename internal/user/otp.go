@@ -54,7 +54,7 @@ func VerifyOTP(user *model.User, otp, recoveryCode string) (err error) {
 		usedCount := 0
 		verified := false
 		for _, code := range user.RecoveryCodes.Codes {
-			if code.Code == recoveryCode && code.UsedTime == nil {
+			if !verified && code.Code == recoveryCode && code.UsedTime == nil {
 				t := time.Now().Unix()
 				code.UsedTime = &t
 				_, err = u.Where(u.ID.Eq(user.ID)).Updates(user)
@@ -67,10 +67,13 @@ func VerifyOTP(user *model.User, otp, recoveryCode string) (err error) {
 				usedCount++
 			}
 		}
-		if verified && usedCount == len(user.RecoveryCodes.Codes) {
+		if !verified {
+			return ErrRecoveryCode
+		}
+		if usedCount == len(user.RecoveryCodes.Codes) {
 			notification.Warning("All Recovery Codes Have Been Used", "Please generate new recovery codes in the preferences immediately to prevent lockout.", nil)
 		}
-		return ErrRecoveryCode
+		return nil
 	}
 	return
 }
