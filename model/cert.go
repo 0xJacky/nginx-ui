@@ -43,7 +43,7 @@ type Cert struct {
 	ACMEUser                *AcmeUser            `json:"acme_user,omitempty"`
 	KeyType                 certcrypto.KeyType   `json:"key_type"`
 	Log                     string               `json:"log"`
-	Resource                *CertificateResource `json:"-" gorm:"serializer:json"`
+	Resource                *CertificateResource `json:"-" gorm:"serializer:json[aes]"`
 	SyncNodeIds             []uint64             `json:"sync_node_ids" gorm:"serializer:json"`
 	MustStaple              bool                 `json:"must_staple"`
 	LegoDisableCNAMESupport bool                 `json:"lego_disable_cname_support"`

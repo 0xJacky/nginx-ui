@@ -23,7 +23,7 @@ type AcmeUser struct {
 	Email             string                `json:"email"`
 	CADir             string                `json:"ca_dir"`
 	Registration      registration.Resource `json:"registration" gorm:"serializer:json"`
-	Key               PrivateKey            `json:"-" gorm:"serializer:json"`
+	Key               PrivateKey            `json:"-" gorm:"serializer:json[aes]"`
 	Proxy             string                `json:"proxy"`
 	RegisterOnStartup bool                  `json:"register_on_startup"`
 	EABKeyID          string                `json:"eab_key_id"`

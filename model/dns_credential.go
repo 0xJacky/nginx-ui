@@ -7,7 +7,7 @@ import (
 type DnsCredential struct {
 	Model
 	Name         string      `json:"name"`
-	Config       *dns.Config `json:"config,omitempty" gorm:"serializer:json"`
+	Config       *dns.Config `json:"config,omitempty" gorm:"serializer:json[aes]"`
 	Provider     string      `json:"provider"`
 	ProviderCode string      `json:"provider_code" gorm:"index"`
 }
