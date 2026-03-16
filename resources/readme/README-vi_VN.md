@@ -371,7 +371,9 @@ Hãy tham gia nhóm cộng đồng WeChat chính thức của Nginx UI để tra
 
 Quét mã QR bên dưới để thêm WeChat và ghi `Nginx UI Community Group` trong lời mời kết bạn. Quản trị viên sẽ mời bạn vào nhóm cộng đồng chính thức.
 
-<img src="../../docs/public/assets/wechat-community-qr.png" alt="Nginx UI WeChat Community QR Code" width="320">
+<p align="center">
+  <img src="../../docs/public/assets/wechat-community-qr.png" alt="Nginx UI WeChat Community QR Code" width="320">
+</p>
 
 ## Giấy phép
 

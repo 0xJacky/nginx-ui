@@ -380,7 +380,9 @@ Nginx UI 公式 WeChat コミュニティグループへぜひご参加くださ
 
 以下の QR コードを WeChat で読み取り、申請時に `Nginx UI Community Group` と記載してください。管理者が公式コミュニティグループへ招待します。
 
-<img src="../../docs/public/assets/wechat-community-qr.png" alt="Nginx UI WeChat Community QR Code" width="320">
+<p align="center">
+  <img src="../../docs/public/assets/wechat-community-qr.png" alt="Nginx UI WeChat Community QR Code" width="320">
+</p>
 
 ## ライセンス
 

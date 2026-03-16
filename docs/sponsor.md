@@ -24,7 +24,9 @@ Welcome to join the official Nginx UI WeChat community group to discuss usage, d
 
 Scan the QR code below to add us on WeChat, and include `Nginx UI Community Group` in your request. The administrator will invite you to the official community group.
 
-![Nginx UI official WeChat community QR code](/assets/wechat-community-qr.png)
+<p align="center">
+  <img src="/assets/wechat-community-qr.png" alt="Nginx UI official WeChat community QR code" width="320">
+</p>
 
 ## Why Sponsor?
 

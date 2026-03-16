@@ -24,7 +24,9 @@
 
 扫描下方二维码添加好友，并备注 `Nginx UI 交流群`，管理员会邀请您加入官方交流群。
 
-![Nginx UI 官方微信交流群二维码](/assets/wechat-community-qr.png)
+<p align="center">
+  <img src="/assets/wechat-community-qr.png" alt="Nginx UI 官方微信交流群二维码" width="320">
+</p>
 
 ## 为什么赞助？
 

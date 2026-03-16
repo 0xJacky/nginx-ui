@@ -24,7 +24,9 @@
 
 掃描下方二維碼新增好友，並備註 `Nginx UI 交流群`，管理員會邀請您加入官方交流群。
 
-![Nginx UI 官方微信交流群二維碼](/assets/wechat-community-qr.png)
+<p align="center">
+  <img src="/assets/wechat-community-qr.png" alt="Nginx UI 官方微信交流群二維碼" width="320">
+</p>
 
 ## 為什麼贊助？
 

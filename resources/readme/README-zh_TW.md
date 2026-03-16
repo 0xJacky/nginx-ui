@@ -320,7 +320,9 @@ server {
 
 掃描下方二維碼新增好友，並備註 `Nginx UI 交流群`，管理員會邀請您加入官方交流群。
 
-<img src="../../docs/public/assets/wechat-community-qr.png" alt="Nginx UI WeChat Community QR Code" width="320">
+<p align="center">
+  <img src="../../docs/public/assets/wechat-community-qr.png" alt="Nginx UI WeChat Community QR Code" width="320">
+</p>
 
 ### 工具支援
 

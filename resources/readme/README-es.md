@@ -310,7 +310,9 @@ Si tiene una sugerencia que mejoraría este proyecto, bifurque el repositorio y 
 
 Escanea el siguiente código QR para agregarnos en WeChat e incluye `Nginx UI Community Group` en tu solicitud. Un administrador te invitará al grupo oficial de la comunidad.
 
-<img src="../../docs/public/assets/wechat-community-qr.png" alt="Nginx UI WeChat Community QR Code" width="320">
+<p align="center">
+  <img src="../../docs/public/assets/wechat-community-qr.png" alt="Nginx UI WeChat Community QR Code" width="320">
+</p>
 
 ## Licencia
 
