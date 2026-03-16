@@ -365,6 +365,14 @@ Nếu bạn có đề xuất giúp dự án tốt hơn, vui lòng phân nhánh r
 4. Đẩy code lên Branch (`git push origin feature/AmazingFeature`)
 5. Mở một Pull Request
 
+## Cộng đồng
+
+Hãy tham gia nhóm cộng đồng WeChat chính thức của Nginx UI để trao đổi với những người dùng khác về cách sử dụng, triển khai và xử lý sự cố.
+
+Quét mã QR bên dưới để thêm WeChat và ghi `Nginx UI Community Group` trong lời mời kết bạn. Quản trị viên sẽ mời bạn vào nhóm cộng đồng chính thức.
+
+<img src="../../docs/public/assets/wechat-community-qr.png" alt="Nginx UI WeChat Community QR Code" width="320">
+
 ## Giấy phép
 
 Dự án này được cung cấp theo giấy phép GNU Affero General Public License v3.0 có thể tìm thấy trong tệp [LICENSE](LICENSE). Bằng cách sử dụng, phân phối hoặc đóng góp cho dự án này, bạn đồng ý với các điều khoản và điều kiện của giấy phép này.

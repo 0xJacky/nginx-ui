@@ -374,6 +374,14 @@ Issue に「enhancement」タグを付けて提案することもできます。
 4. ブランチをプッシュ (`git push origin feature/AmazingFeature`)
 5. プルリクエストを作成
 
+## コミュニティ
+
+Nginx UI 公式 WeChat コミュニティグループへぜひご参加ください。利用方法、デプロイ構成、トラブルシューティングについて他のユーザーと交流できます。
+
+以下の QR コードを WeChat で読み取り、申請時に `Nginx UI Community Group` と記載してください。管理者が公式コミュニティグループへ招待します。
+
+<img src="../../docs/public/assets/wechat-community-qr.png" alt="Nginx UI WeChat Community QR Code" width="320">
+
 ## ライセンス
 
 本プロジェクトは GNU Affero General Public License v3.0 に基づき配布されています。ライセンスの詳細は [LICENSE](LICENSE) ファイルをご覧ください。

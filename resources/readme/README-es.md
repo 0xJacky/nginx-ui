@@ -304,6 +304,14 @@ Si tiene una sugerencia que mejoraría este proyecto, bifurque el repositorio y 
 4. Push al branch (`git push origin feature/AmazingFeature`)
 5. Abrir un Pull Request
 
+## Comunidad
+
+Únete al grupo oficial de la comunidad de Nginx UI en WeChat para hablar con otros usuarios sobre uso, despliegue y resolución de problemas.
+
+Escanea el siguiente código QR para agregarnos en WeChat e incluye `Nginx UI Community Group` en tu solicitud. Un administrador te invitará al grupo oficial de la comunidad.
+
+<img src="../../docs/public/assets/wechat-community-qr.png" alt="Nginx UI WeChat Community QR Code" width="320">
+
 ## Licencia
 
 Este proyecto se proporciona bajo una licencia GNU Affero General Public License v3.0 que se puede encontrar en el archivo [LICENCIA](LICENSE). Al usar, distribuir o contribuir a este proyecto, acepta los términos y condiciones de esta licencia.
