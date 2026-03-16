@@ -13,6 +13,8 @@ const (
 	Server   = "server"
 	Location = "location"
 	Upstream = "upstream"
+	Http     = "http"
+	Stream   = "stream"
 )
 
 func (s *NgxServer) ParseServer(directive config.IDirective) {
@@ -170,11 +172,40 @@ func buildComment(c []string) string {
 	return strings.ReplaceAll(strings.Join(c, "\n"), "#", "")
 }
 
+func shouldUnwrapRootBlock(block config.IBlock) config.IDirective {
+	if block == nil {
+		return nil
+	}
+
+	directives := block.GetDirectives()
+	if len(directives) != 1 {
+		return nil
+	}
+
+	directive := directives[0]
+	if directive.GetBlock() == nil {
+		return nil
+	}
+
+	switch directive.GetName() {
+	case Http, Stream:
+		return directive
+	default:
+		return nil
+	}
+}
+
 func parse(block config.IBlock, ngxConfig *NgxConfig) (err error) {
 	if block == nil {
 		err = ErrBlockIsNil
 		return
 	}
+
+	if rootBlock := shouldUnwrapRootBlock(block); rootBlock != nil {
+		ngxConfig.RootBlock = rootBlock.GetName()
+		return parse(rootBlock.GetBlock(), ngxConfig)
+	}
+
 	for _, v := range block.GetDirectives() {
 		comments := buildComment(v.GetComment())
 		switch v.GetName() {

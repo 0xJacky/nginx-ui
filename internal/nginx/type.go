@@ -10,6 +10,7 @@ import (
 type NgxConfig struct {
 	FileName  string         `json:"file_name"`
 	Name      string         `json:"name"`
+	RootBlock string         `json:"root_block,omitempty"`
 	Upstreams []*NgxUpstream `json:"upstreams"`
 	Servers   []*NgxServer   `json:"servers"`
 	Custom    string         `json:"custom"`

@@ -17,6 +17,32 @@ func buildComments(orig string, indent int) (content string) {
 	return
 }
 
+func wrapRootBlock(name, content string) string {
+	trimmedContent := strings.TrimSpace(content)
+	if trimmedContent == "" {
+		return fmt.Sprintf("%s {\n}\n", name)
+	}
+
+	var builder strings.Builder
+	builder.WriteString(name)
+	builder.WriteString(" {\n")
+
+	scanner := bufio.NewScanner(strings.NewReader(strings.TrimRight(content, "\n")))
+	for scanner.Scan() {
+		line := scanner.Text()
+		if line == "" {
+			builder.WriteByte('\n')
+			continue
+		}
+		builder.WriteByte('\t')
+		builder.WriteString(line)
+		builder.WriteByte('\n')
+	}
+
+	builder.WriteString("}\n")
+	return builder.String()
+}
+
 func (c *NgxConfig) BuildConfig() (content string, err error) {
 	// Custom
 	if c.Custom != "" {
@@ -82,6 +108,11 @@ func (c *NgxConfig) BuildConfig() (content string, err error) {
 
 		content += fmt.Sprintf("%sserver {\n%s}\n\n", comments, server)
 	}
+
+	if c.RootBlock != "" {
+		content = wrapRootBlock(c.RootBlock, content)
+	}
+
 	p := parser.NewStringParser(content, parser.WithSkipValidDirectivesErr())
 	cfg, err := p.Parse()
 	if err != nil {

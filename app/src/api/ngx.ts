@@ -3,6 +3,7 @@ import { http } from '@uozi-admin/request'
 export interface NgxConfig {
   file_name?: string
   name: string
+  root_block?: 'http' | 'stream'
   upstreams?: NgxUpstream[]
   servers: NgxServer[]
   custom?: string
