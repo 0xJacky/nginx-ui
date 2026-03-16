@@ -93,6 +93,7 @@ func IssueCert(c *gin.Context) {
 			AutoCert:                model.AutoCertEnabled,
 			ChallengeMethod:         payload.ChallengeMethod,
 			DnsCredentialID:         payload.DNSCredentialID,
+			ACMEUserID:              payload.ACMEUserID,
 			Resource:                payload.Resource,
 			MustStaple:              payload.MustStaple,
 			LegoDisableCNAMESupport: payload.LegoDisableCNAMESupport,

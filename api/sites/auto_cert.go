@@ -18,6 +18,7 @@ func AddDomainToAutoCert(c *gin.Context) {
 		ChallengeMethod string             `json:"challenge_method"`
 		Domains         []string           `json:"domains"`
 		KeyType         certcrypto.KeyType `json:"key_type"`
+		ACMEUserID      uint64             `json:"acme_user_id"`
 	}
 
 	if !cosy.BindAndValid(c, &json) {
@@ -37,6 +38,7 @@ func AddDomainToAutoCert(c *gin.Context) {
 		AutoCert:        model.AutoCertEnabled,
 		DnsCredentialID: json.DnsCredentialID,
 		ChallengeMethod: json.ChallengeMethod,
+		ACMEUserID:      json.ACMEUserID,
 	})
 
 	if err != nil {

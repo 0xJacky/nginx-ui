@@ -41,6 +41,7 @@ export interface AutoCertRequest {
   challenge_method: string
   domains: string[]
   key_type: PrivateKeyType
+  acme_user_id?: number
 }
 
 const baseUrl = '/sites'

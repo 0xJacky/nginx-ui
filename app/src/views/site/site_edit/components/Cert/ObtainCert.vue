@@ -69,6 +69,7 @@ function changeAutoCert(status: boolean, key_type?: PrivateKeyType) {
       challenge_method: data.value.challenge_method!,
       dns_credential_id: data.value.dns_credential_id!,
       key_type: key_type!,
+      acme_user_id: data.value.acme_user_id,
     }).then(() => {
       message.success($gettext('Auto-renewal enabled for %{name}', { name: name.value }))
     }).catch(e => {
