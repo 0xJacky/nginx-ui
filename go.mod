@@ -378,7 +378,7 @@ require (
 )
 
 replace (
-	code.pfad.fr/risefront => github.com/nginxui/risefront v1.3.2
+	code.pfad.fr/risefront => github.com/nginxui/risefront v1.3.3
 	github.com/minio/selfupdate => github.com/nginxui/selfupdate v0.0.0-20250508140228-a7dab39cec4a
 	github.com/nikoksr/notify => github.com/nginxui/notify v0.0.0-20250509000747-c76622723eb1
 )
