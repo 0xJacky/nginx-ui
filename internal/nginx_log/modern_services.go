@@ -28,6 +28,7 @@ var (
 	globalIndexer          *indexer.ParallelIndexer
 	globalLogFileManager   *indexer.LogFileManager
 	servicesInitialized    bool
+	servicesInitializing   bool
 	servicesMutex          sync.RWMutex
 	shutdownCancel         context.CancelFunc
 	isShuttingDown         bool
@@ -43,32 +44,58 @@ var (
 // InitializeServices initializes the new modular services
 func InitializeServices(ctx context.Context) {
 	servicesMutex.Lock()
-	defer servicesMutex.Unlock()
 
 	// Check if indexing is enabled
 	if !settings.NginxLogSettings.IndexingEnabled {
+		servicesMutex.Unlock()
 		logger.Info("Indexing is disabled, skipping nginx_log services initialization")
 		return
 	}
 
 	if servicesInitialized {
+		servicesMutex.Unlock()
 		logger.Info("Modern nginx log services already initialized, skipping")
 		return
 	}
+
+	if servicesInitializing {
+		servicesMutex.Unlock()
+		logger.Info("Modern nginx log services are initializing, skipping duplicate request")
+		return
+	}
+
+	servicesInitializing = true
+	servicesMutex.Unlock()
 
 	logger.Info("Initializing modern nginx log services...")
 
 	// Create a cancellable context for services
 	serviceCtx, cancel := context.WithCancel(ctx)
-	shutdownCancel = cancel
 
-	// Initialize with default configuration directly
-	if err := initializeWithDefaults(serviceCtx); err != nil {
+	searcherInstance, analyticsInstance, indexerInstance, logFileManagerInstance, err := initializeWithDefaults(serviceCtx)
+	if err != nil {
+		cancel()
+		servicesMutex.Lock()
+		servicesInitializing = false
+		servicesMutex.Unlock()
 		logger.Errorf("Failed to initialize modern services: %v", err)
 		return
 	}
 
+	servicesMutex.Lock()
+	globalSearcher = searcherInstance
+	globalAnalytics = analyticsInstance
+	globalIndexer = indexerInstance
+	globalLogFileManager = logFileManagerInstance
+	shutdownCancel = cancel
+	servicesInitialized = true
+	servicesInitializing = false
+	servicesMutex.Unlock()
+
 	logger.Info("Modern nginx log services initialization completed")
+
+	// Load existing shards after services are visible without blocking readers during initialization.
+	UpdateSearcherShards()
 
 	// Initialize task scheduler after services are ready
 	go InitTaskScheduler(serviceCtx)
@@ -86,8 +113,8 @@ func InitializeServices(ctx context.Context) {
 	}()
 }
 
-// initializeWithDefaults creates services with default configuration
-func initializeWithDefaults(ctx context.Context) error {
+// initializeWithDefaults creates services with default configuration.
+func initializeWithDefaults(ctx context.Context) (*searcher.Searcher, analytics.Service, *indexer.ParallelIndexer, *indexer.LogFileManager, error) {
 	logger.Info("Initializing services with default configuration")
 
 	// Initialize global log parser singleton before starting indexer/searcher
@@ -95,37 +122,30 @@ func initializeWithDefaults(ctx context.Context) error {
 
 	// Create empty searcher (will be populated when indexes are available)
 	searcherConfig := searcher.DefaultSearcherConfig()
-	globalSearcher = searcher.NewSearcher(searcherConfig, []bleve.Index{})
+	searcherInstance := searcher.NewSearcher(searcherConfig, []bleve.Index{})
 
 	// Initialize analytics with empty searcher
-	globalAnalytics = analytics.NewService(globalSearcher)
+	analyticsInstance := analytics.NewService(searcherInstance)
 
 	// Initialize parallel indexer with shard manager
 	indexerConfig := indexer.DefaultIndexerConfig()
 	// Use config directory for index path
 	indexerConfig.IndexPath = getConfigDirIndexPath()
 	shardManager := indexer.NewGroupedShardManager(indexerConfig)
-	globalIndexer = indexer.NewParallelIndexer(indexerConfig, shardManager)
+	indexerInstance := indexer.NewParallelIndexer(indexerConfig, shardManager)
 
 	// Start the indexer
-	if err := globalIndexer.Start(ctx); err != nil {
+	if err := indexerInstance.Start(ctx); err != nil {
 		logger.Errorf("Failed to start parallel indexer: %v", err)
-		return fmt.Errorf("failed to start parallel indexer: %w", err)
+		return nil, nil, nil, nil, fmt.Errorf("failed to start parallel indexer: %w", err)
 	}
 
 	// Initialize log file manager
-	globalLogFileManager = indexer.NewLogFileManager()
+	logFileManagerInstance := indexer.NewLogFileManager()
 	// Inject indexer for precise doc counting before persisting
-	globalLogFileManager.SetIndexer(globalIndexer)
+	logFileManagerInstance.SetIndexer(indexerInstance)
 
-	servicesInitialized = true
-
-	// After all services are initialized, update the searcher with any existing shards.
-	// This is crucial for loading the index state on application startup.
-	// We call the 'locked' version because we already hold the mutex here.
-	updateSearcherShardsLocked()
-
-	return nil
+	return searcherInstance, analyticsInstance, indexerInstance, logFileManagerInstance, nil
 }
 
 // getConfigDirIndexPath returns the index path relative to the config file directory
@@ -262,13 +282,14 @@ func AddLogPath(path, logType, name, configFile string) {
 
 	// Fallback storage
 	fallbackCacheMutex.Lock()
+	defer fallbackCacheMutex.Unlock()
+
 	fallbackCache[path] = &NginxLogCache{
 		Path:       path,
 		Type:       logType,
 		Name:       name,
 		ConfigFile: configFile,
 	}
-	fallbackCacheMutex.Unlock()
 }
 
 // RemoveLogPathsFromConfig removes all log paths associated with a specific config file
@@ -280,12 +301,13 @@ func RemoveLogPathsFromConfig(configFile string) {
 
 	// Fallback removal
 	fallbackCacheMutex.Lock()
+	defer fallbackCacheMutex.Unlock()
+
 	for p, entry := range fallbackCache {
 		if entry.ConfigFile == configFile {
 			delete(fallbackCache, p)
 		}
 	}
-	fallbackCacheMutex.Unlock()
 }
 
 // GetAllLogPaths returns all cached log paths, optionally filtered
