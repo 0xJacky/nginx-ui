@@ -6,7 +6,7 @@ require (
 	code.pfad.fr/risefront v1.0.0
 	github.com/0xJacky/pofile v1.1.1
 	github.com/BurntSushi/toml v1.6.0
-	github.com/alibabacloud-go/alidns-20150109/v5 v5.3.1
+	github.com/alibabacloud-go/alidns-20150109/v5 v5.3.2
 	github.com/alibabacloud-go/darabonba-openapi/v2 v2.1.15
 	github.com/alibabacloud-go/tea v1.4.0
 	github.com/alibabacloud-go/tea-utils/v2 v2.0.9
@@ -50,17 +50,17 @@ require (
 	github.com/spf13/afero v1.15.0
 	github.com/spf13/cast v1.10.0
 	github.com/stretchr/testify v1.11.1
-	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.3.56
-	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/dnspod v1.3.24
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.3.60
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/dnspod v1.3.59
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20260220081509-8e17ce617db3
 	github.com/ulikunitz/xz v0.5.15
-	github.com/uozi-tech/cosy v1.30.1
+	github.com/uozi-tech/cosy v1.31.0
 	github.com/uozi-tech/cosy-driver-sqlite v0.2.1
 	github.com/urfave/cli/v3 v3.7.0
 	golang.org/x/crypto v0.49.0
 	golang.org/x/net v0.52.0
 	golang.org/x/oauth2 v0.36.0
-	google.golang.org/grpc v1.79.2
+	google.golang.org/grpc v1.79.3
 	gopkg.in/ini.v1 v1.67.1
 	gorm.io/datatypes v1.2.7
 	gorm.io/driver/sqlite v1.6.0
