@@ -80,6 +80,13 @@ func DeleteNode(c *gin.Context) {
 		}).Destroy()
 }
 
+func RefreshNodeStatus(c *gin.Context) {
+	analytic.ResetRetryBackoff()
+	c.JSON(http.StatusOK, gin.H{
+		"message": "ok",
+	})
+}
+
 func LoadNodeFromSettings(c *gin.Context) {
 	err := settings.ReloadCluster()
 	if err != nil {

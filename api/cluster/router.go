@@ -14,6 +14,7 @@ func InitRouter(r *gin.RouterGroup) {
 		nodeGroup.DELETE("/:id", DeleteNode)
 	}
 
+	r.POST("nodes/refresh_status", RefreshNodeStatus)
 	r.POST("nodes/reload_nginx", ReloadNginx)
 	r.POST("nodes/restart_nginx", RestartNginx)
 
