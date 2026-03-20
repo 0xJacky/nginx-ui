@@ -130,6 +130,21 @@ func markConnectionSuccess(nodeID uint64) {
 	updateNodeStatus(nodeID, true, "connection_success")
 }
 
+// ResetRetryBackoff resets the retry backoff timers for all nodes,
+// allowing immediate re-checks on the next tick. This is lighter than
+// RestartRetrieveNodesStatus because it does not restart the manager
+// goroutines; it only clears the backoff so existing goroutines will
+// retry on their next 1-second tick.
+func ResetRetryBackoff() {
+	retryMutex.Lock()
+	defer retryMutex.Unlock()
+
+	now := time.Now()
+	for _, state := range retryStates {
+		state.NextRetry = now
+	}
+}
+
 func logCurrentNodeStatus(prefix string) {
 	nodeMapMu.Lock()
 	defer nodeMapMu.Unlock()

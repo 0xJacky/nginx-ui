@@ -71,6 +71,7 @@ function restartNginx(nodeIds: number[]) {
 
 const nodeApi = extendCurdApi(useCurdApi<Node>(baseUrl), {
   load_from_settings: () => http.post(`${baseUrl}/load_from_settings`),
+  refreshStatus: () => http.post(`${baseUrl}/refresh_status`),
   reloadNginx,
   restartNginx,
 })
