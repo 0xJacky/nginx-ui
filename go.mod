@@ -12,7 +12,7 @@ require (
 	github.com/alibabacloud-go/tea-utils/v2 v2.0.9
 	github.com/blevesearch/bleve/v2 v2.5.7
 	github.com/caarlos0/env/v11 v11.4.0
-	github.com/casdoor/casdoor-go-sdk v1.44.0
+	github.com/casdoor/casdoor-go-sdk v1.45.0
 	github.com/cloudflare/cloudflare-go/v6 v6.8.0
 	github.com/coreos/go-oidc/v3 v3.17.0
 	github.com/creack/pty v1.1.24
@@ -25,7 +25,7 @@ require (
 	github.com/gin-contrib/cors v1.7.6
 	github.com/gin-contrib/static v1.1.5
 	github.com/gin-gonic/gin v1.12.0
-	github.com/go-acme/lego/v4 v4.32.0
+	github.com/go-acme/lego/v4 v4.33.0
 	github.com/go-co-op/gocron/v2 v2.19.1
 	github.com/go-gormigrate/gormigrate/v2 v2.1.5
 	github.com/go-playground/validator/v10 v10.30.1
@@ -50,11 +50,11 @@ require (
 	github.com/spf13/afero v1.15.0
 	github.com/spf13/cast v1.10.0
 	github.com/stretchr/testify v1.11.1
-	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.3.60
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.3.62
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/dnspod v1.3.59
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20260220081509-8e17ce617db3
 	github.com/ulikunitz/xz v0.5.15
-	github.com/uozi-tech/cosy v1.31.0
+	github.com/uozi-tech/cosy v1.31.1
 	github.com/uozi-tech/cosy-driver-sqlite v0.2.1
 	github.com/urfave/cli/v3 v3.7.0
 	golang.org/x/crypto v0.49.0
