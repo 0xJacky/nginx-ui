@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Namespace } from '@/api/namespace'
 import namespace from '@/api/namespace'
+import nodeApi from '@/api/node'
 import NodeCard from '@/components/NodeCard'
 
 const props = defineProps<{
@@ -35,6 +36,14 @@ const allSyncNodeIds = computed(() => {
   // Merge and deduplicate
   const allNodes = [...new Set([...namespaceNodes, ...manualNodes])]
   return allNodes
+})
+
+// When sync nodes become visible, reset the backend retry backoff so that
+// nodes stuck in backoff are re-checked immediately and their status is fresh.
+watch(allSyncNodeIds, newIds => {
+  if (newIds.length > 0) {
+    nodeApi.refreshStatus()
+  }
 })
 </script>
 
