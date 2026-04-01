@@ -37,11 +37,19 @@ export function useWebSocket<T = any>(
   reconnect: boolean = true,
   options?: Omit<UseWebSocketOptions, 'autoReconnect'>,
 ): UseWebSocketReturn<T> {
-  const user = useUserStore()
+  const userStore = useUserStore()
   const settings = useSettingsStore()
-  const { token, shortToken } = storeToRefs(user)
+  const { token, shortToken } = storeToRefs(userStore)
 
-  const wsUrl = buildWebSocketUrl(url, token.value, shortToken.value, settings.node.id)
+  // Reactively rebuild the URL when shortToken changes (e.g. after fetch completes)
+  const wsUrl = computed(() =>
+    buildWebSocketUrl(url, token.value, shortToken.value, settings.node.id),
+  )
+
+  // If short token is not yet available, trigger a fetch (non-blocking)
+  if (!shortToken.value && token.value) {
+    userStore.fetchShortToken()
+  }
 
   return vueUseWebSocket<T>(wsUrl, {
     autoReconnect: reconnect
@@ -49,6 +57,7 @@ export function useWebSocket<T = any>(
           retries: 10,
           delay: 1000,
           onFailed: () => {
+            userStore.fetchShortToken()
             console.warn(`Failed to reconnect to WebSocket after 10 retries: ${url}`)
           },
         }

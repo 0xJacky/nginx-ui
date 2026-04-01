@@ -1,11 +1,40 @@
 package middleware
 
 import (
+	"crypto/rand"
+	"encoding/hex"
+	"net/http"
+
 	"github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
-	"net/http"
+	cSettings "github.com/uozi-tech/cosy/settings"
 )
+
+const SecureSessionCookieName = "_nginx_ui_secure_session"
+
+// SecureSessionCookie sets an HttpOnly SameSite=Lax cookie when serving the SPA.
+// This cookie acts as a CSRF-proof session binding for the short token endpoint.
+func SecureSessionCookie() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		if _, err := c.Cookie(SecureSessionCookieName); err == http.ErrNoCookie {
+			b := make([]byte, 16)
+			if _, err := rand.Read(b); err == nil {
+				c.SetSameSite(http.SameSiteLaxMode)
+				c.SetCookie(
+					SecureSessionCookieName,
+					hex.EncodeToString(b),
+					0,
+					"/",
+					"",
+					cSettings.ServerSettings.EnableHTTPS,
+					true,
+				)
+			}
+		}
+		c.Next()
+	}
+}
 
 func RequireSecureSession() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -38,6 +67,5 @@ func RequireSecureSession() gin.HandlerFunc {
 		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
 			"message": "Secure Session ID is invalid",
 		})
-		return
 	}
 }

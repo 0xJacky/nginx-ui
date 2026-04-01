@@ -36,6 +36,25 @@ func getToken(c *gin.Context) (token string) {
 	return ""
 }
 
+// getTokenWS reads token from header or query only (no cookie fallback).
+// This prevents Cross-Site WebSocket Hijacking (CSWSH) by ensuring
+// browsers cannot silently authenticate WebSocket upgrades via cookies.
+func getTokenWS(c *gin.Context) (token string) {
+	if token = c.GetHeader("Authorization"); token != "" {
+		return
+	}
+
+	if token = c.Query("token"); token != "" {
+		if len(token) > 16 {
+			tokenBytes, _ := base64.StdEncoding.DecodeString(token)
+			return string(tokenBytes)
+		}
+		return token
+	}
+
+	return ""
+}
+
 // getXNodeID from header or query
 func getXNodeID(c *gin.Context) (xNodeID string) {
 	if xNodeID = c.GetHeader("X-Node-ID"); xNodeID != "" {
@@ -97,6 +116,59 @@ func AuthRequired() gin.HandlerFunc {
 			}
 		} else {
 			// Long JWT token
+			u, ok = user.GetTokenUser(token)
+			if !ok {
+				abortWithAuthFailure()
+				return
+			}
+		}
+
+		c.Set("user", u)
+		c.Next()
+	}
+}
+
+// AuthRequiredWS is a WebSocket-specific auth middleware that does NOT read cookies.
+// This prevents CSWSH attacks by requiring explicit token passing via header or query param.
+func AuthRequiredWS() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		abortWithAuthFailure := func() {
+			c.AbortWithStatusJSON(http.StatusForbidden, gin.H{
+				"message": "Authorization failed",
+			})
+		}
+
+		xNodeID := getXNodeID(c)
+		if xNodeID != "" {
+			c.Set("ProxyNodeID", xNodeID)
+		}
+
+		if nodeSecret := getNodeSecret(c); nodeSecret != "" && nodeSecret == settings.NodeSettings.Secret {
+			initUser := user.GetInitUser(c)
+			c.Set("Secret", nodeSecret)
+			c.Set("user", initUser)
+			c.Next()
+			return
+		}
+
+		token := getTokenWS(c)
+		if token == "" {
+			abortWithAuthFailure()
+			return
+		}
+
+		var (
+			u  *model.User
+			ok bool
+		)
+
+		if len(token) <= 16 {
+			u, ok = user.GetTokenUserByShortToken(token)
+			if !ok {
+				abortWithAuthFailure()
+				return
+			}
+		} else {
 			u, ok = user.GetTokenUser(token)
 			if !ok {
 				abortWithAuthFailure()

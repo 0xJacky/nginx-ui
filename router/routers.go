@@ -75,6 +75,9 @@ func InitRouter() {
 			llm.InitLocalRouter(local)
 		}
 
+		// Authorization required (HTTP, no proxy) - token endpoint
+		user.InitTokenRouter(local)
+
 		// Authorization required and not websocket request
 		g := root.Group("/", middleware.AuthRequired(), middleware.Proxy())
 		{
@@ -102,8 +105,8 @@ func InitRouter() {
 			g.GET("/geolite/status", geolite.GetStatus)
 		}
 
-		// Authorization required and websocket request
-		w := root.Group("/", middleware.AuthRequired(), middleware.ProxyWs())
+		// Authorization required and websocket request (no cookie fallback to prevent CSWSH)
+		w := root.Group("/", middleware.AuthRequiredWS(), middleware.ProxyWs())
 		{
 			analytic.InitWebSocketRouter(w)
 			certificate.InitCertificateWebSocketRouter(w)

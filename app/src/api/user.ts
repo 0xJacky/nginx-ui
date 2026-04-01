@@ -22,6 +22,9 @@ const user = extendCurdApi(useCurdApi<User>('/users'), {
   updateCurrentUserLanguage: (data: { language: string }) => {
     return http.post('/user/language', data)
   },
+  fetchShortToken: (): Promise<{ short_token: string }> => {
+    return http.post('/token/short')
+  },
 })
 
 export default user

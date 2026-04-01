@@ -9,6 +9,7 @@ import (
 
 func initEmbedRoute(r *gin.Engine) {
 	r.Use(middleware.CacheJs())
+	r.Use(middleware.SecureSessionCookie())
 
 	r.Group("/*")
 	{

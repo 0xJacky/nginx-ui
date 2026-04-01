@@ -1,7 +1,7 @@
 import type { CookieChangeOptions } from 'universal-cookie'
 import type { User } from '@/api/user'
 import { useCookies } from '@vueuse/integrations/useCookies'
-import user from '@/api/user'
+import userApi from '@/api/user'
 
 export const useUserStore = defineStore('user', () => {
   const cookies = useCookies(['nginx-ui'])
@@ -25,13 +25,6 @@ export const useUserStore = defineStore('user', () => {
       cookies.remove('token', { path: '/' })
   })
 
-  watch(shortToken, v => {
-    if (v)
-      cookies.set('short_token', v, getCookieOptions(86400))
-    else
-      cookies.remove('short_token', { path: '/' })
-  })
-
   const secureSessionId = ref('')
 
   watch(secureSessionId, v => {
@@ -44,8 +37,6 @@ export const useUserStore = defineStore('user', () => {
   function handleCookieChange({ name, value }: CookieChangeOptions) {
     if (name === 'token')
       token.value = value || ''
-    else if (name === 'short_token')
-      shortToken.value = value || ''
     else if (name === 'secure_session_id')
       secureSessionId.value = value || ''
   }
@@ -59,16 +50,13 @@ export const useUserStore = defineStore('user', () => {
   const isLogin = computed(() => !!token.value)
   const passkeyLoginAvailable = computed(() => !!passkeyRawId.value)
 
-  function passkeyLogin(rawId: string, tokenValue: string, shortTokenValue?: string) {
+  function passkeyLogin(rawId: string, tokenValue: string) {
     passkeyRawId.value = rawId
-    login(tokenValue, shortTokenValue)
+    login(tokenValue)
   }
 
-  function login(tokenValue: string, shortTokenValue?: string) {
+  function login(tokenValue: string) {
     token.value = tokenValue
-    if (shortTokenValue) {
-      shortToken.value = shortTokenValue
-    }
   }
 
   function logout() {
@@ -80,9 +68,21 @@ export const useUserStore = defineStore('user', () => {
     info.value = {} as User
   }
 
+  async function fetchShortToken() {
+    if (!token.value)
+      return
+    try {
+      const data = await userApi.fetchShortToken()
+      shortToken.value = data.short_token
+    }
+    catch (error) {
+      console.error('Failed to fetch short token:', error)
+    }
+  }
+
   async function getCurrentUser() {
     try {
-      const data = await user.getCurrentUser()
+      const data = await userApi.getCurrentUser()
       info.value = data
       return data
     }
@@ -94,7 +94,7 @@ export const useUserStore = defineStore('user', () => {
 
   async function updateCurrentUser(userData: Partial<User>) {
     try {
-      const response = await user.updateCurrentUser(userData as User)
+      const response = await userApi.updateCurrentUser(userData as User)
       info.value = { ...info.value, ...userData }
       return response.data
     }
@@ -106,7 +106,7 @@ export const useUserStore = defineStore('user', () => {
 
   async function updateCurrentUserPassword(data: { old_password: string, new_password: string }) {
     try {
-      const response = await user.updateCurrentUserPassword(data)
+      const response = await userApi.updateCurrentUserPassword(data)
       return response.data
     }
     catch (error) {
@@ -117,13 +117,18 @@ export const useUserStore = defineStore('user', () => {
 
   async function updateCurrentUserLanguage(language: string) {
     try {
-      await user.updateCurrentUserLanguage({ language })
+      await userApi.updateCurrentUserLanguage({ language })
       info.value.language = language
     }
     catch (error) {
       console.error('Failed to update language:', error)
       throw error
     }
+  }
+
+  // On store initialization, if token exists, fetch a fresh short token
+  if (token.value) {
+    fetchShortToken()
   }
 
   return {
@@ -138,11 +143,14 @@ export const useUserStore = defineStore('user', () => {
     passkeyLogin,
     login,
     logout,
+    fetchShortToken,
     getCurrentUser,
     updateCurrentUser,
     updateCurrentUserPassword,
     updateCurrentUserLanguage,
   }
 }, {
-  persist: true,
+  persist: {
+    pick: ['token', 'secureSessionId', 'passkeyRawId', 'info', 'unreadCount'],
+  },
 })

@@ -21,6 +21,10 @@ func InitAuthRouter(r *gin.RouterGroup) {
 	r.GET("/passkeys/config", GetPasskeyConfigStatus)
 }
 
+func InitTokenRouter(r *gin.RouterGroup) {
+	r.POST("/token/short", IssueShortToken)
+}
+
 func InitUserRouter(r *gin.RouterGroup) {
 	r.GET("/2fa_status", Get2FAStatus)
 	r.GET("/2fa_secure_session/status", SecureSessionStatus)

@@ -22,6 +22,12 @@ This option is used to skip the verification of the certificate of servers when 
 - Default: empty
 - Example: `http://localhost:5173,https://admin.example.com`
 
+::: tip
+Since Nginx UI uses ticket-based WebSocket authentication, this option is **no longer required** for most deployments.
+WebSocket security is now enforced by requiring an explicit short token in the URL query parameter, which can only be obtained through a CSRF-protected API endpoint.
+This setting is retained as an optional defense-in-depth measure.
+:::
+
 This option allows additional trusted browser origins for authenticated WebSocket connections.
 
 Use it when Nginx UI is accessed through a reverse proxy with a different public origin, through multiple management domains, or during local development where the frontend and backend run on different ports.

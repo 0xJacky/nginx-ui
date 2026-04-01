@@ -197,9 +197,35 @@ func GenerateJWT(user *model.User) (*AccessTokenPayload, error) {
 	CacheToken(authToken)
 
 	return &AccessTokenPayload{
-		Token:      signedToken,
-		ShortToken: shortToken,
+		Token: signedToken,
 	}, nil
+}
+
+// GenerateShortToken creates a standalone short token for WebSocket authentication.
+// The short token is stored in a new AuthToken row with no associated JWT.
+func GenerateShortToken(userID uint64) (string, error) {
+	shortTokenBytes := make([]byte, 16)
+	_, err := rand.Read(shortTokenBytes)
+	if err != nil {
+		return "", err
+	}
+	shortToken := base64.URLEncoding.EncodeToString(shortTokenBytes)[:16]
+
+	now := time.Now()
+	authToken := &model.AuthToken{
+		UserID:     userID,
+		ShortToken: shortToken,
+		ExpiredAt:  now.Add(ExpiredTime).Unix(),
+	}
+
+	q := query.AuthToken
+	err = q.Create(authToken)
+	if err != nil {
+		return "", err
+	}
+
+	CacheToken(authToken)
+	return shortToken, nil
 }
 
 func ValidateJWT(tokenStr string) (claims *JWTClaims, err error) {
