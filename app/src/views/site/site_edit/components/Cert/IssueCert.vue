@@ -6,7 +6,7 @@ import { useSiteEditorStore } from '@/views/site/site_edit/components/SiteEditor
 import ObtainCert from './ObtainCert.vue'
 
 const editorStore = useSiteEditorStore()
-const { ngxConfig, issuingCert, curServer, curDirectivesMap, autoCert } = storeToRefs(editorStore)
+const { ngxConfig, issuingCert, curServerIdx, curDirectivesMap, autoCert } = storeToRefs(editorStore)
 
 const [modal, ContextHolder] = Modal.useModal()
 
@@ -25,6 +25,19 @@ watch(noServerName, () => {
 
 const update = ref(0)
 
+function isTLSServer(serverIndex: number) {
+  return ngxConfig.value.servers[serverIndex]?.directives?.some(v => v.directive === 'listen' && v.params?.includes('ssl')) ?? false
+}
+
+function getChallengeServerIndex() {
+  const httpServerIndex = ngxConfig.value.servers.findIndex((_, serverIndex) => !isTLSServer(serverIndex))
+
+  if (httpServerIndex >= 0)
+    return httpServerIndex
+
+  return curServerIdx.value
+}
+
 async function onchange() {
   update.value++
   await nextTick()
@@ -40,16 +53,22 @@ async function onchange() {
     cancelText: $gettext('Cancel'),
     async onOk() {
       await template.get_block('letsencrypt.conf').then(async r => {
-        if (!curServer.value.locations)
-          curServer.value.locations = []
+        const challengeServer = ngxConfig.value.servers[getChallengeServerIndex()]
+
+        if (!challengeServer.locations)
+          challengeServer.locations = []
         else
-          curServer.value.locations = curServer.value.locations.filter(l => !l.path.includes('/.well-known/acme-challenge'))
+          challengeServer.locations = challengeServer.locations.filter(l => !l.path.includes('/.well-known/acme-challenge'))
 
         await nextTick()
 
-        curServer.value.locations.push(...r.locations!)
+        challengeServer.locations.push(...r.locations!)
       })
-      await editorStore.save()
+      await editorStore.save({
+        omitIncompleteTLSServers: true,
+        skipTLSValidation: true,
+        syncResponse: false,
+      })
 
       await nextTick()
 

@@ -1,4 +1,5 @@
 import type { CertificateInfo } from '@/api/cert'
+import type { NgxConfig, NgxServer } from '@/api/ngx'
 import type { Site } from '@/api/site'
 import type { CosyError } from '@/lib/http/types'
 import type { CheckedType } from '@/types'
@@ -6,9 +7,35 @@ import config from '@/api/config'
 import ngx from '@/api/ngx'
 import site from '@/api/site'
 import { useNgxConfigStore } from '@/components/NgxConfigEditor'
+import { useGlobalApp } from '@/composables/useGlobalApp'
 import { translateError } from '@/lib/http/error'
 
+interface SaveOptions {
+  omitIncompleteTLSServers?: boolean
+  skipTLSValidation?: boolean
+  syncResponse?: boolean
+}
+
+interface TLSServerIssue {
+  serverIndex: number
+  missingCertificate: boolean
+  missingCertificateKey: boolean
+}
+
+function cloneNgxConfig(config: NgxConfig): NgxConfig {
+  return JSON.parse(JSON.stringify(config))
+}
+
+function hasSSLListen(server?: NgxServer) {
+  return server?.directives?.some(v => v.directive === 'listen' && v.params?.includes('ssl')) ?? false
+}
+
+function hasDirectiveWithValue(server: NgxServer | undefined, directive: string) {
+  return server?.directives?.some(v => v.directive === directive && v.params?.trim()) ?? false
+}
+
 export const useSiteEditorStore = defineStore('siteEditor', () => {
+  const { message } = useGlobalApp()
   const advanceMode = ref(false)
   const parseErrorStatus = ref(false)
   const parseErrorMessage = ref('')
@@ -56,18 +83,73 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
     loading.value = false
   }
 
-  async function buildConfig() {
-    return ngx.build_config(ngxConfig.value).then(r => {
-      configText.value = r.content
+  function getTLSServerIssues(config: NgxConfig = ngxConfig.value): TLSServerIssue[] {
+    return (config.servers ?? []).reduce<TLSServerIssue[]>((issues, server, serverIndex) => {
+      if (!hasSSLListen(server))
+        return issues
+
+      const missingCertificate = !hasDirectiveWithValue(server, 'ssl_certificate')
+      const missingCertificateKey = !hasDirectiveWithValue(server, 'ssl_certificate_key')
+
+      if (missingCertificate || missingCertificateKey) {
+        issues.push({
+          serverIndex,
+          missingCertificate,
+          missingCertificateKey,
+        })
+      }
+
+      return issues
+    }, [])
+  }
+
+  function getConfigWithoutIncompleteTLSServers(config: NgxConfig = ngxConfig.value) {
+    const clonedConfig = cloneNgxConfig(config)
+
+    const servers = clonedConfig.servers?.filter(server => {
+      if (!hasSSLListen(server))
+        return true
+
+      return hasDirectiveWithValue(server, 'ssl_certificate')
+        && hasDirectiveWithValue(server, 'ssl_certificate_key')
+    }) ?? []
+
+    if (servers.length === 0)
+      return clonedConfig
+
+    clonedConfig.servers = servers
+
+    return clonedConfig
+  }
+
+  async function buildConfig(config: NgxConfig = ngxConfig.value, syncConfigText = true) {
+    return ngx.build_config(config).then(r => {
+      if (syncConfigText)
+        configText.value = r.content
+
+      return r.content
     })
   }
 
-  async function save() {
+  async function save(options: SaveOptions = {}) {
     saving.value = true
 
     try {
+      let content = configText.value
+
       if (!advanceMode.value) {
-        await buildConfig()
+        const tlsServerIssues = getTLSServerIssues()
+
+        if (tlsServerIssues.length > 0 && !options.skipTLSValidation) {
+          message.error($gettext('Please select a certificate before saving the TLS server configuration.'))
+          throw new Error('tls_certificate_required')
+        }
+
+        const configForSave = options.omitIncompleteTLSServers
+          ? getConfigWithoutIncompleteTLSServers()
+          : ngxConfig.value
+
+        content = await buildConfig(configForSave, !options.omitIncompleteTLSServers)
       }
 
       if (data.value.sync_node_ids === null) {
@@ -80,7 +162,7 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
       }
 
       const response = await site.updateItem(encodeURIComponent(name.value), {
-        content: configText.value,
+        content,
         overwrite: true,
         namespace_id: data.value.namespace_id,
         sync_node_ids: data.value.sync_node_ids,
@@ -91,10 +173,17 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
         dns_record_type: data.value.dns_record_type,
       })
 
-      handleResponse(response)
+      if (options.syncResponse !== false)
+        await handleResponse(response)
+
+      return response
     }
     catch (error) {
-      handleParseError(error as CosyError)
+      if ((error as Error)?.message === 'tls_certificate_required')
+        throw error
+
+      await handleParseError(error as CosyError)
+      throw error
     }
     finally {
       saving.value = false
@@ -242,6 +331,8 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
     isIpCertificate,
     needsManualIpInput,
     hasServers,
+    getTLSServerIssues,
+    getConfigWithoutIncompleteTLSServers,
     dnsLinked,
     linkedDNSName,
     init,

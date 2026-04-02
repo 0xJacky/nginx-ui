@@ -46,6 +46,60 @@ const name = computed(() => {
 const refObtainCertLive = useTemplateRef('refObtainCertLive')
 const refAutoCertForm = useTemplateRef('refAutoCertForm')
 
+function hasTLSListen(params: string) {
+  return params.includes('443') && params.includes('ssl')
+}
+
+function ensureDirective(directive: string, params: string, insertIndex?: number) {
+  if (!curServerDirectives.value)
+    curServerDirectives.value = []
+
+  const existingDirective = curServerDirectives.value.find(v => v.directive === directive)
+
+  if (existingDirective) {
+    existingDirective.params = params
+    return
+  }
+
+  const directiveItem = { directive, params }
+
+  if (insertIndex === undefined || insertIndex < 0 || insertIndex > curServerDirectives.value.length) {
+    curServerDirectives.value.push(directiveItem)
+    return
+  }
+
+  curServerDirectives.value.splice(insertIndex, 0, directiveItem)
+}
+
+function ensureTLSDirectives(sslCertificate: string, sslCertificateKey: string) {
+  if (!curServerDirectives.value)
+    curServerDirectives.value = []
+
+  const hasIPv4TLSListen = curServerDirectives.value.some(v => v.directive === 'listen' && hasTLSListen(v.params) && !v.params.includes('[::]'))
+  const hasIPv6TLSListen = curServerDirectives.value.some(v => v.directive === 'listen' && hasTLSListen(v.params) && v.params.includes('[::]'))
+
+  if (!hasIPv6TLSListen) {
+    curServerDirectives.value.splice(0, 0, {
+      directive: 'listen',
+      params: '[::]:443 ssl',
+    })
+  }
+
+  if (!hasIPv4TLSListen) {
+    curServerDirectives.value.splice(0, 0, {
+      directive: 'listen',
+      params: '443 ssl',
+    })
+  }
+
+  const serverNameIdx = curDirectivesMap.value.server_name?.[0]?.idx ?? (curServerDirectives.value.length - 1)
+
+  ensureDirective('ssl_certificate', sslCertificate, serverNameIdx + 1)
+
+  const sslCertificateIndex = curServerDirectives.value.findIndex(v => v.directive === 'ssl_certificate')
+  ensureDirective('ssl_certificate_key', sslCertificateKey, sslCertificateIndex + 1)
+}
+
 function issueCert() {
   refObtainCertLive.value?.issue_cert(
     props.configName,
@@ -55,8 +109,7 @@ function issueCert() {
 }
 
 async function resolveCert({ ssl_certificate, ssl_certificate_key, key_type }: CertificateResult) {
-  curDirectivesMap.value.ssl_certificate[0].params = ssl_certificate
-  curDirectivesMap.value.ssl_certificate_key[0].params = ssl_certificate_key
+  ensureTLSDirectives(ssl_certificate, ssl_certificate_key)
   await editorStore.save()
   changeAutoCert(true, key_type)
   autoCert.value = true
@@ -109,29 +162,6 @@ async function job() {
     issuingCert.value = false
 
     return
-  }
-
-  const serverNameIdx = curDirectivesMap.value.server_name[0]?.idx ?? 0
-
-  if (!curServerDirectives.value)
-    curServerDirectives.value = []
-
-  if (!curDirectivesMap.value.ssl_certificate) {
-    curServerDirectives.value.splice(serverNameIdx + 1, 0, {
-      directive: 'ssl_certificate',
-      params: '',
-    })
-  }
-
-  await nextTick()
-
-  if (!curDirectivesMap.value.ssl_certificate_key) {
-    const sslCertificateIdx = curDirectivesMap.value.ssl_certificate[0]?.idx ?? 0
-
-    curServerDirectives.value.splice(sslCertificateIdx + 1, 0, {
-      directive: 'ssl_certificate_key',
-      params: '',
-    })
   }
 
   issueCert()

@@ -7,7 +7,7 @@ import { useSiteEditorStore } from '@/views/site/site_edit/components/SiteEditor
 const [modal, ContextHolder] = Modal.useModal()
 
 const editorStore = useSiteEditorStore()
-const { ngxConfig, curServerIdx, curDirectivesMap, hasServers } = storeToRefs(editorStore)
+const { ngxConfig, curServerIdx, hasServers } = storeToRefs(editorStore)
 
 function confirmChangeTLS(status: CheckedType) {
   modal.confirm({
@@ -65,24 +65,6 @@ function changeTLS(status: CheckedType) {
       directive: 'listen',
       params: '[::]:443 ssl',
     })
-
-    const serverNameIdx = curDirectivesMap.value?.server_name?.[0].idx ?? 0
-
-    if (!curDirectivesMap.value.ssl_certificate) {
-      servers?.[1]?.directives?.splice(serverNameIdx + 1, 0, {
-        directive: 'ssl_certificate',
-        params: '',
-      })
-    }
-
-    setTimeout(() => {
-      if (!curDirectivesMap.value.ssl_certificate_key) {
-        servers?.[1]?.directives?.splice(serverNameIdx + 2, 0, {
-          directive: 'ssl_certificate_key',
-          params: '',
-        })
-      }
-    }, 100)
   }
   else {
     // remove servers[1]
