@@ -91,6 +91,7 @@ export default defineConfig(({ mode }) => {
           target: env.VITE_PROXY_TARGET || 'http://localhost:9001',
           changeOrigin: true,
           secure: false,
+          ws: true,
         },
       },
     },

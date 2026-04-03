@@ -13,11 +13,11 @@ export function buildWebSocketUrl(url: string, token: string, shortToken: string
   // Use shortToken if available (without base64 encoding), otherwise use regular token (with base64 encoding)
   const authParam = shortToken ? `token=${shortToken}` : `token=${btoa(token)}`
 
-  // In development mode, connect directly to backend server
+  // In development mode, keep WebSocket same-origin so the browser
+  // connects through the dev server instead of the private backend port.
   if (import.meta.env.DEV) {
-    const proxyTarget = import.meta.env.VITE_PROXY_TARGET || 'http://localhost:9000'
-    const wsTarget = proxyTarget.replace(/^https?:/, location.protocol === 'https:' ? 'wss:' : 'ws:')
-    return urlJoin(wsTarget, url, `?${authParam}`, node_id)
+    const protocol = location.protocol === 'https:' ? 'wss://' : 'ws://'
+    return urlJoin(protocol + window.location.host, url, `?${authParam}`, node_id)
   }
 
   // In production mode, use current host
@@ -41,15 +41,9 @@ export function useWebSocket<T = any>(
   const settings = useSettingsStore()
   const { token, shortToken } = storeToRefs(userStore)
 
-  // Reactively rebuild the URL when shortToken changes (e.g. after fetch completes)
-  const wsUrl = computed(() =>
-    buildWebSocketUrl(url, token.value, shortToken.value, settings.node.id),
-  )
-
-  // If short token is not yet available, trigger a fetch (non-blocking)
-  if (!shortToken.value && token.value) {
-    userStore.fetchShortToken()
-  }
+  // Snapshot the URL at call time — must NOT be reactive to avoid
+  // tearing down in-flight connections when shortToken arrives later.
+  const wsUrl = buildWebSocketUrl(url, token.value, shortToken.value, settings.node.id)
 
   return vueUseWebSocket<T>(wsUrl, {
     autoReconnect: reconnect
@@ -57,7 +51,6 @@ export function useWebSocket<T = any>(
           retries: 10,
           delay: 1000,
           onFailed: () => {
-            userStore.fetchShortToken()
             console.warn(`Failed to reconnect to WebSocket after 10 retries: ${url}`)
           },
         }

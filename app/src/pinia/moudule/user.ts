@@ -18,11 +18,19 @@ export const useUserStore = defineStore('user', () => {
   const token = ref('')
   const shortToken = ref('')
 
+  let shortTokenRequest: Promise<void> | null = null
+
   watch(token, v => {
-    if (v)
+    if (v) {
       cookies.set('token', v, getCookieOptions(86400))
-    else
+      if (!shortToken.value) {
+        void fetchShortToken()
+      }
+    }
+    else {
       cookies.remove('token', { path: '/' })
+      shortToken.value = ''
+    }
   })
 
   const secureSessionId = ref('')
@@ -71,13 +79,22 @@ export const useUserStore = defineStore('user', () => {
   async function fetchShortToken() {
     if (!token.value)
       return
-    try {
-      const data = await userApi.fetchShortToken()
-      shortToken.value = data.short_token
-    }
-    catch (error) {
-      console.error('Failed to fetch short token:', error)
-    }
+    if (shortTokenRequest)
+      return shortTokenRequest
+    shortTokenRequest = (async () => {
+      try {
+        const data = await userApi.fetchShortToken()
+        shortToken.value = data.short_token
+      }
+      catch (error) {
+        console.error('Failed to fetch short token:', error)
+      }
+      finally {
+        shortTokenRequest = null
+      }
+    })()
+
+    return shortTokenRequest
   }
 
   async function getCurrentUser() {

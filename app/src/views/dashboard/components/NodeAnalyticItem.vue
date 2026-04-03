@@ -6,7 +6,7 @@ import memory from '@/assets/svg/memory.svg?component'
 import UsageProgressLine from '@/components/Chart/UsageProgressLine.vue'
 import { bytesToSize } from '@/lib/helper'
 
-defineProps<{
+const props = defineProps<{
   item: AnalyticNode
   currentNodeId?: number
   localVersion?: string

@@ -4,6 +4,7 @@ import nodeApi from '@/api/node'
 import { useWebSocket } from '@/lib/websocket'
 
 export const useNodeAvailabilityStore = defineStore('nodeAvailability', () => {
+  const cacheKey = 'node-availability-snapshot'
   const nodes = ref<Record<string, Partial<AnalyticNode>>>({})
   const websocket = shallowRef<WebSocket | null>(null)
   const isConnected = ref(false)
@@ -11,6 +12,38 @@ export const useNodeAvailabilityStore = defineStore('nodeAvailability', () => {
   const lastUpdateTime = ref<string>('')
   const isConnecting = ref(false)
   const nodeList = computed<Partial<AnalyticNode>[]>(() => Object.values(nodes.value))
+
+  function readCachedNodes(): Record<string, Partial<AnalyticNode>> {
+    if (typeof window === 'undefined') {
+      return {}
+    }
+
+    try {
+      const raw = window.sessionStorage.getItem(cacheKey)
+      return raw ? JSON.parse(raw) as Record<string, Partial<AnalyticNode>> : {}
+    }
+    catch {
+      return {}
+    }
+  }
+
+  function writeCachedNodes(value: Record<string, Partial<AnalyticNode>>) {
+    if (typeof window === 'undefined') {
+      return
+    }
+
+    try {
+      const sanitized = Object.fromEntries(
+        Object.entries(value).map(([nodeId, node]) => {
+          const { token, ...safeNode } = node
+          return [nodeId, safeNode]
+        }),
+      )
+      window.sessionStorage.setItem(cacheKey, JSON.stringify(sanitized))
+    }
+    catch {
+    }
+  }
 
   const socket = useWebSocket<Record<string, Partial<AnalyticNode>>>(analytic.nodesWebSocketUrl, true, {
     immediate: false,
@@ -25,8 +58,8 @@ export const useNodeAvailabilityStore = defineStore('nodeAvailability', () => {
       isConnecting.value = false
       websocket.value = null
     },
-    onError(event) {
-      console.warn('Failed to connect to nodes WebSocket endpoint', event)
+    onError() {
+      console.warn('Failed to connect to nodes WebSocket endpoint')
       isConnected.value = false
       isConnecting.value = false
     },
@@ -40,6 +73,10 @@ export const useNodeAvailabilityStore = defineStore('nodeAvailability', () => {
 
           nodes.value[nodeId] = nodeData
         })
+
+        const firstNodeId = Object.keys(nodesData)[0]
+
+        writeCachedNodes(nodes.value)
 
         lastUpdateTime.value = new Date().toISOString()
       }
@@ -59,9 +96,12 @@ export const useNodeAvailabilityStore = defineStore('nodeAvailability', () => {
       // First, load the initial node data from API
       const response = await nodeApi.getList({ enabled: true })
       const nodeMap: Record<string, Partial<AnalyticNode>> = {}
+      const cachedNodes = readCachedNodes()
 
       response.data.forEach((node: Node) => {
+        const cachedNode = cachedNodes[node.id] ?? {}
         nodeMap[node.id] = {
+          ...cachedNode,
           id: node.id,
           name: node.name,
           status: node.status,
@@ -72,6 +112,7 @@ export const useNodeAvailabilityStore = defineStore('nodeAvailability', () => {
       })
 
       nodes.value = nodeMap
+      writeCachedNodes(nodes.value)
 
       // Then connect WebSocket for real-time updates
       connectWebSocket()
