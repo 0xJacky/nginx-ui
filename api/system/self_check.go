@@ -1,11 +1,10 @@
 package system
 
 import (
-	"net/http"
-
 	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/gorilla/websocket"
 	"github.com/uozi-tech/cosy/logger"
+	"net/http"
 
 	"time"
 

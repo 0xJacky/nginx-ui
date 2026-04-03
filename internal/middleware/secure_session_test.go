@@ -79,3 +79,32 @@ func TestSecureSessionCookie(t *testing.T) {
 		t.Fatal("cookie not found")
 	})
 }
+
+func TestEnsureSecureSessionCookie(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+
+	r := gin.New()
+	r.POST("/login", func(c *gin.Context) {
+		EnsureSecureSessionCookie(c)
+		c.String(http.StatusOK, "ok")
+	})
+
+	req := httptest.NewRequest(http.MethodPost, "/login", nil)
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	cookies := w.Result().Cookies()
+	var found *http.Cookie
+	for _, c := range cookies {
+		if c.Name == SecureSessionCookieName {
+			found = c
+			break
+		}
+	}
+
+	assert.NotNil(t, found, "session cookie should be set")
+	assert.NotEmpty(t, found.Value)
+	assert.True(t, found.HttpOnly, "cookie must be HttpOnly")
+	assert.Equal(t, http.SameSiteLaxMode, found.SameSite, "cookie must be SameSite=Lax")
+	assert.Equal(t, "/", found.Path)
+}

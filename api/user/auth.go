@@ -6,6 +6,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
@@ -104,6 +105,8 @@ func Login(c *gin.Context) {
 		cosy.ErrHandler(c, err)
 		return
 	}
+
+	middleware.EnsureSecureSessionCookie(c)
 
 	c.JSON(http.StatusOK, LoginResponse{
 		Code:               LoginSuccess,

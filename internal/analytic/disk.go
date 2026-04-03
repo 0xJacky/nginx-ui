@@ -9,9 +9,27 @@ import (
 	"github.com/spf13/cast"
 )
 
+func getVisiblePartitions() ([]disk.PartitionStat, error) {
+	partitions, err := disk.Partitions(false)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(partitions) > 0 {
+		return partitions, nil
+	}
+
+	partitions, err = disk.Partitions(true)
+	if err != nil {
+		return nil, err
+	}
+
+	return partitions, nil
+}
+
 func GetDiskStat() (DiskStat, error) {
 	// Get all partitions
-	partitions, err := disk.Partitions(false)
+	partitions, err := getVisiblePartitions()
 	if err != nil {
 		return DiskStat{}, errors.Wrap(err, "error analytic getDiskStat - getting partitions")
 	}

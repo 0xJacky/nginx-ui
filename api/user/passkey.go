@@ -3,8 +3,13 @@ package user
 import (
 	"encoding/base64"
 	"fmt"
+	"net/http"
+	"strings"
+	"time"
+
 	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/cache"
+	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/0xJacky/Nginx-UI/internal/passkey"
 	"github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -16,9 +21,6 @@ import (
 	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 	"gorm.io/gorm"
-	"net/http"
-	"strings"
-	"time"
 )
 
 const passkeyTimeout = 30 * time.Second
@@ -153,6 +155,8 @@ func FinishPasskeyLogin(c *gin.Context) {
 	}
 
 	secureSessionID := user.SetSecureSessionID(outUser.ID)
+
+	middleware.EnsureSecureSessionCookie(c)
 
 	c.JSON(http.StatusOK, LoginResponse{
 		Code:               LoginSuccess,

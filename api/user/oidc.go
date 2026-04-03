@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/coreos/go-oidc/v3/oidc"
@@ -151,6 +152,8 @@ func OIDCCallback(c *gin.Context) {
 		cosy.ErrHandler(c, err)
 		return
 	}
+
+	middleware.EnsureSecureSessionCookie(c)
 
 	c.JSON(http.StatusOK, LoginResponse{
 		Message:            "ok",
