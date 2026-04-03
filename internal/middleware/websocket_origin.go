@@ -10,11 +10,17 @@ import (
 )
 
 // CheckWebSocketOrigin validates browser origins for WebSocket upgrade requests.
-// Non-browser requests are only allowed for trusted node-to-node traffic.
+// Trusted node-to-node traffic (via X-Node-Secret) is always allowed,
+// regardless of the Origin header, because proxied requests carry the
+// browser's original Origin which won't match the downstream node's host.
 func CheckWebSocketOrigin(r *http.Request) bool {
+	if isTrustedNodeRequest(r) {
+		return true
+	}
+
 	origin := strings.TrimSpace(r.Header.Get("Origin"))
 	if origin == "" {
-		return isTrustedNodeRequest(r)
+		return false
 	}
 
 	if requestOrigin, ok := getRequestOrigin(r); ok && sameOrigin(origin, requestOrigin) {

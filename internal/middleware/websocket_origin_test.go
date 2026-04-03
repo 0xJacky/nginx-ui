@@ -64,6 +64,20 @@ func TestCheckWebSocketOrigin(t *testing.T) {
 		assert.True(t, CheckWebSocketOrigin(req))
 	})
 
+	t.Run("allows node secret requests with cross-origin (proxy scenario)", func(t *testing.T) {
+		settings.HTTPSettings.WebSocketTrustedOrigins = nil
+		settings.NodeSettings.Secret = "node-secret"
+
+		// Simulates master node proxying WS to child node:
+		// Origin is the browser's master domain, but X-Node-Secret proves it's a trusted proxy.
+		req := httptest.NewRequest("GET", "http://127.0.0.1/ws", nil)
+		req.Host = "child-node:9000"
+		req.Header.Set("Origin", "https://master.example.com")
+		req.Header.Set("X-Node-Secret", "node-secret")
+
+		assert.True(t, CheckWebSocketOrigin(req))
+	})
+
 	t.Run("rejects cross site requests", func(t *testing.T) {
 		settings.HTTPSettings.WebSocketTrustedOrigins = nil
 		settings.NodeSettings.Secret = ""
