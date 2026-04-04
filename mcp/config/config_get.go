@@ -3,6 +3,7 @@ package config
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
 
@@ -23,6 +24,10 @@ var nginxConfigGetTool = mcpgo.NewTool(
 func handleNginxConfigGet(ctx context.Context, request mcpgo.CallToolRequest) (*mcpgo.CallToolResult, error) {
 	args := request.GetArguments()
 	relativePath := mcp.GetString(args, "relative_path")
+
+	if relativePath == "" {
+		return nil, fmt.Errorf("argument 'relative_path' is required")
+	}
 
 	absPath, err := config.ResolveAbsoluteOrRelativeConfPath(relativePath)
 	if err != nil {
