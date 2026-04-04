@@ -9,25 +9,26 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/internal/mcp"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
-	"github.com/mark3labs/mcp-go/mcp"
+	mcpgo "github.com/mark3labs/mcp-go/mcp"
 )
 
 const nginxConfigEnableToolName = "nginx_config_enable"
 
-var nginxConfigEnableTool = mcp.NewTool(
+var nginxConfigEnableTool = mcpgo.NewTool(
 	nginxConfigEnableToolName,
-	mcp.WithDescription("Enable a previously created Nginx configuration (creates symlink in sites-enabled)"),
-	mcp.WithString("name", mcp.Description("The name of the configuration file to enable")),
-	mcp.WithString("base_dir", mcp.Description("The source directory (default: sites-available)")),
-	mcp.WithBoolean("overwrite", mcp.Description("Whether to overwrite an existing enabled configuration")),
+	mcpgo.WithDescription("Enable a previously created Nginx configuration (creates symlink in sites-enabled)"),
+	mcpgo.WithString("name", mcpgo.Description("The name of the configuration file to enable")),
+	mcpgo.WithString("base_dir", mcpgo.Description("The source directory (default: sites-available)")),
+	mcpgo.WithBoolean("overwrite", mcpgo.Description("Whether to overwrite an existing enabled configuration")),
 )
 
-func handleNginxConfigEnable(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func handleNginxConfigEnable(ctx context.Context, request mcpgo.CallToolRequest) (*mcpgo.CallToolResult, error) {
 	args := request.GetArguments()
-	name := args["name"].(string)
-	baseDir := args["base_dir"].(string)
-	overwrite := args["overwrite"].(bool)
+	name := mcp.GetString(args, "name")
+	baseDir := mcp.GetString(args, "base_dir")
+	overwrite := mcp.GetBool(args, "overwrite")
 
 	if name == "" {
 		return nil, fmt.Errorf("argument 'name' is required")
@@ -110,6 +111,6 @@ func handleNginxConfigEnable(ctx context.Context, request mcp.CallToolRequest) (
 	}
 	jsonResult, _ := json.Marshal(result)
 
-	return mcp.NewToolResultText(string(jsonResult)), nil
+	return mcpgo.NewToolResultText(string(jsonResult)), nil
 
 }

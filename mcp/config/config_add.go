@@ -4,14 +4,16 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"os"
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/internal/mcp"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
-	"github.com/mark3labs/mcp-go/mcp"
+	mcpgo "github.com/mark3labs/mcp-go/mcp"
 )
 
 const nginxConfigAddToolName = "nginx_config_add"
@@ -19,31 +21,36 @@ const nginxConfigAddToolName = "nginx_config_add"
 // ErrFileAlreadyExists is returned when trying to create a file that already exists
 var ErrFileAlreadyExists = errors.New("file already exists")
 
-var nginxConfigAddTool = mcp.NewTool(
+var nginxConfigAddTool = mcpgo.NewTool(
 	nginxConfigAddToolName,
-	mcp.WithDescription("Add or create a new Nginx configuration file"),
-	mcp.WithString("name", mcp.Description("The name of the configuration file to create")),
-	mcp.WithString("content", mcp.Description("The content of the configuration file")),
-	mcp.WithString("base_dir", mcp.Description("The base directory for the configuration")),
-	mcp.WithBoolean("overwrite", mcp.Description("Whether to overwrite an existing file")),
-	mcp.WithArray("sync_node_ids", mcp.Description("IDs of nodes to sync the configuration to")),
+	mcpgo.WithDescription("Add or create a new Nginx configuration file"),
+	mcpgo.WithString("name", mcpgo.Description("The name of the configuration file to create")),
+	mcpgo.WithString("content", mcpgo.Description("The content of the configuration file")),
+	mcpgo.WithString("base_dir", mcpgo.Description("The base directory for the configuration")),
+	mcpgo.WithBoolean("overwrite", mcpgo.Description("Whether to overwrite an existing file")),
+	mcpgo.WithArray("sync_node_ids", mcpgo.Description("IDs of nodes to sync the configuration to")),
 )
 
-func handleNginxConfigAdd(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func handleNginxConfigAdd(ctx context.Context, request mcpgo.CallToolRequest) (*mcpgo.CallToolResult, error) {
 	args := request.GetArguments()
-	name := args["name"].(string)
-	content := args["content"].(string)
-	baseDir := args["base_dir"].(string)
-	overwrite := args["overwrite"].(bool)
+	name := mcp.GetString(args, "name")
+	content := mcp.GetString(args, "content")
+	baseDir := mcp.GetString(args, "base_dir")
+	overwrite := mcp.GetBool(args, "overwrite")
+
+	if name == "" {
+		return nil, fmt.Errorf("argument 'name' is required")
+	}
+	if _, exists := args["content"]; !exists || args["content"] == nil {
+		return nil, fmt.Errorf("argument 'content' is required")
+	}
 
 	// Convert sync_node_ids from []interface{} to []uint64
-	syncNodeIdsInterface, ok := args["sync_node_ids"].([]interface{})
+	syncNodeIdsInterface := mcp.GetSlice(args, "sync_node_ids")
 	syncNodeIds := make([]uint64, 0)
-	if ok {
-		for _, id := range syncNodeIdsInterface {
-			if idFloat, ok := id.(float64); ok {
-				syncNodeIds = append(syncNodeIds, uint64(idFloat))
-			}
+	for _, id := range syncNodeIdsInterface {
+		if idFloat, ok := id.(float64); ok {
+			syncNodeIds = append(syncNodeIds, uint64(idFloat))
 		}
 	}
 
@@ -109,5 +116,5 @@ func handleNginxConfigAdd(ctx context.Context, request mcp.CallToolRequest) (*mc
 	}
 
 	jsonResult, _ := json.Marshal(result)
-	return mcp.NewToolResultText(string(jsonResult)), nil
+	return mcpgo.NewToolResultText(string(jsonResult)), nil
 }

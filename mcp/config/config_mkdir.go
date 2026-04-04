@@ -3,25 +3,31 @@ package config
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"os"
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
-	"github.com/mark3labs/mcp-go/mcp"
+	"github.com/0xJacky/Nginx-UI/internal/mcp"
+	mcpgo "github.com/mark3labs/mcp-go/mcp"
 )
 
 const nginxConfigMkdirToolName = "nginx_config_mkdir"
 
-var nginxConfigMkdirTool = mcp.NewTool(
+var nginxConfigMkdirTool = mcpgo.NewTool(
 	nginxConfigMkdirToolName,
-	mcp.WithDescription("Create a new directory in the Nginx configuration path"),
-	mcp.WithString("base_path", mcp.Description("The base path where to create the directory")),
-	mcp.WithString("folder_name", mcp.Description("The name of the folder to create")),
+	mcpgo.WithDescription("Create a new directory in the Nginx configuration path"),
+	mcpgo.WithString("base_path", mcpgo.Description("The base path where to create the directory")),
+	mcpgo.WithString("folder_name", mcpgo.Description("The name of the folder to create")),
 )
 
-func handleNginxConfigMkdir(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func handleNginxConfigMkdir(ctx context.Context, request mcpgo.CallToolRequest) (*mcpgo.CallToolResult, error) {
 	args := request.GetArguments()
-	basePath := args["base_path"].(string)
-	folderName := args["folder_name"].(string)
+	basePath := mcp.GetString(args, "base_path")
+	folderName := mcp.GetString(args, "folder_name")
+
+	if folderName == "" {
+		return nil, fmt.Errorf("argument 'folder_name' is required")
+	}
 
 	fullPath, err := config.ResolveConfPath(basePath, folderName)
 	if err != nil {
@@ -39,5 +45,5 @@ func handleNginxConfigMkdir(ctx context.Context, request mcp.CallToolRequest) (*
 	}
 
 	jsonResult, _ := json.Marshal(result)
-	return mcp.NewToolResultText(string(jsonResult)), nil
+	return mcpgo.NewToolResultText(string(jsonResult)), nil
 }

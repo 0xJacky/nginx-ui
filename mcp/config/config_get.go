@@ -3,25 +3,31 @@ package config
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
+	"github.com/0xJacky/Nginx-UI/internal/mcp"
 	"github.com/0xJacky/Nginx-UI/query"
-	"github.com/mark3labs/mcp-go/mcp"
+	mcpgo "github.com/mark3labs/mcp-go/mcp"
 )
 
 const nginxConfigGetToolName = "nginx_config_get"
 
-var nginxConfigGetTool = mcp.NewTool(
+var nginxConfigGetTool = mcpgo.NewTool(
 	nginxConfigGetToolName,
-	mcp.WithDescription("Get a specific Nginx configuration file"),
-	mcp.WithString("relative_path", mcp.Description("The relative path to the configuration file")),
+	mcpgo.WithDescription("Get a specific Nginx configuration file"),
+	mcpgo.WithString("relative_path", mcpgo.Description("The relative path to the configuration file")),
 )
 
-func handleNginxConfigGet(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func handleNginxConfigGet(ctx context.Context, request mcpgo.CallToolRequest) (*mcpgo.CallToolResult, error) {
 	args := request.GetArguments()
-	relativePath := args["relative_path"].(string)
+	relativePath := mcp.GetString(args, "relative_path")
+
+	if relativePath == "" {
+		return nil, fmt.Errorf("argument 'relative_path' is required")
+	}
 
 	absPath, err := config.ResolveAbsoluteOrRelativeConfPath(relativePath)
 	if err != nil {
@@ -55,5 +61,5 @@ func handleNginxConfigGet(ctx context.Context, request mcp.CallToolRequest) (*mc
 	}
 
 	jsonResult, _ := json.Marshal(result)
-	return mcp.NewToolResultText(string(jsonResult)), nil
+	return mcpgo.NewToolResultText(string(jsonResult)), nil
 }

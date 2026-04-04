@@ -3,22 +3,28 @@ package config
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 
+	"github.com/0xJacky/Nginx-UI/internal/mcp"
 	"github.com/0xJacky/Nginx-UI/query"
-	"github.com/mark3labs/mcp-go/mcp"
+	mcpgo "github.com/mark3labs/mcp-go/mcp"
 )
 
 const nginxConfigHistoryToolName = "nginx_config_history"
 
-var nginxConfigHistoryTool = mcp.NewTool(
+var nginxConfigHistoryTool = mcpgo.NewTool(
 	nginxConfigHistoryToolName,
-	mcp.WithDescription("Get history of Nginx configuration changes"),
-	mcp.WithString("filepath", mcp.Description("The file path to get history for")),
+	mcpgo.WithDescription("Get history of Nginx configuration changes"),
+	mcpgo.WithString("filepath", mcpgo.Description("The file path to get history for")),
 )
 
-func handleNginxConfigHistory(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func handleNginxConfigHistory(ctx context.Context, request mcpgo.CallToolRequest) (*mcpgo.CallToolResult, error) {
 	args := request.GetArguments()
-	filepath := args["filepath"].(string)
+	filepath := mcp.GetString(args, "filepath")
+
+	if filepath == "" {
+		return nil, fmt.Errorf("argument 'filepath' is required")
+	}
 
 	q := query.ConfigBackup
 	var histories, err = q.Where(q.FilePath.Eq(filepath)).Order(q.ID.Desc()).Find()
@@ -27,5 +33,5 @@ func handleNginxConfigHistory(ctx context.Context, request mcp.CallToolRequest) 
 	}
 
 	jsonResult, _ := json.Marshal(histories)
-	return mcp.NewToolResultText(string(jsonResult)), nil
+	return mcpgo.NewToolResultText(string(jsonResult)), nil
 }
