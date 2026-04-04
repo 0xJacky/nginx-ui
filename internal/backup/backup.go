@@ -145,7 +145,7 @@ func Backup() (Result, error) {
 		},
 	})
 
-	if err := writeManifestFiles(tempDir, manifest); err != nil {
+	if err := writeManifestFiles(tempDir, manifest, key); err != nil {
 		return Result{}, err
 	}
 

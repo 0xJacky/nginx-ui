@@ -50,13 +50,13 @@ func newManifest(createdAt, version string, files []ManifestEntry) Manifest {
 	}
 }
 
-func writeManifestFiles(baseDir string, manifest Manifest) error {
+func writeManifestFiles(baseDir string, manifest Manifest, aesKey []byte) error {
 	manifestBytes, err := json.Marshal(manifest)
 	if err != nil {
 		return cosy.WrapErrorWithParams(ErrCreateManifest, err.Error())
 	}
 
-	signingKey, err := deriveBackupSigningKey()
+	signingKey, err := deriveBackupSigningKeyFromAESKey(aesKey)
 	if err != nil {
 		return err
 	}
@@ -74,18 +74,13 @@ func writeManifestFiles(baseDir string, manifest Manifest) error {
 	return nil
 }
 
-func verifyBackupManifest(baseDir string) error {
+func verifyBackupManifest(baseDir string, aesKey []byte) error {
 	manifest, manifestBytes, signature, err := loadManifest(baseDir)
 	if err != nil {
 		return err
 	}
 
-	signingKey, err := deriveBackupSigningKey()
-	if err != nil {
-		return err
-	}
-
-	if err := verifyManifestSignature(manifestBytes, signature, signingKey); err != nil {
+	if err := verifyManifestSignatureWithFallback(manifestBytes, signature, aesKey); err != nil {
 		return err
 	}
 
@@ -158,6 +153,15 @@ func loadManifest(baseDir string) (Manifest, []byte, string, error) {
 	return manifest, manifestBytes, strings.TrimSpace(string(signatureBytes)), nil
 }
 
+func deriveBackupSigningKeyFromAESKey(aesKey []byte) ([]byte, error) {
+	if len(aesKey) == 0 {
+		return nil, ErrInvalidAESKey
+	}
+
+	sum := sha256.Sum256(append([]byte(manifestKeyContext), aesKey...))
+	return sum[:], nil
+}
+
 func deriveBackupSigningKey() ([]byte, error) {
 	secret := strings.TrimSpace(settings.CryptoSettings.Secret)
 	if secret == "" {
@@ -172,6 +176,20 @@ func signManifest(manifestBytes []byte, signingKey []byte) string {
 	mac := hmac.New(sha256.New, signingKey)
 	mac.Write(manifestBytes)
 	return hex.EncodeToString(mac.Sum(nil))
+}
+
+func verifyManifestSignatureWithFallback(manifestBytes []byte, signature string, aesKey []byte) error {
+	aesSigningKey, err := deriveBackupSigningKeyFromAESKey(aesKey)
+	if err == nil && verifyManifestSignature(manifestBytes, signature, aesSigningKey) == nil {
+		return nil
+	}
+
+	legacySigningKey, err := deriveBackupSigningKey()
+	if err == nil && verifyManifestSignature(manifestBytes, signature, legacySigningKey) == nil {
+		return nil
+	}
+
+	return ErrInvalidManifestSig
 }
 
 func verifyManifestSignature(manifestBytes []byte, signature string, signingKey []byte) error {

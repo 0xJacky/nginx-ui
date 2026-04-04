@@ -50,7 +50,7 @@ func Restore(options RestoreOptions) (RestoreResult, error) {
 	nginxUIZipPath := filepath.Join(options.RestoreDir, NginxUIZipName)
 	nginxZipPath := filepath.Join(options.RestoreDir, NginxZipName)
 
-	if err := verifyBackupManifest(options.RestoreDir); err != nil {
+	if err := verifyBackupManifest(options.RestoreDir, options.AESKey); err != nil {
 		return RestoreResult{}, err
 	}
 
