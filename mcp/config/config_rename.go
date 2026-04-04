@@ -9,36 +9,35 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/internal/mcp"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
-	"github.com/mark3labs/mcp-go/mcp"
+	mcpgo "github.com/mark3labs/mcp-go/mcp"
 )
 
 const nginxConfigRenameToolName = "nginx_config_rename"
 
-var nginxConfigRenameTool = mcp.NewTool(
+var nginxConfigRenameTool = mcpgo.NewTool(
 	nginxConfigRenameToolName,
-	mcp.WithDescription("Rename a file or directory in the Nginx configuration path"),
-	mcp.WithString("base_path", mcp.Description("The base path where the file or directory is located")),
-	mcp.WithString("orig_name", mcp.Description("The original name of the file or directory")),
-	mcp.WithString("new_name", mcp.Description("The new name for the file or directory")),
-	mcp.WithArray("sync_node_ids", mcp.Description("IDs of nodes to sync the rename operation to")),
+	mcpgo.WithDescription("Rename a file or directory in the Nginx configuration path"),
+	mcpgo.WithString("base_path", mcpgo.Description("The base path where the file or directory is located")),
+	mcpgo.WithString("orig_name", mcpgo.Description("The original name of the file or directory")),
+	mcpgo.WithString("new_name", mcpgo.Description("The new name for the file or directory")),
+	mcpgo.WithArray("sync_node_ids", mcpgo.Description("IDs of nodes to sync the rename operation to")),
 )
 
-func handleNginxConfigRename(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func handleNginxConfigRename(ctx context.Context, request mcpgo.CallToolRequest) (*mcpgo.CallToolResult, error) {
 	args := request.GetArguments()
-	basePath := args["base_path"].(string)
-	origName := args["orig_name"].(string)
-	newName := args["new_name"].(string)
+	basePath := mcp.GetString(args, "base_path")
+	origName := mcp.GetString(args, "orig_name")
+	newName := mcp.GetString(args, "new_name")
 
 	// Convert sync_node_ids from []interface{} to []uint64
-	syncNodeIdsInterface, ok := args["sync_node_ids"].([]interface{})
+	syncNodeIdsInterface := mcp.GetSlice(args, "sync_node_ids")
 	syncNodeIds := make([]uint64, 0)
-	if ok {
-		for _, id := range syncNodeIdsInterface {
-			if idFloat, ok := id.(float64); ok {
-				syncNodeIds = append(syncNodeIds, uint64(idFloat))
-			}
+	for _, id := range syncNodeIdsInterface {
+		if idFloat, ok := id.(float64); ok {
+			syncNodeIds = append(syncNodeIds, uint64(idFloat))
 		}
 	}
 
@@ -47,7 +46,7 @@ func handleNginxConfigRename(ctx context.Context, request mcp.CallToolRequest) (
 			"message": "No changes needed, names are identical",
 		}
 		jsonResult, _ := json.Marshal(result)
-		return mcp.NewToolResultText(string(jsonResult)), nil
+		return mcpgo.NewToolResultText(string(jsonResult)), nil
 	}
 
 	origFullPath, err := config.ResolveConfPath(basePath, origName)
@@ -118,5 +117,5 @@ func handleNginxConfigRename(ctx context.Context, request mcp.CallToolRequest) (
 	}
 
 	jsonResult, _ := json.Marshal(result)
-	return mcp.NewToolResultText(string(jsonResult)), nil
+	return mcpgo.NewToolResultText(string(jsonResult)), nil
 }

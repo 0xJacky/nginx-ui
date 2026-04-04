@@ -8,9 +8,10 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/internal/mcp"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
-	"github.com/mark3labs/mcp-go/mcp"
+	mcpgo "github.com/mark3labs/mcp-go/mcp"
 	"gorm.io/gen/field"
 )
 
@@ -19,29 +20,27 @@ const nginxConfigModifyToolName = "nginx_config_modify"
 // ErrFileNotFound is returned when a file is not found
 var ErrFileNotFound = errors.New("file not found")
 
-var nginxConfigModifyTool = mcp.NewTool(
+var nginxConfigModifyTool = mcpgo.NewTool(
 	nginxConfigModifyToolName,
-	mcp.WithDescription("Modify an existing Nginx configuration file"),
-	mcp.WithString("relative_path", mcp.Description("The relative path to the configuration file")),
-	mcp.WithString("content", mcp.Description("The new content of the configuration file")),
-	mcp.WithBoolean("sync_overwrite", mcp.Description("Whether to overwrite existing files when syncing")),
-	mcp.WithArray("sync_node_ids", mcp.Description("IDs of nodes to sync the configuration to")),
+	mcpgo.WithDescription("Modify an existing Nginx configuration file"),
+	mcpgo.WithString("relative_path", mcpgo.Description("The relative path to the configuration file")),
+	mcpgo.WithString("content", mcpgo.Description("The new content of the configuration file")),
+	mcpgo.WithBoolean("sync_overwrite", mcpgo.Description("Whether to overwrite existing files when syncing")),
+	mcpgo.WithArray("sync_node_ids", mcpgo.Description("IDs of nodes to sync the configuration to")),
 )
 
-func handleNginxConfigModify(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func handleNginxConfigModify(ctx context.Context, request mcpgo.CallToolRequest) (*mcpgo.CallToolResult, error) {
 	args := request.GetArguments()
-	relativePath := args["relative_path"].(string)
-	content := args["content"].(string)
-	syncOverwrite := args["sync_overwrite"].(bool)
+	relativePath := mcp.GetString(args, "relative_path")
+	content := mcp.GetString(args, "content")
+	syncOverwrite := mcp.GetBool(args, "sync_overwrite")
 
 	// Convert sync_node_ids from []interface{} to []uint64
-	syncNodeIdsInterface, ok := args["sync_node_ids"].([]interface{})
+	syncNodeIdsInterface := mcp.GetSlice(args, "sync_node_ids")
 	syncNodeIds := make([]uint64, 0)
-	if ok {
-		for _, id := range syncNodeIdsInterface {
-			if idFloat, ok := id.(float64); ok {
-				syncNodeIds = append(syncNodeIds, uint64(idFloat))
-			}
+	for _, id := range syncNodeIdsInterface {
+		if idFloat, ok := id.(float64); ok {
+			syncNodeIds = append(syncNodeIds, uint64(idFloat))
 		}
 	}
 
@@ -92,5 +91,5 @@ func handleNginxConfigModify(ctx context.Context, request mcp.CallToolRequest) (
 	}
 
 	jsonResult, _ := json.Marshal(result)
-	return mcp.NewToolResultText(string(jsonResult)), nil
+	return mcpgo.NewToolResultText(string(jsonResult)), nil
 }
