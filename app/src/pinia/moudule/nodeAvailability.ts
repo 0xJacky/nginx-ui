@@ -74,8 +74,6 @@ export const useNodeAvailabilityStore = defineStore('nodeAvailability', () => {
           nodes.value[nodeId] = nodeData
         })
 
-        const firstNodeId = Object.keys(nodesData)[0]
-
         writeCachedNodes(nodes.value)
 
         lastUpdateTime.value = new Date().toISOString()
