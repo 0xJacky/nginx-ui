@@ -13,7 +13,7 @@ require (
 	github.com/blevesearch/bleve/v2 v2.5.7
 	github.com/caarlos0/env/v11 v11.4.0
 	github.com/casdoor/casdoor-go-sdk v1.45.0
-	github.com/cloudflare/cloudflare-go/v6 v6.8.0
+	github.com/cloudflare/cloudflare-go/v6 v6.9.0
 	github.com/coreos/go-oidc/v3 v3.17.0
 	github.com/creack/pty v1.1.24
 	github.com/dgraph-io/ristretto/v2 v2.4.0
