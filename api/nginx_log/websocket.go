@@ -64,7 +64,7 @@ func getLogPath(control *controlStruct) (logPath string, err error) {
 }
 
 // tailNginxLog tails the specified log file and sends each line to the websocket
-func tailNginxLog(ws *websocket.Conn, controlChan chan controlStruct, errChan chan error) {
+func tailNginxLog(writer *helper.SafeWebSocketWriter, controlChan chan controlStruct, errChan chan error) {
 	defer func() {
 		if err := recover(); err != nil {
 			buf := make([]byte, 1024)
@@ -117,7 +117,7 @@ func tailNginxLog(ws *websocket.Conn, controlChan chan controlStruct, errChan ch
 					continue
 				}
 
-				err = ws.WriteMessage(websocket.TextMessage, []byte(line.Text))
+				err = writer.WriteMessage(websocket.TextMessage, []byte(line.Text))
 				if err != nil {
 					if helper.IsUnexpectedWebsocketError(err) {
 						errChan <- errors.Wrap(err, "error tailNginxLog write message")
@@ -182,15 +182,17 @@ func Log(c *gin.Context) {
 
 	defer ws.Close()
 
+	wsWriter := helper.NewSafeWebSocketWriter(ws)
+
 	errChan := make(chan error, 1)
 	controlChan := make(chan controlStruct, 1)
 
-	go tailNginxLog(ws, controlChan, errChan)
+	go tailNginxLog(wsWriter, controlChan, errChan)
 	go handleLogControl(ws, controlChan, errChan)
 
 	if err = <-errChan; err != nil {
 		logger.Error(err)
-		_ = ws.WriteMessage(websocket.TextMessage, []byte(err.Error()))
+		_ = wsWriter.WriteMessage(websocket.TextMessage, []byte(err.Error()))
 		return
 	}
 }

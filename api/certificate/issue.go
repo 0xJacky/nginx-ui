@@ -43,6 +43,8 @@ func IssueCert(c *gin.Context) {
 
 	defer ws.Close()
 
+	wsWriter := helper.NewSafeWebSocketWriter(ws)
+
 	// read
 	payload := &cert.ConfigPayload{}
 
@@ -70,13 +72,13 @@ func IssueCert(c *gin.Context) {
 
 	log := cert.NewLogger()
 	log.SetCertModel(&certModel)
-	log.SetWebSocket(ws)
+	log.SetWebSocket(wsWriter)
 	defer log.Close()
 
 	err = cert.IssueCert(payload, log)
 	if err != nil {
 		log.Error(err)
-		_ = ws.WriteJSON(IssueCertResponse{
+		_ = wsWriter.WriteJSON(IssueCertResponse{
 			Status:  Error,
 			Message: err.Error(),
 		})
@@ -102,13 +104,13 @@ func IssueCert(c *gin.Context) {
 		})).FirstOrCreate()
 	if err != nil {
 		logger.Error(err)
-		_ = ws.WriteJSON(IssueCertResponse{
+		_ = wsWriter.WriteJSON(IssueCertResponse{
 			Status:  Error,
 			Message: err.Error(),
 		})
 		return
 	}
-	err = ws.WriteJSON(IssueCertResponse{
+	err = wsWriter.WriteJSON(IssueCertResponse{
 		Status:            Success,
 		Message:           translation.C("[Nginx UI] Issued certificate successfully").ToString(),
 		SSLCertificate:    payload.GetCertificatePath(),

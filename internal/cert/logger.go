@@ -6,6 +6,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/translation"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gorilla/websocket"
@@ -15,7 +16,7 @@ import (
 type Logger struct {
 	buffer []string
 	cert   *model.Cert
-	ws     *websocket.Conn
+	ws     *helper.SafeWebSocketWriter
 	trans  *translation.Container
 	mu     sync.Mutex
 	msgCh  chan []byte
@@ -52,7 +53,7 @@ func (t *Logger) SetCertModel(cert *model.Cert) {
 	t.cert = cert
 }
 
-func (t *Logger) SetWebSocket(ws *websocket.Conn) {
+func (t *Logger) SetWebSocket(ws *helper.SafeWebSocketWriter) {
 	t.mu.Lock()
 	defer t.mu.Unlock()
 	t.ws = ws

@@ -2,12 +2,12 @@ package upgrader
 
 import (
 	"github.com/0xJacky/Nginx-UI/internal/docker"
-	"github.com/gorilla/websocket"
+	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/uozi-tech/cosy/logger"
 )
 
 // DockerUpgrade Upgrade the Docker container
-func DockerUpgrade(ws *websocket.Conn, control *Control) {
+func DockerUpgrade(ws *helper.SafeWebSocketWriter, control *Control) {
 	progressChan := make(chan float64)
 
 	// Start a goroutine to listen for progress updates and send them via WebSocket

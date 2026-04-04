@@ -61,6 +61,8 @@ func PerformCoreUpgrade(c *gin.Context) {
 	}
 	defer ws.Close()
 
+	wsWriter := helper.NewSafeWebSocketWriter(ws)
+
 	var control upgrader.Control
 
 	err = ws.ReadJSON(&control)
@@ -70,8 +72,8 @@ func PerformCoreUpgrade(c *gin.Context) {
 		return
 	}
 	if helper.InNginxUIOfficialDocker() && helper.DockerSocketExists() {
-		upgrader.DockerUpgrade(ws, &control)
+		upgrader.DockerUpgrade(wsWriter, &control)
 	} else {
-		upgrader.BinaryUpgrade(ws, &control)
+		upgrader.BinaryUpgrade(wsWriter, &control)
 	}
 }
