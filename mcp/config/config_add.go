@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"os"
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
@@ -36,6 +37,13 @@ func handleNginxConfigAdd(ctx context.Context, request mcpgo.CallToolRequest) (*
 	content := mcp.GetString(args, "content")
 	baseDir := mcp.GetString(args, "base_dir")
 	overwrite := mcp.GetBool(args, "overwrite")
+
+	if name == "" {
+		return nil, fmt.Errorf("argument 'name' is required")
+	}
+	if _, exists := args["content"]; !exists || args["content"] == nil {
+		return nil, fmt.Errorf("argument 'content' is required")
+	}
 
 	// Convert sync_node_ids from []interface{} to []uint64
 	syncNodeIdsInterface := mcp.GetSlice(args, "sync_node_ids")

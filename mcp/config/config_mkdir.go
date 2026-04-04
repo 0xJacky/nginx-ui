@@ -3,6 +3,7 @@ package config
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"os"
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
@@ -23,6 +24,10 @@ func handleNginxConfigMkdir(ctx context.Context, request mcpgo.CallToolRequest) 
 	args := request.GetArguments()
 	basePath := mcp.GetString(args, "base_path")
 	folderName := mcp.GetString(args, "folder_name")
+
+	if folderName == "" {
+		return nil, fmt.Errorf("argument 'folder_name' is required")
+	}
 
 	fullPath, err := config.ResolveConfPath(basePath, folderName)
 	if err != nil {

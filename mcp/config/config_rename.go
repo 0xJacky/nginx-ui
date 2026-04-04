@@ -3,6 +3,7 @@ package config
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -31,6 +32,13 @@ func handleNginxConfigRename(ctx context.Context, request mcpgo.CallToolRequest)
 	basePath := mcp.GetString(args, "base_path")
 	origName := mcp.GetString(args, "orig_name")
 	newName := mcp.GetString(args, "new_name")
+
+	if origName == "" {
+		return nil, fmt.Errorf("argument 'orig_name' is required")
+	}
+	if newName == "" {
+		return nil, fmt.Errorf("argument 'new_name' is required")
+	}
 
 	// Convert sync_node_ids from []interface{} to []uint64
 	syncNodeIdsInterface := mcp.GetSlice(args, "sync_node_ids")
