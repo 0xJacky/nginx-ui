@@ -13,6 +13,9 @@ const locations = defineModel<NgxLocation[]>('locations', {
   default: reactive([]),
 })
 
+const locationKeys = new WeakMap<NgxLocation, string>()
+let locationKeySeed = 0
+
 const location = reactive({
   comments: '',
   path: '',
@@ -44,6 +47,15 @@ function duplicate(index: number) {
 
   locations.value.splice(index, 0, cloneDeep(loc))
 }
+
+function getLocationKey(location: NgxLocation) {
+  let key = locationKeys.get(location)
+  if (!key) {
+    key = `location-${locationKeySeed++}`
+    locationKeys.set(location, key)
+  }
+  return key
+}
 </script>
 
 <template>
@@ -53,7 +65,7 @@ function duplicate(index: number) {
     <Draggable
       v-else
       :list="locations"
-      item-key="name"
+      :item-key="getLocationKey"
       class="list-group"
       ghost-class="ghost"
       handle=".ant-collapse-header"

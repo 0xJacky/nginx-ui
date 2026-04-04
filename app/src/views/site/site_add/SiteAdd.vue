@@ -26,8 +26,12 @@ const { ngxConfig, curServerDirectives, curServerLocations } = storeToRefs(ngxCo
 const { curSupportSSL } = storeToRefs(editorStore)
 
 function init() {
+  currentStep.value = 0
+  selectedDNSRecord.value = null
+  ngxConfigStore.reset()
+
   site.get_default_template().then(r => {
-    ngxConfig.value = r.tokenized
+    ngxConfigStore.setNgxConfig(r.tokenized)
   })
 }
 
