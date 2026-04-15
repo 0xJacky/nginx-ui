@@ -32,6 +32,7 @@ type Service struct {
 	targets         map[string]*TargetInfo // key: host:port
 	availabilityMap map[string]*Status     // key: host:port
 	configTargets   map[string][]string    // configPath -> []targetKeys
+	configUpstreams map[string][]string    // configPath -> []upstreamNames
 	// Public upstream definitions storage
 	Upstreams                 map[string]*Definition // key: upstream name
 	upstreamsMutex            sync.RWMutex
@@ -72,6 +73,7 @@ func GetUpstreamService() *Service {
 			targets:                   make(map[string]*TargetInfo),
 			availabilityMap:           make(map[string]*Status),
 			configTargets:             make(map[string][]string),
+			configUpstreams:           make(map[string][]string),
 			Upstreams:                 make(map[string]*Definition),
 			lastUpdateTime:            time.Now(),
 			disabledSocketsCacheValid: false, // Initialize as invalid to force first load
@@ -99,12 +101,9 @@ func scanForProxyTargets(configPath string, content []byte) error {
 	result := ParseProxyTargetsAndUpstreamsFromRawContent(string(content))
 
 	service := GetUpstreamService()
-	service.updateTargetsFromConfig(configPath, result.ProxyTargets)
-
-	// Update upstream definitions
-	for upstreamName, servers := range result.Upstreams {
-		service.UpdateUpstreamDefinition(upstreamName, servers, configPath)
-	}
+	service.updateUpstreamsFromConfig(configPath, result.Upstreams)
+	service.updateTargetsFromConfig(configPath, service.filterKnownUpstreamReferences(result.ProxyTargets))
+	service.removeKnownUpstreamReferenceTargets()
 
 	return nil
 }
@@ -375,15 +374,16 @@ func (s *Service) InvalidateDisabledSocketsCache() {
 // ClearTargets clears all targets (useful for testing or reloading)
 func (s *Service) ClearTargets() {
 	s.targetsMutex.Lock()
-	s.upstreamsMutex.Lock()
-	defer s.targetsMutex.Unlock()
-	defer s.upstreamsMutex.Unlock()
-
 	s.targets = make(map[string]*TargetInfo)
 	s.availabilityMap = make(map[string]*Status)
 	s.configTargets = make(map[string][]string)
-	s.Upstreams = make(map[string]*Definition)
 	s.lastUpdateTime = time.Now()
+	s.targetsMutex.Unlock()
+
+	s.upstreamsMutex.Lock()
+	s.configUpstreams = make(map[string][]string)
+	s.Upstreams = make(map[string]*Definition)
+	s.upstreamsMutex.Unlock()
 
 	// logger.Debug("Cleared all proxy targets and upstream definitions")
 }
@@ -413,6 +413,44 @@ func (s *Service) UpdateUpstreamDefinition(name string, servers []ProxyTarget, c
 		ConfigPath: configPath,
 		LastSeen:   time.Now(),
 	}
+}
+
+// updateUpstreamsFromConfig replaces the upstream definitions discovered in a specific config file.
+func (s *Service) updateUpstreamsFromConfig(configPath string, upstreams map[string][]ProxyTarget) {
+	s.upstreamsMutex.Lock()
+	defer s.upstreamsMutex.Unlock()
+
+	oldUpstreamNames := s.configUpstreams[configPath]
+	currentUpstreamNames := make([]string, 0, len(upstreams))
+	currentUpstreamSet := make(map[string]bool, len(upstreams))
+	now := time.Now()
+
+	for upstreamName, servers := range upstreams {
+		currentUpstreamNames = append(currentUpstreamNames, upstreamName)
+		currentUpstreamSet[upstreamName] = true
+		s.Upstreams[upstreamName] = &Definition{
+			Name:       upstreamName,
+			Servers:    append([]ProxyTarget(nil), servers...),
+			ConfigPath: configPath,
+			LastSeen:   now,
+		}
+	}
+
+	for _, upstreamName := range oldUpstreamNames {
+		if currentUpstreamSet[upstreamName] {
+			continue
+		}
+		if upstream, exists := s.Upstreams[upstreamName]; exists && upstream.ConfigPath == configPath {
+			delete(s.Upstreams, upstreamName)
+		}
+	}
+
+	if len(currentUpstreamNames) == 0 {
+		delete(s.configUpstreams, configPath)
+		return
+	}
+
+	s.configUpstreams[configPath] = currentUpstreamNames
 }
 
 // GetUpstreamDefinition returns an upstream definition by name
@@ -461,6 +499,11 @@ func (s *Service) IsUpstreamName(name string) bool {
 
 // RemoveConfigTargets removes all targets associated with a specific config file
 func (s *Service) RemoveConfigTargets(configPath string) {
+	s.removeTargetsForConfig(configPath)
+	s.removeUpstreamsForConfig(configPath)
+}
+
+func (s *Service) removeTargetsForConfig(configPath string) {
 	s.targetsMutex.Lock()
 	defer s.targetsMutex.Unlock()
 
@@ -488,5 +531,75 @@ func (s *Service) RemoveConfigTargets(configPath string) {
 		delete(s.configTargets, configPath)
 		s.lastUpdateTime = time.Now()
 		// logger.Debug("Removed config targets for:", configPath)
+	}
+}
+
+func (s *Service) removeUpstreamsForConfig(configPath string) {
+	s.upstreamsMutex.Lock()
+	defer s.upstreamsMutex.Unlock()
+
+	upstreamNames, exists := s.configUpstreams[configPath]
+	if !exists {
+		return
+	}
+
+	for _, upstreamName := range upstreamNames {
+		if upstream, exists := s.Upstreams[upstreamName]; exists && upstream.ConfigPath == configPath {
+			delete(s.Upstreams, upstreamName)
+		}
+	}
+
+	delete(s.configUpstreams, configPath)
+}
+
+func (s *Service) filterKnownUpstreamReferences(targets []ProxyTarget) []ProxyTarget {
+	filtered := make([]ProxyTarget, 0, len(targets))
+
+	for _, target := range targets {
+		if target.Type != "upstream" && s.IsUpstreamName(target.Host) {
+			continue
+		}
+		filtered = append(filtered, target)
+	}
+
+	return filtered
+}
+
+func (s *Service) removeKnownUpstreamReferenceTargets() {
+	s.upstreamsMutex.RLock()
+	knownUpstreams := make(map[string]bool, len(s.Upstreams))
+	for upstreamName := range s.Upstreams {
+		knownUpstreams[upstreamName] = true
+	}
+	s.upstreamsMutex.RUnlock()
+
+	if len(knownUpstreams) == 0 {
+		return
+	}
+
+	s.targetsMutex.Lock()
+	defer s.targetsMutex.Unlock()
+
+	for key, targetInfo := range s.targets {
+		if targetInfo.Type == "upstream" || !knownUpstreams[targetInfo.Host] {
+			continue
+		}
+
+		delete(s.targets, key)
+		delete(s.availabilityMap, key)
+
+		for configPath, targetKeys := range s.configTargets {
+			filteredKeys := targetKeys[:0]
+			for _, targetKey := range targetKeys {
+				if targetKey != key {
+					filteredKeys = append(filteredKeys, targetKey)
+				}
+			}
+			if len(filteredKeys) == 0 {
+				delete(s.configTargets, configPath)
+				continue
+			}
+			s.configTargets[configPath] = filteredKeys
+		}
 	}
 }
