@@ -1,20 +1,20 @@
 module github.com/0xJacky/Nginx-UI
 
-go 1.26.1
+go 1.26.2
 
 require (
 	code.pfad.fr/risefront v1.0.0
 	github.com/0xJacky/pofile v1.1.1
 	github.com/BurntSushi/toml v1.6.0
-	github.com/alibabacloud-go/alidns-20150109/v5 v5.3.3
+	github.com/alibabacloud-go/alidns-20150109/v5 v5.3.4
 	github.com/alibabacloud-go/darabonba-openapi/v2 v2.1.16
 	github.com/alibabacloud-go/tea v1.4.0
 	github.com/alibabacloud-go/tea-utils/v2 v2.0.9
 	github.com/blevesearch/bleve/v2 v2.5.7
 	github.com/caarlos0/env/v11 v11.4.0
-	github.com/casdoor/casdoor-go-sdk v1.45.0
+	github.com/casdoor/casdoor-go-sdk v1.46.0
 	github.com/cloudflare/cloudflare-go/v6 v6.9.0
-	github.com/coreos/go-oidc/v3 v3.17.0
+	github.com/coreos/go-oidc/v3 v3.18.0
 	github.com/creack/pty v1.1.24
 	github.com/dgraph-io/ristretto/v2 v2.4.0
 	github.com/docker/docker v28.5.2+incompatible
@@ -26,16 +26,16 @@ require (
 	github.com/gin-contrib/static v1.1.6
 	github.com/gin-gonic/gin v1.12.0
 	github.com/go-acme/lego/v4 v4.33.0
-	github.com/go-co-op/gocron/v2 v2.19.1
+	github.com/go-co-op/gocron/v2 v2.21.0
 	github.com/go-gormigrate/gormigrate/v2 v2.1.5
 	github.com/go-playground/validator/v10 v10.30.2
 	github.com/go-resty/resty/v2 v2.17.2
 	github.com/go-telegram-bot-api/telegram-bot-api v4.6.4+incompatible
-	github.com/go-webauthn/webauthn v0.16.2
+	github.com/go-webauthn/webauthn v0.16.4
 	github.com/golang-jwt/jwt/v5 v5.3.1
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674
-	github.com/mark3labs/mcp-go v0.46.0
+	github.com/mark3labs/mcp-go v0.48.0
 	github.com/minio/minio-go/v7 v7.0.100
 	github.com/minio/selfupdate v0.6.0
 	github.com/nikoksr/notify v1.5.0
@@ -50,15 +50,15 @@ require (
 	github.com/spf13/afero v1.15.0
 	github.com/spf13/cast v1.10.0
 	github.com/stretchr/testify v1.11.1
-	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.3.71
-	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/dnspod v1.3.64
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.3.79
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/dnspod v1.3.78
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20260220081509-8e17ce617db3
 	github.com/ulikunitz/xz v0.5.15
-	github.com/uozi-tech/cosy v1.31.1
+	github.com/uozi-tech/cosy v1.32.0
 	github.com/uozi-tech/cosy-driver-sqlite v0.2.1
 	github.com/urfave/cli/v3 v3.8.0
-	golang.org/x/crypto v0.49.0
-	golang.org/x/net v0.52.0
+	golang.org/x/crypto v0.50.0
+	golang.org/x/net v0.53.0
 	golang.org/x/oauth2 v0.36.0
 	google.golang.org/grpc v1.80.0
 	gopkg.in/ini.v1 v1.67.1
@@ -193,7 +193,7 @@ require (
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-sql-driver/mysql v1.9.3 // indirect
 	github.com/go-viper/mapstructure/v2 v2.5.0 // indirect
-	github.com/go-webauthn/x v0.2.2 // indirect
+	github.com/go-webauthn/x v0.2.3 // indirect
 	github.com/goccy/go-json v0.10.6 // indirect
 	github.com/goccy/go-yaml v1.19.2 // indirect
 	github.com/gofrs/flock v0.13.0 // indirect
@@ -361,8 +361,8 @@ require (
 	golang.org/x/arch v0.25.0 // indirect
 	golang.org/x/mod v0.34.0 // indirect
 	golang.org/x/sync v0.20.0 // indirect
-	golang.org/x/sys v0.42.0 // indirect
-	golang.org/x/text v0.35.0 // indirect
+	golang.org/x/sys v0.43.0 // indirect
+	golang.org/x/text v0.36.0 // indirect
 	golang.org/x/time v0.15.0 // indirect
 	golang.org/x/tools v0.43.0 // indirect
 	google.golang.org/api v0.274.0 // indirect
