@@ -131,7 +131,7 @@ export function setupResponseInterceptor() {
       }
       // Setup stores and refs
       const user = useUserStore()
-      const { secureSessionId } = storeToRefs(user)
+      const { secureSessionId, token } = storeToRefs(user)
       const otpModal = use2FAModal()
 
       // Handle authentication errors
@@ -142,9 +142,12 @@ export function setupResponseInterceptor() {
             await otpModal.open()
             break
           case 403:
-            user.logout()
-            await router.push('/login')
-            return
+            if (!error.config?.skipAuthRedirect && token.value) {
+              user.logout()
+              await router.push('/login')
+              return
+            }
+            break
         }
       }
 

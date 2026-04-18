@@ -3,6 +3,10 @@ import { LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons-vue'
 import { Form } from 'ant-design-vue'
 import install from '@/api/install'
 
+const props = defineProps<{
+  installSecret: string
+  frontendDebug?: boolean
+}>()
 const emit = defineEmits<{
   (e: 'installSuccess'): void
 }>()
@@ -49,21 +53,27 @@ const rulesRef = reactive({
 
 const { validate, validateInfos } = Form.useForm(modelRef, rulesRef)
 
-function onSubmit() {
-  validate().then(() => {
-    loading.value = true
+async function onSubmit() {
+  await validate()
 
-    install.install_nginx_ui(modelRef).then(async () => {
-      message.success($gettext('Install successfully'))
+  loading.value = true
+
+  try {
+    if (props.frontendDebug) {
+      await new Promise(resolve => setTimeout(resolve, 300))
+      message.success($gettext('Frontend debug mode: install flow completed without sending a backend request'))
       emit('installSuccess')
-      await router.push('/login')
-    }).catch(error => {
-      if (error && error.code === 40308)
-        throw error
-    }).finally(() => {
-      loading.value = false
-    })
-  })
+      return
+    }
+
+    await install.install_nginx_ui(modelRef, props.installSecret)
+    message.success($gettext('Install successfully'))
+    emit('installSuccess')
+    await router.push('/login')
+  }
+  finally {
+    loading.value = false
+  }
 }
 </script>
 

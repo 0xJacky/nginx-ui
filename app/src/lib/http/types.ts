@@ -14,6 +14,7 @@ export type CosyErrorRecord = Record<number, () => string>
 export interface HttpConfig extends AxiosRequestConfig {
   returnFullResponse?: boolean
   crypto?: boolean
+  skipAuthRedirect?: boolean
 }
 
 // Extend InternalAxiosRequestConfig type
@@ -21,5 +22,6 @@ declare module 'axios' {
   interface AxiosRequestConfig {
     returnFullResponse?: boolean
     crypto?: boolean
+    skipAuthRedirect?: boolean
   }
 }

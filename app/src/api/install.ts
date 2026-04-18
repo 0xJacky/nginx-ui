@@ -6,6 +6,12 @@ export interface InstallRequest {
   password: string
 }
 
+function installSecretHeaders(installSecret: string) {
+  return {
+    'X-Install-Secret': installSecret,
+  }
+}
+
 export interface InstallLockResponse {
   lock: boolean
   timeout: boolean
@@ -15,8 +21,12 @@ const install = {
   get_lock() {
     return http.get<InstallLockResponse>('/install')
   },
-  install_nginx_ui(data: InstallRequest) {
-    return http.post('/install', data, { crypto: true })
+  install_nginx_ui(data: InstallRequest, installSecret: string) {
+    return http.post('/setup/install', data, {
+      crypto: true,
+      headers: installSecretHeaders(installSecret),
+      skipAuthRedirect: true,
+    })
   },
 }
 

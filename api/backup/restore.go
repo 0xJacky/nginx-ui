@@ -11,6 +11,7 @@ import (
 	"code.pfad.fr/risefront"
 	"github.com/0xJacky/Nginx-UI/internal/backup"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
+	internalSystem "github.com/0xJacky/Nginx-UI/internal/system"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
 )
@@ -124,6 +125,11 @@ func RestoreBackup(c *gin.Context) {
 	}
 
 	if restoreNginxUI {
+		if err := internalSystem.ConsumeInstallSecret(); err != nil {
+			cosy.ErrHandler(c, err)
+			return
+		}
+
 		go func() {
 			time.Sleep(2 * time.Second)
 			// gracefully restart

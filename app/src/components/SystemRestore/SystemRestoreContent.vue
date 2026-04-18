@@ -8,6 +8,9 @@ import backup from '@/api/backup'
 interface SystemRestoreProps {
   showTitle?: boolean
   showNginxOptions?: boolean
+  installSecret?: string
+  setupAuth?: boolean
+  frontendDebug?: boolean
 }
 
 // Define emits using TypeScript interface
@@ -16,9 +19,11 @@ interface SystemRestoreEmits {
   (e: 'restoreError', error: Error): void
 }
 
-withDefaults(defineProps<SystemRestoreProps>(), {
+const props = withDefaults(defineProps<SystemRestoreProps>(), {
   showTitle: true,
   showNginxOptions: true,
+  setupAuth: false,
+  frontendDebug: false,
 })
 
 const emit = defineEmits<SystemRestoreEmits>()
@@ -130,9 +135,28 @@ async function doRestore() {
       verify_hash: formModel.verifyHash,
     }
 
-    const data = await backup.restoreBackup(options) as RestoreResponse
+    let data: RestoreResponse
 
-    message.success($gettext('Restore completed successfully'))
+    if (props.frontendDebug) {
+      data = {
+        restore_dir: 'frontend-debug',
+        nginx_ui_restored: formModel.restoreNginxUI,
+        nginx_restored: formModel.restoreNginx,
+        hash_match: true,
+      }
+    }
+    else {
+      data = await backup.restoreBackup(options, props.setupAuth
+        ? {
+            setupAuth: true,
+            installSecret: props.installSecret,
+          }
+        : undefined) as RestoreResponse
+    }
+
+    message.success(props.frontendDebug
+      ? $gettext('Frontend debug mode: restore flow completed without sending a backend request')
+      : $gettext('Restore completed successfully'))
 
     if (data.nginx_restored) {
       message.info($gettext('Nginx configuration has been restored'))

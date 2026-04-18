@@ -171,6 +171,12 @@ msgstr "Options 2FA"
 msgid "4GB+ RAM recommended"
 msgstr "4 Go de RAM ou plus recommandés"
 
+#: src/components/InspectConfig/InspectConfig.vue:37
+msgid "A required include file is missing from the sandbox or source configuration."
+msgstr ""
+"Un fichier d'inclusion requis est manquant dans le bac à sable ou la "
+"configuration source."
+
 #: src/routes/modules/system.ts:38
 msgid "About"
 msgstr "À propos"
@@ -202,7 +208,7 @@ msgstr "Action"
 #: src/views/certificate/CertificateList/certColumns.tsx:92
 #: src/views/config/configColumns.tsx:51
 #: src/views/dns/components/DNSRecordTable.vue:42
-#: src/views/dns/DDNSManager.vue:91 src/views/dns/DNSCredential.vue:71
+#: src/views/dns/DDNSManager.vue:129 src/views/dns/DNSCredential.vue:71
 #: src/views/dns/DNSDomainList.vue:217 src/views/namespace/columns.ts:97
 #: src/views/nginx_log/NginxLogList.vue:338 src/views/node/nodeColumns.tsx:96
 #: src/views/notification/notificationColumns.tsx:72
@@ -252,8 +258,8 @@ msgstr "Ajouter un domaine"
 msgid "Add Header"
 msgstr "Ajouter un en-tête"
 
-#: src/components/NgxConfigEditor/LocationEditor.vue:131
-#: src/components/NgxConfigEditor/LocationEditor.vue:158
+#: src/components/NgxConfigEditor/LocationEditor.vue:143
+#: src/components/NgxConfigEditor/LocationEditor.vue:170
 msgid "Add Location"
 msgstr "Ajouter une localisation"
 
@@ -265,7 +271,7 @@ msgstr "Ajouter un enregistrement"
 msgid "Add Server"
 msgstr "Ajouter un serveur"
 
-#: src/routes/modules/sites.ts:26 src/views/site/site_add/SiteAdd.vue:163
+#: src/routes/modules/sites.ts:26 src/views/site/site_add/SiteAdd.vue:167
 msgid "Add Site"
 msgstr "Ajouter un site"
 
@@ -366,7 +372,7 @@ msgstr ""
 "Toute adresse IP accessible peut être utilisée avec des autorités de "
 "certification privées"
 
-#: src/views/preference/tabs/OpenAISettings.vue:32
+#: src/views/preference/tabs/OpenAISettings.vue:33
 msgid "API Base Url"
 msgstr "URL de base de l'API"
 
@@ -374,15 +380,15 @@ msgstr "URL de base de l'API"
 msgid "API Document"
 msgstr "Documentation API"
 
-#: src/views/preference/tabs/OpenAISettings.vue:46
+#: src/views/preference/tabs/OpenAISettings.vue:47
 msgid "API Proxy"
 msgstr "Proxy d'API"
 
-#: src/views/preference/tabs/OpenAISettings.vue:58
+#: src/views/preference/tabs/OpenAISettings.vue:59
 msgid "API Token"
 msgstr "Jeton API"
 
-#: src/views/preference/tabs/OpenAISettings.vue:67
+#: src/views/preference/tabs/OpenAISettings.vue:71
 msgid "API Type"
 msgstr "Type d'API"
 
@@ -401,6 +407,10 @@ msgstr "Arch"
 #: src/views/preference/tabs/AuthSettings.vue:126
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "Êtes-vous sûr de vouloir supprimer immédiatement cette IP bannie ?"
+
+#: src/views/dns/DDNSManager.vue:276
+msgid "Are you sure to delete this DDNS config?"
+msgstr "Êtes-vous sûr de vouloir supprimer cette configuration DDNS ?"
 
 #: src/views/preference/components/AuthSettings/Passkey.vue:114
 msgid "Are you sure to delete this passkey immediately?"
@@ -450,7 +460,7 @@ msgstr "Voulez-vous vraiment supprimer cette directive ?"
 msgid "Are you sure you want to remove this item?"
 msgstr "Êtes-vous sûr de vouloir supprimer cet élément ?"
 
-#: src/components/NgxConfigEditor/LocationEditor.vue:87
+#: src/components/NgxConfigEditor/LocationEditor.vue:99
 msgid "Are you sure you want to remove this location?"
 msgstr "Voulez-vous vraiment supprimer cette localisation ?"
 
@@ -476,7 +486,7 @@ msgstr "Assistant"
 msgid "At least 20GB available disk space"
 msgstr "Au moins 20 Go d'espace disque disponible"
 
-#: src/components/SelfCheck/SelfCheck.vue:48
+#: src/components/SelfCheck/SelfCheck.vue:85
 msgid "Attempt to fix"
 msgstr "Tenter de corriger"
 
@@ -492,7 +502,7 @@ msgstr "Authentification"
 msgid "Authenticate with a passkey"
 msgstr "S'authentifier avec une clé d'accès"
 
-#: src/views/other/Login.vue:293
+#: src/views/other/Login.vue:289
 msgid "Authenticating..."
 msgstr "Authentification en cours..."
 
@@ -543,16 +553,16 @@ msgstr "Actualisation automatique désactivée"
 msgid "Auto refresh enabled"
 msgstr "Actualisation automatique activée"
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:80
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:134
 msgid "Auto-renewal disabled for %{name}"
 msgstr "Renouvellement automatique désactivé pour %{name}"
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:73
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:127
 msgid "Auto-renewal enabled for %{name}"
 msgstr "Renouvellement automatique activé pour %{name}"
 
 #: src/views/certificate/components/RenewCert.vue:54
-#: src/views/site/site_edit/components/Cert/IssueCert.vue:84
+#: src/views/site/site_edit/components/Cert/IssueCert.vue:103
 msgid "AutoCert is running, please wait..."
 msgstr "AutoCert est en cours d'exécution, veuillez patienter..."
 
@@ -564,7 +574,7 @@ msgstr "AutoCert est en cours d'exécution..."
 msgid "Automated log rotation detection"
 msgstr "Détection automatique de rotation des journaux"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:340
+#: src/components/SystemRestore/SystemRestoreContent.vue:364
 msgid "Automatic Restart"
 msgstr "Redémarrage automatique"
 
@@ -589,7 +599,7 @@ msgstr "Moy./PV"
 #: src/views/config/components/ConfigLeftPanel.vue:274
 #: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
 #: src/views/dns/DNSRecordManager.vue:230 src/views/nginx_log/NginxLog.vue:129
-#: src/views/site/site_add/SiteAdd.vue:246
+#: src/views/site/site_add/SiteAdd.vue:250
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:189
 #: src/views/stream/components/StreamEditor.vue:147
 msgid "Back"
@@ -703,7 +713,7 @@ msgstr "Banni durant"
 msgid "Bark"
 msgstr "Bark"
 
-#: src/views/site/site_add/SiteAdd.vue:169
+#: src/views/site/site_add/SiteAdd.vue:173
 msgid "Base information"
 msgstr "Information générale"
 
@@ -829,14 +839,14 @@ msgstr ""
 #: src/components/NgxConfigEditor/NgxUpstream.vue:32 src/language/curd.ts:37
 #: src/views/config/components/Delete.vue:98
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:710
-#: src/views/dns/DDNSManager.vue:244 src/views/dns/DNSRecordManager.vue:219
+#: src/views/dns/DDNSManager.vue:334 src/views/dns/DNSRecordManager.vue:219
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:101
 #: src/views/nginx_log/indexing/IndexManagement.vue:33
 #: src/views/nginx_log/indexing/IndexManagement.vue:59
 #: src/views/preference/components/AuthSettings/Passkey.vue:142
 #: src/views/site/components/SiteStatusSelect.vue:124
-#: src/views/site/site_edit/components/Cert/IssueCert.vue:40
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:145
+#: src/views/site/site_edit/components/Cert/IssueCert.vue:53
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:184
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:21
 #: src/views/stream/components/StreamStatusSelect.vue:62
 msgid "Cancel"
@@ -871,6 +881,10 @@ msgid "Cannot delete server_name while DNS is linked. Clear DNS link first."
 msgstr ""
 "Impossible de supprimer server_name tant que le DNS est lié. Supprimez "
 "d'abord le lien DNS."
+
+#: src/constants/errors/config.ts:9
+msgid "Cannot delete the nginx config directory"
+msgstr "Impossible de supprimer le répertoire de configuration nginx"
 
 #: src/views/dashboard/NginxDashBoard.vue:154
 msgid "Cannot get performance data in this state"
@@ -1214,8 +1228,8 @@ msgstr "Effacer le lien"
 msgid "Cleared successfully"
 msgstr "Effacé avec succès"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:196
-#: src/components/SystemRestore/SystemRestoreContent.vue:279
+#: src/components/SystemRestore/SystemRestoreContent.vue:220
+#: src/components/SystemRestore/SystemRestoreContent.vue:303
 msgid "Click or drag backup file to this area to upload"
 msgstr ""
 "Cliquez sur ou faites glisser le fichier de sauvegarde vers cette zone pour "
@@ -1277,7 +1291,7 @@ msgstr "Fermé"
 msgid "Code completion is not enabled"
 msgstr "La complétion de code n'est pas activée"
 
-#: src/views/preference/tabs/OpenAISettings.vue:86
+#: src/views/preference/tabs/OpenAISettings.vue:90
 msgid "Code Completion Model"
 msgstr "Modèle de complétion de code"
 
@@ -1305,8 +1319,8 @@ msgid "Comment"
 msgstr "Commentaire"
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:150
-#: src/components/NgxConfigEditor/LocationEditor.vue:104
-#: src/components/NgxConfigEditor/LocationEditor.vue:135
+#: src/components/NgxConfigEditor/LocationEditor.vue:116
+#: src/components/NgxConfigEditor/LocationEditor.vue:147
 #: src/components/NgxConfigEditor/NgxServer.vue:123
 msgid "Comments"
 msgstr "Commentaires"
@@ -1383,11 +1397,11 @@ msgstr "Modèle de configuration"
 msgid "Configuration"
 msgstr "Configuration"
 
-#: src/components/InspectConfig/InspectConfig.vue:62
+#: src/components/InspectConfig/InspectConfig.vue:150
 msgid "Configuration file is test successful"
 msgstr "Le fichier de configuration est testé avec succès"
 
-#: src/components/InspectConfig/InspectConfig.vue:61
+#: src/components/InspectConfig/InspectConfig.vue:149
 msgid "Configuration file is test successful in isolated sandbox"
 msgstr ""
 "Le fichier de configuration a été testé avec succès dans un environnement "
@@ -1401,7 +1415,7 @@ msgstr "Historique de configuration"
 msgid "Configuration information"
 msgstr "Informations de configuration"
 
-#: src/views/site/site_add/SiteAdd.vue:176
+#: src/views/site/site_add/SiteAdd.vue:180
 msgid "Configuration Name"
 msgstr "Nom de la configuration"
 
@@ -1409,15 +1423,15 @@ msgstr "Nom de la configuration"
 msgid "Configurations"
 msgstr "Configurations"
 
-#: src/views/dns/DDNSManager.vue:201
+#: src/views/dns/DDNSManager.vue:273
 msgid "Configure"
 msgstr "Configurer"
 
-#: src/views/dns/DDNSManager.vue:211
+#: src/views/dns/DDNSManager.vue:301
 msgid "Configure DDNS"
 msgstr "Configurer DDNS"
 
-#: src/views/site/site_add/SiteAdd.vue:171
+#: src/views/site/site_add/SiteAdd.vue:175
 msgid "Configure SSL"
 msgstr "Configurer SSL"
 
@@ -1455,12 +1469,13 @@ msgid "Container status unknown"
 msgstr "Statut du conteneur inconnu"
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:155
-#: src/components/NgxConfigEditor/LocationEditor.vue:116
-#: src/components/NgxConfigEditor/LocationEditor.vue:144
+#: src/components/NgxConfigEditor/LocationEditor.vue:128
+#: src/components/NgxConfigEditor/LocationEditor.vue:156
 msgid "Content"
 msgstr "Contenu"
 
-#: src/components/SensitiveString/SensitiveString.vue:37
+#: src/components/SensitiveString/SensitiveInput.vue:62
+#: src/components/SensitiveString/SensitiveString.vue:71
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:122
 msgid "Copied"
 msgstr "Copié"
@@ -1469,7 +1484,8 @@ msgstr "Copié"
 msgid "Copied!"
 msgstr "Copié !"
 
-#: src/components/SensitiveString/SensitiveString.vue:37
+#: src/components/SensitiveString/SensitiveInput.vue:85
+#: src/components/SensitiveString/SensitiveString.vue:100
 #: src/views/backup/components/BackupCreator.vue:128
 msgid "Copy"
 msgstr "Copier"
@@ -1524,7 +1540,7 @@ msgstr ""
 msgid "CPU:"
 msgstr "CPU :"
 
-#: src/views/site/site_add/SiteAdd.vue:263
+#: src/views/site/site_add/SiteAdd.vue:267
 msgid "Create Another"
 msgstr "Créer un autre"
 
@@ -1581,7 +1597,7 @@ msgid "Creating client facilitates communication with the CA server"
 msgstr "La création du client facilite la communication avec le serveur CA"
 
 #: src/components/AutoCertForm/DNSChallenge.vue:138
-#: src/views/dns/DDNSManager.vue:65 src/views/dns/DNSDomainList.vue:115
+#: src/views/dns/DDNSManager.vue:103 src/views/dns/DNSDomainList.vue:115
 msgid "Credential"
 msgstr "Identifiant"
 
@@ -1706,11 +1722,15 @@ msgstr "Fichier de base de données introuvable"
 msgid "DDNS"
 msgstr "DDNS"
 
-#: src/views/dns/DDNSManager.vue:153
+#: src/views/dns/DDNSManager.vue:195
+msgid "DDNS config deleted"
+msgstr "Configuration DDNS supprimée"
+
+#: src/views/dns/DDNSManager.vue:212
 msgid "DDNS Overview"
 msgstr "Aperçu du DDNS"
 
-#: src/views/dns/DDNSManager.vue:135
+#: src/views/dns/DDNSManager.vue:180
 msgid "DDNS saved"
 msgstr "DDNS enregistré"
 
@@ -1743,7 +1763,7 @@ msgstr ""
 #: src/views/config/components/Delete.vue:97
 #: src/views/config/ConfigList.vue:199
 #: src/views/dns/components/DNSRecordTable.vue:107
-#: src/views/site/site_list/SiteList.vue:100
+#: src/views/dns/DDNSManager.vue:290 src/views/site/site_list/SiteList.vue:100
 #: src/views/stream/StreamList.vue:110
 msgid "Delete"
 msgstr "Supprimer"
@@ -1920,7 +1940,7 @@ msgstr "Directive.Params n'est ni access_log ni error_log"
 msgid "DirectiveIdx out of range"
 msgstr "DirectiveIdx hors limite"
 
-#: src/components/NgxConfigEditor/directive/DirectiveEditor.vue:35
+#: src/components/NgxConfigEditor/directive/DirectiveEditor.vue:47
 msgid "Directives"
 msgstr "Directives"
 
@@ -1937,7 +1957,7 @@ msgstr "Chemin du répertoire pour stocker les fichiers de cache"
 msgid "disable"
 msgstr "Désactiver"
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:82
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:136
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "Échec de la désactivation du renouvellement automatique pour %{name}"
 
@@ -1992,7 +2012,7 @@ msgid "Disable stream %{name} from %{node} successfully"
 msgstr "Désactivation du flux %{name} depuis %{node} réussie"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:175
-#: src/views/dns/DDNSManager.vue:175 src/views/node/nodeColumns.tsx:60
+#: src/views/dns/DDNSManager.vue:247 src/views/node/nodeColumns.tsx:60
 #: src/views/node/nodeColumns.tsx:78
 #: src/views/preference/tabs/HTTPSettings.vue:24
 #: src/views/preference/tabs/NodeSettings.vue:25
@@ -2050,12 +2070,12 @@ msgid "DNS Provider Support"
 msgstr "Support du fournisseur DNS"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:274
-#: src/views/site/site_add/SiteAdd.vue:170
+#: src/views/site/site_add/SiteAdd.vue:174
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:568
 msgid "DNS Record"
 msgstr "Enregistrement DNS"
 
-#: src/views/site/site_add/SiteAdd.vue:145
+#: src/views/site/site_add/SiteAdd.vue:149
 msgid "DNS record created and linked successfully"
 msgstr "Enregistrement DNS créé et lié avec succès"
 
@@ -2064,7 +2084,7 @@ msgstr "Enregistrement DNS créé et lié avec succès"
 msgid "DNS record created successfully"
 msgstr "Enregistrement DNS créé avec succès"
 
-#: src/views/site/site_add/SiteAdd.vue:253
+#: src/views/site/site_add/SiteAdd.vue:257
 msgid "DNS record has been linked: %{name}"
 msgstr "L'enregistrement DNS a été lié : %{name}"
 
@@ -2084,7 +2104,7 @@ msgstr "Enregistrement DNS manquant"
 msgid "DNS record recreated successfully"
 msgstr "Enregistrement DNS recréé avec succès"
 
-#: src/views/site/site_add/SiteAdd.vue:137
+#: src/views/site/site_add/SiteAdd.vue:141
 msgid "DNS record selected: %{name}"
 msgstr "Enregistrement DNS sélectionné : %{name}"
 
@@ -2112,11 +2132,11 @@ msgstr "Voulez-vous %{action} ce site ?"
 msgid "Do you want to %{action} this stream?"
 msgstr "Voulez-vous %{action} ce flux ?"
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:141
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:180
 msgid "Do you want to disable auto-cert renewal?"
 msgstr "Voulez-vous désactiver le renouvellement automatique des certificats ?"
 
-#: src/views/site/site_edit/components/Cert/IssueCert.vue:33
+#: src/views/site/site_edit/components/Cert/IssueCert.vue:46
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:14
 msgid "Do you want to enable TLS?"
 msgstr "Voulez-vous activer TLS ?"
@@ -2152,7 +2172,7 @@ msgid "Document Count"
 msgstr "Nombre de documents"
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:119
-#: src/views/dns/DDNSManager.vue:60 src/views/dns/DNSDomainList.vue:104
+#: src/views/dns/DDNSManager.vue:98 src/views/dns/DNSDomainList.vue:104
 msgid "Domain"
 msgstr "Domaine"
 
@@ -2173,7 +2193,7 @@ msgid "Download failed"
 msgstr "Échec du téléchargement"
 
 #: src/components/GeoLiteDownload/GeoLiteDownload.vue:187
-#: src/components/SelfCheck/SelfCheck.vue:83
+#: src/components/SelfCheck/SelfCheck.vue:120
 msgid "Download GeoLite2 Database"
 msgstr "Télécharger la base de données GeoLite2"
 
@@ -2272,7 +2292,7 @@ msgstr "Modifier le flux"
 msgid "Email"
 msgstr "E-mail"
 
-#: src/views/install/components/InstallForm.vue:75
+#: src/views/install/components/InstallForm.vue:85
 msgid "Email (*)"
 msgstr "Email (*)"
 
@@ -2297,11 +2317,11 @@ msgstr "Activer l'indexation avancée"
 msgid "Enable Advanced Log Indexing"
 msgstr "Activer l'indexation avancée des journaux"
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:75
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:129
 msgid "Enable auto-renewal failed for %{name}"
 msgstr "Échec de l'activation du renouvellement automatique pour %{name}"
 
-#: src/views/preference/tabs/OpenAISettings.vue:80
+#: src/views/preference/tabs/OpenAISettings.vue:84
 msgid "Enable Code Completion"
 msgstr "Activer la complétion de code"
 
@@ -2309,7 +2329,7 @@ msgstr "Activer la complétion de code"
 msgid "Enable compression for content transfer"
 msgstr "Activer la compression pour le transfert de contenu"
 
-#: src/views/dns/DDNSManager.vue:218
+#: src/views/dns/DDNSManager.vue:308
 msgid "Enable DDNS"
 msgstr "Activer DDNS"
 
@@ -2397,7 +2417,7 @@ msgstr "Activation du flux %{name} sur %{node} réussie"
 msgid "Enable stub_status module"
 msgstr "Activer le module stub_status"
 
-#: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:115
+#: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:97
 msgid "Enable TLS"
 msgstr "Activer TLS"
 
@@ -2406,7 +2426,7 @@ msgid "Enable TOTP"
 msgstr "Activer TOTP"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:174
-#: src/views/dns/DDNSManager.vue:175 src/views/node/nodeColumns.tsx:69
+#: src/views/dns/DDNSManager.vue:247 src/views/node/nodeColumns.tsx:69
 #: src/views/node/nodeColumns.tsx:75
 #: src/views/preference/components/ExternalNotify/columns.tsx:47
 #: src/views/preference/tabs/HTTPSettings.vue:24
@@ -2423,7 +2443,7 @@ msgid "Enabled"
 msgstr "Activé"
 
 #: src/views/site/components/SiteStatusSelect.vue:54
-#: src/views/site/site_add/SiteAdd.vue:56
+#: src/views/site/site_add/SiteAdd.vue:60
 #: src/views/stream/components/StreamStatusSelect.vue:27
 msgid "Enabled successfully"
 msgstr "Activé avec succès"
@@ -2451,7 +2471,7 @@ msgstr ""
 "vous assurer que votre système répond aux exigences minimales avant de "
 "continuer."
 
-#: src/views/site/site_edit/components/Cert/IssueCert.vue:76
+#: src/views/site/site_edit/components/Cert/IssueCert.vue:95
 msgid "Encrypt website with Let's Encrypt"
 msgstr "Crypter le site Web avec Let's Encrypt"
 
@@ -2471,6 +2491,19 @@ msgstr "Entrez le nom de domaine"
 msgid "Enter server IP address (e.g., 203.0.113.1 or 2001:db8::1)"
 msgstr "Entrez l'adresse IP du serveur (ex. 203.0.113.1 ou 2001:db8::1)"
 
+#: src/components/SelfCheck/SelfCheck.vue:72
+msgid "Enter the install secret to run the system check."
+msgstr "Entrez le secret d'installation pour exécuter la vérification du système."
+
+#: src/views/install/components/InstallView.vue:169
+msgid ""
+"Enter the one-time install secret shown by the install script or found in "
+"the config directory hidden file to unlock setup."
+msgstr ""
+"Entrez le secret d'installation à usage unique affiché par le script "
+"d'installation ou trouvé dans le fichier caché du répertoire de "
+"configuration pour déverrouiller l'installation."
+
 #: src/views/certificate/components/DNSIssueCertificate.vue:123
 msgid "Enter your domain"
 msgstr "Entrez votre domaine"
@@ -2483,7 +2516,7 @@ msgstr "La configuration de l'environnement est vide"
 msgid "Environment variables cleaned"
 msgstr "Variables d'environnement nettoyées"
 
-#: src/components/InspectConfig/InspectConfig.vue:80 src/constants/index.ts:23
+#: src/components/InspectConfig/InspectConfig.vue:30 src/constants/index.ts:23
 #: src/views/nginx_log/NginxLogList.vue:249
 #: src/views/notification/notificationColumns.tsx:14
 msgid "Error"
@@ -2612,7 +2645,7 @@ msgstr "Test de notification externe"
 msgid "External Notify"
 msgstr "Notification Externe"
 
-#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:82
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:83
 msgid "Fail to obtain certificate"
 msgstr "Échec de l'obtention du certificat"
 
@@ -3130,7 +3163,7 @@ msgstr "Filtrer"
 msgid "Filter log content"
 msgstr "Filtrer le contenu du journal"
 
-#: src/language/constants.ts:19 src/views/site/site_add/SiteAdd.vue:172
+#: src/language/constants.ts:19 src/views/site/site_add/SiteAdd.vue:176
 msgid "Finished"
 msgstr "Finie"
 
@@ -3221,6 +3254,39 @@ msgstr "À partir des journaux indexés"
 #: src/views/system/Licenses.vue:119 src/views/system/Licenses.vue:222
 msgid "Frontend"
 msgstr "Frontend"
+
+#: src/views/install/components/InstallView.vue:168
+msgid ""
+"Frontend debug mode is active. Enter the debug secret to unlock the mock "
+"installation flow without sending backend requests."
+msgstr ""
+"Le mode de débogage frontend est actif. Entrez le secret de débogage pour "
+"déverrouiller le flux d'installation simulé sans envoyer de requêtes au "
+"backend."
+
+#: src/components/SelfCheck/store.ts:19
+msgid ""
+"Frontend debug mode is active. Secret verification is mocked locally and no "
+"backend request is sent."
+msgstr ""
+"Le mode de débogage frontend est actif. La vérification du secret est "
+"simulée localement et aucune requête backend n'est envoyée."
+
+#: src/views/install/components/InstallForm.vue:64
+msgid ""
+"Frontend debug mode: install flow completed without sending a backend "
+"request"
+msgstr ""
+"Mode débogage frontend : flux d'installation terminé sans envoyer de "
+"requête backend"
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:158
+msgid ""
+"Frontend debug mode: restore flow completed without sending a backend "
+"request"
+msgstr ""
+"Mode de débogage frontend : flux de restauration terminé sans envoyer de "
+"requête backend"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:65
 msgid "Full Text Search"
@@ -3387,7 +3453,8 @@ msgstr "La vérification de santé est activée"
 msgid "Health Status"
 msgstr "État de santé"
 
-#: src/components/SensitiveString/SensitiveString.vue:40
+#: src/components/SensitiveString/SensitiveInput.vue:88
+#: src/components/SensitiveString/SensitiveString.vue:102
 msgid "Hide"
 msgstr "Cacher"
 
@@ -3598,17 +3665,41 @@ msgid "Insecure Skip Verify"
 msgstr "Ignorer la vérification (non sécurisé)"
 
 #: src/routes/modules/auth.ts:8
-#: src/views/install/components/InstallForm.vue:110
+#: src/views/install/components/InstallForm.vue:120
 #: src/views/install/components/InstallHeader.vue:9
 #: src/views/system/Upgrade.vue:150
 msgid "Install"
 msgstr "Installer"
 
-#: src/views/install/components/InstallForm.vue:57
+#: src/components/SelfCheck/store.ts:24
+msgid "Install Flow Preview"
+msgstr "Aperçu du flux d'installation"
+
+#: src/components/SelfCheck/store.ts:18
+msgid "Install Secret"
+msgstr "Installer le secret"
+
+#: src/views/install/components/InstallView.vue:174
+msgid "Install Secret (*)"
+msgstr "Secret d'installation (*)"
+
+#: src/constants/errors/system.ts:6
+msgid "Install secret has expired"
+msgstr "Le secret d'installation a expiré"
+
+#: src/constants/errors/system.ts:5
+msgid "Install secret is invalid"
+msgstr "Le secret d'installation est invalide"
+
+#: src/constants/errors/system.ts:4
+msgid "Install secret is required"
+msgstr "Un secret d'installation est requis"
+
+#: src/views/install/components/InstallForm.vue:70
 msgid "Install successfully"
 msgstr "Installé avec succès"
 
-#: src/views/install/components/InstallView.vue:64
+#: src/views/install/components/InstallView.vue:146
 msgid "Installation"
 msgstr "Installation"
 
@@ -3624,12 +3715,12 @@ msgstr ""
 "L'installation n'est pas autorisée après 10 minutes de démarrage du "
 "système, veuillez redémarrer l'interface Nginx."
 
-#: src/views/dns/DDNSManager.vue:79
+#: src/views/dns/DDNSManager.vue:117
 #: src/views/preference/tabs/LogrotateSettings.vue:26
 msgid "Interval"
 msgstr "Intervalle"
 
-#: src/views/dns/DDNSManager.vue:232
+#: src/views/dns/DDNSManager.vue:322
 msgid "Interval (seconds)"
 msgstr "Intervalle (secondes)"
 
@@ -3666,7 +3757,11 @@ msgstr "Type de réclamation invalide"
 msgid "Invalid commit SHA"
 msgstr "SHA de validation non valide"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:121
+#: src/views/install/components/InstallView.vue:83
+msgid "Invalid debug secret"
+msgstr "Secret de débogage invalide"
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:126
 msgid "Invalid file object"
 msgstr "Objet de fichier non valide"
 
@@ -3875,7 +3970,7 @@ msgstr "Dernière indexation"
 msgid "Last month"
 msgstr "Mois dernier"
 
-#: src/views/dns/DDNSManager.vue:87
+#: src/views/dns/DDNSManager.vue:125
 msgid "Last run"
 msgstr "Dernière exécution"
 
@@ -3895,7 +3990,7 @@ msgstr "Dernière utilisation le"
 msgid "Leave blank for no change"
 msgstr "Laisser vide pour aucun changement"
 
-#: src/views/preference/tabs/OpenAISettings.vue:41
+#: src/views/preference/tabs/OpenAISettings.vue:42
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr "Laissez vide pour la valeur par défaut : https://api.openai.com/"
 
@@ -4009,6 +4104,8 @@ msgstr "Seuil du chargeur"
 msgid "Loading data..."
 msgstr "Chargement des données..."
 
+#: src/components/SensitiveString/SensitiveInput.vue:88
+#: src/components/SensitiveString/SensitiveString.vue:102
 #: src/views/nginx_log/components/LoadingState.vue:41
 #: src/views/nginx_log/components/LoadingState.vue:78
 msgid "Loading..."
@@ -4028,11 +4125,11 @@ msgstr "Local"
 msgid "Local path (e.g., /var/backups)"
 msgstr "Chemin local (par ex., /var/backups)"
 
-#: src/components/NgxConfigEditor/LocationEditor.vue:69
+#: src/components/NgxConfigEditor/LocationEditor.vue:81
 msgid "Location"
 msgstr "Emplacement"
 
-#: src/components/NgxConfigEditor/LocationEditor.vue:51
+#: src/components/NgxConfigEditor/LocationEditor.vue:63
 msgid "Locations"
 msgstr "Emplacements"
 
@@ -4093,11 +4190,11 @@ msgstr ""
 msgid "Log path is not under whitelist"
 msgstr "Le chemin du journal n'est pas dans la liste blanche"
 
-#: src/routes/modules/auth.ts:14 src/views/other/Login.vue:360
+#: src/routes/modules/auth.ts:14 src/views/other/Login.vue:356
 msgid "Login"
 msgstr "Connexion"
 
-#: src/views/other/Login.vue:111
+#: src/views/other/Login.vue:109
 msgid "Login successful"
 msgstr "Connexion réussie"
 
@@ -4320,7 +4417,7 @@ msgstr "Minutes"
 msgid "Mirror"
 msgstr "Miroir"
 
-#: src/views/preference/tabs/OpenAISettings.vue:20
+#: src/views/preference/tabs/OpenAISettings.vue:21
 msgid "Model"
 msgstr "Modèle"
 
@@ -4349,7 +4446,7 @@ msgstr "Modifier"
 msgid "Modify Certificate"
 msgstr "Modifier le certificat"
 
-#: src/views/site/site_add/SiteAdd.vue:260
+#: src/views/site/site_add/SiteAdd.vue:264
 msgid "Modify Config"
 msgstr "Modifier la configuration"
 
@@ -4467,7 +4564,7 @@ msgstr "Nouveau chat"
 msgid "New dns challenge provider error: {0}"
 msgstr "Erreur du nouveau fournisseur de défi DNS : {0}"
 
-#: src/views/install/components/InstallView.vue:109
+#: src/views/install/components/InstallView.vue:225
 msgid "New Installation"
 msgstr "Nouvelle installation"
 
@@ -4496,10 +4593,10 @@ msgid "New version released"
 msgstr "Nouvelle version publiée"
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:184
-#: src/views/install/components/InstallView.vue:96
-#: src/views/site/site_add/SiteAdd.vue:233
-#: src/views/site/site_add/SiteAdd.vue:240
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:225
+#: src/views/install/components/InstallView.vue:212
+#: src/views/site/site_add/SiteAdd.vue:237
+#: src/views/site/site_add/SiteAdd.vue:244
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:264
 msgid "Next"
 msgstr "Suivant"
 
@@ -4556,7 +4653,7 @@ msgstr "Le répertoire de configuration Nginx existe"
 msgid "Nginx configuration entry file exists"
 msgstr "Le fichier d'entrée de configuration Nginx existe"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:138
+#: src/components/SystemRestore/SystemRestoreContent.vue:162
 msgid "Nginx configuration has been restored"
 msgstr "La configuration de Nginx a été restaurée"
 
@@ -4597,6 +4694,10 @@ msgstr "Le chemin du journal d'erreurs de Nginx existe"
 #: src/constants/errors/nginx.ts:2
 msgid "Nginx error: {0}"
 msgstr "Erreur Nginx : {0}"
+
+#: src/components/InspectConfig/InspectConfig.vue:43
+msgid "Nginx failed to validate the configuration."
+msgstr "Nginx n'a pas pu valider la configuration."
 
 #: src/components/NgxConfigEditor/NginxStatusAlert.vue:15
 #: src/composables/useNginxPerformance.ts:44
@@ -4656,6 +4757,10 @@ msgstr "Les opérations de rechargement de Nginx ont été envoyées aux nœuds 
 msgid "Nginx reloaded successfully"
 msgstr "Nginx a été rechargé avec succès"
 
+#: src/components/InspectConfig/InspectConfig.vue:41
+msgid "Nginx reported a configuration syntax error."
+msgstr "Nginx a signalé une erreur de syntaxe dans la configuration."
+
 #: src/views/preference/tabs/NginxSettings.vue:43
 msgid "Nginx Restart Command"
 msgstr "Commande de redémarrage de Nginx"
@@ -4689,11 +4794,11 @@ msgstr "Performances théoriques maximales de Nginx"
 msgid "Nginx UI already installed"
 msgstr "Nginx UI est déjà installé"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:142
+#: src/components/SystemRestore/SystemRestoreContent.vue:166
 msgid "Nginx UI configuration has been restored"
 msgstr "La configuration de Nginx UI a été restaurée"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:344
+#: src/components/SystemRestore/SystemRestoreContent.vue:368
 msgid ""
 "Nginx UI configuration has been restored and will restart automatically in "
 "a few seconds."
@@ -4717,7 +4822,7 @@ msgstr "Nginx.conf inclut le répertoire streams-enabled"
 #: src/components/NamespaceTabs/NamespaceTabs.vue:136
 #: src/components/NamespaceTabs/NamespaceTabs.vue:148
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:124
-#: src/components/NgxConfigEditor/LocationEditor.vue:89
+#: src/components/NgxConfigEditor/LocationEditor.vue:101
 #: src/components/Notification/Notification.vue:115 src/language/curd.ts:40
 #: src/views/notification/Notification.vue:38
 #: src/views/preference/tabs/AuthSettings.vue:128
@@ -4847,7 +4952,7 @@ msgstr "Non indexé"
 msgid "Not Loaded"
 msgstr "Non chargé"
 
-#: src/views/dns/DDNSManager.vue:102
+#: src/views/dns/DDNSManager.vue:140
 msgid "Not run yet"
 msgstr "Pas encore exécuté"
 
@@ -4929,7 +5034,7 @@ msgstr "Nombre de processus de travail"
 msgid "Obtain cert error: {0}"
 msgstr "Erreur lors de l'obtention du certificat : {0}"
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:190
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:229
 msgid "Obtain certificate"
 msgstr "Obtenir un certificat"
 
@@ -4971,7 +5076,7 @@ msgstr "Hors ligne"
 msgid "Offline GeoIP analysis"
 msgstr "Analyse GeoIP hors ligne"
 
-#: src/views/other/Login.vue:335
+#: src/views/other/Login.vue:331
 msgid "OIDC Login"
 msgstr "Connexion OIDC"
 
@@ -4982,8 +5087,8 @@ msgstr "Connexion OIDC"
 #: src/views/backup/components/BackupCreator.vue:149
 #: src/views/notification/Notification.vue:39
 #: src/views/site/components/SiteStatusSelect.vue:123
-#: src/views/site/site_edit/components/Cert/IssueCert.vue:39
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:144
+#: src/views/site/site_edit/components/Cert/IssueCert.vue:52
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:183
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:20
 #: src/views/site/site_list/SiteList.vue:90
 #: src/views/stream/components/StreamStatusSelect.vue:61
@@ -5010,8 +5115,8 @@ msgstr "En ligne"
 msgid "Online Count"
 msgstr "Nombre en ligne"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:180
-#: src/components/SystemRestore/SystemRestoreContent.vue:263
+#: src/components/SystemRestore/SystemRestoreContent.vue:204
+#: src/components/SystemRestore/SystemRestoreContent.vue:287
 msgid ""
 "Only backups created by versions that support signed manifests can be "
 "restored. Legacy backups are no longer supported."
@@ -5020,7 +5125,7 @@ msgstr ""
 "manifestes signés peuvent être restaurées. Les sauvegardes héritées ne sont "
 "plus prises en charge."
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:78
+#: src/components/SystemRestore/SystemRestoreContent.vue:83
 msgid "Only zip files are allowed"
 msgstr "Seuls les fichiers ZIP sont autorisés"
 
@@ -5048,7 +5153,7 @@ msgstr "Statistiques du système d'exploitation"
 msgid "Optional comment for this DNS record"
 msgstr "Commentaire facultatif pour cet enregistrement DNS"
 
-#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:369
+#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:365
 msgid "Or"
 msgstr "Ou"
 
@@ -5137,11 +5242,11 @@ msgstr ""
 "ou un code PIN. Elles peuvent être utilisées comme remplacement d'un mot de "
 "passe ou comme méthode d'authentification à deux facteurs (2FA)."
 
-#: src/views/other/Login.vue:312 src/views/user/userColumns.tsx:16
+#: src/views/other/Login.vue:308 src/views/user/userColumns.tsx:16
 msgid "Password"
 msgstr "Mot de passe"
 
-#: src/views/install/components/InstallForm.vue:95
+#: src/views/install/components/InstallForm.vue:105
 msgid "Password (*)"
 msgstr "Mot de passe (*)"
 
@@ -5149,7 +5254,7 @@ msgstr "Mot de passe (*)"
 msgid "Password incorrect"
 msgstr "Mot de passe incorrect"
 
-#: src/views/install/components/InstallForm.vue:45
+#: src/views/install/components/InstallForm.vue:49
 msgid "Password length cannot exceed 20 characters"
 msgstr "La longueur du mot de passe ne peut pas dépasser 20 caractères"
 
@@ -5161,8 +5266,8 @@ msgstr "Mot de passe mis à jour avec succès"
 msgid "Passwords do not match"
 msgstr "Les mots de passe ne correspondent pas"
 
-#: src/components/NgxConfigEditor/LocationEditor.vue:110
-#: src/components/NgxConfigEditor/LocationEditor.vue:138
+#: src/components/NgxConfigEditor/LocationEditor.vue:122
+#: src/components/NgxConfigEditor/LocationEditor.vue:150
 #: src/language/curd.ts:61
 #: src/views/config/components/ConfigRightPanel/Basic.vue:41
 #: src/views/config/components/Delete.vue:124
@@ -5248,6 +5353,10 @@ msgstr "Le texte en clair est vide"
 msgid "Please add a DNS domain first in the DNS management section."
 msgstr "Veuillez d'abord ajouter un domaine DNS dans la section de gestion DNS"
 
+#: src/views/install/components/InstallView.vue:133
+msgid "Please complete the system check first"
+msgstr "Veuillez d'abord effectuer la vérification du système"
+
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:446
 msgid ""
 "Please configure server_name directive in the configuration before linking "
@@ -5292,16 +5401,20 @@ msgstr "Veuillez entrer une plage de ports valide"
 msgid "Please enter at least one domain"
 msgstr "Veuillez saisir au moins un domaine"
 
+#: src/views/install/components/InstallView.vue:121
+msgid "Please enter the install secret before continuing"
+msgstr "Veuillez entrer le secret d'installation avant de continuer"
+
 #: src/components/TwoFA/Authorization.vue:85
 msgid "Please enter the OTP code:"
 msgstr "Veuillez entrer le code OTP :"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:112
+#: src/components/SystemRestore/SystemRestoreContent.vue:117
 msgid "Please enter the security token"
 msgstr "Veuillez saisir le jeton de sécurité"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:212
-#: src/components/SystemRestore/SystemRestoreContent.vue:295
+#: src/components/SystemRestore/SystemRestoreContent.vue:236
+#: src/components/SystemRestore/SystemRestoreContent.vue:319
 msgid "Please enter the security token received during backup"
 msgstr "Veuillez saisir le jeton de sécurité reçu lors de la sauvegarde"
 
@@ -5373,20 +5486,20 @@ msgstr ""
 "Veuillez entrer le nom, il sera utilisé comme nom de fichier de la nouvelle "
 "configuration."
 
-#: src/views/install/components/InstallForm.vue:25
+#: src/views/install/components/InstallForm.vue:29
 msgid "Please input your E-mail!"
 msgstr "Veuillez saisir votre e-mail !"
 
-#: src/views/install/components/InstallForm.vue:41 src/views/other/Login.vue:80
+#: src/views/install/components/InstallForm.vue:45 src/views/other/Login.vue:80
 msgid "Please input your password!"
 msgstr "Veuillez saisir votre mot de passe !"
 
-#: src/views/install/components/InstallForm.vue:31 src/views/other/Login.vue:74
+#: src/views/install/components/InstallForm.vue:35 src/views/other/Login.vue:74
 msgid "Please input your username!"
 msgstr "Veuillez saisir votre nom d'utilisateur !"
 
 #: src/views/backup/components/SystemRestore.vue:9
-#: src/views/install/components/InstallView.vue:48
+#: src/views/install/components/InstallView.vue:60
 msgid "Please log in."
 msgstr "Veuillez vous connecter."
 
@@ -5396,7 +5509,7 @@ msgstr ""
 "Veuillez noter que les unités de temps des configurations ci-dessous sont "
 "toutes en secondes."
 
-#: src/views/install/components/InstallView.vue:102
+#: src/views/install/components/InstallView.vue:136
 msgid "Please resolve all issues before proceeding with installation"
 msgstr "Veuillez résoudre tous les problèmes avant de procéder à l'installation"
 
@@ -5406,9 +5519,15 @@ msgstr ""
 "Veuillez enregistrer ce jeton de sécurité, vous en aurez besoin pour la "
 "restauration :"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:107
+#: src/components/SystemRestore/SystemRestoreContent.vue:112
 msgid "Please select a backup file"
 msgstr "Veuillez sélectionner un fichier de sauvegarde"
+
+#: src/views/site/site_edit/components/SiteEditor/store.ts:144
+msgid "Please select a certificate before saving the TLS server configuration."
+msgstr ""
+"Veuillez sélectionner un certificat avant d'enregistrer la configuration du "
+"serveur TLS."
 
 #: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:42
 msgid "Please select a notification type"
@@ -5441,6 +5560,10 @@ msgstr "Veuillez taper \"Révoquer\" pour confirmer"
 #: src/views/config/components/Delete.vue:70
 msgid "Please type the exact confirmation text"
 msgstr "Veuillez saisir le texte de confirmation exact"
+
+#: src/views/install/components/InstallView.vue:129
+msgid "Please verify the install secret before continuing"
+msgstr "Veuillez vérifier le secret d'installation avant de continuer"
 
 #: src/components/PortScanner/PortScannerCompact.vue:31
 #: src/views/preference/tabs/ServerSettings.vue:22
@@ -5542,7 +5665,7 @@ msgstr ""
 "directe. Si vous utilisez un proxy inverse, veuillez configurer le "
 "protocole séparément dans le proxy inverse."
 
-#: src/views/dns/DDNSManager.vue:70 src/views/dns/DNSCredential.vue:26
+#: src/views/dns/DDNSManager.vue:108 src/views/dns/DNSCredential.vue:26
 #: src/views/dns/DNSDomainList.vue:183 src/views/dns/DNSDomainList.vue:204
 msgid "Provider"
 msgstr "Fournisseur"
@@ -5650,7 +5773,7 @@ msgstr "Reconstruire l'index"
 msgid "Receive"
 msgstr "Réception"
 
-#: src/components/SelfCheck/SelfCheck.vue:41
+#: src/components/SelfCheck/SelfCheck.vue:64
 msgid "Recheck"
 msgstr "Vérifier à nouveau"
 
@@ -5680,7 +5803,7 @@ msgstr "Type d'enregistrement"
 msgid "Record updated"
 msgstr "Enregistrement mis à jour"
 
-#: src/views/dns/DDNSManager.vue:221
+#: src/views/dns/DDNSManager.vue:311
 msgid "Records"
 msgstr "Enregistrements"
 
@@ -5718,7 +5841,7 @@ msgstr "Messages de redirection (3xx)"
 msgid "Referer"
 msgstr "Référent"
 
-#: src/language/curd.ts:70 src/views/dns/DDNSManager.vue:161
+#: src/language/curd.ts:70 src/views/dns/DDNSManager.vue:231
 #: src/views/dns/DNSRecordManager.vue:170
 msgid "Refresh"
 msgstr "Actualiser"
@@ -6033,21 +6156,21 @@ msgstr "Redémarrage"
 msgid "Restore"
 msgstr "Restaurer"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:135
+#: src/components/SystemRestore/SystemRestoreContent.vue:159
 msgid "Restore completed successfully"
 msgstr "Restauration terminée avec succès"
 
-#: src/views/install/components/InstallView.vue:112
+#: src/views/install/components/InstallView.vue:228
 msgid "Restore from Backup"
 msgstr "Restaurer à partir d'une sauvegarde"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:225
-#: src/components/SystemRestore/SystemRestoreContent.vue:308
+#: src/components/SystemRestore/SystemRestoreContent.vue:249
+#: src/components/SystemRestore/SystemRestoreContent.vue:332
 msgid "Restore Nginx Configuration"
 msgstr "Restaurer la configuration Nginx"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:236
-#: src/components/SystemRestore/SystemRestoreContent.vue:319
+#: src/components/SystemRestore/SystemRestoreContent.vue:260
+#: src/components/SystemRestore/SystemRestoreContent.vue:343
 msgid "Restore Nginx UI Configuration"
 msgstr "Restaurer la configuration de Nginx UI"
 
@@ -6200,6 +6323,22 @@ msgstr "La clé d'accès secrète S3 est requise"
 msgid "S3 upload failed: {0}"
 msgstr "Échec du téléversement S3 : {0}"
 
+#: src/components/InspectConfig/InspectConfig.vue:39
+msgid "Sandbox setup failed before Nginx could validate the configuration."
+msgstr ""
+"La configuration du bac à sable a échoué avant que Nginx ne puisse valider "
+"la configuration."
+
+#: src/components/InspectConfig/InspectConfig.vue:129
+#: src/components/InspectConfig/InspectConfig.vue:28
+msgid "Sandbox validation failed"
+msgstr "Échec de la validation du sandbox"
+
+#: src/components/InspectConfig/InspectConfig.vue:118
+#: src/components/InspectConfig/InspectConfig.vue:26
+msgid "Sandbox validation skipped"
+msgstr "Validation du bac à sable ignorée"
+
 #: src/views/backup/AutoBackup/components/CronEditor.vue:32
 msgid "Saturday"
 msgstr "Samedi"
@@ -6211,7 +6350,7 @@ msgstr "Samedi"
 #: src/views/config/components/ConfigLeftPanel.vue:283
 #: src/views/config/components/ConfigName.vue:58
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:713
-#: src/views/dns/DDNSManager.vue:247 src/views/dns/DNSRecordManager.vue:222
+#: src/views/dns/DDNSManager.vue:337 src/views/dns/DNSRecordManager.vue:222
 #: src/views/preference/components/AuthSettings/Passkey.vue:131
 #: src/views/preference/Preference.vue:124
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
@@ -6275,7 +6414,7 @@ msgstr "Sauvegarde réussie"
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:51
 #: src/language/curd.ts:28 src/views/config/components/ConfigLeftPanel.vue:198
-#: src/views/site/site_add/SiteAdd.vue:53
+#: src/views/site/site_add/SiteAdd.vue:57
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:57
 #: src/views/stream/components/StreamEditor.vue:30
 msgid "Saved successfully"
@@ -6331,6 +6470,10 @@ msgstr "SDK"
 msgid "Search"
 msgstr "Rechercher"
 
+#: src/views/dns/DDNSManager.vue:220
+msgid "Search domain, provider or target"
+msgstr "Rechercher un domaine, un fournisseur ou une cible"
+
 #: src/views/nginx_log/structured/components/SearchFilters.vue:53
 msgid "Search Filters"
 msgstr "Filtres de recherche"
@@ -6363,8 +6506,8 @@ msgstr "Le secret a été copié"
 msgid "Security Settings"
 msgstr "Paramètres de sécurité"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:209
-#: src/components/SystemRestore/SystemRestoreContent.vue:292
+#: src/components/SystemRestore/SystemRestoreContent.vue:233
+#: src/components/SystemRestore/SystemRestoreContent.vue:316
 msgid "Security Token"
 msgstr "Jeton de sécurité"
 
@@ -6414,7 +6557,7 @@ msgstr "{count} fichiers sélectionnés"
 msgid "Selector"
 msgstr "Sélecteur"
 
-#: src/components/SelfCheck/SelfCheck.vue:33 src/routes/modules/system.ts:19
+#: src/components/SelfCheck/SelfCheck.vue:55 src/routes/modules/system.ts:19
 msgid "Self Check"
 msgstr "Vérification automatique"
 
@@ -6438,6 +6581,7 @@ msgstr "Envoyer un message test"
 msgid "Server"
 msgstr "Serveur"
 
+#: src/components/InspectConfig/InspectConfig.vue:81
 #: src/views/certificate/CertificateEditor.vue:56
 msgid "Server error"
 msgstr "Erreur du serveur"
@@ -6466,7 +6610,7 @@ msgstr "Taille du seau de hachage des noms de serveur"
 msgid "Server names hash table size"
 msgstr "Taille de la table de hachage des noms de serveur"
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:107
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:164
 msgid "server_name not found in directives"
 msgstr "server_name introuvable dans les directives"
 
@@ -6532,7 +6676,7 @@ msgstr ""
 "Settings.NginxLogSettings.ErrorLogPath est vide, consultez "
 "https://nginxui.com/guide/config-nginx.html pour plus d'informations"
 
-#: src/views/install/components/InstallView.vue:65
+#: src/views/install/components/InstallView.vue:147
 msgid "Setup your Nginx UI"
 msgstr "Configurez votre Nginx UI"
 
@@ -6540,7 +6684,8 @@ msgstr "Configurez votre Nginx UI"
 msgid "Shared Memory Zone"
 msgstr "Zone de Mémoire Partagée"
 
-#: src/components/SensitiveString/SensitiveString.vue:40
+#: src/components/SensitiveString/SensitiveInput.vue:88
+#: src/components/SensitiveString/SensitiveString.vue:102
 msgid "Show"
 msgstr "Afficher"
 
@@ -6548,7 +6693,7 @@ msgstr "Afficher"
 msgid "Show Assistant"
 msgstr "Afficher l'assistant"
 
-#: src/views/other/Login.vue:378
+#: src/views/other/Login.vue:374
 msgid "Sign in with a passkey"
 msgstr "Se connecter avec une clé d'accès"
 
@@ -6560,7 +6705,7 @@ msgstr "Traitement de flux optimisé SIMD"
 msgid "Single Directive"
 msgstr "Directive unique"
 
-#: src/views/site/site_add/SiteAdd.vue:252
+#: src/views/site/site_add/SiteAdd.vue:256
 msgid "Site Config Created Successfully"
 msgstr "Configuration du site créée avec succès"
 
@@ -6659,13 +6804,13 @@ msgstr "Stockage SSD pour de meilleures performances d'E/S"
 msgid "SSL Certificate Content"
 msgstr "Contenu du certificat SSL"
 
-#: src/constants/errors/system.ts:8
+#: src/constants/errors/system.ts:11
 msgid "SSL certificate file must be under Nginx configuration directory: {0}"
 msgstr ""
 "Le fichier de certificat SSL doit être dans le répertoire de configuration "
 "de Nginx : {0}"
 
-#: src/constants/errors/system.ts:6
+#: src/constants/errors/system.ts:9
 msgid "SSL certificate file not found"
 msgstr "Fichier de certificat SSL introuvable"
 
@@ -6687,17 +6832,17 @@ msgstr "Chemin de la clé du certificat SSL"
 msgid "SSL Certificate Path"
 msgstr "Chemin du certificat SSL"
 
-#: src/constants/errors/system.ts:4
+#: src/constants/errors/system.ts:7
 msgid "SSL certificate path is required when HTTPS is enabled"
 msgstr "Le chemin du certificat SSL est requis lorsque HTTPS est activé"
 
-#: src/constants/errors/system.ts:9
+#: src/constants/errors/system.ts:12
 msgid "SSL key file must be under Nginx configuration directory: {0}"
 msgstr ""
 "Le fichier de clé SSL doit être dans le répertoire de configuration Nginx : "
 "{0}"
 
-#: src/constants/errors/system.ts:7
+#: src/constants/errors/system.ts:10
 msgid "SSL key file not found"
 msgstr "Fichier de clé SSL introuvable"
 
@@ -6705,11 +6850,11 @@ msgstr "Fichier de clé SSL introuvable"
 msgid "SSL Key Path"
 msgstr "Chemin de la clé SSL"
 
-#: src/constants/errors/system.ts:5
+#: src/constants/errors/system.ts:8
 msgid "SSL key path is required when HTTPS is enabled"
 msgstr "Le chemin de la clé SSL est requis lorsque HTTPS est activé"
 
-#: src/views/other/Login.vue:326
+#: src/views/other/Login.vue:322
 msgid "SSO Login"
 msgstr "Connexion SSO"
 
@@ -6726,8 +6871,8 @@ msgstr "Début"
 msgid "Start Date"
 msgstr "Date de début"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:248
-#: src/components/SystemRestore/SystemRestoreContent.vue:331
+#: src/components/SystemRestore/SystemRestoreContent.vue:272
+#: src/components/SystemRestore/SystemRestoreContent.vue:355
 msgid "Start Restore"
 msgstr "Démarrer la restauration"
 
@@ -6745,7 +6890,7 @@ msgstr "Statique"
 #: src/views/certificate/ACMEUser.vue:75
 #: src/views/certificate/CertificateList/certColumns.tsx:63
 #: src/views/dashboard/components/ModulesTable.vue:75
-#: src/views/dns/DDNSManager.vue:75
+#: src/views/dns/DDNSManager.vue:113
 #: src/views/nginx_log/structured/components/SearchFilters.vue:106
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:241
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:521
@@ -6863,8 +7008,8 @@ msgstr "Prise en charge du téléchargement unique ou en lot de fichiers"
 msgid "Support uploading entire folders"
 msgstr "Prend en charge le téléchargement de dossiers entiers"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:199
-#: src/components/SystemRestore/SystemRestoreContent.vue:282
+#: src/components/SystemRestore/SystemRestoreContent.vue:223
+#: src/components/SystemRestore/SystemRestoreContent.vue:306
 msgid "Supported file type: .zip"
 msgstr "Type de fichier pris en charge : .zip"
 
@@ -6959,7 +7104,7 @@ msgstr "Système"
 msgid "System Backup"
 msgstr "Sauvegarde du système"
 
-#: src/views/install/components/InstallView.vue:60
+#: src/views/install/components/InstallView.vue:142
 msgid "System Check"
 msgstr "Vérification du système"
 
@@ -6971,11 +7116,11 @@ msgstr "Utilisateur initial du système"
 msgid "System Requirements"
 msgstr "Configuration requise"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:170
+#: src/components/SystemRestore/SystemRestoreContent.vue:194
 msgid "System Restore"
 msgstr "Restauration du système"
 
-#: src/views/install/components/InstallView.vue:44
+#: src/views/install/components/InstallView.vue:56
 msgid "System restored successfully."
 msgstr "Système restauré avec succès."
 
@@ -6985,7 +7130,7 @@ msgstr "Système restauré avec succès."
 msgid "target.example.com"
 msgstr "target.example.com"
 
-#: src/views/dns/DDNSManager.vue:83
+#: src/views/dns/DDNSManager.vue:121
 msgid "Targets"
 msgstr "Cibles"
 
@@ -7038,6 +7183,10 @@ msgstr "Tester la connexion S3"
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:448
 msgid "Test successful! Response time: %{response_time}ms"
 msgstr "Test réussi ! Temps de réponse : %{response_time}ms"
+
+#: src/components/InspectConfig/InspectConfig.vue:111
+msgid "Testing Nginx configuration..."
+msgstr "Test de la configuration Nginx..."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:160
 msgid ""
@@ -7099,8 +7248,8 @@ msgstr ""
 "Le chemin du journal ne se trouve pas sous les chemins dans "
 "settings.NginxSettings.LogDirWhiteList"
 
-#: src/views/preference/tabs/OpenAISettings.vue:23
-#: src/views/preference/tabs/OpenAISettings.vue:89
+#: src/views/preference/tabs/OpenAISettings.vue:24
+#: src/views/preference/tabs/OpenAISettings.vue:93
 msgid ""
 "The model name should only contain letters, unicode, numbers, hyphens, "
 "dashes, colons, and dots."
@@ -7108,7 +7257,7 @@ msgstr ""
 "Le nom du modèle ne doit contenir que des lettres, unicode, des chiffres, "
 "des traits d'union, des tirets, des deux-points et des points."
 
-#: src/views/preference/tabs/OpenAISettings.vue:90
+#: src/views/preference/tabs/OpenAISettings.vue:94
 msgid "The model used for code completion, if not set, the chat model will be used."
 msgstr ""
 "Le modèle utilisé pour la complétion de code, s'il n'est pas défini, le "
@@ -7122,7 +7271,7 @@ msgstr ""
 "Le nom du nœud ne doit contenir que des lettres, unicode, des chiffres, des "
 "traits d'union, des tirets, des deux-points et des points."
 
-#: src/views/site/site_add/SiteAdd.vue:186
+#: src/views/site/site_add/SiteAdd.vue:190
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:445
 msgid "The parameter of server_name is required"
 msgstr "Le paramètre server_name est requis"
@@ -7167,8 +7316,8 @@ msgstr ""
 msgid "The url is invalid"
 msgstr "L'URL est invalide"
 
-#: src/views/preference/tabs/OpenAISettings.vue:35
-#: src/views/preference/tabs/OpenAISettings.vue:49
+#: src/views/preference/tabs/OpenAISettings.vue:36
+#: src/views/preference/tabs/OpenAISettings.vue:50
 msgid "The url is invalid."
 msgstr "L'URL est invalide."
 
@@ -7257,6 +7406,14 @@ msgstr ""
 msgid "This is a test message sent at %{timestamp} from Nginx UI."
 msgstr "Il s'agit d'un message de test envoyé à% {horodat} de Nginx UI."
 
+#: src/components/SelfCheck/store.ts:25
+msgid ""
+"This mode only previews the installation UI flow and does not change any "
+"server state."
+msgstr ""
+"Ce mode prévisualise uniquement le flux de l'interface utilisateur "
+"d'installation et ne modifie aucun état du serveur."
+
 #: src/views/dashboard/NginxDashBoard.vue:175
 msgid ""
 "This module provides Nginx request statistics, connection count, etc. data. "
@@ -7334,8 +7491,8 @@ msgstr ""
 msgid "This will rebuild the index data for this specific file: %{path}"
 msgstr "Cela reconstruira les données d'index pour ce fichier spécifique : %{path}"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:229
-#: src/components/SystemRestore/SystemRestoreContent.vue:312
+#: src/components/SystemRestore/SystemRestoreContent.vue:253
+#: src/components/SystemRestore/SystemRestoreContent.vue:336
 msgid ""
 "This will restore all Nginx configuration files. Nginx will restart after "
 "the restoration is complete."
@@ -7343,8 +7500,8 @@ msgstr ""
 "Cela restaurera tous les fichiers de configuration de Nginx. Nginx "
 "redémarrera une fois la restauration terminée."
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:240
-#: src/components/SystemRestore/SystemRestoreContent.vue:323
+#: src/components/SystemRestore/SystemRestoreContent.vue:264
+#: src/components/SystemRestore/SystemRestoreContent.vue:347
 msgid ""
 "This will restore configuration files and database. Nginx UI will restart "
 "after the restoration is complete."
@@ -7426,7 +7583,7 @@ msgstr ""
 "éléments suivants dans le fichier de configuration app.ini et redémarrer "
 "Nginx UI."
 
-#: src/views/site/site_edit/components/Cert/IssueCert.vue:34
+#: src/views/site/site_edit/components/Cert/IssueCert.vue:47
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:15
 msgid ""
 "To make sure the certification auto-renewal can work normally, we need to "
@@ -7439,7 +7596,7 @@ msgstr ""
 "transmettre la demande de l'autorité au backend, et nous devons enregistrer "
 "ce fichier et recharger le Nginx. Êtes-vous sûr de vouloir continuer?"
 
-#: src/views/preference/tabs/OpenAISettings.vue:36
+#: src/views/preference/tabs/OpenAISettings.vue:37
 msgid ""
 "To use a local large model, deploy it with ollama, vllm or lmdeploy. They "
 "provide an OpenAI-compatible API endpoint, so just set the baseUrl to your "
@@ -7457,7 +7614,7 @@ msgstr "Échec de la bascule"
 msgid "Token is empty"
 msgstr "Le jeton est vide"
 
-#: src/views/preference/tabs/OpenAISettings.vue:61
+#: src/views/preference/tabs/OpenAISettings.vue:62
 msgid "Token is not valid"
 msgstr "Le jeton n'est pas valide"
 
@@ -7600,7 +7757,7 @@ msgstr "Type"
 msgid "Type %{delete} to confirm"
 msgstr "Tapez %{delete} pour confirmer"
 
-#: src/views/dns/DDNSManager.vue:228
+#: src/views/dns/DDNSManager.vue:318
 msgid "Type or select A/AAAA records"
 msgstr "Saisissez ou sélectionnez des enregistrements A/AAAA"
 
@@ -7775,16 +7932,16 @@ msgstr "L'utilisateur n'a pas activé l'OTP comme 2FA"
 msgid "User Profile"
 msgstr "Profil utilisateur"
 
-#: src/views/other/Login.vue:302 src/views/user/userColumns.tsx:7
+#: src/views/other/Login.vue:298 src/views/user/userColumns.tsx:7
 #: src/views/user/UserProfile.vue:127 src/views/user/UserProfile.vue:131
 msgid "Username"
 msgstr "Nom d'utilisateur"
 
-#: src/views/install/components/InstallForm.vue:85
+#: src/views/install/components/InstallForm.vue:95
 msgid "Username (*)"
 msgstr "Nom d'utilisateur (*)"
 
-#: src/views/install/components/InstallForm.vue:35
+#: src/views/install/components/InstallForm.vue:39
 msgid "Username length cannot exceed 255 characters"
 msgstr "La longueur du nom d'utilisateur ne peut pas dépasser 255 caractères"
 
@@ -7808,8 +7965,8 @@ msgstr "Valider le certificat SSL"
 msgid "Value"
 msgstr "Valeur"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:218
-#: src/components/SystemRestore/SystemRestoreContent.vue:301
+#: src/components/SystemRestore/SystemRestoreContent.vue:242
+#: src/components/SystemRestore/SystemRestoreContent.vue:325
 msgid "Verify Backup File Integrity (required)"
 msgstr "Vérifier l'intégrité du fichier de sauvegarde (requis)"
 
@@ -7817,7 +7974,11 @@ msgstr "Vérifier l'intégrité du fichier de sauvegarde (requis)"
 msgid "Verify Hostname"
 msgstr "Vérifier le nom d'hôte"
 
-#: src/views/install/components/InstallView.vue:61
+#: src/views/install/components/InstallView.vue:184
+msgid "Verify Secret"
+msgstr "Vérifier le secret"
+
+#: src/views/install/components/InstallView.vue:143
 msgid "Verify system requirements"
 msgstr "Vérifiez les exigences du système"
 
@@ -7868,15 +8029,15 @@ msgstr "Visites"
 msgid "Waiting processes"
 msgstr "Processus d'attente"
 
-#: src/components/InspectConfig/InspectConfig.vue:68 src/constants/index.ts:24
+#: src/components/InspectConfig/InspectConfig.vue:156 src/constants/index.ts:24
 #: src/views/backup/components/BackupCreator.vue:138
 #: src/views/notification/notificationColumns.tsx:21
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:88
 msgid "Warning"
 msgstr "Avertissement"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:174
-#: src/components/SystemRestore/SystemRestoreContent.vue:257
+#: src/components/SystemRestore/SystemRestoreContent.vue:198
+#: src/components/SystemRestore/SystemRestoreContent.vue:281
 msgid ""
 "Warning: Restore operation will overwrite current configurations. Make sure "
 "you have a valid backup file and security token, and carefully select what "
@@ -7901,7 +8062,7 @@ msgstr ""
 msgid "We do not accept any feature requests"
 msgstr "Nous n'acceptons aucune demande de fonctionnalité"
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:142
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:181
 msgid ""
 "We will remove the HTTPChallenge configuration from this file and reload "
 "the Nginx. Are you sure you want to continue?"
@@ -8025,7 +8186,7 @@ msgstr "Écriture du certificat sur le disque"
 #: src/components/NamespaceTabs/NamespaceTabs.vue:135
 #: src/components/NamespaceTabs/NamespaceTabs.vue:147
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:123
-#: src/components/NgxConfigEditor/LocationEditor.vue:88
+#: src/components/NgxConfigEditor/LocationEditor.vue:100
 #: src/views/nginx_log/indexing/IndexManagement.vue:31
 #: src/views/nginx_log/indexing/IndexManagement.vue:57
 #: src/views/preference/tabs/AuthSettings.vue:127
@@ -8055,11 +8216,11 @@ msgstr "Vous utilisez la dernière version"
 msgid "You can check Nginx UI upgrade at this page."
 msgstr "Vous pouvez vérifier la mise à niveau de Nginx UI sur cette page."
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:347
+#: src/components/SystemRestore/SystemRestoreContent.vue:371
 msgid "You can close this dialog in %{countdown} seconds"
 msgstr "Vous pouvez fermer cette boîte de dialogue dans %{countdown} secondes"
 
-#: src/components/SystemRestore/SystemRestoreContent.vue:350
+#: src/components/SystemRestore/SystemRestoreContent.vue:374
 msgid "You can close this dialog now"
 msgstr "Vous pouvez maintenant fermer cette boîte de dialogue"
 

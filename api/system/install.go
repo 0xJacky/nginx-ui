@@ -2,9 +2,8 @@ package system
 
 import (
 	"net/http"
-	"time"
 
-	"github.com/0xJacky/Nginx-UI/internal/system"
+	internalSystem "github.com/0xJacky/Nginx-UI/internal/system"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
@@ -15,30 +14,12 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-// System startup time
-var startupTime time.Time
-
-func init() {
-	// Record system startup time
-	startupTime = time.Now()
-}
-
-// InstallLockStatus checks if the system is installed
-func InstallLockStatus() bool {
-	return settings.NodeSettings.SkipInstallation || cSettings.AppSettings.JwtSecret != ""
-}
-
-// IsInstallTimeoutExceeded checks if installation time limit (10 minutes) is exceeded
-func IsInstallTimeoutExceeded() bool {
-	return time.Since(startupTime) > 10*time.Minute
-}
-
 func InstallLockCheck(c *gin.Context) {
-	locked := InstallLockStatus()
+	locked := internalSystem.InstallLockStatus()
 	timeout := false
 
 	if !locked {
-		timeout = IsInstallTimeoutExceeded()
+		timeout = internalSystem.IsInstallTimeoutExceeded()
 	}
 
 	c.JSON(http.StatusOK, gin.H{
@@ -55,16 +36,14 @@ type InstallJson struct {
 
 func InstallNginxUI(c *gin.Context) {
 	// Visit this api after installed is forbidden
-	if InstallLockStatus() {
-		c.JSON(http.StatusForbidden, gin.H{
-			"error": "installed",
-		})
+	if internalSystem.InstallLockStatus() {
+		cosy.ErrHandler(c, internalSystem.ErrInstalled)
 		return
 	}
 
 	// Check if installation time limit (10 minutes) is exceeded
-	if IsInstallTimeoutExceeded() {
-		cosy.ErrHandler(c, system.ErrInstallTimeout)
+	if internalSystem.IsInstallTimeoutExceeded() {
+		cosy.ErrHandler(c, internalSystem.ErrInstallTimeout)
 		return
 	}
 
@@ -97,6 +76,11 @@ func InstallNginxUI(c *gin.Context) {
 	})
 
 	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	if err := internalSystem.ConsumeInstallSecret(); err != nil {
 		cosy.ErrHandler(c, err)
 		return
 	}

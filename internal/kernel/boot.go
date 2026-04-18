@@ -24,6 +24,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/passkey"
 	"github.com/0xJacky/Nginx-UI/internal/self_check"
 	"github.com/0xJacky/Nginx-UI/internal/sitecheck"
+	"github.com/0xJacky/Nginx-UI/internal/system"
 	"github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/internal/validation"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -51,6 +52,7 @@ func Boot(ctx context.Context) {
 
 	async := []func(){
 		InitJsExtensionType,
+		InitInstallSecret,
 		InitNodeSecret,
 		InitCryptoSecret,
 		validation.Init,
@@ -140,6 +142,12 @@ func InitNodeSecret() {
 			logger.Error("Error save settings", err)
 		}
 		logger.Info("Generated Secret: ", uuidStr)
+	}
+}
+
+func InitInstallSecret() {
+	if err := system.EnsureInstallSecret(); err != nil {
+		logger.Error("Error preparing install secret", err)
 	}
 }
 

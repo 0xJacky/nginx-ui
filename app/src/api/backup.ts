@@ -22,6 +22,25 @@ export interface RestoreOptions {
   verify_hash: boolean
 }
 
+export interface RestoreAccessOptions {
+  installSecret?: string
+  setupAuth?: boolean
+}
+
+function installSecretHeaders(installSecret?: string) {
+  if (!installSecret) {
+    return {}
+  }
+
+  return {
+    'X-Install-Secret': installSecret,
+  }
+}
+
+function getRestorePath(options?: RestoreAccessOptions) {
+  return options?.setupAuth ? '/setup/restore' : '/restore'
+}
+
 /**
  * Interface for auto backup configuration
  */
@@ -59,7 +78,7 @@ const backup = {
    * Restore from a backup file
    * @param options RestoreOptions
    */
-  restoreBackup(options: RestoreOptions) {
+  restoreBackup(options: RestoreOptions, accessOptions?: RestoreAccessOptions) {
     const formData = new FormData()
     formData.append('backup_file', options.backup_file)
     formData.append('security_token', options.security_token)
@@ -67,11 +86,13 @@ const backup = {
     formData.append('restore_nginx_ui', options.restore_nginx_ui.toString())
     formData.append('verify_hash', options.verify_hash.toString())
 
-    return http.post('/restore', formData, {
+    return http.post(getRestorePath(accessOptions), formData, {
       headers: {
         'Content-Type': 'multipart/form-data;charset=UTF-8',
+        ...installSecretHeaders(accessOptions?.installSecret),
       },
       crypto: true,
+      skipAuthRedirect: !!accessOptions?.setupAuth,
     })
   },
 }

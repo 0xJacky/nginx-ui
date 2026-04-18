@@ -1,32 +1,54 @@
 <script setup lang="ts">
+import type { SelfCheckAccessOptions } from '@/api/self_check'
 import { CheckCircleOutlined, CloseCircleOutlined, WarningOutlined } from '@ant-design/icons-vue'
 import GeoLiteDownload from '@/components/GeoLiteDownload'
 import AsyncErrorDisplay from './AsyncErrorDisplay.vue'
 import { useSelfCheckStore } from './store'
 
+const props = withDefaults(defineProps<{
+  installSecret?: string
+  setupAuth?: boolean
+  frontendDebug?: boolean
+}>(), {
+  setupAuth: false,
+  frontendDebug: false,
+})
+
 const store = useSelfCheckStore()
 
-const { data, loading, fixing } = storeToRefs(store)
+const { data, loading, fixing, accessError } = storeToRefs(store)
 
 const geoLiteModalVisible = ref(false)
+
+const accessOptions = computed<SelfCheckAccessOptions | undefined>(() => {
+  if (!props.setupAuth) {
+    return undefined
+  }
+
+  return {
+    setupAuth: true,
+    installSecret: props.installSecret,
+    debugMode: props.frontendDebug ? 'frontend' : undefined,
+  }
+})
 
 function handleFix(key: string) {
   if (key === 'GeoLite-DB') {
     geoLiteModalVisible.value = true
   }
   else {
-    store.fix(key)
+    store.fix(key, accessOptions.value)
   }
 }
 
 function handleGeoLiteDownloadComplete() {
   geoLiteModalVisible.value = false
-  store.check()
+  store.check(accessOptions.value)
 }
 
-onMounted(() => {
-  store.check()
-})
+watch(accessOptions, options => {
+  store.check(options)
+}, { immediate: true })
 </script>
 
 <template>
@@ -35,12 +57,27 @@ onMounted(() => {
       <AButton
         type="link"
         size="small"
+        :disabled="setupAuth && !installSecret"
         :loading="loading"
-        @click="store.check"
+        @click="store.check(accessOptions)"
       >
         {{ $gettext('Recheck') }}
       </AButton>
     </template>
+    <AAlert
+      v-if="setupAuth && !installSecret"
+      type="info"
+      show-icon
+      class="mb-4"
+      :message="$gettext('Enter the install secret to run the system check.')"
+    />
+    <AAlert
+      v-else-if="accessError"
+      type="error"
+      show-icon
+      class="mb-4"
+      :message="accessError"
+    />
     <AList>
       <AListItem v-for="(item, index) in data" :key="index">
         <template v-if="item.status === 'error' && item.fixable" #actions>

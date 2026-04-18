@@ -1,5 +1,5 @@
 import type { FrontendTask } from '../types'
-import type { ReportStatusType } from '@/api/self_check'
+import type { ReportStatusType, SelfCheckAccessOptions } from '@/api/self_check'
 import selfCheck, { ReportStatus } from '@/api/self_check'
 import { useWebSocket } from '@/lib/websocket'
 
@@ -15,10 +15,10 @@ const WebsocketTask: FrontendTask = {
     + 'If your Nginx UI is being used via an Nginx reverse proxy, '
     + 'please refer to this link to write the corresponding configuration file: '
     + 'https://nginxui.com/guide/nginx-proxy-example.html'),
-  check: async (): Promise<ReportStatusType> => {
+  check: async (options?: SelfCheckAccessOptions): Promise<ReportStatusType> => {
     try {
       const connected = await new Promise<boolean>(resolve => {
-        const { ws } = useWebSocket(selfCheck.websocketUrl, false)
+        const { ws } = useWebSocket(selfCheck.getWebsocketUrl(options), false, undefined, selfCheck.getWebsocketQuery(options))
         const socket = ws.value!
         socket.onopen = () => {
           socket.close()

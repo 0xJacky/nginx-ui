@@ -472,6 +472,36 @@ start_nginx_ui() {
     fi
 }
 
+print_install_secret() {
+    local secret_path="$DataPath/.install_secret"
+    local install_secret=''
+    local attempts=10
+    local delay=1
+
+    if grep -Eq '^[[:space:]]*JwtSecret[[:space:]]*=[[:space:]]*.+$' "$DataPath/app.ini" 2>/dev/null; then
+        return
+    fi
+
+    for ((i = 1; i <= attempts; i++)); do
+        if [[ -f "$secret_path" ]]; then
+            install_secret="$(tr -d '\r\n' < "$secret_path")"
+            if [[ -n "$install_secret" ]]; then
+                break
+            fi
+        fi
+        sleep "$delay"
+    done
+
+    echo -e "${FontGreen}note: The one-time install secret file should appear at '$secret_path'.${FontSuffix}"
+    if [[ -n "$install_secret" ]]; then
+        echo -e "${FontGreen}note: Open the Nginx UI installation page and paste the following install secret:${FontSuffix}"
+        echo "$install_secret"
+    else
+        echo -e "${FontYellow}warning: Failed to read the install secret automatically.${FontSuffix}"
+        echo -e "${FontYellow}warning: Please check '$secret_path' manually after the service finishes starting.${FontSuffix}"
+    fi
+}
+
 check_nginx_ui_status() {
     if [[ "$SERVICE_TYPE" == "systemd" ]]; then
         if systemctl list-unit-files | grep -qw 'nginx-ui'; then
@@ -738,10 +768,12 @@ main() {
         # Service is running, restart it
         echo "info: Nginx UI service is running, restarting..."
         restart_nginx_ui
+        print_install_secret
     elif [[ $service_status -eq 1 ]]; then
         # Service is installed but not running, start it
         echo "info: Nginx UI service is not running, starting..."
         start_nginx_ui
+        print_install_secret
         # Enable service for auto-start
         if [[ "$SERVICE_TYPE" == "systemd" ]]; then
             systemctl enable nginx-ui
@@ -757,6 +789,7 @@ main() {
             sleep 1s
             if systemctl -q is-active nginx-ui; then
                 echo "info: Start and enable the Nginx UI service."
+                print_install_secret
             else
                 echo -e "${FontYellow}warning: Failed to enable and start the Nginx UI service.${FontSuffix}"
             fi
@@ -766,6 +799,7 @@ main() {
             sleep 1s
             if rc-service nginx-ui status | grep -qE "(started|running)"; then
                 echo "info: Started and added the Nginx UI service to default runlevel."
+                print_install_secret
             else
                 echo -e "${FontYellow}warning: Failed to start the Nginx UI service.${FontSuffix}"
             fi
@@ -774,6 +808,7 @@ main() {
             sleep 1s
             if $InitPath status >/dev/null 2>&1; then
                 echo "info: Started the Nginx UI service."
+                print_install_secret
             else
                 echo -e "${FontYellow}warning: Failed to start the Nginx UI service.${FontSuffix}"
             fi

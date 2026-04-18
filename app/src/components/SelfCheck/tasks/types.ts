@@ -1,4 +1,4 @@
-import type { ReportStatusType, TaskReport as SelfCheckTaskReport } from '@/api/self_check'
+import type { ReportStatusType, SelfCheckAccessOptions, TaskReport as SelfCheckTaskReport } from '@/api/self_check'
 
 export interface TaskDefinition extends Pick<SelfCheckTaskReport, 'key' | 'fixable' | 'err'> {
   name: () => string
@@ -6,7 +6,7 @@ export interface TaskDefinition extends Pick<SelfCheckTaskReport, 'key' | 'fixab
 }
 
 export interface FrontendTask extends TaskDefinition {
-  check: () => Promise<ReportStatusType>
+  check: (options?: SelfCheckAccessOptions) => Promise<ReportStatusType>
 }
 
 export interface TaskReport extends TaskDefinition {

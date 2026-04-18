@@ -8,23 +8,41 @@ import { useSettingsStore, useUserStore } from '@/pinia'
  * Build WebSocket URL based on environment
  */
 export function buildWebSocketUrl(url: string, token: string, shortToken: string, nodeId?: number): string {
-  const node_id = nodeId && nodeId > 0 ? `&x_node_id=${nodeId}` : ''
+  return buildWebSocketUrlWithQuery(url, token, shortToken, undefined, nodeId)
+}
+
+export function buildWebSocketUrlWithQuery(
+  url: string,
+  token: string,
+  shortToken: string,
+  extraQuery?: Record<string, string | undefined>,
+  nodeId?: number,
+): string {
+  const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:'
+  const basePath = import.meta.env.DEV
+    ? `${protocol}//${window.location.host}/`
+    : `${protocol}//${window.location.host}${urlJoin(window.location.pathname, '/')}`
+
+  const wsUrl = new URL(url, basePath)
 
   // Use shortToken if available (without base64 encoding), otherwise use regular token (URL-safe base64).
   // URL-safe base64 avoids `+` chars that get decoded as spaces in query strings.
   const longTokenParam = btoa(token).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
-  const authParam = shortToken ? `token=${shortToken}` : `token=${longTokenParam}`
+  wsUrl.searchParams.set('token', shortToken || longTokenParam)
 
-  // In development mode, keep WebSocket same-origin so the browser
-  // connects through the dev server instead of the private backend port.
-  if (import.meta.env.DEV) {
-    const protocol = location.protocol === 'https:' ? 'wss://' : 'ws://'
-    return urlJoin(protocol + window.location.host, url, `?${authParam}`, node_id)
+  if (nodeId && nodeId > 0) {
+    wsUrl.searchParams.set('x_node_id', String(nodeId))
   }
 
-  // In production mode, use current host
-  const protocol = location.protocol === 'https:' ? 'wss://' : 'ws://'
-  return urlJoin(protocol + window.location.host, window.location.pathname, url, `?${authParam}`, node_id)
+  if (extraQuery) {
+    Object.entries(extraQuery).forEach(([key, value]) => {
+      if (value) {
+        wsUrl.searchParams.set(key, value)
+      }
+    })
+  }
+
+  return wsUrl.toString()
 }
 
 /**
@@ -38,6 +56,7 @@ export function useWebSocket<T = any>(
   url: string,
   reconnect: boolean = true,
   options?: Omit<UseWebSocketOptions, 'autoReconnect'>,
+  extraQuery?: Record<string, string | undefined>,
 ): UseWebSocketReturn<T> {
   const userStore = useUserStore()
   const settings = useSettingsStore()
@@ -52,7 +71,7 @@ export function useWebSocket<T = any>(
   // forced logout — which would kick out otherwise-valid sessions on any
   // WebSocket-backed page. Short-token refresh is handled by the user store's
   // token watcher (see app/src/pinia/moudule/user.ts).
-  const wsUrl = buildWebSocketUrl(url, token.value, shortToken.value, settings.node.id)
+  const wsUrl = buildWebSocketUrlWithQuery(url, token.value, shortToken.value, extraQuery, settings.node.id)
 
   return vueUseWebSocket<T>(wsUrl, {
     autoReconnect: reconnect

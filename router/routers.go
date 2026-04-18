@@ -66,8 +66,13 @@ func InitRouter() {
 		license.InitRouter(root)
 
 		system.InitPublicRouter(root)
-		system.InitSelfCheckRouter(root)
 		backup.InitRouter(root)
+
+		setup := root.Group("/setup", middleware.SetupAuthRequired())
+		{
+			system.InitSetupRouter(setup)
+			backup.InitSetupRouter(setup)
+		}
 
 		// Local-only routes (no proxy) - authorization required
 		local := root.Group("/", middleware.AuthRequired())
