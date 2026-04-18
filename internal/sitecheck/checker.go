@@ -2,12 +2,10 @@ package sitecheck
 
 import (
 	"context"
-	"crypto/tls"
 	"encoding/base64"
 	"fmt"
 	"io"
 	"maps"
-	"net"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -40,25 +38,15 @@ type SiteChecker struct {
 	mu               sync.RWMutex
 	options          CheckOptions
 	client           *http.Client
+	enhanced         *EnhancedSiteChecker
 	onUpdateCallback func([]*SiteInfo) // Callback for notifying updates
 }
 
-// NewSiteChecker creates a new site checker
+// NewSiteChecker creates a new site checker that reuses the package-level
+// shared HTTP transport. The shared transport bounds connections per host so
+// the checker cannot exhaust router conntrack tables (#1608).
 func NewSiteChecker(options CheckOptions) *SiteChecker {
-	transport := &http.Transport{
-		Dial: (&net.Dialer{
-			Timeout: 5 * time.Second,
-		}).Dial,
-		TLSHandshakeTimeout: 5 * time.Second,
-		TLSClientConfig: &tls.Config{
-			InsecureSkipVerify: settings.HTTPSettings.InsecureSkipVerify,
-		},
-	}
-
-	client := &http.Client{
-		Transport: transport,
-		Timeout:   options.Timeout,
-	}
+	client := SharedClient(options.Timeout)
 
 	if !options.FollowRedirects {
 		client.CheckRedirect = func(req *http.Request, via []*http.Request) error {
@@ -74,9 +62,10 @@ func NewSiteChecker(options CheckOptions) *SiteChecker {
 	}
 
 	return &SiteChecker{
-		sites:   make(map[string]*SiteInfo),
-		options: options,
-		client:  client,
+		sites:    make(map[string]*SiteInfo),
+		options:  options,
+		client:   client,
+		enhanced: NewEnhancedSiteChecker(),
 	}
 }
 
@@ -318,9 +307,9 @@ func (sc *SiteChecker) CheckSite(ctx context.Context, siteURL string) (*SiteInfo
 	}
 
 	if err == nil && config != nil && config.HealthCheckConfig != nil {
-		enhancedChecker := NewEnhancedSiteChecker()
-		siteInfo, err := enhancedChecker.CheckSiteWithConfig(ctx, siteURL, config.HealthCheckConfig)
-		if err == nil && siteInfo != nil {
+		result, err := sc.enhanced.CheckSiteWithConfig(ctx, siteURL, config.HealthCheckConfig)
+		if err == nil && result != nil && result.Info != nil {
+			siteInfo := result.Info
 			// Fill in additional details
 			siteInfo.ID = config.ID
 			siteInfo.HealthCheckEnabled = config.HealthCheckEnabled
@@ -330,9 +319,11 @@ func (sc *SiteChecker) CheckSite(ctx context.Context, siteURL string) (*SiteInfo
 			// Set health check protocol and display URL
 			siteInfo.DisplayURL = generateDisplayURL(siteURL, config.HealthCheckConfig.Protocol)
 
-			// Try to get favicon if enabled and not a gRPC check
+			// Try to get favicon if enabled and not a gRPC check.
+			// Reuse the body fetched by the health check whenever possible
+			// to avoid issuing a second GET to the same host (#1608).
 			if sc.options.CheckFavicon && !isGRPCProtocol(config.HealthCheckConfig.Protocol) {
-				faviconURL, faviconData := sc.tryGetFavicon(ctx, siteURL)
+				faviconURL, faviconData := sc.faviconFromBody(ctx, siteURL, result.Body)
 				siteInfo.FaviconURL = faviconURL
 				siteInfo.FaviconData = faviconData
 			}
@@ -417,9 +408,21 @@ func (sc *SiteChecker) checkSiteBasic(ctx context.Context, siteURL string, origi
 	return siteInfo, nil
 }
 
-// tryGetFavicon attempts to get favicon for enhanced checks
+// faviconFromBody extracts the favicon using a body that has already been
+// fetched by the health checker. If the body is empty (e.g. the path probed
+// wasn't the homepage), it falls back to a single GET via the shared client.
+func (sc *SiteChecker) faviconFromBody(ctx context.Context, siteURL string, body []byte) (string, string) {
+	if len(body) > 0 {
+		return sc.extractFavicon(ctx, siteURL, string(body))
+	}
+	return sc.tryGetFavicon(ctx, siteURL)
+}
+
+// tryGetFavicon attempts to get favicon when no health-check body is
+// available (e.g. gRPC checks, or when the enhanced check failed and we are
+// falling back). It uses the shared transport so it shares the per-host
+// connection budget with the health check itself.
 func (sc *SiteChecker) tryGetFavicon(ctx context.Context, siteURL string) (string, string) {
-	// Make a simple GET request to get the HTML
 	req, err := http.NewRequestWithContext(ctx, "GET", siteURL, nil)
 	if err != nil {
 		return "", ""
@@ -445,8 +448,16 @@ func (sc *SiteChecker) tryGetFavicon(ctx context.Context, siteURL string) (strin
 	return sc.extractFavicon(ctx, siteURL, string(body))
 }
 
-// CheckAllSites checks all collected sites concurrently
+// CheckAllSites checks all collected sites concurrently. URLs sharing the
+// same host:port are coalesced into a single network probe whose result is
+// fanned out to every alias, so multi-server_name configs do not multiply
+// outbound connections (#1608).
 func (sc *SiteChecker) CheckAllSites(ctx context.Context) {
+	if !settings.SiteCheckSettings.Enabled {
+		logger.Debug("Site check is disabled; skipping CheckAllSites")
+		return
+	}
+
 	sc.mu.RLock()
 	urls := make([]string, 0, len(sc.sites))
 	for url := range sc.sites {
@@ -454,43 +465,76 @@ func (sc *SiteChecker) CheckAllSites(ctx context.Context) {
 	}
 	sc.mu.RUnlock()
 
-	// Use a semaphore to limit concurrent requests
-	semaphore := make(chan struct{}, 10) // Max 10 concurrent requests
+	// Group URLs by host:port so duplicate aliases share one HTTP probe.
+	groups := make(map[string][]string, len(urls))
+	for _, raw := range urls {
+		key := dedupeKey(raw)
+		groups[key] = append(groups[key], raw)
+	}
+
+	concurrency := settings.SiteCheckSettings.GetConcurrency()
+	semaphore := make(chan struct{}, concurrency)
 	var wg sync.WaitGroup
 
-	for _, url := range urls {
+	for _, aliases := range groups {
 		wg.Add(1)
-		go func(siteURL string) {
+		go func(aliases []string) {
 			defer wg.Done()
 
-			semaphore <- struct{}{}        // Acquire semaphore
-			defer func() { <-semaphore }() // Release semaphore
+			semaphore <- struct{}{}
+			defer func() { <-semaphore }()
 
-			siteInfo, err := sc.CheckSite(ctx, siteURL)
+			primary := aliases[0]
+			siteInfo, err := sc.CheckSite(ctx, primary)
 			if err != nil {
-				logger.Errorf("Failed to check site %s: %v", siteURL, err)
+				logger.Errorf("Failed to check site %s: %v", primary, err)
 				return
 			}
 
 			sc.mu.Lock()
-			sc.sites[siteURL] = siteInfo
+			for _, alias := range aliases {
+				if alias == primary {
+					sc.sites[alias] = siteInfo
+					continue
+				}
+				clone := *siteInfo
+				sc.sites[alias] = &clone
+			}
 			sc.mu.Unlock()
-		}(url)
+		}(aliases)
 	}
 
 	wg.Wait()
-	// logger.Infof("Completed checking %d sites", len(urls))
 
 	// Notify WebSocket clients of the update
 	if sc.onUpdateCallback != nil {
-		sites := make([]*SiteInfo, 0, len(sc.sites))
 		sc.mu.RLock()
+		sites := make([]*SiteInfo, 0, len(sc.sites))
 		for _, site := range sc.sites {
 			sites = append(sites, site)
 		}
 		sc.mu.RUnlock()
 		sc.onUpdateCallback(sites)
 	}
+}
+
+// dedupeKey builds a stable key for an indexed site URL so aliases that
+// resolve to the same host:port share a single network probe.
+func dedupeKey(rawURL string) string {
+	parsed, err := url.Parse(rawURL)
+	if err != nil || parsed.Host == "" {
+		return rawURL
+	}
+	host := strings.ToLower(parsed.Host)
+	if !strings.Contains(host, ":") {
+		switch parsed.Scheme {
+		case "https", "grpcs":
+			host += ":443"
+		default:
+			host += ":80"
+		}
+	}
+	return parsed.Scheme + "://" + host
 }
 
 // GetSites returns all checked sites

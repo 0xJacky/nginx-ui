@@ -63,6 +63,7 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
             { text: 'Node', link: '/guide/config-node' },
             { text: 'Open AI', link: '/guide/config-openai' },
             { text: 'Server', link: '/guide/config-server' },
+            { text: 'Site Check', link: '/guide/config-sitecheck' },
             { text: 'Terminal', link: '/guide/config-terminal' },
             { text: 'Webauthn', link: '/guide/config-webauthn' }
           ]

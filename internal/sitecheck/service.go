@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/cache"
+	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/uozi-tech/cosy/kernel"
 	"github.com/uozi-tech/cosy/logger"
 )
@@ -125,12 +126,19 @@ func (s *Service) SetUpdateCallback(callback func([]*SiteInfo)) {
 	s.checker.SetUpdateCallback(callback)
 }
 
-// Start begins the site checking service
+// Start begins the site checking service. When the feature is globally
+// disabled via settings.SiteCheckSettings.Enabled, no collection or checking
+// goroutines are started (#1608).
 func (s *Service) Start() {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
 	if s.running {
+		return
+	}
+
+	if !settings.SiteCheckSettings.Enabled {
+		logger.Debug("Site check is disabled; service will not start")
 		return
 	}
 
@@ -149,8 +157,8 @@ func (s *Service) Start() {
 		sl.Debug("Sitecheck initial collection goroutine completed")
 	})
 
-	// Start periodic checking (every 5 minutes)
-	s.ticker = time.NewTicker(5 * time.Minute)
+	// Start periodic checking using the configured interval.
+	s.ticker = time.NewTicker(settings.SiteCheckSettings.GetInterval())
 	go kernel.Run(s.ctx, "sitecheck periodic check goroutine", func(ctx context.Context) {
 		sl := logger.NewSessionLogger(ctx)
 		sl.Debug("Started sitecheck periodicCheck goroutine")

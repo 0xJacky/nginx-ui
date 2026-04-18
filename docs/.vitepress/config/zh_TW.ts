@@ -68,6 +68,7 @@ export const zhTWConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
             { text: 'Node', link: '/zh_TW/guide/config-node' },
             { text: 'Open AI', link: '/zh_TW/guide/config-openai' },
             { text: 'Server', link: '/zh_TW/guide/config-server' },
+            { text: 'Site Check', link: '/zh_TW/guide/config-sitecheck' },
             { text: 'Terminal', link: '/zh_TW/guide/config-terminal' },
             { text: 'Webauthn', link: '/zh_TW/guide/config-webauthn' }
           ]
