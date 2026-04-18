@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-//go:embed dist i18n.json src/language
+//go:embed all:dist i18n.json src/language
 var embeddedFS embed.FS
 
 // GetDistFS returns the embedded filesystem with frontend assets
