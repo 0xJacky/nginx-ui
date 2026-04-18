@@ -27,6 +27,8 @@ func GetNodeStat(c *gin.Context) {
 
 	defer ws.Close()
 
+	peerGone := startWSKeepalive(ws)
+
 	// Counter to track iterations for periodic full info update
 	counter := 0
 	const fullInfoInterval = 6 // Send full info every 6 iterations (every minute if interval is 10s)
@@ -70,6 +72,7 @@ func GetNodeStat(c *gin.Context) {
 		}
 
 		// write
+		_ = ws.SetWriteDeadline(time.Now().Add(wsWriteWait))
 		err = ws.WriteJSON(data)
 		if err != nil {
 			if helper.IsUnexpectedWebsocketError(err) {
@@ -83,6 +86,9 @@ func GetNodeStat(c *gin.Context) {
 		select {
 		case <-kernel.Context.Done():
 			logger.Debug("GetNodeStat: Context cancelled, closing WebSocket")
+			return
+		case <-peerGone:
+			logger.Debug("GetNodeStat: peer disconnected, closing WebSocket")
 			return
 		case <-time.After(10 * time.Second):
 		}
@@ -102,9 +108,12 @@ func GetNodesAnalytic(c *gin.Context) {
 
 	defer ws.Close()
 
+	peerGone := startWSKeepalive(ws)
+
 	for {
 		// Send snapshot of NodeMap data to client to avoid concurrent access
 		nodeSnapshot := analytic.SnapshotNodeMap()
+		_ = ws.SetWriteDeadline(time.Now().Add(wsWriteWait))
 		err = ws.WriteJSON(nodeSnapshot)
 		if err != nil {
 			if helper.IsUnexpectedWebsocketError(err) {
@@ -116,6 +125,9 @@ func GetNodesAnalytic(c *gin.Context) {
 		select {
 		case <-kernel.Context.Done():
 			logger.Debug("GetNodesAnalytic: Context cancelled, closing WebSocket")
+			return
+		case <-peerGone:
+			logger.Debug("GetNodesAnalytic: peer disconnected, closing WebSocket")
 			return
 		case <-time.After(10 * time.Second):
 		}

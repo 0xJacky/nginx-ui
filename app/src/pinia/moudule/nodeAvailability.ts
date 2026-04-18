@@ -1,4 +1,5 @@
 import type { AnalyticNode, Node } from '@/api/node'
+import { useDocumentVisibility, useEventListener, useOnline } from '@vueuse/core'
 import analytic from '@/api/analytic'
 import nodeApi from '@/api/node'
 import { useWebSocket } from '@/lib/websocket'
@@ -150,6 +151,34 @@ export const useNodeAvailabilityStore = defineStore('nodeAvailability', () => {
     }
   }
 
+  // The underlying useWebSocket gives up after ~10 quick retries. That's fine
+  // for a transient blip but leaves us stuck for long pauses — backend restart,
+  // laptop sleep, flaky VPN. Re-opening the socket whenever the tab becomes
+  // visible or the network comes back provides a cheap recovery path without
+  // hammering the server while the user isn't looking.
+  if (typeof window !== 'undefined') {
+    const visibility = useDocumentVisibility()
+    const online = useOnline()
+
+    watch(visibility, (value, previous) => {
+      if (!isInitialized.value) {
+        return
+      }
+      if (value === 'visible' && previous !== 'visible' && !isConnected.value) {
+        connectWebSocket()
+      }
+    })
+
+    watch(online, (value, previous) => {
+      if (!isInitialized.value) {
+        return
+      }
+      if (value && !previous && !isConnected.value) {
+        connectWebSocket()
+      }
+    })
+  }
+
   // Start monitoring (initialize + WebSocket)
   async function startMonitoring() {
     await initialize()
@@ -193,12 +222,12 @@ export const useNodeAvailabilityStore = defineStore('nodeAvailability', () => {
     return node?.name ?? ''
   }
 
-  // Auto-cleanup WebSocket on page unload
-  if (typeof window !== 'undefined') {
-    window.addEventListener('beforeunload', () => {
-      stopMonitoring()
-    })
-  }
+  // Auto-cleanup WebSocket on page unload. Using VueUse's useEventListener ties
+  // the listener to the setup store's effect scope so HMR/$dispose reliably
+  // removes it instead of accumulating duplicates.
+  useEventListener(typeof window !== 'undefined' ? window : null, 'beforeunload', () => {
+    stopMonitoring()
+  })
 
   return {
     nodes: readonly(nodes),

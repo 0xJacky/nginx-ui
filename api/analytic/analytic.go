@@ -34,6 +34,8 @@ func Analytic(c *gin.Context) {
 
 	defer ws.Close()
 
+	peerGone := startWSKeepalive(ws)
+
 	var stat Stat
 
 	for {
@@ -84,6 +86,7 @@ func Analytic(c *gin.Context) {
 		stat.Network = *network
 
 		// write
+		_ = ws.SetWriteDeadline(time.Now().Add(wsWriteWait))
 		err = ws.WriteJSON(stat)
 		if err != nil {
 			if helper.IsUnexpectedWebsocketError(err) {
@@ -95,6 +98,9 @@ func Analytic(c *gin.Context) {
 		select {
 		case <-kernel.Context.Done():
 			logger.Debug("Analytic: Context cancelled, closing WebSocket")
+			return
+		case <-peerGone:
+			logger.Debug("Analytic: peer disconnected, closing WebSocket")
 			return
 		case <-time.After(1 * time.Second):
 		}
