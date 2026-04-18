@@ -46,6 +46,12 @@ func getTokenWS(c *gin.Context) (token string) {
 
 	if token = c.Query("token"); token != "" {
 		if len(token) > 16 {
+			// Try URL-safe base64 first (browsers send `+` -> `-`, `/` -> `_` to
+			// avoid query-string corruption); fall back to standard base64 for
+			// backward compatibility with older clients.
+			if tokenBytes, err := base64.RawURLEncoding.DecodeString(token); err == nil {
+				return string(tokenBytes)
+			}
 			tokenBytes, _ := base64.StdEncoding.DecodeString(token)
 			return string(tokenBytes)
 		}

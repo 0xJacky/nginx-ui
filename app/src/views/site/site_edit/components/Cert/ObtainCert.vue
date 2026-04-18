@@ -164,6 +164,11 @@ async function job() {
     return
   }
 
+  // Wait for Vue to mount ObtainCertLive after step transitions to 2; without
+  // this tick refObtainCertLive.value is still null and issueCert() silently
+  // no-ops via its optional-chain call.
+  await nextTick()
+
   issueCert()
 }
 function toggle(status: boolean) {

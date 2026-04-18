@@ -10,8 +10,10 @@ import { useSettingsStore, useUserStore } from '@/pinia'
 export function buildWebSocketUrl(url: string, token: string, shortToken: string, nodeId?: number): string {
   const node_id = nodeId && nodeId > 0 ? `&x_node_id=${nodeId}` : ''
 
-  // Use shortToken if available (without base64 encoding), otherwise use regular token (with base64 encoding)
-  const authParam = shortToken ? `token=${shortToken}` : `token=${btoa(token)}`
+  // Use shortToken if available (without base64 encoding), otherwise use regular token (URL-safe base64).
+  // URL-safe base64 avoids `+` chars that get decoded as spaces in query strings.
+  const longTokenParam = btoa(token).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
+  const authParam = shortToken ? `token=${shortToken}` : `token=${longTokenParam}`
 
   // In development mode, keep WebSocket same-origin so the browser
   // connects through the dev server instead of the private backend port.
@@ -41,8 +43,15 @@ export function useWebSocket<T = any>(
   const settings = useSettingsStore()
   const { token, shortToken } = storeToRefs(userStore)
 
-  // Snapshot the URL at call time — must NOT be reactive to avoid
-  // tearing down in-flight connections when shortToken arrives later.
+  // Snapshot the URL at call time — must NOT be reactive to avoid tearing down
+  // in-flight connections (e.g. terminal, log tail) when shortToken arrives later.
+  // When shortToken is empty we fall back to the URL-safe base64 long token,
+  // which the backend still accepts. We deliberately do NOT trigger
+  // fetchShortToken() here: /token/short can return 403 if the secure-session
+  // cookie is stale, and the global HTTP interceptor turns any 403 into a
+  // forced logout — which would kick out otherwise-valid sessions on any
+  // WebSocket-backed page. Short-token refresh is handled by the user store's
+  // token watcher (see app/src/pinia/moudule/user.ts).
   const wsUrl = buildWebSocketUrl(url, token.value, shortToken.value, settings.node.id)
 
   return vueUseWebSocket<T>(wsUrl, {
