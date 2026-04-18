@@ -16,11 +16,13 @@ export const useNgxConfigStore = defineStore('ngxConfig', () => {
   const curServerIdx = ref(0)
 
   function setNgxConfig(config: NgxConfig) {
-    curServerIdx.value = 0
     ngxConfig.value = {
       ...createEmptyNgxConfig(),
       ...config,
     }
+    const serverCount = ngxConfig.value.servers?.length ?? 0
+    if (curServerIdx.value < 0 || curServerIdx.value >= serverCount)
+      curServerIdx.value = 0
   }
 
   function reset() {

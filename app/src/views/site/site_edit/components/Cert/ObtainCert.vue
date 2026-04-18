@@ -146,7 +146,10 @@ async function onchange(status: boolean) {
     ngxConfig.value.servers.forEach(v => {
       v.locations = v?.locations?.filter(l => l.path !== '/.well-known/acme-challenge')
     })
-    await editorStore.save()
+    // Skip syncing the response so handleResponse() does not overwrite
+    // our local autoCert back to the backend's still-enabled state, which
+    // would leave the switch showing on until a page reload.
+    await editorStore.save({ syncResponse: false })
     changeAutoCert(status)
   }
 
