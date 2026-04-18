@@ -5,7 +5,6 @@ import (
 	"crypto/tls"
 	"fmt"
 	"io"
-	"net"
 	"net/http"
 	"net/url"
 	"slices"
@@ -22,37 +21,47 @@ import (
 	"google.golang.org/grpc/health/grpc_health_v1"
 )
 
-// EnhancedSiteChecker provides advanced health checking capabilities
+const enhancedClientTimeout = 30 * time.Second
+
+// CheckResult bundles the SiteInfo with the response body so callers can
+// reuse the body (e.g. for favicon extraction) without issuing a second
+// request to the same host.
+type CheckResult struct {
+	Info *SiteInfo
+	Body []byte
+}
+
+// EnhancedSiteChecker provides advanced health checking capabilities. It
+// reuses the package-level shared HTTP transport for connection pooling.
 type EnhancedSiteChecker struct {
 	defaultClient *http.Client
 }
 
-// NewEnhancedSiteChecker creates a new enhanced site checker
+// NewEnhancedSiteChecker creates a new enhanced site checker that reuses the
+// shared transport.
 func NewEnhancedSiteChecker() *EnhancedSiteChecker {
-	transport := &http.Transport{
-		Dial: (&net.Dialer{
-			Timeout: 10 * time.Second,
-		}).Dial,
-		TLSHandshakeTimeout: 10 * time.Second,
-		TLSClientConfig: &tls.Config{
-			InsecureSkipVerify: settings.HTTPSettings.InsecureSkipVerify,
-		},
-	}
-
-	client := &http.Client{
-		Transport: transport,
-		Timeout:   30 * time.Second,
-	}
-
 	return &EnhancedSiteChecker{
-		defaultClient: client,
+		defaultClient: SharedClient(enhancedClientTimeout),
 	}
 }
 
-// CheckSiteWithConfig performs enhanced health check using custom configuration
-func (ec *EnhancedSiteChecker) CheckSiteWithConfig(ctx context.Context, siteURL string, config *model.HealthCheckConfig) (*SiteInfo, error) {
+// rewriteCheckURLScheme aligns the scheme of siteURL with the configured
+// healthcheck protocol while preserving path, query, fragment, and port.
+// An unparseable URL is returned unchanged.
+func rewriteCheckURLScheme(siteURL, protocol string) string {
+	parsed, err := url.Parse(siteURL)
+	if err != nil {
+		return siteURL
+	}
+	parsed.Scheme = determineOptimalScheme(parsed, protocol)
+	return parsed.String()
+}
+
+// CheckSiteWithConfig performs an enhanced health check using a custom
+// configuration. The body of the HTTP/HTTPS response (if any) is returned so
+// callers can reuse it; gRPC checks return a nil body.
+func (ec *EnhancedSiteChecker) CheckSiteWithConfig(ctx context.Context, siteURL string, config *model.HealthCheckConfig) (*CheckResult, error) {
 	if config == nil {
-		// Fallback to basic HTTP check
 		return ec.checkHTTP(ctx, siteURL, &model.HealthCheckConfig{
 			Protocol:       "http",
 			Method:         "GET",
@@ -61,18 +70,28 @@ func (ec *EnhancedSiteChecker) CheckSiteWithConfig(ctx context.Context, siteURL 
 		})
 	}
 
+	// Align the request URL scheme with the configured healthcheck protocol
+	// so HTTPS/gRPC checks don't silently fall back to the indexed HTTP URL.
+	// Only the scheme is rewritten; path, query, and port are preserved.
+	checkURL := rewriteCheckURLScheme(siteURL, config.Protocol)
+
 	switch config.Protocol {
 	case "grpc", "grpcs":
-		return ec.checkGRPC(ctx, siteURL, config)
+		info, err := ec.checkGRPC(ctx, checkURL, config)
+		if info == nil {
+			return nil, err
+		}
+		return &CheckResult{Info: info}, err
 	case "https":
-		return ec.checkHTTPS(ctx, siteURL, config)
+		return ec.checkHTTPS(ctx, checkURL, config)
 	default: // http
-		return ec.checkHTTP(ctx, siteURL, config)
+		return ec.checkHTTP(ctx, checkURL, config)
 	}
 }
 
-// checkHTTP performs HTTP health check
-func (ec *EnhancedSiteChecker) checkHTTP(ctx context.Context, siteURL string, config *model.HealthCheckConfig) (*SiteInfo, error) {
+// checkHTTP performs an HTTP health check and returns the response body so
+// callers can reuse it (e.g. to extract a favicon) without re-fetching.
+func (ec *EnhancedSiteChecker) checkHTTP(ctx context.Context, siteURL string, config *model.HealthCheckConfig) (*CheckResult, error) {
 	startTime := time.Now()
 
 	// Build request URL
@@ -84,10 +103,10 @@ func (ec *EnhancedSiteChecker) checkHTTP(ctx context.Context, siteURL string, co
 	// Create request
 	req, err := http.NewRequestWithContext(ctx, config.Method, checkURL, nil)
 	if err != nil {
-		return &SiteInfo{
+		return &CheckResult{Info: &SiteInfo{
 			Status: StatusError,
 			Error:  fmt.Sprintf("Failed to create request: %v", err),
-		}, err
+		}}, err
 	}
 
 	// Add custom headers
@@ -108,43 +127,21 @@ func (ec *EnhancedSiteChecker) checkHTTP(ctx context.Context, siteURL string, co
 		}
 	}
 
-	// Create custom client if needed
+	// Pick the right client. The shared client is reused unless this site
+	// genuinely needs a divergent TLS configuration.
 	client := ec.defaultClient
-	if config.ValidateSSL || config.VerifyHostname {
-		transport := &http.Transport{
-			Dial: (&net.Dialer{
-				Timeout: 10 * time.Second,
-			}).Dial,
-			TLSHandshakeTimeout: 10 * time.Second,
-			TLSClientConfig: &tls.Config{
-				InsecureSkipVerify: !config.ValidateSSL,
-			},
-		}
-
-		// Load client certificate if provided
-		if config.ClientCert != "" && config.ClientKey != "" {
-			cert, err := tls.LoadX509KeyPair(config.ClientCert, config.ClientKey)
-			if err != nil {
-				logger.Warnf("Failed to load client certificate: %v", err)
-			} else {
-				transport.TLSClientConfig.Certificates = []tls.Certificate{cert}
-			}
-		}
-
-		client = &http.Client{
-			Transport: transport,
-			Timeout:   30 * time.Second,
-		}
+	if needsCustomTLS(config) {
+		client = ClientForHealthCheck(config, enhancedClientTimeout)
 	}
 
 	// Make request
 	resp, err := client.Do(req)
 	if err != nil {
-		return &SiteInfo{
+		return &CheckResult{Info: &SiteInfo{
 			Status:       StatusError,
 			ResponseTime: time.Since(startTime).Milliseconds(),
 			Error:        err.Error(),
-		}, err
+		}}, err
 	}
 	defer resp.Body.Close()
 
@@ -191,17 +188,20 @@ func (ec *EnhancedSiteChecker) checkHTTP(ctx context.Context, siteURL string, co
 	// Get or create site config to get ID
 	siteConfig := getOrCreateSiteConfigForURL(siteURL)
 
-	return &SiteInfo{
-		SiteConfig:   *siteConfig,
-		Status:       status,
-		StatusCode:   resp.StatusCode,
-		ResponseTime: responseTime,
-		Error:        errorMsg,
+	return &CheckResult{
+		Info: &SiteInfo{
+			SiteConfig:   *siteConfig,
+			Status:       status,
+			StatusCode:   resp.StatusCode,
+			ResponseTime: responseTime,
+			Error:        errorMsg,
+		},
+		Body: body,
 	}, nil
 }
 
 // checkHTTPS performs HTTPS health check with SSL validation
-func (ec *EnhancedSiteChecker) checkHTTPS(ctx context.Context, siteURL string, config *model.HealthCheckConfig) (*SiteInfo, error) {
+func (ec *EnhancedSiteChecker) checkHTTPS(ctx context.Context, siteURL string, config *model.HealthCheckConfig) (*CheckResult, error) {
 	// Force HTTPS protocol
 	httpsConfig := *config
 	httpsConfig.Protocol = "https"

@@ -142,9 +142,8 @@ func TestHealthCheck(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	// Convert host to URL for testing
-	testURL := siteConfig.Scheme + "://" + siteConfig.Host
-	result, err := enhancedChecker.CheckSiteWithConfig(ctx, testURL, req.Config)
+	// Pass the stored site URL; CheckSiteWithConfig rewrites the scheme to match req.Config.Protocol.
+	result, err := enhancedChecker.CheckSiteWithConfig(ctx, siteConfig.GetURL(), req.Config)
 
 	if err != nil {
 		logger.Errorf("Health check test failed for %s: %v", siteConfig.Host, err)
@@ -156,17 +155,27 @@ func TestHealthCheck(c *gin.Context) {
 		return
 	}
 
-	success := result.Status == "online"
+	info := result.Info
+	if info == nil {
+		c.JSON(http.StatusOK, gin.H{
+			"success":       false,
+			"error":         "empty health check result",
+			"response_time": 0,
+		})
+		return
+	}
+
+	success := info.Status == "online"
 	errorMsg := ""
-	if !success && result.Error != "" {
-		errorMsg = result.Error
+	if !success && info.Error != "" {
+		errorMsg = info.Error
 	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"success":       success,
-		"response_time": result.ResponseTime,
-		"status":        result.Status,
-		"status_code":   result.StatusCode,
+		"response_time": info.ResponseTime,
+		"status":        info.Status,
+		"status_code":   info.StatusCode,
 		"error":         errorMsg,
 	})
 }
