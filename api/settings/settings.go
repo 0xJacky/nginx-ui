@@ -1,6 +1,7 @@
 package settings
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 
@@ -14,6 +15,77 @@ import (
 	"github.com/uozi-tech/cosy"
 	cSettings "github.com/uozi-tech/cosy/settings"
 )
+
+const redactedSensitiveValue = "__NGINX_UI_REDACTED__"
+
+type saveSettingsPayload struct {
+	App       cSettings.App      `json:"app"`
+	Server    cSettings.Server   `json:"server"`
+	Auth      settings.Auth      `json:"auth"`
+	Cert      settings.Cert      `json:"cert"`
+	Http      settings.HTTP      `json:"http"`
+	Node      settings.Node      `json:"node"`
+	Openai    settings.OpenAI    `json:"openai"`
+	Logrotate settings.Logrotate `json:"logrotate"`
+	Nginx     settings.Nginx     `json:"nginx"`
+	Oidc      settings.OIDC      `json:"oidc"`
+}
+
+func cloneSettingsSection(section any) gin.H {
+	raw, err := json.Marshal(section)
+	if err != nil {
+		return gin.H{}
+	}
+
+	var cloned gin.H
+	if err := json.Unmarshal(raw, &cloned); err != nil {
+		return gin.H{}
+	}
+
+	return cloned
+}
+
+func buildSettingsResponse() gin.H {
+	app := cloneSettingsSection(cSettings.AppSettings)
+	app["jwt_secret"] = redactedSensitiveValue
+
+	node := cloneSettingsSection(settings.NodeSettings)
+	node["secret"] = redactedSensitiveValue
+
+	openai := cloneSettingsSection(settings.OpenAISettings)
+	openai["token"] = redactedSensitiveValue
+
+	return gin.H{
+		"app":       app,
+		"server":    cSettings.ServerSettings,
+		"database":  settings.DatabaseSettings,
+		"auth":      settings.AuthSettings,
+		"casdoor":   settings.CasdoorSettings,
+		"oidc":      settings.OIDCSettings,
+		"cert":      settings.CertSettings,
+		"http":      settings.HTTPSettings,
+		"logrotate": settings.LogrotateSettings,
+		"nginx":     settings.NginxSettings,
+		"node":      node,
+		"openai":    openai,
+		"terminal":  settings.TerminalSettings,
+		"webauthn":  settings.WebAuthnSettings,
+	}
+}
+
+func restoreRedactedSensitiveSettings(payload *saveSettingsPayload) {
+	if payload.App.JwtSecret == redactedSensitiveValue {
+		payload.App.JwtSecret = cSettings.AppSettings.JwtSecret
+	}
+
+	if payload.Node.Secret == redactedSensitiveValue {
+		payload.Node.Secret = settings.NodeSettings.Secret
+	}
+
+	if payload.Openai.Token == redactedSensitiveValue {
+		payload.Openai.Token = settings.OpenAISettings.Token
+	}
+}
 
 func GetServerName(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
@@ -46,41 +118,17 @@ func GetSettings(c *gin.Context) {
 			fmt.Sprintf("start-stop-daemon --start --quiet --pidfile %s --exec %s", pidPath, daemon)
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"app":       cSettings.AppSettings,
-		"server":    cSettings.ServerSettings,
-		"database":  settings.DatabaseSettings,
-		"auth":      settings.AuthSettings,
-		"casdoor":   settings.CasdoorSettings,
-		"oidc":      settings.OIDCSettings,
-		"cert":      settings.CertSettings,
-		"http":      settings.HTTPSettings,
-		"logrotate": settings.LogrotateSettings,
-		"nginx":     settings.NginxSettings,
-		"node":      settings.NodeSettings,
-		"openai":    settings.OpenAISettings,
-		"terminal":  settings.TerminalSettings,
-		"webauthn":  settings.WebAuthnSettings,
-	})
+	c.JSON(http.StatusOK, buildSettingsResponse())
 }
 
 func SaveSettings(c *gin.Context) {
-	var json struct {
-		App       cSettings.App      `json:"app"`
-		Server    cSettings.Server   `json:"server"`
-		Auth      settings.Auth      `json:"auth"`
-		Cert      settings.Cert      `json:"cert"`
-		Http      settings.HTTP      `json:"http"`
-		Node      settings.Node      `json:"node"`
-		Openai    settings.OpenAI    `json:"openai"`
-		Logrotate settings.Logrotate `json:"logrotate"`
-		Nginx     settings.Nginx     `json:"nginx"`
-		Oidc      settings.OIDC      `json:"oidc"`
-	}
+	var json saveSettingsPayload
 
 	if !cosy.BindAndValid(c, &json) {
 		return
 	}
+
+	restoreRedactedSensitiveSettings(&json)
 
 	if settings.LogrotateSettings.Enabled != json.Logrotate.Enabled ||
 		settings.LogrotateSettings.Interval != json.Logrotate.Interval {

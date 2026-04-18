@@ -8,6 +8,7 @@ import (
 func InitRouter(r *gin.RouterGroup) {
 	r.GET("settings/server/name", GetServerName)
 	r.GET("settings", GetSettings)
+	r.GET("settings/protected", middleware.RequireSecureSession(), GetProtectedSetting)
 	r.POST("settings", middleware.RequireSecureSession(), SaveSettings)
 
 	r.GET("settings/auth/banned_ips", GetBanLoginIP)

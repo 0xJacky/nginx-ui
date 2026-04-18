@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { SensitiveInput } from '@/components/SensitiveString'
 import { LLM_MODELS, LLM_PROVIDERS } from '@/constants/llm'
 import useSystemSettingsStore from '../store'
 
@@ -61,7 +62,10 @@ const providers = LLM_PROVIDERS.map(provider => ({
         ? $gettext('Token is not valid')
         : ''"
     >
-      <AInputPassword v-model:value="data.openai.token" />
+      <SensitiveInput
+        v-model="data.openai.token"
+        path="openai.token"
+      />
     </AFormItem>
     <AFormItem
       :label="$gettext('API Type')"

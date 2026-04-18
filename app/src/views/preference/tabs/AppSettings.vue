@@ -9,7 +9,7 @@ const { data } = storeToRefs(systemSettingsStore)
 <template>
   <AForm layout="vertical">
     <AFormItem :label="$gettext('Jwt Secret')">
-      <SensitiveString :value="data.app.jwt_secret" />
+      <SensitiveString path="app.jwt_secret" :value="data.app.jwt_secret" />
     </AFormItem>
     <AFormItem :label="$gettext('Page Size')">
       <p>{{ data.app.page_size }}</p>
