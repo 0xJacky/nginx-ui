@@ -2,6 +2,7 @@ package model
 
 import (
 	"os"
+	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
@@ -48,6 +49,8 @@ type Cert struct {
 	MustStaple              bool                 `json:"must_staple"`
 	LegoDisableCNAMESupport bool                 `json:"lego_disable_cname_support"`
 	RevokeOld               bool                 `json:"revoke_old"`
+	LastAutoRenewAt         *time.Time           `json:"-"`
+	LastAutoRenewError      string               `json:"-"`
 }
 
 func FirstCert(confName string) (c Cert, err error) {
