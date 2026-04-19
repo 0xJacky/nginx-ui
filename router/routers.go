@@ -107,6 +107,7 @@ func InitRouter() {
 			external_notify.InitRouter(g)
 			backup.InitAutoBackupRouter(g)
 			nginxLog.InitRouter(g)
+			upstream.InitHTTPRouter(g)
 			g.GET("/geolite/status", geolite.GetStatus)
 		}
 
@@ -121,7 +122,7 @@ func InitRouter() {
 				terminal.InitRouter(o)
 			}
 			nginxLog.InitWebSocketRouter(w)
-			upstream.InitRouter(w)
+			upstream.InitWebSocketRouter(w)
 			system.InitWebSocketRouter(w)
 			nginx.InitWebSocketRouter(w)
 			cluster.InitWebSocketRouter(w)
