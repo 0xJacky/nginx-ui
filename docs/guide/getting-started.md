@@ -113,7 +113,9 @@ you can easily make the switch.
 
 ::: tip
 
-Nginx UI is by default proxied to port `8080` of the container.
+The official Docker image listens on container ports `80` and `443`.
+Requests to container port `80` are reverse proxied to the Nginx UI backend at `127.0.0.1:9000`.
+Access Nginx UI through the host port that you publish to container port `80`.
 When using this container for the first time, ensure that the volume mapped to `/etc/nginx` is empty.
 If you want to host static files, you can map directories to container.
 

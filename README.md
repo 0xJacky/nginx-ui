@@ -257,6 +257,7 @@ docker run -dit \
 ```
 
 3. When your docker container is running, Log in to nginx-ui panel with `http://<your_server_ip>:8080/install`.
+   If you change the port mapping, access Nginx UI through the host port mapped to container port `80` instead.
 </details>
 
 <details>
@@ -292,6 +293,7 @@ docker compose up -d
 ```
 
 4. When your docker container is running, Log in to nginx-ui panel with `http://<your_server_ip>:8080/install`.
+   If you change the port mapping, access Nginx UI through the host port mapped to container port `80` instead.
 
 </details>
 
