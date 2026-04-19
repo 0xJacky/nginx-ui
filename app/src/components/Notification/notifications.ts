@@ -37,6 +37,14 @@ const notifications: Record<string, { title: () => string, content: (args: any) 
     title: () => $gettext('Auto Backup Completed'),
     content: (args: any) => $gettext('Backup task %{backup_name} completed successfully, file: %{file_path}', args, true),
   },
+  'Renew Certificate Success': {
+    title: () => $gettext('Renew Certificate Success'),
+    content: (args: any) => $gettext('Certificate %{name} renewed successfully', args, true),
+  },
+  'Renew Certificate Error': {
+    title: () => $gettext('Renew Certificate Error'),
+    content: (args: any) => $gettext('Certificate %{name} renewal failed: %{error}', args, true),
+  },
   'Certificate Expired': {
     title: () => $gettext('Certificate Expired'),
     content: (args: any) => $gettext('Certificate %{name} has expired', args, true),
