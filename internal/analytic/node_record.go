@@ -459,6 +459,12 @@ func nodeAnalyticRecord(nodeModel *model.Node, ctx context.Context) error {
 	scopeCtx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
+	// Snapshot keepalive timings once so test overrides cannot race with the
+	// background ping loop after this function has started.
+	pongWait := nodeWSPongWait
+	pingPeriod := nodeWSPingPeriod
+	writeWait := nodeWSWriteWait
+
 	node, err := InitNode(nodeModel)
 	if err != nil {
 		nodeMapMu.Lock()
@@ -506,9 +512,9 @@ func nodeAnalyticRecord(nodeModel *model.Node, ctx context.Context) error {
 	// Arm read deadline and refresh it on every pong. Without this, a silently
 	// half-dead TCP connection (NAT drop, peer hang) would block ReadJSON below
 	// indefinitely, freezing this node's retry loop until the process restarts.
-	_ = c.SetReadDeadline(time.Now().Add(nodeWSPongWait))
+	_ = c.SetReadDeadline(time.Now().Add(pongWait))
 	c.SetPongHandler(func(string) error {
-		return c.SetReadDeadline(time.Now().Add(nodeWSPongWait))
+		return c.SetReadDeadline(time.Now().Add(pongWait))
 	})
 
 	go func() {
@@ -523,7 +529,7 @@ func nodeAnalyticRecord(nodeModel *model.Node, ctx context.Context) error {
 	// Periodic ping keeps the connection warm and triggers the deadline above
 	// when the peer stops responding.
 	go func() {
-		ticker := time.NewTicker(nodeWSPingPeriod)
+		ticker := time.NewTicker(pingPeriod)
 		defer ticker.Stop()
 		for {
 			select {
@@ -532,7 +538,7 @@ func nodeAnalyticRecord(nodeModel *model.Node, ctx context.Context) error {
 			case <-ctx.Done():
 				return
 			case <-ticker.C:
-				if err := c.WriteControl(websocket.PingMessage, nil, time.Now().Add(nodeWSWriteWait)); err != nil {
+				if err := c.WriteControl(websocket.PingMessage, nil, time.Now().Add(writeWait)); err != nil {
 					_ = c.Close()
 					return
 				}
