@@ -252,12 +252,12 @@ docker run -dit \
   -v /mnt/user/appdata/nginx:/etc/nginx \
   -v /mnt/user/appdata/nginx-ui:/etc/nginx-ui \
   -v /var/run/docker.sock:/var/run/docker.sock \
-  -p 8080:80 -p 8443:443 \
+  -p 8080:9000 -p 8443:443 \
   uozi/nginx-ui:latest
 ```
 
 3. When your docker container is running, Log in to nginx-ui panel with `http://<your_server_ip>:8080/install`.
-   If you change the port mapping, access Nginx UI through the host port mapped to container port `80` instead.
+   If you change the port mapping, access Nginx UI through the host port mapped to container port `9000` instead.
 </details>
 
 <details>
@@ -282,7 +282,7 @@ services:
             - '/var/www:/var/www'
             - '/var/run/docker.sock:/var/run/docker.sock'
         ports:
-            - 8080:80
+            - 8080:9000
             - 8443:443
         image: 'uozi/nginx-ui:latest'
 ```
@@ -293,7 +293,7 @@ docker compose up -d
 ```
 
 4. When your docker container is running, Log in to nginx-ui panel with `http://<your_server_ip>:8080/install`.
-   If you change the port mapping, access Nginx UI through the host port mapped to container port `80` instead.
+   If you change the port mapping, access Nginx UI through the host port mapped to container port `9000` instead.
 
 </details>
 
