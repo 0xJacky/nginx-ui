@@ -258,6 +258,7 @@ func createMaintenanceConfig(conf *config.Config) string {
 		locationContent.WriteString("proxy_set_header X-Real-IP $remote_addr;\n")
 		locationContent.WriteString("proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n")
 		locationContent.WriteString("proxy_set_header X-Forwarded-Proto $scheme;\n")
+		locationContent.WriteString("proxy_set_header X-Forwarded-Host $http_host;\n")
 		locationContent.WriteString("rewrite ^ /pages/maintenance break;\n")
 		locationContent.WriteString(fmt.Sprintf("proxy_pass %s://127.0.0.1:%d;\n", schema, nginxUIPort))
 

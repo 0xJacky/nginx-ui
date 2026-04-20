@@ -32,6 +32,7 @@ server {
         proxy_set_header    X-Real-IP           $remote_addr;
         proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;
         proxy_set_header    X-Forwarded-Proto   $scheme;
+        proxy_set_header    X-Forwarded-Host    $http_host;
         proxy_http_version  1.1;
         proxy_set_header    Upgrade             $http_upgrade;
         proxy_set_header    Connection          $connection_upgrade;
@@ -55,4 +56,4 @@ based on the $http_upgrade variable, which is used for WebSocket connections.
 Within the second server block, the location `/` section contains proxy settings to forward requests to the local port
 `9000`. The proxy settings also include a number of headers for proper handling of the forwarded requests, such
 as `Host`,
-`X-Real-IP`, `X-Forwarded-For`, `X-Forwarded-Proto`, `Upgrade`, and `Connection`.
+`X-Real-IP`, `X-Forwarded-For`, `X-Forwarded-Proto`, `X-Forwarded-Host`, `Upgrade`, and `Connection`.

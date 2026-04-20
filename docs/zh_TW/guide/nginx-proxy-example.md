@@ -32,6 +32,7 @@ server {
         proxy_set_header    X-Real-IP           $remote_addr;
         proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;
         proxy_set_header    X-Forwarded-Proto   $scheme;
+        proxy_set_header    X-Forwarded-Host    $http_host;
         proxy_http_version  1.1;
         proxy_set_header    Upgrade             $http_upgrade;
         proxy_set_header    Connection          $connection_upgrade;
@@ -49,5 +50,5 @@ SSL 證書和金鑰的路徑替換為 `/path/to/ssl_cert` 和 `/path/to/ssl_cert
 此外，設定包括一個 `map` 指令，用於根據 `$http_upgrade` 變數設定 `$connection_upgrade` 變數的值，該變數用於 WebSocket 連線。
 
 在第二個伺服器區塊中，`location /` 部分包含代理設定，將請求轉發到本機連接埠 `9000`
-。代理設定還包括一些用於正確處理轉發請求的信頭，如 `Host`、`X-Real-IP`、`X-Forwarded-For`、`X-Forwarded-Proto`、`Upgrade`
+。代理設定還包括一些用於正確處理轉發請求的信頭，如 `Host`、`X-Real-IP`、`X-Forwarded-For`、`X-Forwarded-Proto`、`X-Forwarded-Host`、`Upgrade`
 和 `Connection`。
