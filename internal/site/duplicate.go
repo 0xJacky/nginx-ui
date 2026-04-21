@@ -1,6 +1,9 @@
 package site
 
 import (
+	"os"
+
+	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 )
 
@@ -20,7 +23,17 @@ func Duplicate(src, dst string) (err error) {
 		return ErrDstFileExists
 	}
 
-	_, err = helper.CopyFile(src, dst)
+	content, err := os.ReadFile(src)
+	if err != nil {
+		return err
+	}
+
+	err = config.ValidateConfigFileBytes(dst, content)
+	if err != nil {
+		return err
+	}
+
+	err = os.WriteFile(dst, content, 0644)
 	if err != nil {
 		return
 	}

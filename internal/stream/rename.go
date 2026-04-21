@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"sync"
 
+	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
@@ -27,6 +28,11 @@ func Rename(oldName string, newName string) (err error) {
 	}
 
 	if oldPath == newPath {
+		return
+	}
+
+	err = config.ValidateConfigFilename(newPath)
+	if err != nil {
 		return
 	}
 

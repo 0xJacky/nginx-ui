@@ -10,11 +10,11 @@ func InitRouter(r *gin.RouterGroup) {
 
 	r.GET("configs", GetConfigs)
 	r.GET("config", GetConfig)
-	r.POST("configs", AddConfig)
-	r.POST("config", EditConfig)
 
 	o := r.Group("", middleware.RequireSecureSession())
 	{
+		o.POST("configs", AddConfig)
+		o.POST("config", EditConfig)
 		o.POST("config_mkdir", Mkdir)
 		o.POST("config_rename", Rename)
 		o.POST("config_delete", DeleteConfig)

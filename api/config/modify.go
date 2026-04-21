@@ -42,6 +42,13 @@ func EditConfig(c *gin.Context) {
 		return
 	}
 
+	content := json.Content
+	err = config.ValidateConfigFile(absPath, content)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
 	q := query.Config
 	cfg, err := q.Assign(field.Attrs(&model.Config{
 		Filepath: absPath,
@@ -65,7 +72,6 @@ func EditConfig(c *gin.Context) {
 	cfg.SyncNodeIds = json.SyncNodeIds
 	cfg.SyncOverwrite = json.SyncOverwrite
 
-	content := json.Content
 	err = config.Save(absPath, content, cfg)
 	if err != nil {
 		cosy.ErrHandler(c, err)

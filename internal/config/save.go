@@ -28,6 +28,11 @@ func Save(absPath string, content string, cfg *model.Config) (err error) {
 		return cosy.WrapErrorWithParams(ErrPathIsNotUnderTheNginxConfDir, absPath, nginx.GetConfPath())
 	}
 
+	err = ValidateConfigFile(absPath, content)
+	if err != nil {
+		return
+	}
+
 	err = CheckAndCreateHistory(absPath, content)
 	if err != nil {
 		return

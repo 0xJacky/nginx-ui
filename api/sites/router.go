@@ -1,6 +1,9 @@
 package sites
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/0xJacky/Nginx-UI/internal/middleware"
+	"github.com/gin-gonic/gin"
+)
 
 func InitRouter(r *gin.RouterGroup) {
 	// Initialize WebSocket notifications for site checking
@@ -22,18 +25,21 @@ func InitRouter(r *gin.RouterGroup) {
 	r.POST("site_navigation/test_health_check/:id", TestHealthCheck)
 	r.GET("site_navigation_ws", SiteNavigationWebSocket)
 
-	// rename site
-	r.POST("sites/:name/rename", RenameSite)
-	// enable site
-	r.POST("sites/:name/enable", EnableSite)
-	// disable site
-	r.POST("sites/:name/disable", DisableSite)
-	// save site
-	r.POST("sites/:name", SaveSite)
-	// delete site
-	r.DELETE("sites/:name", DeleteSite)
-	// duplicate site
-	r.POST("sites/:name/duplicate", DuplicateSite)
-	// enable maintenance mode for site
-	r.POST("sites/:name/maintenance", EnableMaintenanceSite)
+	o := r.Group("", middleware.RequireSecureSession())
+	{
+		// rename site
+		o.POST("sites/:name/rename", RenameSite)
+		// enable site
+		o.POST("sites/:name/enable", EnableSite)
+		// disable site
+		o.POST("sites/:name/disable", DisableSite)
+		// save site
+		o.POST("sites/:name", SaveSite)
+		// delete site
+		o.DELETE("sites/:name", DeleteSite)
+		// duplicate site
+		o.POST("sites/:name/duplicate", DuplicateSite)
+		// enable maintenance mode for site
+		o.POST("sites/:name/maintenance", EnableMaintenanceSite)
+	}
 }

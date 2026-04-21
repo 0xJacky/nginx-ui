@@ -57,6 +57,14 @@ func Rename(c *gin.Context) {
 		return
 	}
 
+	if !stat.IsDir() {
+		err = config.ValidateConfigFilename(newFullPath)
+		if err != nil {
+			cosy.ErrHandler(c, err)
+			return
+		}
+	}
+
 	if helper.FileExists(newFullPath) {
 		c.JSON(http.StatusNotAcceptable, gin.H{
 			"message": "target file already exists",

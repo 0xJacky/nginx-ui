@@ -28,6 +28,11 @@ func Save(name string, content string, overwrite bool, namespaceId uint64, syncN
 		return ErrDstFileExists
 	}
 
+	err = config.ValidateConfigFile(path, content)
+	if err != nil {
+		return
+	}
+
 	err = config.CheckAndCreateHistory(path, content)
 	if err != nil {
 		return

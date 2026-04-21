@@ -22,27 +22,13 @@ func Duplicate(c *gin.Context) {
 		return
 	}
 
-	src, err := stream.ResolveAvailablePath(name)
+	err := stream.Duplicate(name, json.Name)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
 	}
 
 	dst, err := stream.ResolveAvailablePath(json.Name)
-	if err != nil {
-		cosy.ErrHandler(c, err)
-		return
-	}
-
-	if helper.FileExists(dst) {
-		c.JSON(http.StatusNotAcceptable, gin.H{
-			"message": "File exists",
-		})
-		return
-	}
-
-	_, err = helper.CopyFile(src, dst)
-
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

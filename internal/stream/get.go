@@ -87,6 +87,11 @@ func SaveStreamConfig(name, content string, namespaceID uint64, syncNodeIDs []ui
 		return err
 	}
 
+	err = config.ValidateConfigFile(path, content)
+	if err != nil {
+		return err
+	}
+
 	s := query.Stream
 	streamModel, err := s.Where(s.Path.Eq(path)).FirstOrCreate()
 	if err != nil {

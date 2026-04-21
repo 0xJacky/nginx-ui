@@ -43,6 +43,12 @@ func AddConfig(c *gin.Context) {
 		return
 	}
 
+	err = config.ValidateConfigFile(path, content)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
 	if !json.Overwrite && helper.FileExists(path) {
 		c.JSON(http.StatusNotAcceptable, gin.H{
 			"message": "File exists",

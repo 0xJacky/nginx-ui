@@ -61,6 +61,11 @@ func handleNginxConfigModify(ctx context.Context, request mcpgo.CallToolRequest)
 		return nil, ErrFileNotFound
 	}
 
+	err = config.ValidateConfigFile(absPath, content)
+	if err != nil {
+		return nil, err
+	}
+
 	q := query.Config
 	cfg, err := q.Assign(field.Attrs(&model.Config{
 		Filepath: absPath,
