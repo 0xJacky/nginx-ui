@@ -58,6 +58,11 @@ If there is a port conflict, please modify `/usr/local/etc/nginx-ui/app.ini` man
 then use `systemctl restart nginx-ui` to restart the Nginx UI service.
 For more information, please check [reference for config](./config-server).
 
+After the service starts for the first time, the script prints a one-time install secret for the web setup.
+If you miss the terminal output, read the hidden file `.install_secret` in the config directory.
+By default, this file is located at `/usr/local/etc/nginx-ui/.install_secret`.
+If you override `DATA_PATH`, read `$DATA_PATH/.install_secret` instead.
+
 
 ## Remove
 
