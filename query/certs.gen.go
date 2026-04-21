@@ -48,6 +48,8 @@ func newCert(db *gorm.DB, opts ...gen.DOOption) cert {
 	_cert.MustStaple = field.NewBool(tableName, "must_staple")
 	_cert.LegoDisableCNAMESupport = field.NewBool(tableName, "lego_disable_cname_support")
 	_cert.RevokeOld = field.NewBool(tableName, "revoke_old")
+	_cert.LastAutoRenewAt = field.NewTime(tableName, "last_auto_renew_at")
+	_cert.LastAutoRenewError = field.NewString(tableName, "last_auto_renew_error")
 	_cert.DnsCredential = certBelongsToDnsCredential{
 		db: db.Session(&gorm.Session{}),
 
@@ -89,6 +91,8 @@ type cert struct {
 	MustStaple              field.Bool
 	LegoDisableCNAMESupport field.Bool
 	RevokeOld               field.Bool
+	LastAutoRenewAt         field.Time
+	LastAutoRenewError      field.String
 	DnsCredential           certBelongsToDnsCredential
 
 	ACMEUser certBelongsToACMEUser
@@ -128,6 +132,8 @@ func (c *cert) updateTableName(table string) *cert {
 	c.MustStaple = field.NewBool(table, "must_staple")
 	c.LegoDisableCNAMESupport = field.NewBool(table, "lego_disable_cname_support")
 	c.RevokeOld = field.NewBool(table, "revoke_old")
+	c.LastAutoRenewAt = field.NewTime(table, "last_auto_renew_at")
+	c.LastAutoRenewError = field.NewString(table, "last_auto_renew_error")
 
 	c.fillFieldMap()
 
@@ -144,7 +150,7 @@ func (c *cert) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (c *cert) fillFieldMap() {
-	c.fieldMap = make(map[string]field.Expr, 22)
+	c.fieldMap = make(map[string]field.Expr, 24)
 	c.fieldMap["id"] = c.ID
 	c.fieldMap["created_at"] = c.CreatedAt
 	c.fieldMap["updated_at"] = c.UpdatedAt
@@ -165,6 +171,8 @@ func (c *cert) fillFieldMap() {
 	c.fieldMap["must_staple"] = c.MustStaple
 	c.fieldMap["lego_disable_cname_support"] = c.LegoDisableCNAMESupport
 	c.fieldMap["revoke_old"] = c.RevokeOld
+	c.fieldMap["last_auto_renew_at"] = c.LastAutoRenewAt
+	c.fieldMap["last_auto_renew_error"] = c.LastAutoRenewError
 
 }
 
