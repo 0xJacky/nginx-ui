@@ -292,6 +292,59 @@ func TestEditConfigRejectsBinaryContent(t *testing.T) {
 	assertCosyErrorResponse(t, recorder, http.StatusInternalServerError, scope, code)
 }
 
+func TestAddConfigRejectsRestrictedScriptingDirectives(t *testing.T) {
+	_, auth := setupConfigSecurityTest(t)
+	router := newConfigMutationRouter()
+	scope, code := mustCosyErrorMeta(t, internalconfig.ErrConfigDirectiveNotAllowed)
+
+	recorder := performJSONRequest(t, router, http.MethodPost, "/configs", gin.H{
+		"name":    "app.conf",
+		"content": "server {\n    js_import app.js;\n}\n",
+	}, map[string]string{
+		"Authorization": auth.plainToken,
+	})
+
+	assertCosyErrorResponse(t, recorder, http.StatusInternalServerError, scope, code, "js_import")
+}
+
+func TestEditConfigRejectsRootWorkerEscalation(t *testing.T) {
+	confDir, auth := setupConfigSecurityTest(t)
+	router := newConfigMutationRouter()
+	scope, code := mustCosyErrorMeta(t, internalconfig.ErrConfigDirectiveNotAllowed)
+
+	if err := os.WriteFile(filepath.Join(confDir, "nginx.conf"), []byte("user nginx;\nevents {}\n"), 0o644); err != nil {
+		t.Fatalf("failed to seed config file: %v", err)
+	}
+
+	recorder := performJSONRequest(t, router, http.MethodPost, "/config", gin.H{
+		"path":    "nginx.conf",
+		"content": "user root;\nevents {}\n",
+	}, map[string]string{
+		"Authorization": auth.plainToken,
+	})
+
+	assertCosyErrorResponse(t, recorder, http.StatusInternalServerError, scope, code, "user root")
+}
+
+func TestEditConfigRejectsRestrictedDynamicModuleLoad(t *testing.T) {
+	confDir, auth := setupConfigSecurityTest(t)
+	router := newConfigMutationRouter()
+	scope, code := mustCosyErrorMeta(t, internalconfig.ErrConfigDirectiveNotAllowed)
+
+	if err := os.WriteFile(filepath.Join(confDir, "nginx.conf"), []byte("events {}\n"), 0o644); err != nil {
+		t.Fatalf("failed to seed config file: %v", err)
+	}
+
+	recorder := performJSONRequest(t, router, http.MethodPost, "/config", gin.H{
+		"path":    "nginx.conf",
+		"content": "load_module modules/ngx_http_js_module.so;\nevents {}\n",
+	}, map[string]string{
+		"Authorization": auth.plainToken,
+	})
+
+	assertCosyErrorResponse(t, recorder, http.StatusInternalServerError, scope, code, "load_module")
+}
+
 func TestRenameRejectsDisallowedTargetFile(t *testing.T) {
 	confDir, auth := setupConfigSecurityTest(t)
 	router := newConfigMutationRouter()

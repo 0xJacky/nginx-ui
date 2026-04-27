@@ -1,6 +1,7 @@
 package config
 
 import (
+	"bytes"
 	"path/filepath"
 	"strings"
 	"unicode"
@@ -114,6 +115,48 @@ var blockedManagedConfigExtensions = map[string]struct{}{
 	".pl":     {},
 }
 
+var blockedConfigDirectives = map[string]struct{}{
+	"js_access":                         {},
+	"js_body_filter":                    {},
+	"js_content":                        {},
+	"js_fetch_buffer_size":              {},
+	"js_fetch_ciphers":                  {},
+	"js_fetch_keepalive":                {},
+	"js_fetch_keepalive_requests":       {},
+	"js_fetch_keepalive_time":           {},
+	"js_fetch_keepalive_timeout":        {},
+	"js_fetch_max_response_buffer_size": {},
+	"js_fetch_protocols":                {},
+	"js_fetch_proxy":                    {},
+	"js_fetch_timeout":                  {},
+	"js_fetch_trusted_certificate":      {},
+	"js_fetch_verify":                   {},
+	"js_fetch_verify_depth":             {},
+	"js_filter":                         {},
+	"js_header_filter":                  {},
+	"js_import":                         {},
+	"js_include":                        {},
+	"js_load_http_native_module":        {},
+	"js_load_stream_native_module":      {},
+	"js_path":                           {},
+	"js_periodic":                       {},
+	"js_preload_object":                 {},
+	"js_preread":                        {},
+	"js_set":                            {},
+	"js_shared_dict_zone":               {},
+	"js_var":                            {},
+	"perl":                              {},
+	"perl_modules":                      {},
+	"perl_require":                      {},
+	"perl_set":                          {},
+}
+
+var blockedDynamicModules = []string{
+	"ngx_http_js_module.so",
+	"ngx_stream_js_module.so",
+	"ngx_http_perl_module.so",
+}
+
 func ValidateConfigFile(path string, content string) error {
 	if err := ValidateConfigFilename(path); err != nil {
 		return err
@@ -187,13 +230,84 @@ func ValidateConfigContentBytes(content []byte) error {
 		return ErrConfigContentMustBeUTF8Text
 	}
 
-	for len(content) > 0 {
-		r, size := utf8.DecodeRune(content)
+	for remaining := content; len(remaining) > 0; {
+		r, size := utf8.DecodeRune(remaining)
 		if unicode.IsControl(r) && r != '\n' && r != '\r' && r != '\t' {
 			return ErrConfigContentHasControlChars
 		}
-		content = content[size:]
+		remaining = remaining[size:]
+	}
+
+	if err := ValidateConfigDirectives(content); err != nil {
+		return err
 	}
 
 	return nil
+}
+
+func ValidateConfigDirectives(content []byte) error {
+	for _, line := range bytes.Split(content, []byte("\n")) {
+		trimmed := strings.TrimSpace(string(line))
+		if trimmed == "" || strings.HasPrefix(trimmed, "#") {
+			continue
+		}
+
+		directive := firstDirectiveToken(trimmed)
+		if directive == "" {
+			continue
+		}
+
+		if directive == "user" && configuresRootWorkers(trimmed) {
+			return cosy.WrapErrorWithParams(ErrConfigDirectiveNotAllowed, "user root")
+		}
+
+		if directive == "load_module" && loadsRestrictedDynamicModule(trimmed) {
+			return cosy.WrapErrorWithParams(ErrConfigDirectiveNotAllowed, "load_module")
+		}
+
+		if _, blocked := blockedConfigDirectives[directive]; blocked {
+			return cosy.WrapErrorWithParams(ErrConfigDirectiveNotAllowed, directive)
+		}
+	}
+
+	return nil
+}
+
+func firstDirectiveToken(line string) string {
+	end := 0
+	for end < len(line) {
+		ch := line[end]
+		if (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || ch == '_' {
+			end++
+			continue
+		}
+		break
+	}
+
+	if end == 0 {
+		return ""
+	}
+
+	return strings.ToLower(line[:end])
+}
+
+func configuresRootWorkers(line string) bool {
+	fields := strings.Fields(line)
+	if len(fields) < 2 {
+		return false
+	}
+
+	userValue := strings.Trim(fields[1], ";\"'")
+	return strings.EqualFold(userValue, "root")
+}
+
+func loadsRestrictedDynamicModule(line string) bool {
+	lowerLine := strings.ToLower(line)
+	for _, moduleName := range blockedDynamicModules {
+		if strings.Contains(lowerLine, moduleName) {
+			return true
+		}
+	}
+
+	return false
 }
