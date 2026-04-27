@@ -7,7 +7,7 @@ import (
 
 func InitRouter(r *gin.RouterGroup) {
 	r.GET("/backup", middleware.AuthRequired(), CreateBackup)
-	r.POST("/restore", middleware.AuthRequired(), middleware.EncryptedForm(), RestoreBackup)
+	r.POST("/restore", middleware.AuthRequired(), middleware.RequireSecureSession(), middleware.EncryptedForm(), RestoreBackup)
 }
 
 func InitSetupRouter(r *gin.RouterGroup) {
