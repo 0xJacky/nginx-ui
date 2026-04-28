@@ -71,6 +71,11 @@ function removeCustomDomain(index: number) {
 }
 
 function issueCert() {
+  if (!data.value.dns_credential_id) {
+    message.error($gettext('Please select a DNS credential'))
+    return
+  }
+
   if (certType.value === 'custom') {
     const validDomains = customDomains.value.filter(d => d.trim())
     if (validDomains.length === 0) {
