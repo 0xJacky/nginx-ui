@@ -2,13 +2,9 @@ FROM mcr.microsoft.com/devcontainers/base:noble
 
 # Combine installation steps for Nginx and Go to avoid repetitive update/cleanup commands
 RUN apt-get update && \
-  apt-get install -y --no-install-recommends curl gnupg2 ca-certificates lsb-release ubuntu-keyring jq cloc software-properties-common && \
+  apt-get install -y --no-install-recommends curl ca-certificates jq cloc && \
   \
-  # Add PPA repository for nginx-extras
-  add-apt-repository -y ppa:ondrej/nginx && \
-  \
-  # Update package information and install Nginx-extras
-  apt-get update && \
+  # Install Nginx packages from the base system repository
   apt-get install -y --no-install-recommends nginx nginx-extras inotify-tools file && \
   \
   # Automatically retrieve the latest stable Go version and install it,
