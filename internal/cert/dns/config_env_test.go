@@ -4,6 +4,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/cert/config"
 	"github.com/BurntSushi/toml"
 	"log"
+	"sort"
 	"strings"
 	"testing"
 )
@@ -11,6 +12,20 @@ import (
 func CheckIfErr(err error) {
 	if err != nil {
 		log.Fatalln(err)
+	}
+}
+
+func TestGetProvidersListSortedByName(t *testing.T) {
+	providers := GetProvidersList()
+	if !sort.SliceIsSorted(providers, func(i, j int) bool {
+		leftName := strings.ToLower(providers[i].Name)
+		rightName := strings.ToLower(providers[j].Name)
+		if leftName == rightName {
+			return strings.ToLower(providers[i].Code) < strings.ToLower(providers[j].Code)
+		}
+		return leftName < rightName
+	}) {
+		t.Fatal("providers are not sorted by name")
 	}
 }
 
@@ -22,7 +37,7 @@ func TestConfigEnv(t *testing.T) {
 		if !strings.HasSuffix(filename, ".toml") {
 			continue
 		}
-		
+
 		data, err := config.GetConfig(filename)
 		CheckIfErr(err)
 

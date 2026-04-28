@@ -79,6 +79,20 @@ This project is a web-based NGINX management interface built with Go backend and
 - **Backend**: `go generate ./...`, `go build ./...`, run `go test ./... -race -cover`; for release artifacts reuse the README command with `-tags=jsoniter -ldflags "$LD_FLAGS ..."`.
 - **Demo stack**: `docker-compose -f docker-compose-demo.yml up` to bootstrap the sample environment
 
+
+## Release Workflow
+- Start releases from the `dev` branch with a clean working tree.
+- Run `./version.sh` outside the sandbox to update the version, rebuild the frontend, and refresh generated artifacts that require network access.
+- Prepare release notes in a temporary local markdown file such as `release-notes-vX.Y.Z.md`.
+- Follow the existing three-section release note style: `Features`, `Bug Fixes`, and `Contributors`.
+- Write contributor names using GitHub handles when they are known from the merged PR, not raw git author names.
+- Do not commit the release note markdown file. Keep it untracked and use it directly for the tag annotation and GitHub Release body.
+- Commit only the version-preparation artifacts with `chore: prepare vX.Y.Z`.
+- Create an annotated tag from the release note file. If local GPG signing blocks tag creation in the sandbox, create the tag outside the sandbox with `git -c tag.gpgSign=false tag -a vX.Y.Z -F release-notes-vX.Y.Z.md`.
+- Push both `dev` and the release tag with `git push origin dev vX.Y.Z`.
+- Publish the release with `gh release create vX.Y.Z --verify-tag --title vX.Y.Z -F release-notes-vX.Y.Z.md --discussion-category Announcements`.
+- The release flow is expected to create the GitHub Release and the linked Discussion post, then GitHub Actions handles binary, Docker, Homebrew, WinGet, and branch-sync automation.
+
 ## Language Requirements
 - **All code comments, documentation, and communication must be in English**
 - Maintain consistency and accessibility across the codebase

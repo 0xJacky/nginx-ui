@@ -7,6 +7,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/translation"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
+	"github.com/0xJacky/pofile"
 	"github.com/uozi-tech/cosy/logger"
 )
 
@@ -109,8 +110,17 @@ func (n *ExternalMessage) GetContent(lang string) string {
 
 	content, err := dict.Translate(n.Notification.Content, n.Notification.Details)
 	if err != nil {
-		return n.Notification.Content
+		return renderNotificationContent(n.Notification.Content, n.Notification.Details)
 	}
 
 	return content
+}
+
+func renderNotificationContent(content string, details any) string {
+	rendered, err := pofile.Dict{content: content}.Translate(content, details)
+	if err != nil {
+		return content
+	}
+
+	return rendered
 }

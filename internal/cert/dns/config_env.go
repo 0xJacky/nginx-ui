@@ -5,6 +5,7 @@ import (
 	"github.com/BurntSushi/toml"
 	"log"
 	"os"
+	"sort"
 	"strings"
 )
 
@@ -41,7 +42,7 @@ func init() {
 		if !strings.HasSuffix(filename, ".toml") {
 			continue
 		}
-		
+
 		data, err := config.GetConfig(filename)
 		if err != nil {
 			log.Fatalln(err)
@@ -59,6 +60,15 @@ func init() {
 		c.Links = nil
 		configurations = append(configurations, c)
 	}
+
+	sort.SliceStable(configurations, func(i, j int) bool {
+		leftName := strings.ToLower(configurations[i].Name)
+		rightName := strings.ToLower(configurations[j].Name)
+		if leftName == rightName {
+			return strings.ToLower(configurations[i].Code) < strings.ToLower(configurations[j].Code)
+		}
+		return leftName < rightName
+	})
 }
 
 func GetProvidersList() []Config {
