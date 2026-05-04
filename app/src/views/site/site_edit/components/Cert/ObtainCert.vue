@@ -207,7 +207,7 @@ const canNext = computed(() => {
     return true
   }
   else if (data.value.challenge_method === AutoCertChallengeMethod.dns01) {
-    return data.value?.code ?? false
+    return Boolean(data.value.dns_credential_id)
   }
   return false
 })
