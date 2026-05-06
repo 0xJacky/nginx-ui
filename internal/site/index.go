@@ -37,6 +37,19 @@ func GetIndexedSite(path string) *Index {
 	return &Index{}
 }
 
+// GetAllIndexedSites returns a snapshot copy of all indexed sites.
+// This is safe for concurrent access as it holds the read lock while copying.
+func GetAllIndexedSites() map[string]*Index {
+	siteIndexMutex.RLock()
+	defer siteIndexMutex.RUnlock()
+
+	result := make(map[string]*Index, len(IndexedSites))
+	for k, v := range IndexedSites {
+		result[k] = v
+	}
+	return result
+}
+
 func init() {
 	cache.RegisterCallback("site.scanForSite", scanForSite)
 }
