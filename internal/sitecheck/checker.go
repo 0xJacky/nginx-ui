@@ -82,11 +82,14 @@ func (sc *SiteChecker) CollectSites() {
 	// Clear existing sites
 	sc.sites = make(map[string]*SiteInfo)
 
+	// Get a thread-safe snapshot of indexed sites to avoid concurrent map access
+	indexedSites := site.GetAllIndexedSites()
+
 	// Debug: log indexed sites count
-	logger.Debugf("Found %d indexed sites", len(site.IndexedSites))
+	logger.Debugf("Found %d indexed sites", len(indexedSites))
 
 	// Collect URLs from indexed sites, but only from enabled sites
-	for siteName, indexedSite := range site.IndexedSites {
+	for siteName, indexedSite := range indexedSites {
 		// Check site status - only collect from enabled sites
 		siteStatus := site.GetSiteStatus(siteName)
 		if siteStatus != site.StatusEnabled {
