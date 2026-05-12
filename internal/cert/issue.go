@@ -1,7 +1,7 @@
 package cert
 
 import (
-	"log"
+	"log/slog"
 	"os"
 	"runtime"
 	"time"
@@ -13,11 +13,11 @@ import (
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
-	"github.com/go-acme/lego/v4/challenge/dns01"
-	"github.com/go-acme/lego/v4/challenge/http01"
-	"github.com/go-acme/lego/v4/lego"
-	legolog "github.com/go-acme/lego/v4/log"
-	dnsproviders "github.com/go-acme/lego/v4/providers/dns"
+	"github.com/go-acme/lego/v5/challenge/dns01"
+	"github.com/go-acme/lego/v5/challenge/http01"
+	"github.com/go-acme/lego/v5/lego"
+	legolog "github.com/go-acme/lego/v5/log"
+	dnsproviders "github.com/go-acme/lego/v5/providers/dns"
 	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 	cSettings "github.com/uozi-tech/cosy/settings"
@@ -38,20 +38,18 @@ func IssueCert(payload *ConfigPayload, certLogger *Logger) error {
 			logger.Errorf("%s\n%s", err, buf)
 		}
 	}()
+	payload.KeyType = payload.GetKeyType()
 
 	// initial a channelWriter to receive logs
 	cw := NewChannelWriter()
 	defer close(cw.Ch)
 
-	// initial a logger
-	l := log.New(os.Stderr, "", log.LstdFlags)
-	l.SetOutput(cw)
-
 	// Hijack the (logger) of lego
-	legolog.Logger = l
+	oldLogger := legolog.Default()
+	legolog.SetDefault(slog.New(slog.NewTextHandler(cw, nil)))
 	// Restore the original logger, fix #876
 	defer func() {
-		legolog.Logger = log.New(os.Stderr, "", log.LstdFlags)
+		legolog.SetDefault(oldLogger)
 	}()
 
 	certLogger.Info(translation.C("[Nginx UI] Preparing lego configurations"))
@@ -86,8 +84,6 @@ func IssueCert(payload *ConfigPayload, certLogger *Logger) error {
 		}
 		config.HTTPClient.Transport = t
 	}
-
-	config.Certificate.KeyType = payload.GetKeyType()
 
 	certLogger.Info(translation.C("[Nginx UI] Creating client facilitates communication with the CA server"))
 	// A client facilitates communication with the CA server.
@@ -133,15 +129,15 @@ func IssueCert(payload *ConfigPayload, certLogger *Logger) error {
 			if err != nil {
 				return cosy.WrapErrorWithParams(ErrNewDNSChallengeProvider, err.Error())
 			}
-			challengeOptions := make([]dns01.ChallengeOption, 0)
-
 			if len(settings.CertSettings.RecursiveNameservers) > 0 {
-				challengeOptions = append(challengeOptions,
-					dns01.AddRecursiveNameservers(settings.CertSettings.RecursiveNameservers),
-				)
+				oldDNSClient := dns01.DefaultClient()
+				dns01.SetDefaultClient(dns01.NewClient(&dns01.Options{
+					RecursiveNameservers: settings.CertSettings.RecursiveNameservers,
+				}))
+				defer dns01.SetDefaultClient(oldDNSClient)
 			}
 
-			err = client.Challenge.SetDNS01Provider(provider, challengeOptions...)
+			err = client.Challenge.SetDNS01Provider(provider)
 		} else {
 			return ErrEnvironmentConfigurationIsEmpty
 		}

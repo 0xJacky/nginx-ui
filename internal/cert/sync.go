@@ -13,7 +13,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/transport"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
-	"github.com/go-acme/lego/v4/certcrypto"
+	"github.com/go-acme/lego/v5/certcrypto"
 	"github.com/uozi-tech/cosy/logger"
 )
 
@@ -55,7 +55,7 @@ func SyncToRemoteServer(c *model.Cert) (err error) {
 		SSLCertificateKeyPath: c.SSLCertificateKeyPath,
 		SSLCertificate:        string(certBytes),
 		SSLCertificateKey:     string(keyBytes),
-		KeyType:               c.KeyType,
+		KeyType:               c.GetKeyType(),
 	}
 
 	payloadBytes, err := json.Marshal(payload)

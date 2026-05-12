@@ -6,7 +6,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
-	"github.com/go-acme/lego/v4/certcrypto"
+	"github.com/go-acme/lego/v5/certcrypto"
 	"github.com/uozi-tech/cosy"
 )
 
@@ -38,6 +38,7 @@ func AddDomainToAutoCert(c *gin.Context) {
 		AutoCert:        model.AutoCertEnabled,
 		DnsCredentialID: json.DnsCredentialID,
 		ChallengeMethod: json.ChallengeMethod,
+		KeyType:         helper.GetKeyType(json.KeyType),
 		ACMEUserID:      json.ACMEUserID,
 	})
 

@@ -83,7 +83,7 @@ func IsPrivateKeyPath(path string) bool {
 }
 
 // GetKeyType determines the key type from a PEM certificate string.
-// Returns "2048", "3072", "4096", "P256", "P384" or empty string.
+// Returns "2048", "3072", "4096", "8192", "P256", "P384" or empty string.
 func GetKeyType(pemStr string) (string, error) {
 	block, _ := pem.Decode([]byte(pemStr))
 	if block == nil {
@@ -109,6 +109,8 @@ func GetKeyType(pemStr string) (string, error) {
 			return "3072", nil
 		case 4096:
 			return "4096", nil
+		case 8192:
+			return "8192", nil
 		default:
 			return "", nil
 		}
@@ -132,7 +134,7 @@ func GetKeyType(pemStr string) (string, error) {
 }
 
 // GetKeyTypeFromPath determines the key type from a certificate file.
-// Returns "2048", "3072", "4096", "P256", "P384" or empty string.
+// Returns "2048", "3072", "4096", "8192", "P256", "P384" or empty string.
 func GetKeyTypeFromPath(path string) (string, error) {
 	if path == "" {
 		return "", ErrCertPathIsEmpty

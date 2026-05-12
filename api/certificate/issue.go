@@ -8,7 +8,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
-	"github.com/go-acme/lego/v4/certcrypto"
+	"github.com/go-acme/lego/v5/certcrypto"
 	"github.com/gorilla/websocket"
 	"github.com/uozi-tech/cosy/logger"
 	"gorm.io/gen/field"
@@ -53,6 +53,7 @@ func IssueCert(c *gin.Context) {
 		logger.Error(err)
 		return
 	}
+	payload.KeyType = payload.GetKeyType()
 
 	certModel, err := model.FirstOrInit(name, payload.GetKeyType())
 	if err != nil {
@@ -87,8 +88,10 @@ func IssueCert(c *gin.Context) {
 
 	cert := query.Cert
 
-	_, err = cert.Where(cert.Name.Eq(name), cert.Filename.Eq(name), cert.KeyType.Eq(string(payload.KeyType))).
+	_, err = cert.Where(cert.Name.Eq(name), cert.Filename.Eq(name),
+		cert.KeyType.In(helper.GetKeyTypeAliasStrings(payload.KeyType)...)).
 		Assign(field.Attrs(&model.Cert{
+			KeyType:                 payload.KeyType,
 			Domains:                 payload.ServerName,
 			SSLCertificatePath:      payload.GetCertificatePath(),
 			SSLCertificateKeyPath:   payload.GetCertificateKeyPath(),
