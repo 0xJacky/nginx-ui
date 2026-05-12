@@ -1,15 +1,11 @@
 package validation
 
 import (
-	"github.com/go-acme/lego/v4/certcrypto"
+	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/go-acme/lego/v5/certcrypto"
 	val "github.com/go-playground/validator/v10"
 )
 
 func autoCertKeyType(fl val.FieldLevel) bool {
-	switch certcrypto.KeyType(fl.Field().String()) {
-	case "", certcrypto.RSA2048, certcrypto.RSA3072, certcrypto.RSA4096, certcrypto.RSA8192,
-		certcrypto.EC256, certcrypto.EC384:
-		return true
-	}
-	return false
+	return helper.IsValidKeyType(certcrypto.KeyType(fl.Field().String()))
 }

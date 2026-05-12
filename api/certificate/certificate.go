@@ -11,7 +11,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
-	"github.com/go-acme/lego/v4/certcrypto"
+	"github.com/go-acme/lego/v5/certcrypto"
 	"github.com/spf13/cast"
 	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
@@ -88,6 +88,23 @@ func GetCert(c *gin.Context) {
 	c.JSON(http.StatusOK, Transformer(certModel))
 }
 
+func normalizeCertKeyType(ctx *cosy.Ctx[model.Cert]) {
+	payloadKeyType := cast.ToString(ctx.Payload["key_type"])
+	if payloadKeyType != "" {
+		ctx.Model.KeyType = helper.GetKeyType(certcrypto.KeyType(payloadKeyType))
+	}
+
+	sslCertificate := cast.ToString(ctx.Payload["ssl_certificate"])
+	if sslCertificate == "" {
+		return
+	}
+
+	keyType, err := cert.GetKeyType(sslCertificate)
+	if err == nil && keyType != "" {
+		ctx.Model.KeyType = helper.GetKeyType(certcrypto.KeyType(keyType))
+	}
+}
+
 func AddCert(c *gin.Context) {
 	cosy.Core[model.Cert](c).
 		SetValidRules(gin.H{
@@ -106,26 +123,7 @@ func AddCert(c *gin.Context) {
 			"revoke_old":                 "omitempty",
 		}).
 		BeforeExecuteHook(func(ctx *cosy.Ctx[model.Cert]) {
-			sslCertificate := cast.ToString(ctx.Payload["ssl_certificate"])
-			// Detect and set certificate type
-			if sslCertificate != "" {
-				keyType, err := cert.GetKeyType(sslCertificate)
-				if err == nil && keyType != "" {
-					// Set KeyType based on certificate type
-					switch keyType {
-					case "2048":
-						ctx.Model.KeyType = certcrypto.RSA2048
-					case "3072":
-						ctx.Model.KeyType = certcrypto.RSA3072
-					case "4096":
-						ctx.Model.KeyType = certcrypto.RSA4096
-					case "P256":
-						ctx.Model.KeyType = certcrypto.EC256
-					case "P384":
-						ctx.Model.KeyType = certcrypto.EC384
-					}
-				}
-			}
+			normalizeCertKeyType(ctx)
 		}).
 		ExecutedHook(func(ctx *cosy.Ctx[model.Cert]) {
 			sslCertificate := cast.ToString(ctx.Payload["ssl_certificate"])
@@ -172,26 +170,7 @@ func ModifyCert(c *gin.Context) {
 			"revoke_old":                 "omitempty",
 		}).
 		BeforeExecuteHook(func(ctx *cosy.Ctx[model.Cert]) {
-			sslCertificate := cast.ToString(ctx.Payload["ssl_certificate"])
-			// Detect and set certificate type
-			if sslCertificate != "" {
-				keyType, err := cert.GetKeyType(sslCertificate)
-				if err == nil && keyType != "" {
-					// Set KeyType based on certificate type
-					switch keyType {
-					case "2048":
-						ctx.Model.KeyType = certcrypto.RSA2048
-					case "3072":
-						ctx.Model.KeyType = certcrypto.RSA3072
-					case "4096":
-						ctx.Model.KeyType = certcrypto.RSA4096
-					case "P256":
-						ctx.Model.KeyType = certcrypto.EC256
-					case "P384":
-						ctx.Model.KeyType = certcrypto.EC384
-					}
-				}
-			}
+			normalizeCertKeyType(ctx)
 		}).
 		ExecutedHook(func(ctx *cosy.Ctx[model.Cert]) {
 			sslCertificate := cast.ToString(ctx.Payload["ssl_certificate"])
@@ -228,18 +207,23 @@ func SyncCertificate(c *gin.Context) {
 	if !cosy.BindAndValid(c, &json) {
 		return
 	}
+	normalizedKeyType := helper.GetKeyType(json.KeyType)
 
 	certModel := &model.Cert{
 		Name:                  json.Name,
 		SSLCertificatePath:    json.SSLCertificatePath,
 		SSLCertificateKeyPath: json.SSLCertificateKeyPath,
-		KeyType:               json.KeyType,
+		KeyType:               normalizedKeyType,
 		AutoCert:              model.AutoCertSync,
 	}
 
 	db := model.UseDB()
 
-	err := db.Where(certModel).FirstOrCreate(certModel).Error
+	err := db.Where("name = ? AND ssl_certificate_path = ? AND ssl_certificate_key_path = ? AND key_type IN ?",
+		json.Name, json.SSLCertificatePath, json.SSLCertificateKeyPath,
+		helper.GetKeyTypeAliasStrings(normalizedKeyType)).
+		Assign(&model.Cert{KeyType: normalizedKeyType}).
+		FirstOrCreate(certModel).Error
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

@@ -6,8 +6,8 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
-	"github.com/go-acme/lego/v4/certcrypto"
-	"github.com/go-acme/lego/v4/certificate"
+	"github.com/go-acme/lego/v5/certcrypto"
+	"github.com/go-acme/lego/v5/certificate"
 	"gorm.io/gorm/clause"
 )
 
@@ -23,6 +23,7 @@ type CertDomains []string
 
 type CertificateResource struct {
 	*certificate.Resource
+	Domain            string `json:"domain,omitempty"`
 	PrivateKey        []byte `json:"private_key"`
 	Certificate       []byte `json:"certificate"`
 	IssuerCertificate []byte `json:"issuerCertificate"`
@@ -62,13 +63,22 @@ func FirstCert(confName string) (c Cert, err error) {
 }
 
 func FirstOrCreateCert(confName string, keyType certcrypto.KeyType) (c Cert, err error) {
+	normalizedKeyType := helper.GetKeyType(keyType)
+
 	// Filename is used to check whether this site is enabled
-	err = db.FirstOrCreate(&c, &Cert{Name: confName, Filename: confName, KeyType: keyType}).Error
+	err = db.Where("name = ? AND filename = ? AND key_type IN ?", confName, confName,
+		helper.GetKeyTypeAliasStrings(normalizedKeyType)).
+		Assign(&Cert{KeyType: normalizedKeyType}).
+		FirstOrCreate(&c, &Cert{Name: confName, Filename: confName, KeyType: normalizedKeyType}).Error
 	return
 }
 
 func FirstOrInit(confName string, keyType certcrypto.KeyType) (c Cert, err error) {
-	err = db.FirstOrInit(&c, &Cert{Name: confName, Filename: confName, KeyType: keyType}).Error
+	normalizedKeyType := helper.GetKeyType(keyType)
+	err = db.Where("name = ? AND filename = ? AND key_type IN ?", confName, confName,
+		helper.GetKeyTypeAliasStrings(normalizedKeyType)).
+		FirstOrInit(&c, &Cert{Name: confName, Filename: confName, KeyType: normalizedKeyType}).Error
+	c.KeyType = normalizedKeyType
 	return
 }
 
@@ -122,8 +132,17 @@ func (c *Cert) GetKeyType() certcrypto.KeyType {
 }
 
 func (c *CertificateResource) GetResource() certificate.Resource {
+	domains := c.Resource.Domains
+	if len(domains) == 0 && c.Domain != "" {
+		domains = []string{c.Domain}
+	}
+
 	return certificate.Resource{
-		Domain:            c.Resource.Domain,
+		ID:                c.Resource.ID,
+		Domains:           domains,
+		KeyType:           c.Resource.KeyType,
+		PreferredChain:    c.Resource.PreferredChain,
+		Profile:           c.Resource.Profile,
 		CertURL:           c.Resource.CertURL,
 		CertStableURL:     c.Resource.CertStableURL,
 		PrivateKey:        c.PrivateKey,
