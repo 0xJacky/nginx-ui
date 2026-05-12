@@ -250,27 +250,44 @@ func RenameSite(c *gin.Context) {
 	})
 }
 
-func EnableSite(c *gin.Context) {
-	name := helper.UnescapeURL(c.Param("name"))
-
+func disableMaintenanceIfExists(name string) error {
 	// Check if the site is in maintenance mode, if yes, disable maintenance mode first
 	maintenanceConfigPath, err := site.ResolveEnabledPath(name + site.MaintenanceSuffix)
 	if err != nil {
-		cosy.ErrHandler(c, err)
-		return
+		return err
 	}
 
 	if _, err := os.Stat(maintenanceConfigPath); err == nil {
 		// Site is in maintenance mode, disable it first
 		err := site.DisableMaintenance(name)
 		if err != nil {
-			cosy.ErrHandler(c, err)
-			return
+			return err
 		}
 	}
 
-	// Then enable the site normally
-	err = site.Enable(name)
+	return nil
+}
+
+func enableSiteByName(name string) error {
+	if err := disableMaintenanceIfExists(name); err != nil {
+		return err
+	}
+
+	return site.Enable(name)
+}
+
+func disableSiteByName(name string) error {
+	if err := disableMaintenanceIfExists(name); err != nil {
+		return err
+	}
+
+	return site.Disable(name)
+}
+
+func EnableSite(c *gin.Context) {
+	name := helper.UnescapeURL(c.Param("name"))
+
+	err := enableSiteByName(name)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
@@ -284,27 +301,50 @@ func EnableSite(c *gin.Context) {
 func DisableSite(c *gin.Context) {
 	name := helper.UnescapeURL(c.Param("name"))
 
-	// Check if the site is in maintenance mode, if yes, disable maintenance mode first
-	maintenanceConfigPath, err := site.ResolveEnabledPath(name + site.MaintenanceSuffix)
+	err := disableSiteByName(name)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
 	}
 
-	if _, err := os.Stat(maintenanceConfigPath); err == nil {
-		// Site is in maintenance mode, disable it first
-		err := site.DisableMaintenance(name)
-		if err != nil {
+	c.JSON(http.StatusOK, gin.H{
+		"message": "ok",
+	})
+}
+
+type batchSiteNamesRequest struct {
+	Names []string `json:"names" binding:"required,min=1"`
+}
+
+func BatchEnableSites(c *gin.Context) {
+	var json batchSiteNamesRequest
+	if !cosy.BindAndValid(c, &json) {
+		return
+	}
+
+	for _, name := range json.Names {
+		if err := enableSiteByName(name); err != nil {
 			cosy.ErrHandler(c, err)
 			return
 		}
 	}
 
-	// Then disable the site normally
-	err = site.Disable(name)
-	if err != nil {
-		cosy.ErrHandler(c, err)
+	c.JSON(http.StatusOK, gin.H{
+		"message": "ok",
+	})
+}
+
+func BatchDisableSites(c *gin.Context) {
+	var json batchSiteNamesRequest
+	if !cosy.BindAndValid(c, &json) {
 		return
+	}
+
+	for _, name := range json.Names {
+		if err := disableSiteByName(name); err != nil {
+			cosy.ErrHandler(c, err)
+			return
+		}
 	}
 
 	c.JSON(http.StatusOK, gin.H{

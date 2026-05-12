@@ -27,6 +27,10 @@ func InitRouter(r *gin.RouterGroup) {
 
 	o := r.Group("", middleware.RequireSecureSession())
 	{
+		// batch enable sites
+		o.POST("sites/batch/enable", BatchEnableSites)
+		// batch disable sites
+		o.POST("sites/batch/disable", BatchDisableSites)
 		// rename site
 		o.POST("sites/:name/rename", RenameSite)
 		// enable site

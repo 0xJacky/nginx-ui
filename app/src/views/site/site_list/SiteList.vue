@@ -1,7 +1,9 @@
 <script setup lang="tsx">
+import type { Site } from '@/api/site'
 import { StdCurd } from '@uozi-admin/curd'
-import { message } from 'ant-design-vue'
+import { message, Modal } from 'ant-design-vue'
 import site from '@/api/site'
+import FooterToolBar from '@/components/FooterToolbar'
 import InspectConfig from '@/components/InspectConfig'
 import NamespaceTabs from '@/components/NamespaceTabs'
 import { ConfigStatus } from '@/constants'
@@ -13,6 +15,11 @@ const router = useRouter()
 
 const curd = ref()
 const inspectConfig = ref()
+const selectedSiteNames = ref<string[]>([])
+const selectedSites = ref<Site[]>([])
+const loadingEnable = ref(false)
+const loadingDisable = ref(false)
+const [modal, ContextHolder] = Modal.useModal()
 
 const namespaceId = ref(Number.parseInt(route.query.namespace_id as string) || 0)
 
@@ -36,12 +43,82 @@ function handle_click_duplicate(name: string) {
   show_duplicator.value = true
   target.value = name
 }
+
+function clearSelectedSites() {
+  selectedSiteNames.value = []
+  selectedSites.value = []
+}
+
+function refreshAfterBatchStatusChanged() {
+  clearSelectedSites()
+  curd.value.refresh()
+  inspectConfig.value?.test()
+}
+
+type BatchStatusAction = 'enable' | 'disable'
+
+function executeBatchStatusAction(action: BatchStatusAction, names: string[]) {
+  const isEnable = action === 'enable'
+  const loading = isEnable ? loadingEnable : loadingDisable
+  const request = isEnable ? site.batchEnable : site.batchDisable
+  const successMessage = isEnable ? $gettext('Sites enabled successfully') : $gettext('Sites disabled successfully')
+
+  loading.value = true
+  return request(names).then(() => {
+    message.success(successMessage)
+    refreshAfterBatchStatusChanged()
+  }).finally(() => {
+    loading.value = false
+  })
+}
+
+function confirmBatchStatusAction(action: BatchStatusAction) {
+  if (selectedSiteNames.value.length === 0) {
+    message.warning(action === 'enable'
+      ? $gettext('Please select at least one site to enable')
+      : $gettext('Please select at least one site to disable'))
+    return
+  }
+
+  const names = [...selectedSiteNames.value]
+  const isEnable = action === 'enable'
+
+  modal.confirm({
+    title: isEnable
+      ? $gettext('Do you want to enable selected sites?')
+      : $gettext('Do you want to disable selected sites?'),
+    content: () => h('div', [
+      h('p', isEnable
+        ? $gettext('The following sites will be enabled:')
+        : $gettext('The following sites will be disabled:')),
+      h('ul', { class: 'max-h-60 overflow-auto pl-5' }, names.map(name => h('li', { key: name }, name))),
+    ]),
+    mask: false,
+    centered: true,
+    okText: isEnable ? $gettext('Enable') : $gettext('Disable'),
+    okButtonProps: {
+      danger: !isEnable,
+    },
+    cancelText: $gettext('Cancel'),
+    onOk: () => executeBatchStatusAction(action, names),
+  })
+}
+
+function batchEnableSites() {
+  confirmBatchStatusAction('enable')
+}
+
+function batchDisableSites() {
+  confirmBatchStatusAction('disable')
+}
 </script>
 
 <template>
   <div>
     <StdCurd
       ref="curd"
+      v-model:selected-row-keys="selectedSiteNames"
+      v-model:selected-rows="selectedSites"
       :title="$gettext('Manage Sites')"
       :api="site"
       :columns="columns"
@@ -107,6 +184,31 @@ function handle_click_duplicate(name: string) {
       :name="target"
       @duplicated="() => curd.refresh()"
     />
+    <ContextHolder />
+
+    <FooterToolBar v-if="selectedSiteNames.length > 0">
+      <template #extra>
+        {{ $gettext('%{count} sites selected', { count: String(selectedSiteNames.length) }) }}
+      </template>
+
+      <ASpace>
+        <AButton
+          :loading="loadingEnable"
+          type="primary"
+          @click="batchEnableSites"
+        >
+          {{ $gettext('Enable') }}
+        </AButton>
+
+        <AButton
+          :loading="loadingDisable"
+          danger
+          @click="batchDisableSites"
+        >
+          {{ $gettext('Disable') }}
+        </AButton>
+      </ASpace>
+    </FooterToolBar>
   </div>
 </template>
 

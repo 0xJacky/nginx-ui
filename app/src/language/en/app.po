@@ -104,6 +104,10 @@ msgid ""
 "Actual performance may vary based on your hardware configuration."
 msgstr ""
 
+#: src/views/site/site_list/SiteList.vue:191
+msgid "%{count} sites selected"
+msgstr ""
+
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:811
 msgid "%{start}-%{end} of %{total} items"
 msgstr ""
@@ -202,7 +206,7 @@ msgstr ""
 #: src/components/NgxConfigEditor/NgxUpstream.vue:97 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:45
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:119
-#: src/views/site/site_list/SiteList.vue:73 src/views/stream/StreamList.vue:81
+#: src/views/site/site_list/SiteList.vue:150 src/views/stream/StreamList.vue:81
 msgid "Add"
 msgstr ""
 
@@ -221,7 +225,7 @@ msgstr ""
 msgid "Add Directive Below"
 msgstr ""
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:154
+#: src/views/certificate/components/DNSIssueCertificate.vue:159
 msgid "Add Domain"
 msgstr ""
 
@@ -308,7 +312,7 @@ msgstr ""
 msgid "All Recovery Codes Have Been Used"
 msgstr ""
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:159
+#: src/views/certificate/components/DNSIssueCertificate.vue:164
 msgid ""
 "All selected subdomains must belong to the same DNS Provider, otherwise the "
 "certificate application will fail."
@@ -402,7 +406,7 @@ msgstr ""
 msgid "Are you sure you want to delete permanently?"
 msgstr ""
 
-#: src/language/curd.ts:25 src/views/site/site_list/SiteList.vue:91
+#: src/language/curd.ts:25 src/views/site/site_list/SiteList.vue:168
 #: src/views/stream/StreamList.vue:101
 msgid "Are you sure you want to delete?"
 msgstr ""
@@ -789,6 +793,7 @@ msgstr ""
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:53
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:184
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:21
+#: src/views/site/site_list/SiteList.vue:102
 #: src/views/stream/components/StreamStatusSelect.vue:62
 msgid "Cancel"
 msgstr ""
@@ -934,7 +939,7 @@ msgid_plural "Certificates Status"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:107
+#: src/views/certificate/components/DNSIssueCertificate.vue:112
 msgid "Certificate Type"
 msgstr ""
 
@@ -1038,9 +1043,9 @@ msgid ""
 "Check if the nginx access log path exists. By default, this path is obtained "
 "from 'nginx -V'. If it cannot be obtained or the obtained path does not "
 "point to a valid, existing file, an error will be reported. In this case, "
-"you need to modify the configuration file to specify the access log "
-"path.Refer to the docs for more details: https://nginxui.com/zh_CN/guide/"
-"config-nginx.html#accesslogpath"
+"you need to modify the configuration file to specify the access log path."
+"Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-"
+"nginx.html#accesslogpath"
 msgstr ""
 
 #: src/language/generate.ts:11
@@ -1492,7 +1497,7 @@ msgstr ""
 msgid "Creating client facilitates communication with the CA server"
 msgstr ""
 
-#: src/components/AutoCertForm/DNSChallenge.vue:138
+#: src/components/AutoCertForm/DNSChallenge.vue:130
 #: src/views/dns/DDNSManager.vue:103 src/views/dns/DNSDomainList.vue:115
 msgid "Credential"
 msgstr ""
@@ -1551,11 +1556,11 @@ msgstr ""
 msgid "Custom Directory"
 msgstr ""
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:129
+#: src/views/certificate/components/DNSIssueCertificate.vue:134
 msgid "Custom Domains"
 msgstr ""
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:113
+#: src/views/certificate/components/DNSIssueCertificate.vue:118
 msgid "Custom Domains Certificate"
 msgstr ""
 
@@ -1653,7 +1658,7 @@ msgstr ""
 #: src/views/config/components/Delete.vue:97
 #: src/views/config/ConfigList.vue:199
 #: src/views/dns/components/DNSRecordTable.vue:107
-#: src/views/dns/DDNSManager.vue:290 src/views/site/site_list/SiteList.vue:100
+#: src/views/dns/DDNSManager.vue:290 src/views/site/site_list/SiteList.vue:177
 #: src/views/stream/StreamList.vue:110
 msgid "Delete"
 msgstr ""
@@ -1712,7 +1717,7 @@ msgstr ""
 msgid "Delete site %{name} from %{node} successfully"
 msgstr ""
 
-#: src/views/site/site_list/SiteList.vue:26
+#: src/views/site/site_list/SiteList.vue:33
 msgid "Delete site: %{site_name}"
 msgstr ""
 
@@ -1846,6 +1851,11 @@ msgstr ""
 msgid "disable"
 msgstr ""
 
+#: src/views/site/site_list/SiteList.vue:208
+#: src/views/site/site_list/SiteList.vue:98
+msgid "Disable"
+msgstr ""
+
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:136
 msgid "Disable auto-renewal failed for %{name}"
 msgstr ""
@@ -1949,7 +1959,6 @@ msgstr ""
 msgid "DNS Only"
 msgstr ""
 
-#: src/components/AutoCertForm/DNSChallenge.vue:128
 #: src/views/dns/components/DNSChallenge.vue:63
 msgid "DNS Provider"
 msgstr ""
@@ -2025,6 +2034,14 @@ msgstr ""
 msgid "Do you want to disable auto-cert renewal?"
 msgstr ""
 
+#: src/views/site/site_list/SiteList.vue:89
+msgid "Do you want to disable selected sites?"
+msgstr ""
+
+#: src/views/site/site_list/SiteList.vue:88
+msgid "Do you want to enable selected sites?"
+msgstr ""
+
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:46
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:14
 msgid "Do you want to enable TLS?"
@@ -2061,7 +2078,7 @@ msgstr[1] ""
 msgid "Document Count"
 msgstr ""
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:119
+#: src/views/certificate/components/DNSIssueCertificate.vue:124
 #: src/views/dns/DDNSManager.vue:98 src/views/dns/DNSDomainList.vue:104
 msgid "Domain"
 msgstr ""
@@ -2116,7 +2133,7 @@ msgstr ""
 #: src/components/LLM/LLMSessionTabs.vue:287
 #: src/components/LLM/LLMSessionTabs.vue:378
 #: src/views/site/site_list/SiteDuplicate.vue:72
-#: src/views/site/site_list/SiteList.vue:86
+#: src/views/site/site_list/SiteList.vue:163
 #: src/views/stream/components/StreamDuplicate.vue:64
 #: src/views/stream/StreamList.vue:96
 msgid "Duplicate"
@@ -2190,6 +2207,11 @@ msgstr ""
 #: src/views/site/components/SiteStatusSelect.vue:114
 #: src/views/stream/components/StreamStatusSelect.vue:55
 msgid "enable"
+msgstr ""
+
+#: src/views/site/site_list/SiteList.vue:200
+#: src/views/site/site_list/SiteList.vue:98
+msgid "Enable"
 msgstr ""
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:46
@@ -2362,7 +2384,7 @@ msgstr ""
 msgid "End Date"
 msgstr ""
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:138
+#: src/views/certificate/components/DNSIssueCertificate.vue:143
 msgid "Enter domain name"
 msgstr ""
 
@@ -2380,7 +2402,7 @@ msgid ""
 "the config directory hidden file to unlock setup."
 msgstr ""
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:123
+#: src/views/certificate/components/DNSIssueCertificate.vue:128
 msgid "Enter your domain"
 msgstr ""
 
@@ -3702,7 +3724,7 @@ msgstr ""
 msgid "Issue certificate"
 msgstr ""
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:98
+#: src/views/certificate/components/DNSIssueCertificate.vue:103
 msgid "Issue Certificate"
 msgstr ""
 
@@ -4096,7 +4118,7 @@ msgstr ""
 msgid "Manage Records"
 msgstr ""
 
-#: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:45
+#: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:122
 msgid "Manage Sites"
 msgstr ""
 
@@ -4415,7 +4437,7 @@ msgstr ""
 msgid "New version released"
 msgstr ""
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:184
+#: src/views/certificate/components/DNSIssueCertificate.vue:189
 #: src/views/install/components/InstallView.vue:212
 #: src/views/site/site_add/SiteAdd.vue:237
 #: src/views/site/site_add/SiteAdd.vue:244
@@ -4648,7 +4670,7 @@ msgstr ""
 #: src/views/notification/Notification.vue:38
 #: src/views/preference/tabs/AuthSettings.vue:128
 #: src/views/preference/tabs/CertSettings.vue:73
-#: src/views/site/site_list/SiteList.vue:89 src/views/stream/StreamList.vue:99
+#: src/views/site/site_list/SiteList.vue:166 src/views/stream/StreamList.vue:99
 msgid "No"
 msgstr ""
 
@@ -4900,7 +4922,7 @@ msgstr ""
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:52
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:183
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:20
-#: src/views/site/site_list/SiteList.vue:90
+#: src/views/site/site_list/SiteList.vue:167
 #: src/views/stream/components/StreamStatusSelect.vue:61
 #: src/views/stream/StreamList.vue:100
 msgid "OK"
@@ -5196,7 +5218,7 @@ msgstr ""
 msgid "Please enter a valid port range"
 msgstr ""
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:77
+#: src/views/certificate/components/DNSIssueCertificate.vue:82
 msgid "Please enter at least one domain"
 msgstr ""
 
@@ -5338,6 +5360,14 @@ msgstr ""
 
 #: src/views/node/Node.vue:179
 msgid "Please select at least one node to upgrade"
+msgstr ""
+
+#: src/views/site/site_list/SiteList.vue:79
+msgid "Please select at least one site to disable"
+msgstr ""
+
+#: src/views/site/site_list/SiteList.vue:78
+msgid "Please select at least one site to enable"
 msgstr ""
 
 #: src/views/certificate/components/RemoveCert.vue:37
@@ -5727,7 +5757,7 @@ msgstr ""
 msgid "Remote"
 msgstr ""
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:147
+#: src/views/certificate/components/DNSIssueCertificate.vue:152
 #: src/views/preference/tabs/AuthSettings.vue:133
 msgid "Remove"
 msgstr ""
@@ -5829,7 +5859,7 @@ msgstr ""
 msgid "Renew Certificate Success"
 msgstr ""
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:87
+#: src/views/certificate/components/DNSIssueCertificate.vue:92
 #: src/views/certificate/components/RenewCert.vue:33
 msgid "Renew successfully"
 msgstr ""
@@ -6290,6 +6320,7 @@ msgstr ""
 msgid "Select all"
 msgstr ""
 
+#: src/components/AutoCertForm/DNSChallenge.vue:138
 #: src/language/constants.ts:68
 msgid "Select Credential"
 msgstr ""
@@ -6419,14 +6450,14 @@ msgstr ""
 
 #: src/constants/errors/nginx_log.ts:8
 msgid ""
-"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://"
-"nginxui.com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://nginxui."
+"com/guide/config-nginx.html for more information"
 msgstr ""
 
 #: src/constants/errors/nginx_log.ts:7
 msgid ""
-"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://"
-"nginxui.com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://nginxui."
+"com/guide/config-nginx.html for more information"
 msgstr ""
 
 #: src/views/install/components/InstallView.vue:147
@@ -6492,6 +6523,14 @@ msgstr ""
 
 #: src/language/generate.ts:35
 msgid "Sites directory exists"
+msgstr ""
+
+#: src/views/site/site_list/SiteList.vue:64
+msgid "Sites disabled successfully"
+msgstr ""
+
+#: src/views/site/site_list/SiteList.vue:64
+msgid "Sites enabled successfully"
 msgstr ""
 
 #: src/routes/modules/sites.ts:19
@@ -6934,6 +6973,14 @@ msgid ""
 "since it was last issued."
 msgstr ""
 
+#: src/views/site/site_list/SiteList.vue:93
+msgid "The following sites will be disabled:"
+msgstr ""
+
+#: src/views/site/site_list/SiteList.vue:92
+msgid "The following sites will be enabled:"
+msgstr ""
+
 #: src/components/GeoLiteDownload/GeoLiteDownload.vue:158
 msgid ""
 "The GeoLite2 database is required for offline geographic IP analysis. Please "
@@ -7097,8 +7144,8 @@ msgstr ""
 
 #: src/language/curd.ts:46
 msgid ""
-"This field should only contain letters, unicode characters, numbers, and "
-"-_./:"
+"This field should only contain letters, unicode characters, numbers, and -"
+"_./:"
 msgstr ""
 
 #: src/components/Notification/notifications.ts:102
@@ -7442,6 +7489,10 @@ msgstr ""
 msgid "Unknown"
 msgstr ""
 
+#: src/components/AutoCertForm/DNSChallenge.vue:24
+msgid "Unknown Provider"
+msgstr ""
+
 #: src/constants/errors/backup.ts:67
 msgid "Unsupported backup type: {0}"
 msgstr ""
@@ -7770,7 +7821,7 @@ msgstr ""
 msgid "Whether to use a temporary path when writing temporary files"
 msgstr ""
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:110
+#: src/views/certificate/components/DNSIssueCertificate.vue:115
 msgid "Wildcard Certificate"
 msgstr ""
 
