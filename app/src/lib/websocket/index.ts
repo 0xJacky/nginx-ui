@@ -4,6 +4,14 @@ import { storeToRefs } from 'pinia'
 import { urlJoin } from '@/lib/helper'
 import { useSettingsStore, useUserStore } from '@/pinia'
 
+function normalizeWebSocketEndpoint(url: string): string {
+  if (/^[a-z][a-z\d+\-.]*:\/\//i.test(url) || url.startsWith('//')) {
+    return url
+  }
+
+  return url.replace(/^\/+/, '')
+}
+
 /**
  * Build WebSocket URL based on environment
  */
@@ -23,7 +31,7 @@ export function buildWebSocketUrlWithQuery(
     ? `${protocol}//${window.location.host}/`
     : `${protocol}//${window.location.host}${urlJoin(window.location.pathname, '/')}`
 
-  const wsUrl = new URL(url, basePath)
+  const wsUrl = new URL(normalizeWebSocketEndpoint(url), basePath)
 
   // Use shortToken if available (without base64 encoding), otherwise use regular token (URL-safe base64).
   // URL-safe base64 avoids `+` chars that get decoded as spaces in query strings.
