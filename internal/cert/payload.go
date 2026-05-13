@@ -11,7 +11,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/translation"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
-	"github.com/go-acme/lego/v4/certcrypto"
+	"github.com/go-acme/lego/v5/certcrypto"
 	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 )

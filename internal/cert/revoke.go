@@ -1,15 +1,15 @@
 package cert
 
 import (
-	"log"
-	"os"
+	"context"
+	"log/slog"
 	"runtime"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/translation"
 	"github.com/0xJacky/Nginx-UI/internal/transport"
-	"github.com/go-acme/lego/v4/lego"
-	legolog "github.com/go-acme/lego/v4/log"
+	"github.com/go-acme/lego/v5/lego"
+	legolog "github.com/go-acme/lego/v5/log"
 	"github.com/pkg/errors"
 	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
@@ -33,16 +33,12 @@ func RevokeCert(payload *ConfigPayload, certLogger *Logger, logChan chan string,
 	defer close(errChan)
 	defer close(cw.Ch)
 
-	// Initialize a logger
-	l := log.New(os.Stderr, "", log.LstdFlags)
-	l.SetOutput(cw)
-
 	// Hijack the logger of lego
-	oldLogger := legolog.Logger
-	legolog.Logger = l
+	oldLogger := legolog.Default()
+	legolog.SetDefault(slog.New(slog.NewTextHandler(cw, nil)))
 	// Restore the original logger
 	defer func() {
-		legolog.Logger = oldLogger
+		legolog.SetDefault(oldLogger)
 	}()
 
 	// Start a goroutine to fetch and process logs from channel
@@ -74,8 +70,6 @@ func RevokeCert(payload *ConfigPayload, certLogger *Logger, logChan chan string,
 		config.HTTPClient.Transport = t
 	}
 
-	config.Certificate.KeyType = payload.GetKeyType()
-
 	// Create the client
 	client, err := lego.NewClient(config)
 	if err != nil {
@@ -104,7 +98,7 @@ func RevokeCert(payload *ConfigPayload, certLogger *Logger, logChan chan string,
 // revoke implements the internal certificate revocation logic
 func revoke(payload *ConfigPayload, client *lego.Client, l *Logger) error {
 	l.Info(translation.C("[Nginx UI] Revoking certificate"))
-	err := client.Certificate.Revoke(payload.Resource.Certificate)
+	err := client.Certificate.Revoke(context.Background(), payload.Resource.Certificate)
 	if err != nil {
 		return cosy.WrapErrorWithParams(ErrRevokeCert, err.Error())
 	}

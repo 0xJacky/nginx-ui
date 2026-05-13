@@ -1,10 +1,12 @@
 package cert
 
 import (
+	"context"
+
 	"github.com/0xJacky/Nginx-UI/internal/translation"
 	"github.com/0xJacky/Nginx-UI/model"
-	"github.com/go-acme/lego/v4/certificate"
-	"github.com/go-acme/lego/v4/lego"
+	"github.com/go-acme/lego/v5/certificate"
+	"github.com/go-acme/lego/v5/lego"
 	"github.com/uozi-tech/cosy"
 )
 
@@ -12,11 +14,12 @@ func obtain(payload *ConfigPayload, client *lego.Client, l *Logger) error {
 	request := certificate.ObtainRequest{
 		Domains:    payload.ServerName,
 		Bundle:     true,
+		KeyType:    payload.GetKeyType(),
 		MustStaple: payload.MustStaple,
 	}
 
 	l.Info(translation.C("[Nginx UI] Obtaining certificate"))
-	certificates, err := client.Certificate.Obtain(request)
+	certificates, err := client.Certificate.Obtain(context.Background(), request)
 	if err != nil {
 		return cosy.WrapErrorWithParams(ErrObtainCert, err.Error())
 	}

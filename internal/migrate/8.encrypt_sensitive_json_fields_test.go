@@ -11,8 +11,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/crypto"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/settings"
-	"github.com/go-acme/lego/v4/certificate"
-	"github.com/go-acme/lego/v4/registration"
+	"github.com/go-acme/lego/v5/certificate"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"gorm.io/driver/sqlite"
@@ -33,15 +32,15 @@ func (legacyDnsCredential) TableName() string {
 
 type legacyAcmeUser struct {
 	model.Model
-	Name              string                `json:"name"`
-	Email             string                `json:"email"`
-	CADir             string                `json:"ca_dir"`
-	Registration      registration.Resource `json:"registration" gorm:"serializer:json"`
-	Key               model.PrivateKey      `json:"-" gorm:"serializer:json"`
-	Proxy             string                `json:"proxy"`
-	RegisterOnStartup bool                  `json:"register_on_startup"`
-	EABKeyID          string                `json:"eab_key_id"`
-	EABHMACKey        string                `json:"eab_hmac_key"`
+	Name              string                 `json:"name"`
+	Email             string                 `json:"email"`
+	CADir             string                 `json:"ca_dir"`
+	Registration      model.AcmeRegistration `json:"registration" gorm:"serializer:json"`
+	Key               model.PrivateKey       `json:"-" gorm:"serializer:json"`
+	Proxy             string                 `json:"proxy"`
+	RegisterOnStartup bool                   `json:"register_on_startup"`
+	EABKeyID          string                 `json:"eab_key_id"`
+	EABHMACKey        string                 `json:"eab_hmac_key"`
 }
 
 func (legacyAcmeUser) TableName() string {
@@ -114,10 +113,10 @@ func TestEncryptSensitiveJSONFieldsMigratesLegacyPlaintextData(t *testing.T) {
 		KeyType:  "2048",
 		Resource: &model.CertificateResource{
 			Resource: &certificate.Resource{
-				Domain:        "example.com",
 				CertURL:       "https://acme.example/cert",
 				CertStableURL: "https://acme.example/cert/stable",
 			},
+			Domain:            "example.com",
 			PrivateKey:        []byte("legacy-private-key"),
 			Certificate:       []byte("legacy-certificate"),
 			IssuerCertificate: []byte("legacy-issuer"),
@@ -197,10 +196,10 @@ func TestSensitiveModelsPersistEncryptedJSON(t *testing.T) {
 		KeyType:  "2048",
 		Resource: &model.CertificateResource{
 			Resource: &certificate.Resource{
-				Domain:        "example.com",
 				CertURL:       "https://acme.example/cert",
 				CertStableURL: "https://acme.example/cert/stable",
 			},
+			Domain:            "example.com",
 			PrivateKey:        []byte("new-private-key"),
 			Certificate:       []byte("new-certificate"),
 			IssuerCertificate: []byte("new-issuer"),

@@ -1,10 +1,12 @@
 package cert
 
 import (
+	"context"
+
 	"github.com/0xJacky/Nginx-UI/internal/translation"
 	"github.com/0xJacky/Nginx-UI/model"
-	"github.com/go-acme/lego/v4/certificate"
-	"github.com/go-acme/lego/v4/lego"
+	"github.com/go-acme/lego/v5/certificate"
+	"github.com/go-acme/lego/v5/lego"
 	"github.com/uozi-tech/cosy"
 )
 
@@ -18,7 +20,7 @@ func renew(payload *ConfigPayload, client *lego.Client, l *Logger) error {
 		MustStaple: payload.MustStaple,
 	}
 
-	cert, err := client.Certificate.RenewWithOptions(payload.Resource.GetResource(), options)
+	cert, err := client.Certificate.Renew(context.Background(), payload.Resource.GetResource(), options)
 	if err != nil {
 		return cosy.WrapErrorWithParams(ErrRenewCert, err.Error())
 	}

@@ -1,6 +1,6 @@
 package settings
 
-import "github.com/go-acme/lego/v4/lego"
+import "github.com/go-acme/lego/v5/lego"
 
 type Cert struct {
 	Email                string   `json:"email" protected:"true"`
@@ -22,7 +22,7 @@ func (s *Cert) GetCADir() string {
 	if s.CADir != "" {
 		return s.CADir
 	}
-	return lego.LEDirectoryProduction
+	return lego.DirectoryURLLetsEncrypt
 }
 
 func (s *Cert) GetCertRenewalInterval() int {
