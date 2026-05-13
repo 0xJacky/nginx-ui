@@ -5,6 +5,7 @@ import { datetimeRender, StdCurd } from '@uozi-admin/curd'
 import { Tag } from 'ant-design-vue'
 
 import acme_user from '@/api/acme_user'
+import { CA_SERVER_OPTIONS } from '@/constants/acme'
 
 const { message } = App.useApp()
 
@@ -44,17 +45,7 @@ const columns: ComputedRef<StdTableColumn[]> = computed(() => [
       autoComplete: {
         placeholder: $gettext('Select or enter a CA directory URL'),
         allowClear: true,
-        options: [
-          {
-            value: 'https://acme-v02.api.letsencrypt.org/directory',
-          },
-          {
-            value: 'https://acme-staging-v02.api.letsencrypt.org/directory',
-          },
-          {
-            value: 'https://acme.zerossl.com/v2/DV90',
-          },
-        ],
+        options: CA_SERVER_OPTIONS,
       },
       hint: $gettext('Select a predefined CA directory or enter a custom one. Leave blank to use the default CA directory.'),
     },
