@@ -17,9 +17,16 @@ create_symlink() {
     local target="$dest_dir/$weight-$module_name"
     local source="$src_dir/$module_name"
 
+    if [ ! -f "$source" ]; then
+        echo "Skipped missing module config: $source"
+        return
+    fi
+
     ln -sf "$source" "$target"
     echo "Created symlink: $target -> $source"
 }
+
+mkdir -p "$dest_dir"
 
 modules=(
     "mod-http-ndk.conf 10"
@@ -45,12 +52,16 @@ modules=(
     "mod-stream-geoip2.conf 70"
 )
 
-for module in "${modules[@]}"; do
-    module_name=$(echo $module | awk '{print $1}')
-    weight=$(echo $module | awk '{print $2}')
+if [ -d "$src_dir" ]; then
+    for module in "${modules[@]}"; do
+        module_name=$(echo $module | awk '{print $1}')
+        weight=$(echo $module | awk '{print $2}')
 
-    create_symlink "$module_name" "$weight"
-done
+        create_symlink "$module_name" "$weight"
+    done
+else
+    echo "Skipped module symlink creation because $src_dir does not exist"
+fi
 
 # start nginx
 nginx
