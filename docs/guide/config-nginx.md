@@ -128,6 +128,31 @@ This option is used to set the port for the Nginx stub status module. The stub s
 Make sure the port you set is not being used by other services.
 :::
 
+## Maintenance Page
+
+### MaintenanceTemplate
+- Type: `string`
+- Environment Variable: `NGINX_UI_NGINX_MAINTENANCE_TEMPLATE`
+- Example: `maintenance.html`
+
+This option is used to select a custom HTML template for the Nginx UI maintenance page. You can set it through the environment variable or in Settings > Nginx.
+
+Only the file name is used. Nginx UI loads the custom template from `/etc/nginx/maintenance/<filename>`, and path components in the configured value are ignored.
+
+If this option is empty, the file cannot be read, or the file is empty, Nginx UI falls back to the built-in maintenance page template.
+
+For Docker deployments, mount a host directory to `/etc/nginx/maintenance` and put your template file there:
+
+```yaml
+services:
+  nginx-ui:
+    image: uozi/nginx-ui:latest
+    volumes:
+      - ./maintenance:/etc/nginx/maintenance
+    environment:
+      - NGINX_UI_NGINX_MAINTENANCE_TEMPLATE=maintenance.html
+```
+
 ## Container Control
 
 In this section, we will introduce configuration options in Nginx UI for controlling Nginx services running in another Docker container.

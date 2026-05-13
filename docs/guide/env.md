@@ -98,6 +98,7 @@ Applicable for version v2.0.0-beta.37 and above.
 | LogDirWhiteList       | NGINX_UI_NGINX_LOG_DIR_WHITE_LIST |
 | StubStatusPort        | NGINX_UI_NGINX_STUB_STATUS_PORT   |
 | ContainerName         | NGINX_UI_NGINX_CONTAINER_NAME     |
+| MaintenanceTemplate   | NGINX_UI_NGINX_MAINTENANCE_TEMPLATE |
 
 ## Nginx Log
 | Configuration Setting  | Environment Variable                   |

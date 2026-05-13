@@ -122,6 +122,31 @@ start-stop-daemon --start --quiet --pidfile $PID --exec $SBIN_PATH
 請確保您設定的連接埠未被其他服務佔用。
 :::
 
+## 維護頁面
+
+### MaintenanceTemplate
+- 類型：`string`
+- 環境變數：`NGINX_UI_NGINX_MAINTENANCE_TEMPLATE`
+- 範例：`maintenance.html`
+
+此選項用於為 Nginx UI 維護頁面選擇自訂 HTML 模板。您可以透過環境變數設定，也可以在 Settings > Nginx 中設定。
+
+此設定只使用檔案名稱。Nginx UI 會從 `/etc/nginx/maintenance/<filename>` 載入自訂模板，設定值中的路徑部分會被忽略。
+
+如果此選項為空、檔案不可讀或檔案內容為空，Nginx UI 將回退到內建維護頁面模板。
+
+對於 Docker 部署，請將主機目錄掛載到 `/etc/nginx/maintenance`，並將模板檔案放在該目錄中：
+
+```yaml
+services:
+  nginx-ui:
+    image: uozi/nginx-ui:latest
+    volumes:
+      - ./maintenance:/etc/nginx/maintenance
+    environment:
+      - NGINX_UI_NGINX_MAINTENANCE_TEMPLATE=maintenance.html
+```
+
 ## 容器控制
 
 在本節中，我們將會介紹 Nginx UI 中關於控制運行在另一個 Docker 容器中的 Nginx 服務的設定選項。
