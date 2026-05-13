@@ -5,6 +5,8 @@ packages:
 allowBuilds:
   core-js: true
   esbuild: true
+overrides:
+  '@uozi-admin/curd@4.19.5>xlsx': '-'
 catalog:
   '@0xjacky/vue-github-button': ^3.1.1
   '@ant-design/icons-vue': ^7.0.1
@@ -80,3 +82,4 @@ catalog:
   vue3-gettext: 3.0.0-beta.6
   vue3-otp-input: ^0.5.40
   vuedraggable: ^4.1.0
+  xlsx: https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz
