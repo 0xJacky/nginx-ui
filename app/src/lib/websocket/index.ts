@@ -1,7 +1,6 @@
 import type { UseWebSocketOptions, UseWebSocketReturn } from '@vueuse/core'
 import { useWebSocket as vueUseWebSocket } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
-import { urlJoin } from '@/lib/helper'
 import { useSettingsStore, useUserStore } from '@/pinia'
 
 function normalizeWebSocketEndpoint(url: string): string {
@@ -10,6 +9,19 @@ function normalizeWebSocketEndpoint(url: string): string {
   }
 
   return url.replace(/^\/+/, '')
+}
+
+function buildWebSocketBaseUrl(protocol: string): string {
+  if (import.meta.env.DEV) {
+    return `${protocol}//${window.location.host}/`
+  }
+
+  const baseUrl = new URL('./', window.location.href)
+  baseUrl.protocol = protocol
+  baseUrl.search = ''
+  baseUrl.hash = ''
+
+  return baseUrl.toString()
 }
 
 /**
@@ -27,9 +39,7 @@ export function buildWebSocketUrlWithQuery(
   nodeId?: number,
 ): string {
   const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:'
-  const basePath = import.meta.env.DEV
-    ? `${protocol}//${window.location.host}/`
-    : `${protocol}//${window.location.host}${urlJoin(window.location.pathname, '/')}`
+  const basePath = buildWebSocketBaseUrl(protocol)
 
   const wsUrl = new URL(normalizeWebSocketEndpoint(url), basePath)
 
