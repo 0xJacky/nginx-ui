@@ -88,6 +88,7 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
       public_security_number: '',
     },
     openai: {
+      provider: 'openai',
       model: '',
       base_url: '',
       proxy: '',

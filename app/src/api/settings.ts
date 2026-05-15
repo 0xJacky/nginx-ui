@@ -88,6 +88,7 @@ export interface NodeSettings {
 }
 
 export interface OpenaiSettings {
+  provider: string
   model: string
   base_url: string
   proxy: string

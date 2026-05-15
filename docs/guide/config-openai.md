@@ -4,11 +4,26 @@ This section is for setting up ChatGPT configurations. Please be aware that we d
 information you provide. If the configuration is incorrect, it might cause API request failures, making the ChatGPT
 assistant unusable.
 
+## Provider
+
+- Type: `string`
+- Default: `openai`
+
+This option selects a preset for OpenAI-compatible providers.
+
+- `openai`: Use the default OpenAI endpoint.
+- `atlas_cloud`: Use the Atlas Cloud endpoint `https://api.atlascloud.ai/v1`.
+- `custom`: Keep using the custom `BaseUrl` value.
+
 ## BaseUrl
 
 - Type: `string`
 
-This option is used to set the base url of the api of Open AI, leave it blank if you do not need to change the url.
+This option is used to set the base URL of the API. Leave it blank if you do not need to change the URL.
+
+For Atlas Cloud, use `https://api.atlascloud.ai/v1`. Atlas Cloud is OpenAI-compatible, so the existing chat and code
+completion features work without additional backend changes. You can find the Atlas Cloud model guide at
+<https://www.atlascloud.ai/docs/models/get-start>.
 
 ## Token
 

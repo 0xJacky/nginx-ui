@@ -17,6 +17,13 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 )
 
+func getStreamDeltaContent(response openai.ChatCompletionStreamResponse) string {
+	if len(response.Choices) == 0 {
+		return ""
+	}
+
+	return response.Choices[0].Delta.Content
+}
 
 func MakeChatCompletionRequest(c *gin.Context) {
 	var json struct {
@@ -35,7 +42,7 @@ func MakeChatCompletionRequest(c *gin.Context) {
 	var systemPrompt string
 	if json.Type == "terminal" {
 		systemPrompt = llm.TerminalAssistantPrompt
-		
+
 		// Add OS context for terminal assistant
 		if json.OSInfo != "" {
 			systemPrompt += fmt.Sprintf("\n\nSystem Information: %s", json.OSInfo)
@@ -121,7 +128,11 @@ func MakeChatCompletionRequest(c *gin.Context) {
 					logger.Errorf("Stream error: %v\n", err)
 					return
 				}
-				messageCh <- response.Choices[0].Delta.Content
+				content := getStreamDeltaContent(response)
+				if content == "" {
+					continue
+				}
+				messageCh <- content
 			}
 		}()
 
