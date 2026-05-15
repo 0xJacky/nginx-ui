@@ -115,9 +115,9 @@ function wsOnMessage(m: MessageEvent) {
 
   cpu.value = cpu_usage.toFixed(2)
 
-  const time = new Date().toLocaleString()
+  const time = new Date().toISOString()
 
-  cpu_analytic_series[0].data.push({ x: time, y: r.cpu.user.toFixed(2) })
+  cpu_analytic_series[0].data.push({ x: time, y: Number(r.cpu.user.toFixed(2)) })
   cpu_analytic_series[1].data.push({ x: time, y: cpu_usage })
 
   if (cpu_analytic_series[0].data.length > 100) {
