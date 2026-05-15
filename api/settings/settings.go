@@ -53,6 +53,10 @@ func buildSettingsResponse() gin.H {
 	node["secret"] = redactedSensitiveValue
 
 	openai := cloneSettingsSection(settings.OpenAISettings)
+	openai["provider"] = settings.OpenAISettings.GetProvider()
+	if baseURL := settings.OpenAISettings.GetBaseURL(); openai["base_url"] == "" && baseURL != "" {
+		openai["base_url"] = baseURL
+	}
 	openai["token"] = redactedSensitiveValue
 
 	return gin.H{

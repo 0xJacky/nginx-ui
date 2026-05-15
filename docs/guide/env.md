@@ -116,6 +116,7 @@ Applicable for version v2.0.0-beta.37 and above.
 ## OpenAI
 | Configuration Setting | Environment Variable     |
 |-----------------------|--------------------------|
+| Provider              | NGINX_UI_OPENAI_PROVIDER |
 | Model                 | NGINX_UI_OPENAI_MODEL    |
 | BaseUrl               | NGINX_UI_OPENAI_BASE_URL |
 | Proxy                 | NGINX_UI_OPENAI_PROXY    |

@@ -37,12 +37,12 @@ If you find this project helpful, please consider sponsoring us to support ongoi
 ### AI Infrastructure Support
 
 <p align="center">
-  <a href="https://www.atlascloud.ai/" target="_blank">
+  <a href="https://www.atlascloud.ai/?utm_source=github&utm_medium=link&utm_campaign=nginx-ui" target="_blank">
     <img src="resources/atlas-cloud-logo.svg" alt="Atlas Cloud Logo" width="240">
   </a>
 </p>
 
-Atlas Cloud is a full-modal AI inference platform that gives developers a single AI API to access the world's best video generation API, image generation API, LLM API.
+[Atlas Cloud](https://www.atlascloud.ai/?utm_source=github&utm_medium=link&utm_campaign=nginx-ui) is a full-modal AI inference platform that gives developers a single AI API to access video generation, image generation, and LLM APIs.
 
 ### Official Community Group
 

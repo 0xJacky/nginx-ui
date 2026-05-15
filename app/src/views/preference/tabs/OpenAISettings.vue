@@ -1,22 +1,85 @@
 <script setup lang="ts">
 import { SensitiveInput } from '@/components/SensitiveString'
-import { LLM_MODELS, LLM_PROVIDERS } from '@/constants/llm'
+import { LLM_MODELS, LLM_PROVIDER_BASE_URLS, LLM_PROVIDERS } from '@/constants/llm'
 import useSystemSettingsStore from '../store'
 
 const systemSettingsStore = useSystemSettingsStore()
 const { data, errors } = storeToRefs(systemSettingsStore)
 
-const models = LLM_MODELS.map(model => ({
+const modelOptions = LLM_MODELS.map(model => ({
   value: model,
 }))
 
-const providers = LLM_PROVIDERS.map(provider => ({
-  value: provider,
+const providerOptions = LLM_PROVIDERS.map(provider => ({
+  label: provider.label,
+  value: provider.value,
 }))
+
+const baseUrlOptions = LLM_PROVIDER_BASE_URLS.map(baseUrl => ({
+  value: baseUrl,
+}))
+
+const providerBaseUrlMap = LLM_PROVIDERS.reduce<Record<string, string>>((acc, provider) => {
+  if (provider.baseUrl)
+    acc[provider.value] = provider.baseUrl
+
+  return acc
+}, {})
+
+const baseUrlPlaceholder = computed(() => {
+  if (data.value?.openai.provider === 'atlas_cloud')
+    return $gettext('Leave blank to use the Atlas Cloud endpoint: https://api.atlascloud.ai/v1')
+
+  return $gettext('Leave blank for the default: https://api.openai.com/')
+})
+
+const baseUrlHelp = computed(() => {
+  if (errors.value?.openai?.base_url === 'url')
+    return $gettext('The url is invalid.')
+
+  if (data.value?.openai.provider === 'atlas_cloud') {
+    return $gettext('Atlas Cloud is OpenAI-compatible. Use https://api.atlascloud.ai/v1 and an Atlas Cloud API key.')
+  }
+
+  return $gettext('To use a local large model, deploy it with ollama, vllm or lmdeploy. '
+    + 'They provide an OpenAI-compatible API endpoint, so just set the baseUrl to your local API.')
+})
+
+watch(
+  () => data.value?.openai.provider,
+  (provider, previousProvider) => {
+    if (!data.value || !provider)
+      return
+
+    const nextBaseUrl = providerBaseUrlMap[provider]
+    if (!nextBaseUrl)
+      return
+
+    const currentBaseUrl = data.value.openai.base_url?.trim()
+    const previousBaseUrl = previousProvider ? providerBaseUrlMap[previousProvider] : ''
+
+    if (!currentBaseUrl || currentBaseUrl === previousBaseUrl)
+      data.value.openai.base_url = nextBaseUrl
+  },
+)
 </script>
 
 <template>
   <AForm layout="vertical">
+    <AFormItem
+      :label="$gettext('Provider')"
+      :validate-status="errors?.openai?.provider ? 'error' : ''"
+    >
+      <ASelect v-model:value="data.openai.provider">
+        <ASelectOption
+          v-for="provider in providerOptions"
+          :key="provider.value"
+          :value="provider.value"
+        >
+          {{ provider.label }}
+        </ASelectOption>
+      </ASelect>
+    </AFormItem>
     <AFormItem
       :label="$gettext('Model')"
       :validate-status="errors?.openai?.model ? 'error' : ''"
@@ -26,21 +89,18 @@ const providers = LLM_PROVIDERS.map(provider => ({
     >
       <AAutoComplete
         v-model:value="data.openai.model"
-        :options="models"
+        :options="modelOptions"
       />
     </AFormItem>
     <AFormItem
       :label="$gettext('API Base Url')"
       :validate-status="errors?.openai?.base_url ? 'error' : ''"
-      :help="errors?.openai?.base_url === 'url'
-        ? $gettext('The url is invalid.')
-        : $gettext('To use a local large model, deploy it with ollama, vllm or lmdeploy. '
-          + 'They provide an OpenAI-compatible API endpoint, so just set the baseUrl to your local API.')"
+      :help="baseUrlHelp"
     >
       <AAutoComplete
         v-model:value="data.openai.base_url"
-        :placeholder="$gettext('Leave blank for the default: https://api.openai.com/')"
-        :options="providers"
+        :placeholder="baseUrlPlaceholder"
+        :options="baseUrlOptions"
       />
     </AFormItem>
     <AFormItem
@@ -95,7 +155,7 @@ const providers = LLM_PROVIDERS.map(provider => ({
     >
       <AAutoComplete
         v-model:value="data.openai.code_completion_model"
-        :options="models"
+        :options="modelOptions"
       />
     </AFormItem>
   </AForm>

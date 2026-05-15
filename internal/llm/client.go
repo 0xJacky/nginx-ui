@@ -9,8 +9,9 @@ import (
 
 func GetClient() (*openai.Client, error) {
 	var config openai.ClientConfig
+	baseURL := settings.OpenAISettings.GetBaseURL()
 	if openai.APIType(settings.OpenAISettings.APIType) == openai.APITypeAzure {
-		config = openai.DefaultAzureConfig(settings.OpenAISettings.Token, settings.OpenAISettings.BaseUrl)
+		config = openai.DefaultAzureConfig(settings.OpenAISettings.Token, baseURL)
 	} else {
 		config = openai.DefaultConfig(settings.OpenAISettings.Token)
 	}
@@ -25,8 +26,8 @@ func GetClient() (*openai.Client, error) {
 		}
 	}
 
-	if settings.OpenAISettings.BaseUrl != "" {
-		config.BaseURL = settings.OpenAISettings.BaseUrl
+	if baseURL != "" {
+		config.BaseURL = baseURL
 	}
 
 	return openai.NewClientWithConfig(config), nil

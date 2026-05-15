@@ -98,7 +98,7 @@ onMounted(() => {
         </ATabPane>
         <ATabPane
           key="openai"
-          :tab="$gettext('OpenAI')"
+          :tab="$gettext('LLM')"
         >
           <OpenAISettings />
         </ATabPane>
