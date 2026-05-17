@@ -47,7 +47,7 @@ jobs:
       - name: Install dependencies
         run: |
           corepack enable
-          corepack prepare pnpm@latest --activate
+          corepack prepare pnpm@10 --activate
           pnpm install
         working-directory: docs
 
