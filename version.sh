@@ -3,32 +3,46 @@
 # Version validation regex pattern
 VALID_VERSION_REGEX='^v?[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9\.]+)?$'
 
-# Prompt for version input
-while true; do
-    read -p "Enter version number: " VERSION
-
-    # Remove 'v' prefix for validation
-    if [[ "${VERSION#v}" =~ $VALID_VERSION_REGEX ]]; then
-        # Show confirmation prompt with original input
-        echo "You entered version: ${VERSION}"
-        read -p "Is this correct? [Y/n] " confirm
-        case "$confirm" in
-            [Yy]|[Yy][Ee][Ss]|"")
-                break
-                ;;
-            [Nn]|[Nn][Oo])
-                echo "Restarting version input..."
-                continue
-                ;;
-            *)
-                echo "Invalid input, please answer Y/n"
-                continue
-                ;;
-        esac
-    else
-        echo "Error: Invalid version format. Please use semantic versioning (e.g. 2.0.0, v2.0.1-beta.1)"
+# Resolve version: non-interactive `bump <version>` mode or interactive prompt
+if [[ "$1" == "bump" ]]; then
+    VERSION="$2"
+    if [[ -z "$VERSION" ]]; then
+        echo "Error: missing version argument. Usage: ./version.sh bump <version>"
+        exit 1
     fi
-done
+    if [[ ! "${VERSION#v}" =~ $VALID_VERSION_REGEX ]]; then
+        echo "Error: Invalid version format. Please use semantic versioning (e.g. 2.0.0, v2.0.1-beta.1)"
+        exit 1
+    fi
+    echo "Bumping to version: ${VERSION}"
+else
+    # Prompt for version input
+    while true; do
+        read -p "Enter version number: " VERSION
+
+        # Remove 'v' prefix for validation
+        if [[ "${VERSION#v}" =~ $VALID_VERSION_REGEX ]]; then
+            # Show confirmation prompt with original input
+            echo "You entered version: ${VERSION}"
+            read -p "Is this correct? [Y/n] " confirm
+            case "$confirm" in
+                [Yy]|[Yy][Ee][Ss]|"")
+                    break
+                    ;;
+                [Nn]|[Nn][Oo])
+                    echo "Restarting version input..."
+                    continue
+                    ;;
+                *)
+                    echo "Invalid input, please answer Y/n"
+                    continue
+                    ;;
+            esac
+        else
+            echo "Error: Invalid version format. Please use semantic versioning (e.g. 2.0.0, v2.0.1-beta.1)"
+        fi
+    done
+fi
 
 # Cross-platform compatible sed command
 if [[ "$OSTYPE" == "darwin"* ]]; then
