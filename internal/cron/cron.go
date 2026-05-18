@@ -32,6 +32,12 @@ func InitCronJobs(ctx context.Context) {
 		logger.Fatalf("CertExpired Err: %v\n", err)
 	}
 
+	// Initialize self-signed certificate renewal job
+	_, err = setupSelfSignedCertRenewalJob(s)
+	if err != nil {
+		logger.Fatalf("SelfSignedCertRenewal Err: %v\n", err)
+	}
+
 	// Start logrotate job
 	setupLogrotateJob(s)
 

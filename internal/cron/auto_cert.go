@@ -33,3 +33,16 @@ func setupCertExpiredJob(scheduler gocron.Scheduler) (gocron.Job, error) {
 	}
 	return job, nil
 }
+
+// setupSelfSignedCertRenewalJob initializes the self-signed certificate renewal job
+func setupSelfSignedCertRenewalJob(scheduler gocron.Scheduler) (gocron.Job, error) {
+	job, err := scheduler.NewJob(gocron.DurationJob(30*time.Minute),
+		gocron.NewTask(cert.RenewSelfSignedCerts),
+		gocron.WithSingletonMode(gocron.LimitModeWait),
+		gocron.JobOption(gocron.WithStartImmediately()))
+	if err != nil {
+		logger.Errorf("SelfSignedCertRenewal Job: Err: %v\n", err)
+		return nil, err
+	}
+	return job, nil
+}
