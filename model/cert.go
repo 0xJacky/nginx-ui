@@ -15,6 +15,7 @@ const (
 	AutoCertSync              = 2
 	AutoCertEnabled           = 1
 	AutoCertDisabled          = -1
+	AutoCertSelfSigned        = 3
 	CertChallengeMethodHTTP01 = "http01"
 	CertChallengeMethodDNS01  = "dns01"
 )
@@ -30,28 +31,36 @@ type CertificateResource struct {
 	CSR               []byte `json:"csr"`
 }
 
+// SelfSignedCertConfig stores self-signed-specific generation parameters so the
+// auto-renewal job can regenerate a certificate with the same settings.
+type SelfSignedCertConfig struct {
+	IPAddresses  []string `json:"ip_addresses"`
+	ValidityDays int      `json:"validity_days"`
+}
+
 type Cert struct {
 	Model
-	Name                    string               `json:"name"`
-	Domains                 []string             `json:"domains" gorm:"serializer:json"`
-	Filename                string               `json:"filename"`
-	SSLCertificatePath      string               `json:"ssl_certificate_path"`
-	SSLCertificateKeyPath   string               `json:"ssl_certificate_key_path"`
-	AutoCert                int                  `json:"auto_cert"`
-	ChallengeMethod         string               `json:"challenge_method"`
-	DnsCredentialID         uint64               `json:"dns_credential_id"`
-	DnsCredential           *DnsCredential       `json:"dns_credential,omitempty"`
-	ACMEUserID              uint64               `json:"acme_user_id"`
-	ACMEUser                *AcmeUser            `json:"acme_user,omitempty"`
-	KeyType                 certcrypto.KeyType   `json:"key_type"`
-	Log                     string               `json:"log"`
-	Resource                *CertificateResource `json:"-" gorm:"serializer:json[aes]"`
-	SyncNodeIds             []uint64             `json:"sync_node_ids" gorm:"serializer:json"`
-	MustStaple              bool                 `json:"must_staple"`
-	LegoDisableCNAMESupport bool                 `json:"lego_disable_cname_support"`
-	RevokeOld               bool                 `json:"revoke_old"`
-	LastAutoRenewAt         *time.Time           `json:"-"`
-	LastAutoRenewError      string               `json:"-"`
+	Name                    string                `json:"name"`
+	Domains                 []string              `json:"domains" gorm:"serializer:json"`
+	Filename                string                `json:"filename"`
+	SSLCertificatePath      string                `json:"ssl_certificate_path"`
+	SSLCertificateKeyPath   string                `json:"ssl_certificate_key_path"`
+	AutoCert                int                   `json:"auto_cert"`
+	ChallengeMethod         string                `json:"challenge_method"`
+	DnsCredentialID         uint64                `json:"dns_credential_id"`
+	DnsCredential           *DnsCredential        `json:"dns_credential,omitempty"`
+	ACMEUserID              uint64                `json:"acme_user_id"`
+	ACMEUser                *AcmeUser             `json:"acme_user,omitempty"`
+	KeyType                 certcrypto.KeyType    `json:"key_type"`
+	Log                     string                `json:"log"`
+	Resource                *CertificateResource  `json:"-" gorm:"serializer:json[aes]"`
+	SyncNodeIds             []uint64              `json:"sync_node_ids" gorm:"serializer:json"`
+	MustStaple              bool                  `json:"must_staple"`
+	LegoDisableCNAMESupport bool                  `json:"lego_disable_cname_support"`
+	RevokeOld               bool                  `json:"revoke_old"`
+	SelfSignedConfig        *SelfSignedCertConfig `json:"self_signed_config,omitempty" gorm:"serializer:json"`
+	LastAutoRenewAt         *time.Time            `json:"-"`
+	LastAutoRenewError      string                `json:"-"`
 }
 
 func FirstCert(confName string) (c Cert, err error) {
