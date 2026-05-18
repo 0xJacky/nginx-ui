@@ -9,9 +9,11 @@ import (
 	"encoding/pem"
 	"math/big"
 	"net"
+	"os"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/go-acme/lego/v5/certcrypto"
 	"github.com/uozi-tech/cosy"
 )
@@ -107,4 +109,83 @@ func signSelfSigned(opts SelfSignedOptions, signer crypto.Signer) (certPEM, keyP
 	certPEM = pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: der})
 	keyPEM = pem.EncodeToMemory(&pem.Block{Type: "PRIVATE KEY", Bytes: keyDER})
 	return certPEM, keyPEM, nil
+}
+
+// RegenerateSelfSigned re-issues an existing self-signed certificate for the
+// auto-renewal job. It reuses the private key currently on disk when it can be
+// parsed; otherwise it generates a fresh key.
+func RegenerateSelfSigned(certModel *model.Cert) (certPEM, keyPEM []byte, err error) {
+	opts := SelfSignedOptionsFromModel(certModel)
+
+	signer, parseErr := loadSelfSignedKey(certModel.SSLCertificateKeyPath)
+	if parseErr != nil || signer == nil {
+		// fall back to a fresh key when the existing key cannot be reused
+		return GenerateSelfSigned(opts)
+	}
+	return signSelfSigned(opts, signer)
+}
+
+// SelfSignedOptionsFromModel builds SelfSignedOptions from a persisted Cert.
+func SelfSignedOptionsFromModel(certModel *model.Cert) SelfSignedOptions {
+	opts := SelfSignedOptions{
+		DNSNames:     certModel.Domains,
+		KeyType:      certModel.GetKeyType(),
+		ValidityDays: SelfSignedDefaultValidityDays,
+	}
+	if certModel.SelfSignedConfig != nil {
+		opts.IPAddresses = certModel.SelfSignedConfig.IPAddresses
+		if certModel.SelfSignedConfig.ValidityDays > 0 {
+			opts.ValidityDays = certModel.SelfSignedConfig.ValidityDays
+		}
+	}
+	opts.CommonName = deriveSelfSignedCommonName(opts.DNSNames, opts.IPAddresses)
+	return opts
+}
+
+// deriveSelfSignedCommonName picks the certificate common name: the first DNS
+// name, or the first IP address when no DNS name is present.
+func deriveSelfSignedCommonName(dnsNames, ipAddresses []string) string {
+	for _, name := range dnsNames {
+		if name != "" {
+			return name
+		}
+	}
+	for _, ip := range ipAddresses {
+		if ip != "" {
+			return ip
+		}
+	}
+	return ""
+}
+
+// loadSelfSignedKey reads and parses the private key at the given path.
+func loadSelfSignedKey(path string) (crypto.Signer, error) {
+	if path == "" {
+		return nil, ErrCertPathIsEmpty
+	}
+	pemBytes, err := os.ReadFile(path)
+	if err != nil {
+		return nil, err
+	}
+	return parsePrivateKeyPEM(pemBytes)
+}
+
+// parsePrivateKeyPEM parses a PEM-encoded private key into a crypto.Signer.
+func parsePrivateKeyPEM(pemBytes []byte) (crypto.Signer, error) {
+	block, _ := pem.Decode(pemBytes)
+	if block == nil {
+		return nil, ErrCertDecode
+	}
+	if key, err := x509.ParsePKCS8PrivateKey(block.Bytes); err == nil {
+		if signer, ok := key.(crypto.Signer); ok {
+			return signer, nil
+		}
+	}
+	if key, err := x509.ParsePKCS1PrivateKey(block.Bytes); err == nil {
+		return key, nil
+	}
+	if key, err := x509.ParseECPrivateKey(block.Bytes); err == nil {
+		return key, nil
+	}
+	return nil, ErrCertParse
 }

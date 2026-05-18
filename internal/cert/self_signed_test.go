@@ -4,8 +4,11 @@ import (
 	"crypto/x509"
 	"encoding/pem"
 	"net"
+	"os"
+	"path/filepath"
 	"testing"
 
+	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/go-acme/lego/v5/certcrypto"
 )
 
@@ -106,5 +109,65 @@ func TestGenerateSelfSignedRejectsInvalidIP(t *testing.T) {
 	})
 	if err == nil {
 		t.Fatalf("expected an error for an invalid IP address")
+	}
+}
+
+func TestRegenerateSelfSignedReusesKey(t *testing.T) {
+	_, keyPEM, err := GenerateSelfSigned(SelfSignedOptions{
+		CommonName:   "reuse.local",
+		DNSNames:     []string{"reuse.local"},
+		KeyType:      certcrypto.EC256,
+		ValidityDays: 365,
+	})
+	if err != nil {
+		t.Fatalf("GenerateSelfSigned error: %v", err)
+	}
+
+	keyPath := filepath.Join(t.TempDir(), "private.key")
+	if err := os.WriteFile(keyPath, keyPEM, 0600); err != nil {
+		t.Fatalf("write key: %v", err)
+	}
+
+	certModel := &model.Cert{
+		Domains:               []string{"reuse.local"},
+		KeyType:               certcrypto.EC256,
+		SSLCertificateKeyPath: keyPath,
+		SelfSignedConfig:      &model.SelfSignedCertConfig{ValidityDays: 365},
+	}
+
+	newCertPEM, newKeyPEM, err := RegenerateSelfSigned(certModel)
+	if err != nil {
+		t.Fatalf("RegenerateSelfSigned error: %v", err)
+	}
+	if string(newKeyPEM) != string(keyPEM) {
+		t.Fatalf("expected the private key to be reused unchanged")
+	}
+	parseTestCert(t, newCertPEM)
+}
+
+func TestRegenerateSelfSignedFallsBackToFreshKey(t *testing.T) {
+	certModel := &model.Cert{
+		Domains:               []string{"fresh.local"},
+		KeyType:               certcrypto.EC256,
+		SSLCertificateKeyPath: filepath.Join(t.TempDir(), "missing.key"),
+		SelfSignedConfig:      &model.SelfSignedCertConfig{ValidityDays: 365},
+	}
+
+	certPEM, keyPEM, err := RegenerateSelfSigned(certModel)
+	if err != nil {
+		t.Fatalf("RegenerateSelfSigned error: %v", err)
+	}
+	parseTestCert(t, certPEM)
+	if !IsPrivateKey(string(keyPEM)) {
+		t.Fatalf("fallback key is not a valid private key")
+	}
+}
+
+func TestDeriveSelfSignedCommonName(t *testing.T) {
+	if got := deriveSelfSignedCommonName([]string{"a.com", "b.com"}, nil); got != "a.com" {
+		t.Fatalf("expected first DNS name, got %q", got)
+	}
+	if got := deriveSelfSignedCommonName(nil, []string{"10.0.0.1"}); got != "10.0.0.1" {
+		t.Fatalf("expected first IP, got %q", got)
 	}
 }
