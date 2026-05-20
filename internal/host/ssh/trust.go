@@ -14,7 +14,7 @@ func TrustHostKey(path, hostPort, publicKeyOpenSSH string) error {
 	}
 	parsed, _, _, _, err := gossh.ParseAuthorizedKey([]byte(publicKeyOpenSSH))
 	if err != nil {
-		return cosy.WrapErrorWithParams(ErrHostKeyMismatch, "parse public key", err.Error())
+		return cosy.WrapErrorWithParams(ErrPublicKeyParse, err.Error())
 	}
 	return kh.Trust(hostPort, parsed)
 }

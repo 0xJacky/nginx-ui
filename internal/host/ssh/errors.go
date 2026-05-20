@@ -14,4 +14,5 @@ var (
 	ErrSessionFailed     = e.New(510007, "failed to open ssh session: {0}")
 	ErrKnownHostsRead    = e.New(510008, "failed to read known_hosts: {0}")
 	ErrKnownHostsWrite   = e.New(510009, "failed to write known_hosts: {0}")
+	ErrPublicKeyParse    = e.New(510010, "failed to parse public key: {0}")
 )
