@@ -1,5 +1,12 @@
 #!/command/with-contenv sh
 
+if [ "${NGINX_UI_DISABLE_BUNDLED_NGINX}" = "true" ]; then
+    echo "[INFO] NGINX_UI_DISABLE_BUNDLED_NGINX=true; bundled nginx service suspended"
+    # s6's longrun supervisor restarts the script on exit; sleep forever
+    # to keep the supervised state happy without actually running nginx.
+    exec /bin/sleep infinity
+fi
+
 if [ -n "${TZ}" ]; then
     echo "Timezone: ${TZ}"
     ln -sf "/usr/share/zoneinfo/${TZ}" /etc/localtime && \
