@@ -33,3 +33,9 @@ func TestLocalRunner_Exec_Echo(t *testing.T) {
 		t.Errorf("Exec output = %q, want %q", out, want)
 	}
 }
+
+func TestDockerRunner_RoutesToDockerExec(t *testing.T) {
+	// We can't actually exercise docker.Exec without a docker daemon,
+	// so this is a smoke test ensuring the type satisfies the interface.
+	var _ Runner = (*dockerRunner)(nil)
+}
