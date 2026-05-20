@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"sort"
+	"strconv"
 	"strings"
 )
 
@@ -24,6 +25,7 @@ type Config struct {
 	Code          string         `json:"code"`
 	Configuration *Configuration `json:"configuration,omitempty"`
 	Links         *Links         `json:"links,omitempty"`
+	envBackup     map[string]*string
 }
 
 var configurations []Config
@@ -86,16 +88,16 @@ func (c *Config) SetEnv(configuration Configuration) error {
 	if c.Configuration != nil {
 		for k := range c.Configuration.Credentials {
 			if value, ok := configuration.Credentials[k]; ok {
-				err := os.Setenv(k, value)
-				if err != nil {
+				if err := c.setEnv(k, value); err != nil {
+					c.CleanEnv()
 					return err
 				}
 			}
 		}
 		for k := range c.Configuration.Additional {
 			if value, ok := configuration.Additional[k]; ok {
-				err := os.Setenv(k, value)
-				if err != nil {
+				if err := c.setEnv(k, value); err != nil {
+					c.CleanEnv()
 					return err
 				}
 			}
@@ -107,10 +109,71 @@ func (c *Config) SetEnv(configuration Configuration) error {
 func (c *Config) CleanEnv() {
 	if c.Configuration != nil {
 		for k := range c.Configuration.Credentials {
-			_ = os.Unsetenv(k)
+			c.restoreEnv(k)
 		}
 		for k := range c.Configuration.Additional {
-			_ = os.Unsetenv(k)
+			c.restoreEnv(k)
 		}
 	}
+}
+
+func normalizeEnvValue(value string) string {
+	trimmed := strings.TrimSpace(value)
+	if len(trimmed) < 2 {
+		return trimmed
+	}
+
+	first := trimmed[0]
+	last := trimmed[len(trimmed)-1]
+	if first != last || first != '"' && first != '\'' {
+		return trimmed
+	}
+	if first == '\'' {
+		return trimmed[1 : len(trimmed)-1]
+	}
+
+	unquoted, err := strconv.Unquote(trimmed)
+	if err != nil {
+		return trimmed[1 : len(trimmed)-1]
+	}
+
+	return unquoted
+}
+
+func (c *Config) setEnv(key, value string) error {
+	c.backupEnv(key)
+	return os.Setenv(key, normalizeEnvValue(value))
+}
+
+func (c *Config) backupEnv(key string) {
+	if c.envBackup == nil {
+		c.envBackup = make(map[string]*string)
+	}
+	if _, ok := c.envBackup[key]; ok {
+		return
+	}
+
+	value, exists := os.LookupEnv(key)
+	if !exists {
+		c.envBackup[key] = nil
+		return
+	}
+
+	copied := value
+	c.envBackup[key] = &copied
+}
+
+func (c *Config) restoreEnv(key string) {
+	if c.envBackup == nil {
+		_ = os.Unsetenv(key)
+		return
+	}
+
+	value, exists := c.envBackup[key]
+	if !exists || value == nil {
+		_ = os.Unsetenv(key)
+		return
+	}
+
+	_ = os.Setenv(key, *value)
 }
