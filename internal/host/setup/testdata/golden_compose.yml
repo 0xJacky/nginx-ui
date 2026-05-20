@@ -1,0 +1,21 @@
+# Merge into your existing docker-compose.yml under services.nginx-ui.
+services:
+  nginx-ui:
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      # By default the container path mirrors the host path.
+      - /etc/nginx:/etc/nginx
+      - /var/log/nginx:/var/log/nginx:ro
+      - /var/run:/var/run:ro
+    environment:
+      - NGINX_UI_NGINX_HOST_MODE=ssh
+      - NGINX_UI_NGINX_HOST_ADDRESS=host.docker.internal:22
+      - NGINX_UI_NGINX_HOST_USER=nginxui
+      - NGINX_UI_NGINX_HOST_PRIVATE_KEY_PATH=/etc/nginx-ui/host_key
+      - NGINX_UI_NGINX_HOST_KNOWN_HOSTS_PATH=/etc/nginx-ui/known_hosts
+      - NGINX_UI_NGINX_HOST_SYSTEMD_UNIT_NAME=nginx.service
+      - NGINX_UI_NGINX_HOST_SYSTEMCTL_PATH=/bin/systemctl
+      - NGINX_UI_NGINX_HOST_CONFIG_DIR=/etc/nginx
+      - NGINX_UI_NGINX_HOST_LOG_DIR=/var/log/nginx
+      - NGINX_UI_DISABLE_BUNDLED_NGINX=true
