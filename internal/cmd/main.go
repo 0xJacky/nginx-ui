@@ -47,6 +47,7 @@ func NewAppCmd() *cli.Command {
 				Action: user.ResetInitUserPassword,
 			},
 			UpgradeDockerStep2Command,
+			HostSetupCommand,
 		},
 		Flags: []cli.Flag{
 			&cli.StringFlag{
