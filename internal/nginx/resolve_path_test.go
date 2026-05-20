@@ -3,6 +3,7 @@ package nginx
 import (
 	"fmt"
 	"path/filepath"
+	"sync"
 	"testing"
 
 	"github.com/0xJacky/Nginx-UI/settings"
@@ -55,6 +56,47 @@ configure arguments: --prefix="/Program Files/Nginx" --conf-path='/Program Files
 				t.Fatalf("extractConfigureArg(%q) = %q, want %q", tt.flag, got, tt.want)
 			}
 		})
+	}
+}
+
+// GetPrefix must resolve through the serialized cache. A plain package level
+// string here races under concurrent cold callers such as the log indexer and
+// the log path whitelist.
+func TestGetPrefixSerializesColdLoad(t *testing.T) {
+	originalNginxVOutput := nginxVOutputCache.value
+	originalPrefix := nginxPrefixCache.value
+
+	t.Cleanup(func() {
+		nginxVOutputCache.set(originalNginxVOutput)
+		nginxPrefixCache.set(originalPrefix)
+	})
+
+	nginxVOutputCache.set(`
+nginx version: nginx/1.25.2
+configure arguments: --prefix=/opt/nginx-prefix
+`)
+	nginxPrefixCache.set("")
+
+	const callers = 32
+	results := make([]string, callers)
+	var waitGroup sync.WaitGroup
+
+	for i := range callers {
+		waitGroup.Add(1)
+		go func() {
+			defer waitGroup.Done()
+			results[i] = GetPrefix()
+		}()
+	}
+	waitGroup.Wait()
+
+	if results[0] == "" {
+		t.Fatal("GetPrefix() = empty, want the configured prefix")
+	}
+	for i, got := range results {
+		if got != results[0] {
+			t.Fatalf("GetPrefix() call %d = %q, want %q", i, got, results[0])
+		}
 	}
 }
 
