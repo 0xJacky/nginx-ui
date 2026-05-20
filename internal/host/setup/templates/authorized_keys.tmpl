@@ -1,0 +1,3 @@
+# Append this line to /home/{{ .HostUser }}/.ssh/authorized_keys on the host.
+# Restrict to nginx-ui management only — adjust source IP via from="..." if desired.
+{{ .PublicKeyOpenSSH }}

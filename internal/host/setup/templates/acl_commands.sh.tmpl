@@ -1,0 +1,8 @@
+# Run on the host as root. Grants {{ .HostUser }} read/write on nginx config dir
+# and read on the log dir. Skip on hosts where {{ .HostUser }} is already root.
+setfacl -R  -m u:{{ .HostUser }}:rwx {{ .HostConfigDir }}
+setfacl -dR -m u:{{ .HostUser }}:rwx {{ .HostConfigDir }}
+setfacl -R  -m u:{{ .HostUser }}:rx  {{ .HostLogDir }}
+setfacl -dR -m u:{{ .HostUser }}:rx  {{ .HostLogDir }}
+# Ensure the user can read PID files
+setfacl -m u:{{ .HostUser }}:r /var/run/nginx.pid 2>/dev/null || true

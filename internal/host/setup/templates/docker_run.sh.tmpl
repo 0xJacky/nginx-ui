@@ -1,0 +1,23 @@
+docker run -d --name nginx-ui --restart unless-stopped \
+{{- if .UseHostGateway }}
+  --add-host host.docker.internal:host-gateway \
+{{- end }}
+  -v {{ .HostConfigDir }}:{{ .ContainerConfigDir }} \
+  -v {{ .HostLogDir }}:{{ .ContainerLogDir }}:ro \
+  -v /var/run:/var/run:ro \
+{{- if not .UseGeneratedKey }}
+  -v {{ .HostKeyPath }}:{{ .ContainerKeyPath }}:ro \
+  -v {{ .HostKnownHostsPath }}:{{ .ContainerKnownHostsPath }}:ro \
+{{- end }}
+  -p 8080:80 \
+  -e NGINX_UI_NGINX_HOST_MODE=ssh \
+  -e NGINX_UI_NGINX_HOST_ADDRESS={{ .HostAddress }} \
+  -e NGINX_UI_NGINX_HOST_USER={{ .HostUser }} \
+  -e NGINX_UI_NGINX_HOST_PRIVATE_KEY_PATH={{ .ContainerKeyPath }} \
+  -e NGINX_UI_NGINX_HOST_KNOWN_HOSTS_PATH={{ .ContainerKnownHostsPath }} \
+  -e NGINX_UI_NGINX_HOST_SYSTEMD_UNIT_NAME={{ .SystemdUnit }} \
+  -e NGINX_UI_NGINX_HOST_SYSTEMCTL_PATH={{ .SystemctlPath }} \
+  -e NGINX_UI_NGINX_HOST_CONFIG_DIR={{ .HostConfigDir }} \
+  -e NGINX_UI_NGINX_HOST_LOG_DIR={{ .HostLogDir }} \
+  -e NGINX_UI_DISABLE_BUNDLED_NGINX=true \
+  uozi/nginx-ui:latest
