@@ -12,7 +12,7 @@ func TestNginx_ControlMode(t *testing.T) {
 		{"container only", Nginx{ContainerName: "nginx-1"}, ControlModeExternalContainer},
 		{"ssh only", Nginx{HostMode: HostModeSSH}, ControlModeHostViaSSH},
 		{"ssh wins over container", Nginx{HostMode: HostModeSSH, ContainerName: "nginx-1"}, ControlModeHostViaSSH},
-		{"unknown host mode falls back", Nginx{HostMode: "telnet"}, "local"},
+		{"unknown host mode falls back", Nginx{HostMode: "telnet"}, ControlModeLocal},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
