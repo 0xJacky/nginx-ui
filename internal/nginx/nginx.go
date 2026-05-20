@@ -1,6 +1,7 @@
 package nginx
 
 import (
+	"context"
 	"os"
 	"strconv"
 	"strings"
@@ -111,13 +112,34 @@ func GetLastResult() *ControlResult {
 
 func IsRunning() bool {
 	pidPath := GetPIDPath()
-	switch settings.NginxSettings.RunningInAnotherContainer() {
-	case true:
+	switch settings.NginxSettings.ControlMode() {
+	case settings.ControlModeHostViaSSH:
+		return isRunningViaSystemd()
+	case settings.ControlModeExternalContainer:
 		return docker.StatPath(pidPath)
-	case false:
+	default:
 		return isProcessRunning(pidPath)
 	}
-	return false
+}
+
+// isRunningViaSystemd queries `systemctl is-active <unit>` over SSH.
+// Falls back to PID-file existence check (via bind-mount) on systemctl failure.
+func isRunningViaSystemd() bool {
+	unit := settings.NginxSettings.HostSystemdUnitName
+	if unit == "" {
+		unit = "nginx.service"
+	}
+	systemctl := settings.NginxSettings.HostSystemctlPath
+	if systemctl == "" {
+		systemctl = "/bin/systemctl"
+	}
+	runner := resolveRunner()
+	out, err := runner.Exec(context.Background(), systemctl, "is-active", unit)
+	if err == nil && strings.TrimSpace(out) == "active" {
+		return true
+	}
+	// Fallback: bind-mounted PID file is visible to the container as a local path.
+	return isProcessRunning(GetPIDPath())
 }
 
 // isProcessRunning checks if the process with the PID from pidPath is actually running

@@ -1,12 +1,10 @@
 package nginx
 
 import (
-	"os"
 	"path/filepath"
 	"runtime"
 	"strings"
 
-	"github.com/0xJacky/Nginx-UI/internal/docker"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/uozi-tech/cosy/logger"
@@ -176,12 +174,14 @@ func GetPIDPath() (path string) {
 	out := getNginxV()
 	path = extractConfigureArg(out, "--pid-path")
 
-	// When running in another container, verify the path actually exists there.
+	// When not running locally, verify the compile-time pid-path actually exists there.
 	// Docker images like nginx-unprivileged override the compile-time pid-path
 	// at runtime via the "pid" directive in nginx.conf (e.g., pid /tmp/nginx.pid).
-	if path != "" && settings.NginxSettings.RunningInAnotherContainer() {
-		if !docker.StatPath(path) {
-			logger.Debug("GetPIDPath: compile-time pid-path not found in container, trying nginx -T", "path", path)
+	runner := resolveRunner()
+
+	if path != "" && settings.NginxSettings.ControlMode() != settings.ControlModeLocal {
+		if !runner.Stat(path) {
+			logger.Debug("GetPIDPath: compile-time pid-path not found, trying nginx -T", "path", path)
 			if tPath := getPIDPathFromNginxT(); tPath != "" {
 				return resolvePath(tPath)
 			}
@@ -202,18 +202,10 @@ func GetPIDPath() (path string) {
 		}
 
 		for _, c := range candidates {
-			if settings.NginxSettings.RunningInAnotherContainer() {
-				if docker.StatPath(c) {
-					logger.Debug("GetPIDPath fallback hit (docker)", "path", c)
-					path = c
-					break
-				}
-			} else {
-				if _, err := os.Stat(c); err == nil {
-					logger.Debug("GetPIDPath fallback hit", "path", c)
-					path = c
-					break
-				}
+			if runner.Stat(c) {
+				logger.Debug("GetPIDPath fallback hit", "path", c, "mode", settings.NginxSettings.ControlMode())
+				path = c
+				break
 			}
 		}
 
