@@ -112,25 +112,25 @@ func (c *Client) keepalive(client *gossh.Client) {
 }
 
 // connect returns a healthy client, reconnecting if the cached one is dead.
+// Holds the mutex across dial so concurrent callers serialize on reconnect
+// rather than racing to overwrite c.conn.
 func (c *Client) connect(ctx context.Context) (*gossh.Client, error) {
 	c.mu.Lock()
+	defer c.mu.Unlock()
+
 	if c.conn != nil {
 		if _, _, err := c.conn.SendRequest("keepalive@nginx-ui", true, nil); err == nil {
-			defer c.mu.Unlock()
 			return c.conn, nil
 		}
 		_ = c.conn.Close()
 		c.conn = nil
 	}
-	c.mu.Unlock()
 
 	conn, err := c.dial(ctx)
 	if err != nil {
 		return nil, err
 	}
-	c.mu.Lock()
 	c.conn = conn
-	c.mu.Unlock()
 	return conn, nil
 }
 

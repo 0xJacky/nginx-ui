@@ -6,8 +6,15 @@ import (
 
 	hostssh "github.com/0xJacky/Nginx-UI/internal/host/ssh"
 	"github.com/0xJacky/Nginx-UI/settings"
+	"github.com/uozi-tech/cosy/logger"
 )
 
+// sshOnce ensures we share a single long-lived SSH client across all Exec calls.
+//
+// LIMITATION: if settings.NginxSettings.Host* fields change at runtime (e.g.
+// the user saves new SSH config via the Web UI), the cached client is NOT
+// rebuilt with the new settings. Settings handler must call ResetSSHClient()
+// after writes that affect host SSH config. See spec §6.3.
 var (
 	sshOnce   sync.Once
 	sshShared *hostssh.Client
@@ -21,16 +28,26 @@ func newSSHRunner() Runner {
 	return &sshRunner{client: sshShared}
 }
 
+// ResetSSHClient invalidates the cached SSH client so the next nginx command
+// re-dials with the current settings. Safe to call concurrently with Exec.
+func ResetSSHClient() {
+	if sshShared != nil {
+		_ = sshShared.Close()
+	}
+	sshOnce = sync.Once{}
+	sshShared = nil
+}
+
 func buildSSHOptions() hostssh.ClientOptions {
 	n := settings.NginxSettings
 
 	kh, _ := hostssh.NewKnownHosts(n.HostKnownHostsPath)
 
-	// TODO: decrypt HostPasswordRef via crypto.AesDecrypt when the import cycle
-	// internal/nginx → internal/crypto → internal/cache → internal/nginx is resolved.
-	// For now, password mode is gated off in the UI (spec §8.2), so passing the
-	// raw ref here is acceptable — it will simply fail SSH authentication.
-	password := n.HostPasswordRef
+	password := ""
+	if n.HostAuthMethod == "password" {
+		logger.Warn("SSH password auth is configured but not yet supported (pending crypto package refactor); SSH connections will fail until you switch to key auth")
+	}
+	_ = n.HostPasswordRef // suppress unused-field lint until decryption lands
 
 	sudo := n.HostSudoPrefix
 	if sudo == "" {
