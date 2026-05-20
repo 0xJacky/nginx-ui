@@ -136,8 +136,16 @@ func hostSetupPrint(ctx context.Context, c *cli.Command) error {
 	return nil
 }
 
-// hostSetupTest is a stub here — Task 14 wires it through the shared
-// setup.NewClientFromSettings + setup.Verify helpers introduced in that task.
 func hostSetupTest(ctx context.Context, c *cli.Command) error {
-	return fmt.Errorf("host-setup test: not yet wired to live settings; use the Web UI verify endpoint until Task 14 lands")
+	client, err := setup.NewClientFromSettings()
+	if err != nil {
+		return err
+	}
+	defer client.Close()
+
+	result := setup.Verify(ctx, setup.VerifyOptions{
+		Client: client,
+		Params: setup.ParamsFromSettings(),
+	})
+	return json.NewEncoder(os.Stdout).Encode(result)
 }
