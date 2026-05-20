@@ -70,7 +70,14 @@ func needsQuoting(s string) bool {
 func buildCommand(cfg Config, name string, args []string) string {
 	var b strings.Builder
 	if needsSudo(cfg, name, args) && cfg.SudoPrefix != "" {
-		b.WriteString(cfg.SudoPrefix)
+		// SudoPrefix is split on whitespace and each token is shell-quoted
+		// to prevent injection via misconfigured settings.
+		for i, tok := range strings.Fields(cfg.SudoPrefix) {
+			if i > 0 {
+				b.WriteByte(' ')
+			}
+			b.WriteString(shellQuote(tok))
+		}
 		b.WriteByte(' ')
 	}
 	b.WriteString(shellQuote(name))
