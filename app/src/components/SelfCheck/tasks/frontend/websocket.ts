@@ -3,10 +3,15 @@ import type { ReportStatusType, SelfCheckAccessOptions } from '@/api/self_check'
 import selfCheck, { ReportStatus } from '@/api/self_check'
 import { useWebSocket } from '@/lib/websocket'
 
+const CONNECT_TIMEOUT_MS = 5000
+
 /**
  * WebSocket Task
  *
- * Checks if the application is able to connect to the backend through the WebSocket protocol
+ * Probes the backend WebSocket endpoint. `autoClose: false` is required:
+ * this task runs from a store action (no effectScope), so VueUse's
+ * autoClose would register a `beforeunload` listener that never gets
+ * cleaned up. We own cleanup via the `settled` gate.
  */
 const WebsocketTask: FrontendTask = {
   key: 'websocket',
@@ -15,35 +20,38 @@ const WebsocketTask: FrontendTask = {
     + 'If your Nginx UI is being used via an Nginx reverse proxy, '
     + 'please refer to this link to write the corresponding configuration file: '
     + 'https://nginxui.com/guide/nginx-proxy-example.html'),
-  check: async (options?: SelfCheckAccessOptions): Promise<ReportStatusType> => {
-    try {
-      const connected = await new Promise<boolean>(resolve => {
-        const { ws } = useWebSocket(selfCheck.getWebsocketUrl(options), false, undefined, selfCheck.getWebsocketQuery(options))
-        const socket = ws.value!
-        socket.onopen = () => {
-          socket.close()
-          resolve(true)
-        }
-        socket.onerror = () => {
-          resolve(false)
-        }
-        // Set a timeout for the connection attempt
-        setTimeout(() => {
-          resolve(false)
-        }, 5000)
-      })
+  check: (options?: SelfCheckAccessOptions): Promise<ReportStatusType> => {
+    return new Promise<ReportStatusType>(resolve => {
+      let settled = false
+      let timer: ReturnType<typeof setTimeout> | undefined
+      let closeSocket: (() => void) | undefined
 
-      if (connected) {
-        return ReportStatus.Success
+      function finish(status: ReportStatusType) {
+        if (settled)
+          return
+        settled = true
+        clearTimeout(timer)
+        closeSocket?.()
+        resolve(status)
       }
-      else {
-        return ReportStatus.Error
-      }
-    }
-    catch (error) {
-      console.error(error)
-      return ReportStatus.Error
-    }
+
+      const { close } = useWebSocket(
+        selfCheck.getWebsocketUrl(options),
+        false,
+        {
+          autoClose: false,
+          onConnected: () => finish(ReportStatus.Success),
+          onError: () => finish(ReportStatus.Error),
+          // Fast loopback can deliver close before open; a clean close means
+          // the handshake succeeded.
+          onDisconnected: (_ws, ev) => finish(ev.wasClean ? ReportStatus.Success : ReportStatus.Error),
+        },
+        selfCheck.getWebsocketQuery(options),
+      )
+      closeSocket = close
+
+      timer = setTimeout(finish, CONNECT_TIMEOUT_MS, ReportStatus.Error)
+    })
   },
 }
 
