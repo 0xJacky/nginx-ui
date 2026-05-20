@@ -172,6 +172,38 @@ rc-update add nginx-ui default
 
 :::
 
+### OpenWrt
+
+如果您的系統使用 OpenWrt init 指令碼，請使用以下 `/etc/init.d` 指令控制：
+
+::: code-group
+
+```shell [啟動]
+/etc/init.d/nginx-ui start
+```
+
+```shell [停止]
+/etc/init.d/nginx-ui stop
+```
+
+```shell [重啟]
+/etc/init.d/nginx-ui restart
+```
+
+```shell [顯示狀態]
+/etc/init.d/nginx-ui status
+```
+
+```shell [開機啟動]
+/etc/init.d/nginx-ui enable
+```
+
+```shell [停用開機啟動]
+/etc/init.d/nginx-ui disable
+```
+
+:::
+
 ### Init.d
 
 如果您的系統使用傳統的 init.d 指令碼，請使用以下指令控制：
