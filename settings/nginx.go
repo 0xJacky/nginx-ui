@@ -23,7 +23,8 @@ type Nginx struct {
 	ContainerName       string   `json:"container_name" protected:"true"`
 	MaintenanceTemplate string   `json:"maintenance_template"`
 
-	// Host SSH mode — see docs/superpowers/specs/2026-05-21-docker-host-nginx-management-design.md §5
+	// Host SSH mode fields enable nginx-ui (running in Docker) to control
+	// nginx installed natively on the same host via an SSH tunnel.
 	HostMode            string `json:"host_mode" protected:"true"`
 	HostAddress         string `json:"host_address" protected:"true"`
 	HostUser            string `json:"host_user" protected:"true"`
