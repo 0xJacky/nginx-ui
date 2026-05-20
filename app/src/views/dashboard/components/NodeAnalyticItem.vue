@@ -6,12 +6,16 @@ import memory from '@/assets/svg/memory.svg?component'
 import UsageProgressLine from '@/components/Chart/UsageProgressLine.vue'
 import { bytesToSize } from '@/lib/helper'
 
-defineProps<{
+const props = defineProps<{
   item: AnalyticNode
   currentNodeId?: number
   localVersion?: string
   onLinkStart?: (item: AnalyticNode) => void
 }>()
+
+const hasKnownVersions = computed(() => !!props.item.version && !!props.localVersion)
+const isVersionCompatible = computed(() => hasKnownVersions.value && props.item.version === props.localVersion)
+const isVersionIncompatible = computed(() => hasKnownVersions.value && props.item.version !== props.localVersion)
 </script>
 
 <template>
@@ -66,7 +70,7 @@ defineProps<{
         <!-- Link button section -->
         <div class="link-button-section">
           <AButton
-            v-if="item.version === localVersion"
+            v-if="isVersionCompatible"
             type="primary"
             :disabled="!item.status || currentNodeId === item.id"
             ghost
@@ -79,7 +83,7 @@ defineProps<{
             </span>
           </AButton>
           <ATooltip
-            v-else
+            v-else-if="isVersionIncompatible"
             placement="topLeft"
           >
             <template #title>
@@ -95,6 +99,15 @@ defineProps<{
               <span class="link-btn-text">{{ $gettext('Link') }}</span>
             </AButton>
           </ATooltip>
+          <AButton
+            v-else
+            ghost
+            disabled
+            class="link-btn"
+          >
+            <SendOutlined />
+            <span class="link-btn-text">{{ $gettext('Link') }}</span>
+          </AButton>
         </div>
       </div>
     </div>
