@@ -4,9 +4,6 @@ import (
 	"context"
 	"os/exec"
 	"runtime"
-
-	"github.com/0xJacky/Nginx-UI/internal/docker"
-	"github.com/0xJacky/Nginx-UI/settings"
 )
 
 func execShell(cmd string) (stdOut string, stdErr error) {
@@ -27,20 +24,10 @@ func execShell(cmd string) (stdOut string, stdErr error) {
 	return
 }
 
-func execCommand(name string, cmd ...string) (stdOut string, stdErr error) {
-	switch settings.NginxSettings.RunningInAnotherContainer() {
-	case true:
-		cmd = append([]string{name}, cmd...)
-		stdOut, stdErr = docker.Exec(context.Background(), cmd)
-	case false:
-		execCmd := exec.Command(name, cmd...)
-		// fix #1046
-		execCmd.Dir = GetNginxExeDir()
-		bytes, err := execCmd.CombinedOutput()
-		stdOut = string(bytes)
-		if err != nil {
-			stdErr = err
-		}
-	}
-	return
+// execCommand routes nginx invocations through the Runner chosen by the
+// current control mode. Callers should keep using execCommand as before —
+// the routing is transparent.
+func execCommand(name string, args ...string) (stdOut string, stdErr error) {
+	runner := resolveRunner()
+	return runner.Exec(context.Background(), name, args...)
 }
