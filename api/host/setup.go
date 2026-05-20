@@ -11,6 +11,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
+	gossh "golang.org/x/crypto/ssh"
 )
 
 // Preview renders all snippets from the posted SetupParams (or current
@@ -103,11 +104,32 @@ type knownHostRequest struct {
 }
 
 // TrustHostKey appends a known_hosts entry after the user confirms a fingerprint.
+// It recomputes the SHA256 fingerprint of the submitted public key and rejects
+// requests where the client-provided fingerprint does not match.
 func TrustHostKey(c *gin.Context) {
 	var req knownHostRequest
 	if !cosy.BindAndValid(c, &req) {
 		return
 	}
+
+	// Parse the public key so we can recompute its fingerprint and reject
+	// requests where the client-provided fingerprint disagrees with the key.
+	parsed, _, _, _, err := gossh.ParseAuthorizedKey([]byte(req.PublicKey))
+	if err != nil {
+		cosy.ErrHandler(c, cosy.WrapErrorWithParams(hostssh.ErrPublicKeyParse, err.Error()))
+		return
+	}
+	actual := gossh.FingerprintSHA256(parsed)
+	// Require an exact match of the SHA256: form we computed.
+	if req.Fingerprint != actual {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message":  "fingerprint mismatch",
+			"expected": actual,
+			"got":      req.Fingerprint,
+		})
+		return
+	}
+
 	path := settings.NginxSettings.HostKnownHostsPath
 	if path == "" {
 		path = "/etc/nginx-ui/known_hosts"
