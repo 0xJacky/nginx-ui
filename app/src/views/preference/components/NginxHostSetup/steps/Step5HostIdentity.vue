@@ -25,7 +25,7 @@ function keyID(key: HostKeyScanItem) {
 }
 
 function shellQuote(value: string) {
-  return `'${value.replaceAll("'", "'\"'\"'")}'`
+  return `'${value.replaceAll('\'', '\'"\'"\'')}'`
 }
 
 function parseHostAddress(address: string) {
