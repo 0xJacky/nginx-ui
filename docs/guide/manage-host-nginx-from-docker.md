@@ -37,7 +37,7 @@ sudo chmod 600 /home/nginxui/.ssh/authorized_keys
 ```
 
 ::: warning Host key verification
-Strict host key checking is enabled by default. If the wizard shows a new host fingerprint, verify it before trusting the key. Only set `NGINX_UI_NGINX_HOST_STRICT_HOST_KEY=false` in a controlled test environment.
+Host key checking always uses the configured known_hosts allow-list. If the wizard shows a new host fingerprint, verify it before trusting the key.
 :::
 
 ## Step 3: Install the sudoers entry

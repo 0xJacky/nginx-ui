@@ -207,8 +207,7 @@ nginx-ui host-setup test
 | `host_user` | SSH user on the host |
 | `host_auth_method` | SSH authentication method. Use key authentication for the current host SSH setup |
 | `host_private_key_path` | Private key path inside the container |
-| `host_known_hosts_path` | known_hosts path inside the container |
-| `host_strict_host_key` | Enables strict host key checking. Enabled by default unless explicitly set to `false` |
+| `host_known_hosts_path` | known_hosts allow-list path inside the container |
 | `host_sudo_prefix` | Prefix used for privileged commands. Default `sudo -n` |
 | `host_systemd_unit_name` | Default `nginx.service` |
 | `host_systemctl_path` | Default `/bin/systemctl` |

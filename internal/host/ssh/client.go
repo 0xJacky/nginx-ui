@@ -23,7 +23,6 @@ type ClientOptions struct {
 	PrivateKeyPath string
 	Password       string // decrypted password, only when AuthMethod=="password"
 	KnownHosts     *KnownHosts
-	Strict         bool          // if false, accept any host key on first connect
 	Timeout        time.Duration // dial+handshake timeout; default 10s
 	KeepAlive      time.Duration // SSH-level keepalive; default 30s
 	Config         Config        // forwarded into Exec
@@ -52,12 +51,9 @@ func (c *Client) dial(ctx context.Context) (*gossh.Client, error) {
 		return nil, err
 	}
 
-	hostKeyCallback := gossh.InsecureIgnoreHostKey()
-	if c.opts.KnownHosts != nil {
-		hostKeyCallback = c.opts.KnownHosts.HostKeyCallback()
-	}
-	if c.opts.Strict && c.opts.KnownHosts == nil {
-		return nil, errors.New("strict host key checking enabled but no known_hosts configured")
+	hostKeyCallback, err := c.hostKeyCallback()
+	if err != nil {
+		return nil, err
 	}
 
 	cfg := &gossh.ClientConfig{
@@ -80,6 +76,17 @@ func (c *Client) dial(ctx context.Context) (*gossh.Client, error) {
 	client := gossh.NewClient(sshConn, chans, reqs)
 	go c.keepalive(client)
 	return client, nil
+}
+
+func (c *Client) hostKeyCallback() (gossh.HostKeyCallback, error) {
+	if c.opts.KnownHosts == nil {
+		return nil, errors.New("known_hosts allow-list is required for ssh host key verification")
+	}
+	callback := c.opts.KnownHosts.HostKeyCallback()
+	if callback == nil {
+		return nil, errors.New("known_hosts host key callback is unavailable")
+	}
+	return callback, nil
 }
 
 func (c *Client) buildAuth() ([]gossh.AuthMethod, error) {

@@ -59,3 +59,11 @@ func TestKnownHosts_StrictRejectsUnknown(t *testing.T) {
 		t.Errorf("unknown host should not be trusted")
 	}
 }
+
+func TestClientHostKeyCallbackRequiresKnownHosts(t *testing.T) {
+	client := NewClient(ClientOptions{})
+
+	if _, err := client.hostKeyCallback(); err == nil {
+		t.Fatal("host key callback should require a known_hosts allow-list")
+	}
+}

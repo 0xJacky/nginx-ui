@@ -32,7 +32,6 @@ type Nginx struct {
 	HostPrivateKeyPath  string `json:"host_private_key_path" protected:"true"`
 	HostPasswordRef     string `json:"host_password_ref" protected:"true"`
 	HostKnownHostsPath  string `json:"host_known_hosts_path" protected:"true"`
-	HostStrictHostKey   bool   `json:"host_strict_host_key" protected:"true"`
 	HostSudoPrefix      string `json:"host_sudo_prefix" protected:"true"`
 	HostSystemdUnitName string `json:"host_systemd_unit_name" protected:"true"`
 	HostSystemctlPath   string `json:"host_systemctl_path" protected:"true"`

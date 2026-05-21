@@ -37,7 +37,7 @@ sudo chmod 600 /home/nginxui/.ssh/authorized_keys
 ```
 
 ::: warning 主机密钥验证
-默认启用严格主机密钥检查。如果配置向导显示新的主机指纹，请先确认指纹再信任该密钥。只有在受控测试环境中，才建议设置 `NGINX_UI_NGINX_HOST_STRICT_HOST_KEY=false`。
+主机密钥检查始终使用已配置的 known_hosts 允许列表。如果配置向导显示新的主机指纹，请先确认指纹再信任该密钥。
 :::
 
 ## 步骤 3：安装 sudoers 条目

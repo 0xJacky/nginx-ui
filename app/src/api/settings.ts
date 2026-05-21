@@ -79,7 +79,6 @@ export interface NginxSettings {
   host_auth_method?: string
   host_private_key_path?: string
   host_known_hosts_path?: string
-  host_strict_host_key?: boolean
   host_sudo_prefix?: string
   host_systemd_unit_name?: string
   host_systemctl_path?: string

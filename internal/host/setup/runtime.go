@@ -28,7 +28,6 @@ func NewClientFromSettings() (*hostssh.Client, error) {
 		AuthMethod:     n.HostAuthMethod,
 		PrivateKeyPath: n.HostPrivateKeyPath,
 		KnownHosts:     kh,
-		Strict:         n.HostStrictHostKey,
 		Config: hostssh.Config{
 			SudoPrefix:    sudo,
 			SystemctlPath: systemctl,
