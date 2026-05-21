@@ -173,9 +173,11 @@ services:
 
 ### 限制
 
-- **僅限同一宿主機**：Nginx UI 容器與目標 nginx 程序必須在同一台實體機或虛擬機上。如需多主機管理，請參閱 [叢集節點跨主機指南](cluster-node-cross-host.md)。
+::: warning 限制
+- **僅限同一宿主機**：Nginx UI 容器與目標 nginx 程序必須在同一台實體機或虛擬機上。如需多主機管理，請參閱 [使用叢集節點管理多主機 Nginx](manage-multi-host-nginx-with-cluster.md)。
 - 宿主機上**需要 systemd**。此模式透過呼叫 `systemctl reload|restart <unit>` 來控制服務。
 - 宿主機的 nginx 使用者必須允許一個專用的非特權使用者（通常為 `nginxui`）透過 `sudo -n` 無密碼執行一組受限命令。
+:::
 
 ### 快速開始
 
@@ -197,8 +199,14 @@ nginx-ui host-setup test
 | `host_mode` | 設定為 `ssh` 以啟用此模式 |
 | `host_address` | 遠端 `host:port` |
 | `host_user` | 宿主機上的 SSH 使用者 |
+| `host_auth_method` | SSH 認證方式。目前宿主機 SSH 設定請使用金鑰認證 |
 | `host_private_key_path` | 容器內的私鑰路徑 |
+| `host_known_hosts_path` | 容器內的 known_hosts 路徑 |
+| `host_strict_host_key` | 啟用嚴格主機金鑰檢查。預設啟用，除非明確設定為 `false` |
+| `host_sudo_prefix` | 特權指令前綴。預設值為 `sudo -n` |
 | `host_systemd_unit_name` | 預設為 `nginx.service` |
 | `host_systemctl_path` | 預設為 `/bin/systemctl` |
+| `host_config_dir` | 宿主機側 nginx 設定目錄 |
+| `host_log_dir` | 宿主機側 nginx 日誌目錄 |
 
-另請參閱：[Host SSH 設定指引](host-via-ssh-setup.md)。
+另請參閱：[在 Docker 中管理宿主機 Nginx](manage-host-nginx-from-docker.md) 和 [使用叢集節點管理多主機 Nginx](manage-multi-host-nginx-with-cluster.md)。

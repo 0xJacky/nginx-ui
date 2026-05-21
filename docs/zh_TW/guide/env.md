@@ -158,13 +158,19 @@
 
 ## 透過 SSH 控制宿主機
 
+::: info
+這些變數用於 Nginx UI 在 Docker 容器中透過 SSH 控制宿主機上原生安裝的 nginx 服務。
+:::
+
 | 變數 | 描述 |
 |---|---|
 | `NGINX_UI_NGINX_HOST_MODE` | 設定為 `ssh` 以啟用宿主機 SSH 控制 |
 | `NGINX_UI_NGINX_HOST_ADDRESS` | 遠端 `host:port`，例如 `host.docker.internal:22` |
 | `NGINX_UI_NGINX_HOST_USER` | 宿主機上的 SSH 使用者 |
+| `NGINX_UI_NGINX_HOST_AUTH_METHOD` | SSH 認證方式。目前宿主機 SSH 設定請使用金鑰認證 |
 | `NGINX_UI_NGINX_HOST_PRIVATE_KEY_PATH` | 容器內的私鑰路徑 |
 | `NGINX_UI_NGINX_HOST_KNOWN_HOSTS_PATH` | 容器內的 known_hosts 路徑 |
+| `NGINX_UI_NGINX_HOST_STRICT_HOST_KEY` | 僅在需要關閉嚴格主機金鑰檢查時設定為 `false` |
 | `NGINX_UI_NGINX_HOST_SUDO_PREFIX` | 預設為 `sudo -n` |
 | `NGINX_UI_NGINX_HOST_SYSTEMD_UNIT_NAME` | 預設為 `nginx.service` |
 | `NGINX_UI_NGINX_HOST_SYSTEMCTL_PATH` | 宿主機上 systemctl 的絕對路徑 |
