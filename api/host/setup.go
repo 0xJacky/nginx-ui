@@ -114,6 +114,7 @@ type hostKeyTrustRequest struct {
 	Algorithm   string `json:"algorithm" binding:"required"`
 	Fingerprint string `json:"fingerprint" binding:"required"`
 	PublicKey   string `json:"public_key" binding:"required"`
+	Confirmed   bool   `json:"confirmed"`
 }
 
 type hostKeyReplaceRequest struct {
@@ -133,11 +134,7 @@ type hostKeyDeleteRequest struct {
 }
 
 func hostKnownHostsPath() string {
-	path := settings.NginxSettings.HostKnownHostsPath
-	if path == "" {
-		path = "/etc/nginx-ui/known_hosts"
-	}
-	return path
+	return settings.NginxSettings.GetHostKnownHostsPath()
 }
 
 func parseAndVerifyPublicKey(publicKey, fingerprint string) (gossh.PublicKey, error) {
@@ -218,6 +215,10 @@ func ScanHostKey(c *gin.Context) {
 func TrustScannedHostKey(c *gin.Context) {
 	var req hostKeyTrustRequest
 	if !cosy.BindAndValid(c, &req) {
+		return
+	}
+	if !req.Confirmed {
+		cosy.ErrHandler(c, hostssh.ErrHostKeyConfirmRequired)
 		return
 	}
 	parsed, err := parseAndVerifyPublicKey(req.PublicKey, req.Fingerprint)

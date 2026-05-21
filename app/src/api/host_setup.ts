@@ -38,7 +38,7 @@ export interface KeypairResponse {
   private_key?: string
 }
 
-export type HostKeyStatus = 'trusted' | 'unknown_host' | 'new_algorithm' | 'changed' | 'stale' | 'scan_failed' | 'parse_failed'
+export type HostKeyStatus = 'trusted' | 'unknown_host' | 'new_algorithm' | 'changed' | 'stale'
 
 export interface HostKeyScanItem {
   algorithm: string
@@ -72,6 +72,7 @@ export interface HostKeyTrustRequest {
   algorithm: string
   fingerprint: string
   public_key: string
+  confirmed: boolean
 }
 
 export interface HostKeyReplaceRequest {

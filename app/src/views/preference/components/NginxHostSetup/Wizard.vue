@@ -33,15 +33,27 @@ watch(publicKey, v => {
 const systemSettingsStore = useSystemSettingsStore()
 const { data } = storeToRefs(systemSettingsStore)
 
+const defaultHostPrivateKeyPath = '/etc/nginx-ui/host_key'
+const defaultHostKnownHostsPath = '/etc/nginx-ui/known_hosts'
+
 // Write wizard params into the global settings store so the existing
 // "Save" button in Preference.vue's FooterToolBar persists them.
 function saveToSettings() {
+  data.value.nginx.host_mode = 'ssh'
   data.value.nginx.host_address = params.value.host_address
   data.value.nginx.host_user = params.value.host_user
+  data.value.nginx.host_auth_method = authMethod.value
+  data.value.nginx.host_private_key_path ||= defaultHostPrivateKeyPath
+  data.value.nginx.host_known_hosts_path ||= defaultHostKnownHostsPath
+  data.value.nginx.host_sudo_prefix ||= 'sudo -n'
   data.value.nginx.host_systemd_unit_name = params.value.systemd_unit
   data.value.nginx.host_systemctl_path = params.value.systemctl_path
   data.value.nginx.host_config_dir = params.value.host_config_dir
   data.value.nginx.host_log_dir = params.value.host_log_dir
+  data.value.nginx.sbin_path = params.value.nginx_sbin_path ?? data.value.nginx.sbin_path
+  data.value.nginx.config_dir = params.value.host_config_dir ?? data.value.nginx.config_dir
+  data.value.nginx.error_log_path = `${params.value.host_log_dir ?? '/var/log/nginx'}/error.log`
+  data.value.nginx.access_log_path = `${params.value.host_log_dir ?? '/var/log/nginx'}/access.log`
 }
 
 function next() {
