@@ -24,6 +24,7 @@ export interface RenderedSnippets {
 
 export interface StepOutcome {
   ok: boolean
+  level?: 'success' | 'warning' | 'error'
   detail: string
   remediation?: string
 }

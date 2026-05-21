@@ -15,6 +15,7 @@ import (
 // as a copy-pasteable shell command.
 type StepOutcome struct {
 	OK          bool   `json:"ok"`
+	Level       string `json:"level,omitempty"`
 	Detail      string `json:"detail"`
 	Remediation string `json:"remediation,omitempty"`
 }

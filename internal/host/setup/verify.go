@@ -18,6 +18,7 @@ import (
 // as a copy-pasteable shell command.
 type StepOutcome struct {
 	OK          bool   `json:"ok"`
+	Level       string `json:"level,omitempty"`
 	Detail      string `json:"detail"`
 	Remediation string `json:"remediation,omitempty"`
 }
@@ -38,6 +39,7 @@ type VerifyOptions struct {
 func Verify(ctx context.Context, opts VerifyOptions) VerifyResult {
 	r := VerifyResult{Steps: map[string]StepOutcome{}}
 	p := opts.Params.FillDefaults()
+	r.Steps["known_hosts_persistence"] = checkKnownHostsPersistence(p.ContainerKnownHostsPath)
 
 	r.Steps["same_host"] = checkSameHost(ctx, opts.Client)
 
