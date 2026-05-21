@@ -38,6 +38,58 @@ export interface KeypairResponse {
   private_key?: string
 }
 
+export type HostKeyStatus = 'trusted' | 'unknown_host' | 'new_algorithm' | 'changed' | 'stale' | 'scan_failed' | 'parse_failed'
+
+export interface HostKeyScanItem {
+  algorithm: string
+  public_key: string
+  fingerprint: string
+  existing_fingerprint?: string
+  status: HostKeyStatus
+}
+
+export interface KnownHostsPersistence {
+  path: string
+  recommended: boolean
+  warning?: string
+}
+
+export interface HostKeyScanResult {
+  host_address: string
+  known_hosts_path: string
+  keys: HostKeyScanItem[]
+  stale_keys: HostKeyScanItem[]
+  persistence: KnownHostsPersistence
+}
+
+export interface HostKeyScanRequest {
+  host_address: string
+  keyscan_output?: string
+}
+
+export interface HostKeyTrustRequest {
+  host_address: string
+  algorithm: string
+  fingerprint: string
+  public_key: string
+}
+
+export interface HostKeyReplaceRequest {
+  host_address: string
+  algorithm: string
+  old_fingerprint: string
+  new_fingerprint: string
+  public_key: string
+  confirmed: boolean
+}
+
+export interface HostKeyDeleteRequest {
+  host_address: string
+  algorithm: string
+  fingerprint: string
+  confirmed: boolean
+}
+
 const hostSetup = {
   preview(params?: SetupParams): Promise<RenderedSnippets> {
     return http.post('/host/setup/preview', params ?? {})
@@ -60,6 +112,18 @@ const hostSetup = {
       fingerprint,
       public_key: publicKey,
     })
+  },
+  scanHostKeys(payload: HostKeyScanRequest): Promise<HostKeyScanResult> {
+    return http.post('/host/setup/host-key/scan', payload)
+  },
+  trustScannedHostKey(payload: HostKeyTrustRequest): Promise<void> {
+    return http.post('/host/setup/host-key/trust', payload)
+  },
+  replaceHostKey(payload: HostKeyReplaceRequest): Promise<void> {
+    return http.post('/host/setup/host-key/replace', payload)
+  },
+  deleteHostKey(payload: HostKeyDeleteRequest): Promise<void> {
+    return http.delete('/host/setup/host-key', { data: payload })
   },
 }
 
