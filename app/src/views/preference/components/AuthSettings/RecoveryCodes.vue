@@ -84,11 +84,14 @@ function handlePopOpenChange(visible: boolean) {
     <AAlert
       v-else-if="!twoFAStatus?.recovery_codes_generated"
       class="mb-4"
-      type="warning"
+      :type="twoFAStatus?.recovery_codes_migration_required ? 'warning' : 'info'"
       show-icon
     >
       <template #message>
-        <template v-if="twoFAStatus?.otp_status">
+        <template v-if="twoFAStatus?.recovery_codes_migration_required">
+          {{ $gettext('Your account uses a deprecated legacy recovery code. Generate new recovery codes now to complete migration and keep account recovery secure.') }}
+        </template>
+        <template v-else-if="twoFAStatus?.otp_status">
           {{ $gettext('Your current recovery code might be outdated and insecure. Please generate new recovery codes at your earliest convenience to ensure security.') }}
         </template>
         <template v-else>
@@ -159,7 +162,7 @@ function handlePopOpenChange(visible: boolean) {
           type="primary"
           ghost
         >
-          {{ twoFAStatus?.recovery_codes_generated ? $gettext('Generate New Recovery Codes') : $gettext('Generate Recovery Codes') }}
+          {{ twoFAStatus?.recovery_codes_generated || twoFAStatus?.recovery_codes_migration_required ? $gettext('Generate New Recovery Codes') : $gettext('Generate Recovery Codes') }}
         </AButton>
       </APopconfirm>
     </template>

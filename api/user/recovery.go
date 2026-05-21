@@ -1,8 +1,8 @@
 package user
 
 import (
-	"fmt"
-	"math/rand"
+	cryptorand "crypto/rand"
+	"math/big"
 	"net/http"
 	"time"
 
@@ -13,24 +13,53 @@ import (
 	"github.com/uozi-tech/cosy"
 )
 
+const recoveryCodeAlphabet = "0123456789abcdefghijklmnopqrstuvwxyz"
+
 type RecoveryCodesResponse struct {
 	Message string `json:"message"`
 	model.RecoveryCodes
 }
 
-func generateRecoveryCode() string {
-	// generate recovery code, 10 hex numbers with a dash in the middle
-	return fmt.Sprintf("%05x-%05x", rand.Intn(0x100000), rand.Intn(0x100000))
+func randomRecoveryCodeChar() (byte, error) {
+	n, err := cryptorand.Int(cryptorand.Reader, big.NewInt(int64(len(recoveryCodeAlphabet))))
+	if err != nil {
+		return 0, err
+	}
+
+	return recoveryCodeAlphabet[n.Int64()], nil
 }
 
-func generateRecoveryCodes(count int) []*model.RecoveryCode {
+func generateRecoveryCode() (string, error) {
+	code := make([]byte, 11)
+	for i := range code {
+		if i == 5 {
+			code[i] = '-'
+			continue
+		}
+
+		char, err := randomRecoveryCodeChar()
+		if err != nil {
+			return "", err
+		}
+		code[i] = char
+	}
+
+	return string(code), nil
+}
+
+func generateRecoveryCodes(count int) ([]*model.RecoveryCode, error) {
 	recoveryCodes := make([]*model.RecoveryCode, count)
 	for i := 0; i < count; i++ {
+		code, err := generateRecoveryCode()
+		if err != nil {
+			return nil, err
+		}
+
 		recoveryCodes[i] = &model.RecoveryCode{
-			Code: generateRecoveryCode(),
+			Code: code,
 		}
 	}
-	return recoveryCodes
+	return recoveryCodes, nil
 }
 
 func ViewRecoveryCodes(c *gin.Context) {
@@ -56,11 +85,16 @@ func GenerateRecoveryCodes(c *gin.Context) {
 	user := api.CurrentUser(c)
 
 	t := time.Now().Unix()
-	recoveryCodes := model.RecoveryCodes{Codes: generateRecoveryCodes(16), LastViewed: &t}
+	codes, err := generateRecoveryCodes(16)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+	recoveryCodes := model.RecoveryCodes{Codes: codes, LastViewed: &t}
 	user.RecoveryCodes = recoveryCodes
 
 	u := query.User
-	_, err := u.Where(u.ID.Eq(user.ID)).Updates(user)
+	_, err = u.Where(u.ID.Eq(user.ID)).Updates(user)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

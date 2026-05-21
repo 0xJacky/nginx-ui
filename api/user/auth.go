@@ -87,7 +87,7 @@ func Login(c *gin.Context) {
 			return
 		}
 
-		if err = user.VerifyOTP(u, json.OTP, json.RecoveryCode); err != nil {
+		if _, err = user.VerifyOTP(u, json.OTP, json.RecoveryCode); err != nil {
 			cosy.ErrHandler(c, err)
 			user.BanIP(clientIP)
 			return

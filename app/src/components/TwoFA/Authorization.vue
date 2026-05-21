@@ -65,6 +65,14 @@ onMounted(() => {
 
 <template>
   <div>
+    <AAlert
+      v-if="twoFAStatus.recovery_codes_migration_required"
+      class="mb-4"
+      type="warning"
+      show-icon
+      :message="$gettext('Your account still uses a legacy recovery code. Generate new recovery codes after verification to keep account recovery secure.')"
+    />
+
     <div
       v-if="useRecoveryCode"
       class="mt-2 mb-4"
@@ -110,7 +118,7 @@ onMounted(() => {
       </AButton>
     </div>
 
-    <div v-if="twoFAStatus.otp_status || twoFAStatus.recovery_codes_generated" class="flex justify-center mt-3">
+    <div v-if="twoFAStatus.otp_status || twoFAStatus.recovery_codes_generated || twoFAStatus.recovery_codes_migration_required" class="flex justify-center mt-3">
       <a
         v-if="!useRecoveryCode"
         @click="clickUseRecoveryCode"

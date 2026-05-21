@@ -5,10 +5,12 @@ import { useAppStore, useUserStore } from '@/pinia'
 function use2FAModal() {
   const app = useAppStore()
   const { modal } = storeToRefs(app)
+  const router = useRouter()
+  const userStore = useUserStore()
   const refOTPAuthorization = ref<typeof Authorization>()
   // eslint-disable-next-line sonarjs/pseudo-random
   const randomId = Math.random().toString(36).substring(2, 8)
-  const { secureSessionId } = storeToRefs(useUserStore())
+  const { secureSessionId } = storeToRefs(userStore)
 
   // Use global message API
   const { message } = useGlobalApp()
@@ -22,6 +24,17 @@ function use2FAModal() {
       }
     `
     document.head.appendChild(style)
+  }
+
+  function guideLegacyRecoveryMigration() {
+    modal.value!.confirm({
+      title: $gettext('Generate new recovery codes'),
+      content: $gettext('Your legacy recovery code has been used and cannot be used again. Generate new recovery codes now to keep account recovery available.'),
+      okText: $gettext('Go to Recovery Codes'),
+      cancelText: $gettext('Later'),
+      centered: true,
+      onOk: () => router.push('/profile'),
+    })
   }
 
   const open = async (): Promise<string> => {
@@ -55,6 +68,9 @@ function use2FAModal() {
             twoFA.start_secure_session_by_otp(passcode, recovery).then(async r => {
               modalInstance.destroy()
               secureSessionId.value = r.session_id
+              await userStore.refreshTwoFAStatus()
+              if (r.used_legacy_recovery_code)
+                guideLegacyRecoveryMigration()
               resolve(r.session_id)
             }).catch(async () => {
               refOTPAuthorization.value?.clearInput()
