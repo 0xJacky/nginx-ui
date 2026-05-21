@@ -134,6 +134,10 @@ msgstr ""
 "de RAM. Les performances réelles peuvent varier selon votre configuration "
 "matérielle."
 
+#: src/views/preference/components/NginxHostSetup/steps/Step2bHost.vue:30
+msgid "/etc/sudoers.d/nginx-ui (sudo visudo -f)"
+msgstr "/etc/sudoers.d/nginx-ui (sudo visudo -f)"
+
 #: src/views/site/site_list/SiteList.vue:191
 msgid "%{count} sites selected"
 msgstr "%{count} sites sélectionnés"
@@ -201,7 +205,11 @@ msgstr "Le chemin du journal d'accès n'existe pas"
 msgid "Access Logs"
 msgstr "Journaux d'accès"
 
-#: src/routes/modules/certificates.ts:20 src/views/certificate/ACMEUser.vue:149
+#: src/views/preference/components/NginxHostSetup/steps/Step2bHost.vue:42
+msgid "ACL commands (run as root)"
+msgstr "Commandes ACL (à exécuter en root)"
+
+#: src/routes/modules/certificates.ts:20 src/views/certificate/ACMEUser.vue:140
 #: src/views/certificate/components/ACMEUserSelector.vue:64
 msgid "ACME User"
 msgstr "Utilisateur ACME"
@@ -211,7 +219,7 @@ msgid "Action"
 msgstr "Action"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:273
-#: src/views/certificate/ACMEUser.vue:131
+#: src/views/certificate/ACMEUser.vue:122
 #: src/views/certificate/CertificateList/certColumns.tsx:92
 #: src/views/config/configColumns.tsx:51
 #: src/views/dns/components/DNSRecordTable.vue:42
@@ -236,7 +244,7 @@ msgstr "Ratio réel des travailleurs par rapport à la configuration"
 
 #: src/components/NgxConfigEditor/NgxServer.vue:144
 #: src/components/NgxConfigEditor/NgxUpstream.vue:97 src/language/curd.ts:19
-#: src/views/preference/tabs/CertSettings.vue:45
+#: src/views/preference/tabs/CertSettings.vue:51
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:119
 #: src/views/site/site_list/SiteList.vue:150 src/views/stream/StreamList.vue:81
 msgid "Add"
@@ -303,6 +311,10 @@ msgstr "Supplémentaire"
 msgid "Advance Mode"
 msgstr "Mode avancé"
 
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:242
+msgid "Advanced cleanup"
+msgstr "Nettoyage avancé"
+
 #: src/views/nginx_log/NginxLogList.vue:397
 msgid "Advanced indexing enabled but failed to start rebuild"
 msgstr ""
@@ -339,6 +351,11 @@ msgstr ""
 #: src/views/dns/components/DNSRecordFilter.vue:55
 msgid "All"
 msgstr "Tous"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step4Verify.vue:108
+
+msgid "All checks passed — you may save the configuration."
+msgstr "Toutes les vérifications ont réussi — vous pouvez enregistrer la configuration."
 
 #: src/views/system/Licenses.vue:152
 msgid "All Components"
@@ -381,7 +398,7 @@ msgstr ""
 "Toute adresse IP accessible peut être utilisée avec des autorités de "
 "certification privées"
 
-#: src/views/preference/tabs/OpenAISettings.vue:33
+#: src/views/preference/tabs/OpenAISettings.vue:96
 msgid "API Base Url"
 msgstr "URL de base de l'API"
 
@@ -389,21 +406,25 @@ msgstr "URL de base de l'API"
 msgid "API Document"
 msgstr "Documentation API"
 
-#: src/views/preference/tabs/OpenAISettings.vue:47
+#: src/views/preference/tabs/OpenAISettings.vue:107
 msgid "API Proxy"
 msgstr "Proxy d'API"
 
-#: src/views/preference/tabs/OpenAISettings.vue:59
+#: src/views/preference/tabs/OpenAISettings.vue:119
 msgid "API Token"
 msgstr "Jeton API"
 
-#: src/views/preference/tabs/OpenAISettings.vue:71
+#: src/views/preference/tabs/OpenAISettings.vue:131
 msgid "API Type"
 msgstr "Type d'API"
 
 #: src/views/preference/Preference.vue:53
 msgid "App"
 msgstr "Application"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step2bHost.vue:36
+msgid "Append to ~nginxui/.ssh/authorized_keys"
+msgstr "Ajouter à ~nginxui/.ssh/authorized_keys"
 
 #: src/language/curd.ts:65
 msgid "Apply"
@@ -466,7 +487,7 @@ msgstr ""
 msgid "Are you sure you want to remove this directive?"
 msgstr "Voulez-vous vraiment supprimer cette directive ?"
 
-#: src/views/preference/tabs/CertSettings.vue:71
+#: src/views/preference/tabs/CertSettings.vue:77
 msgid "Are you sure you want to remove this item?"
 msgstr "Êtes-vous sûr de vouloir supprimer cet élément ?"
 
@@ -496,6 +517,12 @@ msgstr "Assistant"
 msgid "At least 20GB available disk space"
 msgstr "Au moins 20 Go d'espace disque disponible"
 
+#: src/views/preference/tabs/OpenAISettings.vue:41
+msgid ""
+"Atlas Cloud is OpenAI-compatible. Use https://api.atlascloud.ai/v1 and an "
+"Atlas Cloud API key."
+msgstr ""
+
 #: src/components/SelfCheck/SelfCheck.vue:85
 msgid "Attempt to fix"
 msgstr "Tenter de corriger"
@@ -504,9 +531,10 @@ msgstr "Tenter de corriger"
 msgid "Attempts"
 msgstr "Tentatives"
 
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:72
 #: src/views/preference/Preference.vue:83
 msgid "Auth"
-msgstr "Authentification"
+msgstr "Auth"
 
 #: src/components/TwoFA/Authorization.vue:109
 msgid "Authenticate with a passkey"
@@ -515,6 +543,10 @@ msgstr "S'authentifier avec une clé d'accès"
 #: src/views/other/Login.vue:289
 msgid "Authenticating..."
 msgstr "Authentification en cours..."
+
+#: src/views/preference/components/NginxHostSetup/steps/Step1AuthMethod.vue:39
+msgid "Authentication method"
+msgstr "Méthode d’authentification"
 
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:122
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:96
@@ -761,9 +793,19 @@ msgid "Belows are selected items that you want to batch modify"
 msgstr ""
 "Ci-dessous sont sélectionnés les éléments que vous voulez modifier en masse"
 
+#: src/views/preference/components/NginxHostSetup/steps/Step3Connection.vue:57
+msgid ""
+"bind-mount cannot reach remote filesystems — config editing, log viewing and "
+"certificate management will fail."
+msgstr "bind-mount ne peut pas accéder aux systèmes de fichiers distants — l’édition de configuration, la consultation des journaux et la gestion des certificats échoueront."
+
 #: src/constants/errors/nginx.ts:3
 msgid "Block is nil"
 msgstr "Le bloc est nul"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step4Verify.vue:114
+msgid "Blocking checks passed, but warnings need review before saving."
+msgstr "Les vérifications bloquantes ont réussi, mais les avertissements doivent être examinés avant l’enregistrement."
 
 #: src/views/nginx_log/dashboard/components/BrowserStatsTable.vue:13
 #: src/views/nginx_log/structured/components/SearchFilters.vue:137
@@ -790,7 +832,7 @@ msgstr ""
 "aux exigences et comprenez les implications en termes de performances. Cela "
 "commencera à indexer immédiatement les fichiers journaux existants."
 
-#: src/views/certificate/ACMEUser.vue:38
+#: src/views/certificate/ACMEUser.vue:39
 msgid "CA Dir"
 msgstr "Répertoire CA"
 
@@ -833,7 +875,7 @@ msgstr "Processus de cache"
 msgid "Cache subdirectory levels structure, e.g. 1:2"
 msgstr "Structure des niveaux de sous-répertoires du cache, par ex. 1:2"
 
-#: src/views/preference/tabs/CertSettings.vue:19
+#: src/views/preference/tabs/CertSettings.vue:20
 msgid "CADir"
 msgstr "CADir"
 
@@ -991,7 +1033,7 @@ msgstr "Le chemin du certificat est vide"
 msgid "Certificate removed successfully"
 msgstr "Certificat supprimé avec succès"
 
-#: src/views/preference/tabs/CertSettings.vue:27
+#: src/views/preference/tabs/CertSettings.vue:33
 msgid "Certificate Renewal Interval"
 msgstr "Intervalle de renouvellement du certificat"
 
@@ -1316,7 +1358,7 @@ msgstr "Fermé"
 msgid "Code completion is not enabled"
 msgstr "La complétion de code n'est pas activée"
 
-#: src/views/preference/tabs/OpenAISettings.vue:90
+#: src/views/preference/tabs/OpenAISettings.vue:150
 msgid "Code Completion Model"
 msgstr "Modèle de complétion de code"
 
@@ -1472,10 +1514,14 @@ msgstr "Confirmer le nouveau mot de passe"
 msgid "Confirmation Required"
 msgstr "Confirmation requise"
 
-#: src/views/dashboard/components/NodeAnalyticItem.vue:78
+#: src/views/dashboard/components/NodeAnalyticItem.vue:82
 #: src/views/dashboard/components/SiteNavigationToolbar.vue:35
 msgid "Connected"
 msgstr "Connecté"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:75
+msgid "Connection"
+msgstr "Connexion"
 
 #: src/views/dashboard/NginxDashBoard.vue:100
 msgid "Connection error, trying to reconnect..."
@@ -1488,6 +1534,14 @@ msgstr "Connexion perdue pour ce terminal. Veuillez actualiser si nécessaire."
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:61
 msgid "Connection timeout period"
 msgstr "Période de délai de connexion"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:73
+msgid "Container"
+msgstr "Conteneur"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step2aContainer.vue:24
+msgid "Container side — choose one of the three formats below"
+msgstr "Côté conteneur — choisissez l’un des trois formats ci-dessous"
 
 #: src/constants/errors/docker.ts:7
 msgid "Container status unknown"
@@ -1502,6 +1556,7 @@ msgstr "Contenu"
 #: src/components/SensitiveString/SensitiveInput.vue:62
 #: src/components/SensitiveString/SensitiveString.vue:71
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:122
+#: src/views/preference/components/NginxHostSetup/CodeBlock.vue:31
 msgid "Copied"
 msgstr "Copié"
 
@@ -1512,12 +1567,17 @@ msgstr "Copié !"
 #: src/components/SensitiveString/SensitiveInput.vue:85
 #: src/components/SensitiveString/SensitiveString.vue:100
 #: src/views/backup/components/BackupCreator.vue:128
+#: src/views/preference/components/NginxHostSetup/CodeBlock.vue:31
 msgid "Copy"
 msgstr "Copier"
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:122
 msgid "Copy Codes"
 msgstr "Copier Codes"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step4Verify.vue:95
+msgid "Copy fix"
+msgstr "Copier le correctif"
 
 #: src/views/system/Upgrade.vue:162
 msgid "Core Upgrade"
@@ -1658,6 +1718,10 @@ msgstr "Contenu actuel"
 msgid "Current Password"
 msgstr "Mot de passe actuel"
 
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:159
+msgid "Current target"
+msgstr "Cible actuelle"
+
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:65
 msgid "Current usage"
 msgstr "Utilisation actuelle"
@@ -1735,7 +1799,7 @@ msgstr "Jour du mois"
 msgid "Day of Week"
 msgstr "Jour de la semaine"
 
-#: src/views/preference/tabs/CertSettings.vue:32
+#: src/views/preference/tabs/CertSettings.vue:38
 msgid "Days"
 msgstr "Jours"
 
@@ -1850,6 +1914,10 @@ msgstr "Suppression du site %{name} de %{node} réussie"
 #: src/views/site/site_list/SiteList.vue:33
 msgid "Delete site: %{site_name}"
 msgstr "Supprimer le site : %{site_name}"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:259
+msgid "Delete stale key"
+msgstr "Supprimer la clé obsolète"
 
 #: src/components/Notification/notifications.ts:162
 msgid "Delete stream %{name} from %{node} failed"
@@ -2195,6 +2263,10 @@ msgstr "Voulez-vous supprimer cet upstream ?"
 msgid "Docker client not initialized"
 msgstr "Client Docker non initialisé"
 
+#: src/views/preference/components/NginxHostSetup/steps/Step2aContainer.vue:44
+msgid "docker run"
+msgstr "docker run"
+
 #: src/language/generate.ts:21
 msgid "Docker socket exists"
 msgstr "Le socket Docker existe"
@@ -2202,6 +2274,10 @@ msgstr "Le socket Docker existe"
 #: src/constants/errors/self_check.ts:16
 msgid "Docker socket not exist"
 msgstr "Le socket Docker n'existe pas"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step2aContainer.vue:28
+msgid "docker-compose snippet"
+msgstr "extrait docker-compose"
 
 #: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:88
 #: src/components/NgxConfigEditor/directive/DirectiveDocuments.vue:16
@@ -2296,11 +2372,11 @@ msgstr "Gestion dynamique des fragments"
 msgid "e.g., 0 0 * * * (daily at midnight)"
 msgstr "par ex., 0 0 * * * (quotidiennement à minuit)"
 
-#: src/views/certificate/ACMEUser.vue:100
+#: src/views/certificate/ACMEUser.vue:91
 msgid "EAB HMAC Key"
 msgstr "Clé HMAC EAB"
 
-#: src/views/certificate/ACMEUser.vue:87
+#: src/views/certificate/ACMEUser.vue:78
 msgid "EAB Key ID"
 msgstr "ID de clé EAB"
 
@@ -2330,8 +2406,8 @@ msgstr "Modifier le site"
 msgid "Edit Stream"
 msgstr "Modifier le flux"
 
-#: src/views/certificate/ACMEUser.vue:26
-#: src/views/preference/tabs/CertSettings.vue:12
+#: src/views/certificate/ACMEUser.vue:27
+#: src/views/preference/tabs/CertSettings.vue:13
 msgid "Email"
 msgstr "E-mail"
 
@@ -2369,7 +2445,7 @@ msgstr "Activer l'indexation avancée des journaux"
 msgid "Enable auto-renewal failed for %{name}"
 msgstr "Échec de l'activation du renouvellement automatique pour %{name}"
 
-#: src/views/preference/tabs/OpenAISettings.vue:84
+#: src/views/preference/tabs/OpenAISettings.vue:144
 msgid "Enable Code Completion"
 msgstr "Activer la complétion de code"
 
@@ -2632,6 +2708,10 @@ msgstr "Exécuter tous les jours à %{time}"
 msgid "Execute on every month on day %{day} at %{time}"
 msgstr "Exécuter chaque mois le jour %{day} à %{time}"
 
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:210
+msgid "Existing fingerprint"
+msgstr "Empreinte existante"
+
 #: src/language/curd.ts:72
 msgid "Expand"
 msgstr "Développer"
@@ -2661,7 +2741,7 @@ msgstr "Expiré le : %{date}"
 msgid "Export Excel"
 msgstr "Exporter Excel"
 
-#: src/views/certificate/ACMEUser.vue:105
+#: src/views/certificate/ACMEUser.vue:96
 msgid ""
 "External Account Binding HMAC Key (optional). Should be in Base64 URL "
 "encoding format."
@@ -2669,7 +2749,7 @@ msgstr ""
 "Clé HMAC de liaison de compte externe (optionnelle). Doit être au format "
 "d'encodage Base64 URL."
 
-#: src/views/certificate/ACMEUser.vue:92
+#: src/views/certificate/ACMEUser.vue:83
 msgid ""
 "External Account Binding Key ID (optional). Required for some ACME providers "
 "like ZeroSSL."
@@ -2677,7 +2757,11 @@ msgstr ""
 "ID de clé de liaison de compte externe (facultatif). Requis pour certains "
 "fournisseurs ACME comme ZeroSSL."
 
-#: src/views/preference/tabs/NginxSettings.vue:49
+#: src/views/preference/tabs/NginxSettings.vue:89
+msgid "External Container"
+msgstr "Conteneur externe"
+
+#: src/views/preference/tabs/NginxSettings.vue:102
 msgid "External Docker Container"
 msgstr "Conteneur Docker externe"
 
@@ -3120,6 +3204,10 @@ msgstr "Échec de l'enregistrement des paramètres de performance de Nginx"
 msgid "Failed to save order"
 msgstr "Échec de l'enregistrement de l'ordre"
 
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:182
+msgid "Failed to scan host keys"
+msgstr "Échec de l’analyse des clés d’hôte"
+
 #: src/views/preference/tabs/ExternalNotify.vue:32
 msgid "Failed to send test message"
 msgstr "Échec de l'envoi du message de test"
@@ -3228,6 +3316,10 @@ msgstr "Filtrer"
 #: src/views/nginx_log/raw/RawLogViewer.vue:301
 msgid "Filter log content"
 msgstr "Filtrer le contenu du journal"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:207
+msgid "Fingerprint"
+msgstr "Empreinte"
 
 #: src/language/constants.ts:19 src/views/site/site_add/SiteAdd.vue:176
 msgid "Finished"
@@ -3368,6 +3460,10 @@ msgstr "Certificat général"
 #: src/language/curd.ts:17
 msgid "Generate"
 msgstr "Générer"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step1AuthMethod.vue:67
+msgid "Generate keypair"
+msgstr "Générer une paire de clés"
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:139
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:162
@@ -3532,6 +3628,10 @@ msgstr "Cacher"
 msgid "Hide Assistant"
 msgstr "Masquer l'assistant"
 
+#: src/views/preference/tabs/NginxSettings.vue:97
+msgid "Hide setup wizard"
+msgstr "Masquer l’assistant de configuration"
+
 #: src/composables/useGeoTranslation.ts:165
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:165
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:133
@@ -3554,9 +3654,41 @@ msgid "Home"
 msgstr "Menu principal"
 
 #: src/views/dns/components/DNSRecordFilter.vue:42
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:160
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:74
 #: src/views/preference/tabs/ServerSettings.vue:19
 msgid "Host"
 msgstr "Hôte"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step3Connection.vue:31
+msgid "Host address (host:port)"
+msgstr "Adresse de l’hôte (host:port)"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:76
+msgid "Host Identity"
+msgstr "Identité de l’hôte"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:273
+msgid "Host identity is trusted. You may continue to verification."
+msgstr "L’identité de l’hôte est approuvée. Vous pouvez continuer la vérification."
+
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:228
+msgid ""
+"Host key changed. Replace only after confirming an intentional host SSH key "
+"rotation."
+msgstr "La clé d’hôte a changé. Remplacez-la uniquement après avoir confirmé une rotation intentionnelle de la clé SSH de l’hôte."
+
+#: src/views/preference/components/NginxHostSetup/steps/Step2bHost.vue:23
+msgid "Host side — run these on the machine that runs nginx"
+msgstr "Côté hôte — exécutez ces commandes sur la machine qui exécute nginx"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:70
+msgid "Host SSH setup wizard"
+msgstr "Assistant de configuration SSH de l’hôte"
+
+#: src/views/preference/tabs/NginxSettings.vue:92
+msgid "Host via SSH"
+msgstr "Hôte via SSH"
 
 #: src/views/dns/components/DNSRecordFilter.vue:45
 msgid "Host, e.g. @ or www"
@@ -3571,7 +3703,7 @@ msgstr "Heure"
 msgid "HTTP"
 msgstr "HTTP"
 
-#: src/views/preference/tabs/CertSettings.vue:15
+#: src/views/preference/tabs/CertSettings.vue:16
 msgid "HTTP Challenge Port"
 msgstr "Port de challenge HTTP"
 
@@ -3590,6 +3722,18 @@ msgstr "Protocole HTTPS"
 #: src/views/nginx_log/structured/components/SearchFilters.vue:189
 msgid "https://..."
 msgstr "https://..."
+
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:255
+msgid "I understand this removes only the selected stale known_hosts entry."
+msgstr "Je comprends que cela supprime uniquement l’entrée known_hosts obsolète sélectionnée."
+
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:230
+msgid "I verified the new fingerprint through a trusted channel."
+msgstr "J’ai vérifié la nouvelle empreinte via un canal de confiance."
+
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:220
+msgid "I verified this fingerprint through a trusted channel."
+msgstr "J’ai vérifié cette empreinte via un canal de confiance."
 
 #: src/views/preference/tabs/NodeSettings.vue:34
 msgid "ICP Number"
@@ -3796,7 +3940,7 @@ msgstr "Intervalle"
 msgid "Interval (seconds)"
 msgstr "Intervalle (secondes)"
 
-#: src/views/certificate/ACMEUser.vue:166
+#: src/views/certificate/ACMEUser.vue:157
 msgid "Invalid"
 msgstr "Invalide"
 
@@ -3964,6 +4108,10 @@ msgstr "Délai d'expiration Keepalive"
 msgid "Key Type"
 msgstr "Type de clé"
 
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:162
+msgid "known_hosts"
+msgstr "known_hosts"
+
 #: src/views/preference/components/ExternalNotify/columns.tsx:33
 msgid "Language"
 msgstr "Langue"
@@ -4062,7 +4210,7 @@ msgstr "Dernière utilisation le"
 msgid "Leave blank for no change"
 msgstr "Laisser vide pour aucun changement"
 
-#: src/views/preference/tabs/OpenAISettings.vue:42
+#: src/views/preference/tabs/OpenAISettings.vue:33
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr "Laissez vide pour la valeur par défaut : https://api.openai.com/"
 
@@ -4070,13 +4218,19 @@ msgstr "Laissez vide pour la valeur par défaut : https://api.openai.com/"
 msgid "Leave blank if do not want to modify"
 msgstr "Laisser vide si vous ne souhaitez pas modifier"
 
-#: src/views/certificate/ACMEUser.vue:107 src/views/certificate/ACMEUser.vue:94
+#: src/views/certificate/ACMEUser.vue:85 src/views/certificate/ACMEUser.vue:98
 msgid "Leave blank if not required by your ACME provider"
 msgstr "Laissez vide si votre fournisseur ACME ne le requiert pas"
 
-#: src/views/certificate/ACMEUser.vue:70
+#: src/views/certificate/ACMEUser.vue:61
 msgid "Leave blank if you don't need this."
 msgstr "Laissez vide si vous n'en avez pas besoin."
+
+#: src/views/preference/tabs/OpenAISettings.vue:31
+#, fuzzy
+msgid ""
+"Leave blank to use the Atlas Cloud endpoint: https://api.atlascloud.ai/v1"
+msgstr "Laissez vide pour la valeur par défaut : https://api.openai.com/"
 
 #: src/views/certificate/components/CertificateContentEditor.vue:240
 #: src/views/certificate/components/CertificateContentEditor.vue:258
@@ -4105,8 +4259,9 @@ msgstr "Répartition des licences"
 msgid "License Types"
 msgstr "Types de licence"
 
-#: src/views/dashboard/components/NodeAnalyticItem.vue:78
-#: src/views/dashboard/components/NodeAnalyticItem.vue:95
+#: src/views/dashboard/components/NodeAnalyticItem.vue:109
+#: src/views/dashboard/components/NodeAnalyticItem.vue:82
+#: src/views/dashboard/components/NodeAnalyticItem.vue:99
 msgid "Link"
 msgstr "Lien"
 
@@ -4138,6 +4293,10 @@ msgstr "Liste"
 #: src/components/PortScanner/PortScannerCompact.vue:43
 msgid "Listening"
 msgstr "En écoute"
+
+#: src/views/preference/Preference.vue:101
+msgid "LLM"
+msgstr ""
 
 #: src/views/dashboard/ServerAnalytic.vue:188
 msgid "Load Average:"
@@ -4189,9 +4348,13 @@ msgstr "Chargement..."
 #: src/constants/index.ts:48 src/views/backup/AutoBackup/AutoBackup.vue:74
 #: src/views/backup/AutoBackup/AutoBackup.vue:83
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:48
-#: src/views/preference/tabs/NginxSettings.vue:55
+#: src/views/preference/tabs/NginxSettings.vue:108
 msgid "Local"
 msgstr "Local"
+
+#: src/views/preference/tabs/NginxSettings.vue:86
+msgid "Local / Bundled"
+msgstr "Local / intégré"
 
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:60
 msgid "Local path (e.g., /var/backups)"
@@ -4319,6 +4482,16 @@ msgstr "Mode maintenance désactivé avec succès"
 #: src/views/site/components/SiteStatusSelect.vue:80
 msgid "Maintenance mode enabled successfully"
 msgstr "Mode maintenance activé avec succès"
+
+#: src/views/preference/tabs/NginxSettings.vue:38
+#, fuzzy
+msgid "Maintenance template (filename only)"
+msgstr "Mode maintenance activé avec succès"
+
+#: src/views/preference/tabs/NginxSettings.vue:41
+#, fuzzy
+msgid "maintenance.html"
+msgstr "Maintenance"
 
 #: src/constants/errors/cert.ts:20
 msgid "Make certificate dir error: {0}"
@@ -4452,6 +4625,10 @@ msgstr "Conception de la mémoire"
 msgid "Memory Usage (RSS)"
 msgstr "Utilisation de la mémoire (RSS)"
 
+#: src/views/preference/components/NginxHostSetup/steps/Step2aContainer.vue:33
+msgid "Merge into services.nginx-ui"
+msgstr "Fusionner dans services.nginx-ui"
+
 #: src/views/nginx_log/structured/components/SearchFilters.vue:92
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:519
 msgid "Method"
@@ -4489,7 +4666,7 @@ msgstr "Minutes"
 msgid "Mirror"
 msgstr "Miroir"
 
-#: src/views/preference/tabs/OpenAISettings.vue:21
+#: src/views/preference/tabs/OpenAISettings.vue:84
 msgid "Model"
 msgstr "Modèle"
 
@@ -4546,6 +4723,11 @@ msgstr "Mensuel"
 msgid "Monthly on day %{day} at %{time}"
 msgstr "Mensuellement le jour %{day} à %{time}"
 
+#: src/views/preference/tabs/NginxSettings.vue:44
+#, fuzzy
+msgid "Mounted directory"
+msgstr "Répertoire protégé"
+
 #: src/views/nginx_log/structured/components/SearchFilters.vue:204
 msgid "Mozilla/5.0..."
 msgstr "Mozilla/5.0..."
@@ -4569,7 +4751,7 @@ msgstr "N/D"
 
 #: src/components/NgxConfigEditor/NgxUpstream.vue:130
 #: src/views/backup/AutoBackup/AutoBackup.vue:11
-#: src/views/certificate/ACMEUser.vue:13
+#: src/views/certificate/ACMEUser.vue:14
 #: src/views/certificate/CertificateList/certColumns.tsx:9
 #: src/views/certificate/components/CertificateBasicInfo.vue:44
 #: src/views/certificate/components/CertificateBasicInfo.vue:58
@@ -4666,6 +4848,7 @@ msgstr "Nouvelle version publiée"
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:189
 #: src/views/install/components/InstallView.vue:212
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:104
 #: src/views/site/site_add/SiteAdd.vue:237
 #: src/views/site/site_add/SiteAdd.vue:244
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:264
@@ -4680,7 +4863,7 @@ msgstr "Nginx"
 msgid "Nginx -T output is empty"
 msgstr "La sortie de Nginx -T est vide"
 
-#: src/views/preference/tabs/NginxSettings.vue:13
+#: src/views/preference/tabs/NginxSettings.vue:47
 msgid "Nginx Access Log Path"
 msgstr "Chemin du journal d'accès Nginx"
 
@@ -4734,11 +4917,11 @@ msgstr "La configuration de Nginx a été restaurée"
 msgid "Nginx Configuration Parse Error"
 msgstr "Erreur d'analyse de configuration Nginx"
 
-#: src/views/preference/tabs/NginxSettings.vue:22
+#: src/views/preference/tabs/NginxSettings.vue:56
 msgid "Nginx Configuration Path"
 msgstr "Chemin de configuration de Nginx"
 
-#: src/views/preference/tabs/NginxSettings.vue:19
+#: src/views/preference/tabs/NginxSettings.vue:53
 msgid "Nginx Configurations Directory"
 msgstr "Répertoire des configurations Nginx"
 
@@ -4746,7 +4929,7 @@ msgstr "Répertoire des configurations Nginx"
 msgid "Nginx Control"
 msgstr "Contrôle Nginx"
 
-#: src/views/preference/tabs/NginxSettings.vue:46
+#: src/views/preference/tabs/NginxSettings.vue:80
 msgid "Nginx Control Mode"
 msgstr "Mode de contrôle Nginx"
 
@@ -4755,7 +4938,7 @@ msgstr "Mode de contrôle Nginx"
 msgid "Nginx CPU usage rate"
 msgstr "Taux d'utilisation du CPU par Nginx"
 
-#: src/views/preference/tabs/NginxSettings.vue:16
+#: src/views/preference/tabs/NginxSettings.vue:50
 msgid "Nginx Error Log Path"
 msgstr "Chemin du journal des erreurs Nginx"
 
@@ -4791,7 +4974,7 @@ msgstr "Nginx est en cours d'exécution"
 msgid "Nginx Log"
 msgstr "Journal Nginx"
 
-#: src/views/preference/tabs/NginxSettings.vue:25
+#: src/views/preference/tabs/NginxSettings.vue:59
 msgid "Nginx Log Directory Whitelist"
 msgstr "Liste blanche des répertoires de journaux Nginx"
 
@@ -4804,7 +4987,7 @@ msgstr "Indexation des logs Nginx..."
 msgid "Nginx Memory usage"
 msgstr "Utilisation de la mémoire par Nginx"
 
-#: src/views/preference/tabs/NginxSettings.vue:34
+#: src/views/preference/tabs/NginxSettings.vue:68
 msgid "Nginx PID Path"
 msgstr "Chemin du PID de Nginx"
 
@@ -4812,7 +4995,7 @@ msgstr "Chemin du PID de Nginx"
 msgid "Nginx PID path exists"
 msgstr "Le chemin du PID de Nginx existe"
 
-#: src/views/preference/tabs/NginxSettings.vue:40
+#: src/views/preference/tabs/NginxSettings.vue:74
 msgid "Nginx Reload Command"
 msgstr "Commande de rechargement de Nginx"
 
@@ -4834,7 +5017,7 @@ msgstr "Nginx a été rechargé avec succès"
 msgid "Nginx reported a configuration syntax error."
 msgstr "Nginx a signalé une erreur de syntaxe dans la configuration."
 
-#: src/views/preference/tabs/NginxSettings.vue:43
+#: src/views/preference/tabs/NginxSettings.vue:77
 msgid "Nginx Restart Command"
 msgstr "Commande de redémarrage de Nginx"
 
@@ -4851,7 +5034,7 @@ msgstr "Nginx a redémarré avec succès"
 msgid "Nginx sbin path exists"
 msgstr "Le chemin sbin de Nginx existe"
 
-#: src/views/preference/tabs/NginxSettings.vue:37
+#: src/views/preference/tabs/NginxSettings.vue:71
 msgid "Nginx Test Config Command"
 msgstr "Commande de test de configuration Nginx"
 
@@ -4867,6 +5050,13 @@ msgstr "Performances théoriques maximales de Nginx"
 #: src/constants/errors/system.ts:2
 msgid "Nginx UI already installed"
 msgstr "Nginx UI est déjà installé"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:156
+msgid ""
+"Nginx UI can read the key presented by the SSH server, but it cannot prove "
+"the key is genuine by itself. Verify the fingerprint through the host "
+"console or another trusted channel before trusting or replacing it."
+msgstr ""
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:166
 msgid "Nginx UI configuration has been restored"
@@ -4900,7 +5090,7 @@ msgstr "Nginx.conf inclut le répertoire streams-enabled"
 #: src/components/Notification/Notification.vue:115 src/language/curd.ts:40
 #: src/views/notification/Notification.vue:38
 #: src/views/preference/tabs/AuthSettings.vue:128
-#: src/views/preference/tabs/CertSettings.vue:73
+#: src/views/preference/tabs/CertSettings.vue:79
 #: src/views/site/site_list/SiteList.vue:166 src/views/stream/StreamList.vue:99
 msgid "No"
 msgstr "Non"
@@ -4943,6 +5133,10 @@ msgstr "Aucune entrée dans la page actuelle"
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:286
 msgid "No geographic data available"
 msgstr "Aucune donnée géographique disponible"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step1AuthMethod.vue:60
+msgid "No key generated yet"
+msgstr "Aucune clé générée pour le moment"
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:567
 msgid "No logs found in the selected time range."
@@ -5207,13 +5401,13 @@ msgstr "Seuls les fichiers ZIP sont autorisés"
 msgid "Open"
 msgstr "Ouvert"
 
+#: src/views/preference/tabs/NginxSettings.vue:97
+msgid "Open setup wizard"
+msgstr "Ouvrir l’assistant de configuration"
+
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:285
 msgid "Open Source Limitation"
 msgstr "Limitation du logiciel libre"
-
-#: src/views/preference/Preference.vue:101
-msgid "OpenAI"
-msgstr "OpenAI"
 
 #: src/views/nginx_log/dashboard/components/OSStatsTable.vue:13
 msgid "Operating System"
@@ -5276,6 +5470,10 @@ msgstr "Autres"
 msgid "Otp or recovery code empty"
 msgstr "Code OTP ou de récupération vide"
 
+#: src/views/preference/components/NginxHostSetup/steps/Step2aContainer.vue:36
+msgid "override file"
+msgstr "fichier override"
+
 #: src/views/config/components/ConfigRightPanel/Deploy.vue:18
 msgid "Overwrite"
 msgstr "Remplacer"
@@ -5296,6 +5494,10 @@ msgstr "Paramètres"
 #: src/views/dashboard/components/ParamsOptimization.vue:116
 msgid "Params Optimization"
 msgstr "Optimisation des paramètres"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:191
+msgid "Parse pasted output"
+msgstr "Analyser la sortie collée"
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:73
 msgid "Parser Performance"
@@ -5324,6 +5526,10 @@ msgstr "Mot de passe"
 msgid "Password (*)"
 msgstr "Mot de passe (*)"
 
+#: src/views/preference/components/NginxHostSetup/steps/Step1AuthMethod.vue:45
+msgid "Password (not yet supported)"
+msgstr "Mot de passe (pas encore pris en charge)"
+
 #: src/constants/errors/user.ts:2
 msgid "Password incorrect"
 msgstr "Mot de passe incorrect"
@@ -5339,6 +5545,10 @@ msgstr "Mot de passe mis à jour avec succès"
 #: src/views/user/UserProfile.vue:75
 msgid "Passwords do not match"
 msgstr "Les mots de passe ne correspondent pas"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:187
+msgid "Paste ssh-keyscan output"
+msgstr "Coller la sortie ssh-keyscan"
 
 #: src/components/NgxConfigEditor/LocationEditor.vue:122
 #: src/components/NgxConfigEditor/LocationEditor.vue:150
@@ -5689,6 +5899,10 @@ msgstr "Préférence"
 msgid "Preparing lego configurations"
 msgstr "Préparation des configurations Lego"
 
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:101
+msgid "Previous"
+msgstr ""
+
 #: src/views/dns/components/DNSRecordForm.vue:82
 #: src/views/dns/components/DNSRecordTable.vue:34
 msgid "Priority"
@@ -5706,6 +5920,10 @@ msgstr "Les IP privées (192.168.x.x, 10.x.x.x, 172.16-31.x.x) échoueront"
 #: src/views/certificate/components/CertificateFileUpload.vue:45
 msgid "private key"
 msgstr "clé privée"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step1AuthMethod.vue:79
+msgid "Private key generated (shown once)"
+msgstr "Clé privée générée (affichée une seule fois)"
 
 #: src/components/PortScanner/PortScannerCompact.vue:55
 msgid "Process"
@@ -5758,6 +5976,7 @@ msgstr ""
 
 #: src/views/dns/DDNSManager.vue:108 src/views/dns/DNSCredential.vue:26
 #: src/views/dns/DNSDomainList.vue:183 src/views/dns/DNSDomainList.vue:204
+#: src/views/preference/tabs/OpenAISettings.vue:70
 msgid "Provider"
 msgstr "Fournisseur"
 
@@ -5778,7 +5997,7 @@ msgstr "Province / Région"
 msgid "Proxied"
 msgstr "Proxifié"
 
-#: src/views/certificate/ACMEUser.vue:63
+#: src/views/certificate/ACMEUser.vue:54
 msgid "Proxy"
 msgstr "Proxy"
 
@@ -5793,6 +6012,15 @@ msgstr "Cibles du proxy"
 #: src/components/AutoCertForm/AutoCertForm.vue:192
 msgid "Public CA Requirements:"
 msgstr "Exigences de l'AC publique :"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step1AuthMethod.vue:51
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:213
+msgid "Public key"
+msgstr "Clé publique"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step1AuthMethod.vue:56
+msgid "Public key (paste into authorized_keys)"
+msgstr "Clé publique (à coller dans authorized_keys)"
 
 #: src/views/preference/tabs/NodeSettings.vue:46
 msgid "Public Security Number"
@@ -5919,7 +6147,7 @@ msgstr ""
 msgid "Recreate DNS Record"
 msgstr "Recréer l'enregistrement DNS"
 
-#: src/views/preference/tabs/CertSettings.vue:40
+#: src/views/preference/tabs/CertSettings.vue:46
 msgid "Recursive Nameservers"
 msgstr "Serveurs de noms récursifs"
 
@@ -5941,15 +6169,19 @@ msgstr "Actualiser"
 msgid "Refresh Modules Cache"
 msgstr "Actualiser le cache des modules"
 
+#: src/views/preference/components/NginxHostSetup/steps/Step1AuthMethod.vue:67
+msgid "Regenerate keypair"
+msgstr "Régénérer la paire de clés"
+
 #: src/components/LLM/ChatMessageInput.vue:74
 msgid "Regenerate response"
 msgstr "Régénérer la réponse"
 
-#: src/views/certificate/ACMEUser.vue:174
+#: src/views/certificate/ACMEUser.vue:165
 msgid "Register"
 msgstr "S'inscrire"
 
-#: src/views/certificate/ACMEUser.vue:68
+#: src/views/certificate/ACMEUser.vue:59
 msgid ""
 "Register a user or use this account to issue a certificate through an HTTP "
 "proxy."
@@ -5957,11 +6189,11 @@ msgstr ""
 "Enregistrez un utilisateur ou utilisez ce compte pour émettre un certificat "
 "via un proxy HTTP."
 
-#: src/views/certificate/ACMEUser.vue:142
+#: src/views/certificate/ACMEUser.vue:133
 msgid "Register failed"
 msgstr "Échec de l'enregistrement"
 
-#: src/views/certificate/ACMEUser.vue:113
+#: src/views/certificate/ACMEUser.vue:104
 msgid "Register On Startup"
 msgstr "Enregistrer au démarrage"
 
@@ -5969,7 +6201,7 @@ msgstr "Enregistrer au démarrage"
 msgid "Register passkey successfully"
 msgstr "Clé d'accès enregistrée avec succès"
 
-#: src/views/certificate/ACMEUser.vue:140
+#: src/views/certificate/ACMEUser.vue:131
 msgid "Register successfully"
 msgstr "Inscription réussie"
 
@@ -5977,7 +6209,7 @@ msgstr "Inscription réussie"
 msgid "Registering user"
 msgstr "Enregistrement de l'utilisateur"
 
-#: src/views/certificate/ACMEUser.vue:157
+#: src/views/certificate/ACMEUser.vue:148
 msgid "Registration Status"
 msgstr "Statut d'enregistrement"
 
@@ -6040,6 +6272,10 @@ msgstr "Rechargement de nginx"
 #: src/constants/index.ts:43 src/constants/index.ts:49
 msgid "Remote"
 msgstr "Distant"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step3Connection.vue:53
+msgid "Remote address detected"
+msgstr "Adresse distante détectée"
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:152
 #: src/views/preference/tabs/AuthSettings.vue:133
@@ -6148,6 +6384,10 @@ msgstr "Renouvellement du certificat réussi"
 msgid "Renew successfully"
 msgstr "Renouvellement réussi"
 
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:233
+msgid "Replace trusted key"
+msgstr "Remplacer la clé approuvée"
+
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:218
 msgid "Request"
 msgstr "Requête"
@@ -6199,6 +6439,10 @@ msgstr ""
 "Resident Set Size : Mémoire réelle résidente dans la mémoire physique, "
 "incluant toute la mémoire des bibliothèques partagées, qui sera recalculée "
 "pour plusieurs processus"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:279
+msgid "Resolve changed host keys before continuing."
+msgstr "Résolvez les clés d’hôte modifiées avant de continuer."
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:109
 msgid "Resource Usage Warning"
@@ -6321,6 +6565,14 @@ msgstr "RPID"
 #: src/views/preference/tabs/ServerSettings.vue:25
 msgid "Run Mode"
 msgstr "Mode d'exécution"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:188
+msgid "Run on a trusted terminal"
+msgstr "Exécuter dans un terminal de confiance"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step4Verify.vue:68
+msgid "Run verification"
+msgstr "Exécuter la vérification"
 
 #: src/components/NginxControl/NginxControl.vue:72
 msgid "Running"
@@ -6451,6 +6703,14 @@ msgstr "Samedi"
 msgid "Save"
 msgstr "Enregistrer"
 
+#: src/views/preference/components/NginxHostSetup/steps/Step2aContainer.vue:41
+msgid "Save as docker-compose.override.yml"
+msgstr "Enregistrer sous docker-compose.override.yml"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:107
+msgid "Save configuration"
+msgstr "Enregistrer la configuration"
+
 #: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:112
 msgid "Save Directive"
 msgstr "Enregistrer la directive"
@@ -6499,9 +6759,13 @@ msgstr "Enregistrement réussi"
 
 #: src/language/curd.ts:35 src/views/certificate/CertificateEditor.vue:49
 #: src/views/certificate/components/RenewCert.vue:26
-#: src/views/preference/store/index.ts:132
+#: src/views/preference/store/index.ts:134
 msgid "Save successfully"
 msgstr "Sauvegarde réussie"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step1AuthMethod.vue:82
+msgid "Save this private key somewhere safe. It will NOT be shown again."
+msgstr "Enregistrez cette clé privée dans un endroit sûr. Elle ne sera PAS affichée à nouveau."
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:51
 #: src/language/curd.ts:28 src/views/config/components/ConfigLeftPanel.vue:198
@@ -6522,6 +6786,10 @@ msgstr "Analyse terminée"
 #: src/components/PortScanner/PortScannerCompact.vue:98
 msgid "Scan failed"
 msgstr "Échec de l'analyse"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:174
+msgid "Scan host keys"
+msgstr "Analyser les clés d’hôte"
 
 #: src/components/PortScanner/PortScannerCompact.vue:179
 msgid "Scan Ports"
@@ -6606,7 +6874,7 @@ msgstr "Jeton de sécurité"
 msgid "Security Token Information"
 msgstr "Informations sur le jeton de sécurité"
 
-#: src/views/certificate/ACMEUser.vue:59
+#: src/views/certificate/ACMEUser.vue:50
 msgid ""
 "Select a predefined CA directory or enter a custom one. Leave blank to use "
 "the default CA directory."
@@ -6633,7 +6901,8 @@ msgstr "Sélectionner un domaine DNS"
 msgid "Select existing record"
 msgstr "Sélectionner un enregistrement existant"
 
-#: src/views/certificate/ACMEUser.vue:45
+#: src/views/certificate/ACMEUser.vue:46
+#: src/views/preference/tabs/CertSettings.vue:29
 msgid "Select or enter a CA directory URL"
 msgstr "Sélectionnez ou entrez une URL de répertoire CA"
 
@@ -6728,7 +6997,7 @@ msgstr ""
 "Définir le drapeau d'environnement pour désactiver le support CNAME de lego "
 "erreur: {0}"
 
-#: src/views/preference/tabs/CertSettings.vue:36
+#: src/views/preference/tabs/CertSettings.vue:42
 msgid ""
 "Set the recursive nameservers to override the systems nameservers for the "
 "step of DNS challenge."
@@ -6871,6 +7140,10 @@ msgstr "Taille"
 msgid "Skip Installation"
 msgstr "Ignorer l'installation"
 
+#: src/views/preference/components/NginxHostSetup/steps/Step4Verify.vue:71
+msgid "Skip nginx -t (no side effects)"
+msgstr "Ignorer nginx -t (aucun effet secondaire)"
+
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:324
 msgid "Sleep time between cache loader iterations"
 msgstr "Temps d'attente entre les itérations du chargeur de cache"
@@ -6898,6 +7171,14 @@ msgstr "Sponsor"
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:61
 msgid "SSD storage for better I/O performance"
 msgstr "Stockage SSD pour de meilleures performances d'E/S"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step1AuthMethod.vue:42
+msgid "SSH key (recommended)"
+msgstr "Clé SSH (recommandée)"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step3Connection.vue:35
+msgid "SSH user"
+msgstr "Utilisateur SSH"
 
 #: src/views/certificate/components/CertificateContentEditor.vue:209
 #: src/views/certificate/components/CertificateContentEditor.vue:214
@@ -6987,7 +7268,7 @@ msgstr "Statique"
 
 #: src/components/PortScanner/PortScannerCompact.vue:37
 #: src/views/backup/AutoBackup/AutoBackup.vue:160
-#: src/views/certificate/ACMEUser.vue:75
+#: src/views/certificate/ACMEUser.vue:66
 #: src/views/certificate/CertificateList/certColumns.tsx:63
 #: src/views/dashboard/components/ModulesTable.vue:75
 #: src/views/dns/DDNSManager.vue:113
@@ -7065,7 +7346,7 @@ msgstr "Le répertoire streams-enabled n'existe pas"
 msgid "Structured"
 msgstr "Structuré"
 
-#: src/views/preference/tabs/NginxSettings.vue:10
+#: src/views/preference/tabs/NginxSettings.vue:35
 msgid "Stub Status Port"
 msgstr "Port d'état stub"
 
@@ -7088,7 +7369,7 @@ msgstr "Réponses réussies (2xx)"
 msgid "Sunday"
 msgstr "Dimanche"
 
-#: src/components/SelfCheck/tasks/frontend/websocket.ts:14
+#: src/components/SelfCheck/tasks/frontend/websocket.ts:19
 msgid ""
 "Support communication with the backend through the WebSocket protocol. If "
 "your Nginx UI is being used via an Nginx reverse proxy, please refer to this "
@@ -7226,6 +7507,14 @@ msgstr "Restauration du système"
 msgid "System restored successfully."
 msgstr "Système restauré avec succès."
 
+#: src/views/preference/components/NginxHostSetup/steps/Step3Connection.vue:43
+msgid "systemctl path"
+msgstr "chemin systemctl"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step3Connection.vue:39
+msgid "systemd unit"
+msgstr "unité systemd"
+
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:338
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:508
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:632
@@ -7357,8 +7646,8 @@ msgstr ""
 "Le chemin du journal ne se trouve pas sous les chemins dans settings."
 "NginxSettings.LogDirWhiteList"
 
-#: src/views/preference/tabs/OpenAISettings.vue:24
-#: src/views/preference/tabs/OpenAISettings.vue:93
+#: src/views/preference/tabs/OpenAISettings.vue:153
+#: src/views/preference/tabs/OpenAISettings.vue:87
 msgid ""
 "The model name should only contain letters, unicode, numbers, hyphens, "
 "dashes, colons, and dots."
@@ -7366,7 +7655,7 @@ msgstr ""
 "Le nom du modèle ne doit contenir que des lettres, unicode, des chiffres, "
 "des traits d'union, des tirets, des deux-points et des points."
 
-#: src/views/preference/tabs/OpenAISettings.vue:94
+#: src/views/preference/tabs/OpenAISettings.vue:154
 msgid ""
 "The model used for code completion, if not set, the chat model will be used."
 msgstr ""
@@ -7402,7 +7691,7 @@ msgstr ""
 "Le numéro de sécurité publique ne doit contenir que des lettres, unicode, "
 "des chiffres, des traits d'union, des tirets, des deux-points et des points."
 
-#: src/views/dashboard/components/NodeAnalyticItem.vue:86
+#: src/views/dashboard/components/NodeAnalyticItem.vue:90
 msgid ""
 "The remote Nginx UI version is not compatible with the local Nginx UI "
 "version. To avoid potential errors, please upgrade the remote Nginx UI to "
@@ -7421,13 +7710,13 @@ msgstr ""
 "pour lequel vous avez besoin du certificat, prenant en charge plusieurs "
 "domaines."
 
-#: src/views/preference/tabs/CertSettings.vue:22
+#: src/views/preference/tabs/CertSettings.vue:23
 #: src/views/preference/tabs/HTTPSettings.vue:14
 msgid "The url is invalid"
 msgstr "L'URL est invalide"
 
-#: src/views/preference/tabs/OpenAISettings.vue:36
-#: src/views/preference/tabs/OpenAISettings.vue:50
+#: src/views/preference/tabs/OpenAISettings.vue:110
+#: src/views/preference/tabs/OpenAISettings.vue:38
 msgid "The url is invalid."
 msgstr "L'URL est invalide."
 
@@ -7525,6 +7814,10 @@ msgid ""
 msgstr ""
 "Ce mode prévisualise uniquement le flux de l'interface utilisateur "
 "d'installation et ne modifie aucun état du serveur."
+
+#: src/views/preference/components/NginxHostSetup/steps/Step3Connection.vue:56
+msgid "This mode only supports nginx-ui and target nginx on the same host."
+msgstr "Ce mode prend uniquement en charge nginx-ui et nginx cible sur le même hôte."
 
 #: src/views/dashboard/NginxDashBoard.vue:175
 msgid ""
@@ -7710,7 +8003,7 @@ msgstr ""
 "transmettre la demande de l'autorité au backend, et nous devons enregistrer "
 "ce fichier et recharger le Nginx. Êtes-vous sûr de vouloir continuer?"
 
-#: src/views/preference/tabs/OpenAISettings.vue:37
+#: src/views/preference/tabs/OpenAISettings.vue:44
 msgid ""
 "To use a local large model, deploy it with ollama, vllm or lmdeploy. They "
 "provide an OpenAI-compatible API endpoint, so just set the baseUrl to your "
@@ -7728,7 +8021,7 @@ msgstr "Échec de la bascule"
 msgid "Token is empty"
 msgstr "Le jeton est vide"
 
-#: src/views/preference/tabs/OpenAISettings.vue:62
+#: src/views/preference/tabs/OpenAISettings.vue:122
 msgid "Token is not valid"
 msgstr "Le jeton n'est pas valide"
 
@@ -7824,6 +8117,14 @@ msgstr "Traduction de l'erreur..."
 #: src/language/curd.ts:20
 msgid "Trash"
 msgstr "Corbeille"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:223
+msgid "Trust this algorithm"
+msgstr "Faire confiance à cet algorithme"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:223
+msgid "Trust this key"
+msgstr "Faire confiance à cette clé"
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:829
 msgid "Try adjusting your search criteria or navigate to different pages."
@@ -7933,7 +8234,7 @@ msgid "Update successfully"
 msgstr "Mise à jour réussie"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:236
-#: src/views/certificate/ACMEUser.vue:124
+#: src/views/certificate/ACMEUser.vue:115
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
 #: src/views/config/configColumns.tsx:44 src/views/dns/DNSCredential.vue:65
 #: src/views/dns/DNSDomainList.vue:211 src/views/namespace/columns.ts:91
@@ -8025,6 +8326,10 @@ msgstr "Utiliser un code de récupération"
 msgid "Use Temporary Path"
 msgstr "Utiliser un chemin temporaire"
 
+#: src/views/preference/components/NginxHostSetup/steps/Step3Connection.vue:63
+msgid "Use the cluster Node guide for cross-host setups."
+msgstr "Utilisez le guide du nœud de cluster pour les configurations multi-hôtes."
+
 #: src/components/LLM/ChatMessage.vue:216
 msgid "User"
 msgstr "Utilisateur"
@@ -8068,7 +8373,7 @@ msgid "UV"
 msgstr "UV"
 
 #: src/components/CertInfo/CertInfo.vue:24
-#: src/views/certificate/ACMEUser.vue:161
+#: src/views/certificate/ACMEUser.vue:152
 #: src/views/certificate/CertificateList/certColumns.tsx:76
 msgid "Valid"
 msgstr "Valide"
@@ -8082,6 +8387,10 @@ msgstr "Valider le certificat SSL"
 #: src/views/dns/components/DNSRecordTable.vue:26
 msgid "Value"
 msgstr "Valeur"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:77
+msgid "Verify"
+msgstr "Vérifier"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:242
 #: src/components/SystemRestore/SystemRestoreContent.vue:325
@@ -8099,6 +8408,10 @@ msgstr "Vérifier le secret"
 #: src/views/install/components/InstallView.vue:143
 msgid "Verify system requirements"
 msgstr "Vérifiez les exigences du système"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:155
+msgid "Verify the SSH host key before trusting it"
+msgstr "Vérifier la clé d’hôte SSH avant de lui faire confiance"
 
 #: src/views/node/nodeColumns.tsx:30 src/views/system/Licenses.vue:28
 msgid "Version"
@@ -8221,7 +8534,7 @@ msgstr "Hebdomadairement le %{day} à %{time}"
 msgid "Weight"
 msgstr "Poids"
 
-#: src/views/certificate/ACMEUser.vue:119
+#: src/views/certificate/ACMEUser.vue:110
 msgid ""
 "When Enabled, Nginx UI will automatically re-register users upon startup. "
 "Generally, do not enable this unless you are in a dev environment and using "
@@ -8308,7 +8621,7 @@ msgstr "Écriture du certificat sur le disque"
 #: src/views/nginx_log/indexing/IndexManagement.vue:31
 #: src/views/nginx_log/indexing/IndexManagement.vue:57
 #: src/views/preference/tabs/AuthSettings.vue:127
-#: src/views/preference/tabs/CertSettings.vue:72
+#: src/views/preference/tabs/CertSettings.vue:78
 msgid "Yes"
 msgstr "Oui"
 
@@ -8382,6 +8695,9 @@ msgstr "Vos clés d'accès"
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:232
 msgid "Zero-allocation pipeline"
 msgstr "Pipeline sans allocation"
+
+#~ msgid "OpenAI"
+#~ msgstr "OpenAI"
 
 #~ msgid "Backup file integrity check failed, it may have been tampered with"
 #~ msgstr ""

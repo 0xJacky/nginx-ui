@@ -37,7 +37,7 @@ sudo chmod 600 /home/nginxui/.ssh/authorized_keys
 ```
 
 ::: warning Host key verification
-Host key checking always uses the configured known_hosts allow-list. If the wizard shows a new host fingerprint, verify it before trusting the key.
+Host SSH mode requires a `known_hosts` allow-list. When the wizard shows a new fingerprint, verify it from the host or another trusted channel before trusting it.
 :::
 
 ## Step 3: Install the sudoers entry
@@ -63,11 +63,13 @@ sudo setfacl -dR -m u:nginxui:rwx /etc/nginx
 
 ## Step 5: Update docker-compose
 
-The wizard Step 2a shows a compose snippet. Merge it into your existing `docker-compose.yml`. Then:
+The wizard Step 2a shows a compose snippet. Merge it into your existing `docker-compose.yml`.
 
 The generated snippet sets `NGINX_UI_DISABLE_BUNDLED_NGINX=true` so the container does not start its bundled nginx service while it controls the host nginx service.
 
-Persist `/etc/nginx-ui` with a Docker volume or bind mount. The SSH host key allow-list is stored at `/etc/nginx-ui/known_hosts` by default, and it should survive container rebuilds.
+::: tip Persist Nginx UI data
+Persist `/etc/nginx-ui` with a Docker volume or bind mount. The host key allow-list is stored at `/etc/nginx-ui/known_hosts` by default, and it should survive image upgrades and container rebuilds.
+:::
 
 ```bash
 docker compose up -d --force-recreate nginx-ui
@@ -75,37 +77,44 @@ docker compose up -d --force-recreate nginx-ui
 
 ## Step 6: Trust the host identity
 
-Open the **Host Identity** step in the setup wizard and click **Scan host keys**. The wizard reads the SSH host key presented by the host and compares it with the configured `known_hosts` file.
+Open **Host Identity** in the setup wizard and click **Scan host keys**. The wizard compares the SSH host keys presented by the host with the configured `known_hosts` file.
 
 ::: warning Verify before trusting
-Nginx UI can collect the key from the SSH server, but it cannot prove the key is genuine by itself. Compare the fingerprint with a trusted source before you click **Trust this key** or **Replace trusted key**.
+Only trust a key after comparing its fingerprint with a source you already trust. This check protects the SSH connection from accepting the wrong host during setup or key rotation.
 :::
 
-Use one of these trusted sources:
+Good sources include:
 
 - The host console or provider control panel
 - A previous inventory record for the server
 - A direct command on the host, such as:
 
+::: code-group
+
 ```bash
 ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub
 ```
 
-If automatic scanning is not available, use the manual fallback shown in the wizard:
-
-```bash
+```bash [Manual scan]
 ssh-keyscan -p 22 host.docker.internal
 ```
 
-Paste the output into **Paste ssh-keyscan output**, verify the fingerprint, then trust the key.
+:::
 
-::: tip Multiple host key algorithms
-The wizard can track more than one host key algorithm for the same host. If it shows **new_algorithm**, verify the new fingerprint and trust it when the algorithm is expected.
+::: details Manual scan fallback
+If automatic scanning is not available, run the `ssh-keyscan` command shown in the wizard from a trusted terminal. Paste the output into **Paste ssh-keyscan output**, compare the fingerprint, then trust the key.
+:::
+
+::: tip Host key status
+- **unknown_host**: no key is trusted for this host yet.
+- **new_algorithm**: this host already has a trusted key, but the scan found another algorithm.
+- **changed**: a trusted key for the same algorithm no longer matches. Treat this as a security-sensitive event.
+- **trusted**: the scanned key matches `known_hosts`.
 :::
 
 ## Step 7: Verify the setup
 
-Back in the **Verify** step, click **Run verification**. Blocking checks should pass:
+Return to **Verify** and click **Run verification**. The main checks should pass:
 
 ::: tip Expected verification result
 
@@ -123,9 +132,9 @@ Back in the **Verify** step, click **Run verification**. Blocking checks should 
 
 :::
 
-If `known_hosts_persistence` is shown as a warning, review your Docker volume or bind mount. The warning does not block saving, but the trusted host keys may be lost after a container rebuild if `/etc/nginx-ui` is not persisted.
+If `known_hosts_persistence` is shown as a warning, review your Docker volume or bind mount. The warning does not block saving, but trusted host keys may be lost after a container rebuild if `/etc/nginx-ui` is not persisted.
 
-Click **Save** after the checks pass.
+Click **Save configuration** after the checks pass.
 
 ## Troubleshooting
 
@@ -140,7 +149,7 @@ Click **Save** after the checks pass.
 :::
 
 ::: details `ssh_connect` fails after the host SSH key changed
-Treat a changed host key as a security-sensitive event. Do not replace it until you have confirmed the change from a trusted channel.
+A changed host key can be legitimate, for example after rebuilding the host or rotating SSH keys. It can also indicate a wrong target or a man-in-the-middle attack. Replace the trusted key only after confirming the new fingerprint.
 
 1. Open the **Host Identity** step.
 2. Scan the host keys again.
@@ -148,7 +157,7 @@ Treat a changed host key as a security-sensitive event. Do not replace it until 
 4. Verify the new fingerprint on the host or through your provider control panel.
 5. Select the confirmation checkbox and click **Replace trusted key**.
 
-Use **Advanced cleanup** only for stale known_hosts entries that you have verified are no longer used.
+Use **Advanced cleanup** only for `known_hosts` entries that you have verified are no longer used.
 :::
 
 ::: warning `same_host` warns "remote host detected"

@@ -37,7 +37,7 @@ sudo chmod 600 /home/nginxui/.ssh/authorized_keys
 ```
 
 ::: warning 主機金鑰驗證
-主機金鑰檢查一律使用已設定的 known_hosts 允許清單。如果設定精靈顯示新的主機指紋，請先確認指紋再信任該金鑰。
+宿主機 SSH 模式需要使用 `known_hosts` 允許清單。精靈顯示新指紋時，請先在宿主機或其他可信管道確認，再信任該金鑰。
 :::
 
 ## 步驟 3：安裝 sudoers 項目
@@ -63,11 +63,13 @@ sudo setfacl -dR -m u:nginxui:rwx /etc/nginx
 
 ## 步驟 5：更新 docker-compose 設定
 
-精靈步驟 2a 會顯示一段 compose 設定片段。將其合併到現有的 `docker-compose.yml` 中，然後執行：
+精靈步驟 2a 會顯示一段 compose 設定片段。將其合併到現有的 `docker-compose.yml` 中。
 
 產生的片段會設定 `NGINX_UI_DISABLE_BUNDLED_NGINX=true`，避免容器在控制宿主機 nginx 時繼續啟動內建 nginx 服務。
 
-請透過 Docker volume 或 bind mount 持久化 `/etc/nginx-ui`。SSH 主機金鑰允許清單預設保存在 `/etc/nginx-ui/known_hosts`，該檔案應在容器重建後繼續存在。
+::: tip 持久化 Nginx UI 資料
+請透過 Docker volume 或 bind mount 持久化 `/etc/nginx-ui`。宿主機金鑰允許清單預設保存在 `/etc/nginx-ui/known_hosts`，它應在映像升級和容器重建後繼續存在。
+:::
 
 ```bash
 docker compose up -d --force-recreate nginx-ui
@@ -75,37 +77,44 @@ docker compose up -d --force-recreate nginx-ui
 
 ## 步驟 6：信任主機身分
 
-開啟設定精靈中的 **Host Identity** 步驟，點擊 **Scan host keys**。精靈會讀取 SSH 服務端提供的主機金鑰，並與已設定的 `known_hosts` 檔案進行比較。
+開啟設定精靈中的**主機身分**，點擊**掃描主機金鑰**。精靈會將 SSH 服務端提供的主機金鑰與已設定的 `known_hosts` 檔案進行比較。
 
 ::: warning 信任前請先驗證
-Nginx UI 可以從 SSH 服務端收集金鑰，但無法自行證明該金鑰真實可信。點擊 **Trust this key** 或 **Replace trusted key** 前，請先透過可信來源比對指紋。
+只有在透過可信來源比對指紋後，才應信任金鑰。這個檢查用於避免在首次設定或金鑰輪換時連線到錯誤的主機。
 :::
 
-可使用以下可信來源之一：
+可使用以下可信來源：
 
 - 宿主機控制台或服務商控制面板
 - 伺服器資產清單中已有的指紋記錄
 - 在宿主機上直接執行指令，例如：
 
+::: code-group
+
 ```bash
 ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub
 ```
 
-如果自動掃描不可用，可以使用精靈中顯示的手動 fallback：
-
-```bash
+```bash [手動掃描]
 ssh-keyscan -p 22 host.docker.internal
 ```
 
-將輸出貼到 **Paste ssh-keyscan output**，確認指紋後再信任金鑰。
+:::
 
-::: tip 多個主機金鑰演算法
-精靈可以為同一主機記錄多個主機金鑰演算法。如果顯示 **new_algorithm**，請確認該演算法符合預期，並在驗證新指紋後信任它。
+::: details 手動掃描備用方式
+如果自動掃描不可用，請在可信終端中執行精靈顯示的 `ssh-keyscan` 指令。將輸出貼到**貼上 ssh-keyscan 輸出**，比對指紋後再信任金鑰。
+:::
+
+::: tip 主機金鑰狀態
+- **unknown_host**：目前還沒有為該主機信任任何金鑰。
+- **new_algorithm**：該主機已有可信金鑰，但掃描到了另一種演算法。
+- **changed**：同一演算法的已信任金鑰不再匹配。請按安全敏感事件處理。
+- **trusted**：掃描到的金鑰與 `known_hosts` 匹配。
 :::
 
 ## 步驟 7：驗證設定
 
-返回 **Verify** 步驟，點擊**執行驗證**。阻塞性檢查項應通過：
+返回**驗證**，點擊**執行驗證**。主要檢查項應通過：
 
 ::: tip 預期驗證結果
 
@@ -123,9 +132,9 @@ ssh-keyscan -p 22 host.docker.internal
 
 :::
 
-如果 `known_hosts_persistence` 顯示為 warning，請檢查 Docker volume 或 bind mount。該警告不會阻止儲存，但如果 `/etc/nginx-ui` 未被持久化，容器重建後已信任的主機金鑰可能會遺失。
+如果 `known_hosts_persistence` 顯示為 warning，請檢查 Docker volume 或 bind mount。該警告不會阻止儲存，但如果 `/etc/nginx-ui` 未被持久化，容器重建後可信主機金鑰可能會遺失。
 
-所有檢查通過後，點擊**儲存**。
+所有檢查通過後，點擊**儲存設定**。
 
 ## 疑難排解
 
@@ -140,15 +149,15 @@ ssh-keyscan -p 22 host.docker.internal
 :::
 
 ::: details 宿主機 SSH 金鑰變更後 `ssh_connect` 失敗
-請將主機金鑰變更視為安全敏感事件。在透過可信渠道確認變更前，不要替換已信任的金鑰。
+主機金鑰變更可能是正常操作，例如重建宿主機或輪換 SSH 金鑰；也可能表示目標主機錯誤或存在中間人攻擊。只有在確認新指紋後，才替換已信任的金鑰。
 
-1. 開啟 **Host Identity** 步驟。
+1. 開啟**主機身分**步驟。
 2. 重新掃描主機金鑰。
 3. 比對精靈顯示的舊指紋和新指紋。
 4. 在宿主機上或透過服務商控制面板驗證新指紋。
-5. 勾選確認框，然後點擊 **Replace trusted key**。
+5. 勾選確認框，然後點擊**取代已信任金鑰**。
 
-僅在確認不再使用對應 known_hosts 項目後，才使用 **Advanced cleanup** 清理 stale 項目。
+僅在確認不再使用對應 `known_hosts` 項目後，才使用**進階清理**清理。
 :::
 
 ::: warning `same_host` 警告 "remote host detected"
