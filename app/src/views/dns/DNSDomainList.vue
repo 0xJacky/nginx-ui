@@ -5,7 +5,7 @@ import type { DNSProvider } from '@/api/auto_cert'
 import type { DNSDomain } from '@/api/dns'
 import { HeartOutlined, MailOutlined, StarOutlined } from '@ant-design/icons-vue'
 import { datetimeRender, StdCurd } from '@uozi-admin/curd'
-import { FormItem, Select } from 'ant-design-vue'
+import { Alert, FormItem, Select } from 'ant-design-vue'
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import auto_cert from '@/api/auto_cert'
@@ -100,6 +100,30 @@ function resolveCredentialName(record: DomainForm) {
   return record.dns_credential?.name ?? '-'
 }
 
+function renderDnsDomainClarification() {
+  return (
+    <Alert
+      class="mb-4"
+      type="info"
+      showIcon
+      message={$gettext('DNS record management only')}
+      description={(
+        <div class="space-y-1">
+          <p>
+            {$gettext('DNS Domains are used for DNS record management in NGINX UI and are separate from ACME DNS-01 certificate challenges.')}
+          </p>
+          <p>
+            {$gettext('DNS Domains only use providers with DNS record management implementations.')}
+          </p>
+          <p>
+            {$gettext('For ACME DNS-01 certificate issuance, create DNS credentials under DNS > Credentials and select them in certificate settings.')}
+          </p>
+        </div>
+      )}
+    />
+  )
+}
+
 const columns: StdTableColumn[] = [{
   title: () => $gettext('Domain'),
   dataIndex: 'domain',
@@ -180,6 +204,7 @@ const columns: StdTableColumn[] = [{
 
       return (
         <div class="flex flex-col gap-4">
+          {renderDnsDomainClarification()}
           <FormItem label={$gettext('Provider')} required>
             <Select
               value={providerRef.value || undefined}
