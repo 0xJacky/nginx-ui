@@ -54,3 +54,18 @@ func TestVerifyOTPLegacyRecoveryCodeCanOnlyBeUsedOnce(t *testing.T) {
 	require.ErrorIs(t, err, ErrRecoveryCode)
 	assert.False(t, result.UsedLegacyRecoveryCode)
 }
+
+func TestVerifyOTPLegacyRecoveryCodeRejectsMalformedInput(t *testing.T) {
+	db := setupOTPTestDB(t)
+
+	testUser := &model.User{
+		Name:      "legacy-user",
+		Status:    true,
+		OTPSecret: []byte("encrypted-otp-secret"),
+	}
+	require.NoError(t, db.Create(testUser).Error)
+
+	result, err := VerifyOTP(testUser, "", "not-hex")
+	require.ErrorIs(t, err, ErrRecoveryCode)
+	assert.False(t, result.UsedLegacyRecoveryCode)
+}

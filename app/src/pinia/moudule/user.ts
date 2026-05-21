@@ -129,9 +129,15 @@ export const useUserStore = defineStore('user', () => {
     if (!token.value)
       return twoFAStatus.value
 
-    const status = await twoFA.status()
-    twoFAStatus.value = status
-    return status
+    try {
+      const status = await twoFA.status()
+      twoFAStatus.value = status
+      return status
+    }
+    catch (error) {
+      console.error('Failed to refresh 2FA status:', error)
+      return twoFAStatus.value
+    }
   }
 
   async function updateCurrentUser(userData: Partial<User>) {

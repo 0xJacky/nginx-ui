@@ -2,6 +2,7 @@ package user
 
 import (
 	"fmt"
+	"net/http/httptest"
 	"testing"
 
 	"github.com/0xJacky/Nginx-UI/model"
@@ -28,7 +29,8 @@ func setup2FAStatusTestDB(t *testing.T) *gorm.DB {
 func TestGet2FAStatusRequiresRecoveryCodeMigrationForLegacyOTPUser(t *testing.T) {
 	setup2FAStatusTestDB(t)
 	gin.SetMode(gin.TestMode)
-	c, _ := gin.CreateTestContext(nil)
+	w := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(w)
 	c.Set("user", &model.User{OTPSecret: []byte("encrypted-secret")})
 
 	status := get2FAStatus(c)
@@ -41,7 +43,8 @@ func TestGet2FAStatusRequiresRecoveryCodeMigrationForLegacyOTPUser(t *testing.T)
 func TestGet2FAStatusDoesNotRequireMigrationWhenRecoveryCodesExist(t *testing.T) {
 	setup2FAStatusTestDB(t)
 	gin.SetMode(gin.TestMode)
-	c, _ := gin.CreateTestContext(nil)
+	w := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(w)
 	c.Set("user", &model.User{
 		OTPSecret: []byte("encrypted-secret"),
 		RecoveryCodes: model.RecoveryCodes{

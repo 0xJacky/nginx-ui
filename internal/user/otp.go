@@ -14,6 +14,8 @@ import (
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/google/uuid"
 	"github.com/pquerna/otp/totp"
+	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type OTPVerificationResult struct {
@@ -40,32 +42,40 @@ func VerifyOTP(user *model.User, otp, recoveryCode string) (result OTPVerificati
 
 		// legacy recovery code compatibility path
 		if !user.RecoveryCodeGenerated() {
-			if user.OTPSecret == nil {
-				return result, ErrTOTPNotEnabled
-			}
+			err = model.UseDB().Transaction(func(tx *gorm.DB) error {
+				var lockedUser model.User
+				if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).First(&lockedUser, user.ID).Error; err != nil {
+					return err
+				}
 
-			if user.RecoveryCodes.LegacyRecoveryCodeUsedAt != nil {
-				return result, ErrRecoveryCode
-			}
+				if lockedUser.OTPSecret == nil {
+					return ErrTOTPNotEnabled
+				}
 
-			recoverCode, err := hex.DecodeString(recoveryCode)
-			if err != nil {
-				return result, err
-			}
-			k := sha1.Sum(user.OTPSecret)
-			if !bytes.Equal(k[:], recoverCode) {
-				return result, ErrRecoveryCode
-			}
+				if lockedUser.RecoveryCodeGenerated() || lockedUser.RecoveryCodes.LegacyRecoveryCodeUsedAt != nil {
+					return ErrRecoveryCode
+				}
 
-			t := time.Now().Unix()
-			user.RecoveryCodes.LegacyRecoveryCodeUsedAt = &t
-			_, err = u.Where(u.ID.Eq(user.ID)).Updates(user)
-			if err != nil {
-				return result, err
-			}
+				recoverCode, err := hex.DecodeString(recoveryCode)
+				if err != nil || len(recoverCode) != sha1.Size {
+					return ErrRecoveryCode
+				}
 
-			result.UsedLegacyRecoveryCode = true
-			return result, nil
+				k := sha1.Sum(lockedUser.OTPSecret)
+				if !bytes.Equal(k[:], recoverCode) {
+					return ErrRecoveryCode
+				}
+
+				t := time.Now().Unix()
+				lockedUser.RecoveryCodes.LegacyRecoveryCodeUsedAt = &t
+				if err := tx.Model(&lockedUser).Select("recovery_codes").Updates(&lockedUser).Error; err != nil {
+					return err
+				}
+
+				result.UsedLegacyRecoveryCode = true
+				return nil
+			})
+			return result, err
 		}
 
 		// check recovery code

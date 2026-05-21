@@ -64,18 +64,29 @@ function use2FAModal() {
         appContext: getCurrentInstance()?.appContext,
         width: '500px',
         content: () => {
-          const verifyOTP = (passcode: string, recovery: string) => {
-            twoFA.start_secure_session_by_otp(passcode, recovery).then(async r => {
-              modalInstance.destroy()
-              secureSessionId.value = r.session_id
-              await userStore.refreshTwoFAStatus()
-              if (r.used_legacy_recovery_code)
-                guideLegacyRecoveryMigration()
-              resolve(r.session_id)
-            }).catch(async () => {
+          const verifyOTP = async (passcode: string, recovery: string) => {
+            let result
+            try {
+              result = await twoFA.start_secure_session_by_otp(passcode, recovery)
+            }
+            catch {
               refOTPAuthorization.value?.clearInput()
               await message.error($gettext('Invalid passcode or recovery code'))
-            })
+              return
+            }
+
+            modalInstance.destroy()
+            secureSessionId.value = result.session_id
+            resolve(result.session_id)
+
+            try {
+              await userStore.refreshTwoFAStatus()
+              if (result.used_legacy_recovery_code)
+                guideLegacyRecoveryMigration()
+            }
+            catch (error) {
+              console.error('Failed to handle post-OTP 2FA refresh:', error)
+            }
           }
 
           const setSessionId = (sessionId: string) => {
