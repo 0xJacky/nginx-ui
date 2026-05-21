@@ -2,6 +2,7 @@ package nginx
 
 import (
 	"context"
+	"os"
 	"sync"
 
 	hostssh "github.com/0xJacky/Nginx-UI/internal/host/ssh"
@@ -58,6 +59,19 @@ func buildSSHOptions() hostssh.ClientOptions {
 		systemctl = "/bin/systemctl"
 	}
 
+	// Default to strict host key checking unless explicitly disabled.
+	// This is critical for the TOFU security model: silently accepting any
+	// host key on first connection would allow MITM substitution.
+	// Since we cannot distinguish "unset bool" from "explicitly false" with
+	// a plain bool field, we default to true here UNLESS the env var
+	// NGINX_UI_NGINX_HOST_STRICT_HOST_KEY is explicitly set to "false".
+	strict := n.HostStrictHostKey
+	if !strict {
+		if os.Getenv("NGINX_UI_NGINX_HOST_STRICT_HOST_KEY") != "false" {
+			strict = true
+		}
+	}
+
 	return hostssh.ClientOptions{
 		Address:        n.HostAddress,
 		User:           n.HostUser,
@@ -65,7 +79,7 @@ func buildSSHOptions() hostssh.ClientOptions {
 		PrivateKeyPath: n.HostPrivateKeyPath,
 		Password:       password,
 		KnownHosts:     kh,
-		Strict:         n.HostStrictHostKey,
+		Strict:         strict,
 		Config: hostssh.Config{
 			SudoPrefix:    sudo,
 			SystemctlPath: systemctl,
