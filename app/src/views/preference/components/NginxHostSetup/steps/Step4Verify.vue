@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { VerifyResult } from '@/api/host_setup'
-import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons-vue'
+import type { StepOutcome } from '@/api/host_setup'
+import { CheckCircleOutlined, CloseCircleOutlined, ExclamationCircleOutlined } from '@ant-design/icons-vue'
 import { useClipboard } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import hostSetup from '@/api/host_setup'
@@ -23,8 +24,42 @@ async function run() {
 const allPassed = computed(() => {
   if (!result.value)
     return false
-  return Object.values(result.value.steps).every(s => s.ok)
+  return Object.values(result.value.steps).every(s => s.ok || s.level === 'warning')
 })
+
+const hasWarning = computed(() => {
+  if (!result.value)
+    return false
+  return Object.values(result.value.steps).some(s => stepLevel(s) === 'warning')
+})
+
+function stepLevel(step: StepOutcome) {
+  if (step.level)
+    return step.level
+  return step.ok ? 'success' : 'error'
+}
+
+function tagColor(step: StepOutcome) {
+  switch (stepLevel(step)) {
+    case 'success':
+      return 'success'
+    case 'warning':
+      return 'warning'
+    default:
+      return 'error'
+  }
+}
+
+function tagText(step: StepOutcome) {
+  switch (stepLevel(step)) {
+    case 'success':
+      return 'OK'
+    case 'warning':
+      return 'WARN'
+    default:
+      return 'FAIL'
+  }
+}
 </script>
 
 <template>
@@ -44,12 +79,13 @@ const allPassed = computed(() => {
           <div class="w-full">
             <div class="flex items-center justify-between">
               <span>
-                <CheckCircleOutlined v-if="item[1].ok" :style="{ color: 'green' }" />
+                <CheckCircleOutlined v-if="stepLevel(item[1]) === 'success'" :style="{ color: 'green' }" />
+                <ExclamationCircleOutlined v-else-if="stepLevel(item[1]) === 'warning'" :style="{ color: '#faad14' }" />
                 <CloseCircleOutlined v-else :style="{ color: 'red' }" />
                 <strong class="ml-2">{{ item[0] }}</strong>
               </span>
-              <ATag :color="item[1].ok ? 'success' : 'error'">
-                {{ item[1].ok ? 'OK' : 'FAIL' }}
+              <ATag :color="tagColor(item[1])">
+                {{ tagText(item[1]) }}
               </ATag>
             </div>
             <div class="text-secondary text-sm mt-1">
@@ -67,10 +103,16 @@ const allPassed = computed(() => {
     </AList>
 
     <AAlert
-      v-if="allPassed"
+      v-if="allPassed && !hasWarning"
       type="success"
       show-icon
       :message="$gettext('All checks passed — you may save the configuration.')"
+    />
+    <AAlert
+      v-else-if="allPassed && hasWarning"
+      type="warning"
+      show-icon
+      :message="$gettext('Blocking checks passed, but warnings need review before saving.')"
     />
   </div>
 </template>
