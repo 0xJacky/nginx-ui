@@ -339,6 +339,7 @@ async function handlePasskeyLogin() {
                   otp_status: true,
                   passkey_status: false,
                   recovery_codes_generated: true,
+                  recovery_codes_migration_required: false,
                 }"
                 @submit-o-t-p="handleOTPSubmit"
               />

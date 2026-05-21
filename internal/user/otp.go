@@ -16,38 +16,56 @@ import (
 	"github.com/pquerna/otp/totp"
 )
 
-func VerifyOTP(user *model.User, otp, recoveryCode string) (err error) {
+type OTPVerificationResult struct {
+	UsedLegacyRecoveryCode bool
+}
+
+func VerifyOTP(user *model.User, otp, recoveryCode string) (result OTPVerificationResult, err error) {
 	if otp != "" {
 		decrypted, err := crypto.AesDecrypt(user.OTPSecret)
 		if err != nil {
-			return err
+			return result, err
 		}
 
 		if ok := totp.Validate(otp, string(decrypted)); !ok {
-			return ErrOTPCode
+			return result, ErrOTPCode
 		}
 	} else {
 		// get user from db
 		u := query.User
 		user, err = u.Where(u.ID.Eq(user.ID)).First()
 		if err != nil {
-			return err
+			return result, err
 		}
 
-		// legacy recovery code
+		// legacy recovery code compatibility path
 		if !user.RecoveryCodeGenerated() {
 			if user.OTPSecret == nil {
-				return ErrTOTPNotEnabled
+				return result, ErrTOTPNotEnabled
+			}
+
+			if user.RecoveryCodes.LegacyRecoveryCodeUsedAt != nil {
+				return result, ErrRecoveryCode
 			}
 
 			recoverCode, err := hex.DecodeString(recoveryCode)
 			if err != nil {
-				return err
+				return result, err
 			}
 			k := sha1.Sum(user.OTPSecret)
 			if !bytes.Equal(k[:], recoverCode) {
-				return ErrRecoveryCode
+				return result, ErrRecoveryCode
 			}
+
+			t := time.Now().Unix()
+			user.RecoveryCodes.LegacyRecoveryCodeUsedAt = &t
+			_, err = u.Where(u.ID.Eq(user.ID)).Updates(user)
+			if err != nil {
+				return result, err
+			}
+
+			result.UsedLegacyRecoveryCode = true
+			return result, nil
 		}
 
 		// check recovery code
@@ -59,7 +77,7 @@ func VerifyOTP(user *model.User, otp, recoveryCode string) (err error) {
 				code.UsedTime = &t
 				_, err = u.Where(u.ID.Eq(user.ID)).Updates(user)
 				if err != nil {
-					return err
+					return result, err
 				}
 				verified = true
 			}
@@ -68,12 +86,12 @@ func VerifyOTP(user *model.User, otp, recoveryCode string) (err error) {
 			}
 		}
 		if !verified {
-			return ErrRecoveryCode
+			return result, ErrRecoveryCode
 		}
 		if usedCount == len(user.RecoveryCodes.Codes) {
 			notification.Warning("All Recovery Codes Have Been Used", "Please generate new recovery codes in the preferences immediately to prevent lockout.", nil)
 		}
-		return nil
+		return result, nil
 	}
 	return
 }

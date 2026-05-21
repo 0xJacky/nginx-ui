@@ -1,6 +1,8 @@
 import type { CookieChangeOptions } from 'universal-cookie'
+import type { TwoFAStatus } from '@/api/2fa'
 import type { User } from '@/api/user'
 import { useCookies } from '@vueuse/integrations/useCookies'
+import twoFA from '@/api/2fa'
 import userApi from '@/api/user'
 
 export const useUserStore = defineStore('user', () => {
@@ -34,6 +36,19 @@ export const useUserStore = defineStore('user', () => {
   })
 
   const secureSessionId = ref('')
+
+  function getEmptyTwoFAStatus(): TwoFAStatus {
+    return {
+      enabled: false,
+      otp_status: false,
+      passkey_status: false,
+      recovery_codes_generated: false,
+      recovery_codes_viewed: false,
+      recovery_codes_migration_required: false,
+    }
+  }
+
+  const twoFAStatus = ref<TwoFAStatus>(getEmptyTwoFAStatus())
 
   watch(secureSessionId, v => {
     if (v)
@@ -74,6 +89,7 @@ export const useUserStore = defineStore('user', () => {
     secureSessionId.value = ''
     unreadCount.value = 0
     info.value = {} as User
+    twoFAStatus.value = getEmptyTwoFAStatus()
   }
 
   async function fetchShortToken() {
@@ -107,6 +123,15 @@ export const useUserStore = defineStore('user', () => {
       console.error('Failed to get current user:', error)
       throw error
     }
+  }
+
+  async function refreshTwoFAStatus() {
+    if (!token.value)
+      return twoFAStatus.value
+
+    const status = await twoFA.status()
+    twoFAStatus.value = status
+    return status
   }
 
   async function updateCurrentUser(userData: Partial<User>) {
@@ -155,12 +180,14 @@ export const useUserStore = defineStore('user', () => {
     secureSessionId,
     passkeyRawId,
     info,
+    twoFAStatus,
     isLogin,
     passkeyLoginAvailable,
     passkeyLogin,
     login,
     logout,
     fetchShortToken,
+    refreshTwoFAStatus,
     getCurrentUser,
     updateCurrentUser,
     updateCurrentUserPassword,

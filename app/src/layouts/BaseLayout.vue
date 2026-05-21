@@ -3,7 +3,7 @@ import { throttle } from 'lodash'
 import { storeToRefs } from 'pinia'
 import settings from '@/api/settings'
 import PageHeader from '@/components/PageHeader'
-import { useSettingsStore } from '@/pinia'
+import { useSettingsStore, useUserStore } from '@/pinia'
 import { useNodeAvailabilityStore } from '@/pinia/moudule/nodeAvailability'
 import { useProxyAvailabilityStore } from '@/pinia/moudule/proxyAvailability'
 import FooterLayout from './FooterLayout.vue'
@@ -40,10 +40,13 @@ settings.get_server_name().then(r => {
 // Initialize stores monitoring after user is logged in and layout is mounted
 const proxyAvailabilityStore = useProxyAvailabilityStore()
 const nodeAvailabilityStore = useNodeAvailabilityStore()
+const userStore = useUserStore()
 
 onMounted(() => {
   // Initialize layout
   init()
+
+  void userStore.refreshTwoFAStatus()
 
   // Start monitoring for upstream availability
   proxyAvailabilityStore.startMonitoring()
