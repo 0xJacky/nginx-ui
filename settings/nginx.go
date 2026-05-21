@@ -6,6 +6,8 @@ const (
 	ControlModeHostViaSSH        = "host_via_ssh"
 
 	HostModeSSH = "ssh"
+
+	DefaultHostKnownHostsPath = "/etc/nginx-ui/known_hosts"
 )
 
 type Nginx struct {
@@ -46,6 +48,13 @@ func (n *Nginx) GetStubStatusPort() uint {
 		return 51820
 	}
 	return n.StubStatusPort
+}
+
+func (n *Nginx) GetHostKnownHostsPath() string {
+	if n.HostKnownHostsPath == "" {
+		return DefaultHostKnownHostsPath
+	}
+	return n.HostKnownHostsPath
 }
 
 // RunningInAnotherContainer reports whether nginx-ui should control nginx

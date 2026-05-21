@@ -57,7 +57,8 @@ func ScanHostKeys(ctx context.Context, hostPort string, timeout time.Duration) (
 		timeout = 10 * time.Second
 	}
 
-	keysByFingerprint := make(map[string]gossh.PublicKey)
+	seenFingerprints := make(map[string]bool)
+	keys := make([]gossh.PublicKey, 0, len(preferredHostKeyAlgorithms))
 	var lastErr error
 	for _, algorithm := range preferredHostKeyAlgorithms {
 		key, err := scanHostKeyWithAlgorithm(ctx, hostPort, timeout, algorithm)
@@ -65,11 +66,11 @@ func ScanHostKeys(ctx context.Context, hostPort string, timeout time.Duration) (
 			lastErr = err
 			continue
 		}
-		keysByFingerprint[gossh.FingerprintSHA256(key)] = key
-	}
-
-	keys := make([]gossh.PublicKey, 0, len(keysByFingerprint))
-	for _, key := range keysByFingerprint {
+		fingerprint := gossh.FingerprintSHA256(key)
+		if seenFingerprints[fingerprint] {
+			continue
+		}
+		seenFingerprints[fingerprint] = true
 		keys = append(keys, key)
 	}
 	if len(keys) == 0 {

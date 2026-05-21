@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { HostKeyScanItem, HostKeyScanResult, SetupParams } from '@/api/host_setup'
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import hostSetup from '@/api/host_setup'
 import CodeBlock from '../CodeBlock.vue'
 
@@ -9,20 +9,46 @@ const props = defineProps<{ params: SetupParams }>()
 const result = ref<HostKeyScanResult | null>(null)
 const scanning = ref(false)
 const manualOutput = ref('')
+const scanError = ref('')
 const confirmed = ref<Record<string, boolean>>({})
 const operating = ref<Record<string, boolean>>({})
 const lastScanUsedManual = ref(false)
 
 const hasChangedKey = computed(() => result.value?.keys.some(key => key.status === 'changed') ?? false)
-const hasTrustedKey = computed(() => result.value?.keys.some(key => key.status === 'trusted') ?? false)
+const hasOnlyTrustedKeys = computed(() => {
+  const keys = result.value?.keys ?? []
+  return keys.length > 0 && keys.every(key => key.status === 'trusted')
+})
 
 function keyID(key: HostKeyScanItem) {
   return `${key.algorithm}:${key.fingerprint}`
 }
 
+function shellQuote(value: string) {
+  return `'${value.replaceAll("'", "'\"'\"'")}'`
+}
+
+function parseHostAddress(address: string) {
+  const bracketed = address.match(/^\[([^\]]+)\](?::(\d+))?$/)
+  if (bracketed) {
+    return {
+      host: bracketed[1],
+      port: bracketed[2] ?? '22',
+    }
+  }
+
+  const colonCount = (address.match(/:/g) ?? []).length
+  if (colonCount === 1) {
+    const [host, port] = address.split(':')
+    return { host, port: port || '22' }
+  }
+
+  return { host: address, port: '22' }
+}
+
 function sshKeyscanCommand() {
-  const [host, port = '22'] = props.params.host_address.split(':')
-  return `ssh-keyscan -p ${port} ${host}`
+  const { host, port } = parseHostAddress(props.params.host_address)
+  return `ssh-keyscan -p ${shellQuote(port)} ${shellQuote(host)}`
 }
 
 function statusColor(status: HostKeyScanItem['status']) {
@@ -42,12 +68,16 @@ function statusColor(status: HostKeyScanItem['status']) {
 
 async function scan(useManual = false) {
   scanning.value = true
+  scanError.value = ''
   lastScanUsedManual.value = useManual
   try {
     result.value = await hostSetup.scanHostKeys({
       host_address: props.params.host_address,
       keyscan_output: useManual ? manualOutput.value : undefined,
     })
+  }
+  catch (error) {
+    scanError.value = error instanceof Error ? error.message : String(error)
   }
   finally {
     scanning.value = false
@@ -67,6 +97,7 @@ async function trust(key: HostKeyScanItem) {
       algorithm: key.algorithm,
       fingerprint: key.fingerprint,
       public_key: key.public_key,
+      confirmed: true,
     })
     await refresh()
   }
@@ -110,6 +141,10 @@ async function deleteStale(key: HostKeyScanItem) {
     operating.value[id] = false
   }
 }
+
+onMounted(() => {
+  void scan(false)
+})
 </script>
 
 <template>
@@ -139,6 +174,14 @@ async function deleteStale(key: HostKeyScanItem) {
         {{ $gettext('Scan host keys') }}
       </AButton>
     </div>
+
+    <AAlert
+      v-if="scanError"
+      type="error"
+      show-icon
+      :message="$gettext('Failed to scan host keys')"
+      :description="scanError"
+    />
 
     <ACollapse>
       <ACollapsePanel key="manual" :header="$gettext('Paste ssh-keyscan output')">
@@ -224,7 +267,7 @@ async function deleteStale(key: HostKeyScanItem) {
     </ACollapse>
 
     <AAlert
-      v-if="result && !hasChangedKey && hasTrustedKey"
+      v-if="result && !hasChangedKey && hasOnlyTrustedKeys"
       type="success"
       show-icon
       :message="$gettext('Host identity is trusted. You may continue to verification.')"

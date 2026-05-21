@@ -63,6 +63,7 @@ export interface NginxSettings {
   error_log_path: string
   config_dir: string
   config_path: string
+  sbin_path: string
   log_dir_white_list: string[]
   pid_path: string
   test_config_cmd: string

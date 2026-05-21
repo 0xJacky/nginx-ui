@@ -96,3 +96,19 @@ func TestParseSSHKeyscanOutput(t *testing.T) {
 		t.Fatalf("unexpected key type %s", keys[0].Type())
 	}
 }
+
+func TestParseSSHKeyscanOutput_HashedHost(t *testing.T) {
+	key := testPublicKeyFromSeed(t, "ssh-ed25519", 14)
+	line := "|1|saltyvalue|hashedvalue " + strings.TrimSpace(string(gossh.MarshalAuthorizedKey(key)))
+
+	keys, err := ParseSSHKeyscanOutput(line)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(keys) != 1 {
+		t.Fatalf("expected one key, got %d", len(keys))
+	}
+	if keys[0].Type() != "ssh-ed25519" {
+		t.Fatalf("unexpected key type %s", keys[0].Type())
+	}
+}

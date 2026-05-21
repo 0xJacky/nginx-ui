@@ -29,3 +29,17 @@ func TestNginx_RunningInAnotherContainer_UnchangedByHostMode(t *testing.T) {
 		t.Errorf("RunningInAnotherContainer should remain false when only HostMode is set")
 	}
 }
+
+func TestNginx_GetHostKnownHostsPath_Default(t *testing.T) {
+	n := Nginx{}
+	if got := n.GetHostKnownHostsPath(); got != "/etc/nginx-ui/known_hosts" {
+		t.Errorf("GetHostKnownHostsPath() = %q, want %q", got, "/etc/nginx-ui/known_hosts")
+	}
+}
+
+func TestNginx_GetHostKnownHostsPath_Configured(t *testing.T) {
+	n := Nginx{HostKnownHostsPath: "/custom/known_hosts"}
+	if got := n.GetHostKnownHostsPath(); got != "/custom/known_hosts" {
+		t.Errorf("GetHostKnownHostsPath() = %q, want %q", got, "/custom/known_hosts")
+	}
+}

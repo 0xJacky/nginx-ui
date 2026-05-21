@@ -41,7 +41,10 @@ func ResetSSHClient() {
 func buildSSHOptions() hostssh.ClientOptions {
 	n := settings.NginxSettings
 
-	kh, _ := hostssh.NewKnownHosts(n.HostKnownHostsPath)
+	kh, err := hostssh.NewKnownHosts(n.GetHostKnownHostsPath())
+	if err != nil {
+		logger.Error("Failed to initialize SSH known_hosts allow-list", err)
+	}
 
 	password := ""
 	if n.HostAuthMethod == "password" {

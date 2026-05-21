@@ -10,7 +10,7 @@ import (
 // the long-lived client used by sshRunner is independent.
 func NewClientFromSettings() (*hostssh.Client, error) {
 	n := settings.NginxSettings
-	kh, err := hostssh.NewKnownHosts(n.HostKnownHostsPath)
+	kh, err := hostssh.NewKnownHosts(n.GetHostKnownHostsPath())
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +48,7 @@ func ParamsFromSettings() SetupParams {
 		HostConfigDir:           n.HostConfigDir,
 		HostLogDir:              n.HostLogDir,
 		ContainerKeyPath:        n.HostPrivateKeyPath,
-		ContainerKnownHostsPath: n.HostKnownHostsPath,
+		ContainerKnownHostsPath: n.GetHostKnownHostsPath(),
 	}
 	return p.FillDefaults()
 }
