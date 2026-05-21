@@ -1,6 +1,9 @@
 package setup
 
-import "testing"
+import (
+	"strings"
+	"testing"
+)
 
 func TestVerifyResult_Marshal(t *testing.T) {
 	r := VerifyResult{Steps: map[string]StepOutcome{
@@ -39,5 +42,28 @@ func TestParseSudoListOutput_FindsMissing(t *testing.T) {
 	missing := findMissingSudoEntries(out, required)
 	if len(missing) != 1 || missing[0] != "/bin/systemctl restart nginx.service" {
 		t.Errorf("expected restart missing, got %v", missing)
+	}
+}
+
+func TestCheckKnownHostsPersistenceRecommended(t *testing.T) {
+	outcome := checkKnownHostsPersistence("/etc/nginx-ui/known_hosts")
+	if !outcome.OK {
+		t.Fatalf("expected recommended path to pass: %+v", outcome)
+	}
+	if outcome.Level != "success" {
+		t.Fatalf("expected success level, got %q", outcome.Level)
+	}
+}
+
+func TestCheckKnownHostsPersistenceWarning(t *testing.T) {
+	outcome := checkKnownHostsPersistence("/tmp/known_hosts")
+	if outcome.OK {
+		t.Fatalf("expected outside path to be non-ok warning: %+v", outcome)
+	}
+	if outcome.Level != "warning" {
+		t.Fatalf("expected warning level, got %q", outcome.Level)
+	}
+	if !strings.Contains(outcome.Remediation, "/etc/nginx-ui") {
+		t.Fatalf("expected remediation to mention /etc/nginx-ui: %q", outcome.Remediation)
 	}
 }
