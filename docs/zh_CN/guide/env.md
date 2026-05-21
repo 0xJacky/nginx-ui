@@ -169,8 +169,7 @@
 | `NGINX_UI_NGINX_HOST_USER` | 宿主机上的 SSH 用户 |
 | `NGINX_UI_NGINX_HOST_AUTH_METHOD` | SSH 认证方式。当前宿主机 SSH 配置请使用密钥认证 |
 | `NGINX_UI_NGINX_HOST_PRIVATE_KEY_PATH` | 容器内的私钥路径 |
-| `NGINX_UI_NGINX_HOST_KNOWN_HOSTS_PATH` | 容器内的 known_hosts 路径 |
-| `NGINX_UI_NGINX_HOST_STRICT_HOST_KEY` | 仅在需要关闭严格主机密钥检查时设置为 `false` |
+| `NGINX_UI_NGINX_HOST_KNOWN_HOSTS_PATH` | 容器内的 known_hosts 允许列表路径 |
 | `NGINX_UI_NGINX_HOST_SUDO_PREFIX` | 默认为 `sudo -n` |
 | `NGINX_UI_NGINX_HOST_SYSTEMD_UNIT_NAME` | 默认为 `nginx.service` |
 | `NGINX_UI_NGINX_HOST_SYSTEMCTL_PATH` | 宿主机上 systemctl 的绝对路径 |

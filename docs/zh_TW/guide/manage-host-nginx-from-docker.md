@@ -37,7 +37,7 @@ sudo chmod 600 /home/nginxui/.ssh/authorized_keys
 ```
 
 ::: warning 主機金鑰驗證
-預設啟用嚴格主機金鑰檢查。如果設定精靈顯示新的主機指紋，請先確認指紋再信任該金鑰。只有在受控測試環境中，才建議設定 `NGINX_UI_NGINX_HOST_STRICT_HOST_KEY=false`。
+主機金鑰檢查一律使用已設定的 known_hosts 允許清單。如果設定精靈顯示新的主機指紋，請先確認指紋再信任該金鑰。
 :::
 
 ## 步驟 3：安裝 sudoers 項目

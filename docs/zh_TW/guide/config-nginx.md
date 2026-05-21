@@ -201,8 +201,7 @@ nginx-ui host-setup test
 | `host_user` | 宿主機上的 SSH 使用者 |
 | `host_auth_method` | SSH 認證方式。目前宿主機 SSH 設定請使用金鑰認證 |
 | `host_private_key_path` | 容器內的私鑰路徑 |
-| `host_known_hosts_path` | 容器內的 known_hosts 路徑 |
-| `host_strict_host_key` | 啟用嚴格主機金鑰檢查。預設啟用，除非明確設定為 `false` |
+| `host_known_hosts_path` | 容器內的 known_hosts 允許清單路徑 |
 | `host_sudo_prefix` | 特權指令前綴。預設值為 `sudo -n` |
 | `host_systemd_unit_name` | 預設為 `nginx.service` |
 | `host_systemctl_path` | 預設為 `/bin/systemctl` |

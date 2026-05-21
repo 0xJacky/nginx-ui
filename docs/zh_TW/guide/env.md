@@ -169,8 +169,7 @@
 | `NGINX_UI_NGINX_HOST_USER` | 宿主機上的 SSH 使用者 |
 | `NGINX_UI_NGINX_HOST_AUTH_METHOD` | SSH 認證方式。目前宿主機 SSH 設定請使用金鑰認證 |
 | `NGINX_UI_NGINX_HOST_PRIVATE_KEY_PATH` | 容器內的私鑰路徑 |
-| `NGINX_UI_NGINX_HOST_KNOWN_HOSTS_PATH` | 容器內的 known_hosts 路徑 |
-| `NGINX_UI_NGINX_HOST_STRICT_HOST_KEY` | 僅在需要關閉嚴格主機金鑰檢查時設定為 `false` |
+| `NGINX_UI_NGINX_HOST_KNOWN_HOSTS_PATH` | 容器內的 known_hosts 允許清單路徑 |
 | `NGINX_UI_NGINX_HOST_SUDO_PREFIX` | 預設為 `sudo -n` |
 | `NGINX_UI_NGINX_HOST_SYSTEMD_UNIT_NAME` | 預設為 `nginx.service` |
 | `NGINX_UI_NGINX_HOST_SYSTEMCTL_PATH` | 宿主機上 systemctl 的絕對路徑 |
