@@ -67,13 +67,45 @@ sudo setfacl -dR -m u:nginxui:rwx /etc/nginx
 
 產生的片段會設定 `NGINX_UI_DISABLE_BUNDLED_NGINX=true`，避免容器在控制宿主機 nginx 時繼續啟動內建 nginx 服務。
 
+請透過 Docker volume 或 bind mount 持久化 `/etc/nginx-ui`。SSH 主機金鑰允許清單預設保存在 `/etc/nginx-ui/known_hosts`，該檔案應在容器重建後繼續存在。
+
 ```bash
 docker compose up -d --force-recreate nginx-ui
 ```
 
-## 步驟 6：驗證設定
+## 步驟 6：信任主機身分
 
-返回精靈步驟 4，點擊**執行驗證**。所有檢查項應全部通過：
+開啟設定精靈中的 **Host Identity** 步驟，點擊 **Scan host keys**。精靈會讀取 SSH 服務端提供的主機金鑰，並與已設定的 `known_hosts` 檔案進行比較。
+
+::: warning 信任前請先驗證
+Nginx UI 可以從 SSH 服務端收集金鑰，但無法自行證明該金鑰真實可信。點擊 **Trust this key** 或 **Replace trusted key** 前，請先透過可信來源比對指紋。
+:::
+
+可使用以下可信來源之一：
+
+- 宿主機控制台或服務商控制面板
+- 伺服器資產清單中已有的指紋記錄
+- 在宿主機上直接執行指令，例如：
+
+```bash
+ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub
+```
+
+如果自動掃描不可用，可以使用精靈中顯示的手動 fallback：
+
+```bash
+ssh-keyscan -p 22 host.docker.internal
+```
+
+將輸出貼到 **Paste ssh-keyscan output**，確認指紋後再信任金鑰。
+
+::: tip 多個主機金鑰演算法
+精靈可以為同一主機記錄多個主機金鑰演算法。如果顯示 **new_algorithm**，請確認該演算法符合預期，並在驗證新指紋後信任它。
+:::
+
+## 步驟 7：驗證設定
+
+返回 **Verify** 步驟，點擊**執行驗證**。阻塞性檢查項應通過：
 
 ::: tip 預期驗證結果
 
@@ -87,8 +119,11 @@ docker compose up -d --force-recreate nginx-ui
 - ✓ config_dir_writable: /etc/nginx 可存取
 - ✓ log_dir_readable: /var/log/nginx/access.log 可讀
 - ✓ pid_file_present: /var/run/nginx.pid 存在
+- ✓ known_hosts_persistence: `/etc/nginx-ui/known_hosts` 位於建議的持久化資料目錄下
 
 :::
+
+如果 `known_hosts_persistence` 顯示為 warning，請檢查 Docker volume 或 bind mount。該警告不會阻止儲存，但如果 `/etc/nginx-ui` 未被持久化，容器重建後已信任的主機金鑰可能會遺失。
 
 所有檢查通過後，點擊**儲存**。
 
@@ -102,6 +137,18 @@ docker compose up -d --force-recreate nginx-ui
 ::: details `ssh_connect` 報錯 "permission denied (publickey)"
 - 驗證 authorized_keys 檔案中的公鑰內容、檔案擁有者及權限是否正確。
 - 檢查 sshd_config 中是否啟用了 `PubkeyAuthentication yes`。
+:::
+
+::: details 宿主機 SSH 金鑰變更後 `ssh_connect` 失敗
+請將主機金鑰變更視為安全敏感事件。在透過可信渠道確認變更前，不要替換已信任的金鑰。
+
+1. 開啟 **Host Identity** 步驟。
+2. 重新掃描主機金鑰。
+3. 比對精靈顯示的舊指紋和新指紋。
+4. 在宿主機上或透過服務商控制面板驗證新指紋。
+5. 勾選確認框，然後點擊 **Replace trusted key**。
+
+僅在確認不再使用對應 known_hosts 項目後，才使用 **Advanced cleanup** 清理 stale 項目。
 :::
 
 ::: warning `same_host` 警告 "remote host detected"
