@@ -1,8 +1,33 @@
 <script setup lang="ts">
+import { computed, ref } from 'vue'
+import NginxHostSetupWizard from '../components/NginxHostSetup/Wizard.vue'
 import useSystemSettingsStore from '../store'
 
 const systemSettingsStore = useSystemSettingsStore()
 const { data } = storeToRefs(systemSettingsStore)
+
+const showWizard = ref(false)
+
+const modeSelection = computed(() => {
+  if (data.value.nginx.host_mode === 'ssh')
+    return 'ssh'
+  if (data.value.nginx.container_name)
+    return 'external_container'
+  return 'local'
+})
+
+function onModeChange(value: string) {
+  if (value === 'ssh') {
+    data.value.nginx.host_mode = 'ssh'
+  }
+  else {
+    data.value.nginx.host_mode = ''
+    if (value === 'local') {
+      // user selected local — leave container_name as-is; emptying it would lose history
+      // settings save endpoint validates the final combination
+    }
+  }
+}
 </script>
 
 <template>
@@ -53,18 +78,39 @@ const { data } = storeToRefs(systemSettingsStore)
       {{ data.nginx.restart_cmd }}
     </AFormItem>
     <AFormItem :label="$gettext('Nginx Control Mode')">
-      <div v-if="data.nginx.container_name">
-        <ATag color="blue" tag>
+      <ARadioGroup
+        :value="modeSelection"
+        @update:value="onModeChange"
+      >
+        <ARadio value="local">
+          {{ $gettext('Local / Bundled') }}
+        </ARadio>
+        <ARadio value="external_container">
+          {{ $gettext('External Container') }}
+        </ARadio>
+        <ARadio value="ssh">
+          {{ $gettext('Host via SSH') }}
+        </ARadio>
+      </ARadioGroup>
+      <div v-if="data.nginx.host_mode === 'ssh'" class="mt-3">
+        <AButton @click="showWizard = !showWizard">
+          {{ showWizard ? $gettext('Hide setup wizard') : $gettext('Open setup wizard') }}
+        </AButton>
+      </div>
+      <div v-else-if="data.nginx.container_name" class="mt-3">
+        <ATag color="blue">
           {{ $gettext('External Docker Container') }}
         </ATag>
         {{ data.nginx.container_name }}
       </div>
-      <div v-else>
-        <ATag color="green" tag>
+      <div v-else class="mt-3">
+        <ATag color="green">
           {{ $gettext('Local') }}
         </ATag>
       </div>
     </AFormItem>
+
+    <NginxHostSetupWizard v-if="showWizard" class="mt-4" />
   </AForm>
 </template>
 
