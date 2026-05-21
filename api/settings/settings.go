@@ -192,6 +192,10 @@ func SaveSettings(c *gin.Context) {
 		return
 	}
 
+	// If host SSH settings changed, invalidate the cached SSH client so
+	// the next nginx command re-dials with the new config.
+	nginx.ResetSSHClient()
+
 	GetSettings(c)
 
 	if needReloadCert {

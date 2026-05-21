@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { SetupParams } from '@/api/host_setup'
+import { storeToRefs } from 'pinia'
 import { ref, watch } from 'vue'
+import useSystemSettingsStore from '../../store'
 import Step1 from './steps/Step1AuthMethod.vue'
 import Step2a from './steps/Step2aContainer.vue'
 import Step2b from './steps/Step2bHost.vue'
@@ -26,6 +28,20 @@ const params = ref<SetupParams>({
 watch(publicKey, v => {
   params.value.public_key_open_ssh = v
 })
+
+const systemSettingsStore = useSystemSettingsStore()
+const { data } = storeToRefs(systemSettingsStore)
+
+// Write wizard params into the global settings store so the existing
+// "Save" button in Preference.vue's FooterToolBar persists them.
+function saveToSettings() {
+  data.value.nginx.host_address = params.value.host_address
+  data.value.nginx.host_user = params.value.host_user
+  data.value.nginx.host_systemd_unit_name = params.value.systemd_unit
+  data.value.nginx.host_systemctl_path = params.value.systemctl_path
+  data.value.nginx.host_config_dir = params.value.host_config_dir
+  data.value.nginx.host_log_dir = params.value.host_log_dir
+}
 
 function next() {
   if (current.value < 4)
@@ -69,6 +85,9 @@ function prev() {
       </AButton>
       <AButton v-if="current < 4" type="primary" @click="next">
         {{ $gettext('Next') }}
+      </AButton>
+      <AButton v-if="current === 4" type="primary" @click="saveToSettings">
+        {{ $gettext('Save configuration') }}
       </AButton>
     </div>
   </ACard>

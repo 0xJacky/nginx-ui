@@ -49,6 +49,20 @@ func Reload() (stdOut string, stdErr error) {
 		return
 	}
 
+	// SSH mode: prefer systemctl reload over nginx -s reload because the
+	// container's PID namespace cannot reach the host's nginx master PID.
+	if settings.NginxSettings.ControlMode() == settings.ControlModeHostViaSSH {
+		systemctl := settings.NginxSettings.HostSystemctlPath
+		if systemctl == "" {
+			systemctl = "/bin/systemctl"
+		}
+		unit := settings.NginxSettings.HostSystemdUnitName
+		if unit == "" {
+			unit = "nginx.service"
+		}
+		return execCommand(systemctl, "reload", unit)
+	}
+
 	if settings.NginxSettings.ReloadCmd != "" {
 		return execShell(settings.NginxSettings.ReloadCmd)
 	}
@@ -64,6 +78,20 @@ func Reload() (stdOut string, stdErr error) {
 func restart() {
 	// fix(docker): nginx restart always output network error
 	time.Sleep(500 * time.Millisecond)
+
+	// SSH mode: route through systemctl for correct cross-namespace lifecycle.
+	if settings.NginxSettings.ControlMode() == settings.ControlModeHostViaSSH {
+		systemctl := settings.NginxSettings.HostSystemctlPath
+		if systemctl == "" {
+			systemctl = "/bin/systemctl"
+		}
+		unit := settings.NginxSettings.HostSystemdUnitName
+		if unit == "" {
+			unit = "nginx.service"
+		}
+		lastStdOut, lastStdErr = execCommand(systemctl, "restart", unit)
+		return
+	}
 
 	if settings.NginxSettings.RestartCmd != "" {
 		lastStdOut, lastStdErr = execShell(settings.NginxSettings.RestartCmd)
