@@ -141,3 +141,24 @@ In skip installation mode, you can set the following environment variables to cr
 
 - NGINX_UI_PREDEFINED_USER_NAME
 - NGINX_UI_PREDEFINED_USER_PASSWORD
+
+## Host SSH Control
+
+::: info
+These variables are used when Nginx UI controls a host-installed nginx service from a Docker container via SSH.
+:::
+
+| Variable | Description |
+|---|---|
+| `NGINX_UI_NGINX_HOST_MODE` | Set to `ssh` to enable host SSH control |
+| `NGINX_UI_NGINX_HOST_ADDRESS` | Remote `host:port`, e.g. `host.docker.internal:22` |
+| `NGINX_UI_NGINX_HOST_USER` | SSH user on the host |
+| `NGINX_UI_NGINX_HOST_AUTH_METHOD` | SSH authentication method. Use key authentication for the current host SSH setup |
+| `NGINX_UI_NGINX_HOST_PRIVATE_KEY_PATH` | Private key path inside the container |
+| `NGINX_UI_NGINX_HOST_KNOWN_HOSTS_PATH` | known_hosts allow-list path inside the container |
+| `NGINX_UI_NGINX_HOST_SUDO_PREFIX` | Default `sudo -n` |
+| `NGINX_UI_NGINX_HOST_SYSTEMD_UNIT_NAME` | Default `nginx.service` |
+| `NGINX_UI_NGINX_HOST_SYSTEMCTL_PATH` | Absolute path to systemctl on the host |
+| `NGINX_UI_NGINX_HOST_CONFIG_DIR` | Host-side nginx config dir |
+| `NGINX_UI_NGINX_HOST_LOG_DIR` | Host-side nginx log dir |
+| `NGINX_UI_DISABLE_BUNDLED_NGINX` | Set to `true` to disable the container's bundled nginx (required in SSH mode) |

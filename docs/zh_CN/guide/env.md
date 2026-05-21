@@ -155,3 +155,24 @@
 
 - NGINX_UI_PREDEFINED_USER_NAME
 - NGINX_UI_PREDEFINED_USER_PASSWORD
+
+## 通过 SSH 控制宿主机
+
+::: info
+这些变量用于 Nginx UI 在 Docker 容器中通过 SSH 控制宿主机上原生安装的 nginx 服务。
+:::
+
+| 变量 | 描述 |
+|---|---|
+| `NGINX_UI_NGINX_HOST_MODE` | 设置为 `ssh` 以启用宿主机 SSH 控制 |
+| `NGINX_UI_NGINX_HOST_ADDRESS` | 远程 `host:port`，例如 `host.docker.internal:22` |
+| `NGINX_UI_NGINX_HOST_USER` | 宿主机上的 SSH 用户 |
+| `NGINX_UI_NGINX_HOST_AUTH_METHOD` | SSH 认证方式。当前宿主机 SSH 配置请使用密钥认证 |
+| `NGINX_UI_NGINX_HOST_PRIVATE_KEY_PATH` | 容器内的私钥路径 |
+| `NGINX_UI_NGINX_HOST_KNOWN_HOSTS_PATH` | 容器内的 known_hosts 允许列表路径 |
+| `NGINX_UI_NGINX_HOST_SUDO_PREFIX` | 默认为 `sudo -n` |
+| `NGINX_UI_NGINX_HOST_SYSTEMD_UNIT_NAME` | 默认为 `nginx.service` |
+| `NGINX_UI_NGINX_HOST_SYSTEMCTL_PATH` | 宿主机上 systemctl 的绝对路径 |
+| `NGINX_UI_NGINX_HOST_CONFIG_DIR` | 宿主机侧的 nginx 配置目录 |
+| `NGINX_UI_NGINX_HOST_LOG_DIR` | 宿主机侧的 nginx 日志目录 |
+| `NGINX_UI_DISABLE_BUNDLED_NGINX` | 设置为 `true` 以禁用容器内置的 nginx（SSH 模式下必需） |

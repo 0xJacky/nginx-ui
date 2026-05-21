@@ -63,6 +63,7 @@ export interface NginxSettings {
   error_log_path: string
   config_dir: string
   config_path: string
+  sbin_path: string
   log_dir_white_list: string[]
   pid_path: string
   test_config_cmd: string
@@ -71,6 +72,19 @@ export interface NginxSettings {
   stub_status_port: number
   container_name: string
   maintenance_template?: string
+  host_mode?: string
+
+  // Host-via-SSH mode fields
+  host_address?: string
+  host_user?: string
+  host_auth_method?: string
+  host_private_key_path?: string
+  host_known_hosts_path?: string
+  host_sudo_prefix?: string
+  host_systemd_unit_name?: string
+  host_systemctl_path?: string
+  host_config_dir?: string
+  host_log_dir?: string
 }
 
 export interface NginxLogSettings {

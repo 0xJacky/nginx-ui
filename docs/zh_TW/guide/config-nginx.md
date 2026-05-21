@@ -166,3 +166,46 @@ services:
 
 例如：`-v /var/run/docker.sock:/var/run/docker.sock`
 :::
+
+## 透過 SSH 控制宿主機 Nginx
+
+對於 Nginx UI 執行在 Docker 容器中、而 Nginx 以原生方式安裝在宿主機上的部署場景（例如透過 apt/yum 安裝並由 systemd 管理），Nginx UI 提供了第三種控制模式，透過 SSH 執行命令並使用綁定掛載進行檔案 I/O。
+
+### 限制
+
+::: warning 限制
+- **僅限同一宿主機**：Nginx UI 容器與目標 nginx 程序必須在同一台實體機或虛擬機上。如需多主機管理，請參閱 [使用叢集節點管理多主機 Nginx](manage-multi-host-nginx-with-cluster.md)。
+- 宿主機上**需要 systemd**。此模式透過呼叫 `systemctl reload|restart <unit>` 來控制服務。
+- 宿主機的 nginx 使用者必須允許一個專用的非特權使用者（通常為 `nginxui`）透過 `sudo -n` 無密碼執行一組受限命令。
+:::
+
+### 快速開始
+
+1. 在 Web 介面中，前往**偏好設定 → Nginx**，選擇**透過 SSH 控制宿主機**模式，並開啟設定精靈。
+2. 按照四步設定精靈操作：產生金鑰對、將產生的 docker-compose 片段貼到您的 stack 中、在宿主機上套用 sudoers/authorized_keys 片段，然後執行驗證。
+3. 所有檢查通過後，儲存設定。
+
+也可以使用命令列：
+
+```bash
+nginx-ui host-setup print --host-address host.docker.internal:22 --host-user nginxui
+nginx-ui host-setup test
+```
+
+### 設定欄位
+
+| 欄位 | 描述 |
+|---|---|
+| `host_mode` | 設定為 `ssh` 以啟用此模式 |
+| `host_address` | 遠端 `host:port` |
+| `host_user` | 宿主機上的 SSH 使用者 |
+| `host_auth_method` | SSH 認證方式。目前宿主機 SSH 設定請使用金鑰認證 |
+| `host_private_key_path` | 容器內的私鑰路徑 |
+| `host_known_hosts_path` | 容器內的 known_hosts 允許清單路徑 |
+| `host_sudo_prefix` | 特權指令前綴。預設值為 `sudo -n` |
+| `host_systemd_unit_name` | 預設為 `nginx.service` |
+| `host_systemctl_path` | 預設為 `/bin/systemctl` |
+| `host_config_dir` | 宿主機側 nginx 設定目錄 |
+| `host_log_dir` | 宿主機側 nginx 日誌目錄 |
+
+另請參閱：[在 Docker 中管理宿主機 Nginx](manage-host-nginx-from-docker.md) 和 [使用叢集節點管理多主機 Nginx](manage-multi-host-nginx-with-cluster.md)。

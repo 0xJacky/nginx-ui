@@ -14,6 +14,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/api/event"
 	"github.com/0xJacky/Nginx-UI/api/external_notify"
 	"github.com/0xJacky/Nginx-UI/api/geolite"
+	"github.com/0xJacky/Nginx-UI/api/host"
 	"github.com/0xJacky/Nginx-UI/api/license"
 	"github.com/0xJacky/Nginx-UI/api/llm"
 	"github.com/0xJacky/Nginx-UI/api/nginx"
@@ -103,6 +104,7 @@ func InitRouter() {
 			settings.InitRouter(g)
 			llm.InitRouter(g)
 			cluster.InitRouter(g)
+			host.InitRouter(g)
 			notification.InitRouter(g)
 			external_notify.InitRouter(g)
 			backup.InitAutoBackupRouter(g)

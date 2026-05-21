@@ -123,6 +123,10 @@ msgstr ""
 "* 性能指标基于 Apple M2 Pro （12 核）和 32GB 内存测得。实际性能可能因您的硬件"
 "配置而异。"
 
+#: src/views/preference/components/NginxHostSetup/steps/Step2bHost.vue:30
+msgid "/etc/sudoers.d/nginx-ui (sudo visudo -f)"
+msgstr "/etc/sudoers.d/nginx-ui（sudo visudo -f）"
+
 #: src/views/site/site_list/SiteList.vue:191
 msgid "%{count} sites selected"
 msgstr "%{count} 个已选站点"
@@ -188,7 +192,11 @@ msgstr "访问日志路径不存在"
 msgid "Access Logs"
 msgstr "访问日志"
 
-#: src/routes/modules/certificates.ts:20 src/views/certificate/ACMEUser.vue:149
+#: src/views/preference/components/NginxHostSetup/steps/Step2bHost.vue:42
+msgid "ACL commands (run as root)"
+msgstr "ACL 命令（以 root 身份运行）"
+
+#: src/routes/modules/certificates.ts:20 src/views/certificate/ACMEUser.vue:140
 #: src/views/certificate/components/ACMEUserSelector.vue:64
 msgid "ACME User"
 msgstr "ACME 用户"
@@ -198,7 +206,7 @@ msgid "Action"
 msgstr "操作"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:273
-#: src/views/certificate/ACMEUser.vue:131
+#: src/views/certificate/ACMEUser.vue:122
 #: src/views/certificate/CertificateList/certColumns.tsx:92
 #: src/views/config/configColumns.tsx:51
 #: src/views/dns/components/DNSRecordTable.vue:42
@@ -223,7 +231,7 @@ msgstr "实际工作进程与配置比例"
 
 #: src/components/NgxConfigEditor/NgxServer.vue:144
 #: src/components/NgxConfigEditor/NgxUpstream.vue:97 src/language/curd.ts:19
-#: src/views/preference/tabs/CertSettings.vue:45
+#: src/views/preference/tabs/CertSettings.vue:51
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:119
 #: src/views/site/site_list/SiteList.vue:150 src/views/stream/StreamList.vue:81
 msgid "Add"
@@ -290,6 +298,10 @@ msgstr "额外选项"
 msgid "Advance Mode"
 msgstr "高级模式"
 
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:242
+msgid "Advanced cleanup"
+msgstr "高级清理"
+
 #: src/views/nginx_log/NginxLogList.vue:397
 msgid "Advanced indexing enabled but failed to start rebuild"
 msgstr "高级索引已启用但未能开始重建"
@@ -321,6 +333,10 @@ msgstr "之后，请刷新此页面并再次点击添加通行密钥。"
 #: src/views/dns/components/DNSRecordFilter.vue:55
 msgid "All"
 msgstr "全部"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step4Verify.vue:108
+msgid "All checks passed — you may save the configuration."
+msgstr "所有检查均已通过，可以保存配置。"
 
 #: src/views/system/Licenses.vue:152
 msgid "All Components"
@@ -358,7 +374,7 @@ msgid ""
 "Any reachable IP address can be used with private Certificate Authorities"
 msgstr "任何可访问的 IP 地址均可用于私有证书颁发机构"
 
-#: src/views/preference/tabs/OpenAISettings.vue:33
+#: src/views/preference/tabs/OpenAISettings.vue:96
 msgid "API Base Url"
 msgstr "API 地址"
 
@@ -366,21 +382,25 @@ msgstr "API 地址"
 msgid "API Document"
 msgstr "API 文档"
 
-#: src/views/preference/tabs/OpenAISettings.vue:47
+#: src/views/preference/tabs/OpenAISettings.vue:107
 msgid "API Proxy"
 msgstr "API 代理"
 
-#: src/views/preference/tabs/OpenAISettings.vue:59
+#: src/views/preference/tabs/OpenAISettings.vue:119
 msgid "API Token"
 msgstr "API 令牌"
 
-#: src/views/preference/tabs/OpenAISettings.vue:71
+#: src/views/preference/tabs/OpenAISettings.vue:131
 msgid "API Type"
 msgstr "API 类型"
 
 #: src/views/preference/Preference.vue:53
 msgid "App"
 msgstr "应用"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step2bHost.vue:36
+msgid "Append to ~nginxui/.ssh/authorized_keys"
+msgstr "追加到 ~nginxui/.ssh/authorized_keys"
 
 #: src/language/curd.ts:65
 msgid "Apply"
@@ -440,7 +460,7 @@ msgstr "你确定要在以下同步节点上重载 Nginx？"
 msgid "Are you sure you want to remove this directive?"
 msgstr "您确定要删除这条指令？"
 
-#: src/views/preference/tabs/CertSettings.vue:71
+#: src/views/preference/tabs/CertSettings.vue:77
 msgid "Are you sure you want to remove this item?"
 msgstr "您确定要删除这个项目吗?"
 
@@ -468,6 +488,12 @@ msgstr "助手"
 msgid "At least 20GB available disk space"
 msgstr "至少 20GB 可用磁盘空间"
 
+#: src/views/preference/tabs/OpenAISettings.vue:41
+msgid ""
+"Atlas Cloud is OpenAI-compatible. Use https://api.atlascloud.ai/v1 and an "
+"Atlas Cloud API key."
+msgstr ""
+
 #: src/components/SelfCheck/SelfCheck.vue:85
 msgid "Attempt to fix"
 msgstr "尝试修复"
@@ -476,6 +502,7 @@ msgstr "尝试修复"
 msgid "Attempts"
 msgstr "尝试次数"
 
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:72
 #: src/views/preference/Preference.vue:83
 msgid "Auth"
 msgstr "认证"
@@ -487,6 +514,10 @@ msgstr "通过 Passkey 认证"
 #: src/views/other/Login.vue:289
 msgid "Authenticating..."
 msgstr "正在验证..."
+
+#: src/views/preference/components/NginxHostSetup/steps/Step1AuthMethod.vue:39
+msgid "Authentication method"
+msgstr "认证方式"
 
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:122
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:96
@@ -721,9 +752,19 @@ msgstr "批量升级"
 msgid "Belows are selected items that you want to batch modify"
 msgstr "以下是您选定的需要批量修改的项目"
 
+#: src/views/preference/components/NginxHostSetup/steps/Step3Connection.vue:57
+msgid ""
+"bind-mount cannot reach remote filesystems — config editing, log viewing and "
+"certificate management will fail."
+msgstr ""
+
 #: src/constants/errors/nginx.ts:3
 msgid "Block is nil"
 msgstr "区块为空"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step4Verify.vue:114
+msgid "Blocking checks passed, but warnings need review before saving."
+msgstr "阻塞性检查已通过，但保存前需要查看警告。"
 
 #: src/views/nginx_log/dashboard/components/BrowserStatsTable.vue:13
 #: src/views/nginx_log/structured/components/SearchFilters.vue:137
@@ -749,7 +790,7 @@ msgstr ""
 "启用高级索引即表示您确认系统满足要求并了解性能影响。这将立即开始对现有日志文"
 "件进行索引。"
 
-#: src/views/certificate/ACMEUser.vue:38
+#: src/views/certificate/ACMEUser.vue:39
 msgid "CA Dir"
 msgstr "CA 目录"
 
@@ -791,7 +832,7 @@ msgstr "缓存进程数"
 msgid "Cache subdirectory levels structure, e.g. 1:2"
 msgstr "缓存子目录级别结构，如 1:2"
 
-#: src/views/preference/tabs/CertSettings.vue:19
+#: src/views/preference/tabs/CertSettings.vue:20
 msgid "CADir"
 msgstr "CADir"
 
@@ -945,7 +986,7 @@ msgstr "证书路径为空"
 msgid "Certificate removed successfully"
 msgstr "证书已成功移除"
 
-#: src/views/preference/tabs/CertSettings.vue:27
+#: src/views/preference/tabs/CertSettings.vue:33
 msgid "Certificate Renewal Interval"
 msgstr "证书续期间隔"
 
@@ -1247,7 +1288,7 @@ msgstr "已关闭"
 msgid "Code completion is not enabled"
 msgstr "代码补全未启用"
 
-#: src/views/preference/tabs/OpenAISettings.vue:90
+#: src/views/preference/tabs/OpenAISettings.vue:150
 msgid "Code Completion Model"
 msgstr "代码补全模型"
 
@@ -1399,10 +1440,14 @@ msgstr "确认新密码"
 msgid "Confirmation Required"
 msgstr "需要确认"
 
-#: src/views/dashboard/components/NodeAnalyticItem.vue:78
+#: src/views/dashboard/components/NodeAnalyticItem.vue:82
 #: src/views/dashboard/components/SiteNavigationToolbar.vue:35
 msgid "Connected"
 msgstr "已连接"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:75
+msgid "Connection"
+msgstr "连接"
 
 #: src/views/dashboard/NginxDashBoard.vue:100
 msgid "Connection error, trying to reconnect..."
@@ -1415,6 +1460,14 @@ msgstr "此终端连接已断开。请根据需要刷新。"
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:61
 msgid "Connection timeout period"
 msgstr "连接超时期限"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:73
+msgid "Container"
+msgstr "容器"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step2aContainer.vue:24
+msgid "Container side — choose one of the three formats below"
+msgstr "容器侧配置：请选择以下三种格式之一"
 
 #: src/constants/errors/docker.ts:7
 msgid "Container status unknown"
@@ -1429,6 +1482,7 @@ msgstr "内容"
 #: src/components/SensitiveString/SensitiveInput.vue:62
 #: src/components/SensitiveString/SensitiveString.vue:71
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:122
+#: src/views/preference/components/NginxHostSetup/CodeBlock.vue:31
 msgid "Copied"
 msgstr "已拷贝"
 
@@ -1439,12 +1493,17 @@ msgstr "已拷贝!"
 #: src/components/SensitiveString/SensitiveInput.vue:85
 #: src/components/SensitiveString/SensitiveString.vue:100
 #: src/views/backup/components/BackupCreator.vue:128
+#: src/views/preference/components/NginxHostSetup/CodeBlock.vue:31
 msgid "Copy"
 msgstr "拷贝"
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:122
 msgid "Copy Codes"
 msgstr "复制代码"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step4Verify.vue:95
+msgid "Copy fix"
+msgstr "复制修复命令"
 
 #: src/views/system/Upgrade.vue:162
 msgid "Core Upgrade"
@@ -1581,6 +1640,10 @@ msgstr "当前内容"
 msgid "Current Password"
 msgstr "当前密码"
 
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:159
+msgid "Current target"
+msgstr "当前目标"
+
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:65
 msgid "Current usage"
 msgstr "当前用量"
@@ -1656,7 +1719,7 @@ msgstr "月中的某天"
 msgid "Day of Week"
 msgstr "星期几"
 
-#: src/views/preference/tabs/CertSettings.vue:32
+#: src/views/preference/tabs/CertSettings.vue:38
 msgid "Days"
 msgstr "天"
 
@@ -1767,6 +1830,10 @@ msgstr "成功从 %{node} 中删除站点 %{name}"
 #: src/views/site/site_list/SiteList.vue:33
 msgid "Delete site: %{site_name}"
 msgstr "删除站点: %{site_name}"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:259
+msgid "Delete stale key"
+msgstr "删除过期密钥"
 
 #: src/components/Notification/notifications.ts:162
 msgid "Delete stream %{name} from %{node} failed"
@@ -2108,6 +2175,10 @@ msgstr "你想删除这个 Upstream 吗？"
 msgid "Docker client not initialized"
 msgstr "Docker 客户端未初始化"
 
+#: src/views/preference/components/NginxHostSetup/steps/Step2aContainer.vue:44
+msgid "docker run"
+msgstr "docker run"
+
 #: src/language/generate.ts:21
 msgid "Docker socket exists"
 msgstr "Docker Socket 存在"
@@ -2115,6 +2186,10 @@ msgstr "Docker Socket 存在"
 #: src/constants/errors/self_check.ts:16
 msgid "Docker socket not exist"
 msgstr "不存在 Docker Socket"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step2aContainer.vue:28
+msgid "docker-compose snippet"
+msgstr "docker-compose 片段"
 
 #: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:88
 #: src/components/NgxConfigEditor/directive/DirectiveDocuments.vue:16
@@ -2207,11 +2282,11 @@ msgstr "动态分片管理"
 msgid "e.g., 0 0 * * * (daily at midnight)"
 msgstr "例如：0 0 * * *（每天午夜）"
 
-#: src/views/certificate/ACMEUser.vue:100
+#: src/views/certificate/ACMEUser.vue:91
 msgid "EAB HMAC Key"
 msgstr "EAB HMAC 密钥"
 
-#: src/views/certificate/ACMEUser.vue:87
+#: src/views/certificate/ACMEUser.vue:78
 msgid "EAB Key ID"
 msgstr "EAB 密钥 ID"
 
@@ -2241,8 +2316,8 @@ msgstr "编辑站点"
 msgid "Edit Stream"
 msgstr "编辑 Stream"
 
-#: src/views/certificate/ACMEUser.vue:26
-#: src/views/preference/tabs/CertSettings.vue:12
+#: src/views/certificate/ACMEUser.vue:27
+#: src/views/preference/tabs/CertSettings.vue:13
 msgid "Email"
 msgstr "邮箱"
 
@@ -2280,7 +2355,7 @@ msgstr "启用高级日志索引"
 msgid "Enable auto-renewal failed for %{name}"
 msgstr "启用 %{name} 自动续签失败"
 
-#: src/views/preference/tabs/OpenAISettings.vue:84
+#: src/views/preference/tabs/OpenAISettings.vue:144
 msgid "Enable Code Completion"
 msgstr "启动代码补全"
 
@@ -2531,6 +2606,10 @@ msgstr "每天 %{time} 执行"
 msgid "Execute on every month on day %{day} at %{time}"
 msgstr "每月 %{day} 日 %{time} 执行"
 
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:210
+msgid "Existing fingerprint"
+msgstr "现有指纹"
+
 #: src/language/curd.ts:72
 msgid "Expand"
 msgstr "展开"
@@ -2560,20 +2639,24 @@ msgstr "过期时间: %{date}"
 msgid "Export Excel"
 msgstr "导出 Excel"
 
-#: src/views/certificate/ACMEUser.vue:105
+#: src/views/certificate/ACMEUser.vue:96
 msgid ""
 "External Account Binding HMAC Key (optional). Should be in Base64 URL "
 "encoding format."
 msgstr "外部账户绑定 HMAC 密钥（可选）。应为 Base64 URL 编码格式。"
 
-#: src/views/certificate/ACMEUser.vue:92
+#: src/views/certificate/ACMEUser.vue:83
 msgid ""
 "External Account Binding Key ID (optional). Required for some ACME providers "
 "like ZeroSSL."
 msgstr ""
 "外部账户绑定密钥 ID （可选）。某些 ACME 提供商（如 ZeroSSL）需要此信息。"
 
-#: src/views/preference/tabs/NginxSettings.vue:49
+#: src/views/preference/tabs/NginxSettings.vue:89
+msgid "External Container"
+msgstr "外部容器"
+
+#: src/views/preference/tabs/NginxSettings.vue:102
 msgid "External Docker Container"
 msgstr "外部 Docker 容器"
 
@@ -3016,6 +3099,10 @@ msgstr "保存 Nginx 性能参数失败"
 msgid "Failed to save order"
 msgstr "保存顺序失败"
 
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:182
+msgid "Failed to scan host keys"
+msgstr "扫描主机密钥失败"
+
 #: src/views/preference/tabs/ExternalNotify.vue:32
 msgid "Failed to send test message"
 msgstr "发送测试消息失败"
@@ -3123,6 +3210,10 @@ msgstr "过滤"
 #: src/views/nginx_log/raw/RawLogViewer.vue:301
 msgid "Filter log content"
 msgstr "过滤日志内容"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:207
+msgid "Fingerprint"
+msgstr "指纹"
 
 #: src/language/constants.ts:19 src/views/site/site_add/SiteAdd.vue:176
 msgid "Finished"
@@ -3247,6 +3338,10 @@ msgstr "普通证书"
 #: src/language/curd.ts:17
 msgid "Generate"
 msgstr "生成"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step1AuthMethod.vue:67
+msgid "Generate keypair"
+msgstr "生成密钥对"
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:139
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:162
@@ -3406,6 +3501,10 @@ msgstr "隐藏"
 msgid "Hide Assistant"
 msgstr "隐藏助手"
 
+#: src/views/preference/tabs/NginxSettings.vue:97
+msgid "Hide setup wizard"
+msgstr "隐藏配置向导"
+
 #: src/composables/useGeoTranslation.ts:165
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:165
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:133
@@ -3427,9 +3526,41 @@ msgid "Home"
 msgstr "首页"
 
 #: src/views/dns/components/DNSRecordFilter.vue:42
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:160
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:74
 #: src/views/preference/tabs/ServerSettings.vue:19
 msgid "Host"
 msgstr "主机"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step3Connection.vue:31
+msgid "Host address (host:port)"
+msgstr "主机地址（host:port）"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:76
+msgid "Host Identity"
+msgstr "主机身份"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:273
+msgid "Host identity is trusted. You may continue to verification."
+msgstr "主机身份已信任，可以继续验证。"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:228
+msgid ""
+"Host key changed. Replace only after confirming an intentional host SSH key "
+"rotation."
+msgstr ""
+
+#: src/views/preference/components/NginxHostSetup/steps/Step2bHost.vue:23
+msgid "Host side — run these on the machine that runs nginx"
+msgstr "宿主机侧配置：请在运行 nginx 的机器上执行"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:70
+msgid "Host SSH setup wizard"
+msgstr "宿主机 SSH 配置向导"
+
+#: src/views/preference/tabs/NginxSettings.vue:92
+msgid "Host via SSH"
+msgstr "通过 SSH 管理宿主机"
 
 #: src/views/dns/components/DNSRecordFilter.vue:45
 msgid "Host, e.g. @ or www"
@@ -3444,7 +3575,7 @@ msgstr "小时"
 msgid "HTTP"
 msgstr "HTTP"
 
-#: src/views/preference/tabs/CertSettings.vue:15
+#: src/views/preference/tabs/CertSettings.vue:16
 msgid "HTTP Challenge Port"
 msgstr "HTTP Challenge 监听端口"
 
@@ -3463,6 +3594,18 @@ msgstr "HTTPS 协议"
 #: src/views/nginx_log/structured/components/SearchFilters.vue:189
 msgid "https://..."
 msgstr "https://..."
+
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:255
+msgid "I understand this removes only the selected stale known_hosts entry."
+msgstr "我理解这只会移除选中的过期 known_hosts 条目。"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:230
+msgid "I verified the new fingerprint through a trusted channel."
+msgstr "我已通过可信渠道验证新指纹。"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:220
+msgid "I verified this fingerprint through a trusted channel."
+msgstr "我已通过可信渠道验证此指纹。"
 
 #: src/views/preference/tabs/NodeSettings.vue:34
 msgid "ICP Number"
@@ -3656,7 +3799,7 @@ msgstr "间隔"
 msgid "Interval (seconds)"
 msgstr "间隔（秒）"
 
-#: src/views/certificate/ACMEUser.vue:166
+#: src/views/certificate/ACMEUser.vue:157
 msgid "Invalid"
 msgstr "无效的"
 
@@ -3823,6 +3966,10 @@ msgstr "Keepalive 超时"
 msgid "Key Type"
 msgstr "密钥类型"
 
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:162
+msgid "known_hosts"
+msgstr "known_hosts"
+
 #: src/views/preference/components/ExternalNotify/columns.tsx:33
 msgid "Language"
 msgstr "语言"
@@ -3921,7 +4068,7 @@ msgstr "上次使用"
 msgid "Leave blank for no change"
 msgstr "留空表示不修改"
 
-#: src/views/preference/tabs/OpenAISettings.vue:42
+#: src/views/preference/tabs/OpenAISettings.vue:33
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr "留空为默认：https://api.openai.com/"
 
@@ -3929,13 +4076,19 @@ msgstr "留空为默认：https://api.openai.com/"
 msgid "Leave blank if do not want to modify"
 msgstr "如果不想修改，请留空"
 
-#: src/views/certificate/ACMEUser.vue:107 src/views/certificate/ACMEUser.vue:94
+#: src/views/certificate/ACMEUser.vue:85 src/views/certificate/ACMEUser.vue:98
 msgid "Leave blank if not required by your ACME provider"
 msgstr "如果您的 ACME 提供商不需要，请留空"
 
-#: src/views/certificate/ACMEUser.vue:70
+#: src/views/certificate/ACMEUser.vue:61
 msgid "Leave blank if you don't need this."
 msgstr "如果不需要，请留空。"
+
+#: src/views/preference/tabs/OpenAISettings.vue:31
+#, fuzzy
+msgid ""
+"Leave blank to use the Atlas Cloud endpoint: https://api.atlascloud.ai/v1"
+msgstr "留空为默认：https://api.openai.com/"
 
 #: src/views/certificate/components/CertificateContentEditor.vue:240
 #: src/views/certificate/components/CertificateContentEditor.vue:258
@@ -3964,8 +4117,9 @@ msgstr "许可证分布"
 msgid "License Types"
 msgstr "许可证类型"
 
-#: src/views/dashboard/components/NodeAnalyticItem.vue:78
-#: src/views/dashboard/components/NodeAnalyticItem.vue:95
+#: src/views/dashboard/components/NodeAnalyticItem.vue:109
+#: src/views/dashboard/components/NodeAnalyticItem.vue:82
+#: src/views/dashboard/components/NodeAnalyticItem.vue:99
 msgid "Link"
 msgstr "连接"
 
@@ -3994,6 +4148,10 @@ msgstr "列表"
 #: src/components/PortScanner/PortScannerCompact.vue:43
 msgid "Listening"
 msgstr "监听中"
+
+#: src/views/preference/Preference.vue:101
+msgid "LLM"
+msgstr ""
 
 #: src/views/dashboard/ServerAnalytic.vue:188
 msgid "Load Average:"
@@ -4045,9 +4203,13 @@ msgstr "加载中..."
 #: src/constants/index.ts:48 src/views/backup/AutoBackup/AutoBackup.vue:74
 #: src/views/backup/AutoBackup/AutoBackup.vue:83
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:48
-#: src/views/preference/tabs/NginxSettings.vue:55
+#: src/views/preference/tabs/NginxSettings.vue:108
 msgid "Local"
 msgstr "本地"
+
+#: src/views/preference/tabs/NginxSettings.vue:86
+msgid "Local / Bundled"
+msgstr "本地 / 内置"
 
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:60
 msgid "Local path (e.g., /var/backups)"
@@ -4168,6 +4330,16 @@ msgstr "成功禁用维护模式"
 #: src/views/site/components/SiteStatusSelect.vue:80
 msgid "Maintenance mode enabled successfully"
 msgstr "成功启用维护模式"
+
+#: src/views/preference/tabs/NginxSettings.vue:38
+#, fuzzy
+msgid "Maintenance template (filename only)"
+msgstr "成功启用维护模式"
+
+#: src/views/preference/tabs/NginxSettings.vue:41
+#, fuzzy
+msgid "maintenance.html"
+msgstr "维护模式"
 
 #: src/constants/errors/cert.ts:20
 msgid "Make certificate dir error: {0}"
@@ -4301,6 +4473,10 @@ msgstr "内存设计"
 msgid "Memory Usage (RSS)"
 msgstr "内存使用量（RSS）"
 
+#: src/views/preference/components/NginxHostSetup/steps/Step2aContainer.vue:33
+msgid "Merge into services.nginx-ui"
+msgstr "合并到 services.nginx-ui"
+
 #: src/views/nginx_log/structured/components/SearchFilters.vue:92
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:519
 msgid "Method"
@@ -4338,7 +4514,7 @@ msgstr "分钟"
 msgid "Mirror"
 msgstr "镜像"
 
-#: src/views/preference/tabs/OpenAISettings.vue:21
+#: src/views/preference/tabs/OpenAISettings.vue:84
 msgid "Model"
 msgstr "模型"
 
@@ -4395,6 +4571,11 @@ msgstr "每月"
 msgid "Monthly on day %{day} at %{time}"
 msgstr "每月%{day}日%{time}"
 
+#: src/views/preference/tabs/NginxSettings.vue:44
+#, fuzzy
+msgid "Mounted directory"
+msgstr "受保护目录"
+
 #: src/views/nginx_log/structured/components/SearchFilters.vue:204
 msgid "Mozilla/5.0..."
 msgstr "Mozilla/5.0..."
@@ -4418,7 +4599,7 @@ msgstr "不适用"
 
 #: src/components/NgxConfigEditor/NgxUpstream.vue:130
 #: src/views/backup/AutoBackup/AutoBackup.vue:11
-#: src/views/certificate/ACMEUser.vue:13
+#: src/views/certificate/ACMEUser.vue:14
 #: src/views/certificate/CertificateList/certColumns.tsx:9
 #: src/views/certificate/components/CertificateBasicInfo.vue:44
 #: src/views/certificate/components/CertificateBasicInfo.vue:58
@@ -4513,6 +4694,7 @@ msgstr "新版本发布"
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:189
 #: src/views/install/components/InstallView.vue:212
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:104
 #: src/views/site/site_add/SiteAdd.vue:237
 #: src/views/site/site_add/SiteAdd.vue:244
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:264
@@ -4527,7 +4709,7 @@ msgstr "Nginx"
 msgid "Nginx -T output is empty"
 msgstr "Nginx -T 的输出为空"
 
-#: src/views/preference/tabs/NginxSettings.vue:13
+#: src/views/preference/tabs/NginxSettings.vue:47
 msgid "Nginx Access Log Path"
 msgstr "Nginx 访问日志路径"
 
@@ -4581,11 +4763,11 @@ msgstr "Nginx 配置已恢复"
 msgid "Nginx Configuration Parse Error"
 msgstr "Nginx 配置解析错误"
 
-#: src/views/preference/tabs/NginxSettings.vue:22
+#: src/views/preference/tabs/NginxSettings.vue:56
 msgid "Nginx Configuration Path"
 msgstr "Nginx 配置路径"
 
-#: src/views/preference/tabs/NginxSettings.vue:19
+#: src/views/preference/tabs/NginxSettings.vue:53
 msgid "Nginx Configurations Directory"
 msgstr "Nginx 配置目录"
 
@@ -4593,7 +4775,7 @@ msgstr "Nginx 配置目录"
 msgid "Nginx Control"
 msgstr "控制 Nginx"
 
-#: src/views/preference/tabs/NginxSettings.vue:46
+#: src/views/preference/tabs/NginxSettings.vue:80
 msgid "Nginx Control Mode"
 msgstr "Nginx 控制模式"
 
@@ -4602,7 +4784,7 @@ msgstr "Nginx 控制模式"
 msgid "Nginx CPU usage rate"
 msgstr "Nginx CPU 使用率"
 
-#: src/views/preference/tabs/NginxSettings.vue:16
+#: src/views/preference/tabs/NginxSettings.vue:50
 msgid "Nginx Error Log Path"
 msgstr "Nginx 错误日志路径"
 
@@ -4638,7 +4820,7 @@ msgstr "Nginx 正在运行"
 msgid "Nginx Log"
 msgstr "Nginx 日志"
 
-#: src/views/preference/tabs/NginxSettings.vue:25
+#: src/views/preference/tabs/NginxSettings.vue:59
 msgid "Nginx Log Directory Whitelist"
 msgstr "Nginx 日志目录白名单"
 
@@ -4651,7 +4833,7 @@ msgstr "Nginx 日志索引中..."
 msgid "Nginx Memory usage"
 msgstr "Nginx 内存使用量"
 
-#: src/views/preference/tabs/NginxSettings.vue:34
+#: src/views/preference/tabs/NginxSettings.vue:68
 msgid "Nginx PID Path"
 msgstr "Nginx PID 路径"
 
@@ -4659,7 +4841,7 @@ msgstr "Nginx PID 路径"
 msgid "Nginx PID path exists"
 msgstr "Nginx PID 路径存在"
 
-#: src/views/preference/tabs/NginxSettings.vue:40
+#: src/views/preference/tabs/NginxSettings.vue:74
 msgid "Nginx Reload Command"
 msgstr "Nginx 重载命令"
 
@@ -4680,7 +4862,7 @@ msgstr "Nginx 重载成功"
 msgid "Nginx reported a configuration syntax error."
 msgstr "Nginx 报告了一个配置语法错误。"
 
-#: src/views/preference/tabs/NginxSettings.vue:43
+#: src/views/preference/tabs/NginxSettings.vue:77
 msgid "Nginx Restart Command"
 msgstr "Nginx 重启命令"
 
@@ -4696,7 +4878,7 @@ msgstr "Nginx 重启成功"
 msgid "Nginx sbin path exists"
 msgstr "Nginx Sbin 路径存在"
 
-#: src/views/preference/tabs/NginxSettings.vue:37
+#: src/views/preference/tabs/NginxSettings.vue:71
 msgid "Nginx Test Config Command"
 msgstr "Nginx 测试配置命令"
 
@@ -4712,6 +4894,13 @@ msgstr "Nginx 理论最高性能"
 #: src/constants/errors/system.ts:2
 msgid "Nginx UI already installed"
 msgstr "Nginx UI 已安装"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:156
+msgid ""
+"Nginx UI can read the key presented by the SSH server, but it cannot prove "
+"the key is genuine by itself. Verify the fingerprint through the host "
+"console or another trusted channel before trusting or replacing it."
+msgstr ""
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:166
 msgid "Nginx UI configuration has been restored"
@@ -4743,7 +4932,7 @@ msgstr "检查 nginx.conf 是否包含 streams-enabled 的目录"
 #: src/components/Notification/Notification.vue:115 src/language/curd.ts:40
 #: src/views/notification/Notification.vue:38
 #: src/views/preference/tabs/AuthSettings.vue:128
-#: src/views/preference/tabs/CertSettings.vue:73
+#: src/views/preference/tabs/CertSettings.vue:79
 #: src/views/site/site_list/SiteList.vue:166 src/views/stream/StreamList.vue:99
 msgid "No"
 msgstr "取消"
@@ -4786,6 +4975,10 @@ msgstr "当前页面没有条目"
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:286
 msgid "No geographic data available"
 msgstr "无可用地理数据"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step1AuthMethod.vue:60
+msgid "No key generated yet"
+msgstr "尚未生成密钥"
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:567
 msgid "No logs found in the selected time range."
@@ -5040,13 +5233,13 @@ msgstr "只允许使用 zip 文件"
 msgid "Open"
 msgstr "开放"
 
+#: src/views/preference/tabs/NginxSettings.vue:97
+msgid "Open setup wizard"
+msgstr "打开配置向导"
+
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:285
 msgid "Open Source Limitation"
 msgstr "开源限制"
-
-#: src/views/preference/Preference.vue:101
-msgid "OpenAI"
-msgstr "OpenAI"
 
 #: src/views/nginx_log/dashboard/components/OSStatsTable.vue:13
 msgid "Operating System"
@@ -5109,6 +5302,10 @@ msgstr "其他"
 msgid "Otp or recovery code empty"
 msgstr "OTP 或恢复代码为空"
 
+#: src/views/preference/components/NginxHostSetup/steps/Step2aContainer.vue:36
+msgid "override file"
+msgstr "override 文件"
+
 #: src/views/config/components/ConfigRightPanel/Deploy.vue:18
 msgid "Overwrite"
 msgstr "覆盖"
@@ -5129,6 +5326,10 @@ msgstr "参数"
 #: src/views/dashboard/components/ParamsOptimization.vue:116
 msgid "Params Optimization"
 msgstr "参数优化"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:191
+msgid "Parse pasted output"
+msgstr "解析粘贴的输出"
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:73
 msgid "Parser Performance"
@@ -5155,6 +5356,10 @@ msgstr "密码"
 msgid "Password (*)"
 msgstr "密码 (*)"
 
+#: src/views/preference/components/NginxHostSetup/steps/Step1AuthMethod.vue:45
+msgid "Password (not yet supported)"
+msgstr "密码（暂不支持）"
+
 #: src/constants/errors/user.ts:2
 msgid "Password incorrect"
 msgstr "用户名和密码错误"
@@ -5170,6 +5375,10 @@ msgstr "密码更新成功"
 #: src/views/user/UserProfile.vue:75
 msgid "Passwords do not match"
 msgstr "密码不匹配"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:187
+msgid "Paste ssh-keyscan output"
+msgstr "粘贴 ssh-keyscan 输出"
 
 #: src/components/NgxConfigEditor/LocationEditor.vue:122
 #: src/components/NgxConfigEditor/LocationEditor.vue:150
@@ -5496,6 +5705,10 @@ msgstr "偏好设置"
 msgid "Preparing lego configurations"
 msgstr "正在准备 Lego 的配置"
 
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:101
+msgid "Previous"
+msgstr ""
+
 #: src/views/dns/components/DNSRecordForm.vue:82
 #: src/views/dns/components/DNSRecordTable.vue:34
 msgid "Priority"
@@ -5513,6 +5726,10 @@ msgstr "私有 IP （192.168.x.x、10.x.x.x、172.16-31.x.x）将失败"
 #: src/views/certificate/components/CertificateFileUpload.vue:45
 msgid "private key"
 msgstr "私钥"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step1AuthMethod.vue:79
+msgid "Private key generated (shown once)"
+msgstr "私钥已生成（仅显示一次）"
 
 #: src/components/PortScanner/PortScannerCompact.vue:55
 msgid "Process"
@@ -5563,6 +5780,7 @@ msgstr ""
 
 #: src/views/dns/DDNSManager.vue:108 src/views/dns/DNSCredential.vue:26
 #: src/views/dns/DNSDomainList.vue:183 src/views/dns/DNSDomainList.vue:204
+#: src/views/preference/tabs/OpenAISettings.vue:70
 msgid "Provider"
 msgstr "提供商"
 
@@ -5583,7 +5801,7 @@ msgstr "省份 / 地区"
 msgid "Proxied"
 msgstr "已代理"
 
-#: src/views/certificate/ACMEUser.vue:63
+#: src/views/certificate/ACMEUser.vue:54
 msgid "Proxy"
 msgstr "代理"
 
@@ -5598,6 +5816,15 @@ msgstr "代理目标"
 #: src/components/AutoCertForm/AutoCertForm.vue:192
 msgid "Public CA Requirements:"
 msgstr "公共 CA 要求："
+
+#: src/views/preference/components/NginxHostSetup/steps/Step1AuthMethod.vue:51
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:213
+msgid "Public key"
+msgstr "公钥"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step1AuthMethod.vue:56
+msgid "Public key (paste into authorized_keys)"
+msgstr "公钥（粘贴到 authorized_keys）"
 
 #: src/views/preference/tabs/NodeSettings.vue:46
 msgid "Public Security Number"
@@ -5723,7 +5950,7 @@ msgstr ""
 msgid "Recreate DNS Record"
 msgstr "重新创建 DNS 记录"
 
-#: src/views/preference/tabs/CertSettings.vue:40
+#: src/views/preference/tabs/CertSettings.vue:46
 msgid "Recursive Nameservers"
 msgstr "递归域名服务器"
 
@@ -5745,25 +5972,29 @@ msgstr "刷新"
 msgid "Refresh Modules Cache"
 msgstr "刷新模块缓存"
 
+#: src/views/preference/components/NginxHostSetup/steps/Step1AuthMethod.vue:67
+msgid "Regenerate keypair"
+msgstr "重新生成密钥对"
+
 #: src/components/LLM/ChatMessageInput.vue:74
 msgid "Regenerate response"
 msgstr "重新生成响应"
 
-#: src/views/certificate/ACMEUser.vue:174
+#: src/views/certificate/ACMEUser.vue:165
 msgid "Register"
 msgstr "注册"
 
-#: src/views/certificate/ACMEUser.vue:68
+#: src/views/certificate/ACMEUser.vue:59
 msgid ""
 "Register a user or use this account to issue a certificate through an HTTP "
 "proxy."
 msgstr "注册用户或使用此账户申请证书时通过 HTTP 代理。"
 
-#: src/views/certificate/ACMEUser.vue:142
+#: src/views/certificate/ACMEUser.vue:133
 msgid "Register failed"
 msgstr "注册失败"
 
-#: src/views/certificate/ACMEUser.vue:113
+#: src/views/certificate/ACMEUser.vue:104
 msgid "Register On Startup"
 msgstr "启动时注册"
 
@@ -5771,7 +6002,7 @@ msgstr "启动时注册"
 msgid "Register passkey successfully"
 msgstr "Passkey 注册成功"
 
-#: src/views/certificate/ACMEUser.vue:140
+#: src/views/certificate/ACMEUser.vue:131
 msgid "Register successfully"
 msgstr "注册成功"
 
@@ -5779,7 +6010,7 @@ msgstr "注册成功"
 msgid "Registering user"
 msgstr "正在注册用户"
 
-#: src/views/certificate/ACMEUser.vue:157
+#: src/views/certificate/ACMEUser.vue:148
 msgid "Registration Status"
 msgstr "注册状态"
 
@@ -5841,6 +6072,10 @@ msgstr "正在重载 Nginx"
 #: src/constants/index.ts:43 src/constants/index.ts:49
 msgid "Remote"
 msgstr "远程"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step3Connection.vue:53
+msgid "Remote address detected"
+msgstr "检测到远程地址"
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:152
 #: src/views/preference/tabs/AuthSettings.vue:133
@@ -5949,6 +6184,10 @@ msgstr "证书续期成功"
 msgid "Renew successfully"
 msgstr "更新成功"
 
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:233
+msgid "Replace trusted key"
+msgstr "替换已信任密钥"
+
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:218
 msgid "Request"
 msgstr "请求"
@@ -5999,6 +6238,10 @@ msgid ""
 msgstr ""
 "驻留集大小：实际驻留在物理内存中的内存，包括所有共享库内存，将为多个进程重复"
 "计算"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:279
+msgid "Resolve changed host keys before continuing."
+msgstr "请先处理已变更的主机密钥，再继续。"
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:109
 msgid "Resource Usage Warning"
@@ -6116,6 +6359,14 @@ msgstr "依赖方 ID"
 #: src/views/preference/tabs/ServerSettings.vue:25
 msgid "Run Mode"
 msgstr "运行模式"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:188
+msgid "Run on a trusted terminal"
+msgstr "在可信终端中运行"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step4Verify.vue:68
+msgid "Run verification"
+msgstr "运行验证"
 
 #: src/components/NginxControl/NginxControl.vue:72
 msgid "Running"
@@ -6244,6 +6495,14 @@ msgstr "星期六"
 msgid "Save"
 msgstr "保存"
 
+#: src/views/preference/components/NginxHostSetup/steps/Step2aContainer.vue:41
+msgid "Save as docker-compose.override.yml"
+msgstr "保存为 docker-compose.override.yml"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:107
+msgid "Save configuration"
+msgstr "保存配置"
+
 #: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:112
 msgid "Save Directive"
 msgstr "保存指令"
@@ -6292,9 +6551,13 @@ msgstr "保存成功"
 
 #: src/language/curd.ts:35 src/views/certificate/CertificateEditor.vue:49
 #: src/views/certificate/components/RenewCert.vue:26
-#: src/views/preference/store/index.ts:132
+#: src/views/preference/store/index.ts:134
 msgid "Save successfully"
 msgstr "保存成功"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step1AuthMethod.vue:82
+msgid "Save this private key somewhere safe. It will NOT be shown again."
+msgstr "请将此私钥保存到安全位置。它不会再次显示。"
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:51
 #: src/language/curd.ts:28 src/views/config/components/ConfigLeftPanel.vue:198
@@ -6315,6 +6578,10 @@ msgstr "扫描完成"
 #: src/components/PortScanner/PortScannerCompact.vue:98
 msgid "Scan failed"
 msgstr "扫描失败"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:174
+msgid "Scan host keys"
+msgstr "扫描主机密钥"
 
 #: src/components/PortScanner/PortScannerCompact.vue:179
 msgid "Scan Ports"
@@ -6397,7 +6664,7 @@ msgstr "安全 Token"
 msgid "Security Token Information"
 msgstr "安全令牌信息"
 
-#: src/views/certificate/ACMEUser.vue:59
+#: src/views/certificate/ACMEUser.vue:50
 msgid ""
 "Select a predefined CA directory or enter a custom one. Leave blank to use "
 "the default CA directory."
@@ -6422,7 +6689,8 @@ msgstr "选择 DNS 域名"
 msgid "Select existing record"
 msgstr "选择现有记录"
 
-#: src/views/certificate/ACMEUser.vue:45
+#: src/views/certificate/ACMEUser.vue:46
+#: src/views/preference/tabs/CertSettings.vue:29
 msgid "Select or enter a CA directory URL"
 msgstr "选择或输入 CA 目录 URL"
 
@@ -6513,7 +6781,7 @@ msgstr "设置环境错误：{0}"
 msgid "Set env flag to disable lego CNAME support error: {0}"
 msgstr "设置环境标志以禁用 lego CNAME 支持错误：{0}"
 
-#: src/views/preference/tabs/CertSettings.vue:36
+#: src/views/preference/tabs/CertSettings.vue:42
 msgid ""
 "Set the recursive nameservers to override the systems nameservers for the "
 "step of DNS challenge."
@@ -6654,6 +6922,10 @@ msgstr "大小"
 msgid "Skip Installation"
 msgstr "跳过安装"
 
+#: src/views/preference/components/NginxHostSetup/steps/Step4Verify.vue:71
+msgid "Skip nginx -t (no side effects)"
+msgstr "跳过 nginx -t（无副作用）"
+
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:324
 msgid "Sleep time between cache loader iterations"
 msgstr "缓存加载器迭代之间的休眠时间"
@@ -6681,6 +6953,14 @@ msgstr "赞助"
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:61
 msgid "SSD storage for better I/O performance"
 msgstr "SSD 存储以获得更好的 I/O 性能"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step1AuthMethod.vue:42
+msgid "SSH key (recommended)"
+msgstr "SSH 密钥（推荐）"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step3Connection.vue:35
+msgid "SSH user"
+msgstr "SSH 用户"
 
 #: src/views/certificate/components/CertificateContentEditor.vue:209
 #: src/views/certificate/components/CertificateContentEditor.vue:214
@@ -6766,7 +7046,7 @@ msgstr "静态"
 
 #: src/components/PortScanner/PortScannerCompact.vue:37
 #: src/views/backup/AutoBackup/AutoBackup.vue:160
-#: src/views/certificate/ACMEUser.vue:75
+#: src/views/certificate/ACMEUser.vue:66
 #: src/views/certificate/CertificateList/certColumns.tsx:63
 #: src/views/dashboard/components/ModulesTable.vue:75
 #: src/views/dns/DDNSManager.vue:113
@@ -6842,7 +7122,7 @@ msgstr "Streams-enabled 目录不存在"
 msgid "Structured"
 msgstr "结构化"
 
-#: src/views/preference/tabs/NginxSettings.vue:10
+#: src/views/preference/tabs/NginxSettings.vue:35
 msgid "Stub Status Port"
 msgstr "Stub 状态端口"
 
@@ -6865,7 +7145,7 @@ msgstr "成功响应 (2xx)"
 msgid "Sunday"
 msgstr "星期日"
 
-#: src/components/SelfCheck/tasks/frontend/websocket.ts:14
+#: src/components/SelfCheck/tasks/frontend/websocket.ts:19
 msgid ""
 "Support communication with the backend through the WebSocket protocol. If "
 "your Nginx UI is being used via an Nginx reverse proxy, please refer to this "
@@ -6997,6 +7277,14 @@ msgstr "系统还原"
 msgid "System restored successfully."
 msgstr "系统恢复成功。"
 
+#: src/views/preference/components/NginxHostSetup/steps/Step3Connection.vue:43
+msgid "systemctl path"
+msgstr "systemctl 路径"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step3Connection.vue:39
+msgid "systemd unit"
+msgstr "systemd 单元"
+
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:338
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:508
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:632
@@ -7116,14 +7404,14 @@ msgid ""
 "The log path is not under the paths in settings.NginxSettings.LogDirWhiteList"
 msgstr "日志路径不在 settings.NginxSettings.LogDirWhiteList 中的路径之下"
 
-#: src/views/preference/tabs/OpenAISettings.vue:24
-#: src/views/preference/tabs/OpenAISettings.vue:93
+#: src/views/preference/tabs/OpenAISettings.vue:153
+#: src/views/preference/tabs/OpenAISettings.vue:87
 msgid ""
 "The model name should only contain letters, unicode, numbers, hyphens, "
 "dashes, colons, and dots."
 msgstr "模型名称只能包含字母、单码、数字、连字符、破折号、冒号和点。"
 
-#: src/views/preference/tabs/OpenAISettings.vue:94
+#: src/views/preference/tabs/OpenAISettings.vue:154
 msgid ""
 "The model used for code completion, if not set, the chat model will be used."
 msgstr "用于代码自动补全的模型，如果未设置，则使用聊天模型。"
@@ -7153,7 +7441,7 @@ msgid ""
 "hyphens, dashes, colons, and dots."
 msgstr "公安备案号只能包含字母、单码、数字、连字符、破折号、冒号和点。"
 
-#: src/views/dashboard/components/NodeAnalyticItem.vue:86
+#: src/views/dashboard/components/NodeAnalyticItem.vue:90
 msgid ""
 "The remote Nginx UI version is not compatible with the local Nginx UI "
 "version. To avoid potential errors, please upgrade the remote Nginx UI to "
@@ -7168,13 +7456,13 @@ msgid ""
 "need to get the certificate, supportmultiple domains."
 msgstr "当前配置中的 server_name 必须是获取证书所需的域名，支持多个域名。"
 
-#: src/views/preference/tabs/CertSettings.vue:22
+#: src/views/preference/tabs/CertSettings.vue:23
 #: src/views/preference/tabs/HTTPSettings.vue:14
 msgid "The url is invalid"
 msgstr "URL 无效"
 
-#: src/views/preference/tabs/OpenAISettings.vue:36
-#: src/views/preference/tabs/OpenAISettings.vue:50
+#: src/views/preference/tabs/OpenAISettings.vue:110
+#: src/views/preference/tabs/OpenAISettings.vue:38
 msgid "The url is invalid."
 msgstr "URL 无效."
 
@@ -7259,6 +7547,10 @@ msgid ""
 "This mode only previews the installation UI flow and does not change any "
 "server state."
 msgstr "此模式仅预览安装界面流程，不会更改任何服务器状态。"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step3Connection.vue:56
+msgid "This mode only supports nginx-ui and target nginx on the same host."
+msgstr "该模式仅支持 nginx-ui 与目标 nginx 位于同一宿主机。"
 
 #: src/views/dashboard/NginxDashBoard.vue:175
 msgid ""
@@ -7416,7 +7708,7 @@ msgstr ""
 "为了确保认证自动更新能够正常工作，我们需要添加一个能够代理从权威机构到后端的"
 "请求的 Location，并且我们需要保存这个文件并重新加载 Nginx。你确定要继续吗？"
 
-#: src/views/preference/tabs/OpenAISettings.vue:37
+#: src/views/preference/tabs/OpenAISettings.vue:44
 msgid ""
 "To use a local large model, deploy it with ollama, vllm or lmdeploy. They "
 "provide an OpenAI-compatible API endpoint, so just set the baseUrl to your "
@@ -7433,7 +7725,7 @@ msgstr "切换失败"
 msgid "Token is empty"
 msgstr "令牌为空"
 
-#: src/views/preference/tabs/OpenAISettings.vue:62
+#: src/views/preference/tabs/OpenAISettings.vue:122
 msgid "Token is not valid"
 msgstr "Token 无效"
 
@@ -7527,6 +7819,14 @@ msgstr "正在翻译错误..."
 #: src/language/curd.ts:20
 msgid "Trash"
 msgstr "回收站"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:223
+msgid "Trust this algorithm"
+msgstr "信任此算法"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:223
+msgid "Trust this key"
+msgstr "信任此密钥"
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:829
 msgid "Try adjusting your search criteria or navigate to different pages."
@@ -7634,7 +7934,7 @@ msgid "Update successfully"
 msgstr "更新成功"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:236
-#: src/views/certificate/ACMEUser.vue:124
+#: src/views/certificate/ACMEUser.vue:115
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
 #: src/views/config/configColumns.tsx:44 src/views/dns/DNSCredential.vue:65
 #: src/views/dns/DNSDomainList.vue:211 src/views/namespace/columns.ts:91
@@ -7726,6 +8026,10 @@ msgstr "使用恢复代码"
 msgid "Use Temporary Path"
 msgstr "使用临时路径"
 
+#: src/views/preference/components/NginxHostSetup/steps/Step3Connection.vue:63
+msgid "Use the cluster Node guide for cross-host setups."
+msgstr "跨主机部署请使用集群节点指南。"
+
 #: src/components/LLM/ChatMessage.vue:216
 msgid "User"
 msgstr "用户"
@@ -7769,7 +8073,7 @@ msgid "UV"
 msgstr "独立访客"
 
 #: src/components/CertInfo/CertInfo.vue:24
-#: src/views/certificate/ACMEUser.vue:161
+#: src/views/certificate/ACMEUser.vue:152
 #: src/views/certificate/CertificateList/certColumns.tsx:76
 msgid "Valid"
 msgstr "有效的"
@@ -7783,6 +8087,10 @@ msgstr "验证 SSL 证书"
 #: src/views/dns/components/DNSRecordTable.vue:26
 msgid "Value"
 msgstr "值"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:77
+msgid "Verify"
+msgstr "验证"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:242
 #: src/components/SystemRestore/SystemRestoreContent.vue:325
@@ -7800,6 +8108,10 @@ msgstr "验证密钥"
 #: src/views/install/components/InstallView.vue:143
 msgid "Verify system requirements"
 msgstr "验证系统要求"
+
+#: src/views/preference/components/NginxHostSetup/steps/Step5HostIdentity.vue:155
+msgid "Verify the SSH host key before trusting it"
+msgstr "信任前请先验证 SSH 主机密钥"
 
 #: src/views/node/nodeColumns.tsx:30 src/views/system/Licenses.vue:28
 msgid "Version"
@@ -7919,7 +8231,7 @@ msgstr "每周%{day}的%{time}"
 msgid "Weight"
 msgstr "权重"
 
-#: src/views/certificate/ACMEUser.vue:119
+#: src/views/certificate/ACMEUser.vue:110
 msgid ""
 "When Enabled, Nginx UI will automatically re-register users upon startup. "
 "Generally, do not enable this unless you are in a dev environment and using "
@@ -7999,7 +8311,7 @@ msgstr "正在将证书写入磁盘"
 #: src/views/nginx_log/indexing/IndexManagement.vue:31
 #: src/views/nginx_log/indexing/IndexManagement.vue:57
 #: src/views/preference/tabs/AuthSettings.vue:127
-#: src/views/preference/tabs/CertSettings.vue:72
+#: src/views/preference/tabs/CertSettings.vue:78
 msgid "Yes"
 msgstr "是的"
 
@@ -8063,6 +8375,9 @@ msgstr "你的 Passkeys"
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:232
 msgid "Zero-allocation pipeline"
 msgstr "零分配管道"
+
+#~ msgid "OpenAI"
+#~ msgstr "OpenAI"
 
 #~ msgid "Backup file integrity check failed, it may have been tampered with"
 #~ msgstr "备份文件完整性检查失败，可能已被篡改"
