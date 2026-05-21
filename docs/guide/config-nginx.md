@@ -172,3 +172,39 @@ If you are using the official Nginx UI container and want to control Nginx in an
 
 For example: `-v /var/run/docker.sock:/var/run/docker.sock`
 :::
+
+## Host SSH Control
+
+For deployments where Nginx UI runs in a Docker container but Nginx is installed natively on the host machine (e.g. systemd-managed via apt/yum), Nginx UI provides a third control mode that uses SSH for command execution and bind-mounts for file I/O.
+
+### Constraints
+
+- **Same-host only**: the Nginx UI container and the target nginx process must be on the same physical/virtual machine. For multi-host management, see [the cluster Node cross-host guide](cluster-node-cross-host.md).
+- **systemd required** on the host. The mode invokes `systemctl reload|restart <unit>` for control.
+- The host nginx user must allow a dedicated unprivileged user (typically `nginxui`) to invoke a narrow set of commands via `sudo -n` without password.
+
+### Quick start
+
+1. From the Web UI, go to **Preferences → Nginx**, select **Host via SSH** mode, and open the setup wizard.
+2. Follow the four-step wizard: generate a keypair, paste the generated docker-compose snippet into your stack, apply the sudoers/authorized_keys snippets on the host, and run the verification.
+3. Once all checks pass, save the configuration.
+
+Alternatively, use the CLI:
+
+```bash
+nginx-ui host-setup print --host-address host.docker.internal:22 --host-user nginxui
+nginx-ui host-setup test
+```
+
+### Configuration fields
+
+| Field | Description |
+|---|---|
+| `host_mode` | Set to `ssh` to enable this mode |
+| `host_address` | Remote `host:port` |
+| `host_user` | SSH user on the host |
+| `host_private_key_path` | Private key path inside the container |
+| `host_systemd_unit_name` | Default `nginx.service` |
+| `host_systemctl_path` | Default `/bin/systemctl` |
+
+See also: [Host SSH setup walkthrough](host-via-ssh-setup.md).
