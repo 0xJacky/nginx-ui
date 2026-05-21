@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import type { VerifyResult } from '@/api/host_setup'
-import type { StepOutcome } from '@/api/host_setup'
+import type { StepOutcome, VerifyResult } from '@/api/host_setup'
 import { CheckCircleOutlined, CloseCircleOutlined, ExclamationCircleOutlined } from '@ant-design/icons-vue'
 import { useClipboard } from '@vueuse/core'
 import { computed, ref } from 'vue'
