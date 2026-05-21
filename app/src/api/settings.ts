@@ -73,6 +73,7 @@ export interface NginxSettings {
   stub_status_port: number
   container_name: string
   maintenance_template?: string
+  host_mode?: string
 }
 
 export interface NginxLogSettings {
