@@ -180,9 +180,11 @@ services:
 
 ### 限制
 
-- **仅限同一宿主机**：Nginx UI 容器与目标 nginx 进程必须在同一台物理机或虚拟机上。如需多主机管理，请参阅 [集群节点跨主机指南](cluster-node-cross-host.md)。
+::: warning 限制
+- **仅限同一宿主机**：Nginx UI 容器与目标 nginx 进程必须在同一台物理机或虚拟机上。如需多主机管理，请参阅 [使用集群节点管理多主机 Nginx](manage-multi-host-nginx-with-cluster.md)。
 - 宿主机上**需要 systemd**。该模式通过调用 `systemctl reload|restart <unit>` 来控制服务。
 - 宿主机的 nginx 用户必须允许一个专用的非特权用户（通常为 `nginxui`）通过 `sudo -n` 无密码执行一组受限命令。
+:::
 
 ### 快速开始
 
@@ -204,8 +206,14 @@ nginx-ui host-setup test
 | `host_mode` | 设置为 `ssh` 以启用此模式 |
 | `host_address` | 远程 `host:port` |
 | `host_user` | 宿主机上的 SSH 用户 |
+| `host_auth_method` | SSH 认证方式。当前宿主机 SSH 配置请使用密钥认证 |
 | `host_private_key_path` | 容器内的私钥路径 |
+| `host_known_hosts_path` | 容器内的 known_hosts 路径 |
+| `host_strict_host_key` | 启用严格主机密钥检查。默认启用，除非明确设置为 `false` |
+| `host_sudo_prefix` | 特权命令前缀。默认值为 `sudo -n` |
 | `host_systemd_unit_name` | 默认为 `nginx.service` |
 | `host_systemctl_path` | 默认为 `/bin/systemctl` |
+| `host_config_dir` | 宿主机侧 nginx 配置目录 |
+| `host_log_dir` | 宿主机侧 nginx 日志目录 |
 
-另请参阅：[Host SSH 设置指引](host-via-ssh-setup.md)。
+另请参阅：[在 Docker 中管理宿主机 Nginx](manage-host-nginx-from-docker.md) 和 [使用集群节点管理多主机 Nginx](manage-multi-host-nginx-with-cluster.md)。

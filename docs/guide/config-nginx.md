@@ -179,9 +179,11 @@ For deployments where Nginx UI runs in a Docker container but Nginx is installed
 
 ### Constraints
 
-- **Same-host only**: the Nginx UI container and the target nginx process must be on the same physical/virtual machine. For multi-host management, see [the cluster Node cross-host guide](cluster-node-cross-host.md).
+::: warning Constraints
+- **Same-host only**: the Nginx UI container and the target nginx process must be on the same physical/virtual machine. For multi-host management, see [Manage Multi-Host Nginx with Cluster](manage-multi-host-nginx-with-cluster.md).
 - **systemd required** on the host. The mode invokes `systemctl reload|restart <unit>` for control.
 - The host nginx user must allow a dedicated unprivileged user (typically `nginxui`) to invoke a narrow set of commands via `sudo -n` without password.
+:::
 
 ### Quick start
 
@@ -203,8 +205,14 @@ nginx-ui host-setup test
 | `host_mode` | Set to `ssh` to enable this mode |
 | `host_address` | Remote `host:port` |
 | `host_user` | SSH user on the host |
+| `host_auth_method` | SSH authentication method. Use key authentication for the current host SSH setup |
 | `host_private_key_path` | Private key path inside the container |
+| `host_known_hosts_path` | known_hosts path inside the container |
+| `host_strict_host_key` | Enables strict host key checking. Enabled by default unless explicitly set to `false` |
+| `host_sudo_prefix` | Prefix used for privileged commands. Default `sudo -n` |
 | `host_systemd_unit_name` | Default `nginx.service` |
 | `host_systemctl_path` | Default `/bin/systemctl` |
+| `host_config_dir` | Host-side nginx config directory |
+| `host_log_dir` | Host-side nginx log directory |
 
-See also: [Host SSH setup walkthrough](host-via-ssh-setup.md).
+See also: [Manage Host Nginx from Docker](manage-host-nginx-from-docker.md) and [Manage Multi-Host Nginx with Cluster](manage-multi-host-nginx-with-cluster.md).

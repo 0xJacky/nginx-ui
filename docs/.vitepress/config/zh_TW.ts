@@ -29,6 +29,14 @@ export const zhTWConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           ]
         },
         {
+          text: '部署指南',
+          collapsed: false,
+          items: [
+            { text: '在 Docker 中管理宿主機 Nginx', link: '/zh_TW/guide/manage-host-nginx-from-docker' },
+            { text: '使用叢集節點管理多主機 Nginx', link: '/zh_TW/guide/manage-multi-host-nginx-with-cluster' }
+          ]
+        },
+        {
           text: '開發',
           collapsed: false,
           items: [
