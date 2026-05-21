@@ -8,6 +8,7 @@ import Step2a from './steps/Step2aContainer.vue'
 import Step2b from './steps/Step2bHost.vue'
 import Step3 from './steps/Step3Connection.vue'
 import Step4 from './steps/Step4Verify.vue'
+import Step5 from './steps/Step5HostIdentity.vue'
 
 const current = ref(0)
 const authMethod = ref<'key' | 'password'>('key')
@@ -44,7 +45,7 @@ function saveToSettings() {
 }
 
 function next() {
-  if (current.value < 4)
+  if (current.value < 5)
     current.value++
 }
 function prev() {
@@ -60,6 +61,7 @@ function prev() {
       <AStep :title="$gettext('Container')" />
       <AStep :title="$gettext('Host')" />
       <AStep :title="$gettext('Connection')" />
+      <AStep :title="$gettext('Host Identity')" />
       <AStep :title="$gettext('Verify')" />
     </ASteps>
 
@@ -76,6 +78,9 @@ function prev() {
       <Step3 v-model:params="params" />
     </div>
     <div v-else-if="current === 4">
+      <Step5 :params="params" />
+    </div>
+    <div v-else-if="current === 5">
       <Step4 />
     </div>
 
@@ -83,10 +88,10 @@ function prev() {
       <AButton :disabled="current === 0" @click="prev">
         {{ $gettext('Previous') }}
       </AButton>
-      <AButton v-if="current < 4" type="primary" @click="next">
+      <AButton v-if="current < 5" type="primary" @click="next">
         {{ $gettext('Next') }}
       </AButton>
-      <AButton v-if="current === 4" type="primary" @click="saveToSettings">
+      <AButton v-if="current === 5" type="primary" @click="saveToSettings">
         {{ $gettext('Save configuration') }}
       </AButton>
     </div>
