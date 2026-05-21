@@ -155,3 +155,19 @@
 
 - NGINX_UI_PREDEFINED_USER_NAME
 - NGINX_UI_PREDEFINED_USER_PASSWORD
+
+## 透過 SSH 控制宿主機
+
+| 變數 | 描述 |
+|---|---|
+| `NGINX_UI_NGINX_HOST_MODE` | 設定為 `ssh` 以啟用宿主機 SSH 控制 |
+| `NGINX_UI_NGINX_HOST_ADDRESS` | 遠端 `host:port`，例如 `host.docker.internal:22` |
+| `NGINX_UI_NGINX_HOST_USER` | 宿主機上的 SSH 使用者 |
+| `NGINX_UI_NGINX_HOST_PRIVATE_KEY_PATH` | 容器內的私鑰路徑 |
+| `NGINX_UI_NGINX_HOST_KNOWN_HOSTS_PATH` | 容器內的 known_hosts 路徑 |
+| `NGINX_UI_NGINX_HOST_SUDO_PREFIX` | 預設為 `sudo -n` |
+| `NGINX_UI_NGINX_HOST_SYSTEMD_UNIT_NAME` | 預設為 `nginx.service` |
+| `NGINX_UI_NGINX_HOST_SYSTEMCTL_PATH` | 宿主機上 systemctl 的絕對路徑 |
+| `NGINX_UI_NGINX_HOST_CONFIG_DIR` | 宿主機側的 nginx 設定目錄 |
+| `NGINX_UI_NGINX_HOST_LOG_DIR` | 宿主機側的 nginx 日誌目錄 |
+| `NGINX_UI_DISABLE_BUNDLED_NGINX` | 設定為 `true` 以停用容器內建的 nginx（SSH 模式下必需） |
