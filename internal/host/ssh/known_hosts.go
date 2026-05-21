@@ -1,9 +1,12 @@
 package ssh
 
 import (
+	"bufio"
+	"bytes"
 	"errors"
 	"os"
 	"path/filepath"
+	"strings"
 	"sync"
 
 	"github.com/uozi-tech/cosy"
@@ -18,6 +21,13 @@ type KnownHosts struct {
 
 	// callback is rebuilt every time the file changes.
 	callback gossh.HostKeyCallback
+}
+
+type HostKeyEntry struct {
+	Host        string `json:"host"`
+	Algorithm   string `json:"algorithm"`
+	PublicKey   string `json:"public_key"`
+	Fingerprint string `json:"fingerprint"`
 }
 
 // NewKnownHosts opens (or creates) a known_hosts file at path. Missing parents
@@ -66,6 +76,82 @@ func (k *KnownHosts) IsTrusted(hostPort string, key gossh.PublicKey) bool {
 	return err == nil
 }
 
+func (k *KnownHosts) List(hostPort string) ([]HostKeyEntry, error) {
+	k.mu.Lock()
+	defer k.mu.Unlock()
+
+	lines, err := k.readLinesLocked()
+	if err != nil {
+		return nil, err
+	}
+	entries := make([]HostKeyEntry, 0)
+	for _, line := range lines {
+		entry, ok, err := parseKnownHostsLine(line, hostPort)
+		if err != nil {
+			return nil, cosy.WrapErrorWithParams(ErrKnownHostsRead, err.Error())
+		}
+		if ok {
+			entries = append(entries, entry)
+		}
+	}
+	return entries, nil
+}
+
+func (k *KnownHosts) Replace(hostPort string, oldFingerprint string, key gossh.PublicKey) error {
+	k.mu.Lock()
+	defer k.mu.Unlock()
+
+	newLine := knownhosts.Line([]string{hostPort}, key)
+	newAlgorithm := key.Type()
+	lines, err := k.readLinesLocked()
+	if err != nil {
+		return err
+	}
+
+	replaced := false
+	for i, line := range lines {
+		entry, ok, err := parseKnownHostsLine(line, hostPort)
+		if err != nil {
+			return cosy.WrapErrorWithParams(ErrKnownHostsRead, err.Error())
+		}
+		if ok && entry.Algorithm == newAlgorithm && entry.Fingerprint == oldFingerprint {
+			lines[i] = newLine
+			replaced = true
+		}
+	}
+	if !replaced {
+		return cosy.WrapErrorWithParams(ErrKnownHostsEntryNotFound, oldFingerprint)
+	}
+	return k.writeLinesAndReloadLocked(lines)
+}
+
+func (k *KnownHosts) Delete(hostPort string, algorithm string, fingerprint string) error {
+	k.mu.Lock()
+	defer k.mu.Unlock()
+
+	lines, err := k.readLinesLocked()
+	if err != nil {
+		return err
+	}
+	kept := make([]string, 0, len(lines))
+	deleted := false
+	for _, line := range lines {
+		entry, ok, err := parseKnownHostsLine(line, hostPort)
+		if err != nil {
+			return cosy.WrapErrorWithParams(ErrKnownHostsRead, err.Error())
+		}
+		if ok && entry.Algorithm == algorithm && entry.Fingerprint == fingerprint {
+			deleted = true
+			continue
+		}
+		kept = append(kept, line)
+	}
+	if !deleted {
+		return cosy.WrapErrorWithParams(ErrKnownHostsEntryNotFound, fingerprint)
+	}
+	return k.writeLinesAndReloadLocked(kept)
+}
+
 // Trust appends an entry for hostPort -> key to the known_hosts file
 // and reloads the callback.
 func (k *KnownHosts) Trust(hostPort string, key gossh.PublicKey) error {
@@ -100,6 +186,97 @@ func (k *KnownHosts) reloadLocked() error {
 	}
 	k.callback = cb
 	return nil
+}
+
+func (k *KnownHosts) readLinesLocked() ([]string, error) {
+	f, err := os.Open(k.path)
+	if err != nil {
+		return nil, cosy.WrapErrorWithParams(ErrKnownHostsRead, err.Error())
+	}
+	defer f.Close()
+
+	var lines []string
+	scanner := bufio.NewScanner(f)
+	for scanner.Scan() {
+		line := strings.TrimSpace(scanner.Text())
+		if line == "" {
+			continue
+		}
+		lines = append(lines, line)
+	}
+	if err := scanner.Err(); err != nil {
+		return nil, cosy.WrapErrorWithParams(ErrKnownHostsRead, err.Error())
+	}
+	return lines, nil
+}
+
+func (k *KnownHosts) writeLinesAndReloadLocked(lines []string) error {
+	var buf bytes.Buffer
+	for _, line := range lines {
+		buf.WriteString(line)
+		buf.WriteByte('\n')
+	}
+	tmp := k.path + ".tmp"
+	if err := os.WriteFile(tmp, buf.Bytes(), 0o600); err != nil {
+		return cosy.WrapErrorWithParams(ErrKnownHostsWrite, err.Error())
+	}
+	if err := os.Remove(k.path); err != nil && !errors.Is(err, os.ErrNotExist) {
+		_ = os.Remove(tmp)
+		return cosy.WrapErrorWithParams(ErrKnownHostsWrite, err.Error())
+	}
+	if err := os.Rename(tmp, k.path); err != nil {
+		_ = os.Remove(tmp)
+		return cosy.WrapErrorWithParams(ErrKnownHostsWrite, err.Error())
+	}
+	return k.reloadLocked()
+}
+
+func parseKnownHostsLine(line string, hostPort string) (HostKeyEntry, bool, error) {
+	parts := strings.Fields(line)
+	if len(parts) == 0 || strings.HasPrefix(parts[0], "#") {
+		return HostKeyEntry{}, false, nil
+	}
+	if strings.HasPrefix(parts[0], "@") {
+		parts = parts[1:]
+	}
+	if len(parts) < 2 {
+		return HostKeyEntry{}, false, errors.New("invalid known_hosts line")
+	}
+	hosts := strings.Split(parts[0], ",")
+	matched := false
+	for _, host := range hosts {
+		if knownHostsHostMatches(host, hostPort) {
+			matched = true
+			break
+		}
+	}
+	if !matched {
+		return HostKeyEntry{}, false, nil
+	}
+	key, _, _, _, err := gossh.ParseAuthorizedKey([]byte(strings.Join(parts[1:], " ")))
+	if err != nil {
+		return HostKeyEntry{}, false, err
+	}
+	return HostKeyEntry{
+		Host:        hostPort,
+		Algorithm:   key.Type(),
+		PublicKey:   strings.TrimSpace(string(gossh.MarshalAuthorizedKey(key))),
+		Fingerprint: gossh.FingerprintSHA256(key),
+	}, true, nil
+}
+
+func knownHostsHostMatches(entryHost string, hostPort string) bool {
+	if entryHost == hostPort {
+		return true
+	}
+	host, port, ok := strings.Cut(hostPort, ":")
+	if !ok || host == "" || port == "" {
+		return false
+	}
+	if port == "22" && entryHost == host {
+		return true
+	}
+	return entryHost == "["+host+"]:"+port
 }
 
 // fakeAddr satisfies net.Addr for the HostKeyCallback signature.
