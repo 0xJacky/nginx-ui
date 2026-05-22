@@ -25,8 +25,10 @@ const issueOptions = computed<AutoCertOptions>(() => ({
 }))
 
 function openAndRetry() {
-  refModal.value
-    ?.start()
+  // refModal is bound to a component rendered alongside this button,
+  // so it is guaranteed to be mounted by the time @click fires.
+  refModal.value!
+    .start()
     .then(() => {
       message.success($gettext('Certificate issued successfully'))
       emit('retried')

@@ -90,8 +90,10 @@ function issueCert() {
   step.value = 1
   modalVisible.value = true
 
-  refObtainCertLive.value
-    ?.issue_cert(computedMainDomain.value, computedDomains.value, data.value.key_type)
+  // ObtainCertLive is mounted in the same modal via force-render, so the
+  // ref is guaranteed to be available by the time this function runs.
+  refObtainCertLive.value!
+    .issue_cert(computedMainDomain.value, computedDomains.value, data.value.key_type)
     .then(() => {
       message.success($gettext('Issued successfully'))
       emit('issued')

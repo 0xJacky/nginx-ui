@@ -34,7 +34,7 @@ export interface Cert extends ModelBase {
   revoke_old: boolean
   status: CertStatusType
   last_error: string
-  last_attempt_at: string
+  last_attempt_at: string | null
 }
 
 export interface CertificateInfo {

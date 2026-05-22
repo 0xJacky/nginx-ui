@@ -1,8 +1,10 @@
 package certificate
 
 import (
+	"strings"
 	"testing"
 	"time"
+	"unicode/utf8"
 
 	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -142,13 +144,25 @@ func TestMarkCertSuccessClearsLastError(t *testing.T) {
 func TestShortError(t *testing.T) {
 	assert.Equal(t, "", shortError(nil))
 	assert.Equal(t, "hello", shortError(errString("  hello  ")))
+
 	long := make([]byte, 600)
 	for i := range long {
 		long[i] = 'a'
 	}
 	got := shortError(errString(string(long)))
+	// 500 ASCII runes + the literal "…" suffix.
 	assert.Equal(t, 500+len("…"), len(got))
 	assert.Equal(t, "…", got[len(got)-len("…"):])
+
+	// Multi-byte runes must not be split: each CJK char is 3 bytes,
+	// 600 chars = 1800 bytes, which would corrupt the boundary if we
+	// sliced by bytes. After rune-aware truncation we expect exactly
+	// 500 CJK chars + the "…" suffix, and the result must be valid UTF-8.
+	multi := strings.Repeat("中", 600)
+	gotMulti := shortError(errString(multi))
+	assert.True(t, utf8.ValidString(gotMulti), "truncated message must be valid UTF-8")
+	assert.Equal(t, 500+1 /* ellipsis rune */, utf8.RuneCountInString(gotMulti))
+	assert.Equal(t, "…", gotMulti[len(gotMulti)-len("…"):])
 }
 
 type errString string

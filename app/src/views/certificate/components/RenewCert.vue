@@ -20,7 +20,9 @@ async function issueCert() {
   await certStore.save()
   message.success($gettext('Save successfully'))
 
-  refModal.value?.start().then(() => {
+  // refModal is mounted alongside this button via force-render, so it
+  // is guaranteed to be available by the time @click fires.
+  refModal.value!.start().then(() => {
     message.success($gettext('Renew successfully'))
     emit('renewed')
   })

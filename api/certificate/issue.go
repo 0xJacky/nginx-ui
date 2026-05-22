@@ -226,14 +226,17 @@ func markCertSuccess(id uint64, sslCertificatePath, sslCertificateKeyPath string
 
 // shortError trims and truncates an error for UI display in last_error.
 // Returns "" for nil so a successful retry can clear the prior error.
+// Truncation is rune-aware so non-ASCII error messages (e.g. localized
+// ACME or DNS provider errors) cannot be split mid-rune.
 func shortError(err error) string {
 	if err == nil {
 		return ""
 	}
 	msg := strings.TrimSpace(err.Error())
-	const max = 500
-	if len(msg) > max {
-		msg = msg[:max] + "…"
+	const maxRunes = 500
+	runes := []rune(msg)
+	if len(runes) > maxRunes {
+		msg = string(runes[:maxRunes]) + "…"
 	}
 	return msg
 }
