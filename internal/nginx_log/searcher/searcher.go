@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"strconv"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -284,6 +285,21 @@ func (s *Searcher) convertBleveResult(bleveResult *bleve.SearchResult) *SearchRe
 			// This addresses the issue where Bleve may incorrectly aggregate Total values
 			// across multiple shards in IndexAlias
 			convertedFacet.Total = len(facetTerms)
+		} else if len(facet.NumericRanges) > 0 {
+			// Numeric range facets (e.g. the numeric status field) report their
+			// buckets as NumericRanges. Expose non-empty ranges as terms so all
+			// facets can be consumed uniformly.
+			convertedFacet.Terms = make([]*FacetTerm, 0, len(facet.NumericRanges))
+			for _, nr := range facet.NumericRanges {
+				if nr.Count == 0 {
+					continue
+				}
+				convertedFacet.Terms = append(convertedFacet.Terms, &FacetTerm{
+					Term:  nr.Name,
+					Count: nr.Count,
+				})
+			}
+			convertedFacet.Total = len(convertedFacet.Terms)
 		} else {
 			// If there are no terms, Total should be 0
 			convertedFacet.Total = 0
@@ -341,6 +357,11 @@ func (s *Searcher) configureSearchRequest(searchReq *bleve.SearchRequest, req *S
 				size = req.FacetSize
 			}
 			facet := bleve.NewFacetRequest(field, size)
+			// The status field is indexed as numeric, so a terms facet cannot
+			// bucket it. Add one numeric range per HTTP status code instead.
+			if field == "status" {
+				addStatusCodeRanges(facet)
+			}
 			searchReq.AddFacet(field, facet)
 		}
 	}
@@ -350,6 +371,40 @@ func (s *Searcher) configureSearchRequest(searchReq *bleve.SearchRequest, req *S
 		searchReq.Fields = req.Fields
 	} else {
 		searchReq.Fields = []string{"*"}
+	}
+}
+
+// statusCodeFacetRange is a precomputed numeric facet bucket for one HTTP
+// status code.
+type statusCodeFacetRange struct {
+	name string
+	min  float64
+	max  float64
+}
+
+// statusCodeFacetRanges holds one numeric range per HTTP status code (100-599).
+// It is built once at startup so that faceting the numeric status field does
+// not rebuild the full range set on every search request.
+var statusCodeFacetRanges = func() []statusCodeFacetRange {
+	ranges := make([]statusCodeFacetRange, 0, 500)
+	for code := 100; code <= 599; code++ {
+		ranges = append(ranges, statusCodeFacetRange{
+			name: strconv.Itoa(code),
+			min:  float64(code),
+			max:  float64(code + 1),
+		})
+	}
+	return ranges
+}()
+
+// addStatusCodeRanges attaches one numeric range per HTTP status code to the
+// facet request. The status field is indexed as numeric, so it must be faceted
+// with numeric ranges rather than terms; each range is named after the status
+// code so the converted facet exposes the code itself as the term.
+func addStatusCodeRanges(facet *bleve.FacetRequest) {
+	for i := range statusCodeFacetRanges {
+		r := &statusCodeFacetRanges[i]
+		facet.AddNumericRange(r.name, &r.min, &r.max)
 	}
 }
 
