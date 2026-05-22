@@ -1,18 +1,26 @@
 <script setup lang="tsx">
-import { CloudUploadOutlined, SafetyCertificateOutlined } from '@ant-design/icons-vue'
+import type { Cert } from '@/api/cert'
+import { CloudUploadOutlined, SafetyCertificateOutlined, SafetyOutlined } from '@ant-design/icons-vue'
 import { StdTable } from '@uozi-admin/curd'
 import cert from '@/api/cert'
 import { useGlobalStore } from '@/pinia'
 import WildcardCertificate from '../components/DNSIssueCertificate.vue'
 import RemoveCert from '../components/RemoveCert.vue'
+import SelfSignedCertForm from '../components/SelfSignedCertForm.vue'
 import certColumns from './certColumns'
 
 const refWildcard = ref()
 const refTable = ref()
+const refSelfSigned = ref()
 
+const router = useRouter()
 const globalStore = useGlobalStore()
 
 const { processingStatus } = storeToRefs(globalStore)
+
+function onSelfSignedCreated(created: Cert) {
+  router.push(`/certificates/${created.id}`)
+}
 </script>
 
 <template>
@@ -25,6 +33,15 @@ const { processingStatus } = storeToRefs(globalStore)
       >
         <CloudUploadOutlined />
         {{ $gettext('Import') }}
+      </AButton>
+
+      <AButton
+        type="link"
+        size="small"
+        @click="() => refSelfSigned.open()"
+      >
+        <SafetyOutlined />
+        {{ $gettext('Self-signed Certificate') }}
       </AButton>
 
       <AButton
@@ -59,6 +76,10 @@ const { processingStatus } = storeToRefs(globalStore)
     <WildcardCertificate
       ref="refWildcard"
       @issued="() => refTable.refresh()"
+    />
+    <SelfSignedCertForm
+      ref="refSelfSigned"
+      @created="onSelfSignedCreated"
     />
   </ACard>
 </template>

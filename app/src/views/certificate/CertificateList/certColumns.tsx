@@ -28,6 +28,7 @@ const columns: StdTableColumn[] = [{
     const sync = $gettext('Sync Certificate')
     const managed = $gettext('Managed Certificate')
     const general = $gettext('General Certificate')
+    const selfSigned = $gettext('Self-signed Certificate')
     if (text === true || text === 1) {
       template.push(
         <Tag bordered={false} color="processing">
@@ -39,6 +40,13 @@ const columns: StdTableColumn[] = [{
       template.push(
         <Tag bordered={false} color="success">
           {sync}
+        </Tag>,
+      )
+    }
+    else if (text === 3) {
+      template.push(
+        <Tag bordered={false} color="cyan">
+          {selfSigned}
         </Tag>,
       )
     }
