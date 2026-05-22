@@ -54,6 +54,7 @@ const timeFormat = "2006-01-02T15:04:05Z07:00"
 type ddnsConfigRequest struct {
 	Enabled         bool     `json:"enabled"`
 	IntervalSeconds int      `json:"interval_seconds" binding:"required,min=60"`
+	IPVersion       string   `json:"ip_version"`
 	RecordIDs       []string `json:"record_ids"`
 }
 
@@ -66,6 +67,7 @@ type ddnsRecordTarget struct {
 type ddnsConfigResponse struct {
 	Enabled         bool               `json:"enabled"`
 	IntervalSeconds int                `json:"interval_seconds"`
+	IPVersion       string             `json:"ip_version"`
 	Targets         []ddnsRecordTarget `json:"targets"`
 	LastIPv4        string             `json:"last_ipv4,omitempty"`
 	LastIPv6        string             `json:"last_ipv6,omitempty"`
@@ -77,6 +79,7 @@ func toDDNSResponse(cfg *model.DDNSConfig) ddnsConfigResponse {
 	resp := ddnsConfigResponse{
 		Enabled:         cfg != nil && cfg.Enabled,
 		IntervalSeconds: dns.DefaultDDNSInterval(),
+		IPVersion:       dns.DDNSIPVersionIPv4IPv6,
 		Targets:         []ddnsRecordTarget{},
 	}
 
@@ -89,6 +92,7 @@ func toDDNSResponse(cfg *model.DDNSConfig) ddnsConfigResponse {
 		interval = dns.DefaultDDNSInterval()
 	}
 	resp.IntervalSeconds = interval
+	resp.IPVersion = dns.NormalizeDDNSIPVersion(cfg.IPVersion)
 	resp.LastIPv4 = cfg.LastIPv4
 	resp.LastIPv6 = cfg.LastIPv6
 	resp.LastError = cfg.LastError

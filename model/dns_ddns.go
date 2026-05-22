@@ -13,6 +13,7 @@ type DDNSRecordTarget struct {
 type DDNSConfig struct {
 	Enabled         bool               `json:"enabled"`
 	IntervalSeconds int                `json:"interval_seconds"`
+	IPVersion       string             `json:"ip_version,omitempty"`
 	Targets         []DDNSRecordTarget `json:"targets"`
 	LastIPv4        string             `json:"last_ipv4,omitempty"`
 	LastIPv6        string             `json:"last_ipv6,omitempty"`

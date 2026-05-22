@@ -32,9 +32,17 @@ export interface DDNSRecordTarget {
   type: string
 }
 
+export type DDNSIPVersion
+  = | 'ipv4'
+    | 'ipv6'
+    | 'ipv4_ipv6'
+    | 'ipv6_ipv4'
+    | 'both_required'
+
 export interface DDNSConfig {
   enabled: boolean
   interval_seconds: number
+  ip_version: DDNSIPVersion
   targets: DDNSRecordTarget[]
   last_ipv4?: string
   last_ipv6?: string
@@ -53,6 +61,7 @@ export interface DDNSDomainItem {
 export interface UpdateDDNSPayload {
   enabled: boolean
   interval_seconds: number
+  ip_version: DDNSIPVersion
   record_ids: string[]
 }
 

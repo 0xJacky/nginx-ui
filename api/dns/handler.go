@@ -173,6 +173,7 @@ func ListDDNSConfig(c *gin.Context) {
 			cfg = &model.DDNSConfig{
 				Enabled:         false,
 				IntervalSeconds: dnsService.DefaultDDNSInterval(),
+				IPVersion:       dnsService.DDNSIPVersionIPv4IPv6,
 				Targets:         []model.DDNSRecordTarget{},
 			}
 		} else if cfg.IntervalSeconds <= 0 {
@@ -219,6 +220,7 @@ func UpdateDDNSConfig(c *gin.Context) {
 	cfg, err := svc.UpdateDDNSConfig(c.Request.Context(), domainID, dnsService.DDNSUpdateInput{
 		Enabled:         payload.Enabled,
 		IntervalSeconds: payload.IntervalSeconds,
+		IPVersion:       payload.IPVersion,
 		RecordIDs:       payload.RecordIDs,
 	})
 	if err != nil {

@@ -2,6 +2,10 @@ package dns_test
 
 import (
 	"context"
+	"errors"
+	"fmt"
+	"net/http"
+	"net/http/httptest"
 	"sync"
 	"testing"
 
@@ -16,6 +20,13 @@ import (
 
 func TestDomainLifecycle(t *testing.T) {
 	registerMockProvider()
+	setMockRecords([]dnsSvc.Record{{
+		ID:      "1",
+		Type:    "mock",
+		Name:    "@",
+		Content: "127.0.0.1",
+		TTL:     60,
+	}})
 
 	q := setupTestQuery(t)
 	ctx := context.Background()
@@ -50,6 +61,423 @@ func TestDomainLifecycle(t *testing.T) {
 	require.NoError(t, err)
 	require.Len(t, records, 1)
 	require.Equal(t, "mock", records[0].Type)
+}
+
+func TestUpdateDDNSConfigRejectsTargetsOutsideIPVersion(t *testing.T) {
+	registerMockProvider()
+	setMockRecords([]dnsSvc.Record{{
+		ID:      "aaaa-record",
+		Type:    "AAAA",
+		Name:    "@",
+		Content: "2001:db8::1",
+		TTL:     600,
+	}})
+
+	q := setupTestQuery(t)
+	ctx := context.Background()
+	service := dnsSvc.NewService()
+
+	cred := createCredential(t, q)
+	domain, err := service.CreateDomain(ctx, dnsSvc.DomainInput{
+		Domain:          "example.com",
+		DnsCredentialID: cred.ID,
+	})
+	require.NoError(t, err)
+
+	_, err = service.UpdateDDNSConfig(ctx, domain.ID, dnsSvc.DDNSUpdateInput{
+		Enabled:         true,
+		IntervalSeconds: dnsSvc.DefaultDDNSInterval(),
+		IPVersion:       "ipv4",
+		RecordIDs:       []string{"aaaa-record"},
+	})
+	require.Error(t, err)
+	require.Contains(t, err.Error(), dnsSvc.ErrDDNSIPVersionRecordMismatch.Error())
+}
+
+func TestUpdateDDNSConfigRejectsInvalidIPVersionValues(t *testing.T) {
+	registerMockProvider()
+	setMockRecords(nil)
+
+	q := setupTestQuery(t)
+	ctx := context.Background()
+	service := dnsSvc.NewService()
+
+	cred := createCredential(t, q)
+	domain, err := service.CreateDomain(ctx, dnsSvc.DomainInput{
+		Domain:          "example.com",
+		DnsCredentialID: cred.ID,
+	})
+	require.NoError(t, err)
+
+	for _, version := range []string{"", "both"} {
+		_, err = service.UpdateDDNSConfig(ctx, domain.ID, dnsSvc.DDNSUpdateInput{
+			Enabled:         false,
+			IntervalSeconds: dnsSvc.DefaultDDNSInterval(),
+			IPVersion:       version,
+		})
+		require.ErrorIs(t, err, dnsSvc.ErrInvalidDDNSIPVersion)
+	}
+}
+
+func TestUpdateDDNSConfigPreservesLastErrorWhenDisabled(t *testing.T) {
+	registerMockProvider()
+	setMockRecords(nil)
+
+	q := setupTestQuery(t)
+	ctx := context.Background()
+	service := dnsSvc.NewService()
+
+	cred := createCredential(t, q)
+	domain, err := service.CreateDomain(ctx, dnsSvc.DomainInput{
+		Domain:          "example.com",
+		DnsCredentialID: cred.ID,
+	})
+	require.NoError(t, err)
+
+	domain.DDNSConfig = &model.DDNSConfig{
+		Enabled:         true,
+		IntervalSeconds: dnsSvc.DefaultDDNSInterval(),
+		IPVersion:       "ipv4_ipv6",
+		LastError:       "previous error",
+	}
+	require.NoError(t, model.UseDB().WithContext(ctx).Save(domain).Error)
+
+	cfg, err := service.UpdateDDNSConfig(ctx, domain.ID, dnsSvc.DDNSUpdateInput{
+		Enabled:         false,
+		IntervalSeconds: dnsSvc.DefaultDDNSInterval(),
+		IPVersion:       "ipv4_ipv6",
+	})
+	require.NoError(t, err)
+	require.Equal(t, "previous error", cfg.LastError)
+}
+
+func TestGetDDNSConfigNormalizesInvalidIPVersionWithoutPersisting(t *testing.T) {
+	registerMockProvider()
+	setMockRecords(nil)
+
+	q := setupTestQuery(t)
+	ctx := context.Background()
+	service := dnsSvc.NewService()
+
+	cred := createCredential(t, q)
+	domain, err := service.CreateDomain(ctx, dnsSvc.DomainInput{
+		Domain:          "example.com",
+		DnsCredentialID: cred.ID,
+	})
+	require.NoError(t, err)
+
+	domain.DDNSConfig = &model.DDNSConfig{
+		Enabled:         true,
+		IntervalSeconds: dnsSvc.DefaultDDNSInterval(),
+		IPVersion:       "invalid",
+	}
+	require.NoError(t, model.UseDB().WithContext(ctx).Save(domain).Error)
+
+	cfg, err := service.GetDDNSConfig(ctx, domain.ID)
+	require.NoError(t, err)
+	require.Equal(t, "ipv4_ipv6", cfg.IPVersion)
+
+	var persisted model.DnsDomain
+	require.NoError(t, model.UseDB().WithContext(ctx).First(&persisted, domain.ID).Error)
+	require.Equal(t, "invalid", persisted.DDNSConfig.IPVersion)
+}
+
+func TestGetDDNSConfigNormalizesEmptyIPVersionWithoutPersisting(t *testing.T) {
+	registerMockProvider()
+	setMockRecords(nil)
+
+	q := setupTestQuery(t)
+	ctx := context.Background()
+	service := dnsSvc.NewService()
+
+	cred := createCredential(t, q)
+	domain, err := service.CreateDomain(ctx, dnsSvc.DomainInput{
+		Domain:          "example.com",
+		DnsCredentialID: cred.ID,
+	})
+	require.NoError(t, err)
+
+	domain.DDNSConfig = &model.DDNSConfig{
+		Enabled:         true,
+		IntervalSeconds: dnsSvc.DefaultDDNSInterval(),
+		IPVersion:       "",
+	}
+	require.NoError(t, model.UseDB().WithContext(ctx).Save(domain).Error)
+
+	cfg, err := service.GetDDNSConfig(ctx, domain.ID)
+	require.NoError(t, err)
+	require.Equal(t, "ipv4_ipv6", cfg.IPVersion)
+
+	var persisted model.DnsDomain
+	require.NoError(t, model.UseDB().WithContext(ctx).First(&persisted, domain.ID).Error)
+	require.Empty(t, persisted.DDNSConfig.IPVersion)
+}
+
+func TestUpdateDDNSConfigBothRequiredNeedsAAndAAAA(t *testing.T) {
+	registerMockProvider()
+	setMockRecords([]dnsSvc.Record{{
+		ID:      "a-record",
+		Type:    "A",
+		Name:    "@",
+		Content: "198.51.100.10",
+		TTL:     600,
+	}})
+
+	q := setupTestQuery(t)
+	ctx := context.Background()
+	service := dnsSvc.NewService()
+
+	cred := createCredential(t, q)
+	domain, err := service.CreateDomain(ctx, dnsSvc.DomainInput{
+		Domain:          "example.com",
+		DnsCredentialID: cred.ID,
+	})
+	require.NoError(t, err)
+
+	_, err = service.UpdateDDNSConfig(ctx, domain.ID, dnsSvc.DDNSUpdateInput{
+		Enabled:         true,
+		IntervalSeconds: dnsSvc.DefaultDDNSInterval(),
+		IPVersion:       "both_required",
+		RecordIDs:       []string{"a-record"},
+	})
+	require.Error(t, err)
+	require.Contains(t, err.Error(), dnsSvc.ErrDDNSBothRequiredTarget.Error())
+}
+
+func TestUpdateDDNSConfigBothRequiredCreatesAAndAAAAForMissingName(t *testing.T) {
+	registerMockProvider()
+	setMockRecords(nil)
+
+	ipv4Server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_, _ = w.Write([]byte("198.51.100.12"))
+	}))
+	defer ipv4Server.Close()
+	ipv6Server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_, _ = w.Write([]byte("2001:db8::20"))
+	}))
+	defer ipv6Server.Close()
+	restore := dnsSvc.OverrideIPEndpointsForTest([]string{ipv4Server.URL}, []string{ipv6Server.URL})
+	defer restore()
+
+	q := setupTestQuery(t)
+	ctx := context.Background()
+	service := dnsSvc.NewService()
+
+	cred := createCredential(t, q)
+	domain, err := service.CreateDomain(ctx, dnsSvc.DomainInput{
+		Domain:          "example.com",
+		DnsCredentialID: cred.ID,
+	})
+	require.NoError(t, err)
+
+	cfg, err := service.UpdateDDNSConfig(ctx, domain.ID, dnsSvc.DDNSUpdateInput{
+		Enabled:         true,
+		IntervalSeconds: dnsSvc.DefaultDDNSInterval(),
+		IPVersion:       "both_required",
+		RecordIDs:       []string{"home"},
+	})
+	require.NoError(t, err)
+	require.Len(t, cfg.Targets, 2)
+	require.ElementsMatch(t, []string{"A", "AAAA"}, []string{cfg.Targets[0].Type, cfg.Targets[1].Type})
+
+	created := getMockCreatedRecords()
+	require.Len(t, created, 2)
+	require.Equal(t, "A", created[0].Type)
+	require.Equal(t, "198.51.100.12", created[0].Content)
+	require.Equal(t, "AAAA", created[1].Type)
+	require.Equal(t, "2001:db8::20", created[1].Content)
+}
+
+func TestUpdateDDNSConfigBothRequiredSelectsSameNameAAndAAAA(t *testing.T) {
+	registerMockProvider()
+	setMockRecords([]dnsSvc.Record{
+		{
+			ID:      "home-a",
+			Type:    "A",
+			Name:    "home",
+			Content: "198.51.100.10",
+			TTL:     600,
+		},
+		{
+			ID:      "home-aaaa",
+			Type:    "AAAA",
+			Name:    "home",
+			Content: "2001:db8::10",
+			TTL:     600,
+		},
+	})
+
+	q := setupTestQuery(t)
+	ctx := context.Background()
+	service := dnsSvc.NewService()
+
+	cred := createCredential(t, q)
+	domain, err := service.CreateDomain(ctx, dnsSvc.DomainInput{
+		Domain:          "example.com",
+		DnsCredentialID: cred.ID,
+	})
+	require.NoError(t, err)
+
+	cfg, err := service.UpdateDDNSConfig(ctx, domain.ID, dnsSvc.DDNSUpdateInput{
+		Enabled:         true,
+		IntervalSeconds: dnsSvc.DefaultDDNSInterval(),
+		IPVersion:       "both_required",
+		RecordIDs:       []string{"home"},
+	})
+	require.NoError(t, err)
+	require.Len(t, cfg.Targets, 2)
+	require.ElementsMatch(t, []string{"home-a", "home-aaaa"}, []string{cfg.Targets[0].ID, cfg.Targets[1].ID})
+}
+
+func TestUpdateDDNSConfigBothRequiredRollsBackCreatedRecordOnSecondCreateFailure(t *testing.T) {
+	registerMockProvider()
+	setMockRecords(nil)
+	setMockCreateFailure("AAAA", errors.New("create AAAA failed"))
+
+	ipv4Server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_, _ = w.Write([]byte("198.51.100.12"))
+	}))
+	defer ipv4Server.Close()
+	ipv6Server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_, _ = w.Write([]byte("2001:db8::20"))
+	}))
+	defer ipv6Server.Close()
+	restore := dnsSvc.OverrideIPEndpointsForTest([]string{ipv4Server.URL}, []string{ipv6Server.URL})
+	defer restore()
+
+	q := setupTestQuery(t)
+	ctx := context.Background()
+	service := dnsSvc.NewService()
+
+	cred := createCredential(t, q)
+	domain, err := service.CreateDomain(ctx, dnsSvc.DomainInput{
+		Domain:          "example.com",
+		DnsCredentialID: cred.ID,
+	})
+	require.NoError(t, err)
+
+	_, err = service.UpdateDDNSConfig(ctx, domain.ID, dnsSvc.DDNSUpdateInput{
+		Enabled:         true,
+		IntervalSeconds: dnsSvc.DefaultDDNSInterval(),
+		IPVersion:       "both_required",
+		RecordIDs:       []string{"home"},
+	})
+	require.Error(t, err)
+	require.Len(t, getMockCreatedRecords(), 1)
+	require.Equal(t, []string{"created-1"}, getMockDeletedRecordIDs())
+}
+
+func TestRunDDNSUpdateNormalizesEmptyIPVersionAndRecordsBestEffortWarnings(t *testing.T) {
+	registerMockProvider()
+	setMockRecords([]dnsSvc.Record{
+		{
+			ID:      "a-record",
+			Type:    "A",
+			Name:    "@",
+			Content: "198.51.100.10",
+			TTL:     600,
+		},
+		{
+			ID:      "aaaa-record",
+			Type:    "AAAA",
+			Name:    "@",
+			Content: "2001:db8::10",
+			TTL:     600,
+		},
+	})
+
+	ipv4Server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_, _ = w.Write([]byte("198.51.100.12"))
+	}))
+	defer ipv4Server.Close()
+	restore := dnsSvc.OverrideIPEndpointsForTest([]string{ipv4Server.URL}, []string{"http://127.0.0.1:1"})
+	defer restore()
+
+	q := setupTestQuery(t)
+	ctx := context.Background()
+	service := dnsSvc.NewService()
+
+	cred := createCredential(t, q)
+	domain, err := service.CreateDomain(ctx, dnsSvc.DomainInput{
+		Domain:          "example.com",
+		DnsCredentialID: cred.ID,
+	})
+	require.NoError(t, err)
+
+	domain.DDNSConfig = &model.DDNSConfig{
+		Enabled:         true,
+		IntervalSeconds: dnsSvc.DefaultDDNSInterval(),
+		IPVersion:       "",
+		Targets: []model.DDNSRecordTarget{
+			{ID: "a-record", Name: "@", Type: "A"},
+			{ID: "aaaa-record", Name: "@", Type: "AAAA"},
+		},
+	}
+	require.NoError(t, model.UseDB().WithContext(ctx).Save(domain).Error)
+
+	require.NoError(t, dnsSvc.RunDDNSUpdate(ctx, domain.ID))
+	require.Equal(t, []string{"a-record"}, getMockUpdatedRecordIDs())
+
+	var persisted model.DnsDomain
+	require.NoError(t, model.UseDB().WithContext(ctx).First(&persisted, domain.ID).Error)
+	require.Empty(t, persisted.DDNSConfig.IPVersion)
+	require.Contains(t, persisted.DDNSConfig.LastError, "ipv6:")
+}
+
+func TestRunDDNSUpdateBothRequiredDoesNotPartiallyUpdateOnResolveFailure(t *testing.T) {
+	registerMockProvider()
+	setMockRecords([]dnsSvc.Record{
+		{
+			ID:      "a-record",
+			Type:    "A",
+			Name:    "@",
+			Content: "198.51.100.10",
+			TTL:     600,
+		},
+		{
+			ID:      "aaaa-record",
+			Type:    "AAAA",
+			Name:    "@",
+			Content: "2001:db8::10",
+			TTL:     600,
+		},
+	})
+
+	ipv4Server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_, _ = w.Write([]byte("198.51.100.12"))
+	}))
+	defer ipv4Server.Close()
+	restore := dnsSvc.OverrideIPEndpointsForTest([]string{ipv4Server.URL}, []string{"http://127.0.0.1:1"})
+	defer restore()
+
+	q := setupTestQuery(t)
+	ctx := context.Background()
+	service := dnsSvc.NewService()
+
+	cred := createCredential(t, q)
+	domain, err := service.CreateDomain(ctx, dnsSvc.DomainInput{
+		Domain:          "example.com",
+		DnsCredentialID: cred.ID,
+	})
+	require.NoError(t, err)
+
+	domain.DDNSConfig = &model.DDNSConfig{
+		Enabled:         true,
+		IntervalSeconds: dnsSvc.DefaultDDNSInterval(),
+		IPVersion:       "both_required",
+		Targets: []model.DDNSRecordTarget{
+			{ID: "a-record", Name: "@", Type: "A"},
+			{ID: "aaaa-record", Name: "@", Type: "AAAA"},
+		},
+	}
+	require.NoError(t, model.UseDB().WithContext(ctx).Save(domain).Error)
+
+	require.NoError(t, dnsSvc.RunDDNSUpdate(ctx, domain.ID))
+	require.Empty(t, getMockUpdatedRecordIDs())
+
+	var persisted model.DnsDomain
+	require.NoError(t, model.UseDB().WithContext(ctx).First(&persisted, domain.ID).Error)
+	require.Contains(t, persisted.DDNSConfig.LastError, "ipv6:")
 }
 
 func setupTestQuery(tb testing.TB) *query.Query {
@@ -103,35 +531,75 @@ func registerMockProvider() {
 type mockProvider struct{}
 
 func (m *mockProvider) ListRecords(ctx context.Context, domain string, filter dnsSvc.RecordFilter) ([]dnsSvc.Record, error) {
-	return []dnsSvc.Record{{
-		ID:      "1",
-		Type:    "mock",
-		Name:    "@",
-		Content: "127.0.0.1",
-		TTL:     60,
-	}}, nil
+	return append([]dnsSvc.Record(nil), mockRecords...), nil
 }
 
 func (m *mockProvider) CreateRecord(ctx context.Context, domain string, input dnsSvc.RecordInput) (dnsSvc.Record, error) {
-	return dnsSvc.Record{
-		ID:      "1",
+	if mockCreateFailureType == input.Type && mockCreateFailureErr != nil {
+		return dnsSvc.Record{}, mockCreateFailureErr
+	}
+
+	record := dnsSvc.Record{
+		ID:      fmt.Sprintf("created-%d", len(mockCreatedRecords)+1),
 		Type:    input.Type,
 		Name:    input.Name,
 		Content: input.Content,
 		TTL:     input.TTL,
-	}, nil
+	}
+	mockCreatedRecords = append(mockCreatedRecords, record)
+	return record, nil
 }
 
 func (m *mockProvider) UpdateRecord(ctx context.Context, domain string, recordID string, input dnsSvc.RecordInput) (dnsSvc.Record, error) {
-	return dnsSvc.Record{
+	record := dnsSvc.Record{
 		ID:      recordID,
 		Type:    input.Type,
 		Name:    input.Name,
 		Content: input.Content,
 		TTL:     input.TTL,
-	}, nil
+	}
+	mockUpdatedRecords = append(mockUpdatedRecords, record)
+	return record, nil
 }
 
 func (m *mockProvider) DeleteRecord(ctx context.Context, domain string, recordID string) error {
+	mockDeletedRecordIDs = append(mockDeletedRecordIDs, recordID)
 	return nil
+}
+
+var mockRecords []dnsSvc.Record
+var mockCreatedRecords []dnsSvc.Record
+var mockUpdatedRecords []dnsSvc.Record
+var mockDeletedRecordIDs []string
+var mockCreateFailureType string
+var mockCreateFailureErr error
+
+func setMockRecords(records []dnsSvc.Record) {
+	mockRecords = append([]dnsSvc.Record(nil), records...)
+	mockCreatedRecords = nil
+	mockUpdatedRecords = nil
+	mockDeletedRecordIDs = nil
+	mockCreateFailureType = ""
+	mockCreateFailureErr = nil
+}
+
+func getMockCreatedRecords() []dnsSvc.Record {
+	return append([]dnsSvc.Record(nil), mockCreatedRecords...)
+}
+
+func getMockUpdatedRecordIDs() []string {
+	ids := make([]string, 0, len(mockUpdatedRecords))
+	for _, record := range mockUpdatedRecords {
+		ids = append(ids, record.ID)
+	}
+	return ids
+}
+
+func getMockDeletedRecordIDs() []string {
+	return append([]string(nil), mockDeletedRecordIDs...)
+}
+
+func setMockCreateFailure(recordType string, err error) {
+	mockCreateFailureType = recordType
+	mockCreateFailureErr = err
 }

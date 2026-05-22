@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { DDNSDomainItem, DNSRecord, UpdateDDNSPayload } from '@/api/dns'
+import type { DDNSDomainItem, DDNSIPVersion, DNSRecord, UpdateDDNSPayload } from '@/api/dns'
 import { DeleteOutlined, ReloadOutlined, SearchOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
 import dayjs from 'dayjs'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { dnsApi } from '@/api/dns'
 import { useDnsStore } from '@/pinia/moudule/dns'
 
@@ -20,6 +20,7 @@ const currentDomain = ref<DDNSDomainItem | null>(null)
 const ddnsForm = ref<UpdateDDNSPayload>({
   enabled: false,
   interval_seconds: 300,
+  ip_version: 'ipv4_ipv6',
   record_ids: [],
 })
 
@@ -34,26 +35,46 @@ const filteredItems = computed(() => {
   return items.value.filter(item => matchKeyword(item, keyword))
 })
 
+const ipVersionOptions: Array<{ value: DDNSIPVersion, label: string }> = [
+  { value: 'ipv4', label: $gettext('IPv4 only') },
+  { value: 'ipv6', label: $gettext('IPv6 only') },
+  { value: 'ipv4_ipv6', label: $gettext('IPv4 then IPv6') },
+  { value: 'ipv6_ipv4', label: $gettext('IPv6 then IPv4') },
+  { value: 'both_required', label: $gettext('IPv4 and IPv6 required') },
+]
+
+function normalizeRecordType(value?: string) {
+  return value?.toUpperCase?.() ?? ''
+}
+
+function isRecordAllowedByIPVersion(recordType: string, ipVersion: DDNSIPVersion) {
+  const type = normalizeRecordType(recordType)
+  if (ipVersion === 'ipv4')
+    return type === 'A'
+  if (ipVersion === 'ipv6')
+    return type === 'AAAA'
+  return type === 'A' || type === 'AAAA'
+}
+
 const recordOptions = computed(() => {
   const opts = new Map<string, { value: string, label: string }>()
   records.value
-    .filter(item => {
-      const type = item.type?.toUpperCase?.()
-      return type === 'A' || type === 'AAAA'
-    })
+    .filter(item => isRecordAllowedByIPVersion(item.type, ddnsForm.value.ip_version))
     .forEach(item => {
       opts.set(item.id, {
         value: item.id,
-        label: `${item.name} (${item.type.toUpperCase?.() ?? ''})`,
+        label: `${item.name} (${normalizeRecordType(item.type)})`,
       })
     })
 
-  currentDomain.value?.config.targets?.forEach(target => {
-    opts.set(target.id, {
-      value: target.id,
-      label: `${target.name} (${target.type})`,
+  currentDomain.value?.config.targets
+    ?.filter(target => isRecordAllowedByIPVersion(target.type, ddnsForm.value.ip_version))
+    .forEach(target => {
+      opts.set(target.id, {
+        value: target.id,
+        label: `${target.name} (${normalizeRecordType(target.type)})`,
+      })
     })
-  })
 
   return [...opts.values()]
 })
@@ -147,10 +168,12 @@ async function openDrawer(record: DDNSDomainItem) {
   ddnsForm.value = {
     enabled: record.config.enabled,
     interval_seconds: record.config.interval_seconds,
+    ip_version: record.config.ip_version ?? 'ipv4_ipv6',
     record_ids: record.config.targets?.map(t => t.id) ?? [],
   }
   drawerOpen.value = true
   await loadRecords(record.id)
+  handleIPVersionChange()
 }
 
 async function loadRecords(domainId: number) {
@@ -168,6 +191,11 @@ function closeDrawer() {
   drawerOpen.value = false
   currentDomain.value = null
   records.value = []
+}
+
+function handleIPVersionChange() {
+  const allowedIds = new Set(recordOptions.value.map(option => option.value))
+  ddnsForm.value.record_ids = ddnsForm.value.record_ids.filter(id => allowedIds.has(id))
 }
 
 async function saveDDNS() {
@@ -202,6 +230,8 @@ async function deleteDDNS(record: DDNSDomainItem) {
 onMounted(() => {
   init()
 })
+
+watch(() => ddnsForm.value.ip_version, handleIPVersionChange)
 </script>
 
 <template>
@@ -308,14 +338,21 @@ onMounted(() => {
           <AFormItem :label="$gettext('Enable DDNS')">
             <ASwitch v-model:checked="ddnsForm.enabled" />
           </AFormItem>
+          <AFormItem :label="$gettext('IP Version')">
+            <ASelect
+              v-model:value="ddnsForm.ip_version"
+              :options="ipVersionOptions"
+              :disabled="!ddnsForm.enabled"
+            />
+          </AFormItem>
           <AFormItem :label="$gettext('Records')">
             <ASelect
               v-model:value="ddnsForm.record_ids"
-              mode="tags"
+              mode="multiple"
               show-search
               :filter-option="(filterRecordOption as any)"
               :options="recordOptions"
-              :placeholder="$gettext('Type or select A/AAAA records')"
+              :placeholder="$gettext('Type or select matching A/AAAA records')"
               :disabled="!ddnsForm.enabled"
             />
           </AFormItem>
