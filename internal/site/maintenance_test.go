@@ -822,6 +822,131 @@ func TestMaintenanceIncludeExpander_RejectsCertbotOptionsSymlink(t *testing.T) {
 	}
 }
 
+func TestMaintenanceIncludeExpander_UsesBaseDirUnderConfigDir(t *testing.T) {
+	originalConfigDir := settings.NginxSettings.ConfigDir
+	t.Cleanup(func() {
+		settings.NginxSettings.ConfigDir = originalConfigDir
+	})
+
+	nginxConfigDir := t.TempDir()
+	sitesAvailableDir := filepath.Join(nginxConfigDir, "sites-available")
+	if err := os.MkdirAll(sitesAvailableDir, 0755); err != nil {
+		t.Fatalf("failed to create sites-available dir: %v", err)
+	}
+
+	settings.NginxSettings.ConfigDir = nginxConfigDir
+	expander := newMaintenanceIncludeExpander(sitesAvailableDir)
+
+	if expander.baseDir != filepath.Clean(sitesAvailableDir) {
+		t.Fatalf("baseDir = %q, want %q", expander.baseDir, filepath.Clean(sitesAvailableDir))
+	}
+}
+
+func TestMaintenanceIncludeExpander_FallsBackWhenBaseDirEscapesConfigDir(t *testing.T) {
+	originalConfigDir := settings.NginxSettings.ConfigDir
+	t.Cleanup(func() {
+		settings.NginxSettings.ConfigDir = originalConfigDir
+	})
+
+	nginxConfigDir := t.TempDir()
+	outsideDir := t.TempDir()
+	settings.NginxSettings.ConfigDir = nginxConfigDir
+
+	expander := newMaintenanceIncludeExpander(outsideDir)
+
+	if expander.baseDir != filepath.Clean(nginxConfigDir) {
+		t.Fatalf("baseDir = %q, want fallback to confDir %q", expander.baseDir, filepath.Clean(nginxConfigDir))
+	}
+}
+
+func TestMaintenanceIncludeExpander_ResolveIncludePathSkipsExistingRelativeEscape(t *testing.T) {
+	originalConfigDir := settings.NginxSettings.ConfigDir
+	t.Cleanup(func() {
+		settings.NginxSettings.ConfigDir = originalConfigDir
+	})
+
+	nginxConfigDir := t.TempDir()
+	sitesAvailableDir := filepath.Join(nginxConfigDir, "sites-available")
+	outsideDir := t.TempDir()
+	if err := os.MkdirAll(sitesAvailableDir, 0755); err != nil {
+		t.Fatalf("failed to create sites-available dir: %v", err)
+	}
+	outsideFile := filepath.Join(outsideDir, "ssl.conf")
+	if err := os.WriteFile(outsideFile, []byte("ssl_ciphers EVIL;\n"), 0644); err != nil {
+		t.Fatalf("failed to write outside file: %v", err)
+	}
+
+	settings.NginxSettings.ConfigDir = nginxConfigDir
+	expander := newMaintenanceIncludeExpander(sitesAvailableDir)
+	includePath, err := filepath.Rel(sitesAvailableDir, outsideFile)
+	if err != nil {
+		t.Fatalf("failed to build relative escape include path: %v", err)
+	}
+
+	resolvedPath := expander.resolveIncludePath(includePath)
+	if filepath.Clean(resolvedPath) == filepath.Clean(outsideFile) {
+		t.Fatalf("resolveIncludePath(%q) = %q, want existing path outside nginx config dir ignored", includePath, resolvedPath)
+	}
+}
+
+func TestMaintenanceIncludeExpander_ResolveIncludePathFallsBackToConfDirOnEscape(t *testing.T) {
+	originalConfigDir := settings.NginxSettings.ConfigDir
+	t.Cleanup(func() {
+		settings.NginxSettings.ConfigDir = originalConfigDir
+	})
+
+	nginxConfigDir := t.TempDir()
+	sitesAvailableDir := filepath.Join(nginxConfigDir, "sites-available")
+	if err := os.MkdirAll(sitesAvailableDir, 0755); err != nil {
+		t.Fatalf("failed to create sites-available dir: %v", err)
+	}
+
+	settings.NginxSettings.ConfigDir = nginxConfigDir
+	expander := newMaintenanceIncludeExpander(sitesAvailableDir)
+
+	resolvedPath := expander.resolveIncludePath(filepath.Join("..", "..", "escape.conf"))
+	if resolvedPath != filepath.Clean(nginxConfigDir) {
+		t.Fatalf("resolveIncludePath escape fallback = %q, want confDir %q", resolvedPath, filepath.Clean(nginxConfigDir))
+	}
+}
+
+func TestMaintenanceIncludeExpander_ResolveWildcardIncludePathRejectsAbsoluteEscape(t *testing.T) {
+	originalConfigDir := settings.NginxSettings.ConfigDir
+	t.Cleanup(func() {
+		settings.NginxSettings.ConfigDir = originalConfigDir
+	})
+
+	nginxConfigDir := t.TempDir()
+	outsideDir := t.TempDir()
+	settings.NginxSettings.ConfigDir = nginxConfigDir
+	expander := newMaintenanceIncludeExpander("")
+
+	outsidePattern := filepath.Join(outsideDir, "*.conf")
+	resolvedPath := expander.resolveWildcardIncludePath(outsidePattern)
+	if filepath.Clean(resolvedPath) == filepath.Clean(outsidePattern) {
+		t.Fatalf("resolveWildcardIncludePath(%q) = %q, want absolute path outside nginx config dir rejected", outsidePattern, resolvedPath)
+	}
+}
+
+func TestMaintenanceIncludeExpander_ExtractIncludeFileRejectsDisallowedPath(t *testing.T) {
+	originalConfigDir := settings.NginxSettings.ConfigDir
+	t.Cleanup(func() {
+		settings.NginxSettings.ConfigDir = originalConfigDir
+	})
+
+	settings.NginxSettings.ConfigDir = t.TempDir()
+	outsideDir := t.TempDir()
+	outsideFile := filepath.Join(outsideDir, "ssl.conf")
+	if err := os.WriteFile(outsideFile, []byte("ssl_ciphers EVIL;\n"), 0644); err != nil {
+		t.Fatalf("failed to write outside include: %v", err)
+	}
+
+	expander := newMaintenanceIncludeExpander("")
+	if directives := expander.extractIncludeFile(outsideFile, 1); len(directives) != 0 {
+		t.Fatalf("extractIncludeFile(%q) returned %d directives, want disallowed path rejected", outsideFile, len(directives))
+	}
+}
+
 func TestCreateMaintenanceConfig_EnforcesIncludeDepthLimit(t *testing.T) {
 	originalPort := cSettings.ServerSettings.Port
 	originalHTTPS := cSettings.ServerSettings.EnableHTTPS

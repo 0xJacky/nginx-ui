@@ -91,3 +91,19 @@ func TestSiteSaveRequiresSecureSessionForOTPUser(t *testing.T) {
 		t.Fatalf("expected 401, got %d", recorder.Code)
 	}
 }
+
+func TestEnableMaintenanceSiteRejectsInvalidSiteName(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	recorder := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(recorder)
+	c.Params = gin.Params{{Key: "name", Value: "..%2F..%2Fnginx.conf"}}
+
+	EnableMaintenanceSite(c)
+
+	if recorder.Code != http.StatusBadRequest {
+		t.Fatalf("expected 400, got %d with body %q", recorder.Code, recorder.Body.String())
+	}
+	if !bytes.Contains(recorder.Body.Bytes(), []byte("invalid site name")) {
+		t.Fatalf("expected invalid site name response, got %q", recorder.Body.String())
+	}
+}

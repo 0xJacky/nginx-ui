@@ -325,13 +325,17 @@ func extractMaintenanceServerDirectives(server config.IDirective, baseDir string
 }
 
 func newMaintenanceIncludeExpander(baseDir string) *maintenanceIncludeExpander {
-	confDir := nginx.GetConfPath()
-	if baseDir == "" {
-		baseDir = confDir
+	confDir := filepath.Clean(nginx.GetConfPath())
+	resolvedBaseDir := confDir
+	if baseDir != "" {
+		candidateBaseDir := filepath.Clean(baseDir)
+		if helper.IsUnderDirectory(candidateBaseDir, confDir) {
+			resolvedBaseDir = candidateBaseDir
+		}
 	}
 
 	return &maintenanceIncludeExpander{
-		baseDir: baseDir,
+		baseDir: resolvedBaseDir,
 		confDir: confDir,
 		visited: make(map[string]struct{}),
 	}
@@ -415,6 +419,10 @@ func (e *maintenanceIncludeExpander) extractWildcardInclude(includePath string, 
 }
 
 func (e *maintenanceIncludeExpander) isAllowedWildcardMatch(path string) bool {
+	if !helper.IsUnderDirectory(path, e.confDir) {
+		return false
+	}
+
 	info, err := os.Stat(path)
 	if err != nil {
 		logger.Debugf("%s: failed to stat wildcard match %s: %v", maintenanceIncludeDebugLogPrefix, path, err)
@@ -424,7 +432,7 @@ func (e *maintenanceIncludeExpander) isAllowedWildcardMatch(path string) bool {
 		return false
 	}
 
-	return helper.IsUnderDirectory(path, e.confDir)
+	return true
 }
 
 func maintenanceGlobStaticDir(pattern string) string {
@@ -447,26 +455,57 @@ func (e *maintenanceIncludeExpander) resolveIncludePath(includePath string) stri
 	}
 
 	candidate := filepath.Clean(filepath.Join(e.baseDir, includePath))
-	if _, err := os.Stat(candidate); err == nil {
-		return candidate
-	}
-
-	return filepath.Clean(filepath.Join(e.confDir, includePath))
-}
-
-func (e *maintenanceIncludeExpander) resolveWildcardIncludePath(includePath string) string {
-	if filepath.IsAbs(includePath) {
-		return filepath.Clean(includePath)
-	}
-
-	candidate := filepath.Clean(filepath.Join(e.baseDir, includePath))
-	if staticDir := maintenanceGlobStaticDir(candidate); staticDir != "" && helper.IsUnderDirectory(staticDir, e.confDir) {
-		if info, err := os.Stat(staticDir); err == nil && info.IsDir() {
+	if helper.IsUnderDirectory(candidate, e.confDir) {
+		if _, err := os.Stat(candidate); err == nil {
 			return candidate
 		}
 	}
 
-	return filepath.Clean(filepath.Join(e.confDir, includePath))
+	return e.resolveFallbackIncludePath(includePath)
+}
+
+func (e *maintenanceIncludeExpander) resolveWildcardIncludePath(includePath string) string {
+	if filepath.IsAbs(includePath) {
+		candidate := filepath.Clean(includePath)
+		staticDir := maintenanceGlobStaticDir(candidate)
+		if staticDir == "" || !helper.IsUnderDirectory(staticDir, e.confDir) {
+			return e.resolveFallbackIncludePath(includePath)
+		}
+
+		if info, err := os.Stat(staticDir); err == nil && info.IsDir() {
+			return candidate
+		}
+
+		return e.resolveFallbackIncludePath(includePath)
+	}
+
+	candidate := filepath.Clean(filepath.Join(e.baseDir, includePath))
+	staticDir := maintenanceGlobStaticDir(candidate)
+	if staticDir == "" || !helper.IsUnderDirectory(staticDir, e.confDir) {
+		return e.resolveFallbackIncludePath(includePath)
+	}
+
+	if info, err := os.Stat(staticDir); err == nil && info.IsDir() {
+		return candidate
+	}
+
+	return e.resolveFallbackIncludePath(includePath)
+}
+
+func (e *maintenanceIncludeExpander) resolveFallbackIncludePath(includePath string) string {
+	fallback := filepath.Clean(filepath.Join(e.confDir, includePath))
+	if hasMaintenanceGlobMeta(fallback) {
+		staticDir := maintenanceGlobStaticDir(fallback)
+		if staticDir != "" && helper.IsUnderDirectory(staticDir, e.confDir) {
+			return fallback
+		}
+		return e.confDir
+	}
+
+	if helper.IsUnderDirectory(fallback, e.confDir) {
+		return fallback
+	}
+	return e.confDir
 }
 
 func (e *maintenanceIncludeExpander) isAllowedSingleInclude(path string) bool {
@@ -490,6 +529,11 @@ func (e *maintenanceIncludeExpander) extractIncludeFile(path string, depth int) 
 	}
 
 	cleanPath := filepath.Clean(path)
+	if !e.isAllowedSingleInclude(cleanPath) {
+		logger.Debugf("%s: skipped disallowed include file %s", maintenanceIncludeDebugLogPrefix, cleanPath)
+		return nil
+	}
+
 	if _, ok := e.visited[cleanPath]; ok {
 		return nil
 	}
