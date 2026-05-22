@@ -56,5 +56,5 @@ export function useTLSDirectives() {
     ensureDirective('ssl_certificate_key', sslCertificateKey, sslCertificateIndex + 1)
   }
 
-  return { ensureDirective, ensureTLSDirectives }
+  return { ensureTLSDirectives }
 }

@@ -42,10 +42,6 @@ func RenewSelfSignedCerts() {
 
 // renewSelfSignedCert renews a single self-signed certificate when it is due.
 func renewSelfSignedCert(certModel *model.Cert, now time.Time, renewalInterval int) {
-	log := NewLogger()
-	log.SetCertModel(certModel)
-	defer log.Close()
-
 	targetName := getAutoRenewTargetName(certModel)
 
 	if shouldSkipAutoRenew(certModel, now) {
@@ -54,20 +50,20 @@ func renewSelfSignedCert(certModel *model.Cert, now time.Time, renewalInterval i
 		return
 	}
 
-	if certModel.SSLCertificatePath == "" {
-		handleAutoRenewFailure(certModel, log, targetName,
-			pkgerrors.New("ssl certificate path is empty for self-signed certificate"))
+	due, err := selfSignedRenewalDue(certModel, now, renewalInterval)
+	if err == nil && !due {
 		return
 	}
 
-	info, err := GetCertInfo(certModel.SSLCertificatePath)
+	// A Logger is allocated only once renewal is actually attempted or has
+	// failed; non-due certificates skip it to avoid a per-tick goroutine and
+	// an empty-log database write.
+	log := NewLogger()
+	log.SetCertModel(certModel)
+	defer log.Close()
+
 	if err != nil {
-		handleAutoRenewFailure(certModel, log, targetName,
-			pkgerrors.Wrap(err, "get self-signed certificate info error"))
-		return
-	}
-
-	if !shouldRenewSelfSignedCert(info, now, renewalInterval) {
+		handleAutoRenewFailure(certModel, log, targetName, err)
 		return
 	}
 
@@ -97,6 +93,21 @@ func renewSelfSignedCert(certModel *model.Cert, now time.Time, renewalInterval i
 	if err = SyncToRemoteServer(certModel); err != nil {
 		notification.Error("Sync Certificate Error", err.Error(), nil)
 	}
+}
+
+// selfSignedRenewalDue reports whether a self-signed certificate is due for
+// renewal. It returns an error when the certificate cannot be inspected.
+func selfSignedRenewalDue(certModel *model.Cert, now time.Time, renewalInterval int) (bool, error) {
+	if certModel.SSLCertificatePath == "" {
+		return false, pkgerrors.New("ssl certificate path is empty for self-signed certificate")
+	}
+
+	info, err := GetCertInfo(certModel.SSLCertificatePath)
+	if err != nil {
+		return false, pkgerrors.Wrap(err, "get self-signed certificate info error")
+	}
+
+	return shouldRenewSelfSignedCert(info, now, renewalInterval), nil
 }
 
 // shouldRenewSelfSignedCert reports whether a self-signed certificate with the

@@ -167,25 +167,5 @@ func loadSelfSignedKey(path string) (crypto.Signer, error) {
 	if err != nil {
 		return nil, err
 	}
-	return parsePrivateKeyPEM(pemBytes)
-}
-
-// parsePrivateKeyPEM parses a PEM-encoded private key into a crypto.Signer.
-func parsePrivateKeyPEM(pemBytes []byte) (crypto.Signer, error) {
-	block, _ := pem.Decode(pemBytes)
-	if block == nil {
-		return nil, ErrCertDecode
-	}
-	if key, err := x509.ParsePKCS8PrivateKey(block.Bytes); err == nil {
-		if signer, ok := key.(crypto.Signer); ok {
-			return signer, nil
-		}
-	}
-	if key, err := x509.ParsePKCS1PrivateKey(block.Bytes); err == nil {
-		return key, nil
-	}
-	if key, err := x509.ParseECPrivateKey(block.Bytes); err == nil {
-		return key, nil
-	}
-	return nil, ErrCertParse
+	return certcrypto.ParsePEMPrivateKey(pemBytes)
 }

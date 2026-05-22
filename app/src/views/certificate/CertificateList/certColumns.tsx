@@ -3,7 +3,7 @@ import type { JSXElements } from '@/types'
 import { datetimeRender, maskRender } from '@uozi-admin/curd'
 import { Badge, Tag } from 'ant-design-vue'
 import dayjs from 'dayjs'
-import { PrivateKeyTypeMask } from '@/constants'
+import { AutoCertState, PrivateKeyTypeMask } from '@/constants'
 
 const columns: StdTableColumn[] = [{
   title: () => $gettext('Name'),
@@ -29,21 +29,21 @@ const columns: StdTableColumn[] = [{
     const managed = $gettext('Managed Certificate')
     const general = $gettext('General Certificate')
     const selfSigned = $gettext('Self-signed Certificate')
-    if (text === true || text === 1) {
+    if (text === true || text === AutoCertState.Enable) {
       template.push(
         <Tag bordered={false} color="processing">
           {managed}
         </Tag>,
       )
     }
-    else if (text === 2) {
+    else if (text === AutoCertState.Sync) {
       template.push(
         <Tag bordered={false} color="success">
           {sync}
         </Tag>,
       )
     }
-    else if (text === 3) {
+    else if (text === AutoCertState.SelfSigned) {
       template.push(
         <Tag bordered={false} color="cyan">
           {selfSigned}
