@@ -221,5 +221,9 @@ func getAutoRenewTargetName(certModel *model.Cert) string {
 		return certModel.Name
 	}
 
+	if certModel.SelfSignedConfig != nil && len(certModel.SelfSignedConfig.IPAddresses) > 0 {
+		return strings.Join(certModel.SelfSignedConfig.IPAddresses, ", ")
+	}
+
 	return "unknown certificate"
 }

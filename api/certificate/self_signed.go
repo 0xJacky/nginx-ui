@@ -27,7 +27,7 @@ type SelfSignedCertRequest struct {
 	Name         string   `json:"name"`
 	Domains      []string `json:"domains" binding:"omitempty"`
 	IPAddresses  []string `json:"ip_addresses" binding:"omitempty,dive,ip"`
-	KeyType      string   `json:"key_type" binding:"omitempty"`
+	KeyType      string   `json:"key_type" binding:"omitempty,auto_cert_key_type"`
 	ValidityDays int      `json:"validity_days" binding:"omitempty,min=1,max=3650"`
 	SyncNodeIds  []uint64 `json:"sync_node_ids" binding:"omitempty"`
 }
