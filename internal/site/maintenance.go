@@ -46,7 +46,6 @@ const (
 var certbotNginxTLSOptionsPath = filepath.Clean("/etc/letsencrypt/options-ssl-nginx.conf")
 
 type maintenanceIncludeExpander struct {
-	baseDir string
 	confDir string
 	visited map[string]struct{}
 }
@@ -310,7 +309,8 @@ func extractDirectives(server config.IDirective, name string) []config.IDirectiv
 
 // extractMaintenanceServerDirectives extracts directives needed by the generated maintenance server.
 func extractMaintenanceServerDirectives(server config.IDirective, baseDir string) []config.IDirective {
-	expander := newMaintenanceIncludeExpander(baseDir)
+	expander := newMaintenanceIncludeExpander()
+	initialBaseDir := resolveMaintenanceBaseDir(baseDir, expander.confDir)
 	var directives []config.IDirective
 
 	if server.GetBlock() == nil {
@@ -318,30 +318,33 @@ func extractMaintenanceServerDirectives(server config.IDirective, baseDir string
 	}
 
 	for _, directive := range server.GetBlock().GetDirectives() {
-		directives = append(directives, expander.extractServerDirective(directive, 0)...)
+		directives = append(directives, expander.extractServerDirective(directive, initialBaseDir, 0)...)
 	}
 
 	return directives
 }
 
-func newMaintenanceIncludeExpander(baseDir string) *maintenanceIncludeExpander {
-	confDir := filepath.Clean(nginx.GetConfPath())
-	resolvedBaseDir := confDir
-	if baseDir != "" {
-		candidateBaseDir := filepath.Clean(baseDir)
-		if helper.IsUnderDirectory(candidateBaseDir, confDir) {
-			resolvedBaseDir = candidateBaseDir
-		}
-	}
-
+func newMaintenanceIncludeExpander() *maintenanceIncludeExpander {
 	return &maintenanceIncludeExpander{
-		baseDir: resolvedBaseDir,
-		confDir: confDir,
+		confDir: filepath.Clean(nginx.GetConfPath()),
 		visited: make(map[string]struct{}),
 	}
 }
 
-func (e *maintenanceIncludeExpander) extractServerDirective(directive config.IDirective, depth int) []config.IDirective {
+// resolveMaintenanceBaseDir validates a caller-supplied include base directory and falls
+// back to confDir if it is empty or escapes the nginx configuration directory.
+func resolveMaintenanceBaseDir(baseDir, confDir string) string {
+	if baseDir == "" {
+		return confDir
+	}
+	candidate := filepath.Clean(baseDir)
+	if helper.IsUnderDirectory(candidate, confDir) {
+		return candidate
+	}
+	return confDir
+}
+
+func (e *maintenanceIncludeExpander) extractServerDirective(directive config.IDirective, baseDir string, depth int) []config.IDirective {
 	name := directive.GetName()
 
 	if _, ok := baseMaintenanceServerDirectives[name]; ok {
@@ -353,13 +356,13 @@ func (e *maintenanceIncludeExpander) extractServerDirective(directive config.IDi
 	}
 
 	if name == "include" {
-		return e.extractIncludeDirective(directive, depth)
+		return e.extractIncludeDirective(directive, baseDir, depth)
 	}
 
 	return nil
 }
 
-func (e *maintenanceIncludeExpander) extractIncludeDirective(directive config.IDirective, depth int) []config.IDirective {
+func (e *maintenanceIncludeExpander) extractIncludeDirective(directive config.IDirective, baseDir string, depth int) []config.IDirective {
 	params := extractParams(directive)
 	if len(params) == 0 {
 		return nil
@@ -367,10 +370,10 @@ func (e *maintenanceIncludeExpander) extractIncludeDirective(directive config.ID
 
 	includePath := strings.Trim(params[0], `"'`)
 	if hasMaintenanceGlobMeta(includePath) {
-		return e.extractWildcardInclude(includePath, depth+1)
+		return e.extractWildcardInclude(includePath, baseDir, depth+1)
 	}
 
-	resolvedPath := e.resolveIncludePath(includePath)
+	resolvedPath := e.resolveIncludePath(includePath, baseDir)
 	if !e.isAllowedSingleInclude(resolvedPath) {
 		logger.Debugf("%s: skipped disallowed include %s", maintenanceIncludeDebugLogPrefix, resolvedPath)
 		return nil
@@ -379,8 +382,8 @@ func (e *maintenanceIncludeExpander) extractIncludeDirective(directive config.ID
 	return e.extractIncludeFile(resolvedPath, depth+1)
 }
 
-func (e *maintenanceIncludeExpander) extractWildcardInclude(includePath string, depth int) []config.IDirective {
-	pattern := e.resolveWildcardIncludePath(includePath)
+func (e *maintenanceIncludeExpander) extractWildcardInclude(includePath, baseDir string, depth int) []config.IDirective {
+	pattern := e.resolveWildcardIncludePath(includePath, baseDir)
 	staticDir := maintenanceGlobStaticDir(pattern)
 	if staticDir == "" || !helper.IsUnderDirectory(staticDir, e.confDir) {
 		logger.Debugf("%s: skipped disallowed wildcard include %s", maintenanceIncludeDebugLogPrefix, pattern)
@@ -446,15 +449,18 @@ func maintenanceGlobStaticDir(pattern string) string {
 		return ""
 	}
 
-	return filepath.Clean(filepath.Dir(staticPrefix))
+	return filepath.Dir(staticPrefix)
 }
 
-func (e *maintenanceIncludeExpander) resolveIncludePath(includePath string) string {
+func (e *maintenanceIncludeExpander) resolveIncludePath(includePath, baseDir string) string {
 	if filepath.IsAbs(includePath) {
 		return filepath.Clean(includePath)
 	}
 
-	candidate := filepath.Clean(filepath.Join(e.baseDir, includePath))
+	// filepath.Join already cleans its output; check baseDir-relative location first
+	// and fall back to confDir-relative only if it does not exist (nginx include
+	// resolution semantics).
+	candidate := filepath.Join(baseDir, includePath)
 	if helper.IsUnderDirectory(candidate, e.confDir) {
 		if _, err := os.Stat(candidate); err == nil {
 			return candidate
@@ -464,27 +470,21 @@ func (e *maintenanceIncludeExpander) resolveIncludePath(includePath string) stri
 	return e.resolveFallbackIncludePath(includePath)
 }
 
-func (e *maintenanceIncludeExpander) resolveWildcardIncludePath(includePath string) string {
+func (e *maintenanceIncludeExpander) resolveWildcardIncludePath(includePath, baseDir string) string {
+	var candidate string
 	if filepath.IsAbs(includePath) {
-		candidate := filepath.Clean(includePath)
-		staticDir := maintenanceGlobStaticDir(candidate)
-		if staticDir == "" || !helper.IsUnderDirectory(staticDir, e.confDir) {
-			return e.resolveFallbackIncludePath(includePath)
-		}
-
-		if info, err := os.Stat(staticDir); err == nil && info.IsDir() {
-			return candidate
-		}
-
-		return e.resolveFallbackIncludePath(includePath)
+		candidate = filepath.Clean(includePath)
+	} else {
+		candidate = filepath.Join(baseDir, includePath)
 	}
 
-	candidate := filepath.Clean(filepath.Join(e.baseDir, includePath))
 	staticDir := maintenanceGlobStaticDir(candidate)
 	if staticDir == "" || !helper.IsUnderDirectory(staticDir, e.confDir) {
 		return e.resolveFallbackIncludePath(includePath)
 	}
 
+	// Stat the static prefix so a baseDir-relative wildcard that targets a
+	// nonexistent directory still falls back to the confDir-relative pattern.
 	if info, err := os.Stat(staticDir); err == nil && info.IsDir() {
 		return candidate
 	}
@@ -493,7 +493,7 @@ func (e *maintenanceIncludeExpander) resolveWildcardIncludePath(includePath stri
 }
 
 func (e *maintenanceIncludeExpander) resolveFallbackIncludePath(includePath string) string {
-	fallback := filepath.Clean(filepath.Join(e.confDir, includePath))
+	fallback := filepath.Join(e.confDir, includePath)
 	if hasMaintenanceGlobMeta(fallback) {
 		staticDir := maintenanceGlobStaticDir(fallback)
 		if staticDir != "" && helper.IsUnderDirectory(staticDir, e.confDir) {
@@ -557,14 +557,15 @@ func (e *maintenanceIncludeExpander) extractIncludeFile(path string, depth int) 
 	}
 
 	var directives []config.IDirective
+	childBaseDir := filepath.Dir(cleanPath)
 	for _, directive := range conf.Block.GetDirectives() {
-		directives = append(directives, e.extractIncludedDirective(directive, filepath.Dir(cleanPath), depth)...)
+		directives = append(directives, e.extractIncludedDirective(directive, childBaseDir, depth)...)
 	}
 
 	return directives
 }
 
-func (e *maintenanceIncludeExpander) extractIncludedDirective(directive config.IDirective, includeBaseDir string, depth int) []config.IDirective {
+func (e *maintenanceIncludeExpander) extractIncludedDirective(directive config.IDirective, baseDir string, depth int) []config.IDirective {
 	name := directive.GetName()
 
 	if strings.HasPrefix(name, "ssl_") {
@@ -575,13 +576,7 @@ func (e *maintenanceIncludeExpander) extractIncludedDirective(directive config.I
 		return nil
 	}
 
-	previousBaseDir := e.baseDir
-	e.baseDir = includeBaseDir
-	defer func() {
-		e.baseDir = previousBaseDir
-	}()
-
-	return e.extractIncludeDirective(directive, depth)
+	return e.extractIncludeDirective(directive, baseDir, depth)
 }
 
 func hasMaintenanceGlobMeta(path string) bool {

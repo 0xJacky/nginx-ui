@@ -397,8 +397,8 @@ func BatchUpdateSites(c *gin.Context) {
 }
 
 func isInvalidSiteName(name string) bool {
-	return name == "" || name == "." || name == ".." ||
-		strings.Contains(name, "/") || strings.Contains(name, "\\") || strings.Contains(name, "..")
+	return name == "" || name == "." ||
+		strings.ContainsAny(name, `/\`) || strings.Contains(name, "..")
 }
 
 func EnableMaintenanceSite(c *gin.Context) {

@@ -12,20 +12,33 @@ import (
 	cSettings "github.com/uozi-tech/cosy/settings"
 )
 
-func TestCreateMaintenanceConfig_PreservesForwardedHost(t *testing.T) {
+// setupMaintenanceTestSettings snapshots and restores the settings globals mutated
+// by maintenance-config tests, then installs canonical test values. Pass
+// nginxConfigDir == "" to leave settings.NginxSettings.ConfigDir at its prior
+// value (still restored on cleanup).
+func setupMaintenanceTestSettings(t *testing.T, nginxConfigDir string) {
+	t.Helper()
 	originalPort := cSettings.ServerSettings.Port
 	originalHTTPS := cSettings.ServerSettings.EnableHTTPS
 	originalChallengePort := settings.CertSettings.HTTPChallengePort
-
+	originalConfigDir := settings.NginxSettings.ConfigDir
 	t.Cleanup(func() {
 		cSettings.ServerSettings.Port = originalPort
 		cSettings.ServerSettings.EnableHTTPS = originalHTTPS
 		settings.CertSettings.HTTPChallengePort = originalChallengePort
+		settings.NginxSettings.ConfigDir = originalConfigDir
 	})
 
+	if nginxConfigDir != "" {
+		settings.NginxSettings.ConfigDir = nginxConfigDir
+	}
 	cSettings.ServerSettings.Port = 9000
 	cSettings.ServerSettings.EnableHTTPS = false
 	settings.CertSettings.HTTPChallengePort = "9180"
+}
+
+func TestCreateMaintenanceConfig_PreservesForwardedHost(t *testing.T) {
+	setupMaintenanceTestSettings(t, "")
 
 	p := parser.NewStringParser(`server {
     listen 80;
@@ -53,18 +66,6 @@ func TestCreateMaintenanceConfig_PreservesForwardedHost(t *testing.T) {
 }
 
 func TestCreateMaintenanceConfig_PreservesTLSHandshakeDirectives(t *testing.T) {
-	originalPort := cSettings.ServerSettings.Port
-	originalHTTPS := cSettings.ServerSettings.EnableHTTPS
-	originalChallengePort := settings.CertSettings.HTTPChallengePort
-	originalConfigDir := settings.NginxSettings.ConfigDir
-
-	t.Cleanup(func() {
-		cSettings.ServerSettings.Port = originalPort
-		cSettings.ServerSettings.EnableHTTPS = originalHTTPS
-		settings.CertSettings.HTTPChallengePort = originalChallengePort
-		settings.NginxSettings.ConfigDir = originalConfigDir
-	})
-
 	nginxConfigDir := t.TempDir()
 	sitesAvailableDir := filepath.Join(nginxConfigDir, "sites-available")
 	snippetsDir := filepath.Join(nginxConfigDir, "snippets")
@@ -83,10 +84,7 @@ location /unexpected {
 		t.Fatalf("failed to write ssl include: %v", err)
 	}
 
-	settings.NginxSettings.ConfigDir = nginxConfigDir
-	cSettings.ServerSettings.Port = 9000
-	cSettings.ServerSettings.EnableHTTPS = false
-	settings.CertSettings.HTTPChallengePort = "9180"
+	setupMaintenanceTestSettings(t, nginxConfigDir)
 
 	p := parser.NewStringParser(`server {
     listen 443 ssl;
@@ -134,18 +132,6 @@ location /unexpected {
 }
 
 func TestCreateMaintenanceConfig_RecursivelyExpandsTLSIncludesAndSkipsCycles(t *testing.T) {
-	originalPort := cSettings.ServerSettings.Port
-	originalHTTPS := cSettings.ServerSettings.EnableHTTPS
-	originalChallengePort := settings.CertSettings.HTTPChallengePort
-	originalConfigDir := settings.NginxSettings.ConfigDir
-
-	t.Cleanup(func() {
-		cSettings.ServerSettings.Port = originalPort
-		cSettings.ServerSettings.EnableHTTPS = originalHTTPS
-		settings.CertSettings.HTTPChallengePort = originalChallengePort
-		settings.NginxSettings.ConfigDir = originalConfigDir
-	})
-
 	nginxConfigDir := t.TempDir()
 	sitesAvailableDir := filepath.Join(nginxConfigDir, "sites-available")
 	snippetsDir := filepath.Join(nginxConfigDir, "snippets")
@@ -167,10 +153,7 @@ ssl_session_timeout 10m;
 		t.Fatalf("failed to write b.conf: %v", err)
 	}
 
-	settings.NginxSettings.ConfigDir = nginxConfigDir
-	cSettings.ServerSettings.Port = 9000
-	cSettings.ServerSettings.EnableHTTPS = false
-	settings.CertSettings.HTTPChallengePort = "9180"
+	setupMaintenanceTestSettings(t, nginxConfigDir)
 
 	p := parser.NewStringParser(`server {
     listen 443 ssl;
@@ -198,18 +181,6 @@ ssl_session_timeout 10m;
 }
 
 func TestCreateMaintenanceConfig_ExpandsNestedRelativeWildcardIncludes(t *testing.T) {
-	originalPort := cSettings.ServerSettings.Port
-	originalHTTPS := cSettings.ServerSettings.EnableHTTPS
-	originalChallengePort := settings.CertSettings.HTTPChallengePort
-	originalConfigDir := settings.NginxSettings.ConfigDir
-
-	t.Cleanup(func() {
-		cSettings.ServerSettings.Port = originalPort
-		cSettings.ServerSettings.EnableHTTPS = originalHTTPS
-		settings.CertSettings.HTTPChallengePort = originalChallengePort
-		settings.NginxSettings.ConfigDir = originalConfigDir
-	})
-
 	nginxConfigDir := t.TempDir()
 	sitesAvailableDir := filepath.Join(nginxConfigDir, "sites-available")
 	snippetsDir := filepath.Join(nginxConfigDir, "snippets")
@@ -227,10 +198,7 @@ func TestCreateMaintenanceConfig_ExpandsNestedRelativeWildcardIncludes(t *testin
 		t.Fatalf("failed to write nested wildcard include: %v", err)
 	}
 
-	settings.NginxSettings.ConfigDir = nginxConfigDir
-	cSettings.ServerSettings.Port = 9000
-	cSettings.ServerSettings.EnableHTTPS = false
-	settings.CertSettings.HTTPChallengePort = "9180"
+	setupMaintenanceTestSettings(t, nginxConfigDir)
 
 	p := parser.NewStringParser(`server {
     listen 443 ssl;
@@ -255,18 +223,6 @@ func TestCreateMaintenanceConfig_ExpandsNestedRelativeWildcardIncludes(t *testin
 }
 
 func TestCreateMaintenanceConfig_SkipsServerDirectivesFromIncludes(t *testing.T) {
-	originalPort := cSettings.ServerSettings.Port
-	originalHTTPS := cSettings.ServerSettings.EnableHTTPS
-	originalChallengePort := settings.CertSettings.HTTPChallengePort
-	originalConfigDir := settings.NginxSettings.ConfigDir
-
-	t.Cleanup(func() {
-		cSettings.ServerSettings.Port = originalPort
-		cSettings.ServerSettings.EnableHTTPS = originalHTTPS
-		settings.CertSettings.HTTPChallengePort = originalChallengePort
-		settings.NginxSettings.ConfigDir = originalConfigDir
-	})
-
 	nginxConfigDir := t.TempDir()
 	sitesAvailableDir := filepath.Join(nginxConfigDir, "sites-available")
 	snippetsDir := filepath.Join(nginxConfigDir, "snippets")
@@ -284,10 +240,7 @@ ssl_protocols TLSv1.3;
 		t.Fatalf("failed to write common include: %v", err)
 	}
 
-	settings.NginxSettings.ConfigDir = nginxConfigDir
-	cSettings.ServerSettings.Port = 9000
-	cSettings.ServerSettings.EnableHTTPS = false
-	settings.CertSettings.HTTPChallengePort = "9180"
+	setupMaintenanceTestSettings(t, nginxConfigDir)
 
 	p := parser.NewStringParser(`server {
     listen 443 ssl;
@@ -318,28 +271,13 @@ ssl_protocols TLSv1.3;
 }
 
 func TestCreateMaintenanceConfig_PreservesTLSBlockDirectives(t *testing.T) {
-	originalPort := cSettings.ServerSettings.Port
-	originalHTTPS := cSettings.ServerSettings.EnableHTTPS
-	originalChallengePort := settings.CertSettings.HTTPChallengePort
-	originalConfigDir := settings.NginxSettings.ConfigDir
-
-	t.Cleanup(func() {
-		cSettings.ServerSettings.Port = originalPort
-		cSettings.ServerSettings.EnableHTTPS = originalHTTPS
-		settings.CertSettings.HTTPChallengePort = originalChallengePort
-		settings.NginxSettings.ConfigDir = originalConfigDir
-	})
-
 	nginxConfigDir := t.TempDir()
 	sitesAvailableDir := filepath.Join(nginxConfigDir, "sites-available")
 	if err := os.MkdirAll(sitesAvailableDir, 0755); err != nil {
 		t.Fatalf("failed to create sites-available dir: %v", err)
 	}
 
-	settings.NginxSettings.ConfigDir = nginxConfigDir
-	cSettings.ServerSettings.Port = 9000
-	cSettings.ServerSettings.EnableHTTPS = false
-	settings.CertSettings.HTTPChallengePort = "9180"
+	setupMaintenanceTestSettings(t, nginxConfigDir)
 
 	p := parser.NewStringParser(`server {
     listen 443 ssl;
@@ -361,28 +299,13 @@ func TestCreateMaintenanceConfig_PreservesTLSBlockDirectives(t *testing.T) {
 }
 
 func TestCreateMaintenanceConfig_PreservesLuaBlockWithSemicolonsAndBraces(t *testing.T) {
-	originalPort := cSettings.ServerSettings.Port
-	originalHTTPS := cSettings.ServerSettings.EnableHTTPS
-	originalChallengePort := settings.CertSettings.HTTPChallengePort
-	originalConfigDir := settings.NginxSettings.ConfigDir
-
-	t.Cleanup(func() {
-		cSettings.ServerSettings.Port = originalPort
-		cSettings.ServerSettings.EnableHTTPS = originalHTTPS
-		settings.CertSettings.HTTPChallengePort = originalChallengePort
-		settings.NginxSettings.ConfigDir = originalConfigDir
-	})
-
 	nginxConfigDir := t.TempDir()
 	sitesAvailableDir := filepath.Join(nginxConfigDir, "sites-available")
 	if err := os.MkdirAll(sitesAvailableDir, 0755); err != nil {
 		t.Fatalf("failed to create sites-available dir: %v", err)
 	}
 
-	settings.NginxSettings.ConfigDir = nginxConfigDir
-	cSettings.ServerSettings.Port = 9000
-	cSettings.ServerSettings.EnableHTTPS = false
-	settings.CertSettings.HTTPChallengePort = "9180"
+	setupMaintenanceTestSettings(t, nginxConfigDir)
 
 	// Regression guard for Raw-field fidelity: the lua block contains both a
 	// statement-terminator (;) and a nested {} literal that could trip a naive
@@ -428,28 +351,13 @@ func TestCreateMaintenanceConfig_PreservesLuaBlockWithSemicolonsAndBraces(t *tes
 }
 
 func TestCreateMaintenanceConfig_PreservesQuotedTLSDirectiveParams(t *testing.T) {
-	originalPort := cSettings.ServerSettings.Port
-	originalHTTPS := cSettings.ServerSettings.EnableHTTPS
-	originalChallengePort := settings.CertSettings.HTTPChallengePort
-	originalConfigDir := settings.NginxSettings.ConfigDir
-
-	t.Cleanup(func() {
-		cSettings.ServerSettings.Port = originalPort
-		cSettings.ServerSettings.EnableHTTPS = originalHTTPS
-		settings.CertSettings.HTTPChallengePort = originalChallengePort
-		settings.NginxSettings.ConfigDir = originalConfigDir
-	})
-
 	nginxConfigDir := t.TempDir()
 	sitesAvailableDir := filepath.Join(nginxConfigDir, "sites-available")
 	if err := os.MkdirAll(sitesAvailableDir, 0755); err != nil {
 		t.Fatalf("failed to create sites-available dir: %v", err)
 	}
 
-	settings.NginxSettings.ConfigDir = nginxConfigDir
-	cSettings.ServerSettings.Port = 9000
-	cSettings.ServerSettings.EnableHTTPS = false
-	settings.CertSettings.HTTPChallengePort = "9180"
+	setupMaintenanceTestSettings(t, nginxConfigDir)
 
 	p := parser.NewStringParser(`server {
     listen 443 ssl;
@@ -475,18 +383,6 @@ func TestCreateMaintenanceConfig_PreservesQuotedTLSDirectiveParams(t *testing.T)
 }
 
 func TestCreateMaintenanceConfig_ExpandsWildcardTLSIncludesInSortedOrder(t *testing.T) {
-	originalPort := cSettings.ServerSettings.Port
-	originalHTTPS := cSettings.ServerSettings.EnableHTTPS
-	originalChallengePort := settings.CertSettings.HTTPChallengePort
-	originalConfigDir := settings.NginxSettings.ConfigDir
-
-	t.Cleanup(func() {
-		cSettings.ServerSettings.Port = originalPort
-		cSettings.ServerSettings.EnableHTTPS = originalHTTPS
-		settings.CertSettings.HTTPChallengePort = originalChallengePort
-		settings.NginxSettings.ConfigDir = originalConfigDir
-	})
-
 	nginxConfigDir := t.TempDir()
 	sitesAvailableDir := filepath.Join(nginxConfigDir, "sites-available")
 	tlsDir := filepath.Join(nginxConfigDir, "snippets", "tls")
@@ -507,10 +403,7 @@ func TestCreateMaintenanceConfig_ExpandsWildcardTLSIncludesInSortedOrder(t *test
 		}
 	}
 
-	settings.NginxSettings.ConfigDir = nginxConfigDir
-	cSettings.ServerSettings.Port = 9000
-	cSettings.ServerSettings.EnableHTTPS = false
-	settings.CertSettings.HTTPChallengePort = "9180"
+	setupMaintenanceTestSettings(t, nginxConfigDir)
 
 	p := parser.NewStringParser(`server {
     listen 443 ssl;
@@ -541,18 +434,6 @@ func TestCreateMaintenanceConfig_ExpandsWildcardTLSIncludesInSortedOrder(t *test
 }
 
 func TestCreateMaintenanceConfig_SkipsWildcardIncludesOutsideNginxConfigDir(t *testing.T) {
-	originalPort := cSettings.ServerSettings.Port
-	originalHTTPS := cSettings.ServerSettings.EnableHTTPS
-	originalChallengePort := settings.CertSettings.HTTPChallengePort
-	originalConfigDir := settings.NginxSettings.ConfigDir
-
-	t.Cleanup(func() {
-		cSettings.ServerSettings.Port = originalPort
-		cSettings.ServerSettings.EnableHTTPS = originalHTTPS
-		settings.CertSettings.HTTPChallengePort = originalChallengePort
-		settings.NginxSettings.ConfigDir = originalConfigDir
-	})
-
 	nginxConfigDir := t.TempDir()
 	outsideDir := t.TempDir()
 	sitesAvailableDir := filepath.Join(nginxConfigDir, "sites-available")
@@ -563,10 +444,7 @@ func TestCreateMaintenanceConfig_SkipsWildcardIncludesOutsideNginxConfigDir(t *t
 		t.Fatalf("failed to write outside include: %v", err)
 	}
 
-	settings.NginxSettings.ConfigDir = nginxConfigDir
-	cSettings.ServerSettings.Port = 9000
-	cSettings.ServerSettings.EnableHTTPS = false
-	settings.CertSettings.HTTPChallengePort = "9180"
+	setupMaintenanceTestSettings(t, nginxConfigDir)
 
 	p := parser.NewStringParser(fmt.Sprintf(`server {
     listen 443 ssl;
@@ -588,18 +466,6 @@ func TestCreateMaintenanceConfig_SkipsWildcardIncludesOutsideNginxConfigDir(t *t
 }
 
 func TestCreateMaintenanceConfig_LimitsWildcardIncludeMatches(t *testing.T) {
-	originalPort := cSettings.ServerSettings.Port
-	originalHTTPS := cSettings.ServerSettings.EnableHTTPS
-	originalChallengePort := settings.CertSettings.HTTPChallengePort
-	originalConfigDir := settings.NginxSettings.ConfigDir
-
-	t.Cleanup(func() {
-		cSettings.ServerSettings.Port = originalPort
-		cSettings.ServerSettings.EnableHTTPS = originalHTTPS
-		settings.CertSettings.HTTPChallengePort = originalChallengePort
-		settings.NginxSettings.ConfigDir = originalConfigDir
-	})
-
 	nginxConfigDir := t.TempDir()
 	sitesAvailableDir := filepath.Join(nginxConfigDir, "sites-available")
 	tlsDir := filepath.Join(nginxConfigDir, "snippets", "tls")
@@ -618,10 +484,7 @@ func TestCreateMaintenanceConfig_LimitsWildcardIncludeMatches(t *testing.T) {
 		}
 	}
 
-	settings.NginxSettings.ConfigDir = nginxConfigDir
-	cSettings.ServerSettings.Port = 9000
-	cSettings.ServerSettings.EnableHTTPS = false
-	settings.CertSettings.HTTPChallengePort = "9180"
+	setupMaintenanceTestSettings(t, nginxConfigDir)
 
 	p := parser.NewStringParser(`server {
     listen 443 ssl;
@@ -646,18 +509,6 @@ func TestCreateMaintenanceConfig_LimitsWildcardIncludeMatches(t *testing.T) {
 }
 
 func TestCreateMaintenanceConfig_LimitsWildcardIncludeMatchesAfterFiltering(t *testing.T) {
-	originalPort := cSettings.ServerSettings.Port
-	originalHTTPS := cSettings.ServerSettings.EnableHTTPS
-	originalChallengePort := settings.CertSettings.HTTPChallengePort
-	originalConfigDir := settings.NginxSettings.ConfigDir
-
-	t.Cleanup(func() {
-		cSettings.ServerSettings.Port = originalPort
-		cSettings.ServerSettings.EnableHTTPS = originalHTTPS
-		settings.CertSettings.HTTPChallengePort = originalChallengePort
-		settings.NginxSettings.ConfigDir = originalConfigDir
-	})
-
 	nginxConfigDir := t.TempDir()
 	outsideDir := t.TempDir()
 	sitesAvailableDir := filepath.Join(nginxConfigDir, "sites-available")
@@ -683,10 +534,7 @@ func TestCreateMaintenanceConfig_LimitsWildcardIncludeMatchesAfterFiltering(t *t
 		t.Fatalf("failed to write legal wildcard include: %v", err)
 	}
 
-	settings.NginxSettings.ConfigDir = nginxConfigDir
-	cSettings.ServerSettings.Port = 9000
-	cSettings.ServerSettings.EnableHTTPS = false
-	settings.CertSettings.HTTPChallengePort = "9180"
+	setupMaintenanceTestSettings(t, nginxConfigDir)
 
 	p := parser.NewStringParser(`server {
     listen 443 ssl;
@@ -711,18 +559,6 @@ func TestCreateMaintenanceConfig_LimitsWildcardIncludeMatchesAfterFiltering(t *t
 }
 
 func TestCreateMaintenanceConfig_RejectsWildcardSymlinkEscape(t *testing.T) {
-	originalPort := cSettings.ServerSettings.Port
-	originalHTTPS := cSettings.ServerSettings.EnableHTTPS
-	originalChallengePort := settings.CertSettings.HTTPChallengePort
-	originalConfigDir := settings.NginxSettings.ConfigDir
-
-	t.Cleanup(func() {
-		cSettings.ServerSettings.Port = originalPort
-		cSettings.ServerSettings.EnableHTTPS = originalHTTPS
-		settings.CertSettings.HTTPChallengePort = originalChallengePort
-		settings.NginxSettings.ConfigDir = originalConfigDir
-	})
-
 	nginxConfigDir := t.TempDir()
 	outsideDir := t.TempDir()
 	sitesAvailableDir := filepath.Join(nginxConfigDir, "sites-available")
@@ -742,10 +578,7 @@ func TestCreateMaintenanceConfig_RejectsWildcardSymlinkEscape(t *testing.T) {
 		t.Skipf("symlink creation is not available in this environment: %v", err)
 	}
 
-	settings.NginxSettings.ConfigDir = nginxConfigDir
-	cSettings.ServerSettings.Port = 9000
-	cSettings.ServerSettings.EnableHTTPS = false
-	settings.CertSettings.HTTPChallengePort = "9180"
+	setupMaintenanceTestSettings(t, nginxConfigDir)
 
 	p := parser.NewStringParser(`server {
     listen 443 ssl;
@@ -781,7 +614,7 @@ func TestMaintenanceIncludeExpander_AllowsCertbotOptionsPath(t *testing.T) {
 		t.Fatalf("failed to write certbot options path: %v", err)
 	}
 
-	expander := newMaintenanceIncludeExpander("")
+	expander := newMaintenanceIncludeExpander()
 
 	if !expander.isAllowedSingleInclude(certbotNginxTLSOptionsPath) {
 		t.Fatalf("expected certbot options path %q to be allowed", certbotNginxTLSOptionsPath)
@@ -816,46 +649,32 @@ func TestMaintenanceIncludeExpander_RejectsCertbotOptionsSymlink(t *testing.T) {
 		t.Skipf("symlink creation is not available in this environment: %v", err)
 	}
 
-	expander := newMaintenanceIncludeExpander("")
+	expander := newMaintenanceIncludeExpander()
 	if expander.isAllowedSingleInclude(certbotNginxTLSOptionsPath) {
 		t.Fatalf("expected certbot options symlink to be rejected")
 	}
 }
 
-func TestMaintenanceIncludeExpander_UsesBaseDirUnderConfigDir(t *testing.T) {
-	originalConfigDir := settings.NginxSettings.ConfigDir
-	t.Cleanup(func() {
-		settings.NginxSettings.ConfigDir = originalConfigDir
-	})
-
+func TestResolveMaintenanceBaseDir_UsesBaseDirUnderConfigDir(t *testing.T) {
 	nginxConfigDir := t.TempDir()
 	sitesAvailableDir := filepath.Join(nginxConfigDir, "sites-available")
 	if err := os.MkdirAll(sitesAvailableDir, 0755); err != nil {
 		t.Fatalf("failed to create sites-available dir: %v", err)
 	}
 
-	settings.NginxSettings.ConfigDir = nginxConfigDir
-	expander := newMaintenanceIncludeExpander(sitesAvailableDir)
-
-	if expander.baseDir != filepath.Clean(sitesAvailableDir) {
-		t.Fatalf("baseDir = %q, want %q", expander.baseDir, filepath.Clean(sitesAvailableDir))
+	got := resolveMaintenanceBaseDir(sitesAvailableDir, filepath.Clean(nginxConfigDir))
+	if got != filepath.Clean(sitesAvailableDir) {
+		t.Fatalf("resolveMaintenanceBaseDir = %q, want %q", got, filepath.Clean(sitesAvailableDir))
 	}
 }
 
-func TestMaintenanceIncludeExpander_FallsBackWhenBaseDirEscapesConfigDir(t *testing.T) {
-	originalConfigDir := settings.NginxSettings.ConfigDir
-	t.Cleanup(func() {
-		settings.NginxSettings.ConfigDir = originalConfigDir
-	})
-
+func TestResolveMaintenanceBaseDir_FallsBackWhenBaseDirEscapesConfigDir(t *testing.T) {
 	nginxConfigDir := t.TempDir()
 	outsideDir := t.TempDir()
-	settings.NginxSettings.ConfigDir = nginxConfigDir
 
-	expander := newMaintenanceIncludeExpander(outsideDir)
-
-	if expander.baseDir != filepath.Clean(nginxConfigDir) {
-		t.Fatalf("baseDir = %q, want fallback to confDir %q", expander.baseDir, filepath.Clean(nginxConfigDir))
+	got := resolveMaintenanceBaseDir(outsideDir, filepath.Clean(nginxConfigDir))
+	if got != filepath.Clean(nginxConfigDir) {
+		t.Fatalf("resolveMaintenanceBaseDir = %q, want fallback to confDir %q", got, filepath.Clean(nginxConfigDir))
 	}
 }
 
@@ -877,13 +696,13 @@ func TestMaintenanceIncludeExpander_ResolveIncludePathSkipsExistingRelativeEscap
 	}
 
 	settings.NginxSettings.ConfigDir = nginxConfigDir
-	expander := newMaintenanceIncludeExpander(sitesAvailableDir)
+	expander := newMaintenanceIncludeExpander()
 	includePath, err := filepath.Rel(sitesAvailableDir, outsideFile)
 	if err != nil {
 		t.Fatalf("failed to build relative escape include path: %v", err)
 	}
 
-	resolvedPath := expander.resolveIncludePath(includePath)
+	resolvedPath := expander.resolveIncludePath(includePath, sitesAvailableDir)
 	if filepath.Clean(resolvedPath) == filepath.Clean(outsideFile) {
 		t.Fatalf("resolveIncludePath(%q) = %q, want existing path outside nginx config dir ignored", includePath, resolvedPath)
 	}
@@ -902,9 +721,9 @@ func TestMaintenanceIncludeExpander_ResolveIncludePathFallsBackToConfDirOnEscape
 	}
 
 	settings.NginxSettings.ConfigDir = nginxConfigDir
-	expander := newMaintenanceIncludeExpander(sitesAvailableDir)
+	expander := newMaintenanceIncludeExpander()
 
-	resolvedPath := expander.resolveIncludePath(filepath.Join("..", "..", "escape.conf"))
+	resolvedPath := expander.resolveIncludePath(filepath.Join("..", "..", "escape.conf"), sitesAvailableDir)
 	if resolvedPath != filepath.Clean(nginxConfigDir) {
 		t.Fatalf("resolveIncludePath escape fallback = %q, want confDir %q", resolvedPath, filepath.Clean(nginxConfigDir))
 	}
@@ -919,10 +738,10 @@ func TestMaintenanceIncludeExpander_ResolveWildcardIncludePathRejectsAbsoluteEsc
 	nginxConfigDir := t.TempDir()
 	outsideDir := t.TempDir()
 	settings.NginxSettings.ConfigDir = nginxConfigDir
-	expander := newMaintenanceIncludeExpander("")
+	expander := newMaintenanceIncludeExpander()
 
 	outsidePattern := filepath.Join(outsideDir, "*.conf")
-	resolvedPath := expander.resolveWildcardIncludePath(outsidePattern)
+	resolvedPath := expander.resolveWildcardIncludePath(outsidePattern, nginxConfigDir)
 	if filepath.Clean(resolvedPath) == filepath.Clean(outsidePattern) {
 		t.Fatalf("resolveWildcardIncludePath(%q) = %q, want absolute path outside nginx config dir rejected", outsidePattern, resolvedPath)
 	}
@@ -941,25 +760,13 @@ func TestMaintenanceIncludeExpander_ExtractIncludeFileRejectsDisallowedPath(t *t
 		t.Fatalf("failed to write outside include: %v", err)
 	}
 
-	expander := newMaintenanceIncludeExpander("")
+	expander := newMaintenanceIncludeExpander()
 	if directives := expander.extractIncludeFile(outsideFile, 1); len(directives) != 0 {
 		t.Fatalf("extractIncludeFile(%q) returned %d directives, want disallowed path rejected", outsideFile, len(directives))
 	}
 }
 
 func TestCreateMaintenanceConfig_EnforcesIncludeDepthLimit(t *testing.T) {
-	originalPort := cSettings.ServerSettings.Port
-	originalHTTPS := cSettings.ServerSettings.EnableHTTPS
-	originalChallengePort := settings.CertSettings.HTTPChallengePort
-	originalConfigDir := settings.NginxSettings.ConfigDir
-
-	t.Cleanup(func() {
-		cSettings.ServerSettings.Port = originalPort
-		cSettings.ServerSettings.EnableHTTPS = originalHTTPS
-		settings.CertSettings.HTTPChallengePort = originalChallengePort
-		settings.NginxSettings.ConfigDir = originalConfigDir
-	})
-
 	nginxConfigDir := t.TempDir()
 	sitesAvailableDir := filepath.Join(nginxConfigDir, "sites-available")
 	snippetsDir := filepath.Join(nginxConfigDir, "snippets")
@@ -986,10 +793,7 @@ func TestCreateMaintenanceConfig_EnforcesIncludeDepthLimit(t *testing.T) {
 		}
 	}
 
-	settings.NginxSettings.ConfigDir = nginxConfigDir
-	cSettings.ServerSettings.Port = 9000
-	cSettings.ServerSettings.EnableHTTPS = false
-	settings.CertSettings.HTTPChallengePort = "9180"
+	setupMaintenanceTestSettings(t, nginxConfigDir)
 
 	p := parser.NewStringParser(`server {
     listen 443 ssl;
@@ -1024,18 +828,6 @@ func TestCreateMaintenanceConfig_EnforcesIncludeDepthLimit(t *testing.T) {
 }
 
 func TestCreateMaintenanceConfig_AcceptsAbsoluteIncludeInsideConfigDir(t *testing.T) {
-	originalPort := cSettings.ServerSettings.Port
-	originalHTTPS := cSettings.ServerSettings.EnableHTTPS
-	originalChallengePort := settings.CertSettings.HTTPChallengePort
-	originalConfigDir := settings.NginxSettings.ConfigDir
-
-	t.Cleanup(func() {
-		cSettings.ServerSettings.Port = originalPort
-		cSettings.ServerSettings.EnableHTTPS = originalHTTPS
-		settings.CertSettings.HTTPChallengePort = originalChallengePort
-		settings.NginxSettings.ConfigDir = originalConfigDir
-	})
-
 	nginxConfigDir := t.TempDir()
 	sitesAvailableDir := filepath.Join(nginxConfigDir, "sites-available")
 	snippetsDir := filepath.Join(nginxConfigDir, "snippets")
@@ -1051,10 +843,7 @@ func TestCreateMaintenanceConfig_AcceptsAbsoluteIncludeInsideConfigDir(t *testin
 		t.Fatalf("failed to write absolute include: %v", err)
 	}
 
-	settings.NginxSettings.ConfigDir = nginxConfigDir
-	cSettings.ServerSettings.Port = 9000
-	cSettings.ServerSettings.EnableHTTPS = false
-	settings.CertSettings.HTTPChallengePort = "9180"
+	setupMaintenanceTestSettings(t, nginxConfigDir)
 
 	p := parser.NewStringParser(fmt.Sprintf(`server {
     listen 443 ssl;
@@ -1080,18 +869,6 @@ func TestCreateMaintenanceConfig_AcceptsAbsoluteIncludeInsideConfigDir(t *testin
 }
 
 func TestCreateMaintenanceConfig_IsolatesIncludeExpansionPerServer(t *testing.T) {
-	originalPort := cSettings.ServerSettings.Port
-	originalHTTPS := cSettings.ServerSettings.EnableHTTPS
-	originalChallengePort := settings.CertSettings.HTTPChallengePort
-	originalConfigDir := settings.NginxSettings.ConfigDir
-
-	t.Cleanup(func() {
-		cSettings.ServerSettings.Port = originalPort
-		cSettings.ServerSettings.EnableHTTPS = originalHTTPS
-		settings.CertSettings.HTTPChallengePort = originalChallengePort
-		settings.NginxSettings.ConfigDir = originalConfigDir
-	})
-
 	nginxConfigDir := t.TempDir()
 	sitesAvailableDir := filepath.Join(nginxConfigDir, "sites-available")
 	snippetsDir := filepath.Join(nginxConfigDir, "snippets")
@@ -1105,10 +882,7 @@ func TestCreateMaintenanceConfig_IsolatesIncludeExpansionPerServer(t *testing.T)
 		t.Fatalf("failed to write shared include: %v", err)
 	}
 
-	settings.NginxSettings.ConfigDir = nginxConfigDir
-	cSettings.ServerSettings.Port = 9000
-	cSettings.ServerSettings.EnableHTTPS = false
-	settings.CertSettings.HTTPChallengePort = "9180"
+	setupMaintenanceTestSettings(t, nginxConfigDir)
 
 	p := parser.NewStringParser(`server {
     listen 443 ssl;
