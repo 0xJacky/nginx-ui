@@ -17,6 +17,12 @@ const (
 	AutoCertDisabled          = -1
 	CertChallengeMethodHTTP01 = "http01"
 	CertChallengeMethodDNS01  = "dns01"
+
+	// CertStatus values track the most recent issuance attempt outcome.
+	// Empty string represents pre-migration / imported certificates.
+	CertStatusPending = "pending"
+	CertStatusSuccess = "success"
+	CertStatusFailure = "failure"
 )
 
 type CertDomains []string
@@ -52,6 +58,9 @@ type Cert struct {
 	RevokeOld               bool                 `json:"revoke_old"`
 	LastAutoRenewAt         *time.Time           `json:"-"`
 	LastAutoRenewError      string               `json:"-"`
+	Status                  string               `json:"status"`
+	LastError               string               `json:"last_error"`
+	LastAttemptAt           *time.Time           `json:"last_attempt_at"`
 }
 
 func FirstCert(confName string) (c Cert, err error) {
