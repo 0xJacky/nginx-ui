@@ -3,7 +3,13 @@ import type { AcmeUser } from '@/api/acme_user'
 import type { ModelBase } from '@/api/curd'
 import type { DnsCredential } from '@/api/dns_credential'
 import type { PrivateKeyType } from '@/constants'
-import { useCurdApi } from '@uozi-admin/request'
+import { extendCurdApi, http, useCurdApi } from '@uozi-admin/request'
+import { PrivateKeyTypeEnum } from '@/constants'
+
+export interface SelfSignedCertConfig {
+  ip_addresses: string[]
+  validity_days: number
+}
 
 export interface Cert extends ModelBase {
   name: string
@@ -24,6 +30,7 @@ export interface Cert extends ModelBase {
   certificate_info: CertificateInfo
   sync_node_ids: number[]
   revoke_old: boolean
+  self_signed_config?: SelfSignedCertConfig
 }
 
 export interface CertificateInfo {
@@ -39,6 +46,34 @@ export interface CertificateResult {
   key_type: PrivateKeyType
 }
 
-const cert = useCurdApi<Cert>('/certs')
+export interface SelfSignedCertPayload {
+  name?: string
+  domains: string[]
+  ip_addresses: string[]
+  key_type: string
+  validity_days: number
+  sync_node_ids?: number[]
+}
+
+// toSelfSignedPayload maps a persisted Cert to an editable self-signed payload.
+export function toSelfSignedPayload(c: Cert): SelfSignedCertPayload {
+  return {
+    name: c.name ?? '',
+    domains: [...(c.domains ?? [])],
+    ip_addresses: [...(c.self_signed_config?.ip_addresses ?? [])],
+    key_type: c.key_type || PrivateKeyTypeEnum.P256,
+    validity_days: c.self_signed_config?.validity_days || 365,
+    sync_node_ids: [...(c.sync_node_ids ?? [])],
+  }
+}
+
+const cert = extendCurdApi(useCurdApi<Cert>('/certs'), {
+  generate_self_signed(payload: SelfSignedCertPayload): Promise<Cert> {
+    return http.post('/self_signed_cert', payload)
+  },
+  modify_self_signed(id: number, payload: SelfSignedCertPayload): Promise<Cert> {
+    return http.post(`/self_signed_cert/${id}`, payload)
+  },
+})
 
 export default cert
