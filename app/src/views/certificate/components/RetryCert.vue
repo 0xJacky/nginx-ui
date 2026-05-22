@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import type { AutoCertOptions } from '@/api/auto_cert'
 import type { Cert } from '@/api/cert'
-import ObtainCertLive from '@/views/site/site_edit/components/Cert/ObtainCertLive.vue'
+import IssueCertModal from './IssueCertModal.vue'
 
 const props = defineProps<{
   cert: Cert
@@ -11,24 +12,28 @@ const emit = defineEmits<{
 }>()
 
 const { message } = App.useApp()
+const refModal = useTemplateRef('refModal')
 
-const modalVisible = ref(false)
-const modalClosable = ref(true)
-const refObtainCertLive = useTemplateRef('refObtainCertLive')
+const issueOptions = computed<AutoCertOptions>(() => ({
+  name: props.cert.name,
+  domains: props.cert.domains,
+  key_type: props.cert.key_type,
+  challenge_method: props.cert.challenge_method,
+  dns_credential_id: props.cert.dns_credential_id,
+  acme_user_id: props.cert.acme_user_id,
+  revoke_old: props.cert.revoke_old,
+}))
 
 function openAndRetry() {
-  modalVisible.value = true
-  nextTick(() => {
-    refObtainCertLive.value
-      ?.issue_cert(props.cert.name, props.cert.domains, props.cert.key_type)
-      .then(() => {
-        message.success($gettext('Certificate issued successfully'))
-        emit('retried')
-      })
-      .catch(() => {
-        // Error already surfaced inside ObtainCertLive's log.
-      })
-  })
+  refModal.value
+    ?.start()
+    .then(() => {
+      message.success($gettext('Certificate issued successfully'))
+      emit('retried')
+    })
+    .catch(() => {
+      // Error already surfaced inside ObtainCertLive's log.
+    })
 }
 </script>
 
@@ -40,28 +45,9 @@ function openAndRetry() {
   >
     {{ $gettext('Retry') }}
   </AButton>
-  <AModal
-    v-model:open="modalVisible"
+  <IssueCertModal
+    ref="refModal"
     :title="$gettext('Retry Certificate Issuance')"
-    :mask-closable="modalClosable"
-    :closable="modalClosable"
-    :footer="null"
-    :width="600"
-    force-render
-  >
-    <ObtainCertLive
-      ref="refObtainCertLive"
-      v-model:modal-visible="modalVisible"
-      v-model:modal-closable="modalClosable"
-      :options="{
-        name: cert.name,
-        domains: cert.domains,
-        key_type: cert.key_type,
-        challenge_method: cert.challenge_method,
-        dns_credential_id: cert.dns_credential_id,
-        acme_user_id: cert.acme_user_id,
-        revoke_old: cert.revoke_old,
-      }"
-    />
-  </AModal>
+    :options="issueOptions"
+  />
 </template>

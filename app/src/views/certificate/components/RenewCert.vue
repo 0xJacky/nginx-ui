@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { AutoCertOptions } from '@/api/auto_cert'
 import { useGlobalStore } from '@/pinia'
-import ObtainCertLive from '@/views/site/site_edit/components/Cert/ObtainCertLive.vue'
 import { useCertStore } from '../store'
+import IssueCertModal from './IssueCertModal.vue'
 
-const props = defineProps<{
+defineProps<{
   options: AutoCertOptions
 }>()
 
@@ -13,23 +13,14 @@ const emit = defineEmits<{
 }>()
 
 const { message } = App.useApp()
-
 const certStore = useCertStore()
-
-const modalVisible = ref(false)
-const modalClosable = ref(true)
-const refObtainCertLive = useTemplateRef('refObtainCertLive')
+const refModal = useTemplateRef('refModal')
 
 async function issueCert() {
   await certStore.save()
-
   message.success($gettext('Save successfully'))
 
-  modalVisible.value = true
-
-  const { name, domains, key_type } = props.options
-
-  refObtainCertLive.value?.issue_cert(name!, domains, key_type).then(() => {
+  refModal.value?.start().then(() => {
     message.success($gettext('Renew successfully'))
     emit('renewed')
   })
@@ -53,28 +44,10 @@ const { processingStatus } = storeToRefs(globalStore)
     <span v-if="processingStatus.auto_cert_processing" class="ml-4">
       {{ $gettext('AutoCert is running, please wait...') }}
     </span>
-    <AModal
-      v-model:open="modalVisible"
+    <IssueCertModal
+      ref="refModal"
       :title="$gettext('Renew Certificate')"
-      :mask-closable="modalClosable"
-      :footer="null"
-      :closable="modalClosable"
-      :width="600"
-      force-render
-    >
-      <ObtainCertLive
-        ref="refObtainCertLive"
-        v-model:modal-closable="modalClosable"
-        v-model:modal-visible="modalVisible"
-        :options
-      />
-    </AModal>
+      :options
+    />
   </div>
 </template>
-
-<style lang="less" scoped>
-.control-btn {
-  display: flex;
-  justify-content: flex-end;
-}
-</style>
