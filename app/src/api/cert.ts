@@ -5,6 +5,14 @@ import type { DnsCredential } from '@/api/dns_credential'
 import type { PrivateKeyType } from '@/constants'
 import { useCurdApi } from '@uozi-admin/request'
 
+export const CertStatus = {
+  Pending: 'pending',
+  Success: 'success',
+  Failure: 'failure',
+} as const
+
+export type CertStatusType = '' | typeof CertStatus[keyof typeof CertStatus]
+
 export interface Cert extends ModelBase {
   name: string
   domains: string[]
@@ -24,6 +32,9 @@ export interface Cert extends ModelBase {
   certificate_info: CertificateInfo
   sync_node_ids: number[]
   revoke_old: boolean
+  status: CertStatusType
+  last_error: string
+  last_attempt_at: string
 }
 
 export interface CertificateInfo {
