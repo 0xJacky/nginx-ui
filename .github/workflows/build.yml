@@ -542,7 +542,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build, build_macos_native]
     env:
-      PLATFORMS: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6,linux/arm/v5
+      PLATFORMS: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6,linux/arm/v5,linux/riscv64
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -568,6 +568,11 @@ jobs:
 
       - name: Prepare Artifacts
         run: chmod +x ./dist/nginx-ui-*/nginx-ui*
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: arm,arm64,riscv64
 
       - name: Set up Docker Buildx
         id: buildx

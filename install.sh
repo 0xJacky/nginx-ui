@@ -209,6 +209,9 @@ identify_the_operating_system_and_architecture() {
         'armv8' | 'aarch64')
             MACHINE='arm64-v8a'
             ;;
+        'riscv64')
+            MACHINE='riscv64'
+            ;;
         *)
             echo -e "${FontRed}error: The architecture is not supported by this script.${FontSuffix}"
             exit 1

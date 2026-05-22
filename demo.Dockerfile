@@ -21,6 +21,7 @@ RUN case "${TARGETARCH}/${TARGETVARIANT}" in \
         "arm/v7"*) S6_ARCH="arm" ;; \
         "arm/v6"*) S6_ARCH="arm" ;; \
         "arm/v5"*) S6_ARCH="arm" ;; \
+        "riscv64/"*) S6_ARCH="riscv64" ;; \
         *) echo "Unsupported arch: ${TARGETARCH}/${TARGETVARIANT}" && exit 1 ;; \
     esac && \
     wget -O /tmp/s6-overlay-noarch.tar.xz https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz && \
