@@ -82,15 +82,6 @@ func FirstOrCreateCert(confName string, keyType certcrypto.KeyType) (c Cert, err
 	return
 }
 
-func FirstOrInit(confName string, keyType certcrypto.KeyType) (c Cert, err error) {
-	normalizedKeyType := helper.GetKeyType(keyType)
-	err = db.Where("name = ? AND filename = ? AND key_type IN ?", confName, confName,
-		helper.GetKeyTypeAliasStrings(normalizedKeyType)).
-		FirstOrInit(&c, &Cert{Name: confName, Filename: confName, KeyType: normalizedKeyType}).Error
-	c.KeyType = normalizedKeyType
-	return
-}
-
 func (c *Cert) Insert() error {
 	return db.Create(c).Error
 }

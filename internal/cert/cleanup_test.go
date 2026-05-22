@@ -10,11 +10,13 @@ import (
 	"gorm.io/gorm"
 )
 
-// setupTestDB creates an in-memory SQLite DB with the Cert schema migrated,
-// wires it into the model package, and returns the *gorm.DB for fixtures.
+// setupTestDB creates a per-test private in-memory SQLite DB with the Cert
+// schema migrated, wires it into the model package, and returns the *gorm.DB
+// for fixtures. Using ":memory:" (no shared cache) gives each gorm.Open call
+// a fresh isolated database, preventing cross-test pollution.
 func setupTestDB(t *testing.T) *gorm.DB {
 	t.Helper()
-	db, err := gorm.Open(sqlite.Open("file::memory:?cache=shared"), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{})
 	require.NoError(t, err)
 	require.NoError(t, db.AutoMigrate(&model.Cert{}))
 	model.Use(db)

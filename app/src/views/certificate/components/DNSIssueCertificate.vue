@@ -28,6 +28,7 @@ function open() {
   domain.value = ''
   certType.value = 'wildcard'
   customDomains.value = ['']
+  errored.value = false
 }
 
 defineExpose({
