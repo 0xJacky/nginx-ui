@@ -80,3 +80,51 @@ func TestCheckBundledNginxUIConf_NotInDocker(t *testing.T) {
 	bundledNginxUIConfPath = "/nonexistent/path"
 	assert.NoError(t, CheckBundledNginxUIConf())
 }
+
+func TestApplyBundledConfPatch_Idempotent(t *testing.T) {
+	fixed, err := os.ReadFile(filepath.Join("test_cases", "bundled", "fixed-default.conf"))
+	require.NoError(t, err)
+	assert.Equal(t, fixed, applyBundledConfPatch(fixed),
+		"already-fixed input must be byte-equal output")
+}
+
+func TestApplyBundledConfPatch_UpgradesUnfixed(t *testing.T) {
+	in, err := os.ReadFile(filepath.Join("test_cases", "bundled", "unfixed-default.conf"))
+	require.NoError(t, err)
+	out := applyBundledConfPatch(in)
+
+	assert.True(t, reMapForwardedProto.Match(out), "must inject forwarded_proto map")
+	assert.True(t, reMapForwardedHost.Match(out), "must inject forwarded_host map")
+	assert.True(t, reHeaderForwardedProto.Match(out), "must rewrite X-Forwarded-Proto to $forwarded_proto")
+	assert.True(t, reHeaderForwardedHost.Match(out), "must rewrite X-Forwarded-Host to $forwarded_host")
+}
+
+func TestApplyBundledConfPatch_PreservesCustomization(t *testing.T) {
+	in, err := os.ReadFile(filepath.Join("test_cases", "bundled", "customized-unfixed.conf"))
+	require.NoError(t, err)
+	out := applyBundledConfPatch(in)
+
+	assert.Contains(t, string(out), "client_max_body_size 256M",
+		"user customization must survive")
+	assert.Contains(t, string(out), "server_name  nginx-ui.example.com",
+		"user customization must survive")
+	assert.True(t, reHeaderForwardedProto.Match(out))
+	assert.True(t, reHeaderForwardedHost.Match(out))
+}
+
+func TestApplyBundledConfPatch_HalfFixedFillsOnlyMissing(t *testing.T) {
+	in, err := os.ReadFile(filepath.Join("test_cases", "bundled", "maps-only-half.conf"))
+	require.NoError(t, err)
+	out := applyBundledConfPatch(in)
+
+	// Both maps now present; should not duplicate the existing one.
+	assert.Equal(t, 1, len(reMapForwardedProto.FindAll(out, -1)),
+		"forwarded_proto map must appear exactly once")
+	assert.Equal(t, 1, len(reMapForwardedHost.FindAll(out, -1)))
+}
+
+func TestInjectBeforeFirstServer_FallbackToPrepend(t *testing.T) {
+	in := []byte("# only comments, no server block\n")
+	out := injectBeforeFirstServer(in, "INJECTED\n")
+	assert.Equal(t, "INJECTED\n# only comments, no server block\n", string(out))
+}
