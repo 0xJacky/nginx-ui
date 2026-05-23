@@ -620,6 +620,38 @@ func TestUpdateDDNSConfigSingleStackPreservesOwnFamilyWhenIPUnavailable(t *testi
 	require.Empty(t, getMockDeletedRecordIDs(), "single-stack must not delete own family on IP failure")
 }
 
+func TestUpdateDDNSConfigBailsWhenNoIPsDetected(t *testing.T) {
+	registerMockProvider()
+	setMockRecords([]dnsSvc.Record{
+		{ID: "a-record", Type: "A", Name: "home", Content: "198.51.100.10", TTL: 600},
+	})
+
+	// Both endpoints unreachable.
+	restore := dnsSvc.OverrideIPEndpointsForTest([]string{"http://127.0.0.1:1"}, []string{"http://127.0.0.1:1"})
+	defer restore()
+
+	q := setupTestQuery(t)
+	ctx := context.Background()
+	service := dnsSvc.NewService()
+
+	cred := createCredential(t, q)
+	domain, err := service.CreateDomain(ctx, dnsSvc.DomainInput{
+		Domain:          "example.com",
+		DnsCredentialID: cred.ID,
+	})
+	require.NoError(t, err)
+
+	_, err = service.UpdateDDNSConfig(ctx, domain.ID, dnsSvc.DDNSUpdateInput{
+		Enabled:                   true,
+		IntervalSeconds:           dnsSvc.DefaultDDNSInterval(),
+		IPVersion:                 "ipv4_ipv6",
+		CleanupConflictingRecords: true,
+		RecordIDs:                 []string{"a-record"},
+	})
+	require.ErrorIs(t, err, dnsSvc.ErrDDNSIPUnavailable)
+	require.Empty(t, getMockDeletedRecordIDs(), "no deletion should occur when no IPs detected")
+}
+
 func TestRunDDNSUpdateTracksFamilyFailureTimestamps(t *testing.T) {
 	registerMockProvider()
 	setMockRecords([]dnsSvc.Record{

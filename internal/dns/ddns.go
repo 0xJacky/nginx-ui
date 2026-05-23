@@ -230,6 +230,15 @@ func (s *Service) UpdateDDNSConfigWithDetails(ctx context.Context, domainID uint
 				snap, _ := resolvePublicIPs(ctx, version)
 				ipSnapshot = &snap
 			}
+			// If neither family is detected, refuse to run §6.3 — running it would
+			// delete every managed record, leaving the config with empty targets
+			// and the domain at NXDOMAIN. Better to surface the failure now and
+			// roll back any §6.1 unknown-name creates so we do not leak provider
+			// state.
+			if ipSnapshot.IPv4 == "" && ipSnapshot.IPv6 == "" {
+				rollbackCreatedDDNSRecords(ctx, provider, domain.Domain, createdRecords)
+				return nil, ErrDDNSIPUnavailable
+			}
 			policy := getDDNSIPVersionPolicy(version)
 			recordsByNameType := indexRecordsByNameAndType(records)
 			managedNames := collectUniqueLowercaseNames(targets)
