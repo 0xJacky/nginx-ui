@@ -96,10 +96,11 @@ func (s *Service) GetDDNSConfig(ctx context.Context, domainID uint64) (*model.DD
 
 	if domain.DDNSConfig == nil {
 		return &model.DDNSConfig{
-			Enabled:         false,
-			IntervalSeconds: defaultDDNSIntervalSeconds,
-			IPVersion:       DDNSIPVersionIPv4IPv6,
-			Targets:         []model.DDNSRecordTarget{},
+			Enabled:                   false,
+			IntervalSeconds:           defaultDDNSIntervalSeconds,
+			IPVersion:                 DDNSIPVersionIPv4IPv6,
+			CleanupConflictingRecords: true,
+			Targets:                   []model.DDNSRecordTarget{},
 		}, nil
 	}
 
@@ -288,7 +289,7 @@ func (s *Service) UpdateDDNSConfigWithDetails(ctx context.Context, domainID uint
 						cancel()
 						if err != nil {
 							rollbackCreatedDDNSRecords(ctx, provider, domain.Domain, createdRecords)
-							return nil, cosy.WrapErrorWithParams(ErrDDNSRecordNotFound, name)
+							return nil, cosy.WrapErrorWithParams(ErrDDNSRecordDeleteFailed, name, err.Error())
 						}
 						targets = removeTargetByID(targets, existing.ID)
 						deletedRecords = append(deletedRecords, model.DDNSRecordTarget{
@@ -303,10 +304,11 @@ func (s *Service) UpdateDDNSConfigWithDetails(ctx context.Context, domainID uint
 	}
 
 	cfg := &model.DDNSConfig{
-		Enabled:         input.Enabled,
-		IntervalSeconds: interval,
-		IPVersion:       version,
-		Targets:         targets,
+		Enabled:                   input.Enabled,
+		IntervalSeconds:           interval,
+		IPVersion:                 version,
+		CleanupConflictingRecords: input.CleanupConflictingRecords,
+		Targets:                   targets,
 	}
 
 	if existing != nil {
@@ -314,6 +316,8 @@ func (s *Service) UpdateDDNSConfigWithDetails(ctx context.Context, domainID uint
 		cfg.LastIPv6 = existing.LastIPv6
 		cfg.LastRunAt = existing.LastRunAt
 		cfg.LastError = existing.LastError
+		cfg.IPv4FailedSince = existing.IPv4FailedSince
+		cfg.IPv6FailedSince = existing.IPv6FailedSince
 	}
 
 	if err := saveDDNSConfig(ctx, domainID, cfg); err != nil {

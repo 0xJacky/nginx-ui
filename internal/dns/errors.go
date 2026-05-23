@@ -18,4 +18,5 @@ var (
 	ErrInvalidDDNSIPVersion        = cosy.NewError(40013, "DDNS IP version must be ipv4, ipv6, ipv4_ipv6, or ipv6_ipv4")
 	ErrDDNSIPVersionRecordMismatch = cosy.NewError(40014, "DDNS record type does not match the selected IP version")
 	ErrDDNSIPUnavailable           = cosy.NewError(50005, "DDNS cannot detect a public IP to create records")
+	ErrDDNSRecordDeleteFailed      = cosy.NewError(50006, "Failed to delete DNS record")
 )

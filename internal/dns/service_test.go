@@ -15,6 +15,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/stretchr/testify/require"
+	"github.com/uozi-tech/cosy"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -1179,4 +1180,137 @@ func TestUpdateDDNSConfigUnknownNameSingleStack(t *testing.T) {
 	created := getMockCreatedRecords()
 	require.Len(t, created, 1)
 	require.Equal(t, "A", created[0].Type)
+}
+
+func TestUpdateDDNSConfigPersistsCleanupFlag(t *testing.T) {
+	registerMockProvider()
+	setMockRecords([]dnsSvc.Record{
+		{ID: "a-record", Type: "A", Name: "home", Content: "198.51.100.10", TTL: 600},
+	})
+
+	q := setupTestQuery(t)
+	ctx := context.Background()
+	service := dnsSvc.NewService()
+
+	cred := createCredential(t, q)
+	domain, err := service.CreateDomain(ctx, dnsSvc.DomainInput{
+		Domain:          "example.com",
+		DnsCredentialID: cred.ID,
+	})
+	require.NoError(t, err)
+
+	_, err = service.UpdateDDNSConfig(ctx, domain.ID, dnsSvc.DDNSUpdateInput{
+		Enabled:                   true,
+		IntervalSeconds:           dnsSvc.DefaultDDNSInterval(),
+		IPVersion:                 "ipv4",
+		CleanupConflictingRecords: true,
+		RecordIDs:                 []string{"a-record"},
+	})
+	require.NoError(t, err)
+
+	var loaded model.DnsDomain
+	require.NoError(t, model.UseDB().WithContext(ctx).First(&loaded, domain.ID).Error)
+	require.NotNil(t, loaded.DDNSConfig)
+	require.True(t, loaded.DDNSConfig.CleanupConflictingRecords, "flag must round-trip through DB")
+
+	// Round-trip the false case too.
+	_, err = service.UpdateDDNSConfig(ctx, domain.ID, dnsSvc.DDNSUpdateInput{
+		Enabled:                   true,
+		IntervalSeconds:           dnsSvc.DefaultDDNSInterval(),
+		IPVersion:                 "ipv4",
+		CleanupConflictingRecords: false,
+		RecordIDs:                 []string{"a-record"},
+	})
+	require.NoError(t, err)
+
+	require.NoError(t, model.UseDB().WithContext(ctx).First(&loaded, domain.ID).Error)
+	require.False(t, loaded.DDNSConfig.CleanupConflictingRecords, "explicit false must persist")
+}
+
+func TestUpdateDDNSConfigPreservesFailedSinceTimestamps(t *testing.T) {
+	registerMockProvider()
+	setMockRecords([]dnsSvc.Record{
+		{ID: "a-record", Type: "A", Name: "home", Content: "198.51.100.10", TTL: 600},
+	})
+
+	q := setupTestQuery(t)
+	ctx := context.Background()
+	service := dnsSvc.NewService()
+
+	cred := createCredential(t, q)
+	domain, err := service.CreateDomain(ctx, dnsSvc.DomainInput{
+		Domain:          "example.com",
+		DnsCredentialID: cred.ID,
+	})
+	require.NoError(t, err)
+
+	past := time.Now().Add(-30 * time.Minute)
+	domain.DDNSConfig = &model.DDNSConfig{
+		Enabled:                   true,
+		IntervalSeconds:           dnsSvc.DefaultDDNSInterval(),
+		IPVersion:                 "ipv4_ipv6",
+		CleanupConflictingRecords: true,
+		IPv6FailedSince:           &past,
+		Targets:                   []model.DDNSRecordTarget{{ID: "a-record", Name: "home", Type: "A"}},
+	}
+	require.NoError(t, model.UseDB().WithContext(ctx).Save(domain).Error)
+
+	// Re-save without changing anything material; the failure timestamp must survive.
+	_, err = service.UpdateDDNSConfig(ctx, domain.ID, dnsSvc.DDNSUpdateInput{
+		Enabled:                   true,
+		IntervalSeconds:           dnsSvc.DefaultDDNSInterval(),
+		IPVersion:                 "ipv4_ipv6",
+		CleanupConflictingRecords: false, // explicitly disable cleanup so §6.3 doesn't run
+		RecordIDs:                 []string{"a-record"},
+	})
+	require.NoError(t, err)
+
+	var loaded model.DnsDomain
+	require.NoError(t, model.UseDB().WithContext(ctx).First(&loaded, domain.ID).Error)
+	require.NotNil(t, loaded.DDNSConfig.IPv6FailedSince, "failure timestamp must be preserved across save")
+	require.WithinDuration(t, past, *loaded.DDNSConfig.IPv6FailedSince, time.Second)
+}
+
+func TestUpdateDDNSConfigDeleteFailureReturnsSpecificError(t *testing.T) {
+	registerMockProvider()
+	setMockRecords([]dnsSvc.Record{
+		{ID: "a-record", Type: "A", Name: "home", Content: "198.51.100.10", TTL: 600},
+		{ID: "aaaa-record", Type: "AAAA", Name: "home", Content: "2001:db8::1", TTL: 600},
+	})
+	setMockDeleteFailure("aaaa-record", errors.New("rate limit"))
+
+	ipv4Server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_, _ = w.Write([]byte("198.51.100.12"))
+	}))
+	defer ipv4Server.Close()
+	restore := dnsSvc.OverrideIPEndpointsForTest([]string{ipv4Server.URL}, []string{"http://127.0.0.1:1"})
+	defer restore()
+
+	q := setupTestQuery(t)
+	ctx := context.Background()
+	service := dnsSvc.NewService()
+
+	cred := createCredential(t, q)
+	domain, err := service.CreateDomain(ctx, dnsSvc.DomainInput{
+		Domain:          "example.com",
+		DnsCredentialID: cred.ID,
+	})
+	require.NoError(t, err)
+
+	_, err = service.UpdateDDNSConfig(ctx, domain.ID, dnsSvc.DDNSUpdateInput{
+		Enabled:                   true,
+		IntervalSeconds:           dnsSvc.DefaultDDNSInterval(),
+		IPVersion:                 "ipv4_ipv6",
+		CleanupConflictingRecords: true,
+		RecordIDs:                 []string{"a-record"},
+	})
+	require.Error(t, err)
+	// cosy.WrapErrorWithParams returns a new *cosy.Error instance (no Unwrap),
+	// so compare by code rather than errors.Is against the sentinel.
+	var cErr *cosy.Error
+	require.True(t, errors.As(err, &cErr), "expected a *cosy.Error")
+	var expected *cosy.Error
+	require.True(t, errors.As(dnsSvc.ErrDDNSRecordDeleteFailed, &expected))
+	require.Equal(t, expected.Code, cErr.Code, "delete failure should surface a specific error code, not ErrDDNSRecordNotFound")
+	require.Contains(t, cErr.Params, "rate limit", "underlying provider error should be surfaced via params")
 }
