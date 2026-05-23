@@ -139,18 +139,31 @@ func Init() {
 	}
 
 	if helper.InNginxUIOfficialDocker() {
-		selfCheckTasks = append(selfCheckTasks, &Task{
-			Name: translation.C("Docker socket exists"),
-			Description: translation.C("Check if /var/run/docker.sock exists. " +
-				"If you are using Nginx UI Official " +
-				"Docker Image, please make sure the docker socket is mounted like this: `-" +
-				"v /var/run/docker.sock:/var/run/docker.sock`. " +
-				"Nginx UI official image uses /var/run/docker.sock to communicate with the host Docker Engine via Docker Client API. " +
-				"This feature is used to control Nginx in another container and perform container replacement rather than binary replacement " +
-				"during OTA upgrades of Nginx UI to ensure container dependencies are also upgraded. " +
-				"If you don't need this feature, please add the environment variable NGINX_UI_IGNORE_DOCKER_SOCKET=true to the container."),
-			CheckFunc: CheckDockerSocket,
-		})
+		selfCheckTasks = append(selfCheckTasks,
+			&Task{
+				Name: translation.C("Docker socket exists"),
+				Description: translation.C("Check if /var/run/docker.sock exists. " +
+					"If you are using Nginx UI Official " +
+					"Docker Image, please make sure the docker socket is mounted like this: `-" +
+					"v /var/run/docker.sock:/var/run/docker.sock`. " +
+					"Nginx UI official image uses /var/run/docker.sock to communicate with the host Docker Engine via Docker Client API. " +
+					"This feature is used to control Nginx in another container and perform container replacement rather than binary replacement " +
+					"during OTA upgrades of Nginx UI to ensure container dependencies are also upgraded. " +
+					"If you don't need this feature, please add the environment variable NGINX_UI_IGNORE_DOCKER_SOCKET=true to the container."),
+				CheckFunc: CheckDockerSocket,
+			},
+			&Task{
+				Key:  "Docker-BundledNginxUIConf-WS",
+				Name: translation.C("Bundled nginx-ui.conf has WebSocket reverse-proxy fix"),
+				Description: translation.C(
+					"When the container is behind an outer reverse proxy that terminates TLS " +
+						"(e.g. host nginx, Cloudflare), the bundled conf.d/nginx-ui.conf must trust " +
+						"the inbound X-Forwarded-Proto/Host headers; otherwise WebSocket origin checks fail. " +
+						"Older deployments that persisted /etc/nginx may still have the unfixed version."),
+				CheckFunc: CheckBundledNginxUIConf,
+				FixFunc:   FixBundledNginxUIConf,
+			},
+		)
 	}
 
 	if settings.NginxLogSettings.IndexingEnabled {
