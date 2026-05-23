@@ -29,6 +29,11 @@ const (
 	DDNSIPVersionIPv6IPv4 = "ipv6_ipv4"
 )
 
+// ddnsFamilyFailureGrace is the duration a public-IP family must be continuously
+// undetected before runtime eviction removes records of that family. Exposed as
+// a var (not const) so tests can override via SetDDNSFamilyFailureGraceForTest.
+var ddnsFamilyFailureGrace = 1 * time.Hour
+
 var (
 	ipv4Endpoints = []string{
 		"https://api.ipify.org",
@@ -391,6 +396,37 @@ func (s *Service) runDDNSUpdate(ctx context.Context, domainID uint64) error {
 	recordMap := indexRecordsByID(records)
 
 	updateErrs := append([]string(nil), ipSnapshot.Warnings...)
+
+	evictA := false
+	evictAAAA := false
+	if isDualStackMode(version) && cfg.CleanupConflictingRecords {
+		if cfg.IPv4FailedSince != nil && now.Sub(*cfg.IPv4FailedSince) >= ddnsFamilyFailureGrace {
+			evictA = true
+		}
+		if cfg.IPv6FailedSince != nil && now.Sub(*cfg.IPv6FailedSince) >= ddnsFamilyFailureGrace {
+			evictAAAA = true
+		}
+	}
+
+	if evictA || evictAAAA {
+		kept := make([]model.DDNSRecordTarget, 0, len(cfg.Targets))
+		for _, target := range cfg.Targets {
+			typ := strings.ToUpper(target.Type)
+			if (typ == "A" && evictA) || (typ == "AAAA" && evictAAAA) {
+				ctxTimeout, cancel := context.WithTimeout(ctx, providerTimeout)
+				err := provider.DeleteRecord(ctxTimeout, domain.Domain, target.ID)
+				cancel()
+				if err != nil {
+					updateErrs = append(updateErrs, fmt.Sprintf("delete %s: %v", target.ID, err))
+					kept = append(kept, target)
+					continue
+				}
+				continue
+			}
+			kept = append(kept, target)
+		}
+		cfg.Targets = kept
+	}
 
 	for _, target := range cfg.Targets {
 		record, ok := recordMap[target.ID]

@@ -706,3 +706,90 @@ func TestRunDDNSUpdateClearsFailedSinceOnRecovery(t *testing.T) {
 	require.NoError(t, model.UseDB().WithContext(ctx).First(&loaded, domain.ID).Error)
 	require.Nil(t, loaded.DDNSConfig.IPv4FailedSince, "ipv4 success should clear the timestamp")
 }
+
+func TestRunDDNSUpdateEvictsTargetsAfterGrace(t *testing.T) {
+	registerMockProvider()
+	setMockRecords([]dnsSvc.Record{
+		{ID: "a-record", Type: "A", Name: "home", Content: "198.51.100.10", TTL: 600},
+		{ID: "aaaa-record", Type: "AAAA", Name: "home", Content: "2001:db8::1", TTL: 600},
+	})
+
+	ipv4Server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_, _ = w.Write([]byte("198.51.100.12"))
+	}))
+	defer ipv4Server.Close()
+	restore := dnsSvc.OverrideIPEndpointsForTest([]string{ipv4Server.URL}, []string{"http://127.0.0.1:1"})
+	defer restore()
+
+	restoreGrace := dnsSvc.SetDDNSFamilyFailureGraceForTest(time.Millisecond)
+	defer restoreGrace()
+
+	q := setupTestQuery(t)
+	ctx := context.Background()
+	service := dnsSvc.NewService()
+
+	cred := createCredential(t, q)
+	domain, err := service.CreateDomain(ctx, dnsSvc.DomainInput{
+		Domain:          "example.com",
+		DnsCredentialID: cred.ID,
+	})
+	require.NoError(t, err)
+
+	past := time.Now().Add(-time.Second)
+	domain.DDNSConfig = &model.DDNSConfig{
+		Enabled:                   true,
+		IntervalSeconds:           dnsSvc.DefaultDDNSInterval(),
+		IPVersion:                 "ipv4_ipv6",
+		CleanupConflictingRecords: true,
+		IPv6FailedSince:           &past,
+		Targets: []model.DDNSRecordTarget{
+			{ID: "a-record", Name: "home", Type: "A"},
+			{ID: "aaaa-record", Name: "home", Type: "AAAA"},
+		},
+	}
+	require.NoError(t, model.UseDB().WithContext(ctx).Save(domain).Error)
+
+	require.NoError(t, dnsSvc.RunDDNSUpdate(ctx, domain.ID))
+
+	require.Equal(t, []string{"aaaa-record"}, getMockDeletedRecordIDs())
+
+	var loaded model.DnsDomain
+	require.NoError(t, model.UseDB().WithContext(ctx).First(&loaded, domain.ID).Error)
+	require.Len(t, loaded.DDNSConfig.Targets, 1)
+	require.Equal(t, "a-record", loaded.DDNSConfig.Targets[0].ID)
+}
+
+func TestRunDDNSUpdateDoesNotEvictBeforeGrace(t *testing.T) {
+	registerMockProvider()
+	setMockRecords([]dnsSvc.Record{
+		{ID: "aaaa-record", Type: "AAAA", Name: "home", Content: "2001:db8::1", TTL: 600},
+	})
+
+	restore := dnsSvc.OverrideIPEndpointsForTest([]string{"http://127.0.0.1:1"}, []string{"http://127.0.0.1:1"})
+	defer restore()
+
+	q := setupTestQuery(t)
+	ctx := context.Background()
+	service := dnsSvc.NewService()
+
+	cred := createCredential(t, q)
+	domain, err := service.CreateDomain(ctx, dnsSvc.DomainInput{
+		Domain:          "example.com",
+		DnsCredentialID: cred.ID,
+	})
+	require.NoError(t, err)
+
+	recent := time.Now().Add(-time.Second)
+	domain.DDNSConfig = &model.DDNSConfig{
+		Enabled:                   true,
+		IntervalSeconds:           dnsSvc.DefaultDDNSInterval(),
+		IPVersion:                 "ipv4_ipv6",
+		CleanupConflictingRecords: true,
+		IPv6FailedSince:           &recent,
+		Targets:                   []model.DDNSRecordTarget{{ID: "aaaa-record", Name: "home", Type: "AAAA"}},
+	}
+	require.NoError(t, model.UseDB().WithContext(ctx).Save(domain).Error)
+
+	require.NoError(t, dnsSvc.RunDDNSUpdate(ctx, domain.ID))
+	require.Empty(t, getMockDeletedRecordIDs())
+}
