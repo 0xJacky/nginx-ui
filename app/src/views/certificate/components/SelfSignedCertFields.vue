@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import type { SelfSignedCertPayload } from '@/api/cert'
 import NodeSelector from '@/components/NodeSelector'
+import StringListInput from '@/components/StringListInput'
 import { PrivateKeyTypeList } from '@/constants'
 
 const props = defineProps<{
   isKeyTypeReadonly?: boolean
+  hideRenewalNote?: boolean
 }>()
 
 const data = defineModel<SelfSignedCertPayload>({ required: true })
@@ -12,28 +14,34 @@ const data = defineModel<SelfSignedCertPayload>({ required: true })
 
 <template>
   <AForm layout="vertical">
-    <AFormItem :label="$gettext('Name')">
+    <AAlert
+      v-if="!props.hideRenewalNote"
+      class="mb-4"
+      type="info"
+      show-icon
+      :message="$gettext('Nginx UI will automatically renew this certificate as it approaches expiration, based on the global certificate renewal interval and this certificate\'s validity period.')"
+    />
+    <AFormItem
+      :label="$gettext('Name')"
+      required
+    >
       <AInput
         v-model:value="data.name"
-        :placeholder="$gettext('Optional')"
+        :placeholder="$gettext('Enter certificate name')"
       />
     </AFormItem>
     <AFormItem :label="$gettext('Domains')">
-      <ASelect
-        v-model:value="data.domains"
-        mode="tags"
-        :open="false"
-        :token-separators="[',', ' ']"
-        :placeholder="$gettext('Enter domain names')"
+      <StringListInput
+        v-model="data.domains"
+        :placeholder="$gettext('Enter domain name')"
+        :add-button-text="$gettext('Add Domain')"
       />
     </AFormItem>
     <AFormItem :label="$gettext('IP Addresses')">
-      <ASelect
-        v-model:value="data.ip_addresses"
-        mode="tags"
-        :open="false"
-        :token-separators="[',', ' ']"
-        :placeholder="$gettext('Enter IP addresses')"
+      <StringListInput
+        v-model="data.ip_addresses"
+        :placeholder="$gettext('Enter IP address')"
+        :add-button-text="$gettext('Add IP Address')"
       />
     </AFormItem>
     <AFormItem :label="$gettext('Key Type')">
