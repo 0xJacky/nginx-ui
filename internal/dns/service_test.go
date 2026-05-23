@@ -62,37 +62,6 @@ func TestDomainLifecycle(t *testing.T) {
 	require.Equal(t, "mock", records[0].Type)
 }
 
-func TestUpdateDDNSConfigRejectsTargetsOutsideIPVersion(t *testing.T) {
-	registerMockProvider()
-	setMockRecords([]dnsSvc.Record{{
-		ID:      "aaaa-record",
-		Type:    "AAAA",
-		Name:    "@",
-		Content: "2001:db8::1",
-		TTL:     600,
-	}})
-
-	q := setupTestQuery(t)
-	ctx := context.Background()
-	service := dnsSvc.NewService()
-
-	cred := createCredential(t, q)
-	domain, err := service.CreateDomain(ctx, dnsSvc.DomainInput{
-		Domain:          "example.com",
-		DnsCredentialID: cred.ID,
-	})
-	require.NoError(t, err)
-
-	_, err = service.UpdateDDNSConfig(ctx, domain.ID, dnsSvc.DDNSUpdateInput{
-		Enabled:         true,
-		IntervalSeconds: dnsSvc.DefaultDDNSInterval(),
-		IPVersion:       "ipv4",
-		RecordIDs:       []string{"aaaa-record"},
-	})
-	require.Error(t, err)
-	require.Contains(t, err.Error(), dnsSvc.ErrDDNSIPVersionRecordMismatch.Error())
-}
-
 func TestUpdateDDNSConfigRejectsInvalidIPVersionValues(t *testing.T) {
 	registerMockProvider()
 	setMockRecords(nil)
@@ -391,4 +360,35 @@ func getMockDeletedRecordIDs() []string {
 func setMockCreateFailure(recordType string, err error) {
 	mockCreateFailureType = recordType
 	mockCreateFailureErr = err
+}
+
+func TestUpdateDDNSConfigSilentlySkipsRecordsOutsideIPVersionPolicy(t *testing.T) {
+	registerMockProvider()
+	setMockRecords([]dnsSvc.Record{
+		{ID: "aaaa-record", Type: "AAAA", Name: "home", Content: "2001:db8::1", TTL: 600},
+		{ID: "a-record", Type: "A", Name: "home", Content: "198.51.100.10", TTL: 600},
+	})
+
+	q := setupTestQuery(t)
+	ctx := context.Background()
+	service := dnsSvc.NewService()
+
+	cred := createCredential(t, q)
+	domain, err := service.CreateDomain(ctx, dnsSvc.DomainInput{
+		Domain:          "example.com",
+		DnsCredentialID: cred.ID,
+	})
+	require.NoError(t, err)
+
+	cfg, err := service.UpdateDDNSConfig(ctx, domain.ID, dnsSvc.DDNSUpdateInput{
+		Enabled:                   true,
+		IntervalSeconds:           dnsSvc.DefaultDDNSInterval(),
+		IPVersion:                 "ipv4",
+		CleanupConflictingRecords: false,
+		RecordIDs:                 []string{"aaaa-record", "a-record"},
+	})
+	require.NoError(t, err)
+	require.Len(t, cfg.Targets, 1)
+	require.Equal(t, "a-record", cfg.Targets[0].ID)
+	require.Equal(t, "A", cfg.Targets[0].Type)
 }

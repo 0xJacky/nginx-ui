@@ -146,7 +146,10 @@ func (s *Service) UpdateDDNSConfig(ctx context.Context, domainID uint64, input D
 					return nil, cosy.WrapErrorWithParams(ErrInvalidDDNSTargetType, recordType)
 				}
 				if !ddnsIPVersionMatchesRecordType(version, recordType) {
-					return nil, cosy.WrapErrorWithParams(ErrDDNSIPVersionRecordMismatch, recordType, version)
+					// Silently skip records whose type is outside the active mode policy.
+					// The UI already filters these; direct API callers degrade gracefully.
+					seen[trimmed] = struct{}{}
+					continue
 				}
 				if _, ok := seenTargetIDs[record.ID]; !ok {
 					targets = append(targets, model.DDNSRecordTarget{
