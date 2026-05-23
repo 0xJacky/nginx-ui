@@ -53,7 +53,6 @@ func TestSanitizeDDNSIPVersion(t *testing.T) {
 			{input: " IPv6 ", want: DDNSIPVersionIPv6},
 			{input: "ipv4_ipv6", want: DDNSIPVersionIPv4IPv6},
 			{input: "IPv6_IPv4", want: DDNSIPVersionIPv6IPv4},
-			{input: "both_required", want: DDNSIPVersionBothRequired},
 		} {
 			version, err := sanitizeDDNSIPVersion(tc.input)
 			require.NoError(t, err)
@@ -62,7 +61,7 @@ func TestSanitizeDDNSIPVersion(t *testing.T) {
 	})
 
 	t.Run("rejects empty and unsupported values", func(t *testing.T) {
-		for _, input := range []string{"", "both", "ipv10"} {
+		for _, input := range []string{"", "both", "ipv10", "both_required"} {
 			_, err := sanitizeDDNSIPVersion(input)
 			require.ErrorIs(t, err, ErrInvalidDDNSIPVersion)
 		}
@@ -144,20 +143,6 @@ func TestResolvePublicIPsRespectsIPVersion(t *testing.T) {
 		require.Equal(t, "2001:db8::20", snapshot.IPv6)
 	})
 
-	t.Run("both required fails when either family fails", func(t *testing.T) {
-		ipv4Server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			_, _ = w.Write([]byte("198.51.100.12"))
-		}))
-		defer ipv4Server.Close()
-
-		restore := OverrideIPEndpointsForTest([]string{ipv4Server.URL}, []string{"http://127.0.0.1:1"})
-		defer restore()
-
-		snapshot, err := resolvePublicIPs(context.Background(), DDNSIPVersionBothRequired)
-		require.Error(t, err)
-		require.Equal(t, "198.51.100.12", snapshot.IPv4)
-		require.Empty(t, snapshot.IPv6)
-	})
 }
 
 func TestDDNSIPVersionMatchesRecordType(t *testing.T) {
@@ -169,7 +154,5 @@ func TestDDNSIPVersionMatchesRecordType(t *testing.T) {
 	require.True(t, ddnsIPVersionMatchesRecordType(DDNSIPVersionIPv4IPv6, "AAAA"))
 	require.True(t, ddnsIPVersionMatchesRecordType(DDNSIPVersionIPv6IPv4, "A"))
 	require.True(t, ddnsIPVersionMatchesRecordType(DDNSIPVersionIPv6IPv4, "AAAA"))
-	require.True(t, ddnsIPVersionMatchesRecordType(DDNSIPVersionBothRequired, "A"))
-	require.True(t, ddnsIPVersionMatchesRecordType(DDNSIPVersionBothRequired, "AAAA"))
 	require.False(t, ddnsIPVersionMatchesRecordType("invalid", "TXT"))
 }

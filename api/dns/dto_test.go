@@ -25,7 +25,6 @@ func TestToDDNSResponseNormalizesIPVersion(t *testing.T) {
 		}{
 			{input: " IPv4_IPv6 ", want: "ipv4_ipv6"},
 			{input: "IPv6_IPv4", want: "ipv6_ipv4"},
-			{input: "BOTH_REQUIRED", want: "both_required"},
 		} {
 			resp := toDDNSResponse(&model.DDNSConfig{IPVersion: tc.input})
 			require.Equal(t, tc.want, resp.IPVersion)
