@@ -171,9 +171,11 @@ func ListDDNSConfig(c *gin.Context) {
 		cfg := domain.DDNSConfig
 		if cfg == nil {
 			cfg = &model.DDNSConfig{
-				Enabled:         false,
-				IntervalSeconds: dnsService.DefaultDDNSInterval(),
-				Targets:         []model.DDNSRecordTarget{},
+				Enabled:                   false,
+				IntervalSeconds:           dnsService.DefaultDDNSInterval(),
+				IPVersion:                 dnsService.DDNSIPVersionIPv4IPv6,
+				CleanupConflictingRecords: true,
+				Targets:                   []model.DDNSRecordTarget{},
 			}
 		} else if cfg.IntervalSeconds <= 0 {
 			cfg.IntervalSeconds = dnsService.DefaultDDNSInterval()
@@ -216,15 +218,18 @@ func UpdateDDNSConfig(c *gin.Context) {
 	}
 
 	svc := dnsService.NewService()
-	cfg, err := svc.UpdateDDNSConfig(c.Request.Context(), domainID, dnsService.DDNSUpdateInput{
-		Enabled:         payload.Enabled,
-		IntervalSeconds: payload.IntervalSeconds,
-		RecordIDs:       payload.RecordIDs,
+	result, err := svc.UpdateDDNSConfigWithDetails(c.Request.Context(), domainID, dnsService.DDNSUpdateInput{
+		Enabled:                   payload.Enabled,
+		IntervalSeconds:           payload.IntervalSeconds,
+		IPVersion:                 payload.IPVersion,
+		CleanupConflictingRecords: payload.CleanupConflictingRecords,
+		RecordIDs:                 payload.RecordIDs,
 	})
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
 	}
+	cfg := result.Config
 
 	if cfg.Enabled {
 		if err := cron.AddOrUpdateDDNSJob(domainID, cfg.IntervalSeconds); err != nil {
@@ -238,7 +243,16 @@ func UpdateDDNSConfig(c *gin.Context) {
 		}
 	}
 
-	c.JSON(http.StatusOK, toDDNSResponse(cfg))
+	resp := toDDNSResponse(cfg)
+	for _, deleted := range result.DeletedRecords {
+		resp.DeletedRecords = append(resp.DeletedRecords, ddnsRecordTarget{
+			ID:   deleted.ID,
+			Name: deleted.Name,
+			Type: deleted.Type,
+		})
+	}
+
+	c.JSON(http.StatusOK, resp)
 }
 
 // DeleteDDNSConfig removes DDNS settings for a domain and stops its schedule.
