@@ -38,13 +38,17 @@ func CheckBundledNginxUIConf() error {
 		}
 		return cosy.WrapErrorWithParams(ErrFailedToReadBundledNginxUIConf, err.Error())
 	}
-	if !reMapForwardedProto.Match(data) ||
-		!reMapForwardedHost.Match(data) ||
-		!reHeaderForwardedProto.Match(data) ||
-		!reHeaderForwardedHost.Match(data) {
+	if !hasBundledConfWebSocketFix(data) {
 		return ErrBundledNginxUIConfOutdated
 	}
 	return nil
+}
+
+func hasBundledConfWebSocketFix(data []byte) bool {
+	return reMapForwardedProto.Match(data) &&
+		reMapForwardedHost.Match(data) &&
+		reHeaderForwardedProto.Match(data) &&
+		reHeaderForwardedHost.Match(data)
 }
 
 // Patterns to rewrite when an old default is still in place.
@@ -117,6 +121,10 @@ func injectBeforeFirstServer(in []byte, s string) []byte {
 // nginx -t rejection is a distinct fault class operators need to triage specifically.
 func patchOnDiskWithBackup(orig []byte, bak string) error {
 	patched := applyBundledConfPatch(orig)
+	if !hasBundledConfWebSocketFix(patched) {
+		return cosy.WrapErrorWithParams(ErrFixedConfigInvalid,
+			"unable to apply all required WebSocket reverse-proxy markers; backup at "+bak)
+	}
 	tmp := bundledNginxUIConfPath + ".tmp"
 	if err := os.WriteFile(tmp, patched, 0o644); err != nil {
 		_ = restoreFromBackup(bundledNginxUIConfPath, bak)
