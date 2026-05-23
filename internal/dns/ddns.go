@@ -117,6 +117,7 @@ func (s *Service) UpdateDDNSConfig(ctx context.Context, domainID uint64, input D
 	existing := domain.DDNSConfig
 
 	targets := []model.DDNSRecordTarget{}
+	var createdRecords []model.DDNSRecordTarget
 	var ipSnapshot *ipSnapshot
 	if input.Enabled {
 		if len(input.RecordIDs) == 0 {
@@ -184,9 +185,11 @@ func (s *Service) UpdateDDNSConfig(ctx context.Context, domainID uint64, input D
 
 			createdTargets, err := createDDNSRecordsForMissingName(ctx, provider, domain.Domain, trimmed, version, *ipSnapshot)
 			if err != nil {
+				rollbackCreatedDDNSRecords(ctx, provider, domain.Domain, createdRecords)
 				return nil, err
 			}
 
+			createdRecords = append(createdRecords, createdTargets...)
 			targets = append(targets, createdTargets...)
 			seen[trimmed] = struct{}{}
 		}
@@ -222,8 +225,24 @@ func (s *Service) UpdateDDNSConfig(ctx context.Context, domainID uint64, input D
 								Name: existing.Name,
 								Type: recordType,
 							})
+							continue
 						}
-						// auto-create handled in Task 8
+						ctxTimeout, cancel := context.WithTimeout(ctx, providerTimeout)
+						newRec, err := provider.CreateRecord(ctxTimeout, domain.Domain, sanitizeRecordInput(RecordInput{
+							Type: recordType, Name: name, Content: ipValue, TTL: 600,
+						}))
+						cancel()
+						if err != nil {
+							rollbackCreatedDDNSRecords(ctx, provider, domain.Domain, createdRecords)
+							return nil, cosy.WrapErrorWithParams(ErrDDNSRecordNotFound, name)
+						}
+						createdTarget := model.DDNSRecordTarget{
+							ID:   newRec.ID,
+							Name: newRec.Name,
+							Type: strings.ToUpper(newRec.Type),
+						}
+						createdRecords = append(createdRecords, createdTarget)
+						targets = append(targets, createdTarget)
 					}
 					// auto-delete handled in Task 9
 				}
