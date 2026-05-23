@@ -37,7 +37,6 @@ export type DDNSIPVersion
     | 'ipv6'
     | 'ipv4_ipv6'
     | 'ipv6_ipv4'
-    | 'both_required'
 
 export interface DDNSConfig {
   enabled: boolean

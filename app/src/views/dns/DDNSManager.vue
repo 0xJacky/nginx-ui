@@ -40,7 +40,6 @@ const ipVersionOptions: Array<{ value: DDNSIPVersion, label: string }> = [
   { value: 'ipv6', label: $gettext('IPv6 only') },
   { value: 'ipv4_ipv6', label: $gettext('IPv4 then IPv6') },
   { value: 'ipv6_ipv4', label: $gettext('IPv6 then IPv4') },
-  { value: 'both_required', label: $gettext('IPv4 and IPv6 required') },
 ]
 
 function normalizeRecordType(value?: string) {
