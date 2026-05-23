@@ -521,3 +521,100 @@ func TestUpdateDDNSConfigDeletesSiblingRecordWhenFamilyUnavailable(t *testing.T)
 	require.Equal(t, "aaaa-record", result.DeletedRecords[0].ID)
 	require.Equal(t, []string{"aaaa-record"}, getMockDeletedRecordIDs())
 }
+
+func TestUpdateDDNSConfigFlagOffSkipsAutoPair(t *testing.T) {
+	registerMockProvider()
+	setMockRecords([]dnsSvc.Record{
+		{ID: "a-record", Type: "A", Name: "home", Content: "198.51.100.10", TTL: 600},
+		{ID: "aaaa-record", Type: "AAAA", Name: "home", Content: "2001:db8::1", TTL: 600},
+	})
+
+	q := setupTestQuery(t)
+	ctx := context.Background()
+	service := dnsSvc.NewService()
+
+	cred := createCredential(t, q)
+	domain, err := service.CreateDomain(ctx, dnsSvc.DomainInput{
+		Domain:          "example.com",
+		DnsCredentialID: cred.ID,
+	})
+	require.NoError(t, err)
+
+	cfg, err := service.UpdateDDNSConfig(ctx, domain.ID, dnsSvc.DDNSUpdateInput{
+		Enabled:                   true,
+		IntervalSeconds:           dnsSvc.DefaultDDNSInterval(),
+		IPVersion:                 "ipv4_ipv6",
+		CleanupConflictingRecords: false,
+		RecordIDs:                 []string{"a-record"},
+	})
+	require.NoError(t, err)
+	require.Len(t, cfg.Targets, 1)
+	require.Equal(t, "a-record", cfg.Targets[0].ID)
+	require.Empty(t, getMockCreatedRecords())
+	require.Empty(t, getMockDeletedRecordIDs())
+}
+
+func TestUpdateDDNSConfigSingleStackIgnoresSiblingFamily(t *testing.T) {
+	registerMockProvider()
+	setMockRecords([]dnsSvc.Record{
+		{ID: "a-record", Type: "A", Name: "home", Content: "198.51.100.10", TTL: 600},
+		{ID: "aaaa-record", Type: "AAAA", Name: "home", Content: "2001:db8::1", TTL: 600},
+	})
+
+	q := setupTestQuery(t)
+	ctx := context.Background()
+	service := dnsSvc.NewService()
+
+	cred := createCredential(t, q)
+	domain, err := service.CreateDomain(ctx, dnsSvc.DomainInput{
+		Domain:          "example.com",
+		DnsCredentialID: cred.ID,
+	})
+	require.NoError(t, err)
+
+	cfg, err := service.UpdateDDNSConfig(ctx, domain.ID, dnsSvc.DDNSUpdateInput{
+		Enabled:                   true,
+		IntervalSeconds:           dnsSvc.DefaultDDNSInterval(),
+		IPVersion:                 "ipv4",
+		CleanupConflictingRecords: true,
+		RecordIDs:                 []string{"a-record"},
+	})
+	require.NoError(t, err)
+	require.Len(t, cfg.Targets, 1)
+	require.Equal(t, "a-record", cfg.Targets[0].ID)
+	require.Empty(t, getMockDeletedRecordIDs(), "single-stack must not delete sibling family")
+}
+
+func TestUpdateDDNSConfigSingleStackPreservesOwnFamilyWhenIPUnavailable(t *testing.T) {
+	registerMockProvider()
+	setMockRecords([]dnsSvc.Record{
+		{ID: "a-record", Type: "A", Name: "home", Content: "198.51.100.10", TTL: 600},
+	})
+
+	// Both endpoints unreachable
+	restore := dnsSvc.OverrideIPEndpointsForTest([]string{"http://127.0.0.1:1"}, []string{"http://127.0.0.1:1"})
+	defer restore()
+
+	q := setupTestQuery(t)
+	ctx := context.Background()
+	service := dnsSvc.NewService()
+
+	cred := createCredential(t, q)
+	domain, err := service.CreateDomain(ctx, dnsSvc.DomainInput{
+		Domain:          "example.com",
+		DnsCredentialID: cred.ID,
+	})
+	require.NoError(t, err)
+
+	cfg, err := service.UpdateDDNSConfig(ctx, domain.ID, dnsSvc.DDNSUpdateInput{
+		Enabled:                   true,
+		IntervalSeconds:           dnsSvc.DefaultDDNSInterval(),
+		IPVersion:                 "ipv4",
+		CleanupConflictingRecords: true,
+		RecordIDs:                 []string{"a-record"},
+	})
+	require.NoError(t, err)
+	require.Len(t, cfg.Targets, 1)
+	require.Equal(t, "a-record", cfg.Targets[0].ID)
+	require.Empty(t, getMockDeletedRecordIDs(), "single-stack must not delete own family on IP failure")
+}
