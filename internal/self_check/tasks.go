@@ -153,7 +153,7 @@ func Init() {
 		})
 	}
 
-	if helper.IsOfficialDockerImage() {
+	if helper.ShouldManageBundledNginx() {
 		selfCheckTasks = append(selfCheckTasks, &Task{
 			Key:  "Docker-BundledNginxUIConf-WS",
 			Name: translation.C("Bundled nginx-ui.conf has WebSocket reverse-proxy fix"),

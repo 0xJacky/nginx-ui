@@ -82,10 +82,12 @@ init_config_main() {
     fi
 
     # Whitelist of bundled files we own and may upgrade.
-    sync_bundled_file \
+    if ! sync_bundled_file \
         "$TEMPLATE_DIR/conf.d/nginx-ui.conf" \
         "$ETC_NGINX/conf.d/nginx-ui.conf" \
-        "$HASH_FILE"
+        "$HASH_FILE"; then
+        log WARN "bundled-conf sync failed; continuing without blocking bundled nginx startup"
+    fi
 }
 
 # Only run main when executed directly; --testing lets bats source us.

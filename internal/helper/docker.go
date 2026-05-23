@@ -15,6 +15,14 @@ func IsOfficialDockerImage() bool {
 	return cast.ToBool(os.Getenv("NGINX_UI_OFFICIAL_DOCKER"))
 }
 
+// ShouldManageBundledNginx returns true when the official Docker image owns
+// the bundled Nginx configuration. Host mode disables that ownership even when
+// the process is still running inside the official image.
+func ShouldManageBundledNginx() bool {
+	return IsOfficialDockerImage() &&
+		!cast.ToBool(os.Getenv("NGINX_UI_DISABLE_BUNDLED_NGINX"))
+}
+
 func InNginxUIOfficialDocker() bool {
 	return cast.ToBool(os.Getenv("NGINX_UI_OFFICIAL_DOCKER")) &&
 		!cast.ToBool(os.Getenv("NGINX_UI_IGNORE_DOCKER_SOCKET"))

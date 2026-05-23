@@ -86,6 +86,7 @@ teardown() { rm -rf "$TMP"; }
     chmod 555 "$ETC_NGINX/conf.d"
     run init_config_main
     chmod 755 "$ETC_NGINX/conf.d"
+    [ "$status" -eq 0 ]
     [[ "$output" == *"backup failed"* ]]
     diff -q "$ETC_NGINX/conf.d/nginx-ui.conf" \
             "$BATS_TEST_DIRNAME/fixtures/unfixed-default.conf"

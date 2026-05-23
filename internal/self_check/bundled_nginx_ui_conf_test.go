@@ -78,7 +78,27 @@ func TestCheckBundledNginxUIConf_MissingFile(t *testing.T) {
 func TestCheckBundledNginxUIConf_NotInDocker(t *testing.T) {
 	t.Setenv("NGINX_UI_OFFICIAL_DOCKER", "")
 	// Even with a missing path, no error when not in docker.
+	orig := bundledNginxUIConfPath
 	bundledNginxUIConfPath = "/nonexistent/path"
+	t.Cleanup(func() { bundledNginxUIConfPath = orig })
+	assert.NoError(t, CheckBundledNginxUIConf())
+}
+
+func TestCheckBundledNginxUIConf_SkipsWhenBundledNginxDisabled(t *testing.T) {
+	t.Setenv("NGINX_UI_OFFICIAL_DOCKER", "true")
+	t.Setenv("NGINX_UI_DISABLE_BUNDLED_NGINX", "true")
+
+	dir := t.TempDir()
+	target := filepath.Join(dir, "nginx-ui.conf")
+	src := filepath.Join("test_cases", "bundled", "unfixed-default.conf")
+	data, err := os.ReadFile(src)
+	require.NoError(t, err)
+	require.NoError(t, os.WriteFile(target, data, 0o644))
+
+	orig := bundledNginxUIConfPath
+	bundledNginxUIConfPath = target
+	t.Cleanup(func() { bundledNginxUIConfPath = orig })
+
 	assert.NoError(t, CheckBundledNginxUIConf())
 }
 
