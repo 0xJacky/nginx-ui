@@ -69,6 +69,13 @@ type DDNSUpdateInput struct {
 	RecordIDs                 []string
 }
 
+// UpdateDDNSResult bundles the persisted config and any provider records that
+// were deleted as a side effect of cleanup.
+type UpdateDDNSResult struct {
+	Config         *model.DDNSConfig
+	DeletedRecords []model.DDNSRecordTarget
+}
+
 // DDNSSchedule describes an enabled DDNS task.
 type DDNSSchedule struct {
 	DomainID        uint64
@@ -98,8 +105,21 @@ func (s *Service) GetDDNSConfig(ctx context.Context, domainID uint64) (*model.DD
 	return &cfg, nil
 }
 
-// UpdateDDNSConfig validates and persists DDNS configuration for the given domain.
+// UpdateDDNSConfig validates and persists DDNS configuration. The returned
+// config matches what is now in the database. Callers who need the list of
+// records deleted during save (e.g. to surface a UI confirmation) should use
+// UpdateDDNSConfigWithDetails.
 func (s *Service) UpdateDDNSConfig(ctx context.Context, domainID uint64, input DDNSUpdateInput) (*model.DDNSConfig, error) {
+	result, err := s.UpdateDDNSConfigWithDetails(ctx, domainID, input)
+	if err != nil {
+		return nil, err
+	}
+	return result.Config, nil
+}
+
+// UpdateDDNSConfigWithDetails is the underlying implementation. It also
+// surfaces records that cleanup deleted from the provider.
+func (s *Service) UpdateDDNSConfigWithDetails(ctx context.Context, domainID uint64, input DDNSUpdateInput) (*UpdateDDNSResult, error) {
 	interval := sanitizeInterval(input.IntervalSeconds)
 	if interval < minDDNSIntervalSeconds {
 		return nil, ErrInvalidDDNSInterval
@@ -118,6 +138,7 @@ func (s *Service) UpdateDDNSConfig(ctx context.Context, domainID uint64, input D
 
 	targets := []model.DDNSRecordTarget{}
 	var createdRecords []model.DDNSRecordTarget
+	var deletedRecords []model.DDNSRecordTarget
 	var ipSnapshot *ipSnapshot
 	if input.Enabled {
 		if len(input.RecordIDs) == 0 {
@@ -243,8 +264,22 @@ func (s *Service) UpdateDDNSConfig(ctx context.Context, domainID uint64, input D
 						}
 						createdRecords = append(createdRecords, createdTarget)
 						targets = append(targets, createdTarget)
+					} else if hasExisting {
+						// F's IP not detected: delete any existing record of that family at this name.
+						ctxTimeout, cancel := context.WithTimeout(ctx, providerTimeout)
+						err := provider.DeleteRecord(ctxTimeout, domain.Domain, existing.ID)
+						cancel()
+						if err != nil {
+							rollbackCreatedDDNSRecords(ctx, provider, domain.Domain, createdRecords)
+							return nil, cosy.WrapErrorWithParams(ErrDDNSRecordNotFound, name)
+						}
+						targets = removeTargetByID(targets, existing.ID)
+						deletedRecords = append(deletedRecords, model.DDNSRecordTarget{
+							ID:   existing.ID,
+							Name: existing.Name,
+							Type: recordType,
+						})
 					}
-					// auto-delete handled in Task 9
 				}
 			}
 		}
@@ -268,7 +303,7 @@ func (s *Service) UpdateDDNSConfig(ctx context.Context, domainID uint64, input D
 		return nil, err
 	}
 
-	return cfg, nil
+	return &UpdateDDNSResult{Config: cfg, DeletedRecords: deletedRecords}, nil
 }
 
 // DeleteDDNSConfig removes DDNS configuration for the given domain.
@@ -782,6 +817,17 @@ func containsTargetForName(targets []model.DDNSRecordTarget, name, recordType st
 		}
 	}
 	return false
+}
+
+func removeTargetByID(targets []model.DDNSRecordTarget, id string) []model.DDNSRecordTarget {
+	out := targets[:0]
+	for _, t := range targets {
+		if t.ID == id {
+			continue
+		}
+		out = append(out, t)
+	}
+	return out
 }
 
 func lookupRecord(index map[string]map[string]Record, name, recordType string) (Record, bool) {

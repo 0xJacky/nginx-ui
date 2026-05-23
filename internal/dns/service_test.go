@@ -481,3 +481,43 @@ func TestUpdateDDNSConfigAutoCreatesSiblingRecordWhenAbsent(t *testing.T) {
 	require.Equal(t, "home", created[0].Name)
 	require.Equal(t, "2001:db8::20", created[0].Content)
 }
+
+func TestUpdateDDNSConfigDeletesSiblingRecordWhenFamilyUnavailable(t *testing.T) {
+	registerMockProvider()
+	setMockRecords([]dnsSvc.Record{
+		{ID: "a-record", Type: "A", Name: "home", Content: "198.51.100.10", TTL: 600},
+		{ID: "aaaa-record", Type: "AAAA", Name: "home", Content: "2001:db8::1", TTL: 600},
+	})
+
+	ipv4Server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_, _ = w.Write([]byte("198.51.100.12"))
+	}))
+	defer ipv4Server.Close()
+	restore := dnsSvc.OverrideIPEndpointsForTest([]string{ipv4Server.URL}, []string{"http://127.0.0.1:1"})
+	defer restore()
+
+	q := setupTestQuery(t)
+	ctx := context.Background()
+	service := dnsSvc.NewService()
+
+	cred := createCredential(t, q)
+	domain, err := service.CreateDomain(ctx, dnsSvc.DomainInput{
+		Domain:          "example.com",
+		DnsCredentialID: cred.ID,
+	})
+	require.NoError(t, err)
+
+	result, err := service.UpdateDDNSConfigWithDetails(ctx, domain.ID, dnsSvc.DDNSUpdateInput{
+		Enabled:                   true,
+		IntervalSeconds:           dnsSvc.DefaultDDNSInterval(),
+		IPVersion:                 "ipv4_ipv6",
+		CleanupConflictingRecords: true,
+		RecordIDs:                 []string{"a-record"},
+	})
+	require.NoError(t, err)
+	require.Len(t, result.Config.Targets, 1)
+	require.Equal(t, "A", result.Config.Targets[0].Type)
+	require.Len(t, result.DeletedRecords, 1)
+	require.Equal(t, "aaaa-record", result.DeletedRecords[0].ID)
+	require.Equal(t, []string{"aaaa-record"}, getMockDeletedRecordIDs())
+}

@@ -218,7 +218,7 @@ func UpdateDDNSConfig(c *gin.Context) {
 	}
 
 	svc := dnsService.NewService()
-	cfg, err := svc.UpdateDDNSConfig(c.Request.Context(), domainID, dnsService.DDNSUpdateInput{
+	result, err := svc.UpdateDDNSConfigWithDetails(c.Request.Context(), domainID, dnsService.DDNSUpdateInput{
 		Enabled:                   payload.Enabled,
 		IntervalSeconds:           payload.IntervalSeconds,
 		IPVersion:                 payload.IPVersion,
@@ -229,6 +229,7 @@ func UpdateDDNSConfig(c *gin.Context) {
 		cosy.ErrHandler(c, err)
 		return
 	}
+	cfg := result.Config
 
 	if cfg.Enabled {
 		if err := cron.AddOrUpdateDDNSJob(domainID, cfg.IntervalSeconds); err != nil {
@@ -242,7 +243,16 @@ func UpdateDDNSConfig(c *gin.Context) {
 		}
 	}
 
-	c.JSON(http.StatusOK, toDDNSResponse(cfg))
+	resp := toDDNSResponse(cfg)
+	for _, deleted := range result.DeletedRecords {
+		resp.DeletedRecords = append(resp.DeletedRecords, ddnsRecordTarget{
+			ID:   deleted.ID,
+			Name: deleted.Name,
+			Type: deleted.Type,
+		})
+	}
+
+	c.JSON(http.StatusOK, resp)
 }
 
 // DeleteDDNSConfig removes DDNS settings for a domain and stops its schedule.
