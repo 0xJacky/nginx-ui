@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { DDNSDomainItem, DDNSIPVersion, DNSRecord, UpdateDDNSPayload } from '@/api/dns'
-import { DeleteOutlined, ReloadOutlined, SearchOutlined } from '@ant-design/icons-vue'
+import { DeleteOutlined, InfoCircleOutlined, ReloadOutlined, SearchOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import { computed, onMounted, ref, watch } from 'vue'
@@ -59,6 +59,31 @@ function isRecordAllowedByIPVersion(recordType: string, ipVersion: DDNSIPVersion
 const isDualStackMode = computed(() =>
   ddnsForm.value.ip_version === 'ipv4_ipv6'
   || ddnsForm.value.ip_version === 'ipv6_ipv4',
+)
+
+const unmanagedSiblingRecords = computed(() => {
+  const mode = ddnsForm.value.ip_version
+  if (mode !== 'ipv4' && mode !== 'ipv6')
+    return []
+  const otherType = mode === 'ipv4' ? 'AAAA' : 'A'
+  const managedNames = new Set<string>()
+  ddnsForm.value.record_ids.forEach(id => {
+    const rec
+      = records.value.find(r => r.id === id)
+      ?? currentDomain.value?.config.targets?.find(t => t.id === id)
+    if (rec)
+      managedNames.add(rec.name.toLowerCase())
+  })
+  return records.value.filter(r =>
+    normalizeRecordType(r.type) === otherType
+    && managedNames.has(r.name.toLowerCase()),
+  )
+})
+
+const siblingNoticeText = computed(() =>
+  ddnsForm.value.ip_version === 'ipv4'
+    ? $gettext('AAAA records at the same names are not managed in IPv4 only mode. They remain unchanged in DNS.')
+    : $gettext('A records at the same names are not managed in IPv6 only mode. They remain unchanged in DNS.'),
 )
 
 const recordOptions = computed(() => {
@@ -373,6 +398,18 @@ watch(() => ddnsForm.value.ip_version, handleIPVersionChange)
               :placeholder="$gettext('Select matching A/AAAA records')"
               :disabled="!ddnsForm.enabled"
             />
+            <div v-if="unmanagedSiblingRecords.length" class="text-xs mt-2" style="color: var(--ant-color-info)">
+              <InfoCircleOutlined />
+              {{ siblingNoticeText }}
+              <ATag
+                v-for="r in unmanagedSiblingRecords"
+                :key="r.id"
+                color="blue"
+                class="mt-1"
+              >
+                {{ r.name }} ({{ normalizeRecordType(r.type) }})
+              </ATag>
+            </div>
           </AFormItem>
           <AFormItem :label="$gettext('Interval (seconds)')">
             <AInputNumber
