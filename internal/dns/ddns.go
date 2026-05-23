@@ -23,11 +23,10 @@ const (
 	ipDetectTimeout            = 8 * time.Second
 
 	// DDNS IP version selectors persisted in DDNSConfig.IPVersion and accepted by the API.
-	DDNSIPVersionIPv4         = "ipv4"
-	DDNSIPVersionIPv6         = "ipv6"
-	DDNSIPVersionIPv4IPv6     = "ipv4_ipv6"
-	DDNSIPVersionIPv6IPv4     = "ipv6_ipv4"
-	DDNSIPVersionBothRequired = "both_required"
+	DDNSIPVersionIPv4     = "ipv4"
+	DDNSIPVersionIPv6     = "ipv6"
+	DDNSIPVersionIPv4IPv6 = "ipv4_ipv6"
+	DDNSIPVersionIPv6IPv4 = "ipv6_ipv4"
 )
 
 var (
@@ -191,9 +190,6 @@ func (s *Service) UpdateDDNSConfig(ctx context.Context, domainID uint64, input D
 		if len(targets) == 0 {
 			return nil, ErrDDNSTargetRequired
 		}
-		if err := validateDDNSTargetFamilies(version, targets); err != nil {
-			return nil, err
-		}
 	}
 
 	cfg := &model.DDNSConfig{
@@ -280,12 +276,6 @@ func (s *Service) runDDNSUpdate(ctx context.Context, domainID uint64) error {
 	policy := getDDNSIPVersionPolicy(version)
 
 	ipSnapshot, ipErr := resolvePublicIPs(ctx, version)
-	if ipErr != nil && version == DDNSIPVersionBothRequired {
-		now := time.Now()
-		cfg.LastRunAt = &now
-		cfg.LastError = ipErr.Error()
-		return saveDDNSConfig(ctx, domainID, cfg)
-	}
 
 	records, err := fetchProviderRecords(ctx, provider, domain.Domain)
 	if err != nil {
@@ -426,9 +416,6 @@ func resolvePublicIPs(ctx context.Context, ipVersion string) (ipSnapshot, error)
 		}
 	}
 
-	if policy.requireAll && len(errs) > 0 {
-		return snapshot, fmt.Errorf("public ip resolve errors: %s", strings.Join(errs, "; "))
-	}
 	if successCount == 0 && len(errs) > 0 {
 		return snapshot, fmt.Errorf("public ip resolve errors: %s", strings.Join(errs, "; "))
 	}
@@ -547,8 +534,6 @@ func sanitizeDDNSIPVersion(value string) (string, error) {
 		return DDNSIPVersionIPv4IPv6, nil
 	case DDNSIPVersionIPv6IPv4:
 		return DDNSIPVersionIPv6IPv4, nil
-	case DDNSIPVersionBothRequired:
-		return DDNSIPVersionBothRequired, nil
 	default:
 		return "", ErrInvalidDDNSIPVersion
 	}
@@ -566,7 +551,6 @@ func NormalizeDDNSIPVersion(value string) string {
 
 type ddnsIPVersionPolicy struct {
 	families    []ipFamily
-	requireAll  bool
 	recordTypes map[string]struct{}
 }
 
@@ -587,12 +571,6 @@ func getDDNSIPVersionPolicy(version string) ddnsIPVersionPolicy {
 			families:    []ipFamily{ipFamilyV6, ipFamilyV4},
 			recordTypes: map[string]struct{}{"A": {}, "AAAA": {}},
 		}
-	case DDNSIPVersionBothRequired:
-		return ddnsIPVersionPolicy{
-			families:    []ipFamily{ipFamilyV4, ipFamilyV6},
-			requireAll:  true,
-			recordTypes: map[string]struct{}{"A": {}, "AAAA": {}},
-		}
 	default:
 		return ddnsIPVersionPolicy{
 			families:    []ipFamily{ipFamilyV4, ipFamilyV6},
@@ -605,26 +583,6 @@ func ddnsIPVersionMatchesRecordType(ipVersion string, recordType string) bool {
 	policy := getDDNSIPVersionPolicy(ipVersion)
 	_, ok := policy.recordTypes[strings.ToUpper(recordType)]
 	return ok
-}
-
-func validateDDNSTargetFamilies(version string, targets []model.DDNSRecordTarget) error {
-	if version != DDNSIPVersionBothRequired {
-		return nil
-	}
-
-	var hasA, hasAAAA bool
-	for _, target := range targets {
-		switch strings.ToUpper(target.Type) {
-		case "A":
-			hasA = true
-		case "AAAA":
-			hasAAAA = true
-		}
-	}
-	if !hasA || !hasAAAA {
-		return ErrDDNSBothRequiredTarget
-	}
-	return nil
 }
 
 func collectDDNSTargetsForNamedRecords(records []Record, version string, seenTargetIDs map[string]struct{}) ([]model.DDNSRecordTarget, error) {
@@ -656,22 +614,8 @@ func collectDDNSTargetsForNamedRecords(records []Record, version string, seenTar
 }
 
 func createDDNSRecordsForMissingName(ctx context.Context, provider Provider, domain string, name string, version string, snapshot ipSnapshot) ([]model.DDNSRecordTarget, error) {
-	policy := getDDNSIPVersionPolicy(version)
-
-	// both_required: must create both A and AAAA atomically.
-	if policy.requireAll {
-		if snapshot.IPv4 == "" || snapshot.IPv6 == "" {
-			return nil, ErrDDNSIPUnavailable
-		}
-		return createDDNSRecordTargets(ctx, provider, domain, name, []RecordInput{
-			{Type: "A", Name: name, Content: snapshot.IPv4, TTL: 600},
-			{Type: "AAAA", Name: name, Content: snapshot.IPv6, TTL: 600},
-		})
-	}
-
-	// Best-effort modes (single-family or dual-stack): create only the first
-	// available family in policy preference order, never both.
-	for _, family := range policy.families {
+	// Best-effort: create a record for the first family in the policy whose IP is detected.
+	for _, family := range getDDNSIPVersionPolicy(version).families {
 		switch family {
 		case ipFamilyV4:
 			if snapshot.IPv4 != "" {
