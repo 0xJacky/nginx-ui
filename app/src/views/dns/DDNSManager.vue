@@ -56,6 +56,11 @@ function isRecordAllowedByIPVersion(recordType: string, ipVersion: DDNSIPVersion
   return type === 'A' || type === 'AAAA'
 }
 
+const isDualStackMode = computed(() =>
+  ddnsForm.value.ip_version === 'ipv4_ipv6'
+  || ddnsForm.value.ip_version === 'ipv6_ipv4',
+)
+
 const recordOptions = computed(() => {
   const opts = new Map<string, { value: string, label: string }>()
   records.value
@@ -345,6 +350,18 @@ watch(() => ddnsForm.value.ip_version, handleIPVersionChange)
               :options="ipVersionOptions"
               :disabled="!ddnsForm.enabled"
             />
+          </AFormItem>
+          <AFormItem
+            v-if="isDualStackMode"
+            :label="$gettext('Clean up conflicting records')"
+          >
+            <ASwitch
+              v-model:checked="ddnsForm.cleanup_conflicting_records"
+              :disabled="!ddnsForm.enabled"
+            />
+            <div class="text-xs text-gray-500 mt-1">
+              {{ $gettext('When enabled, DDNS owns the selected names: it auto-pairs sibling family records, creates missing records, and removes records whose IP family is unreachable. Disable to manage only the records you explicitly selected and keep all other DNS state untouched.') }}
+            </div>
           </AFormItem>
           <AFormItem :label="$gettext('Records')">
             <ASelect
