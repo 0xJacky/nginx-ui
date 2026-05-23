@@ -70,7 +70,7 @@ const unmanagedSiblingRecords = computed(() => {
   ddnsForm.value.record_ids.forEach(id => {
     const rec
       = records.value.find(r => r.id === id)
-      ?? currentDomain.value?.config.targets?.find(t => t.id === id)
+        ?? currentDomain.value?.config.targets?.find(t => t.id === id)
     if (rec)
       managedNames.add(rec.name.toLowerCase())
   })
