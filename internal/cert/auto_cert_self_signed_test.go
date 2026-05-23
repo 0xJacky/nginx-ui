@@ -3,6 +3,8 @@ package cert
 import (
 	"testing"
 	"time"
+
+	"github.com/0xJacky/Nginx-UI/model"
 )
 
 func TestShouldRenewSelfSignedCert(t *testing.T) {
@@ -52,5 +54,16 @@ func TestShouldRenewSelfSignedCert(t *testing.T) {
 				t.Fatalf("shouldRenewSelfSignedCert() = %v, want %v", got, tt.expected)
 			}
 		})
+	}
+}
+
+func TestSelfSignedRenewalDueRejectsMissingConfig(t *testing.T) {
+	_, err := selfSignedRenewalDue(&model.Cert{
+		AutoCert:           model.AutoCertSelfSigned,
+		SelfSignedConfig:   nil,
+		SSLCertificatePath: "unused.pem",
+	}, time.Now(), 7)
+	if err == nil {
+		t.Fatalf("expected missing self-signed config to fail renewal")
 	}
 }

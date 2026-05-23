@@ -98,6 +98,10 @@ func renewSelfSignedCert(certModel *model.Cert, now time.Time, renewalInterval i
 // selfSignedRenewalDue reports whether a self-signed certificate is due for
 // renewal. It returns an error when the certificate cannot be inspected.
 func selfSignedRenewalDue(certModel *model.Cert, now time.Time, renewalInterval int) (bool, error) {
+	if certModel.SelfSignedConfig == nil {
+		return false, pkgerrors.New("self-signed certificate config is empty")
+	}
+
 	if certModel.SSLCertificatePath == "" {
 		return false, pkgerrors.New("ssl certificate path is empty for self-signed certificate")
 	}

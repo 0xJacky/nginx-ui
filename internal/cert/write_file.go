@@ -29,11 +29,6 @@ func (c *Content) WriteFile() (err error) {
 		return e.NewWithParams(50006, ErrPathIsNotUnderTheNginxConfDir.Error(), c.SSLCertificateKeyPath, nginxConfPath)
 	}
 
-	// MkdirAll creates a directory named path, along with any necessary parents,
-	// and returns nil, or else returns an error.
-	// The permission bits perm (before umask) are used for all directories that MkdirAll creates.
-	// If path is already a directory, MkdirAll does nothing and returns nil.
-
 	err = os.MkdirAll(filepath.Dir(c.SSLCertificatePath), 0755)
 	if err != nil {
 		return
@@ -44,19 +39,85 @@ func (c *Content) WriteFile() (err error) {
 		return
 	}
 
+	if err = ensureWritableFileTarget(c.SSLCertificatePath); err != nil {
+		return
+	}
+	if err = ensureWritableFileTarget(c.SSLCertificateKeyPath); err != nil {
+		return
+	}
+
+	tmpFiles := make(map[string]string, 2)
+	defer func() {
+		for _, tmpPath := range tmpFiles {
+			_ = os.Remove(tmpPath)
+		}
+	}()
+
 	if c.SSLCertificate != "" {
-		err = os.WriteFile(c.SSLCertificatePath, []byte(c.SSLCertificate), 0755)
-		if err != nil {
+		if tmpFiles[c.SSLCertificatePath], err = writeTempFileNextTo(c.SSLCertificatePath, []byte(c.SSLCertificate), 0755); err != nil {
 			return
 		}
 	}
 
 	if c.SSLCertificateKey != "" {
-		err = os.WriteFile(c.SSLCertificateKeyPath, []byte(c.SSLCertificateKey), 0755)
-		if err != nil {
+		if tmpFiles[c.SSLCertificateKeyPath], err = writeTempFileNextTo(c.SSLCertificateKeyPath, []byte(c.SSLCertificateKey), 0755); err != nil {
 			return
 		}
 	}
 
+	for targetPath, tmpPath := range tmpFiles {
+		if err = replaceFile(tmpPath, targetPath); err != nil {
+			return
+		}
+		delete(tmpFiles, targetPath)
+	}
+
 	return
+}
+
+func ensureWritableFileTarget(path string) error {
+	info, err := os.Stat(path)
+	if err == nil && info.IsDir() {
+		return &os.PathError{Op: "write", Path: path, Err: os.ErrInvalid}
+	}
+	if err != nil && !os.IsNotExist(err) {
+		return err
+	}
+	return nil
+}
+
+func writeTempFileNextTo(path string, content []byte, perm os.FileMode) (string, error) {
+	tmpFile, err := os.CreateTemp(filepath.Dir(path), "."+filepath.Base(path)+".*.tmp")
+	if err != nil {
+		return "", err
+	}
+	tmpPath := tmpFile.Name()
+
+	if _, err = tmpFile.Write(content); err != nil {
+		_ = tmpFile.Close()
+		_ = os.Remove(tmpPath)
+		return "", err
+	}
+	if err = tmpFile.Chmod(perm); err != nil {
+		_ = tmpFile.Close()
+		_ = os.Remove(tmpPath)
+		return "", err
+	}
+	if err = tmpFile.Close(); err != nil {
+		_ = os.Remove(tmpPath)
+		return "", err
+	}
+
+	return tmpPath, nil
+}
+
+func replaceFile(tmpPath, targetPath string) error {
+	if err := os.Rename(tmpPath, targetPath); err == nil {
+		return nil
+	}
+
+	if err := os.Remove(targetPath); err != nil && !os.IsNotExist(err) {
+		return err
+	}
+	return os.Rename(tmpPath, targetPath)
 }

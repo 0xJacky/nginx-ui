@@ -145,6 +145,41 @@ func TestRegenerateSelfSignedReusesKey(t *testing.T) {
 	parseTestCert(t, newCertPEM)
 }
 
+func TestRegenerateSelfSignedWithOptionsReusesKey(t *testing.T) {
+	_, keyPEM, err := GenerateSelfSigned(SelfSignedOptions{
+		CommonName:   "old.local",
+		DNSNames:     []string{"old.local"},
+		KeyType:      certcrypto.EC256,
+		ValidityDays: 365,
+	})
+	if err != nil {
+		t.Fatalf("GenerateSelfSigned error: %v", err)
+	}
+
+	keyPath := filepath.Join(t.TempDir(), "private.key")
+	if err := os.WriteFile(keyPath, keyPEM, 0600); err != nil {
+		t.Fatalf("write key: %v", err)
+	}
+
+	certModel := &model.Cert{SSLCertificateKeyPath: keyPath}
+	newCertPEM, newKeyPEM, err := RegenerateSelfSignedWithOptions(certModel, SelfSignedOptions{
+		CommonName:   "new.local",
+		DNSNames:     []string{"new.local"},
+		KeyType:      certcrypto.EC256,
+		ValidityDays: 90,
+	})
+	if err != nil {
+		t.Fatalf("RegenerateSelfSignedWithOptions error: %v", err)
+	}
+	if string(newKeyPEM) != string(keyPEM) {
+		t.Fatalf("expected the private key to be reused unchanged")
+	}
+	parsed := parseTestCert(t, newCertPEM)
+	if parsed.Subject.CommonName != "new.local" {
+		t.Fatalf("CommonName = %q, want %q", parsed.Subject.CommonName, "new.local")
+	}
+}
+
 func TestRegenerateSelfSignedFallsBackToFreshKey(t *testing.T) {
 	certModel := &model.Cert{
 		Domains:               []string{"fresh.local"},

@@ -117,7 +117,12 @@ func signSelfSigned(opts SelfSignedOptions, signer crypto.Signer) (certPEM, keyP
 // parsed; otherwise it generates a fresh key.
 func RegenerateSelfSigned(certModel *model.Cert) (certPEM, keyPEM []byte, err error) {
 	opts := SelfSignedOptionsFromModel(certModel)
+	return RegenerateSelfSignedWithOptions(certModel, opts)
+}
 
+// RegenerateSelfSignedWithOptions re-issues an existing self-signed certificate
+// with caller-provided options while reusing the private key when possible.
+func RegenerateSelfSignedWithOptions(certModel *model.Cert, opts SelfSignedOptions) (certPEM, keyPEM []byte, err error) {
 	signer, parseErr := loadSelfSignedKey(certModel.SSLCertificateKeyPath)
 	if parseErr != nil || signer == nil {
 		// Fall back to a fresh key when the existing key cannot be reused.

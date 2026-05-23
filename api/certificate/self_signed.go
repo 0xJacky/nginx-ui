@@ -17,6 +17,7 @@ import (
 	"github.com/spf13/cast"
 	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
+	"golang.org/x/net/idna"
 )
 
 // defaultSelfSignedSlug is the fallback certificate-directory slug.
@@ -134,8 +135,8 @@ func ModifySelfSignedCert(c *gin.Context) {
 		return
 	}
 
-	// reuse the existing file paths so sites referencing them keep working
-	if err = writeSelfSignedFiles(certModel.SSLCertificatePath,
+	// Reuse the existing file paths and private key so sites referencing them keep working.
+	if err = rewriteSelfSignedFiles(certModel, certModel.SSLCertificatePath,
 		certModel.SSLCertificateKeyPath, opts); err != nil {
 		cosy.ErrHandler(c, err)
 		return
@@ -201,6 +202,18 @@ func writeSelfSignedFiles(certPath, keyPath string, opts cert.SelfSignedOptions)
 	if err != nil {
 		return err
 	}
+	return writeSelfSignedContent(certPath, keyPath, certPEM, keyPEM)
+}
+
+func rewriteSelfSignedFiles(certModel *model.Cert, certPath, keyPath string, opts cert.SelfSignedOptions) error {
+	certPEM, keyPEM, err := cert.RegenerateSelfSignedWithOptions(certModel, opts)
+	if err != nil {
+		return err
+	}
+	return writeSelfSignedContent(certPath, keyPath, certPEM, keyPEM)
+}
+
+func writeSelfSignedContent(certPath, keyPath string, certPEM, keyPEM []byte) error {
 	content := &cert.Content{
 		SSLCertificatePath:    certPath,
 		SSLCertificateKeyPath: keyPath,
@@ -223,6 +236,11 @@ func normalizeStringSlice(in []string) []string {
 
 // selfSignedSlug builds a filesystem-safe directory slug from a name.
 func selfSignedSlug(name string) string {
+	name = strings.TrimSpace(name)
+	if asciiName, err := idna.Lookup.ToASCII(name); err == nil {
+		name = asciiName
+	}
+
 	var b strings.Builder
 	for _, r := range strings.ToLower(name) {
 		switch {
