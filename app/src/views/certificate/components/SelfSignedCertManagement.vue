@@ -32,6 +32,7 @@ const data = defineModel<SelfSignedCertPayload>('value', { required: true })
     <SelfSignedCertFields
       v-model="data"
       is-key-type-readonly
+      hide-renewal-note
     />
   </div>
 </template>
