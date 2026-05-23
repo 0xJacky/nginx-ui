@@ -246,6 +246,7 @@ you can easily make the switch.
 ##### Note
 1. When using this container for the first time, ensure that the volume mapped to /etc/nginx is empty.
 2. If you want to host static files, you can map directories to container.
+3. If you are upgrading from an older image, see the [Docker WebSocket fix guide](https://nginxui.com/guide/docker-websocket-fix.html) for required `conf.d/nginx-ui.conf` updates.
 
 <details>
 <summary><b>Deploy with Docker</b></summary>
