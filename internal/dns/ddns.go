@@ -580,6 +580,10 @@ func getDDNSIPVersionPolicy(version string) ddnsIPVersionPolicy {
 	}
 }
 
+func isDualStackMode(version string) bool {
+	return version == DDNSIPVersionIPv4IPv6 || version == DDNSIPVersionIPv6IPv4
+}
+
 func ddnsIPVersionMatchesRecordType(ipVersion string, recordType string) bool {
 	policy := getDDNSIPVersionPolicy(ipVersion)
 	_, ok := policy.recordTypes[strings.ToUpper(recordType)]

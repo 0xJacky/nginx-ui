@@ -156,3 +156,12 @@ func TestDDNSIPVersionMatchesRecordType(t *testing.T) {
 	require.True(t, ddnsIPVersionMatchesRecordType(DDNSIPVersionIPv6IPv4, "AAAA"))
 	require.False(t, ddnsIPVersionMatchesRecordType("invalid", "TXT"))
 }
+
+func TestIsDualStackMode(t *testing.T) {
+	require.True(t, isDualStackMode(DDNSIPVersionIPv4IPv6))
+	require.True(t, isDualStackMode(DDNSIPVersionIPv6IPv4))
+	require.False(t, isDualStackMode(DDNSIPVersionIPv4))
+	require.False(t, isDualStackMode(DDNSIPVersionIPv6))
+	require.False(t, isDualStackMode(""))
+	require.False(t, isDualStackMode("invalid"))
+}
