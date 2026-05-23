@@ -42,7 +42,9 @@ export interface DDNSConfig {
   enabled: boolean
   interval_seconds: number
   ip_version: DDNSIPVersion
+  cleanup_conflicting_records: boolean
   targets: DDNSRecordTarget[]
+  deleted_records?: DDNSRecordTarget[]
   last_ipv4?: string
   last_ipv6?: string
   last_run_at?: string
@@ -61,6 +63,7 @@ export interface UpdateDDNSPayload {
   enabled: boolean
   interval_seconds: number
   ip_version: DDNSIPVersion
+  cleanup_conflicting_records: boolean
   record_ids: string[]
 }
 

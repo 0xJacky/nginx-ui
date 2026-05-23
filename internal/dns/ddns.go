@@ -62,10 +62,11 @@ func DefaultDDNSInterval() int {
 
 // DDNSUpdateInput carries payload for updating a DDNS configuration.
 type DDNSUpdateInput struct {
-	Enabled         bool
-	IntervalSeconds int
-	IPVersion       string
-	RecordIDs       []string
+	Enabled                   bool
+	IntervalSeconds           int
+	IPVersion                 string
+	CleanupConflictingRecords bool
+	RecordIDs                 []string
 }
 
 // DDNSSchedule describes an enabled DDNS task.

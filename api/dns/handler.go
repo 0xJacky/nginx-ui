@@ -171,10 +171,11 @@ func ListDDNSConfig(c *gin.Context) {
 		cfg := domain.DDNSConfig
 		if cfg == nil {
 			cfg = &model.DDNSConfig{
-				Enabled:         false,
-				IntervalSeconds: dnsService.DefaultDDNSInterval(),
-				IPVersion:       dnsService.DDNSIPVersionIPv4IPv6,
-				Targets:         []model.DDNSRecordTarget{},
+				Enabled:                   false,
+				IntervalSeconds:           dnsService.DefaultDDNSInterval(),
+				IPVersion:                 dnsService.DDNSIPVersionIPv4IPv6,
+				CleanupConflictingRecords: true,
+				Targets:                   []model.DDNSRecordTarget{},
 			}
 		} else if cfg.IntervalSeconds <= 0 {
 			cfg.IntervalSeconds = dnsService.DefaultDDNSInterval()
@@ -218,10 +219,11 @@ func UpdateDDNSConfig(c *gin.Context) {
 
 	svc := dnsService.NewService()
 	cfg, err := svc.UpdateDDNSConfig(c.Request.Context(), domainID, dnsService.DDNSUpdateInput{
-		Enabled:         payload.Enabled,
-		IntervalSeconds: payload.IntervalSeconds,
-		IPVersion:       payload.IPVersion,
-		RecordIDs:       payload.RecordIDs,
+		Enabled:                   payload.Enabled,
+		IntervalSeconds:           payload.IntervalSeconds,
+		IPVersion:                 payload.IPVersion,
+		CleanupConflictingRecords: payload.CleanupConflictingRecords,
+		RecordIDs:                 payload.RecordIDs,
 	})
 	if err != nil {
 		cosy.ErrHandler(c, err)

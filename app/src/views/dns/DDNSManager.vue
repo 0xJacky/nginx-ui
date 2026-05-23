@@ -21,6 +21,7 @@ const ddnsForm = ref<UpdateDDNSPayload>({
   enabled: false,
   interval_seconds: 300,
   ip_version: 'ipv4_ipv6',
+  cleanup_conflicting_records: true,
   record_ids: [],
 })
 
@@ -168,6 +169,7 @@ async function openDrawer(record: DDNSDomainItem) {
     enabled: record.config.enabled,
     interval_seconds: record.config.interval_seconds,
     ip_version: record.config.ip_version ?? 'ipv4_ipv6',
+    cleanup_conflicting_records: record.config.cleanup_conflicting_records ?? true,
     record_ids: record.config.targets?.map(t => t.id) ?? [],
   }
   drawerOpen.value = true

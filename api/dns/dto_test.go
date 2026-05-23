@@ -31,3 +31,30 @@ func TestToDDNSResponseNormalizesIPVersion(t *testing.T) {
 		}
 	})
 }
+
+func TestToDDNSResponseCleanupConflictingRecordsDefault(t *testing.T) {
+	t.Run("nil config defaults to true", func(t *testing.T) {
+		resp := toDDNSResponse(nil)
+		require.True(t, resp.CleanupConflictingRecords)
+	})
+
+	t.Run("explicit false round-trips", func(t *testing.T) {
+		resp := toDDNSResponse(&model.DDNSConfig{
+			Enabled:                   true,
+			IntervalSeconds:           300,
+			IPVersion:                 "ipv4_ipv6",
+			CleanupConflictingRecords: false,
+		})
+		require.False(t, resp.CleanupConflictingRecords)
+	})
+
+	t.Run("explicit true persists", func(t *testing.T) {
+		resp := toDDNSResponse(&model.DDNSConfig{
+			Enabled:                   true,
+			IntervalSeconds:           300,
+			IPVersion:                 "ipv4_ipv6",
+			CleanupConflictingRecords: true,
+		})
+		require.True(t, resp.CleanupConflictingRecords)
+	})
+}
