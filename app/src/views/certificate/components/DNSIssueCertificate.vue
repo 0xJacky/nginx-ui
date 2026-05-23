@@ -4,6 +4,7 @@ import type { AutoCertOptions } from '@/api/auto_cert'
 import type { SelfSignedCertPayload } from '@/api/cert'
 import cert from '@/api/cert'
 import AutoCertForm from '@/components/AutoCertForm'
+import StringListInput from '@/components/StringListInput'
 import { PrivateKeyTypeEnum } from '@/constants'
 import ObtainCertLive from '@/views/site/site_edit/components/Cert/ObtainCertLive.vue'
 import SelfSignedCertFields from './SelfSignedCertFields.vue'
@@ -82,16 +83,6 @@ const computedMainDomain = computed(() => {
     return customDomains.value.find(d => d.trim()) || ''
   }
 })
-
-function addCustomDomain() {
-  customDomains.value.push('')
-}
-
-function removeCustomDomain(index: number) {
-  if (customDomains.value.length > 1) {
-    customDomains.value.splice(index, 1)
-  }
-}
 
 function issueCert() {
   if (!data.value.dns_credential_id) {
@@ -200,34 +191,11 @@ async function submitSelfSigned() {
 
           <template v-else-if="certType === 'custom'">
             <AFormItem :label="$gettext('Custom Domains')">
-              <div class="space-y-2">
-                <div
-                  v-for="(_, index) in customDomains"
-                  :key="index"
-                  class="flex items-center gap-2"
-                >
-                  <AInput
-                    v-model:value="customDomains[index]"
-                    :placeholder="$gettext('Enter domain name')"
-                    class="flex-1"
-                  />
-                  <AButton
-                    v-if="customDomains.length > 1"
-                    type="link"
-                    danger
-                    @click="removeCustomDomain(index)"
-                  >
-                    {{ $gettext('Remove') }}
-                  </AButton>
-                </div>
-                <AButton
-                  block
-                  @click="addCustomDomain"
-                >
-                  {{ $gettext('Add Domain') }}
-                </AButton>
-              </div>
-
+              <StringListInput
+                v-model="customDomains"
+                :placeholder="$gettext('Enter domain name')"
+                :add-button-text="$gettext('Add Domain')"
+              />
               <AAlert
                 :message="$gettext('All selected subdomains must belong to the same DNS Provider, otherwise the certificate application will fail.')"
                 type="info"
