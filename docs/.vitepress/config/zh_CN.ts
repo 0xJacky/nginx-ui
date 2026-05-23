@@ -84,6 +84,7 @@ export const zhCNConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           text: '附录',
           collapsed: false,
           items: [
+            { text: 'Docker WebSocket 修复', link: '/zh_CN/guide/docker-websocket-fix' },
             { text: 'Nginx 代理示例', link: '/zh_CN/guide/nginx-proxy-example' },
             { text: '重置密码', link: '/zh_CN/guide/reset-password' },
             { text: '开源协议', link: '/zh_CN/guide/license' }

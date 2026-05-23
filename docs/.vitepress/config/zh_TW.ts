@@ -84,6 +84,7 @@ export const zhTWConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           text: '附錄',
           collapsed: false,
           items: [
+            { text: 'Docker WebSocket 修復', link: '/zh_TW/guide/docker-websocket-fix' },
             { text: 'Nginx 代理示例', link: '/zh_TW/guide/nginx-proxy-example' },
             { text: '重置密碼', link: '/zh_TW/guide/reset-password' },
             { text: '開源協議', link: '/zh_TW/guide/license' }
