@@ -56,6 +56,11 @@ function isRecordAllowedByIPVersion(recordType: string, ipVersion: DDNSIPVersion
   return type === 'A' || type === 'AAAA'
 }
 
+function findSelectedRecordType(value: string) {
+  return records.value.find(item => item.id === value)?.type
+    ?? currentDomain.value?.config.targets?.find(target => target.id === value)?.type
+}
+
 const recordOptions = computed(() => {
   const opts = new Map<string, { value: string, label: string }>()
   records.value
@@ -194,8 +199,10 @@ function closeDrawer() {
 }
 
 function handleIPVersionChange() {
-  const allowedIds = new Set(recordOptions.value.map(option => option.value))
-  ddnsForm.value.record_ids = ddnsForm.value.record_ids.filter(id => allowedIds.has(id))
+  ddnsForm.value.record_ids = ddnsForm.value.record_ids.filter(id => {
+    const recordType = findSelectedRecordType(id)
+    return !recordType || isRecordAllowedByIPVersion(recordType, ddnsForm.value.ip_version)
+  })
 }
 
 async function saveDDNS() {
@@ -348,7 +355,7 @@ watch(() => ddnsForm.value.ip_version, handleIPVersionChange)
           <AFormItem :label="$gettext('Records')">
             <ASelect
               v-model:value="ddnsForm.record_ids"
-              mode="multiple"
+              mode="tags"
               show-search
               :filter-option="(filterRecordOption as any)"
               :options="recordOptions"

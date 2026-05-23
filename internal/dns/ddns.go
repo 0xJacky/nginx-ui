@@ -632,7 +632,7 @@ func collectDDNSTargetsForNamedRecords(records []Record, version string, seenTar
 	for _, record := range records {
 		recordType := strings.ToUpper(record.Type)
 		if recordType != "A" && recordType != "AAAA" {
-			return nil, cosy.WrapErrorWithParams(ErrInvalidDDNSTargetType, recordType)
+			continue
 		}
 		if !ddnsIPVersionMatchesRecordType(version, recordType) {
 			continue
@@ -656,30 +656,26 @@ func collectDDNSTargetsForNamedRecords(records []Record, version string, seenTar
 }
 
 func createDDNSRecordsForMissingName(ctx context.Context, provider Provider, domain string, name string, version string, snapshot ipSnapshot) ([]model.DDNSRecordTarget, error) {
-	if version == DDNSIPVersionBothRequired {
-		if snapshot.IPv4 == "" || snapshot.IPv6 == "" {
-			return nil, ErrDDNSIPUnavailable
-		}
-		return createDDNSRecordTargets(ctx, provider, domain, name, []RecordInput{
-			{Type: "A", Name: name, Content: snapshot.IPv4, TTL: 600},
-			{Type: "AAAA", Name: name, Content: snapshot.IPv6, TTL: 600},
-		})
-	}
-
-	for _, family := range getDDNSIPVersionPolicy(version).families {
+	policy := getDDNSIPVersionPolicy(version)
+	inputs := make([]RecordInput, 0, len(policy.families))
+	for _, family := range policy.families {
 		switch family {
 		case ipFamilyV4:
 			if snapshot.IPv4 != "" {
-				return createDDNSRecordTargets(ctx, provider, domain, name, []RecordInput{{Type: "A", Name: name, Content: snapshot.IPv4, TTL: 600}})
+				inputs = append(inputs, RecordInput{Type: "A", Name: name, Content: snapshot.IPv4, TTL: 600})
 			}
 		case ipFamilyV6:
 			if snapshot.IPv6 != "" {
-				return createDDNSRecordTargets(ctx, provider, domain, name, []RecordInput{{Type: "AAAA", Name: name, Content: snapshot.IPv6, TTL: 600}})
+				inputs = append(inputs, RecordInput{Type: "AAAA", Name: name, Content: snapshot.IPv6, TTL: 600})
 			}
 		}
 	}
 
-	return nil, ErrDDNSIPUnavailable
+	if len(inputs) == 0 || (policy.requireAll && len(inputs) != len(policy.families)) {
+		return nil, ErrDDNSIPUnavailable
+	}
+
+	return createDDNSRecordTargets(ctx, provider, domain, name, inputs)
 }
 
 func createDDNSRecordTargets(ctx context.Context, provider Provider, domain string, name string, inputs []RecordInput) ([]model.DDNSRecordTarget, error) {
