@@ -234,9 +234,21 @@ async function saveDDNS() {
     return
   saving.value = true
   try {
-    await store.updateDDNSConfig(currentDomain.value.id, ddnsForm.value)
+    const res = await store.updateDDNSConfig(currentDomain.value.id, ddnsForm.value)
     await store.refreshDDNSItem(currentDomain.value.id)
     message.success($gettext('DDNS saved'))
+    const deleted = res?.deleted_records ?? []
+    if (deleted.length > 0) {
+      message.info(
+        $gettext(
+          'Removed %{count} conflicting record(s): %{names}',
+          {
+            count: String(deleted.length),
+            names: deleted.map(r => `${r.name} (${r.type})`).join(', '),
+          },
+        ),
+      )
+    }
     closeDrawer()
   }
   finally {
