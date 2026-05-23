@@ -39,7 +39,7 @@ function open() {
 defineExpose({ open })
 
 async function submit() {
-  const name = (form.value.name ?? '').trim()
+  const name = form.value.name.trim()
   const domains = form.value.domains.map(d => d.trim()).filter(Boolean)
   const ip_addresses = form.value.ip_addresses.map(s => s.trim()).filter(Boolean)
 

@@ -58,7 +58,7 @@ export interface CertificateResult {
 }
 
 export interface SelfSignedCertPayload {
-  name?: string
+  name: string
   domains: string[]
   ip_addresses: string[]
   key_type: string

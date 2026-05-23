@@ -60,7 +60,7 @@ async function save() {
     let savedId = data.value.id
     if (isSelfSigned.value && selfSignedPayload.value && data.value.id) {
       const payload = selfSignedPayload.value
-      const name = (payload.name ?? '').trim()
+      const name = payload.name.trim()
       const domains = payload.domains.map(d => d.trim()).filter(Boolean)
       const ip_addresses = payload.ip_addresses.map(s => s.trim()).filter(Boolean)
 

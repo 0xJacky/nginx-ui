@@ -125,7 +125,7 @@ function issueCert() {
 }
 
 async function submitSelfSigned() {
-  const name = (selfSignedPayload.value.name ?? '').trim()
+  const name = selfSignedPayload.value.name.trim()
   const domains = selfSignedPayload.value.domains.map(d => d.trim()).filter(Boolean)
   const ip_addresses = selfSignedPayload.value.ip_addresses.map(s => s.trim()).filter(Boolean)
 
