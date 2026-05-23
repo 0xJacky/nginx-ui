@@ -6,7 +6,7 @@ function getListenPort(params: string) {
   if (!firstToken)
     return ''
 
-  const ipv6Port = firstToken.match(/^\[[^\]]+]:(\d+)$/)
+  const ipv6Port = firstToken.match(/^\[[^\]]+\]:(\d+)$/)
   if (ipv6Port)
     return ipv6Port[1]
 
