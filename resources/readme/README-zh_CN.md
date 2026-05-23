@@ -179,6 +179,7 @@ systemctl restart nginx-ui
 #### 注意
 1. 首次使用时，映射到 `/etc/nginx` 的目录必须为空文件夹。
 2. 如果你想要托管静态文件，可以直接将文件夹映射入容器中。
+3. 如果你从旧镜像升级，请参阅 [Docker WebSocket 修复指南](https://nginxui.com/zh_CN/guide/docker-websocket-fix.html) 以更新 `conf.d/nginx-ui.conf`。
 
 **Docker 部署示例**
 

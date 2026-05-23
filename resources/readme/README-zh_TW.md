@@ -184,6 +184,8 @@ systemctl restart nginx-ui
 
 注意：對映到 `/etc/nginx` 的資料夾應是一個空資料夾。
 
+如果你從舊鏡像升級，請參閱 [Docker WebSocket 修復指南](https://nginxui.com/zh_TW/guide/docker-websocket-fix.html) 以更新 `conf.d/nginx-ui.conf`。
+
 **Docker 範例**
 
 ```bash

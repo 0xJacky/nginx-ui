@@ -178,6 +178,7 @@ Nuestra imagen dpcker [uozi/nginx-ui:latest](https://hub.docker.com/r/uozi/nginx
 ##### Nota
 1. Cuando utilice este contenedor por primera vez, asegúrese de que el volumen mapeado a /etc/nginx esté vacío.
 2. Si desea incluir archivos estáticos, puede mapear directorios al contenedor.
+3. If you are upgrading from an older image, see the [Docker WebSocket fix guide](https://nginxui.com/guide/docker-websocket-fix.html) for required `conf.d/nginx-ui.conf` updates.
 
 **Ejemplo de desplegado Docker**
 
