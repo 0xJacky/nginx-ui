@@ -2,11 +2,14 @@ package self_check
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/uozi-tech/cosy"
 )
 
@@ -136,4 +139,46 @@ func restoreFromBackup(target, bak string) error {
 		return err
 	}
 	return os.WriteFile(target, data, 0o644)
+}
+
+// FixBundledNginxUIConf is the FixFunc for the bundled nginx-ui.conf upgrade
+// self_check task (registered in tasks.go).
+// Flow: read -> backup -> patch -> atomic write -> nginx -t -> reload.
+// On any failure between backup and verify the file is rolled back; the error
+// always includes the backup path.
+func FixBundledNginxUIConf() error {
+	orig, err := os.ReadFile(bundledNginxUIConfPath)
+	if err != nil {
+		return cosy.WrapErrorWithParams(ErrFailedToReadBundledNginxUIConf, err.Error())
+	}
+
+	bak := fmt.Sprintf("%s.bak.%s", bundledNginxUIConfPath, time.Now().Format("20060102150405"))
+	if err := os.WriteFile(bak, orig, 0o644); err != nil {
+		return cosy.WrapErrorWithParams(ErrFailedToCreateBackup, err.Error())
+	}
+
+	if err := patchOnDiskWithBackup(orig, bak); err != nil {
+		return err
+	}
+	return verifyAndReload(bak)
+}
+
+// verifyAndReload runs `nginx -t` and rolls back on failure, then reloads.
+// Reload failures do NOT trigger rollback because the file on disk is already valid.
+func verifyAndReload(bak string) error {
+	if out, err := nginx.TestConfig(); err != nil {
+		if rerr := restoreFromBackup(bundledNginxUIConfPath, bak); rerr != nil {
+			return cosy.WrapErrorWithParams(ErrCriticalRecoveryFailed,
+				"validate failed: "+strings.TrimSpace(out)+
+					"; restore failed: "+rerr.Error()+
+					"; backup at "+bak)
+		}
+		return cosy.WrapErrorWithParams(ErrFixedConfigInvalid,
+			strings.TrimSpace(out)+"; restored from "+bak)
+	}
+	if out, err := nginx.Reload(); err != nil {
+		return cosy.WrapErrorWithParams(ErrReloadFailed,
+			strings.TrimSpace(out)+"; backup at "+bak)
+	}
+	return nil
 }
