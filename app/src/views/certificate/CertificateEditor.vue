@@ -57,15 +57,24 @@ onMounted(() => {
 
 async function save() {
   try {
+    let savedId = data.value.id
     if (isSelfSigned.value && selfSignedPayload.value && data.value.id) {
-      data.value = await cert.modify_self_signed(data.value.id, selfSignedPayload.value)
+      const currentId = data.value.id
+      const result = await cert.modify_self_signed(currentId, selfSignedPayload.value)
+      savedId = result.id || currentId
+      data.value = { ...result, id: savedId }
     }
     else {
       await certStore.save()
+      savedId = data.value.id
+    }
+    if (!savedId) {
+      message.error($gettext('Saved certificate response is missing an ID'))
+      return
     }
     message.success($gettext('Save successfully'))
     errors.value = {}
-    await router.push(`/certificates/${data.value.id}`)
+    await router.push(`/certificates/${savedId}`)
   }
   // eslint-disable-next-line ts/no-explicit-any
   catch (e: any) {

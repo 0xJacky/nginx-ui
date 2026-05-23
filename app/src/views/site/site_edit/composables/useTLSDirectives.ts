@@ -1,15 +1,33 @@
 import { storeToRefs } from 'pinia'
 import { useSiteEditorStore } from '../components/SiteEditor/store'
 
+function getListenPort(params: string) {
+  const firstToken = params.trim().split(/\s+/)[0]?.replace(/;$/, '')
+  if (!firstToken)
+    return ''
+
+  const ipv6Port = firstToken.match(/^\[[^\]]+]:(\d+)$/)
+  if (ipv6Port)
+    return ipv6Port[1]
+
+  const port = firstToken.match(/(?:^|:)(\d+)$/)
+  return port?.[1] ?? ''
+}
+
+export function hasTLSListen(params: string) {
+  const tokens = params.trim().split(/\s+/).map(token => token.replace(/;$/, ''))
+  return getListenPort(params) === '443' && tokens.includes('ssl')
+}
+
+export function isIPv6Listen(params: string) {
+  return params.trim().startsWith('[')
+}
+
 // useTLSDirectives provides helpers that write SSL directives into the
 // currently edited server block.
 export function useTLSDirectives() {
   const editorStore = useSiteEditorStore()
   const { curServerDirectives, curDirectivesMap } = storeToRefs(editorStore)
-
-  function hasTLSListen(params: string) {
-    return params.includes('443') && params.includes('ssl')
-  }
 
   function ensureDirective(directive: string, params: string, insertIndex?: number) {
     if (!curServerDirectives.value)
@@ -33,8 +51,8 @@ export function useTLSDirectives() {
     if (!curServerDirectives.value)
       curServerDirectives.value = []
 
-    const hasIPv4TLSListen = curServerDirectives.value.some(v => v.directive === 'listen' && hasTLSListen(v.params) && !v.params.includes('[::]'))
-    const hasIPv6TLSListen = curServerDirectives.value.some(v => v.directive === 'listen' && hasTLSListen(v.params) && v.params.includes('[::]'))
+    const hasIPv4TLSListen = curServerDirectives.value.some(v => v.directive === 'listen' && hasTLSListen(v.params) && !isIPv6Listen(v.params))
+    const hasIPv6TLSListen = curServerDirectives.value.some(v => v.directive === 'listen' && hasTLSListen(v.params) && isIPv6Listen(v.params))
 
     if (!hasIPv6TLSListen) {
       curServerDirectives.value.splice(0, 0, {

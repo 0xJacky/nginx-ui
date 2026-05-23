@@ -1,16 +1,9 @@
 <script setup lang="ts">
 import type { SelfSignedCertPayload } from '@/api/cert'
 import NodeSelector from '@/components/NodeSelector'
-import { PrivateKeyTypeEnum, PrivateKeyTypeList } from '@/constants'
+import { PrivateKeyTypeList } from '@/constants'
 
 const data = defineModel<SelfSignedCertPayload>({ required: true })
-
-onMounted(() => {
-  if (!data.value.key_type)
-    data.value.key_type = PrivateKeyTypeEnum.P256
-  if (!data.value.validity_days)
-    data.value.validity_days = 365
-})
 </script>
 
 <template>
