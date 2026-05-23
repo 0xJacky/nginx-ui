@@ -98,3 +98,24 @@ func TestGetAutoRenewNotificationResponseFallsBackToPlainText(t *testing.T) {
 		t.Fatalf("unexpected fallback response: %s", text)
 	}
 }
+
+func TestShouldSkipAutoCertForNonSuccessStatus(t *testing.T) {
+	cases := []struct {
+		name     string
+		status   string
+		expected bool
+	}{
+		{"pending is skipped", model.CertStatusPending, true},
+		{"failure is skipped", model.CertStatusFailure, true},
+		{"success is renewed", model.CertStatusSuccess, false},
+		{"empty (legacy) is renewed", "", false},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			cert := &model.Cert{Status: tc.status}
+			if got := shouldSkipAutoCertByStatus(cert); got != tc.expected {
+				t.Fatalf("shouldSkipAutoCertByStatus(%q) = %v, want %v", tc.status, got, tc.expected)
+			}
+		})
+	}
+}
