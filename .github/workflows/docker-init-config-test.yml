@@ -1,0 +1,44 @@
+name: docker init-config tests
+
+on:
+  push:
+    paths:
+      - 'resources/docker/init-config.sh'
+      - 'resources/docker/nginx-ui.conf'
+      - 'resources/docker/nginx-ui.conf.known-hashes'
+      - 'resources/docker/scripts/**'
+      - 'resources/docker/tests/**'
+      - '.github/workflows/docker-init-config-test.yml'
+  pull_request:
+    paths:
+      - 'resources/docker/init-config.sh'
+      - 'resources/docker/nginx-ui.conf'
+      - 'resources/docker/nginx-ui.conf.known-hashes'
+      - 'resources/docker/scripts/**'
+      - 'resources/docker/tests/**'
+      - '.github/workflows/docker-init-config-test.yml'
+
+jobs:
+  hash-consistency:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Verify last known-hash equals current template
+        run: |
+          expected=$(sha256sum resources/docker/nginx-ui.conf | awk '{print $1}')
+          latest=$(grep -vE '^[[:space:]]*(#|$)' resources/docker/nginx-ui.conf.known-hashes \
+                   | awk '{print $1}' | tail -n1)
+          if [ "$expected" != "$latest" ]; then
+            echo "::error::nginx-ui.conf changed without updating known-hashes file."
+            echo "Run: bash resources/docker/scripts/update-nginx-ui-conf-hash.sh"
+            exit 1
+          fi
+
+  bats:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install bats
+        run: sudo apt-get update && sudo apt-get install -y bats
+      - name: Run bats tests
+        run: bats resources/docker/tests/
