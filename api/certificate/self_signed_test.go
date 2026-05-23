@@ -8,6 +8,7 @@ import (
 	"net/http/httptest"
 	"os"
 	"path/filepath"
+	"strings"
 	"sync"
 	"testing"
 
@@ -167,5 +168,33 @@ func TestCleanupSelfSignedCertFilesRemovesManagedDirectory(t *testing.T) {
 
 	if _, err := os.Stat(certDir); !os.IsNotExist(err) {
 		t.Fatalf("expected managed cert directory to be removed, stat err: %v", err)
+	}
+}
+
+func TestGenerateSelfSignedCertRejectsEmptyName(t *testing.T) {
+	setupSelfSignedAPITest(t)
+
+	router := gin.New()
+	router.POST("/self_signed_cert", GenerateSelfSignedCert)
+
+	body, err := json.Marshal(SelfSignedCertRequest{
+		Domains:      []string{"named.example"},
+		KeyType:      string(certcrypto.EC256),
+		ValidityDays: 30,
+	})
+	if err != nil {
+		t.Fatalf("marshal request: %v", err)
+	}
+
+	req := httptest.NewRequest(http.MethodPost, "/self_signed_cert", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	rec := httptest.NewRecorder()
+	router.ServeHTTP(rec, req)
+
+	if rec.Code < 400 || rec.Code >= 500 {
+		t.Fatalf("status = %d, want a 4xx for missing name", rec.Code)
+	}
+	if !strings.Contains(strings.ToLower(rec.Body.String()), "name") {
+		t.Fatalf("response body %q did not mention the missing name field", rec.Body.String())
 	}
 }

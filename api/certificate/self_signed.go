@@ -26,7 +26,7 @@ const defaultSelfSignedSlug = "self_signed"
 // SelfSignedCertRequest is the payload for generating or modifying a
 // self-signed certificate.
 type SelfSignedCertRequest struct {
-	Name         string   `json:"name"`
+	Name         string   `json:"name" binding:"required"`
 	Domains      []string `json:"domains" binding:"omitempty"`
 	IPAddresses  []string `json:"ip_addresses" binding:"omitempty,dive,ip"`
 	KeyType      string   `json:"key_type" binding:"omitempty,auto_cert_key_type"`
