@@ -370,6 +370,20 @@ func (s *Service) runDDNSUpdate(ctx context.Context, domainID uint64) error {
 
 	ipSnapshot, ipErr := resolvePublicIPs(ctx, version)
 
+	now := time.Now()
+	if ipSnapshot.IPv4 != "" {
+		cfg.IPv4FailedSince = nil
+	} else if cfg.IPv4FailedSince == nil {
+		t := now
+		cfg.IPv4FailedSince = &t
+	}
+	if ipSnapshot.IPv6 != "" {
+		cfg.IPv6FailedSince = nil
+	} else if cfg.IPv6FailedSince == nil {
+		t := now
+		cfg.IPv6FailedSince = &t
+	}
+
 	records, err := fetchProviderRecords(ctx, provider, domain.Domain)
 	if err != nil {
 		return err
@@ -377,8 +391,6 @@ func (s *Service) runDDNSUpdate(ctx context.Context, domainID uint64) error {
 	recordMap := indexRecordsByID(records)
 
 	updateErrs := append([]string(nil), ipSnapshot.Warnings...)
-
-	now := time.Now()
 
 	for _, target := range cfg.Targets {
 		record, ok := recordMap[target.ID]

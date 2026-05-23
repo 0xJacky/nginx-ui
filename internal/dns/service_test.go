@@ -7,6 +7,7 @@ import (
 	"net/http/httptest"
 	"sync"
 	"testing"
+	"time"
 
 	certdns "github.com/0xJacky/Nginx-UI/internal/cert/dns"
 	dnsSvc "github.com/0xJacky/Nginx-UI/internal/dns"
@@ -617,4 +618,91 @@ func TestUpdateDDNSConfigSingleStackPreservesOwnFamilyWhenIPUnavailable(t *testi
 	require.Len(t, cfg.Targets, 1)
 	require.Equal(t, "a-record", cfg.Targets[0].ID)
 	require.Empty(t, getMockDeletedRecordIDs(), "single-stack must not delete own family on IP failure")
+}
+
+func TestRunDDNSUpdateTracksFamilyFailureTimestamps(t *testing.T) {
+	registerMockProvider()
+	setMockRecords([]dnsSvc.Record{
+		{ID: "a-record", Type: "A", Name: "home", Content: "198.51.100.10", TTL: 600},
+		{ID: "aaaa-record", Type: "AAAA", Name: "home", Content: "2001:db8::1", TTL: 600},
+	})
+
+	ipv4Server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_, _ = w.Write([]byte("198.51.100.12"))
+	}))
+	defer ipv4Server.Close()
+	// IPv6 endpoint unreachable
+	restore := dnsSvc.OverrideIPEndpointsForTest([]string{ipv4Server.URL}, []string{"http://127.0.0.1:1"})
+	defer restore()
+
+	q := setupTestQuery(t)
+	ctx := context.Background()
+	service := dnsSvc.NewService()
+
+	cred := createCredential(t, q)
+	domain, err := service.CreateDomain(ctx, dnsSvc.DomainInput{
+		Domain:          "example.com",
+		DnsCredentialID: cred.ID,
+	})
+	require.NoError(t, err)
+
+	domain.DDNSConfig = &model.DDNSConfig{
+		Enabled:                   true,
+		IntervalSeconds:           dnsSvc.DefaultDDNSInterval(),
+		IPVersion:                 "ipv4_ipv6",
+		CleanupConflictingRecords: true,
+		Targets: []model.DDNSRecordTarget{
+			{ID: "a-record", Name: "home", Type: "A"},
+			{ID: "aaaa-record", Name: "home", Type: "AAAA"},
+		},
+	}
+	require.NoError(t, model.UseDB().WithContext(ctx).Save(domain).Error)
+
+	require.NoError(t, dnsSvc.RunDDNSUpdate(ctx, domain.ID))
+
+	var loaded model.DnsDomain
+	require.NoError(t, model.UseDB().WithContext(ctx).First(&loaded, domain.ID).Error)
+	require.Nil(t, loaded.DDNSConfig.IPv4FailedSince, "ipv4 detected, timestamp should be nil")
+	require.NotNil(t, loaded.DDNSConfig.IPv6FailedSince, "ipv6 failed, timestamp should be set")
+}
+
+func TestRunDDNSUpdateClearsFailedSinceOnRecovery(t *testing.T) {
+	registerMockProvider()
+	setMockRecords([]dnsSvc.Record{
+		{ID: "a-record", Type: "A", Name: "home", Content: "198.51.100.10", TTL: 600},
+	})
+
+	ipv4Server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_, _ = w.Write([]byte("198.51.100.12"))
+	}))
+	defer ipv4Server.Close()
+	restore := dnsSvc.OverrideIPEndpointsForTest([]string{ipv4Server.URL}, []string{"http://127.0.0.1:1"})
+	defer restore()
+
+	q := setupTestQuery(t)
+	ctx := context.Background()
+	service := dnsSvc.NewService()
+
+	cred := createCredential(t, q)
+	domain, err := service.CreateDomain(ctx, dnsSvc.DomainInput{
+		Domain:          "example.com",
+		DnsCredentialID: cred.ID,
+	})
+	require.NoError(t, err)
+
+	past := time.Now().Add(-30 * time.Minute)
+	domain.DDNSConfig = &model.DDNSConfig{
+		Enabled:         true,
+		IntervalSeconds: dnsSvc.DefaultDDNSInterval(),
+		IPVersion:       "ipv4",
+		IPv4FailedSince: &past,
+		Targets:         []model.DDNSRecordTarget{{ID: "a-record", Name: "home", Type: "A"}},
+	}
+	require.NoError(t, model.UseDB().WithContext(ctx).Save(domain).Error)
+
+	require.NoError(t, dnsSvc.RunDDNSUpdate(ctx, domain.ID))
+
+	var loaded model.DnsDomain
+	require.NoError(t, model.UseDB().WithContext(ctx).First(&loaded, domain.ID).Error)
+	require.Nil(t, loaded.DDNSConfig.IPv4FailedSince, "ipv4 success should clear the timestamp")
 }
