@@ -28,8 +28,8 @@ const selfSignedLoading = ref(false)
 function emptySelfSignedPayload(): SelfSignedCertPayload {
   return {
     name: '',
-    domains: [],
-    ip_addresses: [],
+    domains: [''],
+    ip_addresses: [''],
     key_type: PrivateKeyTypeEnum.P256,
     validity_days: 365,
     sync_node_ids: [],
@@ -125,7 +125,14 @@ function issueCert() {
 }
 
 async function submitSelfSigned() {
-  const { domains, ip_addresses } = selfSignedPayload.value
+  const name = (selfSignedPayload.value.name ?? '').trim()
+  const domains = selfSignedPayload.value.domains.map(d => d.trim()).filter(Boolean)
+  const ip_addresses = selfSignedPayload.value.ip_addresses.map(s => s.trim()).filter(Boolean)
+
+  if (!name) {
+    message.error($gettext('Please enter a name for the certificate'))
+    return
+  }
   if (domains.length === 0 && ip_addresses.length === 0) {
     message.error($gettext('Please enter at least one domain or IP address'))
     return
@@ -133,7 +140,12 @@ async function submitSelfSigned() {
 
   selfSignedLoading.value = true
   try {
-    await cert.generate_self_signed(selfSignedPayload.value)
+    await cert.generate_self_signed({
+      ...selfSignedPayload.value,
+      name,
+      domains,
+      ip_addresses,
+    })
     message.success($gettext('Self-signed certificate generated'))
     visible.value = false
     emit('issued')

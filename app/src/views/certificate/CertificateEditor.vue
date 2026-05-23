@@ -59,8 +59,27 @@ async function save() {
   try {
     let savedId = data.value.id
     if (isSelfSigned.value && selfSignedPayload.value && data.value.id) {
+      const payload = selfSignedPayload.value
+      const name = (payload.name ?? '').trim()
+      const domains = payload.domains.map(d => d.trim()).filter(Boolean)
+      const ip_addresses = payload.ip_addresses.map(s => s.trim()).filter(Boolean)
+
+      if (!name) {
+        message.error($gettext('Please enter a name for the certificate'))
+        return
+      }
+      if (domains.length === 0 && ip_addresses.length === 0) {
+        message.error($gettext('Please enter at least one domain or IP address'))
+        return
+      }
+
       const currentId = data.value.id
-      const result = await cert.modify_self_signed(currentId, selfSignedPayload.value)
+      const result = await cert.modify_self_signed(currentId, {
+        ...payload,
+        name,
+        domains,
+        ip_addresses,
+      })
       savedId = result.id || currentId
       data.value = { ...result, id: savedId }
     }
