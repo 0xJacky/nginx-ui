@@ -249,11 +249,13 @@ func (s *Service) UpdateDDNSConfigWithDetails(ctx context.Context, domainID uint
 					if recordType == "" {
 						continue
 					}
-					if containsTargetForName(targets, name, recordType) {
-						continue
-					}
 					existing, hasExisting := lookupRecord(recordsByNameType, name, recordType)
+
 					if ipValue != "" {
+						// Family detected. Skip if user already covered it; otherwise pair/create.
+						if containsTargetForName(targets, name, recordType) {
+							continue
+						}
 						if hasExisting {
 							targets = append(targets, model.DDNSRecordTarget{
 								ID:   existing.ID,
@@ -279,7 +281,8 @@ func (s *Service) UpdateDDNSConfigWithDetails(ctx context.Context, domainID uint
 						createdRecords = append(createdRecords, createdTarget)
 						targets = append(targets, createdTarget)
 					} else if hasExisting {
-						// F's IP not detected: delete any existing record of that family at this name.
+						// Family undetected and a record exists at this name — delete it,
+						// removing the corresponding target if it was already selected.
 						ctxTimeout, cancel := context.WithTimeout(ctx, providerTimeout)
 						err := provider.DeleteRecord(ctxTimeout, domain.Domain, existing.ID)
 						cancel()

@@ -961,3 +961,222 @@ func TestRunDDNSUpdateDeleteFailurePreservesTargetForRetry(t *testing.T) {
 	require.NotNil(t, loaded.DDNSConfig.IPv6FailedSince, "timestamp should still be set so retry happens")
 	require.Contains(t, loaded.DDNSConfig.LastError, "provider error")
 }
+
+func TestUpdateDDNSConfigCrossFamilyPivotsWhenIPv4Unavailable(t *testing.T) {
+	registerMockProvider()
+	// Only an A record exists at "home" — no AAAA. Provider also lacks
+	// any sibling AAAA we could pair.
+	setMockRecords([]dnsSvc.Record{
+		{ID: "a-record", Type: "A", Name: "home", Content: "198.51.100.10", TTL: 600},
+	})
+
+	// IPv4 endpoint unreachable; IPv6 endpoint reachable.
+	ipv6Server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_, _ = w.Write([]byte("2001:db8::20"))
+	}))
+	defer ipv6Server.Close()
+	restore := dnsSvc.OverrideIPEndpointsForTest([]string{"http://127.0.0.1:1"}, []string{ipv6Server.URL})
+	defer restore()
+
+	q := setupTestQuery(t)
+	ctx := context.Background()
+	service := dnsSvc.NewService()
+
+	cred := createCredential(t, q)
+	domain, err := service.CreateDomain(ctx, dnsSvc.DomainInput{
+		Domain:          "example.com",
+		DnsCredentialID: cred.ID,
+	})
+	require.NoError(t, err)
+
+	result, err := service.UpdateDDNSConfigWithDetails(ctx, domain.ID, dnsSvc.DDNSUpdateInput{
+		Enabled:                   true,
+		IntervalSeconds:           dnsSvc.DefaultDDNSInterval(),
+		IPVersion:                 "ipv4_ipv6",
+		CleanupConflictingRecords: true,
+		RecordIDs:                 []string{"a-record"},
+	})
+	require.NoError(t, err)
+
+	// home-a was deleted (IPv4 unreachable); AAAA was auto-created at home.
+	require.Equal(t, []string{"a-record"}, getMockDeletedRecordIDs())
+	created := getMockCreatedRecords()
+	require.Len(t, created, 1)
+	require.Equal(t, "AAAA", created[0].Type)
+	require.Equal(t, "home", created[0].Name)
+	require.Equal(t, "2001:db8::20", created[0].Content)
+
+	// targets should only contain the new AAAA.
+	require.Len(t, result.Config.Targets, 1)
+	require.Equal(t, "AAAA", result.Config.Targets[0].Type)
+	require.Equal(t, "home", result.Config.Targets[0].Name)
+
+	require.Len(t, result.DeletedRecords, 1)
+	require.Equal(t, "a-record", result.DeletedRecords[0].ID)
+}
+
+func TestUpdateDDNSConfigFlagOffSkipsAutoCreate(t *testing.T) {
+	registerMockProvider()
+	setMockRecords([]dnsSvc.Record{
+		{ID: "a-record", Type: "A", Name: "home", Content: "198.51.100.10", TTL: 600},
+	})
+
+	ipv4Server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_, _ = w.Write([]byte("198.51.100.12"))
+	}))
+	defer ipv4Server.Close()
+	ipv6Server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_, _ = w.Write([]byte("2001:db8::20"))
+	}))
+	defer ipv6Server.Close()
+	restore := dnsSvc.OverrideIPEndpointsForTest([]string{ipv4Server.URL}, []string{ipv6Server.URL})
+	defer restore()
+
+	q := setupTestQuery(t)
+	ctx := context.Background()
+	service := dnsSvc.NewService()
+
+	cred := createCredential(t, q)
+	domain, err := service.CreateDomain(ctx, dnsSvc.DomainInput{
+		Domain:          "example.com",
+		DnsCredentialID: cred.ID,
+	})
+	require.NoError(t, err)
+
+	cfg, err := service.UpdateDDNSConfig(ctx, domain.ID, dnsSvc.DDNSUpdateInput{
+		Enabled:                   true,
+		IntervalSeconds:           dnsSvc.DefaultDDNSInterval(),
+		IPVersion:                 "ipv4_ipv6",
+		CleanupConflictingRecords: false,
+		RecordIDs:                 []string{"a-record"},
+	})
+	require.NoError(t, err)
+	require.Len(t, cfg.Targets, 1)
+	require.Equal(t, "a-record", cfg.Targets[0].ID)
+	require.Empty(t, getMockCreatedRecords(), "flag off must skip auto-create even when sibling IP is available")
+}
+
+func TestUpdateDDNSConfigUnknownNameDualStackFlagOff(t *testing.T) {
+	registerMockProvider()
+	setMockRecords(nil)
+
+	ipv4Server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_, _ = w.Write([]byte("198.51.100.12"))
+	}))
+	defer ipv4Server.Close()
+	ipv6Server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_, _ = w.Write([]byte("2001:db8::20"))
+	}))
+	defer ipv6Server.Close()
+	restore := dnsSvc.OverrideIPEndpointsForTest([]string{ipv4Server.URL}, []string{ipv6Server.URL})
+	defer restore()
+
+	q := setupTestQuery(t)
+	ctx := context.Background()
+	service := dnsSvc.NewService()
+
+	cred := createCredential(t, q)
+	domain, err := service.CreateDomain(ctx, dnsSvc.DomainInput{
+		Domain:          "example.com",
+		DnsCredentialID: cred.ID,
+	})
+	require.NoError(t, err)
+
+	cfg, err := service.UpdateDDNSConfig(ctx, domain.ID, dnsSvc.DDNSUpdateInput{
+		Enabled:                   true,
+		IntervalSeconds:           dnsSvc.DefaultDDNSInterval(),
+		IPVersion:                 "ipv4_ipv6",
+		CleanupConflictingRecords: false,
+		RecordIDs:                 []string{"newhost"},
+	})
+	require.NoError(t, err)
+	require.Len(t, cfg.Targets, 1)
+	require.Equal(t, "A", cfg.Targets[0].Type, "ipv4_ipv6 best-effort creates first available family (A)")
+
+	created := getMockCreatedRecords()
+	require.Len(t, created, 1)
+	require.Equal(t, "A", created[0].Type)
+	require.Equal(t, "newhost", created[0].Name)
+}
+
+func TestUpdateDDNSConfigUnknownNameDualStackFlagOnCreatesBoth(t *testing.T) {
+	registerMockProvider()
+	setMockRecords(nil)
+
+	ipv4Server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_, _ = w.Write([]byte("198.51.100.12"))
+	}))
+	defer ipv4Server.Close()
+	ipv6Server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_, _ = w.Write([]byte("2001:db8::20"))
+	}))
+	defer ipv6Server.Close()
+	restore := dnsSvc.OverrideIPEndpointsForTest([]string{ipv4Server.URL}, []string{ipv6Server.URL})
+	defer restore()
+
+	q := setupTestQuery(t)
+	ctx := context.Background()
+	service := dnsSvc.NewService()
+
+	cred := createCredential(t, q)
+	domain, err := service.CreateDomain(ctx, dnsSvc.DomainInput{
+		Domain:          "example.com",
+		DnsCredentialID: cred.ID,
+	})
+	require.NoError(t, err)
+
+	cfg, err := service.UpdateDDNSConfig(ctx, domain.ID, dnsSvc.DDNSUpdateInput{
+		Enabled:                   true,
+		IntervalSeconds:           dnsSvc.DefaultDDNSInterval(),
+		IPVersion:                 "ipv4_ipv6",
+		CleanupConflictingRecords: true,
+		RecordIDs:                 []string{"newhost"},
+	})
+	require.NoError(t, err)
+	require.Len(t, cfg.Targets, 2)
+
+	types := []string{cfg.Targets[0].Type, cfg.Targets[1].Type}
+	require.ElementsMatch(t, []string{"A", "AAAA"}, types)
+
+	created := getMockCreatedRecords()
+	require.Len(t, created, 2, "§6.1 creates A; §6.3 auto-creates AAAA")
+}
+
+func TestUpdateDDNSConfigUnknownNameSingleStack(t *testing.T) {
+	registerMockProvider()
+	setMockRecords(nil)
+
+	ipv4Server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_, _ = w.Write([]byte("198.51.100.12"))
+	}))
+	defer ipv4Server.Close()
+	restore := dnsSvc.OverrideIPEndpointsForTest([]string{ipv4Server.URL}, []string{"http://127.0.0.1:1"})
+	defer restore()
+
+	q := setupTestQuery(t)
+	ctx := context.Background()
+	service := dnsSvc.NewService()
+
+	cred := createCredential(t, q)
+	domain, err := service.CreateDomain(ctx, dnsSvc.DomainInput{
+		Domain:          "example.com",
+		DnsCredentialID: cred.ID,
+	})
+	require.NoError(t, err)
+
+	cfg, err := service.UpdateDDNSConfig(ctx, domain.ID, dnsSvc.DDNSUpdateInput{
+		Enabled:                   true,
+		IntervalSeconds:           dnsSvc.DefaultDDNSInterval(),
+		IPVersion:                 "ipv4",
+		CleanupConflictingRecords: true,
+		RecordIDs:                 []string{"newhost"},
+	})
+	require.NoError(t, err)
+	require.Len(t, cfg.Targets, 1)
+	require.Equal(t, "A", cfg.Targets[0].Type)
+	require.Equal(t, "newhost", cfg.Targets[0].Name)
+
+	created := getMockCreatedRecords()
+	require.Len(t, created, 1)
+	require.Equal(t, "A", created[0].Type)
+}
