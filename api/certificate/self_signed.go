@@ -2,6 +2,7 @@ package certificate
 
 import (
 	"net/http"
+	"os"
 	"path/filepath"
 	"strings"
 
@@ -72,6 +73,11 @@ func GenerateSelfSignedCert(c *gin.Context) {
 	keyPath := filepath.Join(dir, "private.key")
 
 	if err = writeSelfSignedFiles(certPath, keyPath, opts); err != nil {
+		// remove the partial directory so a failed generation leaves no orphan files
+		if rmErr := os.RemoveAll(dir); rmErr != nil {
+			logger.Errorf("self-signed cert directory cleanup failed for id %d at %s: %v",
+				certModel.ID, dir, rmErr)
+		}
 		// roll back the row so a failed generation leaves no orphan record
 		if rollbackErr := db.Delete(certModel).Error; rollbackErr != nil {
 			logger.Errorf("self-signed cert rollback failed for id %d: %v", certModel.ID, rollbackErr)

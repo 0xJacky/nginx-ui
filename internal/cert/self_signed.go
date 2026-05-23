@@ -16,6 +16,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/go-acme/lego/v5/certcrypto"
 	"github.com/uozi-tech/cosy"
+	"github.com/uozi-tech/cosy/logger"
 )
 
 const (
@@ -119,21 +120,27 @@ func RegenerateSelfSigned(certModel *model.Cert) (certPEM, keyPEM []byte, err er
 
 	signer, parseErr := loadSelfSignedKey(certModel.SSLCertificateKeyPath)
 	if parseErr != nil || signer == nil {
-		// fall back to a fresh key when the existing key cannot be reused
+		// Fall back to a fresh key when the existing key cannot be reused.
+		// Log a warning so operators notice that the certificate's public key
+		// (and therefore its fingerprint) has changed.
+		logger.Warnf("self-signed key %s could not be reused, generating a fresh key: %v",
+			certModel.SSLCertificateKeyPath, parseErr)
 		return GenerateSelfSigned(opts)
 	}
 	return signSelfSigned(opts, signer)
 }
 
 // SelfSignedOptionsFromModel builds SelfSignedOptions from a persisted Cert.
+// The model's slices are defensively copied so options consumers cannot
+// observe concurrent mutations on the persisted Cert.
 func SelfSignedOptionsFromModel(certModel *model.Cert) SelfSignedOptions {
 	opts := SelfSignedOptions{
-		DNSNames:     certModel.Domains,
+		DNSNames:     append([]string(nil), certModel.Domains...),
 		KeyType:      certModel.GetKeyType(),
 		ValidityDays: SelfSignedDefaultValidityDays,
 	}
 	if certModel.SelfSignedConfig != nil {
-		opts.IPAddresses = certModel.SelfSignedConfig.IPAddresses
+		opts.IPAddresses = append([]string(nil), certModel.SelfSignedConfig.IPAddresses...)
 		if certModel.SelfSignedConfig.ValidityDays > 0 {
 			opts.ValidityDays = certModel.SelfSignedConfig.ValidityDays
 		}
