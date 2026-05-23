@@ -28,7 +28,7 @@ var (
 // or ErrBundledNginxUIConfOutdated if any marker is missing.
 // Outside of the official docker image, returns nil unconditionally.
 func CheckBundledNginxUIConf() error {
-	if !helper.InNginxUIOfficialDocker() {
+	if !helper.IsOfficialDockerImage() {
 		return nil
 	}
 	data, err := os.ReadFile(bundledNginxUIConfPath)

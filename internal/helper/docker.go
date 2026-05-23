@@ -6,6 +6,15 @@ import (
 	"github.com/spf13/cast"
 )
 
+// IsOfficialDockerImage returns true when running inside the official Nginx UI
+// docker image. Unlike InNginxUIOfficialDocker, this does NOT honour
+// NGINX_UI_IGNORE_DOCKER_SOCKET — that opt-out is specific to features that
+// require the docker socket (OTA upgrade), and should not suppress checks
+// that simply happen to be docker-only (e.g. bundled config sync).
+func IsOfficialDockerImage() bool {
+	return cast.ToBool(os.Getenv("NGINX_UI_OFFICIAL_DOCKER"))
+}
+
 func InNginxUIOfficialDocker() bool {
 	return cast.ToBool(os.Getenv("NGINX_UI_OFFICIAL_DOCKER")) &&
 		!cast.ToBool(os.Getenv("NGINX_UI_IGNORE_DOCKER_SOCKET"))

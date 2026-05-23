@@ -82,6 +82,29 @@ func TestCheckBundledNginxUIConf_NotInDocker(t *testing.T) {
 	assert.NoError(t, CheckBundledNginxUIConf())
 }
 
+func TestCheckBundledNginxUIConf_RunsEvenWithDockerSocketIgnored(t *testing.T) {
+	// IGNORE_DOCKER_SOCKET should NOT suppress this check — it's only meant
+	// to opt out of the docker-socket feature, not all docker-only checks.
+	t.Setenv("NGINX_UI_OFFICIAL_DOCKER", "true")
+	t.Setenv("NGINX_UI_IGNORE_DOCKER_SOCKET", "true")
+
+	dir := t.TempDir()
+	target := filepath.Join(dir, "nginx-ui.conf")
+	src := filepath.Join("test_cases", "bundled", "unfixed-default.conf")
+	data, err := os.ReadFile(src)
+	require.NoError(t, err)
+	require.NoError(t, os.WriteFile(target, data, 0o644))
+
+	orig := bundledNginxUIConfPath
+	bundledNginxUIConfPath = target
+	t.Cleanup(func() { bundledNginxUIConfPath = orig })
+
+	err = CheckBundledNginxUIConf()
+	var cErr *cosy.Error
+	require.True(t, errors.As(err, &cErr))
+	assert.Equal(t, int32(40421), cErr.Code)
+}
+
 func TestApplyBundledConfPatch_Idempotent(t *testing.T) {
 	fixed, err := os.ReadFile(filepath.Join("test_cases", "bundled", "fixed-default.conf"))
 	require.NoError(t, err)
