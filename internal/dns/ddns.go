@@ -657,25 +657,38 @@ func collectDDNSTargetsForNamedRecords(records []Record, version string, seenTar
 
 func createDDNSRecordsForMissingName(ctx context.Context, provider Provider, domain string, name string, version string, snapshot ipSnapshot) ([]model.DDNSRecordTarget, error) {
 	policy := getDDNSIPVersionPolicy(version)
-	inputs := make([]RecordInput, 0, len(policy.families))
+
+	// both_required: must create both A and AAAA atomically.
+	if policy.requireAll {
+		if snapshot.IPv4 == "" || snapshot.IPv6 == "" {
+			return nil, ErrDDNSIPUnavailable
+		}
+		return createDDNSRecordTargets(ctx, provider, domain, name, []RecordInput{
+			{Type: "A", Name: name, Content: snapshot.IPv4, TTL: 600},
+			{Type: "AAAA", Name: name, Content: snapshot.IPv6, TTL: 600},
+		})
+	}
+
+	// Best-effort modes (single-family or dual-stack): create only the first
+	// available family in policy preference order, never both.
 	for _, family := range policy.families {
 		switch family {
 		case ipFamilyV4:
 			if snapshot.IPv4 != "" {
-				inputs = append(inputs, RecordInput{Type: "A", Name: name, Content: snapshot.IPv4, TTL: 600})
+				return createDDNSRecordTargets(ctx, provider, domain, name, []RecordInput{
+					{Type: "A", Name: name, Content: snapshot.IPv4, TTL: 600},
+				})
 			}
 		case ipFamilyV6:
 			if snapshot.IPv6 != "" {
-				inputs = append(inputs, RecordInput{Type: "AAAA", Name: name, Content: snapshot.IPv6, TTL: 600})
+				return createDDNSRecordTargets(ctx, provider, domain, name, []RecordInput{
+					{Type: "AAAA", Name: name, Content: snapshot.IPv6, TTL: 600},
+				})
 			}
 		}
 	}
 
-	if len(inputs) == 0 || (policy.requireAll && len(inputs) != len(policy.families)) {
-		return nil, ErrDDNSIPUnavailable
-	}
-
-	return createDDNSRecordTargets(ctx, provider, domain, name, inputs)
+	return nil, ErrDDNSIPUnavailable
 }
 
 func createDDNSRecordTargets(ctx context.Context, provider Provider, domain string, name string, inputs []RecordInput) ([]model.DDNSRecordTarget, error) {
