@@ -59,6 +59,7 @@ RUN echo 'longrun' > /etc/s6-overlay/s6-rc.d/nginx-ui/type && \
 # copy nginx config
 COPY resources/docker/nginx.conf /usr/local/etc/nginx/nginx.conf
 COPY resources/docker/nginx-ui.conf /usr/local/etc/nginx/conf.d/nginx-ui.conf
+COPY resources/docker/nginx-ui.conf.known-hashes /usr/local/share/nginx-ui/nginx-ui.conf.known-hashes
 
 # copy nginx-ui executable binary
 COPY nginx-ui-$TARGETOS-$TARGETARCH$TARGETVARIANT/nginx-ui /usr/local/bin/nginx-ui
