@@ -17,31 +17,25 @@ function removeItem(index: number) {
   next.splice(index, 1)
   items.value = next
 }
-
-function updateItem(index: number, value: string) {
-  const next = [...items.value]
-  next[index] = value
-  items.value = next
-}
 </script>
 
 <template>
   <div class="space-y-2">
     <div
-      v-for="(item, index) in items"
+      v-for="(_, index) in items"
       :key="index"
       class="flex items-center gap-2"
     >
       <AInput
-        :value="item"
+        v-model:value="items[index]"
         :placeholder="placeholder"
         class="flex-1"
-        @update:value="(value: string) => updateItem(index, value)"
       />
       <AButton
         v-if="items.length > 1"
         type="link"
         danger
+        :aria-label="`${$gettext('Remove')} ${index + 1}`"
         @click="removeItem(index)"
       >
         {{ $gettext('Remove') }}
