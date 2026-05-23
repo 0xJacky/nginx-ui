@@ -1,6 +1,8 @@
 package dns
 
 import (
+	"time"
+
 	"github.com/0xJacky/Nginx-UI/internal/dns"
 	"github.com/0xJacky/Nginx-UI/model"
 )
@@ -48,8 +50,6 @@ func toRecordInput(req recordRequest) dns.RecordInput {
 		Comment:  req.Comment,
 	}
 }
-
-const timeFormat = "2006-01-02T15:04:05Z07:00"
 
 type ddnsConfigRequest struct {
 	Enabled                   bool     `json:"enabled"`
@@ -103,7 +103,7 @@ func toDDNSResponse(cfg *model.DDNSConfig) ddnsConfigResponse {
 	resp.LastError = cfg.LastError
 
 	if cfg.LastRunAt != nil {
-		resp.LastRunAt = cfg.LastRunAt.Format(timeFormat)
+		resp.LastRunAt = cfg.LastRunAt.Format(time.RFC3339)
 	}
 
 	for _, target := range cfg.Targets {
