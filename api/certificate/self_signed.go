@@ -95,6 +95,13 @@ func GenerateSelfSignedCert(c *gin.Context) {
 	}).Error; err != nil {
 		logger.Errorf("self-signed cert id %d generated at %s but persisting paths failed: %v",
 			certModel.ID, dir, err)
+		if rmErr := os.RemoveAll(dir); rmErr != nil {
+			logger.Errorf("self-signed cert directory cleanup failed for id %d at %s: %v",
+				certModel.ID, dir, rmErr)
+		}
+		if rollbackErr := db.Delete(certModel).Error; rollbackErr != nil {
+			logger.Errorf("self-signed cert rollback failed for id %d: %v", certModel.ID, rollbackErr)
+		}
 		cosy.ErrHandler(c, err)
 		return
 	}
@@ -136,6 +143,8 @@ func ModifySelfSignedCert(c *gin.Context) {
 	}
 
 	// Reuse the existing file paths and private key so sites referencing them keep working.
+	// The stored key type must continue to describe the reused private key.
+	opts.KeyType = certModel.GetKeyType()
 	if err = rewriteSelfSignedFiles(certModel, certModel.SSLCertificatePath,
 		certModel.SSLCertificateKeyPath, opts); err != nil {
 		cosy.ErrHandler(c, err)

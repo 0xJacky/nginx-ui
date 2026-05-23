@@ -3,6 +3,10 @@ import type { SelfSignedCertPayload } from '@/api/cert'
 import NodeSelector from '@/components/NodeSelector'
 import { PrivateKeyTypeList } from '@/constants'
 
+const props = defineProps<{
+  isKeyTypeReadonly?: boolean
+}>()
+
 const data = defineModel<SelfSignedCertPayload>({ required: true })
 </script>
 
@@ -33,7 +37,10 @@ const data = defineModel<SelfSignedCertPayload>({ required: true })
       />
     </AFormItem>
     <AFormItem :label="$gettext('Key Type')">
-      <ASelect v-model:value="data.key_type">
+      <ASelect
+        v-model:value="data.key_type"
+        :disabled="props.isKeyTypeReadonly"
+      >
         <ASelectOption
           v-for="t in PrivateKeyTypeList"
           :key="t.key"

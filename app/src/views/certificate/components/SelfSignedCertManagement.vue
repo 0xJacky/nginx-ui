@@ -29,6 +29,9 @@ const data = defineModel<SelfSignedCertPayload>('value', { required: true })
         />
       </AFormItem>
     </AForm>
-    <SelfSignedCertFields v-model="data" />
+    <SelfSignedCertFields
+      v-model="data"
+      is-key-type-readonly
+    />
   </div>
 </template>

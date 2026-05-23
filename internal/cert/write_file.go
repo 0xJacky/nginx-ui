@@ -54,13 +54,13 @@ func (c *Content) WriteFile() (err error) {
 	}()
 
 	if c.SSLCertificate != "" {
-		if tmpFiles[c.SSLCertificatePath], err = writeTempFileNextTo(c.SSLCertificatePath, []byte(c.SSLCertificate), 0755); err != nil {
+		if tmpFiles[c.SSLCertificatePath], err = writeTempFileNextTo(c.SSLCertificatePath, []byte(c.SSLCertificate), 0644); err != nil {
 			return
 		}
 	}
 
 	if c.SSLCertificateKey != "" {
-		if tmpFiles[c.SSLCertificateKeyPath], err = writeTempFileNextTo(c.SSLCertificateKeyPath, []byte(c.SSLCertificateKey), 0755); err != nil {
+		if tmpFiles[c.SSLCertificateKeyPath], err = writeTempFileNextTo(c.SSLCertificateKeyPath, []byte(c.SSLCertificateKey), 0600); err != nil {
 			return
 		}
 	}
