@@ -4,6 +4,7 @@ import (
 	"errors"
 	"os"
 	"path/filepath"
+	"runtime"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -127,4 +128,47 @@ func TestInjectBeforeFirstServer_FallbackToPrepend(t *testing.T) {
 	in := []byte("# only comments, no server block\n")
 	out := injectBeforeFirstServer(in, "INJECTED\n")
 	assert.Equal(t, "INJECTED\n# only comments, no server block\n", string(out))
+}
+
+func TestPatchOnDiskWithBackup_RewritesAndBacksUp(t *testing.T) {
+	target := withFixture(t, "customized-unfixed.conf")
+	orig, _ := os.ReadFile(target)
+
+	bak := target + ".bak.test"
+	require.NoError(t, os.WriteFile(bak, orig, 0o644))
+
+	require.NoError(t, patchOnDiskWithBackup(orig, bak))
+
+	got, _ := os.ReadFile(target)
+	assert.True(t, reHeaderForwardedProto.Match(got), "target must be patched")
+	assert.True(t, reHeaderForwardedHost.Match(got), "target must be patched")
+	assert.Contains(t, string(got), "client_max_body_size 256M",
+		"customization must survive")
+
+	bakData, _ := os.ReadFile(bak)
+	assert.Equal(t, orig, bakData, "backup must contain pre-patch bytes")
+}
+
+func TestPatchOnDiskWithBackup_DoesNotMutateTargetOnWriteError(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("POSIX-only test: relies on chmod 0o555 to make a directory read-only")
+	}
+
+	target := withFixture(t, "customized-unfixed.conf")
+	orig, _ := os.ReadFile(target)
+	bak := target + ".bak.test"
+	require.NoError(t, os.WriteFile(bak, orig, 0o644))
+
+	// Make the parent dir read-only to force os.WriteFile(.tmp) to fail.
+	dir := filepath.Dir(target)
+	require.NoError(t, os.Chmod(dir, 0o555))
+	t.Cleanup(func() { _ = os.Chmod(dir, 0o755) })
+
+	err := patchOnDiskWithBackup(orig, bak)
+	require.Error(t, err)
+
+	// Target must be untouched (restore would also fail under the same chmod,
+	// but since the .tmp write failed first the target file was never modified).
+	got, _ := os.ReadFile(target)
+	assert.Equal(t, orig, got, "failed patch must leave target byte-identical to its pre-patch state")
 }

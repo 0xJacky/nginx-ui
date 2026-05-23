@@ -104,3 +104,36 @@ func injectBeforeFirstServer(in []byte, s string) []byte {
 	out = append(out, in[idx[0]:]...)
 	return out
 }
+
+// patchOnDiskWithBackup atomically writes the patched contents to bundledNginxUIConfPath.
+// On any failure after the backup file exists, the target is restored from the backup
+// and an error wrapping the backup path is returned.
+//
+// Restore errors are folded into the returned error message; ErrCriticalRecoveryFailed
+// is reserved for the verify/reload layer (Phase 3.7), where a failed restore after
+// nginx -t rejection is a distinct fault class operators need to triage specifically.
+func patchOnDiskWithBackup(orig []byte, bak string) error {
+	patched := applyBundledConfPatch(orig)
+	tmp := bundledNginxUIConfPath + ".tmp"
+	if err := os.WriteFile(tmp, patched, 0o644); err != nil {
+		_ = restoreFromBackup(bundledNginxUIConfPath, bak)
+		return cosy.WrapErrorWithParams(ErrFixedConfigInvalid,
+			"write failed: "+err.Error()+"; restored from "+bak)
+	}
+	if err := os.Rename(tmp, bundledNginxUIConfPath); err != nil {
+		_ = os.Remove(tmp)
+		_ = restoreFromBackup(bundledNginxUIConfPath, bak)
+		return cosy.WrapErrorWithParams(ErrFixedConfigInvalid,
+			"rename failed: "+err.Error()+"; restored from "+bak)
+	}
+	return nil
+}
+
+// restoreFromBackup copies the contents of bak over target.
+func restoreFromBackup(target, bak string) error {
+	data, err := os.ReadFile(bak)
+	if err != nil {
+		return err
+	}
+	return os.WriteFile(target, data, 0o644)
+}
