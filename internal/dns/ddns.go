@@ -194,6 +194,41 @@ func (s *Service) UpdateDDNSConfig(ctx context.Context, domainID uint64, input D
 		if len(targets) == 0 {
 			return nil, ErrDDNSTargetRequired
 		}
+
+		// §6.2-6.3 — Completion phase: dual-stack mode with cleanup on only.
+		if isDualStackMode(version) && input.CleanupConflictingRecords {
+			if ipSnapshot == nil {
+				snap, _ := resolvePublicIPs(ctx, version)
+				ipSnapshot = &snap
+			}
+			policy := getDDNSIPVersionPolicy(version)
+			recordsByNameType := indexRecordsByNameAndType(records)
+			managedNames := collectUniqueLowercaseNames(targets)
+
+			for _, name := range managedNames {
+				for _, family := range policy.families {
+					recordType, ipValue := familyToTypeAndIP(family, *ipSnapshot)
+					if recordType == "" {
+						continue
+					}
+					if containsTargetForName(targets, name, recordType) {
+						continue
+					}
+					existing, hasExisting := lookupRecord(recordsByNameType, name, recordType)
+					if ipValue != "" {
+						if hasExisting {
+							targets = append(targets, model.DDNSRecordTarget{
+								ID:   existing.ID,
+								Name: existing.Name,
+								Type: recordType,
+							})
+						}
+						// auto-create handled in Task 8
+					}
+					// auto-delete handled in Task 9
+				}
+			}
+		}
 	}
 
 	cfg := &model.DDNSConfig{
@@ -689,6 +724,64 @@ func indexRecordsByName(records []Record) map[string][]Record {
 		result[name] = append(result[name], record)
 	}
 	return result
+}
+
+func indexRecordsByNameAndType(records []Record) map[string]map[string]Record {
+	result := make(map[string]map[string]Record, len(records))
+	for _, record := range records {
+		name := strings.ToLower(record.Name)
+		recordType := strings.ToUpper(record.Type)
+		if _, ok := result[name]; !ok {
+			result[name] = map[string]Record{}
+		}
+		// Keep the first record per (name, type); duplicate types at the same name are unusual.
+		if _, exists := result[name][recordType]; !exists {
+			result[name][recordType] = record
+		}
+	}
+	return result
+}
+
+func collectUniqueLowercaseNames(targets []model.DDNSRecordTarget) []string {
+	seen := make(map[string]struct{}, len(targets))
+	names := make([]string, 0, len(targets))
+	for _, t := range targets {
+		key := strings.ToLower(t.Name)
+		if _, ok := seen[key]; ok {
+			continue
+		}
+		seen[key] = struct{}{}
+		names = append(names, key)
+	}
+	return names
+}
+
+func containsTargetForName(targets []model.DDNSRecordTarget, name, recordType string) bool {
+	for _, t := range targets {
+		if strings.EqualFold(t.Name, name) && strings.EqualFold(t.Type, recordType) {
+			return true
+		}
+	}
+	return false
+}
+
+func lookupRecord(index map[string]map[string]Record, name, recordType string) (Record, bool) {
+	byType, ok := index[strings.ToLower(name)]
+	if !ok {
+		return Record{}, false
+	}
+	r, ok := byType[strings.ToUpper(recordType)]
+	return r, ok
+}
+
+func familyToTypeAndIP(family ipFamily, snap ipSnapshot) (string, string) {
+	switch family {
+	case ipFamilyV4:
+		return "A", snap.IPv4
+	case ipFamilyV6:
+		return "AAAA", snap.IPv6
+	}
+	return "", ""
 }
 
 func saveDDNSConfig(ctx context.Context, domainID uint64, cfg *model.DDNSConfig) error {
