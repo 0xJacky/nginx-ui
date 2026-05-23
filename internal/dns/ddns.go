@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"regexp"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/model"
@@ -20,7 +21,18 @@ const (
 	minDDNSIntervalSeconds     = 60
 	defaultDDNSIntervalSeconds = 300
 	ipDetectTimeout            = 8 * time.Second
+
+	// DDNS IP version selectors persisted in DDNSConfig.IPVersion and accepted by the API.
+	DDNSIPVersionIPv4     = "ipv4"
+	DDNSIPVersionIPv6     = "ipv6"
+	DDNSIPVersionIPv4IPv6 = "ipv4_ipv6"
+	DDNSIPVersionIPv6IPv4 = "ipv6_ipv4"
 )
+
+// ddnsFamilyFailureGrace is the duration a public-IP family must be continuously
+// undetected before runtime eviction removes records of that family. Exposed as
+// a var (not const) so tests can override via SetDDNSFamilyFailureGraceForTest.
+var ddnsFamilyFailureGrace = 1 * time.Hour
 
 var (
 	ipv4Endpoints = []string{
@@ -55,9 +67,18 @@ func DefaultDDNSInterval() int {
 
 // DDNSUpdateInput carries payload for updating a DDNS configuration.
 type DDNSUpdateInput struct {
-	Enabled         bool
-	IntervalSeconds int
-	RecordIDs       []string
+	Enabled                   bool
+	IntervalSeconds           int
+	IPVersion                 string
+	CleanupConflictingRecords bool
+	RecordIDs                 []string
+}
+
+// UpdateDDNSResult bundles the persisted config and any provider records that
+// were deleted as a side effect of cleanup.
+type UpdateDDNSResult struct {
+	Config         *model.DDNSConfig
+	DeletedRecords []model.DDNSRecordTarget
 }
 
 // DDNSSchedule describes an enabled DDNS task.
@@ -73,24 +94,45 @@ func (s *Service) GetDDNSConfig(ctx context.Context, domainID uint64) (*model.DD
 		return nil, err
 	}
 
-	cfg := domain.DDNSConfig
-	if cfg == nil {
+	if domain.DDNSConfig == nil {
 		return &model.DDNSConfig{
-			Enabled:         false,
-			IntervalSeconds: defaultDDNSIntervalSeconds,
-			Targets:         []model.DDNSRecordTarget{},
+			Enabled:                   false,
+			IntervalSeconds:           defaultDDNSIntervalSeconds,
+			IPVersion:                 DDNSIPVersionIPv4IPv6,
+			CleanupConflictingRecords: true,
+			Targets:                   []model.DDNSRecordTarget{},
 		}, nil
 	}
 
+	cfg := *domain.DDNSConfig
 	cfg.IntervalSeconds = sanitizeInterval(cfg.IntervalSeconds)
-	return cfg, nil
+	cfg.IPVersion = NormalizeDDNSIPVersion(cfg.IPVersion)
+	cfg.Targets = append([]model.DDNSRecordTarget(nil), cfg.Targets...)
+	return &cfg, nil
 }
 
-// UpdateDDNSConfig validates and persists DDNS configuration for the given domain.
+// UpdateDDNSConfig validates and persists DDNS configuration. The returned
+// config matches what is now in the database. Callers who need the list of
+// records deleted during save (e.g. to surface a UI confirmation) should use
+// UpdateDDNSConfigWithDetails.
 func (s *Service) UpdateDDNSConfig(ctx context.Context, domainID uint64, input DDNSUpdateInput) (*model.DDNSConfig, error) {
+	result, err := s.UpdateDDNSConfigWithDetails(ctx, domainID, input)
+	if err != nil {
+		return nil, err
+	}
+	return result.Config, nil
+}
+
+// UpdateDDNSConfigWithDetails is the underlying implementation. It also
+// surfaces records that cleanup deleted from the provider.
+func (s *Service) UpdateDDNSConfigWithDetails(ctx context.Context, domainID uint64, input DDNSUpdateInput) (*UpdateDDNSResult, error) {
 	interval := sanitizeInterval(input.IntervalSeconds)
 	if interval < minDDNSIntervalSeconds {
 		return nil, ErrInvalidDDNSInterval
+	}
+	version, err := sanitizeDDNSIPVersion(input.IPVersion)
+	if err != nil {
+		return nil, err
 	}
 
 	domain, provider, err := s.prepareProvider(ctx, domainID)
@@ -101,6 +143,8 @@ func (s *Service) UpdateDDNSConfig(ctx context.Context, domainID uint64, input D
 	existing := domain.DDNSConfig
 
 	targets := []model.DDNSRecordTarget{}
+	var createdRecords []model.DDNSRecordTarget
+	var deletedRecords []model.DDNSRecordTarget
 	var ipSnapshot *ipSnapshot
 	if input.Enabled {
 		if len(input.RecordIDs) == 0 {
@@ -112,9 +156,10 @@ func (s *Service) UpdateDDNSConfig(ctx context.Context, domainID uint64, input D
 			return nil, err
 		}
 		recordMap := indexRecordsByID(records)
-		recordByName := indexRecordsByName(records)
+		recordsByName := indexRecordsByName(records)
 
 		seen := map[string]struct{}{}
+		seenTargetIDs := map[string]struct{}{}
 		for _, id := range input.RecordIDs {
 			trimmed := strings.TrimSpace(id)
 			if trimmed == "" {
@@ -123,71 +168,147 @@ func (s *Service) UpdateDDNSConfig(ctx context.Context, domainID uint64, input D
 			if _, ok := seen[trimmed]; ok {
 				continue
 			}
-			record, ok := recordMap[trimmed]
-			if !ok {
-				record, ok = recordByName[strings.ToLower(trimmed)]
-			}
-
-			if ok {
+			if record, ok := recordMap[trimmed]; ok {
 				recordType := strings.ToUpper(record.Type)
 				if recordType != "A" && recordType != "AAAA" {
 					return nil, cosy.WrapErrorWithParams(ErrInvalidDDNSTargetType, recordType)
 				}
-				targets = append(targets, model.DDNSRecordTarget{
-					ID:   record.ID,
-					Name: record.Name,
-					Type: recordType,
-				})
+				if !ddnsIPVersionMatchesRecordType(version, recordType) {
+					// Silently skip records whose type is outside the active mode policy.
+					// The UI already filters these; direct API callers degrade gracefully.
+					seen[trimmed] = struct{}{}
+					continue
+				}
+				if _, ok := seenTargetIDs[record.ID]; !ok {
+					targets = append(targets, model.DDNSRecordTarget{
+						ID:   record.ID,
+						Name: record.Name,
+						Type: recordType,
+					})
+					seenTargetIDs[record.ID] = struct{}{}
+				}
 				seen[trimmed] = struct{}{}
 				continue
 			}
 
-			// If record does not exist, create a new A/AAAA record using detected IPs.
+			if namedRecords := recordsByName[strings.ToLower(trimmed)]; len(namedRecords) > 0 {
+				createdTargets, err := collectDDNSTargetsForNamedRecords(namedRecords, version, seenTargetIDs)
+				if err != nil {
+					return nil, err
+				}
+				targets = append(targets, createdTargets...)
+				seen[trimmed] = struct{}{}
+				continue
+			}
+
+			// If record does not exist, create new A/AAAA records using detected IPs.
 			if ipSnapshot == nil {
-				snapshot, ipErr := resolvePublicIPs(ctx)
+				snapshot, ipErr := resolvePublicIPs(ctx, version)
 				if ipErr != nil {
 					return nil, ipErr
 				}
 				ipSnapshot = &snapshot
 			}
 
-			recordType := "A"
-			content := ipSnapshot.IPv4
-			if content == "" && ipSnapshot.IPv6 != "" {
-				recordType = "AAAA"
-				content = ipSnapshot.IPv6
-			}
-			if content == "" {
-				return nil, ErrDDNSIPUnavailable
-			}
-
-			newRecord, err := provider.CreateRecord(ctx, domain.Domain, sanitizeRecordInput(RecordInput{
-				Type:    recordType,
-				Name:    trimmed,
-				Content: content,
-				TTL:     600,
-			}))
+			createdTargets, err := createDDNSRecordsForMissingName(ctx, provider, domain.Domain, trimmed, version, *ipSnapshot)
 			if err != nil {
-				return nil, cosy.WrapErrorWithParams(ErrDDNSRecordNotFound, trimmed)
+				rollbackCreatedDDNSRecords(ctx, provider, domain.Domain, createdRecords)
+				return nil, err
 			}
 
-			targets = append(targets, model.DDNSRecordTarget{
-				ID:   newRecord.ID,
-				Name: newRecord.Name,
-				Type: strings.ToUpper(newRecord.Type),
-			})
+			createdRecords = append(createdRecords, createdTargets...)
+			targets = append(targets, createdTargets...)
 			seen[trimmed] = struct{}{}
 		}
 
 		if len(targets) == 0 {
 			return nil, ErrDDNSTargetRequired
 		}
+
+		// §6.2-6.3 — Completion phase: dual-stack mode with cleanup on only.
+		if isDualStackMode(version) && input.CleanupConflictingRecords {
+			if ipSnapshot == nil {
+				snap, _ := resolvePublicIPs(ctx, version)
+				ipSnapshot = &snap
+			}
+			// If neither family is detected, refuse to run §6.3 — running it would
+			// delete every managed record, leaving the config with empty targets
+			// and the domain at NXDOMAIN. Better to surface the failure now and
+			// roll back any §6.1 unknown-name creates so we do not leak provider
+			// state.
+			if ipSnapshot.IPv4 == "" && ipSnapshot.IPv6 == "" {
+				rollbackCreatedDDNSRecords(ctx, provider, domain.Domain, createdRecords)
+				return nil, ErrDDNSIPUnavailable
+			}
+			policy := getDDNSIPVersionPolicy(version)
+			recordsByNameType := indexRecordsByNameAndType(records)
+			managedNames := collectUniqueLowercaseNames(targets)
+
+			for _, name := range managedNames {
+				for _, family := range policy.families {
+					recordType, ipValue := familyToTypeAndIP(family, *ipSnapshot)
+					if recordType == "" {
+						continue
+					}
+					existing, hasExisting := lookupRecord(recordsByNameType, name, recordType)
+
+					if ipValue != "" {
+						// Family detected. Skip if user already covered it; otherwise pair/create.
+						if containsTargetForName(targets, name, recordType) {
+							continue
+						}
+						if hasExisting {
+							targets = append(targets, model.DDNSRecordTarget{
+								ID:   existing.ID,
+								Name: existing.Name,
+								Type: recordType,
+							})
+							continue
+						}
+						ctxTimeout, cancel := context.WithTimeout(ctx, providerTimeout)
+						newRec, err := provider.CreateRecord(ctxTimeout, domain.Domain, sanitizeRecordInput(RecordInput{
+							Type: recordType, Name: name, Content: ipValue, TTL: 600,
+						}))
+						cancel()
+						if err != nil {
+							rollbackCreatedDDNSRecords(ctx, provider, domain.Domain, createdRecords)
+							return nil, cosy.WrapErrorWithParams(ErrDDNSRecordNotFound, name)
+						}
+						createdTarget := model.DDNSRecordTarget{
+							ID:   newRec.ID,
+							Name: newRec.Name,
+							Type: strings.ToUpper(newRec.Type),
+						}
+						createdRecords = append(createdRecords, createdTarget)
+						targets = append(targets, createdTarget)
+					} else if hasExisting {
+						// Family undetected and a record exists at this name — delete it,
+						// removing the corresponding target if it was already selected.
+						ctxTimeout, cancel := context.WithTimeout(ctx, providerTimeout)
+						err := provider.DeleteRecord(ctxTimeout, domain.Domain, existing.ID)
+						cancel()
+						if err != nil {
+							rollbackCreatedDDNSRecords(ctx, provider, domain.Domain, createdRecords)
+							return nil, cosy.WrapErrorWithParams(ErrDDNSRecordDeleteFailed, name, err.Error())
+						}
+						targets = removeTargetByID(targets, existing.ID)
+						deletedRecords = append(deletedRecords, model.DDNSRecordTarget{
+							ID:   existing.ID,
+							Name: existing.Name,
+							Type: recordType,
+						})
+					}
+				}
+			}
+		}
 	}
 
 	cfg := &model.DDNSConfig{
-		Enabled:         input.Enabled,
-		IntervalSeconds: interval,
-		Targets:         targets,
+		Enabled:                   input.Enabled,
+		IntervalSeconds:           interval,
+		IPVersion:                 version,
+		CleanupConflictingRecords: input.CleanupConflictingRecords,
+		Targets:                   targets,
 	}
 
 	if existing != nil {
@@ -195,18 +316,15 @@ func (s *Service) UpdateDDNSConfig(ctx context.Context, domainID uint64, input D
 		cfg.LastIPv6 = existing.LastIPv6
 		cfg.LastRunAt = existing.LastRunAt
 		cfg.LastError = existing.LastError
-
-		// Reset runtime error when disabling
-		if !input.Enabled {
-			cfg.LastError = ""
-		}
+		cfg.IPv4FailedSince = existing.IPv4FailedSince
+		cfg.IPv6FailedSince = existing.IPv6FailedSince
 	}
 
 	if err := saveDDNSConfig(ctx, domainID, cfg); err != nil {
 		return nil, err
 	}
 
-	return cfg, nil
+	return &UpdateDDNSResult{Config: cfg, DeletedRecords: deletedRecords}, nil
 }
 
 // DeleteDDNSConfig removes DDNS configuration for the given domain.
@@ -268,10 +386,23 @@ func (s *Service) runDDNSUpdate(ctx context.Context, domainID uint64) error {
 	}
 
 	cfg.IntervalSeconds = sanitizeInterval(cfg.IntervalSeconds)
+	version := NormalizeDDNSIPVersion(cfg.IPVersion)
+	policy := getDDNSIPVersionPolicy(version)
 
-	ipSnapshot, ipErr := resolvePublicIPs(ctx)
-	if ipErr != nil {
-		// keep running; errors will be recorded
+	ipSnapshot, ipErr := resolvePublicIPs(ctx, version)
+
+	now := time.Now()
+	if ipSnapshot.IPv4 != "" {
+		cfg.IPv4FailedSince = nil
+	} else if cfg.IPv4FailedSince == nil {
+		t := now
+		cfg.IPv4FailedSince = &t
+	}
+	if ipSnapshot.IPv6 != "" {
+		cfg.IPv6FailedSince = nil
+	} else if cfg.IPv6FailedSince == nil {
+		t := now
+		cfg.IPv6FailedSince = &t
 	}
 
 	records, err := fetchProviderRecords(ctx, provider, domain.Domain)
@@ -280,9 +411,38 @@ func (s *Service) runDDNSUpdate(ctx context.Context, domainID uint64) error {
 	}
 	recordMap := indexRecordsByID(records)
 
-	var updateErrs []string
+	updateErrs := append([]string(nil), ipSnapshot.Warnings...)
 
-	now := time.Now()
+	evictA := false
+	evictAAAA := false
+	if isDualStackMode(version) && cfg.CleanupConflictingRecords {
+		if cfg.IPv4FailedSince != nil && now.Sub(*cfg.IPv4FailedSince) >= ddnsFamilyFailureGrace {
+			evictA = true
+		}
+		if cfg.IPv6FailedSince != nil && now.Sub(*cfg.IPv6FailedSince) >= ddnsFamilyFailureGrace {
+			evictAAAA = true
+		}
+	}
+
+	if evictA || evictAAAA {
+		kept := make([]model.DDNSRecordTarget, 0, len(cfg.Targets))
+		for _, target := range cfg.Targets {
+			typ := strings.ToUpper(target.Type)
+			if (typ == "A" && evictA) || (typ == "AAAA" && evictAAAA) {
+				ctxTimeout, cancel := context.WithTimeout(ctx, providerTimeout)
+				err := provider.DeleteRecord(ctxTimeout, domain.Domain, target.ID)
+				cancel()
+				if err != nil {
+					updateErrs = append(updateErrs, fmt.Sprintf("delete %s: %v", target.ID, err))
+					kept = append(kept, target)
+					continue
+				}
+				continue
+			}
+			kept = append(kept, target)
+		}
+		cfg.Targets = kept
+	}
 
 	for _, target := range cfg.Targets {
 		record, ok := recordMap[target.ID]
@@ -292,6 +452,11 @@ func (s *Service) runDDNSUpdate(ctx context.Context, domainID uint64) error {
 		}
 
 		recordType := strings.ToUpper(record.Type)
+		if _, ok := policy.recordTypes[recordType]; !ok {
+			updateErrs = append(updateErrs, fmt.Sprintf("record %s has type %s outside selected IP version %s", record.ID, recordType, version))
+			continue
+		}
+
 		var nextIP string
 		switch recordType {
 		case "A":
@@ -347,31 +512,72 @@ func (s *Service) runDDNSUpdate(ctx context.Context, domainID uint64) error {
 }
 
 type ipSnapshot struct {
-	IPv4 string
-	IPv6 string
+	IPv4     string
+	IPv6     string
+	Warnings []string
 }
 
-func resolvePublicIPs(ctx context.Context) (ipSnapshot, error) {
-	var snapshot ipSnapshot
-	var errs []string
+func resolvePublicIPs(ctx context.Context, ipVersion string) (ipSnapshot, error) {
+	version, err := sanitizeDDNSIPVersion(ipVersion)
+	if err != nil {
+		return ipSnapshot{}, err
+	}
+	policy := getDDNSIPVersionPolicy(version)
 
 	ipCtx, cancel := context.WithTimeout(ctx, ipDetectTimeout)
 	defer cancel()
 
-	if ip, err := fetchAnyIP(ipCtx, ipv4Endpoints, ipFamilyV4); err == nil {
-		snapshot.IPv4 = ip
-	} else {
-		errs = append(errs, fmt.Sprintf("ipv4: %v", err))
+	// Probe each family concurrently so a slow IPv6 lookup does not delay IPv4.
+	var (
+		wg               sync.WaitGroup
+		ipv4Res, ipv6Res string
+		ipv4Err, ipv6Err error
+	)
+	for _, family := range policy.families {
+		switch family {
+		case ipFamilyV4:
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				ipv4Res, ipv4Err = fetchAnyIP(ipCtx, ipv4Endpoints, ipFamilyV4)
+			}()
+		case ipFamilyV6:
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				ipv6Res, ipv6Err = fetchAnyIP(ipCtx, ipv6Endpoints, ipFamilyV6)
+			}()
+		}
+	}
+	wg.Wait()
+
+	var snapshot ipSnapshot
+	var errs []string
+	var successCount int
+	for _, family := range policy.families {
+		switch family {
+		case ipFamilyV4:
+			if ipv4Err == nil {
+				snapshot.IPv4 = ipv4Res
+				successCount++
+			} else {
+				errs = append(errs, fmt.Sprintf("ipv4: %v", ipv4Err))
+			}
+		case ipFamilyV6:
+			if ipv6Err == nil {
+				snapshot.IPv6 = ipv6Res
+				successCount++
+			} else {
+				errs = append(errs, fmt.Sprintf("ipv6: %v", ipv6Err))
+			}
+		}
 	}
 
-	if ip, err := fetchAnyIP(ipCtx, ipv6Endpoints, ipFamilyV6); err == nil {
-		snapshot.IPv6 = ip
-	} else {
-		errs = append(errs, fmt.Sprintf("ipv6: %v", err))
-	}
-
-	if len(errs) > 0 {
+	if successCount == 0 && len(errs) > 0 {
 		return snapshot, fmt.Errorf("public ip resolve errors: %s", strings.Join(errs, "; "))
+	}
+	if len(errs) > 0 {
+		snapshot.Warnings = errs
 	}
 
 	return snapshot, nil
@@ -475,6 +681,146 @@ func sanitizeInterval(value int) int {
 	return value
 }
 
+func sanitizeDDNSIPVersion(value string) (string, error) {
+	switch strings.ToLower(strings.TrimSpace(value)) {
+	case DDNSIPVersionIPv4:
+		return DDNSIPVersionIPv4, nil
+	case DDNSIPVersionIPv6:
+		return DDNSIPVersionIPv6, nil
+	case DDNSIPVersionIPv4IPv6:
+		return DDNSIPVersionIPv4IPv6, nil
+	case DDNSIPVersionIPv6IPv4:
+		return DDNSIPVersionIPv6IPv4, nil
+	default:
+		return "", ErrInvalidDDNSIPVersion
+	}
+}
+
+// NormalizeDDNSIPVersion returns a canonical IP version selector, defaulting to
+// DDNSIPVersionIPv4IPv6 for empty or unrecognized values.
+func NormalizeDDNSIPVersion(value string) string {
+	version, err := sanitizeDDNSIPVersion(value)
+	if err != nil {
+		return DDNSIPVersionIPv4IPv6
+	}
+	return version
+}
+
+type ddnsIPVersionPolicy struct {
+	families    []ipFamily
+	recordTypes map[string]struct{}
+}
+
+func getDDNSIPVersionPolicy(version string) ddnsIPVersionPolicy {
+	switch version {
+	case DDNSIPVersionIPv4:
+		return ddnsIPVersionPolicy{
+			families:    []ipFamily{ipFamilyV4},
+			recordTypes: map[string]struct{}{"A": {}},
+		}
+	case DDNSIPVersionIPv6:
+		return ddnsIPVersionPolicy{
+			families:    []ipFamily{ipFamilyV6},
+			recordTypes: map[string]struct{}{"AAAA": {}},
+		}
+	case DDNSIPVersionIPv6IPv4:
+		return ddnsIPVersionPolicy{
+			families:    []ipFamily{ipFamilyV6, ipFamilyV4},
+			recordTypes: map[string]struct{}{"A": {}, "AAAA": {}},
+		}
+	default:
+		return ddnsIPVersionPolicy{
+			families:    []ipFamily{ipFamilyV4, ipFamilyV6},
+			recordTypes: map[string]struct{}{"A": {}, "AAAA": {}},
+		}
+	}
+}
+
+func isDualStackMode(version string) bool {
+	return version == DDNSIPVersionIPv4IPv6 || version == DDNSIPVersionIPv6IPv4
+}
+
+func ddnsIPVersionMatchesRecordType(ipVersion string, recordType string) bool {
+	policy := getDDNSIPVersionPolicy(ipVersion)
+	_, ok := policy.recordTypes[strings.ToUpper(recordType)]
+	return ok
+}
+
+func collectDDNSTargetsForNamedRecords(records []Record, version string, seenTargetIDs map[string]struct{}) ([]model.DDNSRecordTarget, error) {
+	targets := make([]model.DDNSRecordTarget, 0, len(records))
+	for _, record := range records {
+		recordType := strings.ToUpper(record.Type)
+		if recordType != "A" && recordType != "AAAA" {
+			continue
+		}
+		if !ddnsIPVersionMatchesRecordType(version, recordType) {
+			continue
+		}
+		if _, ok := seenTargetIDs[record.ID]; ok {
+			continue
+		}
+
+		targets = append(targets, model.DDNSRecordTarget{
+			ID:   record.ID,
+			Name: record.Name,
+			Type: recordType,
+		})
+		seenTargetIDs[record.ID] = struct{}{}
+	}
+
+	if len(targets) == 0 {
+		return nil, cosy.WrapErrorWithParams(ErrDDNSIPVersionRecordMismatch, records[0].Name, version)
+	}
+	return targets, nil
+}
+
+func createDDNSRecordsForMissingName(ctx context.Context, provider Provider, domain string, name string, version string, snapshot ipSnapshot) ([]model.DDNSRecordTarget, error) {
+	// Best-effort: create a record for the first family in the policy whose IP is detected.
+	for _, family := range getDDNSIPVersionPolicy(version).families {
+		switch family {
+		case ipFamilyV4:
+			if snapshot.IPv4 != "" {
+				return createDDNSRecordTargets(ctx, provider, domain, name, []RecordInput{
+					{Type: "A", Name: name, Content: snapshot.IPv4, TTL: 600},
+				})
+			}
+		case ipFamilyV6:
+			if snapshot.IPv6 != "" {
+				return createDDNSRecordTargets(ctx, provider, domain, name, []RecordInput{
+					{Type: "AAAA", Name: name, Content: snapshot.IPv6, TTL: 600},
+				})
+			}
+		}
+	}
+
+	return nil, ErrDDNSIPUnavailable
+}
+
+func createDDNSRecordTargets(ctx context.Context, provider Provider, domain string, name string, inputs []RecordInput) ([]model.DDNSRecordTarget, error) {
+	targets := make([]model.DDNSRecordTarget, 0, len(inputs))
+	for _, input := range inputs {
+		newRecord, err := provider.CreateRecord(ctx, domain, sanitizeRecordInput(input))
+		if err != nil {
+			rollbackCreatedDDNSRecords(ctx, provider, domain, targets)
+			return nil, cosy.WrapErrorWithParams(ErrDDNSRecordNotFound, name)
+		}
+		targets = append(targets, model.DDNSRecordTarget{
+			ID:   newRecord.ID,
+			Name: newRecord.Name,
+			Type: strings.ToUpper(newRecord.Type),
+		})
+	}
+	return targets, nil
+}
+
+func rollbackCreatedDDNSRecords(ctx context.Context, provider Provider, domain string, targets []model.DDNSRecordTarget) {
+	for _, target := range targets {
+		ctxWithTimeout, cancel := context.WithTimeout(ctx, providerTimeout)
+		_ = provider.DeleteRecord(ctxWithTimeout, domain, target.ID)
+		cancel()
+	}
+}
+
 func fetchProviderRecords(ctx context.Context, provider Provider, domain string) ([]Record, error) {
 	ctxWithTimeout, cancel := context.WithTimeout(ctx, providerTimeout)
 	defer cancel()
@@ -489,12 +835,82 @@ func indexRecordsByID(records []Record) map[string]Record {
 	return result
 }
 
-func indexRecordsByName(records []Record) map[string]Record {
-	result := make(map[string]Record, len(records))
+func indexRecordsByName(records []Record) map[string][]Record {
+	result := make(map[string][]Record, len(records))
 	for _, record := range records {
-		result[strings.ToLower(record.Name)] = record
+		name := strings.ToLower(record.Name)
+		result[name] = append(result[name], record)
 	}
 	return result
+}
+
+func indexRecordsByNameAndType(records []Record) map[string]map[string]Record {
+	result := make(map[string]map[string]Record, len(records))
+	for _, record := range records {
+		name := strings.ToLower(record.Name)
+		recordType := strings.ToUpper(record.Type)
+		if _, ok := result[name]; !ok {
+			result[name] = map[string]Record{}
+		}
+		// Keep the first record per (name, type); duplicate types at the same name are unusual.
+		if _, exists := result[name][recordType]; !exists {
+			result[name][recordType] = record
+		}
+	}
+	return result
+}
+
+func collectUniqueLowercaseNames(targets []model.DDNSRecordTarget) []string {
+	seen := make(map[string]struct{}, len(targets))
+	names := make([]string, 0, len(targets))
+	for _, t := range targets {
+		key := strings.ToLower(t.Name)
+		if _, ok := seen[key]; ok {
+			continue
+		}
+		seen[key] = struct{}{}
+		names = append(names, key)
+	}
+	return names
+}
+
+func containsTargetForName(targets []model.DDNSRecordTarget, name, recordType string) bool {
+	for _, t := range targets {
+		if strings.EqualFold(t.Name, name) && strings.EqualFold(t.Type, recordType) {
+			return true
+		}
+	}
+	return false
+}
+
+func removeTargetByID(targets []model.DDNSRecordTarget, id string) []model.DDNSRecordTarget {
+	out := targets[:0]
+	for _, t := range targets {
+		if t.ID == id {
+			continue
+		}
+		out = append(out, t)
+	}
+	return out
+}
+
+func lookupRecord(index map[string]map[string]Record, name, recordType string) (Record, bool) {
+	byType, ok := index[strings.ToLower(name)]
+	if !ok {
+		return Record{}, false
+	}
+	r, ok := byType[strings.ToUpper(recordType)]
+	return r, ok
+}
+
+func familyToTypeAndIP(family ipFamily, snap ipSnapshot) (string, string) {
+	switch family {
+	case ipFamilyV4:
+		return "A", snap.IPv4
+	case ipFamilyV6:
+		return "AAAA", snap.IPv6
+	}
+	return "", ""
 }
 
 func saveDDNSConfig(ctx context.Context, domainID uint64, cfg *model.DDNSConfig) error {

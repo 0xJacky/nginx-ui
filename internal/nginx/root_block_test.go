@@ -1,9 +1,32 @@
 package nginx
 
 import (
+	"encoding/json"
 	"strings"
 	"testing"
 )
+
+func TestNgxDirectiveRawIsInternalOnly(t *testing.T) {
+	data, err := json.Marshal(NgxDirective{
+		Directive: "ssl_certificate_by_lua_block",
+		Params:    "placeholder",
+		Raw:       "ssl_certificate_by_lua_block { auto_ssl:ssl_certificate() }",
+	})
+	if err != nil {
+		t.Fatalf("Marshal() error = %v", err)
+	}
+	if strings.Contains(string(data), "raw") || strings.Contains(string(data), "auto_ssl") {
+		t.Fatalf("NgxDirective JSON = %s, want Raw omitted from external representation", data)
+	}
+
+	var directive NgxDirective
+	if err := json.Unmarshal([]byte(`{"directive":"listen","params":"443 ssl","raw":"server_name injected.example.com"}`), &directive); err != nil {
+		t.Fatalf("Unmarshal() error = %v", err)
+	}
+	if directive.Raw != "" {
+		t.Fatalf("Raw = %q, want external JSON input ignored", directive.Raw)
+	}
+}
 
 func TestParseNgxConfigByContent_UnwrapsRootStreamBlock(t *testing.T) {
 	content := `stream {

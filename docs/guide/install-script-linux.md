@@ -176,6 +176,38 @@ rc-update add nginx-ui default
 
 :::
 
+### OpenWrt
+
+If your system uses OpenWrt init scripts, please use the following `/etc/init.d` commands to control it:
+
+::: code-group
+
+```shell [Start]
+/etc/init.d/nginx-ui start
+```
+
+```shell [Stop]
+/etc/init.d/nginx-ui stop
+```
+
+```shell [Restart]
+/etc/init.d/nginx-ui restart
+```
+
+```shell [Show Status]
+/etc/init.d/nginx-ui status
+```
+
+```shell [Enable at Boot]
+/etc/init.d/nginx-ui enable
+```
+
+```shell [Disable at Boot]
+/etc/init.d/nginx-ui disable
+```
+
+:::
+
 ### Init.d
 
 If your system uses traditional init.d scripts, please use the following commands to control it:

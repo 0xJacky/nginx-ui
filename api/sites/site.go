@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/cert"
@@ -395,8 +396,19 @@ func BatchUpdateSites(c *gin.Context) {
 		}).BatchModify()
 }
 
+func isInvalidSiteName(name string) bool {
+	return name == "" || name == "." ||
+		strings.ContainsAny(name, `/\`) || strings.Contains(name, "..")
+}
+
 func EnableMaintenanceSite(c *gin.Context) {
 	name := helper.UnescapeURL(c.Param("name"))
+	if isInvalidSiteName(name) {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "invalid site name",
+		})
+		return
+	}
 
 	// If site is already enabled, disable the normal site first
 	enabledConfigPath, err := site.ResolveEnabledPath(name)

@@ -6,6 +6,7 @@ import cert from '@/api/cert'
 import { useGlobalStore } from '@/pinia'
 import WildcardCertificate from '../components/DNSIssueCertificate.vue'
 import RemoveCert from '../components/RemoveCert.vue'
+import RetryCert from '../components/RetryCert.vue'
 import SelfSignedCertForm from '../components/SelfSignedCertForm.vue'
 import certColumns from './certColumns'
 
@@ -65,6 +66,11 @@ function onSelfSignedCreated(created: Cert) {
       @edit-item="record => $router.push(`/certificates/${record.id}`)"
     >
       <template #afterActions="{ record }">
+        <RetryCert
+          v-if="record.status === 'failure'"
+          :cert="record"
+          @retried="() => refTable.refresh()"
+        />
         <RemoveCert
           :id="record.id"
           :certificate="record"

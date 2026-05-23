@@ -50,11 +50,21 @@ const refAutoCertForm = useTemplateRef('refAutoCertForm')
 const { ensureTLSDirectives } = useTLSDirectives()
 
 function issueCert() {
-  refObtainCertLive.value?.issue_cert(
+  const live = refObtainCertLive.value
+  if (!live) {
+    modalClosable.value = true
+    issuingCert.value = false
+    message.error($gettext('Certificate issuance component is not ready'))
+    return
+  }
+
+  live.issue_cert(
     props.configName,
     name.value.trim().split(' '),
     data.value.key_type,
-  ).then(resolveCert)
+  ).then(resolveCert).catch(() => {
+    // The live log already shows the issuance failure details.
+  })
 }
 
 async function resolveCert({ ssl_certificate, ssl_certificate_key, key_type }: CertificateResult) {

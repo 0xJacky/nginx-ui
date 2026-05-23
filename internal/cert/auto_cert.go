@@ -42,6 +42,11 @@ func autoCert(certModel *model.Cert) {
 	targetName := getAutoRenewTargetName(certModel)
 	now := time.Now()
 
+	if shouldSkipAutoCertByStatus(certModel) {
+		logger.Infof("Skip auto cert for %s due to status %s", targetName, certModel.Status)
+		return
+	}
+
 	if shouldSkipAutoRenew(certModel, now) {
 		logger.Infof("Skip auto renew for %s until %s after previous failure", targetName,
 			certModel.LastAutoRenewAt.Add(autoRenewFailureRetryCooldown).Format(time.DateTime))
@@ -143,6 +148,17 @@ func shouldSkipAutoRenew(certModel *model.Cert, now time.Time) bool {
 	}
 
 	return now.Before(certModel.LastAutoRenewAt.Add(autoRenewFailureRetryCooldown))
+}
+
+// shouldSkipAutoCertByStatus returns true when the cert's most recent
+// issuance attempt has not succeeded. Pending and failed certs must
+// be retried by the user explicitly; auto-renew should not touch them.
+func shouldSkipAutoCertByStatus(certModel *model.Cert) bool {
+	if certModel == nil {
+		return false
+	}
+	return certModel.Status == model.CertStatusPending ||
+		certModel.Status == model.CertStatusFailure
 }
 
 func handleAutoRenewFailure(certModel *model.Cert, log *Logger, name string, err error) {

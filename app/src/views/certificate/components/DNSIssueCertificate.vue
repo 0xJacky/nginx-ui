@@ -16,6 +16,7 @@ const data = ref({}) as Ref<AutoCertOptions>
 const domain = ref('')
 const certType = ref<'wildcard' | 'custom'>('wildcard')
 const customDomains = ref<string[]>([''])
+const errored = ref(false)
 
 function open() {
   visible.value = true
@@ -27,6 +28,7 @@ function open() {
   domain.value = ''
   certType.value = 'wildcard'
   customDomains.value = ['']
+  errored.value = false
 }
 
 defineExpose({
@@ -84,13 +86,20 @@ function issueCert() {
     }
   }
 
-  step.value++
+  errored.value = false
+  step.value = 1
   modalVisible.value = true
 
-  refObtainCertLive.value?.issue_cert(computedMainDomain.value, computedDomains.value, data.value.key_type)
+  // ObtainCertLive is mounted in the same modal via force-render, so the
+  // ref is guaranteed to be available by the time this function runs.
+  refObtainCertLive.value!
+    .issue_cert(computedMainDomain.value, computedDomains.value, data.value.key_type)
     .then(() => {
-      message.success($gettext('Renew successfully'))
+      message.success($gettext('Issued successfully'))
       emit('issued')
+    })
+    .catch(() => {
+      errored.value = true
     })
 }
 </script>
@@ -198,6 +207,18 @@ function issueCert() {
         v-model:modal-visible="modalVisible"
         :options="data"
       />
+
+      <div
+        v-if="step === 1 && errored"
+        class="flex justify-end mt-4"
+      >
+        <AButton
+          type="primary"
+          @click="issueCert"
+        >
+          {{ $gettext('Retry') }}
+        </AButton>
+      </div>
     </AModal>
   </div>
 </template>

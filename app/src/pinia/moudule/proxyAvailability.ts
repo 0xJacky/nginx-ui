@@ -1,5 +1,6 @@
 import type { ProxyTarget } from '@/api/site'
 import type { UpstreamAvailabilityResponse, UpstreamStatus } from '@/api/upstream'
+import { useEventListener } from '@vueuse/core'
 import upstream from '@/api/upstream'
 import { useWebSocket } from '@/lib/websocket'
 import { useNodeAvailabilityStore } from './nodeAvailability'
@@ -21,18 +22,52 @@ export interface UpstreamStatusMap {
 // Alias for consistency with existing code
 export type ProxyAvailabilityResult = UpstreamStatus
 
+// Grace period before flipping the UI indicator to "disconnected" — avoids
+// flicker during VueUse's autoReconnect retries (10 × 1s) on transient drops.
+const DISCONNECT_GRACE_MS = 1500
+
 export const useProxyAvailabilityStore = defineStore('proxyAvailability', () => {
   const availabilityResults = ref<Record<string, ProxyAvailabilityResult>>({})
   const upstreamStatusMap = ref<UpstreamStatusMap>({})
-  const websocket = shallowRef<WebSocket>()
-  const nodeAnalyticsWebsocket = shallowRef<WebSocket>()
   const isConnected = ref(false)
-  const isNodeAnalyticsConnected = ref(false)
   const isInitialized = ref(false)
   const lastUpdateTime = ref<string>('')
   const targetCount = ref(0)
 
   const nodeStore = useNodeAvailabilityStore()
+
+  let disconnectTimer: ReturnType<typeof setTimeout> | undefined
+  const clearDisconnectTimer = () => {
+    clearTimeout(disconnectTimer)
+    disconnectTimer = undefined
+  }
+
+  const socket = useWebSocket<Record<string, ProxyAvailabilityResult>>(upstream.availabilityWebSocketUrl, true, {
+    immediate: false,
+    autoClose: false,
+    onConnected() {
+      clearDisconnectTimer()
+      isConnected.value = true
+    },
+    onDisconnected() {
+      clearDisconnectTimer()
+      disconnectTimer = setTimeout(() => {
+        isConnected.value = false
+      }, DISCONNECT_GRACE_MS)
+    },
+    onError(_, error) {
+      console.error('Proxy availability WebSocket error:', error)
+    },
+    onMessage(_, event) {
+      try {
+        availabilityResults.value = JSON.parse(event.data) as Record<string, ProxyAvailabilityResult>
+        lastUpdateTime.value = new Date().toISOString()
+      }
+      catch (error) {
+        console.error('Failed to parse WebSocket message:', error)
+      }
+    },
+  })
 
   // Format socket address for target key (handles IPv6 addresses)
   function formatSocketAddress(host: string, port: string): string {
@@ -75,48 +110,23 @@ export const useProxyAvailabilityStore = defineStore('proxyAvailability', () => 
   }
 
   // Connect to WebSocket for real-time updates
-  async function connectWebSocket() {
-    if (websocket.value && isConnected.value) {
+  function connectWebSocket() {
+    const readyState = socket.ws.value?.readyState
+
+    if (readyState === WebSocket.OPEN) {
+      isConnected.value = true
       return
     }
 
-    // Close existing connection if any
-    if (websocket.value) {
-      websocket.value.close()
+    if (readyState === WebSocket.CONNECTING) {
+      return
     }
 
     try {
-      // Create new WebSocket connection
-      const { ws } = useWebSocket(upstream.availabilityWebSocketUrl)
-      websocket.value = ws.value!
-
-      ws.value!.onopen = () => {
-        isConnected.value = true
-      }
-
-      ws.value!.onmessage = (e: MessageEvent) => {
-        try {
-          const results = JSON.parse(e.data) as Record<string, ProxyAvailabilityResult>
-          // Update availability results with latest data
-          availabilityResults.value = { ...results }
-          lastUpdateTime.value = new Date().toISOString()
-        }
-        catch (error) {
-          console.error('Failed to parse WebSocket message:', error)
-        }
-      }
-
-      ws.value!.onclose = () => {
-        isConnected.value = false
-      }
-
-      ws.value!.onerror = error => {
-        console.error('Proxy availability WebSocket error:', error)
-        isConnected.value = false
-      }
+      socket.open()
     }
     catch (error) {
-      console.error('Failed to create WebSocket connection:', error)
+      console.error('Failed to initiate WebSocket connection:', error)
     }
   }
 
@@ -133,16 +143,13 @@ export const useProxyAvailabilityStore = defineStore('proxyAvailability', () => 
 
   // Stop monitoring and cleanup
   function stopMonitoring() {
-    if (websocket.value) {
-      websocket.value.close()
-      websocket.value = undefined
-      isConnected.value = false
+    clearDisconnectTimer()
+
+    if (socket.ws.value && socket.ws.value.readyState !== WebSocket.CLOSED) {
+      socket.close()
     }
-    if (nodeAnalyticsWebsocket.value) {
-      nodeAnalyticsWebsocket.value.close()
-      nodeAnalyticsWebsocket.value = undefined
-      isNodeAnalyticsConnected.value = false
-    }
+
+    isConnected.value = false
   }
 
   // Get availability result for a specific target
@@ -212,18 +219,15 @@ export const useProxyAvailabilityStore = defineStore('proxyAvailability', () => 
     }
   }
 
-  // Auto-cleanup WebSocket on page unload
-  if (typeof window !== 'undefined') {
-    window.addEventListener('beforeunload', () => {
-      stopMonitoring()
-    })
-  }
+  // Auto-cleanup WebSocket on page unload. VueUse removes the listener with
+  // the store scope (pinia setup stores have an effectScope), so this stays
+  // a single, scope-bound registration for the lifetime of the app.
+  useEventListener(window, 'beforeunload', () => stopMonitoring())
 
   return {
     availabilityResults: readonly(availabilityResults),
     upstreamStatusMap: readonly(upstreamStatusMap),
     isConnected: readonly(isConnected),
-    isNodeAnalyticsConnected: readonly(isNodeAnalyticsConnected),
     isInitialized: readonly(isInitialized),
     lastUpdateTime: readonly(lastUpdateTime),
     targetCount: readonly(targetCount),

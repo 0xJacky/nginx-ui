@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 	"sort"
+	"strings"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
@@ -163,6 +164,19 @@ func GetLogPreflight(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+// splitCommaSeparated splits a comma-joined filter value (as produced by the
+// frontend multi-select inputs) into a slice of trimmed, non-empty values.
+func splitCommaSeparated(value string) []string {
+	parts := strings.Split(value, ",")
+	result := make([]string, 0, len(parts))
+	for _, part := range parts {
+		if trimmed := strings.TrimSpace(part); trimmed != "" {
+			result = append(result, trimmed)
+		}
+	}
+	return result
+}
+
 // AdvancedSearchLogs provides advanced search capabilities for logs
 func AdvancedSearchLogs(c *gin.Context) {
 	var req AdvancedSearchRequest
@@ -270,13 +284,13 @@ func AdvancedSearchLogs(c *gin.Context) {
 		searchReq.Referers = []string{req.Referer}
 	}
 	if req.Browser != "" {
-		searchReq.Browsers = []string{req.Browser}
+		searchReq.Browsers = splitCommaSeparated(req.Browser)
 	}
 	if req.OS != "" {
-		searchReq.OSs = []string{req.OS}
+		searchReq.OSs = splitCommaSeparated(req.OS)
 	}
 	if req.Device != "" {
-		searchReq.Devices = []string{req.Device}
+		searchReq.Devices = splitCommaSeparated(req.Device)
 	}
 	if len(req.Status) > 0 {
 		searchReq.StatusCodes = req.Status
@@ -663,7 +677,7 @@ func GetWorldMapData(c *gin.Context) {
 		EndTime:        req.EndTime,
 		LogPath:        req.Path,
 		LogPaths:       []string{req.Path}, // Use single main log path
-		UseMainLogPath: true,              // Use main_log_path field for efficient queries
+		UseMainLogPath: true,               // Use main_log_path field for efficient queries
 		Limit:          req.Limit,
 	}
 	logger.Debugf("WorldMapData - GeoQueryRequest: %+v", geoReq)
@@ -764,7 +778,7 @@ func GetChinaMapData(c *gin.Context) {
 		EndTime:        req.EndTime,
 		LogPath:        req.Path,
 		LogPaths:       []string{req.Path}, // Use single main log path
-		UseMainLogPath: true,              // Use main_log_path field for efficient queries
+		UseMainLogPath: true,               // Use main_log_path field for efficient queries
 		Limit:          req.Limit,
 	}
 	logger.Debugf("ChinaMapData - GeoQueryRequest: %+v", geoReq)
@@ -863,7 +877,7 @@ func GetGeoStats(c *gin.Context) {
 		EndTime:        req.EndTime,
 		LogPath:        req.Path,
 		LogPaths:       []string{req.Path}, // Use single main log path
-		UseMainLogPath: true,              // Use main_log_path field for efficient queries
+		UseMainLogPath: true,               // Use main_log_path field for efficient queries
 		Limit:          req.Limit,
 	}
 
@@ -878,7 +892,7 @@ func GetGeoStats(c *gin.Context) {
 	for i, stat := range stats {
 		statsInterface[i] = stat
 	}
-	
+
 	c.JSON(http.StatusOK, GeoStatsResponse{
 		Stats: statsInterface,
 	})

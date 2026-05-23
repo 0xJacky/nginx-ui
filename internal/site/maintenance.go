@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"path/filepath"
 	"runtime"
+	"sort"
 	"strings"
 	"sync"
 
@@ -15,12 +17,38 @@ import (
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/go-resty/resty/v2"
 	"github.com/tufanbarisyildirim/gonginx/config"
+	"github.com/tufanbarisyildirim/gonginx/dumper"
 	"github.com/tufanbarisyildirim/gonginx/parser"
 	"github.com/uozi-tech/cosy/logger"
 	cSettings "github.com/uozi-tech/cosy/settings"
 )
 
 const MaintenanceSuffix = "_nginx_ui_maintenance"
+
+var baseMaintenanceServerDirectives = map[string]struct{}{
+	"listen":      {},
+	"server_name": {},
+	"http2":       {},
+}
+
+const (
+	maintenanceMaxIncludeDepth       = 5
+	maintenanceMaxWildcardMatches    = 32
+	maintenanceIncludeDebugLogPrefix = "maintenance include expansion"
+)
+
+// certbotNginxTLSOptionsPath is the well-known certbot-managed SSL options snippet.
+// It is the only path outside the nginx configuration directory that is allowed
+// to be expanded into the maintenance configuration, because certbot installs it
+// at a fixed location and its contents are known-safe TLS hardening directives.
+// The value is cleaned at init time so OS-specific separators do not break the
+// equality check against `filepath.Clean`-normalized include paths.
+var certbotNginxTLSOptionsPath = filepath.Clean("/etc/letsencrypt/options-ssl-nginx.conf")
+
+type maintenanceIncludeExpander struct {
+	confDir string
+	visited map[string]struct{}
+}
 
 // EnableMaintenance enables maintenance mode for a site
 func EnableMaintenance(name string) (err error) {
@@ -62,7 +90,7 @@ func EnableMaintenance(name string) (err error) {
 	}
 
 	// Create new maintenance configuration
-	maintenanceConfig := createMaintenanceConfig(conf)
+	maintenanceConfig := createMaintenanceConfig(conf, filepath.Dir(configFilePath))
 
 	// Write maintenance configuration to file
 	err = os.WriteFile(maintenanceConfigPath, []byte(maintenanceConfig), 0644)
@@ -164,8 +192,10 @@ func DisableMaintenance(name string) (err error) {
 	return nil
 }
 
-// createMaintenanceConfig creates a maintenance configuration based on the original config
-func createMaintenanceConfig(conf *config.Config) string {
+// createMaintenanceConfig creates a maintenance configuration based on the original config.
+// baseDir is the directory used to resolve relative include directives; pass "" to fall back
+// to the nginx configuration directory.
+func createMaintenanceConfig(conf *config.Config, baseDir string) string {
 	nginxUIPort := cSettings.ServerSettings.Port
 	schema := "http"
 	if cSettings.ServerSettings.EnableHTTPS {
@@ -177,57 +207,21 @@ func createMaintenanceConfig(conf *config.Config) string {
 
 	// Find all server blocks in the original configuration
 	serverBlocks := findServerBlocks(conf.Block)
+	includeBaseDir := baseDir
+	if includeBaseDir == "" {
+		includeBaseDir = nginx.GetConfPath()
+	}
 
 	// Create maintenance mode configuration for each server block
 	for _, server := range serverBlocks {
 		ngxServer := nginx.NewNgxServer()
 
-		// Copy listen directives
-		listenDirectives := extractDirectives(server, "listen")
-		for _, directive := range listenDirectives {
+		// Preserve server identity and TLS handshake settings from the original site.
+		for _, directive := range extractMaintenanceServerDirectives(server, includeBaseDir) {
 			ngxDirective := &nginx.NgxDirective{
 				Directive: directive.GetName(),
 				Params:    strings.Join(extractParams(directive), " "),
-			}
-			ngxServer.Directives = append(ngxServer.Directives, ngxDirective)
-		}
-
-		// Copy server_name directives
-		serverNameDirectives := extractDirectives(server, "server_name")
-		for _, directive := range serverNameDirectives {
-			ngxDirective := &nginx.NgxDirective{
-				Directive: directive.GetName(),
-				Params:    strings.Join(extractParams(directive), " "),
-			}
-			ngxServer.Directives = append(ngxServer.Directives, ngxDirective)
-		}
-
-		// Copy SSL certificate directives
-		sslCertDirectives := extractDirectives(server, "ssl_certificate")
-		for _, directive := range sslCertDirectives {
-			ngxDirective := &nginx.NgxDirective{
-				Directive: directive.GetName(),
-				Params:    strings.Join(extractParams(directive), " "),
-			}
-			ngxServer.Directives = append(ngxServer.Directives, ngxDirective)
-		}
-
-		// Copy SSL certificate key directives
-		sslKeyDirectives := extractDirectives(server, "ssl_certificate_key")
-		for _, directive := range sslKeyDirectives {
-			ngxDirective := &nginx.NgxDirective{
-				Directive: directive.GetName(),
-				Params:    strings.Join(extractParams(directive), " "),
-			}
-			ngxServer.Directives = append(ngxServer.Directives, ngxDirective)
-		}
-
-		// Copy http2 directives
-		http2Directives := extractDirectives(server, "http2")
-		for _, directive := range http2Directives {
-			ngxDirective := &nginx.NgxDirective{
-				Directive: directive.GetName(),
-				Params:    strings.Join(extractParams(directive), " "),
+				Raw:       dumpMaintenanceDirective(directive),
 			}
 			ngxServer.Directives = append(ngxServer.Directives, ngxDirective)
 		}
@@ -311,6 +305,288 @@ func extractDirectives(server config.IDirective, name string) []config.IDirectiv
 	}
 
 	return directives
+}
+
+// extractMaintenanceServerDirectives extracts directives needed by the generated maintenance server.
+func extractMaintenanceServerDirectives(server config.IDirective, baseDir string) []config.IDirective {
+	expander := newMaintenanceIncludeExpander()
+	initialBaseDir := resolveMaintenanceBaseDir(baseDir, expander.confDir)
+	var directives []config.IDirective
+
+	if server.GetBlock() == nil {
+		return directives
+	}
+
+	for _, directive := range server.GetBlock().GetDirectives() {
+		directives = append(directives, expander.extractServerDirective(directive, initialBaseDir, 0)...)
+	}
+
+	return directives
+}
+
+func newMaintenanceIncludeExpander() *maintenanceIncludeExpander {
+	return &maintenanceIncludeExpander{
+		confDir: filepath.Clean(nginx.GetConfPath()),
+		visited: make(map[string]struct{}),
+	}
+}
+
+// resolveMaintenanceBaseDir validates a caller-supplied include base directory and falls
+// back to confDir if it is empty or escapes the nginx configuration directory.
+func resolveMaintenanceBaseDir(baseDir, confDir string) string {
+	if baseDir == "" {
+		return confDir
+	}
+	candidate := filepath.Clean(baseDir)
+	if helper.IsUnderDirectory(candidate, confDir) {
+		return candidate
+	}
+	return confDir
+}
+
+func (e *maintenanceIncludeExpander) extractServerDirective(directive config.IDirective, baseDir string, depth int) []config.IDirective {
+	name := directive.GetName()
+
+	if _, ok := baseMaintenanceServerDirectives[name]; ok {
+		return []config.IDirective{directive}
+	}
+
+	if strings.HasPrefix(name, "ssl_") {
+		return []config.IDirective{directive}
+	}
+
+	if name == "include" {
+		return e.extractIncludeDirective(directive, baseDir, depth)
+	}
+
+	return nil
+}
+
+func (e *maintenanceIncludeExpander) extractIncludeDirective(directive config.IDirective, baseDir string, depth int) []config.IDirective {
+	params := extractParams(directive)
+	if len(params) == 0 {
+		return nil
+	}
+
+	includePath := strings.Trim(params[0], `"'`)
+	if hasMaintenanceGlobMeta(includePath) {
+		return e.extractWildcardInclude(includePath, baseDir, depth+1)
+	}
+
+	resolvedPath := e.resolveIncludePath(includePath, baseDir)
+	if !e.isAllowedSingleInclude(resolvedPath) {
+		logger.Debugf("%s: skipped disallowed include %s", maintenanceIncludeDebugLogPrefix, resolvedPath)
+		return nil
+	}
+
+	return e.extractIncludeFile(resolvedPath, depth+1)
+}
+
+func (e *maintenanceIncludeExpander) extractWildcardInclude(includePath, baseDir string, depth int) []config.IDirective {
+	pattern := e.resolveWildcardIncludePath(includePath, baseDir)
+	staticDir := maintenanceGlobStaticDir(pattern)
+	if staticDir == "" || !helper.IsUnderDirectory(staticDir, e.confDir) {
+		logger.Debugf("%s: skipped disallowed wildcard include %s", maintenanceIncludeDebugLogPrefix, pattern)
+		return nil
+	}
+
+	matches, err := filepath.Glob(pattern)
+	if err != nil {
+		logger.Debugf("%s: failed to expand wildcard %s: %v", maintenanceIncludeDebugLogPrefix, pattern, err)
+		return nil
+	}
+	sort.Strings(matches)
+
+	var directives []config.IDirective
+	allowedMatches := 0
+	for _, match := range matches {
+		if !e.isAllowedWildcardMatch(match) {
+			logger.Debugf("%s: skipped disallowed wildcard match %s", maintenanceIncludeDebugLogPrefix, match)
+			continue
+		}
+		if allowedMatches >= maintenanceMaxWildcardMatches {
+			logger.Debugf(
+				"%s: wildcard %s exceeded %d allowed files",
+				maintenanceIncludeDebugLogPrefix,
+				pattern,
+				maintenanceMaxWildcardMatches,
+			)
+			break
+		}
+		allowedMatches++
+
+		directives = append(directives, e.extractIncludeFile(match, depth)...)
+	}
+
+	return directives
+}
+
+func (e *maintenanceIncludeExpander) isAllowedWildcardMatch(path string) bool {
+	if !helper.IsUnderDirectory(path, e.confDir) {
+		return false
+	}
+
+	info, err := os.Stat(path)
+	if err != nil {
+		logger.Debugf("%s: failed to stat wildcard match %s: %v", maintenanceIncludeDebugLogPrefix, path, err)
+		return false
+	}
+	if info.IsDir() {
+		return false
+	}
+
+	return true
+}
+
+func maintenanceGlobStaticDir(pattern string) string {
+	firstGlobIndex := strings.IndexAny(pattern, "*?[")
+	if firstGlobIndex == -1 {
+		return filepath.Dir(pattern)
+	}
+
+	staticPrefix := pattern[:firstGlobIndex]
+	if staticPrefix == "" {
+		return ""
+	}
+
+	return filepath.Dir(staticPrefix)
+}
+
+func (e *maintenanceIncludeExpander) resolveIncludePath(includePath, baseDir string) string {
+	if filepath.IsAbs(includePath) {
+		return filepath.Clean(includePath)
+	}
+
+	// filepath.Join already cleans its output; check baseDir-relative location first
+	// and fall back to confDir-relative only if it does not exist (nginx include
+	// resolution semantics).
+	candidate := filepath.Join(baseDir, includePath)
+	if helper.IsUnderDirectory(candidate, e.confDir) {
+		if _, err := os.Stat(candidate); err == nil {
+			return candidate
+		}
+	}
+
+	return e.resolveFallbackIncludePath(includePath)
+}
+
+func (e *maintenanceIncludeExpander) resolveWildcardIncludePath(includePath, baseDir string) string {
+	var candidate string
+	if filepath.IsAbs(includePath) {
+		candidate = filepath.Clean(includePath)
+	} else {
+		candidate = filepath.Join(baseDir, includePath)
+	}
+
+	staticDir := maintenanceGlobStaticDir(candidate)
+	if staticDir == "" || !helper.IsUnderDirectory(staticDir, e.confDir) {
+		return e.resolveFallbackIncludePath(includePath)
+	}
+
+	// Stat the static prefix so a baseDir-relative wildcard that targets a
+	// nonexistent directory still falls back to the confDir-relative pattern.
+	if info, err := os.Stat(staticDir); err == nil && info.IsDir() {
+		return candidate
+	}
+
+	return e.resolveFallbackIncludePath(includePath)
+}
+
+func (e *maintenanceIncludeExpander) resolveFallbackIncludePath(includePath string) string {
+	fallback := filepath.Join(e.confDir, includePath)
+	if hasMaintenanceGlobMeta(fallback) {
+		staticDir := maintenanceGlobStaticDir(fallback)
+		if staticDir != "" && helper.IsUnderDirectory(staticDir, e.confDir) {
+			return fallback
+		}
+		return e.confDir
+	}
+
+	if helper.IsUnderDirectory(fallback, e.confDir) {
+		return fallback
+	}
+	return e.confDir
+}
+
+func (e *maintenanceIncludeExpander) isAllowedSingleInclude(path string) bool {
+	cleanPath := filepath.Clean(path)
+	if cleanPath == certbotNginxTLSOptionsPath {
+		info, err := os.Lstat(cleanPath)
+		if err != nil {
+			logger.Debugf("%s: failed to stat certbot include %s: %v", maintenanceIncludeDebugLogPrefix, cleanPath, err)
+			return false
+		}
+		return info.Mode().IsRegular()
+	}
+
+	return helper.IsUnderDirectory(cleanPath, e.confDir)
+}
+
+func (e *maintenanceIncludeExpander) extractIncludeFile(path string, depth int) []config.IDirective {
+	if depth > maintenanceMaxIncludeDepth {
+		logger.Debugf("%s: skipped %s because include depth exceeded %d", maintenanceIncludeDebugLogPrefix, path, maintenanceMaxIncludeDepth)
+		return nil
+	}
+
+	cleanPath := filepath.Clean(path)
+	if !e.isAllowedSingleInclude(cleanPath) {
+		logger.Debugf("%s: skipped disallowed include file %s", maintenanceIncludeDebugLogPrefix, cleanPath)
+		return nil
+	}
+
+	if _, ok := e.visited[cleanPath]; ok {
+		return nil
+	}
+	e.visited[cleanPath] = struct{}{}
+
+	content, err := os.ReadFile(cleanPath)
+	if err != nil {
+		logger.Debugf("%s: failed to read %s: %v", maintenanceIncludeDebugLogPrefix, cleanPath, err)
+		return nil
+	}
+
+	p := parser.NewStringParser(string(content), parser.WithSkipValidDirectivesErr())
+	conf, err := p.Parse()
+	if err != nil {
+		logger.Debugf("%s: failed to parse %s: %v", maintenanceIncludeDebugLogPrefix, cleanPath, err)
+		return nil
+	}
+
+	if conf.Block == nil {
+		return nil
+	}
+
+	var directives []config.IDirective
+	childBaseDir := filepath.Dir(cleanPath)
+	for _, directive := range conf.Block.GetDirectives() {
+		directives = append(directives, e.extractIncludedDirective(directive, childBaseDir, depth)...)
+	}
+
+	return directives
+}
+
+func (e *maintenanceIncludeExpander) extractIncludedDirective(directive config.IDirective, baseDir string, depth int) []config.IDirective {
+	name := directive.GetName()
+
+	if strings.HasPrefix(name, "ssl_") {
+		return []config.IDirective{directive}
+	}
+
+	if name != "include" {
+		return nil
+	}
+
+	return e.extractIncludeDirective(directive, baseDir, depth)
+}
+
+func hasMaintenanceGlobMeta(path string) bool {
+	return strings.ContainsAny(path, "*?[")
+}
+
+func dumpMaintenanceDirective(directive config.IDirective) string {
+	style := *dumper.IndentedStyle
+	style.StartIndent = 0
+	return dumper.DumpDirective(directive, &style)
 }
 
 // extractParams extracts all parameters from a directive

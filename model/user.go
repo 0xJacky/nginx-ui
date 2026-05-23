@@ -18,9 +18,10 @@ type RecoveryCode struct {
 }
 
 type RecoveryCodes struct {
-	Codes          []*RecoveryCode `json:"codes"`
-	LastViewed     *int64          `json:"last_viewed,omitempty" gorm:"serializer:unixtime;type:datetime;default:null"`
-	LastDownloaded *int64          `json:"last_downloaded,omitempty" gorm:"serializer:unixtime;type:datetime;default:null"`
+	Codes                    []*RecoveryCode `json:"codes"`
+	LastViewed               *int64          `json:"last_viewed,omitempty" gorm:"serializer:unixtime;type:datetime;default:null"`
+	LastDownloaded           *int64          `json:"last_downloaded,omitempty" gorm:"serializer:unixtime;type:datetime;default:null"`
+	LegacyRecoveryCodeUsedAt *int64          `json:"legacy_recovery_code_used_at,omitempty" gorm:"serializer:unixtime;type:datetime;default:null"`
 }
 
 type User struct {
@@ -57,6 +58,10 @@ func (u *User) EnabledOTP() bool {
 
 func (u *User) RecoveryCodeGenerated() bool {
 	return len(u.RecoveryCodes.Codes) > 0
+}
+
+func (u *User) RecoveryCodesMigrationRequired() bool {
+	return u.EnabledOTP() && !u.RecoveryCodeGenerated()
 }
 
 func (u *User) RecoveryCodeViewed() bool {

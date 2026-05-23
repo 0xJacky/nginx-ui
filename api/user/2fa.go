@@ -19,11 +19,12 @@ import (
 )
 
 type Status2FA struct {
-	Enabled                bool `json:"enabled"`
-	OTPStatus              bool `json:"otp_status"`
-	PasskeyStatus          bool `json:"passkey_status"`
-	RecoveryCodesGenerated bool `json:"recovery_codes_generated"`
-	RecoveryCodesViewed    bool `json:"recovery_codes_viewed"`
+	Enabled                        bool `json:"enabled"`
+	OTPStatus                      bool `json:"otp_status"`
+	PasskeyStatus                  bool `json:"passkey_status"`
+	RecoveryCodesGenerated         bool `json:"recovery_codes_generated"`
+	RecoveryCodesViewed            bool `json:"recovery_codes_viewed"`
+	RecoveryCodesMigrationRequired bool `json:"recovery_codes_migration_required"`
 }
 
 func get2FAStatus(c *gin.Context) (status Status2FA) {
@@ -36,6 +37,7 @@ func get2FAStatus(c *gin.Context) (status Status2FA) {
 		status.Enabled = status.OTPStatus || status.PasskeyStatus
 		status.RecoveryCodesGenerated = userPtr.RecoveryCodeGenerated()
 		status.RecoveryCodesViewed = userPtr.RecoveryCodeViewed()
+		status.RecoveryCodesMigrationRequired = userPtr.RecoveryCodesMigrationRequired()
 	}
 	return
 }
@@ -90,7 +92,8 @@ func Start2FASecureSessionByOTP(c *gin.Context) {
 		return
 	}
 
-	if err := user.VerifyOTP(u, json.OTP, json.RecoveryCode); err != nil {
+	verificationResult, err := user.VerifyOTP(u, json.OTP, json.RecoveryCode)
+	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
 	}
@@ -98,7 +101,8 @@ func Start2FASecureSessionByOTP(c *gin.Context) {
 	sessionId := user.SetSecureSessionID(u.ID)
 
 	c.JSON(http.StatusOK, gin.H{
-		"session_id": sessionId,
+		"session_id":                sessionId,
+		"used_legacy_recovery_code": verificationResult.UsedLegacyRecoveryCode,
 	})
 }
 

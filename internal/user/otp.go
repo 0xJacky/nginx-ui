@@ -14,40 +14,68 @@ import (
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/google/uuid"
 	"github.com/pquerna/otp/totp"
+	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
-func VerifyOTP(user *model.User, otp, recoveryCode string) (err error) {
+type OTPVerificationResult struct {
+	UsedLegacyRecoveryCode bool
+}
+
+func VerifyOTP(user *model.User, otp, recoveryCode string) (result OTPVerificationResult, err error) {
 	if otp != "" {
 		decrypted, err := crypto.AesDecrypt(user.OTPSecret)
 		if err != nil {
-			return err
+			return result, err
 		}
 
 		if ok := totp.Validate(otp, string(decrypted)); !ok {
-			return ErrOTPCode
+			return result, ErrOTPCode
 		}
 	} else {
 		// get user from db
 		u := query.User
 		user, err = u.Where(u.ID.Eq(user.ID)).First()
 		if err != nil {
-			return err
+			return result, err
 		}
 
-		// legacy recovery code
+		// legacy recovery code compatibility path
 		if !user.RecoveryCodeGenerated() {
-			if user.OTPSecret == nil {
-				return ErrTOTPNotEnabled
-			}
+			err = model.UseDB().Transaction(func(tx *gorm.DB) error {
+				var lockedUser model.User
+				if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).First(&lockedUser, user.ID).Error; err != nil {
+					return err
+				}
 
-			recoverCode, err := hex.DecodeString(recoveryCode)
-			if err != nil {
-				return err
-			}
-			k := sha1.Sum(user.OTPSecret)
-			if !bytes.Equal(k[:], recoverCode) {
-				return ErrRecoveryCode
-			}
+				if lockedUser.OTPSecret == nil {
+					return ErrTOTPNotEnabled
+				}
+
+				if lockedUser.RecoveryCodeGenerated() || lockedUser.RecoveryCodes.LegacyRecoveryCodeUsedAt != nil {
+					return ErrRecoveryCode
+				}
+
+				recoverCode, err := hex.DecodeString(recoveryCode)
+				if err != nil || len(recoverCode) != sha1.Size {
+					return ErrRecoveryCode
+				}
+
+				k := sha1.Sum(lockedUser.OTPSecret)
+				if !bytes.Equal(k[:], recoverCode) {
+					return ErrRecoveryCode
+				}
+
+				t := time.Now().Unix()
+				lockedUser.RecoveryCodes.LegacyRecoveryCodeUsedAt = &t
+				if err := tx.Model(&lockedUser).Select("recovery_codes").Updates(&lockedUser).Error; err != nil {
+					return err
+				}
+
+				result.UsedLegacyRecoveryCode = true
+				return nil
+			})
+			return result, err
 		}
 
 		// check recovery code
@@ -59,7 +87,7 @@ func VerifyOTP(user *model.User, otp, recoveryCode string) (err error) {
 				code.UsedTime = &t
 				_, err = u.Where(u.ID.Eq(user.ID)).Updates(user)
 				if err != nil {
-					return err
+					return result, err
 				}
 				verified = true
 			}
@@ -68,12 +96,12 @@ func VerifyOTP(user *model.User, otp, recoveryCode string) (err error) {
 			}
 		}
 		if !verified {
-			return ErrRecoveryCode
+			return result, ErrRecoveryCode
 		}
 		if usedCount == len(user.RecoveryCodes.Codes) {
 			notification.Warning("All Recovery Codes Have Been Used", "Please generate new recovery codes in the preferences immediately to prevent lockout.", nil)
 		}
-		return nil
+		return result, nil
 	}
 	return
 }

@@ -6,6 +6,14 @@ import type { PrivateKeyType } from '@/constants'
 import { extendCurdApi, http, useCurdApi } from '@uozi-admin/request'
 import { PrivateKeyTypeEnum } from '@/constants'
 
+export const CertStatus = {
+  Pending: 'pending',
+  Success: 'success',
+  Failure: 'failure',
+} as const
+
+export type CertStatusType = '' | typeof CertStatus[keyof typeof CertStatus]
+
 export interface SelfSignedCertConfig {
   ip_addresses: string[]
   validity_days: number
@@ -30,6 +38,9 @@ export interface Cert extends ModelBase {
   certificate_info: CertificateInfo
   sync_node_ids: number[]
   revoke_old: boolean
+  status: CertStatusType
+  last_error: string
+  last_attempt_at: string | null
   self_signed_config?: SelfSignedCertConfig
 }
 

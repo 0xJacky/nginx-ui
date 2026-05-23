@@ -5,6 +5,7 @@ import type { Ref } from 'vue'
 import type { DNSProvider } from '@/api/auto_cert'
 import type { DnsCredential } from '@/api/dns_credential'
 import auto_cert from '@/api/auto_cert'
+import { isAllowedDnsProviderCode } from '@/constants/dns_providers'
 
 const providers = ref([]) as Ref<DNSProvider[]>
 
@@ -29,6 +30,39 @@ auto_cert.get_dns_providers().then(r => {
 
 const current = computed(() => {
   return providers.value?.find(v => v.code === data.value.code)
+})
+
+const selectedProviderName = computed(() => {
+  return current.value?.name ?? data.value.provider ?? data.value.code ?? ''
+})
+
+const isDnsRecordManagementSupported = computed(() => {
+  return isAllowedDnsProviderCode(data.value.code)
+})
+
+const dnsProviderHintType = computed(() => {
+  if (!data.value.code)
+    return 'info'
+
+  return isDnsRecordManagementSupported.value ? 'success' : 'warning'
+})
+
+const dnsProviderHint = computed(() => {
+  if (!data.value.code) {
+    return $gettext('Select a DNS provider to see whether it supports DNS record management in DNS Domains.')
+  }
+
+  if (isDnsRecordManagementSupported.value) {
+    return $gettext(
+      '%{provider} can be used for ACME DNS-01 certificate challenges and DNS record management in DNS Domains.',
+      { provider: selectedProviderName.value },
+    )
+  }
+
+  return $gettext(
+    '%{provider} can be used for ACME DNS-01 certificate challenges, but DNS record management in DNS Domains is not supported for this provider.',
+    { provider: selectedProviderName.value },
+  )
 })
 
 watch(current, () => {
@@ -66,6 +100,12 @@ function filterOption(input: string, option?: DefaultOptionType) {
         show-search
         :options="options"
         :filter-option="filterOption"
+      />
+      <AAlert
+        class="mt-2"
+        show-icon
+        :type="dnsProviderHintType"
+        :message="dnsProviderHint"
       />
     </AFormItem>
     <AFormItem>

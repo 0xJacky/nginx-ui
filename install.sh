@@ -10,8 +10,10 @@ ServicePath="/etc/systemd/system/nginx-ui.service"
 InitPath="/etc/init.d/nginx-ui"
 # OpenRC Path
 OpenRCPath="/etc/init.d/nginx-ui"
+# OpenWrt Path
+OpenWrtPath="/etc/init.d/nginx-ui"
 
-# Service Type (systemd, openrc, initd)
+# Service Type (systemd, openrc, openwrt, initd)
 SERVICE_TYPE=''
 
 # Latest release version
@@ -43,6 +45,9 @@ RPROXY=$GH_PROXY
 # --purge
 PURGE='0'
 
+# Test root for detection tests
+DETECT_ROOT=''
+
 # Font color
 FontBlack="\033[30m";
 FontRed="\033[31m";
@@ -56,6 +61,33 @@ FontSuffix="\033[0m";
 
 curl_with_retry() {
     $(type -P curl) -x "${PROXY}" -L -q --retry 5 --retry-delay 10 --retry-max-time 60 "$@"
+}
+
+root_path() {
+    if [[ -n "$DETECT_ROOT" ]]; then
+        echo "${DETECT_ROOT}$1"
+    else
+        echo "$1"
+    fi
+}
+
+command_exists() {
+    local command_name="$1"
+
+    if [[ -z "$DETECT_ROOT" ]]; then
+        type -P "$command_name" >/dev/null 2>&1
+        return
+    fi
+
+    [[ -x "${DETECT_ROOT}/bin/${command_name}" ]] || \
+        [[ -x "${DETECT_ROOT}/sbin/${command_name}" ]] || \
+        [[ -x "${DETECT_ROOT}/usr/bin/${command_name}" ]] || \
+        [[ -x "${DETECT_ROOT}/usr/sbin/${command_name}" ]]
+}
+
+is_openwrt() {
+    grep -qi '^ID=.*openwrt' "$(root_path /etc/os-release)" 2>/dev/null || \
+        [[ -f "$(root_path /etc/openwrt_release)" ]]
 }
 
 ## Demo function for processing parameters
@@ -155,7 +187,7 @@ check_if_running_as_root() {
 }
 
 identify_the_operating_system_and_architecture() {
-    if [[ "$(uname)" == 'Linux' ]]; then
+    if [[ "$(uname)" == 'Linux' || -n "$DETECT_ROOT" ]]; then
         case "$(uname -m)" in
         'i386' | 'i686')
             MACHINE='32'
@@ -168,44 +200,47 @@ identify_the_operating_system_and_architecture() {
             ;;
         'armv6l')
             MACHINE='arm32-v6'
-            grep Features /proc/cpuinfo | grep -qw 'vfp' || MACHINE='arm32-v5'
+            grep Features "$(root_path /proc/cpuinfo)" | grep -qw 'vfp' || MACHINE='arm32-v5'
             ;;
         'armv7' | 'armv7l')
             MACHINE='arm32-v7a'
-            grep Features /proc/cpuinfo | grep -qw 'vfp' || MACHINE='arm32-v5'
+            grep Features "$(root_path /proc/cpuinfo)" | grep -qw 'vfp' || MACHINE='arm32-v5'
             ;;
         'armv8' | 'aarch64')
             MACHINE='arm64-v8a'
+            ;;
+        'riscv64')
+            MACHINE='riscv64'
             ;;
         *)
             echo -e "${FontRed}error: The architecture is not supported by this script.${FontSuffix}"
             exit 1
             ;;
         esac
-        if [[ ! -f '/etc/os-release' ]]; then
+        if [[ ! -f "$(root_path /etc/os-release)" ]]; then
             echo -e "${FontRed}error: Don't use outdated Linux distributions.${FontSuffix}"
             exit 1
         fi
 
-        if [[ "$(type -P apt)" ]]; then
+        if command_exists apt; then
             PACKAGE_MANAGEMENT_INSTALL='apt -y --no-install-recommends install'
             PACKAGE_MANAGEMENT_REMOVE='apt purge'
-        elif [[ "$(type -P dnf)" ]]; then
+        elif command_exists dnf; then
             PACKAGE_MANAGEMENT_INSTALL='dnf -y install'
             PACKAGE_MANAGEMENT_REMOVE='dnf remove'
-        elif [[ "$(type -P yum)" ]]; then
+        elif command_exists yum; then
             PACKAGE_MANAGEMENT_INSTALL='yum -y install'
             PACKAGE_MANAGEMENT_REMOVE='yum remove'
-        elif [[ "$(type -P zypper)" ]]; then
+        elif command_exists zypper; then
             PACKAGE_MANAGEMENT_INSTALL='zypper install -y --no-recommends'
             PACKAGE_MANAGEMENT_REMOVE='zypper remove'
-        elif [[ "$(type -P pacman)" ]]; then
+        elif command_exists pacman; then
             PACKAGE_MANAGEMENT_INSTALL='pacman -Syu --noconfirm'
             PACKAGE_MANAGEMENT_REMOVE='pacman -Rsn'
-        elif [[ "$(type -P opkg)" ]]; then
+        elif command_exists opkg; then
             PACKAGE_MANAGEMENT_INSTALL='opkg install'
             PACKAGE_MANAGEMENT_REMOVE='opkg remove'
-        elif [[ "$(type -P apk)" ]]; then
+        elif command_exists apk; then
             PACKAGE_MANAGEMENT_INSTALL='apk add --no-cache'
             PACKAGE_MANAGEMENT_REMOVE='apk del'
         else
@@ -215,11 +250,13 @@ identify_the_operating_system_and_architecture() {
 
         # Do not combine this judgment condition with the following judgment condition.
         ## Be aware of Linux distribution like Gentoo, which kernel supports switch between Systemd and OpenRC.
-        if [[ -f /.dockerenv ]] || grep -q 'docker\|lxc' /proc/1/cgroup && [[ "$(type -P systemctl)" ]]; then
+        if is_openwrt; then
+            SERVICE_TYPE='openwrt'
+        elif [[ -f "$(root_path /.dockerenv)" ]] || grep -q 'docker\|lxc' "$(root_path /proc/1/cgroup)" && command_exists systemctl; then
             SERVICE_TYPE='systemd'
-        elif [[ -d /run/systemd/system ]] || grep -q systemd <(ls -l /sbin/init); then
+        elif [[ -d "$(root_path /run/systemd/system)" ]] || grep -q systemd <(ls -l "$(root_path /sbin/init)" 2>/dev/null); then
             SERVICE_TYPE='systemd'
-        elif [[ "$(type -P rc-update)" ]] || [[ "$(type -P apk)" ]]; then
+        elif command_exists rc-update || command_exists apk; then
             SERVICE_TYPE='openrc'
         else
             SERVICE_TYPE='initd'
@@ -241,6 +278,15 @@ install_software() {
         echo -e "${FontRed}error: Installation of $package_name failed, please check your network.${FontSuffix}"
         exit 1
     fi
+}
+
+test_detect() {
+    DETECT_ROOT="$1"
+    identify_the_operating_system_and_architecture
+    echo "MACHINE=$MACHINE"
+    echo "PACKAGE_MANAGEMENT_INSTALL=$PACKAGE_MANAGEMENT_INSTALL"
+    echo "PACKAGE_MANAGEMENT_REMOVE=$PACKAGE_MANAGEMENT_REMOVE"
+    echo "SERVICE_TYPE=$SERVICE_TYPE"
 }
 
 get_latest_version() {
@@ -340,6 +386,8 @@ install_service() {
         install_systemd_service
     elif [[ "$SERVICE_TYPE" == "openrc" ]]; then
         install_openrc_service
+    elif [[ "$SERVICE_TYPE" == "openwrt" ]]; then
+        install_openwrt_service
     else
         install_initd_service
     fi
@@ -382,6 +430,25 @@ install_openrc_service() {
     rc-update add nginx-ui default
 
     OPENRC='1'
+}
+
+install_openwrt_service() {
+    local openwrt_download_link="${RPROXY}https://raw.githubusercontent.com/0xJacky/nginx-ui/main/resources/services/nginx-ui.openwrt"
+
+    echo "Downloading Nginx UI OpenWrt init.d file: $openwrt_download_link"
+    if ! curl_with_retry -R -H 'Cache-Control: no-cache' -L -o "$OpenWrtPath" "$openwrt_download_link"; then
+        echo -e "${FontRed}error: Download OpenWrt init.d file failed! Please check your network or try again.${FontSuffix}"
+        return 1
+    fi
+
+    chmod 755 "$OpenWrtPath"
+    echo "info: OpenWrt init.d service file has been installed successfully!"
+    echo -e "${FontGreen}note: The OpenWrt service is installed to '$OpenWrtPath'.${FontSuffix}"
+    cat_file_with_name "$OpenWrtPath"
+
+    "$OpenWrtPath" enable
+
+    OPENWRT='1'
 }
 
 install_initd_service() {
@@ -459,6 +526,20 @@ start_nginx_ui() {
                 exit 1
             fi
         fi
+    elif [[ "$SERVICE_TYPE" == "openwrt" ]]; then
+        # Check if service is already running
+        if "$OpenWrtPath" status >/dev/null 2>&1; then
+            echo 'info: Nginx UI service is already running.'
+        else
+            "$OpenWrtPath" start
+            sleep 1s
+            if "$OpenWrtPath" status >/dev/null 2>&1; then
+                echo 'info: Start the Nginx UI service.'
+            else
+                echo -e "${FontRed}error: Failed to start the Nginx UI service.${FontSuffix}"
+                exit 1
+            fi
+        fi
     else
         # init.d
         $InitPath start
@@ -524,6 +605,16 @@ check_nginx_ui_status() {
         else
             return 2  # not installed
         fi
+    elif [[ "$SERVICE_TYPE" == "openwrt" ]]; then
+        if [[ -f "$OpenWrtPath" ]]; then
+            if "$OpenWrtPath" status >/dev/null 2>&1 || [[ -n "$(pidof nginx-ui)" ]]; then
+                return 0  # running
+            else
+                return 1  # not running
+            fi
+        else
+            return 2  # not installed
+        fi
     else
         # init.d
         if [[ -f "$InitPath" ]]; then
@@ -557,6 +648,15 @@ restart_nginx_ui() {
             echo -e "${FontRed}error: Failed to restart the Nginx UI service.${FontSuffix}"
             exit 1
         fi
+    elif [[ "$SERVICE_TYPE" == "openwrt" ]]; then
+        "$OpenWrtPath" restart
+        sleep 1s
+        if "$OpenWrtPath" status >/dev/null 2>&1; then
+            echo 'info: Restart the Nginx UI service.'
+        else
+            echo -e "${FontRed}error: Failed to restart the Nginx UI service.${FontSuffix}"
+            exit 1
+        fi
     else
         # init.d
         $InitPath restart
@@ -578,6 +678,11 @@ stop_nginx_ui() {
         fi
     elif [[ "$SERVICE_TYPE" == "openrc" ]]; then
         if ! rc-service nginx-ui stop; then
+            echo -e "${FontRed}error: Failed to stop the Nginx UI service.${FontSuffix}"
+            exit 1
+        fi
+    elif [[ "$SERVICE_TYPE" == "openwrt" ]]; then
+        if ! "$OpenWrtPath" stop; then
             echo -e "${FontRed}error: Failed to stop the Nginx UI service.${FontSuffix}"
             exit 1
         fi
@@ -629,6 +734,33 @@ remove_nginx_ui() {
 
     # Remove from runlevels
     rc-update del nginx-ui default 2>/dev/null || true
+
+    if ! ("rm" -r $delete_files 2>/dev/null); then
+      echo -e "${FontRed}error: Failed to remove Nginx UI.${FontSuffix}"
+      exit 1
+    else
+      for file in $delete_files
+      do
+        [[ -e "$file" ]] && echo "removed: $file"
+      done
+      echo "You may need to execute a command to remove dependent software: $PACKAGE_MANAGEMENT_REMOVE curl"
+      echo 'info: Nginx UI has been removed.'
+      if [[ "$PURGE" -eq '0' ]]; then
+        echo 'info: If necessary, manually delete the configuration and log files.'
+        echo "info: e.g., $DataPath ..."
+      fi
+      exit 0
+    fi
+  elif [[ "$SERVICE_TYPE" == "openwrt" ]] && ([[ -f "$OpenWrtPath" ]] || [[ -f "/usr/local/bin/nginx-ui" ]]); then
+    if [[ -f "$OpenWrtPath" ]] && "$OpenWrtPath" status >/dev/null 2>&1; then
+      stop_nginx_ui
+    fi
+    delete_files="/usr/local/bin/nginx-ui $OpenWrtPath"
+    if [[ "$PURGE" -eq '1' ]]; then
+        [[ -d "$DataPath" ]] && delete_files="$delete_files $DataPath"
+    fi
+
+    [[ -f "$OpenWrtPath" ]] && "$OpenWrtPath" disable 2>/dev/null || true
 
     if ! ("rm" -r $delete_files 2>/dev/null); then
       echo -e "${FontRed}error: Failed to remove Nginx UI.${FontSuffix}"
@@ -709,6 +841,11 @@ show_help() {
 }
 
 main() {
+    if [[ "${NGINX_UI_INSTALL_TESTING:-}" == "1" && "${1:-}" == "__test_detect" ]]; then
+        test_detect "$2"
+        exit 0
+    fi
+
     check_if_running_as_root
     identify_the_operating_system_and_architecture
     judgment_parameters "$@"
@@ -722,7 +859,7 @@ main() {
     TAR_FILE="${TMP_DIRECTORY}/nginx-ui-linux-$MACHINE.tar.gz"
 
     # Auto install OpenRC on Alpine Linux if needed
-    if [[ "$(type -P apk)" ]]; then
+    if [[ "$SERVICE_TYPE" == "openrc" ]] && [[ "$(type -P apk)" ]]; then
         install_software 'openrc' 'openrc'
     fi
     install_software 'curl' 'curl'
@@ -750,6 +887,8 @@ main() {
         echo "installed: ${ServicePath}"
     elif [[ "$SERVICE_TYPE" == "openrc" && "$OPENRC" -eq '1' ]]; then
         echo "installed: ${OpenRCPath}"
+    elif [[ "$SERVICE_TYPE" == "openwrt" && "$OPENWRT" -eq '1' ]]; then
+        echo "installed: ${OpenWrtPath}"
     elif [[ "$SERVICE_TYPE" == "initd" && "$INITD" -eq '1' ]]; then
         echo "installed: ${InitPath}"
     fi
@@ -779,6 +918,8 @@ main() {
             systemctl enable nginx-ui
         elif [[ "$SERVICE_TYPE" == "openrc" ]]; then
             rc-update add nginx-ui default
+        elif [[ "$SERVICE_TYPE" == "openwrt" ]]; then
+            "$OpenWrtPath" enable
         fi
     else
         # Service is not installed, start it and enable
@@ -799,6 +940,16 @@ main() {
             sleep 1s
             if rc-service nginx-ui status | grep -qE "(started|running)"; then
                 echo "info: Started and added the Nginx UI service to default runlevel."
+                print_install_secret
+            else
+                echo -e "${FontYellow}warning: Failed to start the Nginx UI service.${FontSuffix}"
+            fi
+        elif [[ "$SERVICE_TYPE" == "openwrt" ]]; then
+            "$OpenWrtPath" start
+            "$OpenWrtPath" enable
+            sleep 1s
+            if "$OpenWrtPath" status >/dev/null 2>&1; then
+                echo "info: Started and enabled the Nginx UI service on OpenWrt."
                 print_install_secret
             else
                 echo -e "${FontYellow}warning: Failed to start the Nginx UI service.${FontSuffix}"
