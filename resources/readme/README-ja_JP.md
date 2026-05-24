@@ -205,6 +205,7 @@ systemctl restart nginx-ui
 ##### 注意
 1. 初回利用時は `/etc/nginx` にマッピングするボリュームが空であることを確認してください。
 2. 静的ファイルを配信する場合は、適切なディレクトリをマッピングしてください。
+3. If you are upgrading from an older image, see the [Docker WebSocket fix guide](https://nginxui.com/guide/docker-websocket-fix.html) for required `conf.d/nginx-ui.conf` updates.
 
 <details>
 <summary><b>Dockerでデプロイ</b></summary>

@@ -1,0 +1,9 @@
+# Historical SHA256 hashes of the official default conf.d/nginx-ui.conf.
+# DO NOT delete entries: each line represents a past official default;
+# removing it would prevent that version's users from getting auto-upgraded.
+# Append a new line each time resources/docker/nginx-ui.conf changes.
+# CI enforces this list contains the current template hash on its last line.
+#
+# Maintenance: bash resources/docker/scripts/update-nginx-ui-conf-hash.sh
+6c3f1f06e242facad58e7d2cb3fd10ab1de18a70bf801c01d1b7294226b251b4  # pre-fix template (up to commit 054295ad's parent)
+93d8357f1fc76297a11855c654cd2aaa7cc517f31afa17c7aa1041d0f5cb2882  # current template (commit 054295ad onward)

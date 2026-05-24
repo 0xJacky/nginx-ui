@@ -192,6 +192,7 @@ Docker image của chúng tôi [uozi/nginx-ui:latest](https://hub.docker.com/r/u
 ##### Ghi chú
 1. Khi khởi chạy container lần đầu tiên, hãy chắc chắn thư mục /etc/nginx trên máy host là rỗng.
 2. Nếu bạn muốn lưu trữ các tệp tĩnh, bạn có thể mount các thư mục vào container.
+3. If you are upgrading from an older image, see the [Docker WebSocket fix guide](https://nginxui.com/guide/docker-websocket-fix.html) for required `conf.d/nginx-ui.conf` updates.
 
 <details>
 <summary><b>Triển khai với Docker</b></summary>

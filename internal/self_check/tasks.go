@@ -153,6 +153,20 @@ func Init() {
 		})
 	}
 
+	if helper.ShouldManageBundledNginx() {
+		selfCheckTasks = append(selfCheckTasks, &Task{
+			Key:  "Docker-BundledNginxUIConf-WS",
+			Name: translation.C("Bundled nginx-ui.conf has WebSocket reverse-proxy fix"),
+			Description: translation.C(
+				"When the container is behind an outer reverse proxy that terminates TLS " +
+					"(e.g. host nginx, Cloudflare), the bundled conf.d/nginx-ui.conf must trust " +
+					"the inbound X-Forwarded-Proto/Host headers; otherwise WebSocket origin checks fail. " +
+					"Older deployments that persisted /etc/nginx may still have the unfixed version."),
+			CheckFunc: CheckBundledNginxUIConf,
+			FixFunc:   FixBundledNginxUIConf,
+		})
+	}
+
 	if settings.NginxLogSettings.IndexingEnabled {
 		selfCheckTasks = append(selfCheckTasks, &Task{
 			Key:  "GeoLite-DB",

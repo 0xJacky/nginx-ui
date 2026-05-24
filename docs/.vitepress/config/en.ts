@@ -79,6 +79,7 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           text: 'Appendix',
           collapsed: false,
           items: [
+            { text: 'Docker WebSocket Fix', link: '/guide/docker-websocket-fix' },
             { text: 'Nginx Proxy Example', link: '/guide/nginx-proxy-example' },
             { text: 'Reset Password', link: '/guide/reset-password' },
             { text: 'License', link: '/guide/license' }
