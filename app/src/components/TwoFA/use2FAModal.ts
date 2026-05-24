@@ -2,6 +2,23 @@ import twoFA from '@/api/2fa'
 import Authorization from '@/components/TwoFA/Authorization.vue'
 import { useAppStore, useUserStore } from '@/pinia'
 
+// Thrown when the user dismisses the 2FA prompt. Callers (notably the HTTP
+// response interceptor) use `instanceof` to distinguish a user cancel from
+// a preflight HTTP failure so the right error reaches the original caller.
+export class TwoFACancelledError extends Error {
+  constructor() {
+    super('Two-factor authentication cancelled')
+    this.name = 'TwoFACancelledError'
+  }
+}
+
+// Module-level dedup: when several concurrent requests fail with 401 at the
+// same time (e.g. a dashboard mount firing parallel protected GETs after the
+// secure session expired), every awaiter shares ONE 2FA prompt. The promise
+// is cleared in `.finally()` so a subsequent — independent — challenge can
+// spawn a fresh modal.
+let inflightOpen: Promise<string> | null = null
+
 function use2FAModal() {
   const app = useAppStore()
   const { modal } = storeToRefs(app)
@@ -37,7 +54,7 @@ function use2FAModal() {
     })
   }
 
-  const open = async (): Promise<string> => {
+  const openInternal = async (): Promise<string> => {
     const twoFAStatus = await twoFA.status()
     const { status: secureSessionStatus } = await twoFA.secure_session_status()
 
@@ -47,10 +64,18 @@ function use2FAModal() {
         return
       }
 
+      // Fast path: another flow (e.g. a sibling tab) may have refreshed the
+      // session between when the caller saw a 401 and now. Don't show the
+      // modal in that case — reuse the freshly-minted session id.
       if (secureSessionId.value && secureSessionStatus) {
         resolve(secureSessionId.value)
         return
       }
+
+      // Server confirmed the session is invalid. Clear the stale value here
+      // (NOT eagerly in the caller) so the fast-path above still gets a
+      // chance to recover when another flow already refreshed the session.
+      secureSessionId.value = ''
 
       injectStyles()
 
@@ -108,11 +133,20 @@ function use2FAModal() {
         },
         onCancel: () => {
           modalInstance.destroy()
-          // eslint-disable-next-line prefer-promise-reject-errors
-          reject()
+          reject(new TwoFACancelledError())
         },
       })
     })
+  }
+
+  const open = (): Promise<string> => {
+    if (inflightOpen) {
+      return inflightOpen
+    }
+    inflightOpen = openInternal().finally(() => {
+      inflightOpen = null
+    })
+    return inflightOpen
   }
 
   return { open }

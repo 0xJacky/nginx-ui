@@ -23,5 +23,12 @@ declare module 'axios' {
     returnFullResponse?: boolean
     crypto?: boolean
     skipAuthRedirect?: boolean
+    // Internal markers used by interceptors to safely retry a request after
+    // a 2FA step-up challenge. Only FormData (the restore-backup endpoint)
+    // is snapshotted — JSON callers with `crypto: true` are all pre-auth
+    // and never reach the secure-session retry path, so we don't keep a
+    // plaintext copy of those payloads on the request config.
+    _preEncryptionFormData?: FormData
+    _retriedAfter2FA?: boolean
   }
 }
