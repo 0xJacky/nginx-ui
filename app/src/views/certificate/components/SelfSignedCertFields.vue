@@ -13,7 +13,10 @@ const data = defineModel<SelfSignedCertPayload>({ required: true })
 </script>
 
 <template>
-  <AForm layout="vertical">
+  <AForm
+    layout="vertical"
+    class="max-w-[600px]"
+  >
     <AAlert
       v-if="!props.hideRenewalNote"
       class="mb-4"
