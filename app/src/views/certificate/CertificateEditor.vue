@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import type { Cert } from '@/api/cert'
-import cert from '@/api/cert'
-import { AutoCertState } from '@/constants'
+import type { Cert, SelfSignedCertPayload } from '@/api/cert'
+import cert, { toSelfSignedPayload } from '@/api/cert'
+import { AutoCertState, normalizePrivateKeyType } from '@/constants'
 
 import AutoCertManagement from './components/AutoCertManagement.vue'
 import CertificateActions from './components/CertificateActions.vue'
 import CertificateBasicInfo from './components/CertificateBasicInfo.vue'
 import CertificateContentEditor from './components/CertificateContentEditor.vue'
 import CertificateDownload from './components/CertificateDownload.vue'
+import SelfSignedCertManagement from './components/SelfSignedCertManagement.vue'
 import { useCertStore } from './store'
 
 const { message } = App.useApp()
@@ -28,10 +29,24 @@ const isManaged = computed(() => {
   return data.value.auto_cert === AutoCertState.Enable || data.value.auto_cert === AutoCertState.Sync
 })
 
+const isSelfSigned = computed(() => {
+  return data.value.auto_cert === AutoCertState.SelfSigned
+})
+
+const selfSignedPayload = ref<SelfSignedCertPayload>()
+
+watch(data, value => {
+  if (value.auto_cert === AutoCertState.SelfSigned)
+    selfSignedPayload.value = toSelfSignedPayload(value)
+}, { immediate: true })
+
 function init() {
   if (id.value > 0) {
     cert.getItem(id.value).then(r => {
-      data.value = r
+      // Backend stores key_type in its canonical form (EC256, RSA2048…); the
+      // ACME form's ASelect options use the legacy keys (P256, 2048…). Normalize
+      // on load so the dropdown highlights the right option when editing.
+      data.value = { ...r, key_type: normalizePrivateKeyType(r.key_type) }
     })
   }
   else {
@@ -45,10 +60,43 @@ onMounted(() => {
 
 async function save() {
   try {
-    await certStore.save()
+    let savedId = data.value.id
+    if (isSelfSigned.value && selfSignedPayload.value && data.value.id) {
+      const payload = selfSignedPayload.value
+      const name = payload.name.trim()
+      const domains = payload.domains.map(d => d.trim()).filter(Boolean)
+      const ip_addresses = payload.ip_addresses.map(s => s.trim()).filter(Boolean)
+
+      if (!name) {
+        message.error($gettext('Please enter a name for the certificate'))
+        return
+      }
+      if (domains.length === 0 && ip_addresses.length === 0) {
+        message.error($gettext('Please enter at least one domain or IP address'))
+        return
+      }
+
+      const currentId = data.value.id
+      const result = await cert.modify_self_signed(currentId, {
+        ...payload,
+        name,
+        domains,
+        ip_addresses,
+      })
+      savedId = result.id || currentId
+      data.value = { ...result, id: savedId }
+    }
+    else {
+      await certStore.save()
+      savedId = data.value.id
+    }
+    if (!savedId) {
+      message.error($gettext('Saved certificate response is missing an ID'))
+      return
+    }
     message.success($gettext('Save successfully'))
     errors.value = {}
-    await router.push(`/certificates/${certStore.data.id}`)
+    await router.push(`/certificates/${savedId}`)
   }
   // eslint-disable-next-line ts/no-explicit-any
   catch (e: any) {
@@ -87,8 +135,16 @@ const log = computed(() => {
         :sm="24"
         :lg="12"
       >
+        <!-- Self-signed Certificate Management -->
+        <SelfSignedCertManagement
+          v-if="isSelfSigned && selfSignedPayload"
+          v-model:value="selfSignedPayload"
+          :certificate-info="data.certificate_info"
+        />
+
         <!-- Auto Certificate Management -->
         <AutoCertManagement
+          v-else
           v-model:data="data"
           :is-managed="isManaged"
           @renewed="init"
@@ -97,6 +153,7 @@ const log = computed(() => {
         <AForm layout="vertical">
           <!-- Certificate Basic Information -->
           <CertificateBasicInfo
+            v-if="!isSelfSigned"
             v-model:data="data"
             :errors="errors"
             :is-managed="isManaged"
@@ -109,7 +166,7 @@ const log = computed(() => {
           <CertificateContentEditor
             v-model:data="data"
             :errors="errors"
-            :readonly="isManaged"
+            :readonly="isManaged || isSelfSigned"
             class="max-w-600px"
           />
         </AForm>

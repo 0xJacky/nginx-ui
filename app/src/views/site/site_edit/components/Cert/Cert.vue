@@ -6,6 +6,7 @@ import { ConfigStatus } from '@/constants'
 import { useSiteEditorStore } from '../SiteEditor/store'
 import ChangeCert from './ChangeCert.vue'
 import IssueCert from './IssueCert.vue'
+import SelfSignedCert from './SelfSignedCert.vue'
 
 const props = defineProps<{
   configName: string
@@ -96,6 +97,9 @@ function handleCertChange(certs: Cert[]) {
     <IssueCert
       v-if="siteStatus === ConfigStatus.Enabled || siteStatus === ConfigStatus.Maintenance"
       :config-name
+    />
+    <SelfSignedCert
+      v-if="siteStatus === ConfigStatus.Enabled || siteStatus === ConfigStatus.Maintenance"
     />
   </div>
 </template>

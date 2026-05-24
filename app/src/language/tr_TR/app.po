@@ -5,24 +5,22 @@ msgstr ""
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2025-04-08 18:26+0000\n"
 "Last-Translator: Ulaş <ozturkmuratulas@hotmail.com>\n"
-"Language-Team: Turkish <https://weblate.nginxui.com/projects/nginx-ui/"
-"frontend/tr/>\n"
+"Language-Team: Turkish "
+"<https://weblate.nginxui.com/projects/nginx-ui/frontend/tr/>\n"
 "Language: tr_TR\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 5.10.4\n"
 
 #: src/language/generate.ts:37
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
-msgstr ""
-"[Nginx UI] ACME Kullanıcısı: %{name}, E-posta: %{email}, CA Dizini: %{caDir}"
+msgstr "[Nginx UI] ACME Kullanıcısı: %{name}, E-posta: %{email}, CA Dizini: %{caDir}"
 
 #: src/language/generate.ts:38
 msgid "[Nginx UI] Backing up current certificate for later revocation"
-msgstr ""
-"[Nginx UI] Geçerli sertifika daha sonra iptal edilmek üzere yedekleniyor"
+msgstr "[Nginx UI] Geçerli sertifika daha sonra iptal edilmek üzere yedekleniyor"
 
 #: src/language/generate.ts:39
 msgid "[Nginx UI] Certificate renewed successfully"
@@ -33,16 +31,14 @@ msgid "[Nginx UI] Certificate successfully revoked"
 msgstr "[Nginx UI] Sertifika başarıyla iptal edildi"
 
 #: src/language/generate.ts:41
-msgid ""
-"[Nginx UI] Certificate was used for server, reloading server TLS certificate"
+msgid "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
 msgstr ""
 "[Nginx UI] Sertifika sunucu için kullanıldı, sunucu TLS sertifikası yeniden "
 "yükleniyor"
 
 #: src/language/generate.ts:42
 msgid "[Nginx UI] Creating client facilitates communication with the CA server"
-msgstr ""
-"[Nginx UI] CA sunucusu ile iletişimi kolaylaştırmak için istemci oluşturma"
+msgstr "[Nginx UI] CA sunucusu ile iletişimi kolaylaştırmak için istemci oluşturma"
 
 #: src/language/generate.ts:43
 msgid "[Nginx UI] Environment variables cleaned"
@@ -111,16 +107,15 @@ msgstr "{label} panoya kopyalandı"
 
 #: src/components/SyncNodesPreview/SyncNodesPreview.vue:59
 msgid "* Includes nodes from group %{groupName} and manually selected nodes"
-msgstr ""
-"* %{groupName} grubundan düğümler ve manuel olarak seçilen düğümler içerir"
+msgstr "* %{groupName} grubundan düğümler ve manuel olarak seçilen düğümler içerir"
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:166
 msgid ""
-"* Index files are stored in the \"log-index\" directory within your Nginx UI "
-"config path by default."
+"* Index files are stored in the \"log-index\" directory within your Nginx "
+"UI config path by default."
 msgstr ""
-"* Dizin dosyaları varsayılan olarak NGINX UI yapılandırma yolunuzdaki \"log-"
-"index\" dizininde saklanır."
+"* Dizin dosyaları varsayılan olarak NGINX UI yapılandırma yolunuzdaki "
+"\"log-index\" dizininde saklanır."
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:215
 msgid ""
@@ -130,10 +125,6 @@ msgstr ""
 "* Performans ölçümleri Apple M2 Pro (12 çekirdek) ve 32 GB RAM ile "
 "yapılmıştır. Gerçek performans donanım yapılandırmanıza göre değişiklik "
 "gösterebilir."
-
-#: src/views/preference/components/NginxHostSetup/steps/Step2bHost.vue:30
-msgid "/etc/sudoers.d/nginx-ui (sudo visudo -f)"
-msgstr ""
 
 #: src/views/site/site_list/SiteList.vue:191
 msgid "%{count} sites selected"
@@ -186,7 +177,7 @@ msgstr "24 Saatlik UV/PV İstatistikleri"
 msgid "2FA"
 msgstr "İki aşamalı kimlik doğrulaması(2FA)"
 
-#: src/views/user/UserProfile.vue:151
+#: src/views/user/UserProfile.vue:146
 msgid "2FA Settings"
 msgstr "2FA Ayarları"
 
@@ -194,11 +185,25 @@ msgstr "2FA Ayarları"
 msgid "4GB+ RAM recommended"
 msgstr "4 GB RAM veya daha fazlası önerilir"
 
-#: src/components/InspectConfig/InspectConfig.vue:37
+#: src/views/dns/DDNSManager.vue:86
 msgid ""
-"A required include file is missing from the sandbox or source configuration."
+"A records at the same names are not managed in IPv6 only mode. They remain "
+"unchanged in DNS."
 msgstr ""
-"Sandbox veya kaynak yapılandırmasında gerekli bir dahil etme dosyası eksik."
+"Yalnızca IPv6 modunda aynı adlara sahip A kayıtları yönetilmez. DNS'te "
+"değişmeden kalırlar."
+
+#: src/components/InspectConfig/InspectConfig.vue:37
+msgid "A required include file is missing from the sandbox or source configuration."
+msgstr "Sandbox veya kaynak yapılandırmasında gerekli bir dahil etme dosyası eksik."
+
+#: src/views/dns/DDNSManager.vue:85
+msgid ""
+"AAAA records at the same names are not managed in IPv4 only mode. They "
+"remain unchanged in DNS."
+msgstr ""
+"Aynı ada sahip AAAA kayıtları yalnızca IPv4 modunda yönetilmez. DNS'te "
+"değişmeden kalır."
 
 #: src/routes/modules/system.ts:38
 msgid "About"
@@ -217,10 +222,6 @@ msgstr "Erişim günlüğü yolu mevcut değil"
 msgid "Access Logs"
 msgstr "Erişim Günlükleri"
 
-#: src/views/preference/components/NginxHostSetup/steps/Step2bHost.vue:42
-msgid "ACL commands (run as root)"
-msgstr ""
-
 #: src/routes/modules/certificates.ts:20 src/views/certificate/ACMEUser.vue:140
 #: src/views/certificate/components/ACMEUserSelector.vue:64
 msgid "ACME User"
@@ -232,10 +233,10 @@ msgstr "Eylem"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:273
 #: src/views/certificate/ACMEUser.vue:122
-#: src/views/certificate/CertificateList/certColumns.tsx:92
+#: src/views/certificate/CertificateList/certColumns.tsx:113
 #: src/views/config/configColumns.tsx:51
 #: src/views/dns/components/DNSRecordTable.vue:42
-#: src/views/dns/DDNSManager.vue:129 src/views/dns/DNSCredential.vue:71
+#: src/views/dns/DDNSManager.vue:180 src/views/dns/DNSCredential.vue:71
 #: src/views/dns/DNSDomainList.vue:242 src/views/namespace/columns.ts:97
 #: src/views/nginx_log/NginxLogList.vue:338 src/views/node/nodeColumns.tsx:96
 #: src/views/notification/notificationColumns.tsx:72
@@ -277,13 +278,22 @@ msgstr "Yapılandırma Ekle"
 msgid "Add Directive Below"
 msgstr "Direktifi Aşağıya Ekleyin"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:159
+#: src/views/certificate/components/DNSIssueCertificate.vue:197
+#: src/views/certificate/components/SelfSignedCertFields.vue:37
 msgid "Add Domain"
 msgstr "Alan Adı Ekle"
 
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:548
 msgid "Add Header"
 msgstr "Başlık Ekle"
+
+#: src/views/certificate/components/SelfSignedCertFields.vue:44
+msgid "Add IP Address"
+msgstr "IP adresi ekle"
+
+#: src/components/StringListInput/StringListInput.vue:48
+msgid "Add Item"
+msgstr "Öğe ekle"
 
 #: src/components/NgxConfigEditor/LocationEditor.vue:143
 #: src/components/NgxConfigEditor/LocationEditor.vue:170
@@ -325,8 +335,7 @@ msgstr "Gelişmiş Mod"
 
 #: src/views/nginx_log/NginxLogList.vue:397
 msgid "Advanced indexing enabled but failed to start rebuild"
-msgstr ""
-"Gelişmiş indeksleme etkinleştirildi ancak yeniden oluşturma başlatılamadı"
+msgstr "Gelişmiş indeksleme etkinleştirildi ancak yeniden oluşturma başlatılamadı"
 
 #: src/views/nginx_log/NginxLogList.vue:388
 msgid "Advanced indexing enabled successfully"
@@ -352,17 +361,11 @@ msgstr "Gelişmiş Ayarlar"
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:105
 msgid "Afterwards, refresh this page and click add passkey again."
-msgstr ""
-"Daha sonra bu sayfayı yenileyin ve tekrar parola anahtarı ekle'ye tıklayın."
+msgstr "Daha sonra bu sayfayı yenileyin ve tekrar parola anahtarı ekle'ye tıklayın."
 
 #: src/views/dns/components/DNSRecordFilter.vue:55
 msgid "All"
 msgstr "Tümü"
-
-#: src/views/preference/components/NginxHostSetup/steps/Step4Verify.vue:73
-#, fuzzy
-msgid "All checks passed — you may save the configuration."
-msgstr "Nginx yapılandırmayı doğrulayamadı."
 
 #: src/views/system/Licenses.vue:152
 msgid "All Components"
@@ -373,7 +376,7 @@ msgstr "Tüm Bileşenler"
 msgid "All Recovery Codes Have Been Used"
 msgstr "Tüm Kurtarma Kodları Kullanıldı"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:164
+#: src/views/certificate/components/DNSIssueCertificate.vue:200
 msgid ""
 "All selected subdomains must belong to the same DNS Provider, otherwise the "
 "certificate application will fail."
@@ -398,8 +401,7 @@ msgid "Any"
 msgstr "Herhangi"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:209
-msgid ""
-"Any reachable IP address can be used with private Certificate Authorities"
+msgid "Any reachable IP address can be used with private Certificate Authorities"
 msgstr ""
 "Herhangi bir erişilebilir IP adresi, özel Sertifika Yetkilileri ile "
 "kullanılabilir"
@@ -428,10 +430,6 @@ msgstr "API Türü"
 msgid "App"
 msgstr "Uygulama"
 
-#: src/views/preference/components/NginxHostSetup/steps/Step2bHost.vue:36
-msgid "Append to ~nginxui/.ssh/authorized_keys"
-msgstr ""
-
 #: src/language/curd.ts:65
 msgid "Apply"
 msgstr "Uygula"
@@ -444,7 +442,7 @@ msgstr "Mimari"
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "Bu yasaklı IP'yi hemen sileceğinizden emin misiniz?"
 
-#: src/views/dns/DDNSManager.vue:276
+#: src/views/dns/DDNSManager.vue:349
 msgid "Are you sure to delete this DDNS config?"
 msgstr "Bu DDNS yapılandırmasını silmek istediğinizden emin misiniz?"
 
@@ -456,7 +454,7 @@ msgstr "Bu geçiş anahtarını hemen silmek istediğinizden emin misiniz?"
 msgid "Are you sure to delete this record?"
 msgstr "Bu kaydı silmek istediğinizden emin misiniz?"
 
-#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:155
+#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:158
 msgid "Are you sure to generate new recovery codes?"
 msgstr "Yeni kurtarma kodları oluşturulacaktır. Emin misiniz?"
 
@@ -527,6 +525,8 @@ msgid ""
 "Atlas Cloud is OpenAI-compatible. Use https://api.atlascloud.ai/v1 and an "
 "Atlas Cloud API key."
 msgstr ""
+"Atlas Cloud, OpenAI ile uyumludur. https://api.atlascloud.ai/v1 ve bir "
+"Atlas Cloud API anahtarını kullanın."
 
 #: src/components/SelfCheck/SelfCheck.vue:85
 msgid "Attempt to fix"
@@ -536,22 +536,16 @@ msgstr "Düzeltmeyi dene"
 msgid "Attempts"
 msgstr "Girişimler"
 
-#: src/views/preference/components/NginxHostSetup/Wizard.vue:59
 #: src/views/preference/Preference.vue:83
 msgid "Auth"
 msgstr "Kimlik Doğrulama"
 
-#: src/components/TwoFA/Authorization.vue:109
+#: src/components/TwoFA/Authorization.vue:117
 msgid "Authenticate with a passkey"
 msgstr "Geçiş anahtarıyla kimlik doğrulama"
 
 #: src/views/other/Login.vue:289
 msgid "Authenticating..."
-msgstr "Kimlik doğrulama..."
-
-#: src/views/preference/components/NginxHostSetup/steps/Step1AuthMethod.vue:39
-#, fuzzy
-msgid "Authentication method"
 msgstr "Kimlik doğrulama..."
 
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:122
@@ -601,15 +595,15 @@ msgstr "Otomatik yenileme devre dışı bırakıldı"
 msgid "Auto refresh enabled"
 msgstr "Otomatik yenileme etkinleştirildi"
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:134
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:93
 msgid "Auto-renewal disabled for %{name}"
 msgstr "Otomatik yenileme %{name} için devre dışı"
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:127
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:86
 msgid "Auto-renewal enabled for %{name}"
 msgstr "Otomatik yenileme %{name} için etkinleştirildi"
 
-#: src/views/certificate/components/RenewCert.vue:54
+#: src/views/certificate/components/RenewCert.vue:47
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:103
 msgid "AutoCert is running, please wait..."
 msgstr "AutoCert çalışıyor, lütfen bekleyin..."
@@ -670,8 +664,8 @@ msgid ""
 "Background indexing in progress. Data will be updated automatically when "
 "ready."
 msgstr ""
-"Arka planda indeksleme devam ediyor. Veriler hazır olduğunda otomatik olarak "
-"güncellenecektir."
+"Arka planda indeksleme devam ediyor. Veriler hazır olduğunda otomatik "
+"olarak güncellenecektir."
 
 #: src/constants/errors/nginx_log.ts:14
 msgid "Background log service not available"
@@ -723,15 +717,13 @@ msgstr "Yedekleme imza anahtarı mevcut değil"
 
 #: src/components/Notification/notifications.ts:38
 msgid "Backup task %{backup_name} completed successfully, file: %{file_path}"
-msgstr ""
-"Yedekleme görevi %{backup_name} başarıyla tamamlandı, dosya: %{file_path}"
+msgstr "Yedekleme görevi %{backup_name} başarıyla tamamlandı, dosya: %{file_path}"
 
 #: src/components/Notification/notifications.ts:34
-msgid ""
-"Backup task %{backup_name} failed during storage upload, error: %{error}"
+msgid "Backup task %{backup_name} failed during storage upload, error: %{error}"
 msgstr ""
-"Yedekleme görevi %{backup_name} depolama yüklemesi sırasında başarısız oldu, "
-"hata: %{error}"
+"Yedekleme görevi %{backup_name} depolama yüklemesi sırasında başarısız "
+"oldu, hata: %{error}"
 
 #: src/components/Notification/notifications.ts:30
 msgid "Backup task %{backup_name} failed to execute, error: %{error}"
@@ -790,14 +782,7 @@ msgstr "Toplu Yükseltme"
 
 #: src/language/curd.ts:38
 msgid "Belows are selected items that you want to batch modify"
-msgstr ""
-"Aşağıda toplu olarak değiştirmek istediğiniz seçili öğeler bulunmaktadır"
-
-#: src/views/preference/components/NginxHostSetup/steps/Step3Connection.vue:57
-msgid ""
-"bind-mount cannot reach remote filesystems — config editing, log viewing and "
-"certificate management will fail."
-msgstr ""
+msgstr "Aşağıda toplu olarak değiştirmek istediğiniz seçili öğeler bulunmaktadır"
 
 #: src/constants/errors/nginx.ts:3
 msgid "Block is nil"
@@ -888,14 +873,14 @@ msgstr ""
 #: src/components/NgxConfigEditor/NgxUpstream.vue:32 src/language/curd.ts:37
 #: src/views/config/components/Delete.vue:98
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:710
-#: src/views/dns/DDNSManager.vue:334 src/views/dns/DNSRecordManager.vue:219
+#: src/views/dns/DDNSManager.vue:438 src/views/dns/DNSRecordManager.vue:219
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:101
 #: src/views/nginx_log/indexing/IndexManagement.vue:33
 #: src/views/nginx_log/indexing/IndexManagement.vue:59
 #: src/views/preference/components/AuthSettings/Passkey.vue:142
 #: src/views/site/components/SiteStatusSelect.vue:124
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:53
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:184
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:143
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:21
 #: src/views/site/site_list/SiteList.vue:102
 #: src/views/stream/components/StreamStatusSelect.vue:62
@@ -987,6 +972,12 @@ msgstr "Sertifika içeriği ve özel anahtar içeriği boş olamaz"
 msgid "Certificate decode error"
 msgstr "Sertifika çözme hatası"
 
+#: src/views/site/site_edit/components/Cert/SelfSignedCert.vue:54
+msgid "Certificate directives added to the editor; review and save when ready."
+msgstr ""
+"Sertifika direktifleri düzenleyiciye eklendi; hazır olduğunuzda gözden "
+"geçirin ve kaydedin."
+
 #: src/components/Notification/notifications.ts:53
 msgid "Certificate Expiration Notice"
 msgstr "Sertifika Son Kullanma Bildirimi"
@@ -1004,6 +995,14 @@ msgstr "Sertifika Yakında Sona Eriyor"
 #: src/views/certificate/components/CertificateDownload.vue:71
 msgid "Certificate files downloaded successfully"
 msgstr "Sertifika dosyaları başarıyla indirildi"
+
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:57
+msgid "Certificate issuance component is not ready"
+msgstr "Sertifika verme bileşeni hazır değil"
+
+#: src/views/certificate/components/RetryCert.vue:33
+msgid "Certificate issued successfully"
+msgstr "Sertifika başarıyla verildi"
 
 #: src/views/certificate/components/CertificateDownload.vue:42
 msgid "Certificate name cannot be empty"
@@ -1039,18 +1038,19 @@ msgid "Certificate revoked successfully"
 msgstr "Sertifika başarıyla iptal edildi"
 
 #: src/views/certificate/components/AutoCertManagement.vue:67
-#: src/views/site/site_edit/components/Cert/Cert.vue:58
+#: src/views/certificate/components/SelfSignedCertManagement.vue:25
+#: src/views/site/site_edit/components/Cert/Cert.vue:59
 msgid "Certificate Status"
 msgid_plural "Certificates Status"
 msgstr[0] "Sertifika Durumu"
 msgstr[1] "Sertifikaların Durumu"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:112
+#: src/views/certificate/components/DNSIssueCertificate.vue:168
 msgid "Certificate Type"
 msgstr "Sertifika Türü"
 
 #: src/routes/modules/certificates.ts:11
-#: src/views/certificate/CertificateList/Certificate.vue:19
+#: src/views/certificate/CertificateList/Certificate.vue:20
 msgid "Certificates"
 msgstr "Sertifikalar"
 
@@ -1071,11 +1071,11 @@ msgstr "Doğrulama Yöntemi"
 msgid "Change Certificate"
 msgstr "Sertifika Değiştir"
 
-#: src/views/user/UserProfile.vue:181
+#: src/views/user/UserProfile.vue:176
 msgid "Change Password"
 msgstr "Şifreyi Değiştir"
 
-#: src/views/site/site_edit/components/Cert/Cert.vue:77
+#: src/views/site/site_edit/components/Cert/Cert.vue:78
 msgid "Changed Certificate"
 msgid_plural "Changed Certificates"
 msgstr[0] "Değişen Sertifika"
@@ -1115,25 +1115,25 @@ msgstr "Favicon'ı kontrol et"
 #: src/language/generate.ts:6
 msgid ""
 "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
-"Docker Image, please make sure the docker socket is mounted like this: `-v /"
-"var/run/docker.sock:/var/run/docker.sock`. Nginx UI official image uses /var/"
-"run/docker.sock to communicate with the host Docker Engine via Docker Client "
-"API. This feature is used to control Nginx in another container and perform "
-"container replacement rather than binary replacement during OTA upgrades of "
-"Nginx UI to ensure container dependencies are also upgraded. If you don't "
-"need this feature, please add the environment variable "
+"Docker Image, please make sure the docker socket is mounted like this: `-v "
+"/var/run/docker.sock:/var/run/docker.sock`. Nginx UI official image uses "
+"/var/run/docker.sock to communicate with the host Docker Engine via Docker "
+"Client API. This feature is used to control Nginx in another container and "
+"perform container replacement rather than binary replacement during OTA "
+"upgrades of Nginx UI to ensure container dependencies are also upgraded. If "
+"you don't need this feature, please add the environment variable "
 "NGINX_UI_IGNORE_DOCKER_SOCKET=true to the container."
 msgstr ""
 "/var/run/docker.sock dosyasının var olup olmadığını kontrol edin. Nginx UI "
 "Resmi Docker Image'ını kullanıyorsanız, docker soketinin şu şekilde "
 "bağlandığından emin olun: `-v /var/run/docker.sock:/var/run/docker.sock`. "
 "Nginx UI resmi imajı, Docker Client API üzerinden ana bilgisayarın Docker "
-"Engine'i ile iletişim kurmak için /var/run/docker.sock kullanır. Bu özellik, "
-"Nginx UI'nin OTA güncellemeleri sırasında ikili dosya değişimi yerine "
-"konteyner değişimi yaparak Nginx'i başka bir konteynerde kontrol etmek ve "
-"konteyner bağımlılıklarının da güncellenmesini sağlamak için kullanılır. Bu "
-"özelliğe ihtiyacınız yoksa, konteynere NGINX_UI_IGNORE_DOCKER_SOCKET=true "
-"ortam değişkenini ekleyin."
+"Engine'i ile iletişim kurmak için /var/run/docker.sock kullanır. Bu "
+"özellik, Nginx UI'nin OTA güncellemeleri sırasında ikili dosya değişimi "
+"yerine konteyner değişimi yaparak Nginx'i başka bir konteynerde kontrol "
+"etmek ve konteyner bağımlılıklarının da güncellenmesini sağlamak için "
+"kullanılır. Bu özelliğe ihtiyacınız yoksa, konteynere "
+"NGINX_UI_IGNORE_DOCKER_SOCKET=true ortam değişkenini ekleyin."
 
 #: src/components/SelfCheck/tasks/frontend/https-check.ts:14
 msgid ""
@@ -1145,8 +1145,7 @@ msgstr ""
 "engeller"
 
 #: src/language/generate.ts:8
-msgid ""
-"Check if the conf.d directory is under the nginx configuration directory"
+msgid "Check if the conf.d directory is under the nginx configuration directory"
 msgstr ""
 "conf.d dizininin nginx yapılandırma dizini altında olup olmadığını kontrol "
 "edin"
@@ -1159,26 +1158,26 @@ msgid ""
 "GeoLite2-City.mmdb in the same directory as app.ini"
 msgstr ""
 "Log endekslemesi etkin olduğunda GeoLite2 veritabanının mevcut olup "
-"olmadığını kontrol edin. GeoLite2 veritabanı, log endekslemesinde coğrafi IP "
-"analizi için gereklidir. Veritabanını Tercihler sayfasından indirebilir veya "
-"app.ini dosyasının bulunduğu dizine GeoLite2-City.mmdb dosyasını manuel "
-"olarak yerleştirebilirsiniz"
+"olmadığını kontrol edin. GeoLite2 veritabanı, log endekslemesinde coğrafi "
+"IP analizi için gereklidir. Veritabanını Tercihler sayfasından indirebilir "
+"veya app.ini dosyasının bulunduğu dizine GeoLite2-City.mmdb dosyasını "
+"manuel olarak yerleştirebilirsiniz"
 
 #: src/language/generate.ts:10
 msgid ""
-"Check if the nginx access log path exists. By default, this path is obtained "
-"from 'nginx -V'. If it cannot be obtained or the obtained path does not "
-"point to a valid, existing file, an error will be reported. In this case, "
-"you need to modify the configuration file to specify the access log path."
-"Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-"
-"nginx.html#accesslogpath"
+"Check if the nginx access log path exists. By default, this path is "
+"obtained from 'nginx -V'. If it cannot be obtained or the obtained path "
+"does not point to a valid, existing file, an error will be reported. In "
+"this case, you need to modify the configuration file to specify the access "
+"log path.Refer to the docs for more details: "
+"https://nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
 msgstr ""
 "Nginx erişim günlüğü yolunun var olup olmadığını kontrol edin. Varsayılan "
 "olarak bu yol 'nginx -V' komutu ile alınır. Eğer alınamazsa veya alınan yol "
 "geçerli, mevcut bir dosyayı işaret etmiyorsa bir hata bildirilecektir. Bu "
 "durumda, erişim günlüğü yolunu belirtmek için yapılandırma dosyasını "
-"değiştirmeniz gerekmektedir. Daha fazla bilgi için belgelere bakın: https://"
-"nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
+"değiştirmeniz gerekmektedir. Daha fazla bilgi için belgelere bakın: "
+"https://nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
 
 #: src/language/generate.ts:11
 msgid "Check if the nginx configuration directory exists"
@@ -1194,29 +1193,29 @@ msgid ""
 "from 'nginx -V'. If it cannot be obtained or the obtained path does not "
 "point to a valid, existing file, an error will be reported. In this case, "
 "you need to modify the configuration file to specify the error log path. "
-"Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-"
-"nginx.html#errorlogpath"
+"Refer to the docs for more details: "
+"https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
 msgstr ""
 "Nginx hata günlüğü yolunun var olup olmadığını kontrol edin. Varsayılan "
 "olarak bu yol 'nginx -V' komutuyla alınır. Eğer alınamazsa veya alınan yol "
 "geçerli, mevcut bir dosyayı işaret etmiyorsa bir hata bildirilir. Bu "
-"durumda, yapılandırma dosyasını değiştirerek hata günlüğü yolunu belirtmeniz "
-"gerekir. Daha fazla ayrıntı için belgelere bakın: https://nginxui.com/zh_CN/"
-"guide/config-nginx.html#errorlogpath"
+"durumda, yapılandırma dosyasını değiştirerek hata günlüğü yolunu "
+"belirtmeniz gerekir. Daha fazla ayrıntı için belgelere bakın: "
+"https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
 
 #: src/language/generate.ts:9
 msgid ""
 "Check if the nginx PID path exists. By default, this path is obtained from "
 "'nginx -V'. If it cannot be obtained, an error will be reported. In this "
 "case, you need to modify the configuration file to specify the Nginx PID "
-"path.Refer to the docs for more details: https://nginxui.com/zh_CN/guide/"
-"config-nginx.html#pidpath"
+"path.Refer to the docs for more details: "
+"https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
 msgstr ""
-"Nginx PID yolunun var olup olmadığını kontrol edin. Varsayılan olarak bu yol "
-"'nginx -V' komutuyla alınır. Alınamazsa bir hata bildirilir. Bu durumda, "
-"yapılandırma dosyasını değiştirerek Nginx PID yolunu belirtmeniz gerekir. "
-"Daha fazla ayrıntı için belgelere bakın: https://nginxui.com/zh_CN/guide/"
-"config-nginx.html#pidpath"
+"Nginx PID yolunun var olup olmadığını kontrol edin. Varsayılan olarak bu "
+"yol 'nginx -V' komutuyla alınır. Alınamazsa bir hata bildirilir. Bu "
+"durumda, yapılandırma dosyasını değiştirerek Nginx PID yolunu belirtmeniz "
+"gerekir. Daha fazla ayrıntı için belgelere bakın: "
+"https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
 
 #: src/language/generate.ts:14
 msgid "Check if the nginx sbin path exists"
@@ -1229,7 +1228,8 @@ msgstr "nginx.conf dosyasının conf.d dizinini içerip içermediğini kontrol e
 #: src/language/generate.ts:16
 msgid "Check if the nginx.conf includes the sites-enabled directory"
 msgstr ""
-"nginx.conf dosyasının sites-enabled dizinini içerip içermediğini kontrol edin"
+"nginx.conf dosyasının sites-enabled dizinini içerip içermediğini kontrol "
+"edin"
 
 #: src/language/generate.ts:17
 msgid "Check if the nginx.conf includes the streams-enabled directory"
@@ -1247,8 +1247,8 @@ msgstr ""
 
 #: src/language/generate.ts:19
 msgid ""
-"Check if the streams-available and streams-enabled directories are under the "
-"nginx configuration directory"
+"Check if the streams-available and streams-enabled directories are under "
+"the nginx configuration directory"
 msgstr ""
 "streams-available ve streams-enabled dizinlerinin nginx yapılandırma dizini "
 "altında olup olmadığını kontrol edin"
@@ -1269,6 +1269,10 @@ msgstr "Çin Haritası"
 #: src/constants/errors/crypto.ts:3
 msgid "Cipher text is too short"
 msgstr "Şifreli metin çok kısa"
+
+#: src/views/dns/DDNSManager.vue:393
+msgid "Clean up conflicting records"
+msgstr "Çakışan kayıtları temizle"
 
 #: src/language/constants.ts:13
 msgid "Cleaning environment variables"
@@ -1479,11 +1483,11 @@ msgstr "Yapılandırma Adı"
 msgid "Configurations"
 msgstr "Yapılandırmalar"
 
-#: src/views/dns/DDNSManager.vue:273
+#: src/views/dns/DDNSManager.vue:346
 msgid "Configure"
 msgstr "Yapılandır"
 
-#: src/views/dns/DDNSManager.vue:301
+#: src/views/dns/DDNSManager.vue:374
 msgid "Configure DDNS"
 msgstr "DDNS Yapılandır"
 
@@ -1495,7 +1499,7 @@ msgstr "SSL'yi Yapılandırma"
 msgid "Confirm Delete"
 msgstr "Silme Onayı"
 
-#: src/views/user/UserProfile.vue:204
+#: src/views/user/UserProfile.vue:199
 msgid "Confirm New Password"
 msgstr "Yeni Şifreyi Onayla"
 
@@ -1506,11 +1510,6 @@ msgstr "Onay Gerekli"
 #: src/views/dashboard/components/NodeAnalyticItem.vue:82
 #: src/views/dashboard/components/SiteNavigationToolbar.vue:35
 msgid "Connected"
-msgstr "Bağlandı"
-
-#: src/views/preference/components/NginxHostSetup/Wizard.vue:62
-#, fuzzy
-msgid "Connection"
 msgstr "Bağlandı"
 
 #: src/views/dashboard/NginxDashBoard.vue:100
@@ -1525,15 +1524,6 @@ msgstr "Bu terminal için bağlantı kesildi. Gerekirse yenileyin."
 msgid "Connection timeout period"
 msgstr "Bağlantı zaman aşımı süresi"
 
-#: src/views/preference/components/NginxHostSetup/Wizard.vue:60
-#, fuzzy
-msgid "Container"
-msgstr "İçerik"
-
-#: src/views/preference/components/NginxHostSetup/steps/Step2aContainer.vue:24
-msgid "Container side — choose one of the three formats below"
-msgstr ""
-
 #: src/constants/errors/docker.ts:7
 msgid "Container status unknown"
 msgstr "Kapsayıcı durumu bilinmiyor"
@@ -1546,8 +1536,7 @@ msgstr "İçerik"
 
 #: src/components/SensitiveString/SensitiveInput.vue:62
 #: src/components/SensitiveString/SensitiveString.vue:71
-#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:122
-#: src/views/preference/components/NginxHostSetup/CodeBlock.vue:31
+#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:125
 msgid "Copied"
 msgstr "Kopyalandı"
 
@@ -1558,18 +1547,12 @@ msgstr "Kopyalandı!"
 #: src/components/SensitiveString/SensitiveInput.vue:85
 #: src/components/SensitiveString/SensitiveString.vue:100
 #: src/views/backup/components/BackupCreator.vue:128
-#: src/views/preference/components/NginxHostSetup/CodeBlock.vue:31
 msgid "Copy"
 msgstr "Kopya"
 
-#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:122
+#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:125
 msgid "Copy Codes"
 msgstr "Kodları Kopyala"
-
-#: src/views/preference/components/NginxHostSetup/steps/Step4Verify.vue:60
-#, fuzzy
-msgid "Copy fix"
-msgstr "Kopya"
 
 #: src/views/system/Upgrade.vue:162
 msgid "Core Upgrade"
@@ -1610,7 +1593,8 @@ msgstr "CPU Kullanımı"
 #: src/views/dashboard/components/ResourceUsageCard.vue:38
 msgid "CPU usage is relatively high, consider optimizing Nginx configuration"
 msgstr ""
-"CPU kullanımı nispeten yüksek, Nginx yapılandırmasını optimize etmeyi düşünün"
+"CPU kullanımı nispeten yüksek, Nginx yapılandırmasını optimize etmeyi "
+"düşünün"
 
 #: src/views/dashboard/ServerAnalytic.vue:200
 msgid "CPU:"
@@ -1672,7 +1656,7 @@ msgid "Creating client facilitates communication with the CA server"
 msgstr "İstemci oluşturmak, CA sunucusuyla iletişimi kolaylaştırır"
 
 #: src/components/AutoCertForm/DNSChallenge.vue:130
-#: src/views/dns/DDNSManager.vue:103 src/views/dns/DNSDomainList.vue:139
+#: src/views/dns/DDNSManager.vue:154 src/views/dns/DNSDomainList.vue:139
 msgid "Credential"
 msgstr "Kimlik bilgisi"
 
@@ -1704,7 +1688,7 @@ msgstr "Mevcut aktif bağlantılar"
 msgid "Current Content"
 msgstr "Mevcut İçerik"
 
-#: src/views/user/UserProfile.vue:186
+#: src/views/user/UserProfile.vue:181
 msgid "Current Password"
 msgstr "Mevcut Şifre"
 
@@ -1730,11 +1714,11 @@ msgstr "Özel cron ifadesi"
 msgid "Custom Directory"
 msgstr "Özel Dizin"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:134
+#: src/views/certificate/components/DNSIssueCertificate.vue:193
 msgid "Custom Domains"
 msgstr "Özel Alan Adları"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:118
+#: src/views/certificate/components/DNSIssueCertificate.vue:174
 msgid "Custom Domains Certificate"
 msgstr "Özel Alan Adı Sertifikası"
 
@@ -1795,15 +1779,15 @@ msgstr "Veritabanı dosyası bulunamadı"
 msgid "DDNS"
 msgstr "DDNS"
 
-#: src/views/dns/DDNSManager.vue:195
+#: src/views/dns/DDNSManager.vue:266
 msgid "DDNS config deleted"
 msgstr "DDNS yapılandırması silindi"
 
-#: src/views/dns/DDNSManager.vue:212
+#: src/views/dns/DDNSManager.vue:285
 msgid "DDNS Overview"
 msgstr "DDNS Genel Bakış"
 
-#: src/views/dns/DDNSManager.vue:180
+#: src/views/dns/DDNSManager.vue:239
 msgid "DDNS saved"
 msgstr "DDNS kaydedildi"
 
@@ -1834,7 +1818,7 @@ msgstr ""
 #: src/views/config/components/Delete.vue:97
 #: src/views/config/ConfigList.vue:199
 #: src/views/dns/components/DNSRecordTable.vue:107
-#: src/views/dns/DDNSManager.vue:290 src/views/site/site_list/SiteList.vue:177
+#: src/views/dns/DDNSManager.vue:363 src/views/site/site_list/SiteList.vue:177
 #: src/views/stream/StreamList.vue:110
 msgid "Delete"
 msgstr "Sil"
@@ -1919,8 +1903,8 @@ msgstr "Demo"
 
 #: src/views/terminal/Terminal.vue:212
 msgid ""
-"Demo mode is enabled. This terminal only allows a small set of safe read-"
-"only commands."
+"Demo mode is enabled. This terminal only allows a small set of safe "
+"read-only commands."
 msgstr ""
 "Demo modu etkinleştirildi. Bu terminal yalnızca küçük bir güvenli salt "
 "okunur komut setine izin verir."
@@ -2034,7 +2018,7 @@ msgstr "Devre dışı bırak"
 msgid "Disable"
 msgstr "Devre Dışı Bırak"
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:136
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:95
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "%{name} için otomatik yenileme devre dışı bırakılamadı"
 
@@ -2074,13 +2058,11 @@ msgstr "%{node} üzerindeki %{name} sitesi başarıyla devre dışı bırakıld�
 
 #: src/components/Notification/notifications.ts:138
 msgid "Disable site %{name} maintenance on %{node} failed"
-msgstr ""
-"%{node} üzerindeki %{name} sitesi bakımını devre dışı bırakma başarısız oldu"
+msgstr "%{node} üzerindeki %{name} sitesi bakımını devre dışı bırakma başarısız oldu"
 
 #: src/components/Notification/notifications.ts:142
 msgid "Disable site %{name} maintenance on %{node} successfully"
-msgstr ""
-"%{name} sitesinin bakımı %{node} üzerinde başarıyla devre dışı bırakıldı"
+msgstr "%{name} sitesinin bakımı %{node} üzerinde başarıyla devre dışı bırakıldı"
 
 #: src/components/Notification/notifications.ts:170
 msgid "Disable stream %{name} from %{node} failed"
@@ -2091,7 +2073,7 @@ msgid "Disable stream %{name} from %{node} successfully"
 msgstr "Akış %{name}, %{node} üzerinden başarıyla devre dışı bırakıldı"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:175
-#: src/views/dns/DDNSManager.vue:247 src/views/node/nodeColumns.tsx:60
+#: src/views/dns/DDNSManager.vue:320 src/views/node/nodeColumns.tsx:60
 #: src/views/node/nodeColumns.tsx:78
 #: src/views/preference/tabs/HTTPSettings.vue:24
 #: src/views/preference/tabs/NodeSettings.vue:25
@@ -2210,19 +2192,17 @@ msgstr "Bu siteyi %{action} etmek istiyor musunuz?"
 msgid "Do you want to %{action} this stream?"
 msgstr "Bu akışı %{action} etmek istiyor musunuz?"
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:180
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:139
 msgid "Do you want to disable auto-cert renewal?"
 msgstr "Otomatik sertifika yenilemeyi devre dışı bırakmak istiyor musunuz?"
 
 #: src/views/site/site_list/SiteList.vue:89
-#, fuzzy
 msgid "Do you want to disable selected sites?"
-msgstr "Bu siteyi devre dışı bırakmak istiyor musunuz?"
+msgstr "Seçili siteleri devre dışı bırakmak istiyor musunuz?"
 
 #: src/views/site/site_list/SiteList.vue:88
-#, fuzzy
 msgid "Do you want to enable selected sites?"
-msgstr "Bu akışı etkinleştirmek istiyor musunuz?"
+msgstr "Seçili siteleri etkinleştirmek istiyor musunuz?"
 
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:46
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:14
@@ -2241,10 +2221,6 @@ msgstr "Bu upstream'i kaldırmak istiyor musunuz?"
 msgid "Docker client not initialized"
 msgstr "Docker istemcisi başlatılmadı"
 
-#: src/views/preference/components/NginxHostSetup/steps/Step2aContainer.vue:44
-msgid "docker run"
-msgstr ""
-
 #: src/language/generate.ts:21
 msgid "Docker socket exists"
 msgstr "Docker soketi mevcut"
@@ -2252,10 +2228,6 @@ msgstr "Docker soketi mevcut"
 #: src/constants/errors/self_check.ts:16
 msgid "Docker socket not exist"
 msgstr "Docker soketi mevcut değil"
-
-#: src/views/preference/components/NginxHostSetup/steps/Step2aContainer.vue:28
-msgid "docker-compose snippet"
-msgstr ""
 
 #: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:88
 #: src/components/NgxConfigEditor/directive/DirectiveDocuments.vue:16
@@ -2267,10 +2239,14 @@ msgstr[0] "Belge"
 msgid "Document Count"
 msgstr "Belge Sayısı"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:124
-#: src/views/dns/DDNSManager.vue:98 src/views/dns/DNSDomainList.vue:128
+#: src/views/certificate/components/DNSIssueCertificate.vue:183
+#: src/views/dns/DDNSManager.vue:149 src/views/dns/DNSDomainList.vue:128
 msgid "Domain"
 msgstr "Alan Adı"
+
+#: src/views/certificate/components/SelfSignedCertFields.vue:33
+msgid "Domains"
+msgstr "Alan Adları"
 
 #: src/views/certificate/components/AutoCertManagement.vue:55
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
@@ -2420,7 +2396,7 @@ msgstr "Gelişmiş Dizinlemeyi Etkinleştir"
 msgid "Enable Advanced Log Indexing"
 msgstr "Gelişmiş Log Dizinlemeyi Etkinleştir"
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:129
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:88
 msgid "Enable auto-renewal failed for %{name}"
 msgstr "%{name} için otomatik yenilemeyi etkinleştirme başarısız oldu"
 
@@ -2432,7 +2408,7 @@ msgstr "Kod Tamamlamayı Etkinleştir"
 msgid "Enable compression for content transfer"
 msgstr "İçerik transferi için sıkıştırmayı etkinleştir"
 
-#: src/views/dns/DDNSManager.vue:308
+#: src/views/dns/DDNSManager.vue:381
 msgid "Enable DDNS"
 msgstr "DDNS'yi Etkinleştir"
 
@@ -2529,7 +2505,7 @@ msgid "Enable TOTP"
 msgstr "TOTP'yi Etkinleştir"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:174
-#: src/views/dns/DDNSManager.vue:247 src/views/node/nodeColumns.tsx:69
+#: src/views/dns/DDNSManager.vue:320 src/views/node/nodeColumns.tsx:69
 #: src/views/node/nodeColumns.tsx:75
 #: src/views/preference/components/ExternalNotify/columns.tsx:47
 #: src/views/preference/tabs/HTTPSettings.vue:24
@@ -2558,7 +2534,8 @@ msgstr "Çoklama ve sunucu itme özellikleri ile HTTP/2 desteğini etkinleştiri
 #: src/views/preference/tabs/ServerSettings.vue:56
 msgid "Enables HTTP/3 support based on QUIC protocol for best performance"
 msgstr ""
-"En iyi performans için QUIC protokolüne dayalı HTTP/3 desteğini etkinleştirir"
+"En iyi performans için QUIC protokolüne dayalı HTTP/3 desteğini "
+"etkinleştirir"
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:110
 msgid ""
@@ -2566,9 +2543,9 @@ msgid ""
 "resources including CPU and memory. Please ensure your system meets the "
 "minimum requirements before proceeding."
 msgstr ""
-"Gelişmiş günlük indekslemeyi etkinleştirmek, CPU ve bellek dahil olmak üzere "
-"önemli hesaplama kaynakları tüketecektir. Devam etmeden önce sisteminizin "
-"minimum gereksinimleri karşıladığından emin olun."
+"Gelişmiş günlük indekslemeyi etkinleştirmek, CPU ve bellek dahil olmak "
+"üzere önemli hesaplama kaynakları tüketecektir. Devam etmeden önce "
+"sisteminizin minimum gereksinimleri karşıladığından emin olun."
 
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:95
 msgid "Encrypt website with Let's Encrypt"
@@ -2582,9 +2559,18 @@ msgstr "Son"
 msgid "End Date"
 msgstr "Bitiş Tarihi"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:143
+#: src/views/certificate/components/SelfSignedCertFields.vue:30
+msgid "Enter certificate name"
+msgstr "Sertifika adını girin"
+
+#: src/views/certificate/components/DNSIssueCertificate.vue:196
+#: src/views/certificate/components/SelfSignedCertFields.vue:36
 msgid "Enter domain name"
 msgstr "Alan adını girin"
+
+#: src/views/certificate/components/SelfSignedCertFields.vue:43
+msgid "Enter IP address"
+msgstr "IP adresini girin"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:183
 msgid "Enter server IP address (e.g., 203.0.113.1 or 2001:db8::1)"
@@ -2599,10 +2585,11 @@ msgid ""
 "Enter the one-time install secret shown by the install script or found in "
 "the config directory hidden file to unlock setup."
 msgstr ""
-"Kurulumun kilidini açmak için kurulum betiğinde gösterilen veya yapılandırma "
-"dizinindeki gizli dosyada bulunan tek kullanımlık kurulum sırrını girin."
+"Kurulumun kilidini açmak için kurulum betiğinde gösterilen veya "
+"yapılandırma dizinindeki gizli dosyada bulunan tek kullanımlık kurulum "
+"sırrını girin."
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:128
+#: src/views/certificate/components/DNSIssueCertificate.vue:187
 msgid "Enter your domain"
 msgstr "Alan adınızı girin"
 
@@ -2614,7 +2601,7 @@ msgstr "Ortam yapılandırması boş"
 msgid "Environment variables cleaned"
 msgstr "Ortam değişkenleri temizlendi"
 
-#: src/components/InspectConfig/InspectConfig.vue:30 src/constants/index.ts:23
+#: src/components/InspectConfig/InspectConfig.vue:30 src/constants/index.ts:24
 #: src/views/nginx_log/NginxLogList.vue:249
 #: src/views/notification/notificationColumns.tsx:14
 msgid "Error"
@@ -2647,11 +2634,11 @@ msgstr "Hata Günlükleri"
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:675
 msgid ""
-"Error logs do not support structured analysis as they contain free-form text "
-"messages."
+"Error logs do not support structured analysis as they contain free-form "
+"text messages."
 msgstr ""
-"Hata günlükleri serbest metin mesajları içerdiğinden yapılandırılmış analizi "
-"desteklemez."
+"Hata günlükleri serbest metin mesajları içerdiğinden yapılandırılmış "
+"analizi desteklemez."
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:272
 msgid "Error pattern recognition"
@@ -2698,7 +2685,7 @@ msgid "Expected Text"
 msgstr "Beklenen Metin"
 
 #: src/components/CertInfo/CertInfo.vue:31
-#: src/views/certificate/CertificateList/certColumns.tsx:80
+#: src/views/certificate/CertificateList/certColumns.tsx:103
 msgid "Expired"
 msgstr "Süresi Doldu"
 
@@ -2720,18 +2707,13 @@ msgstr ""
 
 #: src/views/certificate/ACMEUser.vue:83
 msgid ""
-"External Account Binding Key ID (optional). Required for some ACME providers "
-"like ZeroSSL."
+"External Account Binding Key ID (optional). Required for some ACME "
+"providers like ZeroSSL."
 msgstr ""
 "Harici Hesap Bağlama Anahtar Kimliği (isteğe bağlı). ZeroSSL gibi bazı ACME "
 "sağlayıcıları için gereklidir."
 
-#: src/views/preference/tabs/NginxSettings.vue:89
-#, fuzzy
-msgid "External Container"
-msgstr "Harici Docker Konteyneri"
-
-#: src/views/preference/tabs/NginxSettings.vue:102
+#: src/views/preference/tabs/NginxSettings.vue:58
 msgid "External Docker Container"
 msgstr "Harici Docker Konteyneri"
 
@@ -2754,6 +2736,7 @@ msgstr "Sertifika alınamadı"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:196
 #: src/views/backup/AutoBackup/AutoBackup.vue:221
+#: src/views/certificate/CertificateList/certColumns.tsx:87
 msgid "Failed"
 msgstr "Başarısız"
 
@@ -2992,6 +2975,11 @@ msgstr "AES anahtarı oluşturulamadı: {0}"
 #: src/constants/errors/backup.ts:11
 msgid "Failed to generate initialization vector: {0}"
 msgstr "Başlatma vektörü oluşturulamadı: {0}"
+
+#: src/views/certificate/components/DNSIssueCertificate.vue:146
+#: src/views/certificate/components/SelfSignedCertForm.vue:69
+msgid "Failed to generate self-signed certificate"
+msgstr "Kendinden imzalı sertifika oluşturulamadı"
 
 #: src/language/constants.ts:5
 msgid "Failed to get certificate information"
@@ -3324,8 +3312,7 @@ msgid "For commercial or professional use, contact"
 msgstr "Ticari veya profesyonel kullanım için iletişime geçin"
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:677
-msgid ""
-"For error logs, please use the Raw Log Viewer for better viewing experience."
+msgid "For error logs, please use the Raw Log Viewer for better viewing experience."
 msgstr ""
 "Hata günlükleri için daha iyi bir görüntüleme deneyimi için Ham Günlük "
 "Görüntüleyici'yi kullanın."
@@ -3341,8 +3328,8 @@ msgstr ""
 
 #: src/components/AutoCertForm/AutoCertForm.vue:188
 msgid ""
-"For IP-based certificates, please specify the server IP address that will be "
-"included in the certificate."
+"For IP-based certificates, please specify the server IP address that will "
+"be included in the certificate."
 msgstr ""
 "IP tabanlı sertifikalar için, sertifikaya dahil edilecek sunucu IP adresini "
 "belirtiniz."
@@ -3393,14 +3380,16 @@ msgstr ""
 
 #: src/views/install/components/InstallForm.vue:64
 msgid ""
-"Frontend debug mode: install flow completed without sending a backend request"
+"Frontend debug mode: install flow completed without sending a backend "
+"request"
 msgstr ""
 "Ön uç hata ayıklama modu: arka uç isteği gönderilmeden kurulum akışı "
 "tamamlandı"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:158
 msgid ""
-"Frontend debug mode: restore flow completed without sending a backend request"
+"Frontend debug mode: restore flow completed without sending a backend "
+"request"
 msgstr ""
 "Ön uç hata ayıklama modu: arka uca istek göndermeden geri yükleme akışı "
 "tamamlandı"
@@ -3417,27 +3406,38 @@ msgstr "Tam metin arama desteği"
 msgid "General Certificate"
 msgstr "Genel Sertifika"
 
+#: src/components/RecoveryCodeMigrationWarning/RecoveryCodeMigrationWarning.vue:45
+#: src/components/RecoveryCodeMigrationWarning/RecoveryCodeMigrationWarning.vue:69
 #: src/language/curd.ts:17
+#: src/views/certificate/components/DNSIssueCertificate.vue:237
+#: src/views/certificate/components/SelfSignedCertForm.vue:82
 msgid "Generate"
 msgstr "Oluştur"
 
-#: src/views/preference/components/NginxHostSetup/steps/Step1AuthMethod.vue:67
-#, fuzzy
-msgid "Generate keypair"
-msgstr "Oluştur"
+#: src/components/TwoFA/use2FAModal.ts:31
+msgid "Generate new recovery codes"
+msgstr "Yeni kurtarma kodları oluştur"
 
-#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:139
-#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:162
+#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:142
+#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:165
 msgid "Generate New Recovery Codes"
 msgstr "Yeni Kurtarma Kodları Oluştur"
 
-#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:162
+#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:165
 msgid "Generate Recovery Codes"
 msgstr "Kurtarma Kodları Oluştur"
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:34
 msgid "Generate recovery codes successfully"
 msgstr "Kurtarma kodları başarıyla oluşturuldu"
+
+#: src/views/site/site_edit/components/Cert/SelfSignedCert.vue:65
+msgid "Generate self-signed certificate"
+msgstr "Kendinden imzalı sertifika oluştur"
+
+#: src/views/certificate/components/SelfSignedCertForm.vue:80
+msgid "Generate Self-signed Certificate"
+msgstr "Kendinden İmzalı Sertifika Oluştur"
 
 #: src/language/constants.ts:7
 msgid "Generating private key for registering account"
@@ -3469,8 +3469,8 @@ msgid ""
 "GeoLite2 database not found at {0}. Log indexing requires GeoLite2 database "
 "for geographic IP analysis"
 msgstr ""
-"GeoLite2 veritabanı {0} konumunda bulunamadı. Günlük dizinlemesi, coğrafi IP "
-"analizi için GeoLite2 veritabanına ihtiyaç duyar"
+"GeoLite2 veritabanı {0} konumunda bulunamadı. Günlük dizinlemesi, coğrafi "
+"IP analizi için GeoLite2 veritabanına ihtiyaç duyar"
 
 #: src/components/GeoLiteDownload/GeoLiteDownload.vue:150
 msgid "GeoLite2 Database Required"
@@ -3519,6 +3519,10 @@ msgstr ""
 msgid "Go to Raw Log Viewer"
 msgstr "Ham Log Görüntüleyiciye Git"
 
+#: src/components/TwoFA/use2FAModal.ts:33
+msgid "Go to Recovery Codes"
+msgstr "Kurtarma kodlarına git"
+
 #: src/views/preference/components/ExternalNotify/gotify.ts:5
 msgid "Gotify"
 msgstr "Gotify"
@@ -3528,8 +3532,8 @@ msgid ""
 "gRPC health check requires server to implement gRPC Health Check service "
 "(grpc.health.v1.Health)."
 msgstr ""
-"gRPC sağlık kontrolü, sunucunun gRPC Sağlık Kontrol hizmetini (grpc.health."
-"v1.Health) uygulamasını gerektirir."
+"gRPC sağlık kontrolü, sunucunun gRPC Sağlık Kontrol hizmetini "
+"(grpc.health.v1.Health) uygulamasını gerektirir."
 
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:599
 msgid ""
@@ -3588,10 +3592,6 @@ msgstr "Gizle"
 msgid "Hide Assistant"
 msgstr "Asistanı gizle"
 
-#: src/views/preference/tabs/NginxSettings.vue:97
-msgid "Hide setup wizard"
-msgstr ""
-
 #: src/composables/useGeoTranslation.ts:165
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:165
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:133
@@ -3600,8 +3600,7 @@ msgstr "Yüksek"
 
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:87
 msgid "Higher value means better connection reuse"
-msgstr ""
-"Daha yüksek bir değer, daha iyi bağlantı yeniden kullanımı anlamına gelir"
+msgstr "Daha yüksek bir değer, daha iyi bağlantı yeniden kullanımı anlamına gelir"
 
 #: src/views/config/components/ConfigLeftPanel.vue:255
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:100
@@ -3614,26 +3613,9 @@ msgid "Home"
 msgstr "Anasayfa"
 
 #: src/views/dns/components/DNSRecordFilter.vue:42
-#: src/views/preference/components/NginxHostSetup/Wizard.vue:61
 #: src/views/preference/tabs/ServerSettings.vue:19
 msgid "Host"
 msgstr "Host"
-
-#: src/views/preference/components/NginxHostSetup/steps/Step3Connection.vue:31
-msgid "Host address (host:port)"
-msgstr ""
-
-#: src/views/preference/components/NginxHostSetup/steps/Step2bHost.vue:23
-msgid "Host side — run these on the machine that runs nginx"
-msgstr ""
-
-#: src/views/preference/components/NginxHostSetup/Wizard.vue:57
-msgid "Host SSH setup wizard"
-msgstr ""
-
-#: src/views/preference/tabs/NginxSettings.vue:92
-msgid "Host via SSH"
-msgstr ""
 
 #: src/views/dns/components/DNSRecordFilter.vue:45
 msgid "Host, e.g. @ or www"
@@ -3711,12 +3693,12 @@ msgstr ""
 "Alan adınızda CNAME kayıtları varsa ve sertifika alamıyorsanız, bu seçeneği "
 "etkinleştirmeniz gerekir."
 
-#: src/views/certificate/CertificateList/Certificate.vue:27
+#: src/views/certificate/CertificateList/Certificate.vue:28
 msgid "Import"
 msgstr "İçe Aktar"
 
 #: src/routes/modules/certificates.ts:46
-#: src/views/certificate/CertificateEditor.vue:84
+#: src/views/certificate/CertificateEditor.vue:132
 msgid "Import Certificate"
 msgstr "Sertifika İçe Aktar"
 
@@ -3779,7 +3761,7 @@ msgstr "Dizinleniyor..."
 msgid "Indicator"
 msgstr "Gösterge"
 
-#: src/constants/index.ts:25 src/views/notification/notificationColumns.tsx:28
+#: src/constants/index.ts:26 src/views/notification/notificationColumns.tsx:28
 msgid "Info"
 msgstr "Bilgi"
 
@@ -3803,7 +3785,7 @@ msgstr "Çekirdek yükseltici başlatılıyor"
 msgid "Input the code from the app:"
 msgstr "Uygulamadan kodu girin:"
 
-#: src/components/TwoFA/Authorization.vue:72
+#: src/components/TwoFA/Authorization.vue:80
 msgid "Input the recovery code:"
 msgstr "Kurtarma kodunu girin:"
 
@@ -3862,12 +3844,12 @@ msgstr ""
 "Sistem başlangıcından 10 dakika sonra kuruluma izin verilmez, lütfen Nginx "
 "UI'yi yeniden başlatın."
 
-#: src/views/dns/DDNSManager.vue:117
+#: src/views/dns/DDNSManager.vue:168
 #: src/views/preference/tabs/LogrotateSettings.vue:26
 msgid "Interval"
 msgstr "Aralık"
 
-#: src/views/dns/DDNSManager.vue:322
+#: src/views/dns/DDNSManager.vue:426
 msgid "Interval (seconds)"
 msgstr "Aralık (saniye)"
 
@@ -3941,7 +3923,7 @@ msgstr "Geçersiz OTP kodu"
 msgid "Invalid padding in decrypted data"
 msgstr "Şifresi çözülmüş veride geçersiz dolgu"
 
-#: src/components/TwoFA/use2FAModal.ts:61
+#: src/components/TwoFA/use2FAModal.ts:74
 msgid "Invalid passcode or recovery code"
 msgstr "Geçersiz parola veya kurtarma kodu"
 
@@ -3994,15 +3976,43 @@ msgstr "IP Adresi"
 msgid "IP Address / Target"
 msgstr "IP Adresi / Hedef"
 
+#: src/views/certificate/components/SelfSignedCertFields.vue:40
+msgid "IP Addresses"
+msgstr "IP Adresleri"
+
 #: src/components/AutoCertForm/AutoCertForm.vue:123
 msgid "IP Certificate Notice"
 msgstr "IP Sertifika Bildirimi"
 
-#: src/views/certificate/CertificateList/Certificate.vue:37
+#: src/views/dns/DDNSManager.vue:384
+msgid "IP Version"
+msgstr "IP Sürümü"
+
+#: src/views/dns/DDNSManager.vue:40
+msgid "IPv4 only"
+msgstr "Sadece IPv4"
+
+#: src/views/dns/DDNSManager.vue:42
+msgid "IPv4 then IPv6"
+msgstr "IPv4 sonra IPv6"
+
+#: src/views/dns/DDNSManager.vue:41
+msgid "IPv6 only"
+msgstr "Yalnızca IPv6"
+
+#: src/views/dns/DDNSManager.vue:43
+msgid "IPv6 then IPv4"
+msgstr "IPv6, ardından IPv4"
+
+#: src/views/certificate/CertificateList/certColumns.tsx:83
+msgid "Issuance failed"
+msgstr "Yayınlama başarısız"
+
+#: src/views/certificate/CertificateList/Certificate.vue:38
 msgid "Issue certificate"
 msgstr "Sertifika ver"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:103
+#: src/views/certificate/components/DNSIssueCertificate.vue:159
 msgid "Issue Certificate"
 msgstr "Sertifika Düzenle"
 
@@ -4010,9 +4020,17 @@ msgstr "Sertifika Düzenle"
 msgid "Issued certificate successfully"
 msgstr "Sertifika başarıyla yayınlandı"
 
+#: src/views/certificate/components/DNSIssueCertificate.vue:110
+msgid "Issued successfully"
+msgstr "Başarıyla verildi"
+
 #: src/components/CertInfo/CertInfo.vue:35
 msgid "Issuer: %{issuer}"
 msgstr "Düzenleyen: %{issuer}"
+
+#: src/views/certificate/CertificateList/certColumns.tsx:79
+msgid "Issuing..."
+msgstr "Düzenleniyor..."
 
 #: src/language/curd.ts:6
 msgid "item(s)"
@@ -4035,7 +4053,8 @@ msgid "Keepalive Timeout"
 msgstr "Keepalive Zaman Aşımı"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:236
-#: src/views/certificate/CertificateList/certColumns.tsx:57
+#: src/views/certificate/CertificateList/certColumns.tsx:65
+#: src/views/certificate/components/SelfSignedCertFields.vue:47
 msgid "Key Type"
 msgstr "Anahtar Türü"
 
@@ -4117,7 +4136,7 @@ msgstr "Son Dizinlenme"
 msgid "Last month"
 msgstr "Geçen ay"
 
-#: src/views/dns/DDNSManager.vue:125
+#: src/views/dns/DDNSManager.vue:176
 msgid "Last run"
 msgstr "Son çalıştırma"
 
@@ -4132,6 +4151,10 @@ msgstr "Son güncelleme:"
 #: src/views/preference/components/AuthSettings/Passkey.vue:97
 msgid "Last used at"
 msgstr "En son kullanıldığı zaman"
+
+#: src/components/TwoFA/use2FAModal.ts:34
+msgid "Later"
+msgstr "Daha sonra"
 
 #: src/views/user/userColumns.tsx:23
 msgid "Leave blank for no change"
@@ -4154,10 +4177,10 @@ msgid "Leave blank if you don't need this."
 msgstr "Buna ihtiyacınız yoksa boş bırakın."
 
 #: src/views/preference/tabs/OpenAISettings.vue:31
-#, fuzzy
-msgid ""
-"Leave blank to use the Atlas Cloud endpoint: https://api.atlascloud.ai/v1"
-msgstr "Varsayılan için boş bırakın: https://api.openai.com/"
+msgid "Leave blank to use the Atlas Cloud endpoint: https://api.atlascloud.ai/v1"
+msgstr ""
+"Atlas Cloud uç noktasını kullanmak için boş bırakın: "
+"https://api.atlascloud.ai/v1"
 
 #: src/views/certificate/components/CertificateContentEditor.vue:240
 #: src/views/certificate/components/CertificateContentEditor.vue:258
@@ -4165,6 +4188,15 @@ msgstr "Varsayılan için boş bırakın: https://api.openai.com/"
 #: src/views/certificate/components/CertificateContentEditor.vue:319
 msgid "Leave blank will not change anything"
 msgstr "Boş bırakmak hiçbir şeyi değiştirmeyecektir"
+
+#: src/components/RecoveryCodeMigrationWarning/RecoveryCodeMigrationWarning.vue:41
+#: src/components/RecoveryCodeMigrationWarning/RecoveryCodeMigrationWarning.vue:65
+msgid ""
+"Legacy recovery code is deprecated. Generate new recovery codes to keep "
+"account recovery secure."
+msgstr ""
+"Eski kurtarma kodu kullanımdan kaldırıldı. Hesap kurtarma işleminin "
+"güvenliğini sağlamak için yeni kurtarma kodları oluşturun."
 
 #: src/constants/errors/user.ts:6
 msgid "Legacy recovery code not allowed since totp is not enabled"
@@ -4222,7 +4254,7 @@ msgstr "Dinliyor"
 
 #: src/views/preference/Preference.vue:101
 msgid "LLM"
-msgstr ""
+msgstr "LLM"
 
 #: src/views/dashboard/ServerAnalytic.vue:188
 msgid "Load Average:"
@@ -4270,17 +4302,13 @@ msgstr "Yükleniyor..."
 
 #: src/components/NamespaceTabs/NamespaceTabs.vue:116
 #: src/components/NodeIndicator/NodeIndicator.vue:38
-#: src/components/NodeSelector/NodeSelector.vue:62 src/constants/index.ts:42
-#: src/constants/index.ts:48 src/views/backup/AutoBackup/AutoBackup.vue:74
+#: src/components/NodeSelector/NodeSelector.vue:62 src/constants/index.ts:43
+#: src/constants/index.ts:49 src/views/backup/AutoBackup/AutoBackup.vue:74
 #: src/views/backup/AutoBackup/AutoBackup.vue:83
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:48
-#: src/views/preference/tabs/NginxSettings.vue:108
+#: src/views/preference/tabs/NginxSettings.vue:64
 msgid "Local"
 msgstr "Yerel"
-
-#: src/views/preference/tabs/NginxSettings.vue:86
-msgid "Local / Bundled"
-msgstr ""
 
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:60
 msgid "Local path (e.g., /var/backups)"
@@ -4294,19 +4322,19 @@ msgstr "Konum"
 msgid "Locations"
 msgstr "Konumlar"
 
-#: src/views/certificate/CertificateEditor.vue:124
+#: src/views/certificate/CertificateEditor.vue:181
 msgid "Log"
 msgstr "Günlük"
 
 #: src/language/generate.ts:25
 msgid ""
 "Log file %{log_path} is not a regular file. If you are using nginx-ui in "
-"docker container, please refer to https://nginxui.com/zh_CN/guide/config-"
-"nginx-log.html for more information."
+"docker container, please refer to "
+"https://nginxui.com/zh_CN/guide/config-nginx-log.html for more information."
 msgstr ""
 "Günlük dosyası %{log_path} normal bir dosya değil. Docker konteynerinde "
-"nginx-ui kullanıyorsanız, daha fazla bilgi için https://nginxui.com/zh_CN/"
-"guide/config-nginx-log.html adresine bakın."
+"nginx-ui kullanıyorsanız, daha fazla bilgi için "
+"https://nginxui.com/zh_CN/guide/config-nginx-log.html adresine bakın."
 
 #: src/constants/errors/nginx_log.ts:11
 msgid "Log file does not exist"
@@ -4350,7 +4378,7 @@ msgstr ""
 msgid "Log path is not under whitelist"
 msgstr "Günlük yolu beyaz listede değil"
 
-#: src/routes/modules/auth.ts:14 src/views/other/Login.vue:356
+#: src/routes/modules/auth.ts:14 src/views/other/Login.vue:357
 msgid "Login"
 msgstr "Giriş"
 
@@ -4358,7 +4386,7 @@ msgstr "Giriş"
 msgid "Login successful"
 msgstr "Giriş Başarılı"
 
-#: src/layouts/HeaderLayout.vue:21
+#: src/layouts/HeaderLayout.vue:22
 msgid "Logout successful"
 msgstr "Çıkış başarılı"
 
@@ -4368,19 +4396,19 @@ msgstr "Logrotate"
 
 #: src/views/preference/tabs/LogrotateSettings.vue:13
 msgid ""
-"Logrotate, by default, is enabled in most mainstream Linux distributions for "
-"users who install Nginx UI on the host machine, so you don't need to modify "
-"the parameters on this page. For users who install Nginx UI using Docker "
-"containers, you can manually enable this option. The crontab task scheduler "
-"of Nginx UI will execute the logrotate command at the interval you set in "
-"minutes."
+"Logrotate, by default, is enabled in most mainstream Linux distributions "
+"for users who install Nginx UI on the host machine, so you don't need to "
+"modify the parameters on this page. For users who install Nginx UI using "
+"Docker containers, you can manually enable this option. The crontab task "
+"scheduler of Nginx UI will execute the logrotate command at the interval "
+"you set in minutes."
 msgstr ""
-"Logrotate, varsayılan olarak, Nginx UI'yi ana makineye yükleyen kullanıcılar "
-"için çoğu ana akım Linux dağıtımında etkinleştirilmiştir, bu yüzden bu "
-"sayfadaki parametreleri değiştirmenize gerek yoktur. Nginx UI'yi Docker "
-"konteynerlerini kullanarak yükleyen kullanıcılar, bu seçeneği manuel olarak "
-"etkinleştirebilir. Nginx UI'nin crontab görev zamanlayıcısı, belirlediğiniz "
-"dakika aralığında logrotate komutunu çalıştıracaktır."
+"Logrotate, varsayılan olarak, Nginx UI'yi ana makineye yükleyen "
+"kullanıcılar için çoğu ana akım Linux dağıtımında etkinleştirilmiştir, bu "
+"yüzden bu sayfadaki parametreleri değiştirmenize gerek yoktur. Nginx UI'yi "
+"Docker konteynerlerini kullanarak yükleyen kullanıcılar, bu seçeneği manuel "
+"olarak etkinleştirebilir. Nginx UI'nin crontab görev zamanlayıcısı, "
+"belirlediğiniz dakika aralığında logrotate komutunu çalıştıracaktır."
 
 #: src/composables/useGeoTranslation.ts:166
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:165
@@ -4407,15 +4435,13 @@ msgstr "Bakım modu başarıyla devre dışı bırakıldı"
 msgid "Maintenance mode enabled successfully"
 msgstr "Bakım modu başarıyla etkinleştirildi"
 
-#: src/views/preference/tabs/NginxSettings.vue:38
-#, fuzzy
+#: src/views/preference/tabs/NginxSettings.vue:13
 msgid "Maintenance template (filename only)"
-msgstr "Bakım modu başarıyla etkinleştirildi"
+msgstr "Bakım şablonu (yalnızca dosya adı)"
 
-#: src/views/preference/tabs/NginxSettings.vue:41
-#, fuzzy
+#: src/views/preference/tabs/NginxSettings.vue:16
 msgid "maintenance.html"
-msgstr "Bakım"
+msgstr "maintenance.html"
 
 #: src/constants/errors/cert.ts:20
 msgid "Make certificate dir error: {0}"
@@ -4549,10 +4575,6 @@ msgstr "Bellek Tasarımı"
 msgid "Memory Usage (RSS)"
 msgstr "Bellek Kullanımı (RSS)"
 
-#: src/views/preference/components/NginxHostSetup/steps/Step2aContainer.vue:33
-msgid "Merge into services.nginx-ui"
-msgstr ""
-
 #: src/views/nginx_log/structured/components/SearchFilters.vue:92
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:519
 msgid "Method"
@@ -4586,7 +4608,7 @@ msgstr "Dakika"
 msgid "Minutes"
 msgstr "Dakika"
 
-#: src/constants/index.ts:44
+#: src/constants/index.ts:45
 msgid "Mirror"
 msgstr "Ayna"
 
@@ -4615,7 +4637,7 @@ msgid "Modify"
 msgstr "Değiştir"
 
 #: src/routes/modules/certificates.ts:36
-#: src/views/certificate/CertificateEditor.vue:84
+#: src/views/certificate/CertificateEditor.vue:132
 msgid "Modify Certificate"
 msgstr "Sertifikayı Düzenle"
 
@@ -4647,10 +4669,9 @@ msgstr "Aylık"
 msgid "Monthly on day %{day} at %{time}"
 msgstr "Her ayın %{day} günü %{time} saatinde"
 
-#: src/views/preference/tabs/NginxSettings.vue:44
-#, fuzzy
+#: src/views/preference/tabs/NginxSettings.vue:19
 msgid "Mounted directory"
-msgstr "Korumalı Dizin"
+msgstr "Bağlanmış dizin"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:204
 msgid "Mozilla/5.0..."
@@ -4680,6 +4701,7 @@ msgstr "Yok"
 #: src/views/certificate/components/CertificateBasicInfo.vue:44
 #: src/views/certificate/components/CertificateBasicInfo.vue:58
 #: src/views/certificate/components/CertificateBasicInfo.vue:70
+#: src/views/certificate/components/SelfSignedCertFields.vue:25
 #: src/views/config/components/ConfigRightPanel/Basic.vue:34
 #: src/views/config/components/Delete.vue:123
 #: src/views/config/components/Mkdir.vue:64
@@ -4754,7 +4776,7 @@ msgstr "Yeni lego istemci hatası: {0}"
 msgid "New name"
 msgstr "Yeni ad"
 
-#: src/views/user/UserProfile.vue:195
+#: src/views/user/UserProfile.vue:190
 msgid "New Password"
 msgstr "Yeni Şifre"
 
@@ -4770,12 +4792,11 @@ msgstr "Yeni taşıma hatası: {0}"
 msgid "New version released"
 msgstr "Yeni sürüm yayınlandı"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:189
+#: src/views/certificate/components/DNSIssueCertificate.vue:223
 #: src/views/install/components/InstallView.vue:212
-#: src/views/preference/components/NginxHostSetup/Wizard.vue:87
 #: src/views/site/site_add/SiteAdd.vue:237
 #: src/views/site/site_add/SiteAdd.vue:244
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:264
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:223
 msgid "Next"
 msgstr "Sonraki"
 
@@ -4787,7 +4808,7 @@ msgstr "Nginx"
 msgid "Nginx -T output is empty"
 msgstr "Nginx -T çıktısı boş"
 
-#: src/views/preference/tabs/NginxSettings.vue:47
+#: src/views/preference/tabs/NginxSettings.vue:22
 msgid "Nginx Access Log Path"
 msgstr "Nginx Erişim Günlüğü Yolu"
 
@@ -4841,11 +4862,11 @@ msgstr "Nginx yapılandırması geri yüklendi"
 msgid "Nginx Configuration Parse Error"
 msgstr "Nginx Yapılandırma Ayrıştırma Hatası"
 
-#: src/views/preference/tabs/NginxSettings.vue:56
+#: src/views/preference/tabs/NginxSettings.vue:31
 msgid "Nginx Configuration Path"
 msgstr "Nginx Yapılandırma Dosyası Yolu"
 
-#: src/views/preference/tabs/NginxSettings.vue:53
+#: src/views/preference/tabs/NginxSettings.vue:28
 msgid "Nginx Configurations Directory"
 msgstr "Nginx Yapılandırma Dizini"
 
@@ -4853,7 +4874,7 @@ msgstr "Nginx Yapılandırma Dizini"
 msgid "Nginx Control"
 msgstr "Nginx Kontrolü"
 
-#: src/views/preference/tabs/NginxSettings.vue:80
+#: src/views/preference/tabs/NginxSettings.vue:55
 msgid "Nginx Control Mode"
 msgstr "Nginx Kontrol Modu"
 
@@ -4862,7 +4883,7 @@ msgstr "Nginx Kontrol Modu"
 msgid "Nginx CPU usage rate"
 msgstr "Nginx CPU kullanım oranı"
 
-#: src/views/preference/tabs/NginxSettings.vue:50
+#: src/views/preference/tabs/NginxSettings.vue:25
 msgid "Nginx Error Log Path"
 msgstr "Nginx Hata Günlüğü Yolu"
 
@@ -4898,7 +4919,7 @@ msgstr "Nginx çalışıyor"
 msgid "Nginx Log"
 msgstr "Nginx Günlüğü"
 
-#: src/views/preference/tabs/NginxSettings.vue:59
+#: src/views/preference/tabs/NginxSettings.vue:34
 msgid "Nginx Log Directory Whitelist"
 msgstr "Nginx Günlük Dizin Beyaz Listesi"
 
@@ -4911,7 +4932,7 @@ msgstr "Nginx Günlük Dizini Oluşturuluyor..."
 msgid "Nginx Memory usage"
 msgstr "Nginx Bellek Kullanımı"
 
-#: src/views/preference/tabs/NginxSettings.vue:68
+#: src/views/preference/tabs/NginxSettings.vue:43
 msgid "Nginx PID Path"
 msgstr "Nginx PID Yolu"
 
@@ -4919,7 +4940,7 @@ msgstr "Nginx PID Yolu"
 msgid "Nginx PID path exists"
 msgstr "Nginx PID yolu mevcut"
 
-#: src/views/preference/tabs/NginxSettings.vue:74
+#: src/views/preference/tabs/NginxSettings.vue:49
 msgid "Nginx Reload Command"
 msgstr "Nginx Yeniden Yükleme Komutu"
 
@@ -4940,7 +4961,7 @@ msgstr "Nginx başarıyla yeniden yüklendi"
 msgid "Nginx reported a configuration syntax error."
 msgstr "Nginx bir yapılandırma sözdizimi hatası bildirdi."
 
-#: src/views/preference/tabs/NginxSettings.vue:77
+#: src/views/preference/tabs/NginxSettings.vue:52
 msgid "Nginx Restart Command"
 msgstr "Nginx Yeniden Başlatma Komutu"
 
@@ -4956,7 +4977,7 @@ msgstr "Nginx başarıyla yeniden başlatıldı"
 msgid "Nginx sbin path exists"
 msgstr "Nginx sbin yolu mevcut"
 
-#: src/views/preference/tabs/NginxSettings.vue:71
+#: src/views/preference/tabs/NginxSettings.vue:46
 msgid "Nginx Test Config Command"
 msgstr "Nginx Yapılandırma Test Komutu"
 
@@ -4979,11 +5000,21 @@ msgstr "Nginx UI yapılandırması geri yüklendi"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:368
 msgid ""
-"Nginx UI configuration has been restored and will restart automatically in a "
-"few seconds."
+"Nginx UI configuration has been restored and will restart automatically in "
+"a few seconds."
 msgstr ""
 "Nginx UI yapılandırması geri yüklendi ve birkaç saniye içinde otomatik "
 "olarak yeniden başlatılacak."
+
+#: src/views/certificate/components/SelfSignedCertFields.vue:22
+msgid ""
+"Nginx UI will automatically renew this certificate as it approaches "
+"expiration, based on the global certificate renewal interval and this "
+"certificate's validity period."
+msgstr ""
+"Nginx UI, küresel sertifika yenileme aralığına ve bu sertifikanın "
+"geçerlilik süresine bağlı olarak, süresi dolmak üzere olduğunda bu "
+"sertifikayı otomatik olarak yenileyecektir."
 
 #: src/language/generate.ts:32
 msgid "Nginx.conf includes conf.d directory"
@@ -5011,7 +5042,7 @@ msgid "No"
 msgstr "Hayır"
 
 #: src/components/NamespaceRender/NamespaceRender.vue:41
-#: src/constants/index.ts:37
+#: src/constants/index.ts:38
 msgid "No Action"
 msgstr "Eylem Yok"
 
@@ -5048,10 +5079,6 @@ msgstr "Geçerli sayfada hiçbir giriş yok"
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:286
 msgid "No geographic data available"
 msgstr "Coğrafi veri mevcut değil"
-
-#: src/views/preference/components/NginxHostSetup/steps/Step1AuthMethod.vue:60
-msgid "No key generated yet"
-msgstr ""
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:567
 msgid "No logs found in the selected time range."
@@ -5114,7 +5141,7 @@ msgstr "Düğüm Durumu"
 msgid "Nodes"
 msgstr "Düğümler"
 
-#: src/views/certificate/CertificateList/certColumns.tsx:86
+#: src/views/certificate/CertificateList/certColumns.tsx:107
 msgid "Not After"
 msgstr "Sonra Değil"
 
@@ -5135,7 +5162,7 @@ msgstr "Dizine Alınmamış"
 msgid "Not Loaded"
 msgstr "Yüklenmedi"
 
-#: src/views/dns/DDNSManager.vue:140
+#: src/views/dns/DDNSManager.vue:191
 msgid "Not run yet"
 msgstr "Henüz çalıştırılmadı"
 
@@ -5216,7 +5243,7 @@ msgstr "Çalışan işlem sayısı"
 msgid "Obtain cert error: {0}"
 msgstr "Sertifika alma hatası: {0}"
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:229
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:188
 msgid "Obtain certificate"
 msgstr "Sertifika al"
 
@@ -5270,7 +5297,7 @@ msgstr "OIDC Girişi"
 #: src/views/notification/Notification.vue:39
 #: src/views/site/components/SiteStatusSelect.vue:123
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:52
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:183
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:142
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:20
 #: src/views/site/site_list/SiteList.vue:167
 #: src/views/stream/components/StreamStatusSelect.vue:61
@@ -5314,10 +5341,6 @@ msgstr "Sadece ZIP dosyalarına izin verilir"
 msgid "Open"
 msgstr "Açık"
 
-#: src/views/preference/tabs/NginxSettings.vue:97
-msgid "Open setup wizard"
-msgstr ""
-
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:285
 msgid "Open Source Limitation"
 msgstr "Açık Kaynak Sınırlaması"
@@ -5334,7 +5357,7 @@ msgstr "İşletim Sistemi İstatistikleri"
 msgid "Optional comment for this DNS record"
 msgstr "Bu DNS kaydı için isteğe bağlı yorum"
 
-#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:365
+#: src/components/TwoFA/Authorization.vue:108 src/views/other/Login.vue:366
 msgid "Or"
 msgstr "Veya"
 
@@ -5383,11 +5406,6 @@ msgstr "Diğerleri"
 msgid "Otp or recovery code empty"
 msgstr "OTP veya kurtarma kodu boş"
 
-#: src/views/preference/components/NginxHostSetup/steps/Step2aContainer.vue:36
-#, fuzzy
-msgid "override file"
-msgstr "Mevcut dosyanın üzerine yaz"
-
 #: src/views/config/components/ConfigRightPanel/Deploy.vue:18
 msgid "Overwrite"
 msgstr "Üzerine yaz"
@@ -5435,10 +5453,6 @@ msgstr "Şifre"
 msgid "Password (*)"
 msgstr "Şifre (*)"
 
-#: src/views/preference/components/NginxHostSetup/steps/Step1AuthMethod.vue:45
-msgid "Password (not yet supported)"
-msgstr ""
-
 #: src/constants/errors/user.ts:2
 msgid "Password incorrect"
 msgstr "Yanlış şifre"
@@ -5447,11 +5461,11 @@ msgstr "Yanlış şifre"
 msgid "Password length cannot exceed 20 characters"
 msgstr "Şifre uzunluğu 20 karakteri geçemez"
 
-#: src/views/user/UserProfile.vue:96
+#: src/views/user/UserProfile.vue:91
 msgid "Password updated successfully"
 msgstr "Şifre başarıyla güncellendi"
 
-#: src/views/user/UserProfile.vue:75
+#: src/views/user/UserProfile.vue:70
 msgid "Passwords do not match"
 msgstr "Şifreler eşleşmiyor"
 
@@ -5523,7 +5537,7 @@ msgstr "Performans ayarları başarıyla kaydedildi"
 msgid "Performing core upgrade"
 msgstr "Çekirdek yükseltme gerçekleştiriliyor"
 
-#: src/views/user/UserProfile.vue:121
+#: src/views/user/UserProfile.vue:116
 msgid "Personal Information"
 msgstr "Kişisel Bilgiler"
 
@@ -5568,13 +5582,19 @@ msgstr ""
 msgid "Please enter"
 msgstr "Lütfen girin"
 
+#: src/views/certificate/CertificateEditor.vue:71
+#: src/views/certificate/components/DNSIssueCertificate.vue:124
+#: src/views/certificate/components/SelfSignedCertForm.vue:47
+msgid "Please enter a name for the certificate"
+msgstr "Lütfen sertifika için bir ad girin"
+
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:75
 msgid ""
 "Please enter a name for the passkey you wish to create and click the OK "
 "button below."
 msgstr ""
-"Oluşturmak istediğiniz anahtar için bir ad girin ve aşağıdaki Tamam butonuna "
-"tıklayın."
+"Oluşturmak istediğiniz anahtar için bir ad girin ve aşağıdaki Tamam "
+"butonuna tıklayın."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:98
 msgid "Please enter a valid IPv4 address (0-255 per octet)"
@@ -5588,15 +5608,21 @@ msgstr "Lütfen geçerli bir IPv4 veya IPv6 adresi girin"
 msgid "Please enter a valid port range"
 msgstr "Lütfen geçerli bir port aralığı girin"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:82
+#: src/views/certificate/components/DNSIssueCertificate.vue:96
 msgid "Please enter at least one domain"
 msgstr "Lütfen en az bir alan adı girin"
+
+#: src/views/certificate/CertificateEditor.vue:75
+#: src/views/certificate/components/DNSIssueCertificate.vue:128
+#: src/views/certificate/components/SelfSignedCertForm.vue:51
+msgid "Please enter at least one domain or IP address"
+msgstr "Lütfen en az bir alan adı veya IP adresi girin"
 
 #: src/views/install/components/InstallView.vue:121
 msgid "Please enter the install secret before continuing"
 msgstr "Devam etmeden önce lütfen kurulum sırrını girin"
 
-#: src/components/TwoFA/Authorization.vue:85
+#: src/components/TwoFA/Authorization.vue:93
 msgid "Please enter the OTP code:"
 msgstr "Lütfen OTP kodunu girin:"
 
@@ -5630,8 +5656,7 @@ msgstr "Lütfen gerekli S3 yapılandırma alanlarını doldurun"
 msgid ""
 "Please fill in the API authentication credentials provided by your DNS "
 "provider."
-msgstr ""
-"Lütfen DNS sağlayıcınız tarafından sağlanan API kimlik bilgilerini doldurun."
+msgstr "Lütfen DNS sağlayıcınız tarafından sağlanan API kimlik bilgilerini doldurun."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:168
 msgid ""
@@ -5645,10 +5670,11 @@ msgstr ""
 #: src/components/Notification/notifications.ts:202
 #: src/language/constants.ts:59
 msgid ""
-"Please generate new recovery codes in the preferences immediately to prevent "
-"lockout."
+"Please generate new recovery codes in the preferences immediately to "
+"prevent lockout."
 msgstr ""
-"Kilitlenmeyi önlemek için tercihlerden hemen yeni kurtarma kodları oluşturun."
+"Kilitlenmeyi önlemek için tercihlerden hemen yeni kurtarma kodları "
+"oluşturun."
 
 #: src/views/config/components/ConfigRightPanel/Basic.vue:27
 #: src/views/config/components/Rename.vue:65
@@ -5693,8 +5719,7 @@ msgid "Please log in."
 msgstr "Lütfen giriş yapın."
 
 #: src/views/dns/DNSCredential.vue:96
-msgid ""
-"Please note that the unit of time configurations below are all in seconds."
+msgid "Please note that the unit of time configurations below are all in seconds."
 msgstr ""
 "Lütfen aşağıdaki zaman yapılandırmalarının birimlerinin saniye cinsinden "
 "olduğunu unutmayın."
@@ -5715,10 +5740,9 @@ msgstr "Lütfen bir yedekleme dosyası seçin"
 
 #: src/views/site/site_edit/components/SiteEditor/store.ts:144
 msgid "Please select a certificate before saving the TLS server configuration."
-msgstr ""
-"Lütfen TLS sunucu yapılandırmasını kaydetmeden önce bir sertifika seçin."
+msgstr "Lütfen TLS sunucu yapılandırmasını kaydetmeden önce bir sertifika seçin."
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:75
+#: src/views/certificate/components/DNSIssueCertificate.vue:89
 msgid "Please select a DNS credential"
 msgstr "Lütfen bir DNS kimlik bilgisi seçin"
 
@@ -5798,10 +5822,6 @@ msgstr "Tercih"
 msgid "Preparing lego configurations"
 msgstr "Lego yapılandırmaları hazırlanıyor"
 
-#: src/views/preference/components/NginxHostSetup/Wizard.vue:84
-msgid "Previous"
-msgstr ""
-
 #: src/views/dns/components/DNSRecordForm.vue:82
 #: src/views/dns/components/DNSRecordTable.vue:34
 msgid "Priority"
@@ -5819,10 +5839,6 @@ msgstr "Özel IP'ler (192.168.x.x, 10.x.x.x, 172.16-31.x.x) başarısız olacakt
 #: src/views/certificate/components/CertificateFileUpload.vue:45
 msgid "private key"
 msgstr "özel anahtar"
-
-#: src/views/preference/components/NginxHostSetup/steps/Step1AuthMethod.vue:79
-msgid "Private key generated (shown once)"
-msgstr ""
 
 #: src/components/PortScanner/PortScannerCompact.vue:55
 msgid "Process"
@@ -5867,12 +5883,13 @@ msgstr "Protokol"
 #: src/views/preference/tabs/ServerSettings.vue:47
 msgid ""
 "Protocol configuration only takes effect when directly connecting. If using "
-"reverse proxy, please configure the protocol separately in the reverse proxy."
+"reverse proxy, please configure the protocol separately in the reverse "
+"proxy."
 msgstr ""
 "Protokol yapılandırması yalnızca doğrudan bağlantı sırasında geçerlidir. "
 "Ters proxy kullanıyorsanız, protokolü ters proxyda ayrı olarak yapılandırın."
 
-#: src/views/dns/DDNSManager.vue:108 src/views/dns/DNSCredential.vue:26
+#: src/views/dns/DDNSManager.vue:159 src/views/dns/DNSCredential.vue:26
 #: src/views/dns/DNSDomainList.vue:229
 #: src/views/preference/tabs/OpenAISettings.vue:70
 msgid "Provider"
@@ -5910,14 +5927,6 @@ msgstr "Proxy Hedefleri"
 #: src/components/AutoCertForm/AutoCertForm.vue:192
 msgid "Public CA Requirements:"
 msgstr "Genel CA Gereksinimleri:"
-
-#: src/views/preference/components/NginxHostSetup/steps/Step1AuthMethod.vue:51
-msgid "Public key"
-msgstr ""
-
-#: src/views/preference/components/NginxHostSetup/steps/Step1AuthMethod.vue:56
-msgid "Public key (paste into authorized_keys)"
-msgstr ""
 
 #: src/views/preference/tabs/NodeSettings.vue:46
 msgid "Public Security Number"
@@ -6019,11 +6028,11 @@ msgstr "Kayıt Türü"
 msgid "Record updated"
 msgstr "Kayıt güncellendi"
 
-#: src/views/dns/DDNSManager.vue:311
+#: src/views/dns/DDNSManager.vue:403
 msgid "Records"
 msgstr "Kayıtlar"
 
-#: src/components/TwoFA/Authorization.vue:79
+#: src/components/TwoFA/Authorization.vue:87
 msgid "Recovery"
 msgstr "Kurtarma"
 
@@ -6056,7 +6065,7 @@ msgstr "Yönlendirme Mesajları (3xx)"
 msgid "Referer"
 msgstr "Referer"
 
-#: src/language/curd.ts:70 src/views/dns/DDNSManager.vue:231
+#: src/language/curd.ts:70 src/views/dns/DDNSManager.vue:304
 #: src/views/dns/DNSRecordManager.vue:170
 msgid "Refresh"
 msgstr "Yenile"
@@ -6064,11 +6073,6 @@ msgstr "Yenile"
 #: src/views/dashboard/components/ModulesTable.vue:114
 msgid "Refresh Modules Cache"
 msgstr "Modül Önbelleğini Yenile"
-
-#: src/views/preference/components/NginxHostSetup/steps/Step1AuthMethod.vue:67
-#, fuzzy
-msgid "Regenerate keypair"
-msgstr "Yanıtı yeniden oluştur"
 
 #: src/components/LLM/ChatMessageInput.vue:74
 msgid "Regenerate response"
@@ -6128,7 +6132,7 @@ msgid "Reload"
 msgstr "Yeniden Yükle"
 
 #: src/components/NamespaceRender/NamespaceRender.vue:44
-#: src/components/NamespaceTabs/NamespaceTabs.vue:141 src/constants/index.ts:38
+#: src/components/NamespaceTabs/NamespaceTabs.vue:141 src/constants/index.ts:39
 #: src/views/node/Node.vue:208 src/views/node/Node.vue:216
 msgid "Reload Nginx"
 msgstr "Nginx'i Yeniden Yükle"
@@ -6155,8 +6159,7 @@ msgstr "Uzak Nginx Yeniden Yükleme Başarılı"
 
 #: src/components/NamespaceTabs/NamespaceTabs.vue:85
 msgid "Reload request failed, please check your network connection"
-msgstr ""
-"Yeniden yükleme isteği başarısız oldu, lütfen ağ bağlantınızı kontrol edin"
+msgstr "Yeniden yükleme isteği başarısız oldu, lütfen ağ bağlantınızı kontrol edin"
 
 #: src/components/NginxControl/NginxControl.vue:77
 msgid "Reloading"
@@ -6166,16 +6169,12 @@ msgstr "Yeniden Yükleniyor"
 msgid "Reloading nginx"
 msgstr "nginx yeniden yükleniyor"
 
-#: src/constants/index.ts:43 src/constants/index.ts:49
+#: src/constants/index.ts:44 src/constants/index.ts:50
 msgid "Remote"
 msgstr "Uzak"
 
-#: src/views/preference/components/NginxHostSetup/steps/Step3Connection.vue:53
-#, fuzzy
-msgid "Remote address detected"
-msgstr "Hiçbir düğüm seçilmedi"
-
-#: src/views/certificate/components/DNSIssueCertificate.vue:152
+#: src/components/StringListInput/StringListInput.vue:38
+#: src/components/StringListInput/StringListInput.vue:41
 #: src/views/preference/tabs/AuthSettings.vue:133
 msgid "Remove"
 msgstr "Kaldır"
@@ -6184,6 +6183,10 @@ msgstr "Kaldır"
 #: src/views/preference/tabs/AuthSettings.vue:48
 msgid "Remove successfully"
 msgstr "Başarıyla kaldırıldı"
+
+#: src/views/dns/DDNSManager.vue:243
+msgid "Removed %{count} conflicting record(s): %{names}"
+msgstr "Kaldırılan %{count} çakışan kayıt: %{names}"
 
 #: src/components/Notification/Notification.vue:84
 msgid "Removed successfully"
@@ -6240,8 +6243,7 @@ msgstr "Uzak Akış Yeniden Adlandırma Başarılı"
 
 #: src/components/Notification/notifications.ts:146
 msgid "Rename site %{name} to %{new_name} on %{node} failed"
-msgstr ""
-"%{node} üzerinde %{name} sitesi %{new_name} olarak yeniden adlandırılamadı"
+msgstr "%{node} üzerinde %{name} sitesi %{new_name} olarak yeniden adlandırılamadı"
 
 #: src/components/Notification/notifications.ts:150
 msgid "Rename site %{name} to %{new_name} on %{node} successfully"
@@ -6275,8 +6277,8 @@ msgstr "Başarıyla yeniden adlandırıldı"
 msgid "Renew cert error: {0}"
 msgstr "Sertifika yenileme hatası: {0}"
 
+#: src/views/certificate/components/RenewCert.vue:44
 #: src/views/certificate/components/RenewCert.vue:51
-#: src/views/certificate/components/RenewCert.vue:58
 msgid "Renew Certificate"
 msgstr "Sertifikayı Yenile"
 
@@ -6288,8 +6290,7 @@ msgstr "Sertifika Yenileme Hatası"
 msgid "Renew Certificate Success"
 msgstr "Sertifika Yenileme Başarılı"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:92
-#: src/views/certificate/components/RenewCert.vue:33
+#: src/views/certificate/components/RenewCert.vue:26
 msgid "Renew successfully"
 msgstr "Başarıyla yenilendi"
 
@@ -6341,8 +6342,8 @@ msgid ""
 "shared library memory, which will be repeated calculated for multiple "
 "processes"
 msgstr ""
-"Resident Set Size: Fiziksel bellekte gerçekte bulunan bellek, paylaşılan tüm "
-"kütüphane belleğini içerir ve birden fazla işlem için tekrar hesaplanır"
+"Resident Set Size: Fiziksel bellekte gerçekte bulunan bellek, paylaşılan "
+"tüm kütüphane belleğini içerir ve birden fazla işlem için tekrar hesaplanır"
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:109
 msgid "Resource Usage Warning"
@@ -6380,8 +6381,7 @@ msgstr "Uzak Nginx Yeniden Başlatma Başarılı"
 
 #: src/components/NamespaceTabs/NamespaceTabs.vue:105
 msgid "Restart request failed, please check your network connection"
-msgstr ""
-"Yeniden başlatma isteği başarısız oldu, lütfen ağ bağlantınızı kontrol edin"
+msgstr "Yeniden başlatma isteği başarısız oldu, lütfen ağ bağlantınızı kontrol edin"
 
 #: src/components/NginxControl/NginxControl.vue:82
 msgid "Restarting"
@@ -6418,6 +6418,19 @@ msgstr "Bu sürümü geri yükle"
 msgid "Restored successfully"
 msgstr "Başarıyla geri yüklendi"
 
+#: src/views/certificate/components/DNSIssueCertificate.vue:259
+#: src/views/certificate/components/RetryCert.vue:48
+msgid "Retry"
+msgstr "Yeniden dene"
+
+#: src/views/certificate/components/RetryCert.vue:52
+msgid "Retry Certificate Issuance"
+msgstr "Sertifika verilmesini yeniden dene"
+
+#: src/views/site/site_edit/components/Cert/SelfSignedCert.vue:39
+msgid "Review first"
+msgstr "Önce gözden geçir"
+
 #: src/views/certificate/components/RemoveCert.vue:108
 #: src/views/certificate/components/RemoveCert.vue:36
 msgid "Revoke"
@@ -6446,8 +6459,7 @@ msgstr ""
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:356
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:650
 msgid "Route traffic through proxy for additional protection and features"
-msgstr ""
-"Ekstra koruma ve özellikler için trafiği bir proxy üzerinden yönlendirin"
+msgstr "Ekstra koruma ve özellikler için trafiği bir proxy üzerinden yönlendirin"
 
 #: src/views/preference/tabs/AuthSettings.vue:72
 msgid "RP Display Name"
@@ -6464,11 +6476,6 @@ msgstr "RPID"
 #: src/views/preference/tabs/ServerSettings.vue:25
 msgid "Run Mode"
 msgstr "Çalışma Modu"
-
-#: src/views/preference/components/NginxHostSetup/steps/Step4Verify.vue:34
-#, fuzzy
-msgid "Run verification"
-msgstr "Sertifikayı Yenile"
 
 #: src/components/NginxControl/NginxControl.vue:72
 msgid "Running"
@@ -6565,7 +6572,8 @@ msgstr "S3 yükleme başarısız: {0}"
 #: src/components/InspectConfig/InspectConfig.vue:39
 msgid "Sandbox setup failed before Nginx could validate the configuration."
 msgstr ""
-"Nginx yapılandırmayı doğrulayamadan önce sanal ortam kurulumu başarısız oldu."
+"Nginx yapılandırmayı doğrulayamadan önce sanal ortam kurulumu başarısız "
+"oldu."
 
 #: src/components/InspectConfig/InspectConfig.vue:129
 #: src/components/InspectConfig/InspectConfig.vue:28
@@ -6588,7 +6596,7 @@ msgstr "Cumartesi"
 #: src/views/config/components/ConfigLeftPanel.vue:283
 #: src/views/config/components/ConfigName.vue:58
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:713
-#: src/views/dns/DDNSManager.vue:337 src/views/dns/DNSRecordManager.vue:222
+#: src/views/dns/DDNSManager.vue:441 src/views/dns/DNSRecordManager.vue:222
 #: src/views/preference/components/AuthSettings/Passkey.vue:131
 #: src/views/preference/Preference.vue:124
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
@@ -6598,18 +6606,13 @@ msgstr "Cumartesi"
 msgid "Save"
 msgstr "Kaydet"
 
-#: src/views/preference/components/NginxHostSetup/steps/Step2aContainer.vue:41
-msgid "Save as docker-compose.override.yml"
-msgstr ""
-
-#: src/views/preference/components/NginxHostSetup/Wizard.vue:90
-#, fuzzy
-msgid "Save configuration"
-msgstr "Depolama Yapılandırması"
-
 #: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:112
 msgid "Save Directive"
 msgstr "Yönergeleri Kaydet"
+
+#: src/views/site/site_edit/components/Cert/SelfSignedCert.vue:38
+msgid "Save now"
+msgstr "Şimdi kaydet"
 
 #: src/views/dashboard/components/SiteNavigationToolbar.vue:48
 msgid "Save Order"
@@ -6653,15 +6656,19 @@ msgstr "Akış %{name}, %{node} üzerine başarıyla kaydedildi"
 msgid "Save successful"
 msgstr "Başarıyla kaydedildi"
 
-#: src/language/curd.ts:35 src/views/certificate/CertificateEditor.vue:49
-#: src/views/certificate/components/RenewCert.vue:26
+#: src/language/curd.ts:35 src/views/certificate/CertificateEditor.vue:97
+#: src/views/certificate/components/RenewCert.vue:21
 #: src/views/preference/store/index.ts:133
 msgid "Save successfully"
 msgstr "Başarıyla kaydedildi"
 
-#: src/views/preference/components/NginxHostSetup/steps/Step1AuthMethod.vue:82
-msgid "Save this private key somewhere safe. It will NOT be shown again."
-msgstr ""
+#: src/views/site/site_edit/components/Cert/SelfSignedCert.vue:31
+msgid "Save the site configuration now?"
+msgstr "Site yapılandırması şimdi kaydedilsin mi?"
+
+#: src/views/certificate/CertificateEditor.vue:94
+msgid "Saved certificate response is missing an ID"
+msgstr "Kaydedilen sertifika yanıtında bir ID eksik."
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:51
 #: src/language/curd.ts:28 src/views/config/components/ConfigLeftPanel.vue:198
@@ -6670,6 +6677,14 @@ msgstr ""
 #: src/views/stream/components/StreamEditor.vue:30
 msgid "Saved successfully"
 msgstr "Başarıyla kaydedildi"
+
+#: src/views/site/site_edit/components/Cert/SelfSignedCert.vue:47
+msgid ""
+"Saving the site configuration failed; the certificate directives are in the "
+"editor — review the changes and retry from the Save button."
+msgstr ""
+"Site yapılandırması kaydedilemedi; sertifika yönergeleri düzenleyicide — "
+"değişiklikleri gözden geçirin ve Kaydet düğmesinden tekrar deneyin."
 
 #: src/constants/errors/self_check.ts:20
 msgid "Sbin path not exist"
@@ -6719,7 +6734,7 @@ msgstr "SDK"
 msgid "Search"
 msgstr "Ara"
 
-#: src/views/dns/DDNSManager.vue:220
+#: src/views/dns/DDNSManager.vue:293
 msgid "Search domain, provider or target"
 msgstr "Alan adı, sağlayıcı veya hedef ara"
 
@@ -6751,7 +6766,7 @@ msgstr "Şablonları ara"
 msgid "Secret has been copied"
 msgstr "Gizli kod kopyalandı"
 
-#: src/views/user/UserProfile.vue:175
+#: src/views/user/UserProfile.vue:170
 msgid "Security Settings"
 msgstr "Güvenlik Ayarları"
 
@@ -6777,8 +6792,8 @@ msgid ""
 "Select a predefined CA directory or enter a custom one. Leave blank to use "
 "the default CA directory."
 msgstr ""
-"Önceden tanımlanmış bir CA dizini seçin veya özel bir tane girin. Varsayılan "
-"CA dizinini kullanmak için boş bırakın."
+"Önceden tanımlanmış bir CA dizini seçin veya özel bir tane girin. "
+"Varsayılan CA dizinini kullanmak için boş bırakın."
 
 #: src/language/curd.ts:31
 msgid "Select all"
@@ -6798,6 +6813,10 @@ msgstr "DNS alan adı seç"
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:573
 msgid "Select existing record"
 msgstr "Mevcut kaydı seç"
+
+#: src/views/dns/DDNSManager.vue:410
+msgid "Select matching A/AAAA records"
+msgstr "Eşleşen A/AAAA kayıtlarını seçin"
 
 #: src/views/certificate/ACMEUser.vue:46
 #: src/views/preference/tabs/CertSettings.vue:29
@@ -6825,6 +6844,24 @@ msgstr "Kendi Kendini Kontrol"
 msgid "Self check failed, Nginx UI may not work properly"
 msgstr "Kendi kendine kontrol başarısız oldu, Nginx UI düzgün çalışmayabilir"
 
+#: src/views/site/site_edit/components/Cert/SelfSignedCert.vue:63
+msgid "Self-signed certificate"
+msgstr "Kendinden imzalı sertifika"
+
+#: src/views/certificate/CertificateList/certColumns.tsx:31
+#: src/views/certificate/components/DNSIssueCertificate.vue:177
+msgid "Self-signed Certificate"
+msgstr "Kendinden imzalı sertifika"
+
+#: src/views/site/site_edit/components/Cert/SelfSignedCert.vue:44
+msgid "Self-signed certificate applied"
+msgstr "Kendinden imzalı sertifika uygulandı"
+
+#: src/views/certificate/components/DNSIssueCertificate.vue:140
+#: src/views/certificate/components/SelfSignedCertForm.vue:63
+msgid "Self-signed certificate generated"
+msgstr "Kendinden imzalı sertifika oluşturuldu"
+
 #: src/views/dashboard/ServerAnalytic.vue:35
 #: src/views/dashboard/ServerAnalytic.vue:352
 msgid "Send"
@@ -6839,7 +6876,7 @@ msgid "Server"
 msgstr "Sunucu"
 
 #: src/components/InspectConfig/InspectConfig.vue:81
-#: src/views/certificate/CertificateEditor.vue:56
+#: src/views/certificate/CertificateEditor.vue:104
 msgid "Server error"
 msgstr "Sunucu hatası"
 
@@ -6867,7 +6904,7 @@ msgstr "Sunucu Adları Hash Kova Boyutu"
 msgid "Server names hash table size"
 msgstr "Sunucu adları karma tablo boyutu"
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:164
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:123
 msgid "server_name not found in directives"
 msgstr "Yönergelerde server_name bulunamadı"
 
@@ -6890,8 +6927,8 @@ msgstr "Ortam ayarlama hatası: {0}"
 #: src/constants/errors/cert.ts:18
 msgid "Set env flag to disable lego CNAME support error: {0}"
 msgstr ""
-"Lego CNAME desteğini devre dışı bırakmak için ortam bayrağı ayarlama hatası: "
-"{0}"
+"Lego CNAME desteğini devre dışı bırakmak için ortam bayrağı ayarlama "
+"hatası: {0}"
 
 #: src/views/preference/tabs/CertSettings.vue:42
 msgid ""
@@ -6919,19 +6956,19 @@ msgstr "HTTP01 meydan okuma sağlayıcısı ayarlanıyor"
 
 #: src/constants/errors/nginx_log.ts:8
 msgid ""
-"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://nginxui."
-"com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.AccessLogPath is empty, refer to "
+"https://nginxui.com/guide/config-nginx.html for more information"
 msgstr ""
-"Settings.NginxLogSettings.AccessLogPath boş, daha fazla bilgi için https://"
-"nginxui.com/guide/config-nginx.html adresine bakın"
+"Settings.NginxLogSettings.AccessLogPath boş, daha fazla bilgi için "
+"https://nginxui.com/guide/config-nginx.html adresine bakın"
 
 #: src/constants/errors/nginx_log.ts:7
 msgid ""
-"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://nginxui."
-"com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.ErrorLogPath is empty, refer to "
+"https://nginxui.com/guide/config-nginx.html for more information"
 msgstr ""
-"Settings.NginxLogSettings.ErrorLogPath boş, daha fazla bilgi için https://"
-"nginxui.com/guide/config-nginx.html adresine bakın"
+"Settings.NginxLogSettings.ErrorLogPath boş, daha fazla bilgi için "
+"https://nginxui.com/guide/config-nginx.html adresine bakın"
 
 #: src/views/install/components/InstallView.vue:147
 msgid "Setup your Nginx UI"
@@ -6950,7 +6987,7 @@ msgstr "Göster"
 msgid "Show Assistant"
 msgstr "Asistanı Göster"
 
-#: src/views/other/Login.vue:374
+#: src/views/other/Login.vue:375
 msgid "Sign in with a passkey"
 msgstr "Bir anahtarla oturum aç"
 
@@ -7015,8 +7052,8 @@ msgid ""
 "Sites will appear here once you configure nginx server blocks with valid "
 "server_name (localhost excluded) directives."
 msgstr ""
-"Geçerli server_name yönergeleriyle (localhost hariç) nginx sunucu bloklarını "
-"yapılandırdığınızda siteler burada görünecektir."
+"Geçerli server_name yönergeleriyle (localhost hariç) nginx sunucu "
+"bloklarını yapılandırdığınızda siteler burada görünecektir."
 
 #: src/constants/errors/self_check.ts:11
 msgid "Sites-available directory not exist"
@@ -7036,10 +7073,6 @@ msgstr "Boyut"
 msgid "Skip Installation"
 msgstr "Kurulumu atla"
 
-#: src/views/preference/components/NginxHostSetup/steps/Step4Verify.vue:37
-msgid "Skip nginx -t (no side effects)"
-msgstr ""
-
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:324
 msgid "Sleep time between cache loader iterations"
 msgstr "Önbellek yükleyici tekrarları arasındaki bekleme süresi"
@@ -7051,6 +7084,10 @@ msgstr "Önbellek yöneticisi yinelemeleri arasındaki bekleme süresi"
 #: src/views/upstream/SocketList.vue:18
 msgid "Socket"
 msgstr "Soket"
+
+#: src/views/certificate/components/SelfSignedCertFields.vue:69
+msgid "Some browsers reject TLS certificates valid for more than 398 days."
+msgstr "Bazı tarayıcılar 398 günden fazla geçerli olan TLS sertifikalarını reddeder."
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:742
 msgid "Sorted by"
@@ -7067,15 +7104,6 @@ msgstr "Sponsor"
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:61
 msgid "SSD storage for better I/O performance"
 msgstr "Daha iyi G/Ç performansı için SSD depolama"
-
-#: src/views/preference/components/NginxHostSetup/steps/Step1AuthMethod.vue:42
-#, fuzzy
-msgid "SSH key (recommended)"
-msgstr "2+ çekirdek önerilir"
-
-#: src/views/preference/components/NginxHostSetup/steps/Step3Connection.vue:35
-msgid "SSH user"
-msgstr ""
 
 #: src/views/certificate/components/CertificateContentEditor.vue:209
 #: src/views/certificate/components/CertificateContentEditor.vue:214
@@ -7162,9 +7190,9 @@ msgstr "Statik"
 #: src/components/PortScanner/PortScannerCompact.vue:37
 #: src/views/backup/AutoBackup/AutoBackup.vue:160
 #: src/views/certificate/ACMEUser.vue:66
-#: src/views/certificate/CertificateList/certColumns.tsx:63
+#: src/views/certificate/CertificateList/certColumns.tsx:71
 #: src/views/dashboard/components/ModulesTable.vue:75
-#: src/views/dns/DDNSManager.vue:113
+#: src/views/dns/DDNSManager.vue:164
 #: src/views/nginx_log/structured/components/SearchFilters.vue:106
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:241
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:521
@@ -7239,7 +7267,7 @@ msgstr "Streams-enabled dizini mevcut değil"
 msgid "Structured"
 msgstr "Yapılandırılmış"
 
-#: src/views/preference/tabs/NginxSettings.vue:35
+#: src/views/preference/tabs/NginxSettings.vue:10
 msgid "Stub Status Port"
 msgstr "Stub Durum Portu"
 
@@ -7247,7 +7275,7 @@ msgstr "Stub Durum Portu"
 msgid "Stub_status is not enabled"
 msgstr "Stub_status etkin değil"
 
-#: src/constants/index.ts:26 src/views/backup/AutoBackup/AutoBackup.vue:195
+#: src/constants/index.ts:27 src/views/backup/AutoBackup/AutoBackup.vue:195
 #: src/views/backup/AutoBackup/AutoBackup.vue:220
 #: src/views/notification/notificationColumns.tsx:35
 msgid "Success"
@@ -7265,14 +7293,14 @@ msgstr "Pazar"
 #: src/components/SelfCheck/tasks/frontend/websocket.ts:19
 msgid ""
 "Support communication with the backend through the WebSocket protocol. If "
-"your Nginx UI is being used via an Nginx reverse proxy, please refer to this "
-"link to write the corresponding configuration file: https://nginxui.com/"
-"guide/nginx-proxy-example.html"
+"your Nginx UI is being used via an Nginx reverse proxy, please refer to "
+"this link to write the corresponding configuration file: "
+"https://nginxui.com/guide/nginx-proxy-example.html"
 msgstr ""
 "WebSocket protokolü aracılığıyla backend ile iletişimi destekler. Nginx "
 "UI'nız bir Nginx ters proxy üzerinden kullanılıyorsa, ilgili yapılandırma "
-"dosyasını yazmak için bu bağlantıya bakın: https://nginxui.com/guide/nginx-"
-"proxy-example.html"
+"dosyasını yazmak için bu bağlantıya bakın: "
+"https://nginxui.com/guide/nginx-proxy-example.html"
 
 #: src/language/curd.ts:53 src/language/curd.ts:57
 msgid "Support single or batch upload of files"
@@ -7331,8 +7359,7 @@ msgstr "Yapılandırma %{config_name}, %{node_name} ile eşleştirilemedi"
 
 #: src/components/Notification/notifications.ts:82
 msgid "Sync config %{config_name} to %{node_name} successfully"
-msgstr ""
-"Yapılandırma %{config_name}, %{node_name} ile başarıyla senkronize edildi"
+msgstr "Yapılandırma %{config_name}, %{node_name} ile başarıyla senkronize edildi"
 
 #: src/components/Notification/notifications.ts:77 src/language/constants.ts:45
 msgid "Sync Config Error"
@@ -7360,6 +7387,7 @@ msgid "Sync strategy"
 msgstr "Senkronizasyon stratejisi"
 
 #: src/views/certificate/components/CertificateBasicInfo.vue:145
+#: src/views/certificate/components/SelfSignedCertFields.vue:72
 msgid "Sync to"
 msgstr "Senkronize Et"
 
@@ -7397,21 +7425,13 @@ msgstr "Sistem Geri Yükleme"
 msgid "System restored successfully."
 msgstr "Sistem başarıyla geri yüklendi."
 
-#: src/views/preference/components/NginxHostSetup/steps/Step3Connection.vue:43
-msgid "systemctl path"
-msgstr ""
-
-#: src/views/preference/components/NginxHostSetup/steps/Step3Connection.vue:39
-msgid "systemd unit"
-msgstr ""
-
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:338
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:508
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:632
 msgid "target.example.com"
 msgstr "target.example.com"
 
-#: src/views/dns/DDNSManager.vue:121
+#: src/views/dns/DDNSManager.vue:172
 msgid "Targets"
 msgstr "Hedefler"
 
@@ -7479,26 +7499,36 @@ msgstr ""
 "verildiğinden bu yana 1 haftadan fazla zaman geçmişse veya ayarlarda "
 "belirlediğiniz süre dolmuşsa yenilenecektir."
 
+#: src/views/site/site_edit/components/Cert/SelfSignedCert.vue:32
+msgid ""
+"The certificate has been generated at %{path} and the ssl_certificate "
+"directives have been added to the current server block. Save the "
+"configuration now, or review the changes in the editor and save manually."
+msgstr ""
+"Sertifika %{path} konumunda oluşturuldu ve ssl_certificate yönergeleri "
+"mevcut sunucu bloğuna eklendi. Yapılandırmayı şimdi kaydedin veya "
+"değişiklikleri düzenleyicide inceleyip manuel olarak kaydedin."
+
 #: src/views/site/site_list/SiteList.vue:93
 msgid "The following sites will be disabled:"
-msgstr ""
+msgstr "Aşağıdaki siteler devre dışı bırakılacak:"
 
 #: src/views/site/site_list/SiteList.vue:92
 msgid "The following sites will be enabled:"
-msgstr ""
+msgstr "Aşağıdaki siteler etkinleştirilecek:"
 
 #: src/components/GeoLiteDownload/GeoLiteDownload.vue:158
 msgid ""
-"The GeoLite2 database is required for offline geographic IP analysis. Please "
-"download it to enable this feature."
+"The GeoLite2 database is required for offline geographic IP analysis. "
+"Please download it to enable this feature."
 msgstr ""
 "Çevrimdışı coğrafi IP analizi için GeoLite2 veritabanına ihtiyaç vardır. Bu "
 "özelliği etkinleştirmek için lütfen indirin."
 
 #: src/views/preference/tabs/GeoLiteSettings.vue:9
 msgid ""
-"The GeoLite2 database provides geographic information for IP addresses. This "
-"is used for offline geographic analysis in log analytics."
+"The GeoLite2 database provides geographic information for IP addresses. "
+"This is used for offline geographic analysis in log analytics."
 msgstr ""
 "GeoLite2 veritabanı, IP adresleri için coğrafi bilgi sağlar. Bu, günlük "
 "analizinde çevrimdışı coğrafi analiz için kullanılır."
@@ -7529,7 +7559,8 @@ msgstr ""
 
 #: src/constants/errors/nginx_log.ts:2
 msgid ""
-"The log path is not under the paths in settings.NginxSettings.LogDirWhiteList"
+"The log path is not under the paths in "
+"settings.NginxSettings.LogDirWhiteList"
 msgstr ""
 "Günlük yolu, settings.NginxSettings.LogDirWhiteList içindeki yolların "
 "altında değil"
@@ -7544,8 +7575,7 @@ msgstr ""
 "iki nokta üst üste ve noktalar içermelidir."
 
 #: src/views/preference/tabs/OpenAISettings.vue:154
-msgid ""
-"The model used for code completion, if not set, the chat model will be used."
+msgid "The model used for code completion, if not set, the chat model will be used."
 msgstr ""
 "Kod tamamlama için kullanılan model. Ayarlanmamışsa sohbet modeli "
 "kullanılacaktır."
@@ -7619,7 +7649,7 @@ msgstr "Teorik maksimum eşzamanlı bağlantı:"
 msgid "Theoretical maximum RPS (Requests Per Second):"
 msgstr "Teorik maksimum RPS (Saniyedeki İstek Sayısı):"
 
-#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:105
+#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:108
 msgid ""
 "These codes are the last resort for accessing your account in case you lose "
 "your password and second factors. If you cannot find these codes, you will "
@@ -7642,8 +7672,8 @@ msgid ""
 "This backup uses an unsupported legacy format. Please create a new backup "
 "with a newer version before restoring."
 msgstr ""
-"Bu yedekleme, desteklenmeyen eski bir biçim kullanıyor. Geri yüklemeden önce "
-"daha yeni bir sürümle yeni bir yedekleme oluşturun."
+"Bu yedekleme, desteklenmeyen eski bir biçim kullanıyor. Geri yüklemeden "
+"önce daha yeni bir sürümle yeni bir yedekleme oluşturun."
 
 #: src/views/certificate/components/AutoCertManagement.vue:35
 msgid "This certificate is managed by Nginx UI"
@@ -7672,34 +7702,26 @@ msgid "This field should not be empty"
 msgstr "Bu alan boş bırakılamaz"
 
 #: src/constants/form_errors.ts:6
-msgid ""
-"This field should only contain letters, unicode characters, numbers, and -_."
-msgstr ""
-"Bu alan yalnızca harfler, Unicode karakterler, sayılar ve -_ içermelidir."
+msgid "This field should only contain letters, unicode characters, numbers, and -_."
+msgstr "Bu alan yalnızca harfler, Unicode karakterler, sayılar ve -_ içermelidir."
 
 #: src/language/curd.ts:46
 msgid ""
-"This field should only contain letters, unicode characters, numbers, and -"
-"_./:"
-msgstr ""
-"Bu alan yalnızca harfler, Unicode karakterler, sayılar ve -_./: içermelidir"
+"This field should only contain letters, unicode characters, numbers, and "
+"-_./:"
+msgstr "Bu alan yalnızca harfler, Unicode karakterler, sayılar ve -_./: içermelidir"
 
 #: src/components/Notification/notifications.ts:102
 msgid "This is a test message sent at %{timestamp} from Nginx UI."
-msgstr ""
-"Bu, Nginx UI'den %{Timestamp} adresinden gönderilen bir test mesajıdır."
+msgstr "Bu, Nginx UI'den %{Timestamp} adresinden gönderilen bir test mesajıdır."
 
 #: src/components/SelfCheck/store.ts:25
 msgid ""
 "This mode only previews the installation UI flow and does not change any "
 "server state."
 msgstr ""
-"Bu mod yalnızca kurulum kullanıcı arayüzü akışını önizler ve sunucu durumunu "
-"değiştirmez."
-
-#: src/views/preference/components/NginxHostSetup/steps/Step3Connection.vue:56
-msgid "This mode only supports nginx-ui and target nginx on the same host."
-msgstr ""
+"Bu mod yalnızca kurulum kullanıcı arayüzü akışını önizler ve sunucu "
+"durumunu değiştirmez."
 
 #: src/views/dashboard/NginxDashBoard.vue:175
 msgid ""
@@ -7725,11 +7747,19 @@ msgstr ""
 "Bu işlem yalnızca sertifikayı veritabanından kaldıracaktır. Dosya "
 "sistemindeki sertifika dosyaları silinmeyecektir."
 
+#: src/views/certificate/components/SelfSignedCertManagement.vue:17
+msgid ""
+"This self-signed certificate is managed by Nginx UI and renewed "
+"automatically."
+msgstr ""
+"Bu kendinden imzalı sertifika, Nginx UI tarafından yönetilir ve otomatik "
+"olarak yenilenir."
+
 #: src/components/AutoCertForm/AutoCertForm.vue:128
 msgid ""
-"This site is configured as a default server (default_server) for HTTPS (port "
-"443). IP certificates require Certificate Authority (CA) support and may not "
-"be available with all ACME providers."
+"This site is configured as a default server (default_server) for HTTPS "
+"(port 443). IP certificates require Certificate Authority (CA) support and "
+"may not be available with all ACME providers."
 msgstr ""
 "Bu site, HTTPS (port 443) için varsayılan sunucu (default_server) olarak "
 "yapılandırılmıştır. IP sertifikaları, Sertifika Yetkilisi (CA) desteği "
@@ -7737,8 +7767,8 @@ msgstr ""
 
 #: src/components/AutoCertForm/AutoCertForm.vue:132
 msgid ""
-"This site uses wildcard server name (_) which typically indicates an IP-"
-"based certificate. IP certificates require Certificate Authority (CA) "
+"This site uses wildcard server name (_) which typically indicates an "
+"IP-based certificate. IP certificates require Certificate Authority (CA) "
 "support and may not be available with all ACME providers."
 msgstr ""
 "Bu site, genellikle IP tabanlı bir sertifikayı gösteren joker karakterli "
@@ -7750,8 +7780,8 @@ msgid ""
 "This token will only be shown once and cannot be retrieved later. Please "
 "make sure to save it in a secure location."
 msgstr ""
-"Bu token yalnızca bir kez gösterilecek ve daha sonra alınamayacaktır. Lütfen "
-"güvenli bir yerde sakladığınızdan emin olun."
+"Bu token yalnızca bir kez gösterilecek ve daha sonra alınamayacaktır. "
+"Lütfen güvenli bir yerde sakladığınızdan emin olun."
 
 #: src/constants/form_errors.ts:4 src/language/curd.ts:44
 msgid "This value is already taken"
@@ -7772,8 +7802,7 @@ msgstr ""
 
 #: src/views/nginx_log/indexing/IndexManagement.vue:56
 msgid "This will rebuild the index data for this specific file: %{path}"
-msgstr ""
-"Bu, bu belirli dosya için indeks verilerini yeniden oluşturacaktır: %{path}"
+msgstr "Bu, bu belirli dosya için indeks verilerini yeniden oluşturacaktır: %{path}"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:253
 #: src/components/SystemRestore/SystemRestoreContent.vue:336
@@ -7794,8 +7823,7 @@ msgstr ""
 "yükleme tamamlandıktan sonra Nginx UI yeniden başlatılacaktır."
 
 #: src/views/node/BatchUpgrader.vue:187
-msgid ""
-"This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
+msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr ""
 "Bu işlem, %{nodeNames} üzerindeki Nginx UI'yi %{version} sürümüne "
 "yükseltecek veya yeniden yükleyecektir."
@@ -7862,15 +7890,15 @@ msgid ""
 "and restart Nginx UI."
 msgstr ""
 "Güvenliği sağlamak için WebAuthn yapılandırması kullanıcı arayüzü üzerinden "
-"eklenemez. Lütfen app.ini yapılandırma dosyasına aşağıdakileri manuel olarak "
-"ekleyin ve Nginx UI'ı yeniden başlatın."
+"eklenemez. Lütfen app.ini yapılandırma dosyasına aşağıdakileri manuel "
+"olarak ekleyin ve Nginx UI'ı yeniden başlatın."
 
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:47
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:15
 msgid ""
 "To make sure the certification auto-renewal can work normally, we need to "
-"add a location which can proxy the request from authority to backend, and we "
-"need to save this file and reload the Nginx. Are you sure you want to "
+"add a location which can proxy the request from authority to backend, and "
+"we need to save this file and reload the Nginx. Are you sure you want to "
 "continue?"
 msgstr ""
 "Sertifikanın otomatik yenilenmesinin düzgün çalışmasını sağlamak için, "
@@ -8016,7 +8044,7 @@ msgstr "TTL (saniye)"
 msgid "Tuesday"
 msgstr "Salı"
 
-#: src/components/TwoFA/use2FAModal.ts:46
+#: src/components/TwoFA/use2FAModal.ts:59
 msgid "Two-factor authentication required"
 msgstr "İki faktörlü kimlik doğrulama gerekiyor"
 
@@ -8036,10 +8064,6 @@ msgstr "Tür"
 #: src/views/config/components/Delete.vue:129
 msgid "Type %{delete} to confirm"
 msgstr "Onaylamak için %{delete} yazın"
-
-#: src/views/dns/DDNSManager.vue:318
-msgid "Type or select A/AAAA records"
-msgstr "A/AAAA kayıtlarını yazın veya seçin"
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:142
 msgid "Type or select browser"
@@ -8086,11 +8110,11 @@ msgstr "Desteklenmeyen günlük formatı"
 msgid "Update already in progress"
 msgstr "Güncelleme zaten devam ediyor"
 
-#: src/views/user/UserProfile.vue:218
+#: src/views/user/UserProfile.vue:213
 msgid "Update Password"
 msgstr "Şifreyi Güncelle"
 
-#: src/views/user/UserProfile.vue:142
+#: src/views/user/UserProfile.vue:137
 msgid "Update Profile"
 msgstr "Profili Güncelle"
 
@@ -8179,21 +8203,17 @@ msgstr "URL"
 msgid "Use @ for root"
 msgstr "Kök için @ kullanın"
 
-#: src/components/TwoFA/Authorization.vue:121
+#: src/components/TwoFA/Authorization.vue:129
 msgid "Use OTP"
 msgstr "OTP Kullan"
 
-#: src/components/TwoFA/Authorization.vue:117
+#: src/components/TwoFA/Authorization.vue:125
 msgid "Use recovery code"
 msgstr "Kurtarma kodunu kullan"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:157
 msgid "Use Temporary Path"
 msgstr "Geçici Yol Kullan"
-
-#: src/views/preference/components/NginxHostSetup/steps/Step3Connection.vue:63
-msgid "Use the cluster Node guide for cross-host setups."
-msgstr ""
 
 #: src/components/LLM/ChatMessage.vue:216
 msgid "User"
@@ -8208,7 +8228,7 @@ msgstr "Kullanıcı Aracısı"
 msgid "User banned"
 msgstr "Kullanıcı yasaklandı"
 
-#: src/views/user/UserProfile.vue:62
+#: src/views/user/UserProfile.vue:57
 msgid "User info updated successfully"
 msgstr "Kullanıcı bilgileri başarıyla güncellendi"
 
@@ -8221,7 +8241,7 @@ msgid "User Profile"
 msgstr "Kullanıcı Profili"
 
 #: src/views/other/Login.vue:298 src/views/user/userColumns.tsx:7
-#: src/views/user/UserProfile.vue:127 src/views/user/UserProfile.vue:131
+#: src/views/user/UserProfile.vue:122 src/views/user/UserProfile.vue:126
 msgid "Username"
 msgstr "Kullanıcı Adı"
 
@@ -8239,9 +8259,13 @@ msgstr "Benzersiz Ziyaretçi"
 
 #: src/components/CertInfo/CertInfo.vue:24
 #: src/views/certificate/ACMEUser.vue:152
-#: src/views/certificate/CertificateList/certColumns.tsx:76
+#: src/views/certificate/CertificateList/certColumns.tsx:98
 msgid "Valid"
 msgstr "Geçerli"
+
+#: src/views/certificate/components/SelfSignedCertFields.vue:61
+msgid "Valid For (days)"
+msgstr "Geçerli süre (gün)"
 
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:658
 msgid "Validate SSL Certificate"
@@ -8252,11 +8276,6 @@ msgstr "SSL Sertifikasını Doğrula"
 #: src/views/dns/components/DNSRecordTable.vue:26
 msgid "Value"
 msgstr "Değer"
-
-#: src/views/preference/components/NginxHostSetup/Wizard.vue:63
-#, fuzzy
-msgid "Verify"
-msgstr "Gizliliği Doğrula"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:242
 #: src/components/SystemRestore/SystemRestoreContent.vue:325
@@ -8294,7 +8313,7 @@ msgstr "Tüm bildirimleri görüntüle"
 msgid "View on GitHub"
 msgstr "GitHub'da Görüntüle"
 
-#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:135
+#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:138
 msgid "View Recovery Codes"
 msgstr "Kurtarma Kodlarını Görüntüle"
 
@@ -8322,7 +8341,7 @@ msgstr "Ziyaretler"
 msgid "Waiting processes"
 msgstr "Bekleme süreçleri"
 
-#: src/components/InspectConfig/InspectConfig.vue:156 src/constants/index.ts:24
+#: src/components/InspectConfig/InspectConfig.vue:156 src/constants/index.ts:25
 #: src/views/backup/components/BackupCreator.vue:138
 #: src/views/notification/notificationColumns.tsx:21
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:88
@@ -8354,10 +8373,10 @@ msgstr ""
 msgid "We do not accept any feature requests"
 msgstr "Herhangi bir özellik talebini kabul etmiyoruz"
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:181
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:140
 msgid ""
-"We will remove the HTTPChallenge configuration from this file and reload the "
-"Nginx. Are you sure you want to continue?"
+"We will remove the HTTPChallenge configuration from this file and reload "
+"the Nginx. Are you sure you want to continue?"
 msgstr ""
 "Bu dosyadan HTTPChallenge yapılandırmasını kaldıracağız ve Nginx'i yeniden "
 "yükleyeceğiz. Devam etmek istediğinizden emin misiniz?"
@@ -8395,6 +8414,19 @@ msgstr "Haftalık olarak %{day} günü %{time}"
 msgid "Weight"
 msgstr "Ağırlık"
 
+#: src/views/dns/DDNSManager.vue:400
+msgid ""
+"When enabled, DDNS owns the selected names: it auto-pairs sibling family "
+"records, creates missing records, and removes records whose IP family is "
+"unreachable. Disable to manage only the records you explicitly selected and "
+"keep all other DNS state untouched."
+msgstr ""
+"Etkinleştirildiğinde, DDNS seçili adların sahibi olur: kardeş aile "
+"kayıtlarını otomatik olarak eşleştirir, eksik kayıtları oluşturur ve IP "
+"ailesine erişilemeyen kayıtları kaldırır. Yalnızca açıkça seçtiğiniz "
+"kayıtları yönetmek ve diğer tüm DNS durumunu olduğu gibi bırakmak için "
+"devre dışı bırakın."
+
 #: src/views/certificate/ACMEUser.vue:110
 msgid ""
 "When Enabled, Nginx UI will automatically re-register users upon startup. "
@@ -8415,7 +8447,7 @@ msgstr ""
 "kaydettiğinizde, ad alanında ayarlanan düğümler ve aşağıda seçilen düğümler "
 "senkronize edilecektir."
 
-#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:141
+#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:144
 msgid ""
 "When you generate new recovery codes, you must download or print the new "
 "codes."
@@ -8427,7 +8459,7 @@ msgstr ""
 msgid "Whether to use a temporary path when writing temporary files"
 msgstr "Geçici dosyalar yazılırken geçici bir yol kullanılıp kullanılmayacağı"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:115
+#: src/views/certificate/components/DNSIssueCertificate.vue:171
 msgid "Wildcard Certificate"
 msgstr "Wildcard Sertifikası"
 
@@ -8446,7 +8478,7 @@ msgstr "Çalışan Süreçler"
 msgid "Workers"
 msgstr "Çalışanlar"
 
-#: src/layouts/HeaderLayout.vue:61 src/routes/index.ts:63
+#: src/layouts/HeaderLayout.vue:67 src/routes/index.ts:63
 #: src/views/workspace/WorkSpace.vue:51
 msgid "Workspace"
 msgstr "Çalışma alanı"
@@ -8485,8 +8517,8 @@ msgstr "Evet"
 
 #: src/views/terminal/Terminal.vue:219
 msgid ""
-"You are accessing this terminal over an insecure HTTP connection on a non-"
-"localhost domain. This may expose sensitive information."
+"You are accessing this terminal over an insecure HTTP connection on a "
+"non-localhost domain. This may expose sensitive information."
 msgstr ""
 "Bu terminale, localhost olmayan bir alan adında güvenli olmayan bir HTTP "
 "bağlantısı üzerinden erişiyorsunuz. Bu, hassas bilgilerin açığa çıkmasına "
@@ -8521,26 +8553,51 @@ msgstr ""
 "ekleyemezsiniz."
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:82
-msgid ""
-"You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
+msgid "You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
 msgstr ""
 "Henüz 2FA'yı etkinleştirmediniz. Kurtarma kodları oluşturmak için lütfen "
 "2FA'yı etkinleştirin."
 
-#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:95
+#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:98
 msgid "You have not generated recovery codes yet."
 msgstr "Henüz kurtarma kodları oluşturmadınız."
 
+#: src/components/TwoFA/Authorization.vue:73
+msgid ""
+"Your account still uses a legacy recovery code. Generate new recovery codes "
+"after verification to keep account recovery secure."
+msgstr ""
+"Hesabınız hâlâ eski bir kurtarma kodu kullanıyor. Doğrulamadan sonra yeni "
+"kurtarma kodları oluşturarak hesap kurtarma işlemini güvende tutun."
+
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:92
+msgid ""
+"Your account uses a deprecated legacy recovery code. Generate new recovery "
+"codes now to complete migration and keep account recovery secure."
+msgstr ""
+"Hesabınız kullanımdan kaldırılmış eski bir kurtarma kodu kullanıyor. Geçişi "
+"tamamlamak ve hesap kurtarmayı güvenli tutmak için şimdi yeni kurtarma "
+"kodları oluşturun."
+
+#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:95
 msgid ""
 "Your current recovery code might be outdated and insecure. Please generate "
 "new recovery codes at your earliest convenience to ensure security."
 msgstr ""
-"Mevcut kurtarma kodunuz güncel olmayabilir ve güvenli olmayabilir. Güvenliği "
-"sağlamak için en kısa sürede yeni kurtarma kodları oluşturun."
+"Mevcut kurtarma kodunuz güncel olmayabilir ve güvenli olmayabilir. "
+"Güvenliği sağlamak için en kısa sürede yeni kurtarma kodları oluşturun."
 
-#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:143
-#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:156
+#: src/components/TwoFA/use2FAModal.ts:32
+msgid ""
+"Your legacy recovery code has been used and cannot be used again. Generate "
+"new recovery codes now to keep account recovery available."
+msgstr ""
+"Eski kurtarma kodunuz kullanıldı ve tekrar kullanılamaz. Hesap kurtarma "
+"özelliğinin kullanılabilir kalması için şimdi yeni kurtarma kodları "
+"oluşturun."
+
+#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:146
+#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:159
 msgid "Your old codes won't work anymore."
 msgstr "Eski kodlarınız artık çalışmayacak."
 
@@ -8552,12 +8609,66 @@ msgstr "Geçiş Anahtarlarınız"
 msgid "Zero-allocation pipeline"
 msgstr "Tahsisatsız boru hattı"
 
+#, fuzzy
+#~ msgid "All checks passed — you may save the configuration."
+#~ msgstr "Nginx yapılandırmayı doğrulayamadı."
+
+#, fuzzy
+#~ msgid "Authentication method"
+#~ msgstr "Kimlik doğrulama..."
+
+#, fuzzy
+#~ msgid "Connection"
+#~ msgstr "Bağlandı"
+
+#, fuzzy
+#~ msgid "Container"
+#~ msgstr "İçerik"
+
+#, fuzzy
+#~ msgid "Copy fix"
+#~ msgstr "Kopya"
+
+#, fuzzy
+#~ msgid "External Container"
+#~ msgstr "Harici Docker Konteyneri"
+
+#, fuzzy
+#~ msgid "Generate keypair"
+#~ msgstr "Oluştur"
+
+#, fuzzy
+#~ msgid "override file"
+#~ msgstr "Mevcut dosyanın üzerine yaz"
+
+#, fuzzy
+#~ msgid "Regenerate keypair"
+#~ msgstr "Yanıtı yeniden oluştur"
+
+#, fuzzy
+#~ msgid "Remote address detected"
+#~ msgstr "Hiçbir düğüm seçilmedi"
+
+#, fuzzy
+#~ msgid "Run verification"
+#~ msgstr "Sertifikayı Yenile"
+
+#, fuzzy
+#~ msgid "SSH key (recommended)"
+#~ msgstr "2+ çekirdek önerilir"
+
+#~ msgid "Type or select A/AAAA records"
+#~ msgstr "A/AAAA kayıtlarını yazın veya seçin"
+
+#, fuzzy
+#~ msgid "Verify"
+#~ msgstr "Gizliliği Doğrula"
+
 #~ msgid "OpenAI"
 #~ msgstr "OpenAI"
 
 #~ msgid "Backup file integrity check failed, it may have been tampered with"
-#~ msgstr ""
-#~ "Yedek dosya bütünlük kontrolü başarısız oldu, dosya değiştirilmiş olabilir"
+#~ msgstr "Yedek dosya bütünlük kontrolü başarısız oldu, dosya değiştirilmiş olabilir"
 
 #~ msgid "Once the verification is complete, the records will be removed."
 #~ msgstr "Doğrulama tamamlandığında, kayıtlar kaldırılacaktır."
@@ -8566,8 +8677,8 @@ msgstr "Tahsisatsız boru hattı"
 #~ "We will add one or more TXT records to the DNS records of your domain for "
 #~ "ownership verification."
 #~ msgstr ""
-#~ "Mülkiyet doğrulaması için alan adınızın DNS kayıtlarına bir veya daha "
-#~ "fazla TXT kaydı ekleyeceğiz."
+#~ "Mülkiyet doğrulaması için alan adınızın DNS kayıtlarına bir veya daha fazla "
+#~ "TXT kaydı ekleyeceğiz."
 
 #~ msgid "Settings"
 #~ msgstr "Ayarlar"
@@ -8734,14 +8845,14 @@ msgstr "Tahsisatsız boru hattı"
 
 #~ msgid ""
 #~ "Support communication with the backend through the Server-Sent Events "
-#~ "protocol. If your Nginx UI is being used via an Nginx reverse proxy, "
-#~ "please refer to this link to write the corresponding configuration file: "
+#~ "protocol. If your Nginx UI is being used via an Nginx reverse proxy, please "
+#~ "refer to this link to write the corresponding configuration file: "
 #~ "https://nginxui.com/guide/nginx-proxy-example.html"
 #~ msgstr ""
 #~ "Backend ile iletişimi Server-Sent Events protokolü üzerinden destekler. "
 #~ "Nginx UI'nız bir Nginx ters proxy üzerinden kullanılıyorsa, ilgili "
-#~ "yapılandırma dosyasını yazmak için bu bağlantıya bakın: https://nginxui."
-#~ "com/guide/nginx-proxy-example.html"
+#~ "yapılandırma dosyasını yazmak için bu bağlantıya bakın: "
+#~ "https://nginxui.com/guide/nginx-proxy-example.html"
 
 #~ msgid "If left blank, the default CA Dir will be used."
 #~ msgstr "Boş bırakılırsa, varsayılan CA Dir kullanılır."
@@ -8811,11 +8922,11 @@ msgstr "Tahsisatsız boru hattı"
 
 #~ msgid ""
 #~ "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
-#~ "Docker Image, please make sure the docker socket is mounted like this: `-"
-#~ "v /var/run/docker.sock:/var/run/docker.sock`."
+#~ "Docker Image, please make sure the docker socket is mounted like this: `-v "
+#~ "/var/run/docker.sock:/var/run/docker.sock`."
 #~ msgstr ""
-#~ "/var/run/docker.sock dosyasının var olup olmadığını kontrol edin. Nginx "
-#~ "UI Resmi Docker Image'ını kullanıyorsanız, docker soketinin şu şekilde "
+#~ "/var/run/docker.sock dosyasının var olup olmadığını kontrol edin. Nginx UI "
+#~ "Resmi Docker Image'ını kullanıyorsanız, docker soketinin şu şekilde "
 #~ "bağlandığından emin olun: `-v /var/run/docker.sock:/var/run/docker.sock`."
 
 #~ msgid "Check if the nginx access log path exists"
@@ -8857,8 +8968,7 @@ msgstr "Tahsisatsız boru hattı"
 #~ msgstr "Oluşturulma Tarihi"
 
 #~ msgid "Deploy %{conf_name} to %{node_name} successfully"
-#~ msgstr ""
-#~ "%{conf_name} yapılandırması başarıyla %{node_name} düğümüne dağıtıldı"
+#~ msgstr "%{conf_name} yapılandırması başarıyla %{node_name} düğümüne dağıtıldı"
 
 #~ msgid "Deploy successfully"
 #~ msgstr "Başarıyla Dağıtıldı"
@@ -8866,8 +8976,8 @@ msgstr "Tahsisatsız boru hattı"
 #, fuzzy
 #~ msgid "Disable site %{site} on %{node} error, response: %{resp}"
 #~ msgstr ""
-#~ "%{conf_name} yapılandırmasını %{node_name} düğümünde etkinleştirme "
-#~ "başarılı oldu"
+#~ "%{conf_name} yapılandırmasını %{node_name} düğümünde etkinleştirme başarılı "
+#~ "oldu"
 
 #~ msgid "Do you want to deploy this file to remote server?"
 #~ msgid_plural "Do you want to deploy this file to remote servers?"
@@ -8882,8 +8992,8 @@ msgstr "Tahsisatsız boru hattı"
 
 #~ msgid "Enable %{conf_name} in %{node_name} successfully"
 #~ msgstr ""
-#~ "%{conf_name} yapılandırmasını %{node_name} düğümünde etkinleştirme "
-#~ "başarılı oldu"
+#~ "%{conf_name} yapılandırmasını %{node_name} düğümünde etkinleştirme başarılı "
+#~ "oldu"
 
 #~ msgid "Enable successfully"
 #~ msgstr "Başarıyla etkinleştirildi"
@@ -8895,18 +9005,14 @@ msgstr "Tahsisatsız boru hattı"
 #~ "Nginx kullanıcı arayüzünü en son sürüme yükseltin"
 
 #, fuzzy
-#~ msgid ""
-#~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: "
-#~ "%{resp}"
+#~ msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: %{resp}"
 #~ msgstr ""
-#~ "2] üzerinde %{orig_path}'ı %{new_path} olarak yeniden adlandırma "
-#~ "başarısız oldu, yanıt: %{resp}"
+#~ "2] üzerinde %{orig_path}'ı %{new_path} olarak yeniden adlandırma başarısız "
+#~ "oldu, yanıt: %{resp}"
 
 #, fuzzy
-#~ msgid ""
-#~ "Rename Site %{site} to %{new_site} on %{node} error, response: %{resp}"
-#~ msgstr ""
-#~ "2] üzerinde %{orig_path}'ı %{new_path} olarak başarıyla yeniden adlandırın"
+#~ msgid "Rename Site %{site} to %{new_site} on %{node} error, response: %{resp}"
+#~ msgstr "2] üzerinde %{orig_path}'ı %{new_path} olarak başarıyla yeniden adlandırın"
 
 #, fuzzy
 #~ msgid "Save site %{site} to %{node} error, response: %{resp}"
@@ -8923,8 +9029,7 @@ msgstr "Tahsisatsız boru hattı"
 #~ "lütfen uzak Nginx kullanıcı arayüzünü en son sürüme yükseltin"
 
 #, fuzzy
-#~ msgid ""
-#~ "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
+#~ msgid "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
 #~ msgstr ""
 #~ "Sertifika %{cert_name} ile %{env_name} arasında senkronizasyon başarısız "
 #~ "oldu, yanıt: %{resp}"
@@ -8939,8 +9044,8 @@ msgstr "Tahsisatsız boru hattı"
 #~ msgstr "Tarayamıyor musunuz? Metin anahtar bağlamasını kullanın"
 
 #~ msgid ""
-#~ "If you lose your mobile phone, you can use the recovery code to reset "
-#~ "your 2FA."
+#~ "If you lose your mobile phone, you can use the recovery code to reset your "
+#~ "2FA."
 #~ msgstr ""
 #~ "Cep telefonunuzu kaybederseniz, 2FA'nızı sıfırlamak için kurtarma kodunu "
 #~ "kullanabilirsiniz."
@@ -8949,8 +9054,7 @@ msgstr "Tahsisatsız boru hattı"
 #~ msgstr "Kullanıcı adı veya şifre yanlış"
 
 #, fuzzy
-#~ msgid ""
-#~ "The recovery code is only displayed once, please save it in a safe place."
+#~ msgid "The recovery code is only displayed once, please save it in a safe place."
 #~ msgstr ""
 #~ "Kurtarma kodu yalnızca bir kez görüntülenir, lütfen güvenli bir yere "
 #~ "kaydedin."
@@ -8966,9 +9070,8 @@ msgstr "Tahsisatsız boru hattı"
 #~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, please upgrade "
 #~ "the remote Nginx UI to the latest version"
 #~ msgstr ""
-#~ "2] üzerinde %{orig_path}'ı %{new_path} olarak yeniden adlandırmak "
-#~ "başarısız oldu, lütfen uzak Nginx kullanıcı arayüzünü en son sürüme "
-#~ "yükseltin"
+#~ "2] üzerinde %{orig_path}'ı %{new_path} olarak yeniden adlandırmak başarısız "
+#~ "oldu, lütfen uzak Nginx kullanıcı arayüzünü en son sürüme yükseltin"
 
 #~ msgid ""
 #~ "Customize the name of local server to be displayed in the environment "
@@ -8979,18 +9082,18 @@ msgstr "Tahsisatsız boru hattı"
 #~ msgstr "Yalnızca DNS kaydı yönetimi"
 
 #~ msgid ""
-#~ "DNS Domains are used for DNS record management in NGINX UI and are "
-#~ "separate from ACME DNS-01 certificate challenges."
+#~ "DNS Domains are used for DNS record management in NGINX UI and are separate "
+#~ "from ACME DNS-01 certificate challenges."
 #~ msgstr ""
 #~ "DNS Alanları, NGINX UI içinde DNS kaydı yönetimi için kullanılır ve ACME "
 #~ "DNS-01 sertifika doğrulamalarından ayrıdır."
 
 #~ msgid ""
-#~ "Currently, DNS record management supports Alibaba Cloud DNS, Tencent "
-#~ "Cloud DNS, and Cloudflare only."
+#~ "Currently, DNS record management supports Alibaba Cloud DNS, Tencent Cloud "
+#~ "DNS, and Cloudflare only."
 #~ msgstr ""
-#~ "Şu anda DNS kaydı yönetimi yalnızca Alibaba Cloud DNS, Tencent Cloud DNS "
-#~ "ve Cloudflare destekler."
+#~ "Şu anda DNS kaydı yönetimi yalnızca Alibaba Cloud DNS, Tencent Cloud DNS ve "
+#~ "Cloudflare destekler."
 
 #~ msgid ""
 #~ "For ACME DNS-01 certificate issuance, create DNS credentials under DNS > "
@@ -8999,6 +9102,7 @@ msgstr "Tahsisatsız boru hattı"
 #~ "ACME DNS-01 sertifika düzenleme için DNS > Kimlik Bilgileri altında DNS "
 #~ "kimlik bilgileri oluşturun ve bunları sertifika ayarlarında seçin."
 
-#: src/views/dns/DNSDomainList.vue:115
-msgid "DNS Domains only use providers with DNS record management implementations."
-msgstr "DNS Domains yalnızca DNS kayıt yönetimi uygulamaları olan sağlayıcıları kullanır."
+#~ msgid "DNS Domains only use providers with DNS record management implementations."
+#~ msgstr ""
+#~ "DNS Domains yalnızca DNS kayıt yönetimi uygulamaları olan sağlayıcıları "
+#~ "kullanır."

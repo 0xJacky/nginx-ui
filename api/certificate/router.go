@@ -19,6 +19,8 @@ func InitCertificateRouter(r *gin.RouterGroup) {
 	r.PUT("cert_sync", SyncCertificate)
 	r.GET("certificate/dns_providers", GetDNSProvidersList)
 	r.GET("certificate/dns_provider/:code", GetDNSProvider)
+	r.POST("self_signed_cert", GenerateSelfSignedCert)
+	r.POST("self_signed_cert/:id", ModifySelfSignedCert)
 }
 
 func InitCertificateWebSocketRouter(r *gin.RouterGroup) {

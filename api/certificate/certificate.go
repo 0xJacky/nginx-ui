@@ -3,6 +3,7 @@ package certificate
 import (
 	"net/http"
 	"os"
+	"path/filepath"
 
 	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
@@ -198,7 +199,40 @@ func ModifyCert(c *gin.Context) {
 }
 
 func RemoveCert(c *gin.Context) {
-	cosy.Core[model.Cert](c).Destroy()
+	id := cast.ToUint64(c.Param("id"))
+	certModel, err := query.Cert.FirstByID(id)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	if err = query.Cert.DeleteByID(id); err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	cleanupSelfSignedCertFiles(certModel)
+}
+
+func cleanupSelfSignedCertFiles(certModel *model.Cert) {
+	if certModel.AutoCert != model.AutoCertSelfSigned {
+		return
+	}
+
+	certPath := certModel.SSLCertificatePath
+	keyPath := certModel.SSLCertificateKeyPath
+	sslDir := nginx.GetConfPath("ssl")
+	certDir := filepath.Dir(certPath)
+	keyDir := filepath.Dir(keyPath)
+	if certDir == "." || certDir != keyDir {
+		return
+	}
+	if !helper.IsUnderDirectory(certPath, sslDir) || !helper.IsUnderDirectory(keyPath, sslDir) || !helper.IsUnderDirectory(certDir, sslDir) {
+		return
+	}
+	if err := os.RemoveAll(certDir); err != nil {
+		logger.Errorf("self-signed cert directory cleanup failed for id %d at %s: %v", certModel.ID, certDir, err)
+	}
 }
 
 func SyncCertificate(c *gin.Context) {

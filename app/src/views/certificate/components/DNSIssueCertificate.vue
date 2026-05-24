@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
 import type { AutoCertOptions } from '@/api/auto_cert'
+import type { SelfSignedCertPayload } from '@/api/cert'
+import cert from '@/api/cert'
 import AutoCertForm from '@/components/AutoCertForm'
+import StringListInput from '@/components/StringListInput'
+import { PrivateKeyTypeEnum } from '@/constants'
 import ObtainCertLive from '@/views/site/site_edit/components/Cert/ObtainCertLive.vue'
+import SelfSignedCertFields from './SelfSignedCertFields.vue'
 
 const emit = defineEmits<{
   issued: [void]
@@ -10,13 +15,29 @@ const emit = defineEmits<{
 
 const { message } = App.useApp()
 
+type CertType = 'wildcard' | 'custom' | 'self_signed'
+
 const step = ref(0)
 const visible = ref(false)
 const data = ref({}) as Ref<AutoCertOptions>
 const domain = ref('')
-const certType = ref<'wildcard' | 'custom'>('wildcard')
+const certType = ref<CertType>('wildcard')
 const customDomains = ref<string[]>([''])
 const errored = ref(false)
+const selfSignedLoading = ref(false)
+
+function emptySelfSignedPayload(): SelfSignedCertPayload {
+  return {
+    name: '',
+    domains: [''],
+    ip_addresses: [''],
+    key_type: PrivateKeyTypeEnum.P256,
+    validity_days: 365,
+    sync_node_ids: [],
+  }
+}
+
+const selfSignedPayload = ref<SelfSignedCertPayload>(emptySelfSignedPayload())
 
 function open() {
   visible.value = true
@@ -29,6 +50,7 @@ function open() {
   certType.value = 'wildcard'
   customDomains.value = ['']
   errored.value = false
+  selfSignedPayload.value = emptySelfSignedPayload()
 }
 
 defineExpose({
@@ -62,16 +84,6 @@ const computedMainDomain = computed(() => {
   }
 })
 
-function addCustomDomain() {
-  customDomains.value.push('')
-}
-
-function removeCustomDomain(index: number) {
-  if (customDomains.value.length > 1) {
-    customDomains.value.splice(index, 1)
-  }
-}
-
 function issueCert() {
   if (!data.value.dns_credential_id) {
     message.error($gettext('Please select a DNS credential'))
@@ -102,6 +114,41 @@ function issueCert() {
       errored.value = true
     })
 }
+
+async function submitSelfSigned() {
+  const name = selfSignedPayload.value.name.trim()
+  const domains = selfSignedPayload.value.domains.map(d => d.trim()).filter(Boolean)
+  const ip_addresses = selfSignedPayload.value.ip_addresses.map(s => s.trim()).filter(Boolean)
+
+  if (!name) {
+    message.error($gettext('Please enter a name for the certificate'))
+    return
+  }
+  if (domains.length === 0 && ip_addresses.length === 0) {
+    message.error($gettext('Please enter at least one domain or IP address'))
+    return
+  }
+
+  selfSignedLoading.value = true
+  try {
+    await cert.generate_self_signed({
+      ...selfSignedPayload.value,
+      name,
+      domains,
+      ip_addresses,
+    })
+    message.success($gettext('Self-signed certificate generated'))
+    visible.value = false
+    emit('issued')
+  }
+  // eslint-disable-next-line ts/no-explicit-any
+  catch (e: any) {
+    message.error(e.message ?? $gettext('Failed to generate self-signed certificate'))
+  }
+  finally {
+    selfSignedLoading.value = false
+  }
+}
 </script>
 
 <template>
@@ -126,6 +173,9 @@ function issueCert() {
               <ASelectOption value="custom">
                 {{ $gettext('Custom Domains Certificate') }}
               </ASelectOption>
+              <ASelectOption value="self_signed">
+                {{ $gettext('Self-signed Certificate') }}
+              </ASelectOption>
             </ASelect>
           </AFormItem>
 
@@ -139,36 +189,13 @@ function issueCert() {
             </AFormItem>
           </template>
 
-          <template v-else>
+          <template v-else-if="certType === 'custom'">
             <AFormItem :label="$gettext('Custom Domains')">
-              <div class="space-y-2">
-                <div
-                  v-for="(_, index) in customDomains"
-                  :key="index"
-                  class="flex items-center gap-2"
-                >
-                  <AInput
-                    v-model:value="customDomains[index]"
-                    :placeholder="$gettext('Enter domain name')"
-                    class="flex-1"
-                  />
-                  <AButton
-                    v-if="customDomains.length > 1"
-                    type="link"
-                    danger
-                    @click="removeCustomDomain(index)"
-                  >
-                    {{ $gettext('Remove') }}
-                  </AButton>
-                </div>
-                <AButton
-                  block
-                  @click="addCustomDomain"
-                >
-                  {{ $gettext('Add Domain') }}
-                </AButton>
-              </div>
-
+              <StringListInput
+                v-model="customDomains"
+                :placeholder="$gettext('Enter domain name')"
+                :add-button-text="$gettext('Add Domain')"
+              />
               <AAlert
                 :message="$gettext('All selected subdomains must belong to the same DNS Provider, otherwise the certificate application will fail.')"
                 type="info"
@@ -180,24 +207,37 @@ function issueCert() {
           </template>
         </AForm>
 
-        <AutoCertForm
-          v-model:options="data"
-          style="max-width: 600px"
-          hide-note
-          force-dns-challenge
-        />
+        <template v-if="certType !== 'self_signed'">
+          <AutoCertForm
+            v-model:options="data"
+            style="max-width: 600px"
+            hide-note
+            force-dns-challenge
+          />
 
-        <div
-          v-if="step === 0"
-          class="flex justify-end"
-        >
-          <AButton
-            type="primary"
-            @click="issueCert"
-          >
-            {{ $gettext('Next') }}
-          </AButton>
-        </div>
+          <div class="flex justify-end">
+            <AButton
+              type="primary"
+              @click="issueCert"
+            >
+              {{ $gettext('Next') }}
+            </AButton>
+          </div>
+        </template>
+
+        <template v-else>
+          <SelfSignedCertFields v-model="selfSignedPayload" />
+
+          <div class="flex justify-end">
+            <AButton
+              type="primary"
+              :loading="selfSignedLoading"
+              @click="submitSelfSigned"
+            >
+              {{ $gettext('Generate') }}
+            </AButton>
+          </div>
+        </template>
       </template>
 
       <ObtainCertLive
