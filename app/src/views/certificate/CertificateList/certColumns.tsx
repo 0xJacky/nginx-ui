@@ -1,9 +1,9 @@
 import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
 import type { JSXElements } from '@/types'
-import { datetimeRender, maskRender } from '@uozi-admin/curd'
+import { datetimeRender } from '@uozi-admin/curd'
 import { Badge, Tag, Tooltip } from 'ant-design-vue'
 import dayjs from 'dayjs'
-import { AutoCertState, PrivateKeyTypeMask } from '@/constants'
+import { AutoCertState, formatPrivateKeyType } from '@/constants'
 
 const columns: StdTableColumn[] = [{
   title: () => $gettext('Name'),
@@ -64,7 +64,7 @@ const columns: StdTableColumn[] = [{
 }, {
   title: () => $gettext('Key Type'),
   dataIndex: 'key_type',
-  customRender: maskRender(PrivateKeyTypeMask),
+  customRender: ({ text }: CustomRenderArgs) => formatPrivateKeyType(text),
   sorter: true,
   pure: true,
 }, {

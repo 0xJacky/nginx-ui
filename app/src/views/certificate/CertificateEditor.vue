@@ -2,7 +2,7 @@
 import type { Ref } from 'vue'
 import type { Cert, SelfSignedCertPayload } from '@/api/cert'
 import cert, { toSelfSignedPayload } from '@/api/cert'
-import { AutoCertState } from '@/constants'
+import { AutoCertState, normalizePrivateKeyType } from '@/constants'
 
 import AutoCertManagement from './components/AutoCertManagement.vue'
 import CertificateActions from './components/CertificateActions.vue'
@@ -43,7 +43,10 @@ watch(data, value => {
 function init() {
   if (id.value > 0) {
     cert.getItem(id.value).then(r => {
-      data.value = r
+      // Backend stores key_type in its canonical form (EC256, RSA2048…); the
+      // ACME form's ASelect options use the legacy keys (P256, 2048…). Normalize
+      // on load so the dropdown highlights the right option when editing.
+      data.value = { ...r, key_type: normalizePrivateKeyType(r.key_type) }
     })
   }
   else {
