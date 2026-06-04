@@ -9,6 +9,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/indexer"
 	"github.com/0xJacky/Nginx-UI/model"
+	"github.com/0xJacky/Nginx-UI/settings"
 )
 
 // Test that grouped (aggregated) log metadata with oversized LastSize values
@@ -135,5 +136,22 @@ func TestNeedsIncrementalIndexingDetectsGrowth(t *testing.T) {
 
 	if !needsIncrementalIndexing(logData, stubLogIndexProvider{idx: persisted}) {
 		t.Fatalf("expected incremental indexing when file grew")
+	}
+}
+
+func TestShouldRunIncrementalIndexingRequiresEnabledSetting(t *testing.T) {
+	originalEnabled := settings.NginxLogSettings.IndexingEnabled
+	t.Cleanup(func() {
+		settings.NginxLogSettings.IndexingEnabled = originalEnabled
+	})
+
+	settings.NginxLogSettings.IndexingEnabled = false
+	if shouldRunIncrementalIndexing() {
+		t.Fatalf("expected incremental indexing cron task to be disabled")
+	}
+
+	settings.NginxLogSettings.IndexingEnabled = true
+	if !shouldRunIncrementalIndexing() {
+		t.Fatalf("expected incremental indexing cron task to be enabled")
 	}
 }

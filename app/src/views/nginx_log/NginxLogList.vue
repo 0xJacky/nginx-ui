@@ -2,10 +2,10 @@
 import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
 import type { NginxLogData } from '@/api/nginx_log'
 import type { TabOption } from '@/components/TabFilter'
-import { CheckCircleOutlined, ExclamationCircleOutlined, SyncOutlined } from '@ant-design/icons-vue'
+import { CheckCircleOutlined, ExclamationCircleOutlined, StopOutlined, SyncOutlined } from '@ant-design/icons-vue'
 import { StdCurd } from '@uozi-admin/curd'
 import { useRouteQuery } from '@vueuse/router'
-import { Badge, Tag, Tooltip } from 'ant-design-vue'
+import { Badge, Modal, Tag, Tooltip } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import nginxLog from '@/api/nginx_log'
 import { DevDebugPanel } from '@/components/DevDebugPanel'
@@ -24,6 +24,7 @@ const indexManagementRef = ref()
 const indexingSettingsModalVisible = ref(false)
 const advancedIndexingEnabled = ref(false)
 const enableIndexingLoading = ref(false)
+const disableIndexingLoading = ref(false)
 
 // WebSocket event bus and global store
 const websocketEventBus = useWebSocketEventBusStore()
@@ -411,6 +412,32 @@ async function enableAdvancedIndexing() {
   }
 }
 
+function disableAdvancedIndexing() {
+  Modal.confirm({
+    title: $gettext('Disable Advanced Indexing'),
+    content: $gettext('Advanced log indexing will stop and structured log analytics will be unavailable. Existing index files will not be deleted. Continue?'),
+    okText: $gettext('Disable'),
+    okType: 'danger',
+    cancelText: $gettext('Cancel'),
+    async onOk() {
+      disableIndexingLoading.value = true
+      try {
+        await nginxLog.disableAdvancedIndexing()
+        advancedIndexingEnabled.value = false
+        message.success($gettext('Advanced indexing disabled successfully'))
+        refreshTable()
+      }
+      catch (error) {
+        console.error('Failed to disable advanced indexing:', error)
+        message.error($gettext('Failed to disable advanced indexing'))
+      }
+      finally {
+        disableIndexingLoading.value = false
+      }
+    },
+  })
+}
+
 function cancelIndexingSettings() {
   indexingSettingsModalVisible.value = false
 }
@@ -423,6 +450,7 @@ const debugData = computed(() => ({
   nginxLogStatus: nginxLogStatus.value,
   isGlobalIndexing: isGlobalIndexing.value,
   enableIndexingLoading: enableIndexingLoading.value,
+  disableIndexingLoading: disableIndexingLoading.value,
   indexingSettingsModalVisible: indexingSettingsModalVisible.value,
   columns: columns.value.map(col => ({ title: col.title, dataIndex: col.dataIndex })),
   tabOptions,
@@ -483,6 +511,20 @@ const debugData = computed(() => ({
             :indexing="isGlobalIndexing || processingStatus.nginx_log_indexing"
             @refresh="refreshTable"
           />
+          <AButton
+            v-if="activeLogType === 'access' && advancedIndexingEnabled"
+            type="link"
+            size="small"
+            danger
+            :loading="disableIndexingLoading"
+            :disabled="processingStatus.nginx_log_indexing"
+            @click="disableAdvancedIndexing"
+          >
+            <template #icon>
+              <StopOutlined />
+            </template>
+            {{ $gettext('Disable Advanced Indexing') }}
+          </AButton>
         </div>
       </template>
       <template #beforeActions="{ record }">

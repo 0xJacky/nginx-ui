@@ -12,6 +12,7 @@ import (
 	"github.com/blevesearch/bleve/v2"
 	"github.com/blevesearch/bleve/v2/mapping"
 	"github.com/blevesearch/bleve/v2/search/query"
+	indexapi "github.com/blevesearch/bleve_index_api"
 	"github.com/gabriel-vasile/mimetype"
 	"github.com/uozi-tech/cosy/logger"
 )
@@ -277,6 +278,11 @@ func (si *SearchIndexer) IndexDocument(doc SearchDocument) (err error) {
 	contentSize := int64(len(doc.Content))
 	existingDoc, err := si.index.Document(doc.ID)
 	isNewDocument := err != nil || existingDoc == nil
+	if !isNewDocument {
+		if existingContent, ok := documentStringField(existingDoc, "content"); ok && existingContent == doc.Content {
+			return nil
+		}
+	}
 
 	// For new documents, check memory limits
 	if isNewDocument {
@@ -298,6 +304,26 @@ func (si *SearchIndexer) IndexDocument(doc SearchDocument) (err error) {
 	}
 
 	return nil
+}
+
+func documentStringField(doc indexapi.Document, name string) (string, bool) {
+	if doc == nil {
+		return "", false
+	}
+
+	var value string
+	var found bool
+	doc.VisitFields(func(field indexapi.Field) {
+		if found {
+			return
+		}
+		if field.Name() == name {
+			value = string(field.Value())
+			found = true
+		}
+	})
+
+	return value, found
 }
 
 // Search performs a search query

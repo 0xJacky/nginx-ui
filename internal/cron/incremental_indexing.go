@@ -48,6 +48,11 @@ func setupIncrementalIndexingJob(s gocron.Scheduler) (gocron.Job, error) {
 
 // performIncrementalIndexing performs the actual incremental indexing check
 func performIncrementalIndexing() {
+	if !shouldRunIncrementalIndexing() {
+		logger.Debug("Advanced log indexing is disabled; skipping incremental log indexing scan")
+		return
+	}
+
 	logger.Debug("Starting incremental log indexing scan")
 
 	// Get log file manager
@@ -120,6 +125,10 @@ func performIncrementalIndexing() {
 	} else {
 		logger.Debug("No log files need incremental indexing")
 	}
+}
+
+func shouldRunIncrementalIndexing() bool {
+	return settings.NginxLogSettings.IndexingEnabled
 }
 
 // needsIncrementalIndexing checks if a log file needs incremental indexing

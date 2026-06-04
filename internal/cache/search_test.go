@@ -1,7 +1,9 @@
 package cache
 
 import (
+	"context"
 	"testing"
+	"time"
 )
 
 // TestIsNumericQuery tests the isNumericQuery function
@@ -138,4 +140,53 @@ func TestSearchStrategyDifference(t *testing.T) {
 	}
 }
 
+func TestHandleConfigScanSkipsUnchangedContent(t *testing.T) {
+	indexer := &SearchIndexer{
+		indexPath:      t.TempDir(),
+		maxMemoryUsage: 100 * 1024 * 1024,
+	}
+	ctx := context.Background()
+	if err := indexer.Initialize(ctx); err != nil {
+		t.Fatalf("Initialize() error = %v", err)
+	}
+	t.Cleanup(func() {
+		if err := indexer.Close(); err != nil {
+			t.Fatalf("Close() error = %v", err)
+		}
+	})
 
+	configPath := "/etc/nginx/sites-enabled/example.conf"
+	content := []byte("server { listen 80; server_name example.com; }")
+	if err := indexer.handleConfigScan(configPath, content); err != nil {
+		t.Fatalf("handleConfigScan() first call error = %v", err)
+	}
+
+	results, err := indexer.Search(ctx, "example.com", 10)
+	if err != nil {
+		t.Fatalf("Search() after first index error = %v", err)
+	}
+	if len(results) != 1 {
+		t.Fatalf("Search() after first index returned %d results, want 1", len(results))
+	}
+	firstUpdatedAt := results[0].Document.UpdatedAt
+	if firstUpdatedAt.IsZero() {
+		t.Fatal("first UpdatedAt is zero")
+	}
+
+	time.Sleep(1100 * time.Millisecond)
+	if err := indexer.handleConfigScan(configPath, content); err != nil {
+		t.Fatalf("handleConfigScan() second call error = %v", err)
+	}
+
+	results, err = indexer.Search(ctx, "example.com", 10)
+	if err != nil {
+		t.Fatalf("Search() after second index error = %v", err)
+	}
+	if len(results) != 1 {
+		t.Fatalf("Search() after second index returned %d results, want 1", len(results))
+	}
+	if !results[0].Document.UpdatedAt.Equal(firstUpdatedAt) {
+		t.Fatalf("UpdatedAt changed for unchanged content: got %s, want %s",
+			results[0].Document.UpdatedAt, firstUpdatedAt)
+	}
+}
