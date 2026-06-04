@@ -2,6 +2,7 @@ package cache
 
 import (
 	"context"
+	"os"
 	"testing"
 	"time"
 )
@@ -188,5 +189,36 @@ func TestHandleConfigScanSkipsUnchangedContent(t *testing.T) {
 	if !results[0].Document.UpdatedAt.Equal(firstUpdatedAt) {
 		t.Fatalf("UpdatedAt changed for unchanged content: got %s, want %s",
 			results[0].Document.UpdatedAt, firstUpdatedAt)
+	}
+}
+
+func TestSearchIndexerDoesNotWriteDiskIndexFiles(t *testing.T) {
+	indexPath := t.TempDir()
+	indexer := &SearchIndexer{
+		indexPath:      indexPath,
+		maxMemoryUsage: 100 * 1024 * 1024,
+	}
+	ctx := context.Background()
+	if err := indexer.Initialize(ctx); err != nil {
+		t.Fatalf("Initialize() error = %v", err)
+	}
+	t.Cleanup(func() {
+		if err := indexer.Close(); err != nil {
+			t.Fatalf("Close() error = %v", err)
+		}
+	})
+
+	configPath := "/etc/nginx/sites-enabled/example.conf"
+	content := []byte("server { listen 80; server_name example.com; }")
+	if err := indexer.handleConfigScan(configPath, content); err != nil {
+		t.Fatalf("handleConfigScan() error = %v", err)
+	}
+
+	entries, err := os.ReadDir(indexPath)
+	if err != nil {
+		t.Fatalf("ReadDir() error = %v", err)
+	}
+	if len(entries) != 0 {
+		t.Fatalf("search index wrote %d disk entries, want 0", len(entries))
 	}
 }

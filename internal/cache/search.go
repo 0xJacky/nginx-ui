@@ -3,7 +3,6 @@ package cache
 import (
 	"context"
 	"fmt"
-	"os"
 	"path/filepath"
 	"strings"
 	"sync"
@@ -57,14 +56,8 @@ var (
 // GetSearchIndexer returns the singleton search indexer instance
 func GetSearchIndexer() *SearchIndexer {
 	searchIndexerOnce.Do(func() {
-		// Create a temporary directory for the index
-		tempDir, err := os.MkdirTemp("", "nginx-ui-search-index-*")
-		if err != nil {
-			logger.Fatalf("Failed to create temp directory for search index: %v", err)
-		}
-
 		searchIndexer = &SearchIndexer{
-			indexPath:      tempDir,
+			indexPath:      "memory",
 			maxMemoryUsage: 100 * 1024 * 1024, // 100MB memory limit for indexed content
 		}
 	})
@@ -92,22 +85,11 @@ func (si *SearchIndexer) Initialize(ctx context.Context) error {
 	default:
 	}
 
-	// Try to open existing index, create new if it fails
 	var err error
-	si.index, err = bleve.Open(si.indexPath)
+	logger.Info("Creating in-memory search index")
+	si.index, err = bleve.NewMemOnly(si.createIndexMapping())
 	if err != nil {
-		// Check context again before creating new index
-		select {
-		case <-ctx.Done():
-			return ctx.Err()
-		default:
-		}
-
-		logger.Info("Creating new search index at:", si.indexPath)
-		si.index, err = bleve.New(si.indexPath, si.createIndexMapping())
-		if err != nil {
-			return fmt.Errorf("failed to create search index: %w", err)
-		}
+		return fmt.Errorf("failed to create in-memory search index: %w", err)
 	}
 
 	// Register callback for config scanning
@@ -126,7 +108,7 @@ func (si *SearchIndexer) watchContext() {
 	si.cleanup()
 }
 
-// cleanup closes the index and removes the temporary directory
+// cleanup closes the in-memory index and resets memory accounting.
 func (si *SearchIndexer) cleanup() {
 	si.cleanupOnce.Do(func() {
 		logger.Info("Cleaning up search index...")
@@ -144,13 +126,6 @@ func (si *SearchIndexer) cleanup() {
 		si.totalContentSize = 0
 		si.documentCount = 0
 		si.memoryMutex.Unlock()
-
-		// Remove the temporary directory
-		if err := os.RemoveAll(si.indexPath); err != nil {
-			logger.Error("Failed to remove search index directory:", err)
-		} else {
-			logger.Info("Search index directory removed successfully")
-		}
 	})
 }
 
@@ -573,18 +548,6 @@ func (si *SearchIndexer) RebuildIndex(ctx context.Context) error {
 		si.index.Close()
 	}
 
-	// Check context before removing old index
-	select {
-	case <-ctx.Done():
-		return ctx.Err()
-	default:
-	}
-
-	// Remove old index
-	if err := os.RemoveAll(si.indexPath); err != nil {
-		logger.Error("Failed to remove old index:", err)
-	}
-
 	// Check context before creating new index
 	select {
 	case <-ctx.Done():
@@ -594,9 +557,9 @@ func (si *SearchIndexer) RebuildIndex(ctx context.Context) error {
 
 	// Create new index
 	var err error
-	si.index, err = bleve.New(si.indexPath, si.createIndexMapping())
+	si.index, err = bleve.NewMemOnly(si.createIndexMapping())
 	if err != nil {
-		return fmt.Errorf("failed to create new index: %w", err)
+		return fmt.Errorf("failed to create new in-memory index: %w", err)
 	}
 
 	logger.Info("Search index rebuilt successfully")
