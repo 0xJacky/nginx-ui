@@ -34,16 +34,6 @@ If you find this project helpful, please consider sponsoring us to support ongoi
 [![GitHub Sponsors](https://img.shields.io/badge/GitHub-Sponsors-ea4aaa?style=for-the-badge&logo=github-sponsors&logoColor=white)](https://github.com/sponsors/nginxui)
 [![Afdian](https://img.shields.io/badge/爱发电-Support-946ce6?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMMTMuMDkgOC4yNkwyMCA5TDEzLjA5IDE1Ljc0TDEyIDIyTDEwLjkxIDE1Ljc0TDQgOUwxMC45MSA4LjI2TDEyIDJaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K)](https://afdian.com/a/nginxui)
 
-### AI Infrastructure Support
-
-<p align="center">
-  <a href="https://www.atlascloud.ai/?utm_source=github&utm_medium=link&utm_campaign=nginx-ui" target="_blank">
-    <img src="resources/atlas-cloud-logo.svg" alt="Atlas Cloud Logo" width="240">
-  </a>
-</p>
-
-[Atlas Cloud](https://www.atlascloud.ai/?utm_source=github&utm_medium=link&utm_campaign=nginx-ui) is a full-modal AI inference platform that gives developers a single AI API to access video generation, image generation, and LLM APIs.
-
 ### Official Community Group
 
 Join the official Nginx UI WeChat community group to discuss usage, deployment ideas, and troubleshooting with other community members.
