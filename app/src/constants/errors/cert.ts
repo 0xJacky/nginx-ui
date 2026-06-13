@@ -23,4 +23,9 @@ export default {
   50022: () => $gettext('Obtain cert error: {0}'),
   50023: () => $gettext('Revoke cert error: {0}'),
   50031: () => $gettext('No certificate available'),
+  50032: () => $gettext('Generate self-signed private key error: {0}'),
+  50033: () => $gettext('Create self-signed certificate error: {0}'),
+  50034: () => $gettext('At least one domain or IP address is required'),
+  50035: () => $gettext('Invalid IP address: {0}'),
+  50036: () => $gettext('Certificate is not a self-signed certificate'),
 }
