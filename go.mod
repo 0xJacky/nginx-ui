@@ -11,9 +11,11 @@ require (
 	github.com/alibabacloud-go/tea v1.4.0
 	github.com/alibabacloud-go/tea-utils/v2 v2.0.9
 	github.com/blevesearch/bleve/v2 v2.6.0
+	github.com/blevesearch/bleve_index_api v1.3.11
 	github.com/caarlos0/env/v11 v11.4.1
 	github.com/casdoor/casdoor-go-sdk v1.46.0
 	github.com/cloudflare/cloudflare-go/v6 v6.10.0
+	github.com/cloudflare/cloudflare-go/v7 v7.6.0
 	github.com/coreos/go-oidc/v3 v3.18.0
 	github.com/creack/pty v1.1.24
 	github.com/dgraph-io/ristretto/v2 v2.4.0
@@ -111,7 +113,6 @@ require (
 	github.com/baidubce/bce-sdk-go v0.9.266 // indirect
 	github.com/benbjohnson/clock v1.3.5 // indirect
 	github.com/bits-and-blooms/bitset v1.24.4 // indirect
-	github.com/blevesearch/bleve_index_api v1.3.11 // indirect
 	github.com/blevesearch/geo v0.2.5 // indirect
 	github.com/blevesearch/go-faiss v1.1.0 // indirect
 	github.com/blevesearch/go-porterstemmer v1.0.3 // indirect
