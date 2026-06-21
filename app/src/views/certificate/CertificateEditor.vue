@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import type { Cert, SelfSignedCertPayload } from '@/api/cert'
+import type { Cert, DiscoveredCertificatePair, SelfSignedCertPayload } from '@/api/cert'
 import cert, { toSelfSignedPayload } from '@/api/cert'
 import { AutoCertState, normalizePrivateKeyType } from '@/constants'
 
@@ -18,6 +18,10 @@ const route = useRoute()
 const certStore = useCertStore()
 const router = useRouter()
 const errors = ref({}) as Ref<Record<string, string>>
+const importMode = ref<'paths' | 'directory'>('paths')
+const importDir = ref('')
+const discoveredPair = ref<DiscoveredCertificatePair>()
+const discovering = ref(false)
 
 const id = computed(() => {
   return Number.parseInt(route.params.id as string)
@@ -31,6 +35,12 @@ const isManaged = computed(() => {
 
 const isSelfSigned = computed(() => {
   return data.value.auto_cert === AutoCertState.SelfSigned
+})
+
+const isNewCert = computed(() => !(id.value > 0))
+
+const isDirectoryImportMode = computed(() => {
+  return isNewCert.value && !isSelfSigned.value && importMode.value === 'directory'
 })
 
 const selfSignedPayload = ref<SelfSignedCertPayload>()
@@ -51,6 +61,9 @@ function init() {
   }
   else {
     data.value = {} as Cert
+    importMode.value = 'paths'
+    importDir.value = ''
+    discoveredPair.value = undefined
   }
 }
 
@@ -58,10 +71,64 @@ onMounted(() => {
   init()
 })
 
+async function discoverDirectoryImport() {
+  const dir = importDir.value.trim()
+  if (!dir) {
+    message.error($gettext('Please enter a certificate directory'))
+    return
+  }
+
+  discovering.value = true
+  try {
+    const result = await cert.discover_existing({
+      name: data.value.name,
+      dir,
+    })
+    discoveredPair.value = result
+    data.value = {
+      ...data.value,
+      name: data.value.name || result.name || '',
+      ssl_certificate_path: result.ssl_certificate_path,
+      ssl_certificate_key_path: result.ssl_certificate_key_path,
+      key_type: normalizePrivateKeyType(result.key_type),
+      certificate_info: result.certificate_info ?? data.value.certificate_info,
+    }
+    message.success($gettext('Certificate pair detected'))
+  }
+  // eslint-disable-next-line ts/no-explicit-any
+  catch (e: any) {
+    discoveredPair.value = undefined
+    message.error(e.message ?? $gettext('Failed to detect certificate files'))
+  }
+  finally {
+    discovering.value = false
+  }
+}
+
 async function save() {
   try {
     let savedId = data.value.id
-    if (isSelfSigned.value && selfSignedPayload.value && data.value.id) {
+    if (isDirectoryImportMode.value) {
+      const name = data.value.name?.trim()
+      const dir = importDir.value.trim()
+
+      if (!name) {
+        message.error($gettext('Please enter a name for the certificate'))
+        return
+      }
+      if (!dir) {
+        message.error($gettext('Please enter a certificate directory'))
+        return
+      }
+
+      const result = await cert.import_existing({
+        name,
+        dir,
+      })
+      savedId = result.id
+      data.value = { ...result, key_type: normalizePrivateKeyType(result.key_type) }
+    }
+    else if (isSelfSigned.value && selfSignedPayload.value && data.value.id) {
       const payload = selfSignedPayload.value
       const name = payload.name.trim()
       const domains = payload.domains.map(d => d.trim()).filter(Boolean)
@@ -100,7 +167,7 @@ async function save() {
   }
   // eslint-disable-next-line ts/no-explicit-any
   catch (e: any) {
-    errors.value = e.errors
+    errors.value = e.errors ?? {}
     message.error(e.message ?? $gettext('Server error'))
   }
 }
@@ -151,19 +218,85 @@ const log = computed(() => {
         />
 
         <AForm layout="vertical">
+          <AFormItem
+            v-if="isNewCert && !isSelfSigned"
+            :label="$gettext('Import Mode')"
+          >
+            <ARadioGroup
+              v-model:value="importMode"
+              option-type="button"
+              button-style="solid"
+            >
+              <ARadioButton value="paths">
+                {{ $gettext('Certificate files') }}
+              </ARadioButton>
+              <ARadioButton value="directory">
+                {{ $gettext('Import from directory') }}
+              </ARadioButton>
+            </ARadioGroup>
+          </AFormItem>
+
+          <template v-if="isDirectoryImportMode">
+            <AFormItem
+              :label="$gettext('Name')"
+              :validate-status="errors?.name ? 'error' : ''"
+              :help="errors?.name?.includes('required')
+                ? $gettext('This field is required')
+                : ''"
+            >
+              <AInput v-model:value="data.name" />
+            </AFormItem>
+
+            <AFormItem :label="$gettext('Certificate Directory')">
+              <AInputSearch
+                v-model:value="importDir"
+                :enter-button="$gettext('Detect')"
+                :loading="discovering"
+                @search="discoverDirectoryImport"
+              />
+            </AFormItem>
+
+            <AAlert
+              v-if="discoveredPair"
+              type="success"
+              show-icon
+              class="detected-cert"
+            >
+              <template #message>
+                {{ $gettext('Certificate pair detected') }}
+              </template>
+              <template #description>
+                <div class="detected-paths">
+                  <div>
+                    <strong>{{ $gettext('SSL Certificate Path') }}</strong>
+                    <span>{{ discoveredPair.ssl_certificate_path }}</span>
+                  </div>
+                  <div>
+                    <strong>{{ $gettext('SSL Certificate Key Path') }}</strong>
+                    <span>{{ discoveredPair.ssl_certificate_key_path }}</span>
+                  </div>
+                </div>
+              </template>
+            </AAlert>
+          </template>
+
           <!-- Certificate Basic Information -->
           <CertificateBasicInfo
-            v-if="!isSelfSigned"
+            v-if="!isSelfSigned && !isDirectoryImportMode"
             v-model:data="data"
             :errors="errors"
             :is-managed="isManaged"
           />
 
           <!-- Download Certificate Files -->
-          <CertificateDownload :data="data" />
+          <CertificateDownload
+            v-if="!isDirectoryImportMode"
+            :data="data"
+          />
 
           <!-- Certificate Content Editor -->
           <CertificateContentEditor
+            v-if="!isDirectoryImportMode"
             v-model:data="data"
             :errors="errors"
             :readonly="isManaged || isSelfSigned"
@@ -238,6 +371,25 @@ const log = computed(() => {
         font-weight: 500;
       }
     }
+  }
+}
+
+.detected-cert {
+  max-width: 600px;
+  margin-bottom: 16px;
+}
+
+.detected-paths {
+  display: grid;
+  gap: 8px;
+
+  div {
+    display: grid;
+    gap: 2px;
+  }
+
+  span {
+    word-break: break-all;
   }
 }
 </style>

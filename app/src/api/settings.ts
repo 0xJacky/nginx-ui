@@ -1,3 +1,4 @@
+import type { AxiosRequestConfig } from 'axios'
 import { http } from '@uozi-admin/request'
 
 export const PROTECTED_VALUE_PLACEHOLDER = '__NGINX_UI_REDACTED__'
@@ -8,6 +9,7 @@ export interface AppSettings {
 }
 
 export interface ServerSettings {
+  name?: string
   host: string
   port: number
   run_mode: 'debug' | 'release'
@@ -45,6 +47,7 @@ export interface CertSettings {
   renewal_interval: number
   recursive_nameservers: string[]
   http_challenge_port: string
+  discovery_patterns: string[]
 }
 
 export interface HTTPSettings {
@@ -150,8 +153,8 @@ const settings = {
       params: { path },
     })
   },
-  save(data: Settings) {
-    return http.post('/settings', data)
+  save(data: Settings, config?: AxiosRequestConfig): Promise<Settings> {
+    return http.post('/settings', data, config)
   },
   get_server_name(): Promise<{ name: string }> {
     return http.get('/settings/server/name')

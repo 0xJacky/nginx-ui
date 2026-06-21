@@ -127,6 +127,9 @@ func saveLocked() (err error) {
 	if len(CertSettings.RecursiveNameservers) == 0 {
 		settings.Conf.Section("cert").Key("RecursiveNameservers").SetValue("")
 	}
+	if len(CertSettings.DiscoveryPatterns) == 0 {
+		settings.Conf.Section("cert").Key("DiscoveryPatterns").SetValue("")
+	}
 
 	settings.ReflectFrom("app", settings.AppSettings)
 	settings.ReflectFrom("server", settings.ServerSettings)

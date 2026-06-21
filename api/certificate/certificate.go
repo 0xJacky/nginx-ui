@@ -11,6 +11,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
+	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/go-acme/lego/v5/certcrypto"
 	"github.com/spf13/cast"
@@ -142,6 +143,7 @@ func AddCert(c *gin.Context) {
 					return
 				}
 			}
+			persistCertificateFingerprint(&ctx.Model)
 			err := cert.SyncToRemoteServer(&ctx.Model)
 			if err != nil {
 				notification.Error("Sync Certificate Error", err.Error(), nil)
@@ -188,6 +190,7 @@ func ModifyCert(c *gin.Context) {
 				ctx.AbortWithError(err)
 				return
 			}
+			persistCertificateFingerprint(&ctx.Model)
 			err = cert.SyncToRemoteServer(&ctx.Model)
 			if err != nil {
 				notification.Error("Sync Certificate Error", err.Error(), nil)
@@ -212,6 +215,102 @@ func RemoveCert(c *gin.Context) {
 	}
 
 	cleanupSelfSignedCertFiles(certModel)
+}
+
+func ImportExistingCert(c *gin.Context) {
+	var json cert.ImportCertificateOptions
+
+	if !cosy.BindAndValid(c, &json) {
+		return
+	}
+
+	certModel, err := cert.ImportExistingCertificate(json)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	response := Transformer(certModel)
+	if info, err := cert.ValidateCertificateAndKey(certModel.SSLCertificatePath, certModel.SSLCertificateKeyPath); err == nil {
+		response.CertificateInfo = info
+	}
+
+	c.JSON(http.StatusOK, response)
+}
+
+func DiscoverExistingCert(c *gin.Context) {
+	var json struct {
+		Name string `json:"name"`
+		Dir  string `json:"dir"`
+	}
+
+	if !cosy.BindAndValid(c, &json) {
+		return
+	}
+
+	pair, err := cert.DiscoverCertificatePair(json.Dir)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+	if json.Name != "" {
+		pair.Name = json.Name
+	}
+
+	c.JSON(http.StatusOK, pair)
+}
+
+func DiscoverNewCerts(c *gin.Context) {
+	var json struct {
+		Patterns   []string `json:"patterns"`
+		Configured bool     `json:"configured"`
+		NewOnly    *bool    `json:"new_only"`
+	}
+
+	if !cosy.BindAndValid(c, &json) {
+		return
+	}
+
+	patterns := json.Patterns
+	if json.Configured || len(patterns) == 0 {
+		patterns = settings.CertSettings.DiscoveryPatterns
+	}
+
+	newOnly := true
+	if json.NewOnly != nil {
+		newOnly = *json.NewOnly
+	}
+
+	pairs, err := cert.ScanCertificateDiscoveryPatterns(patterns, newOnly)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"candidates": pairs,
+	})
+}
+
+func persistCertificateFingerprint(certModel *model.Cert) {
+	if certModel == nil || certModel.SSLCertificatePath == "" {
+		return
+	}
+
+	fingerprint, err := cert.CertificateFingerprintFromPath(certModel.SSLCertificatePath)
+	if err != nil {
+		logger.Debug("certificate fingerprint unavailable", "path", certModel.SSLCertificatePath, "error", err)
+		return
+	}
+
+	certModel.Fingerprint = fingerprint
+	if certModel.ID == 0 {
+		return
+	}
+
+	if err = model.UseDB().Model(certModel).Update("fingerprint", fingerprint).Error; err != nil {
+		logger.Debug("persist certificate fingerprint failed", "id", certModel.ID, "error", err)
+	}
 }
 
 func cleanupSelfSignedCertFiles(certModel *model.Cert) {
@@ -275,6 +374,7 @@ func SyncCertificate(c *gin.Context) {
 		cosy.ErrHandler(c, err)
 		return
 	}
+	persistCertificateFingerprint(certModel)
 
 	nginx.Reload()
 

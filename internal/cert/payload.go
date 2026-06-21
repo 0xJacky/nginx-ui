@@ -105,10 +105,12 @@ func (c *ConfigPayload) WriteFile(l *Logger) error {
 		return nil
 	}
 
+	fingerprint, _ := CertificateFingerprintFromPath(c.GetCertificatePath())
 	db := model.UseDB()
 	db.Where("id = ?", c.CertID).Updates(&model.Cert{
 		SSLCertificatePath:    c.GetCertificatePath(),
 		SSLCertificateKeyPath: c.GetCertificateKeyPath(),
+		Fingerprint:           fingerprint,
 		Resource:              c.Resource,
 	})
 

@@ -89,9 +89,13 @@ func GenerateSelfSignedCert(c *gin.Context) {
 
 	certModel.SSLCertificatePath = certPath
 	certModel.SSLCertificateKeyPath = keyPath
+	if fingerprint, fpErr := cert.CertificateFingerprintFromPath(certPath); fpErr == nil {
+		certModel.Fingerprint = fingerprint
+	}
 	if err = db.Model(certModel).Updates(map[string]any{
 		"ssl_certificate_path":     certPath,
 		"ssl_certificate_key_path": keyPath,
+		"fingerprint":              certModel.Fingerprint,
 	}).Error; err != nil {
 		logger.Errorf("self-signed cert id %d generated at %s but persisting paths failed: %v",
 			certModel.ID, dir, err)
@@ -154,6 +158,9 @@ func ModifySelfSignedCert(c *gin.Context) {
 	certModel.Name = req.Name
 	certModel.Domains = opts.DNSNames
 	certModel.KeyType = opts.KeyType
+	if fingerprint, fpErr := cert.CertificateFingerprintFromPath(certModel.SSLCertificatePath); fpErr == nil {
+		certModel.Fingerprint = fingerprint
+	}
 	certModel.SelfSignedConfig = &model.SelfSignedCertConfig{
 		IPAddresses:  opts.IPAddresses,
 		ValidityDays: opts.ValidityDays,
