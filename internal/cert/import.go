@@ -1,6 +1,8 @@
 package cert
 
 import (
+	"crypto/ecdsa"
+	"crypto/rsa"
 	"crypto/sha256"
 	"crypto/tls"
 	"crypto/x509"
@@ -14,6 +16,7 @@ import (
 	"strings"
 
 	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/go-acme/lego/v5/certcrypto"
 )
@@ -113,15 +116,12 @@ func ResolveExistingCertificate(opts ImportCertificateOptions) (*DiscoveredCerti
 		return nil, err
 	}
 
-	info, err := ValidateCertificateAndKey(pair.SSLCertificatePath, pair.SSLCertificateKeyPath)
+	parsedCert, err := validateCertificateAndKey(pair.SSLCertificatePath, pair.SSLCertificateKeyPath)
 	if err != nil {
 		return nil, err
 	}
-	pair.CertificateInfo = info
-	pair.Fingerprint, err = CertificateFingerprintFromPath(pair.SSLCertificatePath)
-	if err != nil {
-		return nil, err
-	}
+	pair.CertificateInfo = infoFromCertificate(parsedCert)
+	pair.Fingerprint = certificateFingerprint(parsedCert)
 
 	if opts.KeyType != "" {
 		if !helper.IsValidKeyType(opts.KeyType) {
@@ -131,12 +131,9 @@ func ResolveExistingCertificate(opts ImportCertificateOptions) (*DiscoveredCerti
 		return pair, nil
 	}
 
-	keyType, err := GetKeyTypeFromPath(pair.SSLCertificatePath)
-	if err != nil {
-		return nil, err
-	}
+	keyType := keyTypeFromCertificate(parsedCert)
 	if keyType != "" {
-		pair.KeyType = helper.GetKeyType(certcrypto.KeyType(keyType))
+		pair.KeyType = helper.GetKeyType(keyType)
 	}
 	if pair.KeyType == "" {
 		pair.KeyType = certcrypto.RSA2048
@@ -355,6 +352,11 @@ func FilterNewCertificatePairs(pairs []DiscoveredCertificatePair) ([]DiscoveredC
 }
 
 func CertificateFingerprintFromPath(certPath string) (string, error) {
+	certPath, err := validatedCertificateFilePath(certPath, "certificate path")
+	if err != nil {
+		return "", err
+	}
+
 	certPEM, err := os.ReadFile(certPath)
 	if err != nil {
 		return "", fmt.Errorf("read certificate %s: %w", certPath, err)
@@ -365,16 +367,25 @@ func CertificateFingerprintFromPath(certPath string) (string, error) {
 		return "", fmt.Errorf("invalid certificate %s: %w", certPath, err)
 	}
 
-	sum := sha256.Sum256(parsedCert.Raw)
-	return hex.EncodeToString(sum[:]), nil
+	return certificateFingerprint(parsedCert), nil
 }
 
 func ValidateCertificateAndKey(certPath, keyPath string) (*Info, error) {
-	if strings.TrimSpace(certPath) == "" {
-		return nil, fmt.Errorf("certificate path is required")
+	parsedCert, err := validateCertificateAndKey(certPath, keyPath)
+	if err != nil {
+		return nil, err
 	}
-	if strings.TrimSpace(keyPath) == "" {
-		return nil, fmt.Errorf("private key path is required")
+	return infoFromCertificate(parsedCert), nil
+}
+
+func validateCertificateAndKey(certPath, keyPath string) (*x509.Certificate, error) {
+	certPath, err := validatedCertificateFilePath(certPath, "certificate path")
+	if err != nil {
+		return nil, err
+	}
+	keyPath, err = validatedCertificateFilePath(keyPath, "private key path")
+	if err != nil {
+		return nil, err
 	}
 
 	certPEM, err := os.ReadFile(certPath)
@@ -397,7 +408,21 @@ func ValidateCertificateAndKey(certPath, keyPath string) (*Info, error) {
 		return nil, fmt.Errorf("certificate and private key do not match: %w", err)
 	}
 
-	return infoFromCertificate(parsedCert), nil
+	return parsedCert, nil
+}
+
+func validatedCertificateFilePath(path, label string) (string, error) {
+	path, err := absPath(path)
+	if err != nil {
+		return "", err
+	}
+	if path == "" {
+		return "", fmt.Errorf("%s is required", label)
+	}
+	if !helper.IsUnderDirectory(path, nginx.GetConfPath()) {
+		return "", ErrCertPathIsNotUnderTheNginxConfDir
+	}
+	return path, nil
 }
 
 func certificatePairIsImported(pair DiscoveredCertificatePair, existing []model.Cert) bool {
@@ -551,6 +576,43 @@ func infoFromCertificate(c *x509.Certificate) *Info {
 		NotAfter:    c.NotAfter,
 		NotBefore:   c.NotBefore,
 	}
+}
+
+func certificateFingerprint(c *x509.Certificate) string {
+	sum := sha256.Sum256(c.Raw)
+	return hex.EncodeToString(sum[:])
+}
+
+func keyTypeFromCertificate(c *x509.Certificate) certcrypto.KeyType {
+	switch c.PublicKeyAlgorithm {
+	case x509.RSA:
+		rsaKey, ok := c.PublicKey.(*rsa.PublicKey)
+		if !ok {
+			return ""
+		}
+		switch rsaKey.Size() * 8 {
+		case 2048:
+			return certcrypto.RSA2048
+		case 3072:
+			return certcrypto.RSA3072
+		case 4096:
+			return certcrypto.RSA4096
+		case 8192:
+			return certcrypto.RSA8192
+		}
+	case x509.ECDSA:
+		ecKey, ok := c.PublicKey.(*ecdsa.PublicKey)
+		if !ok {
+			return ""
+		}
+		switch ecKey.Curve.Params().Name {
+		case "P-256":
+			return certcrypto.EC256
+		case "P-384":
+			return certcrypto.EC384
+		}
+	}
+	return ""
 }
 
 func domainsFromInfo(info *Info) []string {
