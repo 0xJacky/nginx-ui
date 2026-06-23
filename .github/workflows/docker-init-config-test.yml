@@ -30,7 +30,7 @@ jobs:
   hash-consistency:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Verify last known-hash equals current template
         run: |
           expected=$(sha256sum resources/docker/nginx-ui.conf | awk '{print $1}')
@@ -45,7 +45,7 @@ jobs:
   bats:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Install bats
         run: sudo apt-get update && sudo apt-get install -y bats
       - name: Run bats tests
@@ -54,7 +54,7 @@ jobs:
   go-self-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: actions/setup-go@v6
         with:
           go-version-file: go.mod
