@@ -110,6 +110,7 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
 
   function getSettings() {
     settings.get().then(r => {
+      r.cert.recursive_nameservers ||= []
       data.value = r
     })
   }
@@ -120,6 +121,9 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
 
     // fix type
     data.value.cert.http_challenge_port = data.value.cert.http_challenge_port.toString()
+    data.value.cert.recursive_nameservers = (data.value.cert.recursive_nameservers ?? [])
+      .map(nameserver => nameserver.trim())
+      .filter(Boolean)
 
     const otpModal = use2FAModal()
 
@@ -129,6 +133,7 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
         const { server_name } = storeToRefs(settingsStore)
         if (!settingsStore.is_remote)
           server_name.value = r?.server?.name ?? ''
+        r.cert.recursive_nameservers ||= []
         data.value = r
         message.success($gettext('Save successfully'))
         errors.value = {}

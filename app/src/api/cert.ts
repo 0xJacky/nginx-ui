@@ -44,6 +44,31 @@ export interface Cert extends ModelBase {
   self_signed_config?: SelfSignedCertConfig
 }
 
+export interface ImportExistingCertPayload {
+  name?: string
+  ssl_certificate_path?: string
+  ssl_certificate_key_path?: string
+  key_type?: string
+}
+
+export interface DiscoveredCertificatePair {
+  name?: string
+  dir?: string
+  ssl_certificate_path: string
+  ssl_certificate_key_path: string
+  fingerprint: string
+  key_type: string
+  certificate_info?: CertificateInfo
+}
+
+export interface DiscoverNewCertsPayload {
+  new_only?: boolean
+}
+
+export interface DiscoverNewCertsResponse {
+  candidates: DiscoveredCertificatePair[]
+}
+
 export interface CertificateInfo {
   subject_name: string
   issuer_name: string
@@ -87,6 +112,12 @@ export function toSelfSignedPayload(c: Cert): SelfSignedCertPayload {
 }
 
 const cert = extendCurdApi(useCurdApi<Cert>('/certs'), {
+  import_existing(payload: ImportExistingCertPayload): Promise<Cert> {
+    return http.post('/cert_import', payload)
+  },
+  discover_new(payload: DiscoverNewCertsPayload): Promise<DiscoverNewCertsResponse> {
+    return http.post('/cert_discover_new', payload)
+  },
   generate_self_signed(payload: SelfSignedCertPayload): Promise<Cert> {
     return http.post('/self_signed_cert', payload)
   },

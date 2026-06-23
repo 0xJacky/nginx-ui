@@ -51,6 +51,7 @@ type Cert struct {
 	Filename                string                `json:"filename"`
 	SSLCertificatePath      string                `json:"ssl_certificate_path"`
 	SSLCertificateKeyPath   string                `json:"ssl_certificate_key_path"`
+	Fingerprint             string                `json:"fingerprint" gorm:"index"`
 	AutoCert                int                   `json:"auto_cert"`
 	ChallengeMethod         string                `json:"challenge_method"`
 	DnsCredentialID         uint64                `json:"dns_credential_id"`
