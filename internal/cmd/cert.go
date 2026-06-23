@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"path/filepath"
-	"strings"
 
 	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
@@ -27,24 +26,20 @@ var CertCommand = &cli.Command{
 	Commands: []*cli.Command{
 		{
 			Name:   "import",
-			Usage:  "Import an existing certificate from explicit paths or a directory",
+			Usage:  "Import an existing certificate from explicit paths",
 			Action: ImportCertificate,
 			Flags: []cli.Flag{
 				&cli.StringFlag{Name: "name", Usage: "certificate name"},
 				&cli.StringFlag{Name: "cert", Usage: "path to the certificate file"},
 				&cli.StringFlag{Name: "key", Usage: "path to the private key file"},
-				&cli.StringFlag{Name: "dir", Usage: "directory containing certificate and private key files"},
 				&cli.StringFlag{Name: "key-type", Usage: "optional private key type override"},
 			},
 		},
 		{
 			Name:   "scan",
-			Usage:  "Recursively scan a directory and import certificate/key pairs",
+			Usage:  "Recursively scan the Nginx SSL directory and import certificate/key pairs",
 			Action: ScanCertificates,
 			Flags: []cli.Flag{
-				&cli.StringFlag{Name: "dir", Usage: "root directory to scan"},
-				&cli.StringFlag{Name: "pattern", Usage: "glob pattern to scan, for example /etc/nginx/ssl/*"},
-				&cli.BoolFlag{Name: "configured", Usage: "scan configured certificate discovery patterns"},
 				&cli.BoolFlag{Name: "new-only", Usage: "only import certificates whose path, name and fingerprint are not already in the database"},
 				&cli.StringFlag{Name: "name-prefix", Usage: "optional prefix for imported certificate names"},
 				&cli.StringFlag{Name: "key-type", Usage: "optional private key type override"},
@@ -90,39 +85,19 @@ func ScanCertificates(_ context.Context, command *cli.Command) error {
 	pairs := make([]cert.DiscoveredCertificatePair, 0)
 	skipped, failed := 0, 0
 
-	if command.Bool("configured") || command.String("pattern") != "" {
-		patterns := configuredScanPatterns(command.String("pattern"))
-		if command.Bool("configured") {
-			patterns = append(patterns, settings.CertSettings.DiscoveryPatterns...)
-		}
-		if len(patterns) == 0 {
-			return fmt.Errorf("no configured certificate discovery patterns")
-		}
-		var err error
-		pairs, err = cert.ScanCertificateDiscoveryPatterns(patterns, false)
-		if err != nil {
-			return err
-		}
-	} else {
-		root := command.String("dir")
-		if root == "" {
-			return fmt.Errorf("--dir, --pattern or --configured is required")
-		}
+	results, err := cert.ScanCertificateSSLDirectoryResults()
+	if err != nil {
+		return err
+	}
 
-		results, err := cert.ScanCertificateDirectoryResults(root)
-		if err != nil {
-			return err
+	for _, result := range results {
+		if result.Error != nil {
+			skipped++
+			fmt.Printf("skipped %s: %s\n", result.Dir, result.Reason)
+			continue
 		}
-
-		for _, result := range results {
-			if result.Error != nil {
-				skipped++
-				fmt.Printf("skipped %s: %s\n", result.Dir, result.Reason)
-				continue
-			}
-			if result.Pair != nil {
-				pairs = append(pairs, *result.Pair)
-			}
+		if result.Pair != nil {
+			pairs = append(pairs, *result.Pair)
 		}
 	}
 
@@ -160,39 +135,22 @@ func ScanCertificates(_ context.Context, command *cli.Command) error {
 	return nil
 }
 
-func configuredScanPatterns(pattern string) []string {
-	parts := strings.Split(pattern, ",")
-	patterns := make([]string, 0, len(parts))
-	for _, part := range parts {
-		part = strings.TrimSpace(part)
-		if part != "" {
-			patterns = append(patterns, part)
-		}
-	}
-	return patterns
-}
-
 func importOptionsFromCommand(command *cli.Command) (cert.ImportCertificateOptions, error) {
 	certPath := command.String("cert")
 	keyPath := command.String("key")
-	dir := command.String("dir")
 	keyType := certcrypto.KeyType(command.String("key-type"))
 
 	if keyType != "" && !helper.IsValidKeyType(keyType) {
 		return cert.ImportCertificateOptions{}, fmt.Errorf("invalid key type: %s", keyType)
 	}
-	if dir != "" && (certPath != "" || keyPath != "") {
-		return cert.ImportCertificateOptions{}, fmt.Errorf("--dir cannot be combined with --cert or --key")
-	}
-	if dir == "" && (certPath == "" || keyPath == "") {
-		return cert.ImportCertificateOptions{}, fmt.Errorf("provide either --dir or both --cert and --key")
+	if certPath == "" || keyPath == "" {
+		return cert.ImportCertificateOptions{}, fmt.Errorf("provide both --cert and --key")
 	}
 
 	return cert.ImportCertificateOptions{
 		Name:     command.String("name"),
 		CertPath: certPath,
 		KeyPath:  keyPath,
-		Dir:      dir,
 		KeyType:  keyType,
 	}, nil
 }

@@ -23,7 +23,6 @@ systemSettingsStore.getSettings()
 const router = useRouter()
 const route = useRoute()
 const activeKey = ref('server')
-const { saving } = storeToRefs(systemSettingsStore)
 
 watch(activeKey, () => {
   router.push({
@@ -120,7 +119,6 @@ onMounted(() => {
     <FooterToolBar v-if="activeKey !== 'external_notify' && activeKey !== 'geolite'">
       <AButton
         type="primary"
-        :loading="saving"
         @click="systemSettingsStore.save"
       >
         {{ $gettext('Save') }}

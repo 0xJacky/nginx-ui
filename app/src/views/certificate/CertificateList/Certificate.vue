@@ -4,7 +4,6 @@ import { CloudUploadOutlined, SafetyCertificateOutlined } from '@ant-design/icon
 import { StdTable } from '@uozi-admin/curd'
 import { Tag } from 'ant-design-vue'
 import cert from '@/api/cert'
-import settings from '@/api/settings'
 import { useGlobalStore } from '@/pinia'
 import WildcardCertificate from '../components/DNSIssueCertificate.vue'
 import RemoveCert from '../components/RemoveCert.vue'
@@ -23,7 +22,6 @@ const discoveryLoading = ref(false)
 const discoveryImporting = ref(false)
 const discoveryCandidates = ref<DiscoveredCertificatePair[]>([])
 const selectedDiscoveryKeys = ref<string[]>([])
-const discoveryPatternsConfigured = ref(true)
 const { message } = App.useApp()
 
 function discoveryRowKey(record: DiscoveredCertificatePair) {
@@ -68,19 +66,10 @@ const discoveryColumns = computed(() => [
   },
 ])
 
-async function scanConfiguredDiscovery() {
+async function scanDiscoveredCertificates() {
   discoveryLoading.value = true
   try {
-    const currentSettings = await settings.get()
-    discoveryPatternsConfigured.value = currentSettings.cert.discovery_patterns?.some(pattern => pattern.trim()) ?? false
-    if (!discoveryPatternsConfigured.value) {
-      discoveryCandidates.value = []
-      selectedDiscoveryKeys.value = []
-      return
-    }
-
     const result = await cert.discover_new({
-      configured: true,
       new_only: true,
     })
     discoveryCandidates.value = result.candidates ?? []
@@ -97,7 +86,7 @@ async function scanConfiguredDiscovery() {
 
 async function openDiscovery() {
   discoveryVisible.value = true
-  await scanConfiguredDiscovery()
+  await scanDiscoveredCertificates()
 }
 
 async function importSelectedDiscoveredCerts() {
@@ -203,30 +192,12 @@ async function importSelectedDiscoveredCerts() {
       <div class="mb-4 flex justify-end">
         <AButton
           :loading="discoveryLoading"
-          @click="scanConfiguredDiscovery"
+          @click="scanDiscoveredCertificates"
         >
           {{ $gettext('Scan') }}
         </AButton>
       </div>
-      <AAlert
-        v-if="!discoveryPatternsConfigured"
-        type="info"
-        show-icon
-      >
-        <template #message>
-          {{ $gettext('No certificate discovery patterns configured') }}
-        </template>
-        <template #description>
-          <span>
-            {{ $gettext('Configure discovery patterns in certificate settings before scanning for new certificates.') }}
-            <RouterLink :to="{ path: '/preference', query: { tab: 'cert' } }">
-              {{ $gettext('Open certificate settings') }}
-            </RouterLink>
-          </span>
-        </template>
-      </AAlert>
       <ATable
-        v-else
         :columns="discoveryColumns"
         :data-source="discoveryCandidates"
         :loading="discoveryLoading"

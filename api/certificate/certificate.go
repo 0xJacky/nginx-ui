@@ -11,7 +11,6 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
-	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/go-acme/lego/v5/certcrypto"
 	"github.com/spf13/cast"
@@ -238,42 +237,13 @@ func ImportExistingCert(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
-func DiscoverExistingCert(c *gin.Context) {
-	var json struct {
-		Name string `json:"name"`
-		Dir  string `json:"dir"`
-	}
-
-	if !cosy.BindAndValid(c, &json) {
-		return
-	}
-
-	pair, err := cert.DiscoverCertificatePair(json.Dir)
-	if err != nil {
-		cosy.ErrHandler(c, err)
-		return
-	}
-	if json.Name != "" {
-		pair.Name = json.Name
-	}
-
-	c.JSON(http.StatusOK, pair)
-}
-
 func DiscoverNewCerts(c *gin.Context) {
 	var json struct {
-		Patterns   []string `json:"patterns"`
-		Configured bool     `json:"configured"`
-		NewOnly    *bool    `json:"new_only"`
+		NewOnly *bool `json:"new_only"`
 	}
 
 	if !cosy.BindAndValid(c, &json) {
 		return
-	}
-
-	patterns := json.Patterns
-	if json.Configured || len(patterns) == 0 {
-		patterns = settings.CertSettings.DiscoveryPatterns
 	}
 
 	newOnly := true
@@ -281,7 +251,7 @@ func DiscoverNewCerts(c *gin.Context) {
 		newOnly = *json.NewOnly
 	}
 
-	pairs, err := cert.ScanCertificateDiscoveryPatterns(patterns, newOnly)
+	pairs, err := cert.ScanCertificateSSLDirectory(newOnly)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

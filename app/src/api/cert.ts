@@ -48,7 +48,6 @@ export interface ImportExistingCertPayload {
   name?: string
   ssl_certificate_path?: string
   ssl_certificate_key_path?: string
-  dir?: string
   key_type?: string
 }
 
@@ -63,8 +62,6 @@ export interface DiscoveredCertificatePair {
 }
 
 export interface DiscoverNewCertsPayload {
-  patterns?: string[]
-  configured?: boolean
   new_only?: boolean
 }
 
@@ -117,9 +114,6 @@ export function toSelfSignedPayload(c: Cert): SelfSignedCertPayload {
 const cert = extendCurdApi(useCurdApi<Cert>('/certs'), {
   import_existing(payload: ImportExistingCertPayload): Promise<Cert> {
     return http.post('/cert_import', payload)
-  },
-  discover_existing(payload: Pick<ImportExistingCertPayload, 'name' | 'dir'>): Promise<DiscoveredCertificatePair> {
-    return http.post('/cert_discover', payload)
   },
   discover_new(payload: DiscoverNewCertsPayload): Promise<DiscoverNewCertsResponse> {
     return http.post('/cert_discover_new', payload)

@@ -47,7 +47,6 @@ export interface CertSettings {
   renewal_interval: number
   recursive_nameservers: string[]
   http_challenge_port: string
-  discovery_patterns: string[]
 }
 
 export interface HTTPSettings {

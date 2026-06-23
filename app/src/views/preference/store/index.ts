@@ -1,13 +1,10 @@
 import type { Settings } from '@/api/settings'
-import { toRaw } from 'vue'
 import settings from '@/api/settings'
-import { TwoFACancelledError, use2FAModal } from '@/components/TwoFA'
+import { use2FAModal } from '@/components/TwoFA'
 import { useSettingsStore } from '@/pinia'
 
-const saveTimeoutMs = 12000
-
 const useSystemSettingsStore = defineStore('systemSettings', () => {
-  const { message } = useGlobalApp()
+  const { message } = App.useApp()
 
   const data = ref<Settings>({
     app: {
@@ -55,7 +52,6 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
       renewal_interval: 7,
       recursive_nameservers: [],
       http_challenge_port: '9180',
-      discovery_patterns: [],
     },
     http: {
       github_proxy: '',
@@ -111,34 +107,10 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
     },
   })
   const errors = ref<Record<string, Record<string, string>>>({})
-  const saving = ref(false)
-  let saveRequestTimer: ReturnType<typeof setTimeout> | undefined
-  let saveController: AbortController | undefined
-  let saveAttempt = 0
-
-  function clearSaveRequestState() {
-    if (saveRequestTimer)
-      clearTimeout(saveRequestTimer)
-    saveRequestTimer = undefined
-    saveController = undefined
-  }
-
-  function buildSavePayload() {
-    const payload = JSON.parse(JSON.stringify(toRaw(data.value))) as Settings
-    payload.cert.http_challenge_port = payload.cert.http_challenge_port.toString()
-    payload.cert.recursive_nameservers = (payload.cert.recursive_nameservers ?? [])
-      .map(nameserver => nameserver.trim())
-      .filter(Boolean)
-    payload.cert.discovery_patterns = (payload.cert.discovery_patterns ?? [])
-      .map(pattern => pattern.trim())
-      .filter(Boolean)
-    return payload
-  }
 
   function getSettings() {
     settings.get().then(r => {
       r.cert.recursive_nameservers ||= []
-      r.cert.discovery_patterns ||= []
       data.value = r
     })
   }
@@ -147,94 +119,29 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
     if (!data.value)
       return
 
-    if (saveController)
-      saveController.abort()
-    clearSaveRequestState()
-
-    const currentAttempt = ++saveAttempt
-
-    let payload: Settings
-    try {
-      payload = buildSavePayload()
-    }
-    catch (error) {
-      console.error(error)
-      saving.value = false
-      const errorMessage = $gettext('Failed to save configuration')
-      message.error(errorMessage)
-      return
-    }
+    // fix type
+    data.value.cert.http_challenge_port = data.value.cert.http_challenge_port.toString()
+    data.value.cert.recursive_nameservers = (data.value.cert.recursive_nameservers ?? [])
+      .map(nameserver => nameserver.trim())
+      .filter(Boolean)
 
     const otpModal = use2FAModal()
-    try {
-      await otpModal.open()
-    }
-    catch (error) {
-      if (currentAttempt !== saveAttempt)
-        return
 
-      if (error instanceof TwoFACancelledError)
-        return
-
-      console.error(error)
-      const errorMessage = $gettext('Failed to save configuration')
-      message.error(errorMessage)
-      return
-    }
-
-    if (currentAttempt !== saveAttempt)
-      return
-
-    saving.value = true
-    const controller = new AbortController()
-    saveController = controller
-
-    saveRequestTimer = setTimeout(() => {
-      if (currentAttempt !== saveAttempt || !saving.value)
-        return
-
-      controller.abort()
-      saving.value = false
-      const errorMessage = $gettext('Failed to save configuration')
-      message.error(errorMessage)
-      clearSaveRequestState()
-    }, saveTimeoutMs)
-
-    setTimeout(() => {
-      settings.save(payload, { signal: controller.signal }).then(r => {
-        if (currentAttempt !== saveAttempt)
-          return
-
-        clearSaveRequestState()
+    otpModal.open().then(() => {
+      settings.save(data.value!).then(r => {
         const settingsStore = useSettingsStore()
         const { server_name } = storeToRefs(settingsStore)
         if (!settingsStore.is_remote)
           server_name.value = r?.server?.name ?? ''
         r.cert.recursive_nameservers ||= []
-        r.cert.discovery_patterns ||= []
         data.value = r
-        saving.value = false
         message.success($gettext('Save successfully'))
         errors.value = {}
-      }).catch(error => {
-        if (currentAttempt !== saveAttempt || controller.signal.aborted)
-          return
-
-        clearSaveRequestState()
-        console.error(error)
-        saving.value = false
-        const errorMessage = $gettext('Failed to save configuration')
-        message.error(errorMessage)
-      }).finally(() => {
-        if (currentAttempt !== saveAttempt)
-          return
-
-        clearSaveRequestState()
       })
-    }, 0)
+    })
   }
 
-  return { data, errors, saving, getSettings, save }
+  return { data, errors, getSettings, save }
 })
 
 export default useSystemSettingsStore

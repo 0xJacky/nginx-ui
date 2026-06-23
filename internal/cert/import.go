@@ -25,7 +25,6 @@ type ImportCertificateOptions struct {
 	Name     string             `json:"name"`
 	CertPath string             `json:"ssl_certificate_path"`
 	KeyPath  string             `json:"ssl_certificate_key_path"`
-	Dir      string             `json:"dir"`
 	KeyType  certcrypto.KeyType `json:"key_type"`
 }
 
@@ -70,20 +69,38 @@ func ImportExistingCertificate(opts ImportCertificateOptions) (*model.Cert, erro
 		return nil, fmt.Errorf("database is not initialized")
 	}
 
-	certModel := &model.Cert{Name: name}
-	updates := &model.Cert{
-		Name:                  name,
-		Domains:               domainsFromInfo(pair.CertificateInfo),
-		SSLCertificatePath:    pair.SSLCertificatePath,
-		SSLCertificateKeyPath: pair.SSLCertificateKeyPath,
-		Fingerprint:           pair.Fingerprint,
-		KeyType:               pair.KeyType,
-		AutoCert:              model.AutoCertDisabled,
+	certModel, err := findImportedCertificate(name, pair)
+	if err != nil {
+		return nil, err
+	}
+	if certModel == nil {
+		certModel = &model.Cert{Name: name}
 	}
 
-	if err := db.Where("name = ?", name).
-		Assign(updates).
-		FirstOrCreate(certModel).Error; err != nil {
+	updates := map[string]interface{}{
+		"name":                     name,
+		"domains":                  domainsFromInfo(pair.CertificateInfo),
+		"ssl_certificate_path":     pair.SSLCertificatePath,
+		"ssl_certificate_key_path": pair.SSLCertificateKeyPath,
+		"fingerprint":              pair.Fingerprint,
+		"key_type":                 pair.KeyType,
+		"auto_cert":                model.AutoCertDisabled,
+	}
+
+	if certModel.ID > 0 {
+		if err := db.Model(certModel).Updates(updates).Error; err != nil {
+			return nil, err
+		}
+		if err := db.First(certModel, certModel.ID).Error; err != nil {
+			return nil, err
+		}
+		return certModel, nil
+	}
+
+	if err := db.Assign(updates).FirstOrCreate(certModel, model.Cert{Name: name}).Error; err != nil {
+		return nil, err
+	}
+	if err := db.First(certModel, certModel.ID).Error; err != nil {
 		return nil, err
 	}
 
@@ -91,22 +108,13 @@ func ImportExistingCertificate(opts ImportCertificateOptions) (*model.Cert, erro
 }
 
 func ResolveExistingCertificate(opts ImportCertificateOptions) (*DiscoveredCertificatePair, error) {
-	var pair *DiscoveredCertificatePair
-	var err error
-
-	if strings.TrimSpace(opts.Dir) != "" {
-		pair, err = DiscoverCertificatePair(opts.Dir)
-		if err != nil {
-			return nil, err
-		}
-	} else {
-		pair = &DiscoveredCertificatePair{
-			SSLCertificatePath:    opts.CertPath,
-			SSLCertificateKeyPath: opts.KeyPath,
-		}
+	pair := &DiscoveredCertificatePair{
+		SSLCertificatePath:    opts.CertPath,
+		SSLCertificateKeyPath: opts.KeyPath,
 	}
 
 	pair.Name = strings.TrimSpace(opts.Name)
+	var err error
 	pair.SSLCertificatePath, err = absPath(pair.SSLCertificatePath)
 	if err != nil {
 		return nil, err
@@ -170,12 +178,6 @@ func DiscoverCertificatePair(dir string) (*DiscoveredCertificatePair, error) {
 	if len(keyCandidates) == 0 {
 		return nil, fmt.Errorf("no valid private key candidates found in %s", dirPath)
 	}
-	if len(certCandidates) > 1 {
-		return nil, fmt.Errorf("multiple certificate candidates found in %s: %s", dirPath, strings.Join(certCandidates, ", "))
-	}
-	if len(keyCandidates) > 1 {
-		return nil, fmt.Errorf("multiple private key candidates found in %s: %s", dirPath, strings.Join(keyCandidates, ", "))
-	}
 
 	pair := &DiscoveredCertificatePair{
 		Name:                  filepath.Base(dirPath),
@@ -208,6 +210,33 @@ func ScanCertificateDirectories(root string) ([]DiscoveredCertificatePair, error
 		if result.Error == nil && result.Pair != nil {
 			pairs = append(pairs, *result.Pair)
 		}
+	}
+
+	return pairs, nil
+}
+
+func ScanCertificateSSLDirectoryResults() ([]ScanCertificateResult, error) {
+	root := nginx.GetConfPath("ssl")
+	if _, err := os.Stat(root); err != nil {
+		if os.IsNotExist(err) {
+			return []ScanCertificateResult{}, nil
+		}
+		return nil, err
+	}
+	return ScanCertificateDirectoryResults(root)
+}
+
+func ScanCertificateSSLDirectory(newOnly bool) ([]DiscoveredCertificatePair, error) {
+	pairs, err := ScanCertificateDirectories(nginx.GetConfPath("ssl"))
+	if err != nil {
+		if os.IsNotExist(err) {
+			return []DiscoveredCertificatePair{}, nil
+		}
+		return nil, err
+	}
+
+	if newOnly {
+		return FilterNewCertificatePairs(pairs)
 	}
 
 	return pairs, nil
@@ -265,68 +294,6 @@ func ScanCertificateDirectoryResults(root string) ([]ScanCertificateResult, erro
 	}
 
 	return results, nil
-}
-
-func ScanCertificateDiscoveryPatterns(patterns []string, newOnly bool) ([]DiscoveredCertificatePair, error) {
-	pairs := make([]DiscoveredCertificatePair, 0)
-	seenDirs := make(map[string]struct{})
-
-	for _, pattern := range patterns {
-		pattern = strings.TrimSpace(pattern)
-		if pattern == "" {
-			continue
-		}
-
-		if hasGlobMeta(pattern) {
-			matches, err := filepath.Glob(filepath.Clean(pattern))
-			if err != nil {
-				return nil, err
-			}
-			for _, match := range matches {
-				dir := match
-				info, err := os.Stat(match)
-				if err != nil {
-					continue
-				}
-				if !info.IsDir() {
-					dir = filepath.Dir(match)
-				}
-				dirKey := normalizePathForCompare(dir)
-				if _, ok := seenDirs[dirKey]; ok {
-					continue
-				}
-				seenDirs[dirKey] = struct{}{}
-
-				pair, err := DiscoverCertificatePair(dir)
-				if err == nil {
-					pairs = append(pairs, *pair)
-				}
-			}
-			continue
-		}
-
-		results, err := ScanCertificateDirectoryResults(pattern)
-		if err != nil {
-			return nil, err
-		}
-		for _, result := range results {
-			if result.Error != nil || result.Pair == nil {
-				continue
-			}
-			dirKey := normalizePathForCompare(result.Dir)
-			if _, ok := seenDirs[dirKey]; ok {
-				continue
-			}
-			seenDirs[dirKey] = struct{}{}
-			pairs = append(pairs, *result.Pair)
-		}
-	}
-
-	if newOnly {
-		return FilterNewCertificatePairs(pairs)
-	}
-
-	return pairs, nil
 }
 
 func FilterNewCertificatePairs(pairs []DiscoveredCertificatePair) ([]DiscoveredCertificatePair, error) {
@@ -449,6 +416,44 @@ func certificatePairIsImported(pair DiscoveredCertificatePair, existing []model.
 	return false
 }
 
+func findImportedCertificate(name string, pair *DiscoveredCertificatePair) (*model.Cert, error) {
+	db := model.UseDB()
+	if db == nil {
+		return nil, fmt.Errorf("database is not initialized")
+	}
+
+	var existing []model.Cert
+	if err := db.Find(&existing).Error; err != nil {
+		return nil, err
+	}
+
+	for i := range existing {
+		certModel := existing[i]
+		if name != "" && strings.EqualFold(name, strings.TrimSpace(certModel.Name)) {
+			return &certModel, nil
+		}
+	}
+
+	pairCertPath := normalizePathForCompare(pair.SSLCertificatePath)
+	pairKeyPath := normalizePathForCompare(pair.SSLCertificateKeyPath)
+	pairFingerprint := strings.TrimSpace(pair.Fingerprint)
+
+	for i := range existing {
+		certModel := existing[i]
+		if pairCertPath != "" && pairCertPath == normalizePathForCompare(certModel.SSLCertificatePath) {
+			return &certModel, nil
+		}
+		if pairKeyPath != "" && pairKeyPath == normalizePathForCompare(certModel.SSLCertificateKeyPath) {
+			return &certModel, nil
+		}
+		if pairFingerprint != "" && pairFingerprint == strings.TrimSpace(certModel.Fingerprint) {
+			return &certModel, nil
+		}
+	}
+
+	return nil, nil
+}
+
 func findCertificateCandidates(dir string) (certCandidates []string, keyCandidates []string, err error) {
 	entries, err := os.ReadDir(dir)
 	if err != nil {
@@ -474,8 +479,8 @@ func findCertificateCandidates(dir string) (certCandidates []string, keyCandidat
 		}
 	}
 
-	sort.Strings(certCandidates)
-	sort.Strings(keyCandidates)
+	sortCertificateCandidates(dir, certCandidates)
+	sortPrivateKeyCandidates(dir, keyCandidates)
 
 	return certCandidates, keyCandidates, nil
 }
@@ -617,13 +622,9 @@ func keyTypeFromCertificate(c *x509.Certificate) certcrypto.KeyType {
 
 func domainsFromInfo(info *Info) []string {
 	if info == nil || info.SubjectName == "" {
-		return nil
+		return []string{}
 	}
 	return []string{info.SubjectName}
-}
-
-func hasGlobMeta(path string) bool {
-	return strings.ContainsAny(path, "*?[")
 }
 
 func normalizePathForCompare(path string) string {
@@ -641,6 +642,85 @@ func normalizePathForCompare(path string) string {
 		path = strings.ToLower(path)
 	}
 	return path
+}
+
+func sortCertificateCandidates(dir string, candidates []string) {
+	sort.SliceStable(candidates, func(i, j int) bool {
+		left := certificateCandidateRank(dir, filepath.Base(candidates[i]))
+		right := certificateCandidateRank(dir, filepath.Base(candidates[j]))
+		if left == right {
+			return candidates[i] < candidates[j]
+		}
+		return left < right
+	})
+}
+
+func sortPrivateKeyCandidates(dir string, candidates []string) {
+	sort.SliceStable(candidates, func(i, j int) bool {
+		left := privateKeyCandidateRank(dir, filepath.Base(candidates[i]))
+		right := privateKeyCandidateRank(dir, filepath.Base(candidates[j]))
+		if left == right {
+			return candidates[i] < candidates[j]
+		}
+		return left < right
+	})
+}
+
+func certificateCandidateRank(dir, name string) int {
+	lowerName := strings.ToLower(name)
+	baseName := strings.ToLower(filepath.Base(dir))
+	switch lowerName {
+	case "fullchain.pem":
+		return 0
+	case "cert.pem":
+		return 1
+	case "certificate.pem":
+		return 2
+	case "tls.crt":
+		return 3
+	case baseName + ".pem":
+		return 4
+	case baseName + ".crt":
+		return 5
+	case baseName + ".cer":
+		return 6
+	case baseName + ".cert":
+		return 7
+	}
+	switch strings.ToLower(filepath.Ext(lowerName)) {
+	case ".crt":
+		return 8
+	case ".cer":
+		return 9
+	case ".cert":
+		return 10
+	}
+	return 100
+}
+
+func privateKeyCandidateRank(dir, name string) int {
+	lowerName := strings.ToLower(name)
+	baseName := strings.ToLower(filepath.Base(dir))
+	switch lowerName {
+	case "privkey.pem":
+		return 0
+	case "key.pem":
+		return 1
+	case "private.key":
+		return 2
+	case "tls.key":
+		return 3
+	case baseName + ".key":
+		return 4
+	case baseName + ".priv":
+		return 5
+	case baseName + ".pem":
+		return 6
+	}
+	if strings.EqualFold(filepath.Ext(lowerName), ".key") {
+		return 7
+	}
+	return 100
 }
 
 func absPath(path string) (string, error) {

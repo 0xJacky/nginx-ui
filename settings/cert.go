@@ -8,7 +8,6 @@ type Cert struct {
 	RenewalInterval      int      `json:"renewal_interval" binding:"min=7,max=21"`
 	RecursiveNameservers []string `json:"recursive_nameservers" binding:"omitempty,dive,hostname_port"`
 	HTTPChallengePort    string   `json:"http_challenge_port"`
-	DiscoveryPatterns    []string `json:"discovery_patterns" binding:"omitempty,dive"`
 }
 
 var CertSettings = &Cert{
@@ -17,7 +16,6 @@ var CertSettings = &Cert{
 	RenewalInterval:      7,
 	RecursiveNameservers: []string{},
 	HTTPChallengePort:    "9180",
-	DiscoveryPatterns:    []string{},
 }
 
 func (s *Cert) GetCADir() string {
