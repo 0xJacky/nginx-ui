@@ -77,7 +77,7 @@ func ScanCertificates(_ context.Context, command *cli.Command) error {
 
 	keyType := certcrypto.KeyType(command.String("key-type"))
 	if keyType != "" && !helper.IsValidKeyType(keyType) {
-		return fmt.Errorf("invalid key type: %s", keyType)
+		return cert.NewInvalidKeyTypeError(string(keyType))
 	}
 
 	namePrefix := command.String("name-prefix")
@@ -141,10 +141,10 @@ func importOptionsFromCommand(command *cli.Command) (cert.ImportCertificateOptio
 	keyType := certcrypto.KeyType(command.String("key-type"))
 
 	if keyType != "" && !helper.IsValidKeyType(keyType) {
-		return cert.ImportCertificateOptions{}, fmt.Errorf("invalid key type: %s", keyType)
+		return cert.ImportCertificateOptions{}, cert.NewInvalidKeyTypeError(string(keyType))
 	}
 	if certPath == "" || keyPath == "" {
-		return cert.ImportCertificateOptions{}, fmt.Errorf("provide both --cert and --key")
+		return cert.ImportCertificateOptions{}, cert.ErrCertificatePathsRequired
 	}
 
 	return cert.ImportCertificateOptions{
