@@ -137,7 +137,17 @@ func IssueCert(payload *ConfigPayload, certLogger *Logger) error {
 				defer dns01.SetDefaultClient(oldDNSClient)
 			}
 
-			err = client.Challenge.SetDNS01Provider(provider)
+			// lego v5 enabled the recursive-nameserver propagation check by
+			// default, which queries the local system resolver for the
+			// _acme-challenge TXT record. Split-horizon or private resolvers
+			// (systemd-resolved at 127.0.0.53, Unbound, Docker DNS, etc.)
+			// frequently REFUSE these queries, so DNS-01 issuance/renewal that
+			// worked under lego v4 started timing out after the v5 migration.
+			// Restore the v4 behavior by only requiring propagation to the
+			// authoritative nameservers. Fixes #1711, #1719.
+			err = client.Challenge.SetDNS01Provider(provider,
+				dns01.DisableRecursiveNSsPropagationRequirement(),
+			)
 		} else {
 			return ErrEnvironmentConfigurationIsEmpty
 		}
