@@ -37,6 +37,7 @@ func newCert(db *gorm.DB, opts ...gen.DOOption) cert {
 	_cert.Filename = field.NewString(tableName, "filename")
 	_cert.SSLCertificatePath = field.NewString(tableName, "ssl_certificate_path")
 	_cert.SSLCertificateKeyPath = field.NewString(tableName, "ssl_certificate_key_path")
+	_cert.Fingerprint = field.NewString(tableName, "fingerprint")
 	_cert.AutoCert = field.NewInt(tableName, "auto_cert")
 	_cert.ChallengeMethod = field.NewString(tableName, "challenge_method")
 	_cert.DnsCredentialID = field.NewUint64(tableName, "dns_credential_id")
@@ -84,6 +85,7 @@ type cert struct {
 	Filename                field.String
 	SSLCertificatePath      field.String
 	SSLCertificateKeyPath   field.String
+	Fingerprint             field.String
 	AutoCert                field.Int
 	ChallengeMethod         field.String
 	DnsCredentialID         field.Uint64
@@ -129,6 +131,7 @@ func (c *cert) updateTableName(table string) *cert {
 	c.Filename = field.NewString(table, "filename")
 	c.SSLCertificatePath = field.NewString(table, "ssl_certificate_path")
 	c.SSLCertificateKeyPath = field.NewString(table, "ssl_certificate_key_path")
+	c.Fingerprint = field.NewString(table, "fingerprint")
 	c.AutoCert = field.NewInt(table, "auto_cert")
 	c.ChallengeMethod = field.NewString(table, "challenge_method")
 	c.DnsCredentialID = field.NewUint64(table, "dns_credential_id")
@@ -162,7 +165,7 @@ func (c *cert) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (c *cert) fillFieldMap() {
-	c.fieldMap = make(map[string]field.Expr, 28)
+	c.fieldMap = make(map[string]field.Expr, 29)
 	c.fieldMap["id"] = c.ID
 	c.fieldMap["created_at"] = c.CreatedAt
 	c.fieldMap["updated_at"] = c.UpdatedAt
@@ -172,6 +175,7 @@ func (c *cert) fillFieldMap() {
 	c.fieldMap["filename"] = c.Filename
 	c.fieldMap["ssl_certificate_path"] = c.SSLCertificatePath
 	c.fieldMap["ssl_certificate_key_path"] = c.SSLCertificateKeyPath
+	c.fieldMap["fingerprint"] = c.Fingerprint
 	c.fieldMap["auto_cert"] = c.AutoCert
 	c.fieldMap["challenge_method"] = c.ChallengeMethod
 	c.fieldMap["dns_credential_id"] = c.DnsCredentialID
