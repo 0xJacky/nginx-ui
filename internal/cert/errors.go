@@ -33,4 +33,23 @@ var (
 	ErrSelfSignedNoSAN                   = e.New(50034, "at least one domain or IP address is required")
 	ErrSelfSignedInvalidIP               = e.New(50035, "invalid IP address: {0}")
 	ErrCertIsNotSelfSigned               = e.New(50036, "certificate is not a self-signed certificate")
+	ErrCertificateNameRequired           = e.New(50037, "certificate name is required")
+	ErrDatabaseNotInitialized            = e.New(50038, "database is not initialized")
+	ErrInvalidKeyType                    = e.New(50039, "invalid key type: {0}")
+	ErrReadCertificateDirectory          = e.New(50040, "read certificate directory {0}: {1}")
+	ErrCertificateDirectoryNotDirectory  = e.New(50041, "certificate directory {0} is not a directory")
+	ErrNoCertificateOrKeyCandidates      = e.New(50042, "no certificate or private key candidates found in {0}")
+	ErrNoValidCertificateCandidates      = e.New(50043, "no valid certificate candidates found in {0}")
+	ErrNoValidPrivateKeyCandidates       = e.New(50044, "no valid private key candidates found in {0}")
+	ErrReadCertificate                   = e.New(50045, "read certificate {0}: {1}")
+	ErrInvalidCertificate                = e.New(50046, "invalid certificate {0}: {1}")
+	ErrReadPrivateKey                    = e.New(50047, "read private key {0}: {1}")
+	ErrInvalidPrivateKey                 = e.New(50048, "invalid private key {0}")
+	ErrCertificateKeyMismatch            = e.New(50049, "certificate and private key do not match: {0}")
+	ErrCertificateFieldRequired          = e.New(50050, "{0} is required")
+	ErrCertificatePathsRequired          = e.New(50051, "provide both --cert and --key")
 )
+
+func NewInvalidKeyTypeError(keyType string) error {
+	return e.NewWithParams(50039, ErrInvalidKeyType.Error(), keyType)
+}

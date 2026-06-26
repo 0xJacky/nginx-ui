@@ -42,6 +42,14 @@ This option is used to set the port for backend listening in the HTTP01 challeng
 certificates. The HTTP01 challenge is a domain validation method used by Let's Encrypt to verify that you control the
 domain for which you're requesting a certificate.
 
+## Certificate Discovery
+
+When importing deployed certificates, automatic discovery scans the configured Nginx `ssl` directory for directories
+that contain separate certificate and private key files, such as `fullchain.pem` and `privkey.pem`.
+
+Combined certificate and private key single-PEM files are not auto-detected. Split them into separate certificate and
+key files before using discovery.
+
 ## DNS Domain Management
 
 - Version：`>= v2.2.2`

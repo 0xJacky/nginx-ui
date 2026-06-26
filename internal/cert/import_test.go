@@ -1,6 +1,7 @@
 package cert
 
 import (
+	"errors"
 	"os"
 	"path/filepath"
 	"testing"
@@ -8,6 +9,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/go-acme/lego/v5/certcrypto"
+	"github.com/uozi-tech/cosy"
 )
 
 func withImportTestNginxConfigDir(t *testing.T) string {
@@ -200,5 +202,40 @@ func TestScanCertificateSSLDirectoryHandlesMissingSSLRoot(t *testing.T) {
 	}
 	if len(pairs) != 0 {
 		t.Fatalf("expected no pairs for missing ssl root, got %d", len(pairs))
+	}
+}
+
+func TestDiscoverCertificatePairDoesNotAutoDetectCombinedSinglePEM(t *testing.T) {
+	confDir := withImportTestNginxConfigDir(t)
+	dir := filepath.Join(confDir, "ssl", "combined.example.local")
+	if err := os.MkdirAll(dir, 0o755); err != nil {
+		t.Fatalf("create certificate directory: %v", err)
+	}
+
+	certPEM, keyPEM, err := GenerateSelfSigned(SelfSignedOptions{
+		CommonName:   filepath.Base(dir),
+		DNSNames:     []string{filepath.Base(dir)},
+		KeyType:      certcrypto.EC256,
+		ValidityDays: 365,
+	})
+	if err != nil {
+		t.Fatalf("generate test certificate: %v", err)
+	}
+
+	combined := append(append([]byte{}, certPEM...), keyPEM...)
+	if err := os.WriteFile(filepath.Join(dir, "fullchain.pem"), combined, 0o600); err != nil {
+		t.Fatalf("write combined pem: %v", err)
+	}
+
+	_, err = DiscoverCertificatePair(dir)
+	if err == nil {
+		t.Fatalf("expected combined single-PEM file not to be auto-detected")
+	}
+	var cosyErr *cosy.Error
+	if !errors.As(err, &cosyErr) {
+		t.Fatalf("expected cosy error, got %T: %v", err, err)
+	}
+	if cosyErr.Scope != "cert" || cosyErr.Code != 50044 {
+		t.Fatalf("unexpected discovery error scope/code: %s/%d", cosyErr.Scope, cosyErr.Code)
 	}
 }

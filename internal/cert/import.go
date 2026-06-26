@@ -8,7 +8,6 @@ import (
 	"crypto/x509"
 	"encoding/hex"
 	"encoding/pem"
-	"fmt"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -61,12 +60,12 @@ func ImportExistingCertificate(opts ImportCertificateOptions) (*model.Cert, erro
 		name = filepath.Base(filepath.Dir(pair.SSLCertificatePath))
 	}
 	if name == "" || name == "." || name == string(filepath.Separator) {
-		return nil, fmt.Errorf("certificate name is required")
+		return nil, ErrCertificateNameRequired
 	}
 
 	db := model.UseDB()
 	if db == nil {
-		return nil, fmt.Errorf("database is not initialized")
+		return nil, ErrDatabaseNotInitialized
 	}
 
 	certModel, err := findImportedCertificate(name, pair)
@@ -133,7 +132,7 @@ func ResolveExistingCertificate(opts ImportCertificateOptions) (*DiscoveredCerti
 
 	if opts.KeyType != "" {
 		if !helper.IsValidKeyType(opts.KeyType) {
-			return nil, fmt.Errorf("invalid key type: %s", opts.KeyType)
+			return nil, NewInvalidKeyTypeError(string(opts.KeyType))
 		}
 		pair.KeyType = helper.GetKeyType(opts.KeyType)
 		return pair, nil
@@ -158,10 +157,10 @@ func DiscoverCertificatePair(dir string) (*DiscoveredCertificatePair, error) {
 
 	info, err := os.Stat(dirPath)
 	if err != nil {
-		return nil, fmt.Errorf("read certificate directory %s: %w", dirPath, err)
+		return nil, e.NewWithParams(50040, ErrReadCertificateDirectory.Error(), dirPath, err.Error())
 	}
 	if !info.IsDir() {
-		return nil, fmt.Errorf("certificate directory %s is not a directory", dirPath)
+		return nil, e.NewWithParams(50041, ErrCertificateDirectoryNotDirectory.Error(), dirPath)
 	}
 
 	certCandidates, keyCandidates, err := findCertificateCandidates(dirPath)
@@ -170,13 +169,13 @@ func DiscoverCertificatePair(dir string) (*DiscoveredCertificatePair, error) {
 	}
 
 	if len(certCandidates) == 0 && len(keyCandidates) == 0 {
-		return nil, fmt.Errorf("no certificate or private key candidates found in %s", dirPath)
+		return nil, e.NewWithParams(50042, ErrNoCertificateOrKeyCandidates.Error(), dirPath)
 	}
 	if len(certCandidates) == 0 {
-		return nil, fmt.Errorf("no valid certificate candidates found in %s", dirPath)
+		return nil, e.NewWithParams(50043, ErrNoValidCertificateCandidates.Error(), dirPath)
 	}
 	if len(keyCandidates) == 0 {
-		return nil, fmt.Errorf("no valid private key candidates found in %s", dirPath)
+		return nil, e.NewWithParams(50044, ErrNoValidPrivateKeyCandidates.Error(), dirPath)
 	}
 
 	pair := &DiscoveredCertificatePair{
@@ -299,7 +298,7 @@ func ScanCertificateDirectoryResults(root string) ([]ScanCertificateResult, erro
 func FilterNewCertificatePairs(pairs []DiscoveredCertificatePair) ([]DiscoveredCertificatePair, error) {
 	db := model.UseDB()
 	if db == nil {
-		return nil, fmt.Errorf("database is not initialized")
+		return nil, ErrDatabaseNotInitialized
 	}
 
 	var existing []model.Cert
@@ -326,12 +325,12 @@ func CertificateFingerprintFromPath(certPath string) (string, error) {
 
 	certPEM, err := os.ReadFile(certPath)
 	if err != nil {
-		return "", fmt.Errorf("read certificate %s: %w", certPath, err)
+		return "", e.NewWithParams(50045, ErrReadCertificate.Error(), certPath, err.Error())
 	}
 
 	parsedCert, err := parseCertificatePEM(certPEM)
 	if err != nil {
-		return "", fmt.Errorf("invalid certificate %s: %w", certPath, err)
+		return "", e.NewWithParams(50046, ErrInvalidCertificate.Error(), certPath, err.Error())
 	}
 
 	return certificateFingerprint(parsedCert), nil
@@ -357,22 +356,22 @@ func validateCertificateAndKey(certPath, keyPath string) (*x509.Certificate, err
 
 	certPEM, err := os.ReadFile(certPath)
 	if err != nil {
-		return nil, fmt.Errorf("read certificate %s: %w", certPath, err)
+		return nil, e.NewWithParams(50045, ErrReadCertificate.Error(), certPath, err.Error())
 	}
 	keyPEM, err := os.ReadFile(keyPath)
 	if err != nil {
-		return nil, fmt.Errorf("read private key %s: %w", keyPath, err)
+		return nil, e.NewWithParams(50047, ErrReadPrivateKey.Error(), keyPath, err.Error())
 	}
 
 	parsedCert, err := parseCertificatePEM(certPEM)
 	if err != nil {
-		return nil, fmt.Errorf("invalid certificate %s: %w", certPath, err)
+		return nil, e.NewWithParams(50046, ErrInvalidCertificate.Error(), certPath, err.Error())
 	}
 	if !IsPrivateKey(string(keyPEM)) {
-		return nil, fmt.Errorf("invalid private key %s", keyPath)
+		return nil, e.NewWithParams(50048, ErrInvalidPrivateKey.Error(), keyPath)
 	}
 	if _, err = tls.X509KeyPair(certPEM, keyPEM); err != nil {
-		return nil, fmt.Errorf("certificate and private key do not match: %w", err)
+		return nil, e.NewWithParams(50049, ErrCertificateKeyMismatch.Error(), err.Error())
 	}
 
 	return parsedCert, nil
@@ -384,7 +383,7 @@ func validatedCertificateFilePath(path, label string) (string, error) {
 		return "", err
 	}
 	if path == "" {
-		return "", fmt.Errorf("%s is required", label)
+		return "", e.NewWithParams(50050, ErrCertificateFieldRequired.Error(), label)
 	}
 	if !helper.IsUnderDirectory(path, nginx.GetConfPath()) {
 		return "", ErrCertPathIsNotUnderTheNginxConfDir
@@ -419,7 +418,7 @@ func certificatePairIsImported(pair DiscoveredCertificatePair, existing []model.
 func findImportedCertificate(name string, pair *DiscoveredCertificatePair) (*model.Cert, error) {
 	db := model.UseDB()
 	if db == nil {
-		return nil, fmt.Errorf("database is not initialized")
+		return nil, ErrDatabaseNotInitialized
 	}
 
 	var existing []model.Cert
