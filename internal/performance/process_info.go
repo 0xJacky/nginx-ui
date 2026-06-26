@@ -1,12 +1,15 @@
 package performance
 
 import (
+	"context"
 	"fmt"
 	"math"
 	"runtime"
 	"strings"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/docker"
+	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/shirou/gopsutil/v4/process"
 )
 
@@ -19,8 +22,20 @@ type NginxProcessInfo struct {
 	MemoryUsage float64 `json:"memory_usage"`
 }
 
-// GetNginxProcessInfo Get Nginx process information
+// GetNginxProcessInfo Get Nginx process information.
+// When nginx runs in a separate container its processes are not visible in the
+// Nginx UI process namespace, so gopsutil would report zero workers (#1704).
+// In that case the process list is collected from inside the nginx container.
 func GetNginxProcessInfo() (*NginxProcessInfo, error) {
+	if settings.NginxSettings.RunningInAnotherContainer() {
+		return getNginxProcessInfoFromContainer()
+	}
+	return getNginxProcessInfoFromHost()
+}
+
+// getNginxProcessInfoFromHost counts nginx processes in the local process
+// namespace (Nginx UI and nginx share the same host/container).
+func getNginxProcessInfoFromHost() (*NginxProcessInfo, error) {
 	result := &NginxProcessInfo{
 		Workers:     0,
 		Master:      0,
@@ -175,4 +190,46 @@ func GetNginxProcessInfo() (*NginxProcessInfo, error) {
 	result.MemoryUsage = totalMemory
 
 	return result, nil
+}
+
+// getNginxProcessInfoFromContainer counts nginx processes by reading /proc
+// inside the nginx container. It reads cmdlines directly instead of relying on
+// `ps`, which is missing from slim/distroless nginx images. CPU and memory
+// usage are left at zero here because gopsutil cannot sample a foreign
+// container's processes; the master/worker/cache counts are what the dashboard
+// reports as "worker processes".
+func getNginxProcessInfoFromContainer() (*NginxProcessInfo, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	// Emit one line per process: NUL-separated argv joined by spaces. nginx
+	// retitles its processes (setproctitle), so master/worker/cache lines start
+	// with "nginx: ... process".
+	out, err := docker.Exec(ctx, []string{"sh", "-c",
+		`for p in /proc/[0-9]*/cmdline; do tr '\0' ' ' < "$p" 2>/dev/null; echo; done`})
+	if err != nil {
+		return &NginxProcessInfo{}, fmt.Errorf("failed to inspect nginx container processes: %w", err)
+	}
+
+	return parseContainerNginxProcesses(out), nil
+}
+
+// parseContainerNginxProcesses counts nginx master/worker/cache processes from a
+// newline-separated list of process command lines (NUL bytes already replaced
+// by spaces). nginx retitles its processes via setproctitle, e.g.
+// "nginx: master process ...", "nginx: worker process",
+// "nginx: cache manager process".
+func parseContainerNginxProcesses(procList string) *NginxProcessInfo {
+	result := &NginxProcessInfo{}
+	for _, line := range strings.Split(procList, "\n") {
+		switch {
+		case strings.Contains(line, "nginx: master process"):
+			result.Master++
+		case strings.Contains(line, "nginx: worker process"):
+			result.Workers++
+		case strings.Contains(line, "nginx: cache"):
+			result.Cache++
+		}
+	}
+	return result
 }
