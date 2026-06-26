@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/settings"
+	"github.com/uozi-tech/cosy/logger"
 	cSettings "github.com/uozi-tech/cosy/settings"
 )
 
@@ -60,7 +61,19 @@ func EnsureInstallSecret() error {
 		return err
 	}
 
-	return writeInstallSecret(secret)
+	if err := writeInstallSecret(secret); err != nil {
+		return err
+	}
+
+	// Surface the one-time install secret in the application logs. The bare-metal
+	// install.sh prints this banner, but Docker/compose users never see it, so they
+	// had no way to discover the value that the installation page requires. The
+	// secret is only valid for InstallWindow after startup and is removed once
+	// installation finishes. Fixes #1705.
+	logger.Infof("[Nginx UI] One-time install secret (valid for %s): %s", InstallWindow, secret)
+	logger.Infof("[Nginx UI] Enter it on the installation page. You can also read it with: cat %s", InstallSecretPath())
+
+	return nil
 }
 
 // CleanupInstallSecret removes the hidden install secret file if present.

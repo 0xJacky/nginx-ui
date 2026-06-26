@@ -141,7 +141,9 @@ func InitNodeSecret() {
 		if err != nil {
 			logger.Error("Error save settings", err)
 		}
-		logger.Info("Generated Secret: ", uuidStr)
+		// Clarify this is the node API secret, not the first-run install secret.
+		// Users were pasting this value into the installation page (#1705).
+		logger.Info("Generated node API secret (not the install secret): ", uuidStr)
 	}
 }
 
