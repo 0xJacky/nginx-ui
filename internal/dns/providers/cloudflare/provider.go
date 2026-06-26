@@ -8,10 +8,10 @@ import (
 	"sync"
 	"time"
 
-	cf "github.com/cloudflare/cloudflare-go/v6"
-	cfdns "github.com/cloudflare/cloudflare-go/v6/dns"
-	cfopt "github.com/cloudflare/cloudflare-go/v6/option"
-	cfzones "github.com/cloudflare/cloudflare-go/v6/zones"
+	cf "github.com/cloudflare/cloudflare-go/v7"
+	cfdns "github.com/cloudflare/cloudflare-go/v7/dns"
+	cfopt "github.com/cloudflare/cloudflare-go/v7/option"
+	cfzones "github.com/cloudflare/cloudflare-go/v7/zones"
 
 	"github.com/0xJacky/Nginx-UI/internal/dns"
 )

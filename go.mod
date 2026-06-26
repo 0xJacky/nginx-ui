@@ -14,7 +14,6 @@ require (
 	github.com/blevesearch/bleve_index_api v1.3.11
 	github.com/caarlos0/env/v11 v11.4.1
 	github.com/casdoor/casdoor-go-sdk v1.46.0
-	github.com/cloudflare/cloudflare-go/v6 v6.10.0
 	github.com/cloudflare/cloudflare-go/v7 v7.6.0
 	github.com/coreos/go-oidc/v3 v3.18.0
 	github.com/creack/pty v1.1.24
