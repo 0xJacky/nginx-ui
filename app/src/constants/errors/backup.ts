@@ -69,7 +69,7 @@ export default {
   4908: () => $gettext('Failed to write security key file: {0}'),
   4909: () => $gettext('S3 upload failed: {0}'),
   4910: () => $gettext('Invalid path: {0}'),
-  4911: () => $gettext('Path not in granted access paths: {0}'),
+  4911: () => $gettext('Path not in granted access paths: {0}. Add it to [backup] GrantedAccessPath in app.ini and restart.'),
   4912: () => $gettext('Backup path does not exist: {0}'),
   4913: () => $gettext('Cannot access backup path {0}: {1}'),
   4914: () => $gettext('Backup path is not a directory: {0}'),
