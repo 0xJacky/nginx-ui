@@ -49,6 +49,8 @@ func SecureSessionCookie() gin.HandlerFunc {
 	}
 }
 
+const SecureSessionVerifiedKey = "SecureSessionVerified"
+
 func RequireSecureSession() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		u, ok := c.Get("user")
@@ -73,6 +75,7 @@ func RequireSecureSession() gin.HandlerFunc {
 		}
 
 		if user.VerifySecureSessionID(ssid, cUser.ID) {
+			c.Set(SecureSessionVerifiedKey, true)
 			c.Next()
 			return
 		}

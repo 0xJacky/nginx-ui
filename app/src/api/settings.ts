@@ -147,7 +147,7 @@ const settings = {
   get(): Promise<Settings> {
     return http.get('/settings')
   },
-  get_protected_value(path: string): Promise<{ value: string }> {
+  get_protected_value<T = string>(path: string): Promise<{ value: T }> {
     return http.get('/settings/protected', {
       params: { path },
     })

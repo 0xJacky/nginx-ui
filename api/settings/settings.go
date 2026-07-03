@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"reflect"
+	"strings"
 
 	"code.pfad.fr/risefront"
 	"github.com/0xJacky/Nginx-UI/internal/cert"
@@ -17,6 +19,15 @@ import (
 )
 
 const redactedSensitiveValue = "__NGINX_UI_REDACTED__"
+
+var manuallyProtectedSettingGetters = map[string]func() any{
+	"app.jwt_secret": func() any {
+		return cSettings.AppSettings.JwtSecret
+	},
+	"openai.token": func() any {
+		return settings.OpenAISettings.Token
+	},
+}
 
 type saveSettingsPayload struct {
 	App       cSettings.App      `json:"app"`
@@ -45,34 +56,167 @@ func cloneSettingsSection(section any) gin.H {
 	return cloned
 }
 
+func jsonFieldName(field reflect.StructField) string {
+	name := strings.Split(field.Tag.Get("json"), ",")[0]
+	if name == "-" {
+		return ""
+	}
+	if name != "" {
+		return name
+	}
+	return field.Name
+}
+
+func shouldRedactProtectedValue(value reflect.Value) bool {
+	if value.Kind() == reflect.Pointer {
+		if value.IsNil() {
+			return false
+		}
+		value = value.Elem()
+	}
+
+	switch value.Kind() {
+	case reflect.String, reflect.Slice, reflect.Array:
+		return true
+	default:
+		return false
+	}
+}
+
+func redactProtectedValue(value reflect.Value) any {
+	if value.Kind() == reflect.Pointer {
+		if value.IsNil() {
+			return redactedSensitiveValue
+		}
+		value = value.Elem()
+	}
+
+	switch value.Kind() {
+	case reflect.Slice, reflect.Array:
+		return []string{redactedSensitiveValue}
+	default:
+		return redactedSensitiveValue
+	}
+}
+
+func redactProtectedFields(section any, cloned gin.H) {
+	value := reflect.ValueOf(section)
+	if value.Kind() == reflect.Pointer {
+		if value.IsNil() {
+			return
+		}
+		value = value.Elem()
+	}
+	if value.Kind() != reflect.Struct {
+		return
+	}
+
+	valueType := value.Type()
+	for i := 0; i < valueType.NumField(); i++ {
+		field := valueType.Field(i)
+		if field.Tag.Get("protected") != "true" {
+			continue
+		}
+
+		fieldValue := value.Field(i)
+		if !shouldRedactProtectedValue(fieldValue) {
+			continue
+		}
+
+		name := jsonFieldName(field)
+		if name == "" {
+			continue
+		}
+		cloned[name] = redactProtectedValue(fieldValue)
+	}
+}
+
+func cloneRedactedSettingsSection(section any, extraProtectedFields ...string) gin.H {
+	cloned := cloneSettingsSection(section)
+	redactProtectedFields(section, cloned)
+	for _, field := range extraProtectedFields {
+		cloned[field] = redactedSensitiveValue
+	}
+	return cloned
+}
+
+func settingsSectionSources() map[string]any {
+	return map[string]any{
+		"app":       cSettings.AppSettings,
+		"server":    cSettings.ServerSettings,
+		"auth":      settings.AuthSettings,
+		"casdoor":   settings.CasdoorSettings,
+		"cert":      settings.CertSettings,
+		"http":      settings.HTTPSettings,
+		"logrotate": settings.LogrotateSettings,
+		"nginx":     settings.NginxSettings,
+		"node":      settings.NodeSettings,
+		"openai":    settings.OpenAISettings,
+		"terminal":  settings.TerminalSettings,
+		"oidc":      settings.OIDCSettings,
+	}
+}
+
+func getProtectedSettingValue(path string) (any, bool) {
+	if getter, ok := manuallyProtectedSettingGetters[path]; ok {
+		return getter(), true
+	}
+
+	sectionName, fieldName, ok := strings.Cut(path, ".")
+	if !ok || sectionName == "" || fieldName == "" {
+		return nil, false
+	}
+
+	section, ok := settingsSectionSources()[sectionName]
+	if !ok {
+		return nil, false
+	}
+
+	value := reflect.ValueOf(section)
+	if value.Kind() == reflect.Pointer {
+		if value.IsNil() {
+			return nil, false
+		}
+		value = value.Elem()
+	}
+	if value.Kind() != reflect.Struct {
+		return nil, false
+	}
+
+	valueType := value.Type()
+	for i := 0; i < valueType.NumField(); i++ {
+		field := valueType.Field(i)
+		if field.Tag.Get("protected") != "true" || jsonFieldName(field) != fieldName {
+			continue
+		}
+		return value.Field(i).Interface(), true
+	}
+
+	return nil, false
+}
+
 func buildSettingsResponse() gin.H {
-	app := cloneSettingsSection(cSettings.AppSettings)
-	app["jwt_secret"] = redactedSensitiveValue
-
-	node := cloneSettingsSection(settings.NodeSettings)
-	node["secret"] = redactedSensitiveValue
-
-	openai := cloneSettingsSection(settings.OpenAISettings)
+	app := cloneRedactedSettingsSection(cSettings.AppSettings, "jwt_secret")
+	openai := cloneRedactedSettingsSection(settings.OpenAISettings, "token")
 	openai["provider"] = settings.OpenAISettings.GetProvider()
 	if baseURL := settings.OpenAISettings.GetBaseURL(); openai["base_url"] == "" && baseURL != "" {
 		openai["base_url"] = baseURL
 	}
-	openai["token"] = redactedSensitiveValue
 
 	return gin.H{
 		"app":       app,
 		"server":    cSettings.ServerSettings,
 		"database":  settings.DatabaseSettings,
-		"auth":      settings.AuthSettings,
-		"casdoor":   settings.CasdoorSettings,
-		"oidc":      settings.OIDCSettings,
-		"cert":      settings.CertSettings,
-		"http":      settings.HTTPSettings,
-		"logrotate": settings.LogrotateSettings,
-		"nginx":     settings.NginxSettings,
-		"node":      node,
+		"auth":      cloneRedactedSettingsSection(settings.AuthSettings),
+		"casdoor":   cloneRedactedSettingsSection(settings.CasdoorSettings),
+		"oidc":      cloneRedactedSettingsSection(settings.OIDCSettings),
+		"cert":      cloneRedactedSettingsSection(settings.CertSettings),
+		"http":      cloneRedactedSettingsSection(settings.HTTPSettings),
+		"logrotate": cloneRedactedSettingsSection(settings.LogrotateSettings),
+		"nginx":     cloneRedactedSettingsSection(settings.NginxSettings),
+		"node":      cloneRedactedSettingsSection(settings.NodeSettings),
 		"openai":    openai,
-		"terminal":  settings.TerminalSettings,
+		"terminal":  cloneRedactedSettingsSection(settings.TerminalSettings),
 		"webauthn":  settings.WebAuthnSettings,
 	}
 }

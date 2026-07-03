@@ -39,30 +39,54 @@ func TestSaveSettingsRejectsNegativeLogrotateInterval(t *testing.T) {
 func TestGetSettingsRedactsSensitiveFields(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
-	originalJWTSecret := cSettings.AppSettings.JwtSecret
-	originalPageSize := cSettings.AppSettings.PageSize
-	originalNodeSecret := appsettings.NodeSettings.Secret
-	originalNodeName := appsettings.NodeSettings.Name
-	originalOpenAIToken := appsettings.OpenAISettings.Token
-	originalReloadCmd := appsettings.NginxSettings.ReloadCmd
-	originalRestartCmd := appsettings.NginxSettings.RestartCmd
+	originalApp := *cSettings.AppSettings
+	originalAuth := *appsettings.AuthSettings
+	originalCasdoor := *appsettings.CasdoorSettings
+	originalCert := *appsettings.CertSettings
+	originalHTTP := *appsettings.HTTPSettings
+	originalLogrotate := *appsettings.LogrotateSettings
+	originalNginx := *appsettings.NginxSettings
+	originalNode := *appsettings.NodeSettings
+	originalOIDC := *appsettings.OIDCSettings
+	originalOpenAI := *appsettings.OpenAISettings
+	originalTerminal := *appsettings.TerminalSettings
 	defer func() {
-		cSettings.AppSettings.JwtSecret = originalJWTSecret
-		cSettings.AppSettings.PageSize = originalPageSize
-		appsettings.NodeSettings.Secret = originalNodeSecret
-		appsettings.NodeSettings.Name = originalNodeName
-		appsettings.OpenAISettings.Token = originalOpenAIToken
-		appsettings.NginxSettings.ReloadCmd = originalReloadCmd
-		appsettings.NginxSettings.RestartCmd = originalRestartCmd
+		*cSettings.AppSettings = originalApp
+		*appsettings.AuthSettings = originalAuth
+		*appsettings.CasdoorSettings = originalCasdoor
+		*appsettings.CertSettings = originalCert
+		*appsettings.HTTPSettings = originalHTTP
+		*appsettings.LogrotateSettings = originalLogrotate
+		*appsettings.NginxSettings = originalNginx
+		*appsettings.NodeSettings = originalNode
+		*appsettings.OIDCSettings = originalOIDC
+		*appsettings.OpenAISettings = originalOpenAI
+		*appsettings.TerminalSettings = originalTerminal
 	}()
 
 	cSettings.AppSettings.JwtSecret = "jwt-secret"
 	cSettings.AppSettings.PageSize = 50
-	appsettings.NodeSettings.Secret = "node-secret"
-	appsettings.NodeSettings.Name = "local-node"
-	appsettings.OpenAISettings.Token = "openai-secret"
+	appsettings.AuthSettings.IPWhiteList = []string{"192.0.2.1"}
+	appsettings.CasdoorSettings.Endpoint = "https://casdoor.example.com"
+	appsettings.CasdoorSettings.ClientId = "casdoor-client-id"
+	appsettings.CasdoorSettings.ClientSecret = "casdoor-secret"
+	appsettings.CertSettings.Email = "admin@example.com"
+	appsettings.HTTPSettings.GithubProxy = "https://proxy.example.com"
+	appsettings.HTTPSettings.InsecureSkipVerify = true
+	appsettings.LogrotateSettings.CMD = "logrotate /etc/logrotate.d/nginx"
+	appsettings.NginxSettings.LogDirWhiteList = []string{"/var/log/nginx"}
 	appsettings.NginxSettings.ReloadCmd = "nginx -s reload"
 	appsettings.NginxSettings.RestartCmd = "nginx -s restart"
+	appsettings.NginxSettings.TestConfigCmd = "nginx -t"
+	appsettings.NodeSettings.Secret = "node-secret"
+	appsettings.NodeSettings.Name = "local-node"
+	appsettings.NodeSettings.SkipInstallation = true
+	appsettings.OIDCSettings.ClientId = "oidc-client-id"
+	appsettings.OIDCSettings.ClientSecret = "oidc-secret"
+	appsettings.OIDCSettings.Endpoint = "https://oidc.example.com"
+	appsettings.OpenAISettings.Token = "openai-secret"
+	appsettings.OpenAISettings.Model = "gpt-test"
+	appsettings.TerminalSettings.StartCmd = "login"
 
 	w := httptest.NewRecorder()
 	c, _ := gin.CreateTestContext(w)
@@ -79,7 +103,25 @@ func TestGetSettingsRedactsSensitiveFields(t *testing.T) {
 	assert.Equal(t, float64(50), body["app"]["page_size"])
 	assert.Equal(t, redactedSensitiveValue, body["node"]["secret"])
 	assert.Equal(t, "local-node", body["node"]["name"])
+	assert.Equal(t, true, body["node"]["skip_installation"])
 	assert.Equal(t, redactedSensitiveValue, body["openai"]["token"])
+	assert.Equal(t, "gpt-test", body["openai"]["model"])
+	assert.Equal(t, redactedSensitiveValue, body["casdoor"]["endpoint"])
+	assert.Equal(t, redactedSensitiveValue, body["casdoor"]["client_id"])
+	assert.Equal(t, redactedSensitiveValue, body["casdoor"]["client_secret"])
+	assert.Equal(t, redactedSensitiveValue, body["oidc"]["client_id"])
+	assert.Equal(t, redactedSensitiveValue, body["oidc"]["client_secret"])
+	assert.Equal(t, redactedSensitiveValue, body["oidc"]["endpoint"])
+	assert.Equal(t, redactedSensitiveValue, body["cert"]["email"])
+	assert.Equal(t, "https://proxy.example.com", body["http"]["github_proxy"])
+	assert.Equal(t, true, body["http"]["insecure_skip_verify"])
+	assert.Equal(t, redactedSensitiveValue, body["logrotate"]["cmd"])
+	assert.Equal(t, redactedSensitiveValue, body["nginx"]["reload_cmd"])
+	assert.Equal(t, redactedSensitiveValue, body["nginx"]["restart_cmd"])
+	assert.Equal(t, redactedSensitiveValue, body["nginx"]["test_config_cmd"])
+	assert.Equal(t, []any{redactedSensitiveValue}, body["nginx"]["log_dir_white_list"])
+	assert.Equal(t, []any{redactedSensitiveValue}, body["auth"]["ip_white_list"])
+	assert.Equal(t, redactedSensitiveValue, body["terminal"]["start_cmd"])
 }
 
 func TestRestoreRedactedSensitiveSettings(t *testing.T) {
@@ -114,10 +156,22 @@ func TestGetProtectedSetting(t *testing.T) {
 	defer cache.Shutdown()
 
 	originalJWTSecret := cSettings.AppSettings.JwtSecret
+	originalCasdoor := *appsettings.CasdoorSettings
+	originalNodeSecret := appsettings.NodeSettings.Secret
+	originalOIDC := *appsettings.OIDCSettings
+	originalOpenAIToken := appsettings.OpenAISettings.Token
 	defer func() {
 		cSettings.AppSettings.JwtSecret = originalJWTSecret
+		*appsettings.CasdoorSettings = originalCasdoor
+		appsettings.NodeSettings.Secret = originalNodeSecret
+		*appsettings.OIDCSettings = originalOIDC
+		appsettings.OpenAISettings.Token = originalOpenAIToken
 	}()
 	cSettings.AppSettings.JwtSecret = "jwt-secret"
+	appsettings.CasdoorSettings.ClientSecret = "casdoor-secret"
+	appsettings.NodeSettings.Secret = "node-secret"
+	appsettings.OIDCSettings.ClientSecret = "oidc-secret"
+	appsettings.OpenAISettings.Token = "openai-secret"
 
 	t.Run("rejects missing secure session", func(t *testing.T) {
 		r := gin.New()
@@ -149,6 +203,21 @@ func TestGetProtectedSetting(t *testing.T) {
 		r.ServeHTTP(w, req)
 
 		assert.Equal(t, http.StatusForbidden, w.Code)
+	})
+
+	t.Run("rejects users without 2fa", func(t *testing.T) {
+		r := gin.New()
+		r.GET("/api/settings/protected", func(c *gin.Context) {
+			c.Set("user", &model.User{
+				Model: model.Model{ID: 5},
+			})
+		}, middleware.RequireSecureSession(), GetProtectedSetting)
+
+		req := httptest.NewRequest(http.MethodGet, "/api/settings/protected?path=app.jwt_secret", nil)
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, req)
+
+		assert.Equal(t, http.StatusUnauthorized, w.Code)
 	})
 
 	t.Run("rejects invalid path", func(t *testing.T) {
@@ -190,6 +259,40 @@ func TestGetProtectedSetting(t *testing.T) {
 		err := json.Unmarshal(w.Body.Bytes(), &body)
 		assert.NoError(t, err)
 		assert.Equal(t, "jwt-secret", body["value"])
+	})
+
+	t.Run("returns reflected protected values", func(t *testing.T) {
+		testCases := map[string]string{
+			"casdoor.client_secret": "casdoor-secret",
+			"node.secret":           "node-secret",
+			"oidc.client_secret":    "oidc-secret",
+			"openai.token":          "openai-secret",
+		}
+
+		for path, want := range testCases {
+			t.Run(path, func(t *testing.T) {
+				r := gin.New()
+				r.GET("/api/settings/protected", func(c *gin.Context) {
+					user := &model.User{
+						Model:     model.Model{ID: 6},
+						OTPSecret: []byte("otp-enabled"),
+					}
+					c.Set("user", user)
+				}, middleware.RequireSecureSession(), GetProtectedSetting)
+
+				req := httptest.NewRequest(http.MethodGet, "/api/settings/protected?path="+path, nil)
+				req.Header.Set("X-Secure-Session-ID", internaluser.SetSecureSessionID(6))
+				w := httptest.NewRecorder()
+				r.ServeHTTP(w, req)
+
+				assert.Equal(t, http.StatusOK, w.Code)
+
+				var body map[string]string
+				err := json.Unmarshal(w.Body.Bytes(), &body)
+				assert.NoError(t, err)
+				assert.Equal(t, want, body["value"])
+			})
+		}
 	})
 }
 

@@ -3,22 +3,9 @@ package settings
 import (
 	"net/http"
 
-	"github.com/0xJacky/Nginx-UI/settings"
+	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/gin-gonic/gin"
-	cSettings "github.com/uozi-tech/cosy/settings"
 )
-
-var protectedSettingRevealAllowlist = map[string]func() string{
-	"app.jwt_secret": func() string {
-		return cSettings.AppSettings.JwtSecret
-	},
-	"node.secret": func() string {
-		return settings.NodeSettings.Secret
-	},
-	"openai.token": func() string {
-		return settings.OpenAISettings.Token
-	},
-}
 
 func GetProtectedSetting(c *gin.Context) {
 	if _, ok := c.Get("Secret"); ok {
@@ -28,8 +15,15 @@ func GetProtectedSetting(c *gin.Context) {
 		return
 	}
 
+	if verified, _ := c.Get(middleware.SecureSessionVerifiedKey); verified != true {
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+			"message": "Two-factor authentication is required to reveal protected settings",
+		})
+		return
+	}
+
 	path := c.Query("path")
-	getter, ok := protectedSettingRevealAllowlist[path]
+	value, ok := getProtectedSettingValue(path)
 	if !ok {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"message": "Protected setting path is invalid",
@@ -38,6 +32,6 @@ func GetProtectedSetting(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"value": getter(),
+		"value": value,
 	})
 }
