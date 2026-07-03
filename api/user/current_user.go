@@ -11,6 +11,18 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+func verifyCurrentPassword(c *gin.Context, password string) bool {
+	user := api.CurrentUser(c)
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)); err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"message": "Current password is invalid",
+		})
+		return false
+	}
+
+	return true
+}
+
 func GetCurrentUser(c *gin.Context) {
 	user := api.CurrentUser(c)
 	c.JSON(http.StatusOK, user)
@@ -50,8 +62,7 @@ func UpdateCurrentUserPassword(c *gin.Context) {
 	}
 
 	user := api.CurrentUser(c)
-	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(json.OldPassword)); err != nil {
-		cosy.ErrHandler(c, err)
+	if !verifyCurrentPassword(c, json.OldPassword) {
 		return
 	}
 

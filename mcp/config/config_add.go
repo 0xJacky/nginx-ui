@@ -64,6 +64,11 @@ func handleNginxConfigAdd(ctx context.Context, request mcpgo.CallToolRequest) (*
 		return nil, err
 	}
 
+	err = config.ValidateConfigFile(path, content)
+	if err != nil {
+		return nil, err
+	}
+
 	if !overwrite && helper.FileExists(path) {
 		return nil, ErrFileAlreadyExists
 	}

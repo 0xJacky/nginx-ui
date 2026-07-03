@@ -32,19 +32,18 @@ func InitUserRouter(r *gin.RouterGroup) {
 	r.GET("/2fa_secure_session/passkey", BeginStart2FASecureSessionByPasskey)
 	r.POST("/2fa_secure_session/passkey", FinishStart2FASecureSessionByPasskey)
 
-	r.GET("/otp_secret", GenerateTOTP)
-	r.POST("/otp_enroll", EnrollTOTP)
-
-	r.GET("/begin_passkey_register", BeginPasskeyRegistration)
-	r.POST("/finish_passkey_register", FinishPasskeyRegistration)
-
 	r.GET("/passkeys", GetPasskeyList)
-	r.POST("/passkeys/:id", UpdatePasskey)
-	r.DELETE("/passkeys/:id", DeletePasskey)
 
 	o := r.Group("", middleware.RequireSecureSession())
 	{
+		o.GET("/otp_secret", GenerateTOTP)
+		o.POST("/otp_enroll", EnrollTOTP)
 		o.GET("/otp_reset", ResetOTP)
+
+		o.GET("/begin_passkey_register", BeginPasskeyRegistration)
+		o.POST("/finish_passkey_register", FinishPasskeyRegistration)
+		o.POST("/passkeys/:id", UpdatePasskey)
+		o.DELETE("/passkeys/:id", DeletePasskey)
 
 		o.GET("/recovery_codes", ViewRecoveryCodes)
 		o.GET("/recovery_codes_generate", GenerateRecoveryCodes)

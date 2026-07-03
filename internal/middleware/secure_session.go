@@ -57,7 +57,7 @@ func RequireSecureSession() gin.HandlerFunc {
 			return
 		}
 		cUser := u.(*model.User)
-		if !cUser.EnabledOTP() {
+		if !userNeedsSecureSession(cUser) {
 			c.Next()
 			return
 		}
@@ -81,4 +81,16 @@ func RequireSecureSession() gin.HandlerFunc {
 			"message": "Secure Session ID is invalid",
 		})
 	}
+}
+
+func userNeedsSecureSession(cUser *model.User) bool {
+	if cUser.EnabledOTP() || cUser.EnabledTwoFA {
+		return true
+	}
+
+	if cUser.ID == 0 || model.UseDB() == nil {
+		return false
+	}
+
+	return cUser.EnabledPasskey()
 }

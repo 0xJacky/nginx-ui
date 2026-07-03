@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Cert } from '@/api/cert'
 import cert from '@/api/cert'
+import use2FAModal from '@/components/TwoFA/use2FAModal'
 import { AutoCertState } from '@/constants'
 import { useWebSocket } from '@/lib/websocket'
 
@@ -13,6 +14,7 @@ const props = defineProps<{
 const emit = defineEmits(['removed'])
 
 const { message } = App.useApp()
+const otpModal = use2FAModal()
 
 const modalVisible = ref(false)
 const confirmLoading = ref(false)
@@ -31,7 +33,7 @@ function handleDelete() {
 }
 
 // Handle confirmation
-function handleConfirm() {
+async function handleConfirm() {
   // If revocation is checked but confirmation text is not correct
   if (shouldRevoke.value && revokeInput.value !== $gettext('Revoke')) {
     message.error($gettext('Please type "Revoke" to confirm'))
@@ -41,8 +43,18 @@ function handleConfirm() {
   confirmLoading.value = true
 
   if (shouldRevoke.value) {
-    // Revoke certificate using WebSocket
-    const { ws } = useWebSocket(`/api/certs/${props.id}/revoke`, false)
+    let secureSessionId = ''
+    try {
+      secureSessionId = await otpModal.open()
+    }
+    catch {
+      confirmLoading.value = false
+      return
+    }
+
+    const { ws } = useWebSocket(`/api/certs/${props.id}/revoke`, false, undefined, {
+      'X-Secure-Session-ID': secureSessionId,
+    })
     const socket = ws.value!
 
     socket.onmessage = m => {

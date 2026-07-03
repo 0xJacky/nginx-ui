@@ -9,8 +9,12 @@ export interface Passkey extends ModelBase {
 }
 
 const passkey = {
-  begin_registration() {
-    return http.get('/begin_passkey_register')
+  begin_registration(password: string) {
+    return http.get('/begin_passkey_register', {
+      headers: {
+        'X-Current-Password': password,
+      },
+    })
   },
   finish_registration(attestationResponse: RegistrationResponseJSON, passkeyName: string) {
     return http.post('/finish_passkey_register', attestationResponse, {

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	pathpkg "path"
 	"path/filepath"
 	"strings"
 	"time"
@@ -150,14 +151,9 @@ func createEncryptedBackup(autoBackup *model.AutoBackup) (*ExecutionResult, erro
 	filename := fmt.Sprintf("%s_%d.zip", autoBackup.GetName(), time.Now().Unix())
 
 	// Determine output path based on storage type
-	var outputPath string
-	if autoBackup.StorageType == model.StorageTypeS3 {
-		// For S3 storage, create temporary file
-		tempDir := os.TempDir()
-		outputPath = filepath.Join(tempDir, filename)
-	} else {
-		// For local storage, use the configured storage path
-		outputPath = filepath.Join(autoBackup.StoragePath, filename)
+	outputPath, err := buildAutoBackupOutputPath(autoBackup, filename)
+	if err != nil {
+		return nil, err
 	}
 
 	// Create backup using the main backup function
@@ -207,14 +203,9 @@ func createCustomDirectoryBackup(autoBackup *model.AutoBackup) (*ExecutionResult
 	filename := fmt.Sprintf("custom_dir_%s_%d.zip", autoBackup.GetName(), time.Now().Unix())
 
 	// Determine output path based on storage type
-	var outputPath string
-	if autoBackup.StorageType == model.StorageTypeS3 {
-		// For S3 storage, create temporary file
-		tempDir := os.TempDir()
-		outputPath = filepath.Join(tempDir, filename)
-	} else {
-		// For local storage, use the configured storage path
-		outputPath = filepath.Join(autoBackup.StoragePath, filename)
+	outputPath, err := buildAutoBackupOutputPath(autoBackup, filename)
+	if err != nil {
+		return nil, err
 	}
 
 	// Create unencrypted ZIP archive of the custom directory
@@ -260,6 +251,113 @@ func writeKeyFile(keyPath, aesKey, aesIv string) error {
 		return cosy.WrapErrorWithParams(ErrAutoBackupWriteKeyFile, err.Error())
 	}
 	return nil
+}
+
+func buildAutoBackupOutputPath(autoBackup *model.AutoBackup, filename string) (string, error) {
+	baseDir := autoBackup.StoragePath
+	if autoBackup.StorageType == model.StorageTypeS3 {
+		baseDir = os.TempDir()
+	}
+
+	return resolveAutoBackupOutputPath(baseDir, filename)
+}
+
+func resolveAutoBackupOutputPath(baseDir, filename string) (string, error) {
+	if strings.TrimSpace(baseDir) == "" {
+		return "", cosy.WrapErrorWithParams(ErrInvalidPath, "storage path cannot be empty")
+	}
+
+	if err := validateAutoBackupFilename(filename); err != nil {
+		return "", err
+	}
+
+	cleanBaseDir := filepath.Clean(baseDir)
+	outputPath := filepath.Join(cleanBaseDir, filename)
+
+	baseDirAbs, err := filepath.Abs(cleanBaseDir)
+	if err != nil {
+		return "", cosy.WrapErrorWithParams(ErrInvalidPath, fmt.Sprintf("cannot resolve storage path %s: %v", baseDir, err))
+	}
+
+	outputPathAbs, err := filepath.Abs(outputPath)
+	if err != nil {
+		return "", cosy.WrapErrorWithParams(ErrInvalidPath, fmt.Sprintf("cannot resolve backup path %s: %v", outputPath, err))
+	}
+
+	if !isPathInsideBaseDir(baseDirAbs, outputPathAbs) {
+		return "", cosy.WrapErrorWithParams(ErrAutoBackupInvalidFilename,
+			fmt.Sprintf("backup path %s is outside storage path %s", outputPathAbs, baseDirAbs))
+	}
+
+	return outputPath, nil
+}
+
+func validateAutoBackupName(name string) error {
+	filenamePart := strings.ReplaceAll(strings.TrimSpace(name), " ", "_")
+	if filenamePart == "" {
+		return cosy.WrapErrorWithParams(ErrAutoBackupInvalidFilename, "name cannot be empty")
+	}
+
+	return validateAutoBackupFilename(filenamePart)
+}
+
+func validateAutoBackupFilename(filename string) error {
+	if strings.TrimSpace(filename) == "" {
+		return cosy.WrapErrorWithParams(ErrAutoBackupInvalidFilename, "filename cannot be empty")
+	}
+	if filename == "." {
+		return cosy.WrapErrorWithParams(ErrAutoBackupInvalidFilename, "filename cannot be current directory")
+	}
+	if filename != strings.TrimSpace(filename) {
+		return cosy.WrapErrorWithParams(ErrAutoBackupInvalidFilename, "filename contains leading or trailing whitespace")
+	}
+	if strings.Contains(filename, "\x00") {
+		return cosy.WrapErrorWithParams(ErrAutoBackupInvalidFilename, "filename contains null byte")
+	}
+	if filepath.IsAbs(filename) || pathpkg.IsAbs(filename) {
+		return cosy.WrapErrorWithParams(ErrAutoBackupInvalidFilename, "filename must be relative")
+	}
+	if hasWindowsDrivePrefix(filename) {
+		return cosy.WrapErrorWithParams(ErrAutoBackupInvalidFilename, "filename contains Windows drive prefix")
+	}
+	if strings.HasPrefix(filename, `\\`) {
+		return cosy.WrapErrorWithParams(ErrAutoBackupInvalidFilename, "filename contains Windows UNC prefix")
+	}
+	if strings.ContainsAny(filename, `/\`) {
+		return cosy.WrapErrorWithParams(ErrAutoBackupInvalidFilename, "filename must not contain path separators")
+	}
+	if strings.Contains(filename, "..") {
+		return cosy.WrapErrorWithParams(ErrAutoBackupInvalidFilename, "filename must not contain directory traversal")
+	}
+	if filepath.Clean(filename) != filename || pathpkg.Clean(filename) != filename {
+		return cosy.WrapErrorWithParams(ErrAutoBackupInvalidFilename, "filename changes after cleaning")
+	}
+	if filepath.Base(filename) != filename || pathpkg.Base(filename) != filename {
+		return cosy.WrapErrorWithParams(ErrAutoBackupInvalidFilename, "filename must be a base name")
+	}
+
+	return nil
+}
+
+func hasWindowsDrivePrefix(value string) bool {
+	if len(value) < 2 || value[1] != ':' {
+		return false
+	}
+
+	first := value[0]
+	return (first >= 'a' && first <= 'z') || (first >= 'A' && first <= 'Z')
+}
+
+func isPathInsideBaseDir(baseDir, targetPath string) bool {
+	relPath, err := filepath.Rel(baseDir, targetPath)
+	if err != nil {
+		return false
+	}
+
+	return relPath != "." &&
+		!filepath.IsAbs(relPath) &&
+		relPath != ".." &&
+		!strings.HasPrefix(relPath, ".."+string(os.PathSeparator))
 }
 
 // updateBackupStatus updates the backup status in the database.
@@ -436,6 +534,12 @@ func cleanupLocalBackupFiles(result *ExecutionResult) error {
 // Returns:
 //   - error: CosyError if validation fails, nil if configuration is valid
 func ValidateAutoBackupConfig(config *model.AutoBackup) error {
+	if config.Name != "" {
+		if err := validateAutoBackupName(config.Name); err != nil {
+			return err
+		}
+	}
+
 	// Validate backup path for custom directory backup type
 	if config.BackupType == model.BackupTypeCustomDir {
 		if config.BackupPath == "" {

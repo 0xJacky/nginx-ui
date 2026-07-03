@@ -9,6 +9,7 @@ const { message } = App.useApp()
 
 const user = useUserStore()
 const passkeyName = ref('')
+const password = ref('')
 const addPasskeyModelOpen = ref(false)
 const passkeyEnabled = ref(false)
 
@@ -16,7 +17,7 @@ const regLoading = ref(false)
 async function registerPasskey() {
   regLoading.value = true
   try {
-    const optionsJSON = await passkey.begin_registration()
+    const optionsJSON = await passkey.begin_registration(password.value)
 
     const attestationResponse = await startRegistration({ optionsJSON })
 
@@ -26,6 +27,7 @@ async function registerPasskey() {
 
     message.success($gettext('Register passkey successfully'))
     addPasskeyModelOpen.value = false
+    password.value = ''
 
     user.passkeyRawId = attestationResponse.rawId
   }
@@ -37,6 +39,7 @@ async function registerPasskey() {
 function addPasskey() {
   addPasskeyModelOpen.value = true
   passkeyName.value = ''
+  password.value = ''
 }
 
 passkey.get_config_status().then(r => {
@@ -58,7 +61,7 @@ passkey.get_config_status().then(r => {
       :closable="!passkeyEnabled"
       :footer="passkeyEnabled ? undefined : false"
       :confirm-loading="regLoading"
-      :ok-button-props="{ disabled: !passkeyName }"
+      :ok-button-props="{ disabled: !passkeyName || !password }"
       @ok="registerPasskey"
     >
       <AForm
@@ -80,6 +83,12 @@ passkey.get_config_status().then(r => {
         </div>
         <AFormItem :label="$gettext('Name')">
           <AInput v-model:value="passkeyName" />
+        </AFormItem>
+        <AFormItem :label="$gettext('Current Password')">
+          <AInputPassword
+            v-model:value="password"
+            autocomplete="current-password"
+          />
         </AFormItem>
       </AForm>
       <div v-else>

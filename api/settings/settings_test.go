@@ -192,3 +192,24 @@ func TestGetProtectedSetting(t *testing.T) {
 		assert.Equal(t, "jwt-secret", body["value"])
 	})
 }
+
+func TestRemoveBannedIPRequiresSecureSessionForOTPUser(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+
+	r := gin.New()
+	group := r.Group("/api", func(c *gin.Context) {
+		c.Set("user", &model.User{
+			Model:     model.Model{ID: 4},
+			OTPSecret: []byte("otp-enabled"),
+		})
+		c.Next()
+	})
+	InitRouter(group)
+
+	req := httptest.NewRequest(http.MethodDelete, "/api/settings/auth/banned_ip", bytes.NewBufferString(`{"ip":"192.0.2.1"}`))
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	assert.Equal(t, http.StatusUnauthorized, w.Code)
+}

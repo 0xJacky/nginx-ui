@@ -12,5 +12,5 @@ func InitRouter(r *gin.RouterGroup) {
 	r.POST("settings", middleware.RequireSecureSession(), SaveSettings)
 
 	r.GET("settings/auth/banned_ips", GetBanLoginIP)
-	r.DELETE("settings/auth/banned_ip", RemoveBannedIP)
+	r.DELETE("settings/auth/banned_ip", middleware.RequireSecureSession(), RemoveBannedIP)
 }

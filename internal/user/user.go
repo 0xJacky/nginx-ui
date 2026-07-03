@@ -32,12 +32,33 @@ func GetUser(name string) (user *model.User, err error) {
 }
 
 func DeleteToken(token string) {
+	if token == "" {
+		return
+	}
+
 	// Remove from cache first
 	InvalidateTokenCache(token)
 
 	// Remove from database
 	q := query.AuthToken
 	_, _ = q.Where(q.Token.Eq(token)).Delete()
+}
+
+func DeleteShortToken(shortToken string) {
+	if shortToken == "" {
+		return
+	}
+
+	InvalidateShortTokenCache(shortToken)
+
+	db := model.UseDB()
+	if db == nil {
+		return
+	}
+
+	if err := db.Where("short_token = ?", shortToken).Delete(&model.AuthToken{}).Error; err != nil {
+		logger.Error(err)
+	}
 }
 
 func DeleteUserTokens(userID uint64) {
@@ -61,6 +82,9 @@ func DeleteUserTokens(userID uint64) {
 	for _, authToken := range authTokens {
 		if authToken.Token != "" {
 			InvalidateTokenCache(authToken.Token)
+		}
+		if authToken.ShortToken != "" {
+			InvalidateShortTokenCache(authToken.ShortToken)
 		}
 	}
 
@@ -134,7 +158,11 @@ func GetTokenUserByShortToken(shortToken string) (*model.User, bool) {
 	}
 
 	if authToken.ExpiredAt < time.Now().Unix() {
-		DeleteToken(authToken.Token)
+		if authToken.Token != "" {
+			DeleteToken(authToken.Token)
+		} else {
+			DeleteShortToken(authToken.ShortToken)
+		}
 		return nil, false
 	}
 

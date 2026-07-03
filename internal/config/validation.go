@@ -1,7 +1,6 @@
 package config
 
 import (
-	"bytes"
 	"path/filepath"
 	"strings"
 	"unicode"
@@ -145,6 +144,8 @@ var blockedConfigDirectives = map[string]struct{}{
 	"js_set":                            {},
 	"js_shared_dict_zone":               {},
 	"js_var":                            {},
+	"lua_package_cpath":                 {},
+	"lua_package_path":                  {},
 	"perl":                              {},
 	"perl_modules":                      {},
 	"perl_require":                      {},
@@ -155,6 +156,24 @@ var blockedDynamicModules = []string{
 	"ngx_http_js_module.so",
 	"ngx_stream_js_module.so",
 	"ngx_http_perl_module.so",
+}
+
+type nginxConfigTokenKind int
+
+const (
+	nginxConfigTokenWord nginxConfigTokenKind = iota
+	nginxConfigTokenSymbol
+)
+
+type nginxConfigToken struct {
+	kind   nginxConfigTokenKind
+	value  string
+	symbol rune
+}
+
+type nginxConfigLexer struct {
+	content []byte
+	offset  int
 }
 
 func ValidateConfigFile(path string, content string) error {
@@ -246,66 +265,167 @@ func ValidateConfigContentBytes(content []byte) error {
 }
 
 func ValidateConfigDirectives(content []byte) error {
-	for _, line := range bytes.Split(content, []byte("\n")) {
-		trimmed := strings.TrimSpace(string(line))
-		if trimmed == "" || strings.HasPrefix(trimmed, "#") {
+	lexer := &nginxConfigLexer{content: content}
+	statement := make([]string, 0, 4)
+
+	for {
+		token, ok := lexer.nextToken()
+		if !ok {
+			return validateConfigStatement(statement)
+		}
+
+		if token.kind == nginxConfigTokenWord {
+			statement = append(statement, token.value)
 			continue
 		}
 
-		directive := firstDirectiveToken(trimmed)
-		if directive == "" {
-			continue
+		switch token.symbol {
+		case ';', '{':
+			if err := validateConfigStatement(statement); err != nil {
+				return err
+			}
+			statement = statement[:0]
+		case '}':
+			statement = statement[:0]
 		}
+	}
+}
 
-		if directive == "user" && configuresRootWorkers(trimmed) {
-			return cosy.WrapErrorWithParams(ErrConfigDirectiveNotAllowed, "user root")
-		}
+func validateConfigStatement(statement []string) error {
+	if len(statement) == 0 {
+		return nil
+	}
 
-		if directive == "load_module" && loadsRestrictedDynamicModule(trimmed) {
-			return cosy.WrapErrorWithParams(ErrConfigDirectiveNotAllowed, "load_module")
-		}
+	directive := strings.ToLower(statement[0])
+	if directive == "" {
+		return nil
+	}
 
-		if _, blocked := blockedConfigDirectives[directive]; blocked {
-			return cosy.WrapErrorWithParams(ErrConfigDirectiveNotAllowed, directive)
-		}
+	if directive == "user" && configuresRootWorkers(statement) {
+		return cosy.WrapErrorWithParams(ErrConfigDirectiveNotAllowed, "user root")
+	}
+
+	if directive == "load_module" && loadsRestrictedDynamicModule(statement) {
+		return cosy.WrapErrorWithParams(ErrConfigDirectiveNotAllowed, "load_module")
+	}
+
+	if isBlockedConfigDirective(directive) {
+		return cosy.WrapErrorWithParams(ErrConfigDirectiveNotAllowed, directive)
 	}
 
 	return nil
 }
 
-func firstDirectiveToken(line string) string {
-	end := 0
-	for end < len(line) {
-		ch := line[end]
-		if (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || ch == '_' {
-			end++
+func (lexer *nginxConfigLexer) nextToken() (nginxConfigToken, bool) {
+	for lexer.offset < len(lexer.content) {
+		r, size := utf8.DecodeRune(lexer.content[lexer.offset:])
+		if unicode.IsSpace(r) {
+			lexer.offset += size
 			continue
 		}
-		break
+
+		if r == '#' {
+			lexer.skipComment()
+			continue
+		}
+
+		if r == ';' || r == '{' || r == '}' {
+			lexer.offset += size
+			return nginxConfigToken{kind: nginxConfigTokenSymbol, symbol: r}, true
+		}
+
+		if r == '"' || r == '\'' {
+			return lexer.readQuotedToken(r, size), true
+		}
+
+		return lexer.readUnquotedToken(), true
 	}
 
-	if end == 0 {
-		return ""
-	}
-
-	return strings.ToLower(line[:end])
+	return nginxConfigToken{}, false
 }
 
-func configuresRootWorkers(line string) bool {
-	fields := strings.Fields(line)
-	if len(fields) < 2 {
+func (lexer *nginxConfigLexer) skipComment() {
+	for lexer.offset < len(lexer.content) {
+		r, size := utf8.DecodeRune(lexer.content[lexer.offset:])
+		lexer.offset += size
+		if r == '\n' || r == '\r' {
+			return
+		}
+	}
+}
+
+func (lexer *nginxConfigLexer) readQuotedToken(quote rune, quoteSize int) nginxConfigToken {
+	var builder strings.Builder
+	lexer.offset += quoteSize
+
+	for lexer.offset < len(lexer.content) {
+		r, size := utf8.DecodeRune(lexer.content[lexer.offset:])
+		lexer.offset += size
+
+		if r == quote {
+			break
+		}
+
+		if r == '\\' && lexer.offset < len(lexer.content) {
+			escaped, escapedSize := utf8.DecodeRune(lexer.content[lexer.offset:])
+			lexer.offset += escapedSize
+			builder.WriteRune(escaped)
+			continue
+		}
+
+		builder.WriteRune(r)
+	}
+
+	return nginxConfigToken{kind: nginxConfigTokenWord, value: builder.String()}
+}
+
+func (lexer *nginxConfigLexer) readUnquotedToken() nginxConfigToken {
+	var builder strings.Builder
+
+	for lexer.offset < len(lexer.content) {
+		r, size := utf8.DecodeRune(lexer.content[lexer.offset:])
+		if unicode.IsSpace(r) || r == ';' || r == '{' || r == '}' || r == '#' {
+			break
+		}
+
+		lexer.offset += size
+		if r == '\\' && lexer.offset < len(lexer.content) {
+			escaped, escapedSize := utf8.DecodeRune(lexer.content[lexer.offset:])
+			lexer.offset += escapedSize
+			builder.WriteRune(escaped)
+			continue
+		}
+
+		builder.WriteRune(r)
+	}
+
+	return nginxConfigToken{kind: nginxConfigTokenWord, value: builder.String()}
+}
+
+func isBlockedConfigDirective(directive string) bool {
+	if strings.HasPrefix(directive, "js_") || strings.HasPrefix(directive, "perl_") {
+		return true
+	}
+
+	_, blocked := blockedConfigDirectives[directive]
+	return blocked
+}
+
+func configuresRootWorkers(statement []string) bool {
+	if len(statement) < 2 {
 		return false
 	}
 
-	userValue := strings.Trim(fields[1], ";\"'")
-	return strings.EqualFold(userValue, "root")
+	return strings.EqualFold(statement[1], "root")
 }
 
-func loadsRestrictedDynamicModule(line string) bool {
-	lowerLine := strings.ToLower(line)
-	for _, moduleName := range blockedDynamicModules {
-		if strings.Contains(lowerLine, moduleName) {
-			return true
+func loadsRestrictedDynamicModule(statement []string) bool {
+	for _, token := range statement[1:] {
+		lowerToken := strings.ToLower(token)
+		for _, moduleName := range blockedDynamicModules {
+			if strings.Contains(lowerToken, strings.ToLower(moduleName)) {
+				return true
+			}
 		}
 	}
 

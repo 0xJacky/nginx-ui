@@ -1,12 +1,19 @@
 package middleware
 
 import (
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
+	"github.com/0xJacky/Nginx-UI/internal/cache"
+	internaluser "github.com/0xJacky/Nginx-UI/internal/user"
+	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
 )
 
 func TestSecureSessionCookie(t *testing.T) {
@@ -107,4 +114,40 @@ func TestEnsureSecureSessionCookie(t *testing.T) {
 	assert.True(t, found.HttpOnly, "cookie must be HttpOnly")
 	assert.Equal(t, http.SameSiteLaxMode, found.SameSite, "cookie must be SameSite=Lax")
 	assert.Equal(t, "/", found.Path)
+}
+
+func TestRequireSecureSessionAppliesToPasskeyOnlyUsers(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	cache.InitInMemoryCache()
+	t.Cleanup(cache.Shutdown)
+
+	dbName := fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name())
+	db, err := gorm.Open(sqlite.Open(dbName), &gorm.Config{})
+	require.NoError(t, err)
+	require.NoError(t, db.AutoMigrate(&model.User{}, &model.Passkey{}))
+	model.Use(db)
+
+	passkeyUser := &model.User{Model: model.Model{ID: 1}, Name: "passkey", Status: true}
+	require.NoError(t, db.Create(passkeyUser).Error)
+	require.NoError(t, db.Create(&model.Passkey{UserID: passkeyUser.ID, Name: "key"}).Error)
+
+	router := gin.New()
+	router.POST("/sensitive", func(c *gin.Context) {
+		c.Set("user", passkeyUser)
+		c.Next()
+	}, RequireSecureSession(), func(c *gin.Context) {
+		c.String(http.StatusOK, "ok")
+	})
+
+	req := httptest.NewRequest(http.MethodPost, "/sensitive", nil)
+	w := httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+	require.Equal(t, http.StatusUnauthorized, w.Code)
+
+	sessionID := internaluser.SetSecureSessionID(passkeyUser.ID)
+	req = httptest.NewRequest(http.MethodPost, "/sensitive", nil)
+	req.Header.Set("X-Secure-Session-ID", sessionID)
+	w = httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+	require.Equal(t, http.StatusOK, w.Code)
 }

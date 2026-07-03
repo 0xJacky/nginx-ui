@@ -17,7 +17,7 @@ const (
 	tokenCachePrefix      = "auth_token:"
 	shortTokenCachePrefix = "short_token:"
 	userCachePrefix       = "user:"
-	
+
 	// Cache TTL
 	tokenCacheTTL = 24 * time.Hour
 )
@@ -44,7 +44,7 @@ var (
 // InitTokenCache loads all active tokens into cache on startup
 func InitTokenCache(ctx context.Context) {
 	logger.Info("Initializing token cache...")
-	
+
 	q := query.AuthToken
 	authTokens, err := q.Where(q.ExpiredAt.Gte(time.Now().Unix())).Find()
 	if err != nil {
@@ -76,7 +76,7 @@ func InitTokenCache(ctx context.Context) {
 			shortTokenKey := shortTokenCachePrefix + authToken.ShortToken
 			cache.Set(shortTokenKey, cacheData, tokenCacheTTL)
 		}
-		
+
 		loaded++
 	}
 
@@ -189,7 +189,7 @@ func CacheUser(user *model.User) {
 		User:     user,
 		CachedAt: time.Now(),
 	}
-	
+
 	cache.Set(userKey, cacheData, tokenCacheTTL)
 }
 
@@ -232,8 +232,27 @@ func InvalidateTokenCache(token string) {
 			cache.Del(shortTokenCachePrefix + tokenData.ShortToken)
 		}
 	}
-	
+
 	cache.Del(tokenKey)
+}
+
+// InvalidateShortTokenCache removes short token data from cache.
+func InvalidateShortTokenCache(shortToken string) {
+	if shortToken == "" {
+		return
+	}
+
+	cacheMutex.Lock()
+	defer cacheMutex.Unlock()
+
+	shortTokenKey := shortTokenCachePrefix + shortToken
+	if data, found := cache.Get(shortTokenKey); found {
+		if tokenData, ok := data.(*TokenCacheData); ok && tokenData.Token != "" {
+			cache.Del(tokenCachePrefix + tokenData.Token)
+		}
+	}
+
+	cache.Del(shortTokenKey)
 }
 
 // InvalidateUserCache removes user from cache
@@ -251,10 +270,10 @@ func ClearExpiredTokens() {
 	defer cacheMutex.Unlock()
 
 	now := time.Now().Unix()
-	
+
 	// Note: ristretto doesn't provide a way to iterate over all keys
 	// Expired tokens will be removed when accessed via GetCachedTokenData/GetCachedShortTokenData
 	// or when the cache reaches capacity limits
-	
+
 	logger.Debug(fmt.Sprintf("Cache cleanup completed at %d", now))
 }

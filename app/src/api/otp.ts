@@ -10,8 +10,8 @@ const otp = {
   generate_secret(): Promise<OTPGenerateSecretResponse> {
     return http.get('/otp_secret')
   },
-  enroll_otp(secret: string, passcode: string): Promise<RecoveryCodesResponse> {
-    return http.post('/otp_enroll', { secret, passcode })
+  enroll_otp(secret: string, passcode: string, password: string): Promise<RecoveryCodesResponse> {
+    return http.post('/otp_enroll', { secret, passcode, password })
   },
   reset() {
     return http.get('/otp_reset')

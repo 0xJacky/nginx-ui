@@ -1,6 +1,7 @@
 package user
 
 import (
+	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/settings"
@@ -63,6 +64,11 @@ func InitManageUserRouter(g *gin.RouterGroup) {
 			}
 		})
 	})
+
+	c.BeforeCreate(middleware.RequireSecureSession())
+	c.BeforeModify(middleware.RequireSecureSession())
+	c.BeforeDestroy(middleware.RequireSecureSession())
+	c.BeforeRecover(middleware.RequireSecureSession())
 
 	c.InitRouter(g)
 }

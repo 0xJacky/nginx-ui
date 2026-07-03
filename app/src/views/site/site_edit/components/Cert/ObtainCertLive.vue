@@ -2,6 +2,7 @@
 import type { Ref } from 'vue'
 import type { AutoCertOptions } from '@/api/auto_cert'
 import type { CertificateResult } from '@/api/cert'
+import use2FAModal from '@/components/TwoFA/use2FAModal'
 import { useWebSocket } from '@/lib/websocket'
 import { useSiteEditorStore } from '../SiteEditor/store'
 
@@ -14,6 +15,7 @@ const modalClosable = defineModel<boolean>('modalClosable')
 
 const editorStore = useSiteEditorStore()
 const { issuingCert } = storeToRefs(editorStore)
+const otpModal = use2FAModal()
 
 const progressStrokeColor = {
   from: '#108ee9',
@@ -36,6 +38,8 @@ function log(msg: string) {
 }
 
 async function issue_cert(config_name: string, server_name: string[], key_type: string) {
+  const secureSessionId = await otpModal.open()
+
   return new Promise<CertificateResult>((resolve, reject) => {
     progressStatus.value = 'active'
     modalClosable.value = false
@@ -45,7 +49,9 @@ async function issue_cert(config_name: string, server_name: string[], key_type: 
 
     log($gettext('Getting the certificate, please wait...'))
 
-    const { ws } = useWebSocket(`/api/domain/${config_name}/cert`, false)
+    const { ws } = useWebSocket(`/api/domain/${config_name}/cert`, false, undefined, {
+      'X-Secure-Session-ID': secureSessionId,
+    })
     const socket = ws.value!
 
     socket.onopen = () => {

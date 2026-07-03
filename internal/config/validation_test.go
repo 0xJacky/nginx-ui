@@ -146,3 +146,121 @@ func TestValidateConfigContentBytes(t *testing.T) {
 		})
 	}
 }
+
+func TestValidateConfigDirectivesRejectsStatementSeparatedRestrictedDirectives(t *testing.T) {
+	tests := []struct {
+		name      string
+		content   string
+		wantParam string
+	}{
+		{
+			name:      "reject same-line lua package path after safe directive",
+			content:   `server { listen 80; lua_package_path "/tmp/?.lua;;"; }`,
+			wantParam: "lua_package_path",
+		},
+		{
+			name:      "reject same-line njs import after safe directive",
+			content:   "server { listen 80; js_import app.js; }\n",
+			wantParam: "js_import",
+		},
+		{
+			name:      "reject njs import after comment and whitespace",
+			content:   "server {\n    listen 80; # safe listener\n \t js_import app.js;\n}\n",
+			wantParam: "js_import",
+		},
+		{
+			name:      "reject escaped njs directive name",
+			content:   `server { listen 80; js\_import app.js; }`,
+			wantParam: "js_import",
+		},
+		{
+			name:      "reject root worker after same-line safe directive",
+			content:   "worker_processes auto; user root;\nevents {}\n",
+			wantParam: "user root",
+		},
+		{
+			name:      "reject restricted module after same-line safe directive",
+			content:   "pid nginx.pid; load_module modules/ngx_http_js_module.so;\nevents {}\n",
+			wantParam: "load_module",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := ValidateConfigContent(tt.content)
+			requireRestrictedDirectiveError(t, err, tt.wantParam)
+		})
+	}
+}
+
+func TestValidateConfigDirectivesAllowsSafeStatementsAndQuotedSemicolons(t *testing.T) {
+	tests := []struct {
+		name    string
+		content string
+	}{
+		{
+			name: "allow safe same-line config",
+			content: `server { listen 80; location / { proxy_pass http://127.0.0.1:8080; } }
+`,
+		},
+		{
+			name:    "allow restricted directive text inside quotes",
+			content: `server { listen 80; add_header X-Test "safe; js_import app.js;"; }`,
+		},
+		{
+			name:    "allow escaped semicolon inside safe directive argument",
+			content: `server { listen 80; add_header X-Test safe\;js_import; }`,
+		},
+		{
+			name: "allow restricted directive text inside comments",
+			content: `server {
+    listen 80; # js_import app.js;
+}
+`,
+		},
+		{
+			name: "allow existing lua block directives",
+			content: `server {
+    listen 443 ssl;
+    ssl_certificate_by_lua_block {
+        auto_ssl:ssl_certificate()
+    }
+}
+`,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := ValidateConfigContent(tt.content); err != nil {
+				t.Fatalf("ValidateConfigContent(%q) unexpected error: %v", tt.content, err)
+			}
+		})
+	}
+}
+
+func requireRestrictedDirectiveError(t *testing.T, err error, wantParam string) {
+	t.Helper()
+
+	if err == nil {
+		t.Fatalf("expected restricted directive error")
+	}
+
+	var cosyErr *cosy.Error
+	if !errors.As(err, &cosyErr) {
+		t.Fatalf("expected cosy error, got %v", err)
+	}
+
+	var wantErr *cosy.Error
+	if !errors.As(ErrConfigDirectiveNotAllowed, &wantErr) {
+		t.Fatalf("ErrConfigDirectiveNotAllowed is not a cosy error")
+	}
+
+	if cosyErr.Scope != wantErr.Scope || cosyErr.Code != wantErr.Code {
+		t.Fatalf("expected cosy error %s:%d, got %s:%d", wantErr.Scope, wantErr.Code, cosyErr.Scope, cosyErr.Code)
+	}
+
+	if len(cosyErr.Params) != 1 || cosyErr.Params[0] != wantParam {
+		t.Fatalf("expected params [%q], got %v", wantParam, cosyErr.Params)
+	}
+}

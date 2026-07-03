@@ -64,6 +64,8 @@ function issueCert() {
     data.value.key_type,
   ).then(resolveCert).catch(() => {
     // The live log already shows the issuance failure details.
+    modalClosable.value = true
+    issuingCert.value = false
   })
 }
 

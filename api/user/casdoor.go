@@ -1,6 +1,10 @@
 package user
 
 import (
+	"crypto/rand"
+	"crypto/sha256"
+	"crypto/subtle"
+	"encoding/hex"
 	"errors"
 	"fmt"
 	"net/http"
@@ -13,7 +17,13 @@ import (
 	"github.com/casdoor/casdoor-go-sdk/casdoorsdk"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
+	cSettings "github.com/uozi-tech/cosy/settings"
 	"gorm.io/gorm"
+)
+
+const (
+	casdoorStateCookie = "casdoor_state"
+	casdoorStateMaxAge = 300
 )
 
 type CasdoorLoginUser struct {
@@ -26,6 +36,10 @@ func CasdoorCallback(c *gin.Context) {
 
 	ok := cosy.BindAndValid(c, &loginUser)
 	if !ok {
+		return
+	}
+
+	if !validateCasdoorState(c, loginUser.State) {
 		return
 	}
 
@@ -89,10 +103,41 @@ func CasdoorCallback(c *gin.Context) {
 	})
 }
 
+func validateCasdoorState(c *gin.Context, loginState string) bool {
+	state, err := c.Cookie(casdoorStateCookie)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "State cookie not found",
+		})
+		return false
+	}
+
+	if !constantTimeStateEqual(state, loginState) {
+		c.JSON(http.StatusForbidden, gin.H{
+			"message": "State mismatch",
+		})
+		return false
+	}
+
+	setCasdoorStateCookie(c, "", -1)
+	return true
+}
+
+func constantTimeStateEqual(expected, actual string) bool {
+	expectedHash := sha256.Sum256([]byte(expected))
+	actualHash := sha256.Sum256([]byte(actual))
+	return subtle.ConstantTimeCompare(expectedHash[:], actualHash[:]) == 1
+}
+
+func setCasdoorStateCookie(c *gin.Context, value string, maxAge int) {
+	c.SetSameSite(http.SameSiteLaxMode)
+	c.SetCookie(casdoorStateCookie, value, maxAge, "/", "", cSettings.ServerSettings.EnableHTTPS, true)
+}
+
 func GetCasdoorUri(c *gin.Context) {
 	clientId := settings.CasdoorSettings.ClientId
 	redirectUri := settings.CasdoorSettings.RedirectUri
-	state := settings.CasdoorSettings.Application
+	application := settings.CasdoorSettings.Application
 
 	endpoint := settings.CasdoorSettings.Endpoint
 	// feature request #603
@@ -100,12 +145,22 @@ func GetCasdoorUri(c *gin.Context) {
 		endpoint = settings.CasdoorSettings.ExternalUrl
 	}
 
-	if endpoint == "" || clientId == "" || redirectUri == "" || state == "" {
+	if endpoint == "" || clientId == "" || redirectUri == "" || application == "" {
 		c.JSON(http.StatusOK, gin.H{
 			"uri": "",
 		})
 		return
 	}
+
+	b := make([]byte, 16)
+	_, err := rand.Read(b)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	state := "nginx-ui-casdoor_" + hex.EncodeToString(b)
+	setCasdoorStateCookie(c, state, casdoorStateMaxAge)
 
 	encodedRedirectUri := url.QueryEscape(redirectUri)
 

@@ -23,6 +23,7 @@ const resetting = ref(false)
 const generatedUrl = ref('')
 const secret = ref('')
 const passcode = ref('')
+const password = ref('')
 const refOtp = useTemplateRef('refOtp')
 
 function clickEnable2FA() {
@@ -34,13 +35,21 @@ function generateSecret() {
   otp.generate_secret().then(r => {
     secret.value = r.secret
     generatedUrl.value = r.url
+    password.value = ''
     refOtp.value?.clearInput()
   })
 }
 
 function enroll(code: string) {
-  otp.enroll_otp(secret.value, code).then(r => {
+  if (!password.value) {
+    message.error($gettext('Please enter your current password'))
+    refOtp.value?.clearInput()
+    return
+  }
+
+  otp.enroll_otp(secret.value, code, password.value).then(r => {
     enrolling.value = false
+    password.value = ''
     recoveryCodes.value = r.codes
     emit('refresh')
     message.success($gettext('Enable 2FA successfully'))
@@ -118,6 +127,14 @@ function reset2FA() {
         </div>
 
         <div>
+          <AForm layout="vertical">
+            <AFormItem :label="$gettext('Current Password')">
+              <AInputPassword
+                v-model:value="password"
+                autocomplete="current-password"
+              />
+            </AFormItem>
+          </AForm>
           <p>{{ $gettext('Input the code from the app:') }}</p>
           <OTPInput
             ref="refOtp"

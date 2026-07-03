@@ -61,8 +61,13 @@ func EnrollTOTP(c *gin.Context) {
 	var twoFA struct {
 		Secret   string `json:"secret" binding:"required"`
 		Passcode string `json:"passcode" binding:"required"`
+		Password string `json:"password" binding:"required"`
 	}
 	if !cosy.BindAndValid(c, &twoFA) {
+		return
+	}
+
+	if !verifyCurrentPassword(c, twoFA.Password) {
 		return
 	}
 

@@ -24,6 +24,7 @@ import (
 )
 
 const passkeyTimeout = 30 * time.Second
+const currentPasswordHeader = "X-Current-Password"
 
 func buildCachePasskeyRegKey(id uint64) string {
 	return fmt.Sprintf("passkey-reg-%d", id)
@@ -36,6 +37,10 @@ func GetPasskeyConfigStatus(c *gin.Context) {
 }
 
 func BeginPasskeyRegistration(c *gin.Context) {
+	if !verifyCurrentPassword(c, c.GetHeader(currentPasswordHeader)) {
+		return
+	}
+
 	u := api.CurrentUser(c)
 
 	webauthnInstance := passkey.GetInstance()

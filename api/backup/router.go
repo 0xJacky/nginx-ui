@@ -6,7 +6,7 @@ import (
 )
 
 func InitRouter(r *gin.RouterGroup) {
-	r.GET("/backup", middleware.AuthRequired(), CreateBackup)
+	r.GET("/backup", middleware.AuthRequired(), middleware.RequireSecureSession(), CreateBackup)
 	r.POST("/restore", middleware.AuthRequired(), middleware.RequireSecureSession(), middleware.EncryptedForm(), RestoreBackup)
 }
 
@@ -16,10 +16,13 @@ func InitSetupRouter(r *gin.RouterGroup) {
 
 func InitAutoBackupRouter(r *gin.RouterGroup) {
 	r.GET("/auto_backup", GetAutoBackupList)
-	r.POST("/auto_backup", CreateAutoBackup)
 	r.GET("/auto_backup/:id", GetAutoBackup)
-	r.POST("/auto_backup/:id", ModifyAutoBackup)
-	r.DELETE("/auto_backup/:id", DestroyAutoBackup)
-	r.PATCH("/auto_backup/:id", RestoreAutoBackup)
-	r.POST("/auto_backup/test_s3", TestS3Connection)
+	o := r.Group("", middleware.RequireSecureSession())
+	{
+		o.POST("/auto_backup", CreateAutoBackup)
+		o.POST("/auto_backup/:id", ModifyAutoBackup)
+		o.DELETE("/auto_backup/:id", DestroyAutoBackup)
+		o.PATCH("/auto_backup/:id", RestoreAutoBackup)
+		o.POST("/auto_backup/test_s3", TestS3Connection)
+	}
 }

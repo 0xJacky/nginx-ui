@@ -1,7 +1,10 @@
 package terminal
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/0xJacky/Nginx-UI/internal/middleware"
+	"github.com/gin-gonic/gin"
+)
 
 func InitRouter(r *gin.RouterGroup) {
-	r.GET("pty", Pty)
+	r.GET("pty", middleware.RequireSecureSession(), Pty)
 }

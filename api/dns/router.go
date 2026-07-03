@@ -1,6 +1,7 @@
 package dns
 
 import (
+	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/gin-gonic/gin"
 
 	_ "github.com/0xJacky/Nginx-UI/internal/dns/providers/alidns"
@@ -13,19 +14,23 @@ func InitRouter(r *gin.RouterGroup) {
 	{
 		group.GET("/domains", ListDomains)
 		group.GET("/domains/:id", GetDomain)
-		group.POST("/domains", CreateDomain)
-		group.POST("/domains/:id", UpdateDomain)
-		group.DELETE("/domains/:id", DeleteDomain)
 
 		group.GET("/domains/:id/records", ListRecords)
-		group.POST("/domains/:id/records", CreateRecord)
-		group.PUT("/domains/:id/records/:record_id", UpdateRecord)
-		group.DELETE("/domains/:id/records/:record_id", DeleteRecord)
 
 		group.GET("/domains/:id/ddns", GetDDNSConfig)
-		group.PUT("/domains/:id/ddns", UpdateDDNSConfig)
-		group.DELETE("/domains/:id/ddns", DeleteDDNSConfig)
 
 		group.GET("/ddns", ListDDNSConfig)
+
+		o := group.Group("", middleware.RequireSecureSession())
+		{
+			o.POST("/domains", CreateDomain)
+			o.POST("/domains/:id", UpdateDomain)
+			o.DELETE("/domains/:id", DeleteDomain)
+			o.POST("/domains/:id/records", CreateRecord)
+			o.PUT("/domains/:id/records/:record_id", UpdateRecord)
+			o.DELETE("/domains/:id/records/:record_id", DeleteRecord)
+			o.PUT("/domains/:id/ddns", UpdateDDNSConfig)
+			o.DELETE("/domains/:id/ddns", DeleteDDNSConfig)
+		}
 	}
 }

@@ -84,6 +84,7 @@ var (
 	ErrAutoBackupWriteFile          = e.New(4907, "Failed to write backup file: {0}")
 	ErrAutoBackupWriteKeyFile       = e.New(4908, "Failed to write security key file: {0}")
 	ErrAutoBackupS3Upload           = e.New(4909, "S3 upload failed: {0}")
+	ErrAutoBackupInvalidFilename    = e.New(4917, "Invalid auto backup filename: {0}")
 
 	ErrInvalidPath            = e.New(4910, "Invalid path: {0}")
 	ErrPathNotInGrantedAccess = e.New(4911, "Path not in granted access paths: {0}. Add it to [backup] GrantedAccessPath in app.ini and restart.")
