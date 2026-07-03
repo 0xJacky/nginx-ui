@@ -30,6 +30,7 @@ const pageSizeOptions = ['20', '50', '100', '200']
 const domainId = computed(() => Number(route.params.id))
 
 const isDrawerOpen = ref(false)
+const isSavingRecord = ref(false)
 const editingRecord = ref<DNSRecord | null>(null)
 const formModel = ref<RecordPayload>({
   type: 'A',
@@ -108,16 +109,32 @@ function openEditDrawer(record: DNSRecord) {
   isDrawerOpen.value = true
 }
 
-async function handleSubmit() {
-  if (editingRecord.value) {
-    await store.updateRecord(domainId.value, editingRecord.value.id, formModel.value)
-    message.success($gettext('Record updated'))
-  }
-  else {
-    await store.createRecord(domainId.value, formModel.value)
-    message.success($gettext('Record created'))
-  }
+function closeRecordDrawer() {
+  if (isSavingRecord.value)
+    return
+
   isDrawerOpen.value = false
+}
+
+async function handleSubmit() {
+  if (isSavingRecord.value)
+    return
+
+  isSavingRecord.value = true
+  try {
+    if (editingRecord.value) {
+      await store.updateRecord(domainId.value, editingRecord.value.id, formModel.value)
+      message.success($gettext('Record updated'))
+    }
+    else {
+      await store.createRecord(domainId.value, formModel.value)
+      message.success($gettext('Record created'))
+    }
+    isDrawerOpen.value = false
+  }
+  finally {
+    isSavingRecord.value = false
+  }
 }
 
 async function handleDelete(record: DNSRecord) {
@@ -205,7 +222,7 @@ onBeforeUnmount(() => {
       :open="isDrawerOpen"
       :title="editingRecord ? $gettext('Edit Record') : $gettext('Create Record')"
       width="480"
-      @close="isDrawerOpen = false"
+      @close="closeRecordDrawer"
     >
       <DNSRecordForm
         v-model:record="formModel"
@@ -215,10 +232,10 @@ onBeforeUnmount(() => {
       />
       <template #footer>
         <ASpace>
-          <AButton @click="isDrawerOpen = false">
+          <AButton :disabled="isSavingRecord" @click="closeRecordDrawer">
             {{ $gettext('Cancel') }}
           </AButton>
-          <AButton type="primary" @click="handleSubmit">
+          <AButton type="primary" :loading="isSavingRecord" @click="handleSubmit">
             {{ $gettext('Save') }}
           </AButton>
         </ASpace>
