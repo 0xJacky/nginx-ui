@@ -68,6 +68,7 @@ export default {
   4907: () => $gettext('Failed to write backup file: {0}'),
   4908: () => $gettext('Failed to write security key file: {0}'),
   4909: () => $gettext('S3 upload failed: {0}'),
+  4917: () => $gettext('Invalid auto backup filename: {0}'),
   4910: () => $gettext('Invalid path: {0}'),
   4911: () => $gettext('Path not in granted access paths: {0}. Add it to [backup] GrantedAccessPath in app.ini and restart.'),
   4912: () => $gettext('Backup path does not exist: {0}'),
