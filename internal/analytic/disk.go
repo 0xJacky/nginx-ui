@@ -28,37 +28,37 @@ func getVisiblePartitions() ([]disk.PartitionStat, error) {
 }
 
 func GetDiskStat() (DiskStat, error) {
-	// Get all partitions
 	partitions, err := getVisiblePartitions()
 	if err != nil {
 		return DiskStat{}, errors.Wrap(err, "error analytic getDiskStat - getting partitions")
 	}
 
+	return buildDiskStat(partitions, disk.Usage, getFilesystemKey), nil
+}
+
+type diskUsageFunc func(path string) (*disk.UsageStat, error)
+type filesystemKeyFunc func(partition disk.PartitionStat, usage *disk.UsageStat) (string, error)
+
+func buildDiskStat(partitions []disk.PartitionStat, getUsage diskUsageFunc, getKey filesystemKeyFunc) DiskStat {
 	var totalSize uint64
 	var totalUsed uint64
 	var partitionStats []PartitionStat
-	// Track partitions to avoid double counting same partition with multiple mount points
-	partitionUsage := make(map[string]*disk.UsageStat)
+	seenFilesystems := make(map[string]struct{})
 
-	// Get usage for each partition
 	for _, partition := range partitions {
-		usage, err := disk.Usage(partition.Mountpoint)
+		usage, err := getUsage(partition.Mountpoint)
 		if err != nil {
-			// Skip partitions that can't be accessed
 			continue
 		}
 
-		// Skip virtual filesystems and special filesystems
 		if isVirtualFilesystem(partition.Fstype) {
 			continue
 		}
 
-		// Skip OS-specific paths that shouldn't be counted
 		if shouldSkipPath(partition.Mountpoint, partition.Device) {
 			continue
 		}
 
-		// Create partition stat for display purposes
 		partitionStat := PartitionStat{
 			Mountpoint: partition.Mountpoint,
 			Device:     partition.Device,
@@ -70,16 +70,17 @@ func GetDiskStat() (DiskStat, error) {
 		}
 		partitionStats = append(partitionStats, partitionStat)
 
-		// Only count each partition device once for total calculation
-		// This handles cases where same partition is mounted multiple times (e.g., bind mounts, overlayfs)
-		if _, exists := partitionUsage[partition.Device]; !exists {
-			partitionUsage[partition.Device] = usage
+		key, err := getKey(partition, usage)
+		if err != nil || key == "" {
+			key = fallbackFilesystemKey(partition)
+		}
+		if _, exists := seenFilesystems[key]; !exists {
+			seenFilesystems[key] = struct{}{}
 			totalSize += usage.Total
 			totalUsed += usage.Used
 		}
 	}
 
-	// Calculate overall percentage
 	var overallPercentage float64
 	if totalSize > 0 {
 		overallPercentage = cast.ToFloat64(fmt.Sprintf("%.2f", float64(totalUsed)/float64(totalSize)*100))
@@ -92,7 +93,15 @@ func GetDiskStat() (DiskStat, error) {
 		Writes:     DiskWriteRecord[len(DiskWriteRecord)-1],
 		Reads:      DiskReadRecord[len(DiskReadRecord)-1],
 		Partitions: partitionStats,
-	}, nil
+	}
+}
+
+func fallbackFilesystemKey(partition disk.PartitionStat) string {
+	if partition.Device != "" {
+		return "device:" + partition.Device
+	}
+
+	return "mountpoint:" + partition.Mountpoint
 }
 
 // isVirtualFilesystem checks if the filesystem type is virtual

@@ -3,6 +3,8 @@ package analytic
 import (
 	"testing"
 
+	"github.com/dustin/go-humanize"
+	"github.com/shirou/gopsutil/v4/disk"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -46,4 +48,28 @@ func TestIsVirtualFilesystem(t *testing.T) {
 	assert.False(t, isVirtualFilesystem("xfs"))
 	assert.False(t, isVirtualFilesystem("ntfs"))
 	assert.False(t, isVirtualFilesystem("fat32"))
+}
+
+func TestBuildDiskStatDeduplicatesFilesystemKeys(t *testing.T) {
+	partitions := []disk.PartitionStat{
+		{Device: "/mnt/source/1", Mountpoint: "/p/1", Fstype: "ufs"},
+		{Device: "/mnt/source/2", Mountpoint: "/p/2", Fstype: "ufs"},
+		{Device: "/mnt/source/3", Mountpoint: "/p/3", Fstype: "ufs"},
+	}
+	usages := map[string]*disk.UsageStat{
+		"/p/1": {Total: 1000, Used: 400, Free: 600, UsedPercent: 40},
+		"/p/2": {Total: 1000, Used: 400, Free: 600, UsedPercent: 40},
+		"/p/3": {Total: 1000, Used: 400, Free: 600, UsedPercent: 40},
+	}
+
+	diskStat := buildDiskStat(partitions, func(path string) (*disk.UsageStat, error) {
+		return usages[path], nil
+	}, func(_ disk.PartitionStat, _ *disk.UsageStat) (string, error) {
+		return "dev:42", nil
+	})
+
+	assert.Len(t, diskStat.Partitions, 3)
+	assert.Equal(t, humanize.IBytes(1000), diskStat.Total)
+	assert.Equal(t, humanize.IBytes(400), diskStat.Used)
+	assert.Equal(t, 40.0, diskStat.Percentage)
 }
