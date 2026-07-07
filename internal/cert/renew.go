@@ -15,10 +15,7 @@ func renew(payload *ConfigPayload, client *lego.Client, l *Logger) error {
 		return ErrPayloadResourceIsNil
 	}
 
-	options := &certificate.RenewOptions{
-		Bundle:     true,
-		MustStaple: payload.MustStaple,
-	}
+	options := newRenewOptions(payload)
 
 	cert, err := client.Certificate.Renew(context.Background(), payload.Resource.GetResource(), options)
 	if err != nil {
@@ -41,4 +38,11 @@ func renew(payload *ConfigPayload, client *lego.Client, l *Logger) error {
 	l.Info(translation.C("[Nginx UI] Certificate renewed successfully"))
 
 	return nil
+}
+
+func newRenewOptions(payload *ConfigPayload) *certificate.RenewOptions {
+	return &certificate.RenewOptions{
+		Bundle:     true,
+		MustStaple: payload.MustStaple,
+	}
 }

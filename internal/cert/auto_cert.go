@@ -111,6 +111,7 @@ func autoCert(certModel *model.Cert) {
 		NotBefore:               certInfo.NotBefore,
 		MustStaple:              certModel.MustStaple,
 		LegoDisableCNAMESupport: certModel.LegoDisableCNAMESupport,
+		EnableCommonName:        certModel.EnableCommonName,
 		RevokeOld:               certModel.RevokeOld,
 	}
 

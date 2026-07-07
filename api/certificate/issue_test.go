@@ -38,6 +38,7 @@ func TestPersistCertDraftCreatesPendingRecord(t *testing.T) {
 		KeyType:                 certcrypto.RSA2048,
 		MustStaple:              true,
 		LegoDisableCNAMESupport: true,
+		EnableCommonName:        true,
 		RevokeOld:               true,
 	}
 
@@ -57,6 +58,7 @@ func TestPersistCertDraftCreatesPendingRecord(t *testing.T) {
 	assert.Equal(t, uint64(7), fromDB.ACMEUserID)
 	assert.True(t, fromDB.MustStaple)
 	assert.True(t, fromDB.LegoDisableCNAMESupport)
+	assert.True(t, fromDB.EnableCommonName)
 	assert.True(t, fromDB.RevokeOld)
 	assert.Equal(t, model.AutoCertEnabled, fromDB.AutoCert)
 }
@@ -64,11 +66,12 @@ func TestPersistCertDraftCreatesPendingRecord(t *testing.T) {
 func TestPersistCertDraftReusesExistingRow(t *testing.T) {
 	db := setupCertTestDB(t)
 	existing := model.Cert{
-		Name:      "example.com",
-		Filename:  "example.com",
-		KeyType:   certcrypto.RSA2048,
-		Status:    model.CertStatusFailure,
-		LastError: "prior failure",
+		Name:             "example.com",
+		Filename:         "example.com",
+		KeyType:          certcrypto.RSA2048,
+		Status:           model.CertStatusFailure,
+		LastError:        "prior failure",
+		EnableCommonName: true,
 	}
 	require.NoError(t, db.Create(&existing).Error)
 
@@ -83,6 +86,7 @@ func TestPersistCertDraftReusesExistingRow(t *testing.T) {
 	assert.Equal(t, existing.ID, got.ID)
 	assert.Equal(t, model.CertStatusPending, got.Status)
 	assert.Equal(t, "", got.LastError)
+	assert.False(t, got.EnableCommonName)
 
 	var count int64
 	require.NoError(t, db.Model(&model.Cert{}).Where("name = ?", "example.com").Count(&count).Error)

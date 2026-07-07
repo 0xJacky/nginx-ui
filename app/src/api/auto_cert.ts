@@ -33,6 +33,7 @@ export interface AutoCertOptions {
   provider_code?: string
   must_staple?: boolean
   lego_disable_cname_support?: boolean
+  enable_common_name?: boolean
   revoke_old?: boolean
 }
 

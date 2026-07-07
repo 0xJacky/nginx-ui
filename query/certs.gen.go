@@ -48,6 +48,7 @@ func newCert(db *gorm.DB, opts ...gen.DOOption) cert {
 	_cert.SyncNodeIds = field.NewField(tableName, "sync_node_ids")
 	_cert.MustStaple = field.NewBool(tableName, "must_staple")
 	_cert.LegoDisableCNAMESupport = field.NewBool(tableName, "lego_disable_cname_support")
+	_cert.EnableCommonName = field.NewBool(tableName, "enable_common_name")
 	_cert.RevokeOld = field.NewBool(tableName, "revoke_old")
 	_cert.SelfSignedConfig = field.NewField(tableName, "self_signed_config")
 	_cert.LastAutoRenewAt = field.NewTime(tableName, "last_auto_renew_at")
@@ -96,6 +97,7 @@ type cert struct {
 	SyncNodeIds             field.Field
 	MustStaple              field.Bool
 	LegoDisableCNAMESupport field.Bool
+	EnableCommonName        field.Bool
 	RevokeOld               field.Bool
 	SelfSignedConfig        field.Field
 	LastAutoRenewAt         field.Time
@@ -142,6 +144,7 @@ func (c *cert) updateTableName(table string) *cert {
 	c.SyncNodeIds = field.NewField(table, "sync_node_ids")
 	c.MustStaple = field.NewBool(table, "must_staple")
 	c.LegoDisableCNAMESupport = field.NewBool(table, "lego_disable_cname_support")
+	c.EnableCommonName = field.NewBool(table, "enable_common_name")
 	c.RevokeOld = field.NewBool(table, "revoke_old")
 	c.SelfSignedConfig = field.NewField(table, "self_signed_config")
 	c.LastAutoRenewAt = field.NewTime(table, "last_auto_renew_at")
@@ -165,7 +168,7 @@ func (c *cert) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (c *cert) fillFieldMap() {
-	c.fieldMap = make(map[string]field.Expr, 29)
+	c.fieldMap = make(map[string]field.Expr, 30)
 	c.fieldMap["id"] = c.ID
 	c.fieldMap["created_at"] = c.CreatedAt
 	c.fieldMap["updated_at"] = c.UpdatedAt
@@ -186,6 +189,7 @@ func (c *cert) fillFieldMap() {
 	c.fieldMap["sync_node_ids"] = c.SyncNodeIds
 	c.fieldMap["must_staple"] = c.MustStaple
 	c.fieldMap["lego_disable_cname_support"] = c.LegoDisableCNAMESupport
+	c.fieldMap["enable_common_name"] = c.EnableCommonName
 	c.fieldMap["revoke_old"] = c.RevokeOld
 	c.fieldMap["self_signed_config"] = c.SelfSignedConfig
 	c.fieldMap["last_auto_renew_at"] = c.LastAutoRenewAt

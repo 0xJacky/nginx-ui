@@ -11,12 +11,7 @@ import (
 )
 
 func obtain(payload *ConfigPayload, client *lego.Client, l *Logger) error {
-	request := certificate.ObtainRequest{
-		Domains:    payload.ServerName,
-		Bundle:     true,
-		KeyType:    payload.GetKeyType(),
-		MustStaple: payload.MustStaple,
-	}
+	request := newObtainRequest(payload)
 
 	l.Info(translation.C("[Nginx UI] Obtaining certificate"))
 	certificates, err := client.Certificate.Obtain(context.Background(), request)
@@ -38,4 +33,14 @@ func obtain(payload *ConfigPayload, client *lego.Client, l *Logger) error {
 	}
 
 	return nil
+}
+
+func newObtainRequest(payload *ConfigPayload) certificate.ObtainRequest {
+	return certificate.ObtainRequest{
+		Domains:          payload.ServerName,
+		Bundle:           true,
+		KeyType:          payload.GetKeyType(),
+		MustStaple:       payload.MustStaple,
+		EnableCommonName: payload.EnableCommonName,
+	}
 }

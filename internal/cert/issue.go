@@ -180,7 +180,8 @@ func IssueCert(payload *ConfigPayload, certLogger *Logger) error {
 		}
 	}
 
-	if time.Since(payload.NotBefore).Hours()/24 <= 21 &&
+	if canUseLegoRenew(payload) &&
+		time.Since(payload.NotBefore).Hours()/24 <= 21 &&
 		payload.Resource != nil && payload.Resource.Certificate != nil {
 		err = renew(payload, client, certLogger)
 		if err != nil {
@@ -230,4 +231,14 @@ func IssueCert(payload *ConfigPayload, certLogger *Logger) error {
 	time.Sleep(2 * time.Second)
 
 	return nil
+}
+
+func canUseLegoRenew(payload *ConfigPayload) bool {
+	if payload == nil {
+		return true
+	}
+
+	// lego.RenewOptions does not expose EnableCommonName, so use the obtain
+	// flow when CN support is requested.
+	return !payload.EnableCommonName
 }

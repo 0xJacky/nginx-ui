@@ -82,6 +82,9 @@ function handleRenewed() {
           challenge_method: data.challenge_method,
           dns_credential_id: data.dns_credential_id,
           acme_user_id: data.acme_user_id,
+          must_staple: data.must_staple,
+          lego_disable_cname_support: data.lego_disable_cname_support,
+          enable_common_name: data.enable_common_name,
           revoke_old: data.revoke_old,
         }"
         @renewed="handleRenewed"

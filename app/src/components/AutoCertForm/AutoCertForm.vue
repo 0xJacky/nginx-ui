@@ -274,6 +274,14 @@ function validateIpAddress(_rule: unknown, value: string) {
         </template>
         <ASwitch v-model:checked="data.lego_disable_cname_support" />
       </AFormItem>
+      <AFormItem :label="$gettext('Enable Common Name')">
+        <template #help>
+          <p>
+            {{ $gettext('Enable the certificate Common Name field for private CAs that still require it.') }}
+          </p>
+        </template>
+        <ASwitch v-model:checked="data.enable_common_name" />
+      </AFormItem>
       <AFormItem :label="$gettext('Revoke Old Certificate')">
         <template #help>
           <p>

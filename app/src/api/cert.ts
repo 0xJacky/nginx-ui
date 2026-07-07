@@ -37,6 +37,9 @@ export interface Cert extends ModelBase {
   log: string
   certificate_info: CertificateInfo
   sync_node_ids: number[]
+  must_staple: boolean
+  lego_disable_cname_support: boolean
+  enable_common_name: boolean
   revoke_old: boolean
   status: CertStatusType
   last_error: string

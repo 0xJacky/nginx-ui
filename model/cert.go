@@ -64,6 +64,7 @@ type Cert struct {
 	SyncNodeIds             []uint64              `json:"sync_node_ids" gorm:"serializer:json"`
 	MustStaple              bool                  `json:"must_staple"`
 	LegoDisableCNAMESupport bool                  `json:"lego_disable_cname_support"`
+	EnableCommonName        bool                  `json:"enable_common_name"`
 	RevokeOld               bool                  `json:"revoke_old"`
 	SelfSignedConfig        *SelfSignedCertConfig `json:"self_signed_config,omitempty" gorm:"serializer:json"`
 	LastAutoRenewAt         *time.Time            `json:"-"`

@@ -42,6 +42,10 @@ export interface AutoCertRequest {
   domains: string[]
   key_type: PrivateKeyType
   acme_user_id?: number
+  must_staple?: boolean
+  lego_disable_cname_support?: boolean
+  enable_common_name?: boolean
+  revoke_old?: boolean
 }
 
 const baseUrl = '/sites'

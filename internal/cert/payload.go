@@ -26,6 +26,7 @@ type ConfigPayload struct {
 	Resource                *model.CertificateResource `json:"resource,omitempty"`
 	MustStaple              bool                       `json:"must_staple"`
 	LegoDisableCNAMESupport bool                       `json:"lego_disable_cname_support"`
+	EnableCommonName        bool                       `json:"enable_common_name"`
 	NotBefore               time.Time                  `json:"-"`
 	CertificateDir          string                     `json:"-"`
 	SSLCertificatePath      string                     `json:"-"`

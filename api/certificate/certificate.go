@@ -121,6 +121,7 @@ func AddCert(c *gin.Context) {
 			"sync_node_ids":              "omitempty",
 			"must_staple":                "omitempty",
 			"lego_disable_cname_support": "omitempty",
+			"enable_common_name":         "omitempty",
 			"revoke_old":                 "omitempty",
 		}).
 		BeforeExecuteHook(func(ctx *cosy.Ctx[model.Cert]) {
@@ -169,6 +170,7 @@ func ModifyCert(c *gin.Context) {
 			"sync_node_ids":              "omitempty",
 			"must_staple":                "omitempty",
 			"lego_disable_cname_support": "omitempty",
+			"enable_common_name":         "omitempty",
 			"revoke_old":                 "omitempty",
 		}).
 		BeforeExecuteHook(func(ctx *cosy.Ctx[model.Cert]) {
