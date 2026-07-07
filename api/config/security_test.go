@@ -225,7 +225,12 @@ func TestAddConfigAllowsNonOTPUserAndNodeSecret(t *testing.T) {
 
 	nodeRouter := gin.New()
 	nodeRouter.POST("/configs", func(c *gin.Context) {
-		c.Set("user", &model.User{Model: model.Model{ID: 1}, Name: "node-sync", Status: true})
+		c.Set("user", &model.User{
+			Model:     model.Model{ID: 1},
+			Name:      "node-sync",
+			Status:    true,
+			OTPSecret: []byte("otp-enabled"),
+		})
 		c.Set("Secret", "node-secret")
 		c.Next()
 	}, middleware.RequireSecureSession(), AddConfig)

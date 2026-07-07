@@ -53,6 +53,11 @@ const SecureSessionVerifiedKey = "SecureSessionVerified"
 
 func RequireSecureSession() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		if _, ok := c.Get("Secret"); ok {
+			c.Next()
+			return
+		}
+
 		u, ok := c.Get("user")
 		if !ok {
 			c.Next()

@@ -193,7 +193,8 @@ func TestGetProtectedSetting(t *testing.T) {
 		r := gin.New()
 		r.GET("/api/settings/protected", func(c *gin.Context) {
 			c.Set("user", &model.User{
-				Model: model.Model{ID: 1},
+				Model:     model.Model{ID: 1},
+				OTPSecret: []byte("otp-enabled"),
 			})
 			c.Set("Secret", "node-secret")
 		}, middleware.RequireSecureSession(), GetProtectedSetting)
