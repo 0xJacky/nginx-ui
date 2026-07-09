@@ -7,14 +7,19 @@ import (
 )
 
 const (
-	OpenAIProviderOpenAI     = "openai"
-	OpenAIProviderAtlasCloud = "atlas_cloud"
-	OpenAIProviderCustom     = "custom"
-	AtlasCloudBaseURL        = "https://api.atlascloud.ai/v1"
+	OpenAIProviderOpenAI      = "openai"
+	OpenAIProviderAtlasCloud  = "atlas_cloud"
+	OpenAIProviderMiniMax     = "minimax"
+	OpenAIProviderCustom      = "custom"
+	AtlasCloudBaseURL         = "https://api.atlascloud.ai/v1"
+	MiniMaxGlobalOpenAIURL    = "https://api.minimax.io/v1"
+	MiniMaxGlobalAnthropicURL = "https://api.minimax.io/anthropic/v1"
+	MiniMaxCNOpenAIURL        = "https://api.minimaxi.com/v1"
+	MiniMaxCNAnthropicURL     = "https://api.minimaxi.com/anthropic/v1"
 )
 
 type OpenAI struct {
-	Provider             string `json:"provider" binding:"omitempty,oneof=openai atlas_cloud custom"`
+	Provider             string `json:"provider" binding:"omitempty,oneof=openai atlas_cloud minimax custom"`
 	BaseUrl              string `json:"base_url" binding:"omitempty,url"`
 	Token                string `json:"token" binding:"omitempty,safety_text"`
 	Proxy                string `json:"proxy" binding:"omitempty,url"`
@@ -44,6 +49,8 @@ func (o *OpenAI) GetProvider() string {
 	switch normalizeOpenAIBaseURL(o.BaseUrl) {
 	case AtlasCloudBaseURL:
 		return OpenAIProviderAtlasCloud
+	case MiniMaxGlobalOpenAIURL, MiniMaxCNOpenAIURL:
+		return OpenAIProviderMiniMax
 	}
 
 	if o.Provider == "" {
@@ -65,6 +72,8 @@ func (o *OpenAI) GetBaseURL() string {
 	switch o.GetProvider() {
 	case OpenAIProviderAtlasCloud:
 		return AtlasCloudBaseURL
+	case OpenAIProviderMiniMax:
+		return MiniMaxGlobalOpenAIURL
 	default:
 		return ""
 	}
