@@ -10,12 +10,22 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/cache"
 	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	internaluser "github.com/0xJacky/Nginx-UI/internal/user"
+	"github.com/0xJacky/Nginx-UI/internal/validation"
 	"github.com/0xJacky/Nginx-UI/model"
 	appsettings "github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	cSettings "github.com/uozi-tech/cosy/settings"
 )
+
+// TestMain registers the custom gin binding validators used by settings.Auth
+// and settings.Cert. Production wires this via internal/kernel/boot.go, which
+// these package-level tests bypass.
+func TestMain(m *testing.M) {
+	gin.SetMode(gin.TestMode)
+	validation.Init()
+	m.Run()
+}
 
 func TestSaveSettingsRejectsNegativeLogrotateInterval(t *testing.T) {
 	gin.SetMode(gin.TestMode)
@@ -34,6 +44,32 @@ func TestSaveSettingsRejectsNegativeLogrotateInterval(t *testing.T) {
 
 	assert.Equal(t, http.StatusNotAcceptable, w.Code)
 	assert.Contains(t, w.Body.String(), "\"interval\":\"min\"")
+}
+
+// TestSaveSettingsAcceptsRedactedIPWhiteList reproduces the reported bug where the
+// frontend round-trips the sensitive-field placeholder `__NGINX_UI_REDACTED__` back
+// to POST /api/settings. Without the `redacted` validator composed via `ip|redacted`,
+// the payload fails binding on `auth.ip_white_list` with tag `ip`. With the fix, the
+// placeholder is accepted; other unrelated binding errors (here, negative
+// logrotate.interval) still fire, so the response is still 406 but must not mention
+// `ip_white_list`. This avoids exercising the success path, which would need a
+// fully initialized settings.Conf on disk.
+func TestSaveSettingsAcceptsRedactedIPWhiteList(t *testing.T) {
+	w := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(w)
+	c.Request = httptest.NewRequest(http.MethodPost, "/api/settings",
+		bytes.NewBufferString(`{
+			"auth":{"ip_white_list":["__NGINX_UI_REDACTED__"],"ban_threshold_minutes":1,"max_attempts":1},
+			"cert":{"renewal_interval":7},
+			"logrotate":{"enabled":true,"interval":-1}
+		}`))
+	c.Request.Header.Set("Content-Type", "application/json")
+
+	SaveSettings(c)
+
+	assert.Equal(t, http.StatusNotAcceptable, w.Code)
+	assert.Contains(t, w.Body.String(), "\"interval\":\"min\"")
+	assert.NotContains(t, w.Body.String(), "ip_white_list")
 }
 
 func TestGetSettingsRedactsSensitiveFields(t *testing.T) {

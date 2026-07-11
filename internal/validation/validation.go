@@ -37,5 +37,8 @@ func Init() {
 		logger.Fatal(err)
 	}
 
-	return
+	err = v.RegisterValidation("redacted", redacted)
+	if err != nil {
+		logger.Fatal(err)
+	}
 }
