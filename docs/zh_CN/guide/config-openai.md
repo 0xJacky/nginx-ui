@@ -25,7 +25,7 @@ Atlas Cloud 使用 `https://api.atlascloud.ai/v1`。
 
 MiniMax 的 OpenAI 兼容端点包括全球服务 `https://api.minimax.io/v1` 和中国服务
 `https://api.minimaxi.com/v1`。MiniMax 也提供 Anthropic 兼容端点
-`https://api.minimax.io/anthropic/v1` 和 `https://api.minimaxi.com/anthropic/v1`；此设置应使用 OpenAI 兼容端点。
+`https://api.minimax.io/anthropic` 和 `https://api.minimaxi.com/anthropic`；此设置应使用 OpenAI 兼容端点。
 建议的 MiniMax 文本模型包括 `MiniMax-M3` 和 `MiniMax-M2.7`。文档见 <https://platform.minimax.io/docs> 和
 <https://platform.minimaxi.com/docs>。
 

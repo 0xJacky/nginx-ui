@@ -13,9 +13,9 @@ const (
 	OpenAIProviderCustom      = "custom"
 	AtlasCloudBaseURL         = "https://api.atlascloud.ai/v1"
 	MiniMaxGlobalOpenAIURL    = "https://api.minimax.io/v1"
-	MiniMaxGlobalAnthropicURL = "https://api.minimax.io/anthropic/v1"
+	MiniMaxGlobalAnthropicURL = "https://api.minimax.io/anthropic"
 	MiniMaxCNOpenAIURL        = "https://api.minimaxi.com/v1"
-	MiniMaxCNAnthropicURL     = "https://api.minimaxi.com/anthropic/v1"
+	MiniMaxCNAnthropicURL     = "https://api.minimaxi.com/anthropic"
 )
 
 type OpenAI struct {
