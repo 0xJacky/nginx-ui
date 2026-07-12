@@ -18,7 +18,7 @@ import (
 	cSettings "github.com/uozi-tech/cosy/settings"
 )
 
-const redactedSensitiveValue = "__NGINX_UI_REDACTED__"
+const redactedSensitiveValue = settings.RedactedSensitiveValue
 
 var manuallyProtectedSettingGetters = map[string]func() any{
 	"app.jwt_secret": func() any {
