@@ -7,15 +7,13 @@ import (
 )
 
 const (
-	OpenAIProviderOpenAI      = "openai"
-	OpenAIProviderAtlasCloud  = "atlas_cloud"
-	OpenAIProviderMiniMax     = "minimax"
-	OpenAIProviderCustom      = "custom"
-	AtlasCloudBaseURL         = "https://api.atlascloud.ai/v1"
-	MiniMaxGlobalOpenAIURL    = "https://api.minimax.io/v1"
-	MiniMaxGlobalAnthropicURL = "https://api.minimax.io/anthropic"
-	MiniMaxCNOpenAIURL        = "https://api.minimaxi.com/v1"
-	MiniMaxCNAnthropicURL     = "https://api.minimaxi.com/anthropic"
+	OpenAIProviderOpenAI     = "openai"
+	OpenAIProviderAtlasCloud = "atlas_cloud"
+	OpenAIProviderMiniMax    = "minimax"
+	OpenAIProviderCustom     = "custom"
+	AtlasCloudBaseURL        = "https://api.atlascloud.ai/v1"
+	MiniMaxGlobalOpenAIURL   = "https://api.minimax.io/v1"
+	MiniMaxCNOpenAIURL       = "https://api.minimaxi.com/v1"
 )
 
 type OpenAI struct {

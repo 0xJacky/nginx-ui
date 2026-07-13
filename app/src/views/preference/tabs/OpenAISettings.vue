@@ -41,7 +41,7 @@ const baseUrlHelp = computed(() => {
     return $gettext('The url is invalid.')
 
   if (data.value?.openai.provider === 'minimax') {
-    return $gettext('MiniMax is OpenAI-compatible. Use https://api.minimax.io/v1 for global service or https://api.minimaxi.com/v1 for China service. Anthropic-compatible endpoints are https://api.minimax.io/anthropic and https://api.minimaxi.com/anthropic.')
+    return $gettext('MiniMax is OpenAI-compatible. Use https://api.minimax.io/v1 for global service or https://api.minimaxi.com/v1 for China service. For Anthropic-compatible clients, use https://api.minimax.io/anthropic or https://api.minimaxi.com/anthropic.')
   }
 
   if (data.value?.openai.provider === 'atlas_cloud') {

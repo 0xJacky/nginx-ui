@@ -46,9 +46,7 @@ export const LLM_PROVIDER_BASE_URLS = [
   'https://api.openai.com',
   'https://api.atlascloud.ai/v1',
   'https://api.minimax.io/v1',
-  'https://api.minimax.io/anthropic',
   'https://api.minimaxi.com/v1',
-  'https://api.minimaxi.com/anthropic',
   'https://api.deepseek.com',
   'http://localhost:11434',
 ]
