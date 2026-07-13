@@ -13,6 +13,7 @@ This option selects a preset for OpenAI-compatible providers.
 
 - `openai`: Use the default OpenAI endpoint.
 - `atlas_cloud`: Use the Atlas Cloud endpoint `https://api.atlascloud.ai/v1`.
+- `minimax`: Use the MiniMax global OpenAI-compatible endpoint `https://api.minimax.io/v1`.
 - `custom`: Keep using the custom `BaseUrl` value.
 
 ## BaseUrl
@@ -24,6 +25,13 @@ This option is used to set the base URL of the API. Leave it blank if you do not
 For Atlas Cloud, use `https://api.atlascloud.ai/v1`. Atlas Cloud is OpenAI-compatible, so the existing chat and code
 completion features work without additional backend changes. You can find the Atlas Cloud model guide at
 <https://www.atlascloud.ai/docs/models/get-start>.
+
+For MiniMax, the OpenAI-compatible endpoints are `https://api.minimax.io/v1` for global service and
+`https://api.minimaxi.com/v1` for China service. MiniMax also provides Anthropic-compatible endpoints at
+`https://api.minimax.io/anthropic` and `https://api.minimaxi.com/anthropic`; use those with an Anthropic-compatible
+client. This setting requires an OpenAI-compatible endpoint. Suggested MiniMax text models include `MiniMax-M3` and
+`MiniMax-M2.7`. See the MiniMax API docs at <https://platform.minimax.io/docs> and
+<https://platform.minimaxi.com/docs>.
 
 ## Token
 

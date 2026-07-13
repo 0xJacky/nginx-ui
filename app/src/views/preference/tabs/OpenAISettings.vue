@@ -27,6 +27,9 @@ const providerBaseUrlMap = LLM_PROVIDERS.reduce<Record<string, string>>((acc, pr
 }, {})
 
 const baseUrlPlaceholder = computed(() => {
+  if (data.value?.openai.provider === 'minimax')
+    return $gettext('Leave blank to use the MiniMax global OpenAI-compatible endpoint: https://api.minimax.io/v1')
+
   if (data.value?.openai.provider === 'atlas_cloud')
     return $gettext('Leave blank to use the Atlas Cloud endpoint: https://api.atlascloud.ai/v1')
 
@@ -36,6 +39,10 @@ const baseUrlPlaceholder = computed(() => {
 const baseUrlHelp = computed(() => {
   if (errors.value?.openai?.base_url === 'url')
     return $gettext('The url is invalid.')
+
+  if (data.value?.openai.provider === 'minimax') {
+    return $gettext('MiniMax is OpenAI-compatible. Use https://api.minimax.io/v1 for global service or https://api.minimaxi.com/v1 for China service. For Anthropic-compatible clients, use https://api.minimax.io/anthropic or https://api.minimaxi.com/anthropic.')
+  }
 
   if (data.value?.openai.provider === 'atlas_cloud') {
     return $gettext('Atlas Cloud is OpenAI-compatible. Use https://api.atlascloud.ai/v1 and an Atlas Cloud API key.')

@@ -18,6 +18,18 @@ func TestOpenAIGetProvider(t *testing.T) {
 
 		assert.Equal(t, OpenAIProviderAtlasCloud, cfg.GetProvider())
 	})
+
+	t.Run("infers minimax from global base url", func(t *testing.T) {
+		cfg := &OpenAI{BaseUrl: "https://api.minimax.io/v1/"}
+
+		assert.Equal(t, OpenAIProviderMiniMax, cfg.GetProvider())
+	})
+
+	t.Run("infers minimax from cn base url", func(t *testing.T) {
+		cfg := &OpenAI{BaseUrl: "https://api.minimaxi.com/v1/"}
+
+		assert.Equal(t, OpenAIProviderMiniMax, cfg.GetProvider())
+	})
 }
 
 func TestOpenAIGetBaseURL(t *testing.T) {
@@ -25,6 +37,12 @@ func TestOpenAIGetBaseURL(t *testing.T) {
 		cfg := &OpenAI{Provider: OpenAIProviderAtlasCloud}
 
 		assert.Equal(t, AtlasCloudBaseURL, cfg.GetBaseURL())
+	})
+
+	t.Run("returns minimax default base url from provider preset", func(t *testing.T) {
+		cfg := &OpenAI{Provider: OpenAIProviderMiniMax}
+
+		assert.Equal(t, MiniMaxGlobalOpenAIURL, cfg.GetBaseURL())
 	})
 
 	t.Run("normalizes custom base url", func(t *testing.T) {
