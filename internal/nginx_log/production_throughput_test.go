@@ -31,6 +31,12 @@ func TestProductionThroughputEndToEnd(t *testing.T) {
 		{"XLarge_500K", 500000},
 	}
 
+	// The race detector slows parsing and indexing by an order of magnitude;
+	// cap the corpus so the suite finishes well within the go test timeout.
+	if raceEnabled {
+		scales = scales[:2]
+	}
+
 	for _, scale := range scales {
 		t.Run(scale.name, func(t *testing.T) {
 			runCompleteProductionTest(t, scale.records)
@@ -174,11 +180,30 @@ func executeProductionRebuild(ctx context.Context, indexerInstance *indexer.Para
 		return nil, fmt.Errorf("parsing failed: %w", err)
 	}
 
-	// Index all parsed documents (same as production)
+	// Index all parsed documents in production-sized batches. Production code
+	// always indexes in batches; submitting one document per job would create
+	// one bleve batch (and one scorch segment) per record, which overwhelms the
+	// merger/persister at this scale — especially under the race detector.
+	batchSize := indexerInstance.GetConfig().BatchSize
+	if batchSize <= 0 {
+		batchSize = 1000
+	}
+
 	var totalIndexed int
-	for _, entry := range parseResult.Entries {
+	pending := make([]*indexer.Document, 0, batchSize)
+	flushPending := func() {
+		if len(pending) == 0 {
+			return
+		}
+		if err := indexerInstance.IndexDocuments(ctx, pending); err == nil {
+			totalIndexed += len(pending)
+		}
+		pending = pending[:0]
+	}
+
+	for i, entry := range parseResult.Entries {
 		doc := &indexer.Document{
-			ID: fmt.Sprintf("doc_%d", totalIndexed),
+			ID: fmt.Sprintf("doc_%d", i),
 			Fields: &indexer.LogDocument{
 				Timestamp:    entry.Timestamp,
 				IP:           entry.IP,
@@ -202,13 +227,12 @@ func executeProductionRebuild(ctx context.Context, indexerInstance *indexer.Para
 			},
 		}
 
-		// Index document (same as production indexing)
-		err := indexerInstance.IndexDocument(ctx, doc)
-		if err != nil {
-			continue // Count as failed but continue processing
+		pending = append(pending, doc)
+		if len(pending) >= batchSize {
+			flushPending()
 		}
-		totalIndexed++
 	}
+	flushPending()
 
 	// Flush all pending operations (same as production)
 	if err := indexerInstance.FlushAll(); err != nil {
