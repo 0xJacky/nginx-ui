@@ -83,9 +83,19 @@ func TestQueryBuilderValidation(t *testing.T) {
 		t.Errorf("valid request should not have validation error: %v", err)
 	}
 
-	// Test invalid request - negative limit
-	invalidReq := &SearchRequest{
+	// Limit -1 is the facet-only sentinel and must be accepted
+	facetOnlyReq := &SearchRequest{
 		Limit: -1,
+	}
+
+	err = qb.ValidateSearchRequest(facetOnlyReq)
+	if err != nil {
+		t.Errorf("facet-only limit (-1) should not have validation error: %v", err)
+	}
+
+	// Test invalid request - negative limit beyond the sentinel
+	invalidReq := &SearchRequest{
+		Limit: -2,
 	}
 
 	err = qb.ValidateSearchRequest(invalidReq)

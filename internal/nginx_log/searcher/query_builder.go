@@ -256,7 +256,7 @@ func (qb *QueryBuilder) ValidateSearchRequest(req *SearchRequest) error {
 		return fmt.Errorf("search request cannot be nil")
 	}
 
-	if req.Limit < 0 {
+	if req.Limit < -1 {
 		return fmt.Errorf("limit cannot be negative")
 	}
 
