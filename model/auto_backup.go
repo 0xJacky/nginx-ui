@@ -3,6 +3,7 @@ package model
 import (
 	"strings"
 	"time"
+	"unicode"
 )
 
 // BackupType represents the type of backup
@@ -53,5 +54,61 @@ type AutoBackup struct {
 }
 
 func (a *AutoBackup) GetName() string {
-	return strings.ReplaceAll(strings.TrimSpace(a.Name), " ", "_")
+	return SafeAutoBackupName(a.Name)
+}
+
+func SafeAutoBackupName(name string) string {
+	const fallbackName = "backup"
+
+	var builder strings.Builder
+	lastUnderscore := false
+
+	for _, r := range strings.TrimSpace(name) {
+		if isSafeAutoBackupNameRune(r) {
+			builder.WriteRune(r)
+			lastUnderscore = false
+			continue
+		}
+
+		if !lastUnderscore {
+			builder.WriteByte('_')
+			lastUnderscore = true
+		}
+	}
+
+	safeName := builder.String()
+	for strings.Contains(safeName, "..") {
+		safeName = strings.ReplaceAll(safeName, "..", ".")
+	}
+
+	safeName = strings.Trim(safeName, "._-")
+	if safeName == "" {
+		return fallbackName
+	}
+
+	if isReservedWindowsFilename(safeName) {
+		return "_" + safeName
+	}
+
+	return safeName
+}
+
+func isSafeAutoBackupNameRune(r rune) bool {
+	return r == '.' || r == '-' || r == '_' || unicode.IsLetter(r) || unicode.IsDigit(r)
+}
+
+func isReservedWindowsFilename(name string) bool {
+	baseName := name
+	if dotIndex := strings.IndexByte(baseName, '.'); dotIndex >= 0 {
+		baseName = baseName[:dotIndex]
+	}
+
+	switch strings.ToUpper(baseName) {
+	case "CON", "PRN", "AUX", "NUL",
+		"COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
+		"LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9":
+		return true
+	default:
+		return false
+	}
 }

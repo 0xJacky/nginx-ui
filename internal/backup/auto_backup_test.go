@@ -42,6 +42,14 @@ func TestResolveAutoBackupOutputPathRejectsTraversalFilenames(t *testing.T) {
 			filename: "C:evil.zip",
 		},
 		{
+			name:     "windows reserved character",
+			filename: "evil:name.zip",
+		},
+		{
+			name:     "windows reserved device",
+			filename: "CON.zip",
+		},
+		{
 			name:     "windows unc path",
 			filename: `\\server\share\evil.zip`,
 		},
@@ -88,6 +96,21 @@ func TestBuildAutoBackupOutputPathAllowsGeneratedAndSimpleFilenames(t *testing.T
 	assertPathInsideBaseDir(t, baseDir, simplePath)
 }
 
+func TestBuildAutoBackupOutputPathUsesSanitizedAutoBackupName(t *testing.T) {
+	baseDir := t.TempDir()
+	autoBackup := &model.AutoBackup{
+		Name:        `..\evil/CON:`,
+		StorageType: model.StorageTypeLocal,
+		StoragePath: baseDir,
+	}
+
+	generatedFilename := fmt.Sprintf("%s_%d.zip", autoBackup.GetName(), int64(123))
+	generatedPath, err := buildAutoBackupOutputPath(autoBackup, generatedFilename)
+	assert.NoError(t, err)
+	assert.Equal(t, filepath.Join(baseDir, "evil_CON_123.zip"), generatedPath)
+	assertPathInsideBaseDir(t, baseDir, generatedPath)
+}
+
 func TestValidateAutoBackupConfigRejectsUnsafeNames(t *testing.T) {
 	tests := []struct {
 		name       string
@@ -116,6 +139,22 @@ func TestValidateAutoBackupConfigRejectsUnsafeNames(t *testing.T) {
 		{
 			name:       "windows drive relative path",
 			backupName: "C:evil.zip",
+		},
+		{
+			name:       "windows reserved character",
+			backupName: "backup:name",
+		},
+		{
+			name:       "windows reserved wildcard",
+			backupName: "backup*name",
+		},
+		{
+			name:       "windows reserved device",
+			backupName: "CON",
+		},
+		{
+			name:       "windows reserved device with extension",
+			backupName: "con.txt",
 		},
 		{
 			name:       "embedded traversal",

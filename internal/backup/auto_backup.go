@@ -323,6 +323,12 @@ func validateAutoBackupFilename(filename string) error {
 	if strings.HasPrefix(filename, `\\`) {
 		return cosy.WrapErrorWithParams(ErrAutoBackupInvalidFilename, "filename contains Windows UNC prefix")
 	}
+	if strings.ContainsAny(filename, `<>:"|?*`) {
+		return cosy.WrapErrorWithParams(ErrAutoBackupInvalidFilename, "filename contains Windows reserved characters")
+	}
+	if isWindowsReservedFilename(filename) {
+		return cosy.WrapErrorWithParams(ErrAutoBackupInvalidFilename, "filename uses a Windows reserved name")
+	}
 	if strings.ContainsAny(filename, `/\`) {
 		return cosy.WrapErrorWithParams(ErrAutoBackupInvalidFilename, "filename must not contain path separators")
 	}
@@ -346,6 +352,22 @@ func hasWindowsDrivePrefix(value string) bool {
 
 	first := value[0]
 	return (first >= 'a' && first <= 'z') || (first >= 'A' && first <= 'Z')
+}
+
+func isWindowsReservedFilename(filename string) bool {
+	baseName := filename
+	if dotIndex := strings.IndexByte(baseName, '.'); dotIndex >= 0 {
+		baseName = baseName[:dotIndex]
+	}
+
+	switch strings.ToUpper(baseName) {
+	case "CON", "PRN", "AUX", "NUL",
+		"COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
+		"LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9":
+		return true
+	default:
+		return false
+	}
 }
 
 func isPathInsideBaseDir(baseDir, targetPath string) bool {
