@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"sort"
-	"strconv"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
@@ -228,129 +227,41 @@ type CacheStats struct {
 	Cost      int64   `json:"cost"`
 }
 
-// Warmup pre-loads frequently used queries into cache
-func (c *Cache) Warmup(queries []WarmupQuery) {
-	for _, query := range queries {
-		if query.Result != nil {
-			key := c.GenerateKey(query.Request)
-			c.cache.Set(key, query.Result, 1)
-		}
-	}
-
-	c.cache.Wait()
-}
-
-// WarmupQuery represents a query and result pair for cache warmup
-type WarmupQuery struct {
-	Request *SearchRequest `json:"request"`
-	Result  *SearchResult  `json:"result"`
-}
-
 // Close closes the cache and frees resources
 func (c *Cache) Close() {
 	c.cache.Close()
 }
 
-// KeyGen provides even faster key generation for hot paths
-type KeyGen struct {
-	buffer []byte
+// Searcher cache accessors
+
+func (ds *Searcher) getFromCache(req *SearchRequest) *SearchResult {
+	if ds.cache == nil {
+		return nil
+	}
+
+	return ds.cache.Get(req)
 }
 
-// NewKeyGen creates a key generator with pre-allocated buffer
-func NewKeyGen() *KeyGen {
-	return &KeyGen{
-		buffer: make([]byte, 0, 256),
+func (ds *Searcher) cacheResult(req *SearchRequest, result *SearchResult) {
+	if ds.cache == nil {
+		return
 	}
+
+	ds.cache.Put(req, result, DefaultCacheTTL)
 }
 
-// GenerateKey generates a key using pre-allocated buffer
-func (kg *KeyGen) GenerateKey(req *SearchRequest) string {
-	kg.buffer = kg.buffer[:0]
-
-	kg.buffer = append(kg.buffer, "q:"...)
-	kg.buffer = append(kg.buffer, req.Query...)
-	kg.buffer = append(kg.buffer, "|l:"...)
-	kg.buffer = strconv.AppendInt(kg.buffer, int64(req.Limit), 10)
-	kg.buffer = append(kg.buffer, "|o:"...)
-	kg.buffer = strconv.AppendInt(kg.buffer, int64(req.Offset), 10)
-	kg.buffer = append(kg.buffer, "|s:"...)
-	kg.buffer = append(kg.buffer, req.SortBy...)
-	kg.buffer = append(kg.buffer, "|so:"...)
-	kg.buffer = append(kg.buffer, req.SortOrder...)
-
-	if req.StartTime != nil {
-		kg.buffer = append(kg.buffer, "|st:"...)
-		kg.buffer = strconv.AppendInt(kg.buffer, *req.StartTime, 10)
+// ClearCache clears the search cache
+func (ds *Searcher) ClearCache() error {
+	if ds.cache != nil {
+		ds.cache.Clear()
 	}
-	if req.EndTime != nil {
-		kg.buffer = append(kg.buffer, "|et:"...)
-		kg.buffer = strconv.AppendInt(kg.buffer, *req.EndTime, 10)
-	}
-
-	if len(req.StatusCodes) > 0 {
-		kg.buffer = append(kg.buffer, "|sc:"...)
-		for i, code := range req.StatusCodes {
-			if i > 0 {
-				kg.buffer = append(kg.buffer, ',')
-			}
-			kg.buffer = strconv.AppendInt(kg.buffer, int64(code), 10)
-		}
-	}
-
-	return string(kg.buffer)
+	return nil
 }
 
-// Middleware provides middleware functionality for caching
-type Middleware struct {
-	cache      *Cache
-	keyGen     *KeyGen
-	enabled    bool
-	defaultTTL time.Duration
-}
-
-// NewMiddleware creates a new cache middleware
-func NewMiddleware(cache *Cache, defaultTTL time.Duration) *Middleware {
-	return &Middleware{
-		cache:      cache,
-		keyGen:     NewKeyGen(),
-		enabled:    true,
-		defaultTTL: defaultTTL,
+// GetCacheStats returns cache statistics
+func (ds *Searcher) GetCacheStats() *CacheStats {
+	if ds.cache != nil {
+		return ds.cache.GetStats()
 	}
-}
-
-// Enable enables caching
-func (m *Middleware) Enable() {
-	m.enabled = true
-}
-
-// Disable disables caching
-func (m *Middleware) Disable() {
-	m.enabled = false
-}
-
-// IsEnabled returns whether caching is enabled
-func (m *Middleware) IsEnabled() bool {
-	return m.enabled
-}
-
-// GetOrSet attempts to get from cache, or executes the provided function and caches the result
-func (m *Middleware) GetOrSet(req *SearchRequest, fn func() (*SearchResult, error)) (*SearchResult, error) {
-	if !m.enabled {
-		return fn()
-	}
-
-	if cached := m.cache.Get(req); cached != nil {
-		return cached, nil
-	}
-
-	result, err := fn()
-	if err != nil {
-		return nil, err
-	}
-
-	if result != nil {
-		m.cache.Put(req, result, m.defaultTTL)
-	}
-
-	return result, nil
+	return nil
 }

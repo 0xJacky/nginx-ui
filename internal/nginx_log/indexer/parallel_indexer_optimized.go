@@ -347,18 +347,3 @@ func (pi *ParallelIndexer) indexLogDocuments(logDocs []*LogDocument, filePath st
 
 	return nil
 }
-
-// EnableProcessing switches the indexer to use optimized processing methods
-// This method provides a seamless upgrade path from the original implementation
-func (pi *ParallelIndexer) EnableProcessing() {
-	logger.Info("Enabling optimized log processing with 7-235x performance improvements")
-
-	// The optimization is already enabled through the new methods
-	// This method serves as a configuration marker
-	logger.Info("Optimized log processing enabled - use IndexLogFile and IndexSingleFile methods")
-}
-
-// GetOptimizationStatus returns the current optimization status
-func (pi *ParallelIndexer) GetOptimizationStatus() map[string]interface{} {
-	return GetOptimizationStatus()
-}

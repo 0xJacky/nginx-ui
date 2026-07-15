@@ -225,19 +225,6 @@ func convertToLogDocument(entry *parser.AccessLogEntry, filePath, mainLogPath st
 	return logDoc
 }
 
-// GetOptimizationStatus returns the current optimization status
-func GetOptimizationStatus() map[string]interface{} {
-	return map[string]interface{}{
-		"parser_optimized":     true,
-		"simd_enabled":         true,
-		"memory_pools_enabled": true,
-		"batch_processing":     "ParseStream (7-8x faster)",
-		"single_line_parsing":  "SIMD (235x faster)",
-		"memory_efficiency":    "70% reduction in memory usage",
-		"status":               "Production ready",
-	}
-}
-
 // createReaderForFile creates appropriate reader for the file, with gzip detection
 func createReaderForFile(reader io.Reader, filePath string) (io.Reader, func(), error) {
 	// If not a .gz file, return as-is

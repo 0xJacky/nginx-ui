@@ -18,7 +18,6 @@ type Parser struct {
 	uaParser   UserAgentParser
 	geoService GeoIPService
 	pool       *sync.Pool
-	detector   *FormatDetector
 	stats      *ParseStats
 	mu         sync.RWMutex
 }
@@ -58,7 +57,6 @@ func NewParser(config *Config, uaParser UserAgentParser, geoService GeoIPService
 		config:     config,
 		uaParser:   uaParser,
 		geoService: geoService,
-		detector:   NewFormatDetector(),
 		stats:      &ParseStats{},
 		pool: &sync.Pool{
 			New: func() interface{} {

@@ -251,59 +251,6 @@ func TestParser_WithContext(t *testing.T) {
 	}
 }
 
-func TestFormatDetector(t *testing.T) {
-	tests := []struct {
-		name     string
-		lines    []string
-		expected string
-	}{
-		{
-			name: "combined format",
-			lines: []string{
-				`127.0.0.1 - - [25/Dec/2023:10:00:00 +0000] "GET /index.html HTTP/1.1" 200 1234 "https://example.com" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"`,
-				`192.168.1.1 - - [25/Dec/2023:10:00:01 +0000] "POST /api/data HTTP/1.1" 201 567 "-" "curl/7.68.0"`,
-			},
-			expected: "combined",
-		},
-		{
-			name: "main format",
-			lines: []string{
-				`127.0.0.1 - - [25/Dec/2023:10:00:00 +0000] "GET /index.html HTTP/1.1" 200 1234`,
-				`192.168.1.1 - - [25/Dec/2023:10:00:01 +0000] "POST /api/data HTTP/1.1" 201 567`,
-			},
-			expected: "main",
-		},
-		{
-			name: "no match",
-			lines: []string{
-				"completely invalid log format",
-				"another invalid line",
-			},
-			expected: "",
-		},
-	}
-
-	detector := NewFormatDetector()
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			format := detector.DetectFormat(tt.lines)
-
-			if tt.expected == "" {
-				if format != nil {
-					t.Errorf("expected no format detection, but got %s", format.Name)
-				}
-			} else {
-				if format == nil {
-					t.Errorf("expected format %s, but got nil", tt.expected)
-				} else if format.Name != tt.expected {
-					t.Errorf("expected format %s, but got %s", tt.expected, format.Name)
-				}
-			}
-		})
-	}
-}
-
 func TestSimpleUserAgentParser(t *testing.T) {
 	parser := NewSimpleUserAgentParser()
 

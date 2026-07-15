@@ -188,29 +188,6 @@ func TestSearchRequestDefaults(t *testing.T) {
 	}
 }
 
-func TestCacheMiddleware(t *testing.T) {
-	cache := NewCache(100)
-	defer cache.Close()
-
-	middleware := NewMiddleware(cache, 5*time.Minute)
-
-	if !middleware.IsEnabled() {
-		t.Error("middleware should be enabled by default")
-	}
-
-	// Disable and test
-	middleware.Disable()
-	if middleware.IsEnabled() {
-		t.Error("middleware should be disabled")
-	}
-
-	// Re-enable
-	middleware.Enable()
-	if !middleware.IsEnabled() {
-		t.Error("middleware should be enabled")
-	}
-}
-
 func TestQueryBuilder(t *testing.T) {
 	qb := NewQueryBuilder()
 
@@ -228,25 +205,5 @@ func TestQueryBuilder(t *testing.T) {
 
 	if query == nil {
 		t.Error("BuildQuery should return a query")
-	}
-}
-
-func TestSuggestionQuery(t *testing.T) {
-	qb := NewQueryBuilder()
-
-	// Test suggestion query building
-	query, err := qb.BuildSuggestionQuery("test", "message")
-	if err != nil {
-		t.Errorf("BuildSuggestionQuery should not error: %v", err)
-	}
-
-	if query == nil {
-		t.Error("BuildSuggestionQuery should return a query")
-	}
-
-	// Test empty text
-	_, err = qb.BuildSuggestionQuery("", "message")
-	if err == nil {
-		t.Error("BuildSuggestionQuery should error for empty text")
 	}
 }

@@ -19,12 +19,6 @@ type Service interface {
 	GetGeoDistribution(ctx context.Context, req *GeoQueryRequest) (*GeoDistribution, error)
 	GetGeoDistributionByCountry(ctx context.Context, req *GeoQueryRequest, countryCode string) (*GeoDistribution, error)
 	GetTopCountries(ctx context.Context, req *GeoQueryRequest) ([]CountryStats, error)
-	GetTopCities(ctx context.Context, req *GeoQueryRequest) ([]CityStats, error)
-	GetGeoStatsForIP(ctx context.Context, req *GeoQueryRequest, ip string) (*CityStats, error)
-
-	GetTopPaths(ctx context.Context, req *TopListRequest) ([]KeyValue, error)
-	GetTopIPs(ctx context.Context, req *TopListRequest) ([]KeyValue, error)
-	GetTopUserAgents(ctx context.Context, req *TopListRequest) ([]KeyValue, error)
 
 	ValidateLogPath(logPath string) error
 	ValidateTimeRange(startTime, endTime int64) error

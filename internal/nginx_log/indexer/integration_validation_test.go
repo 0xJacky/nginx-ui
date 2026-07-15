@@ -120,40 +120,7 @@ func TestIntegrationValidation(t *testing.T) {
 		t.Logf("Calculated time range: %v to %v", minTime, maxTime)
 	}
 
-	// Test 4: Validate incremental indexing method
-	t.Log("Testing IndexSingleFileIncrementally...")
-
-	docsCountMap, minTime2, maxTime2, err := indexer.IndexSingleFileIncrementally(tmpFile.Name(), progressConfig)
-	if err != nil {
-		t.Fatalf("IndexSingleFileIncrementally failed: %v", err)
-	}
-
-	if len(docsCountMap) != 1 {
-		t.Errorf("Expected 1 entry in docsCountMap, got %d", len(docsCountMap))
-	}
-
-	if docsCount, exists := docsCountMap[tmpFile.Name()]; !exists || docsCount != 3 {
-		t.Errorf("Expected 3 documents for file %s, got %d (exists: %v)", tmpFile.Name(), docsCount, exists)
-	}
-
-	if minTime2 == nil || maxTime2 == nil {
-		t.Errorf("Expected time ranges from incremental indexing, got minTime=%v, maxTime=%v", minTime2, maxTime2)
-	}
-
-	// Test 5: Validate optimization status
-	t.Log("Testing optimization status...")
-
-	status := GetOptimizationStatus()
-	expectedKeys := []string{"parser_optimized", "simd_enabled", "memory_pools_enabled", "batch_processing"}
-	for _, key := range expectedKeys {
-		if _, exists := status[key]; !exists {
-			t.Errorf("Expected optimization status key %s to exist", key)
-		}
-	}
-
-	t.Logf("Optimization status: %+v", status)
-
-	// Test 6: Validate production configuration
+	// Test 4: Validate production configuration
 	t.Log("Testing production configuration...")
 
 	// Test the current indexer's configuration (which should have production optimizations)
@@ -206,10 +173,10 @@ func TestOptimizationCompatibility(t *testing.T) {
 		t.Fatalf("IndexLogFile failed: %v", err)
 	}
 
-	t.Log("Testing indexSingleFile (should use optimized implementation)...")
-	docCount, minTime, maxTime, err := indexer.indexSingleFile(tmpFile.Name())
+	t.Log("Testing IndexSingleFile...")
+	docCount, minTime, maxTime, err := indexer.IndexSingleFile(tmpFile.Name())
 	if err != nil {
-		t.Fatalf("indexSingleFile failed: %v", err)
+		t.Fatalf("IndexSingleFile failed: %v", err)
 	}
 
 	if docCount != 1 {

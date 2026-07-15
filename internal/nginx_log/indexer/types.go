@@ -52,9 +52,9 @@ type Config struct {
 	FlushInterval        time.Duration `json:"flush_interval"`
 	MaxQueueSize         int           `json:"max_queue_size"`
 	EnableCompression    bool          `json:"enable_compression"`
-	MemoryQuota          int64         `json:"memory_quota"`           // Memory limit in bytes
-	MaxSegmentSize       int64         `json:"max_segment_size"`       // Maximum segment size
-	OptimizeInterval     time.Duration `json:"optimize_interval"`      // Auto-optimization interval
+	MemoryQuota          int64         `json:"memory_quota"`      // Memory limit in bytes
+	MaxSegmentSize       int64         `json:"max_segment_size"`  // Maximum segment size
+	OptimizeInterval     time.Duration `json:"optimize_interval"` // Auto-optimization interval
 	EnableMetrics        bool          `json:"enable_metrics"`
 	FileGroupConcurrency int           `json:"file_group_concurrency"` // Max concurrent files within a log group (0 = use WorkerCount)
 }
@@ -95,8 +95,8 @@ func DefaultIndexerConfig() *Config {
 		FlushInterval:        5 * time.Second,
 		MaxQueueSize:         baseBatchSize * 10, // Scale queue with batch size
 		EnableCompression:    true,
-		MemoryQuota:          1024 * 1024 * 1024,         // 1GB
-		MaxSegmentSize:       64 * 1024 * 1024,           // 64MB
+		MemoryQuota:          1024 * 1024 * 1024, // 1GB
+		MaxSegmentSize:       64 * 1024 * 1024,   // 64MB
 		OptimizeInterval:     30 * time.Minute,
 		EnableMetrics:        true,
 		FileGroupConcurrency: fileGroupConcurrency, // Default: up to 50% of logical CPUs for file-level parallelism
@@ -280,8 +280,6 @@ type OptimizationStats struct {
 type Indexer interface {
 	IndexDocument(ctx context.Context, doc *Document) error
 	IndexDocuments(ctx context.Context, docs []*Document) error
-	IndexDocumentAsync(doc *Document, callback func(error))
-	IndexDocumentsAsync(docs []*Document, callback func(error))
 
 	StartBatch() BatchWriterInterface
 	FlushAll() error

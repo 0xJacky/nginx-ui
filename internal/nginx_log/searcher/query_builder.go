@@ -2,7 +2,6 @@ package searcher
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/blevesearch/bleve/v2"
 	"github.com/blevesearch/bleve/v2/search/query"
@@ -291,21 +290,4 @@ func (qb *QueryBuilder) ValidateSearchRequest(req *SearchRequest) error {
 	}
 
 	return nil
-}
-
-// BuildSuggestionQuery builds a query for suggestions (simplified version)
-func (qb *QueryBuilder) BuildSuggestionQuery(text, field string) (query.Query, error) {
-	if text == "" {
-		return nil, fmt.Errorf("suggestion text cannot be empty")
-	}
-
-	// Use a prefix query for suggestions
-	if field == "" {
-		field = "_all"
-	}
-
-	prefixQuery := bleve.NewPrefixQuery(strings.ToLower(text))
-	prefixQuery.SetField(field)
-
-	return prefixQuery, nil
 }

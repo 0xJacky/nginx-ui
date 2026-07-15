@@ -44,11 +44,7 @@ type ParallelIndexer struct {
 	lastOptimized       int64
 	optimizing          int32
 	adaptiveOptimizer   *AdaptiveOptimizer
-	zeroAllocProcessor  *ZeroAllocBatchProcessor
 	optimizationEnabled bool
-
-	// Rotation log scanning for optimized throughput
-	rotationScanner *RotationScanner
 }
 
 // indexWorker represents a single indexing worker
@@ -93,9 +89,7 @@ func NewParallelIndexer(config *Config, shardManager ShardManager) *ParallelInde
 			WorkerStats: make([]*WorkerStats, config.WorkerCount),
 		},
 		adaptiveOptimizer:   ao,
-		zeroAllocProcessor:  NewZeroAllocBatchProcessor(config),
-		optimizationEnabled: true,                    // Enable optimizations by default
-		rotationScanner:     NewRotationScanner(nil), // Use default configuration
+		optimizationEnabled: true, // Enable optimizations by default
 	}
 
 	// Set up the activity poller for the adaptive optimizer
@@ -355,48 +349,6 @@ func (pi *ParallelIndexer) IndexDocuments(ctx context.Context, docs []*Document)
 	}
 }
 
-// IndexDocumentAsync indexes a document asynchronously
-func (pi *ParallelIndexer) IndexDocumentAsync(doc *Document, callback func(error)) {
-	pi.IndexDocumentsAsync([]*Document{doc}, callback)
-}
-
-// IndexDocumentsAsync indexes multiple documents asynchronously
-func (pi *ParallelIndexer) IndexDocumentsAsync(docs []*Document, callback func(error)) {
-	if !pi.IsHealthy() {
-		if callback != nil {
-			callback(fmt.Errorf("indexer not started"))
-		}
-		return
-	}
-
-	if len(docs) == 0 {
-		if callback != nil {
-			callback(nil)
-		}
-		return
-	}
-
-	job := &IndexJob{
-		Documents: docs,
-		Priority:  PriorityNormal,
-		Callback:  callback,
-	}
-
-	select {
-	case pi.jobQueue <- job:
-		// Job queued successfully
-	case <-pi.ctx.Done():
-		if callback != nil {
-			callback(fmt.Errorf("indexer stopped"))
-		}
-	default:
-		// Queue is full
-		if callback != nil {
-			callback(fmt.Errorf("queue is full"))
-		}
-	}
-}
-
 // StartBatch returns a new batch writer with adaptive batch size
 func (pi *ParallelIndexer) StartBatch() BatchWriterInterface {
 	batchSize := pi.config.BatchSize
@@ -412,14 +364,6 @@ func (pi *ParallelIndexer) GetOptimizationStats() AdaptiveOptimizationStats {
 		return pi.adaptiveOptimizer.GetOptimizationStats()
 	}
 	return AdaptiveOptimizationStats{}
-}
-
-// GetPoolStats returns object pool statistics
-func (pi *ParallelIndexer) GetPoolStats() PoolStats {
-	if pi.zeroAllocProcessor != nil {
-		return pi.zeroAllocProcessor.GetPoolStats()
-	}
-	return PoolStats{}
 }
 
 // EnableOptimizations enables or disables adaptive optimizations
@@ -711,231 +655,6 @@ func (pi *ParallelIndexer) DestroyAllIndexes(parentCtx context.Context) error {
 	atomic.StoreInt32(&pi.channelsClosed, 0) // Reset the channel closed flag
 
 	return destructionErr
-}
-
-// IndexLogGroup finds all files related to a base log path (e.g., rotated logs) and indexes them.
-// It returns a map of [filePath -> docCount], and the min/max timestamps found.
-func (pi *ParallelIndexer) IndexLogGroup(basePath string) (map[string]uint64, *time.Time, *time.Time, error) {
-	if !pi.IsHealthy() {
-		return nil, nil, nil, fmt.Errorf("indexer not healthy")
-	}
-
-	// Find all files belonging to this log group by globbing
-	globPath := basePath + "*"
-	matches, err := filepath.Glob(globPath)
-	if err != nil {
-		return nil, nil, nil, fmt.Errorf("failed to glob for log files with base %s: %w", basePath, err)
-	}
-
-	// filepath.Glob might not match the base file itself if it has no extension,
-	// so we check for it explicitly and add it to the list.
-	info, err := os.Stat(basePath)
-	if err == nil && info.Mode().IsRegular() {
-		matches = append(matches, basePath)
-	}
-
-	// Deduplicate file list
-	seen := make(map[string]struct{})
-	uniqueFiles := make([]string, 0)
-	for _, match := range matches {
-		if _, ok := seen[match]; !ok {
-			// Further check if it's a file, not a directory. Glob can match dirs.
-			info, err := os.Stat(match)
-			if err == nil && info.Mode().IsRegular() {
-				seen[match] = struct{}{}
-				uniqueFiles = append(uniqueFiles, match)
-			}
-		}
-	}
-
-	if len(uniqueFiles) == 0 {
-		logger.Warnf("No actual log file found for group: %s", basePath)
-		return nil, nil, nil, nil
-	}
-
-	logger.Infof("Found %d file(s) for log group %s: %v", len(uniqueFiles), basePath, uniqueFiles)
-
-	docsCountMap := make(map[string]uint64)
-	var overallMinTime, overallMaxTime *time.Time
-
-	for _, filePath := range uniqueFiles {
-		docsIndexed, minTime, maxTime, err := pi.indexSingleFile(filePath)
-		if err != nil {
-			logger.Warnf("Failed to index file '%s' in group '%s', skipping: %v", filePath, basePath, err)
-			continue // Continue with the next file
-		}
-		docsCountMap[filePath] = docsIndexed
-
-		if minTime != nil {
-			if overallMinTime == nil || minTime.Before(*overallMinTime) {
-				overallMinTime = minTime
-			}
-		}
-		if maxTime != nil {
-			if overallMaxTime == nil || maxTime.After(*overallMaxTime) {
-				overallMaxTime = maxTime
-			}
-		}
-	}
-
-	return docsCountMap, overallMinTime, overallMaxTime, nil
-}
-
-// IndexLogGroupWithRotationScanning performs optimized log group indexing using rotation scanner
-// for maximum frontend throughput by prioritizing files based on size and age
-func (pi *ParallelIndexer) IndexLogGroupWithRotationScanning(basePaths []string, progressConfig *ProgressConfig) (map[string]uint64, *time.Time, *time.Time, error) {
-	if !pi.IsHealthy() {
-		return nil, nil, nil, fmt.Errorf("indexer not healthy")
-	}
-
-	ctx, cancel := context.WithTimeout(pi.ctx, 10*time.Minute)
-	defer cancel()
-
-	logger.Infof("🚀 Starting optimized rotation log indexing for %d log groups", len(basePaths))
-
-	// Scan all log groups and build priority queue
-	if err := pi.rotationScanner.ScanLogGroups(ctx, basePaths); err != nil {
-		return nil, nil, nil, fmt.Errorf("failed to scan log groups: %w", err)
-	}
-
-	// Create progress tracker if config is provided
-	var progressTracker *ProgressTracker
-	if progressConfig != nil {
-		progressTracker = NewProgressTracker("rotation-scan", progressConfig)
-
-		// Add all discovered files to progress tracker
-		scanResults := pi.rotationScanner.GetScanResults()
-		for _, result := range scanResults {
-			for _, file := range result.Files {
-				progressTracker.AddFile(file.Path, file.IsCompressed)
-				progressTracker.SetFileSize(file.Path, file.Size)
-				progressTracker.SetFileEstimate(file.Path, file.EstimatedLines)
-			}
-		}
-	}
-
-	docsCountMap := make(map[string]uint64)
-	var overallMinTime, overallMaxTime *time.Time
-
-	// Process files in optimized batches using rotation scanner
-	batchSize := pi.config.BatchSize / 4 // Smaller batches for better progress tracking
-	processedFiles := 0
-	totalFiles := pi.rotationScanner.GetQueueSize()
-
-	for {
-		select {
-		case <-ctx.Done():
-			return docsCountMap, overallMinTime, overallMaxTime, ctx.Err()
-		default:
-		}
-
-		// Get next batch of files prioritized by scanner
-		batch := pi.rotationScanner.GetNextBatch(batchSize)
-		if len(batch) == 0 {
-			break // No more files to process
-		}
-
-		logger.Debugf("📦 Processing batch of %d files (progress: %d/%d)", len(batch), processedFiles, totalFiles)
-
-		// Process each file in the batch
-		for _, fileInfo := range batch {
-			if progressTracker != nil {
-				progressTracker.StartFile(fileInfo.Path)
-			}
-
-			docsIndexed, minTime, maxTime, err := pi.indexSingleFile(fileInfo.Path)
-			if err != nil {
-				logger.Warnf("Failed to index file %s: %v", fileInfo.Path, err)
-				if progressTracker != nil {
-					// Skip error recording for now
-					_ = err
-				}
-				continue
-			}
-
-			docsCountMap[fileInfo.Path] = docsIndexed
-			processedFiles++
-
-			// Update overall time range
-			if minTime != nil && (overallMinTime == nil || minTime.Before(*overallMinTime)) {
-				overallMinTime = minTime
-			}
-			if maxTime != nil && (overallMaxTime == nil || maxTime.After(*overallMaxTime)) {
-				overallMaxTime = maxTime
-			}
-
-			if progressTracker != nil {
-				progressTracker.CompleteFile(fileInfo.Path, int64(docsIndexed))
-			}
-
-			logger.Debugf("✅ Indexed %s: %d documents", fileInfo.Path, docsIndexed)
-		}
-
-		// Report batch progress
-		logger.Infof("📊 Batch completed: %d/%d files processed (%.1f%% complete)",
-			processedFiles, totalFiles, float64(processedFiles)/float64(totalFiles)*100)
-	}
-
-	logger.Infof("🎉 Optimized rotation log indexing completed: %d files, %d total documents",
-		processedFiles, sumDocCounts(docsCountMap))
-
-	return docsCountMap, overallMinTime, overallMaxTime, nil
-}
-
-// IndexSingleFileIncrementally indexes a single file (not the entire log group).
-// Note: The actual incremental logic (using LastPosition) is implemented in the cron job layer
-// to have access to persistence. This method performs a full file scan.
-// For true incremental behavior, see internal/cron/incremental_indexing.go
-func (pi *ParallelIndexer) IndexSingleFileIncrementally(filePath string, progressConfig *ProgressConfig) (map[string]uint64, *time.Time, *time.Time, error) {
-	if !pi.IsHealthy() {
-		return nil, nil, nil, fmt.Errorf("indexer not healthy")
-	}
-
-	// Create progress tracker if config is provided
-	var progressTracker *ProgressTracker
-	if progressConfig != nil {
-		progressTracker = NewProgressTracker(filePath, progressConfig)
-		// Setup file for tracking
-		isCompressed := IsCompressedFile(filePath)
-		progressTracker.AddFile(filePath, isCompressed)
-		if stat, err := os.Stat(filePath); err == nil {
-			progressTracker.SetFileSize(filePath, stat.Size())
-			if estimatedLines, err := EstimateFileLines(context.Background(), filePath, stat.Size(), isCompressed); err == nil {
-				progressTracker.SetFileEstimate(filePath, estimatedLines)
-			}
-		}
-	}
-
-	docsCountMap := make(map[string]uint64)
-
-	if progressTracker != nil {
-		progressTracker.StartFile(filePath)
-	}
-
-	docsIndexed, minTime, maxTime, err := pi.indexSingleFileWithProgress(filePath, progressTracker)
-	if err != nil {
-		logger.Warnf("Failed to incrementally index file '%s', skipping: %v", filePath, err)
-		if progressTracker != nil {
-			progressTracker.FailFile(filePath, err.Error())
-		}
-		// Return empty results and the error
-		return docsCountMap, nil, nil, err
-	}
-
-	docsCountMap[filePath] = docsIndexed
-
-	if progressTracker != nil {
-		progressTracker.CompleteFile(filePath, int64(docsIndexed))
-	}
-
-	return docsCountMap, minTime, maxTime, nil
-}
-
-// indexSingleFile contains optimized logic to process one physical log file.
-// Now uses ParseStream for 7-8x faster performance and 70% memory reduction
-func (pi *ParallelIndexer) indexSingleFile(filePath string) (uint64, *time.Time, *time.Time, error) {
-	// Delegate to optimized implementation
-	return pi.IndexSingleFile(filePath)
 }
 
 // UpdateConfig updates the indexer configuration
@@ -1350,15 +1069,6 @@ func (pi *ParallelIndexer) IndexLogGroupWithProgress(basePath string, progressCo
 func (pi *ParallelIndexer) indexSingleFileWithProgress(filePath string, progressTracker *ProgressTracker) (uint64, *time.Time, *time.Time, error) {
 	// Delegate to optimized implementation with progress tracking
 	return pi.IndexSingleFileWithProgress(filePath, progressTracker)
-}
-
-// sumDocCounts returns the total number of documents across all files
-func sumDocCounts(docsCountMap map[string]uint64) uint64 {
-	var total uint64
-	for _, count := range docsCountMap {
-		total += count
-	}
-	return total
 }
 
 // CountDocsByMainLogPath returns the exact number of documents indexed for a given log group (main log path)

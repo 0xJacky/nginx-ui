@@ -78,10 +78,10 @@ func TestService_GetGeoDistributionByCountry_Success(t *testing.T) {
 	// Verify that the search request uses Countries filter correctly
 	mockSearcher.On("Search", ctx, mock.MatchedBy(func(searchReq *searcher.SearchRequest) bool {
 		// Check that Countries filter is set correctly
-		return len(searchReq.Countries) == 1 && 
-			   searchReq.Countries[0] == "CN" &&
-			   len(searchReq.FacetFields) == 1 &&
-			   searchReq.FacetFields[0] == "province"
+		return len(searchReq.Countries) == 1 &&
+			searchReq.Countries[0] == "CN" &&
+			len(searchReq.FacetFields) == 1 &&
+			searchReq.FacetFields[0] == "province"
 	})).Return(expectedResult, nil)
 
 	result, err := s.GetGeoDistributionByCountry(ctx, req, "CN")
@@ -130,7 +130,7 @@ func TestService_GetGeoDistributionByCountry_EmptyProvinceFacet(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotNil(t, result)
 	assert.Len(t, result.Countries, 0) // No provinces returned
-	
+
 	mockSearcher.AssertExpectations(t)
 }
 
@@ -156,7 +156,7 @@ func TestService_GetGeoDistributionByCountry_CountriesFilterValidation(t *testin
 			expectError: false,
 		},
 		{
-			name:        "valid country code US", 
+			name:        "valid country code US",
 			countryCode: "US",
 			expectError: false,
 		},
@@ -245,23 +245,23 @@ func TestService_GeoDataConsistency_ChinaVsWorld(t *testing.T) {
 	// First call: GetGeoDistribution (WorldMap)
 	mockSearcher.On("Search", ctx, mock.MatchedBy(func(searchReq *searcher.SearchRequest) bool {
 		return len(searchReq.Countries) == 0 && // No country filter for world map
-			   len(searchReq.FacetFields) == 1 &&
-			   searchReq.FacetFields[0] == "region_code"
+			len(searchReq.FacetFields) == 1 &&
+			searchReq.FacetFields[0] == "region_code"
 	})).Return(worldMapResult, nil).Once()
 
 	// Second call: GetGeoDistributionByCountry (ChinaMap)
 	mockSearcher.On("Search", ctx, mock.MatchedBy(func(searchReq *searcher.SearchRequest) bool {
 		return len(searchReq.Countries) == 1 &&
-			   searchReq.Countries[0] == "CN" &&
-			   len(searchReq.FacetFields) == 1 &&
-			   searchReq.FacetFields[0] == "province"
+			searchReq.Countries[0] == "CN" &&
+			len(searchReq.FacetFields) == 1 &&
+			searchReq.FacetFields[0] == "province"
 	})).Return(chinaMapResult, nil).Once()
 
 	// Test WorldMap
 	worldResult, err := s.GetGeoDistribution(ctx, req)
 	assert.NoError(t, err)
 	assert.NotNil(t, worldResult)
-	
+
 	cnCountInWorld := worldResult.Countries["CN"]
 	assert.Equal(t, 4185, cnCountInWorld)
 
@@ -277,8 +277,8 @@ func TestService_GeoDataConsistency_ChinaVsWorld(t *testing.T) {
 	}
 
 	// Verify consistency: WorldMap CN count should equal ChinaMap total
-	assert.Equal(t, cnCountInWorld, totalChinaVisits, 
-		"WorldMap CN count (%d) should equal ChinaMap total (%d)", 
+	assert.Equal(t, cnCountInWorld, totalChinaVisits,
+		"WorldMap CN count (%d) should equal ChinaMap total (%d)",
 		cnCountInWorld, totalChinaVisits)
 
 	mockSearcher.AssertExpectations(t)
@@ -335,7 +335,6 @@ func TestService_GetGeoDistribution_SearchError(t *testing.T) {
 	mockSearcher.AssertExpectations(t)
 }
 
-
 func TestService_GetTopCountries_Success(t *testing.T) {
 	mockSearcher := &MockSearcher{}
 	s := NewService(mockSearcher)
@@ -374,166 +373,6 @@ func TestService_GetTopCountries_Success(t *testing.T) {
 
 	assert.Equal(t, "CN", result[1].Country)
 	assert.Equal(t, 2, result[1].Requests)
-
-	mockSearcher.AssertExpectations(t)
-}
-
-func TestService_GetTopCities_Success(t *testing.T) {
-	mockSearcher := &MockSearcher{}
-	s := NewService(mockSearcher)
-
-	ctx := context.Background()
-	req := &GeoQueryRequest{
-		StartTime: 1000,
-		EndTime:   2000,
-		Limit:     2,
-	}
-
-	expectedResult := &searcher.SearchResult{
-		TotalHits: 1000,
-		Facets: map[string]*searcher.Facet{
-			"city": {
-				Field: "city",
-				Total: 1000,
-				Terms: []*searcher.FacetTerm{
-					{Term: "New York", Count: 400},
-					{Term: "Toronto", Count: 300},
-				},
-			},
-		},
-	}
-
-	mockSearcher.On("Search", ctx, mock.AnythingOfType("*searcher.SearchRequest")).Return(expectedResult, nil)
-
-	result, err := s.GetTopCities(ctx, req)
-
-	assert.NoError(t, err)
-	assert.NotNil(t, result)
-	assert.Len(t, result, 2)
-
-	assert.Equal(t, "New York", result[0].City)
-	assert.Equal(t, 400, result[0].Count)
-
-	mockSearcher.AssertExpectations(t)
-}
-
-func TestService_GetGeoStatsForIP_Success(t *testing.T) {
-	mockSearcher := &MockSearcher{}
-	s := NewService(mockSearcher)
-
-	ctx := context.Background()
-	req := &GeoQueryRequest{
-		StartTime: 1000,
-		EndTime:   2000,
-	}
-	ip := "192.168.1.1"
-
-	expectedResult := &searcher.SearchResult{
-		TotalHits: 150,
-		Facets: map[string]*searcher.Facet{
-			"country": {
-				Field: "country",
-				Terms: []*searcher.FacetTerm{
-					{Term: "United States", Count: 150},
-				},
-			},
-			"country_code": {
-				Field: "country_code",
-				Terms: []*searcher.FacetTerm{
-					{Term: "US", Count: 150},
-				},
-			},
-			"city": {
-				Field: "city",
-				Terms: []*searcher.FacetTerm{
-					{Term: "New York", Count: 150},
-				},
-			},
-		},
-	}
-
-	mockSearcher.On("Search", ctx, mock.AnythingOfType("*searcher.SearchRequest")).Return(expectedResult, nil)
-
-	result, err := s.GetGeoStatsForIP(ctx, req, ip)
-
-	assert.NoError(t, err)
-	assert.NotNil(t, result)
-	assert.Equal(t, "New York", result.City)
-	assert.Equal(t, "United States", result.Country)
-	assert.Equal(t, "US", result.CountryCode)
-	assert.Equal(t, 150, result.Count)
-	assert.Equal(t, 100.0, result.Percent) // 100% for single IP
-
-	mockSearcher.AssertExpectations(t)
-}
-
-func TestService_GetGeoStatsForIP_EmptyIP(t *testing.T) {
-	mockSearcher := &MockSearcher{}
-	s := NewService(mockSearcher)
-
-	ctx := context.Background()
-	req := &GeoQueryRequest{
-		StartTime: 1000,
-		EndTime:   2000,
-	}
-
-	result, err := s.GetGeoStatsForIP(ctx, req, "")
-
-	assert.Error(t, err)
-	assert.Nil(t, result)
-	assert.Contains(t, err.Error(), "IP address cannot be empty")
-}
-
-func TestService_GetGeoStatsForIP_NoData(t *testing.T) {
-	mockSearcher := &MockSearcher{}
-	s := NewService(mockSearcher)
-
-	ctx := context.Background()
-	req := &GeoQueryRequest{
-		StartTime: 1000,
-		EndTime:   2000,
-	}
-	ip := "192.168.1.1"
-
-	expectedResult := &searcher.SearchResult{
-		TotalHits: 0, // No data found
-		Facets:    make(map[string]*searcher.Facet),
-	}
-
-	mockSearcher.On("Search", ctx, mock.AnythingOfType("*searcher.SearchRequest")).Return(expectedResult, nil)
-
-	result, err := s.GetGeoStatsForIP(ctx, req, ip)
-
-	assert.Error(t, err)
-	assert.Nil(t, result)
-	assert.Contains(t, err.Error(), "no data found for IP")
-
-	mockSearcher.AssertExpectations(t)
-}
-
-func TestService_GetGeoStatsForIP_NoGeoData(t *testing.T) {
-	mockSearcher := &MockSearcher{}
-	s := NewService(mockSearcher)
-
-	ctx := context.Background()
-	req := &GeoQueryRequest{
-		StartTime: 1000,
-		EndTime:   2000,
-	}
-	ip := "192.168.1.1"
-
-	expectedResult := &searcher.SearchResult{
-		TotalHits: 100,
-		Facets:    nil, // No geo facets
-	}
-
-	mockSearcher.On("Search", ctx, mock.AnythingOfType("*searcher.SearchRequest")).Return(expectedResult, nil)
-
-	result, err := s.GetGeoStatsForIP(ctx, req, ip)
-
-	assert.Error(t, err)
-	assert.Nil(t, result)
-	assert.Contains(t, err.Error(), "could not extract geo information")
 
 	mockSearcher.AssertExpectations(t)
 }

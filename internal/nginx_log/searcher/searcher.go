@@ -167,26 +167,6 @@ func (s *Searcher) Search(ctx context.Context, req *SearchRequest) (*SearchResul
 	return result, nil
 }
 
-// SearchAsync performs asynchronous search
-func (s *Searcher) SearchAsync(ctx context.Context, req *SearchRequest) (<-chan *SearchResult, <-chan error) {
-	resultChan := make(chan *SearchResult, 1)
-	errorChan := make(chan error, 1)
-
-	go func() {
-		defer close(resultChan)
-		defer close(errorChan)
-
-		result, err := s.Search(ctx, req)
-		if err != nil {
-			errorChan <- err
-		} else {
-			resultChan <- result
-		}
-	}()
-
-	return resultChan, errorChan
-}
-
 // executeDistributedSearch executes search across all healthy shards
 func (s *Searcher) executeDistributedSearch(ctx context.Context, query query.Query, req *SearchRequest) (*SearchResult, error) {
 	healthyShards := s.getHealthyShards()
