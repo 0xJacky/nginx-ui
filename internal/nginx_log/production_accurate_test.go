@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/indexer"
+	"github.com/0xJacky/Nginx-UI/settings"
 )
 
 // TestAccurateProductionPerformance tests the exact same workflow as production rebuild
@@ -39,6 +40,14 @@ func runAccurateProductionTest(t *testing.T, recordCount int) {
 
 	tempDir := t.TempDir()
 
+	// IndexLogGroupWithProgress validates every file against the log directory
+	// whitelist, so the temp dir must be whitelisted for the test files to be found.
+	originalWhitelist := settings.NginxSettings.LogDirWhiteList
+	settings.NginxSettings.LogDirWhiteList = append(append([]string{}, originalWhitelist...), tempDir)
+	t.Cleanup(func() {
+		settings.NginxSettings.LogDirWhiteList = originalWhitelist
+	})
+
 	// Generate test data with production-like log entries
 	testLogFile := filepath.Join(tempDir, "access.log")
 	dataGenStart := time.Now()
@@ -55,6 +64,9 @@ func runAccurateProductionTest(t *testing.T, recordCount int) {
 	if err := os.MkdirAll(indexDir, 0755); err != nil {
 		t.Fatalf("Failed to create index dir: %v", err)
 	}
+
+	// Initialize the global log parser singleton, same as production startup does
+	indexer.InitLogParser()
 
 	// Use production default configuration
 	config := indexer.DefaultIndexerConfig()
@@ -122,9 +134,14 @@ func runAccurateProductionTest(t *testing.T, recordCount int) {
 		t.Logf("Warning: Flush failed: %v", err)
 	}
 
-	// Performance validation
-	if throughput < 1000 {
-		t.Errorf("⚠️  Throughput too low: %.0f records/sec (expected >1000 for production)", throughput)
+	// Performance validation. The race detector slows indexing by an order of
+	// magnitude, so only assert a sanity floor there instead of the production bar.
+	minThroughput := 1000.0
+	if raceEnabled {
+		minThroughput = 200.0
+	}
+	if throughput < minThroughput {
+		t.Errorf("⚠️  Throughput too low: %.0f records/sec (expected >%.0f)", throughput, minThroughput)
 	}
 
 	if totalIndexedDocs == 0 {
