@@ -1,12 +1,29 @@
 <script setup lang="ts">
 import type { NgxConfig } from '@/api/ngx'
-import { FileExclamationOutlined, FileTextOutlined } from '@ant-design/icons-vue'
+import { AreaChartOutlined, FileExclamationOutlined, FileTextOutlined } from '@ant-design/icons-vue'
+import nginxLog from '@/api/nginx_log'
 
 const props = defineProps<{
   ngxConfig: NgxConfig
   curServerIdx: number
   name?: string
 }>()
+
+// Cache the indexing status at module level so multiple LogEntry instances
+// mounted on the same page share a single request
+let indexingStatusPromise: Promise<boolean> | null = null
+function getIndexingStatus(): Promise<boolean> {
+  indexingStatusPromise ??= nginxLog.getAdvancedIndexingStatus()
+    .then(res => !!res.enabled)
+    .catch(() => false)
+  return indexingStatusPromise
+}
+
+const isIndexingEnabled = ref(false)
+
+onMounted(async () => {
+  isIndexingEnabled.value = await getIndexingStatus()
+})
 
 const accessIdx = ref<number>()
 const errorIdx = ref<number>()
@@ -59,8 +76,7 @@ function onClickAccessLog() {
   router.push({
     path: '/nginx_log/site',
     query: {
-      type: 'site',
-      log_path: accessLogPath.value,
+      path: accessLogPath.value,
     },
   })
 }
@@ -69,8 +85,17 @@ function onClickErrorLog() {
   router.push({
     path: '/nginx_log/site',
     query: {
-      type: 'site',
-      log_path: errorLogPath.value,
+      path: errorLogPath.value,
+    },
+  })
+}
+
+function onClickAnalytics() {
+  router.push({
+    path: '/nginx_log/site',
+    query: {
+      path: accessLogPath.value,
+      view: 'dashboard',
     },
   })
 }
@@ -96,6 +121,14 @@ function onClickErrorLog() {
     >
       <FileExclamationOutlined />
       {{ $gettext('Error Logs') }}
+    </AButton>
+    <AButton
+      v-if="hasAccessLog && isIndexingEnabled"
+      type="link"
+      @click="onClickAnalytics"
+    >
+      <AreaChartOutlined />
+      {{ $gettext('Traffic Analytics') }}
     </AButton>
   </ASpace>
 </template>

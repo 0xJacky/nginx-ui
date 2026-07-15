@@ -159,7 +159,7 @@ const columns: StdTableColumn[] = [{
 }, {
   title: () => $gettext('Actions'),
   dataIndex: 'actions',
-  width: 80,
+  width: 120,
   fixed: 'right',
 }]
 

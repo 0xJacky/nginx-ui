@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/cache"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
@@ -86,15 +87,20 @@ func isLogPathUnderWhiteList(path string) bool {
 		logDirWhiteList = append(logDirWhiteList, prefix)
 	}
 
+	// Cache verdicts with a TTL so changes to the whitelist settings or the
+	// default log paths take effect without a restart, and probe entries for
+	// arbitrary request-supplied paths do not accumulate forever.
+	const verdictTTL = 10 * time.Minute
+
 	// Check if path is under any whitelist directory
 	for _, whitePath := range logDirWhiteList {
 		if helper.IsUnderDirectory(path, whitePath) {
-			cache.Set(cacheKey, true, 0)
+			cache.Set(cacheKey, true, verdictTTL)
 			return true
 		}
 	}
 
 	// Cache negative result as well to avoid repeated checks
-	cache.Set(cacheKey, false, 0)
+	cache.Set(cacheKey, false, verdictTTL)
 	return false
 }

@@ -11,6 +11,7 @@ func InitRouter(r *gin.RouterGroup) {
 
 	r.GET("sites", GetSiteList)
 	r.GET("sites/:name", GetSite)
+	r.GET("sites/:name/logs", GetSiteLogs)
 
 	// site navigation endpoints
 	r.GET("site_navigation", GetSiteNavigation)

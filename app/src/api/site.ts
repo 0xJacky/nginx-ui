@@ -36,6 +36,13 @@ export interface Site extends ModelBase {
   dns_record_exists?: boolean | null
 }
 
+export interface SiteLog {
+  type: 'access' | 'error'
+  path: string
+  inherited: boolean
+  valid: boolean
+}
+
 export interface AutoCertRequest {
   dns_credential_id: number | null
   challenge_method: string
@@ -62,6 +69,7 @@ const site = extendCurdApi(useCurdApi<Site>(baseUrl), {
   duplicate: (name: string, data: { name: string }) => http.post(`${baseUrl}/${encodeURIComponent(name)}/duplicate`, data),
   advance_mode: (name: string, data: { advanced: boolean }) => http.post(`${baseUrl}/${encodeURIComponent(name)}/advance`, data),
   enableMaintenance: (name: string) => http.post(`${baseUrl}/${encodeURIComponent(name)}/maintenance`),
+  getLogs: (name: string) => http.get<{ logs: SiteLog[] }>(`${baseUrl}/${encodeURIComponent(name)}/logs`),
 })
 
 export default site
