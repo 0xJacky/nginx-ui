@@ -206,6 +206,15 @@ func (pi *ParallelIndexer) handleWorkerCountChange(oldCount, newCount int) {
 	logger.Infof("Successfully adjusted worker count to %d", newCount)
 }
 
+// WorkerCount returns the currently configured worker count. The value is
+// written by handleWorkerCountChange under statsMutex, so readers must
+// synchronize through this accessor.
+func (pi *ParallelIndexer) WorkerCount() int {
+	pi.statsMutex.RLock()
+	defer pi.statsMutex.RUnlock()
+	return pi.config.WorkerCount
+}
+
 // addWorkers adds new workers to the pool
 func (pi *ParallelIndexer) addWorkers(count int) {
 	for i := 0; i < count; i++ {
@@ -509,13 +518,9 @@ func (pi *ParallelIndexer) Optimize() error {
 
 // GetStats returns current indexer statistics
 func (pi *ParallelIndexer) GetStats() *IndexStats {
-	pi.statsMutex.RLock()
-	defer pi.statsMutex.RUnlock()
-
-	// Update shard stats
+	// Gather derived values before taking the lock; writing them into the
+	// shared stats struct under an RLock would be a data race.
 	shardStats := pi.shardManager.GetShardStats()
-	pi.stats.Shards = shardStats
-	pi.stats.ShardCount = len(shardStats)
 
 	var totalDocs uint64
 	var totalSize int64
@@ -524,17 +529,20 @@ func (pi *ParallelIndexer) GetStats() *IndexStats {
 		totalSize += shard.Size
 	}
 
-	pi.stats.TotalDocuments = totalDocs
-	pi.stats.TotalSize = totalSize
-	pi.stats.QueueSize = len(pi.jobQueue)
-
-	// Calculate memory usage
 	var memStats runtime.MemStats
 	runtime.ReadMemStats(&memStats)
-	pi.stats.MemoryUsage = int64(memStats.Alloc)
 
-	// Copy stats to avoid race conditions
+	pi.statsMutex.RLock()
 	statsCopy := *pi.stats
+	pi.statsMutex.RUnlock()
+
+	statsCopy.Shards = shardStats
+	statsCopy.ShardCount = len(shardStats)
+	statsCopy.TotalDocuments = totalDocs
+	statsCopy.TotalSize = totalSize
+	statsCopy.QueueSize = len(pi.jobQueue)
+	statsCopy.MemoryUsage = int64(memStats.Alloc)
+
 	return &statsCopy
 }
 
@@ -652,6 +660,8 @@ func (pi *ParallelIndexer) DeleteIndexByLogGroup(basePath string, logFileManager
 
 				if err := shard.Batch(batch); err != nil {
 					deleteErrors = append(deleteErrors, fmt.Errorf("failed to delete batch for file %s: %w", filePath, err))
+					// Stop paging this file to avoid refetching the same documents forever
+					break
 				}
 
 				// If we got fewer results than requested, we're done
@@ -659,8 +669,8 @@ func (pi *ParallelIndexer) DeleteIndexByLogGroup(basePath string, logFileManager
 					break
 				}
 
-				// Continue from where we left off
-				searchRequest.From += searchRequest.Size
+				// Deleted documents no longer match the query, so keep searching
+				// from the beginning; advancing From would skip surviving documents.
 			}
 		}
 	}
@@ -697,7 +707,7 @@ func (pi *ParallelIndexer) DestroyAllIndexes(parentCtx context.Context) error {
 	// Re-initialize context and channels for a potential restart using parent context
 	pi.ctx, pi.cancel = context.WithCancel(parentCtx)
 	pi.jobQueue = make(chan *IndexJob, pi.config.MaxQueueSize)
-	pi.resultQueue = make(chan *IndexResult, pi.config.WorkerCount)
+	pi.resultQueue = make(chan *IndexResult, pi.WorkerCount())
 	atomic.StoreInt32(&pi.channelsClosed, 0) // Reset the channel closed flag
 
 	return destructionErr
@@ -1253,14 +1263,12 @@ func (pi *ParallelIndexer) IndexLogGroupWithProgress(basePath string, progressCo
 			isCompressed := IsCompressedFile(filePath)
 			progressTracker.AddFile(filePath, isCompressed)
 
-			// Get file size and estimate lines
+			// Get file size for progress calculation. The line estimate is set
+			// by IndexSingleFileWithProgress (size/150), which previously
+			// overwrote the sampling-based estimate anyway — so the 1MB
+			// sampling read per file was pure wasted I/O and is skipped here.
 			if stat, err := os.Stat(filePath); err == nil {
 				progressTracker.SetFileSize(filePath, stat.Size())
-
-				// Estimate lines for progress calculation
-				if estimatedLines, err := EstimateFileLines(context.Background(), filePath, stat.Size(), isCompressed); err == nil {
-					progressTracker.SetFileEstimate(filePath, estimatedLines)
-				}
 			}
 		}
 	}
@@ -1275,7 +1283,7 @@ func (pi *ParallelIndexer) IndexLogGroupWithProgress(basePath string, progressCo
 	// Use FileGroupConcurrency config if set, otherwise fallback to WorkerCount
 	maxConcurrency := pi.config.FileGroupConcurrency
 	if maxConcurrency <= 0 {
-		maxConcurrency = pi.config.WorkerCount
+		maxConcurrency = pi.WorkerCount()
 		if maxConcurrency <= 0 {
 			maxConcurrency = 4 // Fallback default
 		}

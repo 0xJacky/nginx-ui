@@ -368,12 +368,15 @@ func TestParallelIndexer_ConcurrentWorkerAdjustments(t *testing.T) {
 		go func(iteration int) {
 			defer wg.Done()
 
-			// Alternate between increasing and decreasing
+			// Alternate between increasing and decreasing.
+			// Read the worker count through the synchronized accessor:
+			// handleWorkerCountChange writes it under the stats lock.
+			current := pi.WorkerCount()
 			if iteration%2 == 0 {
-				pi.handleWorkerCountChange(pi.config.WorkerCount, pi.config.WorkerCount+1)
+				pi.handleWorkerCountChange(current, current+1)
 			} else {
-				if pi.config.WorkerCount > 2 {
-					pi.handleWorkerCountChange(pi.config.WorkerCount, pi.config.WorkerCount-1)
+				if current > 2 {
+					pi.handleWorkerCountChange(current, current-1)
 				}
 			}
 		}(i)
@@ -383,7 +386,7 @@ func TestParallelIndexer_ConcurrentWorkerAdjustments(t *testing.T) {
 
 	// Verify final state is consistent
 	workerCount := len(pi.workers)
-	configCount := pi.config.WorkerCount
+	configCount := pi.WorkerCount()
 	statsCount := len(pi.stats.WorkerStats)
 
 	if workerCount != configCount {

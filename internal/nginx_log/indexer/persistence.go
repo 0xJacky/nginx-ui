@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/model"
@@ -19,10 +20,11 @@ import (
 // Enhanced for incremental indexing with position tracking
 type PersistenceManager struct {
 	// Configuration for incremental indexing
-	maxBatchSize  int
-	flushInterval time.Duration
-	enabledPaths  map[string]bool // Cache for enabled paths
-	lastFlushTime time.Time
+	maxBatchSize   int
+	flushInterval  time.Duration
+	enabledPathsMu sync.RWMutex
+	enabledPaths   map[string]bool // Cache for enabled paths
+	lastFlushTime  time.Time
 }
 
 // LogFileInfo represents information about a log file for incremental indexing
@@ -119,9 +121,25 @@ func (pm *PersistenceManager) SaveLogIndex(logIndex *model.NginxLogIndex) error 
 	*logIndex = *savedRecord
 
 	// Update cache
-	pm.enabledPaths[logIndex.Path] = logIndex.Enabled
+	pm.setEnabledPath(logIndex.Path, logIndex.Enabled)
 
 	return nil
+}
+
+// setEnabledPath updates the enabled-paths cache under the write lock.
+func (pm *PersistenceManager) setEnabledPath(path string, enabled bool) {
+	pm.enabledPathsMu.Lock()
+	defer pm.enabledPathsMu.Unlock()
+	if pm.enabledPaths != nil {
+		pm.enabledPaths[path] = enabled
+	}
+}
+
+// resetEnabledPaths replaces the enabled-paths cache under the write lock.
+func (pm *PersistenceManager) resetEnabledPaths(paths map[string]bool) {
+	pm.enabledPathsMu.Lock()
+	defer pm.enabledPathsMu.Unlock()
+	pm.enabledPaths = paths
 }
 
 // GetIncrementalInfo retrieves incremental indexing information for a log file
@@ -158,7 +176,10 @@ func (pm *PersistenceManager) UpdateIncrementalInfo(path string, info *LogFileIn
 // IsPathEnabled checks if indexing is enabled for a path (with caching)
 func (pm *PersistenceManager) IsPathEnabled(path string) (bool, error) {
 	// Check cache first
-	if enabled, exists := pm.enabledPaths[path]; exists {
+	pm.enabledPathsMu.RLock()
+	enabled, exists := pm.enabledPaths[path]
+	pm.enabledPathsMu.RUnlock()
+	if exists {
 		return enabled, nil
 	}
 
@@ -169,7 +190,7 @@ func (pm *PersistenceManager) IsPathEnabled(path string) (bool, error) {
 	}
 
 	// Update cache
-	pm.enabledPaths[path] = logIndex.Enabled
+	pm.setEnabledPath(path, logIndex.Enabled)
 	return logIndex.Enabled, nil
 }
 
@@ -256,7 +277,9 @@ func (pm *PersistenceManager) DeleteLogIndex(path string) error {
 	}
 
 	// Remove from cache
+	pm.enabledPathsMu.Lock()
 	delete(pm.enabledPaths, path)
+	pm.enabledPathsMu.Unlock()
 
 	logger.Infof("Hard deleted log index for path: %s", path)
 	return nil
@@ -271,7 +294,7 @@ func (pm *PersistenceManager) DisableLogIndex(path string) error {
 	}
 
 	// Update cache
-	pm.enabledPaths[path] = false
+	pm.setEnabledPath(path, false)
 
 	logger.Infof("Disabled log index for path: %s", path)
 	return nil
@@ -286,7 +309,7 @@ func (pm *PersistenceManager) EnableLogIndex(path string) error {
 	}
 
 	// Update cache
-	pm.enabledPaths[path] = true
+	pm.setEnabledPath(path, true)
 
 	logger.Infof("Enabled log index for path: %s", path)
 	return nil
@@ -304,7 +327,7 @@ func (pm *PersistenceManager) CleanupOldIndexes(maxAge time.Duration) error {
 	if result.RowsAffected > 0 {
 		logger.Infof("Cleaned up %d old log index records", result.RowsAffected)
 		// Clear cache for cleaned up entries
-		pm.enabledPaths = make(map[string]bool)
+		pm.resetEnabledPaths(make(map[string]bool))
 	}
 
 	return nil
@@ -459,7 +482,7 @@ func (pm *PersistenceManager) ResetIndexingTasks() error {
 	}
 
 	// Clear cache
-	pm.enabledPaths = make(map[string]bool)
+	pm.resetEnabledPaths(make(map[string]bool))
 
 	logger.Info("Reset all incomplete indexing tasks")
 	return nil
@@ -497,7 +520,7 @@ func (pm *PersistenceManager) GetIndexingTaskStats() (map[string]int64, error) {
 // Close flushes any pending operations and cleans up resources
 func (pm *PersistenceManager) Close() error {
 	// Flush any pending operations
-	pm.enabledPaths = nil
+	pm.resetEnabledPaths(nil)
 	return nil
 }
 
@@ -511,7 +534,7 @@ func (pm *PersistenceManager) DeleteAllLogIndexes() error {
 	}
 
 	// Clear cache
-	pm.enabledPaths = make(map[string]bool)
+	pm.resetEnabledPaths(make(map[string]bool))
 
 	logger.Infof("Hard deleted all log index records")
 	return nil
@@ -550,10 +573,11 @@ func (pm *PersistenceManager) RefreshCache() error {
 	}
 
 	// Rebuild cache
-	pm.enabledPaths = make(map[string]bool)
+	rebuilt := make(map[string]bool, len(indexes))
 	for _, index := range indexes {
-		pm.enabledPaths[index.Path] = index.Enabled
+		rebuilt[index.Path] = index.Enabled
 	}
+	pm.resetEnabledPaths(rebuilt)
 
 	return nil
 }
@@ -596,6 +620,21 @@ func (pm *PersistenceManager) GetIncrementalIndexStats(mainLogPath string) (*Inc
 	}, nil
 }
 
+// Rotation and date patterns used by getMainLogPathFromFile. Compiled once at
+// package level: this function is called per log line during indexing, and
+// compiling regexes per call dominated the parse cost.
+var (
+	dotDateRotationRe  = regexp.MustCompile(`^\d{4}\.\d{2}\.\d{2}$`)
+	numberedRotationRe = regexp.MustCompile(`^(.+)\.(\d{1,3})$`)
+	middleNumberedRe   = regexp.MustCompile(`^(.+)\.(\d{1,3})\.log$`)
+	multiPartDateRe    = regexp.MustCompile(`^2\d{3}\.\d{2}\.\d{2}$`)
+	fullDatePatternRes = []*regexp.Regexp{
+		regexp.MustCompile(`^\d{8}$`),             // YYYYMMDD
+		regexp.MustCompile(`^\d{4}-\d{2}-\d{2}$`), // YYYY-MM-DD
+		regexp.MustCompile(`^\d{6}$`),             // YYMMDD
+	}
+)
+
 // getMainLogPathFromFile extracts the main log path from a file (including rotated files)
 // Enhanced for better rotation pattern detection
 func getMainLogPathFromFile(filePath string) string {
@@ -616,7 +655,7 @@ func getMainLogPathFromFile(filePath string) string {
 			// Try to match the last 3 parts as a date
 			lastThreeParts := strings.Join(parts[len(parts)-3:], ".")
 			// Check if this looks like YYYY.MM.DD pattern
-			if matched, _ := regexp.MatchString(`^\d{4}\.\d{2}\.\d{2}$`, lastThreeParts); matched {
+			if dotDateRotationRe.MatchString(lastThreeParts) {
 				// Remove the date parts (last 3 parts)
 				basenameParts := parts[:len(parts)-3]
 				baseFilename := strings.Join(basenameParts, ".")
@@ -636,13 +675,13 @@ func getMainLogPathFromFile(filePath string) string {
 
 	// Handle numbered rotation (access.log.1, access.log.2, etc.)
 	// This comes AFTER date pattern checks to avoid matching date components as rotation numbers
-	if match := regexp.MustCompile(`^(.+)\.(\d{1,3})$`).FindStringSubmatch(filename); len(match) > 1 {
+	if match := numberedRotationRe.FindStringSubmatch(filename); len(match) > 1 {
 		baseFilename := match[1]
 		return filepath.Join(dir, baseFilename)
 	}
 
 	// Handle middle-numbered rotation (access.1.log, access.2.log)
-	if match := regexp.MustCompile(`^(.+)\.(\d{1,3})\.log$`).FindStringSubmatch(filename); len(match) > 1 {
+	if match := middleNumberedRe.FindStringSubmatch(filename); len(match) > 1 {
 		baseName := match[1]
 		return filepath.Join(dir, baseName+".log")
 	}
@@ -666,24 +705,13 @@ func isDatePattern(s string) bool {
 	}
 
 	// Check for multi-part date patterns like YYYY.MM.DD
-	if matched, _ := regexp.MatchString(`^2\d{3}\.\d{2}\.\d{2}$`, s); matched {
-		return true
-	}
-
-	return false
+	return multiPartDateRe.MatchString(s)
 }
 
 // isFullDatePattern checks if a string is a complete date pattern (not partial)
 func isFullDatePattern(s string) bool {
-	// Complete date patterns for log rotation
-	patterns := []string{
-		`^\d{8}$`,             // YYYYMMDD
-		`^\d{4}-\d{2}-\d{2}$`, // YYYY-MM-DD
-		`^\d{6}$`,             // YYMMDD
-	}
-
-	for _, pattern := range patterns {
-		if matched, _ := regexp.MatchString(pattern, s); matched {
+	for _, re := range fullDatePatternRes {
+		if re.MatchString(s) {
 			return true
 		}
 	}

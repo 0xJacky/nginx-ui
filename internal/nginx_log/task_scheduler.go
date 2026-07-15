@@ -17,7 +17,7 @@ import (
 type TaskScheduler struct {
 	logFileManager *indexer.LogFileManager
 	modernIndexer  *indexer.ParallelIndexer
-	activeTasks    int32              // Counter for active tasks
+	activeTasks    int32 // Counter for active tasks
 	ctx            context.Context
 	cancel         context.CancelFunc
 	wg             sync.WaitGroup
@@ -27,10 +27,9 @@ type TaskScheduler struct {
 
 // Global task scheduler instance
 var (
-	globalTaskScheduler     *TaskScheduler
-	taskSchedulerOnce       sync.Once
+	globalTaskScheduler      *TaskScheduler
 	taskSchedulerInitialized bool
-	taskSchedulerMutex      sync.RWMutex
+	taskSchedulerMutex       sync.RWMutex
 )
 
 // GetTaskScheduler returns the global task scheduler instance
