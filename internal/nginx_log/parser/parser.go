@@ -4,8 +4,6 @@ import (
 	"bufio"
 	"bytes"
 	"context"
-	"crypto/md5"
-	"fmt"
 	"io"
 	"runtime"
 	"strconv"
@@ -42,6 +40,12 @@ type parseBuffer struct {
 	fields    [][]byte
 	entry     *AccessLogEntry
 	lineBytes []byte
+
+	// Timestamp memoization: nginx timestamps have 1-second granularity, so
+	// consecutive lines usually carry an identical time string. Caching the
+	// last parsed value skips the relatively expensive time.Parse call.
+	lastTimeStr  string
+	lastTimeUnix int64
 }
 
 // NewParser creates a new high-performance parser
@@ -95,14 +99,11 @@ func (p *Parser) ParseLine(line string) (*AccessLogEntry, error) {
 		// In non-strict mode, create a minimal entry with raw line
 		buf.entry.Raw = line
 		buf.entry.Timestamp = time.Now().Unix()
-		buf.entry.ID = p.generateEntryID(line)
 		// Create a copy to avoid sharing the pooled object
 		entryCopy := *buf.entry
 		return &entryCopy, nil
 	}
 
-	// Generate unique ID for the entry
-	buf.entry.ID = p.generateEntryID(line)
 	buf.entry.Raw = line
 
 	// Create a copy of the entry to avoid sharing the pooled object
@@ -344,7 +345,7 @@ func (p *Parser) parseLineOptimized(line []byte, buf *parseBuffer) error {
 
 	// Parse timestamp
 	pos = p.skipSpaces(line, pos)
-	pos = p.parseTimestamp(line, pos, buf.entry)
+	pos = p.parseTimestamp(line, pos, buf)
 	if pos >= length {
 		return ErrUnsupportedLogFormat
 	}
@@ -426,7 +427,17 @@ func (p *Parser) parseIP(line []byte, pos int, entry *AccessLogEntry) int {
 	return pos
 }
 
-func (p *Parser) parseTimestamp(line []byte, pos int, entry *AccessLogEntry) int {
+// fallbackTimeFormats are tried when the configured layout fails to parse.
+var fallbackTimeFormats = []string{
+	"02/Jan/2006:15:04:05 -0700", // Standard nginx format
+	"2006-01-02T15:04:05-07:00",  // ISO 8601 format
+	"2006-01-02 15:04:05",        // Simple datetime format
+	"02/Jan/2006:15:04:05",       // Without timezone
+}
+
+func (p *Parser) parseTimestamp(line []byte, pos int, buf *parseBuffer) int {
+	entry := buf.entry
+
 	if pos >= len(line) || line[pos] != '[' {
 		return pos
 	}
@@ -440,33 +451,31 @@ func (p *Parser) parseTimestamp(line []byte, pos int, entry *AccessLogEntry) int
 	if pos > start {
 		timeStr := bytesToString(line[start:pos])
 
-		// Debug: log the timestamp string we're trying to parse
-		// fmt.Printf("DEBUG: Parsing timestamp string: '%s'\n", timeStr)
-
-		if t, err := time.Parse(p.config.TimeLayout, timeStr); err == nil {
-			entry.Timestamp = t.Unix()
-		} else {
-			// Try alternative common nginx timestamp formats if the default fails
-			formats := []string{
-				"02/Jan/2006:15:04:05 -0700", // Standard nginx format
-				"2006-01-02T15:04:05-07:00",  // ISO 8601 format
-				"2006-01-02 15:04:05",        // Simple datetime format
-				"02/Jan/2006:15:04:05",       // Without timezone
-			}
-
-			parsed := false
-			for _, format := range formats {
-				if t, err := time.Parse(format, timeStr); err == nil {
-					entry.Timestamp = t.Unix()
-					parsed = true
-					break
+		switch {
+		case timeStr == buf.lastTimeStr && buf.lastTimeStr != "":
+			// Same second as the previous line: reuse the cached value
+			entry.Timestamp = buf.lastTimeUnix
+		default:
+			if t, err := time.Parse(p.config.TimeLayout, timeStr); err == nil {
+				entry.Timestamp = t.Unix()
+			} else {
+				// Try alternative common nginx timestamp formats if the default fails
+				for _, format := range fallbackTimeFormats {
+					if format == p.config.TimeLayout {
+						continue // Already tried above
+					}
+					if t, err := time.Parse(format, timeStr); err == nil {
+						entry.Timestamp = t.Unix()
+						break
+					}
 				}
+				// If all parsing attempts fail, the timestamp stays 0
 			}
 
-			// If all parsing attempts fail, keep timestamp as 0
-			if !parsed {
-				// Debug: log parsing failure
-				// fmt.Printf("DEBUG: Failed to parse timestamp: '%s'\n", timeStr)
+			if entry.Timestamp != 0 {
+				// Copy the string: timeStr aliases the caller's line buffer
+				buf.lastTimeStr = string(line[start:pos])
+				buf.lastTimeUnix = entry.Timestamp
 			}
 		}
 	}
@@ -658,11 +667,6 @@ func (p *Parser) skipField(line []byte, pos int) int {
 		pos++
 	}
 	return pos
-}
-
-func (p *Parser) generateEntryID(line string) string {
-	hash := md5.Sum([]byte(line))
-	return fmt.Sprintf("%x", hash)[:16]
 }
 
 func (p *Parser) updateStats(result *ParseResult) {

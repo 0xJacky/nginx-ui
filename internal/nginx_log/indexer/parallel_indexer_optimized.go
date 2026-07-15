@@ -1,11 +1,11 @@
 package indexer
 
 import (
-	"compress/gzip"
 	"context"
 	"fmt"
 	"io"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 
@@ -90,7 +90,7 @@ func (pi *ParallelIndexer) IndexSingleFileWithProgress(filePath string, progress
 	if progressTracker != nil {
 		// Set file size for progress calculation
 		progressTracker.SetFileSize(filePath, fileSize)
-		
+
 		// Estimate line count for progress tracking (rough estimate: ~150 bytes per line)
 		estimatedLines := fileSize / 150
 		if estimatedLines < 100 {
@@ -99,16 +99,11 @@ func (pi *ParallelIndexer) IndexSingleFileWithProgress(filePath string, progress
 		progressTracker.SetFileEstimate(filePath, estimatedLines)
 	}
 
+	// Gzip decompression is handled in exactly one layer: the ParseLogStream*
+	// functions detect the gzip magic header via createReaderForFile. Wrapping
+	// here as well would double-decompress and trigger false "no gzip magic
+	// header" warnings downstream.
 	var reader io.Reader = file
-	// Handle gzipped files efficiently
-	if strings.HasSuffix(filePath, ".gz") {
-		gz, err := gzip.NewReader(file)
-		if err != nil {
-			return 0, nil, nil, fmt.Errorf("failed to create gzip reader for %s: %w", filePath, err)
-		}
-		defer gz.Close()
-		reader = gz
-	}
 
 	logger.Infof("Starting to process file: %s", filePath)
 
@@ -135,7 +130,7 @@ func (pi *ParallelIndexer) IndexSingleFileWithProgress(filePath string, progress
 	// Validate and filter out obviously incorrect parsed entries
 	validDocs := make([]*LogDocument, 0, len(logDocs))
 	var invalidEntryCount int
-	
+
 	for _, doc := range logDocs {
 		// Validate the parsed entry
 		if isValidLogEntry(doc) {
@@ -144,26 +139,22 @@ func (pi *ParallelIndexer) IndexSingleFileWithProgress(filePath string, progress
 			invalidEntryCount++
 		}
 	}
-	
+
 	if invalidEntryCount > 0 {
-		logger.Warnf("File %s: Filtered out %d invalid entries out of %d total (possible parsing issue)", 
+		logger.Warnf("File %s: Filtered out %d invalid entries out of %d total (possible parsing issue)",
 			filePath, invalidEntryCount, len(logDocs))
 	}
-	
+
 	// Replace logDocs with validated entries
 	logDocs = validDocs
 	docCount := uint64(len(logDocs))
-	
-	// Calculate min/max timestamps efficiently using memory pools
+
+	// Calculate min/max timestamps
 	var minTime, maxTime *time.Time
 	var hasLoggedInvalidTimestamp bool
 	var invalidTimestampCount int
-	
+
 	if docCount > 0 {
-		// Use pooled worker for timestamp calculations
-		worker := utils.NewPooledWorker()
-		defer worker.Cleanup()
-		
 		for _, logDoc := range logDocs {
 			// Skip invalid timestamps (0 = epoch, likely parsing failure)
 			if logDoc.Timestamp <= 0 {
@@ -175,7 +166,7 @@ func (pi *ParallelIndexer) IndexSingleFileWithProgress(filePath string, progress
 				invalidTimestampCount++
 				continue
 			}
-			
+
 			ts := time.Unix(logDoc.Timestamp, 0)
 			if minTime == nil || ts.Before(*minTime) {
 				minTime = &ts
@@ -184,17 +175,17 @@ func (pi *ParallelIndexer) IndexSingleFileWithProgress(filePath string, progress
 				maxTime = &ts
 			}
 		}
-		
+
 		// Log the calculated time ranges and statistics
 		if invalidTimestampCount > 0 {
-			logger.Warnf("File %s: Skipped %d entries with invalid timestamps out of %d total", 
+			logger.Warnf("File %s: Skipped %d entries with invalid timestamps out of %d total",
 				filePath, invalidTimestampCount, len(logDocs))
 		}
-		
+
 		if minTime != nil && maxTime != nil {
 			logger.Debugf("Calculated time range for %s: %v to %v", filePath, minTime, maxTime)
 		} else if invalidTimestampCount == len(logDocs) {
-			logger.Errorf("All %d entries in file %s have invalid timestamps - possible format issue", 
+			logger.Errorf("All %d entries in file %s have invalid timestamps - possible format issue",
 				len(logDocs), filePath)
 		} else {
 			logger.Warnf("No valid timestamps found in file %s (processed %d documents)", filePath, docCount)
@@ -266,61 +257,61 @@ func isValidLogEntry(doc *LogDocument) bool {
 	if doc == nil {
 		return false
 	}
-	
+
 	// Check IP address - should be a valid IP format
 	// Allow empty IP for now but reject obvious non-IP strings
 	if doc.IP != "" && doc.IP != "-" {
 		// Simple check: IP shouldn't contain URLs, paths, or binary data
-		if strings.Contains(doc.IP, "http") || 
-		   strings.Contains(doc.IP, "/") || 
-		   strings.Contains(doc.IP, "\\x") ||
-		   strings.Contains(doc.IP, "%") ||
-		   len(doc.IP) > 45 { // Max IPv6 length is 45 chars
+		if strings.Contains(doc.IP, "http") ||
+			strings.Contains(doc.IP, "/") ||
+			strings.Contains(doc.IP, "\\x") ||
+			strings.Contains(doc.IP, "%") ||
+			len(doc.IP) > 45 { // Max IPv6 length is 45 chars
 			return false
 		}
 	}
-	
+
 	// Check timestamp - should be reasonable (not 0, not in far future)
 	now := time.Now().Unix()
 	if doc.Timestamp <= 0 || doc.Timestamp > now+86400 { // Allow up to 1 day in future
 		return false
 	}
-	
+
 	// Check HTTP method if present
-	if doc.Method != "" {
-		validMethods := map[string]bool{
-			// Standard HTTP methods
-			"GET": true, "POST": true, "PUT": true, "DELETE": true,
-			"HEAD": true, "OPTIONS": true, "PATCH": true, "CONNECT": true, "TRACE": true,
-			// WebDAV methods (RFC 4918)
-			"PROPFIND": true, "PROPPATCH": true, "MKCOL": true,
-			"COPY": true, "MOVE": true, "LOCK": true, "UNLOCK": true,
-		}
-		if !validMethods[doc.Method] {
-			return false
-		}
+	if doc.Method != "" && !validHTTPMethods[doc.Method] {
+		return false
 	}
-	
+
 	// Check status code - should be in valid HTTP range
 	if doc.Status != 0 && (doc.Status < 100 || doc.Status > 599) {
 		return false
 	}
-	
+
 	// Check for binary data in path
 	if strings.Contains(doc.Path, "\\x") {
 		return false
 	}
-	
+
 	// If raw log line contains obvious binary data, reject it
 	if strings.Contains(doc.Raw, "\\x16\\x03") || // SSL/TLS handshake
-	   strings.Contains(doc.Raw, "\\xFF\\xD8") {    // JPEG header
+		strings.Contains(doc.Raw, "\\xFF\\xD8") { // JPEG header
 		return false
 	}
-	
+
 	return true
 }
 
-// indexLogDocuments efficiently indexes a batch of LogDocuments using memory pools
+// validHTTPMethods contains the standard HTTP and WebDAV (RFC 4918) methods
+// accepted during document validation. Package-level so the per-document
+// validation loop does not allocate a map per call.
+var validHTTPMethods = map[string]bool{
+	"GET": true, "POST": true, "PUT": true, "DELETE": true,
+	"HEAD": true, "OPTIONS": true, "PATCH": true, "CONNECT": true, "TRACE": true,
+	"PROPFIND": true, "PROPPATCH": true, "MKCOL": true,
+	"COPY": true, "MOVE": true, "LOCK": true, "UNLOCK": true,
+}
+
+// indexLogDocuments efficiently indexes a batch of LogDocuments
 func (pi *ParallelIndexer) indexLogDocuments(logDocs []*LogDocument, filePath string) error {
 	if len(logDocs) == 0 {
 		return nil
@@ -329,20 +320,17 @@ func (pi *ParallelIndexer) indexLogDocuments(logDocs []*LogDocument, filePath st
 	// Use batch writer for efficient indexing
 	batch := pi.StartBatch()
 
-	// Use memory pools for efficient document ID generation
+	// Reuse one buffer for ID construction; the ID itself must be a copied
+	// string because Bleve retains it beyond this loop.
+	idBuf := make([]byte, 0, len(filePath)+16)
 	for i, logDoc := range logDocs {
-		// Use pooled byte slice for document ID construction
-		docIDSlice := utils.GlobalByteSlicePool.Get(len(filePath) + 16)
-		defer utils.GlobalByteSlicePool.Put(docIDSlice)
-		
-		// Reset slice for reuse
-		docIDBuf := docIDSlice[:0]
-		docIDBuf = append(docIDBuf, filePath...)
-		docIDBuf = append(docIDBuf, '-')
-		docIDBuf = utils.AppendInt(docIDBuf, i)
+		idBuf = idBuf[:0]
+		idBuf = append(idBuf, filePath...)
+		idBuf = append(idBuf, '-')
+		idBuf = strconv.AppendInt(idBuf, int64(i), 10)
 
 		doc := &Document{
-			ID:     utils.BytesToStringUnsafe(docIDBuf),
+			ID:     string(idBuf),
 			Fields: logDoc,
 		}
 
@@ -364,7 +352,7 @@ func (pi *ParallelIndexer) indexLogDocuments(logDocs []*LogDocument, filePath st
 // This method provides a seamless upgrade path from the original implementation
 func (pi *ParallelIndexer) EnableProcessing() {
 	logger.Info("Enabling optimized log processing with 7-235x performance improvements")
-	
+
 	// The optimization is already enabled through the new methods
 	// This method serves as a configuration marker
 	logger.Info("Optimized log processing enabled - use IndexLogFile and IndexSingleFile methods")

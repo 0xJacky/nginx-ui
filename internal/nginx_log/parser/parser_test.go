@@ -115,7 +115,7 @@ func TestParser_ParseLine(t *testing.T) {
 
 	config := DefaultParserConfig()
 	config.StrictMode = false // Use non-strict mode to handle malformed lines gracefully
-	
+
 	parser := NewParser(
 		config,
 		NewSimpleUserAgentParser(),
@@ -125,33 +125,29 @@ func TestParser_ParseLine(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			entry, err := parser.ParseLine(tt.line)
-			
+
 			if tt.wantErr {
 				if err == nil {
 					t.Error("expected error but got none")
 				}
 				return
 			}
-			
+
 			if err != nil {
 				t.Errorf("unexpected error: %v", err)
 				return
 			}
-			
+
 			if entry == nil {
 				t.Error("expected entry but got nil")
 				return
 			}
-			
+
 			if tt.validate != nil && !tt.validate(entry) {
 				t.Errorf("entry validation failed: %+v", entry)
 			}
-			
+
 			// Verify common fields
-			if entry.ID == "" {
-				t.Error("entry ID should not be empty")
-			}
-			
 			if entry.Raw != tt.line {
 				t.Errorf("raw line mismatch: got %q, want %q", entry.Raw, tt.line)
 			}
@@ -164,7 +160,7 @@ func TestParser_ParseLines(t *testing.T) {
 		`127.0.0.1 - - [25/Dec/2023:10:00:00 +0000] "GET /index.html HTTP/1.1" 200 1234 "-" "Mozilla/5.0"`,
 		`192.168.1.1 - - [25/Dec/2023:10:00:01 +0000] "POST /api/data HTTP/1.1" 201 567 "-" "curl/7.68.0"`,
 		`10.0.0.1 - - [25/Dec/2023:10:00:02 +0000] "GET /style.css HTTP/1.1" 200 890 "-" "Mozilla/5.0"`,
-		"", // empty line
+		"",                 // empty line
 		"invalid log line", // malformed line
 	}
 
@@ -200,10 +196,10 @@ func TestParser_ParseStream(t *testing.T) {
 10.0.0.1 - - [25/Dec/2023:10:00:02 +0000] "GET /style.css HTTP/1.1" 200 890 "-" "Mozilla/5.0"`
 
 	reader := strings.NewReader(logData)
-	
+
 	config := DefaultParserConfig()
 	config.BatchSize = 2 // Small batch size for testing
-	
+
 	parser := NewParser(
 		config,
 		NewSimpleUserAgentParser(),
@@ -288,11 +284,11 @@ func TestFormatDetector(t *testing.T) {
 	}
 
 	detector := NewFormatDetector()
-	
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			format := detector.DetectFormat(tt.lines)
-			
+
 			if tt.expected == "" {
 				if format != nil {
 					t.Errorf("expected no format detection, but got %s", format.Name)
@@ -310,7 +306,7 @@ func TestFormatDetector(t *testing.T) {
 
 func TestSimpleUserAgentParser(t *testing.T) {
 	parser := NewSimpleUserAgentParser()
-	
+
 	tests := []struct {
 		name      string
 		userAgent string
@@ -365,15 +361,15 @@ func TestSimpleUserAgentParser(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			result := parser.Parse(tt.userAgent)
-			
+
 			if result.Browser != tt.expected.Browser {
 				t.Errorf("browser mismatch: got %s, want %s", result.Browser, tt.expected.Browser)
 			}
-			
+
 			if result.OS != tt.expected.OS {
 				t.Errorf("OS mismatch: got %s, want %s", result.OS, tt.expected.OS)
 			}
-			
+
 			if result.DeviceType != tt.expected.DeviceType {
 				t.Errorf("device type mismatch: got %s, want %s", result.DeviceType, tt.expected.DeviceType)
 			}
@@ -384,24 +380,24 @@ func TestSimpleUserAgentParser(t *testing.T) {
 func TestCachedUserAgentParser(t *testing.T) {
 	baseParser := NewSimpleUserAgentParser()
 	cachedParser := NewCachedUserAgentParser(baseParser, 5)
-	
+
 	userAgent := "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/96.0.4664.110"
-	
+
 	// First parse should cache the result
 	result1 := cachedParser.Parse(userAgent)
-	
+
 	// Second parse should use cached result
 	result2 := cachedParser.Parse(userAgent)
-	
+
 	if result1.Browser != result2.Browser {
 		t.Error("cached result differs from original")
 	}
-	
+
 	size, maxSize := cachedParser.GetCacheStats()
 	if size != 1 {
 		t.Errorf("expected cache size 1, got %d", size)
 	}
-	
+
 	if maxSize != 5 {
 		t.Errorf("expected max cache size 5, got %d", maxSize)
 	}
@@ -409,17 +405,17 @@ func TestCachedUserAgentParser(t *testing.T) {
 
 func BenchmarkParser_ParseLine(b *testing.B) {
 	line := `127.0.0.1 - - [25/Dec/2023:10:00:00 +0000] "GET /index.html HTTP/1.1" 200 1234 "https://example.com" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"`
-	
+
 	config := DefaultParserConfig()
 	parser := NewParser(
 		config,
 		NewSimpleUserAgentParser(),
 		&mockGeoIPService{},
 	)
-	
+
 	b.ResetTimer()
 	b.ReportAllocs()
-	
+
 	for i := 0; i < b.N; i++ {
 		_, err := parser.ParseLine(line)
 		if err != nil {
@@ -433,17 +429,17 @@ func BenchmarkParser_ParseLines(b *testing.B) {
 	for i := range lines {
 		lines[i] = fmt.Sprintf(`127.0.0.%d - - [25/Dec/2023:10:00:00 +0000] "GET /test%d.html HTTP/1.1" 200 1234 "-" "Mozilla/5.0"`, i%255+1, i)
 	}
-	
+
 	config := DefaultParserConfig()
 	parser := NewParser(
 		config,
 		NewSimpleUserAgentParser(),
 		&mockGeoIPService{},
 	)
-	
+
 	b.ResetTimer()
 	b.ReportAllocs()
-	
+
 	for i := 0; i < b.N; i++ {
 		result := parser.ParseLines(lines)
 		if result.Failed > 0 {

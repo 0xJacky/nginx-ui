@@ -7,7 +7,6 @@ import (
 
 // AccessLogEntry represents a parsed access log entry
 type AccessLogEntry struct {
-	ID           string   `json:"id"`
 	Timestamp    int64    `json:"timestamp"` // Unix timestamp
 	IP           string   `json:"ip"`
 	RegionCode   string   `json:"region_code"`

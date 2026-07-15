@@ -11,7 +11,6 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/geolite"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/parser"
-	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
 	"github.com/uozi-tech/cosy/logger"
 )
 
@@ -88,7 +87,7 @@ func ParseLogLine(line string) (*LogDocument, error) {
 		return nil, err
 	}
 
-	return convertToLogDocument(entry, ""), nil
+	return convertToLogDocument(entry, "", ""), nil
 }
 
 // ParseLogStream parses a stream of log data using ParseStream (7-8x faster)
@@ -112,10 +111,11 @@ func ParseLogStream(ctx context.Context, reader io.Reader, filePath string) ([]*
 		return nil, err
 	}
 
-	// Convert to LogDocument format using memory pools for efficiency
+	// Convert to LogDocument format; the main log path is constant per file
+	mainLogPath := getMainLogPathFromFile(filePath)
 	docs := make([]*LogDocument, 0, len(parseResult.Entries))
 	for _, entry := range parseResult.Entries {
-		logDoc := convertToLogDocument(entry, filePath)
+		logDoc := convertToLogDocument(entry, filePath, mainLogPath)
 		docs = append(docs, logDoc)
 	}
 
@@ -146,9 +146,10 @@ func ParseLogStreamChunked(ctx context.Context, reader io.Reader, filePath strin
 		return nil, err
 	}
 
+	mainLogPath := getMainLogPathFromFile(filePath)
 	docs := make([]*LogDocument, 0, len(parseResult.Entries))
 	for _, entry := range parseResult.Entries {
-		logDoc := convertToLogDocument(entry, filePath)
+		logDoc := convertToLogDocument(entry, filePath, mainLogPath)
 		docs = append(docs, logDoc)
 	}
 
@@ -176,33 +177,20 @@ func ParseLogStreamMemoryEfficient(ctx context.Context, reader io.Reader, filePa
 		return nil, err
 	}
 
+	mainLogPath := getMainLogPathFromFile(filePath)
 	docs := make([]*LogDocument, 0, len(parseResult.Entries))
 	for _, entry := range parseResult.Entries {
-		logDoc := convertToLogDocument(entry, filePath)
+		logDoc := convertToLogDocument(entry, filePath, mainLogPath)
 		docs = append(docs, logDoc)
 	}
 
 	return docs, nil
 }
 
-// convertToLogDocument converts parser.AccessLogEntry to indexer.LogDocument with memory pooling
-func convertToLogDocument(entry *parser.AccessLogEntry, filePath string) *LogDocument {
-	// Use memory pools for string operations (48-81% faster, 99.4% memory reduction)
-	sb := utils.LogStringBuilderPool.Get()
-	defer utils.LogStringBuilderPool.Put(sb)
-
-	// Extract main log path from file path for efficient log group queries
-	mainLogPath := getMainLogPathFromFile(filePath)
-
-	// DEBUG: Log the main log path extraction (sample only)
-	if entry.Timestamp%1000 == 0 { // Log every 1000th entry
-		if mainLogPath != filePath {
-			logger.Debugf("🔗 SAMPLE MainLogPath extracted: '%s' -> '%s'", filePath, mainLogPath)
-		} else {
-			logger.Debugf("🔗 SAMPLE MainLogPath same as filePath: '%s'", filePath)
-		}
-	}
-
+// convertToLogDocument converts parser.AccessLogEntry to indexer.LogDocument.
+// mainLogPath is passed in by the caller: it is constant for a whole file, and
+// this function runs once per log line.
+func convertToLogDocument(entry *parser.AccessLogEntry, filePath, mainLogPath string) *LogDocument {
 	// Convert parser.AccessLogEntry to indexer.LogDocument
 	// This mapping is necessary because the indexer and parser might have different data structures.
 	logDoc := &LogDocument{
@@ -232,15 +220,6 @@ func convertToLogDocument(entry *parser.AccessLogEntry, filePath string) *LogDoc
 
 	if entry.UpstreamTime != nil {
 		logDoc.UpstreamTime = entry.UpstreamTime
-	}
-
-	// DEBUG: Verify MainLogPath is set correctly (sample only)
-	if entry.Timestamp%1000 == 0 { // Log every 1000th entry
-		if logDoc.MainLogPath == "" {
-			logger.Errorf("❌ SAMPLE MainLogPath is empty! FilePath: '%s'", filePath)
-		} else {
-			logger.Debugf("✅ SAMPLE LogDocument created with MainLogPath: '%s', FilePath: '%s'", logDoc.MainLogPath, logDoc.FilePath)
-		}
 	}
 
 	return logDoc
@@ -287,8 +266,10 @@ func createReaderForFile(reader io.Reader, filePath string) (io.Reader, func(), 
 
 		return gzReader, func() { gzReader.Close() }, nil
 	} else {
-		// File has .gz extension but no gzip magic number
-		logger.Warnf("File %s has .gz extension but no gzip magic header (header: %x), treating as plain text", filePath, header)
+		// No gzip magic header: either the stream was already decompressed by
+		// the caller (e.g. incremental indexing pre-decompresses to skip to a
+		// byte position) or the file is mislabeled. Both are handled as plain text.
+		logger.Debugf("File %s has .gz extension but stream has no gzip magic header, treating as plain text", filePath)
 		return bufferedReader, nil, nil
 	}
 }
