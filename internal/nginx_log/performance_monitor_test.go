@@ -57,28 +57,31 @@ func TestPerformanceMonitor(t *testing.T) {
 	t.Run("AlertGeneration", func(t *testing.T) {
 		// Create monitor with very high thresholds to trigger alerts
 		thresholds := &Thresholds{
-			ParseStreamOpsPerSec: 1000000.0,  // Unrealistically high
-			SIMDOpsPerSec:        10000000.0, // Unrealistically high
-			MemoryPoolOpsPerSec:  100000000.0, // Unrealistically high
+			ParseStreamOpsPerSec: 1000000.0,    // Unrealistically high
+			SIMDOpsPerSec:        10000000.0,   // Unrealistically high
+			MemoryPoolOpsPerSec:  100000000.0,  // Unrealistically high
 			RegexCacheOpsPerSec:  1000000000.0, // Unrealistically high
-			MaxMemoryUsageMB:     1.0,         // Very low to trigger alert
-			MaxResponseTimeMS:    0.1,         // Very low to trigger alert
+			MaxMemoryUsageMB:     1.0,          // Very low to trigger alert
+			MaxResponseTimeMS:    0.1,          // Very low to trigger alert
 		}
 
 		monitor := NewMonitor(thresholds)
-		
-		// Set up alert collection
-		alertsReceived := make([]Alert, 0)
+
+		// Use a channel because alert callbacks run asynchronously.
+		alertsReceived := make(chan Alert, 8)
 		monitor.SetAlertCallback(func(alert Alert) {
-			alertsReceived = append(alertsReceived, alert)
+			alertsReceived <- alert
 		})
 
 		// Collect metrics and check thresholds
 		monitor.collectMetrics()
 		monitor.checkThresholds()
 
-		// Allow some time for alerts to be processed
-		time.Sleep(100 * time.Millisecond)
+		select {
+		case <-alertsReceived:
+		case <-time.After(time.Second):
+			t.Fatal("alert callback was not invoked")
+		}
 
 		// Verify alerts were generated
 		recentAlerts := monitor.GetRecentAlerts(time.Minute)
@@ -127,12 +130,6 @@ func TestPerformanceMonitor(t *testing.T) {
 
 	t.Run("ContinuousMonitoring", func(t *testing.T) {
 		monitor := NewMonitor(DefaultThresholds())
-		
-		// Set up alert tracking
-		alertCount := 0
-		monitor.SetAlertCallback(func(alert Alert) {
-			alertCount++
-		})
 
 		// Start monitoring for a short period
 		ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
@@ -153,7 +150,7 @@ func TestPerformanceMonitor(t *testing.T) {
 			t.Error("No metrics were collected during monitoring")
 		}
 
-		t.Logf("Monitoring completed. Final metrics timestamp: %s", 
+		t.Logf("Monitoring completed. Final metrics timestamp: %s",
 			metrics.Timestamp.Format(time.RFC3339))
 	})
 }
@@ -190,14 +187,22 @@ func TestOptimizationMonitoringIntegration(t *testing.T) {
 		t.Skip("Skipping optimization monitoring integration test in short mode")
 	}
 
-	// Test the high-level monitoring function
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	monitor := StartMonitoring(ctx)
+	monitor := NewMonitor(DefaultThresholds())
+	go monitor.StartMonitoring(ctx, 10*time.Millisecond)
+	t.Cleanup(monitor.StopMonitoring)
 
-	// Wait for some monitoring cycles
-	time.Sleep(1 * time.Second)
+	deadline := time.NewTimer(2 * time.Second)
+	defer deadline.Stop()
+	for monitor.GetCurrentMetrics().Timestamp.IsZero() {
+		select {
+		case <-deadline.C:
+			t.Fatal("monitoring did not collect metrics before deadline")
+		case <-time.After(10 * time.Millisecond):
+		}
+	}
 
 	// Check that monitoring is working
 	metrics := monitor.GetCurrentMetrics()
@@ -222,16 +227,14 @@ func TestOptimizationMonitoringIntegration(t *testing.T) {
 	t.Logf("Latest metrics: ParseStream=%.2f, SIMD=%.2f ops/sec",
 		metrics.ParseStreamRate, metrics.SIMDRate)
 
-	// Stop monitoring
-	monitor.StopMonitoring()
 }
 
 // BenchmarkPerformanceMonitoring benchmarks the monitoring overhead
 func BenchmarkPerformanceMonitoring(b *testing.B) {
 	monitor := NewMonitor(DefaultThresholds())
-	
+
 	b.ResetTimer()
-	
+
 	for i := 0; i < b.N; i++ {
 		monitor.collectMetrics()
 		monitor.checkThresholds()

@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+	"time"
 
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -15,7 +16,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func setupSiteMutationTest(t *testing.T) string {
+func setupSiteMutationTest(t *testing.T) (string, func()) {
 	t.Helper()
 
 	confDir := t.TempDir()
@@ -48,6 +49,18 @@ func setupSiteMutationTest(t *testing.T) string {
 	query.Use(db)
 	query.SetDefault(db)
 
+	syncQueryCompleted := make(chan struct{}, 1)
+	if err := db.Callback().Query().After("gorm:query").Register("test:site_sync_query_completed", func(tx *gorm.DB) {
+		if tx.Statement != nil && tx.Statement.Table == "sites" {
+			select {
+			case syncQueryCompleted <- struct{}{}:
+			default:
+			}
+		}
+	}); err != nil {
+		t.Fatalf("failed to register site sync query callback: %v", err)
+	}
+
 	t.Cleanup(func() {
 		appsettings.NginxSettings.ConfigDir = originalConfigDir
 		appsettings.NginxSettings.ReloadCmd = originalReloadCmd
@@ -55,16 +68,27 @@ func setupSiteMutationTest(t *testing.T) string {
 		appsettings.NginxSettings.TestConfigCmd = originalTestConfigCmd
 	})
 
-	return confDir
+	waitForSyncQuery := func() {
+		t.Helper()
+
+		select {
+		case <-syncQueryCompleted:
+		case <-time.After(5 * time.Second):
+			t.Fatal("timed out waiting for site sync query")
+		}
+	}
+
+	return confDir, waitForSyncQuery
 }
 
 func TestSaveAllowsManagedSiteHostname(t *testing.T) {
-	confDir := setupSiteMutationTest(t)
+	confDir, waitForSyncQuery := setupSiteMutationTest(t)
 
 	err := Save("example.com", "server {\n    listen 80;\n}\n", true, 0, nil, "")
 	if err != nil {
 		t.Fatalf("Save returned error: %v", err)
 	}
+	waitForSyncQuery()
 
 	if _, err := os.Stat(filepath.Join(confDir, "sites-available", "example.com")); err != nil {
 		t.Fatalf("expected saved site file: %v", err)
@@ -85,7 +109,7 @@ func TestSaveRejectsDangerousSiteExtension(t *testing.T) {
 }
 
 func TestRenameAllowsManagedSiteHostname(t *testing.T) {
-	confDir := setupSiteMutationTest(t)
+	confDir, waitForSyncQuery := setupSiteMutationTest(t)
 
 	if err := os.WriteFile(filepath.Join(confDir, "sites-available", "old.example.com"), []byte("server {\n}\n"), 0o644); err != nil {
 		t.Fatalf("failed to seed site config: %v", err)
@@ -95,6 +119,7 @@ func TestRenameAllowsManagedSiteHostname(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Rename returned error: %v", err)
 	}
+	waitForSyncQuery()
 
 	if _, err := os.Stat(filepath.Join(confDir, "sites-available", "new.example.com")); err != nil {
 		t.Fatalf("expected renamed site file: %v", err)
@@ -102,7 +127,7 @@ func TestRenameAllowsManagedSiteHostname(t *testing.T) {
 }
 
 func TestRenameRejectsDangerousSiteExtension(t *testing.T) {
-	confDir := setupSiteMutationTest(t)
+	confDir, _ := setupSiteMutationTest(t)
 
 	if err := os.WriteFile(filepath.Join(confDir, "sites-available", "old.example.com"), []byte("server {\n}\n"), 0o644); err != nil {
 		t.Fatalf("failed to seed site config: %v", err)
@@ -119,7 +144,7 @@ func TestRenameRejectsDangerousSiteExtension(t *testing.T) {
 }
 
 func TestDuplicateRejectsDangerousSiteExtension(t *testing.T) {
-	confDir := setupSiteMutationTest(t)
+	confDir, _ := setupSiteMutationTest(t)
 
 	if err := os.WriteFile(filepath.Join(confDir, "sites-available", "source.example.com"), []byte("server {\n}\n"), 0o644); err != nil {
 		t.Fatalf("failed to seed site config: %v", err)
@@ -136,7 +161,7 @@ func TestDuplicateRejectsDangerousSiteExtension(t *testing.T) {
 }
 
 func TestDuplicateRejectsBinarySiteContent(t *testing.T) {
-	confDir := setupSiteMutationTest(t)
+	confDir, _ := setupSiteMutationTest(t)
 
 	if err := os.WriteFile(filepath.Join(confDir, "sites-available", "source.example.com"), []byte{0xff, 0xfe, 0xfd}, 0o644); err != nil {
 		t.Fatalf("failed to seed site config: %v", err)

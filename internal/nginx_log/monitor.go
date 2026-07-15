@@ -100,6 +100,7 @@ func (pm *Monitor) StartMonitoring(ctx context.Context, interval time.Duration) 
 		return
 	}
 	pm.running = true
+	stopChan := pm.stopChan
 	pm.mu.Unlock()
 
 	ticker := time.NewTicker(interval)
@@ -110,7 +111,7 @@ func (pm *Monitor) StartMonitoring(ctx context.Context, interval time.Duration) 
 		case <-ctx.Done():
 			pm.stopMonitoring()
 			return
-		case <-pm.stopChan:
+		case <-stopChan:
 			return
 		case <-ticker.C:
 			pm.collectMetrics()

@@ -106,8 +106,8 @@ func (rc *RegexCache) PrecompileCommonPatterns() {
 
 // GetRegex retrieves or compiles a regex pattern
 func (rc *RegexCache) GetRegex(pattern string) (*regexp.Regexp, error) {
-	// Try to get from cache first
-	rc.mutex.RLock()
+	// Cache hits update usage metadata, so they require an exclusive lock.
+	rc.mutex.Lock()
 	cached, exists := rc.cache[pattern]
 	if exists {
 		// Check if not expired
@@ -115,11 +115,11 @@ func (rc *RegexCache) GetRegex(pattern string) (*regexp.Regexp, error) {
 			cached.lastUsed = time.Now()
 			cached.useCount++
 			rc.hits++
-			rc.mutex.RUnlock()
+			rc.mutex.Unlock()
 			return cached.regex, nil
 		}
 	}
-	rc.mutex.RUnlock()
+	rc.mutex.Unlock()
 
 	// Cache miss or expired - compile new regex
 	regex, err := regexp.Compile(pattern)

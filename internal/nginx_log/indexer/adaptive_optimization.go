@@ -43,7 +43,8 @@ type AdaptiveOptimizer struct {
 	activityPoller IndexerActivityPoller
 
 	// Concurrency-safe mirror of worker count
-	workerCount int64
+	workerCount           int64
+	workerAdjustmentMutex sync.Mutex
 }
 
 // CPUMonitor monitors CPU utilization and suggests worker adjustments
@@ -127,11 +128,11 @@ func NewAdaptiveOptimizer(config *Config) *AdaptiveOptimizer {
 		config: config,
 		cpuMonitor: &CPUMonitor{
 			// Keep target utilization, but relax thresholds to reduce oscillation.
-			targetUtilization:   0.75,               // Target 75% CPU utilization
-			measurementInterval: 5 * time.Second,    // Sample every 5 seconds
-			adjustmentThreshold: 0.10,               // Adjust if 10% deviation from target
-			maxWorkers:          initialWorkers,     // Never scale above configured WorkerCount
-			minWorkers:          minWorkers,         // Minimum 2 workers or 1/4 of configured workers
+			targetUtilization:   0.75,                   // Target 75% CPU utilization
+			measurementInterval: 5 * time.Second,        // Sample every 5 seconds
+			adjustmentThreshold: 0.10,                   // Adjust if 10% deviation from target
+			maxWorkers:          initialWorkers,         // Never scale above configured WorkerCount
+			minWorkers:          minWorkers,             // Minimum 2 workers or 1/4 of configured workers
 			measurements:        make([]float64, 0, 12), // 1 minute history at 5s intervals
 			maxSamples:          12,
 		},
@@ -612,6 +613,9 @@ func (ao *AdaptiveOptimizer) suggestWorkerDecrease(currentCPU, targetCPU float64
 
 // adjustWorkerCount dynamically adjusts the worker count at runtime
 func (ao *AdaptiveOptimizer) adjustWorkerCount(newCount int) {
+	ao.workerAdjustmentMutex.Lock()
+	defer ao.workerAdjustmentMutex.Unlock()
+
 	// Only adjust when indexer is actively processing
 	if !ao.isIndexerBusy() {
 		logger.Debugf("Skipping worker adjustment while idle: requested=%d", newCount)
