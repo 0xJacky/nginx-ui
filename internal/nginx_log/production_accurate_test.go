@@ -16,6 +16,7 @@ func TestAccurateProductionPerformance(t *testing.T) {
 	if testing.Short() {
 		t.Skip("Skipping accurate production performance test in short mode")
 	}
+	skipHostPerformanceTestInCI(t)
 
 	// Test with realistic scales matching your production usage
 	testSizes := []struct {

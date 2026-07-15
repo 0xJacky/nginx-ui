@@ -14,6 +14,7 @@ func TestProductionScaleValidation(t *testing.T) {
 	if testing.Short() {
 		t.Skip("Skipping production scale test in short mode")
 	}
+	skipHostPerformanceTestInCI(t)
 
 	scales := []struct {
 		name    string
@@ -397,6 +398,7 @@ func TestMemoryUsageValidation(t *testing.T) {
 	if testing.Short() {
 		t.Skip("Skipping memory usage test in short mode")
 	}
+	skipHostPerformanceTestInCI(t)
 
 	// Test with moderate dataset to observe memory patterns
 	logData := generateProductionLogData(50000)

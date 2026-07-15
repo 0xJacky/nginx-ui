@@ -18,6 +18,7 @@ func TestSimpleProductionThroughput(t *testing.T) {
 	if testing.Short() {
 		t.Skip("Skipping production test in short mode")
 	}
+	skipHostPerformanceTestInCI(t)
 
 	recordCounts := []int{10000, 20000, 30000}
 

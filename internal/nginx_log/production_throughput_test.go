@@ -19,6 +19,7 @@ func TestProductionThroughputEndToEnd(t *testing.T) {
 	if testing.Short() {
 		t.Skip("Skipping production throughput test in short mode")
 	}
+	skipHostPerformanceTestInCI(t)
 
 	scales := []struct {
 		name    string

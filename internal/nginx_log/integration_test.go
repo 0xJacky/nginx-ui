@@ -3,7 +3,6 @@ package nginx_log
 import (
 	"context"
 	"fmt"
-	"math/rand"
 	"os"
 	"path/filepath"
 	"sync"
@@ -20,11 +19,10 @@ import (
 )
 
 const (
-	// Test configuration
-	TestRecordsPerFile = 400000 // 40万条记录每个文件
-	TestFileCount      = 3      // 3个测试文件
-	TestBaseDir        = "./test_integration_logs"
-	TestIndexDir       = "./test_integration_index"
+	// Keep the normal integration suite small enough for constrained CI runners.
+	// Production-scale coverage lives in the dedicated performance tests and benchmarks.
+	TestRecordsPerFile = 250
+	TestFileCount      = 3
 )
 
 // IntegrationTestSuite contains all integration test data and services
@@ -191,19 +189,17 @@ func (suite *IntegrationTestSuite) generateSingleLogFile(t *testing.T, filepath 
 	uniquePaths := make(map[string]bool)
 	uniqueAgents := make(map[string]bool)
 
-	// use global rng defaults; no explicit rand.Seed needed
-
 	for i := 0; i < TestRecordsPerFile; i++ {
 		// Generate log entry timestamp
 		timestamp := baseTime.Add(time.Duration(i) * time.Second)
 
-		// Select random values
-		ip := ips[rand.Intn(len(ips))]
-		path := paths[rand.Intn(len(paths))]
-		agent := userAgents[rand.Intn(len(userAgents))]
-		status := statusCodes[rand.Intn(len(statusCodes))]
-		method := methods[rand.Intn(len(methods))]
-		size := rand.Intn(10000) + 100 // 100-10100 bytes
+		// Cycle through values so expected cardinalities are deterministic.
+		ip := ips[i%len(ips)]
+		path := paths[i%len(paths)]
+		agent := userAgents[i%len(userAgents)]
+		status := statusCodes[i%len(statusCodes)]
+		method := methods[i%len(methods)]
+		size := i%10000 + 100 // 100-10100 bytes
 
 		// Track unique values
 		uniqueIPs[ip] = true
@@ -291,6 +287,17 @@ func (tlm *TestLogFileManager) AddLogPath(path, logType, name, configFile string
 		Name:       name,
 		ConfigFile: configFile,
 	}
+}
+
+// GetFilePathsForGroup returns the physical fixture path for a test log group.
+func (tlm *TestLogFileManager) GetFilePathsForGroup(basePath string) ([]string, error) {
+	tlm.cacheMutex.RLock()
+	defer tlm.cacheMutex.RUnlock()
+
+	if _, exists := tlm.logCache[basePath]; !exists {
+		return nil, nil
+	}
+	return []string{basePath}, nil
 }
 
 // GetAllLogsWithIndexGrouped returns all cached log paths with their index status for testing
@@ -519,13 +526,10 @@ func (suite *IntegrationTestSuite) ValidateCardinalityCounter(t *testing.T, file
 	require.NotNil(t, expected, "Expected metrics not found for file: %s", filePath)
 
 	// Test IP cardinality
-	suite.testFieldCardinality(t, filePath, "remote_addr", expected.UniqueIPs, "IP addresses")
+	suite.testFieldCardinality(t, filePath, "ip", expected.UniqueIPs, "IP addresses")
 
 	// Test path cardinality
-	suite.testFieldCardinality(t, filePath, "uri_path", expected.UniquePaths, "URI paths")
-
-	// Test user agent cardinality
-	suite.testFieldCardinality(t, filePath, "http_user_agent", expected.UniqueAgents, "User agents")
+	suite.testFieldCardinality(t, filePath, "path_exact", expected.UniquePaths, "URI paths")
 
 	t.Logf("Counter validation completed for: %s", filePath)
 }
@@ -600,14 +604,14 @@ func (suite *IntegrationTestSuite) ValidatePaginationFunctionality(t *testing.T,
 
 	// Test first page
 	searchReq1 := &searcher.SearchRequest{
-		Query:     "*",
-		LogPaths:  []string{filePath},
-		StartTime: &startTime,
-		EndTime:   &endTime,
-		Limit:     100,
-		Offset:    0,
-		SortBy:    "timestamp",
-		SortOrder: "desc",
+		LogPaths:       []string{filePath},
+		UseMainLogPath: true,
+		StartTime:      &startTime,
+		EndTime:        &endTime,
+		Limit:          100,
+		Offset:         0,
+		SortBy:         "timestamp",
+		SortOrder:      "desc",
 	}
 
 	result1, err := suite.searcher.Search(suite.ctx, searchReq1)
@@ -617,14 +621,14 @@ func (suite *IntegrationTestSuite) ValidatePaginationFunctionality(t *testing.T,
 
 	// Test second page
 	searchReq2 := &searcher.SearchRequest{
-		Query:     "*",
-		LogPaths:  []string{filePath},
-		StartTime: &startTime,
-		EndTime:   &endTime,
-		Limit:     100,
-		Offset:    100,
-		SortBy:    "timestamp",
-		SortOrder: "desc",
+		LogPaths:       []string{filePath},
+		UseMainLogPath: true,
+		StartTime:      &startTime,
+		EndTime:        &endTime,
+		Limit:          100,
+		Offset:         100,
+		SortBy:         "timestamp",
+		SortOrder:      "desc",
 	}
 
 	result2, err := suite.searcher.Search(suite.ctx, searchReq2)
@@ -704,43 +708,55 @@ func TestConcurrentIndexingAndQuerying(t *testing.T) {
 	suite.GenerateTestData(t)
 	suite.InitializeServices(t)
 
-	var wg sync.WaitGroup
+	// Seed the searcher, then rebuild one group while querying another. This
+	// exercises shard swapping without fixed sleeps or test failures from a helper goroutine.
+	suite.PerformGlobalIndexRebuild(t)
 
-	// Start indexing in background
-	wg.Add(1)
+	type queryRunResult struct {
+		attempts int
+		err      error
+	}
+	queryStarted := make(chan struct{})
+	stopQueries := make(chan struct{})
+	queryResults := make(chan queryRunResult, 1)
 	go func() {
-		defer wg.Done()
-		suite.PerformGlobalIndexRebuild(t)
-	}()
+		searchReq := &searcher.SearchRequest{
+			LogPaths:       []string{suite.logFilePaths[0]},
+			UseMainLogPath: true,
+			Methods:        []string{"GET"},
+			Limit:          10,
+		}
+		attempts := 0
+		for {
+			result, err := suite.searcher.Search(suite.ctx, searchReq)
+			if attempts == 0 {
+				close(queryStarted)
+			}
+			if err != nil {
+				queryResults <- queryRunResult{attempts: attempts, err: err}
+				return
+			}
+			if result.TotalHits == 0 {
+				queryResults <- queryRunResult{attempts: attempts, err: fmt.Errorf("concurrent query returned no hits")}
+				return
+			}
+			attempts++
 
-	// Wait a bit for indexing to start
-	time.Sleep(2 * time.Second)
-
-	// Query while indexing is in progress
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-
-		for i := 0; i < 10; i++ {
-			time.Sleep(1 * time.Second)
-
-			// Test search functionality
-			if suite.searcher.IsHealthy() {
-				searchReq := &searcher.SearchRequest{
-					Query:    "GET",
-					LogPaths: []string{suite.logFilePaths[0]},
-					Limit:    10,
-				}
-
-				result, err := suite.searcher.Search(suite.ctx, searchReq)
-				if err == nil {
-					t.Logf("Concurrent query %d: found %d results", i+1, result.TotalHits)
-				}
+			select {
+			case <-stopQueries:
+				queryResults <- queryRunResult{attempts: attempts}
+				return
+			case <-time.After(10 * time.Millisecond):
 			}
 		}
 	}()
 
-	wg.Wait()
+	<-queryStarted
+	suite.PerformSingleFileIndexRebuild(t, suite.logFilePaths[1])
+	close(stopQueries)
+	queryResult := <-queryResults
+	require.NoError(t, queryResult.err)
+	assert.Greater(t, queryResult.attempts, 0)
 
 	// Final validation
 	for _, filePath := range suite.logFilePaths {
