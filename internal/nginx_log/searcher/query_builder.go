@@ -1,13 +1,11 @@
 package searcher
 
 import (
-	"encoding/json"
 	"fmt"
 	"strings"
 
 	"github.com/blevesearch/bleve/v2"
 	"github.com/blevesearch/bleve/v2/search/query"
-	"github.com/uozi-tech/cosy/logger"
 )
 
 // QueryBuilder provides high-level query building functionality
@@ -131,18 +129,41 @@ func (qb *QueryBuilder) BuildQuery(req *SearchRequest) (query.Query, error) {
 		}
 	}
 
-	// Log the final query structure for debugging.
-	queryBytes, err := json.Marshal(boolQuery)
-	if err == nil {
-		logger.Debugf("Constructed Bleve Query: %s", string(queryBytes))
+	// Add bytes-sent range filter
+	if req.MinBytes != nil || req.MaxBytes != nil {
+		if bytesQuery := qb.buildNumericRangeQuery("bytes_sent", toFloatPtr(req.MinBytes), toFloatPtr(req.MaxBytes)); bytesQuery != nil {
+			boolQuery.AddMust(bytesQuery)
+		}
 	}
 
-	// Additional debug: if using main_log_path, also log a diagnostic query without filters
-	if len(req.LogPaths) > 0 && req.UseMainLogPath {
-		logger.Debugf("DEBUG: Dashboard query using main_log_path field with path: %v", req.LogPaths)
+	// Add request-time range filter
+	if req.MinReqTime != nil || req.MaxReqTime != nil {
+		if reqTimeQuery := qb.buildNumericRangeQuery("request_time", req.MinReqTime, req.MaxReqTime); reqTimeQuery != nil {
+			boolQuery.AddMust(reqTimeQuery)
+		}
 	}
 
 	return boolQuery, nil
+}
+
+// toFloatPtr converts an optional int64 to an optional float64 for numeric range queries
+func toFloatPtr(v *int64) *float64 {
+	if v == nil {
+		return nil
+	}
+	f := float64(*v)
+	return &f
+}
+
+// buildNumericRangeQuery builds an inclusive numeric range query on the given field
+func (qb *QueryBuilder) buildNumericRangeQuery(field string, min, max *float64) query.Query {
+	if min == nil && max == nil {
+		return nil
+	}
+	inclusive := true
+	rangeQuery := bleve.NewNumericRangeInclusiveQuery(min, max, &inclusive, &inclusive)
+	rangeQuery.SetField(field)
+	return rangeQuery
 }
 
 // buildTimeRangeQuery builds a time range query

@@ -583,8 +583,9 @@ func updateSearcherShardsLocked() {
 		isRunning := globalSearcher.IsRunning()
 		logger.Infof("Post-swap searcher status: isHealthy: %v, isRunning: %v", isHealthy, isRunning)
 
-		// Note: We do NOT recreate the analytics service here since the searcher interface remains the same
-		// The Counter will automatically use the new shards through the same IndexAlias
+		// Note: We do NOT recreate the analytics service here since the searcher interface
+		// remains the same. The analytics service rebuilds its cardinality counter lazily
+		// when it detects the searcher's shard set has changed.
 
 	} else {
 		logger.Warn("globalSearcher is not a Searcher, cannot perform hot-swap")

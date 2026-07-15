@@ -898,10 +898,8 @@ func GetGeoStats(c *gin.Context) {
 	})
 }
 
-// getCardinalityCount is a helper function to get accurate cardinality counts using the analytics service
+// getCardinalityCount is a helper function to get accurate cardinality counts
 func getCardinalityCount(ctx context.Context, field string, searchReq *searcher.SearchRequest) int {
-	logger.Debugf("🔍 getCardinalityCount: Starting cardinality count for field '%s'", field)
-
 	// Create a CardinalityRequest from the SearchRequest
 	cardReq := &searcher.CardinalityRequest{
 		Field:          field,
@@ -910,50 +908,34 @@ func getCardinalityCount(ctx context.Context, field string, searchReq *searcher.
 		LogPaths:       searchReq.LogPaths,
 		UseMainLogPath: searchReq.UseMainLogPath, // Use main_log_path field if enabled
 	}
-	logger.Debugf("🔍 CardinalityRequest: Field=%s, StartTime=%v, EndTime=%v, LogPaths=%v",
-		cardReq.Field, cardReq.StartTime, cardReq.EndTime, cardReq.LogPaths)
 
-	// Try to get the searcher to access cardinality counter
 	searcherService := nginx_log.GetSearcher()
 	if searcherService == nil {
-		logger.Debugf("🚨 getCardinalityCount: ModernSearcher not available for field %s", field)
+		logger.Debugf("getCardinalityCount: searcher not available for field %s", field)
 		return 0
 	}
-	logger.Debugf("🔍 getCardinalityCount: ModernSearcher available, type: %T", searcherService)
 
-	// Use searcher to access Counter
-	if searcherService != nil {
-		ds := searcherService
-		logger.Debugf("🔍 getCardinalityCount: Successfully cast to Searcher")
-		shards := ds.GetShards()
-		logger.Debugf("🔍 getCardinalityCount: Retrieved %d shards", len(shards))
-		if len(shards) > 0 {
-			// Check shard health
-			for i, shard := range shards {
-				logger.Debugf("🔍 getCardinalityCount: Shard %d: %v", i, shard != nil)
-			}
-
-			cardinalityCounter := searcher.NewCounter(shards)
-			logger.Debugf("🔍 getCardinalityCount: Created Counter")
-			result, err := cardinalityCounter.Count(ctx, cardReq)
-			if err != nil {
-				logger.Debugf("🚨 getCardinalityCount: Counter failed for field %s: %v", field, err)
-				return 0
-			}
-
-			if result.Error != "" {
-				logger.Debugf("🚨 getCardinalityCount: Counter returned error for field %s: %s", field, result.Error)
-				return 0
-			}
-
-			logger.Debugf("✅ getCardinalityCount: Successfully got cardinality for field %s: %d", field, result.Cardinality)
-			return int(result.Cardinality)
-		} else {
-			logger.Debugf("🚨 getCardinalityCount: Searcher has no shards for field %s", field)
-		}
-	} else {
-		logger.Debugf("🚨 getCardinalityCount: Searcher is not Searcher (type: %T) for field %s", searcherService, field)
+	shards := searcherService.GetShards()
+	if len(shards) == 0 {
+		logger.Debugf("getCardinalityCount: searcher has no shards for field %s", field)
+		return 0
 	}
 
-	return 0
+	// The counter wraps the shards in a lightweight IndexAlias; close it after
+	// use so each request does not leave an unreleased alias behind.
+	cardinalityCounter := searcher.NewCounter(shards)
+	defer cardinalityCounter.Stop()
+
+	result, err := cardinalityCounter.Count(ctx, cardReq)
+	if err != nil {
+		logger.Debugf("getCardinalityCount: counter failed for field %s: %v", field, err)
+		return 0
+	}
+
+	if result.Error != "" {
+		logger.Debugf("getCardinalityCount: counter returned error for field %s: %s", field, result.Error)
+		return 0
+	}
+
+	return int(result.Cardinality)
 }

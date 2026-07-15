@@ -2,12 +2,10 @@ package searcher
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"sync"
 
 	"github.com/blevesearch/bleve/v2"
-	"github.com/blevesearch/bleve/v2/search"
 	"github.com/blevesearch/bleve/v2/search/query"
 	"github.com/uozi-tech/cosy/logger"
 )
@@ -109,15 +107,14 @@ func (c *Counter) Count(ctx context.Context, req *CardinalityRequest) (*Cardinal
 	}, nil
 }
 
-// collectTermsUsingIndexAlias collects unique terms using IndexAlias with global scoring
+// collectTermsUsingIndexAlias collects unique terms using IndexAlias.
+// Cardinality queries never rank by relevance, so the global-scoring
+// pre-search phase is skipped.
 func (c *Counter) collectTermsUsingIndexAlias(ctx context.Context, req *CardinalityRequest) (map[string]struct{}, uint64, error) {
 	uniqueTerms := make(map[string]struct{})
 
-	// Enable global scoring context like Searcher does
-	globalCtx := context.WithValue(ctx, search.SearchTypeKey, search.GlobalScoring)
-
 	// Strategy 1: Try large facet first (more efficient for most cases)
-	terms1, totalDocs, err1 := c.collectTermsUsingLargeFacet(globalCtx, req)
+	terms1, totalDocs, err1 := c.collectTermsUsingLargeFacet(ctx, req)
 	if err1 != nil {
 		logger.Warnf("Large facet collection failed: %v", err1)
 	} else {
@@ -131,7 +128,7 @@ func (c *Counter) collectTermsUsingIndexAlias(ctx context.Context, req *Cardinal
 	needsPagination := len(terms1) >= 50000 || err1 != nil
 	if needsPagination {
 		logger.Infof("Using pagination to collect remaining terms...")
-		terms2, _, err2 := c.collectTermsUsingPagination(globalCtx, req)
+		terms2, _, err2 := c.collectTermsUsingPagination(ctx, req)
 		if err2 != nil {
 			logger.Warnf("Pagination collection failed: %v", err2)
 		} else {
@@ -187,12 +184,7 @@ func (c *Counter) collectTermsUsingLargeFacet(ctx context.Context, req *Cardinal
 	facet := bleve.NewFacetRequest(req.Field, facetSize)
 	searchReq.AddFacet(req.Field, facet)
 
-	// Debug: Log the constructed query
-	if queryBytes, err := json.Marshal(searchReq.Query); err == nil {
-		logger.Debugf("Counter query: %s", string(queryBytes))
-	}
-
-	// Execute search using IndexAlias with global scoring context
+	// Execute search using IndexAlias
 	result, err := c.indexAlias.SearchInContext(ctx, searchReq)
 	if err != nil {
 		return terms, 0, fmt.Errorf("IndexAlias facet search failed: %w", err)

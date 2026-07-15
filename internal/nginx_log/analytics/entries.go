@@ -108,7 +108,7 @@ func (s *service) GetTopPaths(ctx context.Context, req *TopListRequest) ([]KeyVa
 		StartTime:     &req.StartTime,
 		EndTime:       &req.EndTime,
 		LogPaths:      []string{req.LogPath},
-		Limit:         0, // We only need facets
+		Limit:         -1, // Facet-only query, no documents needed
 		IncludeFacets: true,
 		FacetFields:   []string{"path_exact"},
 		FacetSize:     req.Limit,
@@ -145,7 +145,7 @@ func (s *service) GetTopIPs(ctx context.Context, req *TopListRequest) ([]KeyValu
 		StartTime:     &req.StartTime,
 		EndTime:       &req.EndTime,
 		LogPaths:      []string{req.LogPath},
-		Limit:         0,
+		Limit:         -1, // Facet-only query, no documents needed
 		IncludeFacets: true,
 		FacetFields:   []string{"ip"},
 		FacetSize:     req.Limit,
@@ -182,7 +182,7 @@ func (s *service) GetTopUserAgents(ctx context.Context, req *TopListRequest) ([]
 		StartTime:     &req.StartTime,
 		EndTime:       &req.EndTime,
 		LogPaths:      []string{req.LogPath},
-		Limit:         0,
+		Limit:         -1, // Facet-only query, no documents needed
 		IncludeFacets: true,
 		FacetFields:   []string{"user_agent"},
 		FacetSize:     req.Limit,

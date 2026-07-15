@@ -25,7 +25,7 @@ func (s *service) GetGeoDistribution(ctx context.Context, req *GeoQueryRequest) 
 		EndTime:        &req.EndTime,
 		LogPaths:       req.LogPaths,
 		UseMainLogPath: req.UseMainLogPath, // Use main_log_path field for efficient queries
-		Limit:          0,                  // We only need facets.
+		Limit:          -1,                 // Facet-only query, no documents needed
 		IncludeFacets:  true,
 		FacetFields:    []string{"region_code"},
 		FacetSize:      300, // Large enough to cover all countries
@@ -91,9 +91,9 @@ func (s *service) GetGeoDistributionByCountry(ctx context.Context, req *GeoQuery
 		StartTime:      &req.StartTime,
 		EndTime:        &req.EndTime,
 		LogPaths:       req.LogPaths,
-		UseMainLogPath: req.UseMainLogPath, // Use main_log_path field for efficient queries
+		UseMainLogPath: req.UseMainLogPath,    // Use main_log_path field for efficient queries
 		Countries:      []string{countryCode}, // Use proper country filter instead of text query
-		Limit:          0, // We only need facets.
+		Limit:          -1,                    // Facet-only query, no documents needed
 		IncludeFacets:  true,
 		FacetFields:    []string{"province"},
 		FacetSize:      100, // Large enough to cover all provinces in a country
@@ -151,7 +151,7 @@ func (s *service) GetTopCountries(ctx context.Context, req *GeoQueryRequest) ([]
 		EndTime:        &req.EndTime,
 		LogPaths:       req.LogPaths,
 		UseMainLogPath: req.UseMainLogPath, // Use main_log_path field for efficient queries
-		Limit:          0, // We only need facets
+		Limit:          -1,                 // Facet-only query, no documents needed
 		IncludeFacets:  true,
 		FacetFields:    []string{"region_code"},
 		FacetSize:      req.Limit, // Use the requested limit for facet size
@@ -193,7 +193,7 @@ func (s *service) GetTopCities(ctx context.Context, req *GeoQueryRequest) ([]Cit
 		EndTime:        &req.EndTime,
 		LogPaths:       req.LogPaths,
 		UseMainLogPath: req.UseMainLogPath, // Use main_log_path field for efficient queries
-		Limit:          0, // We only need facets
+		Limit:          -1,                 // Facet-only query, no documents needed
 		IncludeFacets:  true,
 		FacetFields:    []string{"city"},
 		FacetSize:      req.Limit,
@@ -241,7 +241,7 @@ func (s *service) GetGeoStatsForIP(ctx context.Context, req *GeoQueryRequest, ip
 		EndTime:        &req.EndTime,
 		LogPaths:       req.LogPaths,
 		UseMainLogPath: req.UseMainLogPath, // Use main_log_path field for efficient queries
-		Limit:          0,
+		Limit:          -1,                 // Facet-only query, no documents needed
 		IncludeFacets:  true,
 		FacetFields:    []string{"country", "country_code", "city"},
 		FacetSize:      10,

@@ -2,7 +2,6 @@ package searcher
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"strconv"
 	"sync"
@@ -210,30 +209,35 @@ func (s *Searcher) executeGlobalScoringSearch(ctx context.Context, query query.Q
 	// Create search request with proper pagination
 	searchReq := bleve.NewSearchRequest(query)
 
-	// Set pagination parameters directly - Bleve will handle distributed pagination correctly
-	searchReq.Size = req.Limit
-	if searchReq.Size <= 0 {
+	// Set pagination parameters directly - Bleve will handle distributed pagination correctly.
+	// A negative Limit explicitly requests zero hits (facet/aggregation-only queries);
+	// zero means "unset" and falls back to the default page size.
+	switch {
+	case req.Limit < 0:
+		searchReq.Size = 0
+	case req.Limit == 0:
 		searchReq.Size = 50 // Default page size
+	default:
+		searchReq.Size = req.Limit
 	}
 	searchReq.From = req.Offset
 
 	// Configure the search request with proper sorting and other settings
 	s.configureSearchRequest(searchReq, req)
 
-	// Enable global scoring for distributed search consistency
-	// This is the key fix from Bleve documentation for distributed search
-	globalCtx := context.WithValue(ctx, search.SearchTypeKey, search.GlobalScoring)
-
-	// Debug: Log the constructed query for comparison
-	if queryBytes, err := json.Marshal(searchReq.Query); err == nil {
-		logger.Debugf("Main search query: %s", string(queryBytes))
-		logger.Debugf("Main search Size=%d, From=%d, Fields=%v", searchReq.Size, searchReq.From, searchReq.Fields)
+	// Global scoring runs an extra pre-search round across all shards to gather
+	// term statistics for consistent TF-IDF ranking. That only matters when
+	// results are ranked by relevance score; all other sort orders (the default
+	// timestamp sort, facet-only queries) don't read scores, so skip the overhead.
+	searchCtx := ctx
+	if req.SortBy == "_score" {
+		searchCtx = context.WithValue(ctx, search.SearchTypeKey, search.GlobalScoring)
 	}
 
-	// Execute search using Bleve's IndexAlias with global scoring
-	result, err := s.indexAlias.SearchInContext(globalCtx, searchReq)
+	// Execute search using Bleve's IndexAlias
+	result, err := s.indexAlias.SearchInContext(searchCtx, searchReq)
 	if err != nil {
-		return nil, fmt.Errorf("global scoring search failed: %w", err)
+		return nil, fmt.Errorf("distributed search failed: %w", err)
 	}
 
 	// Convert Bleve result to our SearchResult format
@@ -414,11 +418,10 @@ func (s *Searcher) setRequestDefaults(req *SearchRequest) {
 	if req.Timeout == 0 {
 		req.Timeout = s.config.TimeoutDuration
 	}
+	// Only downgrade: callers may opt out of caching (e.g. one-off batch scans
+	// whose results would churn the cache), so never force UseCache back on.
 	if req.UseCache && !s.config.EnableCache {
 		req.UseCache = false
-	}
-	if !req.UseCache && s.config.EnableCache {
-		req.UseCache = true
 	}
 }
 
