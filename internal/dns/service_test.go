@@ -241,6 +241,71 @@ func TestRunDDNSUpdateNormalizesEmptyIPVersionAndRecordsBestEffortWarnings(t *te
 	require.Contains(t, persisted.DDNSConfig.LastError, "ipv6:")
 }
 
+func TestListRecordsAcceptsCredentialWithOnlyAdditionalSettings(t *testing.T) {
+	// Providers that authenticate from an ambient identity, such as an Azure managed
+	// identity, carry no secrets at all: everything lives in the additional settings.
+	registerMockProvider()
+	setMockRecords([]dnsSvc.Record{{ID: "1", Type: "A", Name: "@", Content: "127.0.0.1", TTL: 60}})
+
+	q := setupTestQuery(t)
+	ctx := context.Background()
+	service := dnsSvc.NewService()
+
+	cred := &model.DnsCredential{
+		Name:     "Ambient Credential",
+		Provider: "Mock",
+		Config: &certdns.Config{
+			Code: "mock",
+			Configuration: &certdns.Configuration{
+				Credentials: map[string]string{"TOKEN": "  "},
+				Additional:  map[string]string{"SUBSCRIPTION_ID": "sub-1"},
+			},
+		},
+	}
+	require.NoError(t, q.DnsCredential.Create(cred))
+
+	domain, err := service.CreateDomain(ctx, dnsSvc.DomainInput{
+		Domain:          "example.com",
+		DnsCredentialID: cred.ID,
+	})
+	require.NoError(t, err)
+
+	records, err := service.ListRecords(ctx, domain.ID, dnsSvc.RecordListOptions{})
+	require.NoError(t, err)
+	require.Len(t, records, 1)
+}
+
+func TestListRecordsRejectsFullyEmptyCredential(t *testing.T) {
+	registerMockProvider()
+	setMockRecords(nil)
+
+	q := setupTestQuery(t)
+	ctx := context.Background()
+	service := dnsSvc.NewService()
+
+	cred := &model.DnsCredential{
+		Name:     "Empty Credential",
+		Provider: "Mock",
+		Config: &certdns.Config{
+			Code: "mock",
+			Configuration: &certdns.Configuration{
+				Credentials: map[string]string{"TOKEN": ""},
+				Additional:  map[string]string{},
+			},
+		},
+	}
+	require.NoError(t, q.DnsCredential.Create(cred))
+
+	domain, err := service.CreateDomain(ctx, dnsSvc.DomainInput{
+		Domain:          "empty.example.com",
+		DnsCredentialID: cred.ID,
+	})
+	require.NoError(t, err)
+
+	_, err = service.ListRecords(ctx, domain.ID, dnsSvc.RecordListOptions{})
+	require.ErrorIs(t, err, dnsSvc.ErrInvalidCredential)
+}
+
 func setupTestQuery(tb testing.TB) *query.Query {
 	tb.Helper()
 

@@ -105,10 +105,10 @@ export const dnsApi = {
     return http.post<DNSRecord>(`${baseDomainUrl}/${domainId}/records`, payload)
   },
   updateRecord(domainId: number, recordId: string, payload: RecordPayload) {
-    return http.put<DNSRecord>(`${baseDomainUrl}/${domainId}/records/${recordId}`, payload)
+    return http.put<DNSRecord>(`${baseDomainUrl}/${domainId}/records/${encodeURIComponent(recordId)}`, payload)
   },
   deleteRecord(domainId: number, recordId: string) {
-    return http.delete(`${baseDomainUrl}/${domainId}/records/${recordId}`)
+    return http.delete(`${baseDomainUrl}/${domainId}/records/${encodeURIComponent(recordId)}`)
   },
   getDDNSConfig(domainId: number) {
     return http.get<DDNSConfig>(`${baseDomainUrl}/${domainId}/ddns`)

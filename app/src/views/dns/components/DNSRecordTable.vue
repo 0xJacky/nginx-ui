@@ -94,6 +94,9 @@ function handleDelete(record: DNSRecord) {
           {{ (record as DNSRecord).proxied ? $gettext('Proxied') : $gettext('DNS Only') }}
         </ATag>
       </template>
+      <template v-else-if="column.dataIndex === 'content'">
+        <span class="record-value">{{ (record as DNSRecord).content }}</span>
+      </template>
       <template v-else-if="column.dataIndex === 'actions'">
         <ASpace>
           <AButton type="link" size="small" @click="handleEdit(record as DNSRecord)">
@@ -119,5 +122,10 @@ function handleDelete(record: DNSRecord) {
     white-space: normal;
     word-break: break-word;
   }
+}
+
+// Record sets that hold several values render one value per line.
+.record-value {
+  white-space: pre-wrap;
 }
 </style>

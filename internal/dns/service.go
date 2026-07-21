@@ -304,15 +304,19 @@ func toProviderCredential(credential *model.DnsCredential) (*Credential, error) 
 			values[key] = trimmed
 		}
 	}
-	if len(values) == 0 {
-		return nil, ErrInvalidCredential
-	}
 
 	additional := make(map[string]string)
 	for key, val := range credential.Config.Configuration.Additional {
 		if trimmed := strings.TrimSpace(val); trimmed != "" {
 			additional[key] = trimmed
 		}
+	}
+
+	// Some providers authenticate from ambient identity (an Azure managed identity,
+	// for example) and carry only additional settings, so a credential is empty only
+	// when both maps are. Providers that do need secrets report the missing field.
+	if len(values) == 0 && len(additional) == 0 {
+		return nil, ErrInvalidCredential
 	}
 
 	code := credential.Config.Code
