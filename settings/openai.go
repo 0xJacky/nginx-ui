@@ -19,7 +19,7 @@ const (
 type OpenAI struct {
 	Provider             string `json:"provider" binding:"omitempty,oneof=openai atlas_cloud minimax custom"`
 	BaseUrl              string `json:"base_url" binding:"omitempty,url"`
-	Token                string `json:"token" binding:"omitempty,safety_text"`
+	Token                string `json:"token" binding:"omitempty,safety_text" sensitive:"true"`
 	Proxy                string `json:"proxy" binding:"omitempty,url"`
 	Model                string `json:"model" binding:"omitempty,safety_text"`
 	APIType              string `json:"api_type" binding:"omitempty,oneof=OPEN_AI AZURE"`

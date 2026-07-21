@@ -114,7 +114,7 @@ func TestGetSettingsRedactsSensitiveFields(t *testing.T) {
 	appsettings.NginxSettings.ReloadCmd = "nginx -s reload"
 	appsettings.NginxSettings.RestartCmd = "nginx -s restart"
 	appsettings.NginxSettings.TestConfigCmd = "nginx -t"
-	appsettings.NginxSettings.ContainerName = ""
+	appsettings.NginxSettings.ContainerName = "nginx-container"
 	appsettings.NodeSettings.Secret = "node-secret"
 	appsettings.NodeSettings.Name = "local-node"
 	appsettings.NodeSettings.SkipInstallation = true
@@ -143,37 +143,23 @@ func TestGetSettingsRedactsSensitiveFields(t *testing.T) {
 	assert.Equal(t, true, body["node"]["skip_installation"])
 	assert.Equal(t, redactedSensitiveValue, body["openai"]["token"])
 	assert.Equal(t, "gpt-test", body["openai"]["model"])
-	assert.Equal(t, redactedSensitiveValue, body["casdoor"]["endpoint"])
-	assert.Equal(t, redactedSensitiveValue, body["casdoor"]["client_id"])
+	assert.Equal(t, "https://casdoor.example.com", body["casdoor"]["endpoint"])
+	assert.Equal(t, "casdoor-client-id", body["casdoor"]["client_id"])
 	assert.Equal(t, redactedSensitiveValue, body["casdoor"]["client_secret"])
-	assert.Equal(t, redactedSensitiveValue, body["oidc"]["client_id"])
+	assert.Equal(t, "oidc-client-id", body["oidc"]["client_id"])
 	assert.Equal(t, redactedSensitiveValue, body["oidc"]["client_secret"])
-	assert.Equal(t, redactedSensitiveValue, body["oidc"]["endpoint"])
-	assert.Equal(t, redactedSensitiveValue, body["cert"]["email"])
+	assert.Equal(t, "https://oidc.example.com", body["oidc"]["endpoint"])
+	assert.Equal(t, "admin@example.com", body["cert"]["email"])
 	assert.Equal(t, "https://proxy.example.com", body["http"]["github_proxy"])
 	assert.Equal(t, true, body["http"]["insecure_skip_verify"])
-	assert.Equal(t, redactedSensitiveValue, body["logrotate"]["cmd"])
-	assert.Equal(t, redactedSensitiveValue, body["nginx"]["reload_cmd"])
-	assert.Equal(t, redactedSensitiveValue, body["nginx"]["restart_cmd"])
-	assert.Equal(t, redactedSensitiveValue, body["nginx"]["test_config_cmd"])
-	assert.Equal(t, []any{redactedSensitiveValue}, body["nginx"]["log_dir_white_list"])
-	assert.Equal(t, "", body["nginx"]["container_name"])
-	assert.Equal(t, []any{redactedSensitiveValue}, body["auth"]["ip_white_list"])
-	assert.Equal(t, redactedSensitiveValue, body["terminal"]["start_cmd"])
-}
-
-func TestBuildSettingsResponseRedactsNonEmptyContainerName(t *testing.T) {
-	originalNginx := *appsettings.NginxSettings
-	defer func() {
-		*appsettings.NginxSettings = originalNginx
-	}()
-
-	appsettings.NginxSettings.ContainerName = "nginx-container"
-
-	body := buildSettingsResponse()
-	nginxSettings, ok := body["nginx"].(gin.H)
-	assert.True(t, ok)
-	assert.Equal(t, redactedSensitiveValue, nginxSettings["container_name"])
+	assert.Equal(t, "logrotate /etc/logrotate.d/nginx", body["logrotate"]["cmd"])
+	assert.Equal(t, "nginx -s reload", body["nginx"]["reload_cmd"])
+	assert.Equal(t, "nginx -s restart", body["nginx"]["restart_cmd"])
+	assert.Equal(t, "nginx -t", body["nginx"]["test_config_cmd"])
+	assert.Equal(t, []any{"/var/log/nginx"}, body["nginx"]["log_dir_white_list"])
+	assert.Equal(t, "nginx-container", body["nginx"]["container_name"])
+	assert.Equal(t, []any{"192.0.2.1"}, body["auth"]["ip_white_list"])
+	assert.Equal(t, "login", body["terminal"]["start_cmd"])
 }
 
 func TestRestoreRedactedSensitiveSettings(t *testing.T) {
@@ -285,6 +271,24 @@ func TestGetProtectedSetting(t *testing.T) {
 
 		req := httptest.NewRequest(http.MethodGet, "/api/settings/protected?path=node.name", nil)
 		req.Header.Set("X-Secure-Session-ID", internaluser.SetSecureSessionID(2))
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, req)
+
+		assert.Equal(t, http.StatusBadRequest, w.Code)
+	})
+
+	t.Run("rejects non-sensitive protected path", func(t *testing.T) {
+		r := gin.New()
+		r.GET("/api/settings/protected", func(c *gin.Context) {
+			user := &model.User{
+				Model:     model.Model{ID: 7},
+				OTPSecret: []byte("otp-enabled"),
+			}
+			c.Set("user", user)
+		}, middleware.RequireSecureSession(), GetProtectedSetting)
+
+		req := httptest.NewRequest(http.MethodGet, "/api/settings/protected?path=nginx.reload_cmd", nil)
+		req.Header.Set("X-Secure-Session-ID", internaluser.SetSecureSessionID(7))
 		w := httptest.NewRecorder()
 		r.ServeHTTP(w, req)
 

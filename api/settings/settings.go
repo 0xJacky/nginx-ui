@@ -20,12 +20,9 @@ import (
 
 const redactedSensitiveValue = settings.RedactedSensitiveValue
 
-var manuallyProtectedSettingGetters = map[string]func() any{
+var manuallySensitiveSettingGetters = map[string]func() any{
 	"app.jwt_secret": func() any {
 		return cSettings.AppSettings.JwtSecret
-	},
-	"openai.token": func() any {
-		return settings.OpenAISettings.Token
 	},
 }
 
@@ -67,7 +64,7 @@ func jsonFieldName(field reflect.StructField) string {
 	return field.Name
 }
 
-func shouldRedactProtectedValue(value reflect.Value) bool {
+func shouldRedactSensitiveValue(value reflect.Value) bool {
 	if value.Kind() == reflect.Pointer {
 		if value.IsNil() {
 			return false
@@ -76,16 +73,14 @@ func shouldRedactProtectedValue(value reflect.Value) bool {
 	}
 
 	switch value.Kind() {
-	case reflect.String:
-		return value.String() != ""
-	case reflect.Slice, reflect.Array:
-		return value.Len() > 0
+	case reflect.String, reflect.Slice, reflect.Array:
+		return true
 	default:
 		return false
 	}
 }
 
-func redactProtectedValue(value reflect.Value) any {
+func redactSensitiveValue(value reflect.Value) any {
 	if value.Kind() == reflect.Pointer {
 		if value.IsNil() {
 			return redactedSensitiveValue
@@ -101,7 +96,7 @@ func redactProtectedValue(value reflect.Value) any {
 	}
 }
 
-func redactProtectedFields(section any, cloned gin.H) {
+func redactSensitiveFields(section any, cloned gin.H) {
 	value := reflect.ValueOf(section)
 	if value.Kind() == reflect.Pointer {
 		if value.IsNil() {
@@ -116,12 +111,12 @@ func redactProtectedFields(section any, cloned gin.H) {
 	valueType := value.Type()
 	for i := 0; i < valueType.NumField(); i++ {
 		field := valueType.Field(i)
-		if field.Tag.Get("protected") != "true" {
+		if field.Tag.Get("sensitive") != "true" {
 			continue
 		}
 
 		fieldValue := value.Field(i)
-		if !shouldRedactProtectedValue(fieldValue) {
+		if !shouldRedactSensitiveValue(fieldValue) {
 			continue
 		}
 
@@ -129,14 +124,14 @@ func redactProtectedFields(section any, cloned gin.H) {
 		if name == "" {
 			continue
 		}
-		cloned[name] = redactProtectedValue(fieldValue)
+		cloned[name] = redactSensitiveValue(fieldValue)
 	}
 }
 
-func cloneRedactedSettingsSection(section any, extraProtectedFields ...string) gin.H {
+func cloneRedactedSettingsSection(section any, extraSensitiveFields ...string) gin.H {
 	cloned := cloneSettingsSection(section)
-	redactProtectedFields(section, cloned)
-	for _, field := range extraProtectedFields {
+	redactSensitiveFields(section, cloned)
+	for _, field := range extraSensitiveFields {
 		cloned[field] = redactedSensitiveValue
 	}
 	return cloned
@@ -160,7 +155,7 @@ func settingsSectionSources() map[string]any {
 }
 
 func getProtectedSettingValue(path string) (any, bool) {
-	if getter, ok := manuallyProtectedSettingGetters[path]; ok {
+	if getter, ok := manuallySensitiveSettingGetters[path]; ok {
 		return getter(), true
 	}
 
@@ -188,7 +183,7 @@ func getProtectedSettingValue(path string) (any, bool) {
 	valueType := value.Type()
 	for i := 0; i < valueType.NumField(); i++ {
 		field := valueType.Field(i)
-		if field.Tag.Get("protected") != "true" || jsonFieldName(field) != fieldName {
+		if field.Tag.Get("sensitive") != "true" || jsonFieldName(field) != fieldName {
 			continue
 		}
 		return value.Field(i).Interface(), true
@@ -199,7 +194,7 @@ func getProtectedSettingValue(path string) (any, bool) {
 
 func buildSettingsResponse() gin.H {
 	app := cloneRedactedSettingsSection(cSettings.AppSettings, "jwt_secret")
-	openai := cloneRedactedSettingsSection(settings.OpenAISettings, "token")
+	openai := cloneRedactedSettingsSection(settings.OpenAISettings)
 	openai["provider"] = settings.OpenAISettings.GetProvider()
 	if baseURL := settings.OpenAISettings.GetBaseURL(); openai["base_url"] == "" && baseURL != "" {
 		openai["base_url"] = baseURL

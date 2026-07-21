@@ -2,10 +2,8 @@
 import settings, { PROTECTED_VALUE_PLACEHOLDER } from '@/api/settings'
 import { use2FAModal } from '@/components/TwoFA'
 
-type SensitiveValue = string | string[]
-
 const props = defineProps<{
-  value: SensitiveValue
+  value: string
   path: string
 }>()
 
@@ -13,14 +11,7 @@ const { message } = useGlobalApp()
 const twoFAModal = use2FAModal()
 const show = ref(false)
 const isLoading = ref(false)
-const revealedValue = ref<SensitiveValue>()
-
-function formatValue(value: SensitiveValue | undefined) {
-  if (Array.isArray(value))
-    return value.join('\n')
-
-  return value ?? ''
-}
+const revealedValue = ref('')
 
 function maskText(text: string) {
   if (!text)
@@ -36,13 +27,13 @@ function maskText(text: string) {
 }
 
 async function ensureRevealedValue() {
-  if (revealedValue.value !== undefined)
+  if (revealedValue.value)
     return revealedValue.value
 
   isLoading.value = true
   try {
     await twoFAModal.open()
-    const { value } = await settings.get_protected_value<SensitiveValue>(props.path)
+    const { value } = await settings.get_protected_value(props.path)
     revealedValue.value = value
     return value
   }
@@ -53,12 +44,12 @@ async function ensureRevealedValue() {
 
 const displayString = computed(() => {
   if (show.value)
-    return formatValue(revealedValue.value)
+    return revealedValue.value
 
-  if (revealedValue.value === undefined && props.value === PROTECTED_VALUE_PLACEHOLDER)
+  if (!revealedValue.value && props.value === PROTECTED_VALUE_PLACEHOLDER)
     return 'Sensitive value hidden'
 
-  return formatValue(revealedValue.value ?? props.value)
+  return revealedValue.value || props.value
 })
 
 const maskedString = computed(() => {
@@ -76,7 +67,7 @@ async function toggleShow() {
 
 async function copyValue() {
   const value = await ensureRevealedValue()
-  await navigator.clipboard.writeText(formatValue(value))
+  await navigator.clipboard.writeText(value)
   message.success($gettext('Copied'))
 }
 </script>
@@ -141,7 +132,7 @@ async function copyValue() {
     font-family: ui-monospace, SFMono-Regular, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, monospace;
     font-size: 13px;
     line-height: 1.4;
-    white-space: pre-line;
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     transition: filter 0.2s ease, opacity 0.2s ease;

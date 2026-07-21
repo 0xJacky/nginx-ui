@@ -2,7 +2,7 @@ package settings
 
 type Node struct {
 	Name                 string `json:"name" binding:"omitempty,safety_text"`
-	Secret               string `json:"secret" protected:"true"`
+	Secret               string `json:"secret" protected:"true" sensitive:"true"`
 	SkipInstallation     bool   `json:"skip_installation" protected:"true"`
 	Demo                 bool   `json:"demo" protected:"true"`
 	ICPNumber            string `json:"icp_number" binding:"omitempty,safety_text"`
