@@ -75,3 +75,4 @@ export {
 }
 
 export { clearFingerprintCache, getBrowserFingerprint } from './fingerprint'
+export { getBrowserLanguage } from './i18n'

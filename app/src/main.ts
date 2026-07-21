@@ -5,6 +5,7 @@ import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import { createApp } from 'vue'
 import VueDOMPurifyHTML from 'vue-dompurify-html'
+import { getBrowserLanguage } from '@/lib/helper'
 import { setupInterceptors } from '@/lib/http/interceptors'
 import { initPWAThemeColor, watchThemeChanges } from '@/lib/pwa'
 import { useSettingsStore } from '@/pinia'
@@ -62,7 +63,16 @@ app.use(pinia)
 // after pinia created
 const settings = useSettingsStore()
 
-gettext.current = settings.language || 'en'
+// If the user has never selected a language, detect it from the browser and
+// remember the choice as if they had set it manually. They can still change it
+// later via the language selector. Fallback to English if no supported language
+// matches.
+if (!settings.language) {
+  settings.set_language(getBrowserLanguage() || 'en')
+}
+else {
+  gettext.current = settings.language
+}
 
 app.use(router).use(autoAnimatePlugin).mount('#app')
 
