@@ -55,6 +55,7 @@ const localeMap: Record<string, string> = {
   ru: 'ru',
   tr: 'tr',
   vi: 'vi',
+  uk_UA: 'uk',
 }
 
 // Predefined locale importers for dynamic loading
@@ -73,6 +74,7 @@ const localeImporters = {
   'ru': () => import('dayjs/locale/ru'),
   'tr': () => import('dayjs/locale/tr'),
   'vi': () => import('dayjs/locale/vi'),
+  'uk': () => import('dayjs/locale/uk'),
 }
 
 // Dynamically load dayjs locale files
