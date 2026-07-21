@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"regexp"
 	"sort"
 	"strings"
 	"sync"
@@ -150,37 +149,11 @@ func (lm *LogFileManager) GetIndexingFiles() []string {
 	return files
 }
 
-// getBaseLogName determines the base log file name for grouping rotated files
+// getBaseLogName determines the base log file name for grouping rotated files.
+// It delegates to the canonical implementation so grouping always matches the
+// MainLogPath persisted in the index metadata.
 func getBaseLogName(filePath string) string {
-	dir := filepath.Dir(filePath)
-	filename := filepath.Base(filePath)
-
-	// Remove compression extensions first
-	filename = strings.TrimSuffix(filename, ".gz")
-	filename = strings.TrimSuffix(filename, ".bz2")
-
-	// Handle numbered rotation (access.log.1, access.log.2, etc.)
-	if match := regexp.MustCompile(`^(.+)\.(\d+)$`).FindStringSubmatch(filename); len(match) > 1 {
-		baseFilename := match[1]
-		return filepath.Join(dir, baseFilename)
-	}
-
-	// Handle date rotation suffixes
-	parts := strings.Split(filename, ".")
-	if len(parts) >= 2 {
-		lastPart := parts[len(parts)-1]
-		if isDatePattern(lastPart) {
-			baseFilename := strings.Join(parts[:len(parts)-1], ".")
-			// If the base doesn't end with .log, add it
-			if !strings.HasSuffix(baseFilename, ".log") {
-				baseFilename += ".log"
-			}
-			return filepath.Join(dir, baseFilename)
-		}
-	}
-
-	// If it already looks like a base log file, return as-is
-	return filePath
+	return utils.MainLogPathFromFile(filePath)
 }
 
 // GetAllLogsWithIndexGrouped returns logs grouped by their base name (e.g., access.log includes access.log.1, access.log.2.gz etc.)

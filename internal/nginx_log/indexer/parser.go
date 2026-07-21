@@ -56,7 +56,9 @@ func InitLogParser() {
 		if err != nil {
 			logger.Warnf("Failed to initialize GeoIP service, geo-enrichment will be disabled: %v", err)
 		} else {
-			geoIPService = parser.NewGeoLiteAdapter(geoService)
+			// Access logs repeat the same IPs heavily; cache lookups so the
+			// per-line hot path avoids repeated GeoIP database queries
+			geoIPService = parser.NewCachedGeoIPService(parser.NewGeoLiteAdapter(geoService), 10000)
 		}
 
 		// Create the parser with production configuration
@@ -90,98 +92,60 @@ func ParseLogLine(line string) (*LogDocument, error) {
 	return convertToLogDocument(entry, "", ""), nil
 }
 
-// ParseLogStream parses a stream of log data using ParseStream (7-8x faster)
+// ParseLogStreamBatches parses a stream of log data in bounded batches,
+// invoking fn with each converted batch of LogDocuments as soon as it is
+// ready. Only one batch is held in memory at a time, so peak memory stays
+// bounded regardless of file size. Returns the number of processed and
+// failed lines.
+func ParseLogStreamBatches(ctx context.Context, reader io.Reader, filePath string, fn func(docs []*LogDocument) error) (processed, failed int, err error) {
+	if logParser == nil {
+		return 0, 0, ErrLogParserNotInitialized
+	}
+
+	// Auto-detect and handle gzip files
+	actualReader, cleanup, err := createReaderForFile(reader, filePath)
+	if err != nil {
+		logger.Warnf("Error setting up reader for %s: %v", filePath, err)
+		actualReader = reader // fallback to original reader
+	}
+	if cleanup != nil {
+		defer cleanup()
+	}
+
+	// The main log path is constant for the whole file; compute it once
+	mainLogPath := getMainLogPathFromFile(filePath)
+
+	parseResult, err := logParser.StreamParseBatches(ctx, actualReader, func(entries []*parser.AccessLogEntry) error {
+		docs := make([]*LogDocument, 0, len(entries))
+		for _, entry := range entries {
+			docs = append(docs, convertToLogDocument(entry, filePath, mainLogPath))
+		}
+		return fn(docs)
+	})
+	if parseResult == nil {
+		return 0, 0, err
+	}
+
+	return parseResult.Processed, parseResult.Failed, err
+}
+
+// ParseLogStream parses a stream of log data and returns all documents in
+// one slice. Prefer ParseLogStreamBatches for whole-file indexing — this
+// variant accumulates everything in memory and is only appropriate for
+// bounded inputs such as incremental tails.
 func ParseLogStream(ctx context.Context, reader io.Reader, filePath string) ([]*LogDocument, error) {
-	if logParser == nil {
-		return nil, ErrLogParserNotInitialized
-	}
-	// Auto-detect and handle gzip files
-	actualReader, cleanup, err := createReaderForFile(reader, filePath)
-	if err != nil {
-		logger.Warnf("Error setting up reader for %s: %v", filePath, err)
-		actualReader = reader // fallback to original reader
-	}
-	if cleanup != nil {
-		defer cleanup()
-	}
-
-	// Use ParseStream for batch processing with 70% memory reduction
-	parseResult, err := logParser.StreamParse(ctx, actualReader)
+	var docs []*LogDocument
+	processed, failed, err := ParseLogStreamBatches(ctx, reader, filePath, func(batch []*LogDocument) error {
+		docs = append(docs, batch...)
+		return nil
+	})
 	if err != nil {
 		return nil, err
 	}
 
-	// Convert to LogDocument format; the main log path is constant per file
-	mainLogPath := getMainLogPathFromFile(filePath)
-	docs := make([]*LogDocument, 0, len(parseResult.Entries))
-	for _, entry := range parseResult.Entries {
-		logDoc := convertToLogDocument(entry, filePath, mainLogPath)
-		docs = append(docs, logDoc)
-	}
-
-	logger.Infof("ParseStream processed %d lines with %.2f%% error rate",
-		parseResult.Processed, parseResult.ErrorRate*100)
-
-	return docs, nil
-}
-
-// ParseLogStreamChunked processes large files using chunked processing for memory efficiency
-func ParseLogStreamChunked(ctx context.Context, reader io.Reader, filePath string, chunkSize int) ([]*LogDocument, error) {
-	if logParser == nil {
-		return nil, ErrLogParserNotInitialized
-	}
-	// Auto-detect and handle gzip files
-	actualReader, cleanup, err := createReaderForFile(reader, filePath)
-	if err != nil {
-		logger.Warnf("Error setting up reader for %s: %v", filePath, err)
-		actualReader = reader // fallback to original reader
-	}
-	if cleanup != nil {
-		defer cleanup()
-	}
-
-	// Use ChunkedParseStream for large files with controlled memory usage
-	parseResult, err := logParser.ChunkedParseStream(ctx, actualReader, chunkSize)
-	if err != nil {
-		return nil, err
-	}
-
-	mainLogPath := getMainLogPathFromFile(filePath)
-	docs := make([]*LogDocument, 0, len(parseResult.Entries))
-	for _, entry := range parseResult.Entries {
-		logDoc := convertToLogDocument(entry, filePath, mainLogPath)
-		docs = append(docs, logDoc)
-	}
-
-	return docs, nil
-}
-
-// ParseLogStreamMemoryEfficient uses memory-efficient parsing for low memory environments
-func ParseLogStreamMemoryEfficient(ctx context.Context, reader io.Reader, filePath string) ([]*LogDocument, error) {
-	if logParser == nil {
-		return nil, ErrLogParserNotInitialized
-	}
-	// Auto-detect and handle gzip files
-	actualReader, cleanup, err := createReaderForFile(reader, filePath)
-	if err != nil {
-		logger.Warnf("Error setting up reader for %s: %v", filePath, err)
-		actualReader = reader // fallback to original reader
-	}
-	if cleanup != nil {
-		defer cleanup()
-	}
-
-	// Use MemoryEfficientParseStream for minimal memory usage
-	parseResult, err := logParser.MemoryEfficientParseStream(ctx, actualReader)
-	if err != nil {
-		return nil, err
-	}
-
-	mainLogPath := getMainLogPathFromFile(filePath)
-	docs := make([]*LogDocument, 0, len(parseResult.Entries))
-	for _, entry := range parseResult.Entries {
-		logDoc := convertToLogDocument(entry, filePath, mainLogPath)
-		docs = append(docs, logDoc)
+	if processed > 0 {
+		logger.Infof("ParseStream processed %d lines with %.2f%% error rate",
+			processed, float64(failed)/float64(processed)*100)
 	}
 
 	return docs, nil

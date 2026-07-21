@@ -14,21 +14,6 @@ func TestThroughputOptimizations(t *testing.T) {
 			t.Errorf("Expected batch size >= 15000, got %d", config.BatchSize)
 		}
 		t.Logf("✅ Batch size optimized: %d", config.BatchSize)
-
-		// Test adaptive optimization with increased limits
-		ao := NewAdaptiveOptimizer(config)
-		batchController := ao.batchSizeController
-
-		if batchController.minBatchSize < 500 {
-			t.Errorf("Expected min batch size >= 500, got %d", batchController.minBatchSize)
-		}
-
-		if batchController.maxBatchSize < config.BatchSize*4 {
-			t.Errorf("Expected max batch size >= %d, got %d", config.BatchSize*4, batchController.maxBatchSize)
-		}
-
-		t.Logf("✅ Adaptive optimization limits: min=%d, max=%d",
-			batchController.minBatchSize, batchController.maxBatchSize)
 	})
 }
 

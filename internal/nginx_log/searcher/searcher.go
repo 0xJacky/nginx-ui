@@ -241,6 +241,7 @@ func (s *Searcher) convertBleveResult(bleveResult *bleve.SearchResult) *SearchRe
 			Fields:       hit.Fields,
 			Highlighting: hit.Fragments,
 			Index:        hit.Index,
+			Sort:         hit.Sort,
 		}
 		result.Hits = append(result.Hits, searchHit)
 	}
@@ -308,11 +309,21 @@ func (s *Searcher) configureSearchRequest(searchReq *bleve.SearchRequest, req *S
 		sortOrder = SortOrderDesc // Default sort order
 	}
 
-	// Apply Bleve sorting - use "-" prefix for descending order
+	// Apply Bleve sorting - use "-" prefix for descending order.
+	// Always append the document ID as a final tiebreaker: the primary sort
+	// key (usually second-resolution timestamps) is not unique, and a
+	// deterministic total order is required for stable pagination and
+	// SearchAfter cursors.
 	if sortOrder == SortOrderDesc {
-		searchReq.SortBy([]string{"-" + sortField})
+		searchReq.SortBy([]string{"-" + sortField, "_id"})
 	} else {
-		searchReq.SortBy([]string{sortField})
+		searchReq.SortBy([]string{sortField, "_id"})
+	}
+
+	// Cursor-based pagination: resume strictly after the given sort values
+	if len(req.SearchAfter) > 0 {
+		searchReq.SearchAfter = req.SearchAfter
+		searchReq.From = 0 // SearchAfter and From are mutually exclusive
 	}
 
 	// Configure highlighting

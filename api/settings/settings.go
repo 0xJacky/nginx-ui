@@ -76,8 +76,10 @@ func shouldRedactProtectedValue(value reflect.Value) bool {
 	}
 
 	switch value.Kind() {
-	case reflect.String, reflect.Slice, reflect.Array:
-		return true
+	case reflect.String:
+		return value.String() != ""
+	case reflect.Slice, reflect.Array:
+		return value.Len() > 0
 	default:
 		return false
 	}

@@ -114,6 +114,7 @@ func TestGetSettingsRedactsSensitiveFields(t *testing.T) {
 	appsettings.NginxSettings.ReloadCmd = "nginx -s reload"
 	appsettings.NginxSettings.RestartCmd = "nginx -s restart"
 	appsettings.NginxSettings.TestConfigCmd = "nginx -t"
+	appsettings.NginxSettings.ContainerName = ""
 	appsettings.NodeSettings.Secret = "node-secret"
 	appsettings.NodeSettings.Name = "local-node"
 	appsettings.NodeSettings.SkipInstallation = true
@@ -156,8 +157,23 @@ func TestGetSettingsRedactsSensitiveFields(t *testing.T) {
 	assert.Equal(t, redactedSensitiveValue, body["nginx"]["restart_cmd"])
 	assert.Equal(t, redactedSensitiveValue, body["nginx"]["test_config_cmd"])
 	assert.Equal(t, []any{redactedSensitiveValue}, body["nginx"]["log_dir_white_list"])
+	assert.Equal(t, "", body["nginx"]["container_name"])
 	assert.Equal(t, []any{redactedSensitiveValue}, body["auth"]["ip_white_list"])
 	assert.Equal(t, redactedSensitiveValue, body["terminal"]["start_cmd"])
+}
+
+func TestBuildSettingsResponseRedactsNonEmptyContainerName(t *testing.T) {
+	originalNginx := *appsettings.NginxSettings
+	defer func() {
+		*appsettings.NginxSettings = originalNginx
+	}()
+
+	appsettings.NginxSettings.ContainerName = "nginx-container"
+
+	body := buildSettingsResponse()
+	nginxSettings, ok := body["nginx"].(gin.H)
+	assert.True(t, ok)
+	assert.Equal(t, redactedSensitiveValue, nginxSettings["container_name"])
 }
 
 func TestRestoreRedactedSensitiveSettings(t *testing.T) {

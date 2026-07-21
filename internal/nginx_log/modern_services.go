@@ -5,9 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"regexp"
 	"sort"
-	"strings"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -15,6 +13,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/analytics"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/indexer"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/searcher"
+	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/blevesearch/bleve/v2"
 	"github.com/uozi-tech/cosy/logger"
@@ -425,64 +424,11 @@ func GetAllLogsWithIndexGrouped(filters ...func(*NginxLogWithIndex) bool) []*Ngi
 
 // --- Fallback helpers ---
 
-// getBaseLogNameBasic attempts to derive the base log file for a rotated file name.
-// Mirrors the logic used by the indexer, simplified for basic mode.
+// getBaseLogNameBasic derives the base log file for a rotated file name.
+// It delegates to the canonical implementation so fallback-mode grouping
+// matches the MainLogPath persisted by the indexer.
 func getBaseLogNameBasic(filePath string) string {
-	dir := filepath.Dir(filePath)
-	filename := filepath.Base(filePath)
-
-	// Remove compression extensions
-	for _, ext := range []string{".gz", ".bz2", ".xz", ".lz4"} {
-		filename = strings.TrimSuffix(filename, ext)
-	}
-
-	// Check YYYY.MM.DD at end
-	parts := strings.Split(filename, ".")
-	if len(parts) >= 4 {
-		lastThree := strings.Join(parts[len(parts)-3:], ".")
-		if matched, _ := regexp.MatchString(`^\d{4}\.\d{2}\.\d{2}$`, lastThree); matched {
-			base := strings.Join(parts[:len(parts)-3], ".")
-			return filepath.Join(dir, base)
-		}
-	}
-
-	// Single-part date suffix (YYYYMMDD / YYYY-MM-DD / YYMMDD)
-	if len(parts) >= 2 {
-		last := parts[len(parts)-1]
-		if isFullDatePatternBasic(last) {
-			base := strings.Join(parts[:len(parts)-1], ".")
-			return filepath.Join(dir, base)
-		}
-	}
-
-	// Numbered rotation: access.log.1
-	if m := regexp.MustCompile(`^(.+)\.(\d{1,3})$`).FindStringSubmatch(filename); len(m) > 1 {
-		base := m[1]
-		return filepath.Join(dir, base)
-	}
-
-	// Middle-numbered rotation: access.1.log
-	if m := regexp.MustCompile(`^(.+)\.(\d{1,3})\.log$`).FindStringSubmatch(filename); len(m) > 1 {
-		base := m[1] + ".log"
-		return filepath.Join(dir, base)
-	}
-
-	// Fallback: return original path
-	return filePath
-}
-
-func isFullDatePatternBasic(s string) bool {
-	patterns := []string{
-		`^\d{8}$`,             // YYYYMMDD
-		`^\d{4}-\d{2}-\d{2}$`, // YYYY-MM-DD
-		`^\d{6}$`,             // YYMMDD
-	}
-	for _, p := range patterns {
-		if matched, _ := regexp.MatchString(p, s); matched {
-			return true
-		}
-	}
-	return false
+	return utils.MainLogPathFromFile(filePath)
 }
 
 // SetIndexingStatus sets the indexing status for a specific file path

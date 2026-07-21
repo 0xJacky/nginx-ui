@@ -3,7 +3,6 @@ package indexer
 import (
 	"context"
 	"fmt"
-	"io"
 	"os"
 	"strconv"
 	"strings"
@@ -13,60 +12,23 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 )
 
-// IndexLogFile reads and indexes a single log file using ParseStream
-// This replaces the original IndexLogFile with 7-8x faster performance and 70% memory reduction
+// IndexLogFile reads and indexes a single log file using the streaming
+// pipeline. Kept as a thin compatibility wrapper around IndexSingleFile.
 func (pi *ParallelIndexer) IndexLogFile(filePath string) error {
-	if !pi.IsHealthy() {
-		return fmt.Errorf("indexer not healthy")
-	}
-
-	file, err := os.Open(filePath)
-	if err != nil {
-		return fmt.Errorf("failed to open log file %s: %w", filePath, err)
-	}
-	defer file.Close()
-
-	// Determine appropriate processing method based on file size
-	fileInfo, err := file.Stat()
-	if err != nil {
-		return fmt.Errorf("failed to get file info for %s: %w", filePath, err)
-	}
-
-	ctx := context.Background()
-	var logDocs []*LogDocument
-
-	fileSize := fileInfo.Size()
-	logger.Infof("Processing file %s (size: %d bytes) with optimized parser", filePath, fileSize)
-
-	// Choose optimal parsing method based on file size and system resources
-	if fileSize > 100*1024*1024 { // Files > 100MB use chunked processing
-		logDocs, err = ParseLogStreamChunked(ctx, file, filePath, 64*1024)
-		if err != nil {
-			return fmt.Errorf("failed to parse large file %s with chunked processing: %w", filePath, err)
-		}
-		logger.Infof("Processed large file %s with chunked processing", filePath)
-	} else {
-		// Use ParseStream for general purpose (7-8x faster)
-		logDocs, err = ParseLogStream(ctx, file, filePath)
-		if err != nil {
-			return fmt.Errorf("failed to parse file %s with optimized stream processing: %w", filePath, err)
-		}
-		logger.Infof("Processed file %s with optimized stream processing", filePath)
-	}
-
-	// Use efficient batch indexing with memory pools
-	return pi.indexLogDocuments(logDocs, filePath)
+	_, _, _, err := pi.IndexSingleFile(filePath)
+	return err
 }
 
-// IndexSingleFile contains the optimized logic to process one physical log file.
+// IndexSingleFile contains the logic to process one physical log file.
 // It returns the number of documents indexed from the file, and the min/max timestamps.
-// This provides 7-8x better performance than the original indexSingleFile
 func (pi *ParallelIndexer) IndexSingleFile(filePath string) (uint64, *time.Time, *time.Time, error) {
 	return pi.IndexSingleFileWithProgress(filePath, nil)
 }
 
-// IndexSingleFileWithProgress processes a file with progress tracking integration
-// This maintains compatibility with the existing ProgressTracker system while providing optimized performance
+// IndexSingleFileWithProgress processes a file with progress tracking integration.
+// The file is parsed, converted, validated and flushed to the index in bounded
+// batches: only one parse batch is held in memory at a time, so peak memory no
+// longer scales with file size.
 func (pi *ParallelIndexer) IndexSingleFileWithProgress(filePath string, progressTracker *ProgressTracker) (uint64, *time.Time, *time.Time, error) {
 	// Validate log path before accessing it
 	if !utils.IsValidLogPath(filePath) {
@@ -79,7 +41,7 @@ func (pi *ParallelIndexer) IndexSingleFileWithProgress(filePath string, progress
 	}
 	defer file.Close()
 
-	// Get file info for progress tracking and processing method selection
+	// Get file info for progress tracking
 	fileInfo, err := file.Stat()
 	if err != nil {
 		return 0, nil, nil, fmt.Errorf("failed to get file info for %s: %w", filePath, err)
@@ -99,157 +61,96 @@ func (pi *ParallelIndexer) IndexSingleFileWithProgress(filePath string, progress
 		progressTracker.SetFileEstimate(filePath, estimatedLines)
 	}
 
-	// Gzip decompression is handled in exactly one layer: the ParseLogStream*
-	// functions detect the gzip magic header via createReaderForFile. Wrapping
-	// here as well would double-decompress and trigger false "no gzip magic
-	// header" warnings downstream.
-	var reader io.Reader = file
-
 	logger.Infof("Starting to process file: %s", filePath)
 
+	// Gzip decompression is handled inside the streaming parser via the gzip
+	// magic-header detection in createReaderForFile.
 	ctx := context.Background()
-	var logDocs []*LogDocument
+	isCompressed := strings.HasSuffix(filePath, ".gz")
 
-	// Memory-aware processing method selection with progress updates
-	if fileSize > 500*1024*1024 { // Files > 500MB use memory-efficient processing
-		logDocs, err = pi.parseLogStreamWithProgress(ctx, reader, filePath, "memory-efficient", progressTracker)
-		logger.Infof("Using memory-efficient processing for large file %s (%d bytes)", filePath, fileSize)
-	} else if fileSize > 100*1024*1024 { // Files > 100MB use chunked processing
-		logDocs, err = pi.parseLogStreamWithProgress(ctx, reader, filePath, "chunked", progressTracker)
-		logger.Infof("Using chunked processing for file %s (%d bytes)", filePath, fileSize)
-	} else {
-		// Use ParseStream for general purpose (7-8x faster, 70% memory reduction)
-		logDocs, err = pi.parseLogStreamWithProgress(ctx, reader, filePath, "optimized", progressTracker)
-		logger.Infof("Using optimized stream processing for file %s (%d bytes)", filePath, fileSize)
-	}
+	batch := pi.StartBatch()
 
-	if err != nil {
-		return 0, nil, nil, fmt.Errorf("failed to parse file %s: %w", filePath, err)
-	}
-
-	// Validate and filter out obviously incorrect parsed entries
-	validDocs := make([]*LogDocument, 0, len(logDocs))
+	var docCount uint64
+	var minTime, maxTime *time.Time
 	var invalidEntryCount int
+	var processedLines int64
 
-	for _, doc := range logDocs {
-		// Validate the parsed entry
-		if isValidLogEntry(doc) {
-			validDocs = append(validDocs, doc)
-		} else {
-			invalidEntryCount++
+	// Reuse one buffer for ID construction; the ID itself must be a copied
+	// string because Bleve retains it beyond this loop.
+	idBuf := make([]byte, 0, len(filePath)+16)
+
+	processed, _, err := ParseLogStreamBatches(ctx, file, filePath, func(docs []*LogDocument) error {
+		for _, doc := range docs {
+			// Validate and filter out obviously incorrect parsed entries
+			if !isValidLogEntry(doc) {
+				invalidEntryCount++
+				continue
+			}
+
+			ts := time.Unix(doc.Timestamp, 0)
+			if minTime == nil || ts.Before(*minTime) {
+				tsCopy := ts
+				minTime = &tsCopy
+			}
+			if maxTime == nil || ts.After(*maxTime) {
+				tsCopy := ts
+				maxTime = &tsCopy
+			}
+
+			idBuf = idBuf[:0]
+			idBuf = append(idBuf, filePath...)
+			idBuf = append(idBuf, '-')
+			idBuf = strconv.AppendInt(idBuf, int64(docCount), 10)
+
+			if err := batch.Add(&Document{ID: string(idBuf), Fields: doc}); err != nil {
+				// This indicates an auto-flush occurred and failed.
+				return fmt.Errorf("failed to add document to batch for %s (auto-flush might have failed): %w", filePath, err)
+			}
+			docCount++
+		}
+
+		// Real incremental progress per parsed batch
+		processedLines += int64(len(docs))
+		if progressTracker != nil {
+			if isCompressed {
+				// For compressed files, we can't track byte position accurately
+				progressTracker.UpdateFileProgress(filePath, processedLines)
+			} else {
+				// Estimate position based on processed line count
+				estimatedPos := processedLines * 150 // Assume ~150 bytes per line
+				if estimatedPos > fileSize {
+					estimatedPos = fileSize
+				}
+				progressTracker.UpdateFileProgress(filePath, processedLines, estimatedPos)
+			}
+		}
+		return nil
+	})
+	if err != nil {
+		return docCount, minTime, maxTime, fmt.Errorf("failed to parse file %s: %w", filePath, err)
+	}
+
+	// Flush any remaining documents in the batch
+	if docCount > 0 {
+		if _, err := batch.Flush(); err != nil {
+			return docCount, minTime, maxTime, fmt.Errorf("failed to flush batch for %s: %w", filePath, err)
 		}
 	}
 
 	if invalidEntryCount > 0 {
 		logger.Warnf("File %s: Filtered out %d invalid entries out of %d total (possible parsing issue)",
-			filePath, invalidEntryCount, len(logDocs))
+			filePath, invalidEntryCount, processed)
 	}
 
-	// Replace logDocs with validated entries
-	logDocs = validDocs
-	docCount := uint64(len(logDocs))
-
-	// Calculate min/max timestamps
-	var minTime, maxTime *time.Time
-	var hasLoggedInvalidTimestamp bool
-	var invalidTimestampCount int
-
-	if docCount > 0 {
-		for _, logDoc := range logDocs {
-			// Skip invalid timestamps (0 = epoch, likely parsing failure)
-			if logDoc.Timestamp <= 0 {
-				// Only log once per file to avoid spam
-				if !hasLoggedInvalidTimestamp {
-					logger.Warnf("Found entries with invalid timestamps in file %s, skipping them", filePath)
-					hasLoggedInvalidTimestamp = true
-				}
-				invalidTimestampCount++
-				continue
-			}
-
-			ts := time.Unix(logDoc.Timestamp, 0)
-			if minTime == nil || ts.Before(*minTime) {
-				minTime = &ts
-			}
-			if maxTime == nil || ts.After(*maxTime) {
-				maxTime = &ts
-			}
-		}
-
-		// Log the calculated time ranges and statistics
-		if invalidTimestampCount > 0 {
-			logger.Warnf("File %s: Skipped %d entries with invalid timestamps out of %d total",
-				filePath, invalidTimestampCount, len(logDocs))
-		}
-
-		if minTime != nil && maxTime != nil {
-			logger.Debugf("Calculated time range for %s: %v to %v", filePath, minTime, maxTime)
-		} else if invalidTimestampCount == len(logDocs) {
-			logger.Errorf("All %d entries in file %s have invalid timestamps - possible format issue",
-				len(logDocs), filePath)
-		} else {
-			logger.Warnf("No valid timestamps found in file %s (processed %d documents)", filePath, docCount)
-		}
+	if minTime != nil && maxTime != nil {
+		logger.Debugf("Calculated time range for %s: %v to %v", filePath, minTime, maxTime)
+	} else if docCount == 0 && processed > 0 {
+		logger.Errorf("All %d entries in file %s were invalid - possible format issue", processed, filePath)
 	}
 
-	// Final progress update
-	if progressTracker != nil && docCount > 0 {
-		if strings.HasSuffix(filePath, ".gz") {
-			// For compressed files, we can't track position accurately
-			progressTracker.UpdateFileProgress(filePath, int64(docCount))
-		} else {
-			// For regular files, estimate position based on actual line count
-			estimatedPos := int64(docCount * 150) // Assume ~150 bytes per line
-			if estimatedPos > fileSize {
-				estimatedPos = fileSize
-			}
-			progressTracker.UpdateFileProgress(filePath, int64(docCount), estimatedPos)
-		}
-	}
-
-	logger.Infof("Finished processing file: %s. Total lines processed: %d", filePath, docCount)
-
-	// Index documents efficiently using batch processing
-	if docCount > 0 {
-		if err := pi.indexLogDocuments(logDocs, filePath); err != nil {
-			return docCount, minTime, maxTime, fmt.Errorf("failed to index documents for %s: %w", filePath, err)
-		}
-	}
+	logger.Infof("Finished processing file: %s. Total documents indexed: %d", filePath, docCount)
 
 	return docCount, minTime, maxTime, nil
-}
-
-// parseLogStreamWithProgress parses a log stream with progress updates
-func (pi *ParallelIndexer) parseLogStreamWithProgress(ctx context.Context, reader io.Reader, filePath, method string, progressTracker *ProgressTracker) ([]*LogDocument, error) {
-	var logDocs []*LogDocument
-	var err error
-
-	switch method {
-	case "memory-efficient":
-		logDocs, err = ParseLogStreamMemoryEfficient(ctx, reader, filePath)
-	case "chunked":
-		logDocs, err = ParseLogStreamChunked(ctx, reader, filePath, 32*1024)
-	case "optimized":
-		logDocs, err = ParseLogStream(ctx, reader, filePath)
-	default:
-		logDocs, err = ParseLogStream(ctx, reader, filePath)
-	}
-
-	// Update progress during parsing (simplified for now, could be enhanced with real-time updates)
-	if progressTracker != nil && len(logDocs) > 0 {
-		// Intermediate progress update (every 25% of completion)
-		quarterLines := len(logDocs) / 4
-		if quarterLines > 0 {
-			for i := 1; i <= 4; i++ {
-				if i*quarterLines <= len(logDocs) {
-					progressLines := int64(i * quarterLines)
-					progressTracker.UpdateFileProgress(filePath, progressLines)
-				}
-			}
-		}
-	}
-
-	return logDocs, err
 }
 
 // isValidLogEntry validates if a parsed log entry is correct
@@ -309,41 +210,4 @@ var validHTTPMethods = map[string]bool{
 	"HEAD": true, "OPTIONS": true, "PATCH": true, "CONNECT": true, "TRACE": true,
 	"PROPFIND": true, "PROPPATCH": true, "MKCOL": true,
 	"COPY": true, "MOVE": true, "LOCK": true, "UNLOCK": true,
-}
-
-// indexLogDocuments efficiently indexes a batch of LogDocuments
-func (pi *ParallelIndexer) indexLogDocuments(logDocs []*LogDocument, filePath string) error {
-	if len(logDocs) == 0 {
-		return nil
-	}
-
-	// Use batch writer for efficient indexing
-	batch := pi.StartBatch()
-
-	// Reuse one buffer for ID construction; the ID itself must be a copied
-	// string because Bleve retains it beyond this loop.
-	idBuf := make([]byte, 0, len(filePath)+16)
-	for i, logDoc := range logDocs {
-		idBuf = idBuf[:0]
-		idBuf = append(idBuf, filePath...)
-		idBuf = append(idBuf, '-')
-		idBuf = strconv.AppendInt(idBuf, int64(i), 10)
-
-		doc := &Document{
-			ID:     string(idBuf),
-			Fields: logDoc,
-		}
-
-		if err := batch.Add(doc); err != nil {
-			// This indicates an auto-flush occurred and failed.
-			return fmt.Errorf("failed to add document to batch for %s (auto-flush might have failed): %w", filePath, err)
-		}
-	}
-
-	// Flush the batch
-	if _, err := batch.Flush(); err != nil {
-		return fmt.Errorf("failed to flush batch for %s: %w", filePath, err)
-	}
-
-	return nil
 }

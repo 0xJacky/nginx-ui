@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import SensitiveString from '@/components/SensitiveString'
 import useSystemSettingsStore from '../store'
 
 const systemSettingsStore = useSystemSettingsStore()
@@ -20,44 +21,42 @@ const { data } = storeToRefs(systemSettingsStore)
       </div>
     </AFormItem>
     <AFormItem :label="$gettext('Nginx Access Log Path')">
-      {{ data.nginx.access_log_path }}
+      <SensitiveString path="nginx.access_log_path" :value="data.nginx.access_log_path" />
     </AFormItem>
     <AFormItem :label="$gettext('Nginx Error Log Path')">
-      {{ data.nginx.error_log_path }}
+      <SensitiveString path="nginx.error_log_path" :value="data.nginx.error_log_path" />
     </AFormItem>
     <AFormItem :label="$gettext('Nginx Configurations Directory')">
-      {{ data.nginx.config_dir }}
+      <SensitiveString path="nginx.config_dir" :value="data.nginx.config_dir" />
     </AFormItem>
     <AFormItem :label="$gettext('Nginx Configuration Path')">
-      <p>{{ data.nginx.config_path }}</p>
+      <SensitiveString path="nginx.config_path" :value="data.nginx.config_path" />
     </AFormItem>
     <AFormItem :label="$gettext('Nginx Log Directory Whitelist')">
-      <div
-        v-for="dir in data.nginx.log_dir_white_list"
-        :key="dir"
-        class="mb-2"
-      >
-        {{ dir }}
-      </div>
+      <SensitiveString
+        v-if="data.nginx.log_dir_white_list?.length"
+        path="nginx.log_dir_white_list"
+        :value="data.nginx.log_dir_white_list"
+      />
     </AFormItem>
     <AFormItem :label="$gettext('Nginx PID Path')">
-      {{ data.nginx.pid_path }}
+      <SensitiveString path="nginx.pid_path" :value="data.nginx.pid_path" />
     </AFormItem>
     <AFormItem :label="$gettext('Nginx Test Config Command')">
-      <p>{{ data.nginx.test_config_cmd }}</p>
+      <SensitiveString path="nginx.test_config_cmd" :value="data.nginx.test_config_cmd" />
     </AFormItem>
     <AFormItem :label="$gettext('Nginx Reload Command')">
-      {{ data.nginx.reload_cmd }}
+      <SensitiveString path="nginx.reload_cmd" :value="data.nginx.reload_cmd" />
     </AFormItem>
     <AFormItem :label="$gettext('Nginx Restart Command')">
-      {{ data.nginx.restart_cmd }}
+      <SensitiveString path="nginx.restart_cmd" :value="data.nginx.restart_cmd" />
     </AFormItem>
     <AFormItem :label="$gettext('Nginx Control Mode')">
-      <div v-if="data.nginx.container_name">
+      <div v-if="data.nginx.container_name" class="control-mode">
         <ATag color="blue" tag>
           {{ $gettext('External Docker Container') }}
         </ATag>
-        {{ data.nginx.container_name }}
+        <SensitiveString path="nginx.container_name" :value="data.nginx.container_name" />
       </div>
       <div v-else>
         <ATag color="green" tag>
@@ -69,5 +68,10 @@ const { data } = storeToRefs(systemSettingsStore)
 </template>
 
 <style lang="less" scoped>
-
+.control-mode {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
 </style>

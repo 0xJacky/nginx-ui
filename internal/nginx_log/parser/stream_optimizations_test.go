@@ -150,42 +150,6 @@ func BenchmarkStreamOptimizations_Individual(b *testing.B) {
 		&mockGeoIPService{},
 	) // Avoid unused warning
 
-	b.Run("UnsafeStringConversion", func(b *testing.B) {
-		testBytes := []byte("127.0.0.1 - - [25/Dec/2023:10:00:00 +0000] \"GET /index.html HTTP/1.1\" 200 1234")
-
-		b.ResetTimer()
-		b.ReportAllocs()
-
-		for i := 0; i < b.N; i++ {
-			_ = unsafeBytesToString(testBytes)
-		}
-	})
-
-	b.Run("StandardStringConversion", func(b *testing.B) {
-		testBytes := []byte("127.0.0.1 - - [25/Dec/2023:10:00:00 +0000] \"GET /index.html HTTP/1.1\" 200 1234")
-
-		b.ResetTimer()
-		b.ReportAllocs()
-
-		for i := 0; i < b.N; i++ {
-			_ = string(testBytes)
-		}
-	})
-
-	b.Run("LineBuffer_Operations", func(b *testing.B) {
-		buffer := NewLineBuffer(1024)
-		testData := []byte("test log line data")
-
-		b.ResetTimer()
-		b.ReportAllocs()
-
-		for i := 0; i < b.N; i++ {
-			buffer.Reset()
-			buffer.Append(testData)
-			_ = buffer.UnsafeString()
-		}
-	})
-
 	b.Run("MemoryReallocation_Test", func(b *testing.B) {
 		b.ResetTimer()
 		b.ReportAllocs()
@@ -376,57 +340,6 @@ func TestParseStreamCorrectness(t *testing.T) {
 				}
 			}
 		})
-	}
-}
-
-// TestUnsafeStringConversion tests the safety of unsafe string conversion
-func TestUnsafeStringConversion(t *testing.T) {
-	testCases := [][]byte{
-		[]byte("hello world"),
-		[]byte(""),
-		[]byte("127.0.0.1 - - [25/Dec/2023:10:00:00 +0000] \"GET /index.html HTTP/1.1\" 200 1234"),
-		[]byte("special chars: !@#$%^&*()"),
-	}
-
-	for i, testCase := range testCases {
-		t.Run(fmt.Sprintf("Case_%d", i), func(t *testing.T) {
-			unsafeStr := unsafeBytesToString(testCase)
-			safeStr := string(testCase)
-
-			if unsafeStr != safeStr {
-				t.Errorf("Unsafe conversion mismatch: unsafe=%s, safe=%s", unsafeStr, safeStr)
-			}
-		})
-	}
-}
-
-// TestLineBufferOperations tests LineBuffer functionality
-func TestLineBufferOperations(t *testing.T) {
-	buffer := NewLineBuffer(1024)
-
-	// Test basic operations
-	testData := []byte("test data")
-	buffer.Append(testData)
-
-	if string(buffer.Bytes()) != "test data" {
-		t.Errorf("Buffer content mismatch: got %s, want %s", buffer.Bytes(), "test data")
-	}
-
-	// Test reset
-	buffer.Reset()
-	if len(buffer.Bytes()) != 0 {
-		t.Errorf("Buffer should be empty after reset, got length %d", len(buffer.Bytes()))
-	}
-
-	// Test growth
-	largeData := make([]byte, 2048)
-	for i := range largeData {
-		largeData[i] = byte('a' + (i % 26))
-	}
-
-	buffer.Append(largeData)
-	if len(buffer.Bytes()) != 2048 {
-		t.Errorf("Buffer size mismatch: got %d, want 2048", len(buffer.Bytes()))
 	}
 }
 

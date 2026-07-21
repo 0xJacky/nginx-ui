@@ -41,10 +41,8 @@ type ParallelIndexer struct {
 	statsMutex sync.RWMutex
 
 	// Optimization
-	lastOptimized       int64
-	optimizing          int32
-	adaptiveOptimizer   *AdaptiveOptimizer
-	optimizationEnabled bool
+	lastOptimized int64
+	optimizing    int32
 }
 
 // indexWorker represents a single indexing worker
@@ -75,8 +73,6 @@ func NewParallelIndexer(config *Config, shardManager ShardManager) *ParallelInde
 		actualShardManager = shardManager
 	}
 
-	ao := NewAdaptiveOptimizer(config)
-
 	indexer := &ParallelIndexer{
 		config:       config,
 		shardManager: actualShardManager,
@@ -88,13 +84,6 @@ func NewParallelIndexer(config *Config, shardManager ShardManager) *ParallelInde
 		stats: &IndexStats{
 			WorkerStats: make([]*WorkerStats, config.WorkerCount),
 		},
-		adaptiveOptimizer:   ao,
-		optimizationEnabled: true, // Enable optimizations by default
-	}
-
-	// Set up the activity poller for the adaptive optimizer
-	if indexer.adaptiveOptimizer != nil {
-		indexer.adaptiveOptimizer.SetActivityPoller(indexer)
 	}
 
 	// Initialize workers
@@ -148,112 +137,12 @@ func (pi *ParallelIndexer) Start(ctx context.Context) error {
 		go pi.metricsRoutine()
 	}
 
-	// Start adaptive optimizer if enabled
-	if pi.optimizationEnabled && pi.adaptiveOptimizer != nil {
-		// Set worker count change callback
-		logger.Debugf("Setting up adaptive optimizer callback for worker count changes")
-		pi.adaptiveOptimizer.SetWorkerCountChangeCallback(pi.handleWorkerCountChange)
-
-		if err := pi.adaptiveOptimizer.Start(); err != nil {
-			logger.Warnf("Failed to start adaptive optimizer: %v", err)
-		} else {
-			logger.Debugf("Adaptive optimizer started successfully")
-		}
-	}
-
-	// Start dynamic shard awareness monitoring if enabled
-	// NOTE: dynamic shard awareness removed; GroupedShardManager is the default
-
 	return nil
 }
 
-// handleWorkerCountChange handles dynamic worker count adjustments from adaptive optimizer
-func (pi *ParallelIndexer) handleWorkerCountChange(oldCount, newCount int) {
-	logger.Infof("Handling worker count change from %d to %d", oldCount, newCount)
-
-	// Check if indexer is running
-	if atomic.LoadInt32(&pi.running) != 1 {
-		logger.Warn("Cannot adjust worker count: indexer not running")
-		return
-	}
-
-	// Prevent concurrent worker adjustments
-	pi.statsMutex.Lock()
-	defer pi.statsMutex.Unlock()
-
-	currentWorkerCount := len(pi.workers)
-	if currentWorkerCount == newCount {
-		return // Already at desired count
-	}
-
-	if newCount > currentWorkerCount {
-		// Add more workers
-		pi.addWorkers(newCount - currentWorkerCount)
-	} else {
-		// Remove workers
-		pi.removeWorkers(currentWorkerCount - newCount)
-	}
-
-	// Update config to reflect the change
-	pi.config.WorkerCount = newCount
-
-	logger.Infof("Successfully adjusted worker count to %d", newCount)
-}
-
-// WorkerCount returns the currently configured worker count. The value is
-// written by handleWorkerCountChange under statsMutex, so readers must
-// synchronize through this accessor.
+// WorkerCount returns the configured worker count.
 func (pi *ParallelIndexer) WorkerCount() int {
-	pi.statsMutex.RLock()
-	defer pi.statsMutex.RUnlock()
 	return pi.config.WorkerCount
-}
-
-// addWorkers adds new workers to the pool
-func (pi *ParallelIndexer) addWorkers(count int) {
-	for i := 0; i < count; i++ {
-		workerID := len(pi.workers)
-		worker := &indexWorker{
-			id:      workerID,
-			indexer: pi,
-			stats: &WorkerStats{
-				ID:     workerID,
-				Status: WorkerStatusIdle,
-			},
-		}
-
-		pi.workers = append(pi.workers, worker)
-		pi.stats.WorkerStats = append(pi.stats.WorkerStats, worker.stats)
-
-		// Start the new worker
-		pi.wg.Add(1)
-		go worker.run()
-
-		logger.Debugf("Added worker %d", workerID)
-	}
-}
-
-// removeWorkers gracefully removes workers from the pool
-func (pi *ParallelIndexer) removeWorkers(count int) {
-	if count >= len(pi.workers) {
-		logger.Warn("Cannot remove all workers, keeping at least one")
-		count = len(pi.workers) - 1
-	}
-
-	// Remove workers from the end of the slice
-	workersToRemove := pi.workers[len(pi.workers)-count:]
-	pi.workers = pi.workers[:len(pi.workers)-count]
-	pi.stats.WorkerStats = pi.stats.WorkerStats[:len(pi.stats.WorkerStats)-count]
-
-	// Note: In a full implementation, you would need to:
-	// 1. Signal workers to stop gracefully after finishing current jobs
-	// 2. Wait for them to complete
-	// 3. Clean up their resources
-	// For now, we just remove them from tracking
-
-	for _, worker := range workersToRemove {
-		logger.Debugf("Removed worker %d", worker.id)
-	}
 }
 
 // Stop gracefully stops the indexer
@@ -270,11 +159,6 @@ func (pi *ParallelIndexer) Stop() error {
 
 		// Cancel context to stop all routines
 		pi.cancel()
-
-		// Stop adaptive optimizer
-		if pi.adaptiveOptimizer != nil {
-			pi.adaptiveOptimizer.Stop()
-		}
 
 		// Close channels safely if they haven't been closed yet
 		if atomic.CompareAndSwapInt32(&pi.channelsClosed, 0, 1) {
@@ -349,31 +233,9 @@ func (pi *ParallelIndexer) IndexDocuments(ctx context.Context, docs []*Document)
 	}
 }
 
-// StartBatch returns a new batch writer with adaptive batch size
+// StartBatch returns a new batch writer using the configured batch size
 func (pi *ParallelIndexer) StartBatch() BatchWriterInterface {
-	batchSize := pi.config.BatchSize
-	if pi.adaptiveOptimizer != nil {
-		batchSize = pi.adaptiveOptimizer.GetOptimalBatchSize()
-	}
-	return NewBatchWriter(pi, batchSize)
-}
-
-// GetOptimizationStats returns current optimization statistics
-func (pi *ParallelIndexer) GetOptimizationStats() AdaptiveOptimizationStats {
-	if pi.adaptiveOptimizer != nil {
-		return pi.adaptiveOptimizer.GetOptimizationStats()
-	}
-	return AdaptiveOptimizationStats{}
-}
-
-// EnableOptimizations enables or disables adaptive optimizations
-func (pi *ParallelIndexer) EnableOptimizations(enabled bool) {
-	pi.optimizationEnabled = enabled
-	if !enabled && pi.adaptiveOptimizer != nil {
-		pi.adaptiveOptimizer.Stop()
-	} else if enabled && pi.adaptiveOptimizer != nil && atomic.LoadInt32(&pi.running) == 1 {
-		pi.adaptiveOptimizer.Start()
-	}
+	return NewBatchWriter(pi, pi.config.BatchSize)
 }
 
 // FlushAll flushes all pending operations
@@ -493,28 +355,6 @@ func (pi *ParallelIndexer) GetStats() *IndexStats {
 // IsRunning returns whether the indexer is currently running
 func (pi *ParallelIndexer) IsRunning() bool {
 	return atomic.LoadInt32(&pi.running) != 0
-}
-
-// IsBusy checks if the indexer has pending jobs or any active workers.
-func (pi *ParallelIndexer) IsBusy() bool {
-	if len(pi.jobQueue) > 0 {
-		return true
-	}
-
-	// This RLock protects the pi.workers slice from changing during iteration (e.g. scaling)
-	pi.statsMutex.RLock()
-	defer pi.statsMutex.RUnlock()
-
-	for _, worker := range pi.workers {
-		worker.statsMutex.RLock()
-		isBusy := worker.stats.Status == WorkerStatusBusy
-		worker.statsMutex.RUnlock()
-		if isBusy {
-			return true
-		}
-	}
-
-	return false
 }
 
 // GetShardInfo returns information about a specific shard

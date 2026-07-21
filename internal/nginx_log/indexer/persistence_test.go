@@ -12,15 +12,15 @@ func TestPersistenceManager_Creation(t *testing.T) {
 	if pm == nil {
 		t.Fatal("Expected non-nil persistence manager")
 	}
-	
+
 	if pm.maxBatchSize != 1000 {
 		t.Errorf("Expected default batch size 1000, got %d", pm.maxBatchSize)
 	}
-	
+
 	if pm.flushInterval != 30*time.Second {
 		t.Errorf("Expected default flush interval 30s, got %v", pm.flushInterval)
 	}
-	
+
 	// Test custom config
 	config := &IncrementalIndexConfig{
 		MaxBatchSize:  500,
@@ -28,12 +28,12 @@ func TestPersistenceManager_Creation(t *testing.T) {
 		CheckInterval: 2 * time.Minute,
 		MaxAge:        7 * 24 * time.Hour,
 	}
-	
+
 	pm2 := NewPersistenceManager(config)
 	if pm2.maxBatchSize != 500 {
 		t.Errorf("Expected custom batch size 500, got %d", pm2.maxBatchSize)
 	}
-	
+
 	if pm2.flushInterval != 15*time.Second {
 		t.Errorf("Expected custom flush interval 15s, got %v", pm2.flushInterval)
 	}
@@ -41,19 +41,19 @@ func TestPersistenceManager_Creation(t *testing.T) {
 
 func TestIncrementalIndexConfig_Default(t *testing.T) {
 	config := DefaultIncrementalConfig()
-	
+
 	if config.MaxBatchSize != 1000 {
 		t.Errorf("Expected default MaxBatchSize 1000, got %d", config.MaxBatchSize)
 	}
-	
+
 	if config.FlushInterval != 30*time.Second {
 		t.Errorf("Expected default FlushInterval 30s, got %v", config.FlushInterval)
 	}
-	
+
 	if config.CheckInterval != 5*time.Minute {
 		t.Errorf("Expected default CheckInterval 5m, got %v", config.CheckInterval)
 	}
-	
+
 	if config.MaxAge != 30*24*time.Hour {
 		t.Errorf("Expected default MaxAge 30 days, got %v", config.MaxAge)
 	}
@@ -77,36 +77,11 @@ func TestGetMainLogPathFromFile(t *testing.T) {
 		{"/var/log/nginx/custom.log.99", "/var/log/nginx/custom.log"},
 		{"/logs/app.5.log.lz4", "/logs/app.log"},
 	}
-	
+
 	for _, tc := range testCases {
 		result := getMainLogPathFromFile(tc.input)
 		if result != tc.expected {
 			t.Errorf("getMainLogPathFromFile(%s) = %s, expected %s", tc.input, result, tc.expected)
-		}
-	}
-}
-
-func TestIsDatePattern(t *testing.T) {
-	testCases := []struct {
-		input    string
-		expected bool
-	}{
-		{"20231201", true},     // YYYYMMDD
-		{"2023-12-01", true},   // YYYY-MM-DD
-		{"2023.12.01", true},   // YYYY.MM.DD
-		{"231201", true},       // YYMMDD
-		{"access", false},      // Not a date
-		{"123", false},         // Too short
-		{"12345678901", false}, // Too long
-		{"2023-13-01", true},   // Would match pattern (validation not checked)
-		{"log", false},         // Text
-		{"1", false},           // Single digit
-	}
-	
-	for _, tc := range testCases {
-		result := isDatePattern(tc.input)
-		if result != tc.expected {
-			t.Errorf("isDatePattern(%s) = %v, expected %v", tc.input, result, tc.expected)
 		}
 	}
 }
@@ -120,39 +95,39 @@ func TestLogFileInfo_Structure(t *testing.T) {
 		LastIndexed:  time.Now().Unix(),
 		LastPosition: 512,
 	}
-	
+
 	if info.Path != "/var/log/nginx/access.log" {
 		t.Errorf("Expected path to be set correctly")
 	}
-	
+
 	if info.LastSize != 1024 {
 		t.Errorf("Expected LastSize 1024, got %d", info.LastSize)
 	}
-	
+
 	if info.LastPosition != 512 {
 		t.Errorf("Expected LastPosition 512, got %d", info.LastPosition)
 	}
-	
+
 	// Checksum field removed from LogFileInfo
 }
 
 // Mock tests (without database dependency)
 func TestPersistenceManager_CacheOperations(t *testing.T) {
 	pm := NewPersistenceManager(nil)
-	
+
 	// Test initial cache state
 	if len(pm.enabledPaths) != 0 {
 		t.Errorf("Expected empty cache initially, got %d entries", len(pm.enabledPaths))
 	}
-	
+
 	// Simulate cache operations
 	pm.enabledPaths["/test/path1"] = true
 	pm.enabledPaths["/test/path2"] = false
-	
+
 	if len(pm.enabledPaths) != 2 {
 		t.Errorf("Expected 2 cache entries, got %d", len(pm.enabledPaths))
 	}
-	
+
 	// Test RefreshCache method preparation (would need database in real scenario)
 	pm.enabledPaths = make(map[string]bool)
 	if len(pm.enabledPaths) != 0 {
@@ -176,13 +151,13 @@ func TestPersistenceManager_ConfigValidation(t *testing.T) {
 			MaxAge:        90 * 24 * time.Hour,
 		},
 	}
-	
+
 	for i, config := range configs {
 		pm := NewPersistenceManager(config)
 		if pm.maxBatchSize != config.MaxBatchSize {
 			t.Errorf("Config %d: Expected MaxBatchSize %d, got %d", i, config.MaxBatchSize, pm.maxBatchSize)
 		}
-		
+
 		if pm.flushInterval != config.FlushInterval {
 			t.Errorf("Config %d: Expected FlushInterval %v, got %v", i, config.FlushInterval, pm.flushInterval)
 		}
@@ -221,7 +196,7 @@ func TestGetMainLogPathFromFile_EdgeCases(t *testing.T) {
 			"Number too high for rotation (should not match)",
 		},
 	}
-	
+
 	for _, tc := range edgeCases {
 		result := getMainLogPathFromFile(tc.input)
 		if result != tc.expected {
@@ -233,17 +208,17 @@ func TestGetMainLogPathFromFile_EdgeCases(t *testing.T) {
 
 func TestPersistenceManager_Close(t *testing.T) {
 	pm := NewPersistenceManager(nil)
-	
+
 	// Add some cache entries
 	pm.enabledPaths["/test/path1"] = true
 	pm.enabledPaths["/test/path2"] = false
-	
+
 	// Close should clean up
 	err := pm.Close()
 	if err != nil {
 		t.Errorf("Expected no error on close, got %v", err)
 	}
-	
+
 	// Cache should be cleared
 	if pm.enabledPaths != nil {
 		t.Errorf("Expected cache to be nil after close")
@@ -260,7 +235,7 @@ func BenchmarkGetMainLogPathFromFile(b *testing.B) {
 		"/var/log/nginx/access.2.log.gz",
 		"/var/log/nginx/error.log.20231201",
 	}
-	
+
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		path := testPaths[i%len(testPaths)]
@@ -268,31 +243,14 @@ func BenchmarkGetMainLogPathFromFile(b *testing.B) {
 	}
 }
 
-func BenchmarkIsDatePattern(b *testing.B) {
-	testStrings := []string{
-		"20231201",
-		"2023-12-01", 
-		"access",
-		"log",
-		"231201",
-		"notadate",
-	}
-	
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		s := testStrings[i%len(testStrings)]
-		_ = isDatePattern(s)
-	}
-}
-
 func BenchmarkPersistenceManager_CacheAccess(b *testing.B) {
 	pm := NewPersistenceManager(nil)
-	
+
 	// Populate cache
 	for i := 0; i < 1000; i++ {
 		pm.enabledPaths[fmt.Sprintf("/path/file%d.log", i)] = i%2 == 0
 	}
-	
+
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		path := fmt.Sprintf("/path/file%d.log", i%1000)

@@ -37,6 +37,7 @@ type CacheKeyData struct {
 	Query          string   `json:"query"`
 	Limit          int      `json:"limit"`
 	Offset         int      `json:"offset"`
+	SearchAfter    []string `json:"search_after"`
 	SortBy         string   `json:"sort_by"`
 	SortOrder      string   `json:"sort_order"`
 	StartTime      *int64   `json:"start_time"`
@@ -110,6 +111,7 @@ func (c *Cache) GenerateKey(req *SearchRequest) string {
 		Query:          req.Query,
 		Limit:          req.Limit,
 		Offset:         req.Offset,
+		SearchAfter:    req.SearchAfter,
 		SortBy:         req.SortBy,
 		SortOrder:      req.SortOrder,
 		StartTime:      req.StartTime,

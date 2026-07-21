@@ -65,6 +65,12 @@ type SearchRequest struct {
 	Limit  int `json:"limit"`
 	Offset int `json:"offset"`
 
+	// SearchAfter enables cursor-based pagination: pass the Sort values of the
+	// last hit from the previous page. Unlike Offset it stays O(page) per
+	// request instead of materializing offset+limit candidates. When set,
+	// Offset is ignored.
+	SearchAfter []string `json:"search_after,omitempty"`
+
 	// Sorting
 	SortBy    string `json:"sort_by,omitempty"`
 	SortOrder string `json:"sort_order,omitempty"` // "asc" or "desc"
@@ -112,6 +118,7 @@ type SearchHit struct {
 	Fields       map[string]interface{} `json:"fields"`
 	Highlighting map[string][]string    `json:"highlighting,omitempty"`
 	Index        string                 `json:"index,omitempty"` // Shard identifier
+	Sort         []string               `json:"sort,omitempty"`  // Sort values, usable as SearchAfter cursor
 }
 
 // ShardResult represents results from a single shard
