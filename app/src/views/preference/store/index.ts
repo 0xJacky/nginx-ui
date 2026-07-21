@@ -1,10 +1,11 @@
 import type { Settings } from '@/api/settings'
 import settings from '@/api/settings'
 import { use2FAModal } from '@/components/TwoFA'
+import { useGlobalApp } from '@/composables/useGlobalApp'
 import { useSettingsStore } from '@/pinia'
 
 const useSystemSettingsStore = defineStore('systemSettings', () => {
-  const { message } = App.useApp()
+  const { message } = useGlobalApp()
 
   const data = ref<Settings>({
     app: {
@@ -112,6 +113,8 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
     settings.get().then(r => {
       r.cert.recursive_nameservers ||= []
       data.value = r
+    }).catch(err => {
+      console.error('Failed to load settings:', err)
     })
   }
 
@@ -127,18 +130,30 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
 
     const otpModal = use2FAModal()
 
-    otpModal.open().then(() => {
-      settings.save(data.value!).then(r => {
-        const settingsStore = useSettingsStore()
-        const { server_name } = storeToRefs(settingsStore)
-        if (!settingsStore.is_remote)
-          server_name.value = r?.server?.name ?? ''
-        r.cert.recursive_nameservers ||= []
-        data.value = r
-        message.success($gettext('Save successfully'))
-        errors.value = {}
-      })
-    })
+    try {
+      await otpModal.open()
+    }
+    catch {
+      // User cancelled 2FA or the preflight check failed — abort save silently
+      return
+    }
+
+    try {
+      const r = await settings.save(data.value!)
+      const settingsStore = useSettingsStore()
+      const { server_name } = storeToRefs(settingsStore)
+      if (!settingsStore.is_remote)
+        server_name.value = r?.server?.name ?? ''
+      r.cert.recursive_nameservers ||= []
+      data.value = r
+      message.success($gettext('Save successfully'))
+      errors.value = {}
+    }
+    catch (err) {
+      // The HTTP interceptor already surfaces the error via handleApiError,
+      // so we only log here to avoid a duplicate toast.
+      console.error('Failed to save settings:', err)
+    }
   }
 
   return { data, errors, getSettings, save }
