@@ -17,4 +17,5 @@ var (
 	ErrSSLKeyNotFound      = e.New(40306, "SSL key file not found")
 	ErrSSLCertNotUnderConf = e.New(40307, "SSL certificate file must be under Nginx configuration directory: {0}")
 	ErrSSLKeyNotUnderConf  = e.New(40308, "SSL key file must be under Nginx configuration directory: {0}")
+	ErrSSLKeyPairInvalid   = e.New(40312, "SSL certificate and key do not form a valid pair: {0}")
 )
