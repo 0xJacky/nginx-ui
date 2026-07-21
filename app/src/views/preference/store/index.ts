@@ -108,10 +108,12 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
     },
   })
   const errors = ref<Record<string, Record<string, string>>>({})
+  const savedEnableHTTPS = ref(false)
 
   function getSettings() {
     settings.get().then(r => {
       r.cert.recursive_nameservers ||= []
+      savedEnableHTTPS.value = r.server.enable_https
       data.value = r
     }).catch(err => {
       console.error('Failed to load settings:', err)
@@ -127,6 +129,7 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
     data.value.cert.recursive_nameservers = (data.value.cert.recursive_nameservers ?? [])
       .map(nameserver => nameserver.trim())
       .filter(Boolean)
+    const hasHTTPSChanged = data.value.server.enable_https !== savedEnableHTTPS.value
 
     const otpModal = use2FAModal()
 
@@ -145,9 +148,19 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
       if (!settingsStore.is_remote)
         server_name.value = r?.server?.name ?? ''
       r.cert.recursive_nameservers ||= []
+      savedEnableHTTPS.value = r.server.enable_https
       data.value = r
-      message.success($gettext('Save successfully'))
       errors.value = {}
+
+      const expectedProtocol = r.server.enable_https ? 'https:' : 'http:'
+      if (hasHTTPSChanged && window.location.protocol !== expectedProtocol) {
+        const redirectURL = new URL(window.location.href)
+        redirectURL.protocol = expectedProtocol
+        window.location.replace(redirectURL)
+        return
+      }
+
+      message.success($gettext('Save successfully'))
     }
     catch (err) {
       // The HTTP interceptor already surfaces the error via handleApiError,
