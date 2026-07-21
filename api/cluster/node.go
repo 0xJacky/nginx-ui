@@ -56,7 +56,7 @@ func AddNode(c *gin.Context) {
 		"enabled": "omitempty,boolean",
 	}).ExecutedHook(func(c *cosy.Ctx[model.Node]) {
 		cache.InvalidateNodeCache()
-		go analytic.RestartRetrieveNodesStatus()
+		analytic.ReloadNodesStatus()
 	}).Create()
 }
 
@@ -68,7 +68,7 @@ func EditNode(c *gin.Context) {
 		"enabled": "omitempty,boolean",
 	}).ExecutedHook(func(c *cosy.Ctx[model.Node]) {
 		cache.InvalidateNodeCache()
-		go analytic.RestartRetrieveNodesStatus()
+		analytic.ReloadNodesStatus()
 	}).Modify()
 }
 
@@ -76,7 +76,7 @@ func DeleteNode(c *gin.Context) {
 	cosy.Core[model.Node](c).
 		ExecutedHook(func(c *cosy.Ctx[model.Node]) {
 			cache.InvalidateNodeCache()
-			go analytic.RestartRetrieveNodesStatus()
+			analytic.ReloadNodesStatus()
 		}).Destroy()
 }
 
@@ -91,7 +91,7 @@ func LoadNodeFromSettings(c *gin.Context) {
 	cluster.RegisterPredefinedNodes(ctx)
 
 	cache.InvalidateNodeCache()
-	go analytic.RestartRetrieveNodesStatus()
+	analytic.ReloadNodesStatus()
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",

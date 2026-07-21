@@ -15,44 +15,35 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 )
 
-// nodeCache contains both slice and map for efficient access
+// nodeCache avoids querying the enabled-node list for every worker retry.
 type nodeCache struct {
-	Nodes   []*model.Node          // For iteration
-	NodeMap map[uint64]*model.Node // For fast lookup by ID
-}
-
-// NodeRecordManager manages the node status retrieval process
-type NodeRecordManager struct {
-	ctx    context.Context
-	cancel context.CancelFunc
-	wg     sync.WaitGroup
-	mu     sync.Mutex
+	Nodes []*model.Node
 }
 
 type RetryConfig struct {
 	BaseInterval    time.Duration
 	MaxInterval     time.Duration
-	MaxRetries      int
 	BackoffMultiple float64
 }
 
 var defaultRetryConfig = RetryConfig{
 	BaseInterval:    5 * time.Second,
 	MaxInterval:     30 * time.Second,
-	MaxRetries:      10,
 	BackoffMultiple: 1.5,
 }
 
 type NodeRetryState struct {
 	FailureCount int
-	LastSuccess  time.Time
 	NextRetry    time.Time
 }
 
 var (
 	retryStates = make(map[uint64]*NodeRetryState)
 	retryMutex  sync.Mutex
+	nodeReload  = make(chan struct{}, 1)
 )
+
+const nodeOfflineTimeout = 2 * time.Minute
 
 // WebSocket keepalive timings for the connection to remote nodes.
 // pongWait bounds how long ReadJSON may block; pingPeriod must be < pongWait so
@@ -65,30 +56,17 @@ var (
 	nodeWSPingPeriod = (nodeWSPongWait * 9) / 10
 )
 
-func getRetryState(nodeID uint64) *NodeRetryState {
-	retryMutex.Lock()
-	defer retryMutex.Unlock()
-
-	if state, exists := retryStates[nodeID]; exists {
-		return state
-	}
-
-	state := &NodeRetryState{LastSuccess: time.Now(), NextRetry: time.Now()}
-	retryStates[nodeID] = state
-	return state
-}
-
-// updateNodeStatus directly updates node status without condition checks
-func updateNodeStatus(nodeID uint64, status bool, reason string) {
+func markNodeOfflineIfStale(nodeID uint64, timeout time.Duration) {
 	nodeMapMu.Lock()
 	defer nodeMapMu.Unlock()
 
-	now := time.Now()
-	if NodeMap[nodeID] == nil {
-		NodeMap[nodeID] = &Node{NodeStat: NodeStat{}}
+	node := NodeMap[nodeID]
+	if node == nil || !node.Status {
+		return
 	}
-	NodeMap[nodeID].Status = status
-	NodeMap[nodeID].ResponseAt = now
+	if node.ResponseAt.IsZero() || time.Since(node.ResponseAt) >= timeout {
+		node.Status = false
+	}
 }
 
 func calculateNextRetryInterval(failureCount int) time.Duration {
@@ -106,134 +84,72 @@ func calculateNextRetryInterval(failureCount int) time.Duration {
 }
 
 func shouldRetry(nodeID uint64) bool {
-	state := getRetryState(nodeID)
-	now := time.Now()
+	retryMutex.Lock()
+	defer retryMutex.Unlock()
 
-	if state.FailureCount >= defaultRetryConfig.MaxRetries {
-		if now.Sub(state.LastSuccess) < 30*time.Second {
-			state.FailureCount = 0
-			state.NextRetry = now
-			return true
-		}
-		if now.Before(state.NextRetry) {
-			return false
-		}
-		state.FailureCount = defaultRetryConfig.MaxRetries / 2
-		state.NextRetry = now
-		return true
+	state, exists := retryStates[nodeID]
+	if !exists {
+		state = &NodeRetryState{NextRetry: time.Now()}
+		retryStates[nodeID] = state
 	}
-
+	now := time.Now()
 	return !now.Before(state.NextRetry)
 }
 
-func markConnectionFailure(nodeID uint64, err error) {
-	state := getRetryState(nodeID)
+func markConnectionFailure(nodeID uint64) {
+	retryMutex.Lock()
+	state, exists := retryStates[nodeID]
+	if !exists {
+		state = &NodeRetryState{}
+		retryStates[nodeID] = state
+	}
 	state.FailureCount++
 	state.NextRetry = time.Now().Add(calculateNextRetryInterval(state.FailureCount))
-	updateNodeStatus(nodeID, false, "connection_failed")
+	retryMutex.Unlock()
+
+	markNodeOfflineIfStale(nodeID, nodeOfflineTimeout)
 }
 
 func markConnectionSuccess(nodeID uint64) {
-	state := getRetryState(nodeID)
+	retryMutex.Lock()
+	state, exists := retryStates[nodeID]
+	if !exists {
+		state = &NodeRetryState{}
+		retryStates[nodeID] = state
+	}
 	state.FailureCount = 0
-	state.LastSuccess = time.Now()
 	state.NextRetry = time.Now()
-	updateNodeStatus(nodeID, true, "connection_success")
+	retryMutex.Unlock()
 }
 
-func logCurrentNodeStatus(prefix string) {
-	nodeMapMu.Lock()
-	defer nodeMapMu.Unlock()
-	if NodeMap != nil {
-		logger.Debugf("%s: NodeMap contains %d nodes", prefix, len(NodeMap))
+// ReloadNodesStatus asks the single monitor loop started by the kernel to
+// rebuild its workers. It deliberately does not start another monitor: doing
+// so lets two connections race to publish status for the same node.
+func ReloadNodesStatus() {
+	select {
+	case nodeReload <- struct{}{}:
+	default:
 	}
 }
 
-func NewNodeRecordManager(parentCtx context.Context) *NodeRecordManager {
-	ctx, cancel := context.WithCancel(parentCtx)
-	return &NodeRecordManager{ctx: ctx, cancel: cancel}
-}
-
-func (m *NodeRecordManager) Start() {
-	m.mu.Lock()
-	defer m.mu.Unlock()
-	m.wg.Add(1)
-	go func() {
-		defer m.wg.Done()
-		RetrieveNodesStatus(m.ctx)
-	}()
-}
-
-func (m *NodeRecordManager) Stop() {
-	m.mu.Lock()
-	defer m.mu.Unlock()
-	m.cancel()
-	m.wg.Wait()
-}
-
-func (m *NodeRecordManager) Restart() {
-	m.Stop()
-	m.ctx, m.cancel = context.WithCancel(context.Background())
-	m.Start()
-}
-
-var (
-	defaultManager *NodeRecordManager
-	restartMu      sync.Mutex
-)
-
-func InitDefaultManager() {
-	if defaultManager != nil {
-		defaultManager.Stop()
-	}
-	defaultManager = NewNodeRecordManager(context.Background())
-	defaultManager.Start()
-}
-
-func RestartRetrieveNodesStatus() {
-	restartMu.Lock()
-	defer restartMu.Unlock()
-	if defaultManager == nil {
-		InitDefaultManager()
-	} else {
-		defaultManager.Restart()
-	}
-}
-
-func StartRetrieveNodesStatus(ctx context.Context) *NodeRecordManager {
-	manager := NewNodeRecordManager(ctx)
-	manager.Start()
-	return manager
-}
-
-func StartDefaultManager() {
-	restartMu.Lock()
-	defer restartMu.Unlock()
-	if defaultManager != nil {
-		defaultManager.Restart()
-	} else {
-		InitDefaultManager()
-	}
-}
-
-func cleanupDisabledNodes(enabledEnvIDs []uint64) {
+func cleanupDisabledNodes(enabledNodeIDs []uint64) {
 	enabledMap := make(map[uint64]bool)
-	for _, id := range enabledEnvIDs {
+	for _, id := range enabledNodeIDs {
 		enabledMap[id] = true
 	}
 
 	retryMutex.Lock()
-	for envID := range retryStates {
-		if !enabledMap[envID] {
-			delete(retryStates, envID)
+	for nodeID := range retryStates {
+		if !enabledMap[nodeID] {
+			delete(retryStates, nodeID)
 		}
 	}
 	retryMutex.Unlock()
 
 	nodeMapMu.Lock()
-	for envID := range NodeMap {
-		if !enabledMap[envID] {
-			delete(NodeMap, envID)
+	for nodeID := range NodeMap {
+		if !enabledMap[nodeID] {
+			delete(NodeMap, nodeID)
 		}
 	}
 	nodeMapMu.Unlock()
@@ -254,44 +170,12 @@ func getEnabledNodes() ([]*model.Node, error) {
 		return nil, err
 	}
 
-	// Create cache with both slice and map
-	nodeMap := make(map[uint64]*model.Node, len(nodes))
-	for _, node := range nodes {
-		nodeMap[node.ID] = node
-	}
-
 	nc := &nodeCache{
-		Nodes:   nodes,
-		NodeMap: nodeMap,
+		Nodes: nodes,
 	}
 
 	cache.SetCachedNodes(nc)
 	return nodes, nil
-}
-
-// isNodeEnabled checks if a node is enabled using cached map for O(1) lookup
-func isNodeEnabled(nodeID uint64) bool {
-	if cached, found := cache.GetCachedNodes(); found {
-		if nc, ok := cached.(*nodeCache); ok {
-			_, exists := nc.NodeMap[nodeID]
-			return exists
-		}
-	}
-
-	// Fallback: load cache and check again
-	_, err := getEnabledNodes()
-	if err != nil {
-		return false
-	}
-
-	if cached, found := cache.GetCachedNodes(); found {
-		if nc, ok := cached.(*nodeCache); ok {
-			_, exists := nc.NodeMap[nodeID]
-			return exists
-		}
-	}
-
-	return false
 }
 
 func RetrieveNodesStatus(ctx context.Context) {
@@ -304,111 +188,116 @@ func RetrieveNodesStatus(ctx context.Context) {
 	}
 	nodeMapMu.Unlock()
 
-	envCheckTicker := time.NewTicker(30 * time.Second)
-	defer envCheckTicker.Stop()
-	timeoutCheckTicker := time.NewTicker(10 * time.Second)
-	defer timeoutCheckTicker.Stop()
-
-	nodes, err := getEnabledNodes()
-	if err != nil {
-		logger.Error(err)
-		return
-	}
-
-	var enabledNodeIDs []uint64
-	for _, n := range nodes {
-		enabledNodeIDs = append(enabledNodeIDs, n.ID)
-	}
-
-	cleanupDisabledNodes(enabledNodeIDs)
-
-	var wg sync.WaitGroup
-	defer wg.Wait()
-
-	// Channel to signal when nodes list changes
-	nodeUpdateChan := make(chan []uint64, 1)
-
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		for {
+	for ctx.Err() == nil {
+		reload, err := runNodeStatusCycle(ctx)
+		if ctx.Err() != nil {
+			return
+		}
+		if err != nil {
+			logger.Error("Failed to start node status workers:", err)
 			select {
 			case <-ctx.Done():
 				return
-			case <-timeoutCheckTicker.C:
-				checkNodeTimeouts(2 * time.Minute)
-			case <-envCheckTicker.C:
-				currentNodes, err := getEnabledNodes()
-				if err != nil {
-					logger.Error("Failed to re-query nodes:", err)
-					continue
-				}
-				var currentEnabledIDs []uint64
-				for _, n := range currentNodes {
-					currentEnabledIDs = append(currentEnabledIDs, n.ID)
-				}
-				if !equalUint64Slices(enabledNodeIDs, currentEnabledIDs) {
-					cleanupDisabledNodes(currentEnabledIDs)
-					enabledNodeIDs = currentEnabledIDs
-					select {
-					case nodeUpdateChan <- currentEnabledIDs:
-					default:
-					}
-				}
+			case <-nodeReload:
+			case <-time.After(defaultRetryConfig.BaseInterval):
 			}
+			continue
 		}
-	}()
+		if !reload {
+			return
+		}
+	}
+}
 
+// runNodeStatusCycle owns exactly one worker per enabled node. A configuration
+// change cancels and joins the whole cycle before fresh workers are created, so
+// an old connection can never overwrite the status published by its replacement.
+func runNodeStatusCycle(ctx context.Context) (reload bool, err error) {
+	nodes, err := getEnabledNodes()
+	if err != nil {
+		return false, err
+	}
+
+	enabledNodeIDs := make([]uint64, 0, len(nodes))
+	nodeMapMu.Lock()
+	for _, node := range nodes {
+		enabledNodeIDs = append(enabledNodeIDs, node.ID)
+		if existing := NodeMap[node.ID]; existing == nil {
+			NodeMap[node.ID] = &Node{Node: node}
+		} else {
+			existing.Node = node
+		}
+	}
+	nodeMapMu.Unlock()
+	cleanupDisabledNodes(enabledNodeIDs)
+	retryMutex.Lock()
+	for _, nodeID := range enabledNodeIDs {
+		delete(retryStates, nodeID)
+	}
+	retryMutex.Unlock()
+
+	cycleCtx, cancel := context.WithCancel(ctx)
+	var wg sync.WaitGroup
 	for _, node := range nodes {
 		wg.Add(1)
 		go func(n *model.Node) {
 			defer wg.Done()
-			retryTicker := time.NewTicker(1 * time.Second)
-			defer retryTicker.Stop()
-
-			for {
-				select {
-				case <-ctx.Done():
-					return
-				case newEnabledIDs := <-nodeUpdateChan:
-					found := false
-					for _, id := range newEnabledIDs {
-						if id == n.ID {
-							found = true
-							break
-						}
-					}
-					if !found {
-						return
-					}
-				case <-retryTicker.C:
-					if !isNodeEnabled(n.ID) {
-						retryMutex.Lock()
-						delete(retryStates, n.ID)
-						retryMutex.Unlock()
-						return
-					}
-					if !shouldRetry(n.ID) {
-						continue
-					}
-					if err := nodeAnalyticRecord(n, ctx); err != nil {
-						// Context cancellation means the manager is shutting
-						// down — don't pollute retry state with phantom failures.
-						if ctx.Err() != nil {
-							return
-						}
-						if helper.IsUnexpectedWebsocketError(err) {
-							logger.Error(err)
-						}
-						markConnectionFailure(n.ID, err)
-					} else {
-						markConnectionSuccess(n.ID)
-					}
-				}
-			}
+			runNodeStatusWorker(cycleCtx, n)
 		}(node)
 	}
 
+	nodeCheckTicker := time.NewTicker(30 * time.Second)
+	timeoutCheckTicker := time.NewTicker(10 * time.Second)
+	defer func() {
+		nodeCheckTicker.Stop()
+		timeoutCheckTicker.Stop()
+		cancel()
+		wg.Wait()
+	}()
+	for {
+		select {
+		case <-ctx.Done():
+			return false, nil
+		case <-nodeReload:
+			return true, nil
+		case <-timeoutCheckTicker.C:
+			checkNodeTimeouts(nodeOfflineTimeout)
+		case <-nodeCheckTicker.C:
+			currentNodes, queryErr := getEnabledNodes()
+			if queryErr != nil {
+				logger.Error("Failed to re-query nodes:", queryErr)
+				continue
+			}
+			if !equalNodeConfigs(nodes, currentNodes) {
+				return true, nil
+			}
+		}
+	}
+}
+
+func runNodeStatusWorker(ctx context.Context, node *model.Node) {
+	retryTicker := time.NewTicker(time.Second)
+	defer retryTicker.Stop()
+
+	for {
+		select {
+		case <-ctx.Done():
+			return
+		case <-retryTicker.C:
+			if !shouldRetry(node.ID) {
+				continue
+			}
+			if err := nodeAnalyticRecord(node, ctx); err != nil {
+				if ctx.Err() != nil {
+					return
+				}
+				if helper.IsUnexpectedWebsocketError(err) {
+					logger.Error(err)
+				}
+				markConnectionFailure(node.ID)
+			}
+		}
+	}
 }
 
 func checkNodeTimeouts(timeout time.Duration) {
@@ -418,36 +307,27 @@ func checkNodeTimeouts(timeout time.Duration) {
 	for _, node := range NodeMap {
 		if node != nil && node.Status && now.Sub(node.ResponseAt) > timeout {
 			node.Status = false
-			node.ResponseAt = now
 		}
 	}
 }
 
-// equalUint64Slices compares two uint64 slices for equality
-func equalUint64Slices(a, b []uint64) bool {
+func equalNodeConfigs(a, b []*model.Node) bool {
 	if len(a) != len(b) {
 		return false
 	}
 
-	// Create maps for comparison
-	mapA := make(map[uint64]bool)
-	mapB := make(map[uint64]bool)
-
-	for _, v := range a {
-		mapA[v] = true
-	}
-	for _, v := range b {
-		mapB[v] = true
+	nodesByID := make(map[uint64]*model.Node, len(a))
+	for _, node := range a {
+		nodesByID[node.ID] = node
 	}
 
-	// Compare maps
-	for k := range mapA {
-		if !mapB[k] {
+	for _, node := range b {
+		previous, exists := nodesByID[node.ID]
+		if !exists {
 			return false
 		}
-	}
-	for k := range mapB {
-		if !mapA[k] {
+		if previous.Name != node.Name || previous.URL != node.URL ||
+			previous.Token != node.Token || previous.Enabled != node.Enabled {
 			return false
 		}
 	}
@@ -465,24 +345,27 @@ func nodeAnalyticRecord(nodeModel *model.Node, ctx context.Context) error {
 	pingPeriod := nodeWSPingPeriod
 	writeWait := nodeWSWriteWait
 
-	node, err := InitNode(nodeModel)
+	node, err := InitNode(scopeCtx, nodeModel)
 	if err != nil {
 		nodeMapMu.Lock()
 		if NodeMap[nodeModel.ID] == nil {
 			NodeMap[nodeModel.ID] = &Node{
-				Node:     nodeModel,
-				NodeStat: NodeStat{Status: false, ResponseAt: time.Now()},
+				Node: nodeModel,
 			}
 		} else {
-			NodeMap[nodeModel.ID].Status = false
-			NodeMap[nodeModel.ID].ResponseAt = time.Now()
+			NodeMap[nodeModel.ID].Node = nodeModel
 		}
 		nodeMapMu.Unlock()
 		return err
 	}
 
 	nodeMapMu.Lock()
-	NodeMap[nodeModel.ID] = node
+	if existing := NodeMap[nodeModel.ID]; existing == nil {
+		NodeMap[nodeModel.ID] = node
+	} else {
+		existing.Node = nodeModel
+		existing.NodeInfo = node.NodeInfo
+	}
 	nodeMapMu.Unlock()
 
 	u, err := nodeModel.GetWebSocketURL("/api/analytic/intro")
@@ -498,15 +381,13 @@ func nodeAnalyticRecord(nodeModel *model.Node, ctx context.Context) error {
 		HandshakeTimeout: 5 * time.Second,
 	}
 
-	c, _, err := dial.Dial(u, header)
+	c, _, err := dial.DialContext(scopeCtx, u, header)
 	if err != nil {
-		updateNodeStatus(nodeModel.ID, false, "websocket_dial_failed")
 		return err
 	}
 
 	defer func() {
-		c.Close()
-		updateNodeStatus(nodeModel.ID, false, "websocket_connection_closed")
+		_ = c.Close()
 	}()
 
 	// Arm read deadline and refresh it on every pong. Without this, a silently
@@ -558,15 +439,6 @@ func nodeAnalyticRecord(nodeModel *model.Node, ctx context.Context) error {
 		var rawMsg json.RawMessage
 		err = c.ReadJSON(&rawMsg)
 		if err != nil {
-			// Surface every read failure (close frame, read deadline expiry, TCP
-			// reset) as a retryable error. Returning nil here used to trigger
-			// markConnectionSuccess on the caller, hiding dead connections and
-			// flipping node status back to online on the next snapshot.
-			if helper.IsUnexpectedWebsocketError(err) {
-				updateNodeStatus(nodeModel.ID, false, "websocket_error")
-			} else {
-				updateNodeStatus(nodeModel.ID, false, "websocket_connection_closed")
-			}
 			return err
 		}
 
@@ -591,5 +463,6 @@ func nodeAnalyticRecord(nodeModel *model.Node, ctx context.Context) error {
 			NodeMap[nodeModel.ID].ResponseAt = time.Now()
 		}
 		nodeMapMu.Unlock()
+		markConnectionSuccess(nodeModel.ID)
 	}
 }

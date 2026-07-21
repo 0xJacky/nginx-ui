@@ -1,6 +1,7 @@
 package analytic
 
 import (
+	"context"
 	"encoding/json"
 	"io"
 	"net/http"
@@ -123,7 +124,7 @@ func GetNode(node *model.Node) (n *Node) {
 	return cloned
 }
 
-func InitNode(node *model.Node) (n *Node, err error) {
+func InitNode(ctx context.Context, node *model.Node) (n *Node, err error) {
 	n = &Node{
 		Node: node,
 	}
@@ -139,9 +140,10 @@ func InitNode(node *model.Node) (n *Node, err error) {
 	}
 	client := http.Client{
 		Transport: t,
+		Timeout:   10 * time.Second,
 	}
 
-	req, err := http.NewRequest("GET", u, nil)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, u, nil)
 	if err != nil {
 		return
 	}

@@ -100,3 +100,116 @@ func TestNodeAnalyticRecordHalfDeadConnection(t *testing.T) {
 		t.Fatalf("nodeAnalyticRecord did not return within 2s — read deadline / ping-pong not enforced")
 	}
 }
+
+func TestConnectionFailureKeepsFreshNodeOnline(t *testing.T) {
+	nodeID := uint64(43)
+	lastResponse := time.Now().Add(-time.Second)
+
+	nodeMapMu.Lock()
+	NodeMap[nodeID] = &Node{NodeStat: NodeStat{
+		Status:     true,
+		ResponseAt: lastResponse,
+	}}
+	nodeMapMu.Unlock()
+	retryMutex.Lock()
+	delete(retryStates, nodeID)
+	retryMutex.Unlock()
+	t.Cleanup(func() {
+		nodeMapMu.Lock()
+		delete(NodeMap, nodeID)
+		nodeMapMu.Unlock()
+		retryMutex.Lock()
+		delete(retryStates, nodeID)
+		retryMutex.Unlock()
+	})
+
+	markConnectionFailure(nodeID)
+
+	nodeMapMu.RLock()
+	node := cloneNode(NodeMap[nodeID])
+	nodeMapMu.RUnlock()
+	if !node.Status {
+		t.Fatal("expected a transient connection failure to preserve fresh online status")
+	}
+	if !node.ResponseAt.Equal(lastResponse) {
+		t.Fatalf("expected last successful response time to be preserved, got %v", node.ResponseAt)
+	}
+}
+
+func TestConnectionFailureMarksStaleNodeOffline(t *testing.T) {
+	nodeID := uint64(44)
+	lastResponse := time.Now().Add(-nodeOfflineTimeout - time.Second)
+
+	nodeMapMu.Lock()
+	NodeMap[nodeID] = &Node{NodeStat: NodeStat{
+		Status:     true,
+		ResponseAt: lastResponse,
+	}}
+	nodeMapMu.Unlock()
+	t.Cleanup(func() {
+		nodeMapMu.Lock()
+		delete(NodeMap, nodeID)
+		nodeMapMu.Unlock()
+		retryMutex.Lock()
+		delete(retryStates, nodeID)
+		retryMutex.Unlock()
+	})
+
+	markConnectionFailure(nodeID)
+
+	nodeMapMu.RLock()
+	node := cloneNode(NodeMap[nodeID])
+	nodeMapMu.RUnlock()
+	if node.Status {
+		t.Fatal("expected a stale node to be marked offline")
+	}
+	if !node.ResponseAt.Equal(lastResponse) {
+		t.Fatalf("expected offline transition to preserve last successful response time, got %v", node.ResponseAt)
+	}
+}
+
+func TestSuccessfulSampleResetsRetryBackoff(t *testing.T) {
+	nodeID := uint64(45)
+	retryMutex.Lock()
+	retryStates[nodeID] = &NodeRetryState{
+		FailureCount: 7,
+		NextRetry:    time.Now().Add(time.Minute),
+	}
+	retryMutex.Unlock()
+	t.Cleanup(func() {
+		retryMutex.Lock()
+		delete(retryStates, nodeID)
+		retryMutex.Unlock()
+	})
+
+	markConnectionSuccess(nodeID)
+
+	retryMutex.Lock()
+	state := *retryStates[nodeID]
+	retryMutex.Unlock()
+	if state.FailureCount != 0 {
+		t.Fatalf("expected failure count to reset, got %d", state.FailureCount)
+	}
+	if state.NextRetry.After(time.Now()) {
+		t.Fatalf("expected retry to be immediately available, got %v", state.NextRetry)
+	}
+}
+
+func TestEqualNodeConfigsDetectsConnectionChanges(t *testing.T) {
+	base := []*model.Node{
+		{Model: model.Model{ID: 1}, Name: "node-a", URL: "https://node-a.example", Token: "token-a", Enabled: true},
+		{Model: model.Model{ID: 2}, Name: "node-b", URL: "https://node-b.example", Token: "token-b", Enabled: true},
+	}
+	reordered := []*model.Node{base[1], base[0]}
+	if !equalNodeConfigs(base, reordered) {
+		t.Fatal("expected node ordering not to trigger a monitor reload")
+	}
+
+	changedToken := []*model.Node{
+		base[0],
+		{Model: model.Model{ID: 2}, Name: "node-b", URL: "https://node-b.example", Token: "rotated-token", Enabled: true},
+	}
+	if equalNodeConfigs(base, changedToken) {
+		t.Fatal("expected a token change to trigger a monitor reload")
+	}
+}

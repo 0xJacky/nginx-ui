@@ -68,12 +68,7 @@ export const useNodeAvailabilityStore = defineStore('nodeAvailability', () => {
       try {
         const nodesData = JSON.parse(event.data) as Record<string, Partial<AnalyticNode>>
 
-        Object.keys(nodesData).forEach((nodeIdStr: string) => {
-          const nodeId = Number.parseInt(nodeIdStr)
-          const nodeData = nodesData[nodeIdStr]
-
-          nodes.value[nodeId] = nodeData
-        })
+        nodes.value = nodesData
 
         writeCachedNodes(nodes.value)
 
