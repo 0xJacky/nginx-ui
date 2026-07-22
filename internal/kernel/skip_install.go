@@ -60,22 +60,40 @@ func registerPredefinedUser(ctx context.Context) {
 		logger.Fatal(err)
 	}
 
-	u := query.User
-
-	_, err = u.First()
-
-	// Only effect when there is no user in the database
-	if !errors.Is(err, gorm.ErrRecordNotFound) || pUser.Name == "" || pUser.Password == "" {
+	// No predefined credentials configured, nothing to do
+	if pUser.Name == "" || pUser.Password == "" {
 		return
 	}
 
-	// Create a new user with the predefined name and password
+	u := query.User
+
+	user, err := u.First()
+
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+		logger.Error(err)
+		return
+	}
+
 	pwd, _ := bcrypt.GenerateFromPassword([]byte(pUser.Password), bcrypt.DefaultCost)
 
-	_, err = u.Where(u.ID.Eq(1)).Updates(&model.User{
-		Name:     pUser.Name,
-		Password: string(pwd),
-	})
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		// Create the initial user when the database is empty
+		err = u.Create(&model.User{
+			Model: model.Model{
+				ID: 1,
+			},
+			Name:     pUser.Name,
+			Password: string(pwd),
+		})
+	} else if user.Password == "" {
+		// The initial user already exists but has no password, apply the
+		// predefined credentials. This happens when InitUser created the empty
+		// admin user before registerPredefinedUser runs.
+		_, err = u.Where(u.ID.Eq(1)).Updates(&model.User{
+			Name:     pUser.Name,
+			Password: string(pwd),
+		})
+	}
 
 	if err != nil {
 		logger.Error(err)
