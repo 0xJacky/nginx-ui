@@ -39,6 +39,17 @@ func CheckWebSocket(c *gin.Context) {
 		logger.Error(err)
 		return
 	}
+
+	// Wait for the client to close after receiving the probe.
+	// Closing immediately after writing creates a race: the connection may be
+	// torn down before the browser has processed the open/message events.
+	ws.SetReadDeadline(time.Now().Add(5 * time.Second))
+	for {
+		_, _, err := ws.ReadMessage()
+		if err != nil {
+			break
+		}
+	}
 }
 
 func TimeoutCheck(c *gin.Context) {
