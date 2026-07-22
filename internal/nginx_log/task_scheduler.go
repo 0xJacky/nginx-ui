@@ -305,6 +305,13 @@ func (ts *TaskScheduler) needsRecovery(log *NginxLogWithIndex) bool {
 				return true
 			}
 		}
+
+	case string(indexer.IndexStatusNotIndexed):
+		// Newly enabled advanced indexing or a log path that has never been indexed.
+		// Schedule an initial indexing task so users do not have to wait for the
+		// incremental cron job to discover it.
+		logger.Debugf("Found unindexed log for initial indexing: %s", log.Path)
+		return true
 	}
 
 	return false
