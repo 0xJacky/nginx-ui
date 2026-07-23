@@ -40,10 +40,14 @@ const WebsocketTask: FrontendTask = {
         false,
         {
           autoClose: false,
-          onConnected: () => finish(ReportStatus.Success),
+          onConnected: () => {
+            // Handshake succeeded, but wait for the actual probe message to
+            // confirm the full WebSocket path (including proxy message relay).
+          },
+          onMessage: () => finish(ReportStatus.Success),
           onError: () => finish(ReportStatus.Error),
-          // Fast loopback can deliver close before open; a clean close means
-          // the handshake succeeded.
+          // Fast loopback can deliver close before open/message; a clean close
+          // means the handshake at least succeeded.
           onDisconnected: (_ws, ev) => finish(ev.wasClean ? ReportStatus.Success : ReportStatus.Error),
         },
         selfCheck.getWebsocketQuery(options),
