@@ -17,6 +17,7 @@ func InitRouter(r *gin.RouterGroup) {
 		group.GET("/domains/:id", GetDomain)
 
 		group.GET("/domains/:id/records", ListRecords)
+		group.GET("/domains/:id/record-lines", ListRecordLines)
 
 		group.GET("/domains/:id/ddns", GetDDNSConfig)
 

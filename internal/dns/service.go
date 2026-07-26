@@ -172,6 +172,24 @@ func (s *Service) ListRecords(ctx context.Context, domainID uint64, opts RecordL
 	return provider.ListRecords(ctxWithTimeout, domain.Domain, opts.Filter)
 }
 
+// ListRecordLines lists provider-supported DNS resolution lines for the given domain.
+func (s *Service) ListRecordLines(ctx context.Context, domainID uint64) ([]RecordLine, error) {
+	domain, provider, err := s.prepareProvider(ctx, domainID)
+	if err != nil {
+		return nil, err
+	}
+
+	lineProvider, ok := provider.(RecordLineProvider)
+	if !ok {
+		return []RecordLine{}, nil
+	}
+
+	ctxWithTimeout, cancel := context.WithTimeout(ctx, providerTimeout)
+	defer cancel()
+
+	return lineProvider.ListRecordLines(ctxWithTimeout, domain.Domain)
+}
+
 // CreateRecord creates a DNS record under the domain.
 func (s *Service) CreateRecord(ctx context.Context, domainID uint64, input RecordInput) (Record, error) {
 	domain, provider, err := s.prepareProvider(ctx, domainID)
@@ -338,6 +356,14 @@ func sanitizeRecordInput(input RecordInput) RecordInput {
 	input.Name = strings.TrimSpace(input.Name)
 	input.Content = strings.TrimSpace(input.Content)
 	input.Type = strings.ToUpper(strings.TrimSpace(input.Type))
+	if input.Line != nil {
+		line := strings.TrimSpace(*input.Line)
+		if line == "" {
+			input.Line = nil
+		} else {
+			input.Line = &line
+		}
+	}
 	if input.TTL <= 0 {
 		input.TTL = 600
 	}

@@ -20,10 +20,18 @@ export interface DNSRecord {
   name: string
   content: string
   ttl: number
+  line?: string
   priority?: number
   weight?: number
   proxied?: boolean
   comment?: string
+}
+
+export interface DNSRecordLine {
+  code: string
+  name?: string
+  display_name?: string
+  father_code?: string
 }
 
 export interface DDNSRecordTarget {
@@ -86,6 +94,7 @@ export interface RecordPayload {
   name: string
   content: string
   ttl: number
+  line?: string
   priority?: number
   weight?: number
   proxied?: boolean
@@ -100,6 +109,9 @@ export const dnsApi = {
   ...domainApi,
   listRecords(domainId: number, params?: RecordListParams) {
     return http.get<{ data: DNSRecord[], pagination: Pagination }>(`${baseDomainUrl}/${domainId}/records`, { params })
+  },
+  listRecordLines(domainId: number) {
+    return http.get<{ data: DNSRecordLine[] }>(`${baseDomainUrl}/${domainId}/record-lines`)
   },
   createRecord(domainId: number, payload: RecordPayload) {
     return http.post<DNSRecord>(`${baseDomainUrl}/${domainId}/records`, payload)

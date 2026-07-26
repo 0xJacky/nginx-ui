@@ -8,7 +8,6 @@ import (
 
 	aliclient "github.com/alibabacloud-go/alidns-20150109/v5/client"
 	openapi "github.com/alibabacloud-go/darabonba-openapi/v2/client"
-	utilruntime "github.com/alibabacloud-go/tea-utils/v2/service"
 	"github.com/alibabacloud-go/tea/dara"
 
 	"github.com/0xJacky/Nginx-UI/internal/dns"
@@ -20,7 +19,16 @@ const (
 )
 
 type provider struct {
-	client *aliclient.Client
+	client aliDNSClient
+}
+
+type aliDNSClient interface {
+	DescribeDomainRecordsWithOptions(*aliclient.DescribeDomainRecordsRequest, *dara.RuntimeOptions) (*aliclient.DescribeDomainRecordsResponse, error)
+	AddDomainRecordWithOptions(*aliclient.AddDomainRecordRequest, *dara.RuntimeOptions) (*aliclient.AddDomainRecordResponse, error)
+	UpdateDomainRecordWithOptions(*aliclient.UpdateDomainRecordRequest, *dara.RuntimeOptions) (*aliclient.UpdateDomainRecordResponse, error)
+	DeleteDomainRecordWithOptions(*aliclient.DeleteDomainRecordRequest, *dara.RuntimeOptions) (*aliclient.DeleteDomainRecordResponse, error)
+	DescribeDomainRecordInfoWithOptions(*aliclient.DescribeDomainRecordInfoRequest, *dara.RuntimeOptions) (*aliclient.DescribeDomainRecordInfoResponse, error)
+	DescribeSupportLinesWithOptions(*aliclient.DescribeSupportLinesRequest, *dara.RuntimeOptions) (*aliclient.DescribeSupportLinesResponse, error)
 }
 
 func init() {
@@ -106,6 +114,7 @@ func (p *provider) ListRecords(ctx context.Context, domain string, filter dns.Re
 			Name:    rrToName(stringValue(item.RR)),
 			Content: stringValue(item.Value),
 			TTL:     int(int64Value(item.TTL)),
+			Line:    stringValue(item.Line),
 			Weight:  intPointerFrom32(item.Weight),
 		}
 		if item.Priority != nil {
@@ -118,6 +127,43 @@ func (p *provider) ListRecords(ctx context.Context, domain string, filter dns.Re
 	return result, nil
 }
 
+func (p *provider) ListRecordLines(ctx context.Context, domain string) ([]dns.RecordLine, error) {
+	request := &aliclient.DescribeSupportLinesRequest{
+		DomainName: dara.String(domain),
+	}
+
+	response, err := p.client.DescribeSupportLinesWithOptions(request, runtimeOptions(ctx))
+	if err != nil {
+		return nil, fmt.Errorf("alidns: list record lines: %w", err)
+	}
+
+	if response.Body == nil || response.Body.RecordLines == nil {
+		return []dns.RecordLine{}, nil
+	}
+
+	items := response.Body.RecordLines.RecordLine
+	result := make([]dns.RecordLine, 0, len(items))
+	for _, item := range items {
+		if item == nil {
+			continue
+		}
+
+		code := strings.TrimSpace(stringValue(item.LineCode))
+		if code == "" {
+			continue
+		}
+
+		result = append(result, dns.RecordLine{
+			Code:        code,
+			Name:        stringValue(item.LineName),
+			DisplayName: stringValue(item.LineDisplayName),
+			FatherCode:  stringValue(item.FatherCode),
+		})
+	}
+
+	return result, nil
+}
+
 func (p *provider) CreateRecord(ctx context.Context, domain string, input dns.RecordInput) (dns.Record, error) {
 	request := &aliclient.AddDomainRecordRequest{
 		DomainName: dara.String(domain),
@@ -125,7 +171,7 @@ func (p *provider) CreateRecord(ctx context.Context, domain string, input dns.Re
 		RR:         dara.String(rrFromName(input.Name)),
 		Value:      dara.String(strings.TrimSpace(input.Content)),
 		TTL:        dara.Int64(int64(input.TTL)),
-		Line:       dara.String(defaultLineName),
+		Line:       dara.String(recordLine(input.Line, defaultLineName)),
 	}
 
 	if input.Priority != nil {
@@ -154,13 +200,18 @@ func (p *provider) CreateRecord(ctx context.Context, domain string, input dns.Re
 }
 
 func (p *provider) UpdateRecord(ctx context.Context, _ string, recordID string, input dns.RecordInput) (dns.Record, error) {
+	line, err := p.updateRecordLine(ctx, recordID, input.Line)
+	if err != nil {
+		return dns.Record{}, err
+	}
+
 	request := &aliclient.UpdateDomainRecordRequest{
 		RecordId: dara.String(recordID),
 		Type:     dara.String(strings.ToUpper(strings.TrimSpace(input.Type))),
 		RR:       dara.String(rrFromName(input.Name)),
 		Value:    dara.String(strings.TrimSpace(input.Content)),
 		TTL:      dara.Int64(int64(input.TTL)),
-		Line:     dara.String(defaultLineName),
+		Line:     dara.String(line),
 	}
 
 	if input.Priority != nil {
@@ -212,6 +263,7 @@ func (p *provider) describeRecord(ctx context.Context, recordID string) (dns.Rec
 		Name:    rrToName(stringValue(resp.Body.RR)),
 		Content: stringValue(resp.Body.Value),
 		TTL:     int(int64Value(resp.Body.TTL)),
+		Line:    stringValue(resp.Body.Line),
 	}
 
 	if resp.Body.Priority != nil {
@@ -222,9 +274,30 @@ func (p *provider) describeRecord(ctx context.Context, recordID string) (dns.Rec
 	return record, nil
 }
 
-func runtimeOptions(ctx context.Context) *utilruntime.RuntimeOptions {
+func (p *provider) updateRecordLine(ctx context.Context, recordID string, requested *string) (string, error) {
+	if line := recordLine(requested, ""); line != "" {
+		return line, nil
+	}
+
+	record, err := p.describeRecord(ctx, recordID)
+	if err != nil {
+		return "", fmt.Errorf("alidns: preserve record line: %w", err)
+	}
+
+	return firstNonEmpty(strings.TrimSpace(record.Line), defaultLineName), nil
+}
+
+func recordLine(line *string, fallback string) string {
+	if line == nil {
+		return fallback
+	}
+
+	return firstNonEmpty(strings.TrimSpace(*line), fallback)
+}
+
+func runtimeOptions(_ context.Context) *dara.RuntimeOptions {
 	timeout := defaultTimeout()
-	opts := &utilruntime.RuntimeOptions{}
+	opts := &dara.RuntimeOptions{}
 	opts.SetConnectTimeout(int(timeout.Milliseconds()))
 	opts.SetReadTimeout(int(timeout.Milliseconds()))
 	opts.SetAutoretry(true)

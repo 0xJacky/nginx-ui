@@ -15,10 +15,19 @@ type Record struct {
 	Name     string `json:"name"`
 	Content  string `json:"content"`
 	TTL      int    `json:"ttl"`
+	Line     string `json:"line,omitempty"`
 	Priority *int   `json:"priority,omitempty"`
 	Weight   *int   `json:"weight,omitempty"`
 	Proxied  *bool  `json:"proxied,omitempty"`
 	Comment  string `json:"comment,omitempty"`
+}
+
+// RecordLine describes a provider-specific DNS resolution line.
+type RecordLine struct {
+	Code        string `json:"code"`
+	Name        string `json:"name,omitempty"`
+	DisplayName string `json:"display_name,omitempty"`
+	FatherCode  string `json:"father_code,omitempty"`
 }
 
 // RecordFilter allows narrowing down provider queries.
@@ -29,14 +38,15 @@ type RecordFilter struct {
 
 // RecordInput represents the payload required to create or update a DNS record.
 type RecordInput struct {
-	Type     string `json:"type"`
-	Name     string `json:"name"`
-	Content  string `json:"content"`
-	TTL      int    `json:"ttl"`
-	Priority *int   `json:"priority,omitempty"`
-	Weight   *int   `json:"weight,omitempty"`
-	Proxied  *bool  `json:"proxied,omitempty"`
-	Comment  string `json:"comment,omitempty"`
+	Type     string  `json:"type"`
+	Name     string  `json:"name"`
+	Content  string  `json:"content"`
+	TTL      int     `json:"ttl"`
+	Line     *string `json:"line,omitempty"`
+	Priority *int    `json:"priority,omitempty"`
+	Weight   *int    `json:"weight,omitempty"`
+	Proxied  *bool   `json:"proxied,omitempty"`
+	Comment  string  `json:"comment,omitempty"`
 }
 
 // Credential holds the secrets and metadata bound to a DNS provider.
@@ -55,6 +65,11 @@ type Provider interface {
 	CreateRecord(ctx context.Context, domain string, input RecordInput) (Record, error)
 	UpdateRecord(ctx context.Context, domain string, recordID string, input RecordInput) (Record, error)
 	DeleteRecord(ctx context.Context, domain string, recordID string) error
+}
+
+// RecordLineProvider is implemented by providers that expose selectable DNS resolution lines.
+type RecordLineProvider interface {
+	ListRecordLines(ctx context.Context, domain string) ([]RecordLine, error)
 }
 
 // Factory constructs a provider using the given credential.
@@ -89,4 +104,3 @@ func NewProvider(code string, credential *Credential) (Provider, error) {
 
 	return factory(credential)
 }
-

@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import type { RecordPayload } from '@/api/dns'
+import type { DNSRecordLine, RecordPayload } from '@/api/dns'
 import { computed } from 'vue'
 
 const props = defineProps<{
   showProxied?: boolean
   showComment?: boolean
+  showLine?: boolean
+  lineOptions?: DNSRecordLine[]
+  isLineLoading?: boolean
   valueSuggestions?: string[]
 }>()
 
@@ -28,6 +31,26 @@ const recordTypes = [
   'SRV',
   'CAA',
 ]
+
+const resolutionLineOptions = computed(() => {
+  const lines = [...(props.lineOptions ?? [])]
+  const currentLine = formModel.value.line?.trim()
+
+  if (!lines.some(line => line.code === 'default')) {
+    lines.unshift({ code: 'default', display_name: $gettext('Default') })
+  }
+  if (currentLine && !lines.some(line => line.code === currentLine)) {
+    lines.push({ code: currentLine, display_name: currentLine })
+  }
+
+  return lines.map(line => {
+    const name = line.display_name || line.name || line.code
+    return {
+      label: name === line.code ? name : `${name} (${line.code})`,
+      value: line.code,
+    }
+  })
+})
 
 const showPriority = computed(() => {
   const type = formModel.value.type.toUpperCase()
@@ -78,6 +101,15 @@ function handleValueKeydown(event: KeyboardEvent) {
     </AFormItem>
     <AFormItem :label="$gettext('TTL (seconds)')" :rules="[{ required: true, type: 'number', min: 1 }]">
       <AInputNumber v-model:value="formModel.ttl" :min="1" :step="60" style="width: 100%;" />
+    </AFormItem>
+    <AFormItem v-if="props.showLine" :label="$gettext('Resolution Line')" :rules="[{ required: true }]">
+      <ASelect
+        v-model:value="formModel.line"
+        :options="resolutionLineOptions"
+        :loading="props.isLineLoading"
+        show-search
+        option-filter-prop="label"
+      />
     </AFormItem>
     <AFormItem v-if="showPriority" :label="$gettext('Priority')" :rules="[{ required: true, type: 'number', min: 0 }]">
       <AInputNumber v-model:value="formModel.priority" :min="0" style="width: 100%;" />

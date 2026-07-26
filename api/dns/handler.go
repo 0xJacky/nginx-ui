@@ -94,6 +94,18 @@ func ListRecords(c *gin.Context) {
 	})
 }
 
+func ListRecordLines(c *gin.Context) {
+	domainID := cast.ToUint64(c.Param("id"))
+	svc := dnsService.NewService()
+	lines, err := svc.ListRecordLines(c.Request.Context(), domainID)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": lines})
+}
+
 func CreateRecord(c *gin.Context) {
 	domainID := cast.ToUint64(c.Param("id"))
 	var payload recordRequest

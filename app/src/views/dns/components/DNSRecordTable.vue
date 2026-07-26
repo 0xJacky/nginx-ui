@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { DNSRecord } from '@/api/dns'
+import type { DNSRecord, DNSRecordLine } from '@/api/dns'
 import { computed } from 'vue'
 
 const props = defineProps<{
@@ -7,6 +7,8 @@ const props = defineProps<{
   loading?: boolean
   showProxied?: boolean
   showComment?: boolean
+  showLine?: boolean
+  lineOptions?: DNSRecordLine[]
 }>()
 
 const emit = defineEmits<{
@@ -52,8 +54,21 @@ const commentColumn = {
   ellipsis: true,
 }
 
+const lineColumn = {
+  title: $gettext('Resolution Line'),
+  dataIndex: 'line',
+  width: 180,
+}
+
+const lineLabelByCode = computed(() => new Map(
+  (props.lineOptions ?? []).map(line => [line.code, line.display_name || line.name || line.code]),
+))
+
 const columns = computed(() => {
   const list = baseColumns.slice()
+  if (props.showLine) {
+    list.splice(3, 0, lineColumn)
+  }
   // Insert comment column before actions column if showComment is enabled
   if (props.showComment) {
     list.splice(list.length - 1, 0, commentColumn)
@@ -71,6 +86,12 @@ const columns = computed(() => {
 
 function handleEdit(record: DNSRecord) {
   emit('edit', record)
+}
+
+function formatLine(line?: string) {
+  if (!line)
+    return '-'
+  return lineLabelByCode.value.get(line) || line
 }
 
 function handleDelete(record: DNSRecord) {
@@ -93,6 +114,9 @@ function handleDelete(record: DNSRecord) {
         <ATag :color="(record as DNSRecord).proxied ? 'green' : 'default'">
           {{ (record as DNSRecord).proxied ? $gettext('Proxied') : $gettext('DNS Only') }}
         </ATag>
+      </template>
+      <template v-else-if="column.dataIndex === 'line'">
+        <ATag>{{ formatLine((record as DNSRecord).line) }}</ATag>
       </template>
       <template v-else-if="column.dataIndex === 'content'">
         <span class="record-value">{{ (record as DNSRecord).content }}</span>

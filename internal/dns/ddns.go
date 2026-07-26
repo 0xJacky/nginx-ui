@@ -489,6 +489,7 @@ func (s *Service) runDDNSUpdate(ctx context.Context, domainID uint64) error {
 			Name:     record.Name,
 			Content:  nextIP,
 			TTL:      record.TTL,
+			Line:     optionalString(record.Line),
 			Priority: record.Priority,
 			Weight:   record.Weight,
 			Proxied:  record.Proxied,
@@ -825,6 +826,14 @@ func fetchProviderRecords(ctx context.Context, provider Provider, domain string)
 	ctxWithTimeout, cancel := context.WithTimeout(ctx, providerTimeout)
 	defer cancel()
 	return provider.ListRecords(ctxWithTimeout, domain, RecordFilter{})
+}
+
+func optionalString(value string) *string {
+	value = strings.TrimSpace(value)
+	if value == "" {
+		return nil
+	}
+	return &value
 }
 
 func indexRecordsByID(records []Record) map[string]Record {

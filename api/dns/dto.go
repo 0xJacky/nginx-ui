@@ -28,14 +28,15 @@ type recordListQuery struct {
 }
 
 type recordRequest struct {
-	Type     string `json:"type" binding:"required"`
-	Name     string `json:"name" binding:"required"`
-	Content  string `json:"content" binding:"required"`
-	TTL      int    `json:"ttl" binding:"required,min=1"`
-	Priority *int   `json:"priority"`
-	Weight   *int   `json:"weight"`
-	Proxied  *bool  `json:"proxied"`
-	Comment  string `json:"comment"`
+	Type     string  `json:"type" binding:"required"`
+	Name     string  `json:"name" binding:"required"`
+	Content  string  `json:"content" binding:"required"`
+	TTL      int     `json:"ttl" binding:"required,min=1"`
+	Line     *string `json:"line"`
+	Priority *int    `json:"priority"`
+	Weight   *int    `json:"weight"`
+	Proxied  *bool   `json:"proxied"`
+	Comment  string  `json:"comment"`
 }
 
 func toRecordInput(req recordRequest) dns.RecordInput {
@@ -44,6 +45,7 @@ func toRecordInput(req recordRequest) dns.RecordInput {
 		Name:     req.Name,
 		Content:  req.Content,
 		TTL:      req.TTL,
+		Line:     req.Line,
 		Priority: req.Priority,
 		Weight:   req.Weight,
 		Proxied:  req.Proxied,

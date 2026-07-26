@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import type { DNSRecord, RecordListParams, RecordPayload } from '@/api/dns'
+import type { DNSRecord, DNSRecordLine, RecordListParams, RecordPayload } from '@/api/dns'
 import { PlusOutlined, ReloadOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { dnsApi } from '@/api/dns'
 import FooterToolBar from '@/components/FooterToolbar'
 import { useDnsStore } from '@/pinia/moudule/dns'
 import DNSRecordFilter from '@/views/dns/components/DNSRecordFilter.vue'
@@ -32,6 +33,8 @@ const domainId = computed(() => Number(route.params.id))
 const isDrawerOpen = ref(false)
 const isSavingRecord = ref(false)
 const editingRecord = ref<DNSRecord | null>(null)
+const recordLines = ref<DNSRecordLine[]>([])
+const isRecordLinesLoading = ref(false)
 const formModel = ref<RecordPayload>({
   type: 'A',
   name: '@',
@@ -42,6 +45,10 @@ const formModel = ref<RecordPayload>({
 const isCloudflare = computed(() => {
   const provider = store.currentDomain?.dns_credential?.provider ?? ''
   return provider.toLowerCase().includes('cloudflare')
+})
+
+const isAliDNS = computed(() => {
+  return store.currentDomain?.dns_credential?.provider_code?.toLowerCase() === 'alidns'
 })
 
 const showProxiedToggle = computed(() => isCloudflare.value)
@@ -67,6 +74,20 @@ async function initData() {
   await store.fetchDomainDetail(domainId.value)
   pagination.value.current = 1
   await fetchRecords()
+  if (isAliDNS.value) {
+    await fetchRecordLines()
+  }
+}
+
+async function fetchRecordLines() {
+  isRecordLinesLoading.value = true
+  try {
+    const { data } = await dnsApi.listRecordLines(domainId.value)
+    recordLines.value = data
+  }
+  finally {
+    isRecordLinesLoading.value = false
+  }
 }
 
 async function fetchRecords() {
@@ -90,6 +111,7 @@ function openCreateDrawer() {
     name: '@',
     content: '',
     ttl: 600,
+    line: isAliDNS.value ? 'default' : undefined,
   }
   isDrawerOpen.value = true
 }
@@ -101,6 +123,7 @@ function openEditDrawer(record: DNSRecord) {
     name: record.name,
     content: record.content,
     ttl: record.ttl,
+    line: record.line || (isAliDNS.value ? 'default' : undefined),
     priority: record.priority,
     weight: record.weight,
     proxied: record.proxied,
@@ -202,6 +225,8 @@ onBeforeUnmount(() => {
         :loading="store.recordsLoading"
         :show-proxied="showProxiedToggle"
         :show-comment="showCommentField"
+        :show-line="isAliDNS"
+        :line-options="recordLines"
         @edit="openEditDrawer"
         @delete="handleDelete"
       />
@@ -228,6 +253,9 @@ onBeforeUnmount(() => {
         v-model:record="formModel"
         :show-proxied="showProxiedToggle"
         :show-comment="showCommentField"
+        :show-line="isAliDNS"
+        :line-options="recordLines"
+        :is-line-loading="isRecordLinesLoading"
         :value-suggestions="contentSuggestions"
       />
       <template #footer>

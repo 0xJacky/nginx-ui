@@ -32,6 +32,20 @@ func TestToDDNSResponseNormalizesIPVersion(t *testing.T) {
 	})
 }
 
+func TestToRecordInputIncludesResolutionLine(t *testing.T) {
+	line := "telecom"
+	input := toRecordInput(recordRequest{
+		Type:    "A",
+		Name:    "www",
+		Content: "192.0.2.1",
+		TTL:     600,
+		Line:    &line,
+	})
+
+	require.NotNil(t, input.Line)
+	require.Equal(t, "telecom", *input.Line)
+}
+
 func TestToDDNSResponseCleanupConflictingRecordsDefault(t *testing.T) {
 	t.Run("nil config defaults to true", func(t *testing.T) {
 		resp := toDDNSResponse(nil)

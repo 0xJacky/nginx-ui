@@ -65,6 +65,50 @@ func TestDomainLifecycle(t *testing.T) {
 	require.Equal(t, "mock", records[0].Type)
 }
 
+func TestRecordLineLifecycle(t *testing.T) {
+	registerMockProvider()
+	setMockRecords(nil)
+	mockRecordLines = []dnsSvc.RecordLine{
+		{Code: "default", DisplayName: "Default"},
+		{Code: "telecom", DisplayName: "China Telecom"},
+	}
+
+	q := setupTestQuery(t)
+	ctx := context.Background()
+	service := dnsSvc.NewService()
+	cred := createCredential(t, q)
+	domain, err := service.CreateDomain(ctx, dnsSvc.DomainInput{
+		Domain:          "example.com",
+		DnsCredentialID: cred.ID,
+	})
+	require.NoError(t, err)
+
+	lines, err := service.ListRecordLines(ctx, domain.ID)
+	require.NoError(t, err)
+	require.Equal(t, mockRecordLines, lines)
+
+	line := " telecom "
+	created, err := service.CreateRecord(ctx, domain.ID, dnsSvc.RecordInput{
+		Type:    "a",
+		Name:    " www ",
+		Content: " 192.0.2.1 ",
+		TTL:     600,
+		Line:    &line,
+	})
+	require.NoError(t, err)
+	require.Equal(t, "telecom", created.Line)
+
+	updated, err := service.UpdateRecord(ctx, domain.ID, created.ID, dnsSvc.RecordInput{
+		Type:    "a",
+		Name:    " www ",
+		Content: " 192.0.2.2 ",
+		TTL:     600,
+		Line:    &line,
+	})
+	require.NoError(t, err)
+	require.Equal(t, "telecom", updated.Line)
+}
+
 func TestUpdateDDNSConfigRejectsInvalidIPVersionValues(t *testing.T) {
 	registerMockProvider()
 	setMockRecords(nil)
@@ -193,6 +237,7 @@ func TestRunDDNSUpdateNormalizesEmptyIPVersionAndRecordsBestEffortWarnings(t *te
 			Name:    "@",
 			Content: "198.51.100.10",
 			TTL:     600,
+			Line:    "telecom",
 		},
 		{
 			ID:      "aaaa-record",
@@ -234,6 +279,7 @@ func TestRunDDNSUpdateNormalizesEmptyIPVersionAndRecordsBestEffortWarnings(t *te
 
 	require.NoError(t, dnsSvc.RunDDNSUpdate(ctx, domain.ID))
 	require.Equal(t, []string{"a-record"}, getMockUpdatedRecordIDs())
+	require.Equal(t, "telecom", getMockUpdatedRecords()[0].Line)
 
 	var persisted model.DnsDomain
 	require.NoError(t, model.UseDB().WithContext(ctx).First(&persisted, domain.ID).Error)
@@ -360,6 +406,10 @@ func (m *mockProvider) ListRecords(ctx context.Context, domain string, filter dn
 	return append([]dnsSvc.Record(nil), mockRecords...), nil
 }
 
+func (m *mockProvider) ListRecordLines(ctx context.Context, domain string) ([]dnsSvc.RecordLine, error) {
+	return append([]dnsSvc.RecordLine(nil), mockRecordLines...), nil
+}
+
 func (m *mockProvider) CreateRecord(ctx context.Context, domain string, input dnsSvc.RecordInput) (dnsSvc.Record, error) {
 	record := dnsSvc.Record{
 		ID:      fmt.Sprintf("created-%d", len(mockCreatedRecords)+1),
@@ -367,6 +417,7 @@ func (m *mockProvider) CreateRecord(ctx context.Context, domain string, input dn
 		Name:    input.Name,
 		Content: input.Content,
 		TTL:     input.TTL,
+		Line:    recordInputLine(input.Line),
 	}
 	mockCreatedRecords = append(mockCreatedRecords, record)
 	return record, nil
@@ -379,6 +430,7 @@ func (m *mockProvider) UpdateRecord(ctx context.Context, domain string, recordID
 		Name:    input.Name,
 		Content: input.Content,
 		TTL:     input.TTL,
+		Line:    recordInputLine(input.Line),
 	}
 	mockUpdatedRecords = append(mockUpdatedRecords, record)
 	return record, nil
@@ -393,6 +445,7 @@ func (m *mockProvider) DeleteRecord(ctx context.Context, domain string, recordID
 }
 
 var mockRecords []dnsSvc.Record
+var mockRecordLines []dnsSvc.RecordLine
 var mockCreatedRecords []dnsSvc.Record
 var mockUpdatedRecords []dnsSvc.Record
 var mockDeletedRecordIDs []string
@@ -401,11 +454,19 @@ var mockDeleteFailureErr error
 
 func setMockRecords(records []dnsSvc.Record) {
 	mockRecords = append([]dnsSvc.Record(nil), records...)
+	mockRecordLines = nil
 	mockCreatedRecords = nil
 	mockUpdatedRecords = nil
 	mockDeletedRecordIDs = nil
 	mockDeleteFailureID = ""
 	mockDeleteFailureErr = nil
+}
+
+func recordInputLine(line *string) string {
+	if line == nil {
+		return ""
+	}
+	return *line
 }
 
 func getMockCreatedRecords() []dnsSvc.Record {
@@ -418,6 +479,10 @@ func getMockUpdatedRecordIDs() []string {
 		ids = append(ids, record.ID)
 	}
 	return ids
+}
+
+func getMockUpdatedRecords() []dnsSvc.Record {
+	return append([]dnsSvc.Record(nil), mockUpdatedRecords...)
 }
 
 func getMockDeletedRecordIDs() []string {
