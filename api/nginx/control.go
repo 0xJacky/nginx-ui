@@ -1,13 +1,22 @@
 package nginx
 
 import (
+	"errors"
+	"io"
 	"net/http"
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/uozi-tech/cosy"
 )
+
+type restartRequest struct {
+	OperationID string `json:"operation_id"`
+}
+
+type startRestartFunc func(operationID string) (*nginx.ControlOperation, error)
 
 func buildNamespaceTestConfigResponse(namespaceID uint64, result nginx.TestConfigResult) gin.H {
 	return gin.H{
@@ -88,15 +97,48 @@ func TestConfigWithNamespace(c *gin.Context) {
 
 // Restart restarts the nginx
 func Restart(c *gin.Context) {
+	restart(c, nginx.StartRestart)
+}
+
+func restart(c *gin.Context, startRestart startRestartFunc) {
+	var request restartRequest
+	if err := c.ShouldBindJSON(&request); err != nil && !errors.Is(err, io.EOF) {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "invalid restart request",
+		})
+		return
+	}
+	if request.OperationID != "" {
+		if _, err := uuid.Parse(request.OperationID); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"message": "operation_id must be a valid UUID",
+			})
+			return
+		}
+	}
+
+	operation, err := startRestart(request.OperationID)
+	if err != nil {
+		if errors.Is(err, nginx.ErrControlOperationRunning) {
+			c.JSON(http.StatusConflict, gin.H{
+				"message": "another Nginx control operation is already running",
+				"control": nginx.GetControlOperation(),
+			})
+			return
+		}
+		cosy.ErrHandler(c, err)
+		return
+	}
+
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",
+		"control": operation,
 	})
-	go nginx.Restart()
 }
 
 // Status returns the status of the nginx
 func Status(c *gin.Context) {
-	lastResult := nginx.GetLastResult()
+	lastResult, operation := nginx.GetStatusSnapshot()
 
 	running := nginx.IsRunning()
 
@@ -104,5 +146,6 @@ func Status(c *gin.Context) {
 		"running": running,
 		"message": lastResult.GetOutput(),
 		"level":   lastResult.GetLevel(),
+		"control": operation,
 	})
 }

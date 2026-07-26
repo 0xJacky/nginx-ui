@@ -223,6 +223,13 @@ export function setupResponseInterceptor() {
           console.error('Failed to parse blob error response as JSON', e)
         }
       }
+
+      // Some operations intentionally recover from transient transport errors.
+      // Authentication handling above still runs before this opt-out.
+      if (error?.config?.skipErrHandling) {
+        return Promise.reject(error)
+      }
+
       console.error(error)
       const errData = (error.response?.data as CosyError) || {
         code: error?.code || 'NETWORK_ERROR',

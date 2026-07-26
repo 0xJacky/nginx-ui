@@ -31,6 +31,5 @@ declare module '@vue/runtime-core' {
 declare module 'axios' {
   interface AxiosRequestConfig {
     crypto?: boolean
-    skipErrHandling?: boolean
   }
 }

@@ -15,6 +15,7 @@ export interface HttpConfig extends AxiosRequestConfig {
   returnFullResponse?: boolean
   crypto?: boolean
   skipAuthRedirect?: boolean
+  skipErrHandling?: boolean
 }
 
 // Extend InternalAxiosRequestConfig type
@@ -23,6 +24,7 @@ declare module 'axios' {
     returnFullResponse?: boolean
     crypto?: boolean
     skipAuthRedirect?: boolean
+    skipErrHandling?: boolean
     // Internal markers used by interceptors to safely retry a request after
     // a 2FA step-up challenge. Only FormData (the restore-backup endpoint)
     // is snapshotted — JSON callers with `crypto: true` are all pre-auth

@@ -1,3 +1,4 @@
+import type { HttpConfig } from '@/lib/http/types'
 import { http } from '@uozi-admin/request'
 
 export interface NgxConfig {
@@ -121,6 +122,31 @@ export interface NgxTestResult {
   error_category?: 'missing_include' | 'sandbox_build_error' | 'syntax_error' | 'nginx_runtime_error'
 }
 
+export type NginxControlOperationState = 'running' | 'succeeded' | 'failed'
+
+export interface NginxControlOperation {
+  id: string
+  action: 'restart' | 'reload'
+  state: NginxControlOperationState
+  started_at: string
+  finished_at?: string
+  message?: string
+  level: number
+  exit_code?: number
+}
+
+export interface NginxStatusResponse {
+  running: boolean
+  message: string
+  level: number
+  control?: NginxControlOperation
+}
+
+export interface NginxRestartResponse {
+  message: string
+  control: NginxControlOperation
+}
+
 const ngx = {
   build_config(ngxConfig: NgxConfig) {
     return http.post('/ngx/build_config', ngxConfig)
@@ -134,8 +160,8 @@ const ngx = {
     return http.post('/ngx/format_code', { content })
   },
 
-  status(): Promise<{ running: boolean, message: string, level: number }> {
-    return http.get('/nginx/status')
+  status(config?: HttpConfig): Promise<NginxStatusResponse> {
+    return http.get('/nginx/status', config)
   },
 
   detail_status(): Promise<{ running: boolean, stub_status_enabled: boolean, info: NginxPerformanceInfo }> {
@@ -150,8 +176,8 @@ const ngx = {
     return http.post('/nginx/reload')
   },
 
-  restart() {
-    return http.post('/nginx/restart')
+  restart(operationId: string, config?: HttpConfig): Promise<NginxRestartResponse> {
+    return http.post('/nginx/restart', { operation_id: operationId }, config)
   },
 
   test(): Promise<NgxTestResult> {

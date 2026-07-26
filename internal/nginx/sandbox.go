@@ -24,8 +24,8 @@ type NamespaceInfo struct {
 func SandboxTestConfigWithPaths(namespace *NamespaceInfo, sitePaths, streamPaths []string) TestConfigResult {
 	// If custom test command is set, use it (no sandbox support)
 	if settings.NginxSettings.TestConfigCmd != "" {
-		mutex.Lock()
-		defer mutex.Unlock()
+		commandMutex.Lock()
+		defer commandMutex.Unlock()
 		stdOut, stdErr := execShell(settings.NginxSettings.TestConfigCmd)
 		result := NewTestConfigResult(stdOut, stdErr, TestScopeNamespaceSandbox, SandboxStatusSkipped)
 		result.Message = strings.TrimSpace(strings.Join([]string{
@@ -60,8 +60,8 @@ func SandboxTestConfigWithPaths(namespace *NamespaceInfo, sitePaths, streamPaths
 	defer sandbox.Cleanup()
 
 	// Test the sandbox config under the same global lock used by other control commands
-	mutex.Lock()
-	defer mutex.Unlock()
+	commandMutex.Lock()
+	defer commandMutex.Unlock()
 
 	sbin := GetSbinPath()
 	if sbin == "" {
