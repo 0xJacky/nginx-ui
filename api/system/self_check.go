@@ -1,15 +1,15 @@
 package system
 
 import (
-	"github.com/0xJacky/Nginx-UI/internal/middleware"
-	"github.com/gorilla/websocket"
-	"github.com/uozi-tech/cosy/logger"
 	"net/http"
-
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/0xJacky/Nginx-UI/internal/self_check"
 	"github.com/gin-gonic/gin"
+	"github.com/gorilla/websocket"
+	"github.com/uozi-tech/cosy"
+	"github.com/uozi-tech/cosy/logger"
 )
 
 func SelfCheck(c *gin.Context) {
@@ -18,8 +18,11 @@ func SelfCheck(c *gin.Context) {
 }
 
 func SelfCheckFix(c *gin.Context) {
-	result := self_check.AttemptFix(c.Param("name"))
-	c.JSON(http.StatusOK, result)
+	if err := self_check.AttemptFix(c.Param("name")); err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+	c.Status(http.StatusNoContent)
 }
 
 func CheckWebSocket(c *gin.Context) {

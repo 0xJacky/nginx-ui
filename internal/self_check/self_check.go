@@ -32,8 +32,15 @@ func AttemptFix(taskName string) (err error) {
 	if !ok {
 		return ErrTaskNotFound
 	}
+	return attemptFixTask(task)
+}
+
+func attemptFixTask(task *Task) error {
 	if task.FixFunc == nil {
 		return ErrTaskNotFixable
 	}
-	return task.FixFunc()
+	if err := task.FixFunc(); err != nil {
+		return err
+	}
+	return task.CheckFunc()
 }

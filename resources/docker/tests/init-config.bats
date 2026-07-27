@@ -29,6 +29,20 @@ teardown() { rm -rf "$TMP"; }
     [ -f "$ETC_NGINX/conf.d/nginx-ui.conf" ]
 }
 
+@test "missing target in a persisted config directory stays absent across restarts" {
+    rm -f "$ETC_NGINX/conf.d/nginx-ui.conf"
+    printf '# persisted user config\n' > "$ETC_NGINX/nginx.conf"
+
+    run init_config_main
+    [ "$status" -eq 0 ]
+    [ ! -e "$ETC_NGINX/conf.d/nginx-ui.conf" ]
+    [[ "$output" == *"leaving it absent"* ]]
+
+    run init_config_main
+    [ "$status" -eq 0 ]
+    [ ! -e "$ETC_NGINX/conf.d/nginx-ui.conf" ]
+}
+
 @test "current-template hash is no-op (no backup created)" {
     cp "$TEMPLATE_DIR/conf.d/nginx-ui.conf" "$ETC_NGINX/conf.d/nginx-ui.conf"
     run init_config_main

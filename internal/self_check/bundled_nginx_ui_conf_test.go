@@ -75,6 +75,32 @@ func TestCheckBundledNginxUIConf_MissingFile(t *testing.T) {
 	assert.NoError(t, CheckBundledNginxUIConf())
 }
 
+func TestCheckBundledNginxUIConf_IgnoresNonBundledProxyConfig(t *testing.T) {
+	cases := []struct {
+		name string
+		data string
+	}{
+		{name: "empty file", data: ""},
+		{name: "custom server", data: "server {\n    listen 80;\n    return 204;\n}\n"},
+	}
+
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			target := withFixture(t, "unfixed-default.conf")
+			require.NoError(t, os.WriteFile(target, []byte(tc.data), 0o644))
+			assert.NoError(t, CheckBundledNginxUIConf())
+		})
+	}
+}
+
+func TestFixBundledNginxUIConf_RejectsNonBundledProxyConfig(t *testing.T) {
+	target := withFixture(t, "unfixed-default.conf")
+	require.NoError(t, os.WriteFile(target, nil, 0o644))
+
+	err := FixBundledNginxUIConf()
+	assert.ErrorIs(t, err, ErrTaskNotFixable)
+}
+
 func TestCheckBundledNginxUIConf_NotInDocker(t *testing.T) {
 	t.Setenv("NGINX_UI_OFFICIAL_DOCKER", "")
 	// Even with a missing path, no error when not in docker.
@@ -214,4 +240,84 @@ func TestPatchOnDiskWithBackup_DoesNotMutateTargetOnWriteError(t *testing.T) {
 	// but since the .tmp write failed first the target file was never modified).
 	got, _ := os.ReadFile(target)
 	assert.Equal(t, orig, got, "failed patch must leave target byte-identical to its pre-patch state")
+}
+
+func TestVerifyAndReload_RestoresAfterValidationFailure(t *testing.T) {
+	target, orig, bak := preparePatchedConfig(t)
+	stubNginxCommands(t,
+		func() (string, error) { return "nginx: configuration test failed", errors.New("invalid") },
+		func() (string, error) {
+			t.Fatal("reload must not run after validation failure")
+			return "", nil
+		},
+	)
+
+	err := verifyAndReload(bak)
+	assertCosyErrorCode(t, err, 50008)
+	got, readErr := os.ReadFile(target)
+	require.NoError(t, readErr)
+	assert.Equal(t, orig, got)
+}
+
+func TestVerifyAndReload_RestoresAfterReloadFailure(t *testing.T) {
+	target, orig, bak := preparePatchedConfig(t)
+	stubNginxCommands(t,
+		func() (string, error) { return "configuration is valid", nil },
+		func() (string, error) { return "reload failed", errors.New("reload failed") },
+	)
+
+	err := verifyAndReload(bak)
+	assertCosyErrorCode(t, err, 50009)
+	got, readErr := os.ReadFile(target)
+	require.NoError(t, readErr)
+	assert.Equal(t, orig, got, "reload failure must not leave an unapplied config on disk")
+}
+
+func TestVerifyAndReload_KeepsPatchedConfigAfterSuccess(t *testing.T) {
+	target, orig, bak := preparePatchedConfig(t)
+	stubNginxCommands(t,
+		func() (string, error) { return "configuration is valid", nil },
+		func() (string, error) { return "reloaded", nil },
+	)
+
+	require.NoError(t, verifyAndReload(bak))
+	got, readErr := os.ReadFile(target)
+	require.NoError(t, readErr)
+	assert.NotEqual(t, orig, got)
+	assert.True(t, hasBundledConfWebSocketFix(got))
+}
+
+func preparePatchedConfig(t *testing.T) (target string, orig []byte, bak string) {
+	t.Helper()
+	target = withFixture(t, "unfixed-default.conf")
+	var err error
+	orig, err = os.ReadFile(target)
+	require.NoError(t, err)
+	bak = target + ".bak.test"
+	require.NoError(t, os.WriteFile(bak, orig, 0o644))
+	require.NoError(t, patchOnDiskWithBackup(orig, bak))
+	return
+}
+
+func stubNginxCommands(
+	t *testing.T,
+	testConfig func() (string, error),
+	reload func() (string, error),
+) {
+	t.Helper()
+	originalTestConfig := testNginxConfig
+	originalReload := reloadNginx
+	testNginxConfig = testConfig
+	reloadNginx = reload
+	t.Cleanup(func() {
+		testNginxConfig = originalTestConfig
+		reloadNginx = originalReload
+	})
+}
+
+func assertCosyErrorCode(t *testing.T, err error, code int32) {
+	t.Helper()
+	var cErr *cosy.Error
+	require.ErrorAs(t, err, &cErr)
+	assert.Equal(t, code, cErr.Code)
 }

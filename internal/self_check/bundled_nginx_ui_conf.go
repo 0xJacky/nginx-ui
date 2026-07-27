@@ -18,6 +18,7 @@ var bundledNginxUIConfPath = "/etc/nginx/conf.d/nginx-ui.conf"
 
 // Markers indicating the WS reverse-proxy fix is present.
 var (
+	reBundledNginxUIProxy  = regexp.MustCompile(`(?m)^\s*proxy_pass\s+http://127\.0\.0\.1:9000/?\s*;`)
 	reMapForwardedProto    = regexp.MustCompile(`(?m)^\s*map\s+\$http_x_forwarded_proto\s+\$forwarded_proto\b`)
 	reMapForwardedHost     = regexp.MustCompile(`(?m)^\s*map\s+\$http_x_forwarded_host\s+\$forwarded_host\b`)
 	reHeaderForwardedProto = regexp.MustCompile(`(?m)^\s*proxy_set_header\s+X-Forwarded-Proto\s+\$forwarded_proto\b`)
@@ -38,10 +39,17 @@ func CheckBundledNginxUIConf() error {
 		}
 		return cosy.WrapErrorWithParams(ErrFailedToReadBundledNginxUIConf, err.Error())
 	}
+	if !usesBundledNginxUIProxy(data) {
+		return nil
+	}
 	if !hasBundledConfWebSocketFix(data) {
 		return ErrBundledNginxUIConfOutdated
 	}
 	return nil
+}
+
+func usesBundledNginxUIProxy(data []byte) bool {
+	return reBundledNginxUIProxy.Match(data)
 }
 
 func hasBundledConfWebSocketFix(data []byte) bool {
@@ -152,12 +160,15 @@ func restoreFromBackup(target, bak string) error {
 // FixBundledNginxUIConf is the FixFunc for the bundled nginx-ui.conf upgrade
 // self_check task (registered in tasks.go).
 // Flow: read -> backup -> patch -> atomic write -> nginx -t -> reload.
-// On any failure between backup and verify the file is rolled back; the error
+// On any failure after the backup is created, the file is rolled back; the error
 // always includes the backup path.
 func FixBundledNginxUIConf() error {
 	orig, err := os.ReadFile(bundledNginxUIConfPath)
 	if err != nil {
 		return cosy.WrapErrorWithParams(ErrFailedToReadBundledNginxUIConf, err.Error())
+	}
+	if !usesBundledNginxUIProxy(orig) {
+		return ErrTaskNotFixable
 	}
 
 	bak := fmt.Sprintf("%s.bak.%s", bundledNginxUIConfPath, time.Now().Format("20060102150405"))
@@ -171,10 +182,14 @@ func FixBundledNginxUIConf() error {
 	return verifyAndReload(bak)
 }
 
-// verifyAndReload runs `nginx -t` and rolls back on failure, then reloads.
-// Reload failures do NOT trigger rollback because the file on disk is already valid.
+var (
+	testNginxConfig = nginx.TestConfig
+	reloadNginx     = nginx.Reload
+)
+
+// verifyAndReload runs `nginx -t`, reloads, and rolls back on either failure.
 func verifyAndReload(bak string) error {
-	if out, err := nginx.TestConfig(); err != nil {
+	if out, err := testNginxConfig(); err != nil {
 		if rerr := restoreFromBackup(bundledNginxUIConfPath, bak); rerr != nil {
 			return cosy.WrapErrorWithParams(ErrCriticalRecoveryFailed,
 				"validate failed: "+strings.TrimSpace(out)+
@@ -184,9 +199,15 @@ func verifyAndReload(bak string) error {
 		return cosy.WrapErrorWithParams(ErrFixedConfigInvalid,
 			strings.TrimSpace(out)+"; restored from "+bak)
 	}
-	if out, err := nginx.Reload(); err != nil {
+	if out, err := reloadNginx(); err != nil {
+		if rerr := restoreFromBackup(bundledNginxUIConfPath, bak); rerr != nil {
+			return cosy.WrapErrorWithParams(ErrCriticalRecoveryFailed,
+				"reload failed: "+strings.TrimSpace(out)+
+					"; restore failed: "+rerr.Error()+
+					"; backup at "+bak)
+		}
 		return cosy.WrapErrorWithParams(ErrReloadFailed,
-			strings.TrimSpace(out)+"; backup at "+bak)
+			strings.TrimSpace(out)+"; restored from "+bak)
 	}
 	return nil
 }

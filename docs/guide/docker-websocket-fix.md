@@ -55,3 +55,11 @@ After saving, run `docker exec <container> nginx -s reload`.
 Set `NGINX_UI_PRESERVE_BUNDLED_CONF=true` on the container to disable the
 startup-time auto-upgrade. The UI-driven fix remains available regardless.
 :::
+
+If you delete `/etc/nginx/conf.d/nginx-ui.conf` from an existing persisted
+configuration, startup leaves it deleted. Only a completely empty `/etc/nginx`
+directory is initialized from the bundled templates.
+
+Set `NGINX_UI_DISABLE_BUNDLED_NGINX=true` when Nginx UI should not manage or run
+the bundled Nginx instance at all. This skips template initialization, keeps the
+bundled Nginx service idle, and excludes bundled-Nginx checks from self-check.

@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'resources/docker/init-config.sh'
+      - 'resources/docker/nginx.run'
       - 'resources/docker/nginx-ui.conf'
       - 'resources/docker/nginx-ui.conf.known-hashes'
       - 'resources/docker/scripts/**'
@@ -16,6 +17,7 @@ on:
   pull_request:
     paths:
       - 'resources/docker/init-config.sh'
+      - 'resources/docker/nginx.run'
       - 'resources/docker/nginx-ui.conf'
       - 'resources/docker/nginx-ui.conf.known-hashes'
       - 'resources/docker/scripts/**'

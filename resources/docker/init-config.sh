@@ -23,9 +23,8 @@ sync_bundled_file() {
     [ -f "$template" ] || { log WARN "template missing: $template"; return 0; }
     [ -f "$hashes"   ] || { log WARN "hash list missing: $hashes"; return 0; }
     if [ ! -f "$target" ]; then
-        log INFO "target absent; copying template to $target"
-        cp -p "$template" "$target"
-        return $?
+        log INFO "target absent; leaving it absent"
+        return 0
     fi
 
     if ! command -v sha256sum >/dev/null 2>&1; then

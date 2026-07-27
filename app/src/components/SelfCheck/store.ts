@@ -106,12 +106,13 @@ export const useSelfCheckStore = defineStore('selfCheck', () => {
     fixing.value[taskName] = true
     try {
       await selfCheck.fix(taskName, options)
+      await runCheck(options)
+    }
+    catch {
+      // Error presentation is handled by the global response interceptor.
     }
     finally {
-      setTimeout(() => {
-        check(options)
-        fixing.value[taskName] = false
-      }, 1000)
+      fixing.value[taskName] = false
     }
   }
 
