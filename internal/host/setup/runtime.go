@@ -31,7 +31,7 @@ func NewClientFromParams(params SetupParams) (*hostssh.Client, error) {
 		Address:        p.HostAddress,
 		User:           p.HostUser,
 		AuthMethod:     n.HostAuthMethod,
-		PrivateKeyPath: n.HostPrivateKeyPath,
+		PrivateKeyPath: p.ContainerKeyPath,
 		KnownHosts:     kh,
 		Config: hostssh.Config{
 			SudoPrefix:    sudo,

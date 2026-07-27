@@ -4,6 +4,7 @@ import (
 	"crypto/ed25519"
 	"crypto/rand"
 	"encoding/pem"
+	"errors"
 	"os"
 	"path/filepath"
 	"strings"
@@ -34,8 +35,8 @@ func GenerateKeypair(privateKeyPath string) (publicKeyOpenSSH string, err error)
 	}
 	pemBytes := pem.EncodeToMemory(pemBlock)
 
-	if err := os.WriteFile(privateKeyPath, pemBytes, 0o600); err != nil {
-		return "", cosy.WrapErrorWithParams(ErrKeyfileWrite, privateKeyPath, err.Error())
+	if err := writePrivateKeyFile(privateKeyPath, pemBytes); err != nil {
+		return "", err
 	}
 
 	sshPub, err := gossh.NewPublicKey(pub)
@@ -46,12 +47,73 @@ func GenerateKeypair(privateKeyPath string) (publicKeyOpenSSH string, err error)
 	return strings.TrimSpace(line) + " nginx-ui@generated", nil
 }
 
+// writePrivateKeyFile replaces the key atomically. os.WriteFile would leave an
+// existing file's permissions untouched, so a rotated key could inherit a
+// looser mode from whatever was there before.
+func writePrivateKeyFile(privateKeyPath string, contents []byte) error {
+	dir := filepath.Dir(privateKeyPath)
+	if err := os.MkdirAll(dir, 0o700); err != nil {
+		return cosy.WrapErrorWithParams(ErrKeyfileWrite, privateKeyPath, err.Error())
+	}
+	tmp, err := os.CreateTemp(dir, ".host-key-*")
+	if err != nil {
+		return cosy.WrapErrorWithParams(ErrKeyfileWrite, privateKeyPath, err.Error())
+	}
+	tmpPath := tmp.Name()
+	defer func() { _ = os.Remove(tmpPath) }()
+
+	if err := tmp.Chmod(0o600); err != nil {
+		_ = tmp.Close()
+		return cosy.WrapErrorWithParams(ErrKeyfileWrite, privateKeyPath, err.Error())
+	}
+	if _, err := tmp.Write(contents); err != nil {
+		_ = tmp.Close()
+		return cosy.WrapErrorWithParams(ErrKeyfileWrite, privateKeyPath, err.Error())
+	}
+	if err := tmp.Sync(); err != nil {
+		_ = tmp.Close()
+		return cosy.WrapErrorWithParams(ErrKeyfileWrite, privateKeyPath, err.Error())
+	}
+	if err := tmp.Close(); err != nil {
+		return cosy.WrapErrorWithParams(ErrKeyfileWrite, privateKeyPath, err.Error())
+	}
+	if err := os.Rename(tmpPath, privateKeyPath); err != nil {
+		return cosy.WrapErrorWithParams(ErrKeyfileWrite, privateKeyPath, err.Error())
+	}
+	return nil
+}
+
+// MaxPrivateKeyFileSize bounds every private key read. The path can be chosen
+// by the operator, so an unbounded read of a character device such as /dev/zero
+// would otherwise exhaust memory.
+const MaxPrivateKeyFileSize = 64 * 1024
+
+// ReadPrivateKeyFile reads a private key from disk, rejecting anything that is
+// not a regular file of a plausible size.
+func ReadPrivateKeyFile(privateKeyPath string) ([]byte, error) {
+	info, err := os.Stat(privateKeyPath)
+	if err != nil {
+		return nil, cosy.WrapErrorWithParams(ErrKeyfileRead, privateKeyPath, err.Error())
+	}
+	if !info.Mode().IsRegular() {
+		return nil, cosy.WrapErrorWithParams(ErrKeyfileRead, privateKeyPath, "not a regular file")
+	}
+	if info.Size() > MaxPrivateKeyFileSize {
+		return nil, cosy.WrapErrorWithParams(ErrKeyfileRead, privateKeyPath, "private key file is too large")
+	}
+	raw, err := os.ReadFile(privateKeyPath)
+	if err != nil {
+		return nil, cosy.WrapErrorWithParams(ErrKeyfileRead, privateKeyPath, err.Error())
+	}
+	return raw, nil
+}
+
 // LoadPublicKey reads an OpenSSH private key file and returns its public key
 // in OpenSSH single-line form. Useful for "show current public key" flows.
 func LoadPublicKey(privateKeyPath string) (string, error) {
-	raw, err := os.ReadFile(privateKeyPath)
+	raw, err := ReadPrivateKeyFile(privateKeyPath)
 	if err != nil {
-		return "", cosy.WrapErrorWithParams(ErrKeyfileRead, privateKeyPath, err.Error())
+		return "", err
 	}
 	signer, err := gossh.ParsePrivateKey(raw)
 	if err != nil {
@@ -59,4 +121,20 @@ func LoadPublicKey(privateKeyPath string) (string, error) {
 	}
 	line := string(gossh.MarshalAuthorizedKey(signer.PublicKey()))
 	return strings.TrimSpace(line) + " nginx-ui@generated", nil
+}
+
+// SavePrivateKey validates and atomically stores an unencrypted SSH private key.
+// The private key is never returned; only its derived public key is exposed.
+func SavePrivateKey(privateKeyPath string, raw []byte) (string, error) {
+	signer, err := gossh.ParsePrivateKey(raw)
+	if err != nil {
+		return "", errors.Join(ErrInvalidPrivateKey, err)
+	}
+
+	if err := writePrivateKeyFile(privateKeyPath, raw); err != nil {
+		return "", err
+	}
+
+	line := string(gossh.MarshalAuthorizedKey(signer.PublicKey()))
+	return strings.TrimSpace(line) + " nginx-ui@provided", nil
 }

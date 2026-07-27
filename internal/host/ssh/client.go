@@ -33,6 +33,9 @@ type Client struct {
 	opts ClientOptions
 	mu   sync.Mutex
 	conn *gossh.Client
+	// closed is terminal. Without it a discarded client would silently redial
+	// the old host with the options captured when it was built.
+	closed bool
 }
 
 // synchronizedBuffer is safe for SSH's concurrent stdout and extended-data
@@ -113,12 +116,30 @@ func (c *Client) hostKeyCallback() (gossh.HostKeyCallback, error) {
 	return callback, nil
 }
 
+// maxPrivateKeyFileSize bounds the key read. The path is operator supplied, so
+// reading a character device such as /dev/zero would otherwise never end.
+const maxPrivateKeyFileSize = 64 * 1024
+
+func readPrivateKeyFile(path string) ([]byte, error) {
+	info, err := os.Stat(path)
+	if err != nil {
+		return nil, err
+	}
+	if !info.Mode().IsRegular() {
+		return nil, fmt.Errorf("private key %s is not a regular file", path)
+	}
+	if info.Size() > maxPrivateKeyFileSize {
+		return nil, fmt.Errorf("private key %s is too large", path)
+	}
+	return os.ReadFile(path)
+}
+
 func (c *Client) buildAuth() ([]gossh.AuthMethod, error) {
 	switch c.opts.AuthMethod {
 	case "password":
 		return []gossh.AuthMethod{gossh.Password(c.opts.Password)}, nil
 	default: // "key" (or empty)
-		raw, err := os.ReadFile(c.opts.PrivateKeyPath)
+		raw, err := readPrivateKeyFile(c.opts.PrivateKeyPath)
 		if err != nil {
 			return nil, cosy.WrapErrorWithParams(ErrAuthFailed, err.Error())
 		}
@@ -149,8 +170,12 @@ func (c *Client) connect(ctx context.Context) (*gossh.Client, error) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
+	if c.closed {
+		return nil, ErrClientClosed
+	}
+
 	if c.conn != nil {
-		if _, _, err := c.conn.SendRequest("keepalive@nginx-ui", true, nil); err == nil {
+		if alive(ctx, c.conn, c.opts.KeepAlive) {
 			return c.conn, nil
 		}
 		_ = c.conn.Close()
@@ -205,10 +230,37 @@ func (c *Client) Stat(path string) bool {
 	return err == nil
 }
 
-// Close releases the cached connection if any.
+// alive probes the cached connection without blocking the mutex on a
+// half-open socket, where SendRequest waits for the TCP timeout.
+func alive(ctx context.Context, conn *gossh.Client, timeout time.Duration) bool {
+	if timeout <= 0 {
+		timeout = 5 * time.Second
+	}
+	done := make(chan error, 1)
+	go func() {
+		_, _, err := conn.SendRequest("keepalive@nginx-ui", true, nil)
+		done <- err
+	}()
+
+	timer := time.NewTimer(timeout)
+	defer timer.Stop()
+	select {
+	case err := <-done:
+		return err == nil
+	case <-timer.C:
+		return false
+	case <-ctx.Done():
+		return false
+	}
+}
+
+// Close releases the cached connection and marks the client unusable, so a
+// caller holding a stale reference fails loudly instead of redialing the host
+// this client was built for.
 func (c *Client) Close() error {
 	c.mu.Lock()
 	defer c.mu.Unlock()
+	c.closed = true
 	if c.conn != nil {
 		err := c.conn.Close()
 		c.conn = nil
