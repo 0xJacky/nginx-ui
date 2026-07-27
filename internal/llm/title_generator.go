@@ -38,10 +38,9 @@ Respond only with the title, no additional text or formatting.`,
 	}
 
 	req := openai.ChatCompletionRequest{
-		Model:       settings.OpenAISettings.Model,
-		Messages:    []openai.ChatCompletionMessage{systemMessage, userMessage},
-		MaxTokens:   20, // Keep it short
-		Temperature: 0.3, // Lower temperature for more consistent titles
+		Model:               settings.OpenAISettings.Model,
+		Messages:            []openai.ChatCompletionMessage{systemMessage, userMessage},
+		MaxCompletionTokens: 20, // Keep it short
 	}
 
 	resp, err := client.CreateChatCompletion(context.Background(), req)
@@ -55,10 +54,10 @@ Respond only with the title, no additional text or formatting.`,
 	}
 
 	title := strings.TrimSpace(resp.Choices[0].Message.Content)
-	
+
 	// Sanitize the title
 	title = sanitizeTitle(title)
-	
+
 	if title == "" {
 		return "New Session", nil
 	}
@@ -75,7 +74,7 @@ func extractContextForTitleGeneration(messages []openai.ChatCompletionMessage) s
 	var contextBuilder strings.Builder
 	messageCount := 0
 	maxMessages := 3 // Only use the first few messages for context
-	maxLength := 800  // Limit total context length
+	maxLength := 800 // Limit total context length
 
 	for _, message := range messages {
 		if messageCount >= maxMessages {
@@ -107,7 +106,7 @@ func extractContextForTitleGeneration(messages []openai.ChatCompletionMessage) s
 		}
 
 		newContent := fmt.Sprintf("%s%s\n", rolePrefix, content)
-		
+
 		// Check if adding this message would exceed the max length
 		if contextBuilder.Len()+len(newContent) > maxLength {
 			break
@@ -124,25 +123,25 @@ func extractContextForTitleGeneration(messages []openai.ChatCompletionMessage) s
 func sanitizeTitle(title string) string {
 	// Remove quotes if present
 	title = strings.Trim(title, `"'`)
-	
+
 	// Remove any prefix like "Title: " if present
 	if strings.HasPrefix(strings.ToLower(title), "title:") {
 		title = strings.TrimSpace(title[6:])
 	}
-	
+
 	// Limit length
 	if len(title) > 50 {
 		title = title[:47] + "..."
 	}
-	
+
 	// Replace any problematic characters
 	title = strings.ReplaceAll(title, "\n", " ")
 	title = strings.ReplaceAll(title, "\r", " ")
-	
+
 	// Collapse multiple spaces
 	for strings.Contains(title, "  ") {
 		title = strings.ReplaceAll(title, "  ", " ")
 	}
-	
+
 	return strings.TrimSpace(title)
 }
