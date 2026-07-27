@@ -3,12 +3,15 @@ import { throttle } from 'lodash'
 import { storeToRefs } from 'pinia'
 import settings from '@/api/settings'
 import PageHeader from '@/components/PageHeader'
+import { useRouteHashScroll } from '@/composables/useRouteHashScroll'
 import { useSettingsStore, useUserStore } from '@/pinia'
 import { useNodeAvailabilityStore } from '@/pinia/moudule/nodeAvailability'
 import { useProxyAvailabilityStore } from '@/pinia/moudule/proxyAvailability'
 import FooterLayout from './FooterLayout.vue'
 import HeaderLayout from './HeaderLayout.vue'
 import SideBar from './SideBar.vue'
+
+const { handleRouteEnter } = useRouteHashScroll()
 
 const drawerVisible = ref(false)
 const collapsed = ref(false)
@@ -103,7 +106,7 @@ provide('breadList', breadList)
         <PageHeader />
         <div class="router-view">
           <RouterView v-slot="{ Component, route }">
-            <Transition name="slide-fade">
+            <Transition name="slide-fade" @after-enter="handleRouteEnter">
               <component
                 :is="Component"
                 :key="route.path"
