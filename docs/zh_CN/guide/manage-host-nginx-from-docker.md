@@ -9,7 +9,7 @@
 - macOS：拥有 Homebrew nginx 服务的登录用户
 :::
 
-在 macOS 上，请在向导中选择 **macOS (Homebrew)**。Apple Silicon 默认使用 `/opt/homebrew`。验证时，向导会通过 SSH 查询 Homebrew 并解析 `nginx -V`，自动识别已安装的 nginx 版本以及实际的可执行文件、配置、日志、PID 和 Docroot 路径；这也能识别位于 `/usr/local` 的 Intel Homebrew。继续前请确认服务已加载：
+在 macOS 上，请在向导的**检测平台**步骤中选择 **macOS (Homebrew)**。Apple Silicon 默认使用 `/opt/homebrew`。验证时，向导会通过 SSH 查询 Homebrew 并解析 `nginx -V`，自动识别已安装的 nginx 版本以及实际的可执行文件、配置、日志、PID 和 Docroot 路径；这也能识别位于 `/usr/local` 的 Intel Homebrew。继续前请确认服务已加载：
 
 ```bash
 brew services info nginx
@@ -27,7 +27,23 @@ macOS 应使用运行 `brew services` 的现有登录用户，不要创建单独
 
 ## 步骤 2：通过 Nginx UI 生成密钥对
 
-打开**偏好设置 → Nginx → 通过 SSH 管理宿主机 → 打开配置向导**。在步骤 1 中点击**生成密钥对**。
+打开**偏好设置 → Nginx → Nginx 控制模式 → 编辑**，选择**通过 SSH 管理宿主机**，再点击**打开 SSH 配置向导**。修改控制模式需要已验证的两步验证会话。
+
+向导包含五个步骤：**SSH 目标**、**信任与测试**、**检测平台**、**安装**、**验证**。
+
+在**检测平台**步骤中，每个路径字段会标记为**自动检测**（与宿主机上报值一致）或**手动覆盖**（被你改过）。手动覆盖的字段会显示检测值以及**恢复检测值**操作。修改 nginx 可执行文件路径后，可点击**根据该可执行文件重新检测路径**，重新执行 `nginx -V` 并刷新配置、日志和 PID 路径。
+
+在 **SSH 目标**步骤中选择私钥来源：
+
+| 来源 | 行为 |
+| --- | --- |
+| **生成** | Nginx UI 在托管路径 `/etc/nginx-ui/host_key` 生成 ed25519 密钥对。 |
+| **使用已有路径** | Nginx UI 读取容器内你指定路径上已存在的私钥。 |
+| **粘贴或上传** | 你粘贴私钥内容或选择文件，Nginx UI 以 0600 权限存放到托管路径。 |
+
+所选来源会保存为 `host_key_source` 设置。不支持加密的私钥。
+
+使用生成流程时，点击**生成密钥对**。
 
 复制显示的公钥，格式如下：
 
@@ -51,7 +67,7 @@ sudo chmod 600 /home/nginxui/.ssh/authorized_keys
 
 ## 步骤 3：安装 sudoers 条目（仅 Linux）
 
-向导步骤 2b 会显示一段 sudoers 配置片段。复制后通过以下命令安装：
+向导**安装**步骤的**宿主机**页签会显示一段 sudoers 配置片段。复制后通过以下命令安装：
 
 ```bash
 sudo visudo -f /etc/sudoers.d/nginx-ui
@@ -76,7 +92,7 @@ sudo setfacl -dR -m u:nginxui:rwx /etc/nginx
 
 ## 步骤 5：更新 docker-compose 配置
 
-向导步骤 2a 会显示一段 compose 配置片段。将其合并到现有的 `docker-compose.yml` 中。
+向导**安装**步骤的**容器**页签会显示一段 compose 配置片段。将其合并到现有的 `docker-compose.yml` 中。
 
 生成的片段会设置 `NGINX_UI_DISABLE_BUNDLED_NGINX=true`，避免容器在控制宿主机 nginx 时继续启动内置 nginx 服务。
 
@@ -96,7 +112,7 @@ docker compose up -d --force-recreate nginx-ui
 
 ## 步骤 6：信任主机身份
 
-打开配置向导中的**主机身份**，点击**扫描主机密钥**。向导会将 SSH 服务端提供的主机密钥与已配置的 `known_hosts` 文件进行比较。
+打开向导的**信任与测试**步骤，点击**扫描主机密钥**。向导会将 SSH 服务端提供的主机密钥与已配置的 `known_hosts` 文件进行比较。
 
 ::: warning 信任前请先验证
 只有在通过可信来源比对指纹后，才应信任密钥。这个检查用于避免在首次配置或密钥轮换时连接到错误的主机。
@@ -170,7 +186,7 @@ ssh-keyscan -p 22 host.docker.internal
 ::: details 宿主机 SSH 密钥变更后 `ssh_connect` 失败
 主机密钥变更可能是正常操作，例如重建宿主机或轮换 SSH 密钥；也可能表示目标主机错误或存在中间人攻击。只有在确认新指纹后，才替换已信任的密钥。
 
-1. 打开**主机身份**步骤。
+1. 打开**信任与测试**步骤。
 2. 重新扫描主机密钥。
 3. 比对向导显示的旧指纹和新指纹。
 4. 在宿主机上或通过服务商控制面板验证新指纹。

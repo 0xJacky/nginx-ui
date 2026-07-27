@@ -9,7 +9,7 @@ Use this guide when Nginx UI runs in Docker and needs to manage an nginx instanc
 - macOS: the login user that owns the Homebrew nginx service
 :::
 
-For macOS, select **macOS (Homebrew)** in the wizard. Apple Silicon defaults to `/opt/homebrew`. During verification, the wizard queries Homebrew and parses `nginx -V` over SSH to detect the installed nginx version and the actual executable, configuration, log, PID, and document-root paths. This also handles Intel Homebrew under `/usr/local`. Confirm the service is loaded before continuing:
+For macOS, select **macOS (Homebrew)** in the wizard's **Detect Platform** step. Apple Silicon defaults to `/opt/homebrew`. During verification, the wizard queries Homebrew and parses `nginx -V` over SSH to detect the installed nginx version and the actual executable, configuration, log, PID, and document-root paths. This also handles Intel Homebrew under `/usr/local`. Confirm the service is loaded before continuing:
 
 ```bash
 brew services info nginx
@@ -27,7 +27,23 @@ On macOS, use the existing login user that runs `brew services`; do not create a
 
 ## Step 2: Generate the keypair via Nginx UI
 
-Open **Preferences → Nginx → Host via SSH → Open setup wizard**. Click **Generate keypair** in Step 1.
+Open **Preferences → Nginx → Nginx Control Mode → Edit**, select **Host via SSH**, then click **Open SSH setup wizard**. Editing the control mode requires a verified two-factor session.
+
+The wizard has five steps: **SSH Target**, **Trust & Test**, **Detect Platform**, **Install** and **Verify**.
+
+In **Detect Platform**, each path field is tagged **Auto-detected** when it matches what the host reported, or **Manual override** when you changed it. An overridden field shows the detected value and a **Restore detected value** action. After changing the nginx executable path, use **Re-detect paths from this executable** to run `nginx -V` again and refresh the config, log and PID paths.
+
+In **SSH Target**, choose a private key source:
+
+| Source | Behaviour |
+| --- | --- |
+| **Generate** | Nginx UI creates an ed25519 keypair at the managed path `/etc/nginx-ui/host_key`. |
+| **Existing path** | Nginx UI reads a key that already exists inside the container, at a path you enter. |
+| **Paste or upload** | You paste the key or pick a file. Nginx UI stores it at the managed path with mode 0600. |
+
+The chosen source is persisted as the `host_key_source` setting. Encrypted private keys are not supported.
+
+Click **Generate keypair** for the generate flow.
 
 Copy the public key shown. It looks like:
 
@@ -51,7 +67,7 @@ Host SSH mode requires a `known_hosts` allow-list. When the wizard shows a new f
 
 ## Step 3: Install the sudoers entry (Linux only)
 
-The wizard Step 2b shows you a sudoers snippet. Copy it and install via:
+The wizard's **Install** step, **Host** tab, shows a sudoers snippet. Copy it and install via:
 
 ```bash
 sudo visudo -f /etc/sudoers.d/nginx-ui
@@ -76,7 +92,7 @@ On macOS, the wizard emits read/write checks for the Homebrew config and log pat
 
 ## Step 5: Update docker-compose
 
-The wizard Step 2a shows a compose snippet. Merge it into your existing `docker-compose.yml`.
+The wizard's **Install** step, **Container** tab, shows a compose snippet. Merge it into your existing `docker-compose.yml`.
 
 The generated snippet sets `NGINX_UI_DISABLE_BUNDLED_NGINX=true` so the container does not start its bundled nginx service while it controls the host nginx service.
 
@@ -94,7 +110,7 @@ docker compose up -d --force-recreate nginx-ui
 
 ## Step 6: Trust the host identity
 
-Open **Host Identity** in the setup wizard and click **Scan host keys**. The wizard compares the SSH host keys presented by the host with the configured `known_hosts` file.
+Open the **Trust & Test** step and click **Scan host keys**. The wizard compares the SSH host keys presented by the host with the configured `known_hosts` file.
 
 ::: warning Verify before trusting
 Only trust a key after comparing its fingerprint with a source you already trust. This check protects the SSH connection from accepting the wrong host during setup or key rotation.
