@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { DDNSDomainItem, DDNSIPVersion, DNSRecord, UpdateDDNSPayload } from '@/api/dns'
-import { DeleteOutlined, InfoCircleOutlined, ReloadOutlined, SearchOutlined } from '@ant-design/icons-vue'
+import { InfoCircleOutlined, ReloadOutlined, SearchOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import { computed, onMounted, ref, watch } from 'vue'
@@ -297,7 +297,7 @@ watch(() => ddnsForm.value.ip_version, handleIPVersionChange)
               <SearchOutlined />
             </template>
           </AInput>
-          <AButton size="small" :loading="loading" @click="init">
+          <AButton size="middle" :loading="loading" @click="init">
             <template #icon>
               <ReloadOutlined />
             </template>
@@ -357,9 +357,6 @@ watch(() => ddnsForm.value.ip_version, handleIPVersionChange)
                   :disabled="!hasDDNSConfig(record as DDNSDomainItem)"
                   :loading="deletingDomainId === (record as DDNSDomainItem).id"
                 >
-                  <template #icon>
-                    <DeleteOutlined />
-                  </template>
                   {{ $gettext('Delete') }}
                 </AButton>
               </APopconfirm>
