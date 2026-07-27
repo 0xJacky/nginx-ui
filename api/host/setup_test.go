@@ -7,9 +7,15 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
+	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
+	"github.com/0xJacky/Nginx-UI/internal/host/setup"
+	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
+	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	gossh "golang.org/x/crypto/ssh"
@@ -180,6 +186,152 @@ func TestHostKeyChangesResetSSHClientOnlyAfterSuccessfulWrite(t *testing.T) {
 			}
 			if resetCount != test.wantResets {
 				t.Fatalf("reset count = %d, want %d", resetCount, test.wantResets)
+			}
+		})
+	}
+}
+
+func TestConnectionRejectsMissingTarget(t *testing.T) {
+	recorder := httptest.NewRecorder()
+	context, _ := gin.CreateTestContext(recorder)
+	context.Request = httptest.NewRequest(http.MethodPost, "/api/host/setup/connection", bytes.NewBufferString(`{}`))
+	context.Request.Header.Set("Content-Type", "application/json")
+
+	TestConnection(context)
+
+	if recorder.Code != http.StatusBadRequest {
+		t.Fatalf("status = %d, want %d: %s", recorder.Code, http.StatusBadRequest, recorder.Body.String())
+	}
+}
+
+func TestGetPublicKeyUsesRequestedContainerPath(t *testing.T) {
+	keyPath := filepath.Join(t.TempDir(), "existing_key")
+	if _, err := setup.GenerateKeypair(keyPath); err != nil {
+		t.Fatal(err)
+	}
+
+	recorder := httptest.NewRecorder()
+	context, _ := gin.CreateTestContext(recorder)
+	context.Request = httptest.NewRequest(http.MethodGet,
+		"/api/host/setup/publickey?private_key_path="+url.QueryEscape(keyPath), nil)
+
+	GetPublicKey(context)
+
+	if recorder.Code != http.StatusOK {
+		t.Fatalf("status = %d, want %d: %s", recorder.Code, http.StatusOK, recorder.Body.String())
+	}
+	var response keypairResponse
+	if err := json.Unmarshal(recorder.Body.Bytes(), &response); err != nil {
+		t.Fatal(err)
+	}
+	if !strings.HasPrefix(response.PublicKey, "ssh-ed25519 ") {
+		t.Fatalf("unexpected public key: %q", response.PublicKey)
+	}
+}
+
+func TestGetPublicKeyRejectsRelativePath(t *testing.T) {
+	recorder := httptest.NewRecorder()
+	context, _ := gin.CreateTestContext(recorder)
+	context.Request = httptest.NewRequest(http.MethodGet,
+		"/api/host/setup/publickey?private_key_path=relative/key", nil)
+
+	GetPublicKey(context)
+
+	if recorder.Code != http.StatusBadRequest {
+		t.Fatalf("status = %d, want %d: %s", recorder.Code, http.StatusBadRequest, recorder.Body.String())
+	}
+}
+
+func TestGenerateKeypairRejectsUnconfiguredPath(t *testing.T) {
+	originalPrivateKeyPath := settings.NginxSettings.HostPrivateKeyPath
+	settings.NginxSettings.HostPrivateKeyPath = ""
+	t.Cleanup(func() {
+		settings.NginxSettings.HostPrivateKeyPath = originalPrivateKeyPath
+	})
+
+	recorder := performHostKeyRequest(t, GenerateKeypair, keyPathRequest{
+		PrivateKeyPath: filepath.Join(t.TempDir(), "unconfigured_key"),
+	})
+	if recorder.Code != http.StatusBadRequest {
+		t.Fatalf("status = %d, want %d: %s", recorder.Code, http.StatusBadRequest, recorder.Body.String())
+	}
+}
+
+func TestGenerateKeypairAllowsConfiguredPath(t *testing.T) {
+	originalPrivateKeyPath := settings.NginxSettings.HostPrivateKeyPath
+	privateKeyPath := filepath.Join(t.TempDir(), "configured_key")
+	settings.NginxSettings.HostPrivateKeyPath = privateKeyPath
+	t.Cleanup(func() {
+		settings.NginxSettings.HostPrivateKeyPath = originalPrivateKeyPath
+	})
+
+	recorder := performHostKeyRequest(t, GenerateKeypair, keyPathRequest{
+		PrivateKeyPath: privateKeyPath,
+	})
+	if recorder.Code != http.StatusOK {
+		t.Fatalf("status = %d, want %d: %s", recorder.Code, http.StatusOK, recorder.Body.String())
+	}
+	if _, err := os.Stat(privateKeyPath); err != nil {
+		t.Fatalf("configured private key was not created: %v", err)
+	}
+}
+
+// The wizard sits under middleware.Proxy(), so a controller configuring a
+// child node arrives signed as that node. Adding RequireInteractiveUser() here
+// would break that flow, and the proxy rewrites 403 into an opaque 503.
+func TestSetupRoutesStayReachableForProxiedNodePrincipal(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+
+	router := gin.New()
+	router.Use(func(c *gin.Context) {
+		c.Set(nodeauth.GinPrincipalKey, &nodeauth.Principal{
+			CredentialID: "credential",
+			AuthMethod:   model.NodeAuthMethodPaired,
+		})
+		c.Next()
+	})
+	InitRouter(router.Group("/"))
+
+	recorder := httptest.NewRecorder()
+	router.ServeHTTP(recorder, httptest.NewRequest(http.MethodDelete, "/host/setup/keypair", nil))
+
+	if recorder.Code == http.StatusForbidden {
+		t.Fatalf("DELETE /host/setup/keypair = 403, want the request to reach the handler; "+
+			"a middleware is rejecting the proxied node principal (body: %s)", recorder.Body.String())
+	}
+}
+
+// The wizard reads operator supplied paths and opens SSH sessions, so the
+// group must stay behind a verified session for an interactive user. Without
+// this, removing the middleware leaves the package's tests green.
+func TestSetupRoutesRequireASecureSession(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+
+	router := gin.New()
+	router.Use(func(c *gin.Context) {
+		// An interactive user with 2FA enabled and no secure session header.
+		c.Set("user", &model.User{
+			Model:     model.Model{ID: 1},
+			OTPSecret: []byte("otp-enabled"),
+		})
+		c.Next()
+	})
+	InitRouter(router.Group("/"))
+
+	for _, tt := range []struct {
+		method string
+		path   string
+	}{
+		{http.MethodPost, "/host/setup/keypair"},
+		{http.MethodDelete, "/host/setup/keypair"},
+		{http.MethodPost, "/host/setup/host-key/replace"},
+	} {
+		t.Run(tt.method+tt.path, func(t *testing.T) {
+			recorder := httptest.NewRecorder()
+			router.ServeHTTP(recorder, httptest.NewRequest(tt.method, tt.path, nil))
+			if recorder.Code != http.StatusUnauthorized {
+				t.Fatalf("%s %s = %d, want %d; the secure session guard is missing",
+					tt.method, tt.path, recorder.Code, http.StatusUnauthorized)
 			}
 		})
 	}

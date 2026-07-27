@@ -2,8 +2,11 @@ package host
 
 import (
 	"context"
+	"errors"
+	"io"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strings"
 	"time"
 
@@ -20,10 +23,31 @@ var resetSSHClient = nginx.ResetSSHClient
 
 // Preview renders all snippets from the posted SetupParams (or current
 // settings if body is empty). Does not persist anything.
+// bindSetupParams reads the posted params. An absent body deliberately means
+// "use the saved settings"; a malformed body is an error, not a fallback.
+func bindSetupParams(c *gin.Context, p *setup.SetupParams) bool {
+	if c.Request.ContentLength == 0 {
+		*p = setup.ParamsFromSettings()
+		return true
+	}
+	if err := c.ShouldBindJSON(p); err != nil {
+		if errors.Is(err, io.EOF) {
+			*p = setup.ParamsFromSettings()
+			return true
+		}
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return false
+	}
+	if p.HostAddress == "" {
+		*p = setup.ParamsFromSettings()
+	}
+	return true
+}
+
 func Preview(c *gin.Context) {
 	var p setup.SetupParams
-	if err := c.ShouldBindJSON(&p); err != nil {
-		p = setup.ParamsFromSettings()
+	if !bindSetupParams(c, &p) {
+		return
 	}
 	r, err := setup.RenderAll(p)
 	if err != nil {
@@ -38,13 +62,45 @@ type keypairResponse struct {
 	PrivateKey string `json:"private_key,omitempty"`
 }
 
+type keyPathRequest struct {
+	PrivateKeyPath string `json:"private_key_path"`
+}
+
+func normalizePrivateKeyPath(path string) (string, error) {
+	path = strings.TrimSpace(path)
+	if path == "" {
+		return "", errors.New("private key path is required")
+	}
+	if !filepath.IsAbs(path) {
+		return "", errors.New("private key path must be absolute")
+	}
+	return filepath.Clean(path), nil
+}
+
 // GenerateKeypair creates a fresh ed25519 keypair, writes the private key to
 // HostPrivateKeyPath, returns the public key. The private key is also returned
 // once for the caller to display/download — never returned by GetPublicKey().
 func GenerateKeypair(c *gin.Context) {
-	path := settings.NginxSettings.HostPrivateKeyPath
+	var req keyPathRequest
+	if c.Request.ContentLength > 0 {
+		if err := c.ShouldBindJSON(&req); err != nil {
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "invalid key path request"})
+			return
+		}
+	}
+	path := req.PrivateKeyPath
 	if path == "" {
-		path = "/etc/nginx-ui/host_key"
+		path = settings.NginxSettings.GetHostPrivateKeyPath()
+	}
+	path, err := normalizePrivateKeyPath(path)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+	configuredPath := filepath.Clean(settings.NginxSettings.GetHostPrivateKeyPath())
+	if path != settings.DefaultHostPrivateKeyPath && path != configuredPath {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "generated keys may only use the default or configured private key path"})
+		return
 	}
 	pub, err := setup.GenerateKeypair(path)
 	if err != nil {
@@ -56,33 +112,99 @@ func GenerateKeypair(c *gin.Context) {
 }
 
 func GetPublicKey(c *gin.Context) {
-	path := settings.NginxSettings.HostPrivateKeyPath
+	path := c.Query("private_key_path")
+	if path == "" {
+		path = settings.NginxSettings.GetHostPrivateKeyPath()
+	}
+	path, err := normalizePrivateKeyPath(path)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+	if _, statErr := os.Stat(path); errors.Is(statErr, os.ErrNotExist) {
+		// Nothing there yet. The wizard treats this as a normal starting state.
+		c.JSON(http.StatusNotFound, gin.H{"public_key": ""})
+		return
+	}
+
 	pub, err := setup.LoadPublicKey(path)
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"public_key": ""})
+		// The file exists but cannot be used. This must not look like an empty
+		// path, otherwise the wizard would offer to overwrite it without asking.
+		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, gin.H{
+			"public_key": "",
+			"message":    err.Error(),
+		})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"public_key": pub})
 }
 
 func DeleteKeypair(c *gin.Context) {
-	path := settings.NginxSettings.HostPrivateKeyPath
-	if path == "" {
-		c.JSON(http.StatusNoContent, nil)
+	path, err := normalizePrivateKeyPath(settings.NginxSettings.GetHostPrivateKeyPath())
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
-	_ = os.Remove(path)
+	if err := os.Remove(path); err != nil && !errors.Is(err, os.ErrNotExist) {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		return
+	}
 	c.JSON(http.StatusNoContent, nil)
 }
 
 type verifyRequest struct {
 	setup.SetupParams
 	SkipNginxT bool `json:"skip_nginx_t"`
+	// Groups limits the run to a subset of the pipeline so an individual wizard
+	// step can verify what it configured. Empty runs every check.
+	Groups []string `json:"groups"`
+}
+
+type connectionTestResult struct {
+	Connected bool   `json:"connected"`
+	Detail    string `json:"detail"`
+}
+
+// TestConnection verifies host identity, key authentication, and remote command
+// execution without running nginx or service-manager commands.
+func TestConnection(c *gin.Context) {
+	var p setup.SetupParams
+	if !cosy.BindAndValid(c, &p) {
+		return
+	}
+	if strings.TrimSpace(p.HostAddress) == "" || strings.TrimSpace(p.HostUser) == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "host address and SSH user are required"})
+		return
+	}
+	client, err := setup.NewClientFromParams(p)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+	defer client.Close()
+
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 15*time.Second)
+	defer cancel()
+	output, err := client.Exec(ctx, "/bin/echo", "nginx-ui-ssh-ok")
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, connectionTestResult{
+		Connected: true,
+		Detail:    strings.TrimSpace(output),
+	})
 }
 
 func Verify(c *gin.Context) {
 	var req verifyRequest
-	_ = c.ShouldBindJSON(&req)
+	if c.Request.ContentLength > 0 {
+		if err := c.ShouldBindJSON(&req); err != nil && !errors.Is(err, io.EOF) {
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+			return
+		}
+	}
 
 	p := req.SetupParams
 	if p.HostAddress == "" {
@@ -102,6 +224,7 @@ func Verify(c *gin.Context) {
 		Client:     client,
 		Params:     p,
 		SkipNginxT: req.SkipNginxT,
+		Groups:     setup.ParseCheckGroups(req.Groups),
 	})
 	c.JSON(http.StatusOK, result)
 }
@@ -110,9 +233,8 @@ func Verify(c *gin.Context) {
 // read-only version and package-prefix commands and does not persist settings.
 func Discover(c *gin.Context) {
 	var p setup.SetupParams
-	_ = c.ShouldBindJSON(&p)
-	if p.HostAddress == "" {
-		p = setup.ParamsFromSettings()
+	if !bindSetupParams(c, &p) {
+		return
 	}
 	client, err := setup.NewClientFromParams(p)
 	if err != nil {
@@ -124,6 +246,42 @@ func Discover(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
 	defer cancel()
 	result, err := setup.DiscoverNginx(ctx, client, p)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, result)
+}
+
+// SSHTargets probes the addresses a container can use to reach its own host,
+// so the wizard can offer a reachable target instead of a guess. It opens no
+// SSH session and needs no credentials.
+func SSHTargets(c *gin.Context) {
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 15*time.Second)
+	defer cancel()
+	// The caller may pass the address already entered so a non standard port
+	// is probed too, not just the conventional ones.
+	requested := strings.TrimSpace(c.Query("address"))
+	c.JSON(http.StatusOK, gin.H{"targets": setup.DiscoverSSHTargets(ctx, requested)})
+}
+
+// Diagnose detects the SSH target platform and nginx installation using
+// read-only commands. It does not persist the detected settings.
+func Diagnose(c *gin.Context) {
+	var p setup.SetupParams
+	if !bindSetupParams(c, &p) {
+		return
+	}
+	client, err := setup.NewClientFromParams(p)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+	defer client.Close()
+
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
+	defer cancel()
+	result, err := setup.DiagnoseHost(ctx, client, p)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
