@@ -87,10 +87,11 @@ func FirstOrCreateCert(confName string, keyType certcrypto.KeyType) (c Cert, err
 	normalizedKeyType := helper.GetKeyType(keyType)
 
 	// Filename is used to check whether this site is enabled
-	err = db.Where("name = ? AND filename = ? AND key_type IN ?", confName, confName,
+	err = db.Where("filename = ? AND key_type IN ?", confName,
 		helper.GetKeyTypeAliasStrings(normalizedKeyType)).
+		Attrs(&Cert{Name: confName, Filename: confName, KeyType: normalizedKeyType}).
 		Assign(&Cert{KeyType: normalizedKeyType}).
-		FirstOrCreate(&c, &Cert{Name: confName, Filename: confName, KeyType: normalizedKeyType}).Error
+		FirstOrCreate(&c).Error
 	return
 }
 

@@ -29,6 +29,15 @@ func TestNormalizeCertificateIdentifiers(t *testing.T) {
 	}
 }
 
+func TestCertificateNameUsesFirstIdentifier(t *testing.T) {
+	if got := CertificateName("default.conf", []string{" ", "203.0.113.8"}); got != "203.0.113.8" {
+		t.Fatalf("CertificateName() = %q, want IP identifier", got)
+	}
+	if got := CertificateName("default.conf", nil); got != "default.conf" {
+		t.Fatalf("CertificateName() = %q, want fallback", got)
+	}
+}
+
 func TestNormalizeAndValidateIdentifiersRejectsUnsupportedIPCombinations(t *testing.T) {
 	tests := []struct {
 		name    string

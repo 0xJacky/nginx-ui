@@ -126,11 +126,12 @@ func persistCertDraft(name string, payload *cert.ConfigPayload) (*model.Cert, er
 	db := model.UseDB()
 	normalizedKeyType := helper.GetKeyType(payload.GetKeyType())
 	keyTypeAliases := helper.GetKeyTypeAliasStrings(normalizedKeyType)
+	certificateName := cert.CertificateName(name, payload.ServerName)
 
 	now := time.Now()
 
 	seed := &model.Cert{
-		Name:                    name,
+		Name:                    certificateName,
 		Filename:                name,
 		KeyType:                 normalizedKeyType,
 		Domains:                 payload.ServerName,
@@ -148,10 +149,12 @@ func persistCertDraft(name string, payload *cert.ConfigPayload) (*model.Cert, er
 		LastAttemptAt:           &now,
 	}
 
-	// FirstOrCreate by (name, filename, key_type). When the row exists,
+	// FirstOrCreate by (filename, key_type). Name is the certificate identifier,
+	// while Filename keeps the association with the site configuration.
+	// When the row exists,
 	// `seed` is hydrated with the existing record (preserving SSLCertificatePath,
 	// Resource, etc.) so we can read those fields on the renewal path below.
-	if err := db.Where("name = ? AND filename = ? AND key_type IN ?", name, name, keyTypeAliases).
+	if err := db.Where("filename = ? AND key_type IN ?", name, keyTypeAliases).
 		FirstOrCreate(seed).Error; err != nil {
 		return nil, err
 	}
@@ -166,6 +169,7 @@ func persistCertDraft(name string, payload *cert.ConfigPayload) (*model.Cert, er
 	// Use struct + Select so GORM applies the `serializer:json` tag for Domains
 	// AND writes the zero-valued LastError ("") instead of skipping it.
 	updates := &model.Cert{
+		Name:                    certificateName,
 		Domains:                 payload.ServerName,
 		ChallengeMethod:         payload.ChallengeMethod,
 		Profile:                 payload.Profile,
@@ -182,7 +186,7 @@ func persistCertDraft(name string, payload *cert.ConfigPayload) (*model.Cert, er
 	}
 	if err := db.Model(&model.Cert{}).Where("id = ?", seed.ID).
 		Select(
-			"domains", "challenge_method", "profile", "dns_credential_id", "acme_user_id",
+			"name", "domains", "challenge_method", "profile", "dns_credential_id", "acme_user_id",
 			"auto_cert", "must_staple", "lego_disable_cname_support", "enable_common_name",
 			"revoke_old", "status", "last_error", "last_attempt_at",
 		).

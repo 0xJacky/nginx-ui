@@ -28,8 +28,8 @@ func setupAutoCertTestDB(t *testing.T) *gorm.DB {
 func TestPersistAutoCertOptionsWritesCommonNameAndClearsBooleans(t *testing.T) {
 	db := setupAutoCertTestDB(t)
 	certModel := &model.Cert{
-		Name:                    "example.com",
-		Filename:                "example.com",
+		Name:                    "203.0.113.8",
+		Filename:                "default.conf",
 		KeyType:                 certcrypto.RSA2048,
 		MustStaple:              true,
 		LegoDisableCNAMESupport: true,
@@ -40,10 +40,17 @@ func TestPersistAutoCertOptionsWritesCommonNameAndClearsBooleans(t *testing.T) {
 	if err := db.Create(certModel).Error; err != nil {
 		t.Fatal(err)
 	}
+	found, err := model.FirstOrCreateCert("default.conf", certcrypto.RSA2048)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if found.ID != certModel.ID {
+		t.Fatalf("FirstOrCreateCert created duplicate ID %d, want %d", found.ID, certModel.ID)
+	}
 
-	err := persistAutoCertOptions(certModel, "example.com", autoCertRequest{
-		Domains:         []string{"example.com", "www.example.com"},
-		ChallengeMethod: model.CertChallengeMethodDNS01,
+	err = persistAutoCertOptions(certModel, "default.conf", autoCertRequest{
+		Domains:         []string{"203.0.113.8"},
+		ChallengeMethod: model.CertChallengeMethodHTTP01,
 		KeyType:         certcrypto.EC256,
 		DnsCredentialID: 10,
 		ACMEUserID:      20,
@@ -72,10 +79,13 @@ func TestPersistAutoCertOptionsWritesCommonNameAndClearsBooleans(t *testing.T) {
 	if got.Profile != "shortlived" {
 		t.Fatalf("Profile = %q, want preserved shortlived", got.Profile)
 	}
+	if got.Name != "203.0.113.8" || got.Filename != "default.conf" {
+		t.Fatalf("Name/Filename = %q/%q, want IP/config association", got.Name, got.Filename)
+	}
 	if got.KeyType != certcrypto.EC256 {
 		t.Fatalf("KeyType = %s, want %s", got.KeyType, certcrypto.EC256)
 	}
-	if len(got.Domains) != 2 || got.Domains[0] != "example.com" || got.Domains[1] != "www.example.com" {
-		t.Fatalf("Domains = %#v, want example.com and www.example.com", got.Domains)
+	if len(got.Domains) != 1 || got.Domains[0] != "203.0.113.8" {
+		t.Fatalf("Domains = %#v, want IP identifier", got.Domains)
 	}
 }

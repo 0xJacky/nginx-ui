@@ -83,6 +83,7 @@ func RemoveDomainFromAutoCert(c *gin.Context) {
 }
 
 func persistAutoCertOptions(certModel *model.Cert, name string, json autoCertRequest) error {
+	certificateName := cert.CertificateName(name, json.Domains)
 	profile := json.Profile
 	if profile == "" {
 		profile = certModel.Profile
@@ -92,7 +93,7 @@ func persistAutoCertOptions(certModel *model.Cert, name string, json autoCertReq
 	}
 
 	updates := &model.Cert{
-		Name:                    name,
+		Name:                    certificateName,
 		Domains:                 json.Domains,
 		AutoCert:                model.AutoCertEnabled,
 		DnsCredentialID:         json.DnsCredentialID,

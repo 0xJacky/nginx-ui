@@ -95,6 +95,31 @@ func TestPersistCertDraftReusesExistingRow(t *testing.T) {
 	assert.Equal(t, int64(1), count, "should reuse, not duplicate")
 }
 
+func TestPersistCertDraftUsesIPIdentifierAsName(t *testing.T) {
+	db := setupCertTestDB(t)
+	existing := model.Cert{
+		Name:     "default.conf",
+		Filename: "default.conf",
+		KeyType:  certcrypto.EC256,
+	}
+	require.NoError(t, db.Create(&existing).Error)
+
+	payload := &cert.ConfigPayload{
+		ServerName:      []string{"203.0.113.8"},
+		ChallengeMethod: "http01",
+		KeyType:         certcrypto.EC256,
+	}
+	got, err := persistCertDraft("default.conf", payload)
+	require.NoError(t, err)
+	assert.Equal(t, existing.ID, got.ID)
+	assert.Equal(t, "203.0.113.8", got.Name)
+	assert.Equal(t, "default.conf", got.Filename)
+
+	var count int64
+	require.NoError(t, db.Model(&model.Cert{}).Where("filename = ?", "default.conf").Count(&count).Error)
+	assert.Equal(t, int64(1), count, "should rename the existing site certificate, not duplicate it")
+}
+
 func TestMarkCertFailureSetsStatusAndError(t *testing.T) {
 	db := setupCertTestDB(t)
 	c := model.Cert{Name: "example.com", Filename: "example.com", Status: model.CertStatusPending}

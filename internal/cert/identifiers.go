@@ -13,6 +13,17 @@ type certificateIdentifierInfo struct {
 	HasWildcard bool
 }
 
+// CertificateName returns the first certificate identifier for display and
+// falls back to the associated configuration name when none is available.
+func CertificateName(fallback string, identifiers []string) string {
+	for _, identifier := range identifiers {
+		if name := strings.TrimSpace(identifier); name != "" {
+			return name
+		}
+	}
+	return fallback
+}
+
 // NormalizeAndValidateIdentifiers canonicalizes certificate identifiers and
 // enforces challenge combinations supported by the ACME protocol.
 func NormalizeAndValidateIdentifiers(payload *ConfigPayload) error {

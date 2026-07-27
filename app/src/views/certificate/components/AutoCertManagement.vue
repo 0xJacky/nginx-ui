@@ -76,7 +76,7 @@ function handleRenewed() {
     <template v-if="isManaged">
       <RenewCert
         :options="{
-          name: data.name,
+          name: data.filename || data.name,
           domains: data.domains,
           key_type: data.key_type,
           challenge_method: data.challenge_method,

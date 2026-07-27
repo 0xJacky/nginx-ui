@@ -15,7 +15,7 @@ const { message } = App.useApp()
 const refModal = useTemplateRef('refModal')
 
 const issueOptions = computed<AutoCertOptions>(() => ({
-  name: props.cert.name,
+  name: props.cert.filename || props.cert.name,
   domains: props.cert.domains,
   key_type: props.cert.key_type,
   challenge_method: props.cert.challenge_method,
