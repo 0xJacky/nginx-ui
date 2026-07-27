@@ -48,8 +48,20 @@ var (
 	ErrCertificateKeyMismatch            = e.New(50049, "certificate and private key do not match: {0}")
 	ErrCertificateFieldRequired          = e.New(50050, "{0} is required")
 	ErrCertificatePathsRequired          = e.New(50051, "provide both --cert and --key")
+	ErrInvalidCertificateIdentifier      = e.New(50052, "invalid certificate identifier: {0}")
+	ErrIPCertificateRequiresHTTP01       = e.New(50053, "IP address certificates require the HTTP-01 challenge")
+	ErrCertificateProfileUnavailable     = e.New(50054, "certificate profile is not available from the selected ACME server: {0}")
+	ErrWildcardIPCertificateConflict     = e.New(50055, "wildcard domains and IP addresses cannot be requested in the same certificate")
 )
 
 func NewInvalidKeyTypeError(keyType string) error {
 	return e.NewWithParams(50039, ErrInvalidKeyType.Error(), keyType)
+}
+
+func NewInvalidCertificateIdentifierError(identifier string) error {
+	return e.NewWithParams(50052, ErrInvalidCertificateIdentifier.Error(), identifier)
+}
+
+func NewCertificateProfileUnavailableError(profile string) error {
+	return e.NewWithParams(50054, ErrCertificateProfileUnavailable.Error(), profile)
 }

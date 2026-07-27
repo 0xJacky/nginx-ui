@@ -3,6 +3,7 @@ package sites
 import (
 	"net/http"
 
+	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
@@ -14,6 +15,7 @@ import (
 type autoCertRequest struct {
 	DnsCredentialID         uint64             `json:"dns_credential_id"`
 	ChallengeMethod         string             `json:"challenge_method"`
+	Profile                 string             `json:"profile"`
 	Domains                 []string           `json:"domains"`
 	KeyType                 certcrypto.KeyType `json:"key_type"`
 	ACMEUserID              uint64             `json:"acme_user_id"`
@@ -31,6 +33,17 @@ func AddDomainToAutoCert(c *gin.Context) {
 	if !cosy.BindAndValid(c, &json) {
 		return
 	}
+
+	payload := &cert.ConfigPayload{
+		ServerName:      json.Domains,
+		ChallengeMethod: json.ChallengeMethod,
+	}
+	if err := cert.NormalizeAndValidateIdentifiers(payload); err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+	json.Domains = payload.ServerName
+	json.ChallengeMethod = payload.ChallengeMethod
 
 	certModel, err := model.FirstOrCreateCert(name, helper.GetKeyType(json.KeyType))
 
@@ -70,12 +83,21 @@ func RemoveDomainFromAutoCert(c *gin.Context) {
 }
 
 func persistAutoCertOptions(certModel *model.Cert, name string, json autoCertRequest) error {
+	profile := json.Profile
+	if profile == "" {
+		profile = certModel.Profile
+		if profile == "" && certModel.Resource != nil && certModel.Resource.Resource != nil {
+			profile = certModel.Resource.Profile
+		}
+	}
+
 	updates := &model.Cert{
 		Name:                    name,
 		Domains:                 json.Domains,
 		AutoCert:                model.AutoCertEnabled,
 		DnsCredentialID:         json.DnsCredentialID,
 		ChallengeMethod:         json.ChallengeMethod,
+		Profile:                 profile,
 		KeyType:                 helper.GetKeyType(json.KeyType),
 		ACMEUserID:              json.ACMEUserID,
 		MustStaple:              json.MustStaple,
@@ -86,7 +108,7 @@ func persistAutoCertOptions(certModel *model.Cert, name string, json autoCertReq
 
 	return model.UseDB().Model(certModel).Clauses(clause.Returning{}).
 		Select(
-			"name", "domains", "auto_cert", "dns_credential_id", "challenge_method",
+			"name", "domains", "auto_cert", "dns_credential_id", "challenge_method", "profile",
 			"key_type", "acme_user_id", "must_staple", "lego_disable_cname_support",
 			"enable_common_name", "revoke_old",
 		).

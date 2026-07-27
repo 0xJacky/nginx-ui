@@ -7,6 +7,7 @@ import { AutoCertChallengeMethod } from '@/api/auto_cert'
 import site from '@/api/site'
 import AutoCertStepOne from '@/components/AutoCertForm'
 import { PrivateKeyTypeEnum } from '@/constants'
+import { isIPAddress } from '@/utils/certificate'
 import { useTLSDirectives } from '../../composables/useTLSDirectives'
 import { useSiteEditorStore } from '../SiteEditor/store'
 import ObtainCertLive from './ObtainCertLive.vue'
@@ -18,7 +19,7 @@ const props = defineProps<{
 
 const editorStore = useSiteEditorStore()
 const { message } = useGlobalApp()
-const { ngxConfig, issuingCert, curDirectivesMap, isDefaultServer, hasWildcardServerName, hasExplicitIpAddress, isIpCertificate, needsManualIpInput } = storeToRefs(editorStore)
+const { ngxConfig, issuingCert, curDirectivesMap, isDefaultServer, hasWildcardServerName, certificateIdentifiers, needsManualIpInput } = storeToRefs(editorStore)
 
 const autoCert = defineModel<boolean>('autoCert')
 
@@ -28,6 +29,7 @@ const step = ref(1)
 const [modal, ContextHolder] = Modal.useModal()
 
 const data = ref({
+  domains: [],
   dns_credential_id: null,
   challenge_method: AutoCertChallengeMethod.http01,
   code: '',
@@ -46,6 +48,18 @@ const name = computed(() => {
 
 const refObtainCertLive = useTemplateRef('refObtainCertLive')
 const refAutoCertForm = useTemplateRef('refAutoCertForm')
+const manualIpAddress = ref('')
+
+const requestIdentifiers = computed(() => {
+  if (needsManualIpInput.value) {
+    const manualIdentifier = manualIpAddress.value.trim()
+    return manualIdentifier ? [manualIdentifier] : []
+  }
+
+  return [...certificateIdentifiers.value]
+})
+
+const isIpCertificate = computed(() => requestIdentifiers.value.some(isIPAddress))
 
 const { ensureTLSDirectives } = useTLSDirectives()
 
@@ -60,7 +74,7 @@ function issueCert() {
 
   live.issue_cert(
     props.configName,
-    name.value.trim().split(' '),
+    data.value.domains,
     data.value.key_type,
   ).then(resolveCert).catch(() => {
     // The live log already shows the issuance failure details.
@@ -69,7 +83,8 @@ function issueCert() {
   })
 }
 
-async function resolveCert({ ssl_certificate, ssl_certificate_key, key_type }: CertificateResult) {
+async function resolveCert({ ssl_certificate, ssl_certificate_key, key_type, profile }: CertificateResult) {
+  data.value.profile = profile
   ensureTLSDirectives(ssl_certificate, ssl_certificate_key)
   await editorStore.save()
   changeAutoCert(true, key_type)
@@ -79,8 +94,9 @@ async function resolveCert({ ssl_certificate, ssl_certificate_key, key_type }: C
 function changeAutoCert(status: boolean, key_type?: PrivateKeyType) {
   if (status) {
     site.add_auto_cert(props.configName, {
-      domains: name.value.trim().split(' '),
+      domains: data.value.domains,
       challenge_method: data.value.challenge_method!,
+      profile: data.value.profile,
       dns_credential_id: data.value.dns_credential_id!,
       key_type: key_type!,
       acme_user_id: data.value.acme_user_id,
@@ -155,6 +171,9 @@ function toggle(status: boolean) {
     })
   }
   else {
+    step.value = 1
+    manualIpAddress.value = ''
+    data.value.domains = [...certificateIdentifiers.value]
     modalVisible.value = true
     modalClosable.value = true
   }
@@ -168,6 +187,12 @@ const canNext = computed(() => {
   if (step.value === 2) {
     return false
   }
+  else if (requestIdentifiers.value.length === 0) {
+    return false
+  }
+  else if (needsManualIpInput.value && !isIPAddress(manualIpAddress.value)) {
+    return false
+  }
   else if (data.value.challenge_method === AutoCertChallengeMethod.http01) {
     return true
   }
@@ -177,10 +202,16 @@ const canNext = computed(() => {
   return false
 })
 
-function next() {
-  // Apply manual IP address to domains before proceeding
-  refAutoCertForm.value?.applyManualIpToDomains()
+async function next() {
+  try {
+    await refAutoCertForm.value?.validateManualIpAddress()
+  }
+  catch (error) {
+    message.error(error instanceof Error ? error.message : String(error))
+    return
+  }
 
+  data.value.domains = [...requestIdentifiers.value]
   step.value++
   onchange(true)
 }
@@ -202,10 +233,10 @@ function next() {
         <AutoCertStepOne
           ref="refAutoCertForm"
           v-model:options="data"
+          v-model:manual-ip-address="manualIpAddress"
           :no-server-name="noServerName"
           :is-default-server="isDefaultServer"
           :has-wildcard-server-name="hasWildcardServerName"
-          :has-explicit-ip-address="hasExplicitIpAddress"
           :is-ip-certificate="isIpCertificate"
           :needs-manual-ip-input="needsManualIpInput"
         />

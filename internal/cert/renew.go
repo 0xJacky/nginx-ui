@@ -44,5 +44,6 @@ func newRenewOptions(payload *ConfigPayload) *certificate.RenewOptions {
 	return &certificate.RenewOptions{
 		Bundle:     true,
 		MustStaple: payload.MustStaple,
+		Profile:    payload.Profile,
 	}
 }

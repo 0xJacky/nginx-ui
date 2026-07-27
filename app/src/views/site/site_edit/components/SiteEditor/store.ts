@@ -9,6 +9,7 @@ import site from '@/api/site'
 import { useNgxConfigStore } from '@/components/NgxConfigEditor'
 import { useGlobalApp } from '@/composables/useGlobalApp'
 import { translateError } from '@/lib/http/error'
+import { isIPAddress, splitCertificateIdentifiers } from '@/utils/certificate'
 
 interface SaveOptions {
   omitIncompleteTLSServers?: boolean
@@ -271,39 +272,24 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
     return false
   })
 
-  const hasWildcardServerName = computed(() => {
-    if (curDirectivesMap.value.server_name) {
-      for (const v of curDirectivesMap.value.server_name) {
-        const params = v?.params || ''
-        if (params.includes('_'))
-          return true
-      }
-    }
+  const rawServerNames = computed(() => curDirectivesMap.value.server_name
+    ?.flatMap(directive => directive.params?.split(/\s+/) ?? [])
+    .map(value => value.trim())
+    .filter(Boolean) ?? [])
 
-    return false
-  })
+  const certificateIdentifiers = computed(() => splitCertificateIdentifiers(rawServerNames.value))
 
-  const hasExplicitIpAddress = computed(() => {
-    if (curDirectivesMap.value.server_name) {
-      for (const v of curDirectivesMap.value.server_name) {
-        const params = v?.params || ''
-        // Check for IPv4 or IPv6 addresses
-        const ipv4Regex = /\b(?:\d{1,3}\.){3}\d{1,3}\b/
-        const ipv6Regex = /\[?(?:[\da-f]{0,4}:){1,7}[\da-f]{0,4}\]?/i
-        if (ipv4Regex.test(params) || ipv6Regex.test(params))
-          return true
-      }
-    }
+  const hasWildcardServerName = computed(() => rawServerNames.value.includes('_'))
 
-    return false
-  })
+  const hasExplicitIpAddress = computed(() => certificateIdentifiers.value.some(isIPAddress))
 
   const isIpCertificate = computed(() => {
-    return isDefaultServer.value || hasWildcardServerName.value
+    return hasExplicitIpAddress.value
   })
 
   const needsManualIpInput = computed(() => {
-    return isIpCertificate.value && !hasExplicitIpAddress.value
+    return (isDefaultServer.value || hasWildcardServerName.value)
+      && certificateIdentifiers.value.length === 0
   })
 
   return {
@@ -329,6 +315,7 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
     isDefaultServer,
     hasWildcardServerName,
     hasExplicitIpAddress,
+    certificateIdentifiers,
     isIpCertificate,
     needsManualIpInput,
     hasServers,

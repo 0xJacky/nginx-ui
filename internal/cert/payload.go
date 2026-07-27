@@ -20,6 +20,7 @@ type ConfigPayload struct {
 	CertID                  uint64                     `json:"cert_id"`
 	ServerName              []string                   `json:"server_name"`
 	ChallengeMethod         string                     `json:"challenge_method"`
+	Profile                 string                     `json:"profile"`
 	DNSCredentialID         uint64                     `json:"dns_credential_id"`
 	ACMEUserID              uint64                     `json:"acme_user_id"`
 	KeyType                 certcrypto.KeyType         `json:"key_type"`
@@ -113,6 +114,7 @@ func (c *ConfigPayload) WriteFile(l *Logger) error {
 		SSLCertificateKeyPath: c.GetCertificateKeyPath(),
 		Fingerprint:           fingerprint,
 		Resource:              c.Resource,
+		Profile:               c.Profile,
 	})
 
 	return nil

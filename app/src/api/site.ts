@@ -55,6 +55,7 @@ export interface SiteLog {
 export interface AutoCertRequest {
   dns_credential_id: number | null
   challenge_method: string
+  profile?: string
   domains: string[]
   key_type: PrivateKeyType
   acme_user_id?: number

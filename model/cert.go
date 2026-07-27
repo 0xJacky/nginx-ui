@@ -54,6 +54,7 @@ type Cert struct {
 	Fingerprint             string                `json:"fingerprint" gorm:"index"`
 	AutoCert                int                   `json:"auto_cert"`
 	ChallengeMethod         string                `json:"challenge_method"`
+	Profile                 string                `json:"profile"`
 	DnsCredentialID         uint64                `json:"dns_credential_id"`
 	DnsCredential           *DnsCredential        `json:"dns_credential,omitempty"`
 	ACMEUserID              uint64                `json:"acme_user_id"`

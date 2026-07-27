@@ -79,6 +79,7 @@ async function issue_cert(config_name: string, server_name: string[], key_type: 
               ssl_certificate: r.ssl_certificate,
               ssl_certificate_key: r.ssl_certificate_key,
               key_type: r.key_type,
+              profile: r.profile,
             })
           }
           break

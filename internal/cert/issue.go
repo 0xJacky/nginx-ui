@@ -39,6 +39,9 @@ func IssueCert(payload *ConfigPayload, certLogger *Logger) error {
 		}
 	}()
 	payload.KeyType = payload.GetKeyType()
+	if err := NormalizeAndValidateIdentifiers(payload); err != nil {
+		return err
+	}
 
 	// initial a channelWriter to receive logs
 	cw := NewChannelWriter()
@@ -90,6 +93,9 @@ func IssueCert(payload *ConfigPayload, certLogger *Logger) error {
 	client, err := lego.NewClient(config)
 	if err != nil {
 		return cosy.WrapErrorWithParams(ErrNewLegoClient, err.Error())
+	}
+	if err = resolveCertificateProfile(payload, client.GetServerMetadata().Profiles); err != nil {
+		return err
 	}
 
 	switch payload.ChallengeMethod {

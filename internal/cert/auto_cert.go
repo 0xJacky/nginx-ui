@@ -76,35 +76,16 @@ func autoCert(certModel *model.Cert) {
 		return
 	}
 
-	// Calculate certificate age (days since NotBefore)
-	certAge := int(time.Since(certInfo.NotBefore).Hours() / 24)
-	// Calculate days until expiration
-	daysUntilExpiration := int(time.Until(certInfo.NotAfter).Hours() / 24)
-	// Calculate total certificate validity period
-	totalValidityDays := int(certInfo.NotAfter.Sub(certInfo.NotBefore).Hours() / 24)
-
 	renewalInterval := settings.CertSettings.GetCertRenewalInterval()
-
-	// For certificates with short validity periods (less than renewal interval),
-	// use early renewal logic to prevent expiration.
-	if totalValidityDays < renewalInterval {
-		// Renew when 2/3 of the certificate's lifetime remains.
-		earlyRenewalThreshold := 2 * totalValidityDays / 3
-		if daysUntilExpiration > earlyRenewalThreshold {
-			return
-		}
-	} else {
-		// For normal certificates with validity >= renewal interval:
-		// skip renewal if certificate age is less than the configured renewal interval.
-		if certAge < renewalInterval {
-			return
-		}
+	if !shouldRenewACMECertificate(certInfo, now, renewalInterval) {
+		return
 	}
 
 	payload := &ConfigPayload{
 		CertID:                  certModel.ID,
 		ServerName:              certModel.Domains,
 		ChallengeMethod:         certModel.ChallengeMethod,
+		Profile:                 certModel.Profile,
 		DNSCredentialID:         certModel.DnsCredentialID,
 		KeyType:                 certModel.GetKeyType(),
 		ACMEUserID:              certModel.ACMEUserID,
@@ -141,6 +122,21 @@ func autoCert(certModel *model.Cert) {
 		notification.Error("Sync Certificate Error", err.Error(), nil)
 		return
 	}
+}
+
+func shouldRenewACMECertificate(info *Info, now time.Time, renewalIntervalDays int) bool {
+	if info == nil {
+		return false
+	}
+
+	validity := info.NotAfter.Sub(info.NotBefore)
+	renewalInterval := time.Duration(renewalIntervalDays) * 24 * time.Hour
+	if validity < renewalInterval {
+		// Renew short-lived certificates once two thirds of their validity remains.
+		return info.NotAfter.Sub(now) <= 2*validity/3
+	}
+
+	return now.Sub(info.NotBefore) >= renewalInterval
 }
 
 func shouldSkipAutoRenew(certModel *model.Cert, now time.Time) bool {

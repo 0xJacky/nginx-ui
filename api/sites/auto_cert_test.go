@@ -35,6 +35,7 @@ func TestPersistAutoCertOptionsWritesCommonNameAndClearsBooleans(t *testing.T) {
 		LegoDisableCNAMESupport: true,
 		EnableCommonName:        true,
 		RevokeOld:               true,
+		Profile:                 "shortlived",
 	}
 	if err := db.Create(certModel).Error; err != nil {
 		t.Fatal(err)
@@ -67,6 +68,9 @@ func TestPersistAutoCertOptionsWritesCommonNameAndClearsBooleans(t *testing.T) {
 	}
 	if got.RevokeOld {
 		t.Fatalf("RevokeOld = true, want false")
+	}
+	if got.Profile != "shortlived" {
+		t.Fatalf("Profile = %q, want preserved shortlived", got.Profile)
 	}
 	if got.KeyType != certcrypto.EC256 {
 		t.Fatalf("KeyType = %s, want %s", got.KeyType, certcrypto.EC256)

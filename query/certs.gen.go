@@ -40,6 +40,7 @@ func newCert(db *gorm.DB, opts ...gen.DOOption) cert {
 	_cert.Fingerprint = field.NewString(tableName, "fingerprint")
 	_cert.AutoCert = field.NewInt(tableName, "auto_cert")
 	_cert.ChallengeMethod = field.NewString(tableName, "challenge_method")
+	_cert.Profile = field.NewString(tableName, "profile")
 	_cert.DnsCredentialID = field.NewUint64(tableName, "dns_credential_id")
 	_cert.ACMEUserID = field.NewUint64(tableName, "acme_user_id")
 	_cert.KeyType = field.NewString(tableName, "key_type")
@@ -89,6 +90,7 @@ type cert struct {
 	Fingerprint             field.String
 	AutoCert                field.Int
 	ChallengeMethod         field.String
+	Profile                 field.String
 	DnsCredentialID         field.Uint64
 	ACMEUserID              field.Uint64
 	KeyType                 field.String
@@ -136,6 +138,7 @@ func (c *cert) updateTableName(table string) *cert {
 	c.Fingerprint = field.NewString(table, "fingerprint")
 	c.AutoCert = field.NewInt(table, "auto_cert")
 	c.ChallengeMethod = field.NewString(table, "challenge_method")
+	c.Profile = field.NewString(table, "profile")
 	c.DnsCredentialID = field.NewUint64(table, "dns_credential_id")
 	c.ACMEUserID = field.NewUint64(table, "acme_user_id")
 	c.KeyType = field.NewString(table, "key_type")
@@ -168,7 +171,7 @@ func (c *cert) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (c *cert) fillFieldMap() {
-	c.fieldMap = make(map[string]field.Expr, 30)
+	c.fieldMap = make(map[string]field.Expr, 31)
 	c.fieldMap["id"] = c.ID
 	c.fieldMap["created_at"] = c.CreatedAt
 	c.fieldMap["updated_at"] = c.UpdatedAt
@@ -181,6 +184,7 @@ func (c *cert) fillFieldMap() {
 	c.fieldMap["fingerprint"] = c.Fingerprint
 	c.fieldMap["auto_cert"] = c.AutoCert
 	c.fieldMap["challenge_method"] = c.ChallengeMethod
+	c.fieldMap["profile"] = c.Profile
 	c.fieldMap["dns_credential_id"] = c.DnsCredentialID
 	c.fieldMap["acme_user_id"] = c.ACMEUserID
 	c.fieldMap["key_type"] = c.KeyType

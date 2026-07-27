@@ -29,6 +29,7 @@ export interface Cert extends ModelBase {
   ssl_certificate_key: string
   auto_cert: number
   challenge_method: keyof typeof AutoCertChallengeMethod
+  profile: string
   dns_credential_id: number
   dns_credential?: DnsCredential
   acme_user_id: number
@@ -83,6 +84,7 @@ export interface CertificateResult {
   ssl_certificate: string
   ssl_certificate_key: string
   key_type: PrivateKeyType
+  profile?: string
 }
 
 export interface SelfSignedCertPayload {

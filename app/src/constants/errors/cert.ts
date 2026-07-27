@@ -43,4 +43,8 @@ export default {
   50049: () => $gettext('Certificate and private key do not match: {0}'),
   50050: () => $gettext('{0} is required'),
   50051: () => $gettext('Provide both --cert and --key'),
+  50052: () => $gettext('Invalid certificate identifier: {0}'),
+  50053: () => $gettext('IP address certificates require the HTTP-01 challenge'),
+  50054: () => $gettext('Certificate profile is not available from the selected ACME server: {0}'),
+  50055: () => $gettext('Wildcard domains and IP addresses cannot be requested in the same certificate'),
 }

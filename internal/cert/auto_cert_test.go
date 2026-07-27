@@ -119,3 +119,33 @@ func TestShouldSkipAutoCertForNonSuccessStatus(t *testing.T) {
 		})
 	}
 }
+
+func TestShouldRenewACMECertificateUsesExactShortLifetime(t *testing.T) {
+	notBefore := time.Date(2026, time.July, 1, 0, 0, 0, 0, time.UTC)
+	info := &Info{
+		NotBefore: notBefore,
+		NotAfter:  notBefore.Add(160 * time.Hour),
+	}
+
+	if shouldRenewACMECertificate(info, notBefore.Add(53*time.Hour), 7) {
+		t.Fatal("certificate renewed before the exact two-thirds-remaining threshold")
+	}
+	if !shouldRenewACMECertificate(info, notBefore.Add(54*time.Hour), 7) {
+		t.Fatal("certificate not renewed after the exact two-thirds-remaining threshold")
+	}
+}
+
+func TestShouldRenewACMECertificateKeepsNormalInterval(t *testing.T) {
+	notBefore := time.Date(2026, time.July, 1, 0, 0, 0, 0, time.UTC)
+	info := &Info{
+		NotBefore: notBefore,
+		NotAfter:  notBefore.Add(90 * 24 * time.Hour),
+	}
+
+	if shouldRenewACMECertificate(info, notBefore.Add(6*24*time.Hour), 7) {
+		t.Fatal("normal certificate renewed before configured interval")
+	}
+	if !shouldRenewACMECertificate(info, notBefore.Add(7*24*time.Hour), 7) {
+		t.Fatal("normal certificate not renewed at configured interval")
+	}
+}

@@ -22,10 +22,10 @@ export interface DNSProvider {
 export interface AutoCertOptions {
   name?: string
   domains: string[]
-  ip_address?: string
   code?: string
   dns_credential_id?: number | null
   challenge_method: keyof typeof AutoCertChallengeMethod
+  profile?: string
   configuration?: DNSProvider['configuration']
   key_type: string
   acme_user_id?: number

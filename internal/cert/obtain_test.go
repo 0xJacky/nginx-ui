@@ -12,6 +12,7 @@ func TestNewObtainRequestIncludesCommonNameOption(t *testing.T) {
 		KeyType:          certcrypto.RSA2048,
 		MustStaple:       true,
 		EnableCommonName: true,
+		Profile:          "shortlived",
 	}
 
 	request := newObtainRequest(payload)
@@ -27,5 +28,18 @@ func TestNewObtainRequestIncludesCommonNameOption(t *testing.T) {
 	}
 	if len(request.Domains) != 2 || request.Domains[0] != "example.com" || request.Domains[1] != "www.example.com" {
 		t.Fatalf("Domains = %#v, want example.com and www.example.com", request.Domains)
+	}
+	if request.Profile != "shortlived" {
+		t.Fatalf("Profile = %q, want shortlived", request.Profile)
+	}
+}
+
+func TestNewRenewOptionsIncludesProfile(t *testing.T) {
+	options := newRenewOptions(&ConfigPayload{Profile: "shortlived", MustStaple: true})
+	if options.Profile != "shortlived" {
+		t.Fatalf("Profile = %q, want shortlived", options.Profile)
+	}
+	if !options.MustStaple {
+		t.Fatal("MustStaple = false, want true")
 	}
 }

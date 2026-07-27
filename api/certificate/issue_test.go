@@ -33,6 +33,7 @@ func TestPersistCertDraftCreatesPendingRecord(t *testing.T) {
 	payload := &cert.ConfigPayload{
 		ServerName:              []string{"example.com", "*.example.com"},
 		ChallengeMethod:         "dns01",
+		Profile:                 "shortlived",
 		DNSCredentialID:         42,
 		ACMEUserID:              7,
 		KeyType:                 certcrypto.RSA2048,
@@ -54,6 +55,7 @@ func TestPersistCertDraftCreatesPendingRecord(t *testing.T) {
 	require.NoError(t, db.First(&fromDB, got.ID).Error)
 	assert.Equal(t, []string{"example.com", "*.example.com"}, fromDB.Domains)
 	assert.Equal(t, "dns01", fromDB.ChallengeMethod)
+	assert.Equal(t, "shortlived", fromDB.Profile)
 	assert.Equal(t, uint64(42), fromDB.DnsCredentialID)
 	assert.Equal(t, uint64(7), fromDB.ACMEUserID)
 	assert.True(t, fromDB.MustStaple)
@@ -135,7 +137,7 @@ func TestMarkCertSuccessClearsLastError(t *testing.T) {
 	}
 	require.NoError(t, db.Create(&c).Error)
 
-	markCertSuccess(c.ID, "/etc/nginx/ssl/example.com/fullchain.cer", "/etc/nginx/ssl/example.com/private.key", nil)
+	markCertSuccess(c.ID, "/etc/nginx/ssl/example.com/fullchain.cer", "/etc/nginx/ssl/example.com/private.key", nil, "shortlived")
 
 	var got model.Cert
 	require.NoError(t, db.First(&got, c.ID).Error)
@@ -143,6 +145,7 @@ func TestMarkCertSuccessClearsLastError(t *testing.T) {
 	assert.Equal(t, "", got.LastError)
 	assert.Equal(t, "/etc/nginx/ssl/example.com/fullchain.cer", got.SSLCertificatePath)
 	assert.Equal(t, "/etc/nginx/ssl/example.com/private.key", got.SSLCertificateKeyPath)
+	assert.Equal(t, "shortlived", got.Profile)
 }
 
 func TestShortError(t *testing.T) {

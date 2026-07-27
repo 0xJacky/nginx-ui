@@ -2,6 +2,7 @@
 import type { AutoCertOptions } from '@/api/auto_cert'
 import { AutoCertChallengeMethod } from '@/api/auto_cert'
 import { PrivateKeyTypeEnum, PrivateKeyTypeList } from '@/constants'
+import { isIPAddress } from '@/utils/certificate'
 import ACMEUserSelector from '@/views/certificate/components/ACMEUserSelector.vue'
 import DNSChallenge from './DNSChallenge.vue'
 
@@ -11,7 +12,6 @@ const props = defineProps<{
   keyTypeReadOnly?: boolean
   isDefaultServer?: boolean
   hasWildcardServerName?: boolean
-  hasExplicitIpAddress?: boolean
   isIpCertificate?: boolean
   needsManualIpInput?: boolean
 }>()
@@ -21,21 +21,7 @@ const data = defineModel<AutoCertOptions>('options', {
   required: true,
 })
 
-// Local IP address buffer for manual input
-const manualIpAddress = ref('')
-
-// Function to apply manual IP to domains when needed
-function applyManualIpToDomains() {
-  if (props.needsManualIpInput && manualIpAddress.value?.trim()) {
-    if (!data.value.domains)
-      data.value.domains = []
-
-    const trimmedIp = manualIpAddress.value.trim()
-    if (!data.value.domains.includes(trimmedIp)) {
-      data.value.domains.push(trimmedIp)
-    }
-  }
-}
+const manualIpAddress = defineModel<string>('manualIpAddress', { default: '' })
 
 onMounted(() => {
   if (!data.value.key_type)
@@ -43,7 +29,7 @@ onMounted(() => {
 
   if (props.forceDnsChallenge)
     data.value.challenge_method = AutoCertChallengeMethod.dns01
-  else if (props.isIpCertificate)
+  else if (props.isIpCertificate || props.needsManualIpInput)
     data.value.challenge_method = AutoCertChallengeMethod.http01
 })
 
@@ -52,27 +38,10 @@ watch(() => props.forceDnsChallenge, v => {
     data.value.challenge_method = AutoCertChallengeMethod.dns01
 })
 
-watch(() => props.isIpCertificate, v => {
-  if (v && !props.forceDnsChallenge)
+watch(() => [props.isIpCertificate, props.needsManualIpInput], ([isIpCertificate, needsManualIpInput]) => {
+  if ((isIpCertificate || needsManualIpInput) && !props.forceDnsChallenge)
     data.value.challenge_method = AutoCertChallengeMethod.http01
 })
-
-// Expose function for parent component to call before submission
-defineExpose({
-  applyManualIpToDomains,
-})
-
-// Check if IPv4 address is private
-function isPrivateIPv4(ip: string): boolean {
-  const parts = ip.split('.').map(part => Number.parseInt(part, 10))
-  const [a, b] = parts
-
-  // 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, 127.0.0.0/8 (localhost)
-  return a === 10
-    || (a === 172 && b >= 16 && b <= 31)
-    || (a === 192 && b === 168)
-    || a === 127
-}
 
 // IP address validation function
 function validateIpAddress(_rule: unknown, value: string) {
@@ -80,44 +49,29 @@ function validateIpAddress(_rule: unknown, value: string) {
     return Promise.reject($gettext('Please enter the server IP address'))
   }
 
-  // Basic IPv4 validation (simplified)
-  const ipv4Regex = /^(?:\d{1,3}\.){3}\d{1,3}$/
-  // Basic IPv6 validation
-  const ipv6Regex = /^(?:[\da-f]{1,4}:){7}[\da-f]{1,4}$|^::1$|^::$/i
-
   const trimmedValue = value.trim()
-
-  // Additional validation for IPv4 ranges
-  if (ipv4Regex.test(trimmedValue)) {
-    const parts = trimmedValue.split('.')
-    const validRange = parts.every(part => {
-      const num = Number.parseInt(part, 10)
-      return num >= 0 && num <= 255
-    })
-    if (!validRange) {
-      return Promise.reject($gettext('Please enter a valid IPv4 address (0-255 per octet)'))
-    }
-
-    // Warn about private IP addresses
-    if (isPrivateIPv4(trimmedValue)) {
-      return Promise.reject($gettext('Warning: This appears to be a private IP address. '
-        + 'Public CAs like Let\'s Encrypt cannot issue certificates for private IPs. '
-        + 'Use a public IP address or consider using a private CA.'))
-    }
-  }
-  else if (!ipv6Regex.test(trimmedValue)) {
+  if (!isIPAddress(trimmedValue)) {
     return Promise.reject($gettext('Please enter a valid IPv4 or IPv6 address'))
   }
 
   return Promise.resolve()
 }
+
+async function validateManualIpAddress() {
+  if (props.needsManualIpInput)
+    await validateIpAddress(undefined, manualIpAddress.value)
+}
+
+defineExpose({
+  validateManualIpAddress,
+})
 </script>
 
 <template>
   <div>
     <!-- IP Certificate Warning -->
     <AAlert
-      v-if="isIpCertificate && !hideNote"
+      v-if="(isIpCertificate || needsManualIpInput) && !hideNote"
       type="warning"
       show-icon
       :message="$gettext('IP Certificate Notice')"
@@ -144,7 +98,7 @@ function validateIpAddress(_rule: unknown, value: string) {
     </AAlert>
 
     <AAlert
-      v-if="!hideNote && !isIpCertificate"
+      v-if="!hideNote && !isIpCertificate && !needsManualIpInput"
       type="info"
       show-icon
       :message="$gettext('Note')"
@@ -223,10 +177,10 @@ function validateIpAddress(_rule: unknown, value: string) {
           </ASelectOption>
           <ASelectOption
             value="dns01"
-            :disabled="isIpCertificate"
+            :disabled="isIpCertificate || needsManualIpInput"
           >
             {{ $gettext('DNS01') }}
-            <span v-if="isIpCertificate" class="text-gray-400 ml-2">
+            <span v-if="isIpCertificate || needsManualIpInput" class="text-gray-400 ml-2">
               ({{ $gettext('Not supported for IP certificates') }})
             </span>
           </ASelectOption>

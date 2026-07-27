@@ -80,6 +80,7 @@ function handleRenewed() {
           domains: data.domains,
           key_type: data.key_type,
           challenge_method: data.challenge_method,
+          profile: data.profile,
           dns_credential_id: data.dns_credential_id,
           acme_user_id: data.acme_user_id,
           must_staple: data.must_staple,

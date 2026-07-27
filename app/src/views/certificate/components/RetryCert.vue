@@ -19,6 +19,7 @@ const issueOptions = computed<AutoCertOptions>(() => ({
   domains: props.cert.domains,
   key_type: props.cert.key_type,
   challenge_method: props.cert.challenge_method,
+  profile: props.cert.profile,
   dns_credential_id: props.cert.dns_credential_id,
   acme_user_id: props.cert.acme_user_id,
   must_staple: props.cert.must_staple,

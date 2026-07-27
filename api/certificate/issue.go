@@ -27,6 +27,7 @@ type IssueCertResponse struct {
 	SSLCertificate    string             `json:"ssl_certificate,omitempty"`
 	SSLCertificateKey string             `json:"ssl_certificate_key,omitempty"`
 	KeyType           certcrypto.KeyType `json:"key_type,omitempty"`
+	Profile           string             `json:"profile,omitempty"`
 }
 
 func IssueCert(c *gin.Context) {
@@ -50,6 +51,11 @@ func IssueCert(c *gin.Context) {
 		return
 	}
 	payload.KeyType = payload.GetKeyType()
+	if err := cert.NormalizeAndValidateIdentifiers(payload); err != nil {
+		logger.Error(err)
+		_ = wsWriter.WriteJSON(IssueCertResponse{Status: Error, Message: err.Error()})
+		return
+	}
 
 	certModel, err := persistCertDraft(name, payload)
 	if err != nil {
@@ -97,7 +103,7 @@ func IssueCert(c *gin.Context) {
 		return
 	}
 
-	markCertSuccess(certModel.ID, payload.GetCertificatePath(), payload.GetCertificateKeyPath(), payload.Resource)
+	markCertSuccess(certModel.ID, payload.GetCertificatePath(), payload.GetCertificateKeyPath(), payload.Resource, payload.Profile)
 
 	if err := wsWriter.WriteJSON(IssueCertResponse{
 		Status:            Success,
@@ -105,6 +111,7 @@ func IssueCert(c *gin.Context) {
 		SSLCertificate:    payload.GetCertificatePath(),
 		SSLCertificateKey: payload.GetCertificateKeyPath(),
 		KeyType:           payload.GetKeyType(),
+		Profile:           payload.Profile,
 	}); err != nil {
 		if helper.IsUnexpectedWebsocketError(err) {
 			logger.Error(err)
@@ -128,6 +135,7 @@ func persistCertDraft(name string, payload *cert.ConfigPayload) (*model.Cert, er
 		KeyType:                 normalizedKeyType,
 		Domains:                 payload.ServerName,
 		ChallengeMethod:         payload.ChallengeMethod,
+		Profile:                 payload.Profile,
 		DnsCredentialID:         payload.DNSCredentialID,
 		ACMEUserID:              payload.ACMEUserID,
 		AutoCert:                model.AutoCertEnabled,
@@ -147,6 +155,12 @@ func persistCertDraft(name string, payload *cert.ConfigPayload) (*model.Cert, er
 		FirstOrCreate(seed).Error; err != nil {
 		return nil, err
 	}
+	if payload.Profile == "" {
+		payload.Profile = seed.Profile
+		if payload.Profile == "" && seed.Resource != nil && seed.Resource.Resource != nil {
+			payload.Profile = seed.Resource.Profile
+		}
+	}
 
 	// Refresh all user-submitted config and reset issuance state to pending.
 	// Use struct + Select so GORM applies the `serializer:json` tag for Domains
@@ -154,6 +168,7 @@ func persistCertDraft(name string, payload *cert.ConfigPayload) (*model.Cert, er
 	updates := &model.Cert{
 		Domains:                 payload.ServerName,
 		ChallengeMethod:         payload.ChallengeMethod,
+		Profile:                 payload.Profile,
 		DnsCredentialID:         payload.DNSCredentialID,
 		ACMEUserID:              payload.ACMEUserID,
 		AutoCert:                model.AutoCertEnabled,
@@ -167,7 +182,7 @@ func persistCertDraft(name string, payload *cert.ConfigPayload) (*model.Cert, er
 	}
 	if err := db.Model(&model.Cert{}).Where("id = ?", seed.ID).
 		Select(
-			"domains", "challenge_method", "dns_credential_id", "acme_user_id",
+			"domains", "challenge_method", "profile", "dns_credential_id", "acme_user_id",
 			"auto_cert", "must_staple", "lego_disable_cname_support", "enable_common_name",
 			"revoke_old", "status", "last_error", "last_attempt_at",
 		).
@@ -204,7 +219,8 @@ func markCertFailure(id uint64, lastError string) {
 // flips status to success, and clears any prior last_error. Uses struct + Select
 // so GORM applies the `serializer:json[aes]` tag for Resource AND writes the
 // zero-valued LastError ("").
-func markCertSuccess(id uint64, sslCertificatePath, sslCertificateKeyPath string, resource *model.CertificateResource) {
+func markCertSuccess(id uint64, sslCertificatePath, sslCertificateKeyPath string,
+	resource *model.CertificateResource, profile string) {
 	db := model.UseDB()
 	if db == nil {
 		return
@@ -213,10 +229,11 @@ func markCertSuccess(id uint64, sslCertificatePath, sslCertificateKeyPath string
 		SSLCertificatePath:    sslCertificatePath,
 		SSLCertificateKeyPath: sslCertificateKeyPath,
 		Resource:              resource,
+		Profile:               profile,
 		Status:                model.CertStatusSuccess,
 		LastError:             "",
 	}
-	cols := []string{"ssl_certificate_path", "ssl_certificate_key_path", "status", "last_error"}
+	cols := []string{"ssl_certificate_path", "ssl_certificate_key_path", "profile", "status", "last_error"}
 	if resource != nil {
 		cols = append(cols, "resource")
 	}
