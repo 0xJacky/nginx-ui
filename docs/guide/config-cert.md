@@ -53,7 +53,7 @@ key files before using discovery.
 ## DNS Domain Management
 
 - Version：`>= v2.2.2`
-- Supported providers: Alibaba Cloud DNS, Tencent Cloud DNS, Cloudflare
+- Supported providers: Alibaba Cloud DNS, Azure DNS, Cloudflare, Huawei Cloud DNS, Tencent Cloud DNS
 
 You can now register DNS domains inside Nginx-UI (Certificates → DNS Domains) and bind them to an existing DNS Credential.
 For every registered domain the UI exposes a full DNS record management experience (list, create, update, delete) that talks directly to the provider's API.

@@ -7,6 +7,7 @@ import (
 	_ "github.com/0xJacky/Nginx-UI/internal/dns/providers/alidns"
 	_ "github.com/0xJacky/Nginx-UI/internal/dns/providers/azuredns"
 	_ "github.com/0xJacky/Nginx-UI/internal/dns/providers/cloudflare"
+	_ "github.com/0xJacky/Nginx-UI/internal/dns/providers/huaweicloud"
 	_ "github.com/0xJacky/Nginx-UI/internal/dns/providers/tencentcloud"
 )
 

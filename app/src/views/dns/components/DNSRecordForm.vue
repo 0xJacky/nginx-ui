@@ -8,6 +8,8 @@ const props = defineProps<{
   showLine?: boolean
   lineOptions?: DNSRecordLine[]
   isLineLoading?: boolean
+  defaultLineCode?: string
+  lineDisabled?: boolean
   valueSuggestions?: string[]
 }>()
 
@@ -35,9 +37,10 @@ const recordTypes = [
 const resolutionLineOptions = computed(() => {
   const lines = [...(props.lineOptions ?? [])]
   const currentLine = formModel.value.line?.trim()
+  const defaultLineCode = props.defaultLineCode?.trim()
 
-  if (!lines.some(line => line.code === 'default')) {
-    lines.unshift({ code: 'default', display_name: $gettext('Default') })
+  if (defaultLineCode && !lines.some(line => line.code === defaultLineCode)) {
+    lines.unshift({ code: defaultLineCode, display_name: $gettext('Default') })
   }
   if (currentLine && !lines.some(line => line.code === currentLine)) {
     lines.push({ code: currentLine, display_name: currentLine })
@@ -107,6 +110,7 @@ function handleValueKeydown(event: KeyboardEvent) {
         v-model:value="formModel.line"
         :options="resolutionLineOptions"
         :loading="props.isLineLoading"
+        :disabled="props.lineDisabled"
         show-search
         option-filter-prop="label"
       />

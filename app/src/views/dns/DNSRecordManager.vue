@@ -51,6 +51,20 @@ const isAliDNS = computed(() => {
   return store.currentDomain?.dns_credential?.provider_code?.toLowerCase() === 'alidns'
 })
 
+const isHuaweiCloud = computed(() => {
+  return store.currentDomain?.dns_credential?.provider_code?.toLowerCase() === 'huaweicloud'
+})
+
+const defaultRecordLine = computed(() => {
+  if (isAliDNS.value)
+    return 'default'
+  if (isHuaweiCloud.value)
+    return 'default_view'
+  return undefined
+})
+
+const supportsRecordLines = computed(() => Boolean(defaultRecordLine.value))
+
 const showProxiedToggle = computed(() => isCloudflare.value)
 
 const showCommentField = computed(() => isCloudflare.value)
@@ -74,7 +88,7 @@ async function initData() {
   await store.fetchDomainDetail(domainId.value)
   pagination.value.current = 1
   await fetchRecords()
-  if (isAliDNS.value) {
+  if (supportsRecordLines.value) {
     await fetchRecordLines()
   }
 }
@@ -111,7 +125,7 @@ function openCreateDrawer() {
     name: '@',
     content: '',
     ttl: 600,
-    line: isAliDNS.value ? 'default' : undefined,
+    line: defaultRecordLine.value,
   }
   isDrawerOpen.value = true
 }
@@ -123,7 +137,7 @@ function openEditDrawer(record: DNSRecord) {
     name: record.name,
     content: record.content,
     ttl: record.ttl,
-    line: record.line || (isAliDNS.value ? 'default' : undefined),
+    line: record.line || defaultRecordLine.value,
     priority: record.priority,
     weight: record.weight,
     proxied: record.proxied,
@@ -225,7 +239,7 @@ onBeforeUnmount(() => {
         :loading="store.recordsLoading"
         :show-proxied="showProxiedToggle"
         :show-comment="showCommentField"
-        :show-line="isAliDNS"
+        :show-line="supportsRecordLines"
         :line-options="recordLines"
         @edit="openEditDrawer"
         @delete="handleDelete"
@@ -253,9 +267,11 @@ onBeforeUnmount(() => {
         v-model:record="formModel"
         :show-proxied="showProxiedToggle"
         :show-comment="showCommentField"
-        :show-line="isAliDNS"
+        :show-line="supportsRecordLines"
         :line-options="recordLines"
         :is-line-loading="isRecordLinesLoading"
+        :default-line-code="defaultRecordLine"
+        :line-disabled="Boolean(editingRecord) && isHuaweiCloud"
         :value-suggestions="contentSuggestions"
       />
       <template #footer>
