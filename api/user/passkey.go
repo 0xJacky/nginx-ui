@@ -105,6 +105,7 @@ func FinishPasskeyPreAuthentication(c *gin.Context) {
 		Message:            "ok",
 		AccessTokenPayload: token,
 		SecureSessionID:    secureSessionID,
+		SecureSessionTTL:   int(user.SecureSessionDuration().Seconds()),
 	})
 }
 
@@ -257,6 +258,7 @@ func FinishPasskeyLogin(c *gin.Context) {
 		Message:            "ok",
 		AccessTokenPayload: token,
 		SecureSessionID:    secureSessionID,
+		SecureSessionTTL:   int(user.SecureSessionDuration().Seconds()),
 	})
 }
 

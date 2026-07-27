@@ -110,18 +110,33 @@ func secureSessionIDCacheKey(sessionId string) string {
 	return fmt.Sprintf("2fa_secure_session:_%s", sessionId)
 }
 
+// DefaultSecureSessionDuration is the two factor session window used by every
+// release build. See secure_session.go and secure_session_dev.go.
+const DefaultSecureSessionDuration = 10 * time.Minute
+
 func SetSecureSessionID(userId uint64) (sessionId string) {
 	sessionId = uuid.NewString()
-	cache.Set(secureSessionIDCacheKey(sessionId), userId, 10*time.Minute)
+	storeSecureSession(sessionId, userId, SecureSessionDuration())
 
 	return
 }
 
 func VerifySecureSessionID(sessionId string, userId uint64) bool {
-	if v, ok := cache.Get(secureSessionIDCacheKey(sessionId)); ok {
-		if v.(uint64) == userId {
-			return true
-		}
+	storedUserID, ok := lookupSecureSession(sessionId)
+	return ok && storedUserID == userId
+}
+
+// setCachedSecureSession and lookupCachedSecureSession back the release build
+// and act as the fallback for the dev build before the database is ready.
+func setCachedSecureSession(sessionId string, userId uint64, ttl time.Duration) {
+	cache.Set(secureSessionIDCacheKey(sessionId), userId, ttl)
+}
+
+func lookupCachedSecureSession(sessionId string) (uint64, bool) {
+	v, ok := cache.Get(secureSessionIDCacheKey(sessionId))
+	if !ok {
+		return 0, false
 	}
-	return false
+	userId, ok := v.(uint64)
+	return userId, ok
 }
