@@ -9,11 +9,14 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/host/setup"
 	hostssh "github.com/0xJacky/Nginx-UI/internal/host/ssh"
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
 	gossh "golang.org/x/crypto/ssh"
 )
+
+var resetSSHClient = nginx.ResetSSHClient
 
 // Preview renders all snippets from the posted SetupParams (or current
 // settings if body is empty). Does not persist anything.
@@ -197,6 +200,7 @@ func TrustHostKey(c *gin.Context) {
 		cosy.ErrHandler(c, err)
 		return
 	}
+	resetSSHClient()
 	c.JSON(http.StatusOK, gin.H{"message": "trusted"})
 }
 
@@ -264,6 +268,7 @@ func TrustScannedHostKey(c *gin.Context) {
 		cosy.ErrHandler(c, err)
 		return
 	}
+	resetSSHClient()
 	c.JSON(http.StatusOK, gin.H{"message": "trusted"})
 }
 
@@ -289,6 +294,7 @@ func ReplaceHostKey(c *gin.Context) {
 		cosy.ErrHandler(c, err)
 		return
 	}
+	resetSSHClient()
 	c.JSON(http.StatusOK, gin.H{"message": "replaced"})
 }
 
@@ -305,5 +311,6 @@ func DeleteHostKey(c *gin.Context) {
 		cosy.ErrHandler(c, err)
 		return
 	}
+	resetSSHClient()
 	c.JSON(http.StatusOK, gin.H{"message": "deleted"})
 }
