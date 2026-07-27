@@ -15,8 +15,15 @@ type Runner interface {
 	Stat(path string) bool
 }
 
+// StatOnTarget reports whether path exists on the machine that runs nginx,
+// which is not this container in external container or SSH mode.
+func StatOnTarget(path string) bool {
+	return resolveRunner().Stat(path)
+}
+
 // resolveRunner returns the active runner based on the configured control mode.
-func resolveRunner() Runner {
+// It is a variable so tests can substitute a runner without a live target.
+var resolveRunner = func() Runner {
 	switch settings.NginxSettings.ControlMode() {
 	case settings.ControlModeHostViaSSH:
 		return newSSHRunner()

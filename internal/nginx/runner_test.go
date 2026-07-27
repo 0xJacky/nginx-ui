@@ -3,6 +3,7 @@ package nginx
 import (
 	"context"
 	"os"
+	"sync"
 	"testing"
 )
 
@@ -38,4 +39,37 @@ func TestDockerRunner_RoutesToDockerExec(t *testing.T) {
 	// We can't actually exercise docker.Exec without a docker daemon,
 	// so this is a smoke test ensuring the type satisfies the interface.
 	var _ Runner = (*dockerRunner)(nil)
+}
+
+// ResetSSHClient used to write the shared client without a lock, so a
+// concurrent newSSHRunner could hand out a runner holding a nil client.
+func TestResetSSHClientIsSafeUnderConcurrentUse(t *testing.T) {
+	t.Cleanup(func() {
+		sshMutex.Lock()
+		sshShared = nil
+		sshMutex.Unlock()
+	})
+
+	var waitGroup sync.WaitGroup
+	for range 16 {
+		waitGroup.Add(1)
+		go func() {
+			defer waitGroup.Done()
+			for range 32 {
+				runner, ok := newSSHRunner().(*sshRunner)
+				if !ok || runner.client == nil {
+					t.Error("newSSHRunner() produced a runner without a client")
+					return
+				}
+			}
+		}()
+		waitGroup.Add(1)
+		go func() {
+			defer waitGroup.Done()
+			for range 32 {
+				ResetSSHClient()
+			}
+		}()
+	}
+	waitGroup.Wait()
 }

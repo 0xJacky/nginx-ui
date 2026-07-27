@@ -7,6 +7,9 @@ const (
 
 	HostModeSSH = "ssh"
 
+	HostServiceManagerSystemd = "systemd"
+	HostServiceManagerLaunchd = "launchd"
+
 	DefaultHostKnownHostsPath = "/etc/nginx-ui/known_hosts"
 )
 
@@ -35,8 +38,11 @@ type Nginx struct {
 	HostPasswordRef     string `json:"host_password_ref" protected:"true"`
 	HostKnownHostsPath  string `json:"host_known_hosts_path" protected:"true"`
 	HostSudoPrefix      string `json:"host_sudo_prefix" protected:"true"`
+	HostServiceManager  string `json:"host_service_manager" protected:"true"`
 	HostSystemdUnitName string `json:"host_systemd_unit_name" protected:"true"`
 	HostSystemctlPath   string `json:"host_systemctl_path" protected:"true"`
+	HostLaunchdService  string `json:"host_launchd_service" protected:"true"`
+	HostLaunchctlPath   string `json:"host_launchctl_path" protected:"true"`
 	HostConfigDir       string `json:"host_config_dir" protected:"true"`
 	HostLogDir          string `json:"host_log_dir" protected:"true"`
 }
@@ -55,6 +61,37 @@ func (n *Nginx) GetHostKnownHostsPath() string {
 		return DefaultHostKnownHostsPath
 	}
 	return n.HostKnownHostsPath
+}
+
+func (n *Nginx) GetHostServiceManager() string {
+	if n.HostServiceManager == HostServiceManagerLaunchd {
+		return HostServiceManagerLaunchd
+	}
+	return HostServiceManagerSystemd
+}
+
+func (n *Nginx) GetHostSudoPrefix() string {
+	if n.GetHostServiceManager() == HostServiceManagerLaunchd {
+		return ""
+	}
+	if n.HostSudoPrefix == "" {
+		return "sudo -n"
+	}
+	return n.HostSudoPrefix
+}
+
+func (n *Nginx) GetHostLaunchdService() string {
+	if n.HostLaunchdService == "" {
+		return "homebrew.mxcl.nginx"
+	}
+	return n.HostLaunchdService
+}
+
+func (n *Nginx) GetHostLaunchctlPath() string {
+	if n.HostLaunchctlPath == "" {
+		return "/bin/launchctl"
+	}
+	return n.HostLaunchctlPath
 }
 
 // RunningInAnotherContainer reports whether nginx-ui should control nginx

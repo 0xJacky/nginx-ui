@@ -83,8 +83,11 @@ export interface NginxSettings {
   host_private_key_path?: string
   host_known_hosts_path?: string
   host_sudo_prefix?: string
+  host_service_manager?: 'systemd' | 'launchd'
   host_systemd_unit_name?: string
   host_systemctl_path?: string
+  host_launchd_service?: string
+  host_launchctl_path?: string
   host_config_dir?: string
   host_log_dir?: string
 }

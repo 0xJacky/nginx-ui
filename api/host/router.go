@@ -10,6 +10,7 @@ func InitRouter(r *gin.RouterGroup) {
 		g.POST("keypair", GenerateKeypair)
 		g.GET("publickey", GetPublicKey)
 		g.DELETE("keypair", DeleteKeypair)
+		g.POST("discover", Discover)
 		g.POST("verify", Verify)
 		g.POST("known-host", TrustHostKey)
 		g.POST("host-key/scan", ScanHostKey)

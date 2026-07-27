@@ -73,6 +73,7 @@ func DeleteKeypair(c *gin.Context) {
 }
 
 type verifyRequest struct {
+	setup.SetupParams
 	SkipNginxT bool `json:"skip_nginx_t"`
 }
 
@@ -80,7 +81,11 @@ func Verify(c *gin.Context) {
 	var req verifyRequest
 	_ = c.ShouldBindJSON(&req)
 
-	client, err := setup.NewClientFromSettings()
+	p := req.SetupParams
+	if p.HostAddress == "" {
+		p = setup.ParamsFromSettings()
+	}
+	client, err := setup.NewClientFromParams(p)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
@@ -92,9 +97,34 @@ func Verify(c *gin.Context) {
 
 	result := setup.Verify(ctx, setup.VerifyOptions{
 		Client:     client,
-		Params:     setup.ParamsFromSettings(),
+		Params:     p,
 		SkipNginxT: req.SkipNginxT,
 	})
+	c.JSON(http.StatusOK, result)
+}
+
+// Discover locates nginx and its compiled paths on the SSH host. It only runs
+// read-only version and package-prefix commands and does not persist settings.
+func Discover(c *gin.Context) {
+	var p setup.SetupParams
+	_ = c.ShouldBindJSON(&p)
+	if p.HostAddress == "" {
+		p = setup.ParamsFromSettings()
+	}
+	client, err := setup.NewClientFromParams(p)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+	defer client.Close()
+
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
+	defer cancel()
+	result, err := setup.DiscoverNginx(ctx, client, p)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
 	c.JSON(http.StatusOK, result)
 }
 

@@ -24,7 +24,7 @@ watch(() => props.params, refresh, { deep: true })
     />
 
     <CodeBlock
-      v-if="snippets"
+      v-if="snippets && params.service_manager !== 'launchd'"
       :code="snippets.sudoers"
       language="sudoers"
       :title="$gettext('/etc/sudoers.d/nginx-ui (sudo visudo -f)')"
@@ -39,7 +39,7 @@ watch(() => props.params, refresh, { deep: true })
       v-if="snippets"
       :code="snippets.acl_commands"
       language="shell"
-      :title="$gettext('ACL commands (run as root)')"
+      :title="params.service_manager === 'launchd' ? $gettext('Host file access checks') : $gettext('ACL commands (run as root)')"
     />
   </div>
 </template>

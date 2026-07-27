@@ -28,11 +28,15 @@ func hostSetupPrintCommand() *cli.Command {
 		Flags: []cli.Flag{
 			&cli.StringFlag{Name: "host-address", Usage: "remote address host:port"},
 			&cli.StringFlag{Name: "host-user", Usage: "remote user"},
+			&cli.StringFlag{Name: "service-manager", Usage: "host service manager: systemd or launchd", Value: "systemd"},
 			&cli.StringFlag{Name: "systemd-unit", Usage: "systemd unit name", Value: "nginx.service"},
 			&cli.StringFlag{Name: "systemctl-path", Usage: "absolute path to systemctl on host", Value: "/bin/systemctl"},
-			&cli.StringFlag{Name: "nginx-sbin", Usage: "absolute path to nginx on host", Value: "/usr/sbin/nginx"},
-			&cli.StringFlag{Name: "config-dir", Usage: "host nginx config dir", Value: "/etc/nginx"},
-			&cli.StringFlag{Name: "log-dir", Usage: "host nginx log dir", Value: "/var/log/nginx"},
+			&cli.StringFlag{Name: "launchd-service", Usage: "launchd service label", Value: "homebrew.mxcl.nginx"},
+			&cli.StringFlag{Name: "launchctl-path", Usage: "absolute path to launchctl on host", Value: "/bin/launchctl"},
+			&cli.StringFlag{Name: "nginx-sbin", Usage: "absolute path to nginx on host"},
+			&cli.StringFlag{Name: "config-dir", Usage: "host nginx config dir"},
+			&cli.StringFlag{Name: "log-dir", Usage: "host nginx log dir"},
+			&cli.StringFlag{Name: "pid-path", Usage: "host nginx PID file path"},
 			&cli.StringFlag{Name: "public-key", Usage: "path to public key file"},
 			&cli.BoolFlag{Name: "compose", Usage: "print only the compose snippet"},
 			&cli.BoolFlag{Name: "override", Usage: "print only the full override file"},
@@ -72,13 +76,17 @@ func hostSetupTestCommand() *cli.Command {
 
 func paramsFromFlags(c *cli.Command) (setup.SetupParams, error) {
 	p := setup.SetupParams{
-		HostAddress:   c.String("host-address"),
-		HostUser:      c.String("host-user"),
-		SystemdUnit:   c.String("systemd-unit"),
-		SystemctlPath: c.String("systemctl-path"),
-		NginxSbinPath: c.String("nginx-sbin"),
-		HostConfigDir: c.String("config-dir"),
-		HostLogDir:    c.String("log-dir"),
+		HostAddress:    c.String("host-address"),
+		HostUser:       c.String("host-user"),
+		ServiceManager: c.String("service-manager"),
+		SystemdUnit:    c.String("systemd-unit"),
+		SystemctlPath:  c.String("systemctl-path"),
+		LaunchdService: c.String("launchd-service"),
+		LaunchctlPath:  c.String("launchctl-path"),
+		NginxSbinPath:  c.String("nginx-sbin"),
+		HostConfigDir:  c.String("config-dir"),
+		HostLogDir:     c.String("log-dir"),
+		PIDPath:        c.String("pid-path"),
 	}
 	if addr := c.String("host-address"); strings.HasPrefix(addr, "host.docker.internal") {
 		p.UseHostGateway = true

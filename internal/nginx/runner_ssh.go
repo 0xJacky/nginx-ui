@@ -9,33 +9,46 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 )
 
-// sshOnce ensures we share a single long-lived SSH client across all Exec calls.
+// A single long-lived SSH client is shared across all Exec calls.
 //
 // LIMITATION: if settings.NginxSettings.Host* fields change at runtime (e.g.
 // the user saves new SSH config via the Web UI), the cached client is NOT
 // rebuilt with the new settings. Settings handler must call ResetSSHClient()
 // after writes that affect host SSH config. See spec §6.3.
 var (
-	sshOnce   sync.Once
+	sshMutex  sync.Mutex
 	sshShared *hostssh.Client
 )
 
+// sharedSSHClient returns the cached client, building it on first use. The
+// mutex covers both the read and the build so a concurrent reset cannot hand
+// out a nil client.
+func sharedSSHClient() *hostssh.Client {
+	sshMutex.Lock()
+	defer sshMutex.Unlock()
+	if sshShared == nil {
+		sshShared = hostssh.NewClient(buildSSHOptions())
+	}
+	return sshShared
+}
+
 func newSSHRunner() Runner {
-	sshOnce.Do(func() {
-		opts := buildSSHOptions()
-		sshShared = hostssh.NewClient(opts)
-	})
-	return &sshRunner{client: sshShared}
+	return &sshRunner{client: sharedSSHClient()}
 }
 
 // ResetSSHClient invalidates the cached SSH client so the next nginx command
-// re-dials with the current settings. Safe to call concurrently with Exec.
+// re-dials with the current settings. Safe to call concurrently with Exec: a
+// runner already holds its own reference, so it finishes against the old
+// client instead of observing a nil one.
 func ResetSSHClient() {
-	if sshShared != nil {
-		_ = sshShared.Close()
-	}
-	sshOnce = sync.Once{}
+	sshMutex.Lock()
+	previous := sshShared
 	sshShared = nil
+	sshMutex.Unlock()
+
+	if previous != nil {
+		_ = previous.Close()
+	}
 }
 
 func buildSSHOptions() hostssh.ClientOptions {
@@ -52,10 +65,7 @@ func buildSSHOptions() hostssh.ClientOptions {
 	}
 	_ = n.HostPasswordRef // suppress unused-field lint until decryption lands
 
-	sudo := n.HostSudoPrefix
-	if sudo == "" {
-		sudo = "sudo -n"
-	}
+	sudo := n.GetHostSudoPrefix()
 	systemctl := n.HostSystemctlPath
 	if systemctl == "" {
 		systemctl = "/bin/systemctl"

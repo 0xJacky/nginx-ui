@@ -8,7 +8,7 @@ services:
     volumes:
       - {{ .HostConfigDir }}:{{ .ContainerConfigDir }}
       - {{ .HostLogDir }}:{{ .ContainerLogDir }}:ro
-      - /var/run:/var/run:ro
+      - {{ .PIDDir }}:{{ .PIDDir }}:ro
 {{- if not .UseGeneratedKey }}
       - {{ .HostKeyPath }}:{{ .ContainerKeyPath }}:ro
       - {{ .HostKnownHostsPath }}:{{ .ContainerKnownHostsPath }}:ro
@@ -19,8 +19,15 @@ services:
       NGINX_UI_NGINX_HOST_USER: {{ .HostUser }}
       NGINX_UI_NGINX_HOST_PRIVATE_KEY_PATH: {{ .ContainerKeyPath }}
       NGINX_UI_NGINX_HOST_KNOWN_HOSTS_PATH: {{ .ContainerKnownHostsPath }}
+      NGINX_UI_NGINX_HOST_SERVICE_MANAGER: {{ .ServiceManager }}
+{{- if .IsLaunchd }}
+      NGINX_UI_NGINX_HOST_LAUNCHD_SERVICE: {{ .LaunchdService }}
+      NGINX_UI_NGINX_HOST_LAUNCHCTL_PATH: {{ .LaunchctlPath }}
+{{- else }}
       NGINX_UI_NGINX_HOST_SYSTEMD_UNIT_NAME: {{ .SystemdUnit }}
       NGINX_UI_NGINX_HOST_SYSTEMCTL_PATH: {{ .SystemctlPath }}
+{{- end }}
       NGINX_UI_NGINX_HOST_CONFIG_DIR: {{ .HostConfigDir }}
       NGINX_UI_NGINX_HOST_LOG_DIR: {{ .HostLogDir }}
+      NGINX_UI_NGINX_PID_PATH: {{ .PIDPath }}
       NGINX_UI_DISABLE_BUNDLED_NGINX: "true"

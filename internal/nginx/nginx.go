@@ -3,6 +3,7 @@ package nginx
 import (
 	"context"
 	"errors"
+	"fmt"
 	"os"
 	"os/exec"
 	"strconv"
@@ -76,18 +77,10 @@ func Reload() (stdOut string, stdErr error) {
 		return stdOut, stdErr
 	}
 
-	// SSH mode: prefer systemctl reload over nginx -s reload because the
-	// container's PID namespace cannot reach the host's nginx master PID.
+	// SSH mode controls the native host service without crossing PID namespaces.
 	if settings.NginxSettings.ControlMode() == settings.ControlModeHostViaSSH {
-		systemctl := settings.NginxSettings.HostSystemctlPath
-		if systemctl == "" {
-			systemctl = "/bin/systemctl"
-		}
-		unit := settings.NginxSettings.HostSystemdUnitName
-		if unit == "" {
-			unit = "nginx.service"
-		}
-		return execCommand(systemctl, "reload", unit)
+		name, args := hostReloadCommand(settings.NginxSettings)
+		return execCommand(name, args...)
 	}
 
 	if settings.NginxSettings.ReloadCmd != "" {
@@ -106,18 +99,14 @@ func restart() (stdOut string, stdErr error) {
 	// fix(docker): nginx restart always output network error
 	time.Sleep(500 * time.Millisecond)
 
-	// SSH mode: route through systemctl for correct cross-namespace lifecycle.
+	// SSH mode routes restart through the host's native service manager.
 	if settings.NginxSettings.ControlMode() == settings.ControlModeHostViaSSH {
-		systemctl := settings.NginxSettings.HostSystemctlPath
-		if systemctl == "" {
-			systemctl = "/bin/systemctl"
+		runner := resolveRunner()
+		name, args, err := hostRestartCommand(runner, settings.NginxSettings)
+		if err != nil {
+			return "", err
 		}
-		unit := settings.NginxSettings.HostSystemdUnitName
-		if unit == "" {
-			unit = "nginx.service"
-		}
-		lastStdOut, lastStdErr = execCommand(systemctl, "restart", unit)
-		return
+		return runner.Exec(context.Background(), name, args...)
 	}
 
 	if settings.NginxSettings.RestartCmd != "" {
@@ -310,7 +299,7 @@ func IsRunning() bool {
 	pidPath := GetPIDPath()
 	switch settings.NginxSettings.ControlMode() {
 	case settings.ControlModeHostViaSSH:
-		return isRunningViaSystemd()
+		return isRunningViaHostService()
 	case settings.ControlModeExternalContainer:
 		return docker.StatPath(pidPath)
 	default:
@@ -318,24 +307,109 @@ func IsRunning() bool {
 	}
 }
 
-// isRunningViaSystemd queries `systemctl is-active <unit>` over SSH.
-// Falls back to PID-file existence check (via bind-mount) on systemctl failure.
-func isRunningViaSystemd() bool {
-	unit := settings.NginxSettings.HostSystemdUnitName
-	if unit == "" {
-		unit = "nginx.service"
+func hostReloadCommand(n *settings.Nginx) (string, []string) {
+	if n.GetHostServiceManager() == settings.HostServiceManagerLaunchd {
+		sbin := n.SbinPath
+		if sbin == "" {
+			sbin = "/opt/homebrew/bin/nginx"
+		}
+		return sbin, []string{"-s", "reload"}
 	}
-	systemctl := settings.NginxSettings.HostSystemctlPath
+	systemctl := n.HostSystemctlPath
 	if systemctl == "" {
 		systemctl = "/bin/systemctl"
 	}
-	runner := resolveRunner()
-	out, err := runner.Exec(context.Background(), systemctl, "is-active", unit)
-	if err == nil && strings.TrimSpace(out) == "active" {
-		return true
+	unit := n.HostSystemdUnitName
+	if unit == "" {
+		unit = "nginx.service"
 	}
-	// Fallback: bind-mounted PID file is visible to the container as a local path.
-	return isProcessRunning(GetPIDPath())
+	return systemctl, []string{"reload", unit}
+}
+
+func hostRestartCommand(runner Runner, n *settings.Nginx) (string, []string, error) {
+	if n.GetHostServiceManager() == settings.HostServiceManagerLaunchd {
+		target, err := launchdTarget(runner, n.GetHostLaunchdService())
+		if err != nil {
+			return "", nil, err
+		}
+		return n.GetHostLaunchctlPath(), []string{"kickstart", "-k", target}, nil
+	}
+	systemctl := n.HostSystemctlPath
+	if systemctl == "" {
+		systemctl = "/bin/systemctl"
+	}
+	unit := n.HostSystemdUnitName
+	if unit == "" {
+		unit = "nginx.service"
+	}
+	return systemctl, []string{"restart", unit}, nil
+}
+
+func launchdTarget(runner Runner, service string) (string, error) {
+	out, err := runner.Exec(context.Background(), "/usr/bin/id", "-u")
+	if err != nil {
+		return "", fmt.Errorf("resolve launchd user domain: %w", err)
+	}
+	uid := strings.TrimSpace(out)
+	if parsed, parseErr := strconv.ParseUint(uid, 10, 32); parseErr != nil || parsed == 0 {
+		return "", fmt.Errorf("invalid launchd user id %q", uid)
+	}
+	service = strings.TrimSpace(service)
+	if service == "" {
+		return "", errors.New("launchd service label is empty")
+	}
+	return "gui/" + uid + "/" + service, nil
+}
+
+// isRunningViaHostService queries the configured host service manager over SSH.
+// On manager errors it validates the remote PID instead of inspecting the container PID namespace.
+func isRunningViaHostService() bool {
+	runner := resolveRunner()
+	n := settings.NginxSettings
+	if n.GetHostServiceManager() == settings.HostServiceManagerLaunchd {
+		target, err := launchdTarget(runner, n.GetHostLaunchdService())
+		if err == nil {
+			if _, err = runner.Exec(context.Background(), n.GetHostLaunchctlPath(), "print", target); err == nil {
+				return true
+			}
+		}
+	} else {
+		name, args := hostSystemdStatusCommand(n)
+		out, err := runner.Exec(context.Background(), name, args...)
+		if err == nil && strings.TrimSpace(out) == "active" {
+			return true
+		}
+	}
+	return isRemotePIDRunning(runner, GetPIDPath())
+}
+
+func hostSystemdStatusCommand(n *settings.Nginx) (string, []string) {
+	systemctl := n.HostSystemctlPath
+	if systemctl == "" {
+		systemctl = "/bin/systemctl"
+	}
+	unit := n.HostSystemdUnitName
+	if unit == "" {
+		unit = "nginx.service"
+	}
+	return systemctl, []string{"is-active", unit}
+}
+
+func isRemotePIDRunning(runner Runner, pidPath string) bool {
+	if pidPath == "" {
+		return false
+	}
+	out, err := runner.Exec(context.Background(), "/bin/cat", pidPath)
+	if err != nil {
+		return false
+	}
+	pid := strings.TrimSpace(out)
+	parsed, err := strconv.ParseInt(pid, 10, 32)
+	if err != nil || parsed <= 0 {
+		return false
+	}
+	_, err = runner.Exec(context.Background(), "/bin/kill", "-0", pid)
+	return err == nil
 }
 
 // isProcessRunning checks if the process with the PID from pidPath is actually running

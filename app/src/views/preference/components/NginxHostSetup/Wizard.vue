@@ -17,11 +17,13 @@ const publicKey = ref('')
 const params = ref<SetupParams>({
   host_address: 'host.docker.internal:22',
   host_user: 'nginxui',
+  service_manager: 'systemd',
   systemd_unit: 'nginx.service',
   systemctl_path: '/bin/systemctl',
   nginx_sbin_path: '/usr/sbin/nginx',
   host_config_dir: '/etc/nginx',
   host_log_dir: '/var/log/nginx',
+  pid_path: '/var/run/nginx.pid',
   use_generated_key: true,
   public_key_open_ssh: '',
 })
@@ -45,13 +47,20 @@ function saveToSettings() {
   data.value.nginx.host_auth_method = authMethod.value
   data.value.nginx.host_private_key_path ||= defaultHostPrivateKeyPath
   data.value.nginx.host_known_hosts_path ||= defaultHostKnownHostsPath
-  data.value.nginx.host_sudo_prefix ||= 'sudo -n'
+  data.value.nginx.host_service_manager = params.value.service_manager
+  data.value.nginx.host_sudo_prefix = params.value.service_manager === 'launchd'
+    ? ''
+    : (data.value.nginx.host_sudo_prefix || 'sudo -n')
   data.value.nginx.host_systemd_unit_name = params.value.systemd_unit
   data.value.nginx.host_systemctl_path = params.value.systemctl_path
+  data.value.nginx.host_launchd_service = params.value.launchd_service
+  data.value.nginx.host_launchctl_path = params.value.launchctl_path
   data.value.nginx.host_config_dir = params.value.host_config_dir
   data.value.nginx.host_log_dir = params.value.host_log_dir
   data.value.nginx.sbin_path = params.value.nginx_sbin_path ?? data.value.nginx.sbin_path
+  data.value.nginx.pid_path = params.value.pid_path ?? data.value.nginx.pid_path
   data.value.nginx.config_dir = params.value.host_config_dir ?? data.value.nginx.config_dir
+  data.value.nginx.config_path = `${params.value.host_config_dir ?? '/etc/nginx'}/nginx.conf`
   data.value.nginx.error_log_path = `${params.value.host_log_dir ?? '/var/log/nginx'}/error.log`
   data.value.nginx.access_log_path = `${params.value.host_log_dir ?? '/var/log/nginx'}/access.log`
 }
@@ -93,7 +102,7 @@ function prev() {
       <Step5 :params="params" />
     </div>
     <div v-else-if="current === 5">
-      <Step4 />
+      <Step4 v-model:params="params" />
     </div>
 
     <div class="mt-6 flex justify-between">

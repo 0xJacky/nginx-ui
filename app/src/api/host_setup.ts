@@ -4,11 +4,15 @@ export interface SetupParams {
   host_address: string
   host_user: string
   use_host_gateway?: boolean
+  service_manager?: 'systemd' | 'launchd'
   systemd_unit?: string
   systemctl_path?: string
+  launchd_service?: string
+  launchctl_path?: string
   nginx_sbin_path?: string
   host_config_dir?: string
   host_log_dir?: string
+  pid_path?: string
   use_generated_key?: boolean
   public_key_open_ssh?: string
 }
@@ -31,6 +35,20 @@ export interface StepOutcome {
 
 export interface VerifyResult {
   steps: Record<string, StepOutcome>
+}
+
+export interface NginxDiscovery {
+  version: string
+  executable_path: string
+  prefix?: string
+  config_path?: string
+  config_dir?: string
+  pid_path?: string
+  access_log_path?: string
+  error_log_path?: string
+  log_dir?: string
+  homebrew_prefix?: string
+  document_root?: string
 }
 
 export interface KeypairResponse {
@@ -104,8 +122,11 @@ const hostSetup = {
   deleteKeypair(): Promise<void> {
     return http.delete('/host/setup/keypair')
   },
-  verify(skipNginxT = false): Promise<VerifyResult> {
-    return http.post('/host/setup/verify', { skip_nginx_t: skipNginxT })
+  verify(params: SetupParams, skipNginxT = false): Promise<VerifyResult> {
+    return http.post('/host/setup/verify', { ...params, skip_nginx_t: skipNginxT })
+  },
+  discover(params: SetupParams): Promise<NginxDiscovery> {
+    return http.post('/host/setup/discover', params)
   },
   trustHostKey(hostAddress: string, fingerprint: string, publicKey: string): Promise<void> {
     return http.post('/host/setup/known-host', {

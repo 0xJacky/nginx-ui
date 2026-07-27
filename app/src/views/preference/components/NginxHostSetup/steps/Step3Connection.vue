@@ -10,6 +10,28 @@ watch(hostInput, v => {
   params.value.use_host_gateway = v.startsWith('host.docker.internal')
 })
 
+watch(() => params.value.service_manager, manager => {
+  if (manager === 'launchd') {
+    Object.assign(params.value, {
+      launchd_service: 'homebrew.mxcl.nginx',
+      launchctl_path: '/bin/launchctl',
+      nginx_sbin_path: '/opt/homebrew/bin/nginx',
+      host_config_dir: '/opt/homebrew/etc/nginx',
+      host_log_dir: '/opt/homebrew/var/log/nginx',
+      pid_path: '/opt/homebrew/var/run/nginx.pid',
+    })
+    return
+  }
+  Object.assign(params.value, {
+    systemd_unit: 'nginx.service',
+    systemctl_path: '/bin/systemctl',
+    nginx_sbin_path: '/usr/sbin/nginx',
+    host_config_dir: '/etc/nginx',
+    host_log_dir: '/var/log/nginx',
+    pid_path: '/var/run/nginx.pid',
+  })
+})
+
 const remoteWarning = computed<boolean>(() => {
   const host = (hostInput.value.split(':')[0] || '').trim()
   if (!host)
@@ -36,12 +58,46 @@ const remoteWarning = computed<boolean>(() => {
       <AInput v-model:value="params.host_user" placeholder="nginxui" />
     </AFormItem>
 
-    <AFormItem :label="$gettext('systemd unit')">
+    <AFormItem :label="$gettext('Host platform')" required>
+      <ASegmented
+        v-model:value="params.service_manager"
+        :options="[
+          { label: $gettext('Linux (systemd)'), value: 'systemd' },
+          { label: $gettext('macOS (Homebrew)'), value: 'launchd' },
+        ]"
+      />
+    </AFormItem>
+
+    <AFormItem v-if="params.service_manager === 'systemd'" :label="$gettext('systemd unit')">
       <AInput v-model:value="params.systemd_unit" placeholder="nginx.service" />
     </AFormItem>
 
-    <AFormItem :label="$gettext('systemctl path')">
+    <AFormItem v-if="params.service_manager === 'systemd'" :label="$gettext('systemctl path')">
       <AInput v-model:value="params.systemctl_path" placeholder="/bin/systemctl" />
+    </AFormItem>
+
+    <AFormItem v-if="params.service_manager === 'launchd'" :label="$gettext('launchd service label')">
+      <AInput v-model:value="params.launchd_service" placeholder="homebrew.mxcl.nginx" />
+    </AFormItem>
+
+    <AFormItem v-if="params.service_manager === 'launchd'" :label="$gettext('launchctl path')">
+      <AInput v-model:value="params.launchctl_path" placeholder="/bin/launchctl" />
+    </AFormItem>
+
+    <AFormItem :label="$gettext('nginx executable path')" required>
+      <AInput v-model:value="params.nginx_sbin_path" />
+    </AFormItem>
+
+    <AFormItem :label="$gettext('nginx config directory')" required>
+      <AInput v-model:value="params.host_config_dir" />
+    </AFormItem>
+
+    <AFormItem :label="$gettext('nginx log directory')" required>
+      <AInput v-model:value="params.host_log_dir" />
+    </AFormItem>
+
+    <AFormItem :label="$gettext('nginx PID file')" required>
+      <AInput v-model:value="params.pid_path" />
     </AFormItem>
 
     <AAlert

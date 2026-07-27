@@ -9,29 +9,34 @@ import (
 // settings.NginxSettings. The returned client is single-use for verify flows;
 // the long-lived client used by sshRunner is independent.
 func NewClientFromSettings() (*hostssh.Client, error) {
+	return NewClientFromParams(ParamsFromSettings())
+}
+
+// NewClientFromParams constructs a client for wizard verification without
+// persisting the in-progress host and service-manager settings.
+func NewClientFromParams(params SetupParams) (*hostssh.Client, error) {
 	n := settings.NginxSettings
+	p := params.FillDefaults()
 	kh, err := hostssh.NewKnownHosts(n.GetHostKnownHostsPath())
 	if err != nil {
 		return nil, err
 	}
 	sudo := n.HostSudoPrefix
-	if sudo == "" {
+	if p.IsLaunchd() {
+		sudo = ""
+	} else if sudo == "" {
 		sudo = "sudo -n"
 	}
-	systemctl := n.HostSystemctlPath
-	if systemctl == "" {
-		systemctl = "/bin/systemctl"
-	}
 	return hostssh.NewClient(hostssh.ClientOptions{
-		Address:        n.HostAddress,
-		User:           n.HostUser,
+		Address:        p.HostAddress,
+		User:           p.HostUser,
 		AuthMethod:     n.HostAuthMethod,
 		PrivateKeyPath: n.HostPrivateKeyPath,
 		KnownHosts:     kh,
 		Config: hostssh.Config{
 			SudoPrefix:    sudo,
-			SystemctlPath: systemctl,
-			NginxSbinPath: n.SbinPath,
+			SystemctlPath: p.SystemctlPath,
+			NginxSbinPath: p.NginxSbinPath,
 		},
 	}), nil
 }
@@ -42,11 +47,15 @@ func ParamsFromSettings() SetupParams {
 	p := SetupParams{
 		HostAddress:             n.HostAddress,
 		HostUser:                n.HostUser,
+		ServiceManager:          n.GetHostServiceManager(),
 		SystemdUnit:             n.HostSystemdUnitName,
 		SystemctlPath:           n.HostSystemctlPath,
+		LaunchdService:          n.GetHostLaunchdService(),
+		LaunchctlPath:           n.GetHostLaunchctlPath(),
 		NginxSbinPath:           n.SbinPath,
 		HostConfigDir:           n.HostConfigDir,
 		HostLogDir:              n.HostLogDir,
+		PIDPath:                 n.PIDPath,
 		ContainerKeyPath:        n.HostPrivateKeyPath,
 		ContainerKnownHostsPath: n.GetHostKnownHostsPath(),
 	}
