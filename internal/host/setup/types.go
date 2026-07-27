@@ -1,10 +1,14 @@
 package setup
 
 import (
+	"bytes"
 	"path/filepath"
+	"regexp"
 	"strings"
 
 	"github.com/0xJacky/Nginx-UI/settings"
+	"github.com/uozi-tech/cosy"
+	gossh "golang.org/x/crypto/ssh"
 )
 
 // SetupParams is the single shared input model for all template renders,
@@ -58,7 +62,7 @@ func (p SetupParams) FillDefaults() SetupParams {
 			p.LaunchctlPath = "/bin/launchctl"
 		}
 		if p.NginxSbinPath == "" {
-			p.NginxSbinPath = "/opt/homebrew/bin/nginx"
+			p.NginxSbinPath = "/opt/homebrew/opt/nginx/bin/nginx"
 		}
 		if p.HostConfigDir == "" {
 			p.HostConfigDir = "/opt/homebrew/etc/nginx"
@@ -98,7 +102,7 @@ func (p SetupParams) FillDefaults() SetupParams {
 		p.ContainerLogDir = p.HostLogDir
 	}
 	if p.ContainerKeyPath == "" {
-		p.ContainerKeyPath = "/etc/nginx-ui/host_key"
+		p.ContainerKeyPath = settings.DefaultHostPrivateKeyPath
 	}
 	if p.ContainerKnownHostsPath == "" {
 		p.ContainerKnownHostsPath = "/etc/nginx-ui/known_hosts"
@@ -109,6 +113,98 @@ func (p SetupParams) FillDefaults() SetupParams {
 	return p
 }
 
+// hostUserPattern is the portable POSIX username syntax. The value is pasted
+// into sudoers and into shell commands, so anything outside it is rejected
+// rather than escaped.
+var hostUserPattern = regexp.MustCompile(`^[a-z_][a-z0-9_-]{0,31}$`)
+
+// ValidateHostUser rejects an SSH user that cannot be safely interpolated into
+// the generated host instructions.
+func ValidateHostUser(user string) error {
+	if !hostUserPattern.MatchString(strings.TrimSpace(user)) {
+		return ErrInvalidHostUser
+	}
+	return nil
+}
+
+// The generated snippets are pasted into a sudoers rule and into shell commands
+// the operator runs as root. sudoers has no quoting that survives a comma, so
+// every interpolated value is restricted rather than escaped.
+var (
+	absolutePathPattern = regexp.MustCompile(`^/[A-Za-z0-9._+@\-/]*$`)
+	systemdUnitPattern  = regexp.MustCompile(`^[A-Za-z0-9@._\-]+$`)
+	launchdLabelPattern = regexp.MustCompile(`^[A-Za-z0-9._\-]+$`)
+	hostAddressPattern  = regexp.MustCompile(`^\[?[A-Za-z0-9._:\-]+\]?(:[0-9]{1,5})?$`)
+)
+
+type snippetField struct {
+	name    string
+	value   string
+	pattern *regexp.Regexp
+}
+
+// ValidateSnippetValues rejects any value that would change the meaning of the
+// generated sudoers rule or shell snippets. Empty values are left to
+// FillDefaults, which only produces known-good literals.
+func (p SetupParams) ValidateSnippetValues() error {
+	if err := ValidateHostUser(p.HostUser); err != nil {
+		return err
+	}
+
+	fields := []snippetField{
+		{"host_address", p.HostAddress, hostAddressPattern},
+		{"systemd_unit", p.SystemdUnit, systemdUnitPattern},
+		{"launchd_service", p.LaunchdService, launchdLabelPattern},
+		{"systemctl_path", p.SystemctlPath, absolutePathPattern},
+		{"launchctl_path", p.LaunchctlPath, absolutePathPattern},
+		{"nginx_sbin_path", p.NginxSbinPath, absolutePathPattern},
+		{"host_config_dir", p.HostConfigDir, absolutePathPattern},
+		{"host_log_dir", p.HostLogDir, absolutePathPattern},
+		{"pid_path", p.PIDPath, absolutePathPattern},
+		{"host_key_path", p.HostKeyPath, absolutePathPattern},
+		{"host_known_hosts_path", p.HostKnownHostsPath, absolutePathPattern},
+		{"container_config_dir", p.ContainerConfigDir, absolutePathPattern},
+		{"container_log_dir", p.ContainerLogDir, absolutePathPattern},
+		{"container_key_path", p.ContainerKeyPath, absolutePathPattern},
+		{"container_known_hosts_path", p.ContainerKnownHostsPath, absolutePathPattern},
+	}
+
+	for _, field := range fields {
+		value := strings.TrimSpace(field.value)
+		if value == "" {
+			continue
+		}
+		if !field.pattern.MatchString(value) {
+			return cosy.WrapErrorWithParams(ErrUnsafeSnippetValue, field.name, value)
+		}
+	}
+
+	return validatePublicKeyLine(p.PublicKeyOpenSSH)
+}
+
+// validatePublicKeyLine keeps a newline out of authorized_keys, where a second
+// line would install another key or a forced command.
+func validatePublicKeyLine(key string) error {
+	value := strings.TrimSpace(key)
+	if value == "" {
+		return nil
+	}
+	if strings.ContainsAny(value, "\r\n") {
+		return ErrInvalidPublicKey
+	}
+	if _, _, _, rest, err := gossh.ParseAuthorizedKey([]byte(value)); err != nil || len(bytes.TrimSpace(rest)) > 0 {
+		return ErrInvalidPublicKey
+	}
+	return nil
+}
+
 func (p SetupParams) IsLaunchd() bool {
 	return p.ServiceManager == settings.HostServiceManagerLaunchd
+}
+
+// NeedsSudoers reports whether the generated instructions have to include a
+// sudoers entry. A launchd service runs in the SSH user's own domain, and root
+// already holds every privilege, so neither case needs one.
+func (p SetupParams) NeedsSudoers() bool {
+	return !p.IsLaunchd() && strings.TrimSpace(p.HostUser) != "root"
 }

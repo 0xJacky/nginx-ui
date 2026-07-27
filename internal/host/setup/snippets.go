@@ -19,12 +19,26 @@ type Rendered struct {
 	ComposeOverride string `json:"compose_override"`
 	DockerRun       string `json:"docker_run"`
 	AuthorizedKeys  string `json:"authorized_keys"`
-	Sudoers         string `json:"sudoers"`
-	ACLCommands     string `json:"acl_commands"`
+	// AuthorizedKeysInstall appends the key with the permissions sshd requires.
+	// sshd silently ignores authorized_keys when they are too permissive.
+	AuthorizedKeysInstall string `json:"authorized_keys_install"`
+	Sudoers               string `json:"sudoers"`
+	ACLCommands           string `json:"acl_commands"`
+	// SudoersRequired lets the UI hide the sudoers instructions and their
+	// checks when the target needs none.
+	SudoersRequired bool `json:"sudoers_required"`
 }
 
+// shellQuote wraps a value in single quotes so a public key comment cannot
+// break out of the generated command.
+func shellQuote(value string) string {
+	return "'" + strings.ReplaceAll(value, "'", `'"'"'`) + "'"
+}
+
+var templateFuncs = template.FuncMap{"shellQuote": shellQuote}
+
 func renderTemplate(name string, p SetupParams) (string, error) {
-	t, err := template.ParseFS(templateFS, "templates/"+name)
+	t, err := template.New(name).Funcs(templateFuncs).ParseFS(templateFS, "templates/"+name)
 	if err != nil {
 		return "", cosy.WrapErrorWithParams(ErrTemplateRender, name, err.Error())
 	}
@@ -52,6 +66,10 @@ func RenderAuthorizedKeys(p SetupParams) (string, error) {
 	return renderTemplate("authorized_keys.tmpl", p.FillDefaults())
 }
 
+func RenderAuthorizedKeysInstall(p SetupParams) (string, error) {
+	return renderTemplate("authorized_keys_install.sh.tmpl", p.FillDefaults())
+}
+
 func RenderSudoers(p SetupParams) (string, error) {
 	return renderTemplate("sudoers.tmpl", p.FillDefaults())
 }
@@ -63,6 +81,9 @@ func RenderACL(p SetupParams) (string, error) {
 // RenderAll renders all six snippets in one go.
 func RenderAll(p SetupParams) (*Rendered, error) {
 	p = p.FillDefaults()
+	if err := p.ValidateSnippetValues(); err != nil {
+		return nil, err
+	}
 	r := &Rendered{}
 	var err error
 	if r.ComposeSnippet, err = RenderCompose(p); err != nil {
@@ -77,11 +98,15 @@ func RenderAll(p SetupParams) (*Rendered, error) {
 	if r.AuthorizedKeys, err = RenderAuthorizedKeys(p); err != nil {
 		return nil, fmt.Errorf("authorized_keys: %w", err)
 	}
+	if r.AuthorizedKeysInstall, err = RenderAuthorizedKeysInstall(p); err != nil {
+		return nil, fmt.Errorf("authorized_keys install: %w", err)
+	}
 	if r.Sudoers, err = RenderSudoers(p); err != nil {
 		return nil, fmt.Errorf("sudoers: %w", err)
 	}
 	if r.ACLCommands, err = RenderACL(p); err != nil {
 		return nil, fmt.Errorf("acl: %w", err)
 	}
+	r.SudoersRequired = p.NeedsSudoers()
 	return r, nil
 }

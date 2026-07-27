@@ -5,8 +5,10 @@ docker run -d --name nginx-ui --restart unless-stopped \
   -v {{ .HostConfigDir }}:{{ .ContainerConfigDir }} \
   -v {{ .HostLogDir }}:{{ .ContainerLogDir }}:ro \
   -v {{ .PIDDir }}:{{ .PIDDir }}:ro \
-{{- if not .UseGeneratedKey }}
+{{- if and (not .UseGeneratedKey) .HostKeyPath }}
   -v {{ .HostKeyPath }}:{{ .ContainerKeyPath }}:ro \
+{{- end }}
+{{- if and (not .UseGeneratedKey) .HostKnownHostsPath }}
   -v {{ .HostKnownHostsPath }}:{{ .ContainerKnownHostsPath }}:ro \
 {{- end }}
   -p 8080:80 \

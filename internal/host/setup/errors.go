@@ -1,8 +1,21 @@
 package setup
 
-import "github.com/uozi-tech/cosy"
+import (
+	"errors"
+
+	"github.com/uozi-tech/cosy"
+)
+
+var ErrInvalidPrivateKey = errors.New("invalid private key")
+
+var ErrInvalidHostUser = errors.New("ssh user must match ^[a-z_][a-z0-9_-]*$ and be at most 32 characters")
 
 var e = cosy.NewErrorScope("host_setup")
+
+var (
+	ErrUnsafeSnippetValue = e.New(520007, "{0} contains characters that are unsafe to paste into the generated host instructions: {1}")
+	ErrInvalidPublicKey   = e.New(520008, "public key must be a single valid OpenSSH key line")
+)
 
 var (
 	ErrTemplateRender  = e.New(520001, "failed to render template {0}: {1}")

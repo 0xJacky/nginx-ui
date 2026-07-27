@@ -1,10 +1,8 @@
-# Merge into your existing docker-compose.yml under services.nginx-ui.
 services:
   nginx-ui:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
-      # By default the container path mirrors the host path.
       - /etc/nginx:/etc/nginx
       - /var/log/nginx:/var/log/nginx:ro
       - /var/run:/var/run:ro

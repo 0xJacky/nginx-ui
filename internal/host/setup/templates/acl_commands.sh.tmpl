@@ -1,15 +1,10 @@
 {{- if .IsLaunchd }}
-# Homebrew nginx normally runs as the login user that owns its files.
-# Confirm {{ .HostUser }} can write {{ .HostConfigDir }} and read {{ .HostLogDir }}.
 test -w {{ .HostConfigDir }}
 test -r {{ .HostLogDir }}/access.log
-{{- else }}
-# Run on the host as root. Grants {{ .HostUser }} read/write on nginx config dir
-# and read on the log dir. Skip on hosts where {{ .HostUser }} is already root.
+{{- else if .NeedsSudoers }}
 setfacl -R  -m u:{{ .HostUser }}:rwx {{ .HostConfigDir }}
 setfacl -dR -m u:{{ .HostUser }}:rwx {{ .HostConfigDir }}
 setfacl -R  -m u:{{ .HostUser }}:rx  {{ .HostLogDir }}
 setfacl -dR -m u:{{ .HostUser }}:rx  {{ .HostLogDir }}
-# Ensure the user can read PID files
 setfacl -m u:{{ .HostUser }}:r {{ .PIDPath }} 2>/dev/null || true
 {{- end }}

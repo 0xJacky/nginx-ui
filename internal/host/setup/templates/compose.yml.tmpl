@@ -1,4 +1,3 @@
-# Merge into your existing docker-compose.yml under services.nginx-ui.
 services:
   nginx-ui:
 {{- if .UseHostGateway }}
@@ -6,12 +5,13 @@ services:
       - "host.docker.internal:host-gateway"
 {{- end }}
     volumes:
-      # By default the container path mirrors the host path.
       - {{ .HostConfigDir }}:{{ .ContainerConfigDir }}
       - {{ .HostLogDir }}:{{ .ContainerLogDir }}:ro
       - {{ .PIDDir }}:{{ .PIDDir }}:ro
-{{- if not .UseGeneratedKey }}
+{{- if and (not .UseGeneratedKey) .HostKeyPath }}
       - {{ .HostKeyPath }}:{{ .ContainerKeyPath }}:ro
+{{- end }}
+{{- if and (not .UseGeneratedKey) .HostKnownHostsPath }}
       - {{ .HostKnownHostsPath }}:{{ .ContainerKnownHostsPath }}:ro
 {{- end }}
     environment:
