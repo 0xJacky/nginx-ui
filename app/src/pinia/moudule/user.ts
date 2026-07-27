@@ -5,6 +5,9 @@ import { useCookies } from '@vueuse/integrations/useCookies'
 import twoFA from '@/api/2fa'
 import userApi from '@/api/user'
 
+// Matches the release-build two-factor session window on the backend.
+const defaultSecureSessionTTL = 60 * 10
+
 export const useUserStore = defineStore('user', () => {
   const cookies = useCookies(['nginx-ui'])
 
@@ -34,6 +37,9 @@ export const useUserStore = defineStore('user', () => {
   })
 
   const secureSessionId = ref('')
+  // Seconds the backend keeps a verified two-factor session. Reported when the
+  // session is created so the cookie does not expire before the server side.
+  const secureSessionTTL = ref(defaultSecureSessionTTL)
 
   function getEmptyTwoFAStatus(): TwoFAStatus {
     return {
@@ -48,16 +54,34 @@ export const useUserStore = defineStore('user', () => {
 
   const twoFAStatus = ref<TwoFAStatus>(getEmptyTwoFAStatus())
 
-  watch(secureSessionId, v => {
-    if (v)
-      cookies.set('secure_session_id', v, getCookieOptions(60 * 3))
+  // Set while mirroring a cookie another tab wrote, so this tab does not write
+  // the shared cookie back with its own, possibly shorter, TTL.
+  let syncingFromCookie = false
+
+  watch([secureSessionId, secureSessionTTL], ([id, ttl]) => {
+    if (syncingFromCookie) {
+      syncingFromCookie = false
+      return
+    }
+    if (id)
+      cookies.set('secure_session_id', id, getCookieOptions(ttl || defaultSecureSessionTTL))
     else
       cookies.remove('secure_session_id', { path: '/' })
   })
 
+  function setSecureSession(id: string, ttl?: number) {
+    secureSessionTTL.value = ttl && ttl > 0 ? ttl : defaultSecureSessionTTL
+    secureSessionId.value = id
+  }
+
   function handleCookieChange({ name, value }: CookieChangeOptions) {
-    if (name === 'secure_session_id')
-      secureSessionId.value = value || ''
+    if (name !== 'secure_session_id')
+      return
+    const next = value || ''
+    if (next === secureSessionId.value)
+      return
+    syncingFromCookie = true
+    secureSessionId.value = next
   }
 
   // Remove the legacy ambient JWT cookie. Authentication state is persisted by
@@ -86,6 +110,7 @@ export const useUserStore = defineStore('user', () => {
     shortToken.value = ''
     passkeyRawId.value = ''
     secureSessionId.value = ''
+    secureSessionTTL.value = defaultSecureSessionTTL
     unreadCount.value = 0
     info.value = {} as User
     twoFAStatus.value = getEmptyTwoFAStatus()
@@ -183,6 +208,8 @@ export const useUserStore = defineStore('user', () => {
     shortToken,
     unreadCount,
     secureSessionId,
+    secureSessionTTL,
+    setSecureSession,
     passkeyRawId,
     info,
     twoFAStatus,
@@ -200,6 +227,6 @@ export const useUserStore = defineStore('user', () => {
   }
 }, {
   persist: {
-    pick: ['token', 'secureSessionId', 'passkeyRawId', 'info', 'unreadCount'],
+    pick: ['token', 'secureSessionId', 'secureSessionTTL', 'passkeyRawId', 'info', 'unreadCount'],
   },
 })
