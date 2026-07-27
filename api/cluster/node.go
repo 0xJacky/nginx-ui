@@ -73,11 +73,15 @@ func EditNode(c *gin.Context) {
 }
 
 func DeleteNode(c *gin.Context) {
-	cosy.Core[model.Node](c).
-		ExecutedHook(func(c *cosy.Ctx[model.Node]) {
-			cache.InvalidateNodeCache()
-			analytic.ReloadNodesStatus()
-		}).Destroy()
+	cosy.Core[model.Node](c).Destroy()
+	if c.Writer.Status() != http.StatusNoContent {
+		return
+	}
+
+	// Destroy does not run item ExecutedHook callbacks, so refresh the monitor
+	// explicitly after the deletion has succeeded.
+	cache.InvalidateNodeCache()
+	analytic.ReloadNodesStatus()
 }
 
 func LoadNodeFromSettings(c *gin.Context) {
