@@ -7,9 +7,12 @@ import (
 	"crypto/rsa"
 	"os"
 	"path/filepath"
+	"slices"
+	"strings"
 	"testing"
 
 	gossh "golang.org/x/crypto/ssh"
+	"golang.org/x/crypto/ssh/knownhosts"
 )
 
 func generateHostKey(t *testing.T) gossh.PublicKey {
@@ -89,6 +92,62 @@ func TestKnownHosts_ListMultipleAlgorithms(t *testing.T) {
 	}
 	if entries[0].Fingerprint == "" || entries[1].Fingerprint == "" {
 		t.Fatalf("fingerprints should be populated: %+v", entries)
+	}
+}
+
+func TestKnownHosts_HostKeyAlgorithms(t *testing.T) {
+	dir := t.TempDir()
+	kh, err := NewKnownHosts(filepath.Join(dir, "known_hosts"))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	edKey := testPublicKey(t, gossh.KeyAlgoED25519)
+	rsaKey := testPublicKey(t, gossh.KeyAlgoRSA)
+	if err := kh.Trust("example.com:22", edKey); err != nil {
+		t.Fatal(err)
+	}
+	if err := kh.Trust("other.example.com:22", rsaKey); err != nil {
+		t.Fatal(err)
+	}
+
+	algorithms, err := kh.HostKeyAlgorithms("example.com:22")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(algorithms) != 1 || algorithms[0] != gossh.KeyAlgoED25519 {
+		t.Fatalf("unexpected algorithms: %v", algorithms)
+	}
+
+	algorithms, err = kh.HostKeyAlgorithms("other.example.com:22")
+	if err != nil {
+		t.Fatal(err)
+	}
+	wantRSA := []string{gossh.KeyAlgoRSASHA512, gossh.KeyAlgoRSASHA256, gossh.KeyAlgoRSA}
+	if !slices.Equal(algorithms, wantRSA) {
+		t.Fatalf("unexpected RSA algorithms: got %v want %v", algorithms, wantRSA)
+	}
+}
+
+func TestKnownHosts_HostKeyAlgorithmsMatchesHashedHost(t *testing.T) {
+	dir := t.TempDir()
+	path := filepath.Join(dir, "known_hosts")
+	key := testPublicKey(t, gossh.KeyAlgoED25519)
+	hashedHost := knownhosts.HashHostname("[example.com]:2222")
+	if err := os.WriteFile(path, []byte(knownhosts.Line([]string{hashedHost}, key)+"\n"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	kh, err := NewKnownHosts(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	algorithms, err := kh.HostKeyAlgorithms("example.com:2222")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(algorithms) != 1 || algorithms[0] != gossh.KeyAlgoED25519 {
+		t.Fatalf("unexpected algorithms for hashed host: %v", algorithms)
 	}
 }
 
@@ -205,5 +264,91 @@ func testPublicKeyFromSeed(t *testing.T, algorithm string, seed byte) gossh.Publ
 	default:
 		t.Fatalf("unsupported test algorithm %q", algorithm)
 		return nil
+	}
+}
+
+// OpenSSH writes hashed entries by default on Debian and Ubuntu. If they are
+// invisible to List, ClassifyHostKeys reports a CHANGED key as an unknown host
+// and the wizard offers the benign trust flow instead of the alarm.
+func TestKnownHostsListSeesHashedEntry(t *testing.T) {
+	dir := t.TempDir()
+	path := filepath.Join(dir, "known_hosts")
+
+	kh, err := NewKnownHosts(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	key := generateHostKey(t)
+	if err := kh.Trust("host.docker.internal:22", key); err != nil {
+		t.Fatal(err)
+	}
+
+	// Rewrite the plain entry in the hashed form ssh-keygen -H produces.
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	fields := strings.Fields(string(raw))
+	if len(fields) < 3 {
+		t.Fatalf("unexpected known_hosts line: %q", raw)
+	}
+	hashed := knownhosts.HashHostname("host.docker.internal") + " " + fields[1] + " " + fields[2] + "\n"
+	if err := os.WriteFile(path, []byte(hashed), 0o600); err != nil {
+		t.Fatal(err)
+	}
+
+	reopened, err := NewKnownHosts(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	entries, err := reopened.List("host.docker.internal:22")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(entries) != 1 {
+		t.Fatalf("List() = %d entries, want 1; a hashed entry is invisible", len(entries))
+	}
+	if entries[0].Fingerprint != gossh.FingerprintSHA256(key) {
+		t.Fatalf("fingerprint = %q, want %q", entries[0].Fingerprint, gossh.FingerprintSHA256(key))
+	}
+}
+
+// The dial callback refuses a revoked key, so classification must not call it
+// trusted, and Delete must not erase the revocation record.
+func TestKnownHostsRevokedKeyIsNotTrusted(t *testing.T) {
+	dir := t.TempDir()
+	path := filepath.Join(dir, "known_hosts")
+	key := generateHostKey(t)
+	line := "@revoked " + knownhosts.Line([]string{"host.docker.internal:22"}, key) + "\n"
+	if err := os.WriteFile(path, []byte(line), 0o600); err != nil {
+		t.Fatal(err)
+	}
+
+	kh, err := NewKnownHosts(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if kh.IsTrusted("host.docker.internal:22", key) {
+		t.Fatal("a revoked key must not be trusted at dial time")
+	}
+
+	result, err := ClassifyHostKeys("host.docker.internal:22", []gossh.PublicKey{key}, kh)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(result.Keys) != 1 || result.Keys[0].Status != HostKeyStatusRevoked {
+		t.Fatalf("status = %q, want %q", result.Keys[0].Status, HostKeyStatusRevoked)
+	}
+
+	err = kh.Delete("host.docker.internal:22", key.Type(), gossh.FingerprintSHA256(key))
+	if err == nil {
+		t.Fatal("Delete removed the revocation record")
+	}
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(string(raw), "@revoked") {
+		t.Fatalf("revocation record was lost:\n%s", raw)
 	}
 }

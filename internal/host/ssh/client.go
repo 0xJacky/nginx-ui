@@ -35,6 +35,25 @@ type Client struct {
 	conn *gossh.Client
 }
 
+// synchronizedBuffer is safe for SSH's concurrent stdout and extended-data
+// copy goroutines. A plain bytes.Buffer can lose stderr when both streams use it.
+type synchronizedBuffer struct {
+	mu  sync.Mutex
+	buf bytes.Buffer
+}
+
+func (b *synchronizedBuffer) Write(p []byte) (int, error) {
+	b.mu.Lock()
+	defer b.mu.Unlock()
+	return b.buf.Write(p)
+}
+
+func (b *synchronizedBuffer) String() string {
+	b.mu.Lock()
+	defer b.mu.Unlock()
+	return b.buf.String()
+}
+
 func NewClient(opts ClientOptions) *Client {
 	if opts.Timeout == 0 {
 		opts.Timeout = 10 * time.Second
@@ -55,12 +74,17 @@ func (c *Client) dial(ctx context.Context) (*gossh.Client, error) {
 	if err != nil {
 		return nil, err
 	}
+	hostKeyAlgorithms, err := c.opts.KnownHosts.HostKeyAlgorithms(c.opts.Address)
+	if err != nil {
+		return nil, err
+	}
 
 	cfg := &gossh.ClientConfig{
-		User:            c.opts.User,
-		Auth:            authMethods,
-		HostKeyCallback: hostKeyCallback,
-		Timeout:         c.opts.Timeout,
+		User:              c.opts.User,
+		Auth:              authMethods,
+		HostKeyCallback:   hostKeyCallback,
+		HostKeyAlgorithms: hostKeyAlgorithms,
+		Timeout:           c.opts.Timeout,
 	}
 
 	dialer := net.Dialer{Timeout: c.opts.Timeout}
@@ -153,7 +177,7 @@ func (c *Client) Exec(ctx context.Context, name string, args ...string) (string,
 	}
 	defer sess.Close()
 
-	var out bytes.Buffer
+	var out synchronizedBuffer
 	sess.Stdout = &out
 	sess.Stderr = &out
 

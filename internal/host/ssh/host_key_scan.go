@@ -17,6 +17,7 @@ const (
 	HostKeyStatusNewAlgorithm = "new_algorithm"
 	HostKeyStatusChanged      = "changed"
 	HostKeyStatusStale        = "stale"
+	HostKeyStatusRevoked      = "revoked"
 )
 
 type HostKeyScanItem struct {
@@ -53,11 +54,20 @@ var preferredHostKeyAlgorithms = []string{
 
 // ScanHostKeys reads host keys presented during SSH handshakes without trusting them.
 func ScanHostKeys(ctx context.Context, hostPort string, timeout time.Duration) ([]gossh.PublicKey, error) {
+	keys, _, err := ScanHostKeysWithCoverage(ctx, hostPort, timeout)
+	return keys, err
+}
+
+// scanHostKeysWithCoverage also reports which algorithms were actually probed.
+// Without that, an algorithm whose probe failed is indistinguishable from one
+// the server no longer offers, and a trusted entry gets labelled stale.
+func ScanHostKeysWithCoverage(ctx context.Context, hostPort string, timeout time.Duration) ([]gossh.PublicKey, map[string]bool, error) {
 	if timeout <= 0 {
 		timeout = 10 * time.Second
 	}
 
 	seenFingerprints := make(map[string]bool)
+	probed := make(map[string]bool, len(preferredHostKeyAlgorithms))
 	keys := make([]gossh.PublicKey, 0, len(preferredHostKeyAlgorithms))
 	var lastErr error
 	for _, algorithm := range preferredHostKeyAlgorithms {
@@ -66,6 +76,9 @@ func ScanHostKeys(ctx context.Context, hostPort string, timeout time.Duration) (
 			lastErr = err
 			continue
 		}
+		// The handshake answered for this algorithm, so its absence from the
+		// reply is real evidence rather than a failed probe.
+		probed[algorithm] = true
 		fingerprint := gossh.FingerprintSHA256(key)
 		if seenFingerprints[fingerprint] {
 			continue
@@ -75,11 +88,11 @@ func ScanHostKeys(ctx context.Context, hostPort string, timeout time.Duration) (
 	}
 	if len(keys) == 0 {
 		if lastErr != nil {
-			return nil, cosy.WrapErrorWithParams(ErrHostKeyScanFailed, lastErr.Error())
+			return nil, nil, cosy.WrapErrorWithParams(ErrHostKeyScanFailed, lastErr.Error())
 		}
-		return nil, cosy.WrapErrorWithParams(ErrHostKeyScanFailed, "server did not present a host key")
+		return nil, nil, cosy.WrapErrorWithParams(ErrHostKeyScanFailed, "server did not present a host key")
 	}
-	return keys, nil
+	return keys, probed, nil
 }
 
 func scanHostKeyWithAlgorithm(ctx context.Context, hostPort string, timeout time.Duration, algorithm string) (gossh.PublicKey, error) {
@@ -140,15 +153,30 @@ func ParseSSHKeyscanOutput(output string) ([]gossh.PublicKey, error) {
 	return keys, nil
 }
 
+// ClassifyHostKeys compares scanned keys against known_hosts. probedAlgorithms
+// may be nil when the caller could not establish which algorithms answered; a
+// trusted entry is then never reported stale, because an unanswered probe is
+// not evidence that the server dropped the key.
 func ClassifyHostKeys(hostPort string, scanned []gossh.PublicKey, kh *KnownHosts) (HostKeyScanResult, error) {
+	return ClassifyScannedHostKeys(hostPort, scanned, nil, kh)
+}
+
+func ClassifyScannedHostKeys(hostPort string, scanned []gossh.PublicKey, probedAlgorithms map[string]bool, kh *KnownHosts) (HostKeyScanResult, error) {
 	known, err := kh.List(hostPort)
 	if err != nil {
 		return HostKeyScanResult{}, err
 	}
 	result := HostKeyScanResult{HostAddress: hostPort, Keys: make([]HostKeyScanItem, 0, len(scanned))}
 	knownByAlgorithm := make(map[string]HostKeyEntry, len(known))
+	revokedFingerprints := make(map[string]bool, len(known))
+	trustedCount := 0
 	for _, entry := range known {
+		if entry.Marker == markerRevoked {
+			revokedFingerprints[entry.Fingerprint] = true
+			continue
+		}
 		knownByAlgorithm[entry.Algorithm] = entry
+		trustedCount++
 	}
 	seenAlgorithms := make(map[string]bool, len(scanned))
 
@@ -163,7 +191,11 @@ func ClassifyHostKeys(hostPort string, scanned []gossh.PublicKey, kh *KnownHosts
 		}
 		knownEntry, exists := knownByAlgorithm[algorithm]
 		switch {
-		case len(known) == 0:
+		case revokedFingerprints[fingerprint]:
+			// The dial callback refuses a revoked key, so it must never read
+			// as trusted here.
+			item.Status = HostKeyStatusRevoked
+		case trustedCount == 0:
 			item.Status = HostKeyStatusUnknownHost
 		case !exists:
 			item.Status = HostKeyStatusNewAlgorithm
@@ -177,7 +209,12 @@ func ClassifyHostKeys(hostPort string, scanned []gossh.PublicKey, kh *KnownHosts
 	}
 
 	for _, entry := range known {
-		if seenAlgorithms[entry.Algorithm] {
+		if entry.Marker == markerRevoked || seenAlgorithms[entry.Algorithm] {
+			continue
+		}
+		// Only an algorithm the server actually answered for can prove the
+		// entry is stale. Deleting on a failed probe would drop a good key.
+		if probedAlgorithms != nil && !probedAlgorithms[entry.Algorithm] {
 			continue
 		}
 		result.StaleKeys = append(result.StaleKeys, HostKeyScanItem{
