@@ -564,18 +564,8 @@ func parseCertificatePEM(certPEM []byte) (*x509.Certificate, error) {
 }
 
 func infoFromCertificate(c *x509.Certificate) *Info {
-	subjectName := c.Subject.CommonName
-	if subjectName == "" {
-		for _, name := range c.DNSNames {
-			if name != "" {
-				subjectName = name
-				break
-			}
-		}
-	}
-
 	return &Info{
-		SubjectName: subjectName,
+		SubjectName: certificateSubjectName(c),
 		IssuerName:  c.Issuer.CommonName,
 		NotAfter:    c.NotAfter,
 		NotBefore:   c.NotBefore,

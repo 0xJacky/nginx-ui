@@ -40,22 +40,31 @@ func GetCertInfo(sslCertificatePath string) (info *Info, err error) {
 		return
 	}
 
-	// for wildcard certificate, the subject name is the first DNS name
-	subjectName := cert.Subject.CommonName
-	if subjectName == "" {
-		for _, name := range cert.DNSNames {
-			if name != "" {
-				subjectName = name
-				break
-			}
-		}
-	}
-
 	info = &Info{
-		SubjectName: subjectName,
+		SubjectName: certificateSubjectName(cert),
 		IssuerName:  cert.Issuer.CommonName,
 		NotAfter:    cert.NotAfter,
 		NotBefore:   cert.NotBefore,
 	}
 	return
+}
+
+func certificateSubjectName(cert *x509.Certificate) string {
+	if cert == nil {
+		return ""
+	}
+	if cert.Subject.CommonName != "" {
+		return cert.Subject.CommonName
+	}
+	for _, name := range cert.DNSNames {
+		if name != "" {
+			return name
+		}
+	}
+	for _, ip := range cert.IPAddresses {
+		if ip != nil {
+			return ip.String()
+		}
+	}
+	return ""
 }
