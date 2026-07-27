@@ -157,8 +157,11 @@ These variables are used when Nginx UI controls a host-installed nginx service f
 | `NGINX_UI_NGINX_HOST_PRIVATE_KEY_PATH` | Private key path inside the container |
 | `NGINX_UI_NGINX_HOST_KNOWN_HOSTS_PATH` | known_hosts allow-list path inside the container |
 | `NGINX_UI_NGINX_HOST_SUDO_PREFIX` | Default `sudo -n` |
+| `NGINX_UI_NGINX_HOST_SERVICE_MANAGER` | `systemd` (default) or `launchd` |
 | `NGINX_UI_NGINX_HOST_SYSTEMD_UNIT_NAME` | Default `nginx.service` |
 | `NGINX_UI_NGINX_HOST_SYSTEMCTL_PATH` | Absolute path to systemctl on the host |
+| `NGINX_UI_NGINX_HOST_LAUNCHD_SERVICE` | launchd label. Default `homebrew.mxcl.nginx` |
+| `NGINX_UI_NGINX_HOST_LAUNCHCTL_PATH` | Absolute path to launchctl. Default `/bin/launchctl` |
 | `NGINX_UI_NGINX_HOST_CONFIG_DIR` | Host-side nginx config dir |
 | `NGINX_UI_NGINX_HOST_LOG_DIR` | Host-side nginx log dir |
 | `NGINX_UI_DISABLE_BUNDLED_NGINX` | Set to `true` to disable the container's bundled nginx (required in SSH mode) |

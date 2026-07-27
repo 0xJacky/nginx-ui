@@ -3,18 +3,27 @@
 当 Nginx UI 运行在 Docker 中，并需要管理同一宿主机上原生安装的 nginx 时，可按本文完成配置。
 
 ::: info 前置条件
-- 已安装 nginx 并通过 systemd 运行的 Linux 宿主机
+- 通过 systemd 运行 nginx 的 Linux 宿主机，或通过 `brew services` 运行 nginx 的 macOS 宿主机
 - 同一宿主机上已安装 Docker
-- 一个专用于 Nginx UI 的非特权用户（示例中使用 `nginxui`）
+- Linux：一个专用于 Nginx UI 的非特权用户（示例中使用 `nginxui`）
+- macOS：拥有 Homebrew nginx 服务的登录用户
 :::
 
-## 步骤 1：创建非特权用户
+在 macOS 上，请在向导中选择 **macOS (Homebrew)**。Apple Silicon 默认使用 `/opt/homebrew`。验证时，向导会通过 SSH 查询 Homebrew 并解析 `nginx -V`，自动识别已安装的 nginx 版本以及实际的可执行文件、配置、日志、PID 和 Docroot 路径；这也能识别位于 `/usr/local` 的 Intel Homebrew。继续前请确认服务已加载：
+
+```bash
+brew services info nginx
+```
+
+## 步骤 1：创建非特权用户（仅 Linux）
 
 ```bash
 sudo useradd -r -s /bin/bash -m -G adm nginxui
 ```
 
 `-G adm` 赋予该用户读取 /var/log 文件（包括 nginx 日志）的权限。
+
+macOS 应使用运行 `brew services` 的现有登录用户，不要创建单独的服务用户。
 
 ## 步骤 2：通过 Nginx UI 生成密钥对
 
@@ -40,7 +49,7 @@ sudo chmod 600 /home/nginxui/.ssh/authorized_keys
 宿主机 SSH 模式需要使用 `known_hosts` 允许列表。向导显示新指纹时，请先在宿主机或其他可信渠道确认，再信任该密钥。
 :::
 
-## 步骤 3：安装 sudoers 条目
+## 步骤 3：安装 sudoers 条目（仅 Linux）
 
 向导步骤 2b 会显示一段 sudoers 配置片段。复制后通过以下命令安装：
 
@@ -50,7 +59,9 @@ sudo visudo -f /etc/sudoers.d/nginx-ui
 
 粘贴配置片段后保存并退出。如果语法有误，visudo 会拒绝保存该文件。
 
-## 步骤 4：为非 root 用户应用 ACL
+Homebrew launchd 服务运行在登录用户域中，不需要 sudoers 条目。
+
+## 步骤 4：配置文件权限
 
 ::: details 可选 ACL 命令
 如果 nginxui 用户为非 root 用户，请授予其对 /etc/nginx 的写入权限：
@@ -61,15 +72,23 @@ sudo setfacl -dR -m u:nginxui:rwx /etc/nginx
 ```
 :::
 
+在 macOS 上，向导会输出 Homebrew 配置和日志路径的读写检查，而不是 Linux ACL 命令。
+
 ## 步骤 5：更新 docker-compose 配置
 
 向导步骤 2a 会显示一段 compose 配置片段。将其合并到现有的 `docker-compose.yml` 中。
 
 生成的片段会设置 `NGINX_UI_DISABLE_BUNDLED_NGINX=true`，避免容器在控制宿主机 nginx 时继续启动内置 nginx 服务。
 
+片段还会绑定挂载已配置的 PID 目录。在 Linux 与 macOS 预设之间切换后，请重建容器以应用新路径。
+
+如果验证检测到的路径与初始预设不同，请返回容器步骤重新生成 compose 片段，重建容器后再运行验证。
+
 ::: tip 持久化 Nginx UI 数据
 请通过 Docker volume 或 bind mount 持久化 `/etc/nginx-ui`。宿主机密钥允许列表默认保存在 `/etc/nginx-ui/known_hosts`，它应在镜像升级和容器重建后继续存在。
 :::
+
+macOS 上，`host_platform` 会报告 Darwin，`launchctl_service_loaded` 取代两个 systemd 检查，sudo 检查会显示不需要 sudo。配置、日志和 PID 检查默认使用 `/opt/homebrew` 路径。
 
 ```bash
 docker compose up -d --force-recreate nginx-ui

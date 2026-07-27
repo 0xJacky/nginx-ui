@@ -177,14 +177,14 @@ Nginx UI reads and writes Nginx configuration and log files through its own file
 
 ## Host SSH Control
 
-For deployments where Nginx UI runs in a Docker container but Nginx is installed natively on the host machine (e.g. systemd-managed via apt/yum), Nginx UI provides a third control mode that uses SSH for command execution and bind-mounts for file I/O.
+For deployments where Nginx UI runs in a Docker container but Nginx is installed natively on the host machine, Nginx UI provides a third control mode that uses SSH for command execution and bind-mounts for file I/O. Linux systemd services and macOS Homebrew launchd services are supported.
 
 ### Constraints
 
 ::: warning Constraints
 - **Same-host only**: the Nginx UI container and the target nginx process must be on the same physical/virtual machine. For multi-host management, see [Manage Multi-Host Nginx with Cluster](manage-multi-host-nginx-with-cluster.md).
-- **systemd required** on the host. The mode invokes `systemctl reload|restart <unit>` for control.
-- The host nginx user must allow a dedicated unprivileged user (typically `nginxui`) to invoke a narrow set of commands via `sudo -n` without password.
+- On Linux, nginx must be managed by systemd and the SSH user must be allowed to invoke a narrow command set through passwordless `sudo -n`.
+- On macOS, nginx must run as a Homebrew user service. The configured SSH user must be the login user that owns `homebrew.mxcl.nginx`; sudo is not used.
 :::
 
 ### Quick start
@@ -211,8 +211,11 @@ nginx-ui host-setup test
 | `host_private_key_path` | Private key path inside the container |
 | `host_known_hosts_path` | known_hosts allow-list path inside the container |
 | `host_sudo_prefix` | Prefix used for privileged commands. Default `sudo -n` |
+| `host_service_manager` | `systemd` (default) or `launchd` |
 | `host_systemd_unit_name` | Default `nginx.service` |
 | `host_systemctl_path` | Default `/bin/systemctl` |
+| `host_launchd_service` | Default `homebrew.mxcl.nginx` |
+| `host_launchctl_path` | Default `/bin/launchctl` |
 | `host_config_dir` | Host-side nginx config directory |
 | `host_log_dir` | Host-side nginx log directory |
 

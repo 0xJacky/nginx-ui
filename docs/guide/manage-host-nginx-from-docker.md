@@ -3,18 +3,27 @@
 Use this guide when Nginx UI runs in Docker and needs to manage an nginx instance installed directly on the same host.
 
 ::: info Prerequisites
-- Linux host with nginx installed and running under systemd
+- Linux host with nginx running under systemd, or macOS with nginx running through `brew services`
 - Docker installed on the same host
-- An unprivileged user dedicated to Nginx UI (we use `nginxui` in examples)
+- Linux: an unprivileged user dedicated to Nginx UI (we use `nginxui` in examples)
+- macOS: the login user that owns the Homebrew nginx service
 :::
 
-## Step 1: Create the unprivileged user
+For macOS, select **macOS (Homebrew)** in the wizard. Apple Silicon defaults to `/opt/homebrew`. During verification, the wizard queries Homebrew and parses `nginx -V` over SSH to detect the installed nginx version and the actual executable, configuration, log, PID, and document-root paths. This also handles Intel Homebrew under `/usr/local`. Confirm the service is loaded before continuing:
+
+```bash
+brew services info nginx
+```
+
+## Step 1: Create the unprivileged user (Linux only)
 
 ```bash
 sudo useradd -r -s /bin/bash -m -G adm nginxui
 ```
 
 `-G adm` grants the user read access to /var/log files including nginx logs.
+
+On macOS, use the existing login user that runs `brew services`; do not create a separate service user.
 
 ## Step 2: Generate the keypair via Nginx UI
 
@@ -40,7 +49,7 @@ sudo chmod 600 /home/nginxui/.ssh/authorized_keys
 Host SSH mode requires a `known_hosts` allow-list. When the wizard shows a new fingerprint, verify it from the host or another trusted channel before trusting it.
 :::
 
-## Step 3: Install the sudoers entry
+## Step 3: Install the sudoers entry (Linux only)
 
 The wizard Step 2b shows you a sudoers snippet. Copy it and install via:
 
@@ -50,7 +59,9 @@ sudo visudo -f /etc/sudoers.d/nginx-ui
 
 Paste the snippet, save, exit. visudo will reject the file if the syntax is bad.
 
-## Step 4: Apply ACLs for a non-root user
+Homebrew launchd services run in the login user's domain and do not require a sudoers entry.
+
+## Step 4: Apply file permissions
 
 ::: details Optional ACL commands
 If your nginxui user is non-root, grant it write access to /etc/nginx:
@@ -61,11 +72,17 @@ sudo setfacl -dR -m u:nginxui:rwx /etc/nginx
 ```
 :::
 
+On macOS, the wizard emits read/write checks for the Homebrew config and log paths instead of Linux ACL commands.
+
 ## Step 5: Update docker-compose
 
 The wizard Step 2a shows a compose snippet. Merge it into your existing `docker-compose.yml`.
 
 The generated snippet sets `NGINX_UI_DISABLE_BUNDLED_NGINX=true` so the container does not start its bundled nginx service while it controls the host nginx service.
+
+The snippet also bind-mounts the configured PID directory. Recreate the container after changing between Linux and macOS presets so the new paths are applied.
+
+If verification detects paths that differ from the initial preset, return to the container step, regenerate the compose snippet, and recreate the container before running verification again.
 
 ::: tip Persist Nginx UI data
 Persist `/etc/nginx-ui` with a Docker volume or bind mount. The host key allow-list is stored at `/etc/nginx-ui/known_hosts` by default, and it should survive image upgrades and container rebuilds.
@@ -131,6 +148,8 @@ Return to **Verify** and click **Run verification**. The main checks should pass
 - ✓ known_hosts_persistence: `/etc/nginx-ui/known_hosts` is under the recommended persisted data directory
 
 :::
+
+For macOS, `host_platform` reports Darwin, `launchctl_service_loaded` replaces the two systemd checks, and the sudo checks report that sudo is not required. The config, log, and PID checks use `/opt/homebrew` by default.
 
 If `known_hosts_persistence` is shown as a warning, review your Docker volume or bind mount. The warning does not block saving, but trusted host keys may be lost after a container rebuild if `/etc/nginx-ui` is not persisted.
 

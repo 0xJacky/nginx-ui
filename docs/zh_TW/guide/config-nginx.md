@@ -169,14 +169,14 @@ services:
 
 ## 透過 SSH 控制宿主機 Nginx
 
-對於 Nginx UI 執行在 Docker 容器中、而 Nginx 以原生方式安裝在宿主機上的部署場景（例如透過 apt/yum 安裝並由 systemd 管理），Nginx UI 提供了第三種控制模式，透過 SSH 執行命令並使用綁定掛載進行檔案 I/O。
+對於 Nginx UI 執行在 Docker 容器中、而 Nginx 以原生方式安裝在宿主機上的部署場景，Nginx UI 提供了第三種控制模式，透過 SSH 執行命令並使用綁定掛載進行檔案 I/O。此模式支援 Linux systemd 服務與 macOS Homebrew launchd 服務。
 
 ### 限制
 
 ::: warning 限制
 - **僅限同一宿主機**：Nginx UI 容器與目標 nginx 程序必須在同一台實體機或虛擬機上。如需多主機管理，請參閱 [使用叢集節點管理多主機 Nginx](manage-multi-host-nginx-with-cluster.md)。
-- 宿主機上**需要 systemd**。此模式透過呼叫 `systemctl reload|restart <unit>` 來控制服務。
-- 宿主機的 nginx 使用者必須允許一個專用的非特權使用者（通常為 `nginxui`）透過 `sudo -n` 無密碼執行一組受限命令。
+- Linux 上的 nginx 必須由 systemd 管理，並允許 SSH 使用者透過免密碼 `sudo -n` 呼叫一組受限指令。
+- macOS 上的 nginx 必須作為 Homebrew 使用者服務執行；SSH 使用者必須是擁有 `homebrew.mxcl.nginx` 的登入使用者，且不會使用 sudo。
 :::
 
 ### 快速開始
@@ -203,8 +203,11 @@ nginx-ui host-setup test
 | `host_private_key_path` | 容器內的私鑰路徑 |
 | `host_known_hosts_path` | 容器內的 known_hosts 允許清單路徑 |
 | `host_sudo_prefix` | 特權指令前綴。預設值為 `sudo -n` |
+| `host_service_manager` | `systemd`（預設）或 `launchd` |
 | `host_systemd_unit_name` | 預設為 `nginx.service` |
 | `host_systemctl_path` | 預設為 `/bin/systemctl` |
+| `host_launchd_service` | 預設為 `homebrew.mxcl.nginx` |
+| `host_launchctl_path` | 預設為 `/bin/launchctl` |
 | `host_config_dir` | 宿主機側 nginx 設定目錄 |
 | `host_log_dir` | 宿主機側 nginx 日誌目錄 |
 

@@ -171,8 +171,11 @@
 | `NGINX_UI_NGINX_HOST_PRIVATE_KEY_PATH` | 容器内的私钥路径 |
 | `NGINX_UI_NGINX_HOST_KNOWN_HOSTS_PATH` | 容器内的 known_hosts 允许列表路径 |
 | `NGINX_UI_NGINX_HOST_SUDO_PREFIX` | 默认为 `sudo -n` |
+| `NGINX_UI_NGINX_HOST_SERVICE_MANAGER` | `systemd`（默认）或 `launchd` |
 | `NGINX_UI_NGINX_HOST_SYSTEMD_UNIT_NAME` | 默认为 `nginx.service` |
 | `NGINX_UI_NGINX_HOST_SYSTEMCTL_PATH` | 宿主机上 systemctl 的绝对路径 |
+| `NGINX_UI_NGINX_HOST_LAUNCHD_SERVICE` | launchd 标签，默认为 `homebrew.mxcl.nginx` |
+| `NGINX_UI_NGINX_HOST_LAUNCHCTL_PATH` | launchctl 的绝对路径，默认为 `/bin/launchctl` |
 | `NGINX_UI_NGINX_HOST_CONFIG_DIR` | 宿主机侧的 nginx 配置目录 |
 | `NGINX_UI_NGINX_HOST_LOG_DIR` | 宿主机侧的 nginx 日志目录 |
 | `NGINX_UI_DISABLE_BUNDLED_NGINX` | 设置为 `true` 以禁用容器内置的 nginx（SSH 模式下必需） |
