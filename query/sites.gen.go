@@ -36,6 +36,7 @@ func newSite(db *gorm.DB, opts ...gen.DOOption) site {
 	_site.Advanced = field.NewBool(tableName, "advanced")
 	_site.NamespaceID = field.NewUint64(tableName, "namespace_id")
 	_site.SyncNodeIDs = field.NewField(tableName, "sync_node_ids")
+	_site.DNSRecords = field.NewField(tableName, "dns_records")
 	_site.DNSDomainID = field.NewInt(tableName, "dns_domain_id")
 	_site.DNSRecordID = field.NewString(tableName, "dns_record_id")
 	_site.DNSRecordName = field.NewString(tableName, "dns_record_name")
@@ -64,6 +65,7 @@ type site struct {
 	Advanced        field.Bool
 	NamespaceID     field.Uint64
 	SyncNodeIDs     field.Field
+	DNSRecords      field.Field
 	DNSDomainID     field.Int
 	DNSRecordID     field.String
 	DNSRecordName   field.String
@@ -94,6 +96,7 @@ func (s *site) updateTableName(table string) *site {
 	s.Advanced = field.NewBool(table, "advanced")
 	s.NamespaceID = field.NewUint64(table, "namespace_id")
 	s.SyncNodeIDs = field.NewField(table, "sync_node_ids")
+	s.DNSRecords = field.NewField(table, "dns_records")
 	s.DNSDomainID = field.NewInt(table, "dns_domain_id")
 	s.DNSRecordID = field.NewString(table, "dns_record_id")
 	s.DNSRecordName = field.NewString(table, "dns_record_name")
@@ -115,7 +118,7 @@ func (s *site) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (s *site) fillFieldMap() {
-	s.fieldMap = make(map[string]field.Expr, 14)
+	s.fieldMap = make(map[string]field.Expr, 15)
 	s.fieldMap["id"] = s.ID
 	s.fieldMap["created_at"] = s.CreatedAt
 	s.fieldMap["updated_at"] = s.UpdatedAt
@@ -124,6 +127,7 @@ func (s *site) fillFieldMap() {
 	s.fieldMap["advanced"] = s.Advanced
 	s.fieldMap["namespace_id"] = s.NamespaceID
 	s.fieldMap["sync_node_ids"] = s.SyncNodeIDs
+	s.fieldMap["dns_records"] = s.DNSRecords
 	s.fieldMap["dns_domain_id"] = s.DNSDomainID
 	s.fieldMap["dns_record_id"] = s.DNSRecordID
 	s.fieldMap["dns_record_name"] = s.DNSRecordName

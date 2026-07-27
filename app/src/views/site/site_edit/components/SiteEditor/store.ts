@@ -168,6 +168,7 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
         sync_node_ids: data.value.sync_node_ids,
         post_action: 'reload_nginx',
         dns_domain_id: data.value.dns_domain_id,
+        dns_records: data.value.dns_records,
         dns_record_id: data.value.dns_record_id,
         dns_record_name: data.value.dns_record_name,
         dns_record_type: data.value.dns_record_type,

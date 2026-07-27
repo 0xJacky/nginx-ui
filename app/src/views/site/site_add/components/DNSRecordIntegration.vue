@@ -9,7 +9,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   recordCreated: [record: DNSRecord, domain: DNSDomain]
-  recordSelected: [record: DNSRecord, domain: DNSDomain]
+  recordsSelected: [records: DNSRecord[], domain: DNSDomain]
   cleared: []
 }>()
 
@@ -17,7 +17,7 @@ const { message } = useGlobalApp()
 const dnsStore = useDnsStore()
 
 const selectedDomainId = ref<number | null>(null)
-const selectedRecordId = ref<string | null>(null)
+const selectedRecordIds = ref<string[]>([])
 const createNewRecord = ref(false)
 const loading = ref(false)
 const availableDomains = ref<DNSDomain[]>([])
@@ -40,9 +40,11 @@ const selectedDomainValue = computed({
 })
 
 const selectedRecordValue = computed({
-  get: () => selectedRecordId.value ?? undefined,
+  get: () => selectedRecordIds.value,
   set: val => {
-    selectedRecordId.value = typeof val === 'string' ? val : null
+    selectedRecordIds.value = Array.isArray(val)
+      ? val.filter((recordId): recordId is string => typeof recordId === 'string')
+      : []
   },
 })
 
@@ -145,8 +147,9 @@ async function loadRecordsForDomain(domainId: number) {
 // Handle domain selection change
 function onDomainChange(value: unknown) {
   const domainId = typeof value === 'number' ? value : null
-  selectedRecordId.value = null
+  selectedRecordIds.value = []
   createNewRecord.value = false
+  emit('cleared')
   if (domainId) {
     loadRecordsForDomain(domainId)
   }
@@ -157,14 +160,22 @@ function onDomainChange(value: unknown) {
 
 // Handle record selection
 function onRecordSelect(value: unknown) {
-  const recordId = typeof value === 'string' ? value : null
+  const recordIds = Array.isArray(value)
+    ? value.filter((recordId): recordId is string => typeof recordId === 'string')
+    : []
   createNewRecord.value = false
-  if (recordId && selectedDomainId.value) {
-    const record = availableRecords.value.find(r => r.id === recordId)
+  if (recordIds.length > 0 && selectedDomainId.value) {
+    const records = recordIds.flatMap(recordId => {
+      const record = availableRecords.value.find(item => item.id === recordId)
+      return record ? [record] : []
+    })
     const domain = availableDomains.value.find(d => d.id === selectedDomainId.value)
-    if (record && domain) {
-      emit('recordSelected', record, domain)
+    if (records.length > 0 && domain) {
+      emit('recordsSelected', records, domain)
     }
+  }
+  else {
+    emit('cleared')
   }
 }
 
@@ -172,7 +183,8 @@ function onRecordSelect(value: unknown) {
 function onCreateNewToggle(e: { target: { checked: boolean } }) {
   const checked = e.target.checked
   if (checked) {
-    selectedRecordId.value = null
+    selectedRecordIds.value = []
+    emit('cleared')
     // Pre-fill record name from server_name
     if (props.serverName && selectedDomainId.value) {
       const domain = availableDomains.value.find(d => d.id === selectedDomainId.value)
@@ -215,7 +227,7 @@ async function createRecord() {
 
     // Reload records
     await loadRecordsForDomain(selectedDomainId.value)
-    selectedRecordId.value = record.id
+    selectedRecordIds.value = [record.id]
     createNewRecord.value = false
   }
   catch (error) {
@@ -230,7 +242,7 @@ async function createRecord() {
 // Clear selection
 function clearSelection() {
   selectedDomainId.value = null
-  selectedRecordId.value = null
+  selectedRecordIds.value = []
   createNewRecord.value = false
   availableRecords.value = []
   emit('cleared')
@@ -276,9 +288,11 @@ defineExpose({
         <ASpace direction="vertical" style="width: 100%">
           <ASelect
             v-model:value="selectedRecordValue"
+            mode="multiple"
             :placeholder="$gettext('Select existing record')"
             :loading="loading"
             :disabled="createNewRecord"
+            max-tag-count="responsive"
             allow-clear
             @change="onRecordSelect"
           >

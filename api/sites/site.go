@@ -53,30 +53,91 @@ func buildProxyTargets(fileName string) []site.ProxyTarget {
 	return proxyTargets
 }
 
-// checkDNSRecordExists verifies if a linked DNS record still exists
-func checkDNSRecordExists(domainID int, recordID string) bool {
-	if domainID == 0 || recordID == "" {
-		return false
+// checkDNSRecordsExist verifies all linked records with a single provider request.
+func checkDNSRecordsExist(domainID int, records []model.SiteDNSRecord) []model.SiteDNSRecord {
+	checkedRecords := append([]model.SiteDNSRecord(nil), records...)
+	if domainID == 0 || len(checkedRecords) == 0 {
+		return checkedRecords
 	}
 
 	svc := dns.NewService()
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	records, err := svc.ListRecords(ctx, uint64(domainID), dns.RecordListOptions{})
+	providerRecords, err := svc.ListRecords(ctx, uint64(domainID), dns.RecordListOptions{})
 	if err != nil {
 		logger.Warn("Failed to list DNS records:", err)
-		return false
+		return checkedRecords
 	}
 
-	// Check if recordID exists in the list
+	existingRecordIDs := make(map[string]struct{}, len(providerRecords))
+	for _, record := range providerRecords {
+		existingRecordIDs[record.ID] = struct{}{}
+	}
+	for i := range checkedRecords {
+		_, checkedRecords[i].Exists = existingRecordIDs[checkedRecords[i].ID]
+	}
+
+	return checkedRecords
+}
+
+func normalizeDNSRecords(records []model.SiteDNSRecord) []model.SiteDNSRecord {
+	normalizedRecords := make([]model.SiteDNSRecord, 0, len(records))
+	seenRecordIDs := make(map[string]struct{}, len(records))
 	for _, record := range records {
-		if record.ID == recordID {
-			return true
+		record.ID = strings.TrimSpace(record.ID)
+		if record.ID == "" {
+			continue
 		}
+		if _, exists := seenRecordIDs[record.ID]; exists {
+			continue
+		}
+		seenRecordIDs[record.ID] = struct{}{}
+		normalizedRecords = append(normalizedRecords, record)
+	}
+	return normalizedRecords
+}
+
+func getSiteDNSRecords(siteModel *model.Site) []model.SiteDNSRecord {
+	if len(siteModel.DNSRecords) > 0 {
+		return normalizeDNSRecords(siteModel.DNSRecords)
+	}
+	if siteModel.DNSRecordID == nil || *siteModel.DNSRecordID == "" {
+		return nil
 	}
 
-	return false
+	record := model.SiteDNSRecord{ID: *siteModel.DNSRecordID}
+	if siteModel.DNSRecordName != nil {
+		record.Name = *siteModel.DNSRecordName
+	}
+	if siteModel.DNSRecordType != nil {
+		record.Type = *siteModel.DNSRecordType
+	}
+	if siteModel.DNSRecordExists != nil {
+		record.Exists = *siteModel.DNSRecordExists
+	}
+	return []model.SiteDNSRecord{record}
+}
+
+func setSiteDNSRecords(siteModel *model.Site, domainID *int, records []model.SiteDNSRecord) {
+	records = normalizeDNSRecords(records)
+	if domainID == nil || len(records) == 0 {
+		siteModel.DNSRecords = nil
+		siteModel.DNSDomainID = nil
+		siteModel.DNSRecordID = nil
+		siteModel.DNSRecordName = nil
+		siteModel.DNSRecordType = nil
+		siteModel.DNSRecordExists = nil
+		return
+	}
+
+	siteModel.DNSRecords = records
+	siteModel.DNSDomainID = domainID
+	firstRecord := records[0]
+	siteModel.DNSRecordID = &firstRecord.ID
+	siteModel.DNSRecordName = &firstRecord.Name
+	siteModel.DNSRecordType = &firstRecord.Type
+	siteModel.DNSRecordExists = &firstRecord.Exists
 }
 
 func GetSite(c *gin.Context) {
@@ -108,10 +169,11 @@ func GetSite(c *gin.Context) {
 		logger.Warn(err)
 	}
 
-	// Check DNS record existence if linked
-	if siteModel.DNSDomainID != nil && siteModel.DNSRecordID != nil {
-		exists := checkDNSRecordExists(*siteModel.DNSDomainID, *siteModel.DNSRecordID)
-		siteModel.DNSRecordExists = &exists
+	// Check all DNS record links and migrate legacy single-record links on read.
+	linkedRecords := getSiteDNSRecords(siteModel)
+	if siteModel.DNSDomainID != nil && len(linkedRecords) > 0 {
+		linkedRecords = checkDNSRecordsExist(*siteModel.DNSDomainID, linkedRecords)
+		setSiteDNSRecords(siteModel, siteModel.DNSDomainID, linkedRecords)
 		// Update in database
 		if err := query.Site.Save(siteModel); err != nil {
 			logger.Warn("Failed to update DNS record exists status:", err)
@@ -176,15 +238,16 @@ func SaveSite(c *gin.Context) {
 	name := helper.UnescapeURL(c.Param("name"))
 
 	var json struct {
-		Content       string   `json:"content" binding:"required"`
-		NamespaceID   uint64   `json:"namespace_id"`
-		SyncNodeIDs   []uint64 `json:"sync_node_ids"`
-		Overwrite     bool     `json:"overwrite"`
-		PostAction    string   `json:"post_action"`
-		DNSDomainID   *int     `json:"dns_domain_id"`
-		DNSRecordID   *string  `json:"dns_record_id"`
-		DNSRecordName *string  `json:"dns_record_name"`
-		DNSRecordType *string  `json:"dns_record_type"`
+		Content       string                 `json:"content" binding:"required"`
+		NamespaceID   uint64                 `json:"namespace_id"`
+		SyncNodeIDs   []uint64               `json:"sync_node_ids"`
+		Overwrite     bool                   `json:"overwrite"`
+		PostAction    string                 `json:"post_action"`
+		DNSDomainID   *int                   `json:"dns_domain_id"`
+		DNSRecordID   *string                `json:"dns_record_id"`
+		DNSRecordName *string                `json:"dns_record_name"`
+		DNSRecordType *string                `json:"dns_record_type"`
+		DNSRecords    *[]model.SiteDNSRecord `json:"dns_records"`
 	}
 
 	if !cosy.BindAndValid(c, &json) {
@@ -209,19 +272,24 @@ func SaveSite(c *gin.Context) {
 	if err != nil {
 		logger.Warn("Failed to find or create site for DNS update:", err)
 	} else {
-		// Update DNS fields
-		siteModel.DNSDomainID = json.DNSDomainID
-		siteModel.DNSRecordID = json.DNSRecordID
-		siteModel.DNSRecordName = json.DNSRecordName
-		siteModel.DNSRecordType = json.DNSRecordType
-
-		// Check if record exists if DNS info is provided
-		if json.DNSDomainID != nil && json.DNSRecordID != nil {
-			exists := checkDNSRecordExists(*json.DNSDomainID, *json.DNSRecordID)
-			siteModel.DNSRecordExists = &exists
-		} else {
-			siteModel.DNSRecordExists = nil
+		var linkedRecords []model.SiteDNSRecord
+		if json.DNSRecords != nil {
+			linkedRecords = normalizeDNSRecords(*json.DNSRecords)
+		} else if json.DNSRecordID != nil {
+			legacyRecord := model.SiteDNSRecord{ID: *json.DNSRecordID}
+			if json.DNSRecordName != nil {
+				legacyRecord.Name = *json.DNSRecordName
+			}
+			if json.DNSRecordType != nil {
+				legacyRecord.Type = *json.DNSRecordType
+			}
+			linkedRecords = []model.SiteDNSRecord{legacyRecord}
 		}
+
+		if json.DNSDomainID != nil {
+			linkedRecords = checkDNSRecordsExist(*json.DNSDomainID, linkedRecords)
+		}
+		setSiteDNSRecords(siteModel, json.DNSDomainID, linkedRecords)
 
 		if err := s.Save(siteModel); err != nil {
 			logger.Warn("Failed to save DNS link information:", err)

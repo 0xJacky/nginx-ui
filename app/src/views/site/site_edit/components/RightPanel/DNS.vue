@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { DNSDomain, DNSRecord } from '@/api/dns'
 import type { NgxDirective, NgxServer } from '@/api/ngx'
+import type { SiteDNSRecord } from '@/api/site'
 import { isAllowedDnsProvider } from '@/constants/dns_providers'
 import { useDnsStore } from '@/pinia/moudule/dns'
 import { useSiteEditorStore } from '../SiteEditor/store'
@@ -10,14 +11,23 @@ const dnsStore = useDnsStore()
 const editorStore = useSiteEditorStore()
 const { ngxConfig, dnsLinked, linkedDNSName, data } = storeToRefs(editorStore)
 
+interface LinkedDNSRecord {
+  record: DNSRecord
+  domain: DNSDomain
+  exists: boolean
+  recreateContent: string
+  recreateTTL: number
+  recreateProxied: boolean
+}
+
 const selectedDomainId = ref<number | null>(null)
-const selectedRecordId = ref<string | null>(null)
+const selectedRecordIds = ref<string[]>([])
 const createNewRecord = ref(false)
 const loading = ref(false)
 const initialLoading = ref(true) // Loading state for initial DNS link check
 const availableDomains = ref<DNSDomain[]>([])
 const availableRecords = ref<DNSRecord[]>([])
-const linkedRecord = ref<{ record: DNSRecord, domain: DNSDomain } | null>(null)
+const linkedRecords = ref<LinkedDNSRecord[]>([])
 const newRecordForm = reactive({
   type: 'A',
   content: '',
@@ -36,11 +46,27 @@ const selectedDomainValue = computed({
 })
 
 const selectedRecordValue = computed({
-  get: () => selectedRecordId.value ?? undefined,
+  get: () => selectedRecordIds.value,
   set: val => {
-    selectedRecordId.value = typeof val === 'string' ? val : null
+    selectedRecordIds.value = Array.isArray(val)
+      ? val.filter((recordId): recordId is string => typeof recordId === 'string')
+      : []
   },
 })
+
+const selectableRecords = computed(() => {
+  const records = [...availableRecords.value]
+  const recordIds = new Set(records.map(record => record.id))
+  for (const linkedRecord of linkedRecords.value) {
+    if (!recordIds.has(linkedRecord.record.id)) {
+      records.push(linkedRecord.record)
+    }
+  }
+  return records
+})
+
+const existingLinkedRecords = computed(() => linkedRecords.value.filter(record => record.exists))
+const missingLinkedRecords = computed(() => linkedRecords.value.filter(record => !record.exists))
 
 // Get server_name value from config
 const serverNameValue = computed(() => {
@@ -73,7 +99,7 @@ function getFullDNSName(record: DNSRecord, domain: DNSDomain): string {
 }
 
 // Update server_name directive with DNS name
-function updateServerNameDirective(dnsName: string) {
+function updateServerNameDirective(dnsNames: string[]) {
   // Find and update server_name directive in the first server
   const servers = ngxConfig.value.servers
   if (servers && servers.length > 0) {
@@ -85,7 +111,7 @@ function updateServerNameDirective(dnsName: string) {
       ) as NgxDirective | undefined
 
       if (serverNameDirective) {
-        serverNameDirective.params = dnsName
+        serverNameDirective.params = dnsNames.join(' ')
       }
     }
   }
@@ -171,54 +197,99 @@ async function loadRecordsForDomain(domainId: number) {
   }
 }
 
+function getStoredDNSRecords(): SiteDNSRecord[] {
+  if (data.value.dns_records?.length) {
+    return data.value.dns_records
+  }
+  if (!data.value.dns_record_id) {
+    return []
+  }
+  return [{
+    id: data.value.dns_record_id,
+    name: data.value.dns_record_name || '',
+    type: data.value.dns_record_type || 'A',
+    exists: data.value.dns_record_exists !== false,
+  }]
+}
+
+function toLinkedRecord(storedRecord: SiteDNSRecord, domain: DNSDomain): LinkedDNSRecord {
+  const availableRecord = availableRecords.value.find(record => record.id === storedRecord.id)
+  return {
+    record: availableRecord || {
+      id: storedRecord.id,
+      name: storedRecord.name,
+      type: storedRecord.type,
+      content: '',
+      ttl: 600,
+    },
+    domain,
+    exists: Boolean(availableRecord),
+    recreateContent: '',
+    recreateTTL: 600,
+    recreateProxied: false,
+  }
+}
+
+function saveDNSLinks(domain: DNSDomain, records: LinkedDNSRecord[]) {
+  const storedRecords = records.map(({ record, exists }) => ({
+    id: record.id,
+    name: record.name,
+    type: record.type,
+    exists,
+  }))
+  const firstRecord = storedRecords[0]
+
+  data.value.dns_domain_id = domain.id
+  data.value.dns_records = storedRecords
+  data.value.dns_record_id = firstRecord?.id || null
+  data.value.dns_record_name = firstRecord?.name || null
+  data.value.dns_record_type = firstRecord?.type || null
+  data.value.dns_record_exists = firstRecord?.exists ?? null
+}
+
+function clearDNSLinks() {
+  selectedRecordIds.value = []
+  linkedRecords.value = []
+  dnsLinked.value = false
+  linkedDNSName.value = ''
+  data.value.dns_domain_id = null
+  data.value.dns_records = []
+  data.value.dns_record_id = null
+  data.value.dns_record_name = null
+  data.value.dns_record_type = null
+  data.value.dns_record_exists = null
+}
+
+function applyLinkedRecords(records: LinkedDNSRecord[], domain: DNSDomain, shouldUpdateServerName: boolean) {
+  linkedRecords.value = records
+  const dnsNames = records.map(({ record }) => getFullDNSName(record, domain))
+  dnsLinked.value = records.length > 0
+  linkedDNSName.value = dnsNames.join(' ')
+  saveDNSLinks(domain, records)
+  if (shouldUpdateServerName) {
+    updateServerNameDirective(dnsNames)
+  }
+}
+
 // Load available DNS domains on mount
 onMounted(async () => {
   try {
     initialLoading.value = true
     await loadDomains()
 
-    // Load existing DNS link if present
-    if (data.value.dns_domain_id && data.value.dns_record_id) {
+    const storedRecords = getStoredDNSRecords()
+    if (data.value.dns_domain_id && storedRecords.length > 0) {
       selectedDomainId.value = data.value.dns_domain_id
       await loadRecordsForDomain(data.value.dns_domain_id)
 
-      // Try to find the linked record
-      const record = availableRecords.value.find(r => r.id === data.value.dns_record_id)
       const domain = availableDomains.value.find(d => d.id === data.value.dns_domain_id)
-
-      if (record && domain) {
-        selectedRecordId.value = data.value.dns_record_id
-        linkedRecord.value = { record, domain }
-        dnsLinked.value = true
-        linkedDNSName.value = getFullDNSName(record, domain)
-      }
-      else if (domain) {
-        // Record doesn't exist anymore, but we have the cached info
-        linkedRecord.value = {
-          record: {
-            id: data.value.dns_record_id!,
-            name: data.value.dns_record_name || '',
-            type: data.value.dns_record_type || 'A',
-            content: '',
-            ttl: 600,
-          },
-          domain,
-        }
-        dnsLinked.value = true
-        const recordName = data.value.dns_record_name
-        if (recordName === '@') {
-          linkedDNSName.value = domain.domain
-        }
-        else if (recordName) {
-          linkedDNSName.value = `${recordName}.${domain.domain}`
-        }
-        else {
-          linkedDNSName.value = domain.domain
-        }
+      if (domain) {
+        const records = storedRecords.map(record => toLinkedRecord(record, domain))
+        selectedRecordIds.value = records.map(({ record }) => record.id)
+        applyLinkedRecords(records, domain, false)
       }
     }
     else {
-      // Try to auto-match domain from server_name
       await autoMatchDomain()
     }
   }
@@ -244,9 +315,8 @@ async function autoMatchDomain() {
 // Handle domain selection change
 async function onDomainChange(value: unknown) {
   const domainId = typeof value === 'number' ? value : null
-  selectedRecordId.value = null
+  clearDNSLinks()
   createNewRecord.value = false
-  linkedRecord.value = null
   if (domainId) {
     await loadRecordsForDomain(domainId)
   }
@@ -255,43 +325,36 @@ async function onDomainChange(value: unknown) {
   }
 }
 
-// Save DNS link to backend
-async function saveDNSLink(domainId: number, recordId: string, recordName: string, recordType: string) {
-  data.value.dns_domain_id = domainId
-  data.value.dns_record_id = recordId
-  data.value.dns_record_name = recordName
-  data.value.dns_record_type = recordType
-  data.value.dns_record_exists = true
-}
-
 // Handle record selection
 function onRecordSelect(value: unknown) {
-  const recordId = typeof value === 'string' ? value : null
+  const recordIds = Array.isArray(value)
+    ? value.filter((recordId): recordId is string => typeof recordId === 'string')
+    : []
   createNewRecord.value = false
-  if (recordId && selectedDomainId.value) {
-    const record = availableRecords.value.find(r => r.id === recordId)
+  if (recordIds.length > 0 && selectedDomainId.value) {
     const domain = availableDomains.value.find(d => d.id === selectedDomainId.value)
-    if (record && domain) {
-      linkedRecord.value = { record, domain }
-
-      // Update server_name with DNS name
-      const dnsName = getFullDNSName(record, domain)
-      updateServerNameDirective(dnsName)
-
-      // Update store state
-      dnsLinked.value = true
-      linkedDNSName.value = dnsName
-
-      // Save DNS link to backend
-      saveDNSLink(domain.id, record.id, record.name, record.type)
-
-      message.success($gettext('DNS record linked and server_name updated: %{name}').replace('%{name}', dnsName))
+    if (domain) {
+      const records = recordIds.flatMap(recordId => {
+        const record = selectableRecords.value.find(item => item.id === recordId)
+        if (!record)
+          return []
+        const previousRecord = linkedRecords.value.find(item => item.record.id === recordId)
+        return [{
+          record,
+          domain,
+          exists: availableRecords.value.some(item => item.id === recordId),
+          recreateContent: previousRecord?.recreateContent || '',
+          recreateTTL: previousRecord?.recreateTTL || 600,
+          recreateProxied: previousRecord?.recreateProxied || false,
+        } satisfies LinkedDNSRecord]
+      })
+      applyLinkedRecords(records, domain, true)
+      const dnsNames = records.map(({ record }) => getFullDNSName(record, domain)).join(', ')
+      message.success($gettext('DNS record linked and server_name updated: %{name}').replace('%{name}', dnsNames))
     }
   }
   else {
-    linkedRecord.value = null
-    dnsLinked.value = false
-    linkedDNSName.value = ''
+    clearDNSLinks()
   }
 }
 
@@ -299,8 +362,7 @@ function onRecordSelect(value: unknown) {
 function onCreateNewToggle(e: { target: { checked: boolean } }) {
   const checked = e.target.checked
   if (checked) {
-    selectedRecordId.value = null
-    linkedRecord.value = null
+    clearDNSLinks()
     // Pre-fill form
     if (serverNameValue.value && selectedDomainId.value) {
       const domain = availableDomains.value.find(d => d.id === selectedDomainId.value)
@@ -338,22 +400,19 @@ async function createRecord() {
     })
 
     message.success($gettext('DNS record created successfully'))
-    linkedRecord.value = { record, domain }
-
-    // Update server_name with DNS name
-    const dnsName = getFullDNSName(record, domain)
-    updateServerNameDirective(dnsName)
-
-    // Update store state
-    dnsLinked.value = true
-    linkedDNSName.value = dnsName
-
-    // Save DNS link to backend
-    saveDNSLink(domain.id, record.id, record.name, record.type)
+    const linkedRecord: LinkedDNSRecord = {
+      record,
+      domain,
+      exists: true,
+      recreateContent: '',
+      recreateTTL: 600,
+      recreateProxied: false,
+    }
+    applyLinkedRecords([linkedRecord], domain, true)
 
     // Reload records
     await loadRecordsForDomain(selectedDomainId.value)
-    selectedRecordId.value = record.id
+    selectedRecordIds.value = [record.id]
     createNewRecord.value = false
   }
   catch (error) {
@@ -368,58 +427,45 @@ async function createRecord() {
 // Clear selection
 function clearSelection() {
   selectedDomainId.value = null
-  selectedRecordId.value = null
   createNewRecord.value = false
   availableRecords.value = []
-  linkedRecord.value = null
-  dnsLinked.value = false
-  linkedDNSName.value = ''
-
-  // Clear DNS link in backend
-  data.value.dns_domain_id = null
-  data.value.dns_record_id = null
-  data.value.dns_record_name = null
-  data.value.dns_record_type = null
-  data.value.dns_record_exists = null
+  clearDNSLinks()
 }
 
 // Recreate missing DNS record
-async function recreateRecord() {
-  if (!linkedRecord.value || !selectedDomainId.value)
+async function recreateRecord(linkedRecord: LinkedDNSRecord) {
+  if (!selectedDomainId.value || !linkedRecord.recreateContent)
     return
 
   try {
     loading.value = true
-    const { record, domain } = linkedRecord.value
+    const { record, domain } = linkedRecord
 
     const newRecord = await dnsStore.createRecord(selectedDomainId.value, {
       type: record.type,
       name: record.name,
-      content: newRecordForm.content || '', // User should fill this
-      ttl: newRecordForm.ttl,
-      proxied: newRecordForm.proxied,
+      content: linkedRecord.recreateContent,
+      ttl: linkedRecord.recreateTTL,
+      proxied: linkedRecord.recreateProxied,
     })
 
     message.success($gettext('DNS record recreated successfully'))
 
-    // Update linked record
-    linkedRecord.value = { record: newRecord, domain }
-    selectedRecordId.value = newRecord.id
-
-    // Save new link
-    await saveDNSLink(domain.id, newRecord.id, newRecord.name, newRecord.type)
+    const updatedRecords = linkedRecords.value.map(item => item.record.id === record.id
+      ? {
+          record: newRecord,
+          domain,
+          exists: true,
+          recreateContent: '',
+          recreateTTL: 600,
+          recreateProxied: false,
+        }
+      : item)
+    selectedRecordIds.value = updatedRecords.map(item => item.record.id)
+    applyLinkedRecords(updatedRecords, domain, true)
 
     // Reload records
     await loadRecordsForDomain(selectedDomainId.value)
-    data.value.dns_record_exists = true
-
-    // Update server_name with DNS name
-    const dnsName = getFullDNSName(newRecord, domain)
-    updateServerNameDirective(dnsName)
-
-    // Update store state
-    dnsLinked.value = true
-    linkedDNSName.value = dnsName
 
     // Automatically save the site configuration with the updated DNS link
     await editorStore.save()
@@ -456,34 +502,38 @@ async function recreateRecord() {
         {{ $gettext('Link this site to a DNS record. The server_name will be used for the DNS record name.') }}
       </p>
 
-      <!-- Current linked record -->
-      <div v-if="linkedRecord" class="mb-4">
-        <!-- Record exists -->
-        <div v-if="data.dns_record_exists !== false" class="p-3 border border-green-200 rounded">
-          <div class="flex items-center justify-between">
-            <div>
-              <div class="text-sm font-medium text-green-800 mb-1">
-                {{ $gettext('Linked DNS Record') }}
-              </div>
-              <div class="text-xs text-gray-600">
-                <ATag :color="linkedRecord.record.type === 'A' ? 'blue' : linkedRecord.record.type === 'AAAA' ? 'green' : 'orange'">
-                  {{ linkedRecord.record.type }}
-                </ATag>
-                {{ linkedRecord.record.name === '@' ? linkedRecord.domain.domain : linkedRecord.record.name }}
-                → {{ linkedRecord.record.content }}
-                <ATag v-if="linkedRecord.record.proxied" color="orange" class="ml-1">
-                  {{ $gettext('Proxied') }}
-                </ATag>
-              </div>
+      <!-- Current linked records -->
+      <div v-if="linkedRecords.length" class="mb-4">
+        <div v-if="existingLinkedRecords.length" class="p-3 border border-green-200 rounded">
+          <div class="flex items-center justify-between mb-2">
+            <div class="text-sm font-medium text-green-800">
+              {{ $gettext('Linked DNS Record') }}
             </div>
             <AButton size="small" @click="clearSelection">
               {{ $gettext('Clear') }}
             </AButton>
           </div>
+          <div
+            v-for="linkedRecord in existingLinkedRecords"
+            :key="linkedRecord.record.id"
+            class="text-xs text-gray-600 not-last:mb-2"
+          >
+            <ATag :color="linkedRecord.record.type === 'A' ? 'blue' : linkedRecord.record.type === 'AAAA' ? 'green' : 'orange'">
+              {{ linkedRecord.record.type }}
+            </ATag>
+            {{ linkedRecord.record.name === '@' ? linkedRecord.domain.domain : linkedRecord.record.name }}
+            → {{ linkedRecord.record.content }}
+            <ATag v-if="linkedRecord.record.proxied" color="orange" class="ml-1">
+              {{ $gettext('Proxied') }}
+            </ATag>
+          </div>
         </div>
 
-        <!-- Record doesn't exist -->
-        <div v-else class="p-3 border border-orange-200 rounded">
+        <div
+          v-for="linkedRecord in missingLinkedRecords"
+          :key="linkedRecord.record.id"
+          class="p-3 mt-2 border border-orange-200 rounded"
+        >
           <div class="mb-2">
             <div class="text-sm font-medium text-orange-800 mb-1">
               {{ $gettext('DNS Record Missing') }}
@@ -499,18 +549,17 @@ async function recreateRecord() {
             </div>
           </div>
 
-          <!-- Recreate form -->
           <AForm layout="vertical" size="small">
             <AFormItem :label="$gettext('IP Address / Target')" required>
               <AInput
-                v-model:value="newRecordForm.content"
+                v-model:value="linkedRecord.recreateContent"
                 size="small"
                 :placeholder="linkedRecord.record.type === 'CNAME' ? $gettext('target.example.com') : $gettext('192.168.1.1')"
               />
             </AFormItem>
             <AFormItem :label="$gettext('TTL (seconds)')">
               <AInputNumber
-                v-model:value="newRecordForm.ttl"
+                v-model:value="linkedRecord.recreateTTL"
                 size="small"
                 :min="60"
                 :max="86400"
@@ -518,7 +567,7 @@ async function recreateRecord() {
               />
             </AFormItem>
             <AFormItem>
-              <ACheckbox v-model:checked="newRecordForm.proxied">
+              <ACheckbox v-model:checked="linkedRecord.recreateProxied">
                 {{ $gettext('Enable Proxy (Cloudflare)') }}
               </ACheckbox>
             </AFormItem>
@@ -530,7 +579,8 @@ async function recreateRecord() {
               size="small"
               danger
               :loading="loading"
-              @click="recreateRecord"
+              :disabled="!linkedRecord.recreateContent"
+              @click="recreateRecord(linkedRecord)"
             >
               {{ $gettext('Recreate DNS Record') }}
             </AButton>
@@ -570,14 +620,16 @@ async function recreateRecord() {
           <ASpace direction="vertical" style="width: 100%">
             <ASelect
               v-model:value="selectedRecordValue"
+              mode="multiple"
               :placeholder="$gettext('Select existing record')"
               :loading="loading"
               :disabled="createNewRecord"
+              max-tag-count="responsive"
               allow-clear
               @change="onRecordSelect"
             >
               <ASelectOption
-                v-for="record in availableRecords"
+                v-for="record in selectableRecords"
                 :key="record.id"
                 :value="record.id"
               >

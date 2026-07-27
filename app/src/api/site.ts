@@ -13,6 +13,13 @@ export interface ProxyTarget {
   type: string // "proxy_pass" or "upstream"
 }
 
+export interface SiteDNSRecord {
+  id: string
+  name: string
+  type: string
+  exists: boolean
+}
+
 export interface Site extends ModelBase {
   modified_at: string
   path: string
@@ -30,6 +37,8 @@ export interface Site extends ModelBase {
   proxy_targets?: ProxyTarget[]
   status: SiteStatus
   dns_domain_id?: number | null
+  dns_records?: SiteDNSRecord[] | null
+  // Legacy single-record fields are kept for backward compatibility.
   dns_record_id?: string | null
   dns_record_name?: string | null
   dns_record_type?: string | null
