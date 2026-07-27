@@ -1,3 +1,4 @@
+import type { AxiosRequestConfig } from 'axios'
 import { http } from '@uozi-admin/request'
 
 export interface SetupParams {
@@ -13,6 +14,11 @@ export interface SetupParams {
   host_config_dir?: string
   host_log_dir?: string
   pid_path?: string
+  host_key_path?: string
+  host_known_hosts_path?: string
+  container_key_path?: string
+  container_known_hosts_path?: string
+  key_source?: 'generated' | 'existing' | 'provided'
   use_generated_key?: boolean
   public_key_open_ssh?: string
 }
@@ -22,8 +28,12 @@ export interface RenderedSnippets {
   compose_override: string
   docker_run: string
   authorized_keys: string
+  // Appends the key with the permissions sshd requires before it will use it.
+  authorized_keys_install: string
   sudoers: string
   acl_commands: string
+  // False for launchd and for a root SSH user, which need no sudoers entry.
+  sudoers_required: boolean
 }
 
 export interface StepOutcome {
@@ -35,6 +45,13 @@ export interface StepOutcome {
 
 export interface VerifyResult {
   steps: Record<string, StepOutcome>
+}
+
+export type CheckGroup = 'connection' | 'platform' | 'privileges' | 'nginx'
+
+export interface ConnectionTestResult {
+  connected: boolean
+  detail: string
 }
 
 export interface NginxDiscovery {
@@ -51,12 +68,31 @@ export interface NginxDiscovery {
   document_root?: string
 }
 
+export interface SSHTarget {
+  address: string
+  source: string
+  reachable: boolean
+}
+
+export interface HostDiagnosis {
+  os: string
+  arch?: string
+  service_manager?: 'systemd' | 'launchd'
+  systemctl_path?: string
+  launchctl_path?: string
+  systemd_unit?: string
+  launchd_service?: string
+  homebrew_prefix?: string
+  nginx?: NginxDiscovery
+  warnings?: string[]
+}
+
 export interface KeypairResponse {
   public_key: string
   private_key?: string
 }
 
-export type HostKeyStatus = 'trusted' | 'unknown_host' | 'new_algorithm' | 'changed' | 'stale'
+export type HostKeyStatus = 'trusted' | 'unknown_host' | 'new_algorithm' | 'changed' | 'stale' | 'revoked'
 
 export interface HostKeyScanItem {
   algorithm: string
@@ -113,20 +149,51 @@ const hostSetup = {
   preview(params?: SetupParams): Promise<RenderedSnippets> {
     return http.post('/host/setup/preview', params ?? {})
   },
-  generateKeypair(): Promise<KeypairResponse> {
-    return http.post('/host/setup/keypair')
+  generateKeypair(privateKeyPath?: string): Promise<KeypairResponse> {
+    return http.post('/host/setup/keypair', {
+      private_key_path: privateKeyPath,
+    })
   },
-  getPublicKey(): Promise<{ public_key: string }> {
-    return http.get('/host/setup/publickey')
+  // The backend answers 404 when no key exists yet, so callers that probe on
+  // mount pass skipErrHandling to keep the global error toast quiet.
+  getPublicKey(privateKeyPath?: string, config?: AxiosRequestConfig): Promise<{ public_key: string }> {
+    return http.get('/host/setup/publickey', {
+      ...config,
+      params: {
+        private_key_path: privateKeyPath,
+      },
+    })
   },
   deleteKeypair(): Promise<void> {
     return http.delete('/host/setup/keypair')
   },
-  verify(params: SetupParams, skipNginxT = false): Promise<VerifyResult> {
-    return http.post('/host/setup/verify', { ...params, skip_nginx_t: skipNginxT })
+  // groups limits the run to a subset of the pipeline so a wizard step can
+  // verify what it configured. Omit it to run every check.
+  verify(
+    params: SetupParams,
+    options: { skipNginxT?: boolean, groups?: CheckGroup[] } = {},
+  ): Promise<VerifyResult> {
+    return http.post('/host/setup/verify', {
+      ...params,
+      skip_nginx_t: options.skipNginxT ?? false,
+      groups: options.groups,
+    })
+  },
+  testConnection(params: SetupParams): Promise<ConnectionTestResult> {
+    return http.post('/host/setup/connection', params)
   },
   discover(params: SetupParams): Promise<NginxDiscovery> {
     return http.post('/host/setup/discover', params)
+  },
+  // Probes the addresses this container can use to reach its own host. No SSH
+  // session and no credentials are involved.
+  sshTargets(address?: string): Promise<{ targets: SSHTarget[] }> {
+    return http.get('/host/setup/ssh-targets', {
+      params: { address },
+    })
+  },
+  diagnose(params: SetupParams): Promise<HostDiagnosis> {
+    return http.post('/host/setup/diagnose', params)
   },
   trustHostKey(hostAddress: string, fingerprint: string, publicKey: string): Promise<void> {
     return http.post('/host/setup/known-host', {

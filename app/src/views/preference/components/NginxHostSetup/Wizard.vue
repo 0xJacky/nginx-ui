@@ -1,120 +1,166 @@
 <script setup lang="ts">
-import type { SetupParams } from '@/api/host_setup'
+import type { Component } from 'vue'
+import { ArrowLeftOutlined, ArrowRightOutlined, SaveOutlined } from '@ant-design/icons-vue'
 import { storeToRefs } from 'pinia'
-import { ref, watch } from 'vue'
+import { computed, onBeforeUnmount } from 'vue'
 import useSystemSettingsStore from '../../store'
-import Step1 from './steps/Step1AuthMethod.vue'
-import Step2a from './steps/Step2aContainer.vue'
-import Step2b from './steps/Step2bHost.vue'
-import Step3 from './steps/Step3Connection.vue'
-import Step4 from './steps/Step4Verify.vue'
-import Step5 from './steps/Step5HostIdentity.vue'
+import StepDetectPlatform from './steps/StepDetectPlatform.vue'
+import StepInstall from './steps/StepInstall.vue'
+import StepSshTarget from './steps/StepSshTarget.vue'
+import StepTrustAndTest from './steps/StepTrustAndTest.vue'
+import StepVerify from './steps/StepVerify.vue'
+import {
+  createHostSetupWizard,
+  hostSetupStepOrder,
+  provideHostSetupWizard,
+} from './useHostSetupWizard'
 
-const current = ref(0)
-const authMethod = ref<'key' | 'password'>('key')
-const publicKey = ref('')
-
-const params = ref<SetupParams>({
-  host_address: 'host.docker.internal:22',
-  host_user: 'nginxui',
-  service_manager: 'systemd',
-  systemd_unit: 'nginx.service',
-  systemctl_path: '/bin/systemctl',
-  nginx_sbin_path: '/usr/sbin/nginx',
-  host_config_dir: '/etc/nginx',
-  host_log_dir: '/var/log/nginx',
-  pid_path: '/var/run/nginx.pid',
-  use_generated_key: true,
-  public_key_open_ssh: '',
-})
-
-watch(publicKey, v => {
-  params.value.public_key_open_ssh = v
-})
+const props = defineProps<{ saving?: boolean }>()
+const emit = defineEmits<{ save: [] }>()
 
 const systemSettingsStore = useSystemSettingsStore()
 const { data } = storeToRefs(systemSettingsStore)
+const wizard = createHostSetupWizard(data)
+provideHostSetupWizard(wizard)
 
-const defaultHostPrivateKeyPath = '/etc/nginx-ui/host_key'
-const defaultHostKnownHostsPath = '/etc/nginx-ui/known_hosts'
+const stepComponents: Record<typeof wizard.currentStepId.value, Component> = {
+  'ssh-target': StepSshTarget,
+  'trust-and-test': StepTrustAndTest,
+  'detect-platform': StepDetectPlatform,
+  'install': StepInstall,
+  'verify': StepVerify,
+}
+const activeStepComponent = computed(() => stepComponents[wizard.currentStepId.value])
 
-// Write wizard params into the global settings store so the existing
-// "Save" button in Preference.vue's FooterToolBar persists them.
+const steps = computed(() => [
+  { title: $gettext('SSH Target'), description: $gettext('Address, user and private key') },
+  { title: $gettext('Trust & Test'), description: $gettext('Host key and connectivity') },
+  { title: $gettext('Detect Platform'), description: $gettext('Service manager and nginx paths') },
+  { title: $gettext('Install'), description: $gettext('Container and host snippets') },
+  { title: $gettext('Verify'), description: $gettext('Run checks and save') },
+].map((step, index) => ({
+  ...step,
+  disabled: index > wizard.furthestReachableIndex.value && index > wizard.currentStepIndex.value,
+})))
+
+const isLastStep = computed(() => wizard.currentStepId.value === hostSetupStepOrder[hostSetupStepOrder.length - 1])
+
 function saveToSettings() {
-  data.value.nginx.host_mode = 'ssh'
-  data.value.nginx.host_address = params.value.host_address
-  data.value.nginx.host_user = params.value.host_user
-  data.value.nginx.host_auth_method = authMethod.value
-  data.value.nginx.host_private_key_path ||= defaultHostPrivateKeyPath
-  data.value.nginx.host_known_hosts_path ||= defaultHostKnownHostsPath
-  data.value.nginx.host_service_manager = params.value.service_manager
-  data.value.nginx.host_sudo_prefix = params.value.service_manager === 'launchd'
-    ? ''
-    : (data.value.nginx.host_sudo_prefix || 'sudo -n')
-  data.value.nginx.host_systemd_unit_name = params.value.systemd_unit
-  data.value.nginx.host_systemctl_path = params.value.systemctl_path
-  data.value.nginx.host_launchd_service = params.value.launchd_service
-  data.value.nginx.host_launchctl_path = params.value.launchctl_path
-  data.value.nginx.host_config_dir = params.value.host_config_dir
-  data.value.nginx.host_log_dir = params.value.host_log_dir
-  data.value.nginx.sbin_path = params.value.nginx_sbin_path ?? data.value.nginx.sbin_path
-  data.value.nginx.pid_path = params.value.pid_path ?? data.value.nginx.pid_path
-  data.value.nginx.config_dir = params.value.host_config_dir ?? data.value.nginx.config_dir
-  data.value.nginx.config_path = `${params.value.host_config_dir ?? '/etc/nginx'}/nginx.conf`
-  data.value.nginx.error_log_path = `${params.value.host_log_dir ?? '/var/log/nginx'}/error.log`
-  data.value.nginx.access_log_path = `${params.value.host_log_dir ?? '/var/log/nginx'}/access.log`
+  if (wizard.applyToSettings())
+    emit('save')
 }
 
-function next() {
-  if (current.value < 5)
-    current.value++
-}
-function prev() {
-  if (current.value > 0)
-    current.value--
-}
+onBeforeUnmount(wizard.clearSensitiveState)
 </script>
 
 <template>
-  <ACard :title="$gettext('Host SSH setup wizard')">
-    <ASteps :current="current" size="small" class="mb-4">
-      <AStep :title="$gettext('Auth')" />
-      <AStep :title="$gettext('Container')" />
-      <AStep :title="$gettext('Host')" />
-      <AStep :title="$gettext('Connection')" />
-      <AStep :title="$gettext('Host Identity')" />
-      <AStep :title="$gettext('Verify')" />
+  <section class="host-setup-wizard">
+    <ASteps
+      :current="wizard.currentStepIndex.value"
+      class="wizard-steps"
+      size="small"
+      @change="wizard.goToStep"
+    >
+      <AStep
+        v-for="step in steps"
+        :key="step.title"
+        :title="step.title"
+        :description="step.description"
+        :disabled="step.disabled"
+      />
     </ASteps>
 
-    <div v-if="current === 0">
-      <Step1 v-model:auth-method="authMethod" v-model:public-key="publicKey" />
-    </div>
-    <div v-else-if="current === 1">
-      <Step2a :params="params" />
-    </div>
-    <div v-else-if="current === 2">
-      <Step2b :params="params" />
-    </div>
-    <div v-else-if="current === 3">
-      <Step3 v-model:params="params" />
-    </div>
-    <div v-else-if="current === 4">
-      <Step5 :params="params" />
-    </div>
-    <div v-else-if="current === 5">
-      <Step4 v-model:params="params" />
-    </div>
+    <AForm layout="vertical" class="wizard-step-content">
+      <KeepAlive>
+        <component
+          :is="activeStepComponent"
+          :key="wizard.currentStepId.value"
+        />
+      </KeepAlive>
+    </AForm>
 
-    <div class="mt-6 flex justify-between">
-      <AButton :disabled="current === 0" @click="prev">
-        {{ $gettext('Previous') }}
-      </AButton>
-      <AButton v-if="current < 5" type="primary" @click="next">
-        {{ $gettext('Next') }}
-      </AButton>
-      <AButton v-if="current === 5" type="primary" @click="saveToSettings">
-        {{ $gettext('Save configuration') }}
-      </AButton>
+    <AAlert
+      v-if="wizard.blockedReason.value"
+      type="info"
+      show-icon
+      class="mt-4"
+      :message="wizard.blockedReason.value"
+    />
+
+    <div class="wizard-actions">
+      <ASpace wrap>
+        <AButton :disabled="wizard.currentStepIndex.value === 0" @click="wizard.previous">
+          <ArrowLeftOutlined />
+          {{ $gettext('Previous') }}
+        </AButton>
+      </ASpace>
+      <ASpace wrap>
+        <AButton
+          v-if="!isLastStep"
+          type="primary"
+          :disabled="!wizard.canAdvance.value"
+          @click="wizard.next"
+        >
+          {{ $gettext('Next') }}
+          <ArrowRightOutlined />
+        </AButton>
+        <AButton
+          v-else
+          type="primary"
+          :disabled="!wizard.isVerificationPassed.value"
+          :loading="props.saving"
+          @click="saveToSettings"
+        >
+          <SaveOutlined />
+          {{ $gettext('Save configuration') }}
+        </AButton>
+      </ASpace>
     </div>
-  </ACard>
+  </section>
 </template>
+
+<style lang="less" scoped>
+.wizard-steps {
+  margin-bottom: 28px;
+}
+
+.wizard-step-content {
+  min-height: 360px;
+}
+
+.wizard-actions {
+  position: sticky;
+  z-index: 5;
+  bottom: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  margin-top: 32px;
+  padding: 16px 0;
+  border-top: 1px solid #e8e8e8;
+  background: #fff;
+}
+
+// The theme class is set on <body> by the settings store. Ant design tokens are
+// not exposed as CSS variables in this project. The whole selector must sit
+// inside :global, otherwise the scoped transform drops the rule.
+:global(body.dark .wizard-actions) {
+  border-color: #303030;
+  background: #141414;
+}
+
+@media (max-width: 600px) {
+  .wizard-steps {
+    margin-bottom: 20px;
+  }
+
+  .wizard-step-content {
+    min-height: 280px;
+  }
+
+  .wizard-actions {
+    position: static;
+  }
+}
+</style>

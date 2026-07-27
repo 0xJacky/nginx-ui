@@ -80,7 +80,9 @@ export interface NginxSettings {
   host_address?: string
   host_user?: string
   host_auth_method?: string
+  host_key_source?: 'generated' | 'existing' | 'provided'
   host_private_key_path?: string
+  host_password_ref?: string
   host_known_hosts_path?: string
   host_sudo_prefix?: string
   host_service_manager?: 'systemd' | 'launchd'
@@ -90,6 +92,34 @@ export interface NginxSettings {
   host_launchctl_path?: string
   host_config_dir?: string
   host_log_dir?: string
+}
+
+export type NginxControlMode = 'local' | 'external_container' | 'host_via_ssh'
+
+export interface NginxControlSettings {
+  mode: NginxControlMode
+  container_name: string
+  host_address?: string
+  host_user?: string
+  host_auth_method?: string
+  host_key_source?: 'generated' | 'existing' | 'provided'
+  host_private_key_path?: string
+  host_password_ref?: string
+  host_known_hosts_path?: string
+  host_sudo_prefix?: string
+  host_service_manager?: 'systemd' | 'launchd'
+  host_systemd_unit_name?: string
+  host_systemctl_path?: string
+  host_launchd_service?: string
+  host_launchctl_path?: string
+  host_config_dir?: string
+  host_log_dir?: string
+  sbin_path?: string
+  pid_path?: string
+  config_dir?: string
+  config_path?: string
+  access_log_path?: string
+  error_log_path?: string
 }
 
 export interface NginxLogSettings {
@@ -172,6 +202,16 @@ const settings = {
   },
   save(data: Settings, config?: AxiosRequestConfig): Promise<Settings> {
     return http.post('/settings', data, config)
+  },
+  saveNginxControl(data: NginxControlSettings, config?: AxiosRequestConfig): Promise<NginxControlSettings> {
+    return http.post('/settings/nginx/control', data, config)
+  },
+  saveNginxPrivateKey(privateKey: string): Promise<{ private_key_path: string, public_key: string }> {
+    return http.post('/settings/nginx/private-key', {
+      private_key: privateKey,
+    }, {
+      skipErrHandling: true,
+    })
   },
   get_server_name(): Promise<{ name: string }> {
     return http.get('/settings/server/name')
