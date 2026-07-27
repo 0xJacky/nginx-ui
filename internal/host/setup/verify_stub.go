@@ -6,8 +6,6 @@ import (
 	"context"
 	"errors"
 	"strings"
-
-	hostssh "github.com/0xJacky/Nginx-UI/internal/host/ssh"
 )
 
 // StepOutcome is a single check result. Detail is the raw evidence;
@@ -27,9 +25,11 @@ type VerifyResult struct {
 
 // VerifyOptions narrows the input to what verify actually needs.
 type VerifyOptions struct {
-	Client     *hostssh.Client
+	Client     CommandRunner
 	Params     SetupParams
 	SkipNginxT bool
+	// Groups limits the pipeline to the listed check groups. Empty runs all.
+	Groups []CheckGroup
 }
 
 // Verify stub for non-Linux build targets; SSH host mode is Linux-only by design.
