@@ -8,18 +8,26 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetProtectedSetting(c *gin.Context) {
+func requireVerifiedTwoFactor(c *gin.Context, message string) bool {
 	if _, ok := c.Get(nodeauth.GinPrincipalKey); ok {
 		c.AbortWithStatusJSON(http.StatusForbidden, gin.H{
 			"message": "Node secret authentication is not allowed for protected settings",
 		})
-		return
+		return false
 	}
 
 	if verified, _ := c.Get(middleware.SecureSessionVerifiedKey); verified != true {
 		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
-			"message": "Two-factor authentication is required to reveal protected settings",
+			"message": message,
 		})
+		return false
+	}
+
+	return true
+}
+
+func GetProtectedSetting(c *gin.Context) {
+	if !requireVerifiedTwoFactor(c, "Two-factor authentication is required to reveal protected settings") {
 		return
 	}
 

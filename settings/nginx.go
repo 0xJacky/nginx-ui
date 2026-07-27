@@ -9,7 +9,11 @@ const (
 
 	HostServiceManagerSystemd = "systemd"
 	HostServiceManagerLaunchd = "launchd"
+	HostKeySourceGenerated    = "generated"
+	HostKeySourceExisting     = "existing"
+	HostKeySourceProvided     = "provided"
 
+	DefaultHostPrivateKeyPath = "/etc/nginx-ui/host_key"
 	DefaultHostKnownHostsPath = "/etc/nginx-ui/known_hosts"
 )
 
@@ -34,6 +38,7 @@ type Nginx struct {
 	HostAddress         string `json:"host_address" protected:"true"`
 	HostUser            string `json:"host_user" protected:"true"`
 	HostAuthMethod      string `json:"host_auth_method" protected:"true"`
+	HostKeySource       string `json:"host_key_source" protected:"true"`
 	HostPrivateKeyPath  string `json:"host_private_key_path" protected:"true"`
 	HostPasswordRef     string `json:"host_password_ref" protected:"true"`
 	HostKnownHostsPath  string `json:"host_known_hosts_path" protected:"true"`
@@ -61,6 +66,25 @@ func (n *Nginx) GetHostKnownHostsPath() string {
 		return DefaultHostKnownHostsPath
 	}
 	return n.HostKnownHostsPath
+}
+
+func (n *Nginx) GetHostPrivateKeyPath() string {
+	if n.HostPrivateKeyPath == "" {
+		return DefaultHostPrivateKeyPath
+	}
+	return n.HostPrivateKeyPath
+}
+
+func (n *Nginx) GetHostKeySource() string {
+	if n.HostKeySource == HostKeySourceGenerated ||
+		n.HostKeySource == HostKeySourceExisting ||
+		n.HostKeySource == HostKeySourceProvided {
+		return n.HostKeySource
+	}
+	if n.GetHostPrivateKeyPath() == DefaultHostPrivateKeyPath {
+		return HostKeySourceGenerated
+	}
+	return HostKeySourceExisting
 }
 
 func (n *Nginx) GetHostServiceManager() string {
