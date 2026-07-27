@@ -19,6 +19,10 @@ const baseUrlOptions = LLM_PROVIDER_BASE_URLS.map(baseUrl => ({
   value: baseUrl,
 }))
 
+function filterBaseUrlOption(inputValue: string, option?: { value?: string }) {
+  return option?.value?.toLowerCase().includes(inputValue.toLowerCase()) ?? false
+}
+
 const providerBaseUrlMap = LLM_PROVIDERS.reduce<Record<string, string>>((acc, provider) => {
   if (provider.baseUrl)
     acc[provider.value] = provider.baseUrl
@@ -108,6 +112,8 @@ watch(
         v-model:value="data.openai.base_url"
         :placeholder="baseUrlPlaceholder"
         :options="baseUrlOptions"
+        :filter-option="filterBaseUrlOption"
+        :default-active-first-option="false"
       />
     </AFormItem>
     <AFormItem
