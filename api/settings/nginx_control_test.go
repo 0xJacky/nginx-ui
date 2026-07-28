@@ -11,6 +11,7 @@ import (
 
 	hostsetup "github.com/0xJacky/Nginx-UI/internal/host/setup"
 	"github.com/0xJacky/Nginx-UI/internal/middleware"
+	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	appsettings "github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
@@ -152,7 +153,7 @@ func TestSaveNginxControlSettingsRequiresVerifiedTwoFactor(t *testing.T) {
 	t.Run("rejects node secret authentication", func(t *testing.T) {
 		w := httptest.NewRecorder()
 		c, _ := gin.CreateTestContext(w)
-		c.Set("Secret", "node-secret")
+		c.Set(nodeauth.GinPrincipalKey, "node-principal")
 		c.Request = httptest.NewRequest(http.MethodPost, "/api/settings/nginx/control", nil)
 
 		SaveNginxControlSettings(c)
