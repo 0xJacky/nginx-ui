@@ -118,15 +118,5 @@ func selfSignedRenewalDue(certModel *model.Cert, now time.Time, renewalInterval 
 // given info should be renewed now. It mirrors the renewal-threshold logic of
 // the ACME auto-renewal job.
 func shouldRenewSelfSignedCert(info *Info, now time.Time, renewalInterval int) bool {
-	certAge := int(now.Sub(info.NotBefore).Hours() / 24)
-	daysUntilExpiration := int(info.NotAfter.Sub(now).Hours() / 24)
-	totalValidityDays := int(info.NotAfter.Sub(info.NotBefore).Hours() / 24)
-
-	if totalValidityDays < renewalInterval {
-		// short-lived certificate: renew once 2/3 of the lifetime has elapsed
-		earlyRenewalThreshold := 2 * totalValidityDays / 3
-		return daysUntilExpiration <= earlyRenewalThreshold
-	}
-	// normal certificate: renew once the age reaches the renewal interval
-	return certAge >= renewalInterval
+	return shouldRenewCertificate(info, now, renewalInterval)
 }

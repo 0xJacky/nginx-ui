@@ -70,14 +70,20 @@ func autoCert(certModel *model.Cert) {
 		return
 	}
 
-	certInfo, err := GetCertInfo(certModel.SSLCertificatePath)
+	certificate, err := getCertificate(certModel.SSLCertificatePath)
 	if err != nil {
 		handleAutoRenewFailure(certModel, log, targetName, pkgerrors.Wrap(err, "get certificate info error"))
 		return
 	}
+	certInfo := certificateInfo(certificate)
 
 	renewalInterval := settings.CertSettings.GetCertRenewalInterval()
-	if !shouldRenewACMECertificate(certInfo, now, renewalInterval) {
+	scheduleDecision := getRenewalScheduleDecision(certModel, certificate, now)
+	if scheduleDecision.UsesARI {
+		if !scheduleDecision.Due {
+			return
+		}
+	} else if !shouldRenewACMECertificate(certInfo, now, renewalInterval) {
 		return
 	}
 
@@ -94,6 +100,7 @@ func autoCert(certModel *model.Cert) {
 		LegoDisableCNAMESupport: certModel.LegoDisableCNAMESupport,
 		EnableCommonName:        certModel.EnableCommonName,
 		RevokeOld:               certModel.RevokeOld,
+		ReplacesCertID:          scheduleDecision.ReplacesCertID,
 	}
 
 	if certModel.Resource != nil {
@@ -125,18 +132,7 @@ func autoCert(certModel *model.Cert) {
 }
 
 func shouldRenewACMECertificate(info *Info, now time.Time, renewalIntervalDays int) bool {
-	if info == nil {
-		return false
-	}
-
-	validity := info.NotAfter.Sub(info.NotBefore)
-	renewalInterval := time.Duration(renewalIntervalDays) * 24 * time.Hour
-	if validity < renewalInterval {
-		// Renew short-lived certificates once two thirds of their validity remains.
-		return info.NotAfter.Sub(now) <= 2*validity/3
-	}
-
-	return now.Sub(info.NotBefore) >= renewalInterval
+	return shouldRenewCertificate(info, now, renewalIntervalDays)
 }
 
 func shouldSkipAutoRenew(certModel *model.Cert, now time.Time) bool {

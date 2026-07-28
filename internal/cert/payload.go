@@ -33,6 +33,7 @@ type ConfigPayload struct {
 	SSLCertificatePath      string                     `json:"-"`
 	SSLCertificateKeyPath   string                     `json:"-"`
 	RevokeOld               bool                       `json:"revoke_old"`
+	ReplacesCertID          string                     `json:"-"`
 }
 
 func (c *ConfigPayload) GetACMEUser() (user *model.AcmeUser, err error) {
@@ -109,12 +110,15 @@ func (c *ConfigPayload) WriteFile(l *Logger) error {
 
 	fingerprint, _ := CertificateFingerprintFromPath(c.GetCertificatePath())
 	db := model.UseDB()
-	db.Where("id = ?", c.CertID).Updates(&model.Cert{
-		SSLCertificatePath:    c.GetCertificatePath(),
-		SSLCertificateKeyPath: c.GetCertificateKeyPath(),
-		Fingerprint:           fingerprint,
-		Resource:              c.Resource,
-		Profile:               c.Profile,
+	db.Model(&model.Cert{}).Where("id = ?", c.CertID).Updates(map[string]any{
+		"ssl_certificate_path":            c.GetCertificatePath(),
+		"ssl_certificate_key_path":        c.GetCertificateKeyPath(),
+		"fingerprint":                     fingerprint,
+		"resource":                        c.Resource,
+		"profile":                         c.Profile,
+		"next_auto_renew_at":              nil,
+		"last_renewal_info_check_at":      nil,
+		"auto_renew_schedule_fingerprint": "",
 	})
 
 	return nil

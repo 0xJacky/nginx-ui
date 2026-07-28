@@ -43,5 +43,6 @@ func newObtainRequest(payload *ConfigPayload) certificate.ObtainRequest {
 		MustStaple:       payload.MustStaple,
 		EnableCommonName: payload.EnableCommonName,
 		Profile:          payload.Profile,
+		ReplacesCertID:   payload.ReplacesCertID,
 	}
 }

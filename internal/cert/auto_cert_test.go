@@ -120,18 +120,18 @@ func TestShouldSkipAutoCertForNonSuccessStatus(t *testing.T) {
 	}
 }
 
-func TestShouldRenewACMECertificateUsesExactShortLifetime(t *testing.T) {
+func TestShouldRenewACMECertificateRenewsShortLifetimeAtMidpoint(t *testing.T) {
 	notBefore := time.Date(2026, time.July, 1, 0, 0, 0, 0, time.UTC)
 	info := &Info{
 		NotBefore: notBefore,
 		NotAfter:  notBefore.Add(160 * time.Hour),
 	}
 
-	if shouldRenewACMECertificate(info, notBefore.Add(53*time.Hour), 7) {
-		t.Fatal("certificate renewed before the exact two-thirds-remaining threshold")
+	if shouldRenewACMECertificate(info, notBefore.Add(79*time.Hour), 7) {
+		t.Fatal("certificate renewed before half of its lifetime elapsed")
 	}
-	if !shouldRenewACMECertificate(info, notBefore.Add(54*time.Hour), 7) {
-		t.Fatal("certificate not renewed after the exact two-thirds-remaining threshold")
+	if !shouldRenewACMECertificate(info, notBefore.Add(80*time.Hour), 7) {
+		t.Fatal("certificate not renewed at half of its lifetime")
 	}
 }
 

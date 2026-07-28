@@ -54,6 +54,12 @@ func newCert(db *gorm.DB, opts ...gen.DOOption) cert {
 	_cert.SelfSignedConfig = field.NewField(tableName, "self_signed_config")
 	_cert.LastAutoRenewAt = field.NewTime(tableName, "last_auto_renew_at")
 	_cert.LastAutoRenewError = field.NewString(tableName, "last_auto_renew_error")
+	_cert.NextAutoRenewAt = field.NewTime(tableName, "next_auto_renew_at")
+	_cert.LastRenewalInfoCheckAt = field.NewTime(tableName, "last_renewal_info_check_at")
+	_cert.AutoRenewScheduleFingerprint = field.NewString(tableName, "auto_renew_schedule_fingerprint")
+	_cert.LastExpiryNotifyAt = field.NewTime(tableName, "last_expiry_notify_at")
+	_cert.LastExpiryNotifyNotAfter = field.NewTime(tableName, "last_expiry_notify_not_after")
+	_cert.LastExpiryNotifyStage = field.NewString(tableName, "last_expiry_notify_stage")
 	_cert.Status = field.NewString(tableName, "status")
 	_cert.LastError = field.NewString(tableName, "last_error")
 	_cert.LastAttemptAt = field.NewTime(tableName, "last_attempt_at")
@@ -77,37 +83,43 @@ func newCert(db *gorm.DB, opts ...gen.DOOption) cert {
 type cert struct {
 	certDo
 
-	ALL                     field.Asterisk
-	ID                      field.Uint64
-	CreatedAt               field.Time
-	UpdatedAt               field.Time
-	DeletedAt               field.Field
-	Name                    field.String
-	Domains                 field.Field
-	Filename                field.String
-	SSLCertificatePath      field.String
-	SSLCertificateKeyPath   field.String
-	Fingerprint             field.String
-	AutoCert                field.Int
-	ChallengeMethod         field.String
-	Profile                 field.String
-	DnsCredentialID         field.Uint64
-	ACMEUserID              field.Uint64
-	KeyType                 field.String
-	Log                     field.String
-	Resource                field.Field
-	SyncNodeIds             field.Field
-	MustStaple              field.Bool
-	LegoDisableCNAMESupport field.Bool
-	EnableCommonName        field.Bool
-	RevokeOld               field.Bool
-	SelfSignedConfig        field.Field
-	LastAutoRenewAt         field.Time
-	LastAutoRenewError      field.String
-	Status                  field.String
-	LastError               field.String
-	LastAttemptAt           field.Time
-	DnsCredential           certBelongsToDnsCredential
+	ALL                          field.Asterisk
+	ID                           field.Uint64
+	CreatedAt                    field.Time
+	UpdatedAt                    field.Time
+	DeletedAt                    field.Field
+	Name                         field.String
+	Domains                      field.Field
+	Filename                     field.String
+	SSLCertificatePath           field.String
+	SSLCertificateKeyPath        field.String
+	Fingerprint                  field.String
+	AutoCert                     field.Int
+	ChallengeMethod              field.String
+	Profile                      field.String
+	DnsCredentialID              field.Uint64
+	ACMEUserID                   field.Uint64
+	KeyType                      field.String
+	Log                          field.String
+	Resource                     field.Field
+	SyncNodeIds                  field.Field
+	MustStaple                   field.Bool
+	LegoDisableCNAMESupport      field.Bool
+	EnableCommonName             field.Bool
+	RevokeOld                    field.Bool
+	SelfSignedConfig             field.Field
+	LastAutoRenewAt              field.Time
+	LastAutoRenewError           field.String
+	NextAutoRenewAt              field.Time
+	LastRenewalInfoCheckAt       field.Time
+	AutoRenewScheduleFingerprint field.String
+	LastExpiryNotifyAt           field.Time
+	LastExpiryNotifyNotAfter     field.Time
+	LastExpiryNotifyStage        field.String
+	Status                       field.String
+	LastError                    field.String
+	LastAttemptAt                field.Time
+	DnsCredential                certBelongsToDnsCredential
 
 	ACMEUser certBelongsToACMEUser
 
@@ -152,6 +164,12 @@ func (c *cert) updateTableName(table string) *cert {
 	c.SelfSignedConfig = field.NewField(table, "self_signed_config")
 	c.LastAutoRenewAt = field.NewTime(table, "last_auto_renew_at")
 	c.LastAutoRenewError = field.NewString(table, "last_auto_renew_error")
+	c.NextAutoRenewAt = field.NewTime(table, "next_auto_renew_at")
+	c.LastRenewalInfoCheckAt = field.NewTime(table, "last_renewal_info_check_at")
+	c.AutoRenewScheduleFingerprint = field.NewString(table, "auto_renew_schedule_fingerprint")
+	c.LastExpiryNotifyAt = field.NewTime(table, "last_expiry_notify_at")
+	c.LastExpiryNotifyNotAfter = field.NewTime(table, "last_expiry_notify_not_after")
+	c.LastExpiryNotifyStage = field.NewString(table, "last_expiry_notify_stage")
 	c.Status = field.NewString(table, "status")
 	c.LastError = field.NewString(table, "last_error")
 	c.LastAttemptAt = field.NewTime(table, "last_attempt_at")
@@ -171,7 +189,7 @@ func (c *cert) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (c *cert) fillFieldMap() {
-	c.fieldMap = make(map[string]field.Expr, 31)
+	c.fieldMap = make(map[string]field.Expr, 37)
 	c.fieldMap["id"] = c.ID
 	c.fieldMap["created_at"] = c.CreatedAt
 	c.fieldMap["updated_at"] = c.UpdatedAt
@@ -198,6 +216,12 @@ func (c *cert) fillFieldMap() {
 	c.fieldMap["self_signed_config"] = c.SelfSignedConfig
 	c.fieldMap["last_auto_renew_at"] = c.LastAutoRenewAt
 	c.fieldMap["last_auto_renew_error"] = c.LastAutoRenewError
+	c.fieldMap["next_auto_renew_at"] = c.NextAutoRenewAt
+	c.fieldMap["last_renewal_info_check_at"] = c.LastRenewalInfoCheckAt
+	c.fieldMap["auto_renew_schedule_fingerprint"] = c.AutoRenewScheduleFingerprint
+	c.fieldMap["last_expiry_notify_at"] = c.LastExpiryNotifyAt
+	c.fieldMap["last_expiry_notify_not_after"] = c.LastExpiryNotifyNotAfter
+	c.fieldMap["last_expiry_notify_stage"] = c.LastExpiryNotifyStage
 	c.fieldMap["status"] = c.Status
 	c.fieldMap["last_error"] = c.LastError
 	c.fieldMap["last_attempt_at"] = c.LastAttemptAt

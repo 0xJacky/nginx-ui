@@ -244,7 +244,7 @@ func canUseLegoRenew(payload *ConfigPayload) bool {
 		return true
 	}
 
-	// lego.RenewOptions does not expose EnableCommonName, so use the obtain
-	// flow when CN support is requested.
-	return !payload.EnableCommonName
+	// lego.RenewOptions does not expose EnableCommonName or ReplacesCertID,
+	// so use the obtain flow when either option is required.
+	return !payload.EnableCommonName && payload.ReplacesCertID == ""
 }

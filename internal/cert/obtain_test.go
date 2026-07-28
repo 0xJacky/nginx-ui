@@ -13,6 +13,7 @@ func TestNewObtainRequestIncludesCommonNameOption(t *testing.T) {
 		MustStaple:       true,
 		EnableCommonName: true,
 		Profile:          "shortlived",
+		ReplacesCertID:   "aki.serial",
 	}
 
 	request := newObtainRequest(payload)
@@ -31,6 +32,9 @@ func TestNewObtainRequestIncludesCommonNameOption(t *testing.T) {
 	}
 	if request.Profile != "shortlived" {
 		t.Fatalf("Profile = %q, want shortlived", request.Profile)
+	}
+	if request.ReplacesCertID != "aki.serial" {
+		t.Fatalf("ReplacesCertID = %q, want aki.serial", request.ReplacesCertID)
 	}
 }
 
