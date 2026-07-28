@@ -64,17 +64,30 @@ func setupAutoBackupSecurityRouter(t *testing.T) (*gin.Engine, string) {
 func TestAutoBackupMutationRequiresSecureSessionForOTPUser(t *testing.T) {
 	router, token := setupAutoBackupSecurityRouter(t)
 
-	body, err := json.Marshal(gin.H{"name": "daily"})
-	require.NoError(t, err)
+	tests := []struct {
+		name string
+		path string
+		body gin.H
+	}{
+		{name: "test S3 connection", path: "/auto_backup/test_s3", body: gin.H{"name": "daily"}},
+		{name: "run backup now", path: "/auto_backup/1/run"},
+	}
 
-	req := httptest.NewRequest(http.MethodPost, "/auto_backup/test_s3", bytes.NewReader(body))
-	req.Header.Set("Authorization", token)
-	req.Header.Set("Content-Type", "application/json")
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			body, err := json.Marshal(tt.body)
+			require.NoError(t, err)
 
-	recorder := httptest.NewRecorder()
-	router.ServeHTTP(recorder, req)
+			req := httptest.NewRequest(http.MethodPost, tt.path, bytes.NewReader(body))
+			req.Header.Set("Authorization", token)
+			req.Header.Set("Content-Type", "application/json")
 
-	require.Equal(t, http.StatusUnauthorized, recorder.Code)
+			recorder := httptest.NewRecorder()
+			router.ServeHTTP(recorder, req)
+
+			require.Equal(t, http.StatusUnauthorized, recorder.Code)
+		})
+	}
 }
 
 func setupBackupSecurityRouter(t *testing.T) (*gin.Engine, string, uint64) {

@@ -23,6 +23,7 @@ func InitAutoBackupRouter(r *gin.RouterGroup) {
 		o.POST("/auto_backup/:id", ModifyAutoBackup)
 		o.DELETE("/auto_backup/:id", DestroyAutoBackup)
 		o.PATCH("/auto_backup/:id", RestoreAutoBackup)
+		o.POST("/auto_backup/:id/run", RunAutoBackup)
 		o.POST("/auto_backup/test_s3", TestS3Connection)
 	}
 }

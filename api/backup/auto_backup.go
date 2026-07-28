@@ -7,6 +7,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/cron"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/cast"
 	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 )
@@ -159,6 +160,23 @@ func TestS3Connection(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "S3 connection test successful"})
+}
+
+// RunAutoBackup immediately executes a saved auto backup configuration.
+// The enabled flag only controls cron scheduling and does not prevent a manual run.
+func RunAutoBackup(c *gin.Context) {
+	autoBackup, err := backup.GetAutoBackupByID(cast.ToUint64(c.Param("id")))
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	if err := backup.ExecuteAutoBackup(autoBackup); err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Auto backup completed successfully"})
 }
 
 // RestoreAutoBackup restores a soft-deleted auto backup configuration.

@@ -3,8 +3,37 @@ import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
 import type { AutoBackup } from '@/api/backup'
 import { datetimeRender, StdCurd } from '@uozi-admin/curd'
 import { FormItem, Input, Tag } from 'ant-design-vue'
-import { autoBackup } from '@/api/backup'
+import { autoBackup, runAutoBackup } from '@/api/backup'
 import { CronEditor, StorageConfigEditor } from './components'
+
+const { message } = useGlobalApp()
+const curd = useTemplateRef('curd')
+const runningStates = ref<Record<number, boolean>>({})
+
+function getErrorMessage(error: unknown) {
+  if (typeof error === 'object' && error !== null && 'message' in error && typeof error.message === 'string')
+    return error.message
+
+  return ''
+}
+
+async function handleRunAutoBackup(record: AutoBackup) {
+  if (!record.id)
+    return
+
+  runningStates.value[record.id] = true
+  try {
+    await runAutoBackup(record.id)
+    message.success($gettext('Backup completed successfully'))
+    curd.value?.refresh()
+  }
+  catch (error) {
+    message.error(getErrorMessage(error) || $gettext('Failed to run backup'))
+  }
+  finally {
+    runningStates.value[record.id] = false
+  }
+}
 
 const columns: StdTableColumn[] = [
   {
@@ -279,11 +308,23 @@ const columns: StdTableColumn[] = [
 
 <template>
   <StdCurd
+    ref="curd"
     :title="$gettext('Auto Backup')"
     :columns="columns"
     :api="autoBackup"
     disable-export
-  />
+  >
+    <template #beforeActions="{ record }">
+      <AButton
+        type="link"
+        size="small"
+        :loading="runningStates[record.id] || false"
+        @click="handleRunAutoBackup(record as AutoBackup)"
+      >
+        {{ $gettext('Backup Now') }}
+      </AButton>
+    </template>
+  </StdCurd>
 </template>
 
 <style lang="less">

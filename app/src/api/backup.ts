@@ -105,6 +105,16 @@ export function testS3Connection(config: AutoBackup) {
   return http.post('/auto_backup/test_s3', config)
 }
 
+/**
+ * Immediately execute a saved auto backup configuration.
+ * @param id Auto backup configuration ID
+ */
+export function runAutoBackup(id: number) {
+  return http.post(`/auto_backup/${id}/run`, undefined, {
+    skipErrHandling: true,
+  })
+}
+
 // Auto backup CRUD API
 export const autoBackup = useCurdApi<AutoBackup>('/auto_backup')
 
