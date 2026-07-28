@@ -25,10 +25,11 @@ type LoginUser struct {
 }
 
 const (
-	ErrMaxAttempts = 4291
-	Enabled2FA     = 199
-	Error2FACode   = 4034
-	LoginSuccess   = 200
+	ErrMaxAttempts  = 4291
+	PasskeyRequired = 198
+	Enabled2FA      = 199
+	Error2FACode    = 4034
+	LoginSuccess    = 200
 )
 
 type LoginResponse struct {
@@ -37,6 +38,8 @@ type LoginResponse struct {
 	Code    int    `json:"code"`
 	*user.AccessTokenPayload
 	SecureSessionID string `json:"secure_session_id,omitempty"`
+	PreAuthID       string `json:"pre_auth_id,omitempty"`
+	Options         any    `json:"options,omitempty"`
 }
 
 func Login(c *gin.Context) {
@@ -77,6 +80,7 @@ func Login(c *gin.Context) {
 	// Check if the user enables 2FA
 	var secureSessionID string
 
+	loginProof := user.LoginProofPassword
 	if u.EnabledOTP() {
 		if json.OTP == "" && json.RecoveryCode == "" {
 			c.JSON(http.StatusOK, LoginResponse{
@@ -94,13 +98,17 @@ func Login(c *gin.Context) {
 		}
 
 		secureSessionID = user.SetSecureSessionID(u.ID)
+		loginProof = user.LoginProofOTP
+	} else if u.EnabledPasskey() {
+		beginPasskeyPreAuthentication(c, u)
+		return
 	}
 
 	// login success, clear banned record
 	_, _ = b.Where(b.IP.Eq(clientIP)).Delete()
 
 	logger.Info("[User Login]", u.Name)
-	accessToken, err := user.GenerateJWT(u)
+	accessToken, err := user.IssueLoginToken(u, loginProof)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

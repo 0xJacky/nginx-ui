@@ -156,6 +156,23 @@ function onSubmit() {
         case 199:
           enabled2FA.value = true
           break
+        case 198: {
+          if (!r.pre_auth_id || !r.options?.publicKey)
+            throw new Error('Passkey pre-authentication response is incomplete')
+
+          const assertion = await startAuthentication({ optionsJSON: r.options.publicKey })
+          const verified = await auth.finish_passkey_pre_auth({
+            pre_auth_id: r.pre_auth_id,
+            options: assertion,
+          })
+          await handleLoginSuccess({
+            token: verified.token,
+            secureSessionId: verified.secure_session_id,
+            loginType: 'passkey',
+            passkeyRawId: assertion.rawId,
+          })
+          break
+        }
       }
     }).catch(e => {
       if (e.code === 4043) {

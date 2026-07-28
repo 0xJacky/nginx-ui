@@ -1,4 +1,4 @@
-import type { AuthenticationResponseJSON } from '@simplewebauthn/browser'
+import type { AuthenticationResponseJSON, PublicKeyCredentialRequestOptionsJSON } from '@simplewebauthn/browser'
 import { http } from '@uozi-admin/request'
 import { useUserStore } from '@/pinia'
 
@@ -10,6 +10,10 @@ export interface AuthResponse {
   code: number
   error: string
   secure_session_id: string
+  pre_auth_id?: string
+  options?: {
+    publicKey: PublicKeyCredentialRequestOptionsJSON
+  }
 }
 
 const auth = {
@@ -57,6 +61,13 @@ const auth = {
     return http.post('/finish_passkey_login', data.options, {
       headers: {
         'X-Passkey-Session-Id': data.session_id,
+      },
+    })
+  },
+  finish_passkey_pre_auth(data: { pre_auth_id: string, options: AuthenticationResponseJSON }): Promise<AuthResponse> {
+    return http.post('/finish_passkey_pre_auth', data.options, {
+      headers: {
+        'X-Passkey-Pre-Auth-ID': data.pre_auth_id,
       },
     })
   },

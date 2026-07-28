@@ -2,6 +2,7 @@ package cache
 
 import (
 	"context"
+	"sync"
 	"time"
 
 	"github.com/dgraph-io/ristretto/v2"
@@ -10,6 +11,7 @@ import (
 
 // Global cache instance
 var cache *ristretto.Cache[string, any]
+var takeMutex sync.Mutex
 
 // InitInMemoryCache initializes just the in-memory cache system (Ristretto).
 // This is suitable for unit tests that don't require search functionality.
@@ -73,6 +75,23 @@ func Get(key string) (interface{}, bool) {
 		return nil, false
 	}
 	return cache.Get(key)
+}
+
+// Take atomically retrieves and removes a one-time cache entry.
+func Take(key string) (interface{}, bool) {
+	takeMutex.Lock()
+	defer takeMutex.Unlock()
+	if cache == nil {
+		logger.Warn("Cache not initialized, returning not found.")
+		return nil, false
+	}
+	value, ok := cache.Get(key)
+	if !ok {
+		return nil, false
+	}
+	cache.Del(key)
+	cache.Wait()
+	return value, true
 }
 
 // Del removes a value from cache

@@ -3,6 +3,7 @@ package user
 import (
 	"crypto/rand"
 	"encoding/base64"
+	"errors"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/model"
@@ -177,7 +178,36 @@ type AccessTokenPayload struct {
 	ShortToken string `json:"short_token,omitempty"`
 }
 
+type LoginProof string
+
+const (
+	LoginProofPassword LoginProof = "password"
+	LoginProofOTP      LoginProof = "otp"
+	LoginProofPasskey  LoginProof = "passkey"
+	LoginProofExternal LoginProof = "external"
+	LoginProofSystem   LoginProof = "system"
+)
+
+var ErrPasskeyRequired = errors.New("passkey verification is required")
+
+// IssueLoginToken is the policy gate for every interactive login path.
+func IssueLoginToken(user *model.User, proof LoginProof) (*AccessTokenPayload, error) {
+	if user == nil {
+		return nil, errors.New("user is required")
+	}
+	if proof == LoginProofPassword && !user.EnabledOTP() && user.EnabledPasskey() {
+		return nil, ErrPasskeyRequired
+	}
+	return generateJWT(user)
+}
+
+// GenerateJWT remains available for non-login system flows and tests. New
+// interactive login paths must call IssueLoginToken with an explicit proof.
 func GenerateJWT(user *model.User) (*AccessTokenPayload, error) {
+	return IssueLoginToken(user, LoginProofSystem)
+}
+
+func generateJWT(user *model.User) (*AccessTokenPayload, error) {
 	now := time.Now()
 	claims := JWTClaims{
 		Name:   user.Name,

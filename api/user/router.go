@@ -11,6 +11,7 @@ func InitAuthRouter(r *gin.RouterGroup) {
 
 	r.GET("/begin_passkey_login", BeginPasskeyLogin)
 	r.POST("/finish_passkey_login", FinishPasskeyLogin)
+	r.POST("/finish_passkey_pre_auth", FinishPasskeyPreAuthentication)
 
 	r.GET("/casdoor_uri", GetCasdoorUri)
 	r.POST("/casdoor_callback", CasdoorCallback)

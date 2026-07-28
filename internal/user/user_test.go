@@ -183,3 +183,25 @@ func TestExpiredStandaloneShortTokenDoesNotDeleteOtherStandaloneShortTokens(t *t
 	assert.True(t, ok)
 	assert.NotNil(t, validUser)
 }
+
+func TestIssueLoginTokenRequiresPasskeyProofForPasskeyOnlyUser(t *testing.T) {
+	db, testUser, _ := setupTokenAuthTest(t)
+	DeleteUserTokens(testUser.ID)
+	require.NoError(t, db.Create(&model.Passkey{
+		UserID: testUser.ID,
+		Name:   "security-key",
+		RawID:  "credential-id",
+	}).Error)
+
+	token, err := IssueLoginToken(testUser, LoginProofPassword)
+	require.ErrorIs(t, err, ErrPasskeyRequired)
+	assert.Nil(t, token)
+
+	var count int64
+	require.NoError(t, db.Model(&model.AuthToken{}).Where("user_id = ?", testUser.ID).Count(&count).Error)
+	assert.Zero(t, count, "password verification must not persist a token before passkey proof")
+
+	token, err = IssueLoginToken(testUser, LoginProofPasskey)
+	require.NoError(t, err)
+	assert.NotEmpty(t, token.Token)
+}

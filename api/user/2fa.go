@@ -132,7 +132,7 @@ func FinishStart2FASecureSessionByPasskey(c *gin.Context) {
 		return
 	}
 	passkeySessionID := c.GetHeader("X-Passkey-Session-ID")
-	sessionDataBytes, ok := cache.Get(passkeySessionID)
+	sessionDataBytes, ok := cache.Take(passkeySessionID)
 	if !ok {
 		cosy.ErrHandler(c, user.ErrSessionNotFound)
 		return

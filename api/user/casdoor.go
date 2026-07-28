@@ -89,7 +89,7 @@ func CasdoorCallback(c *gin.Context) {
 		return
 	}
 
-	userToken, err := user.GenerateJWT(u)
+	userToken, err := user.IssueLoginToken(u, user.LoginProofExternal)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
