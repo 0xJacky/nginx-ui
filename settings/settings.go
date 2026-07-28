@@ -93,7 +93,7 @@ func Init(confPath string) {
 
 	// if in official docker, set the restart cmd of nginx to "nginx -s stop",
 	// then the supervisor of s6-overlay will start the nginx again.
-	if helper.InNginxUIOfficialDocker() {
+	if helper.InNginxUIOfficialDocker() && NginxSettings.RestartCmd == "" {
 		NginxSettings.RestartCmd = "nginx -s stop"
 	}
 

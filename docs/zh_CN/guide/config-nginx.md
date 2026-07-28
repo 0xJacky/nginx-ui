@@ -172,4 +172,6 @@ services:
 如果使用 Nginx UI 官方容器，想要控制另外一个容器里的 Nginx，务必将宿主机内的 docker.sock 映射到 Nginx UI 官方容器中。
 
 例如：`-v /var/run/docker.sock:/var/run/docker.sock`
+
+Nginx UI 通过自身的文件系统读写 Nginx 配置和日志文件。请将相同的配置和日志目录以相同路径挂载到两个容器中。配置目录在 Nginx UI 容器中必须可写，在 Nginx 容器中可以保持只读。映射 `docker.sock` 和设置 `ContainerName` 只会将状态检查和控制命令转发到另一个容器，不会自动共享文件或转发业务流量。
 :::

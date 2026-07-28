@@ -43,12 +43,16 @@ func Enable(name string) (err error) {
 	// Test nginx config, if not pass, then disable the site.
 	res := nginx.Control(nginx.TestConfig)
 	if res.IsError() {
-		return res.GetError()
+		return rollbackError(res.GetError(), func() error {
+			return removeEnabledLink(enabledConfigFilePath)
+		})
 	}
 
 	res = nginx.Control(nginx.Reload)
 	if res.IsError() {
-		return res.GetError()
+		return rollbackError(res.GetError(), func() error {
+			return removeEnabledLinkAndReload(enabledConfigFilePath)
+		})
 	}
 
 	go syncEnable(name)

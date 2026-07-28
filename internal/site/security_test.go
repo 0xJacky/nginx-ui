@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strconv"
 	"testing"
 	"time"
 
@@ -27,14 +28,19 @@ func setupSiteMutationTest(t *testing.T) (string, func()) {
 	}
 
 	originalConfigDir := appsettings.NginxSettings.ConfigDir
+	originalPIDPath := appsettings.NginxSettings.PIDPath
 	originalReloadCmd := appsettings.NginxSettings.ReloadCmd
 	originalRestartCmd := appsettings.NginxSettings.RestartCmd
 	originalTestConfigCmd := appsettings.NginxSettings.TestConfigCmd
 
 	appsettings.NginxSettings.ConfigDir = confDir
+	appsettings.NginxSettings.PIDPath = filepath.Join(confDir, "nginx.pid")
 	appsettings.NginxSettings.ReloadCmd = "true"
 	appsettings.NginxSettings.RestartCmd = "true"
 	appsettings.NginxSettings.TestConfigCmd = "true"
+	if err := os.WriteFile(appsettings.NginxSettings.PIDPath, []byte(strconv.Itoa(os.Getpid())), 0o644); err != nil {
+		t.Fatalf("failed to seed nginx pid file: %v", err)
+	}
 
 	db, err := gorm.Open(sqlite.Open(fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name())), &gorm.Config{})
 	if err != nil {
@@ -63,6 +69,7 @@ func setupSiteMutationTest(t *testing.T) (string, func()) {
 
 	t.Cleanup(func() {
 		appsettings.NginxSettings.ConfigDir = originalConfigDir
+		appsettings.NginxSettings.PIDPath = originalPIDPath
 		appsettings.NginxSettings.ReloadCmd = originalReloadCmd
 		appsettings.NginxSettings.RestartCmd = originalRestartCmd
 		appsettings.NginxSettings.TestConfigCmd = originalTestConfigCmd

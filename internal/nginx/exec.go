@@ -10,21 +10,19 @@ import (
 )
 
 func execShell(cmd string) (stdOut string, stdErr error) {
-	var execCmd *exec.Cmd
+	name, args := shellCommand(runtime.GOOS, settings.NginxSettings.RunningInAnotherContainer(), cmd)
+	return execCommand(name, args...)
+}
 
-	if runtime.GOOS == "windows" {
-		execCmd = exec.Command("cmd", "/c", cmd)
-	} else {
-		execCmd = exec.Command("/bin/sh", "-c", cmd)
+func shellCommand(goos string, externalContainer bool, cmd string) (name string, args []string) {
+	// External Nginx containers are Linux containers even when Nginx UI runs
+	// on a different host OS. Route the shell itself through execCommand so
+	// custom test, reload, and restart commands use the configured target.
+	if externalContainer || goos != "windows" {
+		return "/bin/sh", []string{"-c", cmd}
 	}
 
-	execCmd.Dir = GetNginxExeDir()
-	bytes, err := execCmd.CombinedOutput()
-	stdOut = string(bytes)
-	if err != nil {
-		stdErr = err
-	}
-	return
+	return "cmd", []string{"/c", cmd}
 }
 
 func execCommand(name string, cmd ...string) (stdOut string, stdErr error) {

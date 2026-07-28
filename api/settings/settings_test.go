@@ -162,6 +162,34 @@ func TestGetSettingsRedactsSensitiveFields(t *testing.T) {
 	assert.Equal(t, "login", body["terminal"]["start_cmd"])
 }
 
+func TestBuildNginxSettingsResponseDoesNotPersistDerivedDefaults(t *testing.T) {
+	originalNginx := *appsettings.NginxSettings
+	defer func() {
+		*appsettings.NginxSettings = originalNginx
+	}()
+
+	appsettings.NginxSettings.AccessLogPath = "/var/log/nginx/access.log"
+	appsettings.NginxSettings.ErrorLogPath = "/var/log/nginx/error.log"
+	appsettings.NginxSettings.ConfigDir = "/etc/nginx"
+	appsettings.NginxSettings.PIDPath = "/run/nginx.pid"
+	appsettings.NginxSettings.SbinPath = "/usr/sbin/nginx"
+	appsettings.NginxSettings.ReloadCmd = ""
+	appsettings.NginxSettings.RestartCmd = ""
+	appsettings.NginxSettings.StubStatusPort = 0
+	appsettings.NginxSettings.ContainerName = ""
+
+	response := buildNginxSettingsResponse()
+
+	assert.Equal(t, "nginx -s reload", response["reload_cmd"])
+	assert.Equal(t,
+		"start-stop-daemon --start --quiet --pidfile /run/nginx.pid --exec /usr/sbin/nginx",
+		response["restart_cmd"])
+	assert.Equal(t, uint(51820), response["stub_status_port"])
+	assert.Empty(t, appsettings.NginxSettings.ReloadCmd)
+	assert.Empty(t, appsettings.NginxSettings.RestartCmd)
+	assert.Zero(t, appsettings.NginxSettings.StubStatusPort)
+}
+
 func TestRestoreRedactedSensitiveSettings(t *testing.T) {
 	originalJWTSecret := cSettings.AppSettings.JwtSecret
 	originalNodeSecret := appsettings.NodeSettings.Secret
