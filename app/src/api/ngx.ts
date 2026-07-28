@@ -117,8 +117,11 @@ export interface NgxTestResult {
   message: string
   level: number
   namespace_id?: number
+  site_count?: number
+  stream_count?: number
   test_scope?: 'global' | 'namespace_sandbox'
   sandbox_status?: 'ok' | 'skipped' | 'failed'
+  sandbox_reason?: 'remote_namespace' | 'separate_container' | 'custom_test_command'
   error_category?: 'missing_include' | 'sandbox_build_error' | 'syntax_error' | 'nginx_runtime_error'
 }
 

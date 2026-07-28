@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -18,14 +19,60 @@ type restartRequest struct {
 
 type startRestartFunc func(operationID string) (*nginx.ControlOperation, error)
 
-func buildNamespaceTestConfigResponse(namespaceID uint64, result nginx.TestConfigResult) gin.H {
+func buildNamespaceTestConfigResponse(namespaceID uint64, siteCount, streamCount int, result nginx.TestConfigResult) gin.H {
 	return gin.H{
 		"message":        result.Message,
 		"level":          result.Level,
 		"namespace_id":   namespaceID,
+		"site_count":     siteCount,
+		"stream_count":   streamCount,
 		"test_scope":     result.TestScope,
 		"sandbox_status": result.SandboxStatus,
+		"sandbox_reason": result.SandboxReason,
 		"error_category": result.ErrorCategory,
+	}
+}
+
+type namespaceTestConfigDependencies struct {
+	findNamespace   func(namespaceID uint64) (*model.Namespace, error)
+	findSitePaths   func(namespaceID uint64) ([]string, error)
+	findStreamPaths func(namespaceID uint64) ([]string, error)
+	testConfig      func(namespace *nginx.NamespaceInfo, sitePaths, streamPaths []string) nginx.TestConfigResult
+}
+
+func defaultNamespaceTestConfigDependencies() namespaceTestConfigDependencies {
+	return namespaceTestConfigDependencies{
+		findNamespace: func(namespaceID uint64) (*model.Namespace, error) {
+			ns := query.Namespace
+			return ns.Where(ns.ID.Eq(namespaceID)).First()
+		},
+		findSitePaths: func(namespaceID uint64) ([]string, error) {
+			s := query.Site
+			sites, err := s.Where(s.NamespaceID.Eq(namespaceID)).Find()
+			if err != nil {
+				return nil, err
+			}
+
+			paths := make([]string, 0, len(sites))
+			for _, site := range sites {
+				paths = append(paths, site.Path)
+			}
+			return paths, nil
+		},
+		findStreamPaths: func(namespaceID uint64) ([]string, error) {
+			st := query.Stream
+			streams, err := st.Where(st.NamespaceID.Eq(namespaceID)).Find()
+			if err != nil {
+				return nil, err
+			}
+
+			paths := make([]string, 0, len(streams))
+			for _, stream := range streams {
+				paths = append(paths, stream.Path)
+			}
+			return paths, nil
+		},
+		testConfig: nginx.SandboxTestConfigWithPaths,
 	}
 }
 
@@ -51,15 +98,16 @@ func TestConfigWithNamespace(c *gin.Context) {
 		return
 	}
 
-	// Get namespace and related configs
+	testConfigWithNamespace(c, req.NamespaceID, defaultNamespaceTestConfigDependencies())
+}
+
+func testConfigWithNamespace(c *gin.Context, namespaceID uint64, dependencies namespaceTestConfigDependencies) {
 	var namespaceInfo *nginx.NamespaceInfo
 	var sitePaths []string
 	var streamPaths []string
 
-	if req.NamespaceID > 0 {
-		// Fetch namespace
-		ns := query.Namespace
-		namespace, err := ns.Where(ns.ID.Eq(req.NamespaceID)).First()
+	if namespaceID > 0 {
+		namespace, err := dependencies.findNamespace(namespaceID)
 		if err != nil {
 			cosy.ErrHandler(c, err)
 			return
@@ -71,28 +119,21 @@ func TestConfigWithNamespace(c *gin.Context) {
 			DeployMode: namespace.DeployMode,
 		}
 
-		// Fetch sites belonging to this namespace
-		s := query.Site
-		sites, err := s.Where(s.NamespaceID.Eq(req.NamespaceID)).Find()
-		if err == nil {
-			for _, site := range sites {
-				sitePaths = append(sitePaths, site.Path)
-			}
+		sitePaths, err = dependencies.findSitePaths(namespaceID)
+		if err != nil {
+			cosy.ErrHandler(c, err)
+			return
 		}
 
-		// Fetch streams belonging to this namespace
-		st := query.Stream
-		streams, err := st.Where(st.NamespaceID.Eq(req.NamespaceID)).Find()
-		if err == nil {
-			for _, stream := range streams {
-				streamPaths = append(streamPaths, stream.Path)
-			}
+		streamPaths, err = dependencies.findStreamPaths(namespaceID)
+		if err != nil {
+			cosy.ErrHandler(c, err)
+			return
 		}
 	}
 
-	// Use sandbox test with namespace-specific paths
-	result := nginx.SandboxTestConfigWithPaths(namespaceInfo, sitePaths, streamPaths)
-	c.JSON(http.StatusOK, buildNamespaceTestConfigResponse(req.NamespaceID, result))
+	result := dependencies.testConfig(namespaceInfo, sitePaths, streamPaths)
+	c.JSON(http.StatusOK, buildNamespaceTestConfigResponse(namespaceID, len(sitePaths), len(streamPaths), result))
 }
 
 // Restart restarts the nginx

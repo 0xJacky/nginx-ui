@@ -62,13 +62,13 @@ func TestGetConfAndPidPathsHandleSpaces(t *testing.T) {
 	originalConfigDir := settings.NginxSettings.ConfigDir
 	originalConfigPath := settings.NginxSettings.ConfigPath
 	originalPIDPath := settings.NginxSettings.PIDPath
-	originalNginxVOutput := nginxVOutput
+	originalNginxVOutput := nginxVOutputCache.value
 
 	t.Cleanup(func() {
 		settings.NginxSettings.ConfigDir = originalConfigDir
 		settings.NginxSettings.ConfigPath = originalConfigPath
 		settings.NginxSettings.PIDPath = originalPIDPath
-		nginxVOutput = originalNginxVOutput
+		nginxVOutputCache.set(originalNginxVOutput)
 	})
 
 	settings.NginxSettings.ConfigDir = ""
@@ -78,10 +78,10 @@ func TestGetConfAndPidPathsHandleSpaces(t *testing.T) {
 	sampleConf := "/Program Files/nginx/conf/nginx.conf"
 	samplePID := "/Program Files/nginx/logs/nginx.pid"
 
-	nginxVOutput = fmt.Sprintf(`
+	nginxVOutputCache.set(fmt.Sprintf(`
 nginx version: nginx/1.25.2
 configure arguments: --conf-path="%s" --pid-path="%s"
-`, sampleConf, samplePID)
+`, sampleConf, samplePID))
 
 	confDir := GetConfPath()
 	expectedConfDir := filepath.Dir(sampleConf)

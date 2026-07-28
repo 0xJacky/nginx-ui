@@ -3,78 +3,80 @@ package nginx
 import (
 	"os/exec"
 	"runtime"
+	"sync"
 
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/uozi-tech/cosy/logger"
 )
 
+type nginxStringCache struct {
+	mutex sync.Mutex
+	value string
+}
+
+func (c *nginxStringCache) get(loader func() string) string {
+	c.mutex.Lock()
+	defer c.mutex.Unlock()
+	if c.value == "" {
+		c.value = loader()
+	}
+	return c.value
+}
+
+func (c *nginxStringCache) set(value string) {
+	c.mutex.Lock()
+	c.value = value
+	c.mutex.Unlock()
+}
+
 var (
-	nginxSbinPath string
-	nginxVOutput  string
-	nginxTOutput  string
+	nginxSbinPathCache nginxStringCache
+	nginxVOutputCache  nginxStringCache
+	nginxTOutputCache  nginxStringCache
 )
 
 // Returns the path to the nginx executable
 func getNginxSbinPath() string {
-	// load from cache
-	if nginxSbinPath != "" {
-		return nginxSbinPath
-	}
+	return nginxSbinPathCache.get(func() string {
+		if settings.NginxSettings.SbinPath != "" {
+			return settings.NginxSettings.SbinPath
+		}
 
-	// load from settings
-	if settings.NginxSettings.SbinPath != "" {
-		nginxSbinPath = settings.NginxSettings.SbinPath
-		return nginxSbinPath
-	}
-
-	// load from system
-	var path string
-	var err error
-	if runtime.GOOS == "windows" {
-		path, err = exec.LookPath("nginx.exe")
-	} else {
-		path, err = exec.LookPath("nginx")
-	}
-	if err == nil {
-		nginxSbinPath = path
-		return nginxSbinPath
-	}
-	return nginxSbinPath
+		var path string
+		var err error
+		if runtime.GOOS == "windows" {
+			path, err = exec.LookPath("nginx.exe")
+		} else {
+			path, err = exec.LookPath("nginx")
+		}
+		if err == nil {
+			return path
+		}
+		return ""
+	})
 }
 
 func getNginxV() string {
-	// load from cache
-	if nginxVOutput != "" {
-		return nginxVOutput
-	}
-
-	// load from system
-	exePath := getNginxSbinPath()
-	out, err := execCommand(exePath, "-V")
-	if err != nil {
-		logger.Error(err)
-		return ""
-	}
-
-	nginxVOutput = out
-	return nginxVOutput
+	return nginxVOutputCache.get(func() string {
+		exePath := getNginxSbinPath()
+		out, err := execCommand(exePath, "-V")
+		if err != nil {
+			logger.Error(err)
+			return ""
+		}
+		return out
+	})
 }
 
 // getNginxT executes nginx -T and returns the output
 func getNginxT() string {
-	// load from cache
-	if nginxTOutput != "" {
-		return nginxTOutput
-	}
-
-	// load from system
-	exePath := getNginxSbinPath()
-	out, err := execCommand(exePath, "-T")
-	if err != nil {
-		logger.Error(err)
-		return ""
-	}
-
-	nginxTOutput = out
-	return nginxTOutput
+	return nginxTOutputCache.get(func() string {
+		exePath := getNginxSbinPath()
+		out, err := execCommand(exePath, "-T")
+		if err != nil {
+			logger.Error(err)
+			return ""
+		}
+		return out
+	})
 }

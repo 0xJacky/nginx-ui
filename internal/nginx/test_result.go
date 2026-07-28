@@ -21,6 +21,15 @@ const (
 	SandboxStatusFailed  SandboxStatus = "failed"
 )
 
+type SandboxReason string
+
+const (
+	SandboxReasonNone              SandboxReason = ""
+	SandboxReasonRemoteNamespace   SandboxReason = "remote_namespace"
+	SandboxReasonSeparateContainer SandboxReason = "separate_container"
+	SandboxReasonCustomTestCommand SandboxReason = "custom_test_command"
+)
+
 type ErrorCategory string
 
 const (
@@ -36,6 +45,7 @@ type TestConfigResult struct {
 	Level         int           `json:"level"`
 	TestScope     TestScope     `json:"test_scope"`
 	SandboxStatus SandboxStatus `json:"sandbox_status,omitempty"`
+	SandboxReason SandboxReason `json:"sandbox_reason,omitempty"`
 	ErrorCategory ErrorCategory `json:"error_category,omitempty"`
 }
 

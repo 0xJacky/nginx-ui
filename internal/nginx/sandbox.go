@@ -1,11 +1,10 @@
 package nginx
 
 import (
+	"crypto/sha256"
 	"fmt"
-	"io/fs"
 	"os"
 	"path/filepath"
-	"regexp"
 	"strings"
 
 	"github.com/0xJacky/Nginx-UI/internal/helper"
@@ -22,27 +21,34 @@ type NamespaceInfo struct {
 
 // SandboxTestConfigWithPaths tests nginx config in an isolated sandbox with provided paths.
 func SandboxTestConfigWithPaths(namespace *NamespaceInfo, sitePaths, streamPaths []string) TestConfigResult {
-	// If custom test command is set, use it (no sandbox support)
+	// Remote namespaces have no local configuration to validate.
+	if namespace != nil && namespace.DeployMode == "remote" {
+		return TestConfigResult{
+			Level:         Notice,
+			TestScope:     TestScopeNamespaceSandbox,
+			SandboxStatus: SandboxStatusSkipped,
+			SandboxReason: SandboxReasonRemoteNamespace,
+		}
+	}
+
+	// A process-local temporary directory is not visible inside a separate Nginx container.
+	if namespace != nil && settings.NginxSettings.RunningInAnotherContainer() {
+		return TestConfigResult{
+			Level:         Notice,
+			TestScope:     TestScopeNamespaceSandbox,
+			SandboxStatus: SandboxStatusSkipped,
+			SandboxReason: SandboxReasonSeparateContainer,
+		}
+	}
+
+	// If a custom test command is set, use it without claiming sandbox coverage.
 	if settings.NginxSettings.TestConfigCmd != "" {
 		commandMutex.Lock()
 		defer commandMutex.Unlock()
 		stdOut, stdErr := execShell(settings.NginxSettings.TestConfigCmd)
 		result := NewTestConfigResult(stdOut, stdErr, TestScopeNamespaceSandbox, SandboxStatusSkipped)
-		result.Message = strings.TrimSpace(strings.Join([]string{
-			"Sandbox validation skipped because a custom test command is configured.",
-			result.Message,
-		}, "\n"))
+		result.SandboxReason = SandboxReasonCustomTestCommand
 		return result
-	}
-
-	// Skip local test for remote-only namespaces
-	if namespace != nil && namespace.DeployMode == "remote" {
-		return TestConfigResult{
-			Message:       "Config validation skipped for remote-only namespace",
-			Level:         Notice,
-			TestScope:     TestScopeNamespaceSandbox,
-			SandboxStatus: SandboxStatusSkipped,
-		}
 	}
 
 	// If namespace is nil, directly test in real directory (no sandbox)
@@ -159,11 +165,11 @@ func generateSandboxConfig(namespace *NamespaceInfo, siteFiles, streamFiles []st
 	// Generate include patterns based on provided paths
 	siteIncludeLines := make([]string, 0, len(siteFiles))
 	for _, f := range siteFiles {
-		siteIncludeLines = append(siteIncludeLines, fmt.Sprintf("    include %s;", filepath.Join(builder.sandboxDir, "sites-enabled", f)))
+		siteIncludeLines = append(siteIncludeLines, "    include "+quoteNginxPath(filepath.Join(builder.sandboxDir, "sites-enabled", f))+";")
 	}
 	streamIncludeLines := make([]string, 0, len(streamFiles))
 	for _, f := range streamFiles {
-		streamIncludeLines = append(streamIncludeLines, fmt.Sprintf("    include %s;", filepath.Join(builder.sandboxDir, "streams-enabled", f)))
+		streamIncludeLines = append(streamIncludeLines, "    include "+quoteNginxPath(filepath.Join(builder.sandboxDir, "streams-enabled", f))+";")
 	}
 
 	// Replace include directives with sandbox-specific ones
@@ -178,199 +184,200 @@ func generateSandboxConfig(namespace *NamespaceInfo, siteFiles, streamFiles []st
 // replaceIncludeDirectives replaces only sites-enabled and streams-enabled includes.
 // Rewrites other includes to point to copied files under sandboxDir, preserving isolation.
 func replaceIncludeDirectives(mainConf string, sourcePath string, builder *sandboxBuilder, siteIncludeLines, streamIncludeLines []string) (string, error) {
-	lines := strings.Split(mainConf, "\n")
-	var result []string
-	httpDepth := 0
-	streamDepth := 0
+	rewritten, err := builder.rewriteConfigContent(mainConf, sourcePath)
+	if err != nil {
+		return "", err
+	}
+
+	tokens, err := tokenizeNginxConfig(rewritten)
+	if err != nil {
+		return "", err
+	}
+
+	var result strings.Builder
+	stack := make([]string, 0, 8)
+	lastWrite := 0
+	statementStart := 0
 	httpIncludesAdded := false
 	streamIncludesAdded := false
 
-	includeRx := regexp.MustCompile(`(?i)^\s*include\s+([^;#]+);`)
-	httpOpenRx := regexp.MustCompile(`(?i)^\s*http\s*\{`)
-	streamOpenRx := regexp.MustCompile(`(?i)^\s*stream\s*\{`)
-
-	for _, line := range lines {
-		trimmed := strings.TrimSpace(line)
-
-		// Skip processing for comment-only lines
-		if strings.HasPrefix(trimmed, "#") {
-			result = append(result, line)
-			continue
-		}
-
-		// Detect opening of http/stream blocks
-		if httpOpenRx.MatchString(line) {
-			httpDepth = 1
-			httpIncludesAdded = false
-			result = append(result, line)
-			continue
-		}
-		if streamOpenRx.MatchString(line) {
-			streamDepth = 1
-			streamIncludesAdded = false
-			result = append(result, line)
-			continue
-		}
-
-		// Handle include directives (non-comment)
-		if includeRx.MatchString(line) {
-			isSitesEnabled := strings.Contains(line, "sites-enabled")
-			isStreamsEnabled := strings.Contains(line, "streams-enabled")
-
-			// If it's sites-enabled or streams-enabled, replace it
-			if isSitesEnabled || isStreamsEnabled {
-				// Add our sandbox-specific includes at the first occurrence
-				if httpDepth > 0 && isSitesEnabled && !httpIncludesAdded {
-					result = append(result, "    # Sandbox-specific includes (generated for isolated testing)")
-					result = append(result, siteIncludeLines...)
+	for i, token := range tokens {
+		switch token.value {
+		case "{":
+			blockName := ""
+			if statementStart < i {
+				blockName = strings.ToLower(tokens[statementStart].value)
+			}
+			stack = append(stack, blockName)
+			statementStart = i + 1
+		case "}":
+			if len(stack) > 0 {
+				blockName := stack[len(stack)-1]
+				if len(stack) == 1 && blockName == "http" && !httpIncludesAdded && len(siteIncludeLines) > 0 {
+					result.WriteString(rewritten[lastWrite:token.start])
+					writeSandboxIncludes(&result, siteIncludeLines)
+					lastWrite = token.start
 					httpIncludesAdded = true
 				}
-				if streamDepth > 0 && isStreamsEnabled && !streamIncludesAdded {
-					result = append(result, "    # Sandbox-specific includes (generated for isolated testing)")
-					result = append(result, streamIncludeLines...)
+				if len(stack) == 1 && blockName == "stream" && !streamIncludesAdded && len(streamIncludeLines) > 0 {
+					result.WriteString(rewritten[lastWrite:token.start])
+					writeSandboxIncludes(&result, streamIncludeLines)
+					lastWrite = token.start
 					streamIncludesAdded = true
 				}
-				// Skip the original include line
-				continue
+				stack = stack[:len(stack)-1]
 			}
-
-			// Rewrite other includes to sandbox paths
-			normalized, err := builder.rewriteIncludeLine(line, filepath.Dir(sourcePath))
-			if err != nil {
-				return "", err
-			}
-			if normalized != "" {
-				result = append(result, normalized)
-			}
-			continue
+			statementStart = i + 1
+		case ";":
+			statementStart = i + 1
 		}
+	}
+	result.WriteString(rewritten[lastWrite:])
 
-		// Before appending this line, check if it closes http/stream top-level block.
-		openCount := strings.Count(line, "{")
-		closeCount := strings.Count(line, "}")
-
-		// If current httpDepth will reach zero after this line, inject includes BEFORE the closing brace line.
-		if httpDepth > 0 {
-			newDepth := httpDepth + openCount - closeCount
-			if newDepth == 0 && !httpIncludesAdded {
-				result = append(result, "    # Sandbox-specific includes (generated for isolated testing)")
-				result = append(result, siteIncludeLines...)
-				httpIncludesAdded = true
-			}
-			httpDepth = newDepth
-		}
-		if streamDepth > 0 {
-			newDepth := streamDepth + openCount - closeCount
-			if newDepth == 0 && !streamIncludesAdded {
-				result = append(result, "    # Sandbox-specific includes (generated for isolated testing)")
-				result = append(result, streamIncludeLines...)
-				streamIncludesAdded = true
-			}
-			streamDepth = newDepth
-		}
-
-		// Append current line
-		result = append(result, line)
+	if len(siteIncludeLines) > 0 && !httpIncludesAdded {
+		return "", newSandboxStructureError("selected site configurations were not emitted inside an http block")
+	}
+	if len(streamIncludeLines) > 0 && !streamIncludesAdded {
+		return "", newSandboxStructureError("selected stream configurations were not emitted inside a stream block")
 	}
 
-	return strings.Join(result, "\n"), nil
+	return result.String(), nil
+}
+
+func writeSandboxIncludes(result *strings.Builder, includeLines []string) {
+	result.WriteString("    # Sandbox-specific includes (generated for isolated testing)\n")
+	result.WriteString(strings.Join(includeLines, "\n"))
+	result.WriteByte('\n')
 }
 
 // collectAndCopyNamespaceEnabled collects and copies enabled site/stream configs based on provided paths.
 // It rewrites relative includes to absolute, and writes them into sandboxDir/{sites-enabled,streams-enabled}.
 // Returns the written file names.
 func collectAndCopyNamespaceEnabled(_ *NamespaceInfo, sitePaths, streamPaths []string, builder *sandboxBuilder) (siteFiles, streamFiles []string, err error) {
-	// Helper to process and write a single config by kind and name
-	readSourceAndWrite := func(kind, name string) (writtenName string, wErr error) {
+	const maintenanceSuffix = "_nginx_ui_maintenance"
+
+	readSourceAndWrite := func(kind, relativePath string) (writtenName string, wErr error) {
+		enabledRoot := GetConfPath(kind + "s-enabled")
+		availableRoot := GetConfPath(kind + "s-available")
+		enabledPath := GetConfSymlinkPath(filepath.Join(enabledRoot, relativePath))
 		var enabledCandidates []string
 		switch kind {
 		case "site":
 			enabledCandidates = []string{
-				GetConfSymlinkPath(GetConfPath("sites-enabled", name)),
-				GetConfPath("sites-enabled", name),
+				enabledPath,
+				filepath.Join(enabledRoot, relativePath),
+				GetConfSymlinkPath(filepath.Join(enabledRoot, relativePath+maintenanceSuffix)),
+				filepath.Join(enabledRoot, relativePath+maintenanceSuffix),
 			}
 		case "stream":
 			enabledCandidates = []string{
-				GetConfSymlinkPath(GetConfPath("streams-enabled", name)),
-				GetConfPath("streams-enabled", name),
+				enabledPath,
+				filepath.Join(enabledRoot, relativePath),
 			}
 		}
-		var enabledPath string
+		selectedEnabledPath := ""
 		for _, cand := range enabledCandidates {
 			if helper.FileExists(cand) {
-				enabledPath = cand
+				selectedEnabledPath = cand
 				break
 			}
 		}
-		if enabledPath == "" {
-			return "", nil // not enabled, skip silently
+		if selectedEnabledPath == "" {
+			return "", nil
 		}
 
-		// Determine source file: prefer the symlink target if possible; fallback to *-available
-		srcPath := enabledPath
-		if fi, lErr := os.Lstat(enabledPath); lErr == nil && (fi.Mode()&os.ModeSymlink) != 0 {
-			if target, rErr := os.Readlink(enabledPath); rErr == nil {
-				// If target is relative, resolve against enabled dir
+		srcPath := selectedEnabledPath
+		if fi, lErr := os.Lstat(selectedEnabledPath); lErr == nil && (fi.Mode()&os.ModeSymlink) != 0 {
+			if target, rErr := os.Readlink(selectedEnabledPath); rErr == nil {
 				if !filepath.IsAbs(target) {
-					target = filepath.Join(filepath.Dir(enabledPath), target)
+					target = filepath.Join(filepath.Dir(selectedEnabledPath), target)
 				}
 				srcPath = target
 			}
 		}
-		if kind == "site" && !helper.FileExists(srcPath) {
-			srcPath = GetConfPath("sites-available", name)
-		}
-		if kind == "stream" && !helper.FileExists(srcPath) {
-			srcPath = GetConfPath("streams-available", name)
+		if !helper.FileExists(srcPath) {
+			srcPath = filepath.Join(availableRoot, relativePath)
 		}
 		content, rErr := os.ReadFile(srcPath)
 		if rErr != nil {
 			return "", fmt.Errorf("read %s content %s: %w", kind, srcPath, rErr)
 		}
 
-		// Rewrite include lines to sandbox paths (resolve relative to source dir first)
 		rewritten, rErr := builder.rewriteConfigContent(string(content), srcPath)
 		if rErr != nil {
 			return "", fmt.Errorf("rewrite sandbox %s: %w", kind, rErr)
 		}
 
-		// Compute destination file name respecting platform symlink naming
-		var destName string
-		switch kind {
-		case "site":
-			destName = filepath.Base(GetConfSymlinkPath(GetConfPath("sites-enabled", name)))
-		case "stream":
-			destName = filepath.Base(GetConfSymlinkPath(GetConfPath("streams-enabled", name)))
+		destName, rErr := filepath.Rel(enabledRoot, enabledPath)
+		if rErr != nil || isPathOutsideBase(destName) {
+			return "", fmt.Errorf("resolve sandbox %s destination %s: %w", kind, enabledPath, rErr)
 		}
 
 		destDir := filepath.Join(builder.sandboxDir, kind+"s-enabled")
-		if err := os.WriteFile(filepath.Join(destDir, destName), []byte(rewritten), 0644); err != nil {
+		destPath := filepath.Join(destDir, destName)
+		if err := os.MkdirAll(filepath.Dir(destPath), 0755); err != nil {
+			return "", fmt.Errorf("create sandbox %s destination: %w", kind, err)
+		}
+		if err := ensureSandboxDestination(builder.sandboxDir, destPath); err != nil {
+			return "", err
+		}
+		if err := os.WriteFile(destPath, []byte(rewritten), 0644); err != nil {
 			return "", fmt.Errorf("write sandbox %s: %w", kind, err)
 		}
 		return destName, nil
 	}
 
-	// Process sites based on provided sitePaths
+	seenSites := make(map[string]struct{}, len(sitePaths))
 	for _, sp := range sitePaths {
-		name := filepath.Base(sp)
-		if written, wErr := readSourceAndWrite("site", name); wErr != nil {
+		relativePath, rErr := relativeNamespaceConfigPath(sp, GetConfPath("sites-available"))
+		if rErr != nil {
+			return nil, nil, rErr
+		}
+		if written, wErr := readSourceAndWrite("site", relativePath); wErr != nil {
 			return nil, nil, wErr
 		} else if written != "" {
+			if _, exists := seenSites[written]; exists {
+				continue
+			}
+			seenSites[written] = struct{}{}
 			siteFiles = append(siteFiles, written)
 		}
 	}
 
-	// Process streams based on provided streamPaths
+	seenStreams := make(map[string]struct{}, len(streamPaths))
 	for _, st := range streamPaths {
-		name := filepath.Base(st)
-		if written, wErr := readSourceAndWrite("stream", name); wErr != nil {
+		relativePath, rErr := relativeNamespaceConfigPath(st, GetConfPath("streams-available"))
+		if rErr != nil {
+			return nil, nil, rErr
+		}
+		if written, wErr := readSourceAndWrite("stream", relativePath); wErr != nil {
 			return nil, nil, wErr
 		} else if written != "" {
+			if _, exists := seenStreams[written]; exists {
+				continue
+			}
+			seenStreams[written] = struct{}{}
 			streamFiles = append(streamFiles, written)
 		}
 	}
 
 	return siteFiles, streamFiles, nil
+}
+
+func relativeNamespaceConfigPath(path, availableRoot string) (string, error) {
+	cleanPath := filepath.Clean(path)
+	relativePath, err := filepath.Rel(availableRoot, cleanPath)
+	if err != nil || isPathOutsideBase(relativePath) {
+		return "", &SandboxBuildError{
+			Category: ErrorCategorySandboxBuildError,
+			Message:  fmt.Sprintf("namespace config path %s is outside %s", path, availableRoot),
+		}
+	}
+	return relativePath, nil
+}
+
+func isPathOutsideBase(relativePath string) bool {
+	return relativePath == ".." || strings.HasPrefix(relativePath, ".."+string(filepath.Separator)) || filepath.IsAbs(relativePath)
 }
 
 type sandboxBuilder struct {
@@ -388,82 +395,72 @@ func newSandboxBuilder(sandboxDir string) *sandboxBuilder {
 }
 
 func (b *sandboxBuilder) rewriteConfigContent(content string, sourcePath string) (string, error) {
-	includeRegex := regexp.MustCompile(`(?m)^[ \t]*include\s+([^;#]+);`)
-	var rewriteErr error
-
-	rewritten := includeRegex.ReplaceAllStringFunc(content, func(match string) string {
-		if rewriteErr != nil {
-			return match
-		}
-
-		line, err := b.rewriteIncludeLine(match, filepath.Dir(sourcePath))
-		if err != nil {
-			rewriteErr = err
-			return match
-		}
-
-		return line
-	})
-
-	if rewriteErr != nil {
-		return "", rewriteErr
-	}
-
-	return rewritten, nil
-}
-
-func (b *sandboxBuilder) rewriteIncludeLine(line string, baseDir string) (string, error) {
-	includeRegex := regexp.MustCompile(`(?i)include\s+([^;#]+);`)
-	matches := includeRegex.FindStringSubmatch(line)
-	if len(matches) < 2 {
-		return line, nil
-	}
-
-	includePath := strings.TrimSpace(matches[1])
-	resolvedPath, matchedFiles, err := b.resolveIncludePath(includePath, baseDir)
+	tokens, err := tokenizeNginxConfig(content)
 	if err != nil {
 		return "", err
 	}
 
-	if helper.IsUnderDirectory(resolvedPath, b.confBase) {
-		for _, matchedFile := range matchedFiles {
-			if err := b.mirrorDependency(matchedFile); err != nil {
-				return "", err
+	var result strings.Builder
+	lastWrite := 0
+	statementStart := 0
+	for i := 0; i < len(tokens); i++ {
+		token := tokens[i]
+		if i == statementStart && strings.EqualFold(token.value, "include") {
+			if i+2 >= len(tokens) || tokens[i+2].value != ";" {
+				return "", &SandboxBuildError{
+					Category: ErrorCategorySyntaxError,
+					Message:  "include directive must contain exactly one path argument",
+				}
 			}
+
+			replacement, rewriteErr := b.rewriteIncludeDirective(tokens[i+1].value, filepath.Dir(sourcePath))
+			if rewriteErr != nil {
+				return "", rewriteErr
+			}
+			result.WriteString(content[lastWrite:token.start])
+			result.WriteString(replacement)
+			lastWrite = tokens[i+2].end
+			i += 2
+			statementStart = i + 1
+			continue
 		}
 
-		rel, err := filepath.Rel(b.confBase, resolvedPath)
-		if err == nil {
-			resolvedPath = filepath.Join(b.sandboxDir, rel)
+		switch token.value {
+		case ";", "{", "}":
+			statementStart = i + 1
 		}
 	}
+	result.WriteString(content[lastWrite:])
+	return result.String(), nil
+}
 
-	return includeRegex.ReplaceAllString(line, "include "+resolvedPath+";"), nil
+func (b *sandboxBuilder) rewriteIncludeLine(line string, baseDir string) (string, error) {
+	return b.rewriteConfigContent(line, filepath.Join(baseDir, "__include_line__.conf"))
 }
 
 func (b *sandboxBuilder) resolveIncludePath(includePath string, baseDir string) (string, []string, error) {
 	if filepath.IsAbs(includePath) {
-		matches, err := matchIncludePattern(includePath)
+		matches, isPattern, err := matchIncludePattern(includePath)
 		if err != nil {
 			return "", nil, err
 		}
-		if len(matches) == 0 && helper.IsUnderDirectory(includePath, b.confBase) {
+		if len(matches) == 0 && !isPattern {
 			return "", nil, newSandboxIncludeError(baseDir, includePath)
 		}
 		return includePath, matches, nil
 	}
 
 	candidates := uniqueSandboxCandidates(
-		filepath.Clean(filepath.Join(baseDir, includePath)),
 		filepath.Clean(filepath.Join(b.confBase, includePath)),
+		filepath.Clean(filepath.Join(baseDir, includePath)),
 	)
 
 	for _, candidate := range candidates {
-		matches, err := matchIncludePattern(candidate)
+		matches, isPattern, err := matchIncludePattern(candidate)
 		if err != nil {
 			return "", nil, err
 		}
-		if len(matches) > 0 {
+		if len(matches) > 0 || isPattern {
 			return candidate, matches, nil
 		}
 	}
@@ -475,10 +472,67 @@ func (b *sandboxBuilder) resolveIncludePath(includePath string, baseDir string) 
 	return "", nil, newSandboxIncludeError(baseDir, includePath)
 }
 
+func (b *sandboxBuilder) rewriteIncludeDirective(includePath, baseDir string) (string, error) {
+	resolvedPath, matchedFiles, err := b.resolveIncludePath(includePath, baseDir)
+	if err != nil {
+		return "", err
+	}
+
+	if b.enabledDirectoryKind(resolvedPath) != "" {
+		return "", nil
+	}
+
+	for _, matchedFile := range matchedFiles {
+		if err := b.mirrorDependency(matchedFile); err != nil {
+			return "", err
+		}
+	}
+
+	sandboxPath, err := b.sandboxPathForSource(resolvedPath)
+	if err != nil {
+		return "", err
+	}
+	return "include " + quoteNginxPath(sandboxPath) + ";", nil
+}
+
+func (b *sandboxBuilder) enabledDirectoryKind(path string) string {
+	for _, kind := range []string{"sites-enabled", "streams-enabled"} {
+		if isPathWithin(filepath.Join(b.confBase, kind), path) {
+			return kind
+		}
+	}
+	return ""
+}
+
+func isPathWithin(root, path string) bool {
+	relativePath, err := filepath.Rel(filepath.Clean(root), filepath.Clean(path))
+	return err == nil && !isPathOutsideBase(relativePath)
+}
+
+func (b *sandboxBuilder) sandboxPathForSource(sourcePath string) (string, error) {
+	if helper.IsUnderDirectory(sourcePath, b.confBase) {
+		relativePath, err := filepath.Rel(b.confBase, sourcePath)
+		if err != nil {
+			return "", &SandboxBuildError{
+				Category: ErrorCategorySandboxBuildError,
+				Message:  fmt.Sprintf("failed to map sandbox path %s: %v", sourcePath, err),
+			}
+		}
+		return filepath.Join(b.sandboxDir, relativePath), nil
+	}
+
+	directory := filepath.Dir(sourcePath)
+	hash := sha256.Sum256([]byte(directory))
+	return filepath.Join(b.sandboxDir, "__external", fmt.Sprintf("%x", hash[:8]), filepath.Base(sourcePath)), nil
+}
+
 func (b *sandboxBuilder) mirrorDependency(sourcePath string) error {
 	sourcePath = filepath.Clean(sourcePath)
-	if !helper.IsUnderDirectory(sourcePath, b.confBase) {
-		return nil
+	if b.enabledDirectoryKind(sourcePath) != "" {
+		return &SandboxBuildError{
+			Category: ErrorCategorySandboxBuildError,
+			Message:  fmt.Sprintf("refusing to mirror enabled configuration %s", sourcePath),
+		}
 	}
 	if b.mirrored[sourcePath] {
 		return nil
@@ -498,20 +552,18 @@ func (b *sandboxBuilder) mirrorDependency(sourcePath string) error {
 		return err
 	}
 
-	rel, err := filepath.Rel(b.confBase, sourcePath)
+	destPath, err := b.sandboxPathForSource(sourcePath)
 	if err != nil {
-		return &SandboxBuildError{
-			Category: ErrorCategorySandboxBuildError,
-			Message:  fmt.Sprintf("failed to resolve sandbox dependency path %s: %v", sourcePath, err),
-		}
+		return err
 	}
-
-	destPath := filepath.Join(b.sandboxDir, rel)
 	if err := os.MkdirAll(filepath.Dir(destPath), 0755); err != nil {
 		return &SandboxBuildError{
 			Category: ErrorCategorySandboxBuildError,
 			Message:  fmt.Sprintf("failed to create sandbox dependency dir for %s: %v", sourcePath, err),
 		}
+	}
+	if err := ensureSandboxDestination(b.sandboxDir, destPath); err != nil {
+		return err
 	}
 
 	if err := os.WriteFile(destPath, []byte(rewritten), 0644); err != nil {
@@ -524,11 +576,12 @@ func (b *sandboxBuilder) mirrorDependency(sourcePath string) error {
 	return nil
 }
 
-func matchIncludePattern(pattern string) ([]string, error) {
-	if strings.ContainsAny(pattern, "*?[") {
+func matchIncludePattern(pattern string) ([]string, bool, error) {
+	isPattern := strings.ContainsAny(pattern, "*?[")
+	if isPattern {
 		matches, err := filepath.Glob(pattern)
 		if err != nil {
-			return nil, &SandboxBuildError{
+			return nil, true, &SandboxBuildError{
 				Category: ErrorCategorySandboxBuildError,
 				Message:  fmt.Sprintf("invalid include pattern %s: %v", pattern, err),
 			}
@@ -542,15 +595,15 @@ func matchIncludePattern(pattern string) ([]string, error) {
 			}
 		}
 
-		return existing, nil
+		return existing, true, nil
 	}
 
 	info, err := os.Stat(pattern)
 	if err != nil || info.IsDir() {
-		return nil, nil
+		return nil, false, nil
 	}
 
-	return []string{pattern}, nil
+	return []string{pattern}, false, nil
 }
 
 func uniqueSandboxCandidates(paths ...string) []string {
@@ -571,82 +624,229 @@ func uniqueSandboxCandidates(paths ...string) []string {
 	return result
 }
 
-// copyConfigBaseExceptSitesStreams copies the entire nginx conf directory into sandboxDir,
-// excluding any paths under sites-* and streams-* and skipping the entry nginx.conf (we generate our own).
+// copyConfigBaseExceptSitesStreams copies readable regular configuration entries into the sandbox.
+// Directory symlinks are materialized so later writes can never escape through a symlinked parent.
 func copyConfigBaseExceptSitesStreams(sandboxDir string) error {
-	confBase := GetConfPath()
-	entry := GetConfEntryPath()
+	activeDirectories := make(map[string]bool)
+	return copySandboxConfigEntry(GetConfPath(), sandboxDir, sandboxDir, GetConfEntryPath(), activeDirectories, true)
+}
 
-	copyFile := func(src, dst string, mode fs.FileMode) error {
-		parent := filepath.Dir(dst)
-		if err := os.MkdirAll(parent, 0755); err != nil {
-			return err
+func copySandboxConfigEntry(sourcePath, destPath, sandboxDir, entryPath string, activeDirectories map[string]bool, isRoot bool) error {
+	info, err := os.Lstat(sourcePath)
+	if err != nil {
+		if os.IsNotExist(err) || os.IsPermission(err) {
+			logger.Debugf("Skipping unavailable sandbox config entry %s: %v", sourcePath, err)
+			return nil
 		}
-		data, err := os.ReadFile(src)
-		if err != nil {
-			return err
-		}
-		return os.WriteFile(dst, data, 0644)
+		return err
 	}
 
-	return filepath.WalkDir(confBase, func(path string, d fs.DirEntry, err error) error {
-		if err != nil {
+	if !isRoot {
+		if filepath.Clean(sourcePath) == filepath.Clean(entryPath) {
+			return nil
+		}
+	}
+
+	if info.Mode()&os.ModeSymlink != 0 {
+		target, readErr := filepath.EvalSymlinks(sourcePath)
+		if readErr != nil {
+			logger.Debugf("Skipping dangling sandbox config symlink %s: %v", sourcePath, readErr)
+			return nil
+		}
+		targetInfo, statErr := os.Stat(target)
+		if statErr != nil {
+			logger.Debugf("Skipping unavailable sandbox config symlink target %s: %v", sourcePath, statErr)
+			return nil
+		}
+		base := filepath.Base(sourcePath)
+		if targetInfo.IsDir() && (strings.HasPrefix(base, "sites-") || strings.HasPrefix(base, "streams-")) {
+			return nil
+		}
+		return copySandboxConfigEntry(target, destPath, sandboxDir, entryPath, activeDirectories, false)
+	}
+
+	if info.IsDir() {
+		base := filepath.Base(sourcePath)
+		if !isRoot && (strings.HasPrefix(base, "sites-") || strings.HasPrefix(base, "streams-")) {
+			return nil
+		}
+		canonicalPath, evalErr := filepath.EvalSymlinks(sourcePath)
+		if evalErr != nil {
+			canonicalPath = filepath.Clean(sourcePath)
+		}
+		if activeDirectories[canonicalPath] {
+			logger.Debugf("Skipping recursive sandbox config directory %s", sourcePath)
+			return nil
+		}
+		activeDirectories[canonicalPath] = true
+		defer delete(activeDirectories, canonicalPath)
+
+		if err := os.MkdirAll(destPath, 0755); err != nil {
+			if os.IsPermission(err) || os.IsNotExist(err) {
+				logger.Debugf("Skipping unavailable sandbox destination %s: %v", destPath, err)
+				return nil
+			}
 			return err
 		}
-		rel, rErr := filepath.Rel(confBase, path)
-		if rErr != nil {
-			return rErr
-		}
-		if rel == "." {
-			return nil
-		}
-		base := filepath.Base(path)
-
-		// Handle symlinked entries (including symlinks to directories such as /etc/nginx/modules)
-		lstatInfo, lErr := os.Lstat(path)
-		if lErr != nil {
-			return lErr
-		}
-		if lstatInfo.Mode()&os.ModeSymlink != 0 {
-			// Respect blacklist for sites/streams even when symlinked
-			if strings.HasPrefix(base, "sites-") || strings.HasPrefix(base, "streams-") {
+		entries, readErr := os.ReadDir(sourcePath)
+		if readErr != nil {
+			if os.IsPermission(readErr) || os.IsNotExist(readErr) {
+				logger.Debugf("Skipping unreadable sandbox config directory %s: %v", sourcePath, readErr)
 				return nil
 			}
-			target, tErr := os.Readlink(path)
-			if tErr != nil {
-				return tErr
-			}
-			if !filepath.IsAbs(target) {
-				target = filepath.Join(filepath.Dir(path), target)
-			}
-			// If the symlink points to a directory, recreate the symlink and stop processing this entry
-			if tStat, sErr := os.Stat(target); sErr == nil && tStat.IsDir() {
-				dst := filepath.Join(sandboxDir, rel)
-				if mkErr := os.MkdirAll(filepath.Dir(dst), 0755); mkErr != nil {
-					return mkErr
-				}
-				// Ignore existing symlink if already created
-				if syErr := os.Symlink(target, dst); syErr != nil && !os.IsExist(syErr) {
-					return syErr
-				}
-				return nil
+			return readErr
+		}
+		for _, entry := range entries {
+			if err := copySandboxConfigEntry(
+				filepath.Join(sourcePath, entry.Name()),
+				filepath.Join(destPath, entry.Name()),
+				sandboxDir,
+				entryPath,
+				activeDirectories,
+				false,
+			); err != nil {
+				return err
 			}
 		}
+		return nil
+	}
 
-		// Skip blacklisted directories
-		if d.IsDir() {
-			if strings.HasPrefix(base, "sites-") || strings.HasPrefix(base, "streams-") {
-				return filepath.SkipDir
-			}
-			// Create directory in sandbox
-			return os.MkdirAll(filepath.Join(sandboxDir, rel), 0755)
-		}
-		// Skip entry nginx.conf to avoid overwriting generated file
-		if path == entry && filepath.Base(path) == "nginx.conf" {
+	if !info.Mode().IsRegular() {
+		logger.Debugf("Skipping non-regular sandbox config entry %s", sourcePath)
+		return nil
+	}
+
+	data, err := os.ReadFile(sourcePath)
+	if err != nil {
+		if os.IsPermission(err) || os.IsNotExist(err) {
+			logger.Debugf("Skipping unreadable sandbox config file %s: %v", sourcePath, err)
 			return nil
 		}
-		// Copy regular file (follow symlinks by reading content)
-		dst := filepath.Join(sandboxDir, rel)
-		return copyFile(path, dst, lstatInfo.Mode())
-	})
+		return err
+	}
+	if err := os.MkdirAll(filepath.Dir(destPath), 0755); err != nil {
+		return err
+	}
+	if err := ensureSandboxDestination(sandboxDir, destPath); err != nil {
+		return err
+	}
+	return os.WriteFile(destPath, data, 0644)
+}
+
+func ensureSandboxDestination(sandboxDir, destPath string) error {
+	relativePath, err := filepath.Rel(sandboxDir, destPath)
+	if err != nil || isPathOutsideBase(relativePath) {
+		return &SandboxBuildError{
+			Category: ErrorCategorySandboxBuildError,
+			Message:  fmt.Sprintf("sandbox destination escapes sandbox directory: %s", destPath),
+		}
+	}
+
+	current := filepath.Clean(sandboxDir)
+	for _, component := range strings.Split(filepath.Clean(relativePath), string(filepath.Separator)) {
+		if component == "." || component == "" {
+			continue
+		}
+		current = filepath.Join(current, component)
+		info, lstatErr := os.Lstat(current)
+		if os.IsNotExist(lstatErr) {
+			continue
+		}
+		if lstatErr != nil {
+			return lstatErr
+		}
+		if info.Mode()&os.ModeSymlink != 0 {
+			return &SandboxBuildError{
+				Category: ErrorCategorySandboxBuildError,
+				Message:  fmt.Sprintf("refusing to write through sandbox symlink %s", current),
+			}
+		}
+	}
+	return nil
+}
+
+func quoteNginxPath(path string) string {
+	escaped := strings.ReplaceAll(path, `\`, `\\`)
+	escaped = strings.ReplaceAll(escaped, `"`, `\"`)
+	return `"` + escaped + `"`
+}
+
+type nginxConfigToken struct {
+	value string
+	start int
+	end   int
+}
+
+func tokenizeNginxConfig(content string) ([]nginxConfigToken, error) {
+	tokens := make([]nginxConfigToken, 0, len(content)/8)
+	for index := 0; index < len(content); {
+		switch content[index] {
+		case ' ', '\t', '\r', '\n':
+			index++
+			continue
+		case '#':
+			for index < len(content) && content[index] != '\n' {
+				index++
+			}
+			continue
+		case '{', '}', ';':
+			tokens = append(tokens, nginxConfigToken{value: content[index : index+1], start: index, end: index + 1})
+			index++
+			continue
+		case '\'', '"':
+			start := index
+			quote := content[index]
+			index++
+			var value strings.Builder
+			closed := false
+			for index < len(content) {
+				if content[index] == '\\' && index+1 < len(content) {
+					value.WriteByte(content[index+1])
+					index += 2
+					continue
+				}
+				if content[index] == quote {
+					index++
+					closed = true
+					break
+				}
+				value.WriteByte(content[index])
+				index++
+			}
+			if !closed {
+				return nil, newSandboxStructureError("unterminated quoted string in nginx configuration")
+			}
+			tokens = append(tokens, nginxConfigToken{value: value.String(), start: start, end: index})
+			continue
+		}
+
+		start := index
+		var value strings.Builder
+		for index < len(content) {
+			character := content[index]
+			if character == '\\' && index+1 < len(content) {
+				value.WriteByte(content[index+1])
+				index += 2
+				continue
+			}
+			if strings.ContainsRune(" \t\r\n#{};", rune(character)) {
+				break
+			}
+			value.WriteByte(character)
+			index++
+		}
+		if index == start {
+			index++
+			continue
+		}
+		tokens = append(tokens, nginxConfigToken{value: value.String(), start: start, end: index})
+	}
+	return tokens, nil
+}
+
+func newSandboxStructureError(message string) error {
+	return &SandboxBuildError{
+		Category: ErrorCategorySandboxBuildError,
+		Message:  message,
+	}
 }

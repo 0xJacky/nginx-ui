@@ -12,9 +12,7 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 )
 
-var (
-	nginxPrefix string
-)
+var nginxPrefixCache nginxStringCache
 
 // GetNginxExeDir Returns the directory containing the nginx executable
 func GetNginxExeDir() string {
@@ -84,24 +82,19 @@ func extractConfigureArg(out, flag string) string {
 
 // GetPrefix returns the prefix of the nginx executable
 func GetPrefix() string {
-	if nginxPrefix != "" {
-		return nginxPrefix
-	}
-
-	out := getNginxV()
-	prefix := extractConfigureArg(out, "--prefix")
-	if prefix == "" {
-		logger.Debug("nginx.GetPrefix len(match) < 1")
-		if runtime.GOOS == "windows" {
-			nginxPrefix = GetNginxExeDir()
-		} else {
-			nginxPrefix = "/usr/local/nginx"
+	return nginxPrefixCache.get(func() string {
+		out := getNginxV()
+		prefix := extractConfigureArg(out, "--prefix")
+		if prefix == "" {
+			logger.Debug("nginx.GetPrefix len(match) < 1")
+			if runtime.GOOS == "windows" {
+				return GetNginxExeDir()
+			}
+			return "/usr/local/nginx"
 		}
-		return nginxPrefix
-	}
 
-	nginxPrefix = resolvePath(prefix)
-	return nginxPrefix
+		return resolvePath(prefix)
+	})
 }
 
 // GetConfPath returns the nginx configuration directory (e.g. "/etc/nginx").

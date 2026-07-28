@@ -75,6 +75,10 @@ func Exec(ctx context.Context, command []string) (string, error) {
 		return outBuf.String(), cosy.WrapErrorWithParams(ErrExitUnexpected, strconv.Itoa(execInspectResp.ExitCode), errBuf.String())
 	}
 
-	// Return stdout if successful
-	return outBuf.String(), nil
+	// Nginx writes successful test output and warnings to stderr.
+	return combineExecOutput(outBuf.String(), errBuf.String()), nil
+}
+
+func combineExecOutput(stdout, stderr string) string {
+	return stdout + stderr
 }
