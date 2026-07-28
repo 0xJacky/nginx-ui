@@ -10,9 +10,6 @@ import dns_credential from '@/api/dns_credential'
 const router = useRouter()
 
 const data = defineModel<AutoCertOptions>('options', {
-  default: () => {
-    return {}
-  },
   required: true,
 })
 

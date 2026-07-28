@@ -14,7 +14,7 @@ const directiveStore = useDirectiveStore()
 const { curIdx } = storeToRefs(directiveStore)
 
 const ngxDirectives = defineModel<NgxDirective[]>('directives', {
-  default: reactive([]),
+  default: () => [],
 })
 
 const directiveKeys = new WeakMap<NgxDirective, string>()

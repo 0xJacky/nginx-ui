@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import type { SplitpanesResizedPayload } from 'splitpanes'
 import { CloseOutlined } from '@ant-design/icons-vue'
 import { Pane, Splitpanes } from 'splitpanes'
 import 'splitpanes/dist/splitpanes.css'
@@ -10,8 +11,10 @@ const src = computed(() => {
 })
 
 const paneSize = ref(localStorage.paneSize ?? 50) // Read from persistent localStorage.
-function storePaneSize({ prevPane }) {
-  localStorage.paneSize = prevPane.size // Store in persistent localStorage.
+function storePaneSize({ panes, prevPane }: SplitpanesResizedPayload) {
+  const leftPane = prevPane ?? panes[0]
+  if (leftPane)
+    localStorage.paneSize = leftPane.size // Store in persistent localStorage.
 }
 
 function closeSplitView() {

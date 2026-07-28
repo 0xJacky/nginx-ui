@@ -38,16 +38,24 @@ const sizeClasses = computed(() => {
 
 <template>
   <div
-    :class="`flex items-center bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 ${sizeClasses.container}`"
+    class="flex items-center bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700"
+    :class="sizeClasses.container"
   >
     <span
-      :class="`inline-block rounded-full flex-shrink-0 ${sizeClasses.indicator} ${nodeInfo.isOnline ? 'bg-green-500' : 'bg-red-500'}`"
+      class="inline-block rounded-full flex-shrink-0"
+      :class="[sizeClasses.indicator, nodeInfo.isOnline ? 'bg-green-500' : 'bg-red-500']"
     />
     <div class="flex-1 min-w-0">
-      <div :class="`font-medium truncate text-gray-900 dark:text-gray-100 ${sizeClasses.nameText}`">
+      <div
+        class="font-medium truncate text-gray-900 dark:text-gray-100"
+        :class="sizeClasses.nameText"
+      >
         {{ nodeInfo.name }}
       </div>
-      <div :class="`text-gray-500 dark:text-gray-400 ${sizeClasses.statusText}`">
+      <div
+        class="text-gray-500 dark:text-gray-400"
+        :class="sizeClasses.statusText"
+      >
         {{ nodeInfo.isOnline ? $gettext('Online') : $gettext('Offline') }}
       </div>
     </div>

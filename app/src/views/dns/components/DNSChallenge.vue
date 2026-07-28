@@ -11,7 +11,9 @@ const providers = ref([]) as Ref<DNSProvider[]>
 
 // This data is provided by the Top StdCurd component,
 // is the object that you are trying to modify it
-const data = defineModel<DnsCredential>('data', { default: reactive({}) })
+const data = defineModel<DnsCredential>('data', {
+  default: () => ({}) as DnsCredential,
+})
 
 async function init() {
   if (!data.value.configuration) {

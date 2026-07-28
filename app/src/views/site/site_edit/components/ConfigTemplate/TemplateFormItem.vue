@@ -5,7 +5,7 @@ import { useSettingsStore } from '@/pinia'
 import { useConfigTemplateStore } from './store'
 
 const data = defineModel<Variable>({
-  default: reactive({}),
+  default: () => ({}),
 })
 
 const { language } = storeToRefs(useSettingsStore())

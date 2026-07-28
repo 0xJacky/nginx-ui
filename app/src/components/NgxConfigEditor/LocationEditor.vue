@@ -10,7 +10,7 @@ defineProps<{
 }>()
 
 const locations = defineModel<NgxLocation[]>('locations', {
-  default: reactive([]),
+  default: () => [],
 })
 
 const locationKeys = new WeakMap<NgxLocation, string>()

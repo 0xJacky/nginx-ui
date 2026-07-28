@@ -5,9 +5,9 @@ import SizeInput from './SizeInput.vue'
 import TimeInput from './TimeInput.vue'
 
 const performanceConfig = defineModel<NginxConfigInfo>({
-  default: reactive({
+  default: () => ({
     proxy_cache: {},
-  }),
+  }) as NginxConfigInfo,
 })
 
 const workerProcessAutoMode = ref<boolean>(true)

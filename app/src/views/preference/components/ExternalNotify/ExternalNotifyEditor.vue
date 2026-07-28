@@ -12,7 +12,7 @@ const props = defineProps<{
 
 const { message } = App.useApp()
 
-const modelValue = defineModel<Record<string, string>>({ default: reactive({}) })
+const modelValue = defineModel<Record<string, string>>({ default: () => ({}) })
 
 const currentConfig = computed<ExternalNotifyConfig | undefined>(() => {
   return configMap[props.type?.toLowerCase() ?? '']
