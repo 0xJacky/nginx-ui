@@ -191,6 +191,31 @@ func TestBuildNginxSettingsResponseDoesNotPersistDerivedDefaults(t *testing.T) {
 	assert.Zero(t, appsettings.NginxSettings.StubStatusPort)
 }
 
+func TestProtectedNginxCommandsCannotBeOverwrittenBySettingsPayload(t *testing.T) {
+	originalNginx := *appsettings.NginxSettings
+	defer func() {
+		*appsettings.NginxSettings = originalNginx
+	}()
+
+	appsettings.NginxSettings.TestConfigCmd = "nginx -t"
+	appsettings.NginxSettings.ReloadCmd = "nginx -s reload"
+	appsettings.NginxSettings.RestartCmd = "nginx -s restart"
+
+	payload := saveSettingsPayload{
+		Nginx: appsettings.Nginx{
+			TestConfigCmd: "touch /tmp/test-config-injection",
+			ReloadCmd:     "touch /tmp/reload-injection",
+			RestartCmd:    "touch /tmp/restart-injection",
+		},
+	}
+
+	cSettings.ProtectedFill(appsettings.NginxSettings, &payload.Nginx)
+
+	assert.Equal(t, "nginx -t", appsettings.NginxSettings.TestConfigCmd)
+	assert.Equal(t, "nginx -s reload", appsettings.NginxSettings.ReloadCmd)
+	assert.Equal(t, "nginx -s restart", appsettings.NginxSettings.RestartCmd)
+}
+
 func TestRestoreRedactedSensitiveSettings(t *testing.T) {
 	originalJWTSecret := cSettings.AppSettings.JwtSecret
 	originalNodeSecret := appsettings.NodeSettings.Secret
