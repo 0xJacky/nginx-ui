@@ -67,8 +67,10 @@ type ProgressWriter struct {
 func (pw *ProgressWriter) Write(p []byte) (int, error) {
 	n, err := pw.Writer.Write(p)
 	pw.currentSize += int64(n)
-	progress := float64(pw.currentSize) / float64(pw.totalSize) * 100
-	pw.progressChan <- progress
+	if pw.totalSize > 0 && pw.progressChan != nil {
+		progress := float64(pw.currentSize) / float64(pw.totalSize) * 100
+		pw.progressChan <- progress
+	}
 	return n, err
 }
 
@@ -83,10 +85,17 @@ func downloadRelease(url string, dir string, progressChan chan float64) (tarName
 		return
 	}
 	defer resp.Body.Close()
-
-	totalSize, err := strconv.ParseInt(resp.Header.Get("Content-Length"), 10, 64)
-	if err != nil {
+	if resp.StatusCode < http.StatusOK || resp.StatusCode >= http.StatusMultipleChoices {
+		err = fmt.Errorf("download release: unexpected HTTP status %s", resp.Status)
 		return
+	}
+
+	var totalSize int64
+	if contentLength := resp.Header.Get("Content-Length"); contentLength != "" {
+		totalSize, err = strconv.ParseInt(contentLength, 10, 64)
+		if err != nil {
+			return
+		}
 	}
 
 	file, err := os.CreateTemp(dir, "nginx-ui-temp-*.tar.gz")
@@ -94,7 +103,14 @@ func downloadRelease(url string, dir string, progressChan chan float64) (tarName
 		err = errors.Wrap(err, "service.DownloadLatestRelease CreateTemp error")
 		return
 	}
-	defer file.Close()
+	defer func() {
+		if closeErr := file.Close(); err == nil && closeErr != nil {
+			err = closeErr
+		}
+		if err != nil {
+			_ = os.Remove(file.Name())
+		}
+	}()
 
 	progressWriter := &ProgressWriter{Writer: file, totalSize: totalSize, progressChan: progressChan}
 	multiWriter := io.MultiWriter(progressWriter)
@@ -117,32 +133,43 @@ func (u *Upgrader) DownloadLatestRelease(progressChan chan float64) (tarName str
 	}
 	var buildJson map[string]map[string]buildArch
 
-	_ = json.Unmarshal(bytes, &buildJson)
+	if err = json.Unmarshal(bytes, &buildJson); err != nil {
+		err = errors.Wrap(err, "service.DownloadLatestRelease parse build_info.json error")
+		return
+	}
 
 	build, ok := buildJson[u.OS]
 	if !ok {
-		err = errors.Wrap(err, "os not support upgrade")
+		err = ErrUnsupportedPlatform
 		return
 	}
 	arch, ok := build[u.Arch]
 	if !ok {
-		err = errors.Wrap(err, "arch not support upgrade")
+		err = ErrUnsupportedPlatform
 		return
 	}
 
 	assetsMap := u.Release.GetAssetsMap()
 
 	// asset
-	asset, ok := assetsMap[fmt.Sprintf("nginx-ui-%s.tar.gz", arch.Name)]
+	assetName := fmt.Sprintf("nginx-ui-%s.tar.gz", arch.Name)
+	asset, ok := assetsMap[assetName]
 
 	if !ok {
-		err = errors.Wrap(err, "upgrader core asset is empty")
+		err = ErrReleaseAssetEmpty
 		return
 	}
 
 	downloadUrl := asset.BrowserDownloadUrl
 	if downloadUrl == "" {
 		err = ErrDownloadUrlEmpty
+		return
+	}
+
+	// authenticity signature
+	signatureAsset, ok := assetsMap[assetName+".minisig"]
+	if !ok || signatureAsset.BrowserDownloadUrl == "" {
+		err = ErrSignatureEmpty
 		return
 	}
 
@@ -157,18 +184,11 @@ func (u *Upgrader) DownloadLatestRelease(progressChan chan float64) (tarName str
 		digest.BrowserDownloadUrl = version.GetUrl(digest.BrowserDownloadUrl)
 	}
 
-	resp, err := http.Get(digest.BrowserDownloadUrl)
-	if err != nil {
-		err = errors.Wrap(err, "upgrader core download digest fail")
-		return
-	}
-
-	defer resp.Body.Close()
-
 	dir := filepath.Dir(u.ExPath)
 
 	if u.Channel != string(version.ReleaseTypeDev) {
 		downloadUrl = version.GetUrl(downloadUrl)
+		signatureAsset.BrowserDownloadUrl = version.GetUrl(signatureAsset.BrowserDownloadUrl)
 	}
 
 	tarName, err = downloadRelease(downloadUrl, dir, progressChan)
@@ -176,11 +196,32 @@ func (u *Upgrader) DownloadLatestRelease(progressChan chan float64) (tarName str
 		err = errors.Wrap(err, "service.DownloadLatestRelease downloadFile error")
 		return
 	}
+	defer func() {
+		if err != nil {
+			_ = os.Remove(tarName)
+			_ = os.Remove(tarName + ".minisig")
+		}
+	}()
+
+	signatureBytes, err := downloadMetadata(signatureAsset.BrowserDownloadUrl, 64<<10)
+	if err != nil {
+		err = errors.Wrap(err, "upgrader core download signature fail")
+		return
+	}
+	keyID, err := verifyArchiveSignature(tarName, signatureBytes)
+	if err != nil {
+		return
+	}
+	if err = os.WriteFile(tarName+".minisig", signatureBytes, 0o600); err != nil {
+		err = errors.Wrap(err, "stage verified upgrader signature")
+		return
+	}
+	logger.Debug("DownloadLatestRelease verified Minisign key", fmt.Sprintf("%016X", keyID))
 
 	// check tar digest
-	digestFileBytes, err := io.ReadAll(resp.Body)
+	digestFileBytes, err := downloadMetadata(digest.BrowserDownloadUrl, 4<<10)
 	if err != nil {
-		err = errors.Wrap(err, "digest file content read error")
+		err = errors.Wrap(err, "upgrader core download digest fail")
 		return
 	}
 
@@ -201,11 +242,30 @@ func (u *Upgrader) DownloadLatestRelease(progressChan chan float64) (tarName str
 	}
 
 	if digestFileContent != exeSHA512 {
-		err = errors.Wrap(err, "digest not equal")
+		err = ErrDigestMismatch
 		return
 	}
 
 	return
+}
+
+func downloadMetadata(url string, maxBytes int64) ([]byte, error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < http.StatusOK || resp.StatusCode >= http.StatusMultipleChoices {
+		return nil, fmt.Errorf("download metadata: unexpected HTTP status %s", resp.Status)
+	}
+	data, err := io.ReadAll(io.LimitReader(resp.Body, maxBytes+1))
+	if err != nil {
+		return nil, err
+	}
+	if int64(len(data)) > maxBytes {
+		return nil, errors.New("downloaded metadata exceeds size limit")
+	}
+	return data, nil
 }
 
 var updateInProgress atomic.Bool
@@ -215,6 +275,9 @@ func (u *Upgrader) PerformCoreUpgrade(tarPath string) (err error) {
 		return ErrUpdateInProgress
 	}
 	defer updateInProgress.Store(false)
+	if _, err = verifyAdjacentArchiveSignature(tarPath); err != nil {
+		return err
+	}
 
 	oldExe := ""
 	if runtime.GOOS == "windows" {
@@ -279,4 +342,15 @@ func (u *Upgrader) PerformCoreUpgrade(tarPath string) (err error) {
 	// gracefully restart
 	risefront.Restart()
 	return
+}
+
+func verifyAdjacentArchiveSignature(archivePath string) (uint64, error) {
+	signature, err := os.ReadFile(archivePath + ".minisig")
+	if err != nil {
+		if os.IsNotExist(err) {
+			return 0, ErrSignatureEmpty
+		}
+		return 0, err
+	}
+	return verifyArchiveSignature(archivePath, signature)
 }

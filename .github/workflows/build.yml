@@ -46,6 +46,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
+      - name: Set up Go
+        if: github.event_name == 'release'
+        uses: actions/setup-go@v7
+        with:
+          go-version: ^1.26.5
+          cache: false
+
       - name: Set up Bun
         uses: oven-sh/setup-bun@v2
         with:
@@ -78,11 +85,20 @@ jobs:
           cp README*.md app/dist
           find app/dist -printf '%P\n' | tar -C app/dist --no-recursion -zcvf app-dist.tar.gz -T -
 
+      - name: Sign publish archive
+        if: github.event_name == 'release'
+        env:
+          MINISIGN_PRIVATE_KEY: ${{ secrets.MINISIGN_PRIVATE_KEY }}
+          MINISIGN_PASSWORD: ${{ secrets.MINISIGN_PASSWORD }}
+        run: env CGO_ENABLED=0 go run ./cmd/sign-release app-dist.tar.gz
+
       - name: Publish
         uses: softprops/action-gh-release@v3
         if: github.event_name == 'release'
         with:
-          files: app-dist.tar.gz
+          files: |
+            app-dist.tar.gz
+            app-dist.tar.gz.minisig
 
   build:
     runs-on: ubuntu-latest
@@ -269,6 +285,18 @@ jobs:
             openssl dgst -sha512 ${{ env.DIST }}.zip | sed 's/([^)]*)//g' | awk '{print $NF}' >> ${{ env.DIST }}.zip.digest
           fi
 
+      - name: Sign publish archives
+        if: github.event_name == 'release' || (github.event_name != 'pull_request' && github.ref == 'refs/heads/dev')
+        env:
+          MINISIGN_PRIVATE_KEY: ${{ secrets.MINISIGN_PRIVATE_KEY }}
+          MINISIGN_PASSWORD: ${{ secrets.MINISIGN_PASSWORD }}
+        run: |
+          archives=("${{ env.DIST }}.tar.gz")
+          if [[ "$GOOS" == "windows" ]]; then
+            archives+=("${{ env.DIST }}.zip")
+          fi
+          env GOOS="$(go env GOHOSTOS)" GOARCH="$(go env GOHOSTARCH)" CGO_ENABLED=0 go run ./cmd/sign-release "${archives[@]}"
+
       - name: Publish
         uses: softprops/action-gh-release@v3
         if: github.event_name == 'release'
@@ -276,8 +304,10 @@ jobs:
           files: |
             ${{ env.DIST }}.tar.gz
             ${{ env.DIST }}.tar.gz.digest
+            ${{ env.DIST }}.tar.gz.minisig
             ${{ env.GOOS == 'windows' && format('{0}.zip', env.DIST) || '' }}
             ${{ env.GOOS == 'windows' && format('{0}.zip.digest', env.DIST) || '' }}
+            ${{ env.GOOS == 'windows' && format('{0}.zip.minisig', env.DIST) || '' }}
 
       - name: Upload to R2 using S3 API
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/dev'
@@ -291,6 +321,9 @@ jobs:
 
           echo "Uploading ${{ env.DIST }}.tar.gz.digest to R2..."
           aws s3 cp ./${{ env.DIST }}.tar.gz.digest s3://nginx-ui-dev-build/${{ env.DIST }}.tar.gz.digest --endpoint-url=${{ secrets.R2_S3_API_ENDPOINT }}
+
+          echo "Uploading ${{ env.DIST }}.tar.gz.minisig to R2..."
+          aws s3 cp ./${{ env.DIST }}.tar.gz.minisig s3://nginx-ui-dev-build/${{ env.DIST }}.tar.gz.minisig --endpoint-url=${{ secrets.R2_S3_API_ENDPOINT }}
 
           echo "Upload completed successfully"
 
@@ -405,6 +438,13 @@ jobs:
           find dist -printf '%P\n' | tar -C dist --no-recursion -zcvf ${{ env.DIST }}.tar.gz -T -
           openssl dgst -sha512 ${{ env.DIST }}.tar.gz | sed 's/([^)]*)//g' | awk '{print $NF}' >> ${{ env.DIST }}.tar.gz.digest
 
+      - name: Sign publish archive
+        if: github.event_name == 'release' || (github.event_name != 'pull_request' && github.ref == 'refs/heads/dev')
+        env:
+          MINISIGN_PRIVATE_KEY: ${{ secrets.MINISIGN_PRIVATE_KEY }}
+          MINISIGN_PASSWORD: ${{ secrets.MINISIGN_PASSWORD }}
+        run: env GOOS="$(go env GOHOSTOS)" GOARCH="$(go env GOHOSTARCH)" CGO_ENABLED=0 go run ./cmd/sign-release "${{ env.DIST }}.tar.gz"
+
       - name: Publish
         uses: softprops/action-gh-release@v3
         if: github.event_name == 'release'
@@ -412,6 +452,7 @@ jobs:
           files: |
             ${{ env.DIST }}.tar.gz
             ${{ env.DIST }}.tar.gz.digest
+            ${{ env.DIST }}.tar.gz.minisig
 
       - name: Upload to R2 using S3 API
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/dev'
@@ -425,6 +466,9 @@ jobs:
 
           echo "Uploading ${{ env.DIST }}.tar.gz.digest to R2..."
           aws s3 cp ./${{ env.DIST }}.tar.gz.digest s3://nginx-ui-dev-build/${{ env.DIST }}.tar.gz.digest --endpoint-url=${{ secrets.R2_S3_API_ENDPOINT }}
+
+          echo "Uploading ${{ env.DIST }}.tar.gz.minisig to R2..."
+          aws s3 cp ./${{ env.DIST }}.tar.gz.minisig s3://nginx-ui-dev-build/${{ env.DIST }}.tar.gz.minisig --endpoint-url=${{ secrets.R2_S3_API_ENDPOINT }}
 
           echo "Upload completed successfully"
 
@@ -509,6 +553,13 @@ jobs:
           cd ..
           openssl dgst -sha512 ${{ env.DIST }}.tar.gz | sed 's/([^)]*)//g' | awk '{print $NF}' >> ${{ env.DIST }}.tar.gz.digest
 
+      - name: Sign publish archive
+        if: github.event_name == 'release' || (github.event_name != 'pull_request' && github.ref == 'refs/heads/dev')
+        env:
+          MINISIGN_PRIVATE_KEY: ${{ secrets.MINISIGN_PRIVATE_KEY }}
+          MINISIGN_PASSWORD: ${{ secrets.MINISIGN_PASSWORD }}
+        run: env GOOS="$(go env GOHOSTOS)" GOARCH="$(go env GOHOSTARCH)" CGO_ENABLED=0 go run ./cmd/sign-release "${{ env.DIST }}.tar.gz"
+
       - name: Publish
         uses: softprops/action-gh-release@v3
         if: github.event_name == 'release'
@@ -516,6 +567,7 @@ jobs:
           files: |
             ${{ env.DIST }}.tar.gz
             ${{ env.DIST }}.tar.gz.digest
+            ${{ env.DIST }}.tar.gz.minisig
 
       - name: Upload to R2 using S3 API
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/dev'
@@ -529,6 +581,9 @@ jobs:
 
           echo "Uploading ${{ env.DIST }}.tar.gz.digest to R2..."
           aws s3 cp ./${{ env.DIST }}.tar.gz.digest s3://nginx-ui-dev-build/${{ env.DIST }}.tar.gz.digest --endpoint-url=${{ secrets.R2_S3_API_ENDPOINT }}
+
+          echo "Uploading ${{ env.DIST }}.tar.gz.minisig to R2..."
+          aws s3 cp ./${{ env.DIST }}.tar.gz.minisig s3://nginx-ui-dev-build/${{ env.DIST }}.tar.gz.minisig --endpoint-url=${{ secrets.R2_S3_API_ENDPOINT }}
 
           echo "Upload completed successfully"
 

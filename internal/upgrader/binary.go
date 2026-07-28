@@ -76,6 +76,7 @@ func BinaryUpgrade(ws *helper.SafeWebSocketWriter, control *Control) {
 	defer func() {
 		_ = os.Remove(tarName)
 		_ = os.Remove(tarName + ".digest")
+		_ = os.Remove(tarName + ".minisig")
 	}()
 	_ = ws.WriteJSON(CoreUpgradeResp{
 		Status:  UpgradeStatusInfo,

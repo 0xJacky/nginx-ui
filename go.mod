@@ -3,6 +3,7 @@ module github.com/0xJacky/Nginx-UI
 go 1.26.5
 
 require (
+	aead.dev/minisign v0.3.0
 	code.pfad.fr/risefront v1.0.0
 	github.com/0xJacky/pofile v1.1.1
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.22.0
@@ -75,7 +76,6 @@ require (
 )
 
 require (
-	aead.dev/minisign v0.3.0 // indirect
 	cloud.google.com/go/auth v0.22.0 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.8 // indirect
 	cloud.google.com/go/compute/metadata v0.9.0 // indirect
