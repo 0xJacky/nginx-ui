@@ -8,11 +8,20 @@ import { bytesToSize } from '@/lib/helper'
 import { useWebSocket } from '@/lib/websocket'
 import { useSettingsStore } from '@/pinia'
 
-let websocket: WebSocket
-
 const settings = useSettingsStore()
 
 const { language } = storeToRefs(settings)
+
+let isUnmounted = false
+
+const websocket = useWebSocket(analytic.serverWebSocketUrl, true, {
+  immediate: false,
+  onMessage: (_websocket, event) => {
+    if (!isUnmounted) {
+      wsOnMessage(event)
+    }
+  },
+})
 
 const rerender = ref(0)
 
@@ -62,37 +71,40 @@ function cpu_formatter(usage: number) {
   return usage.toFixed(2)
 }
 
-onMounted(() => {
-  analytic.init().then(r => {
-    Object.assign(host, r.host)
-    Object.assign(cpu_info, r.cpu.info)
-    Object.assign(memory, r.memory)
-    Object.assign(disk, r.disk)
+onMounted(async () => {
+  const r = await analytic.init()
 
-    // uptime
-    handle_uptime(r.host?.uptime)
+  if (isUnmounted) {
+    return
+  }
 
-    // load_avg
-    Object.assign(loadavg, r.loadavg)
+  Object.assign(host, r.host)
+  Object.assign(cpu_info, r.cpu.info)
+  Object.assign(memory, r.memory)
+  Object.assign(disk, r.disk)
 
-    net.last_recv = r.network.init.bytesRecv
-    net.last_sent = r.network.init.bytesSent
+  // uptime
+  handle_uptime(r.host?.uptime)
 
-    cpu_analytic_series[0].data = [...cpu_analytic_series[0].data, ...r.cpu.user]
-    cpu_analytic_series[1].data = [...cpu_analytic_series[1].data, ...r.cpu.total]
-    net_analytic[0].data = [...net_analytic[0].data, ...r.network.bytesRecv]
-    net_analytic[1].data = [...net_analytic[1].data, ...r.network.bytesSent]
-    disk_io_analytic[0].data = [...disk_io_analytic[0].data, ...r.disk_io.writes]
-    disk_io_analytic[1].data = [...disk_io_analytic[1].data, ...r.disk_io.reads]
+  // load_avg
+  Object.assign(loadavg, r.loadavg)
 
-    const { ws } = useWebSocket(analytic.serverWebSocketUrl)
-    websocket = ws.value!
-    websocket.onmessage = wsOnMessage
-  })
+  net.last_recv = r.network.init.bytesRecv
+  net.last_sent = r.network.init.bytesSent
+
+  cpu_analytic_series[0].data = [...cpu_analytic_series[0].data, ...r.cpu.user]
+  cpu_analytic_series[1].data = [...cpu_analytic_series[1].data, ...r.cpu.total]
+  net_analytic[0].data = [...net_analytic[0].data, ...r.network.bytesRecv]
+  net_analytic[1].data = [...net_analytic[1].data, ...r.network.bytesSent]
+  disk_io_analytic[0].data = [...disk_io_analytic[0].data, ...r.disk_io.writes]
+  disk_io_analytic[1].data = [...disk_io_analytic[1].data, ...r.disk_io.reads]
+
+  websocket.open()
 })
 
-onUnmounted(() => {
-  websocket?.close()
+onBeforeUnmount(() => {
+  isUnmounted = true
+  websocket.close()
 })
 
 function handle_uptime(t: number) {
