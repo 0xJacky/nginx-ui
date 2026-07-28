@@ -23,7 +23,10 @@ const directiveStore = useDirectiveStore()
 const { curIdx } = storeToRefs(directiveStore)
 
 const directive = defineModel<NgxDirective>('directive', {
-  default: reactive({}),
+  default: () => ({
+    directive: '',
+    params: '',
+  }),
 })
 
 const content = ref('')

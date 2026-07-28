@@ -17,7 +17,6 @@ const props = defineProps<{
 }>()
 
 const data = defineModel<AutoCertOptions>('options', {
-  default: reactive({}),
   required: true,
 })
 

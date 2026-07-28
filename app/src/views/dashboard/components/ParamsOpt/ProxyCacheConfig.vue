@@ -2,7 +2,7 @@
 import type { ProxyCacheConfig } from '@/api/ngx'
 
 const value = defineModel<ProxyCacheConfig>({
-  default: reactive({
+  default: () => ({
     enabled: false,
     path: '/var/cache/nginx/proxy_cache',
     levels: '1:2',

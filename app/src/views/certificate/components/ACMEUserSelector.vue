@@ -4,7 +4,6 @@ import type { AutoCertOptions } from '@/api/auto_cert'
 import acme_user from '@/api/acme_user'
 
 const data = defineModel<AutoCertOptions>('options', {
-  default: reactive({}),
   required: true,
 })
 
