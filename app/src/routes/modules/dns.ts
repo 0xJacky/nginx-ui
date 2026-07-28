@@ -29,6 +29,14 @@ export const dnsRoutes: RouteRecordRaw[] = [
         },
       },
       {
+        path: 'groups',
+        name: 'DNS Groups',
+        component: () => import('@/views/dns/DNSGroupList.vue'),
+        meta: {
+          name: () => $gettext('Groups'),
+        },
+      },
+      {
         path: 'ddns',
         name: 'DNS DDNS',
         component: () => import('@/views/dns/DDNSManager.vue'),
@@ -44,6 +52,16 @@ export const dnsRoutes: RouteRecordRaw[] = [
           name: () => $gettext('DNS Records'),
           hiddenInSidebar: true,
           lastRouteName: 'DNS Domains',
+        },
+      },
+      {
+        path: 'groups/:id/records',
+        name: 'DNS Group Records',
+        component: () => import('@/views/dns/DNSGroupRecordManager.vue'),
+        meta: {
+          name: () => $gettext('Group Records'),
+          hiddenInSidebar: true,
+          lastRouteName: 'DNS Groups',
         },
       },
     ],

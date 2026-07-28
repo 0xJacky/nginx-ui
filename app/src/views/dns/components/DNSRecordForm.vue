@@ -11,6 +11,7 @@ const props = defineProps<{
   defaultLineCode?: string
   lineDisabled?: boolean
   valueSuggestions?: string[]
+  showName?: boolean
 }>()
 
 const formModel = defineModel<RecordPayload>('record', {
@@ -87,7 +88,7 @@ function handleValueKeydown(event: KeyboardEvent) {
         :options="recordTypes.map(value => ({ label: value, value }))"
       />
     </AFormItem>
-    <AFormItem :label="$gettext('Name')" :rules="[{ required: true }]">
+    <AFormItem v-if="props.showName !== false" :label="$gettext('Name')" :rules="[{ required: true }]">
       <AInput v-model:value="formModel.name" :placeholder="$gettext('Use @ for root')" />
     </AFormItem>
     <AFormItem :label="$gettext('Value')" :rules="[{ required: true }]">
