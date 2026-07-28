@@ -84,10 +84,13 @@ type DashboardAnalytics struct {
 type DashboardSummary struct {
 	TotalUV         int     `json:"total_uv"`
 	TotalPV         int     `json:"total_pv"`
+	TotalTraffic    int64   `json:"total_traffic"` // Total bytes sent over the queried range
 	AvgDailyUV      float64 `json:"avg_daily_uv"`
 	AvgDailyPV      float64 `json:"avg_daily_pv"`
 	PeakHour        int     `json:"peak_hour"`
 	PeakHourTraffic int     `json:"peak_hour_traffic"`
+	AvgQPS          float64 `json:"avg_qps"`  // Total requests divided by the length of the queried range
+	PeakQPS         float64 `json:"peak_qps"` // Busiest minute in the range, expressed per second
 }
 
 // HourlyAccessStats represents hourly access statistics

@@ -323,9 +323,11 @@ func TestService_GetDashboardAnalytics_WithCardinalityCounter(t *testing.T) {
 		},
 	}
 
-	// Mock batch search calls for hourly/daily stats (simplified - return empty for test focus)
+	// Mock batch search calls for hourly/daily stats (simplified - return empty for test focus).
+	// The time-bucket scan is the only ascending cursor scan, so match on that
+	// rather than on how many fields it happens to load.
 	mockSearcher.On("Search", ctx, mock.MatchedBy(func(r *searcher.SearchRequest) bool {
-		return len(r.Fields) == 2
+		return len(r.Fields) > 0 && r.SortBy == "timestamp" && r.SortOrder == "asc"
 	})).Return(&searcher.SearchResult{Hits: []*searcher.SearchHit{}}, nil)
 
 	// Mock URL facet search

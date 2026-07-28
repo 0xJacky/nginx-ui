@@ -157,6 +157,13 @@ func (s *Searcher) Search(ctx context.Context, req *SearchRequest) (*SearchResul
 		return nil, err
 	}
 
+	// Byte and response-time totals need their own pass over the match set:
+	// the hits carry only the requested page, so summing them would describe
+	// the page rather than the query.
+	if req.IncludeStats {
+		result.Stats = s.searchStats(searchCtx, query, req, result.TotalHits)
+	}
+
 	result.Duration = time.Since(startTime)
 
 	// Cache result if enabled

@@ -114,7 +114,7 @@ function removeServer(index: number) {
           </ADropdown>
         </template>
 
-        <LogEntry class="mb-4" :ngx-config :cur-server-idx :name />
+        <LogEntry class="mb-4" :ngx-config :cur-server-idx :name :context />
 
         <div class="tab-content">
           <slot name="tab-content" :tab-idx="k" />

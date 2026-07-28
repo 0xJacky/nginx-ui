@@ -159,6 +159,14 @@ type SearchStats struct {
 	UniquePaths    int            `json:"unique_paths"`
 	StatusCodeDist map[string]int `json:"status_code_distribution"`
 	MethodDist     map[string]int `json:"method_distribution"`
+
+	// ScannedDocs is the number of documents actually read to build these
+	// statistics. It equals the match count unless the scan hit its cap.
+	ScannedDocs uint64 `json:"scanned_docs"`
+
+	// Approximate reports that the scan covered only a prefix of the match set
+	// and the totals were extrapolated from it.
+	Approximate bool `json:"approximate"`
 }
 
 // SearcherInterface defines the main search interface

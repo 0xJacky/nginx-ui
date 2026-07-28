@@ -19,6 +19,7 @@ func InitRouter(r *gin.RouterGroup) {
 	r.POST("nginx_log/settings/advanced_indexing/enable", EnableAdvancedIndexing)
 	r.POST("nginx_log/settings/advanced_indexing/disable", DisableAdvancedIndexing)
 	r.GET("nginx_log/settings/advanced_indexing/status", GetAdvancedIndexingStatus)
+	r.GET("nginx_log/default_log_dir", GetDefaultLogDir)
 }
 
 func InitWebSocketRouter(r *gin.RouterGroup) {
