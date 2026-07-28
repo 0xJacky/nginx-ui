@@ -210,12 +210,39 @@ func buildSettingsResponse() gin.H {
 		"cert":      cloneRedactedSettingsSection(settings.CertSettings),
 		"http":      cloneRedactedSettingsSection(settings.HTTPSettings),
 		"logrotate": cloneRedactedSettingsSection(settings.LogrotateSettings),
-		"nginx":     cloneRedactedSettingsSection(settings.NginxSettings),
+		"nginx":     buildNginxSettingsResponse(),
 		"node":      cloneRedactedSettingsSection(settings.NodeSettings),
 		"openai":    openai,
 		"terminal":  cloneRedactedSettingsSection(settings.TerminalSettings),
 		"webauthn":  settings.WebAuthnSettings,
 	}
+}
+
+func buildNginxSettingsResponse() gin.H {
+	response := cloneRedactedSettingsSection(settings.NginxSettings)
+	response["access_log_path"] = nginx.GetAccessLogPath()
+	response["error_log_path"] = nginx.GetErrorLogPath()
+	response["config_dir"] = nginx.GetConfPath()
+	response["pid_path"] = nginx.GetPIDPath()
+	response["stub_status_port"] = settings.NginxSettings.GetStubStatusPort()
+
+	if settings.NginxSettings.ReloadCmd == "" {
+		response["reload_cmd"] = "nginx -s reload"
+	}
+
+	if settings.NginxSettings.RestartCmd == "" {
+		pidPath := nginx.GetPIDPath()
+		if daemon := nginx.GetSbinPath(); daemon != "" {
+			response["restart_cmd"] =
+				fmt.Sprintf("start-stop-daemon --start --quiet --pidfile %s --exec %s", pidPath, daemon)
+		} else {
+			response["restart_cmd"] =
+				fmt.Sprintf("start-stop-daemon --stop --quiet --oknodo --retry=TERM/30/KILL/5"+
+					" --pidfile %s && nginx", pidPath)
+		}
+	}
+
+	return response
 }
 
 func restoreRedactedSensitiveSettings(payload *saveSettingsPayload) {
@@ -239,30 +266,6 @@ func GetServerName(c *gin.Context) {
 }
 
 func GetSettings(c *gin.Context) {
-	settings.NginxSettings.AccessLogPath = nginx.GetAccessLogPath()
-	settings.NginxSettings.ErrorLogPath = nginx.GetErrorLogPath()
-	settings.NginxSettings.ConfigDir = nginx.GetConfPath()
-	settings.NginxSettings.PIDPath = nginx.GetPIDPath()
-	settings.NginxSettings.StubStatusPort = settings.NginxSettings.GetStubStatusPort()
-
-	if settings.NginxSettings.ReloadCmd == "" {
-		settings.NginxSettings.ReloadCmd = "nginx -s reload"
-	}
-
-	if settings.NginxSettings.RestartCmd == "" {
-		pidPath := nginx.GetPIDPath()
-		daemon := nginx.GetSbinPath()
-		if daemon == "" {
-			settings.NginxSettings.RestartCmd =
-				fmt.Sprintf("start-stop-daemon --stop --quiet --oknodo --retry=TERM/30/KILL/5"+
-					" --pidfile %s && nginx", pidPath)
-			return
-		}
-
-		settings.NginxSettings.RestartCmd =
-			fmt.Sprintf("start-stop-daemon --start --quiet --pidfile %s --exec %s", pidPath, daemon)
-	}
-
 	c.JSON(http.StatusOK, buildSettingsResponse())
 }
 

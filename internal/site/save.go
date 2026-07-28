@@ -3,7 +3,6 @@ package site
 import (
 	"fmt"
 	"net/http"
-	"os"
 	"runtime"
 	"sync"
 
@@ -23,9 +22,17 @@ func Save(name string, content string, overwrite bool, namespaceId uint64, syncN
 	if err != nil {
 		return err
 	}
+	enabledConfigFilePath, err := ResolveEnabledPath(name)
+	if err != nil {
+		return err
+	}
 
 	if !overwrite && helper.FileExists(path) {
 		return ErrDstFileExists
+	}
+	snapshot, err := captureConfigFile(path)
+	if err != nil {
+		return err
 	}
 
 	err = config.ValidateConfigFile(path, content)
@@ -38,27 +45,28 @@ func Save(name string, content string, overwrite bool, namespaceId uint64, syncN
 		return
 	}
 
-	err = os.WriteFile(path, []byte(content), 0644)
+	err = writeConfigFile(path, []byte(content), 0644)
 	if err != nil {
-		return
-	}
-
-	enabledConfigFilePath, err := ResolveEnabledPath(name)
-	if err != nil {
-		return err
+		return rollbackError(err, func() error {
+			return snapshot.restore(path)
+		})
 	}
 
 	if helper.FileExists(enabledConfigFilePath) {
 		// Test nginx configuration
 		c := nginx.Control(nginx.TestConfig)
 		if c.IsError() {
-			return c.GetError()
+			return rollbackError(c.GetError(), func() error {
+				return snapshot.restore(path)
+			})
 		}
 
 		if postAction == model.PostSyncActionReloadNginx {
 			c := nginx.Control(nginx.Reload)
 			if c.IsError() {
-				return c.GetError()
+				return rollbackError(c.GetError(), func() error {
+					return restoreConfigAndReload(path, snapshot)
+				})
 			}
 		}
 	}
@@ -71,7 +79,12 @@ func Save(name string, content string, overwrite bool, namespaceId uint64, syncN
 			SyncNodeIDs: syncNodeIds,
 		})
 	if err != nil {
-		return
+		return rollbackError(err, func() error {
+			if helper.FileExists(enabledConfigFilePath) && postAction == model.PostSyncActionReloadNginx {
+				return restoreConfigAndReload(path, snapshot)
+			}
+			return snapshot.restore(path)
+		})
 	}
 
 	go syncSave(name, content)

@@ -119,6 +119,17 @@ var selfCheckTasks = []*Task{
 var selfCheckTaskMap = orderedmap.NewOrderedMap[string, *Task]()
 
 func Init() {
+	if settings.NginxSettings.RunningInAnotherContainer() {
+		selfCheckTasks = append(selfCheckTasks, &Task{
+			Key:  "Docker-ExternalNginxConfig-Shared",
+			Name: translation.C("External Nginx configuration directory is shared"),
+			Description: translation.C("Check if Nginx UI can write a temporary file to the configured Nginx directory " +
+				"and the external Nginx container can see it at the same path. Docker socket access and ContainerName only route " +
+				"control commands; configuration and log directories must be mounted into both containers at matching paths."),
+			CheckFunc: CheckExternalContainerConfigShared,
+		})
+	}
+
 	if nginx.IsModuleLoaded(nginx.ModuleStream) {
 		selfCheckTasks = append(selfCheckTasks, &Task{
 			Key:  "Directory-Streams",

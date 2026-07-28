@@ -32,4 +32,6 @@ var (
 	ErrFixedConfigInvalid               = e.New(50008, "Patched nginx-ui.conf is invalid: {0}")
 	ErrReloadFailed                     = e.New(50009, "Nginx reload after fix failed: {0}")
 	ErrCriticalRecoveryFailed           = e.New(50010, "Failed to restore nginx-ui.conf from backup: {0}")
+	ErrExternalConfigNotShared          = e.New(40422, "Nginx configuration directory is not shared with external container at {0}")
+	ErrExternalConfigCheckFailed        = e.New(50011, "Failed to verify external Nginx configuration directory {0}: {1}")
 )

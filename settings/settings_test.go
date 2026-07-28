@@ -170,7 +170,7 @@ func TestSetup(t *testing.T) {
 	assert.Equal(t, "/var/run/nginx.pid", NginxSettings.PIDPath)
 	assert.Equal(t, "nginx -t", NginxSettings.TestConfigCmd)
 	assert.Equal(t, "nginx -s reload", NginxSettings.ReloadCmd)
-	assert.Equal(t, "nginx -s stop", NginxSettings.RestartCmd)
+	assert.Equal(t, "nginx -s restart", NginxSettings.RestartCmd)
 	assert.Equal(t, []string{"/var/log/nginx"}, NginxSettings.LogDirWhiteList)
 
 	// Node
