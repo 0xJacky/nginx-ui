@@ -11,22 +11,19 @@ import DNSRecordFilter from '@/views/dns/components/DNSRecordFilter.vue'
 import DNSRecordForm from '@/views/dns/components/DNSRecordForm.vue'
 import DNSRecordTable from '@/views/dns/components/DNSRecordTable.vue'
 
+interface DNSRecordTableInstance {
+  resetPagination: () => void
+}
+
 const route = useRoute()
 const store = useDnsStore()
 const router = useRouter()
+const recordTable = useTemplateRef<DNSRecordTableInstance>('recordTable')
 
 const filters = ref<RecordListParams>({
   name: '',
   type: '',
 })
-
-const pagination = ref({
-  current: 1,
-  pageSize: 50,
-  total: 0,
-})
-
-const pageSizeOptions = ['20', '50', '100', '200']
 
 const domainId = computed(() => Number(route.params.id))
 
@@ -86,7 +83,6 @@ const pageTitle = computed(() => {
 
 async function initData() {
   await store.fetchDomainDetail(domainId.value)
-  pagination.value.current = 1
   await fetchRecords()
   if (supportsRecordLines.value) {
     await fetchRecordLines()
@@ -105,17 +101,7 @@ async function fetchRecordLines() {
 }
 
 async function fetchRecords() {
-  await store.fetchRecords(domainId.value, {
-    ...filters.value,
-    page: pagination.value.current,
-    per_page: pagination.value.pageSize,
-  })
-  const meta = store.recordsPagination
-  pagination.value = {
-    current: meta?.current_page ?? pagination.value.current,
-    pageSize: meta?.per_page ?? pagination.value.pageSize,
-    total: meta?.total ?? 0,
-  }
+  await store.fetchAllRecords(domainId.value, filters.value)
 }
 
 function openCreateDrawer() {
@@ -167,6 +153,7 @@ async function handleSubmit() {
       await store.createRecord(domainId.value, formModel.value)
       message.success($gettext('Record created'))
     }
+    await fetchRecords()
     isDrawerOpen.value = false
   }
   finally {
@@ -176,23 +163,12 @@ async function handleSubmit() {
 
 async function handleDelete(record: DNSRecord) {
   await store.deleteRecord(domainId.value, record.id)
+  await fetchRecords()
   message.success($gettext('Record deleted'))
 }
 
 function handleFilterSubmit() {
-  pagination.value.current = 1
-  fetchRecords()
-}
-
-function handlePageChange(page: number, pageSize: number) {
-  pagination.value.current = page
-  pagination.value.pageSize = pageSize
-  fetchRecords()
-}
-
-function handlePageSizeChange(current: number, size: number) {
-  pagination.value.current = current
-  pagination.value.pageSize = size
+  recordTable.value?.resetPagination()
   fetchRecords()
 }
 
@@ -234,6 +210,7 @@ onBeforeUnmount(() => {
       <DNSRecordFilter v-model:filters="filters" @submit="handleFilterSubmit" />
 
       <DNSRecordTable
+        ref="recordTable"
         class="mt-4"
         :records="store.records"
         :loading="store.recordsLoading"
@@ -244,17 +221,6 @@ onBeforeUnmount(() => {
         @edit="openEditDrawer"
         @delete="handleDelete"
       />
-      <div class="mt-4 flex justify-end">
-        <APagination
-          :current="pagination.current"
-          :page-size="pagination.pageSize"
-          :total="pagination.total"
-          :show-size-changer="true"
-          :page-size-options="pageSizeOptions"
-          @change="handlePageChange"
-          @show-size-change="handlePageSizeChange"
-        />
-      </div>
     </ACard>
 
     <ADrawer
@@ -265,6 +231,7 @@ onBeforeUnmount(() => {
     >
       <DNSRecordForm
         v-model:record="formModel"
+        :show-name="true"
         :show-proxied="showProxiedToggle"
         :show-comment="showCommentField"
         :show-line="supportsRecordLines"

@@ -59,6 +59,33 @@ export const useDnsStore = defineStore('dns-store', {
         this.recordsLoading = false
       }
     },
+    async fetchAllRecords(domainId: number, filters?: Pick<RecordListParams, 'name' | 'type'>) {
+      this.recordsLoading = true
+      try {
+        const firstPage = await dnsApi.listRecords(domainId, {
+          ...filters,
+          page: 1,
+          per_page: 200,
+        })
+
+        if (firstPage.pagination.total > firstPage.data.length) {
+          const completePage = await dnsApi.listRecords(domainId, {
+            ...filters,
+            page: 1,
+            per_page: firstPage.pagination.total,
+          })
+          this.records = completePage.data
+          this.recordsPagination = completePage.pagination
+          return
+        }
+
+        this.records = firstPage.data
+        this.recordsPagination = firstPage.pagination
+      }
+      finally {
+        this.recordsLoading = false
+      }
+    },
     async createRecord(domainId: number, payload: RecordPayload) {
       const data = await dnsApi.createRecord(domainId, payload)
       this.records.unshift(data)
