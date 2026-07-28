@@ -33,15 +33,15 @@ func RenewSelfSignedCerts() {
 	db.Where("auto_cert = ?", model.AutoCertSelfSigned).Find(&certs)
 
 	now := time.Now()
-	renewalInterval := settings.CertSettings.GetCertRenewalInterval()
+	renewalThresholdDays := settings.CertSettings.GetCertRenewalInterval()
 	for _, certModel := range certs {
-		renewSelfSignedCert(certModel, now, renewalInterval)
+		renewSelfSignedCert(certModel, now, renewalThresholdDays)
 	}
 	logger.Info("RenewSelfSignedCerts Worker End")
 }
 
 // renewSelfSignedCert renews a single self-signed certificate when it is due.
-func renewSelfSignedCert(certModel *model.Cert, now time.Time, renewalInterval int) {
+func renewSelfSignedCert(certModel *model.Cert, now time.Time, renewalThresholdDays int) {
 	targetName := getAutoRenewTargetName(certModel)
 
 	if shouldSkipAutoRenew(certModel, now) {
@@ -50,7 +50,7 @@ func renewSelfSignedCert(certModel *model.Cert, now time.Time, renewalInterval i
 		return
 	}
 
-	due, err := selfSignedRenewalDue(certModel, now, renewalInterval)
+	due, err := selfSignedRenewalDue(certModel, now, renewalThresholdDays)
 	if err == nil && !due {
 		return
 	}
@@ -97,7 +97,7 @@ func renewSelfSignedCert(certModel *model.Cert, now time.Time, renewalInterval i
 
 // selfSignedRenewalDue reports whether a self-signed certificate is due for
 // renewal. It returns an error when the certificate cannot be inspected.
-func selfSignedRenewalDue(certModel *model.Cert, now time.Time, renewalInterval int) (bool, error) {
+func selfSignedRenewalDue(certModel *model.Cert, now time.Time, renewalThresholdDays int) (bool, error) {
 	if certModel.SelfSignedConfig == nil {
 		return false, pkgerrors.New("self-signed certificate config is empty")
 	}
@@ -111,12 +111,12 @@ func selfSignedRenewalDue(certModel *model.Cert, now time.Time, renewalInterval 
 		return false, pkgerrors.Wrap(err, "get self-signed certificate info error")
 	}
 
-	return shouldRenewSelfSignedCert(info, now, renewalInterval), nil
+	return shouldRenewSelfSignedCert(info, now, renewalThresholdDays), nil
 }
 
 // shouldRenewSelfSignedCert reports whether a self-signed certificate with the
 // given info should be renewed now. It mirrors the renewal-threshold logic of
 // the ACME auto-renewal job.
-func shouldRenewSelfSignedCert(info *Info, now time.Time, renewalInterval int) bool {
-	return shouldRenewCertificate(info, now, renewalInterval)
+func shouldRenewSelfSignedCert(info *Info, now time.Time, renewalThresholdDays int) bool {
+	return shouldRenewCertificate(info, now, renewalThresholdDays)
 }

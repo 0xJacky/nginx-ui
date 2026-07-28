@@ -50,7 +50,7 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
     cert: {
       email: '',
       ca_dir: '',
-      renewal_interval: 7,
+      renewal_interval: 30,
       recursive_nameservers: [],
       http_challenge_port: '9180',
     },

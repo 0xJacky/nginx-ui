@@ -135,17 +135,30 @@ func TestShouldRenewACMECertificateRenewsShortLifetimeAtMidpoint(t *testing.T) {
 	}
 }
 
-func TestShouldRenewACMECertificateKeepsNormalInterval(t *testing.T) {
+func TestShouldRenewACMECertificateUsesRemainingValidityThreshold(t *testing.T) {
 	notBefore := time.Date(2026, time.July, 1, 0, 0, 0, 0, time.UTC)
 	info := &Info{
 		NotBefore: notBefore,
 		NotAfter:  notBefore.Add(90 * 24 * time.Hour),
 	}
 
-	if shouldRenewACMECertificate(info, notBefore.Add(6*24*time.Hour), 7) {
-		t.Fatal("normal certificate renewed before configured interval")
+	if shouldRenewACMECertificate(info, info.NotAfter.Add(-31*24*time.Hour), 30) {
+		t.Fatal("normal certificate renewed with more than the configured validity remaining")
 	}
-	if !shouldRenewACMECertificate(info, notBefore.Add(7*24*time.Hour), 7) {
-		t.Fatal("normal certificate not renewed at configured interval")
+	if !shouldRenewACMECertificate(info, info.NotAfter.Add(-30*24*time.Hour), 30) {
+		t.Fatal("normal certificate not renewed at the remaining-validity threshold")
+	}
+}
+
+func TestCertificateRenewalTimeUsesMidpointForOversizedThreshold(t *testing.T) {
+	notBefore := time.Date(2026, time.July, 1, 0, 0, 0, 0, time.UTC)
+	info := &Info{
+		NotBefore: notBefore,
+		NotAfter:  notBefore.Add(20 * 24 * time.Hour),
+	}
+
+	want := notBefore.Add(10 * 24 * time.Hour)
+	if got := certificateRenewalTime(info, 30); !got.Equal(want) {
+		t.Fatalf("certificateRenewalTime() = %s, want %s", got, want)
 	}
 }

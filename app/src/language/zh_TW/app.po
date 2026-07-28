@@ -1036,9 +1036,9 @@ msgstr "憑證路徑為空"
 msgid "Certificate removed successfully"
 msgstr "憑證已成功移除"
 
-#: src/views/preference/tabs/CertSettings.vue:33
-msgid "Certificate Renewal Interval"
-msgstr "憑證更新間隔"
+#: src/views/preference/tabs/CertSettings.vue:34
+msgid "Certificate Renewal Threshold"
+msgstr "憑證續簽門檻"
 
 #: src/language/constants.ts:21
 msgid "Certificate renewed successfully"
@@ -6308,6 +6308,12 @@ msgstr "更新憑證錯誤"
 msgid "Renew Certificate Success"
 msgstr "更新憑證成功"
 
+#: src/views/preference/tabs/CertSettings.vue:35
+msgid ""
+"Renew certificates when their remaining validity is less than or equal to "
+"this value."
+msgstr "當憑證剩餘有效期小於或等於此值時續簽憑證。"
+
 #: src/views/certificate/components/RenewCert.vue:26
 msgid "Renew successfully"
 msgstr "更新成功"
@@ -7496,12 +7502,11 @@ msgstr "測試成功！回應時間：%{response_time} 毫秒"
 msgid "Testing Nginx configuration..."
 msgstr "正在測試 Nginx 配置..."
 
-#: src/components/AutoCertForm/AutoCertForm.vue:160
+#: src/components/AutoCertForm/AutoCertForm.vue:114
 msgid ""
-"The certificate for the domain will be checked 30 minutes, and will be "
-"renewed if it has been more than 1 week or the period you set in settings "
-"since it was last issued."
-msgstr "網域憑證將在 30 分鐘內接受檢查，如果自上次簽發以來已超過 1 週或您在設定中設定的時間，憑證將會自動更新。"
+"The certificate for the domain is checked every 30 minutes and renewed when "
+"its remaining validity reaches the threshold configured in settings."
+msgstr "網域憑證每 30 分鐘檢查一次，並在剩餘有效期達到設定中配置的門檻時續簽。"
 
 #: src/views/site/site_edit/components/Cert/SelfSignedCert.vue:32
 msgid ""

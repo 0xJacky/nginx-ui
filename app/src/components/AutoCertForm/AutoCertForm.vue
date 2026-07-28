@@ -111,8 +111,7 @@ defineExpose({
             + 'multiple domains.') }}
         </p>
         <p>
-          {{ $gettext('The certificate for the domain will be checked 30 minutes, '
-            + 'and will be renewed if it has been more than 1 week or the period you set in settings since it was last issued.') }}
+          {{ $gettext('The certificate for the domain is checked every 30 minutes and renewed when its remaining validity reaches the threshold configured in settings.') }}
         </p>
         <p v-if="data.challenge_method === 'http01'">
           {{ $gettext('Make sure you have configured a reverse proxy for .well-known '

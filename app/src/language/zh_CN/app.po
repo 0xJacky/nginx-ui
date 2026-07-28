@@ -1040,9 +1040,9 @@ msgstr "证书路径为空"
 msgid "Certificate removed successfully"
 msgstr "证书已成功移除"
 
-#: src/views/preference/tabs/CertSettings.vue:33
-msgid "Certificate Renewal Interval"
-msgstr "证书续期间隔"
+#: src/views/preference/tabs/CertSettings.vue:34
+msgid "Certificate Renewal Threshold"
+msgstr "证书续签阈值"
 
 #: src/language/constants.ts:21
 msgid "Certificate renewed successfully"
@@ -6314,6 +6314,12 @@ msgstr "证书续期错误"
 msgid "Renew Certificate Success"
 msgstr "证书续期成功"
 
+#: src/views/preference/tabs/CertSettings.vue:35
+msgid ""
+"Renew certificates when their remaining validity is less than or equal to "
+"this value."
+msgstr "当证书剩余有效期小于或等于此值时续签证书。"
+
 #: src/views/certificate/components/RenewCert.vue:26
 msgid "Renew successfully"
 msgstr "更新成功"
@@ -7502,12 +7508,11 @@ msgstr "测试成功！响应时间：%{response_time}毫秒"
 msgid "Testing Nginx configuration..."
 msgstr "正在测试 Nginx 配置..."
 
-#: src/components/AutoCertForm/AutoCertForm.vue:160
+#: src/components/AutoCertForm/AutoCertForm.vue:114
 msgid ""
-"The certificate for the domain will be checked 30 minutes, and will be "
-"renewed if it has been more than 1 week or the period you set in settings "
-"since it was last issued."
-msgstr "域名证书将在 30 分钟内接受检查，如果距离上次签发证书的时间超过 1 周或您在设置中设定的时间，证书将被更新。"
+"The certificate for the domain is checked every 30 minutes and renewed when "
+"its remaining validity reaches the threshold configured in settings."
+msgstr "域名证书每 30 分钟检查一次，并在剩余有效期达到设置中配置的阈值时续签。"
 
 #: src/views/site/site_edit/components/Cert/SelfSignedCert.vue:32
 msgid ""

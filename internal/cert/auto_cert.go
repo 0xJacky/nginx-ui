@@ -77,13 +77,13 @@ func autoCert(certModel *model.Cert) {
 	}
 	certInfo := certificateInfo(certificate)
 
-	renewalInterval := settings.CertSettings.GetCertRenewalInterval()
+	renewalThresholdDays := settings.CertSettings.GetCertRenewalInterval()
 	scheduleDecision := getRenewalScheduleDecision(certModel, certificate, now)
 	if scheduleDecision.UsesARI {
 		if !scheduleDecision.Due {
 			return
 		}
-	} else if !shouldRenewACMECertificate(certInfo, now, renewalInterval) {
+	} else if !shouldRenewACMECertificate(certInfo, now, renewalThresholdDays) {
 		return
 	}
 
@@ -131,8 +131,8 @@ func autoCert(certModel *model.Cert) {
 	}
 }
 
-func shouldRenewACMECertificate(info *Info, now time.Time, renewalIntervalDays int) bool {
-	return shouldRenewCertificate(info, now, renewalIntervalDays)
+func shouldRenewACMECertificate(info *Info, now time.Time, renewalThresholdDays int) bool {
+	return shouldRenewCertificate(info, now, renewalThresholdDays)
 }
 
 func shouldSkipAutoRenew(certModel *model.Cert, now time.Time) bool {
