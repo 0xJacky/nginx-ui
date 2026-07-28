@@ -46,7 +46,7 @@ go generate
 
 # 從前端提取可翻譯字符串
 cd app
-pnpm gettext:extract
+bun run gettext:extract
 ```
 
 此過程確保所有新的可翻譯內容都正確添加到翻譯系統中。 

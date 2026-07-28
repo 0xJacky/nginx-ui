@@ -216,8 +216,8 @@ En plataformas que no tienen una versión de compilación oficial, pueden compil
 Ejecute el siguiente comando en el directorio `app`.
 
 ```shell
-pnpm install
-pnpm build
+bun install
+bun run build
 ```
 
 ### Compilación del Backend

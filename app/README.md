@@ -25,7 +25,7 @@ You can learn more about Take Over mode [here](https://github.com/johnsoncodehk/
 ## Project Setup
 
 ```sh
-pnpm install
+bun install
 ```
 
 **Note:** The default target of the api proxy is `http://localhost:9000`,
@@ -38,7 +38,7 @@ VITE_PROXY_TARGET=http://localhost:9001
 ### Compile and Hot-Reload for Development
 
 ```sh
-pnpm dev
+bun run dev
 ```
 
 **Note:** The default port of the dev server is `3002`,
@@ -51,17 +51,17 @@ VITE_PORT=3456
 ### Code Style Check
 
 ```sh
-pnpm lint
+bun run lint
 ```
 
 ### Type Check
 
 ```sh
-pnpm typecheck
+bun run typecheck
 ```
 
 ### Compile and Minify for Production
 
 ```sh
-pnpm build
+bun run build
 ```

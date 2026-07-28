@@ -19,12 +19,6 @@ fi
 # init nginx config dir
 ./.devcontainer/init-nginx.sh
 
-# install app dependencies
-echo "Installing app dependencies"
-cd app && pnpm install -f
-cd ..
-
-# install docs dependencies
-echo "Installing docs dependencies"
-cd docs && pnpm install -f
-cd ..
+# install workspace dependencies
+echo "Installing workspace dependencies"
+bun ci

@@ -39,21 +39,16 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up nodejs
-        uses: actions/setup-node@v7
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version: 23.x
+          bun-version: 1.3.14
 
       - name: Install dependencies
-        run: |
-          corepack enable
-          corepack prepare pnpm@10 --activate
-          pnpm install
-        working-directory: docs
+        run: bun ci
 
       - name: Build
-        run: COMMIT_REF=$(git rev-parse HEAD) pnpm docs:build
-        working-directory: docs
+        run: COMMIT_REF=$(git rev-parse HEAD) bun run docs:build
 
       - name: Archive artifacts
         uses: actions/upload-artifact@v7
@@ -61,13 +56,9 @@ jobs:
           name: dist
           path: docs/.vitepress/dist
 
-      - name: Install Wrangler
-        if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' || github.event_name == 'release' || github.event_name == 'workflow_dispatch' || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success'))
-        run: pnpm add -w wrangler
-
       - name: Deploy
         if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' || github.event_name == 'release' || github.event_name == 'workflow_dispatch' || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success'))
-        run: pnpm wrangler pages deploy "docs/.vitepress/dist/" --commit-dirty=true --project-name=nginxui
+        run: bunx wrangler pages deploy "docs/.vitepress/dist/" --commit-dirty=true --project-name=nginxui
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}

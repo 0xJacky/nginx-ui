@@ -72,7 +72,6 @@ export default createConfig(
 
       'eslint-comments/no-unlimited-disable': 'off',
 
-      'pnpm/json-enforce-catalog': 'off',
     },
   },
 )

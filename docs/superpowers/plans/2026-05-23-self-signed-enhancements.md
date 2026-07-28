@@ -16,7 +16,7 @@
 
 ## Project conventions
 
-- Frontend: pnpm only. Lint/typecheck gates run from `app/`: `pnpm lint`, `pnpm lint:fix`, `pnpm typecheck`. The `perfectionist` rule may reorder imports during `lint:fix` — accept it.
+- Frontend: Bun only. Lint/typecheck gates run from `app/`: `bun run lint`, `bun run lint:fix`, `bun run typecheck`. The `perfectionist` rule may reorder imports during `lint:fix` — accept it.
 - Vue auto-imports: `ref`, `computed`, `watch`, `App.useApp`, `$gettext`, `useTemplateRef`, `storeToRefs`. Match surrounding style.
 - All comments / i18n strings in English.
 - Backend: `gofmt`/`goimports` clean, `go test ./... -race -cover` for full sweep but only the touched packages need to pass.
@@ -133,10 +133,10 @@ export default StringListInput
 - [ ] **Step 3: Lint and typecheck**
 
 ```bash
-cd app && pnpm lint && pnpm typecheck
+cd app && bun run lint && bun run typecheck
 ```
 
-Expected: both exit 0. If lint flags ordering, run `pnpm lint:fix` then re-check.
+Expected: both exit 0. If lint flags ordering, run `bun run lint:fix` then re-check.
 
 - [ ] **Step 4: Commit**
 
@@ -362,7 +362,7 @@ Substantive changes vs. the original file:
 - [ ] **Step 2: Lint and typecheck**
 
 ```bash
-cd app && pnpm lint && pnpm typecheck
+cd app && bun run lint && bun run typecheck
 ```
 
 Expected: both 0. `lint:fix` if needed.
@@ -417,7 +417,7 @@ with:
 - [ ] **Step 2: Lint and typecheck**
 
 ```bash
-cd app && pnpm lint && pnpm typecheck
+cd app && bun run lint && bun run typecheck
 ```
 
 Expected: both 0.
@@ -737,7 +737,7 @@ Modify the `isSelfSigned` branch so it trims and validates before calling the AP
 - [ ] **Step 5: Lint and typecheck**
 
 ```bash
-cd app && pnpm lint && pnpm typecheck
+cd app && bun run lint && bun run typecheck
 ```
 
 Expected: both 0.
@@ -869,10 +869,10 @@ function removeCustomDomain(index: number) {
 - [ ] **Step 4: Lint and typecheck**
 
 ```bash
-cd app && pnpm lint && pnpm typecheck
+cd app && bun run lint && bun run typecheck
 ```
 
-Expected: both 0. `pnpm typecheck` should catch any orphaned references to `addCustomDomain` / `removeCustomDomain`.
+Expected: both 0. `bun run typecheck` should catch any orphaned references to `addCustomDomain` / `removeCustomDomain`.
 
 - [ ] **Step 5: Commit**
 
@@ -899,7 +899,7 @@ EOF
 - [ ] **Step 1: Final frontend gate**
 
 ```bash
-cd app && pnpm lint && pnpm typecheck
+cd app && bun run lint && bun run typecheck
 ```
 
 Expected: both 0.
@@ -937,6 +937,6 @@ No commit produced by this task.
 ## Wrap-up checklist
 
 - [ ] All 6 code commits land on `feature/self-signed-certificate`.
-- [ ] `pnpm lint`, `pnpm typecheck`, and the Go test sweep are all green on the final tree.
+- [ ] `bun run lint`, `bun run typecheck`, and the Go test sweep are all green on the final tree.
 - [ ] `git status` is clean.
 - [ ] Manual smoke checklist done (or explicit user sign-off).

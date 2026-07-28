@@ -19,8 +19,8 @@ You should execute the following command to update browser list database before 
 Please execute the following command in `app` directory.
 
 ```shell
-pnpm install
-pnpm build
+bun install
+bun run build
 ```
 
 ## Build Backend

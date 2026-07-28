@@ -30,8 +30,8 @@ No backend changes, no Go tests.
 
 ## Project conventions reminder
 
-- Frontend stack: pnpm only, Vue 3 Composition API with `<script setup>`, TypeScript, Ant Design Vue, UnoCSS.
-- Code quality gates: `pnpm lint`, `pnpm lint:fix`, `pnpm typecheck` must all pass before commit.
+- Frontend stack: Bun only, Vue 3 Composition API with `<script setup>`, TypeScript, Ant Design Vue, UnoCSS.
+- Code quality gates: `bun run lint`, `bun run lint:fix`, `bun run typecheck` must all pass before commit.
 - Vue auto-imports are configured in this project: `ref`, `computed`, `watch`, `App`, `$gettext` etc. don't need explicit imports — match the surrounding file's style.
 - Comments must be in English.
 - Commits: short imperative subject; sign off with `Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>` (project convention).
@@ -331,10 +331,10 @@ Two intentional simplifications versus the original:
 Run from `app/`:
 
 ```bash
-pnpm lint && pnpm typecheck
+bun run lint && bun run typecheck
 ```
 
-Expected: both commands exit 0. If `pnpm lint` flags style issues, run `pnpm lint:fix` and re-run `pnpm lint`.
+Expected: both commands exit 0. If `bun run lint` flags style issues, run `bun run lint:fix` and re-run `bun run lint`.
 
 - [ ] **Step 6: Commit**
 
@@ -463,7 +463,7 @@ The `<style lang="less" scoped>` block at the end of the file is unchanged.
 Run from `app/`:
 
 ```bash
-pnpm lint && pnpm typecheck
+bun run lint && bun run typecheck
 ```
 
 Expected: both exit 0. The removed imports must be cleanly removed — leftover `Cert` or `SafetyOutlined` references would surface as lint warnings here.
@@ -498,8 +498,8 @@ These are the steps to convince yourself the change works end-to-end before decl
 From `app/`:
 
 ```bash
-pnpm install
-pnpm run dev
+bun install
+bun run dev
 ```
 
 Expected: Vite reports ready and prints a local URL.
@@ -553,7 +553,7 @@ Manual verification produces no files to commit.
 
 After both code commits land and manual verification passes:
 
-- [ ] `pnpm lint` and `pnpm typecheck` both green on the final tree.
+- [ ] `bun run lint` and `bun run typecheck` both green on the final tree.
 - [ ] `git status` is clean.
 - [ ] The two commits are scoped one per task (creation extension, then header cleanup) and reviewable independently.
 - [ ] No backend files touched; no Go tests need re-running.

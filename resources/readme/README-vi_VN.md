@@ -271,8 +271,8 @@ Trên các nền tảng không có phiên bản xây dựng chính thức, chún
 Vui lòng thực hiện lệnh sau trong thư mục `app`.
 
 ```shell
-pnpm install
-pnpm build
+bun install
+bun run build
 ```
 
 ### Build Backend

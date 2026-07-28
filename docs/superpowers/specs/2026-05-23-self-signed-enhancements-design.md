@@ -174,7 +174,7 @@ direct callers of `selfSignedSlug` outside the handler.
 
 ### Frontend
 
-* `pnpm lint` / `pnpm lint:fix` / `pnpm typecheck` from `app/` — must pass.
+* `bun run lint` / `bun run lint:fix` / `bun run typecheck` from `app/` — must pass.
 * No new component tests added (project does not carry component tests for
   this view; manual smoke covers behaviour).
 

@@ -286,8 +286,8 @@ docker compose up -d
 `app` ディレクトリで以下を実行：
 
 ```shell
-pnpm install
-pnpm build
+bun install
+bun run build
 ```
 
 ### バックエンドのビルド

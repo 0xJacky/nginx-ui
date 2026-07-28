@@ -152,7 +152,7 @@ that ACME users don't experience.
 
 ## Testing
 
-* Frontend gates: `pnpm lint`, `pnpm lint:fix`, `pnpm typecheck` must all pass.
+* Frontend gates: `bun run lint`, `bun run lint:fix`, `bun run typecheck` must all pass.
 * Manual verification:
   1. Certificate list header shows only Import + Issue certificate.
   2. Issue Certificate dialog defaults to Wildcard; ACME flow still works end-to-end.

@@ -18,8 +18,8 @@
 請在 `app` 資料夾中執行以下命令。
 
 ```shell
-pnpm install
-pnpm build
+bun install
+bun run build
 ```
 
 ## 建構後端

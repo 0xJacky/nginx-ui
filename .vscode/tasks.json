@@ -15,7 +15,7 @@
     {
       "label": "[App] Start Frontend",
       "type": "shell",
-      "command": "pnpm dev",
+      "command": "bun run dev",
       "isBackground": true,
       "presentation": {
         "panel": "shared",
@@ -26,7 +26,7 @@
     {
       "label": "[Docs] Start Documentation",
       "type": "shell",
-      "command": "pnpm docs:dev",
+      "command": "bun run docs:dev",
       "isBackground": true,
       "presentation": {
         "panel": "shared",
@@ -51,7 +51,7 @@
     {
       "label": "[App] Gettext Extract",
       "type": "shell",
-      "command": "pnpm gettext:extract",
+      "command": "bun run gettext:extract",
       "isBackground": true,
       "presentation": {
         "panel": "new"
@@ -61,7 +61,7 @@
     {
       "label": "[App] ESLint Fix",
       "type": "shell",
-      "command": "pnpm lint --fix",
+      "command": "bun run lint:fix",
       "presentation": {
         "panel": "new"
       },
@@ -70,7 +70,7 @@
     {
       "label": "[App] Typecheck",
       "type": "shell",
-      "command": "pnpm typecheck",
+      "command": "bun run typecheck",
       "presentation": {
         "panel": "new"
       },
@@ -79,7 +79,7 @@
     {
       "label": "[App] Build",
       "type": "shell",
-      "command": "pnpm build",
+      "command": "bun run build",
       "presentation": {
         "panel": "new"
       },

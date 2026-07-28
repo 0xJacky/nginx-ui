@@ -3,8 +3,8 @@
 This project is a web-based NGINX management interface built with Go backend and Vue.js frontend.
 
 ## Package Manager
-- **Use pnpm exclusively** for all frontend package management operations
-- Commands: `pnpm install`, `pnpm run dev`, `pnpm typecheck`
+- **Use Bun exclusively** for all frontend package management operations
+- Commands: `bun install`, `bun run dev`, `bun run typecheck`
 
 ## Backend (Go) Development
 
@@ -72,10 +72,10 @@ This project is a web-based NGINX management interface built with Go backend and
 
 ### Code Quality
 - **Always use ESLint MCP after generating frontend code** to ensure code quality and consistency
-- Run `pnpm lint`, `pnpm lint:fix`, and `pnpm typecheck` to keep style and typings aligned
+- Run `bun run lint`, `bun run lint:fix`, and `bun run typecheck` to keep style and typings aligned
 
 ## Development Commands
-- **Frontend**: `pnpm run dev`, `pnpm lint`, `pnpm typecheck`, `pnpm run build`
+- **Frontend**: `bun run dev`, `bun run lint`, `bun run typecheck`, `bun run build`
 - **Backend**: `go generate ./...`, `go build ./...`, run `go test ./... -race -cover`; for release artifacts reuse the README command with `-tags=jsoniter -ldflags "$LD_FLAGS ..."`.
 - **Demo stack**: `docker-compose -f docker-compose-demo.yml up` to bootstrap the sample environment
 

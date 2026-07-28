@@ -46,7 +46,7 @@ go generate
 
 # Extract translatable strings from the frontend
 cd app
-pnpm gettext:extract
+bun run gettext:extract
 ```
 
 This process ensures all new translatable content is properly added to the translation system.

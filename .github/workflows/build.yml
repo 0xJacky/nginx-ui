@@ -46,29 +46,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Set up nodejs
-        uses: actions/setup-node@v7
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version: current
+          bun-version: 1.3.14
 
       - name: Install dependencies
-        run: |
-          corepack enable
-          corepack prepare pnpm@latest --activate
-          pnpm install
+        run: bun ci
 
       - name: Check frontend code style
-        run: |
-          pnpm lint
+        run: bun run lint
 
       - name: Check frontend types
-        run: |
-          pnpm typecheck
+        run: bun run typecheck
 
       - name: Build
         run: |
-          npx update-browserslist-db@latest
-          pnpm build
+          bunx update-browserslist-db@latest
+          bun run build
 
       - name: Archive app artifacts
         uses: actions/upload-artifact@v7

@@ -54,12 +54,11 @@ echo "Updated package.json to version ${VERSION#v}"
 
 # Build app
 echo "Building app..."
-cd app && pnpm build
+bun run build
 if [ $? -ne 0 ]; then
     echo "Error: Build failed"
     exit 1
 fi
-cd ..
 
 # Run go generate
 echo "Generating Go code..."
