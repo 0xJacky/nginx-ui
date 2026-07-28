@@ -7,10 +7,10 @@ import (
 	"runtime"
 
 	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
-	"github.com/go-resty/resty/v2"
 	"github.com/uozi-tech/cosy/logger"
 )
 
@@ -74,10 +74,9 @@ func syncDelete(name string) {
 					logger.Errorf("%s\n%s", err, buf)
 				}
 			}()
-			client := resty.New()
+			client := nodeauth.NewRestyClient(node)
 			client.SetBaseURL(node.URL)
 			resp, err := client.R().
-				SetHeader("X-Node-Secret", node.Token).
 				Delete(fmt.Sprintf("/api/sites/%s", name))
 			if err != nil {
 				notification.Error("Delete Remote Site Error", err.Error(), nil)

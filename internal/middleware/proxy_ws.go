@@ -3,6 +3,7 @@ package middleware
 import (
 	"net/http"
 
+	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
 	"github.com/pretty66/websocketproxy"
@@ -42,12 +43,11 @@ func ProxyWs() gin.HandlerFunc {
 		logger.Debug("Proxy request", decodedUri)
 
 		wp, err := websocketproxy.NewProxy(decodedUri, func(r *http.Request) error {
-			r.Header.Set("X-Node-Secret", node.Token)
 			r.Header.Del("X-Node-ID")
 			queryValues := r.URL.Query()
 			queryValues.Del("x_node_id")
 			r.URL.RawQuery = queryValues.Encode()
-			return nil
+			return nodeauth.SignWebSocketHeaders(node, r.URL.String(), r.Header)
 		})
 
 		if err != nil {

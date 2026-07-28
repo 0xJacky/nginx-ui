@@ -152,12 +152,12 @@ func TestCheckWebSocketOrigin_Hardening(t *testing.T) {
 		assert.False(t, CheckWebSocketOrigin(req))
 	})
 
-	t.Run("allows_query_string_node_secret_fallback", func(t *testing.T) {
+	t.Run("rejects_query_string_node_secret", func(t *testing.T) {
 		reset()
 		settings.NodeSettings.Secret = "node-secret"
 		req := httptest.NewRequest("GET", "http://127.0.0.1/ws?node_secret=node-secret", nil)
 		req.Host = "child:9000"
-		assert.True(t, CheckWebSocketOrigin(req))
+		assert.False(t, CheckWebSocketOrigin(req))
 	})
 
 	t.Run("empty_configured_secret_never_matches_empty_request_secret", func(t *testing.T) {

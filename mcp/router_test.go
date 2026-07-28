@@ -6,8 +6,10 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/cache"
+	internalmcp "github.com/0xJacky/Nginx-UI/internal/mcp"
 	internaluser "github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -52,18 +54,34 @@ func setupMCPSecurityRouter(t *testing.T) (*gin.Engine, string, uint64) {
 
 	originalIPWhiteList := settings.AuthSettings.IPWhiteList
 	originalJWTSecret := cSettings.AppSettings.JwtSecret
+	originalCryptoSecret := settings.CryptoSettings.Secret
+	originalInstanceID := settings.NodeSettings.InstanceID
+	originalNodeSecret := settings.NodeSettings.Secret
+	originalLegacyAuth := settings.NodeSettings.LegacyAuthEnabled
+	originalLegacyMCPAuth := settings.NodeSettings.LegacyMCPAuthEnabled
 	t.Cleanup(func() {
 		cache.Shutdown()
 		settings.AuthSettings.IPWhiteList = originalIPWhiteList
 		cSettings.AppSettings.JwtSecret = originalJWTSecret
+		settings.CryptoSettings.Secret = originalCryptoSecret
+		settings.NodeSettings.InstanceID = originalInstanceID
+		settings.NodeSettings.Secret = originalNodeSecret
+		settings.NodeSettings.LegacyAuthEnabled = originalLegacyAuth
+		settings.NodeSettings.LegacyMCPAuthEnabled = originalLegacyMCPAuth
+		model.Use(nil)
 	})
 
 	settings.AuthSettings.IPWhiteList = nil
 	cSettings.AppSettings.JwtSecret = "test-secret"
+	settings.CryptoSettings.Secret = "mcp-test-crypto-root"
+	settings.NodeSettings.InstanceID = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+	settings.NodeSettings.Secret = "legacy-mcp-secret"
+	settings.NodeSettings.LegacyAuthEnabled = true
+	settings.NodeSettings.LegacyMCPAuthEnabled = true
 
 	db, err := gorm.Open(sqlite.Open(fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name())), &gorm.Config{})
 	require.NoError(t, err)
-	require.NoError(t, db.AutoMigrate(&model.User{}, &model.AuthToken{}, &model.Passkey{}))
+	require.NoError(t, db.AutoMigrate(&model.User{}, &model.AuthToken{}, &model.Passkey{}, &model.MCPServiceToken{}))
 
 	model.Use(db)
 	query.Use(db)
@@ -85,6 +103,77 @@ func setupMCPSecurityRouter(t *testing.T) (*gin.Engine, string, uint64) {
 	InitRouter(router)
 
 	return router, payload.Token, otpUser.ID
+}
+
+func TestMCPServiceTokenScopesAndQueryRejection(t *testing.T) {
+	router, userToken, userID := setupMCPSecurityRouter(t)
+	_, readToken, err := internalmcp.CreateServiceToken("reader", []string{model.MCPTokenScopeRead}, nil, userID)
+	require.NoError(t, err)
+	_, writeToken, err := internalmcp.CreateServiceToken("writer", []string{model.MCPTokenScopeWrite}, nil, userID)
+	require.NoError(t, err)
+
+	readRequest := httptest.NewRequest(http.MethodPost, "/mcp_message", bytes.NewBufferString(`{
+		"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"nginx_config_get"}
+	}`))
+	readRequest.Header.Set("Authorization", "Bearer "+readToken)
+	readRecorder := httptest.NewRecorder()
+	router.ServeHTTP(readRecorder, readRequest)
+	assert.NotEqual(t, http.StatusForbidden, readRecorder.Code)
+
+	writeWithReadToken := httptest.NewRequest(http.MethodPost, "/mcp_message", bytes.NewBufferString(`{
+		"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"nginx_config_modify"}
+	}`))
+	writeWithReadToken.Header.Set("Authorization", "Bearer "+readToken)
+	writeWithReadRecorder := httptest.NewRecorder()
+	router.ServeHTTP(writeWithReadRecorder, writeWithReadToken)
+	assert.Equal(t, http.StatusForbidden, writeWithReadRecorder.Code)
+
+	writeRequest := httptest.NewRequest(http.MethodPost, "/mcp_message", bytes.NewBufferString(`{
+		"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"nginx_config_modify"}
+	}`))
+	writeRequest.Header.Set("Authorization", "Bearer "+writeToken)
+	writeRecorder := httptest.NewRecorder()
+	router.ServeHTTP(writeRecorder, writeRequest)
+	assert.NotEqual(t, http.StatusForbidden, writeRecorder.Code)
+
+	queryCredentialRequest := httptest.NewRequest(http.MethodPost, "/mcp?node_secret=leaked", nil)
+	queryCredentialRequest.Header.Set("Authorization", userToken)
+	queryCredentialRecorder := httptest.NewRecorder()
+	router.ServeHTTP(queryCredentialRecorder, queryCredentialRequest)
+	assert.Equal(t, http.StatusForbidden, queryCredentialRecorder.Code)
+}
+
+func TestMCPLegacyHeaderRequiresVisibleCompatibilitySwitches(t *testing.T) {
+	router, _, _ := setupMCPSecurityRouter(t)
+
+	legacyRequest := func() *http.Request {
+		request := httptest.NewRequest(http.MethodPost, "/mcp_message", bytes.NewBufferString(`{"method":"tools/list"}`))
+		request.Header.Set("X-Node-Secret", settings.NodeSettings.Secret)
+		return request
+	}
+
+	recorder := httptest.NewRecorder()
+	router.ServeHTTP(recorder, legacyRequest())
+	assert.NotEqual(t, http.StatusForbidden, recorder.Code)
+
+	settings.NodeSettings.LegacyMCPAuthEnabled = false
+	recorder = httptest.NewRecorder()
+	router.ServeHTTP(recorder, legacyRequest())
+	assert.Equal(t, http.StatusForbidden, recorder.Code)
+}
+
+func TestMCPExpiredAndRevokedServiceTokensAreRejected(t *testing.T) {
+	router, _, userID := setupMCPSecurityRouter(t)
+	expiresAt := time.Now().Add(time.Minute)
+	record, token, err := internalmcp.CreateServiceToken("temporary", []string{model.MCPTokenScopeRead}, &expiresAt, userID)
+	require.NoError(t, err)
+	require.NoError(t, internalmcp.RevokeServiceToken(record.PublicID))
+
+	request := httptest.NewRequest(http.MethodPost, "/mcp_message", bytes.NewBufferString(`{"method":"tools/list"}`))
+	request.Header.Set("Authorization", "Bearer "+token)
+	recorder := httptest.NewRecorder()
+	router.ServeHTTP(recorder, request)
+	assert.Equal(t, http.StatusForbidden, recorder.Code)
 }
 
 func TestMCPMutatingToolRequiresSecureSessionForOTPUser(t *testing.T) {

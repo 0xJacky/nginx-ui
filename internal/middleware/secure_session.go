@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"net/http"
 
+	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
@@ -53,7 +54,7 @@ const SecureSessionVerifiedKey = "SecureSessionVerified"
 
 func RequireSecureSession() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if _, ok := c.Get("Secret"); ok {
+		if _, ok := c.Get(nodeauth.GinPrincipalKey); ok {
 			c.Next()
 			return
 		}
@@ -88,6 +89,20 @@ func RequireSecureSession() gin.HandlerFunc {
 		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
 			"message": "Secure Session ID is invalid",
 		})
+	}
+}
+
+// RequireInteractiveUser prevents a verified node principal from invoking
+// controller-administration APIs intended only for a logged-in administrator.
+func RequireInteractiveUser() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		if _, ok := c.Get(nodeauth.GinPrincipalKey); ok {
+			c.AbortWithStatusJSON(http.StatusForbidden, gin.H{
+				"message": "This operation requires an interactive administrator",
+			})
+			return
+		}
+		c.Next()
 	}
 }
 

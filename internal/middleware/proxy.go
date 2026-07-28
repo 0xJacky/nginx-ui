@@ -6,6 +6,7 @@ import (
 	"net/http/httputil"
 	"net/url"
 
+	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/internal/transport"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
@@ -59,7 +60,7 @@ func Proxy() gin.HandlerFunc {
 			return
 		}
 
-		proxy.Transport = customTransport
+		proxy.Transport = nodeauth.NewTransport(node, customTransport)
 
 		defaultDirector := proxy.Director
 		proxy.Director = func(req *http.Request) {
@@ -69,7 +70,6 @@ func Proxy() gin.HandlerFunc {
 			query.Del("x_node_id")
 			req.URL.RawQuery = query.Encode()
 			req.Header.Del("X-Node-ID")
-			req.Header.Set("X-Node-Secret", node.Token)
 		}
 
 		// resolve https://github.com/0xJacky/nginx-ui/issues/342

@@ -13,16 +13,22 @@ func GetInitUser(c *gin.Context) *model.User {
 	if cachedUser, found := GetCachedUser(initUserID); found {
 		return cachedUser
 	}
-	
+
 	// If not in cache, get from database
 	db := cosy.UseDB(c)
+	if db == nil {
+		db = model.UseDB()
+	}
 	user := &model.User{}
+	if db == nil {
+		return user
+	}
 	db.First(user, initUserID)
-	
+
 	// Cache the user for future requests
 	if user.ID != 0 {
 		CacheUser(user)
 	}
-	
+
 	return user
 }

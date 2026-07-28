@@ -67,6 +67,7 @@ func InitRouter() {
 
 		system.InitPublicRouter(root)
 		backup.InitRouter(root)
+		cluster.InitPublicRouter(root)
 
 		setup := root.Group("/setup", middleware.SetupAuthRequired())
 		{
@@ -102,6 +103,7 @@ func InitRouter() {
 			system.InitPrivateRouter(g)
 			settings.InitRouter(g)
 			llm.InitRouter(g)
+			mcp.InitManagementRouter(g)
 			cluster.InitRouter(g)
 			notification.InitRouter(g)
 			external_notify.InitRouter(g)

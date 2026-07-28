@@ -20,9 +20,14 @@ func TestInitNodeStopsWhenContextIsCancelled(t *testing.T) {
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
+	node := &model.Node{
+		Model: model.Model{ID: 46},
+		URL:   server.URL,
+	}
+	setupLegacyNodeAuthForTest(t, node, "test-secret")
 	result := make(chan error, 1)
 	go func() {
-		_, err := InitNode(ctx, &model.Node{URL: server.URL})
+		_, err := InitNode(ctx, node)
 		result <- err
 	}()
 

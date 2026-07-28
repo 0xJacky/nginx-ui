@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/0xJacky/Nginx-UI/internal/cache"
+	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	internaluser "github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
@@ -85,6 +86,35 @@ func TestSecureSessionCookie(t *testing.T) {
 		}
 		t.Fatal("cookie not found")
 	})
+}
+
+func TestVerifiedNodePrincipalBypassesInternalSecureSessionOnly(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	principal := &nodeauth.Principal{CredentialID: "credential", AuthMethod: model.NodeAuthMethodPaired}
+
+	internalRouter := gin.New()
+	internalRouter.POST("/internal", func(c *gin.Context) {
+		c.Set(nodeauth.GinPrincipalKey, principal)
+		c.Next()
+	}, RequireSecureSession(), func(c *gin.Context) {
+		c.Status(http.StatusNoContent)
+	})
+	request := httptest.NewRequest(http.MethodPost, "/internal", nil)
+	recorder := httptest.NewRecorder()
+	internalRouter.ServeHTTP(recorder, request)
+	require.Equal(t, http.StatusNoContent, recorder.Code)
+
+	adminRouter := gin.New()
+	adminRouter.POST("/admin", func(c *gin.Context) {
+		c.Set(nodeauth.GinPrincipalKey, principal)
+		c.Next()
+	}, RequireInteractiveUser(), RequireSecureSession(), func(c *gin.Context) {
+		c.Status(http.StatusNoContent)
+	})
+	request = httptest.NewRequest(http.MethodPost, "/admin", nil)
+	recorder = httptest.NewRecorder()
+	adminRouter.ServeHTTP(recorder, request)
+	require.Equal(t, http.StatusForbidden, recorder.Code)
 }
 
 func TestEnsureSecureSessionCookie(t *testing.T) {

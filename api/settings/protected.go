@@ -4,11 +4,12 @@ import (
 	"net/http"
 
 	"github.com/0xJacky/Nginx-UI/internal/middleware"
+	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/gin-gonic/gin"
 )
 
 func GetProtectedSetting(c *gin.Context) {
-	if _, ok := c.Get("Secret"); ok {
+	if _, ok := c.Get(nodeauth.GinPrincipalKey); ok {
 		c.AbortWithStatusJSON(http.StatusForbidden, gin.H{
 			"message": "Node secret authentication is not allowed for protected settings",
 		})

@@ -63,8 +63,8 @@ func TestNodeAnalyticRecordHalfDeadConnection(t *testing.T) {
 		Model: model.Model{ID: 42},
 		Name:  "half-dead",
 		URL:   srv.URL,
-		Token: "test-token",
 	}
+	setupLegacyNodeAuthForTest(t, node, "test-token")
 	// Make sure the NodeMap slot exists so updateNodeStatus is a no-op on the
 	// shared map across parallel tests.
 	nodeMapMu.Lock()
@@ -197,19 +197,19 @@ func TestSuccessfulSampleResetsRetryBackoff(t *testing.T) {
 
 func TestEqualNodeConfigsDetectsConnectionChanges(t *testing.T) {
 	base := []*model.Node{
-		{Model: model.Model{ID: 1}, Name: "node-a", URL: "https://node-a.example", Token: "token-a", Enabled: true},
-		{Model: model.Model{ID: 2}, Name: "node-b", URL: "https://node-b.example", Token: "token-b", Enabled: true},
+		{Model: model.Model{ID: 1}, Name: "node-a", URL: "https://node-a.example", EncryptedLegacySecret: []byte("token-a"), Enabled: true},
+		{Model: model.Model{ID: 2}, Name: "node-b", URL: "https://node-b.example", EncryptedLegacySecret: []byte("token-b"), Enabled: true},
 	}
 	reordered := []*model.Node{base[1], base[0]}
 	if !equalNodeConfigs(base, reordered) {
 		t.Fatal("expected node ordering not to trigger a monitor reload")
 	}
 
-	changedToken := []*model.Node{
+	changedCredential := []*model.Node{
 		base[0],
-		{Model: model.Model{ID: 2}, Name: "node-b", URL: "https://node-b.example", Token: "rotated-token", Enabled: true},
+		{Model: model.Model{ID: 2}, Name: "node-b", URL: "https://node-b.example", EncryptedLegacySecret: []byte("rotated-token"), Enabled: true},
 	}
-	if equalNodeConfigs(base, changedToken) {
-		t.Fatal("expected a token change to trigger a monitor reload")
+	if equalNodeConfigs(base, changedCredential) {
+		t.Fatal("expected a credential change to trigger a monitor reload")
 	}
 }

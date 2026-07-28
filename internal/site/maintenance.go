@@ -12,10 +12,10 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/settings"
-	"github.com/go-resty/resty/v2"
 	"github.com/tufanbarisyildirim/gonginx/config"
 	"github.com/tufanbarisyildirim/gonginx/dumper"
 	"github.com/tufanbarisyildirim/gonginx/parser"
@@ -618,10 +618,9 @@ func syncEnableMaintenance(name string) {
 			}()
 			defer wg.Done()
 
-			client := resty.New()
+			client := nodeauth.NewRestyClient(node)
 			client.SetBaseURL(node.URL)
 			resp, err := client.R().
-				SetHeader("X-Node-Secret", node.Token).
 				Post(fmt.Sprintf("/api/sites/%s/maintenance", name))
 			if err != nil {
 				notification.Error("Enable Remote Site Maintenance Error", err.Error(), nil)
@@ -656,10 +655,9 @@ func syncDisableMaintenance(name string) {
 			}()
 			defer wg.Done()
 
-			client := resty.New()
+			client := nodeauth.NewRestyClient(node)
 			client.SetBaseURL(node.URL)
 			resp, err := client.R().
-				SetHeader("X-Node-Secret", node.Token).
 				Post(fmt.Sprintf("/api/sites/%s/enable", name))
 			if err != nil {
 				notification.Error("Disable Remote Site Maintenance Error", err.Error(), nil)

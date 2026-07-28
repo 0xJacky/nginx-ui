@@ -9,7 +9,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/0xJacky/Nginx-UI/internal/transport"
+	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/internal/upstream"
 	"github.com/0xJacky/Nginx-UI/internal/version"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -134,21 +134,15 @@ func InitNode(ctx context.Context, node *model.Node) (n *Node, err error) {
 		return
 	}
 
-	t, err := transport.NewTransport()
+	client, err := nodeauth.NewHTTPClient(node, 10*time.Second)
 	if err != nil {
 		return
-	}
-	client := http.Client{
-		Transport: t,
-		Timeout:   10 * time.Second,
 	}
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, u, nil)
 	if err != nil {
 		return
 	}
-
-	req.Header.Set("X-Node-Secret", node.Token)
 
 	resp, err := client.Do(req)
 	if err != nil {

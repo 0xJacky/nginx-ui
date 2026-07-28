@@ -36,7 +36,7 @@ export const useNodeAvailabilityStore = defineStore('nodeAvailability', () => {
     try {
       const sanitized = Object.fromEntries(
         Object.entries(value).map(([nodeId, node]) => {
-          const { token, ...safeNode } = node
+          const { token: _legacyToken, ...safeNode } = node as Partial<AnalyticNode> & { token?: string }
           return [nodeId, safeNode]
         }),
       )
@@ -100,7 +100,9 @@ export const useNodeAvailabilityStore = defineStore('nodeAvailability', () => {
           name: node.name,
           status: node.status,
           url: node.url,
-          token: node.token,
+          auth_method: node.auth_method,
+          has_credential: node.has_credential,
+          credential_status: node.credential_status,
           enabled: true,
         }
       })

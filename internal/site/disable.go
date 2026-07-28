@@ -8,9 +8,9 @@ import (
 	"sync"
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/0xJacky/Nginx-UI/model"
-	"github.com/go-resty/resty/v2"
 	"github.com/uozi-tech/cosy/logger"
 )
 
@@ -65,10 +65,9 @@ func syncDisable(name string) {
 			}()
 			defer wg.Done()
 
-			client := resty.New()
+			client := nodeauth.NewRestyClient(node)
 			client.SetBaseURL(node.URL)
 			resp, err := client.R().
-				SetHeader("X-Node-Secret", node.Token).
 				Post(fmt.Sprintf("/api/sites/%s/disable", name))
 			if err != nil {
 				notification.Error("Disable Remote Site Error", "", err.Error())

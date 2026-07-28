@@ -1,11 +1,14 @@
 package middleware
 
 import (
+	"crypto/subtle"
 	"encoding/base64"
+	"fmt"
 	"net/http"
 	"path"
 	"strings"
 
+	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/settings"
@@ -13,27 +16,12 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 )
 
-// getToken from header, cookie or query
+// getToken reads credentials only from the explicit Authorization header.
+// Browser-managed cookies and URL query parameters are ambient credentials and
+// must not authorize management API requests because they enable CSRF and leak
+// tokens through URLs.
 func getToken(c *gin.Context) (token string) {
-	if token = c.GetHeader("Authorization"); token != "" {
-		return
-	}
-
-	if token = c.Query("token"); token != "" {
-		if len(token) > 16 {
-			// Long token (base64 encoded JWT)
-			tokenBytes, _ := base64.StdEncoding.DecodeString(token)
-			return string(tokenBytes)
-		}
-		// Short token (16 characters)
-		return token
-	}
-
-	if token, _ = c.Cookie("token"); token != "" {
-		return token
-	}
-
-	return ""
+	return c.GetHeader("Authorization")
 }
 
 // getTokenWS reads token from header or query only (no cookie fallback).
@@ -70,13 +58,42 @@ func getXNodeID(c *gin.Context) (xNodeID string) {
 	return c.Query("x_node_id")
 }
 
-// getNodeSecret from header or query
-func getNodeSecret(c *gin.Context) (secret string) {
-	if secret = c.GetHeader("X-Node-Secret"); secret != "" {
-		return secret
+func authenticateNodeRequest(c *gin.Context) (bool, error) {
+	if c.Request.URL.Query().Has("node_secret") {
+		return true, fmt.Errorf("node credentials are not accepted in query parameters")
 	}
 
-	return c.Query("node_secret")
+	if c.GetHeader("Signature-Input") != "" || c.GetHeader("Signature") != "" {
+		principal, err := nodeauth.VerifyRequest(c.Request)
+		if err != nil {
+			nodeauth.CloseStagedBody(c.Request)
+			return true, err
+		}
+		c.Request = nodeauth.WithPrincipal(c.Request, principal)
+		c.Set(nodeauth.GinPrincipalKey, principal)
+		c.Set("user", user.GetInitUser(c))
+		return true, nil
+	}
+
+	secret := strings.TrimSpace(c.GetHeader("X-Node-Secret"))
+	if secret == "" {
+		return false, nil
+	}
+	configuredSecret := settings.NodeSettings.Secret
+	if !settings.NodeSettings.LegacyAuthEnabled ||
+		len(secret) != len(configuredSecret) ||
+		subtle.ConstantTimeCompare([]byte(secret), []byte(configuredSecret)) != 1 {
+		return true, fmt.Errorf("legacy node authentication failed")
+	}
+	principal := &nodeauth.Principal{
+		CredentialID:         "legacy",
+		ControllerInstanceID: "legacy",
+		AuthMethod:           model.NodeAuthMethodLegacy,
+	}
+	c.Request = nodeauth.WithPrincipal(c.Request, principal)
+	c.Set(nodeauth.GinPrincipalKey, principal)
+	c.Set("user", user.GetInitUser(c))
+	return true, nil
 }
 
 // AuthRequired is a middleware that checks if the user is authenticated
@@ -93,11 +110,12 @@ func AuthRequired() gin.HandlerFunc {
 			c.Set("ProxyNodeID", xNodeID)
 		}
 
-		// Check node secret authentication
-		if nodeSecret := getNodeSecret(c); nodeSecret != "" && nodeSecret == settings.NodeSettings.Secret {
-			initUser := user.GetInitUser(c)
-			c.Set("Secret", nodeSecret)
-			c.Set("user", initUser)
+		if handled, err := authenticateNodeRequest(c); handled {
+			if err != nil {
+				abortWithAuthFailure()
+				return
+			}
+			defer nodeauth.CloseStagedBody(c.Request)
 			c.Next()
 			return
 		}
@@ -149,10 +167,12 @@ func AuthRequiredWS() gin.HandlerFunc {
 			c.Set("ProxyNodeID", xNodeID)
 		}
 
-		if nodeSecret := getNodeSecret(c); nodeSecret != "" && nodeSecret == settings.NodeSettings.Secret {
-			initUser := user.GetInitUser(c)
-			c.Set("Secret", nodeSecret)
-			c.Set("user", initUser)
+		if handled, err := authenticateNodeRequest(c); handled {
+			if err != nil {
+				abortWithAuthFailure()
+				return
+			}
+			defer nodeauth.CloseStagedBody(c.Request)
 			c.Next()
 			return
 		}

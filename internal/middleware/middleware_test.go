@@ -5,7 +5,9 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestGetTokenWS_NoCookieFallback(t *testing.T) {
@@ -59,12 +61,46 @@ func TestGetTokenWS_NoCookieFallback(t *testing.T) {
 	})
 }
 
-func TestGetToken_IncludesCookieFallback(t *testing.T) {
-	t.Run("reads from cookie when no header or query", func(t *testing.T) {
+func TestGetToken_RequiresAuthorizationHeader(t *testing.T) {
+	t.Run("reads from Authorization header", func(t *testing.T) {
+		c := newTestGinContext(t, "GET", "/api/test", nil)
+		c.Request.Header.Set("Authorization", "jwt-token-here")
+
+		token := getToken(c)
+		assert.Equal(t, "jwt-token-here", token)
+	})
+
+	t.Run("does not read from cookie", func(t *testing.T) {
 		c := newTestGinContext(t, "GET", "/api/test", nil)
 		c.Request.AddCookie(&http.Cookie{Name: "token", Value: "cookie-jwt-token"})
 
 		token := getToken(c)
-		assert.Equal(t, "cookie-jwt-token", token)
+		assert.Empty(t, token)
 	})
+
+	t.Run("does not read from query", func(t *testing.T) {
+		encoded := base64.StdEncoding.EncodeToString([]byte("jwt-token-here"))
+		c := newTestGinContext(t, "GET", "/api/test?token="+encoded, nil)
+
+		token := getToken(c)
+		assert.Empty(t, token)
+	})
+}
+
+func TestAuthenticateNodeRequestRejectsQuerySecretEvenWhenItMatches(t *testing.T) {
+	originalSecret := settings.NodeSettings.Secret
+	originalEnabled := settings.NodeSettings.LegacyAuthEnabled
+	t.Cleanup(func() {
+		settings.NodeSettings.Secret = originalSecret
+		settings.NodeSettings.LegacyAuthEnabled = originalEnabled
+	})
+	settings.NodeSettings.Secret = "matching-legacy-secret"
+	settings.NodeSettings.LegacyAuthEnabled = true
+
+	c := newTestGinContext(t, "GET", "/api/node?node_secret=matching-legacy-secret", nil)
+	handled, err := authenticateNodeRequest(c)
+
+	require.Error(t, err)
+	assert.True(t, handled)
+	assert.ErrorContains(t, err, "query parameters")
 }

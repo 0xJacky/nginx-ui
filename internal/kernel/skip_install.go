@@ -40,7 +40,7 @@ func skipInstall() {
 	}
 
 	if nodeSecret != "" {
-		logger.Infof("Secret: %s", nodeSecret)
+		logger.Info("Generated legacy node API secret")
 	}
 }
 

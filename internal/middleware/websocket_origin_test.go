@@ -5,6 +5,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
+	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/stretchr/testify/assert"
 )
@@ -67,26 +69,27 @@ func TestCheckWebSocketOrigin(t *testing.T) {
 		assert.True(t, CheckWebSocketOrigin(req))
 	})
 
-	t.Run("allows node secret requests without origin", func(t *testing.T) {
+	t.Run("allows verified node requests without origin", func(t *testing.T) {
 		settings.HTTPSettings.WebSocketTrustedOrigins = nil
 		settings.NodeSettings.Secret = "node-secret"
 
 		req := httptest.NewRequest("GET", "http://127.0.0.1/ws", nil)
-		req.Header.Set("X-Node-Secret", "node-secret")
+		req = nodeauth.WithPrincipal(req, &nodeauth.Principal{AuthMethod: model.NodeAuthMethodLegacy})
 
 		assert.True(t, CheckWebSocketOrigin(req))
 	})
 
-	t.Run("allows node secret requests with cross-origin (proxy scenario)", func(t *testing.T) {
+	t.Run("allows verified node requests with cross-origin (proxy scenario)", func(t *testing.T) {
 		settings.HTTPSettings.WebSocketTrustedOrigins = nil
 		settings.NodeSettings.Secret = "node-secret"
 
 		// Simulates master node proxying WS to child node:
-		// Origin is the browser's master domain, but X-Node-Secret proves it's a trusted proxy.
+		// Origin is the browser's controller domain, but authentication middleware
+		// has already attached a verified node principal.
 		req := httptest.NewRequest("GET", "http://127.0.0.1/ws", nil)
 		req.Host = "child-node:9000"
 		req.Header.Set("Origin", "https://master.example.com")
-		req.Header.Set("X-Node-Secret", "node-secret")
+		req = nodeauth.WithPrincipal(req, &nodeauth.Principal{AuthMethod: model.NodeAuthMethodLegacy})
 
 		assert.True(t, CheckWebSocketOrigin(req))
 	})

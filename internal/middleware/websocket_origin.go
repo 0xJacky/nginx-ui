@@ -6,11 +6,12 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/settings"
 )
 
 // CheckWebSocketOrigin validates browser origins for WebSocket upgrade requests.
-// Trusted node-to-node traffic (via X-Node-Secret) is always allowed,
+// Authenticated node-to-node traffic is always allowed,
 // regardless of the Origin header, because proxied requests carry the
 // browser's original Origin which won't match the downstream node's host.
 func CheckWebSocketOrigin(r *http.Request) bool {
@@ -37,12 +38,8 @@ func CheckWebSocketOrigin(r *http.Request) bool {
 }
 
 func isTrustedNodeRequest(r *http.Request) bool {
-	secret := strings.TrimSpace(r.Header.Get("X-Node-Secret"))
-	if secret == "" {
-		secret = strings.TrimSpace(r.URL.Query().Get("node_secret"))
-	}
-
-	return secret != "" && secret == settings.NodeSettings.Secret
+	_, ok := nodeauth.PrincipalFromRequest(r)
+	return ok
 }
 
 func getRequestOrigin(r *http.Request) (string, bool) {

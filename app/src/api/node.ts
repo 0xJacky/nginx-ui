@@ -4,10 +4,19 @@ import { extendCurdApi, http, useCurdApi } from '@uozi-admin/request'
 export interface Node extends ModelBase {
   name: string
   url: string
-  token: string
   status: boolean
   enabled: boolean
+  auth_method: 'legacy_secret' | 'paired_ed25519'
+  has_credential: boolean
+  credential_status: 'active' | 'unpaired' | 'rotating' | 'revoked'
+  last_credential_use_at?: string
   response_at?: string
+}
+
+export interface PairingCode {
+  code: string
+  instance_id: string
+  expires_at: string
 }
 
 export interface NodeStatus {
@@ -73,6 +82,9 @@ const nodeApi = extendCurdApi(useCurdApi<Node>(baseUrl), {
   load_from_settings: () => http.post(`${baseUrl}/load_from_settings`),
   reloadNginx,
   restartNginx,
+  createPairingCode: () => http.post<PairingCode>('/node/pairing-codes'),
+  pair: (id: number, code: string) => http.post(`${baseUrl}/${id}/pair`, { code }),
+  rotateCredential: (id: number) => http.post(`${baseUrl}/${id}/credentials/rotate`),
 })
 
 export default nodeApi

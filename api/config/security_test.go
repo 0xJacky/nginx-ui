@@ -15,6 +15,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/cache"
 	internalconfig "github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/middleware"
+	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	internaluser "github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -231,7 +232,7 @@ func TestAddConfigAllowsNonOTPUserAndNodeSecret(t *testing.T) {
 			Status:    true,
 			OTPSecret: []byte("otp-enabled"),
 		})
-		c.Set("Secret", "node-secret")
+		c.Set(nodeauth.GinPrincipalKey, &nodeauth.Principal{AuthMethod: model.NodeAuthMethodLegacy})
 		c.Next()
 	}, middleware.RequireSecureSession(), AddConfig)
 

@@ -1,6 +1,7 @@
 package analytic
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"net/http"
@@ -9,6 +10,7 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/cache"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gorilla/websocket"
@@ -327,7 +329,9 @@ func equalNodeConfigs(a, b []*model.Node) bool {
 			return false
 		}
 		if previous.Name != node.Name || previous.URL != node.URL ||
-			previous.Token != node.Token || previous.Enabled != node.Enabled {
+			previous.AuthMethod != node.AuthMethod ||
+			!bytes.Equal(previous.EncryptedLegacySecret, node.EncryptedLegacySecret) ||
+			previous.Enabled != node.Enabled {
 			return false
 		}
 	}
@@ -374,7 +378,9 @@ func nodeAnalyticRecord(nodeModel *model.Node, ctx context.Context) error {
 	}
 
 	header := http.Header{}
-	header.Set("X-Node-Secret", nodeModel.Token)
+	if err := nodeauth.SignWebSocketHeaders(nodeModel, u, header); err != nil {
+		return err
+	}
 
 	dial := &websocket.Dialer{
 		Proxy:            http.ProxyFromEnvironment,

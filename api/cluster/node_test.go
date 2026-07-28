@@ -2,6 +2,7 @@ package cluster
 
 import (
 	"context"
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"path/filepath"
@@ -21,13 +22,37 @@ import (
 	"gorm.io/gorm"
 )
 
+func TestNodeResponseRedactsAllCredentialMaterial(t *testing.T) {
+	node := &model.Node{
+		Model:                 model.Model{ID: 77},
+		Name:                  "redacted-node",
+		URL:                   "https://node.example",
+		Token:                 "plaintext-secret",
+		EncryptedLegacySecret: []byte("encrypted-secret"),
+		AuthMethod:            model.NodeAuthMethodLegacy,
+		CredentialStatus:      model.NodeCredentialStatusActive,
+	}
+
+	encoded, err := json.Marshal(newNodeResponse(node))
+	require.NoError(t, err)
+	response := string(encoded)
+	require.NotContains(t, response, "plaintext-secret")
+	require.NotContains(t, response, "encrypted-secret")
+	require.NotContains(t, response, "token")
+	require.NotContains(t, response, "private_key")
+	require.Contains(t, response, `"auth_method":"legacy_secret"`)
+	require.Contains(t, response, `"has_credential":true`)
+	require.Contains(t, response, `"status":false`)
+	require.NotContains(t, response, `"NodeStat"`)
+}
+
 func TestDeleteNodeReloadsStatusAfterSuccessfulDeletion(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	cache.InitInMemoryCache()
 	t.Cleanup(cache.Shutdown)
 
 	cosyModel.ClearCollection()
-	cosy.RegisterModels(model.Node{})
+	cosy.RegisterModels(model.Node{}, model.NodeCredential{})
 	db := cosy.InitDB(sqlite.Open(filepath.Join(t.TempDir(), "node-delete.db")))
 	model.Use(db)
 	t.Cleanup(func() { model.Use(nil) })

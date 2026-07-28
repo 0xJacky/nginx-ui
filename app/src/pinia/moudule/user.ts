@@ -24,13 +24,11 @@ export const useUserStore = defineStore('user', () => {
 
   watch(token, v => {
     if (v) {
-      cookies.set('token', v, getCookieOptions(86400))
       if (!shortToken.value) {
         void fetchShortToken()
       }
     }
     else {
-      cookies.remove('token', { path: '/' })
       shortToken.value = ''
     }
   })
@@ -58,12 +56,13 @@ export const useUserStore = defineStore('user', () => {
   })
 
   function handleCookieChange({ name, value }: CookieChangeOptions) {
-    if (name === 'token')
-      token.value = value || ''
-    else if (name === 'secure_session_id')
+    if (name === 'secure_session_id')
       secureSessionId.value = value || ''
   }
 
+  // Remove the legacy ambient JWT cookie. Authentication state is persisted by
+  // Pinia and sent explicitly through the Authorization header.
+  cookies.remove('token', { path: '/' })
   cookies.addChangeListener(handleCookieChange)
 
   const passkeyRawId = ref('')

@@ -32,13 +32,21 @@ const columns: StdTableColumn[] = [{
   pure: true,
   width: 120,
 }, {
-  title: () => 'NodeSecret',
-  dataIndex: 'token',
-  sorter: true,
-  hiddenInTable: true,
-  edit: {
-    type: 'input',
+  title: () => $gettext('Authentication'),
+  dataIndex: 'auth_method',
+  customRender: ({ record }: CustomRenderArgs) => {
+    const isPaired = record.auth_method === 'paired_ed25519'
+    return (
+      <div class="flex flex-col gap-1">
+        <Tag color={isPaired ? 'green' : 'orange'}>
+          {isPaired ? $gettext('Paired signature') : $gettext('Legacy secret')}
+        </Tag>
+        <span class="text-xs opacity-60">{record.credential_status}</span>
+      </div>
+    )
   },
+  pure: true,
+  width: 160,
 }, {
   title: () => $gettext('Status'),
   dataIndex: 'status',

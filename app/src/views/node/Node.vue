@@ -1,4 +1,5 @@
 <script setup lang="tsx">
+import type { AnalyticNode } from '@/api/node'
 import { StdCurd } from '@uozi-admin/curd'
 import nodeApi from '@/api/node'
 import FooterToolBar from '@/components/FooterToolbar'
@@ -11,6 +12,12 @@ const curd = ref()
 const loadingFromSettings = ref(false)
 const loadingReload = ref(false)
 const loadingRestart = ref(false)
+const loadingPair = ref(false)
+const loadingRotate = ref(false)
+const pairModalVisible = ref(false)
+const pairingCode = ref('')
+const generatedPairingCode = ref('')
+const generatedPairingCodeExpiresAt = ref('')
 
 // Auto refresh logic
 const isAutoRefresh = ref(true)
@@ -69,8 +76,8 @@ function loadFromSettings() {
     loadingFromSettings.value = false
   })
 }
-const selectedNodeIds = ref([])
-const selectedNodes = ref([])
+const selectedNodeIds = ref<number[]>([])
+const selectedNodes = ref<AnalyticNode[]>([])
 const refUpgrader = ref()
 
 function batchUpgrade() {
@@ -105,6 +112,47 @@ function restartNginx() {
   })
 }
 
+const selectedNode = computed(() => selectedNodes.value.length === 1 ? selectedNodes.value[0] : undefined)
+
+function openPairModal() {
+  pairingCode.value = ''
+  pairModalVisible.value = true
+}
+
+function upgradeAuthentication() {
+  if (!selectedNode.value || !pairingCode.value.trim())
+    return
+
+  loadingPair.value = true
+  nodeApi.pair(selectedNode.value.id, pairingCode.value.trim()).then(() => {
+    message.success($gettext('Node authentication upgraded successfully'))
+    pairModalVisible.value = false
+    curd.value.refresh()
+  }).finally(() => {
+    loadingPair.value = false
+  })
+}
+
+function rotateAuthentication() {
+  if (!selectedNode.value)
+    return
+
+  loadingRotate.value = true
+  nodeApi.rotateCredential(selectedNode.value.id).then(() => {
+    message.success($gettext('Node credential rotated successfully'))
+    curd.value.refresh()
+  }).finally(() => {
+    loadingRotate.value = false
+  })
+}
+
+function createPairingCode() {
+  nodeApi.createPairingCode().then(data => {
+    generatedPairingCode.value = data.code
+    generatedPairingCodeExpiresAt.value = data.expires_at
+  })
+}
+
 const inTrash = computed(() => {
   return route.query.trash === 'true'
 })
@@ -122,7 +170,7 @@ const inTrash = computed(() => {
         rowSelection: {
           type: 'checkbox',
           getCheckboxProps: (record) => ({
-            disabled: !record.status,
+            disabled: !record.status && record.credential_status !== 'unpaired',
           }),
         },
         pagination: false,
@@ -172,8 +220,55 @@ const inTrash = computed(() => {
 
     <BatchUpgrader ref="refUpgrader" @success="curd.refresh()" />
 
+    <AModal
+      v-model:open="pairModalVisible"
+      :title="selectedNode?.auth_method === 'legacy_secret' ? $gettext('Upgrade Authentication') : $gettext('Pair Node')"
+      :confirm-loading="loadingPair"
+      @ok="upgradeAuthentication"
+    >
+      <AAlert
+        class="mb-4"
+        type="info"
+        :message="$gettext('Generate a one-time pairing code on the child node, then enter it here. Remote pairing requires HTTPS.')"
+      />
+      <AInput
+        v-model:value="pairingCode"
+        :placeholder="$gettext('One-time pairing code')"
+        autocomplete="off"
+      />
+    </AModal>
+
+    <AModal
+      :open="Boolean(generatedPairingCode)"
+      :title="$gettext('One-time Pairing Code')"
+      :footer="null"
+      @cancel="generatedPairingCode = ''"
+    >
+      <ATypographyParagraph copyable>
+        {{ generatedPairingCode }}
+      </ATypographyParagraph>
+      <p>{{ $gettext('Expires at: %{time}', { time: generatedPairingCodeExpiresAt }) }}</p>
+    </AModal>
+
     <FooterToolBar v-if="!inTrash">
       <ASpace>
+        <AButton @click="createPairingCode">
+          {{ $gettext('Generate Pairing Code') }}
+        </AButton>
+        <AButton
+          :disabled="!selectedNode || (selectedNode.auth_method === 'paired_ed25519' && selectedNode.credential_status !== 'unpaired')"
+          :loading="loadingPair"
+          @click="openPairModal"
+        >
+          {{ selectedNode?.auth_method === 'legacy_secret' ? $gettext('Upgrade Authentication') : $gettext('Pair Node') }}
+        </AButton>
+        <AButton
+          :disabled="!selectedNode || selectedNode.auth_method !== 'paired_ed25519'"
+          :loading="loadingRotate"
+          @click="rotateAuthentication"
+        >
+          {{ $gettext('Rotate Credential') }}
+        </AButton>
         <ATooltip
           v-if="selectedNodeIds.length === 0"
           :title="$gettext('Please select at least one node to upgrade')"

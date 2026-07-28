@@ -21,6 +21,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/mcp"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log"
+	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/internal/passkey"
 	"github.com/0xJacky/Nginx-UI/internal/self_check"
 	"github.com/0xJacky/Nginx-UI/internal/sitecheck"
@@ -54,6 +55,7 @@ func Boot(ctx context.Context) {
 		InitJsExtensionType,
 		InitInstallSecret,
 		InitNodeSecret,
+		InitNodeInstanceID,
 		InitCryptoSecret,
 		validation.Init,
 		self_check.Init,
@@ -127,6 +129,9 @@ func InitDatabase(ctx context.Context) {
 	db := cosy.InitDB(sqlite.Open(path.Dir(cSettings.ConfPath), settings.DatabaseSettings))
 	model.Use(db)
 	query.Init(db)
+	if err := nodeauth.MigrateLegacyNodeCredentials(db); err != nil {
+		logger.Fatal("Migrate legacy node credentials: ", err)
+	}
 
 	InitAfterDatabase(ctx)
 }
@@ -141,9 +146,18 @@ func InitNodeSecret() {
 		if err != nil {
 			logger.Error("Error save settings", err)
 		}
-		// Clarify this is the node API secret, not the first-run install secret.
-		// Users were pasting this value into the installation page (#1705).
-		logger.Info("Generated node API secret (not the install secret): ", uuidStr)
+		logger.Info("Generated legacy node API secret")
+	}
+}
+
+func InitNodeInstanceID() {
+	if settings.NodeSettings.InstanceID != "" {
+		return
+	}
+	if err := settings.Update(func() {
+		settings.NodeSettings.InstanceID = uuid.NewString()
+	}); err != nil {
+		logger.Fatal("Generate node instance ID: ", err)
 	}
 }
 

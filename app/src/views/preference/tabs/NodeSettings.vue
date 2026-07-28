@@ -11,6 +11,30 @@ const { data, errors } = storeToRefs(systemSettingsStore)
     <AFormItem :label="$gettext('Node Secret')">
       <SensitiveString path="node.secret" :value="data.node.secret" />
     </AFormItem>
+    <AFormItem :label="$gettext('Instance ID')">
+      <AInput :value="data.node.instance_id" readonly />
+    </AFormItem>
+    <AFormItem :label="$gettext('Allow legacy node authentication')">
+      <ASwitch v-model:checked="data.node.legacy_auth_enabled" />
+      <AAlert
+        v-if="data.node.legacy_auth_enabled"
+        class="mt-3"
+        type="warning"
+        :message="$gettext('Disable this compatibility switch after every controller has been upgraded to paired signatures.')"
+      />
+    </AFormItem>
+    <AFormItem :label="$gettext('Allow legacy Node Secret for MCP')">
+      <ASwitch
+        v-model:checked="data.node.legacy_mcp_auth_enabled"
+        :disabled="!data.node.legacy_auth_enabled"
+      />
+      <AAlert
+        v-if="data.node.legacy_mcp_auth_enabled"
+        class="mt-3"
+        type="warning"
+        :message="$gettext('Temporary compatibility only. Replace MCP Node Secret clients with scoped service tokens.')"
+      />
+    </AFormItem>
     <AFormItem
       :label="$gettext('Node name')"
       :validate-status="errors?.node?.name ? 'error' : ''"

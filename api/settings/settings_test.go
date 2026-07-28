@@ -9,6 +9,7 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/cache"
 	"github.com/0xJacky/Nginx-UI/internal/middleware"
+	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	internaluser "github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/internal/validation"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -262,7 +263,7 @@ func TestGetProtectedSetting(t *testing.T) {
 				Model:     model.Model{ID: 1},
 				OTPSecret: []byte("otp-enabled"),
 			})
-			c.Set("Secret", "node-secret")
+			c.Set(nodeauth.GinPrincipalKey, &nodeauth.Principal{AuthMethod: model.NodeAuthMethodLegacy})
 		}, middleware.RequireSecureSession(), GetProtectedSetting)
 
 		req := httptest.NewRequest(http.MethodGet, "/api/settings/protected?path=app.jwt_secret", nil)
