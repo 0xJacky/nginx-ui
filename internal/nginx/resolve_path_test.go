@@ -59,6 +59,27 @@ configure arguments: --prefix="/Program Files/Nginx" --conf-path='/Program Files
 	}
 }
 
+// A warm lookup cache must not shadow the configured path, otherwise changing
+// the nginx binary in settings only takes effect after a restart.
+func TestGetSbinPathPrefersSettingsOverWarmCache(t *testing.T) {
+	originalSbinPath := settings.NginxSettings.SbinPath
+	originalCache := nginxSbinPathCache.value
+
+	t.Cleanup(func() {
+		settings.NginxSettings.SbinPath = originalSbinPath
+		nginxSbinPathCache.set(originalCache)
+	})
+
+	settings.NginxSettings.SbinPath = ""
+	nginxSbinPathCache.set("/discovered/bin/nginx")
+
+	settings.NginxSettings.SbinPath = "/usr/sbin/nginx"
+
+	if got := GetSbinPath(); got != "/usr/sbin/nginx" {
+		t.Fatalf("GetSbinPath() = %q, want the configured path", got)
+	}
+}
+
 // GetPrefix must resolve through the serialized cache. A plain package level
 // string here races under concurrent cold callers such as the log indexer and
 // the log path whitelist.
