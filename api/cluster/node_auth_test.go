@@ -12,6 +12,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
@@ -113,6 +114,56 @@ func TestCompletePairingRejectsExpiredCode(t *testing.T) {
 	recorder := httptest.NewRecorder()
 	router.ServeHTTP(recorder, httptest.NewRequest(http.MethodPost, "/pair/complete", bytes.NewReader(payload)))
 	assert.Equal(t, http.StatusForbidden, recorder.Code)
+}
+
+func TestLegacyAuthenticatedRelationshipUpgradeReplacesExistingControllerCredential(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	database, err := gorm.Open(sqlite.Open("file:"+t.Name()+"?mode=memory&cache=shared"), &gorm.Config{})
+	require.NoError(t, err)
+	require.NoError(t, database.AutoMigrate(&model.NodeControllerCredential{}))
+	model.Use(database)
+	originalInstanceID := settings.NodeSettings.InstanceID
+	settings.NodeSettings.InstanceID = "11111111-1111-4111-8111-111111111111"
+	t.Cleanup(func() {
+		settings.NodeSettings.InstanceID = originalInstanceID
+		model.Use(nil)
+	})
+
+	controllerInstanceID := "22222222-2222-4222-8222-222222222222"
+	requestUpgrade := func() completePairingResponse {
+		publicKey, _, generateErr := ed25519.GenerateKey(rand.Reader)
+		require.NoError(t, generateErr)
+		payload, marshalErr := json.Marshal(upgradeLegacyPairingRequest{
+			ControllerInstanceID: controllerInstanceID,
+			PublicKey:            base64.RawURLEncoding.EncodeToString(publicKey),
+		})
+		require.NoError(t, marshalErr)
+
+		router := gin.New()
+		router.POST("/pair/upgrade", func(c *gin.Context) {
+			c.Set(nodeauth.GinPrincipalKey, &nodeauth.Principal{AuthMethod: model.NodeAuthMethodLegacy})
+			UpgradeLegacyPairing(c)
+		})
+		recorder := httptest.NewRecorder()
+		router.ServeHTTP(recorder, httptest.NewRequest(http.MethodPost, "/pair/upgrade", bytes.NewReader(payload)))
+		require.Equal(t, http.StatusCreated, recorder.Code)
+		var response completePairingResponse
+		require.NoError(t, json.Unmarshal(recorder.Body.Bytes(), &response))
+		assert.Equal(t, settings.NodeSettings.InstanceID, response.TargetInstanceID)
+		return response
+	}
+
+	first := requestUpgrade()
+	second := requestUpgrade()
+	assert.NotEqual(t, first.CredentialID, second.CredentialID)
+
+	var credentials []model.NodeControllerCredential
+	require.NoError(t, database.Unscoped().Order("created_at ASC").Find(&credentials).Error)
+	require.Len(t, credentials, 2)
+	assert.Equal(t, model.NodeCredentialStatusRevoked, credentials[0].Status)
+	assert.NotNil(t, credentials[0].RevokedAt)
+	assert.Equal(t, model.NodeCredentialStatusActive, credentials[1].Status)
+	assert.Nil(t, credentials[1].RevokedAt)
 }
 
 func TestPairingRequiresHTTPSExceptLoopback(t *testing.T) {

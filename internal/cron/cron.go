@@ -54,6 +54,12 @@ func InitCronJobs(ctx context.Context) {
 		logger.Fatalf("CleanExpiredAuthToken Err: %v\n", err)
 	}
 
+	// Initialize automatic node credential upgrade and rotation.
+	_, err = setupNodeCredentialMaintenanceJob(s)
+	if err != nil {
+		logger.Fatalf("NodeCredentialMaintenance Err: %v\n", err)
+	}
+
 	// Initialize auto backup jobs
 	err = setupAutoBackupJobs(s)
 	if err != nil {

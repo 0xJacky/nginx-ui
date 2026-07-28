@@ -10,6 +10,8 @@ func InitPublicRouter(r *gin.RouterGroup) {
 }
 
 func InitRouter(r *gin.RouterGroup) {
+	r.POST("node/pair/upgrade", UpgradeLegacyPairing)
+
 	// Node
 	r.GET("nodes", GetNodeList)
 	nodeGroup := r.Group("nodes")

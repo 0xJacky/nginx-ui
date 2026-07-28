@@ -1,9 +1,19 @@
 <script setup lang="ts">
+import nodeApi from '@/api/node'
 import SensitiveString from '@/components/SensitiveString'
 import useSystemSettingsStore from '../store'
 
 const systemSettingsStore = useSystemSettingsStore()
 const { data, errors } = storeToRefs(systemSettingsStore)
+const generatedPairingCode = ref('')
+const generatedPairingCodeExpiresAt = ref('')
+
+function createPairingCode() {
+  nodeApi.createPairingCode().then(result => {
+    generatedPairingCode.value = result.code
+    generatedPairingCodeExpiresAt.value = result.expires_at
+  })
+}
 </script>
 
 <template>
@@ -13,6 +23,11 @@ const { data, errors } = storeToRefs(systemSettingsStore)
     </AFormItem>
     <AFormItem :label="$gettext('Instance ID')">
       <AInput :value="data.node.instance_id" readonly />
+    </AFormItem>
+    <AFormItem :label="$gettext('Pair Node')">
+      <AButton @click="createPairingCode">
+        {{ $gettext('Generate Pairing Code') }}
+      </AButton>
     </AFormItem>
     <AFormItem :label="$gettext('Allow legacy node authentication')">
       <ASwitch v-model:checked="data.node.legacy_auth_enabled" />
@@ -79,6 +94,18 @@ const { data, errors } = storeToRefs(systemSettingsStore)
       />
     </AFormItem>
   </AForm>
+
+  <AModal
+    :open="Boolean(generatedPairingCode)"
+    :title="$gettext('One-time Pairing Code')"
+    :footer="null"
+    @cancel="generatedPairingCode = ''"
+  >
+    <ATypographyParagraph copyable>
+      {{ generatedPairingCode }}
+    </ATypographyParagraph>
+    <p>{{ $gettext('Expires at: %{time}', { time: generatedPairingCodeExpiresAt }) }}</p>
+  </AModal>
 </template>
 
 <style lang="less" scoped>

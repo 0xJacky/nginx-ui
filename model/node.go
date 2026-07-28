@@ -51,6 +51,7 @@ type NodeCredential struct {
 	PendingPublicKey            []byte     `json:"-"`
 	EncryptedPendingPrivateKey  []byte     `json:"-"`
 	Status                      string     `json:"status" gorm:"index;not null"`
+	RotatedAt                   *time.Time `json:"rotated_at,omitempty"`
 	LastUsedAt                  *time.Time `json:"last_used_at,omitempty"`
 	RevokedAt                   *time.Time `json:"revoked_at,omitempty" gorm:"index"`
 }

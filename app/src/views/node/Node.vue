@@ -13,11 +13,8 @@ const loadingFromSettings = ref(false)
 const loadingReload = ref(false)
 const loadingRestart = ref(false)
 const loadingPair = ref(false)
-const loadingRotate = ref(false)
 const pairModalVisible = ref(false)
 const pairingCode = ref('')
-const generatedPairingCode = ref('')
-const generatedPairingCodeExpiresAt = ref('')
 
 // Auto refresh logic
 const isAutoRefresh = ref(true)
@@ -113,6 +110,10 @@ function restartNginx() {
 }
 
 const selectedNode = computed(() => selectedNodes.value.length === 1 ? selectedNodes.value[0] : undefined)
+const selectedNodeNeedsPairing = computed(() => selectedNode.value
+  && (selectedNode.value.auth_method === 'legacy_secret'
+    || selectedNode.value.credential_status === 'unpaired'
+    || !selectedNode.value.has_credential))
 
 function openPairModal() {
   pairingCode.value = ''
@@ -130,26 +131,6 @@ function upgradeAuthentication() {
     curd.value.refresh()
   }).finally(() => {
     loadingPair.value = false
-  })
-}
-
-function rotateAuthentication() {
-  if (!selectedNode.value)
-    return
-
-  loadingRotate.value = true
-  nodeApi.rotateCredential(selectedNode.value.id).then(() => {
-    message.success($gettext('Node credential rotated successfully'))
-    curd.value.refresh()
-  }).finally(() => {
-    loadingRotate.value = false
-  })
-}
-
-function createPairingCode() {
-  nodeApi.createPairingCode().then(data => {
-    generatedPairingCode.value = data.code
-    generatedPairingCodeExpiresAt.value = data.expires_at
   })
 }
 
@@ -238,36 +219,14 @@ const inTrash = computed(() => {
       />
     </AModal>
 
-    <AModal
-      :open="Boolean(generatedPairingCode)"
-      :title="$gettext('One-time Pairing Code')"
-      :footer="null"
-      @cancel="generatedPairingCode = ''"
-    >
-      <ATypographyParagraph copyable>
-        {{ generatedPairingCode }}
-      </ATypographyParagraph>
-      <p>{{ $gettext('Expires at: %{time}', { time: generatedPairingCodeExpiresAt }) }}</p>
-    </AModal>
-
     <FooterToolBar v-if="!inTrash">
       <ASpace>
-        <AButton @click="createPairingCode">
-          {{ $gettext('Generate Pairing Code') }}
-        </AButton>
         <AButton
-          :disabled="!selectedNode || (selectedNode.auth_method === 'paired_ed25519' && selectedNode.credential_status !== 'unpaired')"
+          v-if="selectedNodeNeedsPairing"
           :loading="loadingPair"
           @click="openPairModal"
         >
           {{ selectedNode?.auth_method === 'legacy_secret' ? $gettext('Upgrade Authentication') : $gettext('Pair Node') }}
-        </AButton>
-        <AButton
-          :disabled="!selectedNode || selectedNode.auth_method !== 'paired_ed25519'"
-          :loading="loadingRotate"
-          @click="rotateAuthentication"
-        >
-          {{ $gettext('Rotate Credential') }}
         </AButton>
         <ATooltip
           v-if="selectedNodeIds.length === 0"
