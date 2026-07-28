@@ -171,4 +171,6 @@ If this option is not empty, Nginx UI will control the Nginx service running in 
 If you are using the official Nginx UI container and want to control Nginx in another container, you must map the host's docker.sock to the Nginx UI container.
 
 For example: `-v /var/run/docker.sock:/var/run/docker.sock`
+
+Nginx UI reads and writes Nginx configuration and log files through its own filesystem. Mount the same configuration and log directories at the same paths in both containers. The configuration mount must be writable in the Nginx UI container; it can remain read-only in the Nginx container. Mapping `docker.sock` and setting `ContainerName` only route status checks and control commands to the other container.
 :::

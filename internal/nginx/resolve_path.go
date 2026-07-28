@@ -164,32 +164,39 @@ func GetConfEntryPath() (path string) {
 // GetPIDPath returns the nginx master process PID file path.
 // Resolution order:
 //  1. User override via settings (PIDPath)
-//  2. Compile-time default from `nginx -V --pid-path=...`
-//  3. Runtime override from `nginx -T` pid directive (handles nginx-unprivileged etc.)
+//  2. Runtime override from `nginx -T` for external containers
+//  3. Compile-time default from `nginx -V --pid-path=...`
 //  4. Probing common candidate paths (Docker-aware)
 func GetPIDPath() (path string) {
 	if settings.NginxSettings.PIDPath != "" {
 		return resolvePath(settings.NginxSettings.PIDPath)
 	}
 
+	isExternalContainer := settings.NginxSettings.RunningInAnotherContainer()
+	if isExternalContainer {
+		// The running configuration is authoritative. Images such as
+		// nginx-unprivileged override the compiled /run/nginx.pid default with
+		// a writable path such as /tmp/nginx.pid.
+		if runtimePath := getPIDPathFromNginxT(); runtimePath != "" {
+			return resolvePath(runtimePath)
+		}
+	}
+
 	// Try compile-time default from nginx -V
 	out := getNginxV()
 	path = extractConfigureArg(out, "--pid-path")
 
-	// When running in another container, verify the path actually exists there.
-	// Docker images like nginx-unprivileged override the compile-time pid-path
-	// at runtime via the "pid" directive in nginx.conf (e.g., pid /tmp/nginx.pid).
-	if path != "" && settings.NginxSettings.RunningInAnotherContainer() {
+	// If the runtime configuration could not be read, only retain the compiled
+	// default when it exists in the external container.
+	if path != "" && isExternalContainer {
 		if !docker.StatPath(path) {
-			logger.Debug("GetPIDPath: compile-time pid-path not found in container, trying nginx -T", "path", path)
-			if tPath := getPIDPathFromNginxT(); tPath != "" {
-				return resolvePath(tPath)
-			}
+			logger.Debug("GetPIDPath: compile-time pid-path not found in container", "path", path)
+			path = ""
 		}
 	}
 
-	// If nginx -V didn't provide a path, try nginx -T
-	if path == "" {
+	// For local Nginx, try the runtime directive when nginx -V has no default.
+	if path == "" && !isExternalContainer {
 		path = getPIDPathFromNginxT()
 	}
 
@@ -202,7 +209,7 @@ func GetPIDPath() (path string) {
 		}
 
 		for _, c := range candidates {
-			if settings.NginxSettings.RunningInAnotherContainer() {
+			if isExternalContainer {
 				if docker.StatPath(c) {
 					logger.Debug("GetPIDPath fallback hit (docker)", "path", c)
 					path = c
