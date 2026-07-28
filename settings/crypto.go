@@ -3,7 +3,7 @@ package settings
 import "crypto/md5"
 
 type Crypto struct {
-	Secret string `json:"secret"`
+	Secret string `json:"secret" protected:"true" sensitive:"true"`
 }
 
 var CryptoSettings = &Crypto{}

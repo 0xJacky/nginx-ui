@@ -1,9 +1,8 @@
 package backup
 
 import (
-	"archive/zip"
+	"errors"
 	"fmt"
-	"io"
 	"os"
 	"path/filepath"
 	"strings"
@@ -14,6 +13,7 @@ import (
 	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 	cosysettings "github.com/uozi-tech/cosy/settings"
+	"gopkg.in/ini.v1"
 )
 
 // RestoreResult contains the results of a restore operation
@@ -22,6 +22,8 @@ type RestoreResult struct {
 	NginxUIRestored bool
 	NginxRestored   bool
 	HashMatch       bool
+	TrustLevel      ManifestTrust
+	SkippedSettings []string
 }
 
 // RestoreOptions contains options for restore operation
@@ -50,40 +52,9 @@ func Restore(options RestoreOptions) (RestoreResult, error) {
 	nginxUIZipPath := filepath.Join(options.RestoreDir, NginxUIZipName)
 	nginxZipPath := filepath.Join(options.RestoreDir, NginxZipName)
 
-	if err := verifyBackupManifest(options.RestoreDir, options.AESKey); err != nil {
+	trustLevel, err := verifyBackupManifest(options.RestoreDir, options.AESKey)
+	if err != nil {
 		return RestoreResult{}, err
-	}
-
-	// Decrypt nginx-ui.zip
-	if err := decryptFile(nginxUIZipPath, options.AESKey, options.AESIv); err != nil {
-		return RestoreResult{}, cosy.WrapErrorWithParams(ErrDecryptNginxUIDir, err.Error())
-	}
-
-	// Decrypt nginx.zip
-	if err := decryptFile(nginxZipPath, options.AESKey, options.AESIv); err != nil {
-		return RestoreResult{}, cosy.WrapErrorWithParams(ErrDecryptNginxDir, err.Error())
-	}
-
-	// Extract zip files to subdirectories
-	nginxUIDir := filepath.Join(options.RestoreDir, NginxUIDir)
-	nginxDir := filepath.Join(options.RestoreDir, NginxDir)
-
-	if err := os.MkdirAll(nginxUIDir, 0755); err != nil {
-		return RestoreResult{}, cosy.WrapErrorWithParams(ErrCreateDir, err.Error())
-	}
-
-	if err := os.MkdirAll(nginxDir, 0755); err != nil {
-		return RestoreResult{}, cosy.WrapErrorWithParams(ErrCreateDir, err.Error())
-	}
-
-	// Extract nginx-ui.zip to nginx-ui directory
-	if err := extractZipArchive(nginxUIZipPath, nginxUIDir); err != nil {
-		return RestoreResult{}, cosy.WrapErrorWithParams(ErrExtractArchive, err.Error())
-	}
-
-	// Extract nginx.zip to nginx directory
-	if err := extractZipArchive(nginxZipPath, nginxDir); err != nil {
-		return RestoreResult{}, cosy.WrapErrorWithParams(ErrExtractArchive, err.Error())
 	}
 
 	result := RestoreResult{
@@ -91,245 +62,146 @@ func Restore(options RestoreOptions) (RestoreResult, error) {
 		NginxUIRestored: false,
 		NginxRestored:   false,
 		HashMatch:       true,
+		TrustLevel:      trustLevel,
 	}
 
-	// Restore nginx configs if requested
+	nginxUIDir := filepath.Join(options.RestoreDir, NginxUIDir)
+	nginxDir := filepath.Join(options.RestoreDir, NginxDir)
+
+	if options.RestoreNginxUI {
+		if err := decryptFile(nginxUIZipPath, options.AESKey, options.AESIv); err != nil {
+			return result, cosy.WrapErrorWithParams(ErrDecryptNginxUIDir, err.Error())
+		}
+		if err := os.MkdirAll(nginxUIDir, 0o755); err != nil {
+			return result, cosy.WrapErrorWithParams(ErrCreateDir, err.Error())
+		}
+		if err := extractZipArchive(nginxUIZipPath, nginxUIDir); err != nil {
+			return result, cosy.WrapErrorWithParams(ErrExtractArchive, err.Error())
+		}
+	}
+
 	if options.RestoreNginx {
-		if err := restoreNginxConfigs(nginxDir); err != nil {
+		if err := decryptFile(nginxZipPath, options.AESKey, options.AESIv); err != nil {
+			return result, cosy.WrapErrorWithParams(ErrDecryptNginxDir, err.Error())
+		}
+		if err := os.MkdirAll(nginxDir, 0o755); err != nil {
+			return result, cosy.WrapErrorWithParams(ErrCreateDir, err.Error())
+		}
+		if err := extractNginxZipArchive(nginxZipPath, nginxDir, nginx.GetConfPath(), nginx.GetModulesPath()); err != nil {
+			return result, cosy.WrapErrorWithParams(ErrExtractArchive, err.Error())
+		}
+	}
+
+	var nginxPlan *stagedNginxRestore
+	var nginxUIPlan *stagedNginxUIRestore
+	if options.RestoreNginx {
+		nginxPlan, err = prepareNginxConfigs(nginxDir)
+		if err != nil {
 			return result, cosy.WrapErrorWithParams(ErrRestoreNginxConfigs, err.Error())
 		}
-		result.NginxRestored = true
+		defer nginxPlan.Cleanup()
 	}
-
-	// Restore nginx-ui config if requested
 	if options.RestoreNginxUI {
-		if err := restoreNginxUIConfig(nginxUIDir); err != nil {
+		nginxUIPlan, err = prepareNginxUIConfig(nginxUIDir, trustLevel)
+		if err != nil {
 			return result, cosy.WrapErrorWithParams(ErrBackupNginxUI, err.Error())
 		}
+		defer nginxUIPlan.Cleanup()
+	}
+
+	// Every selected tree has now been extracted, validated, and staged. Keep
+	// rollback snapshots for each live target until all replacements succeed.
+	var applied []appliedReplacement
+	rollback := func(cause error) error {
+		rollbackErrors := []error{cause}
+		for index := len(applied) - 1; index >= 0; index-- {
+			if rollbackErr := applied[index].Rollback(); rollbackErr != nil {
+				rollbackErrors = append(rollbackErrors, rollbackErr)
+			}
+		}
+		return errors.Join(rollbackErrors...)
+	}
+	if nginxPlan != nil {
+		change, applyErr := nginxPlan.Apply()
+		if applyErr != nil {
+			return result, cosy.WrapErrorWithParams(ErrRestoreNginxConfigs, rollback(applyErr).Error())
+		}
+		applied = append(applied, change)
+	}
+	if nginxUIPlan != nil {
+		change, applyErr := nginxUIPlan.Apply()
+		if applyErr != nil {
+			return result, cosy.WrapErrorWithParams(ErrBackupNginxUI, rollback(applyErr).Error())
+		}
+		applied = append(applied, change)
+	}
+	for _, change := range applied {
+		if commitErr := change.Commit(); commitErr != nil {
+			logger.Warn("Clean restore rollback snapshot: ", commitErr)
+		}
+	}
+
+	if nginxPlan != nil {
+		result.NginxRestored = true
+	}
+	if nginxUIPlan != nil {
 		result.NginxUIRestored = true
+		result.SkippedSettings = nginxUIPlan.skippedSettings
 	}
 
 	return result, nil
 }
 
-// extractZipArchive extracts a zip archive to the specified directory
-func extractZipArchive(zipPath, destDir string) error {
-	reader, err := zip.OpenReader(zipPath)
-	if err != nil {
-		return cosy.WrapErrorWithParams(ErrOpenZipFile, fmt.Sprintf("failed to open zip file %s: %v", zipPath, err))
-	}
-	defer reader.Close()
-
-	for _, file := range reader.File {
-		err := extractZipFile(file, destDir)
-		if err != nil {
-			return cosy.WrapErrorWithParams(ErrExtractArchive, fmt.Sprintf("failed to extract file %s: %v", file.Name, err))
-		}
-	}
-
-	return nil
+type stagedNginxRestore struct {
+	candidate   string
+	destination string
+	stageRoot   string
 }
 
-// extractZipFile extracts a single file from a zip archive
-func extractZipFile(file *zip.File, destDir string) error {
-	// Check for directory traversal elements in the file name
-	if strings.Contains(file.Name, "..") {
-		return cosy.WrapErrorWithParams(ErrInvalidFilePath, fmt.Sprintf("file name contains directory traversal: %s", file.Name))
+func prepareNginxConfigs(nginxBackupDir string) (*stagedNginxRestore, error) {
+	destination := nginx.GetConfPath()
+	if destination == "" {
+		return nil, ErrNginxConfigDirEmpty
 	}
-
-	// Clean and normalize the file path
-	cleanName := filepath.Clean(file.Name)
-	if cleanName == "." || cleanName == ".." {
-		return cosy.WrapErrorWithParams(ErrInvalidFilePath, fmt.Sprintf("invalid file name after cleaning: %s", file.Name))
-	}
-
-	// Create directory path if needed
-	filePath := filepath.Join(destDir, cleanName)
-
-	// Ensure the resulting file path is within the destination directory
-	destDirAbs, err := filepath.Abs(destDir)
+	stageRoot, err := os.MkdirTemp(filepath.Dir(destination), ".nginx-ui-nginx-stage-*")
 	if err != nil {
-		return cosy.WrapErrorWithParams(ErrInvalidFilePath, fmt.Sprintf("cannot resolve destination path %s: %v", destDir, err))
+		return nil, err
 	}
-
-	filePathAbs, err := filepath.Abs(filePath)
-	if err != nil {
-		return cosy.WrapErrorWithParams(ErrInvalidFilePath, fmt.Sprintf("cannot resolve file path %s: %v", filePath, err))
+	plan := &stagedNginxRestore{
+		candidate:   filepath.Join(stageRoot, "candidate"),
+		destination: destination,
+		stageRoot:   stageRoot,
 	}
-
-	// Check if the file path is within the destination directory
-	if !strings.HasPrefix(filePathAbs, destDirAbs+string(os.PathSeparator)) {
-		return cosy.WrapErrorWithParams(ErrInvalidFilePath, fmt.Sprintf("file path %s is outside destination directory %s", filePathAbs, destDirAbs))
+	if err := copyDirectory(nginxBackupDir, plan.candidate); err != nil {
+		plan.Cleanup()
+		return nil, err
 	}
+	return plan, nil
+}
 
-	if file.FileInfo().IsDir() {
-		if err := os.MkdirAll(filePath, file.Mode()); err != nil {
-			return cosy.WrapErrorWithParams(ErrCreateDir, fmt.Sprintf("failed to create directory %s: %v", filePath, err))
-		}
-		return nil
+func (plan *stagedNginxRestore) Apply() (appliedReplacement, error) {
+	logger.Infof("Starting Nginx config restore to %s", plan.destination)
+	return applyDirectoryWithRollback(plan.candidate, plan.destination)
+}
+
+func (plan *stagedNginxRestore) Cleanup() {
+	if plan != nil {
+		_ = os.RemoveAll(plan.stageRoot)
 	}
-
-	// Create parent directory if needed
-	parentDir := filepath.Dir(filePath)
-	if err := os.MkdirAll(parentDir, 0755); err != nil {
-		return cosy.WrapErrorWithParams(ErrCreateParentDir, fmt.Sprintf("failed to create parent directory %s: %v", parentDir, err))
-	}
-
-	// Check if this is a symlink by examining mode bits
-	if file.Mode()&os.ModeSymlink != 0 {
-		// Open source file in zip to read the link target
-		srcFile, err := file.Open()
-		if err != nil {
-			return cosy.WrapErrorWithParams(ErrOpenZipEntry, fmt.Sprintf("failed to open symlink source %s: %v", file.Name, err))
-		}
-		defer srcFile.Close()
-
-		// Read the link target
-		linkTargetBytes, err := io.ReadAll(srcFile)
-		if err != nil {
-			return cosy.WrapErrorWithParams(ErrReadSymlink, fmt.Sprintf("failed to read symlink target for %s: %v", file.Name, err))
-		}
-		linkTarget := string(linkTargetBytes)
-
-		// Clean and normalize the link target
-		cleanLinkTarget := filepath.Clean(linkTarget)
-		if cleanLinkTarget == "." || cleanLinkTarget == ".." {
-			return cosy.WrapErrorWithParams(ErrInvalidFilePath, fmt.Sprintf("invalid symlink target: %s", linkTarget))
-		}
-
-		// Get allowed paths for symlinks
-		confPath := nginx.GetConfPath()
-		modulesPath := nginx.GetModulesPath()
-
-		// Check if symlink target is to an allowed path (conf path or modules path)
-		isAllowedSymlink := false
-
-		// Check if link points to modules path
-		if filepath.IsAbs(cleanLinkTarget) && (cleanLinkTarget == modulesPath || strings.HasPrefix(cleanLinkTarget, modulesPath+string(filepath.Separator))) {
-			isAllowedSymlink = true
-		}
-
-		// Check if link points to nginx conf path
-		if filepath.IsAbs(cleanLinkTarget) && (cleanLinkTarget == confPath || strings.HasPrefix(cleanLinkTarget, confPath+string(filepath.Separator))) {
-			isAllowedSymlink = true
-		}
-
-		// Handle absolute paths
-		if filepath.IsAbs(cleanLinkTarget) {
-			// Remove any existing file/link at the target path
-			if err := os.RemoveAll(filePath); err != nil && !os.IsNotExist(err) {
-				// Ignoring error, continue creating symlink
-			}
-
-			// If this is a symlink to an allowed path, create it
-			if isAllowedSymlink {
-				if err := os.Symlink(cleanLinkTarget, filePath); err != nil {
-					return cosy.WrapErrorWithParams(ErrCreateSymlink, fmt.Sprintf("failed to create symlink %s -> %s: %v", filePath, cleanLinkTarget, err))
-				}
-				return nil
-			}
-
-			// Skip symlinks that point to paths outside the allowed directories
-			logger.Warn("Skipping symlink outside allowed paths during restore",
-				"path", filePath,
-				"target", cleanLinkTarget,
-				"allowedConfPath", confPath,
-				"allowedModulesPath", modulesPath)
-			return nil
-		}
-
-		// For relative symlinks, verify they don't escape the destination directory
-		absLinkTarget := filepath.Clean(filepath.Join(filepath.Dir(filePath), cleanLinkTarget))
-		if !strings.HasPrefix(absLinkTarget, destDirAbs+string(os.PathSeparator)) {
-			// Skip relative symlinks that point outside the destination directory
-			logger.Warn("Skipping relative symlink pointing outside destination directory during restore",
-				"path", filePath,
-				"target", cleanLinkTarget,
-				"resolvedTarget", absLinkTarget,
-				"destinationDir", destDirAbs)
-			return nil
-		}
-
-		// Remove any existing file/link at the target path
-		if err := os.RemoveAll(filePath); err != nil && !os.IsNotExist(err) {
-			// Ignoring error, continue creating symlink
-		}
-
-		// Create the symlink for relative paths within destination
-		if err := os.Symlink(cleanLinkTarget, filePath); err != nil {
-			return cosy.WrapErrorWithParams(ErrCreateSymlink, fmt.Sprintf("failed to create symlink %s -> %s: %v", filePath, cleanLinkTarget, err))
-		}
-
-		// Verify the resolved symlink path is within destination directory
-		resolvedPath, err := filepath.EvalSymlinks(filePath)
-		if err != nil {
-			// If we can't resolve the symlink, it's not a critical error
-			// Just continue
-			return nil
-		}
-
-		resolvedPathAbs, err := filepath.Abs(resolvedPath)
-		if err != nil {
-			// Not a critical error, continue
-			return nil
-		}
-
-		if !strings.HasPrefix(resolvedPathAbs, destDirAbs+string(os.PathSeparator)) {
-			// Remove the symlink if it points outside the destination directory
-			_ = os.Remove(filePath)
-			return cosy.WrapErrorWithParams(ErrInvalidFilePath, fmt.Sprintf("resolved symlink path %s is outside destination directory %s", resolvedPathAbs, destDirAbs))
-		}
-
-		return nil
-	}
-
-	// Create file
-	destFile, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, file.Mode())
-	if err != nil {
-		return cosy.WrapErrorWithParams(ErrCreateFile, fmt.Sprintf("failed to create file %s: %v", filePath, err))
-	}
-	defer destFile.Close()
-
-	// Open source file in zip
-	srcFile, err := file.Open()
-	if err != nil {
-		return cosy.WrapErrorWithParams(ErrOpenZipEntry, fmt.Sprintf("failed to open zip entry %s: %v", file.Name, err))
-	}
-	defer srcFile.Close()
-
-	// Copy content
-	if _, err := io.Copy(destFile, srcFile); err != nil {
-		return cosy.WrapErrorWithParams(ErrCopyContent, fmt.Sprintf("failed to copy content for file %s: %v", file.Name, err))
-	}
-
-	return nil
 }
 
 // restoreNginxConfigs restores nginx configuration files
 func restoreNginxConfigs(nginxBackupDir string) error {
-	destDir := nginx.GetConfPath()
-	if destDir == "" {
-		return ErrNginxConfigDirEmpty
-	}
-
-	logger.Infof("Starting Nginx config restore from %s to %s", nginxBackupDir, destDir)
-
-	// Recursively clean destination directory preserving the directory structure
-	logger.Info("Cleaning destination directory before restore")
-	if err := cleanDirectoryPreservingStructure(destDir); err != nil {
-		logger.Errorf("Failed to clean directory %s: %v", destDir, err)
-		return cosy.WrapErrorWithParams(ErrCopyNginxConfigDir, "failed to clean directory: "+err.Error())
-	}
-
-	// Copy files from backup to nginx config directory
-	logger.Infof("Copying backup files to destination: %s", destDir)
-	if err := copyDirectory(nginxBackupDir, destDir); err != nil {
-		logger.Errorf("Failed to copy backup files: %v", err)
+	plan, err := prepareNginxConfigs(nginxBackupDir)
+	if err != nil {
 		return err
 	}
-
-	logger.Info("Nginx config restore completed successfully")
-	return nil
+	defer plan.Cleanup()
+	applied, err := plan.Apply()
+	if err != nil {
+		return err
+	}
+	return applied.Commit()
 }
 
 // cleanDirectoryPreservingStructure removes all files and subdirectories in a directory
@@ -448,38 +320,111 @@ func clearDirectoryContents(dir string) error {
 		path := filepath.Join(dir, entry.Name())
 
 		if err := removeOrClearPath(path, entry.IsDir()); err != nil {
-			logger.Warnf("Failed to clear %s: %v, continuing", path, err)
+			return fmt.Errorf("clear %s: %w", path, err)
 		}
 	}
 
 	return nil
 }
 
-// restoreNginxUIConfig restores nginx-ui configuration files
-func restoreNginxUIConfig(nginxUIBackupDir string) error {
+type stagedNginxUIRestore struct {
+	replacements    []stagedFileReplacement
+	removals        []string
+	skippedSettings []string
+}
+
+func (plan *stagedNginxUIRestore) Apply() (appliedReplacement, error) {
+	return applyFilesWithRollback(plan.replacements, plan.removals)
+}
+
+func (plan *stagedNginxUIRestore) Cleanup() {
+	if plan == nil {
+		return
+	}
+	for _, replacement := range plan.replacements {
+		_ = os.Remove(replacement.staged)
+	}
+}
+
+func prepareNginxUIConfig(nginxUIBackupDir string, trustLevel ManifestTrust) (*stagedNginxUIRestore, error) {
 	// Get config directory
 	configDir := filepath.Dir(cosysettings.ConfPath)
 	if configDir == "" {
-		return ErrConfigPathEmpty
+		return nil, ErrConfigPathEmpty
 	}
 
-	// Restore app.ini to the configured location
 	srcConfigPath := filepath.Join(nginxUIBackupDir, "app.ini")
-	if err := copyFile(srcConfigPath, cosysettings.ConfPath); err != nil {
-		return err
+	preserveProtected := trustLevel == ManifestTrustPortable
+	configContent, skippedSettings, err := settings.BuildRestoreConfig(srcConfigPath, cosysettings.ConfPath, preserveProtected)
+	if err != nil {
+		return nil, err
+	}
+	stagedConfig, err := stageBytes(cosysettings.ConfPath, configContent, 0o600)
+	if err != nil {
+		return nil, err
+	}
+	plan := &stagedNginxUIRestore{
+		replacements:    []stagedFileReplacement{{destination: cosysettings.ConfPath, staged: stagedConfig}},
+		skippedSettings: skippedSettings,
+	}
+	fail := func(cause error) (*stagedNginxUIRestore, error) {
+		plan.Cleanup()
+		return nil, cause
 	}
 
-	// Restore database file if exists
-	dbName := settings.DatabaseSettings.GetName()
+	dbName, err := restoredDatabaseName(configContent)
+	if err != nil {
+		return fail(err)
+	}
 	srcDBPath := filepath.Join(nginxUIBackupDir, dbName+".db")
 	destDBPath := filepath.Join(configDir, dbName+".db")
 
-	// Only attempt to copy if database file exists in backup
+	plan.removals = []string{destDBPath + "-wal", destDBPath + "-shm"}
 	if _, err := os.Stat(srcDBPath); err == nil {
-		if err := copyFile(srcDBPath, destDBPath); err != nil {
-			return err
+		stagedDatabase, err := stageFile(srcDBPath, destDBPath, 0o600)
+		if err != nil {
+			return fail(err)
 		}
+		plan.replacements = append(plan.replacements, stagedFileReplacement{destination: destDBPath, staged: stagedDatabase})
+		if preserveProtected {
+			if err := invalidatePortableCredentials(stagedDatabase); err != nil {
+				return fail(err)
+			}
+		}
+		if err := validateSQLiteDatabase(stagedDatabase); err != nil {
+			return fail(err)
+		}
+	} else if !os.IsNotExist(err) {
+		return fail(err)
 	}
+	return plan, nil
+}
 
-	return nil
+// restoreNginxUIConfig restores nginx-ui configuration files.
+func restoreNginxUIConfig(nginxUIBackupDir string, trustLevel ManifestTrust) ([]string, error) {
+	plan, err := prepareNginxUIConfig(nginxUIBackupDir, trustLevel)
+	if err != nil {
+		return nil, err
+	}
+	defer plan.Cleanup()
+	applied, err := plan.Apply()
+	if err != nil {
+		return nil, err
+	}
+	if err := applied.Commit(); err != nil {
+		return nil, err
+	}
+	return plan.skippedSettings, nil
+}
+
+func restoredDatabaseName(configContent []byte) (string, error) {
+	config, err := ini.Load(configContent)
+	if err != nil {
+		return "", err
+	}
+	var databaseSettings settings.Database
+	if err := config.Section("database").StrictMapTo(&databaseSettings); err != nil {
+		return "", fmt.Errorf("parse restored database settings: %w", err)
+	}
+	return databaseSettings.GetName(), nil
 }

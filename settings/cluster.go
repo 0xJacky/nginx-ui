@@ -3,7 +3,7 @@ package settings
 import "github.com/uozi-tech/cosy/settings"
 
 type Cluster struct {
-	Node []string `json:"node" ini:",,allowshadow"`
+	Node []string `json:"node" ini:",,allowshadow" protected:"true" sensitive:"true"`
 }
 
 var ClusterSettings = &Cluster{

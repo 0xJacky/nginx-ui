@@ -17,7 +17,7 @@ import (
 const (
 	ManifestFile          = "manifest.json"
 	ManifestSignatureFile = "manifest.sig"
-	manifestSchemaVersion = 1
+	manifestSchemaVersion = 2
 	manifestKeyContext    = "nginx-ui-backup-signing-v1:"
 )
 
@@ -34,6 +34,18 @@ type ManifestEntry struct {
 	Name   string `json:"name"`
 	SHA256 string `json:"sha256"`
 	Size   int64  `json:"size"`
+}
+
+type ManifestTrust string
+
+const (
+	ManifestTrustCurrentServer ManifestTrust = "current_server"
+	ManifestTrustPortable      ManifestTrust = "portable"
+)
+
+type manifestSignatures struct {
+	ServerHMACSHA256   string `json:"server_hmac_sha256"`
+	PortableHMACSHA256 string `json:"portable_hmac_sha256"`
 }
 
 func newManifest(createdAt, version string, files []ManifestEntry) Manifest {
@@ -56,69 +68,85 @@ func writeManifestFiles(baseDir string, manifest Manifest, aesKey []byte) error 
 		return cosy.WrapErrorWithParams(ErrCreateManifest, err.Error())
 	}
 
-	signingKey, err := deriveBackupSigningKeyFromAESKey(aesKey)
+	serverSigningKey, err := deriveBackupSigningKey()
 	if err != nil {
 		return err
 	}
-
-	signature := signManifest(manifestBytes, signingKey)
+	portableSigningKey, err := deriveBackupSigningKeyFromAESKey(aesKey)
+	if err != nil {
+		return err
+	}
+	signatureBytes, err := json.Marshal(manifestSignatures{
+		ServerHMACSHA256:   signManifest(manifestBytes, serverSigningKey),
+		PortableHMACSHA256: signManifest(manifestBytes, portableSigningKey),
+	})
+	if err != nil {
+		return cosy.WrapErrorWithParams(ErrCreateManifestSig, err.Error())
+	}
 
 	if err := os.WriteFile(filepath.Join(baseDir, ManifestFile), manifestBytes, 0644); err != nil {
 		return cosy.WrapErrorWithParams(ErrCreateManifest, err.Error())
 	}
 
-	if err := os.WriteFile(filepath.Join(baseDir, ManifestSignatureFile), []byte(signature), 0644); err != nil {
+	if err := os.WriteFile(filepath.Join(baseDir, ManifestSignatureFile), signatureBytes, 0644); err != nil {
 		return cosy.WrapErrorWithParams(ErrCreateManifestSig, err.Error())
 	}
 
 	return nil
 }
 
-func verifyBackupManifest(baseDir string, aesKey []byte) error {
+func verifyBackupManifest(baseDir string, aesKey []byte) (ManifestTrust, error) {
 	manifest, manifestBytes, signature, err := loadManifest(baseDir)
 	if err != nil {
-		return err
+		return "", err
 	}
 
-	if err := verifyManifestSignatureWithFallback(manifestBytes, signature, aesKey); err != nil {
-		return err
+	trust, err := verifyManifestSignatureWithFallback(manifest, manifestBytes, signature, aesKey)
+	if err != nil {
+		return "", err
 	}
 
 	filesByName := make(map[string]ManifestEntry, len(manifest.Files))
 	for _, file := range manifest.Files {
+		if file.Name != NginxUIZipName && file.Name != NginxZipName {
+			return "", cosy.WrapErrorWithParams(ErrInvalidManifest, "unexpected file entry: "+file.Name)
+		}
+		if _, exists := filesByName[file.Name]; exists {
+			return "", cosy.WrapErrorWithParams(ErrInvalidManifest, "duplicate file entry: "+file.Name)
+		}
 		filesByName[file.Name] = file
 	}
 
 	for _, fileName := range requiredManifestFiles {
 		entry, ok := filesByName[fileName]
 		if !ok {
-			return cosy.WrapErrorWithParams(ErrMissingManifest, fileName)
+			return "", cosy.WrapErrorWithParams(ErrMissingManifest, fileName)
 		}
 
 		filePath := filepath.Join(baseDir, fileName)
 		stat, err := os.Stat(filePath)
 		if err != nil {
 			if os.IsNotExist(err) {
-				return cosy.WrapErrorWithParams(ErrMissingManifest, fileName)
+				return "", cosy.WrapErrorWithParams(ErrMissingManifest, fileName)
 			}
-			return cosy.WrapErrorWithParams(ErrBackupIntegrity, err.Error())
+			return "", cosy.WrapErrorWithParams(ErrBackupIntegrity, err.Error())
 		}
 
-		if stat.Size() != entry.Size {
-			return ErrBackupIntegrity
+		if !stat.Mode().IsRegular() || stat.Size() != entry.Size {
+			return "", ErrBackupIntegrity
 		}
 
 		fileHash, err := calculateFileHash(filePath)
 		if err != nil {
-			return cosy.WrapErrorWithParams(ErrBackupIntegrity, err.Error())
+			return "", cosy.WrapErrorWithParams(ErrBackupIntegrity, err.Error())
 		}
 
 		if fileHash != entry.SHA256 {
-			return ErrBackupIntegrity
+			return "", ErrBackupIntegrity
 		}
 	}
 
-	return nil
+	return trust, nil
 }
 
 func loadManifest(baseDir string) (Manifest, []byte, string, error) {
@@ -146,7 +174,7 @@ func loadManifest(baseDir string) (Manifest, []byte, string, error) {
 		return Manifest{}, nil, "", cosy.WrapErrorWithParams(ErrInvalidManifest, err.Error())
 	}
 
-	if manifest.Schema != manifestSchemaVersion {
+	if manifest.Schema != 1 && manifest.Schema != manifestSchemaVersion {
 		return Manifest{}, nil, "", cosy.WrapErrorWithParams(ErrInvalidManifest, "unsupported schema version")
 	}
 
@@ -178,18 +206,33 @@ func signManifest(manifestBytes []byte, signingKey []byte) string {
 	return hex.EncodeToString(mac.Sum(nil))
 }
 
-func verifyManifestSignatureWithFallback(manifestBytes []byte, signature string, aesKey []byte) error {
-	aesSigningKey, err := deriveBackupSigningKeyFromAESKey(aesKey)
-	if err == nil && verifyManifestSignature(manifestBytes, signature, aesSigningKey) == nil {
-		return nil
+func verifyManifestSignatureWithFallback(manifest Manifest, manifestBytes []byte, signature string, aesKey []byte) (ManifestTrust, error) {
+	serverSigningKey, serverKeyErr := deriveBackupSigningKey()
+	portableSigningKey, portableKeyErr := deriveBackupSigningKeyFromAESKey(aesKey)
+
+	if manifest.Schema == manifestSchemaVersion {
+		var signatures manifestSignatures
+		if err := json.Unmarshal([]byte(signature), &signatures); err != nil {
+			return "", ErrInvalidManifestSig
+		}
+		if serverKeyErr == nil && verifyManifestSignature(manifestBytes, signatures.ServerHMACSHA256, serverSigningKey) == nil {
+			return ManifestTrustCurrentServer, nil
+		}
+		if portableKeyErr == nil && verifyManifestSignature(manifestBytes, signatures.PortableHMACSHA256, portableSigningKey) == nil {
+			return ManifestTrustPortable, nil
+		}
+		return "", ErrInvalidManifestSig
 	}
 
-	legacySigningKey, err := deriveBackupSigningKey()
-	if err == nil && verifyManifestSignature(manifestBytes, signature, legacySigningKey) == nil {
-		return nil
+	// Schema v1 used a single raw HMAC. AES-derived signatures are portable;
+	// server-secret signatures are authoritative for the current installation.
+	if portableKeyErr == nil && verifyManifestSignature(manifestBytes, signature, portableSigningKey) == nil {
+		return ManifestTrustPortable, nil
 	}
-
-	return ErrInvalidManifestSig
+	if serverKeyErr == nil && verifyManifestSignature(manifestBytes, signature, serverSigningKey) == nil {
+		return ManifestTrustCurrentServer, nil
+	}
+	return "", ErrInvalidManifestSig
 }
 
 func verifyManifestSignature(manifestBytes []byte, signature string, signingKey []byte) error {

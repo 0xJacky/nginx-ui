@@ -18,9 +18,11 @@ import (
 
 // RestoreResponse contains the response data for restore operation
 type RestoreResponse struct {
-	NginxUIRestored bool `json:"nginx_ui_restored"`
-	NginxRestored   bool `json:"nginx_restored"`
-	HashMatch       bool `json:"hash_match"`
+	NginxUIRestored bool                 `json:"nginx_ui_restored"`
+	NginxRestored   bool                 `json:"nginx_restored"`
+	HashMatch       bool                 `json:"hash_match"`
+	TrustLevel      backup.ManifestTrust `json:"trust_level"`
+	SkippedSettings []string             `json:"skipped_protected_settings"`
 }
 
 func uploadedBackupPath(tempDir string) string {
@@ -141,5 +143,7 @@ func RestoreBackup(c *gin.Context) {
 		NginxUIRestored: result.NginxUIRestored,
 		NginxRestored:   result.NginxRestored,
 		HashMatch:       result.HashMatch,
+		TrustLevel:      result.TrustLevel,
+		SkippedSettings: result.SkippedSettings,
 	})
 }

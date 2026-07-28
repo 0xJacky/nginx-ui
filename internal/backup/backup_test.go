@@ -1,6 +1,7 @@
 package backup
 
 import (
+	"encoding/json"
 	"os"
 	"path/filepath"
 	"testing"
@@ -9,6 +10,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	cosylogger "github.com/uozi-tech/cosy/logger"
 	cosysettings "github.com/uozi-tech/cosy/settings"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
 )
 
 func init() {
@@ -110,9 +113,13 @@ func TestBackupAndRestore(t *testing.T) {
 	dbName := settings.DatabaseSettings.GetName()
 	dbFile := dbName + ".db"
 	dbPath := filepath.Join(tempDir, dbFile)
-	testDB := []byte("CREATE TABLE users (id INT, name TEXT);")
-	err = os.WriteFile(dbPath, testDB, 0644)
+	testDatabase, err := gorm.Open(sqlite.Open(dbPath), &gorm.Config{})
 	assert.NoError(t, err)
+	err = testDatabase.Exec("CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT)").Error
+	assert.NoError(t, err)
+	sqlDatabase, err := testDatabase.DB()
+	assert.NoError(t, err)
+	assert.NoError(t, sqlDatabase.Close())
 
 	// Create nginx directory
 	nginxConfigDir := filepath.Join(tempDir, "nginx")
@@ -599,6 +606,7 @@ func TestRestoreSucceedsWhenCryptoSecretChanges(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, restoreDir, result.RestoreDir)
 	assert.True(t, result.HashMatch, "Hash verification should pass even if crypto secret changed")
+	assert.Equal(t, ManifestTrustPortable, result.TrustLevel)
 }
 
 func TestRestoreAcceptsLegacyManifestSignature(t *testing.T) {
@@ -648,6 +656,14 @@ func TestRestoreAcceptsLegacyManifestSignature(t *testing.T) {
 
 	manifestBytes, err := os.ReadFile(filepath.Join(extractedDir, ManifestFile))
 	assert.NoError(t, err)
+	var legacyManifest Manifest
+	err = json.Unmarshal(manifestBytes, &legacyManifest)
+	assert.NoError(t, err)
+	legacyManifest.Schema = 1
+	manifestBytes, err = json.Marshal(legacyManifest)
+	assert.NoError(t, err)
+	err = os.WriteFile(filepath.Join(extractedDir, ManifestFile), manifestBytes, 0o644)
+	assert.NoError(t, err)
 	legacySigningKey, err := deriveBackupSigningKey()
 	assert.NoError(t, err)
 	err = os.WriteFile(filepath.Join(extractedDir, ManifestSignatureFile), []byte(signManifest(manifestBytes, legacySigningKey)), 0644)
@@ -675,6 +691,7 @@ func TestRestoreAcceptsLegacyManifestSignature(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, restoreDir, result.RestoreDir)
 	assert.True(t, result.HashMatch, "Hash verification should pass for legacy manifest signatures")
+	assert.Equal(t, ManifestTrustCurrentServer, result.TrustLevel)
 }
 
 func TestHashCalculation(t *testing.T) {
