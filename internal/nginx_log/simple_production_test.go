@@ -18,9 +18,10 @@ func TestSimpleProductionThroughput(t *testing.T) {
 	if testing.Short() {
 		t.Skip("Skipping production test in short mode")
 	}
-	skipHostPerformanceTestInCI(t)
 
-	recordCounts := []int{10000, 20000, 30000}
+	// Large-scale throughput coverage belongs in benchmarks. A small corpus is
+	// enough to exercise the complete parsing and indexing workflow here.
+	recordCounts := []int{1000}
 
 	for _, records := range recordCounts {
 		t.Run(fmt.Sprintf("Records_%d", records), func(t *testing.T) {

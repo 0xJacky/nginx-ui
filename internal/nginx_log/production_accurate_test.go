@@ -17,15 +17,14 @@ func TestAccurateProductionPerformance(t *testing.T) {
 	if testing.Short() {
 		t.Skip("Skipping accurate production performance test in short mode")
 	}
-	skipHostPerformanceTestInCI(t)
 
-	// Test with realistic scales matching your production usage
+	// Keep regular tests focused on production workflow correctness. Large-scale
+	// indexing belongs in benchmarks and should not slow down go test.
 	testSizes := []struct {
 		name    string
 		records int
 	}{
-		{"Production_50K", 50000},   // Smaller scale for quick validation
-		{"Production_100K", 100000}, // Medium scale
+		{"Smoke_1K", 1000},
 	}
 
 	for _, testSize := range testSizes {

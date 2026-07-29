@@ -1,0 +1,39 @@
+name: Unit Tests
+
+on:
+  push:
+    branches-ignore:
+      - weblate
+    paths:
+      - "**/*.go"
+      - go.mod
+      - go.sum
+      - ".github/workflows/unit-test.yml"
+  pull_request:
+    paths:
+      - "**/*.go"
+      - go.mod
+      - go.sum
+      - ".github/workflows/unit-test.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  nginx-log:
+    name: NGINX Log
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Go
+        uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+
+      - name: Run unit tests
+        run: >-
+          go test -race -cover -count=1
+          ./internal/nginx_log
+          ./internal/nginx_log/parser

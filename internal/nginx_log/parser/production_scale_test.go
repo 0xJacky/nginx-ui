@@ -9,21 +9,18 @@ import (
 	"time"
 )
 
-// TestProductionScaleValidation tests optimized parsers with 1M+ records
+// TestProductionScaleValidation tests optimized parser correctness with a
+// representative corpus. Production-scale coverage belongs in benchmarks.
 func TestProductionScaleValidation(t *testing.T) {
 	if testing.Short() {
 		t.Skip("Skipping production scale test in short mode")
 	}
-	skipHostPerformanceTestInCI(t)
 
 	scales := []struct {
 		name    string
 		records int
 	}{
-		{"Medium_100K", 100000},
-		{"Large_500K", 500000},
-		{"XLarge_1M", 1000000},
-		{"Enterprise_2M", 2000000},
+		{"Small_1K", 1000},
 	}
 
 	config := DefaultParserConfig()
@@ -398,10 +395,10 @@ func TestMemoryUsageValidation(t *testing.T) {
 	if testing.Short() {
 		t.Skip("Skipping memory usage test in short mode")
 	}
-	skipHostPerformanceTestInCI(t)
 
-	// Test with moderate dataset to observe memory patterns
-	logData := generateProductionLogData(50000)
+	// Keep regular tests lightweight; benchmarks cover large corpora.
+	const recordCount = 5000
+	logData := generateProductionLogData(recordCount)
 
 	config := DefaultParserConfig()
 	config.MaxLineLength = 16 * 1024
@@ -474,7 +471,7 @@ func TestMemoryUsageValidation(t *testing.T) {
 				t.Errorf("Memory usage too high: %.2f bytes per record > %.0f", memPerRecord, maxBytesPerRecord)
 			}
 
-			validateResults(t, result, 50000)
+			validateResults(t, result, recordCount)
 		})
 	}
 }
