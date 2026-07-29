@@ -12,6 +12,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/analytic"
 	"github.com/0xJacky/Nginx-UI/internal/cache"
 	internalCluster "github.com/0xJacky/Nginx-UI/internal/cluster"
+	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/settings"
@@ -40,6 +41,9 @@ type nodeResponse struct {
 	HasCredential       bool       `json:"has_credential"`
 	CredentialStatus    string     `json:"credential_status"`
 	LastCredentialUseAt *time.Time `json:"last_credential_use_at,omitempty"`
+	// LegacySecret only ever carries the redaction sentinel, which tells the
+	// edit form a secret is stored without putting it in a list response.
+	LegacySecret string `json:"legacy_secret,omitempty"`
 	analytic.NodeStat
 	analytic.NodeInfo
 }
@@ -57,6 +61,9 @@ func newNodeResponse(node *model.Node) nodeResponse {
 		HasCredential:       node.HasCredential(),
 		CredentialStatus:    node.CredentialStatus,
 		LastCredentialUseAt: node.LastCredentialUseAt,
+	}
+	if len(node.EncryptedLegacySecret) != 0 {
+		response.LegacySecret = settings.RedactedSensitiveValue
 	}
 	if analyticNode != nil {
 		response.NodeStat = analyticNode.NodeStat
@@ -237,19 +244,61 @@ func findNode(c *gin.Context) (*model.Node, bool) {
 	return &node, true
 }
 
+// GetNodeSecret reveals the shared secret stored for a node so an administrator
+// can read or copy it back out. Revealing it costs a verified secure session,
+// the same bar protected settings are held to — the route's own middleware only
+// demands one from users who have two-factor authentication enabled.
+func GetNodeSecret(c *gin.Context) {
+	if verified, _ := c.Get(middleware.SecureSessionVerifiedKey); verified != true {
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+			"message": "Two-factor authentication is required to reveal the node secret",
+		})
+		return
+	}
+	node, ok := findNode(c)
+	if !ok {
+		return
+	}
+	if len(node.EncryptedLegacySecret) == 0 {
+		c.JSON(http.StatusOK, gin.H{"value": ""})
+		return
+	}
+	secret, err := nodeauth.DecryptPrivateCredential(
+		nodeauth.LegacyCredentialPurpose(node.ID),
+		node.EncryptedLegacySecret,
+	)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		return
+	}
+	audit.MarkSensitiveResponse(c)
+	c.JSON(http.StatusOK, gin.H{"value": string(secret)})
+}
+
 func refreshNodeState() {
 	cache.InvalidateNodeCache()
 	analytic.ReloadNodesStatus()
 }
 
+// mutationLegacySecret reads the submitted secret, treating the redaction
+// sentinel the edit form echoes back as "keep the stored value" rather than as
+// a literal new secret.
 func mutationLegacySecret(request nodeMutationRequest) string {
 	if request.LegacySecret != nil {
-		return strings.TrimSpace(*request.LegacySecret)
+		return sanitizeSubmittedSecret(*request.LegacySecret)
 	}
 	if request.Token != nil {
-		return strings.TrimSpace(*request.Token)
+		return sanitizeSubmittedSecret(*request.Token)
 	}
 	return ""
+}
+
+func sanitizeSubmittedSecret(value string) string {
+	value = strings.TrimSpace(value)
+	if value == settings.RedactedSensitiveValue {
+		return ""
+	}
+	return value
 }
 
 func validateNodeURL(rawURL string) (string, error) {

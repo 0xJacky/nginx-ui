@@ -7,6 +7,8 @@ export interface Node extends ModelBase {
   status: boolean
   enabled: boolean
   auth_method: 'legacy_secret' | 'paired_ed25519'
+  /** Only ever the redaction sentinel; reveal the real value with getSecret. */
+  legacy_secret?: string
   has_credential: boolean
   credential_status: 'active' | 'unpaired' | 'rotating' | 'revoked'
   last_credential_use_at?: string
@@ -76,6 +78,7 @@ const nodeApi = extendCurdApi(useCurdApi<Node>(baseUrl), {
   load_from_settings: () => http.post(`${baseUrl}/load_from_settings`),
   reloadNginx,
   restartNginx,
+  getSecret: (id: number) => http.get<{ value: string }>(`${baseUrl}/${id}/secret`),
   rotateCredential: (id: number) => http.post(`${baseUrl}/${id}/credentials/rotate`),
 })
 

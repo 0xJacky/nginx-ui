@@ -14,6 +14,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/cache"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
+	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/require"
 	"github.com/uozi-tech/cosy"
@@ -44,6 +45,34 @@ func TestNodeResponseRedactsAllCredentialMaterial(t *testing.T) {
 	require.Contains(t, response, `"has_credential":true`)
 	require.Contains(t, response, `"status":false`)
 	require.NotContains(t, response, `"NodeStat"`)
+	// The edit form needs to know a secret exists without receiving it.
+	require.Contains(t, response, `"legacy_secret":"`+settings.RedactedSensitiveValue+`"`)
+
+	withoutSecret, err := json.Marshal(newNodeResponse(&model.Node{Model: model.Model{ID: 78}}))
+	require.NoError(t, err)
+	require.NotContains(t, string(withoutSecret), "legacy_secret")
+}
+
+// TestSubmittedSecretIgnoresTheRedactionSentinel pins the round trip: an edit
+// that leaves the field untouched sends the sentinel back, and storing it
+// literally would replace the node's real secret with a useless string.
+func TestSubmittedSecretIgnoresTheRedactionSentinel(t *testing.T) {
+	sentinel := settings.RedactedSensitiveValue
+	actual := "  a-real-secret  "
+
+	require.Empty(t, mutationLegacySecret(nodeMutationRequest{LegacySecret: &sentinel}))
+	require.Empty(t, mutationLegacySecret(nodeMutationRequest{Token: &sentinel}))
+	require.Equal(t, "a-real-secret", mutationLegacySecret(nodeMutationRequest{LegacySecret: &actual}))
+	require.Empty(t, mutationLegacySecret(nodeMutationRequest{}))
+}
+
+func TestGetNodeSecretRequiresAVerifiedSecureSession(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	router := gin.New()
+	router.GET("/nodes/:id/secret", GetNodeSecret)
+	recorder := httptest.NewRecorder()
+	router.ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, "/nodes/1/secret", nil))
+	require.Equal(t, http.StatusUnauthorized, recorder.Code)
 }
 
 func TestDeleteNodeReloadsStatusAfterSuccessfulDeletion(t *testing.T) {

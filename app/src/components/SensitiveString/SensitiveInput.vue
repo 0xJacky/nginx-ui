@@ -3,8 +3,11 @@ import settings, { PROTECTED_VALUE_PLACEHOLDER } from '@/api/settings'
 import { use2FAModal } from '@/components/TwoFA'
 
 const props = defineProps<{
-  path: string
+  /** Protected settings path to reveal from. Ignored when `resolve` is given. */
+  path?: string
   placeholder?: string
+  /** Reveals a value that does not live in settings, such as a node's secret. */
+  resolve?: () => Promise<string>
 }>()
 
 const model = defineModel<string>({ required: true })
@@ -39,7 +42,9 @@ async function ensureRevealedValue() {
   isLoading.value = true
   try {
     await twoFAModal.open()
-    const { value } = await settings.get_protected_value(props.path)
+    const value = props.resolve
+      ? await props.resolve()
+      : (await settings.get_protected_value(props.path!)).value
     revealedValue.value = value
     model.value = value
     return value

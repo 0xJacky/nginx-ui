@@ -24,6 +24,7 @@ func InitRouter(r *gin.RouterGroup) {
 		admin.POST("nodes/:id", EditNode)
 		admin.DELETE("nodes/:id", DeleteNode)
 		admin.POST("nodes/load_from_settings", LoadNodeFromSettings)
+		admin.GET("nodes/:id/secret", GetNodeSecret)
 		admin.GET("nodes/:id/credentials", GetNodeCredentials)
 		admin.POST("nodes/:id/credentials/rotate", RotateNodeCredential)
 		admin.GET("node/credentials", ListControllerCredentials)

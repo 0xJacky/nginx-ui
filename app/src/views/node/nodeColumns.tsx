@@ -1,15 +1,18 @@
 import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
-import type { BadgeProps } from 'ant-design-vue'
 import type { JSX } from 'vue/jsx-runtime'
+import type { Node } from '@/api/node'
 import { datetimeRender } from '@uozi-admin/curd'
-import { Badge, Tag } from 'ant-design-vue'
+import { Badge, InputPassword, Tag } from 'ant-design-vue'
 import { h } from 'vue'
+import nodeApi from '@/api/node'
+import { SensitiveInput } from '@/components/SensitiveString'
 
-const credentialStatusMap: Record<string, { status: BadgeProps['status'], text: () => string }> = {
-  active: { status: 'success', text: () => $gettext('Active') },
-  rotating: { status: 'processing', text: () => $gettext('Rotating') },
-  unpaired: { status: 'warning', text: () => $gettext('Unpaired') },
-  revoked: { status: 'error', text: () => $gettext('Revoked') },
+// Only a credential that is not simply healthy is worth its own word: the
+// remaining states collapse into naming the authentication method itself.
+const unhealthyCredentialMap: Record<string, { color: string, text: () => string }> = {
+  rotating: { color: 'blue', text: () => $gettext('Rotating') },
+  unpaired: { color: 'default', text: () => $gettext('Unpaired') },
+  revoked: { color: 'red', text: () => $gettext('Revoked') },
 }
 
 const columns: StdTableColumn[] = [{
@@ -41,9 +44,21 @@ const columns: StdTableColumn[] = [{
   title: () => $gettext('Node Secret'),
   dataIndex: 'legacy_secret',
   edit: {
-    type: 'password',
-    password: {
-      placeholder: $gettext('Leave blank for no change'),
+    // An existing node stores a secret worth reading back, so it gets the
+    // reveal-after-2FA input. A node being added has nothing to reveal yet.
+    type: (context: { formData: Node }) => {
+      if (context.formData.legacy_secret === undefined)
+        context.formData.legacy_secret = ''
+
+      return context.formData.id
+        ? (
+            <SensitiveInput
+              v-model={context.formData.legacy_secret}
+              placeholder={$gettext('Leave blank for no change')}
+              resolve={() => nodeApi.getSecret(context.formData.id).then(({ value }) => value)}
+            />
+          )
+        : <InputPassword v-model:value={context.formData.legacy_secret} />
     },
   },
   hiddenInTable: true,
@@ -57,25 +72,17 @@ const columns: StdTableColumn[] = [{
   title: () => $gettext('Authentication'),
   dataIndex: 'auth_method',
   customRender: ({ record }: CustomRenderArgs) => {
-    const isPaired = record.auth_method === 'paired_ed25519'
-    const credential = credentialStatusMap[record.credential_status as string]
+    if (record.auth_method !== 'paired_ed25519')
+      return <Tag color="orange" class="m-0">{$gettext('Legacy secret')}</Tag>
 
-    return (
-      <div class="flex flex-col items-start gap-1">
-        <Tag color={isPaired ? 'green' : 'orange'} class="m-0">
-          {isPaired ? $gettext('Paired signature') : $gettext('Legacy secret')}
-        </Tag>
-        {record.credential_status && (
-          <Badge
-            status={credential?.status ?? 'default'}
-            text={<span class="text-xs opacity-65">{credential ? credential.text() : record.credential_status}</span>}
-          />
-        )}
-      </div>
-    )
+    const unhealthy = unhealthyCredentialMap[record.credential_status as string]
+    if (unhealthy)
+      return <Tag color={unhealthy.color} class="m-0">{unhealthy.text()}</Tag>
+
+    return <Tag color="green" class="m-0">{$gettext('Paired signature')}</Tag>
   },
   pure: true,
-  width: 160,
+  width: 140,
 }, {
   title: () => $gettext('Status'),
   dataIndex: 'status',
