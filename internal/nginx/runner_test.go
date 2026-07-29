@@ -73,3 +73,36 @@ func TestResetSSHClientIsSafeUnderConcurrentUse(t *testing.T) {
 	}
 	waitGroup.Wait()
 }
+
+// Paths resolved from nginx -V/-T describe one control target, so switching
+// targets must not keep serving the previous one.
+func TestResetHostNginxStateDropsResolvedPaths(t *testing.T) {
+	originalSbin := nginxSbinPathCache.value
+	originalV := nginxVOutputCache.value
+	originalT := nginxTOutputCache.value
+	originalPrefix := nginxPrefixCache.value
+	t.Cleanup(func() {
+		nginxSbinPathCache.set(originalSbin)
+		nginxVOutputCache.set(originalV)
+		nginxTOutputCache.set(originalT)
+		nginxPrefixCache.set(originalPrefix)
+	})
+
+	nginxSbinPathCache.set("/remote/sbin/nginx")
+	nginxVOutputCache.set("configure arguments: --prefix=/remote")
+	nginxTOutputCache.set("pid /remote/nginx.pid;")
+	nginxPrefixCache.set("/remote")
+
+	ResetHostNginxState()
+
+	for name, cache := range map[string]*nginxStringCache{
+		"sbin path": &nginxSbinPathCache,
+		"nginx -V":  &nginxVOutputCache,
+		"nginx -T":  &nginxTOutputCache,
+		"prefix":    &nginxPrefixCache,
+	} {
+		if cache.value != "" {
+			t.Errorf("%s cache still holds %q after a target change", name, cache.value)
+		}
+	}
+}

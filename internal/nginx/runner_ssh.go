@@ -36,6 +36,14 @@ func newSSHRunner() Runner {
 	return &sshRunner{client: sharedSSHClient()}
 }
 
+// ResetHostNginxState invalidates everything derived from the current nginx
+// control target: the SSH client and the paths resolved from nginx -V/-T.
+// Call it after any settings write that can change the target.
+func ResetHostNginxState() {
+	ResetSSHClient()
+	resetPathCaches()
+}
+
 // ResetSSHClient invalidates the cached SSH client so the next nginx command
 // re-dials with the current settings. Safe to call concurrently with Exec: a
 // runner already holds its own reference, so it finishes against the old
