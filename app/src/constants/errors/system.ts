@@ -10,4 +10,5 @@ export default {
   40306: () => $gettext('SSL key file not found'),
   40307: () => $gettext('SSL certificate file must be under Nginx configuration directory: {0}'),
   40308: () => $gettext('SSL key file must be under Nginx configuration directory: {0}'),
+  40312: () => $gettext('SSL certificate and key do not form a valid pair: {0}'),
 }

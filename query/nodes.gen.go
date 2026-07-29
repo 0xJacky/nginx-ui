@@ -35,6 +35,10 @@ func newNode(db *gorm.DB, opts ...gen.DOOption) node {
 	_node.Name = field.NewString(tableName, "name")
 	_node.URL = field.NewString(tableName, "url")
 	_node.Token = field.NewString(tableName, "token")
+	_node.EncryptedLegacySecret = field.NewBytes(tableName, "encrypted_legacy_secret")
+	_node.AuthMethod = field.NewString(tableName, "auth_method")
+	_node.CredentialStatus = field.NewString(tableName, "credential_status")
+	_node.LastCredentialUseAt = field.NewTime(tableName, "last_credential_use_at")
 	_node.Enabled = field.NewBool(tableName, "enabled")
 
 	_node.fillFieldMap()
@@ -45,15 +49,19 @@ func newNode(db *gorm.DB, opts ...gen.DOOption) node {
 type node struct {
 	nodeDo
 
-	ALL       field.Asterisk
-	ID        field.Uint64
-	CreatedAt field.Time
-	UpdatedAt field.Time
-	DeletedAt field.Field
-	Name      field.String
-	URL       field.String
-	Token     field.String
-	Enabled   field.Bool
+	ALL                   field.Asterisk
+	ID                    field.Uint64
+	CreatedAt             field.Time
+	UpdatedAt             field.Time
+	DeletedAt             field.Field
+	Name                  field.String
+	URL                   field.String
+	Token                 field.String
+	EncryptedLegacySecret field.Bytes
+	AuthMethod            field.String
+	CredentialStatus      field.String
+	LastCredentialUseAt   field.Time
+	Enabled               field.Bool
 
 	fieldMap map[string]field.Expr
 }
@@ -77,6 +85,10 @@ func (n *node) updateTableName(table string) *node {
 	n.Name = field.NewString(table, "name")
 	n.URL = field.NewString(table, "url")
 	n.Token = field.NewString(table, "token")
+	n.EncryptedLegacySecret = field.NewBytes(table, "encrypted_legacy_secret")
+	n.AuthMethod = field.NewString(table, "auth_method")
+	n.CredentialStatus = field.NewString(table, "credential_status")
+	n.LastCredentialUseAt = field.NewTime(table, "last_credential_use_at")
 	n.Enabled = field.NewBool(table, "enabled")
 
 	n.fillFieldMap()
@@ -94,7 +106,7 @@ func (n *node) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (n *node) fillFieldMap() {
-	n.fieldMap = make(map[string]field.Expr, 8)
+	n.fieldMap = make(map[string]field.Expr, 12)
 	n.fieldMap["id"] = n.ID
 	n.fieldMap["created_at"] = n.CreatedAt
 	n.fieldMap["updated_at"] = n.UpdatedAt
@@ -102,6 +114,10 @@ func (n *node) fillFieldMap() {
 	n.fieldMap["name"] = n.Name
 	n.fieldMap["url"] = n.URL
 	n.fieldMap["token"] = n.Token
+	n.fieldMap["encrypted_legacy_secret"] = n.EncryptedLegacySecret
+	n.fieldMap["auth_method"] = n.AuthMethod
+	n.fieldMap["credential_status"] = n.CredentialStatus
+	n.fieldMap["last_credential_use_at"] = n.LastCredentialUseAt
 	n.fieldMap["enabled"] = n.Enabled
 }
 

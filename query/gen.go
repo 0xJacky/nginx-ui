@@ -16,28 +16,31 @@ import (
 )
 
 var (
-	Q              = new(Query)
-	AcmeUser       *acmeUser
-	AuthToken      *authToken
-	AutoBackup     *autoBackup
-	BanIP          *banIP
-	Cert           *cert
-	Config         *config
-	ConfigBackup   *configBackup
-	DnsCredential  *dnsCredential
-	DnsDomain      *dnsDomain
-	ExternalNotify *externalNotify
-	LLMSession     *lLMSession
-	Namespace      *namespace
-	NginxLogIndex  *nginxLogIndex
-	Node           *node
-	Notification   *notification
-	Passkey        *passkey
-	Site           *site
-	SiteConfig     *siteConfig
-	Stream         *stream
-	UpstreamConfig *upstreamConfig
-	User           *user
+	Q                        = new(Query)
+	AcmeUser                 *acmeUser
+	AuthToken                *authToken
+	AutoBackup               *autoBackup
+	BanIP                    *banIP
+	Cert                     *cert
+	Config                   *config
+	ConfigBackup             *configBackup
+	DnsCredential            *dnsCredential
+	DnsDomain                *dnsDomain
+	ExternalNotify           *externalNotify
+	LLMSession               *lLMSession
+	MCPServiceToken          *mCPServiceToken
+	Namespace                *namespace
+	NginxLogIndex            *nginxLogIndex
+	Node                     *node
+	NodeControllerCredential *nodeControllerCredential
+	NodeCredential           *nodeCredential
+	Notification             *notification
+	Passkey                  *passkey
+	Site                     *site
+	SiteConfig               *siteConfig
+	Stream                   *stream
+	UpstreamConfig           *upstreamConfig
+	User                     *user
 )
 
 func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
@@ -53,9 +56,12 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	DnsDomain = &Q.DnsDomain
 	ExternalNotify = &Q.ExternalNotify
 	LLMSession = &Q.LLMSession
+	MCPServiceToken = &Q.MCPServiceToken
 	Namespace = &Q.Namespace
 	NginxLogIndex = &Q.NginxLogIndex
 	Node = &Q.Node
+	NodeControllerCredential = &Q.NodeControllerCredential
+	NodeCredential = &Q.NodeCredential
 	Notification = &Q.Notification
 	Passkey = &Q.Passkey
 	Site = &Q.Site
@@ -67,55 +73,61 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 	return &Query{
-		db:             db,
-		AcmeUser:       newAcmeUser(db, opts...),
-		AuthToken:      newAuthToken(db, opts...),
-		AutoBackup:     newAutoBackup(db, opts...),
-		BanIP:          newBanIP(db, opts...),
-		Cert:           newCert(db, opts...),
-		Config:         newConfig(db, opts...),
-		ConfigBackup:   newConfigBackup(db, opts...),
-		DnsCredential:  newDnsCredential(db, opts...),
-		DnsDomain:      newDnsDomain(db, opts...),
-		ExternalNotify: newExternalNotify(db, opts...),
-		LLMSession:     newLLMSession(db, opts...),
-		Namespace:      newNamespace(db, opts...),
-		NginxLogIndex:  newNginxLogIndex(db, opts...),
-		Node:           newNode(db, opts...),
-		Notification:   newNotification(db, opts...),
-		Passkey:        newPasskey(db, opts...),
-		Site:           newSite(db, opts...),
-		SiteConfig:     newSiteConfig(db, opts...),
-		Stream:         newStream(db, opts...),
-		UpstreamConfig: newUpstreamConfig(db, opts...),
-		User:           newUser(db, opts...),
+		db:                       db,
+		AcmeUser:                 newAcmeUser(db, opts...),
+		AuthToken:                newAuthToken(db, opts...),
+		AutoBackup:               newAutoBackup(db, opts...),
+		BanIP:                    newBanIP(db, opts...),
+		Cert:                     newCert(db, opts...),
+		Config:                   newConfig(db, opts...),
+		ConfigBackup:             newConfigBackup(db, opts...),
+		DnsCredential:            newDnsCredential(db, opts...),
+		DnsDomain:                newDnsDomain(db, opts...),
+		ExternalNotify:           newExternalNotify(db, opts...),
+		LLMSession:               newLLMSession(db, opts...),
+		MCPServiceToken:          newMCPServiceToken(db, opts...),
+		Namespace:                newNamespace(db, opts...),
+		NginxLogIndex:            newNginxLogIndex(db, opts...),
+		Node:                     newNode(db, opts...),
+		NodeControllerCredential: newNodeControllerCredential(db, opts...),
+		NodeCredential:           newNodeCredential(db, opts...),
+		Notification:             newNotification(db, opts...),
+		Passkey:                  newPasskey(db, opts...),
+		Site:                     newSite(db, opts...),
+		SiteConfig:               newSiteConfig(db, opts...),
+		Stream:                   newStream(db, opts...),
+		UpstreamConfig:           newUpstreamConfig(db, opts...),
+		User:                     newUser(db, opts...),
 	}
 }
 
 type Query struct {
 	db *gorm.DB
 
-	AcmeUser       acmeUser
-	AuthToken      authToken
-	AutoBackup     autoBackup
-	BanIP          banIP
-	Cert           cert
-	Config         config
-	ConfigBackup   configBackup
-	DnsCredential  dnsCredential
-	DnsDomain      dnsDomain
-	ExternalNotify externalNotify
-	LLMSession     lLMSession
-	Namespace      namespace
-	NginxLogIndex  nginxLogIndex
-	Node           node
-	Notification   notification
-	Passkey        passkey
-	Site           site
-	SiteConfig     siteConfig
-	Stream         stream
-	UpstreamConfig upstreamConfig
-	User           user
+	AcmeUser                 acmeUser
+	AuthToken                authToken
+	AutoBackup               autoBackup
+	BanIP                    banIP
+	Cert                     cert
+	Config                   config
+	ConfigBackup             configBackup
+	DnsCredential            dnsCredential
+	DnsDomain                dnsDomain
+	ExternalNotify           externalNotify
+	LLMSession               lLMSession
+	MCPServiceToken          mCPServiceToken
+	Namespace                namespace
+	NginxLogIndex            nginxLogIndex
+	Node                     node
+	NodeControllerCredential nodeControllerCredential
+	NodeCredential           nodeCredential
+	Notification             notification
+	Passkey                  passkey
+	Site                     site
+	SiteConfig               siteConfig
+	Stream                   stream
+	UpstreamConfig           upstreamConfig
+	User                     user
 }
 
 func (q *Query) Available() bool { return q.db != nil }
@@ -124,28 +136,31 @@ func (q *Query) UnderlyingDB() *gorm.DB { return q.db }
 
 func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
-		db:             db,
-		AcmeUser:       q.AcmeUser.clone(db),
-		AuthToken:      q.AuthToken.clone(db),
-		AutoBackup:     q.AutoBackup.clone(db),
-		BanIP:          q.BanIP.clone(db),
-		Cert:           q.Cert.clone(db),
-		Config:         q.Config.clone(db),
-		ConfigBackup:   q.ConfigBackup.clone(db),
-		DnsCredential:  q.DnsCredential.clone(db),
-		DnsDomain:      q.DnsDomain.clone(db),
-		ExternalNotify: q.ExternalNotify.clone(db),
-		LLMSession:     q.LLMSession.clone(db),
-		Namespace:      q.Namespace.clone(db),
-		NginxLogIndex:  q.NginxLogIndex.clone(db),
-		Node:           q.Node.clone(db),
-		Notification:   q.Notification.clone(db),
-		Passkey:        q.Passkey.clone(db),
-		Site:           q.Site.clone(db),
-		SiteConfig:     q.SiteConfig.clone(db),
-		Stream:         q.Stream.clone(db),
-		UpstreamConfig: q.UpstreamConfig.clone(db),
-		User:           q.User.clone(db),
+		db:                       db,
+		AcmeUser:                 q.AcmeUser.clone(db),
+		AuthToken:                q.AuthToken.clone(db),
+		AutoBackup:               q.AutoBackup.clone(db),
+		BanIP:                    q.BanIP.clone(db),
+		Cert:                     q.Cert.clone(db),
+		Config:                   q.Config.clone(db),
+		ConfigBackup:             q.ConfigBackup.clone(db),
+		DnsCredential:            q.DnsCredential.clone(db),
+		DnsDomain:                q.DnsDomain.clone(db),
+		ExternalNotify:           q.ExternalNotify.clone(db),
+		LLMSession:               q.LLMSession.clone(db),
+		MCPServiceToken:          q.MCPServiceToken.clone(db),
+		Namespace:                q.Namespace.clone(db),
+		NginxLogIndex:            q.NginxLogIndex.clone(db),
+		Node:                     q.Node.clone(db),
+		NodeControllerCredential: q.NodeControllerCredential.clone(db),
+		NodeCredential:           q.NodeCredential.clone(db),
+		Notification:             q.Notification.clone(db),
+		Passkey:                  q.Passkey.clone(db),
+		Site:                     q.Site.clone(db),
+		SiteConfig:               q.SiteConfig.clone(db),
+		Stream:                   q.Stream.clone(db),
+		UpstreamConfig:           q.UpstreamConfig.clone(db),
+		User:                     q.User.clone(db),
 	}
 }
 
@@ -159,78 +174,87 @@ func (q *Query) WriteDB() *Query {
 
 func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 	return &Query{
-		db:             db,
-		AcmeUser:       q.AcmeUser.replaceDB(db),
-		AuthToken:      q.AuthToken.replaceDB(db),
-		AutoBackup:     q.AutoBackup.replaceDB(db),
-		BanIP:          q.BanIP.replaceDB(db),
-		Cert:           q.Cert.replaceDB(db),
-		Config:         q.Config.replaceDB(db),
-		ConfigBackup:   q.ConfigBackup.replaceDB(db),
-		DnsCredential:  q.DnsCredential.replaceDB(db),
-		DnsDomain:      q.DnsDomain.replaceDB(db),
-		ExternalNotify: q.ExternalNotify.replaceDB(db),
-		LLMSession:     q.LLMSession.replaceDB(db),
-		Namespace:      q.Namespace.replaceDB(db),
-		NginxLogIndex:  q.NginxLogIndex.replaceDB(db),
-		Node:           q.Node.replaceDB(db),
-		Notification:   q.Notification.replaceDB(db),
-		Passkey:        q.Passkey.replaceDB(db),
-		Site:           q.Site.replaceDB(db),
-		SiteConfig:     q.SiteConfig.replaceDB(db),
-		Stream:         q.Stream.replaceDB(db),
-		UpstreamConfig: q.UpstreamConfig.replaceDB(db),
-		User:           q.User.replaceDB(db),
+		db:                       db,
+		AcmeUser:                 q.AcmeUser.replaceDB(db),
+		AuthToken:                q.AuthToken.replaceDB(db),
+		AutoBackup:               q.AutoBackup.replaceDB(db),
+		BanIP:                    q.BanIP.replaceDB(db),
+		Cert:                     q.Cert.replaceDB(db),
+		Config:                   q.Config.replaceDB(db),
+		ConfigBackup:             q.ConfigBackup.replaceDB(db),
+		DnsCredential:            q.DnsCredential.replaceDB(db),
+		DnsDomain:                q.DnsDomain.replaceDB(db),
+		ExternalNotify:           q.ExternalNotify.replaceDB(db),
+		LLMSession:               q.LLMSession.replaceDB(db),
+		MCPServiceToken:          q.MCPServiceToken.replaceDB(db),
+		Namespace:                q.Namespace.replaceDB(db),
+		NginxLogIndex:            q.NginxLogIndex.replaceDB(db),
+		Node:                     q.Node.replaceDB(db),
+		NodeControllerCredential: q.NodeControllerCredential.replaceDB(db),
+		NodeCredential:           q.NodeCredential.replaceDB(db),
+		Notification:             q.Notification.replaceDB(db),
+		Passkey:                  q.Passkey.replaceDB(db),
+		Site:                     q.Site.replaceDB(db),
+		SiteConfig:               q.SiteConfig.replaceDB(db),
+		Stream:                   q.Stream.replaceDB(db),
+		UpstreamConfig:           q.UpstreamConfig.replaceDB(db),
+		User:                     q.User.replaceDB(db),
 	}
 }
 
 type queryCtx struct {
-	AcmeUser       *acmeUserDo
-	AuthToken      *authTokenDo
-	AutoBackup     *autoBackupDo
-	BanIP          *banIPDo
-	Cert           *certDo
-	Config         *configDo
-	ConfigBackup   *configBackupDo
-	DnsCredential  *dnsCredentialDo
-	DnsDomain      *dnsDomainDo
-	ExternalNotify *externalNotifyDo
-	LLMSession     *lLMSessionDo
-	Namespace      *namespaceDo
-	NginxLogIndex  *nginxLogIndexDo
-	Node           *nodeDo
-	Notification   *notificationDo
-	Passkey        *passkeyDo
-	Site           *siteDo
-	SiteConfig     *siteConfigDo
-	Stream         *streamDo
-	UpstreamConfig *upstreamConfigDo
-	User           *userDo
+	AcmeUser                 *acmeUserDo
+	AuthToken                *authTokenDo
+	AutoBackup               *autoBackupDo
+	BanIP                    *banIPDo
+	Cert                     *certDo
+	Config                   *configDo
+	ConfigBackup             *configBackupDo
+	DnsCredential            *dnsCredentialDo
+	DnsDomain                *dnsDomainDo
+	ExternalNotify           *externalNotifyDo
+	LLMSession               *lLMSessionDo
+	MCPServiceToken          *mCPServiceTokenDo
+	Namespace                *namespaceDo
+	NginxLogIndex            *nginxLogIndexDo
+	Node                     *nodeDo
+	NodeControllerCredential *nodeControllerCredentialDo
+	NodeCredential           *nodeCredentialDo
+	Notification             *notificationDo
+	Passkey                  *passkeyDo
+	Site                     *siteDo
+	SiteConfig               *siteConfigDo
+	Stream                   *streamDo
+	UpstreamConfig           *upstreamConfigDo
+	User                     *userDo
 }
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
-		AcmeUser:       q.AcmeUser.WithContext(ctx),
-		AuthToken:      q.AuthToken.WithContext(ctx),
-		AutoBackup:     q.AutoBackup.WithContext(ctx),
-		BanIP:          q.BanIP.WithContext(ctx),
-		Cert:           q.Cert.WithContext(ctx),
-		Config:         q.Config.WithContext(ctx),
-		ConfigBackup:   q.ConfigBackup.WithContext(ctx),
-		DnsCredential:  q.DnsCredential.WithContext(ctx),
-		DnsDomain:      q.DnsDomain.WithContext(ctx),
-		ExternalNotify: q.ExternalNotify.WithContext(ctx),
-		LLMSession:     q.LLMSession.WithContext(ctx),
-		Namespace:      q.Namespace.WithContext(ctx),
-		NginxLogIndex:  q.NginxLogIndex.WithContext(ctx),
-		Node:           q.Node.WithContext(ctx),
-		Notification:   q.Notification.WithContext(ctx),
-		Passkey:        q.Passkey.WithContext(ctx),
-		Site:           q.Site.WithContext(ctx),
-		SiteConfig:     q.SiteConfig.WithContext(ctx),
-		Stream:         q.Stream.WithContext(ctx),
-		UpstreamConfig: q.UpstreamConfig.WithContext(ctx),
-		User:           q.User.WithContext(ctx),
+		AcmeUser:                 q.AcmeUser.WithContext(ctx),
+		AuthToken:                q.AuthToken.WithContext(ctx),
+		AutoBackup:               q.AutoBackup.WithContext(ctx),
+		BanIP:                    q.BanIP.WithContext(ctx),
+		Cert:                     q.Cert.WithContext(ctx),
+		Config:                   q.Config.WithContext(ctx),
+		ConfigBackup:             q.ConfigBackup.WithContext(ctx),
+		DnsCredential:            q.DnsCredential.WithContext(ctx),
+		DnsDomain:                q.DnsDomain.WithContext(ctx),
+		ExternalNotify:           q.ExternalNotify.WithContext(ctx),
+		LLMSession:               q.LLMSession.WithContext(ctx),
+		MCPServiceToken:          q.MCPServiceToken.WithContext(ctx),
+		Namespace:                q.Namespace.WithContext(ctx),
+		NginxLogIndex:            q.NginxLogIndex.WithContext(ctx),
+		Node:                     q.Node.WithContext(ctx),
+		NodeControllerCredential: q.NodeControllerCredential.WithContext(ctx),
+		NodeCredential:           q.NodeCredential.WithContext(ctx),
+		Notification:             q.Notification.WithContext(ctx),
+		Passkey:                  q.Passkey.WithContext(ctx),
+		Site:                     q.Site.WithContext(ctx),
+		SiteConfig:               q.SiteConfig.WithContext(ctx),
+		Stream:                   q.Stream.WithContext(ctx),
+		UpstreamConfig:           q.UpstreamConfig.WithContext(ctx),
+		User:                     q.User.WithContext(ctx),
 	}
 }
 

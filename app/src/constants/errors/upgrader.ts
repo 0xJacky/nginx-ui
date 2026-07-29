@@ -4,4 +4,12 @@ export default {
   52003: () => $gettext('Digest file content is empty'),
   52004: () => $gettext('Executable binary file is empty'),
   52005: () => $gettext('Update already in progress'),
+  52006: () => $gettext('Release signature is missing'),
+  52007: () => $gettext('Release signature is invalid'),
+  52008: () => $gettext('Release signature key is not trusted'),
+  52009: () => $gettext('No trusted release signing keys are embedded'),
+  52010: () => $gettext('Embedded release signing keys are invalid'),
+  52011: () => $gettext('Release archive digest does not match'),
+  52012: () => $gettext('Upgrader core release asset is missing'),
+  52013: () => $gettext('Upgrader core platform is unsupported'),
 }

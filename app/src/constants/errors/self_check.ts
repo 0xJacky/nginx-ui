@@ -27,4 +27,6 @@ export default {
   50008: () => $gettext('Patched nginx-ui.conf is invalid: {0}'),
   50009: () => $gettext('Nginx reload after fix failed: {0}'),
   50010: () => $gettext('Failed to restore nginx-ui.conf from backup: {0}'),
+  40422: () => $gettext('Nginx configuration directory is not shared with external container at {0}'),
+  50011: () => $gettext('Failed to verify external Nginx configuration directory {0}: {1}'),
 }
