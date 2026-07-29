@@ -351,115 +351,73 @@ type Metrics struct {
 // CreateLogIndexMapping creates optimized index mapping for log entries
 func CreateLogIndexMapping() mapping.IndexMapping {
 	indexMapping := bleve.NewIndexMapping()
-
-	// Configure text analyzer for better search
 	indexMapping.DefaultAnalyzer = "standard"
+	indexMapping.DefaultField = "raw"
+	indexMapping.IndexDynamic = false
+	indexMapping.StoreDynamic = false
+	indexMapping.DocValuesDynamic = false
 
-	// Define document mapping
-	docMapping := bleve.NewDocumentMapping()
+	docMapping := bleve.NewDocumentStaticMapping()
 
-	// Timestamp field - stored and indexed for range queries
-	timestampMapping := bleve.NewNumericFieldMapping()
-	timestampMapping.Store = true
-	timestampMapping.Index = true
-	docMapping.AddFieldMappingsAt("timestamp", timestampMapping)
+	type fieldOptions struct {
+		store              bool
+		index              bool
+		includeTermVectors bool
+		docValues          bool
+	}
 
-	// IP field - keyword for exact matching
-	ipMapping := bleve.NewTextFieldMapping()
-	ipMapping.Store = true
-	ipMapping.Index = true
-	ipMapping.Analyzer = "keyword"
-	ipMapping.DocValues = true // Enable for faceting performance
-	docMapping.AddFieldMappingsAt("ip", ipMapping)
+	addTextField := func(name, analyzer string, options fieldOptions) {
+		fieldMapping := bleve.NewTextFieldMapping()
+		fieldMapping.Analyzer = analyzer
+		fieldMapping.Store = options.store
+		fieldMapping.Index = options.index
+		fieldMapping.IncludeTermVectors = options.includeTermVectors
+		fieldMapping.IncludeInAll = false
+		fieldMapping.DocValues = options.docValues
+		docMapping.AddFieldMappingsAt(name, fieldMapping)
+	}
+	addNumericField := func(name string, options fieldOptions) {
+		fieldMapping := bleve.NewNumericFieldMapping()
+		fieldMapping.Store = options.store
+		fieldMapping.Index = options.index
+		fieldMapping.IncludeInAll = false
+		fieldMapping.DocValues = options.docValues
+		docMapping.AddFieldMappingsAt(name, fieldMapping)
+	}
 
-	// Geographic fields
-	regionMapping := bleve.NewTextFieldMapping()
-	regionMapping.Store = true
-	regionMapping.Index = true
-	regionMapping.Analyzer = "keyword"
-	docMapping.AddFieldMappingsAt("region_code", regionMapping)
-	docMapping.AddFieldMappingsAt("province", regionMapping)
-	docMapping.AddFieldMappingsAt("city", regionMapping)
+	storedAndIndexed := fieldOptions{store: true, index: true}
+	storedIndexedAndSortable := fieldOptions{store: true, index: true, docValues: true}
+	storedPhraseSearchable := fieldOptions{store: true, index: true, includeTermVectors: true}
 
-	// HTTP method - keyword
-	methodMapping := bleve.NewTextFieldMapping()
-	methodMapping.Store = true
-	methodMapping.Index = true
-	methodMapping.Analyzer = "keyword"
-	docMapping.AddFieldMappingsAt("method", methodMapping)
+	// Keep doc values only on fields used by sorting, faceting, or cardinality queries.
+	addNumericField("timestamp", storedIndexedAndSortable)
+	addTextField("ip", "keyword", storedIndexedAndSortable)
+	addTextField("region_code", "keyword", storedIndexedAndSortable)
+	addTextField("province", "keyword", storedIndexedAndSortable)
+	addTextField("city", "keyword", storedAndIndexed)
+	addTextField("method", "keyword", storedIndexedAndSortable)
+	addTextField("path", "standard", storedPhraseSearchable)
+	addTextField("path_exact", "keyword", fieldOptions{index: true, docValues: true})
+	addTextField("protocol", "keyword", fieldOptions{store: true})
+	addNumericField("status", storedIndexedAndSortable)
+	addNumericField("bytes_sent", storedIndexedAndSortable)
+	addTextField("referer", "standard", storedPhraseSearchable)
+	addTextField("user_agent", "standard", fieldOptions{
+		store: true, index: true, includeTermVectors: true, docValues: true,
+	})
+	addTextField("browser", "keyword", storedIndexedAndSortable)
+	addTextField("browser_version", "keyword", storedAndIndexed)
+	addTextField("os", "keyword", storedIndexedAndSortable)
+	addTextField("os_version", "keyword", storedAndIndexed)
+	addTextField("device_type", "keyword", storedIndexedAndSortable)
+	addNumericField("request_time", storedAndIndexed)
+	addNumericField("upstream_time", storedAndIndexed)
 
-	// Path field - both analyzed and keyword for different query types
-	pathMapping := bleve.NewTextFieldMapping()
-	pathMapping.Store = true
-	pathMapping.Index = true
-	pathMapping.Analyzer = "standard"
-	docMapping.AddFieldMappingsAt("path", pathMapping)
-
-	pathKeywordMapping := bleve.NewTextFieldMapping()
-	pathKeywordMapping.Store = false
-	pathKeywordMapping.Index = true
-	pathKeywordMapping.Analyzer = "keyword"
-	pathKeywordMapping.DocValues = true // Enable for faceting performance
-	docMapping.AddFieldMappingsAt("path_exact", pathKeywordMapping)
-
-	// Status code - numeric for range queries
-	statusMapping := bleve.NewNumericFieldMapping()
-	statusMapping.Store = true
-	statusMapping.Index = true
-	docMapping.AddFieldMappingsAt("status", statusMapping)
-
-	// Bytes sent - numeric
-	bytesMapping := bleve.NewNumericFieldMapping()
-	bytesMapping.Store = true
-	bytesMapping.Index = true
-	docMapping.AddFieldMappingsAt("bytes_sent", bytesMapping)
-
-	// Referer and User Agent - analyzed text
-	textMapping := bleve.NewTextFieldMapping()
-	textMapping.Store = true
-	textMapping.Index = true
-	textMapping.Analyzer = "standard"
-	docMapping.AddFieldMappingsAt("referer", textMapping)
-	docMapping.AddFieldMappingsAt("user_agent", textMapping)
-
-	// Browser, OS, Device - keywords
-	keywordMapping := bleve.NewTextFieldMapping()
-	keywordMapping.Store = true
-	keywordMapping.Index = true
-	keywordMapping.Analyzer = "keyword"
-	docMapping.AddFieldMappingsAt("browser", keywordMapping)
-	docMapping.AddFieldMappingsAt("browser_version", keywordMapping)
-	docMapping.AddFieldMappingsAt("os", keywordMapping)
-	docMapping.AddFieldMappingsAt("os_version", keywordMapping)
-	docMapping.AddFieldMappingsAt("device_type", keywordMapping)
-
-	// Request and upstream time - numeric
-	timeMapping := bleve.NewNumericFieldMapping()
-	timeMapping.Store = true
-	timeMapping.Index = true
-	docMapping.AddFieldMappingsAt("request_time", timeMapping)
-	docMapping.AddFieldMappingsAt("upstream_time", timeMapping)
-
-	// Raw log line - stored but not indexed (for retrieval)
-	rawMapping := bleve.NewTextFieldMapping()
-	rawMapping.Store = true
-	rawMapping.Index = false
-	docMapping.AddFieldMappingsAt("raw", rawMapping)
-
-	// File path - keyword for filtering by file
-	fileMapping := bleve.NewTextFieldMapping()
-	fileMapping.Store = true
-	fileMapping.Index = true
-	fileMapping.Analyzer = "keyword"
-	docMapping.AddFieldMappingsAt("file_path", fileMapping)
-
-	// Main log path - keyword for efficient log group filtering
-	mainLogMapping := bleve.NewTextFieldMapping()
-	mainLogMapping.Store = true
-	mainLogMapping.Index = true
-	mainLogMapping.Analyzer = "keyword"
-	mainLogMapping.DocValues = true // Enable for efficient faceting and filtering
-	docMapping.AddFieldMappingsAt("main_log_path", mainLogMapping)
+	// Index the original line once for default full-text search instead of
+	// duplicating every field into Bleve's composite _all field.
+	addTextField("raw", "standard", storedAndIndexed)
+	addTextField("file_path", "keyword", storedAndIndexed)
+	addTextField("main_log_path", "keyword", storedAndIndexed)
 
 	indexMapping.AddDocumentMapping("_default", docMapping)
 
