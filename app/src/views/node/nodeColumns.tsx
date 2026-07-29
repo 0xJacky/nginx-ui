@@ -1,8 +1,16 @@
 import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
+import type { BadgeProps } from 'ant-design-vue'
 import type { JSX } from 'vue/jsx-runtime'
 import { datetimeRender } from '@uozi-admin/curd'
 import { Badge, Tag } from 'ant-design-vue'
 import { h } from 'vue'
+
+const credentialStatusMap: Record<string, { status: BadgeProps['status'], text: () => string }> = {
+  active: { status: 'success', text: () => $gettext('Active') },
+  rotating: { status: 'processing', text: () => $gettext('Rotating') },
+  unpaired: { status: 'warning', text: () => $gettext('Unpaired') },
+  revoked: { status: 'error', text: () => $gettext('Revoked') },
+}
 
 const columns: StdTableColumn[] = [{
   title: () => $gettext('Name'),
@@ -36,12 +44,19 @@ const columns: StdTableColumn[] = [{
   dataIndex: 'auth_method',
   customRender: ({ record }: CustomRenderArgs) => {
     const isPaired = record.auth_method === 'paired_ed25519'
+    const credential = credentialStatusMap[record.credential_status as string]
+
     return (
-      <div class="flex flex-col gap-1">
-        <Tag color={isPaired ? 'green' : 'orange'}>
+      <div class="flex flex-col items-start gap-1">
+        <Tag color={isPaired ? 'green' : 'orange'} class="m-0 whitespace-nowrap">
           {isPaired ? $gettext('Paired signature') : $gettext('Legacy secret')}
         </Tag>
-        <span class="text-xs opacity-60">{record.credential_status}</span>
+        {credential && (
+          <Badge
+            status={credential.status}
+            text={<span class="text-xs opacity-65">{credential.text()}</span>}
+          />
+        )}
       </div>
     )
   },
