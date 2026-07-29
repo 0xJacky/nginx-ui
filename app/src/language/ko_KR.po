@@ -3,9 +3,12 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
 "PO-Revision-Date: 2025-04-07 12:21+0000\n"
 "Last-Translator: jkh0kr <admin@jkh.kr>\n"
-"Language-Team: Korean <https://weblate.nginxui.com/projects/nginx-ui/frontend/ko/>\n"
+"Language-Team: Korean <https://weblate.nginxui.com/projects/nginx-ui/"
+"frontend/ko/>\n"
 "Language: ko_KR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,15 +30,18 @@ msgstr "IP 인증서 알림"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:81
 msgid ""
-"This site is configured as a default server (default_server) for HTTPS (port"
-" 443). "
-msgstr "이 사이트는 HTTPS(443 포트)의 기본 서버(default_server)로 구성되어 있습니다."
+"This site is configured as a default server (default_server) for HTTPS (port "
+"443). "
+msgstr ""
+"이 사이트는 HTTPS(443 포트)의 기본 서버(default_server)로 구성되어 있습니다."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:85
 msgid ""
 "This site uses wildcard server name (_) which typically indicates an IP-"
 "based certificate. "
-msgstr "이 사이트는 와일드카드 서버 이름 (_)을 사용하며, 이는 일반적으로 IP 기반 인증서를 나타냅니다."
+msgstr ""
+"이 사이트는 와일드카드 서버 이름 (_)을 사용하며, 이는 일반적으로 IP 기반 인증"
+"서를 나타냅니다."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:89
 msgid "No specific IP address found in server_name configuration. "
@@ -60,7 +66,9 @@ msgstr "server_name"
 msgid ""
 "The certificate for the domain is checked every 30 minutes and renewed when "
 "its remaining validity reaches the threshold configured in settings."
-msgstr "도메인의 인증서는 30분마다 확인되며 남은 유효 기간이 설정에서 구성된 임계값에 도달하면 갱신됩니다."
+msgstr ""
+"도메인의 인증서는 30분마다 확인되며 남은 유효 기간이 설정에서 구성된 임계값"
+"에 도달하면 갱신됩니다."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:116
 msgid "Make sure you have configured a reverse proxy for .well-known "
@@ -80,8 +88,8 @@ msgstr "서버 IP 주소 입력 (예: 203.0.113.1 또는 2001:db8::1)"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:140
 msgid ""
-"For IP-based certificates, please specify the server IP address that will be"
-" included in the certificate."
+"For IP-based certificates, please specify the server IP address that will be "
+"included in the certificate."
 msgstr "IP 기반 인증서의 경우 인증서에 포함될 서버 IP 주소를 지정해 주세요."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:144
@@ -143,7 +151,9 @@ msgstr "이 옵션은 필요한 경우가 아니라면 활성화하지 마세요
 msgid ""
 "OCSP Must Staple may cause errors for some users on first access using "
 "Firefox."
-msgstr "OCSP Must Staple은 Firefox를 사용한 첫 접속 시 일부 사용자에게 오류를 일으킬 수 있습니다."
+msgstr ""
+"OCSP Must Staple은 Firefox를 사용한 첫 접속 시 일부 사용자에게 오류를 일으킬 "
+"수 있습니다."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:220
 msgid "Lego disable CNAME Support"
@@ -161,7 +171,9 @@ msgstr "공통 이름 사용"
 msgid ""
 "Enable the certificate Common Name field for private CAs that still require "
 "it."
-msgstr "아직 Common Name을 요구하는 사설 CA를 위해 인증서 Common Name 필드를 활성화합니다."
+msgstr ""
+"아직 Common Name을 요구하는 사설 CA를 위해 인증서 Common Name 필드를 활성화합"
+"니다."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:237
 msgid "Revoke Old Certificate"
@@ -197,8 +209,7 @@ msgid "Go to DNS > Credentials to create or manage credentials"
 msgstr "DNS > 자격 증명으로 이동하여 자격 증명을 생성하거나 관리하세요"
 
 #: src/components/CertInfo/CertInfo.vue:24
-#: src/views/certificate/ACMEUser.vue:70
-#: src/views/certificate/ACMEUser.vue:152
+#: src/views/certificate/ACMEUser.vue:70 src/views/certificate/ACMEUser.vue:152
 #: src/views/certificate/CertificateList/certColumns.tsx:98
 msgid "Valid"
 msgstr "유효함"
@@ -296,17 +307,19 @@ msgstr "GeoLite2 데이터베이스가 필요합니다"
 
 #: src/components/GeoLiteDownload/GeoLiteDownload.vue:158
 msgid ""
-"The GeoLite2 database is required for offline geographic IP analysis. Please"
-" download it to enable this feature."
-msgstr "오프라인 지리적 IP 분석을 위해 GeoLite2 데이터베이스가 필요합니다. 이 기능을 사용하려면 다운로드해 주세요."
+"The GeoLite2 database is required for offline geographic IP analysis. Please "
+"download it to enable this feature."
+msgstr ""
+"오프라인 지리적 IP 분석을 위해 GeoLite2 데이터베이스가 필요합니다. 이 기능을 "
+"사용하려면 다운로드해 주세요."
 
 #: src/components/GeoLiteDownload/GeoLiteDownload.vue:160
 msgid ""
 "Alternatively, if you cannot download the database, you can manually place "
 "GeoLite2-City.mmdb in the same directory as app.ini."
 msgstr ""
-"또는 데이터베이스를 다운로드할 수 없는 경우 GeoLite2-City.mmdb 파일을 app.ini와 같은 디렉터리에 수동으로 배치할 수"
-" 있습니다."
+"또는 데이터베이스를 다운로드할 수 없는 경우 GeoLite2-City.mmdb 파일을 app.ini"
+"와 같은 디렉터리에 수동으로 배치할 수 있습니다."
 
 #: src/components/GeoLiteDownload/GeoLiteDownload.vue:168
 msgid "GeoLite2 Database Installed"
@@ -353,7 +366,8 @@ msgstr "원격 전용 네임스페이스에는 설정 검증을 사용할 수 �
 #: src/components/InspectConfig/InspectConfig.vue:47
 msgid ""
 "Sandbox validation is unavailable when Nginx runs in a separate container."
-msgstr "Nginx 가 별도의 컨테이너에서 실행 중일 때 샌드박스 검증을 사용할 수 없습니다."
+msgstr ""
+"Nginx 가 별도의 컨테이너에서 실행 중일 때 샌드박스 검증을 사용할 수 없습니다."
 
 #: src/components/InspectConfig/InspectConfig.vue:49
 msgid ""
@@ -399,11 +413,11 @@ msgstr "구성 파일이 격리된 샌드박스에서 테스트에 성공했습�
 msgid "Configuration file is test successful"
 msgstr "구성 파일 테스트 성공"
 
-#: src/components/InspectConfig/InspectConfig.vue:195
-#: src/constants/index.ts:25 src/views/backup/components/BackupCreator.vue:138
+#: src/components/InspectConfig/InspectConfig.vue:195 src/constants/index.ts:25
+#: src/views/backup/components/BackupCreator.vue:138
 #: src/views/notification/notificationColumns.tsx:21
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:97
-#: src/views/preference/components/NginxHostSetup/checks.ts:67
+#: src/views/preference/components/NginxHostSetup/checks.ts:122
 msgid "Warning"
 msgstr "경고"
 
@@ -429,7 +443,7 @@ msgstr "수정"
 #: src/views/dns/DDNSManager.vue:438 src/views/dns/DNSRecordManager.vue:250
 #: src/views/preference/components/AuthSettings/Passkey.vue:131
 #: src/views/preference/Preference.vue:129
-#: src/views/preference/tabs/NginxSettings.vue:274
+#: src/views/preference/tabs/NginxSettings.vue:295
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:196
 #: src/views/stream/components/ConfigName.vue:52
@@ -453,7 +467,7 @@ msgstr "저장"
 #: src/views/preference/components/AuthSettings/Passkey.vue:142
 #: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:317
 #: src/views/preference/tabs/NginxSettings.vue:46
-#: src/views/preference/tabs/NginxSettings.vue:278
+#: src/views/preference/tabs/NginxSettings.vue:299
 #: src/views/site/components/SiteStatusSelect.vue:124
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:53
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:165
@@ -477,8 +491,7 @@ msgstr "리로드"
 #: src/views/notification/Notification.vue:38
 #: src/views/preference/tabs/AuthSettings.vue:128
 #: src/views/preference/tabs/CertSettings.vue:82
-#: src/views/site/site_list/SiteList.vue:210
-#: src/views/stream/StreamList.vue:99
+#: src/views/site/site_list/SiteList.vue:210 src/views/stream/StreamList.vue:99
 msgid "No"
 msgstr "아니요"
 
@@ -488,7 +501,7 @@ msgstr "아니요"
 #: src/components/Notification/Notification.vue:116 src/language/curd.ts:15
 #: src/views/backup/components/BackupCreator.vue:149
 #: src/views/notification/Notification.vue:39
-#: src/views/preference/components/NginxHostSetup/checks.ts:65
+#: src/views/preference/components/NginxHostSetup/checks.ts:120
 #: src/views/site/components/SiteStatusSelect.vue:123
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:52
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:164
@@ -577,9 +590,8 @@ msgid "No Action"
 msgstr "작업 없음"
 
 #: src/components/NamespaceRender/NamespaceRender.vue:44
-#: src/components/NamespaceTabs/NamespaceTabs.vue:141
-#: src/constants/index.ts:39 src/views/node/Node.vue:209
-#: src/views/node/Node.vue:217
+#: src/components/NamespaceTabs/NamespaceTabs.vue:141 src/constants/index.ts:39
+#: src/views/node/Node.vue:209 src/views/node/Node.vue:217
 msgid "Reload Nginx"
 msgstr "Nginx 다시 로드"
 
@@ -749,7 +761,9 @@ msgstr "이 지시문을 제거하시겠습니까?"
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:138
 msgid "Cannot delete server_name while DNS is linked. Clear DNS link first."
-msgstr "DNS가 연결된 상태에서는 server_name을 삭제할 수 없습니다. 먼저 DNS 연결을 해제하세요."
+msgstr ""
+"DNS가 연결된 상태에서는 server_name을 삭제할 수 없습니다. 먼저 DNS 연결을 해"
+"제하세요."
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:153
 #: src/components/NgxConfigEditor/LocationEditor.vue:116
@@ -802,12 +816,14 @@ msgstr "이 서버에서 access_log 지시문을 제거하세요"
 
 #: src/components/NgxConfigEditor/LogEntry.vue:154
 msgid ""
-"Write an access_log directive for this server, so its requests can be viewed"
-" and analysed separately"
-msgstr "이 서버의 access_log 지시어를 작성하여 요청을 개별적으로 보고 분석할 수 있도록 합니다."
+"Write an access_log directive for this server, so its requests can be viewed "
+"and analysed separately"
+msgstr ""
+"이 서버의 access_log 지시어를 작성하여 요청을 개별적으로 보고 분석할 수 있도"
+"록 합니다."
 
-#: src/components/NgxConfigEditor/LogEntry.vue:163
-#: src/language/constants.ts:64 src/views/nginx_log/NginxLogList.vue:150
+#: src/components/NgxConfigEditor/LogEntry.vue:163 src/language/constants.ts:64
+#: src/views/nginx_log/NginxLogList.vue:150
 msgid "Access Log"
 msgstr "액세스 로그"
 
@@ -855,8 +871,7 @@ msgstr "서버 추가"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:97 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:54
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:119
-#: src/views/site/site_list/SiteList.vue:186
-#: src/views/stream/StreamList.vue:81
+#: src/views/site/site_list/SiteList.vue:186 src/views/stream/StreamList.vue:81
 msgid "Add"
 msgstr "추가"
 
@@ -980,7 +995,8 @@ msgstr "자동 백업 구성 오류"
 msgid ""
 "Storage configuration validation failed for backup task %{backup_name}, "
 "error: %{error}"
-msgstr "백업 작업 %{backup_name}에 대한 저장소 구성 유효성 검사 실패, 오류: %{error}"
+msgstr ""
+"백업 작업 %{backup_name}에 대한 저장소 구성 유효성 검사 실패, 오류: %{error}"
 
 #: src/components/Notification/notifications.ts:29
 msgid "Auto Backup Failed"
@@ -1005,11 +1021,11 @@ msgstr "자동 백업 완료"
 
 #: src/components/Notification/notifications.ts:38
 msgid "Backup task %{backup_name} completed successfully, file: %{file_path}"
-msgstr "백업 작업 %{backup_name} 이(가) 성공적으로 완료되었습니다, 파일: %{file_path}"
+msgstr ""
+"백업 작업 %{backup_name} 이(가) 성공적으로 완료되었습니다, 파일: %{file_path}"
 
 #: src/components/Notification/notifications.ts:41
-#: src/components/Notification/notifications.ts:49
-#: src/language/constants.ts:35
+#: src/components/Notification/notifications.ts:49 src/language/constants.ts:35
 msgid "Renew Certificate Success"
 msgstr "인증서 갱신 성공"
 
@@ -1018,8 +1034,7 @@ msgstr "인증서 갱신 성공"
 msgid "Certificate %{name} renewed successfully"
 msgstr "인증서 %{name} 갱신 성공"
 
-#: src/components/Notification/notifications.ts:45
-#: src/language/constants.ts:36
+#: src/components/Notification/notifications.ts:45 src/language/constants.ts:36
 msgid "Renew Certificate Error"
 msgstr "인증서 갱신 오류"
 
@@ -1027,8 +1042,7 @@ msgstr "인증서 갱신 오류"
 msgid "Certificate %{name} renewal failed: %{error}"
 msgstr "인증서 %{name} 갱신 실패: %{error}"
 
-#: src/components/Notification/notifications.ts:53
-#: src/language/constants.ts:39
+#: src/components/Notification/notifications.ts:53 src/language/constants.ts:39
 msgid "Sync Certificate Error"
 msgstr "인증서 동기화 오류"
 
@@ -1036,8 +1050,7 @@ msgstr "인증서 동기화 오류"
 msgid "Sync Certificate %{cert_name} to %{node_name} failed"
 msgstr "인증서 %{cert_name}을(를) %{node_name}에 동기화하지 못했습니다"
 
-#: src/components/Notification/notifications.ts:57
-#: src/language/constants.ts:38
+#: src/components/Notification/notifications.ts:57 src/language/constants.ts:38
 msgid "Sync Certificate Success"
 msgstr "인증서 동기화 성공"
 
@@ -1045,8 +1058,7 @@ msgstr "인증서 동기화 성공"
 msgid "Sync Certificate %{cert_name} to %{node_name} successfully"
 msgstr "인증서 %{cert_name}을(를) %{node_name}에 성공적으로 동기화했습니다"
 
-#: src/components/Notification/notifications.ts:61
-#: src/language/constants.ts:45
+#: src/components/Notification/notifications.ts:61 src/language/constants.ts:45
 msgid "Sync Config Error"
 msgstr "구성 동기화 오류"
 
@@ -1054,8 +1066,7 @@ msgstr "구성 동기화 오류"
 msgid "Sync config %{config_name} to %{node_name} failed"
 msgstr "구성 %{config_name}을(를) %{node_name}에 동기화하지 못했습니다"
 
-#: src/components/Notification/notifications.ts:65
-#: src/language/constants.ts:44
+#: src/components/Notification/notifications.ts:65 src/language/constants.ts:44
 msgid "Sync Config Success"
 msgstr "구성 동기화 성공"
 
@@ -1063,8 +1074,7 @@ msgstr "구성 동기화 성공"
 msgid "Sync config %{config_name} to %{node_name} successfully"
 msgstr "구성 %{config_name}을(를) %{node_name}에 성공적으로 동기화했습니다"
 
-#: src/components/Notification/notifications.ts:69
-#: src/language/constants.ts:42
+#: src/components/Notification/notifications.ts:69 src/language/constants.ts:42
 msgid "Rename Remote Config Error"
 msgstr "원격 구성 이름 변경 오류"
 
@@ -1072,8 +1082,7 @@ msgstr "원격 구성 이름 변경 오류"
 msgid "Rename %{orig_path} to %{new_path} on %{node_name} failed"
 msgstr "%{node_name}에서 %{orig_path}을(를) %{new_path}(으)로 이름 변경 실패"
 
-#: src/components/Notification/notifications.ts:73
-#: src/language/constants.ts:41
+#: src/components/Notification/notifications.ts:73 src/language/constants.ts:41
 msgid "Rename Remote Config Success"
 msgstr "원격 구성 이름 변경 성공"
 
@@ -1105,8 +1114,7 @@ msgstr "외부 알림 테스트"
 msgid "This is a test message sent at %{timestamp} from Nginx UI."
 msgstr "이것은 nginx ui에서 %{timestamp}에서 전송 된 테스트 메시지입니다."
 
-#: src/components/Notification/notifications.ts:89
-#: src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:89 src/language/constants.ts:50
 msgid "Delete Remote Site Error"
 msgstr "원격 사이트 삭제 오류"
 
@@ -1114,8 +1122,7 @@ msgstr "원격 사이트 삭제 오류"
 msgid "Delete site %{name} from %{node} failed"
 msgstr "%{node}에서 사이트 %{name} 삭제 실패"
 
-#: src/components/Notification/notifications.ts:93
-#: src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:93 src/language/constants.ts:49
 msgid "Delete Remote Site Success"
 msgstr "원격 사이트 삭제 성공"
 
@@ -1123,8 +1130,7 @@ msgstr "원격 사이트 삭제 성공"
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "%{node}에서 사이트 %{name} 삭제 성공"
 
-#: src/components/Notification/notifications.ts:97
-#: src/language/constants.ts:52
+#: src/components/Notification/notifications.ts:97 src/language/constants.ts:52
 msgid "Disable Remote Site Error"
 msgstr "원격 사이트 비활성화 오류"
 
@@ -1198,7 +1204,9 @@ msgstr "원격 사이트 이름 변경 오류"
 
 #: src/components/Notification/notifications.ts:130
 msgid "Rename site %{name} to %{new_name} on %{node} failed"
-msgstr "%{node}에서 사이트 %{name}을(를) %{new_name}(으)로 이름 변경하는 데 실패했습니다"
+msgstr ""
+"%{node}에서 사이트 %{name}을(를) %{new_name}(으)로 이름 변경하는 데 실패했습"
+"니다"
 
 #: src/components/Notification/notifications.ts:133
 #: src/language/constants.ts:55
@@ -1281,7 +1289,9 @@ msgstr "원격 스트림 이름 변경 오류"
 
 #: src/components/Notification/notifications.ts:170
 msgid "Rename stream %{name} to %{new_name} on %{node} failed"
-msgstr "%{node}에서 스트림 %{name}을(를) %{new_name}(으)로 이름 변경하는 데 실패했습니다"
+msgstr ""
+"%{node}에서 스트림 %{name}을(를) %{new_name}(으)로 이름 변경하는 데 실패했습"
+"니다"
 
 #: src/components/Notification/notifications.ts:173
 msgid "Rename Remote Stream Success"
@@ -1315,8 +1325,8 @@ msgstr "모든 복구 코드가 사용되었습니다"
 #: src/components/Notification/notifications.ts:186
 #: src/language/constants.ts:59
 msgid ""
-"Please generate new recovery codes in the preferences immediately to prevent"
-" lockout."
+"Please generate new recovery codes in the preferences immediately to prevent "
+"lockout."
 msgstr "잠금을 방지하려면 설정에서 즉시 새로운 복구 코드를 생성하세요."
 
 #: src/components/PortScanner/PortScannerCompact.vue:31
@@ -1412,7 +1422,9 @@ msgstr "Nginx 로그 인덱싱 중..."
 msgid ""
 "Legacy recovery code is deprecated. Generate new recovery codes to keep "
 "account recovery secure."
-msgstr "기존 복구 코드는 더 이상 사용되지 않습니다. 계정 복구 보안을 유지하려면 새 복구 코드를 생성하세요."
+msgstr ""
+"기존 복구 코드는 더 이상 사용되지 않습니다. 계정 복구 보안을 유지하려면 새 복"
+"구 코드를 생성하세요."
 
 #: src/components/RecoveryCodeMigrationWarning/RecoveryCodeMigrationWarning.vue:45
 #: src/components/RecoveryCodeMigrationWarning/RecoveryCodeMigrationWarning.vue:69
@@ -1460,7 +1472,9 @@ msgstr "비밀 설치"
 msgid ""
 "Frontend debug mode is active. Secret verification is mocked locally and no "
 "backend request is sent."
-msgstr "프론트엔드 디버그 모드가 활성화되었습니다. 비밀 검증은 로컬에서 모의되며 백엔드 요청은 전송되지 않습니다."
+msgstr ""
+"프론트엔드 디버그 모드가 활성화되었습니다. 비밀 검증은 로컬에서 모의되며 백엔"
+"드 요청은 전송되지 않습니다."
 
 #: src/components/SelfCheck/store.ts:24
 msgid "Install Flow Preview"
@@ -1481,12 +1495,11 @@ msgid ""
 "Check if HTTPS is enabled. Using HTTP outside localhost is insecure and "
 "prevents using Passkeys and clipboard features"
 msgstr ""
-"HTTPS가 활성화되었는지 확인하세요. localhost 외부에서 HTTP를 사용하는 것은 안전하지 않으며 Passkeys 및 클립보드 "
-"기능 사용을 방해합니다"
+"HTTPS가 활성화되었는지 확인하세요. localhost 외부에서 HTTP를 사용하는 것은 안"
+"전하지 않으며 Passkeys 및 클립보드 기능 사용을 방해합니다"
 
 #: src/components/SelfCheck/tasks/frontend/websocket.ts:19
-msgid ""
-"Support communication with the backend through the WebSocket protocol. "
+msgid "Support communication with the backend through the WebSocket protocol. "
 msgstr "WebSocket 프로토콜을 통해 백엔드와의 통신을 지원합니다."
 
 #: src/components/SensitiveString/SensitiveInput.vue:67
@@ -1564,8 +1577,7 @@ msgstr "잘못된 파일 객체"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:158
 msgid ""
-"Frontend debug mode: restore flow completed without sending a backend "
-"request"
+"Frontend debug mode: restore flow completed without sending a backend request"
 msgstr "프론트엔드 디버그 모드: 백엔드 요청 없이 복원 흐름 완료"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:159
@@ -1591,14 +1603,17 @@ msgid ""
 "you have a valid backup file and security token, and carefully select what "
 "to restore."
 msgstr ""
-"경고: 복원 작업은 현재 구성을 덮어씁니다. 유효한 백업 파일과 보안 토큰이 있는지 확인하고 복원할 내용을 신중하게 선택하십시오."
+"경고: 복원 작업은 현재 구성을 덮어씁니다. 유효한 백업 파일과 보안 토큰이 있는"
+"지 확인하고 복원할 내용을 신중하게 선택하십시오."
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:204
 #: src/components/SystemRestore/SystemRestoreContent.vue:287
 msgid ""
 "Only backups created by versions that support signed manifests can be "
 "restored. Legacy backups are no longer supported."
-msgstr "서명된 매니페스트를 지원하는 버전에서 생성된 백업만 복원할 수 있습니다. 레거시 백업은 더 이상 지원되지 않습니다."
+msgstr ""
+"서명된 매니페스트를 지원하는 버전에서 생성된 백업만 복원할 수 있습니다. 레거"
+"시 백업은 더 이상 지원되지 않습니다."
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:220
 #: src/components/SystemRestore/SystemRestoreContent.vue:303
@@ -1635,7 +1650,9 @@ msgstr "Nginx 설정 복원"
 msgid ""
 "This will restore all Nginx configuration files. Nginx will restart after "
 "the restoration is complete."
-msgstr "이렇게 하면 모든 Nginx 구성 파일이 복원됩니다. 복원이 완료된 후 Nginx가 재시작됩니다."
+msgstr ""
+"이렇게 하면 모든 Nginx 구성 파일이 복원됩니다. 복원이 완료된 후 Nginx가 재시"
+"작됩니다."
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:260
 #: src/components/SystemRestore/SystemRestoreContent.vue:343
@@ -1647,7 +1664,9 @@ msgstr "Nginx UI 설정 복원"
 msgid ""
 "This will restore configuration files and database. Nginx UI will restart "
 "after the restoration is complete."
-msgstr "이 작업은 구성 파일과 데이터베이스를 복원합니다. 복원이 완료되면 Nginx UI가 재시작됩니다."
+msgstr ""
+"이 작업은 구성 파일과 데이터베이스를 복원합니다. 복원이 완료되면 Nginx UI가 "
+"재시작됩니다."
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:272
 #: src/components/SystemRestore/SystemRestoreContent.vue:355
@@ -1660,8 +1679,8 @@ msgstr "자동 재시작"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:368
 msgid ""
-"Nginx UI configuration has been restored and will restart automatically in a"
-" few seconds."
+"Nginx UI configuration has been restored and will restart automatically in a "
+"few seconds."
 msgstr "Nginx UI 설정이 복원되었으며 몇 초 후에 자동으로 재시작됩니다."
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:371
@@ -1676,7 +1695,9 @@ msgstr "이제 이 대화 상자를 닫을 수 있습니다"
 msgid ""
 "Your account still uses a legacy recovery code. Generate new recovery codes "
 "after verification to keep account recovery secure."
-msgstr "계정이 여전히 레거시 복구 코드를 사용하고 있습니다. 확인 후 새 복구 코드를 생성하여 계정 복구를 안전하게 유지하세요."
+msgstr ""
+"계정이 여전히 레거시 복구 코드를 사용하고 있습니다. 확인 후 새 복구 코드를 생"
+"성하여 계정 복구를 안전하게 유지하세요."
 
 #: src/components/TwoFA/Authorization.vue:80
 msgid "Input the recovery code:"
@@ -1715,7 +1736,8 @@ msgid ""
 "Your legacy recovery code has been used and cannot be used again. Generate "
 "new recovery codes now to keep account recovery available."
 msgstr ""
-"이전 복구 코드가 이미 사용되어 다시 사용할 수 없습니다. 계정 복구를 계속 사용할 수 있도록 지금 새 복구 코드를 생성하세요."
+"이전 복구 코드가 이미 사용되어 다시 사용할 수 없습니다. 계정 복구를 계속 사용"
+"할 수 있도록 지금 새 복구 코드를 생성하세요."
 
 #: src/components/TwoFA/use2FAModal.ts:50
 msgid "Go to Recovery Codes"
@@ -1726,7 +1748,7 @@ msgid "Later"
 msgstr "나중에"
 
 #: src/components/TwoFA/use2FAModal.ts:84
-#: src/views/preference/NginxHostSetup.vue:109
+#: src/views/preference/NginxHostSetup.vue:120
 #: src/views/preference/tabs/NginxSettings.vue:43
 msgid "Two-factor authentication required"
 msgstr "2단계 인증이 필요합니다"
@@ -2169,7 +2191,9 @@ msgstr "백업 무결성 검증 실패"
 msgid ""
 "This backup uses an unsupported legacy format. Please create a new backup "
 "with a newer version before restoring."
-msgstr "이 백업은 지원되지 않는 레거시 형식을 사용합니다. 복원하기 전에 새 버전으로 새 백업을 생성하십시오."
+msgstr ""
+"이 백업은 지원되지 않는 레거시 형식을 사용합니다. 복원하기 전에 새 버전으로 "
+"새 백업을 생성하십시오."
 
 #: src/constants/errors/backup.ts:63
 msgid "Backup manifest is missing required file entry: {0}"
@@ -2216,8 +2240,8 @@ msgid ""
 "Path not in granted access paths: {0}. Add it to [backup] GrantedAccessPath "
 "in app.ini and restart."
 msgstr ""
-"경로가 허용된 액세스 경로에 포함되지 않았습니다: {0}. app.ini 의 [backup] GrantedAccessPath 에 추가한 "
-"후 다시 시작하세요."
+"경로가 허용된 액세스 경로에 포함되지 않았습니다: {0}. app.ini 의 [backup] "
+"GrantedAccessPath 에 추가한 후 다시 시작하세요."
 
 #: src/constants/errors/backup.ts:74
 msgid "Backup path does not exist: {0}"
@@ -2424,14 +2448,12 @@ msgid "IP address certificates require the HTTP-01 challenge"
 msgstr "IP 주소 인증서에는 HTTP-01 챌린지가 필요합니다"
 
 #: src/constants/errors/cert.ts:48
-msgid ""
-"Certificate profile is not available from the selected ACME server: {0}"
+msgid "Certificate profile is not available from the selected ACME server: {0}"
 msgstr "선택한 ACME 서버에서 인증서 프로필을 사용할 수 없습니다: {0}"
 
 #: src/constants/errors/cert.ts:49
 msgid ""
-"Wildcard domains and IP addresses cannot be requested in the same "
-"certificate"
+"Wildcard domains and IP addresses cannot be requested in the same certificate"
 msgstr "와일드카드 도메인과 IP 주소는 동일한 인증서에 요청할 수 없습니다."
 
 #: src/constants/errors/config.ts:2
@@ -2610,7 +2632,9 @@ msgstr "폼 분석 실패"
 
 #: src/constants/errors/nginx_log.indexer.ts:2
 msgid "Log parser is not initialized; call indexer.InitLogParser() before use"
-msgstr "로그 파서가 초기화되지 않았습니다. 사용 전에 indexer.InitLogParser()를 호출하세요"
+msgstr ""
+"로그 파서가 초기화되지 않았습니다. 사용 전에 indexer.InitLogParser()를 호출하"
+"세요"
 
 #: src/constants/errors/nginx_log.parser.ts:2
 msgid "Empty log line"
@@ -2630,9 +2654,9 @@ msgstr "잘못된 타임스탬프 형식"
 
 #: src/constants/errors/nginx_log.ts:2
 msgid ""
-"The log path is not under the paths in "
-"settings.NginxSettings.LogDirWhiteList"
-msgstr "로그 경로가 settings.NginxSettings.LogDirWhiteList의 경로에 속하지 않습니다"
+"The log path is not under the paths in settings.NginxSettings.LogDirWhiteList"
+msgstr ""
+"로그 경로가 settings.NginxSettings.LogDirWhiteList의 경로에 속하지 않습니다"
 
 #: src/constants/errors/nginx_log.ts:3
 msgid "ServerIdx out of range"
@@ -2652,16 +2676,16 @@ msgstr "지시어 매개변수가 비어 있습니다"
 
 #: src/constants/errors/nginx_log.ts:7
 msgid ""
-"Settings.NginxLogSettings.ErrorLogPath is empty, refer to "
-"https://nginxui.com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://nginxui."
+"com/guide/config-nginx.html for more information"
 msgstr ""
 "Settings.NginxLogSettings.ErrorLogPath가 비어 있습니다. 자세한 내용은 "
 "https://nginxui.com/guide/config-nginx.html을 참조하세요"
 
 #: src/constants/errors/nginx_log.ts:8
 msgid ""
-"Settings.NginxLogSettings.AccessLogPath is empty, refer to "
-"https://nginxui.com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://nginxui."
+"com/guide/config-nginx.html for more information"
 msgstr ""
 "Settings.NginxLogSettings.AccessLogPath이 비어 있습니다. 자세한 내용은 "
 "https://nginxui.com/guide/config-nginx.html을 참조하십시오"
@@ -2899,8 +2923,8 @@ msgid ""
 "GeoLite2 database not found at {0}. Log indexing requires GeoLite2 database "
 "for geographic IP analysis"
 msgstr ""
-"GeoLite2 데이터베이스가 {0}에서 찾을 수 없습니다. 로그 색인화는 지리적 IP 분석을 위해 GeoLite2 데이터베이스를 필요로"
-" 합니다"
+"GeoLite2 데이터베이스가 {0}에서 찾을 수 없습니다. 로그 색인화는 지리적 IP 분"
+"석을 위해 GeoLite2 데이터베이스를 필요로 합니다"
 
 #: src/constants/errors/self_check.ts:25
 msgid "Failed to read bundled nginx-ui.conf: {0}"
@@ -2908,7 +2932,9 @@ msgstr "번들된 nginx-ui.conf 를 읽지 못했습니다: {0}"
 
 #: src/constants/errors/self_check.ts:26
 msgid "Bundled nginx-ui.conf is missing the WebSocket reverse-proxy fix"
-msgstr "번들로 제공되는 nginx-ui.conf 에 WebSocket 역방향 프록시 수정이 누락되었습니다"
+msgstr ""
+"번들로 제공되는 nginx-ui.conf 에 WebSocket 역방향 프록시 수정이 누락되었습니"
+"다"
 
 #: src/constants/errors/self_check.ts:27
 msgid "Patched nginx-ui.conf is invalid: {0}"
@@ -3323,7 +3349,7 @@ msgstr "보기"
 
 #: src/language/curd.ts:8 src/views/dns/components/DNSRecordTable.vue:324
 #: src/views/dns/components/DNSRecordTable.vue:375
-#: src/views/preference/tabs/NginxSettings.vue:230
+#: src/views/preference/tabs/NginxSettings.vue:236
 msgid "Edit"
 msgstr "편집"
 
@@ -3404,7 +3430,7 @@ msgstr "일괄 수정"
 
 #: src/language/curd.ts:35 src/views/certificate/CertificateEditor.vue:97
 #: src/views/certificate/components/RenewCert.vue:21
-#: src/views/preference/NginxHostSetup.vue:77
+#: src/views/preference/NginxHostSetup.vue:84
 #: src/views/preference/store/index.ts:169
 #: src/views/preference/tabs/NginxSettings.vue:138
 msgid "Save successfully"
@@ -3424,8 +3450,8 @@ msgstr "수정하지 않으려면 비워 두세요"
 
 #: src/language/curd.ts:46
 msgid ""
-"This field should only contain letters, unicode characters, numbers, and "
-"-_./:"
+"This field should only contain letters, unicode characters, numbers, and -"
+"_./:"
 msgstr "이 필드에는 문자, 유니코드 문자, 숫자 및 -_./: 만 포함되어야 합니다"
 
 #: src/language/curd.ts:49
@@ -3503,7 +3529,9 @@ msgstr "확장"
 
 #: src/language/generate.ts:4
 msgid "Bundled nginx-ui.conf has WebSocket reverse-proxy fix"
-msgstr "번들로 제공되는 nginx-ui.conf 에는 WebSocket 리버스 프록시 수정 사항이 포함되어 있습니다"
+msgstr ""
+"번들로 제공되는 nginx-ui.conf 에는 WebSocket 리버스 프록시 수정 사항이 포함되"
+"어 있습니다"
 
 #: src/language/generate.ts:5
 msgid "Certificate not found: %{error}"
@@ -3516,20 +3544,22 @@ msgstr "인증서가 성공적으로 취소되었습니다"
 #: src/language/generate.ts:7
 msgid ""
 "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
-"Docker Image, please make sure the docker socket is mounted like this: `-v "
-"/var/run/docker.sock:/var/run/docker.sock`. Nginx UI official image uses "
-"/var/run/docker.sock to communicate with the host Docker Engine via Docker "
-"Client API. This feature is used to control Nginx in another container and "
-"perform container replacement rather than binary replacement during OTA "
-"upgrades of Nginx UI to ensure container dependencies are also upgraded. If "
-"you don't need this feature, please add the environment variable "
+"Docker Image, please make sure the docker socket is mounted like this: `-v /"
+"var/run/docker.sock:/var/run/docker.sock`. Nginx UI official image uses /var/"
+"run/docker.sock to communicate with the host Docker Engine via Docker Client "
+"API. This feature is used to control Nginx in another container and perform "
+"container replacement rather than binary replacement during OTA upgrades of "
+"Nginx UI to ensure container dependencies are also upgraded. If you don't "
+"need this feature, please add the environment variable "
 "NGINX_UI_IGNORE_DOCKER_SOCKET=true to the container."
 msgstr ""
-"/var/run/docker.sock이 존재하는지 확인하세요. Nginx UI 공식 Docker 이미지를 사용 중이라면 Docker "
-"소켓을 다음과 같이 마운트했는지 확인하세요: `-v /var/run/docker.sock:/var/run/docker.sock`. "
-"Nginx UI 공식 이미지는 /var/run/docker.sock을 사용하여 Docker Client API를 통해 호스트의 "
-"Docker 엔진과 통신합니다. 이 기능은 다른 컨테이너에서 Nginx를 제어하고 Nginx UI의 OTA 업그레이드 시 바이너리 교체 "
-"대신 컨테이너 교체를 수행하여 컨테이너 종속성도 업그레이드되도록 하는 데 사용됩니다. 이 기능이 필요하지 않다면 컨테이너에 환경 변수 "
+"/var/run/docker.sock이 존재하는지 확인하세요. Nginx UI 공식 Docker 이미지를 "
+"사용 중이라면 Docker 소켓을 다음과 같이 마운트했는지 확인하세요: `-v /var/"
+"run/docker.sock:/var/run/docker.sock`. Nginx UI 공식 이미지는 /var/run/"
+"docker.sock을 사용하여 Docker Client API를 통해 호스트의 Docker 엔진과 통신합"
+"니다. 이 기능은 다른 컨테이너에서 Nginx를 제어하고 Nginx UI의 OTA 업그레이드 "
+"시 바이너리 교체 대신 컨테이너 교체를 수행하여 컨테이너 종속성도 업그레이드되"
+"도록 하는 데 사용됩니다. 이 기능이 필요하지 않다면 컨테이너에 환경 변수 "
 "NGINX_UI_IGNORE_DOCKER_SOCKET=true를 추가하세요."
 
 #: src/language/generate.ts:8
@@ -3540,9 +3570,10 @@ msgid ""
 "configuration and log directories must be mounted into both containers at "
 "matching paths."
 msgstr ""
-"Nginx UI 가 구성된 Nginx 디렉터리에 임시 파일을 쓸 수 있고, 외부 Nginx 컨테이너가 동일한 경로에서 해당 파일을 볼 수"
-" 있는지 확인하십시오. Docker 소켓 접근과 ContainerName 은 제어 명령만 라우팅합니다. 구성 및 로그 디렉터리는 일치하는"
-" 경로로 두 컨테이너에 모두 마운트되어야 합니다."
+"Nginx UI 가 구성된 Nginx 디렉터리에 임시 파일을 쓸 수 있고, 외부 Nginx 컨테이"
+"너가 동일한 경로에서 해당 파일을 볼 수 있는지 확인하십시오. Docker 소켓 접근"
+"과 ContainerName 은 제어 명령만 라우팅합니다. 구성 및 로그 디렉터리는 일치하"
+"는 경로로 두 컨테이너에 모두 마운트되어야 합니다."
 
 #: src/language/generate.ts:9
 msgid ""
@@ -3551,8 +3582,9 @@ msgid ""
 "indexing. You can download it from the Preference page or manually place "
 "GeoLite2-City.mmdb in the same directory as app.ini"
 msgstr ""
-"로그 색인화가 활성화된 경우 GeoLite2 데이터베이스가 사용 가능한지 확인하세요. GeoLite2 데이터베이스는 로그 색인화에서 "
-"지리적 IP 분석에 필요합니다. 설정 페이지에서 다운로드하거나 app.ini와 같은 디렉토리에 GeoLite2-City.mmdb를 "
+"로그 색인화가 활성화된 경우 GeoLite2 데이터베이스가 사용 가능한지 확인하세"
+"요. GeoLite2 데이터베이스는 로그 색인화에서 지리적 IP 분석에 필요합니다. 설"
+"정 페이지에서 다운로드하거나 app.ini와 같은 디렉토리에 GeoLite2-City.mmdb를 "
 "수동으로 배치할 수 있습니다"
 
 #: src/language/generate.ts:10
@@ -3565,26 +3597,28 @@ msgid ""
 "Check if the nginx PID path exists. By default, this path is obtained from "
 "'nginx -V'. If it cannot be obtained, an error will be reported. In this "
 "case, you need to modify the configuration file to specify the Nginx PID "
-"path.Refer to the docs for more details: "
-"https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
+"path.Refer to the docs for more details: https://nginxui.com/zh_CN/guide/"
+"config-nginx.html#pidpath"
 msgstr ""
-"Nginx PID 경로가 존재하는지 확인하세요. 기본적으로 이 경로는 'nginx -V'에서 얻습니다. 얻을 수 없는 경우 오류가 "
-"보고됩니다. 이 경우 구성 파일을 수정하여 Nginx PID 경로를 지정해야 합니다. 자세한 내용은 문서를 참조하세요: "
-"https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
+"Nginx PID 경로가 존재하는지 확인하세요. 기본적으로 이 경로는 'nginx -V'에서 "
+"얻습니다. 얻을 수 없는 경우 오류가 보고됩니다. 이 경우 구성 파일을 수정하여 "
+"Nginx PID 경로를 지정해야 합니다. 자세한 내용은 문서를 참조하세요: https://"
+"nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
 
 #: src/language/generate.ts:12
 msgid ""
-"Check if the nginx access log path exists. By default, this path is obtained"
-" from 'nginx -V'. If it cannot be obtained or the obtained path does not "
+"Check if the nginx access log path exists. By default, this path is obtained "
+"from 'nginx -V'. If it cannot be obtained or the obtained path does not "
 "point to a valid, existing file, an error will be reported. In this case, "
-"you need to modify the configuration file to specify the access log "
-"path.Refer to the docs for more details: "
-"https://nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
-msgstr ""
-"nginx 액세스 로그 경로가 존재하는지 확인하세요. 기본적으로 이 경로는 'nginx -V'에서 가져옵니다. 가져올 수 없거나 가져온 "
-"경로가 유효한 기존 파일을 가리키지 않는 경우 오류가 보고됩니다. 이 경우 구성 파일을 수정하여 액세스 로그 경로를 지정해야 합니다. "
-"자세한 내용은 문서를 참조하세요: https://nginxui.com/zh_CN/guide/config-"
+"you need to modify the configuration file to specify the access log path."
+"Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-"
 "nginx.html#accesslogpath"
+msgstr ""
+"nginx 액세스 로그 경로가 존재하는지 확인하세요. 기본적으로 이 경로는 'nginx -"
+"V'에서 가져옵니다. 가져올 수 없거나 가져온 경로가 유효한 기존 파일을 가리키"
+"지 않는 경우 오류가 보고됩니다. 이 경우 구성 파일을 수정하여 액세스 로그 경로"
+"를 지정해야 합니다. 자세한 내용은 문서를 참조하세요: https://nginxui.com/"
+"zh_CN/guide/config-nginx.html#accesslogpath"
 
 #: src/language/generate.ts:13
 msgid "Check if the nginx configuration directory exists"
@@ -3603,10 +3637,11 @@ msgid ""
 "Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-"
 "nginx.html#errorlogpath"
 msgstr ""
-"nginx 오류 로그 경로가 존재하는지 확인하세요. 기본적으로 이 경로는 'nginx -V'에서 얻습니다. 경로를 얻을 수 없거나 얻은 "
-"경로가 유효한 기존 파일을 가리키지 않으면 오류가 보고됩니다. 이 경우 구성 파일을 수정하여 오류 로그 경로를 지정해야 합니다. 자세한 "
-"내용은 문서를 참조하세요: https://nginxui.com/zh_CN/guide/config-"
-"nginx.html#errorlogpath"
+"nginx 오류 로그 경로가 존재하는지 확인하세요. 기본적으로 이 경로는 'nginx -"
+"V'에서 얻습니다. 경로를 얻을 수 없거나 얻은 경로가 유효한 기존 파일을 가리키"
+"지 않으면 오류가 보고됩니다. 이 경우 구성 파일을 수정하여 오류 로그 경로를 지"
+"정해야 합니다. 자세한 내용은 문서를 참조하세요: https://nginxui.com/zh_CN/"
+"guide/config-nginx.html#errorlogpath"
 
 #: src/language/generate.ts:16
 msgid "Check if the nginx sbin path exists"
@@ -3628,13 +3663,16 @@ msgstr "nginx.conf에 streams-enabled 디렉토리가 포함되어 있는지 확
 msgid ""
 "Check if the sites-available and sites-enabled directories are under the "
 "nginx configuration directory"
-msgstr "nginx 설정 디렉터리에 sites-available 및 sites-enabled 디렉터리가 있는지 확인"
+msgstr ""
+"nginx 설정 디렉터리에 sites-available 및 sites-enabled 디렉터리가 있는지 확인"
 
 #: src/language/generate.ts:21
 msgid ""
-"Check if the streams-available and streams-enabled directories are under the"
-" nginx configuration directory"
-msgstr "nginx 구성 디렉터리 아래에 streams-available 및 streams-enabled 디렉터리가 있는지 확인하세요"
+"Check if the streams-available and streams-enabled directories are under the "
+"nginx configuration directory"
+msgstr ""
+"nginx 구성 디렉터리 아래에 streams-available 및 streams-enabled 디렉터리가 있"
+"는지 확인하세요"
 
 #: src/language/generate.ts:22
 msgid "Conf.d directory exists"
@@ -3666,8 +3704,9 @@ msgid ""
 "docker container, please refer to https://nginxui.com/zh_CN/guide/config-"
 "nginx-log.html for more information."
 msgstr ""
-"로그 파일 %{log_path}은(는) 일반 파일이 아닙니다. Docker 컨테이너에서 nginx-ui를 사용 중이라면 자세한 내용은 "
-"https://nginxui.com/zh_CN/guide/config-nginx-log.html을 참조하십시오."
+"로그 파일 %{log_path}은(는) 일반 파일이 아닙니다. Docker 컨테이너에서 nginx-"
+"ui를 사용 중이라면 자세한 내용은 https://nginxui.com/zh_CN/guide/config-"
+"nginx-log.html을 참조하십시오."
 
 #: src/language/generate.ts:29
 msgid "Nginx PID path exists"
@@ -3715,19 +3754,21 @@ msgstr "스트림 디렉터리가 존재합니다"
 
 #: src/language/generate.ts:40
 msgid ""
-"When the container is behind an outer reverse proxy that terminates TLS "
-"(e.g. host nginx, Cloudflare), the bundled conf.d/nginx-ui.conf must trust "
-"the inbound X-Forwarded-Proto/Host headers; otherwise WebSocket origin "
-"checks fail. Older deployments that persisted /etc/nginx may still have the "
-"unfixed version."
+"When the container is behind an outer reverse proxy that terminates TLS (e."
+"g. host nginx, Cloudflare), the bundled conf.d/nginx-ui.conf must trust the "
+"inbound X-Forwarded-Proto/Host headers; otherwise WebSocket origin checks "
+"fail. Older deployments that persisted /etc/nginx may still have the unfixed "
+"version."
 msgstr ""
-"컨테이너가 TLS를 종료하는 외부 리버스 프록시(예: 호스트 nginx, Cloudflare) 뒤에 있는 경우, 번들 "
-"conf.d/nginx-ui.conf는 인바운드 X-Forwarded-Proto/Host 헤더를 신뢰해야 합니다. 그렇지 않으면 "
-"WebSocket 원본 검사가 실패합니다. /etc/nginx를 유지한 이전 배포에는 아직 수정되지 않은 버전이 남아 있을 수 있습니다."
+"컨테이너가 TLS를 종료하는 외부 리버스 프록시(예: 호스트 nginx, Cloudflare) 뒤"
+"에 있는 경우, 번들 conf.d/nginx-ui.conf는 인바운드 X-Forwarded-Proto/Host 헤"
+"더를 신뢰해야 합니다. 그렇지 않으면 WebSocket 원본 검사가 실패합니다. /etc/"
+"nginx를 유지한 이전 배포에는 아직 수정되지 않은 버전이 남아 있을 수 있습니다."
 
 #: src/language/generate.ts:41
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
-msgstr "[Nginx UI] ACME 사용자: %{name}, 이메일: %{email}, CA 디렉터리: %{caDir}"
+msgstr ""
+"[Nginx UI] ACME 사용자: %{name}, 이메일: %{email}, CA 디렉터리: %{caDir}"
 
 #: src/language/generate.ts:42
 msgid "[Nginx UI] Backing up current certificate for later revocation"
@@ -3744,11 +3785,11 @@ msgstr "[Nginx UI] 인증서가 성공적으로 취소되었습니다"
 #: src/language/generate.ts:45
 msgid ""
 "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
-msgstr "[Nginx UI] 서버에 인증서가 사용되었습니다, 서버 TLS 인증서 다시 불러오는 중"
+msgstr ""
+"[Nginx UI] 서버에 인증서가 사용되었습니다, 서버 TLS 인증서 다시 불러오는 중"
 
 #: src/language/generate.ts:46
-msgid ""
-"[Nginx UI] Creating client facilitates communication with the CA server"
+msgid "[Nginx UI] Creating client facilitates communication with the CA server"
 msgstr "[Nginx UI] CA 서버와의 통신을 용이하게 하는 클라이언트 생성"
 
 #: src/language/generate.ts:47
@@ -3827,7 +3868,6 @@ msgstr "홈"
 #: src/routes/modules/auth.ts:8
 #: src/views/install/components/InstallForm.vue:120
 #: src/views/install/components/InstallHeader.vue:9
-#: src/views/preference/components/NginxHostSetup/Wizard.vue:39
 #: src/views/system/Upgrade.vue:150
 msgid "Install"
 msgstr "설치"
@@ -3850,8 +3890,7 @@ msgstr "자동 백업"
 msgid "Certificates"
 msgstr "인증서"
 
-#: src/routes/modules/certificates.ts:20
-#: src/views/certificate/ACMEUser.vue:140
+#: src/routes/modules/certificates.ts:20 src/views/certificate/ACMEUser.vue:140
 #: src/views/certificate/components/ACMEUserSelector.vue:63
 msgid "ACME User"
 msgstr "ACME 사용자"
@@ -3967,7 +4006,7 @@ msgstr "환경설정"
 
 #: src/routes/modules/preference.ts:19
 msgid "Host SSH Setup"
-msgstr ""
+msgstr "호스트 SSH 설정"
 
 #: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:158
 msgid "Manage Sites"
@@ -4015,8 +4054,7 @@ msgstr "터미널"
 msgid "Manage Users"
 msgstr "사용자 관리"
 
-#: src/routes/modules/user.ts:19
-#: src/views/preference/tabs/NginxSettings.vue:44
+#: src/routes/modules/user.ts:19 src/views/preference/tabs/NginxSettings.vue:44
 msgid "User Profile"
 msgstr "사용자 프로필"
 
@@ -4129,7 +4167,7 @@ msgstr "대기 중"
 #: src/views/backup/AutoBackup/AutoBackup.vue:250
 #: src/views/certificate/CertificateList/certColumns.tsx:87
 #: src/views/dns/DNSGroupRecordManager.vue:1184
-#: src/views/preference/components/NginxHostSetup/checks.ts:69
+#: src/views/preference/components/NginxHostSetup/checks.ts:124
 msgid "Failed"
 msgstr "실패"
 
@@ -4380,7 +4418,9 @@ msgstr "시스템 백업"
 msgid ""
 "Create system backups including Nginx configuration and Nginx UI settings. "
 "Backup files will be automatically downloaded to your computer."
-msgstr "Nginx 구성 및 Nginx UI 설정을 포함한 시스템 백업을 생성합니다. 백업 파일은 자동으로 컴퓨터에 다운로드됩니다."
+msgstr ""
+"Nginx 구성 및 Nginx UI 설정을 포함한 시스템 백업을 생성합니다. 백업 파일은 자"
+"동으로 컴퓨터에 다운로드됩니다."
 
 #: src/views/backup/components/BackupCreator.vue:86
 msgid "Create Backup"
@@ -4402,7 +4442,9 @@ msgstr "복사 완료!"
 msgid ""
 "This token will only be shown once and cannot be retrieved later. Please "
 "make sure to save it in a secure location."
-msgstr "이 토큰은 한 번만 표시되며 나중에 다시 가져올 수 없습니다. 반드시 안전한 곳에 저장하세요."
+msgstr ""
+"이 토큰은 한 번만 표시되며 나중에 다시 가져올 수 없습니다. 반드시 안전한 곳"
+"에 저장하세요."
 
 #: src/views/backup/components/SystemRestore.vue:9
 #: src/views/install/components/InstallView.vue:60
@@ -4427,7 +4469,9 @@ msgstr "CA 디렉터리 URL을 선택하거나 입력하세요"
 msgid ""
 "Select a predefined CA directory or enter a custom one. Leave blank to use "
 "the default CA directory."
-msgstr "미리 정의된 CA 디렉터리를 선택하거나 사용자 지정 디렉터리를 입력하세요. 기본 CA 디렉터리를 사용하려면 비워 두세요."
+msgstr ""
+"미리 정의된 CA 디렉터리를 선택하거나 사용자 지정 디렉터리를 입력하세요. 기본 "
+"CA 디렉터리를 사용하려면 비워 두세요."
 
 #: src/views/certificate/ACMEUser.vue:54
 msgid "Proxy"
@@ -4437,14 +4481,15 @@ msgstr "프록시"
 msgid ""
 "Register a user or use this account to issue a certificate through an HTTP "
 "proxy."
-msgstr "사용자를 등록하거나 이 계정을 사용하여 HTTP 프록시를 통해 인증서를 발급합니다."
+msgstr ""
+"사용자를 등록하거나 이 계정을 사용하여 HTTP 프록시를 통해 인증서를 발급합니"
+"다."
 
 #: src/views/certificate/ACMEUser.vue:61
 msgid "Leave blank if you don't need this."
 msgstr "필요하지 않으면 비워 두세요."
 
-#: src/views/certificate/ACMEUser.vue:72
-#: src/views/certificate/ACMEUser.vue:157
+#: src/views/certificate/ACMEUser.vue:72 src/views/certificate/ACMEUser.vue:157
 msgid "Invalid"
 msgstr "무효"
 
@@ -4454,9 +4499,11 @@ msgstr "EAB 키 ID"
 
 #: src/views/certificate/ACMEUser.vue:83
 msgid ""
-"External Account Binding Key ID (optional). Required for some ACME providers"
-" like ZeroSSL."
-msgstr "외부 계정 바인딩 키 ID (선택 사항). ZeroSSL과 같은 일부 ACME 공급자에 필요합니다."
+"External Account Binding Key ID (optional). Required for some ACME providers "
+"like ZeroSSL."
+msgstr ""
+"외부 계정 바인딩 키 ID (선택 사항). ZeroSSL과 같은 일부 ACME 공급자에 필요합"
+"니다."
 
 #: src/views/certificate/ACMEUser.vue:85 src/views/certificate/ACMEUser.vue:98
 msgid "Leave blank if not required by your ACME provider"
@@ -4470,7 +4517,8 @@ msgstr "EAB HMAC 키"
 msgid ""
 "External Account Binding HMAC Key (optional). Should be in Base64 URL "
 "encoding format."
-msgstr "외부 계정 바인딩 HMAC 키 (선택 사항). Base64 URL 인코딩 형식이어야 합니다."
+msgstr ""
+"외부 계정 바인딩 HMAC 키 (선택 사항). Base64 URL 인코딩 형식이어야 합니다."
 
 #: src/views/certificate/ACMEUser.vue:104
 msgid "Register On Startup"
@@ -4617,7 +4665,8 @@ msgstr "이 자동 인증 항목이 유효하지 않습니다. 제거해주세�
 
 #: src/views/certificate/components/AutoCertManagement.vue:55
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
-msgstr "도메인 목록이 비어 있습니다. %{config}에 대한 자동 인증서를 다시 열어보세요"
+msgstr ""
+"도메인 목록이 비어 있습니다. %{config}에 대한 자동 인증서를 다시 열어보세요"
 
 #: src/views/certificate/components/AutoCertManagement.vue:67
 #: src/views/certificate/components/SelfSignedCertManagement.vue:25
@@ -4632,8 +4681,8 @@ msgstr[1] "인증서 상태"
 #: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
 #: src/views/dns/DNSGroupRecordManager.vue:1546
 #: src/views/dns/DNSRecordManager.vue:258 src/views/nginx_log/NginxLog.vue:129
-#: src/views/preference/NginxHostSetup.vue:118
-#: src/views/preference/NginxHostSetup.vue:136
+#: src/views/preference/NginxHostSetup.vue:129
+#: src/views/preference/NginxHostSetup.vue:147
 #: src/views/site/site_add/SiteAdd.vue:260
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:189
 #: src/views/stream/components/StreamEditor.vue:147
@@ -4659,7 +4708,7 @@ msgstr "클립보드에 복사하지 못했습니다"
 #: src/views/certificate/components/CertificateBasicInfo.vue:80
 #: src/views/certificate/components/CertificateBasicInfo.vue:114
 #: src/views/preference/components/NginxHostSetup/PathField.vue:60
-#: src/views/preference/tabs/NginxSettings.vue:261
+#: src/views/preference/tabs/NginxSettings.vue:282
 msgid "This field is required"
 msgstr "이 필드는 필수입니다"
 
@@ -4848,7 +4897,9 @@ msgstr "도메인 추가"
 msgid ""
 "All selected subdomains must belong to the same DNS Provider, otherwise the "
 "certificate application will fail."
-msgstr "선택한 모든 서브도메인은 동일한 DNS 공급자에 속해야 합니다. 그렇지 않으면 인증서 신청이 실패합니다."
+msgstr ""
+"선택한 모든 서브도메인은 동일한 DNS 공급자에 속해야 합니다. 그렇지 않으면 인"
+"증서 신청이 실패합니다."
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:223
 #: src/views/install/components/InstallView.vue:212
@@ -4861,8 +4912,8 @@ msgstr "다음"
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:259
 #: src/views/certificate/components/RetryCert.vue:52
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:77
-#: src/views/preference/NginxHostSetup.vue:133
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:117
+#: src/views/preference/NginxHostSetup.vue:144
 msgid "Retry"
 msgstr "재시도"
 
@@ -4900,7 +4951,9 @@ msgstr "인증서 삭제"
 msgid ""
 "This operation will only remove the certificate from the database. The "
 "certificate files on the file system will not be deleted."
-msgstr "이 작업은 데이터베이스에서만 인증서를 제거합니다. 파일 시스템의 인증서 파일은 삭제되지 않습니다."
+msgstr ""
+"이 작업은 데이터베이스에서만 인증서를 제거합니다. 파일 시스템의 인증서 파일"
+"은 삭제되지 않습니다."
 
 #: src/views/certificate/components/RemoveCert.vue:134
 msgid "Revoke this certificate"
@@ -4910,7 +4963,9 @@ msgstr "이 인증서 취소"
 msgid ""
 "Revoking a certificate will affect any services currently using it. This "
 "action cannot be undone."
-msgstr "인증서를 취소하면 현재 이를 사용 중인 모든 서비스에 영향을 미칩니다. 이 작업은 취소할 수 없습니다."
+msgstr ""
+"인증서를 취소하면 현재 이를 사용 중인 모든 서비스에 영향을 미칩니다. 이 작업"
+"은 취소할 수 없습니다."
 
 #: src/views/certificate/components/RemoveCert.vue:146
 msgid "To confirm revocation, please type \"Revoke\" in the field below:"
@@ -4944,7 +4999,8 @@ msgid ""
 "expiration, based on the global certificate renewal interval and this "
 "certificate's validity period."
 msgstr ""
-"Nginx UI 는 글로벌 인증서 갱신 간격과 이 인증서의 유효 기간을 기준으로, 만료가 임박하면 이 인증서를 자동으로 갱신합니다."
+"Nginx UI 는 글로벌 인증서 갱신 간격과 이 인증서의 유효 기간을 기준으로, 만료"
+"가 임박하면 이 인증서를 자동으로 갱신합니다."
 
 #: src/views/certificate/components/SelfSignedCertFields.vue:33
 msgid "Enter certificate name"
@@ -5096,8 +5152,7 @@ msgstr "동기화"
 msgid "Created successfully"
 msgstr "성공적으로 생성됨"
 
-#: src/views/config/components/Mkdir.vue:47
-#: src/views/config/ConfigList.vue:137
+#: src/views/config/components/Mkdir.vue:47 src/views/config/ConfigList.vue:137
 msgid "Create Folder"
 msgstr "폴더 생성"
 
@@ -5480,8 +5535,8 @@ msgid ""
 "Calculated based on worker_processes * worker_connections. Actual "
 "performance depends on hardware, configuration, and workload"
 msgstr ""
-"worker_processes * worker_connections를 기반으로 계산되었습니다. 실제 성능은 하드웨어, 구성 및 작업량에 "
-"따라 달라집니다"
+"worker_processes * worker_connections를 기반으로 계산되었습니다. 실제 성능은 "
+"하드웨어, 구성 및 작업량에 따라 달라집니다"
 
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:56
 msgid "Max Concurrent Connections"
@@ -5570,7 +5625,8 @@ msgid ""
 "Tips: You can increase the concurrency processing capacity by increasing "
 "worker_processes or worker_connections"
 msgstr ""
-"팁: worker_processes 또는 worker_connections를 증가시켜 동시 처리 능력을 향상시킬 수 있습니다."
+"팁: worker_processes 또는 worker_connections를 증가시켜 동시 처리 능력을 향상"
+"시킬 수 있습니다."
 
 #: src/views/dashboard/components/PerformanceTablesCard.vue:215
 msgid "Modules"
@@ -5592,7 +5648,8 @@ msgstr "전체 Nginx 프로세스"
 msgid ""
 "Includes master process, worker processes, cache processes, and other Nginx "
 "processes"
-msgstr "마스터 프로세스, 워커 프로세스, 캐시 프로세스 및 기타 Nginx 프로세스 포함"
+msgstr ""
+"마스터 프로세스, 워커 프로세스, 캐시 프로세스 및 기타 Nginx 프로세스 포함"
 
 #: src/views/dashboard/components/ResourceUsageCard.vue:27
 msgid "CPU Usage"
@@ -5612,8 +5669,8 @@ msgid ""
 "shared library memory, which will be repeated calculated for multiple "
 "processes"
 msgstr ""
-"Resident Set Size: 물리적 메모리에 상주하는 실제 메모리로, 모든 공유 라이브러리 메모리를 포함하며, 여러 프로세스에 대해"
-" 반복 계산됩니다"
+"Resident Set Size: 물리적 메모리에 상주하는 실제 메모리로, 모든 공유 라이브러"
+"리 메모리를 포함하며, 여러 프로세스에 대해 반복 계산됩니다"
 
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:76
 msgid "Informational Responses (1xx)"
@@ -5708,22 +5765,24 @@ msgid ""
 "gRPCS uses TLS encryption. Server must implement gRPC Health Check service. "
 "For testing, SSL validation is disabled by default."
 msgstr ""
-"gRPCS는 TLS 암호화를 사용합니다. 서버는 gRPC 상태 확인 서비스를 구현해야 합니다. 테스트를 위해 SSL 검증은 기본적으로 "
-"비활성화되어 있습니다."
+"gRPCS는 TLS 암호화를 사용합니다. 서버는 gRPC 상태 확인 서비스를 구현해야 합니"
+"다. 테스트를 위해 SSL 검증은 기본적으로 비활성화되어 있습니다."
 
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:600
 msgid ""
 "gRPC health check requires server to implement gRPC Health Check service "
 "(grpc.health.v1.Health)."
-msgstr "gRPC 상태 확인을 위해서는 서버가 gRPC 상태 확인 서비스(grpc.health.v1.Health)를 구현해야 합니다."
+msgstr ""
+"gRPC 상태 확인을 위해서는 서버가 gRPC 상태 확인 서비스(grpc.health.v1.Health)"
+"를 구현해야 합니다."
 
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:603
 msgid ""
 "Note: If the server does not support gRPC Reflection, health checks may "
 "fail. Please ensure your gRPC server has Reflection enabled."
 msgstr ""
-"참고: 서버가 gRPC 리플렉션을 지원하지 않으면 상태 확인이 실패할 수 있습니다. gRPC 서버에서 리플렉션이 활성화되어 있는지 "
-"확인하세요."
+"참고: 서버가 gRPC 리플렉션을 지원하지 않으면 상태 확인이 실패할 수 있습니다. "
+"gRPC 서버에서 리플렉션이 활성화되어 있는지 확인하세요."
 
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:608
 msgid "Service Name"
@@ -5831,7 +5890,9 @@ msgstr "stub_status 모듈 활성화"
 msgid ""
 "This module provides Nginx request statistics, connection count, etc. data. "
 "After enabling it, you can view performance statistics"
-msgstr "이 모듈은 Nginx 요청 통계, 연결 수 등 데이터를 제공합니다. 활성화한 후 성능 통계를 볼 수 있습니다."
+msgstr ""
+"이 모듈은 Nginx 요청 통계, 연결 수 등 데이터를 제공합니다. 활성화한 후 성능 "
+"통계를 볼 수 있습니다."
 
 #: src/views/dashboard/NginxDashBoard.vue:195
 msgid "Need to enable the stub_status module"
@@ -5968,28 +6029,33 @@ msgstr "사이트를 찾을 수 없음"
 msgid ""
 "Sites will appear here once you configure nginx server blocks with valid "
 "server_name (localhost excluded) directives."
-msgstr "유효한 server_name 지시문(localhost 제외)으로 nginx 서버 블록을 구성하면 사이트가 여기에 표시됩니다."
+msgstr ""
+"유효한 server_name 지시문(localhost 제외)으로 nginx 서버 블록을 구성하면 사이"
+"트가 여기에 표시됩니다."
 
 #: src/views/dns/components/DNSChallenge.vue:54
 msgid ""
 "Select a DNS provider to see whether it supports DNS record management in "
 "DNS Domains."
-msgstr "DNS 제공업체를 선택하면 DNS Domains에서 DNS 레코드 관리를 지원하는지 표시됩니다."
+msgstr ""
+"DNS 제공업체를 선택하면 DNS Domains에서 DNS 레코드 관리를 지원하는지 표시됩니"
+"다."
 
 #: src/views/dns/components/DNSChallenge.vue:58
 msgid ""
 "%{provider} can be used for ACME DNS-01 certificate challenges and DNS "
 "record management in DNS Domains."
 msgstr ""
-"%{provider}은(는) ACME DNS-01 인증서 챌린지와 DNS Domains의 DNS 레코드 관리에 사용할 수 있습니다."
+"%{provider}은(는) ACME DNS-01 인증서 챌린지와 DNS Domains의 DNS 레코드 관리"
+"에 사용할 수 있습니다."
 
 #: src/views/dns/components/DNSChallenge.vue:64
 msgid ""
 "%{provider} can be used for ACME DNS-01 certificate challenges, but DNS "
 "record management in DNS Domains is not supported for this provider."
 msgstr ""
-"%{provider}은(는) ACME DNS-01 인증서 챌린지에 사용할 수 있지만, DNS Domains의 DNS 레코드 관리는 이 "
-"제공업체를 지원하지 않습니다."
+"%{provider}은(는) ACME DNS-01 인증서 챌린지에 사용할 수 있지만, DNS Domains"
+"의 DNS 레코드 관리는 이 제공업체를 지원하지 않습니다."
 
 #: src/views/dns/components/DNSChallenge.vue:99
 msgid "DNS Provider"
@@ -6008,7 +6074,7 @@ msgid "Additional"
 msgstr "추가적인"
 
 #: src/views/dns/components/DNSRecordFilter.vue:42
-#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:210
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:238
 #: src/views/preference/tabs/ServerSettings.vue:19
 msgid "Host"
 msgstr "호스트"
@@ -6133,13 +6199,17 @@ msgstr "IPv6 다음 IPv4"
 msgid ""
 "AAAA records at the same names are not managed in IPv4 only mode. They "
 "remain unchanged in DNS."
-msgstr "IPv4 전용 모드에서는 동일한 이름의 AAAA 레코드를 관리하지 않습니다. DNS에서 변경되지 않고 그대로 유지됩니다."
+msgstr ""
+"IPv4 전용 모드에서는 동일한 이름의 AAAA 레코드를 관리하지 않습니다. DNS에서 "
+"변경되지 않고 그대로 유지됩니다."
 
 #: src/views/dns/DDNSManager.vue:86
 msgid ""
 "A records at the same names are not managed in IPv6 only mode. They remain "
 "unchanged in DNS."
-msgstr "IPv6 전용 모드에서는 동일한 이름의 A 레코드가 관리되지 않습니다. DNS에서 변경되지 않고 그대로 유지됩니다."
+msgstr ""
+"IPv6 전용 모드에서는 동일한 이름의 A 레코드가 관리되지 않습니다. DNS에서 변경"
+"되지 않고 그대로 유지됩니다."
 
 #: src/views/dns/DDNSManager.vue:159 src/views/dns/DNSCredential.vue:26
 #: src/views/dns/DNSDomainList.vue:208 src/views/dns/DNSDomainList.vue:229
@@ -6215,8 +6285,10 @@ msgid ""
 "unreachable. Disable to manage only the records you explicitly selected and "
 "keep all other DNS state untouched."
 msgstr ""
-"활성화하면 DDNS가 선택한 이름을 소유합니다. 형제 패밀리 레코드를 자동으로 페어링하고, 누락된 레코드를 생성하며, IP 패밀리에 "
-"연결할 수 없는 레코드를 제거합니다. 비활성화하면 명시적으로 선택한 레코드만 관리하고 다른 DNS 상태는 그대로 유지됩니다."
+"활성화하면 DDNS가 선택한 이름을 소유합니다. 형제 패밀리 레코드를 자동으로 페"
+"어링하고, 누락된 레코드를 생성하며, IP 패밀리에 연결할 수 없는 레코드를 제거"
+"합니다. 비활성화하면 명시적으로 선택한 레코드만 관리하고 다른 DNS 상태는 그대"
+"로 유지됩니다."
 
 #: src/views/dns/DDNSManager.vue:400
 msgid "Records"
@@ -6258,7 +6330,8 @@ msgid ""
 "DNS Domains are used for DNS record management in NGINX UI and are separate "
 "from ACME DNS-01 certificate challenges."
 msgstr ""
-"DNS 도메인은 NGINX UI에서 DNS 레코드 관리를 위해 사용되며 ACME DNS-01 인증서 챌린지와는 별개의 기능입니다."
+"DNS 도메인은 NGINX UI에서 DNS 레코드 관리를 위해 사용되며 ACME DNS-01 인증서 "
+"챌린지와는 별개의 기능입니다."
 
 #: src/views/dns/DNSDomainList.vue:116
 msgid ""
@@ -6269,7 +6342,9 @@ msgstr "DNS Domains는 DNS 레코드 관리 구현이 있는 제공업체만 사
 msgid ""
 "For ACME DNS-01 certificate issuance, create DNS credentials under DNS > "
 "Credentials and select them in certificate settings."
-msgstr "ACME DNS-01 인증서 발급에는 DNS > 자격 증명에서 DNS 자격 증명을 만든 후 인증서 설정에서 선택하세요."
+msgstr ""
+"ACME DNS-01 인증서 발급에는 DNS > 자격 증명에서 DNS 자격 증명을 만든 후 인증"
+"서 설정에서 선택하세요."
 
 #: src/views/dns/DNSDomainList.vue:267
 msgid "Manage Records"
@@ -6283,7 +6358,9 @@ msgstr "DNS 공급자 지원"
 msgid ""
 "Need more DNS providers? Support us through donations or contact us for "
 "commercial collaboration"
-msgstr "더 많은 DNS 제공자가 필요하신가요? 기부를 통해 지원하거나 상업적 협력을 위해 문의해 주세요"
+msgstr ""
+"더 많은 DNS 제공자가 필요하신가요? 기부를 통해 지원하거나 상업적 협력을 위해 "
+"문의해 주세요"
 
 #: src/views/dns/DNSDomainList.vue:288
 msgid "Business contact:"
@@ -6336,7 +6413,9 @@ msgstr "그룹은 이 브라우저에 저장됩니다"
 msgid ""
 "Groups are scoped to the current user and selected node. Record operations "
 "run once and are not continuous synchronization."
-msgstr "그룹은 현재 사용자와 선택된 노드로 범위가 한정됩니다. 레코드 작업은 한 번만 실행되며 지속적인 동기화가 아닙니다."
+msgstr ""
+"그룹은 현재 사용자와 선택된 노드로 범위가 한정됩니다. 레코드 작업은 한 번만 "
+"실행되며 지속적인 동기화가 아닙니다."
 
 #: src/views/dns/DNSGroupList.vue:172
 msgid "DNS Groups"
@@ -6385,7 +6464,9 @@ msgstr "설명"
 msgid ""
 "Batch record operations target the selected domains. Provider credentials "
 "remain unchanged."
-msgstr "일괄 레코드 작업은 선택한 도메인을 대상으로 합니다. 제공자의 자격 증명은 변경되지 않습니다."
+msgstr ""
+"일괄 레코드 작업은 선택한 도메인을 대상으로 합니다. 제공자의 자격 증명은 변경"
+"되지 않습니다."
 
 #: src/views/dns/DNSGroupList.vue:288
 msgid "Save group"
@@ -6545,7 +6626,8 @@ msgstr "DNS 그룹을 찾을 수 없습니다"
 msgid ""
 "This local group may belong to another user or node, or it may have been "
 "deleted."
-msgstr "이 로컬 그룹은 다른 사용자나 노드에 속해 있거나 삭제되었을 수 있습니다."
+msgstr ""
+"이 로컬 그룹은 다른 사용자나 노드에 속해 있거나 삭제되었을 수 있습니다."
 
 #: src/views/dns/DNSGroupRecordManager.vue:1223
 #: src/views/dns/DNSGroupRecordManager.vue:1636
@@ -6606,7 +6688,9 @@ msgstr "공유 값으로 자동 그룹화"
 msgid ""
 "Choose which names to synchronize. Existing provider-specific values are "
 "preserved unless you change them below."
-msgstr "동기화할 이름을 선택하세요. 기존 제공업체별 값은 아래에서 변경하지 않는 한 유지됩니다."
+msgstr ""
+"동기화할 이름을 선택하세요. 기존 제공업체별 값은 아래에서 변경하지 않는 한 유"
+"지됩니다."
 
 #: src/views/dns/DNSGroupRecordManager.vue:1409
 msgid "Edit scope"
@@ -6645,8 +6729,8 @@ msgid ""
 "Existing values are preserved per name. Changing a field overrides it for "
 "every selected name on that domain; new records use the shown defaults."
 msgstr ""
-"기존 값은 이름별로 유지됩니다. 필드를 변경하면 해당 도메인의 선택된 모든 이름에 대해 덮어씁니다. 새로운 레코드는 표시된 기본값을 "
-"사용합니다."
+"기존 값은 이름별로 유지됩니다. 필드를 변경하면 해당 도메인의 선택된 모든 이름"
+"에 대해 덮어씁니다. 새로운 레코드는 표시된 기본값을 사용합니다."
 
 #: src/views/dns/DNSGroupRecordManager.vue:1463
 msgid "Each setting is sent only to its matching target domain."
@@ -6679,7 +6763,8 @@ msgstr "변경 사항 적용"
 #: src/views/dns/DNSGroupRecordManager.vue:1554
 msgid ""
 "Changes are applied per domain and cannot be rolled back as one transaction."
-msgstr "변경 사항은 도메인별로 적용되며 하나의 트랜잭션으로 롤백할 수 없습니다."
+msgstr ""
+"변경 사항은 도메인별로 적용되며 하나의 트랜잭션으로 롤백할 수 없습니다."
 
 #: src/views/dns/DNSGroupRecordManager.vue:1585
 msgid "Group record results"
@@ -6721,8 +6806,7 @@ msgstr "알 수 없는 오류"
 msgid "Please input your E-mail!"
 msgstr "이메일을 입력해주세요!"
 
-#: src/views/install/components/InstallForm.vue:35
-#: src/views/other/Login.vue:74
+#: src/views/install/components/InstallForm.vue:35 src/views/other/Login.vue:74
 msgid "Please input your username!"
 msgstr "사용자 이름을 입력해주세요!"
 
@@ -6730,8 +6814,7 @@ msgstr "사용자 이름을 입력해주세요!"
 msgid "Username length cannot exceed 255 characters"
 msgstr "사용자 이름 길이는 255자를 초과할 수 없습니다"
 
-#: src/views/install/components/InstallForm.vue:45
-#: src/views/other/Login.vue:80
+#: src/views/install/components/InstallForm.vue:45 src/views/other/Login.vue:80
 msgid "Please input your password!"
 msgstr "비밀번호를 입력해주세요!"
 
@@ -6741,8 +6824,7 @@ msgstr "비밀번호 길이는 20자를 초과할 수 없습니다"
 
 #: src/views/install/components/InstallForm.vue:64
 msgid ""
-"Frontend debug mode: install flow completed without sending a backend "
-"request"
+"Frontend debug mode: install flow completed without sending a backend request"
 msgstr "프론트엔드 디버그 모드: 백엔드 요청 없이 설치 흐름 완료"
 
 #: src/views/install/components/InstallForm.vue:70
@@ -6805,13 +6887,17 @@ msgstr "Nginx UI 설정"
 msgid ""
 "Frontend debug mode is active. Enter the debug secret to unlock the mock "
 "installation flow without sending backend requests."
-msgstr "프론트엔드 디버그 모드가 활성화되었습니다. 백엔드 요청 없이 모의 설치 흐름을 잠금 해제하려면 디버그 시크릿을 입력하세요."
+msgstr ""
+"프론트엔드 디버그 모드가 활성화되었습니다. 백엔드 요청 없이 모의 설치 흐름을 "
+"잠금 해제하려면 디버그 시크릿을 입력하세요."
 
 #: src/views/install/components/InstallView.vue:169
 msgid ""
 "Enter the one-time install secret shown by the install script or found in "
 "the config directory hidden file to unlock setup."
-msgstr "설정을 해제하려면 설치 스크립트에 표시되거나 구성 디렉터리의 숨겨진 파일에 있는 일회용 설치 비밀번호를 입력하세요."
+msgstr ""
+"설정을 해제하려면 설치 스크립트에 표시되거나 구성 디렉터리의 숨겨진 파일에 있"
+"는 일회용 설치 비밀번호를 입력하세요."
 
 #: src/views/install/components/InstallView.vue:174
 msgid "Install Secret (*)"
@@ -6833,7 +6919,9 @@ msgstr "백업에서 복원"
 msgid ""
 "Installation is not allowed after 10 minutes of system startup, please "
 "restart the Nginx UI."
-msgstr "시스템 시작 후 10분이 지나면 설치가 허용되지 않습니다. Nginx UI를 다시 시작하세요."
+msgstr ""
+"시스템 시작 후 10분이 지나면 설치가 허용되지 않습니다. Nginx UI를 다시 시작하"
+"세요."
 
 #: src/views/namespace/columns.ts:59
 msgid "Upstream Test Type"
@@ -6913,8 +7001,8 @@ msgid ""
 "resources including CPU and memory. Please ensure your system meets the "
 "minimum requirements before proceeding."
 msgstr ""
-"고급 로그 인덱싱을 활성화하면 CPU 및 메모리를 포함한 상당한 컴퓨팅 리소스를 소모합니다. 진행하기 전에 시스템이 최소 요구 사항을 "
-"충족하는지 확인하십시오."
+"고급 로그 인덱싱을 활성화하면 CPU 및 메모리를 포함한 상당한 컴퓨팅 리소스를 "
+"소모합니다. 진행하기 전에 시스템이 최소 요구 사항을 충족하는지 확인하십시오."
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:120
 msgid "System Requirements"
@@ -6930,15 +7018,19 @@ msgstr "권장:"
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:166
 msgid ""
-"* Index files are stored in the \"log-index\" directory within your Nginx UI"
-" config path by default."
-msgstr "* 인덱스 파일은 기본적으로 NGINX UI 구성 경로 내 \"log-index\" 디렉터리에 저장됩니다."
+"* Index files are stored in the \"log-index\" directory within your Nginx UI "
+"config path by default."
+msgstr ""
+"* 인덱스 파일은 기본적으로 NGINX UI 구성 경로 내 \"log-index\" 디렉터리에 저"
+"장됩니다."
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:167
 msgid ""
 "If you want to change the storage location, you can set the `IndexPath` of "
 "`nginx_log` section in the Nginx UI config."
-msgstr "저장 위치를 변경하려면 Nginx UI 설정에서 `nginx_log` 섹션의 `IndexPath`를 설정할 수 있습니다."
+msgstr ""
+"저장 위치를 변경하려면 Nginx UI 설정에서 `nginx_log` 섹션의 `IndexPath`를 설"
+"정할 수 있습니다."
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:178
 #: src/views/preference/tabs/GeoLiteSettings.vue:7
@@ -6954,8 +7046,8 @@ msgid ""
 "* Performance metrics measured on Apple M2 Pro (12-core) with 32GB RAM. "
 "Actual performance may vary based on your hardware configuration."
 msgstr ""
-"* 성능 지표는 Apple M2 Pro(12코어)와 32GB RAM에서 측정되었습니다. 실제 성능은 하드웨어 구성에 따라 다를 수 "
-"있습니다."
+"* 성능 지표는 Apple M2 Pro(12코어)와 32GB RAM에서 측정되었습니다. 실제 성능"
+"은 하드웨어 구성에 따라 다를 수 있습니다."
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:226
 msgid "Features"
@@ -7035,8 +7127,8 @@ msgid ""
 "requirements and understand the performance implications. This will start "
 "indexing existing log files immediately."
 msgstr ""
-"고급 인덱싱을 활성화하면 시스템이 요구 사항을 충족하고 성능 영향을 이해했음을 인정하는 것입니다. 이로 인해 기존 로그 파일의 인덱싱이 "
-"즉시 시작됩니다."
+"고급 인덱싱을 활성화하면 시스템이 요구 사항을 충족하고 성능 영향을 이해했음"
+"을 인정하는 것입니다. 이로 인해 기존 로그 파일의 인덱싱이 즉시 시작됩니다."
 
 #: src/views/nginx_log/components/LoadingState.vue:33
 #: src/views/nginx_log/NginxLogList.vue:491
@@ -7256,8 +7348,9 @@ msgid ""
 "This will rebuild the entire log index. All existing index data will be "
 "deleted and rebuilt from scratch. This may take some time. Continue?"
 msgstr ""
-"이 작업은 전체 로그 인덱스를 재구성합니다. 기존의 모든 인덱스 데이터가 삭제되고 처음부터 다시 구축됩니다. 시간이 다소 소요될 수 "
-"있습니다. 계속하시겠습니까?"
+"이 작업은 전체 로그 인덱스를 재구성합니다. 기존의 모든 인덱스 데이터가 삭제되"
+"고 처음부터 다시 구축됩니다. 시간이 다소 소요될 수 있습니다. 계속하시겠습니"
+"까?"
 
 #: src/views/nginx_log/indexing/IndexManagement.vue:38
 msgid "Index and statistics rebuild started successfully"
@@ -7354,7 +7447,8 @@ msgid ""
 "Advanced log indexing will stop and structured log analytics will be "
 "unavailable. Existing index files will not be deleted. Continue?"
 msgstr ""
-"고급 로그 인덱싱이 중지되고 구조화된 로그 분석을 사용할 수 없게 됩니다. 기존 인덱스 파일은 삭제되지 않습니다. 계속하시겠습니까?"
+"고급 로그 인덱싱이 중지되고 구조화된 로그 분석을 사용할 수 없게 됩니다. 기존 "
+"인덱스 파일은 삭제되지 않습니다. 계속하시겠습니까?"
 
 #: src/views/nginx_log/NginxLogList.vue:419
 #: src/views/site/site_list/SiteList.vue:134
@@ -7504,7 +7598,8 @@ msgstr "선택한 시간 범위에서 로그를 찾을 수 없습니다."
 msgid ""
 "Background indexing in progress. Data will be updated automatically when "
 "ready."
-msgstr "백그라운드 인덱싱이 진행 중입니다. 준비되면 데이터가 자동으로 업데이트됩니다."
+msgstr ""
+"백그라운드 인덱싱이 진행 중입니다. 준비되면 데이터가 자동으로 업데이트됩니다."
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:587
 msgid "Log indexing completed! Loading updated data..."
@@ -7516,14 +7611,17 @@ msgstr "오류 로그 감지됨"
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:676
 msgid ""
-"Error logs do not support structured analysis as they contain free-form text"
-" messages."
-msgstr "오류 로그는 자유 형식의 텍스트 메시지를 포함하기 때문에 구조화된 분석을 지원하지 않습니다."
+"Error logs do not support structured analysis as they contain free-form text "
+"messages."
+msgstr ""
+"오류 로그는 자유 형식의 텍스트 메시지를 포함하기 때문에 구조화된 분석을 지원"
+"하지 않습니다."
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:678
 msgid ""
 "For error logs, please use the Raw Log Viewer for better viewing experience."
-msgstr "오류 로그의 경우 더 나은 보기 환경을 위해 Raw Log Viewer를 사용해 주세요."
+msgstr ""
+"오류 로그의 경우 더 나은 보기 환경을 위해 Raw Log Viewer를 사용해 주세요."
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:683
 msgid "Go to Raw Log Viewer"
@@ -7557,7 +7655,9 @@ msgstr "고유 방문자"
 msgid ""
 "The result set is too large to sum exactly, this value is extrapolated from "
 "a sample"
-msgstr "결과 집합이 너무 커서 정확하게 합산할 수 없으며, 이 값은 샘플에서 추정한 것입니다"
+msgstr ""
+"결과 집합이 너무 커서 정확하게 합산할 수 없으며, 이 값은 샘플에서 추정한 것입"
+"니다"
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:787
 msgid "Traffic"
@@ -7648,7 +7748,9 @@ msgstr "릴리스 정보 가져오기 오류"
 #: src/views/node/BatchUpgrader.vue:187
 msgid ""
 "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
-msgstr "이 작업은 %{nodeNames}의 Nginx UI를 %{version}으로 업그레이드하거나 재설치합니다."
+msgstr ""
+"이 작업은 %{nodeNames}의 Nginx UI를 %{version}으로 업그레이드하거나 재설치합"
+"니다."
 
 #: src/views/node/BatchUpgrader.vue:193 src/views/system/Upgrade.vue:237
 msgid "Dry run mode enabled"
@@ -7707,6 +7809,7 @@ msgid "Unpaired"
 msgstr "미페어링"
 
 #: src/views/node/nodeColumns.tsx:15
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:98
 msgid "Revoked"
 msgstr "해지됨"
 
@@ -7837,8 +7940,8 @@ msgid ""
 "Due to the security policies of some browsers, you cannot use passkeys on "
 "non-HTTPS websites, except when running on localhost."
 msgstr ""
-"일부 브라우저의 보안 정책으로 인해 localhost에서 실행하는 경우를 제외하고 비 HTTPS 웹사이트에서는 패스키를 사용할 수 "
-"없습니다."
+"일부 브라우저의 보안 정책으로 인해 localhost에서 실행하는 경우를 제외하고 비 "
+"HTTPS 웹사이트에서는 패스키를 사용할 수 없습니다."
 
 #: src/views/preference/components/AuthSettings/Passkey.vue:40
 msgid "Update successfully"
@@ -7891,32 +7994,38 @@ msgid ""
 "Recovery codes are used to access your account when you lose access to your "
 "2FA device. Each code can only be used once."
 msgstr ""
-"복구 코드는 2FA 장치에 대한 접근 권한을 잃었을 때 계정에 접근하는 데 사용됩니다. 각 코드는 한 번만 사용할 수 있습니다."
+"복구 코드는 2FA 장치에 대한 접근 권한을 잃었을 때 계정에 접근하는 데 사용됩니"
+"다. 각 코드는 한 번만 사용할 수 있습니다."
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:75
 msgid ""
 "Keep your recovery codes as safe as your password. We recommend saving them "
 "with a password manager."
-msgstr "복구 코드를 비밀번호와 같이 안전하게 보관하세요. 비밀번호 관리자에 저장하는 것을 권장합니다."
+msgstr ""
+"복구 코드를 비밀번호와 같이 안전하게 보관하세요. 비밀번호 관리자에 저장하는 "
+"것을 권장합니다."
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:82
 msgid ""
 "You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
-msgstr "2FA가 아직 활성화되지 않았습니다. 복구 코드를 생성하려면 2FA를 활성화하세요."
+msgstr ""
+"2FA가 아직 활성화되지 않았습니다. 복구 코드를 생성하려면 2FA를 활성화하세요."
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:92
 msgid ""
 "Your account uses a deprecated legacy recovery code. Generate new recovery "
 "codes now to complete migration and keep account recovery secure."
 msgstr ""
-"귀하의 계정은 사용되지 않는 레거시 복구 코드를 사용하고 있습니다. 지금 새 복구 코드를 생성하여 마이그레이션을 완료하고 계정 복구를 "
-"안전하게 유지하세요."
+"귀하의 계정은 사용되지 않는 레거시 복구 코드를 사용하고 있습니다. 지금 새 복"
+"구 코드를 생성하여 마이그레이션을 완료하고 계정 복구를 안전하게 유지하세요."
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:95
 msgid ""
 "Your current recovery code might be outdated and insecure. Please generate "
 "new recovery codes at your earliest convenience to ensure security."
-msgstr "현재 복구 코드는 오래되어 안전하지 않을 수 있습니다. 보안을 위해 가능한 한 빨리 새로운 복구 코드를 생성해 주세요."
+msgstr ""
+"현재 복구 코드는 오래되어 안전하지 않을 수 있습니다. 보안을 위해 가능한 한 빨"
+"리 새로운 복구 코드를 생성해 주세요."
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:98
 msgid "You have not generated recovery codes yet."
@@ -7928,8 +8037,9 @@ msgid ""
 "your password and second factors. If you cannot find these codes, you will "
 "lose access to your account."
 msgstr ""
-"이 코드들은 비밀번호와 두 번째 요소를 잃어버린 경우 계정에 접근할 수 있는 최후의 수단입니다. 이 코드들을 찾을 수 없다면 계정에 대한"
-" 접근 권한을 잃게 됩니다."
+"이 코드들은 비밀번호와 두 번째 요소를 잃어버린 경우 계정에 접근할 수 있는 최"
+"후의 수단입니다. 이 코드들을 찾을 수 없다면 계정에 대한 접근 권한을 잃게 됩니"
+"다."
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:125
 msgid "Copy Codes"
@@ -7948,7 +8058,9 @@ msgstr "새 복구 코드 생성"
 msgid ""
 "When you generate new recovery codes, you must download or print the new "
 "codes."
-msgstr "새로운 복구 코드를 생성할 때는 반드시 새 코드를 다운로드하거나 인쇄해야 합니다."
+msgstr ""
+"새로운 복구 코드를 생성할 때는 반드시 새 코드를 다운로드하거나 인쇄해야 합니"
+"다."
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:146
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:159
@@ -7979,14 +8091,16 @@ msgstr "TOTP"
 msgid ""
 "TOTP is a two-factor authentication method that uses a time-based one-time "
 "password algorithm."
-msgstr "TOTP는 시간 기반의 일회용 비밀번호 알고리즘을 사용하는 이중 인증 방법입니다."
+msgstr ""
+"TOTP는 시간 기반의 일회용 비밀번호 알고리즘을 사용하는 이중 인증 방법입니다."
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:79
 msgid ""
 "To enable it, you need to install the Google or Microsoft Authenticator app "
 "on your mobile phone."
 msgstr ""
-"활성화하려면 휴대폰에 Google Authenticator 또는 Microsoft Authenticator 앱을 설치해야 합니다."
+"활성화하려면 휴대폰에 Google Authenticator 또는 Microsoft Authenticator 앱을 "
+"설치해야 합니다."
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:80
 msgid "Scan the QR code with your mobile phone to add the account to the app."
@@ -8126,62 +8240,207 @@ msgstr "모든 검사를 통과했습니다."
 msgid "Suggested fix"
 msgstr "권장 해결 방법"
 
-#: src/views/preference/components/NginxHostSetup/checks.ts:16
+#: src/views/preference/components/NginxHostSetup/checks.ts:18
+msgid "nginx config directory is the host directory"
+msgstr "nginx 설정 디렉터리가 호스트 디렉터리임"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:19
 msgid "nginx config directory is writable"
 msgstr "nginx 구성 디렉터리에 쓸 수 있습니다"
 
-#: src/views/preference/components/NginxHostSetup/checks.ts:17
+#: src/views/preference/components/NginxHostSetup/checks.ts:20
 msgid "Host platform matches the service manager"
 msgstr "호스트 플랫폼이 서비스 관리자와 일치합니다"
 
-#: src/views/preference/components/NginxHostSetup/checks.ts:18
+#: src/views/preference/components/NginxHostSetup/checks.ts:21
 msgid "known_hosts is persisted"
 msgstr "known_hosts가 영구 저장됩니다"
 
-#: src/views/preference/components/NginxHostSetup/checks.ts:19
+#: src/views/preference/components/NginxHostSetup/checks.ts:22
 msgid "launchd service is loaded"
 msgstr "launchd 서비스가 로드되었습니다"
 
-#: src/views/preference/components/NginxHostSetup/checks.ts:20
+#: src/views/preference/components/NginxHostSetup/checks.ts:23
 msgid "nginx log directory is readable"
 msgstr "nginx 로그 디렉터리를 읽을 수 있습니다"
 
-#: src/views/preference/components/NginxHostSetup/checks.ts:21
+#: src/views/preference/components/NginxHostSetup/checks.ts:24
 msgid "nginx -t passes"
 msgstr "nginx -t 통과"
 
-#: src/views/preference/components/NginxHostSetup/checks.ts:22
+#: src/views/preference/components/NginxHostSetup/checks.ts:25
 msgid "nginx PID file is present"
 msgstr "nginx PID 파일이 존재합니다"
 
-#: src/views/preference/components/NginxHostSetup/checks.ts:23
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:266
+#: src/views/preference/components/NginxHostSetup/checks.ts:26
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:286
 msgid "Host platform"
 msgstr "호스트 플랫폼"
 
-#: src/views/preference/components/NginxHostSetup/checks.ts:24
+#: src/views/preference/components/NginxHostSetup/checks.ts:27
 msgid "Target is the container host"
 msgstr "대상이 컨테이너 호스트입니다"
 
-#: src/views/preference/components/NginxHostSetup/checks.ts:25
+#: src/views/preference/components/NginxHostSetup/checks.ts:28
 msgid "SSH connection"
 msgstr "SSH 연결"
 
-#: src/views/preference/components/NginxHostSetup/checks.ts:26
+#: src/views/preference/components/NginxHostSetup/checks.ts:29
 msgid "Passwordless sudo is available"
 msgstr "비밀번호 없는 sudo를 사용할 수 있습니다"
 
-#: src/views/preference/components/NginxHostSetup/checks.ts:27
+#: src/views/preference/components/NginxHostSetup/checks.ts:30
 msgid "sudoers rules cover the nginx commands"
 msgstr "sudoers 규칙이 nginx 명령을 포함합니다"
 
-#: src/views/preference/components/NginxHostSetup/checks.ts:28
+#: src/views/preference/components/NginxHostSetup/checks.ts:31
 msgid "systemd unit is active"
 msgstr "systemd 유닛이 활성 상태입니다"
 
-#: src/views/preference/components/NginxHostSetup/checks.ts:29
+#: src/views/preference/components/NginxHostSetup/checks.ts:32
 msgid "systemd unit defines ExecReload"
 msgstr "systemd 유닛에 ExecReload가 정의되어 있습니다"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:36
+msgid "Add a bind mount: -v %{source}:%{target}"
+msgstr "바인드 마운트를 추가하세요: -v %{source}:%{target}"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:40
+msgid "Append the missing entries to %{path} (see the Install step)."
+msgstr "누락된 항목을 %{path}에 추가하세요(설치 단계 참조)."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:43
+msgid "Confirm that the address reaches the machine running nginx."
+msgstr "이 주소로 nginx가 실행 중인 시스템에 연결할 수 있는지 확인하세요."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:44
+msgid ""
+"This is expected on Docker Desktop. On other runtimes, confirm that the "
+"address reaches the machine running nginx."
+msgstr ""
+"Docker Desktop에서는 예상되는 동작입니다. 다른 런타임에서는 이 주소로 nginx"
+"가 실행 중인 시스템에 연결할 수 있는지 확인하세요."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:45
+msgid ""
+"Confirm that the SSH server is running, the user exists, and the key or "
+"password is correct."
+msgstr ""
+"SSH 서버가 실행 중이고 사용자가 존재하며 키 또는 비밀번호가 올바른지 확인하세"
+"요."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:46
+msgid ""
+"Confirm that the systemd unit name matches the installation, such as nginx."
+"service or openresty.service."
+msgstr ""
+"systemd 유닛 이름이 nginx.service 또는 openresty.service와 같이 설치 환경과 "
+"일치하는지 확인하세요."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:47
+msgid "Confirm that the configured SSH user owns the Homebrew service."
+msgstr "설정된 SSH 사용자가 Homebrew 서비스의 소유자인지 확인하세요."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:48
+msgid "Confirm that the configured nginx directory exists on the host."
+msgstr "설정된 nginx 디렉터리가 호스트에 있는지 확인하세요."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:49
+msgid "Confirm that the container runtime provides host.docker.internal."
+msgstr "컨테이너 런타임에서 host.docker.internal을 제공하는지 확인하세요."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:50
+msgid "Confirm that /usr/bin/uname exists on the host."
+msgstr "호스트에 /usr/bin/uname이 있는지 확인하세요."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:51
+msgid ""
+"Correct the highlighted path or identifier, then run verification again."
+msgstr "강조 표시된 경로나 식별자를 수정한 다음 검증을 다시 실행하세요."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:52
+msgid "Fix the nginx configuration error shown in the details."
+msgstr "세부 정보에 표시된 nginx 설정 오류를 수정하세요."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:53
+msgid "Run `sudo -l` on the host to inspect the configured permissions."
+msgstr "호스트에서 `sudo -l`을 실행하여 설정된 권한을 확인하세요."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:54
+msgid "Inspect the systemd unit file."
+msgstr "systemd 유닛 파일을 확인하세요."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:55
+msgid ""
+"Bind-mount the host nginx log directory read-only at the configured "
+"container log path, and ensure the container can read it."
+msgstr ""
+"호스트의 nginx 로그 디렉터리를 설정된 컨테이너 로그 경로에 읽기 전용으로 바인"
+"드 마운트하고 컨테이너에서 읽을 수 있는지 확인하세요."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:56
+msgid ""
+"Bind-mount the host PID directory containing %{path} at the same container "
+"path."
+msgstr ""
+"%{path}가 포함된 호스트 PID 디렉터리를 컨테이너의 동일한 경로에 바인드 마운트"
+"하세요."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:59
+msgid ""
+"Persist /etc/nginx-ui with a Docker named volume or bind mount so "
+"known_hosts survives container rebuilds."
+msgstr ""
+"컨테이너를 다시 생성해도 known_hosts가 유지되도록 /etc/nginx-ui를 Docker 명"
+"명 볼륨 또는 바인드 마운트로 영구 저장하세요."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:60
+msgid "Replace the mount with: -v %{source}:%{target}"
+msgstr "마운트를 다음으로 교체하세요: -v %{source}:%{target}"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:64
+msgid "Some packages omit ExecReload. Use `systemctl restart` instead."
+msgstr ""
+"일부 패키지에는 ExecReload가 없습니다. 대신 `systemctl restart`를 사용하세요."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:65
+msgid "If this is a remote host, review the cluster Node cross-host guide."
+msgstr "원격 호스트인 경우 클러스터 노드의 호스트 간 가이드를 확인하세요."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:66
+msgid "Review the file permission commands in the Install step."
+msgstr "설치 단계의 파일 권한 명령을 검토하세요."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:67
+msgid "Review the sudoers rules shown in the Install step."
+msgstr "설치 단계에 표시된 sudoers 규칙을 검토하세요."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:68
+msgid "Select the service manager that matches the SSH host."
+msgstr "SSH 호스트와 일치하는 서비스 관리자를 선택하세요."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:69
+msgid "Run `brew services start nginx` as the configured SSH user."
+msgstr "설정된 SSH 사용자로 `brew services start nginx`를 실행하세요."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:70
+msgid ""
+"Review the cluster Node cross-host guide for the correct deployment method."
+msgstr "올바른 배포 방법은 클러스터 노드의 호스트 간 가이드를 확인하세요."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:71
+msgid "Use host.docker.internal when nginx runs on the Docker host."
+msgstr ""
+"nginx가 Docker 호스트에서 실행되는 경우 host.docker.internal을 사용하세요."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:72
+msgid "Use host.docker.internal when nginx runs on the macOS host."
+msgstr ""
+"nginx가 macOS 호스트에서 실행되는 경우 host.docker.internal을 사용하세요."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:73
+msgid "Verify the bind mount manually."
+msgstr "바인드 마운트를 수동으로 확인하세요."
 
 #: src/views/preference/components/NginxHostSetup/CodeBlock.vue:30
 msgid "Clipboard access is unavailable in this browser context"
@@ -8206,13 +8465,16 @@ msgstr "감지된 값 복원"
 #: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:77
 msgid ""
 "Point Nginx UI at a private key that already exists inside the container."
-msgstr "컨테이너 내부에 이미 존재하는 개인 키를 Nginx UI가 사용하도록 지정합니다."
+msgstr ""
+"컨테이너 내부에 이미 존재하는 개인 키를 Nginx UI가 사용하도록 지정합니다."
 
 #: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:79
 msgid ""
 "Paste or upload a private key. Nginx UI stores it at the managed path with "
 "mode 0600."
-msgstr "개인 키를 붙여넣거나 업로드하세요. Nginx UI가 모드 0600으로 관리 경로에 저장합니다."
+msgstr ""
+"개인 키를 붙여넣거나 업로드하세요. Nginx UI가 모드 0600으로 관리 경로에 저장"
+"합니다."
 
 #: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:81
 msgid ""
@@ -8263,8 +8525,8 @@ msgid ""
 "source path below to include a read-only bind mount in the generated "
 "container instructions."
 msgstr ""
-"암호화된 개인 키는 지원되지 않습니다. 아래에 호스트 측 원본 경로를 입력하면 생성된 컨테이너 안내에 읽기 전용 바인드 마운트를 포함할 "
-"수 있습니다."
+"암호화된 개인 키는 지원되지 않습니다. 아래에 호스트 측 원본 경로를 입력하면 "
+"생성된 컨테이너 안내에 읽기 전용 바인드 마운트를 포함할 수 있습니다."
 
 #: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:256
 msgid "Saving will replace the Nginx UI managed SSH private key."
@@ -8274,15 +8536,19 @@ msgstr "저장하면 Nginx UI가 관리하는 SSH 개인 키가 교체됩니다.
 msgid ""
 "Only unencrypted SSH private keys are accepted. The submitted content is "
 "cleared from the browser after it is stored with file mode 0600."
-msgstr "암호화되지 않은 SSH 개인 키만 허용됩니다. 제출한 내용은 파일 모드 0600으로 저장된 후 브라우저에서 삭제됩니다."
+msgstr ""
+"암호화되지 않은 SSH 개인 키만 허용됩니다. 제출한 내용은 파일 모드 0600으로 저"
+"장된 후 브라우저에서 삭제됩니다."
 
 #: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:260
 msgid "Private key path inside container"
 msgstr "컨테이너 내부의 개인 키 경로"
 
 #: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:268
-msgid "Managed by Nginx UI. Switch to \"Existing path\" to use another location."
-msgstr "Nginx UI가 관리합니다. 다른 위치를 사용하려면 \\\"기존 경로\\\"로 전환하세요."
+msgid ""
+"Managed by Nginx UI. Switch to \"Existing path\" to use another location."
+msgstr ""
+"Nginx UI가 관리합니다. 다른 위치를 사용하려면 \\\"기존 경로\\\"로 전환하세요."
 
 #: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:273
 msgid "Private key content"
@@ -8339,8 +8605,8 @@ msgid "Private key validation failed"
 msgstr "개인 키 검증 실패"
 
 #: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:368
-#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:282
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:107
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:310
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:156
 msgid "Public key"
 msgstr "공개 키"
 
@@ -8352,7 +8618,9 @@ msgstr "계속하려면 키 쌍을 생성하거나 위의 \\\"내 SSH 키 사용
 msgid ""
 "The Install step shows where to put this on the host. Nothing has been "
 "installed there yet."
-msgstr "설치 단계에서 이 내용을 호스트의 어디에 두어야 하는지 안내합니다. 아직 호스트에는 아무것도 설치되지 않았습니다."
+msgstr ""
+"설치 단계에서 이 내용을 호스트의 어디에 두어야 하는지 안내합니다. 아직 호스트"
+"에는 아무것도 설치되지 않았습니다."
 
 #: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:393
 msgid "Private key generated (shown once)"
@@ -8382,670 +8650,705 @@ msgstr "SSH 연결에 성공했습니다"
 msgid "SSH connection was not established"
 msgstr "SSH 연결이 설정되지 않았습니다"
 
-#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:82
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:90
 msgid "Trusted"
 msgstr "신뢰됨"
 
-#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:84
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:92
 msgid "New algorithm"
 msgstr "새 알고리즘"
 
-#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:86
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:94
 msgid "Changed"
 msgstr "변경됨"
 
-#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:88
-#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:328
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:96
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:356
 msgid "Stale"
 msgstr "오래됨"
 
-#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:90
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:100
 msgid "Unknown host"
 msgstr "알 수 없는 호스트"
 
-#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:204
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:232
 msgid "Verify the SSH host key before trusting it"
 msgstr "신뢰하기 전에 SSH 호스트 키를 확인하세요"
 
-#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:205
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:233
 msgid ""
 "Nginx UI can read the key presented by the SSH server, but it cannot prove "
 "the key is genuine by itself. Verify the fingerprint through the host "
 "console or another trusted channel before trusting or replacing it."
 msgstr ""
-"Nginx UI는 SSH 서버가 제시한 키를 읽을 수 있지만, 그 키가 진짜인지 스스로 증명할 수는 없습니다. 신뢰하거나 교체하기 전에 "
-"호스트 콘솔이나 다른 신뢰할 수 있는 경로를 통해 지문을 확인하세요."
+"Nginx UI는 SSH 서버가 제시한 키를 읽을 수 있지만, 그 키가 진짜인지 스스로 증"
+"명할 수는 없습니다. 신뢰하거나 교체하기 전에 호스트 콘솔이나 다른 신뢰할 수 "
+"있는 경로를 통해 지문을 확인하세요."
 
-#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:208
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:236
 msgid "Current target"
 msgstr "현재 대상"
 
-#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:213
-#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:121
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:241
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:123
 msgid "SSH user"
 msgstr "SSH 사용자"
 
-#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:216
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:244
 msgid "known_hosts"
 msgstr "known_hosts"
 
-#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:230
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:258
 msgid "1. Verify and trust the host key"
 msgstr "1. 호스트 키 확인 및 신뢰"
 
-#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:236
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:264
 msgid "Scan host keys"
 msgstr "호스트 키 스캔"
 
-#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:244
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:272
 msgid "Failed to scan host keys"
 msgstr "호스트 키 스캔 실패"
 
-#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:251
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:279
 msgid "Failed to update trusted host keys"
 msgstr "신뢰할 수 있는 호스트 키 업데이트 실패"
 
-#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:256
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:284
 msgid "Paste ssh-keyscan output"
 msgstr "ssh-keyscan 출력 붙여넣기"
 
-#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:257
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:285
 msgid "Run on a trusted terminal"
 msgstr "신뢰할 수 있는 터미널에서 실행"
 
-#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:260
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:288
 msgid "Parse pasted output"
 msgstr "붙여넣은 출력 분석"
 
-#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:276
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:304
 msgid "Fingerprint"
 msgstr "지문"
 
-#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:279
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:307
 msgid "Existing fingerprint"
 msgstr "기존 지문"
 
-#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:295
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:323
 msgid "I verified this fingerprint through a trusted channel."
 msgstr "신뢰할 수 있는 경로를 통해 이 지문을 확인했습니다."
 
-#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:298
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:326
 msgid "Trust this algorithm"
 msgstr "이 알고리즘 신뢰"
 
-#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:298
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:326
 msgid "Trust this key"
 msgstr "이 키 신뢰"
 
-#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:303
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:331
 msgid ""
 "Host key changed. Replace only after confirming an intentional host SSH key "
 "rotation."
-msgstr "호스트 키가 변경되었습니다. 호스트 SSH 키를 의도적으로 교체한 것이 확인된 경우에만 교체하세요."
+msgstr ""
+"호스트 키가 변경되었습니다. 호스트 SSH 키를 의도적으로 교체한 것이 확인된 경"
+"우에만 교체하세요."
 
-#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:305
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:333
 msgid "I verified the new fingerprint through a trusted channel."
 msgstr "신뢰할 수 있는 경로를 통해 새 지문을 확인했습니다."
 
-#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:308
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:336
 msgid "Replace trusted key"
 msgstr "신뢰된 키 교체"
 
-#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:318
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:346
 msgid "No SSH host keys were returned"
 msgstr "SSH 호스트 키가 반환되지 않았습니다"
 
-#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:322
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:350
 msgid "Advanced cleanup"
 msgstr "고급 정리"
 
-#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:335
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:363
 msgid "I understand this removes only the selected stale known_hosts entry."
 msgstr "선택한 오래된 known_hosts 항목만 제거된다는 점을 이해합니다."
 
-#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:339
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:367
 msgid "Delete stale key"
 msgstr "오래된 키 삭제"
 
-#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:353
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:381
 msgid "Host identity is trusted"
 msgstr "호스트 신원이 신뢰됩니다"
 
-#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:359
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:387
 msgid "Resolve changed host keys before continuing."
 msgstr "계속하기 전에 변경된 호스트 키를 해결하세요."
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:168
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:393
+msgid "The host presented a revoked key"
+msgstr "호스트에서 폐기된 키를 제시했습니다"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:394
+msgid ""
+"This key is marked @revoked in known_hosts. SSH will refuse it, so trusting "
+"it here would only fail later. Investigate why the host is presenting a "
+"revoked key before continuing."
+msgstr ""
+"이 키는 known_hosts에서 @revoked로 표시되어 있습니다. SSH가 이 키를 거부하므"
+"로 여기서 신뢰해도 나중에 실패합니다. 계속하기 전에 호스트가 폐기된 키를 제시"
+"하는 이유를 확인하세요."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:180
 msgid "Paths refreshed from %{path}"
 msgstr "%{path}에서 경로를 새로 고쳤습니다"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:193
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:213
 msgid "Target diagnosis"
 msgstr "대상 진단"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:197
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:217
 msgid "Detect again"
 msgstr "다시 감지"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:197
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:217
 msgid "Detect target"
 msgstr "대상 감지"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:205
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:225
 msgid "Every field matches the detected values"
 msgstr "모든 필드가 감지된 값과 일치합니다"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:209
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:229
 msgid "Some fields differ from the detected values"
 msgstr "일부 필드가 감지된 값과 다릅니다"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:213
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:233
 msgid "Apply all detected values"
 msgstr "감지된 값 모두 적용"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:221
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:241
 msgid "Target diagnosis failed"
 msgstr "대상 진단 실패"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:229
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:249
 msgid "The target platform could not be classified automatically"
 msgstr "대상 플랫폼을 자동으로 분류할 수 없습니다"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:230
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:250
 msgid ""
 "Choose the platform and confirm every path below manually, then continue."
 msgstr "플랫폼을 선택하고 아래의 모든 경로를 직접 확인한 뒤 계속하세요."
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:233
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:253
 msgid "Diagnosis completed with warnings"
 msgstr "진단이 경고와 함께 완료되었습니다"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:244
-#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:156
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:264
 msgid "Operating system"
 msgstr "운영 체제"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:247
-#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:159
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:267
 msgid "Service manager"
 msgstr "서비스 관리자"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:250
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:276
-#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:162
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:270
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:296
 msgid "Homebrew prefix"
 msgstr "Homebrew 접두사"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:253
-#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:168
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:273
 msgid "Detected nginx version"
 msgstr "감지된 nginx 버전"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:256
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:302
-#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:171
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:276
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:322
 msgid "nginx executable path"
 msgstr "nginx 실행 파일 경로"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:264
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:284
 msgid "Adjust detected values"
 msgstr "감지된 값 조정"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:265
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:285
 msgid "Platform"
 msgstr "플랫폼"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:270
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:290
 msgid "Linux (systemd)"
 msgstr "Linux (systemd)"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:271
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:291
 msgid "macOS (Homebrew)"
 msgstr "macOS (Homebrew)"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:280
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:300
 msgid "Apple Silicon"
 msgstr "Apple Silicon"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:281
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:301
 msgid "Intel Mac"
 msgstr "Intel Mac"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:286
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:306
 msgid ""
 "Detection fills this in. Switching it rewrites the four paths below that "
 "still hold a conventional default."
-msgstr "감지 결과가 여기에 채워집니다. 이 값을 바꾸면 아래에서 아직 기본값을 유지하고 있는 네 개의 경로가 다시 작성됩니다."
+msgstr ""
+"감지 결과가 여기에 채워집니다. 이 값을 바꾸면 아래에서 아직 기본값을 유지하"
+"고 있는 네 개의 경로가 다시 작성됩니다."
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:292
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:312
 msgid "systemd unit"
 msgstr "systemd 유닛"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:293
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:313
 msgid "systemctl path"
 msgstr "systemctl 경로"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:296
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:316
 msgid "launchd service label"
 msgstr "launchd 서비스 레이블"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:297
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:317
 msgid "launchctl path"
 msgstr "launchctl 경로"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:301
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:321
 msgid "nginx paths"
 msgstr "nginx 경로"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:309
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:329
 msgid "Re-detect paths from this executable"
 msgstr "이 실행 파일에서 경로 다시 감지"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:313
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:333
 msgid ""
 "Runs nginx -V on the target and refreshes the config, log and PID paths "
 "below."
-msgstr "대상에서 nginx -V를 실행하고 아래의 구성, 로그, PID 경로를 새로 고칩니다."
+msgstr ""
+"대상에서 nginx -V를 실행하고 아래의 구성, 로그, PID 경로를 새로 고칩니다."
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:323
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:343
 msgid "Could not read the nginx build configuration"
 msgstr "nginx 빌드 구성을 읽을 수 없습니다"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:334
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:354
 msgid "nginx config directory"
 msgstr "nginx 구성 디렉터리"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:335
-#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:177
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:355
 msgid "nginx log directory"
 msgstr "nginx 로그 디렉터리"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:336
-#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:180
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:356
 msgid "nginx PID file"
 msgstr "nginx PID 파일"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:345
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:365
 msgid "Platform and paths are complete."
 msgstr "플랫폼과 경로가 모두 입력되었습니다."
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:351
-msgid "Path checks read the Nginx UI container, not the host"
-msgstr "경로 검사는 호스트가 아니라 Nginx UI 컨테이너를 읽습니다"
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:88
+msgid "File access mode"
+msgstr "파일 접근 모드"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:352
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:91
+#: src/views/preference/tabs/NginxSettings.vue:229
+msgid "Compatibility (SFTP)"
+msgstr "호환 모드(SFTP)"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:94
+#: src/views/preference/tabs/NginxSettings.vue:232
+msgid "High performance (mounted)"
+msgstr "고성능 모드(마운트)"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:99
 msgid ""
-"The service check runs over SSH, but the config, log and PID checks look "
-"inside this container. On a first run they stay red until the bind mounts "
-"from the next step are applied and the container is recreated. That is "
-"expected and does not block you from continuing."
+"Nginx UI reads configuration and logs from bind-mounted host directories. "
+"This is faster, but requires recreating the container."
 msgstr ""
-"서비스 검사는 SSH를 통해 실행되지만 구성, 로그, PID 검사는 이 컨테이너 내부를 확인합니다. 처음 실행할 때는 다음 단계의 바인드"
-" 마운트를 적용하고 컨테이너를 다시 만들기 전까지 빨간색으로 표시됩니다. 이는 정상이며 계속 진행하는 데 문제가 되지 않습니다."
+"Nginx UI는 바인드 마운트된 호스트 디렉터리에서 설정과 로그를 읽습니다. 더 빠"
+"르지만 컨테이너를 다시 생성해야 합니다."
 
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:357
-msgid "Platform checks"
-msgstr "플랫폼 검사"
-
-#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:358
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:100
 msgid ""
-"Verifies the service is loaded under the entered label and that every path "
-"above is reachable from the container."
-msgstr "입력한 레이블로 서비스가 로드되었는지, 위의 모든 경로에 컨테이너에서 접근할 수 있는지 확인합니다."
+"Nginx UI reads configuration and logs entirely over SSH and SFTP. No host "
+"directories are mounted into the container."
+msgstr ""
+"Nginx UI는 설정과 로그를 모두 SSH 및 SFTP를 통해 읽습니다. 호스트 디렉터리는 "
+"컨테이너에 마운트되지 않습니다."
 
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:68
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:108
 msgid "Failed to load setup instructions"
 msgstr "설정 안내 불러오기 실패"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:83
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:126
+msgid "No container changes are required in compatibility mode"
+msgstr "호환 모드에서는 컨테이너를 변경할 필요가 없습니다"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:127
+msgid "Complete the host permissions below, then run the setup checks."
+msgstr "아래의 호스트 권한을 설정한 다음 설정 검사를 실행하세요."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:132
 msgid "1. On the nginx host"
 msgstr "1. nginx 호스트에서"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:89
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:138
 msgid "Run these on the machine that runs nginx, as a user who can use sudo."
 msgstr "nginx를 실행하는 머신에서 sudo를 사용할 수 있는 사용자로 실행하세요."
 
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:90
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:139
 msgid ""
 "Run these on the machine that runs nginx, as the SSH user configured above."
 msgstr "nginx를 실행하는 머신에서 위에 구성한 SSH 사용자로 실행하세요."
 
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:98
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:147
 msgid "Install the public key"
 msgstr "공개 키 설치"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:99
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:148
 msgid ""
-"Creates %{file} with the permissions sshd requires and appends the key. sshd"
-" silently ignores an authorized_keys file that other users can write, which "
+"Creates %{file} with the permissions sshd requires and appends the key. sshd "
+"silently ignores an authorized_keys file that other users can write, which "
 "shows up later as a permission denied error."
 msgstr ""
-"sshd가 요구하는 권한으로 %{file}을(를) 만들고 키를 추가합니다. sshd는 다른 사용자가 쓸 수 있는 "
-"authorized_keys 파일을 조용히 무시하며, 이는 나중에 permission denied 오류로 나타납니다."
+"sshd가 요구하는 권한으로 %{file}을(를) 만들고 키를 추가합니다. sshd는 다른 사"
+"용자가 쓸 수 있는 authorized_keys 파일을 조용히 무시하며, 이는 나중에 "
+"permission denied 오류로 나타납니다."
 
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:108
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:157
 msgid ""
 "The same key on its own, for appending by hand. To restrict where it may be "
 "used from, prefix it with from='…'."
-msgstr "직접 추가할 수 있도록 키만 따로 표시한 것입니다. 사용 가능한 출처를 제한하려면 앞에 from='…'을 붙이세요."
+msgstr ""
+"직접 추가할 수 있도록 키만 따로 표시한 것입니다. 사용 가능한 출처를 제한하려"
+"면 앞에 from='…'을 붙이세요."
 
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:116
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:165
 msgid "Open the sudoers file"
 msgstr "sudoers 파일 열기"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:117
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:166
 msgid ""
 "visudo checks the syntax before saving, so a typo cannot lock you out of "
 "sudo."
-msgstr "visudo는 저장하기 전에 구문을 검사하므로 오타 때문에 sudo를 사용할 수 없게 되는 일이 없습니다."
+msgstr ""
+"visudo는 저장하기 전에 구문을 검사하므로 오타 때문에 sudo를 사용할 수 없게 되"
+"는 일이 없습니다."
 
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:123
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:172
 msgid "sudoers rules"
 msgstr "sudoers 규칙"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:124
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:173
 msgid ""
 "Paste this into the editor visudo opened, then save and exit. It lets the "
 "SSH user reload nginx without a password."
 msgstr ""
-"visudo가 연 편집기에 이 내용을 붙여넣은 뒤 저장하고 종료하세요. 그러면 SSH 사용자가 비밀번호 없이 nginx를 다시 로드할 수"
-" 있습니다."
+"visudo가 연 편집기에 이 내용을 붙여넣은 뒤 저장하고 종료하세요. 그러면 SSH 사"
+"용자가 비밀번호 없이 nginx를 다시 로드할 수 있습니다."
 
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:133
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:182
 msgid "File access check"
 msgstr "파일 접근 검사"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:133
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:182
 msgid "File permissions"
 msgstr "파일 권한"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:135
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:184
 msgid ""
 "Run as the SSH user. Both commands only test access and change nothing. A "
 "failure means the SSH user cannot reach the Homebrew paths."
 msgstr ""
-"SSH 사용자로 실행하세요. 두 명령 모두 접근만 테스트하며 아무것도 변경하지 않습니다. 실패하면 SSH 사용자가 Homebrew 경로에"
-" 접근할 수 없다는 뜻입니다."
+"SSH 사용자로 실행하세요. 두 명령 모두 접근만 테스트하며 아무것도 변경하지 않"
+"습니다. 실패하면 SSH 사용자가 Homebrew 경로에 접근할 수 없다는 뜻입니다."
 
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:136
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:185
 msgid ""
 "Run as root. Grants the SSH user write access to the nginx config directory "
-"and read access to the logs, including files created later, plus read access"
-" to the PID file."
+"and read access to the logs, including files created later, plus read access "
+"to the PID file."
 msgstr ""
-"root로 실행하세요. SSH 사용자에게 nginx 구성 디렉터리에 대한 쓰기 권한과 나중에 생성되는 파일을 포함한 로그에 대한 읽기 "
-"권한, 그리고 PID 파일에 대한 읽기 권한을 부여합니다."
+"root로 실행하세요. SSH 사용자에게 nginx 구성 디렉터리에 대한 쓰기 권한과 나중"
+"에 생성되는 파일을 포함한 로그에 대한 읽기 권한, 그리고 PID 파일에 대한 읽기 "
+"권한을 부여합니다."
 
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:143
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:192
 msgid "Nothing else to install on the host"
 msgstr "호스트에 추가로 설치할 항목이 없습니다"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:145
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:194
 msgid ""
 "A Homebrew launchd service runs as the SSH user, so no sudoers entry or "
 "extra permissions are needed."
-msgstr "Homebrew launchd 서비스는 SSH 사용자로 실행되므로 sudoers 항목이나 추가 권한이 필요하지 않습니다."
+msgstr ""
+"Homebrew launchd 서비스는 SSH 사용자로 실행되므로 sudoers 항목이나 추가 권한"
+"이 필요하지 않습니다."
 
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:146
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:195
 msgid ""
 "The SSH user is root, so no sudoers entry or extra permissions are needed."
-msgstr "SSH 사용자가 root이므로 sudoers 항목이나 추가 권한이 필요하지 않습니다."
+msgstr ""
+"SSH 사용자가 root이므로 sudoers 항목이나 추가 권한이 필요하지 않습니다."
 
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:151
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:200
 msgid "2. On the Nginx UI container"
 msgstr "2. Nginx UI 컨테이너에서"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:156
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:206
 msgid ""
 "Pick the format that matches how you run Nginx UI, then recreate the "
-"container."
-msgstr "Nginx UI를 실행하는 방식에 맞는 형식을 선택한 뒤 컨테이너를 다시 만드세요."
+"container with the bind mounts."
+msgstr ""
+"Nginx UI 실행 방식에 맞는 형식을 선택한 다음 바인드 마운트를 포함하여 컨테이"
+"너를 다시 생성하세요."
 
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:162
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:207
+msgid ""
+"Linux Docker Engine requires this host-gateway mapping for host.docker."
+"internal. No directory mounts are added."
+msgstr ""
+"Linux Docker Engine에서 host.docker.internal을 사용하려면 이 host-gateway 매"
+"핑이 필요합니다. 디렉터리 마운트는 추가되지 않습니다."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:213
 msgid "Recreating the container closes this page"
 msgstr "컨테이너를 다시 만들면 이 페이지가 닫힙니다"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:166
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:217
 msgid "Finish the host side first, then come back here."
 msgstr "먼저 호스트 쪽 작업을 완료한 뒤 여기로 돌아오세요."
 
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:167
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:218
 msgid ""
-"Restarting Nginx UI ends the two-factor session and clears anything typed in"
-" the earlier steps."
-msgstr "Nginx UI를 재시작하면 2단계 인증 세션이 종료되고 이전 단계에서 입력한 내용이 모두 지워집니다."
+"Restarting Nginx UI ends the two-factor session and clears anything typed in "
+"the earlier steps."
+msgstr ""
+"Nginx UI를 재시작하면 2단계 인증 세션이 종료되고 이전 단계에서 입력한 내용이 "
+"모두 지워집니다."
 
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:168
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:219
 msgid ""
 "The generated key and known_hosts survive, because they live under the "
 "persisted /etc/nginx-ui directory."
-msgstr "생성된 키와 known_hosts는 영구 저장되는 /etc/nginx-ui 디렉터리에 있으므로 그대로 유지됩니다."
+msgstr ""
+"생성된 키와 known_hosts는 영구 저장되는 /etc/nginx-ui 디렉터리에 있으므로 그"
+"대로 유지됩니다."
 
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:169
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:220
 msgid ""
 "Note the host address and SSH user before you recreate, then reopen the "
 "wizard and verify again."
-msgstr "다시 만들기 전에 호스트 주소와 SSH 사용자를 기록해 두었다가, 마법사를 다시 열고 확인을 실행하세요."
+msgstr ""
+"다시 만들기 전에 호스트 주소와 SSH 사용자를 기록해 두었다가, 마법사를 다시 열"
+"고 확인을 실행하세요."
 
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:175
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:226
 msgid "docker compose"
 msgstr "docker compose"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:181
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:232
 msgid "docker-compose.yml"
 msgstr "docker-compose.yml"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:182
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:234
 msgid ""
 "Merge this under services.nginx-ui in your existing file. Each bind mount "
 "uses the same path inside the container as on the host."
 msgstr ""
-"기존 파일의 services.nginx-ui 아래에 이 내용을 병합하세요. 각 바인드 마운트는 컨테이너 내부에서 호스트와 동일한 경로를 "
-"사용합니다."
+"기존 파일의 services.nginx-ui 아래에 이 내용을 병합하세요. 각 바인드 마운트"
+"는 컨테이너 내부에서 호스트와 동일한 경로를 사용합니다."
 
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:185
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:235
+msgid ""
+"Merge this host-gateway mapping under services.nginx-ui in your existing "
+"file."
+msgstr ""
+"기존 파일의 services.nginx-ui 아래에 이 host-gateway 매핑을 병합하세요."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:238
 msgid "override file"
 msgstr "오버라이드 파일"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:191
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:244
 msgid "docker-compose.override.yml"
 msgstr "docker-compose.override.yml"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:192
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:245
 msgid ""
 "Save as a new file next to your main compose file. Docker Compose merges it "
 "automatically, so your original file stays untouched."
 msgstr ""
-"기본 compose 파일 옆에 새 파일로 저장하세요. Docker Compose가 자동으로 병합하므로 원본 파일은 그대로 유지됩니다."
+"기본 compose 파일 옆에 새 파일로 저장하세요. Docker Compose가 자동으로 병합하"
+"므로 원본 파일은 그대로 유지됩니다."
 
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:195
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:201
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:248
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:254
 msgid "docker run"
 msgstr "docker run"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:202
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:255
 msgid ""
 "Replaces your current docker run command. Adjust the published port and the "
 "image tag to match your current deployment."
-msgstr "현재 docker run 명령을 대체합니다. 게시된 포트와 이미지 태그를 현재 배포에 맞게 조정하세요."
+msgstr ""
+"현재 docker run 명령을 대체합니다. 게시된 포트와 이미지 태그를 현재 배포에 맞"
+"게 조정하세요."
 
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:212
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:265
 msgid "Apply the change"
 msgstr "변경 사항 적용"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:214
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:268
 msgid ""
-"Remove the old container, then run the command above. The new environment "
-"variables only take effect on a fresh container."
-msgstr "이전 컨테이너를 제거한 뒤 위 명령을 실행하세요. 새 환경 변수는 새로 만든 컨테이너에서만 적용됩니다."
+"Remove the old container, then run the command above with the mounted host "
+"directories."
+msgstr ""
+"기존 컨테이너를 제거한 다음 호스트 디렉터리가 마운트된 위 명령을 실행하세요."
 
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:215
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:269
+msgid "The bind mounts take effect once the container is recreated."
+msgstr "바인드 마운트는 컨테이너를 다시 생성하면 적용됩니다."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:270
+msgid "The host-gateway mapping takes effect once the container is recreated."
+msgstr "host-gateway 매핑은 컨테이너를 다시 생성하면 적용됩니다."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:280
+msgid "Setup checks"
+msgstr "설정 검사"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:281
 msgid ""
-"The new environment variables only take effect once the container is "
-"recreated."
-msgstr "새 환경 변수는 컨테이너를 다시 만든 후에만 적용됩니다."
+"Run these after applying the relevant host and container instructions above. "
+"They verify the service, file access and required privileges for the "
+"selected mode."
+msgstr ""
+"위의 관련 호스트 및 컨테이너 지침을 적용한 후 실행하세요. 선택한 모드의 서비"
+"스, 파일 접근 및 필요한 권한을 확인합니다."
 
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:225
-msgid "Permission checks"
-msgstr "권한 검사"
-
-#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:226
-msgid "Run this once the sudoers rules are installed on the host."
-msgstr "호스트에 sudoers 규칙을 설치한 뒤 실행하세요."
-
-#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:81
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:83
 msgid "SSH target"
 msgstr "SSH 대상"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:82
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:84
 msgid "Host address (host:port)"
 msgstr "호스트 주소 (host:port)"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:89
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:91
 msgid "This address answers on the SSH port."
 msgstr "이 주소가 SSH 포트로 응답합니다."
 
-#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:94
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:96
 msgid "These addresses answer on the SSH port from this container:"
 msgstr "이 컨테이너에서 다음 주소들이 SSH 포트로 응답합니다:"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:108
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:110
 msgid "Could not probe for reachable addresses: %{reason}"
 msgstr "연결 가능한 주소를 탐색하지 못했습니다: %{reason}"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:111
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:113
 msgid ""
 "No address answered. Enter one manually, then use Probe again to test it."
-msgstr "응답한 주소가 없습니다. 주소를 직접 입력한 뒤 다시 확인을 눌러 테스트하세요."
+msgstr ""
+"응답한 주소가 없습니다. 주소를 직접 입력한 뒤 다시 확인을 눌러 테스트하세요."
 
-#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:115
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:117
 msgid "Probe again"
 msgstr "다시 확인"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:131
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:133
 msgid "Remote address detected"
 msgstr "원격 주소가 감지되었습니다"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:135
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:137
 msgid "This mode only supports nginx-ui and target nginx on the same host."
-msgstr "이 모드는 nginx-ui와 대상 nginx가 같은 호스트에 있는 경우만 지원합니다."
+msgstr ""
+"이 모드는 nginx-ui와 대상 nginx가 같은 호스트에 있는 경우만 지원합니다."
 
-#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:136
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:138
 msgid ""
 "bind-mount cannot reach remote filesystems, so config editing, log viewing "
 "and certificate management will fail."
-msgstr "바인드 마운트는 원격 파일 시스템에 접근할 수 없으므로 구성 편집, 로그 보기, 인증서 관리가 실패합니다."
+msgstr ""
+"바인드 마운트는 원격 파일 시스템에 접근할 수 없으므로 구성 편집, 로그 보기, "
+"인증서 관리가 실패합니다."
 
-#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:143
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:145
 msgid "Use the cluster Node guide for cross-host setups."
 msgstr "호스트 간 설정에는 클러스터 노드 가이드를 사용하세요."
 
-#: src/views/preference/components/NginxHostSetup/steps/StepTrustAndTest.vue:27
+#: src/views/preference/components/NginxHostSetup/steps/StepTrustAndTest.vue:26
 msgid "2. Test the SSH connection"
 msgstr "2. SSH 연결 테스트"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepTrustAndTest.vue:37
-msgid "3. Check the connection"
-msgstr "3. 연결 확인"
-
-#: src/views/preference/components/NginxHostSetup/steps/StepTrustAndTest.vue:42
-msgid "Connection checks"
-msgstr "연결 검사"
-
-#: src/views/preference/components/NginxHostSetup/steps/StepTrustAndTest.vue:43
-msgid ""
-"Verifies reachability, that the target is the container host, and that "
-"known_hosts is persisted."
-msgstr "연결 가능 여부, 대상이 컨테이너의 호스트인지 여부, known_hosts가 영구 저장되는지를 확인합니다."
-
-#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:89
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:66
 msgid "Verification"
 msgstr "확인"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:92
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:69
 msgid "Run verification"
 msgstr "확인 실행"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:96
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:73
 msgid ""
-"Every check validates the SSH setup itself, except nginx -t, which validates"
-" the configuration already present on the host."
-msgstr "모든 검사는 SSH 설정 자체를 검증하지만, nginx -t는 호스트에 이미 존재하는 구성을 검증합니다."
+"The earlier steps already verified SSH, platform, file access and "
+"privileges. This final check only runs nginx -t against the host "
+"configuration."
+msgstr ""
+"이전 단계에서 SSH, 플랫폼, 파일 접근 및 권한을 이미 확인했습니다. 마지막 검사"
+"에서는 호스트 설정에 대해 nginx -t만 실행합니다."
 
-#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:104
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:81
 msgid "The nginx configuration on the host failed validation"
 msgstr "호스트의 nginx 구성 검증에 실패했습니다"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:108
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:85
 msgid ""
 "This is the configuration already present on the host, not something this "
-"wizard wrote. The SSH setup itself can still be saved, and the configuration"
-" can be fixed from Nginx UI afterwards."
+"wizard wrote. The SSH setup itself can still be saved, and the configuration "
+"can be fixed from Nginx UI afterwards."
 msgstr ""
-"이는 이 마법사가 작성한 것이 아니라 호스트에 이미 존재하던 구성입니다. SSH 설정 자체는 저장할 수 있으며, 구성은 이후 Nginx "
-"UI에서 수정할 수 있습니다."
+"이는 이 마법사가 작성한 것이 아니라 호스트에 이미 존재하던 구성입니다. SSH 설"
+"정 자체는 저장할 수 있으며, 구성은 이후 Nginx UI에서 수정할 수 있습니다."
 
-#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:111
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:88
 msgid "Continue without validating the configuration"
 msgstr "구성을 검증하지 않고 계속"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:120
-msgid "Target diagnosis completed with warnings"
-msgstr "대상 진단이 경고와 함께 완료되었습니다"
-
-#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:135
-msgid "Detected target settings differ from the current configuration"
-msgstr "감지된 대상 설정이 현재 구성과 다릅니다"
-
-#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:139
-msgid "Apply the detected settings, review them, then run verification again."
-msgstr "감지된 설정을 적용하고 검토한 뒤 확인을 다시 실행하세요."
-
-#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:142
-msgid "Apply detected settings"
-msgstr "감지된 설정 적용"
-
-#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:151
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:97
 msgid "Verification failed"
 msgstr "확인 실패"
 
-#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:174
-msgid "Main configuration file"
-msgstr "주 구성 파일"
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:105
+msgid "Run the final nginx configuration check to enable saving."
+msgstr "마지막 nginx 설정 검사를 실행하면 저장할 수 있습니다."
 
-#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:183
-msgid "Homebrew document root"
-msgstr "Homebrew 문서 루트"
-
-#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:192
-msgid ""
-"A run re-reads the host, opens an SSH session, checks every path from inside"
-" this container, checks sudo access, and runs nginx -t."
-msgstr ""
-"실행하면 호스트를 다시 읽고, SSH 세션을 열고, 이 컨테이너 내부에서 모든 경로를 검사하고, sudo 접근을 확인하며, nginx "
-"-t를 실행합니다."
-
-#: src/views/preference/components/NginxHostSetup/useHostSetupWizard.ts:189
+#: src/views/preference/components/NginxHostSetup/useHostSetupWizard.ts:197
 msgid "Enter the SSH host address."
 msgstr "SSH 호스트 주소를 입력하세요."
 
-#: src/views/preference/components/NginxHostSetup/useHostSetupWizard.ts:191
+#: src/views/preference/components/NginxHostSetup/useHostSetupWizard.ts:199
 msgid "Enter the SSH user."
 msgstr "SSH 사용자를 입력하세요."
 
-#: src/views/preference/components/NginxHostSetup/useHostSetupWizard.ts:193
+#: src/views/preference/components/NginxHostSetup/useHostSetupWizard.ts:201
 msgid "Generate, validate or import a private key first."
 msgstr "먼저 개인 키를 생성, 검증 또는 가져오세요."
 
-#: src/views/preference/components/NginxHostSetup/useHostSetupWizard.ts:197
+#: src/views/preference/components/NginxHostSetup/useHostSetupWizard.ts:205
 msgid "Trust every presented host key first."
 msgstr "먼저 제시된 모든 호스트 키를 신뢰하세요."
 
-#: src/views/preference/components/NginxHostSetup/useHostSetupWizard.ts:199
+#: src/views/preference/components/NginxHostSetup/useHostSetupWizard.ts:207
 msgid "Run the SSH connection test first."
 msgstr "먼저 SSH 연결 테스트를 실행하세요."
 
-#: src/views/preference/components/NginxHostSetup/useHostSetupWizard.ts:203
+#: src/views/preference/components/NginxHostSetup/useHostSetupWizard.ts:211
 msgid "Fill in the platform and every nginx path below."
 msgstr "아래에 플랫폼과 모든 nginx 경로를 입력하세요."
 
@@ -9074,8 +9377,12 @@ msgid "Service manager and nginx paths"
 msgstr "서비스 관리자 및 nginx 경로"
 
 #: src/views/preference/components/NginxHostSetup/Wizard.vue:39
-msgid "Container and host snippets"
-msgstr "컨테이너 및 호스트 스니펫"
+msgid "Access & Install"
+msgstr "접근 및 설치"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:39
+msgid "File mode and setup instructions"
+msgstr "파일 모드 및 설정 지침"
 
 #: src/views/preference/components/NginxHostSetup/Wizard.vue:40
 msgid "Verify"
@@ -9097,36 +9404,44 @@ msgstr "구성 저장"
 msgid "Failed to load settings"
 msgstr "설정 불러오기 실패"
 
-#: src/views/preference/NginxHostSetup.vue:61
+#: src/views/preference/NginxHostSetup.vue:58
+msgid ""
+"The saved SSH access mode is missing or invalid. Set host_access_mode to "
+"sftp or mounted in the configuration file."
+msgstr ""
+"저장된 SSH 접근 모드가 없거나 올바르지 않습니다. 설정 파일에서 "
+"host_access_mode를 sftp 또는 mounted로 설정하세요."
+
+#: src/views/preference/NginxHostSetup.vue:68
 msgid "Failed to authorize protected settings"
 msgstr "보호된 설정 권한 확인 실패"
 
-#: src/views/preference/NginxHostSetup.vue:81
-#: src/views/preference/NginxHostSetup.vue:148
+#: src/views/preference/NginxHostSetup.vue:88
+#: src/views/preference/NginxHostSetup.vue:159
 msgid "Failed to save Nginx control settings"
 msgstr "Nginx 제어 설정 저장 실패"
 
-#: src/views/preference/NginxHostSetup.vue:98
+#: src/views/preference/NginxHostSetup.vue:109
 msgid "Back to Nginx settings"
 msgstr "Nginx 설정으로 돌아가기"
 
-#: src/views/preference/NginxHostSetup.vue:103
+#: src/views/preference/NginxHostSetup.vue:114
 msgid "Authorizing..."
 msgstr "권한 확인 중..."
 
-#: src/views/preference/NginxHostSetup.vue:110
+#: src/views/preference/NginxHostSetup.vue:121
 msgid ""
 "Enable two-factor authentication before changing Nginx control settings."
 msgstr "Nginx 제어 설정을 변경하기 전에 2단계 인증을 활성화하세요."
 
-#: src/views/preference/NginxHostSetup.vue:115
+#: src/views/preference/NginxHostSetup.vue:126
 #: src/views/preference/tabs/NginxSettings.vue:44
 #: src/views/preference/tabs/NginxSettings.vue:45
 #: src/views/user/UserProfile.vue:149
 msgid "2FA Settings"
 msgstr "2FA 설정"
 
-#: src/views/preference/NginxHostSetup.vue:127
+#: src/views/preference/NginxHostSetup.vue:138
 msgid "Unable to open SSH setup"
 msgstr "SSH 설정을 열 수 없습니다"
 
@@ -9215,7 +9530,9 @@ msgstr "최대 시도 횟수"
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
 "ban threshold minutes,"
-msgstr "하나의 IP에서 로그인 실패 횟수가 차단 임계 시간(분) 내에 최대 시도 횟수에 도달하면,"
+msgstr ""
+"하나의 IP에서 로그인 실패 횟수가 차단 임계 시간(분) 내에 최대 시도 횟수에 도"
+"달하면,"
 
 #: src/views/preference/tabs/AuthSettings.vue:114
 msgid "Banned IPs"
@@ -9274,10 +9591,11 @@ msgstr "테스트 메시지 전송 실패"
 
 #: src/views/preference/tabs/GeoLiteSettings.vue:9
 msgid ""
-"The GeoLite2 database provides geographic information for IP addresses. This"
-" is used for offline geographic analysis in log analytics."
+"The GeoLite2 database provides geographic information for IP addresses. This "
+"is used for offline geographic analysis in log analytics."
 msgstr ""
-"GeoLite2 데이터베이스는 IP 주소에 대한 지리 정보를 제공합니다. 이는 로그 분석에서 오프라인 지리 분석에 사용됩니다."
+"GeoLite2 데이터베이스는 IP 주소에 대한 지리 정보를 제공합니다. 이는 로그 분석"
+"에서 오프라인 지리 분석에 사용됩니다."
 
 #: src/views/preference/tabs/HTTPSettings.vue:11
 msgid "Github Proxy"
@@ -9360,24 +9678,41 @@ msgid "Nginx Control Mode"
 msgstr "Nginx 제어 모드"
 
 #: src/views/preference/tabs/NginxSettings.vue:217
-#: src/views/preference/tabs/NginxSettings.vue:245
+#: src/views/preference/tabs/NginxSettings.vue:266
 msgid "Host via SSH"
 msgstr "SSH를 통한 호스트"
 
 #: src/views/preference/tabs/NginxSettings.vue:220
-#: src/views/preference/tabs/NginxSettings.vue:259
+#: src/views/preference/tabs/NginxSettings.vue:280
 msgid "External Docker Container"
 msgstr "외부 Docker 컨테이너"
 
-#: src/views/preference/tabs/NginxSettings.vue:239
+#: src/views/preference/tabs/NginxSettings.vue:244
+msgid "High-performance mode is available"
+msgstr "고성능 모드를 사용할 수 있습니다"
+
+#: src/views/preference/tabs/NginxSettings.vue:245
+msgid ""
+"Compatibility mode works entirely over SSH. For lower file-access latency, "
+"configure bind mounts and switch to high-performance mode after recreating "
+"the container."
+msgstr ""
+"호환 모드는 전적으로 SSH를 통해 작동합니다. 파일 접근 지연을 줄이려면 바인드 "
+"마운트를 설정하고 컨테이너를 다시 생성한 후 고성능 모드로 전환하세요."
+
+#: src/views/preference/tabs/NginxSettings.vue:249
+msgid "Review high-performance setup"
+msgstr "고성능 설정 검토"
+
+#: src/views/preference/tabs/NginxSettings.vue:260
 msgid "Local / Bundled"
 msgstr "로컬 / 번들"
 
-#: src/views/preference/tabs/NginxSettings.vue:242
+#: src/views/preference/tabs/NginxSettings.vue:263
 msgid "External Container"
 msgstr "외부 컨테이너"
 
-#: src/views/preference/tabs/NginxSettings.vue:251
+#: src/views/preference/tabs/NginxSettings.vue:272
 msgid "Open SSH setup wizard"
 msgstr "SSH 설정 마법사 열기"
 
@@ -9393,7 +9728,9 @@ msgstr "노드 이름"
 msgid ""
 "The node name should only contain letters, unicode, numbers, hyphens, "
 "dashes, colons, and dots."
-msgstr "노드 이름에는 문자, 유니코드, 숫자, 하이픈, 대시, 콜론 및 점만 포함되어야 합니다."
+msgstr ""
+"노드 이름에는 문자, 유니코드, 숫자, 하이픈, 대시, 콜론 및 점만 포함되어야 합"
+"니다."
 
 #: src/views/preference/tabs/NodeSettings.vue:22
 msgid ""
@@ -9417,7 +9754,8 @@ msgstr "ICP 번호"
 msgid ""
 "The ICP Number should only contain letters, unicode, numbers, hyphens, "
 "dashes, colons, and dots."
-msgstr "ICP 번호는 문자, 유니코드, 숫자, 하이픈, 대시, 콜론 및 점만 포함해야 합니다."
+msgstr ""
+"ICP 번호는 문자, 유니코드, 숫자, 하이픈, 대시, 콜론 및 점만 포함해야 합니다."
 
 #: src/views/preference/tabs/NodeSettings.vue:45
 #: src/views/preference/tabs/NodeSettings.vue:57
@@ -9432,18 +9770,23 @@ msgstr "공공 보안 번호"
 msgid ""
 "The Public Security Number should only contain letters, unicode, numbers, "
 "hyphens, dashes, colons, and dots."
-msgstr "공공 보안 번호는 문자, 유니코드, 숫자, 하이픈, 대시, 콜론 및 점만 포함해야 합니다."
+msgstr ""
+"공공 보안 번호는 문자, 유니코드, 숫자, 하이픈, 대시, 콜론 및 점만 포함해야 합"
+"니다."
 
 #: src/views/preference/tabs/OpenAISettings.vue:35
 msgid ""
-"Leave blank to use the MiniMax global OpenAI-compatible endpoint: "
-"https://api.minimax.io/v1"
-msgstr "MiniMax 글로벌 OpenAI 호환 엔드포인트를 사용하려면 비워 두세요: https://api.minimax.io/v1"
+"Leave blank to use the MiniMax global OpenAI-compatible endpoint: https://"
+"api.minimax.io/v1"
+msgstr ""
+"MiniMax 글로벌 OpenAI 호환 엔드포인트를 사용하려면 비워 두세요: https://api."
+"minimax.io/v1"
 
 #: src/views/preference/tabs/OpenAISettings.vue:38
 msgid ""
 "Leave blank to use the Atlas Cloud endpoint: https://api.atlascloud.ai/v1"
-msgstr "비워 두면 Atlas Cloud 엔드포인트를 사용합니다: https://api.atlascloud.ai/v1"
+msgstr ""
+"비워 두면 Atlas Cloud 엔드포인트를 사용합니다: https://api.atlascloud.ai/v1"
 
 #: src/views/preference/tabs/OpenAISettings.vue:40
 msgid "Leave blank for the default: https://api.openai.com/"
@@ -9458,21 +9801,21 @@ msgstr "URL이 유효하지 않습니다."
 msgid ""
 "MiniMax is OpenAI-compatible. Use https://api.minimax.io/v1 for global "
 "service or https://api.minimaxi.com/v1 for China service. For Anthropic-"
-"compatible clients, use https://api.minimax.io/anthropic or "
-"https://api.minimaxi.com/anthropic."
+"compatible clients, use https://api.minimax.io/anthropic or https://api."
+"minimaxi.com/anthropic."
 msgstr ""
-"MiniMax 는 OpenAI 와 호환됩니다. 글로벌 서비스에는 https://api.minimax.io/v1 , 중국 서비스에는 "
-"https://api.minimaxi.com/v1 을 사용하세요. Anthropic 호환 클라이언트의 경우 "
-"https://api.minimax.io/anthropic 또는 https://api.minimaxi.com/anthropic 을 "
-"사용하세요."
+"MiniMax 는 OpenAI 와 호환됩니다. 글로벌 서비스에는 https://api.minimax.io/"
+"v1 , 중국 서비스에는 https://api.minimaxi.com/v1 을 사용하세요. Anthropic 호"
+"환 클라이언트의 경우 https://api.minimax.io/anthropic 또는 https://api."
+"minimaxi.com/anthropic 을 사용하세요."
 
 #: src/views/preference/tabs/OpenAISettings.vue:52
 msgid ""
 "Atlas Cloud is OpenAI-compatible. Use https://api.atlascloud.ai/v1 and an "
 "Atlas Cloud API key."
 msgstr ""
-"Atlas Cloud 는 OpenAI 와 호환됩니다. https://api.atlascloud.ai/v1 과 Atlas Cloud API"
-" 키를 사용하세요."
+"Atlas Cloud 는 OpenAI 와 호환됩니다. https://api.atlascloud.ai/v1 과 Atlas "
+"Cloud API 키를 사용하세요."
 
 #: src/views/preference/tabs/OpenAISettings.vue:55
 msgid "To use a local large model, deploy it with ollama, vllm or lmdeploy. "
@@ -9487,7 +9830,9 @@ msgstr "모델"
 msgid ""
 "The model name should only contain letters, unicode, numbers, hyphens, "
 "dashes, colons, and dots."
-msgstr "모델 이름에는 문자, 유니코드, 숫자, 하이픈, 대시, 콜론 및 점만 포함되어야 합니다."
+msgstr ""
+"모델 이름에는 문자, 유니코드, 숫자, 하이픈, 대시, 콜론 및 점만 포함되어야 합"
+"니다."
 
 #: src/views/preference/tabs/OpenAISettings.vue:107
 msgid "API Base Url"
@@ -9520,7 +9865,8 @@ msgstr "코드 완성 모델"
 #: src/views/preference/tabs/OpenAISettings.vue:167
 msgid ""
 "The model used for code completion, if not set, the chat model will be used."
-msgstr "코드 완성에 사용되는 모델입니다. 설정되지 않은 경우 채팅 모델이 사용됩니다."
+msgstr ""
+"코드 완성에 사용되는 모델입니다. 설정되지 않은 경우 채팅 모델이 사용됩니다."
 
 #: src/views/preference/tabs/ServerSettings.vue:25
 msgid "Run Mode"
@@ -9537,9 +9883,10 @@ msgstr "SSL 키 경로"
 #: src/views/preference/tabs/ServerSettings.vue:47
 msgid ""
 "Protocol configuration only takes effect when directly connecting. If using "
-"reverse proxy, please configure the protocol separately in the reverse "
-"proxy."
-msgstr "프로토콜 설정은 직접 연결할 때만 적용됩니다. 리버스 프록시를 사용하는 경우 리버스 프록시에서 별도로 프로토콜을 구성하세요."
+"reverse proxy, please configure the protocol separately in the reverse proxy."
+msgstr ""
+"프로토콜 설정은 직접 연결할 때만 적용됩니다. 리버스 프록시를 사용하는 경우 리"
+"버스 프록시에서 별도로 프로토콜을 구성하세요."
 
 #: src/views/preference/tabs/ServerSettings.vue:52
 msgid "Enable HTTP/2"
@@ -9651,8 +9998,8 @@ msgid ""
 "Link this site to a DNS record. The server_name will be used for the DNS "
 "record name. You can skip this step if DNS is already configured."
 msgstr ""
-"이 사이트를 DNS 레코드에 연결하세요. server_name이 DNS 레코드 이름으로 사용됩니다. DNS가 이미 구성된 경우 이 단계를"
-" 건너뛸 수 있습니다."
+"이 사이트를 DNS 레코드에 연결하세요. server_name이 DNS 레코드 이름으로 사용됩"
+"니다. DNS가 이미 구성된 경우 이 단계를 건너뛸 수 있습니다."
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:263
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:595
@@ -9874,8 +10221,7 @@ msgid ""
 msgstr "사이트 설정 저장에 실패했습니다. 인증서 디렉티브가"
 
 #: src/views/site/site_edit/components/Cert/SelfSignedCert.vue:54
-msgid ""
-"Certificate directives added to the editor; review and save when ready."
+msgid "Certificate directives added to the editor; review and save when ready."
 msgstr "인증서 지시문이 편집기에 추가되었습니다; 준비되면 검토하고 저장하세요."
 
 #: src/views/site/site_edit/components/Cert/SelfSignedCert.vue:63
@@ -9955,7 +10301,9 @@ msgstr "DNS 레코드를 연결하기 전에 구성에서 server_name 지시문�
 msgid ""
 "Link this site to a DNS record. The server_name will be used for the DNS "
 "record name."
-msgstr "이 사이트를 DNS 레코드에 연결하세요. server_name이 DNS 레코드 이름으로 사용됩니다."
+msgstr ""
+"이 사이트를 DNS 레코드에 연결하세요. server_name이 DNS 레코드 이름으로 사용됩"
+"니다."
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:510
 msgid "Linked DNS Record"
@@ -9969,7 +10317,9 @@ msgstr "DNS 레코드 누락"
 msgid ""
 "The linked DNS record was deleted from the DNS server. You can recreate it "
 "or clear the link."
-msgstr "연결된 DNS 레코드가 DNS 서버에서 삭제되었습니다. 다시 만들거나 링크를 지울 수 있습니다."
+msgstr ""
+"연결된 DNS 레코드가 DNS 서버에서 삭제되었습니다. 다시 만들거나 링크를 지울 "
+"수 있습니다."
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:585
 msgid "Recreate DNS Record"
@@ -10009,8 +10359,7 @@ msgid "Nginx Configuration Parse Error"
 msgstr "Nginx 구성 분석 오류"
 
 #: src/views/site/site_edit/components/SiteEditor/store.ts:145
-msgid ""
-"Please select a certificate before saving the TLS server configuration."
+msgid "Please select a certificate before saving the TLS server configuration."
 msgstr "TLS 서버 구성을 저장하기 전에 인증서를 선택해 주세요."
 
 #: src/views/site/site_list/columns.tsx:78 src/views/stream/columns.tsx:46
@@ -10039,7 +10388,9 @@ msgstr "이 사이트에 대한 유효한 액세스 로그 경로를 찾을 수 
 msgid ""
 "This site uses the default access log, which may contain traffic from other "
 "sites"
-msgstr "이 사이트는 기본 접속 로그를 사용하므로, 다른 사이트의 트래픽이 포함될 수 있습니다."
+msgstr ""
+"이 사이트는 기본 접속 로그를 사용하므로, 다른 사이트의 트래픽이 포함될 수 있"
+"습니다."
 
 #: src/views/site/site_list/SiteList.vue:100
 msgid "Sites enabled successfully"
@@ -10214,15 +10565,17 @@ msgstr "이 터미널의 연결이 끊어졌습니다. 필요한 경우 새로 �
 msgid ""
 "Demo mode is enabled. This terminal only allows a small set of safe read-"
 "only commands."
-msgstr "데모 모드가 활성화되었습니다. 이 터미널은 안전한 읽기 전용 명령의 작은 집합만 허용합니다."
+msgstr ""
+"데모 모드가 활성화되었습니다. 이 터미널은 안전한 읽기 전용 명령의 작은 집합"
+"만 허용합니다."
 
 #: src/views/terminal/Terminal.vue:219
 msgid ""
 "You are accessing this terminal over an insecure HTTP connection on a non-"
 "localhost domain. This may expose sensitive information."
 msgstr ""
-"비 로컬호스트 도메인에서 안전하지 않은 HTTP 연결을 통해 이 터미널에 접속하고 있습니다. 이로 인해 민감한 정보가 노출될 수 "
-"있습니다."
+"비 로컬호스트 도메인에서 안전하지 않은 HTTP 연결을 통해 이 터미널에 접속하고 "
+"있습니다. 이로 인해 민감한 정보가 노출될 수 있습니다."
 
 #: src/views/upstream/SocketList.vue:18
 msgid "Socket"
@@ -10296,6 +10649,82 @@ msgstr "새 비밀번호 확인"
 msgid "Update Password"
 msgstr "비밀번호 업데이트"
 
+#~ msgid "3. Check the connection"
+#~ msgstr "3. 연결 확인"
+
+#~ msgid "Connection checks"
+#~ msgstr "연결 검사"
+
+#~ msgid ""
+#~ "Verifies reachability, that the target is the container host, and that "
+#~ "known_hosts is persisted."
+#~ msgstr ""
+#~ "연결 가능 여부, 대상이 컨테이너의 호스트인지 여부, known_hosts가 영구 저장"
+#~ "되는지를 확인합니다."
+
+#~ msgid ""
+#~ "Every check validates the SSH setup itself, except nginx -t, which "
+#~ "validates the configuration already present on the host."
+#~ msgstr ""
+#~ "모든 검사는 SSH 설정 자체를 검증하지만, nginx -t는 호스트에 이미 존재하는 "
+#~ "구성을 검증합니다."
+
+#~ msgid "Target diagnosis completed with warnings"
+#~ msgstr "대상 진단이 경고와 함께 완료되었습니다"
+
+#~ msgid "Detected target settings differ from the current configuration"
+#~ msgstr "감지된 대상 설정이 현재 구성과 다릅니다"
+
+#~ msgid "Apply detected settings"
+#~ msgstr "감지된 설정 적용"
+
+#~ msgid "Main configuration file"
+#~ msgstr "주 구성 파일"
+
+#~ msgid "Homebrew document root"
+#~ msgstr "Homebrew 문서 루트"
+
+#, fuzzy
+#~ msgid ""
+#~ "A run re-reads the host, opens an SSH session, checks every configured "
+#~ "path and required privilege, and runs nginx -t."
+#~ msgstr ""
+#~ "실행하면 호스트를 다시 읽고, SSH 세션을 열고, 이 컨테이너 내부에서 모든 경"
+#~ "로를 검사하고, sudo 접근을 확인하며, nginx -t를 실행합니다."
+
+#~ msgid "Path checks read the Nginx UI container, not the host"
+#~ msgstr "경로 검사는 호스트가 아니라 Nginx UI 컨테이너를 읽습니다"
+
+#~ msgid ""
+#~ "The service check runs over SSH, but the config, log and PID checks look "
+#~ "inside this container. On a first run they stay red until the bind mounts "
+#~ "from the next step are applied and the container is recreated. That is "
+#~ "expected and does not block you from continuing."
+#~ msgstr ""
+#~ "서비스 검사는 SSH를 통해 실행되지만 구성, 로그, PID 검사는 이 컨테이너 내"
+#~ "부를 확인합니다. 처음 실행할 때는 다음 단계의 바인드 마운트를 적용하고 컨"
+#~ "테이너를 다시 만들기 전까지 빨간색으로 표시됩니다. 이는 정상이며 계속 진행"
+#~ "하는 데 문제가 되지 않습니다."
+
+#~ msgid "Platform checks"
+#~ msgstr "플랫폼 검사"
+
+#~ msgid ""
+#~ "Verifies the service is loaded under the entered label and that every "
+#~ "path above is reachable from the container."
+#~ msgstr ""
+#~ "입력한 레이블로 서비스가 로드되었는지, 위의 모든 경로에 컨테이너에서 접근"
+#~ "할 수 있는지 확인합니다."
+
+#~ msgid "Permission checks"
+#~ msgstr "권한 검사"
+
+#~ msgid "Run this once the sudoers rules are installed on the host."
+#~ msgstr "호스트에 sudoers 규칙을 설치한 뒤 실행하세요."
+
+#~ msgid "Container and host snippets"
+#~ msgstr "컨테이너 및 호스트 스니펫"
+
 #~ msgid "Certificate Expired"
 #~ msgstr "인증서 만료됨"
 
@@ -10331,7 +10760,9 @@ msgstr "비밀번호 업데이트"
 #~ msgid ""
 #~ "Generate a one-time pairing code on the child node, then enter it here. "
 #~ "Remote pairing requires HTTPS."
-#~ msgstr "하위 노드에서 일회성 페어링 코드를 생성한 후 여기에 입력하세요. 원격 페어링에는 HTTPS 가 필요합니다."
+#~ msgstr ""
+#~ "하위 노드에서 일회성 페어링 코드를 생성한 후 여기에 입력하세요. 원격 페어"
+#~ "링에는 HTTPS 가 필요합니다."
 
 #~ msgid "One-time pairing code"
 #~ msgstr "일회용 페어링 코드"
@@ -10349,9 +10780,11 @@ msgstr "비밀번호 업데이트"
 #~ msgstr "레거시 노드 인증 허용"
 
 #~ msgid ""
-#~ "Disable this compatibility switch after every controller has been upgraded "
-#~ "to paired signatures."
-#~ msgstr "모든 컨트롤러가 페어링된 서명으로 업그레이드된 후에는 이 호환성 스위치를 비활성화하십시오."
+#~ "Disable this compatibility switch after every controller has been "
+#~ "upgraded to paired signatures."
+#~ msgstr ""
+#~ "모든 컨트롤러가 페어링된 서명으로 업그레이드된 후에는 이 호환성 스위치를 "
+#~ "비활성화하십시오."
 
 #~ msgid "Allow legacy Node Secret for MCP"
 #~ msgstr "MCP에 레거시 Node Secret 허용"
@@ -10359,41 +10792,48 @@ msgstr "비밀번호 업데이트"
 #~ msgid ""
 #~ "Temporary compatibility only. Replace MCP Node Secret clients with scoped "
 #~ "service tokens."
-#~ msgstr "임시 호환성만 해당됩니다. MCP Node Secret 클라이언트를 범위가 지정된 서비스 토큰으로 교체하세요."
+#~ msgstr ""
+#~ "임시 호환성만 해당됩니다. MCP Node Secret 클라이언트를 범위가 지정된 서비"
+#~ "스 토큰으로 교체하세요."
 
 #~ msgid ""
-#~ "Logrotate, by default, is enabled in most mainstream Linux distributions for"
-#~ " users who install Nginx UI on the host machine, so you don't need to modify"
-#~ " the parameters on this page. For users who install Nginx UI using Docker "
-#~ "containers, you can manually enable this option. The crontab task scheduler "
-#~ "of Nginx UI will execute the logrotate command at the interval you set in "
-#~ "minutes."
+#~ "Logrotate, by default, is enabled in most mainstream Linux distributions "
+#~ "for users who install Nginx UI on the host machine, so you don't need to "
+#~ "modify the parameters on this page. For users who install Nginx UI using "
+#~ "Docker containers, you can manually enable this option. The crontab task "
+#~ "scheduler of Nginx UI will execute the logrotate command at the interval "
+#~ "you set in minutes."
 #~ msgstr ""
-#~ "Logrotate는 대부분의 주류 리눅스 배포판에서Nginx UI를 호스트 머신에 설치하는 사용자에게 기본적으로 활성화되어 있으므로이 "
-#~ "페이지의 매개 변수를 수정할 필요가 없습니다. 도커 컨테이너를 사용하여 Nginx UI를 설치하는사용자는이 옵션을 수동으로 활성화할 수 "
-#~ "있습니다. Nginx UI의 크론탭 작업 스케줄러는설정한 간격 (분 단위)에서 logrotate 명령을 실행합니다."
+#~ "Logrotate는 대부분의 주류 리눅스 배포판에서Nginx UI를 호스트 머신에 설치하"
+#~ "는 사용자에게 기본적으로 활성화되어 있으므로이 페이지의 매개 변수를 수정"
+#~ "할 필요가 없습니다. 도커 컨테이너를 사용하여 Nginx UI를 설치하는사용자는"
+#~ "이 옵션을 수동으로 활성화할 수 있습니다. Nginx UI의 크론탭 작업 스케줄러는"
+#~ "설정한 간격 (분 단위)에서 logrotate 명령을 실행합니다."
 
 #~ msgid "Node credential rotated successfully"
 #~ msgstr "노드 자격 증명이 성공적으로 순환되었습니다"
 
 #~ msgid ""
-#~ "Passkeys are webauthn credentials that validate your identity using touch, "
-#~ "facial recognition, a device password, or a PIN. They can be used as a "
-#~ "password replacement or as a 2FA method."
+#~ "Passkeys are webauthn credentials that validate your identity using "
+#~ "touch, facial recognition, a device password, or a PIN. They can be used "
+#~ "as a password replacement or as a 2FA method."
 #~ msgstr ""
-#~ "패스키는 터치, 얼굴 인식, 기기 비밀번호 또는 PIN을 사용하여 신원을 확인하는 웹인증(WebAuthn) 자격 증명입니다. 비밀번호 "
-#~ "대체 또는 2FA 방법으로 사용할 수 있습니다."
+#~ "패스키는 터치, 얼굴 인식, 기기 비밀번호 또는 PIN을 사용하여 신원을 확인하"
+#~ "는 웹인증(WebAuthn) 자격 증명입니다. 비밀번호 대체 또는 2FA 방법으로 사용"
+#~ "할 수 있습니다."
 
 #~ msgid ""
 #~ "Please first add credentials in Certification > DNS Credentials, and then "
 #~ "select one of the credentialsbelow to request the API of the DNS provider."
 #~ msgstr ""
-#~ "먼저 인증서 > DNS 자격 증명에 자격 증명을 추가한 다음,DNS 제공자의 API를 요청하려면 아래 자격 증명 중 하나를 선택해주세요."
+#~ "먼저 인증서 > DNS 자격 증명에 자격 증명을 추가한 다음,DNS 제공자의 API를 "
+#~ "요청하려면 아래 자격 증명 중 하나를 선택해주세요."
 
 #~ msgid ""
 #~ "Please input name, this will be used as the filename of the new "
 #~ "configuration!"
-#~ msgstr "이름을 입력해주세요, 이것은 새 구성의 파일 이름으로 사용될 것입니다!"
+#~ msgstr ""
+#~ "이름을 입력해주세요, 이것은 새 구성의 파일 이름으로 사용될 것입니다!"
 
 #~ msgid ""
 #~ "Please input name, this will be used as the filename of the new "
@@ -10405,40 +10845,46 @@ msgstr "비밀번호 업데이트"
 
 #~ msgid ""
 #~ "Support communication with the backend through the WebSocket protocol. If "
-#~ "your Nginx UI is being used via an Nginx reverse proxy, please refer to this"
-#~ " link to write the corresponding configuration file: "
-#~ "https://nginxui.com/guide/nginx-proxy-example.html"
+#~ "your Nginx UI is being used via an Nginx reverse proxy, please refer to "
+#~ "this link to write the corresponding configuration file: https://nginxui."
+#~ "com/guide/nginx-proxy-example.html"
 #~ msgstr ""
-#~ "WebSocket 프로토콜을 통해 백엔드와의 통신을 지원합니다. Nginx UI가 Nginx 리버스 프록시를 통해 사용 중인 경우 이 "
-#~ "링크를 참조하여 해당 구성 파일을 작성하십시오: https://nginxui.com/guide/nginx-proxy-"
-#~ "example.html"
+#~ "WebSocket 프로토콜을 통해 백엔드와의 통신을 지원합니다. Nginx UI가 Nginx "
+#~ "리버스 프록시를 통해 사용 중인 경우 이 링크를 참조하여 해당 구성 파일을 작"
+#~ "성하십시오: https://nginxui.com/guide/nginx-proxy-example.html"
 
 #~ msgid ""
 #~ "The certificate has been generated at %{path} and the ssl_certificate "
 #~ "directives have been added to the current server block. Save the "
 #~ "configuration now, or review the changes in the editor and save manually."
 #~ msgstr ""
-#~ "%{path}에 인증서가 생성되었으며 ssl_certificate 디렉티브가 현재 서버 블록에 추가되었습니다. 지금 설정을 저장하거나 "
-#~ "편집기에서 변경 사항을 검토한 후 수동으로 저장하세요."
+#~ "%{path}에 인증서가 생성되었으며 ssl_certificate 디렉티브가 현재 서버 블록"
+#~ "에 추가되었습니다. 지금 설정을 저장하거나 편집기에서 변경 사항을 검토한 "
+#~ "후 수동으로 저장하세요."
 
 #~ msgid ""
 #~ "The server_name in the current configuration must be the domain name you "
 #~ "need to get the certificate, supportmultiple domains."
-#~ msgstr "현재 구성에서 server_name은 인증서를 받아야 하는 도메인 이름이어야 하며, 여러 도메인을 지원합니다."
+#~ msgstr ""
+#~ "현재 구성에서 server_name은 인증서를 받아야 하는 도메인 이름이어야 하며, "
+#~ "여러 도메인을 지원합니다."
 
 #~ msgid ""
 #~ "To make sure the certification auto-renewal can work normally, we need to "
-#~ "add a location which can proxy the request from authority to backend, and we"
-#~ " need to save this file and reload the Nginx. Are you sure you want to "
+#~ "add a location which can proxy the request from authority to backend, and "
+#~ "we need to save this file and reload the Nginx. Are you sure you want to "
 #~ "continue?"
 #~ msgstr ""
-#~ "인증서 자동 갱신이 정상적으로 작동하도록 하려면,권한에서 백엔드로 요청을 프록시할 수 있는 위치를 추가해야 하며,이 파일을 저장하고 "
-#~ "Nginx를 다시로드해야 합니다.계속하시겠습니까?"
+#~ "인증서 자동 갱신이 정상적으로 작동하도록 하려면,권한에서 백엔드로 요청을 "
+#~ "프록시할 수 있는 위치를 추가해야 하며,이 파일을 저장하고 Nginx를 다시로드"
+#~ "해야 합니다.계속하시겠습니까?"
 
 #~ msgid ""
 #~ "When you enable/disable, delete, or save this site, the nodes set in the "
 #~ "namespace and the nodes selected below will be synchronized."
-#~ msgstr "이 사이트를 활성화/비활성화, 삭제 또는 저장할 때 네임스페이스에 설정된 노드와 아래에서 선택한 노드가 동기화됩니다."
+#~ msgstr ""
+#~ "이 사이트를 활성화/비활성화, 삭제 또는 저장할 때 네임스페이스에 설정된 노"
+#~ "드와 아래에서 선택한 노드가 동기화됩니다."
 
 #, fuzzy
 #~ msgid "Create record set"
@@ -10533,11 +10979,12 @@ msgstr "비밀번호 업데이트"
 
 #~ msgid ""
 #~ "Warning: This appears to be a private IP address. Public CAs like Let's "
-#~ "Encrypt cannot issue certificates for private IPs. Use a public IP address "
-#~ "or consider using a private CA."
+#~ "Encrypt cannot issue certificates for private IPs. Use a public IP "
+#~ "address or consider using a private CA."
 #~ msgstr ""
-#~ "경고: 이 주소는 사설 IP 주소로 보입니다. Let's Encrypt와 같은 공인 인증 기관은 사설 IP에 대한 인증서를 발급할 수 "
-#~ "없습니다. 공인 IP 주소를 사용하거나 사설 인증 기관 사용을 고려해 보세요."
+#~ "경고: 이 주소는 사설 IP 주소로 보입니다. Let's Encrypt와 같은 공인 인증 기"
+#~ "관은 사설 IP에 대한 인증서를 발급할 수 없습니다. 공인 IP 주소를 사용하거"
+#~ "나 사설 인증 기관 사용을 고려해 보세요."
 
 #~ msgid "Path not in granted access paths: {0}"
 #~ msgstr "허용된 접근 경로에 없는 경로: {0}"
@@ -10577,7 +11024,9 @@ msgstr "비밀번호 업데이트"
 #~ msgid ""
 #~ "We will add one or more TXT records to the DNS records of your domain for "
 #~ "ownership verification."
-#~ msgstr "도메인 소유권 검증을 위해 도메인의 DNS레코드에 하나 이상의 TXT 레코드를 추가할 것입니다."
+#~ msgstr ""
+#~ "도메인 소유권 검증을 위해 도메인의 DNS레코드에 하나 이상의 TXT 레코드를 추"
+#~ "가할 것입니다."
 
 #~ msgid "Settings"
 #~ msgstr "설정"
@@ -10653,9 +11102,6 @@ msgstr "비밀번호 업데이트"
 
 #~ msgid "Modern CPU (x86_64, ARM64)"
 #~ msgstr "최신 CPU (x86_64, ARM64)"
-
-#~ msgid "Real-time performance monitoring"
-#~ msgstr "실시간 성능 모니터링"
 
 #~ msgid "Sustained performance on modern hardware"
 #~ msgstr "최신 하드웨어에서의 지속적인 성능"
@@ -10735,13 +11181,13 @@ msgstr "비밀번호 업데이트"
 
 #~ msgid ""
 #~ "Support communication with the backend through the Server-Sent Events "
-#~ "protocol. If your Nginx UI is being used via an Nginx reverse proxy, please "
-#~ "refer to this link to write the corresponding configuration file: "
+#~ "protocol. If your Nginx UI is being used via an Nginx reverse proxy, "
+#~ "please refer to this link to write the corresponding configuration file: "
 #~ "https://nginxui.com/guide/nginx-proxy-example.html"
 #~ msgstr ""
-#~ "Server-Sent Events 프로토콜을 통해 백엔드와의 통신을 지원합니다. Nginx UI를 Nginx 리버스 프록시를 통해 사용 "
-#~ "중인 경우, 해당 구성 파일을 작성하려면 이 링크를 참조하세요: https://nginxui.com/guide/nginx-proxy-"
-#~ "example.html"
+#~ "Server-Sent Events 프로토콜을 통해 백엔드와의 통신을 지원합니다. Nginx UI"
+#~ "를 Nginx 리버스 프록시를 통해 사용 중인 경우, 해당 구성 파일을 작성하려면 "
+#~ "이 링크를 참조하세요: https://nginxui.com/guide/nginx-proxy-example.html"
 
 #~ msgid "If left blank, the default CA Dir will be used."
 #~ msgstr "비워 둘 경우 기본 CA 디렉터리가 사용됩니다."
@@ -10808,11 +11254,12 @@ msgstr "비밀번호 업데이트"
 
 #~ msgid ""
 #~ "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
-#~ "Docker Image, please make sure the docker socket is mounted like this: `-v "
-#~ "/var/run/docker.sock:/var/run/docker.sock`."
+#~ "Docker Image, please make sure the docker socket is mounted like this: `-"
+#~ "v /var/run/docker.sock:/var/run/docker.sock`."
 #~ msgstr ""
-#~ "/var/run/docker.sock이 존재하는지 확인하세요. Nginx UI 공식 Docker 이미지를 사용 중이라면 Docker "
-#~ "소켓이 다음과 같이 마운트되었는지 확인하세요: `-v /var/run/docker.sock:/var/run/docker.sock`."
+#~ "/var/run/docker.sock이 존재하는지 확인하세요. Nginx UI 공식 Docker 이미지"
+#~ "를 사용 중이라면 Docker 소켓이 다음과 같이 마운트되었는지 확인하세요: `-"
+#~ "v /var/run/docker.sock:/var/run/docker.sock`."
 
 #~ msgid "Check if the nginx access log path exists"
 #~ msgstr "Nginx 액세스 로그 경로가 존재하는지 확인"
@@ -10887,11 +11334,13 @@ msgstr "비밀번호 업데이트"
 
 #, fuzzy
 #~ msgid ""
-#~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: %{resp}"
+#~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: "
+#~ "%{resp}"
 #~ msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
 #, fuzzy
-#~ msgid "Rename Site %{site} to %{new_site} on %{node} error, response: %{resp}"
+#~ msgid ""
+#~ "Rename Site %{site} to %{new_site} on %{node} error, response: %{resp}"
 #~ msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
 #, fuzzy
@@ -10905,7 +11354,8 @@ msgstr "비밀번호 업데이트"
 #~ msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
 #, fuzzy
-#~ msgid "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
+#~ msgid ""
+#~ "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
 #~ msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
 #, fuzzy
@@ -10918,8 +11368,8 @@ msgstr "비밀번호 업데이트"
 
 #, fuzzy
 #~ msgid ""
-#~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, please upgrade the"
-#~ " remote Nginx UI to the latest version"
+#~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, please upgrade "
+#~ "the remote Nginx UI to the latest version"
 #~ msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
 #, fuzzy
@@ -10981,7 +11431,8 @@ msgstr "비밀번호 업데이트"
 #~ msgstr "404 Not Found"
 
 #~ msgid ""
-#~ "Currently, DNS record management supports Alibaba Cloud DNS, Tencent Cloud "
-#~ "DNS, and Cloudflare only."
+#~ "Currently, DNS record management supports Alibaba Cloud DNS, Tencent "
+#~ "Cloud DNS, and Cloudflare only."
 #~ msgstr ""
-#~ "현재 DNS 레코드 관리는 Alibaba Cloud DNS, Tencent Cloud DNS 및 Cloudflare만 지원합니다."
+#~ "현재 DNS 레코드 관리는 Alibaba Cloud DNS, Tencent Cloud DNS 및 Cloudflare"
+#~ "만 지원합니다."
