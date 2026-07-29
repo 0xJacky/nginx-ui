@@ -8,7 +8,6 @@ import (
 	"sync"
 	"time"
 
-	cf "github.com/cloudflare/cloudflare-go/v7"
 	cfdns "github.com/cloudflare/cloudflare-go/v7/dns"
 	cfopt "github.com/cloudflare/cloudflare-go/v7/option"
 	cfzones "github.com/cloudflare/cloudflare-go/v7/zones"
@@ -19,7 +18,8 @@ import (
 const defaultTimeout = 10 * time.Second
 
 type provider struct {
-	client    *cf.Client
+	records   *cfdns.RecordService
+	zones     *cfzones.ZoneService
 	zoneCache sync.Map
 }
 
@@ -48,10 +48,8 @@ func newProvider(cred *dns.Credential) (dns.Provider, error) {
 		cred.Values["CF_API_TOKEN"],
 	)
 
-	var api *cf.Client
-
 	if token != "" {
-		api = cf.NewClient(append(opts, cfopt.WithAPIToken(token))...)
+		opts = append(opts, cfopt.WithAPIToken(token))
 	} else {
 		email := firstNonEmpty(
 			cred.Values["CLOUDFLARE_EMAIL"],
@@ -64,11 +62,12 @@ func newProvider(cred *dns.Credential) (dns.Provider, error) {
 		if email == "" || key == "" {
 			return nil, fmt.Errorf("cloudflare: missing API credentials")
 		}
-		api = cf.NewClient(append(opts, cfopt.WithAPIKey(key), cfopt.WithAPIEmail(email))...)
+		opts = append(opts, cfopt.WithAPIKey(key), cfopt.WithAPIEmail(email))
 	}
 
 	return &provider{
-		client: api,
+		records: cfdns.NewRecordService(opts...),
+		zones:   cfzones.NewZoneService(opts...),
 	}, nil
 }
 
@@ -78,22 +77,20 @@ func (p *provider) ListRecords(ctx context.Context, domain string, filter dns.Re
 		return nil, err
 	}
 
-	params := cfdns.RecordListParams{
-		ZoneID: cf.F(zoneID),
-	}
+	params := cfdns.RecordListParams{}
+	setField(&params.ZoneID.Value, &params.ZoneID.Present, zoneID)
 
 	recordType := strings.ToUpper(strings.TrimSpace(filter.Type))
 	if recordType != "" {
-		params.Type = cf.F(cfdns.RecordListParamsType(recordType))
+		setField(&params.Type.Value, &params.Type.Present, cfdns.RecordListParamsType(recordType))
 	}
 
 	if name := strings.TrimSpace(filter.Name); name != "" {
-		params.Name = cf.F(cfdns.RecordListParamsName{
-			Exact: cf.F(buildFQDN(domain, name)),
-		})
+		setField(&params.Name.Value.Exact.Value, &params.Name.Value.Exact.Present, buildFQDN(domain, name))
+		params.Name.Present = true
 	}
 
-	pager := p.client.DNS.Records.ListAutoPaging(ctx, params)
+	pager := p.records.ListAutoPaging(ctx, params)
 
 	result := make([]dns.Record, 0)
 	for pager.Next() {
@@ -124,30 +121,28 @@ func (p *provider) CreateRecord(ctx context.Context, domain string, input dns.Re
 		return dns.Record{}, err
 	}
 
-	body := cfdns.RecordNewParamsBody{
-		Type:    cf.F(cfdns.RecordNewParamsBodyType(strings.ToUpper(strings.TrimSpace(input.Type)))),
-		Name:    cf.F(buildFQDN(domain, input.Name)),
-		Content: cf.F(strings.TrimSpace(input.Content)),
-		TTL:     cf.F(cfdns.TTL(normalizeTTL(input.TTL))),
-	}
+	body := cfdns.RecordNewParamsBody{}
+	setField(&body.Type.Value, &body.Type.Present, cfdns.RecordNewParamsBodyType(strings.ToUpper(strings.TrimSpace(input.Type))))
+	setField(&body.Name.Value, &body.Name.Present, buildFQDN(domain, input.Name))
+	setField(&body.Content.Value, &body.Content.Present, strings.TrimSpace(input.Content))
+	setField(&body.TTL.Value, &body.TTL.Present, cfdns.TTL(normalizeTTL(input.TTL)))
 
 	if input.Proxied != nil {
-		body.Proxied = cf.F(*input.Proxied)
+		setField(&body.Proxied.Value, &body.Proxied.Present, *input.Proxied)
 	}
 
 	if input.Priority != nil {
 		value := float64(max(*input.Priority, 0))
-		body.Priority = cf.F(value)
+		setField(&body.Priority.Value, &body.Priority.Present, value)
 	}
 
 	if input.Comment != "" {
-		body.Comment = cf.F(input.Comment)
+		setField(&body.Comment.Value, &body.Comment.Present, input.Comment)
 	}
 
-	record, err := p.client.DNS.Records.New(ctx, cfdns.RecordNewParams{
-		ZoneID: cf.F(zoneID),
-		Body:   body,
-	})
+	params := cfdns.RecordNewParams{Body: body}
+	setField(&params.ZoneID.Value, &params.ZoneID.Present, zoneID)
+	record, err := p.records.New(ctx, params)
 	if err != nil {
 		return dns.Record{}, fmt.Errorf("cloudflare: create record: %w", err)
 	}
@@ -170,29 +165,27 @@ func (p *provider) UpdateRecord(ctx context.Context, domain string, recordID str
 		return dns.Record{}, err
 	}
 
-	body := cfdns.RecordUpdateParamsBody{
-		Type:    cf.F(cfdns.RecordUpdateParamsBodyType(strings.ToUpper(strings.TrimSpace(input.Type)))),
-		Name:    cf.F(buildFQDN(domain, input.Name)),
-		Content: cf.F(strings.TrimSpace(input.Content)),
-		TTL:     cf.F(cfdns.TTL(normalizeTTL(input.TTL))),
-	}
+	body := cfdns.RecordUpdateParamsBody{}
+	setField(&body.Type.Value, &body.Type.Present, cfdns.RecordUpdateParamsBodyType(strings.ToUpper(strings.TrimSpace(input.Type))))
+	setField(&body.Name.Value, &body.Name.Present, buildFQDN(domain, input.Name))
+	setField(&body.Content.Value, &body.Content.Present, strings.TrimSpace(input.Content))
+	setField(&body.TTL.Value, &body.TTL.Present, cfdns.TTL(normalizeTTL(input.TTL)))
 
 	if input.Proxied != nil {
-		body.Proxied = cf.F(*input.Proxied)
+		setField(&body.Proxied.Value, &body.Proxied.Present, *input.Proxied)
 	}
 
 	if input.Priority != nil {
 		value := float64(max(*input.Priority, 0))
-		body.Priority = cf.F(value)
+		setField(&body.Priority.Value, &body.Priority.Present, value)
 	}
 
 	// Always set comment, including empty string to allow clearing
-	body.Comment = cf.F(input.Comment)
+	setField(&body.Comment.Value, &body.Comment.Present, input.Comment)
 
-	record, err := p.client.DNS.Records.Update(ctx, recordID, cfdns.RecordUpdateParams{
-		ZoneID: cf.F(zoneID),
-		Body:   body,
-	})
+	params := cfdns.RecordUpdateParams{Body: body}
+	setField(&params.ZoneID.Value, &params.ZoneID.Present, zoneID)
+	record, err := p.records.Update(ctx, recordID, params)
 	if err != nil {
 		return dns.Record{}, fmt.Errorf("cloudflare: update record: %w", err)
 	}
@@ -215,9 +208,9 @@ func (p *provider) DeleteRecord(ctx context.Context, domain string, recordID str
 		return err
 	}
 
-	if _, err := p.client.DNS.Records.Delete(ctx, recordID, cfdns.RecordDeleteParams{
-		ZoneID: cf.F(zoneID),
-	}); err != nil {
+	params := cfdns.RecordDeleteParams{}
+	setField(&params.ZoneID.Value, &params.ZoneID.Present, zoneID)
+	if _, err := p.records.Delete(ctx, recordID, params); err != nil {
 		return fmt.Errorf("cloudflare: delete record: %w", err)
 	}
 
@@ -230,9 +223,9 @@ func (p *provider) zoneID(ctx context.Context, domain string) (string, error) {
 		return zoneID.(string), nil
 	}
 
-	pager := p.client.Zones.ListAutoPaging(ctx, cfzones.ZoneListParams{
-		Name: cf.F(normalized),
-	})
+	params := cfzones.ZoneListParams{}
+	setField(&params.Name.Value, &params.Name.Present, normalized)
+	pager := p.zones.ListAutoPaging(ctx, params)
 	for pager.Next() {
 		zone := pager.Current()
 		if strings.EqualFold(strings.TrimSuffix(zone.Name, "."), normalized) {
@@ -308,4 +301,9 @@ func max(a, b int) int {
 
 func boolPtr(v bool) *bool {
 	return &v
+}
+
+func setField[T any](target *T, present *bool, value T) {
+	*target = value
+	*present = true
 }
