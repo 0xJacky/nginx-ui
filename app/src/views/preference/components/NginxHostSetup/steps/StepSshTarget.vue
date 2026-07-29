@@ -65,6 +65,8 @@ onActivated(() => {
 })
 
 const remoteWarning = computed(() => {
+  if (params.value.access_mode !== 'mounted')
+    return false
   const host = (hostInput.value.split(':')[0] || '').trim()
   if (!host || host === 'host.docker.internal' || host === 'localhost' || host === '::1')
     return false

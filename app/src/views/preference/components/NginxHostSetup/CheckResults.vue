@@ -58,16 +58,20 @@ const allPassed = computed(() => props.rows.length > 0 && failed.value.length ==
             <ATypographyText type="secondary" class="break-words text-sm">
               {{ item.outcome.detail }}
             </ATypographyText>
-            <ASpace v-if="item.outcome.remediation" direction="vertical" size="small" class="w-full">
+            <ASpace v-if="item.suggestedFix" direction="vertical" size="small" class="w-full">
               <ATypographyText type="secondary" class="text-xs">
                 {{ $gettext('Suggested fix') }}
               </ATypographyText>
+              <ATypographyParagraph class="mb-0 break-words">
+                {{ item.suggestedFix }}
+              </ATypographyParagraph>
               <ATypographyParagraph
+                v-if="item.suggestedCommand"
                 class="mb-0 break-all"
                 code
-                :copyable="{ text: item.outcome.remediation, tooltip: false }"
+                :copyable="{ text: item.suggestedCommand, tooltip: false }"
               >
-                {{ item.outcome.remediation }}
+                {{ item.suggestedCommand }}
               </ATypographyParagraph>
             </ASpace>
           </ASpace>

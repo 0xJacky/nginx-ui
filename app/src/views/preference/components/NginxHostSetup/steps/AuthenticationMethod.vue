@@ -59,7 +59,7 @@ const keySource = computed<KeySource>({
       params.value.host_key_path = ''
     }
     invalidateKey()
-    if (value !== 'provided')
+    if (value === 'generated')
       void loadPublicKey(false)
   },
 })
@@ -117,7 +117,7 @@ async function loadPublicKey(showError = true) {
     if (isKeyMissing(error)) {
       // A missing key is a normal starting state, not a failure to report.
       isKeyStateKnown.value = true
-      if (showError || keySource.value === 'existing')
+      if (showError)
         keyError.value = getErrorMessage(error)
       return
     }

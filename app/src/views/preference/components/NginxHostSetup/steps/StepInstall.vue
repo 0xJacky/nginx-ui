@@ -1,22 +1,28 @@
 <script setup lang="ts">
 import type { RenderedSnippets } from '@/api/host_setup'
 import { ReloadOutlined } from '@ant-design/icons-vue'
-import { computed, onActivated, ref } from 'vue'
+import { computed, onActivated, onDeactivated, ref, watch } from 'vue'
 import hostSetup from '@/api/host_setup'
 import { getErrorMessage } from '@/lib/http'
 import CheckPanel from '../CheckPanel.vue'
 import CodeBlock from '../CodeBlock.vue'
 import { useHostSetupWizard } from '../useHostSetupWizard'
 
-const { hasVisitedInstall, params } = useHostSetupWizard()
+const { isHostSetupPassed, params } = useHostSetupWizard()
 
 const snippets = ref<RenderedSnippets | null>(null)
 const activeSide = ref<'host' | 'container'>('host')
 const containerFormat = ref<'compose' | 'override' | 'docker-run'>('compose')
 const isLoading = ref(false)
 const loadError = ref('')
+let refreshRequestID = 0
 
 const isLaunchd = computed(() => params.value.service_manager === 'launchd')
+const isMounted = computed(() => params.value.access_mode === 'mounted')
+const needsHostGatewayMapping = computed(() =>
+  !isLaunchd.value && params.value.host_address.startsWith('host.docker.internal'),
+)
+const needsContainerChange = computed(() => isMounted.value || needsHostGatewayMapping.value)
 const sudoersFile = '/etc/sudoers.d/nginx-ui'
 const sudoersInstallCommand = computed(() => `sudo visudo -f ${sudoersFile}`)
 const authorizedKeysFile = computed(() => `~${params.value.host_user}/.ssh/authorized_keys`)
@@ -38,29 +44,63 @@ const applyCommand = computed(() => (isDockerRun.value
   : 'docker compose up -d --force-recreate nginx-ui'))
 const isHostSetupMinimal = computed(() => Boolean(snippets.value) && !needsSudoers.value && !hasHostCommands.value)
 
+watch(needsContainerChange, needed => {
+  if (!needed)
+    activeSide.value = 'host'
+})
+
 async function refresh() {
+  const requestID = ++refreshRequestID
   isLoading.value = true
   loadError.value = ''
   try {
-    snippets.value = await hostSetup.preview(params.value)
+    const rendered = await hostSetup.preview({ ...params.value })
+    if (requestID !== refreshRequestID)
+      return
+    snippets.value = rendered
   }
   catch (error) {
+    if (requestID !== refreshRequestID)
+      return
     snippets.value = null
     loadError.value = getErrorMessage(error)
   }
   finally {
-    isLoading.value = false
+    if (requestID === refreshRequestID)
+      isLoading.value = false
   }
 }
 
+watch(() => params.value.access_mode, () => void refresh())
+
 onActivated(() => {
-  hasVisitedInstall.value = true
   void refresh()
+})
+
+onDeactivated(() => {
+  refreshRequestID++
+  isLoading.value = false
 })
 </script>
 
 <template>
   <ASpin :spinning="isLoading">
+    <AFormItem :label="$gettext('File access mode')">
+      <ARadioGroup v-model:value="params.access_mode" option-type="button" button-style="solid">
+        <ARadioButton value="sftp">
+          {{ $gettext('Compatibility (SFTP)') }}
+        </ARadioButton>
+        <ARadioButton value="mounted">
+          {{ $gettext('High performance (mounted)') }}
+        </ARadioButton>
+      </ARadioGroup>
+      <div class="text-secondary mt-2 text-sm">
+        {{ isMounted
+          ? $gettext('Nginx UI reads configuration and logs from bind-mounted host directories. This is faster, but requires recreating the container.')
+          : $gettext('Nginx UI reads configuration and logs entirely over SSH and SFTP. No host directories are mounted into the container.') }}
+      </div>
+    </AFormItem>
+
     <AAlert
       v-if="loadError"
       type="error"
@@ -78,6 +118,15 @@ onActivated(() => {
         </AButton>
       </template>
     </AAlert>
+
+    <AAlert
+      v-if="!needsContainerChange"
+      type="success"
+      show-icon
+      :message="$gettext('No container changes are required in compatibility mode')"
+      :description="$gettext('Complete the host permissions below, then run the setup checks.')"
+      class="mb-3"
+    />
 
     <ATabs v-model:active-key="activeSide">
       <ATabPane key="host" :tab="$gettext('1. On the nginx host')">
@@ -148,12 +197,14 @@ onActivated(() => {
         </ASpace>
       </ATabPane>
 
-      <ATabPane key="container" :tab="$gettext('2. On the Nginx UI container')">
+      <ATabPane v-if="needsContainerChange" key="container" :tab="$gettext('2. On the Nginx UI container')">
         <ASpace direction="vertical" size="middle" class="w-full">
           <AAlert
             type="info"
             show-icon
-            :message="$gettext('Pick the format that matches how you run Nginx UI, then recreate the container.')"
+            :message="isMounted
+              ? $gettext('Pick the format that matches how you run Nginx UI, then recreate the container with the bind mounts.')
+              : $gettext('Linux Docker Engine requires this host-gateway mapping for host.docker.internal. No directory mounts are added.')"
           />
 
           <AAlert
@@ -179,7 +230,9 @@ onActivated(() => {
                 :code="snippets.compose_snippet"
                 language="yaml"
                 :title="$gettext('docker-compose.yml')"
-                :description="$gettext('Merge this under services.nginx-ui in your existing file. Each bind mount uses the same path inside the container as on the host.')"
+                :description="isMounted
+                  ? $gettext('Merge this under services.nginx-ui in your existing file. Each bind mount uses the same path inside the container as on the host.')
+                  : $gettext('Merge this host-gateway mapping under services.nginx-ui in your existing file.')"
               />
             </ATabPane>
             <ATabPane key="override" :tab="$gettext('override file')">
@@ -210,20 +263,23 @@ onActivated(() => {
             :code="applyCommand"
             language="shell"
             :title="$gettext('Apply the change')"
-            :description="isDockerRun
-              ? $gettext('Remove the old container, then run the command above. The new environment variables only take effect on a fresh container.')
-              : $gettext('The new environment variables only take effect once the container is recreated.')"
+            :description="isMounted
+              ? (isDockerRun
+                ? $gettext('Remove the old container, then run the command above with the mounted host directories.')
+                : $gettext('The bind mounts take effect once the container is recreated.'))
+              : $gettext('The host-gateway mapping takes effect once the container is recreated.')"
           />
         </ASpace>
       </ATabPane>
     </ATabs>
 
     <CheckPanel
-      v-if="needsSudoers"
+      v-model:passed="isHostSetupPassed"
       class="mt-4"
-      group="privileges"
-      :title="$gettext('Permission checks')"
-      :hint="$gettext('Run this once the sudoers rules are installed on the host.')"
+      :groups="['platform', 'privileges']"
+      :title="$gettext('Setup checks')"
+      :hint="$gettext('Run these after applying the relevant host and container instructions above. They verify the service, file access and required privileges for the selected mode.')"
+      :disabled="isLoading || Boolean(loadError)"
     />
   </ASpin>
 </template>

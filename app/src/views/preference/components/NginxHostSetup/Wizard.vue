@@ -36,7 +36,7 @@ const steps = computed(() => [
   { title: $gettext('SSH Target'), description: $gettext('Address, user and private key') },
   { title: $gettext('Trust & Test'), description: $gettext('Host key and connectivity') },
   { title: $gettext('Detect Platform'), description: $gettext('Service manager and nginx paths') },
-  { title: $gettext('Install'), description: $gettext('Container and host snippets') },
+  { title: $gettext('Access & Install'), description: $gettext('File mode and setup instructions') },
   { title: $gettext('Verify'), description: $gettext('Run checks and save') },
 ].map((step, index) => ({
   ...step,

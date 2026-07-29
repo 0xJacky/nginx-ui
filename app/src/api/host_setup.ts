@@ -4,6 +4,7 @@ import { http } from '@uozi-admin/request'
 export interface SetupParams {
   host_address: string
   host_user: string
+  access_mode: 'sftp' | 'mounted'
   use_host_gateway?: boolean
   service_manager?: 'systemd' | 'launchd'
   systemd_unit?: string
@@ -36,11 +37,46 @@ export interface RenderedSnippets {
   sudoers_required: boolean
 }
 
+export type RemediationCode
+  = 'add_bind_mount'
+    | 'add_missing_sudoers_entries'
+    | 'check_host_address'
+    | 'check_host_address_outside_docker'
+    | 'check_ssh_connection'
+    | 'check_systemd_unit'
+    | 'confirm_homebrew_service_owner'
+    | 'confirm_host_nginx_directory'
+    | 'confirm_macos_host_alias'
+    | 'confirm_uname'
+    | 'correct_parameters'
+    | 'fix_nginx_config'
+    | 'inspect_sudo_permissions'
+    | 'inspect_systemd_unit'
+    | 'mount_nginx_logs'
+    | 'mount_pid_directory'
+    | 'persist_known_hosts'
+    | 'replace_bind_mount'
+    | 'restart_without_exec_reload'
+    | 'review_cross_host_guide'
+    | 'review_install_permissions'
+    | 'review_sudoers_rules'
+    | 'select_service_manager'
+    | 'start_homebrew_nginx'
+    | 'use_cluster_node'
+    | 'use_docker_host_alias'
+    | 'use_macos_host_alias'
+    | 'verify_bind_mount'
+
+export interface StepRemediation {
+  code: RemediationCode
+  params: Record<string, string>
+}
+
 export interface StepOutcome {
   ok: boolean
   level?: 'success' | 'warning' | 'error'
   detail: string
-  remediation?: string
+  remediation?: StepRemediation
 }
 
 export interface VerifyResult {

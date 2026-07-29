@@ -51,6 +51,13 @@ async function initialize() {
       loadError.value = $gettext('Failed to load settings')
       return
     }
+    const nginx = data.value.nginx
+    if (nginx.host_mode === 'ssh'
+      && nginx.host_access_mode !== 'sftp'
+      && nginx.host_access_mode !== 'mounted') {
+      loadError.value = $gettext('The saved SSH access mode is missing or invalid. Set host_access_mode to sftp or mounted in the configuration file.')
+      return
+    }
     isReady.value = true
   }
   catch (error) {

@@ -225,11 +225,32 @@ async function openSSHSetup() {
         <span v-if="currentMode === 'external_container'">
           {{ data.nginx.container_name }}
         </span>
+        <ATag v-if="currentMode === 'host_via_ssh' && data.nginx.host_access_mode === 'sftp'" color="blue">
+          {{ $gettext('Compatibility (SFTP)') }}
+        </ATag>
+        <ATag v-else-if="currentMode === 'host_via_ssh' && data.nginx.host_access_mode === 'mounted'" color="green">
+          {{ $gettext('High performance (mounted)') }}
+        </ATag>
         <AButton size="small" @click="beginControlEdit">
           <EditOutlined />
           {{ $gettext('Edit') }}
         </AButton>
       </div>
+      <AAlert
+        v-if="!isEditingControl && currentMode === 'host_via_ssh' && data.nginx.host_access_mode === 'sftp'"
+        type="info"
+        show-icon
+        class="mt-3"
+        :message="$gettext('High-performance mode is available')"
+        :description="$gettext('Compatibility mode works entirely over SSH. For lower file-access latency, configure bind mounts and switch to high-performance mode after recreating the container.')"
+      >
+        <template #action>
+          <AButton size="small" @click="openSSHSetup">
+            {{ $gettext('Review high-performance setup') }}
+            <ArrowRightOutlined />
+          </AButton>
+        </template>
+      </AAlert>
       <template v-else>
         <ARadioGroup
           :value="selectedMode"

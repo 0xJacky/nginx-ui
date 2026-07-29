@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import type { HostDiagnosis, SetupParams } from '@/api/host_setup'
 import { AimOutlined, CheckCircleOutlined, ScanOutlined, ThunderboltOutlined } from '@ant-design/icons-vue'
-import { computed, onActivated, ref, watch } from 'vue'
+import { computed, onActivated, onDeactivated, ref, watch } from 'vue'
 import hostSetup from '@/api/host_setup'
 import { getErrorMessage } from '@/lib/http'
-import CheckPanel from '../CheckPanel.vue'
 import {
   applyHostDiagnosis,
   detectedSettings,
@@ -72,7 +71,9 @@ function revealAdjustPanel() {
   if (!adjustPanels.value.length)
     adjustPanels.value = ['adjust']
 }
-// A slow discover response must not overwrite a path edited while it was in flight.
+// Slow responses must not overwrite state after the step is left or a newer
+// request starts.
+let diagnoseRequestID = 0
 let discoverRequestID = 0
 
 function applyPathPreset(preset: ReturnType<typeof homebrewPaths> | typeof linuxPaths) {
@@ -118,6 +119,7 @@ function fillSuggestedDefaults(result: HostDiagnosis) {
 }
 
 async function diagnoseTarget() {
+  const requestID = ++diagnoseRequestID
   isDiagnosing.value = true
   diagnosisError.value = ''
   discoverError.value = ''
@@ -125,20 +127,30 @@ async function diagnoseTarget() {
   diagnosis.value = null
   try {
     const target = params.value.host_address
+    const isFirstDiagnosisForTarget = lastDiagnosedHostAddress.value !== target
     const result = await hostSetup.diagnose(params.value)
+    if (requestID !== diagnoseRequestID)
+      return
     diagnosis.value = result
     lastDiagnosedHostAddress.value = target
     if (result.homebrew_prefix === '/usr/local' || result.homebrew_prefix === '/opt/homebrew')
       homebrewPrefix.value = result.homebrew_prefix
-    // Remember reported values so each field can show detected or overridden.
+    // The first diagnosis is authoritative for this target. Later manual
+    // overrides remain intact when the operator explicitly detects again.
+    if (isFirstDiagnosisForTarget)
+      applyHostDiagnosis(params.value, result)
+    else
+      fillSuggestedDefaults(result)
     recordDetected(detectedSettings(result))
-    fillSuggestedDefaults(result)
   }
   catch (error) {
+    if (requestID !== diagnoseRequestID)
+      return
     diagnosisError.value = getErrorMessage(error)
   }
   finally {
-    isDiagnosing.value = false
+    if (requestID === diagnoseRequestID)
+      isDiagnosing.value = false
   }
 }
 
@@ -173,7 +185,8 @@ async function rediscoverNginxPaths() {
     discoverError.value = getErrorMessage(error)
   }
   finally {
-    isDiscovering.value = false
+    if (requestID === discoverRequestID)
+      isDiscovering.value = false
   }
 }
 
@@ -185,6 +198,13 @@ watch([isUnclassifiedTarget, diagnosisError, isPlatformReady, hasDetectedChanges
 onActivated(() => {
   if (!diagnosis.value || lastDiagnosedHostAddress.value !== params.value.host_address)
     void diagnoseTarget()
+})
+
+onDeactivated(() => {
+  diagnoseRequestID++
+  discoverRequestID++
+  isDiagnosing.value = false
+  isDiscovering.value = false
 })
 </script>
 
@@ -343,21 +363,6 @@ onActivated(() => {
       type="success"
       show-icon
       :message="$gettext('Platform and paths are complete.')"
-    />
-
-    <AAlert
-      type="info"
-      show-icon
-      :message="$gettext('Path checks read the Nginx UI container, not the host')"
-      :description="$gettext('The service check runs over SSH, but the config, log and PID checks look inside this container. On a first run they stay red until the bind mounts from the next step are applied and the container is recreated. That is expected and does not block you from continuing.')"
-    />
-
-    <CheckPanel
-      group="platform"
-      :title="$gettext('Platform checks')"
-      :hint="$gettext('Verifies the service is loaded under the entered label and that every path above is reachable from the container.')"
-      :disabled="!isPlatformReady"
-      @failed="revealAdjustPanel"
     />
   </div>
 </template>

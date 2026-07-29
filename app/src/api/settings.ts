@@ -79,6 +79,7 @@ export interface NginxSettings {
   // Host-via-SSH mode fields
   host_address?: string
   host_user?: string
+  host_access_mode?: 'sftp' | 'mounted'
   host_auth_method?: string
   host_key_source?: 'generated' | 'existing' | 'provided'
   host_private_key_path?: string
@@ -101,6 +102,7 @@ export interface NginxControlSettings {
   container_name: string
   host_address?: string
   host_user?: string
+  host_access_mode?: 'sftp' | 'mounted'
   host_auth_method?: string
   host_key_source?: 'generated' | 'existing' | 'provided'
   host_private_key_path?: string

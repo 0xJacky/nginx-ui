@@ -51,6 +51,14 @@ function normalizeKeySource(source: string | undefined, privateKeyPath: string):
   return privateKeyPath === defaultHostPrivateKeyPath ? 'generated' : 'existing'
 }
 
+function initialAccessMode(nginx: Settings['nginx']): SetupParams['access_mode'] {
+  if (nginx.host_mode !== 'ssh')
+    return 'sftp'
+  if (nginx.host_access_mode === 'sftp' || nginx.host_access_mode === 'mounted')
+    return nginx.host_access_mode
+  throw new Error('Saved SSH settings do not contain a valid host access mode')
+}
+
 export function createHostSetupWizard(settings: Ref<Settings>) {
   const nginx = settings.value.nginx
   const serviceManager = nginx.host_service_manager || 'systemd'
@@ -58,10 +66,8 @@ export function createHostSetupWizard(settings: Ref<Settings>) {
   const configuredKeySource = normalizeKeySource(nginx.host_key_source, configuredPrivateKeyPath)
   const currentStepId = ref<HostSetupStepId>('ssh-target')
   const isHostIdentityTrusted = ref(false)
-  // The install snippets have no completion signal, so the wizard only requires
-  // that the step was opened once before the final verification is reachable.
-  const hasVisitedInstall = ref(false)
   const isSSHConnected = ref(false)
+  const isHostSetupPassed = ref(false)
   const isVerificationPassed = ref(false)
   // SSH key is the only method the backend accepts, so there is nothing to ask.
   const authMethod = 'key' as const
@@ -71,6 +77,7 @@ export function createHostSetupWizard(settings: Ref<Settings>) {
   const params = ref<SetupParams>({
     host_address: nginx.host_address || 'host.docker.internal:22',
     host_user: nginx.host_user || 'nginxui',
+    access_mode: initialAccessMode(nginx),
     service_manager: serviceManager,
     systemd_unit: nginx.host_systemd_unit_name || 'nginx.service',
     systemctl_path: nginx.host_systemctl_path || '/bin/systemctl',
@@ -155,6 +162,7 @@ export function createHostSetupWizard(settings: Ref<Settings>) {
   )
 
   watch(params, () => {
+    isHostSetupPassed.value = false
     isVerificationPassed.value = false
   }, { deep: true })
 
@@ -207,7 +215,9 @@ export function createHostSetupWizard(settings: Ref<Settings>) {
     }
   })
 
-  const canAdvance = computed(() => blockedReason.value === '')
+  const canAdvance = computed(() => currentStepId.value === 'install'
+    ? isHostSetupPassed.value
+    : blockedReason.value === '')
 
   // Steps the user already completed stay reachable so nothing is a dead end.
   const furthestReachableIndex = computed(() => {
@@ -217,7 +227,7 @@ export function createHostSetupWizard(settings: Ref<Settings>) {
       return 1
     if (!isPlatformReady.value)
       return 2
-    if (!hasVisitedInstall.value)
+    if (!isHostSetupPassed.value)
       return 3
     return hostSetupStepOrder.length - 1
   })
@@ -256,6 +266,7 @@ export function createHostSetupWizard(settings: Ref<Settings>) {
 
     const target = settings.value.nginx
     target.host_mode = 'ssh'
+    target.host_access_mode = params.value.access_mode
     target.host_address = params.value.host_address
     target.host_user = params.value.host_user
     target.host_auth_method = authMethod
@@ -295,8 +306,8 @@ export function createHostSetupWizard(settings: Ref<Settings>) {
     forgetDetected,
     furthestReachableIndex,
     goToStep,
-    hasVisitedInstall,
     isHostIdentityTrusted,
+    isHostSetupPassed,
     isPlatformReady,
     isSSHConnected,
     isVerificationPassed,

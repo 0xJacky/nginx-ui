@@ -2,7 +2,7 @@
 import type { CheckGroup } from './checks'
 import type { VerifyResult } from '@/api/host_setup'
 import { SafetyCertificateOutlined } from '@ant-design/icons-vue'
-import { computed, ref, watch } from 'vue'
+import { computed, onDeactivated, ref, watch } from 'vue'
 import hostSetup from '@/api/host_setup'
 import { getErrorMessage } from '@/lib/http'
 import CheckResults from './CheckResults.vue'
@@ -10,31 +10,29 @@ import { hasBlockingFailure, toCheckRows } from './checks'
 import { useHostSetupWizard } from './useHostSetupWizard'
 
 const props = defineProps<{
-  group: CheckGroup
+  groups: CheckGroup[]
   title: string
   hint?: string
-  /** Disable the button while the step is not ready to be checked. */
   disabled?: boolean
 }>()
 
-const emit = defineEmits<{ failed: [] }>()
-
 const passed = defineModel<boolean>('passed', { default: false })
-
 const { params } = useHostSetupWizard()
 
 const result = ref<VerifyResult | null>(null)
 const runError = ref('')
 const running = ref(false)
-// A slow response must not report on params the user has since changed.
 let runID = 0
 
-const rows = computed(() => toCheckRows(result.value))
+const allRows = computed(() => toCheckRows(result.value))
+const rows = computed(() => allRows.value.filter(row =>
+  row.key !== 'ssh_connect' || row.level === 'error'))
 
 function reset() {
   runID++
   result.value = null
   runError.value = ''
+  running.value = false
   passed.value = false
 }
 
@@ -45,13 +43,11 @@ async function run() {
   const currentRun = ++runID
   running.value = true
   try {
-    const response = await hostSetup.verify(params.value, { groups: [props.group] })
+    const response = await hostSetup.verify({ ...params.value }, { groups: props.groups })
     if (currentRun !== runID)
       return
     result.value = response
-    passed.value = !hasBlockingFailure(toCheckRows(response))
-    if (!passed.value)
-      emit('failed')
+    passed.value = !hasBlockingFailure(allRows.value)
   }
   catch (error) {
     if (currentRun !== runID)
@@ -59,11 +55,15 @@ async function run() {
     runError.value = getErrorMessage(error)
   }
   finally {
-    running.value = false
+    if (currentRun === runID)
+      running.value = false
   }
 }
 
-defineExpose({ run })
+onDeactivated(() => {
+  runID++
+  running.value = false
+})
 </script>
 
 <template>
