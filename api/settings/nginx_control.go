@@ -202,7 +202,7 @@ var updateNginxControlSettings = func(payload nginxControlSettingsPayload) error
 }
 
 func SaveNginxControlSettings(c *gin.Context) {
-	if !requireVerifiedTwoFactor(c, "Two-factor authentication is required to modify nginx control settings") {
+	if !requireVerifiedTwoFactorOrProxy(c, "Two-factor authentication is required to modify nginx control settings") {
 		return
 	}
 
@@ -230,7 +230,7 @@ type nginxPrivateKeyPayload struct {
 }
 
 func SaveNginxPrivateKey(c *gin.Context) {
-	if !requireVerifiedTwoFactor(c, "Two-factor authentication is required to store an SSH private key") {
+	if !requireVerifiedTwoFactorOrProxy(c, "Two-factor authentication is required to store an SSH private key") {
 		return
 	}
 

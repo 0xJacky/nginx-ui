@@ -150,7 +150,9 @@ func TestSaveNginxControlSettingsRequiresVerifiedTwoFactor(t *testing.T) {
 		assert.Equal(t, http.StatusUnauthorized, w.Code)
 	})
 
-	t.Run("rejects node secret authentication", func(t *testing.T) {
+	// A controller configuring a child node arrives signed as that node through
+	// middleware.Proxy(), so the write must not be refused on that basis.
+	t.Run("accepts a proxied node principal", func(t *testing.T) {
 		w := httptest.NewRecorder()
 		c, _ := gin.CreateTestContext(w)
 		c.Set(nodeauth.GinPrincipalKey, "node-principal")
@@ -158,7 +160,9 @@ func TestSaveNginxControlSettingsRequiresVerifiedTwoFactor(t *testing.T) {
 
 		SaveNginxControlSettings(c)
 
-		assert.Equal(t, http.StatusForbidden, w.Code)
+		assert.NotEqual(t, http.StatusForbidden, w.Code,
+			"a proxied node principal must reach the handler; the proxy rewrites 403 into an opaque 503")
+		assert.NotEqual(t, http.StatusUnauthorized, w.Code)
 	})
 }
 
