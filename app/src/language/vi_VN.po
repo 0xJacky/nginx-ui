@@ -1,3 +1,4 @@
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -5,7 +6,7 @@ msgstr ""
 "Language-Team: none\n"
 "Language: vi_VN\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -23,19 +24,19 @@ msgstr "Thông báo chứng chỉ IP"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:81
 msgid ""
-"This site is configured as a default server (default_server) for HTTPS "
-"(port 443). "
+"This site is configured as a default server (default_server) for HTTPS (port"
+" 443). "
 msgstr ""
 "Trang web này được cấu hình làm máy chủ mặc định (default_server) cho HTTPS "
 "(cổng 443)."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:85
 msgid ""
-"This site uses wildcard server name (_) which typically indicates an "
-"IP-based certificate. "
+"This site uses wildcard server name (_) which typically indicates an IP-"
+"based certificate. "
 msgstr ""
-"Trang web này sử dụng tên máy chủ wildcard (_) thường biểu thị chứng chỉ "
-"dựa trên IP."
+"Trang web này sử dụng tên máy chủ wildcard (_) thường biểu thị chứng chỉ dựa"
+" trên IP."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:89
 msgid "No specific IP address found in server_name configuration. "
@@ -72,7 +73,8 @@ msgstr "Đảm bảo bạn đã cấu hình proxy ngược cho .well-known"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:120
 msgid "Please first add credentials in Certification > DNS Credentials, "
-msgstr "Vui lòng thêm thông tin xác thực trước tại Certification > DNS Credentials, "
+msgstr ""
+"Vui lòng thêm thông tin xác thực trước tại Certification > DNS Credentials, "
 
 #: src/components/AutoCertForm/AutoCertForm.vue:130
 msgid "Server IP Address"
@@ -84,8 +86,8 @@ msgstr "Nhập địa chỉ IP máy chủ (ví dụ: 203.0.113.1 hoặc 2001:db8
 
 #: src/components/AutoCertForm/AutoCertForm.vue:140
 msgid ""
-"For IP-based certificates, please specify the server IP address that will "
-"be included in the certificate."
+"For IP-based certificates, please specify the server IP address that will be"
+" included in the certificate."
 msgstr ""
 "Đối với chứng chỉ dựa trên IP, vui lòng chỉ định địa chỉ IP của máy chủ sẽ "
 "được đưa vào chứng chỉ."
@@ -111,7 +113,8 @@ msgid "Private CA:"
 msgstr "CA riêng:"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:161
-msgid "Any reachable IP address can be used with private Certificate Authorities"
+msgid ""
+"Any reachable IP address can be used with private Certificate Authorities"
 msgstr ""
 "Bất kỳ địa chỉ IP có thể truy cập nào đều có thể được sử dụng với các cơ "
 "quan cấp chứng chỉ riêng tư"
@@ -160,7 +163,8 @@ msgstr "Lego tắt hỗ trợ CNAME"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:223
 msgid "If your domain has CNAME records and you cannot obtain certificates, "
-msgstr "Nếu tên miền của bạn có bản ghi CNAME và bạn không thể nhận chứng chỉ,"
+msgstr ""
+"Nếu tên miền của bạn có bản ghi CNAME và bạn không thể nhận chứng chỉ,"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:229
 msgid "Enable Common Name"
@@ -171,8 +175,8 @@ msgid ""
 "Enable the certificate Common Name field for private CAs that still require "
 "it."
 msgstr ""
-"Bật trường Common Name của chứng chỉ cho các CA riêng vẫn còn yêu cầu "
-"trường này."
+"Bật trường Common Name của chứng chỉ cho các CA riêng vẫn còn yêu cầu trường"
+" này."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:237
 msgid "Revoke Old Certificate"
@@ -196,7 +200,8 @@ msgstr "Chứng chỉ"
 
 #: src/components/AutoCertForm/DNSChallenge.vue:128
 msgid "Please create DNS credentials first in DNS > Credentials"
-msgstr "Vui lòng tạo thông tin xác thực DNS trước trong DNS > Thông tin xác thực"
+msgstr ""
+"Vui lòng tạo thông tin xác thực DNS trước trong DNS > Thông tin xác thực"
 
 #: src/components/AutoCertForm/DNSChallenge.vue:135
 #: src/language/constants.ts:68 src/views/dns/DNSDomainList.vue:189
@@ -205,10 +210,12 @@ msgstr "Chọn thông tin xác thực"
 
 #: src/components/AutoCertForm/DNSChallenge.vue:141
 msgid "Go to DNS > Credentials to create or manage credentials"
-msgstr "Đi tới DNS > Thông tin xác thực để tạo hoặc quản lý thông tin xác thực"
+msgstr ""
+"Đi tới DNS > Thông tin xác thực để tạo hoặc quản lý thông tin xác thực"
 
 #: src/components/CertInfo/CertInfo.vue:24
-#: src/views/certificate/ACMEUser.vue:70 src/views/certificate/ACMEUser.vue:152
+#: src/views/certificate/ACMEUser.vue:70
+#: src/views/certificate/ACMEUser.vue:152
 #: src/views/certificate/CertificateList/certColumns.tsx:98
 msgid "Valid"
 msgstr "Hợp lệ"
@@ -306,8 +313,8 @@ msgstr "Cần có cơ sở dữ liệu GeoLite2"
 
 #: src/components/GeoLiteDownload/GeoLiteDownload.vue:158
 msgid ""
-"The GeoLite2 database is required for offline geographic IP analysis. "
-"Please download it to enable this feature."
+"The GeoLite2 database is required for offline geographic IP analysis. Please"
+" download it to enable this feature."
 msgstr ""
 "Cần có cơ sở dữ liệu GeoLite2 để phân tích địa lý IP ngoại tuyến. Vui lòng "
 "tải xuống để kích hoạt tính năng này."
@@ -317,8 +324,8 @@ msgid ""
 "Alternatively, if you cannot download the database, you can manually place "
 "GeoLite2-City.mmdb in the same directory as app.ini."
 msgstr ""
-"Ngoài ra, nếu bạn không thể tải xuống cơ sở dữ liệu, bạn có thể đặt thủ "
-"công tệp GeoLite2-City.mmdb vào cùng thư mục với app.ini."
+"Ngoài ra, nếu bạn không thể tải xuống cơ sở dữ liệu, bạn có thể đặt thủ công"
+" tệp GeoLite2-City.mmdb vào cùng thư mục với app.ini."
 
 #: src/components/GeoLiteDownload/GeoLiteDownload.vue:168
 msgid "GeoLite2 Database Installed"
@@ -360,10 +367,12 @@ msgstr "Lỗi"
 
 #: src/components/InspectConfig/InspectConfig.vue:45
 msgid "Config validation is unavailable for a remote-only namespace."
-msgstr "Xác thực cấu hình không khả dụng đối với không gian tên chỉ dành cho từ xa."
+msgstr ""
+"Xác thực cấu hình không khả dụng đối với không gian tên chỉ dành cho từ xa."
 
 #: src/components/InspectConfig/InspectConfig.vue:47
-msgid "Sandbox validation is unavailable when Nginx runs in a separate container."
+msgid ""
+"Sandbox validation is unavailable when Nginx runs in a separate container."
 msgstr ""
 "Xác thực sandbox không khả dụng khi Nginx chạy trong một container riêng "
 "biệt."
@@ -377,7 +386,8 @@ msgstr ""
 "hình."
 
 #: src/components/InspectConfig/InspectConfig.vue:58
-msgid "A required include file is missing from the sandbox or source configuration."
+msgid ""
+"A required include file is missing from the sandbox or source configuration."
 msgstr "Thiếu tệp include bắt buộc trong sandbox hoặc cấu hình nguồn."
 
 #: src/components/InspectConfig/InspectConfig.vue:60
@@ -394,7 +404,7 @@ msgstr "Nginx báo cáo lỗi cú pháp cấu hình."
 msgid "Nginx failed to validate the configuration."
 msgstr "Nginx không thể xác thực cấu hình."
 
-#: src/components/InspectConfig/InspectConfig.vue:103
+#: src/components/InspectConfig/InspectConfig.vue:103 src/lib/http/error.ts:36
 #: src/views/certificate/CertificateEditor.vue:104
 msgid "Server error"
 msgstr "Lỗi máy chủ"
@@ -415,10 +425,11 @@ msgstr "Tệp cấu hình đã được kiểm tra thành công trong môi trư�
 msgid "Configuration file is test successful"
 msgstr "Tệp cấu hình được kiểm tra thành công"
 
-#: src/components/InspectConfig/InspectConfig.vue:195 src/constants/index.ts:25
-#: src/views/backup/components/BackupCreator.vue:138
+#: src/components/InspectConfig/InspectConfig.vue:195
+#: src/constants/index.ts:25 src/views/backup/components/BackupCreator.vue:138
 #: src/views/notification/notificationColumns.tsx:21
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:97
+#: src/views/preference/components/NginxHostSetup/checks.ts:67
 msgid "Warning"
 msgstr "Lưu ý"
 
@@ -443,7 +454,8 @@ msgstr "Sửa đổi"
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:713
 #: src/views/dns/DDNSManager.vue:438 src/views/dns/DNSRecordManager.vue:250
 #: src/views/preference/components/AuthSettings/Passkey.vue:131
-#: src/views/preference/Preference.vue:124
+#: src/views/preference/Preference.vue:129
+#: src/views/preference/tabs/NginxSettings.vue:274
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:196
 #: src/views/stream/components/ConfigName.vue:52
@@ -465,6 +477,9 @@ msgstr "Lưu"
 #: src/views/nginx_log/indexing/IndexManagement.vue:59
 #: src/views/nginx_log/NginxLogList.vue:421
 #: src/views/preference/components/AuthSettings/Passkey.vue:142
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:317
+#: src/views/preference/tabs/NginxSettings.vue:46
+#: src/views/preference/tabs/NginxSettings.vue:278
 #: src/views/site/components/SiteStatusSelect.vue:124
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:53
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:165
@@ -488,7 +503,8 @@ msgstr "Tải lại"
 #: src/views/notification/Notification.vue:38
 #: src/views/preference/tabs/AuthSettings.vue:128
 #: src/views/preference/tabs/CertSettings.vue:82
-#: src/views/site/site_list/SiteList.vue:210 src/views/stream/StreamList.vue:99
+#: src/views/site/site_list/SiteList.vue:210
+#: src/views/stream/StreamList.vue:99
 msgid "No"
 msgstr "Không"
 
@@ -498,6 +514,7 @@ msgstr "Không"
 #: src/components/Notification/Notification.vue:116 src/language/curd.ts:15
 #: src/views/backup/components/BackupCreator.vue:149
 #: src/views/notification/Notification.vue:39
+#: src/views/preference/components/NginxHostSetup/checks.ts:65
 #: src/views/site/components/SiteStatusSelect.vue:123
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:52
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:164
@@ -586,8 +603,9 @@ msgid "No Action"
 msgstr "Không hành động"
 
 #: src/components/NamespaceRender/NamespaceRender.vue:44
-#: src/components/NamespaceTabs/NamespaceTabs.vue:141 src/constants/index.ts:39
-#: src/views/node/Node.vue:209 src/views/node/Node.vue:217
+#: src/components/NamespaceTabs/NamespaceTabs.vue:141
+#: src/constants/index.ts:39 src/views/node/Node.vue:209
+#: src/views/node/Node.vue:217
 msgid "Reload Nginx"
 msgstr "Tải lại Nginx"
 
@@ -607,7 +625,8 @@ msgstr "Yêu cầu tải lại thất bại, vui lòng kiểm tra kết nối m�
 
 #: src/components/NamespaceTabs/NamespaceTabs.vue:105
 msgid "Restart request failed, please check your network connection"
-msgstr "Yêu cầu khởi động lại thất bại, vui lòng kiểm tra kết nối mạng của bạn"
+msgstr ""
+"Yêu cầu khởi động lại thất bại, vui lòng kiểm tra kết nối mạng của bạn"
 
 #: src/components/NamespaceTabs/NamespaceTabs.vue:116
 #: src/components/NodeIndicator/NodeIndicator.vue:38
@@ -615,7 +634,7 @@ msgstr "Yêu cầu khởi động lại thất bại, vui lòng kiểm tra kết
 #: src/constants/index.ts:49 src/views/backup/AutoBackup/AutoBackup.vue:103
 #: src/views/backup/AutoBackup/AutoBackup.vue:112
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:50
-#: src/views/preference/tabs/NginxSettings.vue:64
+#: src/views/preference/tabs/NginxSettings.vue:223
 msgid "Local"
 msgstr "Cục bộ"
 
@@ -636,7 +655,8 @@ msgstr "Có"
 
 #: src/components/NamespaceTabs/NamespaceTabs.vue:146
 msgid "Are you sure you want to restart Nginx on the following sync nodes?"
-msgstr "Bạn có chắc chắn muốn khởi động lại Nginx trên các nút đồng bộ sau không?"
+msgstr ""
+"Bạn có chắc chắn muốn khởi động lại Nginx trên các nút đồng bộ sau không?"
 
 #: src/components/NamespaceTabs/NamespaceTabs.vue:153
 #: src/views/node/Node.vue:230 src/views/node/Node.vue:238
@@ -677,7 +697,8 @@ msgid "Nginx restarted successfully"
 msgstr "Khởi động lại Nginx thành công"
 
 #: src/components/NginxControl/NginxControl.vue:124
-msgid "Nginx restart status could not be confirmed. Please check the Nginx status."
+msgid ""
+"Nginx restart status could not be confirmed. Please check the Nginx status."
 msgstr ""
 "Không thể xác nhận trạng thái khởi động lại Nginx. Vui lòng kiểm tra trạng "
 "thái Nginx."
@@ -813,14 +834,14 @@ msgstr "Xóa chỉ thị access_log khỏi máy chủ này"
 
 #: src/components/NgxConfigEditor/LogEntry.vue:154
 msgid ""
-"Write an access_log directive for this server, so its requests can be "
-"viewed and analysed separately"
+"Write an access_log directive for this server, so its requests can be viewed"
+" and analysed separately"
 msgstr ""
 "Viết một chỉ thị access_log cho máy chủ này, để các yêu cầu của nó có thể "
 "được xem và phân tích riêng biệt."
 
-#: src/components/NgxConfigEditor/LogEntry.vue:163 src/language/constants.ts:64
-#: src/views/nginx_log/NginxLogList.vue:150
+#: src/components/NgxConfigEditor/LogEntry.vue:163
+#: src/language/constants.ts:64 src/views/nginx_log/NginxLogList.vue:150
 msgid "Access Log"
 msgstr "Nhật ký truy cập"
 
@@ -868,7 +889,8 @@ msgstr "Thêm máy chủ"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:97 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:54
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:119
-#: src/views/site/site_list/SiteList.vue:186 src/views/stream/StreamList.vue:81
+#: src/views/site/site_list/SiteList.vue:186
+#: src/views/stream/StreamList.vue:81
 msgid "Add"
 msgstr "Thêm"
 
@@ -1009,10 +1031,11 @@ msgid "Auto Backup Storage Failed"
 msgstr "Lưu trữ sao lưu tự động thất bại"
 
 #: src/components/Notification/notifications.ts:34
-msgid "Backup task %{backup_name} failed during storage upload, error: %{error}"
+msgid ""
+"Backup task %{backup_name} failed during storage upload, error: %{error}"
 msgstr ""
-"Tác vụ sao lưu %{backup_name} thất bại trong quá trình tải lên lưu trữ, "
-"lỗi: %{error}"
+"Tác vụ sao lưu %{backup_name} thất bại trong quá trình tải lên lưu trữ, lỗi:"
+" %{error}"
 
 #: src/components/Notification/notifications.ts:37
 msgid "Auto Backup Completed"
@@ -1020,10 +1043,12 @@ msgstr "Sao lưu tự động hoàn tất"
 
 #: src/components/Notification/notifications.ts:38
 msgid "Backup task %{backup_name} completed successfully, file: %{file_path}"
-msgstr "Tác vụ sao lưu %{backup_name} đã hoàn thành thành công, tệp: %{file_path}"
+msgstr ""
+"Tác vụ sao lưu %{backup_name} đã hoàn thành thành công, tệp: %{file_path}"
 
 #: src/components/Notification/notifications.ts:41
-#: src/components/Notification/notifications.ts:49 src/language/constants.ts:35
+#: src/components/Notification/notifications.ts:49
+#: src/language/constants.ts:35
 msgid "Renew Certificate Success"
 msgstr "Gia hạn chứng chỉ thành công"
 
@@ -1032,7 +1057,8 @@ msgstr "Gia hạn chứng chỉ thành công"
 msgid "Certificate %{name} renewed successfully"
 msgstr "Chứng chỉ %{name} đã được gia hạn thành công"
 
-#: src/components/Notification/notifications.ts:45 src/language/constants.ts:36
+#: src/components/Notification/notifications.ts:45
+#: src/language/constants.ts:36
 msgid "Renew Certificate Error"
 msgstr "Lỗi gia hạn chứng chỉ"
 
@@ -1040,7 +1066,8 @@ msgstr "Lỗi gia hạn chứng chỉ"
 msgid "Certificate %{name} renewal failed: %{error}"
 msgstr "Gia hạn chứng chỉ %{name} thất bại: %{error}"
 
-#: src/components/Notification/notifications.ts:53 src/language/constants.ts:39
+#: src/components/Notification/notifications.ts:53
+#: src/language/constants.ts:39
 msgid "Sync Certificate Error"
 msgstr "Lỗi đồng bộ chứng chỉ"
 
@@ -1048,7 +1075,8 @@ msgstr "Lỗi đồng bộ chứng chỉ"
 msgid "Sync Certificate %{cert_name} to %{node_name} failed"
 msgstr "Đồng bộ chứng chỉ %{cert_name} tới %{node_name} thất bại"
 
-#: src/components/Notification/notifications.ts:57 src/language/constants.ts:38
+#: src/components/Notification/notifications.ts:57
+#: src/language/constants.ts:38
 msgid "Sync Certificate Success"
 msgstr "Đồng bộ chứng chỉ thành công"
 
@@ -1056,7 +1084,8 @@ msgstr "Đồng bộ chứng chỉ thành công"
 msgid "Sync Certificate %{cert_name} to %{node_name} successfully"
 msgstr "Đồng bộ chứng chỉ %{cert_name} tới %{node_name} thành công"
 
-#: src/components/Notification/notifications.ts:61 src/language/constants.ts:45
+#: src/components/Notification/notifications.ts:61
+#: src/language/constants.ts:45
 msgid "Sync Config Error"
 msgstr "Lỗi đồng bộ cấu hình"
 
@@ -1064,7 +1093,8 @@ msgstr "Lỗi đồng bộ cấu hình"
 msgid "Sync config %{config_name} to %{node_name} failed"
 msgstr "Đồng bộ cấu hình %{config_name} tới %{node_name} thất bại"
 
-#: src/components/Notification/notifications.ts:65 src/language/constants.ts:44
+#: src/components/Notification/notifications.ts:65
+#: src/language/constants.ts:44
 msgid "Sync Config Success"
 msgstr "Đồng bộ cấu hình thành công"
 
@@ -1072,7 +1102,8 @@ msgstr "Đồng bộ cấu hình thành công"
 msgid "Sync config %{config_name} to %{node_name} successfully"
 msgstr "Đồng bộ cấu hình %{config_name} với %{node_name} thành công"
 
-#: src/components/Notification/notifications.ts:69 src/language/constants.ts:42
+#: src/components/Notification/notifications.ts:69
+#: src/language/constants.ts:42
 msgid "Rename Remote Config Error"
 msgstr "Lỗi đổi tên cấu hình từ xa"
 
@@ -1080,13 +1111,15 @@ msgstr "Lỗi đổi tên cấu hình từ xa"
 msgid "Rename %{orig_path} to %{new_path} on %{node_name} failed"
 msgstr "Đổi tên %{orig_path} thành %{new_path} trên %{node_name} thất bại"
 
-#: src/components/Notification/notifications.ts:73 src/language/constants.ts:41
+#: src/components/Notification/notifications.ts:73
+#: src/language/constants.ts:41
 msgid "Rename Remote Config Success"
 msgstr "Đổi tên cấu hình từ xa thành công"
 
 #: src/components/Notification/notifications.ts:74
 msgid "Rename %{orig_path} to %{new_path} on %{node_name} successfully"
-msgstr "Đã đổi tên %{orig_path} thành %{new_path} trên %{node_name} thành công"
+msgstr ""
+"Đã đổi tên %{orig_path} thành %{new_path} trên %{node_name} thành công"
 
 #: src/components/Notification/notifications.ts:77
 msgid "Delete Remote Config Error"
@@ -1110,9 +1143,11 @@ msgstr "Kiểm tra thông báo bên ngoài"
 
 #: src/components/Notification/notifications.ts:86
 msgid "This is a test message sent at %{timestamp} from Nginx UI."
-msgstr "Đây là một thông báo thử nghiệm được gửi tại %{Timestamp} từ nginx UI."
+msgstr ""
+"Đây là một thông báo thử nghiệm được gửi tại %{Timestamp} từ nginx UI."
 
-#: src/components/Notification/notifications.ts:89 src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:89
+#: src/language/constants.ts:50
 msgid "Delete Remote Site Error"
 msgstr "Lỗi xóa trang web từ xa"
 
@@ -1120,7 +1155,8 @@ msgstr "Lỗi xóa trang web từ xa"
 msgid "Delete site %{name} from %{node} failed"
 msgstr "Xóa trang %{name} từ %{node} thất bại"
 
-#: src/components/Notification/notifications.ts:93 src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:93
+#: src/language/constants.ts:49
 msgid "Delete Remote Site Success"
 msgstr "Xóa trang web từ xa thành công"
 
@@ -1128,7 +1164,8 @@ msgstr "Xóa trang web từ xa thành công"
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "Đã xóa trang web %{name} từ %{node} thành công"
 
-#: src/components/Notification/notifications.ts:97 src/language/constants.ts:52
+#: src/components/Notification/notifications.ts:97
+#: src/language/constants.ts:52
 msgid "Disable Remote Site Error"
 msgstr "Lỗi vô hiệu hóa trang từ xa"
 
@@ -1211,7 +1248,8 @@ msgstr "Đổi tên trang từ xa thành công"
 
 #: src/components/Notification/notifications.ts:134
 msgid "Rename site %{name} to %{new_name} on %{node} successfully"
-msgstr "Đã đổi tên trang web %{name} thành %{new_name} trên %{node} thành công"
+msgstr ""
+"Đã đổi tên trang web %{name} thành %{new_name} trên %{node} thành công"
 
 #: src/components/Notification/notifications.ts:137
 #: src/language/constants.ts:48
@@ -1319,8 +1357,8 @@ msgstr "Tất cả mã khôi phục đã được sử dụng"
 #: src/components/Notification/notifications.ts:186
 #: src/language/constants.ts:59
 msgid ""
-"Please generate new recovery codes in the preferences immediately to "
-"prevent lockout."
+"Please generate new recovery codes in the preferences immediately to prevent"
+" lockout."
 msgstr ""
 "Vui lòng tạo mã khôi phục mới trong phần tùy chọn ngay lập tức để tránh bị "
 "khóa."
@@ -1419,14 +1457,15 @@ msgid ""
 "Legacy recovery code is deprecated. Generate new recovery codes to keep "
 "account recovery secure."
 msgstr ""
-"Mã khôi phục cũ đã không còn được hỗ trợ. Tạo mã khôi phục mới để đảm bảo "
-"an toàn cho việc khôi phục tài khoản."
+"Mã khôi phục cũ đã không còn được hỗ trợ. Tạo mã khôi phục mới để đảm bảo an"
+" toàn cho việc khôi phục tài khoản."
 
 #: src/components/RecoveryCodeMigrationWarning/RecoveryCodeMigrationWarning.vue:45
 #: src/components/RecoveryCodeMigrationWarning/RecoveryCodeMigrationWarning.vue:69
 #: src/language/curd.ts:17
 #: src/views/certificate/components/DNSIssueCertificate.vue:237
 #: src/views/certificate/components/SelfSignedCertForm.vue:82
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:230
 msgid "Generate"
 msgstr "Tạo"
 
@@ -1457,7 +1496,8 @@ msgstr "Kiểm tra"
 #: src/components/SelfCheck/SelfCheckHeaderBanner.vue:46
 #: src/components/SelfCheck/SelfCheckHeaderBanner.vue:69
 msgid "Self check failed, Nginx UI may not work properly"
-msgstr "Tự kiểm tra thất bại, giao diện Nginx có thể không hoạt động bình thường"
+msgstr ""
+"Tự kiểm tra thất bại, giao diện Nginx có thể không hoạt động bình thường"
 
 #: src/components/SelfCheck/store.ts:18
 msgid "Install Secret"
@@ -1492,22 +1532,25 @@ msgid ""
 "Check if HTTPS is enabled. Using HTTP outside localhost is insecure and "
 "prevents using Passkeys and clipboard features"
 msgstr ""
-"Kiểm tra xem HTTPS có được bật không. Sử dụng HTTP bên ngoài localhost "
-"không an toàn và ngăn chặn việc sử dụng tính năng Passkeys và clipboard"
+"Kiểm tra xem HTTPS có được bật không. Sử dụng HTTP bên ngoài localhost không"
+" an toàn và ngăn chặn việc sử dụng tính năng Passkeys và clipboard"
 
 #: src/components/SelfCheck/tasks/frontend/websocket.ts:19
-msgid "Support communication with the backend through the WebSocket protocol. "
+msgid ""
+"Support communication with the backend through the WebSocket protocol. "
 msgstr "Hỗ trợ giao tiếp với backend thông qua giao thức WebSocket."
 
 #: src/components/SensitiveString/SensitiveInput.vue:67
 #: src/components/SensitiveString/SensitiveString.vue:71
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:125
+#: src/views/preference/components/NginxHostSetup/CodeBlock.vue:51
 msgid "Copied"
 msgstr "Đã sao chép"
 
 #: src/components/SensitiveString/SensitiveInput.vue:90
 #: src/components/SensitiveString/SensitiveString.vue:100
 #: src/views/backup/components/BackupCreator.vue:128
+#: src/views/preference/components/NginxHostSetup/CodeBlock.vue:51
 msgid "Copy"
 msgstr "Sao chép"
 
@@ -1601,9 +1644,9 @@ msgid ""
 "you have a valid backup file and security token, and carefully select what "
 "to restore."
 msgstr ""
-"Cảnh báo: Thao tác khôi phục sẽ ghi đè lên cấu hình hiện tại. Đảm bảo bạn "
-"có tệp sao lưu hợp lệ và mã bảo mật, đồng thời cẩn thận chọn nội dung cần "
-"khôi phục."
+"Cảnh báo: Thao tác khôi phục sẽ ghi đè lên cấu hình hiện tại. Đảm bảo bạn có"
+" tệp sao lưu hợp lệ và mã bảo mật, đồng thời cẩn thận chọn nội dung cần khôi"
+" phục."
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:204
 #: src/components/SystemRestore/SystemRestoreContent.vue:287
@@ -1664,8 +1707,8 @@ msgid ""
 "This will restore configuration files and database. Nginx UI will restart "
 "after the restoration is complete."
 msgstr ""
-"Thao tác này sẽ khôi phục các tệp cấu hình và cơ sở dữ liệu. Giao diện "
-"Nginx sẽ khởi động lại sau khi quá trình khôi phục hoàn tất."
+"Thao tác này sẽ khôi phục các tệp cấu hình và cơ sở dữ liệu. Giao diện Nginx"
+" sẽ khởi động lại sau khi quá trình khôi phục hoàn tất."
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:272
 #: src/components/SystemRestore/SystemRestoreContent.vue:355
@@ -1678,8 +1721,8 @@ msgstr "Khởi động lại tự động"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:368
 msgid ""
-"Nginx UI configuration has been restored and will restart automatically in "
-"a few seconds."
+"Nginx UI configuration has been restored and will restart automatically in a"
+" few seconds."
 msgstr ""
 "Cấu hình Nginx UI đã được khôi phục và sẽ tự động khởi động lại sau vài "
 "giây."
@@ -1697,8 +1740,8 @@ msgid ""
 "Your account still uses a legacy recovery code. Generate new recovery codes "
 "after verification to keep account recovery secure."
 msgstr ""
-"Tài khoản của bạn vẫn đang sử dụng mã khôi phục cũ. Hãy tạo mã khôi phục "
-"mới sau khi xác minh để giữ an toàn cho việc khôi phục tài khoản."
+"Tài khoản của bạn vẫn đang sử dụng mã khôi phục cũ. Hãy tạo mã khôi phục mới"
+" sau khi xác minh để giữ an toàn cho việc khôi phục tài khoản."
 
 #: src/components/TwoFA/Authorization.vue:80
 msgid "Input the recovery code:"
@@ -1712,7 +1755,7 @@ msgstr "Khôi phục"
 msgid "Please enter the OTP code:"
 msgstr "Vui lòng nhập mã OTP:"
 
-#: src/components/TwoFA/Authorization.vue:108 src/views/other/Login.vue:383
+#: src/components/TwoFA/Authorization.vue:108 src/views/other/Login.vue:387
 msgid "Or"
 msgstr "Hoặc"
 
@@ -1738,8 +1781,8 @@ msgid ""
 "new recovery codes now to keep account recovery available."
 msgstr ""
 "Mã khôi phục cũ của bạn đã được sử dụng và không thể dùng lại. Hãy tạo mã "
-"khôi phục mới ngay bây giờ để giữ cho tính năng khôi phục tài khoản luôn "
-"sẵn sàng."
+"khôi phục mới ngay bây giờ để giữ cho tính năng khôi phục tài khoản luôn sẵn"
+" sàng."
 
 #: src/components/TwoFA/use2FAModal.ts:50
 msgid "Go to Recovery Codes"
@@ -1750,6 +1793,8 @@ msgid "Later"
 msgstr "Để sau"
 
 #: src/components/TwoFA/use2FAModal.ts:84
+#: src/views/preference/NginxHostSetup.vue:109
+#: src/views/preference/tabs/NginxSettings.vue:43
 msgid "Two-factor authentication required"
 msgstr "Yêu cầu xác thực hai yếu tố"
 
@@ -2192,8 +2237,8 @@ msgid ""
 "This backup uses an unsupported legacy format. Please create a new backup "
 "with a newer version before restoring."
 msgstr ""
-"Bản sao lưu này sử dụng định dạng cũ không được hỗ trợ. Vui lòng tạo bản "
-"sao lưu mới với phiên bản mới hơn trước khi khôi phục."
+"Bản sao lưu này sử dụng định dạng cũ không được hỗ trợ. Vui lòng tạo bản sao"
+" lưu mới với phiên bản mới hơn trước khi khôi phục."
 
 #: src/constants/errors/backup.ts:63
 msgid "Backup manifest is missing required file entry: {0}"
@@ -2448,7 +2493,8 @@ msgid "IP address certificates require the HTTP-01 challenge"
 msgstr "Chứng chỉ địa chỉ IP yêu cầu thử thách HTTP-01"
 
 #: src/constants/errors/cert.ts:48
-msgid "Certificate profile is not available from the selected ACME server: {0}"
+msgid ""
+"Certificate profile is not available from the selected ACME server: {0}"
 msgstr "Hồ sơ chứng chỉ không có sẵn từ máy chủ ACME đã chọn: {0}"
 
 #: src/constants/errors/cert.ts:49
@@ -2456,8 +2502,8 @@ msgid ""
 "Wildcard domains and IP addresses cannot be requested in the same "
 "certificate"
 msgstr ""
-"Không thể yêu cầu tên miền ký tự đại diện và địa chỉ IP trong cùng một "
-"chứng chỉ."
+"Không thể yêu cầu tên miền ký tự đại diện và địa chỉ IP trong cùng một chứng"
+" chỉ."
 
 #: src/constants/errors/config.ts:2
 msgid "File name is not allowed: {0}"
@@ -2952,8 +2998,10 @@ msgid "Failed to restore nginx-ui.conf from backup: {0}"
 msgstr "Không thể khôi phục nginx-ui.conf từ bản sao lưu: {0}"
 
 #: src/constants/errors/self_check.ts:30
-msgid "Nginx configuration directory is not shared with external container at {0}"
-msgstr "Thư mục cấu hình Nginx không được chia sẻ với container bên ngoài tại {0}"
+msgid ""
+"Nginx configuration directory is not shared with external container at {0}"
+msgstr ""
+"Thư mục cấu hình Nginx không được chia sẻ với container bên ngoài tại {0}"
 
 #: src/constants/errors/self_check.ts:31
 msgid "Failed to verify external Nginx configuration directory {0}: {1}"
@@ -3180,7 +3228,8 @@ msgid "This field should be a valid hostname"
 msgstr "Trường này phải là một tên máy chủ hợp lệ"
 
 #: src/constants/form_errors.ts:6
-msgid "This field should only contain letters, unicode characters, numbers, and -_."
+msgid ""
+"This field should only contain letters, unicode characters, numbers, and -_."
 msgstr "Trường này chỉ được chứa chữ cái, ký tự Unicode, số và -_."
 
 #: src/constants/index.ts:26 src/views/notification/notificationColumns.tsx:28
@@ -3350,6 +3399,7 @@ msgstr "Xem"
 
 #: src/language/curd.ts:8 src/views/dns/components/DNSRecordTable.vue:324
 #: src/views/dns/components/DNSRecordTable.vue:375
+#: src/views/preference/tabs/NginxSettings.vue:230
 msgid "Edit"
 msgstr "Chỉnh sửa"
 
@@ -3430,7 +3480,9 @@ msgstr "Chỉnh sửa hàng loạt"
 
 #: src/language/curd.ts:35 src/views/certificate/CertificateEditor.vue:97
 #: src/views/certificate/components/RenewCert.vue:21
-#: src/views/preference/store/index.ts:164
+#: src/views/preference/NginxHostSetup.vue:77
+#: src/views/preference/store/index.ts:169
+#: src/views/preference/tabs/NginxSettings.vue:138
 msgid "Save successfully"
 msgstr "Lưu thành công"
 
@@ -3569,10 +3621,10 @@ msgid ""
 "matching paths."
 msgstr ""
 "Kiểm tra xem Nginx UI có thể ghi một tệp tạm thời vào thư mục Nginx đã cấu "
-"hình và container Nginx bên ngoài có thể thấy nó ở cùng đường dẫn hay "
-"không. Truy cập socket Docker và ContainerName chỉ định tuyến các lệnh điều "
-"khiển; các thư mục cấu hình và nhật ký phải được gắn vào cả hai container "
-"với các đường dẫn khớp nhau."
+"hình và container Nginx bên ngoài có thể thấy nó ở cùng đường dẫn hay không."
+" Truy cập socket Docker và ContainerName chỉ định tuyến các lệnh điều khiển;"
+" các thư mục cấu hình và nhật ký phải được gắn vào cả hai container với các "
+"đường dẫn khớp nhau."
 
 #: src/language/generate.ts:9
 msgid ""
@@ -3587,7 +3639,8 @@ msgstr ""
 "GeoLite2-City.mmdb vào cùng thư mục với app.ini một cách thủ công"
 
 #: src/language/generate.ts:10
-msgid "Check if the conf.d directory is under the nginx configuration directory"
+msgid ""
+"Check if the conf.d directory is under the nginx configuration directory"
 msgstr "Kiểm tra xem thư mục conf.d có nằm trong thư mục cấu hình nginx không"
 
 #: src/language/generate.ts:11
@@ -3599,25 +3652,25 @@ msgid ""
 "https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
 msgstr ""
 "Kiểm tra xem đường dẫn PID của Nginx có tồn tại không. Theo mặc định, đường "
-"dẫn này được lấy từ lệnh 'nginx -V'. Nếu không thể lấy được, một lỗi sẽ "
-"được báo cáo. Trong trường hợp này, bạn cần sửa đổi tệp cấu hình để chỉ "
-"định đường dẫn PID của Nginx. Tham khảo tài liệu để biết thêm chi tiết: "
+"dẫn này được lấy từ lệnh 'nginx -V'. Nếu không thể lấy được, một lỗi sẽ được"
+" báo cáo. Trong trường hợp này, bạn cần sửa đổi tệp cấu hình để chỉ định "
+"đường dẫn PID của Nginx. Tham khảo tài liệu để biết thêm chi tiết: "
 "https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
 
 #: src/language/generate.ts:12
 msgid ""
-"Check if the nginx access log path exists. By default, this path is "
-"obtained from 'nginx -V'. If it cannot be obtained or the obtained path "
-"does not point to a valid, existing file, an error will be reported. In "
-"this case, you need to modify the configuration file to specify the access "
-"log path.Refer to the docs for more details: "
+"Check if the nginx access log path exists. By default, this path is obtained"
+" from 'nginx -V'. If it cannot be obtained or the obtained path does not "
+"point to a valid, existing file, an error will be reported. In this case, "
+"you need to modify the configuration file to specify the access log "
+"path.Refer to the docs for more details: "
 "https://nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
 msgstr ""
 "Kiểm tra xem đường dẫn nhật ký truy cập nginx có tồn tại không. Theo mặc "
 "định, đường dẫn này được lấy từ 'nginx -V'. Nếu không thể lấy được hoặc "
 "đường dẫn lấy được không trỏ đến một tệp hợp lệ đang tồn tại, một lỗi sẽ "
-"được báo cáo. Trong trường hợp này, bạn cần sửa đổi tệp cấu hình để chỉ "
-"định đường dẫn nhật ký truy cập. Tham khảo tài liệu để biết thêm chi tiết: "
+"được báo cáo. Trong trường hợp này, bạn cần sửa đổi tệp cấu hình để chỉ định"
+" đường dẫn nhật ký truy cập. Tham khảo tài liệu để biết thêm chi tiết: "
 "https://nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
 
 #: src/language/generate.ts:13
@@ -3634,14 +3687,14 @@ msgid ""
 "from 'nginx -V'. If it cannot be obtained or the obtained path does not "
 "point to a valid, existing file, an error will be reported. In this case, "
 "you need to modify the configuration file to specify the error log path. "
-"Refer to the docs for more details: "
-"https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
+"Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-"
+"nginx.html#errorlogpath"
 msgstr ""
 "Kiểm tra xem đường dẫn nhật ký lỗi của nginx có tồn tại không. Theo mặc "
 "định, đường dẫn này được lấy từ 'nginx -V'. Nếu không thể lấy được hoặc "
 "đường dẫn lấy được không trỏ đến một tệp hợp lệ đang tồn tại, một lỗi sẽ "
-"được báo cáo. Trong trường hợp này, bạn cần sửa đổi tệp cấu hình để chỉ "
-"định đường dẫn nhật ký lỗi. Tham khảo tài liệu để biết thêm chi tiết: "
+"được báo cáo. Trong trường hợp này, bạn cần sửa đổi tệp cấu hình để chỉ định"
+" đường dẫn nhật ký lỗi. Tham khảo tài liệu để biết thêm chi tiết: "
 "https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
 
 #: src/language/generate.ts:16
@@ -3670,8 +3723,8 @@ msgstr ""
 
 #: src/language/generate.ts:21
 msgid ""
-"Check if the streams-available and streams-enabled directories are under "
-"the nginx configuration directory"
+"Check if the streams-available and streams-enabled directories are under the"
+" nginx configuration directory"
 msgstr ""
 "Kiểm tra xem các thư mục streams-available và streams-enabled có nằm trong "
 "thư mục cấu hình nginx không"
@@ -3703,11 +3756,11 @@ msgstr "Cơ sở dữ liệu GeoLite2 có sẵn"
 #: src/language/generate.ts:28
 msgid ""
 "Log file %{log_path} is not a regular file. If you are using nginx-ui in "
-"docker container, please refer to "
-"https://nginxui.com/zh_CN/guide/config-nginx-log.html for more information."
+"docker container, please refer to https://nginxui.com/zh_CN/guide/config-"
+"nginx-log.html for more information."
 msgstr ""
-"Tệp nhật ký %{log_path} không phải là tệp thông thường. Nếu bạn đang sử "
-"dụng nginx-ui trong container docker, vui lòng tham khảo "
+"Tệp nhật ký %{log_path} không phải là tệp thông thường. Nếu bạn đang sử dụng"
+" nginx-ui trong container docker, vui lòng tham khảo "
 "https://nginxui.com/zh_CN/guide/config-nginx-log.html để biết thêm thông "
 "tin."
 
@@ -3764,14 +3817,15 @@ msgid ""
 "unfixed version."
 msgstr ""
 "Khi container nằm sau một proxy ngược bên ngoài có chức năng kết thúc TLS "
-"(ví dụ: nginx máy chủ, Cloudflare), tệp conf.d/nginx-ui.conf đi kèm phải "
-"tin tưởng các tiêu đề X-Forwarded-Proto/Host đến; nếu không, việc kiểm tra "
+"(ví dụ: nginx máy chủ, Cloudflare), tệp conf.d/nginx-ui.conf đi kèm phải tin"
+" tưởng các tiêu đề X-Forwarded-Proto/Host đến; nếu không, việc kiểm tra "
 "nguồn gốc WebSocket sẽ thất bại. Các triển khai cũ đã duy trì /etc/nginx có "
 "thể vẫn dùng phiên bản chưa được sửa."
 
 #: src/language/generate.ts:41
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
-msgstr "[Nginx UI] Người dùng ACME: %{name}, Email: %{email}, Thư mục CA: %{caDir}"
+msgstr ""
+"[Nginx UI] Người dùng ACME: %{name}, Email: %{email}, Thư mục CA: %{caDir}"
 
 #: src/language/generate.ts:42
 msgid "[Nginx UI] Backing up current certificate for later revocation"
@@ -3786,13 +3840,15 @@ msgid "[Nginx UI] Certificate successfully revoked"
 msgstr "[Nginx UI] Hủy chứng chỉ thành công"
 
 #: src/language/generate.ts:45
-msgid "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
+msgid ""
+"[Nginx UI] Certificate was used for server, reloading server TLS certificate"
 msgstr ""
-"[Nginx UI] Chứng chỉ đã được sử dụng cho máy chủ, đang tải lại chứng chỉ "
-"TLS của máy chủ"
+"[Nginx UI] Chứng chỉ đã được sử dụng cho máy chủ, đang tải lại chứng chỉ TLS"
+" của máy chủ"
 
 #: src/language/generate.ts:46
-msgid "[Nginx UI] Creating client facilitates communication with the CA server"
+msgid ""
+"[Nginx UI] Creating client facilitates communication with the CA server"
 msgstr "[Nginx UI] Tạo máy khách để tạo điều kiện giao tiếp với máy chủ CA"
 
 #: src/language/generate.ts:47
@@ -3871,11 +3927,12 @@ msgstr "Trang chủ"
 #: src/routes/modules/auth.ts:8
 #: src/views/install/components/InstallForm.vue:120
 #: src/views/install/components/InstallHeader.vue:9
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:39
 #: src/views/system/Upgrade.vue:150
 msgid "Install"
 msgstr "Cài đặt"
 
-#: src/routes/modules/auth.ts:14 src/views/other/Login.vue:374
+#: src/routes/modules/auth.ts:14 src/views/other/Login.vue:378
 msgid "Login"
 msgstr "Đăng nhập"
 
@@ -3893,7 +3950,8 @@ msgstr "Sao lưu tự động"
 msgid "Certificates"
 msgstr "Chứng chỉ"
 
-#: src/routes/modules/certificates.ts:20 src/views/certificate/ACMEUser.vue:140
+#: src/routes/modules/certificates.ts:20
+#: src/views/certificate/ACMEUser.vue:140
 #: src/views/certificate/components/ACMEUserSelector.vue:63
 msgid "ACME User"
 msgstr "Người dùng ACME"
@@ -3937,11 +3995,11 @@ msgstr "Sửa cấu hình"
 msgid "Dashboard"
 msgstr "Bảng điều khiển"
 
-#: src/routes/modules/dashboard.ts:19 src/views/preference/Preference.vue:47
+#: src/routes/modules/dashboard.ts:19 src/views/preference/Preference.vue:48
 msgid "Server"
 msgstr "Máy chủ"
 
-#: src/routes/modules/dashboard.ts:27 src/views/preference/Preference.vue:95
+#: src/routes/modules/dashboard.ts:27 src/views/preference/Preference.vue:96
 msgid "Nginx"
 msgstr "Nginx"
 
@@ -4003,9 +4061,13 @@ msgstr "Danh sách nhật ký"
 msgid "Nodes"
 msgstr "Nút"
 
-#: src/routes/modules/preference.ts:10 src/views/preference/Preference.vue:42
+#: src/routes/modules/preference.ts:10 src/views/preference/Preference.vue:43
 msgid "Preference"
 msgstr "Cài đặt"
+
+#: src/routes/modules/preference.ts:19
+msgid "Host SSH Setup"
+msgstr ""
 
 #: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:158
 msgid "Manage Sites"
@@ -4045,7 +4107,7 @@ msgstr "Tác giả"
 msgid "Third-party Components"
 msgstr "Thành phần bên thứ ba"
 
-#: src/routes/modules/terminal.ts:10 src/views/preference/Preference.vue:77
+#: src/routes/modules/terminal.ts:10 src/views/preference/Preference.vue:78
 msgid "Terminal"
 msgstr "Thiết bị đầu cuối"
 
@@ -4054,6 +4116,7 @@ msgid "Manage Users"
 msgstr "Người dùng"
 
 #: src/routes/modules/user.ts:19
+#: src/views/preference/tabs/NginxSettings.vue:44
 msgid "User Profile"
 msgstr "Hồ sơ người dùng"
 
@@ -4166,6 +4229,7 @@ msgstr "Đang chờ"
 #: src/views/backup/AutoBackup/AutoBackup.vue:250
 #: src/views/certificate/CertificateList/certColumns.tsx:87
 #: src/views/dns/DNSGroupRecordManager.vue:1184
+#: src/views/preference/components/NginxHostSetup/checks.ts:69
 msgid "Failed"
 msgstr "Thất bại"
 
@@ -4417,8 +4481,8 @@ msgid ""
 "Create system backups including Nginx configuration and Nginx UI settings. "
 "Backup files will be automatically downloaded to your computer."
 msgstr ""
-"Tạo bản sao lưu hệ thống bao gồm cấu hình Nginx và cài đặt Nginx UI. Các "
-"tệp sao lưu sẽ tự động được tải xuống máy tính của bạn."
+"Tạo bản sao lưu hệ thống bao gồm cấu hình Nginx và cài đặt Nginx UI. Các tệp"
+" sao lưu sẽ tự động được tải xuống máy tính của bạn."
 
 #: src/views/backup/components/BackupCreator.vue:86
 msgid "Create Backup"
@@ -4487,7 +4551,8 @@ msgstr ""
 msgid "Leave blank if you don't need this."
 msgstr "Để trống nếu bạn không cần cái này."
 
-#: src/views/certificate/ACMEUser.vue:72 src/views/certificate/ACMEUser.vue:157
+#: src/views/certificate/ACMEUser.vue:72
+#: src/views/certificate/ACMEUser.vue:157
 msgid "Invalid"
 msgstr "Không hợp lệ"
 
@@ -4497,11 +4562,11 @@ msgstr "ID khóa EAB"
 
 #: src/views/certificate/ACMEUser.vue:83
 msgid ""
-"External Account Binding Key ID (optional). Required for some ACME "
-"providers like ZeroSSL."
+"External Account Binding Key ID (optional). Required for some ACME providers"
+" like ZeroSSL."
 msgstr ""
-"ID khóa liên kết tài khoản bên ngoài (tùy chọn). Bắt buộc đối với một số "
-"nhà cung cấp ACME như ZeroSSL."
+"ID khóa liên kết tài khoản bên ngoài (tùy chọn). Bắt buộc đối với một số nhà"
+" cung cấp ACME như ZeroSSL."
 
 #: src/views/certificate/ACMEUser.vue:85 src/views/certificate/ACMEUser.vue:98
 msgid "Leave blank if not required by your ACME provider"
@@ -4524,8 +4589,10 @@ msgid "Register On Startup"
 msgstr "Đăng ký khi khởi động"
 
 #: src/views/certificate/ACMEUser.vue:110
-msgid "When Enabled, Nginx UI will automatically re-register users upon startup. "
-msgstr "Khi được bật, Nginx UI sẽ tự động đăng ký lại người dùng khi khởi động."
+msgid ""
+"When Enabled, Nginx UI will automatically re-register users upon startup. "
+msgstr ""
+"Khi được bật, Nginx UI sẽ tự động đăng ký lại người dùng khi khởi động."
 
 #: src/views/certificate/ACMEUser.vue:131
 msgid "Register successfully"
@@ -4679,6 +4746,8 @@ msgstr[0] "Trạng thái chứng chỉ"
 #: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
 #: src/views/dns/DNSGroupRecordManager.vue:1546
 #: src/views/dns/DNSRecordManager.vue:258 src/views/nginx_log/NginxLog.vue:129
+#: src/views/preference/NginxHostSetup.vue:118
+#: src/views/preference/NginxHostSetup.vue:136
 #: src/views/site/site_add/SiteAdd.vue:260
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:189
 #: src/views/stream/components/StreamEditor.vue:147
@@ -4703,6 +4772,8 @@ msgstr "Sao chép vào bộ nhớ tạm thất bại"
 #: src/views/certificate/components/CertificateBasicInfo.vue:47
 #: src/views/certificate/components/CertificateBasicInfo.vue:80
 #: src/views/certificate/components/CertificateBasicInfo.vue:114
+#: src/views/preference/components/NginxHostSetup/PathField.vue:60
+#: src/views/preference/tabs/NginxSettings.vue:261
 msgid "This field is required"
 msgstr "Trường này là bắt buộc"
 
@@ -4897,6 +4968,7 @@ msgstr ""
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:223
 #: src/views/install/components/InstallView.vue:212
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:104
 #: src/views/site/site_add/SiteAdd.vue:247
 #: src/views/site/site_add/SiteAdd.vue:254
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:260
@@ -4905,6 +4977,8 @@ msgstr "Tiếp theo"
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:259
 #: src/views/certificate/components/RetryCert.vue:52
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:77
+#: src/views/preference/NginxHostSetup.vue:133
 msgid "Retry"
 msgstr "Thử lại"
 
@@ -4943,8 +5017,8 @@ msgid ""
 "This operation will only remove the certificate from the database. The "
 "certificate files on the file system will not be deleted."
 msgstr ""
-"Thao tác này sẽ chỉ xóa chứng chỉ khỏi cơ sở dữ liệu. Các tệp chứng chỉ "
-"trên hệ thống tệp sẽ không bị xóa."
+"Thao tác này sẽ chỉ xóa chứng chỉ khỏi cơ sở dữ liệu. Các tệp chứng chỉ trên"
+" hệ thống tệp sẽ không bị xóa."
 
 #: src/views/certificate/components/RemoveCert.vue:134
 msgid "Revoke this certificate"
@@ -4955,8 +5029,8 @@ msgid ""
 "Revoking a certificate will affect any services currently using it. This "
 "action cannot be undone."
 msgstr ""
-"Việc thu hồi chứng chỉ sẽ ảnh hưởng đến bất kỳ dịch vụ nào hiện đang sử "
-"dụng nó. Hành động này không thể hoàn tác."
+"Việc thu hồi chứng chỉ sẽ ảnh hưởng đến bất kỳ dịch vụ nào hiện đang sử dụng"
+" nó. Hành động này không thể hoàn tác."
 
 #: src/views/certificate/components/RemoveCert.vue:146
 msgid "To confirm revocation, please type \"Revoke\" in the field below:"
@@ -5143,7 +5217,8 @@ msgstr "Đồng bộ"
 msgid "Created successfully"
 msgstr "Tạo thành công"
 
-#: src/views/config/components/Mkdir.vue:47 src/views/config/ConfigList.vue:137
+#: src/views/config/components/Mkdir.vue:47
+#: src/views/config/ConfigList.vue:137
 msgid "Create Folder"
 msgstr "Tạo thư mục"
 
@@ -5228,6 +5303,7 @@ msgstr "Liên kết"
 
 #: src/views/dashboard/components/NodeAnalyticItem.vue:82
 #: src/views/dashboard/components/SiteNavigationToolbar.vue:35
+#: src/views/preference/components/NginxHostSetup/steps/ConnectionTest.vue:72
 msgid "Connected"
 msgstr "Đã kết nối"
 
@@ -5235,7 +5311,8 @@ msgstr "Đã kết nối"
 msgid ""
 "The remote Nginx UI version is not compatible with the local Nginx UI "
 "version. "
-msgstr "Phiên bản Nginx UI từ xa không tương thích với phiên bản Nginx UI cục bộ."
+msgstr ""
+"Phiên bản Nginx UI từ xa không tương thích với phiên bản Nginx UI cục bộ."
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:26
 msgid "Number of concurrent worker processes, auto sets to CPU core count"
@@ -5364,7 +5441,8 @@ msgstr "Vùng Bộ Nhớ Chia Sẻ"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:149
 msgid "Define shared memory zone name and size, e.g. proxy_cache:10m"
-msgstr "Xác định tên và kích thước vùng bộ nhớ dùng chung, ví dụ proxy_cache:10m"
+msgstr ""
+"Xác định tên và kích thước vùng bộ nhớ dùng chung, ví dụ proxy_cache:10m"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:157
 msgid "Use Temporary Path"
@@ -5661,8 +5739,8 @@ msgid ""
 "processes"
 msgstr ""
 "Kích thước tập hợp thường trú: Bộ nhớ thực tế thường trú trong bộ nhớ vật "
-"lý, bao gồm tất cả bộ nhớ thư viện dùng chung, sẽ được tính toán lặp lại "
-"cho nhiều tiến trình"
+"lý, bao gồm tất cả bộ nhớ thư viện dùng chung, sẽ được tính toán lặp lại cho"
+" nhiều tiến trình"
 
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:76
 msgid "Informational Responses (1xx)"
@@ -5773,8 +5851,8 @@ msgid ""
 "Note: If the server does not support gRPC Reflection, health checks may "
 "fail. Please ensure your gRPC server has Reflection enabled."
 msgstr ""
-"Lưu ý: Nếu máy chủ không hỗ trợ gRPC Reflection, việc kiểm tra tình trạng "
-"có thể thất bại. Hãy đảm bảo rằng máy chủ gRPC của bạn đã bật Reflection."
+"Lưu ý: Nếu máy chủ không hỗ trợ gRPC Reflection, việc kiểm tra tình trạng có"
+" thể thất bại. Hãy đảm bảo rằng máy chủ gRPC của bạn đã bật Reflection."
 
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:608
 msgid "Service Name"
@@ -6024,8 +6102,8 @@ msgid ""
 "Sites will appear here once you configure nginx server blocks with valid "
 "server_name (localhost excluded) directives."
 msgstr ""
-"Các trang web sẽ xuất hiện ở đây sau khi bạn cấu hình các khối máy chủ "
-"nginx với các chỉ thị server_name hợp lệ (không bao gồm localhost)."
+"Các trang web sẽ xuất hiện ở đây sau khi bạn cấu hình các khối máy chủ nginx"
+" với các chỉ thị server_name hợp lệ (không bao gồm localhost)."
 
 #: src/views/dns/components/DNSChallenge.vue:54
 msgid ""
@@ -6068,6 +6146,7 @@ msgid "Additional"
 msgstr "Bổ sung"
 
 #: src/views/dns/components/DNSRecordFilter.vue:42
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:210
 #: src/views/preference/tabs/ServerSettings.vue:19
 msgid "Host"
 msgstr "Máy chủ"
@@ -6279,9 +6358,9 @@ msgid ""
 "keep all other DNS state untouched."
 msgstr ""
 "Khi được bật, DDNS sở hữu các tên đã chọn: nó tự động ghép cặp các bản ghi "
-"cùng họ, tạo các bản ghi bị thiếu và xóa các bản ghi có họ IP không thể "
-"truy cập. Tắt để chỉ quản lý các bản ghi bạn đã chọn rõ ràng và giữ nguyên "
-"toàn bộ trạng thái DNS khác."
+"cùng họ, tạo các bản ghi bị thiếu và xóa các bản ghi có họ IP không thể truy"
+" cập. Tắt để chỉ quản lý các bản ghi bạn đã chọn rõ ràng và giữ nguyên toàn "
+"bộ trạng thái DNS khác."
 
 #: src/views/dns/DDNSManager.vue:400
 msgid "Records"
@@ -6307,10 +6386,12 @@ msgstr "Xác thực DNS"
 msgid ""
 "Please fill in the API authentication credentials provided by your DNS "
 "provider."
-msgstr "Vui lòng điền thông tin xác thực API do nhà cung cấp DNS của bạn cung cấp"
+msgstr ""
+"Vui lòng điền thông tin xác thực API do nhà cung cấp DNS của bạn cung cấp"
 
 #: src/views/dns/DNSCredential.vue:96
-msgid "Please note that the unit of time configurations below are all in seconds."
+msgid ""
+"Please note that the unit of time configurations below are all in seconds."
 msgstr "Lưu ý đơn vị cấu hình thời gian bên dưới được tính bằng giây."
 
 #: src/views/dns/DNSDomainList.vue:109
@@ -6326,8 +6407,10 @@ msgstr ""
 "thử thách chứng chỉ ACME DNS-01."
 
 #: src/views/dns/DNSDomainList.vue:116
-msgid "DNS Domains only use providers with DNS record management implementations."
-msgstr "DNS Domains chỉ sử dụng các nhà cung cấp có triển khai quản lý bản ghi DNS."
+msgid ""
+"DNS Domains only use providers with DNS record management implementations."
+msgstr ""
+"DNS Domains chỉ sử dụng các nhà cung cấp có triển khai quản lý bản ghi DNS."
 
 #: src/views/dns/DNSDomainList.vue:119
 msgid ""
@@ -6569,7 +6652,8 @@ msgstr "Nhiều bản ghi có cùng tên và loại"
 msgid ""
 "Huawei Cloud does not support changing the resolution line of an existing "
 "record"
-msgstr "Huawei Cloud không hỗ trợ thay đổi đường phân giải của bản ghi hiện có."
+msgstr ""
+"Huawei Cloud không hỗ trợ thay đổi đường phân giải của bản ghi hiện có."
 
 #: src/views/dns/DNSGroupRecordManager.vue:967
 #: src/views/dns/DNSGroupRecordManager.vue:1169
@@ -6739,7 +6823,8 @@ msgstr "Giữ nguyên hiện có"
 
 #: src/views/dns/DNSGroupRecordManager.vue:1505
 msgid "Huawei Cloud resolution lines cannot be changed after record creation."
-msgstr "Các dòng phân giải của Huawei Cloud không thể thay đổi sau khi tạo bản ghi."
+msgstr ""
+"Các dòng phân giải của Huawei Cloud không thể thay đổi sau khi tạo bản ghi."
 
 #: src/views/dns/DNSGroupRecordManager.vue:1534
 msgid "Preview changes"
@@ -6754,7 +6839,8 @@ msgid "Apply changes"
 msgstr "Áp dụng thay đổi"
 
 #: src/views/dns/DNSGroupRecordManager.vue:1554
-msgid "Changes are applied per domain and cannot be rolled back as one transaction."
+msgid ""
+"Changes are applied per domain and cannot be rolled back as one transaction."
 msgstr ""
 "Các thay đổi được áp dụng theo từng miền và không thể hoàn tác như một giao "
 "dịch duy nhất."
@@ -6799,7 +6885,8 @@ msgstr "Lỗi không xác định"
 msgid "Please input your E-mail!"
 msgstr "Vui lòng nhập E-mail của bạn!"
 
-#: src/views/install/components/InstallForm.vue:35 src/views/other/Login.vue:74
+#: src/views/install/components/InstallForm.vue:35
+#: src/views/other/Login.vue:74
 msgid "Please input your username!"
 msgstr "Vui lòng nhập username!"
 
@@ -6807,7 +6894,8 @@ msgstr "Vui lòng nhập username!"
 msgid "Username length cannot exceed 255 characters"
 msgstr "Độ dài tên người dùng không được vượt quá 255 ký tự"
 
-#: src/views/install/components/InstallForm.vue:45 src/views/other/Login.vue:80
+#: src/views/install/components/InstallForm.vue:45
+#: src/views/other/Login.vue:80
 msgid "Please input your password!"
 msgstr "Vui lòng nhập mật khẩu!"
 
@@ -6998,8 +7086,8 @@ msgid ""
 "minimum requirements before proceeding."
 msgstr ""
 "Bật tính năng lập chỉ mục nhật ký nâng cao sẽ tiêu tốn tài nguyên tính toán "
-"đáng kể bao gồm CPU và bộ nhớ. Vui lòng đảm bảo hệ thống của bạn đáp ứng "
-"các yêu cầu tối thiểu trước khi tiếp tục."
+"đáng kể bao gồm CPU và bộ nhớ. Vui lòng đảm bảo hệ thống của bạn đáp ứng các"
+" yêu cầu tối thiểu trước khi tiếp tục."
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:120
 msgid "System Requirements"
@@ -7015,8 +7103,8 @@ msgstr "Đề xuất:"
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:166
 msgid ""
-"* Index files are stored in the \"log-index\" directory within your Nginx "
-"UI config path by default."
+"* Index files are stored in the \"log-index\" directory within your Nginx UI"
+" config path by default."
 msgstr ""
 "* Các tệp chỉ mục được lưu trữ trong thư mục \"log-index\" trong đường dẫn "
 "cấu hình NGINX UI theo mặc định."
@@ -7126,9 +7214,9 @@ msgid ""
 "requirements and understand the performance implications. This will start "
 "indexing existing log files immediately."
 msgstr ""
-"Bằng cách kích hoạt lập chỉ mục nâng cao, bạn xác nhận rằng hệ thống của "
-"bạn đáp ứng các yêu cầu và hiểu rõ các tác động đến hiệu suất. Điều này sẽ "
-"bắt đầu lập chỉ mục các tệp nhật ký hiện có ngay lập tức."
+"Bằng cách kích hoạt lập chỉ mục nâng cao, bạn xác nhận rằng hệ thống của bạn"
+" đáp ứng các yêu cầu và hiểu rõ các tác động đến hiệu suất. Điều này sẽ bắt "
+"đầu lập chỉ mục các tệp nhật ký hiện có ngay lập tức."
 
 #: src/views/nginx_log/components/LoadingState.vue:33
 #: src/views/nginx_log/NginxLogList.vue:491
@@ -7349,8 +7437,8 @@ msgid ""
 "deleted and rebuilt from scratch. This may take some time. Continue?"
 msgstr ""
 "Điều này sẽ xây dựng lại toàn bộ chỉ mục nhật ký. Tất cả dữ liệu chỉ mục "
-"hiện có sẽ bị xóa và xây dựng lại từ đầu. Việc này có thể mất một thời "
-"gian. Tiếp tục?"
+"hiện có sẽ bị xóa và xây dựng lại từ đầu. Việc này có thể mất một thời gian."
+" Tiếp tục?"
 
 #: src/views/nginx_log/indexing/IndexManagement.vue:38
 msgid "Index and statistics rebuild started successfully"
@@ -7612,14 +7700,15 @@ msgstr "Đã phát hiện nhật ký lỗi"
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:676
 msgid ""
-"Error logs do not support structured analysis as they contain free-form "
-"text messages."
+"Error logs do not support structured analysis as they contain free-form text"
+" messages."
 msgstr ""
 "Nhật ký lỗi không hỗ trợ phân tích có cấu trúc vì chúng chứa các thông báo "
 "văn bản tự do."
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:678
-msgid "For error logs, please use the Raw Log Viewer for better viewing experience."
+msgid ""
+"For error logs, please use the Raw Log Viewer for better viewing experience."
 msgstr ""
 "Đối với nhật ký lỗi, vui lòng sử dụng Trình xem Nhật ký Thô để có trải "
 "nghiệm xem tốt hơn."
@@ -7682,7 +7771,8 @@ msgstr "Không có mục nào trong trang hiện tại"
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:837
 msgid "Try adjusting your search criteria or navigate to different pages."
-msgstr "Hãy thử điều chỉnh tiêu chí tìm kiếm hoặc điều hướng đến các trang khác."
+msgstr ""
+"Hãy thử điều chỉnh tiêu chí tìm kiếm hoặc điều hướng đến các trang khác."
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:844
 msgid "No structured log data available"
@@ -7747,7 +7837,8 @@ msgid "Get release information error"
 msgstr "Lỗi lấy thông tin phát hành"
 
 #: src/views/node/BatchUpgrader.vue:187
-msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
+msgid ""
+"This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr ""
 "Thao tác này sẽ nâng cấp hoặc cài đặt lại Nginx UI trên %{nodeNames} lên "
 "phiên bản %{version}."
@@ -7826,6 +7917,7 @@ msgid "Version"
 msgstr "Phiên bản"
 
 #: src/views/node/nodeColumns.tsx:72
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:222
 msgid "Authentication"
 msgstr "Xác thực"
 
@@ -7853,32 +7945,32 @@ msgstr "Không tìm thấy tệp tin"
 msgid "Back Home"
 msgstr "Trở về trang chủ"
 
-#: src/views/other/Login.vue:109
+#: src/views/other/Login.vue:110
 msgid "Login successful"
 msgstr "Đăng nhập thành công"
 
-#: src/views/other/Login.vue:306
+#: src/views/other/Login.vue:310
 msgid "Authenticating..."
 msgstr "Đang xác thực..."
 
-#: src/views/other/Login.vue:315 src/views/user/userColumns.tsx:7
+#: src/views/other/Login.vue:319 src/views/user/userColumns.tsx:7
 #: src/views/user/UserProfile.vue:122 src/views/user/UserProfile.vue:126
 msgid "Username"
 msgstr "Username"
 
-#: src/views/other/Login.vue:325 src/views/user/userColumns.tsx:16
+#: src/views/other/Login.vue:329 src/views/user/userColumns.tsx:16
 msgid "Password"
 msgstr "Mật khẩu"
 
-#: src/views/other/Login.vue:339
+#: src/views/other/Login.vue:343
 msgid "SSO Login"
 msgstr "Đăng nhập SSO"
 
-#: src/views/other/Login.vue:348
+#: src/views/other/Login.vue:352
 msgid "OIDC Login"
 msgstr "Đăng nhập OIDC"
 
-#: src/views/other/Login.vue:392
+#: src/views/other/Login.vue:396
 msgid "Sign in with a passkey"
 msgstr "Đăng nhập bằng khóa truy cập"
 
@@ -7906,7 +7998,8 @@ msgstr ""
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:79
 msgid "If your browser supports WebAuthn Passkey, a dialog box will appear."
-msgstr "Nếu trình duyệt của bạn hỗ trợ WebAuthn Passkey, một hộp thoại sẽ xuất hiện."
+msgstr ""
+"Nếu trình duyệt của bạn hỗ trợ WebAuthn Passkey, một hộp thoại sẽ xuất hiện."
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:80
 msgid ""
@@ -7918,7 +8011,7 @@ msgstr ""
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:87
 #: src/views/preference/components/AuthSettings/TOTP.vue:131
-#: src/views/user/UserProfile.vue:181
+#: src/views/user/UserProfile.vue:184
 msgid "Current Password"
 msgstr "Mật khẩu hiện tại"
 
@@ -7926,10 +8019,12 @@ msgstr "Mật khẩu hiện tại"
 msgid ""
 "You have not configured the settings of Webauthn, so you cannot add a "
 "passkey."
-msgstr "Bạn chưa cấu hình cài đặt WebAuthn, vì vậy không thể thêm khóa truy cập."
+msgstr ""
+"Bạn chưa cấu hình cài đặt WebAuthn, vì vậy không thể thêm khóa truy cập."
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:104
-msgid "To ensure security, Webauthn configuration cannot be added through the UI. "
+msgid ""
+"To ensure security, Webauthn configuration cannot be added through the UI. "
 msgstr ""
 "Để đảm bảo bảo mật, cấu hình WebAuthn không thể được thêm qua giao diện "
 "người dùng."
@@ -7960,7 +8055,8 @@ msgid "Passkey"
 msgstr "Khóa truy cập"
 
 #: src/views/preference/components/AuthSettings/Passkey.vue:63
-msgid "Passkeys are webauthn credentials that validate your identity using touch, "
+msgid ""
+"Passkeys are webauthn credentials that validate your identity using touch, "
 msgstr ""
 "Khóa truy cập là thông tin xác thực WebAuthn dùng để xác minh danh tính của "
 "bạn bằng cảm ứng,"
@@ -8010,10 +8106,11 @@ msgstr ""
 "nên lưu chúng bằng trình quản lý mật khẩu."
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:82
-msgid "You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
+msgid ""
+"You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
 msgstr ""
-"Bạn chưa bật xác thực hai yếu tố. Vui lòng bật xác thực hai yếu tố để tạo "
-"mã khôi phục."
+"Bạn chưa bật xác thực hai yếu tố. Vui lòng bật xác thực hai yếu tố để tạo mã"
+" khôi phục."
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:92
 msgid ""
@@ -8021,8 +8118,8 @@ msgid ""
 "codes now to complete migration and keep account recovery secure."
 msgstr ""
 "Tài khoản của bạn đang sử dụng mã khôi phục cũ không còn được hỗ trợ. Hãy "
-"tạo mã khôi phục mới ngay bây giờ để hoàn tất quá trình chuyển đổi và giữ "
-"an toàn cho việc khôi phục tài khoản."
+"tạo mã khôi phục mới ngay bây giờ để hoàn tất quá trình chuyển đổi và giữ an"
+" toàn cho việc khôi phục tài khoản."
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:95
 msgid ""
@@ -8108,7 +8205,8 @@ msgstr ""
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:80
 msgid "Scan the QR code with your mobile phone to add the account to the app."
-msgstr "Quét mã QR bằng điện thoại di động của bạn để thêm tài khoản vào ứng dụng."
+msgstr ""
+"Quét mã QR bằng điện thoại di động của bạn để thêm tài khoản vào ứng dụng."
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:81
 msgid "Current account is not enabled TOTP."
@@ -8215,40 +8313,1138 @@ msgstr "Telegram"
 msgid "WeCom"
 msgstr "WeCom"
 
-#: src/views/preference/Preference.vue:53
+#: src/views/preference/components/NginxHostSetup/CheckPanel.vue:74
+#: src/views/system/Upgrade.vue:204
+msgid "Check again"
+msgstr "Kiểm tra lại"
+
+#: src/views/preference/components/NginxHostSetup/CheckPanel.vue:74
+msgid "Run checks"
+msgstr "Chạy kiểm tra"
+
+#: src/views/preference/components/NginxHostSetup/CheckPanel.vue:87
+msgid "Could not run the checks"
+msgstr "Không thể chạy các kiểm tra"
+
+#: src/views/preference/components/NginxHostSetup/CheckResults.vue:20
+msgid "Some checks failed. Fix them before continuing."
+msgstr "Một số kiểm tra đã thất bại. Hãy khắc phục chúng trước khi tiếp tục."
+
+#: src/views/preference/components/NginxHostSetup/CheckResults.vue:34
+msgid "Blocking checks passed. Review the warnings below."
+msgstr "Các kiểm tra bắt buộc đã đạt. Hãy xem lại các cảnh báo bên dưới."
+
+#: src/views/preference/components/NginxHostSetup/CheckResults.vue:40
+msgid "All checks passed."
+msgstr "Tất cả kiểm tra đã đạt."
+
+#: src/views/preference/components/NginxHostSetup/CheckResults.vue:63
+msgid "Suggested fix"
+msgstr "Cách khắc phục đề xuất"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:16
+msgid "nginx config directory is writable"
+msgstr "thư mục cấu hình nginx có thể ghi"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:17
+msgid "Host platform matches the service manager"
+msgstr "Nền tảng host khớp với trình quản lý dịch vụ"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:18
+msgid "known_hosts is persisted"
+msgstr "known_hosts được lưu bền"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:19
+msgid "launchd service is loaded"
+msgstr "dịch vụ launchd đã được nạp"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:20
+msgid "nginx log directory is readable"
+msgstr "thư mục nhật ký nginx có thể đọc"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:21
+msgid "nginx -t passes"
+msgstr "nginx -t đạt"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:22
+msgid "nginx PID file is present"
+msgstr "tệp PID của nginx tồn tại"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:23
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:266
+msgid "Host platform"
+msgstr "Nền tảng host"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:24
+msgid "Target is the container host"
+msgstr "Mục tiêu là host của container"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:25
+msgid "SSH connection"
+msgstr "Kết nối SSH"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:26
+msgid "Passwordless sudo is available"
+msgstr "sudo không cần mật khẩu khả dụng"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:27
+msgid "sudoers rules cover the nginx commands"
+msgstr "quy tắc sudoers bao gồm các lệnh nginx"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:28
+msgid "systemd unit is active"
+msgstr "unit systemd đang hoạt động"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:29
+msgid "systemd unit defines ExecReload"
+msgstr "unit systemd có định nghĩa ExecReload"
+
+#: src/views/preference/components/NginxHostSetup/CodeBlock.vue:30
+msgid "Clipboard access is unavailable in this browser context"
+msgstr "Không thể truy cập bảng nhớ tạm trong ngữ cảnh trình duyệt này"
+
+#: src/views/preference/components/NginxHostSetup/PathField.vue:35
+msgid "Auto-detected"
+msgstr "Tự động phát hiện"
+
+#: src/views/preference/components/NginxHostSetup/PathField.vue:39
+msgid "Manual override"
+msgstr "Ghi đè thủ công"
+
+#: src/views/preference/components/NginxHostSetup/PathField.vue:49
+msgid "Detected:"
+msgstr "Đã phát hiện:"
+
+#: src/views/preference/components/NginxHostSetup/PathField.vue:56
+msgid "Restore detected value"
+msgstr "Khôi phục giá trị đã phát hiện"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:77
+msgid ""
+"Point Nginx UI at a private key that already exists inside the container."
+msgstr "Trỏ Nginx UI tới một khóa riêng đã có sẵn bên trong container."
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:79
+msgid ""
+"Paste or upload a private key. Nginx UI stores it at the managed path with "
+"mode 0600."
+msgstr ""
+"Hãy dán hoặc tải lên một khóa riêng. Nginx UI lưu khóa tại đường dẫn do nó "
+"quản lý với quyền 0600."
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:81
+msgid ""
+"Nginx UI generates an ed25519 keypair and stores it at the managed path."
+msgstr "Nginx UI tạo một cặp khóa ed25519 và lưu tại đường dẫn do nó quản lý."
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:99
+msgid "Private key path is required"
+msgstr "Đường dẫn khóa riêng là bắt buộc"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:159
+msgid "Private key content is required"
+msgstr "Nội dung khóa riêng là bắt buộc"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:163
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:197
+msgid "Private key exceeds the 64 KiB limit"
+msgstr "Khóa riêng vượt quá giới hạn 64 KiB"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:182
+msgid "Private key saved securely"
+msgstr "Đã lưu khóa riêng một cách an toàn"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:224
+msgid "Use my own SSH key"
+msgstr "Dùng khóa SSH của riêng tôi"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:225
+msgid "Private key source"
+msgstr "Nguồn khóa riêng"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:231
+msgid "Existing path"
+msgstr "Đường dẫn hiện có"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:232
+msgid "Paste or upload"
+msgstr "Dán hoặc tải lên"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:247
+msgid ""
+"The private key must already be available inside the Nginx UI container."
+msgstr "Khóa riêng phải có sẵn bên trong container Nginx UI."
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:248
+msgid ""
+"Encrypted private keys are not supported. You may provide the host-side "
+"source path below to include a read-only bind mount in the generated "
+"container instructions."
+msgstr ""
+"Không hỗ trợ khóa riêng đã mã hóa. Bạn có thể cung cấp đường dẫn nguồn phía "
+"host bên dưới để thêm một bind mount chỉ đọc vào hướng dẫn container được "
+"tạo ra."
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:256
+msgid "Saving will replace the Nginx UI managed SSH private key."
+msgstr "Lưu sẽ thay thế khóa riêng SSH do Nginx UI quản lý."
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:257
+msgid ""
+"Only unencrypted SSH private keys are accepted. The submitted content is "
+"cleared from the browser after it is stored with file mode 0600."
+msgstr ""
+"Chỉ chấp nhận khóa riêng SSH không mã hóa. Nội dung đã gửi sẽ được xóa khỏi "
+"trình duyệt sau khi được lưu với quyền tệp 0600."
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:260
+msgid "Private key path inside container"
+msgstr "Đường dẫn khóa riêng bên trong container"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:268
+msgid "Managed by Nginx UI. Switch to \"Existing path\" to use another location."
+msgstr ""
+"Do Nginx UI quản lý. Chuyển sang \\\"Đường dẫn hiện có\\\" để dùng vị trí "
+"khác."
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:273
+msgid "Private key content"
+msgstr "Nội dung khóa riêng"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:283
+msgid "Choose private key file"
+msgstr "Chọn tệp khóa riêng"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:297
+msgid "Private key path on Docker host (optional)"
+msgstr "Đường dẫn khóa riêng trên host Docker (tùy chọn)"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:302
+msgid "Adds a read-only bind mount to the generated container instructions."
+msgstr "Thêm một bind mount chỉ đọc vào hướng dẫn container được tạo ra."
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:314
+msgid "Replace the stored private key with a new one?"
+msgstr "Thay thế khóa riêng đã lưu bằng khóa mới?"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:315
+msgid ""
+"The current key stops working until the new public key is installed on the "
+"host."
+msgstr ""
+"Khóa hiện tại sẽ ngừng hoạt động cho đến khi khóa công khai mới được cài "
+"trên host."
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:316
+msgid "Regenerate"
+msgstr "Tạo lại"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:322
+msgid "Regenerate keypair"
+msgstr "Tạo lại cặp khóa"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:327
+msgid "Generate keypair"
+msgstr "Tạo cặp khóa"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:338
+msgid "Validate existing key"
+msgstr "Xác thực khóa hiện có"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:349
+msgid "Validate and save private key"
+msgstr "Xác thực và lưu khóa riêng"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:354
+msgid "Key is readable"
+msgstr "Khóa có thể đọc được"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:364
+msgid "Private key validation failed"
+msgstr "Xác thực khóa riêng thất bại"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:368
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:282
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:107
+msgid "Public key"
+msgstr "Khóa công khai"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:378
+msgid "Generate a keypair to continue, or open \"Use my own SSH key\" above."
+msgstr ""
+"Hãy tạo một cặp khóa để tiếp tục, hoặc mở \\\"Dùng khóa SSH của riêng "
+"tôi\\\" ở trên."
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:382
+msgid ""
+"The Install step shows where to put this on the host. Nothing has been "
+"installed there yet."
+msgstr ""
+"Bước Cài đặt cho biết cần đặt nội dung này ở đâu trên host. Hiện chưa có gì "
+"được cài ở đó."
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:393
+msgid "Private key generated (shown once)"
+msgstr "Đã tạo khóa riêng (chỉ hiển thị một lần)"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:396
+msgid "Save this private key somewhere safe. It will NOT be shown again."
+msgstr "Hãy lưu khóa riêng này ở nơi an toàn. Nó sẽ KHÔNG được hiển thị lại."
+
+#: src/views/preference/components/NginxHostSetup/steps/ConnectionTest.vue:63
+msgid "Trust every presented host key before testing the connection."
+msgstr "Hãy tin cậy mọi khóa host được cung cấp trước khi kiểm tra kết nối."
+
+#: src/views/preference/components/NginxHostSetup/steps/ConnectionTest.vue:69
+msgid "Test SSH connection"
+msgstr "Kiểm tra kết nối SSH"
+
+#: src/views/preference/components/NginxHostSetup/steps/ConnectionTest.vue:80
+msgid "SSH connection failed"
+msgstr "Kết nối SSH thất bại"
+
+#: src/views/preference/components/NginxHostSetup/steps/ConnectionTest.vue:87
+msgid "SSH connection succeeded"
+msgstr "Kết nối SSH thành công"
+
+#: src/views/preference/components/NginxHostSetup/steps/ConnectionTest.vue:94
+msgid "SSH connection was not established"
+msgstr "Chưa thiết lập được kết nối SSH"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:82
+msgid "Trusted"
+msgstr "Đã tin cậy"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:84
+msgid "New algorithm"
+msgstr "Thuật toán mới"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:86
+msgid "Changed"
+msgstr "Đã thay đổi"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:88
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:328
+msgid "Stale"
+msgstr "Cũ"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:90
+msgid "Unknown host"
+msgstr "Host chưa xác định"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:204
+msgid "Verify the SSH host key before trusting it"
+msgstr "Xác minh khóa host SSH trước khi tin cậy nó"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:205
+msgid ""
+"Nginx UI can read the key presented by the SSH server, but it cannot prove "
+"the key is genuine by itself. Verify the fingerprint through the host "
+"console or another trusted channel before trusting or replacing it."
+msgstr ""
+"Nginx UI có thể đọc khóa do máy chủ SSH cung cấp, nhưng tự nó không thể "
+"chứng minh khóa là thật. Hãy xác minh dấu vân tay qua console của host hoặc "
+"một kênh tin cậy khác trước khi tin cậy hoặc thay thế nó."
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:208
+msgid "Current target"
+msgstr "Mục tiêu hiện tại"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:213
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:121
+msgid "SSH user"
+msgstr "Người dùng SSH"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:216
+msgid "known_hosts"
+msgstr "known_hosts"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:230
+msgid "1. Verify and trust the host key"
+msgstr "1. Xác minh và tin cậy khóa host"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:236
+msgid "Scan host keys"
+msgstr "Quét khóa host"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:244
+msgid "Failed to scan host keys"
+msgstr "Không thể quét khóa host"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:251
+msgid "Failed to update trusted host keys"
+msgstr "Không thể cập nhật khóa host đã tin cậy"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:256
+msgid "Paste ssh-keyscan output"
+msgstr "Dán kết quả ssh-keyscan"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:257
+msgid "Run on a trusted terminal"
+msgstr "Chạy trên một thiết bị đầu cuối đáng tin cậy"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:260
+msgid "Parse pasted output"
+msgstr "Phân tích kết quả đã dán"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:276
+msgid "Fingerprint"
+msgstr "Dấu vân tay"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:279
+msgid "Existing fingerprint"
+msgstr "Dấu vân tay hiện có"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:295
+msgid "I verified this fingerprint through a trusted channel."
+msgstr "Tôi đã xác minh dấu vân tay này qua một kênh tin cậy."
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:298
+msgid "Trust this algorithm"
+msgstr "Tin cậy thuật toán này"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:298
+msgid "Trust this key"
+msgstr "Tin cậy khóa này"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:303
+msgid ""
+"Host key changed. Replace only after confirming an intentional host SSH key "
+"rotation."
+msgstr ""
+"Khóa host đã thay đổi. Chỉ thay thế sau khi xác nhận đây là việc xoay khóa "
+"SSH host có chủ ý."
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:305
+msgid "I verified the new fingerprint through a trusted channel."
+msgstr "Tôi đã xác minh dấu vân tay mới qua một kênh tin cậy."
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:308
+msgid "Replace trusted key"
+msgstr "Thay thế khóa đã tin cậy"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:318
+msgid "No SSH host keys were returned"
+msgstr "Không nhận được khóa host SSH nào"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:322
+msgid "Advanced cleanup"
+msgstr "Dọn dẹp nâng cao"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:335
+msgid "I understand this removes only the selected stale known_hosts entry."
+msgstr "Tôi hiểu rằng thao tác này chỉ xóa mục known_hosts cũ đã chọn."
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:339
+msgid "Delete stale key"
+msgstr "Xóa khóa cũ"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:353
+msgid "Host identity is trusted"
+msgstr "Danh tính host đã được tin cậy"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:359
+msgid "Resolve changed host keys before continuing."
+msgstr "Hãy xử lý các khóa host đã thay đổi trước khi tiếp tục."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:168
+msgid "Paths refreshed from %{path}"
+msgstr "Đã làm mới đường dẫn từ %{path}"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:193
+msgid "Target diagnosis"
+msgstr "Chẩn đoán mục tiêu"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:197
+msgid "Detect again"
+msgstr "Phát hiện lại"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:197
+msgid "Detect target"
+msgstr "Phát hiện mục tiêu"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:205
+msgid "Every field matches the detected values"
+msgstr "Mọi trường đều khớp với giá trị đã phát hiện"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:209
+msgid "Some fields differ from the detected values"
+msgstr "Một số trường khác với giá trị đã phát hiện"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:213
+msgid "Apply all detected values"
+msgstr "Áp dụng mọi giá trị đã phát hiện"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:221
+msgid "Target diagnosis failed"
+msgstr "Chẩn đoán mục tiêu thất bại"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:229
+msgid "The target platform could not be classified automatically"
+msgstr "Không thể tự động phân loại nền tảng của máy đích"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:230
+msgid ""
+"Choose the platform and confirm every path below manually, then continue."
+msgstr ""
+"Hãy chọn nền tảng và xác nhận thủ công mọi đường dẫn bên dưới, rồi tiếp tục."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:233
+msgid "Diagnosis completed with warnings"
+msgstr "Chẩn đoán hoàn tất kèm cảnh báo"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:244
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:156
+msgid "Operating system"
+msgstr "Hệ điều hành"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:247
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:159
+msgid "Service manager"
+msgstr "Trình quản lý dịch vụ"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:250
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:276
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:162
+msgid "Homebrew prefix"
+msgstr "Tiền tố Homebrew"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:253
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:168
+msgid "Detected nginx version"
+msgstr "Phiên bản nginx đã phát hiện"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:256
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:302
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:171
+msgid "nginx executable path"
+msgstr "đường dẫn tệp thực thi nginx"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:264
+msgid "Adjust detected values"
+msgstr "Điều chỉnh giá trị đã phát hiện"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:265
+msgid "Platform"
+msgstr "Nền tảng"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:270
+msgid "Linux (systemd)"
+msgstr "Linux (systemd)"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:271
+msgid "macOS (Homebrew)"
+msgstr "macOS (Homebrew)"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:280
+msgid "Apple Silicon"
+msgstr "Apple Silicon"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:281
+msgid "Intel Mac"
+msgstr "Intel Mac"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:286
+msgid ""
+"Detection fills this in. Switching it rewrites the four paths below that "
+"still hold a conventional default."
+msgstr ""
+"Việc phát hiện sẽ điền vào đây. Thay đổi giá trị này sẽ ghi lại bốn đường "
+"dẫn bên dưới nếu chúng vẫn giữ giá trị mặc định thông thường."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:292
+msgid "systemd unit"
+msgstr "unit systemd"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:293
+msgid "systemctl path"
+msgstr "đường dẫn systemctl"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:296
+msgid "launchd service label"
+msgstr "nhãn dịch vụ launchd"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:297
+msgid "launchctl path"
+msgstr "đường dẫn launchctl"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:301
+msgid "nginx paths"
+msgstr "đường dẫn nginx"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:309
+msgid "Re-detect paths from this executable"
+msgstr "Phát hiện lại đường dẫn từ tệp thực thi này"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:313
+msgid ""
+"Runs nginx -V on the target and refreshes the config, log and PID paths "
+"below."
+msgstr ""
+"Chạy nginx -V trên máy đích và làm mới các đường dẫn cấu hình, nhật ký và "
+"PID bên dưới."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:323
+msgid "Could not read the nginx build configuration"
+msgstr "Không thể đọc cấu hình biên dịch của nginx"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:334
+msgid "nginx config directory"
+msgstr "thư mục cấu hình nginx"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:335
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:177
+msgid "nginx log directory"
+msgstr "thư mục nhật ký nginx"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:336
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:180
+msgid "nginx PID file"
+msgstr "tệp PID của nginx"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:345
+msgid "Platform and paths are complete."
+msgstr "Nền tảng và các đường dẫn đã đầy đủ."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:351
+msgid "Path checks read the Nginx UI container, not the host"
+msgstr ""
+"Các kiểm tra đường dẫn đọc trong container Nginx UI, không phải trên host"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:352
+msgid ""
+"The service check runs over SSH, but the config, log and PID checks look "
+"inside this container. On a first run they stay red until the bind mounts "
+"from the next step are applied and the container is recreated. That is "
+"expected and does not block you from continuing."
+msgstr ""
+"Kiểm tra dịch vụ chạy qua SSH, nhưng các kiểm tra cấu hình, nhật ký và PID "
+"lại nhìn vào bên trong container này. Ở lần chạy đầu tiên, chúng vẫn đỏ cho "
+"đến khi các bind mount ở bước tiếp theo được áp dụng và container được tạo "
+"lại. Đó là điều bình thường và không ngăn bạn tiếp tục."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:357
+msgid "Platform checks"
+msgstr "Các kiểm tra nền tảng"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:358
+msgid ""
+"Verifies the service is loaded under the entered label and that every path "
+"above is reachable from the container."
+msgstr ""
+"Xác minh dịch vụ đã được nạp dưới nhãn đã nhập và mọi đường dẫn ở trên đều "
+"truy cập được từ container."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:68
+msgid "Failed to load setup instructions"
+msgstr "Không thể tải hướng dẫn thiết lập"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:83
+msgid "1. On the nginx host"
+msgstr "1. Trên host nginx"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:89
+msgid "Run these on the machine that runs nginx, as a user who can use sudo."
+msgstr ""
+"Hãy chạy các lệnh này trên máy đang chạy nginx, với một người dùng có thể "
+"dùng sudo."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:90
+msgid ""
+"Run these on the machine that runs nginx, as the SSH user configured above."
+msgstr ""
+"Hãy chạy các lệnh này trên máy đang chạy nginx, với người dùng SSH đã cấu "
+"hình ở trên."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:98
+msgid "Install the public key"
+msgstr "Cài đặt khóa công khai"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:99
+msgid ""
+"Creates %{file} with the permissions sshd requires and appends the key. sshd"
+" silently ignores an authorized_keys file that other users can write, which "
+"shows up later as a permission denied error."
+msgstr ""
+"Tạo %{file} với quyền mà sshd yêu cầu và nối thêm khóa vào đó. sshd âm thầm "
+"bỏ qua tệp authorized_keys mà người dùng khác có thể ghi, và điều này sau đó"
+" hiện ra dưới dạng lỗi permission denied."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:108
+msgid ""
+"The same key on its own, for appending by hand. To restrict where it may be "
+"used from, prefix it with from='…'."
+msgstr ""
+"Chính khóa đó ở dạng đơn lẻ, để nối thêm thủ công. Để giới hạn nơi có thể "
+"dùng khóa, hãy thêm tiền tố from='…'."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:116
+msgid "Open the sudoers file"
+msgstr "Mở tệp sudoers"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:117
+msgid ""
+"visudo checks the syntax before saving, so a typo cannot lock you out of "
+"sudo."
+msgstr ""
+"visudo kiểm tra cú pháp trước khi lưu, nên một lỗi gõ nhầm không thể khiến "
+"bạn mất quyền sudo."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:123
+msgid "sudoers rules"
+msgstr "quy tắc sudoers"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:124
+msgid ""
+"Paste this into the editor visudo opened, then save and exit. It lets the "
+"SSH user reload nginx without a password."
+msgstr ""
+"Hãy dán nội dung này vào trình soạn thảo mà visudo đã mở, rồi lưu và thoát. "
+"Nó cho phép người dùng SSH tải lại nginx mà không cần mật khẩu."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:133
+msgid "File access check"
+msgstr "Kiểm tra truy cập tệp"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:133
+msgid "File permissions"
+msgstr "Quyền tệp"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:135
+msgid ""
+"Run as the SSH user. Both commands only test access and change nothing. A "
+"failure means the SSH user cannot reach the Homebrew paths."
+msgstr ""
+"Chạy với quyền người dùng SSH. Cả hai lệnh chỉ kiểm tra quyền truy cập và "
+"không thay đổi gì. Thất bại nghĩa là người dùng SSH không thể truy cập các "
+"đường dẫn Homebrew."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:136
+msgid ""
+"Run as root. Grants the SSH user write access to the nginx config directory "
+"and read access to the logs, including files created later, plus read access"
+" to the PID file."
+msgstr ""
+"Chạy với quyền root. Cấp cho người dùng SSH quyền ghi vào thư mục cấu hình "
+"nginx và quyền đọc nhật ký, bao gồm cả các tệp được tạo sau này, cùng quyền "
+"đọc tệp PID."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:143
+msgid "Nothing else to install on the host"
+msgstr "Không cần cài thêm gì trên host"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:145
+msgid ""
+"A Homebrew launchd service runs as the SSH user, so no sudoers entry or "
+"extra permissions are needed."
+msgstr ""
+"Dịch vụ launchd của Homebrew chạy dưới quyền người dùng SSH, nên không cần "
+"mục sudoers hay quyền bổ sung nào."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:146
+msgid ""
+"The SSH user is root, so no sudoers entry or extra permissions are needed."
+msgstr ""
+"Người dùng SSH là root, nên không cần mục sudoers hay quyền bổ sung nào."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:151
+msgid "2. On the Nginx UI container"
+msgstr "2. Trên container Nginx UI"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:156
+msgid ""
+"Pick the format that matches how you run Nginx UI, then recreate the "
+"container."
+msgstr ""
+"Hãy chọn định dạng phù hợp với cách bạn chạy Nginx UI, rồi tạo lại "
+"container."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:162
+msgid "Recreating the container closes this page"
+msgstr "Việc tạo lại container sẽ đóng trang này"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:166
+msgid "Finish the host side first, then come back here."
+msgstr "Hãy hoàn tất phía host trước, rồi quay lại đây."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:167
+msgid ""
+"Restarting Nginx UI ends the two-factor session and clears anything typed in"
+" the earlier steps."
+msgstr ""
+"Khởi động lại Nginx UI sẽ kết thúc phiên xác thực hai yếu tố và xóa mọi nội "
+"dung đã nhập ở các bước trước."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:168
+msgid ""
+"The generated key and known_hosts survive, because they live under the "
+"persisted /etc/nginx-ui directory."
+msgstr ""
+"Khóa đã tạo và known_hosts vẫn được giữ lại, vì chúng nằm trong thư mục "
+"/etc/nginx-ui được lưu bền."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:169
+msgid ""
+"Note the host address and SSH user before you recreate, then reopen the "
+"wizard and verify again."
+msgstr ""
+"Hãy ghi lại địa chỉ host và người dùng SSH trước khi tạo lại, sau đó mở lại "
+"trình hướng dẫn và xác minh lần nữa."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:175
+msgid "docker compose"
+msgstr "docker compose"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:181
+msgid "docker-compose.yml"
+msgstr "docker-compose.yml"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:182
+msgid ""
+"Merge this under services.nginx-ui in your existing file. Each bind mount "
+"uses the same path inside the container as on the host."
+msgstr ""
+"Hãy gộp phần này vào services.nginx-ui trong tệp hiện có của bạn. Mỗi bind "
+"mount dùng đường dẫn bên trong container giống hệt như trên host."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:185
+msgid "override file"
+msgstr "tệp ghi đè"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:191
+msgid "docker-compose.override.yml"
+msgstr "docker-compose.override.yml"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:192
+msgid ""
+"Save as a new file next to your main compose file. Docker Compose merges it "
+"automatically, so your original file stays untouched."
+msgstr ""
+"Lưu thành tệp mới bên cạnh tệp compose chính của bạn. Docker Compose tự động"
+" gộp nó, nên tệp gốc của bạn không bị thay đổi."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:195
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:201
+msgid "docker run"
+msgstr "docker run"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:202
+msgid ""
+"Replaces your current docker run command. Adjust the published port and the "
+"image tag to match your current deployment."
+msgstr ""
+"Thay thế lệnh docker run hiện tại của bạn. Hãy điều chỉnh cổng công bố và "
+"thẻ image cho khớp với triển khai hiện tại."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:212
+msgid "Apply the change"
+msgstr "Áp dụng thay đổi"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:214
+msgid ""
+"Remove the old container, then run the command above. The new environment "
+"variables only take effect on a fresh container."
+msgstr ""
+"Hãy xóa container cũ, rồi chạy lệnh ở trên. Các biến môi trường mới chỉ có "
+"hiệu lực trên container mới."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:215
+msgid ""
+"The new environment variables only take effect once the container is "
+"recreated."
+msgstr ""
+"Các biến môi trường mới chỉ có hiệu lực sau khi container được tạo lại."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:225
+msgid "Permission checks"
+msgstr "Kiểm tra quyền"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:226
+msgid "Run this once the sudoers rules are installed on the host."
+msgstr "Hãy chạy lệnh này sau khi các quy tắc sudoers đã được cài trên host."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:81
+msgid "SSH target"
+msgstr "Mục tiêu SSH"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:82
+msgid "Host address (host:port)"
+msgstr "Địa chỉ host (host:port)"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:89
+msgid "This address answers on the SSH port."
+msgstr "Địa chỉ này phản hồi trên cổng SSH."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:94
+msgid "These addresses answer on the SSH port from this container:"
+msgstr "Các địa chỉ này phản hồi trên cổng SSH từ container này:"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:108
+msgid "Could not probe for reachable addresses: %{reason}"
+msgstr "Không thể dò tìm các địa chỉ có thể kết nối: %{reason}"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:111
+msgid ""
+"No address answered. Enter one manually, then use Probe again to test it."
+msgstr ""
+"Không có địa chỉ nào phản hồi. Hãy nhập thủ công một địa chỉ, rồi dùng Kiểm "
+"tra lại để thử."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:115
+msgid "Probe again"
+msgstr "Kiểm tra lại"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:131
+msgid "Remote address detected"
+msgstr "Đã phát hiện địa chỉ từ xa"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:135
+msgid "This mode only supports nginx-ui and target nginx on the same host."
+msgstr ""
+"Chế độ này chỉ hỗ trợ nginx-ui và nginx mục tiêu nằm trên cùng một host."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:136
+msgid ""
+"bind-mount cannot reach remote filesystems, so config editing, log viewing "
+"and certificate management will fail."
+msgstr ""
+"bind-mount không thể truy cập hệ thống tệp từ xa — chỉnh sửa cấu hình, xem "
+"log và quản lý chứng chỉ sẽ thất bại."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:143
+msgid "Use the cluster Node guide for cross-host setups."
+msgstr "Hãy dùng hướng dẫn Nút cụm cho các thiết lập trên nhiều host."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepTrustAndTest.vue:27
+msgid "2. Test the SSH connection"
+msgstr "2. Kiểm tra kết nối SSH"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepTrustAndTest.vue:37
+msgid "3. Check the connection"
+msgstr "3. Kiểm tra kết nối"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepTrustAndTest.vue:42
+msgid "Connection checks"
+msgstr "Các kiểm tra kết nối"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepTrustAndTest.vue:43
+msgid ""
+"Verifies reachability, that the target is the container host, and that "
+"known_hosts is persisted."
+msgstr ""
+"Xác minh khả năng kết nối, rằng máy đích chính là host của container, và "
+"known_hosts được lưu bền."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:89
+msgid "Verification"
+msgstr "Xác minh"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:92
+msgid "Run verification"
+msgstr "Chạy xác minh"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:96
+msgid ""
+"Every check validates the SSH setup itself, except nginx -t, which validates"
+" the configuration already present on the host."
+msgstr ""
+"Mọi kiểm tra đều xác minh chính thiết lập SSH, ngoại trừ nginx -t vốn xác "
+"thực cấu hình đã có sẵn trên host."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:104
+msgid "The nginx configuration on the host failed validation"
+msgstr "Cấu hình nginx trên host không vượt qua kiểm tra hợp lệ"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:108
+msgid ""
+"This is the configuration already present on the host, not something this "
+"wizard wrote. The SSH setup itself can still be saved, and the configuration"
+" can be fixed from Nginx UI afterwards."
+msgstr ""
+"Đây là cấu hình đã có sẵn trên host, không phải do trình hướng dẫn này ghi "
+"ra. Bạn vẫn có thể lưu thiết lập SSH và sửa cấu hình từ Nginx UI sau đó."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:111
+msgid "Continue without validating the configuration"
+msgstr "Tiếp tục mà không xác thực cấu hình"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:120
+msgid "Target diagnosis completed with warnings"
+msgstr "Chẩn đoán mục tiêu hoàn tất kèm cảnh báo"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:135
+msgid "Detected target settings differ from the current configuration"
+msgstr "Cài đặt mục tiêu đã phát hiện khác với cấu hình hiện tại"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:139
+msgid "Apply the detected settings, review them, then run verification again."
+msgstr ""
+"Áp dụng các cài đặt đã phát hiện, xem lại chúng, rồi chạy xác minh lần nữa."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:142
+msgid "Apply detected settings"
+msgstr "Áp dụng cài đặt đã phát hiện"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:151
+msgid "Verification failed"
+msgstr "Xác minh thất bại"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:174
+msgid "Main configuration file"
+msgstr "Tệp cấu hình chính"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:183
+msgid "Homebrew document root"
+msgstr "Thư mục gốc tài liệu Homebrew"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:192
+msgid ""
+"A run re-reads the host, opens an SSH session, checks every path from inside"
+" this container, checks sudo access, and runs nginx -t."
+msgstr ""
+"Mỗi lần chạy sẽ đọc lại host, mở một phiên SSH, kiểm tra mọi đường dẫn từ "
+"bên trong container này, kiểm tra quyền sudo và chạy nginx -t."
+
+#: src/views/preference/components/NginxHostSetup/useHostSetupWizard.ts:189
+msgid "Enter the SSH host address."
+msgstr "Hãy nhập địa chỉ host SSH."
+
+#: src/views/preference/components/NginxHostSetup/useHostSetupWizard.ts:191
+msgid "Enter the SSH user."
+msgstr "Hãy nhập người dùng SSH."
+
+#: src/views/preference/components/NginxHostSetup/useHostSetupWizard.ts:193
+msgid "Generate, validate or import a private key first."
+msgstr "Trước tiên hãy tạo, xác thực hoặc nhập một khóa riêng."
+
+#: src/views/preference/components/NginxHostSetup/useHostSetupWizard.ts:197
+msgid "Trust every presented host key first."
+msgstr "Trước tiên hãy tin cậy mọi khóa host được cung cấp."
+
+#: src/views/preference/components/NginxHostSetup/useHostSetupWizard.ts:199
+msgid "Run the SSH connection test first."
+msgstr "Trước tiên hãy chạy kiểm tra kết nối SSH."
+
+#: src/views/preference/components/NginxHostSetup/useHostSetupWizard.ts:203
+msgid "Fill in the platform and every nginx path below."
+msgstr "Hãy điền nền tảng và mọi đường dẫn nginx bên dưới."
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:36
+msgid "SSH Target"
+msgstr "Mục tiêu SSH"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:36
+msgid "Address, user and private key"
+msgstr "Địa chỉ, người dùng và khóa riêng"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:37
+msgid "Trust & Test"
+msgstr "Tin cậy & Kiểm tra"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:37
+msgid "Host key and connectivity"
+msgstr "Khóa host và khả năng kết nối"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:38
+msgid "Detect Platform"
+msgstr "Phát hiện nền tảng"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:38
+msgid "Service manager and nginx paths"
+msgstr "Trình quản lý dịch vụ và đường dẫn nginx"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:39
+msgid "Container and host snippets"
+msgstr "Đoạn lệnh cho container và host"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:40
+msgid "Verify"
+msgstr "Xác minh"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:40
+msgid "Run checks and save"
+msgstr "Chạy kiểm tra và lưu"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:94
+msgid "Previous"
+msgstr "Trước đó"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:115
+msgid "Save configuration"
+msgstr "Lưu cấu hình"
+
+#: src/views/preference/NginxHostSetup.vue:51
+msgid "Failed to load settings"
+msgstr "Không thể tải cài đặt"
+
+#: src/views/preference/NginxHostSetup.vue:61
+msgid "Failed to authorize protected settings"
+msgstr "Không thể cấp quyền cho các cài đặt được bảo vệ"
+
+#: src/views/preference/NginxHostSetup.vue:81
+#: src/views/preference/NginxHostSetup.vue:148
+msgid "Failed to save Nginx control settings"
+msgstr "Không thể lưu cài đặt điều khiển Nginx"
+
+#: src/views/preference/NginxHostSetup.vue:98
+msgid "Back to Nginx settings"
+msgstr "Quay lại cài đặt Nginx"
+
+#: src/views/preference/NginxHostSetup.vue:103
+msgid "Authorizing..."
+msgstr "Đang cấp quyền..."
+
+#: src/views/preference/NginxHostSetup.vue:110
+msgid ""
+"Enable two-factor authentication before changing Nginx control settings."
+msgstr ""
+"Hãy bật xác thực hai yếu tố trước khi thay đổi cài đặt điều khiển Nginx."
+
+#: src/views/preference/NginxHostSetup.vue:115
+#: src/views/preference/tabs/NginxSettings.vue:44
+#: src/views/preference/tabs/NginxSettings.vue:45
+#: src/views/user/UserProfile.vue:149
+msgid "2FA Settings"
+msgstr "Cài đặt 2FA"
+
+#: src/views/preference/NginxHostSetup.vue:127
+msgid "Unable to open SSH setup"
+msgstr "Không thể mở thiết lập SSH"
+
+#: src/views/preference/Preference.vue:54
 msgid "App"
 msgstr "Ứng dụng"
 
-#: src/views/preference/Preference.vue:59
+#: src/views/preference/Preference.vue:60
 #: src/views/preference/tabs/ExternalNotify.vue:42
 msgid "External Notify"
 msgstr "Thông báo bên ngoài"
 
-#: src/views/preference/Preference.vue:65
+#: src/views/preference/Preference.vue:66
 msgid "Node"
 msgstr "Nút"
 
-#: src/views/preference/Preference.vue:71
+#: src/views/preference/Preference.vue:72
 msgid "HTTP"
 msgstr "HTTP"
 
-#: src/views/preference/Preference.vue:83
+#: src/views/preference/Preference.vue:84
 msgid "Auth"
 msgstr "Xác thực"
 
-#: src/views/preference/Preference.vue:89
+#: src/views/preference/Preference.vue:90
 msgid "Cert"
 msgstr "Chứng chỉ"
 
-#: src/views/preference/Preference.vue:101
+#: src/views/preference/Preference.vue:102
 msgid "LLM"
 msgstr "LLM"
 
-#: src/views/preference/Preference.vue:107
+#: src/views/preference/Preference.vue:108
 msgid "Logrotate"
 msgstr "Logrotate"
 
-#: src/views/preference/Preference.vue:113
+#: src/views/preference/Preference.vue:114
 msgid "GeoLite"
 msgstr "GeoLite"
 
@@ -8363,8 +9559,8 @@ msgstr "Gửi tin nhắn kiểm tra thất bại"
 
 #: src/views/preference/tabs/GeoLiteSettings.vue:9
 msgid ""
-"The GeoLite2 database provides geographic information for IP addresses. "
-"This is used for offline geographic analysis in log analytics."
+"The GeoLite2 database provides geographic information for IP addresses. This"
+" is used for offline geographic analysis in log analytics."
 msgstr ""
 "Cơ sở dữ liệu GeoLite2 cung cấp thông tin địa lý cho các địa chỉ IP. Điều "
 "này được sử dụng để phân tích địa lý ngoại tuyến trong phân tích nhật ký."
@@ -8393,65 +9589,83 @@ msgstr "Lệnh"
 msgid "Minutes"
 msgstr "Phút"
 
-#: src/views/preference/tabs/NginxSettings.vue:10
+#: src/views/preference/tabs/NginxSettings.vue:169
 msgid "Stub Status Port"
 msgstr "Cổng trạng thái stub"
 
-#: src/views/preference/tabs/NginxSettings.vue:13
+#: src/views/preference/tabs/NginxSettings.vue:172
 msgid "Maintenance template (filename only)"
 msgstr "Mẫu bảo trì (chỉ tên tệp)"
 
-#: src/views/preference/tabs/NginxSettings.vue:16
+#: src/views/preference/tabs/NginxSettings.vue:175
 msgid "maintenance.html"
 msgstr "maintenance.html"
 
-#: src/views/preference/tabs/NginxSettings.vue:19
+#: src/views/preference/tabs/NginxSettings.vue:178
 msgid "Mounted directory"
 msgstr "Thư mục được gắn kết"
 
-#: src/views/preference/tabs/NginxSettings.vue:22
+#: src/views/preference/tabs/NginxSettings.vue:181
 msgid "Nginx Access Log Path"
 msgstr "Vị trí lưu log truy cập (Access log) của Nginx"
 
-#: src/views/preference/tabs/NginxSettings.vue:25
+#: src/views/preference/tabs/NginxSettings.vue:184
 msgid "Nginx Error Log Path"
 msgstr "Vị trí lưu log lỗi (Error log) của Nginx"
 
-#: src/views/preference/tabs/NginxSettings.vue:28
+#: src/views/preference/tabs/NginxSettings.vue:187
 msgid "Nginx Configurations Directory"
 msgstr "Thư mục cấu hình Nginx"
 
-#: src/views/preference/tabs/NginxSettings.vue:31
+#: src/views/preference/tabs/NginxSettings.vue:190
 msgid "Nginx Configuration Path"
 msgstr "Đường dẫn cấu hình Nginx"
 
-#: src/views/preference/tabs/NginxSettings.vue:34
+#: src/views/preference/tabs/NginxSettings.vue:193
 msgid "Nginx Log Directory Whitelist"
 msgstr "Danh sách trắng thư mục nhật ký Nginx"
 
-#: src/views/preference/tabs/NginxSettings.vue:43
+#: src/views/preference/tabs/NginxSettings.vue:202
 msgid "Nginx PID Path"
 msgstr "Đường dẫn PID của Nginx"
 
-#: src/views/preference/tabs/NginxSettings.vue:46
+#: src/views/preference/tabs/NginxSettings.vue:205
 msgid "Nginx Test Config Command"
 msgstr "Lệnh kiểm tra cấu hình Nginx"
 
-#: src/views/preference/tabs/NginxSettings.vue:49
+#: src/views/preference/tabs/NginxSettings.vue:208
 msgid "Nginx Reload Command"
 msgstr "Lệnh Tải lại Nginx"
 
-#: src/views/preference/tabs/NginxSettings.vue:52
+#: src/views/preference/tabs/NginxSettings.vue:211
 msgid "Nginx Restart Command"
 msgstr "Lệnh khởi động lại Nginx"
 
-#: src/views/preference/tabs/NginxSettings.vue:55
+#: src/views/preference/tabs/NginxSettings.vue:214
 msgid "Nginx Control Mode"
 msgstr "Chế độ điều khiển Nginx"
 
-#: src/views/preference/tabs/NginxSettings.vue:58
+#: src/views/preference/tabs/NginxSettings.vue:217
+#: src/views/preference/tabs/NginxSettings.vue:245
+msgid "Host via SSH"
+msgstr "Host qua SSH"
+
+#: src/views/preference/tabs/NginxSettings.vue:220
+#: src/views/preference/tabs/NginxSettings.vue:259
 msgid "External Docker Container"
 msgstr "Container Docker bên ngoài"
+
+#: src/views/preference/tabs/NginxSettings.vue:239
+msgid "Local / Bundled"
+msgstr "Cục bộ / Đi kèm"
+
+#: src/views/preference/tabs/NginxSettings.vue:242
+msgid "External Container"
+msgstr "Container bên ngoài"
+
+#: src/views/preference/tabs/NginxSettings.vue:251
+msgid "Open SSH setup wizard"
+msgstr "Mở trình hướng dẫn thiết lập SSH"
 
 #: src/views/preference/tabs/NodeSettings.vue:14
 msgid "Instance ID"
@@ -8492,8 +9706,8 @@ msgid ""
 "The ICP Number should only contain letters, unicode, numbers, hyphens, "
 "dashes, colons, and dots."
 msgstr ""
-"Số ICP chỉ được chứa chữ cái, unicode, số, dấu gạch ngang, dấu gạch dài, "
-"dấu hai chấm và dấu chấm."
+"Số ICP chỉ được chứa chữ cái, unicode, số, dấu gạch ngang, dấu gạch dài, dấu"
+" hai chấm và dấu chấm."
 
 #: src/views/preference/tabs/NodeSettings.vue:45
 #: src/views/preference/tabs/NodeSettings.vue:57
@@ -8509,8 +9723,8 @@ msgid ""
 "The Public Security Number should only contain letters, unicode, numbers, "
 "hyphens, dashes, colons, and dots."
 msgstr ""
-"Số Công an chỉ được chứa chữ cái, unicode, số, dấu gạch ngang, dấu gạch "
-"dài, dấu hai chấm và dấu chấm."
+"Số Công an chỉ được chứa chữ cái, unicode, số, dấu gạch ngang, dấu gạch dài,"
+" dấu hai chấm và dấu chấm."
 
 #: src/views/preference/tabs/OpenAISettings.vue:35
 msgid ""
@@ -8521,8 +9735,10 @@ msgstr ""
 "https://api.minimax.io/v1"
 
 #: src/views/preference/tabs/OpenAISettings.vue:38
-msgid "Leave blank to use the Atlas Cloud endpoint: https://api.atlascloud.ai/v1"
-msgstr "Để trống để sử dụng điểm cuối Atlas Cloud: https://api.atlascloud.ai/v1"
+msgid ""
+"Leave blank to use the Atlas Cloud endpoint: https://api.atlascloud.ai/v1"
+msgstr ""
+"Để trống để sử dụng điểm cuối Atlas Cloud: https://api.atlascloud.ai/v1"
 
 #: src/views/preference/tabs/OpenAISettings.vue:40
 msgid "Leave blank for the default: https://api.openai.com/"
@@ -8536,13 +9752,13 @@ msgstr "URL không hợp lệ."
 #: src/views/preference/tabs/OpenAISettings.vue:48
 msgid ""
 "MiniMax is OpenAI-compatible. Use https://api.minimax.io/v1 for global "
-"service or https://api.minimaxi.com/v1 for China service. For "
-"Anthropic-compatible clients, use https://api.minimax.io/anthropic or "
+"service or https://api.minimaxi.com/v1 for China service. For Anthropic-"
+"compatible clients, use https://api.minimax.io/anthropic or "
 "https://api.minimaxi.com/anthropic."
 msgstr ""
 "MiniMax tương thích với OpenAI. Sử dụng https://api.minimax.io/v1 cho dịch "
-"vụ toàn cầu hoặc https://api.minimaxi.com/v1 cho dịch vụ tại Trung Quốc. "
-"Đối với các ứng dụng khách tương thích với Anthropic, hãy sử dụng "
+"vụ toàn cầu hoặc https://api.minimaxi.com/v1 cho dịch vụ tại Trung Quốc. Đối"
+" với các ứng dụng khách tương thích với Anthropic, hãy sử dụng "
 "https://api.minimax.io/anthropic hoặc https://api.minimaxi.com/anthropic."
 
 #: src/views/preference/tabs/OpenAISettings.vue:52
@@ -8601,7 +9817,8 @@ msgid "Code Completion Model"
 msgstr "Mô hình hoàn thành mã"
 
 #: src/views/preference/tabs/OpenAISettings.vue:167
-msgid "The model used for code completion, if not set, the chat model will be used."
+msgid ""
+"The model used for code completion, if not set, the chat model will be used."
 msgstr ""
 "Mô hình được sử dụng để hoàn thành mã, nếu không được đặt, mô hình trò "
 "chuyện sẽ được sử dụng."
@@ -8808,7 +10025,8 @@ msgstr "Bật Proxy (Cloudflare)"
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:370
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:702
 msgid "Route traffic through proxy for additional protection and features"
-msgstr "Định tuyến lưu lượng qua proxy để có thêm tính năng bảo vệ và chức năng"
+msgstr ""
+"Định tuyến lưu lượng qua proxy để có thêm tính năng bảo vệ và chức năng"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:379
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:711
@@ -8885,8 +10103,8 @@ msgstr "Bạn có muốn bật TLS không?"
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:15
 msgid "To make sure the certification auto-renewal can work normally, "
 msgstr ""
-"Để đảm bảo rằng việc gia hạn chứng chỉ tự động có thể hoạt động bình "
-"thường, "
+"Để đảm bảo rằng việc gia hạn chứng chỉ tự động có thể hoạt động bình thường,"
+" "
 
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:95
 msgid "Encrypt website with Let's Encrypt"
@@ -8957,11 +10175,14 @@ msgid "Self-signed certificate applied"
 msgstr "Đã áp dụng chứng chỉ tự ký"
 
 #: src/views/site/site_edit/components/Cert/SelfSignedCert.vue:47
-msgid "Saving the site configuration failed; the certificate directives are in "
-msgstr "Lưu cấu hình trang web không thành công; các chỉ thị chứng chỉ đang ở trong "
+msgid ""
+"Saving the site configuration failed; the certificate directives are in "
+msgstr ""
+"Lưu cấu hình trang web không thành công; các chỉ thị chứng chỉ đang ở trong "
 
 #: src/views/site/site_edit/components/Cert/SelfSignedCert.vue:54
-msgid "Certificate directives added to the editor; review and save when ready."
+msgid ""
+"Certificate directives added to the editor; review and save when ready."
 msgstr ""
 "Các chỉ thị chứng chỉ đã được thêm vào trình chỉnh sửa; hãy xem lại và lưu "
 "khi sẵn sàng."
@@ -9103,7 +10324,8 @@ msgid "Nginx Configuration Parse Error"
 msgstr "Lỗi phân tích cấu hình Nginx"
 
 #: src/views/site/site_edit/components/SiteEditor/store.ts:145
-msgid "Please select a certificate before saving the TLS server configuration."
+msgid ""
+"Please select a certificate before saving the TLS server configuration."
 msgstr "Vui lòng chọn chứng chỉ trước khi lưu cấu hình máy chủ TLS."
 
 #: src/views/site/site_list/columns.tsx:78 src/views/stream/columns.tsx:46
@@ -9277,10 +10499,6 @@ msgstr "Đường dẫn thực thi"
 msgid "Last checked at"
 msgstr "Kiểm tra lần cuối lúc"
 
-#: src/views/system/Upgrade.vue:204
-msgid "Check again"
-msgstr "Kiểm tra lại"
-
 #: src/views/system/Upgrade.vue:216
 msgid "Dev"
 msgstr "Dev"
@@ -9311,20 +10529,20 @@ msgstr "Mất kết nối với thiết bị đầu cuối này. Vui lòng làm 
 
 #: src/views/terminal/Terminal.vue:212
 msgid ""
-"Demo mode is enabled. This terminal only allows a small set of safe "
-"read-only commands."
+"Demo mode is enabled. This terminal only allows a small set of safe read-"
+"only commands."
 msgstr ""
 "Chế độ demo đã được bật. Thiết bị đầu cuối này chỉ cho phép một tập hợp nhỏ "
 "các lệnh an toàn chỉ đọc."
 
 #: src/views/terminal/Terminal.vue:219
 msgid ""
-"You are accessing this terminal over an insecure HTTP connection on a "
-"non-localhost domain. This may expose sensitive information."
+"You are accessing this terminal over an insecure HTTP connection on a non-"
+"localhost domain. This may expose sensitive information."
 msgstr ""
-"Bạn đang truy cập thiết bị đầu cuối này thông qua kết nối HTTP không an "
-"toàn trên một miền không phải localhost. Điều này có thể làm lộ thông tin "
-"nhạy cảm."
+"Bạn đang truy cập thiết bị đầu cuối này thông qua kết nối HTTP không an toàn"
+" trên một miền không phải localhost. Điều này có thể làm lộ thông tin nhạy "
+"cảm."
 
 #: src/views/upstream/SocketList.vue:18
 msgid "Socket"
@@ -9378,27 +10596,23 @@ msgstr "Thông tin cá nhân"
 msgid "Update Profile"
 msgstr "Cập nhật hồ sơ"
 
-#: src/views/user/UserProfile.vue:146
-msgid "2FA Settings"
-msgstr "Cài đặt 2FA"
-
-#: src/views/user/UserProfile.vue:170
+#: src/views/user/UserProfile.vue:173
 msgid "Security Settings"
 msgstr "Cài đặt bảo mật"
 
-#: src/views/user/UserProfile.vue:176
+#: src/views/user/UserProfile.vue:179
 msgid "Change Password"
 msgstr "Đổi mật khẩu"
 
-#: src/views/user/UserProfile.vue:190
+#: src/views/user/UserProfile.vue:193
 msgid "New Password"
 msgstr "Mật khẩu mới"
 
-#: src/views/user/UserProfile.vue:199
+#: src/views/user/UserProfile.vue:202
 msgid "Confirm New Password"
 msgstr "Xác nhận mật khẩu mới"
 
-#: src/views/user/UserProfile.vue:213
+#: src/views/user/UserProfile.vue:216
 msgid "Update Password"
 msgstr "Cập nhật mật khẩu"
 
@@ -9474,19 +10688,19 @@ msgstr "Cập nhật mật khẩu"
 #~ "thông báo dịch vụ có phạm vi."
 
 #~ msgid ""
-#~ "Logrotate, by default, is enabled in most mainstream Linux distributions "
-#~ "for users who install Nginx UI on the host machine, so you don't need to "
-#~ "modify the parameters on this page. For users who install Nginx UI using "
-#~ "Docker containers, you can manually enable this option. The crontab task "
-#~ "scheduler of Nginx UI will execute the logrotate command at the interval "
-#~ "you set in minutes."
+#~ "Logrotate, by default, is enabled in most mainstream Linux distributions for"
+#~ " users who install Nginx UI on the host machine, so you don't need to modify"
+#~ " the parameters on this page. For users who install Nginx UI using Docker "
+#~ "containers, you can manually enable this option. The crontab task scheduler "
+#~ "of Nginx UI will execute the logrotate command at the interval you set in "
+#~ "minutes."
 #~ msgstr ""
 #~ "Logrotate được kích hoạt mặc định trong hầu hết các bản phân phối Linux phổ "
-#~ "biến dành cho người dùng cài đặt Nginx UI trực tiếp trên máy chủ, vì vậy "
-#~ "bạn không cần phải thay đổi các tham số trên trang này. Đối với người dùng "
-#~ "cài đặt Nginx UI bằng container Docker, bạn có thể kích hoạt thủ công tùy "
-#~ "chọn này. Bộ lập lịch tác vụ crontab của Nginx UI sẽ thực thi lệnh "
-#~ "logrotate theo khoảng thời gian bạn đặt (tính bằng phút)."
+#~ "biến dành cho người dùng cài đặt Nginx UI trực tiếp trên máy chủ, vì vậy bạn"
+#~ " không cần phải thay đổi các tham số trên trang này. Đối với người dùng cài "
+#~ "đặt Nginx UI bằng container Docker, bạn có thể kích hoạt thủ công tùy chọn "
+#~ "này. Bộ lập lịch tác vụ crontab của Nginx UI sẽ thực thi lệnh logrotate theo"
+#~ " khoảng thời gian bạn đặt (tính bằng phút)."
 
 #~ msgid "Node credential rotated successfully"
 #~ msgstr "Thông tin xác thực nút đã được xoay vòng thành công"
@@ -9497,40 +10711,42 @@ msgstr "Cập nhật mật khẩu"
 #~ "password replacement or as a 2FA method."
 #~ msgstr ""
 #~ "Passkey là thông tin xác thực WebAuthn dùng để xác minh danh tính của bạn "
-#~ "thông qua chạm, nhận diện khuôn mặt, mật khẩu thiết bị hoặc mã PIN. Chúng "
-#~ "có thể được sử dụng để thay thế mật khẩu hoặc làm phương thức xác thực hai "
-#~ "yếu tố (2FA)."
+#~ "thông qua chạm, nhận diện khuôn mặt, mật khẩu thiết bị hoặc mã PIN. Chúng có"
+#~ " thể được sử dụng để thay thế mật khẩu hoặc làm phương thức xác thực hai yếu"
+#~ " tố (2FA)."
 
 #~ msgid ""
 #~ "Please first add credentials in Certification > DNS Credentials, and then "
 #~ "select one of the credentialsbelow to request the API of the DNS provider."
 #~ msgstr ""
-#~ "Trước tiên, vui lòng thêm thông tin xác thực trong Chứng chỉ > Thông tin "
-#~ "xác thực DNS, sau đó chọn nhà cung cấp DNS"
+#~ "Trước tiên, vui lòng thêm thông tin xác thực trong Chứng chỉ > Thông tin xác"
+#~ " thực DNS, sau đó chọn nhà cung cấp DNS"
 
 #~ msgid ""
 #~ "Please input name, this will be used as the filename of the new "
 #~ "configuration!"
-#~ msgstr "Vui lòng nhập tên, tên này sẽ được sử dụng làm tên tệp của cấu hình mới!"
+#~ msgstr ""
+#~ "Vui lòng nhập tên, tên này sẽ được sử dụng làm tên tệp của cấu hình mới!"
 
 #~ msgid ""
 #~ "Please input name, this will be used as the filename of the new "
 #~ "configuration."
-#~ msgstr "Vui lòng nhập tên, tên này sẽ được sử dụng làm tên tệp cho cấu hình mới."
+#~ msgstr ""
+#~ "Vui lòng nhập tên, tên này sẽ được sử dụng làm tên tệp cho cấu hình mới."
 
 #~ msgid "Rotate Credential"
 #~ msgstr "Xoay thông tin xác thực"
 
 #~ msgid ""
 #~ "Support communication with the backend through the WebSocket protocol. If "
-#~ "your Nginx UI is being used via an Nginx reverse proxy, please refer to "
-#~ "this link to write the corresponding configuration file: "
+#~ "your Nginx UI is being used via an Nginx reverse proxy, please refer to this"
+#~ " link to write the corresponding configuration file: "
 #~ "https://nginxui.com/guide/nginx-proxy-example.html"
 #~ msgstr ""
-#~ "Hỗ trợ giao tiếp với backend thông qua giao thức WebSocket. Nếu Nginx UI "
-#~ "của bạn đang được sử dụng thông qua proxy ngược Nginx, vui lòng tham khảo "
-#~ "liên kết này để viết tệp cấu hình tương ứng: "
-#~ "https://nginxui.com/guide/nginx-proxy-example.html"
+#~ "Hỗ trợ giao tiếp với backend thông qua giao thức WebSocket. Nếu Nginx UI của"
+#~ " bạn đang được sử dụng thông qua proxy ngược Nginx, vui lòng tham khảo liên "
+#~ "kết này để viết tệp cấu hình tương ứng: https://nginxui.com/guide/nginx-"
+#~ "proxy-example.html"
 
 #~ msgid ""
 #~ "The certificate has been generated at %{path} and the ssl_certificate "
@@ -9550,13 +10766,13 @@ msgstr "Cập nhật mật khẩu"
 
 #~ msgid ""
 #~ "To make sure the certification auto-renewal can work normally, we need to "
-#~ "add a location which can proxy the request from authority to backend, and "
-#~ "we need to save this file and reload the Nginx. Are you sure you want to "
+#~ "add a location which can proxy the request from authority to backend, and we"
+#~ " need to save this file and reload the Nginx. Are you sure you want to "
 #~ "continue?"
 #~ msgstr ""
-#~ "Để đảm bảo tính năng tự động gia hạn chứng chỉ có thể hoạt động bình "
-#~ "thường, chúng tôi cần thêm một vị trí có thể ủy quyền yêu cầu từ cơ quan có "
-#~ "thẩm quyền đến chương trình phụ trợ và chúng tôi cần lưu tệp này và tải lại "
+#~ "Để đảm bảo tính năng tự động gia hạn chứng chỉ có thể hoạt động bình thường,"
+#~ " chúng tôi cần thêm một vị trí có thể ủy quyền yêu cầu từ cơ quan có thẩm "
+#~ "quyền đến chương trình phụ trợ và chúng tôi cần lưu tệp này và tải lại "
 #~ "Nginx. Bạn có chắc chắn muốn Tiếp tục?"
 
 #~ msgid ""
@@ -9573,10 +10789,6 @@ msgstr "Cập nhật mật khẩu"
 #, fuzzy
 #~ msgid "Create set"
 #~ msgstr "Ngày tạo"
-
-#, fuzzy
-#~ msgid "Delete set"
-#~ msgstr "Xoá"
 
 #, fuzzy
 #~ msgid "Edit record set"
@@ -9667,8 +10879,8 @@ msgstr "Cập nhật mật khẩu"
 #~ "or consider using a private CA."
 #~ msgstr ""
 #~ "Cảnh báo: Đây có vẻ là một địa chỉ IP riêng. Các tổ chức cấp chứng chỉ công "
-#~ "cộng như Let's Encrypt không thể cấp chứng chỉ cho các IP riêng. Hãy sử "
-#~ "dụng địa chỉ IP công cộng hoặc cân nhắc sử dụng tổ chức cấp chứng chỉ riêng."
+#~ "cộng như Let's Encrypt không thể cấp chứng chỉ cho các IP riêng. Hãy sử dụng"
+#~ " địa chỉ IP công cộng hoặc cân nhắc sử dụng tổ chức cấp chứng chỉ riêng."
 
 #~ msgid "Path not in granted access paths: {0}"
 #~ msgstr "Đường dẫn không nằm trong các đường dẫn truy cập được cấp: {0}"
@@ -9682,10 +10894,6 @@ msgstr "Cập nhật mật khẩu"
 #~ msgstr "Đang xác thực..."
 
 #, fuzzy
-#~ msgid "Connection"
-#~ msgstr "Đã kết nối"
-
-#, fuzzy
 #~ msgid "Container"
 #~ msgstr "Nội dung"
 
@@ -9694,45 +10902,18 @@ msgstr "Cập nhật mật khẩu"
 #~ msgstr "Sao chép"
 
 #, fuzzy
-#~ msgid "External Container"
-#~ msgstr "Container Docker bên ngoài"
-
-#, fuzzy
-#~ msgid "Generate keypair"
-#~ msgstr "Tạo"
-
-#, fuzzy
-#~ msgid "override file"
-#~ msgstr "Ghi đè tập tin đã tồn tại"
-
-#, fuzzy
-#~ msgid "Regenerate keypair"
-#~ msgstr "Tạo lại câu trả lời"
-
-#, fuzzy
-#~ msgid "Remote address detected"
-#~ msgstr "Không có nút nào được chọn"
-
-#, fuzzy
-#~ msgid "Run verification"
-#~ msgstr "Gia hạn chứng chỉ"
-
-#, fuzzy
 #~ msgid "SSH key (recommended)"
 #~ msgstr "Khuyên dùng 2+ lõi"
 
 #~ msgid "Type or select A/AAAA records"
 #~ msgstr "Nhập hoặc chọn bản ghi A/AAAA"
 
-#, fuzzy
-#~ msgid "Verify"
-#~ msgstr "Xác minh bí mật"
-
 #~ msgid "OpenAI"
 #~ msgstr "OpenAI"
 
 #~ msgid "Backup file integrity check failed, it may have been tampered with"
-#~ msgstr "Kiểm tra tính toàn vẹn của tập tin sao lưu thất bại, có thể đã bị can thiệp"
+#~ msgstr ""
+#~ "Kiểm tra tính toàn vẹn của tập tin sao lưu thất bại, có thể đã bị can thiệp"
 
 #~ msgid "Once the verification is complete, the records will be removed."
 #~ msgstr "Sau khi quá trình xác minh hoàn tất, bản ghi sẽ bị xóa."
@@ -9826,7 +11007,8 @@ msgstr "Cập nhật mật khẩu"
 #~ msgstr "Hiệu suất ổn định trên phần cứng hiện đại"
 
 #~ msgid "Backup path not in granted access paths: {0}"
-#~ msgstr "Đường dẫn sao lưu không nằm trong các đường dẫn truy cập được cấp: {0}"
+#~ msgstr ""
+#~ "Đường dẫn sao lưu không nằm trong các đường dẫn truy cập được cấp: {0}"
 
 #~ msgid "Build with"
 #~ msgstr "Xây dựng với"
@@ -9859,7 +11041,8 @@ msgstr "Cập nhật mật khẩu"
 #~ msgstr "Thông tin xác thực S3 không hợp lệ: {0}"
 
 #~ msgid "Storage path not in granted access paths: {0}"
-#~ msgstr "Đường dẫn lưu trữ không nằm trong các đường dẫn truy cập được cấp: {0}"
+#~ msgstr ""
+#~ "Đường dẫn lưu trữ không nằm trong các đường dẫn truy cập được cấp: {0}"
 
 #~ msgid "files"
 #~ msgstr "tệp"
@@ -9905,8 +11088,8 @@ msgstr "Cập nhật mật khẩu"
 #~ "https://nginxui.com/guide/nginx-proxy-example.html"
 #~ msgstr ""
 #~ "Hỗ trợ giao tiếp với backend thông qua giao thức Server-Sent Events. Nếu "
-#~ "Nginx UI của bạn đang được sử dụng qua proxy ngược Nginx, vui lòng tham "
-#~ "khảo liên kết này để viết tệp cấu hình tương ứng: "
+#~ "Nginx UI của bạn đang được sử dụng qua proxy ngược Nginx, vui lòng tham khảo"
+#~ " liên kết này để viết tệp cấu hình tương ứng: "
 #~ "https://nginxui.com/guide/nginx-proxy-example.html"
 
 #~ msgid "If left blank, the default CA Dir will be used."
@@ -9978,8 +11161,8 @@ msgstr "Cập nhật mật khẩu"
 #~ "/var/run/docker.sock:/var/run/docker.sock`."
 #~ msgstr ""
 #~ "Kiểm tra xem /var/run/docker.sock có tồn tại không. Nếu bạn đang sử dụng "
-#~ "Docker Image chính thức của Nginx UI, hãy đảm bảo rằng ổ cắm Docker được "
-#~ "gắn như sau: `-v /var/run/docker.sock:/var/run/docker.sock`."
+#~ "Docker Image chính thức của Nginx UI, hãy đảm bảo rằng ổ cắm Docker được gắn"
+#~ " như sau: `-v /var/run/docker.sock:/var/run/docker.sock`."
 
 #~ msgid "Check if the nginx access log path exists"
 #~ msgstr "Kiểm tra xem đường dẫn nhật ký truy cập nginx có tồn tại không"
@@ -10049,7 +11232,8 @@ msgstr "Cập nhật mật khẩu"
 #~ msgstr "Nhân bản %{conf_name} thành %{node_name} thành công"
 
 #, fuzzy
-#~ msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: %{resp}"
+#~ msgid ""
+#~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: %{resp}"
 #~ msgstr "Nhân bản %{conf_name} thành %{node_name} thành công"
 
 #, fuzzy
@@ -10080,8 +11264,8 @@ msgstr "Cập nhật mật khẩu"
 
 #, fuzzy
 #~ msgid ""
-#~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, please upgrade "
-#~ "the remote Nginx UI to the latest version"
+#~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, please upgrade the"
+#~ " remote Nginx UI to the latest version"
 #~ msgstr "Nhân bản %{conf_name} thành %{node_name} thành công"
 
 #, fuzzy

@@ -9,15 +9,14 @@ msgstr ""
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2025-04-10 02:51+0000\n"
 "Last-Translator: 0xJacky <me@jackyu.cn>\n"
-"Language-Team: Chinese (Traditional Han script) "
-"<https://weblate.nginxui.com/projects/nginx-ui/frontend/zh_Hant/>\n"
+"Language-Team: Chinese (Traditional Han script) <https://weblate.nginxui.com/projects/nginx-ui/frontend/zh_Hant/>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10.4\n"
 "Generated-By: easygettext\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:48
 msgid "Please enter the server IP address"
@@ -33,14 +32,14 @@ msgstr "IP 證書通知"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:81
 msgid ""
-"This site is configured as a default server (default_server) for HTTPS "
-"(port 443). "
+"This site is configured as a default server (default_server) for HTTPS (port"
+" 443). "
 msgstr "此站台設定為 HTTPS 的預設伺服器（default_server）（連接埠 443）。"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:85
 msgid ""
-"This site uses wildcard server name (_) which typically indicates an "
-"IP-based certificate. "
+"This site uses wildcard server name (_) which typically indicates an IP-"
+"based certificate. "
 msgstr "此站點使用了萬用字元伺服器名稱（_），這通常表示這是一個基於 IP 的憑證。"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:89
@@ -86,8 +85,8 @@ msgstr "輸入伺服器 IP 位址（例如：203.0.113.1 或 2001:db8::1）"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:140
 msgid ""
-"For IP-based certificates, please specify the server IP address that will "
-"be included in the certificate."
+"For IP-based certificates, please specify the server IP address that will be"
+" included in the certificate."
 msgstr "對於基於 IP 的證書，請指定將包含在證書中的伺服器 IP 地址。"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:144
@@ -111,7 +110,8 @@ msgid "Private CA:"
 msgstr "私有 CA："
 
 #: src/components/AutoCertForm/AutoCertForm.vue:161
-msgid "Any reachable IP address can be used with private Certificate Authorities"
+msgid ""
+"Any reachable IP address can be used with private Certificate Authorities"
 msgstr "任何可訪問的 IP 地址均可用於私有證書頒發機構"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:170
@@ -202,7 +202,8 @@ msgid "Go to DNS > Credentials to create or manage credentials"
 msgstr "前往 DNS > 憑證 以建立或管理憑證"
 
 #: src/components/CertInfo/CertInfo.vue:24
-#: src/views/certificate/ACMEUser.vue:70 src/views/certificate/ACMEUser.vue:152
+#: src/views/certificate/ACMEUser.vue:70
+#: src/views/certificate/ACMEUser.vue:152
 #: src/views/certificate/CertificateList/certColumns.tsx:98
 msgid "Valid"
 msgstr "有效"
@@ -300,8 +301,8 @@ msgstr "需要 GeoLite2 資料庫"
 
 #: src/components/GeoLiteDownload/GeoLiteDownload.vue:158
 msgid ""
-"The GeoLite2 database is required for offline geographic IP analysis. "
-"Please download it to enable this feature."
+"The GeoLite2 database is required for offline geographic IP analysis. Please"
+" download it to enable this feature."
 msgstr "離線地理 IP 分析需要 GeoLite2 資料庫。請下載以啟用此功能。"
 
 #: src/components/GeoLiteDownload/GeoLiteDownload.vue:160
@@ -353,7 +354,8 @@ msgid "Config validation is unavailable for a remote-only namespace."
 msgstr "設定驗證無法用於僅限遠端的命名空間。"
 
 #: src/components/InspectConfig/InspectConfig.vue:47
-msgid "Sandbox validation is unavailable when Nginx runs in a separate container."
+msgid ""
+"Sandbox validation is unavailable when Nginx runs in a separate container."
 msgstr "當 Nginx 在獨立的容器中執行時，無法使用沙箱驗證。"
 
 #: src/components/InspectConfig/InspectConfig.vue:49
@@ -363,7 +365,8 @@ msgid ""
 msgstr "因為已設定自訂測試指令，所以無法使用沙箱驗證。"
 
 #: src/components/InspectConfig/InspectConfig.vue:58
-msgid "A required include file is missing from the sandbox or source configuration."
+msgid ""
+"A required include file is missing from the sandbox or source configuration."
 msgstr "沙盒或源配置中缺少必需的包含文件。"
 
 #: src/components/InspectConfig/InspectConfig.vue:60
@@ -378,7 +381,7 @@ msgstr "Nginx 報告了一個配置語法錯誤。"
 msgid "Nginx failed to validate the configuration."
 msgstr "Nginx 未能驗證配置。"
 
-#: src/components/InspectConfig/InspectConfig.vue:103
+#: src/components/InspectConfig/InspectConfig.vue:103 src/lib/http/error.ts:36
 #: src/views/certificate/CertificateEditor.vue:104
 msgid "Server error"
 msgstr "伺服器錯誤"
@@ -399,10 +402,11 @@ msgstr "組態檔案在隔離的沙箱中測試成功"
 msgid "Configuration file is test successful"
 msgstr "設定檔案測試成功"
 
-#: src/components/InspectConfig/InspectConfig.vue:195 src/constants/index.ts:25
-#: src/views/backup/components/BackupCreator.vue:138
+#: src/components/InspectConfig/InspectConfig.vue:195
+#: src/constants/index.ts:25 src/views/backup/components/BackupCreator.vue:138
 #: src/views/notification/notificationColumns.tsx:21
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:97
+#: src/views/preference/components/NginxHostSetup/checks.ts:67
 msgid "Warning"
 msgstr "警告"
 
@@ -427,7 +431,8 @@ msgstr "修改"
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:713
 #: src/views/dns/DDNSManager.vue:438 src/views/dns/DNSRecordManager.vue:250
 #: src/views/preference/components/AuthSettings/Passkey.vue:131
-#: src/views/preference/Preference.vue:124
+#: src/views/preference/Preference.vue:129
+#: src/views/preference/tabs/NginxSettings.vue:274
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:196
 #: src/views/stream/components/ConfigName.vue:52
@@ -449,6 +454,9 @@ msgstr "儲存"
 #: src/views/nginx_log/indexing/IndexManagement.vue:59
 #: src/views/nginx_log/NginxLogList.vue:421
 #: src/views/preference/components/AuthSettings/Passkey.vue:142
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:317
+#: src/views/preference/tabs/NginxSettings.vue:46
+#: src/views/preference/tabs/NginxSettings.vue:278
 #: src/views/site/components/SiteStatusSelect.vue:124
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:53
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:165
@@ -472,7 +480,8 @@ msgstr "重新載入"
 #: src/views/notification/Notification.vue:38
 #: src/views/preference/tabs/AuthSettings.vue:128
 #: src/views/preference/tabs/CertSettings.vue:82
-#: src/views/site/site_list/SiteList.vue:210 src/views/stream/StreamList.vue:99
+#: src/views/site/site_list/SiteList.vue:210
+#: src/views/stream/StreamList.vue:99
 msgid "No"
 msgstr "取消"
 
@@ -482,6 +491,7 @@ msgstr "取消"
 #: src/components/Notification/Notification.vue:116 src/language/curd.ts:15
 #: src/views/backup/components/BackupCreator.vue:149
 #: src/views/notification/Notification.vue:39
+#: src/views/preference/components/NginxHostSetup/checks.ts:65
 #: src/views/site/components/SiteStatusSelect.vue:123
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:52
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:164
@@ -570,8 +580,9 @@ msgid "No Action"
 msgstr "無行動"
 
 #: src/components/NamespaceRender/NamespaceRender.vue:44
-#: src/components/NamespaceTabs/NamespaceTabs.vue:141 src/constants/index.ts:39
-#: src/views/node/Node.vue:209 src/views/node/Node.vue:217
+#: src/components/NamespaceTabs/NamespaceTabs.vue:141
+#: src/constants/index.ts:39 src/views/node/Node.vue:209
+#: src/views/node/Node.vue:217
 msgid "Reload Nginx"
 msgstr "重新載入 Nginx"
 
@@ -599,7 +610,7 @@ msgstr "重新啟動請求失敗，請檢查您的網路連線"
 #: src/constants/index.ts:49 src/views/backup/AutoBackup/AutoBackup.vue:103
 #: src/views/backup/AutoBackup/AutoBackup.vue:112
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:50
-#: src/views/preference/tabs/NginxSettings.vue:64
+#: src/views/preference/tabs/NginxSettings.vue:223
 msgid "Local"
 msgstr "本機"
 
@@ -661,7 +672,8 @@ msgid "Nginx restarted successfully"
 msgstr "Nginx 重啟成功"
 
 #: src/components/NginxControl/NginxControl.vue:124
-msgid "Nginx restart status could not be confirmed. Please check the Nginx status."
+msgid ""
+"Nginx restart status could not be confirmed. Please check the Nginx status."
 msgstr "無法確認 Nginx 重新啟動狀態。請檢查 Nginx 狀態。"
 
 #: src/components/NginxControl/NginxControl.vue:160
@@ -793,12 +805,12 @@ msgstr "移除此伺服器的 access_log 指令"
 
 #: src/components/NgxConfigEditor/LogEntry.vue:154
 msgid ""
-"Write an access_log directive for this server, so its requests can be "
-"viewed and analysed separately"
+"Write an access_log directive for this server, so its requests can be viewed"
+" and analysed separately"
 msgstr "為此伺服器寫入 access_log 指令，以便單獨檢視和分析其請求"
 
-#: src/components/NgxConfigEditor/LogEntry.vue:163 src/language/constants.ts:64
-#: src/views/nginx_log/NginxLogList.vue:150
+#: src/components/NgxConfigEditor/LogEntry.vue:163
+#: src/language/constants.ts:64 src/views/nginx_log/NginxLogList.vue:150
 msgid "Access Log"
 msgstr "存取日誌"
 
@@ -846,7 +858,8 @@ msgstr "新增伺服器"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:97 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:54
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:119
-#: src/views/site/site_list/SiteList.vue:186 src/views/stream/StreamList.vue:81
+#: src/views/site/site_list/SiteList.vue:186
+#: src/views/stream/StreamList.vue:81
 msgid "Add"
 msgstr "新增"
 
@@ -985,7 +998,8 @@ msgid "Auto Backup Storage Failed"
 msgstr "自動備份儲存失敗"
 
 #: src/components/Notification/notifications.ts:34
-msgid "Backup task %{backup_name} failed during storage upload, error: %{error}"
+msgid ""
+"Backup task %{backup_name} failed during storage upload, error: %{error}"
 msgstr "備份任務 %{backup_name} 在儲存上傳過程中失敗，錯誤：%{error}"
 
 #: src/components/Notification/notifications.ts:37
@@ -997,7 +1011,8 @@ msgid "Backup task %{backup_name} completed successfully, file: %{file_path}"
 msgstr "備份任務 %{backup_name} 已完成，檔案：%{file_path}"
 
 #: src/components/Notification/notifications.ts:41
-#: src/components/Notification/notifications.ts:49 src/language/constants.ts:35
+#: src/components/Notification/notifications.ts:49
+#: src/language/constants.ts:35
 msgid "Renew Certificate Success"
 msgstr "更新憑證成功"
 
@@ -1006,7 +1021,8 @@ msgstr "更新憑證成功"
 msgid "Certificate %{name} renewed successfully"
 msgstr "憑證 %{name} 續期成功"
 
-#: src/components/Notification/notifications.ts:45 src/language/constants.ts:36
+#: src/components/Notification/notifications.ts:45
+#: src/language/constants.ts:36
 msgid "Renew Certificate Error"
 msgstr "更新憑證錯誤"
 
@@ -1014,7 +1030,8 @@ msgstr "更新憑證錯誤"
 msgid "Certificate %{name} renewal failed: %{error}"
 msgstr "憑證 %{name} 續期失敗：%{error}"
 
-#: src/components/Notification/notifications.ts:53 src/language/constants.ts:39
+#: src/components/Notification/notifications.ts:53
+#: src/language/constants.ts:39
 msgid "Sync Certificate Error"
 msgstr "同步憑證錯誤"
 
@@ -1022,7 +1039,8 @@ msgstr "同步憑證錯誤"
 msgid "Sync Certificate %{cert_name} to %{node_name} failed"
 msgstr "同步證書 %{cert_name} 到 %{node_name} 失敗"
 
-#: src/components/Notification/notifications.ts:57 src/language/constants.ts:38
+#: src/components/Notification/notifications.ts:57
+#: src/language/constants.ts:38
 msgid "Sync Certificate Success"
 msgstr "同步憑證成功"
 
@@ -1030,7 +1048,8 @@ msgstr "同步憑證成功"
 msgid "Sync Certificate %{cert_name} to %{node_name} successfully"
 msgstr "證書 %{cert_name} 已成功同步至 %{node_name}"
 
-#: src/components/Notification/notifications.ts:61 src/language/constants.ts:45
+#: src/components/Notification/notifications.ts:61
+#: src/language/constants.ts:45
 msgid "Sync Config Error"
 msgstr "同步設定錯誤"
 
@@ -1038,7 +1057,8 @@ msgstr "同步設定錯誤"
 msgid "Sync config %{config_name} to %{node_name} failed"
 msgstr "同步配置 %{config_name} 到 %{node_name} 失敗"
 
-#: src/components/Notification/notifications.ts:65 src/language/constants.ts:44
+#: src/components/Notification/notifications.ts:65
+#: src/language/constants.ts:44
 msgid "Sync Config Success"
 msgstr "同步設定成功"
 
@@ -1046,7 +1066,8 @@ msgstr "同步設定成功"
 msgid "Sync config %{config_name} to %{node_name} successfully"
 msgstr "設定 %{config_name} 已成功同步到 %{node_name}"
 
-#: src/components/Notification/notifications.ts:69 src/language/constants.ts:42
+#: src/components/Notification/notifications.ts:69
+#: src/language/constants.ts:42
 msgid "Rename Remote Config Error"
 msgstr "重新命名遠端設定錯誤"
 
@@ -1054,7 +1075,8 @@ msgstr "重新命名遠端設定錯誤"
 msgid "Rename %{orig_path} to %{new_path} on %{node_name} failed"
 msgstr "在 %{node_name} 上將 %{orig_path} 重新命名為 %{new_path} 失敗"
 
-#: src/components/Notification/notifications.ts:73 src/language/constants.ts:41
+#: src/components/Notification/notifications.ts:73
+#: src/language/constants.ts:41
 msgid "Rename Remote Config Success"
 msgstr "重新命名遠端設定成功"
 
@@ -1086,7 +1108,8 @@ msgstr "外部通知測試"
 msgid "This is a test message sent at %{timestamp} from Nginx UI."
 msgstr "這是一條測試消息，於 %{timestamp} 從 Nginx UI 發送。"
 
-#: src/components/Notification/notifications.ts:89 src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:89
+#: src/language/constants.ts:50
 msgid "Delete Remote Site Error"
 msgstr "刪除遠端網站錯誤"
 
@@ -1094,7 +1117,8 @@ msgstr "刪除遠端網站錯誤"
 msgid "Delete site %{name} from %{node} failed"
 msgstr "從 %{node} 刪除網站 %{name} 失敗"
 
-#: src/components/Notification/notifications.ts:93 src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:93
+#: src/language/constants.ts:49
 msgid "Delete Remote Site Success"
 msgstr "刪除遠端網站成功"
 
@@ -1102,7 +1126,8 @@ msgstr "刪除遠端網站成功"
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "成功從 %{node} 移除站點 %{name}"
 
-#: src/components/Notification/notifications.ts:97 src/language/constants.ts:52
+#: src/components/Notification/notifications.ts:97
+#: src/language/constants.ts:52
 msgid "Disable Remote Site Error"
 msgstr "禁用遠端站點錯誤"
 
@@ -1293,8 +1318,8 @@ msgstr "所有恢復代碼已用完"
 #: src/components/Notification/notifications.ts:186
 #: src/language/constants.ts:59
 msgid ""
-"Please generate new recovery codes in the preferences immediately to "
-"prevent lockout."
+"Please generate new recovery codes in the preferences immediately to prevent"
+" lockout."
 msgstr "請立即在偏好設定中產生新的恢復碼，以免無法存取您的賬戶。"
 
 #: src/components/PortScanner/PortScannerCompact.vue:31
@@ -1397,6 +1422,7 @@ msgstr "舊有的復原碼已不建議使用。請產生新的復原碼以確保
 #: src/language/curd.ts:17
 #: src/views/certificate/components/DNSIssueCertificate.vue:237
 #: src/views/certificate/components/SelfSignedCertForm.vue:82
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:230
 msgid "Generate"
 msgstr "產生"
 
@@ -1460,18 +1486,21 @@ msgid ""
 msgstr "檢查是否啟用了 HTTPS。在 localhost 之外使用 HTTP 不安全，並且會阻止使用 Passkeys 和剪貼簿功能"
 
 #: src/components/SelfCheck/tasks/frontend/websocket.ts:19
-msgid "Support communication with the backend through the WebSocket protocol. "
+msgid ""
+"Support communication with the backend through the WebSocket protocol. "
 msgstr "支援透過 WebSocket 協定與後端通訊。"
 
 #: src/components/SensitiveString/SensitiveInput.vue:67
 #: src/components/SensitiveString/SensitiveString.vue:71
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:125
+#: src/views/preference/components/NginxHostSetup/CodeBlock.vue:51
 msgid "Copied"
 msgstr "已複製"
 
 #: src/components/SensitiveString/SensitiveInput.vue:90
 #: src/components/SensitiveString/SensitiveString.vue:100
 #: src/views/backup/components/BackupCreator.vue:128
+#: src/views/preference/components/NginxHostSetup/CodeBlock.vue:51
 msgid "Copy"
 msgstr "複製"
 
@@ -1631,8 +1660,8 @@ msgstr "自動重啟"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:368
 msgid ""
-"Nginx UI configuration has been restored and will restart automatically in "
-"a few seconds."
+"Nginx UI configuration has been restored and will restart automatically in a"
+" few seconds."
 msgstr "Nginx UI 設定已恢復，將在幾秒後自動重新啟動。"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:371
@@ -1661,7 +1690,7 @@ msgstr "恢復"
 msgid "Please enter the OTP code:"
 msgstr "請輸入 OTP 代碼："
 
-#: src/components/TwoFA/Authorization.vue:108 src/views/other/Login.vue:383
+#: src/components/TwoFA/Authorization.vue:108 src/views/other/Login.vue:387
 msgid "Or"
 msgstr "或"
 
@@ -1696,6 +1725,8 @@ msgid "Later"
 msgstr "稍後"
 
 #: src/components/TwoFA/use2FAModal.ts:84
+#: src/views/preference/NginxHostSetup.vue:109
+#: src/views/preference/tabs/NginxSettings.vue:43
 msgid "Two-factor authentication required"
 msgstr "需要多重因素驗證"
 
@@ -2390,7 +2421,8 @@ msgid "IP address certificates require the HTTP-01 challenge"
 msgstr "IP 位址憑證需要 HTTP-01 驗證"
 
 #: src/constants/errors/cert.ts:48
-msgid "Certificate profile is not available from the selected ACME server: {0}"
+msgid ""
+"Certificate profile is not available from the selected ACME server: {0}"
 msgstr "所選的 ACME 伺服器不提供憑證設定檔： {0}"
 
 #: src/constants/errors/cert.ts:49
@@ -2886,7 +2918,8 @@ msgid "Failed to restore nginx-ui.conf from backup: {0}"
 msgstr "從備份還原 nginx-ui.conf 失敗：{0}"
 
 #: src/constants/errors/self_check.ts:30
-msgid "Nginx configuration directory is not shared with external container at {0}"
+msgid ""
+"Nginx configuration directory is not shared with external container at {0}"
 msgstr "Nginx 設定目錄未與位於 {0} 的外部容器共用"
 
 #: src/constants/errors/self_check.ts:31
@@ -3114,7 +3147,8 @@ msgid "This field should be a valid hostname"
 msgstr "此欄位應為有效的主機名稱"
 
 #: src/constants/form_errors.ts:6
-msgid "This field should only contain letters, unicode characters, numbers, and -_."
+msgid ""
+"This field should only contain letters, unicode characters, numbers, and -_."
 msgstr "此欄位僅能包含字母、Unicode 字元、數字、連字號、破折號和底線。"
 
 #: src/constants/index.ts:26 src/views/notification/notificationColumns.tsx:28
@@ -3284,6 +3318,7 @@ msgstr "檢視"
 
 #: src/language/curd.ts:8 src/views/dns/components/DNSRecordTable.vue:324
 #: src/views/dns/components/DNSRecordTable.vue:375
+#: src/views/preference/tabs/NginxSettings.vue:230
 msgid "Edit"
 msgstr "編輯"
 
@@ -3364,7 +3399,9 @@ msgstr "批次修改"
 
 #: src/language/curd.ts:35 src/views/certificate/CertificateEditor.vue:97
 #: src/views/certificate/components/RenewCert.vue:21
-#: src/views/preference/store/index.ts:164
+#: src/views/preference/NginxHostSetup.vue:77
+#: src/views/preference/store/index.ts:169
+#: src/views/preference/tabs/NginxSettings.vue:138
 msgid "Save successfully"
 msgstr "儲存成功"
 
@@ -3483,8 +3520,8 @@ msgid ""
 "you don't need this feature, please add the environment variable "
 "NGINX_UI_IGNORE_DOCKER_SOCKET=true to the container."
 msgstr ""
-"檢查 /var/run/docker.sock 是否存在。如果您使用的是 Nginx UI 官方 Docker 映像，請確保以這種方式掛載 "
-"Docker 通訊端：`-v /var/run/docker.sock:/var/run/docker.sock`。Nginx UI 官方映像使用 "
+"檢查 /var/run/docker.sock 是否存在。如果您使用的是 Nginx UI 官方 Docker 映像，請確保以這種方式掛載 Docker"
+" 通訊端：`-v /var/run/docker.sock:/var/run/docker.sock`。Nginx UI 官方映像使用 "
 "/var/run/docker.sock 通過 Docker Client API 與主機 Docker Engine "
 "通訊。此功能用於在另一個容器中控制 Nginx，並在 Nginx UI 的 OTA "
 "升級期間執行容器替換而非二進位替換，以確保容器依賴項也得到升級。如果您不需要此功能，請向容器新增環境變數 "
@@ -3512,7 +3549,8 @@ msgstr ""
 "分析所必需的。您可以在偏好設置頁面下載它，或者手動將 GeoLite2-City.mmdb 放在與 app.ini 相同的目錄中"
 
 #: src/language/generate.ts:10
-msgid "Check if the conf.d directory is under the nginx configuration directory"
+msgid ""
+"Check if the conf.d directory is under the nginx configuration directory"
 msgstr "檢查 conf.d 目錄是否位於 nginx 配置目錄下"
 
 #: src/language/generate.ts:11
@@ -3529,16 +3567,16 @@ msgstr ""
 
 #: src/language/generate.ts:12
 msgid ""
-"Check if the nginx access log path exists. By default, this path is "
-"obtained from 'nginx -V'. If it cannot be obtained or the obtained path "
-"does not point to a valid, existing file, an error will be reported. In "
-"this case, you need to modify the configuration file to specify the access "
-"log path.Refer to the docs for more details: "
+"Check if the nginx access log path exists. By default, this path is obtained"
+" from 'nginx -V'. If it cannot be obtained or the obtained path does not "
+"point to a valid, existing file, an error will be reported. In this case, "
+"you need to modify the configuration file to specify the access log "
+"path.Refer to the docs for more details: "
 "https://nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
 msgstr ""
 "檢查 nginx 訪問日誌路徑是否存在。預設情況下，此路徑從 'nginx -V' "
-"獲取。如果無法獲取或獲取的路徑未指向有效的現有文件，將報告錯誤。在這種情況下，您需要修改配置文件以指定訪問日誌路徑。更多詳情請參閱文檔：https://"
-"nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
+"獲取。如果無法獲取或獲取的路徑未指向有效的現有文件，將報告錯誤。在這種情況下，您需要修改配置文件以指定訪問日誌路徑。更多詳情請參閱文檔：https://nginxui.com/zh_CN/guide/config-"
+"nginx.html#accesslogpath"
 
 #: src/language/generate.ts:13
 msgid "Check if the nginx configuration directory exists"
@@ -3554,12 +3592,12 @@ msgid ""
 "from 'nginx -V'. If it cannot be obtained or the obtained path does not "
 "point to a valid, existing file, an error will be reported. In this case, "
 "you need to modify the configuration file to specify the error log path. "
-"Refer to the docs for more details: "
-"https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
+"Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-"
+"nginx.html#errorlogpath"
 msgstr ""
 "檢查 nginx 錯誤日誌路徑是否存在。預設情況下，該路徑從 'nginx -V' "
-"獲取。如果無法獲取或獲取的路徑未指向有效的現有文件，將報錯。此時需要修改配置文件以指定錯誤日誌路徑。詳情請參閱文件：https://nginxui."
-"com/zh_CN/guide/config-nginx.html#errorlogpath"
+"獲取。如果無法獲取或獲取的路徑未指向有效的現有文件，將報錯。此時需要修改配置文件以指定錯誤日誌路徑。詳情請參閱文件：https://nginxui.com/zh_CN/guide/config-"
+"nginx.html#errorlogpath"
 
 #: src/language/generate.ts:16
 msgid "Check if the nginx sbin path exists"
@@ -3585,8 +3623,8 @@ msgstr "檢查 sites-available 和 sites-enabled 目錄是否位於 nginx 配置
 
 #: src/language/generate.ts:21
 msgid ""
-"Check if the streams-available and streams-enabled directories are under "
-"the nginx configuration directory"
+"Check if the streams-available and streams-enabled directories are under the"
+" nginx configuration directory"
 msgstr "檢查 streams-available 和 streams-enabled 目錄是否位於 nginx 配置目錄下"
 
 #: src/language/generate.ts:22
@@ -3616,8 +3654,8 @@ msgstr "GeoLite2 資料庫可用"
 #: src/language/generate.ts:28
 msgid ""
 "Log file %{log_path} is not a regular file. If you are using nginx-ui in "
-"docker container, please refer to "
-"https://nginxui.com/zh_CN/guide/config-nginx-log.html for more information."
+"docker container, please refer to https://nginxui.com/zh_CN/guide/config-"
+"nginx-log.html for more information."
 msgstr ""
 "日誌文件 %{log_path} 不是常規文件。如果您在 docker 容器中使用 nginx-ui，請參考 "
 "https://nginxui.com/zh_CN/guide/config-nginx-log.html 獲取更多信息。"
@@ -3695,11 +3733,13 @@ msgid "[Nginx UI] Certificate successfully revoked"
 msgstr "[Nginx UI] 證書已成功撤銷"
 
 #: src/language/generate.ts:45
-msgid "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
+msgid ""
+"[Nginx UI] Certificate was used for server, reloading server TLS certificate"
 msgstr "[Nginx UI] 憑證已用於伺服器，正在重新載入伺服器 TLS 憑證"
 
 #: src/language/generate.ts:46
-msgid "[Nginx UI] Creating client facilitates communication with the CA server"
+msgid ""
+"[Nginx UI] Creating client facilitates communication with the CA server"
 msgstr "[Nginx UI] 創建客戶端以促進與 CA 伺服器的通信"
 
 #: src/language/generate.ts:47
@@ -3778,11 +3818,12 @@ msgstr "首頁"
 #: src/routes/modules/auth.ts:8
 #: src/views/install/components/InstallForm.vue:120
 #: src/views/install/components/InstallHeader.vue:9
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:39
 #: src/views/system/Upgrade.vue:150
 msgid "Install"
 msgstr "安裝"
 
-#: src/routes/modules/auth.ts:14 src/views/other/Login.vue:374
+#: src/routes/modules/auth.ts:14 src/views/other/Login.vue:378
 msgid "Login"
 msgstr "登入"
 
@@ -3800,7 +3841,8 @@ msgstr "自動備份"
 msgid "Certificates"
 msgstr "憑證"
 
-#: src/routes/modules/certificates.ts:20 src/views/certificate/ACMEUser.vue:140
+#: src/routes/modules/certificates.ts:20
+#: src/views/certificate/ACMEUser.vue:140
 #: src/views/certificate/components/ACMEUserSelector.vue:63
 msgid "ACME User"
 msgstr "ACME 使用者"
@@ -3844,11 +3886,11 @@ msgstr "編輯設定"
 msgid "Dashboard"
 msgstr "儀錶板"
 
-#: src/routes/modules/dashboard.ts:19 src/views/preference/Preference.vue:47
+#: src/routes/modules/dashboard.ts:19 src/views/preference/Preference.vue:48
 msgid "Server"
 msgstr "伺服器"
 
-#: src/routes/modules/dashboard.ts:27 src/views/preference/Preference.vue:95
+#: src/routes/modules/dashboard.ts:27 src/views/preference/Preference.vue:96
 msgid "Nginx"
 msgstr "Nginx"
 
@@ -3910,9 +3952,13 @@ msgstr "日誌列表"
 msgid "Nodes"
 msgstr "節點"
 
-#: src/routes/modules/preference.ts:10 src/views/preference/Preference.vue:42
+#: src/routes/modules/preference.ts:10 src/views/preference/Preference.vue:43
 msgid "Preference"
 msgstr "偏好設定"
+
+#: src/routes/modules/preference.ts:19
+msgid "Host SSH Setup"
+msgstr ""
 
 #: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:158
 msgid "Manage Sites"
@@ -3952,7 +3998,7 @@ msgstr "關於"
 msgid "Third-party Components"
 msgstr "第三方組件"
 
-#: src/routes/modules/terminal.ts:10 src/views/preference/Preference.vue:77
+#: src/routes/modules/terminal.ts:10 src/views/preference/Preference.vue:78
 msgid "Terminal"
 msgstr "終端"
 
@@ -3961,6 +4007,7 @@ msgid "Manage Users"
 msgstr "管理使用者"
 
 #: src/routes/modules/user.ts:19
+#: src/views/preference/tabs/NginxSettings.vue:44
 msgid "User Profile"
 msgstr "用戶資料"
 
@@ -4073,6 +4120,7 @@ msgstr "待處理"
 #: src/views/backup/AutoBackup/AutoBackup.vue:250
 #: src/views/certificate/CertificateList/certColumns.tsx:87
 #: src/views/dns/DNSGroupRecordManager.vue:1184
+#: src/views/preference/components/NginxHostSetup/checks.ts:69
 msgid "Failed"
 msgstr "失敗"
 
@@ -4386,7 +4434,8 @@ msgstr "註冊一個使用者或使用此帳戶透過 HTTP 代理發行憑證。
 msgid "Leave blank if you don't need this."
 msgstr "留空表示不需要此項目。"
 
-#: src/views/certificate/ACMEUser.vue:72 src/views/certificate/ACMEUser.vue:157
+#: src/views/certificate/ACMEUser.vue:72
+#: src/views/certificate/ACMEUser.vue:157
 msgid "Invalid"
 msgstr "無效"
 
@@ -4396,8 +4445,8 @@ msgstr "EAB 密鑰 ID"
 
 #: src/views/certificate/ACMEUser.vue:83
 msgid ""
-"External Account Binding Key ID (optional). Required for some ACME "
-"providers like ZeroSSL."
+"External Account Binding Key ID (optional). Required for some ACME providers"
+" like ZeroSSL."
 msgstr "外部帳戶綁定密鑰 ID （可選）。某些 ACME 提供商（如 ZeroSSL）需要此信息。"
 
 #: src/views/certificate/ACMEUser.vue:85 src/views/certificate/ACMEUser.vue:98
@@ -4419,7 +4468,8 @@ msgid "Register On Startup"
 msgstr "啟動時註冊"
 
 #: src/views/certificate/ACMEUser.vue:110
-msgid "When Enabled, Nginx UI will automatically re-register users upon startup. "
+msgid ""
+"When Enabled, Nginx UI will automatically re-register users upon startup. "
 msgstr "啟用後， Nginx UI 將在啟動時自動重新註冊使用者。"
 
 #: src/views/certificate/ACMEUser.vue:131
@@ -4572,6 +4622,8 @@ msgstr[0] "憑證狀態"
 #: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
 #: src/views/dns/DNSGroupRecordManager.vue:1546
 #: src/views/dns/DNSRecordManager.vue:258 src/views/nginx_log/NginxLog.vue:129
+#: src/views/preference/NginxHostSetup.vue:118
+#: src/views/preference/NginxHostSetup.vue:136
 #: src/views/site/site_add/SiteAdd.vue:260
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:189
 #: src/views/stream/components/StreamEditor.vue:147
@@ -4596,6 +4648,8 @@ msgstr "複製到剪貼簿失敗"
 #: src/views/certificate/components/CertificateBasicInfo.vue:47
 #: src/views/certificate/components/CertificateBasicInfo.vue:80
 #: src/views/certificate/components/CertificateBasicInfo.vue:114
+#: src/views/preference/components/NginxHostSetup/PathField.vue:60
+#: src/views/preference/tabs/NginxSettings.vue:261
 msgid "This field is required"
 msgstr "此欄位為必填項"
 
@@ -4788,6 +4842,7 @@ msgstr "所有選定的子網域名稱必須屬於同一 DNS 提供商，否則�
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:223
 #: src/views/install/components/InstallView.vue:212
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:104
 #: src/views/site/site_add/SiteAdd.vue:247
 #: src/views/site/site_add/SiteAdd.vue:254
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:260
@@ -4796,6 +4851,8 @@ msgstr "下一步"
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:259
 #: src/views/certificate/components/RetryCert.vue:52
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:77
+#: src/views/preference/NginxHostSetup.vue:133
 msgid "Retry"
 msgstr "重試"
 
@@ -5028,7 +5085,8 @@ msgstr "同步"
 msgid "Created successfully"
 msgstr "建立成功"
 
-#: src/views/config/components/Mkdir.vue:47 src/views/config/ConfigList.vue:137
+#: src/views/config/components/Mkdir.vue:47
+#: src/views/config/ConfigList.vue:137
 msgid "Create Folder"
 msgstr "建立資料夾"
 
@@ -5113,6 +5171,7 @@ msgstr "連結"
 
 #: src/views/dashboard/components/NodeAnalyticItem.vue:82
 #: src/views/dashboard/components/SiteNavigationToolbar.vue:35
+#: src/views/preference/components/NginxHostSetup/steps/ConnectionTest.vue:72
 msgid "Connected"
 msgstr "已連線"
 
@@ -5926,6 +5985,7 @@ msgid "Additional"
 msgstr "其他設定"
 
 #: src/views/dns/components/DNSRecordFilter.vue:42
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:210
 #: src/views/preference/tabs/ServerSettings.vue:19
 msgid "Host"
 msgstr "主機"
@@ -6132,8 +6192,8 @@ msgid ""
 "unreachable. Disable to manage only the records you explicitly selected and "
 "keep all other DNS state untouched."
 msgstr ""
-"啟用後，DDNS 將擁有所選名稱：自動配對同族記錄，建立缺失的記錄，並移除 IP 族無法連線的記錄。停用後，僅管理您明確選取的記錄，保持所有其他 "
-"DNS 狀態不變。"
+"啟用後，DDNS 將擁有所選名稱：自動配對同族記錄，建立缺失的記錄，並移除 IP 族無法連線的記錄。停用後，僅管理您明確選取的記錄，保持所有其他 DNS"
+" 狀態不變。"
 
 #: src/views/dns/DDNSManager.vue:400
 msgid "Records"
@@ -6162,7 +6222,8 @@ msgid ""
 msgstr "請填寫您的 DNS 供應商提供的 API 認證憑據。"
 
 #: src/views/dns/DNSCredential.vue:96
-msgid "Please note that the unit of time configurations below are all in seconds."
+msgid ""
+"Please note that the unit of time configurations below are all in seconds."
 msgstr "請注意，以下時間設定單位均為秒。"
 
 #: src/views/dns/DNSDomainList.vue:109
@@ -6176,7 +6237,8 @@ msgid ""
 msgstr "DNS 網域用於 NGINX UI 中的 DNS 記錄管理，與 ACME DNS-01 憑證驗證挑戰是兩個不同的功能。"
 
 #: src/views/dns/DNSDomainList.vue:116
-msgid "DNS Domains only use providers with DNS record management implementations."
+msgid ""
+"DNS Domains only use providers with DNS record management implementations."
 msgstr "DNS Domains 僅使用已實作 DNS 記錄管理的提供商。"
 
 #: src/views/dns/DNSDomainList.vue:119
@@ -6589,7 +6651,8 @@ msgid "Apply changes"
 msgstr "套用變更"
 
 #: src/views/dns/DNSGroupRecordManager.vue:1554
-msgid "Changes are applied per domain and cannot be rolled back as one transaction."
+msgid ""
+"Changes are applied per domain and cannot be rolled back as one transaction."
 msgstr "變更將按網域分別套用，無法作為單一交易進行復原。"
 
 #: src/views/dns/DNSGroupRecordManager.vue:1585
@@ -6632,7 +6695,8 @@ msgstr "未知錯誤"
 msgid "Please input your E-mail!"
 msgstr "請輸入您的電子郵件！"
 
-#: src/views/install/components/InstallForm.vue:35 src/views/other/Login.vue:74
+#: src/views/install/components/InstallForm.vue:35
+#: src/views/other/Login.vue:74
 msgid "Please input your username!"
 msgstr "請輸入您的使用者名稱！"
 
@@ -6640,7 +6704,8 @@ msgstr "請輸入您的使用者名稱！"
 msgid "Username length cannot exceed 255 characters"
 msgstr "使用者名稱長度不能超過 255 個字元"
 
-#: src/views/install/components/InstallForm.vue:45 src/views/other/Login.vue:80
+#: src/views/install/components/InstallForm.vue:45
+#: src/views/other/Login.vue:80
 msgid "Please input your password!"
 msgstr "請輸入您的密碼！"
 
@@ -6837,8 +6902,8 @@ msgstr "推薦："
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:166
 msgid ""
-"* Index files are stored in the \"log-index\" directory within your Nginx "
-"UI config path by default."
+"* Index files are stored in the \"log-index\" directory within your Nginx UI"
+" config path by default."
 msgstr "* 索引文件預設存儲在您的 Nginx UI 配置路徑下的 \"log-index\" 目錄中。"
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:167
@@ -7416,12 +7481,13 @@ msgstr "檢測到錯誤日誌"
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:676
 msgid ""
-"Error logs do not support structured analysis as they contain free-form "
-"text messages."
+"Error logs do not support structured analysis as they contain free-form text"
+" messages."
 msgstr "錯誤日誌不支援結構化分析，因為它們包含自由格式的文字訊息。"
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:678
-msgid "For error logs, please use the Raw Log Viewer for better viewing experience."
+msgid ""
+"For error logs, please use the Raw Log Viewer for better viewing experience."
 msgstr "對於錯誤日誌，請使用原始日誌檢視器以獲得更好的檢視體驗。"
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:683
@@ -7545,7 +7611,8 @@ msgid "Get release information error"
 msgstr "取得發佈資訊錯誤"
 
 #: src/views/node/BatchUpgrader.vue:187
-msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
+msgid ""
+"This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr "這將在 %{nodeNames} 上升級或重新安裝 Nginx UI 到 %{version}。"
 
 #: src/views/node/BatchUpgrader.vue:193 src/views/system/Upgrade.vue:237
@@ -7622,6 +7689,7 @@ msgid "Version"
 msgstr "版本"
 
 #: src/views/node/nodeColumns.tsx:72
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:222
 msgid "Authentication"
 msgstr "認證"
 
@@ -7649,32 +7717,32 @@ msgstr "找不到檔案"
 msgid "Back Home"
 msgstr "返回首頁"
 
-#: src/views/other/Login.vue:109
+#: src/views/other/Login.vue:110
 msgid "Login successful"
 msgstr "登入成功"
 
-#: src/views/other/Login.vue:306
+#: src/views/other/Login.vue:310
 msgid "Authenticating..."
 msgstr "正在驗證..."
 
-#: src/views/other/Login.vue:315 src/views/user/userColumns.tsx:7
+#: src/views/other/Login.vue:319 src/views/user/userColumns.tsx:7
 #: src/views/user/UserProfile.vue:122 src/views/user/UserProfile.vue:126
 msgid "Username"
 msgstr "使用者名稱"
 
-#: src/views/other/Login.vue:325 src/views/user/userColumns.tsx:16
+#: src/views/other/Login.vue:329 src/views/user/userColumns.tsx:16
 msgid "Password"
 msgstr "密碼"
 
-#: src/views/other/Login.vue:339
+#: src/views/other/Login.vue:343
 msgid "SSO Login"
 msgstr "SSO 登入"
 
-#: src/views/other/Login.vue:348
+#: src/views/other/Login.vue:352
 msgid "OIDC Login"
 msgstr "OIDC 登入"
 
-#: src/views/other/Login.vue:392
+#: src/views/other/Login.vue:396
 msgid "Sign in with a passkey"
 msgstr "使用通行金鑰登入"
 
@@ -7710,7 +7778,7 @@ msgstr "請按照對話框中的指示完成通行金鑰的註冊流程。"
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:87
 #: src/views/preference/components/AuthSettings/TOTP.vue:131
-#: src/views/user/UserProfile.vue:181
+#: src/views/user/UserProfile.vue:184
 msgid "Current Password"
 msgstr "當前密碼"
 
@@ -7721,7 +7789,8 @@ msgid ""
 msgstr "您尚未設定 Webauthn 設定，因此無法新增通行金鑰。"
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:104
-msgid "To ensure security, Webauthn configuration cannot be added through the UI. "
+msgid ""
+"To ensure security, Webauthn configuration cannot be added through the UI. "
 msgstr "為確保安全性，Webauthn 設定無法透過 UI 新增。"
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:114
@@ -7748,7 +7817,8 @@ msgid "Passkey"
 msgstr "通行金鑰"
 
 #: src/views/preference/components/AuthSettings/Passkey.vue:63
-msgid "Passkeys are webauthn credentials that validate your identity using touch, "
+msgid ""
+"Passkeys are webauthn credentials that validate your identity using touch, "
 msgstr "通行金鑰是 WebAuthn 憑證，可透過觸控驗證您的身分，"
 
 #: src/views/preference/components/AuthSettings/Passkey.vue:76
@@ -7792,7 +7862,8 @@ msgid ""
 msgstr "請將您的復原代碼與密碼一樣妥善保管。我們建議使用密碼管理工具來儲存這些代碼。"
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:82
-msgid "You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
+msgid ""
+"You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
 msgstr "您尚未啟用雙重身份驗證 (2FA)。請啟用 2FA 以生成復原代碼。"
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:92
@@ -7983,40 +8054,1057 @@ msgstr "Telegram"
 msgid "WeCom"
 msgstr "企業微信"
 
-#: src/views/preference/Preference.vue:53
+#: src/views/preference/components/NginxHostSetup/CheckPanel.vue:74
+#: src/views/system/Upgrade.vue:204
+msgid "Check again"
+msgstr "再次檢查"
+
+#: src/views/preference/components/NginxHostSetup/CheckPanel.vue:74
+msgid "Run checks"
+msgstr "執行檢查"
+
+#: src/views/preference/components/NginxHostSetup/CheckPanel.vue:87
+msgid "Could not run the checks"
+msgstr "無法執行檢查"
+
+#: src/views/preference/components/NginxHostSetup/CheckResults.vue:20
+msgid "Some checks failed. Fix them before continuing."
+msgstr "部分檢查未通過。請先修正再繼續。"
+
+#: src/views/preference/components/NginxHostSetup/CheckResults.vue:34
+msgid "Blocking checks passed. Review the warnings below."
+msgstr "阻斷性檢查已通過。請檢視下方的警告。"
+
+#: src/views/preference/components/NginxHostSetup/CheckResults.vue:40
+msgid "All checks passed."
+msgstr "所有檢查均已通過。"
+
+#: src/views/preference/components/NginxHostSetup/CheckResults.vue:63
+msgid "Suggested fix"
+msgstr "建議修正"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:16
+msgid "nginx config directory is writable"
+msgstr "nginx 設定目錄可寫入"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:17
+msgid "Host platform matches the service manager"
+msgstr "主機平台與服務管理器相符"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:18
+msgid "known_hosts is persisted"
+msgstr "known_hosts 已持久化"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:19
+msgid "launchd service is loaded"
+msgstr "launchd 服務已載入"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:20
+msgid "nginx log directory is readable"
+msgstr "nginx 日誌目錄可讀取"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:21
+msgid "nginx -t passes"
+msgstr "nginx -t 通過"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:22
+msgid "nginx PID file is present"
+msgstr "nginx PID 檔案存在"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:23
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:266
+msgid "Host platform"
+msgstr "主機平台"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:24
+msgid "Target is the container host"
+msgstr "目標為本容器所在的宿主機"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:25
+msgid "SSH connection"
+msgstr "SSH 連線"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:26
+msgid "Passwordless sudo is available"
+msgstr "可使用免密碼 sudo"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:27
+msgid "sudoers rules cover the nginx commands"
+msgstr "sudoers 規則已涵蓋 nginx 指令"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:28
+msgid "systemd unit is active"
+msgstr "systemd unit 已啟動"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:29
+msgid "systemd unit defines ExecReload"
+msgstr "systemd unit 已定義 ExecReload"
+
+#: src/views/preference/components/NginxHostSetup/CodeBlock.vue:30
+msgid "Clipboard access is unavailable in this browser context"
+msgstr "目前的瀏覽器環境無法存取剪貼簿"
+
+#: src/views/preference/components/NginxHostSetup/PathField.vue:35
+msgid "Auto-detected"
+msgstr "自動偵測"
+
+#: src/views/preference/components/NginxHostSetup/PathField.vue:39
+msgid "Manual override"
+msgstr "手動覆寫"
+
+#: src/views/preference/components/NginxHostSetup/PathField.vue:49
+msgid "Detected:"
+msgstr "偵測值："
+
+#: src/views/preference/components/NginxHostSetup/PathField.vue:56
+msgid "Restore detected value"
+msgstr "還原為偵測到的值"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:77
+msgid ""
+"Point Nginx UI at a private key that already exists inside the container."
+msgstr "將 Nginx UI 指向容器內已存在的私鑰。"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:79
+msgid ""
+"Paste or upload a private key. Nginx UI stores it at the managed path with "
+"mode 0600."
+msgstr "貼上或上傳私鑰。Nginx UI 會以權限 0600 將其儲存於受管理的路徑。"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:81
+msgid ""
+"Nginx UI generates an ed25519 keypair and stores it at the managed path."
+msgstr "Nginx UI 會產生 ed25519 金鑰對，並儲存於受管理的路徑。"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:99
+msgid "Private key path is required"
+msgstr "私鑰路徑為必填項"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:159
+msgid "Private key content is required"
+msgstr "私鑰內容為必填項"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:163
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:197
+msgid "Private key exceeds the 64 KiB limit"
+msgstr "私鑰超過 64 KiB 的大小上限"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:182
+msgid "Private key saved securely"
+msgstr "私鑰已安全儲存"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:224
+msgid "Use my own SSH key"
+msgstr "使用我自己的 SSH 金鑰"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:225
+msgid "Private key source"
+msgstr "私鑰來源"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:231
+msgid "Existing path"
+msgstr "現有路徑"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:232
+msgid "Paste or upload"
+msgstr "貼上或上傳"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:247
+msgid ""
+"The private key must already be available inside the Nginx UI container."
+msgstr "該私鑰必須已存在於 Nginx UI 容器內。"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:248
+msgid ""
+"Encrypted private keys are not supported. You may provide the host-side "
+"source path below to include a read-only bind mount in the generated "
+"container instructions."
+msgstr "不支援加密的私鑰。您可以在下方提供宿主機端的來源路徑，以便在產生的容器指令中加入唯讀綁定掛載。"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:256
+msgid "Saving will replace the Nginx UI managed SSH private key."
+msgstr "儲存後將取代由 Nginx UI 管理的 SSH 私鑰。"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:257
+msgid ""
+"Only unencrypted SSH private keys are accepted. The submitted content is "
+"cleared from the browser after it is stored with file mode 0600."
+msgstr "僅接受未加密的 SSH 私鑰。提交的內容會以檔案權限 0600 儲存後，自瀏覽器中清除。"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:260
+msgid "Private key path inside container"
+msgstr "容器內的私鑰路徑"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:268
+msgid "Managed by Nginx UI. Switch to \"Existing path\" to use another location."
+msgstr "由 Nginx UI 管理。若要使用其他位置，請切換為「現有路徑」。"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:273
+msgid "Private key content"
+msgstr "私鑰內容"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:283
+msgid "Choose private key file"
+msgstr "選擇私鑰檔案"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:297
+msgid "Private key path on Docker host (optional)"
+msgstr "Docker 宿主機上的私鑰路徑（選填）"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:302
+msgid "Adds a read-only bind mount to the generated container instructions."
+msgstr "在產生的容器指令中加入唯讀綁定掛載。"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:314
+msgid "Replace the stored private key with a new one?"
+msgstr "要以新的私鑰取代已儲存的私鑰嗎？"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:315
+msgid ""
+"The current key stops working until the new public key is installed on the "
+"host."
+msgstr "在主機上安裝新的公鑰之前，目前的金鑰將無法使用。"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:316
+msgid "Regenerate"
+msgstr "重新產生"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:322
+msgid "Regenerate keypair"
+msgstr "重新產生金鑰對"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:327
+msgid "Generate keypair"
+msgstr "產生金鑰對"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:338
+msgid "Validate existing key"
+msgstr "驗證現有金鑰"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:349
+msgid "Validate and save private key"
+msgstr "驗證並儲存私鑰"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:354
+msgid "Key is readable"
+msgstr "金鑰可讀取"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:364
+msgid "Private key validation failed"
+msgstr "私鑰驗證失敗"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:368
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:282
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:107
+msgid "Public key"
+msgstr "公鑰"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:378
+msgid "Generate a keypair to continue, or open \"Use my own SSH key\" above."
+msgstr "請產生金鑰對以繼續，或展開上方的「使用我自己的 SSH 金鑰」。"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:382
+msgid ""
+"The Install step shows where to put this on the host. Nothing has been "
+"installed there yet."
+msgstr "「安裝」步驟會說明應將其放在主機的哪個位置。目前尚未在主機上安裝任何內容。"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:393
+msgid "Private key generated (shown once)"
+msgstr "已產生私鑰（僅顯示一次）"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:396
+msgid "Save this private key somewhere safe. It will NOT be shown again."
+msgstr "請將此私鑰妥善保存於安全之處。它不會再次顯示。"
+
+#: src/views/preference/components/NginxHostSetup/steps/ConnectionTest.vue:63
+msgid "Trust every presented host key before testing the connection."
+msgstr "請先信任所有提供的主機金鑰，再測試連線。"
+
+#: src/views/preference/components/NginxHostSetup/steps/ConnectionTest.vue:69
+msgid "Test SSH connection"
+msgstr "測試 SSH 連線"
+
+#: src/views/preference/components/NginxHostSetup/steps/ConnectionTest.vue:80
+msgid "SSH connection failed"
+msgstr "SSH 連線失敗"
+
+#: src/views/preference/components/NginxHostSetup/steps/ConnectionTest.vue:87
+msgid "SSH connection succeeded"
+msgstr "SSH 連線成功"
+
+#: src/views/preference/components/NginxHostSetup/steps/ConnectionTest.vue:94
+msgid "SSH connection was not established"
+msgstr "尚未建立 SSH 連線"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:82
+msgid "Trusted"
+msgstr "已信任"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:84
+msgid "New algorithm"
+msgstr "新演算法"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:86
+msgid "Changed"
+msgstr "已變更"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:88
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:328
+msgid "Stale"
+msgstr "已過期"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:90
+msgid "Unknown host"
+msgstr "未知主機"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:204
+msgid "Verify the SSH host key before trusting it"
+msgstr "信任 SSH 主機金鑰前請先驗證"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:205
+msgid ""
+"Nginx UI can read the key presented by the SSH server, but it cannot prove "
+"the key is genuine by itself. Verify the fingerprint through the host "
+"console or another trusted channel before trusting or replacing it."
+msgstr "Nginx UI 可以讀取 SSH 伺服器提供的金鑰，但無法自行證明該金鑰為真。請先透過主機主控台或其他可信管道驗證指紋，再信任或替換它。"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:208
+msgid "Current target"
+msgstr "目前目標"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:213
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:121
+msgid "SSH user"
+msgstr "SSH 使用者"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:216
+msgid "known_hosts"
+msgstr "known_hosts"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:230
+msgid "1. Verify and trust the host key"
+msgstr "1. 驗證並信任主機金鑰"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:236
+msgid "Scan host keys"
+msgstr "掃描主機金鑰"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:244
+msgid "Failed to scan host keys"
+msgstr "掃描主機金鑰失敗"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:251
+msgid "Failed to update trusted host keys"
+msgstr "更新受信任的主機金鑰失敗"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:256
+msgid "Paste ssh-keyscan output"
+msgstr "貼上 ssh-keyscan 輸出"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:257
+msgid "Run on a trusted terminal"
+msgstr "在可信的終端機上執行"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:260
+msgid "Parse pasted output"
+msgstr "解析貼上的輸出"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:276
+msgid "Fingerprint"
+msgstr "指紋"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:279
+msgid "Existing fingerprint"
+msgstr "現有指紋"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:295
+msgid "I verified this fingerprint through a trusted channel."
+msgstr "我已透過可信管道驗證此指紋。"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:298
+msgid "Trust this algorithm"
+msgstr "信任此演算法"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:298
+msgid "Trust this key"
+msgstr "信任此金鑰"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:303
+msgid ""
+"Host key changed. Replace only after confirming an intentional host SSH key "
+"rotation."
+msgstr "主機金鑰已變更。請先確認這是主機 SSH 金鑰的預期輪換，再進行替換。"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:305
+msgid "I verified the new fingerprint through a trusted channel."
+msgstr "我已透過可信管道驗證新的指紋。"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:308
+msgid "Replace trusted key"
+msgstr "替換受信任的金鑰"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:318
+msgid "No SSH host keys were returned"
+msgstr "未取得任何 SSH 主機金鑰"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:322
+msgid "Advanced cleanup"
+msgstr "進階清理"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:335
+msgid "I understand this removes only the selected stale known_hosts entry."
+msgstr "我了解此操作僅會移除所選的過期 known_hosts 條目。"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:339
+msgid "Delete stale key"
+msgstr "刪除過期金鑰"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:353
+msgid "Host identity is trusted"
+msgstr "主機身分已受信任"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:359
+msgid "Resolve changed host keys before continuing."
+msgstr "請先處理已變更的主機金鑰再繼續。"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:168
+msgid "Paths refreshed from %{path}"
+msgstr "已從 %{path} 重新整理路徑"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:193
+msgid "Target diagnosis"
+msgstr "目標診斷"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:197
+msgid "Detect again"
+msgstr "再次偵測"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:197
+msgid "Detect target"
+msgstr "偵測目標"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:205
+msgid "Every field matches the detected values"
+msgstr "所有欄位皆與偵測到的值相符"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:209
+msgid "Some fields differ from the detected values"
+msgstr "部分欄位與偵測到的值不同"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:213
+msgid "Apply all detected values"
+msgstr "套用所有偵測到的值"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:221
+msgid "Target diagnosis failed"
+msgstr "目標診斷失敗"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:229
+msgid "The target platform could not be classified automatically"
+msgstr "無法自動判斷目標平台"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:230
+msgid ""
+"Choose the platform and confirm every path below manually, then continue."
+msgstr "請選擇平台並手動確認下方每一個路徑，然後繼續。"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:233
+msgid "Diagnosis completed with warnings"
+msgstr "診斷完成，但有警告"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:244
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:156
+msgid "Operating system"
+msgstr "作業系統"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:247
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:159
+msgid "Service manager"
+msgstr "服務管理器"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:250
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:276
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:162
+msgid "Homebrew prefix"
+msgstr "Homebrew 前綴路徑"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:253
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:168
+msgid "Detected nginx version"
+msgstr "偵測到的 nginx 版本"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:256
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:302
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:171
+msgid "nginx executable path"
+msgstr "nginx 可執行檔路徑"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:264
+msgid "Adjust detected values"
+msgstr "調整偵測到的值"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:265
+msgid "Platform"
+msgstr "平台"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:270
+msgid "Linux (systemd)"
+msgstr "Linux (systemd)"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:271
+msgid "macOS (Homebrew)"
+msgstr "macOS (Homebrew)"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:280
+msgid "Apple Silicon"
+msgstr "Apple Silicon"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:281
+msgid "Intel Mac"
+msgstr "Intel Mac"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:286
+msgid ""
+"Detection fills this in. Switching it rewrites the four paths below that "
+"still hold a conventional default."
+msgstr "此欄位由偵測結果填入。切換後會重寫下方四個仍為慣用預設值的路徑。"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:292
+msgid "systemd unit"
+msgstr "systemd unit"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:293
+msgid "systemctl path"
+msgstr "systemctl 路徑"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:296
+msgid "launchd service label"
+msgstr "launchd 服務標籤"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:297
+msgid "launchctl path"
+msgstr "launchctl 路徑"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:301
+msgid "nginx paths"
+msgstr "nginx 路徑"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:309
+msgid "Re-detect paths from this executable"
+msgstr "從此執行檔重新偵測路徑"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:313
+msgid ""
+"Runs nginx -V on the target and refreshes the config, log and PID paths "
+"below."
+msgstr "在目標主機上執行 nginx -V，並重新整理下方的設定、日誌與 PID 路徑。"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:323
+msgid "Could not read the nginx build configuration"
+msgstr "無法讀取 nginx 的編譯設定"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:334
+msgid "nginx config directory"
+msgstr "nginx 設定目錄"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:335
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:177
+msgid "nginx log directory"
+msgstr "nginx 日誌目錄"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:336
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:180
+msgid "nginx PID file"
+msgstr "nginx PID 檔案"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:345
+msgid "Platform and paths are complete."
+msgstr "平台與路徑已填寫完整。"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:351
+msgid "Path checks read the Nginx UI container, not the host"
+msgstr "路徑檢查讀取的是 Nginx UI 容器，而非主機"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:352
+msgid ""
+"The service check runs over SSH, but the config, log and PID checks look "
+"inside this container. On a first run they stay red until the bind mounts "
+"from the next step are applied and the container is recreated. That is "
+"expected and does not block you from continuing."
+msgstr ""
+"服務檢查是透過 SSH 執行，但設定、日誌與 PID "
+"檢查是在本容器內進行。首次執行時，在套用下一步的綁定掛載並重建容器之前，這些檢查會維持紅色。這是預期行為，不會妨礙您繼續。"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:357
+msgid "Platform checks"
+msgstr "平台檢查"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:358
+msgid ""
+"Verifies the service is loaded under the entered label and that every path "
+"above is reachable from the container."
+msgstr "驗證服務是否以所輸入的標籤載入，以及上方每一個路徑是否可從容器存取。"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:68
+msgid "Failed to load setup instructions"
+msgstr "載入設定說明失敗"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:83
+msgid "1. On the nginx host"
+msgstr "1. 在 nginx 主機上"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:89
+msgid "Run these on the machine that runs nginx, as a user who can use sudo."
+msgstr "請在執行 nginx 的機器上，以可使用 sudo 的使用者身分執行下列指令。"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:90
+msgid ""
+"Run these on the machine that runs nginx, as the SSH user configured above."
+msgstr "請在執行 nginx 的機器上，以上方設定的 SSH 使用者身分執行下列指令。"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:98
+msgid "Install the public key"
+msgstr "安裝公鑰"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:99
+msgid ""
+"Creates %{file} with the permissions sshd requires and appends the key. sshd"
+" silently ignores an authorized_keys file that other users can write, which "
+"shows up later as a permission denied error."
+msgstr ""
+"以 sshd 要求的權限建立 %{file} 並附加金鑰。若 authorized_keys 檔案可被其他使用者寫入，sshd "
+"會直接忽略它，之後便會出現 permission denied 錯誤。"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:108
+msgid ""
+"The same key on its own, for appending by hand. To restrict where it may be "
+"used from, prefix it with from='…'."
+msgstr "僅金鑰本身的內容，供手動附加使用。若要限制可從何處使用，請在前面加上 from='…'。"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:116
+msgid "Open the sudoers file"
+msgstr "開啟 sudoers 檔案"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:117
+msgid ""
+"visudo checks the syntax before saving, so a typo cannot lock you out of "
+"sudo."
+msgstr "visudo 會在儲存前檢查語法，因此打錯字不會讓您失去 sudo 權限。"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:123
+msgid "sudoers rules"
+msgstr "sudoers 規則"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:124
+msgid ""
+"Paste this into the editor visudo opened, then save and exit. It lets the "
+"SSH user reload nginx without a password."
+msgstr "將此內容貼到 visudo 開啟的編輯器中，然後儲存並離開。這可讓 SSH 使用者無需密碼即可重新載入 nginx。"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:133
+msgid "File access check"
+msgstr "檔案存取檢查"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:133
+msgid "File permissions"
+msgstr "檔案權限"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:135
+msgid ""
+"Run as the SSH user. Both commands only test access and change nothing. A "
+"failure means the SSH user cannot reach the Homebrew paths."
+msgstr "以 SSH 使用者身分執行。這兩個指令只會測試存取權限，不會變更任何內容。若失敗，表示該 SSH 使用者無法存取 Homebrew 路徑。"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:136
+msgid ""
+"Run as root. Grants the SSH user write access to the nginx config directory "
+"and read access to the logs, including files created later, plus read access"
+" to the PID file."
+msgstr ""
+"以 root 身分執行。授予 SSH 使用者對 nginx 設定目錄的寫入權限、對日誌（含日後新增的檔案）的讀取權限，以及對 PID 檔案的讀取權限。"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:143
+msgid "Nothing else to install on the host"
+msgstr "主機上不需要再安裝任何內容"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:145
+msgid ""
+"A Homebrew launchd service runs as the SSH user, so no sudoers entry or "
+"extra permissions are needed."
+msgstr "Homebrew 的 launchd 服務會以 SSH 使用者身分執行，因此不需要 sudoers 條目或額外權限。"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:146
+msgid ""
+"The SSH user is root, so no sudoers entry or extra permissions are needed."
+msgstr "SSH 使用者為 root，因此不需要 sudoers 條目或額外權限。"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:151
+msgid "2. On the Nginx UI container"
+msgstr "2. 在 Nginx UI 容器上"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:156
+msgid ""
+"Pick the format that matches how you run Nginx UI, then recreate the "
+"container."
+msgstr "請選擇符合您執行 Nginx UI 方式的格式，然後重建容器。"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:162
+msgid "Recreating the container closes this page"
+msgstr "重建容器會關閉此頁面"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:166
+msgid "Finish the host side first, then come back here."
+msgstr "請先完成主機端的設定，再回到此處。"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:167
+msgid ""
+"Restarting Nginx UI ends the two-factor session and clears anything typed in"
+" the earlier steps."
+msgstr "重新啟動 Nginx UI 會結束雙重身份驗證工作階段，並清除先前步驟中輸入的所有內容。"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:168
+msgid ""
+"The generated key and known_hosts survive, because they live under the "
+"persisted /etc/nginx-ui directory."
+msgstr "產生的金鑰與 known_hosts 會保留下來，因為它們位於已持久化的 /etc/nginx-ui 目錄下。"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:169
+msgid ""
+"Note the host address and SSH user before you recreate, then reopen the "
+"wizard and verify again."
+msgstr "重建前請先記下主機位址與 SSH 使用者，之後重新開啟精靈並再次驗證。"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:175
+msgid "docker compose"
+msgstr "docker compose"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:181
+msgid "docker-compose.yml"
+msgstr "docker-compose.yml"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:182
+msgid ""
+"Merge this under services.nginx-ui in your existing file. Each bind mount "
+"uses the same path inside the container as on the host."
+msgstr "請將此段合併到現有檔案的 services.nginx-ui 之下。每個綁定掛載在容器內使用與主機相同的路徑。"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:185
+msgid "override file"
+msgstr "覆寫檔案"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:191
+msgid "docker-compose.override.yml"
+msgstr "docker-compose.override.yml"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:192
+msgid ""
+"Save as a new file next to your main compose file. Docker Compose merges it "
+"automatically, so your original file stays untouched."
+msgstr "請另存為新檔並與主要 compose 檔案放在一起。Docker Compose 會自動合併，原始檔案不會被更動。"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:195
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:201
+msgid "docker run"
+msgstr "docker run"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:202
+msgid ""
+"Replaces your current docker run command. Adjust the published port and the "
+"image tag to match your current deployment."
+msgstr "取代您目前的 docker run 指令。請調整對外埠號與映像標籤，使其符合目前的部署。"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:212
+msgid "Apply the change"
+msgstr "套用變更"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:214
+msgid ""
+"Remove the old container, then run the command above. The new environment "
+"variables only take effect on a fresh container."
+msgstr "請移除舊容器，然後執行上方指令。新的環境變數只會在全新建立的容器上生效。"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:215
+msgid ""
+"The new environment variables only take effect once the container is "
+"recreated."
+msgstr "新的環境變數只有在重建容器後才會生效。"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:225
+msgid "Permission checks"
+msgstr "權限檢查"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:226
+msgid "Run this once the sudoers rules are installed on the host."
+msgstr "在主機上安裝好 sudoers 規則後再執行此檢查。"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:81
+msgid "SSH target"
+msgstr "SSH 目標"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:82
+msgid "Host address (host:port)"
+msgstr "主機位址 (host:port)"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:89
+msgid "This address answers on the SSH port."
+msgstr "此位址在 SSH 埠上有回應。"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:94
+msgid "These addresses answer on the SSH port from this container:"
+msgstr "從本容器可在 SSH 埠上連通下列位址："
+
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:108
+msgid "Could not probe for reachable addresses: %{reason}"
+msgstr "無法探測可達位址：%{reason}"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:111
+msgid ""
+"No address answered. Enter one manually, then use Probe again to test it."
+msgstr "沒有位址回應。請手動輸入一個位址，再使用「再次探測」進行測試。"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:115
+msgid "Probe again"
+msgstr "再次探測"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:131
+msgid "Remote address detected"
+msgstr "偵測到遠端位址"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:135
+msgid "This mode only supports nginx-ui and target nginx on the same host."
+msgstr "此模式僅支援 nginx-ui 與目標 nginx 位於同一主機。"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:136
+msgid ""
+"bind-mount cannot reach remote filesystems, so config editing, log viewing "
+"and certificate management will fail."
+msgstr "綁定掛載無法存取遠端檔案系統，因此設定編輯、日誌檢視與憑證管理都會失敗。"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:143
+msgid "Use the cluster Node guide for cross-host setups."
+msgstr "跨主機設定請參閱叢集節點指南。"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepTrustAndTest.vue:27
+msgid "2. Test the SSH connection"
+msgstr "2. 測試 SSH 連線"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepTrustAndTest.vue:37
+msgid "3. Check the connection"
+msgstr "3. 檢查連線"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepTrustAndTest.vue:42
+msgid "Connection checks"
+msgstr "連線檢查"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepTrustAndTest.vue:43
+msgid ""
+"Verifies reachability, that the target is the container host, and that "
+"known_hosts is persisted."
+msgstr "驗證連通性、目標是否為本容器所在的宿主機，以及 known_hosts 是否已持久化。"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:89
+msgid "Verification"
+msgstr "驗證"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:92
+msgid "Run verification"
+msgstr "執行驗證"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:96
+msgid ""
+"Every check validates the SSH setup itself, except nginx -t, which validates"
+" the configuration already present on the host."
+msgstr "除了 nginx -t 之外，每項檢查驗證的都是 SSH 設定本身；nginx -t 驗證的則是主機上既有的設定。"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:104
+msgid "The nginx configuration on the host failed validation"
+msgstr "主機上的 nginx 設定未通過驗證"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:108
+msgid ""
+"This is the configuration already present on the host, not something this "
+"wizard wrote. The SSH setup itself can still be saved, and the configuration"
+" can be fixed from Nginx UI afterwards."
+msgstr "這是主機上既有的設定，並非本精靈寫入的內容。SSH 設定本身仍可儲存，之後可從 Nginx UI 修正該設定。"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:111
+msgid "Continue without validating the configuration"
+msgstr "不驗證設定並繼續"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:120
+msgid "Target diagnosis completed with warnings"
+msgstr "目標診斷完成，但有警告"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:135
+msgid "Detected target settings differ from the current configuration"
+msgstr "偵測到的目標設定與目前設定不同"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:139
+msgid "Apply the detected settings, review them, then run verification again."
+msgstr "套用偵測到的設定，確認無誤後再次執行驗證。"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:142
+msgid "Apply detected settings"
+msgstr "套用偵測到的設定"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:151
+msgid "Verification failed"
+msgstr "驗證失敗"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:174
+msgid "Main configuration file"
+msgstr "主設定檔"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:183
+msgid "Homebrew document root"
+msgstr "Homebrew 網站根目錄"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:192
+msgid ""
+"A run re-reads the host, opens an SSH session, checks every path from inside"
+" this container, checks sudo access, and runs nginx -t."
+msgstr "每次執行都會重新讀取主機、建立 SSH 工作階段、從本容器內檢查所有路徑、檢查 sudo 權限，並執行 nginx -t。"
+
+#: src/views/preference/components/NginxHostSetup/useHostSetupWizard.ts:189
+msgid "Enter the SSH host address."
+msgstr "請輸入 SSH 主機位址。"
+
+#: src/views/preference/components/NginxHostSetup/useHostSetupWizard.ts:191
+msgid "Enter the SSH user."
+msgstr "請輸入 SSH 使用者。"
+
+#: src/views/preference/components/NginxHostSetup/useHostSetupWizard.ts:193
+msgid "Generate, validate or import a private key first."
+msgstr "請先產生、驗證或匯入私鑰。"
+
+#: src/views/preference/components/NginxHostSetup/useHostSetupWizard.ts:197
+msgid "Trust every presented host key first."
+msgstr "請先信任所有提供的主機金鑰。"
+
+#: src/views/preference/components/NginxHostSetup/useHostSetupWizard.ts:199
+msgid "Run the SSH connection test first."
+msgstr "請先執行 SSH 連線測試。"
+
+#: src/views/preference/components/NginxHostSetup/useHostSetupWizard.ts:203
+msgid "Fill in the platform and every nginx path below."
+msgstr "請填寫平台與下方每一個 nginx 路徑。"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:36
+msgid "SSH Target"
+msgstr "SSH 目標"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:36
+msgid "Address, user and private key"
+msgstr "位址、使用者與私鑰"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:37
+msgid "Trust & Test"
+msgstr "信任與測試"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:37
+msgid "Host key and connectivity"
+msgstr "主機金鑰與連線能力"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:38
+msgid "Detect Platform"
+msgstr "偵測平台"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:38
+msgid "Service manager and nginx paths"
+msgstr "服務管理器與 nginx 路徑"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:39
+msgid "Container and host snippets"
+msgstr "容器與主機程式碼片段"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:40
+msgid "Verify"
+msgstr "驗證"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:40
+msgid "Run checks and save"
+msgstr "執行檢查並儲存"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:94
+msgid "Previous"
+msgstr "上一步"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:115
+msgid "Save configuration"
+msgstr "儲存設定"
+
+#: src/views/preference/NginxHostSetup.vue:51
+msgid "Failed to load settings"
+msgstr "載入設定失敗"
+
+#: src/views/preference/NginxHostSetup.vue:61
+msgid "Failed to authorize protected settings"
+msgstr "授權受保護的設定失敗"
+
+#: src/views/preference/NginxHostSetup.vue:81
+#: src/views/preference/NginxHostSetup.vue:148
+msgid "Failed to save Nginx control settings"
+msgstr "儲存 Nginx 控制設定失敗"
+
+#: src/views/preference/NginxHostSetup.vue:98
+msgid "Back to Nginx settings"
+msgstr "返回 Nginx 設定"
+
+#: src/views/preference/NginxHostSetup.vue:103
+msgid "Authorizing..."
+msgstr "正在授權..."
+
+#: src/views/preference/NginxHostSetup.vue:110
+msgid ""
+"Enable two-factor authentication before changing Nginx control settings."
+msgstr "變更 Nginx 控制設定前，請先啟用雙重身份驗證 (2FA)。"
+
+#: src/views/preference/NginxHostSetup.vue:115
+#: src/views/preference/tabs/NginxSettings.vue:44
+#: src/views/preference/tabs/NginxSettings.vue:45
+#: src/views/user/UserProfile.vue:149
+msgid "2FA Settings"
+msgstr "多重要素驗證設定"
+
+#: src/views/preference/NginxHostSetup.vue:127
+msgid "Unable to open SSH setup"
+msgstr "無法開啟 SSH 設定"
+
+#: src/views/preference/Preference.vue:54
 msgid "App"
 msgstr "應用"
 
-#: src/views/preference/Preference.vue:59
+#: src/views/preference/Preference.vue:60
 #: src/views/preference/tabs/ExternalNotify.vue:42
 msgid "External Notify"
 msgstr "外部通知"
 
-#: src/views/preference/Preference.vue:65
+#: src/views/preference/Preference.vue:66
 msgid "Node"
 msgstr "節點"
 
-#: src/views/preference/Preference.vue:71
+#: src/views/preference/Preference.vue:72
 msgid "HTTP"
 msgstr "HTTP"
 
-#: src/views/preference/Preference.vue:83
+#: src/views/preference/Preference.vue:84
 msgid "Auth"
 msgstr "身份驗證"
 
-#: src/views/preference/Preference.vue:89
+#: src/views/preference/Preference.vue:90
 msgid "Cert"
 msgstr "證書"
 
-#: src/views/preference/Preference.vue:101
+#: src/views/preference/Preference.vue:102
 msgid "LLM"
 msgstr "LLM"
 
-#: src/views/preference/Preference.vue:107
+#: src/views/preference/Preference.vue:108
 msgid "Logrotate"
 msgstr "Logrotate"
 
-#: src/views/preference/Preference.vue:113
+#: src/views/preference/Preference.vue:114
 msgid "GeoLite"
 msgstr "GeoLite"
 
@@ -8127,8 +9215,8 @@ msgstr "發送測試消息失敗"
 
 #: src/views/preference/tabs/GeoLiteSettings.vue:9
 msgid ""
-"The GeoLite2 database provides geographic information for IP addresses. "
-"This is used for offline geographic analysis in log analytics."
+"The GeoLite2 database provides geographic information for IP addresses. This"
+" is used for offline geographic analysis in log analytics."
 msgstr "GeoLite2 資料庫為 IP 位址提供地理資訊。這用於日誌分析中的離線地理分析。"
 
 #: src/views/preference/tabs/HTTPSettings.vue:11
@@ -8155,65 +9243,83 @@ msgstr "命令"
 msgid "Minutes"
 msgstr "分鐘"
 
-#: src/views/preference/tabs/NginxSettings.vue:10
+#: src/views/preference/tabs/NginxSettings.vue:169
 msgid "Stub Status Port"
 msgstr "存根狀態端口"
 
-#: src/views/preference/tabs/NginxSettings.vue:13
+#: src/views/preference/tabs/NginxSettings.vue:172
 msgid "Maintenance template (filename only)"
 msgstr "維護範本（僅檔名）"
 
-#: src/views/preference/tabs/NginxSettings.vue:16
+#: src/views/preference/tabs/NginxSettings.vue:175
 msgid "maintenance.html"
 msgstr "maintenance.html"
 
-#: src/views/preference/tabs/NginxSettings.vue:19
+#: src/views/preference/tabs/NginxSettings.vue:178
 msgid "Mounted directory"
 msgstr "掛載目錄"
 
-#: src/views/preference/tabs/NginxSettings.vue:22
+#: src/views/preference/tabs/NginxSettings.vue:181
 msgid "Nginx Access Log Path"
 msgstr "Nginx 存取日誌路徑"
 
-#: src/views/preference/tabs/NginxSettings.vue:25
+#: src/views/preference/tabs/NginxSettings.vue:184
 msgid "Nginx Error Log Path"
 msgstr "Nginx 錯誤日誌路徑"
 
-#: src/views/preference/tabs/NginxSettings.vue:28
+#: src/views/preference/tabs/NginxSettings.vue:187
 msgid "Nginx Configurations Directory"
 msgstr "Nginx 設定目錄"
 
-#: src/views/preference/tabs/NginxSettings.vue:31
+#: src/views/preference/tabs/NginxSettings.vue:190
 msgid "Nginx Configuration Path"
 msgstr "Nginx 設定路徑"
 
-#: src/views/preference/tabs/NginxSettings.vue:34
+#: src/views/preference/tabs/NginxSettings.vue:193
 msgid "Nginx Log Directory Whitelist"
 msgstr "Nginx 日誌目錄白名單"
 
-#: src/views/preference/tabs/NginxSettings.vue:43
+#: src/views/preference/tabs/NginxSettings.vue:202
 msgid "Nginx PID Path"
 msgstr "Nginx PID 路徑"
 
-#: src/views/preference/tabs/NginxSettings.vue:46
+#: src/views/preference/tabs/NginxSettings.vue:205
 msgid "Nginx Test Config Command"
 msgstr "Nginx 測試設定指令"
 
-#: src/views/preference/tabs/NginxSettings.vue:49
+#: src/views/preference/tabs/NginxSettings.vue:208
 msgid "Nginx Reload Command"
 msgstr "Nginx 重新載入指令"
 
-#: src/views/preference/tabs/NginxSettings.vue:52
+#: src/views/preference/tabs/NginxSettings.vue:211
 msgid "Nginx Restart Command"
 msgstr "Nginx 重啟指令"
 
-#: src/views/preference/tabs/NginxSettings.vue:55
+#: src/views/preference/tabs/NginxSettings.vue:214
 msgid "Nginx Control Mode"
 msgstr "Nginx 控制模式"
 
-#: src/views/preference/tabs/NginxSettings.vue:58
+#: src/views/preference/tabs/NginxSettings.vue:217
+#: src/views/preference/tabs/NginxSettings.vue:245
+msgid "Host via SSH"
+msgstr "透過 SSH 連線的主機"
+
+#: src/views/preference/tabs/NginxSettings.vue:220
+#: src/views/preference/tabs/NginxSettings.vue:259
 msgid "External Docker Container"
 msgstr "外部 Docker 容器"
+
+#: src/views/preference/tabs/NginxSettings.vue:239
+msgid "Local / Bundled"
+msgstr "本機 / 內建"
+
+#: src/views/preference/tabs/NginxSettings.vue:242
+msgid "External Container"
+msgstr "外部容器"
+
+#: src/views/preference/tabs/NginxSettings.vue:251
+msgid "Open SSH setup wizard"
+msgstr "開啟 SSH 設定精靈"
 
 #: src/views/preference/tabs/NodeSettings.vue:14
 msgid "Instance ID"
@@ -8275,7 +9381,8 @@ msgid ""
 msgstr "留空以使用 MiniMax 全球 OpenAI 相容端點：https://api.minimax.io/v1"
 
 #: src/views/preference/tabs/OpenAISettings.vue:38
-msgid "Leave blank to use the Atlas Cloud endpoint: https://api.atlascloud.ai/v1"
+msgid ""
+"Leave blank to use the Atlas Cloud endpoint: https://api.atlascloud.ai/v1"
 msgstr "留空則使用 Atlas Cloud 端點：https://api.atlascloud.ai/v1"
 
 #: src/views/preference/tabs/OpenAISettings.vue:40
@@ -8290,8 +9397,8 @@ msgstr "網址無效。"
 #: src/views/preference/tabs/OpenAISettings.vue:48
 msgid ""
 "MiniMax is OpenAI-compatible. Use https://api.minimax.io/v1 for global "
-"service or https://api.minimaxi.com/v1 for China service. For "
-"Anthropic-compatible clients, use https://api.minimax.io/anthropic or "
+"service or https://api.minimaxi.com/v1 for China service. For Anthropic-"
+"compatible clients, use https://api.minimax.io/anthropic or "
 "https://api.minimaxi.com/anthropic."
 msgstr ""
 "MiniMax 相容 OpenAI。全球服務請使用 https://api.minimax.io/v1，中國服務請使用 "
@@ -8302,7 +9409,8 @@ msgstr ""
 msgid ""
 "Atlas Cloud is OpenAI-compatible. Use https://api.atlascloud.ai/v1 and an "
 "Atlas Cloud API key."
-msgstr "Atlas Cloud 相容 OpenAI。使用 https://api.atlascloud.ai/v1 和 Atlas Cloud API 金鑰。"
+msgstr ""
+"Atlas Cloud 相容 OpenAI。使用 https://api.atlascloud.ai/v1 和 Atlas Cloud API 金鑰。"
 
 #: src/views/preference/tabs/OpenAISettings.vue:55
 msgid "To use a local large model, deploy it with ollama, vllm or lmdeploy. "
@@ -8348,7 +9456,8 @@ msgid "Code Completion Model"
 msgstr "程式碼補全模型"
 
 #: src/views/preference/tabs/OpenAISettings.vue:167
-msgid "The model used for code completion, if not set, the chat model will be used."
+msgid ""
+"The model used for code completion, if not set, the chat model will be used."
 msgstr "用於代碼補全的模型，如果未設置，將使用聊天模型。"
 
 #: src/views/preference/tabs/ServerSettings.vue:25
@@ -8696,11 +9805,13 @@ msgid "Self-signed certificate applied"
 msgstr "已套用自行簽署憑證"
 
 #: src/views/site/site_edit/components/Cert/SelfSignedCert.vue:47
-msgid "Saving the site configuration failed; the certificate directives are in "
+msgid ""
+"Saving the site configuration failed; the certificate directives are in "
 msgstr "儲存站點配置失敗；憑證指令位於"
 
 #: src/views/site/site_edit/components/Cert/SelfSignedCert.vue:54
-msgid "Certificate directives added to the editor; review and save when ready."
+msgid ""
+"Certificate directives added to the editor; review and save when ready."
 msgstr "憑證指令已新增至編輯器；準備就緒後請檢閱並儲存。"
 
 #: src/views/site/site_edit/components/Cert/SelfSignedCert.vue:63
@@ -8834,7 +9945,8 @@ msgid "Nginx Configuration Parse Error"
 msgstr "Nginx 設定解析錯誤"
 
 #: src/views/site/site_edit/components/SiteEditor/store.ts:145
-msgid "Please select a certificate before saving the TLS server configuration."
+msgid ""
+"Please select a certificate before saving the TLS server configuration."
 msgstr "請在儲存 TLS 伺服器設定前選擇一個憑證。"
 
 #: src/views/site/site_list/columns.tsx:78 src/views/stream/columns.tsx:46
@@ -9006,10 +10118,6 @@ msgstr "可執行檔路徑"
 msgid "Last checked at"
 msgstr "上次檢查時間"
 
-#: src/views/system/Upgrade.vue:204
-msgid "Check again"
-msgstr "再次檢查"
-
 #: src/views/system/Upgrade.vue:216
 msgid "Dev"
 msgstr "Dev"
@@ -9040,14 +10148,14 @@ msgstr "此終端連接已斷開。請根據需要重新整理。"
 
 #: src/views/terminal/Terminal.vue:212
 msgid ""
-"Demo mode is enabled. This terminal only allows a small set of safe "
-"read-only commands."
+"Demo mode is enabled. This terminal only allows a small set of safe read-"
+"only commands."
 msgstr "演示模式已啟用。此終端僅允許執行少量安全的唯讀命令。"
 
 #: src/views/terminal/Terminal.vue:219
 msgid ""
-"You are accessing this terminal over an insecure HTTP connection on a "
-"non-localhost domain. This may expose sensitive information."
+"You are accessing this terminal over an insecure HTTP connection on a non-"
+"localhost domain. This may expose sensitive information."
 msgstr "您正在透過非本地主機域上的不安全 HTTP 連線存取此終端機。這可能會暴露敏感資訊。"
 
 #: src/views/upstream/SocketList.vue:18
@@ -9102,27 +10210,23 @@ msgstr "個人資訊"
 msgid "Update Profile"
 msgstr "更新資料"
 
-#: src/views/user/UserProfile.vue:146
-msgid "2FA Settings"
-msgstr "多重要素驗證設定"
-
-#: src/views/user/UserProfile.vue:170
+#: src/views/user/UserProfile.vue:173
 msgid "Security Settings"
 msgstr "安全設定"
 
-#: src/views/user/UserProfile.vue:176
+#: src/views/user/UserProfile.vue:179
 msgid "Change Password"
 msgstr "更改密碼"
 
-#: src/views/user/UserProfile.vue:190
+#: src/views/user/UserProfile.vue:193
 msgid "New Password"
 msgstr "新密碼"
 
-#: src/views/user/UserProfile.vue:199
+#: src/views/user/UserProfile.vue:202
 msgid "Confirm New Password"
 msgstr "確認新密碼"
 
-#: src/views/user/UserProfile.vue:213
+#: src/views/user/UserProfile.vue:216
 msgid "Update Password"
 msgstr "更新密碼"
 
@@ -9191,16 +10295,16 @@ msgstr "更新密碼"
 #~ msgstr "僅用於暫時相容。將 MCP 節點密鑰用戶端取代為限定範圍的服務權杖。"
 
 #~ msgid ""
-#~ "Logrotate, by default, is enabled in most mainstream Linux distributions "
-#~ "for users who install Nginx UI on the host machine, so you don't need to "
-#~ "modify the parameters on this page. For users who install Nginx UI using "
-#~ "Docker containers, you can manually enable this option. The crontab task "
-#~ "scheduler of Nginx UI will execute the logrotate command at the interval "
-#~ "you set in minutes."
+#~ "Logrotate, by default, is enabled in most mainstream Linux distributions for"
+#~ " users who install Nginx UI on the host machine, so you don't need to modify"
+#~ " the parameters on this page. For users who install Nginx UI using Docker "
+#~ "containers, you can manually enable this option. The crontab task scheduler "
+#~ "of Nginx UI will execute the logrotate command at the interval you set in "
+#~ "minutes."
 #~ msgstr ""
 #~ "預設情況下，對於在主機上安裝 Nginx UI 的使用者，大多數主流 Linux 發行版都啟用了 "
-#~ "logrotate，因此您無需修改此頁面的參數。對於使用 Docker 容器安裝 Nginx UI 的使用者，您可以手動啟用此選項。Nginx UI "
-#~ "的 crontab 任務排程器將按照您設定的分鐘間隔執行 logrotate 命令。"
+#~ "logrotate，因此您無需修改此頁面的參數。對於使用 Docker 容器安裝 Nginx UI 的使用者，您可以手動啟用此選項。Nginx UI 的"
+#~ " crontab 任務排程器將按照您設定的分鐘間隔執行 logrotate 命令。"
 
 #, fuzzy
 #~ msgid "Node credential rotated successfully"
@@ -9235,8 +10339,8 @@ msgstr "更新密碼"
 
 #~ msgid ""
 #~ "Support communication with the backend through the WebSocket protocol. If "
-#~ "your Nginx UI is being used via an Nginx reverse proxy, please refer to "
-#~ "this link to write the corresponding configuration file: "
+#~ "your Nginx UI is being used via an Nginx reverse proxy, please refer to this"
+#~ " link to write the corresponding configuration file: "
 #~ "https://nginxui.com/guide/nginx-proxy-example.html"
 #~ msgstr ""
 #~ "支援透過 WebSocket 協議與後端進行通訊。如果您的 Nginx UI 是透過 Nginx "
@@ -9246,7 +10350,8 @@ msgstr "更新密碼"
 #~ "The certificate has been generated at %{path} and the ssl_certificate "
 #~ "directives have been added to the current server block. Save the "
 #~ "configuration now, or review the changes in the editor and save manually."
-#~ msgstr "憑證已產生於 %{path}，且 ssl_certificate 指令已新增至目前的伺服器區塊。請立即儲存設定，或在編輯器中檢閱變更後手動儲存。"
+#~ msgstr ""
+#~ "憑證已產生於 %{path}，且 ssl_certificate 指令已新增至目前的伺服器區塊。請立即儲存設定，或在編輯器中檢閱變更後手動儲存。"
 
 #~ msgid ""
 #~ "The server_name in the current configuration must be the domain name you "
@@ -9255,8 +10360,8 @@ msgstr "更新密碼"
 
 #~ msgid ""
 #~ "To make sure the certification auto-renewal can work normally, we need to "
-#~ "add a location which can proxy the request from authority to backend, and "
-#~ "we need to save this file and reload the Nginx. Are you sure you want to "
+#~ "add a location which can proxy the request from authority to backend, and we"
+#~ " need to save this file and reload the Nginx. Are you sure you want to "
 #~ "continue?"
 #~ msgstr ""
 #~ "為了確保憑證自動續期能夠正常運作，我們需要新增一個 Location 來代理從授權後端的請求，我們需要儲存這個檔案並重新載入 "
@@ -9274,10 +10379,6 @@ msgstr "更新密碼"
 #, fuzzy
 #~ msgid "Create set"
 #~ msgstr "建立時間"
-
-#, fuzzy
-#~ msgid "Delete set"
-#~ msgstr "刪除"
 
 #, fuzzy
 #~ msgid "Delete this record set? DNS records will not be changed."
@@ -9340,7 +10441,8 @@ msgstr "更新密碼"
 #~ msgid "Record type"
 #~ msgstr "記錄類型"
 
-#~ msgid "Resolve duplicate records in each domain before synchronizing this entry"
+#~ msgid ""
+#~ "Resolve duplicate records in each domain before synchronizing this entry"
 #~ msgstr "同步此條目之前，請先解決每個網域中的重複記錄。"
 
 #~ msgid "Resolve duplicate records in individual domains first"
@@ -9382,9 +10484,9 @@ msgstr "更新密碼"
 #~ msgstr "現有的解析線路、代理設定和備註會保留下來。新增記錄則使用服務商對這些欄位的預設值。"
 
 #~ msgid ""
-#~ "Group operations update common DNS fields once through the existing "
-#~ "per-domain APIs. Resolution lines, proxy state, and comments stay specific "
-#~ "to each existing record."
+#~ "Group operations update common DNS fields once through the existing per-"
+#~ "domain APIs. Resolution lines, proxy state, and comments stay specific to "
+#~ "each existing record."
 #~ msgstr "群組操作會透過現有的按網域 API 一次性更新通用 DNS 欄位。解析線路、代理狀態和註解仍保留在每個現有記錄中。"
 
 #~ msgid "Please enter a valid IPv4 address (0-255 per octet)"
@@ -9410,10 +10512,6 @@ msgstr "更新密碼"
 #~ msgstr "正在驗證..."
 
 #, fuzzy
-#~ msgid "Connection"
-#~ msgstr "已連線"
-
-#, fuzzy
 #~ msgid "Container"
 #~ msgstr "內容"
 
@@ -9422,39 +10520,11 @@ msgstr "更新密碼"
 #~ msgstr "複製"
 
 #, fuzzy
-#~ msgid "External Container"
-#~ msgstr "外部 Docker 容器"
-
-#, fuzzy
-#~ msgid "Generate keypair"
-#~ msgstr "產生"
-
-#, fuzzy
-#~ msgid "override file"
-#~ msgstr "覆寫現有檔案"
-
-#, fuzzy
-#~ msgid "Regenerate keypair"
-#~ msgstr "重新產生回應"
-
-#, fuzzy
-#~ msgid "Remote address detected"
-#~ msgstr "未選擇節點"
-
-#, fuzzy
-#~ msgid "Run verification"
-#~ msgstr "更換憑證"
-
-#, fuzzy
 #~ msgid "SSH key (recommended)"
 #~ msgstr "推薦 2+ 核心"
 
 #~ msgid "Type or select A/AAAA records"
 #~ msgstr "輸入或選擇 A/AAAA 記錄"
-
-#, fuzzy
-#~ msgid "Verify"
-#~ msgstr "驗證密鑰"
 
 #~ msgid "OpenAI"
 #~ msgstr "OpenAI"
@@ -9720,8 +10790,8 @@ msgstr "更新密碼"
 #~ msgstr "此自動憑證項目無效，請將其移除。"
 
 #~ msgid ""
-#~ "If logs are not indexed, please check if the log file is under the "
-#~ "directory in Nginx.LogDirWhiteList."
+#~ "If logs are not indexed, please check if the log file is under the directory"
+#~ " in Nginx.LogDirWhiteList."
 #~ msgstr "如果日誌未被索引，請檢查日誌檔案是否位於 Nginx 的 LogDirWhiteList 目錄下。"
 
 #, fuzzy
@@ -9788,7 +10858,8 @@ msgstr "更新密碼"
 #~ msgid "Please upgrade the remote Nginx UI to the latest version"
 #~ msgstr "請將遠端 Nginx UI 升級至最新版本"
 
-#~ msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: %{resp}"
+#~ msgid ""
+#~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: %{resp}"
 #~ msgstr "在 %{env_name} 上將 %{orig_path} 重新命名為 %{new_path} 失敗，回應：%{resp}"
 
 #~ msgid "Rename Site %{site} to %{new_site} on %{node} error, response: %{resp}"
@@ -9813,7 +10884,8 @@ msgstr "更新密碼"
 #~ "2FA."
 #~ msgstr "如果您遺失了手機，可以使用恢復碼重設您的多重因素驗證驗證。"
 
-#~ msgid "The recovery code is only displayed once, please save it in a safe place."
+#~ msgid ""
+#~ "The recovery code is only displayed once, please save it in a safe place."
 #~ msgstr "恢復碼僅顯示一次，請將其儲存在安全的地方。"
 
 #~ msgid "Incorrect username or password"
@@ -9823,9 +10895,10 @@ msgstr "更新密碼"
 #~ msgstr "登入失敗次數過多，請稍後再試"
 
 #~ msgid ""
-#~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, please upgrade "
-#~ "the remote Nginx UI to the latest version"
-#~ msgstr "將 %{orig_path} 重新命名為 %{new_path} 在 %{env_name} 失敗，請將遠端 Nginx UI 升級到最新版本"
+#~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, please upgrade the"
+#~ " remote Nginx UI to the latest version"
+#~ msgstr ""
+#~ "將 %{orig_path} 重新命名為 %{new_path} 在 %{env_name} 失敗，請將遠端 Nginx UI 升級到最新版本"
 
 #~ msgid "Enable 2FA"
 #~ msgstr "啟用多因素身份驗證"
@@ -9878,10 +10951,8 @@ msgstr "更新密碼"
 
 #, fuzzy
 #~ msgid ""
-#~ "Please fill in the API authentication credentials provided by your DNS "
-#~ "provider.\n"
-#~ "We will add one or more TXT records to the DNS records of your domain for "
-#~ "ownership verification.\n"
+#~ "Please fill in the API authentication credentials provided by your DNS provider.\n"
+#~ "We will add one or more TXT records to the DNS records of your domain for ownership verification.\n"
 #~ "Once the verification is complete, the records will be removed.\n"
 #~ "Please note that the unit of time configurations below are all in seconds."
 #~ msgstr ""
@@ -9971,7 +11042,8 @@ msgstr "更新密碼"
 #~ msgid "This operation will lose the custom configuration."
 #~ msgstr "該操作將會遺失自定義設定。"
 
-#~ msgid "Add site here first, then you can configure TLS on the domain edit page."
+#~ msgid ""
+#~ "Add site here first, then you can configure TLS on the domain edit page."
 #~ msgstr "在這裡新增網站，完成後可進入編輯頁面設定 TLS。"
 
 #~ msgid "Server Status"
