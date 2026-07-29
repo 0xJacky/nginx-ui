@@ -1,7 +1,6 @@
 package config
 
 import (
-	"os"
 	"path/filepath"
 
 	"github.com/0xJacky/Nginx-UI/internal/helper"
@@ -21,7 +20,7 @@ func CheckAndCreateHistory(path string, content string) error {
 	}
 
 	// Read the current content of the file
-	currentContent, err := os.ReadFile(path)
+	currentContent, err := nginx.ReadFile(path)
 	if err != nil {
 		return nil
 	}

@@ -1,9 +1,10 @@
 package config
 
 import (
+	"net/http"
+
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 func GetBasePath(c *gin.Context) {

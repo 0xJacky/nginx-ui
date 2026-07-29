@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/0xJacky/Nginx-UI/internal/host/setup"
+	appsettings "github.com/0xJacky/Nginx-UI/settings"
 	"github.com/urfave/cli/v3"
 )
 
@@ -28,6 +29,7 @@ func hostSetupPrintCommand() *cli.Command {
 		Flags: []cli.Flag{
 			&cli.StringFlag{Name: "host-address", Usage: "remote address host:port"},
 			&cli.StringFlag{Name: "host-user", Usage: "remote user"},
+			&cli.StringFlag{Name: "access-mode", Required: true, Usage: "file access mode: sftp or mounted"},
 			&cli.StringFlag{Name: "service-manager", Usage: "host service manager: systemd or launchd", Value: "systemd"},
 			&cli.StringFlag{Name: "systemd-unit", Usage: "systemd unit name", Value: "nginx.service"},
 			&cli.StringFlag{Name: "systemctl-path", Usage: "absolute path to systemctl on host", Value: "/bin/systemctl"},
@@ -78,6 +80,7 @@ func paramsFromFlags(c *cli.Command) (setup.SetupParams, error) {
 	p := setup.SetupParams{
 		HostAddress:    c.String("host-address"),
 		HostUser:       c.String("host-user"),
+		AccessMode:     c.String("access-mode"),
 		ServiceManager: c.String("service-manager"),
 		SystemdUnit:    c.String("systemd-unit"),
 		SystemctlPath:  c.String("systemctl-path"),
@@ -145,6 +148,8 @@ func hostSetupPrint(ctx context.Context, c *cli.Command) error {
 }
 
 func hostSetupTest(ctx context.Context, c *cli.Command) error {
+	appsettings.Init(c.String("config"))
+
 	client, err := setup.NewClientFromSettings()
 	if err != nil {
 		return err

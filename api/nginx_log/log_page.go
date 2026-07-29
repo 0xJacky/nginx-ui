@@ -3,8 +3,8 @@ package nginx_log
 import (
 	"io"
 	"net/http"
-	"os"
 
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/translation"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
@@ -34,7 +34,7 @@ func GetNginxLogPage(c *gin.Context) {
 		return
 	}
 
-	logFileStat, err := os.Stat(logPath)
+	logFileStat, err := nginx.Stat(logPath)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, nginxLogPageResp{
 			Error: translation.C(err.Error()),
@@ -65,7 +65,7 @@ func GetNginxLogPage(c *gin.Context) {
 		return
 	}
 
-	f, err := os.Open(logPath)
+	f, err := nginx.Open(logPath)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, nginxLogPageResp{
 			Error: translation.C(err.Error()),

@@ -2,7 +2,6 @@ package config
 
 import (
 	"net/http"
-	"os"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
@@ -49,23 +48,35 @@ func AddConfig(c *gin.Context) {
 		return
 	}
 
-	if !json.Overwrite && helper.FileExists(path) {
-		c.JSON(http.StatusNotAcceptable, gin.H{
-			"message": "File exists",
-		})
-		return
+	if !json.Overwrite {
+		exists, existsErr := nginx.Exists(path)
+		if existsErr != nil {
+			cosy.ErrHandler(c, existsErr)
+			return
+		}
+		if exists {
+			c.JSON(http.StatusNotAcceptable, gin.H{
+				"message": "File exists",
+			})
+			return
+		}
 	}
 
 	// check if the dir exists, if not, use mkdirAll to create the dir
-	if !helper.FileExists(dir) {
-		err = os.MkdirAll(dir, 0755)
+	dirExists, err := nginx.Exists(dir)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+	if !dirExists {
+		err = nginx.MkdirAll(dir, 0755)
 		if err != nil {
 			cosy.ErrHandler(c, err)
 			return
 		}
 	}
 
-	err = os.WriteFile(path, []byte(content), 0644)
+	err = nginx.WriteFile(path, []byte(content), 0644)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

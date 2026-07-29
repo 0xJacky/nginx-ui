@@ -10,6 +10,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/pkg/sftp"
 	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 	gossh "golang.org/x/crypto/ssh"
@@ -33,6 +34,7 @@ type Client struct {
 	opts ClientOptions
 	mu   sync.Mutex
 	conn *gossh.Client
+	sftp *sftp.Client
 	// closed is terminal. Without it a discarded client would silently redial
 	// the old host with the options captured when it was built.
 	closed bool
@@ -166,10 +168,7 @@ func (c *Client) keepalive(client *gossh.Client) {
 // connect returns a healthy client, reconnecting if the cached one is dead.
 // Holds the mutex across dial so concurrent callers serialize on reconnect
 // rather than racing to overwrite c.conn.
-func (c *Client) connect(ctx context.Context) (*gossh.Client, error) {
-	c.mu.Lock()
-	defer c.mu.Unlock()
-
+func (c *Client) connectLocked(ctx context.Context) (*gossh.Client, error) {
 	if c.closed {
 		return nil, ErrClientClosed
 	}
@@ -177,6 +176,10 @@ func (c *Client) connect(ctx context.Context) (*gossh.Client, error) {
 	if c.conn != nil {
 		if alive(ctx, c.conn, c.opts.KeepAlive) {
 			return c.conn, nil
+		}
+		if c.sftp != nil {
+			_ = c.sftp.Close()
+			c.sftp = nil
 		}
 		_ = c.conn.Close()
 		c.conn = nil
@@ -188,6 +191,35 @@ func (c *Client) connect(ctx context.Context) (*gossh.Client, error) {
 	}
 	c.conn = conn
 	return conn, nil
+}
+
+func (c *Client) connect(ctx context.Context) (*gossh.Client, error) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	return c.connectLocked(ctx)
+}
+
+// SFTP returns an SFTP session bound to the current verified SSH connection.
+// When the SSH connection is replaced, the stale SFTP session is closed before
+// a new one is created.
+func (c *Client) SFTP(ctx context.Context) (*sftp.Client, error) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+
+	conn, err := c.connectLocked(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if c.sftp != nil {
+		return c.sftp, nil
+	}
+
+	client, err := sftp.NewClient(conn)
+	if err != nil {
+		return nil, fmt.Errorf("start sftp subsystem: %w", err)
+	}
+	c.sftp = client
+	return client, nil
 }
 
 // Exec runs a single command and returns combined stdout/stderr.
@@ -261,6 +293,10 @@ func (c *Client) Close() error {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 	c.closed = true
+	if c.sftp != nil {
+		_ = c.sftp.Close()
+		c.sftp = nil
+	}
 	if c.conn != nil {
 		err := c.conn.Close()
 		c.conn = nil

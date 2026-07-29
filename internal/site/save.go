@@ -7,7 +7,6 @@ import (
 	"sync"
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
-	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
@@ -27,8 +26,14 @@ func Save(name string, content string, overwrite bool, namespaceId uint64, syncN
 		return err
 	}
 
-	if !overwrite && helper.FileExists(path) {
-		return ErrDstFileExists
+	if !overwrite {
+		exists, existsErr := nginx.Exists(path)
+		if existsErr != nil {
+			return existsErr
+		}
+		if exists {
+			return ErrDstFileExists
+		}
 	}
 	snapshot, err := captureConfigFile(path)
 	if err != nil {
@@ -52,7 +57,11 @@ func Save(name string, content string, overwrite bool, namespaceId uint64, syncN
 		})
 	}
 
-	if helper.FileExists(enabledConfigFilePath) {
+	enabledExists, err := nginx.Exists(enabledConfigFilePath)
+	if err != nil {
+		return err
+	}
+	if enabledExists {
 		// Test nginx configuration
 		c := nginx.Control(nginx.TestConfig)
 		if c.IsError() {
@@ -80,7 +89,7 @@ func Save(name string, content string, overwrite bool, namespaceId uint64, syncN
 		})
 	if err != nil {
 		return rollbackError(err, func() error {
-			if helper.FileExists(enabledConfigFilePath) && postAction == model.PostSyncActionReloadNginx {
+			if enabledExists && postAction == model.PostSyncActionReloadNginx {
 				return restoreConfigAndReload(path, snapshot)
 			}
 			return snapshot.restore(path)
@@ -144,7 +153,12 @@ func syncSave(name string, content string) {
 				return
 			}
 
-			if helper.FileExists(enabledConfigFilePath) {
+			enabledExists, existsErr := nginx.Exists(enabledConfigFilePath)
+			if existsErr != nil {
+				logger.Error(existsErr)
+				return
+			}
+			if enabledExists {
 				syncEnable(name)
 			}
 		}(node)

@@ -47,6 +47,7 @@ func ParamsFromSettings() SetupParams {
 	p := SetupParams{
 		HostAddress:             n.HostAddress,
 		HostUser:                n.HostUser,
+		AccessMode:              n.HostAccessMode,
 		ServiceManager:          n.GetHostServiceManager(),
 		SystemdUnit:             n.HostSystemdUnitName,
 		SystemctlPath:           n.HostSystemctlPath,

@@ -3,11 +3,9 @@ package stream
 import (
 	"fmt"
 	"net/http"
-	"os"
 	"runtime"
 	"sync"
 
-	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
@@ -26,16 +24,20 @@ func Enable(name string) (err error) {
 		return err
 	}
 
-	_, err = os.Stat(configFilePath)
+	_, err = nginx.Stat(configFilePath)
 	if err != nil {
 		return
 	}
 
-	if helper.FileExists(enabledConfigFilePath) {
+	enabledExists, err := nginx.Exists(enabledConfigFilePath)
+	if err != nil {
+		return err
+	}
+	if enabledExists {
 		return
 	}
 
-	err = os.Symlink(configFilePath, enabledConfigFilePath)
+	err = nginx.Symlink(configFilePath, enabledConfigFilePath)
 	if err != nil {
 		return
 	}

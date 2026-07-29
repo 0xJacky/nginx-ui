@@ -93,6 +93,7 @@ func TestRenderAllRejectsAnUnsafeHostUser(t *testing.T) {
 	p := SetupParams{
 		HostAddress:    "host.docker.internal:22",
 		HostUser:       "nginxui ALL=(ALL) NOPASSWD: ALL",
+		AccessMode:     settings.HostAccessModeMounted,
 		ServiceManager: settings.HostServiceManagerSystemd,
 	}
 	if _, err := RenderAll(p); !errors.Is(err, ErrInvalidHostUser) {

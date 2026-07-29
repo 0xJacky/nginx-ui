@@ -38,9 +38,6 @@ func bindSetupParams(c *gin.Context, p *setup.SetupParams) bool {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return false
 	}
-	if p.HostAddress == "" {
-		*p = setup.ParamsFromSettings()
-	}
 	return true
 }
 

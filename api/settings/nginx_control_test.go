@@ -51,6 +51,7 @@ func TestValidateNginxControlSettings(t *testing.T) {
 				Mode:               appsettings.ControlModeHostViaSSH,
 				HostAddress:        "host.docker.internal:22",
 				HostUser:           "nginxui",
+				HostAccessMode:     appsettings.HostAccessModeSFTP,
 				HostAuthMethod:     "key",
 				HostKeySource:      appsettings.HostKeySourceGenerated,
 				HostPrivateKeyPath: "/etc/nginx-ui/host_key",
@@ -122,6 +123,7 @@ func TestApplyNginxControlSettings(t *testing.T) {
 			Mode:               appsettings.ControlModeHostViaSSH,
 			HostAddress:        "host.docker.internal:22",
 			HostUser:           "nginxui",
+			HostAccessMode:     appsettings.HostAccessModeSFTP,
 			HostAuthMethod:     "key",
 			HostKeySource:      appsettings.HostKeySourceExisting,
 			HostPrivateKeyPath: "/etc/nginx-ui/host_key",
@@ -134,6 +136,7 @@ func TestApplyNginxControlSettings(t *testing.T) {
 		assert.Empty(t, target.ContainerName)
 		assert.Equal(t, appsettings.HostModeSSH, target.HostMode)
 		assert.Equal(t, payload.HostAddress, target.HostAddress)
+		assert.Equal(t, payload.HostAccessMode, target.HostAccessMode)
 		assert.Equal(t, payload.HostServiceManager, target.HostServiceManager)
 		assert.Equal(t, appsettings.HostKeySourceExisting, target.HostKeySource)
 	})

@@ -8,14 +8,13 @@ import (
 	"strings"
 )
 
-// StepOutcome is a single check result. Detail is the raw evidence;
-// Remediation is a human-readable fix-it hint that the UI may render
-// as a copy-pasteable shell command.
+// StepOutcome is a single check result. Detail is raw evidence, while
+// Remediation is a language-neutral message contract rendered by the UI.
 type StepOutcome struct {
-	OK          bool   `json:"ok"`
-	Level       string `json:"level,omitempty"`
-	Detail      string `json:"detail"`
-	Remediation string `json:"remediation,omitempty"`
+	OK          bool             `json:"ok"`
+	Level       string           `json:"level,omitempty"`
+	Detail      string           `json:"detail"`
+	Remediation *StepRemediation `json:"remediation,omitempty"`
 }
 
 // VerifyResult aggregates all step outcomes.

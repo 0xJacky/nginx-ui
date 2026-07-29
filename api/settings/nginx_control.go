@@ -24,6 +24,7 @@ type nginxControlSettingsPayload struct {
 	ContainerName       string `json:"container_name"`
 	HostAddress         string `json:"host_address"`
 	HostUser            string `json:"host_user"`
+	HostAccessMode      string `json:"host_access_mode"`
 	HostAuthMethod      string `json:"host_auth_method"`
 	HostKeySource       string `json:"host_key_source"`
 	HostPrivateKeyPath  string `json:"host_private_key_path"`
@@ -50,6 +51,7 @@ func normalizeNginxControlSettings(payload nginxControlSettingsPayload) nginxCon
 	payload.ContainerName = strings.TrimSpace(payload.ContainerName)
 	payload.HostAddress = strings.TrimSpace(payload.HostAddress)
 	payload.HostUser = strings.TrimSpace(payload.HostUser)
+	payload.HostAccessMode = strings.TrimSpace(payload.HostAccessMode)
 	payload.HostAuthMethod = strings.TrimSpace(payload.HostAuthMethod)
 	payload.HostKeySource = strings.TrimSpace(payload.HostKeySource)
 	payload.HostPrivateKeyPath = strings.TrimSpace(payload.HostPrivateKeyPath)
@@ -98,6 +100,10 @@ func validateNginxControlSettings(payload nginxControlSettingsPayload) error {
 		if err := hostsetup.ValidateHostUser(payload.HostUser); err != nil {
 			return err
 		}
+		if payload.HostAccessMode != appsettings.HostAccessModeSFTP &&
+			payload.HostAccessMode != appsettings.HostAccessModeMounted {
+			return hostsetup.ErrInvalidAccessMode
+		}
 		if payload.HostAuthMethod != "key" {
 			return errors.New("SSH mode requires key authentication")
 		}
@@ -129,6 +135,7 @@ func applyNginxControlSettings(target *appsettings.Nginx, payload nginxControlSe
 		target.ContainerName = payload.ContainerName
 	case appsettings.ControlModeHostViaSSH:
 		target.HostMode = appsettings.HostModeSSH
+		target.HostAccessMode = payload.HostAccessMode
 		target.HostAddress = payload.HostAddress
 		target.HostUser = payload.HostUser
 		target.HostAuthMethod = payload.HostAuthMethod
@@ -178,6 +185,7 @@ func currentNginxControlSettings() nginxControlSettingsPayload {
 		ContainerName:       n.ContainerName,
 		HostAddress:         n.HostAddress,
 		HostUser:            n.HostUser,
+		HostAccessMode:      n.HostAccessMode,
 		HostAuthMethod:      n.HostAuthMethod,
 		HostKeySource:       n.GetHostKeySource(),
 		HostPrivateKeyPath:  n.HostPrivateKeyPath,

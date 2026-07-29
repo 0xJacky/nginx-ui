@@ -9,6 +9,7 @@ func TestDiagnoseHostDarwinHomebrew(t *testing.T) {
 	executor := discoveryExecutor{outputs: map[string]string{
 		"/usr/bin/uname -s":                     "Darwin\n",
 		"/usr/bin/uname -m":                     "arm64\n",
+		"/bin/launchctl list":                   "863\t0\thomebrew.mxcl.nginx\n",
 		"/opt/homebrew/bin/brew --prefix":       "/opt/homebrew\n",
 		"/opt/homebrew/bin/brew --prefix nginx": "/opt/homebrew/opt/nginx\n",
 		"/opt/homebrew/opt/nginx/bin/nginx -V":  "nginx version: nginx/1.31.3\nconfigure arguments: --conf-path=/opt/homebrew/etc/nginx/nginx.conf --pid-path=/opt/homebrew/var/run/nginx.pid --http-log-path=/opt/homebrew/var/log/nginx/access.log --error-log-path=/opt/homebrew/var/log/nginx/error.log\n",
@@ -23,6 +24,9 @@ func TestDiagnoseHostDarwinHomebrew(t *testing.T) {
 	}
 	if result.HomebrewPrefix != "/opt/homebrew" || result.Nginx == nil || result.Nginx.Version != "nginx/1.31.3" {
 		t.Fatalf("unexpected Homebrew diagnosis: %+v", result)
+	}
+	if result.LaunchctlPath != "/bin/launchctl" || result.LaunchdService != "homebrew.mxcl.nginx" {
+		t.Fatalf("unexpected launchd diagnosis: %+v", result)
 	}
 }
 

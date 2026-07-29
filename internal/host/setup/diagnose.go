@@ -65,7 +65,7 @@ func DiagnoseHost(ctx context.Context, executor remoteExecutor, params SetupPara
 	case "Darwin":
 		result.ServiceManager = settings.HostServiceManagerLaunchd
 		detectedParams.ServiceManager = result.ServiceManager
-		result.LaunchctlPath = detectExecutable(ctx, executor, params.LaunchctlPath, "/bin/launchctl")
+		result.LaunchctlPath = detectExecutableWithArgs(ctx, executor, []string{"list"}, params.LaunchctlPath, "/bin/launchctl")
 		if result.LaunchctlPath == "" {
 			result.Warnings = append(result.Warnings, "launchctl was not detected at a standard path")
 			detectedParams.LaunchctlPath = "/bin/launchctl"
@@ -201,6 +201,10 @@ func detectLaunchdService(ctx context.Context, executor remoteExecutor, homebrew
 }
 
 func detectExecutable(ctx context.Context, executor remoteExecutor, candidates ...string) string {
+	return detectExecutableWithArgs(ctx, executor, []string{"--version"}, candidates...)
+}
+
+func detectExecutableWithArgs(ctx context.Context, executor remoteExecutor, probeArgs []string, candidates ...string) string {
 	seen := make(map[string]struct{})
 	for _, candidate := range candidates {
 		candidate = strings.TrimSpace(candidate)
@@ -211,7 +215,7 @@ func detectExecutable(ctx context.Context, executor remoteExecutor, candidates .
 			continue
 		}
 		seen[candidate] = struct{}{}
-		if _, err := executor.Exec(ctx, candidate, "--version"); err == nil {
+		if _, err := executor.Exec(ctx, candidate, probeArgs...); err == nil {
 			return candidate
 		}
 	}

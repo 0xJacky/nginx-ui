@@ -51,15 +51,27 @@ func renderTemplate(name string, p SetupParams) (string, error) {
 }
 
 func RenderCompose(p SetupParams) (string, error) {
-	return renderTemplate("compose.yml.tmpl", p.FillDefaults())
+	p = p.FillDefaults()
+	if err := p.ValidateSnippetValues(); err != nil {
+		return "", err
+	}
+	return renderTemplate("compose.yml.tmpl", p)
 }
 
 func RenderComposeOverride(p SetupParams) (string, error) {
-	return renderTemplate("compose.override.yml.tmpl", p.FillDefaults())
+	p = p.FillDefaults()
+	if err := p.ValidateSnippetValues(); err != nil {
+		return "", err
+	}
+	return renderTemplate("compose.override.yml.tmpl", p)
 }
 
 func RenderDockerRun(p SetupParams) (string, error) {
-	return renderTemplate("docker_run.sh.tmpl", p.FillDefaults())
+	p = p.FillDefaults()
+	if err := p.ValidateSnippetValues(); err != nil {
+		return "", err
+	}
+	return renderTemplate("docker_run.sh.tmpl", p)
 }
 
 func RenderAuthorizedKeys(p SetupParams) (string, error) {

@@ -3,7 +3,6 @@ package site
 import (
 	"fmt"
 	"net/http"
-	"os"
 	"path/filepath"
 	"runtime"
 	"sort"
@@ -54,7 +53,7 @@ type maintenanceIncludeExpander struct {
 func EnableMaintenance(name string) (err error) {
 	// Check if the site exists in sites-available
 	configFilePath, err := ResolveAvailablePath(name)
-	_, err = os.Stat(configFilePath)
+	_, err = nginx.Stat(configFilePath)
 	if err != nil {
 		return
 	}
@@ -72,12 +71,16 @@ func EnableMaintenance(name string) (err error) {
 	}
 
 	// Check if the site is already in maintenance mode
-	if helper.FileExists(maintenanceConfigPath) {
+	maintenanceExists, err := nginx.Exists(maintenanceConfigPath)
+	if err != nil {
+		return err
+	}
+	if maintenanceExists {
 		return
 	}
 
 	// Read the original configuration file
-	content, err := os.ReadFile(configFilePath)
+	content, err := nginx.ReadFile(configFilePath)
 	if err != nil {
 		return
 	}
@@ -93,17 +96,22 @@ func EnableMaintenance(name string) (err error) {
 	maintenanceConfig := createMaintenanceConfig(conf, filepath.Dir(configFilePath))
 
 	// Write maintenance configuration to file
-	err = os.WriteFile(maintenanceConfigPath, []byte(maintenanceConfig), 0644)
+	err = nginx.WriteFile(maintenanceConfigPath, []byte(maintenanceConfig), 0644)
 	if err != nil {
 		return
 	}
 
 	// Remove the original symlink from sites-enabled if it exists
-	if helper.FileExists(originalEnabledPath) {
-		err = os.Remove(originalEnabledPath)
+	originalEnabledExists, err := nginx.Exists(originalEnabledPath)
+	if err != nil {
+		_ = nginx.Remove(maintenanceConfigPath)
+		return err
+	}
+	if originalEnabledExists {
+		err = nginx.Remove(originalEnabledPath)
 		if err != nil {
 			// If we couldn't remove the original, remove the maintenance file and return the error
-			_ = os.Remove(maintenanceConfigPath)
+			_ = nginx.Remove(maintenanceConfigPath)
 			return
 		}
 	}
@@ -112,9 +120,13 @@ func EnableMaintenance(name string) (err error) {
 	res := nginx.Control(nginx.TestConfig)
 	if res.IsError() {
 		// Configuration error, cleanup and revert
-		_ = os.Remove(maintenanceConfigPath)
-		if helper.FileExists(originalEnabledPath + "_backup") {
-			_ = os.Rename(originalEnabledPath+"_backup", originalEnabledPath)
+		_ = nginx.Remove(maintenanceConfigPath)
+		backupExists, existsErr := nginx.Exists(originalEnabledPath + "_backup")
+		if existsErr != nil {
+			return existsErr
+		}
+		if backupExists {
+			_ = nginx.Rename(originalEnabledPath+"_backup", originalEnabledPath)
 		}
 		return res.GetError()
 	}
@@ -135,7 +147,7 @@ func EnableMaintenance(name string) (err error) {
 func DisableMaintenance(name string) (err error) {
 	// Check if the site is in maintenance mode
 	maintenanceConfigPath, err := ResolveEnabledPath(name + MaintenanceSuffix)
-	_, err = os.Stat(maintenanceConfigPath)
+	_, err = nginx.Stat(maintenanceConfigPath)
 	if err != nil {
 		return
 	}
@@ -152,22 +164,22 @@ func DisableMaintenance(name string) (err error) {
 	}
 
 	// Check if the original configuration exists
-	_, err = os.Stat(configFilePath)
+	_, err = nginx.Stat(configFilePath)
 	if err != nil {
 		return
 	}
 
 	// Create symlink to original configuration
-	err = os.Symlink(configFilePath, enabledConfigFilePath)
+	err = nginx.Symlink(configFilePath, enabledConfigFilePath)
 	if err != nil {
 		return
 	}
 
 	// Remove maintenance configuration
-	err = os.Remove(maintenanceConfigPath)
+	err = nginx.Remove(maintenanceConfigPath)
 	if err != nil {
 		// If we couldn't remove the maintenance file, remove the new symlink and return the error
-		_ = os.Remove(enabledConfigFilePath)
+		_ = nginx.Remove(enabledConfigFilePath)
 		return
 	}
 
@@ -175,8 +187,8 @@ func DisableMaintenance(name string) (err error) {
 	res := nginx.Control(nginx.TestConfig)
 	if res.IsError() {
 		// Configuration error, cleanup and revert
-		_ = os.Remove(enabledConfigFilePath)
-		_ = os.Symlink(configFilePath, maintenanceConfigPath)
+		_ = nginx.Remove(enabledConfigFilePath)
+		_ = nginx.Symlink(configFilePath, maintenanceConfigPath)
 		return res.GetError()
 	}
 
@@ -390,7 +402,7 @@ func (e *maintenanceIncludeExpander) extractWildcardInclude(includePath, baseDir
 		return nil
 	}
 
-	matches, err := filepath.Glob(pattern)
+	matches, err := nginx.Glob(pattern)
 	if err != nil {
 		logger.Debugf("%s: failed to expand wildcard %s: %v", maintenanceIncludeDebugLogPrefix, pattern, err)
 		return nil
@@ -426,7 +438,7 @@ func (e *maintenanceIncludeExpander) isAllowedWildcardMatch(path string) bool {
 		return false
 	}
 
-	info, err := os.Stat(path)
+	info, err := nginx.Stat(path)
 	if err != nil {
 		logger.Debugf("%s: failed to stat wildcard match %s: %v", maintenanceIncludeDebugLogPrefix, path, err)
 		return false
@@ -462,7 +474,7 @@ func (e *maintenanceIncludeExpander) resolveIncludePath(includePath, baseDir str
 	// resolution semantics).
 	candidate := filepath.Join(baseDir, includePath)
 	if helper.IsUnderDirectory(candidate, e.confDir) {
-		if _, err := os.Stat(candidate); err == nil {
+		if _, err := nginx.Stat(candidate); err == nil {
 			return candidate
 		}
 	}
@@ -485,7 +497,7 @@ func (e *maintenanceIncludeExpander) resolveWildcardIncludePath(includePath, bas
 
 	// Stat the static prefix so a baseDir-relative wildcard that targets a
 	// nonexistent directory still falls back to the confDir-relative pattern.
-	if info, err := os.Stat(staticDir); err == nil && info.IsDir() {
+	if info, err := nginx.Stat(staticDir); err == nil && info.IsDir() {
 		return candidate
 	}
 
@@ -511,7 +523,7 @@ func (e *maintenanceIncludeExpander) resolveFallbackIncludePath(includePath stri
 func (e *maintenanceIncludeExpander) isAllowedSingleInclude(path string) bool {
 	cleanPath := filepath.Clean(path)
 	if cleanPath == certbotNginxTLSOptionsPath {
-		info, err := os.Lstat(cleanPath)
+		info, err := nginx.Lstat(cleanPath)
 		if err != nil {
 			logger.Debugf("%s: failed to stat certbot include %s: %v", maintenanceIncludeDebugLogPrefix, cleanPath, err)
 			return false
@@ -539,7 +551,7 @@ func (e *maintenanceIncludeExpander) extractIncludeFile(path string, depth int) 
 	}
 	e.visited[cleanPath] = struct{}{}
 
-	content, err := os.ReadFile(cleanPath)
+	content, err := nginx.ReadFile(cleanPath)
 	if err != nil {
 		logger.Debugf("%s: failed to read %s: %v", maintenanceIncludeDebugLogPrefix, cleanPath, err)
 		return nil

@@ -1,6 +1,7 @@
 package setup
 
 import (
+	"errors"
 	"os"
 	"path/filepath"
 	"strings"
@@ -15,6 +16,7 @@ func sampleParams() SetupParams {
 	return SetupParams{
 		HostAddress:      "host.docker.internal:22",
 		HostUser:         "nginxui",
+		AccessMode:       settings.HostAccessModeMounted,
 		UseHostGateway:   true,
 		SystemdUnit:      "nginx.service",
 		SystemctlPath:    "/bin/systemctl",
@@ -70,6 +72,32 @@ func TestRenderAll_DoesNotError(t *testing.T) {
 	}
 }
 
+func TestRenderContainerSnippetsDoNotRepeatApplicationSettings(t *testing.T) {
+	p := sampleParams()
+	p.NginxSbinPath = "/opt/homebrew/opt/nginx/bin/nginx"
+
+	tests := []struct {
+		name   string
+		render func(SetupParams) (string, error)
+	}{
+		{"compose", RenderCompose},
+		{"override", RenderComposeOverride},
+		{"docker run", RenderDockerRun},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			out, err := tt.render(p)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if strings.Contains(out, "NGINX_UI_") {
+				t.Fatalf("container snippet repeats application settings as environment variables:\n%s", out)
+			}
+		})
+	}
+}
+
 func TestRenderComposeOmitsEmptyExistingKeyMount(t *testing.T) {
 	p := sampleParams()
 	p.UseGeneratedKey = false
@@ -82,8 +110,8 @@ func TestRenderComposeOmitsEmptyExistingKeyMount(t *testing.T) {
 	if strings.Contains(out, "- :") {
 		t.Fatalf("compose contains an empty bind mount:\n%s", out)
 	}
-	if !strings.Contains(out, "NGINX_UI_NGINX_HOST_PRIVATE_KEY_PATH=/etc/nginx-ui/host_key") {
-		t.Fatalf("compose is missing the configured container key path:\n%s", out)
+	if strings.Contains(out, "host_key") {
+		t.Fatalf("compose contains an unrequested key mount:\n%s", out)
 	}
 }
 
@@ -91,6 +119,7 @@ func TestRenderLaunchdCompose(t *testing.T) {
 	p := SetupParams{
 		HostAddress:      "host.docker.internal:22",
 		HostUser:         "hintay",
+		AccessMode:       settings.HostAccessModeMounted,
 		ServiceManager:   "launchd",
 		PublicKeyOpenSSH: validTestPublicKey,
 	}.FillDefaults()
@@ -99,17 +128,44 @@ func TestRenderLaunchdCompose(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, want := range []string{
-		"NGINX_UI_NGINX_HOST_SERVICE_MANAGER=launchd",
-		"NGINX_UI_NGINX_HOST_LAUNCHD_SERVICE=homebrew.mxcl.nginx",
+		"/opt/homebrew/etc/nginx:/opt/homebrew/etc/nginx",
+		"/opt/homebrew/var/log/nginx:/opt/homebrew/var/log/nginx:ro",
 		"/opt/homebrew/var/run:/opt/homebrew/var/run:ro",
-		"NGINX_UI_NGINX_PID_PATH=/opt/homebrew/var/run/nginx.pid",
 	} {
 		if !strings.Contains(out, want) {
 			t.Errorf("launchd compose missing %q:\n%s", want, out)
 		}
 	}
-	if strings.Contains(out, "HOST_SYSTEMD_UNIT_NAME") {
-		t.Fatalf("launchd compose contains systemd settings:\n%s", out)
+	if strings.Contains(out, "extra_hosts") || strings.Contains(out, "NGINX_UI_") {
+		t.Fatalf("launchd compose contains runtime mapping or application settings:\n%s", out)
+	}
+}
+
+func TestRenderSFTPComposeOmitsHostFilesystemMounts(t *testing.T) {
+	p := sampleParams()
+	p.AccessMode = settings.HostAccessModeSFTP
+
+	out, err := RenderCompose(p)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, unexpected := range []string{"volumes:", "/etc/nginx:/etc/nginx", "/var/log/nginx:/var/log/nginx"} {
+		if strings.Contains(out, unexpected) {
+			t.Fatalf("SFTP compose contains %q:\n%s", unexpected, out)
+		}
+	}
+}
+
+func TestRenderContainerSnippetRequiresExplicitAccessMode(t *testing.T) {
+	p := sampleParams()
+	p.AccessMode = ""
+	if _, err := RenderCompose(p); !errors.Is(err, ErrInvalidAccessMode) {
+		t.Fatalf("RenderCompose error = %v, want ErrInvalidAccessMode", err)
+	}
+
+	p.AccessMode = "automatic"
+	if _, err := RenderAll(p); !errors.Is(err, ErrInvalidAccessMode) {
+		t.Fatalf("RenderAll error = %v, want ErrInvalidAccessMode", err)
 	}
 }
 

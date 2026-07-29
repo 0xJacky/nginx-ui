@@ -3,10 +3,9 @@ package stream
 import (
 	"fmt"
 	"net/http"
-	"os"
 	"runtime"
 
-	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -34,18 +33,26 @@ func Delete(name string) (err error) {
 		return err
 	}
 
-	if !helper.FileExists(availablePath) {
+	availableExists, err := nginx.Exists(availablePath)
+	if err != nil {
+		return err
+	}
+	if !availableExists {
 		return ErrStreamNotFound
 	}
 
-	if helper.FileExists(enabledPath) {
+	enabledExists, err := nginx.Exists(enabledPath)
+	if err != nil {
+		return err
+	}
+	if enabledExists {
 		return ErrStreamIsEnabled
 	}
 
 	certModel := model.Cert{Filename: name}
 	_ = certModel.Remove()
 
-	err = os.Remove(availablePath)
+	err = nginx.Remove(availablePath)
 	if err != nil {
 		return
 	}

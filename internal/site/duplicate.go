@@ -1,10 +1,8 @@
 package site
 
 import (
-	"os"
-
 	"github.com/0xJacky/Nginx-UI/internal/config"
-	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
 )
 
 // Duplicate duplicates a site by copying the file
@@ -19,11 +17,15 @@ func Duplicate(src, dst string) (err error) {
 		return err
 	}
 
-	if helper.FileExists(dst) {
+	destinationExists, err := nginx.Exists(dst)
+	if err != nil {
+		return err
+	}
+	if destinationExists {
 		return ErrDstFileExists
 	}
 
-	content, err := os.ReadFile(src)
+	content, err := nginx.ReadFile(src)
 	if err != nil {
 		return err
 	}
@@ -33,7 +35,7 @@ func Duplicate(src, dst string) (err error) {
 		return err
 	}
 
-	err = os.WriteFile(dst, content, 0644)
+	err = nginx.WriteFile(dst, content, 0644)
 	if err != nil {
 		return
 	}

@@ -22,10 +22,10 @@ type nginxLogPageResp struct {
 
 // FileInfo represents basic file information
 type FileInfo struct {
-	Exists        bool  `json:"exists"`
-	Readable      bool  `json:"readable"`
-	Size          int64 `json:"size,omitempty"`
-	LastModified  int64 `json:"last_modified,omitempty"`
+	Exists       bool  `json:"exists"`
+	Readable     bool  `json:"readable"`
+	Size         int64 `json:"size,omitempty"`
+	LastModified int64 `json:"last_modified,omitempty"`
 }
 
 // TimeRange represents a time range for log data

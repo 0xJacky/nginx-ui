@@ -62,12 +62,12 @@ func GetGenericConfigs[T Entity](
 	processor *GenericConfigProcessor,
 ) ([]Config, error) {
 	// Read configuration directories
-	configFiles, err := os.ReadDir(nginx.GetConfPath(processor.Paths.AvailableDir))
+	configFiles, err := nginx.ReadDir(nginx.GetConfPath(processor.Paths.AvailableDir))
 	if err != nil {
 		return nil, err
 	}
 
-	enabledConfig, err := os.ReadDir(nginx.GetConfPath(processor.Paths.EnabledDir))
+	enabledConfig, err := nginx.ReadDir(nginx.GetConfPath(processor.Paths.EnabledDir))
 	if err != nil {
 		return nil, err
 	}

@@ -7,22 +7,23 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"path"
 	"strconv"
 	"strings"
 	"syscall"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/settings"
 	"golang.org/x/sys/unix"
 )
 
-// StepOutcome is a single check result. Detail is the raw evidence;
-// Remediation is a human-readable fix-it hint that the UI may render
-// as a copy-pasteable shell command.
+// StepOutcome is a single check result. Detail is raw evidence, while
+// Remediation is a language-neutral message contract rendered by the UI.
 type StepOutcome struct {
-	OK          bool   `json:"ok"`
-	Level       string `json:"level,omitempty"`
-	Detail      string `json:"detail"`
-	Remediation string `json:"remediation,omitempty"`
+	OK          bool             `json:"ok"`
+	Level       string           `json:"level,omitempty"`
+	Detail      string           `json:"detail"`
+	Remediation *StepRemediation `json:"remediation,omitempty"`
 }
 
 // VerifyResult aggregates all step outcomes.
@@ -49,7 +50,7 @@ func Verify(ctx context.Context, opts VerifyOptions) VerifyResult {
 	// ones the checks below stat and open, so they are validated here too.
 	if err := p.ValidateSnippetValues(); err != nil {
 		r.Steps["parameters"] = StepOutcome{OK: false, Detail: err.Error(),
-			Remediation: "Correct the highlighted path or identifier and run verification again."}
+			Remediation: newStepRemediation(remediationCorrectParameters)}
 		return r
 	}
 
@@ -62,7 +63,7 @@ func Verify(ctx context.Context, opts VerifyOptions) VerifyResult {
 	// Every remaining check needs a working session, so this one always runs.
 	connOut, err := opts.Client.Exec(ctx, "/bin/echo", "ok")
 	r.Steps["ssh_connect"] = okOrFail(err, "echo ok over ssh",
-		"Check SSH server is up, user exists, and key/password is correct.",
+		remediationCheckSSHConnection,
 		connOut)
 	if err != nil {
 		return r
@@ -79,10 +80,16 @@ func Verify(ctx context.Context, opts VerifyOptions) VerifyResult {
 		} else {
 			verifySystemdService(ctx, opts.Client, p, r.Steps)
 		}
-		r.Steps["config_dir_writable"] = checkDirAccess(p.ContainerConfigDir, true)
-		r.Steps["config_dir_shared"] = checkSharedPath(ctx, opts.Client, p, p.ContainerConfigDir, p.HostConfigDir)
-		r.Steps["log_dir_readable"] = checkLogReadable(p.ContainerLogDir + "/access.log")
-		r.Steps["pid_file_present"] = checkPathExists(p.PIDPath)
+		if p.AccessMode == settings.HostAccessModeSFTP {
+			r.Steps["config_dir_writable"] = checkRemoteDirectory(ctx, opts.Client, p.HostConfigDir, true)
+			r.Steps["log_dir_readable"] = checkRemoteDirectory(ctx, opts.Client, p.HostLogDir, false)
+			r.Steps["pid_file_present"] = checkRemotePath(ctx, opts.Client, p.PIDPath)
+		} else {
+			r.Steps["config_dir_writable"] = checkDirAccess(p.ContainerConfigDir, true)
+			r.Steps["config_dir_shared"] = checkSharedPath(ctx, opts.Client, p, p.ContainerConfigDir, p.HostConfigDir)
+			r.Steps["log_dir_readable"] = checkLogReadable(p.ContainerLogDir + "/access.log")
+			r.Steps["pid_file_present"] = checkPathExists(p.PIDPath)
+		}
 	}
 
 	// A target that needs no sudoers entry reports no privilege steps at all,
@@ -102,7 +109,7 @@ func Verify(ctx context.Context, opts VerifyOptions) VerifyResult {
 		} else {
 			ntOut, ntErr := opts.Client.Exec(ctx, p.NginxSbinPath, "-t")
 			r.Steps["nginx_test"] = okOrFail(ntErr, strings.TrimSpace(ntOut),
-				"Fix the nginx config error shown in detail.", ntOut)
+				remediationFixNginxConfig, ntOut)
 		}
 	}
 
@@ -127,12 +134,12 @@ func sudoersRequired(ctx context.Context, client CommandRunner, p SetupParams) b
 func verifySudoers(ctx context.Context, client CommandRunner, p SetupParams, steps map[string]StepOutcome) {
 	_, err := client.Exec(ctx, "/usr/bin/sudo", "-n", "/bin/true")
 	steps["sudo_available"] = okOrFail(err, "sudo -n true succeeded",
-		"Re-check the sudoers rules shown in the wizard Install step.", "")
+		remediationReviewSudoersRules, "")
 
 	listOut, listErr := client.Exec(ctx, "/usr/bin/sudo", "-n", "-l")
 	if listErr != nil {
 		steps["sudoers_coverage"] = StepOutcome{OK: false, Detail: listErr.Error(),
-			Remediation: "Run `sudo -l` on the host manually to inspect."}
+			Remediation: newStepRemediation(remediationInspectSudoPermissions)}
 	} else {
 		required := []string{
 			fmt.Sprintf("%s reload %s", p.SystemctlPath, p.SystemdUnit),
@@ -145,7 +152,9 @@ func verifySudoers(ctx context.Context, client CommandRunner, p SetupParams, ste
 			steps["sudoers_coverage"] = StepOutcome{OK: true, Detail: "all required entries present"}
 		} else {
 			steps["sudoers_coverage"] = StepOutcome{OK: false,
-				Detail: "missing: " + strings.Join(missing, "; "), Remediation: "Append the missing entries to " + p.SudoersFilename + " (see the wizard Install step)."}
+				Detail: "missing: " + strings.Join(missing, "; "), Remediation: newStepRemediation(remediationAddMissingSudoersEntries, map[string]string{
+					"path": p.SudoersFilename,
+				})}
 		}
 	}
 }
@@ -154,11 +163,11 @@ func verifySudoers(ctx context.Context, client CommandRunner, p SetupParams, ste
 func verifySystemdService(ctx context.Context, client CommandRunner, p SetupParams, steps map[string]StepOutcome) {
 	isActiveOut, err := client.Exec(ctx, p.SystemctlPath, "is-active", p.SystemdUnit)
 	steps["systemctl_is_active"] = okOrFail(err, "is-active returned: "+strings.TrimSpace(isActiveOut),
-		"Check that the systemd unit name matches your installation (e.g. nginx.service vs openresty.service).", isActiveOut)
+		remediationCheckSystemdUnit, isActiveOut)
 
 	showOut, err := client.Exec(ctx, p.SystemctlPath, "show", p.SystemdUnit, "--property=ExecReload")
 	if err != nil {
-		steps["unit_has_execreload"] = okOrFail(err, "", "Inspect unit file.", showOut)
+		steps["unit_has_execreload"] = okOrFail(err, "", remediationInspectSystemdUnit, showOut)
 		return
 	}
 	// systemctl always prints the property name, so an undeclared ExecReload
@@ -166,7 +175,7 @@ func verifySystemdService(ctx context.Context, client CommandRunner, p SetupPara
 	value := strings.TrimSpace(strings.TrimPrefix(strings.TrimSpace(showOut), "ExecReload="))
 	if value == "" {
 		steps["unit_has_execreload"] = StepOutcome{OK: false, Detail: "ExecReload is not declared in the unit",
-			Remediation: "Some packages omit ExecReload; reload via `systemctl restart` instead."}
+			Remediation: newStepRemediation(remediationRestartWithoutExecReload)}
 		return
 	}
 	steps["unit_has_execreload"] = StepOutcome{OK: true, Detail: "ExecReload is declared"}
@@ -175,7 +184,7 @@ func verifySystemdService(ctx context.Context, client CommandRunner, p SetupPara
 func verifyLaunchd(ctx context.Context, client CommandRunner, p SetupParams, steps map[string]StepOutcome) {
 	uidOut, err := client.Exec(ctx, "/usr/bin/id", "-u")
 	if err != nil {
-		steps["launchctl_service_loaded"] = StepOutcome{OK: false, Detail: err.Error(), Remediation: "Confirm the SSH user owns the Homebrew service."}
+		steps["launchctl_service_loaded"] = StepOutcome{OK: false, Detail: err.Error(), Remediation: newStepRemediation(remediationConfirmHomebrewServiceOwner)}
 		return
 	}
 	uid := strings.TrimSpace(uidOut)
@@ -187,13 +196,13 @@ func verifyLaunchd(ctx context.Context, client CommandRunner, p SetupParams, ste
 	target := "gui/" + uid + "/" + p.LaunchdService
 	out, err := client.Exec(ctx, p.LaunchctlPath, "print", target)
 	steps["launchctl_service_loaded"] = okOrFail(err, target+" is loaded",
-		"Run `brew services start nginx` as the configured SSH user.", out)
+		remediationStartHomebrewNginx, out)
 }
 
 func checkHostPlatform(ctx context.Context, c CommandRunner, p SetupParams) StepOutcome {
 	out, err := c.Exec(ctx, "/usr/bin/uname", "-s")
 	if err != nil {
-		return StepOutcome{OK: false, Detail: err.Error(), Remediation: "Confirm /usr/bin/uname exists on the host."}
+		return StepOutcome{OK: false, Detail: err.Error(), Remediation: newStepRemediation(remediationConfirmUname)}
 	}
 	got := strings.TrimSpace(out)
 	want := "Linux"
@@ -202,7 +211,7 @@ func checkHostPlatform(ctx context.Context, c CommandRunner, p SetupParams) Step
 	}
 	if got != want {
 		return StepOutcome{OK: false, Detail: "expected " + want + ", got " + got,
-			Remediation: "Select the service manager matching the SSH host."}
+			Remediation: newStepRemediation(remediationSelectServiceManager)}
 	}
 	return StepOutcome{OK: true, Detail: got + " host matches " + p.ServiceManager}
 }
@@ -219,13 +228,13 @@ func checkTargetIsDefaultGateway(hostAddress string) StepOutcome {
 	if gateway == "" {
 		return StepOutcome{OK: false, Level: "warning",
 			Detail:      "could not read the container default gateway, so the target could not be confirmed as the container host",
-			Remediation: "Confirm the address reaches the machine that runs nginx."}
+			Remediation: newStepRemediation(remediationCheckHostAddress)}
 	}
 	addresses, err := net.LookupHost(host)
 	if err != nil {
 		return StepOutcome{OK: false, Level: "warning",
 			Detail:      "could not resolve " + host + ": " + err.Error(),
-			Remediation: "Confirm the address reaches the machine that runs nginx."}
+			Remediation: newStepRemediation(remediationCheckHostAddress)}
 	}
 	for _, address := range addresses {
 		if address == gateway {
@@ -235,17 +244,47 @@ func checkTargetIsDefaultGateway(hostAddress string) StepOutcome {
 	return StepOutcome{OK: false, Level: "warning",
 		Detail: host + " resolves to " + strings.Join(addresses, ", ") +
 			", which is not the container default gateway " + gateway,
-		Remediation: "On Docker Desktop this is expected. Elsewhere, confirm the address reaches the machine that runs nginx."}
+		Remediation: newStepRemediation(remediationCheckHostAddressOutsideDocker)}
+}
+
+func checkMacOSHostGateway(hostAddress string, lookupHost func(string) ([]string, error)) StepOutcome {
+	host := hostAddress
+	if parsed, _, err := net.SplitHostPort(hostAddress); err == nil {
+		host = parsed
+	}
+	if host != "host.docker.internal" {
+		return StepOutcome{OK: false, Level: "warning",
+			Detail:      host + " is not the standard macOS container host alias",
+			Remediation: newStepRemediation(remediationUseMacOSHostAlias)}
+	}
+	addresses, err := lookupHost(host)
+	if err != nil || len(addresses) == 0 {
+		detail := "no address was returned"
+		if err != nil {
+			detail = err.Error()
+		}
+		return StepOutcome{OK: false, Level: "warning",
+			Detail:      "could not resolve " + host + ": " + detail,
+			Remediation: newStepRemediation(remediationConfirmMacOSHostAlias)}
+	}
+	return StepOutcome{OK: true,
+		Detail: host + " resolves to the macOS host gateway " + strings.Join(addresses, ", ")}
 }
 
 func checkSameHost(ctx context.Context, c CommandRunner, p SetupParams) StepOutcome {
+	if p.AccessMode == settings.HostAccessModeSFTP {
+		return StepOutcome{OK: true, Detail: "SFTP access supports a remote nginx host"}
+	}
+	if p.IsLaunchd() && p.UseHostGateway {
+		return checkMacOSHostGateway(p.HostAddress, net.LookupHost)
+	}
 	if p.UseHostGateway {
 		return checkTargetIsDefaultGateway(p.HostAddress)
 	}
 	if p.IsLaunchd() {
 		return StepOutcome{OK: false, Level: "warning",
 			Detail:      "macOS has no machine-id; same-host access is validated by the config, log, and PID bind mounts",
-			Remediation: "Use host.docker.internal when nginx runs on the Docker host."}
+			Remediation: newStepRemediation(remediationUseDockerHostAlias)}
 	}
 	localID, err := os.ReadFile("/etc/machine-id")
 	if err != nil {
@@ -256,21 +295,42 @@ func checkSameHost(ctx context.Context, c CommandRunner, p SetupParams) StepOutc
 	remoteID, err := c.Exec(subCtx, "/bin/cat", "/etc/machine-id")
 	if err != nil {
 		return StepOutcome{OK: false, Detail: "could not read remote /etc/machine-id: " + err.Error(),
-			Remediation: "If host is remote, see the cluster Node cross-host guide."}
+			Remediation: newStepRemediation(remediationReviewCrossHostGuide)}
 	}
 	if strings.TrimSpace(string(localID)) == strings.TrimSpace(remoteID) {
 		return StepOutcome{OK: true, Detail: "machine-id matched"}
 	}
 	return StepOutcome{OK: false,
 		Detail:      "remote host detected; bind-mount file I/O will not work for configs/logs",
-		Remediation: "See cluster Node cross-host guide for proper deployment."}
+		Remediation: newStepRemediation(remediationUseClusterNode)}
+}
+
+func checkRemoteDirectory(ctx context.Context, c CommandRunner, path string, writable bool) StepOutcome {
+	arguments := []string{"-d", path, "-a", "-r", path, "-a", "-x", path}
+	if writable {
+		arguments = append(arguments, "-a", "-w", path)
+	}
+	_, err := c.Exec(ctx, "/bin/test", arguments...)
+	if err != nil {
+		return StepOutcome{OK: false, Detail: err.Error(),
+			Remediation: newStepRemediation(remediationReviewInstallPermissions)}
+	}
+	return StepOutcome{OK: true, Detail: path + " accessible over SFTP"}
+}
+
+func checkRemotePath(ctx context.Context, c CommandRunner, path string) StepOutcome {
+	_, err := c.Exec(ctx, "/bin/test", "-e", path)
+	if err != nil {
+		return StepOutcome{OK: false, Detail: err.Error()}
+	}
+	return StepOutcome{OK: true, Detail: path + " present on the SSH host"}
 }
 
 func checkDirAccess(path string, writable bool) StepOutcome {
 	info, err := os.Stat(path)
 	if err != nil {
 		return StepOutcome{OK: false, Detail: err.Error(),
-			Remediation: fmt.Sprintf("Add a bind-mount: -v %s:%s", path, path)}
+			Remediation: newStepRemediation(remediationAddBindMount, map[string]string{"source": path, "target": path})}
 	}
 	if !info.IsDir() {
 		return StepOutcome{OK: false, Detail: path + " exists but is not a directory"}
@@ -281,7 +341,7 @@ func checkDirAccess(path string, writable bool) StepOutcome {
 	}
 	if err := unix.Access(path, uint32(mode)); err != nil {
 		return StepOutcome{OK: false, Detail: err.Error(),
-			Remediation: "See the file permission commands in the wizard Install step."}
+			Remediation: newStepRemediation(remediationReviewInstallPermissions)}
 	}
 	return StepOutcome{OK: true, Detail: path + " accessible"}
 }
@@ -290,7 +350,7 @@ func checkLogReadable(path string) StepOutcome {
 	f, err := os.Open(path)
 	if err != nil {
 		return StepOutcome{OK: false, Detail: err.Error(),
-			Remediation: "Add user to 'adm' group on the host: usermod -aG adm <user>."}
+			Remediation: newStepRemediation(remediationMountNginxLogs)}
 	}
 	defer f.Close()
 	buf := make([]byte, 1)
@@ -314,7 +374,10 @@ func checkSharedPath(ctx context.Context, c CommandRunner, p SetupParams, contai
 	info, err := os.Stat(containerPath)
 	if err != nil {
 		return StepOutcome{OK: false, Detail: err.Error(),
-			Remediation: fmt.Sprintf("Bind-mount the host directory at %s.", containerPath)}
+			Remediation: newStepRemediation(remediationAddBindMount, map[string]string{"source": hostPath, "target": containerPath})}
+	}
+	if p.IsLaunchd() {
+		return checkVirtualizedSharedPath(ctx, c, containerPath, hostPath)
 	}
 	local, ok := info.Sys().(*syscall.Stat_t)
 	if !ok {
@@ -323,17 +386,13 @@ func checkSharedPath(ctx context.Context, c CommandRunner, p SetupParams, contai
 
 	// A bind mount exposes the host inode unchanged, so comparing inodes needs
 	// no write and leaves nothing behind.
-	statArgs := []string{"-c", "%i", hostPath}
-	if p.IsLaunchd() {
-		statArgs = []string{"-f", "%i", hostPath}
-	}
 	subCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
-	out, err := c.Exec(subCtx, "/usr/bin/stat", statArgs...)
+	out, err := c.Exec(subCtx, "/usr/bin/stat", "-c", "%i", hostPath)
 	if err != nil {
 		return StepOutcome{OK: false, Level: "warning",
 			Detail:      "could not read the host inode for " + hostPath + ": " + err.Error(),
-			Remediation: "The bind mount could not be confirmed; verify it manually."}
+			Remediation: newStepRemediation(remediationVerifyBindMount)}
 	}
 	remote, err := strconv.ParseUint(strings.TrimSpace(out), 10, 64)
 	if err != nil {
@@ -344,21 +403,90 @@ func checkSharedPath(ctx context.Context, c CommandRunner, p SetupParams, contai
 		return StepOutcome{OK: false,
 			Detail: fmt.Sprintf("%s and host %s are different directories (inode %d vs %d)",
 				containerPath, hostPath, local.Ino, remote),
-			Remediation: fmt.Sprintf("Add a bind-mount: -v %s:%s", hostPath, containerPath)}
+			Remediation: newStepRemediation(remediationAddBindMount, map[string]string{"source": hostPath, "target": containerPath})}
 	}
 	return StepOutcome{OK: true,
 		Detail: fmt.Sprintf("%s is the host directory %s (inode %d)", containerPath, hostPath, remote)}
 }
 
+// A macOS bind mount crosses a VM filesystem boundary, so its Linux-side inode
+// is not expected to match the inode reported by the host. The mount table still
+// records the host root selected by Docker Desktop, OrbStack, or another VM.
+func checkVirtualizedSharedPath(ctx context.Context, c CommandRunner, containerPath, hostPath string) StepOutcome {
+	subCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+	if _, err := c.Exec(subCtx, "/usr/bin/stat", "-f", "%HT", hostPath); err != nil {
+		return StepOutcome{OK: false, Detail: "could not stat the host directory " + hostPath + ": " + err.Error(),
+			Remediation: newStepRemediation(remediationConfirmHostNginxDirectory)}
+	}
+
+	mountInfo, err := os.ReadFile("/proc/self/mountinfo")
+	if err != nil {
+		return StepOutcome{OK: false, Level: "warning", Detail: "could not read the container mount table: " + err.Error(),
+			Remediation: newStepRemediation(remediationVerifyBindMount)}
+	}
+	mountedHostPath, ok := mountedHostPathFor(mountInfo, containerPath)
+	if !ok {
+		return StepOutcome{OK: false,
+			Detail:      containerPath + " is not backed by a separate container mount",
+			Remediation: newStepRemediation(remediationAddBindMount, map[string]string{"source": hostPath, "target": containerPath})}
+	}
+	if !virtualizedMountRootMatches(mountedHostPath, hostPath) {
+		return StepOutcome{OK: false,
+			Detail: fmt.Sprintf("%s is mounted from %s instead of host %s",
+				containerPath, mountedHostPath, hostPath),
+			Remediation: newStepRemediation(remediationReplaceBindMount, map[string]string{"source": hostPath, "target": containerPath})}
+	}
+	return StepOutcome{OK: true,
+		Detail: fmt.Sprintf("%s is mounted from host %s", containerPath, hostPath)}
+}
+
+// mountedHostPathFor resolves target through the deepest mount that contains
+// it. The root field in mountinfo identifies the host-side directory selected
+// by a bind mount, including paths forwarded through a macOS VM filesystem.
+func mountedHostPathFor(mountInfo []byte, target string) (string, bool) {
+	target = path.Clean(target)
+	bestMountPoint := ""
+	bestRoot := ""
+	for _, line := range strings.Split(string(mountInfo), "\n") {
+		fields := strings.Fields(line)
+		if len(fields) < 5 {
+			continue
+		}
+		root := path.Clean(fields[3])
+		mountPoint := path.Clean(fields[4])
+		if target != mountPoint && !strings.HasPrefix(target, mountPoint+"/") {
+			continue
+		}
+		if len(mountPoint) > len(bestMountPoint) {
+			bestMountPoint = mountPoint
+			bestRoot = root
+		}
+	}
+	// The container root filesystem always contains every absolute path. It is
+	// not evidence that the requested host directory was bind-mounted.
+	if bestMountPoint == "" || bestMountPoint == "/" {
+		return "", false
+	}
+	relative := strings.TrimPrefix(target, bestMountPoint)
+	return path.Join(bestRoot, relative), true
+}
+
+func virtualizedMountRootMatches(mountedHostPath, hostPath string) bool {
+	mountedHostPath = path.Clean(mountedHostPath)
+	hostPath = path.Clean(hostPath)
+	return mountedHostPath == hostPath || strings.HasSuffix(mountedHostPath, hostPath)
+}
+
 func checkPathExists(path string) StepOutcome {
 	if _, err := os.Stat(path); err != nil {
 		return StepOutcome{OK: false, Detail: err.Error(),
-			Remediation: fmt.Sprintf("Bind-mount the host PID directory containing %s at the same container path.", path)}
+			Remediation: newStepRemediation(remediationMountPIDDirectory, map[string]string{"path": path})}
 	}
 	return StepOutcome{OK: true, Detail: path + " present"}
 }
 
-func okOrFail(err error, okDetail, remediation, raw string) StepOutcome {
+func okOrFail(err error, okDetail, remediationCode, raw string) StepOutcome {
 	if err == nil {
 		return StepOutcome{OK: true, Detail: okDetail}
 	}
@@ -366,7 +494,7 @@ func okOrFail(err error, okDetail, remediation, raw string) StepOutcome {
 	if raw != "" {
 		detail = strings.TrimSpace(raw)
 	}
-	return StepOutcome{OK: false, Detail: detail, Remediation: remediation}
+	return StepOutcome{OK: false, Detail: detail, Remediation: newStepRemediation(remediationCode)}
 }
 
 func findMissingSudoEntries(sudoListOutput string, required []string) []string {

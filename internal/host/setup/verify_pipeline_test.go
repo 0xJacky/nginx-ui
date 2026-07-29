@@ -49,6 +49,7 @@ func systemdParams() SetupParams {
 	return SetupParams{
 		HostAddress:    "192.168.1.10:22",
 		HostUser:       "nginxui",
+		AccessMode:     "mounted",
 		ServiceManager: "systemd",
 		SystemdUnit:    "nginx.service",
 		SystemctlPath:  "/bin/systemctl",
@@ -163,6 +164,34 @@ func TestVerifyRunsOnlyTheRequestedGroup(t *testing.T) {
 	for _, unexpected := range []string{"systemctl_is_active", "unit_has_execreload", "same_host"} {
 		if _, ok := result.Steps[unexpected]; ok {
 			t.Fatalf("step %q ran for a nginx-only request", unexpected)
+		}
+	}
+}
+
+func TestVerifySFTPModeChecksRemotePathsWithoutMountChecks(t *testing.T) {
+	params := systemdParams()
+	params.AccessMode = "sftp"
+	runner := newFakeRunner().
+		on("/bin/echo ok", "ok", nil).
+		on("/usr/bin/uname -s", "Linux", nil).
+		on("/bin/systemctl is-active nginx.service", "active", nil).
+		on("/bin/systemctl show nginx.service --property=ExecReload", "ExecReload=/bin/kill -HUP $MAINPID", nil).
+		on("/bin/test -d /etc/nginx -a -r /etc/nginx -a -x /etc/nginx -a -w /etc/nginx", "", nil).
+		on("/bin/test -d /var/log/nginx -a -r /var/log/nginx -a -x /var/log/nginx", "", nil).
+		on("/bin/test -e /var/run/nginx.pid", "", nil)
+
+	result := Verify(context.Background(), VerifyOptions{
+		Client: runner,
+		Params: params,
+		Groups: []CheckGroup{CheckGroupPlatform},
+	})
+
+	if _, exists := result.Steps["config_dir_shared"]; exists {
+		t.Fatal("SFTP verification must not run a bind-mount check")
+	}
+	for _, key := range []string{"config_dir_writable", "log_dir_readable", "pid_file_present"} {
+		if step := result.Steps[key]; !step.OK {
+			t.Fatalf("remote SFTP check %q failed: %+v", key, step)
 		}
 	}
 }

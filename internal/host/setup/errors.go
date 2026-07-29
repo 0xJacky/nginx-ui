@@ -15,6 +15,7 @@ var e = cosy.NewErrorScope("host_setup")
 var (
 	ErrUnsafeSnippetValue = e.New(520007, "{0} contains characters that are unsafe to paste into the generated host instructions: {1}")
 	ErrInvalidPublicKey   = e.New(520008, "public key must be a single valid OpenSSH key line")
+	ErrInvalidAccessMode  = e.New(520009, "access mode must be either sftp or mounted")
 )
 
 var (

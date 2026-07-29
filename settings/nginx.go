@@ -5,7 +5,9 @@ const (
 	ControlModeExternalContainer = "external_container"
 	ControlModeHostViaSSH        = "host_via_ssh"
 
-	HostModeSSH = "ssh"
+	HostModeSSH           = "ssh"
+	HostAccessModeMounted = "mounted"
+	HostAccessModeSFTP    = "sftp"
 
 	HostServiceManagerSystemd = "systemd"
 	HostServiceManagerLaunchd = "launchd"
@@ -35,6 +37,7 @@ type Nginx struct {
 	// Host SSH mode fields enable nginx-ui (running in Docker) to control
 	// nginx installed natively on the same host via an SSH tunnel.
 	HostMode            string `json:"host_mode" protected:"true"`
+	HostAccessMode      string `json:"host_access_mode" protected:"true"`
 	HostAddress         string `json:"host_address" protected:"true"`
 	HostUser            string `json:"host_user" protected:"true"`
 	HostAuthMethod      string `json:"host_auth_method" protected:"true"`
@@ -92,6 +95,10 @@ func (n *Nginx) GetHostServiceManager() string {
 		return HostServiceManagerLaunchd
 	}
 	return HostServiceManagerSystemd
+}
+
+func (n *Nginx) UsesSFTP() bool {
+	return n.ControlMode() == ControlModeHostViaSSH && n.HostAccessMode == HostAccessModeSFTP
 }
 
 func (n *Nginx) GetHostSudoPrefix() string {

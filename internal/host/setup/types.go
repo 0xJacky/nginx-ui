@@ -28,6 +28,7 @@ type SetupParams struct {
 	HostLogDir     string `json:"host_log_dir,omitempty"`
 	PIDPath        string `json:"pid_path,omitempty"`
 	PIDDir         string `json:"-"`
+	AccessMode     string `json:"access_mode,omitempty"` // "sftp" | "mounted"
 
 	// User-managed key paths (only when UseGeneratedKey==false)
 	HostKeyPath        string `json:"host_key_path,omitempty"`
@@ -147,6 +148,9 @@ type snippetField struct {
 // generated sudoers rule or shell snippets. Empty values are left to
 // FillDefaults, which only produces known-good literals.
 func (p SetupParams) ValidateSnippetValues() error {
+	if p.AccessMode != settings.HostAccessModeSFTP && p.AccessMode != settings.HostAccessModeMounted {
+		return ErrInvalidAccessMode
+	}
 	if err := ValidateHostUser(p.HostUser); err != nil {
 		return err
 	}
@@ -200,6 +204,16 @@ func validatePublicKeyLine(key string) error {
 
 func (p SetupParams) IsLaunchd() bool {
 	return p.ServiceManager == settings.HostServiceManagerLaunchd
+}
+
+func (p SetupParams) UsesMountedFilesystem() bool {
+	return p.AccessMode == settings.HostAccessModeMounted
+}
+
+// NeedsHostGatewayMapping is false on macOS runtimes, where Docker Desktop and
+// OrbStack provide host.docker.internal without an extra_hosts override.
+func (p SetupParams) NeedsHostGatewayMapping() bool {
+	return p.UseHostGateway && !p.IsLaunchd()
 }
 
 // NeedsSudoers reports whether the generated instructions have to include a

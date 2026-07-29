@@ -1,7 +1,8 @@
 docker run -d --name nginx-ui --restart unless-stopped \
-{{- if .UseHostGateway }}
+{{- if .NeedsHostGatewayMapping }}
   --add-host host.docker.internal:host-gateway \
 {{- end }}
+{{- if .UsesMountedFilesystem }}
   -v {{ .HostConfigDir }}:{{ .ContainerConfigDir }} \
   -v {{ .HostLogDir }}:{{ .ContainerLogDir }}:ro \
   -v {{ .PIDDir }}:{{ .PIDDir }}:ro \
@@ -11,22 +12,6 @@ docker run -d --name nginx-ui --restart unless-stopped \
 {{- if and (not .UseGeneratedKey) .HostKnownHostsPath }}
   -v {{ .HostKnownHostsPath }}:{{ .ContainerKnownHostsPath }}:ro \
 {{- end }}
-  -p 8080:80 \
-  -e NGINX_UI_NGINX_HOST_MODE=ssh \
-  -e NGINX_UI_NGINX_HOST_ADDRESS={{ .HostAddress }} \
-  -e NGINX_UI_NGINX_HOST_USER={{ .HostUser }} \
-  -e NGINX_UI_NGINX_HOST_PRIVATE_KEY_PATH={{ .ContainerKeyPath }} \
-  -e NGINX_UI_NGINX_HOST_KNOWN_HOSTS_PATH={{ .ContainerKnownHostsPath }} \
-  -e NGINX_UI_NGINX_HOST_SERVICE_MANAGER={{ .ServiceManager }} \
-{{- if .IsLaunchd }}
-  -e NGINX_UI_NGINX_HOST_LAUNCHD_SERVICE={{ .LaunchdService }} \
-  -e NGINX_UI_NGINX_HOST_LAUNCHCTL_PATH={{ .LaunchctlPath }} \
-{{- else }}
-  -e NGINX_UI_NGINX_HOST_SYSTEMD_UNIT_NAME={{ .SystemdUnit }} \
-  -e NGINX_UI_NGINX_HOST_SYSTEMCTL_PATH={{ .SystemctlPath }} \
 {{- end }}
-  -e NGINX_UI_NGINX_HOST_CONFIG_DIR={{ .HostConfigDir }} \
-  -e NGINX_UI_NGINX_HOST_LOG_DIR={{ .HostLogDir }} \
-  -e NGINX_UI_NGINX_PID_PATH={{ .PIDPath }} \
-  -e NGINX_UI_DISABLE_BUNDLED_NGINX=true \
+  -p 8080:80 \
   uozi/nginx-ui:latest

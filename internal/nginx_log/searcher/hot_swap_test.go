@@ -40,7 +40,7 @@ func TestDistributedSearcher_SwapShards(t *testing.T) {
 
 	err = shard1.Index("doc1", doc1)
 	require.NoError(t, err)
-	
+
 	err = shard2.Index("doc2", doc2)
 	require.NoError(t, err)
 
@@ -101,7 +101,7 @@ func TestDistributedSearcher_SwapShards_NotRunning(t *testing.T) {
 	config := DefaultSearcherConfig()
 	searcher := NewSearcher(config, []bleve.Index{shard})
 	require.NotNil(t, searcher)
-	
+
 	err = searcher.Stop()
 	require.NoError(t, err)
 
@@ -146,7 +146,7 @@ func TestDistributedSearcher_HotSwap_ZeroDowntime(t *testing.T) {
 	gen2Path := filepath.Join(tempDir, "gen2.bleve")
 
 	mapping := bleve.NewIndexMapping()
-	
+
 	// Generation 1 index
 	gen1Index, err := bleve.New(gen1Path, mapping)
 	require.NoError(t, err)
@@ -171,10 +171,10 @@ func TestDistributedSearcher_HotSwap_ZeroDowntime(t *testing.T) {
 
 	err = gen1Index.Index("old_doc", gen1Doc)
 	require.NoError(t, err)
-	
+
 	err = gen2Index.Index("new_doc", gen2Doc)
 	require.NoError(t, err)
-	
+
 	// Ensure both indexes are flushed
 	err = gen1Index.SetInternal([]byte("_flush"), []byte("true"))
 	require.NoError(t, err)
@@ -249,7 +249,7 @@ func TestDistributedSearcher_SwapShards_StatsUpdate(t *testing.T) {
 	// Check stats after swap
 	stats = searcher.GetStats()
 	assert.Len(t, stats.ShardStats, 2)
-	
+
 	// Verify shard IDs are correct
 	shardIDs := make([]int, len(stats.ShardStats))
 	for i, stat := range stats.ShardStats {
