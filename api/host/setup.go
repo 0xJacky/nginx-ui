@@ -19,7 +19,7 @@ import (
 	gossh "golang.org/x/crypto/ssh"
 )
 
-var resetSSHClient = nginx.ResetSSHClient
+var resetSSHClient = nginx.ResetHostNginxState
 
 // Preview renders all snippets from the posted SetupParams (or current
 // settings if body is empty). Does not persist anything.
@@ -107,7 +107,13 @@ func GenerateKeypair(c *gin.Context) {
 		cosy.ErrHandler(c, err)
 		return
 	}
-	priv, _ := os.ReadFile(path)
+	// The one-time private key is the only copy the operator gets, so a failed
+	// read must not be rendered as a clean 200 with the field simply absent.
+	priv, err := os.ReadFile(path)
+	if err != nil {
+		cosy.ErrHandler(c, cosy.WrapErrorWithParams(setup.ErrKeyfileRead, path, err.Error()))
+		return
+	}
 	c.JSON(http.StatusOK, keypairResponse{PublicKey: pub, PrivateKey: string(priv)})
 }
 
@@ -376,19 +382,22 @@ func ScanHostKey(c *gin.Context) {
 	}
 
 	var keys []gossh.PublicKey
+	// Pasted output carries no evidence about which algorithms answered, so it
+	// leaves the coverage nil and no entry is reported stale from it.
+	var probed map[string]bool
 	if req.KeyscanOutput != "" {
 		keys, err = hostssh.ParseSSHKeyscanOutput(req.KeyscanOutput)
 	} else {
 		ctx, cancel := context.WithTimeout(c.Request.Context(), 10*time.Second)
 		defer cancel()
-		keys, err = hostssh.ScanHostKeys(ctx, req.HostAddress, 10*time.Second)
+		keys, probed, err = hostssh.ScanHostKeysWithCoverage(ctx, req.HostAddress, 10*time.Second)
 	}
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
 	}
 
-	result, err := hostssh.ClassifyHostKeys(req.HostAddress, keys, kh)
+	result, err := hostssh.ClassifyScannedHostKeys(req.HostAddress, keys, probed, kh)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

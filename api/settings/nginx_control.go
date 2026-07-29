@@ -152,6 +152,11 @@ func applyNginxControlSettings(target *appsettings.Nginx, payload nginxControlSe
 		target.ErrorLogPath = payload.ErrorLogPath
 	}
 
+	// TestConfigCmd, ReloadCmd and RestartCmd are deliberately left alone here.
+	// Nothing in the wizard writes them, so they are operator authored, and
+	// execShell already routes them at the current target. Clearing them on a
+	// mode switch would silently discard input the operator typed elsewhere.
+	//
 	// Paths detected on the SSH host do not describe a local or docker install.
 	// Clear them on the way out so path resolution falls back to detection.
 	if wasHostViaSSH && payload.Mode != appsettings.ControlModeHostViaSSH {
@@ -187,11 +192,14 @@ func currentNginxControlSettings() nginxControlSettingsPayload {
 		HostConfigDir:       n.HostConfigDir,
 		HostLogDir:          n.HostLogDir,
 		SbinPath:            n.SbinPath,
-		PIDPath:             n.PIDPath,
-		ConfigDir:           n.ConfigDir,
-		ConfigPath:          n.ConfigPath,
-		AccessLogPath:       n.AccessLogPath,
-		ErrorLogPath:        n.ErrorLogPath,
+		// GET /settings reports the resolved values for these, and the frontend
+		// merges this response into the same store without refetching, so the
+		// two must agree or a save would blank the displayed paths.
+		PIDPath:       nginx.GetPIDPath(),
+		ConfigDir:     nginx.GetConfPath(),
+		ConfigPath:    n.ConfigPath,
+		AccessLogPath: nginx.GetAccessLogPath(),
+		ErrorLogPath:  nginx.GetErrorLogPath(),
 	}
 }
 
@@ -221,7 +229,7 @@ func SaveNginxControlSettings(c *gin.Context) {
 		return
 	}
 
-	nginx.ResetSSHClient()
+	nginx.ResetHostNginxState()
 	c.JSON(http.StatusOK, currentNginxControlSettings())
 }
 
