@@ -20,8 +20,8 @@ permissions:
   contents: read
 
 jobs:
-  nginx-log:
-    name: NGINX Log
+  go:
+    name: Go
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -34,6 +34,4 @@ jobs:
 
       - name: Run unit tests
         run: >-
-          go test -race -cover -count=1
-          ./internal/nginx_log
-          ./internal/nginx_log/parser
+          go test -tags=unembed -race -cover -count=1 ./...
