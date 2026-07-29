@@ -72,10 +72,10 @@ type rotationRequest struct {
 // UpgradeLegacyRelationship migrates a node that still authenticates with the
 // shared secret onto its own key pair.
 //
-// The request rides the ordinary authenticated transport, which now signs with
-// the shared secret rather than sending it, so this exchange needs no transport
-// guarantee of its own: nothing reusable is exposed, and the target's answer is
-// authenticated before the new credential is stored.
+// The request rides the legacy-compatible transport until the target has been
+// upgraded. The target's answer is authenticated with the same shared secret
+// before the new credential is stored, so a substituted response cannot leave
+// the relationship relying on a key the real target never issued.
 func UpgradeLegacyRelationship(ctx context.Context, node *model.Node, controllerInstanceID string) (*PairingResult, error) {
 	if node == nil {
 		return nil, errors.New("node is required")

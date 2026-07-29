@@ -126,10 +126,10 @@ func TestSharedSecretRequestRejectsForgeryAndReplay(t *testing.T) {
 	})
 }
 
-// TestLegacyNodeTransportSignsInsteadOfSendingTheSecret covers the controller
-// side end to end: the node still authenticates with the shared secret, but the
-// transport now signs every request with it.
-func TestLegacyNodeTransportSignsInsteadOfSendingTheSecret(t *testing.T) {
+// TestLegacyNodeTransportUsesCompatibleHeader covers rolling upgrades: a
+// controller must keep using the protocol understood by pre-v2.5.0 nodes until
+// the relationship maintenance job can replace the secret with a key pair.
+func TestLegacyNodeTransportUsesCompatibleHeader(t *testing.T) {
 	database := setupSharedSecretTest(t)
 
 	encryptedSecret, err := EncryptPrivateCredential(LegacyCredentialPurpose(1), []byte(sharedNodeSecret))
@@ -145,18 +145,10 @@ func TestLegacyNodeTransportSignsInsteadOfSendingTheSecret(t *testing.T) {
 	require.NoError(t, database.Create(node).Error)
 	require.EqualValues(t, 1, node.ID, "the legacy credential purpose is bound to the node ID")
 
-	replayCache := NewReplayCache(16)
 	verified := 0
 	child := roundTripFunc(func(request *http.Request) (*http.Response, error) {
-		if request.Header.Get("X-Node-Secret") != "" {
-			t.Error("the shared secret must not travel with the request")
-		}
-		principal, verifyErr := verifyRequest(request, database, time.Now(), replayCache)
-		defer CloseStagedBody(request)
-		if verifyErr != nil {
-			return nil, verifyErr
-		}
-		assert.Equal(t, model.NodeAuthMethodLegacy, principal.AuthMethod)
+		assert.Equal(t, sharedNodeSecret, request.Header.Get("X-Node-Secret"))
+		assert.Empty(t, request.Header.Get(signatureHeader))
 		verified++
 		return &http.Response{
 			StatusCode: http.StatusNoContent,
@@ -182,6 +174,6 @@ func TestLegacyNodeTransportSignsInsteadOfSendingTheSecret(t *testing.T) {
 
 	headers := make(http.Header)
 	require.NoError(t, SignWebSocketHeaders(node, "wss://child.example/api/analytic/intro", headers))
-	assert.Empty(t, headers.Get("X-Node-Secret"))
-	assert.NotEmpty(t, headers.Get(signatureHeader))
+	assert.Equal(t, sharedNodeSecret, headers.Get("X-Node-Secret"))
+	assert.Empty(t, headers.Get(signatureHeader))
 }

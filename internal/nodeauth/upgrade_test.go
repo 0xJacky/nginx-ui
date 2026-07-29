@@ -102,14 +102,13 @@ func createLegacyNode(t *testing.T, database *gorm.DB, name, url string) *model.
 	return node
 }
 
-// TestLegacyUpgradeOverPlaintextTransportKeepsSecretOffTheWire exercises the
-// whole controller side against a plain HTTP target, which is the case the
-// previous HTTPS-only policy refused to migrate at all.
-func TestLegacyUpgradeOverPlaintextTransportKeepsSecretOffTheWire(t *testing.T) {
+// TestLegacyUpgradeUsesPreV250CompatibleAuthentication exercises the rolling
+// upgrade path: the first request uses the old header protocol, and a successful
+// handshake immediately replaces it with a dedicated key pair.
+func TestLegacyUpgradeUsesPreV250CompatibleAuthentication(t *testing.T) {
 	database := setupUpgradeControllerTest(t)
 
 	credentialID := uuid.NewString()
-	replayCache := NewReplayCache(16)
 	var (
 		observedHeaders http.Header
 		observedBody    []byte
@@ -118,14 +117,11 @@ func TestLegacyUpgradeOverPlaintextTransportKeepsSecretOffTheWire(t *testing.T) 
 		require.Equal(t, "/api/node/pair/upgrade", request.URL.Path)
 		observedHeaders = request.Header.Clone()
 
-		// Stand in for the middleware: the upgrade is authenticated by the
-		// ordinary request signature before the handler ever runs.
-		principal, verifyErr := verifyRequest(request, database, time.Now(), replayCache)
-		if verifyErr != nil {
+		// Stand in for a target that still uses the pre-v2.5.0 node protocol.
+		if request.Header.Get("X-Node-Secret") != testLegacySecret {
 			writer.WriteHeader(http.StatusForbidden)
 			return
 		}
-		require.Equal(t, model.NodeAuthMethodLegacy, principal.AuthMethod)
 
 		body, err := io.ReadAll(request.Body)
 		require.NoError(t, err)
@@ -155,8 +151,8 @@ func TestLegacyUpgradeOverPlaintextTransportKeepsSecretOffTheWire(t *testing.T) 
 	require.NoError(t, err)
 	assert.Equal(t, credentialID, result.CredentialID)
 
-	assert.Empty(t, observedHeaders.Get("X-Node-Secret"), "the upgrade must not present the shared secret")
-	assert.NotEmpty(t, observedHeaders.Get(signatureHeader), "the upgrade must be signed instead")
+	assert.Equal(t, testLegacySecret, observedHeaders.Get("X-Node-Secret"))
+	assert.Empty(t, observedHeaders.Get(signatureHeader))
 	assert.NotContains(t, string(observedBody), testLegacySecret, "the upgrade must not carry the shared secret")
 
 	var stored model.Node
@@ -179,7 +175,9 @@ func TestLegacyUpgradeOverPlaintextTransportKeepsSecretOffTheWire(t *testing.T) 
 func TestLegacyUpgradeLeavesOlderNodesOnTheSharedSecret(t *testing.T) {
 	database := setupUpgradeControllerTest(t)
 
-	target := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, _ *http.Request) {
+	target := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
+		assert.Equal(t, testLegacySecret, request.Header.Get("X-Node-Secret"))
+		assert.Empty(t, request.Header.Get(signatureHeader))
 		writer.WriteHeader(http.StatusNotFound)
 	}))
 	t.Cleanup(target.Close)

@@ -2,13 +2,39 @@ package analytic
 
 import (
 	"context"
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/model"
+	"github.com/stretchr/testify/require"
 )
+
+func TestInitNodeAuthenticatesPreV250Node(t *testing.T) {
+	const secret = "legacy-node-secret"
+	server := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
+		if request.Header.Get("X-Node-Secret") != secret {
+			writer.WriteHeader(http.StatusForbidden)
+			return
+		}
+		if err := json.NewEncoder(writer).Encode(NodeInfo{Version: "2.4.3"}); err != nil {
+			t.Errorf("encode node info: %v", err)
+		}
+	}))
+	t.Cleanup(server.Close)
+
+	node := &model.Node{
+		Model: model.Model{ID: 47},
+		URL:   server.URL,
+	}
+	setupLegacyNodeAuthForTest(t, node, secret)
+
+	remote, err := InitNode(context.Background(), node)
+	require.NoError(t, err)
+	require.Equal(t, "2.4.3", remote.Version)
+}
 
 func TestInitNodeStopsWhenContextIsCancelled(t *testing.T) {
 	requestStarted := make(chan struct{})
