@@ -1,14 +1,14 @@
 package cache
 
 import (
-	"context"
 	"testing"
 	"time"
 )
 
 func TestNodeCache(t *testing.T) {
 	// Initialize cache for testing
-	Init(context.Background())
+	InitInMemoryCache()
+	t.Cleanup(Shutdown)
 
 	// Mock nodes data for testing
 	mockNodes := []interface{}{
