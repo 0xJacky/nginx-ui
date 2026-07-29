@@ -4,13 +4,11 @@ import (
 	"bytes"
 	"crypto/ed25519"
 	"crypto/rand"
-	"crypto/sha256"
 	"encoding/base64"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"testing"
-	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -22,99 +20,10 @@ import (
 	"gorm.io/gorm"
 )
 
-func TestPairingCodeIsSingleUseAndStoresOnlyControllerPublicKey(t *testing.T) {
-	gin.SetMode(gin.TestMode)
-	database, err := gorm.Open(sqlite.Open("file:"+t.Name()+"?mode=memory&cache=shared"), &gorm.Config{})
-	require.NoError(t, err)
-	require.NoError(t, database.AutoMigrate(&model.NodePairingCode{}, &model.NodeControllerCredential{}))
-	model.Use(database)
-	originalInstanceID := settings.NodeSettings.InstanceID
-	settings.NodeSettings.InstanceID = "11111111-1111-4111-8111-111111111111"
-	t.Cleanup(func() {
-		settings.NodeSettings.InstanceID = originalInstanceID
-		model.Use(nil)
-	})
-
-	router := gin.New()
-	router.POST("/pairing-codes", func(c *gin.Context) {
-		c.Set("user", &model.User{Model: model.Model{ID: 42}})
-		CreatePairingCode(c)
-	})
-	router.POST("/pair/complete", CompletePairing)
-
-	codeRecorder := httptest.NewRecorder()
-	router.ServeHTTP(codeRecorder, httptest.NewRequest(http.MethodPost, "/pairing-codes", nil))
-	require.Equal(t, http.StatusCreated, codeRecorder.Code)
-	var codeResponse pairingCodeResponse
-	require.NoError(t, json.Unmarshal(codeRecorder.Body.Bytes(), &codeResponse))
-	decodedCode, err := base64.RawURLEncoding.DecodeString(codeResponse.Code)
-	require.NoError(t, err)
-	assert.Len(t, decodedCode, 16)
-	assert.WithinDuration(t, time.Now().Add(pairingCodeLifetime), codeResponse.ExpiresAt, 2*time.Second)
-
-	publicKey, _, err := ed25519.GenerateKey(rand.Reader)
-	require.NoError(t, err)
-	payload, err := json.Marshal(completePairingRequest{
-		Code:                 codeResponse.Code,
-		ControllerInstanceID: "22222222-2222-4222-8222-222222222222",
-		PublicKey:            base64.RawURLEncoding.EncodeToString(publicKey),
-	})
-	require.NoError(t, err)
-
-	completeRecorder := httptest.NewRecorder()
-	router.ServeHTTP(completeRecorder, httptest.NewRequest(http.MethodPost, "/pair/complete", bytes.NewReader(payload)))
-	require.Equal(t, http.StatusCreated, completeRecorder.Code)
-	var completeResponse completePairingResponse
-	require.NoError(t, json.Unmarshal(completeRecorder.Body.Bytes(), &completeResponse))
-	assert.Equal(t, settings.NodeSettings.InstanceID, completeResponse.TargetInstanceID)
-
-	var credential model.NodeControllerCredential
-	require.NoError(t, database.Where("credential_id = ?", completeResponse.CredentialID).First(&credential).Error)
-	assert.Equal(t, []byte(publicKey), []byte(credential.PublicKey))
-	assert.Empty(t, credential.PendingPublicKey)
-	assert.Empty(t, credential.PreviousPublicKey)
-	assert.Equal(t, model.NodeCredentialStatusActive, credential.Status)
-
-	replayRecorder := httptest.NewRecorder()
-	router.ServeHTTP(replayRecorder, httptest.NewRequest(http.MethodPost, "/pair/complete", bytes.NewReader(payload)))
-	assert.Equal(t, http.StatusForbidden, replayRecorder.Code)
-}
-
-func TestCompletePairingRejectsExpiredCode(t *testing.T) {
-	gin.SetMode(gin.TestMode)
-	database, err := gorm.Open(sqlite.Open("file:"+t.Name()+"?mode=memory&cache=shared"), &gorm.Config{})
-	require.NoError(t, err)
-	require.NoError(t, database.AutoMigrate(&model.NodePairingCode{}, &model.NodeControllerCredential{}))
-	model.Use(database)
-	originalInstanceID := settings.NodeSettings.InstanceID
-	settings.NodeSettings.InstanceID = "11111111-1111-4111-8111-111111111111"
-	t.Cleanup(func() {
-		settings.NodeSettings.InstanceID = originalInstanceID
-		model.Use(nil)
-	})
-
-	code := base64.RawURLEncoding.EncodeToString(bytes.Repeat([]byte{7}, 16))
-	codeHash := sha256.Sum256([]byte(code))
-	require.NoError(t, database.Create(&model.NodePairingCode{
-		CodeHash:  codeHash[:],
-		ExpiresAt: time.Now().Add(-time.Second),
-		CreatedBy: 1,
-	}).Error)
-	publicKey, _, err := ed25519.GenerateKey(rand.Reader)
-	require.NoError(t, err)
-	payload, err := json.Marshal(completePairingRequest{
-		Code:                 code,
-		ControllerInstanceID: "22222222-2222-4222-8222-222222222222",
-		PublicKey:            base64.RawURLEncoding.EncodeToString(publicKey),
-	})
-	require.NoError(t, err)
-
-	router := gin.New()
-	router.POST("/pair/complete", CompletePairing)
-	recorder := httptest.NewRecorder()
-	router.ServeHTTP(recorder, httptest.NewRequest(http.MethodPost, "/pair/complete", bytes.NewReader(payload)))
-	assert.Equal(t, http.StatusForbidden, recorder.Code)
-}
+const (
+	nodeSecret           = "shared-legacy-node-secret"
+	controllerInstanceID = "22222222-2222-4222-8222-222222222222"
+)
 
 func TestLegacyAuthenticatedRelationshipUpgradeReplacesExistingControllerCredential(t *testing.T) {
 	gin.SetMode(gin.TestMode)
@@ -123,14 +32,16 @@ func TestLegacyAuthenticatedRelationshipUpgradeReplacesExistingControllerCredent
 	require.NoError(t, database.AutoMigrate(&model.NodeControllerCredential{}))
 	model.Use(database)
 	originalInstanceID := settings.NodeSettings.InstanceID
+	originalSecret := settings.NodeSettings.Secret
 	settings.NodeSettings.InstanceID = "11111111-1111-4111-8111-111111111111"
+	settings.NodeSettings.Secret = nodeSecret
 	t.Cleanup(func() {
 		settings.NodeSettings.InstanceID = originalInstanceID
+		settings.NodeSettings.Secret = originalSecret
 		model.Use(nil)
 	})
 
-	controllerInstanceID := "22222222-2222-4222-8222-222222222222"
-	requestUpgrade := func() completePairingResponse {
+	upgrade := func() (upgradeLegacyPairingResponse, ed25519.PublicKey) {
 		publicKey, _, generateErr := ed25519.GenerateKey(rand.Reader)
 		require.NoError(t, generateErr)
 		payload, marshalErr := json.Marshal(upgradeLegacyPairingRequest{
@@ -139,23 +50,24 @@ func TestLegacyAuthenticatedRelationshipUpgradeReplacesExistingControllerCredent
 		})
 		require.NoError(t, marshalErr)
 
-		router := gin.New()
-		router.POST("/pair/upgrade", func(c *gin.Context) {
-			c.Set(nodeauth.GinPrincipalKey, &nodeauth.Principal{AuthMethod: model.NodeAuthMethodLegacy})
-			UpgradeLegacyPairing(c)
-		})
-		recorder := httptest.NewRecorder()
-		router.ServeHTTP(recorder, httptest.NewRequest(http.MethodPost, "/pair/upgrade", bytes.NewReader(payload)))
+		recorder := serveUpgrade(t, payload, legacyNodePrincipal)
 		require.Equal(t, http.StatusCreated, recorder.Code)
-		var response completePairingResponse
+		var response upgradeLegacyPairingResponse
 		require.NoError(t, json.Unmarshal(recorder.Body.Bytes(), &response))
 		assert.Equal(t, settings.NodeSettings.InstanceID, response.TargetInstanceID)
-		return response
+		return response, publicKey
 	}
 
-	first := requestUpgrade()
-	second := requestUpgrade()
+	first, firstKey := upgrade()
+	second, _ := upgrade()
 	assert.NotEqual(t, first.CredentialID, second.CredentialID)
+
+	// The response proves the target holds the same secret, so the controller
+	// can trust the credential before it starts relying on it.
+	assert.NoError(t, nodeauth.VerifyUpgradeConfirmation([]byte(nodeSecret), controllerInstanceID,
+		firstKey, first.CredentialID, first.TargetInstanceID, first.Confirmation))
+	assert.Error(t, nodeauth.VerifyUpgradeConfirmation([]byte("another-secret"), controllerInstanceID,
+		firstKey, first.CredentialID, first.TargetInstanceID, first.Confirmation))
 
 	var credentials []model.NodeControllerCredential
 	require.NoError(t, database.Unscoped().Order("created_at ASC").Find(&credentials).Error)
@@ -166,9 +78,67 @@ func TestLegacyAuthenticatedRelationshipUpgradeReplacesExistingControllerCredent
 	assert.Nil(t, credentials[1].RevokedAt)
 }
 
-func TestPairingRequiresHTTPSExceptLoopback(t *testing.T) {
-	assert.NoError(t, requireSecurePairingURL("https://node.example"))
-	assert.NoError(t, requireSecurePairingURL("http://127.0.0.1:9000"))
-	assert.NoError(t, requireSecurePairingURL("http://[::1]:9000"))
-	assert.ErrorContains(t, requireSecurePairingURL("http://node.example"), "HTTPS")
+func TestLegacyUpgradeRequiresSharedSecretAuthentication(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	database, err := gorm.Open(sqlite.Open("file:"+t.Name()+"?mode=memory&cache=shared"), &gorm.Config{})
+	require.NoError(t, err)
+	require.NoError(t, database.AutoMigrate(&model.NodeControllerCredential{}))
+	model.Use(database)
+	originalInstanceID := settings.NodeSettings.InstanceID
+	originalSecret := settings.NodeSettings.Secret
+	settings.NodeSettings.InstanceID = "11111111-1111-4111-8111-111111111111"
+	settings.NodeSettings.Secret = nodeSecret
+	t.Cleanup(func() {
+		settings.NodeSettings.InstanceID = originalInstanceID
+		settings.NodeSettings.Secret = originalSecret
+		model.Use(nil)
+	})
+
+	publicKey, _, err := ed25519.GenerateKey(rand.Reader)
+	require.NoError(t, err)
+	payload, err := json.Marshal(upgradeLegacyPairingRequest{
+		ControllerInstanceID: controllerInstanceID,
+		PublicKey:            base64.RawURLEncoding.EncodeToString(publicKey),
+	})
+	require.NoError(t, err)
+
+	t.Run("unauthenticated", func(t *testing.T) {
+		assert.Equal(t, http.StatusForbidden, serveUpgrade(t, payload, nil).Code)
+	})
+
+	t.Run("paired_principal", func(t *testing.T) {
+		// A controller that already holds its own key pair has nothing to
+		// upgrade, and must not be able to mint a replacement credential.
+		assert.Equal(t, http.StatusForbidden, serveUpgrade(t, payload, func(c *gin.Context) {
+			c.Set(nodeauth.GinPrincipalKey, &nodeauth.Principal{AuthMethod: model.NodeAuthMethodPaired})
+		}).Code)
+	})
+
+	t.Run("no_configured_secret", func(t *testing.T) {
+		settings.NodeSettings.Secret = ""
+		defer func() { settings.NodeSettings.Secret = nodeSecret }()
+		assert.Equal(t, http.StatusForbidden, serveUpgrade(t, payload, legacyNodePrincipal).Code)
+	})
+
+	var count int64
+	require.NoError(t, database.Unscoped().Model(&model.NodeControllerCredential{}).Count(&count).Error)
+	assert.Zero(t, count, "a rejected upgrade must not issue a credential")
+}
+
+// legacyNodePrincipal stands in for the middleware, which authenticates a
+// shared-secret controller by verifying the signature on its request.
+func legacyNodePrincipal(c *gin.Context) {
+	c.Set(nodeauth.GinPrincipalKey, &nodeauth.Principal{AuthMethod: model.NodeAuthMethodLegacy})
+}
+
+func serveUpgrade(t *testing.T, payload []byte, authenticate gin.HandlerFunc) *httptest.ResponseRecorder {
+	t.Helper()
+	router := gin.New()
+	if authenticate != nil {
+		router.Use(authenticate)
+	}
+	router.POST("/pair/upgrade", UpgradeLegacyPairing)
+	recorder := httptest.NewRecorder()
+	router.ServeHTTP(recorder, httptest.NewRequest(http.MethodPost, "/pair/upgrade", bytes.NewReader(payload)))
+	return recorder
 }

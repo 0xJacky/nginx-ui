@@ -2,7 +2,10 @@ package nodeauth
 
 import (
 	"crypto/ed25519"
+	"crypto/hkdf"
+	"crypto/hmac"
 	"crypto/rand"
+	"crypto/sha256"
 	"crypto/subtle"
 	"encoding/base64"
 	"errors"
@@ -29,6 +32,16 @@ const (
 	signatureInputHeader       = "Signature-Input"
 	signatureHeader            = "Signature"
 	coveredComponentParameters = "(\"@method\" \"@path\" \"@query\" \"content-digest\" \"x-nginx-ui-credential-id\" \"x-nginx-ui-target-instance\")"
+
+	signatureAlgorithmEd25519 = "ed25519"
+	signatureAlgorithmHMAC    = "hmac-sha256"
+
+	// sharedSecretKeyID marks a signature keyed by the configured node secret
+	// rather than by a paired credential. It fills both identifier slots of the
+	// envelope because a shared secret is not bound to a credential record or to
+	// one target instance.
+	sharedSecretKeyID   = "node-secret"
+	sharedSecretKeyInfo = "nginx-ui/node-shared-secret/hmac-sha256/v1"
 )
 
 var defaultReplayCache = NewReplayCache(maxReplayItems)
@@ -38,6 +51,7 @@ type signatureMetadata struct {
 	expires      int64
 	nonce        string
 	credentialID string
+	algorithm    string
 	parameters   string
 }
 
@@ -45,6 +59,27 @@ func SignRequestWithKey(request *http.Request, credentialID, targetInstanceID st
 	if len(privateKey) != ed25519.PrivateKeySize {
 		return errors.New("invalid Ed25519 private key")
 	}
+	return signRequest(request, credentialID, targetInstanceID, signatureAlgorithmEd25519, now,
+		func(base []byte) ([]byte, error) {
+			return ed25519.Sign(privateKey, base), nil
+		})
+}
+
+// SignRequestWithSharedSecret authenticates a request with the node secret both
+// instances already hold, without ever putting that secret on the wire.
+func SignRequestWithSharedSecret(request *http.Request, secret []byte, now time.Time) error {
+	if len(secret) == 0 {
+		return errors.New("node secret is unavailable")
+	}
+	return signRequest(request, sharedSecretKeyID, sharedSecretKeyID, signatureAlgorithmHMAC, now,
+		func(base []byte) ([]byte, error) {
+			return sharedSecretSignature(secret, base)
+		})
+}
+
+func signRequest(request *http.Request, credentialID, targetInstanceID, algorithm string, now time.Time,
+	sign func(base []byte) ([]byte, error),
+) error {
 	if !validIdentifier(credentialID) || !validIdentifier(targetInstanceID) {
 		return errors.New("invalid node signature identifier")
 	}
@@ -63,12 +98,13 @@ func SignRequestWithKey(request *http.Request, credentialID, targetInstanceID st
 	expires := now.Add(signatureLifetime).Unix()
 	nonce := base64.RawURLEncoding.EncodeToString(nonceBytes)
 	parameters := fmt.Sprintf(
-		"%s;created=%d;expires=%d;nonce=\"%s\";keyid=\"%s\";alg=\"ed25519\";tag=\"%s\"",
+		"%s;created=%d;expires=%d;nonce=\"%s\";keyid=\"%s\";alg=\"%s\";tag=\"%s\"",
 		coveredComponentParameters,
 		created,
 		expires,
 		nonce,
 		credentialID,
+		algorithm,
 		signatureTag,
 	)
 
@@ -77,10 +113,23 @@ func SignRequestWithKey(request *http.Request, credentialID, targetInstanceID st
 	request.Header.Set(CredentialIDHeader, credentialID)
 	request.Header.Set(TargetInstanceHeader, targetInstanceID)
 	request.Header.Set(signatureInputHeader, signatureLabel+"="+parameters)
-	signatureBase := buildSignatureBase(request, parameters)
-	signature := ed25519.Sign(privateKey, []byte(signatureBase))
+	signature, err := sign([]byte(buildSignatureBase(request, parameters)))
+	if err != nil {
+		CloseStagedBody(request)
+		return err
+	}
 	request.Header.Set(signatureHeader, signatureLabel+"=:"+base64.StdEncoding.EncodeToString(signature)+":")
 	return nil
+}
+
+func sharedSecretSignature(secret, base []byte) ([]byte, error) {
+	key, err := hkdf.Key(sha256.New, secret, []byte(signatureTag), sharedSecretKeyInfo, 32)
+	if err != nil {
+		return nil, fmt.Errorf("derive node secret signing key: %w", err)
+	}
+	mac := hmac.New(sha256.New, key)
+	_, _ = mac.Write(base)
+	return mac.Sum(nil), nil
 }
 
 func VerifyRequest(request *http.Request) (*Principal, error) {
@@ -99,14 +148,17 @@ func verifyRequest(request *http.Request, database *gorm.DB, now time.Time, repl
 	if err != nil {
 		return nil, err
 	}
-	if target := singleHeaderValue(request.Header, TargetInstanceHeader); target == "" || target != settings.NodeSettings.InstanceID {
-		return nil, errors.New("node signature target does not match this instance")
-	}
 	if credentialID := singleHeaderValue(request.Header, CredentialIDHeader); credentialID == "" || credentialID != metadata.credentialID {
 		return nil, errors.New("node signature credential identifier mismatch")
 	}
 	if err := validateSignatureTime(metadata, now); err != nil {
 		return nil, err
+	}
+	if metadata.algorithm == signatureAlgorithmHMAC {
+		return verifySharedSecretRequest(request, metadata, now, replayCache)
+	}
+	if target := singleHeaderValue(request.Header, TargetInstanceHeader); target == "" || target != settings.NodeSettings.InstanceID {
+		return nil, errors.New("node signature target does not match this instance")
 	}
 
 	var credential model.NodeControllerCredential
@@ -127,7 +179,7 @@ func verifyRequest(request *http.Request, database *gorm.DB, now time.Time, repl
 		return nil, errors.New("node request content digest mismatch")
 	}
 
-	signature, err := parseSignature(request.Header)
+	signature, err := parseSignature(request.Header, ed25519.SignatureSize)
 	if err != nil {
 		return nil, err
 	}
@@ -149,6 +201,56 @@ func verifyRequest(request *http.Request, database *gorm.DB, now time.Time, repl
 		CredentialID:         credential.CredentialID,
 		ControllerInstanceID: credential.ControllerInstanceID,
 		AuthMethod:           model.NodeAuthMethodPaired,
+	}, nil
+}
+
+// verifySharedSecretRequest authenticates a request signed with the node secret
+// both instances hold. The secret itself never travels, so an observer of the
+// link learns nothing reusable, and the covered components plus the nonce make
+// the signature useless for anything other than the exact request it was made
+// for.
+func verifySharedSecretRequest(request *http.Request, metadata signatureMetadata, now time.Time,
+	replayCache *ReplayCache,
+) (*Principal, error) {
+	// A shared secret is not bound to a credential record or to one instance, so
+	// both identifier slots have to carry the sentinel rather than real values.
+	if metadata.credentialID != sharedSecretKeyID ||
+		singleHeaderValue(request.Header, TargetInstanceHeader) != sharedSecretKeyID {
+		return nil, errors.New("node signature identifiers do not match a shared secret")
+	}
+	secret := strings.TrimSpace(settings.NodeSettings.Secret)
+	if secret == "" {
+		return nil, errors.New("node secret is not configured")
+	}
+
+	contentDigest, err := stageRequestBody(request)
+	if err != nil {
+		return nil, err
+	}
+	receivedDigest := singleHeaderValue(request.Header, contentDigestHeader)
+	if receivedDigest == "" || subtle.ConstantTimeCompare([]byte(receivedDigest), []byte(contentDigest)) != 1 {
+		return nil, errors.New("node request content digest mismatch")
+	}
+
+	signature, err := parseSignature(request.Header, sha256.Size)
+	if err != nil {
+		return nil, err
+	}
+	expected, err := sharedSecretSignature([]byte(secret), []byte(buildSignatureBase(request, metadata.parameters)))
+	if err != nil {
+		return nil, err
+	}
+	if subtle.ConstantTimeCompare(signature, expected) != 1 {
+		return nil, errors.New("node request signature is invalid")
+	}
+	if replayCache == nil || !replayCache.Use(sharedSecretKeyID+":"+metadata.nonce, now) {
+		return nil, errors.New("node request nonce was already used")
+	}
+
+	return &Principal{
+		CredentialID:         "legacy",
+		ControllerInstanceID: "legacy",
+		AuthMethod:           model.NodeAuthMethodLegacy,
 	}, nil
 }
 
@@ -177,7 +279,7 @@ func parseSignatureInput(header http.Header) (signatureMetadata, error) {
 		return signatureMetadata{}, errors.New("invalid node signature key identifier")
 	}
 	algorithm, remaining, err := consumeQuotedParameter(remaining, "alg")
-	if err != nil || algorithm != "ed25519" {
+	if err != nil || (algorithm != signatureAlgorithmEd25519 && algorithm != signatureAlgorithmHMAC) {
 		return signatureMetadata{}, errors.New("unsupported node signature algorithm")
 	}
 	tag, remaining, err := consumeQuotedParameter(remaining, "tag")
@@ -190,6 +292,7 @@ func parseSignatureInput(header http.Header) (signatureMetadata, error) {
 		expires:      expires,
 		nonce:        nonce,
 		credentialID: credentialID,
+		algorithm:    algorithm,
 		parameters:   strings.TrimPrefix(value, signatureLabel+"="),
 	}, nil
 }
@@ -228,7 +331,7 @@ func consumeQuotedParameter(input, name string) (string, string, error) {
 	return value, input[end+1:], nil
 }
 
-func parseSignature(header http.Header) ([]byte, error) {
+func parseSignature(header http.Header, expectedSize int) ([]byte, error) {
 	value := singleHeaderValue(header, signatureHeader)
 	prefix := signatureLabel + "=:"
 	if !strings.HasPrefix(value, prefix) || !strings.HasSuffix(value, ":") {
@@ -236,7 +339,7 @@ func parseSignature(header http.Header) ([]byte, error) {
 	}
 	encoded := strings.TrimSuffix(strings.TrimPrefix(value, prefix), ":")
 	signature, err := base64.StdEncoding.DecodeString(encoded)
-	if err != nil || len(signature) != ed25519.SignatureSize {
+	if err != nil || len(signature) != expectedSize {
 		return nil, errors.New("node signature is missing or invalid")
 	}
 	return signature, nil

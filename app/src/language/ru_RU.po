@@ -619,7 +619,7 @@ msgstr "Нет действия"
 
 #: src/components/NamespaceRender/NamespaceRender.vue:44
 #: src/components/NamespaceTabs/NamespaceTabs.vue:141 src/constants/index.ts:39
-#: src/views/node/Node.vue:262 src/views/node/Node.vue:270
+#: src/views/node/Node.vue:209 src/views/node/Node.vue:217
 msgid "Reload Nginx"
 msgstr "Перезагрузить Nginx"
 
@@ -676,7 +676,7 @@ msgstr ""
 "узлах?"
 
 #: src/components/NamespaceTabs/NamespaceTabs.vue:153
-#: src/views/node/Node.vue:283 src/views/node/Node.vue:291
+#: src/views/node/Node.vue:230 src/views/node/Node.vue:238
 msgid "Restart Nginx"
 msgstr "Перезапустить Nginx"
 
@@ -685,7 +685,7 @@ msgstr "Перезапустить Nginx"
 #: src/components/NodeSelector/NodeSelector.vue:65
 #: src/components/NodeSelector/NodeSelector.vue:79
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
-#: src/views/dashboard/Nodes.vue:110 src/views/node/nodeColumns.tsx:74
+#: src/views/dashboard/Nodes.vue:110 src/views/node/nodeColumns.tsx:88
 #: src/views/upstream/SocketList.vue:45
 msgid "Online"
 msgstr "Онлайн"
@@ -694,7 +694,7 @@ msgstr "Онлайн"
 #: src/components/NodeCard/NodeCard.vue:59
 #: src/components/NodeSelector/NodeSelector.vue:85
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
-#: src/views/dashboard/Nodes.vue:117 src/views/node/nodeColumns.tsx:78
+#: src/views/dashboard/Nodes.vue:117 src/views/node/nodeColumns.tsx:92
 #: src/views/upstream/SocketList.vue:45
 msgid "Offline"
 msgstr "Оффлайн"
@@ -1413,7 +1413,7 @@ msgstr "Порт"
 #: src/views/nginx_log/structured/components/SearchFilters.vue:106
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:242
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:522
-#: src/views/node/nodeColumns.tsx:66
+#: src/views/node/nodeColumns.tsx:80
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:29
 #: src/views/site/site_list/columns.tsx:120 src/views/stream/columns.tsx:87
 msgid "Status"
@@ -3471,7 +3471,7 @@ msgstr "Массовое изменение"
 
 #: src/language/curd.ts:35 src/views/certificate/CertificateEditor.vue:97
 #: src/views/certificate/components/RenewCert.vue:21
-#: src/views/preference/store/index.ts:166
+#: src/views/preference/store/index.ts:164
 msgid "Save successfully"
 msgstr "Сохранено успешно"
 
@@ -4045,7 +4045,7 @@ msgid "Log List"
 msgstr "Список журналов"
 
 #: src/routes/modules/nodes.ts:11 src/views/dashboard/Nodes.vue:89
-#: src/views/node/Node.vue:159
+#: src/views/node/Node.vue:131
 msgid "Nodes"
 msgstr "Узлы"
 
@@ -4077,8 +4077,8 @@ msgstr "Управление потоками"
 msgid "Edit Stream"
 msgstr "Редактировать поток"
 
-#: src/routes/modules/system.ts:26 src/views/node/Node.vue:241
-#: src/views/node/Node.vue:249 src/views/system/Upgrade.vue:154
+#: src/routes/modules/system.ts:26 src/views/node/Node.vue:188
+#: src/views/node/Node.vue:196 src/views/system/Upgrade.vue:154
 #: src/views/system/Upgrade.vue:159
 msgid "Upgrade"
 msgstr "Обновление"
@@ -4164,13 +4164,13 @@ msgstr "Ежемесячно в день %{day} в %{time}"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:193
 #: src/views/backup/AutoBackup/AutoBackup.vue:203
-#: src/views/dns/DDNSManager.vue:320 src/views/node/nodeColumns.tsx:92
-#: src/views/node/nodeColumns.tsx:98
+#: src/views/dns/DDNSManager.vue:320 src/views/node/nodeColumns.tsx:106
+#: src/views/node/nodeColumns.tsx:112
 #: src/views/preference/components/ExternalNotify/columns.tsx:47
 #: src/views/preference/tabs/HTTPSettings.vue:24
 #: src/views/preference/tabs/LogrotateSettings.vue:20
-#: src/views/preference/tabs/NodeSettings.vue:64
-#: src/views/preference/tabs/NodeSettings.vue:69
+#: src/views/preference/tabs/NodeSettings.vue:28
+#: src/views/preference/tabs/NodeSettings.vue:33
 #: src/views/site/components/SiteStatusSelect.vue:159
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:75
 #: src/views/site/site_list/columns.tsx:142 src/views/stream/columns.tsx:108
@@ -4182,11 +4182,11 @@ msgstr "Включено"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:194
 #: src/views/backup/AutoBackup/AutoBackup.vue:204
-#: src/views/dns/DDNSManager.vue:320 src/views/node/nodeColumns.tsx:83
-#: src/views/node/nodeColumns.tsx:101
+#: src/views/dns/DDNSManager.vue:320 src/views/node/nodeColumns.tsx:97
+#: src/views/node/nodeColumns.tsx:115
 #: src/views/preference/tabs/HTTPSettings.vue:24
-#: src/views/preference/tabs/NodeSettings.vue:64
-#: src/views/preference/tabs/NodeSettings.vue:69
+#: src/views/preference/tabs/NodeSettings.vue:28
+#: src/views/preference/tabs/NodeSettings.vue:33
 #: src/views/site/components/SiteStatusSelect.vue:162
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:81
 #: src/views/site/site_list/columns.tsx:146 src/views/stream/columns.tsx:112
@@ -4229,7 +4229,7 @@ msgstr "Создан в"
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
 #: src/views/config/configColumns.tsx:44 src/views/dns/DNSCredential.vue:65
 #: src/views/dns/DNSDomainList.vue:236 src/views/dns/DNSGroupList.vue:33
-#: src/views/namespace/columns.ts:91 src/views/node/nodeColumns.tsx:112
+#: src/views/namespace/columns.ts:91 src/views/node/nodeColumns.tsx:126
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:39
 #: src/views/site/site_list/columns.tsx:113 src/views/stream/columns.tsx:80
 #: src/views/stream/components/RightPanel/Basic.vue:35
@@ -4273,7 +4273,7 @@ msgstr "Регион S3"
 #: src/views/dns/DNSGroupRecordManager.vue:145
 #: src/views/dns/DNSGroupRecordManager.vue:1362
 #: src/views/namespace/columns.ts:97 src/views/nginx_log/NginxLogList.vue:339
-#: src/views/node/nodeColumns.tsx:119
+#: src/views/node/nodeColumns.tsx:133
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:85
 #: src/views/site/site_list/columns.tsx:160 src/views/stream/columns.tsx:123
@@ -7477,7 +7477,7 @@ msgstr "Структурированный"
 msgid "Raw"
 msgstr "Сырой"
 
-#: src/views/nginx_log/NginxLog.vue:101 src/views/node/Node.vue:193
+#: src/views/nginx_log/NginxLog.vue:101 src/views/node/Node.vue:165
 msgid "Auto Refresh"
 msgstr "Автообновление"
 
@@ -7862,65 +7862,39 @@ msgstr "Посмотреть на GitHub"
 msgid "Perform"
 msgstr "Выполнить"
 
-#: src/views/node/Node.vue:47
+#: src/views/node/Node.vue:44
 msgid "Auto refresh enabled"
 msgstr "Автоматическое обновление включено"
 
-#: src/views/node/Node.vue:51
+#: src/views/node/Node.vue:48
 msgid "Auto refresh disabled"
 msgstr "Автоматическое обновление отключено"
 
-#: src/views/node/Node.vue:71
+#: src/views/node/Node.vue:68
 msgid "Load successfully"
 msgstr "Загружено успешно"
 
-#: src/views/node/Node.vue:86 src/views/node/Node.vue:254
+#: src/views/node/Node.vue:83 src/views/node/Node.vue:201
 msgid "Please select at least one node to reload Nginx"
 msgstr "Пожалуйста, выберите хотя бы один узел для перезагрузки Nginx"
 
-#: src/views/node/Node.vue:92
+#: src/views/node/Node.vue:89
 msgid "Nginx reload operations have been dispatched to remote nodes"
 msgstr "Операции перезагрузки Nginx были отправлены на удаленные узлы"
 
-#: src/views/node/Node.vue:100 src/views/node/Node.vue:275
+#: src/views/node/Node.vue:97 src/views/node/Node.vue:222
 msgid "Please select at least one node to restart Nginx"
 msgstr "Пожалуйста, выберите хотя бы один узел для перезапуска Nginx"
 
-#: src/views/node/Node.vue:106
+#: src/views/node/Node.vue:103
 msgid "Nginx restart operations have been dispatched to remote nodes"
 msgstr "Операции перезапуска Nginx были отправлены на удаленные узлы"
 
-#: src/views/node/Node.vue:129
-msgid "Node authentication upgraded successfully"
-msgstr "Аутентификация узла успешно обновлена"
-
-#: src/views/node/Node.vue:166
+#: src/views/node/Node.vue:138
 msgid "Load from settings"
 msgstr "Загрузить из настроек"
 
-#: src/views/node/Node.vue:206 src/views/node/Node.vue:229
-msgid "Upgrade Authentication"
-msgstr "Обновление аутентификации"
-
-#: src/views/node/Node.vue:206 src/views/node/Node.vue:229
-#: src/views/preference/tabs/NodeSettings.vue:27
-#, fuzzy
-msgid "Pair Node"
-msgstr "Главный узел"
-
-#: src/views/node/Node.vue:213
-msgid ""
-"Generate a one-time pairing code on the child node, then enter it here. "
-"Remote pairing requires HTTPS."
-msgstr ""
-"Создайте одноразовый код сопряжения на дочернем узле и введите его здесь. "
-"Удаленное сопряжение требует HTTPS."
-
-#: src/views/node/Node.vue:217
-msgid "One-time pairing code"
-msgstr "Одноразовый код сопряжения"
-
-#: src/views/node/Node.vue:233
+#: src/views/node/Node.vue:180
 msgid "Please select at least one node to upgrade"
 msgstr "Пожалуйста, выберите хотя бы один узел"
 
@@ -7944,19 +7918,28 @@ msgstr "Истекший"
 msgid "Revoked"
 msgstr "Аннулировать"
 
-#: src/views/node/nodeColumns.tsx:38 src/views/system/Licenses.vue:28
+#: src/views/node/nodeColumns.tsx:41
+#: src/views/preference/tabs/NodeSettings.vue:11
+msgid "Node Secret"
+msgstr "Секрет узла"
+
+#: src/views/node/nodeColumns.tsx:46 src/views/user/userColumns.tsx:23
+msgid "Leave blank for no change"
+msgstr "Оставьте пустым без изменений"
+
+#: src/views/node/nodeColumns.tsx:52 src/views/system/Licenses.vue:28
 msgid "Version"
 msgstr "Версия"
 
-#: src/views/node/nodeColumns.tsx:43
+#: src/views/node/nodeColumns.tsx:57
 msgid "Authentication"
 msgstr "Аутентификация"
 
-#: src/views/node/nodeColumns.tsx:52
+#: src/views/node/nodeColumns.tsx:66
 msgid "Paired signature"
 msgstr "Парная подпись"
 
-#: src/views/node/nodeColumns.tsx:52
+#: src/views/node/nodeColumns.tsx:66
 msgid "Legacy secret"
 msgstr "Устаревший секрет"
 
@@ -8593,47 +8576,15 @@ msgstr "Режим управления Nginx"
 msgid "External Docker Container"
 msgstr "Внешний контейнер Docker"
 
-#: src/views/preference/tabs/NodeSettings.vue:21
-msgid "Node Secret"
-msgstr "Секрет узла"
-
-#: src/views/preference/tabs/NodeSettings.vue:24
+#: src/views/preference/tabs/NodeSettings.vue:14
 msgid "Instance ID"
 msgstr "Идентификатор экземпляра"
 
-#: src/views/preference/tabs/NodeSettings.vue:29
-msgid "Generate Pairing Code"
-msgstr "Сгенерировать код сопряжения"
-
-#: src/views/preference/tabs/NodeSettings.vue:32
-msgid "Allow legacy node authentication"
-msgstr "Разрешить устаревшую аутентификацию узла"
-
-#: src/views/preference/tabs/NodeSettings.vue:38
-msgid ""
-"Disable this compatibility switch after every controller has been upgraded "
-"to paired signatures."
-msgstr ""
-"Отключите этот переключатель совместимости после того, как все контроллеры "
-"будут обновлены до парных подписей."
-
-#: src/views/preference/tabs/NodeSettings.vue:41
-msgid "Allow legacy Node Secret for MCP"
-msgstr "Разрешить устаревший секрет узла для MCP"
-
-#: src/views/preference/tabs/NodeSettings.vue:50
-msgid ""
-"Temporary compatibility only. Replace MCP Node Secret clients with scoped "
-"service tokens."
-msgstr ""
-"Только временная совместимость. Замените клиенты MCP Node Secret на токены "
-"службы с ограниченной областью действия."
-
-#: src/views/preference/tabs/NodeSettings.vue:54
+#: src/views/preference/tabs/NodeSettings.vue:18
 msgid "Node name"
 msgstr "Имя узла"
 
-#: src/views/preference/tabs/NodeSettings.vue:57
+#: src/views/preference/tabs/NodeSettings.vue:21
 msgid ""
 "The node name should only contain letters, unicode, numbers, hyphens, "
 "dashes, colons, and dots."
@@ -8641,25 +8592,25 @@ msgstr ""
 "Имя узла должно содержать только буквы, юникод, цифры, дефисы, тире, "
 "двоеточия и точки."
 
-#: src/views/preference/tabs/NodeSettings.vue:58
+#: src/views/preference/tabs/NodeSettings.vue:22
 msgid ""
 "Customize the name of local node to be displayed in the environment "
 "indicator."
 msgstr "Настройте имя локального узла для отображения в индикаторе среды."
 
-#: src/views/preference/tabs/NodeSettings.vue:62
+#: src/views/preference/tabs/NodeSettings.vue:26
 msgid "Skip Installation"
 msgstr "Пропустить установку"
 
-#: src/views/preference/tabs/NodeSettings.vue:67
+#: src/views/preference/tabs/NodeSettings.vue:31
 msgid "Demo"
 msgstr "Демо"
 
-#: src/views/preference/tabs/NodeSettings.vue:73
+#: src/views/preference/tabs/NodeSettings.vue:37
 msgid "ICP Number"
 msgstr "ICP номер"
 
-#: src/views/preference/tabs/NodeSettings.vue:76
+#: src/views/preference/tabs/NodeSettings.vue:40
 msgid ""
 "The ICP Number should only contain letters, unicode, numbers, hyphens, "
 "dashes, colons, and dots."
@@ -8667,30 +8618,22 @@ msgstr ""
 "Номер ICP должен содержать только буквы, юникод, цифры, дефисы, тире, "
 "двоеточия и точки."
 
-#: src/views/preference/tabs/NodeSettings.vue:81
-#: src/views/preference/tabs/NodeSettings.vue:93
+#: src/views/preference/tabs/NodeSettings.vue:45
+#: src/views/preference/tabs/NodeSettings.vue:57
 msgid "For Chinese user"
 msgstr "Для китайскоязычных пользователей"
 
-#: src/views/preference/tabs/NodeSettings.vue:85
+#: src/views/preference/tabs/NodeSettings.vue:49
 msgid "Public Security Number"
 msgstr "Номер в органах общественной безопасности"
 
-#: src/views/preference/tabs/NodeSettings.vue:88
+#: src/views/preference/tabs/NodeSettings.vue:52
 msgid ""
 "The Public Security Number should only contain letters, unicode, numbers, "
 "hyphens, dashes, colons, and dots."
 msgstr ""
 "Номер общественной безопасности должен содержать только буквы, юникод, "
 "цифры, дефисы, тире, двоеточия и точки."
-
-#: src/views/preference/tabs/NodeSettings.vue:100
-msgid "One-time Pairing Code"
-msgstr "Одноразовый код сопряжения"
-
-#: src/views/preference/tabs/NodeSettings.vue:107
-msgid "Expires at: %{time}"
-msgstr "Истекает: %{time}"
 
 #: src/views/preference/tabs/OpenAISettings.vue:35
 msgid ""
@@ -9556,10 +9499,6 @@ msgstr "Проверка состояния"
 msgid "Upstream Sockets"
 msgstr "Сокеты Upstream"
 
-#: src/views/user/userColumns.tsx:23
-msgid "Leave blank for no change"
-msgstr "Оставьте пустым без изменений"
-
 #: src/views/user/userColumns.tsx:30
 msgid "2FA"
 msgstr "2FA"
@@ -9607,6 +9546,55 @@ msgstr "Подтвердите новый пароль"
 #: src/views/user/UserProfile.vue:213
 msgid "Update Password"
 msgstr "Обновить пароль"
+
+#~ msgid "Node authentication upgraded successfully"
+#~ msgstr "Аутентификация узла успешно обновлена"
+
+#~ msgid "Upgrade Authentication"
+#~ msgstr "Обновление аутентификации"
+
+#, fuzzy
+#~ msgid "Pair Node"
+#~ msgstr "Главный узел"
+
+#~ msgid ""
+#~ "Generate a one-time pairing code on the child node, then enter it here. "
+#~ "Remote pairing requires HTTPS."
+#~ msgstr ""
+#~ "Создайте одноразовый код сопряжения на дочернем узле и введите его здесь. "
+#~ "Удаленное сопряжение требует HTTPS."
+
+#~ msgid "One-time pairing code"
+#~ msgstr "Одноразовый код сопряжения"
+
+#~ msgid "Generate Pairing Code"
+#~ msgstr "Сгенерировать код сопряжения"
+
+#~ msgid "One-time Pairing Code"
+#~ msgstr "Одноразовый код сопряжения"
+
+#~ msgid "Expires at: %{time}"
+#~ msgstr "Истекает: %{time}"
+
+#~ msgid "Allow legacy node authentication"
+#~ msgstr "Разрешить устаревшую аутентификацию узла"
+
+#~ msgid ""
+#~ "Disable this compatibility switch after every controller has been "
+#~ "upgraded to paired signatures."
+#~ msgstr ""
+#~ "Отключите этот переключатель совместимости после того, как все "
+#~ "контроллеры будут обновлены до парных подписей."
+
+#~ msgid "Allow legacy Node Secret for MCP"
+#~ msgstr "Разрешить устаревший секрет узла для MCP"
+
+#~ msgid ""
+#~ "Temporary compatibility only. Replace MCP Node Secret clients with scoped "
+#~ "service tokens."
+#~ msgstr ""
+#~ "Только временная совместимость. Замените клиенты MCP Node Secret на "
+#~ "токены службы с ограниченной областью действия."
 
 #~ msgid ""
 #~ "Logrotate, by default, is enabled in most mainstream Linux distributions "

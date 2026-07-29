@@ -5,11 +5,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func InitPublicRouter(r *gin.RouterGroup) {
-	r.POST("node/pair/complete", CompletePairing)
-}
-
 func InitRouter(r *gin.RouterGroup) {
+	// The node secret is the only thing a relationship starts from, so an
+	// upgrade arrives already authenticated by the middleware like any other
+	// node request.
 	r.POST("node/pair/upgrade", UpgradeLegacyPairing)
 
 	// Node
@@ -25,10 +24,8 @@ func InitRouter(r *gin.RouterGroup) {
 		admin.POST("nodes/:id", EditNode)
 		admin.DELETE("nodes/:id", DeleteNode)
 		admin.POST("nodes/load_from_settings", LoadNodeFromSettings)
-		admin.POST("nodes/:id/pair", PairNode)
 		admin.GET("nodes/:id/credentials", GetNodeCredentials)
 		admin.POST("nodes/:id/credentials/rotate", RotateNodeCredential)
-		admin.POST("node/pairing-codes", CreatePairingCode)
 		admin.GET("node/credentials", ListControllerCredentials)
 		admin.DELETE("node/credentials/:credential_id", RevokeControllerCredential)
 	}

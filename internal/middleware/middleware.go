@@ -79,8 +79,10 @@ func authenticateNodeRequest(c *gin.Context) (bool, error) {
 	if secret == "" {
 		return false, nil
 	}
+	// Nodes registered with a shared secret authenticate this way until the
+	// maintenance pass upgrades them to signed requests.
 	configuredSecret := settings.NodeSettings.Secret
-	if !settings.NodeSettings.LegacyAuthEnabled ||
+	if configuredSecret == "" ||
 		len(secret) != len(configuredSecret) ||
 		subtle.ConstantTimeCompare([]byte(secret), []byte(configuredSecret)) != 1 {
 		return true, fmt.Errorf("legacy node authentication failed")

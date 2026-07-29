@@ -13,12 +13,6 @@ export interface Node extends ModelBase {
   response_at?: string
 }
 
-export interface PairingCode {
-  code: string
-  instance_id: string
-  expires_at: string
-}
-
 export interface NodeStatus {
   avg_load: {
     load1: number
@@ -82,8 +76,6 @@ const nodeApi = extendCurdApi(useCurdApi<Node>(baseUrl), {
   load_from_settings: () => http.post(`${baseUrl}/load_from_settings`),
   reloadNginx,
   restartNginx,
-  createPairingCode: () => http.post<PairingCode>('/node/pairing-codes'),
-  pair: (id: number, code: string) => http.post(`${baseUrl}/${id}/pair`, { code }),
   rotateCredential: (id: number) => http.post(`${baseUrl}/${id}/credentials/rotate`),
 })
 

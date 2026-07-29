@@ -87,9 +87,7 @@ func mcpAuthRequired() gin.HandlerFunc {
 
 		legacySecret := strings.TrimSpace(c.GetHeader("X-Node-Secret"))
 		configuredSecret := settings.NodeSettings.Secret
-		if legacySecret != "" &&
-			settings.NodeSettings.LegacyAuthEnabled &&
-			settings.NodeSettings.LegacyMCPAuthEnabled &&
+		if legacySecret != "" && configuredSecret != "" &&
 			len(legacySecret) == len(configuredSecret) &&
 			subtle.ConstantTimeCompare([]byte(legacySecret), []byte(configuredSecret)) == 1 {
 			principal := &nodeauth.Principal{

@@ -10,7 +10,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"net"
 	"net/http"
 	"net/url"
 	"strings"
@@ -28,8 +27,14 @@ const (
 )
 
 var (
-	ErrNodeNotPaired     = errors.New("node is not using paired authentication")
-	ErrCredentialMissing = errors.New("paired credential not found")
+	ErrNodeNotPaired       = errors.New("node is not using paired authentication")
+	ErrCredentialMissing   = errors.New("paired credential not found")
+	ErrLegacySecretMissing = errors.New("node has no legacy secret to upgrade from")
+	// ErrRelationshipUnsupported reports a target that does not expose the
+	// handshake endpoint, which is how a node running an older release presents
+	// itself. Such a node keeps authenticating with the shared secret until it
+	// is upgraded, and the next maintenance pass picks it up on its own.
+	ErrRelationshipUnsupported = errors.New("target node does not support paired authentication yet")
 )
 
 type PairingResult struct {
@@ -49,8 +54,7 @@ type MaintenanceIssue struct {
 	Err       error
 }
 
-type pairingRequest struct {
-	Code                 string `json:"code,omitempty"`
+type upgradeRequest struct {
 	ControllerInstanceID string `json:"controller_instance_id"`
 	PublicKey            string `json:"public_key"`
 }
@@ -58,60 +62,70 @@ type pairingRequest struct {
 type pairingResponse struct {
 	CredentialID     string `json:"credential_id"`
 	TargetInstanceID string `json:"target_instance_id"`
+	Confirmation     string `json:"confirmation,omitempty"`
 }
 
 type rotationRequest struct {
 	PublicKey string `json:"public_key"`
 }
 
-func PairNode(ctx context.Context, node *model.Node, code, controllerInstanceID string) (*PairingResult, error) {
-	if strings.TrimSpace(code) == "" {
-		return nil, errors.New("pairing code is required")
-	}
-	return establishRelationship(ctx, node, "/api/node/pair/complete", pairingRequest{
-		Code:                 strings.TrimSpace(code),
-		ControllerInstanceID: controllerInstanceID,
-	}, false)
-}
-
+// UpgradeLegacyRelationship migrates a node that still authenticates with the
+// shared secret onto its own key pair.
+//
+// The request rides the ordinary authenticated transport, which now signs with
+// the shared secret rather than sending it, so this exchange needs no transport
+// guarantee of its own: nothing reusable is exposed, and the target's answer is
+// authenticated before the new credential is stored.
 func UpgradeLegacyRelationship(ctx context.Context, node *model.Node, controllerInstanceID string) (*PairingResult, error) {
-	if node == nil || node.AuthMethod != model.NodeAuthMethodLegacy {
-		return nil, errors.New("node is not using legacy authentication")
-	}
-	return establishRelationship(ctx, node, "/api/node/pair/upgrade", pairingRequest{
-		ControllerInstanceID: controllerInstanceID,
-	}, true)
-}
-
-func establishRelationship(ctx context.Context, node *model.Node, path string, payload pairingRequest,
-	authenticate bool,
-) (*PairingResult, error) {
 	if node == nil {
 		return nil, errors.New("node is required")
 	}
-	if err := RequireSecurePairingURL(node.URL); err != nil {
-		return nil, err
+	if len(node.EncryptedLegacySecret) == 0 {
+		return nil, ErrLegacySecretMissing
 	}
-	if _, err := uuid.Parse(payload.ControllerInstanceID); err != nil {
+	if _, err := uuid.Parse(controllerInstanceID); err != nil {
 		return nil, errors.New("invalid controller instance ID")
 	}
+	secret, err := DecryptPrivateCredential(LegacyCredentialPurpose(node.ID), node.EncryptedLegacySecret)
+	if err != nil {
+		return nil, err
+	}
+
 	publicKey, privateKey, err := ed25519.GenerateKey(rand.Reader)
 	if err != nil {
 		return nil, err
 	}
-	payload.PublicKey = base64.RawURLEncoding.EncodeToString(publicKey)
 
 	var response pairingResponse
-	if err := sendRelationshipJSON(ctx, node, http.MethodPost, path, payload, &response, authenticate); err != nil {
+	if err := sendRelationshipJSON(ctx, node, http.MethodPost, "/api/node/pair/upgrade", upgradeRequest{
+		ControllerInstanceID: controllerInstanceID,
+		PublicKey:            base64.RawURLEncoding.EncodeToString(publicKey),
+	}, &response, true); err != nil {
 		return nil, err
 	}
+	if err := validatePairingResponse(&response); err != nil {
+		return nil, err
+	}
+	if err := VerifyUpgradeConfirmation(secret, controllerInstanceID, publicKey,
+		response.CredentialID, response.TargetInstanceID, response.Confirmation); err != nil {
+		return nil, fmt.Errorf("target node did not confirm the upgrade: %w", err)
+	}
+	return persistRelationship(node, &response, publicKey, privateKey)
+}
+
+func validatePairingResponse(response *pairingResponse) error {
 	if _, err := uuid.Parse(response.CredentialID); err != nil {
-		return nil, errors.New("paired node returned an invalid credential ID")
+		return errors.New("paired node returned an invalid credential ID")
 	}
 	if _, err := uuid.Parse(response.TargetInstanceID); err != nil {
-		return nil, errors.New("paired node returned an invalid instance ID")
+		return errors.New("paired node returned an invalid instance ID")
 	}
+	return nil
+}
 
+func persistRelationship(node *model.Node, response *pairingResponse,
+	publicKey ed25519.PublicKey, privateKey ed25519.PrivateKey,
+) (*PairingResult, error) {
 	encryptedPrivateKey, err := EncryptPrivateCredential(
 		SigningCredentialPurpose(response.CredentialID),
 		privateKey,
@@ -138,11 +152,15 @@ func establishRelationship(ctx context.Context, node *model.Node, path string, p
 		if err := tx.Create(credential).Error; err != nil {
 			return err
 		}
+		// The encrypted legacy secret is kept on purpose. It stops travelling on
+		// the wire the moment auth_method flips to paired, and keeping it lets a
+		// node that loses its controller credential (a restored backup, a
+		// revoked relationship) be re-upgraded automatically instead of waiting
+		// for someone to notice and pair it by hand.
 		return tx.Model(&model.Node{}).Where("id = ?", node.ID).Updates(map[string]any{
-			"token":                   "",
-			"encrypted_legacy_secret": nil,
-			"auth_method":             model.NodeAuthMethodPaired,
-			"credential_status":       model.NodeCredentialStatusActive,
+			"token":             "",
+			"auth_method":       model.NodeAuthMethodPaired,
+			"credential_status": model.NodeCredentialStatusActive,
 		}).Error
 	})
 	if err != nil {
@@ -263,7 +281,11 @@ func MaintainRelationships(ctx context.Context, controllerInstanceID string, now
 			if len(node.EncryptedLegacySecret) == 0 {
 				continue
 			}
-			if _, err := UpgradeLegacyRelationship(ctx, node, controllerInstanceID); err != nil {
+			// A node that has not been upgraded yet simply keeps using the shared
+			// secret. That is an expected state during a rolling upgrade, not a
+			// fault worth reporting on every pass.
+			if _, err := UpgradeLegacyRelationship(ctx, node, controllerInstanceID); err != nil &&
+				!errors.Is(err, ErrRelationshipUnsupported) {
 				issues = append(issues, MaintenanceIssue{NodeID: node.ID, Operation: "upgrade", Err: err})
 			}
 		case model.NodeAuthMethodPaired:
@@ -271,6 +293,17 @@ func MaintainRelationships(ctx context.Context, controllerInstanceID string, now
 			if err := database.Where("node_id = ? AND revoked_at IS NULL", node.ID).First(&credential).Error; err != nil {
 				if !errors.Is(err, gorm.ErrRecordNotFound) {
 					issues = append(issues, MaintenanceIssue{NodeID: node.ID, Operation: "load", Err: err})
+					continue
+				}
+				// The credential is gone while the node still trusts us through
+				// its retained secret, so re-run the handshake instead of
+				// leaving the relationship broken until someone pairs by hand.
+				if len(node.EncryptedLegacySecret) == 0 {
+					continue
+				}
+				if _, err := UpgradeLegacyRelationship(ctx, node, controllerInstanceID); err != nil &&
+					!errors.Is(err, ErrRelationshipUnsupported) {
+					issues = append(issues, MaintenanceIssue{NodeID: node.ID, Operation: "recover", Err: err})
 				}
 				continue
 			}
@@ -325,6 +358,9 @@ func sendRelationshipJSON(ctx context.Context, node *model.Node, method, path st
 	if err != nil {
 		return err
 	}
+	if httpResponse.StatusCode == http.StatusNotFound || httpResponse.StatusCode == http.StatusMethodNotAllowed {
+		return ErrRelationshipUnsupported
+	}
 	if httpResponse.StatusCode < 200 || httpResponse.StatusCode >= 300 {
 		message := strings.TrimSpace(string(responseBody))
 		if message == "" {
@@ -338,26 +374,4 @@ func sendRelationshipJSON(ctx context.Context, node *model.Node, method, path st
 		}
 	}
 	return nil
-}
-
-func RequireSecurePairingURL(rawURL string) error {
-	parsed, err := url.Parse(rawURL)
-	if err != nil || parsed.Hostname() == "" {
-		return errors.New("invalid node URL")
-	}
-	if parsed.Scheme == "https" {
-		return nil
-	}
-	if parsed.Scheme != "http" {
-		return errors.New("pairing requires an HTTPS node URL")
-	}
-	hostname := strings.TrimSuffix(strings.ToLower(parsed.Hostname()), ".")
-	if hostname == "localhost" {
-		return nil
-	}
-	ip := net.ParseIP(hostname)
-	if ip != nil && ip.IsLoopback() {
-		return nil
-	}
-	return errors.New("remote pairing requires HTTPS")
 }

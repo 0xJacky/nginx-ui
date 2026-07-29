@@ -46,7 +46,6 @@ func GenerateAllModel() []any {
 		Node{},
 		NodeCredential{},
 		NodeControllerCredential{},
-		NodePairingCode{},
 		MCPServiceToken{},
 		Notification{},
 		AcmeUser{},

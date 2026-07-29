@@ -69,14 +69,6 @@ type NodeControllerCredential struct {
 	RevokedAt            *time.Time `json:"revoked_at,omitempty" gorm:"index"`
 }
 
-type NodePairingCode struct {
-	Model
-	CodeHash  []byte     `json:"-" gorm:"uniqueIndex;not null"`
-	ExpiresAt time.Time  `json:"expires_at" gorm:"index;not null"`
-	UsedAt    *time.Time `json:"used_at,omitempty" gorm:"index"`
-	CreatedBy uint64     `json:"created_by" gorm:"index;not null"`
-}
-
 func (n *Node) GetUrl(uri string) (decodedUri string, err error) {
 	baseUrl, err := url.Parse(n.URL)
 	if err != nil {

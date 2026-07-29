@@ -2,11 +2,10 @@ package cluster
 
 import (
 	"crypto/ed25519"
-	"crypto/rand"
-	"crypto/sha256"
 	"encoding/base64"
 	"errors"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/api/audit"
@@ -18,35 +17,17 @@ import (
 	"gorm.io/gorm"
 )
 
-const (
-	pairingCodeLifetime             = 10 * time.Minute
-	credentialRotationRecoveryGrace = 10 * time.Minute
-)
-
-type pairingCodeResponse struct {
-	Code       string    `json:"code"`
-	InstanceID string    `json:"instance_id"`
-	ExpiresAt  time.Time `json:"expires_at"`
-}
-
-type completePairingRequest struct {
-	Code                 string `json:"code" binding:"required"`
-	ControllerInstanceID string `json:"controller_instance_id" binding:"required"`
-	PublicKey            string `json:"public_key" binding:"required"`
-}
-
-type completePairingResponse struct {
-	CredentialID     string `json:"credential_id"`
-	TargetInstanceID string `json:"target_instance_id"`
-}
+const credentialRotationRecoveryGrace = 10 * time.Minute
 
 type upgradeLegacyPairingRequest struct {
 	ControllerInstanceID string `json:"controller_instance_id" binding:"required"`
 	PublicKey            string `json:"public_key" binding:"required"`
 }
 
-type pairNodeRequest struct {
-	Code string `json:"code" binding:"required"`
+type upgradeLegacyPairingResponse struct {
+	CredentialID     string `json:"credential_id"`
+	TargetInstanceID string `json:"target_instance_id"`
+	Confirmation     string `json:"confirmation"`
 }
 
 type rotateCredentialRequest struct {
@@ -71,109 +52,25 @@ type controllerCredentialResponse struct {
 	PreviousValidUntil   *time.Time `json:"previous_valid_until,omitempty"`
 }
 
-func CreatePairingCode(c *gin.Context) {
-	codeBytes := make([]byte, 16)
-	if _, err := rand.Read(codeBytes); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to generate pairing code"})
-		return
-	}
-	code := base64.RawURLEncoding.EncodeToString(codeBytes)
-	codeHash := sha256.Sum256([]byte(code))
-	expiresAt := time.Now().Add(pairingCodeLifetime)
-	createdBy := currentUserID(c)
-
-	database := model.UseDB()
-	if database == nil {
-		c.JSON(http.StatusServiceUnavailable, gin.H{"message": "database unavailable"})
-		return
-	}
-	_ = database.Where("expires_at < ? OR used_at IS NOT NULL", time.Now()).Delete(&model.NodePairingCode{}).Error
-	record := &model.NodePairingCode{
-		CodeHash:  codeHash[:],
-		ExpiresAt: expiresAt,
-		CreatedBy: createdBy,
-	}
-	if err := database.Create(record).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
-		return
-	}
-	audit.MarkSensitiveResponse(c)
-	c.JSON(http.StatusCreated, pairingCodeResponse{
-		Code:       code,
-		InstanceID: settings.NodeSettings.InstanceID,
-		ExpiresAt:  expiresAt,
-	})
-}
-
-func CompletePairing(c *gin.Context) {
-	audit.MarkSensitiveRequest(c)
-	var request completePairingRequest
-	if err := c.ShouldBindJSON(&request); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
-		return
-	}
-	codeBytes, err := base64.RawURLEncoding.DecodeString(request.Code)
-	if err != nil || len(codeBytes) != 16 {
-		c.JSON(http.StatusForbidden, gin.H{"message": "invalid or expired pairing code"})
-		return
-	}
-	if _, err := uuid.Parse(request.ControllerInstanceID); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": "invalid controller instance ID"})
-		return
-	}
-	publicKey, err := base64.RawURLEncoding.DecodeString(request.PublicKey)
-	if err != nil || len(publicKey) != ed25519.PublicKeySize {
-		c.JSON(http.StatusBadRequest, gin.H{"message": "invalid Ed25519 public key"})
-		return
-	}
-
-	database := model.UseDB()
-	if database == nil {
-		c.JSON(http.StatusServiceUnavailable, gin.H{"message": "database unavailable"})
-		return
-	}
-	now := time.Now()
-	codeHash := sha256.Sum256([]byte(request.Code))
-	credentialID := uuid.NewString()
-	err = database.Transaction(func(tx *gorm.DB) error {
-		var pairingCode model.NodePairingCode
-		if err := tx.Where("code_hash = ? AND used_at IS NULL AND expires_at > ?", codeHash[:], now).
-			First(&pairingCode).Error; err != nil {
-			return errors.New("invalid or expired pairing code")
-		}
-		result := tx.Model(&model.NodePairingCode{}).
-			Where("id = ? AND used_at IS NULL", pairingCode.ID).
-			Update("used_at", now)
-		if result.Error != nil {
-			return result.Error
-		}
-		if result.RowsAffected != 1 {
-			return errors.New("pairing code was already used")
-		}
-
-		credential := &model.NodeControllerCredential{
-			CredentialID:         credentialID,
-			ControllerInstanceID: request.ControllerInstanceID,
-			PublicKey:            append([]byte(nil), publicKey...),
-			Status:               model.NodeCredentialStatusActive,
-		}
-		return tx.Create(credential).Error
-	})
-	if err != nil {
-		c.JSON(http.StatusForbidden, gin.H{"message": err.Error()})
-		return
-	}
-
-	c.JSON(http.StatusCreated, completePairingResponse{
-		CredentialID:     credentialID,
-		TargetInstanceID: settings.NodeSettings.InstanceID,
-	})
-}
-
+// UpgradeLegacyPairing migrates a controller that still authenticates with the
+// shared node secret onto its own key pair.
+//
+// The request is authenticated by the middleware like any other node request,
+// which for a shared-secret controller means a signature derived from that
+// secret — knowledge of the secret is therefore already proven, along with the
+// nonce and freshness the signature envelope carries. What this handler adds is
+// the return direction: it signs the credential it issues so the controller can
+// tell it reached the node that holds the same secret.
 func UpgradeLegacyPairing(c *gin.Context) {
+	audit.MarkSensitiveRequest(c)
 	principal, ok := nodePrincipal(c)
 	if !ok || principal.AuthMethod != model.NodeAuthMethodLegacy {
 		c.JSON(http.StatusForbidden, gin.H{"message": "legacy node authentication is required"})
+		return
+	}
+	secret := strings.TrimSpace(settings.NodeSettings.Secret)
+	if secret == "" {
+		c.JSON(http.StatusForbidden, gin.H{"message": "node secret is not configured"})
 		return
 	}
 	var request upgradeLegacyPairingRequest
@@ -218,37 +115,17 @@ func UpgradeLegacyPairing(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
-	c.JSON(http.StatusCreated, completePairingResponse{
+
+	confirmation, err := nodeauth.SignUpgradeConfirmation(
+		[]byte(secret), request.ControllerInstanceID, publicKey, credentialID, settings.NodeSettings.InstanceID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		return
+	}
+	c.JSON(http.StatusCreated, upgradeLegacyPairingResponse{
 		CredentialID:     credentialID,
 		TargetInstanceID: settings.NodeSettings.InstanceID,
-	})
-}
-
-func PairNode(c *gin.Context) {
-	audit.MarkSensitiveRequest(c)
-	node, ok := findNode(c)
-	if !ok {
-		return
-	}
-	var request pairNodeRequest
-	if err := c.ShouldBindJSON(&request); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
-		return
-	}
-	if err := requireSecurePairingURL(node.URL); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
-		return
-	}
-	result, err := nodeauth.PairNode(c.Request.Context(), node, request.Code, settings.NodeSettings.InstanceID)
-	if err != nil {
-		c.JSON(http.StatusBadGateway, gin.H{"message": err.Error()})
-		return
-	}
-	refreshNodeState()
-	c.JSON(http.StatusOK, nodeCredentialResponse{
-		CredentialID:     result.CredentialID,
-		TargetInstanceID: result.TargetInstanceID,
-		Status:           model.NodeCredentialStatusActive,
+		Confirmation:     confirmation,
 	})
 }
 
@@ -413,10 +290,6 @@ func RotateNodeCredential(c *gin.Context) {
 	})
 }
 
-func requireSecurePairingURL(rawURL string) error {
-	return nodeauth.RequireSecurePairingURL(rawURL)
-}
-
 func nodePrincipal(c *gin.Context) (*nodeauth.Principal, bool) {
 	value, ok := c.Get(nodeauth.GinPrincipalKey)
 	if !ok {
@@ -424,16 +297,4 @@ func nodePrincipal(c *gin.Context) (*nodeauth.Principal, bool) {
 	}
 	principal, ok := value.(*nodeauth.Principal)
 	return principal, ok && principal != nil
-}
-
-func currentUserID(c *gin.Context) uint64 {
-	value, ok := c.Get("user")
-	if !ok {
-		return 0
-	}
-	user, ok := value.(*model.User)
-	if !ok {
-		return 0
-	}
-	return user.ID
 }

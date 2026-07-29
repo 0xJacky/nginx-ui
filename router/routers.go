@@ -67,7 +67,6 @@ func InitRouter() {
 
 		system.InitPublicRouter(root)
 		backup.InitRouter(root)
-		cluster.InitPublicRouter(root)
 
 		setup := root.Group("/setup", middleware.SetupAuthRequired())
 		{

@@ -57,8 +57,6 @@ func setupMCPSecurityRouter(t *testing.T) (*gin.Engine, string, uint64) {
 	originalCryptoSecret := settings.CryptoSettings.Secret
 	originalInstanceID := settings.NodeSettings.InstanceID
 	originalNodeSecret := settings.NodeSettings.Secret
-	originalLegacyAuth := settings.NodeSettings.LegacyAuthEnabled
-	originalLegacyMCPAuth := settings.NodeSettings.LegacyMCPAuthEnabled
 	t.Cleanup(func() {
 		cache.Shutdown()
 		settings.AuthSettings.IPWhiteList = originalIPWhiteList
@@ -66,8 +64,6 @@ func setupMCPSecurityRouter(t *testing.T) (*gin.Engine, string, uint64) {
 		settings.CryptoSettings.Secret = originalCryptoSecret
 		settings.NodeSettings.InstanceID = originalInstanceID
 		settings.NodeSettings.Secret = originalNodeSecret
-		settings.NodeSettings.LegacyAuthEnabled = originalLegacyAuth
-		settings.NodeSettings.LegacyMCPAuthEnabled = originalLegacyMCPAuth
 		model.Use(nil)
 	})
 
@@ -76,8 +72,6 @@ func setupMCPSecurityRouter(t *testing.T) (*gin.Engine, string, uint64) {
 	settings.CryptoSettings.Secret = "mcp-test-crypto-root"
 	settings.NodeSettings.InstanceID = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
 	settings.NodeSettings.Secret = "legacy-mcp-secret"
-	settings.NodeSettings.LegacyAuthEnabled = true
-	settings.NodeSettings.LegacyMCPAuthEnabled = true
 
 	db, err := gorm.Open(sqlite.Open(fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name())), &gorm.Config{})
 	require.NoError(t, err)
@@ -143,22 +137,31 @@ func TestMCPServiceTokenScopesAndQueryRejection(t *testing.T) {
 	assert.Equal(t, http.StatusForbidden, queryCredentialRecorder.Code)
 }
 
-func TestMCPLegacyHeaderRequiresVisibleCompatibilitySwitches(t *testing.T) {
+// TestMCPLegacyHeaderRequiresTheConfiguredSecret covers the shared-secret path
+// MCP keeps for nodes that have not been upgraded to signed requests yet.
+func TestMCPLegacyHeaderRequiresTheConfiguredSecret(t *testing.T) {
 	router, _, _ := setupMCPSecurityRouter(t)
+	secret := settings.NodeSettings.Secret
 
-	legacyRequest := func() *http.Request {
+	legacyRequest := func(value string) *http.Request {
 		request := httptest.NewRequest(http.MethodPost, "/mcp_message", bytes.NewBufferString(`{"method":"tools/list"}`))
-		request.Header.Set("X-Node-Secret", settings.NodeSettings.Secret)
+		request.Header.Set("X-Node-Secret", value)
 		return request
 	}
 
 	recorder := httptest.NewRecorder()
-	router.ServeHTTP(recorder, legacyRequest())
+	router.ServeHTTP(recorder, legacyRequest(secret))
 	assert.NotEqual(t, http.StatusForbidden, recorder.Code)
 
-	settings.NodeSettings.LegacyMCPAuthEnabled = false
 	recorder = httptest.NewRecorder()
-	router.ServeHTTP(recorder, legacyRequest())
+	router.ServeHTTP(recorder, legacyRequest(secret+"-wrong"))
+	assert.Equal(t, http.StatusForbidden, recorder.Code)
+
+	// An instance without a configured secret must never treat an empty or
+	// arbitrary header as a credential.
+	settings.NodeSettings.Secret = ""
+	recorder = httptest.NewRecorder()
+	router.ServeHTTP(recorder, legacyRequest(secret))
 	assert.Equal(t, http.StatusForbidden, recorder.Code)
 }
 

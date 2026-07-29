@@ -35,6 +35,20 @@ const columns: StdTableColumn[] = [{
   },
   width: 260,
 }, {
+  // The node secret is what a relationship starts from: the controller signs
+  // its requests with it, then swaps itself onto a dedicated key pair in the
+  // background. Copy it from the target node's Node Settings page.
+  title: () => $gettext('Node Secret'),
+  dataIndex: 'legacy_secret',
+  edit: {
+    type: 'password',
+    password: {
+      placeholder: $gettext('Leave blank for no change'),
+    },
+  },
+  hiddenInTable: true,
+  hiddenInDetail: true,
+}, {
   title: () => $gettext('Version'),
   dataIndex: 'version',
   pure: true,

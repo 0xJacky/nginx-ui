@@ -78,7 +78,6 @@ func init() {
 }
 
 func Init(confPath string) {
-	legacySecretConfigured, legacyAuthExplicit, legacyMCPAuthExplicit := detectLegacyNodeAuthCompatibility(confPath)
 	migrate(confPath)
 
 	settings.Init(confPath)
@@ -90,18 +89,6 @@ func Init(confPath string) {
 
 	for prefix, ptr := range envPrefixMap {
 		parseEnv(ptr, prefix+"_")
-	}
-
-	// Existing installations retain the header-based legacy path until their
-	// nodes are paired. Fresh installations have no pre-existing secret at this
-	// point and therefore default to signed node authentication only.
-	if legacySecretConfigured {
-		if !legacyAuthExplicit {
-			NodeSettings.LegacyAuthEnabled = true
-		}
-		if !legacyMCPAuthExplicit {
-			NodeSettings.LegacyMCPAuthEnabled = true
-		}
 	}
 
 	// if in official docker, set the restart cmd of nginx to "nginx -s stop",
@@ -117,31 +104,6 @@ func Init(confPath string) {
 	if AuthSettings.MaxAttempts <= 0 {
 		AuthSettings.MaxAttempts = 10
 	}
-}
-
-func detectLegacyNodeAuthCompatibility(confPath string) (secretConfigured, authExplicit, mcpAuthExplicit bool) {
-	conf, err := ini.LoadSources(ini.LoadOptions{Loose: true, AllowShadows: true}, confPath)
-	if err == nil {
-		nodeSection := conf.Section("node")
-		serverSection := conf.Section("server")
-		secretConfigured = strings.TrimSpace(nodeSection.Key("Secret").String()) != "" ||
-			strings.TrimSpace(serverSection.Key("NodeSecret").String()) != ""
-		authExplicit = nodeSection.HasKey("LegacyAuthEnabled")
-		mcpAuthExplicit = nodeSection.HasKey("LegacyMCPAuthEnabled")
-	}
-
-	if strings.TrimSpace(os.Getenv(EnvPrefix+"NODE_SECRET")) != "" ||
-		strings.TrimSpace(os.Getenv(EnvPrefix+"SERVER_NODE_SECRET")) != "" {
-		secretConfigured = true
-	}
-	if _, ok := os.LookupEnv(EnvPrefix + "NODE_LEGACY_AUTH_ENABLED"); ok {
-		authExplicit = true
-	}
-	if _, ok := os.LookupEnv(EnvPrefix + "NODE_LEGACY_MCP_AUTH_ENABLED"); ok {
-		mcpAuthExplicit = true
-	}
-
-	return
 }
 
 func Update(fn func()) (err error) {

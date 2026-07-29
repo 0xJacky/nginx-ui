@@ -572,7 +572,7 @@ msgstr "无操作"
 
 #: src/components/NamespaceRender/NamespaceRender.vue:44
 #: src/components/NamespaceTabs/NamespaceTabs.vue:141 src/constants/index.ts:39
-#: src/views/node/Node.vue:262 src/views/node/Node.vue:270
+#: src/views/node/Node.vue:209 src/views/node/Node.vue:217
 msgid "Reload Nginx"
 msgstr "重载 Nginx"
 
@@ -624,7 +624,7 @@ msgid "Are you sure you want to restart Nginx on the following sync nodes?"
 msgstr "你确定要在以下同步节点上重启 Nginx 吗？"
 
 #: src/components/NamespaceTabs/NamespaceTabs.vue:153
-#: src/views/node/Node.vue:283 src/views/node/Node.vue:291
+#: src/views/node/Node.vue:230 src/views/node/Node.vue:238
 msgid "Restart Nginx"
 msgstr "重启 Nginx"
 
@@ -633,7 +633,7 @@ msgstr "重启 Nginx"
 #: src/components/NodeSelector/NodeSelector.vue:65
 #: src/components/NodeSelector/NodeSelector.vue:79
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
-#: src/views/dashboard/Nodes.vue:110 src/views/node/nodeColumns.tsx:74
+#: src/views/dashboard/Nodes.vue:110 src/views/node/nodeColumns.tsx:88
 #: src/views/upstream/SocketList.vue:45
 msgid "Online"
 msgstr "在线"
@@ -642,7 +642,7 @@ msgstr "在线"
 #: src/components/NodeCard/NodeCard.vue:59
 #: src/components/NodeSelector/NodeSelector.vue:85
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
-#: src/views/dashboard/Nodes.vue:117 src/views/node/nodeColumns.tsx:78
+#: src/views/dashboard/Nodes.vue:117 src/views/node/nodeColumns.tsx:92
 #: src/views/upstream/SocketList.vue:45
 msgid "Offline"
 msgstr "离线"
@@ -1346,7 +1346,7 @@ msgstr "端口"
 #: src/views/nginx_log/structured/components/SearchFilters.vue:106
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:242
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:522
-#: src/views/node/nodeColumns.tsx:66
+#: src/views/node/nodeColumns.tsx:80
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:29
 #: src/views/site/site_list/columns.tsx:120 src/views/stream/columns.tsx:87
 msgid "Status"
@@ -3363,7 +3363,7 @@ msgstr "批量修改"
 
 #: src/language/curd.ts:35 src/views/certificate/CertificateEditor.vue:97
 #: src/views/certificate/components/RenewCert.vue:21
-#: src/views/preference/store/index.ts:166
+#: src/views/preference/store/index.ts:164
 msgid "Save successfully"
 msgstr "保存成功"
 
@@ -3912,7 +3912,7 @@ msgid "Log List"
 msgstr "日志列表"
 
 #: src/routes/modules/nodes.ts:11 src/views/dashboard/Nodes.vue:89
-#: src/views/node/Node.vue:159
+#: src/views/node/Node.vue:131
 msgid "Nodes"
 msgstr "节点"
 
@@ -3944,8 +3944,8 @@ msgstr "管理 Stream"
 msgid "Edit Stream"
 msgstr "编辑 Stream"
 
-#: src/routes/modules/system.ts:26 src/views/node/Node.vue:241
-#: src/views/node/Node.vue:249 src/views/system/Upgrade.vue:154
+#: src/routes/modules/system.ts:26 src/views/node/Node.vue:188
+#: src/views/node/Node.vue:196 src/views/system/Upgrade.vue:154
 #: src/views/system/Upgrade.vue:159
 msgid "Upgrade"
 msgstr "升级"
@@ -4031,13 +4031,13 @@ msgstr "每月%{day}日%{time}"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:193
 #: src/views/backup/AutoBackup/AutoBackup.vue:203
-#: src/views/dns/DDNSManager.vue:320 src/views/node/nodeColumns.tsx:92
-#: src/views/node/nodeColumns.tsx:98
+#: src/views/dns/DDNSManager.vue:320 src/views/node/nodeColumns.tsx:106
+#: src/views/node/nodeColumns.tsx:112
 #: src/views/preference/components/ExternalNotify/columns.tsx:47
 #: src/views/preference/tabs/HTTPSettings.vue:24
 #: src/views/preference/tabs/LogrotateSettings.vue:20
-#: src/views/preference/tabs/NodeSettings.vue:64
-#: src/views/preference/tabs/NodeSettings.vue:69
+#: src/views/preference/tabs/NodeSettings.vue:28
+#: src/views/preference/tabs/NodeSettings.vue:33
 #: src/views/site/components/SiteStatusSelect.vue:159
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:75
 #: src/views/site/site_list/columns.tsx:142 src/views/stream/columns.tsx:108
@@ -4049,11 +4049,11 @@ msgstr "启用"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:194
 #: src/views/backup/AutoBackup/AutoBackup.vue:204
-#: src/views/dns/DDNSManager.vue:320 src/views/node/nodeColumns.tsx:83
-#: src/views/node/nodeColumns.tsx:101
+#: src/views/dns/DDNSManager.vue:320 src/views/node/nodeColumns.tsx:97
+#: src/views/node/nodeColumns.tsx:115
 #: src/views/preference/tabs/HTTPSettings.vue:24
-#: src/views/preference/tabs/NodeSettings.vue:64
-#: src/views/preference/tabs/NodeSettings.vue:69
+#: src/views/preference/tabs/NodeSettings.vue:28
+#: src/views/preference/tabs/NodeSettings.vue:33
 #: src/views/site/components/SiteStatusSelect.vue:162
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:81
 #: src/views/site/site_list/columns.tsx:146 src/views/stream/columns.tsx:112
@@ -4096,7 +4096,7 @@ msgstr "创建时间"
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
 #: src/views/config/configColumns.tsx:44 src/views/dns/DNSCredential.vue:65
 #: src/views/dns/DNSDomainList.vue:236 src/views/dns/DNSGroupList.vue:33
-#: src/views/namespace/columns.ts:91 src/views/node/nodeColumns.tsx:112
+#: src/views/namespace/columns.ts:91 src/views/node/nodeColumns.tsx:126
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:39
 #: src/views/site/site_list/columns.tsx:113 src/views/stream/columns.tsx:80
 #: src/views/stream/components/RightPanel/Basic.vue:35
@@ -4140,7 +4140,7 @@ msgstr "S3 区域"
 #: src/views/dns/DNSGroupRecordManager.vue:145
 #: src/views/dns/DNSGroupRecordManager.vue:1362
 #: src/views/namespace/columns.ts:97 src/views/nginx_log/NginxLogList.vue:339
-#: src/views/node/nodeColumns.tsx:119
+#: src/views/node/nodeColumns.tsx:133
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:85
 #: src/views/site/site_list/columns.tsx:160 src/views/stream/columns.tsx:123
@@ -7233,7 +7233,7 @@ msgstr "结构化"
 msgid "Raw"
 msgstr "原始"
 
-#: src/views/nginx_log/NginxLog.vue:101 src/views/node/Node.vue:193
+#: src/views/nginx_log/NginxLog.vue:101 src/views/node/Node.vue:165
 msgid "Auto Refresh"
 msgstr "自动刷新"
 
@@ -7609,62 +7609,39 @@ msgstr "在 GitHub 上查看"
 msgid "Perform"
 msgstr "执行"
 
-#: src/views/node/Node.vue:47
+#: src/views/node/Node.vue:44
 msgid "Auto refresh enabled"
 msgstr "自动刷新已启用"
 
-#: src/views/node/Node.vue:51
+#: src/views/node/Node.vue:48
 msgid "Auto refresh disabled"
 msgstr "自动刷新已禁用"
 
-#: src/views/node/Node.vue:71
+#: src/views/node/Node.vue:68
 msgid "Load successfully"
 msgstr "加载成功"
 
-#: src/views/node/Node.vue:86 src/views/node/Node.vue:254
+#: src/views/node/Node.vue:83 src/views/node/Node.vue:201
 msgid "Please select at least one node to reload Nginx"
 msgstr "请至少选择一个节点重载 Nginx"
 
-#: src/views/node/Node.vue:92
+#: src/views/node/Node.vue:89
 msgid "Nginx reload operations have been dispatched to remote nodes"
 msgstr "Nginx 重载操作已发送到远程节点"
 
-#: src/views/node/Node.vue:100 src/views/node/Node.vue:275
+#: src/views/node/Node.vue:97 src/views/node/Node.vue:222
 msgid "Please select at least one node to restart Nginx"
 msgstr "请至少选择一个节点重启 Nginx"
 
-#: src/views/node/Node.vue:106
+#: src/views/node/Node.vue:103
 msgid "Nginx restart operations have been dispatched to remote nodes"
 msgstr "Nginx 重启操作已发送到远程节点"
 
-#: src/views/node/Node.vue:129
-msgid "Node authentication upgraded successfully"
-msgstr "节点认证升级成功"
-
-#: src/views/node/Node.vue:166
+#: src/views/node/Node.vue:138
 msgid "Load from settings"
 msgstr "从设置中加载"
 
-#: src/views/node/Node.vue:206 src/views/node/Node.vue:229
-msgid "Upgrade Authentication"
-msgstr "升级认证"
-
-#: src/views/node/Node.vue:206 src/views/node/Node.vue:229
-#: src/views/preference/tabs/NodeSettings.vue:27
-msgid "Pair Node"
-msgstr "配对节点"
-
-#: src/views/node/Node.vue:213
-msgid ""
-"Generate a one-time pairing code on the child node, then enter it here. "
-"Remote pairing requires HTTPS."
-msgstr "在子节点上生成一次性配对码，然后在此处输入。远程配对需要 HTTPS。"
-
-#: src/views/node/Node.vue:217
-msgid "One-time pairing code"
-msgstr "一次性配对码"
-
-#: src/views/node/Node.vue:233
+#: src/views/node/Node.vue:180
 msgid "Please select at least one node to upgrade"
 msgstr "请至少选择一个节点进行升级"
 
@@ -7688,19 +7665,28 @@ msgstr "已过期"
 msgid "Revoked"
 msgstr "撤销"
 
-#: src/views/node/nodeColumns.tsx:38 src/views/system/Licenses.vue:28
+#: src/views/node/nodeColumns.tsx:41
+#: src/views/preference/tabs/NodeSettings.vue:11
+msgid "Node Secret"
+msgstr "节点密钥"
+
+#: src/views/node/nodeColumns.tsx:46 src/views/user/userColumns.tsx:23
+msgid "Leave blank for no change"
+msgstr "留空表示不修改"
+
+#: src/views/node/nodeColumns.tsx:52 src/views/system/Licenses.vue:28
 msgid "Version"
 msgstr "版本"
 
-#: src/views/node/nodeColumns.tsx:43
+#: src/views/node/nodeColumns.tsx:57
 msgid "Authentication"
 msgstr "认证"
 
-#: src/views/node/nodeColumns.tsx:52
+#: src/views/node/nodeColumns.tsx:66
 msgid "Paired signature"
 msgstr "配对签名"
 
-#: src/views/node/nodeColumns.tsx:52
+#: src/views/node/nodeColumns.tsx:66
 msgid "Legacy secret"
 msgstr "旧版密钥"
 
@@ -8301,94 +8287,58 @@ msgstr "Nginx 控制模式"
 msgid "External Docker Container"
 msgstr "外部 Docker 容器"
 
-#: src/views/preference/tabs/NodeSettings.vue:21
-msgid "Node Secret"
-msgstr "节点密钥"
-
-#: src/views/preference/tabs/NodeSettings.vue:24
+#: src/views/preference/tabs/NodeSettings.vue:14
 msgid "Instance ID"
 msgstr "实例 ID"
 
-#: src/views/preference/tabs/NodeSettings.vue:29
-msgid "Generate Pairing Code"
-msgstr "生成配对码"
-
-#: src/views/preference/tabs/NodeSettings.vue:32
-msgid "Allow legacy node authentication"
-msgstr "允许旧版节点认证"
-
-#: src/views/preference/tabs/NodeSettings.vue:38
-msgid ""
-"Disable this compatibility switch after every controller has been upgraded "
-"to paired signatures."
-msgstr "在将所有控制器升级为配对签名后，禁用此兼容性开关。"
-
-#: src/views/preference/tabs/NodeSettings.vue:41
-msgid "Allow legacy Node Secret for MCP"
-msgstr "允许将旧版节点密钥用于 MCP"
-
-#: src/views/preference/tabs/NodeSettings.vue:50
-msgid ""
-"Temporary compatibility only. Replace MCP Node Secret clients with scoped "
-"service tokens."
-msgstr "仅用于临时兼容。将 MCP 节点密钥客户端替换为限定范围的服务令牌。"
-
-#: src/views/preference/tabs/NodeSettings.vue:54
+#: src/views/preference/tabs/NodeSettings.vue:18
 msgid "Node name"
 msgstr "节点名称"
 
-#: src/views/preference/tabs/NodeSettings.vue:57
+#: src/views/preference/tabs/NodeSettings.vue:21
 msgid ""
 "The node name should only contain letters, unicode, numbers, hyphens, "
 "dashes, colons, and dots."
 msgstr "节点名称只能包含字母、统一码、数字、连字符、破折号、冒号和点。"
 
-#: src/views/preference/tabs/NodeSettings.vue:58
+#: src/views/preference/tabs/NodeSettings.vue:22
 msgid ""
 "Customize the name of local node to be displayed in the environment "
 "indicator."
 msgstr "自定义显示在环境指示器中的本地服务器名称。"
 
-#: src/views/preference/tabs/NodeSettings.vue:62
+#: src/views/preference/tabs/NodeSettings.vue:26
 msgid "Skip Installation"
 msgstr "跳过安装"
 
-#: src/views/preference/tabs/NodeSettings.vue:67
+#: src/views/preference/tabs/NodeSettings.vue:31
 msgid "Demo"
 msgstr "Demo"
 
-#: src/views/preference/tabs/NodeSettings.vue:73
+#: src/views/preference/tabs/NodeSettings.vue:37
 msgid "ICP Number"
 msgstr "ICP 备案号"
 
-#: src/views/preference/tabs/NodeSettings.vue:76
+#: src/views/preference/tabs/NodeSettings.vue:40
 msgid ""
 "The ICP Number should only contain letters, unicode, numbers, hyphens, "
 "dashes, colons, and dots."
 msgstr "ICP 备案号只能包含字母、单码、数字、连字符、破折号、冒号和点。"
 
-#: src/views/preference/tabs/NodeSettings.vue:81
-#: src/views/preference/tabs/NodeSettings.vue:93
+#: src/views/preference/tabs/NodeSettings.vue:45
+#: src/views/preference/tabs/NodeSettings.vue:57
 msgid "For Chinese user"
 msgstr "中国用户"
 
-#: src/views/preference/tabs/NodeSettings.vue:85
+#: src/views/preference/tabs/NodeSettings.vue:49
 msgid "Public Security Number"
 msgstr "公安备案号"
 
-#: src/views/preference/tabs/NodeSettings.vue:88
+#: src/views/preference/tabs/NodeSettings.vue:52
 msgid ""
 "The Public Security Number should only contain letters, unicode, numbers, "
 "hyphens, dashes, colons, and dots."
 msgstr "公安备案号只能包含字母、单码、数字、连字符、破折号、冒号和点。"
-
-#: src/views/preference/tabs/NodeSettings.vue:100
-msgid "One-time Pairing Code"
-msgstr "一次性配对码"
-
-#: src/views/preference/tabs/NodeSettings.vue:107
-msgid "Expires at: %{time}"
-msgstr "过期时间: %{time}"
 
 #: src/views/preference/tabs/OpenAISettings.vue:35
 msgid ""
@@ -9208,10 +9158,6 @@ msgstr "健康检查"
 msgid "Upstream Sockets"
 msgstr "上游套接字"
 
-#: src/views/user/userColumns.tsx:23
-msgid "Leave blank for no change"
-msgstr "留空表示不修改"
-
 #: src/views/user/userColumns.tsx:30
 msgid "2FA"
 msgstr "2FA"
@@ -9259,6 +9205,48 @@ msgstr "确认新密码"
 #: src/views/user/UserProfile.vue:213
 msgid "Update Password"
 msgstr "更新密码"
+
+#~ msgid "Node authentication upgraded successfully"
+#~ msgstr "节点认证升级成功"
+
+#~ msgid "Upgrade Authentication"
+#~ msgstr "升级认证"
+
+#~ msgid "Pair Node"
+#~ msgstr "配对节点"
+
+#~ msgid ""
+#~ "Generate a one-time pairing code on the child node, then enter it here. "
+#~ "Remote pairing requires HTTPS."
+#~ msgstr "在子节点上生成一次性配对码，然后在此处输入。远程配对需要 HTTPS。"
+
+#~ msgid "One-time pairing code"
+#~ msgstr "一次性配对码"
+
+#~ msgid "Generate Pairing Code"
+#~ msgstr "生成配对码"
+
+#~ msgid "One-time Pairing Code"
+#~ msgstr "一次性配对码"
+
+#~ msgid "Expires at: %{time}"
+#~ msgstr "过期时间: %{time}"
+
+#~ msgid "Allow legacy node authentication"
+#~ msgstr "允许旧版节点认证"
+
+#~ msgid ""
+#~ "Disable this compatibility switch after every controller has been "
+#~ "upgraded to paired signatures."
+#~ msgstr "在将所有控制器升级为配对签名后，禁用此兼容性开关。"
+
+#~ msgid "Allow legacy Node Secret for MCP"
+#~ msgstr "允许将旧版节点密钥用于 MCP"
+
+#~ msgid ""
+#~ "Temporary compatibility only. Replace MCP Node Secret clients with scoped "
+#~ "service tokens."
+#~ msgstr "仅用于临时兼容。将 MCP 节点密钥客户端替换为限定范围的服务令牌。"
 
 #~ msgid ""
 #~ "Logrotate, by default, is enabled in most mainstream Linux distributions "

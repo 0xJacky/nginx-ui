@@ -84,8 +84,6 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
       name: '',
       secret: '',
       instance_id: '',
-      legacy_auth_enabled: true,
-      legacy_mcp_auth_enabled: true,
       skip_installation: false,
       demo: false,
       icp_number: '',

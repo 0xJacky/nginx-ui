@@ -89,13 +89,10 @@ func TestGetToken_RequiresAuthorizationHeader(t *testing.T) {
 
 func TestAuthenticateNodeRequestRejectsQuerySecretEvenWhenItMatches(t *testing.T) {
 	originalSecret := settings.NodeSettings.Secret
-	originalEnabled := settings.NodeSettings.LegacyAuthEnabled
 	t.Cleanup(func() {
 		settings.NodeSettings.Secret = originalSecret
-		settings.NodeSettings.LegacyAuthEnabled = originalEnabled
 	})
 	settings.NodeSettings.Secret = "matching-legacy-secret"
-	settings.NodeSettings.LegacyAuthEnabled = true
 
 	c := newTestGinContext(t, "GET", "/api/node?node_secret=matching-legacy-secret", nil)
 	handled, err := authenticateNodeRequest(c)

@@ -609,7 +609,7 @@ msgstr "Không hành động"
 
 #: src/components/NamespaceRender/NamespaceRender.vue:44
 #: src/components/NamespaceTabs/NamespaceTabs.vue:141 src/constants/index.ts:39
-#: src/views/node/Node.vue:262 src/views/node/Node.vue:270
+#: src/views/node/Node.vue:209 src/views/node/Node.vue:217
 msgid "Reload Nginx"
 msgstr "Tải lại Nginx"
 
@@ -662,7 +662,7 @@ msgstr ""
 "Bạn có chắc chắn muốn khởi động lại Nginx trên các nút đồng bộ sau không?"
 
 #: src/components/NamespaceTabs/NamespaceTabs.vue:153
-#: src/views/node/Node.vue:283 src/views/node/Node.vue:291
+#: src/views/node/Node.vue:230 src/views/node/Node.vue:238
 msgid "Restart Nginx"
 msgstr "Khởi động lại Nginx"
 
@@ -671,7 +671,7 @@ msgstr "Khởi động lại Nginx"
 #: src/components/NodeSelector/NodeSelector.vue:65
 #: src/components/NodeSelector/NodeSelector.vue:79
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
-#: src/views/dashboard/Nodes.vue:110 src/views/node/nodeColumns.tsx:74
+#: src/views/dashboard/Nodes.vue:110 src/views/node/nodeColumns.tsx:88
 #: src/views/upstream/SocketList.vue:45
 msgid "Online"
 msgstr "Trực tuyến"
@@ -680,7 +680,7 @@ msgstr "Trực tuyến"
 #: src/components/NodeCard/NodeCard.vue:59
 #: src/components/NodeSelector/NodeSelector.vue:85
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
-#: src/views/dashboard/Nodes.vue:117 src/views/node/nodeColumns.tsx:78
+#: src/views/dashboard/Nodes.vue:117 src/views/node/nodeColumns.tsx:92
 #: src/views/upstream/SocketList.vue:45
 msgid "Offline"
 msgstr "Ngoại tuyến"
@@ -1396,7 +1396,7 @@ msgstr "Cổng"
 #: src/views/nginx_log/structured/components/SearchFilters.vue:106
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:242
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:522
-#: src/views/node/nodeColumns.tsx:66
+#: src/views/node/nodeColumns.tsx:80
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:29
 #: src/views/site/site_list/columns.tsx:120 src/views/stream/columns.tsx:87
 msgid "Status"
@@ -3440,7 +3440,7 @@ msgstr "Chỉnh sửa hàng loạt"
 
 #: src/language/curd.ts:35 src/views/certificate/CertificateEditor.vue:97
 #: src/views/certificate/components/RenewCert.vue:21
-#: src/views/preference/store/index.ts:166
+#: src/views/preference/store/index.ts:164
 msgid "Save successfully"
 msgstr "Lưu thành công"
 
@@ -4011,7 +4011,7 @@ msgid "Log List"
 msgstr "Danh sách nhật ký"
 
 #: src/routes/modules/nodes.ts:11 src/views/dashboard/Nodes.vue:89
-#: src/views/node/Node.vue:159
+#: src/views/node/Node.vue:131
 msgid "Nodes"
 msgstr "Nút"
 
@@ -4043,8 +4043,8 @@ msgstr "Quản lý luồng"
 msgid "Edit Stream"
 msgstr "Chỉnh sửa luồng"
 
-#: src/routes/modules/system.ts:26 src/views/node/Node.vue:241
-#: src/views/node/Node.vue:249 src/views/system/Upgrade.vue:154
+#: src/routes/modules/system.ts:26 src/views/node/Node.vue:188
+#: src/views/node/Node.vue:196 src/views/system/Upgrade.vue:154
 #: src/views/system/Upgrade.vue:159
 msgid "Upgrade"
 msgstr "Cập nhật"
@@ -4130,13 +4130,13 @@ msgstr "Hàng tháng vào ngày %{day} lúc %{time}"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:193
 #: src/views/backup/AutoBackup/AutoBackup.vue:203
-#: src/views/dns/DDNSManager.vue:320 src/views/node/nodeColumns.tsx:92
-#: src/views/node/nodeColumns.tsx:98
+#: src/views/dns/DDNSManager.vue:320 src/views/node/nodeColumns.tsx:106
+#: src/views/node/nodeColumns.tsx:112
 #: src/views/preference/components/ExternalNotify/columns.tsx:47
 #: src/views/preference/tabs/HTTPSettings.vue:24
 #: src/views/preference/tabs/LogrotateSettings.vue:20
-#: src/views/preference/tabs/NodeSettings.vue:64
-#: src/views/preference/tabs/NodeSettings.vue:69
+#: src/views/preference/tabs/NodeSettings.vue:28
+#: src/views/preference/tabs/NodeSettings.vue:33
 #: src/views/site/components/SiteStatusSelect.vue:159
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:75
 #: src/views/site/site_list/columns.tsx:142 src/views/stream/columns.tsx:108
@@ -4148,11 +4148,11 @@ msgstr "Đã bật"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:194
 #: src/views/backup/AutoBackup/AutoBackup.vue:204
-#: src/views/dns/DDNSManager.vue:320 src/views/node/nodeColumns.tsx:83
-#: src/views/node/nodeColumns.tsx:101
+#: src/views/dns/DDNSManager.vue:320 src/views/node/nodeColumns.tsx:97
+#: src/views/node/nodeColumns.tsx:115
 #: src/views/preference/tabs/HTTPSettings.vue:24
-#: src/views/preference/tabs/NodeSettings.vue:64
-#: src/views/preference/tabs/NodeSettings.vue:69
+#: src/views/preference/tabs/NodeSettings.vue:28
+#: src/views/preference/tabs/NodeSettings.vue:33
 #: src/views/site/components/SiteStatusSelect.vue:162
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:81
 #: src/views/site/site_list/columns.tsx:146 src/views/stream/columns.tsx:112
@@ -4195,7 +4195,7 @@ msgstr "Ngày tạo"
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
 #: src/views/config/configColumns.tsx:44 src/views/dns/DNSCredential.vue:65
 #: src/views/dns/DNSDomainList.vue:236 src/views/dns/DNSGroupList.vue:33
-#: src/views/namespace/columns.ts:91 src/views/node/nodeColumns.tsx:112
+#: src/views/namespace/columns.ts:91 src/views/node/nodeColumns.tsx:126
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:39
 #: src/views/site/site_list/columns.tsx:113 src/views/stream/columns.tsx:80
 #: src/views/stream/components/RightPanel/Basic.vue:35
@@ -4239,7 +4239,7 @@ msgstr "Vùng S3"
 #: src/views/dns/DNSGroupRecordManager.vue:145
 #: src/views/dns/DNSGroupRecordManager.vue:1362
 #: src/views/namespace/columns.ts:97 src/views/nginx_log/NginxLogList.vue:339
-#: src/views/node/nodeColumns.tsx:119
+#: src/views/node/nodeColumns.tsx:133
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:85
 #: src/views/site/site_list/columns.tsx:160 src/views/stream/columns.tsx:123
@@ -7418,7 +7418,7 @@ msgstr "Có cấu trúc"
 msgid "Raw"
 msgstr "Thô"
 
-#: src/views/nginx_log/NginxLog.vue:101 src/views/node/Node.vue:193
+#: src/views/nginx_log/NginxLog.vue:101 src/views/node/Node.vue:165
 msgid "Auto Refresh"
 msgstr "Tự động làm mới"
 
@@ -7803,65 +7803,39 @@ msgstr "Xem trên GitHub"
 msgid "Perform"
 msgstr "Thực hiện"
 
-#: src/views/node/Node.vue:47
+#: src/views/node/Node.vue:44
 msgid "Auto refresh enabled"
 msgstr "Cập nhật tự động đã được bật"
 
-#: src/views/node/Node.vue:51
+#: src/views/node/Node.vue:48
 msgid "Auto refresh disabled"
 msgstr "Tự động làm mới đã bị vô hiệu hóa"
 
-#: src/views/node/Node.vue:71
+#: src/views/node/Node.vue:68
 msgid "Load successfully"
 msgstr "Tải thành công"
 
-#: src/views/node/Node.vue:86 src/views/node/Node.vue:254
+#: src/views/node/Node.vue:83 src/views/node/Node.vue:201
 msgid "Please select at least one node to reload Nginx"
 msgstr "Vui lòng chọn ít nhất một nút để tải lại Nginx"
 
-#: src/views/node/Node.vue:92
+#: src/views/node/Node.vue:89
 msgid "Nginx reload operations have been dispatched to remote nodes"
 msgstr "Các thao tác tải lại Nginx đã được gửi đến các nút từ xa"
 
-#: src/views/node/Node.vue:100 src/views/node/Node.vue:275
+#: src/views/node/Node.vue:97 src/views/node/Node.vue:222
 msgid "Please select at least one node to restart Nginx"
 msgstr "Vui lòng chọn ít nhất một nút để khởi động lại Nginx"
 
-#: src/views/node/Node.vue:106
+#: src/views/node/Node.vue:103
 msgid "Nginx restart operations have been dispatched to remote nodes"
 msgstr "Các thao tác khởi động lại Nginx đã được gửi đến các nút từ xa"
 
-#: src/views/node/Node.vue:129
-msgid "Node authentication upgraded successfully"
-msgstr "Xác thực nút đã được nâng cấp thành công"
-
-#: src/views/node/Node.vue:166
+#: src/views/node/Node.vue:138
 msgid "Load from settings"
 msgstr "Tải từ cài đặt"
 
-#: src/views/node/Node.vue:206 src/views/node/Node.vue:229
-msgid "Upgrade Authentication"
-msgstr "Nâng cấp xác thực"
-
-#: src/views/node/Node.vue:206 src/views/node/Node.vue:229
-#: src/views/preference/tabs/NodeSettings.vue:27
-#, fuzzy
-msgid "Pair Node"
-msgstr "Nút chính"
-
-#: src/views/node/Node.vue:213
-msgid ""
-"Generate a one-time pairing code on the child node, then enter it here. "
-"Remote pairing requires HTTPS."
-msgstr ""
-"Tạo mã ghép nối dùng một lần trên nút con, sau đó nhập vào đây. Ghép nối từ "
-"xa yêu cầu HTTPS."
-
-#: src/views/node/Node.vue:217
-msgid "One-time pairing code"
-msgstr "Mã ghép nối dùng một lần"
-
-#: src/views/node/Node.vue:233
+#: src/views/node/Node.vue:180
 msgid "Please select at least one node to upgrade"
 msgstr "Vui lòng chọn ít nhất một nút để nâng cấp"
 
@@ -7885,19 +7859,28 @@ msgstr "Đã hết hạn"
 msgid "Revoked"
 msgstr "Thu hồi"
 
-#: src/views/node/nodeColumns.tsx:38 src/views/system/Licenses.vue:28
+#: src/views/node/nodeColumns.tsx:41
+#: src/views/preference/tabs/NodeSettings.vue:11
+msgid "Node Secret"
+msgstr "Bí mật nút"
+
+#: src/views/node/nodeColumns.tsx:46 src/views/user/userColumns.tsx:23
+msgid "Leave blank for no change"
+msgstr "Bỏ trống nếu không thay đổi"
+
+#: src/views/node/nodeColumns.tsx:52 src/views/system/Licenses.vue:28
 msgid "Version"
 msgstr "Phiên bản"
 
-#: src/views/node/nodeColumns.tsx:43
+#: src/views/node/nodeColumns.tsx:57
 msgid "Authentication"
 msgstr "Xác thực"
 
-#: src/views/node/nodeColumns.tsx:52
+#: src/views/node/nodeColumns.tsx:66
 msgid "Paired signature"
 msgstr "Chữ ký ghép cặp"
 
-#: src/views/node/nodeColumns.tsx:52
+#: src/views/node/nodeColumns.tsx:66
 msgid "Legacy secret"
 msgstr "Bí mật cũ"
 
@@ -8526,47 +8509,15 @@ msgstr "Chế độ điều khiển Nginx"
 msgid "External Docker Container"
 msgstr "Container Docker bên ngoài"
 
-#: src/views/preference/tabs/NodeSettings.vue:21
-msgid "Node Secret"
-msgstr "Bí mật nút"
-
-#: src/views/preference/tabs/NodeSettings.vue:24
+#: src/views/preference/tabs/NodeSettings.vue:14
 msgid "Instance ID"
 msgstr "ID phiên bản"
 
-#: src/views/preference/tabs/NodeSettings.vue:29
-msgid "Generate Pairing Code"
-msgstr "Tạo mã ghép nối"
-
-#: src/views/preference/tabs/NodeSettings.vue:32
-msgid "Allow legacy node authentication"
-msgstr "Cho phép xác thực nút cũ"
-
-#: src/views/preference/tabs/NodeSettings.vue:38
-msgid ""
-"Disable this compatibility switch after every controller has been upgraded "
-"to paired signatures."
-msgstr ""
-"Vô hiệu hóa công tắc tương thích này sau khi mọi bộ điều khiển đã được nâng "
-"cấp lên chữ ký ghép cặp."
-
-#: src/views/preference/tabs/NodeSettings.vue:41
-msgid "Allow legacy Node Secret for MCP"
-msgstr "Cho phép bí mật node cũ cho MCP"
-
-#: src/views/preference/tabs/NodeSettings.vue:50
-msgid ""
-"Temporary compatibility only. Replace MCP Node Secret clients with scoped "
-"service tokens."
-msgstr ""
-"Chỉ tương thích tạm thời. Thay thế các máy khách MCP Node Secret bằng mã "
-"thông báo dịch vụ có phạm vi."
-
-#: src/views/preference/tabs/NodeSettings.vue:54
+#: src/views/preference/tabs/NodeSettings.vue:18
 msgid "Node name"
 msgstr "Tên nút"
 
-#: src/views/preference/tabs/NodeSettings.vue:57
+#: src/views/preference/tabs/NodeSettings.vue:21
 msgid ""
 "The node name should only contain letters, unicode, numbers, hyphens, "
 "dashes, colons, and dots."
@@ -8574,25 +8525,25 @@ msgstr ""
 "Tên nút chỉ được chứa chữ cái, unicode, số, dấu gạch ngang, dấu gạch dài, "
 "dấu hai chấm và dấu chấm."
 
-#: src/views/preference/tabs/NodeSettings.vue:58
+#: src/views/preference/tabs/NodeSettings.vue:22
 msgid ""
 "Customize the name of local node to be displayed in the environment "
 "indicator."
 msgstr "Tùy chỉnh tên nút cục bộ để hiển thị trong chỉ báo môi trường."
 
-#: src/views/preference/tabs/NodeSettings.vue:62
+#: src/views/preference/tabs/NodeSettings.vue:26
 msgid "Skip Installation"
 msgstr "Bỏ qua cài đặt"
 
-#: src/views/preference/tabs/NodeSettings.vue:67
+#: src/views/preference/tabs/NodeSettings.vue:31
 msgid "Demo"
 msgstr "Bản demo"
 
-#: src/views/preference/tabs/NodeSettings.vue:73
+#: src/views/preference/tabs/NodeSettings.vue:37
 msgid "ICP Number"
 msgstr "Số ICP"
 
-#: src/views/preference/tabs/NodeSettings.vue:76
+#: src/views/preference/tabs/NodeSettings.vue:40
 msgid ""
 "The ICP Number should only contain letters, unicode, numbers, hyphens, "
 "dashes, colons, and dots."
@@ -8600,30 +8551,22 @@ msgstr ""
 "Số ICP chỉ được chứa chữ cái, unicode, số, dấu gạch ngang, dấu gạch dài, dấu "
 "hai chấm và dấu chấm."
 
-#: src/views/preference/tabs/NodeSettings.vue:81
-#: src/views/preference/tabs/NodeSettings.vue:93
+#: src/views/preference/tabs/NodeSettings.vue:45
+#: src/views/preference/tabs/NodeSettings.vue:57
 msgid "For Chinese user"
 msgstr "Dành cho người dùng Trung Quốc"
 
-#: src/views/preference/tabs/NodeSettings.vue:85
+#: src/views/preference/tabs/NodeSettings.vue:49
 msgid "Public Security Number"
 msgstr "Số An ninh Công cộng"
 
-#: src/views/preference/tabs/NodeSettings.vue:88
+#: src/views/preference/tabs/NodeSettings.vue:52
 msgid ""
 "The Public Security Number should only contain letters, unicode, numbers, "
 "hyphens, dashes, colons, and dots."
 msgstr ""
 "Số Công an chỉ được chứa chữ cái, unicode, số, dấu gạch ngang, dấu gạch dài, "
 "dấu hai chấm và dấu chấm."
-
-#: src/views/preference/tabs/NodeSettings.vue:100
-msgid "One-time Pairing Code"
-msgstr "Mã ghép nối một lần"
-
-#: src/views/preference/tabs/NodeSettings.vue:107
-msgid "Expires at: %{time}"
-msgstr "Hết hạn lúc: %{time}"
 
 #: src/views/preference/tabs/OpenAISettings.vue:35
 msgid ""
@@ -9481,10 +9424,6 @@ msgstr "Kiểm tra sức khỏe"
 msgid "Upstream Sockets"
 msgstr "Các cổng Upstream"
 
-#: src/views/user/userColumns.tsx:23
-msgid "Leave blank for no change"
-msgstr "Bỏ trống nếu không thay đổi"
-
 #: src/views/user/userColumns.tsx:30
 msgid "2FA"
 msgstr "2fa"
@@ -9532,6 +9471,55 @@ msgstr "Xác nhận mật khẩu mới"
 #: src/views/user/UserProfile.vue:213
 msgid "Update Password"
 msgstr "Cập nhật mật khẩu"
+
+#~ msgid "Node authentication upgraded successfully"
+#~ msgstr "Xác thực nút đã được nâng cấp thành công"
+
+#~ msgid "Upgrade Authentication"
+#~ msgstr "Nâng cấp xác thực"
+
+#, fuzzy
+#~ msgid "Pair Node"
+#~ msgstr "Nút chính"
+
+#~ msgid ""
+#~ "Generate a one-time pairing code on the child node, then enter it here. "
+#~ "Remote pairing requires HTTPS."
+#~ msgstr ""
+#~ "Tạo mã ghép nối dùng một lần trên nút con, sau đó nhập vào đây. Ghép nối "
+#~ "từ xa yêu cầu HTTPS."
+
+#~ msgid "One-time pairing code"
+#~ msgstr "Mã ghép nối dùng một lần"
+
+#~ msgid "Generate Pairing Code"
+#~ msgstr "Tạo mã ghép nối"
+
+#~ msgid "One-time Pairing Code"
+#~ msgstr "Mã ghép nối một lần"
+
+#~ msgid "Expires at: %{time}"
+#~ msgstr "Hết hạn lúc: %{time}"
+
+#~ msgid "Allow legacy node authentication"
+#~ msgstr "Cho phép xác thực nút cũ"
+
+#~ msgid ""
+#~ "Disable this compatibility switch after every controller has been "
+#~ "upgraded to paired signatures."
+#~ msgstr ""
+#~ "Vô hiệu hóa công tắc tương thích này sau khi mọi bộ điều khiển đã được "
+#~ "nâng cấp lên chữ ký ghép cặp."
+
+#~ msgid "Allow legacy Node Secret for MCP"
+#~ msgstr "Cho phép bí mật node cũ cho MCP"
+
+#~ msgid ""
+#~ "Temporary compatibility only. Replace MCP Node Secret clients with scoped "
+#~ "service tokens."
+#~ msgstr ""
+#~ "Chỉ tương thích tạm thời. Thay thế các máy khách MCP Node Secret bằng mã "
+#~ "thông báo dịch vụ có phạm vi."
 
 #~ msgid ""
 #~ "Logrotate, by default, is enabled in most mainstream Linux distributions "

@@ -12,9 +12,6 @@ const curd = ref()
 const loadingFromSettings = ref(false)
 const loadingReload = ref(false)
 const loadingRestart = ref(false)
-const loadingPair = ref(false)
-const pairModalVisible = ref(false)
-const pairingCode = ref('')
 
 // Auto refresh logic
 const isAutoRefresh = ref(true)
@@ -109,31 +106,6 @@ function restartNginx() {
   })
 }
 
-const selectedNode = computed(() => selectedNodes.value.length === 1 ? selectedNodes.value[0] : undefined)
-const selectedNodeNeedsPairing = computed(() => selectedNode.value
-  && (selectedNode.value.auth_method === 'legacy_secret'
-    || selectedNode.value.credential_status === 'unpaired'
-    || !selectedNode.value.has_credential))
-
-function openPairModal() {
-  pairingCode.value = ''
-  pairModalVisible.value = true
-}
-
-function upgradeAuthentication() {
-  if (!selectedNode.value || !pairingCode.value.trim())
-    return
-
-  loadingPair.value = true
-  nodeApi.pair(selectedNode.value.id, pairingCode.value.trim()).then(() => {
-    message.success($gettext('Node authentication upgraded successfully'))
-    pairModalVisible.value = false
-    curd.value.refresh()
-  }).finally(() => {
-    loadingPair.value = false
-  })
-}
-
 const inTrash = computed(() => {
   return route.query.trash === 'true'
 })
@@ -201,33 +173,8 @@ const inTrash = computed(() => {
 
     <BatchUpgrader ref="refUpgrader" @success="curd.refresh()" />
 
-    <AModal
-      v-model:open="pairModalVisible"
-      :title="selectedNode?.auth_method === 'legacy_secret' ? $gettext('Upgrade Authentication') : $gettext('Pair Node')"
-      :confirm-loading="loadingPair"
-      @ok="upgradeAuthentication"
-    >
-      <AAlert
-        class="mb-4"
-        type="info"
-        :message="$gettext('Generate a one-time pairing code on the child node, then enter it here. Remote pairing requires HTTPS.')"
-      />
-      <AInput
-        v-model:value="pairingCode"
-        :placeholder="$gettext('One-time pairing code')"
-        autocomplete="off"
-      />
-    </AModal>
-
     <FooterToolBar v-if="!inTrash">
       <ASpace>
-        <AButton
-          v-if="selectedNodeNeedsPairing"
-          :loading="loadingPair"
-          @click="openPairModal"
-        >
-          {{ selectedNode?.auth_method === 'legacy_secret' ? $gettext('Upgrade Authentication') : $gettext('Pair Node') }}
-        </AButton>
         <ATooltip
           v-if="selectedNodeIds.length === 0"
           :title="$gettext('Please select at least one node to upgrade')"

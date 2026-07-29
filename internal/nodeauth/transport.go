@@ -56,7 +56,7 @@ func (transport *authenticatedTransport) RoundTrip(request *http.Request) (*http
 func applyNodeAuthentication(request *http.Request, database *gorm.DB, node *model.Node, now time.Time) error {
 	switch node.AuthMethod {
 	case "", model.NodeAuthMethodLegacy:
-		if err := applyLegacyAuthentication(request, node); err != nil {
+		if err := applyLegacyAuthentication(request, node, now); err != nil {
 			return err
 		}
 	case model.NodeAuthMethodPaired:
@@ -69,7 +69,10 @@ func applyNodeAuthentication(request *http.Request, database *gorm.DB, node *mod
 	return nil
 }
 
-func applyLegacyAuthentication(request *http.Request, node *model.Node) error {
+// applyLegacyAuthentication signs the request with the shared node secret. The
+// secret stays on both ends: only a signature derived from it travels, so the
+// credential is no longer exposed to anyone who can observe the link.
+func applyLegacyAuthentication(request *http.Request, node *model.Node, now time.Time) error {
 	if len(node.EncryptedLegacySecret) == 0 {
 		return errors.New("legacy node credential is unavailable")
 	}
@@ -77,13 +80,7 @@ func applyLegacyAuthentication(request *http.Request, node *model.Node) error {
 	if err != nil {
 		return err
 	}
-	request.Header.Del(signatureInputHeader)
-	request.Header.Del(signatureHeader)
-	request.Header.Del(contentDigestHeader)
-	request.Header.Del(CredentialIDHeader)
-	request.Header.Del(TargetInstanceHeader)
-	request.Header.Set("X-Node-Secret", string(secret))
-	return nil
+	return SignRequestWithSharedSecret(request, secret, now)
 }
 
 func NewHTTPClient(node *model.Node, timeout time.Duration) (*http.Client, error) {

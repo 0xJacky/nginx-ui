@@ -84,8 +84,6 @@ export interface NodeSettings {
   name: string
   secret: string
   instance_id: string
-  legacy_auth_enabled: boolean
-  legacy_mcp_auth_enabled: boolean
   skip_installation: boolean
   demo: boolean
   icp_number: string
