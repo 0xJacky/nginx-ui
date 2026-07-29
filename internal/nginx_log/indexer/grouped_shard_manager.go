@@ -7,6 +7,7 @@ import (
 	"sort"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -14,6 +15,8 @@ import (
 	"github.com/google/uuid"
 	"github.com/uozi-tech/cosy/logger"
 )
+
+const existingShardLockTimeout = 5 * time.Second
 
 // GroupedShardManager manages shards grouped by MainLogPath. Each group uses a
 // unique UUID directory:
@@ -419,7 +422,7 @@ func (gsm *GroupedShardManager) openOrCreateShard(groupBase string, shardID int)
 			return nil, "", fmt.Errorf("create bleve index: %w", err)
 		}
 	} else {
-		idx, err = bleve.Open(shardPath)
+		idx, err = openExistingShard(shardPath, existingShardLockTimeout)
 		if err != nil {
 			return nil, "", fmt.Errorf("open bleve index: %w", err)
 		}
@@ -504,7 +507,7 @@ func (gsm *GroupedShardManager) loadExistingGroups() error {
 				continue
 			}
 
-			idx, openErr := bleve.Open(shardPath)
+			idx, openErr := openExistingShard(shardPath, existingShardLockTimeout)
 			if openErr != nil {
 				logger.Warnf("loadExistingGroups: failed to open shard at %s: %v", shardPath, openErr)
 				continue
@@ -528,6 +531,12 @@ func (gsm *GroupedShardManager) loadExistingGroups() error {
 	}
 
 	return nil
+}
+
+func openExistingShard(shardPath string, lockTimeout time.Duration) (bleve.Index, error) {
+	return bleve.OpenUsing(shardPath, map[string]interface{}{
+		"bolt_timeout": lockTimeout.String(),
+	})
 }
 
 // getOrCreateUUID: Find the first record UUID for a MainLogPath in the DB; create a placeholder if not found.

@@ -29,7 +29,9 @@ import (
 
 func Program(ctx context.Context, confPath string) func(l []net.Listener) error {
 	return func(l []net.Listener) error {
-		listener := l[0]
+		listener := process.NewLifecycleListener(l[0])
+		programCtx, programCancel := context.WithCancel(ctx)
+		defer programCancel()
 
 		cosy.RegisterMigrationsBeforeAutoMigrate(migrate.BeforeAutoMigrate)
 
@@ -38,7 +40,7 @@ func Program(ctx context.Context, confPath string) func(l []net.Listener) error 
 		cosy.RegisterMigration(migrate.Migrations)
 
 		cosy.RegisterInitFunc(func() {
-			kernel.Boot(ctx)
+			kernel.Boot(programCtx)
 			router.InitRouter()
 		})
 
@@ -57,7 +59,7 @@ func Program(ctx context.Context, confPath string) func(l []net.Listener) error 
 		cRouter.Init()
 
 		// Kernel boot
-		cKernel.Boot(ctx)
+		cKernel.Boot(programCtx)
 
 		// Get the HTTP handler from Cosy router
 		handler := cRouter.GetEngine()
@@ -103,11 +105,11 @@ func Program(ctx context.Context, confPath string) func(l []net.Listener) error 
 		go func() {
 			logger.Info("Started graceful shutdown handler goroutine")
 			// Wait for context cancellation
-			<-ctx.Done()
+			<-programCtx.Done()
 
 			// Graceful shutdown
 			logger.Info("Shutting down servers...")
-			if err := serverFactory.Shutdown(ctx); err != nil {
+			if err := serverFactory.Shutdown(programCtx); err != nil {
 				if kernel.IsUnknownServerListenError(err) {
 					logger.Errorf("Error during server shutdown: %v", err)
 				}
@@ -116,16 +118,21 @@ func Program(ctx context.Context, confPath string) func(l []net.Listener) error 
 		}()
 
 		// Start the servers
-		if err := serverFactory.Start(ctx, listener); err != nil {
+		if err := serverFactory.Start(programCtx, listener); err != nil {
 			logger.Fatalf("Failed to start servers: %v", err)
 			return err
 		}
 
-		<-ctx.Done()
+		select {
+		case <-programCtx.Done():
+		case <-listener.Done():
+			logger.Info("Listener closed during process handover, stopping program services")
+			programCancel()
+		}
 
 		// Graceful shutdown
 		logger.Info("Shutting down servers...")
-		if err := serverFactory.Shutdown(ctx); err != nil {
+		if err := serverFactory.Shutdown(programCtx); err != nil {
 			if kernel.IsUnknownServerListenError(err) {
 				logger.Errorf("Error during server shutdown: %v", err)
 			}
