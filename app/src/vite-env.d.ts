@@ -11,22 +11,6 @@ declare module '*.vue' {
 }
 
 export { }
-declare module '@vue/runtime-core' {
-  interface ComponentCustomProperties {
-    $gettext: (msgid: string, parameters?: {
-      [key: string]: string
-    }, disableHtmlEscaping?: boolean) => string
-    $pgettext: (context: string, msgid: string, parameters?: {
-      [key: string]: string
-    }, disableHtmlEscaping?: boolean) => string
-    $ngettext: (msgid: string, plural: string, n: number, parameters?: {
-      [key: string]: string
-    }, disableHtmlEscaping?: boolean) => string
-    $npgettext: (context: string, msgid: string, plural: string, n: number, parameters?: {
-      [key: string]: string
-    }, disableHtmlEscaping?: boolean) => string
-  }
-}
 
 declare module 'axios' {
   interface AxiosRequestConfig {
