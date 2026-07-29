@@ -2,11 +2,11 @@ package config
 
 import (
 	"net/http"
-	"os"
 	"path/filepath"
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
@@ -21,13 +21,13 @@ func GetConfig(c *gin.Context) {
 		return
 	}
 
-	stat, err := os.Stat(absPath)
+	stat, err := nginx.Stat(absPath)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
 	}
 
-	content, err := os.ReadFile(absPath)
+	content, err := nginx.ReadFile(absPath)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

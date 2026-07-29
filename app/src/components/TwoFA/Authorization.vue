@@ -52,7 +52,7 @@ async function passkeyAuthenticate() {
     options: asseResp,
   })
 
-  emit('submitSecureSessionID', r.session_id)
+  emit('submitSecureSessionID', r.session_id, r.session_ttl)
 
   passkeyLoading.value = false
 }

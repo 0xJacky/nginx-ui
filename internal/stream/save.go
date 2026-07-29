@@ -3,12 +3,10 @@ package stream
 import (
 	"fmt"
 	"net/http"
-	"os"
 	"runtime"
 	"sync"
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
-	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
@@ -24,8 +22,14 @@ func Save(name string, content string, overwrite bool, syncNodeIds []uint64, pos
 		return err
 	}
 
-	if !overwrite && helper.FileExists(path) {
-		return ErrDstFileExists
+	if !overwrite {
+		exists, existsErr := nginx.Exists(path)
+		if existsErr != nil {
+			return existsErr
+		}
+		if exists {
+			return ErrDstFileExists
+		}
 	}
 
 	err = config.ValidateConfigFile(path, content)
@@ -38,7 +42,7 @@ func Save(name string, content string, overwrite bool, syncNodeIds []uint64, pos
 		return
 	}
 
-	err = os.WriteFile(path, []byte(content), 0644)
+	err = nginx.WriteFile(path, []byte(content), 0644)
 	if err != nil {
 		return
 	}
@@ -48,7 +52,11 @@ func Save(name string, content string, overwrite bool, syncNodeIds []uint64, pos
 		return err
 	}
 
-	if helper.FileExists(enabledConfigFilePath) {
+	enabledExists, err := nginx.Exists(enabledConfigFilePath)
+	if err != nil {
+		return err
+	}
+	if enabledExists {
 		// Test nginx configuration
 		res := nginx.Control(nginx.TestConfig)
 		if res.IsError() {
@@ -130,7 +138,12 @@ func syncSave(name string, content string) {
 				return
 			}
 
-			if helper.FileExists(enabledConfigFilePath) {
+			enabledExists, existsErr := nginx.Exists(enabledConfigFilePath)
+			if existsErr != nil {
+				logger.Error(existsErr)
+				return
+			}
+			if enabledExists {
 				syncEnable(name)
 			}
 		}(node)

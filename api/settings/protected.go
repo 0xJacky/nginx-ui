@@ -8,18 +8,45 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetProtectedSetting(c *gin.Context) {
+// requireVerifiedTwoFactor gates endpoints that hand a stored secret back to
+// the caller, so a node principal is refused outright.
+func requireVerifiedTwoFactor(c *gin.Context, message string) bool {
 	if _, ok := c.Get(nodeauth.GinPrincipalKey); ok {
 		c.AbortWithStatusJSON(http.StatusForbidden, gin.H{
 			"message": "Node secret authentication is not allowed for protected settings",
 		})
-		return
+		return false
 	}
 
+	return requireVerifiedSession(c, message)
+}
+
+// requireVerifiedTwoFactorOrProxy gates endpoints that only store a value. A
+// controller configuring a child node reaches them through middleware.Proxy(),
+// which signs the forwarded request as that node, so a node principal is
+// accepted the same way middleware.RequireSecureSession does. Rejecting it
+// would surface as an opaque 503, because the proxy rewrites 403 responses.
+func requireVerifiedTwoFactorOrProxy(c *gin.Context, message string) bool {
+	if _, ok := c.Get(nodeauth.GinPrincipalKey); ok {
+		return true
+	}
+
+	return requireVerifiedSession(c, message)
+}
+
+func requireVerifiedSession(c *gin.Context, message string) bool {
 	if verified, _ := c.Get(middleware.SecureSessionVerifiedKey); verified != true {
 		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
-			"message": "Two-factor authentication is required to reveal protected settings",
+			"message": message,
 		})
+		return false
+	}
+
+	return true
+}
+
+func GetProtectedSetting(c *gin.Context) {
+	if !requireVerifiedTwoFactor(c, "Two-factor authentication is required to reveal protected settings") {
 		return
 	}
 

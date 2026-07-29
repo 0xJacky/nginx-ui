@@ -27,10 +27,16 @@ type NginxProcessInfo struct {
 // Nginx UI process namespace, so gopsutil would report zero workers (#1704).
 // In that case the process list is collected from inside the nginx container.
 func GetNginxProcessInfo() (*NginxProcessInfo, error) {
-	if settings.NginxSettings.RunningInAnotherContainer() {
+	switch settings.NginxSettings.ControlMode() {
+	case settings.ControlModeExternalContainer:
 		return getNginxProcessInfoFromContainer()
+	case settings.ControlModeHostViaSSH:
+		// nginx runs on the SSH host, outside this process namespace. Counting
+		// locally would report zero workers and zero CPU as if measured.
+		return nil, ErrProcessInfoUnavailable
+	default:
+		return getNginxProcessInfoFromHost()
 	}
-	return getNginxProcessInfoFromHost()
 }
 
 // getNginxProcessInfoFromHost counts nginx processes in the local process

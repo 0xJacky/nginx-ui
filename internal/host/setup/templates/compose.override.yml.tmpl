@@ -1,0 +1,18 @@
+services:
+  nginx-ui:
+{{- if .NeedsHostGatewayMapping }}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+{{- end }}
+{{- if .UsesMountedFilesystem }}
+    volumes:
+      - {{ .HostConfigDir }}:{{ .ContainerConfigDir }}
+      - {{ .HostLogDir }}:{{ .ContainerLogDir }}:ro
+      - {{ .PIDDir }}:{{ .PIDDir }}:ro
+{{- if and (not .UseGeneratedKey) .HostKeyPath }}
+      - {{ .HostKeyPath }}:{{ .ContainerKeyPath }}:ro
+{{- end }}
+{{- if and (not .UseGeneratedKey) .HostKnownHostsPath }}
+      - {{ .HostKnownHostsPath }}:{{ .ContainerKnownHostsPath }}:ro
+{{- end }}
+{{- end }}

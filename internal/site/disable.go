@@ -3,7 +3,6 @@ package site
 import (
 	"fmt"
 	"net/http"
-	"os"
 	"runtime"
 	"sync"
 
@@ -21,12 +20,12 @@ func Disable(name string) (err error) {
 		return err
 	}
 
-	_, err = os.Stat(enabledConfigFilePath)
+	_, err = nginx.Stat(enabledConfigFilePath)
 	if err != nil {
 		return
 	}
 
-	err = os.Remove(enabledConfigFilePath)
+	err = nginx.Remove(enabledConfigFilePath)
 	if err != nil {
 		return
 	}

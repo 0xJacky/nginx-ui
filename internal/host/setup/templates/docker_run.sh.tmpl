@@ -1,0 +1,17 @@
+docker run -d --name nginx-ui --restart unless-stopped \
+{{- if .NeedsHostGatewayMapping }}
+  --add-host host.docker.internal:host-gateway \
+{{- end }}
+{{- if .UsesMountedFilesystem }}
+  -v {{ .HostConfigDir }}:{{ .ContainerConfigDir }} \
+  -v {{ .HostLogDir }}:{{ .ContainerLogDir }}:ro \
+  -v {{ .PIDDir }}:{{ .PIDDir }}:ro \
+{{- if and (not .UseGeneratedKey) .HostKeyPath }}
+  -v {{ .HostKeyPath }}:{{ .ContainerKeyPath }}:ro \
+{{- end }}
+{{- if and (not .UseGeneratedKey) .HostKnownHostsPath }}
+  -v {{ .HostKnownHostsPath }}:{{ .ContainerKnownHostsPath }}:ro \
+{{- end }}
+{{- end }}
+  -p 8080:80 \
+  uozi/nginx-ui:latest

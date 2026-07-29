@@ -1,7 +1,6 @@
 package config
 
 import (
-	"os"
 	"path/filepath"
 
 	"github.com/0xJacky/Nginx-UI/internal/helper"
@@ -38,7 +37,7 @@ func Save(absPath string, content string, cfg *model.Config) (err error) {
 		return
 	}
 
-	err = os.WriteFile(absPath, []byte(content), 0644)
+	err = nginx.WriteFile(absPath, []byte(content), 0644)
 	if err != nil {
 		return
 	}

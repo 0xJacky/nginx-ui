@@ -3,7 +3,6 @@ package self_check
 import (
 	"os"
 
-	"github.com/0xJacky/Nginx-UI/internal/docker"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/uozi-tech/cosy"
@@ -14,11 +13,13 @@ const externalConfigCheckContent = "# Nginx UI external container shared-path ch
 // CheckExternalContainerConfigShared verifies that local configuration writes
 // are visible at the same path inside the configured external Nginx container.
 func CheckExternalContainerConfigShared() error {
-	if !settings.NginxSettings.RunningInAnotherContainer() {
+	if settings.NginxSettings.ControlMode() == settings.ControlModeLocal {
 		return nil
 	}
 
-	return checkExternalContainerConfigShared(nginx.GetConfPath(), docker.StatPath)
+	// StatOnTarget routes to docker exec or SSH depending on the control mode,
+	// so the same evidence works for both.
+	return checkExternalContainerConfigShared(nginx.GetConfPath(), nginx.StatOnTarget)
 }
 
 func checkExternalContainerConfigShared(configDir string, statPath func(string) bool) error {

@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
-	"os"
 	"path/filepath"
 	"strings"
 
@@ -36,7 +35,7 @@ func SyncToRemoteServer(c *model.Config) (err error) {
 		return e.NewWithParams(50006, ErrPathIsNotUnderTheNginxConfDir.Error(), c.Filepath, nginxConfPath)
 	}
 
-	configBytes, err := os.ReadFile(c.Filepath)
+	configBytes, err := nginx.ReadFile(c.Filepath)
 	if err != nil {
 		return
 	}

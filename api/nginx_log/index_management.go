@@ -25,11 +25,11 @@ var (
 func acquireRebuildLock(logGroupPath string) *sync.Mutex {
 	rebuildLocksLock.Lock()
 	defer rebuildLocksLock.Unlock()
-	
+
 	if lock, exists := rebuildLocks[logGroupPath]; exists {
 		return lock
 	}
-	
+
 	lock := &sync.Mutex{}
 	rebuildLocks[logGroupPath] = lock
 	return lock
@@ -46,7 +46,7 @@ func releaseRebuildLock(logGroupPath string) {
 func isRebuildInProgress(logGroupPath string) bool {
 	rebuildLocksLock.RLock()
 	defer rebuildLocksLock.RUnlock()
-	
+
 	if lock, exists := rebuildLocks[logGroupPath]; exists {
 		// Try to acquire the lock with a short timeout
 		// If we can't acquire it, it means rebuild is in progress
@@ -320,12 +320,12 @@ func rebuildSingleFile(modernIndexer interface{}, path string, logFileManager in
 			for _, docCount := range docsCountMap {
 				totalDocsIndexed += docCount
 			}
-			
+
 			// Save metadata for the base log path with total count
 			if err := logFileManager.(indexer.MetadataManager).SaveIndexMetadata(path, totalDocsIndexed, startTime, duration, minTime, maxTime); err != nil {
 				logger.Errorf("Failed to save index metadata for %s: %v", path, err)
 			}
-			
+
 			// Also save individual file metadata if needed
 			for filePath, docCount := range docsCountMap {
 				if filePath != path { // Don't duplicate the base path
@@ -367,7 +367,7 @@ func rebuildAllFiles(modernIndexer interface{}, logFileManager interface{}, prog
 			releaseRebuildLock(globalLockKey)
 		}()
 	}
-	
+
 	// For full rebuild, we clear ALL existing metadata to start fresh
 	// This is different from single file/group rebuild which preserves metadata for incremental indexing
 	if logFileManager != nil {
@@ -378,7 +378,7 @@ func rebuildAllFiles(modernIndexer interface{}, logFileManager interface{}, prog
 
 	logger.Info("Starting full modern index rebuild with queue management")
 	allLogs := nginx_log.GetAllLogsWithIndexGrouped()
-	
+
 	// Get persistence manager for queue management
 	var persistence *indexer.PersistenceManager
 	if lfm, ok := logFileManager.(*indexer.LogFileManager); ok {
@@ -388,7 +388,7 @@ func rebuildAllFiles(modernIndexer interface{}, logFileManager interface{}, prog
 	// First pass: Set all access logs to queued status
 	queuePosition := 1
 	accessLogs := make([]*nginx_log.NginxLogWithIndex, 0)
-	
+
 	for _, log := range allLogs {
 		if log.Type == "error" {
 			logger.Infof("Skipping indexing for error log: %s", log.Path)
@@ -399,14 +399,14 @@ func rebuildAllFiles(modernIndexer interface{}, logFileManager interface{}, prog
 			}
 			continue
 		}
-		
+
 		// Set to queued status with position
 		if persistence != nil {
 			if err := persistence.SetIndexStatus(log.Path, string(indexer.IndexStatusQueued), queuePosition, ""); err != nil {
 				logger.Errorf("Failed to set queued status for %s: %v", log.Path, err)
 			}
 		}
-		
+
 		accessLogs = append(accessLogs, log)
 		queuePosition++
 	}

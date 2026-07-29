@@ -25,7 +25,7 @@ const loading = ref(false)
 const passwordLoading = ref(false)
 
 function get2FAStatus() {
-  void userStore.refreshTwoFAStatus()
+  return userStore.refreshTwoFAStatus()
 }
 
 async function getCurrentUser() {
@@ -102,8 +102,8 @@ async function changePassword() {
 
 // Initialize data on mount
 onMounted(() => {
-  getCurrentUser()
-  get2FAStatus()
+  void getCurrentUser()
+  void get2FAStatus()
 })
 </script>
 
@@ -142,7 +142,10 @@ onMounted(() => {
 
       <!-- 2FA Settings Section -->
       <div class="mb-8">
-        <h2 class="text-xl font-semibold mb-4">
+        <h2
+          id="two-factor-authentication"
+          class="mb-4 text-xl font-semibold"
+        >
           {{ $gettext('2FA Settings') }}
         </h2>
         <ACard>

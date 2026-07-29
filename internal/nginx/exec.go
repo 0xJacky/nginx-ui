@@ -2,43 +2,34 @@ package nginx
 
 import (
 	"context"
-	"os/exec"
 	"runtime"
 
-	"github.com/0xJacky/Nginx-UI/internal/docker"
 	"github.com/0xJacky/Nginx-UI/settings"
 )
 
 func execShell(cmd string) (stdOut string, stdErr error) {
-	name, args := shellCommand(runtime.GOOS, settings.NginxSettings.RunningInAnotherContainer(), cmd)
+	remoteTarget := settings.NginxSettings.ControlMode() != settings.ControlModeLocal
+	name, args := shellCommand(runtime.GOOS, remoteTarget, cmd)
 	return execCommand(name, args...)
 }
 
-func shellCommand(goos string, externalContainer bool, cmd string) (name string, args []string) {
-	// External Nginx containers are Linux containers even when Nginx UI runs
-	// on a different host OS. Route the shell itself through execCommand so
-	// custom test, reload, and restart commands use the configured target.
-	if externalContainer || goos != "windows" {
+func shellCommand(goos string, remoteTarget bool, cmd string) (name string, args []string) {
+	// A remote target runs its own OS, not this one. An external Nginx
+	// container is Linux, and an SSH host is Linux or macOS, so a Windows
+	// hosted Nginx UI must not send cmd /c to either. Route the shell itself
+	// through execCommand so custom test, reload, and restart commands use the
+	// configured target.
+	if remoteTarget || goos != "windows" {
 		return "/bin/sh", []string{"-c", cmd}
 	}
 
 	return "cmd", []string{"/c", cmd}
 }
 
-func execCommand(name string, cmd ...string) (stdOut string, stdErr error) {
-	switch settings.NginxSettings.RunningInAnotherContainer() {
-	case true:
-		cmd = append([]string{name}, cmd...)
-		stdOut, stdErr = docker.Exec(context.Background(), cmd)
-	case false:
-		execCmd := exec.Command(name, cmd...)
-		// fix #1046
-		execCmd.Dir = GetNginxExeDir()
-		bytes, err := execCmd.CombinedOutput()
-		stdOut = string(bytes)
-		if err != nil {
-			stdErr = err
-		}
-	}
-	return
+// execCommand routes nginx invocations through the Runner chosen by the
+// current control mode. Callers should keep using execCommand as before —
+// the routing is transparent.
+func execCommand(name string, args ...string) (stdOut string, stdErr error) {
+	runner := resolveRunner()
+	return runner.Exec(context.Background(), name, args...)
 }

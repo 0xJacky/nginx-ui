@@ -102,6 +102,7 @@ func Start2FASecureSessionByOTP(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"session_id":                sessionId,
+		"session_ttl":               int(user.SecureSessionDuration().Seconds()),
 		"used_legacy_recovery_code": verificationResult.UsedLegacyRecoveryCode,
 	})
 }
@@ -154,6 +155,7 @@ func FinishStart2FASecureSessionByPasskey(c *gin.Context) {
 	sessionId := user.SetSecureSessionID(u.ID)
 
 	c.JSON(http.StatusOK, gin.H{
-		"session_id": sessionId,
+		"session_id":  sessionId,
+		"session_ttl": int(user.SecureSessionDuration().Seconds()),
 	})
 }

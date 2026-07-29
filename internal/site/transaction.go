@@ -15,7 +15,7 @@ type configFileSnapshot struct {
 }
 
 func captureConfigFile(path string) (configFileSnapshot, error) {
-	content, err := os.ReadFile(path)
+	content, err := nginx.ReadFile(path)
 	if os.IsNotExist(err) {
 		return configFileSnapshot{}, nil
 	}
@@ -23,7 +23,7 @@ func captureConfigFile(path string) (configFileSnapshot, error) {
 		return configFileSnapshot{}, err
 	}
 
-	info, err := os.Stat(path)
+	info, err := nginx.Stat(path)
 	if err != nil {
 		return configFileSnapshot{}, err
 	}
@@ -37,7 +37,7 @@ func captureConfigFile(path string) (configFileSnapshot, error) {
 
 func (snapshot configFileSnapshot) restore(path string) error {
 	if !snapshot.exists {
-		if err := os.Remove(path); err != nil && !os.IsNotExist(err) {
+		if err := nginx.Remove(path); err != nil && !os.IsNotExist(err) {
 			return err
 		}
 		return nil
@@ -49,7 +49,7 @@ func (snapshot configFileSnapshot) restore(path string) error {
 func writeConfigFile(path string, content []byte, mode os.FileMode) error {
 	// Write in place to preserve symlink targets and file-level bind mounts.
 	// The caller keeps a snapshot and restores it when validation or reload fails.
-	return os.WriteFile(path, content, mode)
+	return nginx.WriteFile(path, content, mode)
 }
 
 func rollbackError(primary error, rollback func() error) error {
@@ -75,7 +75,7 @@ func restoreConfigAndReload(path string, snapshot configFileSnapshot) error {
 }
 
 func removeEnabledLink(path string) error {
-	if err := os.Remove(path); err != nil && !os.IsNotExist(err) {
+	if err := nginx.Remove(path); err != nil && !os.IsNotExist(err) {
 		return err
 	}
 	return nil

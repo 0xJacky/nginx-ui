@@ -24,6 +24,14 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           ]
         },
         {
+          text: 'Deployment',
+          collapsed: false,
+          items: [
+            { text: 'Manage Host Nginx from Docker', link: '/guide/manage-host-nginx-from-docker' },
+            { text: 'Manage Multi-Host Nginx with Cluster', link: '/guide/manage-multi-host-nginx-with-cluster' }
+          ]
+        },
+        {
           text: 'Development',
           collapsed: false,
           items: [

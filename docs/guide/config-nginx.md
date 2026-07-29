@@ -174,3 +174,49 @@ For example: `-v /var/run/docker.sock:/var/run/docker.sock`
 
 Nginx UI reads and writes Nginx configuration and log files through its own filesystem. Mount the same configuration and log directories at the same paths in both containers. The configuration mount must be writable in the Nginx UI container; it can remain read-only in the Nginx container. Mapping `docker.sock` and setting `ContainerName` only route status checks and control commands to the other container.
 :::
+
+## Host SSH Control
+
+For deployments where Nginx UI runs in a Docker container but Nginx is installed natively on the host machine, Nginx UI provides a third control mode that uses SSH for command execution and bind-mounts for file I/O. Linux systemd services and macOS Homebrew launchd services are supported.
+
+### Constraints
+
+::: warning Constraints
+- **Same-host only**: the Nginx UI container and the target nginx process must be on the same physical/virtual machine. For multi-host management, see [Manage Multi-Host Nginx with Cluster](manage-multi-host-nginx-with-cluster.md).
+- On Linux, nginx must be managed by systemd and the SSH user must be allowed to invoke a narrow command set through passwordless `sudo -n`.
+- On macOS, nginx must run as a Homebrew user service. The configured SSH user must be the login user that owns `homebrew.mxcl.nginx`; sudo is not used.
+:::
+
+### Quick start
+
+1. From the Web UI, go to **Preferences → Nginx**, select **Host via SSH** mode, and open the setup wizard.
+2. Follow the four-step wizard: generate a keypair, paste the generated docker-compose snippet into your stack, apply the sudoers/authorized_keys snippets on the host, and run the verification.
+3. Once all checks pass, save the configuration.
+
+Alternatively, use the CLI:
+
+```bash
+nginx-ui host-setup print --host-address host.docker.internal:22 --host-user nginxui
+nginx-ui host-setup test
+```
+
+### Configuration fields
+
+| Field | Description |
+|---|---|
+| `host_mode` | Set to `ssh` to enable this mode |
+| `host_address` | Remote `host:port` |
+| `host_user` | SSH user on the host |
+| `host_auth_method` | SSH authentication method. Use key authentication for the current host SSH setup |
+| `host_private_key_path` | Private key path inside the container |
+| `host_known_hosts_path` | known_hosts allow-list path inside the container |
+| `host_sudo_prefix` | Prefix used for privileged commands. Default `sudo -n` |
+| `host_service_manager` | `systemd` (default) or `launchd` |
+| `host_systemd_unit_name` | Default `nginx.service` |
+| `host_systemctl_path` | Default `/bin/systemctl` |
+| `host_launchd_service` | Default `homebrew.mxcl.nginx` |
+| `host_launchctl_path` | Default `/bin/launchctl` |
+| `host_config_dir` | Host-side nginx config directory |
+| `host_log_dir` | Host-side nginx log directory |
+
+See also: [Manage Host Nginx from Docker](manage-host-nginx-from-docker.md) and [Manage Multi-Host Nginx with Cluster](manage-multi-host-nginx-with-cluster.md).

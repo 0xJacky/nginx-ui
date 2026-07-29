@@ -68,6 +68,7 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
       error_log_path: '',
       config_dir: '',
       config_path: '',
+      sbin_path: '',
       log_dir_white_list: [],
       pid_path: '',
       test_config_cmd: '',
@@ -111,14 +112,18 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
   const errors = ref<Record<string, Record<string, string>>>({})
   const savedEnableHTTPS = ref(false)
 
-  function getSettings() {
-    settings.get().then(r => {
+  async function getSettings(): Promise<boolean> {
+    try {
+      const r = await settings.get()
       r.cert.recursive_nameservers ||= []
       savedEnableHTTPS.value = r.server.enable_https
       data.value = r
-    }).catch(err => {
+      return true
+    }
+    catch (err) {
       console.error('Failed to load settings:', err)
-    })
+      return false
+    }
   }
 
   async function save() {
