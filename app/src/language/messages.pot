@@ -107,8 +107,44 @@ msgstr ""
 msgid "* Performance metrics measured on Apple M2 Pro (12-core) with 32GB RAM. Actual performance may vary based on your hardware configuration."
 msgstr ""
 
+#: src/views/dns/DNSGroupRecordManager.vue:599
+msgid "%{count} drifted"
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:613
+msgid "%{count} duplicated"
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:634
+msgid "%{count} matching records found"
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:606
+msgid "%{count} missing"
+msgstr ""
+
+#: src/views/dns/components/DNSRecordTable.vue:243
+msgid "%{count} more"
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:1448
+msgid "%{count} name and domain targets will be reviewed."
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:1095
+msgid "%{count} record operation(s) failed"
+msgstr ""
+
 #: src/views/site/site_list/SiteList.vue:235
 msgid "%{count} sites selected"
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:592
+msgid "%{count} synced"
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:620
+msgid "%{count} unknown"
 msgstr ""
 
 #: src/views/dns/components/DNSChallenge.vue:56
@@ -127,9 +163,9 @@ msgstr ""
 msgid "1 core minimum"
 msgstr ""
 
-#: src/views/site/site_add/components/DNSRecordIntegration.vue:338
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:508
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:632
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:352
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:557
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:684
 msgid "192.168.1.1"
 msgstr ""
 
@@ -158,11 +194,15 @@ msgstr ""
 msgid "4GB+ RAM recommended"
 msgstr ""
 
+#: src/views/dns/DNSGroupList.vue:113
+msgid "A group with this name already exists"
+msgstr ""
+
 #: src/views/dns/DDNSManager.vue:86
 msgid "A records at the same names are not managed in IPv6 only mode. They remain unchanged in DNS."
 msgstr ""
 
-#: src/components/InspectConfig/InspectConfig.vue:37
+#: src/components/InspectConfig/InspectConfig.vue:58
 msgid "A required include file is missing from the sandbox or source configuration."
 msgstr ""
 
@@ -194,21 +234,27 @@ msgstr ""
 msgid "ACME User"
 msgstr ""
 
+#: src/views/dns/DNSGroupRecordManager.vue:160
+#: src/views/dns/DNSGroupRecordManager.vue:177
 #: src/views/preference/tabs/AuthSettings.vue:27
 msgid "Action"
 msgstr ""
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:273
+#: src/views/backup/AutoBackup/AutoBackup.vue:302
 #: src/views/certificate/ACMEUser.vue:122
 #: src/views/certificate/CertificateList/certColumns.tsx:113
 #: src/views/config/configColumns.tsx:51
-#: src/views/dns/components/DNSRecordTable.vue:44
+#: src/views/dns/components/DNSRecordTable.vue:348
+#: src/views/dns/components/DNSRecordTable.vue:64
 #: src/views/dns/DDNSManager.vue:180
 #: src/views/dns/DNSCredential.vue:71
 #: src/views/dns/DNSDomainList.vue:242
+#: src/views/dns/DNSGroupList.vue:37
+#: src/views/dns/DNSGroupRecordManager.vue:1362
+#: src/views/dns/DNSGroupRecordManager.vue:145
 #: src/views/namespace/columns.ts:97
 #: src/views/nginx_log/NginxLogList.vue:339
-#: src/views/node/nodeColumns.tsx:96
+#: src/views/node/nodeColumns.tsx:104
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:85
 #: src/views/site/site_list/columns.tsx:160
@@ -229,7 +275,7 @@ msgstr ""
 #: src/components/NgxConfigEditor/NgxServer.vue:144
 #: src/components/NgxConfigEditor/NgxUpstream.vue:97
 #: src/language/curd.ts:19
-#: src/views/preference/tabs/CertSettings.vue:51
+#: src/views/preference/tabs/CertSettings.vue:54
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:119
 #: src/views/site/site_list/SiteList.vue:186
 #: src/views/stream/StreamList.vue:81
@@ -256,6 +302,12 @@ msgstr ""
 msgid "Add Domain"
 msgstr ""
 
+#: src/views/dns/DNSGroupRecordManager.vue:1281
+#: src/views/dns/DNSGroupRecordManager.vue:1297
+#: src/views/dns/DNSGroupRecordManager.vue:1395
+msgid "Add group record"
+msgstr ""
+
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:548
 msgid "Add Header"
 msgstr ""
@@ -273,7 +325,7 @@ msgstr ""
 msgid "Add Location"
 msgstr ""
 
-#: src/views/dns/DNSRecordManager.vue:216
+#: src/views/dns/DNSRecordManager.vue:200
 msgid "Add Record"
 msgstr ""
 
@@ -282,7 +334,7 @@ msgid "Add Server"
 msgstr ""
 
 #: src/routes/modules/sites.ts:26
-#: src/views/site/site_add/SiteAdd.vue:167
+#: src/views/site/site_add/SiteAdd.vue:177
 msgid "Add Site"
 msgstr ""
 
@@ -351,6 +403,10 @@ msgstr ""
 msgid "All Components"
 msgstr ""
 
+#: src/views/dns/DNSGroupRecordManager.vue:1412
+msgid "All names"
+msgstr ""
+
 #: src/components/Notification/notifications.ts:205
 #: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
@@ -358,6 +414,14 @@ msgstr ""
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:200
 msgid "All selected subdomains must belong to the same DNS Provider, otherwise the certificate application will fail."
+msgstr ""
+
+#: src/views/preference/tabs/NodeSettings.vue:17
+msgid "Allow legacy node authentication"
+msgstr ""
+
+#: src/views/preference/tabs/NodeSettings.vue:26
+msgid "Allow legacy Node Secret for MCP"
 msgstr ""
 
 #: src/components/GeoLiteDownload/GeoLiteDownload.vue:160
@@ -376,11 +440,11 @@ msgstr ""
 msgid "Any"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:209
+#: src/components/AutoCertForm/AutoCertForm.vue:162
 msgid "Any reachable IP address can be used with private Certificate Authorities"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:103
+#: src/views/preference/tabs/OpenAISettings.vue:107
 msgid "API Base Url"
 msgstr ""
 
@@ -388,15 +452,15 @@ msgstr ""
 msgid "API Document"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:114
+#: src/views/preference/tabs/OpenAISettings.vue:120
 msgid "API Proxy"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:126
+#: src/views/preference/tabs/OpenAISettings.vue:132
 msgid "API Token"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:138
+#: src/views/preference/tabs/OpenAISettings.vue:144
 msgid "API Type"
 msgstr ""
 
@@ -406,6 +470,10 @@ msgstr ""
 
 #: src/language/curd.ts:65
 msgid "Apply"
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:1545
+msgid "Apply changes"
 msgstr ""
 
 #: src/views/system/Upgrade.vue:195
@@ -424,7 +492,8 @@ msgstr ""
 msgid "Are you sure to delete this passkey immediately?"
 msgstr ""
 
-#: src/views/dns/components/DNSRecordTable.vue:130
+#: src/views/dns/components/DNSRecordTable.vue:321
+#: src/views/dns/components/DNSRecordTable.vue:372
 msgid "Are you sure to delete this record?"
 msgstr ""
 
@@ -463,7 +532,7 @@ msgstr ""
 msgid "Are you sure you want to remove this directive?"
 msgstr ""
 
-#: src/views/preference/tabs/CertSettings.vue:77
+#: src/views/preference/tabs/CertSettings.vue:80
 msgid "Are you sure you want to remove this item?"
 msgstr ""
 
@@ -495,7 +564,7 @@ msgstr ""
 msgid "At least one domain or IP address is required"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:48
+#: src/views/preference/tabs/OpenAISettings.vue:52
 msgid "Atlas Cloud is OpenAI-compatible. Use https://api.atlascloud.ai/v1 and an Atlas Cloud API key."
 msgstr ""
 
@@ -519,6 +588,10 @@ msgstr ""
 msgid "Authenticating..."
 msgstr ""
 
+#: src/views/node/nodeColumns.tsx:35
+msgid "Authentication"
+msgstr ""
+
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:122
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:96
 msgid "Author"
@@ -534,7 +607,7 @@ msgid "auto = CPU cores"
 msgstr ""
 
 #: src/routes/modules/backup.ts:27
-#: src/views/backup/AutoBackup/AutoBackup.vue:282
+#: src/views/backup/AutoBackup/AutoBackup.vue:312
 msgid "Auto Backup"
 msgstr ""
 
@@ -555,23 +628,23 @@ msgid "Auto Backup Storage Failed"
 msgstr ""
 
 #: src/views/nginx_log/NginxLog.vue:101
-#: src/views/node/Node.vue:164
+#: src/views/node/Node.vue:211
 msgid "Auto Refresh"
 msgstr ""
 
-#: src/views/node/Node.vue:47
+#: src/views/node/Node.vue:53
 msgid "Auto refresh disabled"
 msgstr ""
 
-#: src/views/node/Node.vue:43
+#: src/views/node/Node.vue:49
 msgid "Auto refresh enabled"
 msgstr ""
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:99
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:115
 msgid "Auto-renewal disabled for %{name}"
 msgstr ""
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:92
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:108
 msgid "Auto-renewal enabled for %{name}"
 msgstr ""
 
@@ -592,9 +665,13 @@ msgstr ""
 msgid "Automatic Restart"
 msgstr ""
 
-#: src/views/site/site_add/components/DNSRecordIntegration.vue:331
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:625
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:345
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:677
 msgid "Automatically extracted from server_name"
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:1406
+msgid "Automatically grouped by shared value"
 msgstr ""
 
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:36
@@ -613,9 +690,10 @@ msgstr ""
 #: src/views/config/components/ConfigLeftPanel.vue:274
 #: src/views/config/ConfigList.vue:120
 #: src/views/config/ConfigList.vue:217
-#: src/views/dns/DNSRecordManager.vue:275
+#: src/views/dns/DNSGroupRecordManager.vue:1546
+#: src/views/dns/DNSRecordManager.vue:250
 #: src/views/nginx_log/NginxLog.vue:129
-#: src/views/site/site_add/SiteAdd.vue:250
+#: src/views/site/site_add/SiteAdd.vue:260
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:189
 #: src/views/stream/components/StreamEditor.vue:147
 msgid "Back"
@@ -623,6 +701,11 @@ msgstr ""
 
 #: src/views/other/Error.vue:22
 msgid "Back Home"
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:1223
+#: src/views/dns/DNSGroupRecordManager.vue:1636
+msgid "Back to groups"
 msgstr ""
 
 #: src/language/curd.ts:21
@@ -707,7 +790,7 @@ msgstr ""
 msgid "Backup task %{backup_name} failed to execute, error: %{error}"
 msgstr ""
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:24
+#: src/views/backup/AutoBackup/AutoBackup.vue:53
 msgid "Backup Type"
 msgstr ""
 
@@ -727,7 +810,7 @@ msgstr ""
 msgid "Bark"
 msgstr ""
 
-#: src/views/site/site_add/SiteAdd.vue:173
+#: src/views/site/site_add/SiteAdd.vue:183
 msgid "Base information"
 msgstr ""
 
@@ -754,6 +837,10 @@ msgstr ""
 msgid "Batch Modify"
 msgstr ""
 
+#: src/views/dns/DNSGroupList.vue:278
+msgid "Batch record operations target the selected domains. Provider credentials remain unchanged."
+msgstr ""
+
 #: src/views/node/BatchUpgrader.vue:154
 msgid "Batch Upgrade"
 msgstr ""
@@ -764,6 +851,11 @@ msgstr ""
 
 #: src/constants/errors/nginx.ts:3
 msgid "Block is nil"
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:1011
+#: src/views/dns/DNSGroupRecordManager.vue:1186
+msgid "Blocked"
 msgstr ""
 
 #: src/views/nginx_log/dashboard/components/BrowserStatsTable.vue:13
@@ -850,8 +942,11 @@ msgstr ""
 #: src/language/curd.ts:37
 #: src/views/config/components/Delete.vue:98
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:710
-#: src/views/dns/DDNSManager.vue:438
-#: src/views/dns/DNSRecordManager.vue:264
+#: src/views/dns/DDNSManager.vue:435
+#: src/views/dns/DNSGroupList.vue:240
+#: src/views/dns/DNSGroupList.vue:285
+#: src/views/dns/DNSGroupRecordManager.vue:1531
+#: src/views/dns/DNSRecordManager.vue:239
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:101
 #: src/views/nginx_log/indexing/IndexManagement.vue:33
 #: src/views/nginx_log/indexing/IndexManagement.vue:59
@@ -859,7 +954,7 @@ msgstr ""
 #: src/views/preference/components/AuthSettings/Passkey.vue:142
 #: src/views/site/components/SiteStatusSelect.vue:124
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:53
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:149
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:165
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:21
 #: src/views/site/site_list/SiteList.vue:138
 #: src/views/stream/components/StreamStatusSelect.vue:62
@@ -984,11 +1079,11 @@ msgstr ""
 msgid "Certificate is not a self-signed certificate"
 msgstr ""
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:57
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:71
 msgid "Certificate issuance component is not ready"
 msgstr ""
 
-#: src/views/certificate/components/RetryCert.vue:36
+#: src/views/certificate/components/RetryCert.vue:37
 msgid "Certificate issued successfully"
 msgstr ""
 
@@ -1010,6 +1105,10 @@ msgstr ""
 
 #: src/constants/errors/cert.ts:8
 msgid "Certificate path is empty"
+msgstr ""
+
+#: src/constants/errors/cert.ts:48
+msgid "Certificate profile is not available from the selected ACME server: {0}"
 msgstr ""
 
 #: src/views/certificate/components/RemoveCert.vue:64
@@ -1054,7 +1153,7 @@ msgstr ""
 msgid "Challenge error: {0}"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:218
+#: src/components/AutoCertForm/AutoCertForm.vue:171
 msgid "Challenge Method"
 msgstr ""
 
@@ -1075,6 +1174,10 @@ msgstr[1] ""
 
 #: src/views/config/components/ConfigRightPanel/Basic.vue:47
 msgid "Changed Path"
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:1554
+msgid "Changes are applied per domain and cannot be rolled back as one transaction."
 msgstr ""
 
 #: src/views/node/BatchUpgrader.vue:161
@@ -1177,11 +1280,15 @@ msgstr ""
 msgid "China Map"
 msgstr ""
 
+#: src/views/dns/DNSGroupRecordManager.vue:1407
+msgid "Choose which names to synchronize. Existing provider-specific values are preserved unless you change them below."
+msgstr ""
+
 #: src/constants/errors/crypto.ts:3
 msgid "Cipher text is too short"
 msgstr ""
 
-#: src/views/dns/DDNSManager.vue:393
+#: src/views/dns/DDNSManager.vue:390
 msgid "Clean up conflicting records"
 msgstr ""
 
@@ -1192,11 +1299,11 @@ msgstr ""
 #: src/components/LLM/ChatMessageInput.vue:67
 #: src/components/Notification/Notification.vue:122
 #: src/views/notification/Notification.vue:45
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:480
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:513
 msgid "Clear"
 msgstr ""
 
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:538
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:588
 msgid "Clear Link"
 msgstr ""
 
@@ -1258,6 +1365,7 @@ msgstr ""
 
 #: src/components/ConfigHistory/ConfigHistory.vue:179
 #: src/language/curd.ts:14
+#: src/views/dns/DNSGroupRecordManager.vue:1625
 msgid "Close"
 msgstr ""
 
@@ -1269,7 +1377,7 @@ msgstr ""
 msgid "Code completion is not enabled"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:157
+#: src/views/preference/tabs/OpenAISettings.vue:163
 msgid "Code Completion Model"
 msgstr ""
 
@@ -1289,8 +1397,12 @@ msgstr ""
 msgid "Command exited with unexpected exit code: {0}, error: {1}"
 msgstr ""
 
-#: src/views/dns/components/DNSRecordForm.vue:123
-#: src/views/dns/components/DNSRecordTable.vue:51
+#: src/views/dns/components/DNSRecordForm.vue:128
+#: src/views/dns/components/DNSRecordTable.vue:343
+#: src/views/dns/components/DNSRecordTable.vue:71
+#: src/views/dns/DNSGroupRecordManager.vue:1036
+#: src/views/dns/DNSGroupRecordManager.vue:1516
+#: src/views/dns/DNSGroupRecordManager.vue:642
 msgid "Comment"
 msgstr ""
 
@@ -1319,6 +1431,10 @@ msgstr ""
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:70
 msgid "Complete indexing with search capabilities"
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:889
+msgid "Complete the required record fields"
 msgstr ""
 
 #: src/views/system/Licenses.vue:144
@@ -1369,15 +1485,19 @@ msgstr ""
 msgid "Config Template"
 msgstr ""
 
+#: src/components/InspectConfig/InspectConfig.vue:45
+msgid "Config validation is unavailable for a remote-only namespace."
+msgstr ""
+
 #: src/views/dns/DNSCredential.vue:52
 msgid "Configuration"
 msgstr ""
 
-#: src/components/InspectConfig/InspectConfig.vue:150
+#: src/components/InspectConfig/InspectConfig.vue:189
 msgid "Configuration file is test successful"
 msgstr ""
 
-#: src/components/InspectConfig/InspectConfig.vue:149
+#: src/components/InspectConfig/InspectConfig.vue:188
 msgid "Configuration file is test successful in isolated sandbox"
 msgstr ""
 
@@ -1389,7 +1509,7 @@ msgstr ""
 msgid "Configuration information"
 msgstr ""
 
-#: src/views/site/site_add/SiteAdd.vue:180
+#: src/views/site/site_add/SiteAdd.vue:190
 msgid "Configuration Name"
 msgstr ""
 
@@ -1401,11 +1521,11 @@ msgstr ""
 msgid "Configure"
 msgstr ""
 
-#: src/views/dns/DDNSManager.vue:374
+#: src/views/dns/DDNSManager.vue:371
 msgid "Configure DDNS"
 msgstr ""
 
-#: src/views/site/site_add/SiteAdd.vue:175
+#: src/views/site/site_add/SiteAdd.vue:185
 msgid "Configure SSL"
 msgstr ""
 
@@ -1480,6 +1600,10 @@ msgstr ""
 msgid "Could not find temp container"
 msgstr ""
 
+#: src/components/InspectConfig/InspectConfig.vue:138
+msgid "Could not reach the server"
+msgstr ""
+
 #: src/views/nginx_log/dashboard/components/BrowserStatsTable.vue:18
 #: src/views/nginx_log/dashboard/components/DailyTrendsChart.vue:98
 #: src/views/nginx_log/dashboard/components/DeviceStatsTable.vue:17
@@ -1492,11 +1616,15 @@ msgstr ""
 msgid "Country / Region"
 msgstr ""
 
+#: src/views/dns/DNSGroupRecordManager.vue:137
+msgid "Coverage"
+msgstr ""
+
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:47
 msgid "CPU"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:309
+#: src/views/dashboard/ServerAnalytic.vue:321
 msgid "CPU Status"
 msgstr ""
 
@@ -1508,11 +1636,19 @@ msgstr ""
 msgid "CPU usage is relatively high, consider optimizing Nginx configuration"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:200
+#: src/views/dashboard/ServerAnalytic.vue:212
 msgid "CPU:"
 msgstr ""
 
-#: src/views/site/site_add/SiteAdd.vue:267
+#: src/views/dns/DNSGroupRecordManager.vue:1008
+msgid "Create"
+msgstr ""
+
+#: src/views/dns/DNSGroupList.vue:200
+msgid "Create a group to manage the same DNS record across multiple domains"
+msgstr ""
+
+#: src/views/site/site_add/SiteAdd.vue:277
 msgid "Create Another"
 msgstr ""
 
@@ -1520,8 +1656,12 @@ msgstr ""
 msgid "Create Backup"
 msgstr ""
 
-#: src/views/site/site_add/components/DNSRecordIntegration.vue:365
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:659
+#: src/views/dns/DNSGroupList.vue:255
+msgid "Create DNS group"
+msgstr ""
+
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:379
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:711
 msgid "Create DNS Record"
 msgstr ""
 
@@ -1534,12 +1674,18 @@ msgstr ""
 msgid "Create Folder"
 msgstr ""
 
-#: src/views/site/site_add/components/DNSRecordIntegration.vue:305
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:599
+#: src/views/dns/DNSGroupList.vue:186
+#: src/views/dns/DNSGroupList.vue:202
+#: src/views/dns/DNSGroupList.vue:288
+msgid "Create group"
+msgstr ""
+
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:319
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:651
 msgid "Create new DNS record"
 msgstr ""
 
-#: src/views/dns/DNSRecordManager.vue:248
+#: src/views/dns/DNSRecordManager.vue:221
 msgid "Create Record"
 msgstr ""
 
@@ -1551,7 +1697,7 @@ msgstr ""
 msgid "Create system backups including Nginx configuration and Nginx UI settings. Backup files will be automatically downloaded to your computer."
 msgstr ""
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:229
+#: src/views/backup/AutoBackup/AutoBackup.vue:258
 #: src/views/namespace/columns.ts:85
 #: src/views/notification/notificationColumns.tsx:51
 #: src/views/preference/components/AuthSettings/Passkey.vue:96
@@ -1626,8 +1772,8 @@ msgstr ""
 msgid "Custom cron expression"
 msgstr ""
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:29
-#: src/views/backup/AutoBackup/AutoBackup.vue:41
+#: src/views/backup/AutoBackup/AutoBackup.vue:58
+#: src/views/backup/AutoBackup/AutoBackup.vue:70
 msgid "Custom Directory"
 msgstr ""
 
@@ -1643,7 +1789,7 @@ msgstr ""
 msgid "Custom Headers"
 msgstr ""
 
-#: src/views/preference/tabs/NodeSettings.vue:19
+#: src/views/preference/tabs/NodeSettings.vue:43
 msgid "Customize the name of local node to be displayed in the environment indicator."
 msgstr ""
 
@@ -1655,7 +1801,7 @@ msgstr ""
 msgid "Daily Access Trends"
 msgstr ""
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:128
+#: src/views/backup/AutoBackup/AutoBackup.vue:157
 msgid "Daily at %{time}"
 msgstr ""
 
@@ -1687,7 +1833,7 @@ msgstr ""
 msgid "Day of Week"
 msgstr ""
 
-#: src/views/preference/tabs/CertSettings.vue:38
+#: src/views/preference/tabs/CertSettings.vue:41
 msgid "Days"
 msgstr ""
 
@@ -1695,7 +1841,7 @@ msgstr ""
 msgid "Db file not found"
 msgstr ""
 
-#: src/routes/modules/dns.ts:36
+#: src/routes/modules/dns.ts:44
 msgid "DDNS"
 msgstr ""
 
@@ -1719,7 +1865,8 @@ msgstr ""
 msgid "Decryption failed"
 msgstr ""
 
-#: src/views/dns/components/DNSRecordForm.vue:40
+#: src/views/dns/components/DNSRecordForm.vue:44
+#: src/views/dns/DNSGroupRecordManager.vue:759
 msgid "Default"
 msgstr ""
 
@@ -1740,8 +1887,10 @@ msgstr ""
 #: src/views/config/components/Delete.vue:65
 #: src/views/config/components/Delete.vue:97
 #: src/views/config/ConfigList.vue:199
-#: src/views/dns/components/DNSRecordTable.vue:134
-#: src/views/dns/DDNSManager.vue:363
+#: src/views/dns/components/DNSRecordTable.vue:325
+#: src/views/dns/components/DNSRecordTable.vue:376
+#: src/views/dns/DDNSManager.vue:360
+#: src/views/dns/DNSGroupList.vue:244
 #: src/views/site/site_list/SiteList.vue:221
 #: src/views/stream/StreamList.vue:110
 msgid "Delete"
@@ -1761,6 +1910,10 @@ msgstr ""
 
 #: src/views/config/components/Delete.vue:96
 msgid "Delete Confirmation"
+msgstr ""
+
+#: src/views/dns/DNSGroupList.vue:239
+msgid "Delete group"
 msgstr ""
 
 #: src/language/curd.ts:11
@@ -1817,12 +1970,16 @@ msgstr ""
 msgid "Delete stream: %{stream_name}"
 msgstr ""
 
+#: src/views/dns/DNSGroupList.vue:238
+msgid "Delete this local group? DNS records will not be changed."
+msgstr ""
+
 #: src/language/curd.ts:29
 #: src/views/config/components/Delete.vue:80
 msgid "Deleted successfully"
 msgstr ""
 
-#: src/views/preference/tabs/NodeSettings.vue:28
+#: src/views/preference/tabs/NodeSettings.vue:52
 msgid "Demo"
 msgstr ""
 
@@ -1842,6 +1999,7 @@ msgstr ""
 msgid "Descending"
 msgstr ""
 
+#: src/views/dns/DNSGroupList.vue:263
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:123
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:99
 msgid "Description"
@@ -1856,6 +2014,8 @@ msgstr ""
 msgid "Destination file: {0} already exists"
 msgstr ""
 
+#: src/views/dns/DNSGroupRecordManager.vue:164
+#: src/views/dns/DNSGroupRecordManager.vue:185
 #: src/views/notification/notificationColumns.tsx:66
 msgid "Details"
 msgstr ""
@@ -1884,6 +2044,10 @@ msgstr ""
 
 #: src/views/nginx_log/dashboard/components/DeviceStatsTable.vue:12
 msgid "Device Type"
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:471
+msgid "Different values"
 msgstr ""
 
 #: src/constants/errors/upgrader.ts:4
@@ -1946,7 +2110,7 @@ msgstr ""
 msgid "Disable Advanced Indexing"
 msgstr ""
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:101
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:117
 msgid "Disable auto-renewal failed for %{name}"
 msgstr ""
 
@@ -2000,13 +2164,17 @@ msgstr ""
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr ""
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:175
+#: src/views/preference/tabs/NodeSettings.vue:23
+msgid "Disable this compatibility switch after every controller has been upgraded to paired signatures."
+msgstr ""
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:204
 #: src/views/dns/DDNSManager.vue:320
-#: src/views/node/nodeColumns.tsx:60
-#: src/views/node/nodeColumns.tsx:78
+#: src/views/node/nodeColumns.tsx:68
+#: src/views/node/nodeColumns.tsx:86
 #: src/views/preference/tabs/HTTPSettings.vue:24
-#: src/views/preference/tabs/NodeSettings.vue:25
-#: src/views/preference/tabs/NodeSettings.vue:30
+#: src/views/preference/tabs/NodeSettings.vue:49
+#: src/views/preference/tabs/NodeSettings.vue:54
 #: src/views/site/components/SiteStatusSelect.vue:162
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:81
 #: src/views/site/site_list/columns.tsx:146
@@ -2033,7 +2201,7 @@ msgstr ""
 msgid "Discover Certificates"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:374
+#: src/views/dashboard/ServerAnalytic.vue:386
 msgid "Disk IO"
 msgstr ""
 
@@ -2046,8 +2214,8 @@ msgstr ""
 msgid "DNS Credentials"
 msgstr ""
 
-#: src/views/site/site_add/components/DNSRecordIntegration.vue:251
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:545
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:263
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:595
 msgid "DNS Domain"
 msgstr ""
 
@@ -2056,7 +2224,18 @@ msgstr ""
 msgid "DNS Domains"
 msgstr ""
 
-#: src/views/dns/components/DNSRecordTable.vue:115
+#: src/views/dns/DNSGroupRecordManager.vue:1218
+msgid "DNS group not found"
+msgstr ""
+
+#: src/views/dns/DNSGroupList.vue:172
+msgid "DNS Groups"
+msgstr ""
+
+#: src/views/dns/components/DNSRecordTable.vue:304
+#: src/views/dns/components/DNSRecordTable.vue:363
+#: src/views/dns/DNSGroupRecordManager.vue:1034
+#: src/views/dns/DNSGroupRecordManager.vue:640
 msgid "DNS Only"
 msgstr ""
 
@@ -2068,47 +2247,47 @@ msgstr ""
 msgid "DNS Provider Support"
 msgstr ""
 
-#: src/views/site/site_add/components/DNSRecordIntegration.vue:274
-#: src/views/site/site_add/SiteAdd.vue:174
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:568
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:286
+#: src/views/site/site_add/SiteAdd.vue:184
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:618
 msgid "DNS Record"
 msgstr ""
 
-#: src/views/site/site_add/SiteAdd.vue:149
+#: src/views/site/site_add/SiteAdd.vue:159
 msgid "DNS record created and linked successfully"
 msgstr ""
 
-#: src/views/site/site_add/components/DNSRecordIntegration.vue:213
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:340
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:225
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:402
 msgid "DNS record created successfully"
 msgstr ""
 
-#: src/views/site/site_add/SiteAdd.vue:257
+#: src/views/site/site_add/SiteAdd.vue:267
 msgid "DNS record has been linked: %{name}"
 msgstr ""
 
-#: src/views/site/site_add/components/DNSRecordIntegration.vue:245
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:257
 msgid "DNS Record Integration (Optional)"
 msgstr ""
 
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:288
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:353
 msgid "DNS record linked and server_name updated: %{name}"
 msgstr ""
 
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:489
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:539
 msgid "DNS Record Missing"
 msgstr ""
 
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:403
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:452
 msgid "DNS record recreated successfully"
 msgstr ""
 
-#: src/views/site/site_add/SiteAdd.vue:141
+#: src/views/site/site_add/SiteAdd.vue:151
 msgid "DNS record selected: %{name}"
 msgstr ""
 
-#: src/routes/modules/dns.ts:44
-#: src/views/dns/DNSRecordManager.vue:70
+#: src/routes/modules/dns.ts:52
+#: src/views/dns/DNSRecordManager.vue:76
 msgid "DNS Records"
 msgstr ""
 
@@ -2116,11 +2295,11 @@ msgstr ""
 msgid "DNS Resolver"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:228
+#: src/components/AutoCertForm/AutoCertForm.vue:181
 msgid "DNS01"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:261
+#: src/components/AutoCertForm/AutoCertForm.vue:214
 msgid "Do not enable this option unless you are sure that you need it."
 msgstr ""
 
@@ -2132,7 +2311,7 @@ msgstr ""
 msgid "Do you want to %{action} this stream?"
 msgstr ""
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:145
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:161
 msgid "Do you want to disable auto-cert renewal?"
 msgstr ""
 
@@ -2183,10 +2362,14 @@ msgstr ""
 #: src/views/certificate/components/DNSIssueCertificate.vue:183
 #: src/views/dns/DDNSManager.vue:149
 #: src/views/dns/DNSDomainList.vue:128
+#: src/views/dns/DNSGroupRecordManager.vue:152
+#: src/views/dns/DNSGroupRecordManager.vue:169
 msgid "Domain"
 msgstr ""
 
 #: src/views/certificate/components/SelfSignedCertFields.vue:36
+#: src/views/dns/DNSGroupList.vue:266
+#: src/views/dns/DNSGroupList.vue:30
 msgid "Domains"
 msgstr ""
 
@@ -2271,8 +2454,13 @@ msgstr ""
 msgid "EAB Key ID"
 msgstr ""
 
+#: src/views/dns/DNSGroupRecordManager.vue:1463
+msgid "Each setting is sent only to its matching target domain."
+msgstr ""
+
 #: src/language/curd.ts:8
-#: src/views/dns/components/DNSRecordTable.vue:127
+#: src/views/dns/components/DNSRecordTable.vue:318
+#: src/views/dns/components/DNSRecordTable.vue:369
 msgid "Edit"
 msgstr ""
 
@@ -2281,13 +2469,33 @@ msgstr ""
 msgid "Edit %{n}"
 msgstr ""
 
+#: src/views/dns/DNSGroupRecordManager.vue:1345
+msgid "Edit and sync"
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:1396
+msgid "Edit and synchronize records"
+msgstr ""
+
 #: src/routes/modules/config.ts:30
 #: src/views/config/components/ConfigLeftPanel.vue:242
 msgid "Edit Configuration"
 msgstr ""
 
-#: src/views/dns/DNSRecordManager.vue:248
+#: src/views/dns/DNSGroupList.vue:255
+msgid "Edit DNS group"
+msgstr ""
+
+#: src/views/dns/DNSGroupList.vue:235
+msgid "Edit group"
+msgstr ""
+
+#: src/views/dns/DNSRecordManager.vue:221
 msgid "Edit Record"
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:1409
+msgid "Edit scope"
 msgstr ""
 
 #: src/routes/modules/sites.ts:34
@@ -2296,6 +2504,10 @@ msgstr ""
 
 #: src/routes/modules/streams.ts:20
 msgid "Edit Stream"
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:1235
+msgid "Edit the group to remove unavailable domain IDs: %{ids}"
 msgstr ""
 
 #: src/views/certificate/ACMEUser.vue:27
@@ -2333,15 +2545,15 @@ msgstr ""
 msgid "Enable Advanced Log Indexing"
 msgstr ""
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:94
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:110
 msgid "Enable auto-renewal failed for %{name}"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:151
+#: src/views/preference/tabs/OpenAISettings.vue:157
 msgid "Enable Code Completion"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:277
+#: src/components/AutoCertForm/AutoCertForm.vue:230
 msgid "Enable Common Name"
 msgstr ""
 
@@ -2349,7 +2561,7 @@ msgstr ""
 msgid "Enable compression for content transfer"
 msgstr ""
 
-#: src/views/dns/DDNSManager.vue:381
+#: src/views/dns/DDNSManager.vue:378
 msgid "Enable DDNS"
 msgstr ""
 
@@ -2373,9 +2585,9 @@ msgstr ""
 msgid "Enable Indexing"
 msgstr ""
 
-#: src/views/site/site_add/components/DNSRecordIntegration.vue:353
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:522
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:647
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:367
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:571
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:699
 msgid "Enable Proxy (Cloudflare)"
 msgstr ""
 
@@ -2437,7 +2649,7 @@ msgstr ""
 msgid "Enable stub_status module"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:280
+#: src/components/AutoCertForm/AutoCertForm.vue:233
 msgid "Enable the certificate Common Name field for private CAs that still require it."
 msgstr ""
 
@@ -2449,15 +2661,15 @@ msgstr ""
 msgid "Enable TOTP"
 msgstr ""
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:174
+#: src/views/backup/AutoBackup/AutoBackup.vue:203
 #: src/views/dns/DDNSManager.vue:320
-#: src/views/node/nodeColumns.tsx:69
-#: src/views/node/nodeColumns.tsx:75
+#: src/views/node/nodeColumns.tsx:77
+#: src/views/node/nodeColumns.tsx:83
 #: src/views/preference/components/ExternalNotify/columns.tsx:47
 #: src/views/preference/tabs/HTTPSettings.vue:24
 #: src/views/preference/tabs/LogrotateSettings.vue:20
-#: src/views/preference/tabs/NodeSettings.vue:25
-#: src/views/preference/tabs/NodeSettings.vue:30
+#: src/views/preference/tabs/NodeSettings.vue:49
+#: src/views/preference/tabs/NodeSettings.vue:54
 #: src/views/site/components/SiteStatusSelect.vue:159
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:75
 #: src/views/site/site_list/columns.tsx:142
@@ -2469,7 +2681,7 @@ msgid "Enabled"
 msgstr ""
 
 #: src/views/site/components/SiteStatusSelect.vue:54
-#: src/views/site/site_add/SiteAdd.vue:60
+#: src/views/site/site_add/SiteAdd.vue:70
 #: src/views/stream/components/StreamStatusSelect.vue:27
 msgid "Enabled successfully"
 msgstr ""
@@ -2498,6 +2710,10 @@ msgstr ""
 msgid "End Date"
 msgstr ""
 
+#: src/views/dns/DNSGroupList.vue:100
+msgid "Enter a group name"
+msgstr ""
+
 #: src/views/certificate/components/SelfSignedCertFields.vue:33
 msgid "Enter certificate name"
 msgstr ""
@@ -2511,7 +2727,7 @@ msgstr ""
 msgid "Enter IP address"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:183
+#: src/components/AutoCertForm/AutoCertForm.vue:136
 msgid "Enter server IP address (e.g., 203.0.113.1 or 2001:db8::1)"
 msgstr ""
 
@@ -2535,7 +2751,7 @@ msgstr ""
 msgid "Environment variables cleaned"
 msgstr ""
 
-#: src/components/InspectConfig/InspectConfig.vue:30
+#: src/components/InspectConfig/InspectConfig.vue:38
 #: src/constants/index.ts:24
 #: src/views/nginx_log/NginxLogList.vue:250
 #: src/views/notification/notificationColumns.tsx:14
@@ -2600,6 +2816,10 @@ msgstr ""
 msgid "Execute on every month on day %{day} at %{time}"
 msgstr ""
 
+#: src/views/dns/DNSGroupRecordManager.vue:1462
+msgid "Existing values are preserved per name. Changing a field overrides it for every selected name on that domain; new records use the shown defaults."
+msgstr ""
+
 #: src/language/curd.ts:72
 msgid "Expand"
 msgstr ""
@@ -2623,6 +2843,10 @@ msgstr ""
 
 #: src/components/CertInfo/CertInfo.vue:38
 msgid "Expired At: %{date}"
+msgstr ""
+
+#: src/views/node/Node.vue:249
+msgid "Expires at: %{time}"
 msgstr ""
 
 #: src/language/curd.ts:22
@@ -2654,13 +2878,14 @@ msgstr ""
 msgid "External Notify"
 msgstr ""
 
-#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:89
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:90
 msgid "Fail to obtain certificate"
 msgstr ""
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:196
-#: src/views/backup/AutoBackup/AutoBackup.vue:221
+#: src/views/backup/AutoBackup/AutoBackup.vue:225
+#: src/views/backup/AutoBackup/AutoBackup.vue:250
 #: src/views/certificate/CertificateList/certColumns.tsx:87
+#: src/views/dns/DNSGroupRecordManager.vue:1184
 msgid "Failed"
 msgstr ""
 
@@ -2737,8 +2962,8 @@ msgstr ""
 msgid "Failed to create directory: {0}"
 msgstr ""
 
-#: src/views/site/site_add/components/DNSRecordIntegration.vue:222
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:360
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:234
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:419
 msgid "Failed to create DNS record"
 msgstr ""
 
@@ -2958,8 +3183,8 @@ msgstr ""
 msgid "Failed to inspect current container: {0}"
 msgstr ""
 
-#: src/views/site/site_add/components/DNSRecordIntegration.vue:137
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:166
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:139
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:192
 msgid "Failed to load DNS records"
 msgstr ""
 
@@ -3059,7 +3284,7 @@ msgstr ""
 msgid "Failed to rebuild index"
 msgstr ""
 
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:429
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:475
 msgid "Failed to recreate DNS record"
 msgstr ""
 
@@ -3226,7 +3451,7 @@ msgid "Filter log content"
 msgstr ""
 
 #: src/language/constants.ts:19
-#: src/views/site/site_add/SiteAdd.vue:176
+#: src/views/site/site_add/SiteAdd.vue:186
 msgid "Finished"
 msgstr ""
 
@@ -3254,8 +3479,8 @@ msgstr ""
 msgid "Follow the instructions in the dialog to complete the passkey registration process."
 msgstr ""
 
-#: src/views/preference/tabs/NodeSettings.vue:42
-#: src/views/preference/tabs/NodeSettings.vue:54
+#: src/views/preference/tabs/NodeSettings.vue:66
+#: src/views/preference/tabs/NodeSettings.vue:78
 msgid "For Chinese user"
 msgstr ""
 
@@ -3271,11 +3496,11 @@ msgstr ""
 msgid "For error logs, please use the Raw Log Viewer for better viewing experience."
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:140
+#: src/components/AutoCertForm/AutoCertForm.vue:94
 msgid "For IP-based certificate configurations, only HTTP-01 challenge method is supported. DNS-01 challenge is not compatible with IP-based certificates."
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:188
+#: src/components/AutoCertForm/AutoCertForm.vue:141
 msgid "For IP-based certificates, please specify the server IP address that will be included in the certificate."
 msgstr ""
 
@@ -3344,6 +3569,10 @@ msgstr ""
 msgid "Generate"
 msgstr ""
 
+#: src/views/node/Node.vue:231
+msgid "Generate a one-time pairing code on the child node, then enter it here. Remote pairing requires HTTPS."
+msgstr ""
+
 #: src/components/TwoFA/use2FAModal.ts:48
 msgid "Generate new recovery codes"
 msgstr ""
@@ -3351,6 +3580,10 @@ msgstr ""
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:142
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:165
 msgid "Generate New Recovery Codes"
+msgstr ""
+
+#: src/views/node/Node.vue:255
+msgid "Generate Pairing Code"
 msgstr ""
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:165
@@ -3456,6 +3689,50 @@ msgstr ""
 msgid "Gotify"
 msgstr ""
 
+#: src/views/dns/DNSGroupList.vue:27
+msgid "Group"
+msgstr ""
+
+#: src/views/dns/DNSGroupList.vue:128
+msgid "Group created"
+msgstr ""
+
+#: src/views/dns/DNSGroupList.vue:135
+msgid "Group deleted"
+msgstr ""
+
+#: src/views/dns/DNSGroupList.vue:260
+msgid "Group name"
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:1097
+msgid "Group record operation completed"
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:1585
+msgid "Group record results"
+msgstr ""
+
+#: src/routes/modules/dns.ts:62
+msgid "Group Records"
+msgstr ""
+
+#: src/views/dns/DNSGroupList.vue:124
+msgid "Group updated"
+msgstr ""
+
+#: src/routes/modules/dns.ts:36
+msgid "Groups"
+msgstr ""
+
+#: src/views/dns/DNSGroupList.vue:167
+msgid "Groups are scoped to the current user and selected node. Record operations run once and are not continuous synchronization."
+msgstr ""
+
+#: src/views/dns/DNSGroupList.vue:166
+msgid "Groups are stored in this browser"
+msgstr ""
+
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:600
 msgid "gRPC health check requires server to implement gRPC Health Check service (grpc.health.v1.Health)."
 msgstr ""
@@ -3559,7 +3836,7 @@ msgstr ""
 msgid "HTTP Method"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:222
+#: src/components/AutoCertForm/AutoCertForm.vue:175
 msgid "HTTP01"
 msgstr ""
 
@@ -3571,7 +3848,15 @@ msgstr ""
 msgid "https://..."
 msgstr ""
 
-#: src/views/preference/tabs/NodeSettings.vue:34
+#: src/views/dns/DNSGroupRecordManager.vue:957
+msgid "Huawei Cloud does not support changing the resolution line of an existing record"
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:1505
+msgid "Huawei Cloud resolution lines cannot be changed after record creation."
+msgstr ""
+
+#: src/views/preference/tabs/NodeSettings.vue:58
 msgid "ICP Number"
 msgstr ""
 
@@ -3579,7 +3864,7 @@ msgstr ""
 msgid "If the number of login failed attempts from a ip reach the max attempts in ban threshold minutes, the ip will be banned for a period of time."
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:288
+#: src/components/AutoCertForm/AutoCertForm.vue:241
 msgid "If you want to automatically revoke the old certificate, please enable this option."
 msgstr ""
 
@@ -3591,7 +3876,7 @@ msgstr ""
 msgid "If your browser supports WebAuthn Passkey, a dialog box will appear."
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:271
+#: src/components/AutoCertForm/AutoCertForm.vue:224
 msgid "If your domain has CNAME records and you cannot obtain certificates, you need to enable this option."
 msgstr ""
 
@@ -3618,6 +3903,10 @@ msgstr ""
 
 #: src/views/dashboard/components/ProcessDistributionCard.vue:54
 msgid "Includes master process, worker processes, cache processes, and other Nginx processes"
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:474
+msgid "Incomplete"
 msgstr ""
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:252
@@ -3747,12 +4036,16 @@ msgstr ""
 msgid "Installation is not allowed after 10 minutes of system startup, please restart the Nginx UI."
 msgstr ""
 
+#: src/views/preference/tabs/NodeSettings.vue:14
+msgid "Instance ID"
+msgstr ""
+
 #: src/views/dns/DDNSManager.vue:168
 #: src/views/preference/tabs/LogrotateSettings.vue:26
 msgid "Interval"
 msgstr ""
 
-#: src/views/dns/DDNSManager.vue:426
+#: src/views/dns/DDNSManager.vue:423
 msgid "Interval (seconds)"
 msgstr ""
 
@@ -3787,6 +4080,10 @@ msgstr ""
 #: src/views/certificate/components/CertificateDownload.vue:54
 #: src/views/certificate/components/CertificateFileUpload.vue:88
 msgid "Invalid certificate format"
+msgstr ""
+
+#: src/constants/errors/cert.ts:46
+msgid "Invalid certificate identifier: {0}"
 msgstr ""
 
 #: src/constants/errors/user.ts:14
@@ -3893,21 +4190,25 @@ msgstr ""
 msgid "IP Address"
 msgstr ""
 
-#: src/views/site/site_add/components/DNSRecordIntegration.vue:335
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:504
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:629
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:349
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:553
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:681
 msgid "IP Address / Target"
+msgstr ""
+
+#: src/constants/errors/cert.ts:47
+msgid "IP address certificates require the HTTP-01 challenge"
 msgstr ""
 
 #: src/views/certificate/components/SelfSignedCertFields.vue:43
 msgid "IP Addresses"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:123
+#: src/components/AutoCertForm/AutoCertForm.vue:77
 msgid "IP Certificate Notice"
 msgstr ""
 
-#: src/views/dns/DDNSManager.vue:384
+#: src/views/dns/DDNSManager.vue:381
 msgid "IP Version"
 msgstr ""
 
@@ -3971,7 +4272,7 @@ msgstr ""
 msgid "Keepalive Timeout"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:236
+#: src/components/AutoCertForm/AutoCertForm.vue:189
 #: src/views/certificate/CertificateList/certColumns.tsx:65
 #: src/views/certificate/components/SelfSignedCertFields.vue:50
 msgid "Key Type"
@@ -4027,11 +4328,11 @@ msgstr ""
 msgid "Last 90 days"
 msgstr ""
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:190
+#: src/views/backup/AutoBackup/AutoBackup.vue:219
 msgid "Last Backup Status"
 msgstr ""
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:183
+#: src/views/backup/AutoBackup/AutoBackup.vue:212
 msgid "Last Backup Time"
 msgstr ""
 
@@ -4079,7 +4380,7 @@ msgstr ""
 msgid "Leave blank for no change"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:36
+#: src/views/preference/tabs/OpenAISettings.vue:40
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr ""
 
@@ -4096,11 +4397,11 @@ msgstr ""
 msgid "Leave blank if you don't need this."
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:34
+#: src/views/preference/tabs/OpenAISettings.vue:38
 msgid "Leave blank to use the Atlas Cloud endpoint: https://api.atlascloud.ai/v1"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:31
+#: src/views/preference/tabs/OpenAISettings.vue:35
 msgid "Leave blank to use the MiniMax global OpenAI-compatible endpoint: https://api.minimax.io/v1"
 msgstr ""
 
@@ -4120,7 +4421,11 @@ msgstr ""
 msgid "Legacy recovery code not allowed since totp is not enabled"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:268
+#: src/views/node/nodeColumns.tsx:42
+msgid "Legacy secret"
+msgstr ""
+
+#: src/components/AutoCertForm/AutoCertForm.vue:221
 msgid "Lego disable CNAME Support"
 msgstr ""
 
@@ -4143,15 +4448,15 @@ msgstr ""
 msgid "Link"
 msgstr ""
 
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:456
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:502
 msgid "Link this site to a DNS record. The server_name will be used for the DNS record name."
 msgstr ""
 
-#: src/views/site/site_add/components/DNSRecordIntegration.vue:247
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:259
 msgid "Link this site to a DNS record. The server_name will be used for the DNS record name. You can skip this step if DNS is already configured."
 msgstr ""
 
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:466
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:510
 msgid "Linked DNS Record"
 msgstr ""
 
@@ -4167,15 +4472,15 @@ msgstr ""
 msgid "LLM"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:188
+#: src/views/dashboard/ServerAnalytic.vue:200
 msgid "Load Average:"
 msgstr ""
 
-#: src/views/node/Node.vue:137
+#: src/views/node/Node.vue:184
 msgid "Load from settings"
 msgstr ""
 
-#: src/views/node/Node.vue:67
+#: src/views/node/Node.vue:73
 msgid "Load successfully"
 msgstr ""
 
@@ -4216,8 +4521,8 @@ msgstr ""
 #: src/components/NodeSelector/NodeSelector.vue:62
 #: src/constants/index.ts:43
 #: src/constants/index.ts:49
-#: src/views/backup/AutoBackup/AutoBackup.vue:74
-#: src/views/backup/AutoBackup/AutoBackup.vue:83
+#: src/views/backup/AutoBackup/AutoBackup.vue:103
+#: src/views/backup/AutoBackup/AutoBackup.vue:112
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:48
 #: src/views/preference/tabs/NginxSettings.vue:64
 msgid "Local"
@@ -4342,7 +4647,7 @@ msgstr ""
 msgid "Make certificate dir error: {0}"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:164
+#: src/components/AutoCertForm/AutoCertForm.vue:117
 msgid "Make sure you have configured a reverse proxy for .well-known directory to HTTPChallengePort before obtaining the certificate."
 msgstr ""
 
@@ -4351,6 +4656,11 @@ msgstr ""
 #: src/views/config/components/ConfigLeftPanel.vue:164
 #: src/views/config/ConfigList.vue:74
 msgid "Manage Configs"
+msgstr ""
+
+#: src/views/dns/components/DNSRecordTable.vue:314
+#: src/views/dns/DNSGroupList.vue:232
+msgid "Manage records"
 msgstr ""
 
 #: src/views/dns/DNSDomainList.vue:267
@@ -4455,13 +4765,13 @@ msgstr ""
 msgid "Maximum worker process number:"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:228
-#: src/views/dashboard/ServerAnalytic.vue:229
+#: src/views/dashboard/ServerAnalytic.vue:240
+#: src/views/dashboard/ServerAnalytic.vue:241
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:53
 msgid "Memory"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:217
+#: src/views/dashboard/ServerAnalytic.vue:229
 msgid "Memory and Storage"
 msgstr ""
 
@@ -4482,7 +4792,7 @@ msgstr ""
 msgid "Method Name"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:44
+#: src/views/preference/tabs/OpenAISettings.vue:48
 msgid "MiniMax is OpenAI-compatible. Use https://api.minimax.io/v1 for global service or https://api.minimaxi.com/v1 for China service. For Anthropic-compatible clients, use https://api.minimax.io/anthropic or https://api.minimaxi.com/anthropic."
 msgstr ""
 
@@ -4514,7 +4824,18 @@ msgstr ""
 msgid "Mirror"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:91
+#: src/views/dns/DNSGroupRecordManager.vue:472
+msgid "Missing records"
+msgstr ""
+
+#: src/views/dns/components/DNSRecordTable.vue:260
+#: src/views/dns/components/DNSRecordTable.vue:273
+#: src/views/dns/components/DNSRecordTable.vue:292
+#: src/views/dns/components/DNSRecordTable.vue:301
+msgid "Mixed"
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:95
 msgid "Model"
 msgstr ""
 
@@ -4544,7 +4865,7 @@ msgstr ""
 msgid "Modify Certificate"
 msgstr ""
 
-#: src/views/site/site_add/SiteAdd.vue:264
+#: src/views/site/site_add/SiteAdd.vue:274
 msgid "Modify Config"
 msgstr ""
 
@@ -4568,7 +4889,7 @@ msgstr ""
 msgid "Monthly"
 msgstr ""
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:138
+#: src/views/backup/AutoBackup/AutoBackup.vue:167
 msgid "Monthly on day %{day} at %{time}"
 msgstr ""
 
@@ -4588,7 +4909,16 @@ msgstr ""
 msgid "Multi-line Directive"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:196
+#: src/views/dns/DNSGroupRecordManager.vue:473
+msgid "Multiple matches"
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:1151
+#: src/views/dns/DNSGroupRecordManager.vue:935
+msgid "Multiple records have the same name and type"
+msgstr ""
+
+#: src/components/AutoCertForm/AutoCertForm.vue:149
 msgid "Must be a public IP address accessible from the internet"
 msgstr ""
 
@@ -4598,7 +4928,7 @@ msgid "N/A"
 msgstr ""
 
 #: src/components/NgxConfigEditor/NgxUpstream.vue:130
-#: src/views/backup/AutoBackup/AutoBackup.vue:11
+#: src/views/backup/AutoBackup/AutoBackup.vue:40
 #: src/views/certificate/ACMEUser.vue:14
 #: src/views/certificate/CertificateList/certColumns.tsx:9
 #: src/views/certificate/CertificateList/Certificate.vue:40
@@ -4610,9 +4940,13 @@ msgstr ""
 #: src/views/config/components/Delete.vue:123
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:17
-#: src/views/dns/components/DNSRecordForm.vue:87
-#: src/views/dns/components/DNSRecordTable.vue:20
+#: src/views/dns/components/DNSRecordForm.vue:91
+#: src/views/dns/components/DNSRecordTable.vue:337
+#: src/views/dns/components/DNSRecordTable.vue:40
 #: src/views/dns/DNSCredential.vue:17
+#: src/views/dns/DNSGroupRecordManager.vue:1357
+#: src/views/dns/DNSGroupRecordManager.vue:156
+#: src/views/dns/DNSGroupRecordManager.vue:173
 #: src/views/namespace/columns.ts:9
 #: src/views/nginx_log/NginxLogList.vue:156
 #: src/views/node/nodeColumns.tsx:8
@@ -4628,10 +4962,18 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
+#: src/views/dns/DNSGroupRecordManager.vue:1352
+msgid "Name by domain"
+msgstr ""
+
 #: src/views/config/configColumns.tsx:10
 #: src/views/site/site_list/columns.tsx:22
 #: src/views/stream/columns.tsx:18
 msgid "Name or content"
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:133
+msgid "Names"
 msgstr ""
 
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:42
@@ -4654,11 +4996,11 @@ msgstr ""
 msgid "Need to enable the stub_status module"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:335
+#: src/views/dashboard/ServerAnalytic.vue:347
 msgid "Network"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:277
+#: src/views/dashboard/ServerAnalytic.vue:289
 msgid "Network Statistics"
 msgstr ""
 
@@ -4700,9 +5042,9 @@ msgstr ""
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:223
 #: src/views/install/components/InstallView.vue:212
-#: src/views/site/site_add/SiteAdd.vue:237
-#: src/views/site/site_add/SiteAdd.vue:244
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:229
+#: src/views/site/site_add/SiteAdd.vue:247
+#: src/views/site/site_add/SiteAdd.vue:254
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:260
 msgid "Next"
 msgstr ""
 
@@ -4723,8 +5065,8 @@ msgstr ""
 msgid "Nginx access log path exists"
 msgstr ""
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:28
-#: src/views/backup/AutoBackup/AutoBackup.vue:40
+#: src/views/backup/AutoBackup/AutoBackup.vue:57
+#: src/views/backup/AutoBackup/AutoBackup.vue:69
 msgid "Nginx and Nginx UI Config"
 msgstr ""
 
@@ -4773,6 +5115,10 @@ msgstr ""
 msgid "Nginx Configuration Path"
 msgstr ""
 
+#: src/components/InspectConfig/InspectConfig.vue:29
+msgid "Nginx configuration test failed"
+msgstr ""
+
 #: src/views/preference/tabs/NginxSettings.vue:28
 msgid "Nginx Configurations Directory"
 msgstr ""
@@ -4802,7 +5148,7 @@ msgstr ""
 msgid "Nginx error: {0}"
 msgstr ""
 
-#: src/components/InspectConfig/InspectConfig.vue:43
+#: src/components/InspectConfig/InspectConfig.vue:64
 msgid "Nginx failed to validate the configuration."
 msgstr ""
 
@@ -4862,7 +5208,7 @@ msgstr ""
 msgid "Nginx reload failed: {0}"
 msgstr ""
 
-#: src/views/node/Node.vue:88
+#: src/views/node/Node.vue:94
 msgid "Nginx reload operations have been dispatched to remote nodes"
 msgstr ""
 
@@ -4870,7 +5216,7 @@ msgstr ""
 msgid "Nginx reloaded successfully"
 msgstr ""
 
-#: src/components/InspectConfig/InspectConfig.vue:41
+#: src/components/InspectConfig/InspectConfig.vue:62
 msgid "Nginx reported a configuration syntax error."
 msgstr ""
 
@@ -4878,7 +5224,7 @@ msgstr ""
 msgid "Nginx Restart Command"
 msgstr ""
 
-#: src/views/node/Node.vue:102
+#: src/views/node/Node.vue:108
 msgid "Nginx restart operations have been dispatched to remote nodes"
 msgstr ""
 
@@ -4945,7 +5291,7 @@ msgstr ""
 #: src/language/curd.ts:40
 #: src/views/notification/Notification.vue:38
 #: src/views/preference/tabs/AuthSettings.vue:128
-#: src/views/preference/tabs/CertSettings.vue:79
+#: src/views/preference/tabs/CertSettings.vue:82
 #: src/views/site/site_list/SiteList.vue:210
 #: src/views/stream/StreamList.vue:99
 msgid "No"
@@ -4964,6 +5310,10 @@ msgstr ""
 msgid "No certificate or private key candidates found in {0}"
 msgstr ""
 
+#: src/views/dns/DNSGroupRecordManager.vue:1010
+msgid "No change"
+msgstr ""
+
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:227
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:263
 msgid "No China geographic data available"
@@ -4980,9 +5330,13 @@ msgstr ""
 msgid "No Data"
 msgstr ""
 
-#: src/views/site/site_add/components/DNSRecordIntegration.vue:372
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:666
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:386
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:718
 msgid "No DNS domains available"
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:1295
+msgid "No DNS records were found in this group"
 msgstr ""
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:827
@@ -5014,7 +5368,7 @@ msgstr ""
 msgid "No sites found"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:136
+#: src/components/AutoCertForm/AutoCertForm.vue:90
 msgid "No specific IP address found in server_name configuration. Please specify the server IP address below for the certificate."
 msgstr ""
 
@@ -5046,7 +5400,15 @@ msgstr ""
 msgid "Node analytics failed: {0}"
 msgstr ""
 
-#: src/views/preference/tabs/NodeSettings.vue:15
+#: src/views/node/Node.vue:127
+msgid "Node authentication upgraded successfully"
+msgstr ""
+
+#: src/views/node/Node.vue:141
+msgid "Node credential rotated successfully"
+msgstr ""
+
+#: src/views/preference/tabs/NodeSettings.vue:39
 msgid "Node name"
 msgstr ""
 
@@ -5060,7 +5422,7 @@ msgstr ""
 
 #: src/routes/modules/nodes.ts:11
 #: src/views/dashboard/Nodes.vue:89
-#: src/views/node/Node.vue:130
+#: src/views/node/Node.vue:177
 msgid "Nodes"
 msgstr ""
 
@@ -5090,7 +5452,7 @@ msgstr ""
 msgid "Not run yet"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:230
+#: src/components/AutoCertForm/AutoCertForm.vue:183
 msgid "Not supported for IP certificates"
 msgstr ""
 
@@ -5098,7 +5460,7 @@ msgstr ""
 msgid "Not Valid Before: %{date}"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:150
+#: src/components/AutoCertForm/AutoCertForm.vue:104
 #: src/views/dns/DNSCredential.vue:89
 msgid "Note"
 msgstr ""
@@ -5157,7 +5519,7 @@ msgstr ""
 msgid "Obtain cert error: {0}"
 msgstr ""
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:194
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:225
 msgid "Obtain certificate"
 msgstr ""
 
@@ -5165,11 +5527,11 @@ msgstr ""
 msgid "Obtaining certificate"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:258
+#: src/components/AutoCertForm/AutoCertForm.vue:211
 msgid "OCSP Must Staple"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:262
+#: src/components/AutoCertForm/AutoCertForm.vue:215
 msgid "OCSP Must Staple may cause errors for some users on first access using Firefox."
 msgstr ""
 
@@ -5187,7 +5549,7 @@ msgstr ""
 #: src/components/NodeSelector/NodeSelector.vue:85
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
 #: src/views/dashboard/Nodes.vue:117
-#: src/views/node/nodeColumns.tsx:55
+#: src/views/node/nodeColumns.tsx:63
 #: src/views/upstream/SocketList.vue:45
 msgid "Offline"
 msgstr ""
@@ -5209,7 +5571,7 @@ msgstr ""
 #: src/views/notification/Notification.vue:39
 #: src/views/site/components/SiteStatusSelect.vue:123
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:52
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:148
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:164
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:20
 #: src/views/site/site_list/SiteList.vue:211
 #: src/views/stream/components/StreamStatusSelect.vue:61
@@ -5222,13 +5584,21 @@ msgstr ""
 msgid "On"
 msgstr ""
 
+#: src/views/node/Node.vue:235
+msgid "One-time pairing code"
+msgstr ""
+
+#: src/views/node/Node.vue:242
+msgid "One-time Pairing Code"
+msgstr ""
+
 #: src/components/NamespaceTabs/NamespaceTabs.vue:164
 #: src/components/NodeCard/NodeCard.vue:51
 #: src/components/NodeSelector/NodeSelector.vue:65
 #: src/components/NodeSelector/NodeSelector.vue:79
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
 #: src/views/dashboard/Nodes.vue:110
-#: src/views/node/nodeColumns.tsx:51
+#: src/views/node/nodeColumns.tsx:59
 #: src/views/upstream/SocketList.vue:45
 msgid "Online"
 msgstr ""
@@ -5262,7 +5632,8 @@ msgstr ""
 msgid "Operating System Statistics"
 msgstr ""
 
-#: src/views/dns/components/DNSRecordForm.vue:126
+#: src/views/dns/components/DNSRecordForm.vue:131
+#: src/views/dns/DNSGroupRecordManager.vue:1519
 msgid "Optional comment for this DNS record"
 msgstr ""
 
@@ -5294,7 +5665,7 @@ msgstr ""
 msgid "OS"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:194
+#: src/views/dashboard/ServerAnalytic.vue:206
 msgid "OS:"
 msgstr ""
 
@@ -5316,6 +5687,10 @@ msgstr ""
 msgid "Otp or recovery code empty"
 msgstr ""
 
+#: src/views/dns/DNSGroupRecordManager.vue:1481
+msgid "Override selected names"
+msgstr ""
+
 #: src/views/config/components/ConfigRightPanel/Deploy.vue:18
 msgid "Overwrite"
 msgstr ""
@@ -5326,6 +5701,10 @@ msgstr ""
 
 #: src/views/preference/tabs/AppSettings.vue:14
 msgid "Page Size"
+msgstr ""
+
+#: src/views/node/nodeColumns.tsx:42
+msgid "Paired signature"
 msgstr ""
 
 #: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:77
@@ -5406,8 +5785,8 @@ msgstr ""
 msgid "Peak Hour"
 msgstr ""
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:194
-#: src/views/backup/AutoBackup/AutoBackup.vue:219
+#: src/views/backup/AutoBackup/AutoBackup.vue:223
+#: src/views/backup/AutoBackup/AutoBackup.vue:248
 msgid "Pending"
 msgstr ""
 
@@ -5459,8 +5838,8 @@ msgstr ""
 msgid "Plain text is empty"
 msgstr ""
 
-#: src/views/site/site_add/components/DNSRecordIntegration.vue:373
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:667
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:387
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:719
 msgid "Please add a DNS domain first in the DNS management section."
 msgstr ""
 
@@ -5468,7 +5847,7 @@ msgstr ""
 msgid "Please complete the system check first"
 msgstr ""
 
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:446
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:492
 msgid "Please configure server_name directive in the configuration before linking DNS records."
 msgstr ""
 
@@ -5494,11 +5873,7 @@ msgstr ""
 msgid "Please enter a name for the passkey you wish to create and click the OK button below."
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:98
-msgid "Please enter a valid IPv4 address (0-255 per octet)"
-msgstr ""
-
-#: src/components/AutoCertForm/AutoCertForm.vue:109
+#: src/components/AutoCertForm/AutoCertForm.vue:54
 msgid "Please enter a valid IPv4 or IPv6 address"
 msgstr ""
 
@@ -5533,7 +5908,7 @@ msgstr ""
 msgid "Please enter the security token received during backup"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:80
+#: src/components/AutoCertForm/AutoCertForm.vue:49
 msgid "Please enter the server IP address"
 msgstr ""
 
@@ -5545,8 +5920,8 @@ msgstr ""
 msgid "Please fill all fields correctly"
 msgstr ""
 
-#: src/views/site/site_add/components/DNSRecordIntegration.vue:193
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:320
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:205
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:382
 msgid "Please fill in all required fields"
 msgstr ""
 
@@ -5558,7 +5933,7 @@ msgstr ""
 msgid "Please fill in the API authentication credentials provided by your DNS provider."
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:168
+#: src/components/AutoCertForm/AutoCertForm.vue:121
 msgid "Please first add credentials in Certification > DNS Credentials, and then select one of the credentialsbelow to request the API of the DNS provider."
 msgstr ""
 
@@ -5619,7 +5994,7 @@ msgstr ""
 msgid "Please select a backup file"
 msgstr ""
 
-#: src/views/site/site_edit/components/SiteEditor/store.ts:144
+#: src/views/site/site_edit/components/SiteEditor/store.ts:145
 msgid "Please select a certificate before saving the TLS server configuration."
 msgstr ""
 
@@ -5643,17 +6018,17 @@ msgstr ""
 msgid "Please select at least one item"
 msgstr ""
 
-#: src/views/node/Node.vue:200
-#: src/views/node/Node.vue:82
+#: src/views/node/Node.vue:294
+#: src/views/node/Node.vue:88
 msgid "Please select at least one node to reload Nginx"
 msgstr ""
 
-#: src/views/node/Node.vue:221
-#: src/views/node/Node.vue:96
+#: src/views/node/Node.vue:102
+#: src/views/node/Node.vue:315
 msgid "Please select at least one node to restart Nginx"
 msgstr ""
 
-#: src/views/node/Node.vue:179
+#: src/views/node/Node.vue:273
 msgid "Please select at least one node to upgrade"
 msgstr ""
 
@@ -5682,7 +6057,7 @@ msgstr ""
 msgid "Port"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:199
+#: src/components/AutoCertForm/AutoCertForm.vue:152
 msgid "Port 80 must be open for HTTP-01 challenge validation"
 msgstr ""
 
@@ -5712,16 +6087,25 @@ msgstr ""
 msgid "Preparing lego configurations"
 msgstr ""
 
-#: src/views/dns/components/DNSRecordForm.vue:114
-#: src/views/dns/components/DNSRecordTable.vue:36
+#: src/views/dns/DNSGroupRecordManager.vue:1482
+msgid "Preserve existing"
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:1534
+msgid "Preview changes"
+msgstr ""
+
+#: src/views/dns/components/DNSRecordForm.vue:119
+#: src/views/dns/components/DNSRecordTable.vue:56
+#: src/views/dns/DNSGroupRecordManager.vue:576
 msgid "Priority"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:206
+#: src/components/AutoCertForm/AutoCertForm.vue:159
 msgid "Private CA:"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:202
+#: src/components/AutoCertForm/AutoCertForm.vue:155
 msgid "Private IPs (192.168.x.x, 10.x.x.x, 172.16-31.x.x) will fail"
 msgstr ""
 
@@ -5781,7 +6165,7 @@ msgstr ""
 #: src/views/dns/DDNSManager.vue:159
 #: src/views/dns/DNSCredential.vue:26
 #: src/views/dns/DNSDomainList.vue:229
-#: src/views/preference/tabs/OpenAISettings.vue:77
+#: src/views/preference/tabs/OpenAISettings.vue:81
 msgid "Provider"
 msgstr ""
 
@@ -5789,16 +6173,25 @@ msgstr ""
 msgid "Provider not found: {0}"
 msgstr ""
 
+#: src/views/dns/DNSGroupRecordManager.vue:1458
+msgid "Provider-specific settings"
+msgstr ""
+
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:59
 msgid "Province / Region"
 msgstr ""
 
-#: src/views/dns/components/DNSRecordForm.vue:120
-#: src/views/dns/components/DNSRecordTable.vue:115
-#: src/views/dns/components/DNSRecordTable.vue:79
-#: src/views/site/site_add/components/DNSRecordIntegration.vue:296
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:475
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:590
+#: src/views/dns/components/DNSRecordForm.vue:125
+#: src/views/dns/components/DNSRecordTable.vue:304
+#: src/views/dns/components/DNSRecordTable.vue:346
+#: src/views/dns/components/DNSRecordTable.vue:363
+#: src/views/dns/components/DNSRecordTable.vue:97
+#: src/views/dns/DNSGroupRecordManager.vue:1034
+#: src/views/dns/DNSGroupRecordManager.vue:1509
+#: src/views/dns/DNSGroupRecordManager.vue:640
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:310
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:527
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:642
 msgid "Proxied"
 msgstr ""
 
@@ -5815,11 +6208,11 @@ msgstr ""
 msgid "Proxy Targets"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:192
+#: src/components/AutoCertForm/AutoCertForm.vue:145
 msgid "Public CA Requirements:"
 msgstr ""
 
-#: src/views/preference/tabs/NodeSettings.vue:46
+#: src/views/preference/tabs/NodeSettings.vue:70
 msgid "Public Security Number"
 msgstr ""
 
@@ -5872,8 +6265,8 @@ msgstr ""
 msgid "Read requests"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:37
-#: src/views/dashboard/ServerAnalytic.vue:391
+#: src/views/dashboard/ServerAnalytic.vue:403
+#: src/views/dashboard/ServerAnalytic.vue:46
 msgid "Reads"
 msgstr ""
 
@@ -5897,8 +6290,8 @@ msgstr ""
 msgid "Rebuild Index"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:342
-#: src/views/dashboard/ServerAnalytic.vue:35
+#: src/views/dashboard/ServerAnalytic.vue:354
+#: src/views/dashboard/ServerAnalytic.vue:44
 msgid "Receive"
 msgstr ""
 
@@ -5910,30 +6303,48 @@ msgstr ""
 msgid "Recommended:"
 msgstr ""
 
-#: src/views/dns/DNSRecordManager.vue:154
+#: src/views/dns/DNSGroupRecordManager.vue:1169
+#: src/views/dns/DNSGroupRecordManager.vue:967
+msgid "Record already matches"
+msgstr ""
+
+#: src/views/dns/DNSRecordManager.vue:149
 msgid "Record created"
 msgstr ""
 
-#: src/views/dns/DNSRecordManager.vue:165
+#: src/views/dns/DNSRecordManager.vue:162
 msgid "Record deleted"
 msgstr ""
 
-#: src/views/site/site_add/components/DNSRecordIntegration.vue:325
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:619
+#: src/views/dns/DNSGroupRecordManager.vue:632
+msgid "Record is missing"
+msgstr ""
+
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:339
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:671
 msgid "Record Name"
 msgstr ""
 
-#: src/views/site/site_add/components/DNSRecordIntegration.vue:311
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:605
+#: src/views/dns/DNSGroupRecordManager.vue:1419
+msgid "Record names"
+msgstr ""
+
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:325
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:657
 msgid "Record Type"
 msgstr ""
 
-#: src/views/dns/DNSRecordManager.vue:150
+#: src/views/dns/DNSRecordManager.vue:145
 msgid "Record updated"
 msgstr ""
 
-#: src/views/dns/DDNSManager.vue:403
+#: src/views/dns/DDNSManager.vue:400
 msgid "Records"
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:1135
+#: src/views/dns/DNSGroupRecordManager.vue:922
+msgid "Records could not be loaded for this domain"
 msgstr ""
 
 #: src/components/TwoFA/Authorization.vue:87
@@ -5948,11 +6359,11 @@ msgstr ""
 msgid "Recovery codes are used to access your account when you lose access to your 2FA device. Each code can only be used once."
 msgstr ""
 
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:535
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:585
 msgid "Recreate DNS Record"
 msgstr ""
 
-#: src/views/preference/tabs/CertSettings.vue:46
+#: src/views/preference/tabs/CertSettings.vue:49
 msgid "Recursive Nameservers"
 msgstr ""
 
@@ -5967,7 +6378,9 @@ msgstr ""
 
 #: src/language/curd.ts:70
 #: src/views/dns/DDNSManager.vue:304
-#: src/views/dns/DNSRecordManager.vue:210
+#: src/views/dns/DNSGroupList.vue:180
+#: src/views/dns/DNSGroupRecordManager.vue:1275
+#: src/views/dns/DNSRecordManager.vue:194
 msgid "Refresh"
 msgstr ""
 
@@ -6031,8 +6444,8 @@ msgstr ""
 #: src/components/NamespaceRender/NamespaceRender.vue:44
 #: src/components/NamespaceTabs/NamespaceTabs.vue:141
 #: src/constants/index.ts:39
-#: src/views/node/Node.vue:208
-#: src/views/node/Node.vue:216
+#: src/views/node/Node.vue:302
+#: src/views/node/Node.vue:310
 msgid "Reload Nginx"
 msgstr ""
 
@@ -6241,8 +6654,12 @@ msgstr ""
 msgid "Resident Set Size: Actual memory resident in physical memory, including all shared library memory, which will be repeated calculated for multiple processes"
 msgstr ""
 
-#: src/views/dns/components/DNSRecordForm.vue:105
-#: src/views/dns/components/DNSRecordTable.vue:58
+#: src/views/dns/components/DNSRecordForm.vue:109
+#: src/views/dns/components/DNSRecordTable.vue:339
+#: src/views/dns/components/DNSRecordTable.vue:78
+#: src/views/dns/DNSGroupRecordManager.vue:1032
+#: src/views/dns/DNSGroupRecordManager.vue:1490
+#: src/views/dns/DNSGroupRecordManager.vue:638
 msgid "Resolution Line"
 msgstr ""
 
@@ -6260,8 +6677,8 @@ msgid "Restart"
 msgstr ""
 
 #: src/components/NamespaceTabs/NamespaceTabs.vue:153
-#: src/views/node/Node.vue:229
-#: src/views/node/Node.vue:237
+#: src/views/node/Node.vue:323
+#: src/views/node/Node.vue:331
 msgid "Restart Nginx"
 msgstr ""
 
@@ -6320,17 +6737,29 @@ msgstr ""
 msgid "Restored successfully"
 msgstr ""
 
+#: src/views/dns/DNSGroupRecordManager.vue:181
+msgid "Result"
+msgstr ""
+
 #: src/views/certificate/components/DNSIssueCertificate.vue:259
-#: src/views/certificate/components/RetryCert.vue:51
+#: src/views/certificate/components/RetryCert.vue:52
 msgid "Retry"
 msgstr ""
 
-#: src/views/certificate/components/RetryCert.vue:55
+#: src/views/certificate/components/RetryCert.vue:56
 msgid "Retry Certificate Issuance"
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:1622
+msgid "Retry failed"
 msgstr ""
 
 #: src/views/site/site_edit/components/Cert/SelfSignedCert.vue:39
 msgid "Review first"
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:1542
+msgid "Review group record changes"
 msgstr ""
 
 #: src/views/certificate/components/RemoveCert.vue:120
@@ -6342,7 +6771,7 @@ msgstr ""
 msgid "Revoke cert error: {0}"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:285
+#: src/components/AutoCertForm/AutoCertForm.vue:238
 msgid "Revoke Old Certificate"
 msgstr ""
 
@@ -6354,8 +6783,12 @@ msgstr ""
 msgid "Revoking a certificate will affect any services currently using it. This action cannot be undone."
 msgstr ""
 
-#: src/views/site/site_add/components/DNSRecordIntegration.vue:356
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:650
+#: src/views/node/Node.vue:269
+msgid "Rotate Credential"
+msgstr ""
+
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:370
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:702
 msgid "Route traffic through proxy for additional protection and features"
 msgstr ""
 
@@ -6379,8 +6812,8 @@ msgstr ""
 msgid "Running"
 msgstr ""
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:75
-#: src/views/backup/AutoBackup/AutoBackup.vue:84
+#: src/views/backup/AutoBackup/AutoBackup.vue:104
+#: src/views/backup/AutoBackup/AutoBackup.vue:113
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:49
 msgid "S3"
 msgstr ""
@@ -6389,7 +6822,7 @@ msgstr ""
 msgid "S3 access key ID"
 msgstr ""
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:249
+#: src/views/backup/AutoBackup/AutoBackup.vue:278
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:77
 msgid "S3 Access Key ID"
 msgstr ""
@@ -6398,7 +6831,7 @@ msgstr ""
 msgid "S3 access key ID is required"
 msgstr ""
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:261
+#: src/views/backup/AutoBackup/AutoBackup.vue:290
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:99
 msgid "S3 Bucket"
 msgstr ""
@@ -6423,7 +6856,7 @@ msgstr ""
 msgid "S3 connection test successful"
 msgstr ""
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:243
+#: src/views/backup/AutoBackup/AutoBackup.vue:272
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:66
 msgid "S3 Endpoint"
 msgstr ""
@@ -6441,7 +6874,7 @@ msgstr ""
 msgid "S3 path (e.g., backups/)"
 msgstr ""
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:267
+#: src/views/backup/AutoBackup/AutoBackup.vue:296
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:110
 msgid "S3 Region"
 msgstr ""
@@ -6454,7 +6887,7 @@ msgstr ""
 msgid "S3 secret access key"
 msgstr ""
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:255
+#: src/views/backup/AutoBackup/AutoBackup.vue:284
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:88
 msgid "S3 Secret Access Key"
 msgstr ""
@@ -6467,17 +6900,25 @@ msgstr ""
 msgid "S3 upload failed: {0}"
 msgstr ""
 
-#: src/components/InspectConfig/InspectConfig.vue:39
+#: src/components/InspectConfig/InspectConfig.vue:60
 msgid "Sandbox setup failed before Nginx could validate the configuration."
 msgstr ""
 
-#: src/components/InspectConfig/InspectConfig.vue:129
-#: src/components/InspectConfig/InspectConfig.vue:28
+#: src/components/InspectConfig/InspectConfig.vue:168
+#: src/components/InspectConfig/InspectConfig.vue:36
 msgid "Sandbox validation failed"
 msgstr ""
 
-#: src/components/InspectConfig/InspectConfig.vue:118
-#: src/components/InspectConfig/InspectConfig.vue:26
+#: src/components/InspectConfig/InspectConfig.vue:49
+msgid "Sandbox validation is unavailable because a custom test command is configured."
+msgstr ""
+
+#: src/components/InspectConfig/InspectConfig.vue:47
+msgid "Sandbox validation is unavailable when Nginx runs in a separate container."
+msgstr ""
+
+#: src/components/InspectConfig/InspectConfig.vue:152
+#: src/components/InspectConfig/InspectConfig.vue:34
 msgid "Sandbox validation skipped"
 msgstr ""
 
@@ -6492,8 +6933,8 @@ msgstr ""
 #: src/views/config/components/ConfigLeftPanel.vue:283
 #: src/views/config/components/ConfigName.vue:58
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:713
-#: src/views/dns/DDNSManager.vue:441
-#: src/views/dns/DNSRecordManager.vue:267
+#: src/views/dns/DDNSManager.vue:438
+#: src/views/dns/DNSRecordManager.vue:242
 #: src/views/preference/components/AuthSettings/Passkey.vue:131
 #: src/views/preference/Preference.vue:124
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
@@ -6505,6 +6946,10 @@ msgstr ""
 
 #: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:112
 msgid "Save Directive"
+msgstr ""
+
+#: src/views/dns/DNSGroupList.vue:288
+msgid "Save group"
 msgstr ""
 
 #: src/views/site/site_edit/components/Cert/SelfSignedCert.vue:38
@@ -6571,7 +7016,7 @@ msgstr ""
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:51
 #: src/language/curd.ts:28
 #: src/views/config/components/ConfigLeftPanel.vue:198
-#: src/views/site/site_add/SiteAdd.vue:57
+#: src/views/site/site_add/SiteAdd.vue:67
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:57
 #: src/views/stream/components/StreamEditor.vue:30
 msgid "Saved successfully"
@@ -6613,7 +7058,7 @@ msgstr ""
 msgid "Scanning"
 msgstr ""
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:113
+#: src/views/backup/AutoBackup/AutoBackup.vue:142
 msgid "Schedule"
 msgstr ""
 
@@ -6633,6 +7078,10 @@ msgstr ""
 #: src/views/site/site_list/columns.tsx:17
 #: src/views/stream/columns.tsx:13
 msgid "Search"
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:1268
+msgid "Search by name, type, or value"
 msgstr ""
 
 #: src/views/dns/DDNSManager.vue:293
@@ -6692,22 +7141,35 @@ msgstr ""
 msgid "Select all"
 msgstr ""
 
+#: src/views/dns/DNSGroupRecordManager.vue:883
+msgid "Select at least one record name"
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:879
+msgid "Select at least one target domain"
+msgstr ""
+
+#: src/views/dns/DNSGroupList.vue:104
+#: src/views/dns/DNSGroupList.vue:275
+msgid "Select at least two domains"
+msgstr ""
+
 #: src/components/AutoCertForm/DNSChallenge.vue:138
 #: src/language/constants.ts:68
 msgid "Select Credential"
 msgstr ""
 
-#: src/views/site/site_add/components/DNSRecordIntegration.vue:254
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:548
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:266
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:598
 msgid "Select DNS domain"
 msgstr ""
 
-#: src/views/site/site_add/components/DNSRecordIntegration.vue:279
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:573
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:292
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:624
 msgid "Select existing record"
 msgstr ""
 
-#: src/views/dns/DDNSManager.vue:410
+#: src/views/dns/DDNSManager.vue:407
 msgid "Select matching A/AAAA records"
 msgstr ""
 
@@ -6722,6 +7184,10 @@ msgstr ""
 
 #: src/language/curd.ts:59
 msgid "Selected {count} files"
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:1415
+msgid "Selected names"
 msgstr ""
 
 #: src/language/curd.ts:16
@@ -6756,8 +7222,8 @@ msgstr ""
 msgid "Self-signed certificate generated"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:35
-#: src/views/dashboard/ServerAnalytic.vue:352
+#: src/views/dashboard/ServerAnalytic.vue:364
+#: src/views/dashboard/ServerAnalytic.vue:44
 msgid "Send"
 msgstr ""
 
@@ -6770,7 +7236,7 @@ msgstr ""
 msgid "Server"
 msgstr ""
 
-#: src/components/InspectConfig/InspectConfig.vue:81
+#: src/components/InspectConfig/InspectConfig.vue:103
 #: src/views/certificate/CertificateEditor.vue:104
 msgid "Server error"
 msgstr ""
@@ -6779,11 +7245,11 @@ msgstr ""
 msgid "Server Error Responses (5xx)"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:180
+#: src/views/dashboard/ServerAnalytic.vue:192
 msgid "Server Info"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:178
+#: src/components/AutoCertForm/AutoCertForm.vue:131
 msgid "Server IP Address"
 msgstr ""
 
@@ -6799,7 +7265,7 @@ msgstr ""
 msgid "Server names hash table size"
 msgstr ""
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:129
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:145
 msgid "server_name not found in directives"
 msgstr ""
 
@@ -6823,7 +7289,7 @@ msgstr ""
 msgid "Set env flag to disable lego CNAME support error: {0}"
 msgstr ""
 
-#: src/views/preference/tabs/CertSettings.vue:42
+#: src/views/preference/tabs/CertSettings.vue:45
 msgid "Set the recursive nameservers to override the systems nameservers for the step of DNS challenge."
 msgstr ""
 
@@ -6859,6 +7325,10 @@ msgstr ""
 msgid "Shared Memory Zone"
 msgstr ""
 
+#: src/views/dns/DNSGroupRecordManager.vue:129
+msgid "Shared value"
+msgstr ""
+
 #: src/components/SensitiveString/SensitiveInput.vue:88
 #: src/components/SensitiveString/SensitiveString.vue:102
 msgid "Show"
@@ -6880,11 +7350,11 @@ msgstr ""
 msgid "Single Directive"
 msgstr ""
 
-#: src/views/site/site_add/SiteAdd.vue:256
+#: src/views/site/site_add/SiteAdd.vue:266
 msgid "Site Config Created Successfully"
 msgstr ""
 
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:426
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:472
 msgid "Site configuration updated with recreated DNS record"
 msgstr ""
 
@@ -6946,8 +7416,12 @@ msgstr ""
 msgid "Size"
 msgstr ""
 
-#: src/views/preference/tabs/NodeSettings.vue:23
+#: src/views/preference/tabs/NodeSettings.vue:47
 msgid "Skip Installation"
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:1185
+msgid "Skipped"
 msgstr ""
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:324
@@ -6964,6 +7438,14 @@ msgstr ""
 
 #: src/views/certificate/components/SelfSignedCertFields.vue:72
 msgid "Some browsers reject TLS certificates valid for more than 398 days."
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:1243
+msgid "Some DNS records could not be loaded"
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:1234
+msgid "Some group domains are unavailable"
 msgstr ""
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:742
@@ -7069,15 +7551,16 @@ msgid "Static"
 msgstr ""
 
 #: src/components/PortScanner/PortScannerCompact.vue:37
-#: src/views/backup/AutoBackup/AutoBackup.vue:160
+#: src/views/backup/AutoBackup/AutoBackup.vue:189
 #: src/views/certificate/ACMEUser.vue:66
 #: src/views/certificate/CertificateList/certColumns.tsx:71
 #: src/views/dashboard/components/ModulesTable.vue:75
 #: src/views/dns/DDNSManager.vue:164
+#: src/views/dns/DNSGroupRecordManager.vue:141
 #: src/views/nginx_log/structured/components/SearchFilters.vue:106
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:241
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:521
-#: src/views/node/nodeColumns.tsx:43
+#: src/views/node/nodeColumns.tsx:51
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:29
 #: src/views/site/site_list/columns.tsx:120
 #: src/views/stream/columns.tsx:87
@@ -7092,13 +7575,13 @@ msgstr ""
 msgid "Stopped"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:258
-#: src/views/dashboard/ServerAnalytic.vue:259
+#: src/views/dashboard/ServerAnalytic.vue:270
+#: src/views/dashboard/ServerAnalytic.vue:271
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:59
 msgid "Storage"
 msgstr ""
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:92
+#: src/views/backup/AutoBackup/AutoBackup.vue:121
 msgid "Storage Configuration"
 msgstr ""
 
@@ -7116,7 +7599,7 @@ msgstr ""
 msgid "Storage path is required"
 msgstr ""
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:70
+#: src/views/backup/AutoBackup/AutoBackup.vue:99
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:45
 msgid "Storage Type"
 msgstr ""
@@ -7153,9 +7636,13 @@ msgstr ""
 msgid "Stub_status is not enabled"
 msgstr ""
 
+#: src/views/dns/DNSGroupRecordManager.vue:1183
+msgid "Succeeded"
+msgstr ""
+
 #: src/constants/index.ts:27
-#: src/views/backup/AutoBackup/AutoBackup.vue:195
-#: src/views/backup/AutoBackup/AutoBackup.vue:220
+#: src/views/backup/AutoBackup/AutoBackup.vue:224
+#: src/views/backup/AutoBackup/AutoBackup.vue:249
 #: src/views/notification/notificationColumns.tsx:35
 msgid "Success"
 msgstr ""
@@ -7188,8 +7675,8 @@ msgstr ""
 msgid "Supported file type: .zip"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:243
-#: src/views/dashboard/ServerAnalytic.vue:244
+#: src/views/dashboard/ServerAnalytic.vue:255
+#: src/views/dashboard/ServerAnalytic.vue:256
 msgid "Swap"
 msgstr ""
 
@@ -7264,9 +7751,17 @@ msgstr ""
 msgid "Sync strategy"
 msgstr ""
 
+#: src/views/dns/DNSGroupRecordManager.vue:1381
+msgid "Sync this name"
+msgstr ""
+
 #: src/views/certificate/components/CertificateBasicInfo.vue:145
 #: src/views/certificate/components/SelfSignedCertFields.vue:75
 msgid "Sync to"
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:470
+msgid "Synced"
 msgstr ""
 
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:57
@@ -7303,14 +7798,22 @@ msgstr ""
 msgid "System restored successfully."
 msgstr ""
 
-#: src/views/site/site_add/components/DNSRecordIntegration.vue:338
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:508
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:632
+#: src/views/dns/DNSGroupRecordManager.vue:1437
+msgid "Target domains"
+msgstr ""
+
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:352
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:557
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:684
 msgid "target.example.com"
 msgstr ""
 
 #: src/views/dns/DDNSManager.vue:172
 msgid "Targets"
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:1326
+msgid "targets synced"
 msgstr ""
 
 #: src/constants/errors/self_check.ts:3
@@ -7323,6 +7826,10 @@ msgstr ""
 
 #: src/views/preference/components/ExternalNotify/telegram.ts:5
 msgid "Telegram"
+msgstr ""
+
+#: src/views/preference/tabs/NodeSettings.vue:35
+msgid "Temporary compatibility only. Replace MCP Node Secret clients with scoped service tokens."
 msgstr ""
 
 #: src/routes/modules/terminal.ts:10
@@ -7364,7 +7871,7 @@ msgstr ""
 msgid "Test successful! Response time: %{response_time}ms"
 msgstr ""
 
-#: src/components/InspectConfig/InspectConfig.vue:111
+#: src/components/InspectConfig/InspectConfig.vue:131
 msgid "Testing Nginx configuration..."
 msgstr ""
 
@@ -7392,7 +7899,7 @@ msgstr ""
 msgid "The GeoLite2 database provides geographic information for IP addresses. This is used for offline geographic analysis in log analytics."
 msgstr ""
 
-#: src/views/preference/tabs/NodeSettings.vue:37
+#: src/views/preference/tabs/NodeSettings.vue:61
 msgid "The ICP Number should only contain letters, unicode, numbers, hyphens, dashes, colons, and dots."
 msgstr ""
 
@@ -7404,7 +7911,7 @@ msgstr ""
 msgid "The input is not a SSL Certificate Key"
 msgstr ""
 
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:498
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:548
 msgid "The linked DNS record was deleted from the DNS server. You can recreate it or clear the link."
 msgstr ""
 
@@ -7412,21 +7919,21 @@ msgstr ""
 msgid "The log path is not under the paths in settings.NginxSettings.LogDirWhiteList"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:160
-#: src/views/preference/tabs/OpenAISettings.vue:94
+#: src/views/preference/tabs/OpenAISettings.vue:166
+#: src/views/preference/tabs/OpenAISettings.vue:98
 msgid "The model name should only contain letters, unicode, numbers, hyphens, dashes, colons, and dots."
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:161
+#: src/views/preference/tabs/OpenAISettings.vue:167
 msgid "The model used for code completion, if not set, the chat model will be used."
 msgstr ""
 
-#: src/views/preference/tabs/NodeSettings.vue:18
+#: src/views/preference/tabs/NodeSettings.vue:42
 msgid "The node name should only contain letters, unicode, numbers, hyphens, dashes, colons, and dots."
 msgstr ""
 
-#: src/views/site/site_add/SiteAdd.vue:190
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:445
+#: src/views/site/site_add/SiteAdd.vue:200
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:491
 msgid "The parameter of server_name is required"
 msgstr ""
 
@@ -7438,7 +7945,7 @@ msgstr ""
 msgid "The path exists, but the file is not a private key"
 msgstr ""
 
-#: src/views/preference/tabs/NodeSettings.vue:49
+#: src/views/preference/tabs/NodeSettings.vue:73
 msgid "The Public Security Number should only contain letters, unicode, numbers, hyphens, dashes, colons, and dots."
 msgstr ""
 
@@ -7446,7 +7953,7 @@ msgstr ""
 msgid "The remote Nginx UI version is not compatible with the local Nginx UI version. To avoid potential errors, please upgrade the remote Nginx UI to match the local version."
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:155
+#: src/components/AutoCertForm/AutoCertForm.vue:109
 msgid "The server_name in the current configuration must be the domain name you need to get the certificate, supportmultiple domains."
 msgstr ""
 
@@ -7455,8 +7962,8 @@ msgstr ""
 msgid "The url is invalid"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:117
-#: src/views/preference/tabs/OpenAISettings.vue:41
+#: src/views/preference/tabs/OpenAISettings.vue:123
+#: src/views/preference/tabs/OpenAISettings.vue:45
 msgid "The url is invalid."
 msgstr ""
 
@@ -7529,6 +8036,10 @@ msgstr ""
 msgid "This is a test message sent at %{timestamp} from Nginx UI."
 msgstr ""
 
+#: src/views/dns/DNSGroupRecordManager.vue:1219
+msgid "This local group may belong to another user or node, or it may have been deleted."
+msgstr ""
+
 #: src/components/SelfCheck/store.ts:25
 msgid "This mode only previews the installation UI flow and does not change any server state."
 msgstr ""
@@ -7553,7 +8064,7 @@ msgstr ""
 msgid "This self-signed certificate is managed by Nginx UI and renewed automatically."
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:128
+#: src/components/AutoCertForm/AutoCertForm.vue:82
 msgid "This site is configured as a default server (default_server) for HTTPS (port 443). IP certificates require Certificate Authority (CA) support and may not be available with all ACME providers."
 msgstr ""
 
@@ -7561,7 +8072,7 @@ msgstr ""
 msgid "This site uses the default access log, which may contain traffic from other sites"
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:132
+#: src/components/AutoCertForm/AutoCertForm.vue:86
 msgid "This site uses wildcard server name (_) which typically indicates an IP-based certificate. IP certificates require Certificate Authority (CA) support and may not be available with all ACME providers."
 msgstr ""
 
@@ -7657,7 +8168,7 @@ msgstr ""
 msgid "To make sure the certification auto-renewal can work normally, we need to add a location which can proxy the request from authority to backend, and we need to save this file and reload the Nginx. Are you sure you want to continue?"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:51
+#: src/views/preference/tabs/OpenAISettings.vue:55
 msgid "To use a local large model, deploy it with ollama, vllm or lmdeploy. They provide an OpenAI-compatible API endpoint, so just set the baseUrl to your local API."
 msgstr ""
 
@@ -7669,7 +8180,7 @@ msgstr ""
 msgid "Token is empty"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:129
+#: src/views/preference/tabs/OpenAISettings.vue:135
 msgid "Token is not valid"
 msgstr ""
 
@@ -7721,7 +8232,7 @@ msgstr ""
 msgid "Total PV"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:284
+#: src/views/dashboard/ServerAnalytic.vue:296
 msgid "Total Receive"
 msgstr ""
 
@@ -7734,7 +8245,7 @@ msgstr ""
 msgid "Total Requests / Total Connections"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:290
+#: src/views/dashboard/ServerAnalytic.vue:302
 msgid "Total Send"
 msgstr ""
 
@@ -7774,15 +8285,20 @@ msgstr ""
 msgid "Try adjusting your search criteria or time range."
 msgstr ""
 
-#: src/views/dns/components/DNSRecordTable.vue:32
+#: src/views/dns/components/DNSRecordTable.vue:341
+#: src/views/dns/components/DNSRecordTable.vue:52
 msgid "TTL"
 msgstr ""
 
-#: src/views/dns/components/DNSRecordForm.vue:102
-#: src/views/site/site_add/components/DNSRecordIntegration.vue:342
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:511
-#: src/views/site/site_edit/components/RightPanel/DNS.vue:636
+#: src/views/dns/components/DNSRecordForm.vue:106
+#: src/views/site/site_add/components/DNSRecordIntegration.vue:356
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:560
+#: src/views/site/site_edit/components/RightPanel/DNS.vue:688
 msgid "TTL (seconds)"
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:893
+msgid "TTL must be at least one second"
 msgstr ""
 
 #: src/views/backup/AutoBackup/components/CronEditor.vue:28
@@ -7799,8 +8315,9 @@ msgstr ""
 #: src/views/config/components/Delete.vue:122
 #: src/views/dashboard/components/ModulesTable.vue:62
 #: src/views/dns/components/DNSRecordFilter.vue:49
-#: src/views/dns/components/DNSRecordForm.vue:81
-#: src/views/dns/components/DNSRecordTable.vue:24
+#: src/views/dns/components/DNSRecordForm.vue:85
+#: src/views/dns/components/DNSRecordTable.vue:44
+#: src/views/dns/DNSGroupRecordManager.vue:125
 #: src/views/nginx_log/NginxLogList.vue:147
 #: src/views/notification/notificationColumns.tsx:8
 #: src/views/preference/components/ExternalNotify/columns.tsx:19
@@ -7831,6 +8348,11 @@ msgstr ""
 msgid "Type your message here..."
 msgstr ""
 
+#: src/views/dns/DNSGroupList.vue:148
+#: src/views/dns/DNSGroupList.vue:54
+msgid "Unavailable domain #%{id}"
+msgstr ""
+
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:787
 msgid "Unique Pages"
 msgstr ""
@@ -7838,6 +8360,17 @@ msgstr ""
 #: src/components/PortScanner/PortScannerCompact.vue:47
 #: src/composables/useNginxPerformance.ts:19
 msgid "Unknown"
+msgstr ""
+
+#: src/views/dns/group.ts:87
+msgid "Unknown error"
+msgstr ""
+
+#: src/views/dns/DNSGroupList.vue:45
+#: src/views/dns/DNSGroupRecordManager.vue:1360
+#: src/views/dns/DNSGroupRecordManager.vue:1475
+#: src/views/dns/DNSGroupRecordManager.vue:191
+msgid "Unknown provider"
 msgstr ""
 
 #: src/components/AutoCertForm/DNSChallenge.vue:24
@@ -7850,6 +8383,10 @@ msgstr ""
 
 #: src/constants/errors/nginx_log.parser.ts:4
 msgid "Unsupported log format"
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:1009
+msgid "Update"
 msgstr ""
 
 #: src/constants/errors/upgrader.ts:6
@@ -7868,14 +8405,15 @@ msgstr ""
 msgid "Update successfully"
 msgstr ""
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:236
+#: src/views/backup/AutoBackup/AutoBackup.vue:265
 #: src/views/certificate/ACMEUser.vue:115
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
 #: src/views/config/configColumns.tsx:44
 #: src/views/dns/DNSCredential.vue:65
 #: src/views/dns/DNSDomainList.vue:236
+#: src/views/dns/DNSGroupList.vue:33
 #: src/views/namespace/columns.ts:91
-#: src/views/node/nodeColumns.tsx:89
+#: src/views/node/nodeColumns.tsx:97
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:39
 #: src/views/site/site_list/columns.tsx:113
 #: src/views/stream/columns.tsx:80
@@ -7885,11 +8423,16 @@ msgid "Updated at"
 msgstr ""
 
 #: src/routes/modules/system.ts:26
-#: src/views/node/Node.vue:187
-#: src/views/node/Node.vue:195
+#: src/views/node/Node.vue:281
+#: src/views/node/Node.vue:289
 #: src/views/system/Upgrade.vue:154
 #: src/views/system/Upgrade.vue:159
 msgid "Upgrade"
+msgstr ""
+
+#: src/views/node/Node.vue:224
+#: src/views/node/Node.vue:262
+msgid "Upgrade Authentication"
 msgstr ""
 
 #: src/views/node/BatchUpgrader.vue:138
@@ -7943,7 +8486,7 @@ msgstr ""
 msgid "Upstream Test Type"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:184
+#: src/views/dashboard/ServerAnalytic.vue:196
 msgid "Uptime:"
 msgstr ""
 
@@ -7953,7 +8496,7 @@ msgstr ""
 msgid "URL"
 msgstr ""
 
-#: src/views/dns/components/DNSRecordForm.vue:88
+#: src/views/dns/components/DNSRecordForm.vue:92
 msgid "Use @ for root"
 msgstr ""
 
@@ -7967,6 +8510,10 @@ msgstr ""
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:157
 msgid "Use Temporary Path"
+msgstr ""
+
+#: src/views/dns/DNSGroupRecordManager.vue:1427
+msgid "Use values from"
 msgstr ""
 
 #: src/components/LLM/ChatMessage.vue:216
@@ -8028,8 +8575,8 @@ msgid "Validate SSL Certificate"
 msgstr ""
 
 #: src/views/dashboard/components/PerformanceTablesCard.vue:22
-#: src/views/dns/components/DNSRecordForm.vue:90
-#: src/views/dns/components/DNSRecordTable.vue:28
+#: src/views/dns/components/DNSRecordForm.vue:94
+#: src/views/dns/components/DNSRecordTable.vue:48
 msgid "Value"
 msgstr ""
 
@@ -8101,7 +8648,7 @@ msgstr ""
 msgid "Waiting processes"
 msgstr ""
 
-#: src/components/InspectConfig/InspectConfig.vue:156
+#: src/components/InspectConfig/InspectConfig.vue:195
 #: src/constants/index.ts:25
 #: src/views/backup/components/BackupCreator.vue:138
 #: src/views/notification/notificationColumns.tsx:21
@@ -8114,15 +8661,11 @@ msgstr ""
 msgid "Warning: Restore operation will overwrite current configurations. Make sure you have a valid backup file and security token, and carefully select what to restore."
 msgstr ""
 
-#: src/components/AutoCertForm/AutoCertForm.vue:103
-msgid "Warning: This appears to be a private IP address. Public CAs like Let's Encrypt cannot issue certificates for private IPs. Use a public IP address or consider using a private CA."
-msgstr ""
-
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:298
 msgid "We do not accept any feature requests"
 msgstr ""
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:146
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:162
 msgid "We will remove the HTTPChallenge configuration from this file and reload the Nginx. Are you sure you want to continue?"
 msgstr ""
 
@@ -8150,16 +8693,17 @@ msgstr ""
 msgid "Weekly"
 msgstr ""
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:134
+#: src/views/backup/AutoBackup/AutoBackup.vue:163
 msgid "Weekly on %{day} at %{time}"
 msgstr ""
 
-#: src/views/dns/components/DNSRecordForm.vue:117
-#: src/views/dns/components/DNSRecordTable.vue:40
+#: src/views/dns/components/DNSRecordForm.vue:122
+#: src/views/dns/components/DNSRecordTable.vue:60
+#: src/views/dns/DNSGroupRecordManager.vue:578
 msgid "Weight"
 msgstr ""
 
-#: src/views/dns/DDNSManager.vue:400
+#: src/views/dns/DDNSManager.vue:397
 msgid "When enabled, DDNS owns the selected names: it auto-pairs sibling family records, creates missing records, and removes records whose IP family is unreachable. Disable to manage only the records you explicitly selected and keep all other DNS state untouched."
 msgstr ""
 
@@ -8186,6 +8730,10 @@ msgstr ""
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:171
 msgid "Wildcard Certificate"
+msgstr ""
+
+#: src/constants/errors/cert.ts:49
+msgid "Wildcard domains and IP addresses cannot be requested in the same certificate"
 msgstr ""
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:48
@@ -8217,8 +8765,8 @@ msgstr ""
 msgid "Write private.key error: {0}"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:37
-#: src/views/dashboard/ServerAnalytic.vue:381
+#: src/views/dashboard/ServerAnalytic.vue:393
+#: src/views/dashboard/ServerAnalytic.vue:46
 msgid "Writes"
 msgstr ""
 
@@ -8237,7 +8785,7 @@ msgstr ""
 #: src/views/nginx_log/indexing/IndexManagement.vue:31
 #: src/views/nginx_log/indexing/IndexManagement.vue:57
 #: src/views/preference/tabs/AuthSettings.vue:127
-#: src/views/preference/tabs/CertSettings.vue:78
+#: src/views/preference/tabs/CertSettings.vue:81
 msgid "Yes"
 msgstr ""
 
@@ -8304,404 +8852,6 @@ msgstr ""
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:232
 msgid "Zero-allocation pipeline"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:599
-msgid "%{count} drifted"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:613
-msgid "%{count} duplicated"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:634
-msgid "%{count} matching records found"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:606
-msgid "%{count} missing"
-msgstr ""
-
-#: src/views/dns/components/DNSRecordTable.vue:249
-msgid "%{count} more"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1448
-msgid "%{count} name and domain targets will be reviewed."
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1095
-msgid "%{count} record operation(s) failed"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:592
-msgid "%{count} synced"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:620
-msgid "%{count} unknown"
-msgstr ""
-
-#: src/views/dns/DNSGroupList.vue:113
-msgid "A group with this name already exists"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1281
-#: src/views/dns/DNSGroupRecordManager.vue:1297
-#: src/views/dns/DNSGroupRecordManager.vue:1395
-msgid "Add group record"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1412
-msgid "All names"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1545
-msgid "Apply changes"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1406
-msgid "Automatically grouped by shared value"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1223
-#: src/views/dns/DNSGroupRecordManager.vue:1636
-msgid "Back to groups"
-msgstr ""
-
-#: src/views/dns/DNSGroupList.vue:278
-msgid "Batch record operations target the selected domains. Provider credentials remain unchanged."
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1011
-#: src/views/dns/DNSGroupRecordManager.vue:1186
-msgid "Blocked"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1554
-msgid "Changes are applied per domain and cannot be rolled back as one transaction."
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1407
-msgid "Choose which names to synchronize. Existing provider-specific values are preserved unless you change them below."
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:889
-msgid "Complete the required record fields"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:137
-msgid "Coverage"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1008
-msgid "Create"
-msgstr ""
-
-#: src/views/dns/DNSGroupList.vue:200
-msgid "Create a group to manage the same DNS record across multiple domains"
-msgstr ""
-
-#: src/views/dns/DNSGroupList.vue:255
-msgid "Create DNS group"
-msgstr ""
-
-#: src/views/dns/DNSGroupList.vue:186
-#: src/views/dns/DNSGroupList.vue:202
-#: src/views/dns/DNSGroupList.vue:288
-msgid "Create group"
-msgstr ""
-
-#: src/views/dns/DNSGroupList.vue:239
-msgid "Delete group"
-msgstr ""
-
-#: src/views/dns/DNSGroupList.vue:238
-msgid "Delete this local group? DNS records will not be changed."
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:471
-msgid "Different values"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1218
-msgid "DNS group not found"
-msgstr ""
-
-#: src/views/dns/DNSGroupList.vue:172
-msgid "DNS Groups"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1463
-msgid "Each setting is sent only to its matching target domain."
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1345
-msgid "Edit and sync"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1396
-msgid "Edit and synchronize records"
-msgstr ""
-
-#: src/views/dns/DNSGroupList.vue:255
-msgid "Edit DNS group"
-msgstr ""
-
-#: src/views/dns/DNSGroupList.vue:235
-msgid "Edit group"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1409
-msgid "Edit scope"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1235
-msgid "Edit the group to remove unavailable domain IDs: %{ids}"
-msgstr ""
-
-#: src/views/dns/DNSGroupList.vue:100
-msgid "Enter a group name"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1462
-msgid "Existing values are preserved per name. Changing a field overrides it for every selected name on that domain; new records use the shown defaults."
-msgstr ""
-
-#: src/views/dns/DNSGroupList.vue:27
-msgid "Group"
-msgstr ""
-
-#: src/views/dns/DNSGroupList.vue:128
-msgid "Group created"
-msgstr ""
-
-#: src/views/dns/DNSGroupList.vue:135
-msgid "Group deleted"
-msgstr ""
-
-#: src/views/dns/DNSGroupList.vue:260
-msgid "Group name"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1097
-msgid "Group record operation completed"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1585
-msgid "Group record results"
-msgstr ""
-
-#: src/routes/modules/dns.ts:62
-msgid "Group Records"
-msgstr ""
-
-#: src/views/dns/DNSGroupList.vue:124
-msgid "Group updated"
-msgstr ""
-
-#: src/routes/modules/dns.ts:36
-msgid "Groups"
-msgstr ""
-
-#: src/views/dns/DNSGroupList.vue:167
-msgid "Groups are scoped to the current user and selected node. Record operations run once and are not continuous synchronization."
-msgstr ""
-
-#: src/views/dns/DNSGroupList.vue:166
-msgid "Groups are stored in this browser"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:957
-msgid "Huawei Cloud does not support changing the resolution line of an existing record"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1505
-msgid "Huawei Cloud resolution lines cannot be changed after record creation."
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:474
-msgid "Incomplete"
-msgstr ""
-
-#: src/views/dns/components/DNSRecordTable.vue:320
-#: src/views/dns/DNSGroupList.vue:232
-msgid "Manage records"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:472
-msgid "Missing records"
-msgstr ""
-
-#: src/views/dns/components/DNSRecordTable.vue:266
-#: src/views/dns/components/DNSRecordTable.vue:279
-#: src/views/dns/components/DNSRecordTable.vue:298
-#: src/views/dns/components/DNSRecordTable.vue:307
-msgid "Mixed"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:473
-msgid "Multiple matches"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1151
-#: src/views/dns/DNSGroupRecordManager.vue:935
-msgid "Multiple records have the same name and type"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1352
-msgid "Name by domain"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:133
-msgid "Names"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1010
-msgid "No change"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1295
-msgid "No DNS records were found in this group"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1481
-msgid "Override selected names"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1482
-msgid "Preserve existing"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1534
-msgid "Preview changes"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1458
-msgid "Provider-specific settings"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1169
-#: src/views/dns/DNSGroupRecordManager.vue:967
-msgid "Record already matches"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:632
-msgid "Record is missing"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1419
-msgid "Record names"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1135
-#: src/views/dns/DNSGroupRecordManager.vue:922
-msgid "Records could not be loaded for this domain"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:181
-msgid "Result"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1622
-msgid "Retry failed"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1542
-msgid "Review group record changes"
-msgstr ""
-
-#: src/views/dns/DNSGroupList.vue:288
-msgid "Save group"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1268
-msgid "Search by name, type, or value"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:883
-msgid "Select at least one record name"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:879
-msgid "Select at least one target domain"
-msgstr ""
-
-#: src/views/dns/DNSGroupList.vue:104
-#: src/views/dns/DNSGroupList.vue:275
-msgid "Select at least two domains"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1415
-msgid "Selected names"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:129
-msgid "Shared value"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1185
-msgid "Skipped"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1243
-msgid "Some DNS records could not be loaded"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1234
-msgid "Some group domains are unavailable"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1183
-msgid "Succeeded"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1381
-msgid "Sync this name"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:470
-msgid "Synced"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1437
-msgid "Target domains"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1326
-msgid "targets synced"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1219
-msgid "This local group may belong to another user or node, or it may have been deleted."
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:893
-msgid "TTL must be at least one second"
-msgstr ""
-
-#: src/views/dns/DNSGroupList.vue:148
-#: src/views/dns/DNSGroupList.vue:54
-msgid "Unavailable domain #%{id}"
-msgstr ""
-
-#: src/views/dns/group.ts:87
-msgid "Unknown error"
-msgstr ""
-
-#: src/views/dns/DNSGroupList.vue:45
-#: src/views/dns/DNSGroupRecordManager.vue:1360
-#: src/views/dns/DNSGroupRecordManager.vue:1475
-#: src/views/dns/DNSGroupRecordManager.vue:191
-msgid "Unknown provider"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1009
-msgid "Update"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:1427
-msgid "Use values from"
 msgstr ""
 
 

@@ -412,16 +412,48 @@ func TestService_calculateDashboardSummary(t *testing.T) {
 		},
 	}
 
-	summary := s.calculateDashboardSummary(analytics, result)
+	// Two days of range, so average QPS is 550 requests over 172800 seconds.
+	req := &DashboardQueryRequest{
+		StartTime: 1640995200, // 2022-01-01T00:00:00Z
+		EndTime:   1641168000, // 2022-01-03T00:00:00Z
+	}
+	aggregates := &scanAggregates{
+		TotalBytes:   123456,
+		PeakMinutePV: 120,
+	}
+
+	summary := s.calculateDashboardSummary(analytics, result, aggregates, req)
 
 	assert.Equal(t, 2, summary.TotalUV)   // 2 unique IPs from hits
 	assert.Equal(t, 550, summary.TotalPV) // Total hits from result
 
 	// Average daily values (2 days)
-	assert.InDelta(t, 1.0, summary.AvgDailyUV, 0.01) // 2 total UV / 2 days = 1
+	assert.InDelta(t, 1.0, summary.AvgDailyUV, 0.01)   // 2 total UV / 2 days = 1
 	assert.InDelta(t, 275.0, summary.AvgDailyPV, 0.01) // (300 + 250) / 2
 
 	// Peak hour should be hour 1 with 200 PV
 	assert.Equal(t, 1, summary.PeakHour)
 	assert.Equal(t, 200, summary.PeakHourTraffic)
+
+	// Traffic and rate figures come from the scan aggregates
+	assert.Equal(t, int64(123456), summary.TotalTraffic)
+	assert.InDelta(t, 550.0/172800.0, summary.AvgQPS, 0.000001)
+	assert.InDelta(t, 2.0, summary.PeakQPS, 0.000001) // 120 requests in the busiest minute
+}
+
+func TestService_calculateDashboardSummaryWithoutAggregates(t *testing.T) {
+	mockSearcher := &MockSearcher{}
+	s := NewService(mockSearcher).(*service)
+
+	analytics := &DashboardAnalytics{}
+	result := &searcher.SearchResult{TotalHits: 0}
+	req := &DashboardQueryRequest{StartTime: 1640995200, EndTime: 1640995200}
+
+	// An empty range must not divide by zero and a nil aggregate must not panic.
+	summary := s.calculateDashboardSummary(analytics, result, nil, req)
+
+	assert.Equal(t, 0, summary.TotalPV)
+	assert.Equal(t, int64(0), summary.TotalTraffic)
+	assert.InDelta(t, 0.0, summary.AvgQPS, 0.000001)
+	assert.InDelta(t, 0.0, summary.PeakQPS, 0.000001)
 }

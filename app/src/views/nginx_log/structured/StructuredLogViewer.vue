@@ -21,6 +21,7 @@ interface SearchSummary {
   total_traffic?: number
   unique_pages?: number
   avg_traffic_per_pv?: number
+  traffic_approximate?: boolean
 }
 
 const props = defineProps<Props>()
@@ -777,10 +778,17 @@ watch(timeRange, () => {
               />
             </div>
             <div class="text-center">
-              <AStatistic
-                :title="$gettext('Traffic')"
-                :value="bytesToSize(searchSummary?.total_traffic || 0)"
-              />
+              <ATooltip
+                :title="searchSummary?.traffic_approximate
+                  ? $gettext('The result set is too large to sum exactly, this value is extrapolated from a sample')
+                  : undefined"
+              >
+                <AStatistic
+                  :title="$gettext('Traffic')"
+                  :prefix="searchSummary?.traffic_approximate ? '~' : undefined"
+                  :value="bytesToSize(searchSummary?.total_traffic || 0)"
+                />
+              </ATooltip>
             </div>
             <div class="text-center">
               <AStatistic

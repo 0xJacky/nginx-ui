@@ -42,11 +42,12 @@ func (s *service) GetDashboardAnalytics(ctx context.Context, req *DashboardQuery
 
 	// Initialize analytics with empty slices
 	analytics := &DashboardAnalytics{}
+	aggregates := &scanAggregates{}
 
 	// Calculate analytics if we have results
 	if result.TotalHits > 0 {
 		// For now, use batch queries to get complete data
-		analytics.HourlyStats, analytics.DailyStats = s.calculateTimeBucketStats(ctx, req)
+		analytics.HourlyStats, analytics.DailyStats, aggregates = s.calculateTimeBucketStats(ctx, req)
 
 		// Use cardinality counter for efficient unique URLs counting
 		analytics.TopURLs = s.calculateTopURLsWithCardinality(ctx, req)
@@ -65,7 +66,7 @@ func (s *service) GetDashboardAnalytics(ctx context.Context, req *DashboardQuery
 	}
 
 	// Calculate summary with cardinality counting for accurate unique pages
-	analytics.Summary = s.calculateDashboardSummaryWithCardinality(ctx, analytics, result, req)
+	analytics.Summary = s.calculateDashboardSummaryWithCardinality(ctx, analytics, result, req, aggregates)
 
 	return analytics, nil
 }
@@ -280,7 +281,7 @@ func calculateTopFieldStats[T any](
 }
 
 // calculateDashboardSummary calculates summary statistics
-func (s *service) calculateDashboardSummary(analytics *DashboardAnalytics, result *searcher.SearchResult) DashboardSummary {
+func (s *service) calculateDashboardSummary(analytics *DashboardAnalytics, result *searcher.SearchResult, aggregates *scanAggregates, req *DashboardQueryRequest) DashboardSummary {
 	// Calculate total UV from IP facet, which is now reliable.
 	totalUV := 0
 	if result.Facets != nil {
@@ -314,20 +315,38 @@ func (s *service) calculateDashboardSummary(analytics *DashboardAnalytics, resul
 		}
 	}
 
-	return DashboardSummary{
+	// Average QPS spreads the request total over the whole queried range, so a
+	// wide range dilutes it; peak QPS reports the busiest minute instead, which
+	// is what a capacity question is usually about.
+	var avgQPS, peakQPS float64
+	if rangeSeconds := req.EndTime - req.StartTime; rangeSeconds > 0 {
+		avgQPS = float64(totalPV) / float64(rangeSeconds)
+	}
+	if aggregates != nil {
+		peakQPS = float64(aggregates.PeakMinutePV) / 60
+	}
+
+	summary := DashboardSummary{
 		TotalUV:         totalUV,
 		TotalPV:         totalPV,
 		AvgDailyUV:      avgDailyUV,
 		AvgDailyPV:      avgDailyPV,
 		PeakHour:        peakHour,
 		PeakHourTraffic: peakHourTraffic,
+		AvgQPS:          avgQPS,
+		PeakQPS:         peakQPS,
 	}
+	if aggregates != nil {
+		summary.TotalTraffic = aggregates.TotalBytes
+	}
+
+	return summary
 }
 
 // calculateDashboardSummaryWithCardinality calculates enhanced summary statistics using cardinality counters
-func (s *service) calculateDashboardSummaryWithCardinality(ctx context.Context, analytics *DashboardAnalytics, result *searcher.SearchResult, req *DashboardQueryRequest) DashboardSummary {
+func (s *service) calculateDashboardSummaryWithCardinality(ctx context.Context, analytics *DashboardAnalytics, result *searcher.SearchResult, req *DashboardQueryRequest, aggregates *scanAggregates) DashboardSummary {
 	// Start with the basic summary but we'll override the UV calculation
-	summary := s.calculateDashboardSummary(analytics, result)
+	summary := s.calculateDashboardSummary(analytics, result, aggregates, req)
 
 	// Use cardinality counter for accurate unique visitor (UV) counting if available
 	cardinalityCounter := s.getCardinalityCounter()
@@ -360,12 +379,23 @@ func (s *service) calculateDashboardSummaryWithCardinality(ctx context.Context, 
 	return summary
 }
 
-// calculateTimeBucketStats computes hourly and daily UV/PV statistics in a
-// single pass over the matching documents. Pagination uses a SearchAfter
-// cursor on the (timestamp, _id) sort key: each page costs O(page) instead of
-// the O(offset+page) of offset pagination, so a full scan stays linear in the
-// number of documents.
-func (s *service) calculateTimeBucketStats(ctx context.Context, req *DashboardQueryRequest) ([]HourlyAccessStats, []DailyAccessStats) {
+// scanAggregates holds the range-wide metrics accumulated while the time
+// buckets are filled. They are collected in that same pass because a second
+// scan over the same documents would double the cost of the dashboard query.
+type scanAggregates struct {
+	// TotalBytes is the sum of bytes_sent over documents inside the requested
+	// range, matching the basis of the summary's TotalPV.
+	TotalBytes int64
+	// PeakMinutePV is the request count of the busiest minute in the range.
+	PeakMinutePV int
+}
+
+// calculateTimeBucketStats computes hourly and daily UV/PV statistics, total
+// traffic and the peak-minute request count in a single pass over the matching
+// documents. Pagination uses a SearchAfter cursor on the (timestamp, _id) sort
+// key: each page costs O(page) instead of the O(offset+page) of offset
+// pagination, so a full scan stays linear in the number of documents.
+func (s *service) calculateTimeBucketStats(ctx context.Context, req *DashboardQueryRequest) ([]HourlyAccessStats, []DailyAccessStats, *scanAggregates) {
 	// Daily buckets cover the requested range (dates in server-local time,
 	// matching the rest of the dashboard).
 	dailyMap := make(map[string]*DailyAccessStats)
@@ -406,6 +436,11 @@ func (s *service) calculateTimeBucketStats(ctx context.Context, req *DashboardQu
 	scanEnd := rangeEnd.Unix()
 	const batchSize = 10000
 
+	// Traffic and peak-rate figures describe the requested range only, so they
+	// ignore the timezone buffer the hourly buckets need.
+	aggregates := &scanAggregates{}
+	perMinutePV := make(map[int64]int)
+
 	var searchAfter []string
 	totalProcessed := 0
 
@@ -419,7 +454,7 @@ func (s *service) calculateTimeBucketStats(ctx context.Context, req *DashboardQu
 			SearchAfter:    searchAfter,
 			SortBy:         "timestamp",
 			SortOrder:      "asc",
-			Fields:         []string{"timestamp", "ip"},
+			Fields:         []string{"timestamp", "ip", "bytes_sent"},
 			UseCache:       false, // Don't cache intermediate scan pages
 		}
 
@@ -443,6 +478,19 @@ func (s *service) calculateTimeBucketStats(ctx context.Context, req *DashboardQu
 			var ip string
 			if ipField, ok := hit.Fields["ip"]; ok {
 				ip, _ = ipField.(string)
+			}
+
+			// Range-wide aggregates, restricted to the requested window
+			// Bleve's timestamp range is half-open: include StartTime and
+			// exclude EndTime. Keep aggregates on the same document set as
+			// TotalPV even though this scan uses a wider timezone buffer.
+			if timestamp >= req.StartTime && timestamp < req.EndTime {
+				if bytesField, ok := hit.Fields["bytes_sent"]; ok {
+					if bytesSent, ok := bytesField.(float64); ok {
+						aggregates.TotalBytes += int64(bytesSent)
+					}
+				}
+				perMinutePV[timestamp-timestamp%60]++
 			}
 
 			// Daily bucket (server-local date)
@@ -481,8 +529,14 @@ func (s *service) calculateTimeBucketStats(ctx context.Context, req *DashboardQu
 		searchAfter = lastHit.Sort
 	}
 
-	logger.Debugf("Time-bucket stats completed: %d records into %d hourly / %d daily buckets",
-		totalProcessed, len(hourlyMap), len(dailyMap))
+	for _, pv := range perMinutePV {
+		if pv > aggregates.PeakMinutePV {
+			aggregates.PeakMinutePV = pv
+		}
+	}
+
+	logger.Debugf("Time-bucket stats completed: %d records into %d hourly / %d daily buckets, %d bytes",
+		totalProcessed, len(hourlyMap), len(dailyMap), aggregates.TotalBytes)
 
 	// Convert to sorted slices
 	hourlyStats := make([]HourlyAccessStats, 0, len(hourlyMap))
@@ -501,5 +555,5 @@ func (s *service) calculateTimeBucketStats(ctx context.Context, req *DashboardQu
 		return dailyStats[i].Timestamp < dailyStats[j].Timestamp
 	})
 
-	return hourlyStats, dailyStats
+	return hourlyStats, dailyStats, aggregates
 }

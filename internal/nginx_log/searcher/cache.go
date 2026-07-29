@@ -192,6 +192,43 @@ func (c *Cache) Put(req *SearchRequest, result *SearchResult, ttl time.Duration)
 	c.cache.Wait()
 }
 
+// statsCacheKey derives a key that ignores pagination, sorting and the
+// presentation options. Statistics describe the whole match set rather than
+// one page of it, so every page of the same filter must share a single entry —
+// otherwise paging through results would re-run the scan for each page.
+func (c *Cache) statsCacheKey(req *SearchRequest) string {
+	normalized := *req
+	normalized.Limit = 0
+	normalized.Offset = 0
+	normalized.SearchAfter = nil
+	normalized.SortBy = ""
+	normalized.SortOrder = ""
+	normalized.Fields = nil
+	normalized.IncludeFacets = false
+	normalized.FacetFields = nil
+	normalized.FacetSize = 0
+	normalized.IncludeHighlighting = false
+
+	return "stats:" + c.GenerateKey(&normalized)
+}
+
+// GetSearchStats returns cached statistics for the request's match set.
+func (c *Cache) GetSearchStats(req *SearchRequest) *SearchStats {
+	entry, found := c.cache.Get(c.statsCacheKey(req))
+	if !found || entry == nil {
+		return nil
+	}
+
+	return entry.Stats
+}
+
+// PutSearchStats stores statistics for the request's match set. The cache is
+// typed to search results, so the statistics travel in an otherwise empty one.
+func (c *Cache) PutSearchStats(req *SearchRequest, stats *SearchStats, ttl time.Duration) {
+	c.cache.SetWithTTL(c.statsCacheKey(req), &SearchResult{Stats: stats}, 1, ttl)
+	c.cache.Wait()
+}
+
 // Clear clears all cached entries
 func (c *Cache) Clear() {
 	if c != nil && c.cache != nil {

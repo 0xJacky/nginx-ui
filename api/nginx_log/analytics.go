@@ -64,6 +64,10 @@ type SummaryStats struct {
 	TotalTraffic    int64   `json:"total_traffic"`
 	UniquePages     int     `json:"unique_pages"`
 	AvgTrafficPerPV float64 `json:"avg_traffic_per_pv"`
+
+	// TrafficApproximate reports that the traffic figures were extrapolated
+	// because the match set was larger than the stats scan budget.
+	TrafficApproximate bool `json:"traffic_approximate"`
 }
 
 type AdvancedSearchResponseAPI struct {
@@ -226,6 +230,7 @@ func AdvancedSearchLogs(c *gin.Context) {
 		IncludeFacets:       true,                         // Re-enable facets for accurate summary stats
 		FacetFields:         []string{"ip", "path_exact"}, // For UV and Unique Pages
 		FacetSize:           10000,                        // Balanced: large enough for most cases, but not excessive
+		IncludeStats:        true,                         // Traffic totals for the whole match set, not just this page
 	}
 
 	// If no sorting is specified, default to sorting by timestamp descending.
@@ -310,12 +315,8 @@ func AdvancedSearchLogs(c *gin.Context) {
 
 	// 1. Extract entries from hits
 	entries := make([]map[string]interface{}, len(result.Hits))
-	var totalTraffic int64 // Total traffic is for the entire result set, must be calculated separately if needed.
 	for i, hit := range result.Hits {
 		entries[i] = hit.Fields
-		if bytesSent, ok := hit.Fields["bytes_sent"].(float64); ok {
-			totalTraffic += int64(bytesSent)
-		}
 	}
 
 	// 2. Calculate summary stats from the overall results using Counter for accuracy
@@ -350,25 +351,25 @@ func AdvancedSearchLogs(c *gin.Context) {
 		}
 	}
 
-	// Note: TotalTraffic is not available for the whole result set without a separate query.
-	// We will approximate it based on the current page's average for now.
-	var avgBytesOnPage float64
-	if len(result.Hits) > 0 {
-		avgBytesOnPage = float64(totalTraffic) / float64(len(result.Hits))
-	}
-	approximatedTotalTraffic := int64(avgBytesOnPage * float64(pv))
-
+	// Traffic totals come from the stats aggregation, which scans the whole
+	// match set (or a bounded prefix of it, in which case it says so) rather
+	// than extrapolating from the current page.
+	var totalTraffic int64
 	var avgTraffic float64
-	if pv > 0 {
-		avgTraffic = float64(approximatedTotalTraffic) / float64(pv)
+	var trafficApproximate bool
+	if result.Stats != nil {
+		totalTraffic = result.Stats.TotalBytes
+		avgTraffic = result.Stats.AvgBytes
+		trafficApproximate = result.Stats.Approximate
 	}
 
 	summary := SummaryStats{
-		UV:              uv,
-		PV:              pv,
-		TotalTraffic:    approximatedTotalTraffic,
-		UniquePages:     uniquePages,
-		AvgTrafficPerPV: avgTraffic,
+		UV:                 uv,
+		PV:                 pv,
+		TotalTraffic:       totalTraffic,
+		UniquePages:        uniquePages,
+		AvgTrafficPerPV:    avgTraffic,
+		TrafficApproximate: trafficApproximate,
 	}
 
 	// 3. Assemble the final response
@@ -516,10 +517,13 @@ type DashboardResponse struct {
 	Summary          struct {
 		TotalUV         int     `json:"total_uv"`          // Total unique visitors
 		TotalPV         int     `json:"total_pv"`          // Total page views
+		TotalTraffic    int64   `json:"total_traffic"`     // Total bytes sent
 		AvgDailyUV      float64 `json:"avg_daily_uv"`      // Average daily UV
 		AvgDailyPV      float64 `json:"avg_daily_pv"`      // Average daily PV
 		PeakHour        int     `json:"peak_hour"`         // Peak traffic hour (0-23)
 		PeakHourTraffic int     `json:"peak_hour_traffic"` // Peak hour PV count
+		AvgQPS          float64 `json:"avg_qps"`           // Requests per second across the range
+		PeakQPS         float64 `json:"peak_qps"`          // Busiest minute expressed per second
 	} `json:"summary"`
 }
 
