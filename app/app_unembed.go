@@ -7,7 +7,7 @@ import (
 	"io/fs"
 )
 
-//go:embed i18n.json src/language/* src/language/*/*
+//go:embed i18n.json src/language/*
 var DistFS embed.FS
 
 // GetDistFS returns the embedded filesystem for unembed build

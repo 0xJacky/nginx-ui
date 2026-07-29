@@ -48,13 +48,13 @@ const columns: StdTableColumn[] = [{
 
     return (
       <div class="flex flex-col items-start gap-1">
-        <Tag color={isPaired ? 'green' : 'orange'} class="m-0 whitespace-nowrap">
+        <Tag color={isPaired ? 'green' : 'orange'} class="m-0">
           {isPaired ? $gettext('Paired signature') : $gettext('Legacy secret')}
         </Tag>
-        {credential && (
+        {record.credential_status && (
           <Badge
-            status={credential.status}
-            text={<span class="text-xs opacity-65">{credential.text()}</span>}
+            status={credential?.status ?? 'default'}
+            text={<span class="text-xs opacity-65">{credential ? credential.text() : record.credential_status}</span>}
           />
         )}
       </div>

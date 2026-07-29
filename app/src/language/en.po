@@ -614,7 +614,7 @@ msgstr ""
 #: src/components/NodeSelector/NodeSelector.vue:65
 #: src/components/NodeSelector/NodeSelector.vue:79
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
-#: src/views/dashboard/Nodes.vue:110 src/views/node/nodeColumns.tsx:59
+#: src/views/dashboard/Nodes.vue:110 src/views/node/nodeColumns.tsx:74
 #: src/views/upstream/SocketList.vue:45
 msgid "Online"
 msgstr ""
@@ -623,7 +623,7 @@ msgstr ""
 #: src/components/NodeCard/NodeCard.vue:59
 #: src/components/NodeSelector/NodeSelector.vue:85
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
-#: src/views/dashboard/Nodes.vue:117 src/views/node/nodeColumns.tsx:63
+#: src/views/dashboard/Nodes.vue:117 src/views/node/nodeColumns.tsx:78
 #: src/views/upstream/SocketList.vue:45
 msgid "Offline"
 msgstr ""
@@ -871,7 +871,7 @@ msgstr ""
 #: src/views/dns/DNSGroupRecordManager.vue:173
 #: src/views/dns/DNSGroupRecordManager.vue:1357
 #: src/views/namespace/columns.ts:9 src/views/nginx_log/NginxLogList.vue:156
-#: src/views/node/nodeColumns.tsx:8
+#: src/views/node/nodeColumns.tsx:16
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:84
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:36
 #: src/views/site/site_list/columns.tsx:30
@@ -1328,7 +1328,7 @@ msgstr ""
 #: src/views/nginx_log/structured/components/SearchFilters.vue:106
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:242
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:522
-#: src/views/node/nodeColumns.tsx:51
+#: src/views/node/nodeColumns.tsx:66
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:29
 #: src/views/site/site_list/columns.tsx:120 src/views/stream/columns.tsx:87
 msgid "Status"
@@ -3969,8 +3969,8 @@ msgstr ""
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:193
 #: src/views/backup/AutoBackup/AutoBackup.vue:203
-#: src/views/dns/DDNSManager.vue:320 src/views/node/nodeColumns.tsx:77
-#: src/views/node/nodeColumns.tsx:83
+#: src/views/dns/DDNSManager.vue:320 src/views/node/nodeColumns.tsx:92
+#: src/views/node/nodeColumns.tsx:98
 #: src/views/preference/components/ExternalNotify/columns.tsx:47
 #: src/views/preference/tabs/HTTPSettings.vue:24
 #: src/views/preference/tabs/LogrotateSettings.vue:20
@@ -3987,8 +3987,8 @@ msgstr ""
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:194
 #: src/views/backup/AutoBackup/AutoBackup.vue:204
-#: src/views/dns/DDNSManager.vue:320 src/views/node/nodeColumns.tsx:68
-#: src/views/node/nodeColumns.tsx:86
+#: src/views/dns/DDNSManager.vue:320 src/views/node/nodeColumns.tsx:83
+#: src/views/node/nodeColumns.tsx:101
 #: src/views/preference/tabs/HTTPSettings.vue:24
 #: src/views/preference/tabs/NodeSettings.vue:64
 #: src/views/preference/tabs/NodeSettings.vue:69
@@ -4034,7 +4034,7 @@ msgstr ""
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
 #: src/views/config/configColumns.tsx:44 src/views/dns/DNSCredential.vue:65
 #: src/views/dns/DNSDomainList.vue:236 src/views/dns/DNSGroupList.vue:33
-#: src/views/namespace/columns.ts:91 src/views/node/nodeColumns.tsx:97
+#: src/views/namespace/columns.ts:91 src/views/node/nodeColumns.tsx:112
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:39
 #: src/views/site/site_list/columns.tsx:113 src/views/stream/columns.tsx:80
 #: src/views/stream/components/RightPanel/Basic.vue:35
@@ -4078,7 +4078,7 @@ msgstr ""
 #: src/views/dns/DNSGroupRecordManager.vue:145
 #: src/views/dns/DNSGroupRecordManager.vue:1362
 #: src/views/namespace/columns.ts:97 src/views/nginx_log/NginxLogList.vue:339
-#: src/views/node/nodeColumns.tsx:104
+#: src/views/node/nodeColumns.tsx:119
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:85
 #: src/views/site/site_list/columns.tsx:160 src/views/stream/columns.tsx:123
@@ -7071,7 +7071,7 @@ msgid "Avg Daily UV"
 msgstr ""
 
 #: src/views/nginx_log/dashboard/components/TopUrlsTable.vue:13
-#: src/views/node/nodeColumns.tsx:18 src/views/system/Licenses.vue:34
+#: src/views/node/nodeColumns.tsx:26 src/views/system/Licenses.vue:34
 msgid "URL"
 msgstr ""
 
@@ -7578,19 +7578,35 @@ msgstr ""
 msgid "Please select at least one node to upgrade"
 msgstr ""
 
-#: src/views/node/nodeColumns.tsx:30 src/views/system/Licenses.vue:28
+#: src/views/node/nodeColumns.tsx:9
+msgid "Active"
+msgstr ""
+
+#: src/views/node/nodeColumns.tsx:10
+msgid "Rotating"
+msgstr ""
+
+#: src/views/node/nodeColumns.tsx:11
+msgid "Unpaired"
+msgstr ""
+
+#: src/views/node/nodeColumns.tsx:12
+msgid "Revoked"
+msgstr ""
+
+#: src/views/node/nodeColumns.tsx:38 src/views/system/Licenses.vue:28
 msgid "Version"
 msgstr ""
 
-#: src/views/node/nodeColumns.tsx:35
+#: src/views/node/nodeColumns.tsx:43
 msgid "Authentication"
 msgstr ""
 
-#: src/views/node/nodeColumns.tsx:42
+#: src/views/node/nodeColumns.tsx:52
 msgid "Paired signature"
 msgstr ""
 
-#: src/views/node/nodeColumns.tsx:42
+#: src/views/node/nodeColumns.tsx:52
 msgid "Legacy secret"
 msgstr ""
 
