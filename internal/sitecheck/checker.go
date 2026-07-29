@@ -71,6 +71,9 @@ func NewSiteChecker(options CheckOptions) *SiteChecker {
 
 // SetUpdateCallback sets the callback function for site updates
 func (sc *SiteChecker) SetUpdateCallback(callback func([]*SiteInfo)) {
+	sc.mu.Lock()
+	defer sc.mu.Unlock()
+
 	sc.onUpdateCallback = callback
 }
 
@@ -510,15 +513,18 @@ func (sc *SiteChecker) CheckAllSites(ctx context.Context) {
 	wg.Wait()
 
 	// Notify WebSocket clients of the update
-	if sc.onUpdateCallback != nil {
-		sc.mu.RLock()
-		sites := make([]*SiteInfo, 0, len(sc.sites))
-		for _, site := range sc.sites {
-			sites = append(sites, site)
-		}
+	sc.mu.RLock()
+	updateCallback := sc.onUpdateCallback
+	if updateCallback == nil {
 		sc.mu.RUnlock()
-		sc.onUpdateCallback(sites)
+		return
 	}
+	sites := make([]*SiteInfo, 0, len(sc.sites))
+	for _, site := range sc.sites {
+		sites = append(sites, site)
+	}
+	sc.mu.RUnlock()
+	updateCallback(sites)
 }
 
 // dedupeKey builds a stable key for an indexed site URL so aliases that

@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"reflect"
 	"runtime"
+	"runtime/debug"
 
 	"github.com/0xJacky/Nginx-UI/internal/analytic"
 	"github.com/0xJacky/Nginx-UI/internal/cache"
@@ -88,6 +89,7 @@ func InitAfterDatabase(ctx context.Context) {
 		registerPredefinedUser,
 		cluster.RegisterPredefinedNodes,
 		RegisterAcmeUser,
+		sitecheck.Init,
 	}
 
 	for _, v := range syncs {
@@ -100,7 +102,6 @@ func InitAfterDatabase(ctx context.Context) {
 		analytic.RetrieveNodesStatus,
 		passkey.Init,
 		mcp.Init,
-		sitecheck.Init,
 		nginx_log.InitializeServices,
 		user.InitTokenCache,
 	}
@@ -116,6 +117,17 @@ func recovery() {
 		buf := make([]byte, 1024)
 		runtime.Stack(buf, false)
 		logger.Errorf("%s\n%s", err, buf)
+	}
+}
+
+// RecoverWithLocalPanicLog writes a recovered panic to the local logger when
+// the SLS producer is unavailable, then re-panics so Cosy can handle it.
+func RecoverWithLocalPanicLog() {
+	if err := recover(); err != nil {
+		if !logger.HasSLSSupport() {
+			logger.Errorf("Application initialization panic before SLS was ready: %v\n%s", err, debug.Stack())
+		}
+		panic(err)
 	}
 }
 

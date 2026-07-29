@@ -40,6 +40,8 @@ func Program(ctx context.Context, confPath string) func(l []net.Listener) error 
 		cosy.RegisterMigration(migrate.Migrations)
 
 		cosy.RegisterInitFunc(func() {
+			defer kernel.RecoverWithLocalPanicLog()
+
 			kernel.Boot(programCtx)
 			router.InitRouter()
 		})

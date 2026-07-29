@@ -22,26 +22,51 @@ type Service struct {
 }
 
 var (
-	globalService *Service
+	globalService        *Service
+	globalServiceMu      sync.RWMutex
+	globalUpdateCallback func([]*SiteInfo)
 )
 
 // Init initializes the site checking service
 func Init(ctx context.Context) {
-	globalService = NewService(ctx, DefaultCheckOptions())
+	service := NewService(ctx, DefaultCheckOptions())
+
+	globalServiceMu.Lock()
+	globalService = service
+	if globalUpdateCallback != nil {
+		service.SetUpdateCallback(globalUpdateCallback)
+	}
+	globalServiceMu.Unlock()
 
 	// Register post-scan callback to refresh sites when configs change
 	cache.RegisterPostScanCallback(func() {
-		if globalService != nil && globalService.IsRunning() {
-			globalService.RefreshSites()
+		service := GetService()
+		if service != nil && service.IsRunning() {
+			service.RefreshSites()
 		}
 	})
 
-	globalService.Start()
+	service.Start()
 }
 
 // GetService returns the singleton service instance
 func GetService() *Service {
+	globalServiceMu.RLock()
+	defer globalServiceMu.RUnlock()
+
 	return globalService
+}
+
+// SetUpdateCallback registers the callback used for site status updates. The
+// callback is retained when route setup runs before the service is initialized.
+func SetUpdateCallback(callback func([]*SiteInfo)) {
+	globalServiceMu.Lock()
+	defer globalServiceMu.Unlock()
+
+	globalUpdateCallback = callback
+	if globalService != nil {
+		globalService.SetUpdateCallback(callback)
+	}
 }
 
 // waitForSiteCollection waits for the cache scanner to collect sites with progressive backoff

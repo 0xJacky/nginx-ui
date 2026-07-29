@@ -162,8 +162,7 @@ func GetManager() *WSManager {
 
 // InitWebSocketNotifications sets up the callback for site check updates
 func InitWebSocketNotifications() {
-	service := sitecheck.GetService()
-	service.SetUpdateCallback(func(sites []*sitecheck.SiteInfo) {
+	sitecheck.SetUpdateCallback(func(sites []*sitecheck.SiteInfo) {
 		wsManager.BroadcastUpdate(sites)
 	})
 }
