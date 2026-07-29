@@ -712,33 +712,30 @@ jobs:
       - name: Generate Homebrew Formula
         id: formula
         run: |
-          VERSION="${{ steps.release.outputs.version }}"
-
           cat > nginx-ui.rb << 'EOF'
           class NginxUi < Formula
             desc     "Yet another Nginx Web UI"
             homepage "https://github.com/0xJacky/nginx-ui"
-            version  "${{ steps.release.outputs.version }}"
             license  "AGPL-3.0"
 
             on_macos do
               on_intel do
-                url     "https://github.com/0xJacky/nginx-ui/releases/download/v#{version}/nginx-ui-macos-64.tar.gz"
+                url     "https://github.com/0xJacky/nginx-ui/releases/download/${{ steps.release.outputs.tag_name }}/nginx-ui-macos-64.tar.gz"
                 sha256  "${{ steps.checksums.outputs.macos_intel_sha256 }}"
               end
               on_arm do
-                url     "https://github.com/0xJacky/nginx-ui/releases/download/v#{version}/nginx-ui-macos-arm64-v8a.tar.gz"
+                url     "https://github.com/0xJacky/nginx-ui/releases/download/${{ steps.release.outputs.tag_name }}/nginx-ui-macos-arm64-v8a.tar.gz"
                 sha256  "${{ steps.checksums.outputs.macos_arm_sha256 }}"
               end
             end
 
             on_linux do
               on_intel do
-                url     "https://github.com/0xJacky/nginx-ui/releases/download/v#{version}/nginx-ui-linux-64.tar.gz"
+                url     "https://github.com/0xJacky/nginx-ui/releases/download/${{ steps.release.outputs.tag_name }}/nginx-ui-linux-64.tar.gz"
                 sha256  "${{ steps.checksums.outputs.linux_intel_sha256 }}"
               end
               on_arm do
-                url     "https://github.com/0xJacky/nginx-ui/releases/download/v#{version}/nginx-ui-linux-arm64-v8a.tar.gz"
+                url     "https://github.com/0xJacky/nginx-ui/releases/download/${{ steps.release.outputs.tag_name }}/nginx-ui-linux-arm64-v8a.tar.gz"
                 sha256  "${{ steps.checksums.outputs.linux_arm_sha256 }}"
               end
             end
