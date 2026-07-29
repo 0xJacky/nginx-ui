@@ -13,7 +13,7 @@ Para consultar la documentación, visite [nginxui.com](https://nginxui.com).
 
 ## Stargazers en el tiempo
 
-[![Stargazers over time](https://starchart.cc/0xJacky/nginx-ui.svg)](https://starchart.cc/0xJacky/nginx-ui)
+[![Stargazers over time](https://cloud.nginxui.com/stars/0xJacky/nginx-ui.svg)](https://cloud.nginxui.com/stars/0xJacky/nginx-ui.svg)
 
 
 [English](../../README.md) | Español | [简体中文](README-zh_CN.md) | [繁體中文](README-zh_TW.md)
