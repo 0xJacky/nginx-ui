@@ -448,7 +448,7 @@ async function handleTest() {
       message.success($gettext('Test successful! Response time: %{response_time}ms', { response_time: String(result.response_time || 0) }))
     }
     else {
-      message.error($gettext('Test failed: %{error}', { error: result.error || 'Unknown error' }, true))
+      message.error($gettext('Test failed: %{error}', { error: result.error || 'Unknown error' }))
     }
   }
   catch (error) {

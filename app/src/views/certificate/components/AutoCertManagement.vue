@@ -64,7 +64,7 @@ function handleRenewed() {
       v-if="data.certificate_info"
       layout="vertical"
     >
-      <AFormItem :label="$gettext('Certificate Status')">
+      <AFormItem :label="$ngettext('Certificate Status', 'Certificates Status', 1)">
         <CertInfo
           :cert="data.certificate_info"
           class="max-w-96"

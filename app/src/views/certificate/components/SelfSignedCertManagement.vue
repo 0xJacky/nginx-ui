@@ -22,7 +22,7 @@ const data = defineModel<SelfSignedCertPayload>('value', { required: true })
       v-if="certificateInfo"
       layout="vertical"
     >
-      <AFormItem :label="$gettext('Certificate Status')">
+      <AFormItem :label="$ngettext('Certificate Status', 'Certificates Status', 1)">
         <CertInfo
           :cert="certificateInfo"
           class="max-w-96"
