@@ -2,7 +2,9 @@ package searcher
 
 import (
 	"context"
+	"fmt"
 	"path/filepath"
+	"sync"
 	"testing"
 
 	"github.com/blevesearch/bleve/v2"
@@ -40,7 +42,7 @@ func TestDistributedSearcher_SwapShards(t *testing.T) {
 
 	err = shard1.Index("doc1", doc1)
 	require.NoError(t, err)
-	
+
 	err = shard2.Index("doc2", doc2)
 	require.NoError(t, err)
 
@@ -87,6 +89,85 @@ func TestDistributedSearcher_SwapShards(t *testing.T) {
 	assert.LessOrEqual(t, result.TotalHits, uint64(2))    // But no more than two
 }
 
+func TestDistributedSearcher_ConcurrentSearchAndSwap(t *testing.T) {
+	tempDir := t.TempDir()
+	mapping := bleve.NewIndexMapping()
+
+	shard1, err := bleve.New(filepath.Join(tempDir, "shard1.bleve"), mapping)
+	require.NoError(t, err)
+	defer shard1.Close()
+	require.NoError(t, shard1.Index("doc1", map[string]interface{}{
+		"content": "test document one",
+	}))
+
+	shard2, err := bleve.New(filepath.Join(tempDir, "shard2.bleve"), mapping)
+	require.NoError(t, err)
+	defer shard2.Close()
+	require.NoError(t, shard2.Index("doc2", map[string]interface{}{
+		"content": "test document two",
+	}))
+
+	config := DefaultSearcherConfig()
+	config.EnableCache = false
+	distributedSearcher := NewSearcher(config, []bleve.Index{shard1})
+	defer distributedSearcher.Stop()
+
+	stopSearches := make(chan struct{})
+	searchErrors := make(chan error, 1)
+	searchStarted := make(chan struct{})
+	var searchWaitGroup sync.WaitGroup
+	searchWaitGroup.Add(1)
+	go func() {
+		defer searchWaitGroup.Done()
+		close(searchStarted)
+		for {
+			select {
+			case <-stopSearches:
+				return
+			default:
+			}
+
+			result, searchErr := distributedSearcher.Search(context.Background(), &SearchRequest{
+				Query: "test",
+				Limit: 10,
+			})
+			if searchErr != nil {
+				searchErrors <- searchErr
+				return
+			}
+			if result.TotalHits == 0 {
+				searchErrors <- fmt.Errorf("concurrent search returned no hits")
+				return
+			}
+
+			_ = distributedSearcher.IsHealthy()
+			_ = distributedSearcher.GetShards()
+		}
+	}()
+
+	<-searchStarted
+	for i := 0; i < 25; i++ {
+		shards := []bleve.Index{shard1}
+		if i%2 == 1 {
+			shards = append(shards, shard2)
+		}
+		require.NoError(t, distributedSearcher.SwapShards(shards))
+	}
+
+	close(stopSearches)
+	searchWaitGroup.Wait()
+	select {
+	case searchErr := <-searchErrors:
+		require.NoError(t, searchErr)
+	default:
+	}
+
+	shardSnapshot := distributedSearcher.GetShards()
+	require.NotEmpty(t, shardSnapshot)
+	shardSnapshot[0] = nil
+	require.NotNil(t, distributedSearcher.GetShards()[0], "GetShards must return an isolated snapshot")
+}
+
 func TestDistributedSearcher_SwapShards_NotRunning(t *testing.T) {
 	tempDir := t.TempDir()
 
@@ -101,7 +182,7 @@ func TestDistributedSearcher_SwapShards_NotRunning(t *testing.T) {
 	config := DefaultSearcherConfig()
 	searcher := NewSearcher(config, []bleve.Index{shard})
 	require.NotNil(t, searcher)
-	
+
 	err = searcher.Stop()
 	require.NoError(t, err)
 
@@ -146,7 +227,7 @@ func TestDistributedSearcher_HotSwap_ZeroDowntime(t *testing.T) {
 	gen2Path := filepath.Join(tempDir, "gen2.bleve")
 
 	mapping := bleve.NewIndexMapping()
-	
+
 	// Generation 1 index
 	gen1Index, err := bleve.New(gen1Path, mapping)
 	require.NoError(t, err)
@@ -171,10 +252,10 @@ func TestDistributedSearcher_HotSwap_ZeroDowntime(t *testing.T) {
 
 	err = gen1Index.Index("old_doc", gen1Doc)
 	require.NoError(t, err)
-	
+
 	err = gen2Index.Index("new_doc", gen2Doc)
 	require.NoError(t, err)
-	
+
 	// Ensure both indexes are flushed
 	err = gen1Index.SetInternal([]byte("_flush"), []byte("true"))
 	require.NoError(t, err)
@@ -249,7 +330,7 @@ func TestDistributedSearcher_SwapShards_StatsUpdate(t *testing.T) {
 	// Check stats after swap
 	stats = searcher.GetStats()
 	assert.Len(t, stats.ShardStats, 2)
-	
+
 	// Verify shard IDs are correct
 	shardIDs := make([]int, len(stats.ShardStats))
 	for i, stat := range stats.ShardStats {

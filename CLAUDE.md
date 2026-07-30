@@ -28,7 +28,8 @@ This project is a web-based NGINX management interface built with Go backend and
 - Follow Cosy Error Handler best practices for error management
 - Implement standardized CRUD operations using Cosy framework
 - Apply efficient database pagination for large datasets
-- Validate changes with `go test ./... -race -cover` before pushing
+- Before committing backend changes, run the CI-equivalent unit test command: `GOWORK=off go test -tags=unembed -race -cover -count=1 ./...`
+- Keep `-count=1` in pre-commit unit tests so cached results cannot hide race conditions or flaky failures
 - Keep files modular and well-organized by functionality
 - **All comments and documentation must be in English**
 
@@ -76,7 +77,7 @@ This project is a web-based NGINX management interface built with Go backend and
 
 ## Development Commands
 - **Frontend**: `bun run dev`, `bun run lint`, `bun run typecheck`, `bun run build`
-- **Backend**: `go generate ./...`, `go build ./...`, run `go test ./... -race -cover`; for release artifacts reuse the README command with `-tags=jsoniter -ldflags "$LD_FLAGS ..."`.
+- **Backend**: `go generate ./...`, `go build ./...`, run `GOWORK=off go test -tags=unembed -race -cover -count=1 ./...`; for release artifacts reuse the README command with `-tags=jsoniter -ldflags "$LD_FLAGS ..."`.
 - **Demo stack**: `docker-compose -f docker-compose-demo.yml up` to bootstrap the sample environment
 
 

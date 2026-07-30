@@ -26,6 +26,8 @@ type Searcher struct {
 
 	// Concurrency control
 	semaphore chan struct{}
+	stateMu   sync.RWMutex // protects shards and indexAlias
+	swapMu    sync.Mutex   // serializes shard swaps with shutdown
 
 	// State
 	running int32
@@ -154,6 +156,9 @@ func (s *Searcher) Search(ctx context.Context, req *SearchRequest) (*SearchResul
 		return nil, fmt.Errorf("failed to build query: %w", err)
 	}
 	indexAlias, releaseAlias := s.indexAliasForRequest(req)
+	if indexAlias == nil {
+		return nil, fmt.Errorf("searcher is not running")
+	}
 	defer releaseAlias()
 
 	// Execute search across shards
@@ -246,7 +251,12 @@ func (s *Searcher) executeGlobalScoringSearch(
 }
 
 func (s *Searcher) indexAliasForRequest(req *SearchRequest) (bleve.IndexAlias, func()) {
-	return indexAliasForLogPaths(s.indexAlias, s.shards, req.UseMainLogPath, req.LogPaths)
+	s.stateMu.RLock()
+	defaultAlias := s.indexAlias
+	shards := append([]bleve.Index(nil), s.shards...)
+	s.stateMu.RUnlock()
+
+	return indexAliasForLogPaths(defaultAlias, shards, req.UseMainLogPath, req.LogPaths)
 }
 
 // convertBleveResult converts a Bleve SearchResult to our SearchResult format
@@ -444,8 +454,12 @@ func (s *Searcher) setRequestDefaults(req *SearchRequest) {
 func (s *Searcher) getHealthyShards() []int {
 	// With IndexAlias, Bleve handles shard health internally
 	// Return all shard IDs since the alias will route correctly
-	healthy := make([]int, len(s.shards))
-	for i := range s.shards {
+	s.stateMu.RLock()
+	shardCount := len(s.shards)
+	s.stateMu.RUnlock()
+
+	healthy := make([]int, shardCount)
+	for i := range healthy {
 		healthy[i] = i
 	}
 	return healthy
@@ -530,40 +544,43 @@ func (s *Searcher) GetConfig() *Config {
 	return s.config
 }
 
-// GetShards returns the underlying shards for cardinality counting
+// GetShards returns an isolated shard snapshot for cardinality counting.
 func (s *Searcher) GetShards() []bleve.Index {
-	return s.shards
+	s.stateMu.RLock()
+	defer s.stateMu.RUnlock()
+
+	return append([]bleve.Index(nil), s.shards...)
 }
 
 // SwapShards atomically replaces the current shards with new ones using IndexAlias.Swap()
 // This follows Bleve best practices for zero-downtime index updates
 func (s *Searcher) SwapShards(newShards []bleve.Index) error {
+	s.swapMu.Lock()
+	defer s.swapMu.Unlock()
+
 	if atomic.LoadInt32(&s.running) == 0 {
 		return fmt.Errorf("searcher is not running")
 	}
 
+	newShards = wrapRecoveringIndexes(newShards)
+
+	s.stateMu.Lock()
 	if s.indexAlias == nil {
+		s.stateMu.Unlock()
 		return fmt.Errorf("indexAlias is nil")
 	}
 
-	newShards = wrapRecoveringIndexes(newShards)
-
-	// Store old shards for logging
 	oldShards := s.shards
-
-	// Perform atomic swap using IndexAlias - this is the key Bleve operation
-	// that provides zero-downtime index updates
 	logger.Debugf("SwapShards: Starting atomic swap - old=%d, new=%d", len(oldShards), len(newShards))
 
 	swapStartTime := time.Now()
 	s.indexAlias.Swap(newShards, oldShards)
 	swapDuration := time.Since(swapStartTime)
+	s.shards = newShards
+	s.stateMu.Unlock()
 
 	logger.Infof("IndexAlias.Swap completed in %v (old=%d shards, new=%d shards)",
 		swapDuration, len(oldShards), len(newShards))
-
-	// Update internal shards reference to match the IndexAlias
-	s.shards = newShards
 
 	// Clear cache after shard swap to prevent stale results
 	// Use goroutine to avoid potential deadlock during shard swap
@@ -620,8 +637,14 @@ func (s *Searcher) Stop() error {
 	var err error
 
 	s.closeOnce.Do(func() {
+		s.swapMu.Lock()
+		defer s.swapMu.Unlock()
+
 		// Set running to 0
 		atomic.StoreInt32(&s.running, 0)
+
+		s.stateMu.Lock()
+		defer s.stateMu.Unlock()
 
 		// Close the index alias first (this doesn't close underlying indexes)
 		if s.indexAlias != nil {
