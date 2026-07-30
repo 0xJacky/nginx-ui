@@ -243,6 +243,7 @@ func (c *Counter) collectTermsUsingPagination(
 	pageSize := 10000 // Large page size for efficiency
 	maxPages := 1000  // Support very large datasets
 	processedDocs := 0
+	var searchAfter []string
 
 	logger.Infof("Starting IndexAlias pagination for field '%s' (pageSize=%d)", req.Field, pageSize)
 
@@ -278,8 +279,14 @@ func (c *Counter) collectTermsUsingPagination(
 
 		searchReq := bleve.NewSearchRequest(boolQuery)
 		searchReq.Size = pageSize
-		searchReq.From = page * pageSize
 		searchReq.Fields = []string{req.Field}
+		// A stable cursor keeps every shard's collector bounded to pageSize.
+		// Offset pagination makes each shard retain From+Size candidates and
+		// eventually exhausts the shared search-memory quota on deep scans.
+		searchReq.SortBy([]string{"_id"})
+		if len(searchAfter) > 0 {
+			searchReq.SearchAfter = searchAfter
+		}
 
 		// Execute with IndexAlias and global scoring
 		result, err := indexAlias.SearchInContext(ctx, searchReq)
@@ -326,6 +333,15 @@ func (c *Counter) collectTermsUsingPagination(
 			logger.Warnf("Very large cardinality detected (%d terms), stopping for memory safety", len(terms))
 			break
 		}
+
+		lastHit := result.Hits[len(result.Hits)-1]
+		if len(lastHit.Sort) == 0 {
+			return terms, uint64(processedDocs), fmt.Errorf(
+				"IndexAlias pagination stopped at page %d because the last hit has no sort values",
+				page,
+			)
+		}
+		searchAfter = append(searchAfter[:0], lastHit.Sort...)
 	}
 
 	return terms, uint64(processedDocs), nil
