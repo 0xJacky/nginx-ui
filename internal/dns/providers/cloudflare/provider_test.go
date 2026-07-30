@@ -2,6 +2,7 @@ package cloudflare
 
 import (
 	"encoding/json"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -179,6 +180,42 @@ func TestProviderUsesLegacyAPIKeyHeaders(t *testing.T) {
 	require.Empty(t, records)
 }
 
+func TestProviderUsesProductionBaseURLByDefault(t *testing.T) {
+	t.Parallel()
+
+	requestedPaths := make([]string, 0, 2)
+	httpClient := &http.Client{Transport: roundTripFunc(func(request *http.Request) (*http.Response, error) {
+		require.Equal(t, "https", request.URL.Scheme)
+		require.Equal(t, "api.cloudflare.com", request.URL.Host)
+		requestedPaths = append(requestedPaths, request.URL.Path)
+
+		body := `{"success":true,"errors":[],"messages":[],"result":[],"result_info":{"page":1,"per_page":100,"count":0,"total_count":0,"total_pages":1}}`
+		if request.URL.Path == "/client/v4/zones" {
+			body = `{"success":true,"errors":[],"messages":[],"result":[{"id":"zone-1","name":"example.com"}],"result_info":{"page":1,"per_page":100,"count":1,"total_count":1,"total_pages":1}}`
+		}
+
+		return &http.Response{
+			StatusCode: http.StatusOK,
+			Header:     http.Header{"Content-Type": []string{"application/json"}},
+			Body:       io.NopCloser(strings.NewReader(body)),
+			Request:    request,
+		}, nil
+	})}
+
+	createdProvider, err := newProviderWithHTTPClient(&dns.Credential{
+		Values: map[string]string{"CF_API_TOKEN": "test-token"},
+	}, httpClient)
+	require.NoError(t, err)
+
+	records, err := createdProvider.ListRecords(t.Context(), "example.com", dns.RecordFilter{})
+	require.NoError(t, err)
+	require.Empty(t, records)
+	require.Equal(t, []string{
+		"/client/v4/zones",
+		"/client/v4/zones/zone-1/dns_records",
+	}, requestedPaths)
+}
+
 func cloudflareRecord(id string, payload struct {
 	Type     string   `json:"type"`
 	Name     string   `json:"name"`
@@ -215,4 +252,10 @@ func writeCloudflareResponse(t *testing.T, w http.ResponseWriter, result any, pa
 	if err := json.NewEncoder(w).Encode(response); err != nil {
 		t.Errorf("encode Cloudflare response: %v", err)
 	}
+}
+
+type roundTripFunc func(*http.Request) (*http.Response, error)
+
+func (f roundTripFunc) RoundTrip(request *http.Request) (*http.Response, error) {
+	return f(request)
 }

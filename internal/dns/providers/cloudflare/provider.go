@@ -28,10 +28,13 @@ func init() {
 }
 
 func newProvider(cred *dns.Credential) (dns.Provider, error) {
-	httpClient := &http.Client{Timeout: defaultTimeout}
+	return newProviderWithHTTPClient(cred, &http.Client{Timeout: defaultTimeout})
+}
 
+func newProviderWithHTTPClient(cred *dns.Credential, httpClient *http.Client) (dns.Provider, error) {
 	opts := []cfopt.RequestOption{
 		cfopt.WithHTTPClient(httpClient),
+		cfopt.WithEnvironmentProduction(),
 	}
 
 	if baseURL := firstNonEmpty(
