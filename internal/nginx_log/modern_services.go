@@ -130,6 +130,10 @@ func initializeWithDefaults(ctx context.Context) (*searcher.Searcher, analytics.
 	indexerConfig := indexer.DefaultIndexerConfig()
 	// Use config directory for index path
 	indexerConfig.IndexPath = getConfigDirIndexPath()
+	indexStorageNeedsReset, err := indexer.PrepareIndexStorage(indexerConfig.IndexPath)
+	if err != nil {
+		return nil, nil, nil, nil, fmt.Errorf("failed to prepare nginx log index storage: %w", err)
+	}
 	shardManager := indexer.NewGroupedShardManager(indexerConfig)
 	indexerInstance := indexer.NewParallelIndexer(indexerConfig, shardManager)
 
@@ -143,6 +147,17 @@ func initializeWithDefaults(ctx context.Context) (*searcher.Searcher, analytics.
 	logFileManagerInstance := indexer.NewLogFileManager()
 	// Inject indexer for precise doc counting before persisting
 	logFileManagerInstance.SetIndexer(indexerInstance)
+	if indexStorageNeedsReset {
+		if err := logFileManagerInstance.DeleteAllIndexMetadata(); err != nil {
+			_ = indexerInstance.Stop()
+			return nil, nil, nil, nil, fmt.Errorf("failed to reset incompatible nginx log index metadata: %w", err)
+		}
+		if err := indexer.CommitIndexStorageVersion(indexerConfig.IndexPath); err != nil {
+			_ = indexerInstance.Stop()
+			return nil, nil, nil, nil, fmt.Errorf("failed to commit nginx log index storage migration: %w", err)
+		}
+		logger.Warn("Reset incompatible nginx log indexes; a clean rebuild will be scheduled")
+	}
 
 	return searcherInstance, analyticsInstance, indexerInstance, logFileManagerInstance, nil
 }

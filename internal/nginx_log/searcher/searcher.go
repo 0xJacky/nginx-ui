@@ -52,6 +52,7 @@ func NewSearcher(config *Config, shards []bleve.Index) *Searcher {
 	if config == nil {
 		config = DefaultSearcherConfig()
 	}
+	shards = wrapRecoveringIndexes(shards)
 
 	// Create index alias for global scoring across shards
 	indexAlias := bleve.NewIndexAlias(shards...)
@@ -225,6 +226,9 @@ func (s *Searcher) executeGlobalScoringSearch(ctx context.Context, query query.Q
 	result, err := s.indexAlias.SearchInContext(searchCtx, searchReq)
 	if err != nil {
 		return nil, fmt.Errorf("distributed search failed: %w", err)
+	}
+	if err := searchResultError(result); err != nil {
+		return nil, err
 	}
 
 	// Convert Bleve result to our SearchResult format
@@ -527,6 +531,8 @@ func (s *Searcher) SwapShards(newShards []bleve.Index) error {
 	if s.indexAlias == nil {
 		return fmt.Errorf("indexAlias is nil")
 	}
+
+	newShards = wrapRecoveringIndexes(newShards)
 
 	// Store old shards for logging
 	oldShards := s.shards

@@ -87,6 +87,10 @@ func (s *Searcher) computeStats(ctx context.Context, q query.Query, totalHits ui
 			logger.Warnf("Stats scan stopped after %d documents: %v", scanned, err)
 			break
 		}
+		if err := searchResultError(result); err != nil {
+			logger.Warnf("Stats scan stopped after %d documents: %v", scanned, err)
+			break
+		}
 		if len(result.Hits) == 0 {
 			break
 		}

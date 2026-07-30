@@ -189,6 +189,9 @@ func (c *Counter) collectTermsUsingLargeFacet(ctx context.Context, req *Cardinal
 	if err != nil {
 		return terms, 0, fmt.Errorf("IndexAlias facet search failed: %w", err)
 	}
+	if err := searchResultError(result); err != nil {
+		return terms, 0, fmt.Errorf("IndexAlias facet search failed: %w", err)
+	}
 
 	logger.Debugf("Counter facet search result: Total=%d, Facets=%v", result.Total, result.Facets != nil)
 
@@ -259,6 +262,9 @@ func (c *Counter) collectTermsUsingPagination(ctx context.Context, req *Cardinal
 		// Execute with IndexAlias and global scoring
 		result, err := c.indexAlias.SearchInContext(ctx, searchReq)
 		if err != nil {
+			return terms, 0, fmt.Errorf("IndexAlias pagination search failed at page %d: %w", page, err)
+		}
+		if err := searchResultError(result); err != nil {
 			return terms, 0, fmt.Errorf("IndexAlias pagination search failed at page %d: %w", page, err)
 		}
 
