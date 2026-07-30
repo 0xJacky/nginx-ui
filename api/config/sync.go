@@ -26,13 +26,20 @@ func SyncConfigBatch(c *gin.Context) {
 		return
 	}
 
+	// One rejected file must not discard the rest of the batch: a real
+	// configuration directory always holds something the validator dislikes, and
+	// dropping the whole sync over it would make the feature useless.
 	written := 0
 	skipped := 0
+	failures := make([]gin.H, 0)
+
 	for _, file := range json.Files {
+		relativePath := filepath.ToSlash(filepath.Join(file.BaseDir, file.Name))
+
 		path, err := config.ResolveConfPath(helper.UnescapeURL(file.BaseDir), helper.UnescapeURL(file.Name))
 		if err != nil {
-			cosy.ErrHandler(c, err)
-			return
+			failures = append(failures, gin.H{"path": relativePath, "error": err.Error()})
+			continue
 		}
 
 		if !json.Overwrite && helper.FileExists(path) {
@@ -41,18 +48,18 @@ func SyncConfigBatch(c *gin.Context) {
 		}
 
 		if err = config.ValidateConfigFile(path, file.Content); err != nil {
-			cosy.ErrHandler(c, err)
-			return
+			failures = append(failures, gin.H{"path": relativePath, "error": err.Error()})
+			continue
 		}
 
 		if err = os.MkdirAll(filepath.Dir(path), 0755); err != nil {
-			cosy.ErrHandler(c, err)
-			return
+			failures = append(failures, gin.H{"path": relativePath, "error": err.Error()})
+			continue
 		}
 
 		if err = os.WriteFile(path, []byte(file.Content), 0644); err != nil {
-			cosy.ErrHandler(c, err)
-			return
+			failures = append(failures, gin.H{"path": relativePath, "error": err.Error()})
+			continue
 		}
 
 		written++
@@ -65,10 +72,17 @@ func SyncConfigBatch(c *gin.Context) {
 		}
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"message": "ok",
-		"written": written,
-		"skipped": skipped,
+	// Only a batch where nothing could be applied is an error.
+	status := http.StatusOK
+	if written == 0 && skipped == 0 && len(failures) > 0 {
+		status = http.StatusInternalServerError
+	}
+
+	c.JSON(status, gin.H{
+		"message":  "ok",
+		"written":  written,
+		"skipped":  skipped,
+		"failures": failures,
 	})
 }
 

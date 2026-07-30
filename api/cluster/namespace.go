@@ -84,7 +84,7 @@ func AddNamespace(c *gin.Context) {
 			"upstream_test_type":    "omitempty,oneof=" + model.UpstreamTestLocal + " " + model.UpstreamTestRemote + " " + model.UpstreamTestMirror,
 			"deploy_mode":           "omitempty,oneof=" + model.DeployModeLocal + " " + model.DeployModeRemote,
 			"sync_strategy":         "omitempty,oneof=" + model.SyncStrategyManual + " " + model.SyncStrategyAuto,
-			"sync_interval_minutes": "omitempty,min=1",
+			"sync_interval_minutes": "omitempty,min=0",
 		}).
 		Create()
 }
@@ -98,7 +98,7 @@ func ModifyNamespace(c *gin.Context) {
 			"upstream_test_type":    "omitempty,oneof=" + model.UpstreamTestLocal + " " + model.UpstreamTestRemote + " " + model.UpstreamTestMirror,
 			"deploy_mode":           "omitempty,oneof=" + model.DeployModeLocal + " " + model.DeployModeRemote,
 			"sync_strategy":         "omitempty,oneof=" + model.SyncStrategyManual + " " + model.SyncStrategyAuto,
-			"sync_interval_minutes": "omitempty,min=1",
+			"sync_interval_minutes": "omitempty,min=0",
 		}).
 		Modify()
 }

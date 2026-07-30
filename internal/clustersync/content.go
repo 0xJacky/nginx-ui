@@ -7,6 +7,7 @@ import (
 	"strings"
 	"unicode/utf8"
 
+	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/uozi-tech/cosy/logger"
@@ -86,6 +87,15 @@ func CollectConfigFiles(root string) ([]ConfigFile, error) {
 
 		if !utf8.Valid(content) {
 			logger.Debugf("cluster sync skips non-text file %s", path)
+			return nil
+		}
+
+		// A real configuration directory accumulates files the receiver will
+		// always reject, such as nginx.conf.bak.1738662518. Leaving them out of
+		// the batch keeps a whole-directory sync from being dragged down by one
+		// name that is not a valid configuration file anywhere.
+		if err := config.ValidateConfigFilename(path); err != nil {
+			logger.Debugf("cluster sync skips unsupported config name %s: %v", path, err)
 			return nil
 		}
 

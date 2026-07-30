@@ -2,6 +2,7 @@ package clustersync
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -42,9 +43,9 @@ func configBatchItem(name string, files []ConfigFile, overwrite bool) item {
 		name: name,
 		push: func(ctx context.Context, node nodeRef) error {
 			payload := configBatchPayload{Files: files, Overwrite: overwrite}
-			status, err := node.postWithStatus(ctx, "/api/config_sync_batch", payload)
+			body, status, err := node.postForBody(ctx, "/api/config_sync_batch", payload)
 			if err == nil {
-				return nil
+				return batchFailure(body)
 			}
 			if status != http.StatusNotFound {
 				return err
@@ -54,6 +55,34 @@ func configBatchItem(name string, files []ConfigFile, overwrite bool) item {
 			return pushConfigFilesIndividually(ctx, node, files, overwrite)
 		},
 	}
+}
+
+// batchResponse is the answer of the batch receiver. Files it could not apply
+// are reported individually instead of failing the whole request.
+type batchResponse struct {
+	Written  int `json:"written"`
+	Skipped  int `json:"skipped"`
+	Failures []struct {
+		Path  string `json:"path"`
+		Error string `json:"error"`
+	} `json:"failures"`
+}
+
+// batchFailure turns a partially applied batch into an error so the summary
+// does not claim a clean run.
+func batchFailure(body []byte) error {
+	var response batchResponse
+	if err := json.Unmarshal(body, &response); err != nil || len(response.Failures) == 0 {
+		return nil
+	}
+
+	failures := make([]error, 0, len(response.Failures))
+	for _, failure := range response.Failures {
+		failures = append(failures, fmt.Errorf("%s: %s", failure.Path, failure.Error))
+	}
+
+	return fmt.Errorf("applied %d of %d files: %w",
+		response.Written, response.Written+len(response.Failures), errors.Join(failures...))
 }
 
 // pushConfigFilesIndividually keeps mixed-version clusters working by using the

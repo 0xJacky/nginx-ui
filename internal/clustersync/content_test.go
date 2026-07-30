@@ -163,3 +163,39 @@ func TestConfigFileRelativePathHandlesRootFiles(t *testing.T) {
 		t.Fatalf("got %q, want %q", got, "conf.d/a.conf")
 	}
 }
+
+func TestCollectConfigFilesSkipsNamesTheReceiverRejects(t *testing.T) {
+	// A real configuration directory accumulates backups like these. Including
+	// them used to make the receiver reject the whole batch.
+	confDir := withConfDir(t, map[string]string{
+		"nginx.conf":                "events {}\n",
+		"conf.d/a.conf":             "# a\n",
+		"nginx.conf.bak.1738662518": "events {}\n",
+		"nginx_bak.conf":            "events {}\n",
+		"conf.d/notes.txt":          "not a config\n",
+	})
+
+	files, err := CollectConfigFiles(confDir)
+	if err != nil {
+		t.Fatalf("collect: %v", err)
+	}
+
+	got := collectedPaths(files)
+	for _, path := range got {
+		if path == "nginx.conf.bak.1738662518" || path == "conf.d/notes.txt" {
+			t.Fatalf("unsupported config name must be skipped, got %v", got)
+		}
+	}
+
+	// The .conf files are still collected.
+	want := map[string]bool{"conf.d/a.conf": true, "nginx_bak.conf": true}
+	for _, path := range got {
+		if !want[path] {
+			t.Fatalf("unexpected file %s in %v", path, got)
+		}
+		delete(want, path)
+	}
+	if len(want) != 0 {
+		t.Fatalf("missing files %v, got %v", want, got)
+	}
+}

@@ -63,8 +63,8 @@ func (n *Namespace) IsAutoSync() bool {
 	return n != nil && n.SyncStrategy == SyncStrategyAuto
 }
 
-// EffectiveSyncInterval returns the auto sync interval, falling back to the
-// default when the stored value is unusable.
+// EffectiveSyncInterval returns the auto sync interval. Zero means "use the
+// default", which is what the API accepts when the field is left unset.
 func (n *Namespace) EffectiveSyncInterval() int {
 	if n == nil || n.SyncIntervalMinutes <= 0 {
 		return DefaultSyncIntervalMinutes

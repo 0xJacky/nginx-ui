@@ -68,13 +68,20 @@ func (n nodeRef) post(ctx context.Context, path string, body any) error {
 // postWithStatus behaves like post but also reports the status code so callers
 // can detect endpoints that an older node does not implement yet.
 func (n nodeRef) postWithStatus(ctx context.Context, path string, body any) (int, error) {
+	_, status, err := n.postForBody(ctx, path, body)
+	return status, err
+}
+
+// postForBody returns the response body so callers can inspect a partial
+// success reported inside a 2xx answer.
+func (n nodeRef) postForBody(ctx context.Context, path string, body any) ([]byte, int, error) {
 	resp, err := n.client.R().SetContext(ctx).SetBody(body).Post(path)
 	if err != nil {
-		return 0, err
+		return nil, 0, err
 	}
 	if resp.StatusCode() < http.StatusOK || resp.StatusCode() >= http.StatusMultipleChoices {
-		return resp.StatusCode(), fmt.Errorf("%s responded %d: %s", path, resp.StatusCode(), resp.String())
+		return resp.Body(), resp.StatusCode(), fmt.Errorf("%s responded %d: %s", path, resp.StatusCode(), resp.String())
 	}
 
-	return resp.StatusCode(), nil
+	return resp.Body(), resp.StatusCode(), nil
 }
