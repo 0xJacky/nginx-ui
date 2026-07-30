@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"net/http"
 
+	internalmcp "github.com/0xJacky/Nginx-UI/internal/mcp"
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -58,6 +59,17 @@ func RequireSecureSession() gin.HandlerFunc {
 			c.Next()
 			return
 		}
+		if token, ok := c.Get(internalmcp.ServiceTokenPrincipalKey); ok {
+			principal, valid := token.(*internalmcp.ServiceTokenPrincipal)
+			if !valid || !principal.HasScope(model.APITokenScopeWrite) {
+				c.AbortWithStatusJSON(http.StatusForbidden, gin.H{
+					"message": "Service token write scope is required",
+				})
+				return
+			}
+			c.Next()
+			return
+		}
 
 		u, ok := c.Get("user")
 		if !ok {
@@ -97,6 +109,12 @@ func RequireSecureSession() gin.HandlerFunc {
 func RequireInteractiveUser() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if _, ok := c.Get(nodeauth.GinPrincipalKey); ok {
+			c.AbortWithStatusJSON(http.StatusForbidden, gin.H{
+				"message": "This operation requires an interactive administrator",
+			})
+			return
+		}
+		if _, ok := c.Get(internalmcp.ServiceTokenPrincipalKey); ok {
 			c.AbortWithStatusJSON(http.StatusForbidden, gin.H{
 				"message": "This operation requires an interactive administrator",
 			})

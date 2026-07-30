@@ -1,3 +1,4 @@
+export { default as AccessTokens } from './AccessTokens.vue'
 export { default as AppSettings } from './AppSettings.vue'
 export { default as AuthSettings } from './AuthSettings.vue'
 export { default as CertSettings } from './CertSettings.vue'

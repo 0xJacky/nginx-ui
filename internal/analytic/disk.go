@@ -85,13 +85,20 @@ func buildDiskStat(partitions []disk.PartitionStat, getUsage diskUsageFunc, getK
 	if totalSize > 0 {
 		overallPercentage = cast.ToFloat64(fmt.Sprintf("%.2f", float64(totalUsed)/float64(totalSize)*100))
 	}
+	var writes, reads Usage[uint64]
+	if len(DiskWriteRecord) > 0 {
+		writes = DiskWriteRecord[len(DiskWriteRecord)-1]
+	}
+	if len(DiskReadRecord) > 0 {
+		reads = DiskReadRecord[len(DiskReadRecord)-1]
+	}
 
 	return DiskStat{
 		Used:       humanize.IBytes(totalUsed),
 		Total:      humanize.IBytes(totalSize),
 		Percentage: overallPercentage,
-		Writes:     DiskWriteRecord[len(DiskWriteRecord)-1],
-		Reads:      DiskReadRecord[len(DiskReadRecord)-1],
+		Writes:     writes,
+		Reads:      reads,
 		Partitions: partitionStats,
 	}
 }
