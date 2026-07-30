@@ -1,7 +1,6 @@
 package indexer
 
 import (
-	"context"
 	"fmt"
 	"sync"
 	"time"
@@ -9,9 +8,9 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
-	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 	"gorm.io/gen/field"
+	"gorm.io/gorm"
 )
 
 // PersistenceManager handles database operations for log index positions
@@ -427,11 +426,13 @@ func (pm *PersistenceManager) SetIndexStatus(path, status string, queuePosition 
 
 // GetIncompleteIndexingTasks returns all files that have incomplete indexing tasks
 func (pm *PersistenceManager) GetIncompleteIndexingTasks() ([]*model.NginxLogIndex, error) {
-	// Use direct database query since query fields are not generated yet
-	db := cosy.UseDB(context.Background())
+	db, err := persistenceDB()
+	if err != nil {
+		return nil, err
+	}
 	var indexes []*model.NginxLogIndex
 
-	err := db.Where("enabled = ? AND index_status IN ?", true, []string{
+	err = db.Where("enabled = ? AND index_status IN ?", true, []string{
 		string(IndexStatusIndexing),
 		string(IndexStatusQueued),
 	}).Order("queue_position").Find(&indexes).Error
@@ -445,11 +446,13 @@ func (pm *PersistenceManager) GetIncompleteIndexingTasks() ([]*model.NginxLogInd
 
 // GetQueuedTasks returns all queued indexing tasks ordered by queue position
 func (pm *PersistenceManager) GetQueuedTasks() ([]*model.NginxLogIndex, error) {
-	// Use direct database query since query fields are not generated yet
-	db := cosy.UseDB(context.Background())
+	db, err := persistenceDB()
+	if err != nil {
+		return nil, err
+	}
 	var indexes []*model.NginxLogIndex
 
-	err := db.Where("enabled = ? AND index_status = ?", true, string(IndexStatusQueued)).Order("queue_position").Find(&indexes).Error
+	err = db.Where("enabled = ? AND index_status = ?", true, string(IndexStatusQueued)).Order("queue_position").Find(&indexes).Error
 
 	if err != nil {
 		return nil, fmt.Errorf("failed to get queued tasks: %w", err)
@@ -461,10 +464,12 @@ func (pm *PersistenceManager) GetQueuedTasks() ([]*model.NginxLogIndex, error) {
 // ResetIndexingTasks resets all indexing and queued tasks to not_indexed state
 // This is useful during startup to clear stale states
 func (pm *PersistenceManager) ResetIndexingTasks() error {
-	// Use direct database query
-	db := cosy.UseDB(context.Background())
+	db, err := persistenceDB()
+	if err != nil {
+		return err
+	}
 
-	err := db.Model(&model.NginxLogIndex{}).Where("index_status IN ?", []string{
+	err = db.Model(&model.NginxLogIndex{}).Where("index_status IN ?", []string{
 		string(IndexStatusIndexing),
 		string(IndexStatusQueued),
 	}).Updates(map[string]interface{}{
@@ -488,8 +493,10 @@ func (pm *PersistenceManager) ResetIndexingTasks() error {
 
 // GetIndexingTaskStats returns statistics about indexing tasks
 func (pm *PersistenceManager) GetIndexingTaskStats() (map[string]int64, error) {
-	// Use direct database query
-	db := cosy.UseDB(context.Background())
+	db, err := persistenceDB()
+	if err != nil {
+		return nil, err
+	}
 	stats := make(map[string]int64)
 
 	// Count by status
@@ -526,7 +533,10 @@ func (pm *PersistenceManager) Close() error {
 func (pm *PersistenceManager) DeleteAllLogIndexes() error {
 	// GORM's `Delete` requires a WHERE clause for safety. To delete all records,
 	// we use a raw Exec call, which is the standard way to perform bulk operations.
-	db := cosy.UseDB(context.Background())
+	db, err := persistenceDB()
+	if err != nil {
+		return err
+	}
 	if err := db.Exec("DELETE FROM nginx_log_indices").Error; err != nil {
 		return fmt.Errorf("failed to delete all log indexes: %w", err)
 	}
@@ -536,6 +546,17 @@ func (pm *PersistenceManager) DeleteAllLogIndexes() error {
 
 	logger.Infof("Hard deleted all log index records")
 	return nil
+}
+
+func persistenceDB() (*gorm.DB, error) {
+	if query.Q == nil || !query.Q.Available() {
+		return nil, fmt.Errorf("nginx log metadata database is not initialized")
+	}
+	db := query.Q.UnderlyingDB()
+	if db == nil {
+		return nil, fmt.Errorf("nginx log metadata database is not initialized")
+	}
+	return db, nil
 }
 
 // DeleteLogIndexesByGroup deletes all log index records for a specific log group.

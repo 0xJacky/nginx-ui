@@ -12,10 +12,11 @@ import (
 
 // Counter provides efficient unique value counting without large FacetSize
 type Counter struct {
-	indexAlias bleve.IndexAlias // Use IndexAlias instead of individual shards
-	shards     []bleve.Index    // Keep shards for fallback if needed
-	mu         sync.RWMutex
-	stopOnce   sync.Once
+	indexAlias  bleve.IndexAlias // Use IndexAlias instead of individual shards
+	shards      []bleve.Index    // Keep shards for fallback if needed
+	mu          sync.RWMutex
+	stopOnce    sync.Once
+	memoryLimit *searchMemoryLimiter
 }
 
 // NewCounter creates a new cardinality counter
@@ -31,8 +32,9 @@ func NewCounter(shards []bleve.Index) *Counter {
 	}
 
 	return &Counter{
-		indexAlias: indexAlias,
-		shards:     shards,
+		indexAlias:  indexAlias,
+		shards:      shards,
+		memoryLimit: newSearchMemoryLimiter(defaultSearchMemoryQuota),
 	}
 }
 
@@ -80,6 +82,7 @@ func (c *Counter) Count(ctx context.Context, req *CardinalityRequest) (*Cardinal
 	if req.Field == "" {
 		return nil, fmt.Errorf("field name is required")
 	}
+	ctx = withSearchMemoryLimit(ctx, c.memoryLimit)
 
 	if c.indexAlias == nil {
 		return &CardinalityResult{
@@ -87,9 +90,16 @@ func (c *Counter) Count(ctx context.Context, req *CardinalityRequest) (*Cardinal
 			Error: "IndexAlias not available",
 		}, fmt.Errorf("IndexAlias not available")
 	}
+	indexAlias, releaseAlias := indexAliasForLogPaths(
+		c.indexAlias,
+		c.shards,
+		req.UseMainLogPath,
+		req.LogPaths,
+	)
+	defer releaseAlias()
 
 	// Use IndexAlias with global scoring for consistent distributed search
-	uniqueTerms, totalDocs, err := c.collectTermsUsingIndexAlias(ctx, req)
+	uniqueTerms, totalDocs, err := c.collectTermsUsingIndexAlias(ctx, req, indexAlias)
 	if err != nil {
 		return &CardinalityResult{
 			Field: req.Field,
@@ -110,11 +120,15 @@ func (c *Counter) Count(ctx context.Context, req *CardinalityRequest) (*Cardinal
 // collectTermsUsingIndexAlias collects unique terms using IndexAlias.
 // Cardinality queries never rank by relevance, so the global-scoring
 // pre-search phase is skipped.
-func (c *Counter) collectTermsUsingIndexAlias(ctx context.Context, req *CardinalityRequest) (map[string]struct{}, uint64, error) {
+func (c *Counter) collectTermsUsingIndexAlias(
+	ctx context.Context,
+	req *CardinalityRequest,
+	indexAlias bleve.IndexAlias,
+) (map[string]struct{}, uint64, error) {
 	uniqueTerms := make(map[string]struct{})
 
 	// Strategy 1: Try large facet first (more efficient for most cases)
-	terms1, totalDocs, err1 := c.collectTermsUsingLargeFacet(ctx, req)
+	terms1, totalDocs, err1 := c.collectTermsUsingLargeFacet(ctx, req, indexAlias)
 	if err1 != nil {
 		logger.Warnf("Large facet collection failed: %v", err1)
 	} else {
@@ -128,7 +142,7 @@ func (c *Counter) collectTermsUsingIndexAlias(ctx context.Context, req *Cardinal
 	needsPagination := len(terms1) >= 50000 || err1 != nil
 	if needsPagination {
 		logger.Infof("Using pagination to collect remaining terms...")
-		terms2, _, err2 := c.collectTermsUsingPagination(ctx, req)
+		terms2, _, err2 := c.collectTermsUsingPagination(ctx, req, indexAlias)
 		if err2 != nil {
 			logger.Warnf("Pagination collection failed: %v", err2)
 		} else {
@@ -143,7 +157,11 @@ func (c *Counter) collectTermsUsingIndexAlias(ctx context.Context, req *Cardinal
 }
 
 // collectTermsUsingLargeFacet uses IndexAlias with a large facet to efficiently collect terms
-func (c *Counter) collectTermsUsingLargeFacet(ctx context.Context, req *CardinalityRequest) (map[string]struct{}, uint64, error) {
+func (c *Counter) collectTermsUsingLargeFacet(
+	ctx context.Context,
+	req *CardinalityRequest,
+	indexAlias bleve.IndexAlias,
+) (map[string]struct{}, uint64, error) {
 	terms := make(map[string]struct{})
 
 	// Build search request using IndexAlias with proper filtering
@@ -185,7 +203,7 @@ func (c *Counter) collectTermsUsingLargeFacet(ctx context.Context, req *Cardinal
 	searchReq.AddFacet(req.Field, facet)
 
 	// Execute search using IndexAlias
-	result, err := c.indexAlias.SearchInContext(ctx, searchReq)
+	result, err := indexAlias.SearchInContext(ctx, searchReq)
 	if err != nil {
 		return terms, 0, fmt.Errorf("IndexAlias facet search failed: %w", err)
 	}
@@ -215,7 +233,11 @@ func (c *Counter) collectTermsUsingLargeFacet(ctx context.Context, req *Cardinal
 }
 
 // collectTermsUsingPagination uses IndexAlias with pagination to collect all terms
-func (c *Counter) collectTermsUsingPagination(ctx context.Context, req *CardinalityRequest) (map[string]struct{}, uint64, error) {
+func (c *Counter) collectTermsUsingPagination(
+	ctx context.Context,
+	req *CardinalityRequest,
+	indexAlias bleve.IndexAlias,
+) (map[string]struct{}, uint64, error) {
 	terms := make(map[string]struct{})
 
 	pageSize := 10000 // Large page size for efficiency
@@ -260,7 +282,7 @@ func (c *Counter) collectTermsUsingPagination(ctx context.Context, req *Cardinal
 		searchReq.Fields = []string{req.Field}
 
 		// Execute with IndexAlias and global scoring
-		result, err := c.indexAlias.SearchInContext(ctx, searchReq)
+		result, err := indexAlias.SearchInContext(ctx, searchReq)
 		if err != nil {
 			return terms, 0, fmt.Errorf("IndexAlias pagination search failed at page %d: %w", page, err)
 		}

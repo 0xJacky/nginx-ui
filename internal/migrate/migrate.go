@@ -12,6 +12,7 @@ var Migrations = []*gormigrate.Migration{
 	RenameEnvironmentsToNodes,
 	AddProviderCodeToDnsCredentials,
 	EncryptSensitiveJSONFields,
+	DropLegacyRenamedTableIndexes,
 }
 
 var BeforeAutoMigrate = []*gormigrate.Migration{

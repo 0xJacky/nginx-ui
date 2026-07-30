@@ -11,12 +11,12 @@ import (
 
 const (
 	indexStorageVersionFile = ".nginx-ui-index-version"
-	indexStorageVersion     = "2"
+	indexStorageVersion     = "3"
 )
 
 // PrepareIndexStorage removes rebuildable shard data when the on-disk format
-// predates the zapx sparse-posting offset fix. Metadata must be reset before
-// CommitIndexStorageVersion is called.
+// predates the current Zap format, mapping, sharding, or Scorch resource
+// settings. Metadata must be reset before CommitIndexStorageVersion is called.
 func PrepareIndexStorage(indexPath string) (bool, error) {
 	if err := os.MkdirAll(indexPath, 0o755); err != nil {
 		return false, fmt.Errorf("create index directory: %w", err)

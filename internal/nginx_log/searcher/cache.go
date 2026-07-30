@@ -14,11 +14,15 @@ import (
 
 // Cache provides high-performance caching using Ristretto
 type Cache struct {
-	cache *ristretto.Cache[string, *SearchResult]
+	cache   *ristretto.Cache[string, *SearchResult]
+	maxCost int64
 }
 
-// NewCache creates a new cache with Ristretto
+// NewCache creates a cache whose cost unit is one KiB of serialized result data.
 func NewCache(maxSize int64) *Cache {
+	if maxSize <= 0 {
+		maxSize = 1
+	}
 	cache, err := ristretto.NewCache(&ristretto.Config[string, *SearchResult]{
 		NumCounters: maxSize * 10,
 		MaxCost:     maxSize,
@@ -29,7 +33,7 @@ func NewCache(maxSize int64) *Cache {
 		panic(fmt.Sprintf("failed to create cache: %v", err))
 	}
 
-	return &Cache{cache: cache}
+	return &Cache{cache: cache, maxCost: maxSize}
 }
 
 // CacheKeyData represents the normalized data used for cache key generation
@@ -183,9 +187,9 @@ func (c *Cache) Get(req *SearchRequest) *SearchResult {
 func (c *Cache) Put(req *SearchRequest, result *SearchResult, ttl time.Duration) {
 	key := c.GenerateKey(req)
 
-	cost := int64(1 + len(result.Hits)/10)
-	if cost < 1 {
-		cost = 1
+	cost, ok := searchResultCost(result)
+	if !ok || cost > c.maxCost {
+		return
 	}
 
 	c.cache.SetWithTTL(key, result, cost, ttl)
@@ -225,8 +229,26 @@ func (c *Cache) GetSearchStats(req *SearchRequest) *SearchStats {
 // PutSearchStats stores statistics for the request's match set. The cache is
 // typed to search results, so the statistics travel in an otherwise empty one.
 func (c *Cache) PutSearchStats(req *SearchRequest, stats *SearchStats, ttl time.Duration) {
-	c.cache.SetWithTTL(c.statsCacheKey(req), &SearchResult{Stats: stats}, 1, ttl)
+	result := &SearchResult{Stats: stats}
+	cost, ok := searchResultCost(result)
+	if !ok || cost > c.maxCost {
+		return
+	}
+	c.cache.SetWithTTL(c.statsCacheKey(req), result, cost, ttl)
 	c.cache.Wait()
+}
+
+func searchResultCost(result *SearchResult) (int64, bool) {
+	data, err := json.Marshal(result)
+	if err != nil {
+		return 0, false
+	}
+	const costUnitBytes = 1024
+	cost := int64((len(data) + costUnitBytes - 1) / costUnitBytes)
+	if cost < 1 {
+		cost = 1
+	}
+	return cost, true
 }
 
 // Clear clears all cached entries

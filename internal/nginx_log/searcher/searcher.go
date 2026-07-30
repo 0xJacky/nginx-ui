@@ -22,6 +22,7 @@ type Searcher struct {
 	queryBuilder *QueryBuilder
 	cache        *Cache
 	stats        *searcherStats
+	memoryLimit  *searchMemoryLimiter
 
 	// Concurrency control
 	semaphore chan struct{}
@@ -70,6 +71,7 @@ func NewSearcher(config *Config, shards []bleve.Index) *Searcher {
 		shards:       shards,
 		indexAlias:   indexAlias,
 		queryBuilder: NewQueryBuilder(),
+		memoryLimit:  newSearchMemoryLimiter(config.MemoryQuota),
 		semaphore:    make(chan struct{}, config.MaxConcurrency),
 		stats: &searcherStats{
 			shardStats: make(map[int]*ShardSearchStats),
@@ -133,6 +135,7 @@ func (s *Searcher) Search(ctx context.Context, req *SearchRequest) (*SearchResul
 		searchCtx, cancel = context.WithTimeout(ctx, s.config.TimeoutDuration)
 		defer cancel()
 	}
+	searchCtx = withSearchMemoryLimit(searchCtx, s.memoryLimit)
 
 	// Acquire semaphore for concurrency control
 	select {
@@ -150,9 +153,11 @@ func (s *Searcher) Search(ctx context.Context, req *SearchRequest) (*SearchResul
 	if err != nil {
 		return nil, fmt.Errorf("failed to build query: %w", err)
 	}
+	indexAlias, releaseAlias := s.indexAliasForRequest(req)
+	defer releaseAlias()
 
 	// Execute search across shards
-	result, err := s.executeDistributedSearch(searchCtx, query, req)
+	result, err := s.executeDistributedSearch(searchCtx, query, req, indexAlias)
 	if err != nil {
 		s.recordSearchMetrics(time.Since(startTime), false)
 		return nil, err
@@ -162,7 +167,7 @@ func (s *Searcher) Search(ctx context.Context, req *SearchRequest) (*SearchResul
 	// the hits carry only the requested page, so summing them would describe
 	// the page rather than the query.
 	if req.IncludeStats {
-		result.Stats = s.searchStats(searchCtx, query, req, result.TotalHits)
+		result.Stats = s.searchStats(searchCtx, query, req, result.TotalHits, indexAlias)
 	}
 
 	result.Duration = time.Since(startTime)
@@ -176,24 +181,29 @@ func (s *Searcher) Search(ctx context.Context, req *SearchRequest) (*SearchResul
 }
 
 // executeDistributedSearch executes search across all healthy shards
-func (s *Searcher) executeDistributedSearch(ctx context.Context, query query.Query, req *SearchRequest) (*SearchResult, error) {
+func (s *Searcher) executeDistributedSearch(
+	ctx context.Context,
+	query query.Query,
+	req *SearchRequest,
+	indexAlias bleve.IndexAlias,
+) (*SearchResult, error) {
 	healthyShards := s.getHealthyShards()
 	if len(healthyShards) == 0 {
 		return nil, fmt.Errorf("no healthy shards available")
 	}
 
-	// If specific log groups are requested via main_log_path, we can still use all shards
-	// because documents are filtered by main_log_path at query level. To avoid unnecessary
-	// shard touches, in future we can maintain a mapping of group->shards and build a
-	// narrowed alias. For now, rely on Bleve to skip shards quickly when the filter eliminates them.
-
 	// Use Bleve's native distributed search with global scoring for consistent pagination
-	return s.executeGlobalScoringSearch(ctx, query, req)
+	return s.executeGlobalScoringSearch(ctx, query, req, indexAlias)
 }
 
 // executeGlobalScoringSearch uses Bleve's native distributed search with global scoring
 // This ensures consistent pagination by letting Bleve handle cross-shard ranking
-func (s *Searcher) executeGlobalScoringSearch(ctx context.Context, query query.Query, req *SearchRequest) (*SearchResult, error) {
+func (s *Searcher) executeGlobalScoringSearch(
+	ctx context.Context,
+	query query.Query,
+	req *SearchRequest,
+	indexAlias bleve.IndexAlias,
+) (*SearchResult, error) {
 	// Create search request with proper pagination
 	searchReq := bleve.NewSearchRequest(query)
 
@@ -223,7 +233,7 @@ func (s *Searcher) executeGlobalScoringSearch(ctx context.Context, query query.Q
 	}
 
 	// Execute search using Bleve's IndexAlias
-	result, err := s.indexAlias.SearchInContext(searchCtx, searchReq)
+	result, err := indexAlias.SearchInContext(searchCtx, searchReq)
 	if err != nil {
 		return nil, fmt.Errorf("distributed search failed: %w", err)
 	}
@@ -233,6 +243,10 @@ func (s *Searcher) executeGlobalScoringSearch(ctx context.Context, query query.Q
 
 	// Convert Bleve result to our SearchResult format
 	return s.convertBleveResult(result), nil
+}
+
+func (s *Searcher) indexAliasForRequest(req *SearchRequest) (bleve.IndexAlias, func()) {
+	return indexAliasForLogPaths(s.indexAlias, s.shards, req.UseMainLogPath, req.LogPaths)
 }
 
 // convertBleveResult converts a Bleve SearchResult to our SearchResult format

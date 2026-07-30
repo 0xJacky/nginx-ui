@@ -9,7 +9,8 @@ import (
 type Config struct {
 	MaxConcurrency     int           `json:"max_concurrency"`
 	TimeoutDuration    time.Duration `json:"timeout_duration"`
-	CacheSize          int           `json:"cache_size"`
+	CacheSize          int           `json:"cache_size"` // KiB of serialized search results
+	MemoryQuota        int64         `json:"memory_quota"`
 	EnableCache        bool          `json:"enable_cache"`
 	DefaultLimit       int           `json:"default_limit"`
 	MaxLimit           int           `json:"max_limit"`
@@ -23,7 +24,8 @@ func DefaultSearcherConfig() *Config {
 	return &Config{
 		MaxConcurrency:     10,
 		TimeoutDuration:    30 * time.Second,
-		CacheSize:          1000,
+		CacheSize:          64 * 1024,
+		MemoryQuota:        defaultSearchMemoryQuota,
 		EnableCache:        true,
 		DefaultLimit:       50,
 		MaxLimit:           10000,
@@ -224,7 +226,7 @@ const (
 
 	// Cache constants
 	DefaultCacheTTL = 5 * time.Minute
-	MaxCacheSize    = 10000
+	MaxCacheSize    = 256 * 1024
 
 	// Facet constants
 	DefaultFacetSize = 10

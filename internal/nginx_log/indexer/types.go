@@ -51,10 +51,10 @@ type Config struct {
 	BatchSize            int           `json:"batch_size"`
 	FlushInterval        time.Duration `json:"flush_interval"`
 	MaxQueueSize         int           `json:"max_queue_size"`
-	EnableCompression    bool          `json:"enable_compression"`
-	MemoryQuota          int64         `json:"memory_quota"`      // Memory limit in bytes
-	MaxSegmentSize       int64         `json:"max_segment_size"`  // Maximum segment size
-	OptimizeInterval     time.Duration `json:"optimize_interval"` // Auto-optimization interval
+	EnableCompression    bool          `json:"enable_compression"` // Deprecated: Scorch/Zap compression is always enabled
+	MemoryQuota          int64         `json:"memory_quota"`       // Maximum estimated bytes retained by queued and active jobs
+	MaxSegmentSize       int64         `json:"max_segment_size"`   // Maximum Scorch in-memory merge input per persister worker
+	OptimizeInterval     time.Duration `json:"optimize_interval"`  // Auto-optimization interval
 	EnableMetrics        bool          `json:"enable_metrics"`
 	FileGroupConcurrency int           `json:"file_group_concurrency"` // Max concurrent files within a log group (0 = use WorkerCount)
 }
@@ -86,14 +86,18 @@ func DefaultIndexerConfig() *Config {
 	if fileGroupConcurrency < 2 {
 		fileGroupConcurrency = 2
 	}
+	shardCount := 1
+	if maxProcs >= 8 {
+		shardCount = 2
+	}
 
 	return &Config{
 		IndexPath:            "./log-index",
-		ShardCount:           max(4, maxProcs/2), // Scale shards with CPU cores
-		WorkerCount:          workerCount,        // One worker per logical CPU by default (min 2)
-		BatchSize:            baseBatchSize,      // Dynamically scaled based on CPU cores
+		ShardCount:           shardCount,
+		WorkerCount:          workerCount,   // One worker per logical CPU by default (min 2)
+		BatchSize:            baseBatchSize, // Dynamically scaled based on CPU cores
 		FlushInterval:        5 * time.Second,
-		MaxQueueSize:         baseBatchSize * 10, // Scale queue with batch size
+		MaxQueueSize:         max(4, workerCount*2),
 		EnableCompression:    true,
 		MemoryQuota:          1024 * 1024 * 1024, // 1GB
 		MaxSegmentSize:       64 * 1024 * 1024,   // 64MB
@@ -115,13 +119,10 @@ func GetConfig(scenario string) *Config {
 		base.WorkerCount = maxProcs * 4 // Aggressive worker scaling for I/O-bound operations
 		if maxProcs >= 16 {
 			base.BatchSize = 5000 // Very large batches for 16+ cores
-			base.MaxQueueSize = 50000
 		} else if maxProcs >= 8 {
 			base.BatchSize = 4000 // Large batches for 8+ cores
-			base.MaxQueueSize = 40000
 		} else {
 			base.BatchSize = 3000 // Standard high-throughput batch size
-			base.MaxQueueSize = 30000
 		}
 		base.FlushInterval = 10 * time.Second
 
@@ -129,7 +130,6 @@ func GetConfig(scenario string) *Config {
 		// Minimize latency with reasonable throughput
 		base.WorkerCount = int(float64(maxProcs) * 1.5)
 		base.BatchSize = 500
-		base.MaxQueueSize = 10000
 		base.FlushInterval = 2 * time.Second
 
 	case "balanced":
@@ -140,7 +140,6 @@ func GetConfig(scenario string) *Config {
 		// Reduce memory usage
 		base.WorkerCount = max(2, maxProcs/2)
 		base.BatchSize = 250
-		base.MaxQueueSize = 5000
 		base.MemoryQuota = 256 * 1024 * 1024 // 256MB
 
 	case "cpu_intensive":
@@ -149,13 +148,10 @@ func GetConfig(scenario string) *Config {
 		base.WorkerCount = maxProcs * 4 // Even more workers for CPU-bound tasks
 		if maxProcs >= 16 {
 			base.BatchSize = 4500 // Large batches to keep all cores busy
-			base.MaxQueueSize = 45000
 		} else if maxProcs >= 8 {
 			base.BatchSize = 3500
-			base.MaxQueueSize = 35000
 		} else {
 			base.BatchSize = 2500
-			base.MaxQueueSize = 25000
 		}
 
 	case "max_performance":
@@ -164,20 +160,21 @@ func GetConfig(scenario string) *Config {
 		base.WorkerCount = maxProcs * 5    // Maximum workers
 		base.ShardCount = max(8, maxProcs) // More shards for parallelism
 		if maxProcs >= 16 {
-			base.BatchSize = 6000 // Very large batches for maximum throughput
-			base.MaxQueueSize = 60000
+			base.BatchSize = 6000                     // Very large batches for maximum throughput
 			base.MemoryQuota = 2 * 1024 * 1024 * 1024 // 2GB
 		} else if maxProcs >= 8 {
 			base.BatchSize = 5000
-			base.MaxQueueSize = 50000
 			base.MemoryQuota = 1536 * 1024 * 1024 // 1.5GB
 		} else {
 			base.BatchSize = 4000
-			base.MaxQueueSize = 40000
 		}
 		base.FlushInterval = 15 * time.Second   // Less frequent flushes for larger batches
 		base.MaxSegmentSize = 128 * 1024 * 1024 // 128MB segments
 	}
+
+	// IndexDocuments waits for completion, so retaining thousands of whole
+	// batches cannot improve worker throughput and only expands peak memory.
+	base.MaxQueueSize = max(4, base.WorkerCount*2)
 
 	return base
 }
@@ -217,9 +214,10 @@ type LogDocument struct {
 
 // IndexJob represents a single indexing job
 type IndexJob struct {
-	Documents []*Document `json:"documents"`
-	Priority  int         `json:"priority"`
-	Callback  func(error) `json:"-"`
+	Documents   []*Document `json:"documents"`
+	Priority    int         `json:"priority"`
+	Callback    func(error) `json:"-"`
+	memoryBytes int64
 }
 
 // IndexResult represents the result of an indexing operation
@@ -249,7 +247,8 @@ type IndexStats struct {
 	Shards            []*ShardInfo       `json:"shards"`
 	IndexingRate      float64            `json:"indexing_rate"` // Docs per second
 	MemoryUsage       int64              `json:"memory_usage"`  // Bytes
-	QueueSize         int                `json:"queue_size"`    // Pending jobs
+	QueueMemoryUsage  int64              `json:"queue_memory_usage"`
+	QueueSize         int                `json:"queue_size"` // Pending jobs
 	WorkerStats       []*WorkerStats     `json:"worker_stats"`
 	LastOptimized     int64              `json:"last_optimized"` // Unix timestamp
 	OptimizationStats *OptimizationStats `json:"optimization_stats,omitempty"`

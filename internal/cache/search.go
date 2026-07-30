@@ -45,6 +45,7 @@ type SearchIndexer struct {
 	totalContentSize int64
 	documentCount    int64
 	maxMemoryUsage   int64
+	documentSizes    map[string]int64
 	memoryMutex      sync.RWMutex
 }
 
@@ -91,6 +92,7 @@ func (si *SearchIndexer) Initialize(ctx context.Context) error {
 	if err != nil {
 		return fmt.Errorf("failed to create in-memory search index: %w", err)
 	}
+	si.resetMemoryUsage()
 
 	// Register callback for config scanning
 	RegisterCallback("search.handleConfigScan", si.handleConfigScan)
@@ -125,6 +127,7 @@ func (si *SearchIndexer) cleanup() {
 		si.memoryMutex.Lock()
 		si.totalContentSize = 0
 		si.documentCount = 0
+		si.documentSizes = nil
 		si.memoryMutex.Unlock()
 	})
 }
@@ -132,31 +135,50 @@ func (si *SearchIndexer) cleanup() {
 // createIndexMapping creates the mapping for the search index
 func (si *SearchIndexer) createIndexMapping() mapping.IndexMapping {
 	docMapping := bleve.NewDocumentMapping()
+	docMapping.Dynamic = false
 
-	// Text fields with standard analyzer (better for mixed content including numbers)
-	// Standard analyzer doesn't do aggressive stemming like en analyzer
 	textField := bleve.NewTextFieldMapping()
 	textField.Analyzer = "standard"
 	textField.Store = true
 	textField.Index = true
+	textField.DocValues = false
+	textField.IncludeTermVectors = false
+	textField.IncludeInAll = false
 
-	// Keyword fields for exact match (no analysis, exact term matching)
 	keywordField := bleve.NewKeywordFieldMapping()
 	keywordField.Store = true
 	keywordField.Index = true
+	keywordField.DocValues = false
+	keywordField.IncludeTermVectors = false
+	keywordField.IncludeInAll = false
 
-	// Date field
+	storedKeywordField := bleve.NewKeywordFieldMapping()
+	storedKeywordField.Store = true
+	storedKeywordField.Index = false
+	storedKeywordField.DocValues = false
+	storedKeywordField.IncludeTermVectors = false
+	storedKeywordField.IncludeInAll = false
+
+	idField := bleve.NewKeywordFieldMapping()
+	idField.Store = false
+	idField.Index = false
+	idField.DocValues = false
+	idField.IncludeTermVectors = false
+	idField.IncludeInAll = false
+
 	dateField := bleve.NewDateTimeFieldMapping()
 	dateField.Store = true
-	dateField.Index = true
+	dateField.Index = false
+	dateField.DocValues = false
+	dateField.IncludeTermVectors = false
+	dateField.IncludeInAll = false
 
-	// Map fields to types
 	fieldMappings := map[string]*mapping.FieldMapping{
-		"id":         keywordField,
+		"id":         idField,
 		"type":       keywordField,
-		"path":       keywordField,
-		"name":       textField, // Use text field with standard analyzer
-		"content":    textField, // Use text field with standard analyzer
+		"path":       storedKeywordField,
+		"name":       textField,
+		"content":    textField,
 		"updated_at": dateField,
 	}
 
@@ -167,6 +189,10 @@ func (si *SearchIndexer) createIndexMapping() mapping.IndexMapping {
 	indexMapping := bleve.NewIndexMapping()
 	indexMapping.DefaultMapping = docMapping
 	indexMapping.DefaultAnalyzer = "standard"
+	indexMapping.DefaultField = "content"
+	indexMapping.IndexDynamic = false
+	indexMapping.StoreDynamic = false
+	indexMapping.DocValuesDynamic = false
 
 	return indexMapping
 }
@@ -187,9 +213,9 @@ func (si *SearchIndexer) handleConfigScan(configPath string, content []byte) (er
 		return nil
 	}
 
-	// Skip empty files
+	// Empty content is emitted by the scanner when a config is removed.
 	if len(content) == 0 {
-		return nil
+		return si.DeleteDocument(configPath)
 	}
 
 	// Basic content validation: check if it's a configuration file
@@ -242,8 +268,8 @@ func (si *SearchIndexer) IndexDocument(doc SearchDocument) (err error) {
 		return fmt.Errorf("document content too large: %d bytes", len(doc.Content))
 	}
 
-	si.indexMutex.RLock()
-	defer si.indexMutex.RUnlock()
+	si.indexMutex.Lock()
+	defer si.indexMutex.Unlock()
 
 	if si.index == nil {
 		return fmt.Errorf("search index not initialized")
@@ -259,12 +285,23 @@ func (si *SearchIndexer) IndexDocument(doc SearchDocument) (err error) {
 		}
 	}
 
-	// For new documents, check memory limits
+	si.memoryMutex.Lock()
+	defer si.memoryMutex.Unlock()
+	if si.documentSizes == nil {
+		si.documentSizes = make(map[string]int64)
+	}
+	previousSize := si.documentSizes[doc.ID]
+	newTotalSize := si.totalContentSize - previousSize + contentSize
+	newDocumentCount := si.documentCount
 	if isNewDocument {
-		if !si.checkMemoryLimitBeforeIndexing(contentSize) {
-			logger.Warn("Skipping document due to memory limit", "document_id", doc.ID, "content_size", contentSize)
-			return nil
-		}
+		newDocumentCount++
+	}
+	if newTotalSize > si.maxMemoryUsage || newDocumentCount > 1000 {
+		logger.Warn("Skipping document due to content budget",
+			"document_id", doc.ID,
+			"content_size", contentSize,
+			"content_budget", si.maxMemoryUsage)
+		return nil
 	}
 
 	// Index the document (this will update existing or create new)
@@ -273,10 +310,9 @@ func (si *SearchIndexer) IndexDocument(doc SearchDocument) (err error) {
 		return err
 	}
 
-	// Update memory usage tracking only for new documents
-	if isNewDocument {
-		si.updateMemoryUsage(doc.ID, contentSize, true)
-	}
+	si.totalContentSize = newTotalSize
+	si.documentCount = newDocumentCount
+	si.documentSizes[doc.ID] = contentSize
 
 	return nil
 }
@@ -483,7 +519,7 @@ func (si *SearchIndexer) convertResults(searchResult *bleve.SearchResult) []Sear
 
 	for _, hit := range searchResult.Hits {
 		doc := SearchDocument{
-			ID:      si.getStringField(hit.Fields, "id"),
+			ID:      hit.ID,
 			Type:    si.getStringField(hit.Fields, "type"),
 			Name:    si.getStringField(hit.Fields, "name"),
 			Path:    si.getStringField(hit.Fields, "path"),
@@ -518,18 +554,25 @@ func (si *SearchIndexer) getStringField(fields map[string]interface{}, fieldName
 
 // DeleteDocument removes a document from the index
 func (si *SearchIndexer) DeleteDocument(docID string) error {
-	si.indexMutex.RLock()
-	defer si.indexMutex.RUnlock()
+	si.indexMutex.Lock()
+	defer si.indexMutex.Unlock()
 
 	if si.index == nil {
 		return fmt.Errorf("search index not initialized")
 	}
 
-	// Note: We don't track the exact size of deleted documents here
-	// as it would require storing document sizes separately.
-	// The memory tracking will reset during periodic cleanups or restarts.
+	if err := si.index.Delete(docID); err != nil {
+		return err
+	}
 
-	return si.index.Delete(docID)
+	si.memoryMutex.Lock()
+	defer si.memoryMutex.Unlock()
+	if contentSize, exists := si.documentSizes[docID]; exists {
+		si.totalContentSize -= contentSize
+		si.documentCount--
+		delete(si.documentSizes, docID)
+	}
+	return nil
 }
 
 // RebuildIndex rebuilds the entire search index
@@ -561,6 +604,7 @@ func (si *SearchIndexer) RebuildIndex(ctx context.Context) error {
 	if err != nil {
 		return fmt.Errorf("failed to create new in-memory index: %w", err)
 	}
+	si.resetMemoryUsage()
 
 	logger.Info("Search index rebuilt successfully")
 	return nil
@@ -625,50 +669,12 @@ func SearchAll(ctx context.Context, query string, limit int) ([]SearchResult, er
 	return GetSearchIndexer().Search(ctx, query, limit)
 }
 
-// checkMemoryLimitBeforeIndexing checks if adding new content would exceed memory limits
-func (si *SearchIndexer) checkMemoryLimitBeforeIndexing(contentSize int64) bool {
-	si.memoryMutex.RLock()
-	defer si.memoryMutex.RUnlock()
-
-	// Check if adding this content would exceed the memory limit
-	newTotalSize := si.totalContentSize + contentSize
-	if newTotalSize > si.maxMemoryUsage {
-		logger.Debugf("Memory limit would be exceeded: current=%d, new=%d, limit=%d",
-			si.totalContentSize, newTotalSize, si.maxMemoryUsage)
-		return false
-	}
-
-	// Also check document count limit (max 1000 documents)
-	if si.documentCount >= 1000 {
-		logger.Debugf("Document count limit reached: %d", si.documentCount)
-		return false
-	}
-
-	return true
-}
-
-// updateMemoryUsage updates the memory usage tracking
-func (si *SearchIndexer) updateMemoryUsage(documentID string, contentSize int64, isAddition bool) {
+func (si *SearchIndexer) resetMemoryUsage() {
 	si.memoryMutex.Lock()
 	defer si.memoryMutex.Unlock()
-
-	if isAddition {
-		si.totalContentSize += contentSize
-		si.documentCount++
-		// logger.Debugf("Added document %s: size=%d, total_size=%d, count=%d",
-		// 	documentID, contentSize, si.totalContentSize, si.documentCount)
-	} else {
-		si.totalContentSize -= contentSize
-		si.documentCount--
-		if si.totalContentSize < 0 {
-			si.totalContentSize = 0
-		}
-		if si.documentCount < 0 {
-			si.documentCount = 0
-		}
-		// logger.Debugf("Removed document %s: size=%d, total_size=%d, count=%d",
-		// 	documentID, contentSize, si.totalContentSize, si.documentCount)
-	}
+	si.totalContentSize = 0
+	si.documentCount = 0
+	si.documentSizes = make(map[string]int64)
 }
 
 // getMemoryUsage returns current memory usage statistics

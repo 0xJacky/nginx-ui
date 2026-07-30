@@ -25,6 +25,7 @@ type ParallelIndexer struct {
 	workers     []*indexWorker
 	jobQueue    chan *IndexJob
 	resultQueue chan *IndexResult
+	memoryLimit *indexMemoryLimiter
 
 	// State management
 	ctx     context.Context
@@ -79,6 +80,7 @@ func NewParallelIndexer(config *Config, shardManager ShardManager) *ParallelInde
 		metrics:      NewDefaultMetricsCollector(),
 		jobQueue:     make(chan *IndexJob, config.MaxQueueSize),
 		resultQueue:  make(chan *IndexResult, config.WorkerCount),
+		memoryLimit:  newIndexMemoryLimiter(config.MemoryQuota),
 		ctx:          ctx,
 		cancel:       cancel,
 		stats: &IndexStats{
@@ -205,11 +207,22 @@ func (pi *ParallelIndexer) IndexDocuments(ctx context.Context, docs []*Document)
 	if len(docs) == 0 {
 		return nil
 	}
+	memoryBytes := estimateDocumentsBytes(docs)
+	if err := pi.memoryLimit.acquire(ctx, pi.ctx.Done(), memoryBytes); err != nil {
+		return err
+	}
+	enqueued := false
+	defer func() {
+		if !enqueued {
+			pi.memoryLimit.release(memoryBytes)
+		}
+	}()
 
 	// Create job
 	job := &IndexJob{
-		Documents: docs,
-		Priority:  PriorityNormal,
+		Documents:   docs,
+		Priority:    PriorityNormal,
+		memoryBytes: memoryBytes,
 	}
 
 	// Submit job and wait for completion
@@ -220,6 +233,7 @@ func (pi *ParallelIndexer) IndexDocuments(ctx context.Context, docs []*Document)
 
 	select {
 	case pi.jobQueue <- job:
+		enqueued = true
 		select {
 		case err := <-done:
 			return err
@@ -240,44 +254,12 @@ func (pi *ParallelIndexer) StartBatch() BatchWriterInterface {
 
 // FlushAll flushes all pending operations
 func (pi *ParallelIndexer) FlushAll() error {
-	// Check if indexer is still running
 	if atomic.LoadInt32(&pi.running) != 1 {
 		return fmt.Errorf("indexer not running")
 	}
-
-	// Get all shards and flush them
-	shards := pi.shardManager.GetAllShards()
-	var errs []error
-
-	for i, shard := range shards {
-		if shard == nil {
-			continue
-		}
-
-		// Force flush by creating and immediately deleting a temporary document
-		batch := shard.NewBatch()
-		// Use efficient string building instead of fmt.Sprintf
-		tempIDBuf := make([]byte, 0, 64)
-		tempIDBuf = append(tempIDBuf, "_flush_temp_"...)
-		tempIDBuf = utils.AppendInt(tempIDBuf, i)
-		tempIDBuf = append(tempIDBuf, '_')
-		tempIDBuf = utils.AppendInt(tempIDBuf, int(time.Now().UnixNano()))
-		tempID := utils.BytesToStringUnsafe(tempIDBuf)
-		batch.Index(tempID, map[string]interface{}{"_temp": true})
-
-		if err := shard.Batch(batch); err != nil {
-			errs = append(errs, fmt.Errorf("failed to flush shard %d: %w", i, err))
-			continue
-		}
-
-		// Delete the temporary document
-		shard.Delete(tempID)
-	}
-
-	if len(errs) > 0 {
-		return fmt.Errorf("flush errors: %v", errs)
-	}
-
+	// Bleve Batch calls are synchronous and return only after Scorch has
+	// accepted and persisted the mutation. There is no pending application
+	// buffer to flush here.
 	return nil
 }
 
@@ -348,6 +330,7 @@ func (pi *ParallelIndexer) GetStats() *IndexStats {
 	statsCopy.TotalSize = totalSize
 	statsCopy.QueueSize = len(pi.jobQueue)
 	statsCopy.MemoryUsage = int64(memStats.Alloc)
+	statsCopy.QueueMemoryUsage = pi.memoryLimit.usage()
 
 	return &statsCopy
 }
@@ -521,7 +504,10 @@ func (w *indexWorker) run() {
 			}
 
 			w.updateStatus(WorkerStatusBusy)
-			result := w.processJob(job)
+			result := func() *IndexResult {
+				defer w.indexer.memoryLimit.release(job.memoryBytes)
+				return w.processJob(job)
+			}()
 
 			// Send result
 			select {
@@ -553,8 +539,10 @@ func (w *indexWorker) processJob(job *IndexJob) *IndexResult {
 		Processed: len(job.Documents),
 	}
 
-	// Group documents by mainLogPath then shard for grouped sharding
-	groupShardDocs := make(map[string]map[int][]*Document)
+	// Group documents by the resolved shard object. GetShardForDocument returns
+	// both a group-local shard ID and the actual shard; only the latter is
+	// unambiguous once more than one log group exists.
+	shardDocuments := make(map[bleve.Index][]*Document)
 
 	for _, doc := range job.Documents {
 		if doc.ID == "" || doc.Fields == nil || doc.Fields.MainLogPath == "" {
@@ -562,26 +550,20 @@ func (w *indexWorker) processJob(job *IndexJob) *IndexResult {
 			continue
 		}
 
-		mainLogPath := doc.Fields.MainLogPath
-		_, shardID, err := w.indexer.shardManager.GetShardForDocument(mainLogPath, doc.ID)
+		shard, _, err := w.indexer.shardManager.GetShardForDocument(doc.Fields.MainLogPath, doc.ID)
 		if err != nil {
 			result.Failed++
 			continue
 		}
-		if groupShardDocs[mainLogPath] == nil {
-			groupShardDocs[mainLogPath] = make(map[int][]*Document)
-		}
-		groupShardDocs[mainLogPath][shardID] = append(groupShardDocs[mainLogPath][shardID], doc)
+		shardDocuments[shard] = append(shardDocuments[shard], doc)
 	}
 
-	// Index documents per group/shard
-	for _, shards := range groupShardDocs {
-		for shardID, docs := range shards {
-			if err := w.indexShardDocuments(shardID, docs); err != nil {
-				result.Failed += len(docs)
-			} else {
-				result.Succeeded += len(docs)
-			}
+	// Index documents per resolved shard.
+	for shard, docs := range shardDocuments {
+		if err := w.indexShardDocuments(shard, docs); err != nil {
+			result.Failed += len(docs)
+		} else {
+			result.Succeeded += len(docs)
 		}
 	}
 
@@ -609,12 +591,7 @@ func (w *indexWorker) processJob(job *IndexJob) *IndexResult {
 	return result
 }
 
-func (w *indexWorker) indexShardDocuments(shardID int, docs []*Document) error {
-	shard, err := w.indexer.shardManager.GetShardByID(shardID)
-	if err != nil {
-		return err
-	}
-
+func (w *indexWorker) indexShardDocuments(shard bleve.Index, docs []*Document) error {
 	batch := shard.NewBatch()
 	for _, doc := range docs {
 		// Convert LogDocument to map for Bleve indexing
@@ -623,7 +600,7 @@ func (w *indexWorker) indexShardDocuments(shardID int, docs []*Document) error {
 	}
 
 	if err := shard.Batch(batch); err != nil {
-		return fmt.Errorf("failed to index batch for shard %d: %w", shardID, err)
+		return fmt.Errorf("failed to index batch for shard %q: %w", shard.Name(), err)
 	}
 
 	return nil
