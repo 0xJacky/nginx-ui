@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import FooterToolBar from '@/components/FooterToolbar'
 import {
+  AccessTokens,
   AppSettings,
   AuthSettings,
   CertSettings,
@@ -92,6 +93,12 @@ onMounted(() => {
           <AuthSettings />
         </ATabPane>
         <ATabPane
+          key="access_tokens"
+          :tab="$gettext('Access Tokens')"
+        >
+          <AccessTokens />
+        </ATabPane>
+        <ATabPane
           key="cert"
           :tab="$gettext('Cert')"
         >
@@ -123,7 +130,7 @@ onMounted(() => {
         </ATabPane>
       </ATabs>
     </div>
-    <FooterToolBar v-if="activeKey !== 'external_notify' && activeKey !== 'geolite'">
+    <FooterToolBar v-if="activeKey !== 'external_notify' && activeKey !== 'geolite' && activeKey !== 'access_tokens'">
       <AButton
         type="primary"
         @click="systemSettingsStore.save"

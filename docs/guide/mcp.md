@@ -17,13 +17,21 @@ The MCP interface is accessible through the `/mcp` path and provides streaming v
 
 ## Authentication
 
-The MCP interface is authenticated using the `node_secret` query parameter.
+Create a service token in **Preferences > Access Tokens** and grant it the
+smallest MCP scope the client needs:
 
-For example:
+- `mcp:read` permits resources and read-only tools.
+- `mcp:write` permits mutating tools and includes MCP read access.
 
+Send the token in the `Authorization` header:
+
+```http
+Authorization: Bearer nui_pat_...
 ```
-http://localhost:9000/mcp?node_secret=<your_node_secret>
-```
+
+Tokens are displayed only once. Store them in a secret manager and set an
+expiration date whenever possible. Credentials in URL query parameters are
+rejected to prevent leakage through logs and browser history.
 
 ### Resources
 
@@ -40,4 +48,4 @@ MCP is mainly used in the following scenarios:
 1. AI-driven Nginx configuration management
 2. Integration with automated operations tools
 3. Integration of third-party systems with Nginx UI
-4. Providing machine-readable APIs for automation scripts 
+4. Providing machine-readable APIs for automation scripts

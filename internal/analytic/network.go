@@ -1,6 +1,7 @@
 package analytic
 
 import (
+	"fmt"
 	stdnet "net"
 	"strings"
 
@@ -67,12 +68,20 @@ func hasUsableUnicastIP(addrs []stdnet.Addr) bool {
 }
 
 func GetNetworkStat() (data *net.IOCountersStat, err error) {
+	data = &net.IOCountersStat{}
+	defer func() {
+		if recovered := recover(); recovered != nil {
+			data = &net.IOCountersStat{}
+			err = fmt.Errorf("collect network statistics: %v", recovered)
+		}
+	}()
+
 	networkStats, err := net.IOCounters(true)
 	if err != nil {
 		return
 	}
 	if len(networkStats) == 0 {
-		return &net.IOCountersStat{}, nil
+		return data, nil
 	}
 	// Get all network interfaces
 	interfaces, err := stdnet.Interfaces()

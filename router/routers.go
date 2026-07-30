@@ -118,7 +118,7 @@ func InitRouter() {
 			analytic.InitWebSocketRouter(w)
 			certificate.InitCertificateWebSocketRouter(w)
 			event.InitRouter(w)
-			o := w.Group("", middleware.RequireSecureSession())
+			o := w.Group("", middleware.RequireInteractiveUser(), middleware.RequireSecureSession())
 			{
 				terminal.InitRouter(o)
 			}

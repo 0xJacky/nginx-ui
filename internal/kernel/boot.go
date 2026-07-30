@@ -58,6 +58,7 @@ func Boot(ctx context.Context) {
 		InitNodeSecret,
 		InitNodeInstanceID,
 		InitCryptoSecret,
+		analytic.Initialize,
 		validation.Init,
 		self_check.Init,
 		func() {

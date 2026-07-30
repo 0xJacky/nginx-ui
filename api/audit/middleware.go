@@ -3,6 +3,7 @@ package audit
 import (
 	"encoding/json"
 
+	internalmcp "github.com/0xJacky/Nginx-UI/internal/mcp"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
@@ -29,8 +30,16 @@ func MarkSensitiveResponse(c *gin.Context) {
 func LoggingMiddleware() gin.HandlerFunc {
 	return logger.AuditMiddleware(func(c *gin.Context, logMap map[string]string) {
 		var userId uint64
-		if user, ok := c.Get("user"); ok {
-			userId = user.(*model.User).ID
+		if token, ok := c.Get(internalmcp.ServiceTokenPrincipalKey); ok {
+			if principal, valid := token.(*internalmcp.ServiceTokenPrincipal); valid {
+				userId = principal.CreatorID
+				logMap["service_token_id"] = principal.PublicID
+				logMap["service_token_name"] = principal.Name
+			}
+		} else if user, ok := c.Get("user"); ok {
+			if currentUser, valid := user.(*model.User); valid {
+				userId = currentUser.ID
+			}
 		}
 		logMap["user_id"] = cast.ToString(userId)
 		sanitizeAuditLog(c, logMap)

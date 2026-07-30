@@ -75,6 +75,22 @@ func TestServiceTokenWriteScopeIncludesReadAndRejectsUnsupportedScope(t *testing
 
 	_, _, err = CreateServiceToken("invalid", []string{"admin"}, nil, 1)
 	require.ErrorContains(t, err, "unsupported")
+	_, _, err = CreateServiceToken(strings.Repeat("密", 65), []string{model.MCPTokenScopeRead}, nil, 1)
+	require.ErrorContains(t, err, "64 characters")
+}
+
+func TestServiceTokenAPIScopesAreIndependentFromMCPScopes(t *testing.T) {
+	setupServiceTokenTest(t)
+	_, rawToken, err := CreateServiceToken("api-writer", []string{model.APITokenScopeWrite}, nil, 7)
+	require.NoError(t, err)
+
+	principal, err := VerifyServiceToken(rawToken, time.Now())
+	require.NoError(t, err)
+	assert.Equal(t, uint64(7), principal.CreatorID)
+	assert.True(t, principal.HasScope(model.APITokenScopeWrite))
+	assert.True(t, principal.HasScope(model.APITokenScopeRead))
+	assert.False(t, principal.HasScope(model.MCPTokenScopeRead))
+	assert.False(t, principal.HasScope(model.MCPTokenScopeWrite))
 }
 
 func TestServiceTokenExpiryRevocationAndRotation(t *testing.T) {
@@ -102,4 +118,15 @@ func TestServiceTokenExpiryRevocationAndRotation(t *testing.T) {
 	require.NoError(t, RevokeServiceToken(record.PublicID))
 	_, err = VerifyServiceToken(rotatedToken, time.Now())
 	require.Error(t, err)
+}
+
+func TestExpiredServiceTokenCannotBeRotated(t *testing.T) {
+	database := setupServiceTokenTest(t)
+	expiresAt := time.Now().Add(time.Minute)
+	record, _, err := CreateServiceToken("expired", []string{model.APITokenScopeRead}, &expiresAt, 1)
+	require.NoError(t, err)
+	require.NoError(t, database.Model(record).Update("expires_at", time.Now().Add(-time.Minute)).Error)
+
+	_, _, err = RotateServiceToken(record.PublicID)
+	require.ErrorIs(t, err, gorm.ErrRecordNotFound)
 }

@@ -45,6 +45,13 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           ]
         },
         {
+          text: 'Automation',
+          collapsed: false,
+          items: [
+            { text: 'Command Line Interface', link: '/guide/cli' },
+          ]
+        },
+        {
           text: 'Configuration',
           collapsed: false,
           items: [

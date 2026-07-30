@@ -7,7 +7,9 @@ import (
 	"net/http"
 	"path"
 	"strings"
+	"time"
 
+	internalmcp "github.com/0xJacky/Nginx-UI/internal/mcp"
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -21,7 +23,7 @@ import (
 // must not authorize management API requests because they enable CSRF and leak
 // tokens through URLs.
 func getToken(c *gin.Context) (token string) {
-	return c.GetHeader("Authorization")
+	return authorizationToken(c.GetHeader("Authorization"))
 }
 
 // getTokenWS reads token from header or query only (no cookie fallback).
@@ -29,7 +31,7 @@ func getToken(c *gin.Context) (token string) {
 // browsers cannot silently authenticate WebSocket upgrades via cookies.
 func getTokenWS(c *gin.Context) (token string) {
 	if token = c.GetHeader("Authorization"); token != "" {
-		return
+		return authorizationToken(token)
 	}
 
 	if token = c.Query("token"); token != "" {
@@ -47,6 +49,105 @@ func getTokenWS(c *gin.Context) (token string) {
 	}
 
 	return ""
+}
+
+func authorizationToken(authorization string) string {
+	authorization = strings.TrimSpace(authorization)
+	if len(authorization) > len("Bearer ") && strings.EqualFold(authorization[:len("Bearer ")], "Bearer ") {
+		return strings.TrimSpace(authorization[len("Bearer "):])
+	}
+	return authorization
+}
+
+// These route policies are evaluated during authentication, before Proxy can
+// forward a request to another node. Some legacy APIs use GET for state changes,
+// and interactive account or credential operations must never be delegated to
+// a service token through the cluster proxy.
+var serviceTokenWriteGETPaths = map[string]struct{}{
+	"/api/backup":            {},
+	"/api/certs/:id/revoke":  {},
+	"/api/domain/:name/cert": {},
+	"/api/geolite/download":  {},
+	"/api/system/restart":    {},
+	"/api/upgrade/perform":   {},
+}
+
+var serviceTokenInteractivePaths = map[string]struct{}{
+	"/api/2fa_secure_session/otp":     {},
+	"/api/2fa_secure_session/passkey": {},
+	"/api/2fa_secure_session/status":  {},
+	"/api/2fa_status":                 {},
+	"/api/begin_passkey_register":     {},
+	"/api/finish_passkey_register":    {},
+	"/api/mcp/tokens":                 {},
+	"/api/mcp/tokens/:id":             {},
+	"/api/mcp/tokens/:id/rotate":      {},
+	"/api/otp_enroll":                 {},
+	"/api/otp_reset":                  {},
+	"/api/otp_secret":                 {},
+	"/api/passkeys":                   {},
+	"/api/passkeys/:id":               {},
+	"/api/pty":                        {},
+	"/api/recovery_codes":             {},
+	"/api/recovery_codes_generate":    {},
+	"/api/service_tokens":             {},
+	"/api/service_tokens/:id":         {},
+	"/api/service_tokens/:id/rotate":  {},
+	"/api/settings/protected":         {},
+	"/api/token/short":                {},
+	"/api/user":                       {},
+	"/api/user/language":              {},
+	"/api/user/password":              {},
+}
+
+var serviceTokenInteractiveRoutes = map[string]struct{}{
+	http.MethodDelete + " /api/node/credentials/:credential_id": {},
+	http.MethodDelete + " /api/nodes/:id":                       {},
+	http.MethodGet + " /api/node/credentials":                   {},
+	http.MethodGet + " /api/nodes/:id/credentials":              {},
+	http.MethodGet + " /api/nodes/:id/secret":                   {},
+	http.MethodPost + " /api/nodes":                             {},
+	http.MethodPost + " /api/nodes/:id":                         {},
+	http.MethodPost + " /api/nodes/:id/credentials/rotate":      {},
+	http.MethodPost + " /api/nodes/load_from_settings":          {},
+}
+
+func apiScopeForRequest(c *gin.Context) string {
+	switch c.Request.Method {
+	case http.MethodGet, http.MethodHead, http.MethodOptions:
+		if _, requiresWrite := serviceTokenWriteGETPaths[c.FullPath()]; !requiresWrite {
+			return model.APITokenScopeRead
+		}
+		return model.APITokenScopeWrite
+	default:
+		return model.APITokenScopeWrite
+	}
+}
+
+func serviceTokenRequiresInteractiveUser(c *gin.Context) bool {
+	if _, interactive := serviceTokenInteractivePaths[c.FullPath()]; interactive {
+		return true
+	}
+	_, interactive := serviceTokenInteractiveRoutes[c.Request.Method+" "+c.FullPath()]
+	return interactive
+}
+
+func authenticateServiceTokenRequest(c *gin.Context, token, requiredScope string) (bool, error) {
+	if !strings.HasPrefix(token, "nui_pat_") {
+		return false, nil
+	}
+	principal, err := internalmcp.VerifyServiceToken(token, time.Now())
+	if err != nil {
+		return true, err
+	}
+	if !principal.HasScope(requiredScope) {
+		return true, fmt.Errorf("service token scope is insufficient")
+	}
+	if serviceTokenRequiresInteractiveUser(c) {
+		return true, fmt.Errorf("service tokens cannot access interactive administrator operations")
+	}
+	c.Set(internalmcp.ServiceTokenPrincipalKey, principal)
+	return true, nil
 }
 
 // getXNodeID from header or query
@@ -128,6 +229,15 @@ func AuthRequired() gin.HandlerFunc {
 			return
 		}
 
+		if handled, err := authenticateServiceTokenRequest(c, token, apiScopeForRequest(c)); handled {
+			if err != nil {
+				abortWithAuthFailure()
+				return
+			}
+			c.Next()
+			return
+		}
+
 		var (
 			u  *model.User
 			ok bool
@@ -182,6 +292,15 @@ func AuthRequiredWS() gin.HandlerFunc {
 		token := getTokenWS(c)
 		if token == "" {
 			abortWithAuthFailure()
+			return
+		}
+
+		if handled, err := authenticateServiceTokenRequest(c, token, apiScopeForRequest(c)); handled {
+			if err != nil {
+				abortWithAuthFailure()
+				return
+			}
+			c.Next()
 			return
 		}
 
