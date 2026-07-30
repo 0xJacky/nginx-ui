@@ -6,6 +6,10 @@ import (
 )
 
 type HealthCheckConfig struct {
+	// Optional probe target. When empty, the URL discovered from the Nginx
+	// server block is used.
+	TargetURL string `json:"target_url"`
+
 	// Protocol settings
 	Protocol string            `json:"protocol"`                       // http, https, grpc
 	Method   string            `json:"method"`                         // GET, POST, PUT, etc.
@@ -31,21 +35,34 @@ type HealthCheckConfig struct {
 	ClientKey      string `json:"client_key"`      // Client key path
 }
 
+type SiteHealthAlertConfig struct {
+	Enabled           bool     `json:"enabled"`
+	StatusCodes       []int    `json:"status_codes" gorm:"serializer:json"`
+	NetworkErrors     bool     `json:"network_errors"`
+	FailureThreshold  int      `json:"failure_threshold"`
+	RecoveryEnabled   bool     `json:"recovery_enabled"`
+	CooldownSeconds   int      `json:"cooldown_seconds"`
+	ExternalNotifyIDs []uint64 `json:"external_notify_ids" gorm:"serializer:json"`
+}
+
 type SiteConfig struct {
 	Model
-	Host               string             `gorm:"index" json:"host" cosy:"all:omitempty"`            // host:port format
-	Port               int                `gorm:"index" json:"port" cosy:"all:omitempty"`            // port number
-	Scheme             string             `gorm:"default:'http'" json:"scheme" cosy:"all:omitempty"` // http, https, grpc, grpcs
-	DisplayURL         string             `json:"display_url" cosy:"all:omitempty"`                  // computed URL for display
-	CustomOrder        int                `gorm:"default:0" json:"custom_order" cosy:"all:omitempty"`
-	HealthCheckEnabled bool               `gorm:"default:true" json:"health_check_enabled" cosy:"all:omitempty"`
-	CheckInterval      int                `gorm:"default:300" json:"check_interval" cosy:"all:omitempty"` // seconds
-	Timeout            int                `gorm:"default:10" json:"timeout" cosy:"all:omitempty"`         // seconds
-	UserAgent          string             `gorm:"default:'Nginx-UI Site Checker/1.0'" json:"user_agent" cosy:"all:omitempty"`
-	MaxRedirects       int                `gorm:"default:3" json:"max_redirects" cosy:"all:omitempty"`
-	FollowRedirects    bool               `gorm:"default:true" json:"follow_redirects" cosy:"all:omitempty"`
-	CheckFavicon       bool               `gorm:"default:true" json:"check_favicon" cosy:"all:omitempty"`
-	HealthCheckConfig  *HealthCheckConfig `gorm:"serializer:json" json:"health_check_config" cosy:"all:omitempty"`
+	SiteKey            string                 `gorm:"index" json:"site_key" cosy:"all:omitempty"`
+	SiteName           string                 `gorm:"index" json:"site_name" cosy:"all:omitempty"`
+	Host               string                 `gorm:"index" json:"host" cosy:"all:omitempty"`            // host:port format
+	Port               int                    `gorm:"index" json:"port" cosy:"all:omitempty"`            // port number
+	Scheme             string                 `gorm:"default:'http'" json:"scheme" cosy:"all:omitempty"` // http, https, grpc, grpcs
+	DisplayURL         string                 `json:"display_url" cosy:"all:omitempty"`                  // computed URL for display
+	CustomOrder        int                    `gorm:"default:0" json:"custom_order" cosy:"all:omitempty"`
+	HealthCheckEnabled bool                   `json:"health_check_enabled" cosy:"all:omitempty"`
+	CheckInterval      int                    `gorm:"default:300" json:"check_interval" cosy:"all:omitempty"` // seconds
+	Timeout            int                    `gorm:"default:10" json:"timeout" cosy:"all:omitempty"`         // seconds
+	UserAgent          string                 `gorm:"default:'Nginx-UI Site Checker/1.0'" json:"user_agent" cosy:"all:omitempty"`
+	MaxRedirects       int                    `gorm:"default:3" json:"max_redirects" cosy:"all:omitempty"`
+	FollowRedirects    bool                   `gorm:"default:true" json:"follow_redirects" cosy:"all:omitempty"`
+	CheckFavicon       bool                   `gorm:"default:true" json:"check_favicon" cosy:"all:omitempty"`
+	HealthCheckConfig  *HealthCheckConfig     `gorm:"serializer:json" json:"health_check_config" cosy:"all:omitempty"`
+	HealthCheckAlert   *SiteHealthAlertConfig `gorm:"serializer:json" json:"health_check_alert" cosy:"all:omitempty"`
 }
 
 // GetURL returns the computed URL for this site config

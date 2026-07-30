@@ -13,12 +13,12 @@ import (
 
 // Service manages site checking operations
 type Service struct {
-	checker *SiteChecker
-	ctx     context.Context
-	cancel  context.CancelFunc
-	ticker  *time.Ticker
-	mu      sync.RWMutex
-	running bool
+	checker         *SiteChecker
+	ctx             context.Context
+	cancel          context.CancelFunc
+	settingsChanged chan struct{}
+	mu              sync.RWMutex
+	running         bool
 }
 
 var (
@@ -140,9 +140,10 @@ func NewServiceWithContext(parentCtx context.Context, options CheckOptions) *Ser
 	ctx, cancel := context.WithCancel(parentCtx)
 
 	return &Service{
-		checker: NewSiteChecker(options),
-		ctx:     ctx,
-		cancel:  cancel,
+		checker:         NewSiteChecker(options),
+		ctx:             ctx,
+		cancel:          cancel,
+		settingsChanged: make(chan struct{}, 1),
 	}
 }
 
@@ -151,19 +152,14 @@ func (s *Service) SetUpdateCallback(callback func([]*SiteInfo)) {
 	s.checker.SetUpdateCallback(callback)
 }
 
-// Start begins the site checking service. When the feature is globally
-// disabled via settings.SiteCheckSettings.Enabled, no collection or checking
-// goroutines are started (#1608).
+// Start begins site discovery and periodic checking. Discovery stays active
+// while probes are globally disabled so the dashboard can still show the
+// configured sites without generating network traffic.
 func (s *Service) Start() {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
 	if s.running {
-		return
-	}
-
-	if !settings.SiteCheckSettings.Enabled {
-		logger.Debug("Site check is disabled; service will not start")
 		return
 	}
 
@@ -178,12 +174,11 @@ func (s *Service) Start() {
 
 		// Wait for cache scanner to collect sites with progressive backoff
 		s.waitForSiteCollection(s.ctx)
-		s.checker.CheckAllSites(s.ctx)
+		s.checker.ForceCheckAllSites(s.ctx)
 		sl.Debug("Sitecheck initial collection goroutine completed")
 	})
 
 	// Start periodic checking using the configured interval.
-	s.ticker = time.NewTicker(settings.SiteCheckSettings.GetInterval())
 	go kernel.Run(s.ctx, "sitecheck periodic check goroutine", func(ctx context.Context) {
 		sl := logger.NewSessionLogger(ctx)
 		sl.Debug("Started sitecheck periodicCheck goroutine")
@@ -206,9 +201,6 @@ func (s *Service) Stop() {
 	s.running = false
 	sl.Debug("Stopping site checking service")
 
-	if s.ticker != nil {
-		s.ticker.Stop()
-	}
 	s.cancel()
 }
 
@@ -223,15 +215,33 @@ func (s *Service) Restart() {
 func (s *Service) periodicCheck() {
 	sl := logger.NewSessionLogger(s.ctx)
 	for {
+		timer := time.NewTimer(settings.SiteCheckSettings.GetInterval())
 		select {
 		case <-s.ctx.Done():
+			timer.Stop()
 			return
-		case <-s.ticker.C:
+		case <-s.settingsChanged:
+			if !timer.Stop() {
+				<-timer.C
+			}
+			continue
+		case <-timer.C:
 			sl.Debug("Starting periodic site check")
 			s.checker.CollectSites() // Re-collect in case sites changed
 			s.checker.CheckAllSites(s.ctx)
 		}
 	}
+}
+
+// SettingsChanged applies site-check settings without restarting the process.
+// The current timer is interrupted so a new interval takes effect immediately,
+// and a refresh broadcasts the new effective enabled state to clients.
+func (s *Service) SettingsChanged() {
+	select {
+	case s.settingsChanged <- struct{}{}:
+	default:
+	}
+	s.RefreshSites()
 }
 
 // RefreshSites manually triggers a site collection and check
@@ -240,7 +250,7 @@ func (s *Service) RefreshSites() {
 		sl := logger.NewSessionLogger(s.ctx)
 		sl.Debug("Started sitecheck refresh goroutine")
 		s.checker.CollectSites()
-		s.checker.CheckAllSites(s.ctx)
+		s.checker.ForceCheckAllSites(s.ctx)
 		sl.Debug("Sitecheck refresh goroutine completed")
 	}()
 }

@@ -8,6 +8,14 @@ import (
 )
 
 func push(nType model.NotificationType, title string, content string, details any) {
+	pushWithExternalTargets(nType, title, content, details, nil, false)
+}
+
+func pushTo(nType model.NotificationType, title string, content string, details any, externalNotifyIDs []uint64) {
+	pushWithExternalTargets(nType, title, content, details, externalNotifyIDs, true)
+}
+
+func pushWithExternalTargets(nType model.NotificationType, title string, content string, details any, externalNotifyIDs []uint64, targeted bool) {
 	n := query.Notification
 
 	data := &model.Notification{
@@ -33,5 +41,9 @@ func push(nType model.NotificationType, title string, content string, details an
 	broadcast(data)
 
 	extNotify := &ExternalMessage{data}
-	extNotify.Send()
+	if targeted {
+		extNotify.SendTo(externalNotifyIDs)
+	} else {
+		extNotify.Send()
+	}
 }

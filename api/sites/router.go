@@ -28,6 +28,7 @@ func InitRouter(r *gin.RouterGroup) {
 		o.DELETE("auto_cert/:name", RemoveDomainFromAutoCert)
 		o.POST("site_navigation/order", UpdateSiteOrder)
 		o.POST("site_navigation/health_check/:id", UpdateHealthCheck)
+		o.PUT("site_navigation/health_check/sync", SyncHealthCheck)
 
 		// batch enable sites
 		o.POST("sites/batch/enable", BatchEnableSites)

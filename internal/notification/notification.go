@@ -22,6 +22,14 @@ func Success(title string, content string, details any) {
 	push(model.NotificationSuccess, title, content, details)
 }
 
+func WarningTo(title string, content string, details any, externalNotifyIDs []uint64) {
+	pushTo(model.NotificationWarning, title, content, details, externalNotifyIDs)
+}
+
+func SuccessTo(title string, content string, details any, externalNotifyIDs []uint64) {
+	pushTo(model.NotificationSuccess, title, content, details, externalNotifyIDs)
+}
+
 func Define(title string, content string, details any) *model.Notification {
 	return &model.Notification{
 		Type:    model.NotificationInfo,

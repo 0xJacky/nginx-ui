@@ -61,19 +61,37 @@ func rewriteCheckURLScheme(siteURL, protocol string) string {
 // configuration. The body of the HTTP/HTTPS response (if any) is returned so
 // callers can reuse it; gRPC checks return a nil body.
 func (ec *EnhancedSiteChecker) CheckSiteWithConfig(ctx context.Context, siteURL string, config *model.HealthCheckConfig) (*CheckResult, error) {
+	return ec.checkSiteWithConfig(ctx, siteURL, config, nil)
+}
+
+func (ec *EnhancedSiteChecker) CheckSiteWithSiteConfig(ctx context.Context, siteURL string, siteConfig *model.SiteConfig) (*CheckResult, error) {
+	if siteConfig == nil {
+		return ec.CheckSiteWithConfig(ctx, siteURL, nil)
+	}
+	return ec.checkSiteWithConfig(ctx, siteURL, siteConfig.HealthCheckConfig, siteConfig)
+}
+
+func effectiveHealthCheckURL(siteURL string, config *model.HealthCheckConfig) string {
+	if config != nil && strings.TrimSpace(config.TargetURL) != "" {
+		return strings.TrimSpace(config.TargetURL)
+	}
+	return siteURL
+}
+
+func (ec *EnhancedSiteChecker) checkSiteWithConfig(ctx context.Context, siteURL string, config *model.HealthCheckConfig, siteConfig *model.SiteConfig) (*CheckResult, error) {
 	if config == nil {
 		return ec.checkHTTP(ctx, siteURL, &model.HealthCheckConfig{
 			Protocol:       "http",
 			Method:         "GET",
 			Path:           "/",
 			ExpectedStatus: []int{200},
-		})
+		}, siteConfig)
 	}
 
 	// Align the request URL scheme with the configured healthcheck protocol
 	// so HTTPS/gRPC checks don't silently fall back to the indexed HTTP URL.
 	// Only the scheme is rewritten; path, query, and port are preserved.
-	checkURL := rewriteCheckURLScheme(siteURL, config.Protocol)
+	checkURL := rewriteCheckURLScheme(effectiveHealthCheckURL(siteURL, config), config.Protocol)
 
 	switch config.Protocol {
 	case "grpc", "grpcs":
@@ -83,15 +101,15 @@ func (ec *EnhancedSiteChecker) CheckSiteWithConfig(ctx context.Context, siteURL 
 		}
 		return &CheckResult{Info: info}, err
 	case "https":
-		return ec.checkHTTPS(ctx, checkURL, config)
+		return ec.checkHTTPS(ctx, checkURL, config, siteConfig)
 	default: // http
-		return ec.checkHTTP(ctx, checkURL, config)
+		return ec.checkHTTP(ctx, checkURL, config, siteConfig)
 	}
 }
 
 // checkHTTP performs an HTTP health check and returns the response body so
 // callers can reuse it (e.g. to extract a favicon) without re-fetching.
-func (ec *EnhancedSiteChecker) checkHTTP(ctx context.Context, siteURL string, config *model.HealthCheckConfig) (*CheckResult, error) {
+func (ec *EnhancedSiteChecker) checkHTTP(ctx context.Context, siteURL string, config *model.HealthCheckConfig, siteConfig *model.SiteConfig) (*CheckResult, error) {
 	startTime := time.Now()
 
 	// Build request URL
@@ -116,7 +134,11 @@ func (ec *EnhancedSiteChecker) checkHTTP(ctx context.Context, siteURL string, co
 
 	// Set User-Agent if not provided
 	if req.Header.Get("User-Agent") == "" {
-		req.Header.Set("User-Agent", "Nginx-UI Enhanced Checker/2.0")
+		userAgent := "Nginx-UI Enhanced Checker/2.0"
+		if siteConfig != nil && strings.TrimSpace(siteConfig.UserAgent) != "" {
+			userAgent = siteConfig.UserAgent
+		}
+		req.Header.Set("User-Agent", userAgent)
 	}
 
 	// Add request body for POST/PUT methods
@@ -127,11 +149,33 @@ func (ec *EnhancedSiteChecker) checkHTTP(ctx context.Context, siteURL string, co
 		}
 	}
 
-	// Pick the right client. The shared client is reused unless this site
-	// genuinely needs a divergent TLS configuration.
-	client := ec.defaultClient
+	// Copy the lightweight client value for every request so per-site timeout
+	// and redirect policies never mutate a client shared by concurrent checks.
+	// The underlying transport (and therefore its connection pool) remains
+	// shared unless this site genuinely needs divergent TLS configuration.
+	timeout := enhancedClientTimeout
+	if siteConfig != nil && siteConfig.Timeout > 0 {
+		timeout = time.Duration(siteConfig.Timeout) * time.Second
+	}
+	clientValue := *ec.defaultClient
+	clientValue.Timeout = timeout
+	client := &clientValue
 	if needsCustomTLS(config) {
-		client = ClientForHealthCheck(config, enhancedClientTimeout)
+		client = ClientForHealthCheck(config, timeout)
+	}
+	if siteConfig != nil {
+		if !siteConfig.FollowRedirects {
+			client.CheckRedirect = func(_ *http.Request, _ []*http.Request) error {
+				return http.ErrUseLastResponse
+			}
+		} else if siteConfig.MaxRedirects > 0 {
+			client.CheckRedirect = func(_ *http.Request, via []*http.Request) error {
+				if len(via) >= siteConfig.MaxRedirects {
+					return fmt.Errorf("stopped after %d redirects", siteConfig.MaxRedirects)
+				}
+				return nil
+			}
+		}
 	}
 
 	// Make request
@@ -185,12 +229,8 @@ func (ec *EnhancedSiteChecker) checkHTTP(ctx context.Context, siteURL string, co
 		}
 	}
 
-	// Get or create site config to get ID
-	siteConfig := getOrCreateSiteConfigForURL(siteURL)
-
 	return &CheckResult{
 		Info: &SiteInfo{
-			SiteConfig:   *siteConfig,
 			Status:       status,
 			StatusCode:   resp.StatusCode,
 			ResponseTime: responseTime,
@@ -201,13 +241,11 @@ func (ec *EnhancedSiteChecker) checkHTTP(ctx context.Context, siteURL string, co
 }
 
 // checkHTTPS performs HTTPS health check with SSL validation
-func (ec *EnhancedSiteChecker) checkHTTPS(ctx context.Context, siteURL string, config *model.HealthCheckConfig) (*CheckResult, error) {
+func (ec *EnhancedSiteChecker) checkHTTPS(ctx context.Context, siteURL string, config *model.HealthCheckConfig, siteConfig *model.SiteConfig) (*CheckResult, error) {
 	// Force HTTPS protocol
 	httpsConfig := *config
 	httpsConfig.Protocol = "https"
-	httpsConfig.ValidateSSL = true
-
-	return ec.checkHTTP(ctx, siteURL, &httpsConfig)
+	return ec.checkHTTP(ctx, siteURL, &httpsConfig, siteConfig)
 }
 
 // checkGRPC performs gRPC health check
@@ -359,13 +397,14 @@ func parseGRPCURL(rawURL string) (*url.URL, error) {
 }
 
 // LoadSiteConfig loads health check configuration for a site using cache
-func LoadSiteConfig(siteURL string) (*model.SiteConfig, error) {
+func LoadSiteConfig(siteName, siteURL string) (*model.SiteConfig, error) {
 	// Parse URL to get host:port
 	tempConfig := &model.SiteConfig{}
 	tempConfig.SetFromURL(siteURL)
+	tempConfig.SiteKey = canonicalSiteKey(siteName, siteURL)
 
 	// Try to get from cache first
-	if config, found := getCachedSiteConfig(tempConfig.Host); found {
+	if config, found := getCachedSiteConfig(tempConfig.SiteKey); found {
 		// Set default health check config if nil
 		if config.HealthCheckConfig == nil {
 			config.HealthCheckConfig = &model.HealthCheckConfig{
@@ -380,7 +419,10 @@ func LoadSiteConfig(siteURL string) (*model.SiteConfig, error) {
 
 	// Not in cache, query database
 	sc := query.SiteConfig
-	config, err := sc.Where(sc.Host.Eq(tempConfig.Host)).First()
+	config, err := sc.Where(sc.SiteKey.Eq(tempConfig.SiteKey)).First()
+	if err != nil && siteName == "" {
+		config, err = sc.Where(sc.Host.Eq(tempConfig.Host)).First()
+	}
 	if err != nil {
 		// Return default config if not found
 		defaultConfig := &model.SiteConfig{
@@ -409,6 +451,6 @@ func LoadSiteConfig(siteURL string) (*model.SiteConfig, error) {
 	}
 
 	// Cache the config
-	setCachedSiteConfig(tempConfig.Host, config)
+	setCachedSiteConfig(tempConfig.SiteKey, config)
 	return config, nil
 }

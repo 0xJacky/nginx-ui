@@ -9,6 +9,7 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/cache"
 	"github.com/0xJacky/Nginx-UI/model"
+	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/uozi-tech/cosy/logger"
 )
 
@@ -219,6 +220,11 @@ func (s *Service) GetAvailabilityMap() map[string]*Status {
 
 // PerformAvailabilityTest performs availability test for all targets
 func (s *Service) PerformAvailabilityTest() {
+	if !settings.UpstreamCheckSettings.Enabled {
+		logger.Debug("Upstream availability check is globally disabled")
+		return
+	}
+
 	// Prevent concurrent tests
 	s.testMutex.Lock()
 	if s.testInProgress {

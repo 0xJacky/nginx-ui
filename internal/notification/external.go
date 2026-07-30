@@ -45,6 +45,25 @@ func (n *ExternalMessage) Send() {
 		logger.Error(err)
 		return
 	}
+	n.send(externalNotifies)
+}
+
+// SendTo delivers a message only to the selected, currently enabled external
+// notifier records. An empty selection intentionally sends no external message.
+func (n *ExternalMessage) SendTo(ids []uint64) {
+	if len(ids) == 0 {
+		return
+	}
+	en := query.ExternalNotify
+	externalNotifies, err := en.Where(en.Enabled.Is(true), en.ID.In(ids...)).Find()
+	if err != nil {
+		logger.Error(err)
+		return
+	}
+	n.send(externalNotifies)
+}
+
+func (n *ExternalMessage) send(externalNotifies []*model.ExternalNotify) {
 	ctx := context.Background()
 	for _, externalNotify := range externalNotifies {
 		go func(externalNotify *model.ExternalNotify) {
