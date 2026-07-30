@@ -6,6 +6,7 @@ import {
   CertSettings,
   ExternalNotify,
   GeoLiteSettings,
+  HealthCheckSettings,
   HTTPSettings,
   LogrotateSettings,
   NginxSettings,
@@ -59,6 +60,12 @@ onMounted(() => {
           :tab="$gettext('External Notify')"
         >
           <ExternalNotify />
+        </ATabPane>
+        <ATabPane
+          key="health_check"
+          :tab="$gettext('Health Check')"
+        >
+          <HealthCheckSettings />
         </ATabPane>
         <ATabPane
           key="node"

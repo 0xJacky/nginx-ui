@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import type { ExternalNotify } from '@/api/external_notify'
 import type { EnhancedHealthCheckConfig, HeaderItem, SiteInfo } from '@/api/site_navigation'
 import { CloseOutlined, PlusOutlined } from '@ant-design/icons-vue'
+import { listExternalNotifies } from '@/api/external_notify'
 import { siteNavigationApi } from '@/api/site_navigation'
 
 interface Props {
@@ -8,7 +10,6 @@ interface Props {
 }
 
 interface Emits {
-  (e: 'save', config: EnhancedHealthCheckConfig): void
   (e: 'refresh'): void
 }
 
@@ -18,9 +19,10 @@ const { message } = useGlobalApp()
 
 const visible = defineModel<boolean>('open', { required: true })
 const testing = ref(false)
+const externalNotifies = ref<ExternalNotify[]>([])
 
 const formData = ref<EnhancedHealthCheckConfig>({
-  // Basic settings (health check is always enabled)
+  // Basic settings
   enabled: true,
   interval: 300,
   timeout: 10,
@@ -35,6 +37,7 @@ const formData = ref<EnhancedHealthCheckConfig>({
   path: '/',
   headers: [],
   body: '',
+  targetURL: '',
 
   // Response validation
   expectedStatus: [200],
@@ -52,6 +55,15 @@ const formData = ref<EnhancedHealthCheckConfig>({
   sourceIP: '',
   clientCert: '',
   clientKey: '',
+
+  // Alert settings
+  alertEnabled: false,
+  alertStatusCodes: [502, 503, 504],
+  alertNetworkErrors: true,
+  alertFailureThreshold: 2,
+  alertRecoveryEnabled: true,
+  alertCooldownSeconds: 900,
+  externalNotifyIds: [],
 })
 
 interface StatusCodeOption {
@@ -174,7 +186,11 @@ async function loadExistingConfig() {
     return
 
   try {
-    const config = await siteNavigationApi.getHealthCheck(props.site.id)
+    const [config, notifyResponse] = await Promise.all([
+      siteNavigationApi.getHealthCheck(props.site.id),
+      listExternalNotifies(),
+    ])
+    externalNotifies.value = (notifyResponse.data || []).filter(item => item.enabled)
 
     // Convert backend config to frontend format
     formData.value = {
@@ -193,6 +209,7 @@ async function loadExistingConfig() {
       path: config.health_check_config?.path ?? '/',
       headers: convertHeadersToArray(config.health_check_config?.headers ?? {}),
       body: config.health_check_config?.body ?? '',
+      targetURL: config.health_check_config?.target_url ?? '',
 
       // Response validation
       expectedStatus: config.health_check_config?.expected_status ?? [200],
@@ -210,6 +227,15 @@ async function loadExistingConfig() {
       sourceIP: config.health_check_config?.source_ip ?? '',
       clientCert: config.health_check_config?.client_cert ?? '',
       clientKey: config.health_check_config?.client_key ?? '',
+
+      // Alert settings
+      alertEnabled: config.health_check_alert?.enabled ?? false,
+      alertStatusCodes: config.health_check_alert?.status_codes ?? [502, 503, 504],
+      alertNetworkErrors: config.health_check_alert?.network_errors ?? true,
+      alertFailureThreshold: config.health_check_alert?.failure_threshold ?? 2,
+      alertRecoveryEnabled: config.health_check_alert?.recovery_enabled ?? true,
+      alertCooldownSeconds: config.health_check_alert?.cooldown_seconds ?? 900,
+      externalNotifyIds: config.health_check_alert?.external_notify_ids ?? [],
     }
   }
   catch (error) {
@@ -221,7 +247,7 @@ async function loadExistingConfig() {
 
 function resetForm() {
   formData.value = {
-    // Basic settings (health check is always enabled)
+    // Basic settings
     enabled: true,
     interval: 300,
     timeout: 10,
@@ -236,6 +262,7 @@ function resetForm() {
     path: '/',
     headers: [],
     body: '',
+    targetURL: '',
 
     // Response validation
     expectedStatus: [200],
@@ -253,6 +280,15 @@ function resetForm() {
     sourceIP: '',
     clientCert: '',
     clientKey: '',
+
+    // Alert settings
+    alertEnabled: false,
+    alertStatusCodes: [502, 503, 504],
+    alertNetworkErrors: true,
+    alertFailureThreshold: 2,
+    alertRecoveryEnabled: true,
+    alertCooldownSeconds: 900,
+    externalNotifyIds: [],
   }
 }
 
@@ -396,11 +432,25 @@ async function handleSave() {
         verify_hostname: config.verifyHostname,
         client_cert: config.clientCert,
         client_key: config.clientKey,
+        target_url: config.targetURL,
+      },
+      health_check_alert: {
+        enabled: config.alertEnabled,
+        status_codes: config.alertStatusCodes,
+        network_errors: config.alertNetworkErrors,
+        failure_threshold: config.alertFailureThreshold,
+        recovery_enabled: config.alertRecoveryEnabled,
+        cooldown_seconds: config.alertCooldownSeconds,
+        external_notify_ids: config.externalNotifyIds,
       },
     }
 
-    await siteNavigationApi.updateHealthCheck(props.site.id, backendConfig)
+    const response = await siteNavigationApi.updateHealthCheck(props.site.id, backendConfig)
     message.success($gettext('Health check configuration saved successfully'))
+    const failedNodes = (response.sync_results || []).filter(result => !result.success)
+    if (failedNodes.length > 0) {
+      message.warning($gettext('Saved locally, but failed to synchronize %{count} node(s)', { count: String(failedNodes.length) }))
+    }
 
     // Trigger site refresh to update display URLs
     emit('refresh')
@@ -439,6 +489,7 @@ async function handleTest() {
       grpc_service: formData.value.grpcService,
       grpc_method: formData.value.grpcMethod,
       timeout: formData.value.timeout,
+      target_url: formData.value.targetURL,
     }
 
     // Call test API endpoint (we'll need to create this)
@@ -472,7 +523,7 @@ async function handleTest() {
           <!-- Enable/Disable Health Check -->
           <AFormItem :label="$gettext('Enable Health Check')">
             <div class="flex items-center gap-2">
-              <ASwitch v-model:checked="formData.enabled" />
+              <ASwitch v-model:checked="formData.enabled" data-testid="site-health-check-enabled" />
               <span class="text-sm text-gray-500 dark:text-gray-400">
                 {{ formData.enabled ? $gettext('Health check is enabled') : $gettext('Health check is disabled') }}
               </span>
@@ -497,6 +548,17 @@ async function handleTest() {
                 gRPCS
               </ARadio>
             </ARadioGroup>
+          </AFormItem>
+
+          <AFormItem
+            :label="$gettext('Custom Health Check Target')"
+            :help="$gettext('Optional absolute URL. Use it when the public address differs from the actual upstream host or port.')"
+          >
+            <AInput
+              v-model:value="formData.targetURL"
+              data-testid="health-check-target-url"
+              placeholder="https://127.0.0.1:8443"
+            />
           </AFormItem>
 
           <!-- HTTP/HTTPS Settings -->
@@ -701,6 +763,100 @@ async function handleTest() {
               </ARow>
             </ACollapsePanel>
           </ACollapse>
+
+          <ADivider />
+
+          <section data-testid="health-check-alert-settings">
+            <AFormItem :label="$gettext('Failure Notifications')">
+              <div class="flex items-center gap-2">
+                <ASwitch v-model:checked="formData.alertEnabled" data-testid="health-alert-enabled" />
+                <span class="text-sm text-gray-500 dark:text-gray-400">
+                  {{ formData.alertEnabled ? $gettext('Notifications are enabled') : $gettext('Notifications are disabled') }}
+                </span>
+              </div>
+            </AFormItem>
+
+            <template v-if="formData.alertEnabled">
+              <AFormItem :label="$gettext('Failure Status Codes')">
+                <ASelect
+                  v-model:value="formData.alertStatusCodes"
+                  data-testid="health-alert-status-codes"
+                  mode="multiple"
+                  style="width: 100%"
+                  :placeholder="$gettext('Select status codes')"
+                >
+                  <ASelectOptGroup
+                    v-for="group in statusCodeGroups"
+                    :key="`alert-${group.title}`"
+                    :label="group.title"
+                  >
+                    <ASelectOption
+                      v-for="option in group.options"
+                      :key="`alert-${option.value}`"
+                      :value="option.value"
+                    >
+                      {{ option.label }}
+                    </ASelectOption>
+                  </ASelectOptGroup>
+                </ASelect>
+              </AFormItem>
+
+              <AFormItem>
+                <ACheckbox v-model:checked="formData.alertNetworkErrors" data-testid="health-alert-network-errors">
+                  {{ $gettext('Notify on connection, DNS, and timeout errors') }}
+                </ACheckbox>
+              </AFormItem>
+
+              <ARow :gutter="16">
+                <ACol :span="12">
+                  <AFormItem :label="$gettext('Consecutive Failures')">
+                    <AInputNumber
+                      v-model:value="formData.alertFailureThreshold"
+                      data-testid="health-alert-failure-threshold"
+                      :min="1"
+                      :max="100"
+                      style="width: 100%"
+                    />
+                  </AFormItem>
+                </ACol>
+                <ACol :span="12">
+                  <AFormItem :label="$gettext('Reminder Cooldown (seconds)')">
+                    <AInputNumber
+                      v-model:value="formData.alertCooldownSeconds"
+                      data-testid="health-alert-cooldown"
+                      :min="0"
+                      :max="86400"
+                      style="width: 100%"
+                    />
+                  </AFormItem>
+                </ACol>
+              </ARow>
+
+              <AFormItem>
+                <ACheckbox v-model:checked="formData.alertRecoveryEnabled" data-testid="health-alert-recovery">
+                  {{ $gettext('Notify when the site recovers') }}
+                </ACheckbox>
+              </AFormItem>
+
+              <AFormItem :label="$gettext('Notification Channels')">
+                <ASelect
+                  v-model:value="formData.externalNotifyIds"
+                  data-testid="health-alert-notifiers"
+                  mode="multiple"
+                  style="width: 100%"
+                  :placeholder="$gettext('Select notification channels')"
+                >
+                  <ASelectOption
+                    v-for="notify in externalNotifies"
+                    :key="notify.id"
+                    :value="notify.id"
+                  >
+                    {{ `${notify.type} (#${notify.id})` }}
+                  </ASelectOption>
+                </ASelect>
+              </AFormItem>
+            </template>
+          </section>
         </div>
       </AForm>
     </div>

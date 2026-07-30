@@ -60,6 +60,17 @@ export interface LogrotateSettings {
   interval: number
 }
 
+export interface SiteCheckSettings {
+  enabled: boolean
+  concurrency: number
+  interval_seconds: number
+}
+
+export interface UpstreamCheckSettings {
+  enabled: boolean
+  interval_seconds: number
+}
+
 export interface NginxSettings {
   access_log_path: string
   error_log_path: string
@@ -142,6 +153,8 @@ export interface Settings {
   openai: OpenaiSettings
   terminal: TerminalSettings
   webauthn: WebauthnSettings
+  site_check: SiteCheckSettings
+  upstream_check: UpstreamCheckSettings
 }
 
 const settings = {

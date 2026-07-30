@@ -23,4 +23,8 @@ export function testMessage(params: TestMessageRequest): Promise<{ message: stri
   return http.post(`${baseUrl}/test`, params)
 }
 
+export function listExternalNotifies(): Promise<{ data: ExternalNotify[] }> {
+  return http.get(baseUrl, { params: { page: 1, per_page: 1000 } })
+}
+
 export default externalNotify

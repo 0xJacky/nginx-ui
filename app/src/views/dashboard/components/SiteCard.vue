@@ -130,8 +130,26 @@ function getStatusClass(status: string): string {
         </div>
       </div>
 
-      <div v-if="!settingsMode && site.health_check_enabled" class="site-status">
+      <div v-if="!settingsMode" class="site-status">
+        <ATag
+          v-if="!site.health_check_enabled"
+          data-testid="site-health-check-disabled"
+          color="default"
+          :bordered="false"
+        >
+          {{ $gettext('Disabled') }}
+        </ATag>
+        <ATag
+          v-else-if="!site.effective_health_check_enabled"
+          data-testid="site-health-check-paused"
+          color="warning"
+          :bordered="false"
+        >
+          {{ $gettext('Paused') }}
+        </ATag>
         <div
+          v-else
+          data-testid="site-health-check-status"
           class="status-indicator"
           :class="getStatusClass(site.status)"
         />

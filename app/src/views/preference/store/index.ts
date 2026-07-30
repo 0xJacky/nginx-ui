@@ -107,6 +107,15 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
       rpid: '',
       rp_origins: [],
     },
+    site_check: {
+      enabled: true,
+      concurrency: 5,
+      interval_seconds: 300,
+    },
+    upstream_check: {
+      enabled: true,
+      interval_seconds: 30,
+    },
   })
   const errors = ref<Record<string, Record<string, string>>>({})
   const savedEnableHTTPS = ref(false)

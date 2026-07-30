@@ -9,6 +9,7 @@ import { useProxyAvailabilityStore } from '@/pinia/moudule/proxyAvailability'
 
 const dataSource = ref<SocketInfo[]>([])
 const loading = ref(false)
+const globalHealthCheckEnabled = ref(true)
 
 // Initialize proxy availability store
 const proxyAvailabilityStore = useProxyAvailabilityStore()
@@ -37,6 +38,9 @@ const columns: ColumnsType<SocketInfo> = [
     key: 'status',
     width: 180,
     customRender: ({ record }) => {
+      if (!globalHealthCheckEnabled.value) {
+        return h(Tag, { color: 'warning', bordered: false }, () => $gettext('Paused'))
+      }
       if (!record.status) {
         return $gettext('No Data')
       }
@@ -95,6 +99,7 @@ async function loadData() {
   try {
     const res = await upstream.getSocketList()
     dataSource.value = res.data
+    globalHealthCheckEnabled.value = res.global_health_check_enabled
   }
   catch {
     message.error('Failed to load socket data')
@@ -139,6 +144,16 @@ onUnmounted(() => {
       </AButton>
     </template>
 
+    <AAlert
+      v-if="!globalHealthCheckEnabled"
+      data-testid="upstream-health-check-global-paused"
+      class="mb-4"
+      type="warning"
+      show-icon
+      :message="$gettext('Upstream health checks are globally paused')"
+      :description="$gettext('Per-target selections are preserved. Resume probes from Health Check preferences.')"
+    />
+
     <ATable
       :columns="columns"
       :data-source="enrichedDataSource"
@@ -160,6 +175,7 @@ onUnmounted(() => {
         <template v-if="column.key === 'enabled'">
           <ASwitch
             v-model:checked="record.enabled"
+            :data-testid="`upstream-health-check-${record.socket}`"
             @change="handleToggleEnabled(record.socket, $event)"
           />
         </template>
