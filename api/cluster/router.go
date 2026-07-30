@@ -38,6 +38,9 @@ func InitRouter(r *gin.RouterGroup) {
 	{
 		mutations.POST("nodes/reload_nginx", ReloadNginx)
 		mutations.POST("nodes/restart_nginx", RestartNginx)
+		mutations.POST("nodes/sync", SyncNodes)
+		mutations.POST("namespace/sync", UpsertNamespace)
+		mutations.POST("namespaces/:id/sync", SyncNamespace)
 		mutations.POST("namespaces", AddNamespace)
 		mutations.POST("namespaces/:id", ModifyNamespace)
 		mutations.DELETE("namespaces/:id", DeleteNamespace)

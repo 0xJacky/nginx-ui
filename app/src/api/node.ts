@@ -1,3 +1,4 @@
+import type { SyncScope, SyncSummary } from '@/api/cluster_sync'
 import type { ModelBase } from '@/api/curd'
 import { extendCurdApi, http, useCurdApi } from '@uozi-admin/request'
 
@@ -74,10 +75,16 @@ function restartNginx(nodeIds: number[]) {
   return http.post('/nodes/restart_nginx', { node_ids: nodeIds })
 }
 
+/** Pushes the local configurations, sites and streams to the given nodes. */
+function syncConfigs(nodeIds: number[], scope: SyncScope = {}) {
+  return http.post<SyncSummary>(`${baseUrl}/sync`, { node_ids: nodeIds, ...scope })
+}
+
 const nodeApi = extendCurdApi(useCurdApi<Node>(baseUrl), {
   load_from_settings: () => http.post(`${baseUrl}/load_from_settings`),
   reloadNginx,
   restartNginx,
+  syncConfigs,
   getSecret: (id: number) => http.get<{ value: string }>(`${baseUrl}/${id}/secret`),
   rotateCredential: (id: number) => http.post(`${baseUrl}/${id}/credentials/rotate`),
 })

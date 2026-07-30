@@ -21,6 +21,16 @@ func Delete(name string) (err error) {
 		return err
 	}
 
+	// Remote namespaces keep the enablement flag in the database, so refuse the
+	// deletion the same way an enabled local site is refused.
+	if IsRemoteDeploy(name) {
+		s := query.Site
+		siteModel, err := s.Where(s.Path.Eq(availablePath)).First()
+		if err == nil && siteModel.RemoteEnabled {
+			return ErrSiteIsEnabled
+		}
+	}
+
 	syncDelete(name)
 
 	s := query.Site

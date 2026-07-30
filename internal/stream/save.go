@@ -48,7 +48,16 @@ func Save(name string, content string, overwrite bool, syncNodeIds []uint64, pos
 		return err
 	}
 
+	// A remote namespace is served by its member nodes only, so the local Nginx
+	// must neither validate nor load the configuration. Nothing can be enabled
+	// locally for such a stream, so the namespace is only resolved when the
+	// stream currently participates in the local Nginx.
+	remoteDeploy := false
 	if helper.FileExists(enabledConfigFilePath) {
+		remoteDeploy = IsRemoteDeploy(name)
+	}
+
+	if !remoteDeploy && helper.FileExists(enabledConfigFilePath) {
 		// Test nginx configuration
 		res := nginx.Control(nginx.TestConfig)
 		if res.IsError() {
@@ -66,11 +75,18 @@ func Save(name string, content string, overwrite bool, syncNodeIds []uint64, pos
 	s := query.Stream
 	_, err = s.Where(s.Path.Eq(path)).
 		Select(s.SyncNodeIDs).
-		Updates(&model.Site{
+		Updates(&model.Stream{
 			SyncNodeIDs: syncNodeIds,
 		})
 	if err != nil {
 		return
+	}
+
+	// Moving a stream into a remote namespace detaches it from the local Nginx.
+	if remoteDeploy {
+		if detachErr := detachFromLocalNginx(name); detachErr != nil {
+			logger.Error(detachErr)
+		}
 	}
 
 	go syncSave(name, content)
@@ -123,14 +139,8 @@ func syncSave(name string, content string) {
 			successfulNodes = append(successfulNodes, node)
 			nodesMutex.Unlock()
 
-			// Check if the site is enabled, if so then enable it on the remote node
-			enabledConfigFilePath, err := ResolveEnabledPath(name)
-			if err != nil {
-				logger.Error(err)
-				return
-			}
-
-			if helper.FileExists(enabledConfigFilePath) {
+			// Mirror the deployment intent on the remote node.
+			if IsDeployed(name) {
 				syncEnable(name)
 			}
 		}(node)

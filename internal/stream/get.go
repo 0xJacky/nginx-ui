@@ -48,9 +48,15 @@ func GetStreamInfo(name string) (*Info, error) {
 
 	// Retrieve or create stream model from database
 	s := query.Stream
-	streamModel, err := s.Where(s.Path.Eq(path)).FirstOrCreate()
+	streamModel, err := s.Where(s.Path.Eq(path)).Preload(s.Namespace).FirstOrCreate()
 	if err != nil {
 		return nil, err
+	}
+
+	// Remote namespaces never create a local symlink, their state lives in the
+	// database instead.
+	if streamModel.Namespace.IsRemoteDeploy() {
+		status = remoteStatus(streamModel.RemoteEnabled)
 	}
 
 	// Read raw content

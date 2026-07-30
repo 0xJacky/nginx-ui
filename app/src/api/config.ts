@@ -1,4 +1,5 @@
 import type { AxiosRequestConfig } from '@uozi-admin/request'
+import type { SyncSummary } from '@/api/cluster_sync'
 import type { GetListResponse } from '@/api/curd'
 import type { ChatComplicationMessage } from '@/api/llm'
 import { extendCurdApi, http, useCurdApi } from '@uozi-admin/request'
@@ -50,6 +51,14 @@ const config = extendCurdApi(useCurdApi<Config>('/configs'), {
   }),
   get_history: (filepath: string, params?: { page: number, page_size: number }) => {
     return http.get<GetListResponse<ConfigBackup>>('/config_histories', { params: { filepath, ...params } })
+  },
+  /** Replicates a whole directory to the selected nodes instead of a single file. */
+  syncDirectory: (dir: string, syncNodeIds: number[], syncOverwrite: boolean) => {
+    return http.post<SyncSummary>('/config_sync_directory', {
+      dir,
+      sync_node_ids: syncNodeIds,
+      sync_overwrite: syncOverwrite,
+    })
   },
 })
 

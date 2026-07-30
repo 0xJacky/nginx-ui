@@ -34,6 +34,7 @@ func newConfig(db *gorm.DB, opts ...gen.DOOption) config {
 	_config.DeletedAt = field.NewField(tableName, "deleted_at")
 	_config.Name = field.NewString(tableName, "name")
 	_config.Filepath = field.NewString(tableName, "filepath")
+	_config.IsDir = field.NewBool(tableName, "is_dir")
 	_config.SyncNodeIds = field.NewField(tableName, "sync_node_ids")
 	_config.SyncOverwrite = field.NewBool(tableName, "sync_overwrite")
 
@@ -52,6 +53,7 @@ type config struct {
 	DeletedAt     field.Field
 	Name          field.String
 	Filepath      field.String
+	IsDir         field.Bool
 	SyncNodeIds   field.Field
 	SyncOverwrite field.Bool
 
@@ -76,6 +78,7 @@ func (c *config) updateTableName(table string) *config {
 	c.DeletedAt = field.NewField(table, "deleted_at")
 	c.Name = field.NewString(table, "name")
 	c.Filepath = field.NewString(table, "filepath")
+	c.IsDir = field.NewBool(table, "is_dir")
 	c.SyncNodeIds = field.NewField(table, "sync_node_ids")
 	c.SyncOverwrite = field.NewBool(table, "sync_overwrite")
 
@@ -94,13 +97,14 @@ func (c *config) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (c *config) fillFieldMap() {
-	c.fieldMap = make(map[string]field.Expr, 8)
+	c.fieldMap = make(map[string]field.Expr, 9)
 	c.fieldMap["id"] = c.ID
 	c.fieldMap["created_at"] = c.CreatedAt
 	c.fieldMap["updated_at"] = c.UpdatedAt
 	c.fieldMap["deleted_at"] = c.DeletedAt
 	c.fieldMap["name"] = c.Name
 	c.fieldMap["filepath"] = c.Filepath
+	c.fieldMap["is_dir"] = c.IsDir
 	c.fieldMap["sync_node_ids"] = c.SyncNodeIds
 	c.fieldMap["sync_overwrite"] = c.SyncOverwrite
 }

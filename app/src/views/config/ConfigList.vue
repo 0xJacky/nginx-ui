@@ -6,6 +6,7 @@ import InspectConfig from '@/components/InspectConfig'
 import { useBreadcrumbs } from '@/composables/useBreadcrumbs'
 import { isProtectedPath } from '@/views/config/configUtils'
 import Delete from './components/Delete.vue'
+import Deploy from './components/Deploy.vue'
 import Mkdir from './components/Mkdir.vue'
 import Rename from './components/Rename.vue'
 import configColumns from './configColumns'
@@ -101,6 +102,12 @@ function goBack() {
 const refMkdir = useTemplateRef('refMkdir')
 const refRename = useTemplateRef('refRename')
 const refDelete = useTemplateRef('refDelete')
+const refDeploy = useTemplateRef('refDeploy')
+
+// Deploy needs the same encoded path the list uses to navigate into a directory.
+function openDeploy(name: string) {
+  refDeploy.value?.open(`${basePath.value}${encodeURIComponent(name)}`, name)
+}
 
 // Check if a file/directory is protected
 function isProtected(name: string) {
@@ -182,6 +189,14 @@ function isProtected(name: string) {
           {{ $gettext('Modify') }}
         </AButton>
         <AButton
+          v-if="record.is_dir"
+          type="link"
+          size="small"
+          @click="() => openDeploy(record.name)"
+        >
+          {{ $gettext('Deploy') }}
+        </AButton>
+        <AButton
           v-if="!isProtected(record.name)"
           type="link"
           size="small"
@@ -212,6 +227,7 @@ function isProtected(name: string) {
       ref="refDelete"
       @deleted="() => table?.refresh()"
     />
+    <Deploy ref="refDeploy" />
     <FooterToolBar v-if="basePath">
       <AButton @click="goBack">
         {{ $gettext('Back') }}

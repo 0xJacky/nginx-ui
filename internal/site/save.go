@@ -52,7 +52,16 @@ func Save(name string, content string, overwrite bool, namespaceId uint64, syncN
 		})
 	}
 
+	// A remote namespace is served by its member nodes only, so the local Nginx
+	// must neither validate nor load the configuration. Nothing can be enabled
+	// locally for such a site, so the namespace is only resolved when the site
+	// currently participates in the local Nginx.
+	remoteDeploy := false
 	if helper.FileExists(enabledConfigFilePath) {
+		remoteDeploy = ResolveNamespaceByID(namespaceId).IsRemoteDeploy()
+	}
+
+	if !remoteDeploy && helper.FileExists(enabledConfigFilePath) {
 		// Test nginx configuration
 		c := nginx.Control(nginx.TestConfig)
 		if c.IsError() {
@@ -72,6 +81,16 @@ func Save(name string, content string, overwrite bool, namespaceId uint64, syncN
 	}
 
 	s := query.Site
+	// The record has to exist before the namespace and the sync targets can be
+	// stored on it, otherwise a freshly created site never joins its namespace.
+	if namespaceId > 0 || len(syncNodeIds) > 0 {
+		if _, err = s.Where(s.Path.Eq(path)).FirstOrCreate(); err != nil {
+			return rollbackError(err, func() error {
+				return snapshot.restore(path)
+			})
+		}
+	}
+
 	_, err = s.Where(s.Path.Eq(path)).
 		Select(s.NamespaceID, s.SyncNodeIDs).
 		Updates(&model.Site{
@@ -80,11 +99,19 @@ func Save(name string, content string, overwrite bool, namespaceId uint64, syncN
 		})
 	if err != nil {
 		return rollbackError(err, func() error {
-			if helper.FileExists(enabledConfigFilePath) && postAction == model.PostSyncActionReloadNginx {
+			if !remoteDeploy && helper.FileExists(enabledConfigFilePath) && postAction == model.PostSyncActionReloadNginx {
 				return restoreConfigAndReload(path, snapshot)
 			}
 			return snapshot.restore(path)
 		})
+	}
+
+	// Moving a site into a remote namespace detaches it from the local Nginx and
+	// carries the previous enablement over to the remote deployment intent.
+	if remoteDeploy {
+		if detachErr := detachFromLocalNginx(name); detachErr != nil {
+			logger.Error(detachErr)
+		}
 	}
 
 	go syncSave(name, content)
@@ -137,14 +164,8 @@ func syncSave(name string, content string) {
 			successfulNodes = append(successfulNodes, node)
 			nodesMutex.Unlock()
 
-			// Check if the site is enabled, if so then enable it on the remote node
-			enabledConfigFilePath, err := ResolveEnabledPath(name)
-			if err != nil {
-				logger.Error(err)
-				return
-			}
-
-			if helper.FileExists(enabledConfigFilePath) {
+			// Mirror the deployment intent on the remote node.
+			if IsDeployed(name) {
 				syncEnable(name)
 			}
 		}(node)

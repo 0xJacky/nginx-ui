@@ -83,6 +83,12 @@ func InitCronJobs(ctx context.Context) {
 		logger.Fatalf("IncrementalIndexing Err: %v\n", err)
 	}
 
+	// Initialize automatic namespace replication job
+	_, err = setupNamespaceSyncJob(s)
+	if err != nil {
+		logger.Fatalf("NamespaceAutoSync Err: %v\n", err)
+	}
+
 	// Start the scheduler
 	s.Start()
 

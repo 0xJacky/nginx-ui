@@ -1,7 +1,7 @@
 import type { StdTableColumn } from '@uozi-admin/curd'
 import { datetimeRender, maskRender } from '@uozi-admin/curd'
-import { DeployMode, PostSyncAction, UpstreamTestType } from '@/api/namespace'
-import { DeployModeMask, PostSyncActionMask, UpstreamTestTypeMask } from '@/constants'
+import { DeployMode, PostSyncAction, SyncStrategy, UpstreamTestType } from '@/api/namespace'
+import { DeployModeMask, PostSyncActionMask, SyncStrategyMask, UpstreamTestTypeMask } from '@/constants'
 import { useNodeAvailabilityStore } from '@/pinia/moudule/nodeAvailability'
 
 const columns: StdTableColumn[] = [{
@@ -81,6 +81,31 @@ const columns: StdTableColumn[] = [{
   },
   pure: true,
   width: 120,
+}, {
+  title: () => $gettext('Sync Strategy'),
+  dataIndex: 'sync_strategy',
+  customRender: maskRender(SyncStrategyMask),
+  edit: {
+    type: 'select',
+    select: {
+      mask: SyncStrategyMask,
+      defaultValue: SyncStrategy.Manual,
+    },
+  },
+  pure: true,
+  width: 120,
+}, {
+  title: () => $gettext('Sync Interval (minutes)'),
+  dataIndex: 'sync_interval_minutes',
+  edit: {
+    type: 'inputNumber',
+    inputNumber: {
+      min: 1,
+      defaultValue: 30,
+    },
+  },
+  hiddenInTable: true,
+  pure: true,
 }, {
   title: () => $gettext('Created at'),
   dataIndex: 'created_at',

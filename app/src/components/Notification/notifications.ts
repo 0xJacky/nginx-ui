@@ -81,6 +81,10 @@ const notifications: Record<string, { title: () => string, content: (args: any) 
     title: () => $gettext('Delete Remote Config Success'),
     content: (args: any) => $gettext('Delete %{path} on %{node_name} successfully', args),
   },
+  'Auto Sync Namespace Error': {
+    title: () => $gettext('Auto Sync Namespace Error'),
+    content: (args: any) => $gettext('Auto sync of namespace %{namespace} finished with %{failed} failed items', args),
+  },
   'External Notification Test': {
     title: () => $gettext('External Notification Test'),
     content: (args: any) => $gettext('This is a test message sent at %{timestamp} from Nginx UI.', args),

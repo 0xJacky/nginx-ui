@@ -2,11 +2,22 @@ package site
 
 import (
 	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/uozi-tech/cosy/logger"
 )
 
 // GetSiteStatus returns the status of the site
 func GetSiteStatus(name string) Status {
+	// Remote namespaces never create a local symlink, their state lives in the
+	// database instead.
+	if path, err := ResolveAvailablePath(name); err == nil {
+		s := query.Site
+		if siteModel, err := s.Where(s.Path.Eq(path)).Preload(s.Namespace).First(); err == nil &&
+			siteModel.Namespace.IsRemoteDeploy() {
+			return remoteStatus(siteModel.RemoteEnabled)
+		}
+	}
+
 	enabledFilePath, err := resolveEnabledSymlinkPath(name)
 	if err != nil {
 		logger.Error(err)

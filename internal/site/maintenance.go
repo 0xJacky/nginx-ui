@@ -76,6 +76,14 @@ func EnableMaintenance(name string) (err error) {
 		return
 	}
 
+	// Remote namespaces have no local Nginx to switch into maintenance mode, so
+	// the request is only dispatched to the member nodes.
+	if IsRemoteDeploy(name) {
+		go syncEnableMaintenance(name)
+
+		return
+	}
+
 	// Read the original configuration file
 	content, err := os.ReadFile(configFilePath)
 	if err != nil {
@@ -133,6 +141,13 @@ func EnableMaintenance(name string) (err error) {
 
 // DisableMaintenance disables maintenance mode for a site
 func DisableMaintenance(name string) (err error) {
+	// Remote namespaces have no local maintenance configuration to restore.
+	if IsRemoteDeploy(name) {
+		go syncDisableMaintenance(name)
+
+		return
+	}
+
 	// Check if the site is in maintenance mode
 	maintenanceConfigPath, err := ResolveEnabledPath(name + MaintenanceSuffix)
 	_, err = os.Stat(maintenanceConfigPath)

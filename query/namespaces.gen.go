@@ -38,6 +38,8 @@ func newNamespace(db *gorm.DB, opts ...gen.DOOption) namespace {
 	_namespace.PostSyncAction = field.NewString(tableName, "post_sync_action")
 	_namespace.UpstreamTestType = field.NewString(tableName, "upstream_test_type")
 	_namespace.DeployMode = field.NewString(tableName, "deploy_mode")
+	_namespace.SyncStrategy = field.NewString(tableName, "sync_strategy")
+	_namespace.SyncIntervalMinutes = field.NewInt(tableName, "sync_interval_minutes")
 
 	_namespace.fillFieldMap()
 
@@ -47,17 +49,19 @@ func newNamespace(db *gorm.DB, opts ...gen.DOOption) namespace {
 type namespace struct {
 	namespaceDo
 
-	ALL              field.Asterisk
-	ID               field.Uint64
-	CreatedAt        field.Time
-	UpdatedAt        field.Time
-	DeletedAt        field.Field
-	Name             field.String
-	SyncNodeIds      field.Field
-	OrderID          field.Int
-	PostSyncAction   field.String
-	UpstreamTestType field.String
-	DeployMode       field.String
+	ALL                 field.Asterisk
+	ID                  field.Uint64
+	CreatedAt           field.Time
+	UpdatedAt           field.Time
+	DeletedAt           field.Field
+	Name                field.String
+	SyncNodeIds         field.Field
+	OrderID             field.Int
+	PostSyncAction      field.String
+	UpstreamTestType    field.String
+	DeployMode          field.String
+	SyncStrategy        field.String
+	SyncIntervalMinutes field.Int
 
 	fieldMap map[string]field.Expr
 }
@@ -84,6 +88,8 @@ func (n *namespace) updateTableName(table string) *namespace {
 	n.PostSyncAction = field.NewString(table, "post_sync_action")
 	n.UpstreamTestType = field.NewString(table, "upstream_test_type")
 	n.DeployMode = field.NewString(table, "deploy_mode")
+	n.SyncStrategy = field.NewString(table, "sync_strategy")
+	n.SyncIntervalMinutes = field.NewInt(table, "sync_interval_minutes")
 
 	n.fillFieldMap()
 
@@ -100,7 +106,7 @@ func (n *namespace) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (n *namespace) fillFieldMap() {
-	n.fieldMap = make(map[string]field.Expr, 10)
+	n.fieldMap = make(map[string]field.Expr, 12)
 	n.fieldMap["id"] = n.ID
 	n.fieldMap["created_at"] = n.CreatedAt
 	n.fieldMap["updated_at"] = n.UpdatedAt
@@ -111,6 +117,8 @@ func (n *namespace) fillFieldMap() {
 	n.fieldMap["post_sync_action"] = n.PostSyncAction
 	n.fieldMap["upstream_test_type"] = n.UpstreamTestType
 	n.fieldMap["deploy_mode"] = n.DeployMode
+	n.fieldMap["sync_strategy"] = n.SyncStrategy
+	n.fieldMap["sync_interval_minutes"] = n.SyncIntervalMinutes
 }
 
 func (n namespace) clone(db *gorm.DB) namespace {

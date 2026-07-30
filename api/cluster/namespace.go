@@ -78,11 +78,13 @@ func GetNamespaceList(c *gin.Context) {
 func AddNamespace(c *gin.Context) {
 	cosy.Core[model.Namespace](c).
 		SetValidRules(gin.H{
-			"name":               "required",
-			"sync_node_ids":      "omitempty",
-			"post_sync_action":   "omitempty,oneof=" + model.PostSyncActionNone + " " + model.PostSyncActionReloadNginx,
-			"upstream_test_type": "omitempty,oneof=" + model.UpstreamTestLocal + " " + model.UpstreamTestRemote + " " + model.UpstreamTestMirror,
-			"deploy_mode":        "omitempty,oneof=" + model.DeployModeLocal + " " + model.DeployModeRemote,
+			"name":                  "required",
+			"sync_node_ids":         "omitempty",
+			"post_sync_action":      "omitempty,oneof=" + model.PostSyncActionNone + " " + model.PostSyncActionReloadNginx,
+			"upstream_test_type":    "omitempty,oneof=" + model.UpstreamTestLocal + " " + model.UpstreamTestRemote + " " + model.UpstreamTestMirror,
+			"deploy_mode":           "omitempty,oneof=" + model.DeployModeLocal + " " + model.DeployModeRemote,
+			"sync_strategy":         "omitempty,oneof=" + model.SyncStrategyManual + " " + model.SyncStrategyAuto,
+			"sync_interval_minutes": "omitempty,min=1",
 		}).
 		Create()
 }
@@ -90,11 +92,13 @@ func AddNamespace(c *gin.Context) {
 func ModifyNamespace(c *gin.Context) {
 	cosy.Core[model.Namespace](c).
 		SetValidRules(gin.H{
-			"name":               "required",
-			"sync_node_ids":      "omitempty",
-			"post_sync_action":   "omitempty,oneof=" + model.PostSyncActionNone + " " + model.PostSyncActionReloadNginx,
-			"upstream_test_type": "omitempty,oneof=" + model.UpstreamTestLocal + " " + model.UpstreamTestRemote + " " + model.UpstreamTestMirror,
-			"deploy_mode":        "omitempty,oneof=" + model.DeployModeLocal + " " + model.DeployModeRemote,
+			"name":                  "required",
+			"sync_node_ids":         "omitempty",
+			"post_sync_action":      "omitempty,oneof=" + model.PostSyncActionNone + " " + model.PostSyncActionReloadNginx,
+			"upstream_test_type":    "omitempty,oneof=" + model.UpstreamTestLocal + " " + model.UpstreamTestRemote + " " + model.UpstreamTestMirror,
+			"deploy_mode":           "omitempty,oneof=" + model.DeployModeLocal + " " + model.DeployModeRemote,
+			"sync_strategy":         "omitempty,oneof=" + model.SyncStrategyManual + " " + model.SyncStrategyAuto,
+			"sync_interval_minutes": "omitempty,min=1",
 		}).
 		Modify()
 }

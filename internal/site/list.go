@@ -3,6 +3,7 @@ package site
 import (
 	"context"
 	"os"
+	"path/filepath"
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/upstream"
@@ -43,7 +44,39 @@ func GetSiteConfigs(ctx context.Context, options *ListOptions, sites []*model.Si
 		FilterMatcher:    config.DefaultFilterMatcher,
 	}
 
-	return config.GetGenericConfigs(ctx, genericOptions, sites, processor)
+	configs, err := config.GetGenericConfigs(ctx, genericOptions, sites, processor)
+	if err != nil {
+		return nil, err
+	}
+
+	return applyRemoteStatus(configs, sites, options.Status), nil
+}
+
+// applyRemoteStatus overrides the filesystem derived status for sites owned by a
+// remote namespace, where the deployment intent is stored in the database.
+func applyRemoteStatus(configs []config.Config, sites []*model.Site, statusFilter string) []config.Config {
+	remote := make(map[string]bool, len(sites))
+	for _, siteModel := range sites {
+		if siteModel.Namespace.IsRemoteDeploy() {
+			remote[filepath.Base(siteModel.Path)] = siteModel.RemoteEnabled
+		}
+	}
+	if len(remote) == 0 {
+		return configs
+	}
+
+	filtered := make([]config.Config, 0, len(configs))
+	for _, item := range configs {
+		if enabled, ok := remote[item.Name]; ok {
+			item.Status = config.Status(remoteStatus(enabled))
+		}
+		if statusFilter != "" && string(item.Status) != statusFilter {
+			continue
+		}
+		filtered = append(filtered, item)
+	}
+
+	return filtered
 }
 
 // buildConfig creates a config.Config from file information with site-specific data

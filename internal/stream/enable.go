@@ -31,6 +31,18 @@ func Enable(name string) (err error) {
 		return
 	}
 
+	// Remote namespaces are served by their member nodes: record the intent and
+	// dispatch it instead of touching the local Nginx.
+	if IsRemoteDeploy(name) {
+		if err = setRemoteEnabled(name, true); err != nil {
+			return
+		}
+
+		go syncEnable(name)
+
+		return
+	}
+
 	if helper.FileExists(enabledConfigFilePath) {
 		return
 	}

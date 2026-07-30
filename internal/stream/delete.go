@@ -21,10 +21,21 @@ func Delete(name string) (err error) {
 		return err
 	}
 
+	s := query.Stream
+
+	// Remote namespaces keep the enablement flag in the database, so refuse the
+	// deletion the same way an enabled local stream is refused.
+	remoteDeploy := IsRemoteDeploy(name)
+	if remoteDeploy {
+		streamModel, err := s.Where(s.Path.Eq(availablePath)).First()
+		if err == nil && streamModel.RemoteEnabled {
+			return ErrStreamIsEnabled
+		}
+	}
+
 	syncDelete(name)
 
-	s := query.Site
-	_, err = s.Where(s.Path.Eq(availablePath)).Unscoped().Delete(&model.Site{})
+	_, err = s.Where(s.Path.Eq(availablePath)).Unscoped().Delete(&model.Stream{})
 	if err != nil {
 		return
 	}
@@ -38,7 +49,7 @@ func Delete(name string) (err error) {
 		return ErrStreamNotFound
 	}
 
-	if helper.FileExists(enabledPath) {
+	if !remoteDeploy && helper.FileExists(enabledPath) {
 		return ErrStreamIsEnabled
 	}
 
