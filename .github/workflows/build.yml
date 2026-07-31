@@ -682,7 +682,7 @@ jobs:
       - name: Set up Helm
         uses: azure/setup-helm@v5
         with:
-          version: v3.21.1
+          version: v4.2.3
 
       - name: Create kind cluster
         uses: helm/kind-action@v1.14.0
@@ -758,7 +758,7 @@ jobs:
       - name: Set up Helm
         uses: azure/setup-helm@v5
         with:
-          version: v3.21.1
+          version: v4.2.3
 
       - name: Package chart
         env:
