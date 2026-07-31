@@ -1,0 +1,23 @@
+name: Validate
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  templates:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Install XML tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends libxml2-utils
+
+      - name: Validate Community Applications repository
+        run: bash tests/validate.sh
