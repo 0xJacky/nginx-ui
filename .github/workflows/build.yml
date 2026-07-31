@@ -897,8 +897,8 @@ jobs:
           }
 
           download_openwrt_file sha256sums sha256sums
-          sdk_filename="$(awk '$2 ~ /openwrt-sdk-.*Linux-x86_64.tar.zst$/ {print $2; exit}' sha256sums)"
-          sdk_sha256="$(awk -v file="$sdk_filename" '$2 == file {print $1}' sha256sums)"
+          sdk_filename="$(awk '$2 ~ /^\*?openwrt-sdk-.*\.Linux-x86_64\.tar\.zst$/ {sub(/^\*/, "", $2); print $2; exit}' sha256sums)"
+          sdk_sha256="$(awk -v file="$sdk_filename" '$2 == file || $2 == "*" file {print $1; exit}' sha256sums)"
           test -n "$sdk_filename"
           test -n "$sdk_sha256"
           download_openwrt_file "$sdk_filename" "$sdk_filename"

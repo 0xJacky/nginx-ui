@@ -71,8 +71,14 @@ jobs:
             ipq40xx/generic
             sifiveu/generic
           )
+          checksum_file="$(mktemp)"
+          trap 'rm -f "$checksum_file"' EXIT
           for target in "${targets[@]}"; do
+            base_url="https://mirror-03.infra.openwrt.org/releases/${OPENWRT_VERSION}/targets/${target}"
             curl --retry 3 --retry-all-errors --retry-delay 2 \
-              -fsSLo /dev/null \
-              "https://mirror-03.infra.openwrt.org/releases/${OPENWRT_VERSION}/targets/${target}/sha256sums"
+              -fsSLo "$checksum_file" "${base_url}/sha256sums"
+            sdk_filename="$(awk '$2 ~ /^\*?openwrt-sdk-.*\.Linux-x86_64\.tar\.zst$/ {sub(/^\*/, "", $2); print $2; exit}' "$checksum_file")"
+            test -n "$sdk_filename"
+            curl --retry 3 --retry-all-errors --retry-delay 2 \
+              -fsSILo /dev/null "${base_url}/${sdk_filename}"
           done
