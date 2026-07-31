@@ -1,0 +1,29 @@
+{{- range $name, $settings := .Values.persistence }}
+{{- if and $settings.enabled (not $settings.existingClaim) }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "nginx-ui.claimName" (list $ $name) }}
+  labels:
+    {{- include "nginx-ui.labels" $ | nindent 4 }}
+  {{- if or $settings.annotations $settings.retain }}
+  annotations:
+    {{- if $settings.retain }}
+    helm.sh/resource-policy: keep
+    {{- end }}
+    {{- with $settings.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- end }}
+spec:
+  accessModes:
+    {{- toYaml $settings.accessModes | nindent 4 }}
+  {{- with $settings.storageClass }}
+  storageClassName: {{ . | quote }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ $settings.size }}
+{{- end }}
+{{- end }}

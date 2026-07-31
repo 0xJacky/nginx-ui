@@ -2,7 +2,10 @@
 
 # You can set this variable whatever you want in shell session right before running this script by issuing:
 # export DATA_PATH='/usr/local/etc/nginx-ui'
-DataPath=${DATA_PATH:-/usr/local/etc/nginx-ui}
+DataPath=${DATA_PATH:-}
+
+# Binary Path
+BinaryPath="/usr/local/bin/nginx-ui"
 
 # Service Path
 ServicePath="/etc/systemd/system/nginx-ui.service"
@@ -88,6 +91,28 @@ command_exists() {
 is_openwrt() {
     grep -qi '^ID=.*openwrt' "$(root_path /etc/os-release)" 2>/dev/null || \
         [[ -f "$(root_path /etc/openwrt_release)" ]]
+}
+
+configure_install_paths() {
+    if [[ "$SERVICE_TYPE" == "openwrt" ]]; then
+        BinaryPath="/usr/bin/nginx-ui"
+        DataPath="${DataPath:-/etc/nginx-ui}"
+    else
+        BinaryPath="/usr/local/bin/nginx-ui"
+        DataPath="${DataPath:-/usr/local/etc/nginx-ui}"
+    fi
+}
+
+service_resource_ref() {
+    if [[ -n "${NGINX_UI_SERVICE_REF:-}" ]]; then
+        echo "$NGINX_UI_SERVICE_REF"
+    elif [[ "$VERSION_CHANNEL" == "dev" ]]; then
+        echo "dev"
+    elif [[ -n "$RELEASE_LATEST" ]]; then
+        echo "$RELEASE_LATEST"
+    else
+        echo "main"
+    fi
 }
 
 ## Demo function for processing parameters
@@ -282,11 +307,16 @@ install_software() {
 
 test_detect() {
     DETECT_ROOT="$1"
+    RELEASE_LATEST="${2:-}"
     identify_the_operating_system_and_architecture
+    configure_install_paths
     echo "MACHINE=$MACHINE"
     echo "PACKAGE_MANAGEMENT_INSTALL=$PACKAGE_MANAGEMENT_INSTALL"
     echo "PACKAGE_MANAGEMENT_REMOVE=$PACKAGE_MANAGEMENT_REMOVE"
     echo "SERVICE_TYPE=$SERVICE_TYPE"
+    echo "BINARY_PATH=$BinaryPath"
+    echo "DATA_PATH=$DataPath"
+    echo "SERVICE_RESOURCE_REF=$(service_resource_ref)"
 }
 
 get_latest_version() {
@@ -372,12 +402,13 @@ decompression() {
 
 install_bin() {
     NAME="nginx-ui"
-    
+
+    mkdir -p "$(dirname "$BinaryPath")"
     if command -v install >/dev/null 2>&1; then
-        install -m 755 "${TMP_DIRECTORY}/$NAME" "/usr/local/bin/$NAME"
+        install -m 755 "${TMP_DIRECTORY}/$NAME" "$BinaryPath"
     else
-        cp "${TMP_DIRECTORY}/$NAME" "/usr/bin/$NAME"
-        chmod 755 "/usr/bin/$NAME"
+        cp "${TMP_DIRECTORY}/$NAME" "$BinaryPath"
+        chmod 755 "$BinaryPath"
     fi
 }
 
@@ -395,7 +426,7 @@ install_service() {
 
 install_systemd_service() {
     mkdir -p '/etc/systemd/system/nginx-ui.service.d'
-    local service_download_link="${RPROXY}https://raw.githubusercontent.com/0xJacky/nginx-ui/main/resources/services/nginx-ui.service"
+    local service_download_link="${RPROXY}https://raw.githubusercontent.com/0xJacky/nginx-ui/$(service_resource_ref)/resources/services/nginx-ui.service"
 
     echo "Downloading Nginx UI service file: $service_download_link"
     if ! curl_with_retry -R -H 'Cache-Control: no-cache' -L -o "$ServicePath" "$service_download_link"; then
@@ -413,7 +444,7 @@ install_systemd_service() {
 }
 
 install_openrc_service() {
-    local openrc_download_link="${RPROXY}https://raw.githubusercontent.com/0xJacky/nginx-ui/main/resources/services/nginx-ui.rc"
+    local openrc_download_link="${RPROXY}https://raw.githubusercontent.com/0xJacky/nginx-ui/$(service_resource_ref)/resources/services/nginx-ui.rc"
 
     echo "Downloading Nginx UI OpenRC file: $openrc_download_link"
     if ! curl_with_retry -R -H 'Cache-Control: no-cache' -L -o "$OpenRCPath" "$openrc_download_link"; then
@@ -433,7 +464,7 @@ install_openrc_service() {
 }
 
 install_openwrt_service() {
-    local openwrt_download_link="${RPROXY}https://raw.githubusercontent.com/0xJacky/nginx-ui/main/resources/services/nginx-ui.openwrt"
+    local openwrt_download_link="${RPROXY}https://raw.githubusercontent.com/0xJacky/nginx-ui/$(service_resource_ref)/resources/services/nginx-ui.openwrt"
 
     echo "Downloading Nginx UI OpenWrt init.d file: $openwrt_download_link"
     if ! curl_with_retry -R -H 'Cache-Control: no-cache' -L -o "$OpenWrtPath" "$openwrt_download_link"; then
@@ -453,7 +484,7 @@ install_openwrt_service() {
 
 install_initd_service() {
     # Download init.d script
-    local initd_download_link="${RPROXY}https://raw.githubusercontent.com/0xJacky/nginx-ui/main/resources/services/nginx-ui.init"
+    local initd_download_link="${RPROXY}https://raw.githubusercontent.com/0xJacky/nginx-ui/$(service_resource_ref)/resources/services/nginx-ui.init"
 
     echo "Downloading Nginx UI init.d file: $initd_download_link"
     if ! curl_with_retry -R -H 'Cache-Control: no-cache' -L -o "$InitPath" "$initd_download_link"; then
@@ -697,11 +728,11 @@ stop_nginx_ui() {
 }
 
 remove_nginx_ui() {
-  if [[ "$SERVICE_TYPE" == "systemd" ]] && (systemctl list-unit-files | grep -qw 'nginx-ui' || [[ -f "/usr/local/bin/nginx-ui" ]]); then
+  if [[ "$SERVICE_TYPE" == "systemd" ]] && (systemctl list-unit-files | grep -qw 'nginx-ui' || [[ -f "$BinaryPath" ]]); then
     if [[ -n "$(pidof nginx-ui)" ]]; then
       stop_nginx_ui
     fi
-    delete_files="/usr/local/bin/nginx-ui /etc/systemd/system/nginx-ui.service /etc/systemd/system/nginx-ui.service.d"
+    delete_files="$BinaryPath /etc/systemd/system/nginx-ui.service /etc/systemd/system/nginx-ui.service.d"
     if [[ "$PURGE" -eq '1' ]]; then
         [[ -d "$DataPath" ]] && delete_files="$delete_files $DataPath"
     fi
@@ -723,11 +754,11 @@ remove_nginx_ui() {
       fi
       exit 0
     fi
-  elif [[ "$SERVICE_TYPE" == "openrc" ]] && ([[ -f "$OpenRCPath" ]] || [[ -f "/usr/local/bin/nginx-ui" ]]); then
+  elif [[ "$SERVICE_TYPE" == "openrc" ]] && ([[ -f "$OpenRCPath" ]] || [[ -f "$BinaryPath" ]]); then
     if rc-service nginx-ui status | grep -qE "(started|running)"; then
       stop_nginx_ui
     fi
-    delete_files="/usr/local/bin/nginx-ui $OpenRCPath"
+    delete_files="$BinaryPath $OpenRCPath"
     if [[ "$PURGE" -eq '1' ]]; then
         [[ -d "$DataPath" ]] && delete_files="$delete_files $DataPath"
     fi
@@ -751,11 +782,11 @@ remove_nginx_ui() {
       fi
       exit 0
     fi
-  elif [[ "$SERVICE_TYPE" == "openwrt" ]] && ([[ -f "$OpenWrtPath" ]] || [[ -f "/usr/local/bin/nginx-ui" ]]); then
+  elif [[ "$SERVICE_TYPE" == "openwrt" ]] && ([[ -f "$OpenWrtPath" ]] || [[ -f "$BinaryPath" ]] || [[ -f "/usr/local/bin/nginx-ui" ]]); then
     if [[ -f "$OpenWrtPath" ]] && "$OpenWrtPath" status >/dev/null 2>&1; then
       stop_nginx_ui
     fi
-    delete_files="/usr/local/bin/nginx-ui $OpenWrtPath"
+    delete_files="$BinaryPath /usr/local/bin/nginx-ui $OpenWrtPath"
     if [[ "$PURGE" -eq '1' ]]; then
         [[ -d "$DataPath" ]] && delete_files="$delete_files $DataPath"
     fi
@@ -778,11 +809,11 @@ remove_nginx_ui() {
       fi
       exit 0
     fi
-  elif [[ "$SERVICE_TYPE" == "initd" ]] && ([[ -f "$InitPath" ]] || [[ -f "/usr/local/bin/nginx-ui" ]]); then
+  elif [[ "$SERVICE_TYPE" == "initd" ]] && ([[ -f "$InitPath" ]] || [[ -f "$BinaryPath" ]]); then
     if [[ -n "$(pidof nginx-ui)" ]]; then
       stop_nginx_ui
     fi
-    delete_files="/usr/local/bin/nginx-ui $InitPath"
+    delete_files="$BinaryPath $InitPath"
     if [[ "$PURGE" -eq '1' ]]; then
         [[ -d "$DataPath" ]] && delete_files="$delete_files $DataPath"
     fi
@@ -842,12 +873,13 @@ show_help() {
 
 main() {
     if [[ "${NGINX_UI_INSTALL_TESTING:-}" == "1" && "${1:-}" == "__test_detect" ]]; then
-        test_detect "$2"
+        test_detect "$2" "${3:-}"
         exit 0
     fi
 
     check_if_running_as_root
     identify_the_operating_system_and_architecture
+    configure_install_paths
     judgment_parameters "$@"
 
     # Parameter information
@@ -880,7 +912,7 @@ main() {
     fi
 
     install_bin
-    echo 'installed: /usr/local/bin/nginx-ui'
+    echo "installed: $BinaryPath"
 
     install_service
     if [[ "$SERVICE_TYPE" == "systemd" && "$SYSTEMD" -eq '1' ]]; then

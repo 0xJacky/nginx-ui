@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nginx-ui-smoke-nginx
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nginx-ui-smoke
+  hostPath:
+    path: /var/local/nginx-ui-smoke/nginx
+    type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nginx-ui-smoke-data
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nginx-ui-smoke
+  hostPath:
+    path: /var/local/nginx-ui-smoke/data
+    type: DirectoryOrCreate

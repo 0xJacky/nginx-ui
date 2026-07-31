@@ -1,0 +1,108 @@
+replicaCount: 1
+
+image:
+  repository: uozi/nginx-ui
+  pullPolicy: IfNotPresent
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {}
+securityContext: {}
+
+service:
+  type: ClusterIP
+  annotations: {}
+  httpPort: 80
+  httpsPort: 443
+  externalTrafficPolicy: ""
+  loadBalancerIP: ""
+  loadBalancerSourceRanges: []
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: nginx-ui.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+persistence:
+  nginx:
+    enabled: true
+    existingClaim: ""
+    storageClass: ""
+    accessModes:
+      - ReadWriteOnce
+    size: 1Gi
+    annotations: {}
+    retain: true
+  nginxUI:
+    enabled: true
+    existingClaim: ""
+    storageClass: ""
+    accessModes:
+      - ReadWriteOnce
+    size: 1Gi
+    annotations: {}
+    retain: true
+  www:
+    enabled: false
+    existingClaim: ""
+    storageClass: ""
+    accessModes:
+      - ReadWriteOnce
+    size: 1Gi
+    annotations: {}
+    retain: true
+
+probes:
+  startup:
+    enabled: true
+    httpGet:
+      path: /healthz
+      port: backend
+      scheme: HTTP
+    failureThreshold: 30
+    periodSeconds: 2
+    timeoutSeconds: 1
+  liveness:
+    enabled: true
+    httpGet:
+      path: /healthz
+      port: backend
+      scheme: HTTP
+    failureThreshold: 3
+    periodSeconds: 10
+    timeoutSeconds: 2
+  readiness:
+    enabled: true
+    httpGet:
+      path: /healthz
+      port: http
+      scheme: HTTP
+    failureThreshold: 6
+    periodSeconds: 5
+    timeoutSeconds: 2
+
+resources: {}
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+topologySpreadConstraints: []
+
+extraEnv: []
+extraEnvFrom: []
+extraVolumes: []
+extraVolumeMounts: []
+
+terminationGracePeriodSeconds: 30
