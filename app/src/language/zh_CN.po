@@ -5,11 +5,11 @@ msgstr ""
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2025-05-09 21:33+0800\n"
 "Last-Translator: 0xJacky <me@jackyu.cn>\n"
-"Language-Team: Chinese (Simplified Han script) "
-"<https://weblate.nginxui.com/projects/nginx-ui/frontend/zh_Hans/>\n"
+"Language-Team: Chinese (Simplified Han script) <https://weblate.nginxui.com/"
+"projects/nginx-ui/frontend/zh_Hans/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 3.6\n"
@@ -29,14 +29,14 @@ msgstr "IP 证书通知"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:81
 msgid ""
-"This site is configured as a default server (default_server) for HTTPS "
-"(port 443). "
+"This site is configured as a default server (default_server) for HTTPS (port "
+"443). "
 msgstr "此站点配置为 HTTPS 的默认服务器（default_server）（端口 443）。"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:85
 msgid ""
-"This site uses wildcard server name (_) which typically indicates an "
-"IP-based certificate. "
+"This site uses wildcard server name (_) which typically indicates an IP-"
+"based certificate. "
 msgstr "此站点使用了通配符服务器名称（_），这通常表示这是一个基于 IP 的证书。"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:89
@@ -82,8 +82,8 @@ msgstr "输入服务器 IP 地址（例如：203.0.113.1 或 2001:db8::1）"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:140
 msgid ""
-"For IP-based certificates, please specify the server IP address that will "
-"be included in the certificate."
+"For IP-based certificates, please specify the server IP address that will be "
+"included in the certificate."
 msgstr "对于基于 IP 的证书，请指定将包含在证书中的服务器 IP 地址。"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:144
@@ -107,7 +107,8 @@ msgid "Private CA:"
 msgstr "私有 CA："
 
 #: src/components/AutoCertForm/AutoCertForm.vue:161
-msgid "Any reachable IP address can be used with private Certificate Authorities"
+msgid ""
+"Any reachable IP address can be used with private Certificate Authorities"
 msgstr "任何可访问的 IP 地址均可用于私有证书颁发机构"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:170
@@ -205,6 +206,7 @@ msgstr "有效的"
 
 #: src/components/CertInfo/CertInfo.vue:31
 #: src/views/certificate/CertificateList/certColumns.tsx:103
+#: src/views/preference/tabs/AccessTokens.vue:149
 msgid "Expired"
 msgstr "已过期"
 
@@ -296,15 +298,17 @@ msgstr "需要 GeoLite2 数据库"
 
 #: src/components/GeoLiteDownload/GeoLiteDownload.vue:158
 msgid ""
-"The GeoLite2 database is required for offline geographic IP analysis. "
-"Please download it to enable this feature."
+"The GeoLite2 database is required for offline geographic IP analysis. Please "
+"download it to enable this feature."
 msgstr "离线地理 IP 分析需要 GeoLite2 数据库。请下载以启用此功能。"
 
 #: src/components/GeoLiteDownload/GeoLiteDownload.vue:160
 msgid ""
 "Alternatively, if you cannot download the database, you can manually place "
 "GeoLite2-City.mmdb in the same directory as app.ini."
-msgstr "或者，如果您无法下载数据库，可以手动将 GeoLite2-City.mmdb 文件放置在与 app.ini 相同的目录中。"
+msgstr ""
+"或者，如果您无法下载数据库，可以手动将 GeoLite2-City.mmdb 文件放置在与 "
+"app.ini 相同的目录中。"
 
 #: src/components/GeoLiteDownload/GeoLiteDownload.vue:168
 msgid "GeoLite2 Database Installed"
@@ -349,7 +353,8 @@ msgid "Config validation is unavailable for a remote-only namespace."
 msgstr "仅远程命名空间无法进行配置验证。"
 
 #: src/components/InspectConfig/InspectConfig.vue:47
-msgid "Sandbox validation is unavailable when Nginx runs in a separate container."
+msgid ""
+"Sandbox validation is unavailable when Nginx runs in a separate container."
 msgstr "当 Nginx 在独立容器中运行时，无法进行沙箱验证。"
 
 #: src/components/InspectConfig/InspectConfig.vue:49
@@ -359,7 +364,8 @@ msgid ""
 msgstr "由于配置了自定义测试命令，无法进行沙箱验证。"
 
 #: src/components/InspectConfig/InspectConfig.vue:58
-msgid "A required include file is missing from the sandbox or source configuration."
+msgid ""
+"A required include file is missing from the sandbox or source configuration."
 msgstr "沙盒或源配置中缺少必需的包含文件。"
 
 #: src/components/InspectConfig/InspectConfig.vue:60
@@ -410,7 +416,7 @@ msgstr "助手"
 msgid "User"
 msgstr "用户"
 
-#: src/components/LLM/ChatMessage.vue:241 src/views/config/ConfigList.vue:182
+#: src/components/LLM/ChatMessage.vue:241 src/views/config/ConfigList.vue:189
 msgid "Modify"
 msgstr "修改"
 
@@ -420,10 +426,10 @@ msgstr "修改"
 #: src/views/certificate/components/CertificateActions.vue:29
 #: src/views/config/components/ConfigLeftPanel.vue:283
 #: src/views/config/components/ConfigName.vue:58
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:713
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:869
 #: src/views/dns/DDNSManager.vue:438 src/views/dns/DNSRecordManager.vue:250
 #: src/views/preference/components/AuthSettings/Passkey.vue:131
-#: src/views/preference/Preference.vue:124
+#: src/views/preference/Preference.vue:138
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:196
 #: src/views/stream/components/ConfigName.vue:52
@@ -435,7 +441,7 @@ msgstr "保存"
 #: src/components/NgxConfigEditor/NgxServer.vue:61
 #: src/components/NgxConfigEditor/NgxUpstream.vue:32 src/language/curd.ts:37
 #: src/views/config/components/Delete.vue:98
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:710
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:866
 #: src/views/dns/DDNSManager.vue:435 src/views/dns/DNSGroupList.vue:240
 #: src/views/dns/DNSGroupList.vue:285
 #: src/views/dns/DNSGroupRecordManager.vue:1531
@@ -524,7 +530,7 @@ msgstr "%{path} 的聊天"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:75
 #: src/views/config/components/ConfigName.vue:50
 #: src/views/config/components/Rename.vue:56
-#: src/views/config/ConfigList.vue:190
+#: src/views/config/ConfigList.vue:205
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:44
 #: src/views/stream/components/ConfigName.vue:44
 msgid "Rename"
@@ -546,7 +552,7 @@ msgstr "复制"
 #: src/views/certificate/components/RemoveCert.vue:112
 #: src/views/config/components/Delete.vue:65
 #: src/views/config/components/Delete.vue:97
-#: src/views/config/ConfigList.vue:199
+#: src/views/config/ConfigList.vue:214
 #: src/views/dns/components/DNSRecordTable.vue:331
 #: src/views/dns/components/DNSRecordTable.vue:382
 #: src/views/dns/DDNSManager.vue:360 src/views/dns/DNSGroupList.vue:244
@@ -567,13 +573,13 @@ msgstr "无操作"
 
 #: src/components/NamespaceRender/NamespaceRender.vue:44
 #: src/components/NamespaceTabs/NamespaceTabs.vue:141 src/constants/index.ts:39
-#: src/views/node/Node.vue:209 src/views/node/Node.vue:217
+#: src/views/node/Node.vue:243 src/views/node/Node.vue:251
 msgid "Reload Nginx"
 msgstr "重载 Nginx"
 
 #: src/components/NamespaceRender/NamespaceRender.vue:53
 #: src/components/NamespaceTabs/NamespaceTabs.vue:127
-#: src/views/namespace/columns.ts:17 src/views/namespace/Namespace.vue:31
+#: src/views/namespace/columns.ts:17 src/views/namespace/Namespace.vue:68
 msgid "Sync Nodes"
 msgstr "同步节点"
 
@@ -619,7 +625,7 @@ msgid "Are you sure you want to restart Nginx on the following sync nodes?"
 msgstr "你确定要在以下同步节点上重启 Nginx 吗？"
 
 #: src/components/NamespaceTabs/NamespaceTabs.vue:153
-#: src/views/node/Node.vue:230 src/views/node/Node.vue:238
+#: src/views/node/Node.vue:264 src/views/node/Node.vue:272
 msgid "Restart Nginx"
 msgstr "重启 Nginx"
 
@@ -629,7 +635,7 @@ msgstr "重启 Nginx"
 #: src/components/NodeSelector/NodeSelector.vue:79
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
 #: src/views/dashboard/Nodes.vue:110 src/views/node/nodeColumns.tsx:95
-#: src/views/upstream/SocketList.vue:45
+#: src/views/upstream/SocketList.vue:49
 msgid "Online"
 msgstr "在线"
 
@@ -638,7 +644,7 @@ msgstr "在线"
 #: src/components/NodeSelector/NodeSelector.vue:85
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
 #: src/views/dashboard/Nodes.vue:117 src/views/node/nodeColumns.tsx:99
-#: src/views/upstream/SocketList.vue:45
+#: src/views/upstream/SocketList.vue:49
 msgid "Offline"
 msgstr "离线"
 
@@ -657,7 +663,8 @@ msgid "Nginx restarted successfully"
 msgstr "Nginx 重启成功"
 
 #: src/components/NginxControl/NginxControl.vue:124
-msgid "Nginx restart status could not be confirmed. Please check the Nginx status."
+msgid ""
+"Nginx restart status could not be confirmed. Please check the Nginx status."
 msgstr "无法确认 Nginx 重启状态。请检查 Nginx 状态。"
 
 #: src/components/NginxControl/NginxControl.vue:160
@@ -768,7 +775,7 @@ msgstr "您确定要删除这个 Location？"
 #: src/language/curd.ts:61
 #: src/views/config/components/ConfigRightPanel/Basic.vue:41
 #: src/views/config/components/Delete.vue:124
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:527
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:589
 #: src/views/nginx_log/NginxLogList.vue:165
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:521
 msgid "Path"
@@ -789,8 +796,8 @@ msgstr "移除此服务器的 access_log 指令"
 
 #: src/components/NgxConfigEditor/LogEntry.vue:154
 msgid ""
-"Write an access_log directive for this server, so its requests can be "
-"viewed and analysed separately"
+"Write an access_log directive for this server, so its requests can be viewed "
+"and analysed separately"
 msgstr "为此服务器写入 access_log 指令，以便单独查看和分析其请求"
 
 #: src/components/NgxConfigEditor/LogEntry.vue:163 src/language/constants.ts:64
@@ -885,6 +892,8 @@ msgstr "Upstream 名称"
 #: src/views/namespace/columns.ts:9 src/views/nginx_log/NginxLogList.vue:156
 #: src/views/node/nodeColumns.tsx:19
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:84
+#: src/views/preference/tabs/AccessTokens.vue:50
+#: src/views/preference/tabs/AccessTokens.vue:266
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:36
 #: src/views/site/site_list/columns.tsx:30
 #: src/views/site/site_list/SiteDuplicate.vue:79
@@ -981,7 +990,8 @@ msgid "Auto Backup Storage Failed"
 msgstr "自动备份存储失败"
 
 #: src/components/Notification/notifications.ts:34
-msgid "Backup task %{backup_name} failed during storage upload, error: %{error}"
+msgid ""
+"Backup task %{backup_name} failed during storage upload, error: %{error}"
 msgstr "备份任务 %{backup_name} 在存储上传过程中失败，错误：%{error}"
 
 #: src/components/Notification/notifications.ts:37
@@ -1075,222 +1085,232 @@ msgid "Delete %{path} on %{node_name} successfully"
 msgstr "在 %{node_name} 上成功删除 %{path}"
 
 #: src/components/Notification/notifications.ts:85
+msgid "Auto Sync Namespace Error"
+msgstr "自动同步命名空间出错"
+
+#: src/components/Notification/notifications.ts:86
+msgid ""
+"Auto sync of namespace %{namespace} finished with %{failed} failed items"
+msgstr "命名空间 %{namespace} 自动同步完成，其中 %{failed} 项失败"
+
+#: src/components/Notification/notifications.ts:89
 msgid "External Notification Test"
 msgstr "外部通知测试"
 
-#: src/components/Notification/notifications.ts:86
+#: src/components/Notification/notifications.ts:90
 msgid "This is a test message sent at %{timestamp} from Nginx UI."
 msgstr "这是一条测试消息，于 %{timestamp} 从 Nginx UI 发送。"
 
-#: src/components/Notification/notifications.ts:89 src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:93 src/language/constants.ts:50
 msgid "Delete Remote Site Error"
 msgstr "删除远程站点错误"
 
-#: src/components/Notification/notifications.ts:90
+#: src/components/Notification/notifications.ts:94
 msgid "Delete site %{name} from %{node} failed"
 msgstr "部署 %{name} 到 %{node} 失败"
 
-#: src/components/Notification/notifications.ts:93 src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:97 src/language/constants.ts:49
 msgid "Delete Remote Site Success"
 msgstr "删除远程站点成功"
 
-#: src/components/Notification/notifications.ts:94
+#: src/components/Notification/notifications.ts:98
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "成功从 %{node} 中删除站点 %{name}"
 
-#: src/components/Notification/notifications.ts:97 src/language/constants.ts:52
+#: src/components/Notification/notifications.ts:101
+#: src/language/constants.ts:52
 msgid "Disable Remote Site Error"
 msgstr "禁用远程站点错误"
 
-#: src/components/Notification/notifications.ts:98
+#: src/components/Notification/notifications.ts:102
 msgid "Disable site %{name} from %{node} failed"
 msgstr "在 %{node} 上禁用 %{name} 成功"
 
-#: src/components/Notification/notifications.ts:101
+#: src/components/Notification/notifications.ts:105
 #: src/language/constants.ts:51
 msgid "Disable Remote Site Success"
 msgstr "远程站点禁用成功"
 
-#: src/components/Notification/notifications.ts:102
+#: src/components/Notification/notifications.ts:106
 msgid "Disable site %{name} from %{node} successfully"
 msgstr "在 %{node} 上禁用 %{name} 成功"
 
-#: src/components/Notification/notifications.ts:105
+#: src/components/Notification/notifications.ts:109
 #: src/language/constants.ts:54
 msgid "Enable Remote Site Error"
 msgstr "启用远程站点错误"
 
-#: src/components/Notification/notifications.ts:106
+#: src/components/Notification/notifications.ts:110
 msgid "Enable site %{name} on %{node} failed"
 msgstr "在 %{node} 中启用 %{name} 失败"
 
-#: src/components/Notification/notifications.ts:109
+#: src/components/Notification/notifications.ts:113
 #: src/language/constants.ts:53
 msgid "Enable Remote Site Success"
 msgstr "启用远程站点成功"
 
-#: src/components/Notification/notifications.ts:110
+#: src/components/Notification/notifications.ts:114
 msgid "Enable site %{name} on %{node} successfully"
 msgstr "在 %{node} 上启用 %{name} 成功"
 
-#: src/components/Notification/notifications.ts:113
+#: src/components/Notification/notifications.ts:117
 msgid "Enable Remote Site Maintenance Error"
 msgstr "在 %{node} 上启用 %{site} 失败"
 
-#: src/components/Notification/notifications.ts:114
+#: src/components/Notification/notifications.ts:118
 msgid "Enable site %{name} maintenance on %{node} failed"
 msgstr "在 %{node} 中为 %{name} 启用维护模式失败"
 
-#: src/components/Notification/notifications.ts:117
+#: src/components/Notification/notifications.ts:121
 msgid "Enable Remote Site Maintenance Success"
 msgstr "成功启用远程站点维护"
 
-#: src/components/Notification/notifications.ts:118
+#: src/components/Notification/notifications.ts:122
 msgid "Enable site %{name} maintenance on %{node} successfully"
 msgstr "在 %{node} 上成功启用站点 %{name} 维护模式"
 
-#: src/components/Notification/notifications.ts:121
+#: src/components/Notification/notifications.ts:125
 msgid "Disable Remote Site Maintenance Error"
 msgstr "禁用远程站点维护错误"
 
-#: src/components/Notification/notifications.ts:122
+#: src/components/Notification/notifications.ts:126
 msgid "Disable site %{name} maintenance on %{node} failed"
 msgstr "停用站点 %{name} 维护 %{node} 失败"
 
-#: src/components/Notification/notifications.ts:125
+#: src/components/Notification/notifications.ts:129
 msgid "Disable Remote Site Maintenance Success"
 msgstr "远程站点维护已成功禁用"
 
-#: src/components/Notification/notifications.ts:126
+#: src/components/Notification/notifications.ts:130
 msgid "Disable site %{name} maintenance on %{node} successfully"
 msgstr "成功停用站点 %{name} 上 %{node} 的维护功能"
 
-#: src/components/Notification/notifications.ts:129
+#: src/components/Notification/notifications.ts:133
 #: src/language/constants.ts:56
 msgid "Rename Remote Site Error"
 msgstr "重命名远程站点错误"
 
-#: src/components/Notification/notifications.ts:130
+#: src/components/Notification/notifications.ts:134
 msgid "Rename site %{name} to %{new_name} on %{node} failed"
 msgstr "在 %{node} 上将站点 %{name} 重命名为 %{new_name} 成功"
 
-#: src/components/Notification/notifications.ts:133
+#: src/components/Notification/notifications.ts:137
 #: src/language/constants.ts:55
 msgid "Rename Remote Site Success"
 msgstr "重命名远程站点成功"
 
-#: src/components/Notification/notifications.ts:134
+#: src/components/Notification/notifications.ts:138
 msgid "Rename site %{name} to %{new_name} on %{node} successfully"
 msgstr "在 %{node} 上将站点 %{name} 重命名为 %{new_name} 成功"
 
-#: src/components/Notification/notifications.ts:137
+#: src/components/Notification/notifications.ts:141
 #: src/language/constants.ts:48
 msgid "Save Remote Site Error"
 msgstr "保存远程站点错误"
 
-#: src/components/Notification/notifications.ts:138
+#: src/components/Notification/notifications.ts:142
 msgid "Save site %{name} to %{node} failed"
 msgstr "成功将站点 %{name} 保存到 %{node} 中"
 
-#: src/components/Notification/notifications.ts:141
+#: src/components/Notification/notifications.ts:145
 #: src/language/constants.ts:47
 msgid "Save Remote Site Success"
 msgstr "保存远程站点成功"
 
-#: src/components/Notification/notifications.ts:142
+#: src/components/Notification/notifications.ts:146
 msgid "Save site %{name} to %{node} successfully"
 msgstr "成功将站点 %{name} 保存到 %{node} 中"
 
-#: src/components/Notification/notifications.ts:145
+#: src/components/Notification/notifications.ts:149
 msgid "Delete Remote Stream Error"
 msgstr "删除远程 Stream 错误"
 
-#: src/components/Notification/notifications.ts:146
+#: src/components/Notification/notifications.ts:150
 msgid "Delete stream %{name} from %{node} failed"
 msgstr "从 %{node} 删除 Stream %{name} 失败"
 
-#: src/components/Notification/notifications.ts:149
+#: src/components/Notification/notifications.ts:153
 msgid "Delete Remote Stream Success"
 msgstr "删除远程 Stream 成功"
 
-#: src/components/Notification/notifications.ts:150
+#: src/components/Notification/notifications.ts:154
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "已成功从 %{node} 删除 Stream %{name}"
 
-#: src/components/Notification/notifications.ts:153
+#: src/components/Notification/notifications.ts:157
 msgid "Disable Remote Stream Error"
 msgstr "禁用远程 Stream 错误"
 
-#: src/components/Notification/notifications.ts:154
+#: src/components/Notification/notifications.ts:158
 msgid "Disable stream %{name} from %{node} failed"
 msgstr "在 %{node} 中启用 %{name} 失败"
 
-#: src/components/Notification/notifications.ts:157
+#: src/components/Notification/notifications.ts:161
 msgid "Disable Remote Stream Success"
 msgstr "禁用远程 Stream 成功"
 
-#: src/components/Notification/notifications.ts:158
+#: src/components/Notification/notifications.ts:162
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr "在 %{node} 上禁用 %{name} 成功"
 
-#: src/components/Notification/notifications.ts:161
+#: src/components/Notification/notifications.ts:165
 msgid "Enable Remote Stream Error"
 msgstr "启用远程 Steam 错误"
 
-#: src/components/Notification/notifications.ts:162
+#: src/components/Notification/notifications.ts:166
 msgid "Enable stream %{name} on %{node} failed"
 msgstr "在 %{node} 中启用 %{name} 失败"
 
-#: src/components/Notification/notifications.ts:165
+#: src/components/Notification/notifications.ts:169
 msgid "Enable Remote Stream Success"
 msgstr "启用远程 Stream 成功"
 
-#: src/components/Notification/notifications.ts:166
+#: src/components/Notification/notifications.ts:170
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "在 %{node} 上启用 %{name} 成功"
 
-#: src/components/Notification/notifications.ts:169
+#: src/components/Notification/notifications.ts:173
 msgid "Rename Remote Stream Error"
 msgstr "重命名远程 Stream 错误"
 
-#: src/components/Notification/notifications.ts:170
+#: src/components/Notification/notifications.ts:174
 msgid "Rename stream %{name} to %{new_name} on %{node} failed"
 msgstr "在 %{node} 上将站点 %{name} 重命名为 %{new_name} 成功"
 
-#: src/components/Notification/notifications.ts:173
+#: src/components/Notification/notifications.ts:177
 msgid "Rename Remote Stream Success"
 msgstr "重命名远程 Stream 成功"
 
-#: src/components/Notification/notifications.ts:174
+#: src/components/Notification/notifications.ts:178
 msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
 msgstr "在 %{node} 上将站点 %{name} 重命名为 %{new_name} 成功"
 
-#: src/components/Notification/notifications.ts:177
+#: src/components/Notification/notifications.ts:181
 msgid "Save Remote Stream Error"
 msgstr "保存远程 Stream 错误"
 
-#: src/components/Notification/notifications.ts:178
+#: src/components/Notification/notifications.ts:182
 msgid "Save stream %{name} to %{node} failed"
 msgstr "部署 %{name} 到 %{node} 失败"
 
-#: src/components/Notification/notifications.ts:181
+#: src/components/Notification/notifications.ts:185
 msgid "Save Remote Stream Success"
 msgstr "保存远程 Stream 成功"
 
-#: src/components/Notification/notifications.ts:182
+#: src/components/Notification/notifications.ts:186
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "成功将站点 %{name} 保存到 %{node} 中"
 
-#: src/components/Notification/notifications.ts:185
+#: src/components/Notification/notifications.ts:189
 #: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr "所有恢复代码已用完"
 
-#: src/components/Notification/notifications.ts:186
+#: src/components/Notification/notifications.ts:190
 #: src/language/constants.ts:59
 msgid ""
-"Please generate new recovery codes in the preferences immediately to "
-"prevent lockout."
+"Please generate new recovery codes in the preferences immediately to prevent "
+"lockout."
 msgstr "请立即在偏好设置中生成新的恢复码，以防止无法访问您的账户。"
 
 #: src/components/PortScanner/PortScannerCompact.vue:31
@@ -1309,6 +1329,7 @@ msgstr "端口"
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:242
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:522
 #: src/views/node/nodeColumns.tsx:87
+#: src/views/preference/tabs/AccessTokens.vue:54
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:29
 #: src/views/site/site_list/columns.tsx:120 src/views/stream/columns.tsx:87
 msgid "Status"
@@ -1453,7 +1474,9 @@ msgstr "HTTPS 协议"
 msgid ""
 "Check if HTTPS is enabled. Using HTTP outside localhost is insecure and "
 "prevents using Passkeys and clipboard features"
-msgstr "检查是否启用了 HTTPS。在本地主机之外使用 HTTP 是不安全的，这也会导致无法使用 Passkey 和剪贴板功能"
+msgstr ""
+"检查是否启用了 HTTPS。在本地主机之外使用 HTTP 是不安全的，这也会导致无法使用 "
+"Passkey 和剪贴板功能"
 
 #: src/components/SelfCheck/tasks/frontend/websocket.ts:19
 msgid "Support communication with the backend through the WebSocket protocol. "
@@ -1468,6 +1491,7 @@ msgstr "已拷贝"
 #: src/components/SensitiveString/SensitiveInput.vue:90
 #: src/components/SensitiveString/SensitiveString.vue:100
 #: src/views/backup/components/BackupCreator.vue:128
+#: src/views/preference/tabs/AccessTokens.vue:319
 msgid "Copy"
 msgstr "拷贝"
 
@@ -1532,8 +1556,7 @@ msgstr "无效文件对象"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:158
 msgid ""
-"Frontend debug mode: restore flow completed without sending a backend "
-"request"
+"Frontend debug mode: restore flow completed without sending a backend request"
 msgstr "前端调试模式：恢复流程已完成，无需发送后端请求"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:159
@@ -1558,7 +1581,9 @@ msgid ""
 "Warning: Restore operation will overwrite current configurations. Make sure "
 "you have a valid backup file and security token, and carefully select what "
 "to restore."
-msgstr "警告：还原操作将覆盖当前配置。请确保您有有效的备份文件和安全令牌，并仔细选择要还原的内容。"
+msgstr ""
+"警告：还原操作将覆盖当前配置。请确保您有有效的备份文件和安全令牌，并仔细选择"
+"要还原的内容。"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:204
 #: src/components/SystemRestore/SystemRestoreContent.vue:287
@@ -1627,8 +1652,8 @@ msgstr "自动重启"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:368
 msgid ""
-"Nginx UI configuration has been restored and will restart automatically in "
-"a few seconds."
+"Nginx UI configuration has been restored and will restart automatically in a "
+"few seconds."
 msgstr "Nginx UI 配置已恢复，几秒钟后将自动重启。"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:371
@@ -1643,7 +1668,9 @@ msgstr "现在可以关闭此对话框"
 msgid ""
 "Your account still uses a legacy recovery code. Generate new recovery codes "
 "after verification to keep account recovery secure."
-msgstr "您的账户仍在使用旧版恢复码。请在验证后生成新的恢复码，以确保账户恢复的安全性。"
+msgstr ""
+"您的账户仍在使用旧版恢复码。请在验证后生成新的恢复码，以确保账户恢复的安全"
+"性。"
 
 #: src/components/TwoFA/Authorization.vue:80
 msgid "Input the recovery code:"
@@ -1681,7 +1708,9 @@ msgstr "生成新的恢复代码"
 msgid ""
 "Your legacy recovery code has been used and cannot be used again. Generate "
 "new recovery codes now to keep account recovery available."
-msgstr "您的旧恢复码已使用，无法再次使用。立即生成新的恢复码，以保持账户恢复功能可用。"
+msgstr ""
+"您的旧恢复码已使用，无法再次使用。立即生成新的恢复码，以保持账户恢复功能可"
+"用。"
 
 #: src/components/TwoFA/use2FAModal.ts:50
 msgid "Go to Recovery Codes"
@@ -1720,6 +1749,18 @@ msgstr "不适用"
 #: src/composables/useUpstreamStatus.ts:146
 msgid "Main Node"
 msgstr "主节点"
+
+#: src/composables/useClusterSync.ts:17
+msgid "There is nothing to synchronize"
+msgstr "没有需要同步的内容"
+
+#: src/composables/useClusterSync.ts:22
+msgid "Synchronized %{count} items successfully"
+msgstr "已成功同步 %{count} 项"
+
+#: src/composables/useClusterSync.ts:33
+msgid "Synchronization finished with %{count} failures"
+msgstr "同步完成，其中 %{count} 项失败"
 
 #: src/composables/useGeoTranslation.ts:165
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:165
@@ -1877,7 +1918,7 @@ msgid "Type"
 msgstr "类型"
 
 #: src/composables/useUpstreamStatus.ts:122 src/routes/modules/upstream.ts:10
-#: src/views/upstream/SocketList.vue:24
+#: src/views/upstream/SocketList.vue:25
 msgid "Upstream"
 msgstr "上游"
 
@@ -2179,7 +2220,9 @@ msgstr "无效路径: {0}"
 msgid ""
 "Path not in granted access paths: {0}. Add it to [backup] GrantedAccessPath "
 "in app.ini and restart."
-msgstr "路径不在授予的访问路径中：{0}。将其添加到 app.ini 中的 [backup] GrantedAccessPath 并重启。"
+msgstr ""
+"路径不在授予的访问路径中：{0}。将其添加到 app.ini 中的 [backup] "
+"GrantedAccessPath 并重启。"
 
 #: src/constants/errors/backup.ts:74
 msgid "Backup path does not exist: {0}"
@@ -2391,9 +2434,24 @@ msgstr "所选 ACME 服务器不提供证书配置文件： {0}"
 
 #: src/constants/errors/cert.ts:49
 msgid ""
-"Wildcard domains and IP addresses cannot be requested in the same "
-"certificate"
+"Wildcard domains and IP addresses cannot be requested in the same certificate"
 msgstr "通配符域名和 IP 地址不能在同一证书中请求。"
+
+#: src/constants/errors/cluster_sync.ts:2
+msgid "Path is not under the nginx conf dir"
+msgstr "路径不在 Nginx 配置目录下"
+
+#: src/constants/errors/cluster_sync.ts:3
+msgid "No enabled target node was found"
+msgstr "未找到已启用的目标节点"
+
+#: src/constants/errors/cluster_sync.ts:4
+msgid "The namespace has no node to sync with"
+msgstr "该命名空间没有可同步的节点"
+
+#: src/constants/errors/cluster_sync.ts:5
+msgid "Select at least one kind of content to sync"
+msgstr "请至少选择一种要同步的内容"
 
 #: src/constants/errors/config.ts:2
 msgid "File name is not allowed: {0}"
@@ -2591,8 +2649,7 @@ msgstr "时间戳格式无效"
 
 #: src/constants/errors/nginx_log.ts:2
 msgid ""
-"The log path is not under the paths in "
-"settings.NginxSettings.LogDirWhiteList"
+"The log path is not under the paths in settings.NginxSettings.LogDirWhiteList"
 msgstr "日志路径不在 settings.NginxSettings.LogDirWhiteList 中的路径之下"
 
 #: src/constants/errors/nginx_log.ts:3
@@ -2613,19 +2670,19 @@ msgstr "指令的参数为空"
 
 #: src/constants/errors/nginx_log.ts:7
 msgid ""
-"Settings.NginxLogSettings.ErrorLogPath is empty, refer to "
-"https://nginxui.com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://"
+"nginxui.com/guide/config-nginx.html for more information"
 msgstr ""
-"Settings.NginxLogSettings.ErrorLogPath 为空，更多信息请参阅 "
-"https://nginxui.com/guide/config-nginx.html"
+"Settings.NginxLogSettings.ErrorLogPath 为空，更多信息请参阅 https://"
+"nginxui.com/guide/config-nginx.html"
 
 #: src/constants/errors/nginx_log.ts:8
 msgid ""
-"Settings.NginxLogSettings.AccessLogPath is empty, refer to "
-"https://nginxui.com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://"
+"nginxui.com/guide/config-nginx.html for more information"
 msgstr ""
-"Settings.NginxLogSettings.AccessLogPath 为空，更多信息请参阅 "
-"https://nginxui.com/guide/config-nginx.html"
+"Settings.NginxLogSettings.AccessLogPath 为空，更多信息请参阅 https://"
+"nginxui.com/guide/config-nginx.html"
 
 #: src/constants/errors/nginx_log.ts:9
 msgid "Log indexer not available"
@@ -2859,7 +2916,8 @@ msgstr "Conf.d 目录不存在"
 msgid ""
 "GeoLite2 database not found at {0}. Log indexing requires GeoLite2 database "
 "for geographic IP analysis"
-msgstr "未在 {0} 找到 GeoLite2 数据库。日志索引需要 GeoLite2 数据库进行地理 IP 分析"
+msgstr ""
+"未在 {0} 找到 GeoLite2 数据库。日志索引需要 GeoLite2 数据库进行地理 IP 分析"
 
 #: src/constants/errors/self_check.ts:25
 msgid "Failed to read bundled nginx-ui.conf: {0}"
@@ -2882,7 +2940,8 @@ msgid "Failed to restore nginx-ui.conf from backup: {0}"
 msgstr "从备份恢复 nginx-ui.conf 失败：{0}"
 
 #: src/constants/errors/self_check.ts:30
-msgid "Nginx configuration directory is not shared with external container at {0}"
+msgid ""
+"Nginx configuration directory is not shared with external container at {0}"
 msgstr "Nginx 配置目录未与位于 {0} 的外部容器共享"
 
 #: src/constants/errors/self_check.ts:31
@@ -3110,7 +3169,8 @@ msgid "This field should be a valid hostname"
 msgstr "该字段应是有效的主机名"
 
 #: src/constants/form_errors.ts:6
-msgid "This field should only contain letters, unicode characters, numbers, and -_."
+msgid ""
+"This field should only contain letters, unicode characters, numbers, and -_."
 msgstr "该字段只能包含字母、unicode 字符、数字和 -_。"
 
 #: src/constants/index.ts:26 src/views/notification/notificationColumns.tsx:28
@@ -3130,6 +3190,15 @@ msgstr "远程"
 #: src/constants/index.ts:45
 msgid "Mirror"
 msgstr "镜像"
+
+#: src/constants/index.ts:54
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:32
+msgid "Manual"
+msgstr "手动"
+
+#: src/constants/index.ts:55
+msgid "Automatic"
+msgstr "自动"
 
 #: src/language/constants.ts:2
 msgid "The username or password is incorrect"
@@ -3360,7 +3429,7 @@ msgstr "批量修改"
 
 #: src/language/curd.ts:35 src/views/certificate/CertificateEditor.vue:97
 #: src/views/certificate/components/RenewCert.vue:21
-#: src/views/preference/store/index.ts:164
+#: src/views/preference/store/index.ts:173
 msgid "Save successfully"
 msgstr "保存成功"
 
@@ -3470,20 +3539,21 @@ msgstr "证书撤销成功"
 #: src/language/generate.ts:7
 msgid ""
 "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
-"Docker Image, please make sure the docker socket is mounted like this: `-v "
-"/var/run/docker.sock:/var/run/docker.sock`. Nginx UI official image uses "
-"/var/run/docker.sock to communicate with the host Docker Engine via Docker "
-"Client API. This feature is used to control Nginx in another container and "
-"perform container replacement rather than binary replacement during OTA "
-"upgrades of Nginx UI to ensure container dependencies are also upgraded. If "
-"you don't need this feature, please add the environment variable "
+"Docker Image, please make sure the docker socket is mounted like this: `-v /"
+"var/run/docker.sock:/var/run/docker.sock`. Nginx UI official image uses /var/"
+"run/docker.sock to communicate with the host Docker Engine via Docker Client "
+"API. This feature is used to control Nginx in another container and perform "
+"container replacement rather than binary replacement during OTA upgrades of "
+"Nginx UI to ensure container dependencies are also upgraded. If you don't "
+"need this feature, please add the environment variable "
 "NGINX_UI_IGNORE_DOCKER_SOCKET=true to the container."
 msgstr ""
-"检查 /var/run/docker.sock 是否存在。如果您使用的是 Nginx UI 官方 Docker 镜像，请确保以这种方式挂载 "
-"Docker 套接字：`-v /var/run/docker.sock:/var/run/docker.sock`。Nginx UI 官方镜像使用 "
-"/var/run/docker.sock 通过 Docker Client API 与主机 Docker Engine "
-"通信。此功能用于在另一个容器中控制 Nginx，并在 Nginx UI 的 OTA "
-"升级期间执行容器替换而非二进制替换，以确保容器依赖项也得到升级。如果您不需要此功能，请向容器添加环境变量 "
+"检查 /var/run/docker.sock 是否存在。如果您使用的是 Nginx UI 官方 Docker 镜"
+"像，请确保以这种方式挂载 Docker 套接字：`-v /var/run/docker.sock:/var/run/"
+"docker.sock`。Nginx UI 官方镜像使用 /var/run/docker.sock 通过 Docker Client "
+"API 与主机 Docker Engine 通信。此功能用于在另一个容器中控制 Nginx，并在 "
+"Nginx UI 的 OTA 升级期间执行容器替换而非二进制替换，以确保容器依赖项也得到升"
+"级。如果您不需要此功能，请向容器添加环境变量 "
 "NGINX_UI_IGNORE_DOCKER_SOCKET=true。"
 
 #: src/language/generate.ts:8
@@ -3494,8 +3564,9 @@ msgid ""
 "configuration and log directories must be mounted into both containers at "
 "matching paths."
 msgstr ""
-"检查 Nginx UI 能否在已配置的 Nginx 目录中写入临时文件，且外部 Nginx 容器能否在同一路径下看到该文件。Docker socket "
-"访问和 ContainerName 仅用于路由控制命令；配置和日志目录必须以匹配的路径挂载到两个容器中。"
+"检查 Nginx UI 能否在已配置的 Nginx 目录中写入临时文件，且外部 Nginx 容器能否"
+"在同一路径下看到该文件。Docker socket 访问和 ContainerName 仅用于路由控制命"
+"令；配置和日志目录必须以匹配的路径挂载到两个容器中。"
 
 #: src/language/generate.ts:9
 msgid ""
@@ -3504,11 +3575,13 @@ msgid ""
 "indexing. You can download it from the Preference page or manually place "
 "GeoLite2-City.mmdb in the same directory as app.ini"
 msgstr ""
-"当启用日志索引时，检查 GeoLite2 数据库是否可用。GeoLite2 数据库是日志索引中地理 IP "
-"分析所必需的。您可以在偏好设置页面下载它，或者手动将 GeoLite2-City.mmdb 放在与 app.ini 相同的目录中"
+"当启用日志索引时，检查 GeoLite2 数据库是否可用。GeoLite2 数据库是日志索引中地"
+"理 IP 分析所必需的。您可以在偏好设置页面下载它，或者手动将 GeoLite2-"
+"City.mmdb 放在与 app.ini 相同的目录中"
 
 #: src/language/generate.ts:10
-msgid "Check if the conf.d directory is under the nginx configuration directory"
+msgid ""
+"Check if the conf.d directory is under the nginx configuration directory"
 msgstr "检查 conf.d 目录是否位于 nginx 配置目录下"
 
 #: src/language/generate.ts:11
@@ -3516,25 +3589,26 @@ msgid ""
 "Check if the nginx PID path exists. By default, this path is obtained from "
 "'nginx -V'. If it cannot be obtained, an error will be reported. In this "
 "case, you need to modify the configuration file to specify the Nginx PID "
-"path.Refer to the docs for more details: "
-"https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
+"path.Refer to the docs for more details: https://nginxui.com/zh_CN/guide/"
+"config-nginx.html#pidpath"
 msgstr ""
-"检查 Nginx PID 路径是否存在。默认情况下，该路径是从 'nginx -V' "
-"获取的。如果无法获取，将会报错。在这种情况下，您需要修改配置文件以指定 Nginx PID "
-"路径。更多详情请参阅文档：https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
+"检查 Nginx PID 路径是否存在。默认情况下，该路径是从 'nginx -V' 获取的。如果无"
+"法获取，将会报错。在这种情况下，您需要修改配置文件以指定 Nginx PID 路径。更多"
+"详情请参阅文档：https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
 
 #: src/language/generate.ts:12
 msgid ""
-"Check if the nginx access log path exists. By default, this path is "
-"obtained from 'nginx -V'. If it cannot be obtained or the obtained path "
-"does not point to a valid, existing file, an error will be reported. In "
-"this case, you need to modify the configuration file to specify the access "
-"log path.Refer to the docs for more details: "
-"https://nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
+"Check if the nginx access log path exists. By default, this path is obtained "
+"from 'nginx -V'. If it cannot be obtained or the obtained path does not "
+"point to a valid, existing file, an error will be reported. In this case, "
+"you need to modify the configuration file to specify the access log "
+"path.Refer to the docs for more details: https://nginxui.com/zh_CN/guide/"
+"config-nginx.html#accesslogpath"
 msgstr ""
-"检查 nginx 访问日志路径是否存在。默认情况下，此路径从 'nginx -V' "
-"获取。如果无法获取或获取的路径未指向有效的现有文件，将报告错误。在这种情况下，您需要修改配置文件以指定访问日志路径。更多详情请参阅文档：https://"
-"nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
+"检查 nginx 访问日志路径是否存在。默认情况下，此路径从 'nginx -V' 获取。如果无"
+"法获取或获取的路径未指向有效的现有文件，将报告错误。在这种情况下，您需要修改"
+"配置文件以指定访问日志路径。更多详情请参阅文档：https://nginxui.com/zh_CN/"
+"guide/config-nginx.html#accesslogpath"
 
 #: src/language/generate.ts:13
 msgid "Check if the nginx configuration directory exists"
@@ -3550,12 +3624,13 @@ msgid ""
 "from 'nginx -V'. If it cannot be obtained or the obtained path does not "
 "point to a valid, existing file, an error will be reported. In this case, "
 "you need to modify the configuration file to specify the error log path. "
-"Refer to the docs for more details: "
-"https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
+"Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-"
+"nginx.html#errorlogpath"
 msgstr ""
-"检查 nginx 错误日志路径是否存在。默认情况下，该路径从 'nginx -V' "
-"获取。如果无法获取或获取的路径未指向有效的现有文件，将报错。此时需要修改配置文件以指定错误日志路径。详情请参阅文档：https://nginxui."
-"com/zh_CN/guide/config-nginx.html#errorlogpath"
+"检查 nginx 错误日志路径是否存在。默认情况下，该路径从 'nginx -V' 获取。如果无"
+"法获取或获取的路径未指向有效的现有文件，将报错。此时需要修改配置文件以指定错"
+"误日志路径。详情请参阅文档：https://nginxui.com/zh_CN/guide/config-"
+"nginx.html#errorlogpath"
 
 #: src/language/generate.ts:16
 msgid "Check if the nginx sbin path exists"
@@ -3581,8 +3656,8 @@ msgstr "检查 sites-available 和 sites-enabled 目录是否位于 Nginx 配置
 
 #: src/language/generate.ts:21
 msgid ""
-"Check if the streams-available and streams-enabled directories are under "
-"the nginx configuration directory"
+"Check if the streams-available and streams-enabled directories are under the "
+"nginx configuration directory"
 msgstr "检查 Nginx 配置目录下是否有 streams-available 和 streams-enabled 目录"
 
 #: src/language/generate.ts:22
@@ -3612,8 +3687,8 @@ msgstr "GeoLite2 数据库可用"
 #: src/language/generate.ts:28
 msgid ""
 "Log file %{log_path} is not a regular file. If you are using nginx-ui in "
-"docker container, please refer to "
-"https://nginxui.com/zh_CN/guide/config-nginx-log.html for more information."
+"docker container, please refer to https://nginxui.com/zh_CN/guide/config-"
+"nginx-log.html for more information."
 msgstr ""
 "日志文件 %{log_path} 不是常规文件。如果在 Docker 容器中使用 Nginx UI，请参阅 "
 "https://nginxui.com/zh_CN/guide/config-nginx-log.html 获取更多信息。"
@@ -3670,9 +3745,9 @@ msgid ""
 "checks fail. Older deployments that persisted /etc/nginx may still have the "
 "unfixed version."
 msgstr ""
-"当容器位于终止 TLS 的外部反向代理（如主机 nginx、Cloudflare）之后时，捆绑的 conf.d/nginx-ui.conf "
-"必须信任传入的 X-Forwarded-Proto/Host 头信息；否则 WebSocket 源检查将失败。保留 /etc/nginx "
-"的旧部署可能仍使用未修复的版本。"
+"当容器位于终止 TLS 的外部反向代理（如主机 nginx、Cloudflare）之后时，捆绑的 "
+"conf.d/nginx-ui.conf 必须信任传入的 X-Forwarded-Proto/Host 头信息；否则 "
+"WebSocket 源检查将失败。保留 /etc/nginx 的旧部署可能仍使用未修复的版本。"
 
 #: src/language/generate.ts:41
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
@@ -3691,7 +3766,8 @@ msgid "[Nginx UI] Certificate successfully revoked"
 msgstr "[Nginx UI] 证书成功撤销"
 
 #: src/language/generate.ts:45
-msgid "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
+msgid ""
+"[Nginx UI] Certificate was used for server, reloading server TLS certificate"
 msgstr "[Nginx UI] 证书已用于服务器，正在重新加载服务器 TLS 证书"
 
 #: src/language/generate.ts:46
@@ -3818,7 +3894,7 @@ msgstr "导入证书"
 #: src/routes/modules/config.ts:10
 #: src/views/config/components/ConfigLeftPanel.vue:114
 #: src/views/config/components/ConfigLeftPanel.vue:164
-#: src/views/config/ConfigList.vue:74
+#: src/views/config/ConfigList.vue:75
 msgid "Manage Configs"
 msgstr "配置管理"
 
@@ -3836,19 +3912,20 @@ msgstr "编辑配置"
 #: src/routes/modules/dashboard.ts:10
 #: src/views/config/components/ConfigLeftPanel.vue:109
 #: src/views/config/components/ConfigLeftPanel.vue:159
-#: src/views/config/ConfigList.vue:69 src/views/nginx_log/NginxLog.vue:93
+#: src/views/config/ConfigList.vue:70 src/views/nginx_log/NginxLog.vue:93
 msgid "Dashboard"
 msgstr "仪表盘"
 
-#: src/routes/modules/dashboard.ts:19 src/views/preference/Preference.vue:47
+#: src/routes/modules/dashboard.ts:19 src/views/preference/Preference.vue:49
 msgid "Server"
 msgstr "服务器"
 
-#: src/routes/modules/dashboard.ts:27 src/views/preference/Preference.vue:95
+#: src/routes/modules/dashboard.ts:27 src/views/preference/Preference.vue:109
 msgid "Nginx"
 msgstr "Nginx"
 
-#: src/routes/modules/dashboard.ts:35
+#: src/routes/modules/dashboard.ts:35 src/views/node/SyncConfigs.vue:68
+#: src/views/preference/tabs/HealthCheckSettings.vue:19
 msgid "Sites"
 msgstr "站点"
 
@@ -3885,7 +3962,7 @@ msgstr "分组记录"
 msgid "Not Found"
 msgstr "找不到页面"
 
-#: src/routes/modules/namespaces.ts:10 src/views/namespace/Namespace.vue:19
+#: src/routes/modules/namespaces.ts:10 src/views/namespace/Namespace.vue:45
 msgid "Namespaces"
 msgstr "命名空间"
 
@@ -3902,11 +3979,11 @@ msgid "Log List"
 msgstr "日志列表"
 
 #: src/routes/modules/nodes.ts:11 src/views/dashboard/Nodes.vue:89
-#: src/views/node/Node.vue:131
+#: src/views/node/Node.vue:144
 msgid "Nodes"
 msgstr "节点"
 
-#: src/routes/modules/preference.ts:10 src/views/preference/Preference.vue:42
+#: src/routes/modules/preference.ts:10 src/views/preference/Preference.vue:44
 msgid "Preference"
 msgstr "偏好设置"
 
@@ -3934,8 +4011,8 @@ msgstr "管理 Stream"
 msgid "Edit Stream"
 msgstr "编辑 Stream"
 
-#: src/routes/modules/system.ts:26 src/views/node/Node.vue:188
-#: src/views/node/Node.vue:196 src/views/system/Upgrade.vue:154
+#: src/routes/modules/system.ts:26 src/views/node/Node.vue:203
+#: src/views/node/Node.vue:211 src/views/system/Upgrade.vue:154
 #: src/views/system/Upgrade.vue:159
 msgid "Upgrade"
 msgstr "升级"
@@ -3948,7 +4025,7 @@ msgstr "关于"
 msgid "Third-party Components"
 msgstr "第三方组件"
 
-#: src/routes/modules/terminal.ts:10 src/views/preference/Preference.vue:77
+#: src/routes/modules/terminal.ts:10 src/views/preference/Preference.vue:85
 msgid "Terminal"
 msgstr "终端"
 
@@ -4039,6 +4116,7 @@ msgstr "启用"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:194
 #: src/views/backup/AutoBackup/AutoBackup.vue:204
+#: src/views/dashboard/components/SiteCard.vue:140
 #: src/views/dns/DDNSManager.vue:320 src/views/node/nodeColumns.tsx:104
 #: src/views/node/nodeColumns.tsx:122
 #: src/views/preference/tabs/HTTPSettings.vue:24
@@ -4073,7 +4151,7 @@ msgid "Failed"
 msgstr "失败"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:258
-#: src/views/namespace/columns.ts:85
+#: src/views/namespace/columns.ts:110
 #: src/views/notification/notificationColumns.tsx:51
 #: src/views/preference/components/AuthSettings/Passkey.vue:96
 #: src/views/preference/components/ExternalNotify/columns.tsx:80
@@ -4086,7 +4164,7 @@ msgstr "创建时间"
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
 #: src/views/config/configColumns.tsx:44 src/views/dns/DNSCredential.vue:65
 #: src/views/dns/DNSDomainList.vue:236 src/views/dns/DNSGroupList.vue:33
-#: src/views/namespace/columns.ts:91 src/views/node/nodeColumns.tsx:133
+#: src/views/namespace/columns.ts:116 src/views/node/nodeColumns.tsx:133
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:39
 #: src/views/site/site_list/columns.tsx:113 src/views/stream/columns.tsx:80
 #: src/views/stream/components/RightPanel/Basic.vue:35
@@ -4129,7 +4207,7 @@ msgstr "S3 区域"
 #: src/views/dns/DNSDomainList.vue:242 src/views/dns/DNSGroupList.vue:37
 #: src/views/dns/DNSGroupRecordManager.vue:145
 #: src/views/dns/DNSGroupRecordManager.vue:1362
-#: src/views/namespace/columns.ts:97 src/views/nginx_log/NginxLogList.vue:339
+#: src/views/namespace/columns.ts:122 src/views/nginx_log/NginxLogList.vue:339
 #: src/views/node/nodeColumns.tsx:140
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:85
@@ -4319,7 +4397,8 @@ msgstr "系统备份"
 msgid ""
 "Create system backups including Nginx configuration and Nginx UI settings. "
 "Backup files will be automatically downloaded to your computer."
-msgstr "创建系统备份，包括 Nginx 配置和 Nginx UI 设置。备份文件将自动下载到你的电脑。"
+msgstr ""
+"创建系统备份，包括 Nginx 配置和 Nginx UI 设置。备份文件将自动下载到你的电脑。"
 
 #: src/views/backup/components/BackupCreator.vue:86
 msgid "Create Backup"
@@ -4392,9 +4471,10 @@ msgstr "EAB 密钥 ID"
 
 #: src/views/certificate/ACMEUser.vue:83
 msgid ""
-"External Account Binding Key ID (optional). Required for some ACME "
-"providers like ZeroSSL."
-msgstr "外部账户绑定密钥 ID （可选）。某些 ACME 提供商（如 ZeroSSL）需要此信息。"
+"External Account Binding Key ID (optional). Required for some ACME providers "
+"like ZeroSSL."
+msgstr ""
+"外部账户绑定密钥 ID （可选）。某些 ACME 提供商（如 ZeroSSL）需要此信息。"
 
 #: src/views/certificate/ACMEUser.vue:85 src/views/certificate/ACMEUser.vue:98
 msgid "Leave blank if not required by your ACME provider"
@@ -4415,7 +4495,8 @@ msgid "Register On Startup"
 msgstr "启动时注册"
 
 #: src/views/certificate/ACMEUser.vue:110
-msgid "When Enabled, Nginx UI will automatically re-register users upon startup. "
+msgid ""
+"When Enabled, Nginx UI will automatically re-register users upon startup. "
 msgstr "启用后， Nginx UI 将在启动时自动重新注册用户。"
 
 #: src/views/certificate/ACMEUser.vue:131
@@ -4565,7 +4646,7 @@ msgstr[0] "证书状态"
 
 #: src/views/certificate/components/CertificateActions.vue:22
 #: src/views/config/components/ConfigLeftPanel.vue:274
-#: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
+#: src/views/config/ConfigList.vue:127 src/views/config/ConfigList.vue:233
 #: src/views/dns/DNSGroupRecordManager.vue:1546
 #: src/views/dns/DNSRecordManager.vue:258 src/views/nginx_log/NginxLog.vue:129
 #: src/views/site/site_add/SiteAdd.vue:260
@@ -4872,7 +4953,8 @@ msgid ""
 "Nginx UI will automatically renew this certificate as it approaches "
 "expiration, based on the global certificate renewal interval and this "
 "certificate's validity period."
-msgstr "Nginx UI 将根据全局证书续期间隔和此证书的有效期，在证书即将过期时自动续期。"
+msgstr ""
+"Nginx UI 将根据全局证书续期间隔和此证书的有效期，在证书即将过期时自动续期。"
 
 #: src/views/certificate/components/SelfSignedCertFields.vue:33
 msgid "Enter certificate name"
@@ -4952,6 +5034,7 @@ msgid "Changed Path"
 msgstr "变更后的路径"
 
 #: src/views/config/components/ConfigRightPanel/Basic.vue:60
+#: src/views/config/ConfigList.vue:197
 msgid "Deploy"
 msgstr "部署"
 
@@ -4968,10 +5051,12 @@ msgid "Chat"
 msgstr "聊天"
 
 #: src/views/config/components/ConfigRightPanel/Deploy.vue:18
+#: src/views/config/components/Deploy.vue:76
 msgid "Overwrite"
 msgstr "覆盖"
 
 #: src/views/config/components/ConfigRightPanel/Deploy.vue:22
+#: src/views/config/components/Deploy.vue:80 src/views/node/SyncConfigs.vue:74
 msgid "Overwrite exist file"
 msgstr "覆盖现有文件"
 
@@ -5017,14 +5102,29 @@ msgstr "输入 %{delete} 以确认"
 
 #: src/views/config/components/Delete.vue:141
 #: src/views/config/components/Rename.vue:81
+#: src/views/namespace/Namespace.vue:62
 msgid "Sync"
 msgstr "同步"
+
+#: src/views/config/components/Deploy.vue:36
+msgid "Please select at least one node"
+msgstr "请至少选择一个节点"
+
+#: src/views/config/components/Deploy.vue:60
+msgid "Deploy Directory"
+msgstr "部署目录"
+
+#: src/views/config/components/Deploy.vue:68
+msgid ""
+"All configuration files in %{name} will be deployed to the selected nodes, "
+"and files created here later will follow the same targets."
+msgstr "%{name} 中的所有配置文件都会部署到所选节点，之后在此处新建的文件也会同步到相同的目标。"
 
 #: src/views/config/components/Mkdir.vue:35
 msgid "Created successfully"
 msgstr "创建成功"
 
-#: src/views/config/components/Mkdir.vue:47 src/views/config/ConfigList.vue:137
+#: src/views/config/components/Mkdir.vue:47 src/views/config/ConfigList.vue:144
 msgid "Create Folder"
 msgstr "创建文件夹"
 
@@ -5053,11 +5153,11 @@ msgstr "新名称"
 msgid "Name or content"
 msgstr "名称或内容"
 
-#: src/views/config/ConfigList.vue:112
+#: src/views/config/ConfigList.vue:119 src/views/node/SyncConfigs.vue:65
 msgid "Configurations"
 msgstr "配置"
 
-#: src/views/config/ConfigList.vue:130
+#: src/views/config/ConfigList.vue:137
 msgid "Create File"
 msgstr "创建文件"
 
@@ -5108,7 +5208,7 @@ msgid "Link"
 msgstr "连接"
 
 #: src/views/dashboard/components/NodeAnalyticItem.vue:82
-#: src/views/dashboard/components/SiteNavigationToolbar.vue:35
+#: src/views/dashboard/components/SiteNavigationToolbar.vue:36
 msgid "Connected"
 msgstr "已连接"
 
@@ -5126,10 +5226,6 @@ msgstr "并发工作进程数，自动设置为 CPU 内核数"
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:43
 msgid "Auto"
 msgstr "自动"
-
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:32
-msgid "Manual"
-msgstr "手动"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:48
 msgid "Worker Connections"
@@ -5405,7 +5501,9 @@ msgstr "每秒最大请求次数"
 msgid ""
 "Calculated based on worker_processes * worker_connections. Actual "
 "performance depends on hardware, configuration, and workload"
-msgstr "基于 worker_processes * worker_connections 计算得出。实际性能取决于硬件、配置和工作负载"
+msgstr ""
+"基于 worker_processes * worker_connections 计算得出。实际性能取决于硬件、配置"
+"和工作负载"
 
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:56
 msgid "Max Concurrent Connections"
@@ -5493,7 +5591,8 @@ msgstr "手动设置"
 msgid ""
 "Tips: You can increase the concurrency processing capacity by increasing "
 "worker_processes or worker_connections"
-msgstr "提示您可以通过增加 worker_processes 或 worker_connections 来提高并发处理能力"
+msgstr ""
+"提示您可以通过增加 worker_processes 或 worker_connections 来提高并发处理能力"
 
 #: src/views/dashboard/components/PerformanceTablesCard.vue:215
 msgid "Modules"
@@ -5534,185 +5633,259 @@ msgid ""
 "Resident Set Size: Actual memory resident in physical memory, including all "
 "shared library memory, which will be repeated calculated for multiple "
 "processes"
-msgstr "驻留集大小：实际驻留在物理内存中的内存，包括所有共享库内存，将为多个进程重复计算"
+msgstr ""
+"驻留集大小：实际驻留在物理内存中的内存，包括所有共享库内存，将为多个进程重复"
+"计算"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:76
+#: src/views/dashboard/components/SiteCard.vue:148
+#: src/views/upstream/SocketList.vue:42
+msgid "Paused"
+msgstr "已暂停"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:88
 msgid "Informational Responses (1xx)"
 msgstr "信息响应 (1xx)"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:85
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:97
 msgid "Successful Responses (2xx)"
 msgstr "成功响应 (2xx)"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:100
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:112
 msgid "Redirection Messages (3xx)"
 msgstr "重定向消息 (3xx)"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:114
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:126
 msgid "Client Error Responses (4xx)"
 msgstr "客户端错误响应 (4xx)"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:148
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:160
 msgid "Server Error Responses (5xx)"
 msgstr "服务器错误响应 (5xx)"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:403
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:449
 msgid "Health check configuration saved successfully"
 msgstr "健康检查配置保存成功"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:412
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:452
+msgid "Saved locally, but failed to synchronize %{count} node(s)"
+msgstr "已保存到本地，但有 %{count} 个节点同步失败"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:462
 msgid "Failed to save health check configuration"
 msgstr "保存健康检查配置失败"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:448
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:499
 msgid "Test successful! Response time: %{response_time}ms"
 msgstr "测试成功！响应时间：%{response_time}毫秒"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:451
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:502
 msgid "Test failed: %{error}"
 msgstr "测试失败: %{error}"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:456
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:507
 msgid "Test failed: Unable to perform health check"
 msgstr "测试失败：无法执行健康检查"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:466
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:517
 msgid "Health Check Configuration"
 msgstr "健康检查配置"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:473
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:524
 msgid "Enable Health Check"
 msgstr "启用健康检查"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:477
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:528
 msgid "Health check is enabled"
 msgstr "健康检查已启用"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:477
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:528
 msgid "Health check is disabled"
 msgstr "健康检查已禁用"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:485
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:536
 msgid "Protocol"
 msgstr "协议"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:506
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:554
+msgid "Custom Health Check Target"
+msgstr "自定义健康检查目标"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:555
+msgid ""
+"Optional absolute URL. Use it when the public address differs from the "
+"actual upstream host or port."
+msgstr "可选的绝对 URL。当对外地址与实际上游主机或端口不同时使用。"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:568
 msgid "HTTP Method"
 msgstr "HTTP 方法"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:533
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:595
 msgid "Custom Headers"
 msgstr "自定义标头"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:548
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:610
 msgid "Add Header"
 msgstr "添加标头"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:553
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:615
 msgid "Request Body"
 msgstr "请求体"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:557
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:619
 msgid "Expected Status Codes"
 msgstr "预期状态码"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:582
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:644
 msgid "Expected Text"
 msgstr "预期文本"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:587
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:649
 msgid "Not Expected Text"
 msgstr "非预期文本"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:599
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:661
 msgid ""
 "gRPCS uses TLS encryption. Server must implement gRPC Health Check service. "
 "For testing, SSL validation is disabled by default."
-msgstr "gRPCS 使用 TLS 加密。服务器必须实现 gRPC 健康检查服务。出于测试目的，默认情况下禁用 SSL 验证。"
+msgstr ""
+"gRPCS 使用 TLS 加密。服务器必须实现 gRPC 健康检查服务。出于测试目的，默认情况"
+"下禁用 SSL 验证。"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:600
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:662
 msgid ""
 "gRPC health check requires server to implement gRPC Health Check service "
 "(grpc.health.v1.Health)."
-msgstr "gRPC 健康检查要求服务器实现 gRPC 健康检查服务（grpc.health.v1.Health）。"
+msgstr ""
+"gRPC 健康检查要求服务器实现 gRPC 健康检查服务（grpc.health.v1.Health）。"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:603
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:665
 msgid ""
 "Note: If the server does not support gRPC Reflection, health checks may "
 "fail. Please ensure your gRPC server has Reflection enabled."
-msgstr "注意：如果服务器不支持 gRPC 反射，健康检查可能会失败。请确保您的 gRPC 服务器已启用反射功能。"
+msgstr ""
+"注意：如果服务器不支持 gRPC 反射，健康检查可能会失败。请确保您的 gRPC 服务器"
+"已启用反射功能。"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:608
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:670
 msgid "Service Name"
 msgstr "服务名称"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:613
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:675
 msgid "Method Name"
 msgstr "方法名称"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:622
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:684
 msgid "Advanced Settings"
 msgstr "高级设置"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:625
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:687
 msgid "Check Interval (seconds)"
 msgstr "检查间隔（秒）"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:630
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:692
 msgid "Timeout (seconds)"
 msgstr "超时时间（秒）"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:636
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:698
 #: src/views/nginx_log/structured/components/SearchFilters.vue:200
 msgid "User Agent"
 msgstr "用户代理"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:643
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:705
 msgid "Max Redirects"
 msgstr "最大重定向次数"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:650
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:712
 msgid "Follow Redirects"
 msgstr "跟随重定向"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:658
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:720
 msgid "Validate SSL Certificate"
 msgstr "验证 SSL 证书"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:664
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:726
 msgid "Verify Hostname"
 msgstr "验证主机名"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:670
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:732
 msgid "Check Favicon"
 msgstr "检查网站图标"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:678
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:740
 msgid "DNS Resolver"
 msgstr "DNS 解析器"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:683
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:745
 msgid "Source IP"
 msgstr "源 IP"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:692
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:754
 msgid "Client Certificate"
 msgstr "客户端证书"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:697
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:759
 msgid "Client Key"
 msgstr "客户端密钥"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:716
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:770
+msgid "Failure Notifications"
+msgstr "失败通知"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:774
+msgid "Notifications are enabled"
+msgstr "通知已启用"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:774
+msgid "Notifications are disabled"
+msgstr "通知已停用"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:780
+msgid "Failure Status Codes"
+msgstr "失败状态码"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:786
+msgid "Select status codes"
+msgstr "选择状态码"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:806
+msgid "Notify on connection, DNS, and timeout errors"
+msgstr "在连接、DNS 和超时错误时通知"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:812
+msgid "Consecutive Failures"
+msgstr "连续失败次数"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:823
+msgid "Reminder Cooldown (seconds)"
+msgstr "提醒冷却时间（秒）"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:837
+msgid "Notify when the site recovers"
+msgstr "站点恢复时通知"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:841
+msgid "Notification Channels"
+msgstr "通知渠道"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:847
+msgid "Select notification channels"
+msgstr "选择通知渠道"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:872
 #: src/views/preference/tabs/ExternalNotify.vue:57
 msgid "Test"
 msgstr "测试"
 
-#: src/views/dashboard/components/SiteNavigationToolbar.vue:35
+#: src/views/dashboard/components/SiteNavigationToolbar.vue:36
 msgid "Disconnected"
 msgstr "已断开连接"
 
-#: src/views/dashboard/components/SiteNavigationToolbar.vue:48
+#: src/views/dashboard/components/SiteNavigationToolbar.vue:46
+msgid "Health checks paused"
+msgstr "健康检查已暂停"
+
+#: src/views/dashboard/components/SiteNavigationToolbar.vue:58
 msgid "Save Order"
 msgstr "保存顺序"
 
@@ -5853,39 +6026,33 @@ msgstr "网络"
 msgid "Disk IO"
 msgstr "磁盘 IO"
 
-#: src/views/dashboard/SiteNavigation.vue:82
+#: src/views/dashboard/SiteNavigation.vue:98
 msgid "Site refresh initiated"
 msgstr "站点刷新已启动"
 
-#: src/views/dashboard/SiteNavigation.vue:86
+#: src/views/dashboard/SiteNavigation.vue:102
 msgid "Failed to refresh sites"
 msgstr "刷新站点失败"
 
-#: src/views/dashboard/SiteNavigation.vue:104
+#: src/views/dashboard/SiteNavigation.vue:120
 msgid "Order saved successfully"
 msgstr "顺序保存成功"
 
-#: src/views/dashboard/SiteNavigation.vue:110
+#: src/views/dashboard/SiteNavigation.vue:126
 msgid "Failed to save order"
 msgstr "保存顺序失败"
 
-#: src/views/dashboard/SiteNavigation.vue:128
-msgid "Health check configuration saved"
-msgstr "健康检查配置已保存"
-
-#: src/views/dashboard/SiteNavigation.vue:133
-msgid "Failed to save configuration"
-msgstr "保存配置失败"
-
-#: src/views/dashboard/SiteNavigation.vue:170
+#: src/views/dashboard/SiteNavigation.vue:174
 msgid "No sites found"
 msgstr "未找到站点"
 
-#: src/views/dashboard/SiteNavigation.vue:173
+#: src/views/dashboard/SiteNavigation.vue:177
 msgid ""
 "Sites will appear here once you configure nginx server blocks with valid "
 "server_name (localhost excluded) directives."
-msgstr "配置带有有效 server_name 指令（不包括 localhost）的 nginx 服务器块后，站点将显示在此处。"
+msgstr ""
+"配置带有有效 server_name 指令（不包括 localhost）的 nginx 服务器块后，站点将"
+"显示在此处。"
 
 #: src/views/dns/components/DNSChallenge.vue:54
 msgid ""
@@ -5897,13 +6064,17 @@ msgstr "选择 DNS 提供商后，将显示其是否支持 DNS Domains 中的 DN
 msgid ""
 "%{provider} can be used for ACME DNS-01 certificate challenges and DNS "
 "record management in DNS Domains."
-msgstr "%{provider} 可用于 ACME DNS-01 证书挑战，也可用于 DNS Domains 中的 DNS 记录管理。"
+msgstr ""
+"%{provider} 可用于 ACME DNS-01 证书挑战，也可用于 DNS Domains 中的 DNS 记录管"
+"理。"
 
 #: src/views/dns/components/DNSChallenge.vue:64
 msgid ""
 "%{provider} can be used for ACME DNS-01 certificate challenges, but DNS "
 "record management in DNS Domains is not supported for this provider."
-msgstr "%{provider} 可用于 ACME DNS-01 证书挑战，但 DNS Domains 暂不支持该提供商的 DNS 记录管理。"
+msgstr ""
+"%{provider} 可用于 ACME DNS-01 证书挑战，但 DNS Domains 暂不支持该提供商的 "
+"DNS 记录管理。"
 
 #: src/views/dns/components/DNSChallenge.vue:99
 msgid "DNS Provider"
@@ -6061,6 +6232,8 @@ msgid "Provider"
 msgstr "提供商"
 
 #: src/views/dns/DDNSManager.vue:168
+#: src/views/preference/tabs/HealthCheckSettings.vue:27
+#: src/views/preference/tabs/HealthCheckSettings.vue:41
 #: src/views/preference/tabs/LogrotateSettings.vue:26
 msgid "Interval"
 msgstr "间隔"
@@ -6128,8 +6301,8 @@ msgid ""
 "unreachable. Disable to manage only the records you explicitly selected and "
 "keep all other DNS state untouched."
 msgstr ""
-"启用后，DDNS 将拥有所选名称：自动配对同族记录，创建缺失的记录，并删除 IP 族不可达的记录。禁用后，仅管理您明确选择的记录，保持所有其他 DNS "
-"状态不变。"
+"启用后，DDNS 将拥有所选名称：自动配对同族记录，创建缺失的记录，并删除 IP 族不"
+"可达的记录。禁用后，仅管理您明确选择的记录，保持所有其他 DNS 状态不变。"
 
 #: src/views/dns/DDNSManager.vue:400
 msgid "Records"
@@ -6158,7 +6331,8 @@ msgid ""
 msgstr "请填写 DNS 提供商提供的 API 验证凭据。"
 
 #: src/views/dns/DNSCredential.vue:96
-msgid "Please note that the unit of time configurations below are all in seconds."
+msgid ""
+"Please note that the unit of time configurations below are all in seconds."
 msgstr "请注意，下面的时间单位配置均以秒为单位。"
 
 #: src/views/dns/DNSDomainList.vue:109
@@ -6169,17 +6343,22 @@ msgstr "仅用于 DNS 记录管理"
 msgid ""
 "DNS Domains are used for DNS record management in NGINX UI and are separate "
 "from ACME DNS-01 certificate challenges."
-msgstr "DNS 域名用于 NGINX UI 中的 DNS 记录管理，与 ACME DNS-01 证书挑战是两个不同的功能。"
+msgstr ""
+"DNS 域名用于 NGINX UI 中的 DNS 记录管理，与 ACME DNS-01 证书挑战是两个不同的"
+"功能。"
 
 #: src/views/dns/DNSDomainList.vue:116
-msgid "DNS Domains only use providers with DNS record management implementations."
+msgid ""
+"DNS Domains only use providers with DNS record management implementations."
 msgstr "DNS Domains 仅使用已实现 DNS 记录管理的提供商。"
 
 #: src/views/dns/DNSDomainList.vue:119
 msgid ""
 "For ACME DNS-01 certificate issuance, create DNS credentials under DNS > "
 "Credentials and select them in certificate settings."
-msgstr "如需使用 ACME DNS-01 签发证书，请在 DNS > 凭证中创建 DNS 凭证，并在证书设置中选择它。"
+msgstr ""
+"如需使用 ACME DNS-01 签发证书，请在 DNS > 凭证中创建 DNS 凭证，并在证书设置中"
+"选择它。"
 
 #: src/views/dns/DNSDomainList.vue:267
 msgid "Manage Records"
@@ -6315,6 +6494,7 @@ msgstr "覆盖情况"
 
 #: src/views/dns/DNSGroupRecordManager.vue:160
 #: src/views/dns/DNSGroupRecordManager.vue:177
+#: src/views/preference/tabs/AccessTokens.vue:55
 #: src/views/preference/tabs/AuthSettings.vue:27
 msgid "Action"
 msgstr "操作"
@@ -6415,6 +6595,7 @@ msgid "Record already matches"
 msgstr "记录已匹配"
 
 #: src/views/dns/DNSGroupRecordManager.vue:1008
+#: src/views/preference/tabs/AccessTokens.vue:262
 msgid "Create"
 msgstr "创建"
 
@@ -6516,7 +6697,8 @@ msgstr "按共享值自动分组"
 msgid ""
 "Choose which names to synchronize. Existing provider-specific values are "
 "preserved unless you change them below."
-msgstr "选择要同步的名称。除非您在下方修改，否则会保留各名称现有的提供商特有字段。"
+msgstr ""
+"选择要同步的名称。除非您在下方修改，否则会保留各名称现有的提供商特有字段。"
 
 #: src/views/dns/DNSGroupRecordManager.vue:1409
 msgid "Edit scope"
@@ -6554,7 +6736,9 @@ msgstr "提供商特有设置"
 msgid ""
 "Existing values are preserved per name. Changing a field overrides it for "
 "every selected name on that domain; new records use the shown defaults."
-msgstr "会按名称保留现有值。修改字段后，将覆盖该域名下所有所选名称的对应字段；新记录使用当前显示的默认值。"
+msgstr ""
+"会按名称保留现有值。修改字段后，将覆盖该域名下所有所选名称的对应字段；新记录"
+"使用当前显示的默认值。"
 
 #: src/views/dns/DNSGroupRecordManager.vue:1463
 msgid "Each setting is sent only to its matching target domain."
@@ -6585,7 +6769,8 @@ msgid "Apply changes"
 msgstr "应用更改"
 
 #: src/views/dns/DNSGroupRecordManager.vue:1554
-msgid "Changes are applied per domain and cannot be rolled back as one transaction."
+msgid ""
+"Changes are applied per domain and cannot be rolled back as one transaction."
 msgstr "更改将按域名分别应用，无法作为单个事务回滚。"
 
 #: src/views/dns/DNSGroupRecordManager.vue:1585
@@ -6646,8 +6831,7 @@ msgstr "密码长度不能超过 20 个字符"
 
 #: src/views/install/components/InstallForm.vue:64
 msgid ""
-"Frontend debug mode: install flow completed without sending a backend "
-"request"
+"Frontend debug mode: install flow completed without sending a backend request"
 msgstr "前端调试模式：安装流程完成，未发送后端请求"
 
 #: src/views/install/components/InstallForm.vue:70
@@ -6748,6 +6932,18 @@ msgstr "上游测试类型"
 msgid "Deploy Mode"
 msgstr "部署模式"
 
+#: src/views/namespace/columns.ts:85
+msgid "Sync Strategy"
+msgstr "同步策略"
+
+#: src/views/namespace/columns.ts:98
+msgid "Sync Interval (minutes)"
+msgstr "同步间隔（分钟）"
+
+#: src/views/namespace/Namespace.vue:25
+msgid "This namespace has no sync node"
+msgstr "该命名空间没有同步节点"
+
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:47
 msgid "CPU"
 msgstr "CPU"
@@ -6817,7 +7013,9 @@ msgid ""
 "Enabling advanced log indexing will consume significant computational "
 "resources including CPU and memory. Please ensure your system meets the "
 "minimum requirements before proceeding."
-msgstr "启用高级日志索引将消耗大量计算资源，包括 CPU 和内存。请确保您的系统满足最低要求后再继续。"
+msgstr ""
+"启用高级日志索引将消耗大量计算资源，包括 CPU 和内存。请确保您的系统满足最低要"
+"求后再继续。"
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:120
 msgid "System Requirements"
@@ -6833,15 +7031,17 @@ msgstr "推荐："
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:166
 msgid ""
-"* Index files are stored in the \"log-index\" directory within your Nginx "
-"UI config path by default."
+"* Index files are stored in the \"log-index\" directory within your Nginx UI "
+"config path by default."
 msgstr "* 索引文件默认存储在您的 Nginx UI 配置路径下的 \"log-index\" 目录中。"
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:167
 msgid ""
 "If you want to change the storage location, you can set the `IndexPath` of "
 "`nginx_log` section in the Nginx UI config."
-msgstr "如果要更改存储位置，可以在 Nginx UI 配置中设置 `nginx_log` 部分的 `IndexPath`。"
+msgstr ""
+"如果要更改存储位置，可以在 Nginx UI 配置中设置 `nginx_log` 部分的 "
+"`IndexPath`。"
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:178
 #: src/views/preference/tabs/GeoLiteSettings.vue:7
@@ -6856,7 +7056,9 @@ msgstr "预期性能"
 msgid ""
 "* Performance metrics measured on Apple M2 Pro (12-core) with 32GB RAM. "
 "Actual performance may vary based on your hardware configuration."
-msgstr "* 性能指标基于 Apple M2 Pro （12 核）和 32GB 内存测得。实际性能可能因您的硬件配置而异。"
+msgstr ""
+"* 性能指标基于 Apple M2 Pro （12 核）和 32GB 内存测得。实际性能可能因您的硬件"
+"配置而异。"
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:226
 msgid "Features"
@@ -6935,7 +7137,9 @@ msgid ""
 "By enabling advanced indexing, you acknowledge that your system meets the "
 "requirements and understand the performance implications. This will start "
 "indexing existing log files immediately."
-msgstr "启用高级索引即表示您确认系统满足要求并了解性能影响。这将立即开始对现有日志文件进行索引。"
+msgstr ""
+"启用高级索引即表示您确认系统满足要求并了解性能影响。这将立即开始对现有日志文"
+"件进行索引。"
 
 #: src/views/nginx_log/components/LoadingState.vue:33
 #: src/views/nginx_log/NginxLogList.vue:491
@@ -7154,7 +7358,9 @@ msgstr "重建索引"
 msgid ""
 "This will rebuild the entire log index. All existing index data will be "
 "deleted and rebuilt from scratch. This may take some time. Continue?"
-msgstr "这将重建整个日志索引。所有现有索引数据将被删除并从头开始重建。这可能需要一些时间。是否继续？"
+msgstr ""
+"这将重建整个日志索引。所有现有索引数据将被删除并从头开始重建。这可能需要一些"
+"时间。是否继续？"
 
 #: src/views/nginx_log/indexing/IndexManagement.vue:38
 msgid "Index and statistics rebuild started successfully"
@@ -7184,7 +7390,7 @@ msgstr "结构化"
 msgid "Raw"
 msgstr "原始"
 
-#: src/views/nginx_log/NginxLog.vue:101 src/views/node/Node.vue:165
+#: src/views/nginx_log/NginxLog.vue:101 src/views/node/Node.vue:178
 msgid "Auto Refresh"
 msgstr "自动刷新"
 
@@ -7250,7 +7456,9 @@ msgstr "禁用高级索引"
 msgid ""
 "Advanced log indexing will stop and structured log analytics will be "
 "unavailable. Existing index files will not be deleted. Continue?"
-msgstr "高级日志索引将停止，结构化日志分析将不可用。现有索引文件不会被删除。是否继续？"
+msgstr ""
+"高级日志索引将停止，结构化日志分析将不可用。现有索引文件不会被删除。是否继"
+"续？"
 
 #: src/views/nginx_log/NginxLogList.vue:419
 #: src/views/site/site_list/SiteList.vue:134
@@ -7412,12 +7620,13 @@ msgstr "检测到错误日志"
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:676
 msgid ""
-"Error logs do not support structured analysis as they contain free-form "
-"text messages."
+"Error logs do not support structured analysis as they contain free-form text "
+"messages."
 msgstr "错误日志不支持结构化分析，因为它们包含自由格式的文本消息。"
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:678
-msgid "For error logs, please use the Raw Log Viewer for better viewing experience."
+msgid ""
+"For error logs, please use the Raw Log Viewer for better viewing experience."
 msgstr "对于错误日志，请使用原始日志查看器以获得更好的查看体验。"
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:683
@@ -7541,7 +7750,8 @@ msgid "Get release information error"
 msgstr "获取发布信息错误"
 
 #: src/views/node/BatchUpgrader.vue:187
-msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
+msgid ""
+"This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr "将 %{nodeNames} 上的 Nginx UI 升级或重新安装到 %{version} 版本。"
 
 #: src/views/node/BatchUpgrader.vue:193 src/views/system/Upgrade.vue:237
@@ -7556,41 +7766,50 @@ msgstr "在 GitHub 上查看"
 msgid "Perform"
 msgstr "执行"
 
-#: src/views/node/Node.vue:44
+#: src/views/node/Node.vue:45
 msgid "Auto refresh enabled"
 msgstr "自动刷新已启用"
 
-#: src/views/node/Node.vue:48
+#: src/views/node/Node.vue:49
 msgid "Auto refresh disabled"
 msgstr "自动刷新已禁用"
 
-#: src/views/node/Node.vue:68
+#: src/views/node/Node.vue:69
 msgid "Load successfully"
 msgstr "加载成功"
 
-#: src/views/node/Node.vue:83 src/views/node/Node.vue:201
+#: src/views/node/Node.vue:83 src/views/node/Node.vue:216
+msgid "Please select at least one node to sync configs"
+msgstr "请至少选择一个节点以同步配置"
+
+#: src/views/node/Node.vue:96 src/views/node/Node.vue:235
 msgid "Please select at least one node to reload Nginx"
 msgstr "请至少选择一个节点重载 Nginx"
 
-#: src/views/node/Node.vue:89
+#: src/views/node/Node.vue:102
 msgid "Nginx reload operations have been dispatched to remote nodes"
 msgstr "Nginx 重载操作已发送到远程节点"
 
-#: src/views/node/Node.vue:97 src/views/node/Node.vue:222
+#: src/views/node/Node.vue:110 src/views/node/Node.vue:256
 msgid "Please select at least one node to restart Nginx"
 msgstr "请至少选择一个节点重启 Nginx"
 
-#: src/views/node/Node.vue:103
+#: src/views/node/Node.vue:116
 msgid "Nginx restart operations have been dispatched to remote nodes"
 msgstr "Nginx 重启操作已发送到远程节点"
 
-#: src/views/node/Node.vue:138
+#: src/views/node/Node.vue:151
 msgid "Load from settings"
 msgstr "从设置中加载"
 
-#: src/views/node/Node.vue:180
+#: src/views/node/Node.vue:195
 msgid "Please select at least one node to upgrade"
 msgstr "请至少选择一个节点进行升级"
+
+#: src/views/node/Node.vue:223 src/views/node/Node.vue:230
+#: src/views/node/SyncConfigs.vue:53
+msgid "Sync Configs"
+msgstr "同步配置"
 
 #: src/views/node/nodeColumns.tsx:13
 msgid "Rotating"
@@ -7601,6 +7820,7 @@ msgid "Unpaired"
 msgstr "未配对"
 
 #: src/views/node/nodeColumns.tsx:15
+#: src/views/preference/tabs/AccessTokens.vue:147
 msgid "Revoked"
 msgstr "已吊销"
 
@@ -7628,6 +7848,14 @@ msgstr "旧版密钥"
 #: src/views/node/nodeColumns.tsx:82
 msgid "Paired signature"
 msgstr "配对签名"
+
+#: src/views/node/SyncConfigs.vue:61
+msgid "The selected content will be pushed to: %{nodes}"
+msgstr "所选内容将推送到：%{nodes}"
+
+#: src/views/node/SyncConfigs.vue:71
+msgid "Streams"
+msgstr "Stream"
 
 #: src/views/notification/Notification.vue:28
 msgid "Notification"
@@ -7717,7 +7945,8 @@ msgid ""
 msgstr "您尚未配置 Webauthn 的设置，因此无法添加 Passkey。"
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:104
-msgid "To ensure security, Webauthn configuration cannot be added through the UI. "
+msgid ""
+"To ensure security, Webauthn configuration cannot be added through the UI. "
 msgstr "为确保安全，Webauthn 配置无法通过 UI 添加。"
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:114
@@ -7728,7 +7957,9 @@ msgstr "之后，请刷新此页面并再次点击添加通行密钥。"
 msgid ""
 "Due to the security policies of some browsers, you cannot use passkeys on "
 "non-HTTPS websites, except when running on localhost."
-msgstr "由于某些浏览器的安全策略，除非在 localhost 上使用，否则不能在非 HTTPS 网站上使用 Passkey。"
+msgstr ""
+"由于某些浏览器的安全策略，除非在 localhost 上使用，否则不能在非 HTTPS 网站上"
+"使用 Passkey。"
 
 #: src/views/preference/components/AuthSettings/Passkey.vue:40
 msgid "Update successfully"
@@ -7744,7 +7975,8 @@ msgid "Passkey"
 msgstr "Passkey"
 
 #: src/views/preference/components/AuthSettings/Passkey.vue:63
-msgid "Passkeys are webauthn credentials that validate your identity using touch, "
+msgid ""
+"Passkeys are webauthn credentials that validate your identity using touch, "
 msgstr "通行密钥是 WebAuthn 凭据，可通过触控验证您的身份，"
 
 #: src/views/preference/components/AuthSettings/Passkey.vue:76
@@ -7779,23 +8011,29 @@ msgstr "已查看"
 msgid ""
 "Recovery codes are used to access your account when you lose access to your "
 "2FA device. Each code can only be used once."
-msgstr "恢复代码用于在您无法访问双重身份验证设备时登录您的账户。每个代码只能使用一次。"
+msgstr ""
+"恢复代码用于在您无法访问双重身份验证设备时登录您的账户。每个代码只能使用一"
+"次。"
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:75
 msgid ""
 "Keep your recovery codes as safe as your password. We recommend saving them "
 "with a password manager."
-msgstr "请像保护密码一样安全地保管您的恢复代码。我们建议使用密码管理器保存它们。"
+msgstr ""
+"请像保护密码一样安全地保管您的恢复代码。我们建议使用密码管理器保存它们。"
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:82
-msgid "You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
+msgid ""
+"You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
 msgstr "您尚未启用双重身份验证。请启用双重身份验证以生成恢复代码。"
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:92
 msgid ""
 "Your account uses a deprecated legacy recovery code. Generate new recovery "
 "codes now to complete migration and keep account recovery secure."
-msgstr "您的帐户使用了已弃用的旧恢复代码。请立即生成新的恢复代码以完成迁移，并确保帐户恢复安全。"
+msgstr ""
+"您的帐户使用了已弃用的旧恢复代码。请立即生成新的恢复代码以完成迁移，并确保帐"
+"户恢复安全。"
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:95
 msgid ""
@@ -7812,7 +8050,9 @@ msgid ""
 "These codes are the last resort for accessing your account in case you lose "
 "your password and second factors. If you cannot find these codes, you will "
 "lose access to your account."
-msgstr "这些代码是在您丢失密码和双重身份验证方式时，访问账户的最后手段。如果找不到这些代码，您将无法再访问您的账户。"
+msgstr ""
+"这些代码是在您丢失密码和双重身份验证方式时，访问账户的最后手段。如果找不到这"
+"些代码，您将无法再访问您的账户。"
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:125
 msgid "Copy Codes"
@@ -7868,7 +8108,8 @@ msgstr "TOTP 是一种使用基于时间的一次性密码算法的双因素身�
 msgid ""
 "To enable it, you need to install the Google or Microsoft Authenticator app "
 "on your mobile phone."
-msgstr "要启用该功能，您需要在手机上安装 Google 或 Microsoft Authenticator 应用程序。"
+msgstr ""
+"要启用该功能，您需要在手机上安装 Google 或 Microsoft Authenticator 应用程序。"
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:80
 msgid "Scan the QR code with your mobile phone to add the account to the app."
@@ -7979,42 +8220,201 @@ msgstr "Telegram"
 msgid "WeCom"
 msgstr "企业微信"
 
-#: src/views/preference/Preference.vue:53
+#: src/views/preference/Preference.vue:55
 msgid "App"
 msgstr "应用"
 
-#: src/views/preference/Preference.vue:59
+#: src/views/preference/Preference.vue:61
 #: src/views/preference/tabs/ExternalNotify.vue:42
 msgid "External Notify"
 msgstr "外部通知"
 
-#: src/views/preference/Preference.vue:65
+#: src/views/preference/Preference.vue:67 src/views/upstream/SocketList.vue:64
+msgid "Health Check"
+msgstr "健康检查"
+
+#: src/views/preference/Preference.vue:73
 msgid "Node"
 msgstr "节点"
 
-#: src/views/preference/Preference.vue:71
+#: src/views/preference/Preference.vue:79
 msgid "HTTP"
 msgstr "HTTP"
 
-#: src/views/preference/Preference.vue:83
+#: src/views/preference/Preference.vue:91
 msgid "Auth"
 msgstr "认证"
 
-#: src/views/preference/Preference.vue:89
+#: src/views/preference/Preference.vue:97
+#: src/views/preference/tabs/AccessTokens.vue:165
+msgid "Access Tokens"
+msgstr "访问令牌"
+
+#: src/views/preference/Preference.vue:103
 msgid "Cert"
 msgstr "证书"
 
-#: src/views/preference/Preference.vue:101
+#: src/views/preference/Preference.vue:115
 msgid "LLM"
 msgstr "LLM"
 
-#: src/views/preference/Preference.vue:107
+#: src/views/preference/Preference.vue:121
 msgid "Logrotate"
 msgstr "Logrotate"
 
-#: src/views/preference/Preference.vue:113
+#: src/views/preference/Preference.vue:127
 msgid "GeoLite"
 msgstr "GeoLite"
+
+#: src/views/preference/tabs/AccessTokens.vue:29
+msgid "Management API: Read"
+msgstr "管理 API：读取"
+
+#: src/views/preference/tabs/AccessTokens.vue:30
+msgid "Read resources and runtime status through the management API."
+msgstr "通过管理 API 读取资源和运行状态。"
+
+#: src/views/preference/tabs/AccessTokens.vue:34
+msgid "Management API: Write"
+msgstr "管理 API：写入"
+
+#: src/views/preference/tabs/AccessTokens.vue:35
+msgid ""
+"Create, update, and delete resources and run Nginx control operations. "
+"Includes API read access."
+msgstr "创建、更新和删除资源，并执行 Nginx 控制操作。包含 API 读取权限。"
+
+#: src/views/preference/tabs/AccessTokens.vue:39
+msgid "MCP: Read"
+msgstr "MCP：读取"
+
+#: src/views/preference/tabs/AccessTokens.vue:40
+msgid "Use read-only Nginx UI MCP tools."
+msgstr "使用只读的 Nginx UI MCP 工具。"
+
+#: src/views/preference/tabs/AccessTokens.vue:44
+msgid "MCP: Write"
+msgstr "MCP：写入"
+
+#: src/views/preference/tabs/AccessTokens.vue:45
+msgid "Use mutating Nginx UI MCP tools. Includes MCP read access."
+msgstr "使用可修改数据的 Nginx UI MCP 工具。包含 MCP 读取权限。"
+
+#: src/views/preference/tabs/AccessTokens.vue:51
+#: src/views/preference/tabs/AccessTokens.vue:274
+msgid "Scopes"
+msgstr "作用域"
+
+#: src/views/preference/tabs/AccessTokens.vue:52
+msgid "Last used"
+msgstr "最后使用"
+
+#: src/views/preference/tabs/AccessTokens.vue:53
+msgid "Expires"
+msgstr "过期时间"
+
+#: src/views/preference/tabs/AccessTokens.vue:89
+msgid "Token name is required"
+msgstr "请输入令牌名称"
+
+#: src/views/preference/tabs/AccessTokens.vue:93
+msgid "Select at least one scope"
+msgstr "请至少选择一个作用域"
+
+#: src/views/preference/tabs/AccessTokens.vue:106
+msgid "Access token created"
+msgstr "访问令牌已创建"
+
+#: src/views/preference/tabs/AccessTokens.vue:117
+msgid "Access token rotated"
+msgstr "访问令牌已轮换"
+
+#: src/views/preference/tabs/AccessTokens.vue:123
+msgid "Access token revoked"
+msgstr "访问令牌已吊销"
+
+#: src/views/preference/tabs/AccessTokens.vue:129
+msgid "Access token copied to clipboard"
+msgstr "访问令牌已复制到剪贴板"
+
+#: src/views/preference/tabs/AccessTokens.vue:132
+msgid "Failed to copy access token"
+msgstr "复制访问令牌失败"
+
+#: src/views/preference/tabs/AccessTokens.vue:150
+msgid "Active"
+msgstr "生效中"
+
+#: src/views/preference/tabs/AccessTokens.vue:168
+msgid ""
+"Create scoped credentials for the Nginx UI CLI, automation, and MCP clients. "
+"Tokens are shown only once."
+msgstr "为 Nginx UI CLI、自动化脚本和 MCP 客户端创建带作用域的凭据。令牌只显示一次。"
+
+#: src/views/preference/tabs/AccessTokens.vue:175
+msgid "Create Token"
+msgstr "创建令牌"
+
+#: src/views/preference/tabs/AccessTokens.vue:183
+msgid ""
+"Use the smallest required scope and set an expiration date for automation "
+"credentials."
+msgstr "请使用最小必要作用域，并为自动化凭据设置过期时间。"
+
+#: src/views/preference/tabs/AccessTokens.vue:196
+msgid "No access tokens"
+msgstr "暂无访问令牌"
+
+#: src/views/preference/tabs/AccessTokens.vue:223
+#: src/views/preference/tabs/AccessTokens.vue:227
+msgid "Never"
+msgstr "从不"
+
+#: src/views/preference/tabs/AccessTokens.vue:238
+msgid "Rotate this token? The current token will stop working immediately."
+msgstr "确定轮换此令牌吗？当前令牌将立即失效。"
+
+#: src/views/preference/tabs/AccessTokens.vue:241
+msgid "Rotate token"
+msgstr "轮换令牌"
+
+#: src/views/preference/tabs/AccessTokens.vue:246
+msgid "Revoke this token? This action cannot be undone."
+msgstr "确定吊销此令牌吗？此操作无法撤销。"
+
+#: src/views/preference/tabs/AccessTokens.vue:249
+msgid "Revoke token"
+msgstr "吊销令牌"
+
+#: src/views/preference/tabs/AccessTokens.vue:260
+msgid "Create Access Token"
+msgstr "创建访问令牌"
+
+#: src/views/preference/tabs/AccessTokens.vue:270
+msgid "For example: production deployment"
+msgstr "例如：生产环境部署"
+
+#: src/views/preference/tabs/AccessTokens.vue:291
+msgid "Expires At"
+msgstr "过期于"
+
+#: src/views/preference/tabs/AccessTokens.vue:297
+msgid "No expiration"
+msgstr "永不过期"
+
+#: src/views/preference/tabs/AccessTokens.vue:305
+msgid "Save Your Access Token"
+msgstr "请保存您的访问令牌"
+
+#: src/views/preference/tabs/AccessTokens.vue:313
+msgid ""
+"This token is shown only once. Store it in a secure secret manager before "
+"closing this dialog."
+msgstr "此令牌只显示一次。请在关闭此对话框前将其保存到安全的密钥管理工具中。"
+
+#: src/views/preference/tabs/AccessTokens.vue:324
+msgid "I have saved the token"
+msgstr "我已保存令牌"
 
 #: src/views/preference/tabs/AppSettings.vue:11
 msgid "Jwt Secret"
@@ -8064,7 +8464,8 @@ msgstr "最大尝试次数"
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
 "ban threshold minutes,"
-msgstr "如果在封禁阈值分钟数内，来自某个 IP 的登录失败尝试次数达到了最大尝试次数，"
+msgstr ""
+"如果在封禁阈值分钟数内，来自某个 IP 的登录失败尝试次数达到了最大尝试次数，"
 
 #: src/views/preference/tabs/AuthSettings.vue:114
 msgid "Banned IPs"
@@ -8123,9 +8524,43 @@ msgstr "发送测试消息失败"
 
 #: src/views/preference/tabs/GeoLiteSettings.vue:9
 msgid ""
-"The GeoLite2 database provides geographic information for IP addresses. "
-"This is used for offline geographic analysis in log analytics."
-msgstr "GeoLite2 数据库为 IP 地址提供地理信息。这用于日志分析中的离线地理分析。"
+"The GeoLite2 database provides geographic information for IP addresses. This "
+"is used for offline geographic analysis in log analytics."
+msgstr ""
+"GeoLite2 数据库为 IP 地址提供地理信息。这用于日志分析中的离线地理分析。"
+
+#: src/views/preference/tabs/HealthCheckSettings.vue:14
+msgid "Global health check controls"
+msgstr "全局健康检查控制"
+
+#: src/views/preference/tabs/HealthCheckSettings.vue:15
+msgid ""
+"A global pause stops network probes without changing individual site or "
+"upstream selections. Discovery remains active so configured targets stay "
+"visible."
+msgstr "全局暂停会停止网络探测，但不会更改各个站点或上游的选择。发现功能仍然启用，已配置的目标依然可见。"
+
+#: src/views/preference/tabs/HealthCheckSettings.vue:21
+msgid "Enable site health checks"
+msgstr "启用站点健康检查"
+
+#: src/views/preference/tabs/HealthCheckSettings.vue:24
+msgid "Concurrency"
+msgstr "并发数"
+
+#: src/views/preference/tabs/HealthCheckSettings.vue:31
+#: src/views/preference/tabs/HealthCheckSettings.vue:45
+msgid "Seconds"
+msgstr "秒"
+
+#: src/views/preference/tabs/HealthCheckSettings.vue:36
+#: src/views/site/site_list/columns.tsx:78 src/views/stream/columns.tsx:46
+msgid "Proxy Targets"
+msgstr "代理目标"
+
+#: src/views/preference/tabs/HealthCheckSettings.vue:38
+msgid "Enable upstream health checks"
+msgstr "启用上游健康检查"
 
 #: src/views/preference/tabs/HTTPSettings.vue:11
 msgid "Github Proxy"
@@ -8266,12 +8701,13 @@ msgstr "公安备案号只能包含字母、单码、数字、连字符、破折
 
 #: src/views/preference/tabs/OpenAISettings.vue:35
 msgid ""
-"Leave blank to use the MiniMax global OpenAI-compatible endpoint: "
-"https://api.minimax.io/v1"
+"Leave blank to use the MiniMax global OpenAI-compatible endpoint: https://"
+"api.minimax.io/v1"
 msgstr "留空以使用 MiniMax 全球 OpenAI 兼容端点：https://api.minimax.io/v1"
 
 #: src/views/preference/tabs/OpenAISettings.vue:38
-msgid "Leave blank to use the Atlas Cloud endpoint: https://api.atlascloud.ai/v1"
+msgid ""
+"Leave blank to use the Atlas Cloud endpoint: https://api.atlascloud.ai/v1"
 msgstr "留空则使用 Atlas Cloud 端点：https://api.atlascloud.ai/v1"
 
 #: src/views/preference/tabs/OpenAISettings.vue:40
@@ -8286,19 +8722,21 @@ msgstr "URL 无效."
 #: src/views/preference/tabs/OpenAISettings.vue:48
 msgid ""
 "MiniMax is OpenAI-compatible. Use https://api.minimax.io/v1 for global "
-"service or https://api.minimaxi.com/v1 for China service. For "
-"Anthropic-compatible clients, use https://api.minimax.io/anthropic or "
-"https://api.minimaxi.com/anthropic."
+"service or https://api.minimaxi.com/v1 for China service. For Anthropic-"
+"compatible clients, use https://api.minimax.io/anthropic or https://"
+"api.minimaxi.com/anthropic."
 msgstr ""
-"MiniMax 兼容 OpenAI。全球服务请使用 https://api.minimax.io/v1，中国服务请使用 "
-"https://api.minimaxi.com/v1。对于兼容 Anthropic 的客户端，请使用 "
-"https://api.minimax.io/anthropic 或 https://api.minimaxi.com/anthropic。"
+"MiniMax 兼容 OpenAI。全球服务请使用 https://api.minimax.io/v1，中国服务请使"
+"用 https://api.minimaxi.com/v1。对于兼容 Anthropic 的客户端，请使用 https://"
+"api.minimax.io/anthropic 或 https://api.minimaxi.com/anthropic。"
 
 #: src/views/preference/tabs/OpenAISettings.vue:52
 msgid ""
 "Atlas Cloud is OpenAI-compatible. Use https://api.atlascloud.ai/v1 and an "
 "Atlas Cloud API key."
-msgstr "Atlas Cloud 兼容 OpenAI。使用 https://api.atlascloud.ai/v1 和 Atlas Cloud API 密钥。"
+msgstr ""
+"Atlas Cloud 兼容 OpenAI。使用 https://api.atlascloud.ai/v1 和 Atlas Cloud "
+"API 密钥。"
 
 #: src/views/preference/tabs/OpenAISettings.vue:55
 msgid "To use a local large model, deploy it with ollama, vllm or lmdeploy. "
@@ -8344,7 +8782,8 @@ msgid "Code Completion Model"
 msgstr "代码补全模型"
 
 #: src/views/preference/tabs/OpenAISettings.vue:167
-msgid "The model used for code completion, if not set, the chat model will be used."
+msgid ""
+"The model used for code completion, if not set, the chat model will be used."
 msgstr "用于代码自动补全的模型，如果未设置，则使用聊天模型。"
 
 #: src/views/preference/tabs/ServerSettings.vue:25
@@ -8362,9 +8801,9 @@ msgstr "SSL 密钥路径"
 #: src/views/preference/tabs/ServerSettings.vue:47
 msgid ""
 "Protocol configuration only takes effect when directly connecting. If using "
-"reverse proxy, please configure the protocol separately in the reverse "
-"proxy."
-msgstr "协议配置仅在直接连接时生效。如果使用反向代理，请在反向代理中单独配置协议。"
+"reverse proxy, please configure the protocol separately in the reverse proxy."
+msgstr ""
+"协议配置仅在直接连接时生效。如果使用反向代理，请在反向代理中单独配置协议。"
 
 #: src/views/preference/tabs/ServerSettings.vue:52
 msgid "Enable HTTP/2"
@@ -8475,7 +8914,9 @@ msgstr "DNS 记录集成（可选）"
 msgid ""
 "Link this site to a DNS record. The server_name will be used for the DNS "
 "record name. You can skip this step if DNS is already configured."
-msgstr "将此站点链接到 DNS 记录。server_name 将用作 DNS 记录名称。如果 DNS 已配置，可以跳过此步骤。"
+msgstr ""
+"将此站点链接到 DNS 记录。server_name 将用作 DNS 记录名称。如果 DNS 已配置，可"
+"以跳过此步骤。"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:263
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:595
@@ -8692,7 +9133,8 @@ msgid "Self-signed certificate applied"
 msgstr "自签名证书已应用"
 
 #: src/views/site/site_edit/components/Cert/SelfSignedCert.vue:47
-msgid "Saving the site configuration failed; the certificate directives are in "
+msgid ""
+"Saving the site configuration failed; the certificate directives are in "
 msgstr "保存站点配置失败；证书指令位于"
 
 #: src/views/site/site_edit/components/Cert/SelfSignedCert.vue:54
@@ -8832,10 +9274,6 @@ msgstr "Nginx 配置解析错误"
 #: src/views/site/site_edit/components/SiteEditor/store.ts:145
 msgid "Please select a certificate before saving the TLS server configuration."
 msgstr "请在保存 TLS 服务器配置前选择一个证书。"
-
-#: src/views/site/site_list/columns.tsx:78 src/views/stream/columns.tsx:46
-msgid "Proxy Targets"
-msgstr "代理目标"
 
 #: src/views/site/site_list/SiteDuplicate.vue:33
 #: src/views/stream/components/StreamDuplicate.vue:25
@@ -9036,43 +9474,50 @@ msgstr "此终端连接已断开。请根据需要刷新。"
 
 #: src/views/terminal/Terminal.vue:212
 msgid ""
-"Demo mode is enabled. This terminal only allows a small set of safe "
-"read-only commands."
+"Demo mode is enabled. This terminal only allows a small set of safe read-"
+"only commands."
 msgstr "演示模式已启用。此终端仅允许执行少量安全的只读命令。"
 
 #: src/views/terminal/Terminal.vue:219
 msgid ""
-"You are accessing this terminal over an insecure HTTP connection on a "
-"non-localhost domain. This may expose sensitive information."
-msgstr "您正在通过非本地主机域上的不安全 HTTP 连接访问此终端。这可能会暴露敏感信息。"
+"You are accessing this terminal over an insecure HTTP connection on a non-"
+"localhost domain. This may expose sensitive information."
+msgstr ""
+"您正在通过非本地主机域上的不安全 HTTP 连接访问此终端。这可能会暴露敏感信息。"
 
-#: src/views/upstream/SocketList.vue:18
+#: src/views/upstream/SocketList.vue:19
 msgid "Socket"
 msgstr "套接字"
 
-#: src/views/upstream/SocketList.vue:30
+#: src/views/upstream/SocketList.vue:31
 msgid "Direct"
 msgstr "直接"
 
-#: src/views/upstream/SocketList.vue:36
+#: src/views/upstream/SocketList.vue:37
 msgid "Health Status"
 msgstr "健康状态"
 
-#: src/views/upstream/SocketList.vue:41
+#: src/views/upstream/SocketList.vue:45
 msgid "No Data"
 msgstr "无数据"
 
-#: src/views/upstream/SocketList.vue:51
+#: src/views/upstream/SocketList.vue:55
 msgid "Last Check"
 msgstr "最后检查"
 
-#: src/views/upstream/SocketList.vue:60
-msgid "Health Check"
-msgstr "健康检查"
-
-#: src/views/upstream/SocketList.vue:133
+#: src/views/upstream/SocketList.vue:138
 msgid "Upstream Sockets"
 msgstr "上游套接字"
+
+#: src/views/upstream/SocketList.vue:153
+msgid "Upstream health checks are globally paused"
+msgstr "上游健康检查已全局暂停"
+
+#: src/views/upstream/SocketList.vue:154
+msgid ""
+"Per-target selections are preserved. Resume probes from Health Check "
+"preferences."
+msgstr "各目标的选择会保留。可在健康检查偏好设置中恢复探测。"
 
 #: src/views/user/userColumns.tsx:30
 msgid "2FA"
@@ -9122,6 +9567,12 @@ msgstr "确认新密码"
 msgid "Update Password"
 msgstr "更新密码"
 
+#~ msgid "Health check configuration saved"
+#~ msgstr "健康检查配置已保存"
+
+#~ msgid "Failed to save configuration"
+#~ msgstr "保存配置失败"
+
 #~ msgid "Certificate Expired"
 #~ msgstr "证书已过期"
 
@@ -9139,10 +9590,6 @@ msgstr "更新密码"
 
 #~ msgid "Certificate %{name} will expire in 1 day"
 #~ msgstr "证书 %{name} 将在 1 天后过期"
-
-#, fuzzy
-#~ msgid "Active"
-#~ msgstr "指令"
 
 #~ msgid "Node authentication upgraded successfully"
 #~ msgstr "节点认证升级成功"
@@ -9174,8 +9621,8 @@ msgstr "更新密码"
 #~ msgstr "允许旧版节点认证"
 
 #~ msgid ""
-#~ "Disable this compatibility switch after every controller has been upgraded "
-#~ "to paired signatures."
+#~ "Disable this compatibility switch after every controller has been "
+#~ "upgraded to paired signatures."
 #~ msgstr "在将所有控制器升级为配对签名后，禁用此兼容性开关。"
 
 #~ msgid "Allow legacy Node Secret for MCP"
@@ -9194,23 +9641,28 @@ msgstr "更新密码"
 #~ "scheduler of Nginx UI will execute the logrotate command at the interval "
 #~ "you set in minutes."
 #~ msgstr ""
-#~ "对于在宿主机上安装 Nginx UI 的用户，大多数主流 Linux 发行版都默认启用 logrotate "
-#~ "定时任务，因此您无需修改本页面的参数。对于使用 Docker 容器安装 Nginx 用户界面的用户，您可以手动启用该选项。Nginx UI "
-#~ "的定时任务任务调度器将按照您设置的时间间隔（以分钟为单位）执行 logrotate 命令。"
+#~ "对于在宿主机上安装 Nginx UI 的用户，大多数主流 Linux 发行版都默认启用 "
+#~ "logrotate 定时任务，因此您无需修改本页面的参数。对于使用 Docker 容器安装 "
+#~ "Nginx 用户界面的用户，您可以手动启用该选项。Nginx UI 的定时任务任务调度器"
+#~ "将按照您设置的时间间隔（以分钟为单位）执行 logrotate 命令。"
 
 #~ msgid "Node credential rotated successfully"
 #~ msgstr "节点凭证轮换成功"
 
 #~ msgid ""
-#~ "Passkeys are webauthn credentials that validate your identity using touch, "
-#~ "facial recognition, a device password, or a PIN. They can be used as a "
-#~ "password replacement or as a 2FA method."
-#~ msgstr "Passkey 是一种网络认证凭据，可通过指纹、面部识别、设备密码或 PIN 码验证身份。它们可用作密码替代品或二步验证方法。"
+#~ "Passkeys are webauthn credentials that validate your identity using "
+#~ "touch, facial recognition, a device password, or a PIN. They can be used "
+#~ "as a password replacement or as a 2FA method."
+#~ msgstr ""
+#~ "Passkey 是一种网络认证凭据，可通过指纹、面部识别、设备密码或 PIN 码验证身"
+#~ "份。它们可用作密码替代品或二步验证方法。"
 
 #~ msgid ""
 #~ "Please first add credentials in Certification > DNS Credentials, and then "
 #~ "select one of the credentialsbelow to request the API of the DNS provider."
-#~ msgstr "请首先在 “证书”> “DNS 凭证” 中添加凭证，然后在下方选择一个凭证，请求 DNS 提供商的 API。"
+#~ msgstr ""
+#~ "请首先在 “证书”> “DNS 凭证” 中添加凭证，然后在下方选择一个凭证，请求 DNS "
+#~ "提供商的 API。"
 
 #~ msgid ""
 #~ "Please input name, this will be used as the filename of the new "
@@ -9228,17 +9680,19 @@ msgstr "更新密码"
 #~ msgid ""
 #~ "Support communication with the backend through the WebSocket protocol. If "
 #~ "your Nginx UI is being used via an Nginx reverse proxy, please refer to "
-#~ "this link to write the corresponding configuration file: "
-#~ "https://nginxui.com/guide/nginx-proxy-example.html"
+#~ "this link to write the corresponding configuration file: https://"
+#~ "nginxui.com/guide/nginx-proxy-example.html"
 #~ msgstr ""
-#~ "支持通过 WebSocket 协议与后端通信，如果您正在使用 Nginx 反向代理了 Nginx UI "
-#~ "请参考：https://nginxui.com/guide/nginx-proxy-example.html 编写配置文件"
+#~ "支持通过 WebSocket 协议与后端通信，如果您正在使用 Nginx 反向代理了 Nginx "
+#~ "UI 请参考：https://nginxui.com/guide/nginx-proxy-example.html 编写配置文件"
 
 #~ msgid ""
 #~ "The certificate has been generated at %{path} and the ssl_certificate "
 #~ "directives have been added to the current server block. Save the "
 #~ "configuration now, or review the changes in the editor and save manually."
-#~ msgstr "证书已生成在 %{path}，并且 ssl_certificate 指令已添加到当前服务器块中。请立即保存配置，或在编辑器中查看更改后手动保存。"
+#~ msgstr ""
+#~ "证书已生成在 %{path}，并且 ssl_certificate 指令已添加到当前服务器块中。请"
+#~ "立即保存配置，或在编辑器中查看更改后手动保存。"
 
 #~ msgid ""
 #~ "The server_name in the current configuration must be the domain name you "
@@ -9251,18 +9705,22 @@ msgstr "更新密码"
 #~ "we need to save this file and reload the Nginx. Are you sure you want to "
 #~ "continue?"
 #~ msgstr ""
-#~ "为了确保认证自动更新能够正常工作，我们需要添加一个能够代理从权威机构到后端的请求的 Location，并且我们需要保存这个文件并重新加载 "
-#~ "Nginx。你确定要继续吗？"
+#~ "为了确保认证自动更新能够正常工作，我们需要添加一个能够代理从权威机构到后端"
+#~ "的请求的 Location，并且我们需要保存这个文件并重新加载 Nginx。你确定要继续"
+#~ "吗？"
 
 #~ msgid ""
 #~ "When you enable/disable, delete, or save this site, the nodes set in the "
 #~ "namespace and the nodes selected below will be synchronized."
-#~ msgstr "当您启用/禁用、删除或保存此站点时，命名空间中设置的节点和下方选择的节点将被同步。"
+#~ msgstr ""
+#~ "当您启用/禁用、删除或保存此站点时，命名空间中设置的节点和下方选择的节点将"
+#~ "被同步。"
 
 #~ msgid ""
 #~ "Names with the same type and shared value are grouped together. TTL and "
 #~ "provider-specific differences remain visible as drift."
-#~ msgstr "类型和值相同的名称会自动归组。TTL 和提供商特有字段的差异仍会显示为偏差。"
+#~ msgstr ""
+#~ "类型和值相同的名称会自动归组。TTL 和提供商特有字段的差异仍会显示为偏差。"
 
 #~ msgid "Records are organized automatically"
 #~ msgstr "记录已自动组织"
@@ -9279,9 +9737,6 @@ msgstr "更新密码"
 #~ msgstr "创建记录集，以管理共享同一值的不同名称"
 
 #~ msgid "Create record set"
-#~ msgstr "创建记录集"
-
-#~ msgid "Create set"
 #~ msgstr "创建记录集"
 
 #~ msgid "Delete set"
@@ -9303,9 +9758,10 @@ msgstr "更新密码"
 #~ msgstr "请输入记录集名称"
 
 #~ msgid ""
-#~ "Group operations update common fields together and apply provider-specific "
-#~ "settings to each compatible target domain."
-#~ msgstr "组操作会统一更新通用字段，并将提供商特有设置应用到每个兼容的目标域名。"
+#~ "Group operations update common fields together and apply provider-"
+#~ "specific settings to each compatible target domain."
+#~ msgstr ""
+#~ "组操作会统一更新通用字段，并将提供商特有设置应用到每个兼容的目标域名。"
 
 #~ msgid "Individual records"
 #~ msgstr "单条记录"
@@ -9319,7 +9775,8 @@ msgstr "更新密码"
 #~ msgid ""
 #~ "Matching values are only suggestions. DNS records change only when you "
 #~ "preview and apply a synchronization."
-#~ msgstr "相同值仅用于提供建议。只有在预览并应用同步后，DNS 记录才会发生变化。"
+#~ msgstr ""
+#~ "相同值仅用于提供建议。只有在预览并应用同步后，DNS 记录才会发生变化。"
 
 #~ msgid "missing"
 #~ msgstr "缺失"
@@ -9348,7 +9805,8 @@ msgstr "更新密码"
 #~ msgid "Record type"
 #~ msgstr "记录类型"
 
-#~ msgid "Resolve duplicate records in each domain before synchronizing this entry"
+#~ msgid ""
+#~ "Resolve duplicate records in each domain before synchronizing this entry"
 #~ msgstr "同步此条目之前，请先解决每个域名中的重复记录。"
 
 #~ msgid "Resolve duplicate records in individual domains first"
@@ -9382,8 +9840,8 @@ msgstr "更新密码"
 #~ msgstr "共享值基准"
 
 #~ msgid ""
-#~ "These names currently share a value. Save a record set before applying any "
-#~ "batch changes."
+#~ "These names currently share a value. Save a record set before applying "
+#~ "any batch changes."
 #~ msgstr "这些名称当前共享同一值。请先保存为记录集，再应用任何批量更改。"
 
 #~ msgid "Use shared value from"
@@ -9393,26 +9851,30 @@ msgstr "更新密码"
 #~ msgstr "值"
 
 #~ msgid ""
-#~ "Existing resolution lines, proxy settings, and comments are preserved. New "
-#~ "records use provider defaults for those fields."
-#~ msgstr "已有的解析线路、代理设置和备注将被保留。新建记录将使用服务商默认的这些字段值。"
+#~ "Existing resolution lines, proxy settings, and comments are preserved. "
+#~ "New records use provider defaults for those fields."
+#~ msgstr ""
+#~ "已有的解析线路、代理设置和备注将被保留。新建记录将使用服务商默认的这些字段"
+#~ "值。"
 
 #~ msgid ""
-#~ "Group operations update common DNS fields once through the existing "
-#~ "per-domain APIs. Resolution lines, proxy state, and comments stay specific "
-#~ "to each existing record."
-#~ msgstr "分组操作会通过现有的按域名 API 一次性更新通用 DNS 字段。解析线路、代理状态和注释仍保留在每个现有记录中。"
+#~ "Group operations update common DNS fields once through the existing per-"
+#~ "domain APIs. Resolution lines, proxy state, and comments stay specific to "
+#~ "each existing record."
+#~ msgstr ""
+#~ "分组操作会通过现有的按域名 API 一次性更新通用 DNS 字段。解析线路、代理状态"
+#~ "和注释仍保留在每个现有记录中。"
 
 #~ msgid "Please enter a valid IPv4 address (0-255 per octet)"
 #~ msgstr "请输入有效的 IPv4 地址（每个八位字节为 0-255）"
 
 #~ msgid ""
 #~ "Warning: This appears to be a private IP address. Public CAs like Let's "
-#~ "Encrypt cannot issue certificates for private IPs. Use a public IP address "
-#~ "or consider using a private CA."
+#~ "Encrypt cannot issue certificates for private IPs. Use a public IP "
+#~ "address or consider using a private CA."
 #~ msgstr ""
-#~ "警告：这似乎是一个私有 IP 地址。像 Let's Encrypt 这样的公共 CA 无法为私有 IP 颁发证书。请使用公共 IP 地址或考虑使用私有 "
-#~ "CA。"
+#~ "警告：这似乎是一个私有 IP 地址。像 Let's Encrypt 这样的公共 CA 无法为私有 "
+#~ "IP 颁发证书。请使用公共 IP 地址或考虑使用私有 CA。"
 
 #~ msgid "Path not in granted access paths: {0}"
 #~ msgstr "路径不在授予的访问路径中：{0}"
@@ -9484,7 +9946,8 @@ msgstr "更新密码"
 #~ msgid ""
 #~ "We will add one or more TXT records to the DNS records of your domain for "
 #~ "ownership verification."
-#~ msgstr "我们将在您域名的 DNS 记录中添加一个或多个 TXT 记录，以核实域名所有权。"
+#~ msgstr ""
+#~ "我们将在您域名的 DNS 记录中添加一个或多个 TXT 记录，以核实域名所有权。"
 
 #~ msgid "Settings"
 #~ msgstr "设置"
@@ -9497,9 +9960,6 @@ msgstr "更新密码"
 
 #~ msgid "WebSocket not connected, please wait for connection"
 #~ msgstr "WebSocket 未连接，请等待连接"
-
-#~ msgid "in the same directory as"
-#~ msgstr "与...在同一个目录中"
 
 #~ msgid "Sandbox test successful"
 #~ msgstr "沙盒测试成功"
@@ -9638,12 +10098,13 @@ msgstr "更新密码"
 
 #~ msgid ""
 #~ "Support communication with the backend through the Server-Sent Events "
-#~ "protocol. If your Nginx UI is being used via an Nginx reverse proxy, please "
-#~ "refer to this link to write the corresponding configuration file: "
+#~ "protocol. If your Nginx UI is being used via an Nginx reverse proxy, "
+#~ "please refer to this link to write the corresponding configuration file: "
 #~ "https://nginxui.com/guide/nginx-proxy-example.html"
 #~ msgstr ""
-#~ "支持通过 Server-Sent Events 协议与后端通信。如果您的 Nginx UI 是通过 Nginx "
-#~ "反向代理使用的，请参考此链接编写相应的配置文件：https://nginxui.com/guide/nginx-proxy-example.html"
+#~ "支持通过 Server-Sent Events 协议与后端通信。如果您的 Nginx UI 是通过 "
+#~ "Nginx 反向代理使用的，请参考此链接编写相应的配置文件：https://nginxui.com/"
+#~ "guide/nginx-proxy-example.html"
 
 #~ msgid "If left blank, the default CA Dir will be used."
 #~ msgstr "如果留空，则使用默认 CA Dir。"
@@ -9710,11 +10171,12 @@ msgstr "更新密码"
 
 #~ msgid ""
 #~ "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
-#~ "Docker Image, please make sure the docker socket is mounted like this: `-v "
-#~ "/var/run/docker.sock:/var/run/docker.sock`."
+#~ "Docker Image, please make sure the docker socket is mounted like this: `-"
+#~ "v /var/run/docker.sock:/var/run/docker.sock`."
 #~ msgstr ""
-#~ "检查 /var/run/docker.sock 是否存在。如果你使用的是 Nginx UI 官方 Docker Image，请确保 Docker "
-#~ "Socket 像这样挂载：`-v /var/run/docker.sock:/var/run/docker.sock`."
+#~ "检查 /var/run/docker.sock 是否存在。如果你使用的是 Nginx UI 官方 Docker "
+#~ "Image，请确保 Docker Socket 像这样挂载：`-v /var/run/docker.sock:/var/run/"
+#~ "docker.sock`."
 
 #~ msgid "Check if the nginx access log path exists"
 #~ msgstr "检查 Nginx 访问日志路径是否存在"
@@ -9734,7 +10196,9 @@ msgstr "更新密码"
 #~ msgid ""
 #~ "If logs are not indexed, please check if the log file is under the "
 #~ "directory in Nginx.LogDirWhiteList."
-#~ msgstr "如果日志未被索引，请检查日志文件是否位于 Nginx.LogDirWhiteList 中的目录下。"
+#~ msgstr ""
+#~ "如果日志未被索引，请检查日志文件是否位于 Nginx.LogDirWhiteList 中的目录"
+#~ "下。"
 
 #~ msgid "Docker Socket"
 #~ msgstr "Docker Socket"
@@ -9752,21 +10216,17 @@ msgstr "更新密码"
 #~ msgstr "保存错误 %{msg}"
 
 #~ msgid ""
-#~ "When you enable/disable, delete, or save this stream, the nodes set in the "
-#~ "Node Group and the nodes selected below will be synchronized."
-#~ msgstr "启用/禁用、删除或保存此站点时，环境组中设置的节点和下面选择的节点将同步执行操作。"
+#~ "When you enable/disable, delete, or save this stream, the nodes set in "
+#~ "the Node Group and the nodes selected below will be synchronized."
+#~ msgstr ""
+#~ "启用/禁用、删除或保存此站点时，环境组中设置的节点和下面选择的节点将同步执"
+#~ "行操作。"
 
 #~ msgid "KB"
 #~ msgstr "KB"
 
 #~ msgid "Optimize Nginx Performance"
 #~ msgstr "优化 Nginx 性能"
-
-#~ msgid "seconds"
-#~ msgstr "秒"
-
-#~ msgid "Bot Token"
-#~ msgstr "机器人令牌"
 
 #~ msgid "Server URL"
 #~ msgstr "服务器 URL"
@@ -9817,11 +10277,16 @@ msgstr "更新密码"
 #~ msgid "Please upgrade the remote Nginx UI to the latest version"
 #~ msgstr "请将远程 Nginx UI 升级到最新版本"
 
-#~ msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: %{resp}"
-#~ msgstr "将 %{env_name} 上的 %{orig_path} 重命名为 %{new_path} 失败，响应：%{resp}"
+#~ msgid ""
+#~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: %"
+#~ "{resp}"
+#~ msgstr ""
+#~ "将 %{env_name} 上的 %{orig_path} 重命名为 %{new_path} 失败，响应：%{resp}"
 
-#~ msgid "Rename Site %{site} to %{new_site} on %{node} error, response: %{resp}"
-#~ msgstr "在 %{node} 上将站点 %{site} 重命名为 %{new_site} 失败，响应：%{resp}"
+#~ msgid ""
+#~ "Rename Site %{site} to %{new_site} on %{node} error, response: %{resp}"
+#~ msgstr ""
+#~ "在 %{node} 上将站点 %{site} 重命名为 %{new_site} 失败，响应：%{resp}"
 
 #~ msgid "Save site %{site} to %{node} error, response: %{resp}"
 #~ msgstr "保存站点 %{site} 到 %{node} 错误，响应: %{resp}"
@@ -9829,20 +10294,24 @@ msgstr "更新密码"
 #~ msgid ""
 #~ "Sync Certificate %{cert_name} to %{env_name} failed, please upgrade the "
 #~ "remote Nginx UI to the latest version"
-#~ msgstr "同步证书 %{cert_name} 到 %{env_name} 失败，请先将远程的 Nginx UI 升级到最新版本"
+#~ msgstr ""
+#~ "同步证书 %{cert_name} 到 %{env_name} 失败，请先将远程的 Nginx UI 升级到最"
+#~ "新版本"
 
-#~ msgid "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
+#~ msgid ""
+#~ "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
 #~ msgstr "同步证书 %{cert_name} 到 %{env_name} 失败，响应：%{resp}"
 
 #~ msgid "Sync config %{config_name} to %{env_name} failed, response: %{resp}"
 #~ msgstr "同步配置 %{config_name} 到 %{env_name} 失败，响应：%{resp}"
 
 #~ msgid ""
-#~ "If you lose your mobile phone, you can use the recovery code to reset your "
-#~ "2FA."
+#~ "If you lose your mobile phone, you can use the recovery code to reset "
+#~ "your 2FA."
 #~ msgstr "如果丢失了手机，可以使用恢复代码重置二步验证。"
 
-#~ msgid "The recovery code is only displayed once, please save it in a safe place."
+#~ msgid ""
+#~ "The recovery code is only displayed once, please save it in a safe place."
 #~ msgstr "恢复密码只会显示一次，请妥善保存。"
 
 #~ msgid "Can't scan? Use text key binding"
@@ -9857,7 +10326,9 @@ msgstr "更新密码"
 #~ msgid ""
 #~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, please upgrade "
 #~ "the remote Nginx UI to the latest version"
-#~ msgstr "将 %{env_name} 上的 %{orig_path} 重命名为 %{new_path} 失败，请将远程 Nginx UI 升级到最新版本"
+#~ msgstr ""
+#~ "将 %{env_name} 上的 %{orig_path} 重命名为 %{new_path} 失败，请将远程 "
+#~ "Nginx UI 升级到最新版本"
 
 #~ msgid "Enable 2FA"
 #~ msgstr "启用二步验证"
@@ -9928,8 +10399,9 @@ msgstr "更新密码"
 #~ "Once the verification is complete, the records will be removed.\n"
 #~ "Please note that the unit of time configurations below are all in seconds."
 #~ msgstr ""
-#~ "请填写您的 DNS 提供商提供的 API 认证凭证。我们将在你的域名的 DNS 记录中添加一个或多个 TXT "
-#~ "记录，以进行所有权验证。一旦验证完成，这些记录将被删除。请注意，下面的时间配置都是以秒为单位。"
+#~ "请填写您的 DNS 提供商提供的 API 认证凭证。我们将在你的域名的 DNS 记录中添"
+#~ "加一个或多个 TXT 记录，以进行所有权验证。一旦验证完成，这些记录将被删除。"
+#~ "请注意，下面的时间配置都是以秒为单位。"
 
 #~ msgid "Delete ID: %{id}"
 #~ msgstr "删除 ID: %{id}"
@@ -9944,11 +10416,11 @@ msgstr "更新密码"
 #~ msgstr "主题"
 
 #~ msgid ""
-#~ "Such as Reload and Configs, regex can configure as "
-#~ "`/api/nginx/reload|/api/nginx/test|/api/config/.+`, please see system api"
+#~ "Such as Reload and Configs, regex can configure as `/api/nginx/reload|/"
+#~ "api/nginx/test|/api/config/.+`, please see system api"
 #~ msgstr ""
-#~ "`重载`和`配置管理`的操作同步正则可以配置为`/api/nginx/reload|/api/nginx/test|/api/config/.+`"
-#~ "，详细请查看系统 API"
+#~ "`重载`和`配置管理`的操作同步正则可以配置为`/api/nginx/reload|/api/nginx/"
+#~ "test|/api/config/.+`，详细请查看系统 API"
 
 #~ msgid "SyncApiRegex"
 #~ msgstr "Api 正则表达式"
@@ -9966,9 +10438,11 @@ msgstr "更新密码"
 #~ msgstr "你想启用自动更新证书吗？"
 
 #~ msgid ""
-#~ "We need to add the HTTPChallenge configuration to this file and reload the "
-#~ "Nginx. Are you sure you want to continue?"
-#~ msgstr "我们需要将 HTTPChallenge 的配置添加到这个文件中，并重新加载 Nginx。你确定要继续吗？"
+#~ "We need to add the HTTPChallenge configuration to this file and reload "
+#~ "the Nginx. Are you sure you want to continue?"
+#~ msgstr ""
+#~ "我们需要将 HTTPChallenge 的配置添加到这个文件中，并重新加载 Nginx。你确定"
+#~ "要继续吗？"
 
 #~ msgid "Chat with ChatGPT"
 #~ msgstr "与 ChatGPT 聊天"
@@ -10021,8 +10495,8 @@ msgstr "更新密码"
 #~ "you do not have a certificate before, please click \"Getting Certificate "
 #~ "from Let's Encrypt\" first."
 #~ msgstr ""
-#~ "系统将会每小时检测一次该域名证书，若距离上次签发已超过 1 个月，则将自动续签。<br/>如果您之前没有证书，请先点击 \"从 Let's "
-#~ "Encrypt 获取证书\"。"
+#~ "系统将会每小时检测一次该域名证书，若距离上次签发已超过 1 个月，则将自动续"
+#~ "签。<br/>如果您之前没有证书，请先点击 \"从 Let's Encrypt 获取证书\"。"
 
 #~ msgid "Do you want to change the template to support the TLS?"
 #~ msgstr "你想要改变模板以支持 TLS 吗？"
@@ -10034,12 +10508,15 @@ msgstr "更新密码"
 #~ "The following values will only take effect if you have the corresponding "
 #~ "fields in your configuration file. The configuration filename cannot be "
 #~ "changed after it has been created."
-#~ msgstr "只有在您的配置文件中有相应字段时，下列的配置才能生效。配置文件名称创建后不可修改。"
+#~ msgstr ""
+#~ "只有在您的配置文件中有相应字段时，下列的配置才能生效。配置文件名称创建后不"
+#~ "可修改。"
 
 #~ msgid "This operation will lose the custom configuration."
 #~ msgstr "该操作将会丢失自定义配置。"
 
-#~ msgid "Add site here first, then you can configure TLS on the domain edit page."
+#~ msgid ""
+#~ "Add site here first, then you can configure TLS on the domain edit page."
 #~ msgstr "在这里添加站点，完成后可进入编辑页面配置 TLS。"
 
 #~ msgid "Server Status"
@@ -10052,6 +10529,6 @@ msgstr "更新密码"
 #~ msgstr "已使用: %{used} / 总共: %{total}"
 
 #~ msgid ""
-#~ "Currently, DNS record management supports Alibaba Cloud DNS, Tencent Cloud "
-#~ "DNS, and Cloudflare only."
+#~ "Currently, DNS record management supports Alibaba Cloud DNS, Tencent "
+#~ "Cloud DNS, and Cloudflare only."
 #~ msgstr "目前，DNS 记录管理仅支持阿里云 DNS、腾讯云 DNS 和 Cloudflare。"

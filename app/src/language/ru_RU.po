@@ -7,11 +7,11 @@ msgstr ""
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2025-03-28 02:45+0300\n"
 "Last-Translator: Artyom Isrofilov <artyom@isrofilov.ru>\n"
-"Language-Team: Russian "
-"<https://weblate.nginxui.com/projects/nginx-ui/frontend/ru/>\n"
+"Language-Team: Russian <https://weblate.nginxui.com/projects/nginx-ui/"
+"frontend/ru/>\n"
 "Language: ru_RU\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.5\n"
@@ -30,16 +30,16 @@ msgstr "Уведомление о сертификате IP"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:81
 msgid ""
-"This site is configured as a default server (default_server) for HTTPS "
-"(port 443). "
+"This site is configured as a default server (default_server) for HTTPS (port "
+"443). "
 msgstr ""
 "Этот сайт настроен как сервер по умолчанию (default_server) для HTTPS (порт "
 "443)."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:85
 msgid ""
-"This site uses wildcard server name (_) which typically indicates an "
-"IP-based certificate. "
+"This site uses wildcard server name (_) which typically indicates an IP-"
+"based certificate. "
 msgstr ""
 "Этот сайт использует шаблонное имя сервера (_), которое обычно указывает на "
 "сертификат на основе IP-адреса."
@@ -79,7 +79,8 @@ msgstr "Убедитесь, что вы настроили обратный пр
 
 #: src/components/AutoCertForm/AutoCertForm.vue:120
 msgid "Please first add credentials in Certification > DNS Credentials, "
-msgstr "Сначала добавьте учётные данные в разделе Certification > DNS Credentials, "
+msgstr ""
+"Сначала добавьте учётные данные в разделе Certification > DNS Credentials, "
 
 #: src/components/AutoCertForm/AutoCertForm.vue:130
 msgid "Server IP Address"
@@ -91,8 +92,8 @@ msgstr "Введите IP-адрес сервера (например, 203.0.113
 
 #: src/components/AutoCertForm/AutoCertForm.vue:140
 msgid ""
-"For IP-based certificates, please specify the server IP address that will "
-"be included in the certificate."
+"For IP-based certificates, please specify the server IP address that will be "
+"included in the certificate."
 msgstr ""
 "Для сертификатов на основе IP укажите IP-адрес сервера, который будет "
 "включен в сертификат."
@@ -111,15 +112,18 @@ msgstr "Порт 80 должен быть открыт для проверки H
 
 #: src/components/AutoCertForm/AutoCertForm.vue:154
 msgid "Private IPs (192.168.x.x, 10.x.x.x, 172.16-31.x.x) will fail"
-msgstr "Частные IP-адреса (192.168.x.x, 10.x.x.x, 172.16-31.x.x) не пройдут проверку"
+msgstr ""
+"Частные IP-адреса (192.168.x.x, 10.x.x.x, 172.16-31.x.x) не пройдут проверку"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:158
 msgid "Private CA:"
 msgstr "Частный CA:"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:161
-msgid "Any reachable IP address can be used with private Certificate Authorities"
-msgstr "Любой доступный IP-адрес можно использовать с частными центрами сертификации"
+msgid ""
+"Any reachable IP address can be used with private Certificate Authorities"
+msgstr ""
+"Любой доступный IP-адрес можно использовать с частными центрами сертификации"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:170
 msgid "Challenge Method"
@@ -165,7 +169,8 @@ msgstr "Lego отключить поддержку CNAME"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:223
 msgid "If your domain has CNAME records and you cannot obtain certificates, "
-msgstr "Если у вашего домена есть записи CNAME и вы не можете получить сертификаты,"
+msgstr ""
+"Если у вашего домена есть записи CNAME и вы не можете получить сертификаты,"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:229
 msgid "Enable Common Name"
@@ -187,7 +192,8 @@ msgstr "Отозвать старый сертификат"
 msgid ""
 "If you want to automatically revoke the old certificate, please enable this "
 "option."
-msgstr "Если вы хотите автоматически отозвать старый сертификат, включите эту опцию."
+msgstr ""
+"Если вы хотите автоматически отозвать старый сертификат, включите эту опцию."
 
 #: src/components/AutoCertForm/DNSChallenge.vue:21
 msgid "Unknown Provider"
@@ -211,8 +217,7 @@ msgstr "Выберите учетные данные"
 #: src/components/AutoCertForm/DNSChallenge.vue:141
 msgid "Go to DNS > Credentials to create or manage credentials"
 msgstr ""
-"Перейдите в DNS > Учётные данные для создания или управления учётными "
-"данными"
+"Перейдите в DNS > Учётные данные для создания или управления учётными данными"
 
 #: src/components/CertInfo/CertInfo.vue:24
 #: src/views/certificate/ACMEUser.vue:70 src/views/certificate/ACMEUser.vue:152
@@ -222,6 +227,7 @@ msgstr "Действительный"
 
 #: src/components/CertInfo/CertInfo.vue:31
 #: src/views/certificate/CertificateList/certColumns.tsx:103
+#: src/views/preference/tabs/AccessTokens.vue:149
 msgid "Expired"
 msgstr "Истекший"
 
@@ -313,8 +319,8 @@ msgstr "Требуется база данных GeoLite2"
 
 #: src/components/GeoLiteDownload/GeoLiteDownload.vue:158
 msgid ""
-"The GeoLite2 database is required for offline geographic IP analysis. "
-"Please download it to enable this feature."
+"The GeoLite2 database is required for offline geographic IP analysis. Please "
+"download it to enable this feature."
 msgstr ""
 "Для офлайн-географического анализа IP-адресов требуется база данных "
 "GeoLite2. Пожалуйста, загрузите её для активации этой функции."
@@ -372,10 +378,10 @@ msgstr ""
 "удалённо."
 
 #: src/components/InspectConfig/InspectConfig.vue:47
-msgid "Sandbox validation is unavailable when Nginx runs in a separate container."
+msgid ""
+"Sandbox validation is unavailable when Nginx runs in a separate container."
 msgstr ""
-"Проверка в песочнице недоступна, когда Nginx работает в отдельном "
-"контейнере."
+"Проверка в песочнице недоступна, когда Nginx работает в отдельном контейнере."
 
 #: src/components/InspectConfig/InspectConfig.vue:49
 msgid ""
@@ -386,7 +392,8 @@ msgstr ""
 "команда тестирования."
 
 #: src/components/InspectConfig/InspectConfig.vue:58
-msgid "A required include file is missing from the sandbox or source configuration."
+msgid ""
+"A required include file is missing from the sandbox or source configuration."
 msgstr ""
 "В песочнице или исходной конфигурации отсутствует необходимый включаемый "
 "файл."
@@ -441,7 +448,7 @@ msgstr "Ассистент"
 msgid "User"
 msgstr "Пользователь"
 
-#: src/components/LLM/ChatMessage.vue:241 src/views/config/ConfigList.vue:182
+#: src/components/LLM/ChatMessage.vue:241 src/views/config/ConfigList.vue:189
 msgid "Modify"
 msgstr "Изменить"
 
@@ -451,10 +458,10 @@ msgstr "Изменить"
 #: src/views/certificate/components/CertificateActions.vue:29
 #: src/views/config/components/ConfigLeftPanel.vue:283
 #: src/views/config/components/ConfigName.vue:58
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:713
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:869
 #: src/views/dns/DDNSManager.vue:438 src/views/dns/DNSRecordManager.vue:250
 #: src/views/preference/components/AuthSettings/Passkey.vue:131
-#: src/views/preference/Preference.vue:124
+#: src/views/preference/Preference.vue:138
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:196
 #: src/views/stream/components/ConfigName.vue:52
@@ -466,7 +473,7 @@ msgstr "Сохранить"
 #: src/components/NgxConfigEditor/NgxServer.vue:61
 #: src/components/NgxConfigEditor/NgxUpstream.vue:32 src/language/curd.ts:37
 #: src/views/config/components/Delete.vue:98
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:710
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:866
 #: src/views/dns/DDNSManager.vue:435 src/views/dns/DNSGroupList.vue:240
 #: src/views/dns/DNSGroupList.vue:285
 #: src/views/dns/DNSGroupRecordManager.vue:1531
@@ -555,7 +562,7 @@ msgstr "Чат для %{path}"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:75
 #: src/views/config/components/ConfigName.vue:50
 #: src/views/config/components/Rename.vue:56
-#: src/views/config/ConfigList.vue:190
+#: src/views/config/ConfigList.vue:205
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:44
 #: src/views/stream/components/ConfigName.vue:44
 msgid "Rename"
@@ -577,7 +584,7 @@ msgstr "Дублировать"
 #: src/views/certificate/components/RemoveCert.vue:112
 #: src/views/config/components/Delete.vue:65
 #: src/views/config/components/Delete.vue:97
-#: src/views/config/ConfigList.vue:199
+#: src/views/config/ConfigList.vue:214
 #: src/views/dns/components/DNSRecordTable.vue:331
 #: src/views/dns/components/DNSRecordTable.vue:382
 #: src/views/dns/DDNSManager.vue:360 src/views/dns/DNSGroupList.vue:244
@@ -598,13 +605,13 @@ msgstr "Нет действия"
 
 #: src/components/NamespaceRender/NamespaceRender.vue:44
 #: src/components/NamespaceTabs/NamespaceTabs.vue:141 src/constants/index.ts:39
-#: src/views/node/Node.vue:209 src/views/node/Node.vue:217
+#: src/views/node/Node.vue:243 src/views/node/Node.vue:251
 msgid "Reload Nginx"
 msgstr "Перезагрузить Nginx"
 
 #: src/components/NamespaceRender/NamespaceRender.vue:53
 #: src/components/NamespaceTabs/NamespaceTabs.vue:127
-#: src/views/namespace/columns.ts:17 src/views/namespace/Namespace.vue:31
+#: src/views/namespace/columns.ts:17 src/views/namespace/Namespace.vue:68
 msgid "Sync Nodes"
 msgstr "Синхронизированные узлы"
 
@@ -614,7 +621,8 @@ msgstr "Нет выбранных узлов"
 
 #: src/components/NamespaceTabs/NamespaceTabs.vue:85
 msgid "Reload request failed, please check your network connection"
-msgstr "Не удалось выполнить запрос на перезагрузку, проверьте подключение к сети"
+msgstr ""
+"Не удалось выполнить запрос на перезагрузку, проверьте подключение к сети"
 
 #: src/components/NamespaceTabs/NamespaceTabs.vue:105
 msgid "Restart request failed, please check your network connection"
@@ -654,7 +662,7 @@ msgstr ""
 "узлах?"
 
 #: src/components/NamespaceTabs/NamespaceTabs.vue:153
-#: src/views/node/Node.vue:230 src/views/node/Node.vue:238
+#: src/views/node/Node.vue:264 src/views/node/Node.vue:272
 msgid "Restart Nginx"
 msgstr "Перезапустить Nginx"
 
@@ -664,7 +672,7 @@ msgstr "Перезапустить Nginx"
 #: src/components/NodeSelector/NodeSelector.vue:79
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
 #: src/views/dashboard/Nodes.vue:110 src/views/node/nodeColumns.tsx:95
-#: src/views/upstream/SocketList.vue:45
+#: src/views/upstream/SocketList.vue:49
 msgid "Online"
 msgstr "Онлайн"
 
@@ -673,7 +681,7 @@ msgstr "Онлайн"
 #: src/components/NodeSelector/NodeSelector.vue:85
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
 #: src/views/dashboard/Nodes.vue:117 src/views/node/nodeColumns.tsx:99
-#: src/views/upstream/SocketList.vue:45
+#: src/views/upstream/SocketList.vue:49
 msgid "Offline"
 msgstr "Оффлайн"
 
@@ -692,7 +700,8 @@ msgid "Nginx restarted successfully"
 msgstr "Nginx успешно перезапущен"
 
 #: src/components/NginxControl/NginxControl.vue:124
-msgid "Nginx restart status could not be confirmed. Please check the Nginx status."
+msgid ""
+"Nginx restart status could not be confirmed. Please check the Nginx status."
 msgstr ""
 "Не удалось подтвердить состояние перезапуска Nginx. Проверьте состояние "
 "Nginx."
@@ -774,8 +783,7 @@ msgstr "Вы уверены, что хотите удалить эту дире�
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:138
 msgid "Cannot delete server_name while DNS is linked. Clear DNS link first."
 msgstr ""
-"Невозможно удалить server_name, пока DNS связан. Сначала разорвите связь "
-"DNS."
+"Невозможно удалить server_name, пока DNS связан. Сначала разорвите связь DNS."
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:153
 #: src/components/NgxConfigEditor/LocationEditor.vue:116
@@ -807,7 +815,7 @@ msgstr "Вы уверены, что хотите удалить location?"
 #: src/language/curd.ts:61
 #: src/views/config/components/ConfigRightPanel/Basic.vue:41
 #: src/views/config/components/Delete.vue:124
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:527
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:589
 #: src/views/nginx_log/NginxLogList.vue:165
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:521
 msgid "Path"
@@ -828,8 +836,8 @@ msgstr "Удалить директиву access_log с этого сервер�
 
 #: src/components/NgxConfigEditor/LogEntry.vue:154
 msgid ""
-"Write an access_log directive for this server, so its requests can be "
-"viewed and analysed separately"
+"Write an access_log directive for this server, so its requests can be viewed "
+"and analysed separately"
 msgstr ""
 "Добавьте директиву access_log для этого сервера, чтобы его запросы можно "
 "было просматривать и анализировать отдельно."
@@ -926,6 +934,8 @@ msgstr "Имя Upstream"
 #: src/views/namespace/columns.ts:9 src/views/nginx_log/NginxLogList.vue:156
 #: src/views/node/nodeColumns.tsx:19
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:84
+#: src/views/preference/tabs/AccessTokens.vue:50
+#: src/views/preference/tabs/AccessTokens.vue:266
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:36
 #: src/views/site/site_list/columns.tsx:30
 #: src/views/site/site_list/SiteDuplicate.vue:79
@@ -1008,8 +1018,8 @@ msgid ""
 "Storage configuration validation failed for backup task %{backup_name}, "
 "error: %{error}"
 msgstr ""
-"Проверка конфигурации хранилища для задачи резервного копирования "
-"%{backup_name} не удалась, ошибка: %{error}"
+"Проверка конфигурации хранилища для задачи резервного копирования %"
+"{backup_name} не удалась, ошибка: %{error}"
 
 #: src/components/Notification/notifications.ts:29
 msgid "Auto Backup Failed"
@@ -1018,15 +1028,16 @@ msgstr "Автоматическое резервное копирование �
 #: src/components/Notification/notifications.ts:30
 msgid "Backup task %{backup_name} failed to execute, error: %{error}"
 msgstr ""
-"Не удалось выполнить задание резервного копирования %{backup_name}, ошибка: "
-"%{error}"
+"Не удалось выполнить задание резервного копирования %{backup_name}, ошибка: %"
+"{error}"
 
 #: src/components/Notification/notifications.ts:33
 msgid "Auto Backup Storage Failed"
 msgstr "Сбой хранения автоматической резервной копии"
 
 #: src/components/Notification/notifications.ts:34
-msgid "Backup task %{backup_name} failed during storage upload, error: %{error}"
+msgid ""
+"Backup task %{backup_name} failed during storage upload, error: %{error}"
 msgstr ""
 "Задача резервного копирования %{backup_name} не выполнена при загрузке в "
 "хранилище, ошибка: %{error}"
@@ -1038,8 +1049,8 @@ msgstr "Автоматическое резервное копирование �
 #: src/components/Notification/notifications.ts:38
 msgid "Backup task %{backup_name} completed successfully, file: %{file_path}"
 msgstr ""
-"Задача резервного копирования %{backup_name} успешно завершена, файл: "
-"%{file_path}"
+"Задача резервного копирования %{backup_name} успешно завершена, файл: %"
+"{file_path}"
 
 #: src/components/Notification/notifications.ts:41
 #: src/components/Notification/notifications.ts:49 src/language/constants.ts:35
@@ -1124,222 +1135,235 @@ msgid "Delete %{path} on %{node_name} successfully"
 msgstr "%{path} успешно удалён на %{node_name}"
 
 #: src/components/Notification/notifications.ts:85
+msgid "Auto Sync Namespace Error"
+msgstr "Ошибка автоматической синхронизации пространства имён"
+
+#: src/components/Notification/notifications.ts:86
+msgid ""
+"Auto sync of namespace %{namespace} finished with %{failed} failed items"
+msgstr ""
+"Автоматическая синхронизация пространства имён %{namespace} завершена, "
+"неудачных элементов: %{failed}"
+
+#: src/components/Notification/notifications.ts:89
 msgid "External Notification Test"
 msgstr "Тест внешнего уведомления"
 
-#: src/components/Notification/notifications.ts:86
+#: src/components/Notification/notifications.ts:90
 msgid "This is a test message sent at %{timestamp} from Nginx UI."
-msgstr "Это тестовое сообщение, отправленное по адресу %{timestamp} из nginx ui."
+msgstr ""
+"Это тестовое сообщение, отправленное по адресу %{timestamp} из nginx ui."
 
-#: src/components/Notification/notifications.ts:89 src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:93 src/language/constants.ts:50
 msgid "Delete Remote Site Error"
 msgstr "Ошибка удаления удаленного сайта"
 
-#: src/components/Notification/notifications.ts:90
+#: src/components/Notification/notifications.ts:94
 msgid "Delete site %{name} from %{node} failed"
 msgstr "Не удалось удалить сайт %{name} с %{node}"
 
-#: src/components/Notification/notifications.ts:93 src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:97 src/language/constants.ts:49
 msgid "Delete Remote Site Success"
 msgstr "Удаление удаленного сайта успешно завершено"
 
-#: src/components/Notification/notifications.ts:94
+#: src/components/Notification/notifications.ts:98
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "Сайт %{name} успешно удалён с %{node}"
 
-#: src/components/Notification/notifications.ts:97 src/language/constants.ts:52
+#: src/components/Notification/notifications.ts:101
+#: src/language/constants.ts:52
 msgid "Disable Remote Site Error"
 msgstr "Ошибка отключения удаленного сайта"
 
-#: src/components/Notification/notifications.ts:98
+#: src/components/Notification/notifications.ts:102
 msgid "Disable site %{name} from %{node} failed"
 msgstr "Не удалось отключить сайт %{name} с %{node}"
 
-#: src/components/Notification/notifications.ts:101
+#: src/components/Notification/notifications.ts:105
 #: src/language/constants.ts:51
 msgid "Disable Remote Site Success"
 msgstr "Удалённый сайт успешно отключён"
 
-#: src/components/Notification/notifications.ts:102
+#: src/components/Notification/notifications.ts:106
 msgid "Disable site %{name} from %{node} successfully"
 msgstr "Сайт %{name} успешно отключен на %{node}"
 
-#: src/components/Notification/notifications.ts:105
+#: src/components/Notification/notifications.ts:109
 #: src/language/constants.ts:54
 msgid "Enable Remote Site Error"
 msgstr "Ошибка включения удаленного сайта"
 
-#: src/components/Notification/notifications.ts:106
+#: src/components/Notification/notifications.ts:110
 msgid "Enable site %{name} on %{node} failed"
 msgstr "Не удалось включить сайт %{name} на %{node}"
 
-#: src/components/Notification/notifications.ts:109
+#: src/components/Notification/notifications.ts:113
 #: src/language/constants.ts:53
 msgid "Enable Remote Site Success"
 msgstr "Удалённый сайт успешно включён"
 
-#: src/components/Notification/notifications.ts:110
+#: src/components/Notification/notifications.ts:114
 msgid "Enable site %{name} on %{node} successfully"
 msgstr "Сайт %{name} успешно включён на %{node}"
 
-#: src/components/Notification/notifications.ts:113
+#: src/components/Notification/notifications.ts:117
 msgid "Enable Remote Site Maintenance Error"
 msgstr "Ошибка включения обслуживания удаленного сайта"
 
-#: src/components/Notification/notifications.ts:114
+#: src/components/Notification/notifications.ts:118
 msgid "Enable site %{name} maintenance on %{node} failed"
 msgstr "Не удалось включить обслуживание сайта %{name} на %{node}"
 
-#: src/components/Notification/notifications.ts:117
+#: src/components/Notification/notifications.ts:121
 msgid "Enable Remote Site Maintenance Success"
 msgstr "Успешное включение обслуживания удаленного сайта"
 
-#: src/components/Notification/notifications.ts:118
+#: src/components/Notification/notifications.ts:122
 msgid "Enable site %{name} maintenance on %{node} successfully"
 msgstr "Техническое обслуживание сайта %{name} на %{node} успешно включено"
 
-#: src/components/Notification/notifications.ts:121
+#: src/components/Notification/notifications.ts:125
 msgid "Disable Remote Site Maintenance Error"
 msgstr "Ошибка отключения обслуживания удаленного сайта"
 
-#: src/components/Notification/notifications.ts:122
+#: src/components/Notification/notifications.ts:126
 msgid "Disable site %{name} maintenance on %{node} failed"
 msgstr "Не удалось отключить обслуживание сайта %{name} на %{node}"
 
-#: src/components/Notification/notifications.ts:125
+#: src/components/Notification/notifications.ts:129
 msgid "Disable Remote Site Maintenance Success"
 msgstr "Успешное отключение обслуживания удаленного сайта"
 
-#: src/components/Notification/notifications.ts:126
+#: src/components/Notification/notifications.ts:130
 msgid "Disable site %{name} maintenance on %{node} successfully"
 msgstr "Обслуживание сайта %{name} на %{node} успешно отключено"
 
-#: src/components/Notification/notifications.ts:129
+#: src/components/Notification/notifications.ts:133
 #: src/language/constants.ts:56
 msgid "Rename Remote Site Error"
 msgstr "Ошибка переименования удаленного сайта"
 
-#: src/components/Notification/notifications.ts:130
+#: src/components/Notification/notifications.ts:134
 msgid "Rename site %{name} to %{new_name} on %{node} failed"
 msgstr "Не удалось переименовать сайт %{name} в %{new_name} на %{node}"
 
-#: src/components/Notification/notifications.ts:133
+#: src/components/Notification/notifications.ts:137
 #: src/language/constants.ts:55
 msgid "Rename Remote Site Success"
 msgstr "Успешное переименование удаленного сайта"
 
-#: src/components/Notification/notifications.ts:134
+#: src/components/Notification/notifications.ts:138
 msgid "Rename site %{name} to %{new_name} on %{node} successfully"
 msgstr "Сайт %{name} успешно переименован в %{new_name} на %{node}"
 
-#: src/components/Notification/notifications.ts:137
+#: src/components/Notification/notifications.ts:141
 #: src/language/constants.ts:48
 msgid "Save Remote Site Error"
 msgstr "Ошибка сохранения удаленного сайта"
 
-#: src/components/Notification/notifications.ts:138
+#: src/components/Notification/notifications.ts:142
 msgid "Save site %{name} to %{node} failed"
 msgstr "Не удалось сохранить сайт %{name} на %{node}"
 
-#: src/components/Notification/notifications.ts:141
+#: src/components/Notification/notifications.ts:145
 #: src/language/constants.ts:47
 msgid "Save Remote Site Success"
 msgstr "Удалённый сайт успешно сохранён"
 
-#: src/components/Notification/notifications.ts:142
+#: src/components/Notification/notifications.ts:146
 msgid "Save site %{name} to %{node} successfully"
 msgstr "Сайт %{name} успешно сохранён на %{node}"
 
-#: src/components/Notification/notifications.ts:145
+#: src/components/Notification/notifications.ts:149
 msgid "Delete Remote Stream Error"
 msgstr "Ошибка удаления удаленного потока"
 
-#: src/components/Notification/notifications.ts:146
+#: src/components/Notification/notifications.ts:150
 msgid "Delete stream %{name} from %{node} failed"
 msgstr "Не удалось удалить поток %{name} с %{node}"
 
-#: src/components/Notification/notifications.ts:149
+#: src/components/Notification/notifications.ts:153
 msgid "Delete Remote Stream Success"
 msgstr "Удаление удаленного потока успешно"
 
-#: src/components/Notification/notifications.ts:150
+#: src/components/Notification/notifications.ts:154
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "Поток %{name} успешно удален с %{node}"
 
-#: src/components/Notification/notifications.ts:153
+#: src/components/Notification/notifications.ts:157
 msgid "Disable Remote Stream Error"
 msgstr "Ошибка отключения удаленного потока"
 
-#: src/components/Notification/notifications.ts:154
+#: src/components/Notification/notifications.ts:158
 msgid "Disable stream %{name} from %{node} failed"
 msgstr "Не удалось отключить поток %{name} с узла %{node}"
 
-#: src/components/Notification/notifications.ts:157
+#: src/components/Notification/notifications.ts:161
 msgid "Disable Remote Stream Success"
 msgstr "Удаленный поток успешно отключен"
 
-#: src/components/Notification/notifications.ts:158
+#: src/components/Notification/notifications.ts:162
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr "Поток %{name} отключен от %{node} успешно"
 
-#: src/components/Notification/notifications.ts:161
+#: src/components/Notification/notifications.ts:165
 msgid "Enable Remote Stream Error"
 msgstr "Ошибка включения удаленного потока"
 
-#: src/components/Notification/notifications.ts:162
+#: src/components/Notification/notifications.ts:166
 msgid "Enable stream %{name} on %{node} failed"
 msgstr "Не удалось включить поток %{name} на %{node}"
 
-#: src/components/Notification/notifications.ts:165
+#: src/components/Notification/notifications.ts:169
 msgid "Enable Remote Stream Success"
 msgstr "Успешное включение удаленного потока"
 
-#: src/components/Notification/notifications.ts:166
+#: src/components/Notification/notifications.ts:170
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "Поток %{name} успешно включён на %{node}"
 
-#: src/components/Notification/notifications.ts:169
+#: src/components/Notification/notifications.ts:173
 msgid "Rename Remote Stream Error"
 msgstr "Ошибка переименования удаленного потока"
 
-#: src/components/Notification/notifications.ts:170
+#: src/components/Notification/notifications.ts:174
 msgid "Rename stream %{name} to %{new_name} on %{node} failed"
 msgstr "Не удалось переименовать поток %{name} в %{new_name} на %{node}"
 
-#: src/components/Notification/notifications.ts:173
+#: src/components/Notification/notifications.ts:177
 msgid "Rename Remote Stream Success"
 msgstr "Удаленный поток успешно переименован"
 
-#: src/components/Notification/notifications.ts:174
+#: src/components/Notification/notifications.ts:178
 msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
 msgstr "Поток %{name} успешно переименован в %{new_name} на %{node}"
 
-#: src/components/Notification/notifications.ts:177
+#: src/components/Notification/notifications.ts:181
 msgid "Save Remote Stream Error"
 msgstr "Ошибка сохранения удаленного потока"
 
-#: src/components/Notification/notifications.ts:178
+#: src/components/Notification/notifications.ts:182
 msgid "Save stream %{name} to %{node} failed"
 msgstr "Не удалось сохранить поток %{name} на %{node}"
 
-#: src/components/Notification/notifications.ts:181
+#: src/components/Notification/notifications.ts:185
 msgid "Save Remote Stream Success"
 msgstr "Удаленный поток успешно сохранен"
 
-#: src/components/Notification/notifications.ts:182
+#: src/components/Notification/notifications.ts:186
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "Поток %{name} успешно сохранён на %{node}"
 
-#: src/components/Notification/notifications.ts:185
+#: src/components/Notification/notifications.ts:189
 #: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr "Все коды восстановления были использованы"
 
-#: src/components/Notification/notifications.ts:186
+#: src/components/Notification/notifications.ts:190
 #: src/language/constants.ts:59
 msgid ""
-"Please generate new recovery codes in the preferences immediately to "
-"prevent lockout."
+"Please generate new recovery codes in the preferences immediately to prevent "
+"lockout."
 msgstr ""
 "Пожалуйста, немедленно сгенерируйте новые коды восстановления в настройках, "
 "чтобы избежать блокировки."
@@ -1360,6 +1384,7 @@ msgstr "Порт"
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:242
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:522
 #: src/views/node/nodeColumns.tsx:87
+#: src/views/preference/tabs/AccessTokens.vue:54
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:29
 #: src/views/site/site_list/columns.tsx:120 src/views/stream/columns.tsx:87
 msgid "Status"
@@ -1527,6 +1552,7 @@ msgstr "Скопировано"
 #: src/components/SensitiveString/SensitiveInput.vue:90
 #: src/components/SensitiveString/SensitiveString.vue:100
 #: src/views/backup/components/BackupCreator.vue:128
+#: src/views/preference/tabs/AccessTokens.vue:319
 msgid "Copy"
 msgstr "Копировать"
 
@@ -1591,8 +1617,7 @@ msgstr "Неверный объект файла"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:158
 msgid ""
-"Frontend debug mode: restore flow completed without sending a backend "
-"request"
+"Frontend debug mode: restore flow completed without sending a backend request"
 msgstr ""
 "Режим отладки фронтенда: процесс восстановления завершен без отправки "
 "запроса к бэкенду"
@@ -1674,8 +1699,8 @@ msgid ""
 "This will restore all Nginx configuration files. Nginx will restart after "
 "the restoration is complete."
 msgstr ""
-"Это восстановит все конфигурационные файлы Nginx. Nginx перезапустится "
-"после завершения восстановления."
+"Это восстановит все конфигурационные файлы Nginx. Nginx перезапустится после "
+"завершения восстановления."
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:260
 #: src/components/SystemRestore/SystemRestoreContent.vue:343
@@ -1702,8 +1727,8 @@ msgstr "Автоматическая перезагрузка"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:368
 msgid ""
-"Nginx UI configuration has been restored and will restart automatically in "
-"a few seconds."
+"Nginx UI configuration has been restored and will restart automatically in a "
+"few seconds."
 msgstr ""
 "Конфигурация Nginx UI была восстановлена и автоматически перезапустится "
 "через несколько секунд."
@@ -1721,8 +1746,8 @@ msgid ""
 "Your account still uses a legacy recovery code. Generate new recovery codes "
 "after verification to keep account recovery secure."
 msgstr ""
-"Ваш аккаунт все еще использует устаревший код восстановления. Создайте "
-"новые коды восстановления после проверки, чтобы обеспечить безопасность "
+"Ваш аккаунт все еще использует устаревший код восстановления. Создайте новые "
+"коды восстановления после проверки, чтобы обеспечить безопасность "
 "восстановления аккаунта."
 
 #: src/components/TwoFA/Authorization.vue:80
@@ -1803,6 +1828,18 @@ msgstr "Н/Д"
 #: src/composables/useUpstreamStatus.ts:146
 msgid "Main Node"
 msgstr "Главный узел"
+
+#: src/composables/useClusterSync.ts:17
+msgid "There is nothing to synchronize"
+msgstr "Нечего синхронизировать"
+
+#: src/composables/useClusterSync.ts:22
+msgid "Synchronized %{count} items successfully"
+msgstr "Успешно синхронизировано элементов: %{count}"
+
+#: src/composables/useClusterSync.ts:33
+msgid "Synchronization finished with %{count} failures"
+msgstr "Синхронизация завершена, ошибок: %{count}"
 
 #: src/composables/useGeoTranslation.ts:165
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:165
@@ -1960,7 +1997,7 @@ msgid "Type"
 msgstr "Тип"
 
 #: src/composables/useUpstreamStatus.ts:122 src/routes/modules/upstream.ts:10
-#: src/views/upstream/SocketList.vue:24
+#: src/views/upstream/SocketList.vue:25
 msgid "Upstream"
 msgstr "Восходящий поток"
 
@@ -2357,7 +2394,8 @@ msgstr "Ошибка проверки: {0}"
 
 #: src/constants/errors/cert.ts:18
 msgid "Set env flag to disable lego CNAME support error: {0}"
-msgstr "Установка флага окружения для отключения поддержки CNAME в lego ошибка: {0}"
+msgstr ""
+"Установка флага окружения для отключения поддержки CNAME в lego ошибка: {0}"
 
 #: src/constants/errors/cert.ts:19
 msgid "Renew cert error: {0}"
@@ -2481,11 +2519,26 @@ msgstr "Профиль сертификата недоступен на выбр
 
 #: src/constants/errors/cert.ts:49
 msgid ""
-"Wildcard domains and IP addresses cannot be requested in the same "
-"certificate"
+"Wildcard domains and IP addresses cannot be requested in the same certificate"
 msgstr ""
 "Подстановочные домены и IP-адреса не могут быть запрошены в одном "
 "сертификате."
+
+#: src/constants/errors/cluster_sync.ts:2
+msgid "Path is not under the nginx conf dir"
+msgstr "Путь находится вне каталога конфигурации Nginx"
+
+#: src/constants/errors/cluster_sync.ts:3
+msgid "No enabled target node was found"
+msgstr "Не найдено ни одного включённого целевого узла"
+
+#: src/constants/errors/cluster_sync.ts:4
+msgid "The namespace has no node to sync with"
+msgstr "У пространства имён нет узла для синхронизации"
+
+#: src/constants/errors/cluster_sync.ts:5
+msgid "Select at least one kind of content to sync"
+msgstr "Выберите хотя бы один вид содержимого для синхронизации"
 
 #: src/constants/errors/config.ts:2
 msgid "File name is not allowed: {0}"
@@ -2643,7 +2696,8 @@ msgstr "Не удалось прочитать сжатые данные: {0}"
 
 #: src/constants/errors/geolite.ts:12
 msgid "Decompression succeeded but failed to delete compressed file: {0}"
-msgstr "Разархивирование успешно завершено, но не удалось удалить сжатый файл: {0}"
+msgstr ""
+"Разархивирование успешно завершено, но не удалось удалить сжатый файл: {0}"
 
 #: src/constants/errors/llm.ts:2
 msgid "Code completion is not enabled"
@@ -2685,8 +2739,7 @@ msgstr "Неверный формат временной метки"
 
 #: src/constants/errors/nginx_log.ts:2
 msgid ""
-"The log path is not under the paths in "
-"settings.NginxSettings.LogDirWhiteList"
+"The log path is not under the paths in settings.NginxSettings.LogDirWhiteList"
 msgstr ""
 "Путь к журналу не находится под путями в "
 "settings.NginxSettings.LogDirWhiteList"
@@ -2709,16 +2762,16 @@ msgstr "Параметры директивы пусты"
 
 #: src/constants/errors/nginx_log.ts:7
 msgid ""
-"Settings.NginxLogSettings.ErrorLogPath is empty, refer to "
-"https://nginxui.com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://"
+"nginxui.com/guide/config-nginx.html for more information"
 msgstr ""
 "Settings.NginxLogSettings.ErrorLogPath пуст, дополнительную информацию см. "
 "на https://nginxui.com/guide/config-nginx.html"
 
 #: src/constants/errors/nginx_log.ts:8
 msgid ""
-"Settings.NginxLogSettings.AccessLogPath is empty, refer to "
-"https://nginxui.com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://"
+"nginxui.com/guide/config-nginx.html for more information"
 msgstr ""
 "Settings.NginxLogSettings.AccessLogPath пуст, дополнительную информацию см. "
 "на https://nginxui.com/guide/config-nginx.html"
@@ -2982,8 +3035,10 @@ msgid "Failed to restore nginx-ui.conf from backup: {0}"
 msgstr "Не удалось восстановить nginx-ui.conf из резервной копии: {0}"
 
 #: src/constants/errors/self_check.ts:30
-msgid "Nginx configuration directory is not shared with external container at {0}"
-msgstr "Каталог конфигурации Nginx не является общим с внешним контейнером в {0}"
+msgid ""
+"Nginx configuration directory is not shared with external container at {0}"
+msgstr ""
+"Каталог конфигурации Nginx не является общим с внешним контейнером в {0}"
 
 #: src/constants/errors/self_check.ts:31
 msgid "Failed to verify external Nginx configuration directory {0}: {1}"
@@ -3055,7 +3110,8 @@ msgstr "Файл ключа SSL не найден"
 
 #: src/constants/errors/system.ts:11
 msgid "SSL certificate file must be under Nginx configuration directory: {0}"
-msgstr "Файл SSL-сертификата должен находиться в каталоге конфигурации Nginx: {0}"
+msgstr ""
+"Файл SSL-сертификата должен находиться в каталоге конфигурации Nginx: {0}"
 
 #: src/constants/errors/system.ts:12
 msgid "SSL key file must be under Nginx configuration directory: {0}"
@@ -3210,7 +3266,8 @@ msgid "This field should be a valid hostname"
 msgstr "Это поле должно содержать допустимое имя хоста"
 
 #: src/constants/form_errors.ts:6
-msgid "This field should only contain letters, unicode characters, numbers, and -_."
+msgid ""
+"This field should only contain letters, unicode characters, numbers, and -_."
 msgstr "Это поле должно содержать только буквы, символы Юникода, цифры и -_."
 
 #: src/constants/index.ts:26 src/views/notification/notificationColumns.tsx:28
@@ -3230,6 +3287,15 @@ msgstr "Удаленный"
 #: src/constants/index.ts:45
 msgid "Mirror"
 msgstr "Зеркало"
+
+#: src/constants/index.ts:54
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:32
+msgid "Manual"
+msgstr "Вручную"
+
+#: src/constants/index.ts:55
+msgid "Automatic"
+msgstr "Автоматически"
 
 #: src/language/constants.ts:2
 msgid "The username or password is incorrect"
@@ -3460,7 +3526,7 @@ msgstr "Массовое изменение"
 
 #: src/language/curd.ts:35 src/views/certificate/CertificateEditor.vue:97
 #: src/views/certificate/components/RenewCert.vue:21
-#: src/views/preference/store/index.ts:164
+#: src/views/preference/store/index.ts:173
 msgid "Save successfully"
 msgstr "Сохранено успешно"
 
@@ -3558,8 +3624,8 @@ msgstr "Развернуть"
 #: src/language/generate.ts:4
 msgid "Bundled nginx-ui.conf has WebSocket reverse-proxy fix"
 msgstr ""
-"Входящий в комплект файл nginx-ui.conf содержит исправление обратного "
-"прокси WebSocket"
+"Входящий в комплект файл nginx-ui.conf содержит исправление обратного прокси "
+"WebSocket"
 
 #: src/language/generate.ts:5
 msgid "Certificate not found: %{error}"
@@ -3572,13 +3638,13 @@ msgstr "Сертификат успешно отозван"
 #: src/language/generate.ts:7
 msgid ""
 "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
-"Docker Image, please make sure the docker socket is mounted like this: `-v "
-"/var/run/docker.sock:/var/run/docker.sock`. Nginx UI official image uses "
-"/var/run/docker.sock to communicate with the host Docker Engine via Docker "
-"Client API. This feature is used to control Nginx in another container and "
-"perform container replacement rather than binary replacement during OTA "
-"upgrades of Nginx UI to ensure container dependencies are also upgraded. If "
-"you don't need this feature, please add the environment variable "
+"Docker Image, please make sure the docker socket is mounted like this: `-v /"
+"var/run/docker.sock:/var/run/docker.sock`. Nginx UI official image uses /var/"
+"run/docker.sock to communicate with the host Docker Engine via Docker Client "
+"API. This feature is used to control Nginx in another container and perform "
+"container replacement rather than binary replacement during OTA upgrades of "
+"Nginx UI to ensure container dependencies are also upgraded. If you don't "
+"need this feature, please add the environment variable "
 "NGINX_UI_IGNORE_DOCKER_SOCKET=true to the container."
 msgstr ""
 "Проверьте, существует ли /var/run/docker.sock. Если вы используете "
@@ -3601,10 +3667,10 @@ msgid ""
 "matching paths."
 msgstr ""
 "Проверьте, может ли Nginx UI записать временный файл в настроенный каталог "
-"Nginx и может ли внешний контейнер Nginx увидеть его по тому же пути. "
-"Доступ к сокету Docker и ContainerName служат только для маршрутизации "
-"команд управления; каталоги конфигурации и журналов должны быть "
-"смонтированы в оба контейнера с совпадающими путями."
+"Nginx и может ли внешний контейнер Nginx увидеть его по тому же пути. Доступ "
+"к сокету Docker и ContainerName служат только для маршрутизации команд "
+"управления; каталоги конфигурации и журналов должны быть смонтированы в оба "
+"контейнера с совпадающими путями."
 
 #: src/language/generate.ts:9
 msgid ""
@@ -3614,12 +3680,13 @@ msgid ""
 "GeoLite2-City.mmdb in the same directory as app.ini"
 msgstr ""
 "Проверьте, доступна ли база данных GeoLite2 при включенной индексации "
-"журналов. База данных GeoLite2 необходима для географического анализа "
-"IP-адресов в журналах. Вы можете скачать ее со страницы настроек или "
-"разместить GeoLite2-City.mmdb вручную в том же каталоге, что и app.ini"
+"журналов. База данных GeoLite2 необходима для географического анализа IP-"
+"адресов в журналах. Вы можете скачать ее со страницы настроек или разместить "
+"GeoLite2-City.mmdb вручную в том же каталоге, что и app.ini"
 
 #: src/language/generate.ts:10
-msgid "Check if the conf.d directory is under the nginx configuration directory"
+msgid ""
+"Check if the conf.d directory is under the nginx configuration directory"
 msgstr "Проверьте, находится ли каталог conf.d в каталоге конфигурации nginx"
 
 #: src/language/generate.ts:11
@@ -3627,30 +3694,30 @@ msgid ""
 "Check if the nginx PID path exists. By default, this path is obtained from "
 "'nginx -V'. If it cannot be obtained, an error will be reported. In this "
 "case, you need to modify the configuration file to specify the Nginx PID "
-"path.Refer to the docs for more details: "
-"https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
+"path.Refer to the docs for more details: https://nginxui.com/zh_CN/guide/"
+"config-nginx.html#pidpath"
 msgstr ""
-"Проверьте, существует ли путь к PID Nginx. По умолчанию этот путь "
-"получается из команды 'nginx -V'. Если его не удается получить, будет "
-"сообщена ошибка. В этом случае вам нужно изменить конфигурационный файл, "
-"чтобы указать путь к PID Nginx. Подробнее см. в документации: "
-"https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
+"Проверьте, существует ли путь к PID Nginx. По умолчанию этот путь получается "
+"из команды 'nginx -V'. Если его не удается получить, будет сообщена ошибка. "
+"В этом случае вам нужно изменить конфигурационный файл, чтобы указать путь к "
+"PID Nginx. Подробнее см. в документации: https://nginxui.com/zh_CN/guide/"
+"config-nginx.html#pidpath"
 
 #: src/language/generate.ts:12
 msgid ""
-"Check if the nginx access log path exists. By default, this path is "
-"obtained from 'nginx -V'. If it cannot be obtained or the obtained path "
-"does not point to a valid, existing file, an error will be reported. In "
-"this case, you need to modify the configuration file to specify the access "
-"log path.Refer to the docs for more details: "
-"https://nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
+"Check if the nginx access log path exists. By default, this path is obtained "
+"from 'nginx -V'. If it cannot be obtained or the obtained path does not "
+"point to a valid, existing file, an error will be reported. In this case, "
+"you need to modify the configuration file to specify the access log "
+"path.Refer to the docs for more details: https://nginxui.com/zh_CN/guide/"
+"config-nginx.html#accesslogpath"
 msgstr ""
 "Проверьте, существует ли путь к журналу доступа nginx. По умолчанию этот "
 "путь получается из 'nginx -V'. Если его невозможно получить или полученный "
 "путь не указывает на действительный существующий файл, будет сообщена "
 "ошибка. В этом случае вам необходимо изменить файл конфигурации, чтобы "
-"указать путь к журналу доступа. Подробнее см. в документации: "
-"https://nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
+"указать путь к журналу доступа. Подробнее см. в документации: https://"
+"nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
 
 #: src/language/generate.ts:13
 msgid "Check if the nginx configuration directory exists"
@@ -3666,15 +3733,15 @@ msgid ""
 "from 'nginx -V'. If it cannot be obtained or the obtained path does not "
 "point to a valid, existing file, an error will be reported. In this case, "
 "you need to modify the configuration file to specify the error log path. "
-"Refer to the docs for more details: "
-"https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
+"Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-"
+"nginx.html#errorlogpath"
 msgstr ""
-"Проверьте, существует ли путь к журналу ошибок nginx. По умолчанию этот "
-"путь получается из 'nginx -V'. Если его невозможно получить или полученный "
-"путь не указывает на действительный существующий файл, будет сообщена "
-"ошибка. В этом случае вам нужно изменить файл конфигурации, чтобы указать "
-"путь к журналу ошибок. Подробнее см. в документации: "
-"https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
+"Проверьте, существует ли путь к журналу ошибок nginx. По умолчанию этот путь "
+"получается из 'nginx -V'. Если его невозможно получить или полученный путь "
+"не указывает на действительный существующий файл, будет сообщена ошибка. В "
+"этом случае вам нужно изменить файл конфигурации, чтобы указать путь к "
+"журналу ошибок. Подробнее см. в документации: https://nginxui.com/zh_CN/"
+"guide/config-nginx.html#errorlogpath"
 
 #: src/language/generate.ts:16
 msgid "Check if the nginx sbin path exists"
@@ -3702,8 +3769,8 @@ msgstr ""
 
 #: src/language/generate.ts:21
 msgid ""
-"Check if the streams-available and streams-enabled directories are under "
-"the nginx configuration directory"
+"Check if the streams-available and streams-enabled directories are under the "
+"nginx configuration directory"
 msgstr ""
 "Проверьте, находятся ли каталоги streams-available и streams-enabled в "
 "каталоге конфигурации nginx"
@@ -3735,13 +3802,12 @@ msgstr "База данных GeoLite2 доступна"
 #: src/language/generate.ts:28
 msgid ""
 "Log file %{log_path} is not a regular file. If you are using nginx-ui in "
-"docker container, please refer to "
-"https://nginxui.com/zh_CN/guide/config-nginx-log.html for more information."
+"docker container, please refer to https://nginxui.com/zh_CN/guide/config-"
+"nginx-log.html for more information."
 msgstr ""
 "Файл журнала %{log_path} не является обычным файлом. Если вы используете "
-"nginx-ui в контейнере Docker, обратитесь к "
-"https://nginxui.com/zh_CN/guide/config-nginx-log.html для получения "
-"дополнительной информации."
+"nginx-ui в контейнере Docker, обратитесь к https://nginxui.com/zh_CN/guide/"
+"config-nginx-log.html для получения дополнительной информации."
 
 #: src/language/generate.ts:29
 msgid "Nginx PID path exists"
@@ -3795,22 +3861,21 @@ msgid ""
 "checks fail. Older deployments that persisted /etc/nginx may still have the "
 "unfixed version."
 msgstr ""
-"Если контейнер находится за внешним обратным прокси, который терминирует "
-"TLS (например, хост nginx, Cloudflare), входящий в комплект "
-"conf.d/nginx-ui.conf должен доверять входящим заголовкам "
-"X-Forwarded-Proto/Host; в противном случае проверки источника WebSocket не "
-"пройдут. В старых развёртываниях, где сохранялся /etc/nginx, может "
-"оставаться неисправленная версия."
+"Если контейнер находится за внешним обратным прокси, который терминирует TLS "
+"(например, хост nginx, Cloudflare), входящий в комплект conf.d/nginx-ui.conf "
+"должен доверять входящим заголовкам X-Forwarded-Proto/Host; в противном "
+"случае проверки источника WebSocket не пройдут. В старых развёртываниях, где "
+"сохранялся /etc/nginx, может оставаться неисправленная версия."
 
 #: src/language/generate.ts:41
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
-msgstr "[Nginx UI] Пользователь ACME: %{name}, Email: %{email}, Каталог CA: %{caDir}"
+msgstr ""
+"[Nginx UI] Пользователь ACME: %{name}, Email: %{email}, Каталог CA: %{caDir}"
 
 #: src/language/generate.ts:42
 msgid "[Nginx UI] Backing up current certificate for later revocation"
 msgstr ""
-"[Nginx UI] Резервное копирование текущего сертификата для последующего "
-"отзыва"
+"[Nginx UI] Резервное копирование текущего сертификата для последующего отзыва"
 
 #: src/language/generate.ts:43
 msgid "[Nginx UI] Certificate renewed successfully"
@@ -3821,10 +3886,11 @@ msgid "[Nginx UI] Certificate successfully revoked"
 msgstr "[Nginx UI] Сертификат успешно отозван"
 
 #: src/language/generate.ts:45
-msgid "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
+msgid ""
+"[Nginx UI] Certificate was used for server, reloading server TLS certificate"
 msgstr ""
-"[Nginx UI] Сертификат использовался для сервера, перезагрузка "
-"TLS-сертификата сервера"
+"[Nginx UI] Сертификат использовался для сервера, перезагрузка TLS-"
+"сертификата сервера"
 
 #: src/language/generate.ts:46
 msgid "[Nginx UI] Creating client facilitates communication with the CA server"
@@ -3950,7 +4016,7 @@ msgstr "Импортировать сертификат"
 #: src/routes/modules/config.ts:10
 #: src/views/config/components/ConfigLeftPanel.vue:114
 #: src/views/config/components/ConfigLeftPanel.vue:164
-#: src/views/config/ConfigList.vue:74
+#: src/views/config/ConfigList.vue:75
 msgid "Manage Configs"
 msgstr "Конфигурации"
 
@@ -3968,19 +4034,20 @@ msgstr "Редактировать Конфигурацию"
 #: src/routes/modules/dashboard.ts:10
 #: src/views/config/components/ConfigLeftPanel.vue:109
 #: src/views/config/components/ConfigLeftPanel.vue:159
-#: src/views/config/ConfigList.vue:69 src/views/nginx_log/NginxLog.vue:93
+#: src/views/config/ConfigList.vue:70 src/views/nginx_log/NginxLog.vue:93
 msgid "Dashboard"
 msgstr "Доска"
 
-#: src/routes/modules/dashboard.ts:19 src/views/preference/Preference.vue:47
+#: src/routes/modules/dashboard.ts:19 src/views/preference/Preference.vue:49
 msgid "Server"
 msgstr "Сервер"
 
-#: src/routes/modules/dashboard.ts:27 src/views/preference/Preference.vue:95
+#: src/routes/modules/dashboard.ts:27 src/views/preference/Preference.vue:109
 msgid "Nginx"
 msgstr "Nginx"
 
-#: src/routes/modules/dashboard.ts:35
+#: src/routes/modules/dashboard.ts:35 src/views/node/SyncConfigs.vue:68
+#: src/views/preference/tabs/HealthCheckSettings.vue:19
 msgid "Sites"
 msgstr "Сайты"
 
@@ -4017,7 +4084,7 @@ msgstr "Записи группы"
 msgid "Not Found"
 msgstr "Не найден"
 
-#: src/routes/modules/namespaces.ts:10 src/views/namespace/Namespace.vue:19
+#: src/routes/modules/namespaces.ts:10 src/views/namespace/Namespace.vue:45
 msgid "Namespaces"
 msgstr "Пространства имен"
 
@@ -4034,11 +4101,11 @@ msgid "Log List"
 msgstr "Список журналов"
 
 #: src/routes/modules/nodes.ts:11 src/views/dashboard/Nodes.vue:89
-#: src/views/node/Node.vue:131
+#: src/views/node/Node.vue:144
 msgid "Nodes"
 msgstr "Узлы"
 
-#: src/routes/modules/preference.ts:10 src/views/preference/Preference.vue:42
+#: src/routes/modules/preference.ts:10 src/views/preference/Preference.vue:44
 msgid "Preference"
 msgstr "Настройки"
 
@@ -4066,8 +4133,8 @@ msgstr "Управление потоками"
 msgid "Edit Stream"
 msgstr "Редактировать поток"
 
-#: src/routes/modules/system.ts:26 src/views/node/Node.vue:188
-#: src/views/node/Node.vue:196 src/views/system/Upgrade.vue:154
+#: src/routes/modules/system.ts:26 src/views/node/Node.vue:203
+#: src/views/node/Node.vue:211 src/views/system/Upgrade.vue:154
 #: src/views/system/Upgrade.vue:159
 msgid "Upgrade"
 msgstr "Обновление"
@@ -4080,7 +4147,7 @@ msgstr "О проекте"
 msgid "Third-party Components"
 msgstr "Сторонние компоненты"
 
-#: src/routes/modules/terminal.ts:10 src/views/preference/Preference.vue:77
+#: src/routes/modules/terminal.ts:10 src/views/preference/Preference.vue:85
 msgid "Terminal"
 msgstr "Терминал"
 
@@ -4171,6 +4238,7 @@ msgstr "Включено"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:194
 #: src/views/backup/AutoBackup/AutoBackup.vue:204
+#: src/views/dashboard/components/SiteCard.vue:140
 #: src/views/dns/DDNSManager.vue:320 src/views/node/nodeColumns.tsx:104
 #: src/views/node/nodeColumns.tsx:122
 #: src/views/preference/tabs/HTTPSettings.vue:24
@@ -4205,7 +4273,7 @@ msgid "Failed"
 msgstr "Не удалось"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:258
-#: src/views/namespace/columns.ts:85
+#: src/views/namespace/columns.ts:110
 #: src/views/notification/notificationColumns.tsx:51
 #: src/views/preference/components/AuthSettings/Passkey.vue:96
 #: src/views/preference/components/ExternalNotify/columns.tsx:80
@@ -4218,7 +4286,7 @@ msgstr "Создан в"
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
 #: src/views/config/configColumns.tsx:44 src/views/dns/DNSCredential.vue:65
 #: src/views/dns/DNSDomainList.vue:236 src/views/dns/DNSGroupList.vue:33
-#: src/views/namespace/columns.ts:91 src/views/node/nodeColumns.tsx:133
+#: src/views/namespace/columns.ts:116 src/views/node/nodeColumns.tsx:133
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:39
 #: src/views/site/site_list/columns.tsx:113 src/views/stream/columns.tsx:80
 #: src/views/stream/components/RightPanel/Basic.vue:35
@@ -4261,7 +4329,7 @@ msgstr "Регион S3"
 #: src/views/dns/DNSDomainList.vue:242 src/views/dns/DNSGroupList.vue:37
 #: src/views/dns/DNSGroupRecordManager.vue:145
 #: src/views/dns/DNSGroupRecordManager.vue:1362
-#: src/views/namespace/columns.ts:97 src/views/nginx_log/NginxLogList.vue:339
+#: src/views/namespace/columns.ts:122 src/views/nginx_log/NginxLogList.vue:339
 #: src/views/node/nodeColumns.tsx:140
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:85
@@ -4479,8 +4547,8 @@ msgid ""
 "This token will only be shown once and cannot be retrieved later. Please "
 "make sure to save it in a secure location."
 msgstr ""
-"Этот токен будет показан только один раз и не может быть восстановлен "
-"позже. Пожалуйста, сохраните его в надежном месте."
+"Этот токен будет показан только один раз и не может быть восстановлен позже. "
+"Пожалуйста, сохраните его в надежном месте."
 
 #: src/views/backup/components/SystemRestore.vue:9
 #: src/views/install/components/InstallView.vue:60
@@ -4535,8 +4603,8 @@ msgstr "ID ключа EAB"
 
 #: src/views/certificate/ACMEUser.vue:83
 msgid ""
-"External Account Binding Key ID (optional). Required for some ACME "
-"providers like ZeroSSL."
+"External Account Binding Key ID (optional). Required for some ACME providers "
+"like ZeroSSL."
 msgstr ""
 "Идентификатор ключа внешней привязки аккаунта (опционально). Требуется "
 "некоторыми провайдерами ACME, такими как ZeroSSL."
@@ -4562,7 +4630,8 @@ msgid "Register On Startup"
 msgstr "Регистрация при запуске"
 
 #: src/views/certificate/ACMEUser.vue:110
-msgid "When Enabled, Nginx UI will automatically re-register users upon startup. "
+msgid ""
+"When Enabled, Nginx UI will automatically re-register users upon startup. "
 msgstr ""
 "При включении Nginx UI будет автоматически перерегистрировать пользователей "
 "при запуске."
@@ -4703,7 +4772,8 @@ msgstr "Этот элемент автосертификата недейств�
 
 #: src/views/certificate/components/AutoCertManagement.vue:55
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
-msgstr "Список доменов пуст, попробуйте заново создать авто-сертификат для %{config}"
+msgstr ""
+"Список доменов пуст, попробуйте заново создать авто-сертификат для %{config}"
 
 #: src/views/certificate/components/AutoCertManagement.vue:67
 #: src/views/certificate/components/SelfSignedCertManagement.vue:25
@@ -4715,7 +4785,7 @@ msgstr[1] "Статус сертификатов"
 
 #: src/views/certificate/components/CertificateActions.vue:22
 #: src/views/config/components/ConfigLeftPanel.vue:274
-#: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
+#: src/views/config/ConfigList.vue:127 src/views/config/ConfigList.vue:233
 #: src/views/dns/DNSGroupRecordManager.vue:1546
 #: src/views/dns/DNSRecordManager.vue:258 src/views/nginx_log/NginxLog.vue:129
 #: src/views/site/site_add/SiteAdd.vue:260
@@ -4931,8 +5001,8 @@ msgid ""
 "All selected subdomains must belong to the same DNS Provider, otherwise the "
 "certificate application will fail."
 msgstr ""
-"Все выбранные поддомены должны принадлежать одному и тому же "
-"DNS-провайдеру, иначе запрос сертификата завершится неудачей."
+"Все выбранные поддомены должны принадлежать одному и тому же DNS-провайдеру, "
+"иначе запрос сертификата завершится неудачей."
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:223
 #: src/views/install/components/InstallView.vue:212
@@ -5029,9 +5099,9 @@ msgid ""
 "expiration, based on the global certificate renewal interval and this "
 "certificate's validity period."
 msgstr ""
-"Nginx UI автоматически обновит этот сертификат по мере приближения срока "
-"его истечения, исходя из глобального интервала обновления сертификатов и "
-"срока действия данного сертификата."
+"Nginx UI автоматически обновит этот сертификат по мере приближения срока его "
+"истечения, исходя из глобального интервала обновления сертификатов и срока "
+"действия данного сертификата."
 
 #: src/views/certificate/components/SelfSignedCertFields.vue:33
 msgid "Enter certificate name"
@@ -5060,7 +5130,8 @@ msgstr "Действителен (дней)"
 
 #: src/views/certificate/components/SelfSignedCertFields.vue:72
 msgid "Some browsers reject TLS certificates valid for more than 398 days."
-msgstr "Некоторые браузеры отклоняют TLS-сертификаты, действительные более 398 дней."
+msgstr ""
+"Некоторые браузеры отклоняют TLS-сертификаты, действительные более 398 дней."
 
 #: src/views/certificate/components/SelfSignedCertForm.vue:80
 msgid "Generate Self-signed Certificate"
@@ -5113,6 +5184,7 @@ msgid "Changed Path"
 msgstr "Путь изменён"
 
 #: src/views/config/components/ConfigRightPanel/Basic.vue:60
+#: src/views/config/ConfigList.vue:197
 msgid "Deploy"
 msgstr "Развернуть"
 
@@ -5129,10 +5201,12 @@ msgid "Chat"
 msgstr "Чат"
 
 #: src/views/config/components/ConfigRightPanel/Deploy.vue:18
+#: src/views/config/components/Deploy.vue:76
 msgid "Overwrite"
 msgstr "Перезаписать"
 
 #: src/views/config/components/ConfigRightPanel/Deploy.vue:22
+#: src/views/config/components/Deploy.vue:80 src/views/node/SyncConfigs.vue:74
 msgid "Overwrite exist file"
 msgstr "Перезаписать существующий файл"
 
@@ -5178,14 +5252,31 @@ msgstr "Введите %{delete} для подтверждения"
 
 #: src/views/config/components/Delete.vue:141
 #: src/views/config/components/Rename.vue:81
+#: src/views/namespace/Namespace.vue:62
 msgid "Sync"
 msgstr "Синхронизация"
+
+#: src/views/config/components/Deploy.vue:36
+msgid "Please select at least one node"
+msgstr "Выберите хотя бы один узел"
+
+#: src/views/config/components/Deploy.vue:60
+msgid "Deploy Directory"
+msgstr "Развернуть каталог"
+
+#: src/views/config/components/Deploy.vue:68
+msgid ""
+"All configuration files in %{name} will be deployed to the selected nodes, "
+"and files created here later will follow the same targets."
+msgstr ""
+"Все файлы конфигурации в %{name} будут развёрнуты на выбранных узлах, а "
+"файлы, созданные здесь позже, будут использовать те же цели."
 
 #: src/views/config/components/Mkdir.vue:35
 msgid "Created successfully"
 msgstr "Создано успешно"
 
-#: src/views/config/components/Mkdir.vue:47 src/views/config/ConfigList.vue:137
+#: src/views/config/components/Mkdir.vue:47 src/views/config/ConfigList.vue:144
 msgid "Create Folder"
 msgstr "Создать папку"
 
@@ -5214,11 +5305,11 @@ msgstr "Новое имя"
 msgid "Name or content"
 msgstr "Имя или содержание"
 
-#: src/views/config/ConfigList.vue:112
+#: src/views/config/ConfigList.vue:119 src/views/node/SyncConfigs.vue:65
 msgid "Configurations"
 msgstr "Конфигурации"
 
-#: src/views/config/ConfigList.vue:130
+#: src/views/config/ConfigList.vue:137
 msgid "Create File"
 msgstr "Создать файл"
 
@@ -5269,7 +5360,7 @@ msgid "Link"
 msgstr "Связь"
 
 #: src/views/dashboard/components/NodeAnalyticItem.vue:82
-#: src/views/dashboard/components/SiteNavigationToolbar.vue:35
+#: src/views/dashboard/components/SiteNavigationToolbar.vue:36
 msgid "Connected"
 msgstr "Подключено"
 
@@ -5289,10 +5380,6 @@ msgstr ""
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:43
 msgid "Auto"
 msgstr "Авто"
-
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:32
-msgid "Manual"
-msgstr "Вручную"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:48
 msgid "Worker Connections"
@@ -5425,8 +5512,7 @@ msgstr "Время неактивности"
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:177
 msgid "Cache items not accessed within this time will be removed"
 msgstr ""
-"Элементы кэша, к которым не обращались в течение этого времени, будут "
-"удалены"
+"Элементы кэша, к которым не обращались в течение этого времени, будут удалены"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:198
 msgid "Maximum Cache Size"
@@ -5592,7 +5678,8 @@ msgstr "Всего запросов / Всего соединений"
 
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:87
 msgid "Higher value means better connection reuse"
-msgstr "Более высокое значение означает лучшее повторное использование соединения"
+msgstr ""
+"Более высокое значение означает лучшее повторное использование соединения"
 
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:94
 msgid "Total Nginx Processes"
@@ -5712,104 +5799,124 @@ msgstr ""
 "включая всю память общих библиотек, которая будет повторно рассчитываться "
 "для нескольких процессов"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:76
+#: src/views/dashboard/components/SiteCard.vue:148
+#: src/views/upstream/SocketList.vue:42
+msgid "Paused"
+msgstr "Приостановлено"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:88
 msgid "Informational Responses (1xx)"
 msgstr "Информационные ответы (1xx)"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:85
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:97
 msgid "Successful Responses (2xx)"
 msgstr "Успешные ответы (2xx)"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:100
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:112
 msgid "Redirection Messages (3xx)"
 msgstr "Сообщения о перенаправлении (3xx)"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:114
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:126
 msgid "Client Error Responses (4xx)"
 msgstr "Ошибки клиента (4xx)"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:148
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:160
 msgid "Server Error Responses (5xx)"
 msgstr "Ошибки сервера (5xx)"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:403
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:449
 msgid "Health check configuration saved successfully"
 msgstr "Конфигурация проверки работоспособности успешно сохранена"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:412
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:452
+msgid "Saved locally, but failed to synchronize %{count} node(s)"
+msgstr "Сохранено локально, но синхронизация не удалась для %{count} узлов"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:462
 msgid "Failed to save health check configuration"
 msgstr "Не удалось сохранить конфигурацию проверки работоспособности"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:448
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:499
 msgid "Test successful! Response time: %{response_time}ms"
 msgstr "Тест успешен! Время отклика: %{response_time}мс"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:451
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:502
 msgid "Test failed: %{error}"
 msgstr "Тест не пройден: %{error}"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:456
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:507
 msgid "Test failed: Unable to perform health check"
 msgstr "Тест не удался: Невозможно выполнить проверку состояния"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:466
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:517
 msgid "Health Check Configuration"
 msgstr "Конфигурация проверки работоспособности"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:473
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:524
 msgid "Enable Health Check"
 msgstr "Включить проверку работоспособности"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:477
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:528
 msgid "Health check is enabled"
 msgstr "Проверка работоспособности включена"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:477
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:528
 msgid "Health check is disabled"
 msgstr "Проверка работоспособности отключена"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:485
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:536
 msgid "Protocol"
 msgstr "Протокол"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:506
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:554
+msgid "Custom Health Check Target"
+msgstr "Пользовательская цель проверки состояния"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:555
+msgid ""
+"Optional absolute URL. Use it when the public address differs from the "
+"actual upstream host or port."
+msgstr ""
+"Необязательный абсолютный URL. Используйте его, когда публичный адрес "
+"отличается от реального хоста или порта upstream."
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:568
 msgid "HTTP Method"
 msgstr "HTTP-метод"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:533
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:595
 msgid "Custom Headers"
 msgstr "Пользовательские заголовки"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:548
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:610
 msgid "Add Header"
 msgstr "Добавить заголовок"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:553
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:615
 msgid "Request Body"
 msgstr "Тело запроса"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:557
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:619
 msgid "Expected Status Codes"
 msgstr "Ожидаемые коды состояния"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:582
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:644
 msgid "Expected Text"
 msgstr "Ожидаемый текст"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:587
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:649
 msgid "Not Expected Text"
 msgstr "Неожиданный текст"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:599
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:661
 msgid ""
 "gRPCS uses TLS encryption. Server must implement gRPC Health Check service. "
 "For testing, SSL validation is disabled by default."
 msgstr ""
 "gRPCS использует шифрование TLS. Сервер должен реализовать службу проверки "
-"работоспособности gRPC. Для тестирования проверка SSL по умолчанию "
-"отключена."
+"работоспособности gRPC. Для тестирования проверка SSL по умолчанию отключена."
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:600
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:662
 msgid ""
 "gRPC health check requires server to implement gRPC Health Check service "
 "(grpc.health.v1.Health)."
@@ -5817,7 +5924,7 @@ msgstr ""
 "Проверка работоспособности gRPC требует, чтобы сервер реализовал службу "
 "проверки работоспособности gRPC (grpc.health.v1.Health)."
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:603
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:665
 msgid ""
 "Note: If the server does not support gRPC Reflection, health checks may "
 "fail. Please ensure your gRPC server has Reflection enabled."
@@ -5826,77 +5933,125 @@ msgstr ""
 "работоспособности могут завершиться неудачей. Убедитесь, что на вашем "
 "сервере gRPC включена Reflection."
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:608
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:670
 msgid "Service Name"
 msgstr "Название сервиса"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:613
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:675
 msgid "Method Name"
 msgstr "Имя метода"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:622
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:684
 msgid "Advanced Settings"
 msgstr "Дополнительные настройки"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:625
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:687
 msgid "Check Interval (seconds)"
 msgstr "Интервал проверки (секунды)"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:630
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:692
 msgid "Timeout (seconds)"
 msgstr "Таймаут (секунды)"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:636
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:698
 #: src/views/nginx_log/structured/components/SearchFilters.vue:200
 msgid "User Agent"
 msgstr "Пользовательский агент"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:643
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:705
 msgid "Max Redirects"
 msgstr "Максимальное количество перенаправлений"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:650
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:712
 msgid "Follow Redirects"
 msgstr "Следовать перенаправлениям"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:658
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:720
 msgid "Validate SSL Certificate"
 msgstr "Проверить SSL-сертификат"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:664
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:726
 msgid "Verify Hostname"
 msgstr "Проверить имя хоста"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:670
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:732
 msgid "Check Favicon"
 msgstr "Проверить фавикон"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:678
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:740
 msgid "DNS Resolver"
 msgstr "DNS-резолвер"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:683
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:745
 msgid "Source IP"
 msgstr "Исходный IP"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:692
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:754
 msgid "Client Certificate"
 msgstr "Клиентский сертификат"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:697
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:759
 msgid "Client Key"
 msgstr "Ключ клиента"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:716
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:770
+msgid "Failure Notifications"
+msgstr "Уведомления о сбоях"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:774
+msgid "Notifications are enabled"
+msgstr "Уведомления включены"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:774
+msgid "Notifications are disabled"
+msgstr "Уведомления отключены"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:780
+msgid "Failure Status Codes"
+msgstr "Коды состояния сбоя"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:786
+msgid "Select status codes"
+msgstr "Выберите коды состояния"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:806
+msgid "Notify on connection, DNS, and timeout errors"
+msgstr "Уведомлять об ошибках подключения, DNS и тайм-аутах"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:812
+msgid "Consecutive Failures"
+msgstr "Последовательные сбои"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:823
+msgid "Reminder Cooldown (seconds)"
+msgstr "Пауза между напоминаниями (секунды)"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:837
+msgid "Notify when the site recovers"
+msgstr "Уведомлять о восстановлении сайта"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:841
+msgid "Notification Channels"
+msgstr "Каналы уведомлений"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:847
+msgid "Select notification channels"
+msgstr "Выберите каналы уведомлений"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:872
 #: src/views/preference/tabs/ExternalNotify.vue:57
 msgid "Test"
 msgstr "Тест"
 
-#: src/views/dashboard/components/SiteNavigationToolbar.vue:35
+#: src/views/dashboard/components/SiteNavigationToolbar.vue:36
 msgid "Disconnected"
 msgstr "Отключено"
 
-#: src/views/dashboard/components/SiteNavigationToolbar.vue:48
+#: src/views/dashboard/components/SiteNavigationToolbar.vue:46
+msgid "Health checks paused"
+msgstr "Проверки состояния приостановлены"
+
+#: src/views/dashboard/components/SiteNavigationToolbar.vue:58
 msgid "Save Order"
 msgstr "Сохранить порядок"
 
@@ -5933,8 +6088,8 @@ msgid ""
 "This module provides Nginx request statistics, connection count, etc. data. "
 "After enabling it, you can view performance statistics"
 msgstr ""
-"Этот модуль предоставляет статистику запросов Nginx, количество соединений "
-"и другие данные. После включения вы сможете просматривать статистику "
+"Этот модуль предоставляет статистику запросов Nginx, количество соединений и "
+"другие данные. После включения вы сможете просматривать статистику "
 "производительности."
 
 #: src/views/dashboard/NginxDashBoard.vue:195
@@ -5946,8 +6101,8 @@ msgid ""
 "Please enable the stub_status module to get request statistics, connection "
 "count, etc."
 msgstr ""
-"Пожалуйста, включите модуль stub_status, чтобы получать статистику "
-"запросов, количество соединений и т. д."
+"Пожалуйста, включите модуль stub_status, чтобы получать статистику запросов, "
+"количество соединений и т. д."
 
 #: src/views/dashboard/NginxDashBoard.vue:200
 msgid "Loading data..."
@@ -6042,35 +6197,27 @@ msgstr "Сеть"
 msgid "Disk IO"
 msgstr "Нагрузка на Диск IO"
 
-#: src/views/dashboard/SiteNavigation.vue:82
+#: src/views/dashboard/SiteNavigation.vue:98
 msgid "Site refresh initiated"
 msgstr "Обновление сайта запущено"
 
-#: src/views/dashboard/SiteNavigation.vue:86
+#: src/views/dashboard/SiteNavigation.vue:102
 msgid "Failed to refresh sites"
 msgstr "Не удалось обновить сайты"
 
-#: src/views/dashboard/SiteNavigation.vue:104
+#: src/views/dashboard/SiteNavigation.vue:120
 msgid "Order saved successfully"
 msgstr "Порядок успешно сохранён"
 
-#: src/views/dashboard/SiteNavigation.vue:110
+#: src/views/dashboard/SiteNavigation.vue:126
 msgid "Failed to save order"
 msgstr "Не удалось сохранить порядок"
 
-#: src/views/dashboard/SiteNavigation.vue:128
-msgid "Health check configuration saved"
-msgstr "Конфигурация проверки работоспособности сохранена"
-
-#: src/views/dashboard/SiteNavigation.vue:133
-msgid "Failed to save configuration"
-msgstr "Не удалось сохранить конфигурацию"
-
-#: src/views/dashboard/SiteNavigation.vue:170
+#: src/views/dashboard/SiteNavigation.vue:174
 msgid "No sites found"
 msgstr "Сайты не найдены"
 
-#: src/views/dashboard/SiteNavigation.vue:173
+#: src/views/dashboard/SiteNavigation.vue:177
 msgid ""
 "Sites will appear here once you configure nginx server blocks with valid "
 "server_name (localhost excluded) directives."
@@ -6083,8 +6230,8 @@ msgid ""
 "Select a DNS provider to see whether it supports DNS record management in "
 "DNS Domains."
 msgstr ""
-"Выберите DNS-провайдера, чтобы узнать, поддерживает ли он управление "
-"DNS-записями в DNS Domains."
+"Выберите DNS-провайдера, чтобы узнать, поддерживает ли он управление DNS-"
+"записями в DNS Domains."
 
 #: src/views/dns/components/DNSChallenge.vue:58
 msgid ""
@@ -6100,8 +6247,7 @@ msgid ""
 "record management in DNS Domains is not supported for this provider."
 msgstr ""
 "%{provider} можно использовать для проверок сертификатов ACME DNS-01, но "
-"управление DNS-записями в DNS Domains для этого провайдера не "
-"поддерживается."
+"управление DNS-записями в DNS Domains для этого провайдера не поддерживается."
 
 #: src/views/dns/components/DNSChallenge.vue:99
 msgid "DNS Provider"
@@ -6263,6 +6409,8 @@ msgid "Provider"
 msgstr "Провайдер"
 
 #: src/views/dns/DDNSManager.vue:168
+#: src/views/preference/tabs/HealthCheckSettings.vue:27
+#: src/views/preference/tabs/HealthCheckSettings.vue:41
 #: src/views/preference/tabs/LogrotateSettings.vue:26
 msgid "Interval"
 msgstr "Интервал"
@@ -6331,10 +6479,10 @@ msgid ""
 "keep all other DNS state untouched."
 msgstr ""
 "Когда включено, DDNS владеет выбранными именами: автоматически связывает "
-"родственные записи семейства, создает отсутствующие записи и удаляет "
-"записи, IP-семейство которых недоступно. Отключите, чтобы управлять только "
-"теми записями, которые вы явно выбрали, и сохранить всё остальное состояние "
-"DNS без изменений."
+"родственные записи семейства, создает отсутствующие записи и удаляет записи, "
+"IP-семейство которых недоступно. Отключите, чтобы управлять только теми "
+"записями, которые вы явно выбрали, и сохранить всё остальное состояние DNS "
+"без изменений."
 
 #: src/views/dns/DDNSManager.vue:400
 msgid "Records"
@@ -6361,11 +6509,12 @@ msgid ""
 "Please fill in the API authentication credentials provided by your DNS "
 "provider."
 msgstr ""
-"Пожалуйста, заполните учетные данные API, предоставленные вашим "
-"DNS-провайдером."
+"Пожалуйста, заполните учетные данные API, предоставленные вашим DNS-"
+"провайдером."
 
 #: src/views/dns/DNSCredential.vue:96
-msgid "Please note that the unit of time configurations below are all in seconds."
+msgid ""
+"Please note that the unit of time configurations below are all in seconds."
 msgstr ""
 "Обратите внимание, что единица измерения времени в конфигурациях ниже "
 "указана в секундах."
@@ -6383,10 +6532,11 @@ msgstr ""
 "с проверками сертификатов ACME DNS-01."
 
 #: src/views/dns/DNSDomainList.vue:116
-msgid "DNS Domains only use providers with DNS record management implementations."
+msgid ""
+"DNS Domains only use providers with DNS record management implementations."
 msgstr ""
-"DNS Domains использует только провайдеров с реализациями управления "
-"DNS-записями."
+"DNS Domains использует только провайдеров с реализациями управления DNS-"
+"записями."
 
 #: src/views/dns/DNSDomainList.vue:119
 msgid ""
@@ -6409,8 +6559,8 @@ msgid ""
 "Need more DNS providers? Support us through donations or contact us for "
 "commercial collaboration"
 msgstr ""
-"Нужно больше DNS-провайдеров? Поддержите нас пожертвованиями или свяжитесь "
-"с нами для коммерческого сотрудничества"
+"Нужно больше DNS-провайдеров? Поддержите нас пожертвованиями или свяжитесь с "
+"нами для коммерческого сотрудничества"
 
 #: src/views/dns/DNSDomainList.vue:288
 msgid "Business contact:"
@@ -6538,6 +6688,7 @@ msgstr "Охват"
 
 #: src/views/dns/DNSGroupRecordManager.vue:160
 #: src/views/dns/DNSGroupRecordManager.vue:177
+#: src/views/preference/tabs/AccessTokens.vue:55
 #: src/views/preference/tabs/AuthSettings.vue:27
 msgid "Action"
 msgstr "Действие"
@@ -6630,7 +6781,8 @@ msgstr "Несколько записей имеют одинаковое имя
 msgid ""
 "Huawei Cloud does not support changing the resolution line of an existing "
 "record"
-msgstr "Huawei Cloud не поддерживает изменение линии разрешения существующей записи."
+msgstr ""
+"Huawei Cloud не поддерживает изменение линии разрешения существующей записи."
 
 #: src/views/dns/DNSGroupRecordManager.vue:967
 #: src/views/dns/DNSGroupRecordManager.vue:1169
@@ -6638,6 +6790,7 @@ msgid "Record already matches"
 msgstr "Запись уже совпадает"
 
 #: src/views/dns/DNSGroupRecordManager.vue:1008
+#: src/views/preference/tabs/AccessTokens.vue:262
 msgid "Create"
 msgstr "Создать"
 
@@ -6694,8 +6847,8 @@ msgstr "Некоторые домены группы недоступны"
 #: src/views/dns/DNSGroupRecordManager.vue:1235
 msgid "Edit the group to remove unavailable domain IDs: %{ids}"
 msgstr ""
-"Отредактируйте группу, чтобы удалить недоступные идентификаторы доменов: "
-"%{ids}"
+"Отредактируйте группу, чтобы удалить недоступные идентификаторы доменов: %"
+"{ids}"
 
 #: src/views/dns/DNSGroupRecordManager.vue:1243
 msgid "Some DNS records could not be loaded"
@@ -6817,10 +6970,11 @@ msgid "Apply changes"
 msgstr "Применить изменения"
 
 #: src/views/dns/DNSGroupRecordManager.vue:1554
-msgid "Changes are applied per domain and cannot be rolled back as one transaction."
+msgid ""
+"Changes are applied per domain and cannot be rolled back as one transaction."
 msgstr ""
-"Изменения применяются для каждого домена и не могут быть откачены как "
-"единая транзакция."
+"Изменения применяются для каждого домена и не могут быть откачены как единая "
+"транзакция."
 
 #: src/views/dns/DNSGroupRecordManager.vue:1585
 msgid "Group record results"
@@ -6880,8 +7034,7 @@ msgstr "Длина пароля не может превышать 20 симво
 
 #: src/views/install/components/InstallForm.vue:64
 msgid ""
-"Frontend debug mode: install flow completed without sending a backend "
-"request"
+"Frontend debug mode: install flow completed without sending a backend request"
 msgstr ""
 "Режим отладки фронтенда: процесс установки завершен без отправки запроса к "
 "бэкенду"
@@ -6948,8 +7101,8 @@ msgid ""
 "installation flow without sending backend requests."
 msgstr ""
 "Режим отладки интерфейса активен. Введите отладочный секрет, чтобы "
-"разблокировать имитацию процесса установки без отправки запросов к "
-"серверной части."
+"разблокировать имитацию процесса установки без отправки запросов к серверной "
+"части."
 
 #: src/views/install/components/InstallView.vue:169
 msgid ""
@@ -6991,6 +7144,18 @@ msgstr "Тип теста апстрима"
 #: src/views/namespace/columns.ts:72
 msgid "Deploy Mode"
 msgstr "Режим развертывания"
+
+#: src/views/namespace/columns.ts:85
+msgid "Sync Strategy"
+msgstr "Стратегия синхронизации"
+
+#: src/views/namespace/columns.ts:98
+msgid "Sync Interval (minutes)"
+msgstr "Интервал синхронизации (минуты)"
+
+#: src/views/namespace/Namespace.vue:25
+msgid "This namespace has no sync node"
+msgstr "У этого пространства имён нет узлов синхронизации"
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:47
 msgid "CPU"
@@ -7080,8 +7245,8 @@ msgstr "Рекомендуется:"
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:166
 msgid ""
-"* Index files are stored in the \"log-index\" directory within your Nginx "
-"UI config path by default."
+"* Index files are stored in the \"log-index\" directory within your Nginx UI "
+"config path by default."
 msgstr ""
 "* Файлы индекса по умолчанию хранятся в каталоге \"log-index\" в пути "
 "конфигурации NGINX UI."
@@ -7446,7 +7611,7 @@ msgstr "Структурированный"
 msgid "Raw"
 msgstr "Сырой"
 
-#: src/views/nginx_log/NginxLog.vue:101 src/views/node/Node.vue:165
+#: src/views/nginx_log/NginxLog.vue:101 src/views/node/Node.vue:178
 msgid "Auto Refresh"
 msgstr "Автообновление"
 
@@ -7679,14 +7844,15 @@ msgstr "Обнаружен журнал ошибок"
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:676
 msgid ""
-"Error logs do not support structured analysis as they contain free-form "
-"text messages."
+"Error logs do not support structured analysis as they contain free-form text "
+"messages."
 msgstr ""
 "Журналы ошибок не поддерживают структурированный анализ, так как содержат "
 "свободные текстовые сообщения."
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:678
-msgid "For error logs, please use the Raw Log Viewer for better viewing experience."
+msgid ""
+"For error logs, please use the Raw Log Viewer for better viewing experience."
 msgstr ""
 "Для просмотра журналов ошибок используйте Raw Log Viewer для лучшего опыта "
 "просмотра."
@@ -7814,10 +7980,11 @@ msgid "Get release information error"
 msgstr "Ошибка получения информации о выпуске"
 
 #: src/views/node/BatchUpgrader.vue:187
-msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
+msgid ""
+"This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr ""
-"Это обновит или переустановит интерфейс Nginx на %{nodeNames} до версии "
-"%{version}."
+"Это обновит или переустановит интерфейс Nginx на %{nodeNames} до версии %"
+"{version}."
 
 #: src/views/node/BatchUpgrader.vue:193 src/views/system/Upgrade.vue:237
 msgid "Dry run mode enabled"
@@ -7831,41 +7998,50 @@ msgstr "Посмотреть на GitHub"
 msgid "Perform"
 msgstr "Выполнить"
 
-#: src/views/node/Node.vue:44
+#: src/views/node/Node.vue:45
 msgid "Auto refresh enabled"
 msgstr "Автоматическое обновление включено"
 
-#: src/views/node/Node.vue:48
+#: src/views/node/Node.vue:49
 msgid "Auto refresh disabled"
 msgstr "Автоматическое обновление отключено"
 
-#: src/views/node/Node.vue:68
+#: src/views/node/Node.vue:69
 msgid "Load successfully"
 msgstr "Загружено успешно"
 
-#: src/views/node/Node.vue:83 src/views/node/Node.vue:201
+#: src/views/node/Node.vue:83 src/views/node/Node.vue:216
+msgid "Please select at least one node to sync configs"
+msgstr "Выберите хотя бы один узел для синхронизации конфигураций"
+
+#: src/views/node/Node.vue:96 src/views/node/Node.vue:235
 msgid "Please select at least one node to reload Nginx"
 msgstr "Пожалуйста, выберите хотя бы один узел для перезагрузки Nginx"
 
-#: src/views/node/Node.vue:89
+#: src/views/node/Node.vue:102
 msgid "Nginx reload operations have been dispatched to remote nodes"
 msgstr "Операции перезагрузки Nginx были отправлены на удаленные узлы"
 
-#: src/views/node/Node.vue:97 src/views/node/Node.vue:222
+#: src/views/node/Node.vue:110 src/views/node/Node.vue:256
 msgid "Please select at least one node to restart Nginx"
 msgstr "Пожалуйста, выберите хотя бы один узел для перезапуска Nginx"
 
-#: src/views/node/Node.vue:103
+#: src/views/node/Node.vue:116
 msgid "Nginx restart operations have been dispatched to remote nodes"
 msgstr "Операции перезапуска Nginx были отправлены на удаленные узлы"
 
-#: src/views/node/Node.vue:138
+#: src/views/node/Node.vue:151
 msgid "Load from settings"
 msgstr "Загрузить из настроек"
 
-#: src/views/node/Node.vue:180
+#: src/views/node/Node.vue:195
 msgid "Please select at least one node to upgrade"
 msgstr "Пожалуйста, выберите хотя бы один узел"
+
+#: src/views/node/Node.vue:223 src/views/node/Node.vue:230
+#: src/views/node/SyncConfigs.vue:53
+msgid "Sync Configs"
+msgstr "Синхронизировать конфигурации"
 
 #: src/views/node/nodeColumns.tsx:13
 msgid "Rotating"
@@ -7876,6 +8052,7 @@ msgid "Unpaired"
 msgstr "Не сопряжено"
 
 #: src/views/node/nodeColumns.tsx:15
+#: src/views/preference/tabs/AccessTokens.vue:147
 msgid "Revoked"
 msgstr "Отозван"
 
@@ -7903,6 +8080,14 @@ msgstr "Устаревший секрет"
 #: src/views/node/nodeColumns.tsx:82
 msgid "Paired signature"
 msgstr "Парная подпись"
+
+#: src/views/node/SyncConfigs.vue:61
+msgid "The selected content will be pushed to: %{nodes}"
+msgstr "Выбранное содержимое будет отправлено на: %{nodes}"
+
+#: src/views/node/SyncConfigs.vue:71
+msgid "Streams"
+msgstr "Streams"
 
 #: src/views/notification/Notification.vue:28
 msgid "Notification"
@@ -7973,15 +8158,16 @@ msgstr ""
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:79
 msgid "If your browser supports WebAuthn Passkey, a dialog box will appear."
-msgstr "Если ваш браузер поддерживает WebAuthn Passkey, появится диалоговое окно."
+msgstr ""
+"Если ваш браузер поддерживает WebAuthn Passkey, появится диалоговое окно."
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:80
 msgid ""
 "Follow the instructions in the dialog to complete the passkey registration "
 "process."
 msgstr ""
-"Следуйте инструкциям в всплывающем окне, чтобы завершить процесс "
-"регистрации ключа доступа."
+"Следуйте инструкциям в всплывающем окне, чтобы завершить процесс регистрации "
+"ключа доступа."
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:87
 #: src/views/preference/components/AuthSettings/TOTP.vue:131
@@ -7993,17 +8179,20 @@ msgstr "Текущий пароль"
 msgid ""
 "You have not configured the settings of Webauthn, so you cannot add a "
 "passkey."
-msgstr "Вы не настроили параметры WebAuthn, поэтому не можете добавить ключ доступа."
+msgstr ""
+"Вы не настроили параметры WebAuthn, поэтому не можете добавить ключ доступа."
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:104
-msgid "To ensure security, Webauthn configuration cannot be added through the UI. "
+msgid ""
+"To ensure security, Webauthn configuration cannot be added through the UI. "
 msgstr ""
 "Для обеспечения безопасности конфигурацию WebAuthn нельзя добавить через "
 "пользовательский интерфейс."
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:114
 msgid "Afterwards, refresh this page and click add passkey again."
-msgstr "После этого обновите эту страницу и снова нажмите «Добавить ключ доступа»."
+msgstr ""
+"После этого обновите эту страницу и снова нажмите «Добавить ключ доступа»."
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:116
 msgid ""
@@ -8028,7 +8217,8 @@ msgid "Passkey"
 msgstr "Ключ доступа"
 
 #: src/views/preference/components/AuthSettings/Passkey.vue:63
-msgid "Passkeys are webauthn credentials that validate your identity using touch, "
+msgid ""
+"Passkeys are webauthn credentials that validate your identity using touch, "
 msgstr ""
 "Ключи доступа — это учётные данные WebAuthn, подтверждающие вашу личность "
 "касанием,"
@@ -8066,19 +8256,20 @@ msgid ""
 "Recovery codes are used to access your account when you lose access to your "
 "2FA device. Each code can only be used once."
 msgstr ""
-"Коды восстановления используются для доступа к аккаунту при утере "
-"2FA-устройства. Каждый код можно использовать только один раз."
+"Коды восстановления используются для доступа к аккаунту при утере 2FA-"
+"устройства. Каждый код можно использовать только один раз."
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:75
 msgid ""
 "Keep your recovery codes as safe as your password. We recommend saving them "
 "with a password manager."
 msgstr ""
-"Храните ваши коды восстановления так же безопасно, как и пароль. "
-"Рекомендуем сохранить их в менеджере паролей."
+"Храните ваши коды восстановления так же безопасно, как и пароль. Рекомендуем "
+"сохранить их в менеджере паролей."
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:82
-msgid "You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
+msgid ""
+"You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
 msgstr ""
 "Вы еще не включили двухфакторную аутентификацию. Пожалуйста, включите её, "
 "чтобы сгенерировать коды восстановления."
@@ -8088,8 +8279,8 @@ msgid ""
 "Your account uses a deprecated legacy recovery code. Generate new recovery "
 "codes now to complete migration and keep account recovery secure."
 msgstr ""
-"Ваша учетная запись использует устаревший код восстановления. Создайте "
-"новые коды восстановления сейчас, чтобы завершить миграцию и обеспечить "
+"Ваша учетная запись использует устаревший код восстановления. Создайте новые "
+"коды восстановления сейчас, чтобы завершить миграцию и обеспечить "
 "безопасность восстановления учетной записи."
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:95
@@ -8111,8 +8302,8 @@ msgid ""
 "your password and second factors. If you cannot find these codes, you will "
 "lose access to your account."
 msgstr ""
-"Эти коды являются последним средством для доступа к вашему аккаунту, если "
-"вы потеряете пароль и вторые факторы. Если вы не сможете найти эти коды, вы "
+"Эти коды являются последним средством для доступа к вашему аккаунту, если вы "
+"потеряете пароль и вторые факторы. Если вы не сможете найти эти коды, вы "
 "потеряете доступ к своему аккаунту."
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:125
@@ -8288,42 +8479,211 @@ msgstr "Телеграм"
 msgid "WeCom"
 msgstr "WeCom"
 
-#: src/views/preference/Preference.vue:53
+#: src/views/preference/Preference.vue:55
 msgid "App"
 msgstr "Приложение"
 
-#: src/views/preference/Preference.vue:59
+#: src/views/preference/Preference.vue:61
 #: src/views/preference/tabs/ExternalNotify.vue:42
 msgid "External Notify"
 msgstr "Внешнее уведомление"
 
-#: src/views/preference/Preference.vue:65
+#: src/views/preference/Preference.vue:67 src/views/upstream/SocketList.vue:64
+msgid "Health Check"
+msgstr "Проверка состояния"
+
+#: src/views/preference/Preference.vue:73
 msgid "Node"
 msgstr "Узел"
 
-#: src/views/preference/Preference.vue:71
+#: src/views/preference/Preference.vue:79
 msgid "HTTP"
 msgstr "HTTP"
 
-#: src/views/preference/Preference.vue:83
+#: src/views/preference/Preference.vue:91
 msgid "Auth"
 msgstr "Авторизация"
 
-#: src/views/preference/Preference.vue:89
+#: src/views/preference/Preference.vue:97
+#: src/views/preference/tabs/AccessTokens.vue:165
+msgid "Access Tokens"
+msgstr "Токены доступа"
+
+#: src/views/preference/Preference.vue:103
 msgid "Cert"
 msgstr "Сертификат"
 
-#: src/views/preference/Preference.vue:101
+#: src/views/preference/Preference.vue:115
 msgid "LLM"
 msgstr "LLM"
 
-#: src/views/preference/Preference.vue:107
+#: src/views/preference/Preference.vue:121
 msgid "Logrotate"
 msgstr "Прокрутка"
 
-#: src/views/preference/Preference.vue:113
+#: src/views/preference/Preference.vue:127
 msgid "GeoLite"
 msgstr "GeoLite"
+
+#: src/views/preference/tabs/AccessTokens.vue:29
+msgid "Management API: Read"
+msgstr "API управления: чтение"
+
+#: src/views/preference/tabs/AccessTokens.vue:30
+msgid "Read resources and runtime status through the management API."
+msgstr "Чтение ресурсов и состояния выполнения через API управления."
+
+#: src/views/preference/tabs/AccessTokens.vue:34
+msgid "Management API: Write"
+msgstr "API управления: запись"
+
+#: src/views/preference/tabs/AccessTokens.vue:35
+msgid ""
+"Create, update, and delete resources and run Nginx control operations. "
+"Includes API read access."
+msgstr ""
+"Создание, изменение и удаление ресурсов, а также управление Nginx. "
+"Включает доступ на чтение через API."
+
+#: src/views/preference/tabs/AccessTokens.vue:39
+msgid "MCP: Read"
+msgstr "MCP: чтение"
+
+#: src/views/preference/tabs/AccessTokens.vue:40
+msgid "Use read-only Nginx UI MCP tools."
+msgstr "Использовать инструменты MCP Nginx UI только для чтения."
+
+#: src/views/preference/tabs/AccessTokens.vue:44
+msgid "MCP: Write"
+msgstr "MCP: запись"
+
+#: src/views/preference/tabs/AccessTokens.vue:45
+msgid "Use mutating Nginx UI MCP tools. Includes MCP read access."
+msgstr ""
+"Использовать инструменты MCP Nginx UI, изменяющие данные. Включает доступ "
+"MCP на чтение."
+
+#: src/views/preference/tabs/AccessTokens.vue:51
+#: src/views/preference/tabs/AccessTokens.vue:274
+msgid "Scopes"
+msgstr "Области действия"
+
+#: src/views/preference/tabs/AccessTokens.vue:52
+msgid "Last used"
+msgstr "Последнее использование"
+
+#: src/views/preference/tabs/AccessTokens.vue:53
+msgid "Expires"
+msgstr "Истекает"
+
+#: src/views/preference/tabs/AccessTokens.vue:89
+msgid "Token name is required"
+msgstr "Требуется имя токена"
+
+#: src/views/preference/tabs/AccessTokens.vue:93
+msgid "Select at least one scope"
+msgstr "Выберите хотя бы одну область действия"
+
+#: src/views/preference/tabs/AccessTokens.vue:106
+msgid "Access token created"
+msgstr "Токен доступа создан"
+
+#: src/views/preference/tabs/AccessTokens.vue:117
+msgid "Access token rotated"
+msgstr "Токен доступа обновлён"
+
+#: src/views/preference/tabs/AccessTokens.vue:123
+msgid "Access token revoked"
+msgstr "Токен доступа отозван"
+
+#: src/views/preference/tabs/AccessTokens.vue:129
+msgid "Access token copied to clipboard"
+msgstr "Токен доступа скопирован в буфер обмена"
+
+#: src/views/preference/tabs/AccessTokens.vue:132
+msgid "Failed to copy access token"
+msgstr "Не удалось скопировать токен доступа"
+
+#: src/views/preference/tabs/AccessTokens.vue:150
+msgid "Active"
+msgstr "Активен"
+
+#: src/views/preference/tabs/AccessTokens.vue:168
+msgid ""
+"Create scoped credentials for the Nginx UI CLI, automation, and MCP clients. "
+"Tokens are shown only once."
+msgstr ""
+"Создавайте учётные данные с ограниченной областью действия для Nginx UI "
+"CLI, автоматизации и клиентов MCP. Токены показываются только один раз."
+
+#: src/views/preference/tabs/AccessTokens.vue:175
+msgid "Create Token"
+msgstr "Создать токен"
+
+#: src/views/preference/tabs/AccessTokens.vue:183
+msgid ""
+"Use the smallest required scope and set an expiration date for automation "
+"credentials."
+msgstr ""
+"Используйте минимально необходимую область действия и задайте срок "
+"действия для учётных данных автоматизации."
+
+#: src/views/preference/tabs/AccessTokens.vue:196
+msgid "No access tokens"
+msgstr "Нет токенов доступа"
+
+#: src/views/preference/tabs/AccessTokens.vue:223
+#: src/views/preference/tabs/AccessTokens.vue:227
+msgid "Never"
+msgstr "Никогда"
+
+#: src/views/preference/tabs/AccessTokens.vue:238
+msgid "Rotate this token? The current token will stop working immediately."
+msgstr "Обновить этот токен? Текущий токен сразу перестанет работать."
+
+#: src/views/preference/tabs/AccessTokens.vue:241
+msgid "Rotate token"
+msgstr "Обновить токен"
+
+#: src/views/preference/tabs/AccessTokens.vue:246
+msgid "Revoke this token? This action cannot be undone."
+msgstr "Отозвать этот токен? Это действие нельзя отменить."
+
+#: src/views/preference/tabs/AccessTokens.vue:249
+msgid "Revoke token"
+msgstr "Отозвать токен"
+
+#: src/views/preference/tabs/AccessTokens.vue:260
+msgid "Create Access Token"
+msgstr "Создать токен доступа"
+
+#: src/views/preference/tabs/AccessTokens.vue:270
+msgid "For example: production deployment"
+msgstr "Например: развёртывание в продакшене"
+
+#: src/views/preference/tabs/AccessTokens.vue:291
+msgid "Expires At"
+msgstr "Истекает"
+
+#: src/views/preference/tabs/AccessTokens.vue:297
+msgid "No expiration"
+msgstr "Без срока действия"
+
+#: src/views/preference/tabs/AccessTokens.vue:305
+msgid "Save Your Access Token"
+msgstr "Сохраните токен доступа"
+
+#: src/views/preference/tabs/AccessTokens.vue:313
+msgid ""
+"This token is shown only once. Store it in a secure secret manager before "
+"closing this dialog."
+msgstr ""
+"Этот токен показывается только один раз. Сохраните его в защищённом "
+"менеджере секретов, прежде чем закрыть окно."
+
+#: src/views/preference/tabs/AccessTokens.vue:324
+msgid "I have saved the token"
+msgstr "Я сохранил токен"
 
 #: src/views/preference/tabs/AppSettings.vue:11
 msgid "Jwt Secret"
@@ -8417,8 +8777,7 @@ msgstr "Дни"
 #: src/views/preference/tabs/CertSettings.vue:45
 msgid "Set the recursive nameservers to override the systems nameservers "
 msgstr ""
-"Задайте рекурсивные серверы имен, чтобы переопределить системные серверы "
-"имен"
+"Задайте рекурсивные серверы имен, чтобы переопределить системные серверы имен"
 
 #: src/views/preference/tabs/CertSettings.vue:49
 msgid "Recursive Nameservers"
@@ -8438,12 +8797,47 @@ msgstr "Не удалось отправить тестовое сообщени
 
 #: src/views/preference/tabs/GeoLiteSettings.vue:9
 msgid ""
-"The GeoLite2 database provides geographic information for IP addresses. "
-"This is used for offline geographic analysis in log analytics."
+"The GeoLite2 database provides geographic information for IP addresses. This "
+"is used for offline geographic analysis in log analytics."
 msgstr ""
-"База данных GeoLite2 предоставляет географическую информацию для "
-"IP-адресов. Она используется для офлайн-географического анализа в анализе "
-"журналов."
+"База данных GeoLite2 предоставляет географическую информацию для IP-адресов. "
+"Она используется для офлайн-географического анализа в анализе журналов."
+
+#: src/views/preference/tabs/HealthCheckSettings.vue:14
+msgid "Global health check controls"
+msgstr "Глобальное управление проверками состояния"
+
+#: src/views/preference/tabs/HealthCheckSettings.vue:15
+msgid ""
+"A global pause stops network probes without changing individual site or "
+"upstream selections. Discovery remains active so configured targets stay "
+"visible."
+msgstr ""
+"Глобальная пауза останавливает сетевые проверки, не изменяя выбор "
+"отдельных сайтов или upstream. Обнаружение продолжает работать, поэтому "
+"настроенные цели остаются видимыми."
+
+#: src/views/preference/tabs/HealthCheckSettings.vue:21
+msgid "Enable site health checks"
+msgstr "Включить проверки состояния сайтов"
+
+#: src/views/preference/tabs/HealthCheckSettings.vue:24
+msgid "Concurrency"
+msgstr "Параллелизм"
+
+#: src/views/preference/tabs/HealthCheckSettings.vue:31
+#: src/views/preference/tabs/HealthCheckSettings.vue:45
+msgid "Seconds"
+msgstr "Секунды"
+
+#: src/views/preference/tabs/HealthCheckSettings.vue:36
+#: src/views/site/site_list/columns.tsx:78 src/views/stream/columns.tsx:46
+msgid "Proxy Targets"
+msgstr "Цели прокси"
+
+#: src/views/preference/tabs/HealthCheckSettings.vue:38
+msgid "Enable upstream health checks"
+msgstr "Включить проверки состояния upstream"
 
 #: src/views/preference/tabs/HTTPSettings.vue:11
 msgid "Github Proxy"
@@ -8590,17 +8984,18 @@ msgstr ""
 
 #: src/views/preference/tabs/OpenAISettings.vue:35
 msgid ""
-"Leave blank to use the MiniMax global OpenAI-compatible endpoint: "
-"https://api.minimax.io/v1"
+"Leave blank to use the MiniMax global OpenAI-compatible endpoint: https://"
+"api.minimax.io/v1"
 msgstr ""
 "Оставьте поле пустым, чтобы использовать глобальный совместимый с OpenAI "
 "эндпоинт MiniMax: https://api.minimax.io/v1"
 
 #: src/views/preference/tabs/OpenAISettings.vue:38
-msgid "Leave blank to use the Atlas Cloud endpoint: https://api.atlascloud.ai/v1"
+msgid ""
+"Leave blank to use the Atlas Cloud endpoint: https://api.atlascloud.ai/v1"
 msgstr ""
-"Оставьте пустым, чтобы использовать конечную точку Atlas Cloud: "
-"https://api.atlascloud.ai/v1"
+"Оставьте пустым, чтобы использовать конечную точку Atlas Cloud: https://"
+"api.atlascloud.ai/v1"
 
 #: src/views/preference/tabs/OpenAISettings.vue:40
 msgid "Leave blank for the default: https://api.openai.com/"
@@ -8614,14 +9009,14 @@ msgstr "URL недействителен."
 #: src/views/preference/tabs/OpenAISettings.vue:48
 msgid ""
 "MiniMax is OpenAI-compatible. Use https://api.minimax.io/v1 for global "
-"service or https://api.minimaxi.com/v1 for China service. For "
-"Anthropic-compatible clients, use https://api.minimax.io/anthropic or "
-"https://api.minimaxi.com/anthropic."
+"service or https://api.minimaxi.com/v1 for China service. For Anthropic-"
+"compatible clients, use https://api.minimax.io/anthropic or https://"
+"api.minimaxi.com/anthropic."
 msgstr ""
 "MiniMax совместим с OpenAI. Используйте https://api.minimax.io/v1 для "
 "глобального обслуживания или https://api.minimaxi.com/v1 для обслуживания в "
-"Китае. Для клиентов, совместимых с Anthropic, используйте "
-"https://api.minimax.io/anthropic или https://api.minimaxi.com/anthropic."
+"Китае. Для клиентов, совместимых с Anthropic, используйте https://"
+"api.minimax.io/anthropic или https://api.minimaxi.com/anthropic."
 
 #: src/views/preference/tabs/OpenAISettings.vue:52
 msgid ""
@@ -8634,8 +9029,8 @@ msgstr ""
 #: src/views/preference/tabs/OpenAISettings.vue:55
 msgid "To use a local large model, deploy it with ollama, vllm or lmdeploy. "
 msgstr ""
-"Чтобы использовать локальную большую модель, разверните ее с помощью "
-"ollama, vllm или lmdeploy."
+"Чтобы использовать локальную большую модель, разверните ее с помощью ollama, "
+"vllm или lmdeploy."
 
 #: src/views/preference/tabs/OpenAISettings.vue:95
 msgid "Model"
@@ -8679,7 +9074,8 @@ msgid "Code Completion Model"
 msgstr "Модель автодополнения кода"
 
 #: src/views/preference/tabs/OpenAISettings.vue:167
-msgid "The model used for code completion, if not set, the chat model will be used."
+msgid ""
+"The model used for code completion, if not set, the chat model will be used."
 msgstr ""
 "Модель, используемая для завершения кода. Если не задана, будет "
 "использоваться чат-модель."
@@ -8699,12 +9095,10 @@ msgstr "Путь к SSL-ключу"
 #: src/views/preference/tabs/ServerSettings.vue:47
 msgid ""
 "Protocol configuration only takes effect when directly connecting. If using "
-"reverse proxy, please configure the protocol separately in the reverse "
-"proxy."
+"reverse proxy, please configure the protocol separately in the reverse proxy."
 msgstr ""
 "Настройки протокола применяются только при прямом подключении. При "
-"использовании обратного прокси настройте протокол отдельно в обратном "
-"прокси."
+"использовании обратного прокси настройте протокол отдельно в обратном прокси."
 
 #: src/views/preference/tabs/ServerSettings.vue:52
 msgid "Enable HTTP/2"
@@ -8713,8 +9107,8 @@ msgstr "Включить HTTP/2"
 #: src/views/preference/tabs/ServerSettings.vue:52
 msgid "Enables HTTP/2 support with multiplexing and server push capabilities"
 msgstr ""
-"Включает поддержку HTTP/2 с возможностью мультиплексирования и "
-"push-уведомлений сервера"
+"Включает поддержку HTTP/2 с возможностью мультиплексирования и push-"
+"уведомлений сервера"
 
 #: src/views/preference/tabs/ServerSettings.vue:56
 msgid "Enable HTTP/3"
@@ -8820,9 +9214,8 @@ msgid ""
 "Link this site to a DNS record. The server_name will be used for the DNS "
 "record name. You can skip this step if DNS is already configured."
 msgstr ""
-"Свяжите этот сайт с DNS-записью. server_name будет использоваться в "
-"качестве имени DNS-записи. Вы можете пропустить этот шаг, если DNS уже "
-"настроен."
+"Свяжите этот сайт с DNS-записью. server_name будет использоваться в качестве "
+"имени DNS-записи. Вы можете пропустить этот шаг, если DNS уже настроен."
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:263
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:595
@@ -8892,7 +9285,8 @@ msgstr "Включить прокси (Cloudflare)"
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:370
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:702
 msgid "Route traffic through proxy for additional protection and features"
-msgstr "Перенаправляйте трафик через прокси для дополнительной защиты и функций"
+msgstr ""
+"Перенаправляйте трафик через прокси для дополнительной защиты и функций"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:379
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:711
@@ -9042,8 +9436,10 @@ msgid "Self-signed certificate applied"
 msgstr "Самозаверяющий сертификат применён"
 
 #: src/views/site/site_edit/components/Cert/SelfSignedCert.vue:47
-msgid "Saving the site configuration failed; the certificate directives are in "
-msgstr "Не удалось сохранить конфигурацию сайта; директивы сертификата находятся в "
+msgid ""
+"Saving the site configuration failed; the certificate directives are in "
+msgstr ""
+"Не удалось сохранить конфигурацию сайта; директивы сертификата находятся в "
 
 #: src/views/site/site_edit/components/Cert/SelfSignedCert.vue:54
 msgid "Certificate directives added to the editor; review and save when ready."
@@ -9125,16 +9521,16 @@ msgid ""
 "Please configure server_name directive in the configuration before linking "
 "DNS records."
 msgstr ""
-"Пожалуйста, настройте директиву server_name в конфигурации перед "
-"связыванием записей DNS."
+"Пожалуйста, настройте директиву server_name в конфигурации перед связыванием "
+"записей DNS."
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:502
 msgid ""
 "Link this site to a DNS record. The server_name will be used for the DNS "
 "record name."
 msgstr ""
-"Свяжите этот сайт с DNS-записью. server_name будет использоваться в "
-"качестве имени DNS-записи."
+"Свяжите этот сайт с DNS-записью. server_name будет использоваться в качестве "
+"имени DNS-записи."
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:510
 msgid "Linked DNS Record"
@@ -9149,8 +9545,8 @@ msgid ""
 "The linked DNS record was deleted from the DNS server. You can recreate it "
 "or clear the link."
 msgstr ""
-"Связанная DNS-запись была удалена с DNS-сервера. Вы можете воссоздать её "
-"или очистить ссылку."
+"Связанная DNS-запись была удалена с DNS-сервера. Вы можете воссоздать её или "
+"очистить ссылку."
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:585
 msgid "Recreate DNS Record"
@@ -9191,11 +9587,8 @@ msgstr "Ошибка разбора конфигурации Nginx"
 
 #: src/views/site/site_edit/components/SiteEditor/store.ts:145
 msgid "Please select a certificate before saving the TLS server configuration."
-msgstr "Пожалуйста, выберите сертификат перед сохранением конфигурации TLS-сервера."
-
-#: src/views/site/site_list/columns.tsx:78 src/views/stream/columns.tsx:46
-msgid "Proxy Targets"
-msgstr "Цели прокси"
+msgstr ""
+"Пожалуйста, выберите сертификат перед сохранением конфигурации TLS-сервера."
 
 #: src/views/site/site_list/SiteDuplicate.vue:33
 #: src/views/stream/components/StreamDuplicate.vue:25
@@ -9398,48 +9791,56 @@ msgstr "Соединение с этим терминалом потеряно. 
 
 #: src/views/terminal/Terminal.vue:212
 msgid ""
-"Demo mode is enabled. This terminal only allows a small set of safe "
-"read-only commands."
+"Demo mode is enabled. This terminal only allows a small set of safe read-"
+"only commands."
 msgstr ""
 "Демонстрационный режим включен. В этом терминале разрешён только небольшой "
 "набор безопасных команд только для чтения."
 
 #: src/views/terminal/Terminal.vue:219
 msgid ""
-"You are accessing this terminal over an insecure HTTP connection on a "
-"non-localhost domain. This may expose sensitive information."
+"You are accessing this terminal over an insecure HTTP connection on a non-"
+"localhost domain. This may expose sensitive information."
 msgstr ""
 "Вы обращаетесь к этому терминалу через небезопасное HTTP-соединение в "
 "домене, отличном от localhost. Это может раскрыть конфиденциальную "
 "информацию."
 
-#: src/views/upstream/SocketList.vue:18
+#: src/views/upstream/SocketList.vue:19
 msgid "Socket"
 msgstr "Сокет"
 
-#: src/views/upstream/SocketList.vue:30
+#: src/views/upstream/SocketList.vue:31
 msgid "Direct"
 msgstr "Прямой"
 
-#: src/views/upstream/SocketList.vue:36
+#: src/views/upstream/SocketList.vue:37
 msgid "Health Status"
 msgstr "Состояние здоровья"
 
-#: src/views/upstream/SocketList.vue:41
+#: src/views/upstream/SocketList.vue:45
 msgid "No Data"
 msgstr "Нет данных"
 
-#: src/views/upstream/SocketList.vue:51
+#: src/views/upstream/SocketList.vue:55
 msgid "Last Check"
 msgstr "Последняя проверка"
 
-#: src/views/upstream/SocketList.vue:60
-msgid "Health Check"
-msgstr "Проверка состояния"
-
-#: src/views/upstream/SocketList.vue:133
+#: src/views/upstream/SocketList.vue:138
 msgid "Upstream Sockets"
 msgstr "Сокеты Upstream"
+
+#: src/views/upstream/SocketList.vue:153
+msgid "Upstream health checks are globally paused"
+msgstr "Проверки состояния upstream приостановлены глобально"
+
+#: src/views/upstream/SocketList.vue:154
+msgid ""
+"Per-target selections are preserved. Resume probes from Health Check "
+"preferences."
+msgstr ""
+"Выбор для каждой цели сохраняется. Возобновите проверки в настройках "
+"проверки состояния."
 
 #: src/views/user/userColumns.tsx:30
 msgid "2FA"
@@ -9489,6 +9890,12 @@ msgstr "Подтвердите новый пароль"
 msgid "Update Password"
 msgstr "Обновить пароль"
 
+#~ msgid "Health check configuration saved"
+#~ msgstr "Конфигурация проверки работоспособности сохранена"
+
+#~ msgid "Failed to save configuration"
+#~ msgstr "Не удалось сохранить конфигурацию"
+
 #~ msgid "Certificate Expired"
 #~ msgstr "Сертификат истёк"
 
@@ -9506,10 +9913,6 @@ msgstr "Обновить пароль"
 
 #~ msgid "Certificate %{name} will expire in 1 day"
 #~ msgstr "Сертификат %{name} истечет через 1 день"
-
-#, fuzzy
-#~ msgid "Active"
-#~ msgstr "Директива"
 
 #~ msgid "Node authentication upgraded successfully"
 #~ msgstr "Аутентификация узла успешно обновлена"
@@ -9544,11 +9947,11 @@ msgstr "Обновить пароль"
 #~ msgstr "Разрешить устаревшую аутентификацию узла"
 
 #~ msgid ""
-#~ "Disable this compatibility switch after every controller has been upgraded "
-#~ "to paired signatures."
+#~ "Disable this compatibility switch after every controller has been "
+#~ "upgraded to paired signatures."
 #~ msgstr ""
-#~ "Отключите этот переключатель совместимости после того, как все контроллеры "
-#~ "будут обновлены до парных подписей."
+#~ "Отключите этот переключатель совместимости после того, как все "
+#~ "контроллеры будут обновлены до парных подписей."
 
 #~ msgid "Allow legacy Node Secret for MCP"
 #~ msgstr "Разрешить устаревший секрет узла для MCP"
@@ -9557,8 +9960,8 @@ msgstr "Обновить пароль"
 #~ "Temporary compatibility only. Replace MCP Node Secret clients with scoped "
 #~ "service tokens."
 #~ msgstr ""
-#~ "Только временная совместимость. Замените клиенты MCP Node Secret на токены "
-#~ "службы с ограниченной областью действия."
+#~ "Только временная совместимость. Замените клиенты MCP Node Secret на "
+#~ "токены службы с ограниченной областью действия."
 
 #~ msgid ""
 #~ "Logrotate, by default, is enabled in most mainstream Linux distributions "
@@ -9572,29 +9975,30 @@ msgstr "Обновить пароль"
 #~ "для пользователей, которые устанавливают Nginx UI на хост-машину, поэтому "
 #~ "вам не нужно изменять параметры на этой странице. Для пользователей, "
 #~ "которые устанавливают Nginx UI с использованием Docker-контейнеров, вы "
-#~ "можете вручную включить эту опцию. Планировщик задач crontab Nginx UI будет "
-#~ "выполнять команду logrotate с интервалом, который вы установите в минутах."
+#~ "можете вручную включить эту опцию. Планировщик задач crontab Nginx UI "
+#~ "будет выполнять команду logrotate с интервалом, который вы установите в "
+#~ "минутах."
 
 #~ msgid "Node credential rotated successfully"
 #~ msgstr "Учетные данные узла успешно обновлены"
 
 #~ msgid ""
-#~ "Passkeys are webauthn credentials that validate your identity using touch, "
-#~ "facial recognition, a device password, or a PIN. They can be used as a "
-#~ "password replacement or as a 2FA method."
+#~ "Passkeys are webauthn credentials that validate your identity using "
+#~ "touch, facial recognition, a device password, or a PIN. They can be used "
+#~ "as a password replacement or as a 2FA method."
 #~ msgstr ""
-#~ "Пасски — это учетные данные WebAuthn, которые подтверждают вашу личность с "
-#~ "помощью касания, распознавания лица, пароля устройства или PIN-кода. Они "
-#~ "могут использоваться вместо пароля или в качестве метода двухфакторной "
-#~ "аутентификации (2FA)."
+#~ "Пасски — это учетные данные WebAuthn, которые подтверждают вашу личность "
+#~ "с помощью касания, распознавания лица, пароля устройства или PIN-кода. "
+#~ "Они могут использоваться вместо пароля или в качестве метода "
+#~ "двухфакторной аутентификации (2FA)."
 
 #~ msgid ""
 #~ "Please first add credentials in Certification > DNS Credentials, and then "
 #~ "select one of the credentialsbelow to request the API of the DNS provider."
 #~ msgstr ""
 #~ "Пожалуйста, сначала добавьте учетные данные в Certification > DNS "
-#~ "Credentials, а затем выберите одну из учетных данных ниже, чтобы запросить "
-#~ "API провайдера DNS."
+#~ "Credentials, а затем выберите одну из учетных данных ниже, чтобы "
+#~ "запросить API провайдера DNS."
 
 #~ msgid ""
 #~ "Please input name, this will be used as the filename of the new "
@@ -9616,13 +10020,13 @@ msgstr "Обновить пароль"
 #~ msgid ""
 #~ "Support communication with the backend through the WebSocket protocol. If "
 #~ "your Nginx UI is being used via an Nginx reverse proxy, please refer to "
-#~ "this link to write the corresponding configuration file: "
-#~ "https://nginxui.com/guide/nginx-proxy-example.html"
+#~ "this link to write the corresponding configuration file: https://"
+#~ "nginxui.com/guide/nginx-proxy-example.html"
 #~ msgstr ""
 #~ "Поддерживает связь с бэкендом через протокол WebSocket. Если ваш Nginx UI "
 #~ "используется через обратный прокси Nginx, обратитесь к этой ссылке, чтобы "
-#~ "написать соответствующий конфигурационный файл: "
-#~ "https://nginxui.com/guide/nginx-proxy-example.html"
+#~ "написать соответствующий конфигурационный файл: https://nginxui.com/guide/"
+#~ "nginx-proxy-example.html"
 
 #~ msgid ""
 #~ "The certificate has been generated at %{path} and the ssl_certificate "
@@ -9656,16 +10060,12 @@ msgstr "Обновить пароль"
 #~ "namespace and the nodes selected below will be synchronized."
 #~ msgstr ""
 #~ "При включении/отключении, удалении или сохранении этого сайта будут "
-#~ "синхронизированы узлы, установленные в пространстве имен, и узлы, выбранные "
-#~ "ниже."
+#~ "синхронизированы узлы, установленные в пространстве имен, и узлы, "
+#~ "выбранные ниже."
 
 #, fuzzy
 #~ msgid "Create record set"
 #~ msgstr "Создать запись"
-
-#, fuzzy
-#~ msgid "Create set"
-#~ msgstr "Создан в"
 
 #, fuzzy
 #~ msgid "Delete set"
@@ -9752,12 +10152,13 @@ msgstr "Обновить пароль"
 #~ msgstr "Значение"
 
 #~ msgid "Please enter a valid IPv4 address (0-255 per octet)"
-#~ msgstr "Пожалуйста, введите действительный IPv4-адрес (0-255 для каждого октета)"
+#~ msgstr ""
+#~ "Пожалуйста, введите действительный IPv4-адрес (0-255 для каждого октета)"
 
 #~ msgid ""
 #~ "Warning: This appears to be a private IP address. Public CAs like Let's "
-#~ "Encrypt cannot issue certificates for private IPs. Use a public IP address "
-#~ "or consider using a private CA."
+#~ "Encrypt cannot issue certificates for private IPs. Use a public IP "
+#~ "address or consider using a private CA."
 #~ msgstr ""
 #~ "Предупреждение: Похоже, это частный IP-адрес. Публичные центры "
 #~ "сертификации, такие как Let's Encrypt, не могут выдавать сертификаты для "
@@ -9852,9 +10253,6 @@ msgstr "Обновить пароль"
 #~ msgid "WebSocket not connected, please wait for connection"
 #~ msgstr "WebSocket не подключен, пожалуйста, дождитесь подключения"
 
-#~ msgid "in the same directory as"
-#~ msgstr "в том же каталоге, что и"
-
 #~ msgid "Sandbox test successful"
 #~ msgstr "Тест песочницы успешен"
 
@@ -9922,7 +10320,8 @@ msgstr "Обновить пароль"
 #~ msgstr "Стабильная производительность на современном оборудовании"
 
 #~ msgid "Backup path not in granted access paths: {0}"
-#~ msgstr "Путь резервного копирования не входит в разрешенные пути доступа: {0}"
+#~ msgstr ""
+#~ "Путь резервного копирования не входит в разрешенные пути доступа: {0}"
 
 #~ msgid "Build with"
 #~ msgstr "Собрать с"
@@ -9937,7 +10336,8 @@ msgstr "Обновить пароль"
 #~ msgstr "Не удалось оценить символические ссылки: {0}"
 
 #~ msgid "Failed to restore Nginx UI files: {0}"
-#~ msgstr "Не удалось восстановить файлы пользовательского интерфейса Nginx: {0}"
+#~ msgstr ""
+#~ "Не удалось восстановить файлы пользовательского интерфейса Nginx: {0}"
 
 #~ msgid "Failed to write to zip buffer: {0}"
 #~ msgstr "Ошибка записи в ZIP-буфер: {0}"
@@ -9996,14 +10396,14 @@ msgstr "Обновить пароль"
 
 #~ msgid ""
 #~ "Support communication with the backend through the Server-Sent Events "
-#~ "protocol. If your Nginx UI is being used via an Nginx reverse proxy, please "
-#~ "refer to this link to write the corresponding configuration file: "
+#~ "protocol. If your Nginx UI is being used via an Nginx reverse proxy, "
+#~ "please refer to this link to write the corresponding configuration file: "
 #~ "https://nginxui.com/guide/nginx-proxy-example.html"
 #~ msgstr ""
 #~ "Поддержка связи с бэкендом через протокол Server-Sent Events. Если ваш "
 #~ "Nginx UI используется через обратный прокси Nginx, обратитесь к этой "
-#~ "ссылке, чтобы написать соответствующий конфигурационный файл: "
-#~ "https://nginxui.com/guide/nginx-proxy-example.html"
+#~ "ссылке, чтобы написать соответствующий конфигурационный файл: https://"
+#~ "nginxui.com/guide/nginx-proxy-example.html"
 
 #~ msgid "If left blank, the default CA Dir will be used."
 #~ msgstr "Если оставить пустым, будет использоваться каталог CA по умолчанию."
@@ -10070,8 +10470,8 @@ msgstr "Обновить пароль"
 
 #~ msgid ""
 #~ "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
-#~ "Docker Image, please make sure the docker socket is mounted like this: `-v "
-#~ "/var/run/docker.sock:/var/run/docker.sock`."
+#~ "Docker Image, please make sure the docker socket is mounted like this: `-"
+#~ "v /var/run/docker.sock:/var/run/docker.sock`."
 #~ msgstr ""
 #~ "Проверьте, существует ли /var/run/docker.sock. Если вы используете "
 #~ "официальный образ Docker Nginx UI, убедитесь, что сокет Docker подключен "
@@ -10102,10 +10502,6 @@ msgstr "Обновить пароль"
 
 #~ msgid "Format error %{msg}"
 #~ msgstr "Ошибка формата %{msg}"
-
-#, fuzzy
-#~ msgid "Bot Token"
-#~ msgstr "API токен"
 
 #, fuzzy
 #~ msgid "Server URL"
@@ -10153,20 +10549,23 @@ msgstr "Обновить пароль"
 #~ "Синхронизация конфигурации %{cert_name} с %{env_name} не удалась, "
 #~ "пожалуйста, обновите удаленный Nginx UI до последней версии"
 
-#~ msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: %{resp}"
+#~ msgid ""
+#~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: %"
+#~ "{resp}"
 #~ msgstr ""
-#~ "Переименование %{orig_path} в %{new_path} на %{env_name} не удалось, ответ: "
-#~ "%{resp}"
+#~ "Переименование %{orig_path} в %{new_path} на %{env_name} не удалось, "
+#~ "ответ: %{resp}"
 
 #, fuzzy
-#~ msgid "Rename Site %{site} to %{new_site} on %{node} error, response: %{resp}"
+#~ msgid ""
+#~ "Rename Site %{site} to %{new_site} on %{node} error, response: %{resp}"
 #~ msgstr "Переименование %{orig_path} в %{new_path} на %{env_name} успешно"
 
 #, fuzzy
 #~ msgid "Save site %{site} to %{node} error, response: %{resp}"
 #~ msgstr ""
-#~ "Синхронизация сертификата %{cert_name} с %{env_name} не удалась, ответ: "
-#~ "%{resp}"
+#~ "Синхронизация сертификата %{cert_name} с %{env_name} не удалась, ответ: %"
+#~ "{resp}"
 
 #~ msgid ""
 #~ "Sync Certificate %{cert_name} to %{env_name} failed, please upgrade the "
@@ -10175,19 +10574,20 @@ msgstr "Обновить пароль"
 #~ "Синхронизация сертификата %{cert_name} с %{env_name} не удалась, "
 #~ "пожалуйста, обновите удаленный интерфейс Nginx до последней версии"
 
-#~ msgid "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
+#~ msgid ""
+#~ "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
 #~ msgstr ""
-#~ "Синхронизация сертификата %{cert_name} с %{env_name} не удалась, ответ: "
-#~ "%{resp}"
+#~ "Синхронизация сертификата %{cert_name} с %{env_name} не удалась, ответ: %"
+#~ "{resp}"
 
 #~ msgid "Sync config %{config_name} to %{env_name} failed, response: %{resp}"
 #~ msgstr ""
-#~ "Синхронизация конфигурации %{config_name} с %{env_name} не удалась, ответ: "
-#~ "%{resp}"
+#~ "Синхронизация конфигурации %{config_name} с %{env_name} не удалась, "
+#~ "ответ: %{resp}"
 
 #~ msgid ""
-#~ "If you lose your mobile phone, you can use the recovery code to reset your "
-#~ "2FA."
+#~ "If you lose your mobile phone, you can use the recovery code to reset "
+#~ "your 2FA."
 #~ msgstr ""
 #~ "Если вы потеряете свой мобильный телефон, вы можете использовать код "
 #~ "восстановления для сброса 2FA."
@@ -10195,10 +10595,11 @@ msgstr "Обновить пароль"
 #~ msgid "Incorrect username or password"
 #~ msgstr "Неверное имя пользователя или пароль"
 
-#~ msgid "The recovery code is only displayed once, please save it in a safe place."
+#~ msgid ""
+#~ "The recovery code is only displayed once, please save it in a safe place."
 #~ msgstr ""
-#~ "Код восстановления отображается только один раз, пожалуйста, сохраните его "
-#~ "в безопасном месте."
+#~ "Код восстановления отображается только один раз, пожалуйста, сохраните "
+#~ "его в безопасном месте."
 
 #~ msgid "Too many login failed attempts, please try again later"
 #~ msgstr "Слишком много неудачных попыток входа, попробуйте позже"
@@ -10268,8 +10669,8 @@ msgstr "Обновить пароль"
 #~ msgstr "404 Not Found"
 
 #~ msgid ""
-#~ "Currently, DNS record management supports Alibaba Cloud DNS, Tencent Cloud "
-#~ "DNS, and Cloudflare only."
+#~ "Currently, DNS record management supports Alibaba Cloud DNS, Tencent "
+#~ "Cloud DNS, and Cloudflare only."
 #~ msgstr ""
-#~ "В настоящее время управление DNS-записями поддерживает только Alibaba Cloud "
-#~ "DNS, Tencent Cloud DNS и Cloudflare."
+#~ "В настоящее время управление DNS-записями поддерживает только Alibaba "
+#~ "Cloud DNS, Tencent Cloud DNS и Cloudflare."

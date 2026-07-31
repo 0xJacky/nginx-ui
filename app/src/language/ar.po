@@ -5,10 +5,10 @@ msgid ""
 msgstr ""
 "PO-Revision-Date: 2026-02-05 13:56+0000\n"
 "Last-Translator: OpenAI <noreply-mt-openai@weblate.org>\n"
-"Language-Team: Arabic "
-"<https://weblate.nginxui.com/projects/nginx-ui/frontend/ar/>\n"
+"Language-Team: Arabic <https://weblate.nginxui.com/projects/nginx-ui/"
+"frontend/ar/>\n"
 "Language: ar\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
@@ -28,17 +28,18 @@ msgstr "إشعار شهادة IP"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:81
 msgid ""
-"This site is configured as a default server (default_server) for HTTPS "
-"(port 443). "
-msgstr "تم تكوين هذا الموقع كخادم افتراضي (default_server) لـ HTTPS (المنفذ 443)."
+"This site is configured as a default server (default_server) for HTTPS (port "
+"443). "
+msgstr ""
+"تم تكوين هذا الموقع كخادم افتراضي (default_server) لـ HTTPS (المنفذ 443)."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:85
 msgid ""
-"This site uses wildcard server name (_) which typically indicates an "
-"IP-based certificate. "
+"This site uses wildcard server name (_) which typically indicates an IP-"
+"based certificate. "
 msgstr ""
-"يستخدم هذا الموقع اسم خادم wildcard (_) والذي يشير عادةً إلى شهادة قائمة "
-"على عنوان IP."
+"يستخدم هذا الموقع اسم خادم wildcard (_) والذي يشير عادةً إلى شهادة قائمة على "
+"عنوان IP."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:89
 msgid "No specific IP address found in server_name configuration. "
@@ -49,8 +50,8 @@ msgid ""
 "For IP-based certificate configurations, only HTTP-01 challenge method is "
 "supported. "
 msgstr ""
-"بالنسبة لإعدادات الشهادات المعتمدة على عنوان IP، فإن طريقة التحقق HTTP-01 "
-"هي الوحيدة المدعومة."
+"بالنسبة لإعدادات الشهادات المعتمدة على عنوان IP، فإن طريقة التحقق HTTP-01 هي "
+"الوحيدة المدعومة."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:103
 #: src/views/dns/DNSCredential.vue:89
@@ -87,11 +88,11 @@ msgstr "أدخل عنوان IP للخادم (مثال: 203.0.113.1 أو 2001:db8
 
 #: src/components/AutoCertForm/AutoCertForm.vue:140
 msgid ""
-"For IP-based certificates, please specify the server IP address that will "
-"be included in the certificate."
+"For IP-based certificates, please specify the server IP address that will be "
+"included in the certificate."
 msgstr ""
-"بالنسبة للشهادات القائمة على IP، يرجى تحديد عنوان IP الخاص بالخادم الذي "
-"سيتم تضمينه في الشهادة."
+"بالنسبة للشهادات القائمة على IP، يرجى تحديد عنوان IP الخاص بالخادم الذي سيتم "
+"تضمينه في الشهادة."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:144
 msgid "Public CA Requirements:"
@@ -114,7 +115,8 @@ msgid "Private CA:"
 msgstr "CA الخاصة:"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:161
-msgid "Any reachable IP address can be used with private Certificate Authorities"
+msgid ""
+"Any reachable IP address can be used with private Certificate Authorities"
 msgstr "يمكن استخدام أي عنوان IP قابل للوصول مع سلطات الشهادات الخاصة"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:170
@@ -171,7 +173,8 @@ msgstr "تمكين الاسم الشائع"
 msgid ""
 "Enable the certificate Common Name field for private CAs that still require "
 "it."
-msgstr "تمكين حقل الاسم الشائع للشهادة لهيئات التصديق الخاصة التي لا تزال تتطلبه."
+msgstr ""
+"تمكين حقل الاسم الشائع للشهادة لهيئات التصديق الخاصة التي لا تزال تتطلبه."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:237
 msgid "Revoke Old Certificate"
@@ -214,6 +217,7 @@ msgstr "صالح"
 
 #: src/components/CertInfo/CertInfo.vue:31
 #: src/views/certificate/CertificateList/certColumns.tsx:103
+#: src/views/preference/tabs/AccessTokens.vue:149
 msgid "Expired"
 msgstr "منتهي الصلاحية"
 
@@ -305,8 +309,8 @@ msgstr "مكتبة GeoLite2 مطلوبة"
 
 #: src/components/GeoLiteDownload/GeoLiteDownload.vue:158
 msgid ""
-"The GeoLite2 database is required for offline geographic IP analysis. "
-"Please download it to enable this feature."
+"The GeoLite2 database is required for offline geographic IP analysis. Please "
+"download it to enable this feature."
 msgstr ""
 "يُحتاج إلى قاعدة بيانات GeoLite2 لتحليل العنوان IP الجغرافي دون اتصال "
 "بالإنترنت. يرجى تنزيلها لتفعيل هذه الميزة."
@@ -316,8 +320,8 @@ msgid ""
 "Alternatively, if you cannot download the database, you can manually place "
 "GeoLite2-City.mmdb in the same directory as app.ini."
 msgstr ""
-"بدلاً من ذلك، إذا لم تتمكن من تنزيل قاعدة البيانات، يمكنك وضع ملف "
-"GeoLite2-City.mmdb يدويًا في نفس دليل ملف app.ini."
+"بدلاً من ذلك، إذا لم تتمكن من تنزيل قاعدة البيانات، يمكنك وضع ملف GeoLite2-"
+"City.mmdb يدويًا في نفس دليل ملف app.ini."
 
 #: src/components/GeoLiteDownload/GeoLiteDownload.vue:168
 msgid "GeoLite2 Database Installed"
@@ -362,8 +366,10 @@ msgid "Config validation is unavailable for a remote-only namespace."
 msgstr "التحقق من التكوين غير متاح لمساحة الاسم المخصصة للبعيد فقط."
 
 #: src/components/InspectConfig/InspectConfig.vue:47
-msgid "Sandbox validation is unavailable when Nginx runs in a separate container."
-msgstr "التحقق من صحة البيئة المعزولة غير متاح عندما يعمل Nginx في حاوية منفصلة."
+msgid ""
+"Sandbox validation is unavailable when Nginx runs in a separate container."
+msgstr ""
+"التحقق من صحة البيئة المعزولة غير متاح عندما يعمل Nginx في حاوية منفصلة."
 
 #: src/components/InspectConfig/InspectConfig.vue:49
 msgid ""
@@ -372,12 +378,14 @@ msgid ""
 msgstr "التحقق من بيئة الاختبار غير متاح لأنه تم تكوين أمر اختبار مخصص."
 
 #: src/components/InspectConfig/InspectConfig.vue:58
-msgid "A required include file is missing from the sandbox or source configuration."
+msgid ""
+"A required include file is missing from the sandbox or source configuration."
 msgstr "ملف تضمين مطلوب مفقود من صندوق الحماية أو تكوين المصدر."
 
 #: src/components/InspectConfig/InspectConfig.vue:60
 msgid "Sandbox setup failed before Nginx could validate the configuration."
-msgstr "فشل إعداد البيئة التجريبية قبل أن يتمكن Nginx من التحقق من صحة التكوين."
+msgstr ""
+"فشل إعداد البيئة التجريبية قبل أن يتمكن Nginx من التحقق من صحة التكوين."
 
 #: src/components/InspectConfig/InspectConfig.vue:62
 msgid "Nginx reported a configuration syntax error."
@@ -423,7 +431,7 @@ msgstr "المساعد"
 msgid "User"
 msgstr "مستخدم"
 
-#: src/components/LLM/ChatMessage.vue:241 src/views/config/ConfigList.vue:182
+#: src/components/LLM/ChatMessage.vue:241 src/views/config/ConfigList.vue:189
 msgid "Modify"
 msgstr "تعديل"
 
@@ -433,10 +441,10 @@ msgstr "تعديل"
 #: src/views/certificate/components/CertificateActions.vue:29
 #: src/views/config/components/ConfigLeftPanel.vue:283
 #: src/views/config/components/ConfigName.vue:58
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:713
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:869
 #: src/views/dns/DDNSManager.vue:438 src/views/dns/DNSRecordManager.vue:250
 #: src/views/preference/components/AuthSettings/Passkey.vue:131
-#: src/views/preference/Preference.vue:124
+#: src/views/preference/Preference.vue:138
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:196
 #: src/views/stream/components/ConfigName.vue:52
@@ -448,7 +456,7 @@ msgstr "حفظ"
 #: src/components/NgxConfigEditor/NgxServer.vue:61
 #: src/components/NgxConfigEditor/NgxUpstream.vue:32 src/language/curd.ts:37
 #: src/views/config/components/Delete.vue:98
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:710
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:866
 #: src/views/dns/DDNSManager.vue:435 src/views/dns/DNSGroupList.vue:240
 #: src/views/dns/DNSGroupList.vue:285
 #: src/views/dns/DNSGroupRecordManager.vue:1531
@@ -537,7 +545,7 @@ msgstr "دردشة لـ %{path}"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:75
 #: src/views/config/components/ConfigName.vue:50
 #: src/views/config/components/Rename.vue:56
-#: src/views/config/ConfigList.vue:190
+#: src/views/config/ConfigList.vue:205
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:44
 #: src/views/stream/components/ConfigName.vue:44
 msgid "Rename"
@@ -559,7 +567,7 @@ msgstr "مكرر"
 #: src/views/certificate/components/RemoveCert.vue:112
 #: src/views/config/components/Delete.vue:65
 #: src/views/config/components/Delete.vue:97
-#: src/views/config/ConfigList.vue:199
+#: src/views/config/ConfigList.vue:214
 #: src/views/dns/components/DNSRecordTable.vue:331
 #: src/views/dns/components/DNSRecordTable.vue:382
 #: src/views/dns/DDNSManager.vue:360 src/views/dns/DNSGroupList.vue:244
@@ -580,13 +588,13 @@ msgstr "لا إجراء"
 
 #: src/components/NamespaceRender/NamespaceRender.vue:44
 #: src/components/NamespaceTabs/NamespaceTabs.vue:141 src/constants/index.ts:39
-#: src/views/node/Node.vue:209 src/views/node/Node.vue:217
+#: src/views/node/Node.vue:243 src/views/node/Node.vue:251
 msgid "Reload Nginx"
 msgstr "إعادة تحميل Nginx"
 
 #: src/components/NamespaceRender/NamespaceRender.vue:53
 #: src/components/NamespaceTabs/NamespaceTabs.vue:127
-#: src/views/namespace/columns.ts:17 src/views/namespace/Namespace.vue:31
+#: src/views/namespace/columns.ts:17 src/views/namespace/Namespace.vue:68
 msgid "Sync Nodes"
 msgstr "مزامنة العقد"
 
@@ -632,7 +640,7 @@ msgid "Are you sure you want to restart Nginx on the following sync nodes?"
 msgstr "هل أنت متأكد أنك تريد إعادة تشغيل Nginx على عقد المزامنة التالية؟"
 
 #: src/components/NamespaceTabs/NamespaceTabs.vue:153
-#: src/views/node/Node.vue:230 src/views/node/Node.vue:238
+#: src/views/node/Node.vue:264 src/views/node/Node.vue:272
 msgid "Restart Nginx"
 msgstr "إعادة تشغيل Nginx"
 
@@ -642,7 +650,7 @@ msgstr "إعادة تشغيل Nginx"
 #: src/components/NodeSelector/NodeSelector.vue:79
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
 #: src/views/dashboard/Nodes.vue:110 src/views/node/nodeColumns.tsx:95
-#: src/views/upstream/SocketList.vue:45
+#: src/views/upstream/SocketList.vue:49
 msgid "Online"
 msgstr "متصل"
 
@@ -651,7 +659,7 @@ msgstr "متصل"
 #: src/components/NodeSelector/NodeSelector.vue:85
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
 #: src/views/dashboard/Nodes.vue:117 src/views/node/nodeColumns.tsx:99
-#: src/views/upstream/SocketList.vue:45
+#: src/views/upstream/SocketList.vue:49
 msgid "Offline"
 msgstr "غير متصل"
 
@@ -670,7 +678,8 @@ msgid "Nginx restarted successfully"
 msgstr "تم إعادة تشغيل Nginx بنجاح"
 
 #: src/components/NginxControl/NginxControl.vue:124
-msgid "Nginx restart status could not be confirmed. Please check the Nginx status."
+msgid ""
+"Nginx restart status could not be confirmed. Please check the Nginx status."
 msgstr "تعذر تأكيد حالة إعادة تشغيل Nginx. يرجى التحقق من حالة Nginx."
 
 #: src/components/NginxControl/NginxControl.vue:160
@@ -786,7 +795,7 @@ msgstr "هل أنت متأكد أنك تريد إزالة هذا المكان؟"
 #: src/language/curd.ts:61
 #: src/views/config/components/ConfigRightPanel/Basic.vue:41
 #: src/views/config/components/Delete.vue:124
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:527
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:589
 #: src/views/nginx_log/NginxLogList.vue:165
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:521
 msgid "Path"
@@ -807,9 +816,10 @@ msgstr "إزالة توجيه access_log من هذا الخادم"
 
 #: src/components/NgxConfigEditor/LogEntry.vue:154
 msgid ""
-"Write an access_log directive for this server, so its requests can be "
-"viewed and analysed separately"
-msgstr "أضف توجيه access_log لهذا الخادم، بحيث يمكن عرض طلباته وتحليلها بشكل منفصل"
+"Write an access_log directive for this server, so its requests can be viewed "
+"and analysed separately"
+msgstr ""
+"أضف توجيه access_log لهذا الخادم، بحيث يمكن عرض طلباته وتحليلها بشكل منفصل"
 
 #: src/components/NgxConfigEditor/LogEntry.vue:163 src/language/constants.ts:64
 #: src/views/nginx_log/NginxLogList.vue:150
@@ -903,6 +913,8 @@ msgstr "اسم المنبع"
 #: src/views/namespace/columns.ts:9 src/views/nginx_log/NginxLogList.vue:156
 #: src/views/node/nodeColumns.tsx:19
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:84
+#: src/views/preference/tabs/AccessTokens.vue:50
+#: src/views/preference/tabs/AccessTokens.vue:266
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:36
 #: src/views/site/site_list/columns.tsx:30
 #: src/views/site/site_list/SiteDuplicate.vue:79
@@ -985,8 +997,8 @@ msgid ""
 "Storage configuration validation failed for backup task %{backup_name}, "
 "error: %{error}"
 msgstr ""
-"فشل التحقق من تكوين التخزين لمهمة النسخ الاحتياطي %{backup_name}، الخطأ: "
-"%{error}"
+"فشل التحقق من تكوين التخزين لمهمة النسخ الاحتياطي %{backup_name}، الخطأ: %"
+"{error}"
 
 #: src/components/Notification/notifications.ts:29
 msgid "Auto Backup Failed"
@@ -1001,10 +1013,10 @@ msgid "Auto Backup Storage Failed"
 msgstr "فشل تخزين النسخ الاحتياطي التلقائي"
 
 #: src/components/Notification/notifications.ts:34
-msgid "Backup task %{backup_name} failed during storage upload, error: %{error}"
+msgid ""
+"Backup task %{backup_name} failed during storage upload, error: %{error}"
 msgstr ""
-"فشلت مهمة النسخ الاحتياطي %{backup_name} أثناء تحميل التخزين، الخطأ: "
-"%{error}"
+"فشلت مهمة النسخ الاحتياطي %{backup_name} أثناء تحميل التخزين، الخطأ: %{error}"
 
 #: src/components/Notification/notifications.ts:37
 msgid "Auto Backup Completed"
@@ -1012,7 +1024,8 @@ msgstr "اكتمل النسخ الاحتياطي التلقائي"
 
 #: src/components/Notification/notifications.ts:38
 msgid "Backup task %{backup_name} completed successfully, file: %{file_path}"
-msgstr "تم إنجاز مهمة النسخ الاحتياطي %{backup_name} بنجاح، الملف: %{file_path}"
+msgstr ""
+"تم إنجاز مهمة النسخ الاحتياطي %{backup_name} بنجاح، الملف: %{file_path}"
 
 #: src/components/Notification/notifications.ts:41
 #: src/components/Notification/notifications.ts:49 src/language/constants.ts:35
@@ -1097,222 +1110,234 @@ msgid "Delete %{path} on %{node_name} successfully"
 msgstr "تم حذف %{path} على %{node_name} بنجاح"
 
 #: src/components/Notification/notifications.ts:85
+msgid "Auto Sync Namespace Error"
+msgstr "خطأ في المزامنة التلقائية لمساحة الأسماء"
+
+#: src/components/Notification/notifications.ts:86
+msgid ""
+"Auto sync of namespace %{namespace} finished with %{failed} failed items"
+msgstr ""
+"اكتملت المزامنة التلقائية لمساحة الأسماء %{namespace} مع فشل %{failed} "
+"عنصرًا"
+
+#: src/components/Notification/notifications.ts:89
 msgid "External Notification Test"
 msgstr "اختبار الإشعار الخارجي"
 
-#: src/components/Notification/notifications.ts:86
+#: src/components/Notification/notifications.ts:90
 msgid "This is a test message sent at %{timestamp} from Nginx UI."
 msgstr "هذه رسالة اختبار تم إرسالها في %{timestamp} من واجهة Nginx."
 
-#: src/components/Notification/notifications.ts:89 src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:93 src/language/constants.ts:50
 msgid "Delete Remote Site Error"
 msgstr "خطأ حذف الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:90
+#: src/components/Notification/notifications.ts:94
 msgid "Delete site %{name} from %{node} failed"
 msgstr "فشل حذف الموقع %{name} من %{node}"
 
-#: src/components/Notification/notifications.ts:93 src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:97 src/language/constants.ts:49
 msgid "Delete Remote Site Success"
 msgstr "نجح حذف الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:94
+#: src/components/Notification/notifications.ts:98
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "تم حذف الموقع %{name} من %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:97 src/language/constants.ts:52
+#: src/components/Notification/notifications.ts:101
+#: src/language/constants.ts:52
 msgid "Disable Remote Site Error"
 msgstr "خطأ تعطيل الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:98
+#: src/components/Notification/notifications.ts:102
 msgid "Disable site %{name} from %{node} failed"
 msgstr "فشل تعطيل الموقع %{name} من %{node}"
 
-#: src/components/Notification/notifications.ts:101
+#: src/components/Notification/notifications.ts:105
 #: src/language/constants.ts:51
 msgid "Disable Remote Site Success"
 msgstr "تم تعطيل الموقع البعيد بنجاح"
 
-#: src/components/Notification/notifications.ts:102
+#: src/components/Notification/notifications.ts:106
 msgid "Disable site %{name} from %{node} successfully"
 msgstr "تم تعطيل الموقع %{name} من %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:105
+#: src/components/Notification/notifications.ts:109
 #: src/language/constants.ts:54
 msgid "Enable Remote Site Error"
 msgstr "خطأ في تفعيل الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:106
+#: src/components/Notification/notifications.ts:110
 msgid "Enable site %{name} on %{node} failed"
 msgstr "فشل تمكين الموقع %{name} على %{node}"
 
-#: src/components/Notification/notifications.ts:109
+#: src/components/Notification/notifications.ts:113
 #: src/language/constants.ts:53
 msgid "Enable Remote Site Success"
 msgstr "نجح تفعيل الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:110
+#: src/components/Notification/notifications.ts:114
 msgid "Enable site %{name} on %{node} successfully"
 msgstr "تم تمكين الموقع %{name} على %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:113
+#: src/components/Notification/notifications.ts:117
 msgid "Enable Remote Site Maintenance Error"
 msgstr "خطأ في تمكين صيانة الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:114
+#: src/components/Notification/notifications.ts:118
 msgid "Enable site %{name} maintenance on %{node} failed"
 msgstr "فشل تمكين الصيانة للموقع %{name} على %{node}"
 
-#: src/components/Notification/notifications.ts:117
+#: src/components/Notification/notifications.ts:121
 msgid "Enable Remote Site Maintenance Success"
 msgstr "تمكين صيانة الموقع البعيد بنجاح"
 
-#: src/components/Notification/notifications.ts:118
+#: src/components/Notification/notifications.ts:122
 msgid "Enable site %{name} maintenance on %{node} successfully"
 msgstr "تم تمكين صيانة الموقع %{name} على %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:121
+#: src/components/Notification/notifications.ts:125
 msgid "Disable Remote Site Maintenance Error"
 msgstr "خطأ في تعطيل صيانة الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:122
+#: src/components/Notification/notifications.ts:126
 msgid "Disable site %{name} maintenance on %{node} failed"
 msgstr "فشل تعطيل صيانة الموقع %{name} على %{node}"
 
-#: src/components/Notification/notifications.ts:125
+#: src/components/Notification/notifications.ts:129
 msgid "Disable Remote Site Maintenance Success"
 msgstr "تعطيل صيانة الموقع البعيد بنجاح"
 
-#: src/components/Notification/notifications.ts:126
+#: src/components/Notification/notifications.ts:130
 msgid "Disable site %{name} maintenance on %{node} successfully"
 msgstr "تم تعطيل صيانة الموقع %{name} على %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:129
+#: src/components/Notification/notifications.ts:133
 #: src/language/constants.ts:56
 msgid "Rename Remote Site Error"
 msgstr "خطأ في إعادة تسمية الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:130
+#: src/components/Notification/notifications.ts:134
 msgid "Rename site %{name} to %{new_name} on %{node} failed"
 msgstr "فشل إعادة تسمية الموقع %{name} إلى %{new_name} على %{node}"
 
-#: src/components/Notification/notifications.ts:133
+#: src/components/Notification/notifications.ts:137
 #: src/language/constants.ts:55
 msgid "Rename Remote Site Success"
 msgstr "تم إعادة تسمية الموقع البعيد بنجاح"
 
-#: src/components/Notification/notifications.ts:134
+#: src/components/Notification/notifications.ts:138
 msgid "Rename site %{name} to %{new_name} on %{node} successfully"
 msgstr "تمت إعادة تسمية الموقع %{name} إلى %{new_name} على %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:137
+#: src/components/Notification/notifications.ts:141
 #: src/language/constants.ts:48
 msgid "Save Remote Site Error"
 msgstr "خطأ في حفظ الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:138
+#: src/components/Notification/notifications.ts:142
 msgid "Save site %{name} to %{node} failed"
 msgstr "فشل حفظ الموقع %{name} إلى %{node}"
 
-#: src/components/Notification/notifications.ts:141
+#: src/components/Notification/notifications.ts:145
 #: src/language/constants.ts:47
 msgid "Save Remote Site Success"
 msgstr "حفظ الموقع البعيد بنجاح"
 
-#: src/components/Notification/notifications.ts:142
+#: src/components/Notification/notifications.ts:146
 msgid "Save site %{name} to %{node} successfully"
 msgstr "تم حفظ الموقع %{name} على %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:145
+#: src/components/Notification/notifications.ts:149
 msgid "Delete Remote Stream Error"
 msgstr "خطأ في حذف البث عن بُعد"
 
-#: src/components/Notification/notifications.ts:146
+#: src/components/Notification/notifications.ts:150
 msgid "Delete stream %{name} from %{node} failed"
 msgstr "فشل حذف الدفق %{name} من %{node}"
 
-#: src/components/Notification/notifications.ts:149
+#: src/components/Notification/notifications.ts:153
 msgid "Delete Remote Stream Success"
 msgstr "نجاح حذف البث عن بُعد"
 
-#: src/components/Notification/notifications.ts:150
+#: src/components/Notification/notifications.ts:154
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "تم حذف الدفق %{name} من %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:153
+#: src/components/Notification/notifications.ts:157
 msgid "Disable Remote Stream Error"
 msgstr "خطأ في تعطيل البث عن بُعد"
 
-#: src/components/Notification/notifications.ts:154
+#: src/components/Notification/notifications.ts:158
 msgid "Disable stream %{name} from %{node} failed"
 msgstr "فشل تعطيل الدفق %{name} من %{node}"
 
-#: src/components/Notification/notifications.ts:157
+#: src/components/Notification/notifications.ts:161
 msgid "Disable Remote Stream Success"
 msgstr "تعطيل البث عن بُعد بنجاح"
 
-#: src/components/Notification/notifications.ts:158
+#: src/components/Notification/notifications.ts:162
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr "تم تعطيل الدفق %{name} من %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:161
+#: src/components/Notification/notifications.ts:165
 msgid "Enable Remote Stream Error"
 msgstr "خطأ في تمكين البث عن بُعد"
 
-#: src/components/Notification/notifications.ts:162
+#: src/components/Notification/notifications.ts:166
 msgid "Enable stream %{name} on %{node} failed"
 msgstr "فشل تمكين الدفق %{name} على %{node}"
 
-#: src/components/Notification/notifications.ts:165
+#: src/components/Notification/notifications.ts:169
 msgid "Enable Remote Stream Success"
 msgstr "تمكين البث عن بُعد بنجاح"
 
-#: src/components/Notification/notifications.ts:166
+#: src/components/Notification/notifications.ts:170
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "تم تمكين الدفق %{name} على %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:169
+#: src/components/Notification/notifications.ts:173
 msgid "Rename Remote Stream Error"
 msgstr "خطأ في إعادة تسمية البث عن بُعد"
 
-#: src/components/Notification/notifications.ts:170
+#: src/components/Notification/notifications.ts:174
 msgid "Rename stream %{name} to %{new_name} on %{node} failed"
 msgstr "فشل إعادة تسمية الدفق %{name} إلى %{new_name} على %{node}"
 
-#: src/components/Notification/notifications.ts:173
+#: src/components/Notification/notifications.ts:177
 msgid "Rename Remote Stream Success"
 msgstr "تمت إعادة تسمية الدفق البعيد بنجاح"
 
-#: src/components/Notification/notifications.ts:174
+#: src/components/Notification/notifications.ts:178
 msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
 msgstr "تمت إعادة تسمية الدفق %{name} إلى %{new_name} على %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:177
+#: src/components/Notification/notifications.ts:181
 msgid "Save Remote Stream Error"
 msgstr "خطأ في حفظ البث عن بُعد"
 
-#: src/components/Notification/notifications.ts:178
+#: src/components/Notification/notifications.ts:182
 msgid "Save stream %{name} to %{node} failed"
 msgstr "فشل حفظ الدفق %{name} إلى %{node}"
 
-#: src/components/Notification/notifications.ts:181
+#: src/components/Notification/notifications.ts:185
 msgid "Save Remote Stream Success"
 msgstr "حفظ البث عن بُعد بنجاح"
 
-#: src/components/Notification/notifications.ts:182
+#: src/components/Notification/notifications.ts:186
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "تم حفظ الدفق %{name} في %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:185
+#: src/components/Notification/notifications.ts:189
 #: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr "تم استخدام جميع رموز الاسترداد"
 
-#: src/components/Notification/notifications.ts:186
+#: src/components/Notification/notifications.ts:190
 #: src/language/constants.ts:59
 msgid ""
-"Please generate new recovery codes in the preferences immediately to "
-"prevent lockout."
+"Please generate new recovery codes in the preferences immediately to prevent "
+"lockout."
 msgstr "يرجى إنشاء رموز استرداد جديدة في التفضيلات على الفور لمنع الإغلاق."
 
 #: src/components/PortScanner/PortScannerCompact.vue:31
@@ -1331,6 +1356,7 @@ msgstr "المنفذ"
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:242
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:522
 #: src/views/node/nodeColumns.tsx:87
+#: src/views/preference/tabs/AccessTokens.vue:54
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:29
 #: src/views/site/site_list/columns.tsx:120 src/views/stream/columns.tsx:87
 msgid "Status"
@@ -1469,7 +1495,8 @@ msgstr "معاينة تدفق التثبيت"
 msgid ""
 "This mode only previews the installation UI flow and does not change any "
 "server state."
-msgstr "هذا الوضع يعرض فقط تدفق واجهة المستخدم للتثبيت ولا يغير أي حالة في الخادم."
+msgstr ""
+"هذا الوضع يعرض فقط تدفق واجهة المستخدم للتثبيت ولا يغير أي حالة في الخادم."
 
 #: src/components/SelfCheck/tasks/frontend/https-check.ts:13
 msgid "HTTPS Protocol"
@@ -1496,6 +1523,7 @@ msgstr "تم النسخ"
 #: src/components/SensitiveString/SensitiveInput.vue:90
 #: src/components/SensitiveString/SensitiveString.vue:100
 #: src/views/backup/components/BackupCreator.vue:128
+#: src/views/preference/tabs/AccessTokens.vue:319
 msgid "Copy"
 msgstr "نسخ"
 
@@ -1560,9 +1588,9 @@ msgstr "كائن ملف غير صالح"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:158
 msgid ""
-"Frontend debug mode: restore flow completed without sending a backend "
-"request"
-msgstr "وضع تصحيح الواجهة الأمامية: اكتمل تدفق الاستعادة دون إرسال طلب إلى الخلفية"
+"Frontend debug mode: restore flow completed without sending a backend request"
+msgstr ""
+"وضع تصحيح الواجهة الأمامية: اكتمل تدفق الاستعادة دون إرسال طلب إلى الخلفية"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:159
 msgid "Restore completed successfully"
@@ -1587,8 +1615,8 @@ msgid ""
 "you have a valid backup file and security token, and carefully select what "
 "to restore."
 msgstr ""
-"تحذير: ستقوم عملية الاستعادة بالكتابة فوق التكوينات الحالية. تأكد من أن "
-"لديك ملف نسخ احتياطي صالحًا ورمزًا أمنيًا، واختر بعناية ما تريد استعادته."
+"تحذير: ستقوم عملية الاستعادة بالكتابة فوق التكوينات الحالية. تأكد من أن لديك "
+"ملف نسخ احتياطي صالحًا ورمزًا أمنيًا، واختر بعناية ما تريد استعادته."
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:204
 #: src/components/SystemRestore/SystemRestoreContent.vue:287
@@ -1649,8 +1677,8 @@ msgid ""
 "This will restore configuration files and database. Nginx UI will restart "
 "after the restoration is complete."
 msgstr ""
-"سيؤدي هذا إلى استعادة ملفات التكوين وقاعدة البيانات. سيعاد تشغيل واجهة "
-"Nginx بعد اكتمال الاستعادة."
+"سيؤدي هذا إلى استعادة ملفات التكوين وقاعدة البيانات. سيعاد تشغيل واجهة Nginx "
+"بعد اكتمال الاستعادة."
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:272
 #: src/components/SystemRestore/SystemRestoreContent.vue:355
@@ -1663,8 +1691,8 @@ msgstr "إعادة التشغيل التلقائي"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:368
 msgid ""
-"Nginx UI configuration has been restored and will restart automatically in "
-"a few seconds."
+"Nginx UI configuration has been restored and will restart automatically in a "
+"few seconds."
 msgstr "تمت استعادة تكوين Nginx UI وسيتم إعادة التشغيل تلقائيًا خلال بضع ثوانٍ."
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:371
@@ -1760,6 +1788,18 @@ msgstr "غير متاح"
 #: src/composables/useUpstreamStatus.ts:146
 msgid "Main Node"
 msgstr "العقدة الرئيسية"
+
+#: src/composables/useClusterSync.ts:17
+msgid "There is nothing to synchronize"
+msgstr "لا يوجد ما تتم مزامنته"
+
+#: src/composables/useClusterSync.ts:22
+msgid "Synchronized %{count} items successfully"
+msgstr "تمت مزامنة %{count} عنصرًا بنجاح"
+
+#: src/composables/useClusterSync.ts:33
+msgid "Synchronization finished with %{count} failures"
+msgstr "انتهت المزامنة مع %{count} حالة فشل"
 
 #: src/composables/useGeoTranslation.ts:165
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:165
@@ -1917,7 +1957,7 @@ msgid "Type"
 msgstr "نوع"
 
 #: src/composables/useUpstreamStatus.ts:122 src/routes/modules/upstream.ts:10
-#: src/views/upstream/SocketList.vue:24
+#: src/views/upstream/SocketList.vue:25
 msgid "Upstream"
 msgstr "أعلى التيار"
 
@@ -2174,8 +2214,8 @@ msgid ""
 "This backup uses an unsupported legacy format. Please create a new backup "
 "with a newer version before restoring."
 msgstr ""
-"يستخدم هذا النسخ الاحتياطي تنسيقًا قديمًا غير مدعوم. يرجى إنشاء نسخة "
-"احتياطية جديدة بإصدار أحدث قبل الاستعادة."
+"يستخدم هذا النسخ الاحتياطي تنسيقًا قديمًا غير مدعوم. يرجى إنشاء نسخة احتياطية "
+"جديدة بإصدار أحدث قبل الاستعادة."
 
 #: src/constants/errors/backup.ts:63
 msgid "Backup manifest is missing required file entry: {0}"
@@ -2435,9 +2475,24 @@ msgstr "ملف تعريف الشهادة غير متوفر من خادم ACME ا
 
 #: src/constants/errors/cert.ts:49
 msgid ""
-"Wildcard domains and IP addresses cannot be requested in the same "
-"certificate"
+"Wildcard domains and IP addresses cannot be requested in the same certificate"
 msgstr "لا يمكن طلب نطاقات الحرف البديل وعناوين IP في نفس الشهادة"
+
+#: src/constants/errors/cluster_sync.ts:2
+msgid "Path is not under the nginx conf dir"
+msgstr "المسار ليس ضمن مجلد إعدادات Nginx"
+
+#: src/constants/errors/cluster_sync.ts:3
+msgid "No enabled target node was found"
+msgstr "لم يتم العثور على عقدة هدف مفعّلة"
+
+#: src/constants/errors/cluster_sync.ts:4
+msgid "The namespace has no node to sync with"
+msgstr "لا تحتوي مساحة الأسماء على عقدة للمزامنة معها"
+
+#: src/constants/errors/cluster_sync.ts:5
+msgid "Select at least one kind of content to sync"
+msgstr "حدد نوعًا واحدًا على الأقل من المحتوى للمزامنة"
 
 #: src/constants/errors/config.ts:2
 msgid "File name is not allowed: {0}"
@@ -2615,7 +2670,8 @@ msgstr "فشل تحليل النموذج"
 
 #: src/constants/errors/nginx_log.indexer.ts:2
 msgid "Log parser is not initialized; call indexer.InitLogParser() before use"
-msgstr "لم يتم تهيئة محول السجلات؛ قم بتشغيل indexer.InitLogParser() قبل الاستخدام"
+msgstr ""
+"لم يتم تهيئة محول السجلات؛ قم بتشغيل indexer.InitLogParser() قبل الاستخدام"
 
 #: src/constants/errors/nginx_log.parser.ts:2
 msgid "Empty log line"
@@ -2635,8 +2691,7 @@ msgstr "تنسيق الطابع الزمني غير صالح"
 
 #: src/constants/errors/nginx_log.ts:2
 msgid ""
-"The log path is not under the paths in "
-"settings.NginxSettings.LogDirWhiteList"
+"The log path is not under the paths in settings.NginxSettings.LogDirWhiteList"
 msgstr ""
 "مسار السجل ليس ضمن المسارات الموجودة في "
 "settings.NginxSettings.LogDirWhiteList"
@@ -2659,19 +2714,19 @@ msgstr "معلمات التوجيه فارغة"
 
 #: src/constants/errors/nginx_log.ts:7
 msgid ""
-"Settings.NginxLogSettings.ErrorLogPath is empty, refer to "
-"https://nginxui.com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://"
+"nginxui.com/guide/config-nginx.html for more information"
 msgstr ""
-"إعدادات.Settings.NginxLogSettings.ErrorLogPath فارغة، راجع "
-"https://nginxui.com/guide/config-nginx.html لمزيد من المعلومات"
+"إعدادات.Settings.NginxLogSettings.ErrorLogPath فارغة، راجع https://"
+"nginxui.com/guide/config-nginx.html لمزيد من المعلومات"
 
 #: src/constants/errors/nginx_log.ts:8
 msgid ""
-"Settings.NginxLogSettings.AccessLogPath is empty, refer to "
-"https://nginxui.com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://"
+"nginxui.com/guide/config-nginx.html for more information"
 msgstr ""
-"إعدادات.Settings.NginxLogSettings.AccessLogPath فارغة، راجع "
-"https://nginxui.com/guide/config-nginx.html لمزيد من المعلومات"
+"إعدادات.Settings.NginxLogSettings.AccessLogPath فارغة، راجع https://"
+"nginxui.com/guide/config-nginx.html لمزيد من المعلومات"
 
 #: src/constants/errors/nginx_log.ts:9
 msgid "Log indexer not available"
@@ -2930,7 +2985,8 @@ msgid "Failed to restore nginx-ui.conf from backup: {0}"
 msgstr "فشل في استعادة nginx-ui.conf من النسخة الاحتياطية: {0}"
 
 #: src/constants/errors/self_check.ts:30
-msgid "Nginx configuration directory is not shared with external container at {0}"
+msgid ""
+"Nginx configuration directory is not shared with external container at {0}"
 msgstr "مجلد تكوين Nginx غير مشترك مع الحاوية الخارجية في {0}"
 
 #: src/constants/errors/self_check.ts:31
@@ -3158,7 +3214,8 @@ msgid "This field should be a valid hostname"
 msgstr "يجب أن يكون هذا الحقل اسم مضيف صالحًا"
 
 #: src/constants/form_errors.ts:6
-msgid "This field should only contain letters, unicode characters, numbers, and -_."
+msgid ""
+"This field should only contain letters, unicode characters, numbers, and -_."
 msgstr "يجب أن يحتوي هذا الحقل على حروف وأحرف يونيكود وأرقام و-_. فقط."
 
 #: src/constants/index.ts:26 src/views/notification/notificationColumns.tsx:28
@@ -3178,6 +3235,15 @@ msgstr "عن بُعد"
 #: src/constants/index.ts:45
 msgid "Mirror"
 msgstr "مرآة"
+
+#: src/constants/index.ts:54
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:32
+msgid "Manual"
+msgstr "يدوي"
+
+#: src/constants/index.ts:55
+msgid "Automatic"
+msgstr "تلقائي"
 
 #: src/language/constants.ts:2
 msgid "The username or password is incorrect"
@@ -3408,7 +3474,7 @@ msgstr "تعديل متعدد"
 
 #: src/language/curd.ts:35 src/views/certificate/CertificateEditor.vue:97
 #: src/views/certificate/components/RenewCert.vue:21
-#: src/views/preference/store/index.ts:164
+#: src/views/preference/store/index.ts:173
 msgid "Save successfully"
 msgstr "تم الحفظ بنجاح"
 
@@ -3518,23 +3584,23 @@ msgstr "تم إبطال الشهادة بنجاح"
 #: src/language/generate.ts:7
 msgid ""
 "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
-"Docker Image, please make sure the docker socket is mounted like this: `-v "
-"/var/run/docker.sock:/var/run/docker.sock`. Nginx UI official image uses "
-"/var/run/docker.sock to communicate with the host Docker Engine via Docker "
-"Client API. This feature is used to control Nginx in another container and "
-"perform container replacement rather than binary replacement during OTA "
-"upgrades of Nginx UI to ensure container dependencies are also upgraded. If "
-"you don't need this feature, please add the environment variable "
+"Docker Image, please make sure the docker socket is mounted like this: `-v /"
+"var/run/docker.sock:/var/run/docker.sock`. Nginx UI official image uses /var/"
+"run/docker.sock to communicate with the host Docker Engine via Docker Client "
+"API. This feature is used to control Nginx in another container and perform "
+"container replacement rather than binary replacement during OTA upgrades of "
+"Nginx UI to ensure container dependencies are also upgraded. If you don't "
+"need this feature, please add the environment variable "
 "NGINX_UI_IGNORE_DOCKER_SOCKET=true to the container."
 msgstr ""
 "تحقق مما إذا كان /var/run/docker.sock موجودًا. إذا كنت تستخدم صورة Docker "
-"الرسمية لـ Nginx UI، يرجى التأكد من توصيل مقبس Docker بهذه الطريقة: `-v "
-"/var/run/docker.sock:/var/run/docker.sock`. تستخدم صورة Nginx UI الرسمية "
-"/var/run/docker.sock للتواصل مع محرك Docker المضيف عبر واجهة برمجة تطبيقات "
-"Docker Client. تُستخدم هذه الميزة للتحكم في Nginx في حاوية أخرى وإجراء "
-"استبدال الحاوية بدلاً من استبدال الثنائي أثناء التحديثات OTA لـ Nginx UI "
-"لضمان تحديث تبعيات الحاوية أيضًا. إذا كنت لا تحتاج إلى هذه الميزة، يرجى "
-"إضافة متغير البيئة NGINX_UI_IGNORE_DOCKER_SOCKET=true إلى الحاوية."
+"الرسمية لـ Nginx UI، يرجى التأكد من توصيل مقبس Docker بهذه الطريقة: `-v /var/"
+"run/docker.sock:/var/run/docker.sock`. تستخدم صورة Nginx UI الرسمية /var/run/"
+"docker.sock للتواصل مع محرك Docker المضيف عبر واجهة برمجة تطبيقات Docker "
+"Client. تُستخدم هذه الميزة للتحكم في Nginx في حاوية أخرى وإجراء استبدال "
+"الحاوية بدلاً من استبدال الثنائي أثناء التحديثات OTA لـ Nginx UI لضمان تحديث "
+"تبعيات الحاوية أيضًا. إذا كنت لا تحتاج إلى هذه الميزة، يرجى إضافة متغير "
+"البيئة NGINX_UI_IGNORE_DOCKER_SOCKET=true إلى الحاوية."
 
 #: src/language/generate.ts:8
 msgid ""
@@ -3556,13 +3622,14 @@ msgid ""
 "indexing. You can download it from the Preference page or manually place "
 "GeoLite2-City.mmdb in the same directory as app.ini"
 msgstr ""
-"تحقق مما إذا كانت قاعدة بيانات GeoLite2 متاحة عند تمكين فهرسة السجلات. "
-"تتطلب فهرسة السجلات قاعدة بيانات GeoLite2 لتحليل العنوان الجغرافي للـ IP. "
-"يمكنك تنزيلها من صفحة التفضيلات أو وضع GeoLite2-City.mmdb يدويًا في نفس "
-"المجلد الذي يوجد فيه app.ini"
+"تحقق مما إذا كانت قاعدة بيانات GeoLite2 متاحة عند تمكين فهرسة السجلات. تتطلب "
+"فهرسة السجلات قاعدة بيانات GeoLite2 لتحليل العنوان الجغرافي للـ IP. يمكنك "
+"تنزيلها من صفحة التفضيلات أو وضع GeoLite2-City.mmdb يدويًا في نفس المجلد الذي "
+"يوجد فيه app.ini"
 
 #: src/language/generate.ts:10
-msgid "Check if the conf.d directory is under the nginx configuration directory"
+msgid ""
+"Check if the conf.d directory is under the nginx configuration directory"
 msgstr "تحقق مما إذا كان دليل conf.d موجودًا ضمن دليل تكوين nginx"
 
 #: src/language/generate.ts:11
@@ -3570,30 +3637,30 @@ msgid ""
 "Check if the nginx PID path exists. By default, this path is obtained from "
 "'nginx -V'. If it cannot be obtained, an error will be reported. In this "
 "case, you need to modify the configuration file to specify the Nginx PID "
-"path.Refer to the docs for more details: "
-"https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
+"path.Refer to the docs for more details: https://nginxui.com/zh_CN/guide/"
+"config-nginx.html#pidpath"
 msgstr ""
-"تحقق مما إذا كان مسار معرف عملية Nginx موجودًا. بشكل افتراضي، يتم الحصول "
-"على هذا المسار من الأمر 'nginx -V'. إذا تعذر الحصول عليه، سيتم الإبلاغ عن "
-"خطأ. في هذه الحالة، تحتاج إلى تعديل ملف التكوين لتحديد مسار معرف عملية "
-"Nginx. راجع الوثائق لمزيد من التفاصيل: "
-"https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
+"تحقق مما إذا كان مسار معرف عملية Nginx موجودًا. بشكل افتراضي، يتم الحصول على "
+"هذا المسار من الأمر 'nginx -V'. إذا تعذر الحصول عليه، سيتم الإبلاغ عن خطأ. "
+"في هذه الحالة، تحتاج إلى تعديل ملف التكوين لتحديد مسار معرف عملية Nginx. "
+"راجع الوثائق لمزيد من التفاصيل: https://nginxui.com/zh_CN/guide/config-"
+"nginx.html#pidpath"
 
 #: src/language/generate.ts:12
 msgid ""
-"Check if the nginx access log path exists. By default, this path is "
-"obtained from 'nginx -V'. If it cannot be obtained or the obtained path "
-"does not point to a valid, existing file, an error will be reported. In "
-"this case, you need to modify the configuration file to specify the access "
-"log path.Refer to the docs for more details: "
-"https://nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
+"Check if the nginx access log path exists. By default, this path is obtained "
+"from 'nginx -V'. If it cannot be obtained or the obtained path does not "
+"point to a valid, existing file, an error will be reported. In this case, "
+"you need to modify the configuration file to specify the access log "
+"path.Refer to the docs for more details: https://nginxui.com/zh_CN/guide/"
+"config-nginx.html#accesslogpath"
 msgstr ""
-"تحقق مما إذا كان مسار سجل الوصول إلى nginx موجودًا. بشكل افتراضي، يتم "
-"الحصول على هذا المسار من 'nginx -V'. إذا لم يتم الحصول عليه أو إذا كان "
-"المسار الذي تم الحصول عليه لا يشير إلى ملف صالح موجود، فسيتم الإبلاغ عن "
-"خطأ. في هذه الحالة، تحتاج إلى تعديل ملف التكوين لتحديد مسار سجل الوصول. "
-"راجع الوثائق لمزيد من التفاصيل: "
-"https://nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
+"تحقق مما إذا كان مسار سجل الوصول إلى nginx موجودًا. بشكل افتراضي، يتم الحصول "
+"على هذا المسار من 'nginx -V'. إذا لم يتم الحصول عليه أو إذا كان المسار الذي "
+"تم الحصول عليه لا يشير إلى ملف صالح موجود، فسيتم الإبلاغ عن خطأ. في هذه "
+"الحالة، تحتاج إلى تعديل ملف التكوين لتحديد مسار سجل الوصول. راجع الوثائق "
+"لمزيد من التفاصيل: https://nginxui.com/zh_CN/guide/config-"
+"nginx.html#accesslogpath"
 
 #: src/language/generate.ts:13
 msgid "Check if the nginx configuration directory exists"
@@ -3609,15 +3676,14 @@ msgid ""
 "from 'nginx -V'. If it cannot be obtained or the obtained path does not "
 "point to a valid, existing file, an error will be reported. In this case, "
 "you need to modify the configuration file to specify the error log path. "
-"Refer to the docs for more details: "
-"https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
+"Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-"
+"nginx.html#errorlogpath"
 msgstr ""
 "تحقق مما إذا كان مسار سجل أخطاء nginx موجودًا. بشكل افتراضي، يتم الحصول على "
 "هذا المسار من 'nginx -V'. إذا تعذر الحصول عليه أو إذا كان المسار الذي تم "
-"الحصول عليه لا يشير إلى ملف صالح موجود، فسيتم الإبلاغ عن خطأ. في هذه "
-"الحالة، تحتاج إلى تعديل ملف التكوين لتحديد مسار سجل الأخطاء. راجع الوثائق "
-"لمزيد من التفاصيل: "
-"https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
+"الحصول عليه لا يشير إلى ملف صالح موجود، فسيتم الإبلاغ عن خطأ. في هذه الحالة، "
+"تحتاج إلى تعديل ملف التكوين لتحديد مسار سجل الأخطاء. راجع الوثائق لمزيد من "
+"التفاصيل: https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
 
 #: src/language/generate.ts:16
 msgid "Check if the nginx sbin path exists"
@@ -3645,8 +3711,8 @@ msgstr ""
 
 #: src/language/generate.ts:21
 msgid ""
-"Check if the streams-available and streams-enabled directories are under "
-"the nginx configuration directory"
+"Check if the streams-available and streams-enabled directories are under the "
+"nginx configuration directory"
 msgstr ""
 "تحقق مما إذا كانت الدلائل streams-available و streams-enabled موجودة ضمن "
 "دليل تكوين nginx"
@@ -3678,12 +3744,12 @@ msgstr "قاعدة بيانات GeoLite2 متاحة"
 #: src/language/generate.ts:28
 msgid ""
 "Log file %{log_path} is not a regular file. If you are using nginx-ui in "
-"docker container, please refer to "
-"https://nginxui.com/zh_CN/guide/config-nginx-log.html for more information."
+"docker container, please refer to https://nginxui.com/zh_CN/guide/config-"
+"nginx-log.html for more information."
 msgstr ""
 "ملف السجل %{log_path} ليس ملفًا عاديًا. إذا كنت تستخدم nginx-ui في حاوية "
-"Docker، يرجى الرجوع إلى "
-"https://nginxui.com/zh_CN/guide/config-nginx-log.html لمزيد من المعلومات."
+"Docker، يرجى الرجوع إلى https://nginxui.com/zh_CN/guide/config-nginx-"
+"log.html لمزيد من المعلومات."
 
 #: src/language/generate.ts:29
 msgid "Nginx PID path exists"
@@ -3738,15 +3804,15 @@ msgid ""
 "unfixed version."
 msgstr ""
 "عندما تكون الحاوية خلف وكيل عكسي خارجي ينهي TLS (مثل nginx المضيف، "
-"Cloudflare)، يجب أن يثق ملف conf.d/nginx-ui.conf المضمن في رؤوس "
-"X-Forwarded-Proto/Host الواردة؛ وإلا ستفشل عمليات التحقق من أصل WebSocket. "
-"قد تحتفظ النشرات القديمة التي أبقت /etc/nginx بالإصدار غير المصحح."
+"Cloudflare)، يجب أن يثق ملف conf.d/nginx-ui.conf المضمن في رؤوس X-Forwarded-"
+"Proto/Host الواردة؛ وإلا ستفشل عمليات التحقق من أصل WebSocket. قد تحتفظ "
+"النشرات القديمة التي أبقت /etc/nginx بالإصدار غير المصحح."
 
 #: src/language/generate.ts:41
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
 msgstr ""
-"[Nginx UI] مستخدم ACME: %{name}، البريد الإلكتروني: %{email}، دليل CA: "
-"%{caDir}"
+"[Nginx UI] مستخدم ACME: %{name}، البريد الإلكتروني: %{email}، دليل CA: %"
+"{caDir}"
 
 #: src/language/generate.ts:42
 msgid "[Nginx UI] Backing up current certificate for later revocation"
@@ -3761,7 +3827,8 @@ msgid "[Nginx UI] Certificate successfully revoked"
 msgstr "[Nginx UI] تم إلغاء الشهادة بنجاح"
 
 #: src/language/generate.ts:45
-msgid "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
+msgid ""
+"[Nginx UI] Certificate was used for server, reloading server TLS certificate"
 msgstr "[Nginx UI] تم استخدام الشهادة للخادم، إعادة تحميل شهادة TLS للخادم"
 
 #: src/language/generate.ts:46
@@ -3888,7 +3955,7 @@ msgstr "استيراد شهادة"
 #: src/routes/modules/config.ts:10
 #: src/views/config/components/ConfigLeftPanel.vue:114
 #: src/views/config/components/ConfigLeftPanel.vue:164
-#: src/views/config/ConfigList.vue:74
+#: src/views/config/ConfigList.vue:75
 msgid "Manage Configs"
 msgstr "إدارة التكوينات"
 
@@ -3906,19 +3973,20 @@ msgstr "تعديل التكوين"
 #: src/routes/modules/dashboard.ts:10
 #: src/views/config/components/ConfigLeftPanel.vue:109
 #: src/views/config/components/ConfigLeftPanel.vue:159
-#: src/views/config/ConfigList.vue:69 src/views/nginx_log/NginxLog.vue:93
+#: src/views/config/ConfigList.vue:70 src/views/nginx_log/NginxLog.vue:93
 msgid "Dashboard"
 msgstr "لوحة المعلومات"
 
-#: src/routes/modules/dashboard.ts:19 src/views/preference/Preference.vue:47
+#: src/routes/modules/dashboard.ts:19 src/views/preference/Preference.vue:49
 msgid "Server"
 msgstr "الخادم"
 
-#: src/routes/modules/dashboard.ts:27 src/views/preference/Preference.vue:95
+#: src/routes/modules/dashboard.ts:27 src/views/preference/Preference.vue:109
 msgid "Nginx"
 msgstr "Nginx"
 
-#: src/routes/modules/dashboard.ts:35
+#: src/routes/modules/dashboard.ts:35 src/views/node/SyncConfigs.vue:68
+#: src/views/preference/tabs/HealthCheckSettings.vue:19
 msgid "Sites"
 msgstr "المواقع"
 
@@ -3955,7 +4023,7 @@ msgstr "سجلات المجموعة"
 msgid "Not Found"
 msgstr "غير موجود"
 
-#: src/routes/modules/namespaces.ts:10 src/views/namespace/Namespace.vue:19
+#: src/routes/modules/namespaces.ts:10 src/views/namespace/Namespace.vue:45
 msgid "Namespaces"
 msgstr "مساحات الأسماء"
 
@@ -3972,11 +4040,11 @@ msgid "Log List"
 msgstr "قائمة السجلات"
 
 #: src/routes/modules/nodes.ts:11 src/views/dashboard/Nodes.vue:89
-#: src/views/node/Node.vue:131
+#: src/views/node/Node.vue:144
 msgid "Nodes"
 msgstr "العقد"
 
-#: src/routes/modules/preference.ts:10 src/views/preference/Preference.vue:42
+#: src/routes/modules/preference.ts:10 src/views/preference/Preference.vue:44
 msgid "Preference"
 msgstr "تفضيل"
 
@@ -4004,8 +4072,8 @@ msgstr "إدارة التدفقات"
 msgid "Edit Stream"
 msgstr "تعديل البث"
 
-#: src/routes/modules/system.ts:26 src/views/node/Node.vue:188
-#: src/views/node/Node.vue:196 src/views/system/Upgrade.vue:154
+#: src/routes/modules/system.ts:26 src/views/node/Node.vue:203
+#: src/views/node/Node.vue:211 src/views/system/Upgrade.vue:154
 #: src/views/system/Upgrade.vue:159
 msgid "Upgrade"
 msgstr "ترقية"
@@ -4018,7 +4086,7 @@ msgstr "عن"
 msgid "Third-party Components"
 msgstr "مكونات الطرف الثالث"
 
-#: src/routes/modules/terminal.ts:10 src/views/preference/Preference.vue:77
+#: src/routes/modules/terminal.ts:10 src/views/preference/Preference.vue:85
 msgid "Terminal"
 msgstr "طرفية"
 
@@ -4109,6 +4177,7 @@ msgstr "مفعل"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:194
 #: src/views/backup/AutoBackup/AutoBackup.vue:204
+#: src/views/dashboard/components/SiteCard.vue:140
 #: src/views/dns/DDNSManager.vue:320 src/views/node/nodeColumns.tsx:104
 #: src/views/node/nodeColumns.tsx:122
 #: src/views/preference/tabs/HTTPSettings.vue:24
@@ -4143,7 +4212,7 @@ msgid "Failed"
 msgstr "فشل"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:258
-#: src/views/namespace/columns.ts:85
+#: src/views/namespace/columns.ts:110
 #: src/views/notification/notificationColumns.tsx:51
 #: src/views/preference/components/AuthSettings/Passkey.vue:96
 #: src/views/preference/components/ExternalNotify/columns.tsx:80
@@ -4156,7 +4225,7 @@ msgstr "تم الإنشاء في"
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
 #: src/views/config/configColumns.tsx:44 src/views/dns/DNSCredential.vue:65
 #: src/views/dns/DNSDomainList.vue:236 src/views/dns/DNSGroupList.vue:33
-#: src/views/namespace/columns.ts:91 src/views/node/nodeColumns.tsx:133
+#: src/views/namespace/columns.ts:116 src/views/node/nodeColumns.tsx:133
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:39
 #: src/views/site/site_list/columns.tsx:113 src/views/stream/columns.tsx:80
 #: src/views/stream/components/RightPanel/Basic.vue:35
@@ -4199,7 +4268,7 @@ msgstr "منطقة S3"
 #: src/views/dns/DNSDomainList.vue:242 src/views/dns/DNSGroupList.vue:37
 #: src/views/dns/DNSGroupRecordManager.vue:145
 #: src/views/dns/DNSGroupRecordManager.vue:1362
-#: src/views/namespace/columns.ts:97 src/views/nginx_log/NginxLogList.vue:339
+#: src/views/namespace/columns.ts:122 src/views/nginx_log/NginxLogList.vue:339
 #: src/views/node/nodeColumns.tsx:140
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:85
@@ -4468,11 +4537,10 @@ msgstr "معرف مفتاح EAB"
 
 #: src/views/certificate/ACMEUser.vue:83
 msgid ""
-"External Account Binding Key ID (optional). Required for some ACME "
-"providers like ZeroSSL."
+"External Account Binding Key ID (optional). Required for some ACME providers "
+"like ZeroSSL."
 msgstr ""
-"معرف مفتاح الربط الحساب الخارجي (اختياري). مطلوب لبعض موفري ACME مثل "
-"ZeroSSL."
+"معرف مفتاح الربط الحساب الخارجي (اختياري). مطلوب لبعض موفري ACME مثل ZeroSSL."
 
 #: src/views/certificate/ACMEUser.vue:85 src/views/certificate/ACMEUser.vue:98
 msgid "Leave blank if not required by your ACME provider"
@@ -4486,17 +4554,18 @@ msgstr "مفتاح HMAC EAB"
 msgid ""
 "External Account Binding HMAC Key (optional). Should be in Base64 URL "
 "encoding format."
-msgstr "مفتاح HMAC لربط الحساب الخارجي (اختياري). يجب أن يكون بتنسيق Base64 URL."
+msgstr ""
+"مفتاح HMAC لربط الحساب الخارجي (اختياري). يجب أن يكون بتنسيق Base64 URL."
 
 #: src/views/certificate/ACMEUser.vue:104
 msgid "Register On Startup"
 msgstr "التسجيل عند بدء التشغيل"
 
 #: src/views/certificate/ACMEUser.vue:110
-msgid "When Enabled, Nginx UI will automatically re-register users upon startup. "
+msgid ""
+"When Enabled, Nginx UI will automatically re-register users upon startup. "
 msgstr ""
-"عند التمكين، سيقوم Nginx UI بإعادة تسجيل المستخدمين تلقائيًا عند بدء "
-"التشغيل."
+"عند التمكين، سيقوم Nginx UI بإعادة تسجيل المستخدمين تلقائيًا عند بدء التشغيل."
 
 #: src/views/certificate/ACMEUser.vue:131
 msgid "Register successfully"
@@ -4650,7 +4719,7 @@ msgstr[5] "حالة الشهادة"
 
 #: src/views/certificate/components/CertificateActions.vue:22
 #: src/views/config/components/ConfigLeftPanel.vue:274
-#: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
+#: src/views/config/ConfigList.vue:127 src/views/config/ConfigList.vue:233
 #: src/views/dns/DNSGroupRecordManager.vue:1546
 #: src/views/dns/DNSRecordManager.vue:258 src/views/nginx_log/NginxLog.vue:129
 #: src/views/site/site_add/SiteAdd.vue:260
@@ -5004,7 +5073,8 @@ msgstr "إنشاء شهادة موقعة ذاتيًا"
 msgid ""
 "This self-signed certificate is managed by Nginx UI and renewed "
 "automatically."
-msgstr "تتم إدارة هذه الشهادة الموقعة ذاتيًا بواسطة Nginx UI ويتم تجديدها تلقائيًا."
+msgstr ""
+"تتم إدارة هذه الشهادة الموقعة ذاتيًا بواسطة Nginx UI ويتم تجديدها تلقائيًا."
 
 #: src/views/config/components/ConfigLeftPanel.vue:219
 msgid "Format successfully"
@@ -5045,6 +5115,7 @@ msgid "Changed Path"
 msgstr "المسار المتغير"
 
 #: src/views/config/components/ConfigRightPanel/Basic.vue:60
+#: src/views/config/ConfigList.vue:197
 msgid "Deploy"
 msgstr "نشر"
 
@@ -5061,10 +5132,12 @@ msgid "Chat"
 msgstr "دردشة"
 
 #: src/views/config/components/ConfigRightPanel/Deploy.vue:18
+#: src/views/config/components/Deploy.vue:76
 msgid "Overwrite"
 msgstr "الكتابة فوق"
 
 #: src/views/config/components/ConfigRightPanel/Deploy.vue:22
+#: src/views/config/components/Deploy.vue:80 src/views/node/SyncConfigs.vue:74
 msgid "Overwrite exist file"
 msgstr "الكتابة فوق الملف الموجود"
 
@@ -5110,14 +5183,31 @@ msgstr "اكتب %{delete} للتأكيد"
 
 #: src/views/config/components/Delete.vue:141
 #: src/views/config/components/Rename.vue:81
+#: src/views/namespace/Namespace.vue:62
 msgid "Sync"
 msgstr "مزامنة"
+
+#: src/views/config/components/Deploy.vue:36
+msgid "Please select at least one node"
+msgstr "يرجى تحديد عقدة واحدة على الأقل"
+
+#: src/views/config/components/Deploy.vue:60
+msgid "Deploy Directory"
+msgstr "نشر المجلد"
+
+#: src/views/config/components/Deploy.vue:68
+msgid ""
+"All configuration files in %{name} will be deployed to the selected nodes, "
+"and files created here later will follow the same targets."
+msgstr ""
+"سيتم نشر جميع ملفات الإعداد الموجودة في %{name} إلى العقد المحددة، وستتبع "
+"الملفات التي تُنشأ هنا لاحقًا الأهداف نفسها."
 
 #: src/views/config/components/Mkdir.vue:35
 msgid "Created successfully"
 msgstr "تم الإنشاء بنجاح"
 
-#: src/views/config/components/Mkdir.vue:47 src/views/config/ConfigList.vue:137
+#: src/views/config/components/Mkdir.vue:47 src/views/config/ConfigList.vue:144
 msgid "Create Folder"
 msgstr "إنشاء مجلد"
 
@@ -5146,11 +5236,11 @@ msgstr "اسم جديد"
 msgid "Name or content"
 msgstr "الاسم أو المحتوى"
 
-#: src/views/config/ConfigList.vue:112
+#: src/views/config/ConfigList.vue:119 src/views/node/SyncConfigs.vue:65
 msgid "Configurations"
 msgstr "التكوينات"
 
-#: src/views/config/ConfigList.vue:130
+#: src/views/config/ConfigList.vue:137
 msgid "Create File"
 msgstr "إنشاء ملف"
 
@@ -5201,7 +5291,7 @@ msgid "Link"
 msgstr "ربط"
 
 #: src/views/dashboard/components/NodeAnalyticItem.vue:82
-#: src/views/dashboard/components/SiteNavigationToolbar.vue:35
+#: src/views/dashboard/components/SiteNavigationToolbar.vue:36
 msgid "Connected"
 msgstr "متصل"
 
@@ -5219,10 +5309,6 @@ msgstr "عدد عمليات العامل المتزامنة، يتم الضبط 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:43
 msgid "Auto"
 msgstr "تلقائي"
-
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:32
-msgid "Manual"
-msgstr "يدوي"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:48
 msgid "Worker Connections"
@@ -5354,7 +5440,8 @@ msgstr "وقت عدم النشاط"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:177
 msgid "Cache items not accessed within this time will be removed"
-msgstr "سيتم إزالة عناصر الذاكرة المؤقتة التي لم يتم الوصول إليها خلال هذا الوقت"
+msgstr ""
+"سيتم إزالة عناصر الذاكرة المؤقتة التي لم يتم الوصول إليها خلال هذا الوقت"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:198
 msgid "Maximum Cache Size"
@@ -5382,7 +5469,8 @@ msgstr "ملفات المدير"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:252
 msgid "Number of files processed by cache manager at once"
-msgstr "عدد الملفات التي تتم معالجتها بواسطة مدير ذاكرة التخزين المؤقت في وقت واحد"
+msgstr ""
+"عدد الملفات التي تتم معالجتها بواسطة مدير ذاكرة التخزين المؤقت في وقت واحد"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:260
 msgid "Manager Sleep"
@@ -5410,7 +5498,8 @@ msgstr "ملفات المحمل"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:314
 msgid "Number of files processed by cache loader at once"
-msgstr "عدد الملفات التي تتم معالجتها بواسطة محمل ذاكرة التخزين المؤقت في وقت واحد"
+msgstr ""
+"عدد الملفات التي تتم معالجتها بواسطة محمل ذاكرة التخزين المؤقت في وقت واحد"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:322
 msgid "Loader Sleep"
@@ -5637,95 +5726,116 @@ msgstr ""
 "حجم مجموعة المقيم: الذاكرة الفعلية المقيمة في الذاكرة المادية، بما في ذلك "
 "ذاكرة المكتبة المشتركة، والتي سيتم حسابها بشكل متكرر للعديد من العمليات"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:76
+#: src/views/dashboard/components/SiteCard.vue:148
+#: src/views/upstream/SocketList.vue:42
+msgid "Paused"
+msgstr "متوقف مؤقتًا"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:88
 msgid "Informational Responses (1xx)"
 msgstr "الردود المعلوماتية (1xx)"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:85
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:97
 msgid "Successful Responses (2xx)"
 msgstr "الاستجابات الناجحة (2xx)"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:100
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:112
 msgid "Redirection Messages (3xx)"
 msgstr "رسائل إعادة التوجيه (3xx)"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:114
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:126
 msgid "Client Error Responses (4xx)"
 msgstr "استجابات خطأ العميل (4xx)"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:148
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:160
 msgid "Server Error Responses (5xx)"
 msgstr "استجابات خطأ الخادم (5xx)"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:403
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:449
 msgid "Health check configuration saved successfully"
 msgstr "تم حفظ تكوين فحص الصحة بنجاح"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:412
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:452
+msgid "Saved locally, but failed to synchronize %{count} node(s)"
+msgstr "تم الحفظ محليًا، لكن فشلت المزامنة مع %{count} عقدة"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:462
 msgid "Failed to save health check configuration"
 msgstr "فشل حفظ تكوين فحص الصحة"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:448
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:499
 msgid "Test successful! Response time: %{response_time}ms"
 msgstr "تم الاختبار بنجاح! وقت الاستجابة: %{response_time} مللي ثانية"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:451
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:502
 msgid "Test failed: %{error}"
 msgstr "فشل الاختبار: %{error}"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:456
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:507
 msgid "Test failed: Unable to perform health check"
 msgstr "فشل الاختبار: تعذر إجراء فحص الحالة"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:466
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:517
 msgid "Health Check Configuration"
 msgstr "تكوين فحص الصحة"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:473
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:524
 msgid "Enable Health Check"
 msgstr "تمكين فحص الصحة"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:477
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:528
 msgid "Health check is enabled"
 msgstr "تم تمكين فحص الصحة"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:477
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:528
 msgid "Health check is disabled"
 msgstr "تم تعطيل فحص الحالة"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:485
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:536
 msgid "Protocol"
 msgstr "البروتوكول"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:506
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:554
+msgid "Custom Health Check Target"
+msgstr "هدف مخصص لفحص السلامة"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:555
+msgid ""
+"Optional absolute URL. Use it when the public address differs from the "
+"actual upstream host or port."
+msgstr ""
+"عنوان URL مطلق اختياري. استخدمه عندما يختلف العنوان العام عن مضيف أو منفذ "
+"الخادم الأعلى الفعلي."
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:568
 msgid "HTTP Method"
 msgstr "طريقة HTTP"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:533
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:595
 msgid "Custom Headers"
 msgstr "رؤوس مخصصة"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:548
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:610
 msgid "Add Header"
 msgstr "إضافة رأس"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:553
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:615
 msgid "Request Body"
 msgstr "نص الطلب"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:557
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:619
 msgid "Expected Status Codes"
 msgstr "رموز الحالة المتوقعة"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:582
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:644
 msgid "Expected Text"
 msgstr "النص المتوقع"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:587
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:649
 msgid "Not Expected Text"
 msgstr "نص غير متوقع"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:599
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:661
 msgid ""
 "gRPCS uses TLS encryption. Server must implement gRPC Health Check service. "
 "For testing, SSL validation is disabled by default."
@@ -5733,7 +5843,7 @@ msgstr ""
 "يستخدم gRPTS تشفير TLS. يجب على الخادم تنفيذ خدمة فحص صحة gRPC. لأغراض "
 "الاختبار، يتم تعطيل التحقق من صحة SSL افتراضيًا."
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:600
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:662
 msgid ""
 "gRPC health check requires server to implement gRPC Health Check service "
 "(grpc.health.v1.Health)."
@@ -5741,7 +5851,7 @@ msgstr ""
 "يتطلب فحص صحة gRPC أن يقوم الخادم بتنفيذ خدمة فحص صحة gRPC "
 "(grpc.health.v1.Health)."
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:603
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:665
 msgid ""
 "Note: If the server does not support gRPC Reflection, health checks may "
 "fail. Please ensure your gRPC server has Reflection enabled."
@@ -5749,77 +5859,125 @@ msgstr ""
 "ملاحظة: إذا كان الخادم لا يدعم انعكاس gRPC، فقد تفشل عمليات فحص الصحة. يرجى "
 "التأكد من تمكين الانعكاس على خادم gRPC الخاص بك."
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:608
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:670
 msgid "Service Name"
 msgstr "اسم الخدمة"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:613
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:675
 msgid "Method Name"
 msgstr "اسم الطريقة"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:622
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:684
 msgid "Advanced Settings"
 msgstr "الإعدادات المتقدمة"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:625
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:687
 msgid "Check Interval (seconds)"
 msgstr "فترة الفحص (بالثواني)"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:630
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:692
 msgid "Timeout (seconds)"
 msgstr "الوقت المحدد (بالثواني)"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:636
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:698
 #: src/views/nginx_log/structured/components/SearchFilters.vue:200
 msgid "User Agent"
 msgstr "وكيل المستخدم"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:643
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:705
 msgid "Max Redirects"
 msgstr "أقصى عدد لإعادة التوجيه"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:650
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:712
 msgid "Follow Redirects"
 msgstr "متابعة إعادة التوجيه"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:658
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:720
 msgid "Validate SSL Certificate"
 msgstr "التحقق من صحة شهادة SSL"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:664
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:726
 msgid "Verify Hostname"
 msgstr "التحقق من اسم المضيف"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:670
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:732
 msgid "Check Favicon"
 msgstr "فحص الأيقونة"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:678
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:740
 msgid "DNS Resolver"
 msgstr "حل DNS"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:683
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:745
 msgid "Source IP"
 msgstr "IP المصدر"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:692
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:754
 msgid "Client Certificate"
 msgstr "شهادة العميل"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:697
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:759
 msgid "Client Key"
 msgstr "مفتاح العميل"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:716
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:770
+msgid "Failure Notifications"
+msgstr "إشعارات الفشل"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:774
+msgid "Notifications are enabled"
+msgstr "الإشعارات مفعّلة"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:774
+msgid "Notifications are disabled"
+msgstr "الإشعارات معطّلة"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:780
+msgid "Failure Status Codes"
+msgstr "رموز حالة الفشل"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:786
+msgid "Select status codes"
+msgstr "حدد رموز الحالة"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:806
+msgid "Notify on connection, DNS, and timeout errors"
+msgstr "الإشعار عند أخطاء الاتصال وDNS وانتهاء المهلة"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:812
+msgid "Consecutive Failures"
+msgstr "حالات الفشل المتتالية"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:823
+msgid "Reminder Cooldown (seconds)"
+msgstr "فترة تهدئة التذكير (بالثواني)"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:837
+msgid "Notify when the site recovers"
+msgstr "الإشعار عند تعافي الموقع"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:841
+msgid "Notification Channels"
+msgstr "قنوات الإشعارات"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:847
+msgid "Select notification channels"
+msgstr "حدد قنوات الإشعارات"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:872
 #: src/views/preference/tabs/ExternalNotify.vue:57
 msgid "Test"
 msgstr "اختبار"
 
-#: src/views/dashboard/components/SiteNavigationToolbar.vue:35
+#: src/views/dashboard/components/SiteNavigationToolbar.vue:36
 msgid "Disconnected"
 msgstr "غير متصل"
 
-#: src/views/dashboard/components/SiteNavigationToolbar.vue:48
+#: src/views/dashboard/components/SiteNavigationToolbar.vue:46
+msgid "Health checks paused"
+msgstr "تم إيقاف فحوصات السلامة مؤقتًا"
+
+#: src/views/dashboard/components/SiteNavigationToolbar.vue:58
 msgid "Save Order"
 msgstr "حفظ الطلب"
 
@@ -5856,8 +6014,8 @@ msgid ""
 "This module provides Nginx request statistics, connection count, etc. data. "
 "After enabling it, you can view performance statistics"
 msgstr ""
-"توفر هذه الوحدة إحصائيات طلبات Nginx وعدد الاتصالات وما إلى ذلك من "
-"البيانات. بعد تمكينها، يمكنك عرض إحصائيات الأداء"
+"توفر هذه الوحدة إحصائيات طلبات Nginx وعدد الاتصالات وما إلى ذلك من البيانات. "
+"بعد تمكينها، يمكنك عرض إحصائيات الأداء"
 
 #: src/views/dashboard/NginxDashBoard.vue:195
 msgid "Need to enable the stub_status module"
@@ -5964,35 +6122,27 @@ msgstr "شبكة"
 msgid "Disk IO"
 msgstr "إدخال/إخراج القرص"
 
-#: src/views/dashboard/SiteNavigation.vue:82
+#: src/views/dashboard/SiteNavigation.vue:98
 msgid "Site refresh initiated"
 msgstr "تم بدء تحديث الموقع"
 
-#: src/views/dashboard/SiteNavigation.vue:86
+#: src/views/dashboard/SiteNavigation.vue:102
 msgid "Failed to refresh sites"
 msgstr "فشل في تحديث المواقع"
 
-#: src/views/dashboard/SiteNavigation.vue:104
+#: src/views/dashboard/SiteNavigation.vue:120
 msgid "Order saved successfully"
 msgstr "تم حفظ الطلب بنجاح"
 
-#: src/views/dashboard/SiteNavigation.vue:110
+#: src/views/dashboard/SiteNavigation.vue:126
 msgid "Failed to save order"
 msgstr "فشل حفظ الترتيب"
 
-#: src/views/dashboard/SiteNavigation.vue:128
-msgid "Health check configuration saved"
-msgstr "تم حفظ تكوين فحص الصحة"
-
-#: src/views/dashboard/SiteNavigation.vue:133
-msgid "Failed to save configuration"
-msgstr "فشل حفظ الإعدادات"
-
-#: src/views/dashboard/SiteNavigation.vue:170
+#: src/views/dashboard/SiteNavigation.vue:174
 msgid "No sites found"
 msgstr "لم يتم العثور على مواقع"
 
-#: src/views/dashboard/SiteNavigation.vue:173
+#: src/views/dashboard/SiteNavigation.vue:177
 msgid ""
 "Sites will appear here once you configure nginx server blocks with valid "
 "server_name (localhost excluded) directives."
@@ -6182,6 +6332,8 @@ msgid "Provider"
 msgstr "مزود"
 
 #: src/views/dns/DDNSManager.vue:168
+#: src/views/preference/tabs/HealthCheckSettings.vue:27
+#: src/views/preference/tabs/HealthCheckSettings.vue:41
 #: src/views/preference/tabs/LogrotateSettings.vue:26
 msgid "Interval"
 msgstr "فترة"
@@ -6249,10 +6401,10 @@ msgid ""
 "unreachable. Disable to manage only the records you explicitly selected and "
 "keep all other DNS state untouched."
 msgstr ""
-"عند التمكين، يمتلك DDNS الأسماء المحددة: يقرن تلقائيًا سجلات العائلة "
-"الشقيقة، وينشئ السجلات المفقودة، ويزيل السجلات التي لا يمكن الوصول إلى "
-"عائلة IP الخاصة بها. قم بالتعطيل لإدارة السجلات التي حددتها بشكل صريح فقط "
-"والحفاظ على حالة DNS الأخرى كما هي."
+"عند التمكين، يمتلك DDNS الأسماء المحددة: يقرن تلقائيًا سجلات العائلة الشقيقة، "
+"وينشئ السجلات المفقودة، ويزيل السجلات التي لا يمكن الوصول إلى عائلة IP "
+"الخاصة بها. قم بالتعطيل لإدارة السجلات التي حددتها بشكل صريح فقط والحفاظ على "
+"حالة DNS الأخرى كما هي."
 
 #: src/views/dns/DDNSManager.vue:400
 msgid "Records"
@@ -6281,7 +6433,8 @@ msgid ""
 msgstr "يرجى ملء بيانات اعتماد مصادقة API المقدمة من مزود DNS الخاص بك."
 
 #: src/views/dns/DNSCredential.vue:96
-msgid "Please note that the unit of time configurations below are all in seconds."
+msgid ""
+"Please note that the unit of time configurations below are all in seconds."
 msgstr "يرجى ملاحظة أن تكوين وحدات الوقت أدناه كلها بالثواني."
 
 #: src/views/dns/DNSDomainList.vue:109
@@ -6297,7 +6450,8 @@ msgstr ""
 "ACME DNS-01."
 
 #: src/views/dns/DNSDomainList.vue:116
-msgid "DNS Domains only use providers with DNS record management implementations."
+msgid ""
+"DNS Domains only use providers with DNS record management implementations."
 msgstr "تستخدم DNS Domains فقط المزوّدين الذين لديهم تطبيقات لإدارة سجلات DNS."
 
 #: src/views/dns/DNSDomainList.vue:119
@@ -6427,8 +6581,8 @@ msgid ""
 "Batch record operations target the selected domains. Provider credentials "
 "remain unchanged."
 msgstr ""
-"تستهدف عمليات تسجيل الدُفعات النطاقات المُحددة. تبقى بيانات اعتماد المُزود "
-"دون تغيير."
+"تستهدف عمليات تسجيل الدُفعات النطاقات المُحددة. تبقى بيانات اعتماد المُزود دون "
+"تغيير."
 
 #: src/views/dns/DNSGroupList.vue:288
 msgid "Save group"
@@ -6448,6 +6602,7 @@ msgstr "التغطية"
 
 #: src/views/dns/DNSGroupRecordManager.vue:160
 #: src/views/dns/DNSGroupRecordManager.vue:177
+#: src/views/preference/tabs/AccessTokens.vue:55
 #: src/views/preference/tabs/AuthSettings.vue:27
 msgid "Action"
 msgstr "إجراء"
@@ -6548,6 +6703,7 @@ msgid "Record already matches"
 msgstr "السجل مطابق بالفعل"
 
 #: src/views/dns/DNSGroupRecordManager.vue:1008
+#: src/views/preference/tabs/AccessTokens.vue:262
 msgid "Create"
 msgstr "إنشاء"
 
@@ -6588,7 +6744,8 @@ msgstr "مجموعة DNS غير موجودة"
 msgid ""
 "This local group may belong to another user or node, or it may have been "
 "deleted."
-msgstr "هذه المجموعة المحلية قد تنتمي لمستخدم آخر أو عقدة أخرى، أو ربما تم حذفها."
+msgstr ""
+"هذه المجموعة المحلية قد تنتمي لمستخدم آخر أو عقدة أخرى، أو ربما تم حذفها."
 
 #: src/views/dns/DNSGroupRecordManager.vue:1223
 #: src/views/dns/DNSGroupRecordManager.vue:1636
@@ -6650,8 +6807,8 @@ msgid ""
 "Choose which names to synchronize. Existing provider-specific values are "
 "preserved unless you change them below."
 msgstr ""
-"اختر الأسماء التي ترغب في مزامنتها. يتم الاحتفاظ بالقيم الخاصة بكل مزود "
-"خدمة ما لم تقم بتغييرها أدناه."
+"اختر الأسماء التي ترغب في مزامنتها. يتم الاحتفاظ بالقيم الخاصة بكل مزود خدمة "
+"ما لم تقم بتغييرها أدناه."
 
 #: src/views/dns/DNSGroupRecordManager.vue:1409
 msgid "Edit scope"
@@ -6723,7 +6880,8 @@ msgid "Apply changes"
 msgstr "تطبيق التغييرات"
 
 #: src/views/dns/DNSGroupRecordManager.vue:1554
-msgid "Changes are applied per domain and cannot be rolled back as one transaction."
+msgid ""
+"Changes are applied per domain and cannot be rolled back as one transaction."
 msgstr "يتم تطبيق التغييرات لكل نطاق ولا يمكن التراجع عنها كمعاملة واحدة."
 
 #: src/views/dns/DNSGroupRecordManager.vue:1585
@@ -6784,9 +6942,9 @@ msgstr "يجب ألا يتجاوز طول كلمة المرور 20 حرفًا"
 
 #: src/views/install/components/InstallForm.vue:64
 msgid ""
-"Frontend debug mode: install flow completed without sending a backend "
-"request"
-msgstr "وضع تصحيح الواجهة الأمامية: اكتمل تدفق التثبيت دون إرسال طلب إلى الخلفية"
+"Frontend debug mode: install flow completed without sending a backend request"
+msgstr ""
+"وضع تصحيح الواجهة الأمامية: اكتمل تدفق التثبيت دون إرسال طلب إلى الخلفية"
 
 #: src/views/install/components/InstallForm.vue:70
 msgid "Install successfully"
@@ -6849,16 +7007,16 @@ msgid ""
 "Frontend debug mode is active. Enter the debug secret to unlock the mock "
 "installation flow without sending backend requests."
 msgstr ""
-"وضع تصحيح الواجهة الأمامية نشط. أدخل سر التصحيح لفتح تدفق التثبيت الوهمي "
-"دون إرسال طلبات إلى الخلفية."
+"وضع تصحيح الواجهة الأمامية نشط. أدخل سر التصحيح لفتح تدفق التثبيت الوهمي دون "
+"إرسال طلبات إلى الخلفية."
 
 #: src/views/install/components/InstallView.vue:169
 msgid ""
 "Enter the one-time install secret shown by the install script or found in "
 "the config directory hidden file to unlock setup."
 msgstr ""
-"أدخل سر التثبيت لمرة واحدة الذي يظهره نص التثبيت أو الموجود في ملف "
-"الإعدادات المخفي لفتح الإعداد."
+"أدخل سر التثبيت لمرة واحدة الذي يظهره نص التثبيت أو الموجود في ملف الإعدادات "
+"المخفي لفتح الإعداد."
 
 #: src/views/install/components/InstallView.vue:174
 msgid "Install Secret (*)"
@@ -6891,6 +7049,18 @@ msgstr "نوع اختبار المنبع"
 #: src/views/namespace/columns.ts:72
 msgid "Deploy Mode"
 msgstr "وضع النشر"
+
+#: src/views/namespace/columns.ts:85
+msgid "Sync Strategy"
+msgstr "استراتيجية المزامنة"
+
+#: src/views/namespace/columns.ts:98
+msgid "Sync Interval (minutes)"
+msgstr "فترة المزامنة (بالدقائق)"
+
+#: src/views/namespace/Namespace.vue:25
+msgid "This namespace has no sync node"
+msgstr "لا تحتوي مساحة الأسماء هذه على عقدة مزامنة"
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:47
 msgid "CPU"
@@ -6980,8 +7150,8 @@ msgstr "مُوصى به:"
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:166
 msgid ""
-"* Index files are stored in the \"log-index\" directory within your Nginx "
-"UI config path by default."
+"* Index files are stored in the \"log-index\" directory within your Nginx UI "
+"config path by default."
 msgstr ""
 "* يتم تخزين ملفات الفهرس في دليل \"log-index\" ضمن مسار تكوين واجهة NGINX "
 "افتراضيًا."
@@ -6991,8 +7161,8 @@ msgid ""
 "If you want to change the storage location, you can set the `IndexPath` of "
 "`nginx_log` section in the Nginx UI config."
 msgstr ""
-"إذا كنت ترغب في تغيير موقع التخزين، يمكنك تعيين `IndexPath` لقسم "
-"`nginx_log` في تكوين واجهة Nginx."
+"إذا كنت ترغب في تغيير موقع التخزين، يمكنك تعيين `IndexPath` لقسم `nginx_log` "
+"في تكوين واجهة Nginx."
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:178
 #: src/views/preference/tabs/GeoLiteSettings.vue:7
@@ -7341,7 +7511,7 @@ msgstr "منظم"
 msgid "Raw"
 msgstr "خام"
 
-#: src/views/nginx_log/NginxLog.vue:101 src/views/node/Node.vue:165
+#: src/views/nginx_log/NginxLog.vue:101 src/views/node/Node.vue:178
 msgid "Auto Refresh"
 msgstr "التحديث التلقائي"
 
@@ -7571,15 +7741,16 @@ msgstr "تم اكتشاف سجل الأخطاء"
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:676
 msgid ""
-"Error logs do not support structured analysis as they contain free-form "
-"text messages."
+"Error logs do not support structured analysis as they contain free-form text "
+"messages."
 msgstr "لا تدعم سجلات الأخطاء التحليل المنظم لأنها تحتوي على رسائل نصية حرة."
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:678
-msgid "For error logs, please use the Raw Log Viewer for better viewing experience."
+msgid ""
+"For error logs, please use the Raw Log Viewer for better viewing experience."
 msgstr ""
-"بالنسبة لسجلات الأخطاء، يرجى استخدام عارض السجلات الخام للحصول على تجربة "
-"عرض أفضل."
+"بالنسبة لسجلات الأخطاء، يرجى استخدام عارض السجلات الخام للحصول على تجربة عرض "
+"أفضل."
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:683
 msgid "Go to Raw Log Viewer"
@@ -7614,8 +7785,7 @@ msgid ""
 "The result set is too large to sum exactly, this value is extrapolated from "
 "a sample"
 msgstr ""
-"مجموعة النتائج كبيرة جدًا بحيث لا يمكن جمعها بدقة، وهذه القيمة مستقراة من "
-"عينة"
+"مجموعة النتائج كبيرة جدًا بحيث لا يمكن جمعها بدقة، وهذه القيمة مستقراة من عينة"
 
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:787
 msgid "Traffic"
@@ -7704,7 +7874,8 @@ msgid "Get release information error"
 msgstr "خطأ في الحصول على معلومات الإصدار"
 
 #: src/views/node/BatchUpgrader.vue:187
-msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
+msgid ""
+"This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr "سيتم ترقية أو إعادة تثبيت Nginx UI على %{nodeNames} إلى %{version}."
 
 #: src/views/node/BatchUpgrader.vue:193 src/views/system/Upgrade.vue:237
@@ -7719,41 +7890,50 @@ msgstr "عرض على GitHub"
 msgid "Perform"
 msgstr "نفذ"
 
-#: src/views/node/Node.vue:44
+#: src/views/node/Node.vue:45
 msgid "Auto refresh enabled"
 msgstr "تمكين التحديث التلقائي"
 
-#: src/views/node/Node.vue:48
+#: src/views/node/Node.vue:49
 msgid "Auto refresh disabled"
 msgstr "تم تعطيل التحديث التلقائي"
 
-#: src/views/node/Node.vue:68
+#: src/views/node/Node.vue:69
 msgid "Load successfully"
 msgstr "تم التحميل بنجاح"
 
-#: src/views/node/Node.vue:83 src/views/node/Node.vue:201
+#: src/views/node/Node.vue:83 src/views/node/Node.vue:216
+msgid "Please select at least one node to sync configs"
+msgstr "يرجى تحديد عقدة واحدة على الأقل لمزامنة الإعدادات"
+
+#: src/views/node/Node.vue:96 src/views/node/Node.vue:235
 msgid "Please select at least one node to reload Nginx"
 msgstr "الرجاء تحديد عقدة واحدة على الأقل لإعادة تحميل Nginx"
 
-#: src/views/node/Node.vue:89
+#: src/views/node/Node.vue:102
 msgid "Nginx reload operations have been dispatched to remote nodes"
 msgstr "تم إرسال عمليات إعادة تحميل Nginx إلى العقد البعيدة"
 
-#: src/views/node/Node.vue:97 src/views/node/Node.vue:222
+#: src/views/node/Node.vue:110 src/views/node/Node.vue:256
 msgid "Please select at least one node to restart Nginx"
 msgstr "الرجاء تحديد عقدة واحدة على الأقل لإعادة تشغيل Nginx"
 
-#: src/views/node/Node.vue:103
+#: src/views/node/Node.vue:116
 msgid "Nginx restart operations have been dispatched to remote nodes"
 msgstr "تم إرسال عمليات إعادة تشغيل Nginx إلى العقد البعيدة"
 
-#: src/views/node/Node.vue:138
+#: src/views/node/Node.vue:151
 msgid "Load from settings"
 msgstr "تحميل من الإعدادات"
 
-#: src/views/node/Node.vue:180
+#: src/views/node/Node.vue:195
 msgid "Please select at least one node to upgrade"
 msgstr "يرجى اختيار عقدة واحدة على الأقل للترقية"
+
+#: src/views/node/Node.vue:223 src/views/node/Node.vue:230
+#: src/views/node/SyncConfigs.vue:53
+msgid "Sync Configs"
+msgstr "مزامنة الإعدادات"
 
 #: src/views/node/nodeColumns.tsx:13
 msgid "Rotating"
@@ -7764,6 +7944,7 @@ msgid "Unpaired"
 msgstr "غير مقترن"
 
 #: src/views/node/nodeColumns.tsx:15
+#: src/views/preference/tabs/AccessTokens.vue:147
 msgid "Revoked"
 msgstr "ملغاة"
 
@@ -7791,6 +7972,14 @@ msgstr "السر القديم"
 #: src/views/node/nodeColumns.tsx:82
 msgid "Paired signature"
 msgstr "توقيع مزدوج"
+
+#: src/views/node/SyncConfigs.vue:61
+msgid "The selected content will be pushed to: %{nodes}"
+msgstr "سيتم دفع المحتوى المحدد إلى: %{nodes}"
+
+#: src/views/node/SyncConfigs.vue:71
+msgid "Streams"
+msgstr "Streams"
 
 #: src/views/notification/Notification.vue:28
 msgid "Notification"
@@ -7855,7 +8044,8 @@ msgstr "نصائح"
 msgid ""
 "Please enter a name for the passkey you wish to create and click the OK "
 "button below."
-msgstr "يرجى إدخال اسم لمفتاح المرور الذي ترغب في إنشائه ثم انقر على زر موافق أدناه."
+msgstr ""
+"يرجى إدخال اسم لمفتاح المرور الذي ترغب في إنشائه ثم انقر على زر موافق أدناه."
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:79
 msgid "If your browser supports WebAuthn Passkey, a dialog box will appear."
@@ -7880,7 +8070,8 @@ msgid ""
 msgstr "لم تقم بتكوين إعدادات Webauthn، لذا لا يمكنك إضافة مفتاح مرور."
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:104
-msgid "To ensure security, Webauthn configuration cannot be added through the UI. "
+msgid ""
+"To ensure security, Webauthn configuration cannot be added through the UI. "
 msgstr "لضمان الأمان، لا يمكن إضافة إعدادات WebAuthn من خلال واجهة المستخدم."
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:114
@@ -7892,8 +8083,8 @@ msgid ""
 "Due to the security policies of some browsers, you cannot use passkeys on "
 "non-HTTPS websites, except when running on localhost."
 msgstr ""
-"نظرًا لسياسات الأمان لبعض المتصفحات، لا يمكنك استخدام مفاتيح المرور على "
-"مواقع الويب غير HTTPS، إلا عند التشغيل على localhost."
+"نظرًا لسياسات الأمان لبعض المتصفحات، لا يمكنك استخدام مفاتيح المرور على مواقع "
+"الويب غير HTTPS، إلا عند التشغيل على localhost."
 
 #: src/views/preference/components/AuthSettings/Passkey.vue:40
 msgid "Update successfully"
@@ -7909,7 +8100,8 @@ msgid "Passkey"
 msgstr "مفتاح المرور"
 
 #: src/views/preference/components/AuthSettings/Passkey.vue:63
-msgid "Passkeys are webauthn credentials that validate your identity using touch, "
+msgid ""
+"Passkeys are webauthn credentials that validate your identity using touch, "
 msgstr "مفاتيح المرور هي بيانات اعتماد WebAuthn تتحقق من هويتك باستخدام اللمس،"
 
 #: src/views/preference/components/AuthSettings/Passkey.vue:76
@@ -7957,7 +8149,8 @@ msgstr ""
 "باستخدام مدير كلمات المرور."
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:82
-msgid "You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
+msgid ""
+"You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
 msgstr ""
 "لم تقم بتمكين المصادقة الثنائية بعد. يرجى تمكين المصادقة الثنائية لإنشاء "
 "رموز الاسترداد."
@@ -8161,42 +8354,209 @@ msgstr "تيليجرام"
 msgid "WeCom"
 msgstr "ويكوم"
 
-#: src/views/preference/Preference.vue:53
+#: src/views/preference/Preference.vue:55
 msgid "App"
 msgstr "التطبيق"
 
-#: src/views/preference/Preference.vue:59
+#: src/views/preference/Preference.vue:61
 #: src/views/preference/tabs/ExternalNotify.vue:42
 msgid "External Notify"
 msgstr "إشعار خارجي"
 
-#: src/views/preference/Preference.vue:65
+#: src/views/preference/Preference.vue:67 src/views/upstream/SocketList.vue:64
+msgid "Health Check"
+msgstr "فحص الصحة"
+
+#: src/views/preference/Preference.vue:73
 msgid "Node"
 msgstr "العقدة"
 
-#: src/views/preference/Preference.vue:71
+#: src/views/preference/Preference.vue:79
 msgid "HTTP"
 msgstr "HTTP"
 
-#: src/views/preference/Preference.vue:83
+#: src/views/preference/Preference.vue:91
 msgid "Auth"
 msgstr "مصادقة"
 
-#: src/views/preference/Preference.vue:89
+#: src/views/preference/Preference.vue:97
+#: src/views/preference/tabs/AccessTokens.vue:165
+msgid "Access Tokens"
+msgstr "رموز الوصول"
+
+#: src/views/preference/Preference.vue:103
 msgid "Cert"
 msgstr "شهادة"
 
-#: src/views/preference/Preference.vue:101
+#: src/views/preference/Preference.vue:115
 msgid "LLM"
 msgstr "LLM"
 
-#: src/views/preference/Preference.vue:107
+#: src/views/preference/Preference.vue:121
 msgid "Logrotate"
 msgstr "تدوير السجلات"
 
-#: src/views/preference/Preference.vue:113
+#: src/views/preference/Preference.vue:127
 msgid "GeoLite"
 msgstr "جيو لايت"
+
+#: src/views/preference/tabs/AccessTokens.vue:29
+msgid "Management API: Read"
+msgstr "واجهة الإدارة: قراءة"
+
+#: src/views/preference/tabs/AccessTokens.vue:30
+msgid "Read resources and runtime status through the management API."
+msgstr "قراءة الموارد وحالة التشغيل عبر واجهة الإدارة البرمجية."
+
+#: src/views/preference/tabs/AccessTokens.vue:34
+msgid "Management API: Write"
+msgstr "واجهة الإدارة: كتابة"
+
+#: src/views/preference/tabs/AccessTokens.vue:35
+msgid ""
+"Create, update, and delete resources and run Nginx control operations. "
+"Includes API read access."
+msgstr ""
+"إنشاء الموارد وتحديثها وحذفها وتنفيذ عمليات التحكم في Nginx. يشمل صلاحية "
+"القراءة عبر الواجهة البرمجية."
+
+#: src/views/preference/tabs/AccessTokens.vue:39
+msgid "MCP: Read"
+msgstr "MCP: قراءة"
+
+#: src/views/preference/tabs/AccessTokens.vue:40
+msgid "Use read-only Nginx UI MCP tools."
+msgstr "استخدام أدوات MCP للقراءة فقط في Nginx UI."
+
+#: src/views/preference/tabs/AccessTokens.vue:44
+msgid "MCP: Write"
+msgstr "MCP: كتابة"
+
+#: src/views/preference/tabs/AccessTokens.vue:45
+msgid "Use mutating Nginx UI MCP tools. Includes MCP read access."
+msgstr ""
+"استخدام أدوات MCP التي تُجري تعديلات في Nginx UI. يشمل صلاحية القراءة عبر "
+"MCP."
+
+#: src/views/preference/tabs/AccessTokens.vue:51
+#: src/views/preference/tabs/AccessTokens.vue:274
+msgid "Scopes"
+msgstr "النطاقات"
+
+#: src/views/preference/tabs/AccessTokens.vue:52
+msgid "Last used"
+msgstr "آخر استخدام"
+
+#: src/views/preference/tabs/AccessTokens.vue:53
+msgid "Expires"
+msgstr "ينتهي"
+
+#: src/views/preference/tabs/AccessTokens.vue:89
+msgid "Token name is required"
+msgstr "اسم الرمز مطلوب"
+
+#: src/views/preference/tabs/AccessTokens.vue:93
+msgid "Select at least one scope"
+msgstr "حدد نطاقًا واحدًا على الأقل"
+
+#: src/views/preference/tabs/AccessTokens.vue:106
+msgid "Access token created"
+msgstr "تم إنشاء رمز الوصول"
+
+#: src/views/preference/tabs/AccessTokens.vue:117
+msgid "Access token rotated"
+msgstr "تم تدوير رمز الوصول"
+
+#: src/views/preference/tabs/AccessTokens.vue:123
+msgid "Access token revoked"
+msgstr "تم إبطال رمز الوصول"
+
+#: src/views/preference/tabs/AccessTokens.vue:129
+msgid "Access token copied to clipboard"
+msgstr "تم نسخ رمز الوصول إلى الحافظة"
+
+#: src/views/preference/tabs/AccessTokens.vue:132
+msgid "Failed to copy access token"
+msgstr "تعذّر نسخ رمز الوصول"
+
+#: src/views/preference/tabs/AccessTokens.vue:150
+msgid "Active"
+msgstr "نشط"
+
+#: src/views/preference/tabs/AccessTokens.vue:168
+msgid ""
+"Create scoped credentials for the Nginx UI CLI, automation, and MCP clients. "
+"Tokens are shown only once."
+msgstr ""
+"أنشئ بيانات اعتماد محددة النطاق لواجهة Nginx UI السطرية والأتمتة وعملاء "
+"MCP. تُعرض الرموز مرة واحدة فقط."
+
+#: src/views/preference/tabs/AccessTokens.vue:175
+msgid "Create Token"
+msgstr "إنشاء رمز"
+
+#: src/views/preference/tabs/AccessTokens.vue:183
+msgid ""
+"Use the smallest required scope and set an expiration date for automation "
+"credentials."
+msgstr "استخدم أصغر نطاق مطلوب وحدّد تاريخ انتهاء لبيانات اعتماد الأتمتة."
+
+#: src/views/preference/tabs/AccessTokens.vue:196
+msgid "No access tokens"
+msgstr "لا توجد رموز وصول"
+
+#: src/views/preference/tabs/AccessTokens.vue:223
+#: src/views/preference/tabs/AccessTokens.vue:227
+msgid "Never"
+msgstr "أبدًا"
+
+#: src/views/preference/tabs/AccessTokens.vue:238
+msgid "Rotate this token? The current token will stop working immediately."
+msgstr "هل تريد تدوير هذا الرمز؟ سيتوقف الرمز الحالي عن العمل فورًا."
+
+#: src/views/preference/tabs/AccessTokens.vue:241
+msgid "Rotate token"
+msgstr "تدوير الرمز"
+
+#: src/views/preference/tabs/AccessTokens.vue:246
+msgid "Revoke this token? This action cannot be undone."
+msgstr "هل تريد إبطال هذا الرمز؟ لا يمكن التراجع عن هذا الإجراء."
+
+#: src/views/preference/tabs/AccessTokens.vue:249
+msgid "Revoke token"
+msgstr "إبطال الرمز"
+
+#: src/views/preference/tabs/AccessTokens.vue:260
+msgid "Create Access Token"
+msgstr "إنشاء رمز وصول"
+
+#: src/views/preference/tabs/AccessTokens.vue:270
+msgid "For example: production deployment"
+msgstr "على سبيل المثال: نشر بيئة الإنتاج"
+
+#: src/views/preference/tabs/AccessTokens.vue:291
+msgid "Expires At"
+msgstr "ينتهي في"
+
+#: src/views/preference/tabs/AccessTokens.vue:297
+msgid "No expiration"
+msgstr "بدون انتهاء"
+
+#: src/views/preference/tabs/AccessTokens.vue:305
+msgid "Save Your Access Token"
+msgstr "احفظ رمز الوصول الخاص بك"
+
+#: src/views/preference/tabs/AccessTokens.vue:313
+msgid ""
+"This token is shown only once. Store it in a secure secret manager before "
+"closing this dialog."
+msgstr ""
+"يُعرض هذا الرمز مرة واحدة فقط. احفظه في مدير أسرار آمن قبل إغلاق هذه "
+"النافذة."
+
+#: src/views/preference/tabs/AccessTokens.vue:324
+msgid "I have saved the token"
+msgstr "لقد حفظت الرمز"
 
 #: src/views/preference/tabs/AppSettings.vue:11
 msgid "Jwt Secret"
@@ -8279,7 +8639,8 @@ msgstr "حد تجديد الشهادة"
 msgid ""
 "Renew certificates when their remaining validity is less than or equal to "
 "this value."
-msgstr "تجديد الشهادات عندما تكون صلاحيتها المتبقية أقل من أو تساوي هذه القيمة."
+msgstr ""
+"تجديد الشهادات عندما تكون صلاحيتها المتبقية أقل من أو تساوي هذه القيمة."
 
 #: src/views/preference/tabs/CertSettings.vue:41
 msgid "Days"
@@ -8307,11 +8668,46 @@ msgstr "فشل إرسال رسالة الاختبار"
 
 #: src/views/preference/tabs/GeoLiteSettings.vue:9
 msgid ""
-"The GeoLite2 database provides geographic information for IP addresses. "
-"This is used for offline geographic analysis in log analytics."
+"The GeoLite2 database provides geographic information for IP addresses. This "
+"is used for offline geographic analysis in log analytics."
 msgstr ""
 "قاعدة بيانات GeoLite2 تقدم معلومات جغرافية عن عناوين IP. يتم استخدامها "
 "للتحليل الجغرافي غير المتصل في تحليل السجلات."
+
+#: src/views/preference/tabs/HealthCheckSettings.vue:14
+msgid "Global health check controls"
+msgstr "عناصر التحكم العامة بفحوصات السلامة"
+
+#: src/views/preference/tabs/HealthCheckSettings.vue:15
+msgid ""
+"A global pause stops network probes without changing individual site or "
+"upstream selections. Discovery remains active so configured targets stay "
+"visible."
+msgstr ""
+"الإيقاف المؤقت العام يوقف فحوصات الشبكة دون تغيير اختيارات المواقع أو "
+"الخوادم العليا الفردية. يظل الاكتشاف نشطًا لتبقى الأهداف المُعدّة ظاهرة."
+
+#: src/views/preference/tabs/HealthCheckSettings.vue:21
+msgid "Enable site health checks"
+msgstr "تفعيل فحوصات سلامة المواقع"
+
+#: src/views/preference/tabs/HealthCheckSettings.vue:24
+msgid "Concurrency"
+msgstr "التزامن"
+
+#: src/views/preference/tabs/HealthCheckSettings.vue:31
+#: src/views/preference/tabs/HealthCheckSettings.vue:45
+msgid "Seconds"
+msgstr "ثوانٍ"
+
+#: src/views/preference/tabs/HealthCheckSettings.vue:36
+#: src/views/site/site_list/columns.tsx:78 src/views/stream/columns.tsx:46
+msgid "Proxy Targets"
+msgstr "أهداف الوكيل"
+
+#: src/views/preference/tabs/HealthCheckSettings.vue:38
+msgid "Enable upstream health checks"
+msgstr "تفعيل فحوصات سلامة الخوادم العليا"
 
 #: src/views/preference/tabs/HTTPSettings.vue:11
 msgid "Github Proxy"
@@ -8409,7 +8805,8 @@ msgstr "اسم العقدة"
 msgid ""
 "The node name should only contain letters, unicode, numbers, hyphens, "
 "dashes, colons, and dots."
-msgstr "يجب أن يحتوي اسم العقدة على أحرف، يونيكود، أرقام، شرطات، نقاط، ونقطتين فقط."
+msgstr ""
+"يجب أن يحتوي اسم العقدة على أحرف، يونيكود، أرقام، شرطات، نقاط، ونقطتين فقط."
 
 #: src/views/preference/tabs/NodeSettings.vue:22
 msgid ""
@@ -8433,7 +8830,8 @@ msgstr "رقم ICP"
 msgid ""
 "The ICP Number should only contain letters, unicode, numbers, hyphens, "
 "dashes, colons, and dots."
-msgstr "يجب أن يحتوي رقم ICP على أحرف، يونيكود، أرقام، شرطات، نقاط، ونقطتين فقط."
+msgstr ""
+"يجب أن يحتوي رقم ICP على أحرف، يونيكود، أرقام، شرطات، نقاط، ونقطتين فقط."
 
 #: src/views/preference/tabs/NodeSettings.vue:45
 #: src/views/preference/tabs/NodeSettings.vue:57
@@ -8454,15 +8852,17 @@ msgstr ""
 
 #: src/views/preference/tabs/OpenAISettings.vue:35
 msgid ""
-"Leave blank to use the MiniMax global OpenAI-compatible endpoint: "
-"https://api.minimax.io/v1"
+"Leave blank to use the MiniMax global OpenAI-compatible endpoint: https://"
+"api.minimax.io/v1"
 msgstr ""
 "اتركه فارغًا لاستخدام نقطة نهاية MiniMax العالمية المتوافقة مع OpenAI: "
 "https://api.minimax.io/v1"
 
 #: src/views/preference/tabs/OpenAISettings.vue:38
-msgid "Leave blank to use the Atlas Cloud endpoint: https://api.atlascloud.ai/v1"
-msgstr "اتركه فارغًا لاستخدام نقطة نهاية Atlas Cloud: https://api.atlascloud.ai/v1"
+msgid ""
+"Leave blank to use the Atlas Cloud endpoint: https://api.atlascloud.ai/v1"
+msgstr ""
+"اتركه فارغًا لاستخدام نقطة نهاية Atlas Cloud: https://api.atlascloud.ai/v1"
 
 #: src/views/preference/tabs/OpenAISettings.vue:40
 msgid "Leave blank for the default: https://api.openai.com/"
@@ -8476,26 +8876,27 @@ msgstr "عنوان URL غير صالح."
 #: src/views/preference/tabs/OpenAISettings.vue:48
 msgid ""
 "MiniMax is OpenAI-compatible. Use https://api.minimax.io/v1 for global "
-"service or https://api.minimaxi.com/v1 for China service. For "
-"Anthropic-compatible clients, use https://api.minimax.io/anthropic or "
-"https://api.minimaxi.com/anthropic."
+"service or https://api.minimaxi.com/v1 for China service. For Anthropic-"
+"compatible clients, use https://api.minimax.io/anthropic or https://"
+"api.minimaxi.com/anthropic."
 msgstr ""
 "MiniMax متوافق مع OpenAI. استخدم https://api.minimax.io/v1 للخدمة العالمية "
 "أو https://api.minimaxi.com/v1 للخدمة في الصين. للعملاء المتوافقين مع "
-"Anthropic، استخدم https://api.minimax.io/anthropic أو "
-"https://api.minimaxi.com/anthropic."
+"Anthropic، استخدم https://api.minimax.io/anthropic أو https://"
+"api.minimaxi.com/anthropic."
 
 #: src/views/preference/tabs/OpenAISettings.vue:52
 msgid ""
 "Atlas Cloud is OpenAI-compatible. Use https://api.atlascloud.ai/v1 and an "
 "Atlas Cloud API key."
 msgstr ""
-"Atlas Cloud متوافق مع OpenAI. استخدم https://api.atlascloud.ai/v1 ومفتاح "
-"API لـ Atlas Cloud."
+"Atlas Cloud متوافق مع OpenAI. استخدم https://api.atlascloud.ai/v1 ومفتاح API "
+"لـ Atlas Cloud."
 
 #: src/views/preference/tabs/OpenAISettings.vue:55
 msgid "To use a local large model, deploy it with ollama, vllm or lmdeploy. "
-msgstr "لاستخدام نموذج كبير محلي، قم بنشره باستخدام ollama، أو vllm، أو lmdeploy."
+msgstr ""
+"لاستخدام نموذج كبير محلي، قم بنشره باستخدام ollama، أو vllm، أو lmdeploy."
 
 #: src/views/preference/tabs/OpenAISettings.vue:95
 msgid "Model"
@@ -8539,7 +8940,8 @@ msgid "Code Completion Model"
 msgstr "نموذج إكمال التعليمات البرمجية"
 
 #: src/views/preference/tabs/OpenAISettings.vue:167
-msgid "The model used for code completion, if not set, the chat model will be used."
+msgid ""
+"The model used for code completion, if not set, the chat model will be used."
 msgstr ""
 "النموذج المستخدم لإكمال التعليمات البرمجية، إذا لم يتم تعيينه، سيتم استخدام "
 "نموذج الدردشة."
@@ -8559,8 +8961,7 @@ msgstr "مسار مفتاح SSL"
 #: src/views/preference/tabs/ServerSettings.vue:47
 msgid ""
 "Protocol configuration only takes effect when directly connecting. If using "
-"reverse proxy, please configure the protocol separately in the reverse "
-"proxy."
+"reverse proxy, please configure the protocol separately in the reverse proxy."
 msgstr ""
 "إعدادات البروتوكول تتأثر فقط عند الاتصال المباشر. إذا كنت تستخدم خادم وكيل "
 "عكسي، يرجى تكوين البروتوكول بشكل منفصل في خادم الوكيل العكسي."
@@ -8675,8 +9076,8 @@ msgid ""
 "Link this site to a DNS record. The server_name will be used for the DNS "
 "record name. You can skip this step if DNS is already configured."
 msgstr ""
-"اربط هذا الموقع بسجل DNS. سيتم استخدام server_name كاسم لسجل DNS. يمكنك "
-"تخطي هذه الخطوة إذا تم تكوين DNS بالفعل."
+"اربط هذا الموقع بسجل DNS. سيتم استخدام server_name كاسم لسجل DNS. يمكنك تخطي "
+"هذه الخطوة إذا تم تكوين DNS بالفعل."
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:263
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:595
@@ -8898,7 +9299,8 @@ msgid "Self-signed certificate applied"
 msgstr "تم تطبيق الشهادة الموقعة ذاتيًا"
 
 #: src/views/site/site_edit/components/Cert/SelfSignedCert.vue:47
-msgid "Saving the site configuration failed; the certificate directives are in "
+msgid ""
+"Saving the site configuration failed; the certificate directives are in "
 msgstr "فشل حفظ إعدادات الموقع؛ توجيهات الشهادة موجودة في "
 
 #: src/views/site/site_edit/components/Cert/SelfSignedCert.vue:54
@@ -8996,7 +9398,8 @@ msgstr "سجل DNS مفقود"
 msgid ""
 "The linked DNS record was deleted from the DNS server. You can recreate it "
 "or clear the link."
-msgstr "تم حذف سجل DNS المرتبط من خادم DNS. يمكنك إعادة إنشائه أو مسح الارتباط."
+msgstr ""
+"تم حذف سجل DNS المرتبط من خادم DNS. يمكنك إعادة إنشائه أو مسح الارتباط."
 
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:585
 msgid "Recreate DNS Record"
@@ -9038,10 +9441,6 @@ msgstr "خطأ في تحليل تكوين Nginx"
 #: src/views/site/site_edit/components/SiteEditor/store.ts:145
 msgid "Please select a certificate before saving the TLS server configuration."
 msgstr "يرجى تحديد شهادة قبل حفظ تكوين خادم TLS."
-
-#: src/views/site/site_list/columns.tsx:78 src/views/stream/columns.tsx:46
-msgid "Proxy Targets"
-msgstr "أهداف الوكيل"
 
 #: src/views/site/site_list/SiteDuplicate.vue:33
 #: src/views/stream/components/StreamDuplicate.vue:25
@@ -9244,47 +9643,53 @@ msgstr "فقد الاتصال بهذا الطرف. يرجى التحديث إذ�
 
 #: src/views/terminal/Terminal.vue:212
 msgid ""
-"Demo mode is enabled. This terminal only allows a small set of safe "
-"read-only commands."
+"Demo mode is enabled. This terminal only allows a small set of safe read-"
+"only commands."
 msgstr ""
 "تم تمكين وضع العرض التجريبي. يسمح هذا الطرفي بمجموعة صغيرة فقط من الأوامر "
 "الآمنة للقراءة فقط."
 
 #: src/views/terminal/Terminal.vue:219
 msgid ""
-"You are accessing this terminal over an insecure HTTP connection on a "
-"non-localhost domain. This may expose sensitive information."
+"You are accessing this terminal over an insecure HTTP connection on a non-"
+"localhost domain. This may expose sensitive information."
 msgstr ""
-"أنت تتصل بهذا الطرف عبر اتصال HTTP غير آمن في نطاق غير محلي. قد يؤدي هذا "
-"إلى كشف معلومات حساسة."
+"أنت تتصل بهذا الطرف عبر اتصال HTTP غير آمن في نطاق غير محلي. قد يؤدي هذا إلى "
+"كشف معلومات حساسة."
 
-#: src/views/upstream/SocketList.vue:18
+#: src/views/upstream/SocketList.vue:19
 msgid "Socket"
 msgstr "المنفذ"
 
-#: src/views/upstream/SocketList.vue:30
+#: src/views/upstream/SocketList.vue:31
 msgid "Direct"
 msgstr "مباشر"
 
-#: src/views/upstream/SocketList.vue:36
+#: src/views/upstream/SocketList.vue:37
 msgid "Health Status"
 msgstr "حالة الصحة"
 
-#: src/views/upstream/SocketList.vue:41
+#: src/views/upstream/SocketList.vue:45
 msgid "No Data"
 msgstr "لا بيانات"
 
-#: src/views/upstream/SocketList.vue:51
+#: src/views/upstream/SocketList.vue:55
 msgid "Last Check"
 msgstr "آخر التحقق"
 
-#: src/views/upstream/SocketList.vue:60
-msgid "Health Check"
-msgstr "فحص الصحة"
-
-#: src/views/upstream/SocketList.vue:133
+#: src/views/upstream/SocketList.vue:138
 msgid "Upstream Sockets"
 msgstr "المآخذ العلوية"
+
+#: src/views/upstream/SocketList.vue:153
+msgid "Upstream health checks are globally paused"
+msgstr "فحوصات سلامة الخوادم العليا متوقفة مؤقتًا بشكل عام"
+
+#: src/views/upstream/SocketList.vue:154
+msgid ""
+"Per-target selections are preserved. Resume probes from Health Check "
+"preferences."
+msgstr "يتم الاحتفاظ باختيارات كل هدف. استأنف الفحوصات من تفضيلات فحص السلامة."
 
 #: src/views/user/userColumns.tsx:30
 msgid "2FA"
@@ -9334,6 +9739,12 @@ msgstr "تأكيد كلمة المرور الجديدة"
 msgid "Update Password"
 msgstr "تحديث كلمة المرور"
 
+#~ msgid "Health check configuration saved"
+#~ msgstr "تم حفظ تكوين فحص الصحة"
+
+#~ msgid "Failed to save configuration"
+#~ msgstr "فشل حفظ الإعدادات"
+
 #~ msgid "Certificate Expired"
 #~ msgstr "انتهت صلاحية الشهادة"
 
@@ -9352,10 +9763,6 @@ msgstr "تحديث كلمة المرور"
 #~ msgid "Certificate %{name} will expire in 1 day"
 #~ msgstr "ستنتهي صلاحية الشهادة %{name} خلال يوم واحد"
 
-#, fuzzy
-#~ msgid "Active"
-#~ msgstr "توجيه"
-
 #~ msgid "Node authentication upgraded successfully"
 #~ msgstr "تمت ترقية مصادقة العقدة بنجاح"
 
@@ -9370,8 +9777,8 @@ msgstr "تحديث كلمة المرور"
 #~ "Generate a one-time pairing code on the child node, then enter it here. "
 #~ "Remote pairing requires HTTPS."
 #~ msgstr ""
-#~ "قم بإنشاء رمز اقتران لمرة واحدة على العقدة الفرعية، ثم أدخله هنا. الاقتران "
-#~ "عن بُعد يتطلب HTTPS."
+#~ "قم بإنشاء رمز اقتران لمرة واحدة على العقدة الفرعية، ثم أدخله هنا. "
+#~ "الاقتران عن بُعد يتطلب HTTPS."
 
 #~ msgid "One-time pairing code"
 #~ msgstr "رمز الاقتران للاستخدام لمرة واحدة"
@@ -9389,9 +9796,10 @@ msgstr "تحديث كلمة المرور"
 #~ msgstr "السماح بالمصادقة القديمة للعقدة"
 
 #~ msgid ""
-#~ "Disable this compatibility switch after every controller has been upgraded "
-#~ "to paired signatures."
-#~ msgstr "قم بتعطيل مفتاح التوافق هذا بعد ترقية كل وحدة تحكم إلى التواقيع المقترنة."
+#~ "Disable this compatibility switch after every controller has been "
+#~ "upgraded to paired signatures."
+#~ msgstr ""
+#~ "قم بتعطيل مفتاح التوافق هذا بعد ترقية كل وحدة تحكم إلى التواقيع المقترنة."
 
 #~ msgid "Allow legacy Node Secret for MCP"
 #~ msgstr "السماح بسر العقدة القديم لـ MCP"
@@ -9399,7 +9807,8 @@ msgstr "تحديث كلمة المرور"
 #~ msgid ""
 #~ "Temporary compatibility only. Replace MCP Node Secret clients with scoped "
 #~ "service tokens."
-#~ msgstr "للتوافق المؤقت فقط. استبدل عملاء MCP Node Secret برموز خدمة محددة النطاق."
+#~ msgstr ""
+#~ "للتوافق المؤقت فقط. استبدل عملاء MCP Node Secret برموز خدمة محددة النطاق."
 
 #~ msgid ""
 #~ "Logrotate, by default, is enabled in most mainstream Linux distributions "
@@ -9420,20 +9829,20 @@ msgstr "تحديث كلمة المرور"
 #~ msgstr "تم تدوير اعتماد العقدة بنجاح"
 
 #~ msgid ""
-#~ "Passkeys are webauthn credentials that validate your identity using touch, "
-#~ "facial recognition, a device password, or a PIN. They can be used as a "
-#~ "password replacement or as a 2FA method."
+#~ "Passkeys are webauthn credentials that validate your identity using "
+#~ "touch, facial recognition, a device password, or a PIN. They can be used "
+#~ "as a password replacement or as a 2FA method."
 #~ msgstr ""
 #~ "مفاتيح المرور هي بيانات اعتماد ويباثن تتحقق من هويتك باستخدام اللمس أو "
-#~ "التعرف على الوجه أو كلمة مرور الجهاز أو رقم التعريف الشخصي. يمكن استخدامها "
-#~ "كبديل لكلمة المرور أو كطريقة للمصادقة الثنائية."
+#~ "التعرف على الوجه أو كلمة مرور الجهاز أو رقم التعريف الشخصي. يمكن "
+#~ "استخدامها كبديل لكلمة المرور أو كطريقة للمصادقة الثنائية."
 
 #~ msgid ""
 #~ "Please first add credentials in Certification > DNS Credentials, and then "
 #~ "select one of the credentialsbelow to request the API of the DNS provider."
 #~ msgstr ""
-#~ "يرجى أولاً إضافة بيانات الاعتماد في الشهادات > بيانات اعتماد DNS، ثم اختيار "
-#~ "أحد بيانات الاعتماد أدناه لطلب API لمزود DNS."
+#~ "يرجى أولاً إضافة بيانات الاعتماد في الشهادات > بيانات اعتماد DNS، ثم "
+#~ "اختيار أحد بيانات الاعتماد أدناه لطلب API لمزود DNS."
 
 #~ msgid ""
 #~ "Please input name, this will be used as the filename of the new "
@@ -9451,12 +9860,12 @@ msgstr "تحديث كلمة المرور"
 #~ msgid ""
 #~ "Support communication with the backend through the WebSocket protocol. If "
 #~ "your Nginx UI is being used via an Nginx reverse proxy, please refer to "
-#~ "this link to write the corresponding configuration file: "
-#~ "https://nginxui.com/guide/nginx-proxy-example.html"
+#~ "this link to write the corresponding configuration file: https://"
+#~ "nginxui.com/guide/nginx-proxy-example.html"
 #~ msgstr ""
 #~ "دعم الاتصال مع الخلفية من خلال بروتوكول WebSocket. إذا كنت تستخدم واجهة "
-#~ "Nginx عبر وكيل عكسي لـ Nginx، يرجى الرجوع إلى هذا الرابط لكتابة ملف التكوين "
-#~ "المقابل: https://nginxui.com/guide/nginx-proxy-example.html"
+#~ "Nginx عبر وكيل عكسي لـ Nginx، يرجى الرجوع إلى هذا الرابط لكتابة ملف "
+#~ "التكوين المقابل: https://nginxui.com/guide/nginx-proxy-example.html"
 
 #~ msgid ""
 #~ "The certificate has been generated at %{path} and the ssl_certificate "
@@ -9464,7 +9873,8 @@ msgstr "تحديث كلمة المرور"
 #~ "configuration now, or review the changes in the editor and save manually."
 #~ msgstr ""
 #~ "تم إنشاء الشهادة في %{path}، وتمت إضافة توجيهات ssl_certificate إلى كتلة "
-#~ "الخادم الحالية. احفظ التكوين الآن، أو راجع التغييرات في المحرر واحفظ يدويًا."
+#~ "الخادم الحالية. احفظ التكوين الآن، أو راجع التغييرات في المحرر واحفظ "
+#~ "يدويًا."
 
 #~ msgid ""
 #~ "The server_name in the current configuration must be the domain name you "
@@ -9493,10 +9903,6 @@ msgstr "تحديث كلمة المرور"
 #, fuzzy
 #~ msgid "Create record set"
 #~ msgstr "إنشاء سجل"
-
-#, fuzzy
-#~ msgid "Create set"
-#~ msgstr "تم الإنشاء في"
 
 #, fuzzy
 #~ msgid "Delete set"
@@ -9587,8 +9993,8 @@ msgstr "تحديث كلمة المرور"
 
 #~ msgid ""
 #~ "Warning: This appears to be a private IP address. Public CAs like Let's "
-#~ "Encrypt cannot issue certificates for private IPs. Use a public IP address "
-#~ "or consider using a private CA."
+#~ "Encrypt cannot issue certificates for private IPs. Use a public IP "
+#~ "address or consider using a private CA."
 #~ msgstr ""
 #~ "تحذير: يبدو أن هذا عنوان IP خاص. لا يمكن لسلطات التصديق العامة مثل Let's "
 #~ "Encrypt إصدار شهادات لعناوين IP الخاصة. استخدم عنوان IP عام أو فكر في "
@@ -9664,7 +10070,8 @@ msgstr "تحديث كلمة المرور"
 #~ msgid ""
 #~ "We will add one or more TXT records to the DNS records of your domain for "
 #~ "ownership verification."
-#~ msgstr "سنضيف سجل أو أكثر من سجلات TXT إلى سجلات DNS لنطاقك للتحقق من الملكية."
+#~ msgstr ""
+#~ "سنضيف سجل أو أكثر من سجلات TXT إلى سجلات DNS لنطاقك للتحقق من الملكية."
 
 #~ msgid "Settings"
 #~ msgstr "الإعدادات"
@@ -9677,9 +10084,6 @@ msgstr "تحديث كلمة المرور"
 
 #~ msgid "WebSocket not connected, please wait for connection"
 #~ msgstr "اتصال WebSocket غير متاح، يرجى الانتظار حتى يتم الاتصال"
-
-#~ msgid "in the same directory as"
-#~ msgstr "في نفس المجلد مع"
 
 #~ msgid "Sandbox test successful"
 #~ msgstr "اختبار الساندبوكس ناجح"
@@ -9822,13 +10226,14 @@ msgstr "تحديث كلمة المرور"
 
 #~ msgid ""
 #~ "Support communication with the backend through the Server-Sent Events "
-#~ "protocol. If your Nginx UI is being used via an Nginx reverse proxy, please "
-#~ "refer to this link to write the corresponding configuration file: "
+#~ "protocol. If your Nginx UI is being used via an Nginx reverse proxy, "
+#~ "please refer to this link to write the corresponding configuration file: "
 #~ "https://nginxui.com/guide/nginx-proxy-example.html"
 #~ msgstr ""
-#~ "دعم الاتصال مع الخلفية من خلال بروتوكول Server-Sent Events. إذا كنت تستخدم "
-#~ "واجهة Nginx UI عبر وكيل عكسي لـ Nginx، يرجى الرجوع إلى هذا الرابط لكتابة "
-#~ "ملف التكوين المقابل: https://nginxui.com/guide/nginx-proxy-example.html"
+#~ "دعم الاتصال مع الخلفية من خلال بروتوكول Server-Sent Events. إذا كنت "
+#~ "تستخدم واجهة Nginx UI عبر وكيل عكسي لـ Nginx، يرجى الرجوع إلى هذا الرابط "
+#~ "لكتابة ملف التكوين المقابل: https://nginxui.com/guide/nginx-proxy-"
+#~ "example.html"
 
 #~ msgid "If left blank, the default CA Dir will be used."
 #~ msgstr "إذا تُرك فارغًا، سيتم استخدام دليل CA الافتراضي."
@@ -9904,12 +10309,12 @@ msgstr "تحديث كلمة المرور"
 
 #~ msgid ""
 #~ "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
-#~ "Docker Image, please make sure the docker socket is mounted like this: `-v "
-#~ "/var/run/docker.sock:/var/run/docker.sock`."
+#~ "Docker Image, please make sure the docker socket is mounted like this: `-"
+#~ "v /var/run/docker.sock:/var/run/docker.sock`."
 #~ msgstr ""
 #~ "تحقق مما إذا كان /var/run/docker.sock موجودًا. إذا كنت تستخدم صورة Docker "
-#~ "الرسمية لـ Nginx UI، يرجى التأكد من أن مقبس Docker مثبت بهذه الطريقة: `-v "
-#~ "/var/run/docker.sock:/var/run/docker.sock`."
+#~ "الرسمية لـ Nginx UI، يرجى التأكد من أن مقبس Docker مثبت بهذه الطريقة: `-"
+#~ "v /var/run/docker.sock:/var/run/docker.sock`."
 
 #~ msgid "Check if the nginx access log path exists"
 #~ msgstr "تحقق مما إذا كان مسار سجل الوصول لـ nginx موجودًا"
@@ -9939,15 +10344,11 @@ msgstr "تحديث كلمة المرور"
 
 #, fuzzy
 #~ msgid ""
-#~ "When you enable/disable, delete, or save this stream, the nodes set in the "
-#~ "Node Group and the nodes selected below will be synchronized."
+#~ "When you enable/disable, delete, or save this stream, the nodes set in "
+#~ "the Node Group and the nodes selected below will be synchronized."
 #~ msgstr ""
 #~ "عند تفعيل/تعطيل، حذف، أو حفظ هذا الموقع، سيتم مزامنة العقد المحددة في فئة "
 #~ "الموقع والعقد المحددة أدناه."
-
-#, fuzzy
-#~ msgid "Bot Token"
-#~ msgstr "رمز API"
 
 #, fuzzy
 #~ msgid "Server URL"
@@ -9996,12 +10397,15 @@ msgstr "تحديث كلمة المرور"
 #~ msgid "Please upgrade the remote Nginx UI to the latest version"
 #~ msgstr "يرجى ترقية واجهة Nginx البعيدة إلى أحدث إصدار"
 
-#~ msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: %{resp}"
+#~ msgid ""
+#~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: %"
+#~ "{resp}"
 #~ msgstr ""
-#~ "فشل إعادة تسمية %{orig_path} إلى %{new_path} على %{env_name}، الاستجابة: "
-#~ "%{resp}"
+#~ "فشل إعادة تسمية %{orig_path} إلى %{new_path} على %{env_name}، الاستجابة: %"
+#~ "{resp}"
 
-#~ msgid "Rename Site %{site} to %{new_site} on %{node} error, response: %{resp}"
+#~ msgid ""
+#~ "Rename Site %{site} to %{new_site} on %{node} error, response: %{resp}"
 #~ msgstr ""
 #~ "خطأ في إعادة تسمية الموقع %{site} إلى %{new_site} على %{node}، الاستجابة: "
 #~ "%{resp}"
@@ -10016,20 +10420,23 @@ msgstr "تحديث كلمة المرور"
 #~ "فشل مزامنة الشهادة %{cert_name} إلى %{env_name}، يرجى ترقية واجهة Nginx "
 #~ "البعيدة إلى أحدث إصدار"
 
-#~ msgid "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
+#~ msgid ""
+#~ "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
 #~ msgstr "فشل مزامنة الشهادة %{cert_name} إلى %{env_name}، الاستجابة: %{resp}"
 
 #~ msgid "Sync config %{config_name} to %{env_name} failed, response: %{resp}"
-#~ msgstr "فشل مزامنة التكوين %{config_name} إلى %{env_name}، الاستجابة: %{resp}"
+#~ msgstr ""
+#~ "فشل مزامنة التكوين %{config_name} إلى %{env_name}، الاستجابة: %{resp}"
 
 #~ msgid ""
-#~ "If you lose your mobile phone, you can use the recovery code to reset your "
-#~ "2FA."
+#~ "If you lose your mobile phone, you can use the recovery code to reset "
+#~ "your 2FA."
 #~ msgstr ""
 #~ "إذا فقدت هاتفك المحمول، يمكنك استخدام رمز الاسترداد لإعادة تعيين المصادقة "
 #~ "الثنائية."
 
-#~ msgid "The recovery code is only displayed once, please save it in a safe place."
+#~ msgid ""
+#~ "The recovery code is only displayed once, please save it in a safe place."
 #~ msgstr "رمز الاسترداد يُعرض مرة واحدة فقط، يرجى حفظه في مكان آمن."
 
 #~ msgid "Can't scan? Use text key binding"
@@ -10039,11 +10446,12 @@ msgstr "تحديث كلمة المرور"
 #~ msgstr "اسم المستخدم أو كلمة المرور غير صحيحة"
 
 #~ msgid "Too many login failed attempts, please try again later"
-#~ msgstr "عدد كبير جدًا من محاولات تسجيل الدخول الفاشلة، يرجى المحاولة مرة أخرى لاحقًا"
+#~ msgstr ""
+#~ "عدد كبير جدًا من محاولات تسجيل الدخول الفاشلة، يرجى المحاولة مرة أخرى لاحقًا"
 
 #~ msgid ""
-#~ "Currently, DNS record management supports Alibaba Cloud DNS, Tencent Cloud "
-#~ "DNS, and Cloudflare only."
+#~ "Currently, DNS record management supports Alibaba Cloud DNS, Tencent "
+#~ "Cloud DNS, and Cloudflare only."
 #~ msgstr ""
 #~ "حاليًا، تدعم إدارة سجلات DNS فقط Alibaba Cloud DNS وTencent Cloud DNS "
 #~ "وCloudflare."
