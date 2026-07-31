@@ -1,0 +1,19 @@
+Nginx UI has been installed as a single-replica deployment.
+
+This chart deploys Nginx UI with its bundled Nginx. It is not a Kubernetes
+Ingress controller and does not manage Kubernetes Ingress resources.
+
+{{- if .Values.ingress.enabled }}
+Open the host configured under ingress.hosts.
+{{- else if contains "LoadBalancer" .Values.service.type }}
+Wait for the external address, then open port {{ .Values.service.httpPort }}:
+  kubectl get service --namespace {{ .Release.Namespace }} {{ include "nginx-ui.fullname" . }}
+{{- else }}
+Forward the HTTP service locally:
+  kubectl port-forward --namespace {{ .Release.Namespace }} service/{{ include "nginx-ui.fullname" . }} 8080:{{ .Values.service.httpPort }}
+
+Then open http://127.0.0.1:8080/.
+{{- end }}
+
+The one-time installation secret is stored inside the nginxUI persistent volume:
+  kubectl exec --namespace {{ .Release.Namespace }} deploy/{{ include "nginx-ui.fullname" . }} -- cat /etc/nginx-ui/.install_secret

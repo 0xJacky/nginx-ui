@@ -1,0 +1,34 @@
+<Container version="2">
+  <Name>nginx-ui-swag</Name>
+  <Repository>uozi/nginx-ui:latest</Repository>
+  <Registry>https://hub.docker.com/r/uozi/nginx-ui</Registry>
+  <Network>bridge</Network>
+  <Shell>bash</Shell>
+  <Privileged>false</Privileged>
+  <Icon>https://raw.githubusercontent.com/nginxui/unraid/main/icon.svg</Icon>
+  <WebUI>http://[IP]:[PORT:9000]</WebUI>
+  <Overview>Official Nginx UI controller template for an existing LinuxServer SWAG container. The bundled Nginx instance is disabled. This template requires the Docker socket and a shared SWAG /config mount; review the security warning in the README before installing.</Overview>
+  <Support>https://github.com/0xJacky/nginx-ui/issues</Support>
+  <Project>https://nginxui.com</Project>
+  <TemplateURL>https://raw.githubusercontent.com/nginxui/unraid/main/templates/nginx-ui-swag.xml</TemplateURL>
+  <ReadMe>https://raw.githubusercontent.com/nginxui/unraid/main/README.md</ReadMe>
+  <Category>Tools:System</Category>
+  <ExtraSearchTerms>nginx reverse proxy linuxserver swag certificate</ExtraSearchTerms>
+  <Requires>An existing LinuxServer SWAG container. The Docker socket grants root-equivalent host control. The SWAG appdata directory must be mounted at /config in both containers.</Requires>
+  <Changes>Initial official SWAG controller template.</Changes>
+  <Date>2026-07-30</Date>
+  <MinVer>6.12.0</MinVer>
+  <License>AGPL-3.0-only</License>
+  <Config Name="WebUI port" Target="9000" Default="9000" Mode="tcp" Description="Direct Nginx UI backend port. Do not expose it to the internet." Type="Port" Display="always" Required="true" Mask="false"/>
+  <Config Name="Nginx UI appdata" Target="/etc/nginx-ui" Default="/mnt/user/appdata/nginx-ui-swag" Mode="rw" Description="Nginx UI database, settings, and startup secret." Type="Path" Display="always" Required="true" Mask="false"/>
+  <Config Name="SWAG appdata" Target="/config" Default="/mnt/user/appdata/swag" Mode="rw" Description="Use the same host directory SWAG mounts at /config. The container target must remain /config." Type="Path" Display="always" Required="true" Mask="false"/>
+  <Config Name="Docker socket" Target="/var/run/docker.sock" Default="/var/run/docker.sock" Mode="rw" Description="Required to test, reload, and restart Nginx in SWAG. Grants root-equivalent host control." Type="Path" Display="always" Required="true" Mask="false"/>
+  <Config Name="Timezone" Target="TZ" Default="Etc/UTC" Description="IANA timezone, for example Europe/Berlin." Type="Variable" Display="always" Required="true" Mask="false"/>
+  <Config Name="Disable bundled Nginx" Target="NGINX_UI_DISABLE_BUNDLED_NGINX" Default="true" Description="Run Nginx UI only and leave the bundled Nginx service idle." Type="Variable" Display="advanced" Required="true" Mask="false"/>
+  <Config Name="SWAG container name" Target="NGINX_UI_NGINX_CONTAINER_NAME" Default="swag" Description="Exact Docker container name of the existing SWAG instance." Type="Variable" Display="always" Required="true" Mask="false"/>
+  <Config Name="Nginx configuration directory" Target="NGINX_UI_NGINX_CONFIG_DIR" Default="/config/nginx" Description="SWAG Nginx configuration directory in the shared mount." Type="Variable" Display="advanced" Required="true" Mask="false"/>
+  <Config Name="Nginx configuration file" Target="NGINX_UI_NGINX_CONFIG_PATH" Default="/config/nginx/nginx.conf" Description="SWAG main Nginx configuration file in the shared mount." Type="Variable" Display="advanced" Required="true" Mask="false"/>
+  <Config Name="Nginx access log" Target="NGINX_UI_NGINX_ACCESS_LOG_PATH" Default="/config/log/nginx/access.log" Description="SWAG access log in the shared mount." Type="Variable" Display="advanced" Required="true" Mask="false"/>
+  <Config Name="Nginx error log" Target="NGINX_UI_NGINX_ERROR_LOG_PATH" Default="/config/log/nginx/error.log" Description="SWAG error log in the shared mount." Type="Variable" Display="advanced" Required="true" Mask="false"/>
+  <Config Name="Nginx log allowlist" Target="NGINX_UI_NGINX_LOG_DIR_WHITE_LIST" Default="/config/log/nginx" Description="Directory Nginx UI may read for log analysis." Type="Variable" Display="advanced" Required="true" Mask="false"/>
+</Container>

@@ -36,6 +36,9 @@ We provide several installation methods to suit different needs:
 - **Windows**: Use [Winget](./install-winget) for Windows package management
 - **Linux**: Use the [installation script](./install-script-linux) to directly control the host machine's Nginx
 - **Docker**: [Install via Docker](#install-with-docker) with our bundled image that includes Nginx
+- **Kubernetes**: Use the [official Helm chart](./install-kubernetes) with persistent volumes
+- **OpenWrt 25.12+**: Use the [self-hosted signed APK repository](./install-openwrt)
+- **Unraid**: Use the [official standalone or SWAG Community Applications template](./install-unraid)
 - **Advanced**: Download from [latest release](https://github.com/0xJacky/nginx-ui/releases/latest) and [run executable directly](#run-executable-directly), or [manually build it](./build)
 
 In the first runtime of Nginx UI, please visit `http://<your_server_ip>:<listen_port>`

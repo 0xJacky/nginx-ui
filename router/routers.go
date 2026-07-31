@@ -39,6 +39,8 @@ import (
 func InitRouter() {
 	r := cosy.GetEngine()
 
+	r.GET("/healthz", public.Healthz)
+
 	r.Use(audit.LoggingMiddleware())
 
 	r.SetTrustedProxies(nil)

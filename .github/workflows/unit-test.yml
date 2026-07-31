@@ -8,12 +8,22 @@ on:
       - "**/*.go"
       - go.mod
       - go.sum
+      - install.sh
+      - tests/install_openwrt_test.sh
+      - resources/services/nginx-ui.openwrt
+      - resources/keep.openwrt
+      - "packaging/openwrt/**"
       - ".github/workflows/unit-test.yml"
   pull_request:
     paths:
       - "**/*.go"
       - go.mod
       - go.sum
+      - install.sh
+      - tests/install_openwrt_test.sh
+      - resources/services/nginx-ui.openwrt
+      - resources/keep.openwrt
+      - "packaging/openwrt/**"
       - ".github/workflows/unit-test.yml"
 
 permissions:
@@ -35,3 +45,13 @@ jobs:
       - name: Run unit tests
         run: >-
           go test -tags=unembed -race -cover -count=1 ./...
+
+  openwrt-install:
+    name: OpenWrt installer
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Test installer detection and paths
+        run: bash tests/install_openwrt_test.sh

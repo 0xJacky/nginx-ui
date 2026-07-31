@@ -1,0 +1,29 @@
+<Container version="2">
+  <Name>nginx-ui</Name>
+  <Repository>uozi/nginx-ui:latest</Repository>
+  <Registry>https://hub.docker.com/r/uozi/nginx-ui</Registry>
+  <Network>bridge</Network>
+  <Shell>bash</Shell>
+  <Privileged>false</Privileged>
+  <Icon>https://raw.githubusercontent.com/nginxui/unraid/main/icon.svg</Icon>
+  <WebUI>http://[IP]:[PORT:80]</WebUI>
+  <Overview>Official standalone Nginx UI template with bundled Nginx. Nginx configuration, Nginx UI data, and web content are persisted on the Unraid array.</Overview>
+  <Support>https://github.com/0xJacky/nginx-ui/issues</Support>
+  <Project>https://nginxui.com</Project>
+  <TemplateURL>https://raw.githubusercontent.com/nginxui/unraid/main/templates/nginx-ui.xml</TemplateURL>
+  <ReadMe>https://raw.githubusercontent.com/nginxui/unraid/main/README.md</ReadMe>
+  <Category>Tools:System</Category>
+  <ExtraSearchTerms>nginx reverse proxy web server certificate</ExtraSearchTerms>
+  <Requires>At least 256 MiB of free persistent storage is recommended.</Requires>
+  <Changes>Initial official Community Applications template.</Changes>
+  <Date>2026-07-30</Date>
+  <MinVer>6.12.0</MinVer>
+  <License>AGPL-3.0-only</License>
+  <Config Name="WebUI HTTP port" Target="80" Default="8080" Mode="tcp" Description="HTTP port used to open Nginx UI." Type="Port" Display="always" Required="true" Mask="false"/>
+  <Config Name="HTTPS port" Target="443" Default="8443" Mode="tcp" Description="HTTPS port served by the bundled Nginx instance." Type="Port" Display="always" Required="true" Mask="false"/>
+  <Config Name="Nginx UI appdata" Target="/etc/nginx-ui" Default="/mnt/user/appdata/nginx-ui" Mode="rw" Description="Nginx UI database, settings, and startup secret." Type="Path" Display="always" Required="true" Mask="false"/>
+  <Config Name="Nginx configuration" Target="/etc/nginx" Default="/mnt/user/appdata/nginx-ui/nginx" Mode="rw" Description="Bundled Nginx configuration." Type="Path" Display="always" Required="true" Mask="false"/>
+  <Config Name="Web root" Target="/var/www" Default="/mnt/user/appdata/nginx-ui/www" Mode="rw" Description="Static website content managed by Nginx UI." Type="Path" Display="always" Required="true" Mask="false"/>
+  <Config Name="Timezone" Target="TZ" Default="Etc/UTC" Description="IANA timezone, for example Europe/Berlin." Type="Variable" Display="always" Required="true" Mask="false"/>
+  <Config Name="Disable container self-update" Target="NGINX_UI_IGNORE_DOCKER_SOCKET" Default="true" Description="Unraid manages image updates; keep the Docker socket disabled." Type="Variable" Display="advanced" Required="true" Mask="false"/>
+</Container>

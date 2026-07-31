@@ -82,8 +82,13 @@ jobs:
       - name: Prepare publish
         if: github.event_name == 'release'
         run: |
+          set -euo pipefail
           cp README*.md app/dist
-          find app/dist -printf '%P\n' | tar -C app/dist --no-recursion -zcvf app-dist.tar.gz -T -
+          tar -C app/dist -czf app-dist.tar.gz .
+          test -s app-dist.tar.gz
+          tar -tzf app-dist.tar.gz | grep -qx './index.html'
+          tar -tzf app-dist.tar.gz | grep -q '^./assets/'
+          tar -tzf app-dist.tar.gz | grep -qx './README.md'
 
       - name: Sign publish archive
         if: github.event_name == 'release'
@@ -664,6 +669,360 @@ jobs:
           push: 'true'
           tags: |
             uozi/nginx-ui-demo:latest
+
+  helm-smoke:
+    name: Helm install and upgrade smoke test
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    needs: docker-build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: v3.21.1
+
+      - name: Create kind cluster
+        uses: helm/kind-action@v1.14.0
+        with:
+          version: v0.31.0
+          kubectl_version: v1.35.0
+          cluster_name: nginx-ui-helm
+          wait: 120s
+
+      - name: Install, persist, and upgrade
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          set -euo pipefail
+          version="${RELEASE_TAG#v}"
+          kubectl apply -f charts/nginx-ui/ci/smoke-pvs.yaml
+
+          helm install nginx-ui charts/nginx-ui \
+            --namespace nginx-ui \
+            --create-namespace \
+            --values charts/nginx-ui/ci/smoke-values.yaml \
+            --set-string image.tag="$version" \
+            --wait \
+            --timeout 10m
+
+          old_pod_uid="$(kubectl get pod -n nginx-ui -l app.kubernetes.io/instance=nginx-ui -o jsonpath='{.items[0].metadata.uid}')"
+          test -n "$old_pod_uid"
+          kubectl exec -n nginx-ui deploy/nginx-ui -- \
+            sh -c 'printf "%s\n" persisted > /etc/nginx-ui/.helm-smoke-marker'
+
+          helm upgrade nginx-ui charts/nginx-ui \
+            --namespace nginx-ui \
+            --values charts/nginx-ui/ci/smoke-values.yaml \
+            --set-string image.tag="$version" \
+            --set-string podAnnotations.nginx-ui-smoke-revision=2 \
+            --wait \
+            --timeout 10m
+
+          new_pod_uid="$(kubectl get pod -n nginx-ui -l app.kubernetes.io/instance=nginx-ui -o jsonpath='{.items[0].metadata.uid}')"
+          test -n "$new_pod_uid"
+          test "$new_pod_uid" != "$old_pod_uid"
+          kubectl exec -n nginx-ui deploy/nginx-ui -- \
+            test -f /etc/nginx-ui/.helm-smoke-marker
+
+          kubectl port-forward -n nginx-ui service/nginx-ui 18080:80 >/tmp/nginx-ui-port-forward.log 2>&1 &
+          port_forward_pid=$!
+          trap 'kill "$port_forward_pid" 2>/dev/null || true' EXIT
+          for attempt in {1..30}; do
+            if curl -fsS http://127.0.0.1:18080/healthz; then
+              exit 0
+            fi
+            sleep 2
+          done
+          cat /tmp/nginx-ui-port-forward.log
+          exit 1
+
+      - name: Collect failure diagnostics
+        if: failure()
+        run: |
+          kubectl get all,pvc,pv -A
+          kubectl describe pod -n nginx-ui -l app.kubernetes.io/instance=nginx-ui
+          kubectl logs -n nginx-ui deploy/nginx-ui --all-containers=true --tail=200 || true
+
+  publish-helm:
+    name: Publish Helm repository
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    needs: helm-smoke
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: v3.21.1
+
+      - name: Package chart
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          set -euo pipefail
+          version="${RELEASE_TAG#v}"
+          mkdir -p helm-repository
+          helm package charts/nginx-ui \
+            --version "$version" \
+            --app-version "$version" \
+            --destination helm-repository
+
+      - name: Build repository index
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_REGION: us-east-1
+          AWS_EC2_METADATA_DISABLED: "true"
+          R2_ENDPOINT: ${{ secrets.R2_S3_API_ENDPOINT }}
+        run: |
+          set -euo pipefail
+          if aws s3api head-object \
+            --bucket nginx-ui-dev-build \
+            --key helm/index.yaml \
+            --endpoint-url="$R2_ENDPOINT" \
+            >/dev/null 2>helm-repository/head-object.error; then
+            aws s3 cp s3://nginx-ui-dev-build/helm/index.yaml helm-repository/previous-index.yaml \
+              --endpoint-url="$R2_ENDPOINT"
+            helm repo index helm-repository \
+              --url https://cloud.nginxui.com/helm \
+              --merge helm-repository/previous-index.yaml
+            rm helm-repository/previous-index.yaml
+          elif grep -Eq '(404|Not Found|NoSuchKey)' helm-repository/head-object.error; then
+            helm repo index helm-repository --url https://cloud.nginxui.com/helm
+          else
+            cat helm-repository/head-object.error >&2
+            exit 1
+          fi
+          rm helm-repository/head-object.error
+
+      - name: Upload chart before index
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_REGION: us-east-1
+          AWS_EC2_METADATA_DISABLED: "true"
+          R2_ENDPOINT: ${{ secrets.R2_S3_API_ENDPOINT }}
+        run: |
+          set -euo pipefail
+          chart_file="$(find helm-repository -maxdepth 1 -name 'nginx-ui-*.tgz' -print -quit)"
+          test -n "$chart_file"
+          aws s3 cp "$chart_file" "s3://nginx-ui-dev-build/helm/$(basename "$chart_file")" \
+            --endpoint-url="$R2_ENDPOINT" \
+            --content-type application/gzip \
+            --cache-control 'public, max-age=31536000, immutable'
+          aws s3 cp helm-repository/index.yaml s3://nginx-ui-dev-build/helm/index.yaml \
+            --endpoint-url="$R2_ENDPOINT" \
+            --content-type application/yaml \
+            --cache-control 'public, max-age=300'
+
+  build-openwrt:
+    name: OpenWrt ${{ matrix.feed_arch }}
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: x86
+            subtarget: "64"
+            feed_arch: x86_64
+            binary_artifact: nginx-ui-linux-amd64
+          - target: armsr
+            subtarget: armv8
+            feed_arch: aarch64_generic
+            binary_artifact: nginx-ui-linux-arm64
+          - target: mediatek
+            subtarget: filogic
+            feed_arch: aarch64_cortex-a53
+            binary_artifact: nginx-ui-linux-arm64
+          - target: armsr
+            subtarget: armv7
+            feed_arch: arm_cortex-a15_neon-vfpv4
+            binary_artifact: nginx-ui-linux-armv7
+          - target: ipq40xx
+            subtarget: generic
+            feed_arch: arm_cortex-a7_neon-vfpv4
+            binary_artifact: nginx-ui-linux-armv7
+          - target: sifiveu
+            subtarget: generic
+            feed_arch: riscv64_generic
+            binary_artifact: nginx-ui-linux-riscv64
+    env:
+      OPENWRT_VERSION: 25.12.5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Install SDK dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential clang flex bison g++ gawk gcc-multilib gettext git \
+            libncurses-dev libssl-dev python3-setuptools rsync swig unzip zlib1g-dev \
+            file wget zstd
+
+      - name: Download release binary
+        uses: actions/download-artifact@v8
+        with:
+          name: ${{ matrix.binary_artifact }}
+          path: release-binary
+
+      - name: Download and verify OpenWrt SDK
+        env:
+          TARGET: ${{ matrix.target }}
+          SUBTARGET: ${{ matrix.subtarget }}
+        run: |
+          set -euo pipefail
+          base_url="https://downloads.openwrt.org/releases/${OPENWRT_VERSION}/targets/${TARGET}/${SUBTARGET}"
+          curl -fsSLo sha256sums "${base_url}/sha256sums"
+          sdk_filename="$(awk '$2 ~ /openwrt-sdk-.*Linux-x86_64.tar.zst$/ {print $2; exit}' sha256sums)"
+          sdk_sha256="$(awk -v file="$sdk_filename" '$2 == file {print $1}' sha256sums)"
+          test -n "$sdk_filename"
+          test -n "$sdk_sha256"
+          curl -fsSLo "$sdk_filename" "${base_url}/${sdk_filename}"
+          echo "${sdk_sha256}  ${sdk_filename}" | sha256sum --check
+          sdk_dir="$(tar --zstd -tf "$sdk_filename" | sed -n '1s#/.*##p')"
+          test -n "$sdk_dir"
+          tar --zstd -xf "$sdk_filename"
+          echo "SDK_DIR=$sdk_dir" >> "$GITHUB_ENV"
+
+      - name: Prepare package and signing key
+        env:
+          OPENWRT_APK_PRIVATE_KEY: ${{ secrets.OPENWRT_APK_PRIVATE_KEY }}
+        run: |
+          set -euo pipefail
+          test -n "$OPENWRT_APK_PRIVATE_KEY"
+          package_dir="$SDK_DIR/package/nginx-ui"
+          cp -R packaging/openwrt "$package_dir"
+          install -m 0755 release-binary/nginx-ui "$package_dir/files/nginx-ui"
+          install -m 0755 resources/services/nginx-ui.openwrt "$package_dir/files/nginx-ui.init"
+          install -m 0644 resources/keep.openwrt "$package_dir/files/nginx-ui.keep"
+          install -m 0644 LICENSE "$package_dir/files/LICENSE"
+
+          printf '%s\n' "$OPENWRT_APK_PRIVATE_KEY" > "$SDK_DIR/private-key.pem"
+          if ! grep -q '^untrusted comment:' "$SDK_DIR/private-key.pem"; then
+            sed -i '1i untrusted comment: Nginx UI repository key' "$SDK_DIR/private-key.pem"
+          fi
+          openssl ec -in "$SDK_DIR/private-key.pem" -pubout > "$SDK_DIR/public-key.pem.tmp"
+          {
+            echo 'untrusted comment: Nginx UI repository key'
+            cat "$SDK_DIR/public-key.pem.tmp"
+          } > "$SDK_DIR/public-key.pem"
+          rm "$SDK_DIR/public-key.pem.tmp"
+          chmod 0600 "$SDK_DIR/private-key.pem"
+
+      - name: Build signed APK repository
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          EXPECTED_FEED_ARCH: ${{ matrix.feed_arch }}
+        run: |
+          set -euo pipefail
+          version="${RELEASE_TAG#v}"
+          cd "$SDK_DIR"
+          {
+            echo 'CONFIG_PACKAGE_nginx-ui=m'
+            echo 'CONFIG_SIGNED_PACKAGES=y'
+            echo 'CONFIG_USE_APK=y'
+          } >> .config
+          make defconfig
+          make package/nginx-ui/compile V=s NGINX_UI_VERSION="$version"
+          make package/index V=s
+
+          package_files=(bin/packages/*/base/nginx-ui-*.apk)
+          test "${#package_files[@]}" -eq 1
+          package_file="${package_files[0]}"
+          package_repo="$(dirname "$package_file")"
+          feed_arch="$(basename "$(dirname "$package_repo")")"
+          test "$feed_arch" = "$EXPECTED_FEED_ARCH"
+          test -s "$package_repo/packages.adb"
+          test -s "$package_repo/index.json"
+
+          output_dir="$GITHUB_WORKSPACE/openwrt-artifact/$feed_arch"
+          mkdir -p "$output_dir"
+          cp "$package_file" "$package_repo/packages.adb" "$package_repo/index.json" "$output_dir/"
+          cp public-key.pem "$output_dir/public-key.pem"
+
+      - name: Upload repository artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: openwrt-${{ matrix.feed_arch }}
+          path: openwrt-artifact
+          if-no-files-found: error
+
+  publish-openwrt:
+    name: Publish OpenWrt repository
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    needs: build-openwrt
+    steps:
+      - name: Download repository artifacts
+        uses: actions/download-artifact@v8
+        with:
+          pattern: openwrt-*
+          path: openwrt-repository
+          merge-multiple: true
+
+      - name: Verify repository artifacts
+        run: |
+          set -euo pipefail
+          reference_key=""
+          for feed_dir in openwrt-repository/*; do
+            test -d "$feed_dir"
+            test -s "$feed_dir/packages.adb"
+            test -s "$feed_dir/index.json"
+            package_files=("$feed_dir"/nginx-ui-*.apk)
+            test "${#package_files[@]}" -eq 1
+            if [[ -z "$reference_key" ]]; then
+              reference_key="$feed_dir/public-key.pem"
+            else
+              cmp "$reference_key" "$feed_dir/public-key.pem"
+            fi
+          done
+          test -n "$reference_key"
+          cp "$reference_key" openwrt-repository/public-key.pem
+
+      - name: Upload packages before indexes
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_REGION: us-east-1
+          AWS_EC2_METADATA_DISABLED: "true"
+          R2_ENDPOINT: ${{ secrets.R2_S3_API_ENDPOINT }}
+        run: |
+          set -euo pipefail
+          aws s3 cp openwrt-repository/public-key.pem s3://nginx-ui-dev-build/openwrt/public-key.pem \
+            --endpoint-url="$R2_ENDPOINT" \
+            --content-type application/x-pem-file \
+            --cache-control 'public, max-age=3600'
+
+          for feed_dir in openwrt-repository/*; do
+            [[ -d "$feed_dir" ]] || continue
+            feed_arch="$(basename "$feed_dir")"
+            package_files=("$feed_dir"/nginx-ui-*.apk)
+            aws s3 cp "${package_files[0]}" "s3://nginx-ui-dev-build/openwrt/25.12/${feed_arch}/$(basename "${package_files[0]}")" \
+              --endpoint-url="$R2_ENDPOINT" \
+              --content-type application/vnd.alpine.apk \
+              --cache-control 'public, max-age=31536000, immutable'
+          done
+
+          for feed_dir in openwrt-repository/*; do
+            [[ -d "$feed_dir" ]] || continue
+            feed_arch="$(basename "$feed_dir")"
+            aws s3 cp "$feed_dir/index.json" "s3://nginx-ui-dev-build/openwrt/25.12/${feed_arch}/index.json" \
+              --endpoint-url="$R2_ENDPOINT" \
+              --content-type application/json \
+              --cache-control 'public, max-age=300'
+            aws s3 cp "$feed_dir/packages.adb" "s3://nginx-ui-dev-build/openwrt/25.12/${feed_arch}/packages.adb" \
+              --endpoint-url="$R2_ENDPOINT" \
+              --content-type application/octet-stream \
+              --cache-control 'public, max-age=300'
+          done
 
   update-homebrew:
     runs-on: ubuntu-latest
