@@ -879,13 +879,22 @@ jobs:
           SUBTARGET: ${{ matrix.subtarget }}
         run: |
           set -euo pipefail
-          base_url="https://downloads.openwrt.org/releases/${OPENWRT_VERSION}/targets/${TARGET}/${SUBTARGET}"
-          curl -fsSLo sha256sums "${base_url}/sha256sums"
+          downloads_base_url="https://downloads.openwrt.org/releases/${OPENWRT_VERSION}/targets/${TARGET}/${SUBTARGET}"
+          archive_base_url="https://archive.openwrt.org/releases/${OPENWRT_VERSION}/targets/${TARGET}/${SUBTARGET}"
+          if ! curl --retry 5 --retry-all-errors --retry-delay 2 \
+            -fsSLo sha256sums "${downloads_base_url}/sha256sums"; then
+            curl --retry 5 --retry-all-errors --retry-delay 2 \
+              -fsSLo sha256sums "${archive_base_url}/sha256sums"
+          fi
           sdk_filename="$(awk '$2 ~ /openwrt-sdk-.*Linux-x86_64.tar.zst$/ {print $2; exit}' sha256sums)"
           sdk_sha256="$(awk -v file="$sdk_filename" '$2 == file {print $1}' sha256sums)"
           test -n "$sdk_filename"
           test -n "$sdk_sha256"
-          curl -fsSLo "$sdk_filename" "${base_url}/${sdk_filename}"
+          if ! curl --retry 5 --retry-all-errors --retry-delay 2 \
+            -fsSLo "$sdk_filename" "${downloads_base_url}/${sdk_filename}"; then
+            curl --retry 5 --retry-all-errors --retry-delay 2 \
+              -fsSLo "$sdk_filename" "${archive_base_url}/${sdk_filename}"
+          fi
           echo "${sdk_sha256}  ${sdk_filename}" | sha256sum --check
           sdk_dir="$(tar --zstd -tf "$sdk_filename" | sed -n '1s#/.*##p')"
           test -n "$sdk_dir"
