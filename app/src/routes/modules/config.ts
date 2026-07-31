@@ -9,7 +9,7 @@ export const configRoutes: RouteRecordRaw[] = [
     meta: {
       name: () => $gettext('Manage Configs'),
       icon: FileOutlined,
-      hideChildren: true,
+      hideChildren: false,
     },
   },
   {

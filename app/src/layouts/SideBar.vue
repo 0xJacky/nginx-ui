@@ -6,10 +6,15 @@ import type { NgxModule } from '@/api/ngx'
 import ngx from '@/api/ngx'
 import Logo from '@/components/Logo'
 import NodeIndicator from '@/components/NodeIndicator'
+import { useConfigFavorites } from '@/composables/useConfigFavorites'
 import { useGlobalStore } from '@/pinia/moudule/global'
 import { routes } from '@/routes'
 
 const route = useRoute()
+const { favorites } = useConfigFavorites()
+
+const CONFIG_PATH = 'config'
+const FAVORITES_KEY = `${CONFIG_PATH}-favorites`
 
 const openKeys = ref([openSub()])
 
@@ -22,6 +27,14 @@ function openSub() {
   return path.substring(1, lastSepIndex)
 }
 
+function ensureConfigOpen() {
+  const keys = new Set(openKeys.value)
+  keys.add(CONFIG_PATH)
+  if (favorites.value.length > 0)
+    keys.add(FAVORITES_KEY)
+  openKeys.value = Array.from(keys)
+}
+
 watch(route, () => {
   selectedKey.value = [route.name as Key]
 
@@ -29,7 +42,16 @@ watch(route, () => {
   const p = openKeys.value.indexOf(sub)
   if (p === -1)
     openKeys.value = [sub]
+
+  // Keep config and favorites menus expanded when in config routes
+  if (route.path.startsWith('/config'))
+    ensureConfigOpen()
 })
+
+watch(favorites, () => {
+  if (route.path.startsWith('/config'))
+    ensureConfigOpen()
+}, { immediate: true })
 
 const sidebars = computed(() => {
   return routes[0].children
@@ -51,6 +73,28 @@ interface Sidebar {
 
 const globalStore = useGlobalStore()
 const { modules, modulesMap } = storeToRefs(globalStore)
+
+function getFavoriteRoute(item: typeof favorites.value[0]) {
+  return {
+    path: `/config/${encodeURIComponent(item.name)}/edit`,
+    query: {
+      basePath: item.dir || undefined,
+    },
+  }
+}
+
+function getFavoriteTitle(item: typeof favorites.value[0]) {
+  if (item.modifiedAt) {
+    try {
+      const date = new Date(item.modifiedAt).toLocaleString()
+      return `${item.name} (${date})`
+    }
+    catch {
+      return item.name
+    }
+  }
+  return item.name
+}
 
 onMounted(() => {
   ngx.get_modules().then(r => {
@@ -116,7 +160,7 @@ const visible: ComputedRef<Sidebar[]> = computed(() => {
 
       <template v-for="s in visible">
         <AMenuItem
-          v-if="s.children.length === 0 || s.meta.hideChildren"
+          v-if="(s.children.length === 0 || s.meta.hideChildren) && !(s.path === 'config' && favorites.length > 0)"
           :key="s.name"
           @click="$router.push(`/${s.path}`).catch(() => {})"
         >
@@ -127,6 +171,7 @@ const visible: ComputedRef<Sidebar[]> = computed(() => {
         <ASubMenu
           v-else
           :key="s.path"
+          @titleClick="s.path === 'config' ? $router.push(`/${s.path}`).catch(() => {}) : null"
         >
           <template #title>
             <Component :is="s.meta.icon as IconComponentProps" />
@@ -140,6 +185,20 @@ const visible: ComputedRef<Sidebar[]> = computed(() => {
               {{ child?.meta?.name() }}
             </RouterLink>
           </AMenuItem>
+
+          <template v-if="s.path === 'config' && favorites.length > 0">
+            <AMenuDivider />
+            <ASubMenu :key="`${s.path}-favorites`" :title="$gettext('Favorites')">
+              <AMenuItem
+                v-for="item in favorites"
+                :key="`fav-${item.fullPath}`"
+              >
+                <RouterLink :to="getFavoriteRoute(item)">
+                  {{ getFavoriteTitle(item) }}
+                </RouterLink>
+              </AMenuItem>
+            </ASubMenu>
+          </template>
         </ASubMenu>
       </template>
     </AMenu>

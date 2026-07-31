@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { StarFilled, StarOutlined } from '@ant-design/icons-vue'
 import { StdTable } from '@uozi-admin/curd'
 import config from '@/api/config'
 import FooterToolBar from '@/components/FooterToolbar'
 import InspectConfig from '@/components/InspectConfig'
 import { useBreadcrumbs } from '@/composables/useBreadcrumbs'
+import { useConfigFavorites } from '@/composables/useConfigFavorites'
 import { isProtectedPath } from '@/views/config/configUtils'
 import Delete from './components/Delete.vue'
 import Mkdir from './components/Mkdir.vue'
@@ -36,6 +38,12 @@ watch(getParams, () => {
 
 const refInspectConfig = useTemplateRef('refInspectConfig')
 const breadcrumbs = useBreadcrumbs()
+
+const { isFavorite, toggleFavorite } = useConfigFavorites()
+
+function getFullPath(name: string) {
+  return basePath.value ? `${basePath.value}${name}` : name
+}
 
 function updateBreadcrumbs() {
   const filteredPath = basePath.value
@@ -138,6 +146,7 @@ function isProtected(name: string) {
       </AButton>
     </template>
     <InspectConfig ref="refInspectConfig" />
+
     <StdTable
       :key="update"
       ref="table"
@@ -180,6 +189,20 @@ function isProtected(name: string) {
           }"
         >
           {{ $gettext('Modify') }}
+        </AButton>
+        <AButton
+          type="link"
+          size="small"
+          @click="() => toggleFavorite(record.name, basePath, record.modified_at)"
+        >
+          <template v-if="isFavorite(getFullPath(record.name))">
+            <StarFilled />
+            {{ $gettext('Unfavorite') }}
+          </template>
+          <template v-else>
+            <StarOutlined />
+            {{ $gettext('Favorite') }}
+          </template>
         </AButton>
         <AButton
           v-if="!isProtected(record.name)"
