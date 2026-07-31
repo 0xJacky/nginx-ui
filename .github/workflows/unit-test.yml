@@ -13,6 +13,7 @@ on:
       - resources/services/nginx-ui.openwrt
       - resources/keep.openwrt
       - "packaging/openwrt/**"
+      - ".github/workflows/build.yml"
       - ".github/workflows/unit-test.yml"
   pull_request:
     paths:
@@ -24,6 +25,7 @@ on:
       - resources/services/nginx-ui.openwrt
       - resources/keep.openwrt
       - "packaging/openwrt/**"
+      - ".github/workflows/build.yml"
       - ".github/workflows/unit-test.yml"
 
 permissions:
@@ -55,3 +57,22 @@ jobs:
 
       - name: Test installer detection and paths
         run: bash tests/install_openwrt_test.sh
+
+      - name: Verify OpenWrt SDK mirror
+        env:
+          OPENWRT_VERSION: 25.12.5
+        run: |
+          set -euo pipefail
+          targets=(
+            x86/64
+            armsr/armv8
+            mediatek/filogic
+            armsr/armv7
+            ipq40xx/generic
+            sifiveu/generic
+          )
+          for target in "${targets[@]}"; do
+            curl --retry 3 --retry-all-errors --retry-delay 2 \
+              -fsSLo /dev/null \
+              "https://mirror-03.infra.openwrt.org/releases/${OPENWRT_VERSION}/targets/${target}/sha256sums"
+          done

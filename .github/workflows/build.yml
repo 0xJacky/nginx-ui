@@ -879,22 +879,29 @@ jobs:
           SUBTARGET: ${{ matrix.subtarget }}
         run: |
           set -euo pipefail
+          mirror_base_url="https://mirror-03.infra.openwrt.org/releases/${OPENWRT_VERSION}/targets/${TARGET}/${SUBTARGET}"
           downloads_base_url="https://downloads.openwrt.org/releases/${OPENWRT_VERSION}/targets/${TARGET}/${SUBTARGET}"
           archive_base_url="https://archive.openwrt.org/releases/${OPENWRT_VERSION}/targets/${TARGET}/${SUBTARGET}"
-          if ! curl --retry 5 --retry-all-errors --retry-delay 2 \
-            -fsSLo sha256sums "${downloads_base_url}/sha256sums"; then
-            curl --retry 5 --retry-all-errors --retry-delay 2 \
-              -fsSLo sha256sums "${archive_base_url}/sha256sums"
-          fi
+
+          download_openwrt_file() {
+            local output="$1"
+            local filename="$2"
+            local base_url
+            for base_url in "$mirror_base_url" "$downloads_base_url" "$archive_base_url"; do
+              if curl --retry 3 --retry-all-errors --retry-delay 2 \
+                -fsSLo "$output" "${base_url}/${filename}"; then
+                return 0
+              fi
+            done
+            return 1
+          }
+
+          download_openwrt_file sha256sums sha256sums
           sdk_filename="$(awk '$2 ~ /openwrt-sdk-.*Linux-x86_64.tar.zst$/ {print $2; exit}' sha256sums)"
           sdk_sha256="$(awk -v file="$sdk_filename" '$2 == file {print $1}' sha256sums)"
           test -n "$sdk_filename"
           test -n "$sdk_sha256"
-          if ! curl --retry 5 --retry-all-errors --retry-delay 2 \
-            -fsSLo "$sdk_filename" "${downloads_base_url}/${sdk_filename}"; then
-            curl --retry 5 --retry-all-errors --retry-delay 2 \
-              -fsSLo "$sdk_filename" "${archive_base_url}/${sdk_filename}"
-          fi
+          download_openwrt_file "$sdk_filename" "$sdk_filename"
           echo "${sdk_sha256}  ${sdk_filename}" | sha256sum --check
           sdk_dir="$(tar --zstd -tf "$sdk_filename" | sed -n '1s#/.*##p')"
           test -n "$sdk_dir"
