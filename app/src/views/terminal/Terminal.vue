@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { TerminalSessionCallbacks } from '@/composables/useTerminalSession'
 import { theme } from 'ant-design-vue'
-import settings from '@/api/settings'
 import use2FAModal from '@/components/TwoFA/use2FAModal'
+import { useDemoTerminalSession } from '@/composables/useDemoTerminalSession'
 import { useTerminalSession } from '@/composables/useTerminalSession'
-import { useTerminalStore } from '@/pinia'
+import { useGlobalStore, useTerminalStore } from '@/pinia'
 import TerminalHeader from './components/TerminalHeader.vue'
 import TerminalRightPanel from './components/TerminalRightPanel.vue'
 import TerminalSessionContent from './components/TerminalSessionContent.vue'
@@ -12,14 +12,44 @@ import TerminalStatusBar from './components/TerminalStatusBar.vue'
 import '@xterm/xterm/css/xterm.css'
 
 const terminalStore = useTerminalStore()
+const globalStore = useGlobalStore()
 const { open: openOtpModal } = use2FAModal()
-const {
-  createSession,
-  destroySession,
-  focusSession,
-  resizeAllSessions,
-  getSessionConnectionStatus,
-} = useTerminalSession()
+const liveSession = useTerminalSession()
+const demoSession = useDemoTerminalSession()
+
+// On a demo node /api/pty is refused before the WebSocket upgrade, so there is
+// nothing to attach to. Fall back to the browser-local shell instead. The flag
+// resolves asynchronously, so dispatch per call rather than destructuring once.
+const isDemoTerminal = computed(() => globalStore.isDemo)
+
+function destroySession(tabId: string) {
+  demoSession.destroySession(tabId)
+  liveSession.destroySession(tabId)
+}
+
+function focusSession(tabId: string) {
+  if (isDemoTerminal.value) {
+    demoSession.focusSession(tabId)
+    return
+  }
+  liveSession.focusSession(tabId)
+}
+
+function resizeAllSessions() {
+  if (isDemoTerminal.value) {
+    demoSession.resizeAllSessions()
+    return
+  }
+  liveSession.resizeAllSessions()
+}
+
+function getSessionConnectionStatus(tabId: string) {
+  if (isDemoTerminal.value) {
+    // The browser-local shell has no connection to lose.
+    return { lostConnection: false }
+  }
+  return liveSession.getSessionConnectionStatus(tabId)
+}
 
 // Create theme config for AConfigProvider
 const terminalTheme = computed(() => {
@@ -29,7 +59,6 @@ const terminalTheme = computed(() => {
 })
 
 const insecureConnection = ref(false)
-const isDemoTerminal = ref(false)
 const rightPanelRef = ref<InstanceType<typeof TerminalRightPanel>>()
 
 function checkSecureConnection() {
@@ -38,16 +67,6 @@ function checkSecureConnection() {
 
   if ((hostname !== 'localhost' && hostname !== '127.0.0.1') && protocol !== 'https:') {
     insecureConnection.value = true
-  }
-}
-
-async function loadTerminalMode() {
-  try {
-    const appSettings = await settings.get()
-    isDemoTerminal.value = appSettings.node.demo
-  }
-  catch (error) {
-    console.error('Failed to load terminal mode:', error)
   }
 }
 
@@ -72,12 +91,20 @@ async function createNewTerminal() {
   const tab = terminalStore.createTab()
 
   try {
-    const secureSessionId = await openOtpModal()
+    if (isDemoTerminal.value) {
+      // No PTY, no socket, so no secure session to establish either.
+      await nextTick()
+      demoSession.createSession(tab, getTerminalContainerId(tab.id), sessionCallbacks)
+    }
+    else {
+      const secureSessionId = await openOtpModal()
 
-    // Wait for DOM to update before creating session
-    await nextTick()
+      // Wait for DOM to update before creating session
+      await nextTick()
 
-    await createSession(tab, getTerminalContainerId(tab.id), secureSessionId, sessionCallbacks)
+      await liveSession.createSession(tab, getTerminalContainerId(tab.id), secureSessionId, sessionCallbacks)
+    }
+
     nextTick(() => {
       focusSession(tab.id)
     })
@@ -104,11 +131,14 @@ function closeTab(tabId: string) {
   terminalStore.closeTab(tabId)
 }
 
-onMounted(() => {
+onMounted(async () => {
   checkSecureConnection()
-  loadTerminalMode()
   updateWindowWidth()
   window.addEventListener('resize', updateWindowWidth)
+
+  // Settle the demo flag before the first session, otherwise a demo node would
+  // briefly try to open the PTY socket that it is going to refuse anyway.
+  await globalStore.ensureDemoFlag()
 
   if (!terminalStore.hasActiveTabs) {
     createNewTerminal()
@@ -132,11 +162,18 @@ async function refreshTerminal() {
     // Close the current session
     destroySession(activeTab.id)
 
-    // Recreate the session
-    const secureSessionId = await openOtpModal()
-    await nextTick()
+    if (isDemoTerminal.value) {
+      await nextTick()
+      demoSession.createSession(activeTab, getTerminalContainerId(activeTab.id), sessionCallbacks)
+    }
+    else {
+      // Recreate the session
+      const secureSessionId = await openOtpModal()
+      await nextTick()
 
-    await createSession(activeTab, getTerminalContainerId(activeTab.id), secureSessionId, sessionCallbacks)
+      await liveSession.createSession(activeTab, getTerminalContainerId(activeTab.id), secureSessionId, sessionCallbacks)
+    }
+
     nextTick(() => {
       focusSession(activeTab.id)
     })
@@ -209,7 +246,7 @@ const terminalMainContainerHeight = computed(() => {
         class="mb-6"
         type="info"
         show-icon
-        :message="$gettext('Demo mode is enabled. This terminal only allows a small set of safe read-only commands.')"
+        :message="$gettext('This is a simulated terminal running entirely in your browser. Commands are answered locally and never reach a server.')"
       />
       <AAlert
         v-if="insecureConnection"

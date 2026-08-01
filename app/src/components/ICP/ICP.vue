@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import type { ICP } from '@/api/public'
+import type { PublicNodeInfo } from '@/api/public'
 import publicApi from '@/api/public'
 
-const icp = ref<ICP>({
+const icp = ref<PublicNodeInfo>({
   icp_number: '',
   public_security_number: '',
+  demo: false,
 })
 
 publicApi.getICP().then(r => {
