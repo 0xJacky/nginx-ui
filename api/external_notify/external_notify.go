@@ -3,6 +3,7 @@ package external_notify
 import (
 	"net/http"
 
+	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
@@ -12,9 +13,13 @@ import (
 func InitRouter(r *gin.RouterGroup) {
 	c := cosy.Api[model.ExternalNotify]("/external_notifies")
 
-	c.InitRouter(r)
+	// Reads stay open so the list is worth showing, but creating an enabled
+	// notifier means storing an arbitrary outbound endpoint that the
+	// notification system will genuinely post to.
+	c.InitRouter(r.Group("", middleware.DemoReadOnly()))
 
-	r.POST("/external_notifies/test", testMessage)
+	// Sending a test message posts to whatever endpoint the caller supplies.
+	r.POST("/external_notifies/test", middleware.RejectInDemo(), testMessage)
 }
 
 // testMessage sends a test message with direct parameters

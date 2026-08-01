@@ -40,7 +40,9 @@ func InitManagementRouter(r *gin.RouterGroup) {
 func initServiceTokenManagementRouter(group *gin.RouterGroup) {
 	admin := group.Group("", middleware.RequireInteractiveUser())
 	admin.GET("", ListServiceTokens)
-	mutations := admin.Group("", middleware.RequireSecureSession())
+	// Minting a service token hands out a credential that bypasses the browser
+	// session entirely, so demo visitors do not get to create one.
+	mutations := admin.Group("", middleware.RequireSecureSession(), middleware.RejectInDemo())
 	mutations.POST("", CreateServiceToken)
 	mutations.POST("/:id/rotate", RotateServiceToken)
 	mutations.DELETE("/:id", RevokeServiceToken)
