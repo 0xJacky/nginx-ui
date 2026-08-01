@@ -1,0 +1,49 @@
+{
+  // Local-only override: builds the container from this working tree instead
+  // of pulling the published image, so `wrangler dev` exercises unreleased
+  // changes. Not used by `wrangler deploy`.
+  //
+  // demo.Dockerfile expects a prebuilt linux/amd64 binary at
+  // nginx-ui-linux-amd64/nginx-ui in the build context; produce it with:
+  //
+  //   docker run --rm --platform linux/amd64 -v "$PWD":/src -w /src \
+  //     -e GOWORK=off -e CGO_ENABLED=1 -e GOOS=linux -e GOARCH=amd64 \
+  //     golang:1.26-trixie go build -o /src/nginx-ui-linux-amd64/nginx-ui main.go
+  //
+  //   bunx wrangler dev -c wrangler.dev.jsonc
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "nginx-ui-demo-dev",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-07-01",
+  "compatibility_flags": ["nodejs_compat"],
+
+  "containers": [
+    {
+      "class_name": "NginxUiDemo",
+      "image": "../demo.Dockerfile",
+      "image_build_context": "..",
+      "image_vars": {
+        "TARGETOS": "linux",
+        "TARGETARCH": "amd64"
+      },
+      "instance_type": "basic",
+      "max_instances": 1
+    }
+  ],
+
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "NGINX_UI_DEMO",
+        "class_name": "NginxUiDemo"
+      }
+    ]
+  },
+
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["NginxUiDemo"]
+    }
+  ]
+}

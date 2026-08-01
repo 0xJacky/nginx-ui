@@ -1,0 +1,72 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "nginx-ui-demo",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-07-01",
+  "compatibility_flags": ["nodejs_compat"],
+
+  "observability": {
+    "enabled": true
+  },
+
+  // Keep the workers.dev URL alive alongside the custom domain: it is the only
+  // way to reach the demo when the custom domain's DNS is being changed.
+  "workers_dev": true,
+
+  // demo.nginxui.com must already exist as a zone on this account. Wrangler
+  // takes over the DNS record when custom_domain is true.
+  "routes": [
+    {
+      "pattern": "demo.nginxui.com",
+      "custom_domain": true
+    }
+  ],
+
+  "containers": [
+    {
+      "class_name": "NginxUiDemo",
+      // Built and pushed to Cloudflare's own registry by `wrangler deploy`,
+      // rather than pulled from Docker Hub. That keeps the deployed image and
+      // this working tree in lockstep, and avoids Docker Hub pull limits.
+      //
+      // demo.Dockerfile expects a prebuilt linux/amd64 binary at
+      // nginx-ui-linux-amd64/nginx-ui; `bun run deploy` produces it first.
+      "image": "../demo.Dockerfile",
+      "image_build_context": "..",
+      "image_vars": {
+        "TARGETOS": "linux",
+        "TARGETARCH": "amd64"
+      },
+      // Measured: the container settles around 550 MiB with three nginx-ui
+      // instances plus nginx, so 1 GiB is the smallest tier that fits.
+      "instance_type": "basic",
+      // Not 1. The platform keeps a provisioned instance of its own, and with a
+      // cap of 1 that instance consumes the whole quota — the Durable Object's
+      // instance then sits 'inactive' forever and the container never starts.
+      // Routing is a singleton by instance ID, so only one is ever claimed.
+      "max_instances": 3
+    }
+  ],
+
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "NGINX_UI_DEMO",
+        "class_name": "NginxUiDemo"
+      }
+    ]
+  },
+
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["NginxUiDemo"]
+    }
+  ],
+
+  // Daily restore. The container is ephemeral, so stopping it is the restore.
+  // 19:00 UTC is roughly 03:00 in CST, the quietest window for this audience.
+  "triggers": {
+    "crons": ["0 19 * * *"]
+  }
+}

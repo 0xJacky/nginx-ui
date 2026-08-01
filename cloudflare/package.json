@@ -1,0 +1,20 @@
+{
+  "name": "nginx-ui-demo-worker",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:binary": "sh ./build-binary.sh",
+    "dev": "sh ./build-binary.sh && wrangler dev -c wrangler.dev.jsonc",
+    "deploy": "sh ./build-binary.sh && wrangler deploy",
+    "typecheck": "tsc --noEmit",
+    "types": "wrangler types"
+  },
+  "dependencies": {
+    "@cloudflare/containers": "^0.3.7"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260801.1",
+    "typescript": "^5.9.2",
+    "wrangler": "^4.118.0"
+  }
+}
