@@ -141,19 +141,25 @@ function onClickAnalytics() {
     },
   })
 }
+
+// The log viewer and indexer parse http access log formats, so the toggle is
+// offered for http servers only
+const showAccessLogSwitch = computed(() => props.context === 'http')
+
+// Without any control to render, the row would still occupy its bottom margin
+const hasContent = computed(() =>
+  showAccessLogSwitch.value || hasAccessLog.value || hasErrorLog.value)
 </script>
 
 <template>
-  <ASpace class="mb-1" wrap>
-    <!-- The log viewer and indexer parse http access log formats, so the
-         shortcut is offered for http servers only -->
+  <ASpace v-if="hasContent" wrap>
     <ATooltip
-      v-if="context === 'http'"
+      v-if="showAccessLogSwitch"
       :title="hasAccessLog
         ? $gettext('Remove the access_log directive from this server')
         : $gettext('Write an access_log directive for this server, so its requests can be viewed and analysed separately')"
     >
-      <ASpace>
+      <label class="access-log-toggle">
         <ASwitch
           size="small"
           :checked="hasAccessLog"
@@ -161,12 +167,13 @@ function onClickAnalytics() {
           @change="checked => toggleAccessLog(!!checked)"
         />
         <span>{{ $gettext('Access Log') }}</span>
-      </ASpace>
+      </label>
     </ATooltip>
 
     <AButton
       v-if="hasAccessLog"
       type="link"
+      size="small"
       @click="onClickAccessLog"
     >
       <FileTextOutlined />
@@ -175,6 +182,7 @@ function onClickAnalytics() {
     <AButton
       v-if="hasErrorLog"
       type="link"
+      size="small"
       @click="onClickErrorLog"
     >
       <FileExclamationOutlined />
@@ -183,6 +191,7 @@ function onClickAnalytics() {
     <AButton
       v-if="hasAccessLog && isIndexingEnabled"
       type="link"
+      size="small"
       @click="onClickAnalytics"
     >
       <AreaChartOutlined />
@@ -192,5 +201,12 @@ function onClickAnalytics() {
 </template>
 
 <style lang="less" scoped>
-
+// Keep the label on the same baseline as the switch and let it toggle too
+.access-log-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
 </style>
