@@ -1,6 +1,7 @@
 package upstream
 
 import (
+	"maps"
 	"net"
 	"sync"
 	"time"
@@ -14,7 +15,48 @@ type Status struct {
 	Latency float32 `json:"latency"`
 }
 
+// Prober overrides how upstream targets are probed.
+//
+// The slot defaults to nil and only internal/demo fills it, so a production
+// binary always dials for real. A demo instance has no reachable backends and
+// no business making outbound connections, which on a metered host is also
+// billed egress.
+type Prober interface {
+	// Probe returns a status per socket. Returning no entry for a socket means
+	// "no opinion": the caller falls back to a real dial.
+	Probe(sockets []string) map[string]*Status
+}
+
+var prober Prober
+
+// SetProber installs a probe override. Call once, at boot.
+func SetProber(p Prober) {
+	prober = p
+}
+
 func AvailabilityTest(body []string) (result map[string]*Status) {
+	if p := prober; p != nil {
+		if fabricated := p.Probe(body); fabricated != nil {
+			result = make(map[string]*Status, len(body))
+			var remaining []string
+			for _, socket := range body {
+				if status, ok := fabricated[socket]; ok {
+					result[socket] = status
+					continue
+				}
+				remaining = append(remaining, socket)
+			}
+			// Anything the override declined still gets a real dial, so an
+			// override can never silently answer for a target it does not know.
+			maps.Copy(result, realAvailabilityTest(remaining))
+			return result
+		}
+	}
+
+	return realAvailabilityTest(body)
+}
+
+func realAvailabilityTest(body []string) (result map[string]*Status) {
 	result = make(map[string]*Status)
 
 	wg := sync.WaitGroup{}

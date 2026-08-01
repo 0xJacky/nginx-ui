@@ -42,8 +42,30 @@ const (
 	StubStatusConfigName = "stub_status_nginx-ui.conf"
 )
 
+// StubStatusProvider overrides where connection counters come from.
+//
+// The slot defaults to nil and only internal/demo fills it. Deliberately scoped
+// to the counters alone: process info and config info stay real, so the
+// dashboard still reflects the nginx that is genuinely running.
+type StubStatusProvider interface {
+	StubStatus() *StubStatusData
+}
+
+var stubStatusProvider StubStatusProvider
+
+// SetStubStatusProvider installs a counter override. Call once, at boot.
+func SetStubStatusProvider(p StubStatusProvider) {
+	stubStatusProvider = p
+}
+
 // GetStubStatusData Get the stub_status module data
 func GetStubStatusData() (bool, *StubStatusData, error) {
+	if p := stubStatusProvider; p != nil {
+		if data := p.StubStatus(); data != nil {
+			return true, data, nil
+		}
+	}
+
 	result := &StubStatusData{
 		Active:   0,
 		Accepts:  0,

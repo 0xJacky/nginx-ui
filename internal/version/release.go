@@ -106,7 +106,31 @@ func getLatestPrerelease() (data TRelease, err error) {
 	return
 }
 
+// ReleaseProvider overrides where release metadata comes from.
+//
+// The slot defaults to nil and only internal/demo fills it, so a production
+// binary always asks GitHub. A demo instance cannot install an upgrade anyway,
+// and should not be making outbound API calls on every visit to the About page.
+type ReleaseProvider interface {
+	// Release returns the release for a channel, or false to fall through to
+	// the real lookup.
+	Release(channel string) (TRelease, bool)
+}
+
+var releaseProvider ReleaseProvider
+
+// SetReleaseProvider installs a release override. Call once, at boot.
+func SetReleaseProvider(p ReleaseProvider) {
+	releaseProvider = p
+}
+
 func GetRelease(channel string) (data TRelease, err error) {
+	if p := releaseProvider; p != nil {
+		if release, ok := p.Release(channel); ok {
+			return release, nil
+		}
+	}
+
 	stableRelease, err := getLatestRelease()
 	if err != nil {
 		return TRelease{}, err
