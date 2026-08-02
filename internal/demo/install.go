@@ -2,6 +2,7 @@ package demo
 
 import (
 	"github.com/0xJacky/Nginx-UI/internal/geolite"
+	"github.com/0xJacky/Nginx-UI/internal/llm"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/indexer"
 	"github.com/0xJacky/Nginx-UI/internal/performance"
 	"github.com/0xJacky/Nginx-UI/internal/sitecheck"
@@ -31,6 +32,7 @@ func overrides() []override {
 		// Must run after the vendor packages' init(); the registry is
 		// last-write-wins and boot happens well after package init.
 		{"dns-providers", installDNSProviders},
+		{"llm-transport", func() { llm.SetHTTPDoer(llmDoer{}) }},
 		// Must precede nginx_log.InitializeServices, which is why Install runs
 		// first in the boot sequence: the indexer reads these files once.
 		{"log-fixtures", installLogFixtures},
