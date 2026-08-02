@@ -24,7 +24,9 @@ func (l Logrotate) HasValidInterval() bool {
 	return l.Interval > 0
 }
 
-func (l Logrotate) GetInterval() time.Duration {
+// Pointer receiver so the call reads only Interval rather than copying the
+// whole struct, which would make it race with any concurrent settings write.
+func (l *Logrotate) GetInterval() time.Duration {
 	if !l.HasValidInterval() {
 		return defaultLogrotateIntervalMinutes * time.Minute
 	}

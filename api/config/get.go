@@ -13,7 +13,13 @@ import (
 )
 
 func GetConfig(c *gin.Context) {
-	path := helper.UnescapeURL(c.Query("path"))
+	// An encoded value is already exact, so it must not also go through the
+	// repeated-unescape loop — a filename containing a literal '%' would be
+	// corrupted by it. Raw values keep the historical behaviour.
+	path, encoded := helper.DecodePathParam(c.Query("path"))
+	if !encoded {
+		path = helper.UnescapeURL(path)
+	}
 
 	absPath, err := config.ResolveAbsoluteOrRelativeConfPath(path)
 	if err != nil {

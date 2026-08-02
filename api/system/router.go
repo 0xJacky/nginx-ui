@@ -29,7 +29,8 @@ func InitPrivateRouter(r *gin.RouterGroup) {
 	r.POST("system/port_scan", PortScan)
 
 	r.Any("system/stats", GetProcessStats)
-	r.Any("system/restart", Restart)
+	// Restarting takes the whole demo container down with it.
+	r.Any("system/restart", middleware.RejectInDemo(), Restart)
 
 	g := r.Group("self_check")
 	g.GET("", SelfCheck)
@@ -38,6 +39,9 @@ func InitPrivateRouter(r *gin.RouterGroup) {
 }
 
 func InitWebSocketRouter(r *gin.RouterGroup) {
-	r.GET("upgrade/perform", PerformCoreUpgrade)
+	// internal/upgrader/binary.go already turns the install step into a no-op in
+	// demo mode, but the archive is still downloaded and verified first. Refuse
+	// before any of that runs.
+	r.GET("upgrade/perform", middleware.RejectInDemo(), PerformCoreUpgrade)
 	r.GET("self_check/websocket", CheckWebSocket)
 }

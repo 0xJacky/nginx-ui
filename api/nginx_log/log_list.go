@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy/logger"
@@ -25,7 +26,7 @@ func GetLogList(c *gin.Context) {
 		})
 	}
 
-	if path := c.Query("path"); path != "" {
+	if path, _ := helper.DecodePathParam(c.Query("path")); path != "" {
 		filters = append(filters, func(entry *nginx_log.NginxLogWithIndex) bool {
 			return strings.Contains(entry.Path, path)
 		})

@@ -11,15 +11,7 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/crypto"
 	"github.com/gin-gonic/gin"
-	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
-)
-
-var (
-	e                       = cosy.NewErrorScope("middleware")
-	ErrInvalidRequestFormat = e.New(40000, "invalid request format")
-	ErrDecryptionFailed     = e.New(40001, "decryption failed")
-	ErrFormParseFailed      = e.New(40002, "form parse failed")
 )
 
 func EncryptedParams() gin.HandlerFunc {

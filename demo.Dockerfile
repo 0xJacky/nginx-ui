@@ -1,39 +1,35 @@
-# CGO_ENABLED=1 GOOS=linux CC=x86_64-unknown-linux-gnu-gcc CXX=x86_64-unknown-linux-gnu-g++ GOARCH=amd64 go build -ldflags "-X 'github.com/0xJacky/Nginx-UI/settings.buildTime=$(date +%s)'" -o nginx-ui -v main.go
+# Demo image for the public instance on Cloudflare Containers.
+#
+# Deliberately does NOT use s6-overlay, unlike the production Dockerfile.
+# s6's preinit chowns /run and its suexec calls setgid; Cloudflare Containers
+# grant neither CAP_CHOWN nor CAP_SETGID, so s6 exits 111 before anything
+# starts. resources/demo/entrypoint.sh starts the same processes directly.
+#
+# Build the binary first (see cloudflare/build-binary.sh):
+#   GOWORK=off CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -trimpath \
+#     -tags=jsoniter -ldflags "-s -w" -o nginx-ui-linux-amd64/nginx-ui main.go
 ARG NGINX_VERSION=latest
 FROM nginx:${NGINX_VERSION}
 ARG TARGETOS
 ARG TARGETARCH
 ARG TARGETVARIANT
-ARG S6_OVERLAY_VERSION=3.2.1.0
 WORKDIR /app
-EXPOSE 80
+# 8080 rather than 80: this image runs unprivileged (see USER below) and cannot
+# bind a port under 1024.
+EXPOSE 8080
 
 ENV DEBIAN_FRONTEND=noninteractive
-ENV NGINX_UI_WORKING_DIR=/var/run/
+ENV NGINX_UI_WORKING_DIR=/var/run/nginx-ui
+# Deliberately NOT setting NGINX_UI_OFFICIAL_DOCKER. It would enable a Docker
+# socket self-check that can only fail here (no socket is mounted), run OTA
+# container cleanup that logs errors on every boot, and default RestartCmd to
+# `nginx -s stop` — which assumes an s6 supervisor that this image no longer
+# has. resources/demo/app.ini sets RestartCmd explicitly instead, and
+# entrypoint.sh does the supervising.
 
 RUN apt-get update -y \
-    && apt-get install -y --no-install-recommends wget xz-utils logrotate nginx-module-geoip \
+    && apt-get install -y --no-install-recommends logrotate \
     && rm -rf /var/lib/apt/lists/*
-
-RUN case "${TARGETARCH}/${TARGETVARIANT}" in \
-        "amd64/"*) S6_ARCH="x86_64" ;; \
-        "arm64/"*) S6_ARCH="aarch64" ;; \
-        "arm/v7"*) S6_ARCH="arm" ;; \
-        "arm/v6"*) S6_ARCH="arm" ;; \
-        "arm/v5"*) S6_ARCH="arm" ;; \
-        "riscv64/"*) S6_ARCH="riscv64" ;; \
-        *) echo "Unsupported arch: ${TARGETARCH}/${TARGETVARIANT}" && exit 1 ;; \
-    esac && \
-    wget -O /tmp/s6-overlay-noarch.tar.xz https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz && \
-    tar -C / -Jxpf /tmp/s6-overlay-noarch.tar.xz && \
-    wget -O /tmp/s6-overlay-${S6_ARCH}.tar.xz https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-${S6_ARCH}.tar.xz && \
-    tar -C / -Jxpf /tmp/s6-overlay-${S6_ARCH}.tar.xz && \
-    rm -f /tmp/s6-overlay-noarch.tar.xz /tmp/s6-overlay-${S6_ARCH}.tar.xz
-
-# register nginx service
-COPY resources/docker/nginx.run /etc/s6-overlay/s6-rc.d/nginx/run
-RUN echo 'longrun' > /etc/s6-overlay/s6-rc.d/nginx/type && \
-    touch /etc/s6-overlay/s6-rc.d/user/contents.d/nginx
 
 RUN mkdir -p /usr/local/etc \
     && mkdir /etc/nginx/sites-available \
@@ -41,16 +37,6 @@ RUN mkdir -p /usr/local/etc \
     && mkdir /etc/nginx/streams-available \
     && mkdir /etc/nginx/streams-enabled \
     && cp -r /etc/nginx /usr/local/etc/nginx
-
-# init config
-COPY resources/docker/init-config.up /etc/s6-overlay/s6-rc.d/init-config/up
-COPY resources/docker/init-config.sh /etc/s6-overlay/s6-rc.d/init-config/init-config.sh
-
-RUN chmod +x /etc/s6-overlay/s6-rc.d/init-config/init-config.sh && \
-    echo 'oneshot' > /etc/s6-overlay/s6-rc.d/init-config/type && \
-    touch /etc/s6-overlay/s6-rc.d/user/contents.d/init-config && \
-    mkdir -p /etc/s6-overlay/s6-rc.d/nginx/dependencies.d && \
-    touch /etc/s6-overlay/s6-rc.d/nginx/dependencies.d/init-config
 
 # copy demo config
 COPY resources/demo/ojbk.me /etc/nginx/sites-available/ojbk.me
@@ -61,15 +47,15 @@ RUN ln -s "/etc/nginx/sites-available/Prime Sponsor" \
 COPY resources/demo/app.ini /etc/nginx-ui/app.ini
 COPY resources/demo/demo.db /etc/nginx-ui/database.db
 
-# register nginx-ui service
-COPY resources/docker/nginx-ui.run /etc/s6-overlay/s6-rc.d/nginx-ui/run
-RUN echo 'longrun' > /etc/s6-overlay/s6-rc.d/nginx-ui/type && \
-    touch /etc/s6-overlay/s6-rc.d/user/contents.d/nginx-ui
-
 # copy nginx config
-COPY resources/docker/nginx.conf /etc/nginx/nginx.conf
-COPY resources/docker/nginx-ui.conf /etc/nginx/conf.d/nginx-ui.conf
+# The demo uses its own nginx.conf / nginx-ui.conf rather than the ones under
+# resources/docker: no `user` directive, temp paths under /tmp, and port 8080,
+# all so the container can run unprivileged. resources/docker/* stays as-is for
+# the production image.
+COPY resources/demo/nginx.conf /etc/nginx/nginx.conf
+COPY resources/demo/nginx-ui.conf /etc/nginx/conf.d/nginx-ui.conf
 COPY resources/demo/stub_status_nginx-ui.conf /etc/nginx/conf.d/stub_status_nginx-ui.conf
+COPY resources/docker/nginx-ui.conf.known-hashes /usr/local/share/nginx-ui/nginx-ui.conf.known-hashes
 
 # copy nginx-ui executable binary
 COPY nginx-ui-$TARGETOS-$TARGETARCH$TARGETVARIANT/nginx-ui /usr/local/bin/nginx-ui
@@ -82,4 +68,30 @@ RUN rm -f /var/log/nginx/access.log && \
     rm -f /var/log/nginx/error.log && \
     touch /var/log/nginx/error.log
 
-ENTRYPOINT ["/init"]
+# extra nginx-ui instances so the cluster view has real peers to talk to,
+# reachable over loopback instead of a second container
+COPY resources/demo/setup-cluster-nodes.sh /usr/local/bin/setup-cluster-nodes.sh
+RUN chmod +x /usr/local/bin/setup-cluster-nodes.sh && \
+    /usr/local/bin/setup-cluster-nodes.sh
+
+COPY resources/demo/entrypoint.sh /usr/local/bin/demo-entrypoint.sh
+RUN chmod +x /usr/local/bin/demo-entrypoint.sh
+
+# Run unprivileged. Cloudflare Containers grant no privileged capabilities, and
+# nothing here needs them once the writable paths are owned by the runtime user.
+# Everything stays owned by root, and there is no USER directive. Both are
+# forced by how Cloudflare Containers run this image:
+#
+#   1. With `USER nginx` the instance never got scheduled at all — it sat
+#      'inactive' indefinitely, while an otherwise identical root image started
+#      normally.
+#   2. Running as root does NOT mean unrestricted: every capability is dropped,
+#      so without CAP_DAC_OVERRIDE root obeys ordinary file permissions.
+#      Chowning these paths to `nginx` locked root out of its own filesystem and
+#      broke nginx's error log and nginx-ui's handover socket.
+#
+# So: root-owned, root-run, and no capabilities. The isolation comes from the
+# capability set and the per-container VM, not from the uid.
+RUN mkdir -p /var/cache/nginx /var/lib/nginx /var/run/nginx-ui /etc/nginx-ui
+
+ENTRYPOINT ["/usr/local/bin/demo-entrypoint.sh"]

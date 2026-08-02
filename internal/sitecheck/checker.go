@@ -341,6 +341,57 @@ func (sc *SiteChecker) CheckSite(ctx context.Context, siteURL string) (*SiteInfo
 	return sc.checkSite(ctx, "", siteURL)
 }
 
+// ProbeResult is the outcome of checking one site, without the surrounding
+// bookkeeping that SiteInfo carries.
+type ProbeResult struct {
+	Status       string
+	StatusCode   int
+	ResponseTime int64
+	Title        string
+	Error        string
+}
+
+// Prober overrides how a site is probed.
+//
+// The slot defaults to nil and only internal/demo fills it. Returning false
+// means "no opinion" and the real HTTP check runs, so an override can never
+// answer for a site it does not know about.
+type Prober interface {
+	Probe(siteURL string) (ProbeResult, bool)
+}
+
+var prober Prober
+
+// SetProber installs a probe override. Call once, at boot.
+func SetProber(p Prober) {
+	prober = p
+}
+
+// siteInfoFromProbe assembles a SiteInfo from a fabricated outcome, reusing the
+// site's real configuration so only the probe result itself is substituted.
+func (sc *SiteChecker) siteInfoFromProbe(siteName, siteURL string, config *model.SiteConfig, outcome ProbeResult) *SiteInfo {
+	if config == nil {
+		config = getOrCreateSiteConfigForURL(siteName, siteURL)
+	}
+
+	title := outcome.Title
+	if title == "" {
+		title = extractDomainName(siteURL)
+	}
+
+	return &SiteInfo{
+		SiteConfig:                  *config,
+		Name:                        extractDomainName(siteURL),
+		Status:                      outcome.Status,
+		StatusCode:                  outcome.StatusCode,
+		ResponseTime:                outcome.ResponseTime,
+		Title:                       title,
+		Error:                       outcome.Error,
+		LastChecked:                 time.Now().Unix(),
+		EffectiveHealthCheckEnabled: settings.SiteCheckSettings.Enabled && config.HealthCheckEnabled,
+	}
+}
+
 func (sc *SiteChecker) checkSite(ctx context.Context, siteName, siteURL string) (*SiteInfo, error) {
 	// Try enhanced health check first if config exists
 	config, err := LoadSiteConfig(siteName, siteURL)
@@ -369,6 +420,19 @@ func (sc *SiteChecker) checkSite(ctx context.Context, siteName, siteURL string) 
 		}
 
 		return siteInfo, nil
+	}
+
+	// Substitute the probe result before any network work happens. Placed after
+	// the health-check-disabled branch so an operator's "do not check this"
+	// still wins over a fabricated result.
+	if p := prober; p != nil {
+		if outcome, ok := p.Probe(siteURL); ok {
+			siteInfo := sc.siteInfoFromProbe(siteName, siteURL, config, outcome)
+			if config != nil {
+				evaluateSiteHealthAlert(config, siteInfo)
+			}
+			return siteInfo, nil
+		}
 	}
 
 	if err == nil && config != nil && config.HealthCheckConfig != nil {

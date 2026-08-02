@@ -53,6 +53,6 @@ func InitUserRouter(r *gin.RouterGroup) {
 
 	interactive.GET("/user", GetCurrentUser)
 	interactive.POST("/user", middleware.RequireSecureSession(), UpdateCurrentUser)
-	interactive.POST("/user/password", middleware.RequireSecureSession(), UpdateCurrentUserPassword)
+	interactive.POST("/user/password", middleware.RequireSecureSession(), middleware.RejectInDemo(), UpdateCurrentUserPassword)
 	interactive.POST("/user/language", UpdateCurrentUserLanguage)
 }

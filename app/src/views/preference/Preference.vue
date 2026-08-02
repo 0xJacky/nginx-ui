@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import FooterToolBar from '@/components/FooterToolbar'
+import { useGlobalStore } from '@/pinia'
 import {
   AccessTokens,
   AppSettings,
@@ -19,6 +20,8 @@ import {
 import useSystemSettingsStore from './store'
 
 const systemSettingsStore = useSystemSettingsStore()
+const globalStore = useGlobalStore()
+const isDemoResolved = ref(false)
 
 systemSettingsStore.getSettings()
 
@@ -34,9 +37,14 @@ watch(activeKey, () => {
   })
 })
 
-onMounted(() => {
+onMounted(async () => {
   if (route.query?.tab)
     activeKey.value = route.query.tab.toString()
+
+  await globalStore.ensureDemoFlag()
+  if (globalStore.isDemo && activeKey.value === 'terminal')
+    activeKey.value = 'server'
+  isDemoResolved.value = true
 })
 </script>
 
@@ -81,6 +89,7 @@ onMounted(() => {
           <HTTPSettings />
         </ATabPane>
         <ATabPane
+          v-if="isDemoResolved && !globalStore.isDemo"
           key="terminal"
           :tab="$gettext('Terminal')"
         >

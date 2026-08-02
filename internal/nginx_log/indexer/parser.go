@@ -20,6 +20,20 @@ var (
 	parserInitOnce sync.Once
 )
 
+// geoIPOverride replaces the GeoLite-backed geo lookup when set.
+//
+// The slot defaults to nil, and only internal/demo ever fills it, so a
+// production binary always resolves geo data from the real city database.
+// Geo is baked into the indexed document, so this must be installed before
+// InitLogParser runs.
+var geoIPOverride parser.GeoIPService
+
+// SetGeoIPService installs a geo lookup override. Call once, at boot, before
+// any indexing starts.
+func SetGeoIPService(service parser.GeoIPService) {
+	geoIPOverride = service
+}
+
 // InitLogParser initializes the global parser once (singleton).
 func InitLogParser() {
 	parserInitOnce.Do(func() {
@@ -51,13 +65,14 @@ func InitLogParser() {
 			10000, // Large cache for production workloads
 		)
 
+		// Access logs repeat the same IPs heavily; cache lookups so the
+		// per-line hot path avoids repeated GeoIP database queries
 		var geoIPService parser.GeoIPService
-		geoService, err := geolite.GetService()
-		if err != nil {
+		if geoIPOverride != nil {
+			geoIPService = parser.NewCachedGeoIPService(geoIPOverride, 10000)
+		} else if geoService, err := geolite.GetService(); err != nil {
 			logger.Warnf("Failed to initialize GeoIP service, geo-enrichment will be disabled: %v", err)
 		} else {
-			// Access logs repeat the same IPs heavily; cache lookups so the
-			// per-line hot path avoids repeated GeoIP database queries
 			geoIPService = parser.NewCachedGeoIPService(parser.NewGeoLiteAdapter(geoService), 10000)
 		}
 

@@ -17,7 +17,9 @@ func InitRouter(r *gin.RouterGroup) {
 	r.GET("site_navigation", GetSiteNavigation)
 	r.GET("site_navigation/status", GetSiteNavigationStatus)
 	r.GET("site_navigation/health_check/:id", GetHealthCheck)
-	r.POST("site_navigation/test_health_check/:id", TestHealthCheck)
+	// The request body controls the outbound destination, so this is an
+	// arbitrary-fetch primitive. Demo visitors do not get one.
+	r.POST("site_navigation/test_health_check/:id", middleware.RejectInDemo(), TestHealthCheck)
 	r.GET("site_navigation_ws", SiteNavigationWebSocket)
 
 	o := r.Group("", middleware.RequireSecureSession())

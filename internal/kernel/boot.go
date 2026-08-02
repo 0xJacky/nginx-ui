@@ -17,6 +17,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/cluster"
 	"github.com/0xJacky/Nginx-UI/internal/cron"
+	"github.com/0xJacky/Nginx-UI/internal/demo"
 	"github.com/0xJacky/Nginx-UI/internal/docker"
 	"github.com/0xJacky/Nginx-UI/internal/event"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
@@ -53,6 +54,10 @@ func Boot(ctx context.Context) {
 	}
 
 	async := []func(){
+		// First: a demo node swaps in fabricated providers, and several
+		// consumers below build themselves behind a sync.Once. Installing after
+		// them would silently have no effect.
+		InitDemoOverrides,
 		InitJsExtensionType,
 		InitInstallSecret,
 		InitNodeSecret,
@@ -90,6 +95,8 @@ func InitAfterDatabase(ctx context.Context) {
 		registerPredefinedUser,
 		cluster.RegisterPredefinedNodes,
 		RegisterAcmeUser,
+		// Before sitecheck.Init, so the site prober sees the seeded rows.
+		demo.Seed,
 		sitecheck.Init,
 	}
 
@@ -161,6 +168,12 @@ func InitNodeSecret() {
 		}
 		logger.Info("Generated legacy node API secret")
 	}
+}
+
+// InitDemoOverrides swaps real providers for fabricated ones when this node is
+// a public demo. It does nothing at all on a normal installation.
+func InitDemoOverrides() {
+	demo.Install()
 }
 
 func InitNodeInstanceID() {

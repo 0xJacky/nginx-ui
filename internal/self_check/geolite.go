@@ -12,8 +12,9 @@ func CheckGeoLiteDB() error {
 		return nil
 	}
 
-	if !geolite.DBExists() {
-		return cosy.WrapErrorWithParams(ErrGeoLiteDBNotFound, geolite.GetDBPath())
+	availability := geolite.CurrentAvailability()
+	if !availability.Exists {
+		return cosy.WrapErrorWithParams(ErrGeoLiteDBNotFound, availability.Path)
 	}
 
 	return nil
