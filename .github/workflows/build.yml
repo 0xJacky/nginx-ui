@@ -21,6 +21,10 @@ on:
       - "resources/demo/*"
       - "Dockerfile"
       - "demo.Dockerfile"
+      # Without this a Worker-only change never reaches the deploy-demo job, so
+      # the demo keeps serving the previous Worker until some unrelated commit
+      # happens to trigger a build.
+      - "cloudflare/**"
   pull_request:
     types: [ opened, synchronize, reopened ]
     paths:
