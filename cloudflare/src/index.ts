@@ -1,3 +1,4 @@
+import type { StopParams } from '@cloudflare/containers'
 import { Container, getContainer } from '@cloudflare/containers'
 import { loadingPage } from './loading'
 
@@ -62,29 +63,66 @@ export class NginxUiDemo extends Container<Env> {
   private booting?: Promise<void>
 
   /**
-   * Report whether the container can serve, kicking off a start if not.
+   * Whether the application behind nginx has been seen serving.
    *
-   * Deliberately does not await the boot: the caller returns a loading page
-   * immediately instead of holding the request open for several seconds, which
-   * is what produces a white screen.
+   * Container "healthy" is not enough. The platform's port check counts any
+   * HTTP response as success, and nginx binds 8080 the moment it starts —
+   * several seconds before nginx-ui is up on 9000. During that window nginx
+   * answers 502, the container reads as healthy, the loading page is dismissed
+   * and the visitor gets the raw 502. Cached because once nginx-ui is serving
+   * it stays up for the container's life; cleared whenever the container stops.
    */
+  private applicationServing = false
+
+  /** Probe the application itself rather than the port in front of it. */
+  private async applicationReady(): Promise<boolean> {
+    if (this.applicationServing) {
+      return true
+    }
+
+    try {
+      const probe = await this.containerFetch('http://localhost/healthz')
+      if (probe.ok) {
+        this.applicationServing = true
+        return true
+      }
+      // 502 while nginx-ui is still starting is the case this exists for.
+      console.log(`nginx is up but the app is not serving yet: ${probe.status}`)
+    }
+    catch (err: unknown) {
+      console.log(`health probe failed: ${err}`)
+    }
+
+    return false
+  }
+
   /** Current container state, for the status endpoint and for debugging. */
   async status(): Promise<{ ready: boolean, status: string, exitCode?: number }> {
     const state = await this.getState()
+    const ready = state.status === 'healthy' && await this.applicationReady()
+
     return {
-      ready: state.status === 'healthy',
+      ready,
       status: state.status,
       // exitCode is only present on the stopped-with-code variant.
       ...('exitCode' in state ? { exitCode: state.exitCode as number } : {}),
     }
   }
 
+  /**
+   * Report whether the container can serve, kicking off a start if not.
+   *
+   * Deliberately does not await the boot: the caller returns a loading page
+   * immediately instead of holding the request open for several seconds, which
+   * is what produces a white screen.
+   */
   async ready(): Promise<boolean> {
     const state = await this.getState()
     if (state.status === 'healthy') {
-      return true
+      return this.applicationReady()
     }
 
+    this.applicationServing = false
     console.log(`container not ready yet: status=${state.status}`)
 
     this.booting ??= this.startAndWaitForPorts()
@@ -98,30 +136,25 @@ export class NginxUiDemo extends Container<Env> {
     return false
   }
 
+  override onStop(params: StopParams): void {
+    // A restarted container serves 502 again until nginx-ui is back, so the
+    // cached answer must not survive the stop.
+    this.applicationServing = false
+    console.log(`container stopped: exitCode=${params.exitCode} reason=${params.reason}`)
+  }
+
   /**
-   * Return the demo to its pristine state.
+   * Stop the container so the next request brings up a fresh one.
    *
    * Container disk is ephemeral, so stopping IS the restore: the next start
    * comes up from the image with the seeded database and configs back in
-   * place. SIGTERM rather than a kill, because s6-overlay shuts nginx and
+   * place. SIGTERM rather than a kill, because the entrypoint shuts nginx and
    * nginx-ui down in order and nginx-ui holds an open SQLite handle.
-   */
-  /**
-   * Stop the container so the next request starts it fresh.
    *
-   * Needed after changing envVars: they are applied when the container starts,
-   * so a deploy alone leaves the running instance on the old environment.
+   * Used for both the scheduled restore and the manual recycle after a config
+   * change that only takes effect at container start.
    */
-  async recycle(): Promise<string> {
-    const state = await this.getState()
-    if (state.status === 'stopped' || state.status === 'stopped_with_code') {
-      return 'already-stopped'
-    }
-    await this.stop()
-    return 'stopped'
-  }
-
-  async restore(): Promise<'stopped' | 'already-stopped'> {
+  async recycle(): Promise<'stopped' | 'already-stopped'> {
     const state = await this.getState()
     if (state.status === 'stopped' || state.status === 'stopped_with_code') {
       // Most days the idle timeout will already have done this.
@@ -130,6 +163,11 @@ export class NginxUiDemo extends Container<Env> {
 
     await this.stop()
     return 'stopped'
+  }
+
+  /** Alias kept for the scheduled handler's intent to read clearly. */
+  async restore(): Promise<'stopped' | 'already-stopped'> {
+    return this.recycle()
   }
 
   override onError(error: unknown): Response {
