@@ -43,10 +43,11 @@ func GetConfigs(c *gin.Context) {
 	namespaceId := cast.ToUint64(c.Query("namespace_id"))
 
 	// Get directory parameter
-	encodedDir := c.DefaultQuery("dir", "/")
-
-	// Handle cases where the path might be encoded multiple times
-	dir := helper.UnescapeURL(encodedDir)
+	dir, encoded := helper.DecodePathParam(c.DefaultQuery("dir", "/"))
+	if !encoded {
+		// Handle cases where the path might be encoded multiple times
+		dir = helper.UnescapeURL(dir)
+	}
 
 	// Ensure the directory path format is correct
 	dir = strings.TrimSpace(dir)
