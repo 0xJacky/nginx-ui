@@ -155,6 +155,30 @@ function isWebSocketUpgrade(request: Request): boolean {
 }
 
 /**
+ * Recognise the platform's own "the container went away" response.
+ *
+ * When the container is reaped between the readiness check and the proxy, the
+ * runtime answers with a plain-text error naming the unreachable address rather
+ * than throwing, so it cannot be caught — it has to be detected. Matching on
+ * the message is unpleasant but there is no status code or header that
+ * distinguishes it from an error the application itself produced.
+ */
+async function isStaleContainerError(response: Response): Promise<boolean> {
+  if (response.status < 500 || response.webSocket) {
+    return false
+  }
+  if (!(response.headers.get('content-type') ?? '').startsWith('text/plain')) {
+    return false
+  }
+
+  // Peek without consuming: the body is still needed if this turns out to be a
+  // genuine application error.
+  const body = await response.clone().text().catch(() => '')
+  return body.includes('Error proxying request to container')
+    || body.includes('is not listening in the TCP address')
+}
+
+/**
  * Stamp the public scheme and host onto a request before it reaches the
  * container.
  *
@@ -214,10 +238,32 @@ export default {
       return container.fetch(withForwardedHeaders(request, url))
     }
 
-    if (await container.ready()) {
+    let ready = await container.ready()
+
+    if (ready) {
       // fetch(), not containerFetch(): only fetch() carries WebSocket upgrades,
       // which the terminal, log stream and cluster monitor all rely on.
-      return container.fetch(withForwardedHeaders(request, url))
+      const response = await container.fetch(withForwardedHeaders(request, url))
+
+      // The readiness check and the proxy are not atomic. The idle timeout can
+      // reap the container in between, leaving the Durable Object reporting a
+      // state that is no longer true; the platform then answers with its own
+      // "not listening on ..." error, which used to reach the visitor verbatim.
+      // Treat that as not-ready, ask for a fresh container, and fall through to
+      // the loading page the rest of this handler already knows how to serve.
+      if (await isStaleContainerError(response)) {
+        // Do NOT stop the container here. It is already gone, and a stop lands
+        // on whatever boot ready() has since kicked off — every subsequent
+        // request would kill the container that is trying to start, and the
+        // loading page would refresh forever. Just re-arm the boot and fall
+        // through.
+        console.log('container went away mid-request; waiting for the restart')
+        await container.ready()
+        ready = false
+      }
+      else {
+        return response
+      }
     }
 
     if (wantsDocument(request) && !isWebSocketUpgrade(request)) {

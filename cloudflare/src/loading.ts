@@ -66,11 +66,59 @@ export function loadingPage(): string {
     <p class="hint">This instance sleeps when nobody is using it. First request takes a few seconds.</p>
     <div class="bar"><span></span></div>
     <p class="slow" id="slow">Still starting. This can take up to a minute after a new deploy.</p>
+    <p class="slow" id="stuck">
+      The demo keeps restarting rather than settling. Reloading has been stopped
+      so this page does not loop; use the button below to try again.
+      <br><br>
+      <button type="button" id="retry">Try again</button>
+    </p>
   </main>
 <script>
 (function () {
-  var started = Date.now();
   var delay = 700;
+
+  // Reloading on ready is what gets the visitor into the app, but a container
+  // that flaps would have this page reload endlessly. Count reloads across
+  // navigations and stop after a few, so the worst case is a stalled page with
+  // an explanation rather than a loop nobody can read or escape.
+  var KEY = 'nginx-ui-demo-reloads';
+  var MAX_RELOADS = 3;
+  // Only reloads bunched together indicate a flap. Spaced-out ones are just
+  // ordinary cold starts across a long session and must not accumulate into a
+  // false positive.
+  var WINDOW_MS = 120000;
+
+  function readState() {
+    try {
+      var raw = JSON.parse(sessionStorage.getItem(KEY) || '{}');
+      if (!raw || typeof raw.count !== 'number') return { count: 0, at: 0 };
+      if (Date.now() - (raw.at || 0) > WINDOW_MS) return { count: 0, at: 0 };
+      return raw;
+    } catch (e) { return { count: 0, at: 0 }; }
+  }
+
+  function reloadCount() {
+    return readState().count;
+  }
+
+  function noteReload() {
+    try {
+      sessionStorage.setItem(KEY, JSON.stringify({ count: reloadCount() + 1, at: Date.now() }));
+    } catch (e) {}
+  }
+
+  function giveUp() {
+    var el = document.getElementById('stuck');
+    if (el) el.style.display = 'block';
+  }
+
+  var retry = document.getElementById('retry');
+  if (retry) {
+    retry.addEventListener('click', function () {
+      try { sessionStorage.removeItem(KEY); } catch (e) {}
+      location.reload();
+    });
+  }
 
   setTimeout(function () {
     var el = document.getElementById('slow');
@@ -82,6 +130,8 @@ export function loadingPage(): string {
       .then(function (r) { return r.ok ? r.json() : { ready: false }; })
       .then(function (s) {
         if (s && s.ready) {
+          if (reloadCount() >= MAX_RELOADS) { giveUp(); return; }
+          noteReload();
           // Reload rather than navigate, so the deep link the visitor arrived
           // on is preserved.
           location.reload();
