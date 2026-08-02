@@ -13,12 +13,19 @@
   // way to reach the demo when the custom domain's DNS is being changed.
   "workers_dev": true,
 
-  // demo.nginxui.com must already exist as a zone on this account. Wrangler
-  // takes over the DNS record when custom_domain is true.
+  // A zone route, not a custom domain. custom_domain: true asks Cloudflare to
+  // take over the hostname's DNS record, which it refuses while an ordinary A
+  // record exists ("already has externally managed DNS records") — so every
+  // deploy reported a partial trigger update and exited non-zero even though
+  // the Worker itself deployed fine.
+  //
+  // A route overlays the existing proxied record instead of replacing it, which
+  // is what is actually serving demo.nginxui.com today. Switching to
+  // custom_domain later means deleting that DNS record first.
   "routes": [
     {
-      "pattern": "demo.nginxui.com",
-      "custom_domain": true
+      "pattern": "demo.nginxui.com/*",
+      "zone_name": "nginxui.com"
     }
   ],
 

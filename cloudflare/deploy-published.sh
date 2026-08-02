@@ -30,7 +30,10 @@ case "$image" in
         ;;
 esac
 
-generated="$(mktemp -t wrangler-published-XXXXXX).jsonc"
+# Must live beside wrangler.jsonc, not in a temp directory: wrangler resolves
+# `main` and the container build context relative to the config file, so a
+# config in /tmp sends it looking for /tmp/src/index.ts.
+generated="wrangler.published.jsonc"
 trap 'rm -f "$generated"' EXIT INT TERM
 
 # Replace the local-build block with the published reference. Done with a
