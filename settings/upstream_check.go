@@ -17,7 +17,9 @@ var UpstreamCheckSettings = &UpstreamCheck{
 	IntervalSeconds: defaultUpstreamCheckIntervalSeconds,
 }
 
-func (s UpstreamCheck) GetInterval() time.Duration {
+// Pointer receiver so the call reads only the interval field rather than
+// copying the whole struct, which would make it race with concurrent writes.
+func (s *UpstreamCheck) GetInterval() time.Duration {
 	seconds := s.IntervalSeconds
 	if seconds < minUpstreamCheckIntervalSeconds {
 		seconds = defaultUpstreamCheckIntervalSeconds
