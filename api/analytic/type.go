@@ -16,12 +16,13 @@ type CPUStat struct {
 }
 
 type Stat struct {
-	Uptime  uint64             `json:"uptime"`
-	LoadAvg *load.AvgStat      `json:"loadavg"`
-	CPU     CPUStat            `json:"cpu"`
-	Memory  analytic.MemStat   `json:"memory"`
-	Disk    analytic.DiskStat  `json:"disk"`
-	Network net.IOCountersStat `json:"network"`
+	SampledAt int64              `json:"sampled_at"`
+	Uptime    uint64             `json:"uptime"`
+	LoadAvg   *load.AvgStat      `json:"loadavg"`
+	CPU       CPUStat            `json:"cpu"`
+	Memory    analytic.MemStat   `json:"memory"`
+	Disk      analytic.DiskStat  `json:"disk"`
+	Network   net.IOCountersStat `json:"network"`
 }
 
 type CPURecords struct {

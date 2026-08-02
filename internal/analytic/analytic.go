@@ -24,6 +24,7 @@ var (
 	LastDiskReads   uint64
 	LastNetSent     uint64
 	LastNetRecv     uint64
+	LastNetSampleAt time.Time
 	initializeOnce  sync.Once
 )
 
@@ -43,6 +44,7 @@ func Initialize() {
 		LastDiskReads, LastDiskWrites = getTotalDiskIO()
 
 		now := time.Now()
+		LastNetSampleAt = now
 		// Initialize record slices.
 		for i := 100; i > 0; i-- {
 			uf := Usage[float64]{Time: now.Add(time.Duration(-i) * time.Second), Usage: 0}
@@ -68,7 +70,7 @@ func RecordServerAnalytic(ctx context.Context) {
 		case <-time.After(1 * time.Second):
 			now := time.Now()
 			recordCpu(now) // this func will spend more than 1 second.
-			recordNetwork(now)
+			recordNetwork()
 			recordDiskIO(now)
 		}
 	}

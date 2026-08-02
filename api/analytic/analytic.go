@@ -84,6 +84,7 @@ func Analytic(c *gin.Context) {
 		}
 
 		stat.Network = *network
+		stat.SampledAt = time.Now().UnixMilli()
 
 		// write
 		_ = ws.SetWriteDeadline(time.Now().Add(wsWriteWait))
