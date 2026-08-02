@@ -655,6 +655,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Prepare Demo Dockerfile
+        if: github.ref == 'refs/heads/dev'
         run: |
           cp ./demo.Dockerfile ./dist
           cp -rp ./resources ./dist
@@ -665,10 +666,42 @@ jobs:
         with:
           context: ./dist
           file: ./dist/demo.Dockerfile
-          platforms: ${{ env.PLATFORMS }}
+          # linux/amd64 only. The demo image exists to run on Cloudflare
+          # Containers, which is amd64; the other five platforms were built
+          # under QEMU and thrown away.
+          platforms: linux/amd64
           push: 'true'
+          # The immutable tag is what the Worker deploys against — Cloudflare
+          # pins a container application to a specific image, so redeploying
+          # with an unchanged :latest would not roll instances onto new bytes.
           tags: |
             uozi/nginx-ui-demo:latest
+            uozi/nginx-ui-demo:sha-${{ github.sha }}
+
+  deploy-demo:
+    name: Deploy demo to Cloudflare
+    if: github.ref == 'refs/heads/dev' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    needs: docker-build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install Worker dependencies
+        working-directory: cloudflare
+        run: bun install --frozen-lockfile
+
+      # Deploys against the image docker-build just published rather than
+      # rebuilding it, so this step is a Worker update and takes seconds.
+      - name: Deploy
+        working-directory: cloudflare
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+        run: sh ./deploy-published.sh "docker.io/uozi/nginx-ui-demo:sha-${{ github.sha }}"
 
   helm-smoke:
     name: Helm install and upgrade smoke test
