@@ -49,11 +49,17 @@ nginx -g "daemon off;" >> "$BOOT_LOG" 2>&1 &
 NGINX_PID=$!
 log "started nginx (pid $NGINX_PID)"
 
+# Every nginx-ui this script started. Recorded because the shutdown handler has
+# to signal them by PID: this image is built on nginx:latest, which ships no
+# procps, so `pkill` is not a command here — it exits 127.
+UI_PIDS=""
+
 start_ui() {
     name="$1"
     workdir="$2"
     config="$3"
     NGINX_UI_WORKING_DIR="$workdir" nginx-ui --config "$config" >> "$BOOT_LOG" 2>&1 &
+    UI_PIDS="$UI_PIDS $!"
     log "started $name (pid $!)"
 }
 
@@ -71,12 +77,60 @@ done
 
 start_ui nginx-ui "${NGINX_UI_WORKING_DIR:-/var/run/nginx-ui}" /etc/nginx-ui/app.ini
 
+# Seconds each nginx-ui gets to close its SQLite handle before it is killed.
+SHUTDOWN_GRACE=10
+
+shutting_down=0
+
+# Shut down in order and then actually exit.
+#
+# This runs on every stop the platform issues: the sleepAfter idle expiry, the
+# daily restore, and a manual recycle. It previously called `pkill -TERM
+# nginx-ui`, which does not exist in this image and so exited 127 into
+# /dev/null — the nginx-ui children were never signalled, the bare `wait` below
+# blocked on them forever, and `exit 0` was never reached. nginx was already
+# dead by then, so the container sat there as PID 1 with nothing bound to 8080,
+# reported healthy by the platform, for as long as anyone left it. Signalling
+# recorded PIDs and bounding the wait is what keeps that from recurring.
 shutdown() {
+    if [ "$shutting_down" = 1 ]; then
+        return
+    fi
+    shutting_down=1
+
     log "received termination signal"
     kill -TERM "$NGINX_PID" 2>/dev/null || true
-    # nginx-ui holds an open SQLite handle; give every child a chance to close.
-    pkill -TERM nginx-ui 2>/dev/null || true
-    wait
+
+    for pid in $UI_PIDS; do
+        kill -TERM "$pid" 2>/dev/null || true
+    done
+
+    # nginx-ui holds an open SQLite handle, so give every child a chance to
+    # close it — but never more than that. A child that will not exit must not
+    # be able to keep the container alive.
+    waited=0
+    while [ "$waited" -lt "$SHUTDOWN_GRACE" ]; do
+        alive=""
+        for pid in $UI_PIDS; do
+            if kill -0 "$pid" 2>/dev/null; then
+                alive="$alive $pid"
+            fi
+        done
+        if [ -z "$alive" ]; then
+            break
+        fi
+        sleep 1
+        waited=$((waited + 1))
+    done
+
+    for pid in $UI_PIDS; do
+        if kill -0 "$pid" 2>/dev/null; then
+            log "nginx-ui $pid did not exit in ${SHUTDOWN_GRACE}s; killing it"
+            kill -KILL "$pid" 2>/dev/null || true
+        fi
+    done
+
+    log "shutdown complete"
     exit 0
 }
 trap shutdown TERM INT
