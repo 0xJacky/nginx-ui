@@ -4,7 +4,6 @@ import type { CosyError } from '@/lib/http/types'
 import { defineComponent, ref } from 'vue'
 import { NotificationTypeT } from '@/constants'
 import { translateError } from '@/lib/http/error'
-import notifications from './notifications'
 
 function parseResponsePayload(response: string | object): string | object {
   if (typeof response !== 'string') {
@@ -93,10 +92,7 @@ export function detailRender(args: Pick<CustomRenderArgs, 'record' | 'text'>) {
     return (
       <div>
         <div>
-          {
-            notifications[args.record.title]?.content(args.record.details)
-            || args.record.content || args.record.details
-          }
+          {$gettext(args.record.content, args.record.details)}
         </div>
         {args.record.details?.response && args.record.type !== NotificationTypeT.Success && (
           <div>

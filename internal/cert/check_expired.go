@@ -86,30 +86,40 @@ func buildExpiryNotification(certModel *model.Cert, info *Info, now time.Time) *
 		"not_after": info.NotAfter,
 		"stage":     stage,
 	}
-	if stage == expiryStageExpired {
-		return &expiryNotification{
-			Stage:   stage,
-			Type:    model.NotificationError,
-			Title:   "Certificate Expired",
-			Content: "Certificate %{name} has expired",
-			Details: details,
-		}
-	}
-
-	notice := &expiryNotification{
-		Stage:   stage,
-		Type:    expiryNotificationType(stage),
-		Title:   expiryNotificationTitle(stage),
-		Details: details,
-	}
 	days := int(math.Ceil(remaining.Hours() / 24))
-	if days <= 1 {
-		notice.Content = "Certificate %{name} will expire in 1 day"
-	} else {
-		notice.Content = "Certificate %{name} will expire in %{days} days"
+	if stage != expiryStageExpired && days > 1 {
 		details["days"] = days
 	}
-	return notice
+
+	message := buildExpiryNotificationMessage(stage, days, details)
+	return &expiryNotification{
+		Stage:   stage,
+		Type:    expiryNotificationType(stage),
+		Title:   message.Title,
+		Content: message.Content,
+		Details: details,
+	}
+}
+
+func buildExpiryNotificationMessage(stage expiryNotificationStage, days int,
+	details map[string]any) *model.Notification {
+	switch {
+	case stage == expiryStageExpired:
+		return notification.Define("Certificate Expired",
+			"Certificate %{name} has expired", details)
+	case stage == expiryStageNotice && days <= 1:
+		return notification.Define("Certificate Expiration Notice",
+			"Certificate %{name} will expire in 1 day", details)
+	case stage == expiryStageNotice:
+		return notification.Define("Certificate Expiration Notice",
+			"Certificate %{name} will expire in %{days} days", details)
+	case days <= 1:
+		return notification.Define("Certificate Expiring Soon",
+			"Certificate %{name} will expire in 1 day", details)
+	default:
+		return notification.Define("Certificate Expiring Soon",
+			"Certificate %{name} will expire in %{days} days", details)
+	}
 }
 
 func shortLivedExpiryStage(validity, remaining time.Duration) expiryNotificationStage {
@@ -181,13 +191,6 @@ func expiryNotificationType(stage expiryNotificationStage) model.NotificationTyp
 	default:
 		return model.NotificationInfo
 	}
-}
-
-func expiryNotificationTitle(stage expiryNotificationStage) string {
-	if stage == expiryStageNotice {
-		return "Certificate Expiration Notice"
-	}
-	return "Certificate Expiring Soon"
 }
 
 func sendExpiryNotification(notice *expiryNotification) {

@@ -410,7 +410,7 @@ msgstr ""
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:869
 #: src/views/dns/DDNSManager.vue:438 src/views/dns/DNSRecordManager.vue:250
 #: src/views/preference/components/AuthSettings/Passkey.vue:131
-#: src/views/preference/Preference.vue:138
+#: src/views/preference/Preference.vue:147
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:196
 #: src/views/stream/components/ConfigName.vue:52
@@ -451,7 +451,7 @@ msgstr ""
 #: src/components/NamespaceTabs/NamespaceTabs.vue:148
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:127
 #: src/components/NgxConfigEditor/LocationEditor.vue:101
-#: src/components/Notification/Notification.vue:115 src/language/curd.ts:40
+#: src/components/Notification/Notification.vue:114 src/language/curd.ts:40
 #: src/views/notification/Notification.vue:38
 #: src/views/preference/tabs/AuthSettings.vue:128
 #: src/views/preference/tabs/CertSettings.vue:82
@@ -462,7 +462,7 @@ msgstr ""
 #: src/components/LLM/ChatMessageInput.vue:62
 #: src/components/NgxConfigEditor/NgxServer.vue:60
 #: src/components/NgxConfigEditor/NgxUpstream.vue:31
-#: src/components/Notification/Notification.vue:116 src/language/curd.ts:15
+#: src/components/Notification/Notification.vue:115 src/language/curd.ts:15
 #: src/views/backup/components/BackupCreator.vue:149
 #: src/views/notification/Notification.vue:39
 #: src/views/site/components/SiteStatusSelect.vue:123
@@ -480,7 +480,7 @@ msgid "Are you sure you want to clear the record of chat?"
 msgstr ""
 
 #: src/components/LLM/ChatMessageInput.vue:67
-#: src/components/Notification/Notification.vue:122
+#: src/components/Notification/Notification.vue:121
 #: src/views/notification/Notification.vue:45
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:513
 msgid "Clear"
@@ -759,7 +759,7 @@ msgstr ""
 #: src/views/config/components/Delete.vue:124
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:589
 #: src/views/nginx_log/NginxLogList.vue:165
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:521
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:519
 msgid "Path"
 msgstr ""
 
@@ -772,32 +772,32 @@ msgstr ""
 msgid "Could not determine the nginx log directory"
 msgstr ""
 
-#: src/components/NgxConfigEditor/LogEntry.vue:153
+#: src/components/NgxConfigEditor/LogEntry.vue:159
 msgid "Remove the access_log directive from this server"
 msgstr ""
 
-#: src/components/NgxConfigEditor/LogEntry.vue:154
+#: src/components/NgxConfigEditor/LogEntry.vue:160
 msgid ""
 "Write an access_log directive for this server, so its requests can be viewed "
 "and analysed separately"
 msgstr ""
 
-#: src/components/NgxConfigEditor/LogEntry.vue:163 src/language/constants.ts:64
+#: src/components/NgxConfigEditor/LogEntry.vue:169 src/language/constants.ts:64
 #: src/views/nginx_log/NginxLogList.vue:150
 msgid "Access Log"
 msgstr ""
 
-#: src/components/NgxConfigEditor/LogEntry.vue:173
+#: src/components/NgxConfigEditor/LogEntry.vue:180
 #: src/routes/modules/nginx_log.ts:17 src/views/nginx_log/NginxLogList.vue:44
 msgid "Access Logs"
 msgstr ""
 
-#: src/components/NgxConfigEditor/LogEntry.vue:181
+#: src/components/NgxConfigEditor/LogEntry.vue:189
 #: src/routes/modules/nginx_log.ts:24 src/views/nginx_log/NginxLogList.vue:50
 msgid "Error Logs"
 msgstr ""
 
-#: src/components/NgxConfigEditor/LogEntry.vue:189
+#: src/components/NgxConfigEditor/LogEntry.vue:198
 msgid "Traffic Analytics"
 msgstr ""
 
@@ -886,34 +886,34 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: src/components/Notification/detailRender.tsx:71
+#: src/components/Notification/detailRender.tsx:70
 msgid "Translating error..."
 msgstr ""
 
-#: src/components/Notification/detailRender.tsx:77
+#: src/components/Notification/detailRender.tsx:76
 msgid "Error details"
 msgstr ""
 
-#: src/components/Notification/Notification.vue:75
+#: src/components/Notification/Notification.vue:74
 #: src/views/notification/Notification.vue:13
 msgid "Cleared successfully"
 msgstr ""
 
-#: src/components/Notification/Notification.vue:84
+#: src/components/Notification/Notification.vue:83
 msgid "Removed successfully"
 msgstr ""
 
-#: src/components/Notification/Notification.vue:113
+#: src/components/Notification/Notification.vue:112
 #: src/routes/modules/notifications.ts:10
 msgid "Notifications"
 msgstr ""
 
-#: src/components/Notification/Notification.vue:117
+#: src/components/Notification/Notification.vue:116
 #: src/views/notification/Notification.vue:40
 msgid "Are you sure you want to clear all notifications?"
 msgstr ""
 
-#: src/components/Notification/Notification.vue:185
+#: src/components/Notification/Notification.vue:183
 msgid "View all notifications"
 msgstr ""
 
@@ -1002,293 +1002,323 @@ msgstr ""
 msgid "Certificate %{name} renewal failed: %{error}"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:53 src/language/constants.ts:39
-msgid "Sync Certificate Error"
+#: src/components/Notification/notifications.ts:53
+msgid "Certificate Expired"
 msgstr ""
 
 #: src/components/Notification/notifications.ts:54
-msgid "Sync Certificate %{cert_name} to %{node_name} failed"
+msgid "Certificate %{name} has expired"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:57 src/language/constants.ts:38
-msgid "Sync Certificate Success"
+#: src/components/Notification/notifications.ts:57
+#: src/components/Notification/notifications.ts:61
+msgid "Certificate Expiration Notice"
 msgstr ""
 
 #: src/components/Notification/notifications.ts:58
-msgid "Sync Certificate %{cert_name} to %{node_name} successfully"
-msgstr ""
-
-#: src/components/Notification/notifications.ts:61 src/language/constants.ts:45
-msgid "Sync Config Error"
+#: src/components/Notification/notifications.ts:66
+msgid "Certificate %{name} will expire in 1 day"
 msgstr ""
 
 #: src/components/Notification/notifications.ts:62
-msgid "Sync config %{config_name} to %{node_name} failed"
-msgstr ""
-
-#: src/components/Notification/notifications.ts:65 src/language/constants.ts:44
-msgid "Sync Config Success"
-msgstr ""
-
-#: src/components/Notification/notifications.ts:66
-msgid "Sync config %{config_name} to %{node_name} successfully"
-msgstr ""
-
-#: src/components/Notification/notifications.ts:69 src/language/constants.ts:42
-msgid "Rename Remote Config Error"
-msgstr ""
-
 #: src/components/Notification/notifications.ts:70
-msgid "Rename %{orig_path} to %{new_path} on %{node_name} failed"
+msgid "Certificate %{name} will expire in %{days} days"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:73 src/language/constants.ts:41
-msgid "Rename Remote Config Success"
+#: src/components/Notification/notifications.ts:65
+#: src/components/Notification/notifications.ts:69
+msgid "Certificate Expiring Soon"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:73 src/language/constants.ts:39
+msgid "Sync Certificate Error"
 msgstr ""
 
 #: src/components/Notification/notifications.ts:74
-msgid "Rename %{orig_path} to %{new_path} on %{node_name} successfully"
+msgid "Sync Certificate %{cert_name} to %{node_name} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:77
-msgid "Delete Remote Config Error"
+#: src/components/Notification/notifications.ts:77 src/language/constants.ts:38
+msgid "Sync Certificate Success"
 msgstr ""
 
 #: src/components/Notification/notifications.ts:78
-msgid "Delete %{path} on %{node_name} failed"
+msgid "Sync Certificate %{cert_name} to %{node_name} successfully"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:81
-msgid "Delete Remote Config Success"
+#: src/components/Notification/notifications.ts:81 src/language/constants.ts:45
+msgid "Sync Config Error"
 msgstr ""
 
 #: src/components/Notification/notifications.ts:82
-msgid "Delete %{path} on %{node_name} successfully"
+msgid "Sync config %{config_name} to %{node_name} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:85
-msgid "Auto Sync Namespace Error"
+#: src/components/Notification/notifications.ts:85 src/language/constants.ts:44
+msgid "Sync Config Success"
 msgstr ""
 
 #: src/components/Notification/notifications.ts:86
+msgid "Sync config %{config_name} to %{node_name} successfully"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:89 src/language/constants.ts:42
+msgid "Rename Remote Config Error"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:90
+msgid "Rename %{orig_path} to %{new_path} on %{node_name} failed"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:93 src/language/constants.ts:41
+msgid "Rename Remote Config Success"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:94
+msgid "Rename %{orig_path} to %{new_path} on %{node_name} successfully"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:97
+msgid "Delete Remote Config Error"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:98
+msgid "Delete %{path} on %{node_name} failed"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:101
+msgid "Delete Remote Config Success"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:102
+msgid "Delete %{path} on %{node_name} successfully"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:105
+msgid "Auto Sync Namespace Error"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:106
 msgid ""
 "Auto sync of namespace %{namespace} finished with %{failed} failed items"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:89
+#: src/components/Notification/notifications.ts:109
 msgid "External Notification Test"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:90
+#: src/components/Notification/notifications.ts:110
 msgid "This is a test message sent at %{timestamp} from Nginx UI."
 msgstr ""
 
-#: src/components/Notification/notifications.ts:93 src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:113
+#: src/language/constants.ts:50
 msgid "Delete Remote Site Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:94
+#: src/components/Notification/notifications.ts:114
 msgid "Delete site %{name} from %{node} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:97 src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:117
+#: src/language/constants.ts:49
 msgid "Delete Remote Site Success"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:98
+#: src/components/Notification/notifications.ts:118
 msgid "Delete site %{name} from %{node} successfully"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:101
+#: src/components/Notification/notifications.ts:121
 #: src/language/constants.ts:52
 msgid "Disable Remote Site Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:102
+#: src/components/Notification/notifications.ts:122
 msgid "Disable site %{name} from %{node} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:105
+#: src/components/Notification/notifications.ts:125
 #: src/language/constants.ts:51
 msgid "Disable Remote Site Success"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:106
+#: src/components/Notification/notifications.ts:126
 msgid "Disable site %{name} from %{node} successfully"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:109
+#: src/components/Notification/notifications.ts:129
 #: src/language/constants.ts:54
 msgid "Enable Remote Site Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:110
+#: src/components/Notification/notifications.ts:130
 msgid "Enable site %{name} on %{node} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:113
+#: src/components/Notification/notifications.ts:133
 #: src/language/constants.ts:53
 msgid "Enable Remote Site Success"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:114
+#: src/components/Notification/notifications.ts:134
 msgid "Enable site %{name} on %{node} successfully"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:117
+#: src/components/Notification/notifications.ts:137
 msgid "Enable Remote Site Maintenance Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:118
+#: src/components/Notification/notifications.ts:138
 msgid "Enable site %{name} maintenance on %{node} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:121
+#: src/components/Notification/notifications.ts:141
 msgid "Enable Remote Site Maintenance Success"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:122
+#: src/components/Notification/notifications.ts:142
 msgid "Enable site %{name} maintenance on %{node} successfully"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:125
+#: src/components/Notification/notifications.ts:145
 msgid "Disable Remote Site Maintenance Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:126
+#: src/components/Notification/notifications.ts:146
 msgid "Disable site %{name} maintenance on %{node} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:129
+#: src/components/Notification/notifications.ts:149
 msgid "Disable Remote Site Maintenance Success"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:130
+#: src/components/Notification/notifications.ts:150
 msgid "Disable site %{name} maintenance on %{node} successfully"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:133
+#: src/components/Notification/notifications.ts:153
 #: src/language/constants.ts:56
 msgid "Rename Remote Site Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:134
+#: src/components/Notification/notifications.ts:154
 msgid "Rename site %{name} to %{new_name} on %{node} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:137
+#: src/components/Notification/notifications.ts:157
 #: src/language/constants.ts:55
 msgid "Rename Remote Site Success"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:138
+#: src/components/Notification/notifications.ts:158
 msgid "Rename site %{name} to %{new_name} on %{node} successfully"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:141
+#: src/components/Notification/notifications.ts:161
 #: src/language/constants.ts:48
 msgid "Save Remote Site Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:142
+#: src/components/Notification/notifications.ts:162
 msgid "Save site %{name} to %{node} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:145
+#: src/components/Notification/notifications.ts:165
 #: src/language/constants.ts:47
 msgid "Save Remote Site Success"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:146
+#: src/components/Notification/notifications.ts:166
 msgid "Save site %{name} to %{node} successfully"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:149
+#: src/components/Notification/notifications.ts:169
 msgid "Delete Remote Stream Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:150
+#: src/components/Notification/notifications.ts:170
 msgid "Delete stream %{name} from %{node} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:153
+#: src/components/Notification/notifications.ts:173
 msgid "Delete Remote Stream Success"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:154
+#: src/components/Notification/notifications.ts:174
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:157
+#: src/components/Notification/notifications.ts:177
 msgid "Disable Remote Stream Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:158
+#: src/components/Notification/notifications.ts:178
 msgid "Disable stream %{name} from %{node} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:161
+#: src/components/Notification/notifications.ts:181
 msgid "Disable Remote Stream Success"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:162
+#: src/components/Notification/notifications.ts:182
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:165
+#: src/components/Notification/notifications.ts:185
 msgid "Enable Remote Stream Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:166
+#: src/components/Notification/notifications.ts:186
 msgid "Enable stream %{name} on %{node} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:169
+#: src/components/Notification/notifications.ts:189
 msgid "Enable Remote Stream Success"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:170
+#: src/components/Notification/notifications.ts:190
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:173
+#: src/components/Notification/notifications.ts:193
 msgid "Rename Remote Stream Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:174
+#: src/components/Notification/notifications.ts:194
 msgid "Rename stream %{name} to %{new_name} on %{node} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:177
+#: src/components/Notification/notifications.ts:197
 msgid "Rename Remote Stream Success"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:178
+#: src/components/Notification/notifications.ts:198
 msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:181
+#: src/components/Notification/notifications.ts:201
 msgid "Save Remote Stream Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:182
+#: src/components/Notification/notifications.ts:202
 msgid "Save stream %{name} to %{node} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:185
+#: src/components/Notification/notifications.ts:205
 msgid "Save Remote Stream Success"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:186
+#: src/components/Notification/notifications.ts:206
 msgid "Save stream %{name} to %{node} successfully"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:189
+#: src/components/Notification/notifications.ts:209
 #: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:190
+#: src/components/Notification/notifications.ts:210
 #: src/language/constants.ts:59
 msgid ""
 "Please generate new recovery codes in the preferences immediately to prevent "
@@ -1308,8 +1338,8 @@ msgstr ""
 #: src/views/dns/DDNSManager.vue:164
 #: src/views/dns/DNSGroupRecordManager.vue:141
 #: src/views/nginx_log/structured/components/SearchFilters.vue:106
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:242
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:522
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:243
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:520
 #: src/views/node/nodeColumns.tsx:87
 #: src/views/preference/tabs/AccessTokens.vue:54
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:29
@@ -2599,6 +2629,10 @@ msgstr ""
 msgid "Form parse failed"
 msgstr ""
 
+#: src/constants/errors/middleware.ts:5
+msgid "This action is disabled in demo mode"
+msgstr ""
+
 #: src/constants/errors/nginx_log.indexer.ts:2
 msgid "Log parser is not initialized; call indexer.InitLogParser() before use"
 msgstr ""
@@ -3329,7 +3363,7 @@ msgstr ""
 
 #: src/language/curd.ts:13 src/views/dns/components/DNSRecordFilter.vue:65
 #: src/views/nginx_log/structured/components/SearchFilters.vue:214
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:746
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:744
 msgid "Reset"
 msgstr ""
 
@@ -3451,8 +3485,8 @@ msgid "Processing {count}/{total}"
 msgstr ""
 
 #: src/language/curd.ts:62
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:250
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:523
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:251
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:521
 msgid "Size"
 msgstr ""
 
@@ -3854,11 +3888,11 @@ msgstr ""
 msgid "Dashboard"
 msgstr ""
 
-#: src/routes/modules/dashboard.ts:19 src/views/preference/Preference.vue:49
+#: src/routes/modules/dashboard.ts:19 src/views/preference/Preference.vue:57
 msgid "Server"
 msgstr ""
 
-#: src/routes/modules/dashboard.ts:27 src/views/preference/Preference.vue:109
+#: src/routes/modules/dashboard.ts:27 src/views/preference/Preference.vue:118
 msgid "Nginx"
 msgstr ""
 
@@ -3921,7 +3955,7 @@ msgstr ""
 msgid "Nodes"
 msgstr ""
 
-#: src/routes/modules/preference.ts:10 src/views/preference/Preference.vue:44
+#: src/routes/modules/preference.ts:10 src/views/preference/Preference.vue:52
 msgid "Preference"
 msgstr ""
 
@@ -3963,7 +3997,7 @@ msgstr ""
 msgid "Third-party Components"
 msgstr ""
 
-#: src/routes/modules/terminal.ts:10 src/views/preference/Preference.vue:85
+#: src/routes/modules/terminal.ts:10 src/views/preference/Preference.vue:94
 msgid "Terminal"
 msgstr ""
 
@@ -5867,88 +5901,88 @@ msgstr ""
 msgid "Performance Metrics"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:44
-#: src/views/dashboard/ServerAnalytic.vue:354
+#: src/views/dashboard/ServerAnalytic.vue:46
+#: src/views/dashboard/ServerAnalytic.vue:395
 msgid "Receive"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:44
-#: src/views/dashboard/ServerAnalytic.vue:364
+#: src/views/dashboard/ServerAnalytic.vue:46
+#: src/views/dashboard/ServerAnalytic.vue:405
 msgid "Send"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:46
-#: src/views/dashboard/ServerAnalytic.vue:393
+#: src/views/dashboard/ServerAnalytic.vue:48
+#: src/views/dashboard/ServerAnalytic.vue:434
 msgid "Writes"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:46
-#: src/views/dashboard/ServerAnalytic.vue:403
+#: src/views/dashboard/ServerAnalytic.vue:48
+#: src/views/dashboard/ServerAnalytic.vue:444
 msgid "Reads"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:192
+#: src/views/dashboard/ServerAnalytic.vue:233
 msgid "Server Info"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:196
+#: src/views/dashboard/ServerAnalytic.vue:237
 msgid "Uptime:"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:200
+#: src/views/dashboard/ServerAnalytic.vue:241
 msgid "Load Average:"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:206
+#: src/views/dashboard/ServerAnalytic.vue:247
 msgid "OS:"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:212
+#: src/views/dashboard/ServerAnalytic.vue:253
 msgid "CPU:"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:229
+#: src/views/dashboard/ServerAnalytic.vue:270
 msgid "Memory and Storage"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:240
-#: src/views/dashboard/ServerAnalytic.vue:241
+#: src/views/dashboard/ServerAnalytic.vue:281
+#: src/views/dashboard/ServerAnalytic.vue:282
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:53
 msgid "Memory"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:255
-#: src/views/dashboard/ServerAnalytic.vue:256
+#: src/views/dashboard/ServerAnalytic.vue:296
+#: src/views/dashboard/ServerAnalytic.vue:297
 msgid "Swap"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:270
-#: src/views/dashboard/ServerAnalytic.vue:271
+#: src/views/dashboard/ServerAnalytic.vue:311
+#: src/views/dashboard/ServerAnalytic.vue:312
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:59
 msgid "Storage"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:289
+#: src/views/dashboard/ServerAnalytic.vue:330
 msgid "Network Statistics"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:296
+#: src/views/dashboard/ServerAnalytic.vue:337
 msgid "Total Receive"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:302
+#: src/views/dashboard/ServerAnalytic.vue:343
 msgid "Total Send"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:321
+#: src/views/dashboard/ServerAnalytic.vue:362
 msgid "CPU Status"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:347
+#: src/views/dashboard/ServerAnalytic.vue:388
 msgid "Network"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:386
+#: src/views/dashboard/ServerAnalytic.vue:427
 msgid "Disk IO"
 msgstr ""
 
@@ -7074,8 +7108,8 @@ msgstr ""
 
 #: src/views/nginx_log/dashboard/components/BrowserStatsTable.vue:13
 #: src/views/nginx_log/structured/components/SearchFilters.vue:137
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:258
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:524
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:259
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:522
 msgid "Browser"
 msgstr ""
 
@@ -7119,7 +7153,7 @@ msgid "Date"
 msgstr ""
 
 #: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:21
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:318
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:319
 msgid "Last 7 days"
 msgstr ""
 
@@ -7128,7 +7162,7 @@ msgid "Last 14 days"
 msgstr ""
 
 #: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:23
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:319
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:320
 msgid "Last 30 days"
 msgstr ""
 
@@ -7149,7 +7183,7 @@ msgid "Date Range"
 msgstr ""
 
 #: src/views/nginx_log/dashboard/components/DateRangeSelector.vue:51
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:709
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:707
 msgid "Quick Select"
 msgstr ""
 
@@ -7339,7 +7373,7 @@ msgid "Document Count"
 msgstr ""
 
 #: src/views/nginx_log/NginxLogList.vue:312
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:697
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:695
 msgid "Time Range"
 msgstr ""
 
@@ -7413,12 +7447,12 @@ msgid "Search in log content..."
 msgstr ""
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:77
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:519
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:517
 msgid "IP Address"
 msgstr ""
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:92
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:520
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:518
 msgid "Method"
 msgstr ""
 
@@ -7439,8 +7473,8 @@ msgid "Type or select browser"
 msgstr ""
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:153
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:274
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:525
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:275
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:523
 #: src/views/system/Upgrade.vue:194
 msgid "OS"
 msgstr ""
@@ -7450,8 +7484,8 @@ msgid "Type or select OS"
 msgstr ""
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:169
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:290
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:526
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:291
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:524
 msgid "Device"
 msgstr ""
 
@@ -7460,7 +7494,7 @@ msgid "Type or select device"
 msgstr ""
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:185
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:300
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:301
 msgid "Referer"
 msgstr ""
 
@@ -7472,156 +7506,156 @@ msgstr ""
 msgid "Mozilla/5.0..."
 msgstr ""
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:186
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:518
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:187
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:516
 msgid "Time"
 msgstr ""
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:195
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:196
 #: src/views/preference/tabs/AuthSettings.vue:15
 msgid "IP"
 msgstr ""
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:219
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:220
 msgid "Request"
 msgstr ""
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:312
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:313
 msgid "Last 15 minutes"
 msgstr ""
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:313
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:314
 msgid "Last 30 minutes"
 msgstr ""
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:314
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:315
 msgid "Last hour"
 msgstr ""
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:315
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:316
 msgid "Last 4 hours"
 msgstr ""
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:316
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:317
 msgid "Last 12 hours"
 msgstr ""
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:317
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:318
 msgid "Last 24 hours"
 msgstr ""
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:568
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:566
 msgid "No logs found in the selected time range."
 msgstr ""
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:571
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:569
 msgid ""
 "Background indexing in progress. Data will be updated automatically when "
 "ready."
 msgstr ""
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:587
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:585
 msgid "Log indexing completed! Loading updated data..."
 msgstr ""
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:673
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:671
 msgid "Error Log Detected"
 msgstr ""
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:676
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:674
 msgid ""
 "Error logs do not support structured analysis as they contain free-form text "
 "messages."
 msgstr ""
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:678
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:676
 msgid ""
 "For error logs, please use the Raw Log Viewer for better viewing experience."
 msgstr ""
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:683
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:681
 msgid "Go to Raw Log Viewer"
 msgstr ""
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:743
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:741
 msgid "Sorted by"
 msgstr ""
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:743
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:741
 msgid "Ascending"
 msgstr ""
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:743
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:741
 msgid "Descending"
 msgstr ""
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:764
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:762
 msgid "Total Entries"
 msgstr ""
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:770
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:768
 msgid "PV"
 msgstr ""
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:776
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:774
 msgid "UV"
 msgstr ""
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:783
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:781
 msgid ""
 "The result set is too large to sum exactly, this value is extrapolated from "
 "a sample"
 msgstr ""
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:787
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:785
 msgid "Traffic"
 msgstr ""
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:795
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:793
 msgid "Unique Pages"
 msgstr ""
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:801
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:799
 msgid "Avg/PV"
 msgstr ""
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:819
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:817
 msgid "%{start}-%{end} of %{total} items"
 msgstr ""
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:835
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:833
 msgid "No entries in current page"
 msgstr ""
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:837
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:835
 msgid "Try adjusting your search criteria or navigate to different pages."
 msgstr ""
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:844
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:842
 msgid "No structured log data available"
 msgstr ""
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:847
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:845
 msgid "Try adjusting your search criteria or time range."
 msgstr ""
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:850
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:848
 msgid "Search range"
 msgstr ""
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:852
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:850
 msgid "From indexed logs"
 msgstr ""
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:855
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:853
 msgid "Default range"
 msgstr ""
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:859
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:857
 msgid "Reset Search"
 msgstr ""
 
-#: src/views/nginx_log/structured/StructuredLogViewer.vue:867
+#: src/views/nginx_log/structured/StructuredLogViewer.vue:865
 msgid "Log file not available"
 msgstr ""
 
@@ -8120,49 +8154,49 @@ msgstr ""
 msgid "WeCom"
 msgstr ""
 
-#: src/views/preference/Preference.vue:55
+#: src/views/preference/Preference.vue:63
 msgid "App"
 msgstr ""
 
-#: src/views/preference/Preference.vue:61
+#: src/views/preference/Preference.vue:69
 #: src/views/preference/tabs/ExternalNotify.vue:42
 msgid "External Notify"
 msgstr ""
 
-#: src/views/preference/Preference.vue:67 src/views/upstream/SocketList.vue:64
+#: src/views/preference/Preference.vue:75 src/views/upstream/SocketList.vue:64
 msgid "Health Check"
 msgstr ""
 
-#: src/views/preference/Preference.vue:73
+#: src/views/preference/Preference.vue:81
 msgid "Node"
 msgstr ""
 
-#: src/views/preference/Preference.vue:79
+#: src/views/preference/Preference.vue:87
 msgid "HTTP"
 msgstr ""
 
-#: src/views/preference/Preference.vue:91
+#: src/views/preference/Preference.vue:100
 msgid "Auth"
 msgstr ""
 
-#: src/views/preference/Preference.vue:97
+#: src/views/preference/Preference.vue:106
 #: src/views/preference/tabs/AccessTokens.vue:165
 msgid "Access Tokens"
 msgstr ""
 
-#: src/views/preference/Preference.vue:103
+#: src/views/preference/Preference.vue:112
 msgid "Cert"
 msgstr ""
 
-#: src/views/preference/Preference.vue:115
+#: src/views/preference/Preference.vue:124
 msgid "LLM"
 msgstr ""
 
-#: src/views/preference/Preference.vue:121
+#: src/views/preference/Preference.vue:130
 msgid "Logrotate"
 msgstr ""
 
-#: src/views/preference/Preference.vue:127
+#: src/views/preference/Preference.vue:136
 msgid "GeoLite"
 msgstr ""
 
@@ -9363,13 +9397,13 @@ msgstr ""
 msgid "Connection lost for this terminal. Please refresh if needed."
 msgstr ""
 
-#: src/views/terminal/Terminal.vue:212
+#: src/views/terminal/Terminal.vue:249
 msgid ""
-"Demo mode is enabled. This terminal only allows a small set of safe read-"
-"only commands."
+"This is a simulated terminal running entirely in your browser. Commands are "
+"answered locally and never reach a server."
 msgstr ""
 
-#: src/views/terminal/Terminal.vue:219
+#: src/views/terminal/Terminal.vue:256
 msgid ""
 "You are accessing this terminal over an insecure HTTP connection on a non-"
 "localhost domain. This may expose sensitive information."

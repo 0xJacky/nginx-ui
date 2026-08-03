@@ -97,17 +97,40 @@ func TestBuildExpiryNotificationUsesOrderedStandardThresholds(t *testing.T) {
 	tests := []struct {
 		remaining time.Duration
 		stage     expiryNotificationStage
+		title     string
+		content   string
+		days      int
 	}{
-		{remaining: 14 * 24 * time.Hour, stage: expiryStageNotice},
-		{remaining: 7 * 24 * time.Hour, stage: expiryStageWarning},
-		{remaining: 3 * 24 * time.Hour, stage: expiryStageUrgent},
-		{remaining: 24 * time.Hour, stage: expiryStageCritical},
+		{remaining: 14 * 24 * time.Hour, stage: expiryStageNotice,
+			title:   "Certificate Expiration Notice",
+			content: "Certificate %{name} will expire in %{days} days", days: 14},
+		{remaining: 7 * 24 * time.Hour, stage: expiryStageWarning,
+			title:   "Certificate Expiring Soon",
+			content: "Certificate %{name} will expire in %{days} days", days: 7},
+		{remaining: 3 * 24 * time.Hour, stage: expiryStageUrgent,
+			title:   "Certificate Expiring Soon",
+			content: "Certificate %{name} will expire in %{days} days", days: 3},
+		{remaining: 24 * time.Hour, stage: expiryStageCritical,
+			title:   "Certificate Expiring Soon",
+			content: "Certificate %{name} will expire in 1 day"},
 	}
 
 	for _, tt := range tests {
 		notice := buildExpiryNotification(certModel, info, info.NotAfter.Add(-tt.remaining))
-		if notice == nil || notice.Stage != tt.stage {
-			t.Fatalf("remaining %s: notice = %+v, want %q", tt.remaining, notice, tt.stage)
+		if notice == nil || notice.Stage != tt.stage || notice.Title != tt.title ||
+			notice.Content != tt.content {
+			t.Fatalf("remaining %s: notice = %+v, want stage %q, title %q, content %q",
+				tt.remaining, notice, tt.stage, tt.title, tt.content)
+		}
+		if tt.days > 0 && notice.Details["days"] != tt.days {
+			t.Fatalf("remaining %s: days = %v, want %d", tt.remaining,
+				notice.Details["days"], tt.days)
+		}
+		if tt.days == 0 {
+			if _, ok := notice.Details["days"]; ok {
+				t.Fatalf("remaining %s: unexpected days detail: %+v", tt.remaining,
+					notice.Details)
+			}
 		}
 	}
 }

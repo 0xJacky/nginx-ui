@@ -8,7 +8,6 @@ import notificationApi from '@/api/notification'
 import { detailRender } from '@/components/Notification/detailRender'
 import { NotificationTypeT } from '@/constants'
 import { useUserStore, useWebSocketEventBusStore } from '@/pinia'
-import notifications from './notifications'
 
 defineProps<{
   headerRef: HTMLElement
@@ -164,8 +163,7 @@ function viewAll() {
                 <template #description>
                   <div class="flex justify-between items-center">
                     <div>
-                      {{ notifications[item.title]?.content(item.details)
-                        || item.content || item.details }}
+                      {{ $gettext(item.content, item.details) }}
                     </div>
                     <span
                       key="list-loadmore-remove"
