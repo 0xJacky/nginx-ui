@@ -1,6 +1,8 @@
 import type { StopParams } from '@cloudflare/containers'
+import type { WedgeState } from './recovery'
 import { Container, getContainer } from '@cloudflare/containers'
 import { loadingPage } from './loading'
+import { clearUnserved, decideRecovery, freshWedgeState, markServing } from './recovery'
 
 interface Env {
   NGINX_UI_DEMO: DurableObjectNamespace<NginxUiDemo>
@@ -36,6 +38,15 @@ const BOOT_LOG_PATH = '/__demo/bootlog'
 
 /** Worker-owned, secret-gated: stop the container so the next request starts it fresh. */
 const RECYCLE_PATH = '/__demo/recycle'
+
+/**
+ * Minimum gap between probes of the application behind nginx.
+ *
+ * Every unanswered probe costs a platform-level error event, and the loading
+ * page polls once a second at first, so an unprobed cache window is what keeps
+ * a down container from generating thousands of errors an hour.
+ */
+const PROBE_INTERVAL_MS = 2_000
 
 export class NginxUiDemo extends Container<Env> {
   // nginx inside the container listens here; it proxies to nginx-ui on 9000.
@@ -74,11 +85,29 @@ export class NginxUiDemo extends Container<Env> {
    */
   private applicationServing = false
 
-  /** Probe the application itself rather than the port in front of it. */
+  /** When the probe last ran, so a busy loading page cannot drive one per request. */
+  private lastProbeAt = 0
+
+  /** Tracks a container that claims to be healthy but will not serve. */
+  private wedge: WedgeState = freshWedgeState()
+
+  /**
+   * Probe the application itself rather than the port in front of it.
+   *
+   * Rate-limited: the answer only changes when nginx-ui finishes starting, so
+   * probing more than once every couple of seconds buys nothing and costs an
+   * error event per attempt while the container is down.
+   */
   private async applicationReady(): Promise<boolean> {
     if (this.applicationServing) {
       return true
     }
+
+    const now = Date.now()
+    if (now - this.lastProbeAt < PROBE_INTERVAL_MS) {
+      return false
+    }
+    this.lastProbeAt = now
 
     try {
       const probe = await this.containerFetch('http://localhost/healthz')
@@ -86,8 +115,17 @@ export class NginxUiDemo extends Container<Env> {
         this.applicationServing = true
         return true
       }
-      // 502 while nginx-ui is still starting is the case this exists for.
-      console.log(`nginx is up but the app is not serving yet: ${probe.status}`)
+
+      if (await isStaleContainerError(probe)) {
+        // Not "still starting". The platform is saying nothing is bound to the
+        // port at all, which on a container it also calls healthy means its
+        // view of the container is stale.
+        console.log('container reports healthy but nothing is listening on its port')
+      }
+      else {
+        // 502 while nginx-ui is still starting is the case this exists for.
+        console.log(`nginx is up but the app is not serving yet: ${probe.status}`)
+      }
     }
     catch (err: unknown) {
       console.log(`health probe failed: ${err}`)
@@ -96,10 +134,17 @@ export class NginxUiDemo extends Container<Env> {
     return false
   }
 
-  /** Current container state, for the status endpoint and for debugging. */
+  /**
+   * Current container state, for the status endpoint and for debugging.
+   *
+   * Goes through ready() rather than reading the state directly, so that
+   * polling this endpoint also drives a start. The loading page polls it and
+   * nothing else, so a status call that only observed would leave a sleeping
+   * container asleep.
+   */
   async status(): Promise<{ ready: boolean, status: string, exitCode?: number }> {
+    const ready = await this.ready()
     const state = await this.getState()
-    const ready = state.status === 'healthy' && await this.applicationReady()
 
     return {
       ready,
@@ -119,10 +164,17 @@ export class NginxUiDemo extends Container<Env> {
   async ready(): Promise<boolean> {
     const state = await this.getState()
     if (state.status === 'healthy') {
-      return this.applicationReady()
+      if (await this.applicationReady()) {
+        this.wedge = markServing()
+        return true
+      }
+
+      await this.recoverIfWedged()
+      return false
     }
 
     this.applicationServing = false
+    this.wedge = clearUnserved(this.wedge)
     console.log(`container not ready yet: status=${state.status}`)
 
     this.booting ??= this.startAndWaitForPorts()
@@ -136,10 +188,51 @@ export class NginxUiDemo extends Container<Env> {
     return false
   }
 
+  /**
+   * Break the deadlock where the platform reports the container healthy but it
+   * never serves.
+   *
+   * getState() is not the truth. When a container goes away without the
+   * platform reconciling its record, the state stays 'healthy' indefinitely —
+   * so the start path above, which only runs for a non-healthy state, is never
+   * reached and the demo stays down until someone intervenes by hand. This has
+   * happened: an instance sat 'running' for nineteen hours with nothing bound
+   * to 8080. Stopping the container puts the record into a state ready() knows
+   * how to start from.
+   *
+   * Deliberately slow to trigger. Stopping a container that is merely slow to
+   * boot is exactly how an earlier version of this file put the loading page
+   * into a permanent refresh loop, so this waits out a full boot window first
+   * and then acts at most once per cooldown.
+   */
+  private async recoverIfWedged(): Promise<void> {
+    const decision = decideRecovery(this.wedge, Date.now())
+    this.wedge = decision.next
+
+    if (decision.action === 'wait') {
+      return
+    }
+
+    this.applicationServing = false
+    console.error(
+      `container has reported healthy for ${Math.round(decision.unservedFor / 1000)}s `
+      + `without serving; sending ${decision.action} so the next request starts a fresh one `
+      + `(recovery attempt ${decision.next.attempts})`,
+    )
+
+    try {
+      await (decision.action === 'destroy' ? this.destroy() : this.stop())
+    }
+    catch (err: unknown) {
+      console.error('failed to recover the wedged container', err)
+    }
+  }
+
   override onStop(params: StopParams): void {
     // A restarted container serves 502 again until nginx-ui is back, so the
     // cached answer must not survive the stop.
     this.applicationServing = false
+    this.wedge = clearUnserved(this.wedge)
     console.log(`container stopped: exitCode=${params.exitCode} reason=${params.reason}`)
   }
 
@@ -247,14 +340,11 @@ export default {
     const container = getContainer(env.NGINX_UI_DEMO, INSTANCE)
 
     // Answered by the Worker so the loading page has something to poll that
-    // does not depend on the container being up.
+    // does not depend on the container being up. status() kicks off a boot
+    // itself, so polling makes progress without a second round trip — which
+    // used to double the platform error events a down container produced.
     if (url.pathname === STATUS_PATH) {
-      const status = await container.status()
-      if (!status.ready) {
-        // Kick off a boot so polling the status page actually makes progress.
-        await container.ready()
-      }
-      return Response.json(status, {
+      return Response.json(await container.status(), {
         headers: { 'cache-control': 'no-store' },
       })
     }

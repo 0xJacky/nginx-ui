@@ -67,8 +67,8 @@ export function loadingPage(): string {
     <div class="bar"><span></span></div>
     <p class="slow" id="slow">Still starting. This can take up to a minute after a new deploy.</p>
     <p class="slow" id="stuck">
-      The demo keeps restarting rather than settling. Reloading has been stopped
-      so this page does not loop; use the button below to try again.
+      The demo is not settling. Automatic retrying has been stopped so this page
+      does not loop; use the button below to try again.
       <br><br>
       <button type="button" id="retry">Try again</button>
     </p>
@@ -87,6 +87,15 @@ export function loadingPage(): string {
   // ordinary cold starts across a long session and must not accumulate into a
   // false positive.
   var WINDOW_MS = 120000;
+
+  // The reload cap above only ever fires once the demo HAS become ready. A
+  // container that never comes up would leave this page polling for as long as
+  // the tab stays open, and every poll costs the Worker a probe of a container
+  // that is down — a handful of forgotten tabs is enough to keep the error rate
+  // up on its own. Long enough that a wedged container has time to be detected,
+  // torn down and booted again before the visitor is asked to do anything.
+  var MAX_WAIT_MS = 300000;
+  var startedAt = Date.now();
 
   function readState() {
     try {
@@ -108,6 +117,10 @@ export function loadingPage(): string {
   }
 
   function giveUp() {
+    // "Still starting" is no longer true once we have stopped waiting, and
+    // leaving both messages up reads as a contradiction.
+    var slow = document.getElementById('slow');
+    if (slow) slow.style.display = 'none';
     var el = document.getElementById('stuck');
     if (el) el.style.display = 'block';
   }
@@ -126,6 +139,8 @@ export function loadingPage(): string {
   }, 12000);
 
   function poll() {
+    if (Date.now() - startedAt > MAX_WAIT_MS) { giveUp(); return; }
+
     fetch('/__demo/status', { cache: 'no-store' })
       .then(function (r) { return r.ok ? r.json() : { ready: false }; })
       .then(function (s) {

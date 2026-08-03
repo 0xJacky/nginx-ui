@@ -11,5 +11,8 @@
     "isolatedModules": true,
     "verbatimModuleSyntax": true
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts"],
+  // Tests import bun:test, whose types are not part of the Workers runtime
+  // this project typechecks against. `bun test` runs them.
+  "exclude": ["src/**/*.test.ts"]
 }

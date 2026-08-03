@@ -6,6 +6,7 @@
     "build:binary": "sh ./build-binary.sh",
     "dev": "sh ./build-binary.sh && wrangler dev -c wrangler.dev.jsonc",
     "deploy": "sh ./build-binary.sh && wrangler deploy",
+    "test": "bun test",
     "typecheck": "tsc --noEmit",
     "types": "wrangler types"
   },
