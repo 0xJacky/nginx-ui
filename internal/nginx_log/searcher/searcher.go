@@ -563,6 +563,9 @@ func (s *Searcher) SwapShards(newShards []bleve.Index) error {
 	}
 
 	newShards = wrapRecoveringIndexes(newShards)
+	if len(newShards) == 0 {
+		return fmt.Errorf("cannot swap to an empty shard set")
+	}
 
 	s.stateMu.Lock()
 	if s.indexAlias == nil {

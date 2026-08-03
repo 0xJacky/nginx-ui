@@ -168,6 +168,30 @@ func TestDistributedSearcher_ConcurrentSearchAndSwap(t *testing.T) {
 	require.NotNil(t, distributedSearcher.GetShards()[0], "GetShards must return an isolated snapshot")
 }
 
+func TestDistributedSearcher_SwapShards_RejectsEmptySet(t *testing.T) {
+	index, err := bleve.NewMemOnly(bleve.NewIndexMapping())
+	require.NoError(t, err)
+	defer index.Close()
+	require.NoError(t, index.Index("doc1", map[string]interface{}{
+		"content": "test document",
+	}))
+
+	distributedSearcher := NewSearcher(DefaultSearcherConfig(), []bleve.Index{index})
+	defer distributedSearcher.Stop()
+
+	err = distributedSearcher.SwapShards(nil)
+	require.ErrorContains(t, err, "cannot swap to an empty shard set")
+	require.Len(t, distributedSearcher.GetShards(), 1)
+	require.True(t, distributedSearcher.IsHealthy())
+
+	result, err := distributedSearcher.Search(context.Background(), &SearchRequest{
+		Query: "test",
+		Limit: 10,
+	})
+	require.NoError(t, err)
+	require.Equal(t, uint64(1), result.TotalHits)
+}
+
 func TestDistributedSearcher_SwapShards_NotRunning(t *testing.T) {
 	tempDir := t.TempDir()
 

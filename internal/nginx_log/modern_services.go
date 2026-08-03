@@ -502,6 +502,17 @@ func updateSearcherShardsLocked() {
 	newShards := globalIndexer.GetAllShards()
 	logger.Infof("Retrieved %d new shards from indexer for hot-swap update", len(newShards))
 
+	// An empty shard set is expected before the first indexing task creates a
+	// group. Keep the current searcher state until a usable replacement exists.
+	if len(newShards) == 0 {
+		currentShardCount := 0
+		if globalSearcher != nil {
+			currentShardCount = len(globalSearcher.GetShards())
+		}
+		logger.Debugf("No index shards available yet; keeping %d current searcher shards", currentShardCount)
+		return
+	}
+
 	// If no searcher exists yet, create the initial one (first time setup)
 	if globalSearcher == nil {
 		logger.Info("Creating initial searcher with IndexAlias")
