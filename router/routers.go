@@ -76,20 +76,20 @@ func InitRouter() {
 			backup.InitSetupRouter(setup)
 		}
 
-		// Local-only routes (no proxy) - authorization required
+		// Local-only routes (no proxy) - authorization required. Account and
+		// secure-session state belong to the controller that authenticated the
+		// browser, even while the UI is managing a selected remote node.
 		local := root.Group("/", middleware.AuthRequired())
 		{
 			llm.InitLocalRouter(local)
+			user.InitTokenRouter(local)
+			user.InitUserRouter(local)
 		}
-
-		// Authorization required (HTTP, no proxy) - token endpoint
-		user.InitTokenRouter(local)
 
 		// Authorization required and not websocket request
 		g := root.Group("/", middleware.AuthRequired(), middleware.Proxy())
 		{
 			debug.InitRouter(g)
-			user.InitUserRouter(g)
 			analytic.InitRouter(g)
 			user.InitManageUserRouter(g)
 			nginx.InitRouter(g)
