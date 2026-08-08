@@ -13,10 +13,10 @@ require (
 	github.com/alibabacloud-go/darabonba-openapi/v2 v2.2.4
 	github.com/alibabacloud-go/tea v1.5.3
 	github.com/blevesearch/bleve/v2 v2.6.0
-	github.com/blevesearch/bleve_index_api v1.3.12
+	github.com/blevesearch/bleve_index_api v1.4.1
 	github.com/caarlos0/env/v11 v11.4.1
 	github.com/casdoor/casdoor-go-sdk v1.47.0
-	github.com/cloudflare/cloudflare-go/v7 v7.7.0
+	github.com/cloudflare/cloudflare-go/v7 v7.8.0
 	github.com/coreos/go-oidc/v3 v3.20.0
 	github.com/creack/pty v1.1.24
 	github.com/dgraph-io/ristretto/v2 v2.4.2
@@ -38,7 +38,7 @@ require (
 	github.com/golang-jwt/jwt/v5 v5.3.1
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674
-	github.com/huaweicloud/huaweicloud-sdk-go-v3 v0.1.208
+	github.com/huaweicloud/huaweicloud-sdk-go-v3 v0.1.209
 	github.com/mark3labs/mcp-go v0.57.0
 	github.com/minio/minio-go/v7 v7.2.1
 	github.com/minio/selfupdate v0.6.0
@@ -49,22 +49,23 @@ require (
 	github.com/pquerna/otp v1.5.0
 	github.com/pretty66/websocketproxy v0.0.0-20220507015215-930b3a686308
 	github.com/samber/lo v1.53.0
-	github.com/sashabaranov/go-openai v1.41.2
-	github.com/shirou/gopsutil/v4 v4.26.6
+	github.com/sashabaranov/go-openai v1.42.0
+	github.com/shirou/gopsutil/v4 v4.26.7
 	github.com/spf13/afero v1.15.0
 	github.com/spf13/cast v1.10.0
 	github.com/stretchr/testify v1.11.1
-	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.3.143
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.3.152
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20260220081509-8e17ce617db3
 	github.com/ulikunitz/xz v0.5.16
 	github.com/uozi-tech/cosy v1.34.1
 	github.com/uozi-tech/cosy-driver-sqlite v0.2.1
 	github.com/urfave/cli/v3 v3.10.1
+	go.etcd.io/bbolt v1.5.0
 	golang.org/x/crypto v0.54.0
 	golang.org/x/net v0.57.0
 	golang.org/x/oauth2 v0.36.0
 	golang.org/x/sys v0.47.0
-	google.golang.org/grpc v1.82.1
+	google.golang.org/grpc v1.83.0
 	gopkg.in/ini.v1 v1.67.3
 	gorm.io/datatypes v1.2.7
 	gorm.io/driver/sqlite v1.6.0
@@ -325,7 +326,6 @@ require (
 	github.com/youmark/pkcs8 v0.0.0-20240726163527-a2c0da244d78 // indirect
 	github.com/yusufpapurcu/wmi v1.2.4 // indirect
 	github.com/zeebo/xxh3 v1.1.0 // indirect
-	go.etcd.io/bbolt v1.5.0 // indirect
 	go.mongodb.org/mongo-driver v1.17.9 // indirect
 	go.mongodb.org/mongo-driver/v2 v2.8.0 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
