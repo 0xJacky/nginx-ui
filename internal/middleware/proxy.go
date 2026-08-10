@@ -62,15 +62,7 @@ func Proxy() gin.HandlerFunc {
 
 		proxy.Transport = nodeauth.NewTransport(node, customTransport)
 
-		defaultDirector := proxy.Director
-		proxy.Director = func(req *http.Request) {
-			defaultDirector(req)
-			// drop proxy identifier from upstream query to avoid leaking internal ids
-			query := req.URL.Query()
-			query.Del("x_node_id")
-			req.URL.RawQuery = query.Encode()
-			req.Header.Del("X-Node-ID")
-		}
+		configureProxyDirector(proxy)
 
 		// resolve https://github.com/0xJacky/nginx-ui/issues/342
 		proxy.ModifyResponse = func(resp *http.Response) error {
@@ -107,5 +99,18 @@ func Proxy() gin.HandlerFunc {
 		req := c.Request.Clone(ctx)
 
 		proxy.ServeHTTP(c.Writer, req)
+	}
+}
+
+func configureProxyDirector(proxy *httputil.ReverseProxy) {
+	defaultDirector := proxy.Director
+	proxy.Director = func(req *http.Request) {
+		defaultDirector(req)
+		req.Host = req.URL.Host
+		// drop proxy identifier from upstream query to avoid leaking internal ids
+		query := req.URL.Query()
+		query.Del("x_node_id")
+		req.URL.RawQuery = query.Encode()
+		req.Header.Del("X-Node-ID")
 	}
 }
