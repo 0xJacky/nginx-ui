@@ -394,9 +394,12 @@ func GetLogEntries(c *gin.Context) {
 		Tail  bool   `json:"tail" form:"tail"` // Get latest entries
 	}
 
-	if !cosy.BindAndValid(c, &req) {
+	if err := c.ShouldBindQuery(&req); err != nil {
+		cosy.ErrHandler(c, err)
 		return
 	}
+
+	req.Path, _ = helper.DecodePathParam(req.Path)
 
 	searcherService := nginx_log.GetSearcher()
 	if searcherService == nil {

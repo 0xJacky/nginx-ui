@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
@@ -14,6 +15,7 @@ import (
 	"time"
 
 	nginxlogapi "github.com/0xJacky/Nginx-UI/api/nginx_log"
+	"github.com/0xJacky/Nginx-UI/internal/helper"
 	nginxlog "github.com/0xJacky/Nginx-UI/internal/nginx_log"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -153,4 +155,26 @@ func TestNginxLogHTTPHandlersWithRealRouterAndIndex(t *testing.T) {
 	require.Len(t, smallPage.Entries, 2)
 	require.Len(t, largeLaterPage.Entries, 4)
 	assert.Equal(t, smallPage.Summary["total_traffic"], largeLaterPage.Summary["total_traffic"])
+
+	for name, path := range map[string]string{
+		"encoded": helper.EncodePathParam(logPath),
+		"raw":     logPath,
+	} {
+		t.Run(name+" entries path", func(t *testing.T) {
+			query := url.Values{"path": {path}, "limit": {"2"}}
+			entriesRecorder := httptest.NewRecorder()
+			entriesRequest := httptest.NewRequest(http.MethodGet,
+				"/nginx_log/entries?"+query.Encode(), nil)
+			router.ServeHTTP(entriesRecorder, entriesRequest)
+			require.Equal(t, http.StatusOK, entriesRecorder.Code, entriesRecorder.Body.String())
+
+			var entriesResponse struct {
+				Entries []map[string]interface{} `json:"entries"`
+				Count   int                      `json:"count"`
+			}
+			require.NoError(t, json.Unmarshal(entriesRecorder.Body.Bytes(), &entriesResponse))
+			assert.Equal(t, 2, entriesResponse.Count)
+			assert.Len(t, entriesResponse.Entries, 2)
+		})
+	}
 }
