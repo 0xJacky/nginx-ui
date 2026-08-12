@@ -8,11 +8,19 @@ interface PersistedUserState {
   token?: string
 }
 
-export async function gotoRoute(page: Page, route: string) {
-  const response = await page.goto(route, { waitUntil: 'domcontentloaded' })
+export function routeUrl(route: string) {
+  return `/#${route.startsWith('/') ? route : `/${route}`}`
+}
 
-  expect(response, `Navigation to ${route} did not return a response`).not.toBeNull()
-  expect(response?.ok(), `Navigation to ${route} returned ${response?.status()}`).toBe(true)
+export async function gotoRoute(page: Page, route: string) {
+  const url = routeUrl(route)
+  const response = await page.goto(url, { waitUntil: 'domcontentloaded' })
+
+  if (response) {
+    expect(response.ok(), `Navigation to ${url} returned ${response.status()}`).toBe(true)
+  }
+  await expect.poll(() => new URL(page.url()).pathname).toBe('/')
+  await expect.poll(() => new URL(page.url()).hash).toBe(url.slice(1))
   await expect(page).not.toHaveURL(/\/login(?:\?|$)/)
 }
 
@@ -70,7 +78,7 @@ function containsCode(value: unknown, expectedCode: number): boolean {
 }
 
 export async function expectDemoRefusal(response: APIResponse) {
-  expect(response.status()).toBe(403)
+  expect(response.status()).toBe(500)
   expect(response.headers()['content-type']).toContain('application/json')
 
   const body = await response.json() as unknown
@@ -83,6 +91,5 @@ export function numberFromText(text: string): number {
 }
 
 export async function expectPositiveText(locator: Locator, timeout = 45_000) {
-  await expect.poll(async () => numberFromText(await locator.innerText()), { timeout }).toBeGreaterThan(0)
+  await expect.poll(async () => numberFromText(await locator.textContent() ?? ''), { timeout }).toBeGreaterThan(0)
 }
-

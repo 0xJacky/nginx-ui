@@ -2,11 +2,12 @@ import { expect, test as setup } from '@playwright/test'
 import { mkdir } from 'node:fs/promises'
 import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { routeUrl } from './helpers'
 
 const authState = fileURLToPath(new URL('../playwright/.auth/admin.json', import.meta.url))
 
 setup('authenticate through the demo login UI', async ({ page }) => {
-  await page.goto('/login', { waitUntil: 'domcontentloaded' })
+  await page.goto(routeUrl('/login'), { waitUntil: 'domcontentloaded' })
 
   await page.getByPlaceholder('Username').fill(process.env.E2E_USERNAME ?? 'admin')
   await page.getByPlaceholder('Password').fill(process.env.E2E_PASSWORD ?? 'admin')
@@ -31,4 +32,3 @@ setup('authenticate through the demo login UI', async ({ page }) => {
   await mkdir(dirname(authState), { recursive: true })
   await page.context().storageState({ path: authState })
 })
-
