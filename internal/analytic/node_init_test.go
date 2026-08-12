@@ -36,6 +36,26 @@ func TestInitNodeAuthenticatesPreV250Node(t *testing.T) {
 	require.Equal(t, "2.4.3", remote.Version)
 }
 
+func TestInitNodeReportsLegacyAuthenticationFailureWithoutResponseBody(t *testing.T) {
+	const responseBody = "sensitive-upstream-response"
+	server := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, _ *http.Request) {
+		writer.WriteHeader(http.StatusForbidden)
+		_, _ = writer.Write([]byte(responseBody))
+	}))
+	t.Cleanup(server.Close)
+
+	node := &model.Node{
+		Model: model.Model{ID: 48},
+		URL:   server.URL,
+	}
+	setupLegacyNodeAuthForTest(t, node, "wrong-secret")
+
+	_, err := InitNode(context.Background(), node)
+	require.Error(t, err)
+	require.Contains(t, err.Error(), http.StatusText(http.StatusForbidden))
+	require.NotContains(t, err.Error(), responseBody)
+}
+
 func TestInitNodeStopsWhenContextIsCancelled(t *testing.T) {
 	requestStarted := make(chan struct{})
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

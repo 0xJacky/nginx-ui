@@ -150,13 +150,12 @@ func InitNode(ctx context.Context, node *model.Node) (n *Node, err error) {
 	}
 
 	defer resp.Body.Close()
-	bytes, _ := io.ReadAll(resp.Body)
-
 	if resp.StatusCode != http.StatusOK {
-		return n, cosy.WrapErrorWithParams(ErrNodeAnalyticsFailed, string(bytes))
+		_, _ = io.Copy(io.Discard, io.LimitReader(resp.Body, 4<<10))
+		return n, cosy.WrapErrorWithParams(ErrNodeAnalyticsFailed, resp.Status)
 	}
 
-	err = json.Unmarshal(bytes, &n.NodeInfo)
+	err = json.NewDecoder(resp.Body).Decode(&n.NodeInfo)
 	if err != nil {
 		return
 	}
