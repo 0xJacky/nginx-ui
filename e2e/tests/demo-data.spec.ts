@@ -23,6 +23,13 @@ interface AnalyticsFrame {
   }
 }
 
+interface SiteNavigationFrame {
+  type?: string
+  data?: Array<{
+    name?: string
+  }>
+}
+
 test('server dashboard renders non-zero live gauges over the analytics WebSocket', async ({ page }) => {
   test.setTimeout(120_000)
 
@@ -96,8 +103,15 @@ test('nginx log list, raw view, structured view, and geographic dashboards rende
   await gotoRoute(page, '/nginx_log/list')
   await expectTableRows(page, 1)
 
+  await gotoRoute(page, '/nginx_log/access')
+  const structuredView = page.getByRole('radio', { name: 'Structured', exact: true })
+  const rawView = page.getByRole('radio', { name: 'Raw', exact: true })
+  const dashboardView = page.getByRole('radio', { name: 'Dashboard', exact: true })
+  await expect(structuredView).toBeChecked()
+
   const rawResponsePromise = waitForApiResponse(page, '/api/nginx_log/page', 'POST')
-  await gotoRoute(page, '/nginx_log/access?view=raw')
+  await page.getByRole('main').getByText('Raw', { exact: true }).click()
+  await expect(rawView).toBeChecked()
   const rawResponse = await rawResponsePromise
   expect(rawResponse.ok()).toBe(true)
   const rawBody = await rawResponse.json()
@@ -105,7 +119,8 @@ test('nginx log list, raw view, structured view, and geographic dashboards rende
   await expect.poll(() => page.locator('.nginx-log-line').count()).toBeGreaterThan(0)
 
   const searchResponsePromise = waitForApiResponse(page, '/api/nginx_log/search', 'POST', 180_000)
-  await gotoRoute(page, '/nginx_log/access?view=structured')
+  await page.getByRole('main').getByText('Structured', { exact: true }).click()
+  await expect(structuredView).toBeChecked()
   const searchResponse = await searchResponsePromise
   expect(searchResponse.ok()).toBe(true)
   const searchBody = await searchResponse.json()
@@ -115,7 +130,8 @@ test('nginx log list, raw view, structured view, and geographic dashboards rende
   const dashboardResponsePromise = waitForApiResponse(page, '/api/nginx_log/dashboard', 'POST', 180_000)
   const worldResponsePromise = waitForApiResponse(page, '/api/nginx_log/geo/world', 'POST', 180_000)
   const chinaResponsePromise = waitForApiResponse(page, '/api/nginx_log/geo/china', 'POST', 180_000)
-  await gotoRoute(page, '/nginx_log/access?view=dashboard')
+  await page.getByRole('main').getByText('Dashboard', { exact: true }).click()
+  await expect(dashboardView).toBeChecked()
 
   const [dashboardResponse, worldResponse, chinaResponse] = await Promise.all([
     dashboardResponsePromise,
@@ -150,6 +166,31 @@ test('nginx log list, raw view, structured view, and geographic dashboards rende
 test('sites list is populated and navigation cards include healthy and failing sites', async ({ page }) => {
   test.setTimeout(120_000)
 
+  let navigationSocket: WebSocket | undefined
+  let navigationSocketError: string | undefined
+  let initialNavigationFrame: SiteNavigationFrame | undefined
+
+  page.on('websocket', socket => {
+    if (new URL(socket.url()).pathname !== '/api/site_navigation_ws')
+      return
+
+    navigationSocket = socket
+    socket.on('socketerror', error => {
+      navigationSocketError = error
+    })
+    socket.on('framereceived', event => {
+      try {
+        const payload = typeof event.payload === 'string' ? event.payload : event.payload.toString()
+        const frame = JSON.parse(payload) as SiteNavigationFrame
+        if (frame.type === 'initial')
+          initialNavigationFrame = frame
+      }
+      catch {
+        // A malformed initial frame will be surfaced by the assertions below.
+      }
+    })
+  })
+
   await gotoRoute(page, '/sites')
   const siteRows = await expectTableRows(page, 2)
   await expect(siteRows.filter({ hasText: 'ojbk.me' }).first()).toBeVisible()
@@ -162,13 +203,25 @@ test('sites list is populated and navigation cards include healthy and failing s
   const navigationBody = await navigationResponse.json()
   expect(navigationBody.data?.length).toBeGreaterThanOrEqual(2)
 
+  await expect.poll(() => Boolean(navigationSocket)).toBe(true)
+  expect(new URL(navigationSocket?.url() ?? 'http://invalid').searchParams.get('token')).toBeTruthy()
+  await expect.poll(() => initialNavigationFrame?.data?.length ?? 0).toBeGreaterThanOrEqual(2)
+  expect(initialNavigationFrame?.type).toBe('initial')
+  expect(navigationSocketError).toBeUndefined()
+  expect(navigationSocket?.isClosed()).toBe(false)
+
   const healthy = page.locator('.site-card').filter({ hasText: 'ojbk.me' }).first()
   const failing = page.locator('.site-card').filter({ hasText: /Prime Sponsor|langgood\.com/ }).first()
+  const failingSiteData = navigationBody.data.find((site: { name?: string, title?: string }) =>
+    site.name === 'langgood.com' || site.title === 'Prime Sponsor',
+  )
+  expect(failingSiteData?.error_type).toBe('status_code')
   await expect(healthy).toBeVisible()
   await expect(failing).toBeVisible()
   await expect(healthy.locator('[data-testid="site-health-check-status"]')).toHaveClass(/status-online/, { timeout: 60_000 })
   await expect(healthy).toContainText('200')
   await expect(failing.locator('[data-testid="site-health-check-status"]')).toHaveClass(/status-error/, { timeout: 60_000 })
+  await expect(failing.locator('[data-testid="site-health-check-error"]')).toContainText('Unexpected status code: 503')
   await expect(failing).toContainText('503')
 })
 
