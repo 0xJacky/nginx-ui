@@ -86,6 +86,14 @@ func InitRouter() {
 			user.InitUserRouter(local)
 		}
 
+		// Local-only WebSocket routes (no proxy). WebSocket handshakes cannot
+		// carry an Authorization header, so they must use AuthRequiredWS, which
+		// also accepts the token from the query string.
+		localWs := root.Group("/", middleware.AuthRequiredWS())
+		{
+			llm.InitLocalWebSocketRouter(localWs)
+		}
+
 		// Authorization required and not websocket request
 		g := root.Group("/", middleware.AuthRequired(), middleware.Proxy())
 		{
@@ -125,6 +133,7 @@ func InitRouter() {
 				terminal.InitRouter(o)
 			}
 			nginxLog.InitWebSocketRouter(w)
+			sites.InitWebSocketRouter(w)
 			upstream.InitWebSocketRouter(w)
 			system.InitWebSocketRouter(w)
 			nginx.InitWebSocketRouter(w)
