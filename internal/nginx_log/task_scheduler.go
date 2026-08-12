@@ -7,8 +7,10 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/cgroup"
 	"github.com/0xJacky/Nginx-UI/internal/event"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/indexer"
+	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/uozi-tech/cosy/logger"
 )
 
@@ -23,6 +25,41 @@ type TaskScheduler struct {
 	wg             sync.WaitGroup
 	taskLocks      map[string]*sync.Mutex // Per-log-group locks
 	locksMutex     sync.RWMutex           // Protects taskLocks map
+
+	// runSlots bounds how many log groups may be indexed at the same time.
+	//
+	// The per-log-group locks only stop the same group from running twice; without
+	// this semaphore a rebuild schedules one goroutine per log group and every one
+	// of them runs concurrently. Each of those in turn fans out to
+	// FileGroupConcurrency files, and each file holds a parse batch plus a
+	// buffered index batch, so peak memory is
+	// groups x files x batches - unbounded in the number of configured sites.
+	// That is what makes a post-upgrade full rebuild exhaust RAM and saturate the
+	// CPU on a small container (issue #1792).
+	runSlots chan struct{}
+}
+
+// defaultMaxConcurrentIndexTasks caps the auto-derived log group concurrency.
+// Indexing is dominated by Bleve segment building and disk I/O, so more
+// concurrent groups mostly buys extra resident memory.
+const defaultMaxConcurrentIndexTasks = 2
+
+// maxConcurrentIndexTasks returns how many log groups may be indexed
+// concurrently. The value is derived from the CPU budget the process is
+// actually allowed to use, and can be overridden through settings.
+func maxConcurrentIndexTasks() int {
+	if configured := settings.NginxLogSettings.MaxConcurrentIndexTasks; configured > 0 {
+		return configured
+	}
+
+	slots := cgroup.AvailableCPUs() / 2
+	if slots < 1 {
+		slots = 1
+	}
+	if slots > defaultMaxConcurrentIndexTasks {
+		slots = defaultMaxConcurrentIndexTasks
+	}
+	return slots
 }
 
 // Global task scheduler instance
@@ -80,12 +117,43 @@ func InitTaskScheduler(ctx context.Context) {
 // NewTaskScheduler creates a new task scheduler
 func NewTaskScheduler(parentCtx context.Context) *TaskScheduler {
 	ctx, cancel := context.WithCancel(parentCtx)
+	slots := maxConcurrentIndexTasks()
+	logger.Debugf("Task scheduler limiting concurrent log group indexing to %d", slots)
 	return &TaskScheduler{
 		logFileManager: GetLogFileManager(),
 		modernIndexer:  GetIndexer(),
 		ctx:            ctx,
 		cancel:         cancel,
 		taskLocks:      make(map[string]*sync.Mutex),
+		runSlots:       make(chan struct{}, slots),
+	}
+}
+
+// acquireRunSlot blocks until a global indexing slot is free. It returns false
+// when the scheduler or the caller's context is cancelled while waiting.
+func (ts *TaskScheduler) acquireRunSlot(ctx context.Context) bool {
+	if ts.runSlots == nil {
+		return true
+	}
+
+	select {
+	case ts.runSlots <- struct{}{}:
+		return true
+	case <-ctx.Done():
+		return false
+	case <-ts.ctx.Done():
+		return false
+	}
+}
+
+// releaseRunSlot returns a slot acquired by acquireRunSlot.
+func (ts *TaskScheduler) releaseRunSlot() {
+	if ts.runSlots == nil {
+		return
+	}
+	select {
+	case <-ts.runSlots:
+	default:
 	}
 }
 
@@ -169,6 +237,24 @@ func (ts *TaskScheduler) executeIndexTask(ctx context.Context, logPath string, p
 	}()
 
 	// Check context before starting
+	select {
+	case <-ctx.Done():
+		logger.Debugf("Context cancelled, skipping task for %s", logPath)
+		return
+	default:
+	}
+
+	// Wait for a global slot before touching the indexer. Indexing a log group
+	// fans out over its rotated files and buffers a batch per file, so the number
+	// of groups running at once has to be bounded or a full rebuild across many
+	// sites allocates without limit.
+	if !ts.acquireRunSlot(ctx) {
+		logger.Debugf("Context cancelled while waiting for an indexing slot: %s", logPath)
+		return
+	}
+	defer ts.releaseRunSlot()
+
+	// The wait can be long; re-check cancellation before doing the work.
 	select {
 	case <-ctx.Done():
 		logger.Debugf("Context cancelled, skipping task for %s", logPath)

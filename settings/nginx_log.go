@@ -8,6 +8,12 @@ type NginxLog struct {
 	// IncrementalIndexInterval controls how often the incremental indexing job runs, in minutes.
 	// When set to 0 or a negative value, a conservative default will be used.
 	IncrementalIndexInterval int `json:"incremental_index_interval"`
+	// MaxConcurrentIndexTasks caps how many log groups are indexed at the same
+	// time. Each concurrent group buffers a parse batch and an index batch per
+	// rotated file, so this is the main lever on peak indexing memory.
+	// When set to 0 or a negative value, the value is derived from the CPU
+	// budget the process is allowed to use.
+	MaxConcurrentIndexTasks int `json:"max_concurrent_index_tasks"`
 }
 
 var NginxLogSettings = &NginxLog{}

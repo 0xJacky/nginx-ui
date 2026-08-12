@@ -7,6 +7,7 @@ import (
 	"net"
 	"os"
 	"os/signal"
+	"runtime/debug"
 	"syscall"
 
 	"github.com/0xJacky/Nginx-UI/internal/cert"
@@ -172,7 +173,17 @@ func main() {
 			programCtx, cancel := context.WithCancel(mainCtx)
 			// Store the cancel function so the Shutdown callback can use it.
 			programCancel = cancel
-			return Program(programCtx, confPath)(l)
+			err := Program(programCtx, confPath)(l)
+
+			// After a graceful handover this process does not exit: risefront
+			// keeps it alive as a connection proxy in front of the newly spawned
+			// binary. Its heap is dead but not yet returned to the OS, and inside
+			// a memory-limited container the retired resident set is charged
+			// against the same limit as the new process. Hand it back eagerly
+			// instead of waiting for the background scavenger.
+			debug.FreeOSMemory()
+
+			return err
 		},
 		Shutdown: func() {
 			// This is called by risefront.Restart() to shut down the old program.

@@ -5,20 +5,32 @@ import (
 	"compress/gzip"
 	"context"
 	"io"
-	"runtime"
 	"strings"
 	"sync"
+	"sync/atomic"
 
+	"github.com/0xJacky/Nginx-UI/internal/cgroup"
 	"github.com/0xJacky/Nginx-UI/internal/geolite"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/parser"
 	"github.com/uozi-tech/cosy/logger"
 )
 
-// Global parser instances
+// logParser is the process-wide parser singleton, used for both batch and
+// single-line parsing.
+//
+// It is an atomic pointer rather than a plain global guarded by sync.Once so
+// that ReleaseLogParser can drop it: the parser owns a GeoIP handle and two
+// 10,000-entry caches, and after a graceful handover the retired process would
+// otherwise keep them reachable - and therefore resident - forever.
 var (
-	logParser      *parser.Parser // Use the concrete type for both regular and single-line parsing
-	parserInitOnce sync.Once
+	logParser    atomic.Pointer[parser.Parser]
+	parserInitMu sync.Mutex
 )
+
+// getLogParser returns the current parser singleton, or nil when none is installed.
+func getLogParser() *parser.Parser {
+	return logParser.Load()
+}
 
 // geoIPOverride replaces the GeoLite-backed geo lookup when set.
 //
@@ -34,58 +46,83 @@ func SetGeoIPService(service parser.GeoIPService) {
 	geoIPOverride = service
 }
 
+// maxParserWorkerCount caps the per-file parse fan-out. Parsing is only one
+// stage of the pipeline, and every worker keeps a parse buffer alive.
+const maxParserWorkerCount = 8
+
 // InitLogParser initializes the global parser once (singleton).
 func InitLogParser() {
-	parserInitOnce.Do(func() {
-		// Initialize the parser with production-ready configuration
-		config := parser.DefaultParserConfig()
-		config.MaxLineLength = 16 * 1024 // 16KB for large log lines
-		config.BatchSize = 15000         // Maximum batch size for highest frontend throughput
+	parserInitMu.Lock()
+	defer parserInitMu.Unlock()
 
-		// Derive parser worker count from available CPUs, with sane limits so that
-		// small machines are not overwhelmed while larger hosts can still use
-		// parallel parsing effectively.
-		maxProcs := runtime.GOMAXPROCS(0)
-		if maxProcs <= 0 {
-			maxProcs = runtime.NumCPU()
-		}
-		workerCount := maxProcs
-		if workerCount < 4 {
-			workerCount = 4
-		}
-		if workerCount > 16 {
-			workerCount = 16
-		}
-		config.WorkerCount = workerCount
-		// Note: Caching is handled by the CachedUserAgentParser
+	if logParser.Load() != nil {
+		return
+	}
 
-		// Initialize user agent parser with caching (10,000 cache size for production)
-		uaParser := parser.NewCachedUserAgentParser(
-			parser.NewSimpleUserAgentParser(),
-			10000, // Large cache for production workloads
-		)
+	// Initialize the parser with production-ready configuration
+	config := parser.DefaultParserConfig()
+	config.MaxLineLength = 16 * 1024 // 16KB for large log lines
+	config.BatchSize = 15000         // Maximum batch size for highest frontend throughput
 
-		// Access logs repeat the same IPs heavily; cache lookups so the
-		// per-line hot path avoids repeated GeoIP database queries
-		var geoIPService parser.GeoIPService
-		if geoIPOverride != nil {
-			geoIPService = parser.NewCachedGeoIPService(geoIPOverride, 10000)
-		} else if geoService, err := geolite.GetService(); err != nil {
-			logger.Warnf("Failed to initialize GeoIP service, geo-enrichment will be disabled: %v", err)
-		} else {
-			geoIPService = parser.NewCachedGeoIPService(parser.NewGeoLiteAdapter(geoService), 10000)
-		}
+	// Derive parser worker count from the CPUs this process may actually use,
+	// with sane limits so that small machines are not overwhelmed while larger
+	// hosts can still use parallel parsing effectively.
+	//
+	// cgroup.AvailableCPUs, not GOMAXPROCS: inside an LXC/Docker container the
+	// affinity mask reports every host CPU while the cgroup bandwidth
+	// controller throttles the process to a fraction of one, so GOMAXPROCS
+	// would start up to 16 parse goroutines per file on a container that is
+	// only allowed a single core.
+	workerCount := cgroup.AvailableCPUs()
+	if workerCount < 2 {
+		workerCount = 2
+	}
+	if workerCount > maxParserWorkerCount {
+		workerCount = maxParserWorkerCount
+	}
+	config.WorkerCount = workerCount
+	// Note: Caching is handled by the CachedUserAgentParser
 
-		// Create the parser with production configuration
-		logParser = parser.NewParser(config, uaParser, geoIPService)
+	// Initialize user agent parser with caching (10,000 cache size for production)
+	uaParser := parser.NewCachedUserAgentParser(
+		parser.NewSimpleUserAgentParser(),
+		10000, // Large cache for production workloads
+	)
 
-		logger.Info("Nginx log processing optimization system initialized with production configuration")
-	})
+	// Access logs repeat the same IPs heavily; cache lookups so the
+	// per-line hot path avoids repeated GeoIP database queries
+	var geoIPService parser.GeoIPService
+	if geoIPOverride != nil {
+		geoIPService = parser.NewCachedGeoIPService(geoIPOverride, 10000)
+	} else if geoService, err := geolite.GetService(); err != nil {
+		logger.Warnf("Failed to initialize GeoIP service, geo-enrichment will be disabled: %v", err)
+	} else {
+		geoIPService = parser.NewCachedGeoIPService(parser.NewGeoLiteAdapter(geoService), 10000)
+	}
+
+	// Create the parser with production configuration
+	logParser.Store(parser.NewParser(config, uaParser, geoIPService))
+
+	logger.Info("Nginx log processing optimization system initialized with production configuration")
+}
+
+// ReleaseLogParser drops the parser singleton and the GeoIP handle and caches
+// it owns.
+//
+// After a graceful handover the retired process stays alive as a connection
+// proxy for the new binary, so anything left reachable from a package global
+// can never be collected. Releasing the parser lets that memory go back to the
+// OS instead of doubling the resident set of the container for the lifetime of
+// the process.
+func ReleaseLogParser() {
+	parserInitMu.Lock()
+	defer parserInitMu.Unlock()
+	logParser.Store(nil)
 }
 
 // IsLogParserInitialized returns true if the global parser singleton has been created.
 func IsLogParserInitialized() bool {
-	return logParser != nil
+	return getLogParser() != nil
 }
 
 // ParseLogLine parses a raw log line into a structured LogDocument using optimized parsing
@@ -94,12 +131,13 @@ func ParseLogLine(line string) (*LogDocument, error) {
 		return nil, nil
 	}
 
-	if logParser == nil {
+	activeParser := getLogParser()
+	if activeParser == nil {
 		return nil, ErrLogParserNotInitialized
 	}
 
 	// Use parser for single line processing
-	entry, err := logParser.ParseLine(line)
+	entry, err := activeParser.ParseLine(line)
 	if err != nil {
 		return nil, err
 	}
@@ -113,7 +151,8 @@ func ParseLogLine(line string) (*LogDocument, error) {
 // bounded regardless of file size. Returns the number of processed and
 // failed lines.
 func ParseLogStreamBatches(ctx context.Context, reader io.Reader, filePath string, fn func(docs []*LogDocument) error) (processed, failed int, err error) {
-	if logParser == nil {
+	activeParser := getLogParser()
+	if activeParser == nil {
 		return 0, 0, ErrLogParserNotInitialized
 	}
 
@@ -130,7 +169,7 @@ func ParseLogStreamBatches(ctx context.Context, reader io.Reader, filePath strin
 	// The main log path is constant for the whole file; compute it once
 	mainLogPath := getMainLogPathFromFile(filePath)
 
-	parseResult, err := logParser.StreamParseBatches(ctx, actualReader, func(entries []*parser.AccessLogEntry) error {
+	parseResult, err := activeParser.StreamParseBatches(ctx, actualReader, func(entries []*parser.AccessLogEntry) error {
 		docs := make([]*LogDocument, 0, len(entries))
 		for _, entry := range entries {
 			docs = append(docs, convertToLogDocument(entry, filePath, mainLogPath))

@@ -5,11 +5,12 @@ import (
 	"bytes"
 	"context"
 	"io"
-	"runtime"
 	"strconv"
 	"sync"
 	"time"
 	"unsafe"
+
+	"github.com/0xJacky/Nginx-UI/internal/cgroup"
 )
 
 // Parser provides high-performance log parsing with zero-copy optimizations
@@ -228,7 +229,9 @@ func (p *Parser) parseLinesSingleThreaded(ctx context.Context, lines []string, s
 func (p *Parser) parseLinesParallel(ctx context.Context, lines []string, startTime time.Time) *ParseResult {
 	numWorkers := p.config.WorkerCount
 	if numWorkers <= 0 {
-		numWorkers = runtime.NumCPU()
+		// cgroup.AvailableCPUs rather than runtime.NumCPU: the affinity mask
+		// reports every host CPU inside a cgroup-limited container.
+		numWorkers = cgroup.AvailableCPUs()
 	}
 
 	if numWorkers > len(lines)/10 {

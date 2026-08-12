@@ -611,6 +611,12 @@ func StopServices() {
 		globalSearcher = nil
 	}
 
+	// Release the parser singleton along with the GeoIP handle and the two
+	// 10,000-entry caches it owns. It lives in a package global, so without this
+	// it stays reachable - and resident - for the whole life of a process that
+	// has already handed its listeners over to a new binary.
+	indexer.ReleaseLogParser()
+
 	// Reset state
 	globalLogFileManager = nil
 	servicesInitialized = false
