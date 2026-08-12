@@ -46,16 +46,22 @@ func buildDiskStat(partitions []disk.PartitionStat, getUsage diskUsageFunc, getK
 	seenFilesystems := make(map[string]struct{})
 
 	for _, partition := range partitions {
-		usage, err := getUsage(partition.Mountpoint)
-		if err != nil {
-			continue
-		}
-
+		// Filter before probing. getUsage is a statfs syscall per mount and this
+		// runs once a second for every open analytics stream; when
+		// getVisiblePartitions falls back to listing all mounts - which is the
+		// normal case inside a container, where the nodev filter hides overlay
+		// and tmpfs - probing first would statfs procfs, sysfs and every cgroup
+		// mount just to discard them, and would block on a hung network mount.
 		if isVirtualFilesystem(partition.Fstype) {
 			continue
 		}
 
 		if shouldSkipPath(partition.Mountpoint, partition.Device) {
+			continue
+		}
+
+		usage, err := getUsage(partition.Mountpoint)
+		if err != nil {
 			continue
 		}
 
