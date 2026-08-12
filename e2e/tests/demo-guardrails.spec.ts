@@ -50,21 +50,29 @@ test('Terminal remains reachable while Preference hides its Terminal tab in demo
   await expect(page.getByRole('tab', { name: 'Terminal', exact: true })).toHaveCount(0)
 })
 
-test('destructive settings, password, and backup routes return code 40300', async ({ page }) => {
+test('destructive settings, password, backup, and notifier routes return code 40300', async ({ page }) => {
   await gotoRoute(page, '/dashboard/server')
   const headers = {
     ...await authHeaders(page),
     'Content-Type': 'application/json',
   }
 
-  const [settingsResponse, passwordResponse, backupResponse] = await Promise.all([
+  const [settingsResponse, passwordResponse, backupResponse, notifierResponse] = await Promise.all([
     page.request.post('/api/settings', { headers, data: '{' }),
     page.request.post('/api/user/password', { headers, data: '{' }),
     page.request.get('/api/backup', { headers }),
+    page.request.post('/api/external_notifies/test', {
+      headers,
+      data: {
+        type: 'wecom',
+        language: 'en',
+        config: { webhook_url: 'http://127.0.0.1/internal' },
+      },
+    }),
   ])
 
   await expectDemoRefusal(settingsResponse)
   await expectDemoRefusal(passwordResponse)
   await expectDemoRefusal(backupResponse)
+  await expectDemoRefusal(notifierResponse)
 })
-
