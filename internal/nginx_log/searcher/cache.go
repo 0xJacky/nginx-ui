@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"sort"
+	"sync"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
@@ -16,6 +17,14 @@ import (
 type Cache struct {
 	cache   *ristretto.Cache[string, *SearchResult]
 	maxCost int64
+
+	// closeMu guards every use of cache against a concurrent Close. Ristretto
+	// panics with "send on closed channel" when Set or Clear runs after Close,
+	// and SwapShards clears the cache from a detached goroutine, so a closing
+	// searcher can otherwise crash the process. Cache operations take the read
+	// lock so they still run concurrently with each other.
+	closeMu sync.RWMutex
+	closed  bool
 }
 
 // NewCache creates a cache whose cost unit is one KiB of serialized result data.
@@ -173,6 +182,12 @@ func (c *Cache) generateFallbackKey(req *SearchRequest) string {
 func (c *Cache) Get(req *SearchRequest) *SearchResult {
 	key := c.GenerateKey(req)
 
+	c.closeMu.RLock()
+	defer c.closeMu.RUnlock()
+	if c.closed {
+		return nil
+	}
+
 	result, found := c.cache.Get(key)
 	if !found {
 		return nil
@@ -189,6 +204,12 @@ func (c *Cache) Put(req *SearchRequest, result *SearchResult, ttl time.Duration)
 
 	cost, ok := searchResultCost(result)
 	if !ok || cost > c.maxCost {
+		return
+	}
+
+	c.closeMu.RLock()
+	defer c.closeMu.RUnlock()
+	if c.closed {
 		return
 	}
 
@@ -234,6 +255,12 @@ func (c *Cache) PutSearchStats(req *SearchRequest, stats *SearchStats, ttl time.
 	if !ok || cost > c.maxCost {
 		return
 	}
+	c.closeMu.RLock()
+	defer c.closeMu.RUnlock()
+	if c.closed {
+		return
+	}
+
 	c.cache.SetWithTTL(c.statsCacheKey(req), result, cost, ttl)
 	c.cache.Wait()
 }
@@ -253,9 +280,17 @@ func searchResultCost(result *SearchResult) (int64, bool) {
 
 // Clear clears all cached entries
 func (c *Cache) Clear() {
-	if c != nil && c.cache != nil {
-		c.cache.Clear()
+	if c == nil {
+		return
 	}
+
+	c.closeMu.RLock()
+	defer c.closeMu.RUnlock()
+	if c.closed || c.cache == nil {
+		return
+	}
+
+	c.cache.Clear()
 }
 
 // GetStats returns cache statistics
@@ -290,6 +325,17 @@ type CacheStats struct {
 
 // Close closes the cache and frees resources
 func (c *Cache) Close() {
+	if c == nil {
+		return
+	}
+
+	c.closeMu.Lock()
+	defer c.closeMu.Unlock()
+	if c.closed {
+		return
+	}
+	c.closed = true
+
 	c.cache.Close()
 }
 
