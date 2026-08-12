@@ -85,8 +85,24 @@ func (lm *LogFileManager) AddLogPath(path, logType, name, configFile string) {
 	}
 }
 
+// RemoveLogPath removes a single log path from the log cache
+func (lm *LogFileManager) RemoveLogPath(path string) {
+	lm.cacheMutex.Lock()
+	defer lm.cacheMutex.Unlock()
+
+	delete(lm.logCache, path)
+}
+
 // RemoveLogPathsFromConfig removes all log paths associated with a specific config file
 func (lm *LogFileManager) RemoveLogPathsFromConfig(configFile string) {
+	if configFile == "" {
+		// An empty ConfigFile marks an entry that no configuration file owns,
+		// such as the nginx default access/error logs. Removing by that marker
+		// would wipe every one of them, so it is refused.
+		logger.Warn("Ignoring a request to remove nginx log paths for an empty config file")
+		return
+	}
+
 	lm.cacheMutex.Lock()
 	defer lm.cacheMutex.Unlock()
 

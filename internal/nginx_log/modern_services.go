@@ -109,6 +109,15 @@ func InitializeServices(ctx context.Context) {
 			"the config scan registers them as it completes")
 	}
 
+	// Register the nginx default access and error logs as well. They are not
+	// declared by any configuration file, so scanForLogDirectives never finds
+	// them; a server whose access_log directives are all commented out would
+	// otherwise have nothing at all to index.
+	if defaults := RefreshDefaultLogPaths(); defaults == 0 {
+		logger.Warn("No usable nginx default access/error log path resolved; " +
+			"only log paths declared by access_log/error_log directives can be indexed")
+	}
+
 	logger.Info("Modern nginx log services initialization completed")
 
 	// Load existing shards after services are visible without blocking readers during initialization.
@@ -328,6 +337,15 @@ func AddLogPath(path, logType, name, configFile string) {
 
 // RemoveLogPathsFromConfig removes all log paths associated with a specific config file
 func RemoveLogPathsFromConfig(configFile string) {
+	if configFile == defaultLogConfigFile {
+		// defaultLogConfigFile is the marker carried by the nginx default
+		// access/error logs, and no real configuration file can own an entry
+		// tagged with it. Refusing the removal keeps a caller that lost the
+		// config path from wiping the defaults.
+		logger.Warn("Ignoring a request to remove nginx log paths for an empty config file")
+		return
+	}
+
 	configLogRegistryMutex.Lock()
 	for p, entry := range configLogRegistry {
 		if entry.ConfigFile == configFile {
@@ -341,6 +359,35 @@ func RemoveLogPathsFromConfig(configFile string) {
 	}
 }
 
+// registryEntriesSnapshot returns every known log path: the ones discovered from
+// the nginx configuration plus the nginx default access/error logs. The result
+// is keyed by path, so a path that is both declared by a directive and a default
+// log appears exactly once and can never produce a duplicate log group. The
+// config-derived entry wins that collision so the UI keeps showing which file
+// declares the path.
+func registryEntriesSnapshot() []NginxLogCache {
+	configLogRegistryMutex.RLock()
+	merged := make(map[string]NginxLogCache, len(configLogRegistry))
+	for path, entry := range configLogRegistry {
+		merged[path] = *entry
+	}
+	configLogRegistryMutex.RUnlock()
+
+	for _, entry := range defaultLogPathEntries() {
+		if _, declared := merged[entry.Path]; declared {
+			continue
+		}
+		merged[entry.Path] = entry
+	}
+
+	entries := make([]NginxLogCache, 0, len(merged))
+	for _, entry := range merged {
+		entries = append(entries, entry)
+	}
+
+	return entries
+}
+
 // GetAllLogPaths returns all cached log paths, optionally filtered
 func GetAllLogPaths(filters ...func(*NginxLogCache) bool) []*NginxLogCache {
 	if manager := GetLogFileManager(); manager != nil {
@@ -348,21 +395,17 @@ func GetAllLogPaths(filters ...func(*NginxLogCache) bool) []*NginxLogCache {
 	}
 
 	// Fallback list
-	configLogRegistryMutex.RLock()
-	defer configLogRegistryMutex.RUnlock()
-
 	var logs []*NginxLogCache
-	for _, entry := range configLogRegistry {
+	for _, entry := range registryEntriesSnapshot() {
+		e := entry
 		include := true
 		for _, f := range filters {
-			if !f(entry) {
+			if !f(&e) {
 				include = false
 				break
 			}
 		}
 		if include {
-			// Create a copy to avoid external mutation
-			e := *entry
 			logs = append(logs, &e)
 		}
 	}
@@ -376,11 +419,9 @@ func GetAllLogsWithIndex(filters ...func(*NginxLogWithIndex) bool) []*NginxLogWi
 	}
 
 	// Fallback: produce basic entries without indexing metadata
-	configLogRegistryMutex.RLock()
-	defer configLogRegistryMutex.RUnlock()
-
-	result := make([]*NginxLogWithIndex, 0, len(configLogRegistry))
-	for _, c := range configLogRegistry {
+	entries := registryEntriesSnapshot()
+	result := make([]*NginxLogWithIndex, 0, len(entries))
+	for _, c := range entries {
 		lw := &NginxLogWithIndex{
 			Path:        c.Path,
 			Type:        c.Type,
@@ -410,11 +451,8 @@ func GetAllLogsWithIndexGrouped(filters ...func(*NginxLogWithIndex) bool) []*Ngi
 	}
 
 	// Fallback grouping by base log name (handle simple rotation patterns)
-	configLogRegistryMutex.RLock()
-	defer configLogRegistryMutex.RUnlock()
-
 	grouped := make(map[string]*NginxLogWithIndex)
-	for _, c := range configLogRegistry {
+	for _, c := range registryEntriesSnapshot() {
 		base := getBaseLogNameBasic(c.Path)
 		if existing, ok := grouped[base]; ok {
 			// Preserve most recent non-indexed default; nothing to aggregate in basic mode
@@ -669,13 +707,18 @@ func DestroyAllIndexes(ctx context.Context) error {
 // SyncDiscoveredLogPaths copies every log path already discovered from the
 // nginx configuration into the running LogFileManager. It is idempotent and
 // never clears the registry, so it can be called after every service start.
-// Returns the number of paths handed to the manager.
+// Returns the number of config-derived paths handed to the manager.
 func SyncDiscoveredLogPaths() int {
 	manager := GetLogFileManager()
 	if manager == nil {
 		logger.Warn("Cannot sync discovered nginx log paths: LogFileManager not initialized")
 		return 0
 	}
+
+	// The nginx default access/error logs belong to the same manager. They are
+	// counted separately because the return value reports what the configuration
+	// scan discovered.
+	applyDefaultLogPaths(manager)
 
 	return seedLogFileManager(manager)
 }

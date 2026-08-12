@@ -1,8 +1,6 @@
 package nginx_log
 
 import (
-	"os"
-	"path/filepath"
 	"sort"
 	"sync"
 	"testing"
@@ -11,18 +9,26 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/indexer"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
-	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/stretchr/testify/require"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
-var registryTestDBOnce sync.Once
+var (
+	registryTestDBOnce sync.Once
+	registryTestDB     *gorm.DB
+)
 
 // useRegistryTestDB installs a shared in-memory metadata database. It is kept
 // in memory on purpose: the database handle stays registered globally after the
 // test returns, and a file-backed database inside t.TempDir() would be deleted
 // underneath the tests that run afterwards.
+//
+// The handle is created once but re-installed and emptied on every call. Other
+// tests in this package neither install a metadata database of their own nor put
+// the previous one back, so they write their index metadata into whichever
+// handle happens to be registered. Without the reset, a registry test would list
+// log groups it never registered.
 func useRegistryTestDB(t *testing.T) {
 	t.Helper()
 
@@ -38,10 +44,15 @@ func useRegistryTestDB(t *testing.T) {
 		sqlDB.SetMaxIdleConns(1)
 		sqlDB.SetConnMaxIdleTime(0)
 
-		model.Use(db)
-		query.Use(db)
-		query.SetDefault(db)
+		registryTestDB = db
 	})
+
+	require.NotNil(t, registryTestDB)
+	model.Use(registryTestDB)
+	query.Use(registryTestDB)
+	query.SetDefault(registryTestDB)
+	require.NoError(t, registryTestDB.Session(&gorm.Session{AllowGlobalUpdate: true}).
+		Delete(&model.NginxLogIndex{}).Error)
 }
 
 // resetConfigLogRegistry isolates a test from log paths registered by other
@@ -106,19 +117,19 @@ func cachedLogPaths(logs []*NginxLogCache) []string {
 }
 
 // newDiscoverableAccessLog creates a whitelisted access log file so
-// utils.IsValidLogPath accepts the directive path.
+// utils.IsValidLogPath accepts the directive path. It also neutralises the nginx
+// default log settings, so the machine's own nginx installation cannot register
+// extra log paths behind the test's back.
 func newDiscoverableAccessLog(t *testing.T) string {
 	t.Helper()
 
 	logDir := t.TempDir()
-	logPath := filepath.Join(logDir, "access.log")
-	require.NoError(t, os.WriteFile(logPath, []byte("\n"), 0o600))
+	logPath := writeLogFile(t, logDir, "access.log")
 
-	originalWhiteList := settings.NginxSettings.LogDirWhiteList
-	settings.NginxSettings.LogDirWhiteList = []string{logDir}
-	t.Cleanup(func() {
-		settings.NginxSettings.LogDirWhiteList = originalWhiteList
-	})
+	useLogDirWhiteList(t, logDir)
+	useDefaultLogSettings(t,
+		makeDirectory(t, logDir, "no-access-log"),
+		makeDirectory(t, logDir, "no-error-log"))
 
 	return logPath
 }
@@ -134,6 +145,7 @@ func TestScanForLogDirectivesSurvivesLogFileManagerRecreation(t *testing.T) {
 	cache.InitInMemoryCache()
 	useRegistryTestDB(t)
 	resetConfigLogRegistry(t)
+	resetDefaultLogRegistry(t)
 
 	logPath := newDiscoverableAccessLog(t)
 	configPath := "/etc/nginx/conf.d/regression.conf"
@@ -170,6 +182,7 @@ func TestScanForLogDirectivesBeforeServicesStart(t *testing.T) {
 	cache.InitInMemoryCache()
 	useRegistryTestDB(t)
 	resetConfigLogRegistry(t)
+	resetDefaultLogRegistry(t)
 
 	logPath := newDiscoverableAccessLog(t)
 	configPath := "/etc/nginx/conf.d/early.conf"
@@ -193,6 +206,7 @@ func TestRemoveLogPathsFromConfigClearsRegistry(t *testing.T) {
 	cache.InitInMemoryCache()
 	useRegistryTestDB(t)
 	resetConfigLogRegistry(t)
+	resetDefaultLogRegistry(t)
 
 	logPath := newDiscoverableAccessLog(t)
 	configPath := "/etc/nginx/conf.d/removable.conf"
