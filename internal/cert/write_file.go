@@ -75,6 +75,30 @@ func (c *Content) WriteFile() (err error) {
 	return
 }
 
+// writeFileWithMode atomically replaces path with content and guarantees the
+// resulting file carries perm. os.WriteFile keeps the mode of an already
+// existing file, so staging into a fresh temp file next to the target is what
+// repairs keys that earlier versions created with looser permissions. The
+// content is never visible under a looser mode because the temp file is
+// created 0600 by os.CreateTemp and chmod'd before the rename.
+func writeFileWithMode(path string, content []byte, perm os.FileMode) error {
+	if err := ensureWritableFileTarget(path); err != nil {
+		return err
+	}
+
+	tmpPath, err := writeTempFileNextTo(path, content, perm)
+	if err != nil {
+		return err
+	}
+
+	if err = replaceFile(tmpPath, path); err != nil {
+		_ = os.Remove(tmpPath)
+		return err
+	}
+
+	return nil
+}
+
 func ensureWritableFileTarget(path string) error {
 	info, err := os.Stat(path)
 	if err == nil && info.IsDir() {

@@ -124,16 +124,17 @@ func (c *ConfigPayload) WriteFile(l *Logger) error {
 	// Each certificate comes back with the cert bytes, the bytes of the client's
 	// private key, and a certificate URL. SAVE THESE TO DISK.
 	l.Info(translation.C("[Nginx UI] Writing certificate to disk"))
-	err = os.WriteFile(c.GetCertificatePath(),
+	err = writeFileWithMode(c.GetCertificatePath(),
 		c.Resource.Certificate, 0644)
 
 	if err != nil {
 		return cosy.WrapErrorWithParams(ErrWriteFullchainCer, err.Error())
 	}
 
+	// The private key must stay owner-only; the certificate above is public.
 	l.Info(translation.C("[Nginx UI] Writing certificate private key to disk"))
-	err = os.WriteFile(c.GetCertificateKeyPath(),
-		c.Resource.PrivateKey, 0644)
+	err = writeFileWithMode(c.GetCertificateKeyPath(),
+		c.Resource.PrivateKey, 0600)
 
 	if err != nil {
 		return cosy.WrapErrorWithParams(ErrWritePrivateKey, err.Error())
