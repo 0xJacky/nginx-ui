@@ -25,11 +25,11 @@ var (
 func acquireRebuildLock(logGroupPath string) *sync.Mutex {
 	rebuildLocksLock.Lock()
 	defer rebuildLocksLock.Unlock()
-	
+
 	if lock, exists := rebuildLocks[logGroupPath]; exists {
 		return lock
 	}
-	
+
 	lock := &sync.Mutex{}
 	rebuildLocks[logGroupPath] = lock
 	return lock
@@ -46,7 +46,7 @@ func releaseRebuildLock(logGroupPath string) {
 func isRebuildInProgress(logGroupPath string) bool {
 	rebuildLocksLock.RLock()
 	defer rebuildLocksLock.RUnlock()
-	
+
 	if lock, exists := rebuildLocks[logGroupPath]; exists {
 		// Try to acquire the lock with a short timeout
 		// If we can't acquire it, it means rebuild is in progress
@@ -320,12 +320,12 @@ func rebuildSingleFile(modernIndexer interface{}, path string, logFileManager in
 			for _, docCount := range docsCountMap {
 				totalDocsIndexed += docCount
 			}
-			
+
 			// Save metadata for the base log path with total count
 			if err := logFileManager.(indexer.MetadataManager).SaveIndexMetadata(path, totalDocsIndexed, startTime, duration, minTime, maxTime); err != nil {
 				logger.Errorf("Failed to save index metadata for %s: %v", path, err)
 			}
-			
+
 			// Also save individual file metadata if needed
 			for filePath, docCount := range docsCountMap {
 				if filePath != path { // Don't duplicate the base path
@@ -344,6 +344,19 @@ func rebuildSingleFile(modernIndexer interface{}, path string, logFileManager in
 	nginx_log.UpdateSearcherShards()
 
 	return minTime, maxTime
+}
+
+// reportEmptyRebuild explains why a full rebuild had nothing to index. Reaching
+// this point means the server knows of no access log group at all, which is a
+// discovery problem rather than a finished rebuild.
+func reportEmptyRebuild(totalGroups int) {
+	discoveredPaths := len(nginx_log.GetAllLogPaths())
+
+	logger.Warnf("Full index rebuild found no access log group to index: %d log group(s) known, "+
+		"%d log path(s) discovered from the nginx configuration. Nothing was indexed. Check that an "+
+		"uncommented access_log directive exists in the nginx configuration, and that the directory it "+
+		"writes to is covered by nginx.LogDirWhiteList, by the nginx prefix, or by the directory of the "+
+		"default access/error log.", totalGroups, discoveredPaths)
 }
 
 // rebuildAllFiles rebuilds indexes for all files with proper queue management
@@ -367,7 +380,16 @@ func rebuildAllFiles(modernIndexer interface{}, logFileManager interface{}, prog
 			releaseRebuildLock(globalLockKey)
 		}()
 	}
-	
+
+	logger.Info("Starting full modern index rebuild with queue management")
+
+	// Enumerate the log groups BEFORE dropping the metadata. GetAllLogsWithIndexGrouped
+	// merges the paths discovered from the nginx configuration with the paths recorded
+	// in the index metadata; clearing the metadata first would throw away the second
+	// source, so a rebuild would find nothing whenever the config-derived cache is not
+	// populated yet.
+	allLogs := nginx_log.GetAllLogsWithIndexGrouped()
+
 	// For full rebuild, we clear ALL existing metadata to start fresh
 	// This is different from single file/group rebuild which preserves metadata for incremental indexing
 	if logFileManager != nil {
@@ -376,9 +398,6 @@ func rebuildAllFiles(modernIndexer interface{}, logFileManager interface{}, prog
 		}
 	}
 
-	logger.Info("Starting full modern index rebuild with queue management")
-	allLogs := nginx_log.GetAllLogsWithIndexGrouped()
-	
 	// Get persistence manager for queue management
 	var persistence *indexer.PersistenceManager
 	if lfm, ok := logFileManager.(*indexer.LogFileManager); ok {
@@ -388,7 +407,7 @@ func rebuildAllFiles(modernIndexer interface{}, logFileManager interface{}, prog
 	// First pass: Set all access logs to queued status
 	queuePosition := 1
 	accessLogs := make([]*nginx_log.NginxLogWithIndex, 0)
-	
+
 	for _, log := range allLogs {
 		if log.Type == "error" {
 			logger.Infof("Skipping indexing for error log: %s", log.Path)
@@ -399,20 +418,27 @@ func rebuildAllFiles(modernIndexer interface{}, logFileManager interface{}, prog
 			}
 			continue
 		}
-		
+
 		// Set to queued status with position
 		if persistence != nil {
 			if err := persistence.SetIndexStatus(log.Path, string(indexer.IndexStatusQueued), queuePosition, ""); err != nil {
 				logger.Errorf("Failed to set queued status for %s: %v", log.Path, err)
 			}
 		}
-		
+
 		accessLogs = append(accessLogs, log)
 		queuePosition++
 	}
 
-	// Give the frontend a moment to refresh and show queued status
-	time.Sleep(2 * time.Second)
+	if len(accessLogs) == 0 {
+		// Not a success: no access log group is known to the server at all, so
+		// the rebuild has nothing to work on. Explain why instead of letting the
+		// user read a completion message they cannot tell apart from a real one.
+		reportEmptyRebuild(len(allLogs))
+	} else {
+		// Give the frontend a moment to refresh and show queued status
+		time.Sleep(2 * time.Second)
+	}
 
 	startTime := time.Now()
 	var overallMinTime, overallMaxTime *time.Time
@@ -511,7 +537,12 @@ func rebuildAllFiles(modernIndexer interface{}, logFileManager interface{}, prog
 	wg.Wait()
 
 	totalDuration := time.Since(startTime)
-	logger.Infof("Successfully completed full modern index rebuild in %s", totalDuration)
+	if len(accessLogs) == 0 {
+		logger.Warnf("Full modern index rebuild finished after %s without indexing anything", totalDuration)
+	} else {
+		logger.Infof("Successfully completed full modern index rebuild of %d log group(s) in %s",
+			len(accessLogs), totalDuration)
+	}
 
 	if err := modernIndexer.(indexer.FlushableIndexer).FlushAll(); err != nil {
 		logger.Errorf("Failed to flush all indexer data: %v", err)
