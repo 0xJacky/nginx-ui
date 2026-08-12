@@ -30,6 +30,13 @@ func Save(name string, content string, overwrite bool, namespaceId uint64, syncN
 	if !overwrite && helper.FileExists(path) {
 		return ErrDstFileExists
 	}
+
+	// Hold the apply lock for the whole write -> test -> reload sequence so a
+	// concurrent configuration or site mutation cannot make this save fail on
+	// somebody else's file. `nginx -t` always covers the whole tree.
+	release := config.LockApply()
+	defer release()
+
 	snapshot, err := captureConfigFile(path)
 	if err != nil {
 		return err
@@ -48,7 +55,7 @@ func Save(name string, content string, overwrite bool, namespaceId uint64, syncN
 	err = writeConfigFile(path, []byte(content), 0644)
 	if err != nil {
 		return rollbackError(err, func() error {
-			return snapshot.restore(path)
+			return snapshot.Restore(path)
 		})
 	}
 
@@ -66,7 +73,7 @@ func Save(name string, content string, overwrite bool, namespaceId uint64, syncN
 		c := nginx.Control(nginx.TestConfig)
 		if c.IsError() {
 			return rollbackError(c.GetError(), func() error {
-				return snapshot.restore(path)
+				return snapshot.Restore(path)
 			})
 		}
 
@@ -86,7 +93,7 @@ func Save(name string, content string, overwrite bool, namespaceId uint64, syncN
 	if namespaceId > 0 || len(syncNodeIds) > 0 {
 		if _, err = s.Where(s.Path.Eq(path)).FirstOrCreate(); err != nil {
 			return rollbackError(err, func() error {
-				return snapshot.restore(path)
+				return snapshot.Restore(path)
 			})
 		}
 	}
@@ -102,7 +109,7 @@ func Save(name string, content string, overwrite bool, namespaceId uint64, syncN
 			if !remoteDeploy && helper.FileExists(enabledConfigFilePath) && postAction == model.PostSyncActionReloadNginx {
 				return restoreConfigAndReload(path, snapshot)
 			}
-			return snapshot.restore(path)
+			return snapshot.Restore(path)
 		})
 	}
 

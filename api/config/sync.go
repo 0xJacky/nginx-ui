@@ -8,7 +8,6 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/clustersync"
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
-	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
 )
@@ -32,6 +31,15 @@ func SyncConfigBatch(c *gin.Context) {
 	written := 0
 	skipped := 0
 	failures := make([]gin.H, 0)
+
+	// Hold the apply lock for the whole write -> test -> reload sequence so a
+	// concurrent mutation cannot make this batch fail on somebody else's file.
+	release := config.LockApply()
+	defer release()
+
+	// Every written file is snapshotted so a configuration Nginx rejects can be
+	// undone completely instead of waiting on disk for the next Nginx start.
+	tx := &config.FileTransaction{}
 
 	for _, file := range json.Files {
 		relativePath := filepath.ToSlash(filepath.Join(file.BaseDir, file.Name))
@@ -57,7 +65,7 @@ func SyncConfigBatch(c *gin.Context) {
 			continue
 		}
 
-		if err = os.WriteFile(path, []byte(file.Content), 0644); err != nil {
+		if err = tx.Write(path, []byte(file.Content), 0644); err != nil {
 			failures = append(failures, gin.H{"path": relativePath, "error": err.Error()})
 			continue
 		}
@@ -65,10 +73,20 @@ func SyncConfigBatch(c *gin.Context) {
 		written++
 	}
 
-	if written > 0 {
-		if res := nginx.Control(nginx.Reload); res.IsError() {
-			res.RespError(c)
+	switch {
+	case written > 0:
+		// `nginx -t` cannot attribute a failure to a single file, so a batch the
+		// receiver cannot load is rolled back as a whole and reported back to the
+		// controller node instead of being left behind half applied.
+		if err := tx.TestAndReload(); err != nil {
+			cosy.ErrHandler(c, err)
 			return
+		}
+	case tx.Len() > 0:
+		// Nothing was applied, but a write that failed midway can still have
+		// truncated a file. Undo whatever reached the disk.
+		if err := tx.Rollback(); err != nil {
+			failures = append(failures, gin.H{"path": "rollback", "error": err.Error()})
 		}
 	}
 

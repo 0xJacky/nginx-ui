@@ -3,7 +3,6 @@ package stream
 import (
 	"fmt"
 	"net/http"
-	"os"
 	"runtime"
 	"sync"
 
@@ -38,14 +37,29 @@ func Save(name string, content string, overwrite bool, syncNodeIds []uint64, pos
 		return
 	}
 
-	err = os.WriteFile(path, []byte(content), 0644)
+	// Hold the apply lock for the whole write -> test -> reload sequence so a
+	// concurrent configuration or stream mutation cannot make this save fail on
+	// somebody else's file. `nginx -t` always covers the whole tree.
+	release := config.LockApply()
+	defer release()
+
+	snapshot, err := config.CaptureFile(path)
 	if err != nil {
 		return
 	}
 
+	err = config.WriteFile(path, []byte(content), 0644)
+	if err != nil {
+		return config.RollbackError(err, func() error {
+			return snapshot.Restore(path)
+		})
+	}
+
 	enabledConfigFilePath, err := ResolveEnabledPath(name)
 	if err != nil {
-		return err
+		return config.RollbackError(err, func() error {
+			return snapshot.Restore(path)
+		})
 	}
 
 	// A remote namespace is served by its member nodes only, so the local Nginx
@@ -58,16 +72,22 @@ func Save(name string, content string, overwrite bool, syncNodeIds []uint64, pos
 	}
 
 	if !remoteDeploy && helper.FileExists(enabledConfigFilePath) {
-		// Test nginx configuration
+		// Test nginx configuration. A rejected configuration must not survive on
+		// disk: the running Nginx keeps its valid in-memory configuration, so the
+		// breakage would only surface on the next Nginx start.
 		res := nginx.Control(nginx.TestConfig)
 		if res.IsError() {
-			return res.GetError()
+			return config.RollbackError(res.GetError(), func() error {
+				return snapshot.Restore(path)
+			})
 		}
 
 		if postAction == model.PostSyncActionReloadNginx {
 			res = nginx.Control(nginx.Reload)
 			if res.IsError() {
-				return res.GetError()
+				return config.RollbackError(res.GetError(), func() error {
+					return config.RestoreAndReload(path, snapshot)
+				})
 			}
 		}
 	}

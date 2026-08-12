@@ -10,7 +10,6 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/mcp"
-	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	mcpgo "github.com/mark3labs/mcp-go/mcp"
@@ -81,14 +80,21 @@ func handleNginxConfigAdd(ctx context.Context, request mcpgo.CallToolRequest) (*
 		}
 	}
 
-	err = os.WriteFile(path, []byte(content), 0644)
-	if err != nil {
-		return nil, err
+	// Hold the apply lock for the whole write -> test -> reload sequence so a
+	// concurrent mutation cannot make this call fail on somebody else's file.
+	release := config.LockApply()
+	defer release()
+
+	tx := &config.FileTransaction{}
+	if err = tx.Write(path, []byte(content), 0644); err != nil {
+		return nil, config.RollbackError(err, tx.Rollback)
 	}
 
-	res := nginx.Control(nginx.Reload)
-	if res.IsError() {
-		return nil, res.GetError()
+	// A file Nginx rejects must not survive on disk. The running instance keeps
+	// its valid in-memory configuration, so an untested write only breaks the
+	// next Nginx start. A newly created file is removed by the rollback.
+	if err = tx.TestAndReload(); err != nil {
+		return nil, err
 	}
 
 	q := query.Config
