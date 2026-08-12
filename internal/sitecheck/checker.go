@@ -786,9 +786,16 @@ func extractDomainName(siteURL string) string {
 	return parsed.Host
 }
 
+// HTML extraction patterns. Compiled once: they are applied to every site on
+// every check sweep, and regexp.MustCompile is expensive enough to show up when
+// a forced sweep walks hundreds of sites.
+var (
+	titleRegex   = regexp.MustCompile(`(?i)<title[^>]*>([^<]+)</title>`)
+	faviconRegex = regexp.MustCompile(`(?i)<link[^>]*rel=["'](?:icon|shortcut icon)["'][^>]*href=["']([^"']+)["']`)
+)
+
 // extractTitle extracts title from HTML content
 func extractTitle(html string) string {
-	titleRegex := regexp.MustCompile(`(?i)<title[^>]*>([^<]+)</title>`)
 	matches := titleRegex.FindStringSubmatch(html)
 	if len(matches) > 1 {
 		return strings.TrimSpace(matches[1])
@@ -804,7 +811,6 @@ func (sc *SiteChecker) extractFavicon(ctx context.Context, siteURL, html string)
 	}
 
 	// Look for favicon link in HTML
-	faviconRegex := regexp.MustCompile(`(?i)<link[^>]*rel=["'](?:icon|shortcut icon)["'][^>]*href=["']([^"']+)["']`)
 	matches := faviconRegex.FindStringSubmatch(html)
 
 	var faviconURL string
@@ -832,6 +838,15 @@ func (sc *SiteChecker) extractFavicon(ctx context.Context, siteURL, html string)
 }
 
 // downloadFavicon downloads and encodes favicon as base64
+// maxFaviconBytes bounds how much of a favicon response is kept.
+//
+// The result is base64-encoded (a third larger again), stored in SiteInfo for
+// the life of the process, cloned per alias, and re-marshalled to every
+// WebSocket client on each update. Real favicons are a few KB; the previous 1MB
+// allowance let a few hundred sites pin hundreds of megabytes of resident
+// memory for no benefit.
+const maxFaviconBytes = 64 * 1024
+
 func (sc *SiteChecker) downloadFavicon(ctx context.Context, faviconURL string) string {
 	req, err := http.NewRequestWithContext(ctx, "GET", faviconURL, nil)
 	if err != nil {
@@ -850,8 +865,7 @@ func (sc *SiteChecker) downloadFavicon(ctx context.Context, faviconURL string) s
 		return ""
 	}
 
-	// Limit favicon size to 1MB
-	body, err := io.ReadAll(io.LimitReader(resp.Body, 1024*1024))
+	body, err := io.ReadAll(io.LimitReader(resp.Body, maxFaviconBytes))
 	if err != nil {
 		return ""
 	}

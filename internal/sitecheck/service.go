@@ -19,6 +19,15 @@ type Service struct {
 	settingsChanged chan struct{}
 	mu              sync.RWMutex
 	running         bool
+
+	// refreshMu guards the coalescing state below.
+	refreshMu      sync.Mutex
+	refreshRunning bool
+	refreshPending bool
+
+	// refreshSweep performs one refresh pass. Nil means the real sweep; it is a
+	// field so tests can substitute a deterministic one.
+	refreshSweep func()
 }
 
 var (
@@ -244,15 +253,89 @@ func (s *Service) SettingsChanged() {
 	s.RefreshSites()
 }
 
-// RefreshSites manually triggers a site collection and check
+// RefreshSites triggers a site collection and forced check.
+//
+// Refreshes are coalesced: at most one sweep runs at a time and at most one
+// follow-up is queued behind it. A forced sweep ignores each site's
+// CheckInterval and probes every site - HTTP GET, body read, favicon download
+// and a database write per site - so overlapping sweeps multiply the
+// per-invocation concurrency limit and can keep the process busy indefinitely.
+// The callers are unthrottled by nature: RefreshSites fires from the config
+// post-scan callback on every single file change and on every periodic scan, as
+// well as from WebSocket and settings handlers.
 func (s *Service) RefreshSites() {
-	go func() {
-		sl := logger.NewSessionLogger(s.ctx)
-		sl.Debug("Started sitecheck refresh goroutine")
-		s.checker.CollectSites()
-		s.checker.ForceCheckAllSites(s.ctx)
-		sl.Debug("Sitecheck refresh goroutine completed")
+	s.refreshMu.Lock()
+	if s.refreshRunning {
+		// A sweep is already in flight. One follow-up pass is enough to pick up
+		// everything that changed while it was running.
+		s.refreshPending = true
+		s.refreshMu.Unlock()
+		return
+	}
+	s.refreshRunning = true
+	s.refreshMu.Unlock()
+
+	go s.runRefreshSweeps()
+}
+
+// runRefreshSweeps performs refresh sweeps until no follow-up is pending.
+func (s *Service) runRefreshSweeps() {
+	for !s.runRefreshSweep() {
+	}
+}
+
+// runRefreshSweep runs a single sweep and reports whether the worker should
+// stop. The coalescing state is always cleared before it returns true, so a
+// failing sweep can never wedge future refreshes.
+func (s *Service) runRefreshSweep() (stop bool) {
+	defer func() {
+		if r := recover(); r != nil {
+			logger.Errorf("Recovered from panic during sitecheck refresh sweep: %v", r)
+			s.clearRefreshState()
+			stop = true
+		}
 	}()
+
+	sl := logger.NewSessionLogger(s.ctx)
+	sl.Debug("Started sitecheck refresh sweep")
+	s.performRefreshSweep()
+	sl.Debug("Sitecheck refresh sweep completed")
+
+	select {
+	case <-s.ctx.Done():
+		s.clearRefreshState()
+		return true
+	default:
+	}
+
+	s.refreshMu.Lock()
+	defer s.refreshMu.Unlock()
+	if !s.refreshPending {
+		s.refreshRunning = false
+		return true
+	}
+	s.refreshPending = false
+	return false
+}
+
+// performRefreshSweep runs one collection plus forced check of every site.
+func (s *Service) performRefreshSweep() {
+	if s.refreshSweep != nil {
+		s.refreshSweep()
+		return
+	}
+
+	s.checker.CollectSites()
+	s.checker.ForceCheckAllSites(s.ctx)
+}
+
+// clearRefreshState releases the coalescing state so the next RefreshSites call
+// starts a fresh worker.
+func (s *Service) clearRefreshState() {
+	s.refreshMu.Lock()
+	s.refreshRunning = false
+	s.refreshPending = false
+	s.refreshMu.Unlock()
 }
 
 // GetSites returns all checked sites with custom ordering applied
