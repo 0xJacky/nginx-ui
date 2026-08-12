@@ -78,18 +78,31 @@ func GetTaskScheduler() *TaskScheduler {
 
 // InitTaskScheduler initializes the global task scheduler
 func InitTaskScheduler(ctx context.Context) {
-	taskSchedulerMutex.Lock()
-	defer taskSchedulerMutex.Unlock()
+	taskSchedulerMutex.RLock()
+	alreadyInitialized := taskSchedulerInitialized
+	taskSchedulerMutex.RUnlock()
 
-	if taskSchedulerInitialized {
+	if alreadyInitialized {
 		logger.Debug("Task scheduler already initialized")
 		return
 	}
 
 	logger.Debug("Initializing task scheduler")
 
-	// Wait a bit for services to fully initialize
-	time.Sleep(3 * time.Second)
+	// Wait a bit for services to fully initialize. The lock is deliberately not
+	// held across this wait or across task recovery below: both take the
+	// services lock through GetLogFileManager, and callers such as a manual
+	// rebuild only need to read the scheduler pointer.
+	//
+	// The wait watches the context so that services stopped shortly after they
+	// started - advanced indexing switched off again, or a shutdown - do not get
+	// a scheduler that starts recovery against services that are already gone.
+	select {
+	case <-time.After(3 * time.Second):
+	case <-ctx.Done():
+		logger.Debug("Task scheduler initialization cancelled before services became ready")
+		return
+	}
 
 	// Check if services are available
 	if GetLogFileManager() == nil || GetIndexer() == nil {
@@ -97,21 +110,48 @@ func InitTaskScheduler(ctx context.Context) {
 		return
 	}
 
-	globalTaskScheduler = NewTaskScheduler(ctx)
+	scheduler := NewTaskScheduler(ctx)
+
+	taskSchedulerMutex.Lock()
+	if taskSchedulerInitialized {
+		taskSchedulerMutex.Unlock()
+		scheduler.cancel()
+		logger.Debug("Task scheduler initialized concurrently, discarding duplicate")
+		return
+	}
+	globalTaskScheduler = scheduler
 	taskSchedulerInitialized = true
+	taskSchedulerMutex.Unlock()
 
 	// Start task recovery
-	if err := globalTaskScheduler.RecoverUnfinishedTasks(ctx); err != nil {
+	if err := scheduler.RecoverUnfinishedTasks(ctx); err != nil {
 		logger.Errorf("Failed to recover unfinished tasks: %v", err)
 	}
 
-	// Monitor context for shutdown
+	// Monitor context for shutdown. Capture the scheduler in the closure rather
+	// than reading the global: StopServices clears the global, and reading it
+	// here without the mutex would be a data race against that write.
 	go func() {
 		<-ctx.Done()
-		if globalTaskScheduler != nil {
-			globalTaskScheduler.Shutdown()
-		}
+		scheduler.Shutdown()
 	}()
+}
+
+// resetTaskSchedulerState clears the global scheduler registration and drains
+// the previously registered scheduler, so a later InitTaskScheduler call builds
+// a new scheduler against freshly created services. It must be called without
+// the services lock held: draining waits for in-flight indexing tasks, and
+// those reach back into the services.
+func resetTaskSchedulerState() {
+	taskSchedulerMutex.Lock()
+	previous := globalTaskScheduler
+	globalTaskScheduler = nil
+	taskSchedulerInitialized = false
+	taskSchedulerMutex.Unlock()
+
+	if previous != nil {
+		previous.Shutdown()
+	}
 }
 
 // NewTaskScheduler creates a new task scheduler
@@ -347,6 +387,16 @@ func (ts *TaskScheduler) RecoverUnfinishedTasks(ctx context.Context) error {
 	var queuePosition int = 1
 
 	for _, log := range allLogs {
+		// Stop scheduling as soon as the services are being torn down, so a
+		// disable/shutdown does not keep queueing work against them.
+		select {
+		case <-ctx.Done():
+			return nil
+		case <-ts.ctx.Done():
+			return nil
+		default:
+		}
+
 		if ts.needsRecovery(log) {
 			incompleteTasksCount++
 
@@ -418,8 +468,17 @@ func (ts *TaskScheduler) recoverTask(ctx context.Context, logPath string, queueP
 		return err
 	}
 
-	// Add a small delay to stagger recovery tasks
-	time.Sleep(time.Second * 2)
+	// Add a small delay to stagger recovery tasks, but give up as soon as the
+	// services are being torn down.
+	select {
+	case <-time.After(2 * time.Second):
+	case <-ctx.Done():
+		logger.Debugf("Recovery cancelled while staggering task for %s", logPath)
+		return nil
+	case <-ts.ctx.Done():
+		logger.Debugf("Recovery cancelled while staggering task for %s", logPath)
+		return nil
+	}
 
 	// Create recovery progress config
 	progressConfig := ts.createProgressConfig()

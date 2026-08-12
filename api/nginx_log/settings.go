@@ -25,8 +25,10 @@ func EnableAdvancedIndexing(c *gin.Context) {
 	// Start the nginx_log services
 	nginx_log.InitializeServices(kernel.Context)
 
-	// Migrate fallback cache entries to LogFileManager
-	nginx_log.MigrateFallbackCache()
+	// Hand the log paths already discovered from the nginx configuration to the
+	// freshly started services. InitializeServices seeds them too, but it exits
+	// early when the services happen to be running already, so sync again here.
+	nginx_log.SyncDiscoveredLogPaths()
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Advanced indexing enabled successfully",
