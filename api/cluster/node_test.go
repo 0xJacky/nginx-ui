@@ -75,8 +75,8 @@ func TestGetNodeSecretRequiresAVerifiedSecureSession(t *testing.T) {
 	require.Equal(t, http.StatusUnauthorized, recorder.Code)
 }
 
-func TestDeleteNodeReloadsStatusAfterSuccessfulDeletion(t *testing.T) {
-	gin.SetMode(gin.TestMode)
+func setupNodeLifecycleTest(t *testing.T) *gorm.DB {
+	t.Helper()
 	cache.InitInMemoryCache()
 	t.Cleanup(cache.Shutdown)
 
@@ -86,6 +86,12 @@ func TestDeleteNodeReloadsStatusAfterSuccessfulDeletion(t *testing.T) {
 	model.Use(db)
 	t.Cleanup(func() { model.Use(nil) })
 	query.SetDefault(db)
+	return db
+}
+
+func TestDeleteNodeReloadsStatusAfterSuccessfulDeletion(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	db := setupNodeLifecycleTest(t)
 
 	node := &model.Node{
 		Name:    "deleted-node",
@@ -127,4 +133,88 @@ func TestDeleteNodeReloadsStatusAfterSuccessfulDeletion(t *testing.T) {
 		_, exists := analytic.SnapshotNodeMap()[node.ID]
 		return !exists
 	}, time.Second, 10*time.Millisecond, "deleted node remained in the analytic snapshot")
+}
+
+func TestDeleteNodePermanentlyDeletesATrashedNode(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	db := setupNodeLifecycleTest(t)
+
+	node := &model.Node{
+		Name:       "trashed-node",
+		URL:        "https://node.example",
+		AuthMethod: model.NodeAuthMethodPaired,
+		Enabled:    true,
+	}
+	require.NoError(t, db.Create(node).Error)
+	credential := &model.NodeCredential{
+		NodeID:              node.ID,
+		CredentialID:        "credential-id",
+		TargetInstanceID:    "target-instance-id",
+		PublicKey:           []byte("public-key"),
+		EncryptedPrivateKey: []byte("private-key"),
+		Status:              model.NodeCredentialStatusActive,
+	}
+	require.NoError(t, db.Create(credential).Error)
+
+	router := gin.New()
+	router.DELETE("/nodes/:id", DeleteNode)
+	nodePath := "/nodes/" + strconv.FormatUint(node.ID, 10)
+
+	softDeleteRecorder := httptest.NewRecorder()
+	router.ServeHTTP(softDeleteRecorder, httptest.NewRequest(http.MethodDelete, nodePath, nil))
+	require.Equal(t, http.StatusNoContent, softDeleteRecorder.Code)
+
+	var trashed model.Node
+	require.NoError(t, db.Unscoped().First(&trashed, node.ID).Error)
+	require.NotNil(t, trashed.DeletedAt)
+	require.NoError(t, db.First(&model.NodeCredential{}, credential.ID).Error,
+		"a recoverable delete must retain the node credential")
+
+	permanentDeleteRecorder := httptest.NewRecorder()
+	router.ServeHTTP(permanentDeleteRecorder,
+		httptest.NewRequest(http.MethodDelete, nodePath+"?permanent=true", nil))
+	require.Equal(t, http.StatusNoContent, permanentDeleteRecorder.Code)
+	require.ErrorIs(t, db.Unscoped().First(&model.Node{}, node.ID).Error, gorm.ErrRecordNotFound)
+	require.ErrorIs(t, db.Unscoped().First(&model.NodeCredential{}, credential.ID).Error, gorm.ErrRecordNotFound)
+}
+
+func TestRecoverNodeRestoresNodeAndRetainsCredential(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	db := setupNodeLifecycleTest(t)
+
+	node := &model.Node{Name: "recoverable-node", URL: "https://node.example"}
+	require.NoError(t, db.Create(node).Error)
+	credential := &model.NodeCredential{
+		NodeID:              node.ID,
+		CredentialID:        "recoverable-credential",
+		TargetInstanceID:    "target-instance-id",
+		PublicKey:           []byte("public-key"),
+		EncryptedPrivateKey: []byte("private-key"),
+		Status:              model.NodeCredentialStatusActive,
+	}
+	require.NoError(t, db.Create(credential).Error)
+	require.NoError(t, db.Delete(node).Error)
+
+	router := gin.New()
+	router.PATCH("/nodes/:id", RecoverNode)
+	recorder := httptest.NewRecorder()
+	router.ServeHTTP(recorder, httptest.NewRequest(http.MethodPatch,
+		"/nodes/"+strconv.FormatUint(node.ID, 10), nil))
+
+	require.Equal(t, http.StatusNoContent, recorder.Code)
+	require.NoError(t, db.First(&model.Node{}, node.ID).Error)
+	require.NoError(t, db.First(&model.NodeCredential{}, credential.ID).Error)
+}
+
+func TestNodeRouterRegistersRecoveryRoute(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	router := gin.New()
+	InitRouter(router.Group("/api"))
+
+	for _, route := range router.Routes() {
+		if route.Method == http.MethodPatch && route.Path == "/api/nodes/:id" {
+			return
+		}
+	}
+	t.Fatal("PATCH /api/nodes/:id recovery route is not registered")
 }

@@ -73,7 +73,7 @@ func newNodeResponse(node *model.Node) nodeResponse {
 }
 
 func GetNode(c *gin.Context) {
-	node, ok := findNode(c)
+	node, ok := findNode(c, false)
 	if !ok {
 		return
 	}
@@ -146,7 +146,7 @@ func AddNode(c *gin.Context) {
 
 func EditNode(c *gin.Context) {
 	audit.MarkSensitiveRequest(c)
-	node, ok := findNode(c)
+	node, ok := findNode(c, false)
 	if !ok {
 		return
 	}
@@ -198,17 +198,34 @@ func EditNode(c *gin.Context) {
 }
 
 func DeleteNode(c *gin.Context) {
-	node, ok := findNode(c)
+	permanent := cast.ToBool(c.Query("permanent"))
+	node, ok := findNode(c, permanent)
 	if !ok {
 		return
 	}
 	err := model.UseDB().Transaction(func(tx *gorm.DB) error {
-		if err := tx.Unscoped().Where("node_id = ?", node.ID).Delete(&model.NodeCredential{}).Error; err != nil {
-			return err
+		if permanent {
+			if err := tx.Unscoped().Where("node_id = ?", node.ID).Delete(&model.NodeCredential{}).Error; err != nil {
+				return err
+			}
+			return tx.Unscoped().Delete(node).Error
 		}
 		return tx.Delete(node).Error
 	})
 	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		return
+	}
+	refreshNodeState()
+	c.Status(http.StatusNoContent)
+}
+
+func RecoverNode(c *gin.Context) {
+	node, ok := findNode(c, true)
+	if !ok {
+		return
+	}
+	if err := model.UseDB().Unscoped().Model(node).Update("deleted_at", nil).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
@@ -226,14 +243,18 @@ func LoadNodeFromSettings(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "ok"})
 }
 
-func findNode(c *gin.Context) (*model.Node, bool) {
+func findNode(c *gin.Context, includeDeleted bool) (*model.Node, bool) {
 	id := cast.ToUint64(c.Param("id"))
 	if id == 0 || model.UseDB() == nil {
 		c.JSON(http.StatusNotFound, gin.H{"message": "node not found"})
 		return nil, false
 	}
 	var node model.Node
-	if err := model.UseDB().First(&node, id).Error; err != nil {
+	database := model.UseDB()
+	if includeDeleted {
+		database = database.Unscoped()
+	}
+	if err := database.First(&node, id).Error; err != nil {
 		status := http.StatusInternalServerError
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			status = http.StatusNotFound
@@ -255,7 +276,7 @@ func GetNodeSecret(c *gin.Context) {
 		})
 		return
 	}
-	node, ok := findNode(c)
+	node, ok := findNode(c, false)
 	if !ok {
 		return
 	}

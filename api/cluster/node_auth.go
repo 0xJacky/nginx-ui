@@ -130,7 +130,7 @@ func UpgradeLegacyPairing(c *gin.Context) {
 }
 
 func GetNodeCredentials(c *gin.Context) {
-	node, ok := findNode(c)
+	node, ok := findNode(c, false)
 	if !ok {
 		return
 	}
@@ -265,7 +265,7 @@ func ConfirmControllerCredentialRotation(c *gin.Context) {
 }
 
 func RotateNodeCredential(c *gin.Context) {
-	node, ok := findNode(c)
+	node, ok := findNode(c, false)
 	if !ok {
 		return
 	}
