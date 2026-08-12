@@ -32,6 +32,7 @@ var demoSiteOutcomes = map[string]sitecheck.ProbeResult{
 		StatusCode: 503,
 		Title:      "Prime Sponsor",
 		Error:      "Unexpected status code: 503",
+		ErrorType:  sitecheck.ErrorTypeStatusCode,
 	},
 }
 

@@ -26,6 +26,7 @@ type SiteInfo struct {
 	Title                       string `json:"title"`
 	LastChecked                 int64  `json:"last_checked"` // Unix timestamp in seconds
 	Error                       string `json:"error,omitempty"`
+	ErrorType                   string `json:"error_type,omitempty"` // failure category for Error, see errorclass.go
 	EffectiveHealthCheckEnabled bool   `json:"effective_health_check_enabled"`
 	HealthCheckDisabledReason   string `json:"health_check_disabled_reason,omitempty"`
 }

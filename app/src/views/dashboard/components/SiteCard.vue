@@ -7,7 +7,7 @@ import {
   SettingOutlined,
 } from '@ant-design/icons-vue'
 import { truncate, upperFirst } from 'lodash'
-import { SiteStatus } from '@/constants/site-status'
+import { SiteError, SiteStatus } from '@/constants/site-status'
 
 interface Props {
   site: SiteInfo
@@ -82,6 +82,28 @@ function getInitials(name: string): string {
       .join(''),
     { length: 2, omission: '' },
   )
+}
+
+// Turn the backend error category into a short, readable reason. The raw
+// error stays available as the tooltip, so operators can tell "nothing is
+// listening" apart from "the certificate is not trusted" at a glance.
+function getErrorSummary(site: SiteInfo): string {
+  switch (site.error_type) {
+    case SiteError.TLS:
+      return $gettext('TLS certificate not trusted')
+    case SiteError.DNS:
+      return $gettext('Hostname could not be resolved')
+    case SiteError.CONNECTION_REFUSED:
+      return $gettext('Connection refused')
+    case SiteError.TIMEOUT:
+      return $gettext('Connection timed out')
+    case SiteError.NETWORK:
+      return $gettext('Network unreachable')
+    case SiteError.REQUEST:
+      return $gettext('Invalid health check request')
+    default:
+      return site.error ?? ''
+  }
 }
 
 // Get status CSS class
@@ -176,10 +198,12 @@ function getStatusClass(status: string): string {
           <CodeOutlined class="detail-icon" />
           <span>{{ site.status_code }}</span>
         </div>
-        <div v-if="site.error" class="detail-item error">
-          <ExclamationCircleOutlined class="detail-icon" />
-          <span>{{ site.error }}</span>
-        </div>
+        <ATooltip v-if="site.error" :title="site.error">
+          <div class="detail-item error" data-testid="site-health-check-error">
+            <ExclamationCircleOutlined class="detail-icon" />
+            <span>{{ getErrorSummary(site) }}</span>
+          </div>
+        </ATooltip>
       </div>
     </div>
 

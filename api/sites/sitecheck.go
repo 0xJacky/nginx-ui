@@ -380,8 +380,10 @@ func TestHealthCheck(c *gin.Context) {
 
 	success := info.Status == "online"
 	errorMsg := ""
+	errorType := ""
 	if !success && info.Error != "" {
 		errorMsg = info.Error
+		errorType = info.ErrorType
 	}
 
 	c.JSON(http.StatusOK, gin.H{
@@ -390,5 +392,6 @@ func TestHealthCheck(c *gin.Context) {
 		"status":        info.Status,
 		"status_code":   info.StatusCode,
 		"error":         errorMsg,
+		"error_type":    errorType,
 	})
 }

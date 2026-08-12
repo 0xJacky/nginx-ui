@@ -13,7 +13,6 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
-	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/uozi-tech/cosy/logger"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
@@ -122,8 +121,9 @@ func (ec *EnhancedSiteChecker) checkHTTP(ctx context.Context, siteURL string, co
 	req, err := http.NewRequestWithContext(ctx, config.Method, checkURL, nil)
 	if err != nil {
 		return &CheckResult{Info: &SiteInfo{
-			Status: StatusError,
-			Error:  fmt.Sprintf("Failed to create request: %v", err),
+			Status:    StatusError,
+			Error:     fmt.Sprintf("Failed to create request: %v", err),
+			ErrorType: ErrorTypeRequest,
 		}}, err
 	}
 
@@ -185,6 +185,7 @@ func (ec *EnhancedSiteChecker) checkHTTP(ctx context.Context, siteURL string, co
 			Status:       StatusError,
 			ResponseTime: time.Since(startTime).Milliseconds(),
 			Error:        err.Error(),
+			ErrorType:    classifyCheckError(err),
 		}}, err
 	}
 	defer resp.Body.Close()
@@ -218,14 +219,16 @@ func (ec *EnhancedSiteChecker) checkHTTP(ctx context.Context, siteURL string, co
 
 	// Determine final status
 	status := StatusOffline
-	var errorMsg string
+	var errorMsg, errorType string
 	if statusValid && textValid {
 		status = StatusOnline
 	} else {
 		if !statusValid {
 			errorMsg = fmt.Sprintf("Unexpected status code: %d", resp.StatusCode)
+			errorType = ErrorTypeStatusCode
 		} else {
 			errorMsg = "Response content validation failed"
+			errorType = ErrorTypeContent
 		}
 	}
 
@@ -235,6 +238,7 @@ func (ec *EnhancedSiteChecker) checkHTTP(ctx context.Context, siteURL string, co
 			StatusCode:   resp.StatusCode,
 			ResponseTime: responseTime,
 			Error:        errorMsg,
+			ErrorType:    errorType,
 		},
 		Body: body,
 	}, nil
@@ -256,8 +260,9 @@ func (ec *EnhancedSiteChecker) checkGRPC(ctx context.Context, siteURL string, co
 	parsedURL, err := parseGRPCURL(siteURL)
 	if err != nil {
 		return &SiteInfo{
-			Status: StatusError,
-			Error:  fmt.Sprintf("Invalid gRPC URL: %v", err),
+			Status:    StatusError,
+			Error:     fmt.Sprintf("Invalid gRPC URL: %v", err),
+			ErrorType: ErrorTypeRequest,
 		}, err
 	}
 
@@ -266,26 +271,7 @@ func (ec *EnhancedSiteChecker) checkGRPC(ctx context.Context, siteURL string, co
 
 	// TLS configuration based on protocol setting, not URL scheme
 	if config.Protocol == "grpcs" || config.ValidateSSL {
-		tlsConfig := &tls.Config{
-			InsecureSkipVerify: !config.ValidateSSL,
-		}
-
-		// For GRPCS, default to skip verification unless explicitly enabled
-		if config.Protocol == "grpcs" && !config.ValidateSSL {
-			tlsConfig.InsecureSkipVerify = settings.HTTPSettings.InsecureSkipVerify
-		}
-
-		// Load client certificate if provided
-		if config.ClientCert != "" && config.ClientKey != "" {
-			cert, err := tls.LoadX509KeyPair(config.ClientCert, config.ClientKey)
-			if err != nil {
-				logger.Warnf("Failed to load client certificate: %v", err)
-			} else {
-				tlsConfig.Certificates = []tls.Certificate{cert}
-			}
-		}
-
-		opts = append(opts, grpc.WithTransportCredentials(credentials.NewTLS(tlsConfig)))
+		opts = append(opts, grpc.WithTransportCredentials(credentials.NewTLS(grpcTLSConfig(config))))
 	} else {
 		opts = append(opts, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	}
@@ -308,6 +294,7 @@ func (ec *EnhancedSiteChecker) checkGRPC(ctx context.Context, siteURL string, co
 			Status:       StatusError,
 			ResponseTime: time.Since(startTime).Milliseconds(),
 			Error:        errorMsg,
+			ErrorType:    classifyCheckError(err),
 		}, err
 	}
 	defer conn.Close()
@@ -347,6 +334,7 @@ func (ec *EnhancedSiteChecker) checkGRPC(ctx context.Context, siteURL string, co
 			Status:       StatusError,
 			ResponseTime: responseTime,
 			Error:        errorMsg,
+			ErrorType:    classifyCheckError(err),
 		}, err
 	}
 
@@ -360,6 +348,31 @@ func (ec *EnhancedSiteChecker) checkGRPC(ctx context.Context, siteURL string, co
 		Status:       status,
 		ResponseTime: responseTime,
 	}, nil
+}
+
+// grpcTLSConfig builds the TLS configuration used by a gRPC health probe.
+//
+// It reuses probeVerifiesCertificate so the gRPC and HTTP paths cannot drift
+// apart: the same site configuration produces the same trust decision on both.
+// The previous implementation derived this from the global
+// settings.HTTPSettings.InsecureSkipVerify, which defaults to false and
+// therefore reported healthy internal grpcs endpoints as down (#1790).
+func grpcTLSConfig(config *model.HealthCheckConfig) *tls.Config {
+	tlsConfig := &tls.Config{
+		InsecureSkipVerify: !probeVerifiesCertificate(config),
+	}
+
+	// Load client certificate if provided
+	if config.ClientCert != "" && config.ClientKey != "" {
+		cert, err := tls.LoadX509KeyPair(config.ClientCert, config.ClientKey)
+		if err != nil {
+			logger.Warnf("Failed to load client certificate: %v", err)
+		} else {
+			tlsConfig.Certificates = []tls.Certificate{cert}
+		}
+	}
+
+	return tlsConfig
 }
 
 // parseGRPCURL parses a URL and extracts host:port for gRPC connection

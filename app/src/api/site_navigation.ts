@@ -1,4 +1,4 @@
-import type { SiteStatusType } from '@/constants/site-status'
+import type { SiteErrorType, SiteStatusType } from '@/constants/site-status'
 import { http } from '@uozi-admin/request'
 
 export interface SiteInfo {
@@ -18,6 +18,7 @@ export interface SiteInfo {
   title: string
   last_checked: number
   error?: string
+  error_type?: SiteErrorType // machine-readable category for `error`
   effective_health_check_enabled: boolean
   health_check_disabled_reason?: 'global' | 'site'
   // Legacy fields for backward compatibility

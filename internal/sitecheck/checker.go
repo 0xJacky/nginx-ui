@@ -131,6 +131,7 @@ func (sc *SiteChecker) CollectSites() {
 					siteInfo.Title = previous.Title
 					siteInfo.LastChecked = previous.LastChecked
 					siteInfo.Error = previous.Error
+					siteInfo.ErrorType = previous.ErrorType
 				}
 				if !settings.SiteCheckSettings.Enabled {
 					siteInfo.HealthCheckDisabledReason = "global"
@@ -349,6 +350,7 @@ type ProbeResult struct {
 	ResponseTime int64
 	Title        string
 	Error        string
+	ErrorType    string
 }
 
 // Prober overrides how a site is probed.
@@ -387,6 +389,7 @@ func (sc *SiteChecker) siteInfoFromProbe(siteName, siteURL string, config *model
 		ResponseTime:                outcome.ResponseTime,
 		Title:                       title,
 		Error:                       outcome.Error,
+		ErrorType:                   outcome.ErrorType,
 		LastChecked:                 time.Now().Unix(),
 		EffectiveHealthCheckEnabled: settings.SiteCheckSettings.Enabled && config.HealthCheckEnabled,
 	}
@@ -414,6 +417,7 @@ func (sc *SiteChecker) checkSite(ctx context.Context, siteName, siteURL string) 
 			siteInfo.ResponseTime = existing.ResponseTime
 			siteInfo.LastChecked = existing.LastChecked
 			siteInfo.Error = existing.Error
+			siteInfo.ErrorType = existing.ErrorType
 			if siteInfo.Title == "" {
 				siteInfo.Title = existing.Title
 			}
@@ -499,6 +503,7 @@ func (sc *SiteChecker) checkSiteBasic(ctx context.Context, siteName, siteURL str
 			ResponseTime: time.Since(start).Milliseconds(),
 			LastChecked:  time.Now().Unix(),
 			Error:        err.Error(),
+			ErrorType:    classifyCheckError(err),
 		}, nil
 	}
 	defer resp.Body.Close()
@@ -522,6 +527,7 @@ func (sc *SiteChecker) checkSiteBasic(ctx context.Context, siteName, siteURL str
 	} else {
 		siteInfo.Status = StatusError
 		siteInfo.Error = fmt.Sprintf("HTTP %d", resp.StatusCode)
+		siteInfo.ErrorType = ErrorTypeStatusCode
 	}
 
 	// Read response body for title and favicon extraction
