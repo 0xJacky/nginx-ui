@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"sync"
 
+	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
@@ -52,15 +53,21 @@ func Enable(name string) (err error) {
 		return
 	}
 
-	// Test nginx config, if not pass, then disable the site.
+	// Test nginx config, if not pass, then disable the stream. Leaving the fresh
+	// symlink behind would keep the broken configuration on disk and break the
+	// next Nginx start.
 	res := nginx.Control(nginx.TestConfig)
 	if res.IsError() {
-		return res.GetError()
+		return config.RollbackError(res.GetError(), func() error {
+			return config.RemoveEnabledLink(enabledConfigFilePath)
+		})
 	}
 
 	res = nginx.Control(nginx.Reload)
 	if res.IsError() {
-		return res.GetError()
+		return config.RollbackError(res.GetError(), func() error {
+			return config.RemoveEnabledLinkAndReload(enabledConfigFilePath)
+		})
 	}
 
 	go syncEnable(name)

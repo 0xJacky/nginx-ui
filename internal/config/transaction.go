@@ -106,6 +106,26 @@ func reloadRestored() error {
 	return nil
 }
 
+// RemoveEnabledLink drops the symlink that enables a configuration. A link that
+// is already gone is not an error: the desired state has been reached.
+func RemoveEnabledLink(path string) error {
+	if err := os.Remove(path); err != nil && !os.IsNotExist(err) {
+		return err
+	}
+	return nil
+}
+
+// RemoveEnabledLinkAndReload removes the enabled symlink and brings the running
+// Nginx back to the configuration it served before the link was created. Use it
+// when a reload has already been attempted with the link in place.
+func RemoveEnabledLinkAndReload(path string) error {
+	if err := RemoveEnabledLink(path); err != nil {
+		return err
+	}
+
+	return reloadRestored()
+}
+
 // FileTransaction snapshots every file it writes so a rejected `nginx -t` can
 // restore all of them, including removing the files the transaction created.
 type FileTransaction struct {

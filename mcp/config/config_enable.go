@@ -92,14 +92,21 @@ func handleNginxConfigEnable(ctx context.Context, request mcpgo.CallToolRequest)
 	res := nginx.Control(nginx.TestConfig)
 	if res.IsError() {
 		// Revert change (remove symlink) if test fails to prevent breaking Nginx
-		os.Remove(dstPath)
-		return nil, fmt.Errorf("nginx config test failed: %v", res.GetError())
+		return nil, config.RollbackError(
+			fmt.Errorf("nginx config test failed: %v", res.GetError()),
+			func() error { return config.RemoveEnabledLink(dstPath) },
+		)
 	}
 
 	// Reload Nginx
 	res = nginx.Control(nginx.Reload)
 	if res.IsError() {
-		return nil, fmt.Errorf("nginx reload failed: %v", res.GetError())
+		// The symlink has to go as well, otherwise the configuration that just
+		// failed to load stays enabled and breaks the next Nginx start.
+		return nil, config.RollbackError(
+			fmt.Errorf("nginx reload failed: %v", res.GetError()),
+			func() error { return config.RemoveEnabledLinkAndReload(dstPath) },
+		)
 	}
 
 	// Construct Success Response
