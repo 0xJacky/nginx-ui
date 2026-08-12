@@ -79,6 +79,15 @@ func (n *ExternalMessage) send(externalNotifies []*model.ExternalNotify) {
 
 // SendWithConfig sends the message with direct configuration parameters
 func (n *ExternalMessage) SendWithConfig(notifyType, language string, config map[string]string) error {
+	return n.SendWithConfigContext(context.Background(), notifyType, language, config)
+}
+
+// SendWithConfigContext sends a message with direct configuration parameters and a caller-owned context.
+func (n *ExternalMessage) SendWithConfigContext(
+	ctx context.Context,
+	notifyType, language string,
+	config map[string]string,
+) error {
 	// Create a temporary ExternalNotify object with the provided parameters
 	externalNotify := &model.ExternalNotify{
 		Type:     notifyType,
@@ -86,7 +95,6 @@ func (n *ExternalMessage) SendWithConfig(notifyType, language string, config map
 		Config:   config,
 	}
 
-	ctx := context.Background()
 	notifier, err := externalNotifierHandler(externalNotify)
 	if err != nil {
 		return err
