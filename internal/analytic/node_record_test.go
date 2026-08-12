@@ -182,7 +182,9 @@ func TestSuccessfulSampleResetsRetryBackoff(t *testing.T) {
 		retryMutex.Unlock()
 	})
 
-	markConnectionSuccess(nodeID)
+	if !markConnectionSuccess(nodeID) {
+		t.Fatal("expected a successful sample after failures to report recovery")
+	}
 
 	retryMutex.Lock()
 	state := *retryStates[nodeID]
@@ -192,6 +194,25 @@ func TestSuccessfulSampleResetsRetryBackoff(t *testing.T) {
 	}
 	if state.NextRetry.After(time.Now()) {
 		t.Fatalf("expected retry to be immediately available, got %v", state.NextRetry)
+	}
+}
+
+func TestConnectionFailureCountIdentifiesFirstFailure(t *testing.T) {
+	nodeID := uint64(49)
+	retryMutex.Lock()
+	delete(retryStates, nodeID)
+	retryMutex.Unlock()
+	t.Cleanup(func() {
+		retryMutex.Lock()
+		delete(retryStates, nodeID)
+		retryMutex.Unlock()
+	})
+
+	if count := markConnectionFailure(nodeID); count != 1 {
+		t.Fatalf("first failure count = %d, want 1", count)
+	}
+	if count := markConnectionFailure(nodeID); count != 2 {
+		t.Fatalf("second failure count = %d, want 2", count)
 	}
 }
 

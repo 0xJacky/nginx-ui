@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/cache"
-	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -98,7 +97,7 @@ func shouldRetry(nodeID uint64) bool {
 	return !now.Before(state.NextRetry)
 }
 
-func markConnectionFailure(nodeID uint64) {
+func markConnectionFailure(nodeID uint64) int {
 	retryMutex.Lock()
 	state, exists := retryStates[nodeID]
 	if !exists {
@@ -106,22 +105,26 @@ func markConnectionFailure(nodeID uint64) {
 		retryStates[nodeID] = state
 	}
 	state.FailureCount++
+	failureCount := state.FailureCount
 	state.NextRetry = time.Now().Add(calculateNextRetryInterval(state.FailureCount))
 	retryMutex.Unlock()
 
 	markNodeOfflineIfStale(nodeID, nodeOfflineTimeout)
+	return failureCount
 }
 
-func markConnectionSuccess(nodeID uint64) {
+func markConnectionSuccess(nodeID uint64) bool {
 	retryMutex.Lock()
 	state, exists := retryStates[nodeID]
 	if !exists {
 		state = &NodeRetryState{}
 		retryStates[nodeID] = state
 	}
+	recovered := state.FailureCount > 0
 	state.FailureCount = 0
 	state.NextRetry = time.Now()
 	retryMutex.Unlock()
+	return recovered
 }
 
 // ReloadNodesStatus asks the single monitor loop started by the kernel to
@@ -293,10 +296,10 @@ func runNodeStatusWorker(ctx context.Context, node *model.Node) {
 				if ctx.Err() != nil {
 					return
 				}
-				if helper.IsUnexpectedWebsocketError(err) {
-					logger.Error(err)
+				failureCount := markConnectionFailure(node.ID)
+				if failureCount == 1 {
+					logger.Warnf("Node status connection failed for node %d (%q): %v", node.ID, node.Name, err)
 				}
-				markConnectionFailure(node.ID)
 			}
 		}
 	}
@@ -469,6 +472,8 @@ func nodeAnalyticRecord(nodeModel *model.Node, ctx context.Context) error {
 			NodeMap[nodeModel.ID].ResponseAt = time.Now()
 		}
 		nodeMapMu.Unlock()
-		markConnectionSuccess(nodeModel.ID)
+		if markConnectionSuccess(nodeModel.ID) {
+			logger.Infof("Node status connection restored for node %d (%q)", nodeModel.ID, nodeModel.Name)
+		}
 	}
 }
