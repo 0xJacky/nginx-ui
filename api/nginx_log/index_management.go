@@ -353,10 +353,12 @@ func reportEmptyRebuild(totalGroups int) {
 	discoveredPaths := len(nginx_log.GetAllLogPaths())
 
 	logger.Warnf("Full index rebuild found no access log group to index: %d log group(s) known, "+
-		"%d log path(s) discovered from the nginx configuration. Nothing was indexed. Check that an "+
-		"uncommented access_log directive exists in the nginx configuration, and that the directory it "+
-		"writes to is covered by nginx.LogDirWhiteList, by the nginx prefix, or by the directory of the "+
-		"default access/error log.", totalGroups, discoveredPaths)
+		"%d log path(s) registered. Nothing was indexed. An access log becomes indexable either through "+
+		"an uncommented access_log directive, or as the nginx default access log resolved from "+
+		"nginx.AccessLogPath in app.ini or from --http-log-path in `nginx -V`. Check that one of the two "+
+		"resolves to an existing regular file, and that the directory holding it is covered by "+
+		"nginx.LogDirWhiteList, by the nginx prefix, or by the directory of the default access/error log.",
+		totalGroups, discoveredPaths)
 }
 
 // rebuildAllFiles rebuilds indexes for all files with proper queue management

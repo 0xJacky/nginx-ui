@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 	"testing"
 	"time"
@@ -48,6 +49,45 @@ func TestRebuildAllFilesDiscoversLogGroups(t *testing.T) {
 
 	nginxlog.StopServices()
 	t.Cleanup(nginxlog.StopServices)
+
+	// The scenario from issue #1787 itself: the nginx configuration declares no
+	// access_log at all - the Homebrew nginx.conf ships with every access_log
+	// line commented out - and the log file is only known through
+	// nginx.AccessLogPath in app.ini. The log preview worked because it reads
+	// that setting directly, but nothing ever registered the path as an
+	// indexable log group, so a full rebuild had nothing to process.
+	t.Run("group discovered from the nginx default access log path", func(t *testing.T) {
+		logPath := writeAccessLog(t, logsDir, "default-access.log", 3)
+
+		originalAccessLogPath := settings.NginxSettings.AccessLogPath
+		settings.NginxSettings.AccessLogPath = logPath
+		t.Cleanup(func() {
+			settings.NginxSettings.AccessLogPath = originalAccessLogPath
+		})
+
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+
+		nginxlog.StopServices()
+		require.Empty(t, nginxlog.GetAllLogPaths(),
+			"no access_log directive has been scanned, so nothing is registered yet")
+
+		nginxlog.InitializeServices(ctx)
+
+		modernIndexer := nginxlog.GetIndexer()
+		require.NotNil(t, modernIndexer)
+		logFileManager := nginxlog.GetLogFileManager()
+		require.NotNil(t, logFileManager)
+		require.NoError(t, logFileManager.DeleteAllIndexMetadata())
+
+		require.Equal(t, []string{logPath}, groupedPaths(nginxlog.GetAllLogsWithIndexGrouped()),
+			"the nginx default access log must be listed as a log group")
+
+		rebuildAllFiles(modernIndexer, logFileManager, nil)
+
+		assertIndexedGroup(t, logPath, 3)
+		nginxlog.StopServices()
+	})
 
 	// A log group known only from the nginx configuration must be rebuilt even
 	// after advanced indexing has been switched off and on again.
@@ -107,6 +147,16 @@ func TestRebuildAllFilesDiscoversLogGroups(t *testing.T) {
 		assertIndexedGroup(t, logPath, 2)
 		nginxlog.StopServices()
 	})
+}
+
+// groupedPaths returns the paths of a grouped log list in a stable order.
+func groupedPaths(logs []*nginxlog.NginxLogWithIndex) []string {
+	paths := make([]string, 0, len(logs))
+	for _, log := range logs {
+		paths = append(paths, log.Path)
+	}
+	sort.Strings(paths)
+	return paths
 }
 
 // assertIndexedGroup checks that a full rebuild produced an indexed record with
@@ -176,4 +226,13 @@ func setupRebuildTestEnvironment(t *testing.T, tempDir, logsDir string) {
 	settings.NginxSettings.LogDirWhiteList = []string{logsDir}
 	settings.NginxLogSettings.IndexingEnabled = true
 	settings.NginxLogSettings.IndexPath = filepath.Join(tempDir, "index")
+
+	// Point the default log settings at a directory so the nginx installation of
+	// the machine running the test cannot register log paths of its own:
+	// nginx.GetAccessLogPath falls back to `nginx -V` when the setting is empty,
+	// and utils.IsValidLogPath rejects anything that is not a regular file.
+	noDefaultLog := filepath.Join(tempDir, "no-default-log")
+	require.NoError(t, os.MkdirAll(noDefaultLog, 0o755))
+	settings.NginxSettings.AccessLogPath = noDefaultLog
+	settings.NginxSettings.ErrorLogPath = noDefaultLog
 }
