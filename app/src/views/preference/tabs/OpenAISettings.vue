@@ -19,8 +19,52 @@ const baseUrlOptions = LLM_PROVIDER_BASE_URLS.map(baseUrl => ({
   value: baseUrl,
 }))
 
+const selectedProviderPreset = computed(() => LLM_PROVIDERS.find(
+  provider => provider.value === data.value?.openai.provider,
+))
+
+const selectedModelPreset = computed(() => selectedProviderPreset.value?.models?.find(
+  model => model.value === data.value?.openai.model,
+))
+
 function filterBaseUrlOption(inputValue: string, option?: { value?: string }) {
   return option?.value?.toLowerCase().includes(inputValue.toLowerCase()) ?? false
+}
+
+function formatRegion(region: string) {
+  if (region === 'global_en')
+    return $gettext('Global')
+
+  if (region === 'cn_zh')
+    return $gettext('China')
+
+  return region
+}
+
+function formatCapability(value: string) {
+  if (value === 'always_on')
+    return $gettext('Always on')
+
+  return value.charAt(0).toUpperCase() + value.slice(1)
+}
+
+function formatPricing() {
+  const pricing = selectedModelPreset.value?.pricing
+  if (!pricing)
+    return ''
+
+  const prices = [
+    `${$gettext('Input')}: $${pricing.input}`,
+    `${$gettext('Output')}: $${pricing.output}`,
+  ]
+
+  if (pricing.cacheRead !== undefined)
+    prices.push(`${$gettext('Cache read')}: $${pricing.cacheRead}`)
+
+  if (pricing.cacheWrite !== undefined)
+    prices.push(`${$gettext('Cache write')}: $${pricing.cacheWrite}`)
+
+  return prices.join(' · ')
 }
 
 const providerBaseUrlMap = LLM_PROVIDERS.reduce<Record<string, string>>((acc, provider) => {
@@ -103,6 +147,34 @@ watch(
         :options="modelOptions"
       />
     </AFormItem>
+    <AAlert
+      v-if="selectedModelPreset"
+      type="info"
+      show-icon
+      class="mb-6"
+    >
+      <template #message>
+        {{ $gettext('Model capabilities') }}
+      </template>
+      <template #description>
+        <div>
+          <strong>{{ $gettext('Context window') }}:</strong>
+          {{ selectedModelPreset.contextWindow.toLocaleString() }} {{ $gettext('tokens') }}
+        </div>
+        <div>
+          <strong>{{ $gettext('Input modalities') }}:</strong>
+          {{ selectedModelPreset.inputModalities.map(formatCapability).join(', ') }}
+        </div>
+        <div>
+          <strong>{{ $gettext('Thinking modes') }}:</strong>
+          {{ selectedModelPreset.thinkingModes.map(formatCapability).join(', ') }}
+        </div>
+        <div>
+          <strong>{{ $gettext('Pricing per million tokens') }}:</strong>
+          {{ formatPricing() }}
+        </div>
+      </template>
+    </AAlert>
     <AFormItem
       :label="$gettext('API Base Url')"
       :validate-status="errors?.openai?.base_url ? 'error' : ''"
@@ -116,6 +188,34 @@ watch(
         :default-active-first-option="false"
       />
     </AFormItem>
+    <AAlert
+      v-if="selectedProviderPreset?.endpoints?.length"
+      type="info"
+      show-icon
+      class="mb-6"
+    >
+      <template #message>
+        {{ $gettext('Regional endpoints') }}
+      </template>
+      <template #description>
+        <div
+          v-for="endpoint in selectedProviderPreset.endpoints"
+          :key="endpoint.region"
+          class="mb-1 last:mb-0"
+        >
+          <strong>{{ formatRegion(endpoint.region) }}:</strong>
+          OpenAI-compatible: {{ endpoint.openaiBaseUrl }} ·
+          Anthropic-compatible: {{ endpoint.anthropicBaseUrl }} ·
+          <a
+            :href="endpoint.docsUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {{ $gettext('Documentation') }}
+          </a>
+        </div>
+      </template>
+    </AAlert>
     <AFormItem
       :label="$gettext('API Proxy')"
       :validate-status="errors?.openai?.proxy ? 'error' : ''"
