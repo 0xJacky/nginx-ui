@@ -103,6 +103,14 @@ func autoCert(certModel *model.Cert) {
 		ReplacesCertID:          scheduleDecision.ReplacesCertID,
 	}
 
+	// Renew in place. The nginx configuration keeps referencing the paths that
+	// were recorded when the certificate was first issued, and nothing rewrites
+	// those directives afterwards, so the renewed material has to overwrite the
+	// very same files. Without this the renewal silently lands in a directory
+	// derived from the current identifiers and key type and nginx goes on
+	// serving the expiring certificate.
+	payload.UseExistingCertificatePaths(certModel.SSLCertificatePath, certModel.SSLCertificateKeyPath)
+
 	if certModel.Resource != nil {
 		payload.Resource = &model.CertificateResource{
 			Resource:          certModel.Resource.Resource,

@@ -91,6 +91,12 @@ func IssueCert(c *gin.Context) {
 		}
 	}
 
+	// Reissue over the files this record already owns. The certificate
+	// management page renews without touching any site configuration, so a
+	// path derived from the current identifiers and key type would leave every
+	// vhost referencing the previous, expiring files.
+	payload.UseExistingCertificatePaths(certModel.SSLCertificatePath, certModel.SSLCertificateKeyPath)
+
 	log := cert.NewLogger()
 	log.SetCertModel(certModel)
 	log.SetWebSocket(wsWriter)

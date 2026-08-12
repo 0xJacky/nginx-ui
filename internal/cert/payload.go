@@ -79,9 +79,45 @@ func (c *ConfigPayload) mkCertificateDir() (err error) {
 	return
 }
 
+// UseExistingCertificatePaths pins the payload to the certificate files that
+// the nginx configuration already references, so a renewal replaces them in
+// place.
+//
+// The default certificate directory is derived from the identifier list and the
+// key type. Whenever one of those inputs drifts the derived directory changes,
+// the renewed material is written to a brand-new directory, and the database row
+// is repointed at it while nginx keeps loading the stale files. Known sources of
+// drift are identifier normalization (trimming, de-duplication, IP
+// canonicalization), editing the domain list of an existing certificate, and the
+// lego v4 -> v5 key type rename ("P256" -> "EC256", "2048" -> "RSA2048").
+//
+// Paths outside the nginx configuration directory are ignored so a corrupted or
+// hand-edited record cannot redirect the write to an arbitrary location.
+func (c *ConfigPayload) UseExistingCertificatePaths(certificatePath, certificateKeyPath string) {
+	if certificatePath == "" || certificateKeyPath == "" {
+		return
+	}
+
+	nginxConfPath := nginx.GetConfPath()
+	if !helper.IsUnderDirectory(certificatePath, nginxConfPath) ||
+		!helper.IsUnderDirectory(certificateKeyPath, nginxConfPath) {
+		return
+	}
+
+	c.SSLCertificatePath = certificatePath
+	c.SSLCertificateKeyPath = certificateKeyPath
+	c.CertificateDir = filepath.Dir(certificatePath)
+}
+
 func (c *ConfigPayload) WriteFile(l *Logger) error {
 	err := c.mkCertificateDir()
 	if err != nil {
+		return cosy.WrapErrorWithParams(ErrMakeCertificateDir, err.Error())
+	}
+
+	// The private key does not necessarily live next to the certificate when the
+	// paths are reused from an existing record.
+	if err = os.MkdirAll(filepath.Dir(c.GetCertificateKeyPath()), 0755); err != nil {
 		return cosy.WrapErrorWithParams(ErrMakeCertificateDir, err.Error())
 	}
 
@@ -110,22 +146,47 @@ func (c *ConfigPayload) WriteFile(l *Logger) error {
 
 	fingerprint, _ := CertificateFingerprintFromPath(c.GetCertificatePath())
 	db := model.UseDB()
-	db.Model(&model.Cert{}).Where("id = ?", c.CertID).Updates(map[string]any{
-		"ssl_certificate_path":            c.GetCertificatePath(),
-		"ssl_certificate_key_path":        c.GetCertificateKeyPath(),
-		"fingerprint":                     fingerprint,
-		"resource":                        c.Resource,
-		"profile":                         c.Profile,
-		"next_auto_renew_at":              nil,
-		"last_renewal_info_check_at":      nil,
-		"auto_renew_schedule_fingerprint": "",
-	})
+	if db == nil {
+		return nil
+	}
+
+	// Struct + Select, never a map: Resource carries a `serializer:json[aes]`
+	// tag that GORM only applies to struct updates. A map hands the struct
+	// straight to the SQL driver, which rejects it and aborts the whole
+	// statement, so the record would keep describing the previous certificate.
+	// Select is what makes the zero values (cleared ARI schedule) actually be
+	// written instead of skipped.
+	updates := &model.Cert{
+		SSLCertificatePath:           c.GetCertificatePath(),
+		SSLCertificateKeyPath:        c.GetCertificateKeyPath(),
+		Fingerprint:                  fingerprint,
+		Resource:                     c.Resource,
+		Profile:                      c.Profile,
+		NextAutoRenewAt:              nil,
+		LastRenewalInfoCheckAt:       nil,
+		AutoRenewScheduleFingerprint: "",
+	}
+	if err = db.Model(&model.Cert{}).Where("id = ?", c.CertID).
+		Select(
+			"ssl_certificate_path", "ssl_certificate_key_path", "fingerprint", "resource",
+			"profile", "next_auto_renew_at", "last_renewal_info_check_at",
+			"auto_renew_schedule_fingerprint",
+		).
+		Updates(updates).Error; err != nil {
+		return cosy.WrapErrorWithParams(ErrPersistCertificateRecord, err.Error())
+	}
 
 	return nil
 }
 
 func (c *ConfigPayload) getCertificateDirPath() string {
 	if c.CertificateDir != "" {
+		return c.CertificateDir
+	}
+	// An explicit certificate path wins over the derived directory so a renewal
+	// keeps replacing the file the nginx configuration points at.
+	if c.SSLCertificatePath != "" {
+		c.CertificateDir = filepath.Dir(c.SSLCertificatePath)
 		return c.CertificateDir
 	}
 	c.CertificateDir = nginx.GetConfPath("ssl", strings.Join(c.ServerName, "_")+"_"+string(c.GetKeyType()))
