@@ -159,16 +159,54 @@ func getXNodeID(c *gin.Context) (xNodeID string) {
 	return c.Query("x_node_id")
 }
 
+type nodeAuthenticationFailureLog struct {
+	CredentialType string
+	Method         string
+	Path           string
+	RemoteIP       string
+	Reason         string
+}
+
+func newNodeAuthenticationFailureLog(c *gin.Context, credentialType string, err error) nodeAuthenticationFailureLog {
+	requestPath := ""
+	requestMethod := ""
+	if c.Request != nil {
+		requestPath = c.Request.URL.EscapedPath()
+		requestMethod = c.Request.Method
+	}
+
+	return nodeAuthenticationFailureLog{
+		CredentialType: credentialType,
+		Method:         requestMethod,
+		Path:           requestPath,
+		RemoteIP:       c.ClientIP(),
+		Reason:         err.Error(),
+	}
+}
+
+func rejectNodeAuthentication(c *gin.Context, credentialType string, err error) (bool, error) {
+	failure := newNodeAuthenticationFailureLog(c, credentialType, err)
+	logger.GetLogger().Warnw("Node authentication failed",
+		"credential_type", failure.CredentialType,
+		"method", failure.Method,
+		"path", failure.Path,
+		"remote_ip", failure.RemoteIP,
+		"reason", failure.Reason,
+	)
+	return true, err
+}
+
 func authenticateNodeRequest(c *gin.Context) (bool, error) {
 	if c.Request.URL.Query().Has("node_secret") {
-		return true, fmt.Errorf("node credentials are not accepted in query parameters")
+		return rejectNodeAuthentication(c, "query_parameter",
+			fmt.Errorf("node credentials are not accepted in query parameters"))
 	}
 
 	if c.GetHeader("Signature-Input") != "" || c.GetHeader("Signature") != "" {
 		principal, err := nodeauth.VerifyRequest(c.Request)
 		if err != nil {
 			nodeauth.CloseStagedBody(c.Request)
-			return true, err
+			return rejectNodeAuthentication(c, "signature", err)
 		}
 		c.Request = nodeauth.WithPrincipal(c.Request, principal)
 		c.Set(nodeauth.GinPrincipalKey, principal)
@@ -186,7 +224,7 @@ func authenticateNodeRequest(c *gin.Context) (bool, error) {
 	if configuredSecret == "" ||
 		len(secret) != len(configuredSecret) ||
 		subtle.ConstantTimeCompare([]byte(secret), []byte(configuredSecret)) != 1 {
-		return true, fmt.Errorf("legacy node authentication failed")
+		return rejectNodeAuthentication(c, "legacy_secret", fmt.Errorf("legacy node authentication failed"))
 	}
 	principal := &nodeauth.Principal{
 		CredentialID:         "legacy",

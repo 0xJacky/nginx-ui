@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"encoding/base64"
+	"errors"
 	"net/http"
 	"testing"
 
@@ -100,4 +101,23 @@ func TestAuthenticateNodeRequestRejectsQuerySecretEvenWhenItMatches(t *testing.T
 	require.Error(t, err)
 	assert.True(t, handled)
 	assert.ErrorContains(t, err, "query parameters")
+}
+
+func TestNodeAuthenticationFailureLogExcludesCredentials(t *testing.T) {
+	const secret = "must-not-appear-in-node-authentication-log"
+	c := newTestGinContext(t, http.MethodGet, "/api/node?node_secret="+secret, nil)
+	c.Request.RemoteAddr = "192.0.2.10:54321"
+	c.Request.Header.Set("Signature", secret)
+	c.Request.Header.Set("Signature-Input", secret)
+	c.Request.Header.Set("X-Node-Secret", secret)
+
+	failure := newNodeAuthenticationFailureLog(c, "signature", errors.New("node signature is expired"))
+
+	assert.Equal(t, "signature", failure.CredentialType)
+	assert.Equal(t, http.MethodGet, failure.Method)
+	assert.Equal(t, "/api/node", failure.Path)
+	assert.Equal(t, "192.0.2.10", failure.RemoteIP)
+	assert.Equal(t, "node signature is expired", failure.Reason)
+	assert.NotContains(t, failure.Path, secret)
+	assert.NotContains(t, failure.Reason, secret)
 }

@@ -115,6 +115,20 @@ func TestVerifyRequestEnforcesExpiryAndClockSkew(t *testing.T) {
 	CloseStagedBody(beyondFutureSkew)
 }
 
+func TestVerifyRequestAcceptsFourSecondClockSkew(t *testing.T) {
+	database, privateKey, now := setupSignatureTest(t)
+
+	for _, offset := range []time.Duration{-4 * time.Second, 4 * time.Second} {
+		t.Run(offset.String(), func(t *testing.T) {
+			request := newSignedTestRequest(t, privateKey, now.Add(offset))
+			t.Cleanup(func() { CloseStagedBody(request) })
+
+			_, err := verifyRequest(request, database, now, NewReplayCache(100))
+			require.NoError(t, err)
+		})
+	}
+}
+
 func TestVerifyRequestRejectsReplay(t *testing.T) {
 	database, privateKey, now := setupSignatureTest(t)
 	request := newSignedTestRequest(t, privateKey, now)
