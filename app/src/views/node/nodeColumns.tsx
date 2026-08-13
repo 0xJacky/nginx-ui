@@ -1,8 +1,9 @@
 import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
 import type { JSX } from 'vue/jsx-runtime'
 import type { Node } from '@/api/node'
+import { ExclamationCircleOutlined, InfoCircleOutlined } from '@ant-design/icons-vue'
 import { datetimeRender } from '@uozi-admin/curd'
-import { Badge, InputPassword, Tag } from 'ant-design-vue'
+import { Badge, InputPassword, Popover, Tag } from 'ant-design-vue'
 import { h } from 'vue'
 import nodeApi from '@/api/node'
 import { SensitiveInput } from '@/components/SensitiveString'
@@ -13,6 +14,76 @@ const unhealthyCredentialMap: Record<string, { color: string, text: () => string
   rotating: { color: 'blue', text: () => $gettext('Rotating') },
   unpaired: { color: 'default', text: () => $gettext('Unpaired') },
   revoked: { color: 'red', text: () => $gettext('Revoked') },
+}
+
+function renderConnectionErrorContent(record: Node) {
+  if (record.connection_error_code !== 'clock_skew') {
+    return (
+      <div class="max-w-[400px] text-sm leading-6">
+        <p class="m-0">
+          {$gettext('Check the node URL, network, TLS certificate, and authentication settings.')}
+        </p>
+        <details class="mt-3">
+          <summary class="cursor-pointer select-none font-medium">
+            {$gettext('Technical details')}
+          </summary>
+          <pre class="mb-0 mt-2 max-h-48 overflow-auto whitespace-pre-wrap break-all rounded bg-gray-100 p-3 text-xs dark:bg-gray-800">
+            {record.connection_error}
+          </pre>
+        </details>
+      </div>
+    )
+  }
+
+  return (
+    <div class="w-[400px] max-w-[calc(100vw-48px)] text-sm leading-6">
+      <p class="m-0">
+        {$gettext('The controller time is earlier than the node certificate validity start time. TLS stops the connection before node authentication.')}
+      </p>
+      <ol class="my-3 pl-5">
+        <li>{$gettext('Synchronize the host system time on both the controller and the node.')}</li>
+        <li>{$gettext('If Nginx UI runs in Docker, correct the Docker host clock instead of the container clock.')}</li>
+      </ol>
+      <p class="mb-1 mt-0 font-medium">
+        {$gettext('On Linux hosts, check and enable network time synchronization:')}
+      </p>
+      <pre class="my-0 overflow-auto rounded bg-gray-100 px-3 py-2 text-xs dark:bg-gray-800">
+        {'timedatectl status\nsudo timedatectl set-ntp true'}
+      </pre>
+      <p class="mb-0 mt-3 text-gray-600 dark:text-gray-300">
+        {$gettext('The node will reconnect automatically after the clocks are synchronized.')}
+      </p>
+      <details class="mt-3">
+        <summary class="cursor-pointer select-none font-medium">
+          {$gettext('Technical details')}
+        </summary>
+        <pre class="mb-0 mt-2 max-h-48 overflow-auto whitespace-pre-wrap break-all rounded bg-gray-100 p-3 text-xs dark:bg-gray-800">
+          {record.connection_error}
+        </pre>
+      </details>
+    </div>
+  )
+}
+
+function renderConnectionError(record: Node) {
+  const isClockSkew = record.connection_error_code === 'clock_skew'
+  const title = isClockSkew
+    ? $gettext('System clocks are out of sync')
+    : $gettext('Node connection failed')
+
+  return h(Popover, {
+    content: renderConnectionErrorContent(record),
+    placement: 'rightTop',
+    title: h('div', { class: 'flex items-center gap-2' }, [
+      h(ExclamationCircleOutlined, { class: isClockSkew ? 'text-orange-500' : 'text-red-500' }),
+      h('span', title),
+    ]),
+    trigger: ['hover', 'focus', 'click'],
+  }, () => h('button', {
+    'type': 'button',
+    'aria-label': title,
+    'class': 'ml-1 inline-flex cursor-help items-center border-0 bg-transparent p-0 text-red-500',
+  }, h(InfoCircleOutlined)))
 }
 
 const columns: StdTableColumn[] = [{
@@ -104,7 +175,10 @@ const columns: StdTableColumn[] = [{
       template.push(<span>{$gettext('Disabled')}</span>)
     }
 
-    return h('div', template)
+    if (args.record.connection_error)
+      template.push(renderConnectionError(args.record as Node))
+
+    return h('div', { class: 'flex items-center' }, template)
   },
   sorter: true,
   pure: true,

@@ -38,10 +38,17 @@ type NodeStat struct {
 	UpstreamStatusMap map[string]*upstream.Status `json:"upstream_status_map"`
 }
 
+type NodeConnectionErrorCode string
+
+const NodeConnectionErrorClockSkew NodeConnectionErrorCode = "clock_skew"
+
 type Node struct {
 	*model.Node
 	NodeStat
 	NodeInfo
+	ConnectionError     string                  `json:"connection_error,omitempty"`
+	ConnectionErrorCode NodeConnectionErrorCode `json:"connection_error_code,omitempty"`
+	ConnectionErrorAt   *time.Time              `json:"connection_error_at,omitempty"`
 }
 
 var nodeMapMu sync.RWMutex

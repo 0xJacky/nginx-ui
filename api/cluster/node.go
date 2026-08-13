@@ -31,16 +31,19 @@ type nodeMutationRequest struct {
 }
 
 type nodeResponse struct {
-	ID                  uint64     `json:"id"`
-	CreatedAt           time.Time  `json:"created_at"`
-	UpdatedAt           time.Time  `json:"updated_at"`
-	Name                string     `json:"name"`
-	URL                 string     `json:"url"`
-	Enabled             bool       `json:"enabled"`
-	AuthMethod          string     `json:"auth_method"`
-	HasCredential       bool       `json:"has_credential"`
-	CredentialStatus    string     `json:"credential_status"`
-	LastCredentialUseAt *time.Time `json:"last_credential_use_at,omitempty"`
+	ID                  uint64                           `json:"id"`
+	CreatedAt           time.Time                        `json:"created_at"`
+	UpdatedAt           time.Time                        `json:"updated_at"`
+	Name                string                           `json:"name"`
+	URL                 string                           `json:"url"`
+	Enabled             bool                             `json:"enabled"`
+	AuthMethod          string                           `json:"auth_method"`
+	HasCredential       bool                             `json:"has_credential"`
+	CredentialStatus    string                           `json:"credential_status"`
+	LastCredentialUseAt *time.Time                       `json:"last_credential_use_at,omitempty"`
+	ConnectionError     string                           `json:"connection_error,omitempty"`
+	ConnectionErrorCode analytic.NodeConnectionErrorCode `json:"connection_error_code,omitempty"`
+	ConnectionErrorAt   *time.Time                       `json:"connection_error_at,omitempty"`
 	// LegacySecret only ever carries the redaction sentinel, which tells the
 	// edit form a secret is stored without putting it in a list response.
 	LegacySecret string `json:"legacy_secret,omitempty"`
@@ -68,6 +71,9 @@ func newNodeResponse(node *model.Node) nodeResponse {
 	if analyticNode != nil {
 		response.NodeStat = analyticNode.NodeStat
 		response.NodeInfo = analyticNode.NodeInfo
+		response.ConnectionError = analyticNode.ConnectionError
+		response.ConnectionErrorCode = analyticNode.ConnectionErrorCode
+		response.ConnectionErrorAt = analyticNode.ConnectionErrorAt
 	}
 	return response
 }

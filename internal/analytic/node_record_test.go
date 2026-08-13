@@ -2,6 +2,7 @@ package analytic
 
 import (
 	"context"
+	"crypto/x509"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
@@ -123,7 +124,7 @@ func TestConnectionFailureKeepsFreshNodeOnline(t *testing.T) {
 		retryMutex.Unlock()
 	})
 
-	markConnectionFailure(nodeID)
+	markConnectionFailure(nodeID, context.DeadlineExceeded)
 
 	nodeMapMu.RLock()
 	node := cloneNode(NodeMap[nodeID])
@@ -133,6 +134,9 @@ func TestConnectionFailureKeepsFreshNodeOnline(t *testing.T) {
 	}
 	if !node.ResponseAt.Equal(lastResponse) {
 		t.Fatalf("expected last successful response time to be preserved, got %v", node.ResponseAt)
+	}
+	if node.ConnectionError != context.DeadlineExceeded.Error() || node.ConnectionErrorAt == nil {
+		t.Fatalf("expected the latest connection error to be retained, got %q at %v", node.ConnectionError, node.ConnectionErrorAt)
 	}
 }
 
@@ -155,7 +159,7 @@ func TestConnectionFailureMarksStaleNodeOffline(t *testing.T) {
 		retryMutex.Unlock()
 	})
 
-	markConnectionFailure(nodeID)
+	markConnectionFailure(nodeID, context.DeadlineExceeded)
 
 	nodeMapMu.RLock()
 	node := cloneNode(NodeMap[nodeID])
@@ -165,6 +169,40 @@ func TestConnectionFailureMarksStaleNodeOffline(t *testing.T) {
 	}
 	if !node.ResponseAt.Equal(lastResponse) {
 		t.Fatalf("expected offline transition to preserve last successful response time, got %v", node.ResponseAt)
+	}
+}
+
+func TestConnectionFailureClassifiesClockSkew(t *testing.T) {
+	nodeID := uint64(50)
+	now := time.Now()
+	certificate := &x509.Certificate{NotBefore: now.Add(10 * time.Minute)}
+
+	nodeMapMu.Lock()
+	NodeMap[nodeID] = &Node{}
+	nodeMapMu.Unlock()
+	retryMutex.Lock()
+	delete(retryStates, nodeID)
+	retryMutex.Unlock()
+	t.Cleanup(func() {
+		nodeMapMu.Lock()
+		delete(NodeMap, nodeID)
+		nodeMapMu.Unlock()
+		retryMutex.Lock()
+		delete(retryStates, nodeID)
+		retryMutex.Unlock()
+	})
+
+	markConnectionFailure(nodeID, x509.CertificateInvalidError{
+		Cert:   certificate,
+		Reason: x509.Expired,
+		Detail: "current time is before the certificate validity period",
+	})
+
+	nodeMapMu.RLock()
+	node := cloneNode(NodeMap[nodeID])
+	nodeMapMu.RUnlock()
+	if node.ConnectionErrorCode != NodeConnectionErrorClockSkew {
+		t.Fatalf("connection error code = %q, want %q", node.ConnectionErrorCode, NodeConnectionErrorClockSkew)
 	}
 }
 
@@ -180,7 +218,19 @@ func TestSuccessfulSampleResetsRetryBackoff(t *testing.T) {
 		retryMutex.Lock()
 		delete(retryStates, nodeID)
 		retryMutex.Unlock()
+		nodeMapMu.Lock()
+		delete(NodeMap, nodeID)
+		nodeMapMu.Unlock()
 	})
+
+	failedAt := time.Now()
+	nodeMapMu.Lock()
+	NodeMap[nodeID] = &Node{
+		ConnectionError:     context.DeadlineExceeded.Error(),
+		ConnectionErrorCode: NodeConnectionErrorClockSkew,
+		ConnectionErrorAt:   &failedAt,
+	}
+	nodeMapMu.Unlock()
 
 	if !markConnectionSuccess(nodeID) {
 		t.Fatal("expected a successful sample after failures to report recovery")
@@ -195,6 +245,13 @@ func TestSuccessfulSampleResetsRetryBackoff(t *testing.T) {
 	if state.NextRetry.After(time.Now()) {
 		t.Fatalf("expected retry to be immediately available, got %v", state.NextRetry)
 	}
+	nodeMapMu.RLock()
+	node := cloneNode(NodeMap[nodeID])
+	nodeMapMu.RUnlock()
+	if node.ConnectionError != "" || node.ConnectionErrorCode != "" || node.ConnectionErrorAt != nil {
+		t.Fatalf("expected a successful sample to clear the connection error, got %q (%q) at %v",
+			node.ConnectionError, node.ConnectionErrorCode, node.ConnectionErrorAt)
+	}
 }
 
 func TestConnectionFailureCountIdentifiesFirstFailure(t *testing.T) {
@@ -208,10 +265,10 @@ func TestConnectionFailureCountIdentifiesFirstFailure(t *testing.T) {
 		retryMutex.Unlock()
 	})
 
-	if count := markConnectionFailure(nodeID); count != 1 {
+	if count := markConnectionFailure(nodeID, context.DeadlineExceeded); count != 1 {
 		t.Fatalf("first failure count = %d, want 1", count)
 	}
-	if count := markConnectionFailure(nodeID); count != 2 {
+	if count := markConnectionFailure(nodeID, context.DeadlineExceeded); count != 2 {
 		t.Fatalf("second failure count = %d, want 2", count)
 	}
 }
