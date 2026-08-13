@@ -18,7 +18,8 @@ var bundledNginxUIConfPath = "/etc/nginx/conf.d/nginx-ui.conf"
 
 // Markers indicating the WS reverse-proxy fix is present.
 var (
-	reBundledNginxUIProxy  = regexp.MustCompile(`(?m)^\s*proxy_pass\s+http://127\.0\.0\.1:9000/?\s*;`)
+	reBundledNginxUIProxy  = regexp.MustCompile(`(?m)^[ \t]*proxy_pass\s+http://127\.0\.0\.1:9000/?\s*;`)
+	reBundledProxyLine     = regexp.MustCompile(`(?m)^([ \t]*)proxy_pass\s+http://127\.0\.0\.1:9000/?\s*;[ \t]*$`)
 	reMapForwardedProto    = regexp.MustCompile(`(?m)^\s*map\s+\$http_x_forwarded_proto\s+\$forwarded_proto\b`)
 	reMapForwardedHost     = regexp.MustCompile(`(?m)^\s*map\s+\$http_x_forwarded_host\s+\$forwarded_host\b`)
 	reHeaderForwardedProto = regexp.MustCompile(`(?m)^\s*proxy_set_header\s+X-Forwarded-Proto\s+\$forwarded_proto\b`)
@@ -89,6 +90,12 @@ func applyBundledConfPatch(in []byte) []byte {
 	out := in
 	out = reHeaderForwardedProtoLegacy.ReplaceAll(out, []byte("${1}$$forwarded_proto${2}"))
 	out = reHeaderForwardedHostLegacy.ReplaceAll(out, []byte("${1}$$forwarded_host${2}"))
+	if !reHeaderForwardedProto.Match(out) {
+		out = insertHeaderBeforeBundledProxy(out, "proxy_set_header   X-Forwarded-Proto    $forwarded_proto;")
+	}
+	if !reHeaderForwardedHost.Match(out) {
+		out = insertHeaderBeforeBundledProxy(out, "proxy_set_header   X-Forwarded-Host     $forwarded_host;")
+	}
 
 	var injection strings.Builder
 	if !reMapForwardedProto.Match(out) {
@@ -101,6 +108,11 @@ func applyBundledConfPatch(in []byte) []byte {
 		out = injectBeforeFirstServer(out, injection.String())
 	}
 	return out
+}
+
+func insertHeaderBeforeBundledProxy(in []byte, header string) []byte {
+	replacement := "${1}" + strings.ReplaceAll(header, "$", "$$") + "\n$0"
+	return reBundledProxyLine.ReplaceAll(in, []byte(replacement))
 }
 
 // reFirstServer matches the first top-level `server {` for map injection.
