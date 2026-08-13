@@ -616,7 +616,7 @@ msgstr ""
 #: src/components/NodeSelector/NodeSelector.vue:79
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
 #: src/views/dashboard/Nodes.vue:110
-#: src/views/node/nodeColumns.tsx:95
+#: src/views/node/nodeColumns.tsx:166
 #: src/views/upstream/SocketList.vue:49
 msgid "Online"
 msgstr ""
@@ -626,7 +626,7 @@ msgstr ""
 #: src/components/NodeSelector/NodeSelector.vue:85
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
 #: src/views/dashboard/Nodes.vue:117
-#: src/views/node/nodeColumns.tsx:99
+#: src/views/node/nodeColumns.tsx:170
 #: src/views/upstream/SocketList.vue:49
 msgid "Offline"
 msgstr ""
@@ -878,7 +878,7 @@ msgstr ""
 #: src/views/dns/DNSGroupRecordManager.vue:1357
 #: src/views/namespace/columns.ts:9
 #: src/views/nginx_log/NginxLogList.vue:156
-#: src/views/node/nodeColumns.tsx:19
+#: src/views/node/nodeColumns.tsx:90
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:84
 #: src/views/preference/tabs/AccessTokens.vue:50
 #: src/views/preference/tabs/AccessTokens.vue:266
@@ -1334,6 +1334,10 @@ msgstr ""
 msgid "Please generate new recovery codes in the preferences immediately to prevent lockout."
 msgstr ""
 
+#: src/components/OTPInput/OTPInput.vue:235
+msgid "Digit %{position} of the one-time code"
+msgstr ""
+
 #: src/components/PortScanner/PortScannerCompact.vue:31
 #: src/views/preference/tabs/ServerSettings.vue:22
 msgid "Port"
@@ -1349,7 +1353,7 @@ msgstr ""
 #: src/views/nginx_log/structured/components/SearchFilters.vue:106
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:243
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:520
-#: src/views/node/nodeColumns.tsx:87
+#: src/views/node/nodeColumns.tsx:158
 #: src/views/preference/tabs/AccessTokens.vue:54
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:29
 #: src/views/site/site_list/columns.tsx:120
@@ -1680,7 +1684,7 @@ msgid "Please enter the OTP code:"
 msgstr ""
 
 #: src/components/TwoFA/Authorization.vue:108
-#: src/views/other/Login.vue:383
+#: src/views/other/Login.vue:388
 msgid "Or"
 msgstr ""
 
@@ -2423,6 +2427,10 @@ msgstr ""
 
 #: src/constants/errors/cert.ts:49
 msgid "Wildcard domains and IP addresses cannot be requested in the same certificate"
+msgstr ""
+
+#: src/constants/errors/cert.ts:50
+msgid "Persist certificate record error: {0}"
 msgstr ""
 
 #: src/constants/errors/cluster_sync.ts:2
@@ -3784,7 +3792,7 @@ msgid "Install"
 msgstr ""
 
 #: src/routes/modules/auth.ts:14
-#: src/views/other/Login.vue:374
+#: src/views/other/Login.vue:379
 msgid "Login"
 msgstr ""
 
@@ -4051,8 +4059,8 @@ msgstr ""
 #: src/views/backup/AutoBackup/AutoBackup.vue:193
 #: src/views/backup/AutoBackup/AutoBackup.vue:203
 #: src/views/dns/DDNSManager.vue:320
-#: src/views/node/nodeColumns.tsx:113
-#: src/views/node/nodeColumns.tsx:119
+#: src/views/node/nodeColumns.tsx:187
+#: src/views/node/nodeColumns.tsx:193
 #: src/views/preference/components/ExternalNotify/columns.tsx:47
 #: src/views/preference/tabs/HTTPSettings.vue:24
 #: src/views/preference/tabs/LogrotateSettings.vue:20
@@ -4070,10 +4078,10 @@ msgstr ""
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:194
 #: src/views/backup/AutoBackup/AutoBackup.vue:204
-#: src/views/dashboard/components/SiteCard.vue:140
+#: src/views/dashboard/components/SiteCard.vue:162
 #: src/views/dns/DDNSManager.vue:320
-#: src/views/node/nodeColumns.tsx:104
-#: src/views/node/nodeColumns.tsx:122
+#: src/views/node/nodeColumns.tsx:175
+#: src/views/node/nodeColumns.tsx:196
 #: src/views/preference/tabs/HTTPSettings.vue:24
 #: src/views/preference/tabs/NodeSettings.vue:28
 #: src/views/preference/tabs/NodeSettings.vue:33
@@ -4123,7 +4131,7 @@ msgstr ""
 #: src/views/dns/DNSDomainList.vue:236
 #: src/views/dns/DNSGroupList.vue:33
 #: src/views/namespace/columns.ts:116
-#: src/views/node/nodeColumns.tsx:133
+#: src/views/node/nodeColumns.tsx:207
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:39
 #: src/views/site/site_list/columns.tsx:113
 #: src/views/stream/columns.tsx:80
@@ -4171,7 +4179,7 @@ msgstr ""
 #: src/views/dns/DNSGroupRecordManager.vue:1362
 #: src/views/namespace/columns.ts:122
 #: src/views/nginx_log/NginxLogList.vue:339
-#: src/views/node/nodeColumns.tsx:140
+#: src/views/node/nodeColumns.tsx:214
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:85
 #: src/views/site/site_list/columns.tsx:160
@@ -5567,7 +5575,31 @@ msgstr ""
 msgid "Resident Set Size: Actual memory resident in physical memory, including all shared library memory, which will be repeated calculated for multiple processes"
 msgstr ""
 
-#: src/views/dashboard/components/SiteCard.vue:148
+#: src/views/dashboard/components/SiteCard.vue:93
+msgid "TLS certificate not trusted"
+msgstr ""
+
+#: src/views/dashboard/components/SiteCard.vue:95
+msgid "Hostname could not be resolved"
+msgstr ""
+
+#: src/views/dashboard/components/SiteCard.vue:97
+msgid "Connection refused"
+msgstr ""
+
+#: src/views/dashboard/components/SiteCard.vue:99
+msgid "Connection timed out"
+msgstr ""
+
+#: src/views/dashboard/components/SiteCard.vue:101
+msgid "Network unreachable"
+msgstr ""
+
+#: src/views/dashboard/components/SiteCard.vue:103
+msgid "Invalid health check request"
+msgstr ""
+
+#: src/views/dashboard/components/SiteCard.vue:170
 #: src/views/upstream/SocketList.vue:42
 msgid "Paused"
 msgstr ""
@@ -6124,7 +6156,7 @@ msgstr ""
 #: src/views/dns/DNSCredential.vue:26
 #: src/views/dns/DNSDomainList.vue:208
 #: src/views/dns/DNSDomainList.vue:229
-#: src/views/preference/tabs/OpenAISettings.vue:81
+#: src/views/preference/tabs/OpenAISettings.vue:125
 msgid "Provider"
 msgstr ""
 
@@ -7153,7 +7185,7 @@ msgid "Avg Daily UV"
 msgstr ""
 
 #: src/views/nginx_log/dashboard/components/TopUrlsTable.vue:13
-#: src/views/node/nodeColumns.tsx:29
+#: src/views/node/nodeColumns.tsx:100
 #: src/views/system/Licenses.vue:34
 msgid "URL"
 msgstr ""
@@ -7649,43 +7681,80 @@ msgstr ""
 msgid "Sync Configs"
 msgstr ""
 
-#: src/views/node/nodeColumns.tsx:13
+#: src/views/node/nodeColumns.tsx:14
 msgid "Rotating"
 msgstr ""
 
-#: src/views/node/nodeColumns.tsx:14
+#: src/views/node/nodeColumns.tsx:15
 msgid "Unpaired"
 msgstr ""
 
-#: src/views/node/nodeColumns.tsx:15
+#: src/views/node/nodeColumns.tsx:16
 #: src/views/preference/tabs/AccessTokens.vue:147
 msgid "Revoked"
 msgstr ""
 
+#: src/views/node/nodeColumns.tsx:24
+msgid "Check the node URL, network, TLS certificate, and authentication settings."
+msgstr ""
+
+#: src/views/node/nodeColumns.tsx:28
+#: src/views/node/nodeColumns.tsx:58
+msgid "Technical details"
+msgstr ""
+
+#: src/views/node/nodeColumns.tsx:41
+msgid "The controller time is earlier than the node certificate validity start time. TLS stops the connection before node authentication."
+msgstr ""
+
 #: src/views/node/nodeColumns.tsx:44
+msgid "Synchronize the host system time on both the controller and the node."
+msgstr ""
+
+#: src/views/node/nodeColumns.tsx:45
+msgid "If Nginx UI runs in Docker, correct the Docker host clock instead of the container clock."
+msgstr ""
+
+#: src/views/node/nodeColumns.tsx:48
+msgid "On Linux hosts, check and enable network time synchronization:"
+msgstr ""
+
+#: src/views/node/nodeColumns.tsx:54
+msgid "The node will reconnect automatically after the clocks are synchronized."
+msgstr ""
+
+#: src/views/node/nodeColumns.tsx:71
+msgid "System clocks are out of sync"
+msgstr ""
+
+#: src/views/node/nodeColumns.tsx:72
+msgid "Node connection failed"
+msgstr ""
+
+#: src/views/node/nodeColumns.tsx:115
 #: src/views/preference/tabs/NodeSettings.vue:11
 msgid "Node Secret"
 msgstr ""
 
-#: src/views/node/nodeColumns.tsx:57
+#: src/views/node/nodeColumns.tsx:128
 #: src/views/user/userColumns.tsx:23
 msgid "Leave blank for no change"
 msgstr ""
 
-#: src/views/node/nodeColumns.tsx:67
+#: src/views/node/nodeColumns.tsx:138
 #: src/views/system/Licenses.vue:28
 msgid "Version"
 msgstr ""
 
-#: src/views/node/nodeColumns.tsx:72
+#: src/views/node/nodeColumns.tsx:143
 msgid "Authentication"
 msgstr ""
 
-#: src/views/node/nodeColumns.tsx:76
+#: src/views/node/nodeColumns.tsx:147
 msgid "Legacy secret"
 msgstr ""
 
-#: src/views/node/nodeColumns.tsx:82
+#: src/views/node/nodeColumns.tsx:153
 msgid "Paired signature"
 msgstr ""
 
@@ -7721,27 +7790,27 @@ msgstr ""
 msgid "Authenticating..."
 msgstr ""
 
-#: src/views/other/Login.vue:315
+#: src/views/other/Login.vue:334
 #: src/views/user/userColumns.tsx:7
 #: src/views/user/UserProfile.vue:122
 #: src/views/user/UserProfile.vue:126
 msgid "Username"
 msgstr ""
 
-#: src/views/other/Login.vue:325
+#: src/views/other/Login.vue:344
 #: src/views/user/userColumns.tsx:16
 msgid "Password"
 msgstr ""
 
-#: src/views/other/Login.vue:339
+#: src/views/other/Login.vue:358
 msgid "SSO Login"
 msgstr ""
 
-#: src/views/other/Login.vue:348
+#: src/views/other/Login.vue:367
 msgid "OIDC Login"
 msgstr ""
 
-#: src/views/other/Login.vue:392
+#: src/views/other/Login.vue:397
 msgid "Sign in with a passkey"
 msgstr ""
 
@@ -8479,73 +8548,121 @@ msgstr ""
 msgid "The Public Security Number should only contain letters, unicode, numbers, hyphens, dashes, colons, and dots."
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:35
+#: src/views/preference/tabs/OpenAISettings.vue:36
+msgid "Global"
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:39
+msgid "China"
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:46
+msgid "Always on"
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:57
+msgid "Input"
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:79
 msgid "Leave blank to use the MiniMax global OpenAI-compatible endpoint: https://api.minimax.io/v1"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:38
+#: src/views/preference/tabs/OpenAISettings.vue:82
 msgid "Leave blank to use the Atlas Cloud endpoint: https://api.atlascloud.ai/v1"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:40
+#: src/views/preference/tabs/OpenAISettings.vue:84
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:45
-#: src/views/preference/tabs/OpenAISettings.vue:123
+#: src/views/preference/tabs/OpenAISettings.vue:89
+#: src/views/preference/tabs/OpenAISettings.vue:223
 msgid "The url is invalid."
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:48
+#: src/views/preference/tabs/OpenAISettings.vue:92
 msgid "MiniMax is OpenAI-compatible. Use https://api.minimax.io/v1 for global service or https://api.minimaxi.com/v1 for China service. For Anthropic-compatible clients, use https://api.minimax.io/anthropic or https://api.minimaxi.com/anthropic."
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:52
+#: src/views/preference/tabs/OpenAISettings.vue:96
 msgid "Atlas Cloud is OpenAI-compatible. Use https://api.atlascloud.ai/v1 and an Atlas Cloud API key."
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:55
+#: src/views/preference/tabs/OpenAISettings.vue:99
 msgid "To use a local large model, deploy it with ollama, vllm or lmdeploy. "
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:95
+#: src/views/preference/tabs/OpenAISettings.vue:139
 msgid "Model"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:98
-#: src/views/preference/tabs/OpenAISettings.vue:166
+#: src/views/preference/tabs/OpenAISettings.vue:142
+#: src/views/preference/tabs/OpenAISettings.vue:266
 msgid "The model name should only contain letters, unicode, numbers, hyphens, dashes, colons, and dots."
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:107
+#: src/views/preference/tabs/OpenAISettings.vue:157
+msgid "Model capabilities"
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:161
+msgid "Context window"
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:162
+msgid "tokens"
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:165
+msgid "Input modalities"
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:169
+msgid "Thinking modes"
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:173
+msgid "Pricing per million tokens"
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:179
 msgid "API Base Url"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:120
+#: src/views/preference/tabs/OpenAISettings.vue:198
+msgid "Regional endpoints"
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:214
+msgid "Documentation"
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:220
 msgid "API Proxy"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:132
+#: src/views/preference/tabs/OpenAISettings.vue:232
 msgid "API Token"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:135
+#: src/views/preference/tabs/OpenAISettings.vue:235
 msgid "Token is not valid"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:144
+#: src/views/preference/tabs/OpenAISettings.vue:244
 msgid "API Type"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:157
+#: src/views/preference/tabs/OpenAISettings.vue:257
 msgid "Enable Code Completion"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:163
+#: src/views/preference/tabs/OpenAISettings.vue:263
 msgid "Code Completion Model"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:167
+#: src/views/preference/tabs/OpenAISettings.vue:267
 msgid "The model used for code completion, if not set, the chat model will be used."
 msgstr ""
 
