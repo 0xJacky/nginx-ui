@@ -41,7 +41,7 @@ func Rename(oldName string, newName string) (err error) {
 		return ErrDstFileExists
 	}
 
-	s := query.Site
+	s := query.Stream
 	_, _ = s.Where(s.Path.Eq(oldPath)).Update(s.Path, newPath)
 
 	err = os.Rename(oldPath, newPath)
