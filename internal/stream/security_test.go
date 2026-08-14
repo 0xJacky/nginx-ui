@@ -49,7 +49,7 @@ func setupStreamMutationTest(t *testing.T) (string, func()) {
 		t.Fatalf("failed to open test db: %v", err)
 	}
 
-	if err := db.AutoMigrate(&model.Stream{}, &model.ConfigBackup{}, &model.LLMSession{}); err != nil {
+	if err := db.AutoMigrate(&model.Stream{}, &model.ConfigBackup{}, &model.LLMSession{}, &model.Cert{}); err != nil {
 		t.Fatalf("failed to migrate test db: %v", err)
 	}
 
@@ -132,6 +132,38 @@ func TestRenameAllowsManagedStreamName(t *testing.T) {
 
 	if _, err := os.Stat(filepath.Join(confDir, "streams-available", "tcp_proxy_new")); err != nil {
 		t.Fatalf("expected renamed stream file: %v", err)
+	}
+}
+
+func TestRenameThenDeleteRemovesStreamRecord(t *testing.T) {
+	confDir, waitForSyncQuery := setupStreamMutationTest(t)
+	database := model.UseDB()
+	oldPath := filepath.Join(confDir, "streams-available", "tcp_proxy")
+	newPath := filepath.Join(confDir, "streams-available", "tcp_proxy_new")
+
+	if err := os.WriteFile(oldPath, []byte("server {\n}\n"), 0o644); err != nil {
+		t.Fatalf("failed to seed stream config: %v", err)
+	}
+	if err := database.Create(&model.Stream{Path: oldPath}).Error; err != nil {
+		t.Fatalf("failed to seed stream record: %v", err)
+	}
+
+	if err := Rename("tcp_proxy", "tcp_proxy_new"); err != nil {
+		t.Fatalf("Rename returned error: %v", err)
+	}
+	waitForSyncQuery()
+
+	if err := Delete("tcp_proxy_new"); err != nil {
+		t.Fatalf("Delete returned error: %v", err)
+	}
+
+	var count int64
+	if err := database.Unscoped().Model(&model.Stream{}).
+		Where("path IN ?", []string{oldPath, newPath}).Count(&count).Error; err != nil {
+		t.Fatalf("failed to count stream records: %v", err)
+	}
+	if count != 0 {
+		t.Fatalf("found %d stream records after rename and delete, want 0", count)
 	}
 }
 

@@ -103,6 +103,9 @@ export const useNodeAvailabilityStore = defineStore('nodeAvailability', () => {
           auth_method: node.auth_method,
           has_credential: node.has_credential,
           credential_status: node.credential_status,
+          connection_error: node.connection_error,
+          connection_error_code: node.connection_error_code,
+          connection_error_at: node.connection_error_at,
           enabled: true,
         }
       })

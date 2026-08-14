@@ -14,6 +14,9 @@ export interface Node extends ModelBase {
   credential_status: 'active' | 'unpaired' | 'rotating' | 'revoked'
   last_credential_use_at?: string
   response_at?: string
+  connection_error?: string
+  connection_error_code?: 'clock_skew'
+  connection_error_at?: string
 }
 
 export interface NodeStatus {

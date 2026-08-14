@@ -169,6 +169,34 @@ func TestApplyBundledConfPatch_UpgradesUnfixed(t *testing.T) {
 	assert.True(t, reHeaderForwardedHost.Match(out), "must rewrite X-Forwarded-Host to $forwarded_host")
 }
 
+func TestApplyBundledConfPatch_AddsMissingForwardedHost(t *testing.T) {
+	in, err := os.ReadFile(filepath.Join("test_cases", "bundled", "pre-forwarded-host.conf"))
+	require.NoError(t, err)
+	out := applyBundledConfPatch(in)
+
+	assert.True(t, hasBundledConfWebSocketFix(out))
+	assert.Contains(t, string(out), "proxy_set_header   X-Forwarded-Host     $forwarded_host;")
+	assert.Equal(t, 1, len(reHeaderForwardedHost.FindAll(out, -1)))
+}
+
+func TestFixBundledNginxUIConf_AddsMissingForwardedHost(t *testing.T) {
+	target := withFixture(t, "pre-forwarded-host.conf")
+	stubNginxCommands(t,
+		func() (string, error) { return "configuration is valid", nil },
+		func() (string, error) { return "reloaded", nil },
+	)
+
+	require.NoError(t, FixBundledNginxUIConf())
+	got, err := os.ReadFile(target)
+	require.NoError(t, err)
+	assert.True(t, hasBundledConfWebSocketFix(got))
+	assert.NoError(t, CheckBundledNginxUIConf())
+
+	backups, err := filepath.Glob(target + ".bak.*")
+	require.NoError(t, err)
+	assert.Len(t, backups, 1)
+}
+
 func TestApplyBundledConfPatch_PreservesCustomization(t *testing.T) {
 	in, err := os.ReadFile(filepath.Join("test_cases", "bundled", "customized-unfixed.conf"))
 	require.NoError(t, err)

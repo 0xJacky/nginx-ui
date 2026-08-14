@@ -12,9 +12,9 @@ func GetSiteStatus(name string) Status {
 	// database instead.
 	if path, err := ResolveAvailablePath(name); err == nil {
 		s := query.Site
-		if siteModel, err := s.Where(s.Path.Eq(path)).Preload(s.Namespace).First(); err == nil &&
-			siteModel.Namespace.IsRemoteDeploy() {
-			return remoteStatus(siteModel.RemoteEnabled)
+		siteModels, err := s.Where(s.Path.Eq(path)).Preload(s.Namespace).Find()
+		if err == nil && len(siteModels) > 0 && siteModels[0].Namespace.IsRemoteDeploy() {
+			return remoteStatus(siteModels[0].RemoteEnabled)
 		}
 	}
 
