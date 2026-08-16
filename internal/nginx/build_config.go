@@ -54,14 +54,17 @@ func (c *NgxConfig) BuildConfig() (content string, err error) {
 	for _, u := range c.Upstreams {
 
 		upstream := ""
-		var comments string
 		for _, directive := range u.Directives {
+			// Scope the comment to a single directive. Hoisting it out of the
+			// loop would re-emit the previous directive's comment on every
+			// following directive that has none.
+			var comments string
 			if directive.Comments != "" {
 				comments = buildComments(directive.Comments, 1)
 			}
 			upstream += fmt.Sprintf("%s\t%s;\n", comments, directive.Orig())
 		}
-		comments = buildComments(u.Comments, 1)
+		comments := buildComments(u.Comments, 1)
 		content += fmt.Sprintf("upstream %s {\n%s%s}\n\n", u.Name, comments, upstream)
 	}
 
