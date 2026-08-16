@@ -1,8 +1,8 @@
 package model
 
 import (
+	"net"
 	"net/url"
-	"strings"
 	"time"
 )
 
@@ -94,18 +94,21 @@ func (n *Node) GetWebSocketURL(uri string) (decodedUri string, err error) {
 		return
 	}
 
+	// Switch the scheme on the parsed URL instead of rewriting the rendered
+	// string, so a host, path, or query value that happens to contain "http"
+	// is left untouched.
 	defaultPort := ""
-	if baseUrl.Port() == "" {
-		switch baseUrl.Scheme {
-		default:
-			fallthrough
-		case "http":
-			defaultPort = "80"
-		case "https":
-			defaultPort = "443"
-		}
+	switch baseUrl.Scheme {
+	case "https", "wss":
+		defaultPort = "443"
+		baseUrl.Scheme = "wss"
+	default:
+		defaultPort = "80"
+		baseUrl.Scheme = "ws"
+	}
 
-		baseUrl.Host = baseUrl.Hostname() + ":" + defaultPort
+	if baseUrl.Port() == "" {
+		baseUrl.Host = net.JoinHostPort(baseUrl.Hostname(), defaultPort)
 	}
 
 	u, err := url.JoinPath(baseUrl.String(), uri)
@@ -119,7 +122,6 @@ func (n *Node) GetWebSocketURL(uri string) (decodedUri string, err error) {
 	if err != nil {
 		return
 	}
-	// http will be replaced with ws, https will be replaced with wss
-	decodedUri = strings.ReplaceAll(decodedUri, "http", "ws")
+
 	return
 }
