@@ -2,7 +2,9 @@ package template
 
 import (
 	"net/http"
+	"net/url"
 	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
@@ -71,6 +73,9 @@ func (r *QuickConfigRequest) validate() error {
 		if strings.TrimSpace(domain) == "" {
 			return errors.New("domain cannot be empty")
 		}
+		if !isSafeNginxToken(domain) {
+			return errors.New("domain contains invalid characters")
+		}
 	}
 
 	switch r.Type {
@@ -78,17 +83,56 @@ func (r *QuickConfigRequest) validate() error {
 		if r.Scheme != "http" && r.Scheme != "https" {
 			return errors.New("scheme must be http or https")
 		}
+		if !isSafeNginxToken(r.Host) {
+			return errors.New("host contains invalid characters")
+		}
+		port, err := strconv.Atoi(r.Port)
+		if err != nil || port < 1 || port > 65535 {
+			return errors.New("port must be between 1 and 65535")
+		}
+		if !reNginxSize.MatchString(r.ClientMaxBodySize) {
+			return errors.New("client_max_body_size must be a non-negative integer with an optional k, m, or g suffix")
+		}
 	case QuickConfigTypeStatic:
 		if strings.TrimSpace(r.WebRoot) == "" {
 			return errors.New("web_root is required")
+		}
+		if !isSafeNginxToken(r.WebRoot) {
+			return errors.New("web_root contains invalid characters")
+		}
+		if !isSafeNginxValue(r.Index) {
+			return errors.New("index contains invalid characters")
 		}
 	case QuickConfigTypeRedirect:
 		if strings.TrimSpace(r.TargetURL) == "" {
 			return errors.New("target_url is required")
 		}
+		if !isSafeNginxToken(r.TargetURL) {
+			return errors.New("target_url contains invalid characters")
+		}
+		target, err := url.ParseRequestURI(r.TargetURL)
+		if err != nil || target.Host == "" || (target.Scheme != "http" && target.Scheme != "https") {
+			return errors.New("target_url must be an absolute HTTP or HTTPS URL")
+		}
+		if r.RedirectStatus != "301" && r.RedirectStatus != "302" && r.RedirectStatus != "308" {
+			return errors.New("redirect_status must be 301, 302, or 308")
+		}
 	}
 
 	return nil
+}
+
+var (
+	reUnsafeNginxValue = regexp.MustCompile(`[;{}\r\n]`)
+	reNginxSize        = regexp.MustCompile(`^\d+[kKmMgG]?$`)
+)
+
+func isSafeNginxValue(value string) bool {
+	return value == strings.TrimSpace(value) && value != "" && !reUnsafeNginxValue.MatchString(value)
+}
+
+func isSafeNginxToken(value string) bool {
+	return isSafeNginxValue(value) && !strings.ContainsAny(value, " \t")
 }
 
 // quickApp holds the per-type server-level content of a quick config.

@@ -158,38 +158,42 @@ test('quick setup on the edit page prefills and regenerates an existing site', a
   })
   expect(saveResponse.ok()).toBe(true)
 
-  await gotoRoute(page, `/sites/${name}`)
-  const quickSetupButton = page.getByRole('button', { name: /Quick Setup/ })
-  await expect(quickSetupButton).toBeVisible()
-  await quickSetupButton.click()
+  try {
+    await gotoRoute(page, `/sites/${name}`)
+    const quickSetupButton = page.getByRole('button', { name: /Quick Setup/ })
+    await expect(quickSetupButton).toBeVisible()
+    await quickSetupButton.click()
 
-  // The modal prefills from the existing config and enables generation.
-  const modal = page.locator('.ant-modal').filter({ has: page.getByText('Generate Config') })
-  await expect(modal).toBeVisible()
-  await expect(page.getByRole('button', { name: 'Generate Config', exact: true })).toBeEnabled()
+    // The modal prefills from the existing config and enables generation.
+    const modal = page.locator('.ant-modal').filter({ has: page.getByText('Generate Config') })
+    await expect(modal).toBeVisible()
+    await expect(page.getByRole('button', { name: 'Generate Config', exact: true })).toBeEnabled()
 
-  // Change the proxy port and regenerate.
-  const portItem = modal.locator('.ant-form-item').filter({ has: page.getByText('Port', { exact: true }) }).first()
-  await portItem.locator('input').fill('8080')
+    // Change the proxy port and regenerate.
+    const portItem = modal.locator('.ant-form-item').filter({ has: page.getByText('Port', { exact: true }) }).first()
+    await portItem.locator('input').fill('8080')
 
-  const regenPromise = waitForApiResponse(page, '/api/templates/quick_config', 'POST')
-  await page.getByRole('button', { name: 'Generate Config', exact: true }).click()
-  const regen = await regenPromise
-  expect(regen.ok()).toBe(true)
+    const regenPromise = waitForApiResponse(page, '/api/templates/quick_config', 'POST')
+    await page.getByRole('button', { name: 'Generate Config', exact: true }).click()
+    const regen = await regenPromise
+    expect(regen.ok()).toBe(true)
 
-  // Confirm the destructive replace, then save the new configuration.
-  await page.getByRole('button', { name: 'Replace', exact: true }).click()
-  await expect(modal).toBeHidden()
+    // Confirm the destructive replace, then wait for the save before reading it back.
+    await page.getByRole('button', { name: 'Replace', exact: true }).click()
+    await expect(modal).toBeHidden()
 
-  await page.getByRole('button', { name: 'Save', exact: true }).click()
+    const updatePromise = waitForApiResponse(page, `/api/sites/${name}`, 'POST')
+    await page.getByRole('button', { name: 'Save', exact: true }).click()
+    const updateResponse = await updatePromise
+    expect(updateResponse.ok()).toBe(true)
 
-  const getResponse = await page.request.get(`/api/sites/${name}`, { headers })
-  expect(getResponse.ok()).toBe(true)
-  const site = await getResponse.json() as { config: string }
-  expect(site.config).toContain('proxy_pass http://127.0.0.1:8080/')
-
-  const disableResponse = await page.request.post(`/api/sites/${name}/disable`, { headers })
-  expect(disableResponse.ok()).toBe(true)
-  const deleteResponse = await page.request.delete(`/api/sites/${name}`, { headers })
-  expect(deleteResponse.ok()).toBe(true)
+    const getResponse = await page.request.get(`/api/sites/${name}`, { headers })
+    expect(getResponse.ok()).toBe(true)
+    const site = await getResponse.json() as { config: string }
+    expect(site.config).toContain('proxy_pass http://127.0.0.1:8080/')
+  }
+  finally {
+    await page.request.post(`/api/sites/${name}/disable`, { headers })
+    await page.request.delete(`/api/sites/${name}`, { headers })
+  }
 })

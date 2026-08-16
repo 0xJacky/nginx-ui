@@ -187,6 +187,70 @@ func TestBuildQuickConfigValidation(t *testing.T) {
 		req.fillDefaults()
 		assert.Equal(t, "301", req.RedirectStatus)
 	})
+
+	tests := []struct {
+		name string
+		req  QuickConfigRequest
+	}{
+		{
+			name: "domain directive injection",
+			req:  QuickConfigRequest{Type: QuickConfigTypeStatic, Domains: []string{"example.com;\nreturn 200"}, WebRoot: "/var/www"},
+		},
+		{
+			name: "reverse proxy host directive injection",
+			req:  QuickConfigRequest{Type: QuickConfigTypeReverseProxy, Domains: []string{"example.com"}, Host: "127.0.0.1;", Port: "9000"},
+		},
+		{
+			name: "reverse proxy non-numeric port",
+			req:  QuickConfigRequest{Type: QuickConfigTypeReverseProxy, Domains: []string{"example.com"}, Host: "127.0.0.1", Port: "http"},
+		},
+		{
+			name: "reverse proxy out-of-range port",
+			req:  QuickConfigRequest{Type: QuickConfigTypeReverseProxy, Domains: []string{"example.com"}, Host: "127.0.0.1", Port: "65536"},
+		},
+		{
+			name: "reverse proxy invalid body size",
+			req:  QuickConfigRequest{Type: QuickConfigTypeReverseProxy, Domains: []string{"example.com"}, Host: "127.0.0.1", Port: "9000", ClientMaxBodySize: "100m;"},
+		},
+		{
+			name: "static root directive injection",
+			req:  QuickConfigRequest{Type: QuickConfigTypeStatic, Domains: []string{"example.com"}, WebRoot: "/var/www;\nreturn 200"},
+		},
+		{
+			name: "static index directive injection",
+			req:  QuickConfigRequest{Type: QuickConfigTypeStatic, Domains: []string{"example.com"}, WebRoot: "/var/www", Index: "index.html;"},
+		},
+		{
+			name: "redirect target directive injection",
+			req:  QuickConfigRequest{Type: QuickConfigTypeRedirect, Domains: []string{"example.com"}, TargetURL: "https://new.example.com;return", RedirectStatus: "301"},
+		},
+		{
+			name: "redirect non-http target",
+			req:  QuickConfigRequest{Type: QuickConfigTypeRedirect, Domains: []string{"example.com"}, TargetURL: "javascript:alert(1)", RedirectStatus: "301"},
+		},
+		{
+			name: "redirect unsupported status",
+			req:  QuickConfigRequest{Type: QuickConfigTypeRedirect, Domains: []string{"example.com"}, TargetURL: "https://new.example.com", RedirectStatus: "307"},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tt.req.fillDefaults()
+			assert.Error(t, tt.req.validate())
+		})
+	}
+
+	t.Run("bracketed IPv6 reverse proxy host", func(t *testing.T) {
+		req := QuickConfigRequest{
+			Type:    QuickConfigTypeReverseProxy,
+			Domains: []string{"example.com"},
+			Host:    "[::1]",
+			Port:    "9000",
+		}
+		req.fillDefaults()
+		assert.NoError(t, req.validate())
+	})
 }
 
 func assertQuickConfigEqual(t *testing.T, expected, actual QuickConfigRequest) {
