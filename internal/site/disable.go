@@ -84,7 +84,7 @@ func syncDisable(name string) {
 			resp, err := client.R().
 				Post(fmt.Sprintf("/api/sites/%s/disable", name))
 			if err != nil {
-				notification.Error("Disable Remote Site Error", "", err.Error())
+				notification.Error("Disable Remote Site Error", err.Error(), nil)
 				return
 			}
 			if resp.StatusCode() != http.StatusOK {

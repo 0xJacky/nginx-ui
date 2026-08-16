@@ -49,7 +49,7 @@ func syncReload(nodeIDs []uint64) {
 			resp, err := client.R().
 				Post("/api/nginx/reload")
 			if err != nil {
-				notification.Error("Reload Remote Nginx Error", "", err.Error())
+				notification.Error("Reload Remote Nginx Error", err.Error(), nil)
 				return
 			}
 			if resp.StatusCode() != http.StatusOK {
@@ -102,7 +102,7 @@ func syncRestart(nodeIDs []uint64) {
 			resp, err := client.R().
 				Post("/api/nginx/restart")
 			if err != nil {
-				notification.Error("Restart Remote Nginx Error", "", err.Error())
+				notification.Error("Restart Remote Nginx Error", err.Error(), nil)
 				return
 			}
 			if resp.StatusCode() != http.StatusOK {
