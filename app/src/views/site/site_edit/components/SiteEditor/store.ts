@@ -321,6 +321,7 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
     hasServers,
     getTLSServerIssues,
     getConfigWithoutIncompleteTLSServers,
+    buildConfig,
     dnsLinked,
     linkedDNSName,
     init,

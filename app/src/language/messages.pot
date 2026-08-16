@@ -399,7 +399,7 @@ msgstr ""
 #: src/views/preference/components/AuthSettings/Passkey.vue:131
 #: src/views/preference/Preference.vue:147
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:196
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:208
 #: src/views/stream/components/ConfigName.vue:52
 #: src/views/stream/components/StreamEditor.vue:154
 msgid "Save"
@@ -425,6 +425,8 @@ msgstr ""
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:53
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:165
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:21
+#: src/views/site/site_edit/components/QuickSetupModal.vue:55
+#: src/views/site/site_edit/components/QuickSetupModal.vue:97
 #: src/views/site/site_list/SiteList.vue:138
 #: src/views/stream/components/StreamStatusSelect.vue:62
 msgid "Cancel"
@@ -711,8 +713,8 @@ msgstr ""
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:54
 #: src/language/curd.ts:28
 #: src/views/config/components/ConfigLeftPanel.vue:198
-#: src/views/site/site_add/SiteAdd.vue:67
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:57
+#: src/views/site/site_add/SiteAdd.vue:110
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:60
 #: src/views/stream/components/StreamEditor.vue:30
 msgid "Saved successfully"
 msgstr ""
@@ -1340,6 +1342,7 @@ msgstr ""
 
 #: src/components/PortScanner/PortScannerCompact.vue:31
 #: src/views/preference/tabs/ServerSettings.vue:22
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:74
 msgid "Port"
 msgstr ""
 
@@ -1910,6 +1913,7 @@ msgstr ""
 #: src/views/nginx_log/NginxLogList.vue:147
 #: src/views/notification/notificationColumns.tsx:8
 #: src/views/preference/components/ExternalNotify/columns.tsx:19
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:27
 msgid "Type"
 msgstr ""
 
@@ -3263,7 +3267,7 @@ msgid "Reloading nginx"
 msgstr ""
 
 #: src/language/constants.ts:19
-#: src/views/site/site_add/SiteAdd.vue:186
+#: src/views/site/site_add/SiteAdd.vue:232
 msgid "Finished"
 msgstr ""
 
@@ -3950,7 +3954,7 @@ msgid "Sites List"
 msgstr ""
 
 #: src/routes/modules/sites.ts:26
-#: src/views/site/site_add/SiteAdd.vue:177
+#: src/views/site/site_add/SiteAdd.vue:212
 msgid "Add Site"
 msgstr ""
 
@@ -4067,7 +4071,7 @@ msgstr ""
 #: src/views/preference/tabs/NodeSettings.vue:28
 #: src/views/preference/tabs/NodeSettings.vue:33
 #: src/views/site/components/SiteStatusSelect.vue:159
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:75
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:78
 #: src/views/site/site_list/columns.tsx:142
 #: src/views/stream/columns.tsx:108
 #: src/views/stream/components/RightPanel/Basic.vue:24
@@ -4086,7 +4090,7 @@ msgstr ""
 #: src/views/preference/tabs/NodeSettings.vue:28
 #: src/views/preference/tabs/NodeSettings.vue:33
 #: src/views/site/components/SiteStatusSelect.vue:162
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:81
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:84
 #: src/views/site/site_list/columns.tsx:146
 #: src/views/stream/columns.tsx:112
 #: src/views/stream/components/StreamEditor.vue:55
@@ -4611,8 +4615,8 @@ msgstr[1] ""
 #: src/views/dns/DNSGroupRecordManager.vue:1546
 #: src/views/dns/DNSRecordManager.vue:258
 #: src/views/nginx_log/NginxLog.vue:129
-#: src/views/site/site_add/SiteAdd.vue:260
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:189
+#: src/views/site/site_add/SiteAdd.vue:324
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:201
 #: src/views/stream/components/StreamEditor.vue:147
 msgid "Back"
 msgstr ""
@@ -4826,8 +4830,8 @@ msgstr ""
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:223
 #: src/views/install/components/InstallView.vue:212
-#: src/views/site/site_add/SiteAdd.vue:247
-#: src/views/site/site_add/SiteAdd.vue:254
+#: src/views/site/site_add/SiteAdd.vue:310
+#: src/views/site/site_add/SiteAdd.vue:318
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:260
 msgid "Next"
 msgstr ""
@@ -4916,6 +4920,7 @@ msgstr ""
 #: src/views/certificate/components/SelfSignedCertFields.vue:36
 #: src/views/dns/DNSGroupList.vue:30
 #: src/views/dns/DNSGroupList.vue:266
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:45
 msgid "Domains"
 msgstr ""
 
@@ -4952,7 +4957,7 @@ msgid "Format successfully"
 msgstr ""
 
 #: src/views/config/components/ConfigLeftPanel.vue:255
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:100
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:103
 #: src/views/stream/components/StreamEditor.vue:68
 msgid "History"
 msgstr ""
@@ -5240,6 +5245,7 @@ msgid "Server names hash table size"
 msgstr ""
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:110
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:84
 msgid "Client Max Body Size"
 msgstr ""
 
@@ -6025,6 +6031,7 @@ msgstr ""
 
 #: src/views/dns/components/DNSRecordFilter.vue:42
 #: src/views/preference/tabs/ServerSettings.vue:19
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:67
 msgid "Host"
 msgstr ""
 
@@ -8113,6 +8120,7 @@ msgid "Node"
 msgstr ""
 
 #: src/views/preference/Preference.vue:87
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:58
 msgid "HTTP"
 msgstr ""
 
@@ -8702,8 +8710,70 @@ msgstr ""
 msgid "Terminal Start Command"
 msgstr ""
 
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:18
+#: src/views/site/site_add/SiteAdd.vue:243
+msgid "Configuration Name"
+msgstr ""
+
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:33
+msgid "Reverse Proxy"
+msgstr ""
+
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:36
+msgid "Static Site"
+msgstr ""
+
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:39
+msgid "Redirect"
+msgstr ""
+
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:50
+msgid "example.com www.example.com"
+msgstr ""
+
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:55
+msgid "Scheme"
+msgstr ""
+
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:61
+msgid "HTTPS"
+msgstr ""
+
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:80
+msgid "Enable WebSocket"
+msgstr ""
+
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:91
+msgid "Web Root"
+msgstr ""
+
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:100
+msgid "Index"
+msgstr ""
+
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:104
+msgid "Single Page Application Fallback"
+msgstr ""
+
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:111
+msgid "Target URL"
+msgstr ""
+
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:120
+msgid "Status Code"
+msgstr ""
+
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:136
+#: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:97
+msgid "Enable TLS"
+msgstr ""
+
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:142
+msgid "Redirect HTTP to HTTPS"
+msgstr ""
+
 #: src/views/site/components/SiteStatusSelect.vue:54
-#: src/views/site/site_add/SiteAdd.vue:70
+#: src/views/site/site_add/SiteAdd.vue:113
 #: src/views/stream/components/StreamStatusSelect.vue:27
 msgid "Enabled successfully"
 msgstr ""
@@ -8758,7 +8828,7 @@ msgid "Do you want to %{action} this site?"
 msgstr ""
 
 #: src/views/site/components/SiteStatusSelect.vue:165
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:87
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:90
 #: src/views/site/site_list/columns.tsx:150
 msgid "Maintenance"
 msgstr ""
@@ -8802,7 +8872,7 @@ msgid "Select DNS domain"
 msgstr ""
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:286
-#: src/views/site/site_add/SiteAdd.vue:184
+#: src/views/site/site_add/SiteAdd.vue:230
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:618
 msgid "DNS Record"
 msgstr ""
@@ -8876,44 +8946,55 @@ msgstr ""
 msgid "Please add a DNS domain first in the DNS management section."
 msgstr ""
 
-#: src/views/site/site_add/SiteAdd.vue:151
+#: src/views/site/site_add/SiteAdd.vue:64
+#: src/views/site/site_add/SiteAdd.vue:284
+msgid "Issue a certificate to enable TLS before continuing."
+msgstr ""
+
+#: src/views/site/site_add/SiteAdd.vue:194
 msgid "DNS record selected: %{name}"
 msgstr ""
 
-#: src/views/site/site_add/SiteAdd.vue:159
+#: src/views/site/site_add/SiteAdd.vue:202
 msgid "DNS record created and linked successfully"
 msgstr ""
 
-#: src/views/site/site_add/SiteAdd.vue:183
+#: src/views/site/site_add/SiteAdd.vue:217
+#: src/views/site/site_edit/components/QuickSetupModal.vue:76
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:112
+msgid "Quick Setup"
+msgstr ""
+
+#: src/views/site/site_add/SiteAdd.vue:218
+msgid "Advanced"
+msgstr ""
+
+#: src/views/site/site_add/SiteAdd.vue:229
 msgid "Base information"
 msgstr ""
 
-#: src/views/site/site_add/SiteAdd.vue:185
+#: src/views/site/site_add/SiteAdd.vue:231
 msgid "Configure SSL"
 msgstr ""
 
-#: src/views/site/site_add/SiteAdd.vue:190
-msgid "Configuration Name"
-msgstr ""
-
-#: src/views/site/site_add/SiteAdd.vue:200
+#: src/views/site/site_add/SiteAdd.vue:253
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:491
 msgid "The parameter of server_name is required"
 msgstr ""
 
-#: src/views/site/site_add/SiteAdd.vue:266
+#: src/views/site/site_add/SiteAdd.vue:330
 msgid "Site Config Created Successfully"
 msgstr ""
 
-#: src/views/site/site_add/SiteAdd.vue:267
+#: src/views/site/site_add/SiteAdd.vue:331
 msgid "DNS record has been linked: %{name}"
 msgstr ""
 
-#: src/views/site/site_add/SiteAdd.vue:274
+#: src/views/site/site_add/SiteAdd.vue:338
 msgid "Modify Config"
 msgstr ""
 
-#: src/views/site/site_add/SiteAdd.vue:277
+#: src/views/site/site_add/SiteAdd.vue:341
 msgid "Create Another"
 msgstr ""
 
@@ -9031,8 +9112,28 @@ msgstr ""
 msgid "Author"
 msgstr ""
 
-#: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:97
-msgid "Enable TLS"
+#: src/views/site/site_edit/components/QuickSetupModal.vue:52
+msgid "Replace configuration?"
+msgstr ""
+
+#: src/views/site/site_edit/components/QuickSetupModal.vue:53
+msgid "The generated configuration will replace the current one. Any custom directives or locations will be lost."
+msgstr ""
+
+#: src/views/site/site_edit/components/QuickSetupModal.vue:54
+msgid "Replace"
+msgstr ""
+
+#: src/views/site/site_edit/components/QuickSetupModal.vue:67
+msgid "Configuration regenerated"
+msgstr ""
+
+#: src/views/site/site_edit/components/QuickSetupModal.vue:86
+msgid "Issue a certificate to enable TLS before saving."
+msgstr ""
+
+#: src/views/site/site_edit/components/QuickSetupModal.vue:105
+msgid "Generate Config"
 msgstr ""
 
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:42
@@ -9117,22 +9218,22 @@ msgstr ""
 msgid "Port Scanner"
 msgstr ""
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:70
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:73
 #: src/views/stream/components/StreamEditor.vue:44
 msgid "Edit %{n}"
 msgstr ""
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:113
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:125
 #: src/views/stream/components/StreamEditor.vue:80
 msgid "Advance Mode"
 msgstr ""
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:116
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:128
 #: src/views/stream/components/StreamEditor.vue:83
 msgid "Basic Mode"
 msgstr ""
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:141
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:153
 #: src/views/stream/components/StreamEditor.vue:105
 msgid "Nginx Configuration Parse Error"
 msgstr ""

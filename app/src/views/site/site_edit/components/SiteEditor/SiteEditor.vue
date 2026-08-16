@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { HistoryOutlined } from '@ant-design/icons-vue'
+import { HistoryOutlined, ThunderboltOutlined } from '@ant-design/icons-vue'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 import ConfigHistory from '@/components/ConfigHistory'
 import FooterToolBar from '@/components/FooterToolbar'
@@ -9,6 +9,7 @@ import UpstreamCards from '@/components/UpstreamCards/UpstreamCards.vue'
 import { ConfigStatus } from '@/constants'
 import Cert from '@/views/site/site_edit/components/Cert'
 import EnableTLS from '@/views/site/site_edit/components/EnableTLS'
+import QuickSetupModal from '@/views/site/site_edit/components/QuickSetupModal.vue'
 import { useSiteEditorStore } from './store'
 
 const { message } = App.useApp()
@@ -43,6 +44,8 @@ const upstreamTargets = computed(() => {
 })
 
 const showHistory = ref(false)
+
+const quickSetupOpen = ref(false)
 
 // Use Vue 3.4+ useTemplateRef for InspectConfig component
 const inspectConfigRef = useTemplateRef<InstanceType<typeof InspectConfig>>('inspectConfig')
@@ -98,6 +101,15 @@ async function save() {
             <HistoryOutlined />
           </template>
           {{ $gettext('History') }}
+        </AButton>
+        <AButton
+          type="primary"
+          @click="quickSetupOpen = true"
+        >
+          <template #icon>
+            <ThunderboltOutlined />
+          </template>
+          {{ $gettext('Quick Setup') }}
         </AButton>
         <div class="mode-switch">
           <div class="switch">
@@ -203,6 +215,8 @@ async function save() {
       v-model:current-content="configText"
       :filepath="filepath"
     />
+
+    <QuickSetupModal v-model:open="quickSetupOpen" />
   </ACard>
 </template>
 
