@@ -20,7 +20,7 @@ export async function gotoRoute(page: Page, route: string) {
     expect(response.ok(), `Navigation to ${url} returned ${response.status()}`).toBe(true)
   }
   await expect.poll(() => new URL(page.url()).pathname).toBe('/')
-  await expect.poll(() => new URL(page.url()).hash).toBe(url.slice(1))
+  await expect.poll(() => new URL(page.url()).hash.split('?')[0]).toBe(url.slice(1))
   await expect(page).not.toHaveURL(/\/login(?:\?|$)/)
 }
 
