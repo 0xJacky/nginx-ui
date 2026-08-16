@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"unicode/utf8"
 
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/sashabaranov/go-openai"
@@ -101,9 +102,7 @@ func extractContextForTitleGeneration(messages []openai.ChatCompletionMessage) s
 		}
 
 		// Truncate very long messages
-		if len(content) > 200 {
-			content = content[:200] + "..."
-		}
+		content = truncateRunes(content, 200)
 
 		newContent := fmt.Sprintf("%s%s\n", rolePrefix, content)
 
@@ -119,6 +118,27 @@ func extractContextForTitleGeneration(messages []openai.ChatCompletionMessage) s
 	return contextBuilder.String()
 }
 
+// truncateRunes shortens a string to at most maxRunes runes and appends an
+// ellipsis when anything was cut. Counting runes rather than bytes matters
+// because a byte-indexed cut lands in the middle of a multi-byte character for
+// any non-ASCII text (Chinese, Japanese, Cyrillic, emoji, accented Latin) and
+// leaves an invalid UTF-8 sequence behind, which the UI renders as U+FFFD.
+func truncateRunes(value string, maxRunes int) string {
+	if maxRunes <= 0 || utf8.RuneCountInString(value) <= maxRunes {
+		return value
+	}
+
+	count := 0
+	for offset := range value {
+		if count == maxRunes {
+			return value[:offset] + "..."
+		}
+		count++
+	}
+
+	return value
+}
+
 // sanitizeTitle cleans up the generated title
 func sanitizeTitle(title string) string {
 	// Remove quotes if present
@@ -130,8 +150,8 @@ func sanitizeTitle(title string) string {
 	}
 
 	// Limit length
-	if len(title) > 50 {
-		title = title[:47] + "..."
+	if utf8.RuneCountInString(title) > 50 {
+		title = truncateRunes(title, 47)
 	}
 
 	// Replace any problematic characters
