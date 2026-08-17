@@ -109,6 +109,18 @@ const notifications: Record<string, { title: () => string, content: (args: any) 
     title: () => $gettext('External Notification Test'),
     content: (args: any) => $gettext('This is a test message sent at %{timestamp} from Nginx UI.', args),
   },
+  'Certificate Paths Migrated': {
+    title: () => $gettext('Certificate Paths Migrated'),
+    content: (args: any) => $gettext('Automatically migrated certificate paths for %{sites} sites', args),
+  },
+  'Certificate Configuration Mismatch': {
+    title: () => $gettext('Certificate Configuration Mismatch'),
+    content: (args: any) => $gettext('Site %{site} is not using the certificate path managed by Nginx UI', args),
+  },
+  'Certificate Path Migration Failed': {
+    title: () => $gettext('Certificate Path Migration Failed'),
+    content: (args: any) => $gettext('Automatic certificate path migration failed for site %{site}: %{error}', args),
+  },
   'Delete Remote Site Error': {
     title: () => $gettext('Delete Remote Site Error'),
     content: (args: any) => $gettext('Delete site %{name} from %{node} failed', args),

@@ -77,6 +77,8 @@ type Cert struct {
 	LastExpiryNotifyAt                *time.Time            `json:"-"`
 	LastExpiryNotifyNotAfter          *time.Time            `json:"-"`
 	LastExpiryNotifyStage             string                `json:"-"`
+	LastDeploymentIssueHash           string                `json:"-"`
+	LastDeploymentIssueNotifyAt       *time.Time            `json:"-"`
 	Status                            string                `json:"status"`
 	LastError                         string                `json:"last_error"`
 	LastAttemptAt                     *time.Time            `json:"last_attempt_at"`

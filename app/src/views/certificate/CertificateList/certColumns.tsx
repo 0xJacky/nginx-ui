@@ -87,6 +87,30 @@ const columns: StdTableColumn[] = [{
           h('span', $gettext('Failed')),
         ]))
     }
+    const deployment = record.deployment_status
+    if (deployment?.state === 'legacy_drift' || deployment?.state === 'mismatch') {
+      const label = deployment.state === 'legacy_drift'
+        ? $gettext('Automatic migration pending')
+        : $gettext('Configuration mismatch')
+      const configuredPaths = deployment.configured_certificate_paths?.join(', ') || '-'
+      const managedPath = deployment.managed_certificate_path || '-'
+      const title = $gettext('Configured path: %{configured}; managed path: %{managed}', {
+        configured: configuredPaths,
+        managed: managedPath,
+      })
+      return h(Tooltip, { title }, () =>
+        h('div', [
+          h(Badge, { status: 'warning' }),
+          h('span', label),
+        ]))
+    }
+    if (deployment?.state === 'unreadable' && deployment.error) {
+      return h(Tooltip, { title: deployment.error }, () =>
+        h('div', [
+          h(Badge, { status: 'warning' }),
+          h('span', $gettext('Unable to verify deployment')),
+        ]))
+    }
     const info = record.certificate_info
     const valid = info?.not_before
       && info?.not_after

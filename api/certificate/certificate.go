@@ -9,6 +9,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
+	"github.com/0xJacky/Nginx-UI/internal/site"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
@@ -20,9 +21,10 @@ import (
 
 type APICertificate struct {
 	*model.Cert
-	SSLCertificate    string     `json:"ssl_certificate,omitempty"`
-	SSLCertificateKey string     `json:"ssl_certificate_key,omitempty"`
-	CertificateInfo   *cert.Info `json:"certificate_info,omitempty"`
+	SSLCertificate    string                           `json:"ssl_certificate,omitempty"`
+	SSLCertificateKey string                           `json:"ssl_certificate_key,omitempty"`
+	CertificateInfo   *cert.Info                       `json:"certificate_info,omitempty"`
+	DeploymentStatus  site.CertificateDeploymentStatus `json:"deployment_status"`
 }
 
 func Transformer(certModel *model.Cert) (certificate *APICertificate) {
@@ -55,6 +57,7 @@ func Transformer(certModel *model.Cert) (certificate *APICertificate) {
 		SSLCertificate:    string(sslCertificationBytes),
 		SSLCertificateKey: string(sslCertificationKeyBytes),
 		CertificateInfo:   certificateInfo,
+		DeploymentStatus:  site.InspectCertificateDeployment(certModel),
 	}
 }
 
@@ -65,8 +68,9 @@ func GetCertList(c *gin.Context) {
 		SetTransformer(func(m *model.Cert) any {
 			info, _ := cert.GetCertInfo(m.SSLCertificatePath)
 			return APICertificate{
-				Cert:            m,
-				CertificateInfo: info,
+				Cert:             m,
+				CertificateInfo:  info,
+				DeploymentStatus: site.InspectCertificateDeployment(m),
 			}
 		}).PagingList()
 }
