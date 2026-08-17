@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"log"
+	"net"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -18,7 +19,7 @@ import (
 
 func TestHTTPSProxyPassAvailabilityProbeE2E(t *testing.T) {
 	t.Run("raw TCP probe reproduces truncated TLS handshake", func(t *testing.T) {
-		server, errorLog, _ := newTLSProbeServer()
+		server, errorLog, _, _ := newTLSProbeServer()
 		socket := socketFromURL(t, server.URL)
 
 		status := AvailabilityTest([]string{socket})[socket]
@@ -37,7 +38,7 @@ func TestHTTPSProxyPassAvailabilityProbeE2E(t *testing.T) {
 	})
 
 	t.Run("HTTPS-aware probe completes TLS without an HTTP request", func(t *testing.T) {
-		server, errorLog, requestCount := newTLSProbeServer()
+		server, errorLog, requestCount, connections := newTLSProbeServer()
 		service := GetUpstreamService()
 		service.ClearTargets()
 		originalEnabled := settings.UpstreamCheckSettings.Enabled
@@ -69,6 +70,12 @@ func TestHTTPSProxyPassAvailabilityProbeE2E(t *testing.T) {
 		socket := formatSocketAddress(targets[0].Host, targets[0].Port)
 		service.PerformAvailabilityTest()
 		status := service.GetAvailabilityMap()[socket]
+		select {
+		case <-connections.closed:
+		case <-time.After(time.Second):
+			server.Close()
+			t.Fatal("HTTPS-aware probe connection did not close cleanly")
+		}
 		server.Close()
 
 		if status == nil || !status.Online {
@@ -111,6 +118,20 @@ type synchronizedLog struct {
 	written chan struct{}
 }
 
+type connectionStateRecorder struct {
+	closed chan struct{}
+}
+
+func (r *connectionStateRecorder) record(_ net.Conn, state http.ConnState) {
+	if state != http.StateClosed {
+		return
+	}
+	select {
+	case r.closed <- struct{}{}:
+	default:
+	}
+}
+
 func (l *synchronizedLog) Write(p []byte) (int, error) {
 	l.mu.Lock()
 	defer l.mu.Unlock()
@@ -128,15 +149,17 @@ func (l *synchronizedLog) String() string {
 	return l.buffer.String()
 }
 
-func newTLSProbeServer() (*httptest.Server, *synchronizedLog, *atomic.Int32) {
+func newTLSProbeServer() (*httptest.Server, *synchronizedLog, *atomic.Int32, *connectionStateRecorder) {
 	errorLog := &synchronizedLog{written: make(chan struct{}, 1)}
 	requestCount := &atomic.Int32{}
+	connections := &connectionStateRecorder{closed: make(chan struct{}, 1)}
 	server := httptest.NewUnstartedServer(http.HandlerFunc(func(http.ResponseWriter, *http.Request) {
 		requestCount.Add(1)
 	}))
 	server.Config.ErrorLog = log.New(errorLog, "", 0)
+	server.Config.ConnState = connections.record
 	server.StartTLS()
-	return server, errorLog, requestCount
+	return server, errorLog, requestCount, connections
 }
 
 func socketFromURL(t *testing.T, rawURL string) string {
