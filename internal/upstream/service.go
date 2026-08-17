@@ -151,6 +151,7 @@ func (s *Service) updateTargetsFromConfig(configPath string, targets []ProxyTarg
 
 		if existingTarget, exists := s.targets[key]; exists {
 			// Update existing target with latest info
+			existingTarget.Scheme = mergeProbeScheme(existingTarget.Scheme, target.Scheme)
 			existingTarget.LastSeen = now
 			existingTarget.ConfigPath = configPath // Update to latest config that referenced it
 			// logger.Debug("Updated proxy target:", key, "from config:", configPath)
@@ -258,7 +259,7 @@ func (s *Service) PerformAvailabilityTest() {
 
 	// Separate targets into traditional and consul groups from the start
 	s.targetsMutex.RLock()
-	regularTargetKeys := make([]string, 0, len(s.targets))
+	regularTargets := make([]ProxyTarget, 0, len(s.targets))
 	consulTargets := make([]ProxyTarget, 0, len(s.targets))
 
 	for _, targetInfo := range s.targets {
@@ -272,8 +273,7 @@ func (s *Service) PerformAvailabilityTest() {
 		if targetInfo.ProxyTarget.IsConsul {
 			consulTargets = append(consulTargets, targetInfo.ProxyTarget)
 		} else {
-			// Traditional target - use properly formatted socket address
-			regularTargetKeys = append(regularTargetKeys, socketAddr)
+			regularTargets = append(regularTargets, targetInfo.ProxyTarget)
 		}
 	}
 	s.targetsMutex.RUnlock()
@@ -281,10 +281,10 @@ func (s *Service) PerformAvailabilityTest() {
 	// Initialize results map
 	results := make(map[string]*Status)
 
-	// Test traditional targets using the original AvailabilityTest
-	if len(regularTargetKeys) > 0 {
-		// logger.Debug("Testing", len(regularTargetKeys), "traditional targets")
-		regularResults := AvailabilityTest(regularTargetKeys)
+	// Test regular targets using the transport parsed from their pass directives.
+	if len(regularTargets) > 0 {
+		// logger.Debug("Testing", len(regularTargets), "regular targets")
+		regularResults := AvailabilityTestTargets(regularTargets)
 		maps.Copy(results, regularResults)
 	}
 
@@ -563,6 +563,7 @@ func (s *Service) filterKnownUpstreamReferences(targets []ProxyTarget) []ProxyTa
 
 	for _, target := range targets {
 		if target.Type != "upstream" && s.IsUpstreamName(target.Host) {
+			s.applySchemeToUpstream(target.Host, target.Scheme)
 			continue
 		}
 		filtered = append(filtered, target)
@@ -581,6 +582,20 @@ func (s *Service) removeKnownUpstreamReferenceTargets() {
 
 	if len(knownUpstreams) == 0 {
 		return
+	}
+
+	referenceSchemes := make(map[string]string)
+	s.targetsMutex.RLock()
+	for _, targetInfo := range s.targets {
+		if targetInfo.Type == "upstream" || !knownUpstreams[targetInfo.Host] {
+			continue
+		}
+		referenceSchemes[targetInfo.Host] = mergeProbeScheme(referenceSchemes[targetInfo.Host], targetInfo.Scheme)
+	}
+	s.targetsMutex.RUnlock()
+
+	for upstreamName, scheme := range referenceSchemes {
+		s.applySchemeToUpstream(upstreamName, scheme)
 	}
 
 	s.targetsMutex.Lock()
@@ -606,6 +621,34 @@ func (s *Service) removeKnownUpstreamReferenceTargets() {
 				continue
 			}
 			s.configTargets[configPath] = filteredKeys
+		}
+	}
+}
+
+func (s *Service) applySchemeToUpstream(upstreamName, scheme string) {
+	if scheme == "" {
+		return
+	}
+
+	s.upstreamsMutex.Lock()
+	definition, exists := s.Upstreams[upstreamName]
+	if !exists {
+		s.upstreamsMutex.Unlock()
+		return
+	}
+
+	serverSockets := make([]string, 0, len(definition.Servers))
+	for i := range definition.Servers {
+		definition.Servers[i].Scheme = mergeProbeScheme(definition.Servers[i].Scheme, scheme)
+		serverSockets = append(serverSockets, formatSocketAddress(definition.Servers[i].Host, definition.Servers[i].Port))
+	}
+	s.upstreamsMutex.Unlock()
+
+	s.targetsMutex.Lock()
+	defer s.targetsMutex.Unlock()
+	for _, socket := range serverSockets {
+		if targetInfo, ok := s.targets[socket]; ok && targetInfo.Type == "upstream" {
+			targetInfo.Scheme = mergeProbeScheme(targetInfo.Scheme, scheme)
 		}
 	}
 }

@@ -12,10 +12,11 @@ import (
 type ProxyTarget struct {
 	Host       string `json:"host"`
 	Port       string `json:"port"`
-	Type       string `json:"type"`        // "proxy_pass", "grpc_pass" or "upstream"
-	Resolver   string `json:"resolver"`    // DNS resolver address (e.g., "127.0.0.1:8600")
-	IsConsul   bool   `json:"is_consul"`   // Whether this is a consul service discovery target
-	ServiceURL string `json:"service_url"` // Full service URL for consul (e.g., "service.consul service=redacted-net resolve")
+	Type       string `json:"type"`             // "proxy_pass", "grpc_pass" or "upstream"
+	Scheme     string `json:"scheme,omitempty"` // Transport scheme when it is explicit in the pass directive
+	Resolver   string `json:"resolver"`         // DNS resolver address (e.g., "127.0.0.1:8600")
+	IsConsul   bool   `json:"is_consul"`        // Whether this is a consul service discovery target
+	ServiceURL string `json:"service_url"`      // Full service URL for consul (e.g., "service.consul service=redacted-net resolve")
 }
 
 // TheUpstreamContext contains upstream-level configuration
@@ -40,6 +41,7 @@ func ParseProxyTargetsFromRawContent(content string) []ProxyTarget {
 func ParseProxyTargetsAndUpstreamsFromRawContent(content string) *ParseResult {
 	var targets []ProxyTarget
 	upstreams := make(map[string][]ProxyTarget)
+	upstreamSchemes := make(map[string]string)
 
 	// First, collect all upstream names and their contexts
 	// Also collect literal variable assignments from `set $var value;`
@@ -117,6 +119,8 @@ func ParseProxyTargetsAndUpstreamsFromRawContent(content string) *ParseResult {
 				if target.Host != "" {
 					targets = append(targets, target)
 				}
+			} else if target := parseProxyPassURL(proxyPassURL, "proxy_pass"); target.Host != "" {
+				upstreamSchemes[target.Host] = mergeProbeScheme(upstreamSchemes[target.Host], target.Scheme)
 			}
 		}
 	}
@@ -141,8 +145,32 @@ func ParseProxyTargetsAndUpstreamsFromRawContent(content string) *ParseResult {
 				if target.Host != "" {
 					targets = append(targets, target)
 				}
+			} else if target := parseProxyPassURL(grpcPassURL, "grpc_pass"); target.Host != "" {
+				upstreamSchemes[target.Host] = mergeProbeScheme(upstreamSchemes[target.Host], target.Scheme)
 			}
 		}
+	}
+
+	serverSchemes := make(map[string]string)
+	for upstreamName, scheme := range upstreamSchemes {
+		servers, exists := upstreams[upstreamName]
+		if !exists {
+			continue
+		}
+		for i := range servers {
+			servers[i].Scheme = mergeProbeScheme(servers[i].Scheme, scheme)
+			socket := formatSocketAddress(servers[i].Host, servers[i].Port)
+			serverSchemes[socket] = mergeProbeScheme(serverSchemes[socket], scheme)
+		}
+		upstreams[upstreamName] = servers
+	}
+
+	for i := range targets {
+		if targets[i].Type != "upstream" {
+			continue
+		}
+		socket := formatSocketAddress(targets[i].Host, targets[i].Port)
+		targets[i].Scheme = mergeProbeScheme(targets[i].Scheme, serverSchemes[socket])
 	}
 
 	return &ParseResult{
@@ -186,9 +214,10 @@ func parseProxyPassURL(passURL, passType string) ProxyTarget {
 			}
 
 			return ProxyTarget{
-				Host: host,
-				Port: port,
-				Type: passType,
+				Host:   host,
+				Port:   port,
+				Type:   passType,
+				Scheme: parsedURL.Scheme,
 			}
 		}
 	}
@@ -333,7 +362,7 @@ func parseAddressOnly(addr string) ProxyTarget {
 
 // deduplicateTargets removes duplicate proxy targets
 func deduplicateTargets(targets []ProxyTarget) []ProxyTarget {
-	seen := make(map[string]bool)
+	seen := make(map[string]int)
 	var result []ProxyTarget
 
 	for _, target := range targets {
@@ -345,13 +374,30 @@ func deduplicateTargets(targets []ProxyTarget) []ProxyTarget {
 			key += ":consul:" + target.ServiceURL
 		}
 
-		if !seen[key] {
-			seen[key] = true
-			result = append(result, target)
+		if index, exists := seen[key]; exists {
+			result[index].Scheme = mergeProbeScheme(result[index].Scheme, target.Scheme)
+			continue
 		}
+
+		seen[key] = len(result)
+		result = append(result, target)
 	}
 
 	return result
+}
+
+func mergeProbeScheme(current, candidate string) string {
+	if isTLSProbeScheme(candidate) {
+		return candidate
+	}
+	if current != "" {
+		return current
+	}
+	return candidate
+}
+
+func isTLSProbeScheme(scheme string) bool {
+	return scheme == "https" || scheme == "grpcs"
 }
 
 // isUpstreamReference checks if a proxy_pass or grpc_pass URL references an upstream block
