@@ -28,6 +28,7 @@ func InitRouter(r *gin.RouterGroup) {
 		admin.GET("nodes/:id/secret", GetNodeSecret)
 		admin.GET("nodes/:id/credentials", GetNodeCredentials)
 		admin.POST("nodes/:id/credentials/rotate", RotateNodeCredential)
+		admin.POST("nodes/:id/auth-upgrade/retry", RetryNodeAuthUpgrade)
 		admin.GET("node/credentials", ListControllerCredentials)
 		admin.DELETE("node/credentials/:credential_id", RevokeControllerCredential)
 	}

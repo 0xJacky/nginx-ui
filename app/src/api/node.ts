@@ -13,6 +13,14 @@ export interface Node extends ModelBase {
   has_credential: boolean
   credential_status: 'active' | 'unpaired' | 'rotating' | 'revoked'
   last_credential_use_at?: string
+  auth_upgrade_status?: 'pending' | 'in_progress' | 'waiting_target' | 'failed' | 'completed' | 'paused'
+  auth_upgrade_step?: 'queued' | 'request' | 'verify' | 'persist' | 'completed'
+  auth_upgrade_attempt_count: number
+  auth_upgrade_attempted_at?: string
+  auth_upgrade_next_retry_at?: string
+  auth_upgrade_completed_at?: string
+  auth_upgrade_error_code?: 'target_unsupported' | 'timeout' | 'connection_failed' | 'authentication_rejected' | 'target_rejected' | 'invalid_response' | 'invalid_confirmation' | 'persistence_failed' | 'missing_legacy_secret' | 'internal'
+  auth_upgrade_error?: string
   response_at?: string
   connection_error?: string
   connection_error_code?: 'clock_skew'
@@ -90,6 +98,7 @@ const nodeApi = extendCurdApi(useCurdApi<Node>(baseUrl), {
   syncConfigs,
   getSecret: (id: number) => http.get<{ value: string }>(`${baseUrl}/${id}/secret`),
   rotateCredential: (id: number) => http.post(`${baseUrl}/${id}/credentials/rotate`),
+  retryAuthUpgrade: (id: number) => http.post<Node>(`${baseUrl}/${id}/auth-upgrade/retry`),
 })
 
 export default nodeApi

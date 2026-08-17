@@ -42,6 +42,7 @@ func TestNodeResponseRedactsAllCredentialMaterial(t *testing.T) {
 	require.NotContains(t, response, "token")
 	require.NotContains(t, response, "private_key")
 	require.Contains(t, response, `"auth_method":"legacy_secret"`)
+	require.Contains(t, response, `"auth_upgrade_status":"paused"`)
 	require.Contains(t, response, `"has_credential":true`)
 	require.Contains(t, response, `"status":false`)
 	require.NotContains(t, response, `"NodeStat"`)
@@ -217,4 +218,17 @@ func TestNodeRouterRegistersRecoveryRoute(t *testing.T) {
 		}
 	}
 	t.Fatal("PATCH /api/nodes/:id recovery route is not registered")
+}
+
+func TestNodeRouterRegistersAuthenticationUpgradeRetryRoute(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	router := gin.New()
+	InitRouter(router.Group("/api"))
+
+	for _, route := range router.Routes() {
+		if route.Method == http.MethodPost && route.Path == "/api/nodes/:id/auth-upgrade/retry" {
+			return
+		}
+	}
+	t.Fatal("POST /api/nodes/:id/auth-upgrade/retry is not registered")
 }

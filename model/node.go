@@ -14,18 +14,50 @@ const (
 	NodeCredentialStatusUnpaired = "unpaired"
 	NodeCredentialStatusRotating = "rotating"
 	NodeCredentialStatusRevoked  = "revoked"
+
+	NodeAuthUpgradeStatusPending       = "pending"
+	NodeAuthUpgradeStatusInProgress    = "in_progress"
+	NodeAuthUpgradeStatusWaitingTarget = "waiting_target"
+	NodeAuthUpgradeStatusFailed        = "failed"
+	NodeAuthUpgradeStatusCompleted     = "completed"
+	NodeAuthUpgradeStatusPaused        = "paused"
+
+	NodeAuthUpgradeStepQueued    = "queued"
+	NodeAuthUpgradeStepRequest   = "request"
+	NodeAuthUpgradeStepVerify    = "verify"
+	NodeAuthUpgradeStepPersist   = "persist"
+	NodeAuthUpgradeStepCompleted = "completed"
+
+	NodeAuthUpgradeErrorTargetUnsupported      = "target_unsupported"
+	NodeAuthUpgradeErrorTimeout                = "timeout"
+	NodeAuthUpgradeErrorConnectionFailed       = "connection_failed"
+	NodeAuthUpgradeErrorAuthenticationRejected = "authentication_rejected"
+	NodeAuthUpgradeErrorTargetRejected         = "target_rejected"
+	NodeAuthUpgradeErrorInvalidResponse        = "invalid_response"
+	NodeAuthUpgradeErrorInvalidConfirmation    = "invalid_confirmation"
+	NodeAuthUpgradeErrorPersistenceFailed      = "persistence_failed"
+	NodeAuthUpgradeErrorMissingLegacySecret    = "missing_legacy_secret"
+	NodeAuthUpgradeErrorInternal               = "internal"
 )
 
 type Node struct {
 	Model
-	Name                  string     `json:"name"`
-	URL                   string     `json:"url"`
-	Token                 string     `json:"-"`
-	EncryptedLegacySecret []byte     `json:"-"`
-	AuthMethod            string     `json:"auth_method" gorm:"default:legacy_secret;index"`
-	CredentialStatus      string     `json:"credential_status" gorm:"default:unpaired"`
-	LastCredentialUseAt   *time.Time `json:"last_credential_use_at,omitempty"`
-	Enabled               bool       `json:"enabled" gorm:"default:false"`
+	Name                    string     `json:"name"`
+	URL                     string     `json:"url"`
+	Token                   string     `json:"-"`
+	EncryptedLegacySecret   []byte     `json:"-"`
+	AuthMethod              string     `json:"auth_method" gorm:"default:legacy_secret;index"`
+	CredentialStatus        string     `json:"credential_status" gorm:"default:unpaired"`
+	LastCredentialUseAt     *time.Time `json:"last_credential_use_at,omitempty"`
+	AuthUpgradeStatus       string     `json:"auth_upgrade_status" gorm:"index"`
+	AuthUpgradeStep         string     `json:"auth_upgrade_step"`
+	AuthUpgradeAttemptCount uint       `json:"auth_upgrade_attempt_count"`
+	AuthUpgradeAttemptedAt  *time.Time `json:"auth_upgrade_attempted_at,omitempty"`
+	AuthUpgradeNextRetryAt  *time.Time `json:"auth_upgrade_next_retry_at,omitempty"`
+	AuthUpgradeCompletedAt  *time.Time `json:"auth_upgrade_completed_at,omitempty"`
+	AuthUpgradeErrorCode    string     `json:"auth_upgrade_error_code,omitempty"`
+	AuthUpgradeError        string     `json:"auth_upgrade_error,omitempty"`
+	Enabled                 bool       `json:"enabled" gorm:"default:false"`
 }
 
 func (n *Node) HasCredential() bool {

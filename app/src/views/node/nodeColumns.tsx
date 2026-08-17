@@ -7,14 +7,7 @@ import { Badge, InputPassword, Popover, Tag } from 'ant-design-vue'
 import { h } from 'vue'
 import nodeApi from '@/api/node'
 import { SensitiveInput } from '@/components/SensitiveString'
-
-// Only a credential that is not simply healthy is worth its own word: the
-// remaining states collapse into naming the authentication method itself.
-const unhealthyCredentialMap: Record<string, { color: string, text: () => string }> = {
-  rotating: { color: 'blue', text: () => $gettext('Rotating') },
-  unpaired: { color: 'default', text: () => $gettext('Unpaired') },
-  revoked: { color: 'red', text: () => $gettext('Revoked') },
-}
+import NodeAuthStatus from './NodeAuthStatus.vue'
 
 function renderConnectionErrorContent(record: Node) {
   if (record.connection_error_code !== 'clock_skew') {
@@ -142,18 +135,9 @@ const columns: StdTableColumn[] = [{
 }, {
   title: () => $gettext('Authentication'),
   dataIndex: 'auth_method',
-  customRender: ({ record }: CustomRenderArgs) => {
-    if (record.auth_method !== 'paired_ed25519')
-      return <Tag color="orange" class="m-0">{$gettext('Legacy secret')}</Tag>
-
-    const unhealthy = unhealthyCredentialMap[record.credential_status as string]
-    if (unhealthy)
-      return <Tag color={unhealthy.color} class="m-0">{unhealthy.text()}</Tag>
-
-    return <Tag color="green" class="m-0">{$gettext('Paired signature')}</Tag>
-  },
+  customRender: ({ record }: CustomRenderArgs) => <NodeAuthStatus node={record as Node} />,
   pure: true,
-  width: 140,
+  width: 160,
 }, {
   title: () => $gettext('Status'),
   dataIndex: 'status',
