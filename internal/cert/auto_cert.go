@@ -87,21 +87,7 @@ func autoCert(certModel *model.Cert) {
 		return
 	}
 
-	payload := &ConfigPayload{
-		CertID:                  certModel.ID,
-		ServerName:              certModel.Domains,
-		ChallengeMethod:         certModel.ChallengeMethod,
-		Profile:                 certModel.Profile,
-		DNSCredentialID:         certModel.DnsCredentialID,
-		KeyType:                 certModel.GetKeyType(),
-		ACMEUserID:              certModel.ACMEUserID,
-		NotBefore:               certInfo.NotBefore,
-		MustStaple:              certModel.MustStaple,
-		LegoDisableCNAMESupport: certModel.LegoDisableCNAMESupport,
-		EnableCommonName:        certModel.EnableCommonName,
-		RevokeOld:               certModel.RevokeOld,
-		ReplacesCertID:          scheduleDecision.ReplacesCertID,
-	}
+	payload := newAutoRenewPayload(certModel, certInfo, scheduleDecision.ReplacesCertID)
 
 	// Renew in place. The nginx configuration keeps referencing the paths that
 	// were recorded when the certificate was first issued, and nothing rewrites
@@ -136,6 +122,25 @@ func autoCert(certModel *model.Cert) {
 	if err != nil {
 		notification.Error("Sync Certificate Error", err.Error(), nil)
 		return
+	}
+}
+
+func newAutoRenewPayload(certModel *model.Cert, certInfo *Info, replacesCertID string) *ConfigPayload {
+	return &ConfigPayload{
+		CertID:                            certModel.ID,
+		ServerName:                        certModel.Domains,
+		ChallengeMethod:                   certModel.ChallengeMethod,
+		Profile:                           certModel.Profile,
+		DNSCredentialID:                   certModel.DnsCredentialID,
+		KeyType:                           certModel.GetKeyType(),
+		ACMEUserID:                        certModel.ACMEUserID,
+		NotBefore:                         certInfo.NotBefore,
+		MustStaple:                        certModel.MustStaple,
+		LegoDisableCNAMESupport:           certModel.LegoDisableCNAMESupport,
+		DisableAuthoritativeNSPropagation: certModel.DisableAuthoritativeNSPropagation,
+		EnableCommonName:                  certModel.EnableCommonName,
+		RevokeOld:                         certModel.RevokeOld,
+		ReplacesCertID:                    replacesCertID,
 	}
 }
 

@@ -31,16 +31,17 @@ func TestPersistCertDraftCreatesPendingRecord(t *testing.T) {
 	db := setupCertTestDB(t)
 
 	payload := &cert.ConfigPayload{
-		ServerName:              []string{"example.com", "*.example.com"},
-		ChallengeMethod:         "dns01",
-		Profile:                 "shortlived",
-		DNSCredentialID:         42,
-		ACMEUserID:              7,
-		KeyType:                 certcrypto.RSA2048,
-		MustStaple:              true,
-		LegoDisableCNAMESupport: true,
-		EnableCommonName:        true,
-		RevokeOld:               true,
+		ServerName:                        []string{"example.com", "*.example.com"},
+		ChallengeMethod:                   "dns01",
+		Profile:                           "shortlived",
+		DNSCredentialID:                   42,
+		ACMEUserID:                        7,
+		KeyType:                           certcrypto.RSA2048,
+		MustStaple:                        true,
+		LegoDisableCNAMESupport:           true,
+		DisableAuthoritativeNSPropagation: true,
+		EnableCommonName:                  true,
+		RevokeOld:                         true,
 	}
 
 	got, err := persistCertDraft("example.com", payload)
@@ -60,6 +61,7 @@ func TestPersistCertDraftCreatesPendingRecord(t *testing.T) {
 	assert.Equal(t, uint64(7), fromDB.ACMEUserID)
 	assert.True(t, fromDB.MustStaple)
 	assert.True(t, fromDB.LegoDisableCNAMESupport)
+	assert.True(t, fromDB.DisableAuthoritativeNSPropagation)
 	assert.True(t, fromDB.EnableCommonName)
 	assert.True(t, fromDB.RevokeOld)
 	assert.Equal(t, model.AutoCertEnabled, fromDB.AutoCert)
@@ -68,12 +70,13 @@ func TestPersistCertDraftCreatesPendingRecord(t *testing.T) {
 func TestPersistCertDraftReusesExistingRow(t *testing.T) {
 	db := setupCertTestDB(t)
 	existing := model.Cert{
-		Name:             "example.com",
-		Filename:         "example.com",
-		KeyType:          certcrypto.RSA2048,
-		Status:           model.CertStatusFailure,
-		LastError:        "prior failure",
-		EnableCommonName: true,
+		Name:                              "example.com",
+		Filename:                          "example.com",
+		KeyType:                           certcrypto.RSA2048,
+		Status:                            model.CertStatusFailure,
+		LastError:                         "prior failure",
+		DisableAuthoritativeNSPropagation: true,
+		EnableCommonName:                  true,
 	}
 	require.NoError(t, db.Create(&existing).Error)
 
@@ -88,6 +91,7 @@ func TestPersistCertDraftReusesExistingRow(t *testing.T) {
 	assert.Equal(t, existing.ID, got.ID)
 	assert.Equal(t, model.CertStatusPending, got.Status)
 	assert.Equal(t, "", got.LastError)
+	assert.False(t, got.DisableAuthoritativeNSPropagation)
 	assert.False(t, got.EnableCommonName)
 
 	var count int64

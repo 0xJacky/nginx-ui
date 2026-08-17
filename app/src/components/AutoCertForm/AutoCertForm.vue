@@ -226,6 +226,18 @@ defineExpose({
         </template>
         <ASwitch v-model:checked="data.lego_disable_cname_support" />
       </AFormItem>
+      <AFormItem
+        v-if="data.challenge_method === 'dns01'"
+        :label="$gettext('Disable Authoritative DNS Propagation Check')"
+      >
+        <template #help>
+          <p>
+            {{ $gettext('Skip the local authoritative nameserver propagation check. '
+              + 'The certificate authority will still validate the DNS record independently.') }}
+          </p>
+        </template>
+        <ASwitch v-model:checked="data.disable_authoritative_ns_propagation" />
+      </AFormItem>
       <AFormItem :label="$gettext('Enable Common Name')">
         <template #help>
           <p>

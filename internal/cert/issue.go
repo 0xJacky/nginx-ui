@@ -149,11 +149,11 @@ func IssueCert(payload *ConfigPayload, certLogger *Logger) error {
 			// (systemd-resolved at 127.0.0.53, Unbound, Docker DNS, etc.)
 			// frequently REFUSE these queries, so DNS-01 issuance/renewal that
 			// worked under lego v4 started timing out after the v5 migration.
-			// Restore the v4 behavior by only requiring propagation to the
-			// authoritative nameservers. Fixes #1711, #1719.
-			err = client.Challenge.SetDNS01Provider(provider,
-				dns01.DisableRecursiveNSsPropagationRequirement(),
-			)
+			// Default to the v4 behavior by only requiring propagation to the
+			// authoritative nameservers. A per-certificate option can also skip
+			// that local pre-check when the authoritative path is unreliable.
+			// Fixes #1711, #1719.
+			err = client.Challenge.SetDNS01Provider(provider, dns01ChallengeOptions(payload)...)
 		} else {
 			return ErrEnvironmentConfigurationIsEmpty
 		}
@@ -237,6 +237,16 @@ func IssueCert(payload *ConfigPayload, certLogger *Logger) error {
 	time.Sleep(2 * time.Second)
 
 	return nil
+}
+
+func dns01ChallengeOptions(payload *ConfigPayload) []dns01.ChallengeOption {
+	options := []dns01.ChallengeOption{
+		dns01.DisableRecursiveNSsPropagationRequirement(),
+	}
+	if payload.DisableAuthoritativeNSPropagation {
+		options = append(options, dns01.DisableAuthoritativeNssPropagationRequirement())
+	}
+	return options
 }
 
 func canUseLegoRenew(payload *ConfigPayload) bool {

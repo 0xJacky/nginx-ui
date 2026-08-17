@@ -17,23 +17,24 @@ import (
 )
 
 type ConfigPayload struct {
-	CertID                  uint64                     `json:"cert_id"`
-	ServerName              []string                   `json:"server_name"`
-	ChallengeMethod         string                     `json:"challenge_method"`
-	Profile                 string                     `json:"profile"`
-	DNSCredentialID         uint64                     `json:"dns_credential_id"`
-	ACMEUserID              uint64                     `json:"acme_user_id"`
-	KeyType                 certcrypto.KeyType         `json:"key_type"`
-	Resource                *model.CertificateResource `json:"resource,omitempty"`
-	MustStaple              bool                       `json:"must_staple"`
-	LegoDisableCNAMESupport bool                       `json:"lego_disable_cname_support"`
-	EnableCommonName        bool                       `json:"enable_common_name"`
-	NotBefore               time.Time                  `json:"-"`
-	CertificateDir          string                     `json:"-"`
-	SSLCertificatePath      string                     `json:"-"`
-	SSLCertificateKeyPath   string                     `json:"-"`
-	RevokeOld               bool                       `json:"revoke_old"`
-	ReplacesCertID          string                     `json:"-"`
+	CertID                            uint64                     `json:"cert_id"`
+	ServerName                        []string                   `json:"server_name"`
+	ChallengeMethod                   string                     `json:"challenge_method"`
+	Profile                           string                     `json:"profile"`
+	DNSCredentialID                   uint64                     `json:"dns_credential_id"`
+	ACMEUserID                        uint64                     `json:"acme_user_id"`
+	KeyType                           certcrypto.KeyType         `json:"key_type"`
+	Resource                          *model.CertificateResource `json:"resource,omitempty"`
+	MustStaple                        bool                       `json:"must_staple"`
+	LegoDisableCNAMESupport           bool                       `json:"lego_disable_cname_support"`
+	DisableAuthoritativeNSPropagation bool                       `json:"disable_authoritative_ns_propagation"`
+	EnableCommonName                  bool                       `json:"enable_common_name"`
+	NotBefore                         time.Time                  `json:"-"`
+	CertificateDir                    string                     `json:"-"`
+	SSLCertificatePath                string                     `json:"-"`
+	SSLCertificateKeyPath             string                     `json:"-"`
+	RevokeOld                         bool                       `json:"revoke_old"`
+	ReplacesCertID                    string                     `json:"-"`
 }
 
 func (c *ConfigPayload) GetACMEUser() (user *model.AcmeUser, err error) {
