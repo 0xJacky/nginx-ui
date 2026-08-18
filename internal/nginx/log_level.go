@@ -5,9 +5,12 @@ import "strings"
 // refer to https://nginx.org/en/docs/ngx_core_module.html#error_log
 // nginx log level: debug, info, notice, warn, error, crit, alert, or emerg
 
+const Unknown = -1
+
+// The values below must stay aligned with the indexes of logLevel, because
+// GetLogLevel returns an index into that slice.
 const (
-	Unknown = -1
-	Debug   = iota
+	Debug = iota
 	Info
 	Notice
 	Warn
