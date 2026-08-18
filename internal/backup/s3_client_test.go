@@ -50,6 +50,22 @@ func TestConstructS3Key(t *testing.T) {
 			filename:    "backup.zip",
 			expected:    "nginx-ui/backups/backup.zip",
 		},
+		{
+			// "/" is what an operator types to upload to the bucket root.
+			// Stripping the leading slash leaves an empty string, and the
+			// trailing-slash check then indexed storagePath[-1] and panicked,
+			// taking down the process from the auto backup cron goroutine.
+			name:        "storage path is bucket root",
+			storagePath: "/",
+			filename:    "backup.zip",
+			expected:    "backup.zip",
+		},
+		{
+			name:        "storage path is repeated slashes",
+			storagePath: "//",
+			filename:    "backup.zip",
+			expected:    "backup.zip",
+		},
 	}
 
 	for _, tt := range tests {

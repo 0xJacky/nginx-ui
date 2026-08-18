@@ -191,22 +191,15 @@ func getS3Region(region string) string {
 // Returns:
 //   - string: Properly formatted S3 object key
 func constructS3Key(storagePath, filename string) string {
-	// Ensure storage path doesn't start with slash and ends with slash
+	// Ensure storage path doesn't start with slash and ends with slash.
+	// A path made only of slashes ("/", "//") means the bucket root, and
+	// trimming it leaves an empty prefix rather than an out-of-range index.
+	storagePath = strings.Trim(storagePath, "/")
 	if storagePath == "" {
 		return filename
 	}
 
-	// Remove leading slash if present
-	if storagePath[0] == '/' {
-		storagePath = storagePath[1:]
-	}
-
-	// Add trailing slash if not present
-	if storagePath[len(storagePath)-1] != '/' {
-		storagePath += "/"
-	}
-
-	return storagePath + filename
+	return storagePath + "/" + filename
 }
 
 // readFileContent reads the entire content of a file into memory.
