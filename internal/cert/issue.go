@@ -26,6 +26,8 @@ import (
 const (
 	HTTP01 = "http01"
 	DNS01  = "dns01"
+
+	disabledAuthoritativeNSPropagationWait = time.Minute
 )
 
 func IssueCert(payload *ConfigPayload, certLogger *Logger) error {
@@ -240,13 +242,24 @@ func IssueCert(payload *ConfigPayload, certLogger *Logger) error {
 }
 
 func dns01ChallengeOptions(payload *ConfigPayload) []dns01.ChallengeOption {
-	options := []dns01.ChallengeOption{
+	if wait := dns01PropagationWait(payload); wait > 0 {
+		// No active propagation check remains in this mode, so wait before
+		// asking the ACME server to validate the newly published TXT record.
+		return []dns01.ChallengeOption{
+			dns01.PropagationWait(wait, true),
+		}
+	}
+
+	return []dns01.ChallengeOption{
 		dns01.DisableRecursiveNSsPropagationRequirement(),
 	}
-	if payload.DisableAuthoritativeNSPropagation {
-		options = append(options, dns01.DisableAuthoritativeNssPropagationRequirement())
+}
+
+func dns01PropagationWait(payload *ConfigPayload) time.Duration {
+	if payload != nil && payload.DisableAuthoritativeNSPropagation {
+		return disabledAuthoritativeNSPropagationWait
 	}
-	return options
+	return 0
 }
 
 func canUseLegoRenew(payload *ConfigPayload) bool {

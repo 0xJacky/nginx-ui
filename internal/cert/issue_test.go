@@ -1,6 +1,9 @@
 package cert
 
-import "testing"
+import (
+	"testing"
+	"time"
+)
 
 func TestCanUseLegoRenewDisablesRenewWhenCommonNameEnabled(t *testing.T) {
 	if !canUseLegoRenew(&ConfigPayload{}) {
@@ -16,13 +19,19 @@ func TestCanUseLegoRenewDisablesRenewWhenCommonNameEnabled(t *testing.T) {
 	}
 }
 
-func TestDNS01ChallengeOptions(t *testing.T) {
+func TestDNS01ChallengeOptionsUseFixedWaitWhenAuthoritativeCheckIsDisabled(t *testing.T) {
 	if got := len(dns01ChallengeOptions(&ConfigPayload{})); got != 1 {
 		t.Fatalf("default option count = %d, want 1", got)
 	}
+	if got := dns01PropagationWait(&ConfigPayload{}); got != 0 {
+		t.Fatalf("default propagation wait = %s, want 0", got)
+	}
 
 	payload := &ConfigPayload{DisableAuthoritativeNSPropagation: true}
-	if got := len(dns01ChallengeOptions(payload)); got != 2 {
-		t.Fatalf("disabled authoritative propagation option count = %d, want 2", got)
+	if got := len(dns01ChallengeOptions(payload)); got != 1 {
+		t.Fatalf("disabled authoritative propagation option count = %d, want 1", got)
+	}
+	if got := dns01PropagationWait(payload); got != time.Minute {
+		t.Fatalf("disabled authoritative propagation wait = %s, want 1m", got)
 	}
 }

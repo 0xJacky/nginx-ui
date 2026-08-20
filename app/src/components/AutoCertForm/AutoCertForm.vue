@@ -232,8 +232,8 @@ defineExpose({
       >
         <template #help>
           <p>
-            {{ $gettext('Skip the local authoritative nameserver propagation check. '
-              + 'The certificate authority will still validate the DNS record independently.') }}
+            {{ $gettext('Skip local DNS propagation checks and wait 60 seconds before asking '
+              + 'the certificate authority to validate the record.') }}
           </p>
         </template>
         <ASwitch v-model:checked="data.disable_authoritative_ns_propagation" />
