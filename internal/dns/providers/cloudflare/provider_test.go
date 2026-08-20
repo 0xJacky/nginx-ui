@@ -180,6 +180,38 @@ func TestProviderUsesLegacyAPIKeyHeaders(t *testing.T) {
 	require.Empty(t, records)
 }
 
+func TestProviderUsesSeparateDNSAndZoneAPITokens(t *testing.T) {
+	t.Parallel()
+
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		switch r.URL.Path {
+		case "/zones":
+			assert.Equal(t, "Bearer zone-token", r.Header.Get("Authorization"))
+			writeCloudflareResponse(t, w, []map[string]any{{"id": "zone-1", "name": "example.com"}}, true)
+		case "/zones/zone-1/dns_records":
+			assert.Equal(t, "Bearer dns-token", r.Header.Get("Authorization"))
+			writeCloudflareResponse(t, w, []map[string]any{}, true)
+		default:
+			http.Error(w, "unexpected request", http.StatusNotFound)
+		}
+	}))
+	t.Cleanup(server.Close)
+
+	createdProvider, err := newProvider(&dns.Credential{
+		Values: map[string]string{
+			"CF_DNS_API_TOKEN":  "dns-token",
+			"CF_ZONE_API_TOKEN": "zone-token",
+		},
+		Additional: map[string]string{"CF_BASE_URL": server.URL},
+	})
+	require.NoError(t, err)
+
+	records, err := createdProvider.ListRecords(t.Context(), "example.com", dns.RecordFilter{})
+	require.NoError(t, err)
+	require.Empty(t, records)
+}
+
 func TestProviderUsesProductionBaseURLByDefault(t *testing.T) {
 	t.Parallel()
 

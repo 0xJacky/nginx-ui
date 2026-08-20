@@ -32,7 +32,7 @@ func newProvider(cred *dns.Credential) (dns.Provider, error) {
 }
 
 func newProviderWithHTTPClient(cred *dns.Credential, httpClient *http.Client) (dns.Provider, error) {
-	opts := []cfopt.RequestOption{
+	commonOpts := []cfopt.RequestOption{
 		cfopt.WithHTTPClient(httpClient),
 		cfopt.WithEnvironmentProduction(),
 	}
@@ -41,18 +41,29 @@ func newProviderWithHTTPClient(cred *dns.Credential, httpClient *http.Client) (d
 		cred.Additional["CLOUDFLARE_BASE_URL"],
 		cred.Additional["CF_BASE_URL"],
 	); baseURL != "" {
-		opts = append(opts, cfopt.WithBaseURL(baseURL))
+		commonOpts = append(commonOpts, cfopt.WithBaseURL(baseURL))
 	}
 
-	token := firstNonEmpty(
+	dnsToken := firstNonEmpty(
 		cred.Values["CLOUDFLARE_DNS_API_TOKEN"],
 		cred.Values["CF_DNS_API_TOKEN"],
 		cred.Values["CLOUDFLARE_API_TOKEN"],
 		cred.Values["CF_API_TOKEN"],
 	)
+	zoneToken := firstNonEmpty(
+		cred.Values["CLOUDFLARE_ZONE_API_TOKEN"],
+		cred.Values["CF_ZONE_API_TOKEN"],
+		cred.Values["CLOUDFLARE_API_TOKEN"],
+		cred.Values["CF_API_TOKEN"],
+		dnsToken,
+	)
 
-	if token != "" {
-		opts = append(opts, cfopt.WithAPIToken(token))
+	recordOpts := append([]cfopt.RequestOption{}, commonOpts...)
+	zoneOpts := append([]cfopt.RequestOption{}, commonOpts...)
+
+	if dnsToken != "" {
+		recordOpts = append(recordOpts, cfopt.WithAPIToken(dnsToken))
+		zoneOpts = append(zoneOpts, cfopt.WithAPIToken(zoneToken))
 	} else {
 		email := firstNonEmpty(
 			cred.Values["CLOUDFLARE_EMAIL"],
@@ -65,12 +76,17 @@ func newProviderWithHTTPClient(cred *dns.Credential, httpClient *http.Client) (d
 		if email == "" || key == "" {
 			return nil, fmt.Errorf("cloudflare: missing API credentials")
 		}
-		opts = append(opts, cfopt.WithAPIKey(key), cfopt.WithAPIEmail(email))
+		recordOpts = append(recordOpts, cfopt.WithAPIKey(key), cfopt.WithAPIEmail(email))
+		if zoneToken != "" {
+			zoneOpts = append(zoneOpts, cfopt.WithAPIToken(zoneToken))
+		} else {
+			zoneOpts = append(zoneOpts, cfopt.WithAPIKey(key), cfopt.WithAPIEmail(email))
+		}
 	}
 
 	return &provider{
-		records: cfdns.NewRecordService(opts...),
-		zones:   cfzones.NewZoneService(opts...),
+		records: cfdns.NewRecordService(recordOpts...),
+		zones:   cfzones.NewZoneService(zoneOpts...),
 	}, nil
 }
 
