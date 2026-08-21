@@ -50,6 +50,9 @@ func IssueCert(c *gin.Context) {
 		logger.Error(err)
 		return
 	}
+	stopKeepalive := startIssueCertKeepalive(ws, issueCertWSPingPeriod)
+	defer stopKeepalive()
+
 	payload.KeyType = payload.GetKeyType()
 	if err := cert.NormalizeAndValidateIdentifiers(payload); err != nil {
 		logger.Error(err)
