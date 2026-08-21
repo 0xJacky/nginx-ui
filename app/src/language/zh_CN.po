@@ -6297,6 +6297,16 @@ msgstr "DDNS 配置已删除"
 msgid "DDNS Overview"
 msgstr "DDNS 概览"
 
+#: src/views/dns/DDNSManager.vue:333
+msgid "DDNS updates records within a DNS zone"
+msgstr "DDNS 更新 DNS 区域内的记录"
+
+#: src/views/dns/DDNSManager.vue:334
+msgid ""
+"Configure a zone, then select the A/AAAA records to update. For "
+"ddns.example.com, select the ddns record under example.com."
+msgstr "配置 DNS 区域，然后选择要更新的 A/AAAA 记录。例如，要更新 ddns.example.com，请在 example.com 下选择 ddns 记录。"
+
 #: src/views/dns/DDNSManager.vue:293
 msgid "Search domain, provider or target"
 msgstr "搜索域名、提供商或目标记录"
@@ -6335,13 +6345,13 @@ msgstr ""
 "启用后，DDNS 将拥有所选名称：自动配对同族记录，创建缺失的记录，并删除 IP 族不可达的记录。禁用后，仅管理您明确选择的记录，保持所有其他 DNS "
 "状态不变。"
 
-#: src/views/dns/DDNSManager.vue:400
-msgid "Records"
-msgstr "记录"
+#: src/views/dns/DDNSManager.vue:428
+msgid "Records to update"
+msgstr "要更新的记录"
 
-#: src/views/dns/DDNSManager.vue:407
-msgid "Select matching A/AAAA records"
-msgstr "选择匹配的 A/AAAA 记录"
+#: src/views/dns/DDNSManager.vue:435
+msgid "Select A/AAAA records to update"
+msgstr "选择要更新的 A/AAAA 记录"
 
 #: src/views/dns/DDNSManager.vue:423
 msgid "Interval (seconds)"
@@ -6364,6 +6374,16 @@ msgstr "请填写 DNS 提供商提供的 API 验证凭据。"
 #: src/views/dns/DNSCredential.vue:96
 msgid "Please note that the unit of time configurations below are all in seconds."
 msgstr "请注意，下面的时间单位配置均以秒为单位。"
+
+#: src/views/dns/DNSDomainList.vue:128
+msgid "DNS Zone"
+msgstr "DNS 区域"
+
+#: src/views/dns/DNSDomainList.vue:134
+msgid ""
+"Enter the zone managed by your DNS provider, such as example.com. Add "
+"subdomains such as ddns.example.com later as DNS records."
+msgstr "请输入 DNS 提供商托管的区域，例如 example.com。之后再将 ddns.example.com 等子域名添加为 DNS 记录。"
 
 #: src/views/dns/DNSDomainList.vue:109
 msgid "DNS record management only"

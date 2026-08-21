@@ -125,12 +125,16 @@ function renderDnsDomainClarification() {
 }
 
 const columns: StdTableColumn[] = [{
-  title: () => $gettext('Domain'),
+  title: () => $gettext('DNS Zone'),
   dataIndex: 'domain',
   sorter: true,
   search: true,
   edit: {
     type: 'input',
+    hint: $gettext('Enter the zone managed by your DNS provider, such as example.com. Add subdomains such as ddns.example.com later as DNS records.'),
+    input: {
+      placeholder: 'example.com',
+    },
     formItem: {
       required: true,
     },
