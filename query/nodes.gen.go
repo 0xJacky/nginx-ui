@@ -39,6 +39,14 @@ func newNode(db *gorm.DB, opts ...gen.DOOption) node {
 	_node.AuthMethod = field.NewString(tableName, "auth_method")
 	_node.CredentialStatus = field.NewString(tableName, "credential_status")
 	_node.LastCredentialUseAt = field.NewTime(tableName, "last_credential_use_at")
+	_node.AuthUpgradeStatus = field.NewString(tableName, "auth_upgrade_status")
+	_node.AuthUpgradeStep = field.NewString(tableName, "auth_upgrade_step")
+	_node.AuthUpgradeAttemptCount = field.NewUint(tableName, "auth_upgrade_attempt_count")
+	_node.AuthUpgradeAttemptedAt = field.NewTime(tableName, "auth_upgrade_attempted_at")
+	_node.AuthUpgradeNextRetryAt = field.NewTime(tableName, "auth_upgrade_next_retry_at")
+	_node.AuthUpgradeCompletedAt = field.NewTime(tableName, "auth_upgrade_completed_at")
+	_node.AuthUpgradeErrorCode = field.NewString(tableName, "auth_upgrade_error_code")
+	_node.AuthUpgradeError = field.NewString(tableName, "auth_upgrade_error")
 	_node.Enabled = field.NewBool(tableName, "enabled")
 
 	_node.fillFieldMap()
@@ -49,19 +57,27 @@ func newNode(db *gorm.DB, opts ...gen.DOOption) node {
 type node struct {
 	nodeDo
 
-	ALL                   field.Asterisk
-	ID                    field.Uint64
-	CreatedAt             field.Time
-	UpdatedAt             field.Time
-	DeletedAt             field.Field
-	Name                  field.String
-	URL                   field.String
-	Token                 field.String
-	EncryptedLegacySecret field.Bytes
-	AuthMethod            field.String
-	CredentialStatus      field.String
-	LastCredentialUseAt   field.Time
-	Enabled               field.Bool
+	ALL                     field.Asterisk
+	ID                      field.Uint64
+	CreatedAt               field.Time
+	UpdatedAt               field.Time
+	DeletedAt               field.Field
+	Name                    field.String
+	URL                     field.String
+	Token                   field.String
+	EncryptedLegacySecret   field.Bytes
+	AuthMethod              field.String
+	CredentialStatus        field.String
+	LastCredentialUseAt     field.Time
+	AuthUpgradeStatus       field.String
+	AuthUpgradeStep         field.String
+	AuthUpgradeAttemptCount field.Uint
+	AuthUpgradeAttemptedAt  field.Time
+	AuthUpgradeNextRetryAt  field.Time
+	AuthUpgradeCompletedAt  field.Time
+	AuthUpgradeErrorCode    field.String
+	AuthUpgradeError        field.String
+	Enabled                 field.Bool
 
 	fieldMap map[string]field.Expr
 }
@@ -89,6 +105,14 @@ func (n *node) updateTableName(table string) *node {
 	n.AuthMethod = field.NewString(table, "auth_method")
 	n.CredentialStatus = field.NewString(table, "credential_status")
 	n.LastCredentialUseAt = field.NewTime(table, "last_credential_use_at")
+	n.AuthUpgradeStatus = field.NewString(table, "auth_upgrade_status")
+	n.AuthUpgradeStep = field.NewString(table, "auth_upgrade_step")
+	n.AuthUpgradeAttemptCount = field.NewUint(table, "auth_upgrade_attempt_count")
+	n.AuthUpgradeAttemptedAt = field.NewTime(table, "auth_upgrade_attempted_at")
+	n.AuthUpgradeNextRetryAt = field.NewTime(table, "auth_upgrade_next_retry_at")
+	n.AuthUpgradeCompletedAt = field.NewTime(table, "auth_upgrade_completed_at")
+	n.AuthUpgradeErrorCode = field.NewString(table, "auth_upgrade_error_code")
+	n.AuthUpgradeError = field.NewString(table, "auth_upgrade_error")
 	n.Enabled = field.NewBool(table, "enabled")
 
 	n.fillFieldMap()
@@ -106,7 +130,7 @@ func (n *node) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (n *node) fillFieldMap() {
-	n.fieldMap = make(map[string]field.Expr, 12)
+	n.fieldMap = make(map[string]field.Expr, 20)
 	n.fieldMap["id"] = n.ID
 	n.fieldMap["created_at"] = n.CreatedAt
 	n.fieldMap["updated_at"] = n.UpdatedAt
@@ -118,6 +142,14 @@ func (n *node) fillFieldMap() {
 	n.fieldMap["auth_method"] = n.AuthMethod
 	n.fieldMap["credential_status"] = n.CredentialStatus
 	n.fieldMap["last_credential_use_at"] = n.LastCredentialUseAt
+	n.fieldMap["auth_upgrade_status"] = n.AuthUpgradeStatus
+	n.fieldMap["auth_upgrade_step"] = n.AuthUpgradeStep
+	n.fieldMap["auth_upgrade_attempt_count"] = n.AuthUpgradeAttemptCount
+	n.fieldMap["auth_upgrade_attempted_at"] = n.AuthUpgradeAttemptedAt
+	n.fieldMap["auth_upgrade_next_retry_at"] = n.AuthUpgradeNextRetryAt
+	n.fieldMap["auth_upgrade_completed_at"] = n.AuthUpgradeCompletedAt
+	n.fieldMap["auth_upgrade_error_code"] = n.AuthUpgradeErrorCode
+	n.fieldMap["auth_upgrade_error"] = n.AuthUpgradeError
 	n.fieldMap["enabled"] = n.Enabled
 }
 
