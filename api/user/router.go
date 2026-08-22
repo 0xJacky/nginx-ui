@@ -17,6 +17,7 @@ func InitAuthRouter(r *gin.RouterGroup) {
 	r.POST("/casdoor_callback", CasdoorCallback)
 
 	r.GET("/oidc_uri", GetOIDCUri)
+	r.GET("/oidc_callback", OIDCCallback)
 	r.POST("/oidc_callback", OIDCCallback)
 
 	r.GET("/passkeys/config", GetPasskeyConfigStatus)
