@@ -8,6 +8,7 @@ type Node struct {
 	Demo                 bool   `json:"demo" protected:"true"`
 	ICPNumber            string `json:"icp_number" binding:"omitempty,safety_text"`
 	PublicSecurityNumber string `json:"public_security_number" binding:"omitempty,safety_text"`
+	RestartCmd           string `json:"restart_cmd" protected:"true"`
 }
 
 var NodeSettings = &Node{}
