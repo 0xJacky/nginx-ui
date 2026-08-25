@@ -19,14 +19,14 @@ import (
 
 const emailHTMLTemplate = `<!doctype html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <title>{{.Title}}</title>
-</head>
-<body>
-  <h2>{{.Title}}</h2>
-  <div>{{.Content}}</div>
-</body>
+	<body style="font-family: sans-serif; color: #1f2937;">
+		<main style="max-width: 640px; margin: 0 auto; padding: 24px;">
+			<h1 style="margin: 0 0 16px; color: #1677ff;">{{.Title}}</h1>
+			<section style="padding: 16px; background: #f6f8fa; border-radius: 6px;">
+				{{.Content}}
+			</section>
+		</main>
+	</body>
 </html>`
 
 // @external_notifier(Email)
@@ -39,6 +39,7 @@ type Email struct {
 	To       string `json:"to" title:"To"`
 	SSL      string `json:"ssl" title:"SSL"`
 	HTML     string `json:"html" title:"HTML"`
+	Template string `json:"html_template" title:"HTML Template (Optional)"`
 }
 
 type emailMessageData struct {
@@ -77,18 +78,31 @@ func init() {
 			return ErrInvalidNotifierConfig
 		}
 
-		message, err := buildEmailMessage(emailConfig.From, emailConfig.To, msg.GetTitle(n.Language), msg.GetContent(n.Language), isHTML)
+		message, err := buildEmailMessage(
+			emailConfig.From,
+			emailConfig.To,
+			msg.GetTitle(n.Language),
+			msg.GetContent(n.Language),
+			isHTML,
+			emailConfig.Template,
+		)
 		if err != nil {
 			return err
 		}
 
 		addr := fmt.Sprintf("%s:%s", emailConfig.Host, emailConfig.Port)
-		var auth smtp.Auth
-		if emailConfig.Username != "" || emailConfig.Password != "" {
-			auth = smtp.PlainAuth("", emailConfig.Username, emailConfig.Password, emailConfig.Host)
-		}
-
-		return sendEmail(ctx, emailConfig.Host, addr, auth, from.Address, to, message, isSSL)
+		return sendEmail(
+			ctx,
+			emailConfig.Host,
+			emailConfig.Port,
+			addr,
+			emailConfig.Username,
+			emailConfig.Password,
+			from.Address,
+			to,
+			message,
+			isSSL,
+		)
 	})
 }
 
@@ -115,7 +129,7 @@ func parseEmailRecipients(raw string) ([]string, error) {
 	return recipients, nil
 }
 
-func buildEmailMessage(from, to, subject, content string, html bool) ([]byte, error) {
+func buildEmailMessage(from, to, subject, content string, html bool, customTemplate string) ([]byte, error) {
 	fromAddress, err := mail.ParseAddress(from)
 	if err != nil {
 		return nil, err
@@ -130,7 +144,11 @@ func buildEmailMessage(from, to, subject, content string, html bool) ([]byte, er
 	if html {
 		contentType = "text/html; charset=UTF-8"
 		var htmlBody bytes.Buffer
-		tmpl, err := htmltemplate.New("email").Parse(emailHTMLTemplate)
+		templateSource := emailHTMLTemplate
+		if strings.TrimSpace(customTemplate) != "" {
+			templateSource = customTemplate
+		}
+		tmpl, err := htmltemplate.New("email").Parse(templateSource)
 		if err != nil {
 			return nil, err
 		}
@@ -165,19 +183,13 @@ func buildEmailMessage(from, to, subject, content string, html bool) ([]byte, er
 	return message.Bytes(), nil
 }
 
-func sendEmail(ctx context.Context, host, addr string, auth smtp.Auth, from string, to []string, message []byte, ssl bool) error {
+func sendEmail(ctx context.Context, host, port, addr, username, password, from string, to []string, message []byte, ssl bool) error {
 	if !ssl {
-		done := make(chan error, 1)
-		go func() {
-			done <- smtp.SendMail(addr, auth, from, to, message)
-		}()
+		return sendEmailPlain(ctx, host, addr, username, password, from, to, message)
+	}
 
-		select {
-		case <-ctx.Done():
-			return ctx.Err()
-		case err := <-done:
-			return err
-		}
+	if !isImplicitTLS(port) {
+		return sendEmailStartTLS(ctx, host, addr, username, password, from, to, message)
 	}
 
 	dialer := &net.Dialer{}
@@ -202,7 +214,60 @@ func sendEmail(ctx context.Context, host, addr string, auth smtp.Auth, from stri
 	}
 	defer client.Close()
 
-	if auth != nil {
+	return sendEmailWithClient(client, host, username, password, from, to, message)
+}
+
+func isImplicitTLS(port string) bool {
+	return strings.TrimSpace(port) == "465"
+}
+
+func sendEmailPlain(ctx context.Context, host, addr, username, password, from string, to []string, message []byte) error {
+	dialer := &net.Dialer{}
+	conn, err := dialer.DialContext(ctx, "tcp", addr)
+	if err != nil {
+		return err
+	}
+
+	client, err := smtp.NewClient(conn, host)
+	if err != nil {
+		_ = conn.Close()
+		return err
+	}
+	defer client.Close()
+
+	return sendEmailWithClient(client, host, username, password, from, to, message)
+}
+
+func sendEmailStartTLS(ctx context.Context, host, addr, username, password, from string, to []string, message []byte) error {
+	dialer := &net.Dialer{}
+	conn, err := dialer.DialContext(ctx, "tcp", addr)
+	if err != nil {
+		return err
+	}
+
+	client, err := smtp.NewClient(conn, host)
+	if err != nil {
+		_ = conn.Close()
+		return err
+	}
+	defer client.Close()
+
+	if ok, _ := client.Extension("STARTTLS"); !ok {
+		return fmt.Errorf("SMTP server does not support STARTTLS")
+	}
+	if err := client.StartTLS(&tls.Config{
+		ServerName: host,
+		MinVersion: tls.VersionTLS12,
+	}); err != nil {
+		return err
+	}
+
+	return sendEmailWithClient(client, host, username, password, from, to, message)
+}
+
+func sendEmailWithClient(client *smtp.Client, host, username, password, from string, to []string, message []byte) error {
+	if username != "" || password != "" {
+		auth := smtpAuthForClient(client, host, username, password)
 		if err := client.Auth(auth); err != nil {
 			return err
 		}
@@ -228,6 +293,55 @@ func sendEmail(ctx context.Context, host, addr string, auth smtp.Auth, from stri
 	}
 
 	return client.Quit()
+}
+
+func smtpAuthForClient(client *smtp.Client, host, username, password string) smtp.Auth {
+	_, mechanisms := client.Extension("AUTH")
+	if supportsSMTPAuth(mechanisms, "LOGIN") {
+		return &loginAuth{username: username, password: password}
+	}
+	if supportsSMTPAuth(mechanisms, "CRAM-MD5") {
+		return smtp.CRAMMD5Auth(username, password)
+	}
+
+	return smtp.PlainAuth("", username, password, host)
+}
+
+func supportsSMTPAuth(mechanisms, mechanism string) bool {
+	for _, supported := range strings.Fields(mechanisms) {
+		if strings.EqualFold(supported, mechanism) {
+			return true
+		}
+	}
+
+	return false
+}
+
+type loginAuth struct {
+	username string
+	password string
+	step     int
+}
+
+func (auth *loginAuth) Start(*smtp.ServerInfo) (string, []byte, error) {
+	return "LOGIN", nil, nil
+}
+
+func (auth *loginAuth) Next(_ []byte, more bool) ([]byte, error) {
+	if !more {
+		return nil, nil
+	}
+
+	switch auth.step {
+	case 0:
+		auth.step++
+		return []byte(auth.username), nil
+	case 1:
+		auth.step++
+		return []byte(auth.password), nil
+	default:
+		return nil, fmt.Errorf("unexpected LOGIN authentication challenge")
+	}
 }
 
 func formatEmailAddresses(addresses []*mail.Address) string {
