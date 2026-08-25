@@ -1,6 +1,7 @@
 package notification
 
 import (
+	"net/smtp"
 	"reflect"
 	"strings"
 	"testing"
@@ -18,18 +19,26 @@ func TestParseEmailRecipientsSupportsCommaSeparatedList(t *testing.T) {
 	}
 }
 
-func TestEmailSSLUsesImplicitTLSOnlyForPort465(t *testing.T) {
-	if isImplicitTLS("587") {
-		t.Fatal("isImplicitTLS(587) = true, want false")
+func TestLoginAuthRejectsUnencryptedNonLocalhostConnection(t *testing.T) {
+	auth := &loginAuth{username: "user", password: "secret"}
+	if _, _, err := auth.Start(&smtp.ServerInfo{Name: "mail.example.com", TLS: false}); err == nil {
+		t.Fatal("Start() error = nil, want error for unencrypted non-localhost connection")
 	}
-	if !isImplicitTLS("465") {
-		t.Fatal("isImplicitTLS(465) = false, want true")
+}
+
+func TestLoginAuthAllowsLocalhostOrTLSConnection(t *testing.T) {
+	auth := &loginAuth{username: "user", password: "secret"}
+	if _, _, err := auth.Start(&smtp.ServerInfo{Name: "localhost", TLS: false}); err != nil {
+		t.Fatalf("Start() error = %v, want nil for localhost", err)
+	}
+	if _, _, err := auth.Start(&smtp.ServerInfo{Name: "mail.example.com", TLS: true}); err != nil {
+		t.Fatalf("Start() error = %v, want nil for TLS connection", err)
 	}
 }
 
 func TestLoginAuthRespondsWithUsernameAndPassword(t *testing.T) {
 	auth := &loginAuth{username: "user", password: "secret"}
-	mechanism, initialResponse, err := auth.Start(nil)
+	mechanism, initialResponse, err := auth.Start(&smtp.ServerInfo{Name: "localhost", TLS: false})
 	if err != nil {
 		t.Fatalf("Start() error = %v", err)
 	}

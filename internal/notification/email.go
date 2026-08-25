@@ -184,14 +184,16 @@ func buildEmailMessage(from, to, subject, content string, html bool, customTempl
 }
 
 func sendEmail(ctx context.Context, host, port, addr, username, password, from string, to []string, message []byte, ssl bool) error {
-	if !ssl {
-		return sendEmailPlain(ctx, host, addr, username, password, from, to, message)
+	// SSL=true always means implicit TLS (e.g. SMTPS), regardless of the
+	// configured port, so nonstandard ports (e.g. 8465) keep working.
+	if ssl {
+		return sendEmailImplicitTLS(ctx, host, addr, username, password, from, to, message)
 	}
 
-	if !isImplicitTLS(port) {
-		return sendEmailStartTLS(ctx, host, addr, username, password, from, to, message)
-	}
+	return sendEmailStartTLS(ctx, host, addr, username, password, from, to, message)
+}
 
+func sendEmailImplicitTLS(ctx context.Context, host, addr, username, password, from string, to []string, message []byte) error {
 	dialer := &net.Dialer{}
 	conn, err := dialer.DialContext(ctx, "tcp", addr)
 	if err != nil {
@@ -217,27 +219,9 @@ func sendEmail(ctx context.Context, host, port, addr, username, password, from s
 	return sendEmailWithClient(client, host, username, password, from, to, message)
 }
 
-func isImplicitTLS(port string) bool {
-	return strings.TrimSpace(port) == "465"
-}
-
-func sendEmailPlain(ctx context.Context, host, addr, username, password, from string, to []string, message []byte) error {
-	dialer := &net.Dialer{}
-	conn, err := dialer.DialContext(ctx, "tcp", addr)
-	if err != nil {
-		return err
-	}
-
-	client, err := smtp.NewClient(conn, host)
-	if err != nil {
-		_ = conn.Close()
-		return err
-	}
-	defer client.Close()
-
-	return sendEmailWithClient(client, host, username, password, from, to, message)
-}
-
+// sendEmailStartTLS connects in plaintext and opportunistically upgrades to
+// TLS whenever the server advertises STARTTLS, mirroring the behavior of
+// net/smtp.SendMail so a downgrade attack cannot silently disable encryption.
 func sendEmailStartTLS(ctx context.Context, host, addr, username, password, from string, to []string, message []byte) error {
 	dialer := &net.Dialer{}
 	conn, err := dialer.DialContext(ctx, "tcp", addr)
@@ -252,14 +236,13 @@ func sendEmailStartTLS(ctx context.Context, host, addr, username, password, from
 	}
 	defer client.Close()
 
-	if ok, _ := client.Extension("STARTTLS"); !ok {
-		return fmt.Errorf("SMTP server does not support STARTTLS")
-	}
-	if err := client.StartTLS(&tls.Config{
-		ServerName: host,
-		MinVersion: tls.VersionTLS12,
-	}); err != nil {
-		return err
+	if ok, _ := client.Extension("STARTTLS"); ok {
+		if err := client.StartTLS(&tls.Config{
+			ServerName: host,
+			MinVersion: tls.VersionTLS12,
+		}); err != nil {
+			return err
+		}
 	}
 
 	return sendEmailWithClient(client, host, username, password, from, to, message)
@@ -323,7 +306,13 @@ type loginAuth struct {
 	step     int
 }
 
-func (auth *loginAuth) Start(*smtp.ServerInfo) (string, []byte, error) {
+func (auth *loginAuth) Start(server *smtp.ServerInfo) (string, []byte, error) {
+	// Mirror smtp.PlainAuth's safeguard: refuse to hand over credentials
+	// unless the connection is encrypted or talking to localhost.
+	if !server.TLS && !isLocalhostAddr(server.Name) {
+		return "", nil, fmt.Errorf("unencrypted connection")
+	}
+
 	return "LOGIN", nil, nil
 }
 
@@ -356,4 +345,10 @@ func formatEmailAddresses(addresses []*mail.Address) string {
 func sanitizeEmailHeader(value string) string {
 	value = strings.ReplaceAll(value, "\r", "")
 	return strings.ReplaceAll(value, "\n", "")
+}
+
+// isLocalhostAddr reports whether name is a loopback host, matching the
+// check net/smtp.PlainAuth performs before allowing plaintext credentials.
+func isLocalhostAddr(name string) bool {
+	return name == "localhost" || name == "127.0.0.1" || name == "::1"
 }
