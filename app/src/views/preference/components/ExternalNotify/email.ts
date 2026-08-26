@@ -36,6 +36,10 @@ const EmailConfig: ExternalNotifyConfig = {
       key: 'html',
       label: 'HTML',
     },
+    {
+      key: 'html_template',
+      label: 'HTML Template (Optional)',
+    },
   ],
 }
 

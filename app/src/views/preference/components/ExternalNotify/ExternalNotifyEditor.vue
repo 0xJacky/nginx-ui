@@ -22,7 +22,7 @@ const columns = computed<StdTableColumn[]>(() => {
   if (!currentConfig.value)
     return []
 
-  return currentConfig.value.config.map(item => ({
+  return currentConfig.value.config.filter(item => item.key !== 'html_template').map(item => ({
     title: item.label,
     dataIndex: item.key,
     key: item.key,
@@ -67,6 +67,17 @@ async function handleSendTestMessage() {
       v-model:data="modelValue"
       :columns
     />
+
+    <AFormItem
+      v-for="item in currentConfig.config.filter(item => item.key === 'html_template')"
+      :key="item.key"
+      :label="$gettext('HTML Template (Optional)')"
+    >
+      <ATextarea
+        v-model:value="modelValue[item.key]"
+        :rows="12"
+      />
+    </AFormItem>
 
     <div>
       <AButton
