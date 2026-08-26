@@ -56,6 +56,7 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
     },
     http: {
       github_proxy: '',
+      http_proxy: '',
       insecure_skip_verify: false,
     },
     logrotate: {

@@ -75,7 +75,10 @@ func (pw *ProgressWriter) Write(p []byte) (int, error) {
 }
 
 func downloadRelease(url string, dir string, progressChan chan float64) (tarName string, err error) {
-	client := &http.Client{}
+	client, err := version.NewHTTPClient()
+	if err != nil {
+		return
+	}
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return
@@ -250,7 +253,11 @@ func (u *Upgrader) DownloadLatestRelease(progressChan chan float64) (tarName str
 }
 
 func downloadMetadata(url string, maxBytes int64) ([]byte, error) {
-	resp, err := http.Get(url)
+	client, err := version.NewHTTPClient()
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Get(url)
 	if err != nil {
 		return nil, err
 	}
