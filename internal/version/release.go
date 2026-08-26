@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/transport"
+	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/pkg/errors"
 	"github.com/uozi-tech/cosy"
 )
@@ -43,8 +45,25 @@ func (t *TRelease) GetAssetsMap() (m map[string]TReleaseAsset) {
 	return
 }
 
+func NewHTTPClient() (*http.Client, error) {
+	if settings.HTTPSettings.HTTPProxy == "" {
+		return http.DefaultClient, nil
+	}
+
+	clientTransport, err := transport.NewTransport(transport.WithProxy(settings.HTTPSettings.HTTPProxy))
+	if err != nil {
+		return nil, err
+	}
+
+	return &http.Client{Transport: clientTransport}, nil
+}
+
 func getLatestRelease() (data TRelease, err error) {
-	resp, err := http.Get(GetGithubLatestReleaseAPIUrl())
+	client, err := NewHTTPClient()
+	if err != nil {
+		return
+	}
+	resp, err := client.Get(GetGithubLatestReleaseAPIUrl())
 	if err != nil {
 		err = errors.Wrap(err, "service.getLatestRelease http.Get err")
 		return
@@ -69,7 +88,11 @@ func getLatestRelease() (data TRelease, err error) {
 }
 
 func getLatestPrerelease() (data TRelease, err error) {
-	resp, err := http.Get(GetGithubReleasesListAPIUrl())
+	client, err := NewHTTPClient()
+	if err != nil {
+		return
+	}
+	resp, err := client.Get(GetGithubReleasesListAPIUrl())
 	if err != nil {
 		err = errors.Wrap(err, "service.getLatestPrerelease http.Get err")
 		return

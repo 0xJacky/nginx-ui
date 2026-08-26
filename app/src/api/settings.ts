@@ -51,6 +51,7 @@ export interface CertSettings {
 
 export interface HTTPSettings {
   github_proxy: string
+  http_proxy: string
   insecure_skip_verify: boolean
 }
 

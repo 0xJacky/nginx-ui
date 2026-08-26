@@ -155,6 +155,7 @@ func TestSetup(t *testing.T) {
 
 	// Http
 	assert.Equal(t, "http://proxy.example.com", HTTPSettings.GithubProxy)
+	assert.Equal(t, "http://proxy.example.com:8080", HTTPSettings.HTTPProxy)
 	assert.Equal(t, true, HTTPSettings.InsecureSkipVerify)
 	assert.Equal(t, []string{"http://localhost:5173", "https://admin.example.com"}, HTTPSettings.WebSocketTrustedOrigins)
 

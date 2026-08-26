@@ -70,12 +70,18 @@ func TestDownloadLatestReleaseVerifiesSignedArchivesThroughHTTPProxy(t *testing.
 	for _, testCase := range testCases {
 		t.Run(testCase.name, func(t *testing.T) {
 			setTrustedMinisignKeysForTest(t, string(trustedPublicKeyText))
-			originalProxy := settings.HTTPSettings.GithubProxy
+			originalGithubProxy := settings.HTTPSettings.GithubProxy
+			originalHTTPProxy := settings.HTTPSettings.HTTPProxy
 			t.Cleanup(func() {
-				settings.HTTPSettings.GithubProxy = originalProxy
+				settings.HTTPSettings.GithubProxy = originalGithubProxy
+				settings.HTTPSettings.HTTPProxy = originalHTTPProxy
 			})
 
+			proxyRequests := 0
 			server := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
+				if strings.HasPrefix(request.RequestURI, "http://") {
+					proxyRequests++
+				}
 				switch {
 				case strings.HasSuffix(request.URL.Path, ".tar.gz.minisig"):
 					_, _ = writer.Write(testCase.signature)
@@ -90,6 +96,7 @@ func TestDownloadLatestReleaseVerifiesSignedArchivesThroughHTTPProxy(t *testing.
 			}))
 			defer server.Close()
 			settings.HTTPSettings.GithubProxy = server.URL
+			settings.HTTPSettings.HTTPProxy = server.URL
 
 			downloadDir := t.TempDir()
 			upgrader := newSignedDownloadTestUpgrader(downloadDir)
@@ -97,6 +104,7 @@ func TestDownloadLatestReleaseVerifiesSignedArchivesThroughHTTPProxy(t *testing.
 
 			if testCase.wantErr != nil {
 				assert.ErrorIs(t, downloadErr, testCase.wantErr)
+				assert.Positive(t, proxyRequests)
 				if archivePath != "" {
 					_, statErr := os.Stat(archivePath)
 					assert.ErrorIs(t, statErr, os.ErrNotExist)
@@ -107,6 +115,7 @@ func TestDownloadLatestReleaseVerifiesSignedArchivesThroughHTTPProxy(t *testing.
 			}
 
 			require.NoError(t, downloadErr)
+			assert.Equal(t, 3, proxyRequests)
 			t.Cleanup(func() {
 				_ = os.Remove(archivePath)
 				_ = os.Remove(archivePath + ".minisig")

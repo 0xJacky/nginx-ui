@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"net/http"
 	"time"
 )
 
@@ -19,7 +18,11 @@ type TCommit struct {
 }
 
 func getDevBuild() (data TRelease, err error) {
-	resp, err := http.Get(GetGithubDevCommitAPIUrl())
+	client, err := NewHTTPClient()
+	if err != nil {
+		return
+	}
+	resp, err := client.Get(GetGithubDevCommitAPIUrl())
 	if err != nil {
 		return
 	}
@@ -40,7 +43,7 @@ func getDevBuild() (data TRelease, err error) {
 	}
 	shortSHA := commit.SHA[:7]
 
-	resp, err = http.Get(fmt.Sprintf("%sdev-builds", CloudflareWorkerAPI))
+	resp, err = client.Get(fmt.Sprintf("%sdev-builds", CloudflareWorkerAPI))
 	if err != nil {
 		return
 	}
