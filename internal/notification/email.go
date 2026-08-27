@@ -32,15 +32,58 @@ const emailHTMLTemplate = `<!doctype html>
 // Email holds the external_notify configuration for the built-in email notifier.
 // @external_notifier(Email)
 type Email struct {
-	Host     string `json:"host" title:"Host"`
-	Port     string `json:"port" title:"Port"`
-	Username string `json:"username" title:"Username"`
-	Password string `json:"password" title:"Password"`
-	From     string `json:"from" title:"From"`
-	To       string `json:"to" title:"To"`
-	SSL      string `json:"ssl" title:"SSL"`
-	HTML     string `json:"html" title:"HTML"`
-	Template string `json:"html_template" title:"HTML Template (Optional)"`
+	Host       string `json:"host" title:"Host"`
+	Port       string `json:"port" title:"Port"`
+	Username   string `json:"username" title:"Username"`
+	Password   string `json:"password" title:"Password"`
+	From       string `json:"from" title:"From"`
+	To         string `json:"to" title:"To"`
+	SSL        string `json:"ssl" title:"SSL"`
+	Encryption string `json:"encryption" title:"Encryption (none, starttls, opportunistic, tls)"`
+	HTML       string `json:"html" title:"HTML"`
+	Template   string `json:"html_template" title:"HTML Template (Optional)"`
+}
+
+// emailTransport selects how the SMTP connection is encrypted.
+type emailTransport int
+
+const (
+	// emailTransportPlain never attempts to encrypt the connection.
+	emailTransportPlain emailTransport = iota
+	// emailTransportOpportunisticSTARTTLS upgrades only when the server
+	// advertises STARTTLS and stays plaintext otherwise. This does NOT protect
+	// against an attacker stripping the STARTTLS capability.
+	emailTransportOpportunisticSTARTTLS
+	// emailTransportRequiredSTARTTLS fails closed when the server does not
+	// advertise STARTTLS or the upgrade fails.
+	emailTransportRequiredSTARTTLS
+	// emailTransportImplicitTLS wraps the TCP connection in TLS before any
+	// SMTP command is exchanged (SMTPS).
+	emailTransportImplicitTLS
+)
+
+// parseEmailTransport resolves the explicit encryption mode, falling back to
+// the legacy SSL flag so configurations created before this option existed keep
+// their original behavior: SSL=true was implicit TLS and SSL=false relied on
+// net/smtp.SendMail's opportunistic STARTTLS upgrade.
+func parseEmailTransport(raw string, ssl bool) (emailTransport, error) {
+	switch strings.ToLower(strings.TrimSpace(raw)) {
+	case "":
+		if ssl {
+			return emailTransportImplicitTLS, nil
+		}
+		return emailTransportOpportunisticSTARTTLS, nil
+	case "none", "plain", "plaintext":
+		return emailTransportPlain, nil
+	case "starttls":
+		return emailTransportRequiredSTARTTLS, nil
+	case "starttls-opportunistic", "opportunistic":
+		return emailTransportOpportunisticSTARTTLS, nil
+	case "tls", "ssl", "implicit", "smtps":
+		return emailTransportImplicitTLS, nil
+	default:
+		return 0, ErrInvalidNotifierConfig
+	}
 }
 
 // emailMessageData is the data passed to the HTML email template.
@@ -77,6 +120,11 @@ func init() {
 			return ErrInvalidNotifierConfig
 		}
 
+		transport, err := parseEmailTransport(emailConfig.Encryption, isSSL)
+		if err != nil {
+			return ErrInvalidNotifierConfig
+		}
+
 		isHTML, err := parseOptionalBool(emailConfig.HTML)
 		if err != nil {
 			return ErrInvalidNotifierConfig
@@ -104,7 +152,7 @@ func init() {
 			from.Address,
 			to,
 			message,
-			isSSL,
+			transport,
 		)
 	})
 }
@@ -193,23 +241,59 @@ func buildEmailMessage(from, to, subject, content string, html bool, customTempl
 	return message.Bytes(), nil
 }
 
-// sendEmail dispatches to the STARTTLS transport. SSL alone decides whether
-// encryption is required; the port is never used to infer implicit TLS vs
-// STARTTLS, and the connection always dials the configured host:port as-is.
-func sendEmail(ctx context.Context, host, addr, username, password, from string, to []string, message []byte, ssl bool) error {
-	// ssl=true requires the server to support STARTTLS and fails otherwise;
-	// ssl=false still upgrades opportunistically if STARTTLS is advertised,
-	// so a downgrade attack cannot silently force plaintext.
-	return sendEmailStartTLS(ctx, host, addr, username, password, from, to, message, ssl)
+// sendEmail dispatches to the transport selected by the resolved encryption
+// mode. The port is only ever used to dial addr, never to infer the mode.
+func sendEmail(ctx context.Context, host, addr, username, password, from string, to []string, message []byte, transport emailTransport) error {
+	tlsConfig := &tls.Config{
+		ServerName: host,
+		MinVersion: tls.VersionTLS12,
+	}
+
+	if transport == emailTransportImplicitTLS {
+		return sendEmailImplicitTLS(ctx, host, addr, tlsConfig, username, password, from, to, message)
+	}
+
+	return sendEmailStartTLS(ctx, host, addr, tlsConfig, username, password, from, to, message, transport)
 }
 
-// sendEmailStartTLS always connects to addr in plaintext first (the port is
-// used exactly as configured). When requireTLS is true (SSL enabled) it
-// demands the server support STARTTLS and fails otherwise; when false it
-// upgrades opportunistically whenever the server advertises STARTTLS,
-// mirroring net/smtp.SendMail so a downgrade attack cannot silently disable
-// encryption.
-func sendEmailStartTLS(ctx context.Context, host, addr, username, password, from string, to []string, message []byte, requireTLS bool) error {
+// sendEmailImplicitTLS performs the TLS handshake before the SMTP greeting is
+// read, as required by SMTPS servers that never speak plaintext.
+func sendEmailImplicitTLS(ctx context.Context, host, addr string, tlsConfig *tls.Config, username, password, from string, to []string, message []byte) error {
+	dialer := &net.Dialer{}
+	conn, err := dialer.DialContext(ctx, "tcp", addr)
+	if err != nil {
+		return err
+	}
+
+	// Abort the connection if ctx is canceled, since the SMTP operations
+	// below do not otherwise observe the context deadline.
+	stopWatch := watchContextCancel(ctx, conn)
+	defer stopWatch()
+
+	tlsConn := tls.Client(conn, tlsConfig)
+	if err := tlsConn.HandshakeContext(ctx); err != nil {
+		_ = conn.Close()
+		if strings.Contains(err.Error(), "first record does not look like a TLS handshake") {
+			return fmt.Errorf("implicit TLS handshake failed, the server likely expects STARTTLS instead: %w", err)
+		}
+		return err
+	}
+
+	client, err := smtp.NewClient(tlsConn, host)
+	if err != nil {
+		_ = tlsConn.Close()
+		return err
+	}
+	defer client.Close()
+
+	return sendEmailWithClient(client, host, username, password, from, to, message)
+}
+
+// sendEmailStartTLS connects to addr in plaintext and then applies the STARTTLS
+// policy implied by transport. Only emailTransportRequiredSTARTTLS fails closed;
+// the opportunistic mode stays plaintext when STARTTLS is not advertised and
+// therefore does not defend against an attacker stripping that capability.
+func sendEmailStartTLS(ctx context.Context, host, addr string, tlsConfig *tls.Config, username, password, from string, to []string, message []byte, transport emailTransport) error {
 	dialer := &net.Dialer{}
 	conn, err := dialer.DialContext(ctx, "tcp", addr)
 	if err != nil {
@@ -228,16 +312,15 @@ func sendEmailStartTLS(ctx context.Context, host, addr, username, password, from
 	}
 	defer client.Close()
 
-	ok, _ := client.Extension("STARTTLS")
-	if !ok && requireTLS {
-		return fmt.Errorf("SMTP server does not support STARTTLS")
-	}
-	if ok {
-		if err := client.StartTLS(&tls.Config{
-			ServerName: host,
-			MinVersion: tls.VersionTLS12,
-		}); err != nil {
-			return err
+	if transport != emailTransportPlain {
+		advertised, _ := client.Extension("STARTTLS")
+		if !advertised && transport == emailTransportRequiredSTARTTLS {
+			return fmt.Errorf("SMTP server does not support STARTTLS")
+		}
+		if advertised {
+			if err := client.StartTLS(tlsConfig); err != nil {
+				return err
+			}
 		}
 	}
 
