@@ -33,8 +33,16 @@ const EmailConfig: ExternalNotifyConfig = {
       label: 'SSL',
     },
     {
+      key: 'encryption',
+      label: 'Encryption (none, starttls, opportunistic, tls)',
+    },
+    {
       key: 'html',
       label: 'HTML',
+    },
+    {
+      key: 'html_template',
+      label: 'HTML Template (Optional)',
     },
   ],
 }
