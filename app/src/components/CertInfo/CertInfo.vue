@@ -35,7 +35,7 @@ const isValid = computed(() => dayjs().isAfter(props.cert?.not_before) && dayjs(
       {{ $gettext('Issuer: %{issuer}', { issuer: cert.issuer_name }) }}
     </p>
     <p>
-      {{ $gettext('Expired At: %{date}', { date: dayjs(cert.not_after).format('YYYY-MM-DD HH:mm:ss').toString() }) }}
+      {{ $gettext('Expires At: %{date}', { date: dayjs(cert.not_after).format('YYYY-MM-DD HH:mm:ss').toString() }) }}
     </p>
     <p class="mb-0">
       {{ $gettext('Not Valid Before: %{date}', { date: dayjs(cert.not_before).format('YYYY-MM-DD HH:mm:ss').toString() }) }}
