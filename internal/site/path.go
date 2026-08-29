@@ -21,3 +21,10 @@ func resolveEnabledSymlinkPath(name string) (string, error) {
 
 	return nginx.GetConfSymlinkPath(enabledPath), nil
 }
+
+// resolveEnabledMaintenancePath resolves the generated maintenance config in
+// sites-enabled. It must go through the symlink helper, otherwise Windows setups
+// that include sites-enabled/*.conf would never load the file.
+func resolveEnabledMaintenancePath(name string) (string, error) {
+	return resolveEnabledSymlinkPath(name + MaintenanceSuffix)
+}

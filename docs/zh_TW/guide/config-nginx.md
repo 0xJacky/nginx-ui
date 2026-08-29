@@ -124,6 +124,13 @@ start-stop-daemon --start --quiet --pidfile $PID --exec $SBIN_PATH
 
 ## 維護頁面
 
+### MaintenanceDir
+- 類型：`string`
+- 預設值：`/etc/nginx/maintenance`
+- 環境變數：`NGINX_UI_NGINX_MAINTENANCE_DIR`
+
+此選項用於設定 Nginx UI 讀取自訂維護頁面模板的目錄。若留空，則使用 `/etc/nginx/maintenance`。
+
 ### MaintenanceTemplate
 - 類型：`string`
 - 環境變數：`NGINX_UI_NGINX_MAINTENANCE_TEMPLATE`
@@ -131,11 +138,16 @@ start-stop-daemon --start --quiet --pidfile $PID --exec $SBIN_PATH
 
 此選項用於為 Nginx UI 維護頁面選擇自訂 HTML 模板。您可以透過環境變數設定，也可以在 Settings > Nginx 中設定。
 
-此設定只使用檔案名稱。Nginx UI 會從 `/etc/nginx/maintenance/<filename>` 載入自訂模板，設定值中的路徑部分會被忽略。
+此設定只使用檔案名稱，設定值中的路徑部分會被忽略。Nginx UI 會依下列順序從維護目錄載入模板：
+
+1. `<MaintenanceDir>/<站台名稱>.<檔案名稱>`，即該站台專屬的模板；
+2. `<MaintenanceDir>/<檔案名稱>`，即所有站台共用的通用模板。
+
+例如當 `MaintenanceTemplate=maintenance.html` 時，站台 `example.com` 會優先嘗試 `/etc/nginx/maintenance/example.com.maintenance.html`，找不到時降級為 `/etc/nginx/maintenance/maintenance.html`。
 
 如果此選項為空、檔案不可讀或檔案內容為空，Nginx UI 將回退到內建維護頁面模板。
 
-對於 Docker 部署，請將主機目錄掛載到 `/etc/nginx/maintenance`，並將模板檔案放在該目錄中：
+對於 Docker 部署，請將主機目錄掛載到維護目錄，並將模板檔案放在該目錄中：
 
 ```yaml
 services:

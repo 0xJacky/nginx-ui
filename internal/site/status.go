@@ -29,7 +29,7 @@ func GetSiteStatus(name string) Status {
 		return StatusEnabled
 	}
 
-	mantainanceFilePath, err := ResolveEnabledPath(name + MaintenanceSuffix)
+	mantainanceFilePath, err := resolveEnabledMaintenancePath(name)
 	if err != nil {
 		logger.Error(err)
 		return StatusDisabled

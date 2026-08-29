@@ -60,13 +60,13 @@ func EnableMaintenance(name string) (err error) {
 	}
 
 	// Path for the maintenance configuration file
-	maintenanceConfigPath, err := ResolveEnabledPath(name + MaintenanceSuffix)
+	maintenanceConfigPath, err := resolveEnabledMaintenancePath(name)
 	if err != nil {
 		return err
 	}
 
 	// Path for original configuration in sites-enabled
-	originalEnabledPath, err := ResolveEnabledPath(name)
+	originalEnabledPath, err := resolveEnabledSymlinkPath(name)
 	if err != nil {
 		return err
 	}
@@ -98,7 +98,7 @@ func EnableMaintenance(name string) (err error) {
 	}
 
 	// Create new maintenance configuration
-	maintenanceConfig := createMaintenanceConfig(conf, filepath.Dir(configFilePath))
+	maintenanceConfig := createMaintenanceConfig(conf, filepath.Dir(configFilePath), name)
 
 	// Write maintenance configuration to file
 	err = os.WriteFile(maintenanceConfigPath, []byte(maintenanceConfig), 0644)
@@ -107,7 +107,8 @@ func EnableMaintenance(name string) (err error) {
 	}
 
 	// Remove the original symlink from sites-enabled if it exists
-	if helper.FileExists(originalEnabledPath) {
+	originalWasEnabled := helper.FileExists(originalEnabledPath)
+	if originalWasEnabled {
 		err = os.Remove(originalEnabledPath)
 		if err != nil {
 			// If we couldn't remove the original, remove the maintenance file and return the error
@@ -116,20 +117,31 @@ func EnableMaintenance(name string) (err error) {
 		}
 	}
 
+	// revertMaintenance drops the maintenance config and re-enables the original
+	// site, so a failed switch never leaves the site without any enabled config.
+	revertMaintenance := func() {
+		_ = os.Remove(maintenanceConfigPath)
+		if !originalWasEnabled {
+			return
+		}
+		if symlinkErr := os.Symlink(configFilePath, originalEnabledPath); symlinkErr != nil {
+			logger.Error("Failed to restore site after maintenance rollback", symlinkErr)
+		}
+	}
+
 	// Test nginx config, if not pass, then restore original configuration
 	res := nginx.Control(nginx.TestConfig)
 	if res.IsError() {
 		// Configuration error, cleanup and revert
-		_ = os.Remove(maintenanceConfigPath)
-		if helper.FileExists(originalEnabledPath + "_backup") {
-			_ = os.Rename(originalEnabledPath+"_backup", originalEnabledPath)
-		}
+		revertMaintenance()
 		return res.GetError()
 	}
 
 	// Reload nginx
 	res = nginx.Control(nginx.Reload)
 	if res.IsError() {
+		revertMaintenance()
+		nginx.Control(nginx.Reload)
 		return res.GetError()
 	}
 
@@ -149,7 +161,7 @@ func DisableMaintenance(name string) (err error) {
 	}
 
 	// Check if the site is in maintenance mode
-	maintenanceConfigPath, err := ResolveEnabledPath(name + MaintenanceSuffix)
+	maintenanceConfigPath, err := resolveEnabledMaintenancePath(name)
 	_, err = os.Stat(maintenanceConfigPath)
 	if err != nil {
 		return
@@ -161,7 +173,7 @@ func DisableMaintenance(name string) (err error) {
 		return err
 	}
 
-	enabledConfigFilePath, err := ResolveEnabledPath(name)
+	enabledConfigFilePath, err := resolveEnabledSymlinkPath(name)
 	if err != nil {
 		return err
 	}
@@ -178,6 +190,13 @@ func DisableMaintenance(name string) (err error) {
 		return
 	}
 
+	// Keep the generated maintenance config so it can be restored on rollback
+	maintenanceContent, err := os.ReadFile(maintenanceConfigPath)
+	if err != nil {
+		_ = os.Remove(enabledConfigFilePath)
+		return
+	}
+
 	// Remove maintenance configuration
 	err = os.Remove(maintenanceConfigPath)
 	if err != nil {
@@ -191,7 +210,7 @@ func DisableMaintenance(name string) (err error) {
 	if res.IsError() {
 		// Configuration error, cleanup and revert
 		_ = os.Remove(enabledConfigFilePath)
-		_ = os.Symlink(configFilePath, maintenanceConfigPath)
+		_ = os.WriteFile(maintenanceConfigPath, maintenanceContent, 0644)
 		return res.GetError()
 	}
 
@@ -209,8 +228,9 @@ func DisableMaintenance(name string) (err error) {
 
 // createMaintenanceConfig creates a maintenance configuration based on the original config.
 // baseDir is the directory used to resolve relative include directives; pass "" to fall back
-// to the nginx configuration directory.
-func createMaintenanceConfig(conf *config.Config, baseDir string) string {
+// to the nginx configuration directory. siteName is forwarded to the maintenance page so it
+// can render a site specific template; pass "" to skip it.
+func createMaintenanceConfig(conf *config.Config, baseDir string, siteName string) string {
 	nginxUIPort := cSettings.ServerSettings.Port
 	schema := "http"
 	if cSettings.ServerSettings.EnableHTTPS {
@@ -268,6 +288,9 @@ func createMaintenanceConfig(conf *config.Config, baseDir string) string {
 		locationContent.WriteString("proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n")
 		locationContent.WriteString("proxy_set_header X-Forwarded-Proto $scheme;\n")
 		locationContent.WriteString("proxy_set_header X-Forwarded-Host $http_host;\n")
+		if siteName != "" {
+			locationContent.WriteString(fmt.Sprintf("proxy_set_header X-Maintenance-Site \"%s\";\n", escapeNginxQuotedValue(siteName)))
+		}
 		locationContent.WriteString("rewrite ^ /pages/maintenance break;\n")
 		locationContent.WriteString(fmt.Sprintf("proxy_pass %s://127.0.0.1:%d;\n", schema, nginxUIPort))
 
@@ -286,6 +309,11 @@ func createMaintenanceConfig(conf *config.Config, baseDir string) string {
 	}
 
 	return content
+}
+
+// escapeNginxQuotedValue escapes a value embedded in a double quoted nginx parameter.
+func escapeNginxQuotedValue(value string) string {
+	return strings.NewReplacer(`\`, `\\`, `"`, `\"`).Replace(value)
 }
 
 // findServerBlocks finds all server blocks in a configuration
