@@ -54,8 +54,10 @@ type maintenanceIncludeExpander struct {
 func EnableMaintenance(name string) (err error) {
 	// Check if the site exists in sites-available
 	configFilePath, err := ResolveAvailablePath(name)
-	_, err = os.Stat(configFilePath)
 	if err != nil {
+		return err
+	}
+	if _, err = os.Stat(configFilePath); err != nil {
 		return
 	}
 
@@ -162,8 +164,10 @@ func DisableMaintenance(name string) (err error) {
 
 	// Check if the site is in maintenance mode
 	maintenanceConfigPath, err := resolveEnabledMaintenancePath(name)
-	_, err = os.Stat(maintenanceConfigPath)
 	if err != nil {
+		return err
+	}
+	if _, err = os.Stat(maintenanceConfigPath); err != nil {
 		return
 	}
 
