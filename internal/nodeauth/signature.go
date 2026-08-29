@@ -140,6 +140,9 @@ func verifyRequest(request *http.Request, database *gorm.DB, now time.Time, repl
 	if request == nil || database == nil {
 		return nil, errors.New("node signature verifier is unavailable")
 	}
+	if request.ContentLength > maxStagedRequestBodySize {
+		return nil, requestBodyTooLargeError(maxStagedRequestBodySize)
+	}
 	if request.URL.Query().Has("node_secret") {
 		return nil, errors.New("node credentials are not accepted in query parameters")
 	}
@@ -170,15 +173,10 @@ func verifyRequest(request *http.Request, database *gorm.DB, now time.Time, repl
 		return nil, errors.New("node signing credential is unknown or revoked")
 	}
 
-	contentDigest, err := stageRequestBody(request)
+	receivedDigest, err := requestContentDigest(request)
 	if err != nil {
 		return nil, err
 	}
-	receivedDigest := singleHeaderValue(request.Header, contentDigestHeader)
-	if receivedDigest == "" || subtle.ConstantTimeCompare([]byte(receivedDigest), []byte(contentDigest)) != 1 {
-		return nil, errors.New("node request content digest mismatch")
-	}
-
 	signature, err := parseSignature(request.Header, ed25519.SignatureSize)
 	if err != nil {
 		return nil, err
@@ -190,6 +188,9 @@ func verifyRequest(request *http.Request, database *gorm.DB, now time.Time, repl
 
 	if replayCache == nil || !replayCache.Use(metadata.credentialID+":"+metadata.nonce, now) {
 		return nil, errors.New("node request nonce was already used")
+	}
+	if err := verifyRequestBodyDigest(request, receivedDigest); err != nil {
+		return nil, err
 	}
 
 	if err := database.Model(&model.NodeControllerCredential{}).
@@ -223,15 +224,10 @@ func verifySharedSecretRequest(request *http.Request, metadata signatureMetadata
 		return nil, errors.New("node secret is not configured")
 	}
 
-	contentDigest, err := stageRequestBody(request)
+	receivedDigest, err := requestContentDigest(request)
 	if err != nil {
 		return nil, err
 	}
-	receivedDigest := singleHeaderValue(request.Header, contentDigestHeader)
-	if receivedDigest == "" || subtle.ConstantTimeCompare([]byte(receivedDigest), []byte(contentDigest)) != 1 {
-		return nil, errors.New("node request content digest mismatch")
-	}
-
 	signature, err := parseSignature(request.Header, sha256.Size)
 	if err != nil {
 		return nil, err
@@ -246,12 +242,34 @@ func verifySharedSecretRequest(request *http.Request, metadata signatureMetadata
 	if replayCache == nil || !replayCache.Use(sharedSecretKeyID+":"+metadata.nonce, now) {
 		return nil, errors.New("node request nonce was already used")
 	}
+	if err := verifyRequestBodyDigest(request, receivedDigest); err != nil {
+		return nil, err
+	}
 
 	return &Principal{
 		CredentialID:         "legacy",
 		ControllerInstanceID: "legacy",
 		AuthMethod:           model.NodeAuthMethodLegacy,
 	}, nil
+}
+
+func requestContentDigest(request *http.Request) (string, error) {
+	receivedDigest := singleHeaderValue(request.Header, contentDigestHeader)
+	if receivedDigest == "" {
+		return "", errors.New("node request content digest is missing or invalid")
+	}
+	return receivedDigest, nil
+}
+
+func verifyRequestBodyDigest(request *http.Request, receivedDigest string) error {
+	contentDigest, err := stageRequestBody(request)
+	if err != nil {
+		return err
+	}
+	if subtle.ConstantTimeCompare([]byte(receivedDigest), []byte(contentDigest)) != 1 {
+		return errors.New("node request content digest mismatch")
+	}
+	return nil
 }
 
 func parseSignatureInput(header http.Header) (signatureMetadata, error) {
