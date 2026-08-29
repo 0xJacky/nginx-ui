@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 
 	"github.com/0xJacky/Nginx-UI/settings"
@@ -101,13 +102,20 @@ func readMaintenanceTemplate(siteName string) []byte {
 	}
 
 	dir := settings.NginxSettings.GetMaintenanceDir()
-	candidates := make([]string, 0, 2)
+	names := make([]string, 0, 2)
 	if site := sanitizeMaintenanceFileName(siteName); site != "" {
-		candidates = append(candidates, filepath.Join(dir, site+"."+templateName))
+		names = append(names, site+"."+templateName)
 	}
-	candidates = append(candidates, filepath.Join(dir, templateName))
+	names = append(names, templateName)
 
-	for _, candidate := range candidates {
+	for _, name := range names {
+		// filepath.IsLocal rejects absolute paths and any ".." traversal, so the
+		// join below can never escape dir even if sanitizeMaintenanceFileName
+		// were bypassed.
+		if !filepath.IsLocal(name) {
+			continue
+		}
+		candidate := filepath.Join(dir, name)
 		if content, err := os.ReadFile(candidate); err == nil && len(content) > 0 {
 			return content
 		}
@@ -116,13 +124,17 @@ func readMaintenanceTemplate(siteName string) []byte {
 	return nil
 }
 
-// sanitizeMaintenanceFileName reduces the input to a single path element so that
-// neither the configured template name nor a spoofed site header can escape the
-// maintenance directory.
+// maintenanceFileNamePattern allows only characters that are safe in a single
+// path segment on every supported OS, closing off traversal and NUL-byte tricks.
+var maintenanceFileNamePattern = regexp.MustCompile(`^[A-Za-z0-9._-]+$`)
+
+// sanitizeMaintenanceFileName reduces the input to a single, safe path element so
+// that neither the configured template name nor a spoofed site header can escape
+// the maintenance directory.
 func sanitizeMaintenanceFileName(name string) string {
 	name = strings.TrimSpace(name)
 	name = name[strings.LastIndexAny(name, `/\`)+1:]
-	if name == "." || name == ".." || strings.ContainsRune(name, 0) {
+	if name == "." || name == ".." || !maintenanceFileNamePattern.MatchString(name) {
 		return ""
 	}
 	return name

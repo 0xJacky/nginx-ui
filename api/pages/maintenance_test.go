@@ -46,6 +46,7 @@ func TestReadMaintenanceTemplate(t *testing.T) {
 		{name: "missing site header falls back to generic", siteName: "", want: "generic"},
 		{name: "path traversal is stripped to the base name", siteName: "../../etc/example.com", want: "site"},
 		{name: "dot segment falls back to generic", siteName: "..", want: "generic"},
+		{name: "disallowed characters fall back to generic", siteName: "example.com; rm -rf", want: "generic"},
 	}
 
 	for _, test := range tests {
@@ -70,5 +71,29 @@ func TestGetMaintenanceDirFallsBackToDefault(t *testing.T) {
 
 	if got := settings.NginxSettings.GetMaintenanceDir(); got != settings.DefaultMaintenanceDir {
 		t.Fatalf("GetMaintenanceDir() = %q, want %q", got, settings.DefaultMaintenanceDir)
+	}
+}
+
+func TestSanitizeMaintenanceFileNameRejectsTraversal(t *testing.T) {
+	tests := []struct {
+		name  string
+		input string
+		want  string
+	}{
+		{name: "plain name", input: "maintenance.html", want: "maintenance.html"},
+		{name: "absolute posix path", input: "/etc/passwd", want: "passwd"},
+		{name: "absolute windows path", input: `C:\Windows\System32\config`, want: "config"},
+		{name: "traversal", input: "..", want: ""},
+		{name: "nul byte", input: "maintenance.html\x00.png", want: ""},
+		{name: "shell metacharacters", input: "a;b", want: ""},
+		{name: "space", input: "a b", want: ""},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			if got := sanitizeMaintenanceFileName(test.input); got != test.want {
+				t.Fatalf("sanitizeMaintenanceFileName(%q) = %q, want %q", test.input, got, test.want)
+			}
+		})
 	}
 }
