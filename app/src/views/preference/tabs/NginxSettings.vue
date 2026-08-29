@@ -19,7 +19,7 @@ const { data } = storeToRefs(systemSettingsStore)
         {{ $gettext('Mounted directory') }}: {{ data.nginx.maintenance_dir }}
       </div>
       <div class="text-secondary mt-1">
-        {{ $gettext('The file named <site name>.<filename> is used first, otherwise the generic file is used.') }}
+        {{ $gettext('The file named <site name>.<filename> is used first; if it does not exist, the generic <filename> is used; if neither exists, the built-in Nginx UI maintenance page is used.') }}
       </div>
     </AFormItem>
     <AFormItem :label="$gettext('Nginx Access Log Path')">
