@@ -77,3 +77,20 @@ func TestLockApplySerializesConfigurationMutations(t *testing.T) {
 		t.Fatal("LockApply must hand over the apply lock after it is released")
 	}
 }
+
+func TestTryLockApplyFailsFastWhileConfigurationMutationIsRunning(t *testing.T) {
+	release := LockApply()
+
+	if secondRelease, ok := TryLockApply(); ok {
+		secondRelease()
+		release()
+		t.Fatal("TryLockApply acquired the apply lock while it was held")
+	}
+
+	release()
+	secondRelease, ok := TryLockApply()
+	if !ok {
+		t.Fatal("TryLockApply did not acquire an available apply lock")
+	}
+	secondRelease()
+}

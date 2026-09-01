@@ -22,6 +22,16 @@ func LockApply() (release func()) {
 	return applyMutex.Unlock
 }
 
+// TryLockApply acquires the configuration apply lock without waiting. Control
+// endpoints use it to fail fast instead of building an unbounded request queue
+// behind a long-running configuration mutation.
+func TryLockApply() (release func(), ok bool) {
+	if !applyMutex.TryLock() {
+		return nil, false
+	}
+	return applyMutex.Unlock, true
+}
+
 // FileSnapshot records the on-disk state of a configuration file so a failed
 // nginx test or reload can put the previous state back. A snapshot taken of a
 // missing file restores by removing the file again, which is what a newly

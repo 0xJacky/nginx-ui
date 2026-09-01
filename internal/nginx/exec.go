@@ -10,8 +10,12 @@ import (
 )
 
 func execShell(cmd string) (stdOut string, stdErr error) {
+	return execShellContext(context.Background(), cmd)
+}
+
+func execShellContext(ctx context.Context, cmd string) (stdOut string, stdErr error) {
 	name, args := shellCommand(runtime.GOOS, settings.NginxSettings.RunningInAnotherContainer(), cmd)
-	return execCommand(name, args...)
+	return execCommandContext(ctx, name, args...)
 }
 
 func shellCommand(goos string, externalContainer bool, cmd string) (name string, args []string) {
@@ -26,12 +30,16 @@ func shellCommand(goos string, externalContainer bool, cmd string) (name string,
 }
 
 func execCommand(name string, cmd ...string) (stdOut string, stdErr error) {
+	return execCommandContext(context.Background(), name, cmd...)
+}
+
+func execCommandContext(ctx context.Context, name string, cmd ...string) (stdOut string, stdErr error) {
 	switch settings.NginxSettings.RunningInAnotherContainer() {
 	case true:
 		cmd = append([]string{name}, cmd...)
-		stdOut, stdErr = docker.Exec(context.Background(), cmd)
+		stdOut, stdErr = docker.Exec(ctx, cmd)
 	case false:
-		execCmd := exec.Command(name, cmd...)
+		execCmd := exec.CommandContext(ctx, name, cmd...)
 		// fix #1046
 		execCmd.Dir = GetNginxExeDir()
 		bytes, err := execCmd.CombinedOutput()

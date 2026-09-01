@@ -1,7 +1,11 @@
 package cluster
 
 import (
+	"math"
 	"net/http"
+	"strconv"
+	"sync"
+	"time"
 
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
@@ -13,6 +17,47 @@ import (
 type APIRespNamespace struct {
 	model.Namespace
 	SyncNodes []*model.Node `json:"sync_nodes,omitempty" gorm:"-"`
+}
+
+const reloadDispatchCooldown = 2 * time.Second
+
+type reloadDispatchGate struct {
+	mutex        sync.Mutex
+	inFlight     bool
+	lastFinished time.Time
+	cooldown     time.Duration
+}
+
+type reloadDispatchDependencies struct {
+	now      func() time.Time
+	dispatch func(nodeIDs []uint64)
+}
+
+var clusterReloadDispatchGate = &reloadDispatchGate{cooldown: reloadDispatchCooldown}
+
+func (gate *reloadDispatchGate) tryStart(now time.Time) (ok bool, retryAfter time.Duration) {
+	gate.mutex.Lock()
+	defer gate.mutex.Unlock()
+
+	if gate.inFlight {
+		return false, 0
+	}
+	if !gate.lastFinished.IsZero() {
+		retryAfter = gate.cooldown - now.Sub(gate.lastFinished)
+		if retryAfter > 0 {
+			return false, retryAfter
+		}
+	}
+
+	gate.inFlight = true
+	return true, 0
+}
+
+func (gate *reloadDispatchGate) finish(now time.Time) {
+	gate.mutex.Lock()
+	gate.inFlight = false
+	gate.lastFinished = now
+	gate.mutex.Unlock()
 }
 
 func GetNamespace(c *gin.Context) {
@@ -116,6 +161,13 @@ func UpdateNamespacesOrder(c *gin.Context) {
 }
 
 func ReloadNginx(c *gin.Context) {
+	reloadNginx(c, reloadDispatchDependencies{
+		now:      time.Now,
+		dispatch: syncReload,
+	}, clusterReloadDispatchGate)
+}
+
+func reloadNginx(c *gin.Context, dependencies reloadDispatchDependencies, gate *reloadDispatchGate) {
 	var json struct {
 		NodeIDs []uint64 `json:"node_ids" binding:"required"`
 	}
@@ -124,7 +176,27 @@ func ReloadNginx(c *gin.Context) {
 		return
 	}
 
-	go syncReload(json.NodeIDs)
+	started, retryAfter := gate.tryStart(dependencies.now())
+	if !started {
+		if retryAfter > 0 {
+			seconds := int(math.Ceil(retryAfter.Seconds()))
+			c.Header("Retry-After", strconv.Itoa(seconds))
+			c.JSON(http.StatusTooManyRequests, gin.H{
+				"message":     "Nginx reload dispatch is cooling down",
+				"retry_after": seconds,
+			})
+			return
+		}
+		c.JSON(http.StatusConflict, gin.H{
+			"message": "another Nginx reload dispatch is already running",
+		})
+		return
+	}
+
+	go func() {
+		defer gate.finish(dependencies.now())
+		dependencies.dispatch(json.NodeIDs)
+	}()
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",

@@ -1,8 +1,10 @@
 package nginx
 
 import (
+	"context"
 	"runtime"
 	"testing"
+	"time"
 
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/stretchr/testify/assert"
@@ -66,4 +68,23 @@ func TestExecShellLocal(t *testing.T) {
 	out, err := execShell("printf issue-1571")
 	assert.NoError(t, err)
 	assert.Equal(t, "issue-1571", out)
+}
+
+func TestExecShellContextStopsTimedOutCommand(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("shell timeout command is Unix-specific")
+	}
+	originalContainerName := settings.NginxSettings.ContainerName
+	settings.NginxSettings.ContainerName = ""
+	t.Cleanup(func() {
+		settings.NginxSettings.ContainerName = originalContainerName
+	})
+
+	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Millisecond)
+	defer cancel()
+	started := time.Now()
+	_, err := execShellContext(ctx, "exec sleep 5")
+
+	assert.Error(t, err)
+	assert.Less(t, time.Since(started), time.Second)
 }
