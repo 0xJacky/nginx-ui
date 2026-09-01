@@ -132,10 +132,6 @@ func syncSave(name string, content string) {
 	wg := &sync.WaitGroup{}
 	wg.Add(len(nodes))
 
-	// Map to track successful nodes for potential post-sync action
-	successfulNodes := make([]*model.Node, 0)
-	var nodesMutex sync.Mutex
-
 	for _, node := range nodes {
 		go func(node *model.Node) {
 			defer func() {
@@ -166,14 +162,11 @@ func syncSave(name string, content string) {
 			}
 			notification.Success("Save Remote Site Success", "Save site %{name} to %{node} successfully", NewSyncResult(node.Name, name, resp))
 
-			// Track successful sync for post-sync action
-			nodesMutex.Lock()
-			successfulNodes = append(successfulNodes, node)
-			nodesMutex.Unlock()
-
-			// Mirror the deployment intent on the remote node.
+			// Mirror the deployment intent only on the node that accepted this
+			// save. Broadcasting here once per successful node creates N-by-N
+			// enable requests and duplicate notifications.
 			if IsDeployed(name) {
-				syncEnable(name)
+				syncEnableOnNode(name, node)
 			}
 		}(node)
 	}

@@ -11,6 +11,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
+	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/uozi-tech/cosy/logger"
 )
 
@@ -79,7 +80,7 @@ func syncEnable(name string) {
 	wg.Add(len(nodes))
 
 	for _, node := range nodes {
-		go func() {
+		go func(node *model.Node) {
 			defer func() {
 				if err := recover(); err != nil {
 					buf := make([]byte, 1024)
@@ -89,21 +90,27 @@ func syncEnable(name string) {
 			}()
 			defer wg.Done()
 
-			client := nodeauth.NewRestyClient(node)
-			client.SetBaseURL(node.URL)
-			resp, err := client.R().
-				Post(fmt.Sprintf("/api/sites/%s/enable", name))
-			if err != nil {
-				notification.Error("Enable Remote Site Error", err.Error(), nil)
-				return
-			}
-			if resp.StatusCode() != http.StatusOK {
-				notification.Error("Enable Remote Site Error", "Enable site %{name} on %{node} failed", NewSyncResult(node.Name, name, resp))
-				return
-			}
-			notification.Success("Enable Remote Site Success", "Enable site %{name} on %{node} successfully", NewSyncResult(node.Name, name, resp))
-		}()
+			syncEnableOnNode(name, node)
+		}(node)
 	}
 
 	wg.Wait()
+}
+
+// syncEnableOnNode mirrors the deployment intent to one node. Save calls this
+// after that same node accepts the configuration, avoiding an N-by-N broadcast.
+func syncEnableOnNode(name string, node *model.Node) {
+	client := nodeauth.NewRestyClient(node)
+	client.SetBaseURL(node.URL)
+	resp, err := client.R().
+		Post(fmt.Sprintf("/api/sites/%s/enable", name))
+	if err != nil {
+		notification.Error("Enable Remote Site Error", err.Error(), nil)
+		return
+	}
+	if resp.StatusCode() != http.StatusOK {
+		notification.Error("Enable Remote Site Error", "Enable site %{name} on %{node} failed", NewSyncResult(node.Name, name, resp))
+		return
+	}
+	notification.Success("Enable Remote Site Success", "Enable site %{name} on %{node} successfully", NewSyncResult(node.Name, name, resp))
 }
