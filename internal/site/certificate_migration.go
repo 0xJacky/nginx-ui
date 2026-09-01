@@ -432,7 +432,7 @@ func certificateDeploymentConfigPaths(name string) ([]string, error) {
 	}
 	paths := []string{availablePath}
 	if status == StatusMaintenance {
-		maintenancePath, resolveErr := resolveEnabledMaintenancePath(name)
+		maintenancePath, resolveErr := ResolveEnabledMaintenancePath(name)
 		if resolveErr != nil {
 			return nil, resolveErr
 		}

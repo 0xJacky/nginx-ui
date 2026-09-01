@@ -52,6 +52,10 @@ type maintenanceIncludeExpander struct {
 
 // EnableMaintenance enables maintenance mode for a site
 func EnableMaintenance(name string) (err error) {
+	if err = validateSiteName(name); err != nil {
+		return err
+	}
+
 	// Check if the site exists in sites-available
 	configFilePath, err := ResolveAvailablePath(name)
 	if err != nil {
@@ -62,7 +66,7 @@ func EnableMaintenance(name string) (err error) {
 	}
 
 	// Path for the maintenance configuration file
-	maintenanceConfigPath, err := resolveEnabledMaintenancePath(name)
+	maintenanceConfigPath, err := ResolveEnabledMaintenancePath(name)
 	if err != nil {
 		return err
 	}
@@ -155,6 +159,10 @@ func EnableMaintenance(name string) (err error) {
 
 // DisableMaintenance disables maintenance mode for a site
 func DisableMaintenance(name string) (err error) {
+	if err = validateSiteName(name); err != nil {
+		return err
+	}
+
 	// Remote namespaces have no local maintenance configuration to restore.
 	if IsRemoteDeploy(name) {
 		go syncDisableMaintenance(name)
@@ -163,7 +171,7 @@ func DisableMaintenance(name string) (err error) {
 	}
 
 	// Check if the site is in maintenance mode
-	maintenanceConfigPath, err := resolveEnabledMaintenancePath(name)
+	maintenanceConfigPath, err := ResolveEnabledMaintenancePath(name)
 	if err != nil {
 		return err
 	}
@@ -221,6 +229,12 @@ func DisableMaintenance(name string) (err error) {
 	// Reload nginx
 	res = nginx.Control(nginx.Reload)
 	if res.IsError() {
+		// Reload failed after the config already tested clean: restore the
+		// maintenance file and drop the new symlink so Nginx keeps serving
+		// what it actually reloaded, then reload again to reconcile.
+		_ = os.Remove(enabledConfigFilePath)
+		_ = os.WriteFile(maintenanceConfigPath, maintenanceContent, 0644)
+		nginx.Control(nginx.Reload)
 		return res.GetError()
 	}
 

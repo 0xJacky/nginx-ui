@@ -65,6 +65,56 @@ func TestCreateMaintenanceConfig_PreservesForwardedHost(t *testing.T) {
 	}
 }
 
+// TestDisableMaintenanceRestoresMaintenanceConfigWhenReloadFails guards against
+// leaving a site with neither the normal nor the maintenance config enabled:
+// when Nginx accepts the new config on `-t` but fails to reload it, the site
+// must fall back to the maintenance config that was actually still loaded.
+func TestDisableMaintenanceRestoresMaintenanceConfigWhenReloadFails(t *testing.T) {
+	confDir, _ := setupSiteMutationTest(t)
+	availablePath := filepath.Join(confDir, "sites-available", "example.com")
+	if err := os.WriteFile(availablePath, []byte("server {\n    listen 80;\n}\n"), 0o644); err != nil {
+		t.Fatalf("failed to write available config: %v", err)
+	}
+
+	if err := EnableMaintenance("example.com"); err != nil {
+		t.Fatalf("EnableMaintenance() error = %v", err)
+	}
+
+	maintenancePath, err := ResolveEnabledMaintenancePath("example.com")
+	if err != nil {
+		t.Fatalf("ResolveEnabledMaintenancePath() error = %v", err)
+	}
+	maintenanceContentBefore, err := os.ReadFile(maintenancePath)
+	if err != nil {
+		t.Fatalf("failed to read maintenance config: %v", err)
+	}
+
+	enabledPath, err := resolveEnabledSymlinkPath("example.com")
+	if err != nil {
+		t.Fatalf("resolveEnabledSymlinkPath() error = %v", err)
+	}
+
+	reloadMarker := filepath.Join(t.TempDir(), "reload-attempted")
+	settings.NginxSettings.ReloadCmd = fmt.Sprintf(
+		"if [ ! -e %q ]; then touch %q; exit 1; fi", reloadMarker, reloadMarker)
+
+	if err := DisableMaintenance("example.com"); err == nil {
+		t.Fatalf("DisableMaintenance() error = nil, want reload failure")
+	}
+
+	if _, statErr := os.Lstat(enabledPath); !os.IsNotExist(statErr) {
+		t.Fatalf("enabled symlink stat error = %v, want the normal symlink rolled back", statErr)
+	}
+
+	maintenanceContentAfter, readErr := os.ReadFile(maintenancePath)
+	if readErr != nil {
+		t.Fatalf("failed to read maintenance config after rollback: %v", readErr)
+	}
+	if string(maintenanceContentAfter) != string(maintenanceContentBefore) {
+		t.Fatalf("maintenance config after rollback = %q, want %q", maintenanceContentAfter, maintenanceContentBefore)
+	}
+}
+
 func TestCreateMaintenanceConfig_ForwardsSiteName(t *testing.T) {
 	setupMaintenanceTestSettings(t, "")
 
