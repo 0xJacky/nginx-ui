@@ -100,17 +100,21 @@ func syncEnable(name string) {
 // syncEnableOnNode mirrors the deployment intent to one node. Save calls this
 // after that same node accepts the configuration, avoiding an N-by-N broadcast.
 func syncEnableOnNode(name string, node *model.Node) {
+	logger.Infof("Enabling site on remote node: site=%q node=%q", name, node.Name)
 	client := nodeauth.NewRestyClient(node)
 	client.SetBaseURL(node.URL)
 	resp, err := client.R().
 		Post(fmt.Sprintf("/api/sites/%s/enable", name))
 	if err != nil {
+		logger.Errorf("Remote site enable request failed: site=%q node=%q error=%v", name, node.Name, err)
 		notification.Error("Enable Remote Site Error", err.Error(), nil)
 		return
 	}
 	if resp.StatusCode() != http.StatusOK {
+		logger.Errorf("Remote site enable rejected: site=%q node=%q status=%d", name, node.Name, resp.StatusCode())
 		notification.Error("Enable Remote Site Error", "Enable site %{name} on %{node} failed", NewSyncResult(node.Name, name, resp))
 		return
 	}
+	logger.Infof("Remote site enable succeeded: site=%q node=%q", name, node.Name)
 	notification.Success("Enable Remote Site Success", "Enable site %{name} on %{node} successfully", NewSyncResult(node.Name, name, resp))
 }
