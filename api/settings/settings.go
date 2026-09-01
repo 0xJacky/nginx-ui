@@ -233,6 +233,7 @@ func buildNginxSettingsResponse() gin.H {
 	response["config_dir"] = nginx.GetConfPath()
 	response["pid_path"] = nginx.GetPIDPath()
 	response["stub_status_port"] = settings.NginxSettings.GetStubStatusPort()
+	response["maintenance_dir"] = settings.NginxSettings.GetMaintenanceDir()
 
 	if settings.NginxSettings.ReloadCmd == "" {
 		response["reload_cmd"] = "nginx -s reload"

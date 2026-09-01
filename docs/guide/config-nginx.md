@@ -130,6 +130,13 @@ Make sure the port you set is not being used by other services.
 
 ## Maintenance Page
 
+### MaintenanceDir
+- Type: `string`
+- Default: `/etc/nginx/maintenance`
+- Environment Variable: `NGINX_UI_NGINX_MAINTENANCE_DIR`
+
+This option is used to set the directory that Nginx UI reads custom maintenance page templates from. If it is empty, `/etc/nginx/maintenance` is used.
+
 ### MaintenanceTemplate
 - Type: `string`
 - Environment Variable: `NGINX_UI_NGINX_MAINTENANCE_TEMPLATE`
@@ -137,11 +144,16 @@ Make sure the port you set is not being used by other services.
 
 This option is used to select a custom HTML template for the Nginx UI maintenance page. You can set it through the environment variable or in Settings > Nginx.
 
-Only the file name is used. Nginx UI loads the custom template from `/etc/nginx/maintenance/<filename>`, and path components in the configured value are ignored.
+Only the file name is used. Path components in the configured value are ignored, and the template is loaded from the maintenance directory in the following order:
 
-If this option is empty, the file cannot be read, or the file is empty, Nginx UI falls back to the built-in maintenance page template.
+1. `<MaintenanceDir>/<site name>.<filename>`, the template dedicated to the site under maintenance;
+2. `<MaintenanceDir>/<filename>`, the generic template shared by all sites.
 
-For Docker deployments, mount a host directory to `/etc/nginx/maintenance` and put your template file there:
+For example, with `MaintenanceTemplate=maintenance.html`, the site `example.com` first tries `/etc/nginx/maintenance/example.com.maintenance.html`, then falls back to `/etc/nginx/maintenance/maintenance.html`.
+
+If this option is empty, no file can be read, or the files are empty, Nginx UI falls back to the built-in maintenance page template.
+
+For Docker deployments, mount a host directory to the maintenance directory and put your template files there:
 
 ```yaml
 services:

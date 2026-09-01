@@ -84,6 +84,7 @@ export interface NginxSettings {
   restart_cmd: string
   stub_status_port: number
   container_name: string
+  maintenance_dir?: string
   maintenance_template?: string
 }
 

@@ -256,12 +256,14 @@ func SiteStatusMapBuilder(maintenanceSuffix string) StatusMapBuilder {
 
 		// Update enabled and maintenance status
 		for _, enabledSite := range enabledConfig {
-			name := enabledSite.Name()
+			// Strip the platform symlink suffix first (e.g. the trailing ".conf"
+			// Windows setups need), otherwise the maintenance suffix never matches.
+			name := nginx.GetConfNameBySymlinkName(enabledSite.Name())
 			if strings.HasSuffix(name, maintenanceSuffix) {
 				originalName := strings.TrimSuffix(name, maintenanceSuffix)
 				statusMap[originalName] = StatusMaintenance
 			} else {
-				statusMap[nginx.GetConfNameBySymlinkName(name)] = StatusEnabled
+				statusMap[name] = StatusEnabled
 			}
 		}
 

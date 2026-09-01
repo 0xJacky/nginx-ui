@@ -83,7 +83,7 @@ func detachFromLocalNginx(name string) error {
 		return err
 	}
 
-	maintenancePath, err := ResolveEnabledPath(name + MaintenanceSuffix)
+	maintenancePath, err := ResolveEnabledMaintenancePath(name)
 	if err != nil {
 		return err
 	}

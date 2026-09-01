@@ -107,3 +107,61 @@ func TestEnableMaintenanceSiteRejectsInvalidSiteName(t *testing.T) {
 		t.Fatalf("expected invalid site name response, got %q", recorder.Body.String())
 	}
 }
+
+func TestGetSiteRejectsInvalidSiteName(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	recorder := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(recorder)
+	c.Params = gin.Params{{Key: "name", Value: "..%2F..%2Fnginx.conf"}}
+
+	GetSite(c)
+
+	if recorder.Code != http.StatusBadRequest {
+		t.Fatalf("expected 400, got %d with body %q", recorder.Code, recorder.Body.String())
+	}
+	if !bytes.Contains(recorder.Body.Bytes(), []byte("invalid site name")) {
+		t.Fatalf("expected invalid site name response, got %q", recorder.Body.String())
+	}
+}
+
+func TestDeleteSiteRejectsInvalidSiteName(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	recorder := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(recorder)
+	c.Params = gin.Params{{Key: "name", Value: "..%2F..%2Fnginx.conf"}}
+
+	DeleteSite(c)
+
+	if recorder.Code != http.StatusBadRequest {
+		t.Fatalf("expected 400, got %d with body %q", recorder.Code, recorder.Body.String())
+	}
+	if !bytes.Contains(recorder.Body.Bytes(), []byte("invalid site name")) {
+		t.Fatalf("expected invalid site name response, got %q", recorder.Body.String())
+	}
+}
+
+func TestRenameSiteRejectsInvalidNewName(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	router := gin.New()
+	router.POST("sites/:name/rename", RenameSite)
+
+	body, err := json.Marshal(gin.H{
+		"new_name": "../../etc/passwd",
+	})
+	if err != nil {
+		t.Fatalf("failed to marshal request body: %v", err)
+	}
+
+	req := httptest.NewRequest(http.MethodPost, "/sites/example.com/rename", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+
+	recorder := httptest.NewRecorder()
+	router.ServeHTTP(recorder, req)
+
+	if recorder.Code != http.StatusBadRequest {
+		t.Fatalf("expected 400, got %d with body %q", recorder.Code, recorder.Body.String())
+	}
+	if !bytes.Contains(recorder.Body.Bytes(), []byte("invalid site name")) {
+		t.Fatalf("expected invalid site name response, got %q", recorder.Body.String())
+	}
+}
