@@ -51,6 +51,29 @@ func newStepRemediation(code string, params ...map[string]string) *StepRemediati
 	return &StepRemediation{Code: code, Params: values}
 }
 
+// StepOutcome is a single check result. Detail is raw evidence, while
+// Remediation is a language-neutral message contract rendered by the UI.
+type StepOutcome struct {
+	OK          bool             `json:"ok"`
+	Level       string           `json:"level,omitempty"`
+	Detail      string           `json:"detail"`
+	Remediation *StepRemediation `json:"remediation,omitempty"`
+}
+
+// VerifyResult aggregates all step outcomes.
+type VerifyResult struct {
+	Steps map[string]StepOutcome `json:"steps"`
+}
+
+// VerifyOptions narrows the input to what verify actually needs.
+type VerifyOptions struct {
+	Client     CommandRunner
+	Params     SetupParams
+	SkipNginxT bool
+	// Groups limits the pipeline to the listed check groups. Empty runs all.
+	Groups []CheckGroup
+}
+
 // CommandRunner is the part of the SSH client the verify pipeline uses.
 // Depending on the interface rather than the concrete client lets the checks
 // be exercised without a live host.
@@ -71,4 +94,16 @@ func checkKnownHostsPersistence(path string) StepOutcome {
 		Detail:      path + " is outside the recommended /etc/nginx-ui data directory",
 		Remediation: newStepRemediation(remediationPersistKnownHosts),
 	}
+}
+
+// findMissingSudoEntries reports which required sudoers entries are absent from
+// the `sudo -l` output. It has no syscalls, so it is shared by every platform.
+func findMissingSudoEntries(sudoListOutput string, required []string) []string {
+	var missing []string
+	for _, req := range required {
+		if !strings.Contains(sudoListOutput, req) {
+			missing = append(missing, req)
+		}
+	}
+	return missing
 }

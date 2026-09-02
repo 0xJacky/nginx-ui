@@ -17,29 +17,6 @@ import (
 	"golang.org/x/sys/unix"
 )
 
-// StepOutcome is a single check result. Detail is raw evidence, while
-// Remediation is a language-neutral message contract rendered by the UI.
-type StepOutcome struct {
-	OK          bool             `json:"ok"`
-	Level       string           `json:"level,omitempty"`
-	Detail      string           `json:"detail"`
-	Remediation *StepRemediation `json:"remediation,omitempty"`
-}
-
-// VerifyResult aggregates all step outcomes.
-type VerifyResult struct {
-	Steps map[string]StepOutcome `json:"steps"`
-}
-
-// VerifyOptions narrows the input to what verify actually needs.
-type VerifyOptions struct {
-	Client     CommandRunner
-	Params     SetupParams
-	SkipNginxT bool
-	// Groups limits the pipeline to the listed check groups. Empty runs all.
-	Groups []CheckGroup
-}
-
 // Verify runs the self-check pipeline, optionally limited to a set of groups so
 // a wizard step can validate what it just configured.
 func Verify(ctx context.Context, opts VerifyOptions) VerifyResult {
@@ -495,14 +472,4 @@ func okOrFail(err error, okDetail, remediationCode, raw string) StepOutcome {
 		detail = strings.TrimSpace(raw)
 	}
 	return StepOutcome{OK: false, Detail: detail, Remediation: newStepRemediation(remediationCode)}
-}
-
-func findMissingSudoEntries(sudoListOutput string, required []string) []string {
-	var missing []string
-	for _, req := range required {
-		if !strings.Contains(sudoListOutput, req) {
-			missing = append(missing, req)
-		}
-	}
-	return missing
 }
