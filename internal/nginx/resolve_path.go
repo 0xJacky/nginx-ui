@@ -2,7 +2,6 @@ package nginx
 
 import (
 	"path/filepath"
-	"runtime"
 	"strings"
 
 	"github.com/0xJacky/Nginx-UI/internal/helper"
@@ -20,14 +19,15 @@ func GetNginxExeDir() string {
 	return filepath.Dir(getNginxSbinPath())
 }
 
-// Resolves relative paths by joining them with the nginx executable directory on Windows
+// Resolves relative paths by joining them with the nginx executable directory
+// when the target nginx runs on Windows.
 func resolvePath(path string) string {
 	if path == "" {
 		return ""
 	}
 
 	// Handle relative paths on Windows
-	if runtime.GOOS == "windows" && !filepath.IsAbs(path) {
+	if targetGOOS() == "windows" && !filepath.IsAbs(path) {
 		return filepath.Join(GetNginxExeDir(), path)
 	}
 
@@ -92,7 +92,7 @@ func GetPrefix() string {
 		prefix := ExtractConfigureArg(out, "--prefix")
 		if prefix == "" {
 			logger.Debug("nginx.GetPrefix len(match) < 1")
-			if runtime.GOOS == "windows" {
+			if targetGOOS() == "windows" {
 				return GetNginxExeDir()
 			}
 			return "/usr/local/nginx"
@@ -113,7 +113,7 @@ func GetConfPath(dir ...string) (confPath string) {
 		if fullConf != "" {
 			confPath = filepath.Dir(fullConf)
 		} else {
-			if runtime.GOOS == "windows" {
+			if targetGOOS() == "windows" {
 				confPath = GetPrefix()
 			} else {
 				confPath = "/etc/nginx"
@@ -308,7 +308,7 @@ func GetModulesPath() string {
 	}
 
 	// Default path if not found
-	if runtime.GOOS == "windows" {
+	if targetGOOS() == "windows" {
 		return resolvePath("modules")
 	}
 	return resolvePath("/usr/lib/nginx/modules")

@@ -13,6 +13,15 @@ import (
 type Runner interface {
 	Exec(ctx context.Context, name string, args ...string) (stdout string, err error)
 	Stat(path string) bool
+	// GOOS names the operating system nginx runs on, in runtime.GOOS terms.
+	// A remote target runs its own OS, so path conventions and shell choice
+	// must follow this value rather than the OS hosting nginx-ui.
+	GOOS() string
+}
+
+// targetGOOS returns the operating system of the machine that runs nginx.
+func targetGOOS() string {
+	return resolveRunner().GOOS()
 }
 
 // StatOnTarget reports whether path exists on the machine that runs nginx,

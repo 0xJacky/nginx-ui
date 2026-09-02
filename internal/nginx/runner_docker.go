@@ -19,4 +19,10 @@ func (d *dockerRunner) Stat(path string) bool {
 	return docker.StatPath(path)
 }
 
+// GOOS is always linux: docker exec targets a Linux container even when
+// nginx-ui itself runs on Windows or macOS.
+func (d *dockerRunner) GOOS() string {
+	return "linux"
+}
+
 func newDockerRunner() Runner { return &dockerRunner{} }

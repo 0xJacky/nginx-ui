@@ -33,7 +33,7 @@ func sharedSSHClient() *hostssh.Client {
 }
 
 func newSSHRunner() Runner {
-	return &sshRunner{client: sharedSSHClient()}
+	return &sshRunner{client: sharedSSHClient(), goos: resolveHostService().goos()}
 }
 
 // ResetHostNginxState invalidates everything derived from the current nginx
@@ -94,6 +94,9 @@ func buildSSHOptions() hostssh.ClientOptions {
 
 type sshRunner struct {
 	client *hostssh.Client
+	// goos is derived from the configured service manager: launchd implies a
+	// macOS host, systemd a Linux one.
+	goos string
 }
 
 func (s *sshRunner) Exec(ctx context.Context, name string, args ...string) (string, error) {
@@ -102,4 +105,8 @@ func (s *sshRunner) Exec(ctx context.Context, name string, args ...string) (stri
 
 func (s *sshRunner) Stat(path string) bool {
 	return s.client.Stat(path)
+}
+
+func (s *sshRunner) GOOS() string {
+	return s.goos
 }

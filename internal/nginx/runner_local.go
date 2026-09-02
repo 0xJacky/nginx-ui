@@ -4,6 +4,7 @@ import (
 	"context"
 	"os"
 	"os/exec"
+	"runtime"
 )
 
 // localRunner executes commands as child processes of nginx-ui itself.
@@ -22,4 +23,8 @@ func (l *localRunner) Stat(path string) bool {
 	}
 	_, err := os.Stat(path)
 	return err == nil
+}
+
+func (l *localRunner) GOOS() string {
+	return runtime.GOOS
 }

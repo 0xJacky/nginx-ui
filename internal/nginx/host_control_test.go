@@ -30,6 +30,8 @@ func (r *hostControlTestRunner) Exec(_ context.Context, name string, args ...str
 
 func (*hostControlTestRunner) Stat(string) bool { return false }
 
+func (*hostControlTestRunner) GOOS() string { return "linux" }
+
 func TestHostReloadCommand(t *testing.T) {
 	tests := []struct {
 		name     string

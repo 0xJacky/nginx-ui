@@ -2,9 +2,6 @@ package nginx
 
 import (
 	"context"
-	"runtime"
-
-	"github.com/0xJacky/Nginx-UI/settings"
 )
 
 func execShell(cmd string) (stdOut string, stdErr error) {
@@ -12,18 +9,19 @@ func execShell(cmd string) (stdOut string, stdErr error) {
 }
 
 func execShellContext(ctx context.Context, cmd string) (stdOut string, stdErr error) {
-	remoteTarget := settings.NginxSettings.ControlMode() != settings.ControlModeLocal
-	name, args := shellCommand(runtime.GOOS, remoteTarget, cmd)
-	return execCommandContext(ctx, name, args...)
+	// The shell must match the OS of the target that runs the command, which
+	// the runner reports: an external container is Linux and an SSH host is
+	// Linux or macOS, so a Windows hosted Nginx UI must not send cmd /c to
+	// either. Custom test, reload, and restart commands therefore run through
+	// the same runner as every other nginx invocation.
+	runner := resolveRunner()
+	name, args := shellCommand(runner.GOOS(), cmd)
+	return runner.Exec(ctx, name, args...)
 }
 
-func shellCommand(goos string, remoteTarget bool, cmd string) (name string, args []string) {
-	// A remote target runs its own OS, not this one. An external Nginx
-	// container is Linux, and an SSH host is Linux or macOS, so a Windows
-	// hosted Nginx UI must not send cmd /c to either. Route the shell itself
-	// through execCommand so custom test, reload, and restart commands use the
-	// configured target.
-	if remoteTarget || goos != "windows" {
+// shellCommand wraps cmd in the shell of the operating system named by goos.
+func shellCommand(goos string, cmd string) (name string, args []string) {
+	if goos != "windows" {
 		return "/bin/sh", []string{"-c", cmd}
 	}
 

@@ -183,6 +183,8 @@ func (r *countingStatRunner) Stat(string) bool {
 	return true
 }
 
+func (r *countingStatRunner) GOOS() string { return "linux" }
+
 func (r *countingStatRunner) count() int {
 	r.mutex.Lock()
 	defer r.mutex.Unlock()

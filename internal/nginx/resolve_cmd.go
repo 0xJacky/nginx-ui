@@ -2,7 +2,6 @@ package nginx
 
 import (
 	"os/exec"
-	"runtime"
 	"sync"
 
 	"github.com/0xJacky/Nginx-UI/settings"
@@ -54,16 +53,21 @@ func getNginxSbinPath() string {
 		return settings.NginxSettings.SbinPath
 	}
 
-	// The binary runs on the SSH host, so a lookup in this container's PATH
-	// would name a path the host may not have. Use the host default instead.
-	if settings.NginxSettings.ControlMode() == settings.ControlModeHostViaSSH {
+	// The binary runs on another machine in every non-local mode, so a lookup
+	// in this container's PATH would name a path the target may not have.
+	switch settings.NginxSettings.ControlMode() {
+	case settings.ControlModeHostViaSSH:
 		return settings.NginxSettings.GetHostSbinPath()
+	case settings.ControlModeExternalContainer:
+		// docker exec resolves the bare name through the container's PATH,
+		// exactly as the `nginx -t` fallback already does.
+		return "nginx"
 	}
 
 	return nginxSbinPathCache.get(func() string {
 		var path string
 		var err error
-		if runtime.GOOS == "windows" {
+		if targetGOOS() == "windows" {
 			path, err = exec.LookPath("nginx.exe")
 		} else {
 			path, err = exec.LookPath("nginx")

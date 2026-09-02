@@ -30,6 +30,9 @@ type hostService interface {
 	// isActiveOutput reports whether a successful statusCommand run means the
 	// service manager considers nginx running.
 	isActiveOutput(stdout string) bool
+	// goos names the host operating system implied by the service manager,
+	// in runtime.GOOS terms.
+	goos() string
 }
 
 // resolveHostService picks the service manager strategy for the configured
@@ -77,6 +80,10 @@ func (s *systemdService) isActiveOutput(stdout string) bool {
 	return strings.TrimSpace(stdout) == "active"
 }
 
+func (s *systemdService) goos() string {
+	return "linux"
+}
+
 // launchdService controls a Homebrew style nginx through launchctl in the
 // SSH user's GUI domain on a macOS host.
 type launchdService struct {
@@ -111,6 +118,10 @@ func (l *launchdService) statusCommand(runner Runner) (string, []string, error) 
 // command fails when the service is not loaded in the domain.
 func (l *launchdService) isActiveOutput(string) bool {
 	return true
+}
+
+func (l *launchdService) goos() string {
+	return "darwin"
 }
 
 // launchdTarget resolves the launchd domain target for the SSH user, e.g.
