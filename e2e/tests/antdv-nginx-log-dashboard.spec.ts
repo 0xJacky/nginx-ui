@@ -155,7 +155,9 @@ test('nginx log dashboard keeps antdv-next controls, charts, and rendered tables
   for (let index = 0; index < await charts.count(); index++) {
     const chart = charts.nth(index)
     await expect(chart).toBeVisible()
-    await expect(chart.locator('svg')).toBeVisible()
+    // apexcharts 7 also renders legend and tooltip markers as svg inside the canvas,
+    // so match the chart's own root rather than any svg.
+    await expect(chart.locator('svg.apexcharts-svg')).toBeVisible()
     await expect.poll(() => chart.locator('.apexcharts-series').count()).toBeGreaterThan(0)
   }
 
