@@ -344,14 +344,13 @@ func truncateControlOutput(output string) string {
 }
 
 func IsRunning() bool {
-	pidPath := GetPIDPath()
 	switch settings.NginxSettings.ControlMode() {
 	case settings.ControlModeHostViaSSH:
 		return isRunningViaHostService()
 	case settings.ControlModeExternalContainer:
-		return docker.StatPath(pidPath)
+		return docker.StatPath(GetPIDPath())
 	default:
-		return isProcessRunning(pidPath)
+		return isProcessRunning(GetPIDPath())
 	}
 }
 
