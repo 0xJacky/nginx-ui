@@ -34,7 +34,11 @@ func resolvePath(path string) string {
 	return path
 }
 
-func extractConfigureArg(out, flag string) string {
+// ExtractConfigureArg returns the value of a `--flag=value` entry from
+// `nginx -V` output. The flag may be given with or without its leading dashes;
+// quoted values are unwrapped and unquoted ones end at the next ` --` or line
+// break. It returns "" when the flag is absent.
+func ExtractConfigureArg(out, flag string) string {
 	if out == "" || flag == "" {
 		return ""
 	}
@@ -85,7 +89,7 @@ func extractConfigureArg(out, flag string) string {
 func GetPrefix() string {
 	return nginxPrefixCache.get(func() string {
 		out := getNginxV()
-		prefix := extractConfigureArg(out, "--prefix")
+		prefix := ExtractConfigureArg(out, "--prefix")
 		if prefix == "" {
 			logger.Debug("nginx.GetPrefix len(match) < 1")
 			if runtime.GOOS == "windows" {
@@ -104,7 +108,7 @@ func GetPrefix() string {
 func GetConfPath(dir ...string) (confPath string) {
 	if settings.NginxSettings.ConfigDir == "" {
 		out := getNginxV()
-		fullConf := extractConfigureArg(out, "--conf-path")
+		fullConf := ExtractConfigureArg(out, "--conf-path")
 
 		if fullConf != "" {
 			confPath = filepath.Dir(fullConf)
@@ -136,7 +140,7 @@ func GetConfPath(dir ...string) (confPath string) {
 func GetConfEntryPath() (path string) {
 	if settings.NginxSettings.ConfigPath == "" {
 		out := getNginxV()
-		path = extractConfigureArg(out, "--conf-path")
+		path = ExtractConfigureArg(out, "--conf-path")
 
 		if path == "" {
 			baseDir := GetConfPath()
@@ -192,7 +196,7 @@ func discoverPIDPath() (path string) {
 
 	// Try compile-time default from nginx -V
 	out := getNginxV()
-	path = extractConfigureArg(out, "--pid-path")
+	path = ExtractConfigureArg(out, "--pid-path")
 
 	// Only retain the compiled default when it exists on the target.
 	if path != "" && !isLocal && !runner.Stat(path) {
@@ -241,7 +245,7 @@ func GetAccessLogPath() (path string) {
 
 	if path == "" {
 		out := getNginxV()
-		path = extractConfigureArg(out, "--http-log-path")
+		path = ExtractConfigureArg(out, "--http-log-path")
 		if path != "" {
 			resolvedPath := resolvePath(path)
 
@@ -270,7 +274,7 @@ func GetErrorLogPath() string {
 
 	if path == "" {
 		out := getNginxV()
-		path = extractConfigureArg(out, "--error-log-path")
+		path = ExtractConfigureArg(out, "--error-log-path")
 		if path != "" {
 			resolvedPath := resolvePath(path)
 
@@ -298,7 +302,7 @@ func GetModulesPath() string {
 	// First try to get from nginx -V output
 	out := getNginxV()
 	if out != "" {
-		if path := extractConfigureArg(out, "--modules-path"); path != "" {
+		if path := ExtractConfigureArg(out, "--modules-path"); path != "" {
 			return resolvePath(path)
 		}
 	}

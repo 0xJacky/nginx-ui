@@ -53,8 +53,8 @@ configure arguments: --prefix="/Program Files/Nginx" --conf-path='/Program Files
 	for _, tt := range tests {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
-			if got := extractConfigureArg(output, tt.flag); got != tt.want {
-				t.Fatalf("extractConfigureArg(%q) = %q, want %q", tt.flag, got, tt.want)
+			if got := ExtractConfigureArg(output, tt.flag); got != tt.want {
+				t.Fatalf("ExtractConfigureArg(%q) = %q, want %q", tt.flag, got, tt.want)
 			}
 		})
 	}

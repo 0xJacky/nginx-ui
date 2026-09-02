@@ -6,6 +6,7 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/uozi-tech/cosy"
 )
 
@@ -90,14 +91,14 @@ func parseNginxVersionOutput(executablePath, output string, p SetupParams) *Ngin
 	if match := nginxVersionPattern.FindStringSubmatch(output); len(match) == 2 {
 		result.Version = match[1]
 	}
-	result.Prefix = extractConfigureArg(output, "--prefix")
-	result.ConfigPath = resolveNginxPath(result.Prefix, extractConfigureArg(output, "--conf-path"))
+	result.Prefix = nginx.ExtractConfigureArg(output, "--prefix")
+	result.ConfigPath = resolveNginxPath(result.Prefix, nginx.ExtractConfigureArg(output, "--conf-path"))
 	if result.ConfigPath != "" {
 		result.ConfigDir = path.Dir(result.ConfigPath)
 	}
-	result.PIDPath = resolveNginxPath(result.Prefix, extractConfigureArg(output, "--pid-path"))
-	result.AccessLogPath = resolveNginxPath(result.Prefix, extractConfigureArg(output, "--http-log-path"))
-	result.ErrorLogPath = resolveNginxPath(result.Prefix, extractConfigureArg(output, "--error-log-path"))
+	result.PIDPath = resolveNginxPath(result.Prefix, nginx.ExtractConfigureArg(output, "--pid-path"))
+	result.AccessLogPath = resolveNginxPath(result.Prefix, nginx.ExtractConfigureArg(output, "--http-log-path"))
+	result.ErrorLogPath = resolveNginxPath(result.Prefix, nginx.ExtractConfigureArg(output, "--error-log-path"))
 	if result.AccessLogPath != "" && result.ErrorLogPath != "" && path.Dir(result.AccessLogPath) == path.Dir(result.ErrorLogPath) {
 		result.LogDir = path.Dir(result.AccessLogPath)
 	} else if result.AccessLogPath != "" {
@@ -114,33 +115,9 @@ func parseNginxVersionOutput(executablePath, output string, p SetupParams) *Ngin
 	return result
 }
 
-func extractConfigureArg(output, flag string) string {
-	needle := flag + "="
-	index := strings.Index(output, needle)
-	if index < 0 {
-		return ""
-	}
-	value := strings.TrimLeft(output[index+len(needle):], " \t")
-	if value == "" {
-		return ""
-	}
-	if value[0] == '\'' || value[0] == '"' {
-		quote := value[0]
-		value = value[1:]
-		if end := strings.IndexByte(value, quote); end >= 0 {
-			return strings.TrimSpace(value[:end])
-		}
-		return strings.TrimSpace(value)
-	}
-	if end := strings.Index(value, " --"); end >= 0 {
-		value = value[:end]
-	}
-	if end := strings.IndexAny(value, "\r\n"); end >= 0 {
-		value = value[:end]
-	}
-	return strings.TrimSpace(value)
-}
-
+// resolveNginxPath joins a relative compile-time path onto the nginx prefix.
+// The SSH host is always POSIX, so this deliberately uses path rather than the
+// local filepath rules internal/nginx applies to its own target.
 func resolveNginxPath(prefix, value string) string {
 	if value == "" || path.IsAbs(value) {
 		return value
