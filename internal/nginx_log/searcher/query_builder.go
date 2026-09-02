@@ -86,6 +86,13 @@ func (qb *QueryBuilder) BuildQuery(req *SearchRequest) (query.Query, error) {
 		}
 	}
 
+	// Add province filters
+	if len(req.Provinces) > 0 {
+		if provinceQuery := qb.buildTermsQuery("province", req.Provinces); provinceQuery != nil {
+			boolQuery.AddMust(provinceQuery)
+		}
+	}
+
 	// Add request path filters
 	if len(req.Paths) > 0 {
 		if pathQuery := qb.buildMatchPhraseQuery("path", req.Paths); pathQuery != nil {

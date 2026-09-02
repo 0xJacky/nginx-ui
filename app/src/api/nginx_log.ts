@@ -300,6 +300,10 @@ export interface ChinaMapData {
   cities?: CityData[]
 }
 
+export interface ChinaCityMapRequest extends AnalyticsRequest {
+  province: string
+}
+
 export interface GeoStats {
   region_code: string
   country: string
@@ -348,6 +352,10 @@ const nginx_log = extendCurdApi(useCurdApi('/nginx_logs'), {
 
   getChinaMapData(data: AnalyticsRequest): Promise<{ data: ChinaMapData[] }> {
     return http.post('/nginx_log/geo/china', data)
+  },
+
+  getChinaCityMapData(data: ChinaCityMapRequest): Promise<{ data: CityData[] }> {
+    return http.post('/nginx_log/geo/china/city', data)
   },
 
   getGeoStats(data: AnalyticsRequest): Promise<{ stats: GeoStats[] }> {

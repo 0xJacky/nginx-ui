@@ -838,6 +838,81 @@ func GetChinaMapData(c *gin.Context) {
 	})
 }
 
+// ChinaCityMapRequest represents the request for city-level data within a China province
+type ChinaCityMapRequest struct {
+	AnalyticsRequest
+	Province string `json:"province" binding:"required"`
+}
+
+// GetChinaCityMapData provides city-level geographic data for a China province
+func GetChinaCityMapData(c *gin.Context) {
+	var req ChinaCityMapRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	analyticsService := nginx_log.GetAnalytics()
+	if analyticsService == nil {
+		cosy.ErrHandler(c, nginx_log.ErrModernAnalyticsNotAvailable)
+		return
+	}
+
+	if req.Path == "" {
+		defaultLogPath := nginx.GetAccessLogPath()
+		if defaultLogPath != "" {
+			req.Path = defaultLogPath
+		}
+	}
+
+	if req.Path != "" {
+		if err := analyticsService.ValidateLogPath(req.Path); err != nil {
+			cosy.ErrHandler(c, err)
+			return
+		}
+	}
+
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
+	defer cancel()
+
+	geoReq := &analytics.GeoQueryRequest{
+		StartTime:      req.StartTime,
+		EndTime:        req.EndTime,
+		LogPath:        req.Path,
+		LogPaths:       []string{req.Path},
+		UseMainLogPath: true,
+		Limit:          req.Limit,
+	}
+
+	data, err := analyticsService.GetGeoDistributionByProvince(ctx, geoReq, "CN", req.Province)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	chartData := make([]GeoDataItem, 0, len(data.Countries))
+	totalValue := 0
+	for _, value := range data.Countries {
+		totalValue += value
+	}
+
+	for name, value := range data.Countries {
+		percent := 0.0
+		if totalValue > 0 {
+			percent = (float64(value) / float64(totalValue)) * 100
+		}
+		chartData = append(chartData, GeoDataItem{Name: name, Value: value, Percent: percent})
+	}
+
+	sort.Slice(chartData, func(i, j int) bool {
+		return chartData[i].Value > chartData[j].Value
+	})
+
+	c.JSON(http.StatusOK, GeoDataResponse{
+		Data: chartData,
+	})
+}
+
 // GetGeoStats provides geographic statistics
 func GetGeoStats(c *gin.Context) {
 	var req AnalyticsRequest

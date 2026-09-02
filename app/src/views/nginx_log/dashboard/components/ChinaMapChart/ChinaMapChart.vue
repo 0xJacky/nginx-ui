@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import type { EChartsOption } from 'echarts'
-import { ReloadOutlined } from '@ant-design/icons-vue'
+import { LeftOutlined, ReloadOutlined } from '@ant-design/icons-vue'
 import { MapChart } from 'echarts/charts'
 import { LegendComponent, TitleComponent, TooltipComponent, VisualMapComponent } from 'echarts/components'
 import { registerMap, use } from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
 import { storeToRefs } from 'pinia'
 import VChart from 'vue-echarts'
+import nginx_log from '@/api/nginx_log'
 import { useSettingsStore } from '@/pinia'
 import china from './china.json'
 
@@ -14,6 +15,9 @@ const props = defineProps<{
   data: ChinaMapData[] | null
   loading: boolean
   hideCard?: boolean
+  logPath: string
+  startTime: number
+  endTime: number
 }>()
 
 const emit = defineEmits<{
@@ -36,15 +40,101 @@ interface ChinaMapData {
   cities?: CityData[]
 }
 
+// Public boundary API for province-level "full" geojson (includes city children).
+// Only province adcodes present in china.json are ever requested.
+const CITY_BOUND_API = 'https://geo.datav.aliyun.com/areas_v3/bound'
+
 const settings = useSettingsStore()
 const { theme } = storeToRefs(settings)
 
-// Table data for top 10 provinces
+// Drill-down state: null means showing the province-level China map.
+interface DrilldownState {
+  name: string
+  adcode: string
+  mapName: string
+}
+const drilldown = ref<DrilldownState | null>(null)
+const drillLoading = ref(false)
+const cityChartData = ref<CityData[]>([])
+
+// Cache of already-fetched/registered city-level maps, keyed by adcode.
+const registeredCityMaps = new Map<string, string[]>()
+
+function findProvinceAdcode(name: string): string | null {
+  const feature = (china as { features: Array<{ id: string, properties: { name: string } }> }).features
+    .find(f => f.properties.name === name)
+  return feature?.id ?? null
+}
+
+// City boundary feature names carry administrative suffixes (市/县/州/盟/地区)
+// that our aggregated city data does not, so match by prefix instead of equality.
+function matchCityName(rawName: string, featureNames: string[]): string {
+  return featureNames.find(f => f === rawName || f.startsWith(rawName)) ?? rawName
+}
+
+async function drillIntoProvince(name: string) {
+  if (drillLoading.value || drilldown.value?.name === name)
+    return
+
+  const adcode = findProvinceAdcode(name)
+  if (!adcode)
+    return
+
+  drillLoading.value = true
+  try {
+    const mapName = `china-city-${adcode}`
+    let featureNames = registeredCityMaps.get(adcode)
+
+    const [cityStats] = await Promise.all([
+      nginx_log.getChinaCityMapData({
+        path: props.logPath,
+        start_time: props.startTime,
+        end_time: props.endTime,
+        province: name,
+      }),
+      (async () => {
+        if (featureNames)
+          return
+        const res = await fetch(`${CITY_BOUND_API}/${adcode}_full.json`)
+        if (!res.ok)
+          throw new Error(`Failed to fetch city boundaries: ${res.status}`)
+        const geojson = await res.json()
+        registerMap(mapName, geojson as unknown as Parameters<typeof registerMap>[1])
+        featureNames = (geojson.features as Array<{ properties: { name: string } }>).map(f => f.properties.name)
+        registeredCityMaps.set(adcode, featureNames)
+      })(),
+    ])
+
+    cityChartData.value = cityStats.data.map(city => ({
+      ...city,
+      name: matchCityName(city.name, featureNames!),
+    }))
+    drilldown.value = { name, adcode, mapName }
+  }
+  catch {
+    message.error($gettext('Failed to load city map data'))
+  }
+  finally {
+    drillLoading.value = false
+  }
+}
+
+function backToProvinces() {
+  drilldown.value = null
+  cityChartData.value = []
+}
+
+// Reset drill-down whenever fresh data arrives so stale city data is never shown.
+watch(() => props.data, () => backToProvinces())
+
+// Table data for top 10 provinces, or top 10 cities once drilled into a province.
 const tableData = computed(() => {
-  if (!props.data || props.data.length === 0)
+  const source = drilldown.value ? cityChartData.value : props.data
+
+  if (!source || source.length === 0)
     return []
 
-  return props.data.slice(0, 10).map(item => ({
+  return source.slice(0, 10).map(item => ({
     key: item.name,
     province: item.name,
     value: item.value,
@@ -56,7 +146,7 @@ const tableData = computed(() => {
 const columns = computed(() => {
   return [
     {
-      title: $gettext('Province / Region'),
+      title: drilldown.value ? $gettext('City') : $gettext('Province / Region'),
       dataIndex: 'province',
       key: 'province',
     },
@@ -120,14 +210,16 @@ const tooltipTextColor = computed(() => {
 })
 
 const mapOption = computed((): EChartsOption => {
-  if (!props.data) {
+  // Outside drilldown, no province data means nothing to show at all.
+  if (!drilldown.value && (!props.data || props.data.length === 0)) {
     return {}
   }
 
-  const maxValue = Math.max(...props.data.map(item => item.value))
+  const source = drilldown.value ? cityChartData.value : props.data!
+  const maxValue = source.length > 0 ? Math.max(...source.map(item => item.value)) : 0
 
   // Convert data for ECharts map
-  const chartData = props.data.map(item => ({
+  const chartData = source.map(item => ({
     name: item.name,
     value: item.value,
   }))
@@ -143,7 +235,7 @@ const mapOption = computed((): EChartsOption => {
       },
       formatter: params => {
         if (params.data) {
-          const item = props.data?.find(d => d.name === params.data.name)
+          const item = source.find(d => d.name === params.data.name)
           if (item) {
             return `
                 <div style="font-size: 14px;">
@@ -175,7 +267,7 @@ const mapOption = computed((): EChartsOption => {
       {
         name: $gettext('Visits'),
         type: 'map',
-        map: 'china',
+        map: drilldown.value ? drilldown.value.mapName : 'china',
         roam: false,
         emphasis: {
           label: {
@@ -203,13 +295,42 @@ watch(theme, () => {
     chartRef.value.setOption(mapOption.value, true)
   }
 })
+
+// vue-echarts merges option updates by default, which leaves the previous
+// map's geo component cached and renders a blank chart when the series
+// `map` name changes; force a full replace whenever we switch maps.
+watch(() => drilldown.value?.mapName, () => {
+  if (chartRef.value) {
+    chartRef.value.setOption(mapOption.value, true)
+  }
+})
+
+// Clicking a province drills down into its city-level map; already-drilled
+// clicks are ignored since city boundaries have no further children here.
+function handleChartClick(params: { name?: string }) {
+  if (drilldown.value || !params.name)
+    return
+  drillIntoProvince(params.name)
+}
 </script>
 
 <template>
   <ACard v-if="!hideCard" :loading="loading" class="china-map-card">
     <template #title>
       <div class="flex items-center justify-between">
-        <span>{{ $gettext('China Access Map') }}</span>
+        <span class="flex items-center gap-2">
+          <AButton
+            v-if="drilldown"
+            type="text"
+            size="small"
+            @click="backToProvinces"
+          >
+            <template #icon>
+              <LeftOutlined />
+            </template>
+          </AButton>
+          <span>{{ drilldown ? drilldown.name : $gettext('China Access Map') }}</span>
+        </span>
         <AButton
           type="text"
           size="small"
@@ -235,15 +356,17 @@ watch(theme, () => {
           <VChart
             ref="chartRef"
             :option="mapOption"
+            :loading="drillLoading"
             style="height: 500px; width: 100%"
             autoresize
+            @click="handleChartClick"
           />
         </div>
 
         <!-- Table on right (or bottom on small screens) -->
         <div class="lg:col-span-1 flex flex-col justify-center">
           <div class="table-title">
-            {{ $gettext('Top 10 Provinces / Regions') }}
+            {{ drilldown ? $gettext('Top 10 Cities') : $gettext('Top 10 Provinces / Regions') }}
           </div>
           <ATable
             :columns="columns"
@@ -264,6 +387,15 @@ watch(theme, () => {
     </div>
 
     <div v-else class="china-map-container">
+      <div v-if="drilldown" class="flex items-center gap-2 mb-3">
+        <AButton type="text" size="small" @click="backToProvinces">
+          <template #icon>
+            <LeftOutlined />
+          </template>
+        </AButton>
+        <span class="font-medium">{{ drilldown.name }}</span>
+      </div>
+
       <!-- Data layout: side by side on large screens, stacked on small screens -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Map on left (or top on small screens) -->
@@ -271,15 +403,17 @@ watch(theme, () => {
           <VChart
             ref="chartRef"
             :option="mapOption"
+            :loading="drillLoading"
             style="height: 500px; width: 100%"
             autoresize
+            @click="handleChartClick"
           />
         </div>
 
         <!-- Table on right (or bottom on small screens) -->
         <div class="lg:col-span-1 flex flex-col justify-center">
           <div class="table-title">
-            {{ $gettext('Top 10 Provinces / Regions') }}
+            {{ drilldown ? $gettext('Top 10 Cities') : $gettext('Top 10 Provinces / Regions') }}
           </div>
           <ATable
             :columns="columns"

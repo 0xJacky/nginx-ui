@@ -23,6 +23,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   refresh: []
+  drillChina: []
 }>()
 
 // Register English locale
@@ -33,7 +34,7 @@ use([MapChart, TitleComponent, TooltipComponent, LegendComponent, VisualMapCompo
 
 const settings = useSettingsStore()
 const { theme } = storeToRefs(settings)
-const { formatGeoDisplay, translateCountry } = useGeoTranslation()
+const { formatGeoDisplay, translateCountry, isChineseLocale } = useGeoTranslation()
 
 const chartRef = useTemplateRef<InstanceType<typeof VChart>>('chartRef')
 
@@ -185,6 +186,28 @@ watch(theme, () => {
   }
 })
 
+interface WorldMapClickData {
+  code?: string
+}
+
+function isWorldMapClickData(data: unknown): data is WorldMapClickData {
+  return typeof data === 'object' && data !== null && 'code' in data
+}
+
+// Clicking the China region drills down into the province-level map.
+// Non-Chinese locales never expose the China map view, so map clicks are a no-op there.
+function handleChartClick(params: unknown) {
+  if (!isChineseLocale.value || typeof params !== 'object' || params === null)
+    return
+
+  const { data, name } = params as { data?: unknown, name?: string }
+  const countryCode = isWorldMapClickData(data) ? data.code : countries.getAlpha2Code(name || '', 'en')
+
+  if (countryCode === 'CN') {
+    emit('drillChina')
+  }
+}
+
 // Table data for top 10 countries
 const tableData = computed(() => {
   if (!props.data || props.data.length === 0)
@@ -260,6 +283,7 @@ const columns = computed(() => {
             :option="mapOption"
             style="height: 400px; width: 100%"
             autoresize
+            @click="handleChartClick"
           />
         </div>
 
@@ -296,6 +320,7 @@ const columns = computed(() => {
             :option="mapOption"
             style="height: 400px; width: 100%"
             autoresize
+            @click="handleChartClick"
           />
         </div>
 

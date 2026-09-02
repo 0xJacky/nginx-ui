@@ -53,6 +53,7 @@ type SearchRequest struct {
 	UserAgents     []string `json:"user_agents,omitempty"`
 	Referers       []string `json:"referers,omitempty"`
 	Countries      []string `json:"countries,omitempty"`
+	Provinces      []string `json:"provinces,omitempty"`
 	Browsers       []string `json:"browsers,omitempty"`
 	OSs            []string `json:"operating_systems,omitempty"`
 	Devices        []string `json:"devices,omitempty"`

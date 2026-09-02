@@ -18,6 +18,7 @@ type Service interface {
 
 	GetGeoDistribution(ctx context.Context, req *GeoQueryRequest) (*GeoDistribution, error)
 	GetGeoDistributionByCountry(ctx context.Context, req *GeoQueryRequest, countryCode string) (*GeoDistribution, error)
+	GetGeoDistributionByProvince(ctx context.Context, req *GeoQueryRequest, countryCode, province string) (*GeoDistribution, error)
 	GetTopCountries(ctx context.Context, req *GeoQueryRequest) ([]CountryStats, error)
 
 	ValidateLogPath(logPath string) error
