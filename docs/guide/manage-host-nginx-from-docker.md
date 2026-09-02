@@ -9,7 +9,7 @@ Use this guide when Nginx UI runs in Docker and needs to manage an nginx instanc
 - macOS: the login user that owns the Homebrew nginx service
 :::
 
-For macOS, select **macOS (Homebrew)** in the wizard's **Detect Platform** step. Apple Silicon defaults to `/opt/homebrew`. During verification, the wizard queries Homebrew and parses `nginx -V` over SSH to detect the installed nginx version and the actual executable, configuration, log, PID, and document-root paths. This also handles Intel Homebrew under `/usr/local`. Confirm the service is loaded before continuing:
+For macOS, select **macOS (Homebrew)** in the wizard's **Detect Platform** step. Apple Silicon defaults to `/opt/homebrew`. In that step, the wizard queries Homebrew and parses `nginx -V` over SSH to detect the installed nginx version and the actual executable, configuration, log, PID, and document-root paths. This also handles Intel Homebrew under `/usr/local`. Confirm the service is loaded before continuing:
 
 ```bash
 brew services info nginx
@@ -151,17 +151,23 @@ Return to **Verify** and click **Run verification**. The main checks should pass
 
 ::: tip Expected verification result
 
-- ✓ same_host: machine-id matched
+The **Verify** step runs the nginx checks:
+
 - ✓ ssh_connect: echo ok over ssh
-- ✓ sudo_available: sudo -n true succeeded
-- ✓ sudoers_coverage: all required entries present
+- ✓ nginx_test: configuration file ok
+
+The platform and privilege checks belong to **Setup checks** in the **Access & Install** step, which you already ran after applying the snippets:
+
+- ✓ host_platform: Linux host matches systemd
 - ✓ systemctl_is_active: active
 - ✓ unit_has_execreload: ExecReload is declared
-- ✓ nginx_test: configuration file ok
 - ✓ config_dir_writable: /etc/nginx accessible
 - ✓ log_dir_readable: /var/log/nginx/access.log readable
 - ✓ pid_file_present: /var/run/nginx.pid present
-- ✓ known_hosts_persistence: `/etc/nginx-ui/known_hosts` is under the recommended persisted data directory
+- ✓ sudo_available: sudo -n true succeeded
+- ✓ sudoers_coverage: all required entries present
+
+`same_host` and `known_hosts_persistence` are part of the connection group, which only `nginx-ui host-setup test` runs from the CLI.
 
 :::
 
@@ -186,7 +192,7 @@ Click **Save configuration** after the checks pass.
 ::: details `ssh_connect` fails after the host SSH key changed
 A changed host key can be legitimate, for example after rebuilding the host or rotating SSH keys. It can also indicate a wrong target or a man-in-the-middle attack. Replace the trusted key only after confirming the new fingerprint.
 
-1. Open the **Host Identity** step.
+1. Open the **Trust & Test** step.
 2. Scan the host keys again.
 3. Compare the old and new fingerprints shown by the wizard.
 4. Verify the new fingerprint on the host or through your provider control panel.
@@ -210,14 +216,14 @@ nginx-ui host-setup keygen --out /etc/nginx-ui/host_key
 Print all setup snippets:
 
 ```bash
-nginx-ui host-setup print --host-address host.docker.internal:22 --host-user nginxui
+nginx-ui host-setup print --host-address host.docker.internal:22 --host-user nginxui --access-mode sftp
 ```
 
 Print only Docker or host-side snippets:
 
 ```bash
-nginx-ui host-setup print --host-address host.docker.internal:22 --host-user nginxui --compose
-nginx-ui host-setup print --host-address host.docker.internal:22 --host-user nginxui --host
+nginx-ui host-setup print --host-address host.docker.internal:22 --host-user nginxui --access-mode sftp --compose
+nginx-ui host-setup print --host-address host.docker.internal:22 --host-user nginxui --access-mode sftp --host
 ```
 
 Use `--json`, `--override`, or `--docker-run` when you need machine-readable output, a full compose override, or a docker run command.

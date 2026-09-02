@@ -154,6 +154,8 @@ These variables are used when Nginx UI controls a host-installed nginx service f
 | Variable | Description |
 |---|---|
 | `NGINX_UI_NGINX_HOST_MODE` | Set to `ssh` to enable host SSH control |
+| `NGINX_UI_NGINX_HOST_ACCESS_MODE` | `sftp` or `mounted`. Required in SSH mode: whether the container reaches the host nginx files over SFTP or through bind mounts |
+| `NGINX_UI_NGINX_HOST_KEY_SOURCE` | `generated` (default), `existing` or `provided`: where the SSH private key comes from |
 | `NGINX_UI_NGINX_HOST_ADDRESS` | Remote `host:port`, e.g. `host.docker.internal:22` |
 | `NGINX_UI_NGINX_HOST_USER` | SSH user on the host |
 | `NGINX_UI_NGINX_HOST_AUTH_METHOD` | SSH authentication method. Use key authentication for the current host SSH setup |
@@ -167,4 +169,5 @@ These variables are used when Nginx UI controls a host-installed nginx service f
 | `NGINX_UI_NGINX_HOST_LAUNCHCTL_PATH` | Absolute path to launchctl. Default `/bin/launchctl` |
 | `NGINX_UI_NGINX_HOST_CONFIG_DIR` | Host-side nginx config dir |
 | `NGINX_UI_NGINX_HOST_LOG_DIR` | Host-side nginx log dir |
+| `NGINX_UI_NGINX_SBIN_PATH` | In SSH mode, the absolute path of the nginx binary on the host. The generated sudoers allow-list matches this path exactly |
 | `NGINX_UI_DISABLE_BUNDLED_NGINX` | Set to `true` to disable the container's bundled nginx (required in SSH mode) |

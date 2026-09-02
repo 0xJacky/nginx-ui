@@ -9,7 +9,7 @@
 - macOS：拥有 Homebrew nginx 服务的登录用户
 :::
 
-在 macOS 上，请在向导的**检测平台**步骤中选择 **macOS (Homebrew)**。Apple Silicon 默认使用 `/opt/homebrew`。验证时，向导会通过 SSH 查询 Homebrew 并解析 `nginx -V`，自动识别已安装的 nginx 版本以及实际的可执行文件、配置、日志、PID 和 Docroot 路径；这也能识别位于 `/usr/local` 的 Intel Homebrew。继续前请确认服务已加载：
+在 macOS 上，请在向导的**检测平台**步骤中选择 **macOS (Homebrew)**。Apple Silicon 默认使用 `/opt/homebrew`。在该步骤中，向导会通过 SSH 查询 Homebrew 并解析 `nginx -V`，自动识别已安装的 nginx 版本以及实际的可执行文件、配置、日志、PID 和 Docroot 路径；这也能识别位于 `/usr/local` 的 Intel Homebrew。继续前请确认服务已加载：
 
 ```bash
 brew services info nginx
@@ -153,17 +153,23 @@ ssh-keyscan -p 22 host.docker.internal
 
 ::: tip 预期验证结果
 
-- ✓ same_host: machine-id 匹配
+**验证**步骤只运行 nginx 检查：
+
 - ✓ ssh_connect: 通过 SSH 执行 echo ok 成功
-- ✓ sudo_available: sudo -n true 执行成功
-- ✓ sudoers_coverage: 所有必要条目均已配置
+- ✓ nginx_test: 配置文件检查通过
+
+平台和权限检查属于**访问与安装**步骤中的**安装检查**，应用片段后你已经运行过：
+
+- ✓ host_platform: Linux host matches systemd
 - ✓ systemctl_is_active: 运行中
 - ✓ unit_has_execreload: ExecReload 已声明
-- ✓ nginx_test: 配置文件检查通过
 - ✓ config_dir_writable: /etc/nginx 可访问
 - ✓ log_dir_readable: /var/log/nginx/access.log 可读
 - ✓ pid_file_present: /var/run/nginx.pid 存在
-- ✓ known_hosts_persistence: `/etc/nginx-ui/known_hosts` 位于推荐的持久化数据目录下
+- ✓ sudo_available: sudo -n true 执行成功
+- ✓ sudoers_coverage: 所有必要条目均已配置
+
+`same_host` 和 `known_hosts_persistence` 属于连接检查组，只有在命令行执行 `nginx-ui host-setup test` 时才会运行。
 
 :::
 
@@ -210,14 +216,14 @@ nginx-ui host-setup keygen --out /etc/nginx-ui/host_key
 输出全部配置片段：
 
 ```bash
-nginx-ui host-setup print --host-address host.docker.internal:22 --host-user nginxui
+nginx-ui host-setup print --host-address host.docker.internal:22 --host-user nginxui --access-mode sftp
 ```
 
 只输出 Docker 或宿主机侧片段：
 
 ```bash
-nginx-ui host-setup print --host-address host.docker.internal:22 --host-user nginxui --compose
-nginx-ui host-setup print --host-address host.docker.internal:22 --host-user nginxui --host
+nginx-ui host-setup print --host-address host.docker.internal:22 --host-user nginxui --access-mode sftp --compose
+nginx-ui host-setup print --host-address host.docker.internal:22 --host-user nginxui --access-mode sftp --host
 ```
 
 需要机器可读输出、完整 compose override 或 docker run 命令时，可以使用 `--json`、`--override` 或 `--docker-run`。

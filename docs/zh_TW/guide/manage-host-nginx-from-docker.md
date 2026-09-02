@@ -9,7 +9,7 @@
 - macOS：擁有 Homebrew nginx 服務的登入使用者
 :::
 
-在 macOS 上，請在精靈中選擇 **macOS (Homebrew)**。Apple Silicon 預設使用 `/opt/homebrew`。驗證時，精靈會透過 SSH 查詢 Homebrew 並解析 `nginx -V`，自動識別已安裝的 nginx 版本以及實際的執行檔、設定、日誌、PID 和 Docroot 路徑；這也能識別位於 `/usr/local` 的 Intel Homebrew。繼續前請確認服務已載入：
+在 macOS 上，請在精靈的**偵測平台**步驟中選擇 **macOS (Homebrew)**。Apple Silicon 預設使用 `/opt/homebrew`。在該步驟中，精靈會透過 SSH 查詢 Homebrew 並解析 `nginx -V`，自動識別已安裝的 nginx 版本以及實際的執行檔、設定、日誌、PID 和 Docroot 路徑；這也能識別位於 `/usr/local` 的 Intel Homebrew。繼續前請確認服務已載入：
 
 ```bash
 brew services info nginx
@@ -153,17 +153,23 @@ ssh-keyscan -p 22 host.docker.internal
 
 ::: tip 預期驗證結果
 
-- ✓ same_host: machine-id 匹配
+**驗證**步驟只執行 nginx 檢查：
+
 - ✓ ssh_connect: 透過 SSH 執行 echo ok 成功
-- ✓ sudo_available: sudo -n true 執行成功
-- ✓ sudoers_coverage: 所有必要項目均已設定
+- ✓ nginx_test: 設定檔檢查通過
+
+平台和權限檢查屬於**存取與安裝**步驟中的**安裝檢查**，套用片段後你已經執行過：
+
+- ✓ host_platform: Linux host matches systemd
 - ✓ systemctl_is_active: 執行中
 - ✓ unit_has_execreload: ExecReload 已宣告
-- ✓ nginx_test: 設定檔檢查通過
 - ✓ config_dir_writable: /etc/nginx 可存取
 - ✓ log_dir_readable: /var/log/nginx/access.log 可讀
 - ✓ pid_file_present: /var/run/nginx.pid 存在
-- ✓ known_hosts_persistence: `/etc/nginx-ui/known_hosts` 位於建議的持久化資料目錄下
+- ✓ sudo_available: sudo -n true 執行成功
+- ✓ sudoers_coverage: 所有必要項目均已設定
+
+`same_host` 和 `known_hosts_persistence` 屬於連線檢查組，只有在命令列執行 `nginx-ui host-setup test` 時才會執行。
 
 :::
 
@@ -186,7 +192,7 @@ ssh-keyscan -p 22 host.docker.internal
 ::: details 宿主機 SSH 金鑰變更後 `ssh_connect` 失敗
 主機金鑰變更可能是正常操作，例如重建宿主機或輪換 SSH 金鑰；也可能表示目標主機錯誤或存在中間人攻擊。只有在確認新指紋後，才替換已信任的金鑰。
 
-1. 開啟**主機身分**步驟。
+1. 開啟**信任與測試**步驟。
 2. 重新掃描主機金鑰。
 3. 比對精靈顯示的舊指紋和新指紋。
 4. 在宿主機上或透過服務商控制面板驗證新指紋。
@@ -210,14 +216,14 @@ nginx-ui host-setup keygen --out /etc/nginx-ui/host_key
 輸出全部設定片段：
 
 ```bash
-nginx-ui host-setup print --host-address host.docker.internal:22 --host-user nginxui
+nginx-ui host-setup print --host-address host.docker.internal:22 --host-user nginxui --access-mode sftp
 ```
 
 只輸出 Docker 或宿主機側片段：
 
 ```bash
-nginx-ui host-setup print --host-address host.docker.internal:22 --host-user nginxui --compose
-nginx-ui host-setup print --host-address host.docker.internal:22 --host-user nginxui --host
+nginx-ui host-setup print --host-address host.docker.internal:22 --host-user nginxui --access-mode sftp --compose
+nginx-ui host-setup print --host-address host.docker.internal:22 --host-user nginxui --access-mode sftp --host
 ```
 
 需要機器可讀輸出、完整 compose override 或 docker run 指令時，可以使用 `--json`、`--override` 或 `--docker-run`。

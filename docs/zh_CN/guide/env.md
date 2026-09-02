@@ -168,6 +168,8 @@
 | 变量 | 描述 |
 |---|---|
 | `NGINX_UI_NGINX_HOST_MODE` | 设置为 `ssh` 以启用宿主机 SSH 控制 |
+| `NGINX_UI_NGINX_HOST_ACCESS_MODE` | `sftp` 或 `mounted`。SSH 模式下必填：容器通过 SFTP 还是通过 bind mount 访问宿主机 nginx 文件 |
+| `NGINX_UI_NGINX_HOST_KEY_SOURCE` | `generated`（默认）、`existing` 或 `provided`：SSH 私钥的来源 |
 | `NGINX_UI_NGINX_HOST_ADDRESS` | 远程 `host:port`，例如 `host.docker.internal:22` |
 | `NGINX_UI_NGINX_HOST_USER` | 宿主机上的 SSH 用户 |
 | `NGINX_UI_NGINX_HOST_AUTH_METHOD` | SSH 认证方式。当前宿主机 SSH 配置请使用密钥认证 |
@@ -181,4 +183,5 @@
 | `NGINX_UI_NGINX_HOST_LAUNCHCTL_PATH` | launchctl 的绝对路径，默认为 `/bin/launchctl` |
 | `NGINX_UI_NGINX_HOST_CONFIG_DIR` | 宿主机侧的 nginx 配置目录 |
 | `NGINX_UI_NGINX_HOST_LOG_DIR` | 宿主机侧的 nginx 日志目录 |
+| `NGINX_UI_NGINX_SBIN_PATH` | SSH 模式下为宿主机上 nginx 可执行文件的绝对路径。生成的 sudoers 允许列表会精确匹配该路径 |
 | `NGINX_UI_DISABLE_BUNDLED_NGINX` | 设置为 `true` 以禁用容器内置的 nginx（SSH 模式下必需） |

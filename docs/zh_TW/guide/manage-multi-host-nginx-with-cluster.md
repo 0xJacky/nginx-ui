@@ -56,7 +56,7 @@ Node = http://10.0.0.3:9000?name=host-c&node_secret=<host-c-secret>&enabled=true
 services:
   nginx-ui:
     environment:
-      - NGINX_UI_CLUSTER_NODE_0=http://10.0.0.2:9000?name=host-b&node_secret=...&enabled=true
+      - NGINX_UI_CLUSTER_NODE=http://10.0.0.2:9000?name=host-b&node_secret=...&enabled=true,http://10.0.0.3:9000?name=host-c&node_secret=...&enabled=true
 ```
 
 :::

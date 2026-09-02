@@ -194,13 +194,13 @@ services:
 ### 快速開始
 
 1. 在 Web 介面中，前往**偏好設定 → Nginx**，選擇**透過 SSH 控制宿主機**模式，並開啟設定精靈。
-2. 按照四步設定精靈操作：產生金鑰對、將產生的 docker-compose 片段貼到您的 stack 中、在宿主機上套用 sudoers/authorized_keys 片段，然後執行驗證。
+2. 按照五步設定精靈操作（**SSH 目標**、**信任與測試**、**偵測平台**、**存取與安裝**、**驗證**）：選擇或產生金鑰對、信任主機金鑰並測試連線、偵測服務管理器和 nginx 路徑、選擇檔案存取模式並套用產生的容器與宿主機片段，然後執行驗證。
 3. 所有檢查通過後，儲存設定。
 
 也可以使用命令列：
 
 ```bash
-nginx-ui host-setup print --host-address host.docker.internal:22 --host-user nginxui
+nginx-ui host-setup print --host-address host.docker.internal:22 --host-user nginxui --access-mode sftp
 nginx-ui host-setup test
 ```
 
@@ -209,6 +209,8 @@ nginx-ui host-setup test
 | 欄位 | 描述 |
 |---|---|
 | `host_mode` | 設定為 `ssh` 以啟用此模式 |
+| `host_access_mode` | `sftp` 或 `mounted`。SSH 模式下必填：容器透過 SFTP 還是透過 bind mount 存取宿主機 nginx 檔案 |
+| `host_key_source` | `generated`（預設）、`existing` 或 `provided`：SSH 私鑰的來源 |
 | `host_address` | 遠端 `host:port` |
 | `host_user` | 宿主機上的 SSH 使用者 |
 | `host_auth_method` | SSH 認證方式。目前宿主機 SSH 設定請使用金鑰認證 |
@@ -222,5 +224,6 @@ nginx-ui host-setup test
 | `host_launchctl_path` | 預設為 `/bin/launchctl` |
 | `host_config_dir` | 宿主機側 nginx 設定目錄 |
 | `host_log_dir` | 宿主機側 nginx 日誌目錄 |
+| `sbin_path` | SSH 模式下應指向宿主機上的 nginx 執行檔。產生的 sudoers 允許清單會精確比對該路徑 |
 
 另請參閱：[在 Docker 中管理宿主機 Nginx](manage-host-nginx-from-docker.md) 和 [使用叢集節點管理多主機 Nginx](manage-multi-host-nginx-with-cluster.md)。

@@ -202,13 +202,13 @@ For deployments where Nginx UI runs in a Docker container but Nginx is installed
 ### Quick start
 
 1. From the Web UI, go to **Preferences → Nginx**, select **Host via SSH** mode, and open the setup wizard.
-2. Follow the four-step wizard: generate a keypair, paste the generated docker-compose snippet into your stack, apply the sudoers/authorized_keys snippets on the host, and run the verification.
+2. Follow the five-step wizard (**SSH Target**, **Trust & Test**, **Detect Platform**, **Access & Install**, **Verify**): choose or generate a keypair, trust the host key and test the connection, detect the service manager and nginx paths, pick the file access mode and apply the generated container and host snippets, then run the verification.
 3. Once all checks pass, save the configuration.
 
 Alternatively, use the CLI:
 
 ```bash
-nginx-ui host-setup print --host-address host.docker.internal:22 --host-user nginxui
+nginx-ui host-setup print --host-address host.docker.internal:22 --host-user nginxui --access-mode sftp
 nginx-ui host-setup test
 ```
 
@@ -217,6 +217,8 @@ nginx-ui host-setup test
 | Field | Description |
 |---|---|
 | `host_mode` | Set to `ssh` to enable this mode |
+| `host_access_mode` | `sftp` or `mounted`. Required in SSH mode: whether the container reaches the host nginx files over SFTP or through bind mounts |
+| `host_key_source` | `generated` (default), `existing` or `provided`: where the SSH private key comes from |
 | `host_address` | Remote `host:port` |
 | `host_user` | SSH user on the host |
 | `host_auth_method` | SSH authentication method. Use key authentication for the current host SSH setup |
@@ -230,5 +232,6 @@ nginx-ui host-setup test
 | `host_launchctl_path` | Default `/bin/launchctl` |
 | `host_config_dir` | Host-side nginx config directory |
 | `host_log_dir` | Host-side nginx log directory |
+| `sbin_path` | In SSH mode, point this at the nginx binary on the host. The generated sudoers allow-list matches this path exactly |
 
 See also: [Manage Host Nginx from Docker](manage-host-nginx-from-docker.md) and [Manage Multi-Host Nginx with Cluster](manage-multi-host-nginx-with-cluster.md).

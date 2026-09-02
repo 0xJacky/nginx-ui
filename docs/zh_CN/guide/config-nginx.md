@@ -203,13 +203,13 @@ Nginx UI 通过自身的文件系统读写 Nginx 配置和日志文件。请将�
 ### 快速开始
 
 1. 在 Web 界面中，前往**偏好设置 → Nginx**，选择**通过 SSH 控制宿主机**模式，并打开配置向导。
-2. 按照四步配置向导操作：生成密钥对、将生成的 docker-compose 片段粘贴到您的 stack 中、在宿主机上应用 sudoers/authorized_keys 片段，然后执行验证。
+2. 按照五步配置向导操作（**SSH 目标**、**信任与测试**、**检测平台**、**访问与安装**、**验证**）：选择或生成密钥对、信任主机密钥并测试连接、检测服务管理器和 nginx 路径、选择文件访问模式并应用生成的容器与宿主机片段，然后执行验证。
 3. 所有检查通过后，保存配置。
 
 也可以使用命令行：
 
 ```bash
-nginx-ui host-setup print --host-address host.docker.internal:22 --host-user nginxui
+nginx-ui host-setup print --host-address host.docker.internal:22 --host-user nginxui --access-mode sftp
 nginx-ui host-setup test
 ```
 
@@ -218,6 +218,8 @@ nginx-ui host-setup test
 | 字段 | 描述 |
 |---|---|
 | `host_mode` | 设置为 `ssh` 以启用此模式 |
+| `host_access_mode` | `sftp` 或 `mounted`。SSH 模式下必填：容器通过 SFTP 还是通过 bind mount 访问宿主机 nginx 文件 |
+| `host_key_source` | `generated`（默认）、`existing` 或 `provided`：SSH 私钥的来源 |
 | `host_address` | 远程 `host:port` |
 | `host_user` | 宿主机上的 SSH 用户 |
 | `host_auth_method` | SSH 认证方式。当前宿主机 SSH 配置请使用密钥认证 |
@@ -231,5 +233,6 @@ nginx-ui host-setup test
 | `host_launchctl_path` | 默认为 `/bin/launchctl` |
 | `host_config_dir` | 宿主机侧 nginx 配置目录 |
 | `host_log_dir` | 宿主机侧 nginx 日志目录 |
+| `sbin_path` | SSH 模式下应指向宿主机上的 nginx 可执行文件。生成的 sudoers 允许列表会精确匹配该路径 |
 
 另请参阅：[在 Docker 中管理宿主机 Nginx](manage-host-nginx-from-docker.md) 和 [使用集群节点管理多主机 Nginx](manage-multi-host-nginx-with-cluster.md)。
