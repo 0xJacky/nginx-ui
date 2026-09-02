@@ -105,17 +105,17 @@ func (fs sftpTargetFilesystem) ReadFile(path string) ([]byte, error) {
 	defer file.Close()
 	return io.ReadAll(file)
 }
+
+// WriteFile mirrors os.WriteFile: mode is applied only to a file this call
+// creates, an existing file keeps its permissions and is truncated.
 func (fs sftpTargetFilesystem) WriteFile(path string, data []byte, mode os.FileMode) error {
 	client, err := fs.client()
 	if err != nil {
 		return err
 	}
-	_, statErr := client.Stat(path)
-	isNew := os.IsNotExist(statErr)
-	if statErr != nil && !isNew {
-		return statErr
-	}
-	file, err := client.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC)
+	file, isNew, err := openForWrite(func(flags int) (targetFile, error) {
+		return client.OpenFile(path, flags)
+	})
 	if err != nil {
 		return err
 	}
@@ -131,6 +131,28 @@ func (fs sftpTargetFilesystem) WriteFile(path string, data []byte, mode os.FileM
 		return client.Chmod(path, mode)
 	}
 	return nil
+}
+
+// openForWrite opens a file for a full rewrite and reports whether this call
+// created it, without a separate Stat round trip. It first tries an exclusive
+// create, which succeeds only for a new file; when that fails it reopens the
+// existing file for truncation. SFTP servers answer O_EXCL on an existing file
+// with the generic SSH_FX_FAILURE status rather than os.ErrExist, so any
+// create failure is retried as a truncate. When the truncate open then reports
+// the file missing, the create failure was the real error and is returned.
+func openForWrite(open func(flags int) (targetFile, error)) (file targetFile, isNew bool, err error) {
+	file, createErr := open(os.O_WRONLY | os.O_CREATE | os.O_EXCL)
+	if createErr == nil {
+		return file, true, nil
+	}
+	file, err = open(os.O_WRONLY | os.O_TRUNC)
+	if err != nil {
+		if errors.Is(err, os.ErrNotExist) {
+			return nil, false, createErr
+		}
+		return nil, false, err
+	}
+	return file, false, nil
 }
 func (fs sftpTargetFilesystem) ReadDir(path string) ([]os.DirEntry, error) {
 	client, err := fs.client()
