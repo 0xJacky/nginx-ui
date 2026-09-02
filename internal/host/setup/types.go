@@ -106,7 +106,7 @@ func (p SetupParams) FillDefaults() SetupParams {
 		p.ContainerKeyPath = settings.DefaultHostPrivateKeyPath
 	}
 	if p.ContainerKnownHostsPath == "" {
-		p.ContainerKnownHostsPath = "/etc/nginx-ui/known_hosts"
+		p.ContainerKnownHostsPath = settings.DefaultHostKnownHostsPath
 	}
 	if p.SudoersFilename == "" {
 		p.SudoersFilename = "/etc/sudoers.d/nginx-ui"

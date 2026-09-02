@@ -3,6 +3,8 @@ package setup
 import (
 	"context"
 	"strings"
+
+	"github.com/0xJacky/Nginx-UI/settings"
 )
 
 const (
@@ -81,11 +83,21 @@ type CommandRunner interface {
 	Exec(ctx context.Context, name string, args ...string) (string, error)
 }
 
+// persistedDataDir is the container directory operators are expected to mount
+// as a volume, so files under it survive container rebuilds.
+const persistedDataDir = "/etc/nginx-ui/"
+
+// IsPersistedDataPath reports whether path lives under the recommended
+// persisted data directory.
+func IsPersistedDataPath(path string) bool {
+	return strings.HasPrefix(path, persistedDataDir)
+}
+
 func checkKnownHostsPersistence(path string) StepOutcome {
 	if path == "" {
-		path = "/etc/nginx-ui/known_hosts"
+		path = settings.DefaultHostKnownHostsPath
 	}
-	if strings.HasPrefix(path, "/etc/nginx-ui/") {
+	if IsPersistedDataPath(path) {
 		return StepOutcome{OK: true, Level: "success", Detail: path + " is under the recommended persisted data directory"}
 	}
 	return StepOutcome{

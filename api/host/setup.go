@@ -436,7 +436,7 @@ func ScanHostKey(c *gin.Context) {
 	result.KnownHostsPath = path
 	result.Persistence = hostssh.KnownHostsPersistence{
 		Path:        path,
-		Recommended: strings.HasPrefix(path, "/etc/nginx-ui/"),
+		Recommended: setup.IsPersistedDataPath(path),
 	}
 	if !result.Persistence.Recommended {
 		result.Persistence.Warning = "known_hosts is outside /etc/nginx-ui; make sure it is persisted across container rebuilds"
