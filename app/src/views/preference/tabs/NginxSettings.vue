@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { NginxControlMode, NginxSettings } from '@/api/settings'
-import { ArrowRightOutlined, CloseOutlined, EditOutlined, SaveOutlined } from '@ant-design/icons-vue'
+import { ArrowRightOutlined, CloseOutlined, EditOutlined, SaveOutlined } from '@antdv-next/icons'
 import settingsApi from '@/api/settings'
 import { TwoFACancelledError, use2FAModal } from '@/components/TwoFA'
 import {
@@ -244,7 +244,7 @@ async function openSSHSetup() {
         type="info"
         show-icon
         class="mt-3"
-        :message="$gettext('High-performance mode is available')"
+        :title="$gettext('High-performance mode is available')"
         :description="$gettext('Compatibility mode works entirely over SSH. For lower file-access latency, configure bind mounts and switch to high-performance mode after recreating the container.')"
       >
         <template #action>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { BrowserStatItem } from '../types'
 import type { DashboardAnalytics } from '@/api/nginx_log'
-import { Card, Table } from 'ant-design-vue'
+import { Card, Table } from 'antdv-next'
 
 defineProps<{
   dashboardData: DashboardAnalytics | null
@@ -20,13 +20,13 @@ const browserColumns = [
     key: 'count',
     sorter: (a: BrowserStatItem, b: BrowserStatItem) => a.count - b.count,
     width: 80,
-    customRender: ({ text }: { text: number }) => text.toLocaleString(),
+    render: (value: number) => value.toLocaleString(),
   },
   {
     title: () => $gettext('Percentage'),
     dataIndex: 'percent',
     key: 'percent',
-    customRender: ({ text }: { text: number }) => `${text.toFixed(2)}%`,
+    render: (value: number) => `${value.toFixed(2)}%`,
     width: 100,
   },
 ]

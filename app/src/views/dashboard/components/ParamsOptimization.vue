@@ -2,7 +2,7 @@
 import type { NginxConfigInfo, NginxPerfOpt } from '@/api/ngx'
 import {
   SettingOutlined,
-} from '@ant-design/icons-vue'
+} from '@antdv-next/icons'
 import ngx from '@/api/ngx'
 import PerformanceConfig from './ParamsOpt/PerformanceConfig.vue'
 import ProxyCacheConfig from './ParamsOpt/ProxyCacheConfig.vue'
@@ -118,13 +118,28 @@ async function savePerformanceSettings() {
       :ok-button-props="{ loading }"
       @ok="savePerformanceSettings"
     >
-      <ATabs>
-        <ATabPane key="performance" :tab="$gettext('Performance')">
-          <PerformanceConfig v-model="data" />
-        </ATabPane>
-        <ATabPane key="cache" :tab="$gettext('Cache')">
-          <ProxyCacheConfig v-model="data.proxy_cache" />
-        </ATabPane>
+      <ATabs
+        :items="[
+          {
+            key: 'performance',
+            label: $gettext('Performance'),
+          },
+          {
+            key: 'cache',
+            label: $gettext('Cache'),
+          },
+        ]"
+      >
+        <template #contentRender="{ item }">
+          <PerformanceConfig
+            v-if="item.key === 'performance'"
+            v-model="data"
+          />
+          <ProxyCacheConfig
+            v-else
+            v-model="data.proxy_cache"
+          />
+        </template>
       </ATabs>
     </AModal>
   </div>

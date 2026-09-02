@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import type { SelectProps } from 'antdv-next'
 import type { QuickConfig } from './useQuickConfig'
+import { computed } from 'vue'
 
 defineOptions({ name: 'QuickSetupForm' })
 
@@ -11,6 +13,32 @@ const props = withDefaults(defineProps<{
 })
 
 const { state, quickDerivedName, quickNameTouched } = props.quick
+
+const schemeOptions = computed<SelectProps['options']>(() => [
+  {
+    label: $gettext('HTTP'),
+    value: 'http',
+  },
+  {
+    label: $gettext('HTTPS'),
+    value: 'https',
+  },
+])
+
+const statusCodeOptions: SelectProps['options'] = [
+  {
+    label: '301 Moved Permanently',
+    value: '301',
+  },
+  {
+    label: '302 Found',
+    value: '302',
+  },
+  {
+    label: '308 Permanent Redirect',
+    value: '308',
+  },
+]
 </script>
 
 <template>
@@ -55,14 +83,10 @@ const { state, quickDerivedName, quickNameTouched } = props.quick
 
     <template v-if="state.type === 'reverse_proxy'">
       <AFormItem :label="$gettext('Scheme')">
-        <ASelect v-model:value="state.rpScheme">
-          <ASelectOption value="http">
-            {{ $gettext('HTTP') }}
-          </ASelectOption>
-          <ASelectOption value="https">
-            {{ $gettext('HTTPS') }}
-          </ASelectOption>
-        </ASelect>
+        <ASelect
+          v-model:value="state.rpScheme"
+          :options="schemeOptions"
+        />
       </AFormItem>
 
       <AFormItem
@@ -120,17 +144,10 @@ const { state, quickDerivedName, quickNameTouched } = props.quick
       </AFormItem>
 
       <AFormItem :label="$gettext('Status Code')">
-        <ASelect v-model:value="state.rdStatus">
-          <ASelectOption value="301">
-            301 Moved Permanently
-          </ASelectOption>
-          <ASelectOption value="302">
-            302 Found
-          </ASelectOption>
-          <ASelectOption value="308">
-            308 Permanent Redirect
-          </ASelectOption>
-        </ASelect>
+        <ASelect
+          v-model:value="state.rdStatus"
+          :options="statusCodeOptions"
+        />
       </AFormItem>
     </template>
 

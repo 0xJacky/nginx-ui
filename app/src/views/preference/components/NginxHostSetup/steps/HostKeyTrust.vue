@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { HostKeyScanItem, HostKeyScanResult, SetupParams } from '@/api/host_setup'
-import { ScanOutlined } from '@ant-design/icons-vue'
+import { ScanOutlined } from '@antdv-next/icons'
 import { computed, onActivated, onDeactivated, ref, watch } from 'vue'
 import hostSetup from '@/api/host_setup'
+import { List, ListItem } from '@/components/List'
 import { getErrorMessage } from '@/lib/http'
 import CodeBlock from '../CodeBlock.vue'
 import { parseHostAddress } from '../hostAddress'
@@ -186,7 +187,7 @@ onActivated(() => {
     <AAlert
       type="warning"
       show-icon
-      :message="$gettext('Verify the SSH host key before trusting it')"
+      :title="$gettext('Verify the SSH host key before trusting it')"
       :description="$gettext('Nginx UI can read the key presented by the SSH server, but it cannot prove the key is genuine by itself. Verify the fingerprint through the host console or another trusted channel before trusting or replacing it.')"
     />
 
@@ -207,11 +208,11 @@ onActivated(() => {
         type="warning"
         show-icon
         class="mt-3"
-        :message="result.persistence.warning"
+        :title="result.persistence.warning"
       />
     </ACard>
 
-    <ADivider orientation="left">
+    <ADivider title-placement="start">
       {{ $gettext('1. Verify and trust the host key') }}
     </ADivider>
 
@@ -226,34 +227,34 @@ onActivated(() => {
       v-if="scanError"
       type="error"
       show-icon
-      :message="$gettext('Failed to scan host keys')"
+      :title="$gettext('Failed to scan host keys')"
       :description="scanError"
     />
     <AAlert
       v-if="operationError"
       type="error"
       show-icon
-      :message="$gettext('Failed to update trusted host keys')"
+      :title="$gettext('Failed to update trusted host keys')"
       :description="operationError"
     />
 
-    <ACollapse>
-      <ACollapsePanel key="manual" :header="$gettext('Paste ssh-keyscan output')">
+    <ACollapse :items="[{ key: 'manual', label: $gettext('Paste ssh-keyscan output') }]">
+      <template #contentRender>
         <CodeBlock :code="sshKeyscanCommand()" language="shell" :title="$gettext('Run on a trusted terminal')" />
         <ATextarea v-model:value="manualOutput" class="mt-3" :rows="4" />
         <AButton class="mt-3" :disabled="!manualOutput" :loading="scanning" @click="scan(true)">
           {{ $gettext('Parse pasted output') }}
         </AButton>
-      </ACollapsePanel>
+      </template>
     </ACollapse>
 
-    <AList v-if="result" :data-source="result.keys">
+    <List v-if="result" :data-source="result.keys">
       <template #renderItem="{ item }">
-        <AListItem>
+        <ListItem>
           <ACard class="w-full" size="small">
             <div class="flex flex-wrap items-center justify-between gap-2">
               <strong>{{ item.algorithm }}</strong>
-              <ATag :color="statusColor(item.status)" :bordered="false">
+              <ATag :color="statusColor(item.status)" variant="filled">
                 {{ statusText(item.status) }}
               </ATag>
             </div>
@@ -263,16 +264,19 @@ onActivated(() => {
             <p v-if="item.existing_fingerprint" class="break-all">
               <strong>{{ $gettext('Existing fingerprint') }}:</strong> {{ item.existing_fingerprint }}
             </p>
-            <ACollapse class="mt-2">
-              <ACollapsePanel key="pub" :header="$gettext('Public key')">
+            <ACollapse
+              class="mt-2"
+              :items="[{ key: 'pub', label: $gettext('Public key') }]"
+            >
+              <template #contentRender>
                 <ATypographyParagraph
                   class="mb-0 break-all"
                   code
-                  :copyable="{ text: item.public_key, tooltip: false }"
+                  :copyable="{ text: item.public_key, tooltips: false }"
                 >
                   {{ item.public_key }}
                 </ATypographyParagraph>
-              </ACollapsePanel>
+              </template>
             </ACollapse>
 
             <div v-if="item.status === 'unknown_host' || item.status === 'new_algorithm'" class="mt-3 space-y-2">
@@ -285,7 +289,7 @@ onActivated(() => {
             </div>
 
             <div v-if="item.status === 'changed'" class="mt-3 space-y-2">
-              <AAlert type="error" show-icon :message="$gettext('Host key changed. Replace only after confirming an intentional host SSH key rotation.')" />
+              <AAlert type="error" show-icon :title="$gettext('Host key changed. Replace only after confirming an intentional host SSH key rotation.')" />
               <ACheckbox v-model:checked="confirmed[keyID(item)]">
                 {{ $gettext('I verified the new fingerprint through a trusted channel.') }}
               </ACheckbox>
@@ -294,22 +298,22 @@ onActivated(() => {
               </AButton>
             </div>
           </ACard>
-        </AListItem>
+        </ListItem>
       </template>
-    </AList>
+    </List>
 
     <AEmpty
       v-if="result && result.keys.length === 0"
       :description="$gettext('No SSH host keys were returned')"
     />
 
-    <ACollapse v-if="result?.stale_keys?.length">
-      <ACollapsePanel key="stale" :header="$gettext('Advanced cleanup')">
-        <AList :data-source="result.stale_keys">
+    <ACollapse v-if="result?.stale_keys?.length" :items="[{ key: 'stale', label: $gettext('Advanced cleanup') }]">
+      <template #contentRender>
+        <List :data-source="result.stale_keys">
           <template #renderItem="{ item }">
-            <AListItem>
+            <ListItem>
               <div class="w-full">
-                <ATag color="warning" :bordered="false">
+                <ATag color="warning" variant="filled">
                   {{ $gettext('Stale') }}
                 </ATag>
                 <strong class="ml-2">{{ item.algorithm }}</strong>
@@ -325,29 +329,29 @@ onActivated(() => {
                   </AButton>
                 </div>
               </div>
-            </AListItem>
+            </ListItem>
           </template>
-        </AList>
-      </ACollapsePanel>
+        </List>
+      </template>
     </ACollapse>
 
     <AAlert
       v-if="result && !hasChangedKey && !hasRevokedKey && hasOnlyTrustedKeys"
       type="success"
       show-icon
-      :message="$gettext('Host identity is trusted')"
+      :title="$gettext('Host identity is trusted')"
     />
     <AAlert
       v-if="hasChangedKey"
       type="error"
       show-icon
-      :message="$gettext('Resolve changed host keys before continuing.')"
+      :title="$gettext('Resolve changed host keys before continuing.')"
     />
     <AAlert
       v-if="hasRevokedKey"
       type="error"
       show-icon
-      :message="$gettext('The host presented a revoked key')"
+      :title="$gettext('The host presented a revoked key')"
       :description="$gettext('This key is marked @revoked in known_hosts. SSH will refuse it, so trusting it here would only fail later. Investigate why the host is presenting a revoked key before continuing.')"
     />
   </div>

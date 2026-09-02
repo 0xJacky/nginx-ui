@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import type { SelectProps } from 'ant-design-vue'
-import type { DefaultOptionType } from 'ant-design-vue/es/select'
+import type { SelectProps } from 'antdv-next'
 import type { AutoCertOptions } from '@/api/auto_cert'
 import type { DnsCredential } from '@/api/dns_credential'
-import { InfoCircleOutlined } from '@ant-design/icons-vue'
+import { InfoCircleOutlined } from '@antdv-next/icons'
 import { useRouter } from 'vue-router'
 import dns_credential from '@/api/dns_credential'
+
+interface DefaultOptionType {
+  label?: string
+  value?: string
+}
 
 const router = useRouter()
 
@@ -121,8 +125,8 @@ onMounted(async () => {
 </script>
 
 <template>
-  <AForm layout="vertical">
-    <AFormItem :rules="[{ required: true }]">
+  <AForm layout="vertical" :model="data">
+    <AFormItem name="dns_credential_id" :rules="[{ required: true }]">
       <template #label>
         <span>{{ $gettext('Credential') }}</span>
         <ATooltip :title="$gettext('Please create DNS credentials first in DNS > Credentials')">

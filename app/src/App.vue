@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { theme } from 'ant-design-vue'
-import en_US from 'ant-design-vue/es/locale/en_US'
-import zh_CN from 'ant-design-vue/es/locale/zh_CN'
-import zh_TW from 'ant-design-vue/es/locale/zh_TW'
+import { theme } from 'antdv-next'
+import en_US from 'antdv-next/locale/en_US'
+import zh_CN from 'antdv-next/locale/zh_CN'
+import zh_TW from 'antdv-next/locale/zh_TW'
 import loadTranslations from '@/api/translations'
 import AppProvider from '@/components/AppProvider'
 import gettext from '@/gettext'
@@ -69,7 +69,7 @@ loadTranslations(route)
 </template>
 
 <style lang="less">
-@import "ant-design-vue/dist/reset.css";
+@import "antdv-next/dist/reset.css";
 
 .dark {
   h1, h2, h3, h4, h5, h6, p, div {
@@ -77,9 +77,7 @@ loadTranslations(route)
   }
 
   .ant-checkbox-indeterminate {
-    .ant-checkbox-inner {
-      background-color: transparent !important;
-    }
+    background-color: transparent !important;
   }
 
   .ant-layout-header {

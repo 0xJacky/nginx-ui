@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ArrowLeftOutlined } from '@ant-design/icons-vue'
+import { ArrowLeftOutlined } from '@antdv-next/icons'
 import settingsApi from '@/api/settings'
 import { TwoFACancelledError, use2FAModal } from '@/components/TwoFA'
 import { getErrorMessage } from '@/lib/http'
@@ -111,7 +111,7 @@ onMounted(initialize)
     </div>
 
     <div v-if="isAuthorizing" class="flex min-h-320px items-center justify-center">
-      <ASpin size="large" :tip="$gettext('Authorizing...')" />
+      <ASpin size="large" :description="$gettext('Authorizing...')" />
     </div>
 
     <AResult
@@ -156,7 +156,7 @@ onMounted(initialize)
         type="error"
         show-icon
         closable
-        :message="$gettext('Failed to save Nginx control settings')"
+        :title="$gettext('Failed to save Nginx control settings')"
         :description="loadError"
         class="mb-4"
         @close="loadError = ''"

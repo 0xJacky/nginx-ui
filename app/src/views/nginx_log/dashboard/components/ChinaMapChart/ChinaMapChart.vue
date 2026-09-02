@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { EChartsOption } from 'echarts'
-import { ReloadOutlined } from '@ant-design/icons-vue'
+import { ReloadOutlined } from '@antdv-next/icons'
 import { MapChart } from 'echarts/charts'
 import { LegendComponent, TitleComponent, TooltipComponent, VisualMapComponent } from 'echarts/components'
 import { registerMap, use } from 'echarts/core'
@@ -66,7 +66,7 @@ const columns = computed(() => {
       key: 'value',
       align: 'right' as const,
       sorter: (a: Record<string, unknown>, b: Record<string, unknown>) => (a.value as number) - (b.value as number),
-      customRender: ({ text }) => `${text.toLocaleString()}`,
+      render: (value: number) => `${value.toLocaleString()}`,
     },
     {
       title: $gettext('Percentage'),
@@ -74,7 +74,7 @@ const columns = computed(() => {
       key: 'percent',
       align: 'right' as const,
       sorter: (a: Record<string, unknown>, b: Record<string, unknown>) => Number.parseFloat(a.percent as string) - Number.parseFloat(b.percent as string),
-      customRender: ({ text }: { text: string }) => `${text}%`,
+      render: (value: string) => `${value}%`,
     },
   ]
 })

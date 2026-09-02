@@ -46,10 +46,13 @@ app.use(pinia)
   })
   .use(setupInterceptors)
   .use(createCosyProConfig({
+    // curd 6 accepts a reactive locale source, so its built-in copy follows the
+    // language the user picked instead of being pinned to a single locale.
+    locale: () => gettext.current,
     i18n: {
       legacy: false,
-      locale: 'zh-CN',
-      fallbackLocale: 'en-US',
+      locale: gettext.current,
+      fallbackLocale: 'en',
       messages: setupTranslations(),
     },
     time: {

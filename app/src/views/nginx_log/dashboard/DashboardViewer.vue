@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { AnalyticsRequest, ChinaMapData, DashboardAnalytics, DashboardRequest, WorldMapData } from '@/api/nginx_log'
-import { Col, Row } from 'ant-design-vue'
+import { Col, Row } from 'antdv-next'
 import dayjs from 'dayjs'
 import nginx_log from '@/api/nginx_log'
 import LoadingState from '../components/LoadingState.vue'

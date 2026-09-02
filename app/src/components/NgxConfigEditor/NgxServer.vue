@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { MoreOutlined, PlusOutlined } from '@ant-design/icons-vue'
-import { Modal } from 'ant-design-vue'
+import { MoreOutlined, PlusOutlined } from '@antdv-next/icons'
+import { Modal } from 'antdv-next'
 import { DirectiveEditor, Http, LocationEditor, LogEntry, useNgxConfigStore } from '.'
 
 withDefaults(defineProps<{
@@ -25,6 +25,19 @@ const serversLength = computed(() => {
 const hasServers = computed(() => {
   return serversLength.value > 0
 })
+
+const activeServerKey = computed({
+  get: () => curServerIdx.value.toString(),
+  set: value => {
+    curServerIdx.value = Number(value)
+  },
+})
+
+const serverTabItems = computed(() => ngxConfig.value.servers?.map((server, index) => ({
+  key: String(index),
+  label: `Server ${index + 1}`,
+  server,
+})) ?? [])
 
 watch(serversLength, () => {
   if (curServerIdx.value >= serversLength.value)
@@ -65,6 +78,16 @@ function removeServer(index: number) {
     },
   })
 }
+
+function getServerMenuItems(index: number) {
+  return [
+    {
+      key: 'delete',
+      label: $gettext('Delete'),
+      onClick: () => removeServer(index),
+    },
+  ]
+}
 </script>
 
 <template>
@@ -95,44 +118,41 @@ function removeServer(index: number) {
     </div>
 
     <!-- Server Tabs -->
-    <ATabs v-else v-model:active-key="curServerIdx">
-      <ATabPane
-        v-for="(v, k) in ngxConfig.servers"
-        :key="k"
-      >
-        <template #tab>
-          Server {{ k + 1 }}
-          <ADropdown>
-            <MoreOutlined />
-            <template #overlay>
-              <AMenu>
-                <AMenuItem>
-                  <a @click="removeServer(k)">{{ $gettext('Delete') }}</a>
-                </AMenuItem>
-              </AMenu>
-            </template>
-          </ADropdown>
-        </template>
+    <ATabs
+      v-else
+      v-model:active-key="activeServerKey"
+      :items="serverTabItems"
+    >
+      <template #labelRender="{ index }">
+        Server {{ index + 1 }}
+        <ADropdown>
+          <MoreOutlined />
+          <template #popupRender>
+            <AMenu :items="getServerMenuItems(index)" />
+          </template>
+        </ADropdown>
+      </template>
 
+      <template #contentRender="{ item, index }">
         <LogEntry class="mb-4" :ngx-config :cur-server-idx :name :context />
 
         <div class="tab-content">
-          <slot name="tab-content" :tab-idx="k" />
+          <slot name="tab-content" :tab-idx="index" />
 
-          <template v-if="v.comments">
+          <template v-if="item.server.comments">
             <h3>{{ $gettext('Comments') }}</h3>
             <ATextarea
-              v-model:value="v.comments"
-              :bordered="false"
+              v-model:value="item.server.comments"
+              variant="borderless"
             />
           </template>
-          <DirectiveEditor v-model:directives="v.directives" class="mb-4" />
+          <DirectiveEditor v-model:directives="item.server.directives" class="mb-4" />
           <LocationEditor
             v-if="context === Http"
-            v-model:locations="v.locations"
+            v-model:locations="item.server.locations"
           />
         </div>
-      </ATabPane>
+      </template>
 
       <template #rightExtra>
         <AButton

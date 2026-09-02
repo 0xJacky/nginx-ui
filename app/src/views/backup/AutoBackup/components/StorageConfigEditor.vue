@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { AutoBackup } from '@/api/backup'
 
-import { CheckCircleOutlined, LoadingOutlined } from '@ant-design/icons-vue'
+import { CheckCircleOutlined, LoadingOutlined } from '@antdv-next/icons'
 import { testS3Connection } from '@/api/backup'
 
 const modelValue = defineModel<AutoBackup>({

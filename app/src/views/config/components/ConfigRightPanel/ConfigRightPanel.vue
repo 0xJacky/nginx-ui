@@ -32,24 +32,50 @@ const chatHeight = computed(() => {
   <div ref="containerRef" class="right-settings-container">
     <ACard
       class="right-settings"
-      :bordered="false"
+      variant="borderless"
+      :styles="{ root: { boxShadow: 'unset' } }"
     >
       <ATabs
         v-model:active-key="activeKey"
         size="small"
+        :items="[
+          {
+            key: 'basic',
+            label: $gettext('Basic'),
+          },
+          {
+            key: 'chat',
+            label: $gettext('Chat'),
+          },
+        ]"
+        :styles="{
+          header: {
+            margin: '0',
+            height: '55px',
+            padding: '0 24px',
+          },
+          content: {
+            paddingTop: '24px',
+            overflowY: 'auto',
+            maxHeight: 'calc(100vh - 260px)',
+          },
+        }"
       >
-        <ATabPane key="basic" :tab="$gettext('Basic')">
+        <template #contentRender="{ item }">
           <Basic
+            v-if="item.key === 'basic'"
             v-model:data="data"
             :add-mode
             :new-path
             :modified-at
             :orig-name
           />
-        </ATabPane>
-        <ATabPane key="chat" :tab="$gettext('Chat')">
-          <Chat v-model:data="data" :chat-height />
-        </ATabPane>
+          <Chat
+            v-else
+            v-model:data="data"
+            :chat-height
+          />
+        </template>
       </ATabs>
     </ACard>
   </div>
@@ -61,25 +87,6 @@ const chatHeight = computed(() => {
 
   .right-settings {
     position: relative;
-  }
-
-  :deep(.ant-tabs-nav) {
-    margin: 0;
-    height: 55px;
-    padding: 0 24px;
-  }
-}
-
-:deep(.ant-tabs-content) {
-  padding-top: 24px;
-  overflow-y: auto;
-}
-
-:deep(.ant-card) {
-  box-shadow: unset;
-
-  .ant-tabs-content {
-    max-height: calc(100vh - 260px);
   }
 }
 </style>

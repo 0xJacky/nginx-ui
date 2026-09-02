@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { SetupParams } from '@/api/host_setup'
-import { LinkOutlined } from '@ant-design/icons-vue'
+import { LinkOutlined } from '@antdv-next/icons'
 import { onDeactivated, ref, watch } from 'vue'
 import hostSetup from '@/api/host_setup'
 import { useLatestRequest } from '../useLatestRequest'
@@ -46,7 +46,7 @@ onDeactivated(invalidate)
       v-if="!trusted"
       type="info"
       show-icon
-      :message="$gettext('Trust every presented host key before testing the connection.')"
+      :title="$gettext('Trust every presented host key before testing the connection.')"
     />
 
     <ASpace wrap>
@@ -54,7 +54,7 @@ onDeactivated(invalidate)
         <LinkOutlined />
         {{ $gettext('Test SSH connection') }}
       </AButton>
-      <ATag v-if="connected" color="success" :bordered="false">
+      <ATag v-if="connected" color="success" variant="filled">
         {{ $gettext('Connected') }}
       </ATag>
     </ASpace>
@@ -63,21 +63,21 @@ onDeactivated(invalidate)
       v-if="connectionError"
       type="error"
       show-icon
-      :message="$gettext('SSH connection failed')"
+      :title="$gettext('SSH connection failed')"
       :description="connectionError"
     />
     <AAlert
       v-if="connected"
       type="success"
       show-icon
-      :message="$gettext('SSH connection succeeded')"
+      :title="$gettext('SSH connection succeeded')"
       :description="connectionDetail"
     />
     <AAlert
       v-else-if="connectionDetail"
       type="warning"
       show-icon
-      :message="$gettext('SSH connection was not established')"
+      :title="$gettext('SSH connection was not established')"
       :description="connectionDetail"
     />
   </div>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { SelectProps } from 'antdv-next'
 import { SensitiveInput } from '@/components/SensitiveString'
 import { LLM_MODELS, LLM_PROVIDER_BASE_URLS, LLM_PROVIDERS } from '@/constants/llm'
 import useSystemSettingsStore from '../store'
@@ -10,10 +11,21 @@ const modelOptions = LLM_MODELS.map(model => ({
   value: model,
 }))
 
-const providerOptions = LLM_PROVIDERS.map(provider => ({
+const providerOptions: SelectProps['options'] = LLM_PROVIDERS.map(provider => ({
   label: provider.label,
   value: provider.value,
 }))
+
+const apiTypeOptions: SelectProps['options'] = [
+  {
+    label: 'OpenAI',
+    value: 'OPEN_AI',
+  },
+  {
+    label: 'Azure',
+    value: 'AZURE',
+  },
+]
 
 const baseUrlOptions = LLM_PROVIDER_BASE_URLS.map(baseUrl => ({
   value: baseUrl,
@@ -125,15 +137,10 @@ watch(
       :label="$gettext('Provider')"
       :validate-status="errors?.openai?.provider ? 'error' : ''"
     >
-      <ASelect v-model:value="data.openai.provider">
-        <ASelectOption
-          v-for="provider in providerOptions"
-          :key="provider.value"
-          :value="provider.value"
-        >
-          {{ provider.label }}
-        </ASelectOption>
-      </ASelect>
+      <ASelect
+        v-model:value="data.openai.provider"
+        :options="providerOptions"
+      />
     </AFormItem>
     <AFormItem
       :label="$gettext('Model')"
@@ -153,7 +160,7 @@ watch(
       show-icon
       class="mb-6"
     >
-      <template #message>
+      <template #title>
         {{ $gettext('Model capabilities') }}
       </template>
       <template #description>
@@ -194,7 +201,7 @@ watch(
       show-icon
       class="mb-6"
     >
-      <template #message>
+      <template #title>
         {{ $gettext('Regional endpoints') }}
       </template>
       <template #description>
@@ -244,14 +251,10 @@ watch(
       :label="$gettext('API Type')"
       :validate-status="errors?.openai?.apt_type ? 'error' : ''"
     >
-      <ASelect v-model:value="data.openai.api_type">
-        <ASelectOption value="OPEN_AI">
-          OpenAI
-        </ASelectOption>
-        <ASelectOption value="AZURE">
-          Azure
-        </ASelectOption>
-      </ASelect>
+      <ASelect
+        v-model:value="data.openai.api_type"
+        :options="apiTypeOptions"
+      />
     </AFormItem>
     <AFormItem
       :label="$gettext('Enable Code Completion')"

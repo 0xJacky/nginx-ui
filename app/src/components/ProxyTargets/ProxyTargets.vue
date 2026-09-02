@@ -35,7 +35,7 @@ function handleTargetClick(target: ProxyTarget) {
   <div v-if="targets.length > 0" class="proxy-targets">
     <ATag
       v-for="target in targets" :key="proxyStore.getTargetKey(target)" :color="getTargetColor(target)"
-      class="proxy-target-tag" :class="{ 'clickable': shouldShowMultiNodeDisplay, 'cursor-pointer': shouldShowMultiNodeDisplay }" :bordered="false"
+      class="proxy-target-tag" :class="{ 'clickable': shouldShowMultiNodeDisplay, 'cursor-pointer': shouldShowMultiNodeDisplay }" variant="filled"
       @click="handleTargetClick(target)"
     >
       <template #icon>

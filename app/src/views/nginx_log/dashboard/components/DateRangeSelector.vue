@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { DownOutlined, ReloadOutlined } from '@ant-design/icons-vue'
-import { Card, DatePicker } from 'ant-design-vue'
+import type { MenuProps } from 'antdv-next'
+import { DownOutlined, ReloadOutlined } from '@antdv-next/icons'
+import { Card, DatePicker } from 'antdv-next'
 import dayjs from 'dayjs'
+import { computed } from 'vue'
 
 defineProps<{
   logPath: string
@@ -18,13 +20,18 @@ const { RangePicker } = DatePicker
 
 // Date range presets for dashboard (daily-based)
 const datePresets = [
-  { label: () => $gettext('Last 7 days'), value: () => [dayjs().subtract(7, 'day').startOf('day'), dayjs().endOf('day')] as [dayjs.Dayjs, dayjs.Dayjs] },
-  { label: () => $gettext('Last 14 days'), value: () => [dayjs().subtract(14, 'day').startOf('day'), dayjs().endOf('day')] as [dayjs.Dayjs, dayjs.Dayjs] },
-  { label: () => $gettext('Last 30 days'), value: () => [dayjs().subtract(30, 'day').startOf('day'), dayjs().endOf('day')] as [dayjs.Dayjs, dayjs.Dayjs] },
-  { label: () => $gettext('Last 90 days'), value: () => [dayjs().subtract(90, 'day').startOf('day'), dayjs().endOf('day')] as [dayjs.Dayjs, dayjs.Dayjs] },
-  { label: () => $gettext('This month'), value: () => [dayjs().startOf('month'), dayjs().endOf('day')] as [dayjs.Dayjs, dayjs.Dayjs] },
-  { label: () => $gettext('Last month'), value: () => [dayjs().subtract(1, 'month').startOf('month'), dayjs().subtract(1, 'month').endOf('month')] as [dayjs.Dayjs, dayjs.Dayjs] },
+  { key: 'last-7-days', label: () => $gettext('Last 7 days'), value: () => [dayjs().subtract(7, 'day').startOf('day'), dayjs().endOf('day')] as [dayjs.Dayjs, dayjs.Dayjs] },
+  { key: 'last-14-days', label: () => $gettext('Last 14 days'), value: () => [dayjs().subtract(14, 'day').startOf('day'), dayjs().endOf('day')] as [dayjs.Dayjs, dayjs.Dayjs] },
+  { key: 'last-30-days', label: () => $gettext('Last 30 days'), value: () => [dayjs().subtract(30, 'day').startOf('day'), dayjs().endOf('day')] as [dayjs.Dayjs, dayjs.Dayjs] },
+  { key: 'last-90-days', label: () => $gettext('Last 90 days'), value: () => [dayjs().subtract(90, 'day').startOf('day'), dayjs().endOf('day')] as [dayjs.Dayjs, dayjs.Dayjs] },
+  { key: 'this-month', label: () => $gettext('This month'), value: () => [dayjs().startOf('month'), dayjs().endOf('day')] as [dayjs.Dayjs, dayjs.Dayjs] },
+  { key: 'last-month', label: () => $gettext('Last month'), value: () => [dayjs().subtract(1, 'month').startOf('month'), dayjs().subtract(1, 'month').endOf('month')] as [dayjs.Dayjs, dayjs.Dayjs] },
 ]
+
+const datePresetMenuItems = computed<MenuProps['items']>(() => datePresets.map(preset => ({
+  key: preset.key,
+  label: preset.label(),
+})))
 
 // Apply date preset
 function applyDatePreset(preset: { value: () => [dayjs.Dayjs, dayjs.Dayjs] }) {
@@ -40,12 +47,8 @@ function applyDatePreset(preset: { value: () => [dayjs.Dayjs, dayjs.Dayjs] }) {
     </div>
     <ASpace wrap>
       <ADropdown placement="bottomLeft">
-        <template #overlay>
-          <AMenu @click="({ key }) => applyDatePreset(datePresets[Number(key)])">
-            <AMenuItem v-for="(preset, index) in datePresets" :key="index">
-              {{ preset.label() }}
-            </AMenuItem>
-          </AMenu>
+        <template #popupRender>
+          <AMenu :items="datePresetMenuItems" @click="({ key }) => applyDatePreset(datePresets.find(preset => preset.key === key)!)" />
         </template>
         <AButton>
           {{ $gettext('Quick Select') }}

@@ -11,11 +11,11 @@ const { data } = storeToRefs(systemSettingsStore)
       class="mb-4"
       type="info"
       show-icon
-      :message="$gettext('Global health check controls')"
+      :title="$gettext('Global health check controls')"
       :description="$gettext('A global pause stops network probes without changing individual site or upstream selections. Discovery remains active so configured targets stay visible.')"
     />
 
-    <ADivider orientation="left">
+    <ADivider title-placement="start">
       {{ $gettext('Sites') }}
     </ADivider>
     <AFormItem :label="$gettext('Enable site health checks')">
@@ -28,11 +28,11 @@ const { data } = storeToRefs(systemSettingsStore)
       <AInputNumber
         v-model:value="data.site_check.interval_seconds"
         :min="30"
-        :addon-after="$gettext('Seconds')"
+        :suffix="$gettext('Seconds')"
       />
     </AFormItem>
 
-    <ADivider orientation="left">
+    <ADivider title-placement="start">
       {{ $gettext('Proxy Targets') }}
     </ADivider>
     <AFormItem :label="$gettext('Enable upstream health checks')">
@@ -42,7 +42,7 @@ const { data } = storeToRefs(systemSettingsStore)
       <AInputNumber
         v-model:value="data.upstream_check.interval_seconds"
         :min="5"
-        :addon-after="$gettext('Seconds')"
+        :suffix="$gettext('Seconds')"
       />
     </AFormItem>
   </AForm>

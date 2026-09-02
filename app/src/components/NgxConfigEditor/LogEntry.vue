@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { NgxConfig } from '@/api/ngx'
-import { AreaChartOutlined, FileExclamationOutlined, FileTextOutlined } from '@ant-design/icons-vue'
-import { message } from 'ant-design-vue'
+import { AreaChartOutlined, FileExclamationOutlined, FileTextOutlined } from '@antdv-next/icons'
+import { message } from 'antdv-next'
 import nginxLog from '@/api/nginx_log'
 import { useNgxConfigStore } from './store'
 

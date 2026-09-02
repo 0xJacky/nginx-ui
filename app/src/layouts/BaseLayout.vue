@@ -79,7 +79,7 @@ provide('breadList', breadList)
         v-model:open="drawerVisible"
         :closable="false"
         placement="left"
-        width="256"
+        :size="256"
         @close="drawerVisible = false"
       >
         <SideBar />
@@ -206,7 +206,7 @@ body {
   max-height: 250px;
 }
 
-.header-notice-wrapper .ant-tabs-tabpane-active {
+.header-notice-wrapper .ant-tabs-content-active {
   overflow-y: scroll;
 }
 

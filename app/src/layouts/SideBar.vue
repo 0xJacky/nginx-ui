@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import type { IconComponentProps } from '@ant-design/icons-vue/es/components/Icon'
-import type { AntdIconType } from '@ant-design/icons-vue/lib/components/AntdIcon'
-import type { Key } from 'ant-design-vue/es/_util/type'
+import type { Component } from 'vue'
 import type { NgxModule } from '@/api/ngx'
+import { RouterLink } from 'vue-router'
 import ngx from '@/api/ngx'
 import Logo from '@/components/Logo'
 import NodeIndicator from '@/components/NodeIndicator'
@@ -13,17 +12,17 @@ const route = useRoute()
 
 const openKeys = ref([openSub()])
 
-const selectedKey = ref([route.name]) as Ref<Key[]>
+const selectedKey = ref([route.name as string])
 
 function openSub() {
-  const path = route.path
-  const lastSepIndex = path.lastIndexOf('/')
+  if (route.matched.length <= 2)
+    return ''
 
-  return path.substring(1, lastSepIndex)
+  return route.matched[route.matched.length - 2].name as string
 }
 
 watch(route, () => {
-  selectedKey.value = [route.name as Key]
+  selectedKey.value = [route.name as string]
 
   const sub = openSub()
   const p = openKeys.value.indexOf(sub)
@@ -36,7 +35,7 @@ const sidebars = computed(() => {
 })
 
 interface Meta {
-  icon: AntdIconType
+  icon: Component
   hiddenInSidebar: boolean
   hideChildren: boolean
   name: () => string
@@ -79,7 +78,10 @@ const visible: ComputedRef<Sidebar[]> = computed(() => {
     const t: Sidebar = {
       path: s.path,
       name: s.name as string,
-      meta: s.meta as unknown as Meta,
+      meta: {
+        ...s.meta,
+        icon: s.meta?.icon ? markRaw(s.meta.icon as Component) : undefined,
+      } as unknown as Meta,
       children: [],
     };
 
@@ -101,48 +103,46 @@ const visible: ComputedRef<Sidebar[]> = computed(() => {
 
   return res
 })
+
+const router = useRouter()
+
+const menuItems = computed(() => {
+  return visible.value.map(s => {
+    if (s.children.length === 0 || s.meta.hideChildren) {
+      return {
+        key: s.name,
+        icon: s.meta.icon,
+        label: s.meta?.name(),
+        onClick: () => router.push(`/${s.path}`).catch(() => {}),
+      }
+    }
+
+    return {
+      key: s.name,
+      icon: s.meta.icon,
+      label: s?.meta?.name(),
+      children: s.children.map(child => ({
+        key: child.name,
+        label: h(RouterLink, { to: `/${s.path}/${child.path}` }, () => child?.meta?.name()),
+      })),
+    }
+  })
+})
 </script>
 
 <template>
   <div class="sidebar">
     <Logo />
 
+    <NodeIndicator />
+
     <AMenu
       v-model:open-keys="openKeys"
       v-model:selected-keys="selectedKey"
       mode="inline"
-    >
-      <NodeIndicator />
-
-      <template v-for="s in visible">
-        <AMenuItem
-          v-if="s.children.length === 0 || s.meta.hideChildren"
-          :key="s.name"
-          @click="$router.push(`/${s.path}`).catch(() => {})"
-        >
-          <Component :is="s.meta.icon as IconComponentProps" />
-          <span>{{ s.meta?.name() }}</span>
-        </AMenuItem>
-
-        <ASubMenu
-          v-else
-          :key="s.path"
-        >
-          <template #title>
-            <Component :is="s.meta.icon as IconComponentProps" />
-            <span>{{ s?.meta?.name() }}</span>
-          </template>
-          <AMenuItem
-            v-for="child in s.children"
-            :key="child.name"
-          >
-            <RouterLink :to="`/${s.path}/${child.path}`">
-              {{ child?.meta?.name() }}
-            </RouterLink>
-          </AMenuItem>
-        </ASubMenu>
-      </template>
-    </AMenu>
+      :items="menuItems"
+      :styles="{ root: { borderRight: 'unset' } }"
+    />
   </div>
 </template>
 
@@ -164,10 +164,6 @@ const visible: ComputedRef<Sidebar[]> = computed(() => {
 
 .ant-layout-sider-collapsed .logo {
   overflow: hidden;
-}
-
-.ant-menu-inline, .ant-menu-vertical, .ant-menu-vertical-left {
-  border-right: unset;
 }
 
 .ant-layout-sider-collapsed {

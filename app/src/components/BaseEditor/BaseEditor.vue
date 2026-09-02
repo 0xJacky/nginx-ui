@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { LoadingOutlined } from '@ant-design/icons-vue'
+import { LoadingOutlined } from '@antdv-next/icons'
 
 // Generic editor layout with left and right panels
 interface BaseEditorProps {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { WarningOutlined } from '@ant-design/icons-vue'
+import { WarningOutlined } from '@antdv-next/icons'
 import { useElementSize } from '@vueuse/core'
 import { useUserStore } from '@/pinia'
 
@@ -38,7 +38,7 @@ function openRecoveryCodes() {
       <AAlert
         type="warning"
         show-icon
-        :message="$gettext('Legacy recovery code is deprecated. Generate new recovery codes to keep account recovery secure.')"
+        :title="$gettext('Legacy recovery code is deprecated. Generate new recovery codes to keep account recovery secure.')"
       >
         <template #action>
           <AButton class="ml-4" size="small" @click="openRecoveryCodes">

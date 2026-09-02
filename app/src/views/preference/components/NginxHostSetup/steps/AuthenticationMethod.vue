@@ -6,7 +6,7 @@ import {
   ReloadOutlined,
   SaveOutlined,
   UploadOutlined,
-} from '@ant-design/icons-vue'
+} from '@antdv-next/icons'
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import hostSetup from '@/api/host_setup'
 import settingsApi from '@/api/settings'
@@ -190,8 +190,13 @@ onBeforeUnmount(() => {
 
 <template>
   <ACard size="small" :title="$gettext('Authentication')">
-    <ACollapse v-model:active-key="ownKeyPanels" ghost class="mb-4">
-      <ACollapsePanel key="own-key" :header="$gettext('Use my own SSH key')">
+    <ACollapse
+      v-model:active-key="ownKeyPanels"
+      ghost
+      class="mb-4"
+      :items="[{ key: 'own-key', label: $gettext('Use my own SSH key') }]"
+    >
+      <template #contentRender>
         <AFormItem :label="$gettext('Private key source')" required>
           <ASegmented
             v-model:value="keySource"
@@ -214,7 +219,7 @@ onBeforeUnmount(() => {
           type="info"
           show-icon
           class="mb-4"
-          :message="$gettext('The private key must already be available inside the Nginx UI container.')"
+          :title="$gettext('The private key must already be available inside the Nginx UI container.')"
           :description="$gettext('Encrypted private keys are not supported. You may provide the host-side source path below to include a read-only bind mount in the generated container instructions.')"
         />
 
@@ -223,7 +228,7 @@ onBeforeUnmount(() => {
           type="warning"
           show-icon
           class="mb-4"
-          :message="$gettext('Saving will replace the Nginx UI managed SSH private key.')"
+          :title="$gettext('Saving will replace the Nginx UI managed SSH private key.')"
           :description="$gettext('Only unencrypted SSH private keys are accepted. The submitted content is cleared from the browser after it is stored with file mode 0600.')"
         />
 
@@ -241,7 +246,7 @@ onBeforeUnmount(() => {
         </AFormItem>
 
         <AFormItem v-if="keySource === 'provided'" :label="$gettext('Private key content')" required>
-          <ASpace direction="vertical" size="small" class="w-full">
+          <ASpace orientation="vertical" size="small" class="w-full">
             <AUpload
               :max-count="1"
               :show-upload-list="false"
@@ -273,7 +278,7 @@ onBeforeUnmount(() => {
             </ATypographyText>
           </template>
         </AFormItem>
-      </ACollapsePanel>
+      </template>
     </ACollapse>
 
     <AFormItem>
@@ -319,7 +324,7 @@ onBeforeUnmount(() => {
           {{ $gettext('Validate and save private key') }}
         </AButton>
 
-        <ATag v-if="validatedPrivateKeyPath" color="success" :bordered="false">
+        <ATag v-if="validatedPrivateKeyPath" color="success" variant="filled">
           <CheckCircleOutlined />
           {{ $gettext('Key is readable') }}
         </ATag>
@@ -331,7 +336,7 @@ onBeforeUnmount(() => {
       type="error"
       show-icon
       class="mb-4"
-      :message="$gettext('Private key validation failed')"
+      :title="$gettext('Private key validation failed')"
       :description="keyError"
     />
 
@@ -340,7 +345,7 @@ onBeforeUnmount(() => {
         v-if="publicKey"
         class="mb-0 break-all"
         code
-        :copyable="{ text: publicKey, tooltip: false }"
+        :copyable="{ text: publicKey, tooltips: false }"
       >
         {{ publicKey }}
       </ATypographyParagraph>
@@ -359,7 +364,7 @@ onBeforeUnmount(() => {
       type="warning"
       show-icon
     >
-      <template #message>
+      <template #title>
         {{ $gettext('Private key generated (shown once)') }}
       </template>
       <template #description>
@@ -367,7 +372,7 @@ onBeforeUnmount(() => {
         <ATypographyParagraph
           class="mb-0 whitespace-pre-wrap break-all"
           code
-          :copyable="{ text: privateKeyOnce, tooltip: false }"
+          :copyable="{ text: privateKeyOnce, tooltips: false }"
         >
           {{ privateKeyOnce }}
         </ATypographyParagraph>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { HostDiagnosis, SetupParams } from '@/api/host_setup'
-import { AimOutlined, CheckCircleOutlined, ScanOutlined, ThunderboltOutlined } from '@ant-design/icons-vue'
+import { AimOutlined, CheckCircleOutlined, ScanOutlined, ThunderboltOutlined } from '@antdv-next/icons'
 import { computed, onActivated, onDeactivated, ref, watch } from 'vue'
 import hostSetup from '@/api/host_setup'
 import {
@@ -191,13 +191,13 @@ onDeactivated(() => {
         </AButton>
       </template>
 
-      <ASpace direction="vertical" size="middle" class="w-full">
+      <ASpace orientation="vertical" size="middle" class="w-full">
         <ASpace v-if="diagnosis" wrap>
-          <ATag v-if="!hasDetectedChanges" color="success" :bordered="false">
+          <ATag v-if="!hasDetectedChanges" color="success" variant="filled">
             <CheckCircleOutlined />
             {{ $gettext('Every field matches the detected values') }}
           </ATag>
-          <ATag v-else color="warning" :bordered="false">
+          <ATag v-else color="warning" variant="filled">
             <ThunderboltOutlined />
             {{ $gettext('Some fields differ from the detected values') }}
           </ATag>
@@ -211,7 +211,7 @@ onDeactivated(() => {
           v-if="diagnosisError"
           type="error"
           show-icon
-          :message="$gettext('Target diagnosis failed')"
+          :title="$gettext('Target diagnosis failed')"
           :description="diagnosisError"
         />
 
@@ -219,11 +219,11 @@ onDeactivated(() => {
           v-if="isUnclassifiedTarget"
           type="warning"
           show-icon
-          :message="$gettext('The target platform could not be classified automatically')"
+          :title="$gettext('The target platform could not be classified automatically')"
           :description="$gettext('Choose the platform and confirm every path below manually, then continue.')"
         />
 
-        <AAlert v-if="warnings.length" type="warning" show-icon :message="$gettext('Diagnosis completed with warnings')">
+        <AAlert v-if="warnings.length" type="warning" show-icon :title="$gettext('Diagnosis completed with warnings')">
           <template #description>
             <ul class="m-0 pl-4">
               <li v-for="warning in warnings" :key="warning">
@@ -253,8 +253,12 @@ onDeactivated(() => {
       </ASpace>
     </ACard>
 
-    <ACollapse v-model:active-key="adjustPanels" ghost>
-      <ACollapsePanel key="adjust" :header="$gettext('Adjust detected values')">
+    <ACollapse
+      v-model:active-key="adjustPanels"
+      ghost
+      :items="[{ key: 'adjust', label: $gettext('Adjust detected values') }]"
+    >
+      <template #contentRender>
         <ACard size="small" :title="$gettext('Platform')">
           <AFormItem :label="$gettext('Host platform')" required>
             <ASegmented
@@ -295,7 +299,7 @@ onDeactivated(() => {
           <PathField field="nginx_sbin_path" :label="$gettext('nginx executable path')" placeholder="/usr/sbin/nginx" required />
 
           <AFormItem>
-            <ASpace direction="vertical" size="small" class="w-full">
+            <ASpace orientation="vertical" size="small" class="w-full">
               <ASpace wrap>
                 <AButton :loading="isDiscovering" @click="rediscoverNginxPaths">
                   <ScanOutlined />
@@ -313,7 +317,7 @@ onDeactivated(() => {
             type="error"
             show-icon
             class="mb-4"
-            :message="$gettext('Could not read the nginx build configuration')"
+            :title="$gettext('Could not read the nginx build configuration')"
             :description="discoverError"
           />
           <AAlert
@@ -321,21 +325,21 @@ onDeactivated(() => {
             type="success"
             show-icon
             class="mb-4"
-            :message="discoverHint"
+            :title="discoverHint"
           />
 
           <PathField field="host_config_dir" :label="$gettext('nginx config directory')" placeholder="/etc/nginx" required />
           <PathField field="host_log_dir" :label="$gettext('nginx log directory')" placeholder="/var/log/nginx" required />
           <PathField field="pid_path" :label="$gettext('nginx PID file')" placeholder="/var/run/nginx.pid" required />
         </ACard>
-      </ACollapsePanel>
+      </template>
     </ACollapse>
 
     <AAlert
       v-if="isPlatformReady"
       type="success"
       show-icon
-      :message="$gettext('Platform and paths are complete.')"
+      :title="$gettext('Platform and paths are complete.')"
     />
   </div>
 </template>

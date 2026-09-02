@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { TableColumnsType } from 'ant-design-vue'
+import type { TableColumnsType } from 'antdv-next'
 import type { DNSDomain, DNSRecord, DNSRecordLine, RecordPayload } from '@/api/dns'
 import type { DNSDomainGroup } from '@/pinia/moudule/dnsGroup'
-import { ArrowLeftOutlined, PlusOutlined, ReloadOutlined, SyncOutlined } from '@ant-design/icons-vue'
-import { message } from 'ant-design-vue'
+import { ArrowLeftOutlined, PlusOutlined, ReloadOutlined, SyncOutlined } from '@antdv-next/icons'
+import { message } from 'antdv-next'
 import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { dnsApi } from '@/api/dns'
@@ -1231,7 +1231,7 @@ onMounted(loadGroupRecords)
       type="warning"
       show-icon
       class="mb-4"
-      :message="$gettext('Some group domains are unavailable')"
+      :title="$gettext('Some group domains are unavailable')"
       :description="$gettext('Edit the group to remove unavailable domain IDs: %{ids}', { ids: missingDomainIds.join(', ') })"
     />
 
@@ -1240,7 +1240,7 @@ onMounted(loadGroupRecords)
       type="error"
       show-icon
       class="mb-4"
-      :message="$gettext('Some DNS records could not be loaded')"
+      :title="$gettext('Some DNS records could not be loaded')"
     >
       <template #description>
         <ul class="load-error-list">
@@ -1394,7 +1394,7 @@ onMounted(loadGroupRecords)
       :title="operationMode === 'create'
         ? $gettext('Add group record')
         : $gettext('Edit and synchronize records')"
-      width="640"
+      :size="640"
       @close="closeOperationDrawer"
     >
       <AForm layout="vertical">
@@ -1403,7 +1403,7 @@ onMounted(loadGroupRecords)
             type="info"
             show-icon
             class="mb-4"
-            :message="$gettext('Automatically grouped by shared value')"
+            :title="$gettext('Automatically grouped by shared value')"
             :description="$gettext('Choose which names to synchronize. Existing provider-specific values are preserved unless you change them below.')"
           />
           <AFormItem v-if="editingRecordGroup.recordNames.length > 1" :label="$gettext('Edit scope')" required>
@@ -1551,7 +1551,7 @@ onMounted(loadGroupRecords)
         type="warning"
         show-icon
         class="mb-4"
-        :message="$gettext('Changes are applied per domain and cannot be rolled back as one transaction.')"
+        :title="$gettext('Changes are applied per domain and cannot be rolled back as one transaction.')"
       />
       <ATable
         :row-key="getBatchRowKey"

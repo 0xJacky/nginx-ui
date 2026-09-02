@@ -27,29 +27,29 @@ const activeKey = ref(['3'])
     <ACollapse
       v-model:active-key="activeKey"
       ghost
+      :items="[
+        { key: '1', label: $gettext('Custom') },
+        { key: '2', label: 'Upstream' },
+        { key: '3', label: 'Server' },
+      ]"
     >
-      <ACollapsePanel
-        key="1"
-        :header="$gettext('Custom')"
-      >
-        <div class="mb-4">
+      <template #contentRender="{ item }">
+        <div
+          v-if="item.key === '1'"
+          class="mb-4"
+        >
           <CodeEditor
             v-model:content="ngxConfig.custom"
             default-height="150px"
           />
         </div>
-      </ACollapsePanel>
-      <ACollapsePanel
-        key="2"
-        header="Upstream"
-      >
-        <NgxUpstream />
-      </ACollapsePanel>
-      <ACollapsePanel
-        key="3"
-        header="Server"
-      >
-        <NgxServer :context>
+        <NgxUpstream
+          v-else-if="item.key === '2'"
+        />
+        <NgxServer
+          v-else-if="item.key === '3'"
+          :context
+        >
           <template
             v-for="(_, key) in $slots"
             :key="key"
@@ -61,7 +61,7 @@ const activeKey = ref(['3'])
             />
           </template>
         </NgxServer>
-      </ACollapsePanel>
+      </template>
     </ACollapse>
   </div>
 </template>

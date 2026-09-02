@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Cert } from '@/api/cert'
-import { CopyOutlined } from '@ant-design/icons-vue'
+import { CopyOutlined } from '@antdv-next/icons'
 import { useClipboard } from '@vueuse/core'
 import NodeSelector from '@/components/NodeSelector'
 
@@ -38,9 +38,11 @@ async function copyToClipboard(text: string, label: string) {
 <template>
   <AForm
     layout="vertical"
+    :model="data"
     style="max-width: 600px"
   >
     <AFormItem
+      name="name"
       :label="$gettext('Name')"
       :validate-status="errors?.name ? 'error' : ''"
       :help="errors?.name?.includes('required')
@@ -75,6 +77,7 @@ async function copyToClipboard(text: string, label: string) {
     </AFormItem>
 
     <AFormItem
+      name="ssl_certificate_path"
       :label="$gettext('SSL Certificate Path')"
       :validate-status="errors?.ssl_certificate_path ? 'error' : ''"
       :help="errors?.ssl_certificate_path?.includes('required') ? $gettext('This field is required')
@@ -109,6 +112,7 @@ async function copyToClipboard(text: string, label: string) {
     </AFormItem>
 
     <AFormItem
+      name="ssl_certificate_key_path"
       :label="$gettext('SSL Certificate Key Path')"
       :validate-status="errors?.ssl_certificate_key_path ? 'error' : ''"
       :help="errors?.ssl_certificate_key_path?.includes('required') ? $gettext('This field is required')

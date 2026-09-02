@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Dayjs } from 'dayjs'
 import type { ServiceToken, ServiceTokenScope } from '@/api/service_token'
-import { CopyOutlined, DeleteOutlined, KeyOutlined, PlusOutlined, SyncOutlined } from '@ant-design/icons-vue'
+import { CopyOutlined, DeleteOutlined, KeyOutlined, PlusOutlined, SyncOutlined } from '@antdv-next/icons'
 import { useClipboard } from '@vueuse/core'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -180,7 +180,7 @@ onMounted(loadTokens)
       class="mb-4"
       show-icon
       type="info"
-      :message="$gettext('Use the smallest required scope and set an expiration date for automation credentials.')"
+      :title="$gettext('Use the smallest required scope and set an expiration date for automation credentials.')"
     />
 
     <ATable
@@ -310,15 +310,15 @@ onMounted(loadTokens)
         class="mb-4"
         show-icon
         type="warning"
-        :message="$gettext('This token is shown only once. Store it in a secure secret manager before closing this dialog.')"
+        :title="$gettext('This token is shown only once. Store it in a secure secret manager before closing this dialog.')"
       />
-      <AInputGroup compact class="flex">
+      <ASpaceCompact class="flex">
         <AInput :value="oneTimeToken" readonly class="min-w-0 flex-1 font-mono" />
         <AButton :disabled="!isClipboardSupported" @click="copyToken">
           <CopyOutlined />
           {{ $gettext('Copy') }}
         </AButton>
-      </AInputGroup>
+      </ASpaceCompact>
       <template #footer>
         <AButton type="primary" @click="closeSecretModal">
           {{ $gettext('I have saved the token') }}

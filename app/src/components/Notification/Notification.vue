@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
 import type { Notification } from '@/api/notification'
-import { BellOutlined, CheckCircleOutlined, CloseCircleOutlined, DeleteOutlined, InfoCircleOutlined, WarningOutlined } from '@ant-design/icons-vue'
+import { BellOutlined, CheckCircleOutlined, CloseCircleOutlined, DeleteOutlined, InfoCircleOutlined, WarningOutlined } from '@antdv-next/icons'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import notificationApi from '@/api/notification'
+import { List, ListItem, ListItemMeta } from '@/components/List'
 import { detailRender } from '@/components/Notification/detailRender'
 import { NotificationTypeT } from '@/constants'
 import { useUserStore, useWebSocketEventBusStore } from '@/pinia'
@@ -36,7 +37,7 @@ onMounted(() => {
     }
 
     notification[typeTrans[data.type]]({
-      message: $gettext(data.title),
+      title: $gettext(data.title),
       description: detailRender({ text: data.details, record: data }),
     })
   })
@@ -97,9 +98,9 @@ function viewAll() {
     <APopover
       v-model:open="open"
       placement="bottomRight"
-      overlay-class-name="notification-popover"
       trigger="click"
       :get-popup-container="() => headerRef"
+      :styles="{ root: { width: '400px' }, container: { width: '400px' } }"
     >
       <ABadge
         :count="unreadCount"
@@ -125,29 +126,29 @@ function viewAll() {
 
         <ADivider class="mt-2 mb-2" />
 
-        <AList
+        <List
           :data-source="data"
           class="max-h-96 overflow-scroll"
         >
           <template #renderItem="{ item }">
-            <AListItem>
-              <AListItemMeta>
+            <ListItem>
+              <ListItemMeta>
                 <template #avatar>
                   <div>
                     <CloseCircleOutlined
-                      v-if="item.type === NotificationTypeT.Error"
+                      v-if="Number(item.type) === NotificationTypeT.Error"
                       class="text-red-500"
                     />
                     <WarningOutlined
-                      v-else-if="item.type === NotificationTypeT.Warning"
+                      v-else-if="Number(item.type) === NotificationTypeT.Warning"
                       class="text-orange-400"
                     />
                     <InfoCircleOutlined
-                      v-else-if="item.type === NotificationTypeT.Info"
+                      v-else-if="Number(item.type) === NotificationTypeT.Info"
                       class="text-blue-500"
                     />
                     <CheckCircleOutlined
-                      v-else-if="item.type === NotificationTypeT.Success"
+                      v-else-if="Number(item.type) === NotificationTypeT.Success"
                       class="text-green-500"
                     />
                   </div>
@@ -163,7 +164,7 @@ function viewAll() {
                 <template #description>
                   <div class="flex justify-between items-center">
                     <div>
-                      {{ $gettext(item.content, item.details) }}
+                      {{ $gettext(item.content, item.details ?? undefined) }}
                     </div>
                     <span
                       key="list-loadmore-remove"
@@ -174,10 +175,10 @@ function viewAll() {
                     </span>
                   </div>
                 </template>
-              </AListItemMeta>
-            </AListItem>
+              </ListItemMeta>
+            </ListItem>
           </template>
-        </AList>
+        </List>
         <ADivider class="m-0 mb-2" />
         <div class="flex justify-center p-2">
           <a @click="viewAll">{{ $gettext('View all notifications') }}</a>
@@ -187,18 +188,12 @@ function viewAll() {
   </span>
 </template>
 
-<style lang="less">
-.notification-popover {
-  width: 400px;
-}
-</style>
-
 <style scoped lang="less">
-:deep(.ant-list-item-meta) {
+:deep(.nui-list-item-meta) {
   align-items: center !important;
 }
 
-:deep(.ant-list-item-meta-avatar) {
+:deep(.nui-list-item-meta-avatar) {
   font-size: 24px;
 }
 </style>

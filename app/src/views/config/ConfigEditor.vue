@@ -37,7 +37,7 @@ const leftPanelRef = useTemplateRef<InstanceType<typeof ConfigLeftPanel>>('leftP
   }
 }
 
-:deep(.ant-collapse-ghost > .ant-collapse-item > .ant-collapse-content > .ant-collapse-content-box) {
+:deep(.ant-collapse-ghost > .ant-collapse-item > .ant-collapse-panel > .ant-collapse-body) {
   padding: 0;
 }
 

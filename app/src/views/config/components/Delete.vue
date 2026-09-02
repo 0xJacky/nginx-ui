@@ -104,7 +104,7 @@ function cancel() {
       <AAlert
         v-if="isProtected"
         type="error"
-        :message="$gettext('Protected Directory')"
+        :title="$gettext('Protected Directory')"
         :description="$gettext('This directory is protected and cannot be deleted for system safety.')"
         show-icon
         class="mb-4"
@@ -113,7 +113,7 @@ function cancel() {
       <AAlert
         v-else
         type="warning"
-        :message="$gettext('This will permanently delete the %{type}.', { type: data.isDir ? $gettext('folder') : $gettext('file') })"
+        :title="$gettext('This will permanently delete the %{type}.', { type: data.isDir ? $gettext('folder') : $gettext('file') })"
         show-icon
         class="mb-4"
       />

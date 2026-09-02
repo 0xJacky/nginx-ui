@@ -86,7 +86,7 @@ const columns: StdTableColumn[] = [{
         class="mb-4"
         type="info"
         show-icon
-        :message="$gettext('Note')"
+        :title="$gettext('Note')"
       >
         <template #description>
           <p>

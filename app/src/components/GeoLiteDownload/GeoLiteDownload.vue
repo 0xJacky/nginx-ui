@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import { CheckCircleOutlined, DownloadOutlined, InfoCircleOutlined } from '@ant-design/icons-vue'
+import { CheckCircleOutlined, DownloadOutlined, InfoCircleOutlined } from '@antdv-next/icons'
 import geolite from '@/api/geolite'
 import { formatDateTime } from '@/lib/helper'
 import { useWebSocket } from '@/lib/websocket'
@@ -147,7 +147,7 @@ defineExpose({
   <div>
     <AAlert
       v-if="!geoLiteStatus.exists && !downloading"
-      :message="$gettext('GeoLite2 Database Required')"
+      :title="$gettext('GeoLite2 Database Required')"
       type="info"
       show-icon
       :icon="h(InfoCircleOutlined)"
@@ -165,7 +165,7 @@ defineExpose({
 
     <AAlert
       v-else-if="geoLiteStatus.exists && !downloading"
-      :message="$gettext('GeoLite2 Database Installed')"
+      :title="$gettext('GeoLite2 Database Installed')"
       type="success"
       show-icon
       :icon="h(CheckCircleOutlined)"

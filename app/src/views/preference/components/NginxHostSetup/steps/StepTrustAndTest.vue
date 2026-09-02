@@ -23,7 +23,7 @@ function invalidateConnection() {
       @invalidated="invalidateConnection"
     />
 
-    <ADivider orientation="left">
+    <ADivider title-placement="start">
       {{ $gettext('2. Test the SSH connection') }}
     </ADivider>
 

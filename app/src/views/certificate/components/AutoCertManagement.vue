@@ -32,7 +32,7 @@ function handleRenewed() {
     >
       <div class="mb-2">
         <AAlert
-          :message="$gettext('This certificate is managed by Nginx UI')"
+          :title="$gettext('This certificate is managed by Nginx UI')"
           type="success"
           show-icon
         />
@@ -42,7 +42,7 @@ function handleRenewed() {
         class="mt-4 mb-4"
       >
         <AAlert
-          :message="$gettext('This Auto Cert item is invalid, please remove it.')"
+          :title="$gettext('This Auto Cert item is invalid, please remove it.')"
           type="error"
           show-icon
         />
@@ -52,7 +52,7 @@ function handleRenewed() {
         class="mt-4 mb-4"
       >
         <AAlert
-          :message="$gettext('Domains list is empty, try to reopen Auto Cert for %{config}', { config: data.filename })"
+          :title="$gettext('Domains list is empty, try to reopen Auto Cert for %{config}', { config: data.filename })"
           type="error"
           show-icon
         />

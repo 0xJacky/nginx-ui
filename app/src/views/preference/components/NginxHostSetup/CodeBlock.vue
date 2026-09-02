@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CheckOutlined, CopyOutlined } from '@ant-design/icons-vue'
+import { CheckOutlined, CopyOutlined } from '@antdv-next/icons'
 import { useClipboard } from '@vueuse/core'
 import { computed } from 'vue'
 
@@ -35,10 +35,10 @@ async function copyCode() {
 </script>
 
 <template>
-  <ACard size="small" class="code-block" :body-style="{ padding: 0 }">
+  <ACard size="small" class="code-block overflow-hidden" :styles="{ body: { padding: 0 } }">
     <template #title>
       <ASpace :size="6" wrap>
-        <ATag v-if="order" color="processing" :bordered="false">
+        <ATag v-if="order" color="processing" variant="filled">
           {{ order }}
         </ATag>
         <span class="break-all text-xs font-medium">{{ heading }}</span>

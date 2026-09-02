@@ -1,7 +1,7 @@
 <script setup lang="tsx">
 import type { Site } from '@/api/site'
 import { StdCurd } from '@uozi-admin/curd'
-import { message, Modal } from 'ant-design-vue'
+import { message, Modal } from 'antdv-next'
 import nginxLog from '@/api/nginx_log'
 import site from '@/api/site'
 import FooterToolBar from '@/components/FooterToolbar'

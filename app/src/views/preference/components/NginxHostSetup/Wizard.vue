@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
-import { ArrowLeftOutlined, ArrowRightOutlined, SaveOutlined } from '@ant-design/icons-vue'
+import { ArrowLeftOutlined, ArrowRightOutlined, SaveOutlined } from '@antdv-next/icons'
 import { storeToRefs } from 'pinia'
 import { computed, onBeforeUnmount } from 'vue'
 import useSystemSettingsStore from '../../store'
@@ -33,11 +33,11 @@ const stepComponents: Record<typeof wizard.currentStepId.value, Component> = {
 const activeStepComponent = computed(() => stepComponents[wizard.currentStepId.value])
 
 const steps = computed(() => [
-  { title: $gettext('SSH Target'), description: $gettext('Address, user and private key') },
-  { title: $gettext('Trust & Test'), description: $gettext('Host key and connectivity') },
-  { title: $gettext('Detect Platform'), description: $gettext('Service manager and nginx paths') },
-  { title: $gettext('Access & Install'), description: $gettext('File mode and setup instructions') },
-  { title: $gettext('Verify'), description: $gettext('Run checks and save') },
+  { title: $gettext('SSH Target'), content: $gettext('Address, user and private key') },
+  { title: $gettext('Trust & Test'), content: $gettext('Host key and connectivity') },
+  { title: $gettext('Detect Platform'), content: $gettext('Service manager and nginx paths') },
+  { title: $gettext('Access & Install'), content: $gettext('File mode and setup instructions') },
+  { title: $gettext('Verify'), content: $gettext('Run checks and save') },
 ].map((step, index) => ({
   ...step,
   disabled: index > wizard.furthestReachableIndex.value && index > wizard.currentStepIndex.value,
@@ -58,17 +58,10 @@ onBeforeUnmount(wizard.clearSensitiveState)
     <ASteps
       :current="wizard.currentStepIndex.value"
       class="wizard-steps"
+      :items="steps"
       size="small"
       @change="wizard.goToStep"
-    >
-      <AStep
-        v-for="step in steps"
-        :key="step.title"
-        :title="step.title"
-        :description="step.description"
-        :disabled="step.disabled"
-      />
-    </ASteps>
+    />
 
     <AForm layout="vertical" class="wizard-step-content">
       <KeepAlive>
@@ -84,7 +77,7 @@ onBeforeUnmount(wizard.clearSensitiveState)
       type="info"
       show-icon
       class="mt-4"
-      :message="wizard.blockedReason.value"
+      :title="wizard.blockedReason.value"
     />
 
     <div class="wizard-actions">

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { SSHTarget } from '@/api/host_setup'
-import { CheckCircleOutlined, ReloadOutlined } from '@ant-design/icons-vue'
+import { CheckCircleOutlined, ReloadOutlined } from '@antdv-next/icons'
 import { computed, onActivated, onDeactivated, ref } from 'vue'
 import hostSetup from '@/api/host_setup'
 import { getErrorMessage } from '@/lib/http'
@@ -79,14 +79,14 @@ const remoteWarning = computed(() => {
       <AFormItem :label="$gettext('Host address (host:port)')" required>
         <AInput v-model:value="hostInput" placeholder="host.docker.internal:22" />
         <template #extra>
-          <ASpace direction="vertical" size="small" class="w-full">
+          <ASpace orientation="vertical" size="small" class="w-full">
             <ASpace v-if="isCurrentTargetReachable" :size="6">
               <CheckCircleOutlined :style="{ color: '#52c41a' }" />
               <ATypographyText type="secondary" class="text-xs">
                 {{ $gettext('This address answers on the SSH port.') }}
               </ATypographyText>
             </ASpace>
-            <ASpace v-else-if="reachableTargets.length" direction="vertical" size="small" class="w-full">
+            <ASpace v-else-if="reachableTargets.length" orientation="vertical" size="small" class="w-full">
               <ATypographyText type="secondary" class="text-xs">
                 {{ $gettext('These addresses answer on the SSH port from this container:') }}
               </ATypographyText>
@@ -124,7 +124,7 @@ const remoteWarning = computed(() => {
         type="warning"
         show-icon
       >
-        <template #message>
+        <template #title>
           {{ $gettext('Remote address detected') }}
         </template>
         <template #description>

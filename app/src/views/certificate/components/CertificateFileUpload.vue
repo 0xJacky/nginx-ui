@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { UploadOutlined } from '@ant-design/icons-vue'
+import { UploadOutlined } from '@antdv-next/icons'
 
 interface Props {
   type: 'certificate' | 'key'

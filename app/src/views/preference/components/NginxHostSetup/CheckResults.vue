@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { CheckRow } from './checks'
-import { CheckCircleOutlined, CloseCircleOutlined, ExclamationCircleOutlined } from '@ant-design/icons-vue'
+import { CheckCircleOutlined, CloseCircleOutlined, ExclamationCircleOutlined } from '@antdv-next/icons'
 import { computed } from 'vue'
+import { List, ListItem } from '@/components/List'
 import { tagColor, tagText } from './checks'
 
 const props = defineProps<{ rows: CheckRow[] }>()
@@ -17,7 +18,7 @@ const allPassed = computed(() => props.rows.length > 0 && failed.value.length ==
       v-if="failed.length"
       type="error"
       show-icon
-      :message="$gettext('Some checks failed. Fix them before continuing.')"
+      :title="$gettext('Some checks failed. Fix them before continuing.')"
     >
       <template #description>
         <ul class="m-0 pl-4">
@@ -31,19 +32,19 @@ const allPassed = computed(() => props.rows.length > 0 && failed.value.length ==
       v-else-if="allPassed && warnings.length"
       type="warning"
       show-icon
-      :message="$gettext('Blocking checks passed. Review the warnings below.')"
+      :title="$gettext('Blocking checks passed. Review the warnings below.')"
     />
     <AAlert
       v-else-if="allPassed"
       type="success"
       show-icon
-      :message="$gettext('All checks passed.')"
+      :title="$gettext('All checks passed.')"
     />
 
-    <AList :data-source="rows">
+    <List :data-source="rows">
       <template #renderItem="{ item }">
-        <AListItem>
-          <ASpace direction="vertical" size="small" class="w-full">
+        <ListItem>
+          <ASpace orientation="vertical" size="small" class="w-full">
             <div class="flex flex-wrap items-center justify-between gap-2">
               <ASpace :size="8">
                 <CheckCircleOutlined v-if="item.level === 'success'" :style="{ color: '#52c41a' }" />
@@ -51,14 +52,14 @@ const allPassed = computed(() => props.rows.length > 0 && failed.value.length ==
                 <CloseCircleOutlined v-else :style="{ color: '#ff4d4f' }" />
                 <strong>{{ item.label }}</strong>
               </ASpace>
-              <ATag :color="tagColor(item.level)" :bordered="false">
+              <ATag :color="tagColor(item.level)" variant="filled">
                 {{ tagText(item.level) }}
               </ATag>
             </div>
             <ATypographyText type="secondary" class="break-words text-sm">
               {{ item.outcome.detail }}
             </ATypographyText>
-            <ASpace v-if="item.suggestedFix" direction="vertical" size="small" class="w-full">
+            <ASpace v-if="item.suggestedFix" orientation="vertical" size="small" class="w-full">
               <ATypographyText type="secondary" class="text-xs">
                 {{ $gettext('Suggested fix') }}
               </ATypographyText>
@@ -69,14 +70,14 @@ const allPassed = computed(() => props.rows.length > 0 && failed.value.length ==
                 v-if="item.suggestedCommand"
                 class="mb-0 break-all"
                 code
-                :copyable="{ text: item.suggestedCommand, tooltip: false }"
+                :copyable="{ text: item.suggestedCommand, tooltips: false }"
               >
                 {{ item.suggestedCommand }}
               </ATypographyParagraph>
             </ASpace>
           </ASpace>
-        </AListItem>
+        </ListItem>
       </template>
-    </AList>
+    </List>
   </div>
 </template>

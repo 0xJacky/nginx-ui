@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Cert } from '@/api/cert'
-import { CopyOutlined, InboxOutlined } from '@ant-design/icons-vue'
+import { CopyOutlined, InboxOutlined } from '@antdv-next/icons'
 import { useClipboard } from '@vueuse/core'
 import config from '@/api/config'
 import CodeEditor from '@/components/CodeEditor'

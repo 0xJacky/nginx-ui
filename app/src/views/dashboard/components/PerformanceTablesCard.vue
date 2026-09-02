@@ -1,7 +1,7 @@
 <script setup lang="tsx">
-import type { TableColumnType } from 'ant-design-vue'
+import type { TableColumnType } from 'antdv-next'
 import type { NginxPerformanceInfo } from '@/api/ngx'
-import { InfoCircleOutlined } from '@ant-design/icons-vue'
+import { InfoCircleOutlined } from '@antdv-next/icons'
 import ModulesTable from './ModulesTable.vue'
 
 const props = defineProps<{
@@ -136,11 +136,20 @@ const maxRPS = computed(() => {
 </script>
 
 <template>
-  <ACard :bordered="false">
-    <ATabs v-model:active-key="activeTabKey">
-      <!-- Request statistics -->
-      <ATabPane key="status" :tab="$gettext('Request statistics')">
-        <div class="overflow-x-auto">
+  <ACard variant="borderless">
+    <ATabs
+      v-model:active-key="activeTabKey"
+      :items="[
+        { key: 'status', label: $gettext('Request statistics') },
+        { key: 'workers', label: $gettext('Process information') },
+        { key: 'config', label: $gettext('Configuration information') },
+        { key: 'modules', label: $gettext('Modules') },
+      ]"
+      :styles="{ item: { paddingTop: 0 } }"
+    >
+      <template #contentRender="{ item }">
+        <!-- Request statistics -->
+        <div v-if="item.key === 'status'" class="overflow-x-auto">
           <ATable
             :columns="columns"
             :data-source="statusData"
@@ -149,11 +158,9 @@ const maxRPS = computed(() => {
             :scroll="{ x: '100%' }"
           />
         </div>
-      </ATabPane>
 
-      <!-- Process information -->
-      <ATabPane key="workers" :tab="$gettext('Process information')">
-        <div class="overflow-x-auto">
+        <!-- Process information -->
+        <div v-if="item.key === 'workers'" class="overflow-x-auto">
           <ATable
             :columns="columns"
             :data-source="workerData"
@@ -162,65 +169,57 @@ const maxRPS = computed(() => {
             :scroll="{ x: '100%' }"
           />
         </div>
-      </ATabPane>
 
-      <!-- Configuration information -->
-      <ATabPane key="config" :tab="$gettext('Configuration information')">
-        <div class="overflow-x-auto">
-          <ATable
-            :columns="columns"
-            :data-source="configData"
-            :pagination="false"
-            size="middle"
-            :scroll="{ x: '100%' }"
-          />
-        </div>
-        <div class="mt-4">
-          <AAlert type="info" show-icon>
-            <template #message>
-              {{ $gettext('Nginx theoretical maximum performance') }}
-            </template>
-            <template #description>
-              <p>
-                {{ $gettext('Theoretical maximum concurrent connections:') }}
-                <strong>{{ nginxInfo.worker_processes * nginxInfo.worker_connections }}</strong>
-              </p>
-              <p>
-                {{ $gettext('Theoretical maximum RPS (Requests Per Second):') }}
-                <strong>{{ maxRPS }}</strong>
-                <ATooltip :title="$gettext('Calculated based on worker_processes * worker_connections. Actual performance depends on hardware, configuration, and workload')">
-                  <InfoCircleOutlined class="ml-1 text-gray-500" />
-                </ATooltip>
-              </p>
-              <p>
-                {{ $gettext('Maximum worker process number:') }}
-                <strong>{{ nginxInfo.worker_processes }}</strong>
-                <span class="text-gray-500 text-xs ml-2">
-                  {{
-                    nginxInfo.process_mode === 'auto'
-                      ? $gettext('auto = CPU cores')
-                      : $gettext('manually set')
-                  }}
-                </span>
-              </p>
-              <p class="mb-0">
-                {{ $gettext('Tips: You can increase the concurrency processing capacity by increasing worker_processes or worker_connections') }}
-              </p>
-            </template>
-          </AAlert>
-        </div>
-      </ATabPane>
+        <!-- Configuration information -->
+        <template v-if="item.key === 'config'">
+          <div class="overflow-x-auto">
+            <ATable
+              :columns="columns"
+              :data-source="configData"
+              :pagination="false"
+              size="middle"
+              :scroll="{ x: '100%' }"
+            />
+          </div>
+          <div class="mt-4">
+            <AAlert type="info" show-icon>
+              <template #title>
+                {{ $gettext('Nginx theoretical maximum performance') }}
+              </template>
+              <template #description>
+                <p>
+                  {{ $gettext('Theoretical maximum concurrent connections:') }}
+                  <strong>{{ nginxInfo.worker_processes * nginxInfo.worker_connections }}</strong>
+                </p>
+                <p>
+                  {{ $gettext('Theoretical maximum RPS (Requests Per Second):') }}
+                  <strong>{{ maxRPS }}</strong>
+                  <ATooltip :title="$gettext('Calculated based on worker_processes * worker_connections. Actual performance depends on hardware, configuration, and workload')">
+                    <InfoCircleOutlined class="ml-1 text-gray-500" />
+                  </ATooltip>
+                </p>
+                <p>
+                  {{ $gettext('Maximum worker process number:') }}
+                  <strong>{{ nginxInfo.worker_processes }}</strong>
+                  <span class="text-gray-500 text-xs ml-2">
+                    {{
+                      nginxInfo.process_mode === 'auto'
+                        ? $gettext('auto = CPU cores')
+                        : $gettext('manually set')
+                    }}
+                  </span>
+                </p>
+                <p class="mb-0">
+                  {{ $gettext('Tips: You can increase the concurrency processing capacity by increasing worker_processes or worker_connections') }}
+                </p>
+              </template>
+            </AAlert>
+          </div>
+        </template>
 
-      <!-- Modules information -->
-      <ATabPane key="modules" :tab="$gettext('Modules')">
-        <ModulesTable />
-      </ATabPane>
+        <!-- Modules information -->
+        <ModulesTable v-if="item.key === 'modules'" />
+      </template>
     </ATabs>
   </ACard>
 </template>
-
-<style lang="less" scoped>
-:deep(.ant-tabs-tab) {
-  padding-top: 0;
-}
-</style>

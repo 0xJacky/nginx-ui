@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { CheckGroup, CheckRow } from './checks'
 import type { VerifyResult } from '@/api/host_setup'
-import { SafetyCertificateOutlined } from '@ant-design/icons-vue'
+import { SafetyCertificateOutlined } from '@antdv-next/icons'
 import { computed, onDeactivated, ref, watch } from 'vue'
 import hostSetup from '@/api/host_setup'
 import CheckResults from './CheckResults.vue'
@@ -79,7 +79,7 @@ onDeactivated(invalidate)
         </slot>
       </template>
 
-      <ASpace direction="vertical" size="middle" class="w-full">
+      <ASpace orientation="vertical" size="middle" class="w-full">
         <ATypographyText v-if="hint" type="secondary" class="text-xs">
           {{ hint }}
         </ATypographyText>
@@ -89,7 +89,7 @@ onDeactivated(invalidate)
             v-if="runError"
             type="error"
             show-icon
-            :message="errorTitle ?? $gettext('Could not run the checks')"
+            :title="errorTitle ?? $gettext('Could not run the checks')"
             :description="runError"
           />
 
@@ -111,7 +111,7 @@ onDeactivated(invalidate)
         v-if="runError"
         type="error"
         show-icon
-        :message="errorTitle ?? $gettext('Could not run the checks')"
+        :title="errorTitle ?? $gettext('Could not run the checks')"
         :description="runError"
       />
 

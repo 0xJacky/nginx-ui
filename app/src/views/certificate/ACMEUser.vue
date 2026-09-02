@@ -2,7 +2,7 @@
 import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
 import type { AcmeUser } from '@/api/acme_user'
 import { datetimeRender, StdCurd } from '@uozi-admin/curd'
-import { Tag } from 'ant-design-vue'
+import { Tag } from 'antdv-next'
 
 import acme_user from '@/api/acme_user'
 import { CA_SERVER_OPTIONS } from '@/constants/acme'

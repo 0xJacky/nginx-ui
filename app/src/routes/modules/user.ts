@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { UsergroupAddOutlined, UserOutlined } from '@ant-design/icons-vue'
+import { UsergroupAddOutlined, UserOutlined } from '@antdv-next/icons'
 
 export const userRoutes: RouteRecordRaw[] = [
   {

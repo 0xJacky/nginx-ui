@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import type { SelectProps } from 'antdv-next'
+
 const modelValue = defineModel<string>()
 
-const sizeUnitOptions = [
+const sizeUnitOptions: SelectProps['options'] = [
   { value: 'k', label: 'K' },
   { value: 'm', label: 'M' },
   { value: 'g', label: 'G' },
@@ -29,16 +31,12 @@ watch(() => [numberValue.value, unitValue.value], () => {
 </script>
 
 <template>
-  <AInputGroup compact>
+  <ASpaceCompact>
     <AInputNumber
       v-model:value="numberValue"
       :step="1"
       class="w-30"
     />
-    <ASelect v-model:value="unitValue" class="w-15">
-      <ASelectOption v-for="unit in sizeUnitOptions" :key="unit.value" :value="unit.value">
-        {{ unit.label }}
-      </ASelectOption>
-    </ASelect>
-  </AInputGroup>
+    <ASelect v-model:value="unitValue" :options="sizeUnitOptions" class="w-15" />
+  </ASpaceCompact>
 </template>

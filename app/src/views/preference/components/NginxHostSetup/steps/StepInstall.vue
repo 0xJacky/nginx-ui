@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { RenderedSnippets } from '@/api/host_setup'
-import { ReloadOutlined } from '@ant-design/icons-vue'
+import { ReloadOutlined } from '@antdv-next/icons'
 import { computed, onActivated, onDeactivated, ref, watch } from 'vue'
 import hostSetup from '@/api/host_setup'
 import { getErrorMessage } from '@/lib/http'
@@ -91,7 +91,7 @@ onDeactivated(invalidate)
       v-if="loadError"
       type="error"
       show-icon
-      :message="$gettext('Failed to load setup instructions')"
+      :title="$gettext('Failed to load setup instructions')"
       class="mb-4"
     >
       <template #description>
@@ -109,18 +109,26 @@ onDeactivated(invalidate)
       v-if="!needsContainerChange"
       type="success"
       show-icon
-      :message="$gettext('No container changes are required in compatibility mode')"
+      :title="$gettext('No container changes are required in compatibility mode')"
       :description="$gettext('Complete the host permissions below, then run the setup checks.')"
       class="mb-3"
     />
 
-    <ATabs v-model:active-key="activeSide">
-      <ATabPane key="host" :tab="$gettext('1. On the nginx host')">
-        <ASpace direction="vertical" size="middle" class="w-full">
+    <ATabs
+      v-model:active-key="activeSide"
+      :items="[
+        { key: 'host', label: $gettext('1. On the nginx host') },
+        ...(needsContainerChange
+          ? [{ key: 'container', label: $gettext('2. On the Nginx UI container') }]
+          : []),
+      ]"
+    >
+      <template #contentRender="{ item }">
+        <ASpace v-if="item.key === 'host'" orientation="vertical" size="middle" class="w-full">
           <AAlert
             type="info"
             show-icon
-            :message="needsSudoers
+            :title="needsSudoers
               ? $gettext('Run these on the machine that runs nginx, as a user who can use sudo.')
               : $gettext('Run these on the machine that runs nginx, as the SSH user configured above.')"
           />
@@ -175,20 +183,18 @@ onDeactivated(invalidate)
             v-if="isHostSetupMinimal"
             type="success"
             show-icon
-            :message="$gettext('Nothing else to install on the host')"
+            :title="$gettext('Nothing else to install on the host')"
             :description="isLaunchd
               ? $gettext('A Homebrew launchd service runs as the SSH user, so no sudoers entry or extra permissions are needed.')
               : $gettext('The SSH user is root, so no sudoers entry or extra permissions are needed.')"
           />
         </ASpace>
-      </ATabPane>
 
-      <ATabPane v-if="needsContainerChange" key="container" :tab="$gettext('2. On the Nginx UI container')">
-        <ASpace direction="vertical" size="middle" class="w-full">
+        <ASpace v-else-if="item.key === 'container'" orientation="vertical" size="middle" class="w-full">
           <AAlert
             type="info"
             show-icon
-            :message="isMounted
+            :title="isMounted
               ? $gettext('Pick the format that matches how you run Nginx UI, then recreate the container with the bind mounts.')
               : $gettext('Linux Docker Engine requires this host-gateway mapping for host.docker.internal. No directory mounts are added.')"
           />
@@ -196,7 +202,7 @@ onDeactivated(invalidate)
           <AAlert
             type="warning"
             show-icon
-            :message="$gettext('Recreating the container closes this page')"
+            :title="$gettext('Recreating the container closes this page')"
           >
             <template #description>
               <ul class="m-0 pl-4">
@@ -208,10 +214,18 @@ onDeactivated(invalidate)
             </template>
           </AAlert>
 
-          <ATabs v-model:active-key="containerFormat" size="small">
-            <ATabPane key="compose" :tab="$gettext('docker compose')">
+          <ATabs
+            v-model:active-key="containerFormat"
+            size="small"
+            :items="[
+              { key: 'compose', label: $gettext('docker compose') },
+              { key: 'override', label: $gettext('override file') },
+              { key: 'docker-run', label: $gettext('docker run') },
+            ]"
+          >
+            <template #contentRender="{ item }">
               <CodeBlock
-                v-if="snippets"
+                v-if="item.key === 'compose' && snippets"
                 :order="containerSnippetOrder"
                 :code="snippets.compose_snippet"
                 language="yaml"
@@ -220,27 +234,23 @@ onDeactivated(invalidate)
                   ? $gettext('Merge this under services.nginx-ui in your existing file. Each bind mount uses the same path inside the container as on the host.')
                   : $gettext('Merge this host-gateway mapping under services.nginx-ui in your existing file.')"
               />
-            </ATabPane>
-            <ATabPane key="override" :tab="$gettext('override file')">
               <CodeBlock
-                v-if="snippets"
+                v-else-if="item.key === 'override' && snippets"
                 :order="containerSnippetOrder"
                 :code="snippets.compose_override"
                 language="yaml"
                 :title="$gettext('docker-compose.override.yml')"
                 :description="$gettext('Save as a new file next to your main compose file. Docker Compose merges it automatically, so your original file stays untouched.')"
               />
-            </ATabPane>
-            <ATabPane key="docker-run" :tab="$gettext('docker run')">
               <CodeBlock
-                v-if="snippets"
+                v-else-if="item.key === 'docker-run' && snippets"
                 :order="containerSnippetOrder"
                 :code="snippets.docker_run"
                 language="shell"
                 :title="$gettext('docker run')"
                 :description="$gettext('Replaces your current docker run command. Adjust the published port and the image tag to match your current deployment.')"
               />
-            </ATabPane>
+            </template>
           </ATabs>
 
           <CodeBlock
@@ -256,7 +266,7 @@ onDeactivated(invalidate)
               : $gettext('The host-gateway mapping takes effect once the container is recreated.')"
           />
         </ASpace>
-      </ATabPane>
+      </template>
     </ATabs>
 
     <CheckPanel

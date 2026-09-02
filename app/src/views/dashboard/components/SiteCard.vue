@@ -5,7 +5,7 @@ import {
   CodeOutlined,
   ExclamationCircleOutlined,
   SettingOutlined,
-} from '@ant-design/icons-vue'
+} from '@antdv-next/icons'
 import { truncate, upperFirst } from 'lodash'
 import { SiteError, SiteStatus } from '@/constants/site-status'
 
@@ -157,7 +157,7 @@ function getStatusClass(status: string): string {
           v-if="!site.health_check_enabled"
           data-testid="site-health-check-disabled"
           color="default"
-          :bordered="false"
+          variant="filled"
         >
           {{ $gettext('Disabled') }}
         </ATag>
@@ -165,7 +165,7 @@ function getStatusClass(status: string): string {
           v-else-if="!site.effective_health_check_enabled"
           data-testid="site-health-check-paused"
           color="warning"
-          :bordered="false"
+          variant="filled"
         >
           {{ $gettext('Paused') }}
         </ATag>

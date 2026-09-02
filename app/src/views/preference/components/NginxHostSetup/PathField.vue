@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { DetectablePathField } from './useHostSetupWizard'
-import { AimOutlined, EditOutlined, UndoOutlined } from '@ant-design/icons-vue'
+import { AimOutlined, EditOutlined, UndoOutlined } from '@antdv-next/icons'
 import { computed } from 'vue'
 import { useHostSetupWizard } from './useHostSetupWizard'
 
@@ -30,11 +30,11 @@ const isEmpty = computed(() => Boolean(props.required) && !value.value.trim())
     <template #label>
       <ASpace :size="4" wrap>
         <span>{{ label }}</span>
-        <ATag v-if="origin === 'detected'" color="success" :bordered="false">
+        <ATag v-if="origin === 'detected'" color="success" variant="filled">
           <AimOutlined />
           {{ $gettext('Auto-detected') }}
         </ATag>
-        <ATag v-else-if="origin === 'overridden'" color="warning" :bordered="false">
+        <ATag v-else-if="origin === 'overridden'" color="warning" variant="filled">
           <EditOutlined />
           {{ $gettext('Manual override') }}
         </ATag>
