@@ -10,6 +10,7 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/settings"
@@ -23,76 +24,148 @@ var errMountedChecksUnsupported = errors.New("bind-mount checks are not supporte
 // errInodeUnavailable is returned when the local stat result carries no inode.
 var errInodeUnavailable = errors.New("could not read the local inode")
 
+// maxConcurrentChecks bounds the SSH sessions the pipeline opens at once.
+// sshd defaults MaxSessions to 10 per connection; 4 leaves headroom for the
+// SFTP subsystem and any runtime command issued while a verify is running.
+const maxConcurrentChecks = 4
+
+// stepCollector gathers outcomes from concurrent checks. The JSON result is
+// still a plain map, so callers see the same shape as before.
+type stepCollector struct {
+	mu    sync.Mutex
+	steps map[string]StepOutcome
+}
+
+func newStepCollector() *stepCollector {
+	return &stepCollector{steps: map[string]StepOutcome{}}
+}
+
+func (c *stepCollector) set(key string, outcome StepOutcome) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	c.steps[key] = outcome
+}
+
+// runBounded runs every task concurrently, at most maxConcurrentChecks at a
+// time, and returns once all of them finished. Tasks are independent by
+// construction: anything that needs another check's result runs after it.
+func runBounded(tasks []func()) {
+	var wg sync.WaitGroup
+	slots := make(chan struct{}, maxConcurrentChecks)
+	for _, task := range tasks {
+		wg.Add(1)
+		slots <- struct{}{}
+		go func(task func()) {
+			defer wg.Done()
+			defer func() { <-slots }()
+			task()
+		}(task)
+	}
+	wg.Wait()
+}
+
 // Verify runs the self-check pipeline, optionally limited to a set of groups so
 // a wizard step can validate what it just configured.
 func Verify(ctx context.Context, opts VerifyOptions) VerifyResult {
-	r := VerifyResult{Steps: map[string]StepOutcome{}}
+	steps := newStepCollector()
+	r := VerifyResult{Steps: steps.steps}
 	p := opts.Params.FillDefaults()
 
 	// The same values the wizard refuses to paste into a root shell are the
 	// ones the checks below stat and open, so they are validated here too.
 	if err := p.ValidateSnippetValues(); err != nil {
-		r.Steps["parameters"] = StepOutcome{OK: false, Detail: err.Error(),
-			Remediation: newStepRemediation(remediationCorrectParameters)}
+		steps.set("parameters", StepOutcome{OK: false, Detail: err.Error(),
+			Remediation: newStepRemediation(remediationCorrectParameters)})
 		return r
 	}
 
 	wants := newCheckGroupFilter(opts.Groups)
 
 	if wants(CheckGroupConnection) {
-		r.Steps["known_hosts_persistence"] = checkKnownHostsPersistence(p.ContainerKnownHostsPath)
+		steps.set("known_hosts_persistence", checkKnownHostsPersistence(p.ContainerKnownHostsPath))
 	}
 
-	// Every remaining check needs a working session, so this one always runs.
+	// Every remaining check needs a working session, so this one always runs
+	// and runs alone: the connection is proven before it is shared.
 	connOut, err := opts.Client.Exec(ctx, "/bin/echo", "ok")
-	r.Steps["ssh_connect"] = okOrFail(err, "echo ok over ssh",
+	steps.set("ssh_connect", okOrFail(err, "echo ok over ssh",
 		remediationCheckSSHConnection,
-		connOut)
+		connOut))
 	if err != nil {
 		return r
 	}
 
+	// The remaining checks have no data dependency on each other, so they
+	// share the multiplexed connection instead of paying a round trip each.
+	var tasks []func()
+	check := func(key string, run func() StepOutcome) {
+		tasks = append(tasks, func() { steps.set(key, run()) })
+	}
+
 	if wants(CheckGroupConnection) {
-		r.Steps["same_host"] = checkSameHost(ctx, opts.Client, p)
+		check("same_host", func() StepOutcome { return checkSameHost(ctx, opts.Client, p) })
 	}
 
 	if wants(CheckGroupPlatform) {
-		r.Steps["host_platform"] = checkHostPlatform(ctx, opts.Client, p)
+		check("host_platform", func() StepOutcome { return checkHostPlatform(ctx, opts.Client, p) })
 		if p.IsLaunchd() {
-			verifyLaunchd(ctx, opts.Client, p, r.Steps)
+			check("launchctl_service_loaded", func() StepOutcome { return checkLaunchdServiceLoaded(ctx, opts.Client, p) })
 		} else {
-			verifySystemdService(ctx, opts.Client, p, r.Steps)
+			check("systemctl_is_active", func() StepOutcome { return checkSystemdUnitActive(ctx, opts.Client, p) })
+			check("unit_has_execreload", func() StepOutcome { return checkSystemdExecReload(ctx, opts.Client, p) })
 		}
 		if p.AccessMode == settings.HostAccessModeSFTP {
-			r.Steps["config_dir_writable"] = checkRemoteDirectory(ctx, opts.Client, p.HostConfigDir, true)
-			r.Steps["log_dir_readable"] = checkRemoteDirectory(ctx, opts.Client, p.HostLogDir, false)
-			r.Steps["pid_file_present"] = checkRemotePath(ctx, opts.Client, p.PIDPath)
+			check("config_dir_writable", func() StepOutcome { return checkRemoteDirectory(ctx, opts.Client, p.HostConfigDir, true) })
+			check("log_dir_readable", func() StepOutcome { return checkRemoteDirectory(ctx, opts.Client, p.HostLogDir, false) })
+			check("pid_file_present", func() StepOutcome { return checkRemotePath(ctx, opts.Client, p.PIDPath) })
 		} else {
-			r.Steps["config_dir_writable"] = checkDirAccess(p.ContainerConfigDir, true)
-			r.Steps["config_dir_shared"] = checkSharedPath(ctx, opts.Client, p, p.ContainerConfigDir, p.HostConfigDir)
-			r.Steps["log_dir_readable"] = checkLogReadable(p.ContainerLogDir + "/access.log")
-			r.Steps["pid_file_present"] = checkPathExists(p.PIDPath)
+			check("config_dir_writable", func() StepOutcome { return checkDirAccess(p.ContainerConfigDir, true) })
+			check("config_dir_shared", func() StepOutcome {
+				return checkSharedPath(ctx, opts.Client, p, p.ContainerConfigDir, p.HostConfigDir)
+			})
+			check("log_dir_readable", func() StepOutcome { return checkLogReadable(p.ContainerLogDir + "/access.log") })
+			check("pid_file_present", func() StepOutcome { return checkPathExists(p.PIDPath) })
 		}
 	}
 
 	// A target that needs no sudoers entry reports no privilege steps at all,
-	// so the UI does not show checks the operator cannot act on.
-	if wants(CheckGroupPrivileges) && sudoersRequired(ctx, opts.Client, p) {
-		verifySudoers(ctx, opts.Client, p, r.Steps)
+	// so the UI does not show checks the operator cannot act on. Both
+	// privilege checks share one uid probe through the Once.
+	if wants(CheckGroupPrivileges) && p.NeedsSudoers() {
+		var once sync.Once
+		var required bool
+		sudoersNeeded := func() bool {
+			once.Do(func() { required = sudoersRequired(ctx, opts.Client, p) })
+			return required
+		}
+		tasks = append(tasks, func() {
+			if sudoersNeeded() {
+				steps.set("sudo_available", checkSudoAvailable(ctx, opts.Client))
+			}
+		})
+		tasks = append(tasks, func() {
+			if sudoersNeeded() {
+				steps.set("sudoers_coverage", checkSudoersCoverage(ctx, opts.Client, p))
+			}
+		})
 	}
 
+	runBounded(tasks)
+
+	// nginx -t is the only check with a cost and its output is what the
+	// operator reads last, so it stays after everything it depends on.
 	if wants(CheckGroupNginx) {
 		if opts.SkipNginxT {
 			// A check that did not run must not read as a pass.
-			r.Steps["nginx_test"] = StepOutcome{
+			steps.set("nginx_test", StepOutcome{
 				OK:     false,
 				Level:  "warning",
 				Detail: "skipped by user request; the configuration was not validated",
-			}
+			})
 		} else {
 			ntOut, ntErr := opts.Client.Exec(ctx, p.NginxSbinPath, "-t")
-			r.Steps["nginx_test"] = okOrFail(ntErr, strings.TrimSpace(ntOut),
-				remediationFixNginxConfig, ntOut)
+			steps.set("nginx_test", okOrFail(ntErr, strings.TrimSpace(ntOut),
+				remediationFixNginxConfig, ntOut))
 		}
 	}
 
@@ -113,72 +186,76 @@ func sudoersRequired(ctx context.Context, client CommandRunner, p SetupParams) b
 	return strings.TrimSpace(uidOut) != "0"
 }
 
-// verifySudoers covers the privileges group.
-func verifySudoers(ctx context.Context, client CommandRunner, p SetupParams, steps map[string]StepOutcome) {
+// checkSudoAvailable proves passwordless sudo works for the SSH user.
+func checkSudoAvailable(ctx context.Context, client CommandRunner) StepOutcome {
 	_, err := client.Exec(ctx, "/usr/bin/sudo", "-n", "/bin/true")
-	steps["sudo_available"] = okOrFail(err, "sudo -n true succeeded",
+	return okOrFail(err, "sudo -n true succeeded",
 		remediationReviewSudoersRules, "")
-
-	listOut, listErr := client.Exec(ctx, "/usr/bin/sudo", "-n", "-l")
-	if listErr != nil {
-		steps["sudoers_coverage"] = StepOutcome{OK: false, Detail: listErr.Error(),
-			Remediation: newStepRemediation(remediationInspectSudoPermissions)}
-	} else {
-		required := []string{
-			fmt.Sprintf("%s reload %s", p.SystemctlPath, p.SystemdUnit),
-			fmt.Sprintf("%s restart %s", p.SystemctlPath, p.SystemdUnit),
-			fmt.Sprintf("%s -t", p.NginxSbinPath),
-			fmt.Sprintf("%s -T", p.NginxSbinPath),
-		}
-		missing := findMissingSudoEntries(listOut, required)
-		if len(missing) == 0 {
-			steps["sudoers_coverage"] = StepOutcome{OK: true, Detail: "all required entries present"}
-		} else {
-			steps["sudoers_coverage"] = StepOutcome{OK: false,
-				Detail: "missing: " + strings.Join(missing, "; "), Remediation: newStepRemediation(remediationAddMissingSudoersEntries, map[string]string{
-					"path": p.SudoersFilename,
-				})}
-		}
-	}
 }
 
-// verifySystemdService covers the systemd part of the platform group.
-func verifySystemdService(ctx context.Context, client CommandRunner, p SetupParams, steps map[string]StepOutcome) {
-	isActiveOut, err := client.Exec(ctx, p.SystemctlPath, "is-active", p.SystemdUnit)
-	steps["systemctl_is_active"] = okOrFail(err, "is-active returned: "+strings.TrimSpace(isActiveOut),
-		remediationCheckSystemdUnit, isActiveOut)
+// checkSudoersCoverage confirms every command the runtime issues under sudo is
+// listed for the SSH user.
+func checkSudoersCoverage(ctx context.Context, client CommandRunner, p SetupParams) StepOutcome {
+	listOut, listErr := client.Exec(ctx, "/usr/bin/sudo", "-n", "-l")
+	if listErr != nil {
+		return StepOutcome{OK: false, Detail: listErr.Error(),
+			Remediation: newStepRemediation(remediationInspectSudoPermissions)}
+	}
+	required := []string{
+		fmt.Sprintf("%s reload %s", p.SystemctlPath, p.SystemdUnit),
+		fmt.Sprintf("%s restart %s", p.SystemctlPath, p.SystemdUnit),
+		fmt.Sprintf("%s -t", p.NginxSbinPath),
+		fmt.Sprintf("%s -T", p.NginxSbinPath),
+	}
+	missing := findMissingSudoEntries(listOut, required)
+	if len(missing) == 0 {
+		return StepOutcome{OK: true, Detail: "all required entries present"}
+	}
+	return StepOutcome{OK: false,
+		Detail: "missing: " + strings.Join(missing, "; "), Remediation: newStepRemediation(remediationAddMissingSudoersEntries, map[string]string{
+			"path": p.SudoersFilename,
+		})}
+}
 
+// checkSystemdUnitActive covers the running-state half of the systemd checks.
+func checkSystemdUnitActive(ctx context.Context, client CommandRunner, p SetupParams) StepOutcome {
+	isActiveOut, err := client.Exec(ctx, p.SystemctlPath, "is-active", p.SystemdUnit)
+	return okOrFail(err, "is-active returned: "+strings.TrimSpace(isActiveOut),
+		remediationCheckSystemdUnit, isActiveOut)
+}
+
+// checkSystemdExecReload confirms the unit can be reloaded rather than only
+// restarted.
+func checkSystemdExecReload(ctx context.Context, client CommandRunner, p SetupParams) StepOutcome {
 	showOut, err := client.Exec(ctx, p.SystemctlPath, "show", p.SystemdUnit, "--property=ExecReload")
 	if err != nil {
-		steps["unit_has_execreload"] = okOrFail(err, "", remediationInspectSystemdUnit, showOut)
-		return
+		return okOrFail(err, "", remediationInspectSystemdUnit, showOut)
 	}
 	// systemctl always prints the property name, so an undeclared ExecReload
 	// shows up as an empty value rather than a missing line.
 	value := strings.TrimSpace(strings.TrimPrefix(strings.TrimSpace(showOut), "ExecReload="))
 	if value == "" {
-		steps["unit_has_execreload"] = StepOutcome{OK: false, Detail: "ExecReload is not declared in the unit",
+		return StepOutcome{OK: false, Detail: "ExecReload is not declared in the unit",
 			Remediation: newStepRemediation(remediationRestartWithoutExecReload)}
-		return
 	}
-	steps["unit_has_execreload"] = StepOutcome{OK: true, Detail: "ExecReload is declared"}
+	return StepOutcome{OK: true, Detail: "ExecReload is declared"}
 }
 
-func verifyLaunchd(ctx context.Context, client CommandRunner, p SetupParams, steps map[string]StepOutcome) {
+// checkLaunchdServiceLoaded looks the service up in the SSH user's own
+// launchd domain, which needs the uid first.
+func checkLaunchdServiceLoaded(ctx context.Context, client CommandRunner, p SetupParams) StepOutcome {
 	uidOut, err := client.Exec(ctx, "/usr/bin/id", "-u")
 	if err != nil {
-		steps["launchctl_service_loaded"] = StepOutcome{OK: false, Detail: err.Error(), Remediation: newStepRemediation(remediationConfirmHomebrewServiceOwner)}
-		return
+		return StepOutcome{OK: false, Detail: err.Error(), Remediation: newStepRemediation(remediationConfirmHomebrewServiceOwner)}
 	}
 	uid := strings.TrimSpace(uidOut)
 	parsedUID, err := strconv.ParseUint(uid, 10, 32)
 	if err != nil || parsedUID == 0 {
-		steps["launchctl_service_loaded"] = StepOutcome{OK: false, Detail: "invalid remote user id: " + uid}
-		return
+		return StepOutcome{OK: false, Detail: "invalid remote user id: " + uid}
 	}
 	target := "gui/" + uid + "/" + p.LaunchdService
 	out, err := client.Exec(ctx, p.LaunchctlPath, "print", target)
-	steps["launchctl_service_loaded"] = okOrFail(err, target+" is loaded",
+	return okOrFail(err, target+" is loaded",
 		remediationStartHomebrewNginx, out)
 }
 

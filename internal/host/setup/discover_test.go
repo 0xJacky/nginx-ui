@@ -6,6 +6,8 @@ import (
 	"testing"
 )
 
+// discoveryExecutor answers from a fixed map. It is never written after
+// construction, so concurrent probes may share one instance.
 type discoveryExecutor struct {
 	outputs map[string]string
 }

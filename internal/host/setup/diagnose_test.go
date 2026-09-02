@@ -2,6 +2,7 @@ package setup
 
 import (
 	"context"
+	"strings"
 	"testing"
 )
 
@@ -163,5 +164,58 @@ func TestDetectLaunchdServiceFallsBackWhenBrewIsUnhelpful(t *testing.T) {
 	got := detectLaunchdService(context.Background(), executor, "/opt/homebrew", "/bin/launchctl", "")
 	if got != "homebrew.mxcl.nginx" {
 		t.Fatalf("label = %q, want the launchctl fallback", got)
+	}
+}
+
+// The architecture probe overlaps the platform probes, so the merged warnings
+// must keep their documented order and an unsupported OS must still be
+// reported after the architecture warning.
+func TestDiagnoseHostKeepsWarningOrderAcrossConcurrentProbes(t *testing.T) {
+	executor := discoveryExecutor{outputs: map[string]string{
+		"/usr/bin/uname -s": "FreeBSD\n",
+	}}
+
+	result, err := DiagnoseHost(context.Background(), executor, SetupParams{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.Arch != "" {
+		t.Fatalf("arch = %q, want empty when uname -m fails", result.Arch)
+	}
+	if len(result.Warnings) != 2 {
+		t.Fatalf("warnings = %v, want the architecture and OS warnings", result.Warnings)
+	}
+	if !strings.HasPrefix(result.Warnings[0], "could not detect target architecture") {
+		t.Fatalf("first warning = %q, want the architecture warning", result.Warnings[0])
+	}
+	if result.Warnings[1] != "unsupported target operating system: FreeBSD" {
+		t.Fatalf("second warning = %q, want the OS warning", result.Warnings[1])
+	}
+}
+
+// On macOS the launchctl and Homebrew probes run at the same time, so both
+// missing must still produce both warnings in the documented order.
+func TestDiagnoseHostDarwinWarnsForEachMissingProbe(t *testing.T) {
+	executor := discoveryExecutor{outputs: map[string]string{
+		"/usr/bin/uname -s": "Darwin\n",
+		"/usr/bin/uname -m": "arm64\n",
+	}}
+
+	result, err := DiagnoseHost(context.Background(), executor, SetupParams{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	want := []string{
+		"launchctl was not detected at a standard path",
+		"no loaded nginx launchd service was found; enter the service label manually",
+		"Homebrew was not detected at /opt/homebrew or /usr/local",
+	}
+	if len(result.Warnings) < len(want) {
+		t.Fatalf("warnings = %v, want at least %v", result.Warnings, want)
+	}
+	for i, message := range want {
+		if result.Warnings[i] != message {
+			t.Fatalf("warning[%d] = %q, want %q", i, result.Warnings[i], message)
+		}
 	}
 }

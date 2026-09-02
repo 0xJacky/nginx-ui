@@ -154,8 +154,8 @@ func TestCheckSharedPathComparesInodes(t *testing.T) {
 		if outcome.OK || outcome.Level != "warning" {
 			t.Fatalf("windows must warn rather than fail: %+v", outcome)
 		}
-		if len(runner.calls) != 0 {
-			t.Fatalf("the host was probed without a local inode: %v", runner.calls)
+		if len(runner.recordedCalls()) != 0 {
+			t.Fatalf("the host was probed without a local inode: %v", runner.recordedCalls())
 		}
 		return
 	}

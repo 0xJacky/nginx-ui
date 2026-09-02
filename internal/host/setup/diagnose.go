@@ -27,7 +27,10 @@ type HostDiagnosis struct {
 }
 
 // DiagnoseHost detects the target OS before probing platform-specific nginx
-// locations. It does not persist settings or mutate the SSH host.
+// locations. It does not persist settings or mutate the SSH host. The OS probe
+// gates everything else; the architecture probe and, on macOS, the launchctl
+// and Homebrew probes have no dependency on each other, so they overlap on the
+// multiplexed connection while the dependent chain stays in order.
 func DiagnoseHost(ctx context.Context, executor remoteExecutor, params SetupParams) (*HostDiagnosis, error) {
 	osOutput, err := executor.Exec(ctx, "/usr/bin/uname", "-s")
 	if err != nil {
@@ -35,61 +38,44 @@ func DiagnoseHost(ctx context.Context, executor remoteExecutor, params SetupPara
 	}
 
 	result := &HostDiagnosis{OS: strings.TrimSpace(osOutput)}
-	if archOutput, archErr := executor.Exec(ctx, "/usr/bin/uname", "-m"); archErr == nil {
-		result.Arch = strings.TrimSpace(archOutput)
-	} else {
+	detectedParams := params
+
+	// Each task writes only its own variables; the merge below keeps the
+	// warning order stable so the wizard output does not shuffle between runs.
+	var arch string
+	var archErr error
+	var platformWarnings []string
+	supported := true
+	runBounded([]func(){
+		func() {
+			archOutput, err := executor.Exec(ctx, "/usr/bin/uname", "-m")
+			if err != nil {
+				archErr = err
+				return
+			}
+			arch = strings.TrimSpace(archOutput)
+		},
+		func() {
+			switch result.OS {
+			case "Linux":
+				platformWarnings = diagnoseLinux(ctx, executor, params, result, &detectedParams)
+			case "Darwin":
+				platformWarnings = diagnoseDarwin(ctx, executor, params, result, &detectedParams)
+			default:
+				supported = false
+			}
+		},
+	})
+
+	result.Arch = arch
+	if archErr != nil {
 		result.Warnings = append(result.Warnings, "could not detect target architecture: "+archErr.Error())
 	}
-
-	detectedParams := params
-	switch result.OS {
-	case "Linux":
-		result.ServiceManager = settings.HostServiceManagerSystemd
-		detectedParams.ServiceManager = result.ServiceManager
-		// A probed path is reported. A guess is only used internally to keep the
-		// nginx discovery going, so the wizard never labels it as detected.
-		systemctlPath := detectExecutable(ctx, executor, params.SystemctlPath, "/bin/systemctl", "/usr/bin/systemctl")
-		if systemctlPath == "" {
-			result.Warnings = append(result.Warnings, "systemctl was not detected at a standard path")
-			detectedParams.SystemctlPath = "/bin/systemctl"
-		} else {
-			result.SystemctlPath = systemctlPath
-			detectedParams.SystemctlPath = systemctlPath
-		}
-		result.SystemdUnit = detectSystemdUnit(ctx, executor, detectedParams.SystemctlPath, params.SystemdUnit)
-		if result.SystemdUnit == "" {
-			result.Warnings = append(result.Warnings, "no loaded nginx systemd unit was found; enter the unit name manually")
-		} else {
-			detectedParams.SystemdUnit = result.SystemdUnit
-		}
-	case "Darwin":
-		result.ServiceManager = settings.HostServiceManagerLaunchd
-		detectedParams.ServiceManager = result.ServiceManager
-		result.LaunchctlPath = detectExecutableWithArgs(ctx, executor, []string{"list"}, params.LaunchctlPath, "/bin/launchctl")
-		if result.LaunchctlPath == "" {
-			result.Warnings = append(result.Warnings, "launchctl was not detected at a standard path")
-			detectedParams.LaunchctlPath = "/bin/launchctl"
-		} else {
-			detectedParams.LaunchctlPath = result.LaunchctlPath
-		}
-		result.HomebrewPrefix = detectHomebrewInstallationPrefix(ctx, executor)
-		result.LaunchdService = detectLaunchdService(ctx, executor, result.HomebrewPrefix, detectedParams.LaunchctlPath, params.LaunchdService)
-		if result.LaunchdService == "" {
-			result.Warnings = append(result.Warnings, "no loaded nginx launchd service was found; enter the service label manually")
-		} else {
-			detectedParams.LaunchdService = result.LaunchdService
-		}
-		if result.HomebrewPrefix == "" {
-			result.Warnings = append(result.Warnings, "Homebrew was not detected at /opt/homebrew or /usr/local")
-		} else if detectedParams.NginxSbinPath == "" {
-			// Only seed the Homebrew location. An explicitly configured binary,
-			// such as a source build, must stay the first discovery candidate.
-			detectedParams.NginxSbinPath = path.Join(result.HomebrewPrefix, "opt/nginx/bin/nginx")
-		}
-	default:
+	if !supported {
 		result.Warnings = append(result.Warnings, "unsupported target operating system: "+result.OS)
 		return result, nil
 	}
+	result.Warnings = append(result.Warnings, platformWarnings...)
 
 	nginxResult, nginxErr := DiscoverNginx(ctx, executor, detectedParams)
 	if nginxErr != nil {
@@ -102,6 +88,70 @@ func DiagnoseHost(ctx context.Context, executor remoteExecutor, params SetupPara
 	}
 
 	return result, nil
+}
+
+// diagnoseLinux fills the systemd fields. The unit probe needs the systemctl
+// path, so the two stay sequential.
+func diagnoseLinux(ctx context.Context, executor remoteExecutor, params SetupParams, result *HostDiagnosis, detected *SetupParams) []string {
+	var warnings []string
+	result.ServiceManager = settings.HostServiceManagerSystemd
+	detected.ServiceManager = result.ServiceManager
+	// A probed path is reported. A guess is only used internally to keep the
+	// nginx discovery going, so the wizard never labels it as detected.
+	systemctlPath := detectExecutable(ctx, executor, params.SystemctlPath, "/bin/systemctl", "/usr/bin/systemctl")
+	if systemctlPath == "" {
+		warnings = append(warnings, "systemctl was not detected at a standard path")
+		detected.SystemctlPath = "/bin/systemctl"
+	} else {
+		result.SystemctlPath = systemctlPath
+		detected.SystemctlPath = systemctlPath
+	}
+	result.SystemdUnit = detectSystemdUnit(ctx, executor, detected.SystemctlPath, params.SystemdUnit)
+	if result.SystemdUnit == "" {
+		warnings = append(warnings, "no loaded nginx systemd unit was found; enter the unit name manually")
+	} else {
+		detected.SystemdUnit = result.SystemdUnit
+	}
+	return warnings
+}
+
+// diagnoseDarwin fills the launchd and Homebrew fields. The launchctl and brew
+// probes are independent and overlap; the service label needs both.
+func diagnoseDarwin(ctx context.Context, executor remoteExecutor, params SetupParams, result *HostDiagnosis, detected *SetupParams) []string {
+	var warnings []string
+	result.ServiceManager = settings.HostServiceManagerLaunchd
+	detected.ServiceManager = result.ServiceManager
+
+	var launchctlPath, homebrewPrefix string
+	runBounded([]func(){
+		func() {
+			launchctlPath = detectExecutableWithArgs(ctx, executor, []string{"list"}, params.LaunchctlPath, "/bin/launchctl")
+		},
+		func() { homebrewPrefix = detectHomebrewInstallationPrefix(ctx, executor) },
+	})
+
+	result.LaunchctlPath = launchctlPath
+	if result.LaunchctlPath == "" {
+		warnings = append(warnings, "launchctl was not detected at a standard path")
+		detected.LaunchctlPath = "/bin/launchctl"
+	} else {
+		detected.LaunchctlPath = result.LaunchctlPath
+	}
+	result.HomebrewPrefix = homebrewPrefix
+	result.LaunchdService = detectLaunchdService(ctx, executor, result.HomebrewPrefix, detected.LaunchctlPath, params.LaunchdService)
+	if result.LaunchdService == "" {
+		warnings = append(warnings, "no loaded nginx launchd service was found; enter the service label manually")
+	} else {
+		detected.LaunchdService = result.LaunchdService
+	}
+	if result.HomebrewPrefix == "" {
+		warnings = append(warnings, "Homebrew was not detected at /opt/homebrew or /usr/local")
+	} else if detected.NginxSbinPath == "" {
+		// Only seed the Homebrew location. An explicitly configured binary,
+		// such as a source build, must stay the first discovery candidate.
+		detected.NginxSbinPath = path.Join(result.HomebrewPrefix, "opt/nginx/bin/nginx")
+	}
+	return warnings
 }
 
 // knownLaunchdLabel matches the labels Homebrew and the nginx project use.
