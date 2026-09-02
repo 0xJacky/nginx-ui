@@ -1,8 +1,11 @@
 package crypto
 
 import (
-	"github.com/0xJacky/Nginx-UI/settings"
+	"crypto/aes"
+	"crypto/cipher"
 	"testing"
+
+	"github.com/0xJacky/Nginx-UI/settings"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -67,10 +70,18 @@ func TestAesEncrypt_WithEmptyString_ReturnsError(t *testing.T) {
 
 func TestAesDecrypt_WithInvalidBase64_ReturnsError(t *testing.T) {
 	settings.CryptoSettings.Secret = "test"
-	// Assuming the function is modified to handle this case explicitly
-	encrypted, _ := AesEncrypt([]byte("valid text"))
-	// Invalidate the base64 encoding
-	encrypted[len(encrypted)-1] = '!'
-	_, err := AesDecrypt(encrypted)
-	require.Error(t, err, "decrypting an invalid base64 string should return an error")
+
+	block, err := aes.NewCipher(settings.CryptoSettings.GetSecretMd5())
+	require.NoError(t, err)
+
+	// AesDecrypt decrypts the body and then base64-decodes it, so the body has to
+	// decrypt to something base64 rejects. Corrupting one byte of a real ciphertext
+	// only lands on invalid base64 by chance, which made this test flaky.
+	payload := []byte("not valid base64!!")
+	input := make([]byte, aes.BlockSize+len(payload))
+	iv := input[:aes.BlockSize]
+	cipher.NewCFBEncrypter(block, iv).XORKeyStream(input[aes.BlockSize:], payload)
+
+	_, err = AesDecrypt(input)
+	require.Error(t, err, "decrypting a payload that is not base64 should return an error")
 }
