@@ -95,14 +95,16 @@ func reloadContext(ctx context.Context) (stdOut string, stdErr error) {
 		return stdOut, stdErr
 	}
 
+	// An operator-authored command wins on every target, as it does for
+	// TestConfigCmd; execShellContext already runs it through the SSH runner.
+	if settings.NginxSettings.ReloadCmd != "" {
+		return execShellContext(ctx, settings.NginxSettings.ReloadCmd)
+	}
+
 	// SSH mode controls the native host service without crossing PID namespaces.
 	if settings.NginxSettings.ControlMode() == settings.ControlModeHostViaSSH {
 		name, args := hostReloadCommand(settings.NginxSettings)
 		return execCommandContext(ctx, name, args...)
-	}
-
-	if settings.NginxSettings.ReloadCmd != "" {
-		return execShellContext(ctx, settings.NginxSettings.ReloadCmd)
 	}
 
 	sbin := GetSbinPath()
@@ -143,6 +145,12 @@ func restartContext(ctx context.Context) (stdOut string, stdErr error) {
 	// fix(docker): nginx restart always output network error
 	time.Sleep(500 * time.Millisecond)
 
+	// An operator-authored command wins on every target, as it does for
+	// TestConfigCmd; execShellContext already runs it through the SSH runner.
+	if settings.NginxSettings.RestartCmd != "" {
+		return execShellContext(ctx, settings.NginxSettings.RestartCmd)
+	}
+
 	// SSH mode routes restart through the host's native service manager.
 	if settings.NginxSettings.ControlMode() == settings.ControlModeHostViaSSH {
 		runner := resolveRunner()
@@ -151,10 +159,6 @@ func restartContext(ctx context.Context) (stdOut string, stdErr error) {
 			return "", err
 		}
 		return runner.Exec(ctx, name, args...)
-	}
-
-	if settings.NginxSettings.RestartCmd != "" {
-		return execShellContext(ctx, settings.NginxSettings.RestartCmd)
 	}
 
 	pidPath := GetPIDPath()

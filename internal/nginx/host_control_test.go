@@ -109,3 +109,53 @@ func TestRestartPropagatesHostServiceFailure(t *testing.T) {
 		t.Fatalf("restart() output = %q, want the runner output", stdOut)
 	}
 }
+
+// reload() and restart() used to take the host_via_ssh branch before checking
+// the operator-authored ReloadCmd/RestartCmd, so a custom command was silently
+// replaced by systemctl even though TestConfigCmd was honoured.
+func TestCustomCommandsWinOverHostServiceInSSHMode(t *testing.T) {
+	originalSettings := *settings.NginxSettings
+	originalResolve := resolveRunner
+	t.Cleanup(func() {
+		*settings.NginxSettings = originalSettings
+		resolveRunner = originalResolve
+	})
+
+	const reloadCmd = "/usr/local/openresty/bin/openresty -s reload"
+	const restartCmd = "/usr/local/openresty/bin/openresty -s stop && /usr/local/openresty/bin/openresty"
+
+	settings.NginxSettings.HostMode = settings.HostModeSSH
+	settings.NginxSettings.HostSystemctlPath = "/bin/systemctl"
+	settings.NginxSettings.HostSystemdUnitName = "nginx.service"
+	settings.NginxSettings.ReloadCmd = reloadCmd
+	settings.NginxSettings.RestartCmd = restartCmd
+
+	// Every other command, including systemctl reload/restart, is rejected by
+	// the runner, so falling back to the host service fails the test.
+	resolveRunner = func() Runner {
+		return &hostControlTestRunner{responses: map[string]struct {
+			out string
+			err error
+		}{
+			"/bin/systemctl is-active nginx.service": {out: "active\n"},
+			"/bin/sh -c " + reloadCmd:                {out: "custom reload"},
+			"/bin/sh -c " + restartCmd:               {out: "custom restart"},
+		}}
+	}
+
+	stdOut, stdErr := reload()
+	if stdErr != nil {
+		t.Fatalf("reload() error = %v, want the custom command to run", stdErr)
+	}
+	if stdOut != "custom reload" {
+		t.Fatalf("reload() output = %q, want the custom command output", stdOut)
+	}
+
+	stdOut, stdErr = restart()
+	if stdErr != nil {
+		t.Fatalf("restart() error = %v, want the custom command to run", stdErr)
+	}
+	if stdOut != "custom restart" {
+		t.Fatalf("restart() output = %q, want the custom command output", stdOut)
+	}
+}
