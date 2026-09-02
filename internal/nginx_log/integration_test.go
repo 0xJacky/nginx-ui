@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"slices"
 	"sync"
 	"testing"
 	"time"
@@ -448,7 +449,12 @@ func (suite *IntegrationTestSuite) PerformGlobalIndexRebuild(t *testing.T) {
 	suite.updateSearcher(t)
 
 	totalDuration := time.Since(startTime)
-	t.Logf("Global index rebuild completed in %s. Completed files: %v", totalDuration, completedFiles)
+	// completedFiles is appended to from the completion callback's goroutine, so
+	// reading it here needs the same lock the writer takes.
+	mu.Lock()
+	completed := slices.Clone(completedFiles)
+	mu.Unlock()
+	t.Logf("Global index rebuild completed in %s. Completed files: %v", totalDuration, completed)
 }
 
 // PerformSingleFileIndexRebuild rebuilds index for a single file
