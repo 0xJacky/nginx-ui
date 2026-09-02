@@ -12,7 +12,7 @@ var (
 	ErrSystemctlNotFound       = e.New(510005, "systemctl not found on remote host")
 	ErrCommandTimeout          = e.New(510006, "remote command timed out after {0}")
 	ErrSessionFailed           = e.New(510007, "failed to open ssh session: {0}")
-	ErrClientClosed            = e.New(510008, "ssh client was closed after a settings change")
+	ErrClientClosed            = e.New(510014, "ssh client was closed after a settings change")
 	ErrKnownHostsRead          = e.New(510008, "failed to read known_hosts: {0}")
 	ErrKnownHostsWrite         = e.New(510009, "failed to write known_hosts: {0}")
 	ErrPublicKeyParse          = e.New(510010, "failed to parse public key: {0}")
