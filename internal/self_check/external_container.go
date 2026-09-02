@@ -10,10 +10,19 @@ import (
 
 const externalConfigCheckContent = "# Nginx UI external container shared-path check\n"
 
+// needsSharedConfigCheck reports whether the configuration directory must be
+// visible on the nginx target at the same path. That holds for an external
+// container and for an SSH host with a mounted directory. SFTP access has no
+// bind mount by design: the probe would be written into this container and
+// looked up on the host, so it would always report an unshared directory.
+func needsSharedConfigCheck(n *settings.Nginx) bool {
+	return n.ControlMode() != settings.ControlModeLocal && !n.UsesSFTP()
+}
+
 // CheckExternalContainerConfigShared verifies that local configuration writes
 // are visible at the same path inside the configured external Nginx container.
 func CheckExternalContainerConfigShared() error {
-	if settings.NginxSettings.ControlMode() == settings.ControlModeLocal {
+	if !needsSharedConfigCheck(settings.NginxSettings) {
 		return nil
 	}
 

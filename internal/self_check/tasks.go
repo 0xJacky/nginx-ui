@@ -120,8 +120,9 @@ var selfCheckTaskMap = orderedmap.NewOrderedMap[string, *Task]()
 
 func Init() {
 	// nginx lives outside this container in both external container and SSH
-	// mode, so both need the shared configuration directory proven.
-	if settings.NginxSettings.ControlMode() != settings.ControlModeLocal {
+	// mode, so both need the shared configuration directory proven, unless
+	// SSH mode reaches the files over SFTP and no shared directory exists.
+	if needsSharedConfigCheck(settings.NginxSettings) {
 		selfCheckTasks = append(selfCheckTasks, &Task{
 			Key:  "Docker-ExternalNginxConfig-Shared",
 			Name: translation.C("External Nginx configuration directory is shared"),
