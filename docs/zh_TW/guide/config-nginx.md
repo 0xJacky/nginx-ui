@@ -217,7 +217,6 @@ nginx-ui host-setup test
 | `host_key_source` | `generated`（預設）、`existing` 或 `provided`：SSH 私鑰的來源 |
 | `host_address` | 遠端 `host:port` |
 | `host_user` | 宿主機上的 SSH 使用者 |
-| `host_auth_method` | SSH 認證方式。目前宿主機 SSH 設定請使用金鑰認證 |
 | `host_private_key_path` | 容器內的私鑰路徑 |
 | `host_known_hosts_path` | 容器內的 known_hosts 允許清單路徑 |
 | `host_sudo_prefix` | 特權指令前綴。預設值為 `sudo -n` |

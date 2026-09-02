@@ -7,12 +7,12 @@ import (
 )
 
 // Validation failures for the nginx control settings form. Codes continue the
-// host_setup scope; 520011-520019 are left free for the SSH key handling.
+// host_setup scope; 520011-520019 are left free for the SSH key handling and
+// 520023 is retired (it rejected non-key SSH auth, which no longer exists).
 var (
 	ErrContainerNameRequired     = e.New(520020, "container name is required for external container mode")
 	ErrInvalidContainerName      = e.New(520021, "container name contains invalid characters")
 	ErrSSHConnectionRequired     = e.New(520022, "host address and user are required for SSH mode")
-	ErrSSHKeyAuthRequired        = e.New(520023, "SSH mode requires key authentication")
 	ErrInvalidKeySource          = e.New(520024, "SSH mode requires a valid private key source")
 	ErrSSHKeyPathsRequired       = e.New(520025, "private key and known hosts paths are required for SSH mode")
 	ErrUnsupportedServiceManager = e.New(520026, "SSH mode requires a supported service manager")
@@ -35,7 +35,6 @@ type ControlSettings struct {
 	HostAddress        string
 	HostUser           string
 	HostAccessMode     string
-	HostAuthMethod     string
 	HostKeySource      string
 	HostPrivateKeyPath string
 	HostKnownHostsPath string
@@ -78,9 +77,6 @@ func validateSSHSettings(s ControlSettings) error {
 	if s.HostAccessMode != settings.HostAccessModeSFTP &&
 		s.HostAccessMode != settings.HostAccessModeMounted {
 		return ErrInvalidAccessMode
-	}
-	if s.HostAuthMethod != "key" {
-		return ErrSSHKeyAuthRequired
 	}
 	if s.HostKeySource != settings.HostKeySourceGenerated &&
 		s.HostKeySource != settings.HostKeySourceExisting &&

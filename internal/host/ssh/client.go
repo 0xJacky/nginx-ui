@@ -21,9 +21,7 @@ import (
 type ClientOptions struct {
 	Address        string // host:port
 	User           string
-	AuthMethod     string // "key" | "password"
 	PrivateKeyPath string
-	Password       string // decrypted password, only when AuthMethod=="password"
 	KnownHosts     *KnownHosts
 	Timeout        time.Duration // dial+handshake timeout; default 10s
 	KeepAlive      time.Duration // SSH-level keepalive; default 30s
@@ -163,20 +161,15 @@ func ReadPrivateKeyFile(path string) ([]byte, error) {
 }
 
 func (c *Client) buildAuth() ([]gossh.AuthMethod, error) {
-	switch c.opts.AuthMethod {
-	case "password":
-		return []gossh.AuthMethod{gossh.Password(c.opts.Password)}, nil
-	default: // "key" (or empty)
-		raw, err := ReadPrivateKeyFile(c.opts.PrivateKeyPath)
-		if err != nil {
-			return nil, cosy.WrapErrorWithParams(ErrAuthFailed, err.Error())
-		}
-		signer, err := gossh.ParsePrivateKey(raw)
-		if err != nil {
-			return nil, cosy.WrapErrorWithParams(ErrAuthFailed, err.Error())
-		}
-		return []gossh.AuthMethod{gossh.PublicKeys(signer)}, nil
+	raw, err := ReadPrivateKeyFile(c.opts.PrivateKeyPath)
+	if err != nil {
+		return nil, cosy.WrapErrorWithParams(ErrAuthFailed, err.Error())
 	}
+	signer, err := gossh.ParsePrivateKey(raw)
+	if err != nil {
+		return nil, cosy.WrapErrorWithParams(ErrAuthFailed, err.Error())
+	}
+	return []gossh.AuthMethod{gossh.PublicKeys(signer)}, nil
 }
 
 func (c *Client) keepalive(client *gossh.Client) {

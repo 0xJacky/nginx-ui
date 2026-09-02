@@ -67,20 +67,12 @@ func buildSSHOptions() hostssh.ClientOptions {
 		logger.Error("Failed to initialize SSH known_hosts allow-list", err)
 	}
 
-	password := ""
-	if n.HostAuthMethod == "password" {
-		logger.Warn("SSH password auth is configured but not yet supported (pending crypto package refactor); SSH connections will fail until you switch to key auth")
-	}
-	_ = n.HostPasswordRef // suppress unused-field lint until decryption lands
-
 	sudo := n.GetHostSudoPrefix()
 
 	return hostssh.ClientOptions{
 		Address:        n.HostAddress,
 		User:           n.HostUser,
-		AuthMethod:     n.HostAuthMethod,
 		PrivateKeyPath: n.HostPrivateKeyPath,
-		Password:       password,
 		KnownHosts:     kh,
 		Config: hostssh.Config{
 			SudoPrefix:    sudo,

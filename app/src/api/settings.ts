@@ -93,10 +93,8 @@ export interface NginxSettings {
   host_address?: string
   host_user?: string
   host_access_mode?: 'sftp' | 'mounted'
-  host_auth_method?: string
   host_key_source?: 'generated' | 'existing' | 'provided'
   host_private_key_path?: string
-  host_password_ref?: string
   host_known_hosts_path?: string
   host_sudo_prefix?: string
   host_service_manager?: 'systemd' | 'launchd'
@@ -116,10 +114,8 @@ export interface NginxControlSettings {
   host_address?: string
   host_user?: string
   host_access_mode?: 'sftp' | 'mounted'
-  host_auth_method?: string
   host_key_source?: 'generated' | 'existing' | 'provided'
   host_private_key_path?: string
-  host_password_ref?: string
   host_known_hosts_path?: string
   host_sudo_prefix?: string
   host_service_manager?: 'systemd' | 'launchd'

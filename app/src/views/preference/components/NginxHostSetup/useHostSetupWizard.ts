@@ -81,8 +81,6 @@ export function createHostSetupWizard(settings: Ref<Settings>) {
   const isSSHConnected = ref(false)
   const isHostSetupPassed = ref(false)
   const isVerificationPassed = ref(false)
-  // SSH key is the only method the backend accepts, so there is nothing to ask.
-  const authMethod = 'key' as const
   const publicKey = ref('')
   const privateKeyOnce = ref('')
   const validatedPrivateKeyPath = ref('')
@@ -276,7 +274,6 @@ export function createHostSetupWizard(settings: Ref<Settings>) {
     target.host_access_mode = params.value.access_mode
     target.host_address = params.value.host_address
     target.host_user = params.value.host_user
-    target.host_auth_method = authMethod
     target.host_key_source = params.value.key_source
     target.host_private_key_path = params.value.container_key_path?.trim() || defaultHostPrivateKeyPath
     target.host_known_hosts_path ||= defaultHostKnownHostsPath
@@ -302,7 +299,6 @@ export function createHostSetupWizard(settings: Ref<Settings>) {
 
   return {
     applyToSettings,
-    authMethod,
     blockedReason,
     canAdvance,
     clearSensitiveState,

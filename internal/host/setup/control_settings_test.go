@@ -14,7 +14,6 @@ func validSSHControlSettings() ControlSettings {
 		HostAddress:        "host.docker.internal:22",
 		HostUser:           "nginxui",
 		HostAccessMode:     settings.HostAccessModeSFTP,
-		HostAuthMethod:     "key",
 		HostKeySource:      settings.HostKeySourceGenerated,
 		HostPrivateKeyPath: "/etc/nginx-ui/host_key",
 		HostKnownHostsPath: "/etc/nginx-ui/known_hosts",
@@ -87,11 +86,6 @@ func TestValidateControlSettings(t *testing.T) {
 			name:    "ssh rejects unknown access mode",
 			mutate:  func(s *ControlSettings) { s.HostAccessMode = "nfs" },
 			wantErr: ErrInvalidAccessMode,
-		},
-		{
-			name:    "ssh requires key auth",
-			mutate:  func(s *ControlSettings) { s.HostAuthMethod = "password" },
-			wantErr: ErrSSHKeyAuthRequired,
 		},
 		{
 			name:    "ssh rejects unknown key source",

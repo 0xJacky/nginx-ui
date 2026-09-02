@@ -22,10 +22,8 @@ type nginxControlSettingsPayload struct {
 	HostAddress         string `json:"host_address"`
 	HostUser            string `json:"host_user"`
 	HostAccessMode      string `json:"host_access_mode"`
-	HostAuthMethod      string `json:"host_auth_method"`
 	HostKeySource       string `json:"host_key_source"`
 	HostPrivateKeyPath  string `json:"host_private_key_path"`
-	HostPasswordRef     string `json:"host_password_ref"`
 	HostKnownHostsPath  string `json:"host_known_hosts_path"`
 	HostSudoPrefix      string `json:"host_sudo_prefix"`
 	HostServiceManager  string `json:"host_service_manager"`
@@ -49,13 +47,11 @@ func normalizeNginxControlSettings(payload nginxControlSettingsPayload) nginxCon
 	payload.HostAddress = strings.TrimSpace(payload.HostAddress)
 	payload.HostUser = strings.TrimSpace(payload.HostUser)
 	payload.HostAccessMode = strings.TrimSpace(payload.HostAccessMode)
-	payload.HostAuthMethod = strings.TrimSpace(payload.HostAuthMethod)
 	payload.HostKeySource = strings.TrimSpace(payload.HostKeySource)
 	payload.HostPrivateKeyPath = strings.TrimSpace(payload.HostPrivateKeyPath)
 	// The raw path is passed on purpose: an empty path is a validation error
 	// the operator must see, not a silent fallback to the managed key.
 	payload.HostKeySource = appsettings.NormalizeHostKeySource(payload.HostKeySource, payload.HostPrivateKeyPath)
-	payload.HostPasswordRef = strings.TrimSpace(payload.HostPasswordRef)
 	payload.HostKnownHostsPath = strings.TrimSpace(payload.HostKnownHostsPath)
 	payload.HostSudoPrefix = strings.TrimSpace(payload.HostSudoPrefix)
 	payload.HostServiceManager = strings.TrimSpace(payload.HostServiceManager)
@@ -82,7 +78,6 @@ func controlSettings(payload nginxControlSettingsPayload) hostsetup.ControlSetti
 		HostAddress:        payload.HostAddress,
 		HostUser:           payload.HostUser,
 		HostAccessMode:     payload.HostAccessMode,
-		HostAuthMethod:     payload.HostAuthMethod,
 		HostKeySource:      payload.HostKeySource,
 		HostPrivateKeyPath: payload.HostPrivateKeyPath,
 		HostKnownHostsPath: payload.HostKnownHostsPath,
@@ -120,10 +115,8 @@ func applyNginxControlSettings(target *appsettings.Nginx, payload nginxControlSe
 		target.HostAccessMode = payload.HostAccessMode
 		target.HostAddress = payload.HostAddress
 		target.HostUser = payload.HostUser
-		target.HostAuthMethod = payload.HostAuthMethod
 		target.HostKeySource = payload.HostKeySource
 		target.HostPrivateKeyPath = payload.HostPrivateKeyPath
-		target.HostPasswordRef = payload.HostPasswordRef
 		target.HostKnownHostsPath = payload.HostKnownHostsPath
 		target.HostSudoPrefix = payload.HostSudoPrefix
 		target.HostServiceManager = payload.HostServiceManager
@@ -174,10 +167,8 @@ func currentNginxControlSettings() nginxControlSettingsPayload {
 		HostAddress:         n.HostAddress,
 		HostUser:            n.HostUser,
 		HostAccessMode:      n.HostAccessMode,
-		HostAuthMethod:      n.HostAuthMethod,
 		HostKeySource:       n.GetHostKeySource(),
 		HostPrivateKeyPath:  n.HostPrivateKeyPath,
-		HostPasswordRef:     n.HostPasswordRef,
 		HostKnownHostsPath:  n.HostKnownHostsPath,
 		HostSudoPrefix:      n.HostSudoPrefix,
 		HostServiceManager:  n.HostServiceManager,

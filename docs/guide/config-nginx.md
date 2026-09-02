@@ -225,7 +225,6 @@ nginx-ui host-setup test
 | `host_key_source` | `generated` (default), `existing` or `provided`: where the SSH private key comes from |
 | `host_address` | Remote `host:port` |
 | `host_user` | SSH user on the host |
-| `host_auth_method` | SSH authentication method. Use key authentication for the current host SSH setup |
 | `host_private_key_path` | Private key path inside the container |
 | `host_known_hosts_path` | known_hosts allow-list path inside the container |
 | `host_sudo_prefix` | Prefix used for privileged commands. Default `sudo -n` |

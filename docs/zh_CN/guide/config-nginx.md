@@ -226,7 +226,6 @@ nginx-ui host-setup test
 | `host_key_source` | `generated`（默认）、`existing` 或 `provided`：SSH 私钥的来源 |
 | `host_address` | 远程 `host:port` |
 | `host_user` | 宿主机上的 SSH 用户 |
-| `host_auth_method` | SSH 认证方式。当前宿主机 SSH 配置请使用密钥认证 |
 | `host_private_key_path` | 容器内的私钥路径 |
 | `host_known_hosts_path` | 容器内的 known_hosts 允许列表路径 |
 | `host_sudo_prefix` | 特权命令前缀。默认值为 `sudo -n` |

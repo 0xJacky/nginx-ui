@@ -35,9 +35,8 @@ func TestSynchronizedBufferConcurrentWrites(t *testing.T) {
 // built for; the options were captured at construction time.
 func TestClosedClientRefusesToRedial(t *testing.T) {
 	client := NewClient(ClientOptions{
-		Address:    "127.0.0.1:1",
-		User:       "nobody",
-		AuthMethod: "key",
+		Address: "127.0.0.1:1",
+		User:    "nobody",
 	})
 	if err := client.Close(); err != nil {
 		t.Fatalf("Close: %v", err)

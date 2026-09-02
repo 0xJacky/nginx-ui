@@ -54,10 +54,8 @@ type Nginx struct {
 	HostAccessMode      string `json:"host_access_mode" protected:"true"`
 	HostAddress         string `json:"host_address" protected:"true"`
 	HostUser            string `json:"host_user" protected:"true"`
-	HostAuthMethod      string `json:"host_auth_method" protected:"true"`
 	HostKeySource       string `json:"host_key_source" protected:"true"`
 	HostPrivateKeyPath  string `json:"host_private_key_path" protected:"true"`
-	HostPasswordRef     string `json:"host_password_ref" protected:"true"`
 	HostKnownHostsPath  string `json:"host_known_hosts_path" protected:"true"`
 	HostSudoPrefix      string `json:"host_sudo_prefix" protected:"true"`
 	HostServiceManager  string `json:"host_service_manager" protected:"true"`

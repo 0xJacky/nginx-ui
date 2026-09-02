@@ -172,7 +172,6 @@
 | `NGINX_UI_NGINX_HOST_KEY_SOURCE` | `generated`（默认）、`existing` 或 `provided`：SSH 私钥的来源 |
 | `NGINX_UI_NGINX_HOST_ADDRESS` | 远程 `host:port`，例如 `host.docker.internal:22` |
 | `NGINX_UI_NGINX_HOST_USER` | 宿主机上的 SSH 用户 |
-| `NGINX_UI_NGINX_HOST_AUTH_METHOD` | SSH 认证方式。当前宿主机 SSH 配置请使用密钥认证 |
 | `NGINX_UI_NGINX_HOST_PRIVATE_KEY_PATH` | 容器内的私钥路径 |
 | `NGINX_UI_NGINX_HOST_KNOWN_HOSTS_PATH` | 容器内的 known_hosts 允许列表路径 |
 | `NGINX_UI_NGINX_HOST_SUDO_PREFIX` | 默认为 `sudo -n` |

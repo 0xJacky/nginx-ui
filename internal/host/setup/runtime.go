@@ -30,7 +30,6 @@ func NewClientFromParams(params SetupParams) (*hostssh.Client, error) {
 	return hostssh.NewClient(hostssh.ClientOptions{
 		Address:        p.HostAddress,
 		User:           p.HostUser,
-		AuthMethod:     n.HostAuthMethod,
 		PrivateKeyPath: p.ContainerKeyPath,
 		KnownHosts:     kh,
 		Config: hostssh.Config{

@@ -172,7 +172,6 @@
 | `NGINX_UI_NGINX_HOST_KEY_SOURCE` | `generated`（預設）、`existing` 或 `provided`：SSH 私鑰的來源 |
 | `NGINX_UI_NGINX_HOST_ADDRESS` | 遠端 `host:port`，例如 `host.docker.internal:22` |
 | `NGINX_UI_NGINX_HOST_USER` | 宿主機上的 SSH 使用者 |
-| `NGINX_UI_NGINX_HOST_AUTH_METHOD` | SSH 認證方式。目前宿主機 SSH 設定請使用金鑰認證 |
 | `NGINX_UI_NGINX_HOST_PRIVATE_KEY_PATH` | 容器內的私鑰路徑 |
 | `NGINX_UI_NGINX_HOST_KNOWN_HOSTS_PATH` | 容器內的 known_hosts 允許清單路徑 |
 | `NGINX_UI_NGINX_HOST_SUDO_PREFIX` | 預設為 `sudo -n` |
