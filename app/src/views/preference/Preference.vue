@@ -23,11 +23,12 @@ const systemSettingsStore = useSystemSettingsStore()
 const globalStore = useGlobalStore()
 const isDemoResolved = ref(false)
 
-systemSettingsStore.getSettings()
+void systemSettingsStore.getSettings()
 
 const router = useRouter()
 const route = useRoute()
 const activeKey = ref('server')
+const isNginxControlEditing = ref(false)
 
 watch(activeKey, () => {
   router.push({
@@ -83,14 +84,19 @@ onMounted(async () => {
           <AuthSettings v-else-if="item.key === 'auth'" />
           <AccessTokens v-else-if="item.key === 'access_tokens'" />
           <CertSettings v-else-if="item.key === 'cert'" />
-          <NginxSettings v-else-if="item.key === 'nginx'" />
+          <NginxSettings v-else-if="item.key === 'nginx'" @control-editing="isNginxControlEditing = $event" />
           <OpenAISettings v-else-if="item.key === 'openai'" />
           <LogrotateSettings v-else-if="item.key === 'logrotate'" />
           <GeoLiteSettings v-else-if="item.key === 'geolite'" />
         </template>
       </ATabs>
     </div>
-    <FooterToolBar v-if="activeKey !== 'external_notify' && activeKey !== 'geolite' && activeKey !== 'access_tokens'">
+    <FooterToolBar
+      v-if="activeKey !== 'external_notify'
+        && activeKey !== 'geolite'
+        && activeKey !== 'access_tokens'
+        && !(activeKey === 'nginx' && isNginxControlEditing)"
+    >
       <AButton
         type="primary"
         @click="systemSettingsStore.save"

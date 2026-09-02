@@ -4,7 +4,6 @@ import (
 	"crypto/x509"
 	"encoding/pem"
 	"fmt"
-	"os"
 	"strings"
 	"time"
 
@@ -69,7 +68,7 @@ func getCertificate(sslCertificatePath string) (*x509.Certificate, error) {
 		return nil, ErrCertPathIsNotUnderTheNginxConfDir
 	}
 
-	certData, err := os.ReadFile(sslCertificatePath)
+	certData, err := nginx.ReadFile(sslCertificatePath)
 	if err != nil {
 		return nil, err
 	}

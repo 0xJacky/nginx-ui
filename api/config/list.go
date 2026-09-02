@@ -8,6 +8,7 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
@@ -71,7 +72,7 @@ func GetConfigs(c *gin.Context) {
 	}
 
 	// Get config files from directory and create entities
-	configFiles, err := os.ReadDir(fullDir)
+	configFiles, err := nginx.ReadDir(fullDir)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

@@ -1,0 +1,10 @@
+{{- if .NeedsSudoers }}
+sudo install -d -m 700 -o {{ .HostUser }} -g {{ .HostUser }} ~{{ .HostUser }}/.ssh
+printf '%s\n' {{ shellQuote .PublicKeyOpenSSH }} | sudo tee -a ~{{ .HostUser }}/.ssh/authorized_keys > /dev/null
+sudo chown {{ .HostUser }} ~{{ .HostUser }}/.ssh/authorized_keys
+sudo chmod 600 ~{{ .HostUser }}/.ssh/authorized_keys
+{{- else }}
+install -d -m 700 ~{{ .HostUser }}/.ssh
+printf '%s\n' {{ shellQuote .PublicKeyOpenSSH }} >> ~{{ .HostUser }}/.ssh/authorized_keys
+chmod 600 ~{{ .HostUser }}/.ssh/authorized_keys
+{{- end }}

@@ -24,7 +24,7 @@ func IsValidLogPath(logPath string) bool {
 	}
 
 	// Check if the path exists
-	fileInfo, err := os.Lstat(logPath)
+	fileInfo, err := nginx.Lstat(logPath)
 	if err != nil {
 		// If the file doesn't exist, it might be created later
 		// We'll assume it's valid for now
@@ -35,7 +35,7 @@ func IsValidLogPath(logPath string) bool {
 	if fileInfo.Mode()&os.ModeSymlink != 0 {
 		// Use EvalSymlinks to safely resolve the entire symlink chain
 		// This function detects circular symlinks and returns an error
-		resolvedPath, err := filepath.EvalSymlinks(logPath)
+		resolvedPath, err := nginx.EvalSymlinks(logPath)
 		if err != nil {
 			return false
 		}
@@ -45,7 +45,7 @@ func IsValidLogPath(logPath string) bool {
 		}
 
 		// Check the resolved target file
-		targetInfo, err := os.Stat(resolvedPath)
+		targetInfo, err := nginx.Stat(resolvedPath)
 		if err != nil {
 			return false
 		}

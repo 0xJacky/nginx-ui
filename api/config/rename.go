@@ -2,12 +2,12 @@ package config
 
 import (
 	"net/http"
-	"os"
 	"path/filepath"
 	"strings"
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
@@ -51,7 +51,7 @@ func Rename(c *gin.Context) {
 		return
 	}
 
-	stat, err := os.Stat(origFullPath)
+	stat, err := nginx.Stat(origFullPath)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
@@ -65,14 +65,19 @@ func Rename(c *gin.Context) {
 		}
 	}
 
-	if helper.FileExists(newFullPath) {
+	destinationExists, err := nginx.Exists(newFullPath)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+	if destinationExists {
 		c.JSON(http.StatusNotAcceptable, gin.H{
 			"message": "target file already exists",
 		})
 		return
 	}
 
-	err = os.Rename(origFullPath, newFullPath)
+	err = nginx.Rename(origFullPath, newFullPath)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

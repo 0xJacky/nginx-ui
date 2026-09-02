@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/uozi-tech/cosy"
@@ -60,4 +61,39 @@ func TestCheckExternalContainerConfigShared(t *testing.T) {
 		require.ErrorAs(t, err, &cosyErr)
 		assert.Equal(t, int32(50011), cosyErr.Code)
 	})
+}
+
+// SFTP access mode has no shared directory by design, so the probe written
+// into this container can never be seen on the host and the check must not run.
+func TestNeedsSharedConfigCheck(t *testing.T) {
+	tests := []struct {
+		name  string
+		nginx settings.Nginx
+		want  bool
+	}{
+		{name: "local", nginx: settings.Nginx{}, want: false},
+		{name: "external container", nginx: settings.Nginx{ContainerName: "nginx"}, want: true},
+		{name: "ssh mounted", nginx: settings.Nginx{HostMode: settings.HostModeSSH, HostAccessMode: settings.HostAccessModeMounted}, want: true},
+		{name: "ssh sftp", nginx: settings.Nginx{HostMode: settings.HostModeSSH, HostAccessMode: settings.HostAccessModeSFTP}, want: false},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.want, needsSharedConfigCheck(&tt.nginx))
+		})
+	}
+}
+
+func TestCheckExternalContainerConfigSharedSkipsSFTP(t *testing.T) {
+	original := *settings.NginxSettings
+	t.Cleanup(func() { *settings.NginxSettings = original })
+
+	// ConfigDir is unwritable so any attempt to create the probe would fail
+	// loudly instead of being skipped.
+	*settings.NginxSettings = settings.Nginx{
+		HostMode:       settings.HostModeSSH,
+		HostAccessMode: settings.HostAccessModeSFTP,
+		ConfigDir:      filepath.Join(t.TempDir(), "missing"),
+	}
+
+	assert.NoError(t, CheckExternalContainerConfigShared())
 }

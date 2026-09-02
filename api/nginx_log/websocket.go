@@ -1,10 +1,12 @@
 package nginx_log
 
 import (
+	"bytes"
 	"encoding/json"
 	"io"
 	"os"
 	"runtime"
+	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/middleware"
@@ -74,6 +76,19 @@ func tailNginxLog(writer *helper.SafeWebSocketWriter, controlChan chan controlSt
 		}
 	}()
 
+	usesSFTP, err := nginx.UsesSFTPTarget()
+	if err != nil {
+		errChan <- err
+		return
+	}
+	if usesSFTP {
+		tailSFTPNginxLog(writer, controlChan, errChan)
+		return
+	}
+	tailLocalNginxLog(writer, controlChan, errChan)
+}
+
+func tailLocalNginxLog(writer *helper.SafeWebSocketWriter, controlChan chan controlStruct, errChan chan error) {
 	control := <-controlChan
 
 	for {
@@ -89,7 +104,7 @@ func tailNginxLog(writer *helper.SafeWebSocketWriter, controlChan chan controlSt
 			Whence: io.SeekEnd,
 		}
 
-		stat, err := os.Stat(logPath)
+		stat, err := nginx.Stat(logPath)
 		if os.IsNotExist(err) {
 			errChan <- cosy.WrapErrorWithParams(nginx_log.ErrLogFileNotExists, logPath)
 			return
@@ -132,6 +147,101 @@ func tailNginxLog(writer *helper.SafeWebSocketWriter, controlChan chan controlSt
 				break
 			}
 		}
+	}
+}
+
+func tailSFTPNginxLog(writer *helper.SafeWebSocketWriter, controlChan chan controlStruct, errChan chan error) {
+	control := <-controlChan
+
+	for {
+		logPath, err := getLogPath(&control)
+		if err != nil {
+			errChan <- err
+			return
+		}
+
+		stat, err := nginx.Stat(logPath)
+		if os.IsNotExist(err) {
+			errChan <- cosy.WrapErrorWithParams(nginx_log.ErrLogFileNotExists, logPath)
+			return
+		}
+		if err != nil {
+			errChan <- err
+			return
+		}
+		if !stat.Mode().IsRegular() {
+			errChan <- cosy.WrapErrorWithParams(nginx_log.ErrLogFileNotRegular, logPath)
+			return
+		}
+
+		file, err := nginx.Open(logPath)
+		if err != nil {
+			errChan <- err
+			return
+		}
+		offset := stat.Size()
+		var pending []byte
+		ticker := time.NewTicker(500 * time.Millisecond)
+		next := false
+
+		for !next {
+			select {
+			case control = <-controlChan:
+				next = true
+			case <-ticker.C:
+				current, statErr := nginx.Stat(logPath)
+				if statErr != nil {
+					ticker.Stop()
+					_ = file.Close()
+					errChan <- statErr
+					return
+				}
+				if current.Size() < offset {
+					_ = file.Close()
+					file, err = nginx.Open(logPath)
+					if err != nil {
+						ticker.Stop()
+						errChan <- err
+						return
+					}
+					offset = 0
+					pending = nil
+				}
+				if current.Size() == offset {
+					continue
+				}
+				if _, err = file.Seek(offset, io.SeekStart); err != nil {
+					ticker.Stop()
+					_ = file.Close()
+					errChan <- err
+					return
+				}
+				chunk, readErr := io.ReadAll(io.LimitReader(file, current.Size()-offset))
+				if readErr != nil {
+					ticker.Stop()
+					_ = file.Close()
+					errChan <- readErr
+					return
+				}
+				offset += int64(len(chunk))
+				pending = append(pending, chunk...)
+				lines := bytes.Split(pending, []byte{'\n'})
+				pending = append(pending[:0], lines[len(lines)-1]...)
+				for _, line := range lines[:len(lines)-1] {
+					if err = writer.WriteMessage(websocket.TextMessage, line); err != nil {
+						ticker.Stop()
+						_ = file.Close()
+						if helper.IsUnexpectedWebsocketError(err) {
+							errChan <- errors.Wrap(err, "error tailSFTPNginxLog write message")
+						}
+						return
+					}
+				}
+			}
+		}
+
+		ticker.Stop()
+		_ = file.Close()
 	}
 }
 

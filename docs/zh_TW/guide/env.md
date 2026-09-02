@@ -158,3 +158,29 @@
 
 - NGINX_UI_PREDEFINED_USER_NAME
 - NGINX_UI_PREDEFINED_USER_PASSWORD
+
+## 透過 SSH 控制宿主機
+
+::: info
+這些變數用於 Nginx UI 在 Docker 容器中透過 SSH 控制宿主機上原生安裝的 nginx 服務。
+:::
+
+| 變數 | 描述 |
+|---|---|
+| `NGINX_UI_NGINX_HOST_MODE` | 設定為 `ssh` 以啟用宿主機 SSH 控制 |
+| `NGINX_UI_NGINX_HOST_ACCESS_MODE` | `sftp` 或 `mounted`。SSH 模式下必填：容器透過 SFTP 還是透過 bind mount 存取宿主機 nginx 檔案 |
+| `NGINX_UI_NGINX_HOST_KEY_SOURCE` | `generated`（預設）、`existing` 或 `provided`：SSH 私鑰的來源 |
+| `NGINX_UI_NGINX_HOST_ADDRESS` | 遠端 `host:port`，例如 `host.docker.internal:22` |
+| `NGINX_UI_NGINX_HOST_USER` | 宿主機上的 SSH 使用者 |
+| `NGINX_UI_NGINX_HOST_PRIVATE_KEY_PATH` | 容器內的私鑰路徑 |
+| `NGINX_UI_NGINX_HOST_KNOWN_HOSTS_PATH` | 容器內的 known_hosts 允許清單路徑 |
+| `NGINX_UI_NGINX_HOST_SUDO_PREFIX` | 預設為 `sudo -n` |
+| `NGINX_UI_NGINX_HOST_SERVICE_MANAGER` | `systemd`（預設）或 `launchd` |
+| `NGINX_UI_NGINX_HOST_SYSTEMD_UNIT_NAME` | 預設為 `nginx.service` |
+| `NGINX_UI_NGINX_HOST_SYSTEMCTL_PATH` | 宿主機上 systemctl 的絕對路徑 |
+| `NGINX_UI_NGINX_HOST_LAUNCHD_SERVICE` | launchd 標籤，預設為 `homebrew.mxcl.nginx` |
+| `NGINX_UI_NGINX_HOST_LAUNCHCTL_PATH` | launchctl 的絕對路徑，預設為 `/bin/launchctl` |
+| `NGINX_UI_NGINX_HOST_CONFIG_DIR` | 宿主機側的 nginx 設定目錄 |
+| `NGINX_UI_NGINX_HOST_LOG_DIR` | 宿主機側的 nginx 日誌目錄 |
+| `NGINX_UI_NGINX_SBIN_PATH` | SSH 模式下選填：宿主機上 nginx 執行檔的絕對路徑。留空時，Nginx UI 會解析服務管理器的預設值（systemd 為 `/usr/sbin/nginx`，launchd 為 `/opt/homebrew/opt/nginx/bin/nginx`）。產生的 sudoers 允許清單會精確比對解析後的路徑 |
+| `NGINX_UI_DISABLE_BUNDLED_NGINX` | 設定為 `true` 以停用容器內建的 nginx（SSH 模式下必需） |

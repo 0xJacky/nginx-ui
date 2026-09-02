@@ -4,7 +4,6 @@ import (
 	"os"
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
-	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -81,11 +80,15 @@ func detachFromLocalNginx(name string) error {
 		return err
 	}
 
-	if !helper.FileExists(enabledPath) {
+	enabledExists, err := nginx.Exists(enabledPath)
+	if err != nil {
+		return err
+	}
+	if !enabledExists {
 		return nil
 	}
 
-	if err := os.Remove(enabledPath); err != nil && !os.IsNotExist(err) {
+	if err := nginx.Remove(enabledPath); err != nil && !os.IsNotExist(err) {
 		return err
 	}
 
@@ -120,5 +123,11 @@ func IsDeployed(name string) bool {
 		return false
 	}
 
-	return helper.FileExists(enabledPath)
+	enabledExists, err := nginx.Exists(enabledPath)
+	if err != nil {
+		logger.Error(err)
+		return false
+	}
+
+	return enabledExists
 }

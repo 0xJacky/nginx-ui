@@ -2,10 +2,10 @@ package config
 
 import (
 	"net/http"
-	"os"
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
 )
@@ -51,7 +51,7 @@ func DeleteConfig(c *gin.Context) {
 	}
 
 	// Delete the file or directory
-	err = os.RemoveAll(fullPath)
+	err = nginx.RemoveAll(fullPath)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

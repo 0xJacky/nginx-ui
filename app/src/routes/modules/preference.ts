@@ -11,4 +11,14 @@ export const preferenceRoutes: RouteRecordRaw[] = [
       icon: SettingOutlined,
     },
   },
+  {
+    path: 'preference/nginx-host-setup',
+    name: 'Nginx Host SSH Setup',
+    component: () => import('@/views/preference/NginxHostSetup.vue'),
+    meta: {
+      name: () => $gettext('Host SSH Setup'),
+      hiddenInSidebar: true,
+      lastRouteName: 'Preference',
+    },
+  },
 ]

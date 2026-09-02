@@ -29,6 +29,14 @@ export const zhCNConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           ]
         },
         {
+          text: '部署指南',
+          collapsed: false,
+          items: [
+            { text: '在 Docker 中管理宿主机 Nginx', link: '/zh_CN/guide/manage-host-nginx-from-docker' },
+            { text: '使用集群节点管理多主机 Nginx', link: '/zh_CN/guide/manage-multi-host-nginx-with-cluster' }
+          ]
+        },
+        {
           text: '开发',
           collapsed: false,
           items: [

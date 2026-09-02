@@ -153,7 +153,7 @@ func GetSite(c *gin.Context) {
 		return
 	}
 
-	file, err := os.Stat(path)
+	file, err := nginx.Stat(path)
 	if os.IsNotExist(err) {
 		c.JSON(http.StatusNotFound, gin.H{
 			"message": "file not found",
@@ -185,7 +185,7 @@ func GetSite(c *gin.Context) {
 	}
 
 	if siteModel.Advanced {
-		origContent, err := os.ReadFile(path)
+		origContent, err := nginx.ReadFile(path)
 		if err != nil {
 			cosy.ErrHandler(c, err)
 			return
@@ -348,7 +348,11 @@ func disableMaintenanceIfExists(name string) error {
 		return err
 	}
 
-	if _, err := os.Stat(maintenanceConfigPath); err == nil {
+	maintenanceExists, err := nginx.Exists(maintenanceConfigPath)
+	if err != nil {
+		return err
+	}
+	if maintenanceExists {
 		// Site is in maintenance mode, disable it first
 		err := site.DisableMaintenance(name)
 		if err != nil {
@@ -533,7 +537,12 @@ func EnableMaintenanceSite(c *gin.Context) {
 		return
 	}
 
-	if _, err := os.Stat(enabledConfigPath); err == nil {
+	enabledExists, err := nginx.Exists(enabledConfigPath)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+	if enabledExists {
 		// Site is already enabled, disable normal site first
 		err := site.Disable(name)
 		if err != nil {

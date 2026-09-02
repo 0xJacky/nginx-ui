@@ -86,11 +86,12 @@ const formRef = ref<FormInstance>()
 const userStore = useUserStore()
 const settingsStore = useSettingsStore()
 const { login, passkeyLogin } = userStore
-const { secureSessionId } = storeToRefs(userStore)
+const { setSecureSession } = userStore
 
 interface LoginSuccessOptions {
   token?: string
   secureSessionId?: string
+  secureSessionTTL?: number
   loginType?: 'normal' | 'passkey'
   passkeyRawId?: string
   showSuccessMessage?: boolean
@@ -119,7 +120,7 @@ async function handleLoginSuccess(options: LoginSuccessOptions = {}) {
   await nextTick()
 
   if (sessionId) {
-    secureSessionId.value = sessionId
+    setSecureSession(sessionId, options.secureSessionTTL)
   }
 
   await userStore.fetchShortToken()
@@ -151,6 +152,7 @@ function onSubmit() {
           await handleLoginSuccess({
             token: r.token,
             secureSessionId: r.secure_session_id,
+            secureSessionTTL: r.secure_session_ttl,
           })
           break
         case 199:
@@ -168,6 +170,7 @@ function onSubmit() {
           await handleLoginSuccess({
             token: verified.token,
             secureSessionId: verified.secure_session_id,
+            secureSessionTTL: verified.secure_session_ttl,
             loginType: 'passkey',
             passkeyRawId: assertion.rawId,
           })
@@ -277,6 +280,7 @@ async function handlePasskeyLogin() {
       await handleLoginSuccess({
         token: r.token,
         secureSessionId: r.secure_session_id,
+        secureSessionTTL: r.secure_session_ttl,
         loginType: 'passkey',
         passkeyRawId: asseResp.rawId,
       })

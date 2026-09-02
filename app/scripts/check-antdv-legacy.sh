@@ -31,6 +31,8 @@ check "Input addon"                         "addon-before|addon-after|#addonBefo
 # underlying VcSelect/VcMenu, so they render an empty dropdown with no error anywhere.
 check "Select option children (inert! use :options)" "<ASelectOption|<ASelectOptGroup"
 check "Menu item children (inert! use :items)"       "<AMenuItem|<ASubMenu|<AMenuDivider"
+check "Divider orientation (now means axis)"  "<ADivider[^>]*orientation=\"(left|right|center)\""
+check "Typography copyable tooltip (is tooltips)" ":copyable=\"\\{[^\"]*tooltip:"
 check "removed components"                  "<AList|<AListItem|<AComment|<AStep[^s]|<AIcon"
 check ".ant-modal-content (not sizing box)" "\.ant-modal-content"
 check "Form.useForm / validateInfos"        "Form\.useForm|validateInfos"

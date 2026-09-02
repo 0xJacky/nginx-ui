@@ -29,9 +29,11 @@ func withFixture(t *testing.T, name string) string {
 	bundledNginxUIConfPath = target
 	t.Cleanup(func() { bundledNginxUIConfPath = orig })
 
-	// Force the docker guard on.
+	// Force the docker guard on. Every variable ShouldManageBundledNginx reads
+	// is pinned so an ambient value from the host cannot skip the check.
 	t.Setenv("NGINX_UI_OFFICIAL_DOCKER", "true")
 	t.Setenv("NGINX_UI_IGNORE_DOCKER_SOCKET", "")
+	t.Setenv("NGINX_UI_DISABLE_BUNDLED_NGINX", "")
 	return target
 }
 
@@ -70,6 +72,7 @@ func TestCheckBundledNginxUIConf_MissingFile(t *testing.T) {
 	t.Cleanup(func() { bundledNginxUIConfPath = orig })
 	t.Setenv("NGINX_UI_OFFICIAL_DOCKER", "true")
 	t.Setenv("NGINX_UI_IGNORE_DOCKER_SOCKET", "")
+	t.Setenv("NGINX_UI_DISABLE_BUNDLED_NGINX", "")
 
 	// Missing file is delegated to other tasks; CheckFunc returns nil.
 	assert.NoError(t, CheckBundledNginxUIConf())
@@ -133,6 +136,7 @@ func TestCheckBundledNginxUIConf_RunsEvenWithDockerSocketIgnored(t *testing.T) {
 	// to opt out of the docker-socket feature, not all docker-only checks.
 	t.Setenv("NGINX_UI_OFFICIAL_DOCKER", "true")
 	t.Setenv("NGINX_UI_IGNORE_DOCKER_SOCKET", "true")
+	t.Setenv("NGINX_UI_DISABLE_BUNDLED_NGINX", "")
 
 	dir := t.TempDir()
 	target := filepath.Join(dir, "nginx-ui.conf")
@@ -249,6 +253,9 @@ func TestPatchOnDiskWithBackup_RewritesAndBacksUp(t *testing.T) {
 func TestPatchOnDiskWithBackup_DoesNotMutateTargetOnWriteError(t *testing.T) {
 	if runtime.GOOS == "windows" {
 		t.Skip("POSIX-only test: relies on chmod 0o555 to make a directory read-only")
+	}
+	if os.Geteuid() == 0 {
+		t.Skip("root bypasses directory permission bits, so the write cannot be made to fail")
 	}
 
 	target := withFixture(t, "customized-unfixed.conf")

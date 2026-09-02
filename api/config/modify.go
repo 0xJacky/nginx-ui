@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
-	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
@@ -35,7 +35,12 @@ func EditConfig(c *gin.Context) {
 		return
 	}
 
-	if !helper.FileExists(absPath) {
+	exists, err := nginx.Exists(absPath)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+	if !exists {
 		c.JSON(http.StatusNotFound, gin.H{
 			"message": "file not found",
 		})

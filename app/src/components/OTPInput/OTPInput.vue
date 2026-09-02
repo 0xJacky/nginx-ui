@@ -289,5 +289,18 @@ defineExpose({
     -webkit-appearance: none;
     margin: 0;
   }
+
+  // Six fixed 60px columns overflow the 2FA modal on narrow screens, so let
+  // the boxes share the available width there instead of the fixed size.
+  @media (max-width: 600px) {
+    flex: 1 1 0;
+    width: auto;
+    height: auto;
+    min-width: 0;
+    max-width: 40px;
+    aspect-ratio: 1;
+    margin: 0 4px;
+    font-size: 18px;
+  }
 }
 </style>

@@ -28,9 +28,16 @@ type CallbackInfo struct {
 // PostScanCallback is called after all scan callbacks are executed
 type PostScanCallback func()
 
-// ScanConfig holds scanner configuration
+// ScanConfig holds scanner configuration.
+//
+// PeriodicScanInterval is the safety-net rescan interval used when the config
+// directory is on the local filesystem and fsnotify delivers change events.
+// RemoteScanInterval replaces it when the config directory lives on a remote
+// host reached over SFTP: there is no inotify channel for a remote
+// filesystem, so the scanner polls at this (much shorter) interval instead.
 type ScanConfig struct {
 	PeriodicScanInterval   time.Duration
+	RemoteScanInterval     time.Duration
 	InitialScanTimeout     time.Duration
 	ScanTimeoutGrace       time.Duration
 	FileEventDebounce      time.Duration
@@ -46,6 +53,7 @@ type ScanConfig struct {
 func DefaultScanConfig() ScanConfig {
 	return ScanConfig{
 		PeriodicScanInterval:   5 * time.Minute,
+		RemoteScanInterval:     30 * time.Second,
 		InitialScanTimeout:     15 * time.Second,
 		ScanTimeoutGrace:       2 * time.Second,
 		FileEventDebounce:      100 * time.Millisecond,
@@ -93,6 +101,7 @@ type Scanner struct {
 	ctx        context.Context
 	cancel     context.CancelFunc
 	watcher    *fsnotify.Watcher
+	polling    bool // true when the config directory is remote and fsnotify is unavailable
 	scanTicker *time.Ticker
 	scanning   bool
 	scanMutex  sync.RWMutex
@@ -444,21 +453,30 @@ func (s *Scanner) Initialize(ctx context.Context) error {
 	// Create cancellable context for this scanner instance
 	s.ctx, s.cancel = context.WithCancel(ctx)
 
-	watcher, err := fsnotify.NewWatcher()
-	if err != nil {
-		return err
-	}
-	s.watcher = watcher
+	s.polling = shouldPollForChanges()
+	if s.polling {
+		// The config directory is on a remote host accessed over SFTP. fsnotify
+		// can only observe the local filesystem, so instead of watching the
+		// container's own copy of the path we rescan the remote tree on a short
+		// interval (see ScanConfig.RemoteScanInterval).
+		logger.Infof("Nginx config directory is accessed over SFTP; file watching is disabled and the index is refreshed every %s", scanConfig.RemoteScanInterval)
+	} else {
+		watcher, err := fsnotify.NewWatcher()
+		if err != nil {
+			return err
+		}
+		s.watcher = watcher
 
-	// Watch all directories recursively first (this is faster than scanning)
-	if err := s.watchAllDirectories(); err != nil {
-		return err
-	}
+		// Watch all directories recursively first (this is faster than scanning)
+		if err := s.watchAllDirectories(); err != nil {
+			return err
+		}
 
-	// Start background processes
-	s.wg.Go(func() {
-		s.watchForChanges()
-	})
+		// Start background processes
+		s.wg.Go(func() {
+			s.watchForChanges()
+		})
+	}
 
 	s.wg.Go(func() {
 		s.periodicScan()
@@ -470,6 +488,28 @@ func (s *Scanner) Initialize(ctx context.Context) error {
 	})
 
 	return nil
+}
+
+// shouldPollForChanges reports whether the scanner has to fall back to
+// periodic polling because the nginx config directory is not on the local
+// filesystem. Local and external-container modes (and host_via_ssh with a
+// mounted config directory) keep using fsnotify. An invalid access mode is
+// logged and treated like the local filesystem so the scanner still starts.
+func shouldPollForChanges() bool {
+	usesSFTP, err := nginx.UsesSFTPTarget()
+	if err != nil {
+		logger.Warnf("Cannot determine nginx target filesystem, falling back to local file watching: %v", err)
+		return false
+	}
+	return usesSFTP
+}
+
+// periodicScanInterval returns the rescan interval for the current mode.
+func (s *Scanner) periodicScanInterval() time.Duration {
+	if s.polling && scanConfig.RemoteScanInterval > 0 {
+		return scanConfig.RemoteScanInterval
+	}
+	return scanConfig.PeriodicScanInterval
 }
 
 // watchAllDirectories recursively adds all directories under nginx config path to watcher
@@ -518,7 +558,7 @@ func (s *Scanner) watchAllDirectories() error {
 
 // periodicScan runs periodic scans
 func (s *Scanner) periodicScan() {
-	s.scanTicker = time.NewTicker(scanConfig.PeriodicScanInterval)
+	s.scanTicker = time.NewTicker(s.periodicScanInterval())
 	defer s.scanTicker.Stop()
 
 	for {
@@ -693,7 +733,7 @@ func (s *Scanner) handleFileEvent(event fsnotify.Event) {
 
 	// Add new directories to watch (but only if they could contain config files)
 	if event.Has(fsnotify.Create) {
-		if fi, err := os.Stat(event.Name); err == nil && fi.IsDir() {
+		if fi, err := nginx.Stat(event.Name); err == nil && fi.IsDir() {
 			// Skip adding directories that are clearly static asset directories
 			if shouldWatchDirectory(event.Name) {
 				if err := s.watcher.Add(event.Name); err != nil {
@@ -721,7 +761,7 @@ func (s *Scanner) handleFileEvent(event fsnotify.Event) {
 	}
 
 	// Use Lstat to get symlink info without following it
-	fi, err := os.Lstat(event.Name)
+	fi, err := nginx.Lstat(event.Name)
 	if err != nil {
 		return
 	}
@@ -730,7 +770,7 @@ func (s *Scanner) handleFileEvent(event fsnotify.Event) {
 	var targetIsDir bool
 	if fi.Mode()&os.ModeSymlink != 0 {
 		// For symlinks, check the target
-		targetFi, err := os.Stat(event.Name)
+		targetFi, err := nginx.Stat(event.Name)
 		if err != nil {
 			logger.Debug("Symlink target not accessible:", event.Name, err)
 			return
@@ -778,7 +818,10 @@ func (s *Scanner) scanSingleFileInternal(filePath string, skipPostScan bool) err
 	}
 
 	// Get file info to check type and size
-	fileInfo, err := os.Lstat(filePath) // Use Lstat to avoid following symlinks
+	// Use Lstat to avoid following symlinks. All file access goes through the
+	// nginx target filesystem so the index describes the host's config tree in
+	// host_via_ssh + sftp mode instead of the container's own copy.
+	fileInfo, err := nginx.Lstat(filePath)
 	if err != nil {
 		return err
 	}
@@ -791,7 +834,7 @@ func (s *Scanner) scanSingleFileInternal(filePath string, skipPostScan bool) err
 	// Handle symlinks carefully
 	if fileInfo.Mode()&os.ModeSymlink != 0 {
 		// Check what the symlink points to
-		targetInfo, err := os.Stat(filePath)
+		targetInfo, err := nginx.Stat(filePath)
 		if err != nil {
 			logger.Debugf("Skipping symlink with inaccessible target: %s (%v)", filePath, err)
 			return nil
@@ -818,9 +861,9 @@ func (s *Scanner) scanSingleFileInternal(filePath string, skipPostScan bool) err
 	}
 
 	// Read file content
-	content, err := os.ReadFile(filePath)
+	content, err := nginx.ReadFile(filePath)
 	if err != nil {
-		logger.Errorf("os.ReadFile failed for %s: %v", filePath, err)
+		logger.Errorf("ReadFile failed for %s: %v", filePath, err)
 		return err
 	}
 
@@ -929,7 +972,7 @@ func (s *Scanner) scanDirectoryRecursiveInternal(ctx context.Context, root strin
 	}
 
 	// Resolve symlinks and check for loops
-	realPath, err := filepath.EvalSymlinks(root)
+	realPath, err := nginx.EvalSymlinks(root)
 	if err != nil {
 		// If we can't resolve, use original path
 		realPath = root
@@ -943,7 +986,7 @@ func (s *Scanner) scanDirectoryRecursiveInternal(ctx context.Context, root strin
 	visited[realPath] = true
 
 	// Read directory entries
-	entries, err := os.ReadDir(root)
+	entries, err := nginx.ReadDir(root)
 	if err != nil {
 		logger.Errorf("Failed to read directory %s: %v", root, err)
 		return err
@@ -990,7 +1033,7 @@ func (s *Scanner) scanDirectoryRecursiveInternal(ctx context.Context, root strin
 
 			// Handle symlinks
 			if entryType&os.ModeSymlink != 0 {
-				targetInfo, err := os.Stat(fullPath)
+				targetInfo, err := nginx.Stat(fullPath)
 				if err == nil {
 					if targetInfo.IsDir() {
 						// Check if symlink directory should be scanned
@@ -1004,7 +1047,7 @@ func (s *Scanner) scanDirectoryRecursiveInternal(ctx context.Context, root strin
 						continue
 					}
 				} else {
-					logger.Warnf("os.Stat failed for symlink %s: %v", fullPath, err)
+					logger.Warnf("Stat failed for symlink %s: %v", fullPath, err)
 				}
 			}
 

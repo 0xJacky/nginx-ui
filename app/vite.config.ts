@@ -91,7 +91,9 @@ export default defineConfig(({ mode }) => {
       proxy: {
         '/api': {
           target: env.VITE_PROXY_TARGET || 'http://localhost:9001',
-          changeOrigin: true,
+          // Keep the browser Origin header. Rewriting it makes websocket
+          // authentication fail when the dev server and backend ports differ.
+          changeOrigin: false,
           secure: false,
           ws: true,
         },

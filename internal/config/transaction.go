@@ -36,6 +36,10 @@ func TryLockApply() (release func(), ok bool) {
 // nginx test or reload can put the previous state back. A snapshot taken of a
 // missing file restores by removing the file again, which is what a newly
 // created configuration needs.
+//
+// Every file operation goes through the nginx target filesystem, so the
+// snapshot also covers configuration that lives on an SSH host reached over
+// SFTP rather than on a local or bind-mounted directory.
 type FileSnapshot struct {
 	exists  bool
 	content []byte
@@ -44,7 +48,7 @@ type FileSnapshot struct {
 
 // CaptureFile snapshots the configuration file at path.
 func CaptureFile(path string) (FileSnapshot, error) {
-	content, err := os.ReadFile(path)
+	content, err := nginx.ReadFile(path)
 	if os.IsNotExist(err) {
 		return FileSnapshot{}, nil
 	}
@@ -52,7 +56,7 @@ func CaptureFile(path string) (FileSnapshot, error) {
 		return FileSnapshot{}, err
 	}
 
-	info, err := os.Stat(path)
+	info, err := nginx.Stat(path)
 	if err != nil {
 		return FileSnapshot{}, err
 	}
@@ -68,7 +72,7 @@ func CaptureFile(path string) (FileSnapshot, error) {
 // not exist removes the file the caller created.
 func (snapshot FileSnapshot) Restore(path string) error {
 	if !snapshot.exists {
-		if err := os.Remove(path); err != nil && !os.IsNotExist(err) {
+		if err := nginx.Remove(path); err != nil && !os.IsNotExist(err) {
 			return err
 		}
 		return nil
@@ -81,7 +85,7 @@ func (snapshot FileSnapshot) Restore(path string) error {
 // symlink targets and file-level bind mounts. The caller keeps a snapshot and
 // restores it when validation or reload fails.
 func WriteFile(path string, content []byte, mode os.FileMode) error {
-	return os.WriteFile(path, content, mode)
+	return nginx.WriteFile(path, content, mode)
 }
 
 // RollbackError runs the rollback and reports the original failure, adding the
@@ -119,7 +123,7 @@ func reloadRestored() error {
 // RemoveEnabledLink drops the symlink that enables a configuration. A link that
 // is already gone is not an error: the desired state has been reached.
 func RemoveEnabledLink(path string) error {
-	if err := os.Remove(path); err != nil && !os.IsNotExist(err) {
+	if err := nginx.Remove(path); err != nil && !os.IsNotExist(err) {
 		return err
 	}
 	return nil

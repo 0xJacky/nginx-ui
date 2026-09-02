@@ -37,9 +37,10 @@ type LoginResponse struct {
 	Error   string `json:"error,omitempty"`
 	Code    int    `json:"code"`
 	*user.AccessTokenPayload
-	SecureSessionID string `json:"secure_session_id,omitempty"`
-	PreAuthID       string `json:"pre_auth_id,omitempty"`
-	Options         any    `json:"options,omitempty"`
+	SecureSessionID  string `json:"secure_session_id,omitempty"`
+	SecureSessionTTL int    `json:"secure_session_ttl,omitempty"`
+	PreAuthID        string `json:"pre_auth_id,omitempty"`
+	Options          any    `json:"options,omitempty"`
 }
 
 func Login(c *gin.Context) {
@@ -79,6 +80,7 @@ func Login(c *gin.Context) {
 
 	// Check if the user enables 2FA
 	var secureSessionID string
+	var secureSessionTTL int
 
 	loginProof := user.LoginProofPassword
 	if u.EnabledOTP() {
@@ -98,6 +100,7 @@ func Login(c *gin.Context) {
 		}
 
 		secureSessionID = user.SetSecureSessionID(u.ID)
+		secureSessionTTL = int(user.SecureSessionDuration().Seconds())
 		loginProof = user.LoginProofOTP
 	} else if u.EnabledPasskey() {
 		beginPasskeyPreAuthentication(c, u)
@@ -121,6 +124,7 @@ func Login(c *gin.Context) {
 		Message:            "ok",
 		AccessTokenPayload: accessToken,
 		SecureSessionID:    secureSessionID,
+		SecureSessionTTL:   secureSessionTTL,
 	})
 }
 

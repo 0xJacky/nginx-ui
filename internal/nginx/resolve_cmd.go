@@ -2,7 +2,6 @@ package nginx
 
 import (
 	"os/exec"
-	"runtime"
 	"sync"
 
 	"github.com/0xJacky/Nginx-UI/settings"
@@ -35,16 +34,40 @@ var (
 	nginxTOutputCache  nginxStringCache
 )
 
+// resetPathCaches drops everything derived from the target nginx. The values
+// describe one control target, so switching targets must not keep serving the
+// previous one.
+func resetPathCaches() {
+	nginxSbinPathCache.set("")
+	nginxVOutputCache.set("")
+	nginxTOutputCache.set("")
+	nginxPrefixCache.set("")
+	nginxPIDPathCache.set("")
+}
+
 // Returns the path to the nginx executable
 func getNginxSbinPath() string {
-	return nginxSbinPathCache.get(func() string {
-		if settings.NginxSettings.SbinPath != "" {
-			return settings.NginxSettings.SbinPath
-		}
+	// The configured path is read on every call so a settings change takes
+	// effect without a restart. Only the discovered path is cached.
+	if settings.NginxSettings.SbinPath != "" {
+		return settings.NginxSettings.SbinPath
+	}
 
+	// The binary runs on another machine in every non-local mode, so a lookup
+	// in this container's PATH would name a path the target may not have.
+	switch settings.NginxSettings.ControlMode() {
+	case settings.ControlModeHostViaSSH:
+		return settings.NginxSettings.GetHostSbinPath()
+	case settings.ControlModeExternalContainer:
+		// docker exec resolves the bare name through the container's PATH,
+		// exactly as the `nginx -t` fallback already does.
+		return "nginx"
+	}
+
+	return nginxSbinPathCache.get(func() string {
 		var path string
 		var err error
-		if runtime.GOOS == "windows" {
+		if targetGOOS() == "windows" {
 			path, err = exec.LookPath("nginx.exe")
 		} else {
 			path, err = exec.LookPath("nginx")

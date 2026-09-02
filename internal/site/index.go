@@ -2,7 +2,6 @@ package site
 
 import (
 	"net"
-	"os"
 	"path/filepath"
 	"regexp"
 	"strconv"
@@ -165,9 +164,9 @@ func scanForSite(configPath string, content []byte) error {
 			// Resolve relative paths: prefer same directory; fallback to nginx root (allowedRoot)
 			if !filepath.IsAbs(includePath) {
 				candidate := filepath.Join(baseDir, includePath)
-				if _, err := os.Stat(candidate); err != nil {
+				if _, err := nginx.Stat(candidate); err != nil {
 					altCandidate := filepath.Join(allowedRoot, includePath)
-					if _, altErr := os.Stat(altCandidate); altErr == nil {
+					if _, altErr := nginx.Stat(altCandidate); altErr == nil {
 						candidate = altCandidate
 					}
 				}
@@ -187,7 +186,7 @@ func scanForSite(configPath string, content []byte) error {
 				continue
 			}
 
-			includeContent, err := os.ReadFile(includeAbs)
+			includeContent, err := nginx.ReadFile(includeAbs)
 			if err != nil {
 				logger.Debugf("Failed to read include file during site scan: %s, error: %v", includeAbs, err)
 				continue
