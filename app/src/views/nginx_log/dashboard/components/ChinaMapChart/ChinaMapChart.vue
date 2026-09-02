@@ -10,7 +10,6 @@ import { storeToRefs } from 'pinia'
 import VChart from 'vue-echarts'
 import nginx_log from '@/api/nginx_log'
 import { useSettingsStore } from '@/pinia'
-import china from './china.json'
 
 const props = defineProps<{
   data: ChinaMapData[] | null
@@ -41,9 +40,9 @@ interface ChinaMapData {
   cities?: CityData[]
 }
 
-// Public boundary API for province-level "full" geojson (includes city children).
-// Only province adcodes present in china.json are ever requested.
+// Public boundary API for national and province-level GeoJSON.
 const CITY_BOUND_API = 'https://geo.datav.aliyun.com/areas_v3/bound'
+const CHINA_BOUND_API = `${CITY_BOUND_API}/100000_full.json`
 
 const settings = useSettingsStore()
 const { theme } = storeToRefs(settings)
@@ -57,13 +56,43 @@ interface DrilldownState {
 const drilldown = ref<DrilldownState | null>(null)
 const drillLoading = ref(false)
 const cityChartData = ref<CityData[]>([])
+const isChinaMapLoaded = ref(false)
 
 // Cache of already-fetched/registered city-level maps, keyed by adcode.
 const registeredCityMaps = new Map<string, string[]>()
+const provinceAdcodes = new Map<string, string>()
 
 function findProvinceAdcode(name: string): string | null {
-  const feature = (china as { features: Array<{ id: string, properties: { name: string } }> }).features.find(f => f.properties.name === name)
-  return feature?.id ?? null
+  return provinceAdcodes.get(name) ?? null
+}
+
+function normalizeProvinceName(name: string): string {
+  return name.replace(/(壮族自治区|回族自治区|维吾尔自治区|特别行政区|自治区|省|市)$/, '')
+}
+
+async function loadChinaMap() {
+  try {
+    const res = await fetch(CHINA_BOUND_API)
+    if (!res.ok)
+      throw new Error(`Failed to fetch China boundaries: ${res.status}`)
+
+    const geojson = await res.json() as {
+      features: Array<{ properties: { name: string, adcode?: string | number } }>
+    }
+
+    for (const feature of geojson.features) {
+      const name = normalizeProvinceName(feature.properties.name)
+      feature.properties.name = name
+      if (feature.properties.adcode !== undefined)
+        provinceAdcodes.set(name, String(feature.properties.adcode))
+    }
+
+    registerMap('china', geojson as unknown as Parameters<typeof registerMap>[1])
+    isChinaMapLoaded.value = true
+  }
+  catch {
+    message.error($gettext('Failed to load China map data'))
+  }
 }
 
 // City boundary feature names carry administrative suffixes (市/县/州/盟/地区)
@@ -171,9 +200,9 @@ const columns = computed(() => {
 
 const chartRef = useTemplateRef<InstanceType<typeof VChart>>('chartRef')
 
-// Register China map on component mount
+// Load China map from Alibaba Cloud DataV on component mount.
 onMounted(() => {
-  registerMap('china', china as unknown as Parameters<typeof registerMap>[1])
+  void loadChinaMap()
 })
 
 const fontColor = computed(() => {
@@ -210,8 +239,8 @@ const tooltipTextColor = computed(() => {
 })
 
 const mapOption = computed((): EChartsOption => {
-  // Outside drilldown, no province data means nothing to show at all.
-  if (!drilldown.value && (!props.data || props.data.length === 0)) {
+  // Outside drilldown, wait for the registered map and require province data.
+  if (!drilldown.value && (!isChinaMapLoaded.value || !props.data || props.data.length === 0)) {
     return {}
   }
 
