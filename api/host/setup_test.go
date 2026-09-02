@@ -117,6 +117,19 @@ func TestHostKeyChangesResetSSHClientOnlyAfterSuccessfulWrite(t *testing.T) {
 			wantResets: 1,
 		},
 		{
+			name:    "reject algorithm mismatch",
+			handler: TrustScannedHostKey,
+			body: hostKeyTrustRequest{
+				HostAddress: hostAddress,
+				Algorithm:   "ssh-rsa",
+				Fingerprint: newFingerprint,
+				PublicKey:   newPublicKey,
+				Confirmed:   true,
+			},
+			wantStatus: http.StatusBadRequest,
+			wantResets: 0,
+		},
+		{
 			name:    "reject unconfirmed scanned key",
 			handler: TrustScannedHostKey,
 			body: hostKeyTrustRequest{
@@ -277,6 +290,9 @@ func TestGetPublicKeyRejectsRelativePath(t *testing.T) {
 
 	if recorder.Code != http.StatusBadRequest {
 		t.Fatalf("status = %d, want %d: %s", recorder.Code, http.StatusBadRequest, recorder.Body.String())
+	}
+	if !strings.Contains(recorder.Body.String(), setup.ErrPrivateKeyPathNotAbsolute.Error()) {
+		t.Fatalf("body = %s, want the scoped private key path error", recorder.Body.String())
 	}
 }
 

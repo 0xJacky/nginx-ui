@@ -17,6 +17,9 @@ var (
 	ErrInvalidPublicKey   = e.New(520008, "public key must be a single valid OpenSSH key line")
 	ErrInvalidAccessMode  = e.New(520009, "access mode must be either sftp or mounted")
 	ErrInvalidHostAddress = e.New(520010, "host address must be a hostname or IP with an optional port: {0}")
+
+	ErrPrivateKeyPathRequired    = e.New(520011, "private key path is required")
+	ErrPrivateKeyPathNotAbsolute = e.New(520012, "private key path must be absolute")
 )
 
 var (
@@ -26,4 +29,5 @@ var (
 	ErrKeyfileRead     = e.New(520004, "failed to read key file {0}: {1}")
 	ErrVerifyStep      = e.New(520005, "verify step {0} failed: {1}")
 	ErrDiscoveryFailed = e.New(520006, "failed to discover host nginx: {0}")
+	ErrKeyfileDelete   = e.New(520013, "failed to delete key file {0}: {1}")
 )

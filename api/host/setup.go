@@ -85,10 +85,10 @@ type keyPathRequest struct {
 func normalizePrivateKeyPath(path string) (string, error) {
 	path = strings.TrimSpace(path)
 	if path == "" {
-		return "", errors.New("private key path is required")
+		return "", setup.ErrPrivateKeyPathRequired
 	}
 	if !filepath.IsAbs(path) {
-		return "", errors.New("private key path must be absolute")
+		return "", setup.ErrPrivateKeyPathNotAbsolute
 	}
 	return filepath.Clean(path), nil
 }
@@ -110,7 +110,7 @@ func GenerateKeypair(c *gin.Context) {
 	}
 	path, err := normalizePrivateKeyPath(path)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		abortBadRequest(c, err)
 		return
 	}
 	if !isManagedPrivateKeyPath(path) {
@@ -139,7 +139,7 @@ func GetPublicKey(c *gin.Context) {
 	}
 	path, err := normalizePrivateKeyPath(path)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		abortBadRequest(c, err)
 		return
 	}
 	// The wizard's "existing key" flow reads a key the operator has typed but
@@ -172,11 +172,11 @@ func GetPublicKey(c *gin.Context) {
 func DeleteKeypair(c *gin.Context) {
 	path, err := normalizePrivateKeyPath(settings.NginxSettings.GetHostPrivateKeyPath())
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		abortBadRequest(c, err)
 		return
 	}
 	if err := os.Remove(path); err != nil && !errors.Is(err, os.ErrNotExist) {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		cosy.ErrHandler(c, cosy.WrapErrorWithParams(setup.ErrKeyfileDelete, path, err.Error()))
 		return
 	}
 	c.JSON(http.StatusNoContent, nil)
@@ -351,6 +351,16 @@ func hostKnownHostsPath() string {
 	return settings.NginxSettings.GetHostKnownHostsPath()
 }
 
+// requireHostKeyAlgorithm rejects a request whose declared algorithm does not
+// match the submitted key, so the wizard cannot store a key under the wrong
+// known_hosts algorithm.
+func requireHostKeyAlgorithm(parsed gossh.PublicKey, algorithm string) error {
+	if parsed.Type() != algorithm {
+		return cosy.WrapErrorWithParams(hostssh.ErrHostKeyAlgorithmMismatch, parsed.Type(), algorithm)
+	}
+	return nil
+}
+
 func parseAndVerifyPublicKey(publicKey, fingerprint string) (gossh.PublicKey, error) {
 	parsed, _, _, _, err := gossh.ParseAuthorizedKey([]byte(publicKey))
 	if err != nil {
@@ -430,8 +440,8 @@ func TrustScannedHostKey(c *gin.Context) {
 		cosy.ErrHandler(c, err)
 		return
 	}
-	if parsed.Type() != req.Algorithm {
-		c.JSON(http.StatusBadRequest, gin.H{"message": "algorithm mismatch", "expected": parsed.Type(), "got": req.Algorithm})
+	if err := requireHostKeyAlgorithm(parsed, req.Algorithm); err != nil {
+		abortBadRequest(c, err)
 		return
 	}
 	if err := hostssh.TrustHostKey(hostKnownHostsPath(), req.HostAddress, req.PublicKey); err != nil {
@@ -460,8 +470,8 @@ func ReplaceHostKey(c *gin.Context) {
 		cosy.ErrHandler(c, err)
 		return
 	}
-	if parsed.Type() != req.Algorithm {
-		c.JSON(http.StatusBadRequest, gin.H{"message": "algorithm mismatch", "expected": parsed.Type(), "got": req.Algorithm})
+	if err := requireHostKeyAlgorithm(parsed, req.Algorithm); err != nil {
+		abortBadRequest(c, err)
 		return
 	}
 	if err := hostssh.ReplaceHostKey(hostKnownHostsPath(), req.HostAddress, req.OldFingerprint, req.PublicKey); err != nil {
