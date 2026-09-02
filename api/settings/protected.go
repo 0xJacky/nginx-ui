@@ -21,28 +21,14 @@ func requireVerifiedTwoFactor(c *gin.Context, message string) bool {
 	return requireVerifiedSession(c, message)
 }
 
-// requireVerifiedTwoFactorOrProxy gates endpoints that only store a value. A
-// controller configuring a child node reaches them through middleware.Proxy(),
-// which signs the forwarded request as that node, so a node principal is
-// accepted the same way middleware.RequireSecureSession does. Rejecting it
-// would surface as an opaque 503, because the proxy rewrites 403 responses.
+// requireVerifiedTwoFactorOrProxy gates endpoints that only store a value. See
+// middleware.VerifiedTwoFactorOrProxy for why a node principal is accepted.
 func requireVerifiedTwoFactorOrProxy(c *gin.Context, message string) bool {
-	if _, ok := c.Get(nodeauth.GinPrincipalKey); ok {
-		return true
-	}
-
-	return requireVerifiedSession(c, message)
+	return middleware.VerifiedTwoFactorOrProxy(c, message)
 }
 
 func requireVerifiedSession(c *gin.Context, message string) bool {
-	if verified, _ := c.Get(middleware.SecureSessionVerifiedKey); verified != true {
-		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
-			"message": message,
-		})
-		return false
-	}
-
-	return true
+	return middleware.VerifiedSecureSession(c, message)
 }
 
 func GetProtectedSetting(c *gin.Context) {

@@ -138,6 +138,18 @@ var (
 	hostAddressPattern  = regexp.MustCompile(`^\[?[A-Za-z0-9._:\-]+\]?(:[0-9]{1,5})?$`)
 )
 
+// ValidateHostAddress rejects an SSH target that could not be written as a
+// single known_hosts entry. known_hosts treats "," as a host separator and
+// "*" as a wildcard, and a newline would start a second entry, so anything
+// outside the host[:port] shape is refused before it reaches the file.
+func ValidateHostAddress(address string) error {
+	value := strings.TrimSpace(address)
+	if value == "" || !hostAddressPattern.MatchString(value) {
+		return cosy.WrapErrorWithParams(ErrInvalidHostAddress, address)
+	}
+	return nil
+}
+
 type snippetField struct {
 	name    string
 	value   string

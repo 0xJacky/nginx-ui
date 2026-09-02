@@ -12,6 +12,7 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/host/setup"
 	hostssh "github.com/0xJacky/Nginx-UI/internal/host/ssh"
+	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
@@ -54,6 +55,24 @@ func Preview(c *gin.Context) {
 	c.JSON(http.StatusOK, r)
 }
 
+// abortBadRequest answers a validation failure with 400 while keeping the
+// cosy error code and message the frontend maps to a translated string.
+func abortBadRequest(c *gin.Context, err error) {
+	var cErr *cosy.Error
+	if errors.As(err, &cErr) {
+		c.AbortWithStatusJSON(http.StatusBadRequest, cErr)
+		return
+	}
+	c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+}
+
+// isManagedPrivateKeyPath reports whether path is one of the two locations
+// Nginx UI itself manages: the built-in default and the configured key path.
+func isManagedPrivateKeyPath(path string) bool {
+	configuredPath := filepath.Clean(settings.NginxSettings.GetHostPrivateKeyPath())
+	return path == settings.DefaultHostPrivateKeyPath || path == configuredPath
+}
+
 type keypairResponse struct {
 	PublicKey  string `json:"public_key"`
 	PrivateKey string `json:"private_key,omitempty"`
@@ -94,8 +113,7 @@ func GenerateKeypair(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
-	configuredPath := filepath.Clean(settings.NginxSettings.GetHostPrivateKeyPath())
-	if path != settings.DefaultHostPrivateKeyPath && path != configuredPath {
+	if !isManagedPrivateKeyPath(path) {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "generated keys may only use the default or configured private key path"})
 		return
 	}
@@ -122,6 +140,14 @@ func GetPublicKey(c *gin.Context) {
 	path, err := normalizePrivateKeyPath(path)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+	// The wizard's "existing key" flow reads a key the operator has typed but
+	// not saved yet, so the path cannot be limited to the managed locations.
+	// Any other path is a file-existence oracle and a public key reader for
+	// the whole container, so it needs the same verified session as saving
+	// that path into the settings would.
+	if !isManagedPrivateKeyPath(path) && !middleware.VerifiedTwoFactorOrProxy(c, hostSetupTwoFactorMessage) {
 		return
 	}
 	if _, statErr := os.Stat(path); errors.Is(statErr, os.ErrNotExist) {
@@ -351,6 +377,10 @@ func TrustHostKey(c *gin.Context) {
 	if !cosy.BindAndValid(c, &req) {
 		return
 	}
+	if err := setup.ValidateHostAddress(req.HostAddress); err != nil {
+		abortBadRequest(c, err)
+		return
+	}
 
 	if _, err := parseAndVerifyPublicKey(req.PublicKey, req.Fingerprint); err != nil {
 		cosy.ErrHandler(c, err)
@@ -368,6 +398,10 @@ func TrustHostKey(c *gin.Context) {
 func ScanHostKey(c *gin.Context) {
 	var req hostKeyScanRequest
 	if !cosy.BindAndValid(c, &req) {
+		return
+	}
+	if err := setup.ValidateHostAddress(req.HostAddress); err != nil {
+		abortBadRequest(c, err)
 		return
 	}
 
@@ -415,6 +449,10 @@ func TrustScannedHostKey(c *gin.Context) {
 	if !cosy.BindAndValid(c, &req) {
 		return
 	}
+	if err := setup.ValidateHostAddress(req.HostAddress); err != nil {
+		abortBadRequest(c, err)
+		return
+	}
 	if !req.Confirmed {
 		cosy.ErrHandler(c, hostssh.ErrHostKeyConfirmRequired)
 		return
@@ -441,6 +479,10 @@ func ReplaceHostKey(c *gin.Context) {
 	if !cosy.BindAndValid(c, &req) {
 		return
 	}
+	if err := setup.ValidateHostAddress(req.HostAddress); err != nil {
+		abortBadRequest(c, err)
+		return
+	}
 	if !req.Confirmed {
 		cosy.ErrHandler(c, hostssh.ErrHostKeyConfirmRequired)
 		return
@@ -465,6 +507,10 @@ func ReplaceHostKey(c *gin.Context) {
 func DeleteHostKey(c *gin.Context) {
 	var req hostKeyDeleteRequest
 	if !cosy.BindAndValid(c, &req) {
+		return
+	}
+	if err := setup.ValidateHostAddress(req.HostAddress); err != nil {
+		abortBadRequest(c, err)
 		return
 	}
 	if !req.Confirmed {

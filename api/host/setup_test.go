@@ -14,6 +14,7 @@ import (
 	"testing"
 
 	"github.com/0xJacky/Nginx-UI/internal/host/setup"
+	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/settings"
@@ -204,21 +205,37 @@ func TestConnectionRejectsMissingTarget(t *testing.T) {
 	}
 }
 
-func TestGetPublicKeyUsesRequestedContainerPath(t *testing.T) {
+func performGetPublicKey(t *testing.T, keyPath string, verified bool) *httptest.ResponseRecorder {
+	t.Helper()
+	recorder := httptest.NewRecorder()
+	context, _ := gin.CreateTestContext(recorder)
+	context.Request = httptest.NewRequest(http.MethodGet,
+		"/api/host/setup/publickey?private_key_path="+url.QueryEscape(keyPath), nil)
+	if verified {
+		context.Set(middleware.SecureSessionVerifiedKey, true)
+	}
+	GetPublicKey(context)
+	return recorder
+}
+
+// The wizard's "existing key" flow reads a path the operator typed but has not
+// saved yet. That must keep working, but only for a verified session: without
+// it the endpoint would be a public key reader and file-existence oracle for
+// every path inside the container.
+func TestGetPublicKeyRequiresVerifiedSessionForUnmanagedPath(t *testing.T) {
 	keyPath := filepath.Join(t.TempDir(), "existing_key")
 	if _, err := setup.GenerateKeypair(keyPath); err != nil {
 		t.Fatal(err)
 	}
 
-	recorder := httptest.NewRecorder()
-	context, _ := gin.CreateTestContext(recorder)
-	context.Request = httptest.NewRequest(http.MethodGet,
-		"/api/host/setup/publickey?private_key_path="+url.QueryEscape(keyPath), nil)
+	recorder := performGetPublicKey(t, keyPath, false)
+	if recorder.Code != http.StatusUnauthorized {
+		t.Fatalf("unverified status = %d, want %d: %s", recorder.Code, http.StatusUnauthorized, recorder.Body.String())
+	}
 
-	GetPublicKey(context)
-
+	recorder = performGetPublicKey(t, keyPath, true)
 	if recorder.Code != http.StatusOK {
-		t.Fatalf("status = %d, want %d: %s", recorder.Code, http.StatusOK, recorder.Body.String())
+		t.Fatalf("verified status = %d, want %d: %s", recorder.Code, http.StatusOK, recorder.Body.String())
 	}
 	var response keypairResponse
 	if err := json.Unmarshal(recorder.Body.Bytes(), &response); err != nil {
@@ -226,6 +243,23 @@ func TestGetPublicKeyUsesRequestedContainerPath(t *testing.T) {
 	}
 	if !strings.HasPrefix(response.PublicKey, "ssh-ed25519 ") {
 		t.Fatalf("unexpected public key: %q", response.PublicKey)
+	}
+}
+
+func TestGetPublicKeyReadsConfiguredPathWithoutVerification(t *testing.T) {
+	originalPrivateKeyPath := settings.NginxSettings.HostPrivateKeyPath
+	keyPath := filepath.Join(t.TempDir(), "configured_key")
+	settings.NginxSettings.HostPrivateKeyPath = keyPath
+	t.Cleanup(func() {
+		settings.NginxSettings.HostPrivateKeyPath = originalPrivateKeyPath
+	})
+	if _, err := setup.GenerateKeypair(keyPath); err != nil {
+		t.Fatal(err)
+	}
+
+	recorder := performGetPublicKey(t, keyPath, false)
+	if recorder.Code != http.StatusOK {
+		t.Fatalf("status = %d, want %d: %s", recorder.Code, http.StatusOK, recorder.Body.String())
 	}
 }
 
@@ -334,5 +368,155 @@ func TestSetupRoutesRequireASecureSession(t *testing.T) {
 					tt.method, tt.path, recorder.Code, http.StatusUnauthorized)
 			}
 		})
+	}
+}
+
+// known_hosts treats "," as a host separator, "*" as a wildcard and a newline
+// as the start of another entry, so an unvalidated host address could trust a
+// key for every host. The handlers must refuse it before touching the file.
+func TestHostKeyEndpointsRejectUnsafeHostAddress(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+
+	originalPath := settings.NginxSettings.HostKnownHostsPath
+	originalReset := resetSSHClient
+	knownHostsPath := filepath.Join(t.TempDir(), "known_hosts")
+	settings.NginxSettings.HostKnownHostsPath = knownHostsPath
+	resetCount := 0
+	resetSSHClient = func() { resetCount++ }
+	t.Cleanup(func() {
+		settings.NginxSettings.HostKnownHostsPath = originalPath
+		resetSSHClient = originalReset
+	})
+
+	key := generatePublicHostKey(t)
+	publicKey := string(gossh.MarshalAuthorizedKey(key))
+	fingerprint := gossh.FingerprintSHA256(key)
+
+	for _, address := range []string{"*", "a,*", "example.com:22 extra", "example.com\n*", " ", "example.com:22|1|x"} {
+		handlers := []struct {
+			name    string
+			handler gin.HandlerFunc
+			body    any
+		}{
+			{"known-host", TrustHostKey, knownHostRequest{HostAddress: address, Fingerprint: fingerprint, PublicKey: publicKey}},
+			{"scan", ScanHostKey, hostKeyScanRequest{HostAddress: address, KeyscanOutput: address + " " + publicKey}},
+			{"trust", TrustScannedHostKey, hostKeyTrustRequest{HostAddress: address, Algorithm: key.Type(), Fingerprint: fingerprint, PublicKey: publicKey, Confirmed: true}},
+			{"replace", ReplaceHostKey, hostKeyReplaceRequest{HostAddress: address, Algorithm: key.Type(), OldFingerprint: fingerprint, NewFingerprint: fingerprint, PublicKey: publicKey, Confirmed: true}},
+			{"delete", DeleteHostKey, hostKeyDeleteRequest{HostAddress: address, Algorithm: key.Type(), Fingerprint: fingerprint, Confirmed: true}},
+		}
+		for _, tt := range handlers {
+			t.Run(tt.name+" "+strings.NewReplacer("\n", "\\n").Replace(address), func(t *testing.T) {
+				recorder := performHostKeyRequest(t, tt.handler, tt.body)
+				if recorder.Code != http.StatusBadRequest {
+					t.Fatalf("status = %d, want %d: %s", recorder.Code, http.StatusBadRequest, recorder.Body.String())
+				}
+			})
+		}
+	}
+	if resetCount != 0 {
+		t.Fatalf("resetSSHClient called %d times for rejected addresses", resetCount)
+	}
+	if _, err := os.Stat(knownHostsPath); !os.IsNotExist(err) {
+		t.Fatalf("known_hosts was created for a rejected address: %v", err)
+	}
+}
+
+func setDemoMode(t *testing.T, enabled bool) {
+	t.Helper()
+	previous := settings.NodeSettings.Demo
+	settings.NodeSettings.Demo = enabled
+	t.Cleanup(func() {
+		settings.NodeSettings.Demo = previous
+	})
+}
+
+// newInteractiveUserRouter serves the setup routes as a logged-in user with no
+// second factor, which is the weakest session that reaches the group.
+func newInteractiveUserRouter() *gin.Engine {
+	gin.SetMode(gin.TestMode)
+	router := gin.New()
+	router.Use(func(c *gin.Context) {
+		c.Set("user", &model.User{Model: model.Model{ID: 1}})
+		c.Next()
+	})
+	InitRouter(router.Group("/"))
+	return router
+}
+
+// The public demo accepts any login, so the wizard must not let a demo user
+// mint or delete SSH keys, append to known_hosts, or probe and connect to
+// arbitrary addresses from the demo container.
+func TestSetupRoutesAreRejectedInDemoMode(t *testing.T) {
+	setDemoMode(t, true)
+	router := newInteractiveUserRouter()
+
+	for _, tt := range []struct {
+		method string
+		path   string
+	}{
+		{http.MethodGet, "/host/setup/preview"},
+		{http.MethodGet, "/host/setup/publickey"},
+		{http.MethodPost, "/host/setup/keypair"},
+		{http.MethodDelete, "/host/setup/keypair"},
+		{http.MethodGet, "/host/setup/ssh-targets"},
+		{http.MethodPost, "/host/setup/connection"},
+		{http.MethodPost, "/host/setup/known-host"},
+		{http.MethodPost, "/host/setup/host-key/scan"},
+	} {
+		t.Run(tt.method+tt.path, func(t *testing.T) {
+			recorder := httptest.NewRecorder()
+			router.ServeHTTP(recorder, httptest.NewRequest(tt.method, tt.path, nil))
+			if recorder.Code == http.StatusOK || recorder.Code == http.StatusNoContent || recorder.Code == http.StatusNotFound {
+				t.Fatalf("%s %s = %d in demo mode, want the request to be rejected (body: %s)",
+					tt.method, tt.path, recorder.Code, recorder.Body.String())
+			}
+			if !strings.Contains(recorder.Body.String(), "demo") {
+				t.Fatalf("%s %s did not fail with the demo guard: %s", tt.method, tt.path, recorder.Body.String())
+			}
+		})
+	}
+}
+
+// Everything that stores SSH material or opens an outbound connection shares
+// the verified two-factor requirement of POST settings/nginx/control, where
+// the wizard result is finally saved. A user without a second factor passes
+// RequireSecureSession, so the group needs its own check.
+func TestMutatingSetupRoutesRequireVerifiedTwoFactor(t *testing.T) {
+	setDemoMode(t, false)
+	router := newInteractiveUserRouter()
+
+	for _, tt := range []struct {
+		method string
+		path   string
+	}{
+		{http.MethodPost, "/host/setup/keypair"},
+		{http.MethodDelete, "/host/setup/keypair"},
+		{http.MethodGet, "/host/setup/ssh-targets"},
+		{http.MethodPost, "/host/setup/connection"},
+		{http.MethodPost, "/host/setup/discover"},
+		{http.MethodPost, "/host/setup/diagnose"},
+		{http.MethodPost, "/host/setup/verify"},
+		{http.MethodPost, "/host/setup/known-host"},
+		{http.MethodPost, "/host/setup/host-key/scan"},
+		{http.MethodPost, "/host/setup/host-key/trust"},
+		{http.MethodPost, "/host/setup/host-key/replace"},
+		{http.MethodDelete, "/host/setup/host-key"},
+	} {
+		t.Run(tt.method+tt.path, func(t *testing.T) {
+			recorder := httptest.NewRecorder()
+			router.ServeHTTP(recorder, httptest.NewRequest(tt.method, tt.path, nil))
+			if recorder.Code != http.StatusUnauthorized {
+				t.Fatalf("%s %s = %d, want %d; the verified two-factor guard is missing (body: %s)",
+					tt.method, tt.path, recorder.Code, http.StatusUnauthorized, recorder.Body.String())
+			}
+		})
+	}
+
+	// The read-only preview keeps the weaker guard so the wizard can render
+	// snippets before the operator has completed a second factor.
+	recorder := httptest.NewRecorder()
+	router.ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, "/host/setup/preview", nil))
+	if recorder.Code == http.StatusUnauthorized {
+		t.Fatalf("GET /host/setup/preview = 401, want the read-only preview to stay reachable: %s", recorder.Body.String())
 	}
 }

@@ -16,6 +16,7 @@ var (
 	ErrUnsafeSnippetValue = e.New(520007, "{0} contains characters that are unsafe to paste into the generated host instructions: {1}")
 	ErrInvalidPublicKey   = e.New(520008, "public key must be a single valid OpenSSH key line")
 	ErrInvalidAccessMode  = e.New(520009, "access mode must be either sftp or mounted")
+	ErrInvalidHostAddress = e.New(520010, "host address must be a hostname or IP with an optional port: {0}")
 )
 
 var (
