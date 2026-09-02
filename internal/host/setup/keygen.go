@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	hostssh "github.com/0xJacky/Nginx-UI/internal/host/ssh"
 	"github.com/uozi-tech/cosy"
 	gossh "golang.org/x/crypto/ssh"
 )
@@ -83,25 +84,14 @@ func writePrivateKeyFile(privateKeyPath string, contents []byte) error {
 	return nil
 }
 
-// MaxPrivateKeyFileSize bounds every private key read. The path can be chosen
-// by the operator, so an unbounded read of a character device such as /dev/zero
-// would otherwise exhaust memory.
-const MaxPrivateKeyFileSize = 64 * 1024
+// MaxPrivateKeyFileSize bounds every private key read; see hostssh.MaxPrivateKeyFileSize.
+const MaxPrivateKeyFileSize = hostssh.MaxPrivateKeyFileSize
 
 // ReadPrivateKeyFile reads a private key from disk, rejecting anything that is
-// not a regular file of a plausible size.
+// not a regular file of a plausible size. It delegates to the SSH client's
+// reader and only re-wraps the failure in this package's error scope.
 func ReadPrivateKeyFile(privateKeyPath string) ([]byte, error) {
-	info, err := os.Stat(privateKeyPath)
-	if err != nil {
-		return nil, cosy.WrapErrorWithParams(ErrKeyfileRead, privateKeyPath, err.Error())
-	}
-	if !info.Mode().IsRegular() {
-		return nil, cosy.WrapErrorWithParams(ErrKeyfileRead, privateKeyPath, "not a regular file")
-	}
-	if info.Size() > MaxPrivateKeyFileSize {
-		return nil, cosy.WrapErrorWithParams(ErrKeyfileRead, privateKeyPath, "private key file is too large")
-	}
-	raw, err := os.ReadFile(privateKeyPath)
+	raw, err := hostssh.ReadPrivateKeyFile(privateKeyPath)
 	if err != nil {
 		return nil, cosy.WrapErrorWithParams(ErrKeyfileRead, privateKeyPath, err.Error())
 	}

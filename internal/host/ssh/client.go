@@ -118,11 +118,14 @@ func (c *Client) hostKeyCallback() (gossh.HostKeyCallback, error) {
 	return callback, nil
 }
 
-// maxPrivateKeyFileSize bounds the key read. The path is operator supplied, so
-// reading a character device such as /dev/zero would otherwise never end.
-const maxPrivateKeyFileSize = 64 * 1024
+// MaxPrivateKeyFileSize bounds every private key read. The path is operator
+// supplied, so reading a character device such as /dev/zero would otherwise
+// never end.
+const MaxPrivateKeyFileSize = 64 * 1024
 
-func readPrivateKeyFile(path string) ([]byte, error) {
+// ReadPrivateKeyFile reads a private key from disk, rejecting anything that is
+// not a regular file of a plausible size.
+func ReadPrivateKeyFile(path string) ([]byte, error) {
 	info, err := os.Stat(path)
 	if err != nil {
 		return nil, err
@@ -130,7 +133,7 @@ func readPrivateKeyFile(path string) ([]byte, error) {
 	if !info.Mode().IsRegular() {
 		return nil, fmt.Errorf("private key %s is not a regular file", path)
 	}
-	if info.Size() > maxPrivateKeyFileSize {
+	if info.Size() > MaxPrivateKeyFileSize {
 		return nil, fmt.Errorf("private key %s is too large", path)
 	}
 	return os.ReadFile(path)
@@ -141,7 +144,7 @@ func (c *Client) buildAuth() ([]gossh.AuthMethod, error) {
 	case "password":
 		return []gossh.AuthMethod{gossh.Password(c.opts.Password)}, nil
 	default: // "key" (or empty)
-		raw, err := readPrivateKeyFile(c.opts.PrivateKeyPath)
+		raw, err := ReadPrivateKeyFile(c.opts.PrivateKeyPath)
 		if err != nil {
 			return nil, cosy.WrapErrorWithParams(ErrAuthFailed, err.Error())
 		}
