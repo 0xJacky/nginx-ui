@@ -352,3 +352,49 @@ func TestKnownHostsRevokedKeyIsNotTrusted(t *testing.T) {
 		t.Fatalf("revocation record was lost:\n%s", raw)
 	}
 }
+
+// x/crypto only falls back to its default host key algorithms when the slice
+// is nil. An empty non-nil slice is offered verbatim and the handshake fails
+// with "no common algorithm" before HostKeyCallback can report the unknown host.
+func TestKnownHosts_HostKeyAlgorithmsReturnsNilWithoutRestriction(t *testing.T) {
+	edKey := testPublicKey(t, gossh.KeyAlgoED25519)
+	caLine := "@cert-authority *.example.com " + strings.TrimSpace(string(gossh.MarshalAuthorizedKey(edKey)))
+
+	tests := []struct {
+		name     string
+		contents string
+		hostPort string
+		wantNil  bool
+	}{
+		{name: "empty file", contents: "", hostPort: "example.com:22", wantNil: true},
+		{name: "only other hosts", contents: knownhosts.Line([]string{"other.example.com:22"}, edKey) + "\n", hostPort: "example.com:22", wantNil: true},
+		{name: "only a cert authority", contents: caLine + "\n", hostPort: "example.com:22", wantNil: true},
+		{name: "cert authority next to a matching key", contents: caLine + "\n" + knownhosts.Line([]string{"example.com:22"}, edKey) + "\n", hostPort: "example.com:22", wantNil: true},
+		{name: "matching key", contents: knownhosts.Line([]string{"example.com:22"}, edKey) + "\n", hostPort: "example.com:22", wantNil: false},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			path := filepath.Join(t.TempDir(), "known_hosts")
+			if err := os.WriteFile(path, []byte(tt.contents), 0o600); err != nil {
+				t.Fatal(err)
+			}
+			kh, err := NewKnownHosts(path)
+			if err != nil {
+				t.Fatal(err)
+			}
+			algorithms, err := kh.HostKeyAlgorithms(tt.hostPort)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if tt.wantNil {
+				if algorithms != nil {
+					t.Fatalf("HostKeyAlgorithms() = %v, want nil so x/crypto uses its defaults", algorithms)
+				}
+				return
+			}
+			if len(algorithms) != 1 || algorithms[0] != gossh.KeyAlgoED25519 {
+				t.Fatalf("HostKeyAlgorithms() = %v, want [%s]", algorithms, gossh.KeyAlgoED25519)
+			}
+		})
+	}
+}

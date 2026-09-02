@@ -72,6 +72,13 @@ func (k *KnownHosts) HostKeyCallback() gossh.HostKeyCallback {
 // HostKeyAlgorithms returns the SSH negotiation algorithms backed by keys
 // trusted for hostPort. Restricting negotiation prevents a multi-key server
 // from selecting an untrusted key type before HostKeyCallback runs.
+//
+// It returns nil, never an empty slice, when nothing restricts the choice:
+// x/crypto only substitutes its default algorithm list for a nil slice, and an
+// empty one is offered verbatim so the handshake fails with "no common
+// algorithm" before HostKeyCallback can report the unknown host. The same
+// applies when a @cert-authority line is present, because a CA key does not
+// reveal which certificate algorithm the host presents.
 func (k *KnownHosts) HostKeyAlgorithms(hostPort string) ([]string, error) {
 	k.mu.Lock()
 	defer k.mu.Unlock()
@@ -81,8 +88,11 @@ func (k *KnownHosts) HostKeyAlgorithms(hostPort string) ([]string, error) {
 		return nil, err
 	}
 	seen := make(map[string]bool)
-	algorithms := make([]string, 0)
+	var algorithms []string
 	for _, line := range lines {
+		if hasKnownHostsMarker(line, markerCertAuthority) {
+			return nil, nil
+		}
 		key, ok := parseKnownHostsPublicKey(line)
 		if !ok || k.callback(hostPort, &fakeAddr{hostPort}, key) != nil {
 			continue
@@ -94,7 +104,16 @@ func (k *KnownHosts) HostKeyAlgorithms(hostPort string) ([]string, error) {
 			}
 		}
 	}
+	if len(algorithms) == 0 {
+		return nil, nil
+	}
 	return algorithms, nil
+}
+
+// hasKnownHostsMarker reports whether a known_hosts line starts with marker.
+func hasKnownHostsMarker(line string, marker string) bool {
+	parts := strings.Fields(line)
+	return len(parts) > 0 && parts[0] == marker
 }
 
 func negotiationAlgorithmsForKey(keyType string) []string {
