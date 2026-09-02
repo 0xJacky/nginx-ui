@@ -12,6 +12,7 @@ import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import hostSetup from '@/api/host_setup'
 import settingsApi from '@/api/settings'
 import { getErrorMessage } from '@/lib/http'
+import { useLatestRequest } from '../useLatestRequest'
 
 const params = defineModel<SetupParams>('params', { required: true })
 const publicKey = defineModel<string>('publicKey', { default: '' })
@@ -20,9 +21,13 @@ const validatedPrivateKeyPath = defineModel<string>('validatedPrivateKeyPath', {
 
 const defaultPrivateKeyPath = '/etc/nginx-ui/host_key'
 const maxPrivateKeySize = 64 * 1024
-const isLoadingKey = ref(false)
-const isSavingProvidedKey = ref(false)
 const keyError = ref('')
+// Loading, regenerating and saving all answer the same question, so they share
+// one error and invalidate each other.
+const keyRequest = useLatestRequest({ error: keyError })
+const saveRequest = useLatestRequest({ error: keyError })
+const { isLoading: isLoadingKey } = keyRequest
+const { isLoading: isSavingProvidedKey } = saveRequest
 const privateKeyInput = ref('')
 // False until a probe conclusively answered whether a key exists at the path.
 // While false the regenerate action keeps its confirmation, because a key may
@@ -32,7 +37,6 @@ const isKeyStateKnown = ref(false)
 // configuration hidden, so the disclosure starts open in that case.
 const ownKeyPanels = ref<string[]>([])
 const { message } = useGlobalApp()
-let loadRequestID = 0
 
 // The backend answers 404 only when no key exists at the path yet. Any other
 // status is a real failure and must reach the operator.
@@ -83,8 +87,8 @@ const sourceHint = computed(() => {
 })
 
 function invalidateKey() {
-  loadRequestID++
-  isLoadingKey.value = false
+  keyRequest.invalidate()
+  saveRequest.invalidate()
   validatedPrivateKeyPath.value = ''
   publicKey.value = ''
   isKeyStateKnown.value = false
@@ -100,35 +104,29 @@ async function loadPublicKey(showError = true) {
     return
   }
 
-  const requestID = ++loadRequestID
-  isLoadingKey.value = true
-  try {
-    // A missing key answers 404, which is an expected state on first run.
-    const response = await hostSetup.getPublicKey(privateKeyPath, { skipErrHandling: true })
-    if (requestID !== loadRequestID || privateKeyPath !== containerKeyPath.value.trim())
-      return
-    publicKey.value = response.public_key
-    validatedPrivateKeyPath.value = privateKeyPath
-    isKeyStateKnown.value = true
-  }
-  catch (error) {
-    if (requestID !== loadRequestID)
-      return
-    if (isKeyMissing(error)) {
-      // A missing key is a normal starting state, not a failure to report.
+  // A missing key answers 404, which is an expected state on first run.
+  await keyRequest.run(() => hostSetup.getPublicKey(privateKeyPath, { skipErrHandling: true }), {
+    onSuccess: response => {
+      if (privateKeyPath !== containerKeyPath.value.trim())
+        return
+      publicKey.value = response.public_key
+      validatedPrivateKeyPath.value = privateKeyPath
       isKeyStateKnown.value = true
-      // The 404 carries no message, so a dedicated text replaces the raw
-      // transport error.
-      if (showError)
-        keyError.value = $gettext('No private key was found at this path')
-      return
-    }
-    isKeyStateKnown.value = false
-    keyError.value = getErrorMessage(error)
-  }
-  finally {
-    isLoadingKey.value = false
-  }
+    },
+    onError: error => {
+      if (isKeyMissing(error)) {
+        // A missing key is a normal starting state, not a failure to report.
+        isKeyStateKnown.value = true
+        // The 404 carries no message, so a dedicated text replaces the raw
+        // transport error.
+        if (showError)
+          keyError.value = $gettext('No private key was found at this path')
+        return
+      }
+      isKeyStateKnown.value = false
+      keyError.value = getErrorMessage(error)
+    },
+  })
 }
 
 async function regenerate() {
@@ -136,24 +134,14 @@ async function regenerate() {
   params.value.container_key_path = privateKeyPath
   invalidateKey()
   keyError.value = ''
-  const requestID = ++loadRequestID
-  isLoadingKey.value = true
-  try {
-    const response = await hostSetup.generateKeypair(privateKeyPath)
-    if (requestID !== loadRequestID)
-      return
-    publicKey.value = response.public_key
-    privateKeyOnce.value = response.private_key ?? ''
-    validatedPrivateKeyPath.value = privateKeyPath
-    isKeyStateKnown.value = true
-  }
-  catch (error) {
-    if (requestID === loadRequestID)
-      keyError.value = getErrorMessage(error)
-  }
-  finally {
-    isLoadingKey.value = false
-  }
+  await keyRequest.run(() => hostSetup.generateKeypair(privateKeyPath), {
+    onSuccess: response => {
+      publicKey.value = response.public_key
+      privateKeyOnce.value = response.private_key ?? ''
+      validatedPrivateKeyPath.value = privateKeyPath
+      isKeyStateKnown.value = true
+    },
+  })
 }
 
 async function saveProvidedKey() {
@@ -168,29 +156,18 @@ async function saveProvidedKey() {
 
   invalidateKey()
   keyError.value = ''
-  const requestID = ++loadRequestID
-  isSavingProvidedKey.value = true
-  try {
-    const response = await settingsApi.saveNginxPrivateKey(privateKeyInput.value)
-    if (requestID !== loadRequestID)
-      return
-    params.value.container_key_path = response.private_key_path
-    params.value.key_source = 'provided'
-    params.value.use_generated_key = true
-    publicKey.value = response.public_key
-    validatedPrivateKeyPath.value = response.private_key_path
-    isKeyStateKnown.value = true
-    privateKeyInput.value = ''
-    message.success($gettext('Private key saved securely'))
-  }
-  catch (error) {
-    if (requestID !== loadRequestID)
-      return
-    keyError.value = getErrorMessage(error)
-  }
-  finally {
-    isSavingProvidedKey.value = false
-  }
+  await saveRequest.run(() => settingsApi.saveNginxPrivateKey(privateKeyInput.value), {
+    onSuccess: response => {
+      params.value.container_key_path = response.private_key_path
+      params.value.key_source = 'provided'
+      params.value.use_generated_key = true
+      publicKey.value = response.public_key
+      validatedPrivateKeyPath.value = response.private_key_path
+      isKeyStateKnown.value = true
+      privateKeyInput.value = ''
+      message.success($gettext('Private key saved securely'))
+    },
+  })
 }
 
 // AUpload is used only as a file picker, so the request is always cancelled.

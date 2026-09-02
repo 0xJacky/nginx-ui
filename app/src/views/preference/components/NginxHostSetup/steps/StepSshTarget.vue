@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type { SSHTarget } from '@/api/host_setup'
 import { CheckCircleOutlined, ReloadOutlined } from '@ant-design/icons-vue'
-import { computed, onActivated, ref } from 'vue'
+import { computed, onActivated, onDeactivated, ref } from 'vue'
 import hostSetup from '@/api/host_setup'
 import { getErrorMessage } from '@/lib/http'
 import { parseHostAddress } from '../hostAddress'
 import { useHostSetupWizard } from '../useHostSetupWizard'
+import { useLatestRequest } from '../useLatestRequest'
 import AuthenticationMethod from './AuthenticationMethod.vue'
 
 const {
@@ -25,45 +26,36 @@ const hostInput = computed({
 })
 
 const targets = ref<SSHTarget[]>([])
-const probeError = ref('')
-const isProbingTargets = ref(false)
-let probeRequestID = 0
+const { error: probeError, invalidate, isLoading: isProbingTargets, run } = useLatestRequest()
 
 const reachableTargets = computed(() => targets.value.filter(target => target.reachable))
 const isCurrentTargetReachable = computed(() =>
   reachableTargets.value.some(target => target.address === params.value.host_address))
 
 async function probeTargets() {
-  const requestID = ++probeRequestID
-  isProbingTargets.value = true
-  probeError.value = ''
-  try {
-    // Probe the address already entered too, so a non standard port is covered.
-    const response = await hostSetup.sshTargets(params.value.host_address)
-    if (requestID !== probeRequestID)
-      return
-    targets.value = response.targets
-    // Only adopt a detected address when the operator has not typed one that
-    // already answers, so a deliberate choice is never overwritten.
-    const firstReachable = response.targets.find(target => target.reachable)
-    if (firstReachable && !isCurrentTargetReachable.value && !params.value.host_address.trim())
-      hostInput.value = firstReachable.address
-  }
-  catch (error) {
-    if (requestID !== probeRequestID)
-      return
-    targets.value = []
-    probeError.value = getErrorMessage(error)
-  }
-  finally {
-    isProbingTargets.value = false
-  }
+  // Probe the address already entered too, so a non standard port is covered.
+  await run(() => hostSetup.sshTargets(params.value.host_address), {
+    onSuccess: response => {
+      targets.value = response.targets
+      // Only adopt a detected address when the operator has not typed one that
+      // already answers, so a deliberate choice is never overwritten.
+      const firstReachable = response.targets.find(target => target.reachable)
+      if (firstReachable && !isCurrentTargetReachable.value && !params.value.host_address.trim())
+        hostInput.value = firstReachable.address
+    },
+    onError: error => {
+      targets.value = []
+      probeError.value = getErrorMessage(error)
+    },
+  })
 }
 
 onActivated(() => {
   if (!targets.value.length)
     void probeTargets()
 })
+
+onDeactivated(invalidate)
 
 const remoteWarning = computed(() => {
   if (params.value.access_mode !== 'mounted')

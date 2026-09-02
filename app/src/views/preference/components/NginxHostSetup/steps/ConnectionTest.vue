@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { SetupParams } from '@/api/host_setup'
 import { LinkOutlined } from '@ant-design/icons-vue'
-import { ref, watch } from 'vue'
+import { onDeactivated, ref, watch } from 'vue'
 import hostSetup from '@/api/host_setup'
-import { getErrorMessage } from '@/lib/http'
+import { useLatestRequest } from '../useLatestRequest'
 
 const props = defineProps<{
   params: SetupParams
@@ -11,18 +11,15 @@ const props = defineProps<{
 }>()
 const connected = defineModel<boolean>('connected', { default: false })
 
-const isTestingConnection = ref(false)
-const connectionDetail = ref('')
-const connectionError = ref('')
 // The step stays alive inside KeepAlive, so a stale response could otherwise
 // mark a target as connected after the user changed it.
-let testRequestID = 0
+const { error: connectionError, invalidate, isLoading: isTestingConnection, reset, run } = useLatestRequest()
+const connectionDetail = ref('')
 
 function resetResult() {
-  testRequestID++
+  reset()
   connected.value = false
   connectionDetail.value = ''
-  connectionError.value = ''
 }
 
 watch(
@@ -32,26 +29,15 @@ watch(
 
 async function testConnection() {
   resetResult()
-  const requestID = ++testRequestID
-  isTestingConnection.value = true
-  try {
-    const response = await hostSetup.testConnection(props.params)
-    if (requestID !== testRequestID)
-      return
-    connected.value = response.connected
-    connectionDetail.value = response.detail
-  }
-  catch (error) {
-    if (requestID !== testRequestID)
-      return
-    connectionError.value = getErrorMessage(error)
-  }
-  finally {
-    // A stale run must not clear the loading state of a newer test.
-    if (requestID === testRequestID)
-      isTestingConnection.value = false
-  }
+  await run(() => hostSetup.testConnection(props.params), {
+    onSuccess: response => {
+      connected.value = response.connected
+      connectionDetail.value = response.detail
+    },
+  })
 }
+
+onDeactivated(invalidate)
 </script>
 
 <template>

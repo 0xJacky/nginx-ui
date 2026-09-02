@@ -7,15 +7,14 @@ import { getErrorMessage } from '@/lib/http'
 import CheckPanel from '../CheckPanel.vue'
 import CodeBlock from '../CodeBlock.vue'
 import { useHostSetupWizard } from '../useHostSetupWizard'
+import { useLatestRequest } from '../useLatestRequest'
 
 const { isHostSetupPassed, params } = useHostSetupWizard()
 
 const snippets = ref<RenderedSnippets | null>(null)
 const activeSide = ref<'host' | 'container'>('host')
 const containerFormat = ref<'compose' | 'override' | 'docker-run'>('compose')
-const isLoading = ref(false)
-const loadError = ref('')
-let refreshRequestID = 0
+const { error: loadError, invalidate, isLoading, run } = useLatestRequest()
 
 const isLaunchd = computed(() => params.value.service_manager === 'launchd')
 const isMounted = computed(() => params.value.access_mode === 'mounted')
@@ -50,25 +49,15 @@ watch(needsContainerChange, needed => {
 })
 
 async function refresh() {
-  const requestID = ++refreshRequestID
-  isLoading.value = true
-  loadError.value = ''
-  try {
-    const rendered = await hostSetup.preview({ ...params.value })
-    if (requestID !== refreshRequestID)
-      return
-    snippets.value = rendered
-  }
-  catch (error) {
-    if (requestID !== refreshRequestID)
-      return
-    snippets.value = null
-    loadError.value = getErrorMessage(error)
-  }
-  finally {
-    if (requestID === refreshRequestID)
-      isLoading.value = false
-  }
+  await run(() => hostSetup.preview({ ...params.value }), {
+    onSuccess: rendered => {
+      snippets.value = rendered
+    },
+    onError: error => {
+      snippets.value = null
+      loadError.value = getErrorMessage(error)
+    },
+  })
 }
 
 watch(() => params.value.access_mode, () => void refresh())
@@ -77,10 +66,7 @@ onActivated(() => {
   void refresh()
 })
 
-onDeactivated(() => {
-  refreshRequestID++
-  isLoading.value = false
-})
+onDeactivated(invalidate)
 </script>
 
 <template>

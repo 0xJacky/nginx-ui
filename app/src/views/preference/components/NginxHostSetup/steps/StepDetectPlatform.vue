@@ -3,7 +3,6 @@ import type { HostDiagnosis, SetupParams } from '@/api/host_setup'
 import { AimOutlined, CheckCircleOutlined, ScanOutlined, ThunderboltOutlined } from '@ant-design/icons-vue'
 import { computed, onActivated, onDeactivated, ref, watch } from 'vue'
 import hostSetup from '@/api/host_setup'
-import { getErrorMessage } from '@/lib/http'
 import {
   applyHostDiagnosis,
   detectedSettings,
@@ -13,6 +12,7 @@ import {
 } from '../diagnosis'
 import PathField from '../PathField.vue'
 import { useHostSetupWizard } from '../useHostSetupWizard'
+import { useLatestRequest } from '../useLatestRequest'
 
 type ServiceManager = NonNullable<SetupParams['service_manager']>
 type HomebrewPrefix = '/opt/homebrew' | '/usr/local'
@@ -58,10 +58,12 @@ const homebrewPrefix = ref<HomebrewPrefix>(inferHomebrewPrefix())
 const diagnosis = ref<HostDiagnosis | null>(null)
 // The step is cached by KeepAlive, so remember which target the report is for.
 const lastDiagnosedHostAddress = ref('')
-const diagnosisError = ref('')
-const isDiagnosing = ref(false)
-const discoverError = ref('')
-const isDiscovering = ref(false)
+// Slow responses must not overwrite state after the step is left or a newer
+// request starts.
+const diagnoseRequest = useLatestRequest()
+const discoverRequest = useLatestRequest()
+const { error: diagnosisError, isLoading: isDiagnosing } = diagnoseRequest
+const { error: discoverError, isLoading: isDiscovering } = discoverRequest
 const discoverHint = ref('')
 // The editable fields stay folded on the happy path. Once anything needs
 // attention the panel opens and stays open, so an edit cannot scroll away.
@@ -71,11 +73,6 @@ function revealAdjustPanel() {
   if (!adjustPanels.value.length)
     adjustPanels.value = ['adjust']
 }
-// Slow responses must not overwrite state after the step is left or a newer
-// request starts.
-let diagnoseRequestID = 0
-let discoverRequestID = 0
-
 function applyPathPreset(preset: ReturnType<typeof homebrewPaths> | typeof linuxPaths) {
   for (const key of pathKeys) {
     const currentValue = params.value[key]
@@ -119,39 +116,26 @@ function fillSuggestedDefaults(result: HostDiagnosis) {
 }
 
 async function diagnoseTarget() {
-  const requestID = ++diagnoseRequestID
-  isDiagnosing.value = true
-  diagnosisError.value = ''
   discoverError.value = ''
   discoverHint.value = ''
   diagnosis.value = null
-  try {
-    const target = params.value.host_address
-    const isFirstDiagnosisForTarget = lastDiagnosedHostAddress.value !== target
-    const result = await hostSetup.diagnose(params.value)
-    if (requestID !== diagnoseRequestID)
-      return
-    diagnosis.value = result
-    lastDiagnosedHostAddress.value = target
-    if (result.homebrew_prefix === '/usr/local' || result.homebrew_prefix === '/opt/homebrew')
-      homebrewPrefix.value = result.homebrew_prefix
-    // The first diagnosis is authoritative for this target. Later manual
-    // overrides remain intact when the operator explicitly detects again.
-    if (isFirstDiagnosisForTarget)
-      applyHostDiagnosis(params.value, result)
-    else
-      fillSuggestedDefaults(result)
-    recordDetected(detectedSettings(result))
-  }
-  catch (error) {
-    if (requestID !== diagnoseRequestID)
-      return
-    diagnosisError.value = getErrorMessage(error)
-  }
-  finally {
-    if (requestID === diagnoseRequestID)
-      isDiagnosing.value = false
-  }
+  const target = params.value.host_address
+  const isFirstDiagnosisForTarget = lastDiagnosedHostAddress.value !== target
+  await diagnoseRequest.run(() => hostSetup.diagnose(params.value), {
+    onSuccess: result => {
+      diagnosis.value = result
+      lastDiagnosedHostAddress.value = target
+      if (result.homebrew_prefix === '/usr/local' || result.homebrew_prefix === '/opt/homebrew')
+        homebrewPrefix.value = result.homebrew_prefix
+      // The first diagnosis is authoritative for this target. Later manual
+      // overrides remain intact when the operator explicitly detects again.
+      if (isFirstDiagnosisForTarget)
+        applyHostDiagnosis(params.value, result)
+      else
+        fillSuggestedDefaults(result)
+      recordDetected(detectedSettings(result))
+    },
+  })
 }
 
 function applyDetectedSettings() {
@@ -164,30 +148,21 @@ function applyDetectedSettings() {
 /** Runs nginx -V on the entered executable and refreshes the derived paths. */
 async function rediscoverNginxPaths() {
   const requestedSbinPath = params.value.nginx_sbin_path
-  const requestID = ++discoverRequestID
-  isDiscovering.value = true
-  discoverError.value = ''
   discoverHint.value = ''
-  try {
-    const discovery = await hostSetup.discover(params.value)
-    if (requestID !== discoverRequestID || requestedSbinPath !== params.value.nginx_sbin_path)
-      return
-    const detected = discoveredNginxPaths(discovery)
-    Object.assign(params.value, detected)
-    recordDetected(detected)
-    if (diagnosis.value)
-      diagnosis.value = { ...diagnosis.value, nginx: discovery }
-    discoverHint.value = $gettext('Paths refreshed from %{path}', { path: discovery.executable_path })
-  }
-  catch (error) {
-    if (requestID !== discoverRequestID)
-      return
-    discoverError.value = getErrorMessage(error)
-  }
-  finally {
-    if (requestID === discoverRequestID)
-      isDiscovering.value = false
-  }
+  await discoverRequest.run(() => hostSetup.discover(params.value), {
+    onSuccess: discovery => {
+      // The executable field was edited meanwhile, so these paths describe
+      // another binary.
+      if (requestedSbinPath !== params.value.nginx_sbin_path)
+        return
+      const detected = discoveredNginxPaths(discovery)
+      Object.assign(params.value, detected)
+      recordDetected(detected)
+      if (diagnosis.value)
+        diagnosis.value = { ...diagnosis.value, nginx: discovery }
+      discoverHint.value = $gettext('Paths refreshed from %{path}', { path: discovery.executable_path })
+    },
+  })
 }
 
 watch([isUnclassifiedTarget, diagnosisError, isPlatformReady, hasDetectedChanges], () => {
@@ -201,10 +176,8 @@ onActivated(() => {
 })
 
 onDeactivated(() => {
-  diagnoseRequestID++
-  discoverRequestID++
-  isDiagnosing.value = false
-  isDiscovering.value = false
+  diagnoseRequest.invalidate()
+  discoverRequest.invalidate()
 })
 </script>
 

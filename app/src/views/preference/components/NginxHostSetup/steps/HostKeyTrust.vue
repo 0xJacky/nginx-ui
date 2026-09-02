@@ -1,28 +1,27 @@
 <script setup lang="ts">
 import type { HostKeyScanItem, HostKeyScanResult, SetupParams } from '@/api/host_setup'
 import { ScanOutlined } from '@ant-design/icons-vue'
-import { computed, onActivated, ref, watch } from 'vue'
+import { computed, onActivated, onDeactivated, ref, watch } from 'vue'
 import hostSetup from '@/api/host_setup'
 import { getErrorMessage } from '@/lib/http'
 import CodeBlock from '../CodeBlock.vue'
 import { parseHostAddress } from '../hostAddress'
+import { useLatestRequest } from '../useLatestRequest'
 
 const props = defineProps<{ params: SetupParams }>()
 const emit = defineEmits<{ invalidated: [] }>()
 const trusted = defineModel<boolean>('trusted', { default: false })
 
 const result = ref<HostKeyScanResult | null>(null)
-const scanning = ref(false)
+// A scan invalidated by an address edit must not attribute its result to the
+// new host when it lands.
+const { error: scanError, invalidate: invalidateScan, isLoading: scanning, run: runScan } = useLatestRequest()
 const manualOutput = ref('')
-const scanError = ref('')
 const confirmed = ref<Record<string, boolean>>({})
 const operating = ref<Record<string, boolean>>({})
 const lastScanUsedManual = ref(false)
 const lastScannedHostAddress = ref('')
 const operationError = ref('')
-// A scan invalidated by an address edit must not attribute its result to the
-// new host when it lands.
-let scanID = 0
 
 const hasChangedKey = computed(() => result.value?.keys.some(key => key.status === 'changed') ?? false)
 // A revoked key is refused at dial time, so trusting it would only produce an
@@ -86,40 +85,29 @@ function statusText(status: HostKeyScanItem['status']) {
 
 async function scan(useManual = false) {
   const address = props.params.host_address
-  const currentScan = ++scanID
-  scanning.value = true
   trusted.value = false
   emit('invalidated')
   operationError.value = ''
-  scanError.value = ''
   result.value = null
   lastScanUsedManual.value = useManual
-  try {
-    const scanned = await hostSetup.scanHostKeys({
+  await runScan(
+    () => hostSetup.scanHostKeys({
       host_address: address,
       keyscan_output: useManual ? manualOutput.value : undefined,
-    })
-    if (currentScan !== scanID)
-      return
-    result.value = scanned
-    lastScannedHostAddress.value = address
-  }
-  catch (error) {
-    if (currentScan !== scanID)
-      return
-    scanError.value = getErrorMessage(error)
-  }
-  finally {
-    // A stale run must not clear the loading state of a newer scan.
-    if (currentScan === scanID)
-      scanning.value = false
-  }
+    }),
+    {
+      onSuccess: scanned => {
+        result.value = scanned
+        lastScannedHostAddress.value = address
+      },
+    },
+  )
 }
 
 // Pasted ssh-keyscan output describes one host. Keep it from being re-submitted
 // for a different address.
 watch(() => props.params.host_address, () => {
-  scanID++
+  invalidateScan()
   manualOutput.value = ''
   lastScanUsedManual.value = false
   result.value = null
@@ -131,18 +119,14 @@ async function refresh() {
   await scan(lastScanUsedManual.value)
 }
 
-async function trust(key: HostKeyScanItem) {
+// Every known_hosts change re-scans afterwards, so the rendered statuses
+// always come from the server rather than from a local guess.
+async function runKeyOperation(key: HostKeyScanItem, operation: () => Promise<void>) {
   const id = keyID(key)
   operating.value[id] = true
   operationError.value = ''
   try {
-    await hostSetup.trustScannedHostKey({
-      host_address: props.params.host_address,
-      algorithm: key.algorithm,
-      fingerprint: key.fingerprint,
-      public_key: key.public_key,
-      confirmed: true,
-    })
+    await operation()
     await refresh()
   }
   catch (error) {
@@ -153,49 +137,37 @@ async function trust(key: HostKeyScanItem) {
   }
 }
 
-async function replace(key: HostKeyScanItem) {
-  const id = keyID(key)
-  operating.value[id] = true
-  operationError.value = ''
-  try {
-    await hostSetup.replaceHostKey({
-      host_address: props.params.host_address,
-      algorithm: key.algorithm,
-      old_fingerprint: key.existing_fingerprint ?? '',
-      new_fingerprint: key.fingerprint,
-      public_key: key.public_key,
-      confirmed: true,
-    })
-    await refresh()
-  }
-  catch (error) {
-    operationError.value = getErrorMessage(error)
-  }
-  finally {
-    operating.value[id] = false
-  }
+function trust(key: HostKeyScanItem) {
+  return runKeyOperation(key, () => hostSetup.trustScannedHostKey({
+    host_address: props.params.host_address,
+    algorithm: key.algorithm,
+    fingerprint: key.fingerprint,
+    public_key: key.public_key,
+    confirmed: true,
+  }))
 }
 
-async function deleteStale(key: HostKeyScanItem) {
-  const id = keyID(key)
-  operating.value[id] = true
-  operationError.value = ''
-  try {
-    await hostSetup.deleteHostKey({
-      host_address: props.params.host_address,
-      algorithm: key.algorithm,
-      fingerprint: key.fingerprint,
-      confirmed: true,
-    })
-    await refresh()
-  }
-  catch (error) {
-    operationError.value = getErrorMessage(error)
-  }
-  finally {
-    operating.value[id] = false
-  }
+function replace(key: HostKeyScanItem) {
+  return runKeyOperation(key, () => hostSetup.replaceHostKey({
+    host_address: props.params.host_address,
+    algorithm: key.algorithm,
+    old_fingerprint: key.existing_fingerprint ?? '',
+    new_fingerprint: key.fingerprint,
+    public_key: key.public_key,
+    confirmed: true,
+  }))
 }
+
+function deleteStale(key: HostKeyScanItem) {
+  return runKeyOperation(key, () => hostSetup.deleteHostKey({
+    host_address: props.params.host_address,
+    algorithm: key.algorithm,
+    fingerprint: key.fingerprint,
+    confirmed: true,
+  }))
+}
+
+onDeactivated(invalidateScan)
 
 onActivated(() => {
   if (!result.value || lastScannedHostAddress.value !== props.params.host_address) {
