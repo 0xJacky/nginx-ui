@@ -318,12 +318,6 @@ func Diagnose(c *gin.Context) {
 	c.JSON(http.StatusOK, result)
 }
 
-type knownHostRequest struct {
-	HostAddress string `json:"host_address" binding:"required"`
-	Fingerprint string `json:"fingerprint"  binding:"required"`
-	PublicKey   string `json:"public_key"   binding:"required"`
-}
-
 type hostKeyScanRequest struct {
 	HostAddress   string `json:"host_address" binding:"required"`
 	KeyscanOutput string `json:"keyscan_output"`
@@ -367,32 +361,6 @@ func parseAndVerifyPublicKey(publicKey, fingerprint string) (gossh.PublicKey, er
 		return nil, cosy.WrapErrorWithParams(hostssh.ErrHostKeyMismatch, fingerprint, actual)
 	}
 	return parsed, nil
-}
-
-// TrustHostKey appends a known_hosts entry after the user confirms a fingerprint.
-// It recomputes the SHA256 fingerprint of the submitted public key and rejects
-// requests where the client-provided fingerprint does not match.
-func TrustHostKey(c *gin.Context) {
-	var req knownHostRequest
-	if !cosy.BindAndValid(c, &req) {
-		return
-	}
-	if err := setup.ValidateHostAddress(req.HostAddress); err != nil {
-		abortBadRequest(c, err)
-		return
-	}
-
-	if _, err := parseAndVerifyPublicKey(req.PublicKey, req.Fingerprint); err != nil {
-		cosy.ErrHandler(c, err)
-		return
-	}
-
-	if err := hostssh.TrustHostKey(hostKnownHostsPath(), req.HostAddress, req.PublicKey); err != nil {
-		cosy.ErrHandler(c, err)
-		return
-	}
-	resetSSHClient()
-	c.JSON(http.StatusOK, gin.H{"message": "trusted"})
 }
 
 func ScanHostKey(c *gin.Context) {

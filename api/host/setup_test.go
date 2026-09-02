@@ -78,23 +78,27 @@ func TestHostKeyChangesResetSSHClientOnlyAfterSuccessfulWrite(t *testing.T) {
 		wantResets int
 	}{
 		{
-			name:    "trust legacy endpoint",
-			handler: TrustHostKey,
-			body: knownHostRequest{
+			name:    "trust first scanned key",
+			handler: TrustScannedHostKey,
+			body: hostKeyTrustRequest{
 				HostAddress: hostAddress,
+				Algorithm:   oldKey.Type(),
 				Fingerprint: oldFingerprint,
 				PublicKey:   oldPublicKey,
+				Confirmed:   true,
 			},
 			wantStatus: http.StatusOK,
 			wantResets: 1,
 		},
 		{
 			name:    "reject trust fingerprint mismatch",
-			handler: TrustHostKey,
-			body: knownHostRequest{
+			handler: TrustScannedHostKey,
+			body: hostKeyTrustRequest{
 				HostAddress: hostAddress,
+				Algorithm:   oldKey.Type(),
 				Fingerprint: newFingerprint,
 				PublicKey:   oldPublicKey,
+				Confirmed:   true,
 			},
 			wantStatus: http.StatusInternalServerError,
 			wantResets: 0,
@@ -398,7 +402,6 @@ func TestHostKeyEndpointsRejectUnsafeHostAddress(t *testing.T) {
 			handler gin.HandlerFunc
 			body    any
 		}{
-			{"known-host", TrustHostKey, knownHostRequest{HostAddress: address, Fingerprint: fingerprint, PublicKey: publicKey}},
 			{"scan", ScanHostKey, hostKeyScanRequest{HostAddress: address, KeyscanOutput: address + " " + publicKey}},
 			{"trust", TrustScannedHostKey, hostKeyTrustRequest{HostAddress: address, Algorithm: key.Type(), Fingerprint: fingerprint, PublicKey: publicKey, Confirmed: true}},
 			{"replace", ReplaceHostKey, hostKeyReplaceRequest{HostAddress: address, Algorithm: key.Type(), OldFingerprint: fingerprint, NewFingerprint: fingerprint, PublicKey: publicKey, Confirmed: true}},
@@ -460,7 +463,6 @@ func TestSetupRoutesAreRejectedInDemoMode(t *testing.T) {
 		{http.MethodDelete, "/host/setup/keypair"},
 		{http.MethodGet, "/host/setup/ssh-targets"},
 		{http.MethodPost, "/host/setup/connection"},
-		{http.MethodPost, "/host/setup/known-host"},
 		{http.MethodPost, "/host/setup/host-key/scan"},
 	} {
 		t.Run(tt.method+tt.path, func(t *testing.T) {
@@ -496,7 +498,6 @@ func TestMutatingSetupRoutesRequireVerifiedTwoFactor(t *testing.T) {
 		{http.MethodPost, "/host/setup/discover"},
 		{http.MethodPost, "/host/setup/diagnose"},
 		{http.MethodPost, "/host/setup/verify"},
-		{http.MethodPost, "/host/setup/known-host"},
 		{http.MethodPost, "/host/setup/host-key/scan"},
 		{http.MethodPost, "/host/setup/host-key/trust"},
 		{http.MethodPost, "/host/setup/host-key/replace"},

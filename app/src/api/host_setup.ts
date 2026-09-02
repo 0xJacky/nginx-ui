@@ -231,13 +231,6 @@ const hostSetup = {
   diagnose(params: SetupParams): Promise<HostDiagnosis> {
     return http.post('/host/setup/diagnose', params)
   },
-  trustHostKey(hostAddress: string, fingerprint: string, publicKey: string): Promise<void> {
-    return http.post('/host/setup/known-host', {
-      host_address: hostAddress,
-      fingerprint,
-      public_key: publicKey,
-    })
-  },
   scanHostKeys(payload: HostKeyScanRequest): Promise<HostKeyScanResult> {
     return http.post('/host/setup/host-key/scan', payload)
   },

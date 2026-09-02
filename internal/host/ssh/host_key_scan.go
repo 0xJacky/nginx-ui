@@ -52,13 +52,8 @@ var preferredHostKeyAlgorithms = []string{
 	gossh.KeyAlgoRSA,
 }
 
-// ScanHostKeys reads host keys presented during SSH handshakes without trusting them.
-func ScanHostKeys(ctx context.Context, hostPort string, timeout time.Duration) ([]gossh.PublicKey, error) {
-	keys, _, err := ScanHostKeysWithCoverage(ctx, hostPort, timeout)
-	return keys, err
-}
-
-// scanHostKeysWithCoverage also reports which algorithms were actually probed.
+// ScanHostKeysWithCoverage reads the host keys presented during SSH handshakes
+// without trusting them, and reports which algorithms were actually probed.
 // Without that, an algorithm whose probe failed is indistinguishable from one
 // the server no longer offers, and a trusted entry gets labelled stale.
 func ScanHostKeysWithCoverage(ctx context.Context, hostPort string, timeout time.Duration) ([]gossh.PublicKey, map[string]bool, error) {
@@ -153,14 +148,10 @@ func ParseSSHKeyscanOutput(output string) ([]gossh.PublicKey, error) {
 	return keys, nil
 }
 
-// ClassifyHostKeys compares scanned keys against known_hosts. probedAlgorithms
-// may be nil when the caller could not establish which algorithms answered; a
-// trusted entry is then never reported stale, because an unanswered probe is
-// not evidence that the server dropped the key.
-func ClassifyHostKeys(hostPort string, scanned []gossh.PublicKey, kh *KnownHosts) (HostKeyScanResult, error) {
-	return ClassifyScannedHostKeys(hostPort, scanned, nil, kh)
-}
-
+// ClassifyScannedHostKeys compares scanned keys against known_hosts.
+// probedAlgorithms may be nil when the caller could not establish which
+// algorithms answered; a trusted entry is then never reported stale, because
+// an unanswered probe is not evidence that the server dropped the key.
 func ClassifyScannedHostKeys(hostPort string, scanned []gossh.PublicKey, probedAlgorithms map[string]bool, kh *KnownHosts) (HostKeyScanResult, error) {
 	known, err := kh.List(hostPort)
 	if err != nil {

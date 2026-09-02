@@ -106,11 +106,6 @@ export function createHostSetupWizard(settings: Ref<Settings>) {
     }
   }
 
-  function forgetDetected(fields: readonly DetectableField[]) {
-    for (const field of fields)
-      delete detectedValues.value[field]
-  }
-
   function detectedValue(field: DetectableField) {
     return detectedValues.value[field] ?? ''
   }
@@ -303,7 +298,6 @@ export function createHostSetupWizard(settings: Ref<Settings>) {
     currentStepIndex,
     detectedValue,
     fieldOrigin,
-    forgetDetected,
     furthestReachableIndex,
     goToStep,
     isHostIdentityTrusted,

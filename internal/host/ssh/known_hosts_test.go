@@ -268,7 +268,7 @@ func testPublicKeyFromSeed(t *testing.T, algorithm string, seed byte) gossh.Publ
 }
 
 // OpenSSH writes hashed entries by default on Debian and Ubuntu. If they are
-// invisible to List, ClassifyHostKeys reports a CHANGED key as an unknown host
+// invisible to List, ClassifyScannedHostKeys reports a CHANGED key as an unknown host
 // and the wizard offers the benign trust flow instead of the alarm.
 func TestKnownHostsListSeesHashedEntry(t *testing.T) {
 	dir := t.TempDir()
@@ -332,7 +332,7 @@ func TestKnownHostsRevokedKeyIsNotTrusted(t *testing.T) {
 		t.Fatal("a revoked key must not be trusted at dial time")
 	}
 
-	result, err := ClassifyHostKeys("host.docker.internal:22", []gossh.PublicKey{key}, kh)
+	result, err := ClassifyScannedHostKeys("host.docker.internal:22", []gossh.PublicKey{key}, nil, kh)
 	if err != nil {
 		t.Fatal(err)
 	}

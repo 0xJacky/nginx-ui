@@ -8,7 +8,7 @@ import (
 	gossh "golang.org/x/crypto/ssh"
 )
 
-func TestClassifyHostKeys_UnknownNewChangedTrustedStale(t *testing.T) {
+func TestClassifyScannedHostKeys_UnknownNewChangedTrustedStale(t *testing.T) {
 	dir := t.TempDir()
 	kh, err := NewKnownHosts(filepath.Join(dir, "known_hosts"))
 	if err != nil {
@@ -25,7 +25,7 @@ func TestClassifyHostKeys_UnknownNewChangedTrustedStale(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	changed, err := ClassifyHostKeys("host.docker.internal:22", []gossh.PublicKey{newEd}, kh)
+	changed, err := ClassifyScannedHostKeys("host.docker.internal:22", []gossh.PublicKey{newEd}, nil, kh)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -42,7 +42,7 @@ func TestClassifyHostKeys_UnknownNewChangedTrustedStale(t *testing.T) {
 		t.Fatalf("expected rsa stale key, got %+v", changed.StaleKeys)
 	}
 
-	trusted, err := ClassifyHostKeys("host.docker.internal:22", []gossh.PublicKey{oldEd}, kh)
+	trusted, err := ClassifyScannedHostKeys("host.docker.internal:22", []gossh.PublicKey{oldEd}, nil, kh)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -50,7 +50,7 @@ func TestClassifyHostKeys_UnknownNewChangedTrustedStale(t *testing.T) {
 		t.Fatalf("expected trusted, got %s", trusted.Keys[0].Status)
 	}
 
-	unknown, err := ClassifyHostKeys("new-host:22", []gossh.PublicKey{newEd}, kh)
+	unknown, err := ClassifyScannedHostKeys("new-host:22", []gossh.PublicKey{newEd}, nil, kh)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -59,7 +59,7 @@ func TestClassifyHostKeys_UnknownNewChangedTrustedStale(t *testing.T) {
 	}
 }
 
-func TestClassifyHostKeys_NewAlgorithm(t *testing.T) {
+func TestClassifyScannedHostKeys_NewAlgorithm(t *testing.T) {
 	dir := t.TempDir()
 	kh, err := NewKnownHosts(filepath.Join(dir, "known_hosts"))
 	if err != nil {
@@ -72,7 +72,7 @@ func TestClassifyHostKeys_NewAlgorithm(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	result, err := ClassifyHostKeys("host.docker.internal:22", []gossh.PublicKey{rsaKey}, kh)
+	result, err := ClassifyScannedHostKeys("host.docker.internal:22", []gossh.PublicKey{rsaKey}, nil, kh)
 	if err != nil {
 		t.Fatal(err)
 	}

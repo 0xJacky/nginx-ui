@@ -40,7 +40,6 @@ func InitRouter(r *gin.RouterGroup) {
 		protected.POST("discover", Discover)
 		protected.POST("diagnose", Diagnose)
 		protected.POST("verify", Verify)
-		protected.POST("known-host", TrustHostKey)
 		protected.POST("host-key/scan", ScanHostKey)
 		protected.POST("host-key/trust", TrustScannedHostKey)
 		protected.POST("host-key/replace", ReplaceHostKey)
