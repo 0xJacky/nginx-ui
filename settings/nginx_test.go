@@ -43,3 +43,22 @@ func TestNginx_GetHostKnownHostsPath_Configured(t *testing.T) {
 		t.Errorf("GetHostKnownHostsPath() = %q, want %q", got, "/custom/known_hosts")
 	}
 }
+
+func TestNginx_GetHostSbinPath(t *testing.T) {
+	tests := []struct {
+		name  string
+		nginx Nginx
+		want  string
+	}{
+		{"systemd default", Nginx{HostMode: HostModeSSH}, DefaultHostSbinPathSystemd},
+		{"launchd default", Nginx{HostMode: HostModeSSH, HostServiceManager: HostServiceManagerLaunchd}, DefaultHostSbinPathLaunchd},
+		{"configured path wins", Nginx{HostMode: HostModeSSH, HostServiceManager: HostServiceManagerLaunchd, SbinPath: "/usr/local/bin/nginx"}, "/usr/local/bin/nginx"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := tt.nginx.GetHostSbinPath(); got != tt.want {
+				t.Errorf("GetHostSbinPath() = %q, want %q", got, tt.want)
+			}
+		})
+	}
+}

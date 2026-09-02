@@ -38,7 +38,8 @@ func TestHostReloadCommand(t *testing.T) {
 		wantArgs []string
 	}{
 		{name: "systemd defaults", settings: settings.Nginx{}, wantName: "/bin/systemctl", wantArgs: []string{"reload", "nginx.service"}},
-		{name: "launchd homebrew defaults", settings: settings.Nginx{HostServiceManager: settings.HostServiceManagerLaunchd}, wantName: "/opt/homebrew/bin/nginx", wantArgs: []string{"-s", "reload"}},
+		{name: "launchd homebrew defaults", settings: settings.Nginx{HostServiceManager: settings.HostServiceManagerLaunchd}, wantName: settings.DefaultHostSbinPathLaunchd, wantArgs: []string{"-s", "reload"}},
+		{name: "launchd configured sbin", settings: settings.Nginx{HostServiceManager: settings.HostServiceManagerLaunchd, SbinPath: "/usr/local/bin/nginx"}, wantName: "/usr/local/bin/nginx", wantArgs: []string{"-s", "reload"}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

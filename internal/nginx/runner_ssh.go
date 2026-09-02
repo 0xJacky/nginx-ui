@@ -89,7 +89,9 @@ func buildSSHOptions() hostssh.ClientOptions {
 		Config: hostssh.Config{
 			SudoPrefix:    sudo,
 			SystemctlPath: systemctl,
-			NginxSbinPath: n.SbinPath,
+			// The resolved path must match what -t/-T is invoked with, or the
+			// sudo whitelist check in needsSudo never fires.
+			NginxSbinPath: n.GetHostSbinPath(),
 		},
 	}
 }

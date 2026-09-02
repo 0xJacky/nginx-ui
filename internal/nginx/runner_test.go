@@ -3,8 +3,11 @@ package nginx
 import (
 	"context"
 	"os"
+	"path/filepath"
 	"sync"
 	"testing"
+
+	"github.com/0xJacky/Nginx-UI/settings"
 )
 
 func TestLocalRunner_Stat(t *testing.T) {
@@ -104,5 +107,45 @@ func TestResetHostNginxStateDropsResolvedPaths(t *testing.T) {
 		if cache.value != "" {
 			t.Errorf("%s cache still holds %q after a target change", name, cache.value)
 		}
+	}
+}
+
+// With SbinPath empty, SSH mode used to fall back to exec.LookPath inside this
+// container and hand hostssh.Config an empty NginxSbinPath, so nginx -t/-T ran
+// on the host unprivileged or with a path the host does not have.
+func TestSSHModeResolvesHostSbinPathDefault(t *testing.T) {
+	originalSettings := *settings.NginxSettings
+	t.Cleanup(func() {
+		*settings.NginxSettings = originalSettings
+		resetPathCaches()
+	})
+
+	tests := []struct {
+		name           string
+		serviceManager string
+		sbinPath       string
+		want           string
+	}{
+		{name: "systemd default", serviceManager: settings.HostServiceManagerSystemd, want: settings.DefaultHostSbinPathSystemd},
+		{name: "launchd default", serviceManager: settings.HostServiceManagerLaunchd, want: settings.DefaultHostSbinPathLaunchd},
+		{name: "configured path wins", serviceManager: settings.HostServiceManagerLaunchd, sbinPath: "/usr/local/bin/nginx", want: "/usr/local/bin/nginx"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			resetPathCaches()
+			*settings.NginxSettings = settings.Nginx{
+				HostMode:           settings.HostModeSSH,
+				HostServiceManager: tt.serviceManager,
+				SbinPath:           tt.sbinPath,
+				HostKnownHostsPath: filepath.Join(t.TempDir(), "known_hosts"),
+			}
+
+			if got := getNginxSbinPath(); got != tt.want {
+				t.Fatalf("getNginxSbinPath() = %q, want %q", got, tt.want)
+			}
+			if got := buildSSHOptions().Config.NginxSbinPath; got != tt.want {
+				t.Fatalf("buildSSHOptions().Config.NginxSbinPath = %q, want %q", got, tt.want)
+			}
+		})
 	}
 }

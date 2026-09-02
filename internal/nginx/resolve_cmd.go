@@ -53,6 +53,12 @@ func getNginxSbinPath() string {
 		return settings.NginxSettings.SbinPath
 	}
 
+	// The binary runs on the SSH host, so a lookup in this container's PATH
+	// would name a path the host may not have. Use the host default instead.
+	if settings.NginxSettings.ControlMode() == settings.ControlModeHostViaSSH {
+		return settings.NginxSettings.GetHostSbinPath()
+	}
+
 	return nginxSbinPathCache.get(func() string {
 		var path string
 		var err error

@@ -357,11 +357,7 @@ func IsRunning() bool {
 
 func hostReloadCommand(n *settings.Nginx) (string, []string) {
 	if n.GetHostServiceManager() == settings.HostServiceManagerLaunchd {
-		sbin := n.SbinPath
-		if sbin == "" {
-			sbin = "/opt/homebrew/bin/nginx"
-		}
-		return sbin, []string{"-s", "reload"}
+		return n.GetHostSbinPath(), []string{"-s", "reload"}
 	}
 	systemctl := n.HostSystemctlPath
 	if systemctl == "" {

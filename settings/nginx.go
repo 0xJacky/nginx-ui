@@ -17,6 +17,12 @@ const (
 
 	DefaultHostPrivateKeyPath = "/etc/nginx-ui/host_key"
 	DefaultHostKnownHostsPath = "/etc/nginx-ui/known_hosts"
+
+	// Default nginx binaries on an SSH host, per service manager. The setup
+	// wizard verifies against these, so runtime control must resolve to the
+	// same paths when SbinPath is left empty.
+	DefaultHostSbinPathSystemd = "/usr/sbin/nginx"
+	DefaultHostSbinPathLaunchd = "/opt/homebrew/opt/nginx/bin/nginx"
 )
 
 const DefaultMaintenanceDir = "/etc/nginx/maintenance"
@@ -105,6 +111,20 @@ func (n *Nginx) GetHostServiceManager() string {
 		return HostServiceManagerLaunchd
 	}
 	return HostServiceManagerSystemd
+}
+
+// GetHostSbinPath returns the nginx binary to run on the SSH host: the
+// configured SbinPath, or the service manager's default when it is empty.
+// A container-local lookup would name a binary the host may not have and
+// would never match the sudo whitelist.
+func (n *Nginx) GetHostSbinPath() string {
+	if n.SbinPath != "" {
+		return n.SbinPath
+	}
+	if n.GetHostServiceManager() == HostServiceManagerLaunchd {
+		return DefaultHostSbinPathLaunchd
+	}
+	return DefaultHostSbinPathSystemd
 }
 
 func (n *Nginx) UsesSFTP() bool {

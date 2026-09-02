@@ -63,7 +63,7 @@ func (p SetupParams) FillDefaults() SetupParams {
 			p.LaunchctlPath = "/bin/launchctl"
 		}
 		if p.NginxSbinPath == "" {
-			p.NginxSbinPath = "/opt/homebrew/opt/nginx/bin/nginx"
+			p.NginxSbinPath = settings.DefaultHostSbinPathLaunchd
 		}
 		if p.HostConfigDir == "" {
 			p.HostConfigDir = "/opt/homebrew/etc/nginx"
@@ -77,7 +77,7 @@ func (p SetupParams) FillDefaults() SetupParams {
 	} else {
 		p.ServiceManager = settings.HostServiceManagerSystemd
 		if p.NginxSbinPath == "" {
-			p.NginxSbinPath = "/usr/sbin/nginx"
+			p.NginxSbinPath = settings.DefaultHostSbinPathSystemd
 		}
 		if p.HostConfigDir == "" {
 			p.HostConfigDir = "/etc/nginx"

@@ -152,6 +152,12 @@ func applyNginxControlSettings(target *appsettings.Nginx, payload nginxControlSe
 		target.HostConfigDir = payload.HostConfigDir
 		target.HostLogDir = payload.HostLogDir
 		target.SbinPath = payload.SbinPath
+		if target.SbinPath == "" {
+			// The wizard always sends the path it verified, but the plain
+			// settings form may not. Persist the same default the verifier
+			// used so runtime control never falls back to a container lookup.
+			target.SbinPath = target.GetHostSbinPath()
+		}
 		target.PIDPath = payload.PIDPath
 		target.ConfigDir = payload.ConfigDir
 		target.ConfigPath = payload.ConfigPath

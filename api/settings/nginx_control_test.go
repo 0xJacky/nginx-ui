@@ -320,3 +320,30 @@ func TestApplyNginxControlSettingsKeepsLocalPathsWhenAlreadyLocal(t *testing.T) 
 
 	assert.Equal(t, "/usr/local/sbin/nginx", target.SbinPath)
 }
+
+// The wizard always verifies a concrete binary, but the plain settings form
+// may leave sbin_path blank. Persist the verifier's default so runtime control
+// never falls back to a lookup inside this container.
+func TestApplyNginxControlSettingsPersistsHostSbinPathDefault(t *testing.T) {
+	tests := []struct {
+		name           string
+		serviceManager string
+		sbinPath       string
+		want           string
+	}{
+		{name: "systemd default", serviceManager: appsettings.HostServiceManagerSystemd, want: appsettings.DefaultHostSbinPathSystemd},
+		{name: "launchd default", serviceManager: appsettings.HostServiceManagerLaunchd, want: appsettings.DefaultHostSbinPathLaunchd},
+		{name: "explicit path is kept", serviceManager: appsettings.HostServiceManagerSystemd, sbinPath: "/usr/local/openresty/bin/openresty", want: "/usr/local/openresty/bin/openresty"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			target := &appsettings.Nginx{}
+			applyNginxControlSettings(target, nginxControlSettingsPayload{
+				Mode:               appsettings.ControlModeHostViaSSH,
+				HostServiceManager: tt.serviceManager,
+				SbinPath:           tt.sbinPath,
+			})
+			assert.Equal(t, tt.want, target.SbinPath)
+		})
+	}
+}
