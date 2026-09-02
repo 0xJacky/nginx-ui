@@ -20,7 +20,10 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
             { text: 'Getting Started', link: '/guide/getting-started' },
             { text: 'Install with Homebrew', link: '/guide/install-homebrew' },
             { text: 'Install with Winget', link: '/guide/install-winget' },
-            { text: 'Install Script', link: '/guide/install-script-linux' }
+            { text: 'Install Script', link: '/guide/install-script-linux' },
+            { text: 'Install on Kubernetes', link: '/guide/install-kubernetes' },
+            { text: 'Install on OpenWrt', link: '/guide/install-openwrt' },
+            { text: 'Install on Unraid', link: '/guide/install-unraid' }
           ]
         },
         {
@@ -50,6 +53,13 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
             { text: 'Overview', link: '/guide/mcp' },
             { text: 'Configuration Management', link: '/guide/mcp-config' },
             { text: 'Nginx Service Management', link: '/guide/mcp-nginx' },
+          ]
+        },
+        {
+          text: 'Automation',
+          collapsed: false,
+          items: [
+            { text: 'Command Line Interface', link: '/guide/cli' },
           ]
         },
         {

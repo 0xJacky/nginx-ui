@@ -34,10 +34,16 @@ var (
 	lastShardUpdateAttempt int64
 )
 
-// Fallback storage when IndexingEnabled is disabled
+// configLogRegistry holds every log path discovered by scanning the nginx
+// configuration. It deliberately lives in the package instead of inside
+// LogFileManager: the manager is created by InitializeServices and destroyed by
+// StopServices, so a registry owned by the manager would lose every discovered
+// path whenever advanced indexing is switched off and on again, and nothing
+// would repopulate it until the next periodic config scan five minutes later.
+// A rebuild started in that window finds no log groups at all.
 var (
-	fallbackCache      = make(map[string]*NginxLogCache)
-	fallbackCacheMutex sync.RWMutex
+	configLogRegistry      = make(map[string]*NginxLogCache)
+	configLogRegistryMutex sync.RWMutex
 )
 
 // InitializeServices initializes the new modular services
@@ -91,6 +97,27 @@ func InitializeServices(ctx context.Context) {
 	servicesInitializing = false
 	servicesMutex.Unlock()
 
+	// Seed the brand-new manager with the log paths already discovered from the
+	// nginx configuration. The manager is created empty on every start, and the
+	// config scanner only refills it on a config change or on its five-minute
+	// periodic sweep, so without this a rebuild triggered right after advanced
+	// indexing is (re-)enabled would see zero log groups.
+	if seeded := seedLogFileManager(logFileManagerInstance); seeded > 0 {
+		logger.Infof("Seeded %d nginx log path(s) from the configuration scan into the log file manager", seeded)
+	} else {
+		logger.Info("No nginx log path discovered from the configuration yet; " +
+			"the config scan registers them as it completes")
+	}
+
+	// Register the nginx default access and error logs as well. They are not
+	// declared by any configuration file, so scanForLogDirectives never finds
+	// them; a server whose access_log directives are all commented out would
+	// otherwise have nothing at all to index.
+	if defaults := RefreshDefaultLogPaths(); defaults == 0 {
+		logger.Warn("No usable nginx default access/error log path resolved; " +
+			"only log paths declared by access_log/error_log directives can be indexed")
+	}
+
 	logger.Info("Modern nginx log services initialization completed")
 
 	// Load existing shards after services are visible without blocking readers during initialization.
@@ -130,6 +157,10 @@ func initializeWithDefaults(ctx context.Context) (*searcher.Searcher, analytics.
 	indexerConfig := indexer.DefaultIndexerConfig()
 	// Use config directory for index path
 	indexerConfig.IndexPath = getConfigDirIndexPath()
+	indexStorageNeedsReset, err := indexer.PrepareIndexStorage(indexerConfig.IndexPath)
+	if err != nil {
+		return nil, nil, nil, nil, fmt.Errorf("failed to prepare nginx log index storage: %w", err)
+	}
 	shardManager := indexer.NewGroupedShardManager(indexerConfig)
 	indexerInstance := indexer.NewParallelIndexer(indexerConfig, shardManager)
 
@@ -143,6 +174,17 @@ func initializeWithDefaults(ctx context.Context) (*searcher.Searcher, analytics.
 	logFileManagerInstance := indexer.NewLogFileManager()
 	// Inject indexer for precise doc counting before persisting
 	logFileManagerInstance.SetIndexer(indexerInstance)
+	if indexStorageNeedsReset {
+		if err := logFileManagerInstance.DeleteAllIndexMetadata(); err != nil {
+			_ = indexerInstance.Stop()
+			return nil, nil, nil, nil, fmt.Errorf("failed to reset incompatible nginx log index metadata: %w", err)
+		}
+		if err := indexer.CommitIndexStorageVersion(indexerConfig.IndexPath); err != nil {
+			_ = indexerInstance.Stop()
+			return nil, nil, nil, nil, fmt.Errorf("failed to commit nginx log index storage migration: %w", err)
+		}
+		logger.Warn("Reset incompatible nginx log indexes; a clean rebuild will be scheduled")
+	}
 
 	return searcherInstance, analyticsInstance, indexerInstance, logFileManagerInstance, nil
 }
@@ -274,39 +316,76 @@ const (
 
 // AddLogPath adds a log path to the log cache with the source config file
 func AddLogPath(path, logType, name, configFile string) {
-	if manager := GetLogFileManager(); manager != nil {
-		manager.AddLogPath(path, logType, name, configFile)
-		return
-	}
-
-	// Fallback storage
-	fallbackCacheMutex.Lock()
-	defer fallbackCacheMutex.Unlock()
-
-	fallbackCache[path] = &NginxLogCache{
+	// Record the path in the durable registry *before* looking the manager up.
+	// InitializeServices publishes the manager and only then seeds it from the
+	// registry, so this ordering guarantees a path discovered concurrently with
+	// a service start is picked up by one of the two writes and can never be
+	// dropped between them.
+	configLogRegistryMutex.Lock()
+	configLogRegistry[path] = &NginxLogCache{
 		Path:       path,
 		Type:       logType,
 		Name:       name,
 		ConfigFile: configFile,
 	}
+	configLogRegistryMutex.Unlock()
+
+	if manager := GetLogFileManager(); manager != nil {
+		manager.AddLogPath(path, logType, name, configFile)
+	}
 }
 
 // RemoveLogPathsFromConfig removes all log paths associated with a specific config file
 func RemoveLogPathsFromConfig(configFile string) {
-	if manager := GetLogFileManager(); manager != nil {
-		manager.RemoveLogPathsFromConfig(configFile)
+	if configFile == defaultLogConfigFile {
+		// defaultLogConfigFile is the marker carried by the nginx default
+		// access/error logs, and no real configuration file can own an entry
+		// tagged with it. Refusing the removal keeps a caller that lost the
+		// config path from wiping the defaults.
+		logger.Warn("Ignoring a request to remove nginx log paths for an empty config file")
 		return
 	}
 
-	// Fallback removal
-	fallbackCacheMutex.Lock()
-	defer fallbackCacheMutex.Unlock()
-
-	for p, entry := range fallbackCache {
+	configLogRegistryMutex.Lock()
+	for p, entry := range configLogRegistry {
 		if entry.ConfigFile == configFile {
-			delete(fallbackCache, p)
+			delete(configLogRegistry, p)
 		}
 	}
+	configLogRegistryMutex.Unlock()
+
+	if manager := GetLogFileManager(); manager != nil {
+		manager.RemoveLogPathsFromConfig(configFile)
+	}
+}
+
+// registryEntriesSnapshot returns every known log path: the ones discovered from
+// the nginx configuration plus the nginx default access/error logs. The result
+// is keyed by path, so a path that is both declared by a directive and a default
+// log appears exactly once and can never produce a duplicate log group. The
+// config-derived entry wins that collision so the UI keeps showing which file
+// declares the path.
+func registryEntriesSnapshot() []NginxLogCache {
+	configLogRegistryMutex.RLock()
+	merged := make(map[string]NginxLogCache, len(configLogRegistry))
+	for path, entry := range configLogRegistry {
+		merged[path] = *entry
+	}
+	configLogRegistryMutex.RUnlock()
+
+	for _, entry := range defaultLogPathEntries() {
+		if _, declared := merged[entry.Path]; declared {
+			continue
+		}
+		merged[entry.Path] = entry
+	}
+
+	entries := make([]NginxLogCache, 0, len(merged))
+	for _, entry := range merged {
+		entries = append(entries, entry)
+	}
+
+	return entries
 }
 
 // GetAllLogPaths returns all cached log paths, optionally filtered
@@ -316,21 +395,17 @@ func GetAllLogPaths(filters ...func(*NginxLogCache) bool) []*NginxLogCache {
 	}
 
 	// Fallback list
-	fallbackCacheMutex.RLock()
-	defer fallbackCacheMutex.RUnlock()
-
 	var logs []*NginxLogCache
-	for _, entry := range fallbackCache {
+	for _, entry := range registryEntriesSnapshot() {
+		e := entry
 		include := true
 		for _, f := range filters {
-			if !f(entry) {
+			if !f(&e) {
 				include = false
 				break
 			}
 		}
 		if include {
-			// Create a copy to avoid external mutation
-			e := *entry
 			logs = append(logs, &e)
 		}
 	}
@@ -344,11 +419,9 @@ func GetAllLogsWithIndex(filters ...func(*NginxLogWithIndex) bool) []*NginxLogWi
 	}
 
 	// Fallback: produce basic entries without indexing metadata
-	fallbackCacheMutex.RLock()
-	defer fallbackCacheMutex.RUnlock()
-
-	result := make([]*NginxLogWithIndex, 0, len(fallbackCache))
-	for _, c := range fallbackCache {
+	entries := registryEntriesSnapshot()
+	result := make([]*NginxLogWithIndex, 0, len(entries))
+	for _, c := range entries {
 		lw := &NginxLogWithIndex{
 			Path:        c.Path,
 			Type:        c.Type,
@@ -378,11 +451,8 @@ func GetAllLogsWithIndexGrouped(filters ...func(*NginxLogWithIndex) bool) []*Ngi
 	}
 
 	// Fallback grouping by base log name (handle simple rotation patterns)
-	fallbackCacheMutex.RLock()
-	defer fallbackCacheMutex.RUnlock()
-
 	grouped := make(map[string]*NginxLogWithIndex)
-	for _, c := range fallbackCache {
+	for _, c := range registryEntriesSnapshot() {
 		base := getBaseLogNameBasic(c.Path)
 		if existing, ok := grouped[base]; ok {
 			// Preserve most recent non-indexed default; nothing to aggregate in basic mode
@@ -487,6 +557,17 @@ func updateSearcherShardsLocked() {
 	newShards := globalIndexer.GetAllShards()
 	logger.Infof("Retrieved %d new shards from indexer for hot-swap update", len(newShards))
 
+	// An empty shard set is expected before the first indexing task creates a
+	// group. Keep the current searcher state until a usable replacement exists.
+	if len(newShards) == 0 {
+		currentShardCount := 0
+		if globalSearcher != nil {
+			currentShardCount = len(globalSearcher.GetShards())
+		}
+		logger.Debugf("No index shards available yet; keeping %d current searcher shards", currentShardCount)
+		return
+	}
+
 	// If no searcher exists yet, create the initial one (first time setup)
 	if globalSearcher == nil {
 		logger.Info("Creating initial searcher with IndexAlias")
@@ -540,6 +621,16 @@ func updateSearcherShardsLocked() {
 
 // StopServices stops all running modern services
 func StopServices() {
+	// The scheduler registration is cleared outside the services lock: task
+	// recovery running inside the scheduler lock takes the services lock, so
+	// grabbing them in the opposite order here would deadlock.
+	defer resetTaskSchedulerState()
+
+	stopServicesLocked()
+}
+
+// stopServicesLocked tears down the services while holding the services lock.
+func stopServicesLocked() {
 	servicesMutex.Lock()
 	defer servicesMutex.Unlock()
 
@@ -585,6 +676,12 @@ func StopServices() {
 		globalSearcher = nil
 	}
 
+	// Release the parser singleton along with the GeoIP handle and the two
+	// 10,000-entry caches it owns. It lives in a package global, so without this
+	// it stays reachable - and resident - for the whole life of a process that
+	// has already handed its listeners over to a new binary.
+	indexer.ReleaseLogParser()
+
 	// Reset state
 	globalLogFileManager = nil
 	servicesInitialized = false
@@ -607,39 +704,39 @@ func DestroyAllIndexes(ctx context.Context) error {
 	return globalIndexer.DestroyAllIndexes(ctx)
 }
 
-// MigrateFallbackCache migrates all entries from fallback cache to LogFileManager
-// This is used when enabling advanced indexing after the application has started
-func MigrateFallbackCache() {
-	fallbackCacheMutex.RLock()
-	entries := make([]*NginxLogCache, 0, len(fallbackCache))
-	for _, entry := range fallbackCache {
-		// Create a copy to avoid race conditions
-		e := *entry
-		entries = append(entries, &e)
-	}
-	fallbackCacheMutex.RUnlock()
-
-	if len(entries) == 0 {
-		logger.Debug("No fallback cache entries to migrate")
-		return
-	}
-
+// SyncDiscoveredLogPaths copies every log path already discovered from the
+// nginx configuration into the running LogFileManager. It is idempotent and
+// never clears the registry, so it can be called after every service start.
+// Returns the number of config-derived paths handed to the manager.
+func SyncDiscoveredLogPaths() int {
 	manager := GetLogFileManager()
 	if manager == nil {
-		logger.Warn("Cannot migrate fallback cache: LogFileManager not initialized")
-		return
+		logger.Warn("Cannot sync discovered nginx log paths: LogFileManager not initialized")
+		return 0
 	}
 
-	logger.Infof("Migrating %d log paths from fallback cache to LogFileManager", len(entries))
+	// The nginx default access/error logs belong to the same manager. They are
+	// counted separately because the return value reports what the configuration
+	// scan discovered.
+	applyDefaultLogPaths(manager)
+
+	return seedLogFileManager(manager)
+}
+
+// seedLogFileManager copies the registry into the given manager. It takes the
+// manager as an argument so InitializeServices can seed the instance it just
+// created without going through the global getter.
+func seedLogFileManager(manager *indexer.LogFileManager) int {
+	configLogRegistryMutex.RLock()
+	entries := make([]NginxLogCache, 0, len(configLogRegistry))
+	for _, entry := range configLogRegistry {
+		entries = append(entries, *entry)
+	}
+	configLogRegistryMutex.RUnlock()
 
 	for _, entry := range entries {
 		manager.AddLogPath(entry.Path, entry.Type, entry.Name, entry.ConfigFile)
 	}
 
-	// Clear fallback cache after successful migration
-	fallbackCacheMutex.Lock()
-	fallbackCache = make(map[string]*NginxLogCache)
-	fallbackCacheMutex.Unlock()
-
-	logger.Info("Fallback cache migration completed successfully")
+	return len(entries)
 }

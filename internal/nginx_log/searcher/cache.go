@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"sort"
+	"sync"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
@@ -14,11 +15,23 @@ import (
 
 // Cache provides high-performance caching using Ristretto
 type Cache struct {
-	cache *ristretto.Cache[string, *SearchResult]
+	cache   *ristretto.Cache[string, *SearchResult]
+	maxCost int64
+
+	// closeMu guards every use of cache against a concurrent Close. Ristretto
+	// panics with "send on closed channel" when Set or Clear runs after Close,
+	// and SwapShards clears the cache from a detached goroutine, so a closing
+	// searcher can otherwise crash the process. Cache operations take the read
+	// lock so they still run concurrently with each other.
+	closeMu sync.RWMutex
+	closed  bool
 }
 
-// NewCache creates a new cache with Ristretto
+// NewCache creates a cache whose cost unit is one KiB of serialized result data.
 func NewCache(maxSize int64) *Cache {
+	if maxSize <= 0 {
+		maxSize = 1
+	}
 	cache, err := ristretto.NewCache(&ristretto.Config[string, *SearchResult]{
 		NumCounters: maxSize * 10,
 		MaxCost:     maxSize,
@@ -29,7 +42,7 @@ func NewCache(maxSize int64) *Cache {
 		panic(fmt.Sprintf("failed to create cache: %v", err))
 	}
 
-	return &Cache{cache: cache}
+	return &Cache{cache: cache, maxCost: maxSize}
 }
 
 // CacheKeyData represents the normalized data used for cache key generation
@@ -169,6 +182,12 @@ func (c *Cache) generateFallbackKey(req *SearchRequest) string {
 func (c *Cache) Get(req *SearchRequest) *SearchResult {
 	key := c.GenerateKey(req)
 
+	c.closeMu.RLock()
+	defer c.closeMu.RUnlock()
+	if c.closed {
+		return nil
+	}
+
 	result, found := c.cache.Get(key)
 	if !found {
 		return nil
@@ -183,9 +202,15 @@ func (c *Cache) Get(req *SearchRequest) *SearchResult {
 func (c *Cache) Put(req *SearchRequest, result *SearchResult, ttl time.Duration) {
 	key := c.GenerateKey(req)
 
-	cost := int64(1 + len(result.Hits)/10)
-	if cost < 1 {
-		cost = 1
+	cost, ok := searchResultCost(result)
+	if !ok || cost > c.maxCost {
+		return
+	}
+
+	c.closeMu.RLock()
+	defer c.closeMu.RUnlock()
+	if c.closed {
+		return
 	}
 
 	c.cache.SetWithTTL(key, result, cost, ttl)
@@ -225,15 +250,47 @@ func (c *Cache) GetSearchStats(req *SearchRequest) *SearchStats {
 // PutSearchStats stores statistics for the request's match set. The cache is
 // typed to search results, so the statistics travel in an otherwise empty one.
 func (c *Cache) PutSearchStats(req *SearchRequest, stats *SearchStats, ttl time.Duration) {
-	c.cache.SetWithTTL(c.statsCacheKey(req), &SearchResult{Stats: stats}, 1, ttl)
+	result := &SearchResult{Stats: stats}
+	cost, ok := searchResultCost(result)
+	if !ok || cost > c.maxCost {
+		return
+	}
+	c.closeMu.RLock()
+	defer c.closeMu.RUnlock()
+	if c.closed {
+		return
+	}
+
+	c.cache.SetWithTTL(c.statsCacheKey(req), result, cost, ttl)
 	c.cache.Wait()
+}
+
+func searchResultCost(result *SearchResult) (int64, bool) {
+	data, err := json.Marshal(result)
+	if err != nil {
+		return 0, false
+	}
+	const costUnitBytes = 1024
+	cost := int64((len(data) + costUnitBytes - 1) / costUnitBytes)
+	if cost < 1 {
+		cost = 1
+	}
+	return cost, true
 }
 
 // Clear clears all cached entries
 func (c *Cache) Clear() {
-	if c != nil && c.cache != nil {
-		c.cache.Clear()
+	if c == nil {
+		return
 	}
+
+	c.closeMu.RLock()
+	defer c.closeMu.RUnlock()
+	if c.closed || c.cache == nil {
+		return
+	}
+
+	c.cache.Clear()
 }
 
 // GetStats returns cache statistics
@@ -268,6 +325,17 @@ type CacheStats struct {
 
 // Close closes the cache and frees resources
 func (c *Cache) Close() {
+	if c == nil {
+		return
+	}
+
+	c.closeMu.Lock()
+	defer c.closeMu.Unlock()
+	if c.closed {
+		return
+	}
+	c.closed = true
+
 	c.cache.Close()
 }
 

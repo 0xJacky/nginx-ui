@@ -127,7 +127,7 @@ http {
 }
 ```
 
-Để biết thêm thông tin: [debian/conf/nginx.conf](https://salsa.debian.org/nginx-team/nginx/-/blob/master/debian/conf/nginx.conf#L59-L60)
+Để biết thêm thông tin: [debian/conf/nginx.conf](https://salsa.debian.org/nginx-team/nginx/-/blob/debian/latest/debian/conf/nginx.conf#L60-L61)
 
 ### Cài đặt
 

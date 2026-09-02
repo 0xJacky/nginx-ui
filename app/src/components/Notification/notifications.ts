@@ -49,6 +49,26 @@ const notifications: Record<string, { title: () => string, content: (args: any) 
     title: () => $gettext('Renew Certificate Success'),
     content: (args: any) => $gettext('Certificate %{name} renewed successfully', args),
   },
+  'Certificate Expired': {
+    title: () => $gettext('Certificate Expired'),
+    content: (args: any) => $gettext('Certificate %{name} has expired', args),
+  },
+  'Certificate Expiration Notice': {
+    title: () => $gettext('Certificate Expiration Notice'),
+    content: (args: any) => $gettext('Certificate %{name} will expire in 1 day', args),
+  },
+  'Certificate Expiration Notice_1': {
+    title: () => $gettext('Certificate Expiration Notice'),
+    content: (args: any) => $gettext('Certificate %{name} will expire in %{days} days', args),
+  },
+  'Certificate Expiring Soon': {
+    title: () => $gettext('Certificate Expiring Soon'),
+    content: (args: any) => $gettext('Certificate %{name} will expire in 1 day', args),
+  },
+  'Certificate Expiring Soon_1': {
+    title: () => $gettext('Certificate Expiring Soon'),
+    content: (args: any) => $gettext('Certificate %{name} will expire in %{days} days', args),
+  },
   'Sync Certificate Error': {
     title: () => $gettext('Sync Certificate Error'),
     content: (args: any) => $gettext('Sync Certificate %{cert_name} to %{node_name} failed', args),
@@ -81,9 +101,25 @@ const notifications: Record<string, { title: () => string, content: (args: any) 
     title: () => $gettext('Delete Remote Config Success'),
     content: (args: any) => $gettext('Delete %{path} on %{node_name} successfully', args),
   },
+  'Auto Sync Namespace Error': {
+    title: () => $gettext('Auto Sync Namespace Error'),
+    content: (args: any) => $gettext('Auto sync of namespace %{namespace} finished with %{failed} failed items', args),
+  },
   'External Notification Test': {
     title: () => $gettext('External Notification Test'),
     content: (args: any) => $gettext('This is a test message sent at %{timestamp} from Nginx UI.', args),
+  },
+  'Certificate Paths Migrated': {
+    title: () => $gettext('Certificate Paths Migrated'),
+    content: (args: any) => $gettext('Automatically migrated certificate paths for %{sites} sites', args),
+  },
+  'Certificate Configuration Mismatch': {
+    title: () => $gettext('Certificate Configuration Mismatch'),
+    content: (args: any) => $gettext('Site %{site} is not using the certificate path managed by Nginx UI', args),
+  },
+  'Certificate Path Migration Failed': {
+    title: () => $gettext('Certificate Path Migration Failed'),
+    content: (args: any) => $gettext('Automatic certificate path migration failed for site %{site}: %{error}', args),
   },
   'Delete Remote Site Error': {
     title: () => $gettext('Delete Remote Site Error'),

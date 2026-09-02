@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/clustersync"
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
@@ -174,6 +175,7 @@ func SaveStream(c *gin.Context) {
 	var json struct {
 		Content     string   `json:"content" binding:"required"`
 		NamespaceID uint64   `json:"namespace_id"`
+		Namespace   string   `json:"namespace"`
 		SyncNodeIDs []uint64 `json:"sync_node_ids"`
 		Overwrite   bool     `json:"overwrite"`
 		PostAction  string   `json:"post_action"`
@@ -185,7 +187,14 @@ func SaveStream(c *gin.Context) {
 	}
 
 	// Save stream configuration using internal logic
-	err := stream.SaveStreamConfig(name, json.Content, json.NamespaceID, json.SyncNodeIDs, json.Overwrite, json.PostAction)
+	// A sync from another node identifies the namespace by name so both sides
+	// group the stream the same way even though their ids differ.
+	namespaceID := json.NamespaceID
+	if json.Namespace != "" {
+		namespaceID = clustersync.ResolveNamespaceIDByName(json.Namespace)
+	}
+
+	err := stream.SaveStreamConfig(name, json.Content, namespaceID, json.SyncNodeIDs, json.Overwrite, json.PostAction)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

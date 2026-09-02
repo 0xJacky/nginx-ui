@@ -112,6 +112,18 @@ func TestStartRestartRecordsFailure(t *testing.T) {
 	}
 }
 
+func TestTryTestAndReloadRejectsBusyControlLock(t *testing.T) {
+	resetControlStateForTest(t)
+
+	commandMutex.Lock()
+	_, _, ok := TryTestAndReload()
+	commandMutex.Unlock()
+
+	if ok {
+		t.Fatal("TryTestAndReload acquired commandMutex while another control operation was running")
+	}
+}
+
 func resetControlStateForTest(t *testing.T) {
 	t.Helper()
 	commandMutex.Lock()

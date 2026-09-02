@@ -23,7 +23,13 @@ const (
 // searchStats returns the statistics for the request's match set, reusing a
 // cached aggregation when one is available. The cache entry deliberately
 // ignores pagination, so paging through a result set scans only once.
-func (s *Searcher) searchStats(ctx context.Context, q query.Query, req *SearchRequest, totalHits uint64) *SearchStats {
+func (s *Searcher) searchStats(
+	ctx context.Context,
+	q query.Query,
+	req *SearchRequest,
+	totalHits uint64,
+	indexAlias bleve.IndexAlias,
+) *SearchStats {
 	useCache := s.config.EnableCache && req.UseCache && s.cache != nil
 	if useCache {
 		if cached := s.cache.GetSearchStats(req); cached != nil {
@@ -31,7 +37,7 @@ func (s *Searcher) searchStats(ctx context.Context, q query.Query, req *SearchRe
 		}
 	}
 
-	stats := s.computeStats(ctx, q, totalHits)
+	stats := s.computeStats(ctx, q, totalHits, indexAlias)
 	if useCache && stats != nil {
 		s.cache.PutSearchStats(req, stats, DefaultCacheTTL)
 	}
@@ -47,7 +53,12 @@ func (s *Searcher) searchStats(ctx context.Context, q query.Query, req *SearchRe
 //
 // It must be called from within Search, which already holds the concurrency
 // semaphore, hence the direct use of the index alias rather than Search itself.
-func (s *Searcher) computeStats(ctx context.Context, q query.Query, totalHits uint64) *SearchStats {
+func (s *Searcher) computeStats(
+	ctx context.Context,
+	q query.Query,
+	totalHits uint64,
+	indexAlias bleve.IndexAlias,
+) *SearchStats {
 	stats := &SearchStats{}
 	if totalHits == 0 {
 		return stats
@@ -79,11 +90,15 @@ func (s *Searcher) computeStats(ctx context.Context, q query.Query, totalHits ui
 			searchReq.SearchAfter = searchAfter
 		}
 
-		result, err := s.indexAlias.SearchInContext(ctx, searchReq)
+		result, err := indexAlias.SearchInContext(ctx, searchReq)
 		if err != nil {
 			// A cancelled context or shard error leaves a partial scan, which
 			// is still a better estimate than nothing; extrapolation below
 			// marks the outcome approximate.
+			logger.Warnf("Stats scan stopped after %d documents: %v", scanned, err)
+			break
+		}
+		if err := searchResultError(result); err != nil {
 			logger.Warnf("Stats scan stopped after %d documents: %v", scanned, err)
 			break
 		}

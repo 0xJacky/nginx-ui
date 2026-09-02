@@ -2,9 +2,9 @@ package indexer
 
 import (
 	"context"
-	"runtime"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/cgroup"
 	"github.com/blevesearch/bleve/v2"
 	"github.com/blevesearch/bleve/v2/mapping"
 )
@@ -51,62 +51,128 @@ type Config struct {
 	BatchSize            int           `json:"batch_size"`
 	FlushInterval        time.Duration `json:"flush_interval"`
 	MaxQueueSize         int           `json:"max_queue_size"`
-	EnableCompression    bool          `json:"enable_compression"`
-	MemoryQuota          int64         `json:"memory_quota"`      // Memory limit in bytes
-	MaxSegmentSize       int64         `json:"max_segment_size"`  // Maximum segment size
-	OptimizeInterval     time.Duration `json:"optimize_interval"` // Auto-optimization interval
+	EnableCompression    bool          `json:"enable_compression"` // Deprecated: Scorch/Zap compression is always enabled
+	MemoryQuota          int64         `json:"memory_quota"`       // Maximum estimated bytes retained by queued and active jobs
+	MaxSegmentSize       int64         `json:"max_segment_size"`   // Maximum Scorch in-memory merge input per persister worker
+	OptimizeInterval     time.Duration `json:"optimize_interval"`  // Auto-optimization interval
 	EnableMetrics        bool          `json:"enable_metrics"`
 	FileGroupConcurrency int           `json:"file_group_concurrency"` // Max concurrent files within a log group (0 = use WorkerCount)
 }
 
-// DefaultIndexerConfig returns default indexer configuration with processor optimization
-func DefaultIndexerConfig() *Config {
-	maxProcs := runtime.GOMAXPROCS(0)
+// Absolute ceilings for the derived defaults.
+//
+// Indexing throughput is bounded by Bleve/Scorch segment building and disk I/O
+// long before it is bounded by parse parallelism, so scaling these linearly
+// with the CPU count only multiplies peak memory. The caps keep a 64-core host
+// from opening dozens of buffered batches at once.
+const (
+	maxDefaultWorkerCount          = 8
+	maxDefaultFileGroupConcurrency = 4
 
-	// Dynamically scale batch size based on CPU cores
-	// Significantly increased batch sizes to maximize frontend indexing throughput
+	// minIndexMemoryQuota / maxIndexMemoryQuota bound the derived memory quota.
+	minIndexMemoryQuota = int64(64 * 1024 * 1024)
+	maxIndexMemoryQuota = int64(1024 * 1024 * 1024)
+
+	// indexMemoryQuotaFraction is the share of the container memory budget the
+	// indexer may retain for queued and in-flight batches.
+	indexMemoryQuotaFraction = 4
+)
+
+// availableCPUs reports the CPU budget used to size the indexer, and
+// availableMemory the memory budget.
+//
+// They deliberately do not use runtime.GOMAXPROCS / total RAM directly: inside
+// an LXC or Docker container the affinity mask still lists every host CPU while
+// the cgroup bandwidth controller throttles the process to a fraction of one,
+// so the host numbers overestimate the real budget by an order of magnitude.
+//
+// Both are variables so tests can simulate a constrained container.
+var (
+	availableCPUs   = cgroup.AvailableCPUs
+	availableMemory = cgroup.AvailableMemory
+)
+
+// DefaultIndexerConfig returns default indexer configuration sized from the
+// CPU and memory budget this process is actually allowed to use.
+func DefaultIndexerConfig() *Config {
+	cpus := availableCPUs()
+
+	// Dynamically scale batch size based on usable CPU cores
 	baseBatchSize := 15000
-	if maxProcs >= 16 {
+	if cpus >= 16 {
 		baseBatchSize = 25000 // High-core systems (16+ cores) - maximum throughput
-	} else if maxProcs >= 8 {
+	} else if cpus >= 8 {
 		baseBatchSize = 20000 // Mid-range systems (8-15 cores) - high throughput
-	} else if maxProcs >= 4 {
+	} else if cpus >= 4 {
 		baseBatchSize = 18000 // Standard systems (4-7 cores) - good throughput
 	}
 
 	// Derive conservative, CPU-aware defaults to avoid oversubscribing small machines.
-	// Treat GOMAXPROCS as the upper bound for CPU-bound worker concurrency.
-	workerCount := maxProcs
-	if workerCount < 2 {
-		workerCount = 2
-	}
+	workerCount := clampInt(cpus, 2, maxDefaultWorkerCount)
 
-	// Limit file-level concurrency to at most half of the logical CPUs by default.
-	fileGroupConcurrency := maxProcs / 2
-	if fileGroupConcurrency < 2 {
-		fileGroupConcurrency = 2
+	// Limit file-level concurrency to at most half of the usable CPUs. Every
+	// concurrent file holds its own parse batch plus a buffered index batch, so
+	// this factor multiplies peak memory directly.
+	fileGroupConcurrency := clampInt(cpus/2, 1, maxDefaultFileGroupConcurrency)
+
+	shardCount := 1
+	if cpus >= 8 {
+		shardCount = 2
 	}
 
 	return &Config{
 		IndexPath:            "./log-index",
-		ShardCount:           max(4, maxProcs/2), // Scale shards with CPU cores
-		WorkerCount:          workerCount,        // One worker per logical CPU by default (min 2)
-		BatchSize:            baseBatchSize,      // Dynamically scaled based on CPU cores
+		ShardCount:           shardCount,
+		WorkerCount:          workerCount,   // One worker per usable CPU, capped (min 2)
+		BatchSize:            baseBatchSize, // Dynamically scaled based on usable CPU cores
 		FlushInterval:        5 * time.Second,
-		MaxQueueSize:         baseBatchSize * 10, // Scale queue with batch size
+		MaxQueueSize:         max(4, workerCount*2),
 		EnableCompression:    true,
-		MemoryQuota:          1024 * 1024 * 1024, // 1GB
-		MaxSegmentSize:       64 * 1024 * 1024,   // 64MB
+		MemoryQuota:          DefaultMemoryQuota(),
+		MaxSegmentSize:       64 * 1024 * 1024, // 64MB
 		OptimizeInterval:     30 * time.Minute,
 		EnableMetrics:        true,
-		FileGroupConcurrency: fileGroupConcurrency, // Default: up to 50% of logical CPUs for file-level parallelism
+		FileGroupConcurrency: fileGroupConcurrency, // Default: up to 50% of usable CPUs, capped
 	}
+}
+
+// DefaultMemoryQuota derives the indexer memory quota from the cgroup memory
+// limit, falling back to the historical 1GB budget when no limit is visible.
+//
+// The quota is the backpressure valve for indexing: IndexDocuments blocks until
+// the estimated size of a batch fits, so a quota that ignores a small container
+// lets every concurrent parse pipeline queue its batch and pushes the process
+// straight into the OOM killer.
+func DefaultMemoryQuota() int64 {
+	available, ok := availableMemory()
+	if !ok || available <= 0 {
+		return maxIndexMemoryQuota
+	}
+
+	quota := available / indexMemoryQuotaFraction
+	if quota < minIndexMemoryQuota {
+		quota = minIndexMemoryQuota
+	}
+	if quota > maxIndexMemoryQuota {
+		quota = maxIndexMemoryQuota
+	}
+	return quota
+}
+
+func clampInt(value, minValue, maxValue int) int {
+	if value < minValue {
+		return minValue
+	}
+	if value > maxValue {
+		return maxValue
+	}
+	return value
 }
 
 // GetConfig returns configuration optimized for specific scenarios
 func GetConfig(scenario string) *Config {
 	base := DefaultIndexerConfig()
-	maxProcs := runtime.GOMAXPROCS(0)
+	maxProcs := availableCPUs()
 
 	switch scenario {
 	case "high_throughput":
@@ -115,13 +181,10 @@ func GetConfig(scenario string) *Config {
 		base.WorkerCount = maxProcs * 4 // Aggressive worker scaling for I/O-bound operations
 		if maxProcs >= 16 {
 			base.BatchSize = 5000 // Very large batches for 16+ cores
-			base.MaxQueueSize = 50000
 		} else if maxProcs >= 8 {
 			base.BatchSize = 4000 // Large batches for 8+ cores
-			base.MaxQueueSize = 40000
 		} else {
 			base.BatchSize = 3000 // Standard high-throughput batch size
-			base.MaxQueueSize = 30000
 		}
 		base.FlushInterval = 10 * time.Second
 
@@ -129,7 +192,6 @@ func GetConfig(scenario string) *Config {
 		// Minimize latency with reasonable throughput
 		base.WorkerCount = int(float64(maxProcs) * 1.5)
 		base.BatchSize = 500
-		base.MaxQueueSize = 10000
 		base.FlushInterval = 2 * time.Second
 
 	case "balanced":
@@ -140,7 +202,6 @@ func GetConfig(scenario string) *Config {
 		// Reduce memory usage
 		base.WorkerCount = max(2, maxProcs/2)
 		base.BatchSize = 250
-		base.MaxQueueSize = 5000
 		base.MemoryQuota = 256 * 1024 * 1024 // 256MB
 
 	case "cpu_intensive":
@@ -149,13 +210,10 @@ func GetConfig(scenario string) *Config {
 		base.WorkerCount = maxProcs * 4 // Even more workers for CPU-bound tasks
 		if maxProcs >= 16 {
 			base.BatchSize = 4500 // Large batches to keep all cores busy
-			base.MaxQueueSize = 45000
 		} else if maxProcs >= 8 {
 			base.BatchSize = 3500
-			base.MaxQueueSize = 35000
 		} else {
 			base.BatchSize = 2500
-			base.MaxQueueSize = 25000
 		}
 
 	case "max_performance":
@@ -164,20 +222,29 @@ func GetConfig(scenario string) *Config {
 		base.WorkerCount = maxProcs * 5    // Maximum workers
 		base.ShardCount = max(8, maxProcs) // More shards for parallelism
 		if maxProcs >= 16 {
-			base.BatchSize = 6000 // Very large batches for maximum throughput
-			base.MaxQueueSize = 60000
+			base.BatchSize = 6000                     // Very large batches for maximum throughput
 			base.MemoryQuota = 2 * 1024 * 1024 * 1024 // 2GB
 		} else if maxProcs >= 8 {
 			base.BatchSize = 5000
-			base.MaxQueueSize = 50000
 			base.MemoryQuota = 1536 * 1024 * 1024 // 1.5GB
 		} else {
 			base.BatchSize = 4000
-			base.MaxQueueSize = 40000
 		}
 		base.FlushInterval = 15 * time.Second   // Less frequent flushes for larger batches
 		base.MaxSegmentSize = 128 * 1024 * 1024 // 128MB segments
 	}
+
+	// A scenario must never raise the quota above what the container is allowed
+	// to use: when a cgroup memory limit is visible it wins over the profile.
+	if available, ok := availableMemory(); ok && available > 0 {
+		if budget := DefaultMemoryQuota(); base.MemoryQuota > budget {
+			base.MemoryQuota = budget
+		}
+	}
+
+	// IndexDocuments waits for completion, so retaining thousands of whole
+	// batches cannot improve worker throughput and only expands peak memory.
+	base.MaxQueueSize = max(4, base.WorkerCount*2)
 
 	return base
 }
@@ -217,9 +284,10 @@ type LogDocument struct {
 
 // IndexJob represents a single indexing job
 type IndexJob struct {
-	Documents []*Document `json:"documents"`
-	Priority  int         `json:"priority"`
-	Callback  func(error) `json:"-"`
+	Documents   []*Document `json:"documents"`
+	Priority    int         `json:"priority"`
+	Callback    func(error) `json:"-"`
+	memoryBytes int64
 }
 
 // IndexResult represents the result of an indexing operation
@@ -249,7 +317,8 @@ type IndexStats struct {
 	Shards            []*ShardInfo       `json:"shards"`
 	IndexingRate      float64            `json:"indexing_rate"` // Docs per second
 	MemoryUsage       int64              `json:"memory_usage"`  // Bytes
-	QueueSize         int                `json:"queue_size"`    // Pending jobs
+	QueueMemoryUsage  int64              `json:"queue_memory_usage"`
+	QueueSize         int                `json:"queue_size"` // Pending jobs
 	WorkerStats       []*WorkerStats     `json:"worker_stats"`
 	LastOptimized     int64              `json:"last_optimized"` // Unix timestamp
 	OptimizationStats *OptimizationStats `json:"optimization_stats,omitempty"`

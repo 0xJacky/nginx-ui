@@ -37,15 +37,28 @@ export interface Cert extends ModelBase {
   key_type: string
   log: string
   certificate_info: CertificateInfo
+  deployment_status: CertificateDeploymentStatus
   sync_node_ids: number[]
   must_staple: boolean
   lego_disable_cname_support: boolean
+  disable_authoritative_ns_propagation: boolean
   enable_common_name: boolean
   revoke_old: boolean
   status: CertStatusType
   last_error: string
   last_attempt_at: string | null
   self_signed_config?: SelfSignedCertConfig
+}
+
+export interface CertificateDeploymentStatus {
+  state: 'not_applicable' | 'consistent' | 'legacy_drift' | 'mismatch' | 'unreadable'
+  site_name?: string
+  managed_certificate_path?: string
+  managed_certificate_key_path?: string
+  configured_certificate_paths?: string[]
+  configured_certificate_key_paths?: string[]
+  automatic_migration_available: boolean
+  error?: string
 }
 
 export interface ImportExistingCertPayload {

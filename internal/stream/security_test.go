@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strconv"
 	"testing"
 	"time"
 
@@ -27,21 +28,28 @@ func setupStreamMutationTest(t *testing.T) (string, func()) {
 	}
 
 	originalConfigDir := appsettings.NginxSettings.ConfigDir
+	originalPIDPath := appsettings.NginxSettings.PIDPath
 	originalReloadCmd := appsettings.NginxSettings.ReloadCmd
 	originalRestartCmd := appsettings.NginxSettings.RestartCmd
 	originalTestConfigCmd := appsettings.NginxSettings.TestConfigCmd
 
 	appsettings.NginxSettings.ConfigDir = confDir
+	appsettings.NginxSettings.PIDPath = filepath.Join(confDir, "nginx.pid")
 	appsettings.NginxSettings.ReloadCmd = "true"
 	appsettings.NginxSettings.RestartCmd = "true"
 	appsettings.NginxSettings.TestConfigCmd = "true"
+	// Seed a live PID so nginx.Reload takes the reload path instead of falling
+	// back to a restart, which is what the running Nginx would do in production.
+	if err := os.WriteFile(appsettings.NginxSettings.PIDPath, []byte(strconv.Itoa(os.Getpid())), 0o644); err != nil {
+		t.Fatalf("failed to seed nginx pid file: %v", err)
+	}
 
 	db, err := gorm.Open(sqlite.Open(fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name())), &gorm.Config{})
 	if err != nil {
 		t.Fatalf("failed to open test db: %v", err)
 	}
 
-	if err := db.AutoMigrate(&model.Stream{}, &model.ConfigBackup{}, &model.LLMSession{}); err != nil {
+	if err := db.AutoMigrate(&model.Stream{}, &model.ConfigBackup{}, &model.LLMSession{}, &model.Cert{}); err != nil {
 		t.Fatalf("failed to migrate test db: %v", err)
 	}
 
@@ -63,6 +71,7 @@ func setupStreamMutationTest(t *testing.T) (string, func()) {
 
 	t.Cleanup(func() {
 		appsettings.NginxSettings.ConfigDir = originalConfigDir
+		appsettings.NginxSettings.PIDPath = originalPIDPath
 		appsettings.NginxSettings.ReloadCmd = originalReloadCmd
 		appsettings.NginxSettings.RestartCmd = originalRestartCmd
 		appsettings.NginxSettings.TestConfigCmd = originalTestConfigCmd
@@ -123,6 +132,38 @@ func TestRenameAllowsManagedStreamName(t *testing.T) {
 
 	if _, err := os.Stat(filepath.Join(confDir, "streams-available", "tcp_proxy_new")); err != nil {
 		t.Fatalf("expected renamed stream file: %v", err)
+	}
+}
+
+func TestRenameThenDeleteRemovesStreamRecord(t *testing.T) {
+	confDir, waitForSyncQuery := setupStreamMutationTest(t)
+	database := model.UseDB()
+	oldPath := filepath.Join(confDir, "streams-available", "tcp_proxy")
+	newPath := filepath.Join(confDir, "streams-available", "tcp_proxy_new")
+
+	if err := os.WriteFile(oldPath, []byte("server {\n}\n"), 0o644); err != nil {
+		t.Fatalf("failed to seed stream config: %v", err)
+	}
+	if err := database.Create(&model.Stream{Path: oldPath}).Error; err != nil {
+		t.Fatalf("failed to seed stream record: %v", err)
+	}
+
+	if err := Rename("tcp_proxy", "tcp_proxy_new"); err != nil {
+		t.Fatalf("Rename returned error: %v", err)
+	}
+	waitForSyncQuery()
+
+	if err := Delete("tcp_proxy_new"); err != nil {
+		t.Fatalf("Delete returned error: %v", err)
+	}
+
+	var count int64
+	if err := database.Unscoped().Model(&model.Stream{}).
+		Where("path IN ?", []string{oldPath, newPath}).Count(&count).Error; err != nil {
+		t.Fatalf("failed to count stream records: %v", err)
+	}
+	if count != 0 {
+		t.Fatalf("found %d stream records after rename and delete, want 0", count)
 	}
 }
 

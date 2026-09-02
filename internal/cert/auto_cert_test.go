@@ -120,6 +120,25 @@ func TestShouldSkipAutoCertForNonSuccessStatus(t *testing.T) {
 	}
 }
 
+func TestNewAutoRenewPayloadPreservesAuthoritativePropagationOption(t *testing.T) {
+	notBefore := time.Date(2026, time.August, 17, 0, 0, 0, 0, time.UTC)
+	certModel := &model.Cert{
+		DisableAuthoritativeNSPropagation: true,
+	}
+
+	payload := newAutoRenewPayload(certModel, &Info{NotBefore: notBefore}, "aki.serial")
+
+	if !payload.DisableAuthoritativeNSPropagation {
+		t.Fatal("authoritative propagation option was not copied to auto-renew payload")
+	}
+	if !payload.NotBefore.Equal(notBefore) {
+		t.Fatalf("NotBefore = %s, want %s", payload.NotBefore, notBefore)
+	}
+	if payload.ReplacesCertID != "aki.serial" {
+		t.Fatalf("ReplacesCertID = %q, want aki.serial", payload.ReplacesCertID)
+	}
+}
+
 func TestShouldRenewACMECertificateRenewsShortLifetimeAtMidpoint(t *testing.T) {
 	notBefore := time.Date(2026, time.July, 1, 0, 0, 0, 0, time.UTC)
 	info := &Info{

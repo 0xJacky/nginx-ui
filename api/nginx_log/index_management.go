@@ -346,6 +346,21 @@ func rebuildSingleFile(modernIndexer interface{}, path string, logFileManager in
 	return minTime, maxTime
 }
 
+// reportEmptyRebuild explains why a full rebuild had nothing to index. Reaching
+// this point means the server knows of no access log group at all, which is a
+// discovery problem rather than a finished rebuild.
+func reportEmptyRebuild(totalGroups int) {
+	discoveredPaths := len(nginx_log.GetAllLogPaths())
+
+	logger.Warnf("Full index rebuild found no access log group to index: %d log group(s) known, "+
+		"%d log path(s) registered. Nothing was indexed. An access log becomes indexable either through "+
+		"an uncommented access_log directive, or as the nginx default access log resolved from "+
+		"nginx.AccessLogPath in app.ini or from --http-log-path in `nginx -V`. Check that one of the two "+
+		"resolves to an existing regular file, and that the directory holding it is covered by "+
+		"nginx.LogDirWhiteList, by the nginx prefix, or by the directory of the default access/error log.",
+		totalGroups, discoveredPaths)
+}
+
 // rebuildAllFiles rebuilds indexes for all files with proper queue management
 func rebuildAllFiles(modernIndexer interface{}, logFileManager interface{}, progressConfig *indexer.ProgressConfig) (*time.Time, *time.Time) {
 	// For full rebuild, we use a special global lock key
@@ -368,6 +383,15 @@ func rebuildAllFiles(modernIndexer interface{}, logFileManager interface{}, prog
 		}()
 	}
 
+	logger.Info("Starting full modern index rebuild with queue management")
+
+	// Enumerate the log groups BEFORE dropping the metadata. GetAllLogsWithIndexGrouped
+	// merges the paths discovered from the nginx configuration with the paths recorded
+	// in the index metadata; clearing the metadata first would throw away the second
+	// source, so a rebuild would find nothing whenever the config-derived cache is not
+	// populated yet.
+	allLogs := nginx_log.GetAllLogsWithIndexGrouped()
+
 	// For full rebuild, we clear ALL existing metadata to start fresh
 	// This is different from single file/group rebuild which preserves metadata for incremental indexing
 	if logFileManager != nil {
@@ -375,9 +399,6 @@ func rebuildAllFiles(modernIndexer interface{}, logFileManager interface{}, prog
 			logger.Errorf("Could not clean up all old DB records before full rebuild: %v", err)
 		}
 	}
-
-	logger.Info("Starting full modern index rebuild with queue management")
-	allLogs := nginx_log.GetAllLogsWithIndexGrouped()
 
 	// Get persistence manager for queue management
 	var persistence *indexer.PersistenceManager
@@ -411,8 +432,15 @@ func rebuildAllFiles(modernIndexer interface{}, logFileManager interface{}, prog
 		queuePosition++
 	}
 
-	// Give the frontend a moment to refresh and show queued status
-	time.Sleep(2 * time.Second)
+	if len(accessLogs) == 0 {
+		// Not a success: no access log group is known to the server at all, so
+		// the rebuild has nothing to work on. Explain why instead of letting the
+		// user read a completion message they cannot tell apart from a real one.
+		reportEmptyRebuild(len(allLogs))
+	} else {
+		// Give the frontend a moment to refresh and show queued status
+		time.Sleep(2 * time.Second)
+	}
 
 	startTime := time.Now()
 	var overallMinTime, overallMaxTime *time.Time
@@ -511,7 +539,12 @@ func rebuildAllFiles(modernIndexer interface{}, logFileManager interface{}, prog
 	wg.Wait()
 
 	totalDuration := time.Since(startTime)
-	logger.Infof("Successfully completed full modern index rebuild in %s", totalDuration)
+	if len(accessLogs) == 0 {
+		logger.Warnf("Full modern index rebuild finished after %s without indexing anything", totalDuration)
+	} else {
+		logger.Infof("Successfully completed full modern index rebuild of %d log group(s) in %s",
+			len(accessLogs), totalDuration)
+	}
 
 	if err := modernIndexer.(indexer.FlushableIndexer).FlushAll(); err != nil {
 		logger.Errorf("Failed to flush all indexer data: %v", err)

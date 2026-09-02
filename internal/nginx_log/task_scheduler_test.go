@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/indexer"
+	"github.com/0xJacky/Nginx-UI/internal/nginx_log/searcher"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
@@ -135,11 +136,13 @@ func TestTaskScheduler_RecoverUnfinishedTasks_InitialIndexing(t *testing.T) {
 	oldServicesInitialized := servicesInitialized
 	oldGlobalLogFileManager := globalLogFileManager
 	oldGlobalIndexer := globalIndexer
+	oldGlobalSearcher := globalSearcher
 	t.Cleanup(func() {
 		servicesMutex.Lock()
 		servicesInitialized = oldServicesInitialized
 		globalLogFileManager = oldGlobalLogFileManager
 		globalIndexer = oldGlobalIndexer
+		globalSearcher = oldGlobalSearcher
 		servicesMutex.Unlock()
 	})
 
@@ -161,10 +164,25 @@ func TestTaskScheduler_RecoverUnfinishedTasks_InitialIndexing(t *testing.T) {
 	lfm.SetIndexer(idx)
 	lfm.AddLogPath(logPath, "access", "access.log", "/etc/nginx/nginx.conf")
 
+	searchService := searcher.NewSearcher(searcher.DefaultSearcherConfig(), nil)
+	t.Cleanup(func() {
+		_ = searchService.Stop()
+	})
+
 	globalLogFileManager = lfm
 	globalIndexer = idx
+	globalSearcher = searchService
 	servicesInitialized = true
 	servicesMutex.Unlock()
+
+	// The initial shard refresh runs before the first index exists. It must
+	// remain an idle state instead of executing a search that can only fail.
+	servicesMutex.Lock()
+	updateSearcherShardsLocked()
+	servicesMutex.Unlock()
+	require.False(t, searchService.IsHealthy())
+	require.Empty(t, searchService.GetShards())
+	require.Zero(t, searchService.GetStats().TotalSearches)
 
 	ts := NewTaskScheduler(context.Background())
 	err := ts.RecoverUnfinishedTasks(context.Background())
@@ -184,4 +202,7 @@ func TestTaskScheduler_RecoverUnfinishedTasks_InitialIndexing(t *testing.T) {
 
 	assert.Equal(t, string(indexer.IndexStatusIndexed), record.IndexStatus)
 	assert.Greater(t, record.DocumentCount, uint64(0))
+	require.Eventually(t, func() bool {
+		return searchService.IsHealthy() && len(searchService.GetShards()) > 0
+	}, 10*time.Second, 100*time.Millisecond, "searcher did not receive the initial index shards")
 }

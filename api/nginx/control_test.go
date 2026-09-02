@@ -6,6 +6,8 @@ import (
 	"errors"
 	"net/http"
 	"net/http/httptest"
+	"sync"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -101,6 +103,182 @@ func TestTestConfigWithNamespaceReportsValidatedCoverageCounts(t *testing.T) {
 	assert.NoError(t, json.Unmarshal(recorder.Body.Bytes(), &response))
 	assert.Equal(t, float64(0), response["site_count"])
 	assert.Equal(t, float64(0), response["stream_count"])
+}
+
+func TestReloadTestsConfigurationAndHoldsApplyLock(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	recorder := httptest.NewRecorder()
+	context, _ := gin.CreateTestContext(recorder)
+	context.Request = httptest.NewRequest(http.MethodPost, "/api/nginx/reload", nil)
+
+	events := make([]string, 0, 3)
+	now := time.Unix(100, 0)
+	dependencies := reloadDependencies{
+		now: func() time.Time { return now },
+		tryLockApply: func() (func(), bool) {
+			events = append(events, "lock")
+			return func() { events = append(events, "unlock") }, true
+		},
+		tryTestAndReload: func() (*internalnginx.ControlResult, *internalnginx.ControlResult, bool) {
+			events = append(events, "test-and-reload")
+			return controlResult("configuration ok", nil), controlResult("reload ok", nil), true
+		},
+	}
+
+	reload(context, dependencies, &reloadGate{cooldown: reloadCooldown})
+
+	assert.Equal(t, http.StatusOK, recorder.Code)
+	assert.Equal(t, []string{"lock", "test-and-reload", "unlock"}, events)
+}
+
+func TestReloadRejectsBusyConfigurationWithoutQueueing(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	recorder := httptest.NewRecorder()
+	context, _ := gin.CreateTestContext(recorder)
+	context.Request = httptest.NewRequest(http.MethodPost, "/api/nginx/reload", nil)
+
+	controlCalled := false
+	dependencies := reloadDependencies{
+		now:          time.Now,
+		tryLockApply: func() (func(), bool) { return nil, false },
+		tryTestAndReload: func() (*internalnginx.ControlResult, *internalnginx.ControlResult, bool) {
+			controlCalled = true
+			return nil, nil, false
+		},
+	}
+
+	reload(context, dependencies, &reloadGate{cooldown: reloadCooldown})
+
+	assert.Equal(t, http.StatusConflict, recorder.Code)
+	assert.False(t, controlCalled)
+}
+
+func TestReloadCooldownReturnsRetryAfter(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	now := time.Unix(200, 0)
+	var calls atomic.Int64
+	dependencies := reloadDependencies{
+		now:          func() time.Time { return now },
+		tryLockApply: func() (func(), bool) { return func() {}, true },
+		tryTestAndReload: func() (*internalnginx.ControlResult, *internalnginx.ControlResult, bool) {
+			calls.Add(1)
+			return controlResult("configuration ok", nil), controlResult("reload ok", nil), true
+		},
+	}
+	gate := &reloadGate{cooldown: reloadCooldown}
+
+	first := performReloadRequest(dependencies, gate)
+	second := performReloadRequest(dependencies, gate)
+
+	assert.Equal(t, http.StatusOK, first.Code)
+	assert.Equal(t, http.StatusTooManyRequests, second.Code)
+	assert.Equal(t, "2", second.Header().Get("Retry-After"))
+	assert.EqualValues(t, 1, calls.Load())
+
+	now = now.Add(reloadCooldown)
+	third := performReloadRequest(dependencies, gate)
+	assert.Equal(t, http.StatusOK, third.Code)
+	assert.EqualValues(t, 2, calls.Load())
+}
+
+func TestReloadSingleFlightRejectsConcurrentRequest(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	started := make(chan struct{})
+	release := make(chan struct{})
+	var once sync.Once
+	dependencies := reloadDependencies{
+		now:          time.Now,
+		tryLockApply: func() (func(), bool) { return func() {}, true },
+		tryTestAndReload: func() (*internalnginx.ControlResult, *internalnginx.ControlResult, bool) {
+			once.Do(func() { close(started) })
+			<-release
+			return controlResult("configuration ok", nil), controlResult("reload ok", nil), true
+		},
+	}
+	gate := &reloadGate{cooldown: reloadCooldown}
+	firstDone := make(chan *httptest.ResponseRecorder, 1)
+	go func() {
+		firstDone <- performReloadRequest(dependencies, gate)
+	}()
+
+	<-started
+	second := performReloadRequest(dependencies, gate)
+	close(release)
+	first := <-firstDone
+
+	assert.Equal(t, http.StatusOK, first.Code)
+	assert.Equal(t, http.StatusConflict, second.Code)
+}
+
+func TestReloadStormAB(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	const requests = 64
+	const simulatedCommandDuration = time.Millisecond
+
+	var baselineCalls atomic.Int64
+	var baselineMutex sync.Mutex
+	baselineStarted := time.Now()
+	var baselineGroup sync.WaitGroup
+	for range requests {
+		baselineGroup.Add(1)
+		go func() {
+			defer baselineGroup.Done()
+			baselineMutex.Lock()
+			baselineCalls.Add(1)
+			time.Sleep(simulatedCommandDuration)
+			baselineMutex.Unlock()
+		}()
+	}
+	baselineGroup.Wait()
+	baselineDuration := time.Since(baselineStarted)
+
+	fixedNow := time.Unix(300, 0)
+	var optimizedCalls atomic.Int64
+	dependencies := reloadDependencies{
+		now:          func() time.Time { return fixedNow },
+		tryLockApply: func() (func(), bool) { return func() {}, true },
+		tryTestAndReload: func() (*internalnginx.ControlResult, *internalnginx.ControlResult, bool) {
+			optimizedCalls.Add(1)
+			time.Sleep(simulatedCommandDuration)
+			return controlResult("configuration ok", nil), controlResult("reload ok", nil), true
+		},
+	}
+	gate := &reloadGate{cooldown: time.Minute}
+	optimizedStarted := time.Now()
+	var optimizedGroup sync.WaitGroup
+	var accepted atomic.Int64
+	for range requests {
+		optimizedGroup.Add(1)
+		go func() {
+			defer optimizedGroup.Done()
+			if recorder := performReloadRequest(dependencies, gate); recorder.Code == http.StatusOK {
+				accepted.Add(1)
+			}
+		}()
+	}
+	optimizedGroup.Wait()
+	optimizedDuration := time.Since(optimizedStarted)
+
+	assert.EqualValues(t, requests, baselineCalls.Load())
+	assert.EqualValues(t, 1, optimizedCalls.Load())
+	assert.EqualValues(t, 1, accepted.Load())
+	t.Logf("A/B reload storm: requests=%d baseline_executions=%d baseline_duration=%s optimized_executions=%d optimized_duration=%s reduction=%.2f%%",
+		requests, baselineCalls.Load(), baselineDuration, optimizedCalls.Load(), optimizedDuration,
+		100*(1-float64(optimizedCalls.Load())/float64(baselineCalls.Load())))
+}
+
+func controlResult(output string, err error) *internalnginx.ControlResult {
+	return internalnginx.Control(func() (string, error) {
+		return output, err
+	})
+}
+
+func performReloadRequest(dependencies reloadDependencies, gate *reloadGate) *httptest.ResponseRecorder {
+	recorder := httptest.NewRecorder()
+	context, _ := gin.CreateTestContext(recorder)
+	context.Request = httptest.NewRequest(http.MethodPost, "/api/nginx/reload", nil)
+	reload(context, dependencies, gate)
+	return recorder
 }
 
 func TestRestartAcceptsLegacyEmptyRequest(t *testing.T) {

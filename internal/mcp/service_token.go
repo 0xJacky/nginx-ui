@@ -13,23 +13,37 @@ import (
 	"slices"
 	"strings"
 	"time"
+	"unicode/utf8"
 
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"gorm.io/gorm"
 )
 
-const ServiceTokenPrincipalKey = "MCPServiceTokenPrincipal"
+const ServiceTokenPrincipalKey = "ServiceTokenPrincipal"
 
 type ServiceTokenPrincipal struct {
-	PublicID string
-	Name     string
-	Scopes   []string
+	PublicID  string
+	Name      string
+	Scopes    []string
+	CreatorID uint64
 }
 
 func (principal *ServiceTokenPrincipal) HasScope(scope string) bool {
-	return principal != nil && (slices.Contains(principal.Scopes, scope) ||
-		(scope == model.MCPTokenScopeRead && slices.Contains(principal.Scopes, model.MCPTokenScopeWrite)))
+	if principal == nil {
+		return false
+	}
+	if slices.Contains(principal.Scopes, scope) {
+		return true
+	}
+	switch scope {
+	case model.MCPTokenScopeRead:
+		return slices.Contains(principal.Scopes, model.MCPTokenScopeWrite)
+	case model.APITokenScopeRead:
+		return slices.Contains(principal.Scopes, model.APITokenScopeWrite)
+	default:
+		return false
+	}
 }
 
 func CreateServiceToken(name string, scopes []string, expiresAt *time.Time, creatorID uint64) (*model.MCPServiceToken, string, error) {
@@ -40,8 +54,12 @@ func CreateServiceToken(name string, scopes []string, expiresAt *time.Time, crea
 	if err != nil {
 		return nil, "", err
 	}
-	if strings.TrimSpace(name) == "" {
+	name = strings.TrimSpace(name)
+	if name == "" {
 		return nil, "", errors.New("token name is required")
+	}
+	if utf8.RuneCountInString(name) > 64 {
+		return nil, "", errors.New("token name must not exceed 64 characters")
 	}
 	if expiresAt != nil && !expiresAt.After(time.Now()) {
 		return nil, "", errors.New("token expiry must be in the future")
@@ -57,7 +75,7 @@ func CreateServiceToken(name string, scopes []string, expiresAt *time.Time, crea
 	}
 	record := &model.MCPServiceToken{
 		PublicID:  publicID,
-		Name:      strings.TrimSpace(name),
+		Name:      name,
 		Verifier:  verifier,
 		Scopes:    normalizedScopes,
 		ExpiresAt: expiresAt,
@@ -75,7 +93,11 @@ func RotateServiceToken(publicID string) (*model.MCPServiceToken, string, error)
 		return nil, "", errors.New("database unavailable")
 	}
 	var record model.MCPServiceToken
-	if err := database.Where("public_id = ? AND revoked_at IS NULL", publicID).First(&record).Error; err != nil {
+	if err := database.Where(
+		"public_id = ? AND revoked_at IS NULL AND (expires_at IS NULL OR expires_at > ?)",
+		publicID,
+		time.Now(),
+	).First(&record).Error; err != nil {
 		return nil, "", err
 	}
 	_, secret, err := generateServiceTokenParts()
@@ -138,9 +160,10 @@ func VerifyServiceToken(rawToken string, now time.Time) (*ServiceTokenPrincipal,
 		return nil, err
 	}
 	return &ServiceTokenPrincipal{
-		PublicID: record.PublicID,
-		Name:     record.Name,
-		Scopes:   append([]string(nil), record.Scopes...),
+		PublicID:  record.PublicID,
+		Name:      record.Name,
+		Scopes:    append([]string(nil), record.Scopes...),
+		CreatorID: record.CreatorID,
 	}, nil
 }
 
@@ -215,14 +238,15 @@ func serviceTokenVerifier(publicID, secret string) ([]byte, error) {
 
 func normalizeServiceTokenScopes(scopes []string) ([]string, error) {
 	if len(scopes) == 0 {
-		return nil, errors.New("at least one MCP scope is required")
+		return nil, errors.New("at least one service token scope is required")
 	}
 	seen := make(map[string]struct{}, len(scopes))
 	result := make([]string, 0, len(scopes))
 	for _, scope := range scopes {
 		scope = strings.TrimSpace(scope)
-		if scope != model.MCPTokenScopeRead && scope != model.MCPTokenScopeWrite {
-			return nil, fmt.Errorf("unsupported MCP scope %q", scope)
+		if scope != model.MCPTokenScopeRead && scope != model.MCPTokenScopeWrite &&
+			scope != model.APITokenScopeRead && scope != model.APITokenScopeWrite {
+			return nil, fmt.Errorf("unsupported service token scope %q", scope)
 		}
 		if _, exists := seen[scope]; exists {
 			continue

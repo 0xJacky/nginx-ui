@@ -13,16 +13,17 @@ import (
 )
 
 type autoCertRequest struct {
-	DnsCredentialID         uint64             `json:"dns_credential_id"`
-	ChallengeMethod         string             `json:"challenge_method"`
-	Profile                 string             `json:"profile"`
-	Domains                 []string           `json:"domains"`
-	KeyType                 certcrypto.KeyType `json:"key_type"`
-	ACMEUserID              uint64             `json:"acme_user_id"`
-	MustStaple              bool               `json:"must_staple"`
-	LegoDisableCNAMESupport bool               `json:"lego_disable_cname_support"`
-	EnableCommonName        bool               `json:"enable_common_name"`
-	RevokeOld               bool               `json:"revoke_old"`
+	DnsCredentialID                   uint64             `json:"dns_credential_id"`
+	ChallengeMethod                   string             `json:"challenge_method"`
+	Profile                           string             `json:"profile"`
+	Domains                           []string           `json:"domains"`
+	KeyType                           certcrypto.KeyType `json:"key_type"`
+	ACMEUserID                        uint64             `json:"acme_user_id"`
+	MustStaple                        bool               `json:"must_staple"`
+	LegoDisableCNAMESupport           bool               `json:"lego_disable_cname_support"`
+	DisableAuthoritativeNSPropagation bool               `json:"disable_authoritative_ns_propagation"`
+	EnableCommonName                  bool               `json:"enable_common_name"`
+	RevokeOld                         bool               `json:"revoke_old"`
 }
 
 func AddDomainToAutoCert(c *gin.Context) {
@@ -93,24 +94,26 @@ func persistAutoCertOptions(certModel *model.Cert, name string, json autoCertReq
 	}
 
 	updates := &model.Cert{
-		Name:                    certificateName,
-		Domains:                 json.Domains,
-		AutoCert:                model.AutoCertEnabled,
-		DnsCredentialID:         json.DnsCredentialID,
-		ChallengeMethod:         json.ChallengeMethod,
-		Profile:                 profile,
-		KeyType:                 helper.GetKeyType(json.KeyType),
-		ACMEUserID:              json.ACMEUserID,
-		MustStaple:              json.MustStaple,
-		LegoDisableCNAMESupport: json.LegoDisableCNAMESupport,
-		EnableCommonName:        json.EnableCommonName,
-		RevokeOld:               json.RevokeOld,
+		Name:                              certificateName,
+		Domains:                           json.Domains,
+		AutoCert:                          model.AutoCertEnabled,
+		DnsCredentialID:                   json.DnsCredentialID,
+		ChallengeMethod:                   json.ChallengeMethod,
+		Profile:                           profile,
+		KeyType:                           helper.GetKeyType(json.KeyType),
+		ACMEUserID:                        json.ACMEUserID,
+		MustStaple:                        json.MustStaple,
+		LegoDisableCNAMESupport:           json.LegoDisableCNAMESupport,
+		DisableAuthoritativeNSPropagation: json.DisableAuthoritativeNSPropagation,
+		EnableCommonName:                  json.EnableCommonName,
+		RevokeOld:                         json.RevokeOld,
 	}
 
 	return model.UseDB().Model(certModel).Clauses(clause.Returning{}).
 		Select(
 			"name", "domains", "auto_cert", "dns_credential_id", "challenge_method", "profile",
 			"key_type", "acme_user_id", "must_staple", "lego_disable_cname_support",
+			"disable_authoritative_ns_propagation",
 			"enable_common_name", "revoke_old",
 		).
 		Updates(updates).Error

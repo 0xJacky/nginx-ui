@@ -4,7 +4,38 @@ import (
 	"fmt"
 	"testing"
 	"time"
+
+	"github.com/0xJacky/Nginx-UI/model"
+	"github.com/0xJacky/Nginx-UI/query"
+	"github.com/stretchr/testify/require"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
 )
+
+func TestDeleteAllLogIndexesUsesRegisteredQueryDatabase(t *testing.T) {
+	originalModelDB := model.UseDB()
+	originalQueryDB := query.Q.UnderlyingDB()
+	database, err := gorm.Open(sqlite.Open("file:delete-all-indexes?mode=memory&cache=shared"), &gorm.Config{})
+	require.NoError(t, err)
+	require.NoError(t, database.AutoMigrate(&model.NginxLogIndex{}))
+	model.Use(database)
+	query.SetDefault(database)
+	t.Cleanup(func() {
+		if originalModelDB != nil {
+			model.Use(originalModelDB)
+		}
+		if originalQueryDB != nil {
+			query.SetDefault(originalQueryDB)
+		}
+	})
+
+	require.NoError(t, database.Create(&model.NginxLogIndex{Path: "/var/log/nginx/access.log"}).Error)
+	require.NoError(t, NewPersistenceManager(nil).DeleteAllLogIndexes())
+
+	var count int64
+	require.NoError(t, database.Model(&model.NginxLogIndex{}).Count(&count).Error)
+	require.Zero(t, count)
+}
 
 func TestPersistenceManager_Creation(t *testing.T) {
 	// Test default config

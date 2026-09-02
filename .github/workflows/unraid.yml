@@ -1,0 +1,31 @@
+name: Unraid templates
+
+on:
+  push:
+    branches:
+      - dev
+    paths:
+      - 'packaging/unraid/**'
+      - '.github/workflows/unraid.yml'
+  pull_request:
+    paths:
+      - 'packaging/unraid/**'
+      - '.github/workflows/unraid.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Install XML tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends libxml2-utils
+
+      - name: Validate Community Applications repository
+        run: bash packaging/unraid/repository/tests/validate.sh

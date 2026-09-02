@@ -24,7 +24,9 @@ func InitRouter(r *gin.RouterGroup) {
 
 		group.GET("/ddns", ListDDNSConfig)
 
-		o := group.Group("", middleware.RequireSecureSession())
+		// Every mutation here is relayed to a real DNS provider API with stored
+		// credentials, so none of it belongs on a public demo.
+		o := group.Group("", middleware.RequireSecureSession(), middleware.RejectInDemo())
 		{
 			o.POST("/domains", CreateDomain)
 			o.POST("/domains/:id", UpdateDomain)

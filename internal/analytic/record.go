@@ -67,7 +67,15 @@ func recordCpu(now time.Time) {
 	}
 }
 
-func recordNetwork(now time.Time) {
+func calculateBytesPerSecond(current, previous uint64, elapsed time.Duration) uint64 {
+	if current < previous || elapsed <= 0 {
+		return 0
+	}
+
+	return uint64(float64(current-previous) / elapsed.Seconds())
+}
+
+func recordNetwork() {
 	// Get network statistics using GetNetworkStat which includes Ethernet interfaces
 	networkStats, err := GetNetworkStat()
 	if err != nil {
@@ -75,23 +83,25 @@ func recordNetwork(now time.Time) {
 		return
 	}
 
-	// Calculate usage since last record
-	bytesRecv := networkStats.BytesRecv - LastNetRecv
-	bytesSent := networkStats.BytesSent - LastNetSent
+	sampledAt := time.Now()
+	elapsed := sampledAt.Sub(LastNetSampleAt)
+	bytesRecv := calculateBytesPerSecond(networkStats.BytesRecv, LastNetRecv, elapsed)
+	bytesSent := calculateBytesPerSecond(networkStats.BytesSent, LastNetSent, elapsed)
 
 	// Update records
 	NetRecvRecord = append(NetRecvRecord, Usage[uint64]{
-		Time:  now,
+		Time:  sampledAt,
 		Usage: bytesRecv,
 	})
 	NetSentRecord = append(NetSentRecord, Usage[uint64]{
-		Time:  now,
+		Time:  sampledAt,
 		Usage: bytesSent,
 	})
 
 	// Update last values
 	LastNetRecv = networkStats.BytesRecv
 	LastNetSent = networkStats.BytesSent
+	LastNetSampleAt = sampledAt
 
 	// Limit record size
 	if len(NetRecvRecord) > 100 {

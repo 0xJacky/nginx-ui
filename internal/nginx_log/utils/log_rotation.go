@@ -11,6 +11,7 @@ import (
 // and compiling regexes per call dominated the parse cost.
 var (
 	dotDateRotationRe  = regexp.MustCompile(`^\d{4}\.\d{2}\.\d{2}$`)
+	dashDateRotationRe = regexp.MustCompile(`^(.+\..+)-(\d{8}|\d{4}-\d{2}-\d{2})$`)
 	numberedRotationRe = regexp.MustCompile(`^(.+)\.(\d{1,3})$`)
 	middleNumberedRe   = regexp.MustCompile(`^(.+)\.(\d{1,3})\.log$`)
 	multiPartDateRe    = regexp.MustCompile(`^2\d{3}\.\d{2}\.\d{2}$`)
@@ -23,10 +24,10 @@ var (
 
 // MainLogPathFromFile extracts the main (base) log path from a file path,
 // collapsing rotated and compressed variants (access.log.1, access.log.2.gz,
-// access.log.20231201, ...) onto their log group base. This is the single
-// canonical implementation: the value is persisted as MainLogPath in the
-// index metadata and used for log group queries, so all grouping logic must
-// agree with it.
+// access.log.20231201, access.log-20231201, ...) onto their log group base.
+// This is the single canonical implementation: the value is persisted as
+// MainLogPath in the index metadata and used for log group queries, so all
+// grouping logic must agree with it.
 func MainLogPathFromFile(filePath string) string {
 	dir := filepath.Dir(filePath)
 	filename := filepath.Base(filePath)
@@ -34,6 +35,16 @@ func MainLogPathFromFile(filePath string) string {
 	// Remove compression extensions (.gz, .bz2, .xz, .lz4)
 	for _, ext := range []string{".gz", ".bz2", ".xz", ".lz4"} {
 		filename = strings.TrimSuffix(filename, ext)
+	}
+
+	// Handle dash-separated date rotation (access.log-20231201,
+	// access.log-2023-12-01). This is what logrotate writes with the `dateext`
+	// option, which is the default on Debian and Ubuntu, so it has to collapse
+	// onto the same group as the live log rather than becoming its own group.
+	// The base part must itself contain a dot so a plain name that merely ends
+	// in digits after a dash is left alone.
+	if match := dashDateRotationRe.FindStringSubmatch(filename); len(match) > 1 {
+		return filepath.Join(dir, match[1])
 	}
 
 	// Check if it's a dot-separated date rotation FIRST (access.log.YYYYMMDD or access.log.YYYY.MM.DD)

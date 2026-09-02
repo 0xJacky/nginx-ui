@@ -1,6 +1,7 @@
 package nodeauth
 
 import (
+	"crypto/sha256"
 	"io"
 	"net/http"
 	"strings"
@@ -124,6 +125,39 @@ func TestSharedSecretRequestRejectsForgeryAndReplay(t *testing.T) {
 		_, err := verifyRequest(request, database, now, NewReplayCache(16))
 		assert.ErrorContains(t, err, "not configured")
 	})
+}
+
+func TestSharedSecretRequestRejectsInvalidSignatureBeforeReadingBody(t *testing.T) {
+	database := setupSharedSecretTest(t)
+	now := time.Now()
+	request := newSharedSecretRequest(t, sharedNodeSecret, now)
+	CloseStagedBody(request)
+	body := &trackingReadCloser{failOnRead: true}
+	request.Body = body
+	request.Header.Set(signatureHeader, invalidTestSignature(sha256.Size))
+
+	_, err := verifyRequest(request, database, now, NewReplayCache(16))
+
+	require.ErrorContains(t, err, "signature is invalid")
+	assert.Zero(t, body.bytesRead)
+}
+
+func TestSharedSecretRequestRejectsReplayBeforeReadingBody(t *testing.T) {
+	database := setupSharedSecretTest(t)
+	now := time.Now()
+	request := newSharedSecretRequest(t, sharedNodeSecret, now)
+	replay := request.Clone(request.Context())
+	body := &trackingReadCloser{failOnRead: true}
+	replay.Body = body
+	cache := NewReplayCache(16)
+
+	_, err := verifyRequest(request, database, now, cache)
+	require.NoError(t, err)
+	CloseStagedBody(request)
+	_, err = verifyRequest(replay, database, now, cache)
+
+	require.ErrorContains(t, err, "nonce was already used")
+	assert.Zero(t, body.bytesRead)
 }
 
 // TestLegacyNodeTransportUsesCompatibleHeader covers rolling upgrades: a

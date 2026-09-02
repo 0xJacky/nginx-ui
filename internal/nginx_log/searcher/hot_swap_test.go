@@ -2,7 +2,9 @@ package searcher
 
 import (
 	"context"
+	"fmt"
 	"path/filepath"
+	"sync"
 	"testing"
 
 	"github.com/blevesearch/bleve/v2"
@@ -85,6 +87,109 @@ func TestDistributedSearcher_SwapShards(t *testing.T) {
 	// In this case, we should at least find one document, and potentially both
 	assert.GreaterOrEqual(t, result.TotalHits, uint64(1)) // At least one doc should be found
 	assert.LessOrEqual(t, result.TotalHits, uint64(2))    // But no more than two
+}
+
+func TestDistributedSearcher_ConcurrentSearchAndSwap(t *testing.T) {
+	tempDir := t.TempDir()
+	mapping := bleve.NewIndexMapping()
+
+	shard1, err := bleve.New(filepath.Join(tempDir, "shard1.bleve"), mapping)
+	require.NoError(t, err)
+	defer shard1.Close()
+	require.NoError(t, shard1.Index("doc1", map[string]interface{}{
+		"content": "test document one",
+	}))
+
+	shard2, err := bleve.New(filepath.Join(tempDir, "shard2.bleve"), mapping)
+	require.NoError(t, err)
+	defer shard2.Close()
+	require.NoError(t, shard2.Index("doc2", map[string]interface{}{
+		"content": "test document two",
+	}))
+
+	config := DefaultSearcherConfig()
+	config.EnableCache = false
+	distributedSearcher := NewSearcher(config, []bleve.Index{shard1})
+	defer distributedSearcher.Stop()
+
+	stopSearches := make(chan struct{})
+	searchErrors := make(chan error, 1)
+	searchStarted := make(chan struct{})
+	var searchWaitGroup sync.WaitGroup
+	searchWaitGroup.Add(1)
+	go func() {
+		defer searchWaitGroup.Done()
+		close(searchStarted)
+		for {
+			select {
+			case <-stopSearches:
+				return
+			default:
+			}
+
+			result, searchErr := distributedSearcher.Search(context.Background(), &SearchRequest{
+				Query: "test",
+				Limit: 10,
+			})
+			if searchErr != nil {
+				searchErrors <- searchErr
+				return
+			}
+			if result.TotalHits == 0 {
+				searchErrors <- fmt.Errorf("concurrent search returned no hits")
+				return
+			}
+
+			_ = distributedSearcher.IsHealthy()
+			_ = distributedSearcher.GetShards()
+		}
+	}()
+
+	<-searchStarted
+	for i := 0; i < 25; i++ {
+		shards := []bleve.Index{shard1}
+		if i%2 == 1 {
+			shards = append(shards, shard2)
+		}
+		require.NoError(t, distributedSearcher.SwapShards(shards))
+	}
+
+	close(stopSearches)
+	searchWaitGroup.Wait()
+	select {
+	case searchErr := <-searchErrors:
+		require.NoError(t, searchErr)
+	default:
+	}
+
+	shardSnapshot := distributedSearcher.GetShards()
+	require.NotEmpty(t, shardSnapshot)
+	shardSnapshot[0] = nil
+	require.NotNil(t, distributedSearcher.GetShards()[0], "GetShards must return an isolated snapshot")
+}
+
+func TestDistributedSearcher_SwapShards_RejectsEmptySet(t *testing.T) {
+	index, err := bleve.NewMemOnly(bleve.NewIndexMapping())
+	require.NoError(t, err)
+	defer index.Close()
+	require.NoError(t, index.Index("doc1", map[string]interface{}{
+		"content": "test document",
+	}))
+
+	distributedSearcher := NewSearcher(DefaultSearcherConfig(), []bleve.Index{index})
+	defer distributedSearcher.Stop()
+
+	err = distributedSearcher.SwapShards(nil)
+	require.ErrorContains(t, err, "cannot swap to an empty shard set")
+	require.Len(t, distributedSearcher.GetShards(), 1)
+	require.True(t, distributedSearcher.IsHealthy())
+
+	result, err := distributedSearcher.Search(context.Background(), &SearchRequest{
+		Query: "test",
+		Limit: 10,
+	})
+	require.NoError(t, err)
+	require.Equal(t, uint64(1), result.TotalHits)
 }
 
 func TestDistributedSearcher_SwapShards_NotRunning(t *testing.T) {

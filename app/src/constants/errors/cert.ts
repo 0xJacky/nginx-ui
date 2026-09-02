@@ -47,4 +47,5 @@ export default {
   50053: () => $gettext('IP address certificates require the HTTP-01 challenge'),
   50054: () => $gettext('Certificate profile is not available from the selected ACME server: {0}'),
   50055: () => $gettext('Wildcard domains and IP addresses cannot be requested in the same certificate'),
+  50056: () => $gettext('Persist certificate record error: {0}'),
 }

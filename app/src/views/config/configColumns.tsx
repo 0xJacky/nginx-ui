@@ -51,7 +51,7 @@ const configColumns: StdTableColumn[] = [{
   title: () => $gettext('Actions'),
   dataIndex: 'actions',
   fixed: 'right',
-  width: 180,
+  width: 240,
 }]
 
 export default configColumns

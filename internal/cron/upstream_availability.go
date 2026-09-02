@@ -1,9 +1,8 @@
 package cron
 
 import (
-	"time"
-
 	"github.com/0xJacky/Nginx-UI/internal/upstream"
+	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/go-co-op/gocron/v2"
 	"github.com/uozi-tech/cosy/logger"
 )
@@ -14,7 +13,7 @@ var upstreamAvailabilityJob gocron.Job
 // setupUpstreamAvailabilityJob initializes the upstream availability testing job
 func setupUpstreamAvailabilityJob(scheduler gocron.Scheduler) (gocron.Job, error) {
 	job, err := scheduler.NewJob(
-		gocron.DurationJob(30*time.Second),
+		gocron.DurationJob(settings.UpstreamCheckSettings.GetInterval()),
 		gocron.NewTask(executeUpstreamAvailabilityTest),
 		gocron.WithSingletonMode(gocron.LimitModeWait),
 		gocron.WithName("upstream_availability_test"),
@@ -26,7 +25,7 @@ func setupUpstreamAvailabilityJob(scheduler gocron.Scheduler) (gocron.Job, error
 	}
 
 	upstreamAvailabilityJob = job
-	logger.Info("Upstream availability testing job started with 30s interval")
+	logger.Infof("Upstream availability testing job started with %s interval", settings.UpstreamCheckSettings.GetInterval())
 	return job, nil
 }
 

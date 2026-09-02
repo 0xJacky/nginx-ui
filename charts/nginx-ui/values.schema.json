@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "Nginx UI Helm values",
+  "type": "object",
+  "required": [
+    "replicaCount",
+    "image",
+    "service",
+    "ingress",
+    "persistence",
+    "probes"
+  ],
+  "properties": {
+    "replicaCount": {
+      "type": "integer",
+      "const": 1,
+      "description": "Nginx UI is a single-writer workload and supports exactly one replica."
+    },
+    "image": {
+      "type": "object",
+      "required": ["repository", "pullPolicy", "tag"],
+      "properties": {
+        "repository": {"type": "string", "minLength": 1},
+        "pullPolicy": {"type": "string", "enum": ["Always", "IfNotPresent", "Never"]},
+        "tag": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "imagePullSecrets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {"name": {"type": "string", "minLength": 1}},
+        "additionalProperties": false
+      }
+    },
+    "nameOverride": {"type": "string"},
+    "fullnameOverride": {"type": "string"},
+    "podAnnotations": {"type": "object"},
+    "podLabels": {"type": "object"},
+    "podSecurityContext": {"type": "object"},
+    "securityContext": {"type": "object"},
+    "service": {
+      "type": "object",
+      "required": ["type", "httpPort", "httpsPort"],
+      "properties": {
+        "type": {"type": "string", "enum": ["ClusterIP", "NodePort", "LoadBalancer"]},
+        "annotations": {"type": "object"},
+        "httpPort": {"type": "integer", "minimum": 1, "maximum": 65535},
+        "httpsPort": {"type": "integer", "minimum": 1, "maximum": 65535},
+        "externalTrafficPolicy": {"type": "string", "enum": ["", "Cluster", "Local"]},
+        "loadBalancerIP": {"type": "string"},
+        "loadBalancerSourceRanges": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      },
+      "additionalProperties": false
+    },
+    "ingress": {
+      "type": "object",
+      "required": ["enabled", "hosts", "tls"],
+      "properties": {
+        "enabled": {"type": "boolean"},
+        "className": {"type": "string"},
+        "annotations": {"type": "object"},
+        "hosts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["host", "paths"],
+            "properties": {
+              "host": {"type": "string", "minLength": 1},
+              "paths": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": ["path", "pathType"],
+                  "properties": {
+                    "path": {"type": "string", "minLength": 1},
+                    "pathType": {"type": "string", "enum": ["Exact", "Prefix", "ImplementationSpecific"]}
+                  },
+                  "additionalProperties": false
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "tls": {"type": "array", "items": {"type": "object"}}
+      },
+      "additionalProperties": false
+    },
+    "persistence": {
+      "type": "object",
+      "required": ["nginx", "nginxUI", "www"],
+      "properties": {
+        "nginx": {"$ref": "#/definitions/persistence"},
+        "nginxUI": {"$ref": "#/definitions/persistence"},
+        "www": {"$ref": "#/definitions/persistence"}
+      },
+      "additionalProperties": false
+    },
+    "probes": {
+      "type": "object",
+      "required": ["startup", "liveness", "readiness"],
+      "properties": {
+        "startup": {"$ref": "#/definitions/probe"},
+        "liveness": {"$ref": "#/definitions/probe"},
+        "readiness": {"$ref": "#/definitions/probe"}
+      },
+      "additionalProperties": false
+    },
+    "resources": {"type": "object"},
+    "nodeSelector": {"type": "object"},
+    "tolerations": {"type": "array", "items": {"type": "object"}},
+    "affinity": {"type": "object"},
+    "topologySpreadConstraints": {"type": "array", "items": {"type": "object"}},
+    "extraEnv": {"type": "array", "items": {"type": "object"}},
+    "extraEnvFrom": {"type": "array", "items": {"type": "object"}},
+    "extraVolumes": {"type": "array", "items": {"type": "object"}},
+    "extraVolumeMounts": {"type": "array", "items": {"type": "object"}},
+    "terminationGracePeriodSeconds": {"type": "integer", "minimum": 0}
+  },
+  "definitions": {
+    "persistence": {
+      "type": "object",
+      "required": ["enabled", "existingClaim", "storageClass", "accessModes", "size", "annotations", "retain"],
+      "properties": {
+        "enabled": {"type": "boolean"},
+        "existingClaim": {"type": "string"},
+        "storageClass": {"type": "string"},
+        "accessModes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "enum": ["ReadWriteOnce", "ReadOnlyMany", "ReadWriteMany", "ReadWriteOncePod"]}
+        },
+        "size": {"type": "string", "pattern": "^[0-9]+(\\.[0-9]+)?([EPTGMK]i?|[eptgmk])?$"},
+        "annotations": {"type": "object"},
+        "retain": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "probe": {
+      "type": "object",
+      "required": ["enabled", "httpGet", "failureThreshold", "periodSeconds", "timeoutSeconds"],
+      "properties": {
+        "enabled": {"type": "boolean"},
+        "httpGet": {
+          "type": "object",
+          "required": ["path", "port", "scheme"],
+          "properties": {
+            "path": {"type": "string", "pattern": "^/"},
+            "port": {"oneOf": [{"type": "string"}, {"type": "integer", "minimum": 1, "maximum": 65535}]},
+            "scheme": {"type": "string", "enum": ["HTTP", "HTTPS"]},
+            "httpHeaders": {"type": "array", "items": {"type": "object"}}
+          },
+          "additionalProperties": false
+        },
+        "failureThreshold": {"type": "integer", "minimum": 1},
+        "periodSeconds": {"type": "integer", "minimum": 1},
+        "timeoutSeconds": {"type": "integer", "minimum": 1},
+        "initialDelaySeconds": {"type": "integer", "minimum": 0},
+        "successThreshold": {"type": "integer", "minimum": 1}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

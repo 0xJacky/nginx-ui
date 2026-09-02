@@ -5,6 +5,8 @@ import "time"
 const (
 	MCPTokenScopeRead  = "mcp:read"
 	MCPTokenScopeWrite = "mcp:write"
+	APITokenScopeRead  = "api:read"
+	APITokenScopeWrite = "api:write"
 )
 
 type MCPServiceToken struct {

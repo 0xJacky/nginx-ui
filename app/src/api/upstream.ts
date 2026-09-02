@@ -32,6 +32,12 @@ export interface SocketInfo {
 
 export interface SocketListResponse {
   data: SocketInfo[]
+  global_health_check_enabled: boolean
+}
+
+export interface UpstreamHealthCheckStatusResponse {
+  enabled: boolean
+  interval_seconds: number
 }
 
 export interface UpdateSocketConfigRequest {
@@ -50,6 +56,10 @@ const upstream = {
   // Get all sockets with their configuration and health status
   getSocketList(): Promise<SocketListResponse> {
     return http.get('/upstream/sockets')
+  },
+
+  getHealthCheckStatus(): Promise<UpstreamHealthCheckStatusResponse> {
+    return http.get('/upstream/health_check/status')
   },
 
   // Update socket configuration

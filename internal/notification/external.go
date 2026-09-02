@@ -45,6 +45,25 @@ func (n *ExternalMessage) Send() {
 		logger.Error(err)
 		return
 	}
+	n.send(externalNotifies)
+}
+
+// SendTo delivers a message only to the selected, currently enabled external
+// notifier records. An empty selection intentionally sends no external message.
+func (n *ExternalMessage) SendTo(ids []uint64) {
+	if len(ids) == 0 {
+		return
+	}
+	en := query.ExternalNotify
+	externalNotifies, err := en.Where(en.Enabled.Is(true), en.ID.In(ids...)).Find()
+	if err != nil {
+		logger.Error(err)
+		return
+	}
+	n.send(externalNotifies)
+}
+
+func (n *ExternalMessage) send(externalNotifies []*model.ExternalNotify) {
 	ctx := context.Background()
 	for _, externalNotify := range externalNotifies {
 		go func(externalNotify *model.ExternalNotify) {
@@ -60,6 +79,15 @@ func (n *ExternalMessage) Send() {
 
 // SendWithConfig sends the message with direct configuration parameters
 func (n *ExternalMessage) SendWithConfig(notifyType, language string, config map[string]string) error {
+	return n.SendWithConfigContext(context.Background(), notifyType, language, config)
+}
+
+// SendWithConfigContext sends a message with direct configuration parameters and a caller-owned context.
+func (n *ExternalMessage) SendWithConfigContext(
+	ctx context.Context,
+	notifyType, language string,
+	config map[string]string,
+) error {
 	// Create a temporary ExternalNotify object with the provided parameters
 	externalNotify := &model.ExternalNotify{
 		Type:     notifyType,
@@ -67,7 +95,6 @@ func (n *ExternalMessage) SendWithConfig(notifyType, language string, config map
 		Config:   config,
 	}
 
-	ctx := context.Background()
 	notifier, err := externalNotifierHandler(externalNotify)
 	if err != nil {
 		return err

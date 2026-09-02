@@ -767,12 +767,12 @@ server {
 
 	targets := ParseProxyTargetsFromRawContent(config)
 
-	expected := ProxyTarget{Host: "example.com", Port: "80", Type: "proxy_pass"}
+	expected := ProxyTarget{Host: "example.com", Port: "80", Type: "proxy_pass", Scheme: "http"}
 	if len(targets) != 1 {
 		t.Fatalf("Expected 1 target, got %d", len(targets))
 	}
 	got := targets[0]
-	if got.Host != expected.Host || got.Port != expected.Port || got.Type != expected.Type {
+	if got.Host != expected.Host || got.Port != expected.Port || got.Type != expected.Type || got.Scheme != expected.Scheme {
 		t.Errorf("Unexpected target: got=%+v expected=%+v", got, expected)
 	}
 }
@@ -789,12 +789,12 @@ server {
 
 	targets := ParseProxyTargetsFromRawContent(config)
 
-	expected := ProxyTarget{Host: "example.com", Port: "443", Type: "proxy_pass"}
+	expected := ProxyTarget{Host: "example.com", Port: "443", Type: "proxy_pass", Scheme: "https"}
 	if len(targets) != 1 {
 		t.Fatalf("Expected 1 target, got %d", len(targets))
 	}
 	got := targets[0]
-	if got.Host != expected.Host || got.Port != expected.Port || got.Type != expected.Type {
+	if got.Host != expected.Host || got.Port != expected.Port || got.Type != expected.Type || got.Scheme != expected.Scheme {
 		t.Errorf("Unexpected target: got=%+v expected=%+v", got, expected)
 	}
 }
@@ -811,12 +811,12 @@ server {
 
 	targets := ParseProxyTargetsFromRawContent(config)
 
-	expected := ProxyTarget{Host: "example.com", Port: "9090", Type: "proxy_pass"}
+	expected := ProxyTarget{Host: "example.com", Port: "9090", Type: "proxy_pass", Scheme: "http"}
 	if len(targets) != 1 {
 		t.Fatalf("Expected 1 target, got %d", len(targets))
 	}
 	got := targets[0]
-	if got.Host != expected.Host || got.Port != expected.Port || got.Type != expected.Type {
+	if got.Host != expected.Host || got.Port != expected.Port || got.Type != expected.Type || got.Scheme != expected.Scheme {
 		t.Errorf("Unexpected target: got=%+v expected=%+v", got, expected)
 	}
 }
@@ -896,12 +896,12 @@ server {
 
 	targets := ParseProxyTargetsFromRawContent(config)
 
-	expected := ProxyTarget{Host: "127.0.0.1", Port: "9090", Type: "grpc_pass"}
+	expected := ProxyTarget{Host: "127.0.0.1", Port: "9090", Type: "grpc_pass", Scheme: "grpc"}
 	if len(targets) != 1 {
 		t.Fatalf("Expected 1 target, got %d", len(targets))
 	}
 	got := targets[0]
-	if got.Host != expected.Host || got.Port != expected.Port || got.Type != expected.Type {
+	if got.Host != expected.Host || got.Port != expected.Port || got.Type != expected.Type || got.Scheme != expected.Scheme {
 		t.Errorf("Unexpected target: got=%+v expected=%+v", got, expected)
 	}
 }

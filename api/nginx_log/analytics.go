@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/analytics"
@@ -131,8 +132,9 @@ func GetLogAnalytics(c *gin.Context) {
 
 // GetLogPreflight returns the preflight status for log indexing
 func GetLogPreflight(c *gin.Context) {
-	// Get optional log path parameter
-	logPath := c.Query("log_path")
+	// Get optional log path parameter. Decoded before use: the value may arrive
+	// base64url-encoded so that a WAF does not read it as a traversal attempt.
+	logPath, _ := helper.DecodePathParam(c.Query("log_path"))
 
 	// Create preflight service and perform check
 	preflightService := nginx_log.NewPreflight()
@@ -392,9 +394,12 @@ func GetLogEntries(c *gin.Context) {
 		Tail  bool   `json:"tail" form:"tail"` // Get latest entries
 	}
 
-	if !cosy.BindAndValid(c, &req) {
+	if err := c.ShouldBindQuery(&req); err != nil {
+		cosy.ErrHandler(c, err)
 		return
 	}
+
+	req.Path, _ = helper.DecodePathParam(req.Path)
 
 	searcherService := nginx_log.GetSearcher()
 	if searcherService == nil {

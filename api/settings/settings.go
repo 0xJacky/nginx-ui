@@ -11,10 +11,12 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/cron"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/0xJacky/Nginx-UI/internal/sitecheck"
 	"github.com/0xJacky/Nginx-UI/internal/system"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
+	"github.com/uozi-tech/cosy/logger"
 	cSettings "github.com/uozi-tech/cosy/settings"
 )
 
@@ -27,16 +29,18 @@ var manuallySensitiveSettingGetters = map[string]func() any{
 }
 
 type saveSettingsPayload struct {
-	App       cSettings.App      `json:"app"`
-	Server    cSettings.Server   `json:"server"`
-	Auth      settings.Auth      `json:"auth"`
-	Cert      settings.Cert      `json:"cert"`
-	Http      settings.HTTP      `json:"http"`
-	Node      settings.Node      `json:"node"`
-	Openai    settings.OpenAI    `json:"openai"`
-	Logrotate settings.Logrotate `json:"logrotate"`
-	Nginx     settings.Nginx     `json:"nginx"`
-	Oidc      settings.OIDC      `json:"oidc"`
+	App           cSettings.App          `json:"app"`
+	Server        cSettings.Server       `json:"server"`
+	Auth          settings.Auth          `json:"auth"`
+	Cert          settings.Cert          `json:"cert"`
+	Http          settings.HTTP          `json:"http"`
+	Node          settings.Node          `json:"node"`
+	Openai        settings.OpenAI        `json:"openai"`
+	Logrotate     settings.Logrotate     `json:"logrotate"`
+	Nginx         settings.Nginx         `json:"nginx"`
+	Oidc          settings.OIDC          `json:"oidc"`
+	SiteCheck     settings.SiteCheck     `json:"site_check"`
+	UpstreamCheck settings.UpstreamCheck `json:"upstream_check"`
 }
 
 func cloneSettingsSection(section any) gin.H {
@@ -139,18 +143,20 @@ func cloneRedactedSettingsSection(section any, extraSensitiveFields ...string) g
 
 func settingsSectionSources() map[string]any {
 	return map[string]any{
-		"app":       cSettings.AppSettings,
-		"server":    cSettings.ServerSettings,
-		"auth":      settings.AuthSettings,
-		"casdoor":   settings.CasdoorSettings,
-		"cert":      settings.CertSettings,
-		"http":      settings.HTTPSettings,
-		"logrotate": settings.LogrotateSettings,
-		"nginx":     settings.NginxSettings,
-		"node":      settings.NodeSettings,
-		"openai":    settings.OpenAISettings,
-		"terminal":  settings.TerminalSettings,
-		"oidc":      settings.OIDCSettings,
+		"app":            cSettings.AppSettings,
+		"server":         cSettings.ServerSettings,
+		"auth":           settings.AuthSettings,
+		"casdoor":        settings.CasdoorSettings,
+		"cert":           settings.CertSettings,
+		"http":           settings.HTTPSettings,
+		"logrotate":      settings.LogrotateSettings,
+		"nginx":          settings.NginxSettings,
+		"node":           settings.NodeSettings,
+		"openai":         settings.OpenAISettings,
+		"terminal":       settings.TerminalSettings,
+		"oidc":           settings.OIDCSettings,
+		"site_check":     settings.SiteCheckSettings,
+		"upstream_check": settings.UpstreamCheckSettings,
 	}
 }
 
@@ -201,20 +207,22 @@ func buildSettingsResponse() gin.H {
 	}
 
 	return gin.H{
-		"app":       app,
-		"server":    cSettings.ServerSettings,
-		"database":  settings.DatabaseSettings,
-		"auth":      cloneRedactedSettingsSection(settings.AuthSettings),
-		"casdoor":   cloneRedactedSettingsSection(settings.CasdoorSettings),
-		"oidc":      cloneRedactedSettingsSection(settings.OIDCSettings),
-		"cert":      cloneRedactedSettingsSection(settings.CertSettings),
-		"http":      cloneRedactedSettingsSection(settings.HTTPSettings),
-		"logrotate": cloneRedactedSettingsSection(settings.LogrotateSettings),
-		"nginx":     buildNginxSettingsResponse(),
-		"node":      cloneRedactedSettingsSection(settings.NodeSettings),
-		"openai":    openai,
-		"terminal":  cloneRedactedSettingsSection(settings.TerminalSettings),
-		"webauthn":  settings.WebAuthnSettings,
+		"app":            app,
+		"server":         cSettings.ServerSettings,
+		"database":       settings.DatabaseSettings,
+		"auth":           cloneRedactedSettingsSection(settings.AuthSettings),
+		"casdoor":        cloneRedactedSettingsSection(settings.CasdoorSettings),
+		"oidc":           cloneRedactedSettingsSection(settings.OIDCSettings),
+		"cert":           cloneRedactedSettingsSection(settings.CertSettings),
+		"http":           cloneRedactedSettingsSection(settings.HTTPSettings),
+		"logrotate":      cloneRedactedSettingsSection(settings.LogrotateSettings),
+		"nginx":          buildNginxSettingsResponse(),
+		"node":           cloneRedactedSettingsSection(settings.NodeSettings),
+		"openai":         openai,
+		"terminal":       cloneRedactedSettingsSection(settings.TerminalSettings),
+		"webauthn":       settings.WebAuthnSettings,
+		"site_check":     settings.SiteCheckSettings,
+		"upstream_check": settings.UpstreamCheckSettings,
 	}
 }
 
@@ -225,6 +233,7 @@ func buildNginxSettingsResponse() gin.H {
 	response["config_dir"] = nginx.GetConfPath()
 	response["pid_path"] = nginx.GetPIDPath()
 	response["stub_status_port"] = settings.NginxSettings.GetStubStatusPort()
+	response["maintenance_dir"] = settings.NginxSettings.GetMaintenanceDir()
 
 	if settings.NginxSettings.ReloadCmd == "" {
 		response["reload_cmd"] = "nginx -s reload"
@@ -278,6 +287,9 @@ func SaveSettings(c *gin.Context) {
 
 	restoreRedactedSensitiveSettings(&json)
 
+	siteCheckChanged := *settings.SiteCheckSettings != json.SiteCheck
+	upstreamCheckChanged := *settings.UpstreamCheckSettings != json.UpstreamCheck
+
 	if settings.LogrotateSettings.Enabled != json.Logrotate.Enabled ||
 		settings.LogrotateSettings.Interval != json.Logrotate.Interval {
 		go cron.RestartLogrotate()
@@ -330,6 +342,8 @@ func SaveSettings(c *gin.Context) {
 		cSettings.ProtectedFill(settings.LogrotateSettings, &json.Logrotate)
 		cSettings.ProtectedFill(settings.NginxSettings, &json.Nginx)
 		cSettings.ProtectedFill(settings.OIDCSettings, &json.Oidc)
+		cSettings.ProtectedFill(settings.SiteCheckSettings, &json.SiteCheck)
+		cSettings.ProtectedFill(settings.UpstreamCheckSettings, &json.UpstreamCheck)
 	})
 	if err != nil {
 		cosy.ErrHandler(c, err)
@@ -351,6 +365,22 @@ func SaveSettings(c *gin.Context) {
 	if needRestartProgram {
 		go func() {
 			risefront.Restart()
+		}()
+	}
+
+	if siteCheckChanged {
+		if service := sitecheck.GetService(); service != nil {
+			service.SettingsChanged()
+		}
+	}
+
+	if upstreamCheckChanged {
+		go func() {
+			if err := cron.RestartUpstreamAvailabilityJob(); err != nil {
+				// The settings have already been saved. Surface restart failures in
+				// server logs so the next scheduled reload can recover.
+				logger.Errorf("Failed to restart upstream availability job: %v", err)
+			}
 		}()
 	}
 }

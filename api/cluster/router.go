@@ -22,11 +22,13 @@ func InitRouter(r *gin.RouterGroup) {
 	{
 		admin.POST("nodes", AddNode)
 		admin.POST("nodes/:id", EditNode)
+		admin.PATCH("nodes/:id", RecoverNode)
 		admin.DELETE("nodes/:id", DeleteNode)
 		admin.POST("nodes/load_from_settings", LoadNodeFromSettings)
 		admin.GET("nodes/:id/secret", GetNodeSecret)
 		admin.GET("nodes/:id/credentials", GetNodeCredentials)
 		admin.POST("nodes/:id/credentials/rotate", RotateNodeCredential)
+		admin.POST("nodes/:id/auth-upgrade/retry", RetryNodeAuthUpgrade)
 		admin.GET("node/credentials", ListControllerCredentials)
 		admin.DELETE("node/credentials/:credential_id", RevokeControllerCredential)
 	}
@@ -38,6 +40,9 @@ func InitRouter(r *gin.RouterGroup) {
 	{
 		mutations.POST("nodes/reload_nginx", ReloadNginx)
 		mutations.POST("nodes/restart_nginx", RestartNginx)
+		mutations.POST("nodes/sync", SyncNodes)
+		mutations.POST("namespace/sync", UpsertNamespace)
+		mutations.POST("namespaces/:id/sync", SyncNamespace)
 		mutations.POST("namespaces", AddNamespace)
 		mutations.POST("namespaces/:id", ModifyNamespace)
 		mutations.DELETE("namespaces/:id", DeleteNamespace)

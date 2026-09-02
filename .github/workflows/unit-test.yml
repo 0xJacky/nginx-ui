@@ -8,12 +8,24 @@ on:
       - "**/*.go"
       - go.mod
       - go.sum
+      - install.sh
+      - tests/install_openwrt_test.sh
+      - resources/services/nginx-ui.openwrt
+      - resources/keep.openwrt
+      - "packaging/openwrt/**"
+      - ".github/workflows/build.yml"
       - ".github/workflows/unit-test.yml"
   pull_request:
     paths:
       - "**/*.go"
       - go.mod
       - go.sum
+      - install.sh
+      - tests/install_openwrt_test.sh
+      - resources/services/nginx-ui.openwrt
+      - resources/keep.openwrt
+      - "packaging/openwrt/**"
+      - ".github/workflows/build.yml"
       - ".github/workflows/unit-test.yml"
 
 permissions:
@@ -35,3 +47,38 @@ jobs:
       - name: Run unit tests
         run: >-
           go test -tags=unembed -race -cover -count=1 ./...
+
+  openwrt-install:
+    name: OpenWrt installer
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Test installer detection and paths
+        run: bash tests/install_openwrt_test.sh
+
+      - name: Verify OpenWrt SDK mirror
+        env:
+          OPENWRT_VERSION: 25.12.5
+        run: |
+          set -euo pipefail
+          targets=(
+            x86/64
+            armsr/armv8
+            mediatek/filogic
+            armsr/armv7
+            ipq40xx/generic
+            sifiveu/generic
+          )
+          checksum_file="$(mktemp)"
+          trap 'rm -f "$checksum_file"' EXIT
+          for target in "${targets[@]}"; do
+            base_url="https://mirror-03.infra.openwrt.org/releases/${OPENWRT_VERSION}/targets/${target}"
+            curl --retry 3 --retry-all-errors --retry-delay 2 \
+              -fsSLo "$checksum_file" "${base_url}/sha256sums"
+            sdk_filename="$(awk '$2 ~ /^\*?openwrt-sdk-.*\.Linux-x86_64\.tar\.zst$/ {sub(/^\*/, "", $2); print $2; exit}' "$checksum_file")"
+            test -n "$sdk_filename"
+            curl --retry 3 --retry-all-errors --retry-delay 2 \
+              -fsSILo /dev/null "${base_url}/${sdk_filename}"
+          done

@@ -66,7 +66,6 @@ async function onchange() {
       })
       await editorStore.save({
         omitIncompleteTLSServers: true,
-        skipTLSValidation: true,
         syncResponse: false,
       })
 

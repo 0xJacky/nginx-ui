@@ -1,0 +1,64 @@
+name: Helm Chart
+
+on:
+  push:
+    branches-ignore:
+      - weblate
+    paths:
+      - "charts/nginx-ui/**"
+      - ".github/workflows/helm.yml"
+  pull_request:
+    paths:
+      - "charts/nginx-ui/**"
+      - ".github/workflows/helm.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Lint and validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v5
+        with:
+          version: v4.2.3
+
+      - name: Install kubeconform
+        env:
+          KUBECONFORM_VERSION: v0.7.0
+          KUBECONFORM_SHA256: c31518ddd122663b3f3aa874cfe8178cb0988de944f29c74a0b9260920d115d3
+        run: |
+          set -euo pipefail
+          curl -fsSLo /tmp/kubeconform.tar.gz "https://github.com/yannh/kubeconform/releases/download/${KUBECONFORM_VERSION}/kubeconform-linux-amd64.tar.gz"
+          echo "${KUBECONFORM_SHA256}  /tmp/kubeconform.tar.gz" | sha256sum --check
+          tar -xzf /tmp/kubeconform.tar.gz -C /usr/local/bin kubeconform
+
+      - name: Lint chart
+        run: helm lint --strict charts/nginx-ui
+
+      - name: Validate rendered manifests
+        run: |
+          set -euo pipefail
+          helm template nginx-ui charts/nginx-ui --namespace nginx-ui > /tmp/nginx-ui-default.yaml
+          helm template nginx-ui charts/nginx-ui --namespace nginx-ui --values charts/nginx-ui/ci/ingress-values.yaml > /tmp/nginx-ui-ingress.yaml
+          helm template nginx-ui charts/nginx-ui --namespace nginx-ui --values charts/nginx-ui/ci/existing-claims-values.yaml > /tmp/nginx-ui-existing-claims.yaml
+          helm template nginx-ui charts/nginx-ui --namespace nginx-ui --values charts/nginx-ui/ci/smoke-values.yaml > /tmp/nginx-ui-smoke.yaml
+          kubeconform -strict -summary /tmp/nginx-ui-default.yaml
+          kubeconform -strict -summary /tmp/nginx-ui-ingress.yaml
+          kubeconform -strict -summary /tmp/nginx-ui-existing-claims.yaml
+          kubeconform -strict -summary /tmp/nginx-ui-smoke.yaml charts/nginx-ui/ci/smoke-pvs.yaml
+
+      - name: Verify single-replica schema
+        run: |
+          if helm template nginx-ui charts/nginx-ui --set replicaCount=2; then
+            echo "replicaCount=2 unexpectedly passed schema validation"
+            exit 1
+          fi
+
+      - name: Package chart
+        run: helm package charts/nginx-ui --destination /tmp

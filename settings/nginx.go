@@ -19,6 +19,8 @@ const (
 	DefaultHostKnownHostsPath = "/etc/nginx-ui/known_hosts"
 )
 
+const DefaultMaintenanceDir = "/etc/nginx/maintenance"
+
 type Nginx struct {
 	AccessLogPath       string   `json:"access_log_path" protected:"true"`
 	ErrorLogPath        string   `json:"error_log_path" protected:"true"`
@@ -32,6 +34,7 @@ type Nginx struct {
 	RestartCmd          string   `json:"restart_cmd" protected:"true"`
 	StubStatusPort      uint     `json:"stub_status_port" binding:"omitempty,min=1,max=65535"`
 	ContainerName       string   `json:"container_name" protected:"true"`
+	MaintenanceDir      string   `json:"maintenance_dir" protected:"true"`
 	MaintenanceTemplate string   `json:"maintenance_template"`
 
 	// Host SSH mode fields enable nginx-ui (running in Docker) to control
@@ -62,6 +65,13 @@ func (n *Nginx) GetStubStatusPort() uint {
 		return 51820
 	}
 	return n.StubStatusPort
+}
+
+func (n *Nginx) GetMaintenanceDir() string {
+	if n.MaintenanceDir == "" {
+		return DefaultMaintenanceDir
+	}
+	return n.MaintenanceDir
 }
 
 func (n *Nginx) GetHostKnownHostsPath() string {

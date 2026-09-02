@@ -8,4 +8,6 @@ func InitRouter(r *gin.RouterGroup) {
 	r.GET("templates/blocks", GetTemplateBlockList)
 	r.GET("templates/block/:name", GetTemplateBlock)
 	r.POST("templates/block/:name", GetTemplateBlock)
+	r.POST("templates/quick_config", GetQuickConfig)
+	r.POST("templates/quick_config/analyze", AnalyzeQuickConfig)
 }

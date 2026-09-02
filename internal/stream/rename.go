@@ -43,7 +43,7 @@ func Rename(oldName string, newName string) (err error) {
 		return ErrDstFileExists
 	}
 
-	s := query.Site
+	s := query.Stream
 	_, _ = s.Where(s.Path.Eq(oldPath)).Update(s.Path, newPath)
 
 	err = nginx.Rename(oldPath, newPath)
@@ -57,6 +57,7 @@ func Rename(oldName string, newName string) (err error) {
 		return err
 	}
 
+	relinked := false
 	symlinkExists, err := nginx.SymlinkExists(oldEnabledConfigFilePath)
 	if err != nil {
 		return err
@@ -73,18 +74,25 @@ func Rename(oldName string, newName string) (err error) {
 		if err != nil {
 			return
 		}
+
+		relinked = true
 	}
 
-	// test nginx configuration
-	res := nginx.Control(nginx.TestConfig)
-	if res.IsError() {
-		return res.GetError()
-	}
+	// Only the enabled tree feeds the running Nginx. A rename that did not touch
+	// it changes nothing locally, which is always the case for a remote
+	// namespace because it never creates a local symlink.
+	if relinked {
+		// test nginx configuration
+		res := nginx.Control(nginx.TestConfig)
+		if res.IsError() {
+			return res.GetError()
+		}
 
-	// reload nginx
-	res = nginx.Control(nginx.Reload)
-	if res.IsError() {
-		return res.GetError()
+		// reload nginx
+		res = nginx.Control(nginx.Reload)
+		if res.IsError() {
+			return res.GetError()
+		}
 	}
 
 	// update LLM history

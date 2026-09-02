@@ -10,6 +10,7 @@ import { useWebSocketEventBusStore } from '@/pinia'
 import LoadingState from '../components/LoadingState.vue'
 import { useIndexProgress } from '../composables/useIndexProgress'
 import SearchFilters from './components/SearchFilters.vue'
+import { getInitialStructuredTimeRange } from './timeRange'
 
 interface Props {
   logPath?: string
@@ -392,20 +393,18 @@ async function loadPreflight(): Promise<boolean> {
     if (preflightResponse.value.available && preflightResponse.value.time_range) {
       // Cache this path as valid and set time range
       pathValidationCache.value.set(currentPath, true)
-      // Set time range to full days: start_date 00:00:00 to end_date 23:59:59
-      const startTime = dayjs.unix(preflightResponse.value.time_range.start).startOf('day')
-      const endTime = dayjs.unix(preflightResponse.value.time_range.end).endOf('day')
-
-      timeRange.value.start = startTime
-      timeRange.value.end = endTime
+      // Keep the default query bounded even when rotated logs span years.
+      // Anchor the window to the latest indexed entry so historical logs work too.
+      timeRange.value = getInitialStructuredTimeRange(
+        dayjs.unix(preflightResponse.value.time_range.start),
+        dayjs.unix(preflightResponse.value.time_range.end),
+      )
       return true // Index is ready
     }
     else {
       // Index is not ready, will wait for event notification
       // Don't show message here - let the UI status handle it
-      // Use default range temporarily
-      timeRange.value.start = dayjs().subtract(7, 'day')
-      timeRange.value.end = dayjs()
+      timeRange.value = getInitialStructuredTimeRange()
       return false // Index not ready
     }
   }
@@ -419,8 +418,7 @@ async function loadPreflight(): Promise<boolean> {
 
     // For other errors, set fallback range but don't show error message here
     // The error will be handled by the caller
-    timeRange.value.start = dayjs().subtract(7, 'day')
-    timeRange.value.end = dayjs()
+    timeRange.value = getInitialStructuredTimeRange()
     throw error // Let the caller handle the error message
   }
 }

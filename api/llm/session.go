@@ -21,7 +21,7 @@ const TerminalAssistantPath = "__terminal_assistant__"
 func GetLLMSessions(c *gin.Context) {
 	g := query.LLMSession
 	query := g.Order(g.UpdatedAt.Desc())
-	
+
 	// Filter by type if provided
 	if assistantType := c.Query("type"); assistantType != "" {
 		if assistantType == "terminal" {
@@ -31,8 +31,10 @@ func GetLLMSessions(c *gin.Context) {
 			// For nginx type, exclude terminal assistant path
 			query = query.Where(g.Path.Neq(TerminalAssistantPath))
 		}
-	} else if path := c.Query("path"); path != "" {
+	} else if path, _ := helper.DecodePathParam(c.Query("path")); path != "" {
 		// Filter by path if provided (legacy support)
+		// Decoded above so the containment check below sees the real path — the
+		// other order would let a traversal hide inside the encoding.
 		// Skip path validation for terminal assistant
 		if path != TerminalAssistantPath && !helper.IsUnderDirectory(path, nginx.GetConfPath()) {
 			c.JSON(http.StatusForbidden, gin.H{
@@ -42,7 +44,7 @@ func GetLLMSessions(c *gin.Context) {
 		}
 		query = query.Where(g.Path.Eq(path))
 	}
-	
+
 	sessions, err := query.Find()
 	if err != nil {
 		cosy.ErrHandler(c, err)
@@ -55,7 +57,7 @@ func GetLLMSessions(c *gin.Context) {
 // GetLLMSession returns a single session by session_id
 func GetLLMSession(c *gin.Context) {
 	sessionID := c.Param("session_id")
-	
+
 	g := query.LLMSession
 	session, err := g.Where(g.SessionID.Eq(sessionID)).First()
 	if err != nil {
@@ -102,7 +104,7 @@ func CreateLLMSession(c *gin.Context) {
 	}
 
 	g := query.LLMSession
-	
+
 	// When creating a new active session, deactivate all other sessions with the same path
 	if session.IsActive && sessionPath != "" {
 		_, err := g.Where(g.Path.Eq(sessionPath)).UpdateSimple(g.IsActive.Value(false))
@@ -111,7 +113,7 @@ func CreateLLMSession(c *gin.Context) {
 			// Continue anyway, this is not critical
 		}
 	}
-	
+
 	err := g.Create(session)
 	if err != nil {
 		logger.Error(err)
@@ -125,7 +127,7 @@ func CreateLLMSession(c *gin.Context) {
 // UpdateLLMSession updates an existing session
 func UpdateLLMSession(c *gin.Context) {
 	sessionID := c.Param("session_id")
-	
+
 	var json struct {
 		Title    string                         `json:"title,omitempty"`
 		Messages []openai.ChatCompletionMessage `json:"messages,omitempty"`
@@ -148,21 +150,21 @@ func UpdateLLMSession(c *gin.Context) {
 	if json.Title != "" {
 		session.Title = json.Title
 	}
-	
+
 	if json.Messages != nil {
 		session.Messages = json.Messages
 		session.MessageCount = len(json.Messages)
 	}
-	
+
 	if json.IsActive != nil && *json.IsActive {
 		session.IsActive = true
-		
+
 		// Deactivate all other sessions with the same path
 		_, err = g.Where(
 			g.Path.Eq(session.Path),
 			g.SessionID.Neq(sessionID),
 		).UpdateSimple(g.IsActive.Value(false))
-		
+
 		if err != nil {
 			logger.Error("Failed to deactivate other sessions:", err)
 			// Continue anyway, this is not critical
@@ -185,7 +187,7 @@ func UpdateLLMSession(c *gin.Context) {
 // DeleteLLMSession deletes a session by session_id
 func DeleteLLMSession(c *gin.Context) {
 	sessionID := c.Param("session_id")
-	
+
 	g := query.LLMSession
 	result, err := g.Where(g.SessionID.Eq(sessionID)).Delete()
 	if err != nil {
@@ -209,7 +211,7 @@ func DeleteLLMSession(c *gin.Context) {
 // DuplicateLLMSession duplicates an existing session
 func DuplicateLLMSession(c *gin.Context) {
 	sessionID := c.Param("session_id")
-	
+
 	g := query.LLMSession
 	originalSession, err := g.Where(g.SessionID.Eq(sessionID)).First()
 	if err != nil {
@@ -238,7 +240,8 @@ func DuplicateLLMSession(c *gin.Context) {
 
 // GetLLMSessionByPath - 兼容性端点，基于路径获取或创建会话
 func GetLLMSessionByPath(c *gin.Context) {
-	path := c.Query("path")
+	// Decode before validating: the containment check must run on the real path.
+	path, _ := helper.DecodePathParam(c.Query("path"))
 
 	// Skip path validation for terminal assistant
 	if path != TerminalAssistantPath && !helper.IsUnderDirectory(path, nginx.GetConfPath()) {
@@ -249,7 +252,7 @@ func GetLLMSessionByPath(c *gin.Context) {
 	}
 
 	g := query.LLMSession
-	
+
 	// 查找基于该路径的会话
 	session, err := g.Where(g.Path.Eq(path)).First()
 	if err != nil {
@@ -262,7 +265,7 @@ func GetLLMSessionByPath(c *gin.Context) {
 			MessageCount: 0,
 			IsActive:     true,
 		}
-		
+
 		// Deactivate all other sessions with the same path before creating
 		if path != "" {
 			_, deactivateErr := g.Where(g.Path.Eq(path)).UpdateSimple(g.IsActive.Value(false))
@@ -270,7 +273,7 @@ func GetLLMSessionByPath(c *gin.Context) {
 				logger.Error("Failed to deactivate other sessions:", deactivateErr)
 			}
 		}
-		
+
 		err = g.Create(session)
 		if err != nil {
 			logger.Error(err)
@@ -311,7 +314,7 @@ func CreateOrUpdateLLMSessionByPath(c *gin.Context) {
 	}
 
 	g := query.LLMSession
-	
+
 	// 查找或创建基于该路径的会话
 	session, err := g.Where(g.Path.Eq(json.FileName)).First()
 	if err != nil {
@@ -324,7 +327,7 @@ func CreateOrUpdateLLMSessionByPath(c *gin.Context) {
 			MessageCount: len(json.Messages),
 			IsActive:     true,
 		}
-		
+
 		// Deactivate all other sessions with the same path before creating
 		if json.FileName != "" {
 			_, deactivateErr := g.Where(g.Path.Eq(json.FileName)).UpdateSimple(g.IsActive.Value(false))
@@ -332,7 +335,7 @@ func CreateOrUpdateLLMSessionByPath(c *gin.Context) {
 				logger.Error("Failed to deactivate other sessions:", deactivateErr)
 			}
 		}
-		
+
 		err = g.Create(session)
 		if err != nil {
 			logger.Error(err)
@@ -343,7 +346,7 @@ func CreateOrUpdateLLMSessionByPath(c *gin.Context) {
 		// 更新现有会话
 		session.Messages = json.Messages
 		session.MessageCount = len(json.Messages)
-		
+
 		err = g.Save(session)
 		if err != nil {
 			logger.Error(err)

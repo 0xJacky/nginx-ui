@@ -36,6 +36,7 @@ func newStream(db *gorm.DB, opts ...gen.DOOption) stream {
 	_stream.Advanced = field.NewBool(tableName, "advanced")
 	_stream.NamespaceID = field.NewUint64(tableName, "namespace_id")
 	_stream.SyncNodeIDs = field.NewField(tableName, "sync_node_ids")
+	_stream.RemoteEnabled = field.NewBool(tableName, "remote_enabled")
 	_stream.Namespace = streamBelongsToNamespace{
 		db: db.Session(&gorm.Session{}),
 
@@ -50,16 +51,17 @@ func newStream(db *gorm.DB, opts ...gen.DOOption) stream {
 type stream struct {
 	streamDo
 
-	ALL         field.Asterisk
-	ID          field.Uint64
-	CreatedAt   field.Time
-	UpdatedAt   field.Time
-	DeletedAt   field.Field
-	Path        field.String
-	Advanced    field.Bool
-	NamespaceID field.Uint64
-	SyncNodeIDs field.Field
-	Namespace   streamBelongsToNamespace
+	ALL           field.Asterisk
+	ID            field.Uint64
+	CreatedAt     field.Time
+	UpdatedAt     field.Time
+	DeletedAt     field.Field
+	Path          field.String
+	Advanced      field.Bool
+	NamespaceID   field.Uint64
+	SyncNodeIDs   field.Field
+	RemoteEnabled field.Bool
+	Namespace     streamBelongsToNamespace
 
 	fieldMap map[string]field.Expr
 }
@@ -84,6 +86,7 @@ func (s *stream) updateTableName(table string) *stream {
 	s.Advanced = field.NewBool(table, "advanced")
 	s.NamespaceID = field.NewUint64(table, "namespace_id")
 	s.SyncNodeIDs = field.NewField(table, "sync_node_ids")
+	s.RemoteEnabled = field.NewBool(table, "remote_enabled")
 
 	s.fillFieldMap()
 
@@ -100,7 +103,7 @@ func (s *stream) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (s *stream) fillFieldMap() {
-	s.fieldMap = make(map[string]field.Expr, 9)
+	s.fieldMap = make(map[string]field.Expr, 10)
 	s.fieldMap["id"] = s.ID
 	s.fieldMap["created_at"] = s.CreatedAt
 	s.fieldMap["updated_at"] = s.UpdatedAt
@@ -109,6 +112,7 @@ func (s *stream) fillFieldMap() {
 	s.fieldMap["advanced"] = s.Advanced
 	s.fieldMap["namespace_id"] = s.NamespaceID
 	s.fieldMap["sync_node_ids"] = s.SyncNodeIDs
+	s.fieldMap["remote_enabled"] = s.RemoteEnabled
 
 }
 

@@ -52,6 +52,7 @@ var (
 	ErrIPCertificateRequiresHTTP01       = e.New(50053, "IP address certificates require the HTTP-01 challenge")
 	ErrCertificateProfileUnavailable     = e.New(50054, "certificate profile is not available from the selected ACME server: {0}")
 	ErrWildcardIPCertificateConflict     = e.New(50055, "wildcard domains and IP addresses cannot be requested in the same certificate")
+	ErrPersistCertificateRecord          = e.New(50056, "persist certificate record error: {0}")
 )
 
 func NewInvalidKeyTypeError(keyType string) error {

@@ -28,14 +28,15 @@ func setupAutoCertTestDB(t *testing.T) *gorm.DB {
 func TestPersistAutoCertOptionsWritesCommonNameAndClearsBooleans(t *testing.T) {
 	db := setupAutoCertTestDB(t)
 	certModel := &model.Cert{
-		Name:                    "203.0.113.8",
-		Filename:                "default.conf",
-		KeyType:                 certcrypto.RSA2048,
-		MustStaple:              true,
-		LegoDisableCNAMESupport: true,
-		EnableCommonName:        true,
-		RevokeOld:               true,
-		Profile:                 "shortlived",
+		Name:                              "203.0.113.8",
+		Filename:                          "default.conf",
+		KeyType:                           certcrypto.RSA2048,
+		MustStaple:                        true,
+		LegoDisableCNAMESupport:           true,
+		DisableAuthoritativeNSPropagation: true,
+		EnableCommonName:                  true,
+		RevokeOld:                         true,
+		Profile:                           "shortlived",
 	}
 	if err := db.Create(certModel).Error; err != nil {
 		t.Fatal(err)
@@ -73,6 +74,9 @@ func TestPersistAutoCertOptionsWritesCommonNameAndClearsBooleans(t *testing.T) {
 	if got.LegoDisableCNAMESupport {
 		t.Fatalf("LegoDisableCNAMESupport = true, want false")
 	}
+	if got.DisableAuthoritativeNSPropagation {
+		t.Fatalf("DisableAuthoritativeNSPropagation = true, want false")
+	}
 	if got.RevokeOld {
 		t.Fatalf("RevokeOld = true, want false")
 	}
@@ -87,5 +91,35 @@ func TestPersistAutoCertOptionsWritesCommonNameAndClearsBooleans(t *testing.T) {
 	}
 	if len(got.Domains) != 1 || got.Domains[0] != "203.0.113.8" {
 		t.Fatalf("Domains = %#v, want IP identifier", got.Domains)
+	}
+}
+
+func TestPersistAutoCertOptionsWritesAuthoritativePropagationOption(t *testing.T) {
+	db := setupAutoCertTestDB(t)
+	certModel := &model.Cert{
+		Name:     "example.com",
+		Filename: "example.conf",
+		KeyType:  certcrypto.EC256,
+	}
+	if err := db.Create(certModel).Error; err != nil {
+		t.Fatal(err)
+	}
+
+	err := persistAutoCertOptions(certModel, "example.conf", autoCertRequest{
+		Domains:                           []string{"example.com"},
+		ChallengeMethod:                   model.CertChallengeMethodDNS01,
+		KeyType:                           certcrypto.EC256,
+		DisableAuthoritativeNSPropagation: true,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	var got model.Cert
+	if err := db.First(&got, certModel.ID).Error; err != nil {
+		t.Fatal(err)
+	}
+	if !got.DisableAuthoritativeNSPropagation {
+		t.Fatal("DisableAuthoritativeNSPropagation = false, want true")
 	}
 }

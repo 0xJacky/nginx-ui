@@ -53,6 +53,20 @@ async function issue_cert(config_name: string, server_name: string[], key_type: 
       'X-Secure-Session-ID': secureSessionId,
     })
     const socket = ws.value!
+    let isSettled = false
+
+    function fail(message?: string) {
+      if (isSettled)
+        return
+
+      isSettled = true
+      if (message)
+        log(message)
+      modalClosable.value = true
+      progressStatus.value = 'exception'
+      issuingCert.value = false
+      reject($gettext('Fail to obtain certificate'))
+    }
 
     socket.onopen = () => {
       socket.send(JSON.stringify({
@@ -73,6 +87,7 @@ async function issue_cert(config_name: string, server_name: string[], key_type: 
           issuingCert.value = false
 
           if (r.ssl_certificate !== undefined && r.ssl_certificate_key !== undefined) {
+            isSettled = true
             progressStatus.value = 'success'
             progressPercent.value = 100
             resolve({
@@ -84,10 +99,7 @@ async function issue_cert(config_name: string, server_name: string[], key_type: 
           }
           break
         case 'error':
-          modalClosable.value = true
-          progressStatus.value = 'exception'
-          issuingCert.value = false
-          reject($gettext('Fail to obtain certificate'))
+          fail()
           break
         default:
           // If it is a nginx ui log, increase the percent.
@@ -95,6 +107,14 @@ async function issue_cert(config_name: string, server_name: string[], key_type: 
             progressPercent.value += 8
           break
       }
+    }
+
+    socket.onerror = () => {
+      fail($gettext('Certificate issuance connection closed before completion.'))
+    }
+
+    socket.onclose = () => {
+      fail($gettext('Certificate issuance connection closed before completion.'))
     }
   })
 }

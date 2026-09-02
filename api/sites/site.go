@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/cert"
+	"github.com/0xJacky/Nginx-UI/internal/clustersync"
 	"github.com/0xJacky/Nginx-UI/internal/dns"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
@@ -142,6 +143,9 @@ func setSiteDNSRecords(siteModel *model.Site, domainID *int, records []model.Sit
 
 func GetSite(c *gin.Context) {
 	name := helper.UnescapeURL(c.Param("name"))
+	if rejectInvalidSiteName(c, name) {
+		return
+	}
 
 	path, err := site.ResolveAvailablePath(name)
 	if err != nil {
@@ -236,10 +240,14 @@ func GetSite(c *gin.Context) {
 
 func SaveSite(c *gin.Context) {
 	name := helper.UnescapeURL(c.Param("name"))
+	if rejectInvalidSiteName(c, name) {
+		return
+	}
 
 	var json struct {
 		Content       string                 `json:"content" binding:"required"`
 		NamespaceID   uint64                 `json:"namespace_id"`
+		Namespace     string                 `json:"namespace"`
 		SyncNodeIDs   []uint64               `json:"sync_node_ids"`
 		Overwrite     bool                   `json:"overwrite"`
 		PostAction    string                 `json:"post_action"`
@@ -254,7 +262,14 @@ func SaveSite(c *gin.Context) {
 		return
 	}
 
-	err := site.Save(name, json.Content, json.Overwrite, json.NamespaceID, json.SyncNodeIDs, json.PostAction)
+	// A sync from another node identifies the namespace by name so both sides
+	// group the site the same way even though their ids differ.
+	namespaceID := json.NamespaceID
+	if json.Namespace != "" {
+		namespaceID = clustersync.ResolveNamespaceIDByName(json.Namespace)
+	}
+
+	err := site.Save(name, json.Content, json.Overwrite, namespaceID, json.SyncNodeIDs, json.PostAction)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
@@ -301,10 +316,17 @@ func SaveSite(c *gin.Context) {
 
 func RenameSite(c *gin.Context) {
 	oldName := helper.UnescapeURL(c.Param("name"))
+	if rejectInvalidSiteName(c, oldName) {
+		return
+	}
+
 	var json struct {
 		NewName string `json:"new_name"`
 	}
 	if !cosy.BindAndValid(c, &json) {
+		return
+	}
+	if rejectInvalidSiteName(c, json.NewName) {
 		return
 	}
 
@@ -321,7 +343,7 @@ func RenameSite(c *gin.Context) {
 
 func disableMaintenanceIfExists(name string) error {
 	// Check if the site is in maintenance mode, if yes, disable maintenance mode first
-	maintenanceConfigPath, err := site.ResolveEnabledPath(name + site.MaintenanceSuffix)
+	maintenanceConfigPath, err := site.ResolveEnabledMaintenancePath(name)
 	if err != nil {
 		return err
 	}
@@ -359,6 +381,9 @@ func disableSiteByName(name string) error {
 
 func EnableSite(c *gin.Context) {
 	name := helper.UnescapeURL(c.Param("name"))
+	if rejectInvalidSiteName(c, name) {
+		return
+	}
 
 	err := enableSiteByName(name)
 	if err != nil {
@@ -373,6 +398,9 @@ func EnableSite(c *gin.Context) {
 
 func DisableSite(c *gin.Context) {
 	name := helper.UnescapeURL(c.Param("name"))
+	if rejectInvalidSiteName(c, name) {
+		return
+	}
 
 	err := disableSiteByName(name)
 	if err != nil {
@@ -396,6 +424,9 @@ func BatchEnableSites(c *gin.Context) {
 	}
 
 	for _, name := range json.Names {
+		if rejectInvalidSiteName(c, name) {
+			return
+		}
 		if err := enableSiteByName(name); err != nil {
 			cosy.ErrHandler(c, err)
 			return
@@ -414,6 +445,9 @@ func BatchDisableSites(c *gin.Context) {
 	}
 
 	for _, name := range json.Names {
+		if rejectInvalidSiteName(c, name) {
+			return
+		}
 		if err := disableSiteByName(name); err != nil {
 			cosy.ErrHandler(c, err)
 			return
@@ -426,7 +460,12 @@ func BatchDisableSites(c *gin.Context) {
 }
 
 func DeleteSite(c *gin.Context) {
-	err := site.Delete(helper.UnescapeURL(c.Param("name")))
+	name := helper.UnescapeURL(c.Param("name"))
+	if rejectInvalidSiteName(c, name) {
+		return
+	}
+
+	err := site.Delete(name)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
@@ -473,12 +512,21 @@ func isInvalidSiteName(name string) bool {
 		strings.ContainsAny(name, `/\`) || strings.Contains(name, "..")
 }
 
+// rejectInvalidSiteName responds with 400 and reports whether name failed
+// validation, so callers can bail out before it reaches any path expression.
+func rejectInvalidSiteName(c *gin.Context, name string) bool {
+	if !isInvalidSiteName(name) {
+		return false
+	}
+	c.JSON(http.StatusBadRequest, gin.H{
+		"message": "invalid site name",
+	})
+	return true
+}
+
 func EnableMaintenanceSite(c *gin.Context) {
 	name := helper.UnescapeURL(c.Param("name"))
-	if isInvalidSiteName(name) {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "invalid site name",
-		})
+	if rejectInvalidSiteName(c, name) {
 		return
 	}
 

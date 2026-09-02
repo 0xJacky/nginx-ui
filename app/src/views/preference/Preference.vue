@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import FooterToolBar from '@/components/FooterToolbar'
+import { useGlobalStore } from '@/pinia'
 import {
+  AccessTokens,
   AppSettings,
   AuthSettings,
   CertSettings,
   ExternalNotify,
   GeoLiteSettings,
+  HealthCheckSettings,
   HTTPSettings,
   LogrotateSettings,
   NginxSettings,
@@ -17,6 +20,8 @@ import {
 import useSystemSettingsStore from './store'
 
 const systemSettingsStore = useSystemSettingsStore()
+const globalStore = useGlobalStore()
+const isDemoResolved = ref(false)
 
 void systemSettingsStore.getSettings()
 
@@ -33,9 +38,14 @@ watch(activeKey, () => {
   })
 })
 
-onMounted(() => {
+onMounted(async () => {
   if (route.query?.tab)
     activeKey.value = route.query.tab.toString()
+
+  await globalStore.ensureDemoFlag()
+  if (globalStore.isDemo && activeKey.value === 'terminal')
+    activeKey.value = 'server'
+  isDemoResolved.value = true
 })
 </script>
 
@@ -62,6 +72,12 @@ onMounted(() => {
           <ExternalNotify />
         </ATabPane>
         <ATabPane
+          key="health_check"
+          :tab="$gettext('Health Check')"
+        >
+          <HealthCheckSettings />
+        </ATabPane>
+        <ATabPane
           key="node"
           :tab="$gettext('Node')"
         >
@@ -74,6 +90,7 @@ onMounted(() => {
           <HTTPSettings />
         </ATabPane>
         <ATabPane
+          v-if="isDemoResolved && !globalStore.isDemo"
           key="terminal"
           :tab="$gettext('Terminal')"
         >
@@ -84,6 +101,12 @@ onMounted(() => {
           :tab="$gettext('Auth')"
         >
           <AuthSettings />
+        </ATabPane>
+        <ATabPane
+          key="access_tokens"
+          :tab="$gettext('Access Tokens')"
+        >
+          <AccessTokens />
         </ATabPane>
         <ATabPane
           key="cert"
@@ -120,6 +143,7 @@ onMounted(() => {
     <FooterToolBar
       v-if="activeKey !== 'external_notify'
         && activeKey !== 'geolite'
+        && activeKey !== 'access_tokens'
         && !(activeKey === 'nginx' && isNginxControlEditing)"
     >
       <AButton

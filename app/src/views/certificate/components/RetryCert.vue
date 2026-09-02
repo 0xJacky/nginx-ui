@@ -24,6 +24,7 @@ const issueOptions = computed<AutoCertOptions>(() => ({
   acme_user_id: props.cert.acme_user_id,
   must_staple: props.cert.must_staple,
   lego_disable_cname_support: props.cert.lego_disable_cname_support,
+  disable_authoritative_ns_propagation: props.cert.disable_authoritative_ns_propagation,
   enable_common_name: props.cert.enable_common_name,
   revoke_old: props.cert.revoke_old,
 }))

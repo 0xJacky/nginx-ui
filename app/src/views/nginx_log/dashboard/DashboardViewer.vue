@@ -13,6 +13,7 @@ import HourlyChart from './components/HourlyChart.vue'
 import OSStatsTable from './components/OSStatsTable.vue'
 import SummaryStats from './components/SummaryStats.vue'
 import TopUrlsTable from './components/TopUrlsTable.vue'
+import { getDefaultDashboardDateRange } from './dateRange'
 
 // Props
 const props = defineProps<{
@@ -22,10 +23,7 @@ const props = defineProps<{
 // Reactive data
 const loading = ref(true)
 const dashboardData = ref<DashboardAnalytics | null>(null)
-const dateRange = ref<[dayjs.Dayjs, dayjs.Dayjs]>([
-  dayjs().subtract(7, 'day'), // Default fallback
-  dayjs(),
-])
+const dateRange = ref<[dayjs.Dayjs, dayjs.Dayjs]>(getDefaultDashboardDateRange())
 const timeRangeLoaded = ref(false)
 const hasValidTimeRange = ref(false)
 
@@ -46,13 +44,9 @@ async function loadTimeRange() {
     const preflight = await nginx_log.getPreflight(props.logPath)
 
     if (preflight.time_range && preflight.time_range.start && preflight.time_range.end) {
-      // Set start_date to 00:00:00 and end_date to 23:59:59
-      const endTime = dayjs.unix(preflight.time_range.end).endOf('day')
-
-      // Use last week's data as default range (from last day back to 7 days ago)
-      const weekStart = endTime.subtract(7, 'day').startOf('day')
-      const lastDayEnd = endTime
-      dateRange.value = [weekStart, lastDayEnd]
+      // Default to the latest day with indexed data. Wider ranges remain
+      // available through the date-range presets without delaying first paint.
+      dateRange.value = getDefaultDashboardDateRange(dayjs.unix(preflight.time_range.end))
       timeRangeLoaded.value = true
       hasValidTimeRange.value = true
     }
@@ -61,11 +55,7 @@ async function loadTimeRange() {
       timeRangeLoaded.value = true
       hasValidTimeRange.value = false
 
-      // Use default range (last 7 days from now)
-      dateRange.value = [
-        dayjs().subtract(7, 'day').startOf('day'),
-        dayjs().endOf('day'),
-      ]
+      dateRange.value = getDefaultDashboardDateRange()
     }
   }
   catch (error) {
@@ -74,11 +64,7 @@ async function loadTimeRange() {
     timeRangeLoaded.value = true
     hasValidTimeRange.value = false
 
-    // Use default range
-    dateRange.value = [
-      dayjs().subtract(7, 'day').startOf('day'),
-      dayjs().endOf('day'),
-    ]
+    dateRange.value = getDefaultDashboardDateRange()
   }
 }
 

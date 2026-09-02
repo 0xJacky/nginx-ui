@@ -30,3 +30,9 @@ log-index/
 GeoLite2-City.mmdb
 *.log
 .claude/settings.local.json
+
+# Cloudflare Workers local state (miniflare cache, durable object storage)
+cloudflare/.wrangler/
+
+# Cross-compiled binary that cloudflare/build-binary.sh drops in for demo.Dockerfile
+nginx-ui-linux-*/

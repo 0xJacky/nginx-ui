@@ -47,6 +47,26 @@ function normalizeRecordType(value?: string) {
   return value?.toUpperCase?.() ?? ''
 }
 
+function formatRecordName(name: string, zone?: string) {
+  const normalizedName = name.trim().replace(/\.$/, '')
+  const normalizedZone = zone?.trim().replace(/\.$/, '') ?? ''
+  if (!normalizedZone || !normalizedName)
+    return normalizedName
+  if (normalizedName === '@')
+    return normalizedZone
+
+  const lowerName = normalizedName.toLowerCase()
+  const lowerZone = normalizedZone.toLowerCase()
+  if (lowerName === lowerZone || lowerName.endsWith(`.${lowerZone}`))
+    return normalizedName
+
+  return `${normalizedName}.${normalizedZone}`
+}
+
+function formatRecordLabel(name: string, type: string, zone?: string) {
+  return `${formatRecordName(name, zone)} (${normalizeRecordType(type)})`
+}
+
 function isRecordAllowedByIPVersion(recordType: string, ipVersion: DDNSIPVersion) {
   const type = normalizeRecordType(recordType)
   if (ipVersion === 'ipv4')
@@ -93,7 +113,7 @@ const recordOptions = computed(() => {
     .forEach(item => {
       opts.set(item.id, {
         value: item.id,
-        label: `${item.name} (${normalizeRecordType(item.type)})`,
+        label: formatRecordLabel(item.name, item.type, currentDomain.value?.domain),
       })
     })
 
@@ -102,7 +122,7 @@ const recordOptions = computed(() => {
     .forEach(target => {
       opts.set(target.id, {
         value: target.id,
-        label: `${target.name} (${normalizeRecordType(target.type)})`,
+        label: formatRecordLabel(target.name, target.type, currentDomain.value?.domain),
       })
     })
 
@@ -306,6 +326,14 @@ watch(() => ddnsForm.value.ip_version, handleIPVersionChange)
         </div>
       </template>
 
+      <AAlert
+        class="mb-4"
+        type="info"
+        show-icon
+        :message="$gettext('DDNS updates records within a DNS zone')"
+        :description="$gettext('Configure a zone, then select the A/AAAA records to update. For ddns.example.com, select the ddns record under example.com.')"
+      />
+
       <ATable
         :loading="loading"
         :data-source="filteredItems"
@@ -329,7 +357,7 @@ watch(() => ddnsForm.value.ip_version, handleIPVersionChange)
           <template v-else-if="column.key === 'targets'">
             <ASpace wrap size="small">
               <ATag v-for="target in record.config.targets" :key="target.id">
-                {{ target.name }} ({{ target.type }})
+                {{ formatRecordLabel(target.name, target.type, record.domain) }}
               </ATag>
               <span v-if="!record.config.targets?.length">-</span>
             </ASpace>
@@ -397,14 +425,14 @@ watch(() => ddnsForm.value.ip_version, handleIPVersionChange)
               {{ $gettext('When enabled, DDNS owns the selected names: it auto-pairs sibling family records, creates missing records, and removes records whose IP family is unreachable. Disable to manage only the records you explicitly selected and keep all other DNS state untouched.') }}
             </div>
           </AFormItem>
-          <AFormItem :label="$gettext('Records')">
+          <AFormItem :label="$gettext('Records to update')">
             <ASelect
               v-model:value="ddnsForm.record_ids"
               mode="multiple"
               show-search
               :filter-option="(filterRecordOption as any)"
               :options="recordOptions"
-              :placeholder="$gettext('Select matching A/AAAA records')"
+              :placeholder="$gettext('Select A/AAAA records to update')"
               :disabled="!ddnsForm.enabled"
             />
             <div v-if="unmanagedSiblingRecords.length" class="text-xs mt-2" style="color: var(--ant-color-info)">

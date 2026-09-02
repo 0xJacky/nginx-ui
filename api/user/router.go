@@ -17,25 +17,27 @@ func InitAuthRouter(r *gin.RouterGroup) {
 	r.POST("/casdoor_callback", CasdoorCallback)
 
 	r.GET("/oidc_uri", GetOIDCUri)
+	r.GET("/oidc_callback", OIDCCallback)
 	r.POST("/oidc_callback", OIDCCallback)
 
 	r.GET("/passkeys/config", GetPasskeyConfigStatus)
 }
 
 func InitTokenRouter(r *gin.RouterGroup) {
-	r.POST("/token/short", IssueShortToken)
+	r.POST("/token/short", middleware.RequireInteractiveUser(), IssueShortToken)
 }
 
 func InitUserRouter(r *gin.RouterGroup) {
-	r.GET("/2fa_status", Get2FAStatus)
-	r.GET("/2fa_secure_session/status", SecureSessionStatus)
-	r.POST("/2fa_secure_session/otp", Start2FASecureSessionByOTP)
-	r.GET("/2fa_secure_session/passkey", BeginStart2FASecureSessionByPasskey)
-	r.POST("/2fa_secure_session/passkey", FinishStart2FASecureSessionByPasskey)
+	interactive := r.Group("", middleware.RequireInteractiveUser())
+	interactive.GET("/2fa_status", Get2FAStatus)
+	interactive.GET("/2fa_secure_session/status", SecureSessionStatus)
+	interactive.POST("/2fa_secure_session/otp", Start2FASecureSessionByOTP)
+	interactive.GET("/2fa_secure_session/passkey", BeginStart2FASecureSessionByPasskey)
+	interactive.POST("/2fa_secure_session/passkey", FinishStart2FASecureSessionByPasskey)
 
-	r.GET("/passkeys", GetPasskeyList)
+	interactive.GET("/passkeys", GetPasskeyList)
 
-	o := r.Group("", middleware.RequireSecureSession())
+	o := interactive.Group("", middleware.RequireSecureSession())
 	{
 		o.GET("/otp_secret", GenerateTOTP)
 		o.POST("/otp_enroll", EnrollTOTP)
@@ -50,8 +52,8 @@ func InitUserRouter(r *gin.RouterGroup) {
 		o.GET("/recovery_codes_generate", GenerateRecoveryCodes)
 	}
 
-	r.GET("/user", GetCurrentUser)
-	r.POST("/user", middleware.RequireSecureSession(), UpdateCurrentUser)
-	r.POST("/user/password", middleware.RequireSecureSession(), UpdateCurrentUserPassword)
-	r.POST("/user/language", UpdateCurrentUserLanguage)
+	interactive.GET("/user", GetCurrentUser)
+	interactive.POST("/user", middleware.RequireSecureSession(), UpdateCurrentUser)
+	interactive.POST("/user/password", middleware.RequireSecureSession(), middleware.RejectInDemo(), UpdateCurrentUserPassword)
+	interactive.POST("/user/language", UpdateCurrentUserLanguage)
 }

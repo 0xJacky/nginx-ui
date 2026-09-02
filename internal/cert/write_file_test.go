@@ -8,6 +8,43 @@ import (
 	"github.com/0xJacky/Nginx-UI/settings"
 )
 
+func TestContentWriteFileUsesOwnerOnlyPrivateKeyMode(t *testing.T) {
+	originalConfigDir := settings.NginxSettings.ConfigDir
+	confDir := t.TempDir()
+	settings.NginxSettings.ConfigDir = confDir
+	t.Cleanup(func() {
+		settings.NginxSettings.ConfigDir = originalConfigDir
+	})
+
+	dir := filepath.Join(confDir, "ssl", "example")
+	if err := os.MkdirAll(dir, 0o755); err != nil {
+		t.Fatalf("create cert dir: %v", err)
+	}
+
+	// Simulate a pair left behind by an earlier version that wrote 0644 keys.
+	certPath := filepath.Join(dir, "fullchain.cer")
+	keyPath := filepath.Join(dir, "private.key")
+	if err := os.WriteFile(certPath, []byte("old cert"), 0o644); err != nil {
+		t.Fatalf("write old cert: %v", err)
+	}
+	if err := os.WriteFile(keyPath, []byte("old key"), 0o644); err != nil {
+		t.Fatalf("write old key: %v", err)
+	}
+
+	content := &Content{
+		SSLCertificatePath:    certPath,
+		SSLCertificateKeyPath: keyPath,
+		SSLCertificate:        "new cert",
+		SSLCertificateKey:     "new key",
+	}
+	if err := content.WriteFile(); err != nil {
+		t.Fatalf("WriteFile: %v", err)
+	}
+
+	assertFileMode(t, certPath, 0644)
+	assertFileMode(t, keyPath, 0600)
+}
+
 func TestContentWriteFileKeepsExistingPairWhenKeyWriteFails(t *testing.T) {
 	originalConfigDir := settings.NginxSettings.ConfigDir
 	confDir := t.TempDir()

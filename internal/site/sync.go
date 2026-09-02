@@ -50,6 +50,13 @@ func getSyncNodes(name string) (nodes []*model.Node) {
 	return
 }
 
+// GetSyncNodes returns the nodes configured for a site and its namespace.
+// Callers use this to synchronize metadata that belongs to the logical site
+// but is stored outside the Nginx configuration file.
+func GetSyncNodes(name string) []*model.Node {
+	return getSyncNodes(name)
+}
+
 type SyncResult struct {
 	StatusCode int    `json:"status_code"`
 	Node       string `json:"node"`

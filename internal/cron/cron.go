@@ -4,6 +4,8 @@ import (
 	"context"
 
 	"github.com/0xJacky/Nginx-UI/internal/cert"
+	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
+	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/go-co-op/gocron/v2"
 	"github.com/uozi-tech/cosy/logger"
 )
@@ -55,6 +57,7 @@ func InitCronJobs(ctx context.Context) {
 	}
 
 	// Initialize automatic node credential upgrade and rotation.
+	nodeauth.StartRelationshipUpgradeWorker(ctx, settings.NodeSettings.InstanceID)
 	_, err = setupNodeCredentialMaintenanceJob(s)
 	if err != nil {
 		logger.Fatalf("NodeCredentialMaintenance Err: %v\n", err)
@@ -81,6 +84,12 @@ func InitCronJobs(ctx context.Context) {
 	_, err = setupIncrementalIndexingJob(s)
 	if err != nil {
 		logger.Fatalf("IncrementalIndexing Err: %v\n", err)
+	}
+
+	// Initialize automatic namespace replication job
+	_, err = setupNamespaceSyncJob(s)
+	if err != nil {
+		logger.Fatalf("NamespaceAutoSync Err: %v\n", err)
 	}
 
 	// Start the scheduler

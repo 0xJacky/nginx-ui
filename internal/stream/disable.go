@@ -20,8 +20,25 @@ func Disable(name string) (err error) {
 		return err
 	}
 
-	_, err = nginx.Stat(enabledConfigFilePath)
+	// Remote namespaces keep their deployment intent in the database because no
+	// local symlink is ever created for them.
+	if IsRemoteDeploy(name) {
+		if err = setRemoteEnabled(name, false); err != nil {
+			return
+		}
+
+		go syncDisable(name)
+
+		return
+	}
+
+	// Already disabled: keep the operation idempotent so cluster syncs can
+	// converge a node without reporting spurious failures.
+	enabledExists, err := nginx.Exists(enabledConfigFilePath)
 	if err != nil {
+		return err
+	}
+	if !enabledExists {
 		return
 	}
 

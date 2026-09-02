@@ -3,6 +3,7 @@ package nodeauth
 import (
 	"crypto/ed25519"
 	"crypto/rand"
+	"encoding/base64"
 	"io"
 	"net/http"
 	"strings"
@@ -86,6 +87,34 @@ func TestVerifyRequestRejectsBodyTampering(t *testing.T) {
 	CloseStagedBody(request)
 }
 
+func TestVerifyRequestRejectsInvalidPairedSignatureBeforeReadingBody(t *testing.T) {
+	database, privateKey, now := setupSignatureTest(t)
+	request := newSignedTestRequest(t, privateKey, now)
+	CloseStagedBody(request)
+	body := &trackingReadCloser{failOnRead: true}
+	request.Body = body
+	request.Header.Set(signatureHeader, invalidTestSignature(ed25519.SignatureSize))
+
+	_, err := verifyRequest(request, database, now, NewReplayCache(100))
+
+	require.ErrorContains(t, err, "signature is invalid")
+	assert.Zero(t, body.bytesRead)
+}
+
+func TestVerifyRequestRejectsOversizedContentLengthBeforeReadingBody(t *testing.T) {
+	database, privateKey, now := setupSignatureTest(t)
+	request := newSignedTestRequest(t, privateKey, now)
+	CloseStagedBody(request)
+	body := &trackingReadCloser{failOnRead: true}
+	request.Body = body
+	request.ContentLength = maxStagedRequestBodySize + 1
+
+	_, err := verifyRequest(request, database, now, NewReplayCache(100))
+
+	require.ErrorIs(t, err, errRequestBodyTooLarge)
+	assert.Zero(t, body.bytesRead)
+}
+
 func TestVerifyRequestRejectsWrongTarget(t *testing.T) {
 	database, privateKey, now := setupSignatureTest(t)
 	request := newSignedTestRequest(t, privateKey, now)
@@ -113,6 +142,20 @@ func TestVerifyRequestEnforcesExpiryAndClockSkew(t *testing.T) {
 	_, err = verifyRequest(beyondFutureSkew, database, now, NewReplayCache(100))
 	require.ErrorContains(t, err, "future")
 	CloseStagedBody(beyondFutureSkew)
+}
+
+func TestVerifyRequestAcceptsFourSecondClockSkew(t *testing.T) {
+	database, privateKey, now := setupSignatureTest(t)
+
+	for _, offset := range []time.Duration{-4 * time.Second, 4 * time.Second} {
+		t.Run(offset.String(), func(t *testing.T) {
+			request := newSignedTestRequest(t, privateKey, now.Add(offset))
+			t.Cleanup(func() { CloseStagedBody(request) })
+
+			_, err := verifyRequest(request, database, now, NewReplayCache(100))
+			require.NoError(t, err)
+		})
+	}
 }
 
 func TestVerifyRequestRejectsReplay(t *testing.T) {
@@ -184,4 +227,8 @@ func TestEmptyContentDigestMatchesRFC9530Encoding(t *testing.T) {
 	digest, err := stageRequestBody(request)
 	require.NoError(t, err)
 	assert.Equal(t, "sha-256=:47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=:", digest)
+}
+
+func invalidTestSignature(size int) string {
+	return signatureLabel + "=:" + base64.StdEncoding.EncodeToString(make([]byte, size)) + ":"
 }

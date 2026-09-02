@@ -13,12 +13,21 @@ import (
 
 // Service manages site checking operations
 type Service struct {
-	checker *SiteChecker
-	ctx     context.Context
-	cancel  context.CancelFunc
-	ticker  *time.Ticker
-	mu      sync.RWMutex
-	running bool
+	checker         *SiteChecker
+	ctx             context.Context
+	cancel          context.CancelFunc
+	settingsChanged chan struct{}
+	mu              sync.RWMutex
+	running         bool
+
+	// refreshMu guards the coalescing state below.
+	refreshMu      sync.Mutex
+	refreshRunning bool
+	refreshPending bool
+
+	// refreshSweep performs one refresh pass. Nil means the real sweep; it is a
+	// field so tests can substitute a deterministic one.
+	refreshSweep func()
 }
 
 var (
@@ -140,9 +149,10 @@ func NewServiceWithContext(parentCtx context.Context, options CheckOptions) *Ser
 	ctx, cancel := context.WithCancel(parentCtx)
 
 	return &Service{
-		checker: NewSiteChecker(options),
-		ctx:     ctx,
-		cancel:  cancel,
+		checker:         NewSiteChecker(options),
+		ctx:             ctx,
+		cancel:          cancel,
+		settingsChanged: make(chan struct{}, 1),
 	}
 }
 
@@ -151,19 +161,14 @@ func (s *Service) SetUpdateCallback(callback func([]*SiteInfo)) {
 	s.checker.SetUpdateCallback(callback)
 }
 
-// Start begins the site checking service. When the feature is globally
-// disabled via settings.SiteCheckSettings.Enabled, no collection or checking
-// goroutines are started (#1608).
+// Start begins site discovery and periodic checking. Discovery stays active
+// while probes are globally disabled so the dashboard can still show the
+// configured sites without generating network traffic.
 func (s *Service) Start() {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
 	if s.running {
-		return
-	}
-
-	if !settings.SiteCheckSettings.Enabled {
-		logger.Debug("Site check is disabled; service will not start")
 		return
 	}
 
@@ -178,12 +183,11 @@ func (s *Service) Start() {
 
 		// Wait for cache scanner to collect sites with progressive backoff
 		s.waitForSiteCollection(s.ctx)
-		s.checker.CheckAllSites(s.ctx)
+		s.checker.ForceCheckAllSites(s.ctx)
 		sl.Debug("Sitecheck initial collection goroutine completed")
 	})
 
 	// Start periodic checking using the configured interval.
-	s.ticker = time.NewTicker(settings.SiteCheckSettings.GetInterval())
 	go kernel.Run(s.ctx, "sitecheck periodic check goroutine", func(ctx context.Context) {
 		sl := logger.NewSessionLogger(ctx)
 		sl.Debug("Started sitecheck periodicCheck goroutine")
@@ -206,9 +210,6 @@ func (s *Service) Stop() {
 	s.running = false
 	sl.Debug("Stopping site checking service")
 
-	if s.ticker != nil {
-		s.ticker.Stop()
-	}
 	s.cancel()
 }
 
@@ -223,10 +224,17 @@ func (s *Service) Restart() {
 func (s *Service) periodicCheck() {
 	sl := logger.NewSessionLogger(s.ctx)
 	for {
+		timer := time.NewTimer(settings.SiteCheckSettings.GetInterval())
 		select {
 		case <-s.ctx.Done():
+			timer.Stop()
 			return
-		case <-s.ticker.C:
+		case <-s.settingsChanged:
+			if !timer.Stop() {
+				<-timer.C
+			}
+			continue
+		case <-timer.C:
 			sl.Debug("Starting periodic site check")
 			s.checker.CollectSites() // Re-collect in case sites changed
 			s.checker.CheckAllSites(s.ctx)
@@ -234,15 +242,100 @@ func (s *Service) periodicCheck() {
 	}
 }
 
-// RefreshSites manually triggers a site collection and check
+// SettingsChanged applies site-check settings without restarting the process.
+// The current timer is interrupted so a new interval takes effect immediately,
+// and a refresh broadcasts the new effective enabled state to clients.
+func (s *Service) SettingsChanged() {
+	select {
+	case s.settingsChanged <- struct{}{}:
+	default:
+	}
+	s.RefreshSites()
+}
+
+// RefreshSites triggers a site collection and forced check.
+//
+// Refreshes are coalesced: at most one sweep runs at a time and at most one
+// follow-up is queued behind it. A forced sweep ignores each site's
+// CheckInterval and probes every site - HTTP GET, body read, favicon download
+// and a database write per site - so overlapping sweeps multiply the
+// per-invocation concurrency limit and can keep the process busy indefinitely.
+// The callers are unthrottled by nature: RefreshSites fires from the config
+// post-scan callback on every single file change and on every periodic scan, as
+// well as from WebSocket and settings handlers.
 func (s *Service) RefreshSites() {
-	go func() {
-		sl := logger.NewSessionLogger(s.ctx)
-		sl.Debug("Started sitecheck refresh goroutine")
-		s.checker.CollectSites()
-		s.checker.CheckAllSites(s.ctx)
-		sl.Debug("Sitecheck refresh goroutine completed")
+	s.refreshMu.Lock()
+	if s.refreshRunning {
+		// A sweep is already in flight. One follow-up pass is enough to pick up
+		// everything that changed while it was running.
+		s.refreshPending = true
+		s.refreshMu.Unlock()
+		return
+	}
+	s.refreshRunning = true
+	s.refreshMu.Unlock()
+
+	go s.runRefreshSweeps()
+}
+
+// runRefreshSweeps performs refresh sweeps until no follow-up is pending.
+func (s *Service) runRefreshSweeps() {
+	for !s.runRefreshSweep() {
+	}
+}
+
+// runRefreshSweep runs a single sweep and reports whether the worker should
+// stop. The coalescing state is always cleared before it returns true, so a
+// failing sweep can never wedge future refreshes.
+func (s *Service) runRefreshSweep() (stop bool) {
+	defer func() {
+		if r := recover(); r != nil {
+			logger.Errorf("Recovered from panic during sitecheck refresh sweep: %v", r)
+			s.clearRefreshState()
+			stop = true
+		}
 	}()
+
+	sl := logger.NewSessionLogger(s.ctx)
+	sl.Debug("Started sitecheck refresh sweep")
+	s.performRefreshSweep()
+	sl.Debug("Sitecheck refresh sweep completed")
+
+	select {
+	case <-s.ctx.Done():
+		s.clearRefreshState()
+		return true
+	default:
+	}
+
+	s.refreshMu.Lock()
+	defer s.refreshMu.Unlock()
+	if !s.refreshPending {
+		s.refreshRunning = false
+		return true
+	}
+	s.refreshPending = false
+	return false
+}
+
+// performRefreshSweep runs one collection plus forced check of every site.
+func (s *Service) performRefreshSweep() {
+	if s.refreshSweep != nil {
+		s.refreshSweep()
+		return
+	}
+
+	s.checker.CollectSites()
+	s.checker.ForceCheckAllSites(s.ctx)
+}
+
+// clearRefreshState releases the coalescing state so the next RefreshSites call
+// starts a fresh worker.
+func (s *Service) clearRefreshState() {
+	s.refreshMu.Lock()
+	s.refreshRunning = false
+	s.refreshPending = false
+	s.refreshMu.Unlock()
 }
 
 // GetSites returns all checked sites with custom ordering applied

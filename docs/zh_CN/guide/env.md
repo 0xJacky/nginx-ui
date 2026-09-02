@@ -84,7 +84,9 @@
 | 配置                 | 环境变量                               |
 |--------------------|------------------------------------|
 | GithubProxy        | NGINX_UI_HTTP_GITHUB_PROXY         |
+| HTTPProxy          | NGINX_UI_HTTP_HTTP_PROXY           |
 | InsecureSkipVerify | NGINX_UI_HTTP_INSECURE_SKIP_VERIFY |
+| WebSocketTrustedOrigins | NGINX_UI_HTTP_WEBSOCKET_TRUSTED_ORIGINS |
 
 ## Logrotate
 
@@ -109,6 +111,7 @@
 | LogDirWhiteList | NGINX_UI_NGINX_LOG_DIR_WHITE_LIST |
 | StubStatusPort  | NGINX_UI_NGINX_STUB_STATUS_PORT   |
 | ContainerName   | NGINX_UI_NGINX_CONTAINER_NAME     |
+| MaintenanceDir  | NGINX_UI_NGINX_MAINTENANCE_DIR    |
 | MaintenanceTemplate | NGINX_UI_NGINX_MAINTENANCE_TEMPLATE |
 
 ## Nginx Log

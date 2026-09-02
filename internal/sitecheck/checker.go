@@ -3,9 +3,11 @@ package sitecheck
 import (
 	"context"
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"io"
 	"maps"
+	"net"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -82,6 +84,7 @@ func (sc *SiteChecker) CollectSites() {
 	sc.mu.Lock()
 	defer sc.mu.Unlock()
 
+	previousSites := sc.sites
 	// Clear existing sites
 	sc.sites = make(map[string]*SiteInfo)
 
@@ -104,26 +107,36 @@ func (sc *SiteChecker) CollectSites() {
 		for _, url := range indexedSite.Urls {
 			if url != "" {
 				logger.Debugf("Adding site URL: %s", url)
-				// Load site config to determine display URL
-				config, err := LoadSiteConfig(url)
+				config := getOrCreateSiteConfigForURL(siteName, url)
 				protocol := "http" // default protocol
-				if err == nil && config != nil && config.HealthCheckConfig != nil && config.HealthCheckConfig.Protocol != "" {
+				if config.HealthCheckConfig != nil && config.HealthCheckConfig.Protocol != "" {
 					protocol = config.HealthCheckConfig.Protocol
 					logger.Debugf("Site %s using protocol: %s", url, protocol)
 				} else {
-					logger.Debugf("Site %s using default protocol: %s (config error: %v)", url, protocol, err)
+					logger.Debugf("Site %s using default protocol: %s", url, protocol)
 				}
 
-				// Parse URL components for legacy fields
-
-				// Get or create site config to get ID
-				siteConfig := getOrCreateSiteConfigForURL(url)
-
 				siteInfo := &SiteInfo{
-					SiteConfig:  *siteConfig,
-					Name:        extractDomainName(url),
-					Status:      StatusChecking,
-					LastChecked: time.Now().Unix(),
+					SiteConfig:                  *config,
+					Name:                        extractDomainName(url),
+					Status:                      StatusChecking,
+					EffectiveHealthCheckEnabled: settings.SiteCheckSettings.Enabled && config.HealthCheckEnabled,
+				}
+				if previous := previousSites[url]; previous != nil {
+					siteInfo.Status = previous.Status
+					siteInfo.StatusCode = previous.StatusCode
+					siteInfo.ResponseTime = previous.ResponseTime
+					siteInfo.FaviconURL = previous.FaviconURL
+					siteInfo.FaviconData = previous.FaviconData
+					siteInfo.Title = previous.Title
+					siteInfo.LastChecked = previous.LastChecked
+					siteInfo.Error = previous.Error
+					siteInfo.ErrorType = previous.ErrorType
+				}
+				if !settings.SiteCheckSettings.Enabled {
+					siteInfo.HealthCheckDisabledReason = "global"
+				} else if !config.HealthCheckEnabled {
+					siteInfo.HealthCheckDisabledReason = "site"
 				}
 				sc.sites[url] = siteInfo
 			}
@@ -159,7 +172,11 @@ func loadAllSiteConfigs() error {
 
 	// Cache all configs
 	for _, config := range configs {
-		siteConfigCache[config.Host] = &siteConfigCacheEntry{
+		key := config.SiteKey
+		if key == "" {
+			key = "legacy:" + config.Host
+		}
+		siteConfigCache[key] = &siteConfigCacheEntry{
 			config:    config,
 			expiresAt: expiry,
 		}
@@ -227,27 +244,64 @@ func InvalidateSiteConfigCacheForHost(host string) {
 	logger.Debugf("Site config cache invalidated for host: %s", host)
 }
 
-// getOrCreateSiteConfigForURL gets or creates a site config for the given URL
-func getOrCreateSiteConfigForURL(url string) *model.SiteConfig {
+func canonicalSiteKey(siteName, rawURL string) string {
+	parsed, err := url.Parse(rawURL)
+	if err != nil || parsed.Hostname() == "" {
+		return strings.TrimSpace(siteName) + "|" + strings.TrimSpace(rawURL)
+	}
+
+	host := strings.ToLower(parsed.Hostname())
+	port := parsed.Port()
+	if port == "" {
+		switch strings.ToLower(parsed.Scheme) {
+		case "https", "grpcs":
+			port = "443"
+		default:
+			port = "80"
+		}
+	}
+
+	return strings.TrimSpace(siteName) + "|" + strings.ToLower(parsed.Scheme) + "://" + net.JoinHostPort(host, port)
+}
+
+// getOrCreateSiteConfigForURL gets or creates a site config for the given URL.
+// SiteKey is stable across synchronized nodes and avoids relying on local IDs.
+func getOrCreateSiteConfigForURL(siteName, rawURL string) *model.SiteConfig {
 	// Parse URL to get host:port
 	tempConfig := &model.SiteConfig{}
-	tempConfig.SetFromURL(url)
+	tempConfig.SetFromURL(rawURL)
+	tempConfig.SiteName = siteName
+	tempConfig.SiteKey = canonicalSiteKey(siteName, rawURL)
 
 	// Try to get from cache first
-	if config, found := getCachedSiteConfig(tempConfig.Host); found {
+	if config, found := getCachedSiteConfig(tempConfig.SiteKey); found {
 		return config
 	}
 
 	// Not in cache, query database
 	sc := query.SiteConfig
-	siteConfig, err := sc.Where(sc.Host.Eq(tempConfig.Host)).First()
+	siteConfig, err := sc.Where(sc.SiteKey.Eq(tempConfig.SiteKey)).First()
 	if err != nil {
+		// Lazily adopt a legacy record when it still has no stable key.
+		siteConfig, err = sc.Where(sc.Host.Eq(tempConfig.Host), sc.SiteKey.Eq("")).First()
+		if err == nil {
+			siteConfig.SiteKey = tempConfig.SiteKey
+			siteConfig.SiteName = siteName
+			if saveErr := sc.Save(siteConfig); saveErr != nil {
+				logger.Errorf("Failed to migrate legacy site config for %s: %v", rawURL, saveErr)
+			}
+			setCachedSiteConfig(tempConfig.SiteKey, siteConfig)
+			return siteConfig
+		}
+
 		// Record doesn't exist, create a new one
 		newConfig := &model.SiteConfig{
+			SiteKey:            tempConfig.SiteKey,
+			SiteName:           siteName,
 			Host:               tempConfig.Host,
 			Port:               tempConfig.Port,
 			Scheme:             tempConfig.Scheme,
-			DisplayURL:         url,
+			DisplayURL:         rawURL,
 			HealthCheckEnabled: true,
 			CheckInterval:      300,
 			Timeout:            10,
@@ -259,41 +313,100 @@ func getOrCreateSiteConfigForURL(url string) *model.SiteConfig {
 
 		// Create the record in database
 		if err := sc.Create(newConfig); err != nil {
-			logger.Errorf("Failed to create site config for %s: %v", url, err)
+			logger.Errorf("Failed to create site config for %s: %v", rawURL, err)
 			// Return temp config with a fake ID to avoid crashes
 			tempConfig.ID = 0
 			return tempConfig
 		}
 
 		// Cache the new config
-		setCachedSiteConfig(tempConfig.Host, newConfig)
+		setCachedSiteConfig(tempConfig.SiteKey, newConfig)
 		return newConfig
 	}
 
 	// Record exists, ensure it has the correct URL information
 	if siteConfig.DisplayURL == "" {
-		siteConfig.DisplayURL = url
-		siteConfig.SetFromURL(url)
+		siteConfig.DisplayURL = rawURL
+		siteConfig.SetFromURL(rawURL)
 		// Try to save the updated config, but don't fail if it doesn't work
 		sc.Save(siteConfig)
 	}
 
 	// Cache the config
-	setCachedSiteConfig(tempConfig.Host, siteConfig)
+	setCachedSiteConfig(tempConfig.SiteKey, siteConfig)
 	return siteConfig
 }
 
 // CheckSite checks a single site's availability
 func (sc *SiteChecker) CheckSite(ctx context.Context, siteURL string) (*SiteInfo, error) {
+	return sc.checkSite(ctx, "", siteURL)
+}
+
+// ProbeResult is the outcome of checking one site, without the surrounding
+// bookkeeping that SiteInfo carries.
+type ProbeResult struct {
+	Status       string
+	StatusCode   int
+	ResponseTime int64
+	Title        string
+	Error        string
+	ErrorType    string
+}
+
+// Prober overrides how a site is probed.
+//
+// The slot defaults to nil and only internal/demo fills it. Returning false
+// means "no opinion" and the real HTTP check runs, so an override can never
+// answer for a site it does not know about.
+type Prober interface {
+	Probe(siteURL string) (ProbeResult, bool)
+}
+
+var prober Prober
+
+// SetProber installs a probe override. Call once, at boot.
+func SetProber(p Prober) {
+	prober = p
+}
+
+// siteInfoFromProbe assembles a SiteInfo from a fabricated outcome, reusing the
+// site's real configuration so only the probe result itself is substituted.
+func (sc *SiteChecker) siteInfoFromProbe(siteName, siteURL string, config *model.SiteConfig, outcome ProbeResult) *SiteInfo {
+	if config == nil {
+		config = getOrCreateSiteConfigForURL(siteName, siteURL)
+	}
+
+	title := outcome.Title
+	if title == "" {
+		title = extractDomainName(siteURL)
+	}
+
+	return &SiteInfo{
+		SiteConfig:                  *config,
+		Name:                        extractDomainName(siteURL),
+		Status:                      outcome.Status,
+		StatusCode:                  outcome.StatusCode,
+		ResponseTime:                outcome.ResponseTime,
+		Title:                       title,
+		Error:                       outcome.Error,
+		ErrorType:                   outcome.ErrorType,
+		LastChecked:                 time.Now().Unix(),
+		EffectiveHealthCheckEnabled: settings.SiteCheckSettings.Enabled && config.HealthCheckEnabled,
+	}
+}
+
+func (sc *SiteChecker) checkSite(ctx context.Context, siteName, siteURL string) (*SiteInfo, error) {
 	// Try enhanced health check first if config exists
-	config, err := LoadSiteConfig(siteURL)
+	config, err := LoadSiteConfig(siteName, siteURL)
 
 	// If health check is disabled, return cached metadata without issuing any network requests (#1446)
 	if err == nil && config != nil && !config.HealthCheckEnabled {
 		siteInfo := &SiteInfo{
-			SiteConfig: *config,
-			Name:       extractDomainName(siteURL),
-			Title:      config.DisplayURL,
+			SiteConfig:                  *config,
+			Name:                        extractDomainName(siteURL),
+			Title:                       config.DisplayURL,
+			EffectiveHealthCheckEnabled: false,
+			HealthCheckDisabledReason:   "site",
 		}
 
 		if existing := sc.getExistingSiteSnapshot(siteURL); existing != nil {
@@ -304,6 +417,7 @@ func (sc *SiteChecker) CheckSite(ctx context.Context, siteURL string) (*SiteInfo
 			siteInfo.ResponseTime = existing.ResponseTime
 			siteInfo.LastChecked = existing.LastChecked
 			siteInfo.Error = existing.Error
+			siteInfo.ErrorType = existing.ErrorType
 			if siteInfo.Title == "" {
 				siteInfo.Title = existing.Title
 			}
@@ -312,15 +426,28 @@ func (sc *SiteChecker) CheckSite(ctx context.Context, siteURL string) (*SiteInfo
 		return siteInfo, nil
 	}
 
+	// Substitute the probe result before any network work happens. Placed after
+	// the health-check-disabled branch so an operator's "do not check this"
+	// still wins over a fabricated result.
+	if p := prober; p != nil {
+		if outcome, ok := p.Probe(siteURL); ok {
+			siteInfo := sc.siteInfoFromProbe(siteName, siteURL, config, outcome)
+			if config != nil {
+				evaluateSiteHealthAlert(config, siteInfo)
+			}
+			return siteInfo, nil
+		}
+	}
+
 	if err == nil && config != nil && config.HealthCheckConfig != nil {
-		result, err := sc.enhanced.CheckSiteWithConfig(ctx, siteURL, config.HealthCheckConfig)
-		if err == nil && result != nil && result.Info != nil {
+		result, _ := sc.enhanced.CheckSiteWithSiteConfig(ctx, siteURL, config)
+		if result != nil && result.Info != nil {
 			siteInfo := result.Info
 			// Fill in additional details
-			siteInfo.ID = config.ID
-			siteInfo.HealthCheckEnabled = config.HealthCheckEnabled
+			siteInfo.SiteConfig = *config
 			siteInfo.Name = extractDomainName(siteURL)
 			siteInfo.LastChecked = time.Now().Unix()
+			siteInfo.EffectiveHealthCheckEnabled = settings.SiteCheckSettings.Enabled && config.HealthCheckEnabled
 
 			// Set health check protocol and display URL
 			siteInfo.DisplayURL = generateDisplayURL(siteURL, config.HealthCheckConfig.Protocol)
@@ -328,11 +455,13 @@ func (sc *SiteChecker) CheckSite(ctx context.Context, siteURL string) (*SiteInfo
 			// Try to get favicon if enabled and not a gRPC check.
 			// Reuse the body fetched by the health check whenever possible
 			// to avoid issuing a second GET to the same host (#1608).
-			if sc.options.CheckFavicon && !isGRPCProtocol(config.HealthCheckConfig.Protocol) {
-				faviconURL, faviconData := sc.faviconFromBody(ctx, siteURL, result.Body)
+			if config.CheckFavicon && !isGRPCProtocol(config.HealthCheckConfig.Protocol) {
+				faviconURL, faviconData := sc.faviconFromBody(ctx, effectiveHealthCheckURL(siteURL, config.HealthCheckConfig), result.Body)
 				siteInfo.FaviconURL = faviconURL
 				siteInfo.FaviconData = faviconData
 			}
+
+			evaluateSiteHealthAlert(config, siteInfo)
 
 			return siteInfo, nil
 		}
@@ -343,11 +472,16 @@ func (sc *SiteChecker) CheckSite(ctx context.Context, siteURL string) (*SiteInfo
 	if config != nil && config.HealthCheckConfig != nil && config.HealthCheckConfig.Protocol != "" {
 		originalProtocol = config.HealthCheckConfig.Protocol
 	}
-	return sc.checkSiteBasic(ctx, siteURL, originalProtocol)
+	siteInfo, err := sc.checkSiteBasic(ctx, siteName, siteURL, originalProtocol)
+	if siteInfo != nil && config != nil {
+		siteInfo.EffectiveHealthCheckEnabled = settings.SiteCheckSettings.Enabled && config.HealthCheckEnabled
+		evaluateSiteHealthAlert(config, siteInfo)
+	}
+	return siteInfo, err
 }
 
 // checkSiteBasic performs basic HTTP health check
-func (sc *SiteChecker) checkSiteBasic(ctx context.Context, siteURL string, originalProtocol string) (*SiteInfo, error) {
+func (sc *SiteChecker) checkSiteBasic(ctx context.Context, siteName, siteURL string, originalProtocol string) (*SiteInfo, error) {
 	start := time.Now()
 
 	req, err := http.NewRequestWithContext(ctx, "GET", siteURL, nil)
@@ -360,7 +494,7 @@ func (sc *SiteChecker) checkSiteBasic(ctx context.Context, siteURL string, origi
 	resp, err := sc.client.Do(req)
 	if err != nil {
 		// Get or create site config to get ID
-		siteConfig := getOrCreateSiteConfigForURL(siteURL)
+		siteConfig := getOrCreateSiteConfigForURL(siteName, siteURL)
 
 		return &SiteInfo{
 			SiteConfig:   *siteConfig,
@@ -369,6 +503,7 @@ func (sc *SiteChecker) checkSiteBasic(ctx context.Context, siteURL string, origi
 			ResponseTime: time.Since(start).Milliseconds(),
 			LastChecked:  time.Now().Unix(),
 			Error:        err.Error(),
+			ErrorType:    classifyCheckError(err),
 		}, nil
 	}
 	defer resp.Body.Close()
@@ -376,7 +511,7 @@ func (sc *SiteChecker) checkSiteBasic(ctx context.Context, siteURL string, origi
 	responseTime := time.Since(start).Milliseconds()
 
 	// Get or create site config to get ID
-	siteConfig := getOrCreateSiteConfigForURL(siteURL)
+	siteConfig := getOrCreateSiteConfigForURL(siteName, siteURL)
 
 	siteInfo := &SiteInfo{
 		SiteConfig:   *siteConfig,
@@ -392,6 +527,7 @@ func (sc *SiteChecker) checkSiteBasic(ctx context.Context, siteURL string, origi
 	} else {
 		siteInfo.Status = StatusError
 		siteInfo.Error = fmt.Sprintf("HTTP %d", resp.StatusCode)
+		siteInfo.ErrorType = ErrorTypeStatusCode
 	}
 
 	// Read response body for title and favicon extraction
@@ -459,22 +595,57 @@ func (sc *SiteChecker) tryGetFavicon(ctx context.Context, siteURL string) (strin
 // fanned out to every alias, so multi-server_name configs do not multiply
 // outbound connections (#1608).
 func (sc *SiteChecker) CheckAllSites(ctx context.Context) {
+	sc.checkAllSites(ctx, false)
+}
+
+func (sc *SiteChecker) ForceCheckAllSites(ctx context.Context) {
+	sc.checkAllSites(ctx, true)
+}
+
+func (sc *SiteChecker) checkAllSites(ctx context.Context, force bool) {
 	if !settings.SiteCheckSettings.Enabled {
 		logger.Debug("Site check is disabled; skipping CheckAllSites")
+		sc.broadcastUpdate()
 		return
 	}
 
 	sc.mu.RLock()
 	urls := make([]string, 0, len(sc.sites))
-	for url := range sc.sites {
+	for url, siteInfo := range sc.sites {
+		if !force && siteInfo != nil && siteInfo.CheckInterval > 0 && siteInfo.LastChecked > 0 &&
+			time.Since(time.Unix(siteInfo.LastChecked, 0)) < time.Duration(siteInfo.CheckInterval)*time.Second {
+			continue
+		}
 		urls = append(urls, url)
 	}
 	sc.mu.RUnlock()
 
-	// Group URLs by host:port so duplicate aliases share one HTTP probe.
+	// Group URLs by effective target and request behavior so aliases can share a
+	// probe without accidentally applying one site's custom configuration to
+	// another site.
 	groups := make(map[string][]string, len(urls))
 	for _, raw := range urls {
+		sc.mu.RLock()
+		snapshot := sc.sites[raw]
+		sc.mu.RUnlock()
 		key := dedupeKey(raw)
+		if snapshot != nil {
+			target := effectiveHealthCheckURL(raw, snapshot.HealthCheckConfig)
+			fingerprint, _ := json.Marshal(struct {
+				Config          *model.HealthCheckConfig
+				Timeout         int
+				UserAgent       string
+				MaxRedirects    int
+				FollowRedirects bool
+			}{
+				Config:          snapshot.HealthCheckConfig,
+				Timeout:         snapshot.Timeout,
+				UserAgent:       snapshot.UserAgent,
+				MaxRedirects:    snapshot.MaxRedirects,
+				FollowRedirects: snapshot.FollowRedirects,
+			})
+			key = dedupeKey(target) + "|" + string(fingerprint)
+		}
 		groups[key] = append(groups[key], raw)
 	}
 
@@ -491,7 +662,14 @@ func (sc *SiteChecker) CheckAllSites(ctx context.Context) {
 			defer func() { <-semaphore }()
 
 			primary := aliases[0]
-			siteInfo, err := sc.CheckSite(ctx, primary)
+			sc.mu.RLock()
+			primarySnapshot := sc.sites[primary]
+			siteName := ""
+			if primarySnapshot != nil {
+				siteName = primarySnapshot.SiteName
+			}
+			sc.mu.RUnlock()
+			siteInfo, err := sc.checkSite(ctx, siteName, primary)
 			if err != nil {
 				logger.Errorf("Failed to check site %s: %v", primary, err)
 				return
@@ -504,7 +682,12 @@ func (sc *SiteChecker) CheckAllSites(ctx context.Context) {
 					continue
 				}
 				clone := *siteInfo
+				if existing := sc.sites[alias]; existing != nil {
+					clone.SiteConfig = existing.SiteConfig
+					clone.Name = existing.Name
+				}
 				sc.sites[alias] = &clone
+				evaluateSiteHealthAlert(&clone.SiteConfig, &clone)
 			}
 			sc.mu.Unlock()
 		}(aliases)
@@ -512,6 +695,10 @@ func (sc *SiteChecker) CheckAllSites(ctx context.Context) {
 
 	wg.Wait()
 
+	sc.broadcastUpdate()
+}
+
+func (sc *SiteChecker) broadcastUpdate() {
 	// Notify WebSocket clients of the update
 	sc.mu.RLock()
 	updateCallback := sc.onUpdateCallback
@@ -599,9 +786,16 @@ func extractDomainName(siteURL string) string {
 	return parsed.Host
 }
 
+// HTML extraction patterns. Compiled once: they are applied to every site on
+// every check sweep, and regexp.MustCompile is expensive enough to show up when
+// a forced sweep walks hundreds of sites.
+var (
+	titleRegex   = regexp.MustCompile(`(?i)<title[^>]*>([^<]+)</title>`)
+	faviconRegex = regexp.MustCompile(`(?i)<link[^>]*rel=["'](?:icon|shortcut icon)["'][^>]*href=["']([^"']+)["']`)
+)
+
 // extractTitle extracts title from HTML content
 func extractTitle(html string) string {
-	titleRegex := regexp.MustCompile(`(?i)<title[^>]*>([^<]+)</title>`)
 	matches := titleRegex.FindStringSubmatch(html)
 	if len(matches) > 1 {
 		return strings.TrimSpace(matches[1])
@@ -617,7 +811,6 @@ func (sc *SiteChecker) extractFavicon(ctx context.Context, siteURL, html string)
 	}
 
 	// Look for favicon link in HTML
-	faviconRegex := regexp.MustCompile(`(?i)<link[^>]*rel=["'](?:icon|shortcut icon)["'][^>]*href=["']([^"']+)["']`)
 	matches := faviconRegex.FindStringSubmatch(html)
 
 	var faviconURL string
@@ -645,6 +838,15 @@ func (sc *SiteChecker) extractFavicon(ctx context.Context, siteURL, html string)
 }
 
 // downloadFavicon downloads and encodes favicon as base64
+// maxFaviconBytes bounds how much of a favicon response is kept.
+//
+// The result is base64-encoded (a third larger again), stored in SiteInfo for
+// the life of the process, cloned per alias, and re-marshalled to every
+// WebSocket client on each update. Real favicons are a few KB; the previous 1MB
+// allowance let a few hundred sites pin hundreds of megabytes of resident
+// memory for no benefit.
+const maxFaviconBytes = 64 * 1024
+
 func (sc *SiteChecker) downloadFavicon(ctx context.Context, faviconURL string) string {
 	req, err := http.NewRequestWithContext(ctx, "GET", faviconURL, nil)
 	if err != nil {
@@ -663,8 +865,7 @@ func (sc *SiteChecker) downloadFavicon(ctx context.Context, faviconURL string) s
 		return ""
 	}
 
-	// Limit favicon size to 1MB
-	body, err := io.ReadAll(io.LimitReader(resp.Body, 1024*1024))
+	body, err := io.ReadAll(io.LimitReader(resp.Body, maxFaviconBytes))
 	if err != nil {
 		return ""
 	}

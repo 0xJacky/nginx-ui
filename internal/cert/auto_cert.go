@@ -87,21 +87,15 @@ func autoCert(certModel *model.Cert) {
 		return
 	}
 
-	payload := &ConfigPayload{
-		CertID:                  certModel.ID,
-		ServerName:              certModel.Domains,
-		ChallengeMethod:         certModel.ChallengeMethod,
-		Profile:                 certModel.Profile,
-		DNSCredentialID:         certModel.DnsCredentialID,
-		KeyType:                 certModel.GetKeyType(),
-		ACMEUserID:              certModel.ACMEUserID,
-		NotBefore:               certInfo.NotBefore,
-		MustStaple:              certModel.MustStaple,
-		LegoDisableCNAMESupport: certModel.LegoDisableCNAMESupport,
-		EnableCommonName:        certModel.EnableCommonName,
-		RevokeOld:               certModel.RevokeOld,
-		ReplacesCertID:          scheduleDecision.ReplacesCertID,
-	}
+	payload := newAutoRenewPayload(certModel, certInfo, scheduleDecision.ReplacesCertID)
+
+	// Renew in place. The nginx configuration keeps referencing the paths that
+	// were recorded when the certificate was first issued, and nothing rewrites
+	// those directives afterwards, so the renewed material has to overwrite the
+	// very same files. Without this the renewal silently lands in a directory
+	// derived from the current identifiers and key type and nginx goes on
+	// serving the expiring certificate.
+	payload.UseExistingCertificatePaths(certModel.SSLCertificatePath, certModel.SSLCertificateKeyPath)
 
 	if certModel.Resource != nil {
 		payload.Resource = &model.CertificateResource{
@@ -128,6 +122,25 @@ func autoCert(certModel *model.Cert) {
 	if err != nil {
 		notification.Error("Sync Certificate Error", err.Error(), nil)
 		return
+	}
+}
+
+func newAutoRenewPayload(certModel *model.Cert, certInfo *Info, replacesCertID string) *ConfigPayload {
+	return &ConfigPayload{
+		CertID:                            certModel.ID,
+		ServerName:                        certModel.Domains,
+		ChallengeMethod:                   certModel.ChallengeMethod,
+		Profile:                           certModel.Profile,
+		DNSCredentialID:                   certModel.DnsCredentialID,
+		KeyType:                           certModel.GetKeyType(),
+		ACMEUserID:                        certModel.ACMEUserID,
+		NotBefore:                         certInfo.NotBefore,
+		MustStaple:                        certModel.MustStaple,
+		LegoDisableCNAMESupport:           certModel.LegoDisableCNAMESupport,
+		DisableAuthoritativeNSPropagation: certModel.DisableAuthoritativeNSPropagation,
+		EnableCommonName:                  certModel.EnableCommonName,
+		RevokeOld:                         certModel.RevokeOld,
+		ReplacesCertID:                    replacesCertID,
 	}
 }
 

@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/transport"
+	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/pkg/errors"
 	"github.com/uozi-tech/cosy"
 )
@@ -43,8 +45,25 @@ func (t *TRelease) GetAssetsMap() (m map[string]TReleaseAsset) {
 	return
 }
 
+func NewHTTPClient() (*http.Client, error) {
+	if settings.HTTPSettings.HTTPProxy == "" {
+		return http.DefaultClient, nil
+	}
+
+	clientTransport, err := transport.NewTransport(transport.WithProxy(settings.HTTPSettings.HTTPProxy))
+	if err != nil {
+		return nil, err
+	}
+
+	return &http.Client{Transport: clientTransport}, nil
+}
+
 func getLatestRelease() (data TRelease, err error) {
-	resp, err := http.Get(GetGithubLatestReleaseAPIUrl())
+	client, err := NewHTTPClient()
+	if err != nil {
+		return
+	}
+	resp, err := client.Get(GetGithubLatestReleaseAPIUrl())
 	if err != nil {
 		err = errors.Wrap(err, "service.getLatestRelease http.Get err")
 		return
@@ -69,7 +88,11 @@ func getLatestRelease() (data TRelease, err error) {
 }
 
 func getLatestPrerelease() (data TRelease, err error) {
-	resp, err := http.Get(GetGithubReleasesListAPIUrl())
+	client, err := NewHTTPClient()
+	if err != nil {
+		return
+	}
+	resp, err := client.Get(GetGithubReleasesListAPIUrl())
 	if err != nil {
 		err = errors.Wrap(err, "service.getLatestPrerelease http.Get err")
 		return
@@ -106,7 +129,31 @@ func getLatestPrerelease() (data TRelease, err error) {
 	return
 }
 
+// ReleaseProvider overrides where release metadata comes from.
+//
+// The slot defaults to nil and only internal/demo fills it, so a production
+// binary always asks GitHub. A demo instance cannot install an upgrade anyway,
+// and should not be making outbound API calls on every visit to the About page.
+type ReleaseProvider interface {
+	// Release returns the release for a channel, or false to fall through to
+	// the real lookup.
+	Release(channel string) (TRelease, bool)
+}
+
+var releaseProvider ReleaseProvider
+
+// SetReleaseProvider installs a release override. Call once, at boot.
+func SetReleaseProvider(p ReleaseProvider) {
+	releaseProvider = p
+}
+
 func GetRelease(channel string) (data TRelease, err error) {
+	if p := releaseProvider; p != nil {
+		if release, ok := p.Release(channel); ok {
+			return release, nil
+		}
+	}
+
 	stableRelease, err := getLatestRelease()
 	if err != nil {
 		return TRelease{}, err

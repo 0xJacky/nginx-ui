@@ -31,16 +31,27 @@ type nodeMutationRequest struct {
 }
 
 type nodeResponse struct {
-	ID                  uint64     `json:"id"`
-	CreatedAt           time.Time  `json:"created_at"`
-	UpdatedAt           time.Time  `json:"updated_at"`
-	Name                string     `json:"name"`
-	URL                 string     `json:"url"`
-	Enabled             bool       `json:"enabled"`
-	AuthMethod          string     `json:"auth_method"`
-	HasCredential       bool       `json:"has_credential"`
-	CredentialStatus    string     `json:"credential_status"`
-	LastCredentialUseAt *time.Time `json:"last_credential_use_at,omitempty"`
+	ID                      uint64                           `json:"id"`
+	CreatedAt               time.Time                        `json:"created_at"`
+	UpdatedAt               time.Time                        `json:"updated_at"`
+	Name                    string                           `json:"name"`
+	URL                     string                           `json:"url"`
+	Enabled                 bool                             `json:"enabled"`
+	AuthMethod              string                           `json:"auth_method"`
+	HasCredential           bool                             `json:"has_credential"`
+	CredentialStatus        string                           `json:"credential_status"`
+	LastCredentialUseAt     *time.Time                       `json:"last_credential_use_at,omitempty"`
+	AuthUpgradeStatus       string                           `json:"auth_upgrade_status,omitempty"`
+	AuthUpgradeStep         string                           `json:"auth_upgrade_step,omitempty"`
+	AuthUpgradeAttemptCount uint                             `json:"auth_upgrade_attempt_count"`
+	AuthUpgradeAttemptedAt  *time.Time                       `json:"auth_upgrade_attempted_at,omitempty"`
+	AuthUpgradeNextRetryAt  *time.Time                       `json:"auth_upgrade_next_retry_at,omitempty"`
+	AuthUpgradeCompletedAt  *time.Time                       `json:"auth_upgrade_completed_at,omitempty"`
+	AuthUpgradeErrorCode    string                           `json:"auth_upgrade_error_code,omitempty"`
+	AuthUpgradeError        string                           `json:"auth_upgrade_error,omitempty"`
+	ConnectionError         string                           `json:"connection_error,omitempty"`
+	ConnectionErrorCode     analytic.NodeConnectionErrorCode `json:"connection_error_code,omitempty"`
+	ConnectionErrorAt       *time.Time                       `json:"connection_error_at,omitempty"`
 	// LegacySecret only ever carries the redaction sentinel, which tells the
 	// edit form a secret is stored without putting it in a list response.
 	LegacySecret string `json:"legacy_secret,omitempty"`
@@ -50,17 +61,39 @@ type nodeResponse struct {
 
 func newNodeResponse(node *model.Node) nodeResponse {
 	analyticNode := analytic.GetNode(node)
+	authUpgradeStatus := node.AuthUpgradeStatus
+	authUpgradeErrorCode := node.AuthUpgradeErrorCode
+	authUpgradeError := node.AuthUpgradeError
+	if node.AuthMethod == model.NodeAuthMethodLegacy && authUpgradeStatus == "" {
+		authUpgradeStatus = model.NodeAuthUpgradeStatusPending
+	}
+	if node.AuthMethod == model.NodeAuthMethodLegacy && len(node.EncryptedLegacySecret) == 0 {
+		authUpgradeStatus = model.NodeAuthUpgradeStatusFailed
+		authUpgradeErrorCode = model.NodeAuthUpgradeErrorMissingLegacySecret
+		authUpgradeError = "The stored legacy node secret is unavailable."
+	}
+	if node.AuthMethod == model.NodeAuthMethodLegacy && !node.Enabled {
+		authUpgradeStatus = model.NodeAuthUpgradeStatusPaused
+	}
 	response := nodeResponse{
-		ID:                  node.ID,
-		CreatedAt:           node.CreatedAt,
-		UpdatedAt:           node.UpdatedAt,
-		Name:                node.Name,
-		URL:                 node.URL,
-		Enabled:             node.Enabled,
-		AuthMethod:          node.AuthMethod,
-		HasCredential:       node.HasCredential(),
-		CredentialStatus:    node.CredentialStatus,
-		LastCredentialUseAt: node.LastCredentialUseAt,
+		ID:                      node.ID,
+		CreatedAt:               node.CreatedAt,
+		UpdatedAt:               node.UpdatedAt,
+		Name:                    node.Name,
+		URL:                     node.URL,
+		Enabled:                 node.Enabled,
+		AuthMethod:              node.AuthMethod,
+		HasCredential:           node.HasCredential(),
+		CredentialStatus:        node.CredentialStatus,
+		LastCredentialUseAt:     node.LastCredentialUseAt,
+		AuthUpgradeStatus:       authUpgradeStatus,
+		AuthUpgradeStep:         node.AuthUpgradeStep,
+		AuthUpgradeAttemptCount: node.AuthUpgradeAttemptCount,
+		AuthUpgradeAttemptedAt:  node.AuthUpgradeAttemptedAt,
+		AuthUpgradeNextRetryAt:  node.AuthUpgradeNextRetryAt,
+		AuthUpgradeCompletedAt:  node.AuthUpgradeCompletedAt,
+		AuthUpgradeErrorCode:    authUpgradeErrorCode,
+		AuthUpgradeError:        authUpgradeError,
 	}
 	if len(node.EncryptedLegacySecret) != 0 {
 		response.LegacySecret = settings.RedactedSensitiveValue
@@ -68,12 +101,15 @@ func newNodeResponse(node *model.Node) nodeResponse {
 	if analyticNode != nil {
 		response.NodeStat = analyticNode.NodeStat
 		response.NodeInfo = analyticNode.NodeInfo
+		response.ConnectionError = analyticNode.ConnectionError
+		response.ConnectionErrorCode = analyticNode.ConnectionErrorCode
+		response.ConnectionErrorAt = analyticNode.ConnectionErrorAt
 	}
 	return response
 }
 
 func GetNode(c *gin.Context) {
-	node, ok := findNode(c)
+	node, ok := findNode(c, false)
 	if !ok {
 		return
 	}
@@ -107,16 +143,22 @@ func AddNode(c *gin.Context) {
 	legacySecret := mutationLegacySecret(request)
 	authMethod := model.NodeAuthMethodPaired
 	credentialStatus := model.NodeCredentialStatusUnpaired
+	authUpgradeStatus := ""
+	authUpgradeStep := ""
 	if legacySecret != "" {
 		authMethod = model.NodeAuthMethodLegacy
 		credentialStatus = model.NodeCredentialStatusActive
+		authUpgradeStatus = model.NodeAuthUpgradeStatusPending
+		authUpgradeStep = model.NodeAuthUpgradeStepQueued
 	}
 	node := &model.Node{
-		Name:             request.Name,
-		URL:              normalizedURL,
-		Enabled:          request.Enabled,
-		AuthMethod:       authMethod,
-		CredentialStatus: credentialStatus,
+		Name:              request.Name,
+		URL:               normalizedURL,
+		Enabled:           request.Enabled,
+		AuthMethod:        authMethod,
+		CredentialStatus:  credentialStatus,
+		AuthUpgradeStatus: authUpgradeStatus,
+		AuthUpgradeStep:   authUpgradeStep,
 	}
 	database := model.UseDB()
 	err = database.Transaction(func(tx *gorm.DB) error {
@@ -141,12 +183,15 @@ func AddNode(c *gin.Context) {
 		return
 	}
 	refreshNodeState()
+	if node.Enabled && legacySecret != "" {
+		nodeauth.QueueLegacyRelationshipUpgrade(node.ID)
+	}
 	c.JSON(http.StatusCreated, newNodeResponse(node))
 }
 
 func EditNode(c *gin.Context) {
 	audit.MarkSensitiveRequest(c)
-	node, ok := findNode(c)
+	node, ok := findNode(c, false)
 	if !ok {
 		return
 	}
@@ -179,6 +224,12 @@ func EditNode(c *gin.Context) {
 			updates["encrypted_legacy_secret"] = encrypted
 			updates["auth_method"] = model.NodeAuthMethodLegacy
 			updates["credential_status"] = model.NodeCredentialStatusActive
+			updates["auth_upgrade_status"] = model.NodeAuthUpgradeStatusPending
+			updates["auth_upgrade_step"] = model.NodeAuthUpgradeStepQueued
+			updates["auth_upgrade_next_retry_at"] = time.Now()
+			updates["auth_upgrade_completed_at"] = nil
+			updates["auth_upgrade_error_code"] = ""
+			updates["auth_upgrade_error"] = ""
 			if err := tx.Unscoped().Where("node_id = ?", node.ID).Delete(&model.NodeCredential{}).Error; err != nil {
 				return err
 			}
@@ -194,21 +245,62 @@ func EditNode(c *gin.Context) {
 		return
 	}
 	refreshNodeState()
+	if node.Enabled && node.AuthMethod == model.NodeAuthMethodLegacy && len(node.EncryptedLegacySecret) != 0 {
+		nodeauth.QueueLegacyRelationshipUpgrade(node.ID)
+	}
 	c.JSON(http.StatusOK, newNodeResponse(node))
 }
 
+func RetryNodeAuthUpgrade(c *gin.Context) {
+	node, ok := findNode(c, false)
+	if !ok {
+		return
+	}
+	if err := nodeauth.RetryLegacyRelationshipUpgrade(node.ID, time.Now()); err != nil {
+		status := http.StatusInternalServerError
+		if errors.Is(err, nodeauth.ErrRelationshipUpgradeAlreadyRunning) ||
+			errors.Is(err, nodeauth.ErrRelationshipUpgradeNotAvailable) {
+			status = http.StatusConflict
+		}
+		c.JSON(status, gin.H{"message": err.Error()})
+		return
+	}
+	if err := model.UseDB().First(node, node.ID).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		return
+	}
+	c.JSON(http.StatusAccepted, newNodeResponse(node))
+}
+
 func DeleteNode(c *gin.Context) {
-	node, ok := findNode(c)
+	permanent := cast.ToBool(c.Query("permanent"))
+	node, ok := findNode(c, permanent)
 	if !ok {
 		return
 	}
 	err := model.UseDB().Transaction(func(tx *gorm.DB) error {
-		if err := tx.Unscoped().Where("node_id = ?", node.ID).Delete(&model.NodeCredential{}).Error; err != nil {
-			return err
+		if permanent {
+			if err := tx.Unscoped().Where("node_id = ?", node.ID).Delete(&model.NodeCredential{}).Error; err != nil {
+				return err
+			}
+			return tx.Unscoped().Delete(node).Error
 		}
 		return tx.Delete(node).Error
 	})
 	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		return
+	}
+	refreshNodeState()
+	c.Status(http.StatusNoContent)
+}
+
+func RecoverNode(c *gin.Context) {
+	node, ok := findNode(c, true)
+	if !ok {
+		return
+	}
+	if err := model.UseDB().Unscoped().Model(node).Update("deleted_at", nil).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
@@ -226,14 +318,18 @@ func LoadNodeFromSettings(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "ok"})
 }
 
-func findNode(c *gin.Context) (*model.Node, bool) {
+func findNode(c *gin.Context, includeDeleted bool) (*model.Node, bool) {
 	id := cast.ToUint64(c.Param("id"))
 	if id == 0 || model.UseDB() == nil {
 		c.JSON(http.StatusNotFound, gin.H{"message": "node not found"})
 		return nil, false
 	}
 	var node model.Node
-	if err := model.UseDB().First(&node, id).Error; err != nil {
+	database := model.UseDB()
+	if includeDeleted {
+		database = database.Unscoped()
+	}
+	if err := database.First(&node, id).Error; err != nil {
 		status := http.StatusInternalServerError
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			status = http.StatusNotFound
@@ -255,7 +351,7 @@ func GetNodeSecret(c *gin.Context) {
 		})
 		return
 	}
-	node, ok := findNode(c)
+	node, ok := findNode(c, false)
 	if !ok {
 		return
 	}

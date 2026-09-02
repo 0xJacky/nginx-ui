@@ -46,39 +46,42 @@ type SelfSignedCertConfig struct {
 
 type Cert struct {
 	Model
-	Name                         string                `json:"name"`
-	Domains                      []string              `json:"domains" gorm:"serializer:json"`
-	Filename                     string                `json:"filename"`
-	SSLCertificatePath           string                `json:"ssl_certificate_path"`
-	SSLCertificateKeyPath        string                `json:"ssl_certificate_key_path"`
-	Fingerprint                  string                `json:"fingerprint" gorm:"index"`
-	AutoCert                     int                   `json:"auto_cert"`
-	ChallengeMethod              string                `json:"challenge_method"`
-	Profile                      string                `json:"profile"`
-	DnsCredentialID              uint64                `json:"dns_credential_id"`
-	DnsCredential                *DnsCredential        `json:"dns_credential,omitempty"`
-	ACMEUserID                   uint64                `json:"acme_user_id"`
-	ACMEUser                     *AcmeUser             `json:"acme_user,omitempty"`
-	KeyType                      certcrypto.KeyType    `json:"key_type"`
-	Log                          string                `json:"log"`
-	Resource                     *CertificateResource  `json:"-" gorm:"serializer:json[aes]"`
-	SyncNodeIds                  []uint64              `json:"sync_node_ids" gorm:"serializer:json"`
-	MustStaple                   bool                  `json:"must_staple"`
-	LegoDisableCNAMESupport      bool                  `json:"lego_disable_cname_support"`
-	EnableCommonName             bool                  `json:"enable_common_name"`
-	RevokeOld                    bool                  `json:"revoke_old"`
-	SelfSignedConfig             *SelfSignedCertConfig `json:"self_signed_config,omitempty" gorm:"serializer:json"`
-	LastAutoRenewAt              *time.Time            `json:"-"`
-	LastAutoRenewError           string                `json:"-"`
-	NextAutoRenewAt              *time.Time            `json:"-"`
-	LastRenewalInfoCheckAt       *time.Time            `json:"-"`
-	AutoRenewScheduleFingerprint string                `json:"-"`
-	LastExpiryNotifyAt           *time.Time            `json:"-"`
-	LastExpiryNotifyNotAfter     *time.Time            `json:"-"`
-	LastExpiryNotifyStage        string                `json:"-"`
-	Status                       string                `json:"status"`
-	LastError                    string                `json:"last_error"`
-	LastAttemptAt                *time.Time            `json:"last_attempt_at"`
+	Name                              string                `json:"name"`
+	Domains                           []string              `json:"domains" gorm:"serializer:json"`
+	Filename                          string                `json:"filename"`
+	SSLCertificatePath                string                `json:"ssl_certificate_path"`
+	SSLCertificateKeyPath             string                `json:"ssl_certificate_key_path"`
+	Fingerprint                       string                `json:"fingerprint" gorm:"index"`
+	AutoCert                          int                   `json:"auto_cert"`
+	ChallengeMethod                   string                `json:"challenge_method"`
+	Profile                           string                `json:"profile"`
+	DnsCredentialID                   uint64                `json:"dns_credential_id"`
+	DnsCredential                     *DnsCredential        `json:"dns_credential,omitempty"`
+	ACMEUserID                        uint64                `json:"acme_user_id"`
+	ACMEUser                          *AcmeUser             `json:"acme_user,omitempty"`
+	KeyType                           certcrypto.KeyType    `json:"key_type"`
+	Log                               string                `json:"log"`
+	Resource                          *CertificateResource  `json:"-" gorm:"serializer:json[aes]"`
+	SyncNodeIds                       []uint64              `json:"sync_node_ids" gorm:"serializer:json"`
+	MustStaple                        bool                  `json:"must_staple"`
+	LegoDisableCNAMESupport           bool                  `json:"lego_disable_cname_support"`
+	DisableAuthoritativeNSPropagation bool                  `json:"disable_authoritative_ns_propagation"`
+	EnableCommonName                  bool                  `json:"enable_common_name"`
+	RevokeOld                         bool                  `json:"revoke_old"`
+	SelfSignedConfig                  *SelfSignedCertConfig `json:"self_signed_config,omitempty" gorm:"serializer:json"`
+	LastAutoRenewAt                   *time.Time            `json:"-"`
+	LastAutoRenewError                string                `json:"-"`
+	NextAutoRenewAt                   *time.Time            `json:"-"`
+	LastRenewalInfoCheckAt            *time.Time            `json:"-"`
+	AutoRenewScheduleFingerprint      string                `json:"-"`
+	LastExpiryNotifyAt                *time.Time            `json:"-"`
+	LastExpiryNotifyNotAfter          *time.Time            `json:"-"`
+	LastExpiryNotifyStage             string                `json:"-"`
+	LastDeploymentIssueHash           string                `json:"-"`
+	LastDeploymentIssueNotifyAt       *time.Time            `json:"-"`
+	Status                            string                `json:"status"`
+	LastError                         string                `json:"last_error"`
+	LastAttemptAt                     *time.Time            `json:"last_attempt_at"`
 }
 
 func FirstCert(confName string) (c Cert, err error) {

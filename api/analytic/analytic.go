@@ -38,10 +38,33 @@ func Analytic(c *gin.Context) {
 
 	var stat Stat
 
+	// waitNext throttles the loop and reports whether it should keep running.
+	//
+	// Every error path has to go through it. A bare `continue` would spin this
+	// goroutine at full speed while flooding the log, and - because the
+	// cancellation check lives at the bottom of the loop - it would also never
+	// notice that the peer disconnected or that the process is shutting down,
+	// leaking one hot goroutine per dashboard connection.
+	waitNext := func() bool {
+		select {
+		case <-kernel.Context.Done():
+			logger.Debug("Analytic: Context cancelled, closing WebSocket")
+			return false
+		case <-peerGone:
+			logger.Debug("Analytic: peer disconnected, closing WebSocket")
+			return false
+		case <-time.After(1 * time.Second):
+			return true
+		}
+	}
+
 	for {
 		stat.Memory, err = analytic.GetMemoryStat()
 		if err != nil {
 			logger.Error(err)
+			if !waitNext() {
+				return
+			}
 			continue
 		}
 
@@ -62,28 +85,41 @@ func Analytic(c *gin.Context) {
 		stat.Uptime, err = host.Uptime()
 		if err != nil {
 			logger.Error(err)
+			if !waitNext() {
+				return
+			}
 			continue
 		}
 
 		stat.LoadAvg, err = load.Avg()
 		if err != nil {
 			logger.Error(err)
+			if !waitNext() {
+				return
+			}
 			continue
 		}
 
 		stat.Disk, err = analytic.GetDiskStat()
 		if err != nil {
 			logger.Error(err)
+			if !waitNext() {
+				return
+			}
 			continue
 		}
 
 		network, err := analytic.GetNetworkStat()
 		if err != nil {
 			logger.Error(err)
+			if !waitNext() {
+				return
+			}
 			continue
 		}
 
 		stat.Network = *network
+		stat.SampledAt = time.Now().UnixMilli()
 
 		// write
 		_ = ws.SetWriteDeadline(time.Now().Add(wsWriteWait))
@@ -95,14 +131,8 @@ func Analytic(c *gin.Context) {
 			break
 		}
 
-		select {
-		case <-kernel.Context.Done():
-			logger.Debug("Analytic: Context cancelled, closing WebSocket")
+		if !waitNext() {
 			return
-		case <-peerGone:
-			logger.Debug("Analytic: peer disconnected, closing WebSocket")
-			return
-		case <-time.After(1 * time.Second):
 		}
 	}
 }

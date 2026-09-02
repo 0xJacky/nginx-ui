@@ -3,13 +3,16 @@ package analytic
 import (
 	"bytes"
 	"context"
+	"crypto/x509"
 	"encoding/json"
+	"errors"
+	"fmt"
 	"net/http"
+	"strings"
 	"sync"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/cache"
-	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -98,7 +101,7 @@ func shouldRetry(nodeID uint64) bool {
 	return !now.Before(state.NextRetry)
 }
 
-func markConnectionFailure(nodeID uint64) {
+func markConnectionFailure(nodeID uint64, connectionErr error) int {
 	retryMutex.Lock()
 	state, exists := retryStates[nodeID]
 	if !exists {
@@ -106,22 +109,69 @@ func markConnectionFailure(nodeID uint64) {
 		retryStates[nodeID] = state
 	}
 	state.FailureCount++
+	failureCount := state.FailureCount
 	state.NextRetry = time.Now().Add(calculateNextRetryInterval(state.FailureCount))
 	retryMutex.Unlock()
 
+	nodeMapMu.Lock()
+	if node := NodeMap[nodeID]; node != nil {
+		failedAt := time.Now()
+		node.ConnectionError = connectionErr.Error()
+		node.ConnectionErrorCode = classifyNodeConnectionError(connectionErr, failedAt)
+		node.ConnectionErrorAt = &failedAt
+	}
+	nodeMapMu.Unlock()
+
 	markNodeOfflineIfStale(nodeID, nodeOfflineTimeout)
+	return failureCount
 }
 
-func markConnectionSuccess(nodeID uint64) {
+func markConnectionSuccess(nodeID uint64) bool {
 	retryMutex.Lock()
 	state, exists := retryStates[nodeID]
 	if !exists {
 		state = &NodeRetryState{}
 		retryStates[nodeID] = state
 	}
+	recovered := state.FailureCount > 0
 	state.FailureCount = 0
 	state.NextRetry = time.Now()
 	retryMutex.Unlock()
+
+	nodeMapMu.Lock()
+	if node := NodeMap[nodeID]; node != nil {
+		node.ConnectionError = ""
+		node.ConnectionErrorCode = ""
+		node.ConnectionErrorAt = nil
+	}
+	nodeMapMu.Unlock()
+	return recovered
+}
+
+func classifyNodeConnectionError(connectionErr error, now time.Time) NodeConnectionErrorCode {
+	if connectionErr == nil {
+		return ""
+	}
+
+	var certificateInvalidError x509.CertificateInvalidError
+	if errors.As(connectionErr, &certificateInvalidError) &&
+		certificateInvalidError.Cert != nil &&
+		now.Before(certificateInvalidError.Cert.NotBefore) {
+		return NodeConnectionErrorClockSkew
+	}
+
+	message := connectionErr.Error()
+	if strings.Contains(message, "current time") &&
+		strings.Contains(message, "is before") &&
+		strings.Contains(message, "not yet valid") {
+		return NodeConnectionErrorClockSkew
+	}
+	if strings.Contains(message, "node signature creation time is in the future") ||
+		strings.Contains(message, "node signature is expired") {
+		return NodeConnectionErrorClockSkew
+	}
+
+	return ""
 }
 
 // ReloadNodesStatus asks the single monitor loop started by the kernel to
@@ -293,10 +343,10 @@ func runNodeStatusWorker(ctx context.Context, node *model.Node) {
 				if ctx.Err() != nil {
 					return
 				}
-				if helper.IsUnexpectedWebsocketError(err) {
-					logger.Error(err)
+				failureCount := markConnectionFailure(node.ID, err)
+				if failureCount == 1 {
+					logger.Warnf("Node status connection failed for node %d (%q): %v", node.ID, node.Name, err)
 				}
-				markConnectionFailure(node.ID)
 			}
 		}
 	}
@@ -360,7 +410,7 @@ func nodeAnalyticRecord(nodeModel *model.Node, ctx context.Context) error {
 			NodeMap[nodeModel.ID].Node = nodeModel
 		}
 		nodeMapMu.Unlock()
-		return err
+		return fmt.Errorf("node HTTP probe failed: %w", err)
 	}
 
 	nodeMapMu.Lock()
@@ -374,12 +424,12 @@ func nodeAnalyticRecord(nodeModel *model.Node, ctx context.Context) error {
 
 	u, err := nodeModel.GetWebSocketURL("/api/analytic/intro")
 	if err != nil {
-		return err
+		return fmt.Errorf("build node WebSocket URL: %w", err)
 	}
 
 	header := http.Header{}
 	if err := nodeauth.SignWebSocketHeaders(nodeModel, u, header); err != nil {
-		return err
+		return fmt.Errorf("sign node WebSocket request: %w", err)
 	}
 
 	dial := &websocket.Dialer{
@@ -389,7 +439,7 @@ func nodeAnalyticRecord(nodeModel *model.Node, ctx context.Context) error {
 
 	c, _, err := dial.DialContext(scopeCtx, u, header)
 	if err != nil {
-		return err
+		return fmt.Errorf("connect node WebSocket: %w", err)
 	}
 
 	defer func() {
@@ -445,7 +495,7 @@ func nodeAnalyticRecord(nodeModel *model.Node, ctx context.Context) error {
 		var rawMsg json.RawMessage
 		err = c.ReadJSON(&rawMsg)
 		if err != nil {
-			return err
+			return fmt.Errorf("read node WebSocket status: %w", err)
 		}
 
 		nodeMapMu.Lock()
@@ -469,6 +519,8 @@ func nodeAnalyticRecord(nodeModel *model.Node, ctx context.Context) error {
 			NodeMap[nodeModel.ID].ResponseAt = time.Now()
 		}
 		nodeMapMu.Unlock()
-		markConnectionSuccess(nodeModel.ID)
+		if markConnectionSuccess(nodeModel.ID) {
+			logger.Infof("Node status connection restored for node %d (%q)", nodeModel.ID, nodeModel.Name)
+		}
 	}
 }

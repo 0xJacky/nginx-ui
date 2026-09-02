@@ -16,6 +16,8 @@ let isUnmounted = false
 
 const websocket = useWebSocket(analytic.serverWebSocketUrl, true, {
   immediate: false,
+  onConnected: resetNetworkRateSample,
+  onDisconnected: resetNetworkRateSample,
   onMessage: (_websocket, event) => {
     if (!isUnmounted) {
       wsOnMessage(event)
@@ -62,6 +64,48 @@ const disk_io = reactive({ writes: 0, reads: 0 })
 const uptime = ref('')
 const loadavg = reactive({ load1: 0, load5: 0, load15: 0 }) as LoadStat
 const net = reactive({ recv: 0, sent: 0, last_recv: 0, last_sent: 0 })
+
+interface NetworkSample {
+  bytesRecv: number
+  bytesSent: number
+  sampledAt: number
+}
+
+let lastNetworkSample: NetworkSample | undefined
+
+function resetNetworkRateSample() {
+  lastNetworkSample = undefined
+  net.recv = 0
+  net.sent = 0
+}
+
+function updateNetworkRate(network: { bytesRecv: number, bytesSent: number }, sampledAt: number) {
+  const previous = lastNetworkSample
+  const hasValidPreviousSample = previous
+    && sampledAt > previous.sampledAt
+    && network.bytesRecv >= previous.bytesRecv
+    && network.bytesSent >= previous.bytesSent
+
+  if (hasValidPreviousSample) {
+    const elapsedSeconds = (sampledAt - previous.sampledAt) / 1000
+    net.recv = (network.bytesRecv - previous.bytesRecv) / elapsedSeconds
+    net.sent = (network.bytesSent - previous.bytesSent) / elapsedSeconds
+  }
+  else {
+    net.recv = 0
+    net.sent = 0
+  }
+
+  net.last_recv = network.bytesRecv
+  net.last_sent = network.bytesSent
+  lastNetworkSample = {
+    bytesRecv: network.bytesRecv,
+    bytesSent: network.bytesSent,
+    sampledAt,
+  }
+
+  return Boolean(hasValidPreviousSample)
+}
 
 function net_formatter(bytes: number) {
   return `${bytesToSize(bytes)}/s`
@@ -127,7 +171,8 @@ function wsOnMessage(m: MessageEvent) {
 
   cpu.value = cpu_usage.toFixed(2)
 
-  const time = new Date().toISOString()
+  const sampledAt = Number.isFinite(r.sampled_at) ? r.sampled_at : Date.now()
+  const time = new Date(sampledAt).toISOString()
 
   cpu_analytic_series[0].data.push({ x: time, y: Number(r.cpu.user.toFixed(2)) })
   cpu_analytic_series[1].data.push({ x: time, y: cpu_usage })
@@ -152,18 +197,14 @@ function wsOnMessage(m: MessageEvent) {
   Object.assign(loadavg, r.loadavg)
 
   // network
-  Object.assign(net, r.network)
-  net.recv = r.network.bytesRecv - net.last_recv
-  net.sent = r.network.bytesSent - net.last_sent
-  net.last_recv = r.network.bytesRecv
-  net.last_sent = r.network.bytesSent
+  if (updateNetworkRate(r.network, sampledAt)) {
+    net_analytic[0].data.push({ x: time, y: net.recv })
+    net_analytic[1].data.push({ x: time, y: net.sent })
 
-  net_analytic[0].data.push({ x: time, y: net.recv })
-  net_analytic[1].data.push({ x: time, y: net.sent })
-
-  if (net_analytic[0].data.length > 100) {
-    net_analytic[0].data.shift()
-    net_analytic[1].data.shift()
+    if (net_analytic[0].data.length > 100) {
+      net_analytic[0].data.shift()
+      net_analytic[1].data.shift()
+    }
   }
 
   disk_io_analytic[0].data.push(r.disk.writes)

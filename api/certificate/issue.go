@@ -50,6 +50,9 @@ func IssueCert(c *gin.Context) {
 		logger.Error(err)
 		return
 	}
+	stopKeepalive := startIssueCertKeepalive(ws, issueCertWSPingPeriod)
+	defer stopKeepalive()
+
 	payload.KeyType = payload.GetKeyType()
 	if err := cert.NormalizeAndValidateIdentifiers(payload); err != nil {
 		logger.Error(err)
@@ -91,6 +94,12 @@ func IssueCert(c *gin.Context) {
 		}
 	}
 
+	// Reissue over the files this record already owns. The certificate
+	// management page renews without touching any site configuration, so a
+	// path derived from the current identifiers and key type would leave every
+	// vhost referencing the previous, expiring files.
+	payload.UseExistingCertificatePaths(certModel.SSLCertificatePath, certModel.SSLCertificateKeyPath)
+
 	log := cert.NewLogger()
 	log.SetCertModel(certModel)
 	log.SetWebSocket(wsWriter)
@@ -131,22 +140,23 @@ func persistCertDraft(name string, payload *cert.ConfigPayload) (*model.Cert, er
 	now := time.Now()
 
 	seed := &model.Cert{
-		Name:                    certificateName,
-		Filename:                name,
-		KeyType:                 normalizedKeyType,
-		Domains:                 payload.ServerName,
-		ChallengeMethod:         payload.ChallengeMethod,
-		Profile:                 payload.Profile,
-		DnsCredentialID:         payload.DNSCredentialID,
-		ACMEUserID:              payload.ACMEUserID,
-		AutoCert:                model.AutoCertEnabled,
-		MustStaple:              payload.MustStaple,
-		LegoDisableCNAMESupport: payload.LegoDisableCNAMESupport,
-		EnableCommonName:        payload.EnableCommonName,
-		RevokeOld:               payload.RevokeOld,
-		Status:                  model.CertStatusPending,
-		LastError:               "",
-		LastAttemptAt:           &now,
+		Name:                              certificateName,
+		Filename:                          name,
+		KeyType:                           normalizedKeyType,
+		Domains:                           payload.ServerName,
+		ChallengeMethod:                   payload.ChallengeMethod,
+		Profile:                           payload.Profile,
+		DnsCredentialID:                   payload.DNSCredentialID,
+		ACMEUserID:                        payload.ACMEUserID,
+		AutoCert:                          model.AutoCertEnabled,
+		MustStaple:                        payload.MustStaple,
+		LegoDisableCNAMESupport:           payload.LegoDisableCNAMESupport,
+		DisableAuthoritativeNSPropagation: payload.DisableAuthoritativeNSPropagation,
+		EnableCommonName:                  payload.EnableCommonName,
+		RevokeOld:                         payload.RevokeOld,
+		Status:                            model.CertStatusPending,
+		LastError:                         "",
+		LastAttemptAt:                     &now,
 	}
 
 	// FirstOrCreate by (filename, key_type). Name is the certificate identifier,
@@ -169,25 +179,27 @@ func persistCertDraft(name string, payload *cert.ConfigPayload) (*model.Cert, er
 	// Use struct + Select so GORM applies the `serializer:json` tag for Domains
 	// AND writes the zero-valued LastError ("") instead of skipping it.
 	updates := &model.Cert{
-		Name:                    certificateName,
-		Domains:                 payload.ServerName,
-		ChallengeMethod:         payload.ChallengeMethod,
-		Profile:                 payload.Profile,
-		DnsCredentialID:         payload.DNSCredentialID,
-		ACMEUserID:              payload.ACMEUserID,
-		AutoCert:                model.AutoCertEnabled,
-		MustStaple:              payload.MustStaple,
-		LegoDisableCNAMESupport: payload.LegoDisableCNAMESupport,
-		EnableCommonName:        payload.EnableCommonName,
-		RevokeOld:               payload.RevokeOld,
-		Status:                  model.CertStatusPending,
-		LastError:               "",
-		LastAttemptAt:           &now,
+		Name:                              certificateName,
+		Domains:                           payload.ServerName,
+		ChallengeMethod:                   payload.ChallengeMethod,
+		Profile:                           payload.Profile,
+		DnsCredentialID:                   payload.DNSCredentialID,
+		ACMEUserID:                        payload.ACMEUserID,
+		AutoCert:                          model.AutoCertEnabled,
+		MustStaple:                        payload.MustStaple,
+		LegoDisableCNAMESupport:           payload.LegoDisableCNAMESupport,
+		DisableAuthoritativeNSPropagation: payload.DisableAuthoritativeNSPropagation,
+		EnableCommonName:                  payload.EnableCommonName,
+		RevokeOld:                         payload.RevokeOld,
+		Status:                            model.CertStatusPending,
+		LastError:                         "",
+		LastAttemptAt:                     &now,
 	}
 	if err := db.Model(&model.Cert{}).Where("id = ?", seed.ID).
 		Select(
 			"name", "domains", "challenge_method", "profile", "dns_credential_id", "acme_user_id",
-			"auto_cert", "must_staple", "lego_disable_cname_support", "enable_common_name",
+			"auto_cert", "must_staple", "lego_disable_cname_support",
+			"disable_authoritative_ns_propagation", "enable_common_name",
 			"revoke_old", "status", "last_error", "last_attempt_at",
 		).
 		Updates(updates).Error; err != nil {

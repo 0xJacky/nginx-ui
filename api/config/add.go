@@ -76,15 +76,22 @@ func AddConfig(c *gin.Context) {
 		}
 	}
 
-	err = nginx.WriteFile(path, []byte(content), 0644)
-	if err != nil {
-		cosy.ErrHandler(c, err)
+	// Hold the apply lock for the whole write -> test -> reload sequence so a
+	// concurrent mutation cannot make this request fail on somebody else's file.
+	release := config.LockApply()
+	defer release()
+
+	tx := &config.FileTransaction{}
+	if err = tx.Write(path, []byte(content), 0644); err != nil {
+		cosy.ErrHandler(c, config.RollbackError(err, tx.Rollback))
 		return
 	}
 
-	res := nginx.Control(nginx.Reload)
-	if res.IsError() {
-		res.RespError(c)
+	// A file Nginx rejects must not survive on disk. The running instance keeps
+	// its valid in-memory configuration, so an untested write only breaks the
+	// next Nginx start. A newly created file is removed by the rollback.
+	if err = tx.TestAndReload(); err != nil {
+		cosy.ErrHandler(c, err)
 		return
 	}
 

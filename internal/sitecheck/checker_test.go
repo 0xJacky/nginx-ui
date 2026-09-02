@@ -47,7 +47,7 @@ func TestCheckSiteSkipsNetworkWhenDisabled(t *testing.T) {
 		},
 	}
 
-	setCachedSiteConfig(config.Host, config)
+	setCachedSiteConfig(canonicalSiteKey("", siteURL), config)
 
 	if _, err := checker.CheckSite(context.Background(), siteURL); err != nil {
 		t.Fatalf("CheckSite returned error: %v", err)
@@ -136,7 +136,7 @@ func TestCheckSiteWithConfigRewritesURLScheme(t *testing.T) {
 	t.Cleanup(InvalidateSiteConfigCache)
 
 	// Seed cache so checkHTTP's getOrCreateSiteConfigForURL doesn't hit a nil DB.
-	setCachedSiteConfig("example.com:443", &model.SiteConfig{
+	setCachedSiteConfig(canonicalSiteKey("", "https://example.com"), &model.SiteConfig{
 		Model: model.Model{ID: 1},
 		Host:  "example.com:443",
 	})
@@ -173,6 +173,36 @@ func TestCheckSiteWithConfigRewritesURLScheme(t *testing.T) {
 	// the outgoing request must be https — verifying the rewrite runs.
 	if capturedScheme != "https" {
 		t.Fatalf("expected request scheme https, got %q", capturedScheme)
+	}
+}
+
+func TestCheckSiteWithConfigUsesCustomTargetURL(t *testing.T) {
+	var hits int32
+	target := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		atomic.AddInt32(&hits, 1)
+		if r.URL.Path != "/ready" {
+			t.Fatalf("unexpected custom target path: %s", r.URL.Path)
+		}
+		w.WriteHeader(http.StatusNoContent)
+	}))
+	defer target.Close()
+
+	checker := NewEnhancedSiteChecker()
+	result, err := checker.CheckSiteWithConfig(context.Background(), "http://127.0.0.1:1", &model.HealthCheckConfig{
+		TargetURL:      target.URL,
+		Protocol:       "http",
+		Method:         http.MethodGet,
+		Path:           "/ready",
+		ExpectedStatus: []int{http.StatusNoContent},
+	})
+	if err != nil {
+		t.Fatalf("CheckSiteWithConfig returned error: %v", err)
+	}
+	if result == nil || result.Info == nil || result.Info.Status != StatusOnline {
+		t.Fatalf("expected custom target to be online, got %#v", result)
+	}
+	if got := atomic.LoadInt32(&hits); got != 1 {
+		t.Fatalf("expected one request to the custom target, got %d", got)
 	}
 }
 
@@ -297,7 +327,7 @@ func seedSiteConfigForTest(t *testing.T, rawURL string) {
 	t.Helper()
 	cfg := &model.SiteConfig{HealthCheckEnabled: true}
 	cfg.SetFromURL(rawURL)
-	setCachedSiteConfig(cfg.Host, cfg)
+	setCachedSiteConfig(canonicalSiteKey("", rawURL), cfg)
 }
 
 // TestCheckAllSitesHonorsConcurrencyLimit ensures the configured concurrency
@@ -406,7 +436,7 @@ func TestEnhancedCheckDoesNotDoubleFetchForFavicon(t *testing.T) {
 		},
 	}
 	cfg.SetFromURL(server.URL)
-	setCachedSiteConfig(cfg.Host, cfg)
+	setCachedSiteConfig(canonicalSiteKey("", server.URL), cfg)
 
 	checker := NewSiteChecker(DefaultCheckOptions()) // CheckFavicon defaults to true
 	if _, err := checker.CheckSite(context.Background(), server.URL); err != nil {
@@ -436,5 +466,16 @@ func TestDedupeKey(t *testing.T) {
 		if got := dedupeKey(tc.url); got != tc.want {
 			t.Errorf("dedupeKey(%q) = %q, want %q", tc.url, got, tc.want)
 		}
+	}
+}
+
+func TestCanonicalSiteKeyIsStableAcrossDefaultPortForms(t *testing.T) {
+	first := canonicalSiteKey("example.conf", "https://Example.COM")
+	second := canonicalSiteKey("example.conf", "https://example.com:443/")
+	if first != second {
+		t.Fatalf("expected equivalent URLs to share a site key, got %q and %q", first, second)
+	}
+	if other := canonicalSiteKey("other.conf", "https://example.com"); other == first {
+		t.Fatalf("expected different logical sites to have distinct keys")
 	}
 }

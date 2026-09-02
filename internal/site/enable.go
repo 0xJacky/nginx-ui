@@ -9,6 +9,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
+	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/uozi-tech/cosy/logger"
 )
 
@@ -26,6 +27,18 @@ func Enable(name string) (err error) {
 
 	_, err = nginx.Stat(configFilePath)
 	if err != nil {
+		return
+	}
+
+	// Remote namespaces are served by their member nodes: record the intent and
+	// dispatch it instead of touching the local Nginx.
+	if IsRemoteDeploy(name) {
+		if err = setRemoteEnabled(name, true); err != nil {
+			return
+		}
+
+		go syncEnable(name)
+
 		return
 	}
 
@@ -69,7 +82,7 @@ func syncEnable(name string) {
 	wg.Add(len(nodes))
 
 	for _, node := range nodes {
-		go func() {
+		go func(node *model.Node) {
 			defer func() {
 				if err := recover(); err != nil {
 					buf := make([]byte, 1024)
@@ -79,21 +92,31 @@ func syncEnable(name string) {
 			}()
 			defer wg.Done()
 
-			client := nodeauth.NewRestyClient(node)
-			client.SetBaseURL(node.URL)
-			resp, err := client.R().
-				Post(fmt.Sprintf("/api/sites/%s/enable", name))
-			if err != nil {
-				notification.Error("Enable Remote Site Error", err.Error(), nil)
-				return
-			}
-			if resp.StatusCode() != http.StatusOK {
-				notification.Error("Enable Remote Site Error", "Enable site %{name} on %{node} failed", NewSyncResult(node.Name, name, resp))
-				return
-			}
-			notification.Success("Enable Remote Site Success", "Enable site %{name} on %{node} successfully", NewSyncResult(node.Name, name, resp))
-		}()
+			syncEnableOnNode(name, node)
+		}(node)
 	}
 
 	wg.Wait()
+}
+
+// syncEnableOnNode mirrors the deployment intent to one node. Save calls this
+// after that same node accepts the configuration, avoiding an N-by-N broadcast.
+func syncEnableOnNode(name string, node *model.Node) {
+	logger.Infof("Enabling site on remote node: site=%q node=%q", name, node.Name)
+	client := nodeauth.NewRestyClient(node)
+	client.SetBaseURL(node.URL)
+	resp, err := client.R().
+		Post(fmt.Sprintf("/api/sites/%s/enable", name))
+	if err != nil {
+		logger.Errorf("Remote site enable request failed: site=%q node=%q error=%v", name, node.Name, err)
+		notification.Error("Enable Remote Site Error", err.Error(), nil)
+		return
+	}
+	if resp.StatusCode() != http.StatusOK {
+		logger.Errorf("Remote site enable rejected: site=%q node=%q status=%d", name, node.Name, resp.StatusCode())
+		notification.Error("Enable Remote Site Error", "Enable site %{name} on %{node} failed", NewSyncResult(node.Name, name, resp))
+		return
+	}
+	logger.Infof("Remote site enable succeeded: site=%q node=%q", name, node.Name)
+	notification.Success("Enable Remote Site Success", "Enable site %{name} on %{node} successfully", NewSyncResult(node.Name, name, resp))
 }

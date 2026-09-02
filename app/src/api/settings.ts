@@ -51,6 +51,7 @@ export interface CertSettings {
 
 export interface HTTPSettings {
   github_proxy: string
+  http_proxy: string
   insecure_skip_verify: boolean
 }
 
@@ -58,6 +59,17 @@ export interface LogrotateSettings {
   enabled: boolean
   cmd: string
   interval: number
+}
+
+export interface SiteCheckSettings {
+  enabled: boolean
+  concurrency: number
+  interval_seconds: number
+}
+
+export interface UpstreamCheckSettings {
+  enabled: boolean
+  interval_seconds: number
 }
 
 export interface NginxSettings {
@@ -73,6 +85,7 @@ export interface NginxSettings {
   restart_cmd: string
   stub_status_port: number
   container_name: string
+  maintenance_dir?: string
   maintenance_template?: string
   host_mode?: string
 
@@ -191,6 +204,8 @@ export interface Settings {
   openai: OpenaiSettings
   terminal: TerminalSettings
   webauthn: WebauthnSettings
+  site_check: SiteCheckSettings
+  upstream_check: UpstreamCheckSettings
 }
 
 const settings = {

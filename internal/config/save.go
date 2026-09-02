@@ -37,14 +37,21 @@ func Save(absPath string, content string, cfg *model.Config) (err error) {
 		return
 	}
 
-	err = nginx.WriteFile(absPath, []byte(content), 0644)
-	if err != nil {
-		return
+	// Hold the apply lock for the whole write -> test -> reload sequence so a
+	// concurrent mutation cannot make this save fail on somebody else's file.
+	release := LockApply()
+	defer release()
+
+	tx := &FileTransaction{}
+	if err = tx.Write(absPath, []byte(content), 0644); err != nil {
+		return RollbackError(err, tx.Rollback)
 	}
 
-	res := nginx.Control(nginx.Reload)
-	if res.IsError() {
-		return res.GetError()
+	// Reloading without `nginx -t` would leave content Nginx rejects on disk:
+	// the running instance keeps its valid in-memory configuration, so the
+	// failure is deferred to the next Nginx start. Test first and roll back.
+	if err = tx.TestAndReload(); err != nil {
+		return
 	}
 
 	err = SyncToRemoteServer(cfg)

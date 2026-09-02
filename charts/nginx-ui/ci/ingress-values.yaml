@@ -1,0 +1,12 @@
+ingress:
+  enabled: true
+  className: nginx
+  hosts:
+    - host: nginx-ui.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: nginx-ui-tls
+      hosts:
+        - nginx-ui.example.com

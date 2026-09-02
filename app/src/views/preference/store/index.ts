@@ -56,6 +56,7 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
     },
     http: {
       github_proxy: '',
+      http_proxy: '',
       insecure_skip_verify: false,
     },
     logrotate: {
@@ -107,6 +108,15 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
       rp_display_name: '',
       rpid: '',
       rp_origins: [],
+    },
+    site_check: {
+      enabled: true,
+      concurrency: 5,
+      interval_seconds: 300,
+    },
+    upstream_check: {
+      enabled: true,
+      interval_seconds: 30,
     },
   })
   const errors = ref<Record<string, Record<string, string>>>({})

@@ -50,6 +50,11 @@ export const DeployModeMask = {
   remote: () => $gettext('Remote'),
 } as const
 
+export const SyncStrategyMask = {
+  manual: () => $gettext('Manual'),
+  auto: () => $gettext('Automatic'),
+} as const
+
 export const PrivateKeyTypeMask = {
   2048: 'RSA2048',
   3072: 'RSA3072',

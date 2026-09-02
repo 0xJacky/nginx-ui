@@ -3,8 +3,13 @@ package nginx
 import (
 	"errors"
 	"io"
+	"math"
 	"net/http"
+	"strconv"
+	"sync"
+	"time"
 
+	internalconfig "github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -18,6 +23,58 @@ type restartRequest struct {
 }
 
 type startRestartFunc func(operationID string) (*nginx.ControlOperation, error)
+
+const reloadCooldown = 2 * time.Second
+
+type reloadGate struct {
+	mutex        sync.Mutex
+	inFlight     bool
+	lastFinished time.Time
+	cooldown     time.Duration
+}
+
+type reloadDependencies struct {
+	now              func() time.Time
+	tryLockApply     func() (release func(), ok bool)
+	tryTestAndReload func() (testResult, reloadResult *nginx.ControlResult, ok bool)
+}
+
+var manualReloadGate = &reloadGate{cooldown: reloadCooldown}
+
+func defaultReloadDependencies() reloadDependencies {
+	return reloadDependencies{
+		now:              time.Now,
+		tryLockApply:     internalconfig.TryLockApply,
+		tryTestAndReload: nginx.TryTestAndReload,
+	}
+}
+
+func (gate *reloadGate) tryStart(now time.Time) (ok bool, retryAfter time.Duration) {
+	gate.mutex.Lock()
+	defer gate.mutex.Unlock()
+
+	if gate.inFlight {
+		return false, 0
+	}
+	if !gate.lastFinished.IsZero() {
+		retryAfter = gate.cooldown - now.Sub(gate.lastFinished)
+		if retryAfter > 0 {
+			return false, retryAfter
+		}
+	}
+
+	gate.inFlight = true
+	return true, 0
+}
+
+func (gate *reloadGate) finish(now time.Time, attempted bool) {
+	gate.mutex.Lock()
+	gate.inFlight = false
+	if attempted {
+		gate.lastFinished = now
+	}
+	gate.mutex.Unlock()
+}
 
 func buildNamespaceTestConfigResponse(namespaceID uint64, siteCount, streamCount int, result nginx.TestConfigResult) gin.H {
 	return gin.H{
@@ -78,7 +135,55 @@ func defaultNamespaceTestConfigDependencies() namespaceTestConfigDependencies {
 
 // Reload reloads the nginx
 func Reload(c *gin.Context) {
-	nginx.Control(nginx.Reload).Resp(c)
+	reload(c, defaultReloadDependencies(), manualReloadGate)
+}
+
+func reload(c *gin.Context, dependencies reloadDependencies, gate *reloadGate) {
+	started, retryAfter := gate.tryStart(dependencies.now())
+	if !started {
+		if retryAfter > 0 {
+			seconds := int(math.Ceil(retryAfter.Seconds()))
+			c.Header("Retry-After", strconv.Itoa(seconds))
+			c.JSON(http.StatusTooManyRequests, gin.H{
+				"message":     "Nginx reload is cooling down",
+				"retry_after": seconds,
+			})
+			return
+		}
+		c.JSON(http.StatusConflict, gin.H{
+			"message": "another Nginx reload is already running",
+		})
+		return
+	}
+
+	attempted := false
+	defer func() {
+		gate.finish(dependencies.now(), attempted)
+	}()
+
+	releaseApply, ok := dependencies.tryLockApply()
+	if !ok {
+		c.JSON(http.StatusConflict, gin.H{
+			"message": "another Nginx configuration operation is already running",
+		})
+		return
+	}
+	defer releaseApply()
+
+	testResult, reloadResult, ok := dependencies.tryTestAndReload()
+	if !ok {
+		c.JSON(http.StatusConflict, gin.H{
+			"message": "another Nginx control operation is already running",
+		})
+		return
+	}
+	attempted = true
+
+	if testResult.IsError() {
+		testResult.RespError(c)
+		return
+	}
+	reloadResult.Resp(c)
 }
 
 // TestConfig tests the nginx config

@@ -49,30 +49,48 @@ type ControlOperation struct {
 
 var ErrControlOperationRunning = errors.New("another nginx control operation is already running")
 
+const reloadControlTimeout = 30 * time.Second
+
 // TestConfig tests the nginx config
 func TestConfig() (stdOut string, stdErr error) {
 	commandMutex.Lock()
 	defer commandMutex.Unlock()
+	return testConfig()
+}
+
+func testConfig() (stdOut string, stdErr error) {
+	return testConfigContext(context.Background())
+}
+
+func testConfigContext(ctx context.Context) (stdOut string, stdErr error) {
 	if settings.NginxSettings.TestConfigCmd != "" {
-		return execShell(settings.NginxSettings.TestConfigCmd)
+		return execShellContext(ctx, settings.NginxSettings.TestConfigCmd)
 	}
 	sbin := GetSbinPath()
 	if sbin == "" {
-		return execCommand("nginx", "-t")
+		return execCommandContext(ctx, "nginx", "-t")
 	}
-	return execCommand(sbin, "-t")
+	return execCommandContext(ctx, sbin, "-t")
 }
 
 // Reload reloads the nginx
 func Reload() (stdOut string, stdErr error) {
 	commandMutex.Lock()
 	defer commandMutex.Unlock()
+	return reload()
+}
+
+func reload() (stdOut string, stdErr error) {
+	return reloadContext(context.Background())
+}
+
+func reloadContext(ctx context.Context) (stdOut string, stdErr error) {
 
 	// Clear the modules cache when reloading Nginx
 	clearModulesCache()
 
 	if !IsRunning() {
-		stdOut, stdErr = restart()
+		stdOut, stdErr = restartContext(ctx)
 		setLastResult(stdOut, stdErr)
 		return stdOut, stdErr
 	}
@@ -80,22 +98,48 @@ func Reload() (stdOut string, stdErr error) {
 	// SSH mode controls the native host service without crossing PID namespaces.
 	if settings.NginxSettings.ControlMode() == settings.ControlModeHostViaSSH {
 		name, args := hostReloadCommand(settings.NginxSettings)
-		return execCommand(name, args...)
+		return execCommandContext(ctx, name, args...)
 	}
 
 	if settings.NginxSettings.ReloadCmd != "" {
-		return execShell(settings.NginxSettings.ReloadCmd)
+		return execShellContext(ctx, settings.NginxSettings.ReloadCmd)
 	}
 
 	sbin := GetSbinPath()
 
 	if sbin == "" {
-		return execCommand("nginx", "-s", "reload")
+		return execCommandContext(ctx, "nginx", "-s", "reload")
 	}
-	return execCommand(sbin, "-s", "reload")
+	return execCommandContext(ctx, sbin, "-s", "reload")
+}
+
+// TryTestAndReload validates and reloads Nginx while holding the control lock
+// for the complete sequence. It fails fast when another test, reload, or restart
+// is already running so HTTP handlers do not accumulate behind commandMutex.
+func TryTestAndReload() (testResult, reloadResult *ControlResult, ok bool) {
+	if !commandMutex.TryLock() {
+		return nil, nil, false
+	}
+	defer commandMutex.Unlock()
+	ctx, cancel := context.WithTimeout(context.Background(), reloadControlTimeout)
+	defer cancel()
+
+	stdOut, stdErr := testConfigContext(ctx)
+	testResult = &ControlResult{stdOut: stdOut, stdErr: stdErr}
+	if testResult.IsError() {
+		return testResult, nil, true
+	}
+
+	stdOut, stdErr = reloadContext(ctx)
+	reloadResult = &ControlResult{stdOut: stdOut, stdErr: stdErr}
+	return testResult, reloadResult, true
 }
 
 func restart() (stdOut string, stdErr error) {
+	return restartContext(context.Background())
+}
+
+func restartContext(ctx context.Context) (stdOut string, stdErr error) {
 	// fix(docker): nginx restart always output network error
 	time.Sleep(500 * time.Millisecond)
 
@@ -106,11 +150,11 @@ func restart() (stdOut string, stdErr error) {
 		if err != nil {
 			return "", err
 		}
-		return runner.Exec(context.Background(), name, args...)
+		return runner.Exec(ctx, name, args...)
 	}
 
 	if settings.NginxSettings.RestartCmd != "" {
-		return execShell(settings.NginxSettings.RestartCmd)
+		return execShellContext(ctx, settings.NginxSettings.RestartCmd)
 	}
 
 	pidPath := GetPIDPath()
@@ -118,17 +162,17 @@ func restart() (stdOut string, stdErr error) {
 
 	// Check if nginx is running before attempting to stop it
 	if IsRunning() {
-		stdOut, stdErr = execCommand("start-stop-daemon", "--stop", "--quiet", "--oknodo", "--retry=TERM/30/KILL/5", "--pidfile", pidPath)
+		stdOut, stdErr = execCommandContext(ctx, "start-stop-daemon", "--stop", "--quiet", "--oknodo", "--retry=TERM/30/KILL/5", "--pidfile", pidPath)
 		if stdErr != nil {
 			return stdOut, stdErr
 		}
 	}
 
 	if daemon == "" {
-		return execCommand("nginx")
+		return execCommandContext(ctx, "nginx")
 	}
 
-	return execCommand("start-stop-daemon", "--start", "--quiet", "--pidfile", pidPath, "--exec", daemon)
+	return execCommandContext(ctx, "start-stop-daemon", "--start", "--quiet", "--pidfile", pidPath, "--exec", daemon)
 }
 
 // Restart restarts the nginx

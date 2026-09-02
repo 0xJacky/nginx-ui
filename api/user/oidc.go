@@ -20,15 +20,22 @@ import (
 )
 
 type OIDCLoginUser struct {
-	Code  string `json:"code" binding:"required,max=255"`
-	State string `json:"state" binding:"required,max=255"`
+	Code  string `form:"code" json:"code" uri:"code" binding:"max=255"`
+	State string `form:"state" json:"state" uri:"state" binding:"max=255"`
 }
 
 func OIDCCallback(c *gin.Context) {
 	var loginUser OIDCLoginUser
 
-	ok := cosy.BindAndValid(c, &loginUser)
-	if !ok {
+	if err := c.ShouldBind(&loginUser); err != nil {
+		loginUser.Code = c.Query("code")
+		loginUser.State = c.Query("state")
+	}
+
+	if loginUser.Code == "" || loginUser.State == "" {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Missing code or state",
+		})
 		return
 	}
 

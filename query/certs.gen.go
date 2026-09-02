@@ -49,6 +49,7 @@ func newCert(db *gorm.DB, opts ...gen.DOOption) cert {
 	_cert.SyncNodeIds = field.NewField(tableName, "sync_node_ids")
 	_cert.MustStaple = field.NewBool(tableName, "must_staple")
 	_cert.LegoDisableCNAMESupport = field.NewBool(tableName, "lego_disable_cname_support")
+	_cert.DisableAuthoritativeNSPropagation = field.NewBool(tableName, "disable_authoritative_ns_propagation")
 	_cert.EnableCommonName = field.NewBool(tableName, "enable_common_name")
 	_cert.RevokeOld = field.NewBool(tableName, "revoke_old")
 	_cert.SelfSignedConfig = field.NewField(tableName, "self_signed_config")
@@ -60,6 +61,8 @@ func newCert(db *gorm.DB, opts ...gen.DOOption) cert {
 	_cert.LastExpiryNotifyAt = field.NewTime(tableName, "last_expiry_notify_at")
 	_cert.LastExpiryNotifyNotAfter = field.NewTime(tableName, "last_expiry_notify_not_after")
 	_cert.LastExpiryNotifyStage = field.NewString(tableName, "last_expiry_notify_stage")
+	_cert.LastDeploymentIssueHash = field.NewString(tableName, "last_deployment_issue_hash")
+	_cert.LastDeploymentIssueNotifyAt = field.NewTime(tableName, "last_deployment_issue_notify_at")
 	_cert.Status = field.NewString(tableName, "status")
 	_cert.LastError = field.NewString(tableName, "last_error")
 	_cert.LastAttemptAt = field.NewTime(tableName, "last_attempt_at")
@@ -83,43 +86,46 @@ func newCert(db *gorm.DB, opts ...gen.DOOption) cert {
 type cert struct {
 	certDo
 
-	ALL                          field.Asterisk
-	ID                           field.Uint64
-	CreatedAt                    field.Time
-	UpdatedAt                    field.Time
-	DeletedAt                    field.Field
-	Name                         field.String
-	Domains                      field.Field
-	Filename                     field.String
-	SSLCertificatePath           field.String
-	SSLCertificateKeyPath        field.String
-	Fingerprint                  field.String
-	AutoCert                     field.Int
-	ChallengeMethod              field.String
-	Profile                      field.String
-	DnsCredentialID              field.Uint64
-	ACMEUserID                   field.Uint64
-	KeyType                      field.String
-	Log                          field.String
-	Resource                     field.Field
-	SyncNodeIds                  field.Field
-	MustStaple                   field.Bool
-	LegoDisableCNAMESupport      field.Bool
-	EnableCommonName             field.Bool
-	RevokeOld                    field.Bool
-	SelfSignedConfig             field.Field
-	LastAutoRenewAt              field.Time
-	LastAutoRenewError           field.String
-	NextAutoRenewAt              field.Time
-	LastRenewalInfoCheckAt       field.Time
-	AutoRenewScheduleFingerprint field.String
-	LastExpiryNotifyAt           field.Time
-	LastExpiryNotifyNotAfter     field.Time
-	LastExpiryNotifyStage        field.String
-	Status                       field.String
-	LastError                    field.String
-	LastAttemptAt                field.Time
-	DnsCredential                certBelongsToDnsCredential
+	ALL                               field.Asterisk
+	ID                                field.Uint64
+	CreatedAt                         field.Time
+	UpdatedAt                         field.Time
+	DeletedAt                         field.Field
+	Name                              field.String
+	Domains                           field.Field
+	Filename                          field.String
+	SSLCertificatePath                field.String
+	SSLCertificateKeyPath             field.String
+	Fingerprint                       field.String
+	AutoCert                          field.Int
+	ChallengeMethod                   field.String
+	Profile                           field.String
+	DnsCredentialID                   field.Uint64
+	ACMEUserID                        field.Uint64
+	KeyType                           field.String
+	Log                               field.String
+	Resource                          field.Field
+	SyncNodeIds                       field.Field
+	MustStaple                        field.Bool
+	LegoDisableCNAMESupport           field.Bool
+	DisableAuthoritativeNSPropagation field.Bool
+	EnableCommonName                  field.Bool
+	RevokeOld                         field.Bool
+	SelfSignedConfig                  field.Field
+	LastAutoRenewAt                   field.Time
+	LastAutoRenewError                field.String
+	NextAutoRenewAt                   field.Time
+	LastRenewalInfoCheckAt            field.Time
+	AutoRenewScheduleFingerprint      field.String
+	LastExpiryNotifyAt                field.Time
+	LastExpiryNotifyNotAfter          field.Time
+	LastExpiryNotifyStage             field.String
+	LastDeploymentIssueHash           field.String
+	LastDeploymentIssueNotifyAt       field.Time
+	Status                            field.String
+	LastError                         field.String
+	LastAttemptAt                     field.Time
+	DnsCredential                     certBelongsToDnsCredential
 
 	ACMEUser certBelongsToACMEUser
 
@@ -159,6 +165,7 @@ func (c *cert) updateTableName(table string) *cert {
 	c.SyncNodeIds = field.NewField(table, "sync_node_ids")
 	c.MustStaple = field.NewBool(table, "must_staple")
 	c.LegoDisableCNAMESupport = field.NewBool(table, "lego_disable_cname_support")
+	c.DisableAuthoritativeNSPropagation = field.NewBool(table, "disable_authoritative_ns_propagation")
 	c.EnableCommonName = field.NewBool(table, "enable_common_name")
 	c.RevokeOld = field.NewBool(table, "revoke_old")
 	c.SelfSignedConfig = field.NewField(table, "self_signed_config")
@@ -170,6 +177,8 @@ func (c *cert) updateTableName(table string) *cert {
 	c.LastExpiryNotifyAt = field.NewTime(table, "last_expiry_notify_at")
 	c.LastExpiryNotifyNotAfter = field.NewTime(table, "last_expiry_notify_not_after")
 	c.LastExpiryNotifyStage = field.NewString(table, "last_expiry_notify_stage")
+	c.LastDeploymentIssueHash = field.NewString(table, "last_deployment_issue_hash")
+	c.LastDeploymentIssueNotifyAt = field.NewTime(table, "last_deployment_issue_notify_at")
 	c.Status = field.NewString(table, "status")
 	c.LastError = field.NewString(table, "last_error")
 	c.LastAttemptAt = field.NewTime(table, "last_attempt_at")
@@ -189,7 +198,7 @@ func (c *cert) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (c *cert) fillFieldMap() {
-	c.fieldMap = make(map[string]field.Expr, 37)
+	c.fieldMap = make(map[string]field.Expr, 40)
 	c.fieldMap["id"] = c.ID
 	c.fieldMap["created_at"] = c.CreatedAt
 	c.fieldMap["updated_at"] = c.UpdatedAt
@@ -211,6 +220,7 @@ func (c *cert) fillFieldMap() {
 	c.fieldMap["sync_node_ids"] = c.SyncNodeIds
 	c.fieldMap["must_staple"] = c.MustStaple
 	c.fieldMap["lego_disable_cname_support"] = c.LegoDisableCNAMESupport
+	c.fieldMap["disable_authoritative_ns_propagation"] = c.DisableAuthoritativeNSPropagation
 	c.fieldMap["enable_common_name"] = c.EnableCommonName
 	c.fieldMap["revoke_old"] = c.RevokeOld
 	c.fieldMap["self_signed_config"] = c.SelfSignedConfig
@@ -222,6 +232,8 @@ func (c *cert) fillFieldMap() {
 	c.fieldMap["last_expiry_notify_at"] = c.LastExpiryNotifyAt
 	c.fieldMap["last_expiry_notify_not_after"] = c.LastExpiryNotifyNotAfter
 	c.fieldMap["last_expiry_notify_stage"] = c.LastExpiryNotifyStage
+	c.fieldMap["last_deployment_issue_hash"] = c.LastDeploymentIssueHash
+	c.fieldMap["last_deployment_issue_notify_at"] = c.LastDeploymentIssueNotifyAt
 	c.fieldMap["status"] = c.Status
 	c.fieldMap["last_error"] = c.LastError
 	c.fieldMap["last_attempt_at"] = c.LastAttemptAt

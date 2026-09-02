@@ -6,10 +6,20 @@ import (
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
+	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 )
 
 func Pty(c *gin.Context) {
+	// Refuse before the upgrade. Once the connection is hijacked no HTTP status
+	// can be written and the browser sees nothing but an opaque close. A demo
+	// node exposes no PTY at all; its frontend renders a simulated shell that
+	// never leaves the browser.
+	if settings.NodeSettings.Demo {
+		cosy.ErrHandler(c, middleware.ErrDisabledInDemo)
+		return
+	}
+
 	var upGrader = websocket.Upgrader{
 		CheckOrigin: middleware.CheckWebSocketOrigin,
 	}
@@ -22,13 +32,7 @@ func Pty(c *gin.Context) {
 
 	defer ws.Close()
 
-	var p pty.Runner
-	if settings.NodeSettings.Demo {
-		p, err = pty.NewRestrictedPipeline(ws)
-	} else {
-		p, err = pty.NewPipeLine(ws)
-	}
-
+	p, err := pty.NewPipeLine(ws)
 	if err != nil {
 		logger.Error(err)
 		return

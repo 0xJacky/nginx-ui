@@ -6,9 +6,6 @@ import (
 )
 
 func InitRouter(r *gin.RouterGroup) {
-	// Initialize WebSocket notifications for site checking
-	InitWebSocketNotifications()
-
 	r.GET("sites", GetSiteList)
 	r.GET("sites/:name", GetSite)
 	r.GET("sites/:name/logs", GetSiteLogs)
@@ -17,8 +14,9 @@ func InitRouter(r *gin.RouterGroup) {
 	r.GET("site_navigation", GetSiteNavigation)
 	r.GET("site_navigation/status", GetSiteNavigationStatus)
 	r.GET("site_navigation/health_check/:id", GetHealthCheck)
-	r.POST("site_navigation/test_health_check/:id", TestHealthCheck)
-	r.GET("site_navigation_ws", SiteNavigationWebSocket)
+	// The request body controls the outbound destination, so this is an
+	// arbitrary-fetch primitive. Demo visitors do not get one.
+	r.POST("site_navigation/test_health_check/:id", middleware.RejectInDemo(), TestHealthCheck)
 
 	o := r.Group("", middleware.RequireSecureSession())
 	{
@@ -28,6 +26,7 @@ func InitRouter(r *gin.RouterGroup) {
 		o.DELETE("auto_cert/:name", RemoveDomainFromAutoCert)
 		o.POST("site_navigation/order", UpdateSiteOrder)
 		o.POST("site_navigation/health_check/:id", UpdateHealthCheck)
+		o.PUT("site_navigation/health_check/sync", SyncHealthCheck)
 
 		// batch enable sites
 		o.POST("sites/batch/enable", BatchEnableSites)
@@ -48,4 +47,18 @@ func InitRouter(r *gin.RouterGroup) {
 		// enable maintenance mode for site
 		o.POST("sites/:name/maintenance", EnableMaintenanceSite)
 	}
+}
+
+// InitWebSocketRouter registers the site navigation WebSocket endpoint.
+//
+// It must be mounted on the WebSocket router group (AuthRequiredWS + ProxyWs).
+// Browsers cannot attach an Authorization header to a WebSocket handshake, so
+// the token travels in the query string and only AuthRequiredWS accepts it.
+// Mounting this route on the plain HTTP group made every handshake fail with
+// "Authorization failed" before any token was read (issue #1793).
+func InitWebSocketRouter(r *gin.RouterGroup) {
+	// Initialize WebSocket notifications for site checking
+	InitWebSocketNotifications()
+
+	r.GET("site_navigation_ws", SiteNavigationWebSocket)
 }

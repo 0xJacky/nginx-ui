@@ -32,6 +32,8 @@ func newSiteConfig(db *gorm.DB, opts ...gen.DOOption) siteConfig {
 	_siteConfig.CreatedAt = field.NewTime(tableName, "created_at")
 	_siteConfig.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_siteConfig.DeletedAt = field.NewField(tableName, "deleted_at")
+	_siteConfig.SiteKey = field.NewString(tableName, "site_key")
+	_siteConfig.SiteName = field.NewString(tableName, "site_name")
 	_siteConfig.Host = field.NewString(tableName, "host")
 	_siteConfig.Port = field.NewInt(tableName, "port")
 	_siteConfig.Scheme = field.NewString(tableName, "scheme")
@@ -45,6 +47,7 @@ func newSiteConfig(db *gorm.DB, opts ...gen.DOOption) siteConfig {
 	_siteConfig.FollowRedirects = field.NewBool(tableName, "follow_redirects")
 	_siteConfig.CheckFavicon = field.NewBool(tableName, "check_favicon")
 	_siteConfig.HealthCheckConfig = field.NewField(tableName, "health_check_config")
+	_siteConfig.HealthCheckAlert = field.NewField(tableName, "health_check_alert")
 
 	_siteConfig.fillFieldMap()
 
@@ -59,6 +62,8 @@ type siteConfig struct {
 	CreatedAt          field.Time
 	UpdatedAt          field.Time
 	DeletedAt          field.Field
+	SiteKey            field.String
+	SiteName           field.String
 	Host               field.String
 	Port               field.Int
 	Scheme             field.String
@@ -72,6 +77,7 @@ type siteConfig struct {
 	FollowRedirects    field.Bool
 	CheckFavicon       field.Bool
 	HealthCheckConfig  field.Field
+	HealthCheckAlert   field.Field
 
 	fieldMap map[string]field.Expr
 }
@@ -92,6 +98,8 @@ func (s *siteConfig) updateTableName(table string) *siteConfig {
 	s.CreatedAt = field.NewTime(table, "created_at")
 	s.UpdatedAt = field.NewTime(table, "updated_at")
 	s.DeletedAt = field.NewField(table, "deleted_at")
+	s.SiteKey = field.NewString(table, "site_key")
+	s.SiteName = field.NewString(table, "site_name")
 	s.Host = field.NewString(table, "host")
 	s.Port = field.NewInt(table, "port")
 	s.Scheme = field.NewString(table, "scheme")
@@ -105,6 +113,7 @@ func (s *siteConfig) updateTableName(table string) *siteConfig {
 	s.FollowRedirects = field.NewBool(table, "follow_redirects")
 	s.CheckFavicon = field.NewBool(table, "check_favicon")
 	s.HealthCheckConfig = field.NewField(table, "health_check_config")
+	s.HealthCheckAlert = field.NewField(table, "health_check_alert")
 
 	s.fillFieldMap()
 
@@ -121,11 +130,13 @@ func (s *siteConfig) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (s *siteConfig) fillFieldMap() {
-	s.fieldMap = make(map[string]field.Expr, 17)
+	s.fieldMap = make(map[string]field.Expr, 20)
 	s.fieldMap["id"] = s.ID
 	s.fieldMap["created_at"] = s.CreatedAt
 	s.fieldMap["updated_at"] = s.UpdatedAt
 	s.fieldMap["deleted_at"] = s.DeletedAt
+	s.fieldMap["site_key"] = s.SiteKey
+	s.fieldMap["site_name"] = s.SiteName
 	s.fieldMap["host"] = s.Host
 	s.fieldMap["port"] = s.Port
 	s.fieldMap["scheme"] = s.Scheme
@@ -139,6 +150,7 @@ func (s *siteConfig) fillFieldMap() {
 	s.fieldMap["follow_redirects"] = s.FollowRedirects
 	s.fieldMap["check_favicon"] = s.CheckFavicon
 	s.fieldMap["health_check_config"] = s.HealthCheckConfig
+	s.fieldMap["health_check_alert"] = s.HealthCheckAlert
 }
 
 func (s siteConfig) clone(db *gorm.DB) siteConfig {

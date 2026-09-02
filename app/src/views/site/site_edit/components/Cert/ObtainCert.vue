@@ -102,6 +102,7 @@ function changeAutoCert(status: boolean, key_type?: PrivateKeyType) {
       acme_user_id: data.value.acme_user_id,
       must_staple: data.value.must_staple,
       lego_disable_cname_support: data.value.lego_disable_cname_support,
+      disable_authoritative_ns_propagation: data.value.disable_authoritative_ns_propagation,
       enable_common_name: data.value.enable_common_name,
       revoke_old: data.value.revoke_old,
     }).then(() => {

@@ -311,62 +311,67 @@ async function handlePasskeyLogin() {
             </div>
           </div>
 
-          <AForm v-else id="components-form-demo-normal-login">
-            <template v-if="!enabled2FA">
-              <AFormItem v-bind="validateInfos.username">
-                <AInput
-                  v-model:value="modelRef.username"
-                  :placeholder="$gettext('Username')"
-                >
-                  <template #prefix>
-                    <UserOutlined style="color: rgba(0, 0, 0, 0.25)" />
-                  </template>
-                </AInput>
-              </AFormItem>
-              <AFormItem v-bind="validateInfos.password">
-                <AInputPassword
-                  v-model:value="modelRef.password"
-                  :placeholder="$gettext('Password')"
-                >
-                  <template #prefix>
-                    <LockOutlined style="color: rgba(0, 0, 0, 0.25)" />
-                  </template>
-                </AInputPassword>
-              </AFormItem>
-              <AButton
-                v-if="has_casdoor"
-                block
-                :loading="loading"
-                class="mb-5"
-                @click="loginWithCasdoor"
-              >
-                {{ $gettext('SSO Login') }}
-              </AButton>
-              <AButton
-                v-if="has_oidc"
-                block
-                :loading="loading"
-                class="mb-5"
-                @click="loginWithOIDC"
-              >
-                {{ $gettext('OIDC Login') }}
-              </AButton>
-            </template>
-            <div v-else>
-              <Authorization
-                ref="refOTP"
-                :two-f-a-status="{
-                  enabled: true,
-                  otp_status: true,
-                  passkey_status: false,
-                  recovery_codes_generated: true,
-                  recovery_codes_migration_required: false,
-                }"
-                @submit-o-t-p="handleOTPSubmit"
-              />
-            </div>
+          <!--
+            The two-factor step is rendered outside the credentials form on
+            purpose: the OTP component brings its own <form> element so that
+            password managers can discover the segmented code fields, and
+            nesting forms is invalid HTML.
+          -->
+          <div v-else-if="enabled2FA">
+            <Authorization
+              ref="refOTP"
+              :two-f-a-status="{
+                enabled: true,
+                otp_status: true,
+                passkey_status: false,
+                recovery_codes_generated: true,
+                recovery_codes_migration_required: false,
+              }"
+              @submit-o-t-p="handleOTPSubmit"
+            />
+          </div>
 
-            <AFormItem v-if="!enabled2FA">
+          <AForm v-else id="components-form-demo-normal-login">
+            <AFormItem v-bind="validateInfos.username">
+              <AInput
+                v-model:value="modelRef.username"
+                :placeholder="$gettext('Username')"
+              >
+                <template #prefix>
+                  <UserOutlined style="color: rgba(0, 0, 0, 0.25)" />
+                </template>
+              </AInput>
+            </AFormItem>
+            <AFormItem v-bind="validateInfos.password">
+              <AInputPassword
+                v-model:value="modelRef.password"
+                :placeholder="$gettext('Password')"
+              >
+                <template #prefix>
+                  <LockOutlined style="color: rgba(0, 0, 0, 0.25)" />
+                </template>
+              </AInputPassword>
+            </AFormItem>
+            <AButton
+              v-if="has_casdoor"
+              block
+              :loading="loading"
+              class="mb-5"
+              @click="loginWithCasdoor"
+            >
+              {{ $gettext('SSO Login') }}
+            </AButton>
+            <AButton
+              v-if="has_oidc"
+              block
+              :loading="loading"
+              class="mb-5"
+              @click="loginWithOIDC"
+            >
+              {{ $gettext('OIDC Login') }}
+            </AButton>
+
+            <AFormItem>
               <AButton
                 type="primary"
                 block

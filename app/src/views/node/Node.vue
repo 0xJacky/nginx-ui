@@ -5,6 +5,7 @@ import nodeApi from '@/api/node'
 import FooterToolBar from '@/components/FooterToolbar'
 import BatchUpgrader from './BatchUpgrader.vue'
 import envColumns from './nodeColumns'
+import SyncConfigs from './SyncConfigs.vue'
 
 const route = useRoute()
 const { message } = useGlobalApp()
@@ -73,6 +74,18 @@ function loadFromSettings() {
 const selectedNodeIds = ref<number[]>([])
 const selectedNodes = ref<AnalyticNode[]>([])
 const refUpgrader = ref()
+const refSyncConfigs = useTemplateRef('refSyncConfigs')
+
+// A newly added node starts empty, so pushing everything at once is the fastest
+// way to bring it in line with this instance.
+function syncConfigs() {
+  if (selectedNodeIds.value.length === 0) {
+    message.warning($gettext('Please select at least one node to sync configs'))
+    return
+  }
+
+  refSyncConfigs.value?.open(selectedNodeIds.value, selectedNodes.value)
+}
 
 function batchUpgrade() {
   refUpgrader.value.open(selectedNodeIds, selectedNodes)
@@ -173,6 +186,8 @@ const inTrash = computed(() => {
 
     <BatchUpgrader ref="refUpgrader" @success="curd.refresh()" />
 
+    <SyncConfigs ref="refSyncConfigs" />
+
     <FooterToolBar v-if="!inTrash">
       <ASpace>
         <ATooltip
@@ -194,6 +209,25 @@ const inTrash = computed(() => {
           @click="batchUpgrade"
         >
           {{ $gettext('Upgrade') }}
+        </AButton>
+
+        <ATooltip
+          v-if="selectedNodeIds.length === 0"
+          :title="$gettext('Please select at least one node to sync configs')"
+          placement="topLeft"
+        >
+          <AButton
+            :disabled="selectedNodeIds.length === 0"
+            @click="syncConfigs"
+          >
+            {{ $gettext('Sync Configs') }}
+          </AButton>
+        </ATooltip>
+        <AButton
+          v-else
+          @click="syncConfigs"
+        >
+          {{ $gettext('Sync Configs') }}
         </AButton>
 
         <ATooltip

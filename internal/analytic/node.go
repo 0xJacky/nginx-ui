@@ -38,10 +38,17 @@ type NodeStat struct {
 	UpstreamStatusMap map[string]*upstream.Status `json:"upstream_status_map"`
 }
 
+type NodeConnectionErrorCode string
+
+const NodeConnectionErrorClockSkew NodeConnectionErrorCode = "clock_skew"
+
 type Node struct {
 	*model.Node
 	NodeStat
 	NodeInfo
+	ConnectionError     string                  `json:"connection_error,omitempty"`
+	ConnectionErrorCode NodeConnectionErrorCode `json:"connection_error_code,omitempty"`
+	ConnectionErrorAt   *time.Time              `json:"connection_error_at,omitempty"`
 }
 
 var nodeMapMu sync.RWMutex
@@ -150,13 +157,12 @@ func InitNode(ctx context.Context, node *model.Node) (n *Node, err error) {
 	}
 
 	defer resp.Body.Close()
-	bytes, _ := io.ReadAll(resp.Body)
-
 	if resp.StatusCode != http.StatusOK {
-		return n, cosy.WrapErrorWithParams(ErrNodeAnalyticsFailed, string(bytes))
+		_, _ = io.Copy(io.Discard, io.LimitReader(resp.Body, 4<<10))
+		return n, cosy.WrapErrorWithParams(ErrNodeAnalyticsFailed, resp.Status)
 	}
 
-	err = json.Unmarshal(bytes, &n.NodeInfo)
+	err = json.NewDecoder(resp.Body).Decode(&n.NodeInfo)
 	if err != nil {
 		return
 	}

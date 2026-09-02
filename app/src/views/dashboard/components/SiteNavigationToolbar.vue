@@ -8,6 +8,7 @@ import {
 
 interface Props {
   isConnected: boolean
+  healthCheckEnabled: boolean
   refreshing: boolean
   settingsMode: boolean
 }
@@ -35,6 +36,15 @@ defineEmits<Emits>()
           {{ isConnected ? $gettext('Connected') : $gettext('Disconnected') }}
         </span>
       </div>
+
+      <ATag
+        v-if="!healthCheckEnabled"
+        data-testid="site-health-check-global-paused"
+        color="warning"
+        :bordered="false"
+      >
+        {{ $gettext('Health checks paused') }}
+      </ATag>
 
       <div class="flex gap-2">
         <AButton

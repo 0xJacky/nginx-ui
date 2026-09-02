@@ -7,6 +7,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/upstream"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
+	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
@@ -89,7 +90,15 @@ func GetSocketList(c *gin.Context) {
 	})
 
 	c.JSON(http.StatusOK, gin.H{
-		"data": result,
+		"data":                        result,
+		"global_health_check_enabled": settings.UpstreamCheckSettings.Enabled,
+	})
+}
+
+func GetHealthCheckStatus(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"enabled":          settings.UpstreamCheckSettings.Enabled,
+		"interval_seconds": settings.UpstreamCheckSettings.IntervalSeconds,
 	})
 }
 
@@ -159,4 +168,3 @@ func findUpstreamForSocket(service *upstream.Service, target upstream.ProxyTarge
 	}
 	return ""
 }
-

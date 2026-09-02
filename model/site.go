@@ -9,12 +9,15 @@ type SiteDNSRecord struct {
 
 type Site struct {
 	Model
-	Path        string          `json:"path" gorm:"uniqueIndex"`
-	Advanced    bool            `json:"advanced"`
-	NamespaceID uint64          `json:"namespace_id"`
-	Namespace   *Namespace      `json:"namespace,omitempty"`
-	SyncNodeIDs []uint64        `json:"sync_node_ids" gorm:"serializer:json"`
-	DNSRecords  []SiteDNSRecord `json:"dns_records" gorm:"serializer:json"`
+	Path        string     `json:"path" gorm:"uniqueIndex"`
+	Advanced    bool       `json:"advanced"`
+	NamespaceID uint64     `json:"namespace_id"`
+	Namespace   *Namespace `json:"namespace,omitempty"`
+	SyncNodeIDs []uint64   `json:"sync_node_ids" gorm:"serializer:json"`
+	// RemoteEnabled records the deployment intent for namespaces using
+	// deploy_mode=remote, where no local sites-enabled symlink is created.
+	RemoteEnabled bool            `json:"remote_enabled"`
+	DNSRecords    []SiteDNSRecord `json:"dns_records" gorm:"serializer:json"`
 	// Legacy single-record fields are kept for backward compatibility.
 	DNSDomainID     *int    `json:"dns_domain_id"`     // Linked DNS domain ID
 	DNSRecordID     *string `json:"dns_record_id"`     // Linked DNS record ID

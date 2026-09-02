@@ -26,7 +26,14 @@ type SyncConfigPayload struct {
 }
 
 func SyncToRemoteServer(c *model.Config) (err error) {
-	if c.Filepath == "" || len(c.SyncNodeIds) == 0 {
+	if c == nil || c.Filepath == "" {
+		return
+	}
+
+	// A file below a deployed directory inherits the directory targets, so the
+	// whole tree keeps replicating without configuring every file separately.
+	syncNodeIds, syncOverwrite := EffectiveSyncTargets(c)
+	if len(syncNodeIds) == 0 {
 		return
 	}
 
@@ -44,7 +51,7 @@ func SyncToRemoteServer(c *model.Config) (err error) {
 		Name:      c.Name,
 		BaseDir:   strings.ReplaceAll(filepath.Dir(c.Filepath), nginx.GetConfPath(), ""),
 		Content:   string(configBytes),
-		Overwrite: c.SyncOverwrite,
+		Overwrite: syncOverwrite,
 	}
 	payloadBytes, err := json.Marshal(payload)
 	if err != nil {
@@ -52,7 +59,7 @@ func SyncToRemoteServer(c *model.Config) (err error) {
 	}
 
 	q := query.Node
-	nodes, _ := q.Where(q.ID.In(c.SyncNodeIds...), q.Enabled.Is(true)).Find()
+	nodes, _ := q.Where(q.ID.In(syncNodeIds...), q.Enabled.Is(true)).Find()
 	for _, node := range nodes {
 		go func() {
 			err := payload.deploy(node, c, payloadBytes)

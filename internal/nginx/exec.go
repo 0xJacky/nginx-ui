@@ -8,9 +8,13 @@ import (
 )
 
 func execShell(cmd string) (stdOut string, stdErr error) {
+	return execShellContext(context.Background(), cmd)
+}
+
+func execShellContext(ctx context.Context, cmd string) (stdOut string, stdErr error) {
 	remoteTarget := settings.NginxSettings.ControlMode() != settings.ControlModeLocal
 	name, args := shellCommand(runtime.GOOS, remoteTarget, cmd)
-	return execCommand(name, args...)
+	return execCommandContext(ctx, name, args...)
 }
 
 func shellCommand(goos string, remoteTarget bool, cmd string) (name string, args []string) {
@@ -30,6 +34,13 @@ func shellCommand(goos string, remoteTarget bool, cmd string) (name string, args
 // current control mode. Callers should keep using execCommand as before —
 // the routing is transparent.
 func execCommand(name string, args ...string) (stdOut string, stdErr error) {
+	return execCommandContext(context.Background(), name, args...)
+}
+
+// execCommandContext is the context-aware variant of execCommand. The context
+// bounds the command on every control target, so a hung nginx test or reload
+// cannot block the caller forever.
+func execCommandContext(ctx context.Context, name string, args ...string) (stdOut string, stdErr error) {
 	runner := resolveRunner()
-	return runner.Exec(context.Background(), name, args...)
+	return runner.Exec(ctx, name, args...)
 }

@@ -7,13 +7,11 @@ import config from '@/api/config'
 import ngx from '@/api/ngx'
 import site from '@/api/site'
 import { useNgxConfigStore } from '@/components/NgxConfigEditor'
-import { useGlobalApp } from '@/composables/useGlobalApp'
 import { translateError } from '@/lib/http/error'
 import { isIPAddress, splitCertificateIdentifiers } from '@/utils/certificate'
 
 interface SaveOptions {
   omitIncompleteTLSServers?: boolean
-  skipTLSValidation?: boolean
   syncResponse?: boolean
 }
 
@@ -36,7 +34,6 @@ function hasDirectiveWithValue(server: NgxServer | undefined, directive: string)
 }
 
 export const useSiteEditorStore = defineStore('siteEditor', () => {
-  const { message } = useGlobalApp()
   const advanceMode = ref(false)
   const parseErrorStatus = ref(false)
   const parseErrorMessage = ref('')
@@ -139,13 +136,6 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
       let content = configText.value
 
       if (!advanceMode.value) {
-        const tlsServerIssues = getTLSServerIssues()
-
-        if (tlsServerIssues.length > 0 && !options.skipTLSValidation) {
-          message.error($gettext('Please select a certificate before saving the TLS server configuration.'))
-          throw new Error('tls_certificate_required')
-        }
-
         const configForSave = options.omitIncompleteTLSServers
           ? getConfigWithoutIncompleteTLSServers()
           : ngxConfig.value
@@ -181,9 +171,6 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
       return response
     }
     catch (error) {
-      if ((error as Error)?.message === 'tls_certificate_required')
-        throw error
-
       await handleParseError(error as CosyError)
       throw error
     }
@@ -321,6 +308,7 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
     hasServers,
     getTLSServerIssues,
     getConfigWithoutIncompleteTLSServers,
+    buildConfig,
     dnsLinked,
     linkedDNSName,
     init,

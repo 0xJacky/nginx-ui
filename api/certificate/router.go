@@ -35,7 +35,8 @@ func InitCertificateRouter(r *gin.RouterGroup) {
 }
 
 func InitCertificateWebSocketRouter(r *gin.RouterGroup) {
-	o := r.Group("", middleware.RequireSecureSession())
+	// Issuing and revoking talk to a real ACME CA, so they stay closed in demo mode.
+	o := r.Group("", middleware.RequireSecureSession(), middleware.RejectInDemo())
 	{
 		o.GET("domain/:name/cert", IssueCert)
 		o.GET("certs/:id/revoke", RevokeCert)
@@ -49,7 +50,8 @@ func InitAcmeUserRouter(r *gin.RouterGroup) {
 	{
 		o.POST("acme_users", CreateAcmeUser)
 		o.POST("acme_users/:id", ModifyAcmeUser)
-		o.POST("acme_users/:id/register", RegisterAcmeUser)
+		// Registration creates an account on the upstream CA.
+		o.POST("acme_users/:id/register", middleware.RejectInDemo(), RegisterAcmeUser)
 		o.DELETE("acme_users/:id", DestroyAcmeUser)
 		o.PATCH("acme_users/:id", RecoverAcmeUser)
 	}

@@ -159,6 +159,9 @@ func TestLegacyUpgradeUsesPreV250CompatibleAuthentication(t *testing.T) {
 	require.NoError(t, database.First(&stored, node.ID).Error)
 	assert.Equal(t, model.NodeAuthMethodPaired, stored.AuthMethod)
 	assert.Equal(t, model.NodeCredentialStatusActive, stored.CredentialStatus)
+	assert.Equal(t, model.NodeAuthUpgradeStatusCompleted, stored.AuthUpgradeStatus)
+	assert.Equal(t, model.NodeAuthUpgradeStepCompleted, stored.AuthUpgradeStep)
+	assert.NotNil(t, stored.AuthUpgradeCompletedAt)
 	assert.Empty(t, stored.Token)
 	assert.NotEmpty(t, stored.EncryptedLegacySecret, "the retained secret is what makes recovery automatic")
 
@@ -194,6 +197,11 @@ func TestLegacyUpgradeLeavesOlderNodesOnTheSharedSecret(t *testing.T) {
 	require.NoError(t, database.First(&stored, node.ID).Error)
 	assert.Equal(t, model.NodeAuthMethodLegacy, stored.AuthMethod)
 	assert.NotEmpty(t, stored.EncryptedLegacySecret)
+	assert.Equal(t, model.NodeAuthUpgradeStatusWaitingTarget, stored.AuthUpgradeStatus)
+	assert.Equal(t, model.NodeAuthUpgradeErrorTargetUnsupported, stored.AuthUpgradeErrorCode)
+	assert.Equal(t, model.NodeAuthUpgradeStepRequest, stored.AuthUpgradeStep)
+	assert.EqualValues(t, 1, stored.AuthUpgradeAttemptCount)
+	assert.NotNil(t, stored.AuthUpgradeNextRetryAt)
 }
 
 func TestLegacyUpgradeRejectsUnconfirmedTarget(t *testing.T) {
@@ -222,4 +230,59 @@ func TestLegacyUpgradeRejectsUnconfirmedTarget(t *testing.T) {
 	var count int64
 	require.NoError(t, database.Model(&model.NodeCredential{}).Where("node_id = ?", node.ID).Count(&count).Error)
 	assert.Zero(t, count)
+}
+
+func TestRunLegacyRelationshipUpgradePersistsVerificationFailure(t *testing.T) {
+	database := setupUpgradeControllerTest(t)
+	target := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, _ *http.Request) {
+		writer.Header().Set("Content-Type", "application/json")
+		require.NoError(t, json.NewEncoder(writer).Encode(pairingResponse{
+			CredentialID:     uuid.NewString(),
+			TargetInstanceID: testTargetInstanceID,
+			Confirmation:     strings.Repeat("A", 43),
+		}))
+	}))
+	t.Cleanup(target.Close)
+
+	node := createLegacyNode(t, database, "invalid-confirmation", target.URL)
+	now := time.Now()
+	err := RunLegacyRelationshipUpgrade(context.Background(), node.ID, testControllerInstanceID, now)
+	require.ErrorIs(t, err, ErrUpgradeProofInvalid)
+
+	var stored model.Node
+	require.NoError(t, database.First(&stored, node.ID).Error)
+	assert.Equal(t, model.NodeAuthMethodLegacy, stored.AuthMethod)
+	assert.Equal(t, model.NodeAuthUpgradeStatusFailed, stored.AuthUpgradeStatus)
+	assert.Equal(t, model.NodeAuthUpgradeStepVerify, stored.AuthUpgradeStep)
+	assert.Equal(t, model.NodeAuthUpgradeErrorInvalidConfirmation, stored.AuthUpgradeErrorCode)
+	assert.EqualValues(t, 1, stored.AuthUpgradeAttemptCount)
+	require.NotNil(t, stored.AuthUpgradeNextRetryAt)
+	assert.WithinDuration(t, now.Add(relationshipUpgradeRetryDelay), *stored.AuthUpgradeNextRetryAt, time.Millisecond)
+
+	var count int64
+	require.NoError(t, database.Model(&model.NodeCredential{}).Where("node_id = ?", node.ID).Count(&count).Error)
+	assert.Zero(t, count, "a rejected confirmation must not create a credential")
+}
+
+func TestRetryLegacyRelationshipUpgradeRequeuesAFailedNode(t *testing.T) {
+	database := setupUpgradeControllerTest(t)
+	node := createLegacyNode(t, database, "failed-node", "https://node.example")
+	require.NoError(t, database.Model(node).Updates(map[string]any{
+		"auth_upgrade_status":     model.NodeAuthUpgradeStatusFailed,
+		"auth_upgrade_step":       model.NodeAuthUpgradeStepVerify,
+		"auth_upgrade_error_code": model.NodeAuthUpgradeErrorInvalidConfirmation,
+		"auth_upgrade_error":      "sanitized error",
+	}).Error)
+
+	now := time.Now()
+	require.NoError(t, RetryLegacyRelationshipUpgrade(node.ID, now))
+
+	var stored model.Node
+	require.NoError(t, database.First(&stored, node.ID).Error)
+	assert.Equal(t, model.NodeAuthUpgradeStatusPending, stored.AuthUpgradeStatus)
+	assert.Equal(t, model.NodeAuthUpgradeStepQueued, stored.AuthUpgradeStep)
+	assert.Empty(t, stored.AuthUpgradeErrorCode)
+	assert.Empty(t, stored.AuthUpgradeError)
+	require.NotNil(t, stored.AuthUpgradeNextRetryAt)
+	assert.WithinDuration(t, now, *stored.AuthUpgradeNextRetryAt, time.Millisecond)
 }

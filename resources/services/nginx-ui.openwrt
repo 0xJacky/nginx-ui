@@ -5,8 +5,8 @@ STOP=10
 USE_PROCD=1
 
 NAME="nginx-ui"
-PROG="/usr/local/bin/nginx-ui"
-CONFIG="/usr/local/etc/nginx-ui/app.ini"
+PROG="/usr/bin/nginx-ui"
+CONFIG="/etc/nginx-ui/app.ini"
 
 start_service() {
     procd_open_instance

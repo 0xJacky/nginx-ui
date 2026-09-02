@@ -5,6 +5,8 @@ import ngx from '@/api/ngx'
 import site from '@/api/site'
 import NgxConfigEditor, { DirectiveEditor, LocationEditor, useNgxConfigStore } from '@/components/NgxConfigEditor'
 import { ConfigStatus } from '@/constants'
+import QuickSetupForm from '../components/QuickSetup/QuickSetupForm.vue'
+import { useQuickConfig } from '../components/QuickSetup/useQuickConfig'
 import Cert from '../site_edit/components/Cert'
 import EnableTLS from '../site_edit/components/EnableTLS'
 import { useSiteEditorStore } from '../site_edit/components/SiteEditor/store'
@@ -12,6 +14,12 @@ import DNSRecordIntegration from './components/DNSRecordIntegration.vue'
 
 const currentStep = ref(0)
 const { message } = useGlobalApp()
+
+// Quick setup mode
+const currentMode = ref<'quick' | 'advanced'>('quick')
+const quickMode = computed(() => currentMode.value === 'quick')
+const quick = useQuickConfig()
+const { quickGenerating, quickFormValid } = quick
 
 // DNS record integration state
 const selectedDNSRecords = ref<{ records: DNSRecord[], domain: DNSDomain } | null>(null)
@@ -40,6 +48,41 @@ function init() {
   site.get_default_template().then(r => {
     ngxConfigStore.setNgxConfig(r.tokenized)
   })
+}
+
+const quickTLSMissingCert = computed(() => {
+  if (!quickMode.value || quick.state.type === 'redirect')
+    return false
+  return editorStore.getTLSServerIssues().length > 0
+})
+
+async function next() {
+  if (quickMode.value && currentStep.value === 0) {
+    const r = await quick.generate()
+    ngxConfigStore.setNgxConfig(r.tokenized)
+    ngxConfig.value.name = quick.state.name.trim()
+    // Select the TLS server so the certificate flow targets the 443 block.
+    if (r.tokenized.servers.length > 1)
+      ngxConfigStore.curServerIdx = 1
+  }
+  // Block leaving the SSL step until a certificate is issued for the TLS server.
+  if (currentStep.value === 2 && quickTLSMissingCert.value) {
+    message.warning($gettext('Issue a certificate to enable TLS before continuing.'))
+    return
+  }
+  // Only save on the final step (step 2 -> step 3)
+  if (currentStep.value === 2) {
+    await save()
+  }
+  currentStep.value++
+}
+
+function onModeChange(mode: string | number) {
+  currentMode.value = mode as 'quick' | 'advanced'
+  selectedDNSRecords.value = null
+
+  if (currentStep.value === 0)
+    init()
 }
 
 async function save() {
@@ -163,19 +206,22 @@ function onDNSRecordCreated(record: DNSRecord, domain: DNSDomain) {
 function onDNSRecordCleared() {
   selectedDNSRecords.value = null
 }
-
-async function next() {
-  // Only save on the final step (step 2 -> step 3)
-  if (currentStep.value === 2) {
-    await save()
-  }
-  currentStep.value++
-}
 </script>
 
 <template>
   <ACard :title="$gettext('Add Site')">
     <div class="domain-add-container">
+      <ASegmented
+        :value="currentMode"
+        :options="[
+          { label: $gettext('Quick Setup'), value: 'quick' },
+          { label: $gettext('Advanced'), value: 'advanced' },
+        ]"
+        class="mb-6"
+        block
+        @change="onModeChange"
+      />
+
       <ASteps
         :current="currentStep"
         size="small"
@@ -185,29 +231,37 @@ async function next() {
         <AStep :title="$gettext('Configure SSL')" />
         <AStep :title="$gettext('Finished')" />
       </ASteps>
+
       <div v-if="currentStep === 0" class="mb-6">
-        <AForm layout="vertical">
-          <AFormItem :label="$gettext('Configuration Name')">
-            <AInput v-model:value="ngxConfig.name" />
-          </AFormItem>
-        </AForm>
-
-        <AAlert
-          v-if="!hasServerName"
-          type="warning"
-          class="mb-4"
-          show-icon
-          :message="$gettext('The parameter of server_name is required')"
+        <QuickSetupForm
+          v-if="quickMode"
+          :quick="quick"
         />
 
-        <DirectiveEditor
-          v-model:directives="curServerDirectives"
-          class="mb-4"
-        />
-        <LocationEditor
-          v-model:locations="curServerLocations"
-          :current-server-index="0"
-        />
+        <template v-else>
+          <AForm layout="vertical">
+            <AFormItem :label="$gettext('Configuration Name')">
+              <AInput v-model:value="ngxConfig.name" />
+            </AFormItem>
+          </AForm>
+
+          <AAlert
+            v-if="!hasServerName"
+            type="warning"
+            class="mb-4"
+            show-icon
+            :message="$gettext('The parameter of server_name is required')"
+          />
+
+          <DirectiveEditor
+            v-model:directives="curServerDirectives"
+            class="mb-4"
+          />
+          <LocationEditor
+            v-model:locations="curServerLocations"
+            :current-server-index="0"
+          />
+        </template>
       </div>
 
       <!-- DNS Record Integration Step -->
@@ -222,6 +276,14 @@ async function next() {
       </div>
 
       <template v-else-if="currentStep === 2">
+        <AAlert
+          v-if="quickTLSMissingCert"
+          type="warning"
+          class="mb-4"
+          show-icon
+          :message="$gettext('Issue a certificate to enable TLS before continuing.')"
+        />
+
         <EnableTLS />
 
         <NgxConfigEditor>
@@ -241,7 +303,8 @@ async function next() {
         <AButton
           v-if="currentStep === 0"
           type="primary"
-          :disabled="!ngxConfig.name || !hasServerName"
+          :disabled="quickMode ? !quickFormValid : !ngxConfig.name || !hasServerName"
+          :loading="quickMode && quickGenerating"
           @click="next"
         >
           {{ $gettext('Next') }}
@@ -249,6 +312,7 @@ async function next() {
         <AButton
           v-else
           type="primary"
+          :disabled="currentStep === 2 && quickTLSMissingCert"
           @click="next"
         >
           {{ $gettext('Next') }}

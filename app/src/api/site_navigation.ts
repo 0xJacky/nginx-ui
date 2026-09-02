@@ -1,4 +1,4 @@
-import type { SiteStatusType } from '@/constants/site-status'
+import type { SiteErrorType, SiteStatusType } from '@/constants/site-status'
 import { http } from '@uozi-admin/request'
 
 export interface SiteInfo {
@@ -18,6 +18,9 @@ export interface SiteInfo {
   title: string
   last_checked: number
   error?: string
+  error_type?: SiteErrorType // machine-readable category for `error`
+  effective_health_check_enabled: boolean
+  health_check_disabled_reason?: 'global' | 'site'
   // Legacy fields for backward compatibility
   url?: string // deprecated, use display_url instead
   health_check_protocol?: string // deprecated, use scheme instead
@@ -49,6 +52,16 @@ export interface HealthCheckConfig {
     source_ip?: string
     client_cert?: string
     client_key?: string
+    target_url?: string
+  }
+  health_check_alert?: {
+    enabled: boolean
+    status_codes: number[]
+    network_errors: boolean
+    failure_threshold: number
+    recovery_enabled: boolean
+    cooldown_seconds: number
+    external_notify_ids: number[]
   }
 }
 
@@ -73,6 +86,7 @@ export interface EnhancedHealthCheckConfig {
   path: string
   headers: HeaderItem[]
   body: string
+  targetURL: string
 
   // Response validation
   expectedStatus: number[]
@@ -90,6 +104,15 @@ export interface EnhancedHealthCheckConfig {
   sourceIP: string
   clientCert: string
   clientKey: string
+
+  // Alert settings
+  alertEnabled: boolean
+  alertStatusCodes: number[]
+  alertNetworkErrors: boolean
+  alertFailureThreshold: number
+  alertRecoveryEnabled: boolean
+  alertCooldownSeconds: number
+  externalNotifyIds: number[]
 }
 
 export interface HealthCheckTestConfig {
@@ -105,6 +128,7 @@ export interface HealthCheckTestConfig {
   grpc_service: string
   grpc_method: string
   timeout: number
+  target_url: string
 }
 
 export interface SiteNavigationResponse {
@@ -113,6 +137,9 @@ export interface SiteNavigationResponse {
 
 export interface SiteNavigationStatusResponse {
   running: boolean
+  enabled: boolean
+  concurrency: number
+  interval_seconds: number
 }
 
 export const siteNavigationApi = {
@@ -137,7 +164,7 @@ export const siteNavigationApi = {
   },
 
   // Update health check configuration
-  updateHealthCheck(id: number, config: HealthCheckConfig): Promise<{ message: string }> {
+  updateHealthCheck(id: number, config: HealthCheckConfig): Promise<{ message: string, sync_results: Array<{ node: string, success: boolean, error?: string }> }> {
     return http.post(`/site_navigation/health_check/${id}`, config)
   },
 

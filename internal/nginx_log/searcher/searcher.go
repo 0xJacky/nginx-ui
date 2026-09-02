@@ -22,9 +22,12 @@ type Searcher struct {
 	queryBuilder *QueryBuilder
 	cache        *Cache
 	stats        *searcherStats
+	memoryLimit  *searchMemoryLimiter
 
 	// Concurrency control
 	semaphore chan struct{}
+	stateMu   sync.RWMutex // protects shards and indexAlias
+	swapMu    sync.Mutex   // serializes shard swaps with shutdown
 
 	// State
 	running int32
@@ -52,6 +55,7 @@ func NewSearcher(config *Config, shards []bleve.Index) *Searcher {
 	if config == nil {
 		config = DefaultSearcherConfig()
 	}
+	shards = wrapRecoveringIndexes(shards)
 
 	// Create index alias for global scoring across shards
 	indexAlias := bleve.NewIndexAlias(shards...)
@@ -69,6 +73,7 @@ func NewSearcher(config *Config, shards []bleve.Index) *Searcher {
 		shards:       shards,
 		indexAlias:   indexAlias,
 		queryBuilder: NewQueryBuilder(),
+		memoryLimit:  newSearchMemoryLimiter(config.MemoryQuota),
 		semaphore:    make(chan struct{}, config.MaxConcurrency),
 		stats: &searcherStats{
 			shardStats: make(map[int]*ShardSearchStats),
@@ -132,6 +137,7 @@ func (s *Searcher) Search(ctx context.Context, req *SearchRequest) (*SearchResul
 		searchCtx, cancel = context.WithTimeout(ctx, s.config.TimeoutDuration)
 		defer cancel()
 	}
+	searchCtx = withSearchMemoryLimit(searchCtx, s.memoryLimit)
 
 	// Acquire semaphore for concurrency control
 	select {
@@ -149,9 +155,14 @@ func (s *Searcher) Search(ctx context.Context, req *SearchRequest) (*SearchResul
 	if err != nil {
 		return nil, fmt.Errorf("failed to build query: %w", err)
 	}
+	indexAlias, releaseAlias := s.indexAliasForRequest(req)
+	if indexAlias == nil {
+		return nil, fmt.Errorf("searcher is not running")
+	}
+	defer releaseAlias()
 
 	// Execute search across shards
-	result, err := s.executeDistributedSearch(searchCtx, query, req)
+	result, err := s.executeDistributedSearch(searchCtx, query, req, indexAlias)
 	if err != nil {
 		s.recordSearchMetrics(time.Since(startTime), false)
 		return nil, err
@@ -161,7 +172,7 @@ func (s *Searcher) Search(ctx context.Context, req *SearchRequest) (*SearchResul
 	// the hits carry only the requested page, so summing them would describe
 	// the page rather than the query.
 	if req.IncludeStats {
-		result.Stats = s.searchStats(searchCtx, query, req, result.TotalHits)
+		result.Stats = s.searchStats(searchCtx, query, req, result.TotalHits, indexAlias)
 	}
 
 	result.Duration = time.Since(startTime)
@@ -175,24 +186,29 @@ func (s *Searcher) Search(ctx context.Context, req *SearchRequest) (*SearchResul
 }
 
 // executeDistributedSearch executes search across all healthy shards
-func (s *Searcher) executeDistributedSearch(ctx context.Context, query query.Query, req *SearchRequest) (*SearchResult, error) {
+func (s *Searcher) executeDistributedSearch(
+	ctx context.Context,
+	query query.Query,
+	req *SearchRequest,
+	indexAlias bleve.IndexAlias,
+) (*SearchResult, error) {
 	healthyShards := s.getHealthyShards()
 	if len(healthyShards) == 0 {
 		return nil, fmt.Errorf("no healthy shards available")
 	}
 
-	// If specific log groups are requested via main_log_path, we can still use all shards
-	// because documents are filtered by main_log_path at query level. To avoid unnecessary
-	// shard touches, in future we can maintain a mapping of group->shards and build a
-	// narrowed alias. For now, rely on Bleve to skip shards quickly when the filter eliminates them.
-
 	// Use Bleve's native distributed search with global scoring for consistent pagination
-	return s.executeGlobalScoringSearch(ctx, query, req)
+	return s.executeGlobalScoringSearch(ctx, query, req, indexAlias)
 }
 
 // executeGlobalScoringSearch uses Bleve's native distributed search with global scoring
 // This ensures consistent pagination by letting Bleve handle cross-shard ranking
-func (s *Searcher) executeGlobalScoringSearch(ctx context.Context, query query.Query, req *SearchRequest) (*SearchResult, error) {
+func (s *Searcher) executeGlobalScoringSearch(
+	ctx context.Context,
+	query query.Query,
+	req *SearchRequest,
+	indexAlias bleve.IndexAlias,
+) (*SearchResult, error) {
 	// Create search request with proper pagination
 	searchReq := bleve.NewSearchRequest(query)
 
@@ -222,13 +238,25 @@ func (s *Searcher) executeGlobalScoringSearch(ctx context.Context, query query.Q
 	}
 
 	// Execute search using Bleve's IndexAlias
-	result, err := s.indexAlias.SearchInContext(searchCtx, searchReq)
+	result, err := indexAlias.SearchInContext(searchCtx, searchReq)
 	if err != nil {
 		return nil, fmt.Errorf("distributed search failed: %w", err)
+	}
+	if err := searchResultError(result); err != nil {
+		return nil, err
 	}
 
 	// Convert Bleve result to our SearchResult format
 	return s.convertBleveResult(result), nil
+}
+
+func (s *Searcher) indexAliasForRequest(req *SearchRequest) (bleve.IndexAlias, func()) {
+	s.stateMu.RLock()
+	defaultAlias := s.indexAlias
+	shards := append([]bleve.Index(nil), s.shards...)
+	s.stateMu.RUnlock()
+
+	return indexAliasForLogPaths(defaultAlias, shards, req.UseMainLogPath, req.LogPaths)
 }
 
 // convertBleveResult converts a Bleve SearchResult to our SearchResult format
@@ -426,8 +454,12 @@ func (s *Searcher) setRequestDefaults(req *SearchRequest) {
 func (s *Searcher) getHealthyShards() []int {
 	// With IndexAlias, Bleve handles shard health internally
 	// Return all shard IDs since the alias will route correctly
-	healthy := make([]int, len(s.shards))
-	for i := range s.shards {
+	s.stateMu.RLock()
+	shardCount := len(s.shards)
+	s.stateMu.RUnlock()
+
+	healthy := make([]int, shardCount)
+	for i := range healthy {
 		healthy[i] = i
 	}
 	return healthy
@@ -512,38 +544,46 @@ func (s *Searcher) GetConfig() *Config {
 	return s.config
 }
 
-// GetShards returns the underlying shards for cardinality counting
+// GetShards returns an isolated shard snapshot for cardinality counting.
 func (s *Searcher) GetShards() []bleve.Index {
-	return s.shards
+	s.stateMu.RLock()
+	defer s.stateMu.RUnlock()
+
+	return append([]bleve.Index(nil), s.shards...)
 }
 
 // SwapShards atomically replaces the current shards with new ones using IndexAlias.Swap()
 // This follows Bleve best practices for zero-downtime index updates
 func (s *Searcher) SwapShards(newShards []bleve.Index) error {
+	s.swapMu.Lock()
+	defer s.swapMu.Unlock()
+
 	if atomic.LoadInt32(&s.running) == 0 {
 		return fmt.Errorf("searcher is not running")
 	}
 
+	newShards = wrapRecoveringIndexes(newShards)
+	if len(newShards) == 0 {
+		return fmt.Errorf("cannot swap to an empty shard set")
+	}
+
+	s.stateMu.Lock()
 	if s.indexAlias == nil {
+		s.stateMu.Unlock()
 		return fmt.Errorf("indexAlias is nil")
 	}
 
-	// Store old shards for logging
 	oldShards := s.shards
-
-	// Perform atomic swap using IndexAlias - this is the key Bleve operation
-	// that provides zero-downtime index updates
 	logger.Debugf("SwapShards: Starting atomic swap - old=%d, new=%d", len(oldShards), len(newShards))
 
 	swapStartTime := time.Now()
 	s.indexAlias.Swap(newShards, oldShards)
 	swapDuration := time.Since(swapStartTime)
+	s.shards = newShards
+	s.stateMu.Unlock()
 
 	logger.Infof("IndexAlias.Swap completed in %v (old=%d shards, new=%d shards)",
 		swapDuration, len(oldShards), len(newShards))
-
-	// Update internal shards reference to match the IndexAlias
-	s.shards = newShards
 
 	// Clear cache after shard swap to prevent stale results
 	// Use goroutine to avoid potential deadlock during shard swap
@@ -600,8 +640,14 @@ func (s *Searcher) Stop() error {
 	var err error
 
 	s.closeOnce.Do(func() {
+		s.swapMu.Lock()
+		defer s.swapMu.Unlock()
+
 		// Set running to 0
 		atomic.StoreInt32(&s.running, 0)
+
+		s.stateMu.Lock()
+		defer s.stateMu.Unlock()
 
 		// Close the index alias first (this doesn't close underlying indexes)
 		if s.indexAlias != nil {

@@ -14,7 +14,7 @@ func TestScanForProxyTargets_IgnoresCrossFileUpstreamReferences(t *testing.T) {
 server {
     listen 80;
     location / {
-        proxy_pass http://my_upstream;
+        proxy_pass https://my_upstream;
     }
 }`
 
@@ -37,7 +37,7 @@ upstream my_upstream {
 	}
 
 	target := targets[0]
-	if target.Host != "my_server" || target.Port != "8080" || target.Type != "upstream" {
+	if target.Host != "my_server" || target.Port != "8080" || target.Type != "upstream" || target.Scheme != "https" {
 		t.Fatalf("unexpected target: %+v", target)
 	}
 }

@@ -29,23 +29,24 @@ var envPrefixMap = map[string]interface{}{
 	"APP":    settings.AppSettings,
 	"SERVER": settings.ServerSettings,
 	// Nginx UI
-	"DB":         DatabaseSettings,
-	"AUTH":       AuthSettings,
-	"CASDOOR":    CasdoorSettings,
-	"CERT":       CertSettings,
-	"CLUSTER":    ClusterSettings,
-	"CRYPTO":     CryptoSettings,
-	"HTTP":       HTTPSettings,
-	"LOGROTATE":  LogrotateSettings,
-	"NGINX":      NginxSettings,
-	"NGINX_LOG":  NginxLogSettings,
-	"NODE":       NodeSettings,
-	"OPENAI":     OpenAISettings,
-	"SITE_CHECK": SiteCheckSettings,
-	"TERMINAL":   TerminalSettings,
-	"WEBAUTHN":   WebAuthnSettings,
-	"BACKUP":     BackupSettings,
-	"OIDC":       OIDCSettings,
+	"DB":             DatabaseSettings,
+	"AUTH":           AuthSettings,
+	"CASDOOR":        CasdoorSettings,
+	"CERT":           CertSettings,
+	"CLUSTER":        ClusterSettings,
+	"CRYPTO":         CryptoSettings,
+	"HTTP":           HTTPSettings,
+	"LOGROTATE":      LogrotateSettings,
+	"NGINX":          NginxSettings,
+	"NGINX_LOG":      NginxLogSettings,
+	"NODE":           NodeSettings,
+	"OPENAI":         OpenAISettings,
+	"SITE_CHECK":     SiteCheckSettings,
+	"UPSTREAM_CHECK": UpstreamCheckSettings,
+	"TERMINAL":       TerminalSettings,
+	"WEBAUTHN":       WebAuthnSettings,
+	"BACKUP":         BackupSettings,
+	"OIDC":           OIDCSettings,
 }
 
 func init() {
@@ -67,6 +68,7 @@ func init() {
 	sections.Set("node", NodeSettings)
 	sections.Set("openai", OpenAISettings)
 	sections.Set("site_check", SiteCheckSettings)
+	sections.Set("upstream_check", UpstreamCheckSettings)
 	sections.Set("terminal", TerminalSettings)
 	sections.Set("webauthn", WebAuthnSettings)
 

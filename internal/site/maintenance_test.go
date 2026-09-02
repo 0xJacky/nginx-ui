@@ -50,7 +50,7 @@ func TestCreateMaintenanceConfig_PreservesForwardedHost(t *testing.T) {
 		t.Fatalf("Parse() error = %v", err)
 	}
 
-	content := createMaintenanceConfig(conf, "")
+	content := createMaintenanceConfig(conf, "", "")
 
 	if !strings.Contains(content, "proxy_set_header X-Forwarded-Host $http_host;") {
 		t.Fatalf("maintenance config = %q, want forwarded host header preservation", content)
@@ -62,6 +62,76 @@ func TestCreateMaintenanceConfig_PreservesForwardedHost(t *testing.T) {
 
 	if !strings.Contains(content, "proxy_pass http://127.0.0.1:9000;") {
 		t.Fatalf("maintenance config = %q, want proxy to nginx-ui backend", content)
+	}
+}
+
+// TestDisableMaintenanceRestoresMaintenanceConfigWhenReloadFails guards against
+// leaving a site with neither the normal nor the maintenance config enabled:
+// when Nginx accepts the new config on `-t` but fails to reload it, the site
+// must fall back to the maintenance config that was actually still loaded.
+func TestDisableMaintenanceRestoresMaintenanceConfigWhenReloadFails(t *testing.T) {
+	confDir, _ := setupSiteMutationTest(t)
+	availablePath := filepath.Join(confDir, "sites-available", "example.com")
+	if err := os.WriteFile(availablePath, []byte("server {\n    listen 80;\n}\n"), 0o644); err != nil {
+		t.Fatalf("failed to write available config: %v", err)
+	}
+
+	if err := EnableMaintenance("example.com"); err != nil {
+		t.Fatalf("EnableMaintenance() error = %v", err)
+	}
+
+	maintenancePath, err := ResolveEnabledMaintenancePath("example.com")
+	if err != nil {
+		t.Fatalf("ResolveEnabledMaintenancePath() error = %v", err)
+	}
+	maintenanceContentBefore, err := os.ReadFile(maintenancePath)
+	if err != nil {
+		t.Fatalf("failed to read maintenance config: %v", err)
+	}
+
+	enabledPath, err := resolveEnabledSymlinkPath("example.com")
+	if err != nil {
+		t.Fatalf("resolveEnabledSymlinkPath() error = %v", err)
+	}
+
+	reloadMarker := filepath.Join(t.TempDir(), "reload-attempted")
+	settings.NginxSettings.ReloadCmd = fmt.Sprintf(
+		"if [ ! -e %q ]; then touch %q; exit 1; fi", reloadMarker, reloadMarker)
+
+	if err := DisableMaintenance("example.com"); err == nil {
+		t.Fatalf("DisableMaintenance() error = nil, want reload failure")
+	}
+
+	if _, statErr := os.Lstat(enabledPath); !os.IsNotExist(statErr) {
+		t.Fatalf("enabled symlink stat error = %v, want the normal symlink rolled back", statErr)
+	}
+
+	maintenanceContentAfter, readErr := os.ReadFile(maintenancePath)
+	if readErr != nil {
+		t.Fatalf("failed to read maintenance config after rollback: %v", readErr)
+	}
+	if string(maintenanceContentAfter) != string(maintenanceContentBefore) {
+		t.Fatalf("maintenance config after rollback = %q, want %q", maintenanceContentAfter, maintenanceContentBefore)
+	}
+}
+
+func TestCreateMaintenanceConfig_ForwardsSiteName(t *testing.T) {
+	setupMaintenanceTestSettings(t, "")
+
+	p := parser.NewStringParser(`server {
+    listen 80;
+    server_name example.com;
+}`, parser.WithSkipValidDirectivesErr())
+
+	conf, err := p.Parse()
+	if err != nil {
+		t.Fatalf("Parse() error = %v", err)
+	}
+
+	content := createMaintenanceConfig(conf, "", `example.com"conf`)
+
+	if !strings.Contains(content, `proxy_set_header X-Maintenance-Site "example.com\"conf";`) {
+		t.Fatalf("maintenance config = %q, want escaped site name header", content)
 	}
 }
 
@@ -101,7 +171,7 @@ location /unexpected {
 		t.Fatalf("Parse() error = %v", err)
 	}
 
-	content := createMaintenanceConfig(conf, sitesAvailableDir)
+	content := createMaintenanceConfig(conf, sitesAvailableDir, "")
 
 	expectedDirectives := []string{
 		"ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;",
@@ -168,7 +238,7 @@ ssl_session_timeout 10m;
 		t.Fatalf("Parse() error = %v", err)
 	}
 
-	content := createMaintenanceConfig(conf, sitesAvailableDir)
+	content := createMaintenanceConfig(conf, sitesAvailableDir, "")
 
 	for _, expected := range []string{
 		"ssl_session_cache shared:SSL:10m;",
@@ -213,7 +283,7 @@ func TestCreateMaintenanceConfig_ExpandsNestedRelativeWildcardIncludes(t *testin
 		t.Fatalf("Parse() error = %v", err)
 	}
 
-	content := createMaintenanceConfig(conf, sitesAvailableDir)
+	content := createMaintenanceConfig(conf, sitesAvailableDir, "")
 	if !strings.Contains(content, "ssl_protocols TLSv1.2 TLSv1.3;") {
 		t.Fatalf("maintenance config = %q, want TLS directive from nested relative wildcard include", content)
 	}
@@ -255,7 +325,7 @@ ssl_protocols TLSv1.3;
 		t.Fatalf("Parse() error = %v", err)
 	}
 
-	content := createMaintenanceConfig(conf, sitesAvailableDir)
+	content := createMaintenanceConfig(conf, sitesAvailableDir, "")
 	for _, unexpected := range []string{
 		"listen 8443 ssl;",
 		"server_name internal.example.com;",
@@ -292,7 +362,7 @@ func TestCreateMaintenanceConfig_PreservesTLSBlockDirectives(t *testing.T) {
 		t.Fatalf("Parse() error = %v", err)
 	}
 
-	content := createMaintenanceConfig(conf, sitesAvailableDir)
+	content := createMaintenanceConfig(conf, sitesAvailableDir, "")
 	if !strings.Contains(content, "ssl_certificate_by_lua_block") || !strings.Contains(content, "auto_ssl:ssl_certificate()") {
 		t.Fatalf("maintenance config = %q, want TLS block directive preserved", content)
 	}
@@ -324,7 +394,7 @@ func TestCreateMaintenanceConfig_PreservesLuaBlockWithSemicolonsAndBraces(t *tes
 		t.Fatalf("Parse() error = %v", err)
 	}
 
-	content := createMaintenanceConfig(conf, sitesAvailableDir)
+	content := createMaintenanceConfig(conf, sitesAvailableDir, "")
 
 	// Token-level invariants. The gonginx dumper may normalize whitespace inside
 	// the lua block, so assert on tokens that must survive verbatim instead of
@@ -371,7 +441,7 @@ func TestCreateMaintenanceConfig_PreservesQuotedTLSDirectiveParams(t *testing.T)
 		t.Fatalf("Parse() error = %v", err)
 	}
 
-	content := createMaintenanceConfig(conf, sitesAvailableDir)
+	content := createMaintenanceConfig(conf, sitesAvailableDir, "")
 	for _, expected := range []string{
 		`ssl_certificate "/etc/nginx/certs/example cert.pem";`,
 		`ssl_certificate_key "/etc/nginx/certs/example key.pem";`,
@@ -418,7 +488,7 @@ func TestCreateMaintenanceConfig_ExpandsWildcardTLSIncludesInSortedOrder(t *test
 		t.Fatalf("Parse() error = %v", err)
 	}
 
-	content := createMaintenanceConfig(conf, sitesAvailableDir)
+	content := createMaintenanceConfig(conf, sitesAvailableDir, "")
 
 	protocolsIndex := strings.Index(content, "ssl_protocols TLSv1.2 TLSv1.3;")
 	ciphersIndex := strings.Index(content, "ssl_ciphers HIGH:!aNULL:!MD5;")
@@ -459,7 +529,7 @@ func TestCreateMaintenanceConfig_SkipsWildcardIncludesOutsideNginxConfigDir(t *t
 		t.Fatalf("Parse() error = %v", err)
 	}
 
-	content := createMaintenanceConfig(conf, sitesAvailableDir)
+	content := createMaintenanceConfig(conf, sitesAvailableDir, "")
 	if strings.Contains(content, "ssl_ciphers HIGH;") {
 		t.Fatalf("maintenance config = %q, want to skip wildcard outside nginx config dir", content)
 	}
@@ -499,7 +569,7 @@ func TestCreateMaintenanceConfig_LimitsWildcardIncludeMatches(t *testing.T) {
 		t.Fatalf("Parse() error = %v", err)
 	}
 
-	content := createMaintenanceConfig(conf, sitesAvailableDir)
+	content := createMaintenanceConfig(conf, sitesAvailableDir, "")
 	if !strings.Contains(content, "ssl_conf_command Options31 Value31;") {
 		t.Fatalf("maintenance config = %q, want last allowed wildcard match", content)
 	}
@@ -549,7 +619,7 @@ func TestCreateMaintenanceConfig_LimitsWildcardIncludeMatchesAfterFiltering(t *t
 		t.Fatalf("Parse() error = %v", err)
 	}
 
-	content := createMaintenanceConfig(conf, sitesAvailableDir)
+	content := createMaintenanceConfig(conf, sitesAvailableDir, "")
 	if !strings.Contains(content, "ssl_protocols TLSv1.2 TLSv1.3;") {
 		t.Fatalf("maintenance config = %q, want legal wildcard match after filtering invalid matches", content)
 	}
@@ -593,7 +663,7 @@ func TestCreateMaintenanceConfig_RejectsWildcardSymlinkEscape(t *testing.T) {
 		t.Fatalf("Parse() error = %v", err)
 	}
 
-	content := createMaintenanceConfig(conf, sitesAvailableDir)
+	content := createMaintenanceConfig(conf, sitesAvailableDir, "")
 	if strings.Contains(content, "ssl_ciphers EVIL;") {
 		t.Fatalf("maintenance config = %q, want to reject wildcard symlink escape", content)
 	}
@@ -808,7 +878,7 @@ func TestCreateMaintenanceConfig_EnforcesIncludeDepthLimit(t *testing.T) {
 		t.Fatalf("Parse() error = %v", err)
 	}
 
-	content := createMaintenanceConfig(conf, sitesAvailableDir)
+	content := createMaintenanceConfig(conf, sitesAvailableDir, "")
 
 	// Levels 1..maintenanceMaxIncludeDepth must be present.
 	for i := 1; i <= maintenanceMaxIncludeDepth; i++ {
@@ -858,7 +928,7 @@ func TestCreateMaintenanceConfig_AcceptsAbsoluteIncludeInsideConfigDir(t *testin
 		t.Fatalf("Parse() error = %v", err)
 	}
 
-	content := createMaintenanceConfig(conf, sitesAvailableDir)
+	content := createMaintenanceConfig(conf, sitesAvailableDir, "")
 
 	if !strings.Contains(content, "ssl_protocols TLSv1.3;") {
 		t.Fatalf("maintenance config = %q, want directive from absolute include under config dir", content)
@@ -904,7 +974,7 @@ server {
 		t.Fatalf("Parse() error = %v", err)
 	}
 
-	content := createMaintenanceConfig(conf, sitesAvailableDir)
+	content := createMaintenanceConfig(conf, sitesAvailableDir, "")
 
 	// The shared include must appear in both generated server blocks, proving
 	// the visited cache does not leak across server-block expansions.
