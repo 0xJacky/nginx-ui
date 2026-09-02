@@ -117,6 +117,10 @@ If the `--sbin-path` path can be obtained, Nginx UI will use the following comma
 start-stop-daemon --start --quiet --pidfile $PID --exec $SBIN_PATH
 ```
 
+::: tip Host via SSH mode
+In Host via SSH mode, a non-empty `TestConfigCmd`, `ReloadCmd` or `RestartCmd` is run on the host through `/bin/sh -c` as the SSH user. When they are empty, Nginx UI tests with the host nginx binary and reloads or restarts through systemd or launchd instead. See [Manage Host Nginx from Docker](manage-host-nginx-from-docker.md).
+:::
+
 ### StubStatusPort
 - Type: `uint`
 - Default: `51820`
@@ -189,7 +193,7 @@ Nginx UI reads and writes Nginx configuration and log files through its own file
 
 ## Host SSH Control
 
-For deployments where Nginx UI runs in a Docker container but Nginx is installed natively on the host machine, Nginx UI provides a third control mode that uses SSH for command execution and bind-mounts for file I/O. Linux systemd services and macOS Homebrew launchd services are supported.
+For deployments where Nginx UI runs in a Docker container but Nginx is installed natively on the host machine, Nginx UI provides a third control mode that uses SSH for command execution and either SFTP or bind-mounts for file I/O. Linux systemd services and macOS Homebrew launchd services are supported.
 
 ### Constraints
 
@@ -232,6 +236,6 @@ nginx-ui host-setup test
 | `host_launchctl_path` | Default `/bin/launchctl` |
 | `host_config_dir` | Host-side nginx config directory |
 | `host_log_dir` | Host-side nginx log directory |
-| `sbin_path` | In SSH mode, point this at the nginx binary on the host. The generated sudoers allow-list matches this path exactly |
+| `sbin_path` | Optional in SSH mode: the nginx binary on the host. When empty, Nginx UI resolves the service manager default (`/usr/sbin/nginx` for systemd, `/opt/homebrew/opt/nginx/bin/nginx` for launchd) and stores it when the control settings are saved. The generated sudoers allow-list matches the resolved path exactly |
 
 See also: [Manage Host Nginx from Docker](manage-host-nginx-from-docker.md) and [Manage Multi-Host Nginx with Cluster](manage-multi-host-nginx-with-cluster.md).

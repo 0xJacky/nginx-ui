@@ -111,6 +111,10 @@ start-stop-daemon --stop --quiet --oknodo --retry=TERM/30/KILL/5 --pidfile $PID
 start-stop-daemon --start --quiet --pidfile $PID --exec $SBIN_PATH
 ```
 
+::: tip 透過 SSH 管理宿主機模式
+在透過 SSH 管理宿主機模式下，非空的 `TestConfigCmd`、`ReloadCmd` 或 `RestartCmd` 會以 SSH 使用者身分透過 `/bin/sh -c` 在宿主機上執行。留空時，Nginx UI 會使用宿主機的 nginx 執行檔進行測試，並透過 systemd 或 launchd 重新載入或重新啟動。參見 [在 Docker 中管理宿主機 Nginx](manage-host-nginx-from-docker.md)。
+:::
+
 ### StubStatusPort
 - 類型：`uint`
 - 預設值：`51820`
@@ -181,7 +185,7 @@ services:
 
 ## 透過 SSH 控制宿主機 Nginx
 
-對於 Nginx UI 執行在 Docker 容器中、而 Nginx 以原生方式安裝在宿主機上的部署場景，Nginx UI 提供了第三種控制模式，透過 SSH 執行命令並使用綁定掛載進行檔案 I/O。此模式支援 Linux systemd 服務與 macOS Homebrew launchd 服務。
+對於 Nginx UI 執行在 Docker 容器中、而 Nginx 以原生方式安裝在宿主機上的部署場景，Nginx UI 提供了第三種控制模式，透過 SSH 執行命令，並使用 SFTP 或綁定掛載進行檔案 I/O。此模式支援 Linux systemd 服務與 macOS Homebrew launchd 服務。
 
 ### 限制
 
@@ -224,6 +228,6 @@ nginx-ui host-setup test
 | `host_launchctl_path` | 預設為 `/bin/launchctl` |
 | `host_config_dir` | 宿主機側 nginx 設定目錄 |
 | `host_log_dir` | 宿主機側 nginx 日誌目錄 |
-| `sbin_path` | SSH 模式下應指向宿主機上的 nginx 執行檔。產生的 sudoers 允許清單會精確比對該路徑 |
+| `sbin_path` | SSH 模式下選填：宿主機上的 nginx 執行檔。留空時，Nginx UI 會解析服務管理器的預設值（systemd 為 `/usr/sbin/nginx`，launchd 為 `/opt/homebrew/opt/nginx/bin/nginx`），並在儲存控制設定時寫入。產生的 sudoers 允許清單會精確比對解析後的路徑 |
 
 另請參閱：[在 Docker 中管理宿主機 Nginx](manage-host-nginx-from-docker.md) 和 [使用叢集節點管理多主機 Nginx](manage-multi-host-nginx-with-cluster.md)。

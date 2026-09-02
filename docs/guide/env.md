@@ -169,5 +169,5 @@ These variables are used when Nginx UI controls a host-installed nginx service f
 | `NGINX_UI_NGINX_HOST_LAUNCHCTL_PATH` | Absolute path to launchctl. Default `/bin/launchctl` |
 | `NGINX_UI_NGINX_HOST_CONFIG_DIR` | Host-side nginx config dir |
 | `NGINX_UI_NGINX_HOST_LOG_DIR` | Host-side nginx log dir |
-| `NGINX_UI_NGINX_SBIN_PATH` | In SSH mode, the absolute path of the nginx binary on the host. The generated sudoers allow-list matches this path exactly |
+| `NGINX_UI_NGINX_SBIN_PATH` | Optional in SSH mode: the absolute path of the nginx binary on the host. When empty, Nginx UI resolves the service manager default (`/usr/sbin/nginx` for systemd, `/opt/homebrew/opt/nginx/bin/nginx` for launchd). The generated sudoers allow-list matches the resolved path exactly |
 | `NGINX_UI_DISABLE_BUNDLED_NGINX` | Set to `true` to disable the container's bundled nginx (required in SSH mode) |

@@ -118,6 +118,10 @@ nginx
 start-stop-daemon --start --quiet --pidfile $PID --exec $SBIN_PATH
 ```
 
+::: tip 通过 SSH 管理宿主机模式
+在通过 SSH 管理宿主机模式下，非空的 `TestConfigCmd`、`ReloadCmd` 或 `RestartCmd` 会以 SSH 用户身份通过 `/bin/sh -c` 在宿主机上执行。留空时，Nginx UI 会使用宿主机的 nginx 可执行文件进行测试，并通过 systemd 或 launchd 重载或重启。参见 [在 Docker 中管理宿主机 Nginx](manage-host-nginx-from-docker.md)。
+:::
+
 ### StubStatusPort
 - 类型：`uint`
 - 默认值：`51820`
@@ -190,7 +194,7 @@ Nginx UI 通过自身的文件系统读写 Nginx 配置和日志文件。请将�
 
 ## 通过 SSH 控制宿主机 Nginx
 
-对于 Nginx UI 运行在 Docker 容器中、而 Nginx 以原生方式安装在宿主机上的部署场景，Nginx UI 提供了第三种控制模式，通过 SSH 执行命令并使用绑定挂载进行文件 I/O。该模式支持 Linux systemd 服务和 macOS Homebrew launchd 服务。
+对于 Nginx UI 运行在 Docker 容器中、而 Nginx 以原生方式安装在宿主机上的部署场景，Nginx UI 提供了第三种控制模式，通过 SSH 执行命令，并使用 SFTP 或绑定挂载进行文件 I/O。该模式支持 Linux systemd 服务和 macOS Homebrew launchd 服务。
 
 ### 限制
 
@@ -233,6 +237,6 @@ nginx-ui host-setup test
 | `host_launchctl_path` | 默认为 `/bin/launchctl` |
 | `host_config_dir` | 宿主机侧 nginx 配置目录 |
 | `host_log_dir` | 宿主机侧 nginx 日志目录 |
-| `sbin_path` | SSH 模式下应指向宿主机上的 nginx 可执行文件。生成的 sudoers 允许列表会精确匹配该路径 |
+| `sbin_path` | SSH 模式下可选：宿主机上的 nginx 可执行文件。留空时，Nginx UI 会解析服务管理器的默认值（systemd 为 `/usr/sbin/nginx`，launchd 为 `/opt/homebrew/opt/nginx/bin/nginx`），并在保存控制设置时写入。生成的 sudoers 允许列表会精确匹配解析后的路径 |
 
 另请参阅：[在 Docker 中管理宿主机 Nginx](manage-host-nginx-from-docker.md) 和 [使用集群节点管理多主机 Nginx](manage-multi-host-nginx-with-cluster.md)。

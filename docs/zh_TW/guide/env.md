@@ -183,5 +183,5 @@
 | `NGINX_UI_NGINX_HOST_LAUNCHCTL_PATH` | launchctl 的絕對路徑，預設為 `/bin/launchctl` |
 | `NGINX_UI_NGINX_HOST_CONFIG_DIR` | 宿主機側的 nginx 設定目錄 |
 | `NGINX_UI_NGINX_HOST_LOG_DIR` | 宿主機側的 nginx 日誌目錄 |
-| `NGINX_UI_NGINX_SBIN_PATH` | SSH 模式下為宿主機上 nginx 執行檔的絕對路徑。產生的 sudoers 允許清單會精確比對該路徑 |
+| `NGINX_UI_NGINX_SBIN_PATH` | SSH 模式下選填：宿主機上 nginx 執行檔的絕對路徑。留空時，Nginx UI 會解析服務管理器的預設值（systemd 為 `/usr/sbin/nginx`，launchd 為 `/opt/homebrew/opt/nginx/bin/nginx`）。產生的 sudoers 允許清單會精確比對解析後的路徑 |
 | `NGINX_UI_DISABLE_BUNDLED_NGINX` | 設定為 `true` 以停用容器內建的 nginx（SSH 模式下必需） |

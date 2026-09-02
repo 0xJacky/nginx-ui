@@ -183,5 +183,5 @@
 | `NGINX_UI_NGINX_HOST_LAUNCHCTL_PATH` | launchctl 的绝对路径，默认为 `/bin/launchctl` |
 | `NGINX_UI_NGINX_HOST_CONFIG_DIR` | 宿主机侧的 nginx 配置目录 |
 | `NGINX_UI_NGINX_HOST_LOG_DIR` | 宿主机侧的 nginx 日志目录 |
-| `NGINX_UI_NGINX_SBIN_PATH` | SSH 模式下为宿主机上 nginx 可执行文件的绝对路径。生成的 sudoers 允许列表会精确匹配该路径 |
+| `NGINX_UI_NGINX_SBIN_PATH` | SSH 模式下可选：宿主机上 nginx 可执行文件的绝对路径。留空时，Nginx UI 会解析服务管理器的默认值（systemd 为 `/usr/sbin/nginx`，launchd 为 `/opt/homebrew/opt/nginx/bin/nginx`）。生成的 sudoers 允许列表会精确匹配解析后的路径 |
 | `NGINX_UI_DISABLE_BUNDLED_NGINX` | 设置为 `true` 以禁用容器内置的 nginx（SSH 模式下必需） |

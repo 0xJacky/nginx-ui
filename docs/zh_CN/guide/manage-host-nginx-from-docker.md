@@ -7,9 +7,10 @@
 - 同一宿主机上已安装 Docker
 - Linux：一个专用于 Nginx UI 的非特权用户（示例中使用 `nginxui`）
 - macOS：拥有 Homebrew nginx 服务的登录用户
+- Nginx UI 管理员已启用两步验证：配置向导需要已验证的两步验证会话，否则会显示**需要两步验证**
 :::
 
-在 macOS 上，请在向导的**检测平台**步骤中选择 **macOS (Homebrew)**。Apple Silicon 默认使用 `/opt/homebrew`。在该步骤中，向导会通过 SSH 查询 Homebrew 并解析 `nginx -V`，自动识别已安装的 nginx 版本以及实际的可执行文件、配置、日志、PID 和 Docroot 路径；这也能识别位于 `/usr/local` 的 Intel Homebrew。继续前请确认服务已加载：
+在 macOS 上，请在向导的**检测平台**步骤中选择 **macOS（Homebrew）**。Apple Silicon 默认使用 `/opt/homebrew`。在该步骤中，向导会通过 SSH 查询 Homebrew 并解析 `nginx -V`，自动识别已安装的 nginx 版本以及实际的可执行文件、配置、日志、PID 和 Docroot 路径；这也能识别位于 `/usr/local` 的 Intel Homebrew。继续前请确认服务已加载：
 
 ```bash
 brew services info nginx
@@ -25,13 +26,11 @@ sudo useradd -r -s /bin/bash -m -G adm nginxui
 
 macOS 应使用运行 `brew services` 的现有登录用户，不要创建单独的服务用户。
 
-## 步骤 2：通过 Nginx UI 生成密钥对
+## 步骤 2：SSH 目标——通过 Nginx UI 生成密钥对
 
 打开**偏好设置 → Nginx → Nginx 控制模式 → 编辑**，选择**通过 SSH 管理宿主机**，再点击**打开 SSH 配置向导**。修改控制模式需要已验证的两步验证会话。
 
-向导包含五个步骤：**SSH 目标**、**信任与测试**、**检测平台**、**安装**、**验证**。
-
-在**检测平台**步骤中，每个路径字段会标记为**自动检测**（与宿主机上报值一致）或**手动覆盖**（被你改过）。手动覆盖的字段会显示检测值以及**恢复检测值**操作。修改 nginx 可执行文件路径后，可点击**根据该可执行文件重新检测路径**，重新执行 `nginx -V` 并刷新配置、日志和 PID 路径。
+向导包含五个步骤：**SSH 目标**、**信任与测试**、**检测平台**、**访问与安装**、**验证**。下面的步骤按同样的顺序展开。
 
 在 **SSH 目标**步骤中选择私钥来源：
 
@@ -65,52 +64,7 @@ sudo chmod 600 /home/nginxui/.ssh/authorized_keys
 宿主机 SSH 模式需要使用 `known_hosts` 允许列表。向导显示新指纹时，请先在宿主机或其他可信渠道确认，再信任该密钥。
 :::
 
-## 步骤 3：安装 sudoers 条目（仅 Linux）
-
-向导**安装**步骤的**宿主机**页签会显示一段 sudoers 配置片段。复制后通过以下命令安装：
-
-```bash
-sudo visudo -f /etc/sudoers.d/nginx-ui
-```
-
-粘贴配置片段后保存并退出。如果语法有误，visudo 会拒绝保存该文件。
-
-Homebrew launchd 服务运行在登录用户域中，不需要 sudoers 条目。
-
-## 步骤 4：配置文件权限
-
-::: details 可选 ACL 命令
-如果 nginxui 用户为非 root 用户，请授予其对 /etc/nginx 的写入权限：
-
-```bash
-sudo setfacl -R  -m u:nginxui:rwx /etc/nginx
-sudo setfacl -dR -m u:nginxui:rwx /etc/nginx
-```
-:::
-
-在 macOS 上，向导会输出 Homebrew 配置和日志路径的读写检查，而不是 Linux ACL 命令。
-
-## 步骤 5：更新 docker-compose 配置
-
-向导**安装**步骤的**容器**页签会显示一段 compose 配置片段。将其合并到现有的 `docker-compose.yml` 中。
-
-生成的片段会设置 `NGINX_UI_DISABLE_BUNDLED_NGINX=true`，避免容器在控制宿主机 nginx 时继续启动内置 nginx 服务。
-
-片段还会绑定挂载已配置的 PID 目录。在 Linux 与 macOS 预设之间切换后，请重建容器以应用新路径。
-
-如果验证检测到的路径与初始预设不同，请返回容器步骤重新生成 compose 片段，重建容器后再运行验证。
-
-::: tip 持久化 Nginx UI 数据
-请通过 Docker volume 或 bind mount 持久化 `/etc/nginx-ui`。宿主机密钥允许列表默认保存在 `/etc/nginx-ui/known_hosts`，它应在镜像升级和容器重建后继续存在。
-:::
-
-macOS 上，`host_platform` 会报告 Darwin，`launchctl_service_loaded` 取代两个 systemd 检查，sudo 检查会显示不需要 sudo。配置、日志和 PID 检查默认使用 `/opt/homebrew` 路径。
-
-```bash
-docker compose up -d --force-recreate nginx-ui
-```
-
-## 步骤 6：信任主机身份
+## 步骤 3：信任与测试——信任主机身份
 
 打开向导的**信任与测试**步骤，点击**扫描主机密钥**。向导会将 SSH 服务端提供的主机密钥与已配置的 `known_hosts` 文件进行比较。
 
@@ -147,9 +101,82 @@ ssh-keyscan -p 22 host.docker.internal
 - **trusted**：扫描到的密钥与 `known_hosts` 匹配。
 :::
 
-## 步骤 7：验证配置
+信任所有扫描到的密钥后，点击**测试 SSH 连接**。连接成功后向导才允许继续。
 
-返回**验证**，点击**运行验证**。主要检查项应通过：
+## 步骤 4：检测平台
+
+在**检测平台**步骤中选择服务管理器（**Linux（systemd）**或 **macOS（Homebrew）**）。向导会通过 SSH 执行 `nginx -V`，并填入 nginx 可执行文件、配置、日志和 PID 路径。
+
+每个路径字段会标记为**自动检测**（与宿主机上报值一致）或**手动覆盖**（被你改过）。手动覆盖的字段会显示检测值以及**恢复检测值**操作。修改 nginx 可执行文件路径后，可点击**根据该可执行文件重新检测路径**，重新执行 `nginx -V` 并刷新配置、日志和 PID 路径。
+
+nginx 可执行文件路径会保存为 `sbin_path`。如果留空，Nginx UI 会回退到服务管理器的默认值（systemd 为 `/usr/sbin/nginx`，launchd 为 `/opt/homebrew/opt/nginx/bin/nginx`），并在保存配置时写入该默认值。下一步生成的 sudoers 允许列表会精确匹配这个解析后的路径。
+
+## 步骤 5：访问与安装——选择文件访问模式
+
+**访问与安装**步骤首先是**文件访问模式**：
+
+| 模式 | 行为 |
+| --- | --- |
+| **兼容模式（SFTP）** | Nginx UI 完全通过 SSH 和 SFTP 读写宿主机的 nginx 配置和日志。不会把宿主机目录挂载到容器中。 |
+| **高性能模式（挂载）** | Nginx UI 从绑定挂载的宿主机目录读取配置和日志。速度更快，但必须按生成的挂载配置重建容器。 |
+
+所选模式会保存为 `host_access_mode` 设置。
+
+::: details SFTP 模式覆盖的范围
+- 配置文件、日志文件，以及证书签发或续期时写出的证书文件，都通过 SFTP 在宿主机上读写。
+- 容器无法通过 SFTP 监听宿主机文件变化，因此配置索引和证书发现会改为每 30 秒重新扫描一次。在宿主机上绕过 Nginx UI 所做的修改最多需要 30 秒才会显示在界面中。
+- **共享配置目录**自检会被跳过，因为容器与宿主机之间没有共享目录。
+- 已知限制：证书目录中可导入证书的扫描仍然读取容器文件系统，因此无法发现只存在于宿主机上的证书。如果依赖该扫描，请在 Nginx UI 中签发或续期证书，或改用挂载模式。
+:::
+
+## 步骤 6：访问与安装——安装 sudoers 条目（仅 Linux）
+
+**1. 在 nginx 宿主机上**页签会显示一段 sudoers 配置片段。复制后通过以下命令安装：
+
+```bash
+sudo visudo -f /etc/sudoers.d/nginx-ui
+```
+
+粘贴配置片段后保存并退出。如果语法有误，visudo 会拒绝保存该文件。
+
+Homebrew launchd 服务运行在登录用户域中，不需要 sudoers 条目。
+
+## 步骤 7：访问与安装——配置文件权限
+
+::: details 可选 ACL 命令
+如果 nginxui 用户为非 root 用户，请授予其对 /etc/nginx 的写入权限：
+
+```bash
+sudo setfacl -R  -m u:nginxui:rwx /etc/nginx
+sudo setfacl -dR -m u:nginxui:rwx /etc/nginx
+```
+:::
+
+在 macOS 上，向导会输出 Homebrew 配置和日志路径的读写检查，而不是 Linux ACL 命令。
+
+## 步骤 8：访问与安装——更新容器
+
+**2. 在 Nginx UI 容器中**页签会显示 compose 配置片段、完整的 override 文件和 docker run 命令。该页签只在容器需要修改时出现：使用挂载模式，或者 Linux Docker Engine 需要为 `host.docker.internal` 添加 host-gateway 映射。将片段合并到现有的 `docker-compose.yml` 中。
+
+生成的片段会设置 `NGINX_UI_DISABLE_BUNDLED_NGINX=true`，避免容器在控制宿主机 nginx 时继续启动内置 nginx 服务。
+
+在挂载模式下，片段还会绑定挂载已配置的配置、日志和 PID 目录。在 Linux 与 macOS 预设之间切换后，请重建容器以应用新路径。SFTP 模式下不会添加任何目录挂载。
+
+如果验证检测到的路径与初始预设不同，请返回容器页签重新生成 compose 片段，重建容器后再运行验证。
+
+::: tip 持久化 Nginx UI 数据
+请通过 Docker volume 或 bind mount 持久化 `/etc/nginx-ui`。宿主机密钥允许列表默认保存在 `/etc/nginx-ui/known_hosts`，它应在镜像升级和容器重建后继续存在。
+:::
+
+```bash
+docker compose up -d --force-recreate nginx-ui
+```
+
+宿主机和容器的修改都应用后，运行该步骤底部的**配置检查**。它会执行下一步列出的平台和权限检查。
+
+## 步骤 9：验证配置
+
+打开**验证**，点击**运行验证**。主要检查项应通过：
 
 ::: tip 预期验证结果
 
@@ -158,7 +185,7 @@ ssh-keyscan -p 22 host.docker.internal
 - ✓ ssh_connect: 通过 SSH 执行 echo ok 成功
 - ✓ nginx_test: 配置文件检查通过
 
-平台和权限检查属于**访问与安装**步骤中的**安装检查**，应用片段后你已经运行过：
+平台和权限检查属于**访问与安装**步骤中的**配置检查**，应用片段后你已经运行过：
 
 - ✓ host_platform: Linux host matches systemd
 - ✓ systemctl_is_active: 运行中
@@ -173,9 +200,15 @@ ssh-keyscan -p 22 host.docker.internal
 
 :::
 
+macOS 上，`host_platform` 会报告 Darwin，`launchctl_service_loaded` 取代两个 systemd 检查，sudo 检查会显示不需要 sudo。配置、日志和 PID 检查默认使用 `/opt/homebrew` 路径。
+
 如果 `known_hosts_persistence` 显示为 warning，请检查 Docker volume 或 bind mount。该警告不会阻止保存，但如果 `/etc/nginx-ui` 未被持久化，容器重建后可信主机密钥可能会丢失。
 
 所有检查通过后，点击**保存配置**。
+
+::: tip 自定义控制命令
+如果在 Nginx 设置中配置了 `TestConfigCmd`、`ReloadCmd` 或 `RestartCmd`，Nginx UI 会以 SSH 用户身份通过 `/bin/sh -c` 在宿主机上执行这些命令，而不是内置的 systemd 或 launchd 命令。除非生成的 sudoers 条目覆盖了这些命令所调用的程序，否则请保持为空。
+:::
 
 ## 故障排查
 
@@ -213,7 +246,7 @@ ssh-keyscan -p 22 host.docker.internal
 nginx-ui host-setup keygen --out /etc/nginx-ui/host_key
 ```
 
-输出全部配置片段：
+输出全部配置片段（`--access-mode` 为必填）：
 
 ```bash
 nginx-ui host-setup print --host-address host.docker.internal:22 --host-user nginxui --access-mode sftp
@@ -233,6 +266,8 @@ nginx-ui host-setup print --host-address host.docker.internal:22 --host-user ngi
 ```bash
 nginx-ui host-setup test
 ```
+
+与向导不同，`test` 会运行全部检查组：连接、平台、权限和 nginx。
 
 ## 相关文档
 
