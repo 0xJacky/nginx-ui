@@ -183,3 +183,42 @@ func TestDuplicateRejectsBinarySiteContent(t *testing.T) {
 		t.Fatalf("Duplicate expected cosy error, got %v", err)
 	}
 }
+
+// A regular file in sites-enabled (copied config, restored backup) used to be
+// re-linked on rename just like a symlink. Gating on symlink mode alone left
+// the stale file serving the old content under the old name.
+func TestRenameRelinksRegularFileInEnabledDir(t *testing.T) {
+	confDir, waitForSyncQuery := setupSiteMutationTest(t)
+
+	availableDir := filepath.Join(confDir, "sites-available")
+	enabledDir := filepath.Join(confDir, "sites-enabled")
+	if err := os.WriteFile(filepath.Join(availableDir, "old.example.com"), []byte("server {\n}\n"), 0o644); err != nil {
+		t.Fatalf("failed to seed site config: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(enabledDir, "old.example.com"), []byte("server {\n}\n"), 0o644); err != nil {
+		t.Fatalf("failed to seed enabled copy: %v", err)
+	}
+
+	if err := Rename("old.example.com", "new.example.com"); err != nil {
+		t.Fatalf("Rename returned error: %v", err)
+	}
+	waitForSyncQuery()
+
+	if _, err := os.Lstat(filepath.Join(enabledDir, "old.example.com")); !errors.Is(err, os.ErrNotExist) {
+		t.Fatalf("expected the stale enabled file to be removed, got %v", err)
+	}
+	info, err := os.Lstat(filepath.Join(enabledDir, "new.example.com"))
+	if err != nil {
+		t.Fatalf("expected relinked enabled entry: %v", err)
+	}
+	if info.Mode()&os.ModeSymlink == 0 {
+		t.Fatalf("expected enabled entry to be a symlink, got mode %v", info.Mode())
+	}
+	target, err := os.Readlink(filepath.Join(enabledDir, "new.example.com"))
+	if err != nil {
+		t.Fatalf("failed to read relinked entry: %v", err)
+	}
+	if target != filepath.Join(availableDir, "new.example.com") {
+		t.Fatalf("relinked entry points at %q, want the renamed available file", target)
+	}
+}

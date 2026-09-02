@@ -57,12 +57,15 @@ func Rename(oldName string, newName string) (err error) {
 		return err
 	}
 
+	// Any entry in the enabled tree counts, not only a symlink: a copied
+	// config or a restored backup leaves a regular file there, and leaving it
+	// behind would keep serving the old content under the old name.
 	relinked := false
-	symlinkExists, err := nginx.SymlinkExists(oldEnabledConfigFilePath)
+	enabledEntryExists, err := nginx.EntryExists(oldEnabledConfigFilePath)
 	if err != nil {
 		return err
 	}
-	if symlinkExists {
+	if enabledEntryExists {
 		_ = nginx.Remove(oldEnabledConfigFilePath)
 		var newEnabledConfigFilePath string
 		newEnabledConfigFilePath, err = ResolveEnabledPath(newName)

@@ -334,6 +334,20 @@ func Exists(path string) (bool, error) {
 	return false, err
 }
 
+// EntryExists reports whether any directory entry lives at path, including a
+// dangling symlink. Exists follows symlinks and misses those, SymlinkExists
+// misses regular files.
+func EntryExists(path string) (bool, error) {
+	_, err := Lstat(path)
+	if err == nil {
+		return true, nil
+	}
+	if os.IsNotExist(err) {
+		return false, nil
+	}
+	return false, err
+}
+
 func SymlinkExists(path string) (bool, error) {
 	info, err := Lstat(path)
 	if err == nil {
