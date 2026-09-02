@@ -23,7 +23,6 @@ const checkLabels: Record<string, () => string> = {
   log_dir_readable: () => $gettext('nginx log directory is readable'),
   nginx_test: () => $gettext('nginx -t passes'),
   pid_file_present: () => $gettext('nginx PID file is present'),
-  platform: () => $gettext('Host platform'),
   same_host: () => $gettext('Target is the container host'),
   ssh_connect: () => $gettext('SSH connection'),
   sudo_available: () => $gettext('Passwordless sudo is available'),
