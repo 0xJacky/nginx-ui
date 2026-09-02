@@ -93,3 +93,20 @@ func TestBuildCommandNeutralisesShellMetacharacters(t *testing.T) {
 		})
 	}
 }
+
+// /usr/bin/test only exists on Linux, so the existence probe must use the
+// /bin/test path that both Linux and macOS hosts provide.
+func TestStatCommandUsesPortableTestBinary(t *testing.T) {
+	name, args := statCommand("/var/run/nginx.pid")
+	if name != "/bin/test" {
+		t.Fatalf("statCommand() binary = %q, want /bin/test", name)
+	}
+	want := []string{"-e", "/var/run/nginx.pid"}
+	if len(args) != len(want) || args[0] != want[0] || args[1] != want[1] {
+		t.Fatalf("statCommand() args = %v, want %v", args, want)
+	}
+	got := buildCommand(Config{SudoPrefix: "sudo -n"}, name, args)
+	if got != "/bin/test -e /var/run/nginx.pid" {
+		t.Fatalf("buildCommand(stat) = %q, want an unprivileged /bin/test probe", got)
+	}
+}

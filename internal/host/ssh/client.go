@@ -254,11 +254,21 @@ func (c *Client) Exec(ctx context.Context, name string, args ...string) (string,
 	}
 }
 
+// remoteTestBinary is the absolute path of test(1) on the SSH host. Both Linux
+// and macOS ship it at /bin/test, whereas /usr/bin/test only exists on Linux.
+const remoteTestBinary = "/bin/test"
+
+// statCommand builds the probe Stat runs on the host.
+func statCommand(path string) (string, []string) {
+	return remoteTestBinary, []string{"-e", path}
+}
+
 // Stat checks remote file existence via a tiny `test -e` invocation.
 func (c *Client) Stat(path string) bool {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
-	_, err := c.Exec(ctx, "/usr/bin/test", "-e", path)
+	name, args := statCommand(path)
+	_, err := c.Exec(ctx, name, args...)
 	return err == nil
 }
 
