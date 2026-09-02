@@ -2,7 +2,6 @@ package certificate
 
 import (
 	"net/http"
-	"os"
 	"path/filepath"
 	"strings"
 
@@ -75,7 +74,7 @@ func GenerateSelfSignedCert(c *gin.Context) {
 
 	if err = writeSelfSignedFiles(certPath, keyPath, opts); err != nil {
 		// remove the partial directory so a failed generation leaves no orphan files
-		if rmErr := os.RemoveAll(dir); rmErr != nil {
+		if rmErr := nginx.RemoveAll(dir); rmErr != nil {
 			logger.Errorf("self-signed cert directory cleanup failed for id %d at %s: %v",
 				certModel.ID, dir, rmErr)
 		}
@@ -99,7 +98,7 @@ func GenerateSelfSignedCert(c *gin.Context) {
 	}).Error; err != nil {
 		logger.Errorf("self-signed cert id %d generated at %s but persisting paths failed: %v",
 			certModel.ID, dir, err)
-		if rmErr := os.RemoveAll(dir); rmErr != nil {
+		if rmErr := nginx.RemoveAll(dir); rmErr != nil {
 			logger.Errorf("self-signed cert directory cleanup failed for id %d at %s: %v",
 				certModel.ID, dir, rmErr)
 		}

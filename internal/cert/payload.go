@@ -57,21 +57,26 @@ func (c *ConfigPayload) GetKeyType() certcrypto.KeyType {
 	return helper.GetKeyType(c.KeyType)
 }
 
+// mkCertificateDir creates the certificate directory on the nginx target
+// filesystem, which is the remote host in host_via_ssh + sftp mode.
 func (c *ConfigPayload) mkCertificateDir() (err error) {
 	dir := c.getCertificateDirPath()
-	if !helper.FileExists(dir) {
-		err = os.MkdirAll(dir, 0755)
-		if err == nil {
-			return nil
-		}
-	} else {
+	exists, err := nginx.Exists(dir)
+	if err != nil {
+		return err
+	}
+	if exists {
+		return nil
+	}
+	err = nginx.MkdirAll(dir, 0755)
+	if err == nil {
 		return nil
 	}
 
 	// For windows, replace * with # (issue #403)
 	c.CertificateDir = strings.ReplaceAll(c.CertificateDir, "*", "#")
-	if _, err = os.Stat(c.CertificateDir); os.IsNotExist(err) {
-		err = os.MkdirAll(c.CertificateDir, 0755)
+	if _, err = nginx.Stat(c.CertificateDir); os.IsNotExist(err) {
+		err = nginx.MkdirAll(c.CertificateDir, 0755)
 		if err == nil {
 			return nil
 		}
@@ -118,7 +123,7 @@ func (c *ConfigPayload) WriteFile(l *Logger) error {
 
 	// The private key does not necessarily live next to the certificate when the
 	// paths are reused from an existing record.
-	if err = os.MkdirAll(filepath.Dir(c.GetCertificateKeyPath()), 0755); err != nil {
+	if err = nginx.MkdirAll(filepath.Dir(c.GetCertificateKeyPath()), 0755); err != nil {
 		return cosy.WrapErrorWithParams(ErrMakeCertificateDir, err.Error())
 	}
 
