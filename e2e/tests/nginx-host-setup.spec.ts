@@ -27,7 +27,7 @@ function controlModeItem(page: Page) {
   return page.locator('.ant-form-item').filter({ has: page.getByText('Nginx Control Mode', { exact: true }) }).first()
 }
 
-test('Nginx control mode exposes Host via SSH and switches the summary tag without saving', async ({ page }) => {
+test('Nginx control mode stays read-only until Edit passes the 2FA guard', async ({ page }) => {
   const requests = trackApiRequests(page)
 
   await gotoRoute(page, '/preference')
@@ -36,31 +36,25 @@ test('Nginx control mode exposes Host via SSH and switches the summary tag witho
   const item = controlModeItem(page)
   await expect(item).toBeVisible()
   await expect(item.locator('.ant-tag').filter({ hasText: /^Local$/ })).toBeVisible()
+  const editButton = item.getByRole('button', { name: /Edit/ })
+  await expect(editButton).toBeVisible()
 
-  const localRadio = item.getByRole('radio', { name: 'Local / Bundled' })
-  const containerRadio = item.getByRole('radio', { name: 'External Container' })
-  const sshRadio = item.getByRole('radio', { name: 'Host via SSH' })
-  await expect(localRadio).toBeVisible()
-  await expect(containerRadio).toBeVisible()
-  await expect(sshRadio).toBeVisible()
-  await expect(localRadio).toBeChecked()
-
-  await sshRadio.check()
-  await expect(sshRadio).toBeChecked()
-  await expect(item.locator('.ant-tag').filter({ hasText: 'Host via SSH' })).toBeVisible()
-  await expect(item.locator('.ant-tag').filter({ hasText: /^Local$/ })).toHaveCount(0)
-
-  await localRadio.check()
-  await expect(localRadio).toBeChecked()
-  await expect(item.locator('.ant-tag').filter({ hasText: /^Local$/ })).toBeVisible()
+  // The mode radios only mount in edit mode, so the read-only view cannot
+  // mutate the settings store without going through the guarded Edit flow.
+  await expect(item.locator('.ant-radio-group')).toHaveCount(0)
+  await expect(item.getByRole('radio')).toHaveCount(0)
 
   // Editing the control mode is protected by a secure session. With 2FA
   // disabled on the demo account the UI guides to 2FA settings instead.
-  await item.getByRole('button', { name: /Edit/ }).click()
+  await editButton.click()
   const guard = page.locator('.ant-modal').filter({ hasText: 'Two-factor authentication required' })
   await expect(guard).toBeVisible()
   await guard.getByRole('button', { name: 'Cancel', exact: true }).click()
   await expect(guard).toBeHidden()
+
+  // The guard cancelled the edit, so the view stays read-only.
+  await expect(item.locator('.ant-tag').filter({ hasText: /^Local$/ })).toBeVisible()
+  await expect(item.getByRole('radio')).toHaveCount(0)
 
   expectReadOnlyTraffic(requests)
 })

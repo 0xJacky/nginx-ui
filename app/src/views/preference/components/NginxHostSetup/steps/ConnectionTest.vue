@@ -47,9 +47,9 @@ async function testConnection() {
     connectionError.value = getErrorMessage(error)
   }
   finally {
-    // Always clear the flag. The stale check above already stops a late
-    // response from writing its result.
-    isTestingConnection.value = false
+    // A stale run must not clear the loading state of a newer test.
+    if (requestID === testRequestID)
+      isTestingConnection.value = false
   }
 }
 </script>

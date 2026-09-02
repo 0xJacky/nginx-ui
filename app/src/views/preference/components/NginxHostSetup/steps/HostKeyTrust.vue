@@ -5,6 +5,7 @@ import { computed, onActivated, ref, watch } from 'vue'
 import hostSetup from '@/api/host_setup'
 import { getErrorMessage } from '@/lib/http'
 import CodeBlock from '../CodeBlock.vue'
+import { parseHostAddress } from '../hostAddress'
 
 const props = defineProps<{ params: SetupParams }>()
 const emit = defineEmits<{ invalidated: [] }>()
@@ -42,24 +43,6 @@ function keyID(key: HostKeyScanItem) {
 
 function shellQuote(value: string) {
   return `'${value.replaceAll('\'', '\'"\'"\'')}'`
-}
-
-function parseHostAddress(address: string) {
-  const bracketed = address.match(/^\[([^\]]+)\](?::(\d+))?$/)
-  if (bracketed) {
-    return {
-      host: bracketed[1],
-      port: bracketed[2] ?? '22',
-    }
-  }
-
-  const colonCount = (address.match(/:/g) ?? []).length
-  if (colonCount === 1) {
-    const [host, port] = address.split(':')
-    return { host, port: port || '22' }
-  }
-
-  return { host: address, port: '22' }
 }
 
 function sshKeyscanCommand() {
@@ -127,7 +110,9 @@ async function scan(useManual = false) {
     scanError.value = getErrorMessage(error)
   }
   finally {
-    scanning.value = false
+    // A stale run must not clear the loading state of a newer scan.
+    if (currentScan === scanID)
+      scanning.value = false
   }
 }
 

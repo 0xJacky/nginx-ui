@@ -117,8 +117,10 @@ async function loadPublicKey(showError = true) {
     if (isKeyMissing(error)) {
       // A missing key is a normal starting state, not a failure to report.
       isKeyStateKnown.value = true
+      // The 404 carries no message, so a dedicated text replaces the raw
+      // transport error.
       if (showError)
-        keyError.value = getErrorMessage(error)
+        keyError.value = $gettext('No private key was found at this path')
       return
     }
     isKeyStateKnown.value = false

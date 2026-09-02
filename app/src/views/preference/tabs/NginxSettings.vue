@@ -254,7 +254,7 @@ async function openSSHSetup() {
           </AButton>
         </template>
       </AAlert>
-      <template v-else>
+      <template v-if="isEditingControl">
         <ARadioGroup
           :value="selectedMode"
           @update:value="onModeChange"

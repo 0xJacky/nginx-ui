@@ -4,6 +4,7 @@ import { CheckCircleOutlined, ReloadOutlined } from '@ant-design/icons-vue'
 import { computed, onActivated, ref } from 'vue'
 import hostSetup from '@/api/host_setup'
 import { getErrorMessage } from '@/lib/http'
+import { parseHostAddress } from '../hostAddress'
 import { useHostSetupWizard } from '../useHostSetupWizard'
 import AuthenticationMethod from './AuthenticationMethod.vue'
 
@@ -67,7 +68,9 @@ onActivated(() => {
 const remoteWarning = computed(() => {
   if (params.value.access_mode !== 'mounted')
     return false
-  const host = (hostInput.value.split(':')[0] || '').trim()
+  // Bracketed IPv6 literals such as [::1]:22 must resolve to the address, not
+  // to the opening bracket.
+  const host = parseHostAddress(hostInput.value.trim()).host.trim()
   if (!host || host === 'host.docker.internal' || host === 'localhost' || host === '::1')
     return false
   if (/^127\./.test(host))
