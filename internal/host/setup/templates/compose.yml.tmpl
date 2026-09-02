@@ -1,5 +1,7 @@
 services:
   nginx-ui:
+    environment:
+      - NGINX_UI_DISABLE_BUNDLED_NGINX=true
 {{- if .NeedsHostGatewayMapping }}
     extra_hosts:
       - "host.docker.internal:host-gateway"

@@ -1,4 +1,5 @@
 docker run -d --name nginx-ui --restart unless-stopped \
+  -e NGINX_UI_DISABLE_BUNDLED_NGINX=true \
 {{- if .NeedsHostGatewayMapping }}
   --add-host host.docker.internal:host-gateway \
 {{- end }}

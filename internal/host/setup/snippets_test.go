@@ -12,6 +12,17 @@ import (
 
 const validTestPublicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO454D849GN2Zq8wjHlWTNASj7K2nrLafkq1H+Rv8Xbx nginx-ui@generated"
 
+// disableBundledNginxEnv is the only NGINX_UI_ variable a container snippet may
+// carry: it is a container runtime toggle, not an application setting, and the
+// docs promise the generated snippets set it.
+const disableBundledNginxEnv = "NGINX_UI_DISABLE_BUNDLED_NGINX=true"
+
+// stripAllowedEnv removes the bundled nginx toggle so the remaining output can
+// be checked for application settings leaking into the snippets.
+func stripAllowedEnv(out string) string {
+	return strings.ReplaceAll(out, disableBundledNginxEnv, "")
+}
+
 func sampleParams() SetupParams {
 	return SetupParams{
 		HostAddress:      "host.docker.internal:22",
@@ -91,7 +102,10 @@ func TestRenderContainerSnippetsDoNotRepeatApplicationSettings(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			if strings.Contains(out, "NGINX_UI_") {
+			if !strings.Contains(out, disableBundledNginxEnv) {
+				t.Fatalf("container snippet does not disable the bundled nginx:\n%s", out)
+			}
+			if strings.Contains(stripAllowedEnv(out), "NGINX_UI_") {
 				t.Fatalf("container snippet repeats application settings as environment variables:\n%s", out)
 			}
 		})
@@ -136,7 +150,7 @@ func TestRenderLaunchdCompose(t *testing.T) {
 			t.Errorf("launchd compose missing %q:\n%s", want, out)
 		}
 	}
-	if strings.Contains(out, "extra_hosts") || strings.Contains(out, "NGINX_UI_") {
+	if strings.Contains(out, "extra_hosts") || strings.Contains(stripAllowedEnv(out), "NGINX_UI_") {
 		t.Fatalf("launchd compose contains runtime mapping or application settings:\n%s", out)
 	}
 }
