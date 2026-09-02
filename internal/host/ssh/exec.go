@@ -33,9 +33,13 @@ func needsSudo(cfg Config, name string, args []string) bool {
 	return false
 }
 
-// shellQuote single-quotes s for /bin/sh execution. Inner single quotes are
-// escaped via the standard '\” trick.
-func shellQuote(s string) string {
+// ShellQuote quotes s as a single POSIX shell word. Tokens made only of
+// characters no shell interprets are returned bare so commands stay readable;
+// anything else is single-quoted, with an inner single quote written as a
+// closing quote, a backslash-escaped quote and a reopening quote. It is the
+// one quoting rule for commands executed over SSH and for the copy-and-paste
+// snippets the setup wizard renders, so both agree on every value.
+func ShellQuote(s string) string {
 	if s == "" {
 		return "''"
 	}
@@ -76,14 +80,14 @@ func buildCommand(cfg Config, name string, args []string) string {
 			if i > 0 {
 				b.WriteByte(' ')
 			}
-			b.WriteString(shellQuote(tok))
+			b.WriteString(ShellQuote(tok))
 		}
 		b.WriteByte(' ')
 	}
-	b.WriteString(shellQuote(name))
+	b.WriteString(ShellQuote(name))
 	for _, a := range args {
 		b.WriteByte(' ')
-		b.WriteString(shellQuote(a))
+		b.WriteString(ShellQuote(a))
 	}
 	return b.String()
 }

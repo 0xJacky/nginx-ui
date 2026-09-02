@@ -7,6 +7,7 @@ import (
 	"strings"
 	"text/template"
 
+	hostssh "github.com/0xJacky/Nginx-UI/internal/host/ssh"
 	"github.com/uozi-tech/cosy"
 )
 
@@ -29,13 +30,9 @@ type Rendered struct {
 	SudoersRequired bool `json:"sudoers_required"`
 }
 
-// shellQuote wraps a value in single quotes so a public key comment cannot
-// break out of the generated command.
-func shellQuote(value string) string {
-	return "'" + strings.ReplaceAll(value, "'", `'"'"'`) + "'"
-}
-
-var templateFuncs = template.FuncMap{"shellQuote": shellQuote}
+// shellQuote is the same rule the SSH client applies to executed commands, so
+// a value the wizard pastes into a shell is quoted exactly as one it runs.
+var templateFuncs = template.FuncMap{"shellQuote": hostssh.ShellQuote}
 
 func renderTemplate(name string, p SetupParams) (string, error) {
 	t, err := template.New(name).Funcs(templateFuncs).ParseFS(templateFS, "templates/"+name)

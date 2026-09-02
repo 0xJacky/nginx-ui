@@ -3,6 +3,7 @@ package setup
 import (
 	"errors"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -268,8 +269,30 @@ func TestRenderAuthorizedKeysInstallQuotesTheKey(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !strings.Contains(out, `'ssh-ed25519 AAAA it'"'"'s mine'`) {
+	if !strings.Contains(out, `'ssh-ed25519 AAAA it'\''s mine'`) {
 		t.Fatalf("single quote was not escaped:\n%s", out)
+	}
+	// The snippet is pasted into a shell, so prove the shell reads the key
+	// back as one literal line on both the sudo and the plain variant.
+	const prefix = "printf '%s\\n' "
+	for _, line := range strings.Split(out, "\n") {
+		if !strings.HasPrefix(line, prefix) {
+			continue
+		}
+		quoted := strings.TrimPrefix(line, prefix)
+		if i := strings.Index(quoted, " |"); i >= 0 {
+			quoted = quoted[:i]
+		}
+		if i := strings.Index(quoted, " >>"); i >= 0 {
+			quoted = quoted[:i]
+		}
+		got, err := exec.Command("/bin/sh", "-c", "printf '%s' "+quoted).Output()
+		if err != nil {
+			t.Fatalf("running %q: %v", line, err)
+		}
+		if string(got) != p.PublicKeyOpenSSH {
+			t.Fatalf("shell read %q, want %q", got, p.PublicKeyOpenSSH)
+		}
 	}
 }
 
