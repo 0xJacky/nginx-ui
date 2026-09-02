@@ -18,11 +18,14 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+// The rules themselves are covered in internal/host/setup; this only checks
+// that the payload is mapped onto the validator and the scoped error is
+// returned unchanged.
 func TestValidateNginxControlSettings(t *testing.T) {
 	tests := []struct {
 		name    string
 		payload nginxControlSettingsPayload
-		wantErr string
+		wantErr error
 	}{
 		{name: "local", payload: nginxControlSettingsPayload{Mode: appsettings.ControlModeLocal}},
 		{
@@ -35,7 +38,7 @@ func TestValidateNginxControlSettings(t *testing.T) {
 		{
 			name:    "external container requires name",
 			payload: nginxControlSettingsPayload{Mode: appsettings.ControlModeExternalContainer},
-			wantErr: "container name is required",
+			wantErr: hostsetup.ErrContainerNameRequired,
 		},
 		{
 			name: "external container rejects invalid name",
@@ -43,7 +46,7 @@ func TestValidateNginxControlSettings(t *testing.T) {
 				Mode:          appsettings.ControlModeExternalContainer,
 				ContainerName: "nginx container",
 			},
-			wantErr: "invalid characters",
+			wantErr: hostsetup.ErrInvalidContainerName,
 		},
 		{
 			name: "ssh",
@@ -62,20 +65,52 @@ func TestValidateNginxControlSettings(t *testing.T) {
 		{
 			name:    "ssh requires connection",
 			payload: nginxControlSettingsPayload{Mode: appsettings.ControlModeHostViaSSH},
-			wantErr: "host address and user are required",
+			wantErr: hostsetup.ErrSSHConnectionRequired,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			err := validateNginxControlSettings(tt.payload)
-			if tt.wantErr == "" {
+			if tt.wantErr == nil {
 				require.NoError(t, err)
 				return
 			}
-			require.ErrorContains(t, err, tt.wantErr)
+			require.ErrorIs(t, err, tt.wantErr)
 		})
 	}
+}
+
+func TestSaveNginxControlSettingsRejectsInvalidPayloadWithScopedError(t *testing.T) {
+	originalUpdate := updateNginxControlSettings
+	t.Cleanup(func() {
+		updateNginxControlSettings = originalUpdate
+	})
+	updateNginxControlSettings = func(nginxControlSettingsPayload) error {
+		t.Fatal("invalid payload reached storage")
+		return nil
+	}
+
+	body, err := json.Marshal(nginxControlSettingsPayload{Mode: appsettings.ControlModeExternalContainer})
+	require.NoError(t, err)
+	w := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(w)
+	c.Set(middleware.SecureSessionVerifiedKey, true)
+	c.Request = httptest.NewRequest(http.MethodPost, "/api/settings/nginx/control", bytes.NewReader(body))
+	c.Request.Header.Set("Content-Type", "application/json")
+
+	SaveNginxControlSettings(c)
+
+	assert.Equal(t, http.StatusBadRequest, w.Code)
+	var resp struct {
+		Scope   string `json:"scope"`
+		Code    int32  `json:"code"`
+		Message string `json:"message"`
+	}
+	require.NoError(t, json.Unmarshal(w.Body.Bytes(), &resp))
+	assert.Equal(t, "host_setup", resp.Scope)
+	assert.Equal(t, int32(520020), resp.Code)
+	assert.Equal(t, hostsetup.ErrContainerNameRequired.Error(), resp.Message)
 }
 
 func TestNormalizeNginxControlSettingsInfersLegacyKeySource(t *testing.T) {

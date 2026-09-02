@@ -3,7 +3,6 @@ package settings
 import (
 	"errors"
 	"net/http"
-	"regexp"
 	"strings"
 
 	hostsetup "github.com/0xJacky/Nginx-UI/internal/host/setup"
@@ -12,8 +11,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
 )
-
-var containerNamePattern = regexp.MustCompile(`^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`)
 
 const maxPastedPrivateKeySize = 64 * 1024
 
@@ -81,48 +78,37 @@ func normalizeNginxControlSettings(payload nginxControlSettingsPayload) nginxCon
 	return payload
 }
 
-func validateNginxControlSettings(payload nginxControlSettingsPayload) error {
-	switch payload.Mode {
-	case appsettings.ControlModeLocal:
-		return nil
-	case appsettings.ControlModeExternalContainer:
-		if payload.ContainerName == "" {
-			return errors.New("container name is required for external container mode")
-		}
-		if len(payload.ContainerName) > 255 || !containerNamePattern.MatchString(payload.ContainerName) {
-			return errors.New("container name contains invalid characters")
-		}
-		return nil
-	case appsettings.ControlModeHostViaSSH:
-		if payload.HostAddress == "" || payload.HostUser == "" {
-			return errors.New("host address and user are required for SSH mode")
-		}
-		if err := hostsetup.ValidateHostUser(payload.HostUser); err != nil {
-			return err
-		}
-		if payload.HostAccessMode != appsettings.HostAccessModeSFTP &&
-			payload.HostAccessMode != appsettings.HostAccessModeMounted {
-			return hostsetup.ErrInvalidAccessMode
-		}
-		if payload.HostAuthMethod != "key" {
-			return errors.New("SSH mode requires key authentication")
-		}
-		if payload.HostKeySource != appsettings.HostKeySourceGenerated &&
-			payload.HostKeySource != appsettings.HostKeySourceExisting &&
-			payload.HostKeySource != appsettings.HostKeySourceProvided {
-			return errors.New("SSH mode requires a valid private key source")
-		}
-		if payload.HostPrivateKeyPath == "" || payload.HostKnownHostsPath == "" {
-			return errors.New("private key and known hosts paths are required for SSH mode")
-		}
-		if payload.HostServiceManager != appsettings.HostServiceManagerSystemd &&
-			payload.HostServiceManager != appsettings.HostServiceManagerLaunchd {
-			return errors.New("SSH mode requires a supported service manager")
-		}
-		return nil
-	default:
-		return errors.New("invalid nginx control mode")
+// controlSettings extracts the mode-dependent fields the validator inspects.
+func controlSettings(payload nginxControlSettingsPayload) hostsetup.ControlSettings {
+	return hostsetup.ControlSettings{
+		Mode:               payload.Mode,
+		ContainerName:      payload.ContainerName,
+		HostAddress:        payload.HostAddress,
+		HostUser:           payload.HostUser,
+		HostAccessMode:     payload.HostAccessMode,
+		HostAuthMethod:     payload.HostAuthMethod,
+		HostKeySource:      payload.HostKeySource,
+		HostPrivateKeyPath: payload.HostPrivateKeyPath,
+		HostKnownHostsPath: payload.HostKnownHostsPath,
+		HostServiceManager: payload.HostServiceManager,
 	}
+}
+
+func validateNginxControlSettings(payload nginxControlSettingsPayload) error {
+	return hostsetup.ValidateControlSettings(controlSettings(payload))
+}
+
+// abortBadRequest answers a validation failure with 400 while keeping the
+// cosy scope and code so the frontend can map the message to a translation.
+// cosy.ErrHandler would report the same body as 500, which is wrong for
+// input the operator can correct.
+func abortBadRequest(c *gin.Context, err error) {
+	var cErr *cosy.Error
+	if errors.As(err, &cErr) {
+		c.AbortWithStatusJSON(http.StatusBadRequest, cErr)
+		return
+	}
+	c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 }
 
 func applyNginxControlSettings(target *appsettings.Nginx, payload nginxControlSettingsPayload) {
@@ -234,7 +220,7 @@ func SaveNginxControlSettings(c *gin.Context) {
 	}
 	payload = normalizeNginxControlSettings(payload)
 	if err := validateNginxControlSettings(payload); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		abortBadRequest(c, err)
 		return
 	}
 
