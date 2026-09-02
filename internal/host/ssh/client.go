@@ -8,6 +8,7 @@ import (
 	"net"
 	"os"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/pkg/sftp"
@@ -38,6 +39,12 @@ type Client struct {
 	// closed is terminal. Without it a discarded client would silently redial
 	// the old host with the options captured when it was built.
 	closed bool
+	// lastProbe is the wall-clock time (UnixNano) of the last request the
+	// cached connection answered. connectLocked only sends a synchronous probe
+	// when this is older than the keepalive interval, so a healthy connection
+	// that the keepalive goroutine is already exercising costs Exec and SFTP
+	// callers no extra round trip.
+	lastProbe atomic.Int64
 }
 
 // synchronizedBuffer is safe for SSH's concurrent stdout and extended-data
@@ -103,8 +110,24 @@ func (c *Client) dial(ctx context.Context) (*gossh.Client, error) {
 		return nil, cosy.WrapErrorWithParams(ErrAuthFailed, err.Error())
 	}
 	client := gossh.NewClient(sshConn, chans, reqs)
+	c.markProbed()
 	go c.keepalive(client)
 	return client, nil
+}
+
+// markProbed records that the cached connection just answered a request.
+func (c *Client) markProbed() {
+	c.lastProbe.Store(time.Now().UnixNano())
+}
+
+// needsProbe reports whether the cached connection has gone unverified for
+// longer than the keepalive interval and must be probed before reuse.
+func (c *Client) needsProbe(now time.Time) bool {
+	last := c.lastProbe.Load()
+	if last == 0 {
+		return true
+	}
+	return now.Sub(time.Unix(0, last)) >= c.opts.KeepAlive
 }
 
 func (c *Client) hostKeyCallback() (gossh.HostKeyCallback, error) {
@@ -165,27 +188,27 @@ func (c *Client) keepalive(client *gossh.Client) {
 			logger.Warn("ssh keepalive failed; client will reconnect on next Exec", "err", err)
 			return
 		}
+		c.markProbed()
 	}
 }
 
-// connect returns a healthy client, reconnecting if the cached one is dead.
-// Holds the mutex across dial so concurrent callers serialize on reconnect
-// rather than racing to overwrite c.conn.
+// connectLocked returns a healthy client, reconnecting if the cached one is
+// dead. The caller holds c.mu across dial so concurrent callers serialize on
+// reconnect rather than racing to overwrite c.conn.
 func (c *Client) connectLocked(ctx context.Context) (*gossh.Client, error) {
 	if c.closed {
 		return nil, ErrClientClosed
 	}
 
 	if c.conn != nil {
-		if alive(ctx, c.conn, c.opts.KeepAlive) {
+		if !c.needsProbe(time.Now()) {
 			return c.conn, nil
 		}
-		if c.sftp != nil {
-			_ = c.sftp.Close()
-			c.sftp = nil
+		if alive(ctx, c.conn, c.opts.KeepAlive) {
+			c.markProbed()
+			return c.conn, nil
 		}
-		_ = c.conn.Close()
-		c.conn = nil
+		c.dropLocked()
 	}
 
 	conn, err := c.dial(ctx)
@@ -196,10 +219,38 @@ func (c *Client) connectLocked(ctx context.Context) (*gossh.Client, error) {
 	return conn, nil
 }
 
+// dropLocked discards the cached connection and its SFTP session.
+func (c *Client) dropLocked() {
+	if c.sftp != nil {
+		_ = c.sftp.Close()
+		c.sftp = nil
+	}
+	if c.conn != nil {
+		_ = c.conn.Close()
+		c.conn = nil
+	}
+}
+
+// redialLocked replaces stale, a connection that just failed to open a
+// session, with a fresh one. A connection another caller has already
+// replaced is left alone so the newer one is not torn down by mistake.
+func (c *Client) redialLocked(ctx context.Context, stale *gossh.Client) (*gossh.Client, error) {
+	if c.conn == stale {
+		c.dropLocked()
+	}
+	return c.connectLocked(ctx)
+}
+
 func (c *Client) connect(ctx context.Context) (*gossh.Client, error) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 	return c.connectLocked(ctx)
+}
+
+func (c *Client) redial(ctx context.Context, stale *gossh.Client) (*gossh.Client, error) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	return c.redialLocked(ctx, stale)
 }
 
 // SFTP returns an SFTP session bound to the current verified SSH connection.
@@ -219,7 +270,16 @@ func (c *Client) SFTP(ctx context.Context) (*sftp.Client, error) {
 
 	client, err := sftp.NewClient(conn)
 	if err != nil {
-		return nil, fmt.Errorf("start sftp subsystem: %w", err)
+		// The connection may have died since the last probe; one redial
+		// keeps the recovery transparent without looping on a bad host.
+		conn, err = c.redialLocked(ctx, conn)
+		if err != nil {
+			return nil, err
+		}
+		client, err = sftp.NewClient(conn)
+		if err != nil {
+			return nil, fmt.Errorf("start sftp subsystem: %w", err)
+		}
 	}
 	c.sftp = client
 	return client, nil
@@ -233,7 +293,16 @@ func (c *Client) Exec(ctx context.Context, name string, args ...string) (string,
 	}
 	sess, err := conn.NewSession()
 	if err != nil {
-		return "", cosy.WrapErrorWithParams(ErrSessionFailed, err.Error())
+		// The connection may have died since the last probe; one redial
+		// keeps the recovery transparent without looping on a bad host.
+		conn, err = c.redial(ctx, conn)
+		if err != nil {
+			return "", err
+		}
+		sess, err = conn.NewSession()
+		if err != nil {
+			return "", cosy.WrapErrorWithParams(ErrSessionFailed, err.Error())
+		}
 	}
 	defer sess.Close()
 
@@ -247,6 +316,12 @@ func (c *Client) Exec(ctx context.Context, name string, args ...string) (string,
 
 	select {
 	case err := <-done:
+		// A completed session proves the connection is good even when the
+		// command itself exited non-zero; any other failure may be the link.
+		var exitErr *gossh.ExitError
+		if err == nil || errors.As(err, &exitErr) {
+			c.markProbed()
+		}
 		if err != nil {
 			return out.String(), fmt.Errorf("ssh exec %q: %w (stderr: %s)", cmd, err, out.String())
 		}

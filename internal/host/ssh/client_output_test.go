@@ -6,6 +6,9 @@ import (
 	"strings"
 	"sync"
 	"testing"
+	"time"
+
+	gossh "golang.org/x/crypto/ssh"
 )
 
 func TestSynchronizedBufferConcurrentWrites(t *testing.T) {
@@ -46,5 +49,47 @@ func TestClosedClientRefusesToRedial(t *testing.T) {
 	}
 	if !errors.Is(err, ErrClientClosed) && !strings.Contains(err.Error(), "closed") {
 		t.Fatalf("Exec error = %v, want the closed-client error", err)
+	}
+}
+
+// connectLocked must not pay a probe round trip while the keepalive goroutine
+// is already exercising the connection; it only probes once the last success
+// is older than the keepalive interval.
+func TestNeedsProbeOnlyWhenLastSuccessIsStale(t *testing.T) {
+	client := NewClient(ClientOptions{KeepAlive: 30 * time.Second})
+	now := time.Now()
+
+	if !client.needsProbe(now) {
+		t.Fatal("a connection that never answered must be probed")
+	}
+
+	client.markProbed()
+	if client.needsProbe(now) {
+		t.Fatal("a connection that just answered must not be probed again")
+	}
+	if client.needsProbe(now.Add(29 * time.Second)) {
+		t.Fatal("a connection inside the keepalive interval must not be probed")
+	}
+	if !client.needsProbe(now.Add(31 * time.Second)) {
+		t.Fatal("a connection past the keepalive interval must be probed")
+	}
+}
+
+// A redial for a connection that another caller already replaced must keep
+// the newer, recently verified connection instead of tearing it down and
+// dialing again.
+func TestRedialLockedKeepsAlreadyReplacedConnection(t *testing.T) {
+	client := NewClient(ClientOptions{Address: "127.0.0.1:1", KeepAlive: 30 * time.Second})
+	stale := &gossh.Client{}
+	newer := &gossh.Client{}
+	client.conn = newer
+	client.markProbed()
+
+	conn, err := client.redialLocked(context.Background(), stale)
+	if err != nil {
+		t.Fatalf("redialLocked: %v", err)
+	}
+	if conn != newer || client.conn != newer {
+		t.Fatal("redialLocked replaced a connection that was not the stale one")
 	}
 }
