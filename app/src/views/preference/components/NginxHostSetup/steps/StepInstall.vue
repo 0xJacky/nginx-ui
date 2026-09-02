@@ -9,7 +9,7 @@ import CodeBlock from '../CodeBlock.vue'
 import { useHostSetupWizard } from '../useHostSetupWizard'
 import { useLatestRequest } from '../useLatestRequest'
 
-const { isHostSetupPassed, params } = useHostSetupWizard()
+const { isHostSetupPassed, params, requestParams } = useHostSetupWizard()
 
 const snippets = ref<RenderedSnippets | null>(null)
 const activeSide = ref<'host' | 'container'>('host')
@@ -49,7 +49,7 @@ watch(needsContainerChange, needed => {
 })
 
 async function refresh() {
-  await run(() => hostSetup.preview({ ...params.value }), {
+  await run(() => hostSetup.preview(requestParams.value), {
     onSuccess: rendered => {
       snippets.value = rendered
     },

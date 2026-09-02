@@ -8,7 +8,7 @@ import CodeBlock from '../CodeBlock.vue'
 import { parseHostAddress } from '../hostAddress'
 import { useLatestRequest } from '../useLatestRequest'
 
-const props = defineProps<{ params: SetupParams }>()
+const props = defineProps<{ params: Pick<SetupParams, 'host_address' | 'host_user'> }>()
 const emit = defineEmits<{ invalidated: [] }>()
 const trusted = defineModel<boolean>('trusted', { default: false })
 

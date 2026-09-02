@@ -19,7 +19,6 @@ export interface SetupParams {
   host_known_hosts_path?: string
   container_key_path?: string
   container_known_hosts_path?: string
-  key_source?: 'generated' | 'existing' | 'provided'
   use_generated_key?: boolean
   public_key_open_ssh?: string
 }

@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import type { KeySource } from '../useHostSetupWizard'
-import type { SetupParams } from '@/api/host_setup'
+import type { HostSetupParams, KeySource } from '../useHostSetupWizard'
 import {
   CheckCircleOutlined,
   KeyOutlined,
@@ -14,7 +13,7 @@ import settingsApi from '@/api/settings'
 import { getErrorMessage } from '@/lib/http'
 import { useLatestRequest } from '../useLatestRequest'
 
-const params = defineModel<SetupParams>('params', { required: true })
+const params = defineModel<HostSetupParams>('params', { required: true })
 const publicKey = defineModel<string>('publicKey', { default: '' })
 const privateKeyOnce = defineModel<string>('privateKeyOnce', { default: '' })
 const validatedPrivateKeyPath = defineModel<string>('validatedPrivateKeyPath', { default: '' })
@@ -44,17 +43,10 @@ function isKeyMissing(error: unknown): boolean {
   return (error as { response?: { status?: number } })?.response?.status === 404
 }
 
-function normalizeSource(value: string | undefined, useGeneratedKey: boolean | undefined): KeySource {
-  if (value === 'generated' || value === 'existing' || value === 'provided')
-    return value
-  return useGeneratedKey === false ? 'existing' : 'generated'
-}
-
 const keySource = computed<KeySource>({
-  get: () => normalizeSource(params.value.key_source, params.value.use_generated_key),
+  get: () => params.value.key_source,
   set: value => {
     params.value.key_source = value
-    params.value.use_generated_key = value !== 'existing'
     privateKeyOnce.value = ''
     privateKeyInput.value = ''
     keyError.value = ''
@@ -160,7 +152,6 @@ async function saveProvidedKey() {
     onSuccess: response => {
       params.value.container_key_path = response.private_key_path
       params.value.key_source = 'provided'
-      params.value.use_generated_key = true
       publicKey.value = response.public_key
       validatedPrivateKeyPath.value = response.private_key_path
       isKeyStateKnown.value = true

@@ -17,7 +17,7 @@ import { useLatestRequest } from '../useLatestRequest'
 type ServiceManager = NonNullable<SetupParams['service_manager']>
 type HomebrewPrefix = '/opt/homebrew' | '/usr/local'
 
-const { detectedValue, isPlatformReady, params, recordDetected } = useHostSetupWizard()
+const { detectedValue, isPlatformReady, params, recordDetected, requestParams } = useHostSetupWizard()
 
 const linuxPaths = {
   nginx_sbin_path: '/usr/sbin/nginx',
@@ -121,7 +121,7 @@ async function diagnoseTarget() {
   diagnosis.value = null
   const target = params.value.host_address
   const isFirstDiagnosisForTarget = lastDiagnosedHostAddress.value !== target
-  await diagnoseRequest.run(() => hostSetup.diagnose(params.value), {
+  await diagnoseRequest.run(() => hostSetup.diagnose(requestParams.value), {
     onSuccess: result => {
       diagnosis.value = result
       lastDiagnosedHostAddress.value = target
@@ -149,7 +149,7 @@ function applyDetectedSettings() {
 async function rediscoverNginxPaths() {
   const requestedSbinPath = params.value.nginx_sbin_path
   discoverHint.value = ''
-  await discoverRequest.run(() => hostSetup.discover(params.value), {
+  await discoverRequest.run(() => hostSetup.discover(requestParams.value), {
     onSuccess: discovery => {
       // The executable field was edited meanwhile, so these paths describe
       // another binary.

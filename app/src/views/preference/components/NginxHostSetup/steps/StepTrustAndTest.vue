@@ -7,6 +7,7 @@ const {
   isHostIdentityTrusted,
   isSSHConnected,
   params,
+  requestParams,
 } = useHostSetupWizard()
 
 function invalidateConnection() {
@@ -28,7 +29,7 @@ function invalidateConnection() {
 
     <ConnectionTest
       v-model:connected="isSSHConnected"
-      :params="params"
+      :params="requestParams"
       :trusted="isHostIdentityTrusted"
     />
   </div>

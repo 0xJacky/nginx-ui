@@ -36,6 +36,18 @@ export type FieldOrigin = 'detected' | 'overridden' | 'unknown'
 
 export type KeySource = 'generated' | 'existing' | 'provided'
 
+/**
+ * Wizard state. The backend only knows whether the key is managed by Nginx UI,
+ * so `key_source` is folded into `use_generated_key` when a request is built.
+ */
+export interface HostSetupParams extends Omit<SetupParams, 'use_generated_key'> {
+  key_source: KeySource
+}
+
+export function toSetupParams({ key_source, ...params }: HostSetupParams): SetupParams {
+  return { ...params, use_generated_key: key_source !== 'existing' }
+}
+
 const defaultHostPrivateKeyPath = '/etc/nginx-ui/host_key'
 const defaultHostKnownHostsPath = '/etc/nginx-ui/known_hosts'
 
@@ -74,7 +86,7 @@ export function createHostSetupWizard(settings: Ref<Settings>) {
   const publicKey = ref('')
   const privateKeyOnce = ref('')
   const validatedPrivateKeyPath = ref('')
-  const params = ref<SetupParams>({
+  const params = ref<HostSetupParams>({
     host_address: nginx.host_address || 'host.docker.internal:22',
     host_user: nginx.host_user || 'nginxui',
     access_mode: initialAccessMode(nginx),
@@ -90,9 +102,9 @@ export function createHostSetupWizard(settings: Ref<Settings>) {
     container_key_path: configuredPrivateKeyPath,
     container_known_hosts_path: nginx.host_known_hosts_path || defaultHostKnownHostsPath,
     key_source: configuredKeySource,
-    use_generated_key: configuredKeySource !== 'existing',
     public_key_open_ssh: '',
   })
+  const requestParams = computed(() => toSetupParams(params.value))
 
   // Values reported by the target host, used to mark each field as detected or
   // overridden and to restore the detected value.
@@ -128,7 +140,7 @@ export function createHostSetupWizard(settings: Ref<Settings>) {
   })
 
   watch(
-    [() => params.value.container_key_path, () => params.value.use_generated_key],
+    [() => params.value.container_key_path, () => params.value.key_source],
     () => {
       const currentPath = params.value.container_key_path?.trim() ?? ''
       if (validatedPrivateKeyPath.value !== currentPath) {
@@ -265,7 +277,7 @@ export function createHostSetupWizard(settings: Ref<Settings>) {
     target.host_address = params.value.host_address
     target.host_user = params.value.host_user
     target.host_auth_method = authMethod
-    target.host_key_source = params.value.key_source || 'generated'
+    target.host_key_source = params.value.key_source
     target.host_private_key_path = params.value.container_key_path?.trim() || defaultHostPrivateKeyPath
     target.host_known_hosts_path ||= defaultHostKnownHostsPath
     target.host_service_manager = params.value.service_manager
@@ -311,6 +323,7 @@ export function createHostSetupWizard(settings: Ref<Settings>) {
     privateKeyOnce,
     publicKey,
     recordDetected,
+    requestParams,
     restoreDetected,
     validatedPrivateKeyPath,
   }

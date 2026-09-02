@@ -23,7 +23,7 @@ const props = defineProps<{
 }>()
 
 const passed = defineModel<boolean>('passed', { default: false })
-const { params } = useHostSetupWizard()
+const { params, requestParams } = useHostSetupWizard()
 
 const result = ref<VerifyResult | null>(null)
 const { error: runError, invalidate, isLoading: running, reset: resetRequest, run: runRequest } = useLatestRequest()
@@ -54,7 +54,7 @@ watch(params, reset, { deep: true })
 async function run(options: { skipNginxT?: boolean } = {}) {
   reset()
   await runRequest(
-    () => hostSetup.verify({ ...params.value }, { ...options, groups: props.groups }),
+    () => hostSetup.verify(requestParams.value, { ...options, groups: props.groups }),
     {
       onSuccess: response => {
         result.value = response
