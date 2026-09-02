@@ -1,21 +1,27 @@
-//go:build linux
-
 package setup
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net"
 	"os"
 	"path"
+	"runtime"
 	"strconv"
 	"strings"
-	"syscall"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/settings"
-	"golang.org/x/sys/unix"
 )
+
+// errMountedChecksUnsupported is returned by the platform helpers when the
+// build target cannot inspect a bind mount at all. The mounted-only checks
+// turn it into a warning so the operator sees why nothing was confirmed.
+var errMountedChecksUnsupported = errors.New("bind-mount checks are not supported on " + runtime.GOOS)
+
+// errInodeUnavailable is returned when the local stat result carries no inode.
+var errInodeUnavailable = errors.New("could not read the local inode")
 
 // Verify runs the self-check pipeline, optionally limited to a set of groups so
 // a wizard step can validate what it just configured.
@@ -312,11 +318,12 @@ func checkDirAccess(path string, writable bool) StepOutcome {
 	if !info.IsDir() {
 		return StepOutcome{OK: false, Detail: path + " exists but is not a directory"}
 	}
-	mode := unix.W_OK | unix.R_OK
-	if !writable {
-		mode = unix.R_OK
-	}
-	if err := unix.Access(path, uint32(mode)); err != nil {
+	if err := dirAccessible(path, writable); err != nil {
+		if errors.Is(err, errMountedChecksUnsupported) {
+			return StepOutcome{OK: false, Level: "warning",
+				Detail:      path + " exists, but " + err.Error(),
+				Remediation: newStepRemediation(remediationVerifyBindMount)}
+		}
 		return StepOutcome{OK: false, Detail: err.Error(),
 			Remediation: newStepRemediation(remediationReviewInstallPermissions)}
 	}
@@ -356,9 +363,10 @@ func checkSharedPath(ctx context.Context, c CommandRunner, p SetupParams, contai
 	if p.IsLaunchd() {
 		return checkVirtualizedSharedPath(ctx, c, containerPath, hostPath)
 	}
-	local, ok := info.Sys().(*syscall.Stat_t)
-	if !ok {
-		return StepOutcome{OK: false, Level: "warning", Detail: "could not read the local inode"}
+	localIno, err := localInode(info)
+	if err != nil {
+		return StepOutcome{OK: false, Level: "warning", Detail: err.Error(),
+			Remediation: newStepRemediation(remediationVerifyBindMount)}
 	}
 
 	// A bind mount exposes the host inode unchanged, so comparing inodes needs
@@ -376,10 +384,10 @@ func checkSharedPath(ctx context.Context, c CommandRunner, p SetupParams, contai
 		return StepOutcome{OK: false, Level: "warning",
 			Detail: "unexpected stat output for " + hostPath + ": " + strings.TrimSpace(out)}
 	}
-	if remote != local.Ino {
+	if remote != localIno {
 		return StepOutcome{OK: false,
 			Detail: fmt.Sprintf("%s and host %s are different directories (inode %d vs %d)",
-				containerPath, hostPath, local.Ino, remote),
+				containerPath, hostPath, localIno, remote),
 			Remediation: newStepRemediation(remediationAddBindMount, map[string]string{"source": hostPath, "target": containerPath})}
 	}
 	return StepOutcome{OK: true,
