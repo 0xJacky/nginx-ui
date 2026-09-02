@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { EChartsOption } from 'echarts'
 import { LeftOutlined, ReloadOutlined } from '@ant-design/icons-vue'
+import { message } from 'ant-design-vue'
 import { MapChart } from 'echarts/charts'
 import { LegendComponent, TitleComponent, TooltipComponent, VisualMapComponent } from 'echarts/components'
 import { registerMap, use } from 'echarts/core'
@@ -61,8 +62,7 @@ const cityChartData = ref<CityData[]>([])
 const registeredCityMaps = new Map<string, string[]>()
 
 function findProvinceAdcode(name: string): string | null {
-  const feature = (china as { features: Array<{ id: string, properties: { name: string } }> }).features
-    .find(f => f.properties.name === name)
+  const feature = (china as { features: Array<{ id: string, properties: { name: string } }> }).features.find(f => f.properties.name === name)
   return feature?.id ?? null
 }
 
