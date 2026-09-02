@@ -43,6 +43,7 @@ func resetPathCaches() {
 	nginxVOutputCache.set("")
 	nginxTOutputCache.set("")
 	nginxPrefixCache.set("")
+	nginxPIDPathCache.set("")
 }
 
 // Returns the path to the nginx executable

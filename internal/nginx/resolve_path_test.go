@@ -1,6 +1,7 @@
 package nginx
 
 import (
+	"context"
 	"fmt"
 	"path/filepath"
 	"sync"
@@ -126,17 +127,20 @@ func TestGetConfAndPidPathsHandleSpaces(t *testing.T) {
 	originalConfigPath := settings.NginxSettings.ConfigPath
 	originalPIDPath := settings.NginxSettings.PIDPath
 	originalNginxVOutput := nginxVOutputCache.value
+	originalPIDCache := nginxPIDPathCache.value
 
 	t.Cleanup(func() {
 		settings.NginxSettings.ConfigDir = originalConfigDir
 		settings.NginxSettings.ConfigPath = originalConfigPath
 		settings.NginxSettings.PIDPath = originalPIDPath
 		nginxVOutputCache.set(originalNginxVOutput)
+		nginxPIDPathCache.set(originalPIDCache)
 	})
 
 	settings.NginxSettings.ConfigDir = ""
 	settings.NginxSettings.ConfigPath = ""
 	settings.NginxSettings.PIDPath = ""
+	nginxPIDPathCache.set("")
 
 	sampleConf := "/Program Files/nginx/conf/nginx.conf"
 	samplePID := "/Program Files/nginx/logs/nginx.pid"
@@ -160,5 +164,80 @@ configure arguments: --conf-path="%s" --pid-path="%s"
 	pidPath := GetPIDPath()
 	if pidPath != samplePID {
 		t.Fatalf("GetPIDPath() = %q, want %q", pidPath, samplePID)
+	}
+}
+
+type countingStatRunner struct {
+	mutex sync.Mutex
+	stats int
+}
+
+func (r *countingStatRunner) Exec(context.Context, string, ...string) (string, error) {
+	return "", nil
+}
+
+func (r *countingStatRunner) Stat(string) bool {
+	r.mutex.Lock()
+	defer r.mutex.Unlock()
+	r.stats++
+	return true
+}
+
+func (r *countingStatRunner) count() int {
+	r.mutex.Lock()
+	defer r.mutex.Unlock()
+	return r.stats
+}
+
+// In SSH mode every probe is a remote exec, so the discovered PID path must be
+// served from the cache until the control target changes.
+func TestGetPIDPathIsMemoizedUntilTargetChanges(t *testing.T) {
+	originalSettings := *settings.NginxSettings
+	originalRunner := resolveRunner
+	originalNginxVOutput := nginxVOutputCache.value
+	originalNginxTOutput := nginxTOutputCache.value
+	originalPIDPath := nginxPIDPathCache.value
+	t.Cleanup(func() {
+		*settings.NginxSettings = originalSettings
+		resolveRunner = originalRunner
+		nginxVOutputCache.set(originalNginxVOutput)
+		nginxTOutputCache.set(originalNginxTOutput)
+		nginxPIDPathCache.set(originalPIDPath)
+	})
+
+	runner := &countingStatRunner{}
+	resolveRunner = func() Runner { return runner }
+	*settings.NginxSettings = settings.Nginx{HostMode: settings.HostModeSSH}
+	// nginx -T has no pid directive, so the compiled default is probed on the target.
+	nginxTOutputCache.set("events {}")
+	nginxVOutputCache.set("configure arguments: --pid-path=/remote/run/nginx.pid")
+	nginxPIDPathCache.set("")
+
+	const want = "/remote/run/nginx.pid"
+	for i := range 3 {
+		if got := GetPIDPath(); got != want {
+			t.Fatalf("GetPIDPath() call %d = %q, want %q", i, got, want)
+		}
+	}
+	if got := runner.count(); got != 1 {
+		t.Fatalf("runner.Stat called %d times, want 1 (cached after the first resolution)", got)
+	}
+
+	// A settings override bypasses the cache without touching it.
+	settings.NginxSettings.PIDPath = "/override/nginx.pid"
+	if got := GetPIDPath(); got != "/override/nginx.pid" {
+		t.Fatalf("GetPIDPath() = %q, want the configured override", got)
+	}
+	settings.NginxSettings.PIDPath = ""
+
+	// Switching targets must drop the memoized path and probe again.
+	ResetHostNginxState()
+	nginxTOutputCache.set("events {}")
+	nginxVOutputCache.set("configure arguments: --pid-path=/other/run/nginx.pid")
+	if got := GetPIDPath(); got != "/other/run/nginx.pid" {
+		t.Fatalf("GetPIDPath() after reset = %q, want the new target's path", got)
+	}
+	if got := runner.count(); got != 2 {
+		t.Fatalf("runner.Stat called %d times, want 2 (one probe per target)", got)
 	}
 }

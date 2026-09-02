@@ -10,7 +10,10 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 )
 
-var nginxPrefixCache nginxStringCache
+var (
+	nginxPrefixCache  nginxStringCache
+	nginxPIDPathCache nginxStringCache
+)
 
 // GetNginxExeDir Returns the directory containing the nginx executable
 func GetNginxExeDir() string {
@@ -158,11 +161,23 @@ func GetConfEntryPath() (path string) {
 //  2. Runtime override from `nginx -T` for non-local modes (handles nginx-unprivileged etc.)
 //  3. Compile-time default from `nginx -V --pid-path=...`
 //  4. Probing common candidate paths on the resolved runner
+//
+// The configured override is read on every call so a settings change takes
+// effect immediately. The discovered path is memoized because resolving it on a
+// remote target costs one exec per probe, and callers such as the performance
+// ticker ask for it every few seconds.
 func GetPIDPath() (path string) {
 	if settings.NginxSettings.PIDPath != "" {
 		return resolvePath(settings.NginxSettings.PIDPath)
 	}
 
+	return nginxPIDPathCache.get(discoverPIDPath)
+}
+
+// discoverPIDPath resolves the PID path from the target nginx without
+// consulting the cache. It returns "" when nothing could be determined so the
+// cache keeps retrying on the next call.
+func discoverPIDPath() (path string) {
 	runner := resolveRunner()
 	isLocal := settings.NginxSettings.ControlMode() == settings.ControlModeLocal
 

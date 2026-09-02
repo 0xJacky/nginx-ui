@@ -84,17 +84,20 @@ func TestResetHostNginxStateDropsResolvedPaths(t *testing.T) {
 	originalV := nginxVOutputCache.value
 	originalT := nginxTOutputCache.value
 	originalPrefix := nginxPrefixCache.value
+	originalPID := nginxPIDPathCache.value
 	t.Cleanup(func() {
 		nginxSbinPathCache.set(originalSbin)
 		nginxVOutputCache.set(originalV)
 		nginxTOutputCache.set(originalT)
 		nginxPrefixCache.set(originalPrefix)
+		nginxPIDPathCache.set(originalPID)
 	})
 
 	nginxSbinPathCache.set("/remote/sbin/nginx")
 	nginxVOutputCache.set("configure arguments: --prefix=/remote")
 	nginxTOutputCache.set("pid /remote/nginx.pid;")
 	nginxPrefixCache.set("/remote")
+	nginxPIDPathCache.set("/remote/nginx.pid")
 
 	ResetHostNginxState()
 
@@ -103,6 +106,7 @@ func TestResetHostNginxStateDropsResolvedPaths(t *testing.T) {
 		"nginx -V":  &nginxVOutputCache,
 		"nginx -T":  &nginxTOutputCache,
 		"prefix":    &nginxPrefixCache,
+		"pid path":  &nginxPIDPathCache,
 	} {
 		if cache.value != "" {
 			t.Errorf("%s cache still holds %q after a target change", name, cache.value)
