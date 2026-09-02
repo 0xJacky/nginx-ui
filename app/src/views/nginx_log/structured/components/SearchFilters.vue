@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { SearchFilters } from '@/api/nginx_log'
-import { CaretRightOutlined } from '@ant-design/icons-vue'
+import { CaretRightOutlined } from '@antdv-next/icons'
 import { browserOptions, deviceOptions, methodOptions, osOptions, statusOptions } from './search-filter-options'
 
 // Emits

@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { ShareAltOutlined } from '@ant-design/icons-vue'
+import { ShareAltOutlined } from '@antdv-next/icons'
 
 export const streamsRoutes: RouteRecordRaw[] = [
   {

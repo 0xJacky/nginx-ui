@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { SelectProps } from 'antdv-next'
 import dayjs from 'dayjs'
 import loadTranslations from '@/api/translations'
 import gettext from '@/gettext'
@@ -19,6 +20,11 @@ const current = computed({
 })
 
 const languageAvailable = gettext.available
+
+const languageOptions = computed<SelectProps['options']>(() => Object.entries(languageAvailable).map(([key, language]) => ({
+  label: language,
+  value: key,
+})))
 
 function updateTitle() {
   const name = route.meta.name as never as () => string
@@ -119,17 +125,10 @@ watch(current, init)
   <div>
     <ASelect
       v-model:value="current"
+      :options="languageOptions"
       size="small"
       style="width: 60px"
-    >
-      <ASelectOption
-        v-for="(language, key) in languageAvailable"
-        :key="key"
-        :value="key"
-      >
-        {{ language }}
-      </ASelectOption>
-    </ASelect>
+    />
   </div>
 </template>
 

@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { BellOutlined } from '@ant-design/icons-vue'
+import { BellOutlined } from '@antdv-next/icons'
 
 export const notificationsRoutes: RouteRecordRaw[] = [
   {

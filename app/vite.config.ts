@@ -1,9 +1,9 @@
 import { fileURLToPath, URL } from 'node:url'
+import { AntdvNextResolver } from '@antdv-next/auto-import-resolver'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import UnoCSS from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
-import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
 import Components from 'unplugin-vue-components/vite'
 import DefineOptions from 'unplugin-vue-define-options/vite'
 import { defineConfig, loadEnv } from 'vite'
@@ -17,6 +17,11 @@ export default defineConfig(({ mode }) => {
   return {
     base: './',
     resolve: {
+      dedupe: [
+        'vue',
+        'vue-router',
+        'pinia',
+      ],
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
       },
@@ -38,7 +43,7 @@ export default defineConfig(({ mode }) => {
       svgLoader(),
       UnoCSS(),
       Components({
-        resolvers: [AntDesignVueResolver({ importStyle: false })],
+        resolvers: [AntdvNextResolver()],
         directoryAsNamespace: true,
       }),
       AutoImport({
@@ -61,7 +66,7 @@ export default defineConfig(({ mode }) => {
             '@/composables/useGlobalApp': ['useGlobalApp'],
           },
           {
-            'ant-design-vue': [
+            'antdv-next': [
               'App',
             ],
           },
@@ -77,9 +82,6 @@ export default defineConfig(({ mode }) => {
     css: {
       preprocessorOptions: {
         less: {
-          modifyVars: {
-            'border-radius-base': '5px',
-          },
           javascriptEnabled: true,
         },
       },
@@ -97,6 +99,11 @@ export default defineConfig(({ mode }) => {
     },
     build: {
       chunkSizeWarningLimit: 1500,
+    },
+    optimizeDeps: {
+      include: [
+        'antdv-next',
+      ],
     },
   }
 })

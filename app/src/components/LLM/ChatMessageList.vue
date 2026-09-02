@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { List } from '@/components/List'
 import { useSettingsStore } from '@/pinia'
 import ChatMessage from './ChatMessage.vue'
 import { useLLMStore } from './llm'
@@ -150,7 +151,7 @@ async function handleRegenerate(index: number) {
     class="message-list-container"
     :style="{ paddingBottom: props.inputHeight ? `${props.inputHeight + 32}px` : '32px' }"
   >
-    <AList
+    <List
       class="llm-log pt-12"
       item-layout="horizontal"
     >
@@ -167,7 +168,7 @@ async function handleRegenerate(index: number) {
         @cancel="handleCancel"
         @regenerate="handleRegenerate"
       />
-    </AList>
+    </List>
   </div>
 </template>
 
@@ -177,24 +178,12 @@ async function handleRegenerate(index: number) {
   overflow-y: auto;
   overflow-x: hidden;
 
-  :deep(.ant-list-empty-text) {
-    display: none;
-  }
-
   .llm-log {
-    :deep(.ant-list-item) {
+    :deep(.nui-list-item) {
       padding: 0 12px;
     }
 
-    :deep(.ant-comment-content) {
-      width: 100%;
-    }
-
-    :deep(.ant-comment) {
-      width: 100%;
-    }
-
-    :deep(.ant-comment-content-detail) {
+    :deep(.message-content) {
       width: 100%;
 
       p {

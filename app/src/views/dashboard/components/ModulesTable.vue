@@ -1,8 +1,8 @@
 <script setup lang="tsx">
-import type { TableColumnType } from 'ant-design-vue'
+import type { TableColumnType } from 'antdv-next'
 import type { NgxModule } from '@/api/ngx'
-import { ReloadOutlined, SearchOutlined } from '@ant-design/icons-vue'
-import { Button as AButton, Input as AInput, message } from 'ant-design-vue'
+import { ReloadOutlined, SearchOutlined } from '@antdv-next/icons'
+import { Button as AButton, Input as AInput, message } from 'antdv-next'
 import ngx from '@/api/ngx'
 import { useGlobalStore } from '@/pinia'
 
@@ -49,11 +49,11 @@ const modulesColumns: TableColumnType[] = [
     title: $gettext('Module'),
     dataIndex: 'name',
     width: '800px',
-    customRender: args => {
+    render: (_value, record) => {
       return (
         <div>
-          <div>{args.record.name}</div>
-          <div class="text-sm text-gray-500">{args.record.params}</div>
+          <div>{record.name}</div>
+          <div class="text-sm text-gray-500">{record.params}</div>
         </div>
       )
     },
@@ -67,7 +67,7 @@ const modulesColumns: TableColumnType[] = [
       { text: $gettext('Static'), value: false },
     ],
     onFilter: (value, record) => record.dynamic === value,
-    customRender: ({ record }) => {
+    render: (_value, record) => {
       return <span>{record.dynamic ? $gettext('Dynamic') : $gettext('Static')}</span>
     },
   },
@@ -80,7 +80,7 @@ const modulesColumns: TableColumnType[] = [
       { text: $gettext('Not Loaded'), value: false },
     ],
     onFilter: (value, record) => record.loaded === value,
-    customRender: ({ record }) => {
+    render: (_value, record) => {
       return <span>{record.loaded ? $gettext('Loaded') : $gettext('Not Loaded')}</span>
     },
   },

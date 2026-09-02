@@ -1,8 +1,8 @@
 <script setup lang="tsx">
 import type { DiscoveredCertificatePair } from '@/api/cert'
-import { CloudUploadOutlined, SafetyCertificateOutlined } from '@ant-design/icons-vue'
+import { CloudUploadOutlined, SafetyCertificateOutlined } from '@antdv-next/icons'
 import { StdTable } from '@uozi-admin/curd'
-import { Tag } from 'ant-design-vue'
+import { Tag } from 'antdv-next'
 import cert from '@/api/cert'
 import { useGlobalStore } from '@/pinia'
 import WildcardCertificate from '../components/DNSIssueCertificate.vue'
@@ -42,8 +42,8 @@ const discoveryColumns = computed(() => [
   },
   {
     title: $gettext('Type'),
-    customRender: () => (
-      <Tag bordered={false} color="purple">
+    render: () => (
+      <Tag variant="filled" color="purple">
         {$gettext('General Certificate')}
       </Tag>
     ),
@@ -60,7 +60,7 @@ const discoveryColumns = computed(() => [
   },
   {
     title: $gettext('Not After'),
-    customRender: ({ record }: { record: DiscoveredCertificatePair }) => {
+    render: (_value: unknown, record: DiscoveredCertificatePair) => {
       return record.certificate_info?.not_after ?? '-'
     },
   },

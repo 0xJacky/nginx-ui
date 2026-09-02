@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { CodeOutlined } from '@ant-design/icons-vue'
+import { CodeOutlined } from '@antdv-next/icons'
 
 export const terminalRoutes: RouteRecordRaw[] = [
   {

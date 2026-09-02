@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Form } from 'ant-design-vue'
+import type { FormInstance } from 'antdv-next'
 import site from '@/api/site'
 import gettext from '@/gettext'
 
@@ -36,12 +36,12 @@ const rulesRef = reactive({
   ],
 })
 
-const { validate, validateInfos, clearValidate } = Form.useForm(modelRef, rulesRef)
+const formRef = ref<FormInstance>()
 
 const loading = ref(false)
 
 function onSubmit() {
-  validate().then(async () => {
+  formRef.value?.validate().then(async () => {
     loading.value = true
 
     site.duplicate(props.name, { name: modelRef.name }).then(() => {
@@ -57,12 +57,12 @@ function onSubmit() {
 watch(() => props.visible, v => {
   if (v) {
     modelRef.name = props.name // default with source name
-    nextTick(() => clearValidate())
+    nextTick(() => formRef.value?.clearValidate())
   }
 })
 
 watch(() => gettext.current, () => {
-  clearValidate()
+  formRef.value?.clearValidate()
 })
 </script>
 
@@ -74,10 +74,15 @@ watch(() => gettext.current, () => {
     :mask="false"
     @ok="onSubmit"
   >
-    <AForm layout="vertical">
+    <AForm
+      ref="formRef"
+      layout="vertical"
+      :model="modelRef"
+      :rules="rulesRef"
+    >
       <AFormItem
         :label="$gettext('Name')"
-        v-bind="validateInfos.name"
+        name="name"
       >
         <AInput v-model:value="modelRef.name" />
       </AFormItem>

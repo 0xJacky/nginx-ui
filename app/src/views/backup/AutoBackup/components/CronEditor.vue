@@ -147,7 +147,7 @@ const cronDescription = computed(() => {
 
     <AAlert
       v-if="cronDescription"
-      :message="cronDescription"
+      :title="cronDescription"
       type="info"
       show-icon
       class="mb-4"

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { FileOutlined } from '@ant-design/icons-vue'
+import { FileOutlined } from '@antdv-next/icons'
 import { useRouteQuery } from '@vueuse/router'
 import nginxLog from '@/api/nginx_log'
 import FooterToolBar from '@/components/FooterToolbar'
@@ -74,7 +74,7 @@ watch([isErrorLog, isIndexingEnabled], ([isError, enabled], [prevIsError, prevEn
 <template>
   <ACard
     :title="$gettext('Nginx Log')"
-    :bordered="false"
+    variant="borderless"
   >
     <!-- Log Path Header -->
     <div v-if="logPath" class="mb-4 px-2 py-1.5 bg-gray-50 dark:bg-gray-800 rounded text-xs text-gray-500 dark:text-gray-400">

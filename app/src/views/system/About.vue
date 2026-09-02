@@ -9,7 +9,7 @@ const thisYear = new Date().getFullYear()
 <template>
   <ACard
     class="text-center"
-    :bordered="false"
+    variant="borderless"
   >
     <div class="flex justify-center">
       <div class="logo">

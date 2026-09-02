@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { SelectProps } from 'antdv-next'
 import type { Ref } from 'vue'
 import type { ReleaseInfo } from '@/api/upgrade'
 import dayjs from 'dayjs'
@@ -13,6 +14,21 @@ const data = ref<ReleaseInfo>({} as ReleaseInfo)
 const lastCheck = ref('')
 const loading = ref(false)
 const channel = ref('stable')
+
+const channelOptions = computed<SelectProps['options']>(() => [
+  {
+    label: $gettext('Stable'),
+    value: 'stable',
+  },
+  {
+    label: $gettext('Pre-release'),
+    value: 'prerelease',
+  },
+  {
+    label: $gettext('Dev'),
+    value: 'dev',
+  },
+])
 
 const progressStrokeColor = {
   from: '#108ee9',
@@ -186,7 +202,7 @@ const performUpgradeBtnText = computed(() => {
         <AAlert
           type="error"
           :title="$gettext('Get release information error')"
-          :message="getReleaseError"
+          :description="getReleaseError"
           banner
         />
       </template>
@@ -205,36 +221,29 @@ const performUpgradeBtnText = computed(() => {
           </AButton>
         </p>
         <AFormItem :label="$gettext('Channel')">
-          <ASelect v-model:value="channel">
-            <ASelectOption key="stable">
-              {{ $gettext('Stable') }}
-            </ASelectOption>
-            <ASelectOption key="prerelease">
-              {{ $gettext('Pre-release') }}
-            </ASelectOption>
-            <ASelectOption key="dev">
-              {{ $gettext('Dev') }}
-            </ASelectOption>
-          </ASelect>
+          <ASelect
+            v-model:value="channel"
+            :options="channelOptions"
+          />
         </AFormItem>
         <template v-if="!loading">
           <AAlert
             v-if="isLatestVer && channel !== 'dev'"
             type="success"
-            :message="$gettext('You are using the latest version')"
+            :title="$gettext('You are using the latest version')"
             banner
           />
           <AAlert
             v-else
             type="info"
-            :message="$gettext('New version released')"
+            :title="$gettext('New version released')"
             banner
           />
           <template v-if="dryRun">
             <br>
             <AAlert
               type="info"
-              :message="$gettext('Dry run mode enabled')"
+              :title="$gettext('Dry run mode enabled')"
               banner
             />
           </template>

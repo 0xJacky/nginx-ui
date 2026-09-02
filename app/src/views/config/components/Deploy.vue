@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { InfoCircleOutlined } from '@ant-design/icons-vue'
+import { InfoCircleOutlined } from '@antdv-next/icons'
 import config from '@/api/config'
 import NodeSelector from '@/components/NodeSelector'
 import use2FAModal from '@/components/TwoFA/use2FAModal'
@@ -65,7 +65,7 @@ function ok() {
       class="mb-4"
       type="info"
       show-icon
-      :message="$gettext('All configuration files in %{name} will be deployed to the selected nodes, and files created here later will follow the same targets.', { name })"
+      :title="$gettext('All configuration files in %{name} will be deployed to the selected nodes, and files created here later will follow the same targets.', { name })"
     />
     <NodeSelector
       v-model:target="syncNodeIds"

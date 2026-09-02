@@ -71,7 +71,7 @@ passkey.get_config_status().then(r => {
         <div>
           <AAlert
             class="mb-4"
-            :message="$gettext('Tips')"
+            :title="$gettext('Tips')"
             type="info"
           >
             <template #description>
@@ -94,7 +94,7 @@ passkey.get_config_status().then(r => {
       <div v-else>
         <AAlert
           class="mb-4"
-          :message="$gettext('Warning')"
+          :title="$gettext('Warning')"
           type="warning"
           show-icon
         >

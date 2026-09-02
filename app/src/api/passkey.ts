@@ -6,6 +6,7 @@ export interface Passkey extends ModelBase {
   name: string
   user_id: string
   raw_id: string
+  last_used_at: number
 }
 
 const passkey = {

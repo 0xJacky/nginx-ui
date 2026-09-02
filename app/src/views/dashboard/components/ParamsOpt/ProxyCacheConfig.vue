@@ -176,7 +176,7 @@ initSizeValues()
             name="inactive"
             :help="$gettext('Cache items not accessed within this time will be removed')"
           >
-            <AInputGroup compact>
+            <ASpaceCompact class="w-full">
               <AInput
                 v-model:value="timeValues.inactive.value"
                 style="width: 65%"
@@ -189,7 +189,7 @@ initSizeValues()
                 :options="timeUnitOptions"
                 @change="updateTimeValue('inactive')"
               />
-            </AInputGroup>
+            </ASpaceCompact>
           </AFormItem>
         </ACol>
 
@@ -199,7 +199,7 @@ initSizeValues()
             name="max_size"
             :help="$gettext('Maximum total size of the cache')"
           >
-            <AInputGroup compact>
+            <ASpaceCompact class="w-full">
               <AInput
                 v-model:value="sizeValues.max_size.value"
                 style="width: 65%"
@@ -212,7 +212,7 @@ initSizeValues()
                 :options="sizeUnitOptions"
                 @change="updateSizeValue('max_size')"
               />
-            </AInputGroup>
+            </ASpaceCompact>
           </AFormItem>
         </ACol>
       </ARow>
@@ -224,7 +224,7 @@ initSizeValues()
             name="min_free"
             :help="$gettext('Minimum free space in the cache directory')"
           >
-            <AInputGroup compact>
+            <ASpaceCompact class="w-full">
               <AInput
                 v-model:value="sizeValues.min_free.value"
                 style="width: 65%"
@@ -237,7 +237,7 @@ initSizeValues()
                 :options="sizeUnitOptions"
                 @change="updateSizeValue('min_free')"
               />
-            </AInputGroup>
+            </ASpaceCompact>
           </AFormItem>
         </ACol>
       </ARow>
@@ -261,7 +261,7 @@ initSizeValues()
             name="manager_sleep"
             :help="$gettext('Sleep time between cache manager iterations')"
           >
-            <AInputGroup compact>
+            <ASpaceCompact class="w-full">
               <AInput
                 v-model:value="timeValues.manager_sleep.value"
                 style="width: 65%"
@@ -274,7 +274,7 @@ initSizeValues()
                 :options="timeUnitOptions"
                 @change="updateTimeValue('manager_sleep')"
               />
-            </AInputGroup>
+            </ASpaceCompact>
           </AFormItem>
         </ACol>
       </ARow>
@@ -286,7 +286,7 @@ initSizeValues()
             name="manager_threshold"
             :help="$gettext('Cache manager processing time threshold')"
           >
-            <AInputGroup compact>
+            <ASpaceCompact class="w-full">
               <AInput
                 v-model:value="timeValues.manager_threshold.value"
                 style="width: 65%"
@@ -299,7 +299,7 @@ initSizeValues()
                 :options="timeUnitOptions"
                 @change="updateTimeValue('manager_threshold')"
               />
-            </AInputGroup>
+            </ASpaceCompact>
           </AFormItem>
         </ACol>
       </ARow>
@@ -323,7 +323,7 @@ initSizeValues()
             name="loader_sleep"
             :help="$gettext('Sleep time between cache loader iterations')"
           >
-            <AInputGroup compact>
+            <ASpaceCompact class="w-full">
               <AInput
                 v-model:value="timeValues.loader_sleep.value"
                 style="width: 65%"
@@ -336,7 +336,7 @@ initSizeValues()
                 :options="timeUnitOptions"
                 @change="updateTimeValue('loader_sleep')"
               />
-            </AInputGroup>
+            </ASpaceCompact>
           </AFormItem>
         </ACol>
       </ARow>
@@ -348,7 +348,7 @@ initSizeValues()
             name="loader_threshold"
             :help="$gettext('Cache loader processing time threshold')"
           >
-            <AInputGroup compact>
+            <ASpaceCompact class="w-full">
               <AInput
                 v-model:value="timeValues.loader_threshold.value"
                 style="width: 65%"
@@ -361,7 +361,7 @@ initSizeValues()
                 :options="timeUnitOptions"
                 @change="updateTimeValue('loader_threshold')"
               />
-            </AInputGroup>
+            </ASpaceCompact>
           </AFormItem>
         </ACol>
       </ARow>
@@ -403,7 +403,7 @@ initSizeValues()
             name="purger_sleep"
             :help="$gettext('Sleep time between purger iterations')"
           >
-            <AInputGroup compact>
+            <ASpaceCompact class="w-full">
               <AInput
                 v-model:value="timeValues.purger_sleep.value"
                 style="width: 65%"
@@ -416,7 +416,7 @@ initSizeValues()
                 :options="timeUnitOptions"
                 @change="updateTimeValue('purger_sleep')"
               />
-            </AInputGroup>
+            </ASpaceCompact>
           </AFormItem>
         </ACol>
 
@@ -426,7 +426,7 @@ initSizeValues()
             name="purger_threshold"
             :help="$gettext('Purger processing time threshold')"
           >
-            <AInputGroup compact>
+            <ASpaceCompact class="w-full">
               <AInput
                 v-model:value="timeValues.purger_threshold.value"
                 style="width: 65%"
@@ -439,7 +439,7 @@ initSizeValues()
                 :options="timeUnitOptions"
                 @change="updateTimeValue('purger_threshold')"
               />
-            </AInputGroup>
+            </ASpaceCompact>
           </AFormItem>
         </ACol>
       </ARow> -->

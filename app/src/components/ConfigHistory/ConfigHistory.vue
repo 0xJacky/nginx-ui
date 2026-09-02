@@ -1,9 +1,10 @@
 <script setup lang="tsx">
-import type { Key } from 'ant-design-vue/es/_util/type'
 import type { ConfigBackup } from '@/api/config'
 import type { GetListResponse } from '@/api/curd'
 import { datetimeRender, StdPagination } from '@uozi-admin/curd'
 import config from '@/api/config'
+
+type Key = string | number
 
 // Define props for the component
 const props = defineProps<{
@@ -24,7 +25,7 @@ const DiffViewer = defineAsyncComponent({
   delay: 200,
   timeout: 10000,
   errorComponent: {
-    template: '<div class="async-error"><AAlert type="error" message="Failed to load component" /></div>',
+    template: '<div class="async-error"><AAlert type="error" title="Failed to load component" /></div>',
   },
 })
 
@@ -52,8 +53,8 @@ const columns = [
   {
     title: () => $gettext('Modified At'),
     dataIndex: 'created_at',
-    customRender: args => {
-      return <span>{datetimeRender(args)}</span>
+    render: (value, record, index) => {
+      return <span>{datetimeRender({ text: value, record, index } as Parameters<typeof datetimeRender>[0])}</span>
     },
   },
 ]
@@ -107,7 +108,7 @@ const rowSelection = computed(() => ({
     if (keys.length > 2) {
       return
     }
-    selectedRowKeys.value = keys
+    selectedRowKeys.value = [...keys]
     selectedRecords.value = selectedRows
   },
   getCheckboxProps: (record: ConfigBackup) => ({

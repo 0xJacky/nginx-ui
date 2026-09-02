@@ -4,7 +4,7 @@ import {
   FundProjectionScreenOutlined,
   InfoCircleOutlined,
   ThunderboltOutlined,
-} from '@ant-design/icons-vue'
+} from '@antdv-next/icons'
 
 const props = defineProps<{
   nginxInfo: NginxPerformanceInfo
@@ -16,7 +16,7 @@ const cpuUsage = computed(() => {
 </script>
 
 <template>
-  <ACard :bordered="false" class="h-full" :body-style="{ padding: '20px', height: 'calc(100% - 58px)' }">
+  <ACard variant="borderless" class="h-full" :styles="{ body: { padding: '20px', height: 'calc(100% - 58px)' } }">
     <div class="flex flex-col h-full">
       <!-- CPU usage -->
       <ARow :gutter="[16, 8]">

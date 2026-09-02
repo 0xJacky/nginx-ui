@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { RecoveryCode } from '@/api/recovery'
-import { CheckCircleOutlined } from '@ant-design/icons-vue'
+import { CheckCircleOutlined } from '@antdv-next/icons'
 import { UseClipboard } from '@vueuse/components'
 import otp from '@/api/otp'
 import OTPInput from '@/components/OTPInput'
@@ -78,7 +78,7 @@ function reset2FA() {
     <p>{{ $gettext('TOTP is a two-factor authentication method that uses a time-based one-time password algorithm.') }}</p>
     <p>{{ $gettext('To enable it, you need to install the Google or Microsoft Authenticator app on your mobile phone.') }}</p>
     <p>{{ $gettext('Scan the QR code with your mobile phone to add the account to the app.') }}</p>
-    <AAlert v-if="!status" type="warning" :message="$gettext('Current account is not enabled TOTP.')" class="mb-2" show-icon />
+    <AAlert v-if="!status" type="warning" :title="$gettext('Current account is not enabled TOTP.')" class="mb-2" show-icon />
     <div v-else>
       <p><CheckCircleOutlined class="mr-2 text-green-600" />{{ $gettext('Current account is enabled TOTP.') }}</p>
     </div>

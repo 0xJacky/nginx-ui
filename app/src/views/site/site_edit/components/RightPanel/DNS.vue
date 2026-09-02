@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import type { SelectProps } from 'antdv-next'
 import type { DNSDomain, DNSRecord } from '@/api/dns'
 import type { NgxDirective, NgxServer } from '@/api/ngx'
 import type { SiteDNSRecord } from '@/api/site'
+import { Tag } from 'antdv-next'
+import { Fragment, h } from 'vue'
 import { isAllowedDnsProvider } from '@/constants/dns_providers'
 import { useDnsStore } from '@/pinia/moudule/dns'
 import { useSiteEditorStore } from '../SiteEditor/store'
@@ -37,6 +40,26 @@ const newRecordForm = reactive({
 
 const recordTypes = ['A', 'AAAA', 'CNAME']
 
+const recordTypeOptions: SelectProps['options'] = recordTypes.map(type => ({
+  label: type,
+  value: type,
+}))
+
+const domainOptions = computed<SelectProps['options']>(() => availableDomains.value.map(domain => ({
+  key: domain.id,
+  value: domain.id,
+  label: h(Fragment, null, [
+    domain.domain,
+    domain.dns_credential
+      ? h('span', { class: 'text-gray-400' }, [
+          ' (',
+          domain.dns_credential.name,
+          ')',
+        ])
+      : null,
+  ]),
+})))
+
 // Computed properties for v-model bindings to handle null values
 const selectedDomainValue = computed({
   get: () => selectedDomainId.value ?? undefined,
@@ -64,6 +87,29 @@ const selectableRecords = computed(() => {
   }
   return records
 })
+
+const recordOptions = computed<SelectProps['options']>(() => selectableRecords.value.map(record => {
+  const proxiedLabel = record.proxied ? $gettext('Proxied') : ''
+
+  return {
+    key: record.id,
+    value: record.id,
+    label: h(Fragment, null, [
+      h(Tag, {
+        color: record.type === 'A' ? 'blue' : record.type === 'AAAA' ? 'green' : 'orange',
+      }, { default: () => record.type }),
+      ' ',
+      record.name === '@'
+        ? availableDomains.value.find(domain => domain.id === selectedDomainId.value)?.domain
+        : record.name,
+      ' → ',
+      record.content,
+      record.proxied
+        ? h(Tag, { color: 'orange', class: 'ml-2' }, { default: () => proxiedLabel })
+        : null,
+    ]),
+  }
+}))
 
 const existingLinkedRecords = computed(() => linkedRecords.value.filter(record => record.exists))
 const missingLinkedRecords = computed(() => linkedRecords.value.filter(record => !record.exists))
@@ -488,7 +534,7 @@ async function recreateRecord(linkedRecord: LinkedDNSRecord) {
       type="warning"
       class="mb-4"
       show-icon
-      :message="$gettext('The parameter of server_name is required')"
+      :title="$gettext('The parameter of server_name is required')"
       :description="$gettext('Please configure server_name directive in the configuration before linking DNS records.')"
     />
 
@@ -597,27 +643,17 @@ async function recreateRecord(linkedRecord: LinkedDNSRecord) {
             v-model:value="selectedDomainValue"
             :placeholder="$gettext('Select DNS domain')"
             :loading="loading"
+            :options="domainOptions"
             allow-clear
             @change="onDomainChange"
-          >
-            <ASelectOption
-              v-for="domain in availableDomains"
-              :key="domain.id"
-              :value="domain.id"
-            >
-              {{ domain.domain }}
-              <span v-if="domain.dns_credential" class="text-gray-400">
-                ({{ domain.dns_credential.name }})
-              </span>
-            </ASelectOption>
-          </ASelect>
+          />
         </AFormItem>
 
         <AFormItem
           v-if="selectedDomainId"
           :label="$gettext('DNS Record')"
         >
-          <ASpace direction="vertical" style="width: 100%">
+          <ASpace orientation="vertical" style="width: 100%">
             <ASelect
               v-model:value="selectedRecordValue"
               mode="multiple"
@@ -625,24 +661,10 @@ async function recreateRecord(linkedRecord: LinkedDNSRecord) {
               :loading="loading"
               :disabled="createNewRecord"
               max-tag-count="responsive"
+              :options="recordOptions"
               allow-clear
               @change="onRecordSelect"
-            >
-              <ASelectOption
-                v-for="record in selectableRecords"
-                :key="record.id"
-                :value="record.id"
-              >
-                <ATag :color="record.type === 'A' ? 'blue' : record.type === 'AAAA' ? 'green' : 'orange'">
-                  {{ record.type }}
-                </ATag>
-                {{ record.name === '@' ? availableDomains.find(d => d.id === selectedDomainId)?.domain : record.name }}
-                → {{ record.content }}
-                <ATag v-if="record.proxied" color="orange" class="ml-2">
-                  {{ $gettext('Proxied') }}
-                </ATag>
-              </ASelectOption>
-            </ASelect>
+            />
 
             <ACheckbox
               v-model:checked="createNewRecord"
@@ -655,17 +677,10 @@ async function recreateRecord(linkedRecord: LinkedDNSRecord) {
 
         <template v-if="createNewRecord && selectedDomainId">
           <AFormItem :label="$gettext('Record Type')">
-            <ASelect v-model:value="newRecordForm.type">
-              <ASelectOption value="A">
-                A
-              </ASelectOption>
-              <ASelectOption value="AAAA">
-                AAAA
-              </ASelectOption>
-              <ASelectOption value="CNAME">
-                CNAME
-              </ASelectOption>
-            </ASelect>
+            <ASelect
+              v-model:value="newRecordForm.type"
+              :options="recordTypeOptions"
+            />
           </AFormItem>
 
           <AFormItem :label="$gettext('Record Name')">
@@ -715,7 +730,7 @@ async function recreateRecord(linkedRecord: LinkedDNSRecord) {
         <AAlert
           v-if="!availableDomains.length"
           type="info"
-          :message="$gettext('No DNS domains available')"
+          :title="$gettext('No DNS domains available')"
           :description="$gettext('Please add a DNS domain first in the DNS management section.')"
           show-icon
           class="mt-4"

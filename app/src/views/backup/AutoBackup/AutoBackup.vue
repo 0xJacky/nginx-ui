@@ -2,7 +2,7 @@
 import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
 import type { AutoBackup } from '@/api/backup'
 import { datetimeRender, StdCurd } from '@uozi-admin/curd'
-import { FormItem, Input, Tag } from 'ant-design-vue'
+import { FormItem, Input, Tag } from 'antdv-next'
 import { autoBackup, runAutoBackup } from '@/api/backup'
 import { CronEditor, StorageConfigEditor } from './components'
 

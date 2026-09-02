@@ -2,7 +2,7 @@
 import type { AutoCertOptions } from '@/api/auto_cert'
 import type { CertificateResult } from '@/api/cert'
 import type { PrivateKeyType } from '@/constants'
-import { Modal } from 'ant-design-vue'
+import { Modal } from 'antdv-next'
 import { AutoCertChallengeMethod } from '@/api/auto_cert'
 import site from '@/api/site'
 import AutoCertStepOne from '@/components/AutoCertForm'

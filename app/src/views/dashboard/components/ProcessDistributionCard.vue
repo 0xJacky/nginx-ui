@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { NginxPerformanceInfo } from '@/api/ngx'
-import { InfoCircleOutlined } from '@ant-design/icons-vue'
+import { InfoCircleOutlined } from '@antdv-next/icons'
 
 const props = defineProps<{
   nginxInfo: NginxPerformanceInfo
@@ -23,7 +23,7 @@ const totalProcesses = computed(() => {
 </script>
 
 <template>
-  <ACard :title="$gettext('Process Distribution')" :bordered="false" class="h-full" :body-style="{ height: 'calc(100% - 58px)' }">
+  <ACard :title="$gettext('Process Distribution')" variant="borderless" class="h-full" :styles="{ body: { height: 'calc(100% - 58px)' } }">
     <div class="process-distribution h-full flex flex-col justify-between">
       <div>
         <div v-for="(item, index) in processTypeData" :key="index" class="mb-3">

@@ -81,7 +81,7 @@ async function submit() {
     :confirm-loading="loading"
     :ok-text="$gettext('Generate')"
     :width="600"
-    destroy-on-close
+    destroy-on-hidden
     @ok="submit"
   >
     <SelfSignedCertFields v-model="form" />

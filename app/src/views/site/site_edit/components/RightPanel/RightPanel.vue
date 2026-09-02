@@ -34,32 +34,59 @@ watch(advanceMode, val => {
   <div ref="containerRef" class="right-settings-container">
     <ACard
       class="right-settings"
-      :bordered="false"
+      variant="borderless"
       :loading
+      :styles="{ body: { padding: 0 } }"
     >
       <ATabs
         v-model:active-key="activeKey"
         size="small"
+        :items="[
+          {
+            key: 'basic',
+            label: $gettext('Basic'),
+          },
+          {
+            key: 'dns',
+            label: $gettext('DNS'),
+          },
+          ...(!advanceMode
+            ? [{
+              key: 'config-template',
+              label: $gettext('Config Template'),
+            }]
+            : []),
+          {
+            key: 'chat',
+            label: $gettext('Chat'),
+          },
+          {
+            key: 'port-scanner',
+            label: $gettext('Port Scanner'),
+          },
+        ]"
+        :styles="{
+          header: {
+            margin: '0',
+            padding: '0 24px',
+            height: '55px',
+          },
+          content: {
+            paddingTop: '24px',
+            overflowY: 'auto',
+          },
+        }"
       >
-        <ATabPane key="basic" :tab="$gettext('Basic')">
-          <Basic />
-        </ATabPane>
-        <ATabPane key="dns" :tab="$gettext('DNS')">
-          <DNS />
-        </ATabPane>
-        <ATabPane
-          v-if="!advanceMode"
-          key="config-template"
-          :tab="$gettext('Config Template')"
-        >
-          <ConfigTemplate />
-        </ATabPane>
-        <ATabPane key="chat" :tab="$gettext('Chat')">
-          <Chat :chat-height="chatHeight" />
-        </ATabPane>
-        <ATabPane key="port-scanner" :tab="$gettext('Port Scanner')">
-          <PortScannerCompact />
-        </ATabPane>
+        <template #contentRender="{ item }">
+          <Basic v-if="item.key === 'basic'" />
+          <DNS v-else-if="item.key === 'dns'" />
+          <ConfigTemplate v-else-if="item.key === 'config-template'" />
+          <Chat
+            v-else-if="item.key === 'chat'"
+            :chat-height="chatHeight"
+          />
+          <PortScannerCompact v-else />
+        </template>
       </ATabs>
     </ACard>
   </div>
@@ -72,20 +99,5 @@ watch(advanceMode, val => {
   .right-settings {
     position: relative;
   }
-
-  :deep(.ant-card-body) {
-    padding: 0;
-  }
-
-  :deep(.ant-tabs-nav) {
-    margin: 0;
-    padding: 0 24px;
-    height: 55px;
-  }
-}
-
-:deep(.ant-tabs-content) {
-  padding-top: 24px;
-  overflow-y: auto;
 }
 </style>

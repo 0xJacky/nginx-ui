@@ -6,7 +6,7 @@ import {
   ExclamationCircleOutlined,
   LoadingOutlined,
   PauseCircleOutlined,
-} from '@ant-design/icons-vue'
+} from '@antdv-next/icons'
 import nodeApi from '@/api/node'
 import { formatDateTime } from '@/lib/helper'
 
@@ -35,23 +35,23 @@ const effectiveStatus = computed(() => {
 const statusPresentation = computed(() => {
   switch (effectiveStatus.value) {
     case 'active':
-      return { color: 'green', label: $gettext('Paired signature'), icon: CheckCircleOutlined }
+      return { color: 'green', label: $gettext('Paired signature'), icon: markRaw(CheckCircleOutlined) }
     case 'rotating':
-      return { color: 'blue', label: $gettext('Rotating'), icon: LoadingOutlined }
+      return { color: 'blue', label: $gettext('Rotating'), icon: markRaw(LoadingOutlined) }
     case 'unpaired':
-      return { color: 'default', label: $gettext('Unpaired'), icon: ClockCircleOutlined }
+      return { color: 'default', label: $gettext('Unpaired'), icon: markRaw(ClockCircleOutlined) }
     case 'revoked':
-      return { color: 'red', label: $gettext('Revoked'), icon: ExclamationCircleOutlined }
+      return { color: 'red', label: $gettext('Revoked'), icon: markRaw(ExclamationCircleOutlined) }
     case 'in_progress':
-      return { color: 'blue', label: $gettext('Upgrading'), icon: LoadingOutlined }
+      return { color: 'blue', label: $gettext('Upgrading'), icon: markRaw(LoadingOutlined) }
     case 'waiting_target':
-      return { color: 'orange', label: $gettext('Waiting for target'), icon: ClockCircleOutlined }
+      return { color: 'orange', label: $gettext('Waiting for target'), icon: markRaw(ClockCircleOutlined) }
     case 'failed':
-      return { color: 'red', label: $gettext('Upgrade failed'), icon: ExclamationCircleOutlined }
+      return { color: 'red', label: $gettext('Upgrade failed'), icon: markRaw(ExclamationCircleOutlined) }
     case 'paused':
-      return { color: 'default', label: $gettext('Upgrade paused'), icon: PauseCircleOutlined }
+      return { color: 'default', label: $gettext('Upgrade paused'), icon: markRaw(PauseCircleOutlined) }
     default:
-      return { color: 'blue', label: $gettext('Upgrade pending'), icon: ClockCircleOutlined }
+      return { color: 'blue', label: $gettext('Upgrade pending'), icon: markRaw(ClockCircleOutlined) }
   }
 })
 
@@ -155,10 +155,12 @@ async function retryAuthenticationUpgrade() {
 
 <template>
   <ATag v-if="!isLegacyUpgrade" :color="statusPresentation.color" class="m-0">
-    <component
-      :is="statusPresentation.icon"
-      :class="{ 'auth-upgrade-spinner': effectiveStatus === 'rotating' }"
-    />
+    <template #icon>
+      <component
+        :is="statusPresentation.icon"
+        :class="{ 'auth-upgrade-spinner': effectiveStatus === 'rotating' }"
+      />
+    </template>
     {{ statusPresentation.label }}
   </ATag>
 
@@ -177,13 +179,13 @@ async function retryAuthenticationUpgrade() {
       <div class="w-96 max-w-[calc(100vw-48px)]">
         <AAlert
           :type="effectiveStatus === 'failed' ? 'error' : effectiveStatus === 'waiting_target' ? 'warning' : 'info'"
-          :message="statusDescription"
+          :title="statusDescription"
           show-icon
           class="mb-4"
         />
 
         <ASteps
-          direction="vertical"
+          orientation="vertical"
           size="small"
           :current="currentStep"
           :status="stepStatus"
@@ -245,10 +247,12 @@ async function retryAuthenticationUpgrade() {
       :aria-label="statusTitle"
     >
       <ATag :color="statusPresentation.color" class="m-0">
-        <component
-          :is="statusPresentation.icon"
-          :class="{ 'auth-upgrade-spinner': effectiveStatus === 'in_progress' }"
-        />
+        <template #icon>
+          <component
+            :is="statusPresentation.icon"
+            :class="{ 'auth-upgrade-spinner': effectiveStatus === 'in_progress' }"
+          />
+        </template>
         {{ statusPresentation.label }}
       </ATag>
     </button>

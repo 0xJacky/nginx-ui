@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CloseOutlined, DashboardOutlined, DatabaseOutlined } from '@ant-design/icons-vue'
+import { CloseOutlined, DashboardOutlined, DatabaseOutlined } from '@antdv-next/icons'
 import { storeToRefs } from 'pinia'
 import { useSettingsStore } from '@/pinia'
 

@@ -4,7 +4,7 @@ import {
   ReloadOutlined,
   SaveOutlined,
   SettingOutlined,
-} from '@ant-design/icons-vue'
+} from '@antdv-next/icons'
 
 interface Props {
   isConnected: boolean
@@ -41,7 +41,7 @@ defineEmits<Emits>()
         v-if="!healthCheckEnabled"
         data-testid="site-health-check-global-paused"
         color="warning"
-        :bordered="false"
+        variant="filled"
       >
         {{ $gettext('Health checks paused') }}
       </ATag>

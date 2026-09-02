@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Cert } from '@/api/cert'
-import { DownloadOutlined } from '@ant-design/icons-vue'
+import { DownloadOutlined } from '@antdv-next/icons'
 
 interface Props {
   data: Cert

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Modal } from 'ant-design-vue'
+import { Modal } from 'antdv-next'
 import nginxLog from '@/api/nginx_log'
 
 // Props

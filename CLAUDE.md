@@ -42,7 +42,7 @@ This project is a web-based NGINX management interface built with Go backend and
 - **Vue Router** for routing
 - **Pinia** for state management
 - **VueUse** for utilities
-- **Ant Design Vue** for UI components
+- **antdv-next** for UI components (migrated from `ant-design-vue@4`; the icon package is `@antdv-next/icons`)
 - **UnoCSS** for styling
 
 ### Code Standards
@@ -59,9 +59,11 @@ This project is a web-based NGINX management interface built with Go backend and
 - **Exports**: Favor named exports for functions
 
 ### UI & Styling
-- Use Ant Design Vue components and UnoCSS for styling
+- Use antdv-next components and UnoCSS for styling
+- Always check dark mode when adding or changing styles
+- Prefer a component's semantic `classes` / `styles` props over `:deep(.ant-*)` overrides; antdv-next owns its internal DOM and changes it between versions
 - Implement responsive design with mobile-first approach
-- Use Antdv Flex layout for responsive layouts
+- Use antdv-next Flex layout for responsive layouts
 
 ### Performance Optimization
 - Leverage VueUse functions for enhanced reactivity

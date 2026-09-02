@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { TwoFAStatus } from '@/api/2fa'
-import { KeyOutlined } from '@ant-design/icons-vue'
+import { KeyOutlined } from '@antdv-next/icons'
 import { startAuthentication } from '@simplewebauthn/browser'
 import twoFA from '@/api/2fa'
 import OTPInput from '@/components/OTPInput'
@@ -70,7 +70,7 @@ onMounted(() => {
       class="mb-4"
       type="warning"
       show-icon
-      :message="$gettext('Your account still uses a legacy recovery code. Generate new recovery codes after verification to keep account recovery secure.')"
+      :title="$gettext('Your account still uses a legacy recovery code. Generate new recovery codes after verification to keep account recovery secure.')"
     />
 
     <div
@@ -78,7 +78,7 @@ onMounted(() => {
       class="mt-2 mb-4"
     >
       <p>{{ $gettext('Input the recovery code:') }}</p>
-      <AInputGroup compact>
+      <ASpaceCompact block>
         <AInput v-model:value="recoveryCode" placeholder="xxxxx-xxxxx" />
         <AButton
           type="primary"
@@ -86,7 +86,7 @@ onMounted(() => {
         >
           {{ $gettext('Recovery') }}
         </AButton>
-      </AInputGroup>
+      </ASpaceCompact>
     </div>
 
     <div v-if="twoFAStatus.otp_status && !useRecoveryCode">
@@ -130,9 +130,3 @@ onMounted(() => {
     </div>
   </div>
 </template>
-
-<style scoped lang="less">
-:deep(.ant-input-group.ant-input-group-compact) {
-  display: flex;
-}
-</style>

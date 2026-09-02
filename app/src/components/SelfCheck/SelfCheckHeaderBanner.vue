@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CloseCircleOutlined } from '@ant-design/icons-vue'
+import { CloseCircleOutlined } from '@antdv-next/icons'
 import { useElementSize } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { useSelfCheckStore } from './store'
@@ -43,7 +43,7 @@ onMounted(() => {
 <template>
   <div v-show="hasError && !loading">
     <div ref="alertEl" class="self-check-alert" :style="{ visibility: shouldHideAlert ? 'hidden' : 'visible' }">
-      <AAlert type="error" show-icon :message="$gettext('Self check failed, Nginx UI may not work properly')">
+      <AAlert type="error" show-icon :title="$gettext('Self check failed, Nginx UI may not work properly')">
         <template #action>
           <AButton class="ml-4" size="small" danger @click="router.push('/system/self_check')">
             {{ actionLabel }}

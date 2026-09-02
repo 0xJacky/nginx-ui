@@ -148,8 +148,15 @@ export { getLicenseColor }
     </ACard>
 
     <ACard>
-      <ATabs v-model:active-key="activeTab">
-        <ATabPane key="all" :tab="$gettext('All Components')">
+      <ATabs
+        v-model:active-key="activeTab"
+        :items="[
+          { key: 'all', label: $gettext('All Components') },
+          { key: 'backend', label: $gettext('Backend') },
+          { key: 'frontend', label: $gettext('Frontend') },
+        ]"
+      >
+        <template #contentRender>
           <ATable
             :columns="columns"
             :data-source="getCurrentLicenses()"
@@ -182,77 +189,7 @@ export { getLicenseColor }
               </template>
             </template>
           </ATable>
-        </ATabPane>
-
-        <ATabPane key="backend" :tab="$gettext('Backend')">
-          <ATable
-            :columns="columns"
-            :data-source="getCurrentLicenses()"
-            :loading="loading"
-            :pagination="{ pageSize: 20, showSizeChanger: true, showQuickJumper: true }"
-            :scroll="{ x: 800 }"
-            size="small"
-          >
-            <template #bodyCell="{ column, record }">
-              <template v-if="column.key === 'name'">
-                <ATypographyText code>
-                  {{ record.name }}
-                </ATypographyText>
-              </template>
-              <template v-else-if="column.key === 'license'">
-                <ATag :color="getLicenseColor(record.license)">
-                  {{ record.license }}
-                </ATag>
-              </template>
-              <template v-else-if="column.key === 'url'">
-                <AButton
-                  type="link"
-                  size="small"
-                  :href="record.url"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {{ $gettext('View') }}
-                </AButton>
-              </template>
-            </template>
-          </ATable>
-        </ATabPane>
-
-        <ATabPane key="frontend" :tab="$gettext('Frontend')">
-          <ATable
-            :columns="columns"
-            :data-source="getCurrentLicenses()"
-            :loading="loading"
-            :pagination="{ pageSize: 20, showSizeChanger: true, showQuickJumper: true }"
-            :scroll="{ x: 800 }"
-            size="small"
-          >
-            <template #bodyCell="{ column, record }">
-              <template v-if="column.key === 'name'">
-                <ATypographyText code>
-                  {{ record.name }}
-                </ATypographyText>
-              </template>
-              <template v-else-if="column.key === 'license'">
-                <ATag :color="getLicenseColor(record.license)">
-                  {{ record.license }}
-                </ATag>
-              </template>
-              <template v-else-if="column.key === 'url'">
-                <AButton
-                  type="link"
-                  size="small"
-                  :href="record.url"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {{ $gettext('View') }}
-                </AButton>
-              </template>
-            </template>
-          </ATable>
-        </ATabPane>
+        </template>
       </ATabs>
     </ACard>
   </div>

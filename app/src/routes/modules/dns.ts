@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { CloudServerOutlined } from '@ant-design/icons-vue'
+import { CloudServerOutlined } from '@antdv-next/icons'
 
 export const dnsRoutes: RouteRecordRaw[] = [
   {

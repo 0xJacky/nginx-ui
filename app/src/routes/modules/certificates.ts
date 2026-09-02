@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { SafetyCertificateOutlined } from '@ant-design/icons-vue'
+import { SafetyCertificateOutlined } from '@antdv-next/icons'
 
 export const certificatesRoutes: RouteRecordRaw[] = [
   {

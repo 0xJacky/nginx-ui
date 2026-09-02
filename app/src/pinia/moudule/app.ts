@@ -1,15 +1,15 @@
-import type { MessageInstance } from 'ant-design-vue/es/message/interface'
-import type { ModalStaticFunctions } from 'ant-design-vue/es/modal/confirm'
-import type { NotificationInstance } from 'ant-design-vue/es/notification/interface'
+import type { MessageInstance } from 'antdv-next/dist/message/interface'
+import type { HookAPI } from 'antdv-next/dist/modal/useModal/types'
+import type { NotificationInstance } from 'antdv-next/dist/notification/interface'
 
 export const useAppStore = defineStore('app', () => {
   const message = ref<MessageInstance>()
-  const modal = ref<ModalStaticFunctions>()
+  const modal = ref<HookAPI>()
   const notification = ref<NotificationInstance>()
 
   function setAppContext(context: {
     message: MessageInstance
-    modal: ModalStaticFunctions
+    modal: HookAPI
     notification: NotificationInstance
   }) {
     message.value = context.message

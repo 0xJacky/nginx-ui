@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import type { Passkey } from '@/api/passkey'
-import { DeleteOutlined, EditOutlined, KeyOutlined } from '@ant-design/icons-vue'
+import { DeleteOutlined, EditOutlined, KeyOutlined } from '@antdv-next/icons'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import passkey from '@/api/passkey'
+import { List, ListItem, ListItemMeta } from '@/components/List'
 import ReactiveFromNow from '@/components/ReactiveFromNow'
 import { formatDateTime } from '@/lib/helper'
 import { useUserStore } from '@/pinia'
@@ -65,7 +66,7 @@ function remove(item: Passkey) {
           + 'They can be used as a password replacement or as a 2FA method.') }}
       </p>
     </div>
-    <AList
+    <List
       class="mt-4"
       bordered
       :data-source="data"
@@ -79,8 +80,8 @@ function remove(item: Passkey) {
         </div>
       </template>
       <template #renderItem="{ item, index }">
-        <AListItem>
-          <AListItemMeta>
+        <ListItem>
+          <ListItemMeta>
             <template #title>
               <div class="flex gap-2">
                 <KeyOutlined />
@@ -96,8 +97,8 @@ function remove(item: Passkey) {
               {{ $gettext('Created at') }}: {{ formatDateTime(item.created_at) }} · {{
                 $gettext('Last used at') }}: <ReactiveFromNow :time="item.last_used_at" />
             </template>
-          </AListItemMeta>
-          <template #extra>
+          </ListItemMeta>
+          <template #actions>
             <div v-if="modifyIdx !== index">
               <AButton
                 type="link"
@@ -143,9 +144,9 @@ function remove(item: Passkey) {
               </AButton>
             </div>
           </template>
-        </AListItem>
+        </ListItem>
       </template>
-    </AList>
+    </List>
   </div>
 </template>
 

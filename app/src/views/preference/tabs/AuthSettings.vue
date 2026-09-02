@@ -20,8 +20,8 @@ const bannedIPColumns = [{
 }, {
   title: $gettext('Banned Until'),
   dataIndex: 'expired_at',
-  customRender: args => {
-    return dayjs.unix(args.text).format('YYYY-MM-DD HH:mm:ss')
+  render: value => {
+    return dayjs.unix(value).format('YYYY-MM-DD HH:mm:ss')
   },
 }, {
   title: $gettext('Action'),
@@ -106,7 +106,7 @@ function removeBannedIP(ip: string) {
     <AAlert
       class="mb-6"
       show-icon
-      :message="$gettext('If the number of login failed attempts from a ip reach the max attempts in ban threshold minutes,'
+      :title="$gettext('If the number of login failed attempts from a ip reach the max attempts in ban threshold minutes,'
         + ' the ip will be banned for a period of time.')"
       type="info"
     />

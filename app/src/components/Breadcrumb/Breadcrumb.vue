@@ -32,6 +32,13 @@ const computedBreadList = computed(() => {
 
 const breadList = useBreadcrumbs()
 
+const breadcrumbItems = computed(() => breadList.value.map(item => ({
+  key: item.name,
+  path: item.path,
+})))
+
+const getBread = (route: unknown, routes: readonly unknown[]) => breadList.value[routes.indexOf(route)]
+
 onMounted(() => {
   breadList.value = computedBreadList.value
 })
@@ -42,20 +49,17 @@ watch(route, () => {
 </script>
 
 <template>
-  <ABreadcrumb class="breadcrumb">
-    <ABreadcrumbItem
-      v-for="(item, index) in breadList"
-      :key="item.name"
-    >
+  <ABreadcrumb class="breadcrumb" :items="breadcrumbItems">
+    <template #itemRender="{ route: breadcrumbRoute, routes }">
       <RouterLink
-        v-if="index === 0 || !item.hasChildren && index !== breadList.length - 1"
-        :to="{ path: item.path === '' ? '/' : item.path, query: item.query }"
+        v-if="routes.indexOf(breadcrumbRoute) === 0 || !getBread(breadcrumbRoute, routes)?.hasChildren && routes.indexOf(breadcrumbRoute) !== routes.length - 1"
+        :to="{ path: getBread(breadcrumbRoute, routes)?.path === '' ? '/' : getBread(breadcrumbRoute, routes)?.path, query: getBread(breadcrumbRoute, routes)?.query }"
       >
-        {{ item.translatedName() }}
+        {{ getBread(breadcrumbRoute, routes)?.translatedName() }}
       </RouterLink>
-      <span v-else-if="item.hasChildren">{{ item.translatedName() }}</span>
-      <span v-else>{{ item.translatedName() }}</span>
-    </ABreadcrumbItem>
+      <span v-else-if="getBread(breadcrumbRoute, routes)?.hasChildren">{{ getBread(breadcrumbRoute, routes)?.translatedName() }}</span>
+      <span v-else>{{ getBread(breadcrumbRoute, routes)?.translatedName() }}</span>
+    </template>
   </ABreadcrumb>
 </template>
 

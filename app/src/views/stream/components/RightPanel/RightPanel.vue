@@ -22,21 +22,45 @@ const chatHeight = computed(() => {
   <div ref="containerRef" class="right-settings-container">
     <ACard
       class="right-settings"
-      :bordered="false"
+      variant="borderless"
     >
       <ATabs
         v-model:active-key="activeKey"
         size="small"
+        :items="[
+          {
+            key: 'basic',
+            label: $gettext('Basic'),
+          },
+          {
+            key: 'chat',
+            label: $gettext('Chat'),
+          },
+          {
+            key: 'port-scanner',
+            label: $gettext('Port Scanner'),
+          },
+        ]"
+        :styles="{
+          header: {
+            margin: '0',
+            height: '55px',
+            padding: '0 24px',
+          },
+          content: {
+            paddingTop: '24px',
+            overflowY: 'auto',
+          },
+        }"
       >
-        <ATabPane key="basic" :tab="$gettext('Basic')">
-          <Basic />
-        </ATabPane>
-        <ATabPane key="chat" :tab="$gettext('Chat')">
-          <Chat :chat-height="chatHeight" />
-        </ATabPane>
-        <ATabPane key="port-scanner" :tab="$gettext('Port Scanner')">
-          <PortScannerCompact />
-        </ATabPane>
+        <template #contentRender="{ item }">
+          <Basic v-if="item.key === 'basic'" />
+          <Chat
+            v-else-if="item.key === 'chat'"
+            :chat-height="chatHeight"
+          />
+          <PortScannerCompact v-else />
+        </template>
       </ATabs>
     </ACard>
   </div>
@@ -49,16 +73,5 @@ const chatHeight = computed(() => {
   .right-settings {
     position: relative;
   }
-
-  :deep(.ant-tabs-nav) {
-    margin: 0;
-    height: 55px;
-    padding: 0 24px;
-  }
-}
-
-:deep(.ant-tabs-content) {
-  padding-top: 24px;
-  overflow-y: auto;
 }
 </style>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { TwoFAStatus } from '@/api/2fa'
 import type { RecoveryCode } from '@/api/recovery'
-import { CopyOutlined, WarningOutlined } from '@ant-design/icons-vue'
+import { CopyOutlined, WarningOutlined } from '@antdv-next/icons'
 import { UseClipboard } from '@vueuse/components'
 import recovery from '@/api/recovery'
 import { use2FAModal } from '@/components/TwoFA'
@@ -79,7 +79,7 @@ function handlePopOpenChange(visible: boolean) {
       class="mb-4"
       type="info"
       show-icon
-      :message="$gettext('You have not enabled 2FA yet. Please enable 2FA to generate recovery codes.')"
+      :title="$gettext('You have not enabled 2FA yet. Please enable 2FA to generate recovery codes.')"
     />
     <AAlert
       v-else-if="!twoFAStatus?.recovery_codes_generated"
@@ -87,7 +87,7 @@ function handlePopOpenChange(visible: boolean) {
       :type="twoFAStatus?.recovery_codes_migration_required ? 'warning' : 'info'"
       show-icon
     >
-      <template #message>
+      <template #title>
         <template v-if="twoFAStatus?.recovery_codes_migration_required">
           {{ $gettext('Your account uses a deprecated legacy recovery code. Generate new recovery codes now to complete migration and keep account recovery secure.') }}
         </template>
@@ -100,10 +100,10 @@ function handlePopOpenChange(visible: boolean) {
       </template>
     </AAlert>
 
-    <ACard v-if="twoFAStatus?.recovery_codes_generated && codes" class="codes-card mb-4">
+    <ACard v-if="twoFAStatus?.recovery_codes_generated && codes" class="codes-card mb-4" :styles="{ header: { padding: 0 } }">
       <template #title>
         <AAlert class="whitespace-normal px-6 py-4 rounded-t-[8px]" type="warning" banner :show-icon="false">
-          <template #message>
+          <template #title>
             <WarningOutlined class="ant-alert-icon text-lg" />
             {{ $gettext('These codes are the last resort for accessing your account in case you lose your password and second factors. If you cannot find these codes, you will lose access to your account.') }}
           </template>
@@ -168,9 +168,3 @@ function handlePopOpenChange(visible: boolean) {
     </template>
   </div>
 </template>
-
-<style scoped lang="less">
-.codes-card :deep(.ant-card-head) {
-  padding: 0;
-}
-</style>

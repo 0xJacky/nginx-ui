@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PortInfo, PortScanRequest } from '@/api/port_scan'
-import { Badge } from 'ant-design-vue'
+import { Badge } from 'antdv-next'
 import portScan from '@/api/port_scan'
 
 interface FormData {
@@ -38,13 +38,13 @@ const columns = [
     dataIndex: 'status',
     key: 'status',
     width: 80,
-    customRender: ({ text }: { text: string }) => {
+    render: (value: string) => {
       const statusMap = {
         listening: { color: 'orange', text: $gettext('Listening') },
         open: { color: 'blue', text: $gettext('Open') },
         closed: { color: 'green', text: $gettext('Closed') },
       }
-      const status = statusMap[text as keyof typeof statusMap] || { status: 'error', text: $gettext('Unknown') }
+      const status = statusMap[value as keyof typeof statusMap] || { status: 'error', text: $gettext('Unknown') }
       return h(Badge, {
         color: status.color,
         text: h('span', { style: 'font-size: 11px;' }, status.text),
@@ -56,20 +56,20 @@ const columns = [
     dataIndex: 'process',
     key: 'process',
     ellipsis: true,
-    customRender: ({ text }: { text: string }) => {
-      if (!text)
+    render: (value: string) => {
+      if (!value)
         return '-'
 
       // Extract process name from format like "1234/nginx: master process" or "1234/nginx"
       // Use a more specific regex to avoid backtracking issues
-      const match = text.match(/^\d+\/([^:]+)/)
+      const match = value.match(/^\d+\/([^:]+)/)
       if (match) {
         const processName = match[1].trim()
-        return h('span', { title: text, style: 'font-size: 12px;' }, processName)
+        return h('span', { title: value, style: 'font-size: 12px;' }, processName)
       }
 
       // Fallback: if no match, show first 10 characters
-      return h('span', { title: text, style: 'font-size: 12px;' }, text.substring(0, 10))
+      return h('span', { title: value, style: 'font-size: 12px;' }, value.substring(0, 10))
     },
   },
 ]
@@ -141,7 +141,7 @@ function quickScan(start: number, end: number) {
 <template>
   <div class="port-scanner-compact px-6 mb-6">
     <div class="scan-form">
-      <ASpace direction="vertical" size="small" style="width: 100%">
+      <ASpace orientation="vertical" size="small" style="width: 100%">
         <ARow :gutter="8">
           <ACol :span="11">
             <AInputNumber
@@ -209,6 +209,20 @@ function quickScan(start: number, end: number) {
         :columns="columns"
         :data-source="tableData"
         :pagination="pagination"
+        :styles="{
+          pagination: {
+            root: {
+              margin: '8px 0 0 0',
+              textAlign: 'center',
+            },
+            item: {
+              minWidth: '24px',
+              height: '24px',
+              lineHeight: '22px',
+              fontSize: '12px',
+            },
+          },
+        }"
         :loading="loading"
         size="small"
         :scroll="{ y: 300 }"
@@ -244,20 +258,6 @@ function quickScan(start: number, end: number) {
 
       .ant-table-tbody > tr > td {
         padding: 4px 8px;
-      }
-
-      .ant-pagination {
-        margin: 8px 0 0 0;
-        text-align: center;
-
-        .ant-pagination-item,
-        .ant-pagination-prev,
-        .ant-pagination-next {
-          min-width: 24px;
-          height: 24px;
-          line-height: 22px;
-          font-size: 12px;
-        }
       }
     }
 

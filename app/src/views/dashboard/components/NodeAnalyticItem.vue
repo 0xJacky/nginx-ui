@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { AnalyticNode } from '@/api/node'
-import Icon, { ArrowDownOutlined, ArrowUpOutlined, DatabaseOutlined, LineChartOutlined, SendOutlined } from '@ant-design/icons-vue'
+import Icon, { ArrowDownOutlined, ArrowUpOutlined, DatabaseOutlined, LineChartOutlined, SendOutlined } from '@antdv-next/icons'
 import cpu from '@/assets/svg/cpu.svg?component'
 import memory from '@/assets/svg/memory.svg?component'
 import UsageProgressLine from '@/components/Chart/UsageProgressLine.vue'

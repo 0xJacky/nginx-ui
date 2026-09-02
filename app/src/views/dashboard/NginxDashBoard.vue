@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ClockCircleOutlined, ReloadOutlined } from '@ant-design/icons-vue'
+import { ClockCircleOutlined, ReloadOutlined } from '@antdv-next/icons'
 import { storeToRefs } from 'pinia'
 import ngx from '@/api/ngx'
 import { useNginxPerformance } from '@/composables/useNginxPerformance'
@@ -150,7 +150,7 @@ onUnmounted(() => {
       class="mb-4"
       type="warning"
       show-icon
-      :message="$gettext('Nginx is not running')"
+      :title="$gettext('Nginx is not running')"
       :description="$gettext('Cannot get performance data in this state')"
     />
 
@@ -160,12 +160,12 @@ onUnmounted(() => {
       class="mb-4"
       type="error"
       show-icon
-      :message="$gettext('Get data failed')"
+      :title="$gettext('Get data failed')"
       :description="error"
     />
 
     <!-- stub_status switch -->
-    <ACard class="mb-4" :bordered="false">
+    <ACard class="mb-4" variant="borderless">
       <div class="flex items-center justify-between">
         <div>
           <div class="font-medium mb-1">
@@ -192,19 +192,19 @@ onUnmounted(() => {
       class="mb-4"
       type="info"
       show-icon
-      :message="$gettext('Need to enable the stub_status module')"
+      :title="$gettext('Need to enable the stub_status module')"
       :description="$gettext('Please enable the stub_status module to get request statistics, connection count, etc.')"
     />
 
     <!-- Loading state -->
-    <ASpin :spinning="loading" :tip="$gettext('Loading data...')">
+    <ASpin :spinning="loading" :description="$gettext('Loading data...')">
       <div v-if="!nginxInfo && !error" class="text-center py-8">
         <AEmpty :description="$gettext('No data')" />
       </div>
 
       <div v-if="nginxInfo" class="performance-dashboard">
         <!-- Top performance metrics card -->
-        <ACard class="mb-4" :title="$gettext('Performance Metrics')" :bordered="false">
+        <ACard class="mb-4" :title="$gettext('Performance Metrics')" variant="borderless">
           <template #extra>
             <ParamsOptimization />
           </template>

@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
 import type { Namespace } from '@/api/namespace'
-import type { Node } from '@/api/node'
-import Icon, { LinkOutlined, ThunderboltOutlined } from '@ant-design/icons-vue'
+import type { AnalyticNode, Node } from '@/api/node'
+import Icon, { LinkOutlined, ThunderboltOutlined } from '@antdv-next/icons'
 import namespaceApi from '@/api/namespace'
 import logo from '@/assets/img/logo.png'
 import pulse from '@/assets/svg/pulse.svg?component'
+import { List, ListItem, ListItemMeta } from '@/components/List'
 import NamespaceTabs from '@/components/NamespaceTabs'
 import { formatDateTime } from '@/lib/helper'
 import { useSettingsStore } from '@/pinia'
@@ -87,32 +88,32 @@ const visible = computed(() => {
     v-if="visible"
     class="env-list-card w-full max-w-none"
     :title="$gettext('Nodes')"
-    :bordered="false"
+    variant="borderless"
   >
     <NamespaceTabs v-model:active-key="activeNamespaceKey" class="mb-4" hide-node-info />
 
-    <AList
+    <List
       item-layout="horizontal"
       :data-source="filteredNodes"
       class="env-list"
     >
       <template #renderItem="{ item }">
-        <AListItem class="env-list-item">
-          <AListItemMeta>
+        <ListItem class="env-list-item">
+          <ListItemMeta>
             <template #title>
               <div class="env-title-wrapper">
                 <div class="env-tags">
                   <ATag
                     v-if="item.status"
                     color="blue"
-                    :bordered="false"
+                    variant="filled"
                   >
                     {{ $gettext('Online') }}
                   </ATag>
                   <ATag
                     v-else
                     color="error"
-                    :bordered="false"
+                    variant="filled"
                   >
                     {{ $gettext('Offline') }}
                   </ATag>
@@ -124,7 +125,7 @@ const visible = computed(() => {
                 <template v-if="item.status">
                   <div class="runtime-meta">
                     <Icon :component="pulse" />
-                    <span>{{ formatDateTime(item.response_at) }}</span>
+                    <span v-if="item.response_at">{{ formatDateTime(item.response_at) }}</span>
                   </div>
                   <div class="runtime-meta">
                     <ThunderboltOutlined />
@@ -143,7 +144,7 @@ const visible = computed(() => {
             <template #description>
               <div class="env-description">
                 <NodeAnalyticItem
-                  :item="item"
+                  :item="item as AnalyticNode"
                   :current-node-id="node.id"
                   :local-version="version"
                   :on-link-start="linkStart"
@@ -151,10 +152,10 @@ const visible = computed(() => {
                 />
               </div>
             </template>
-          </AListItemMeta>
-        </AListItem>
+          </ListItemMeta>
+        </ListItem>
       </template>
-    </AList>
+    </List>
   </ACard>
 </template>
 
@@ -245,22 +246,22 @@ const visible = computed(() => {
 
 // Global dark mode class adaptation
 .dark {
-  .ant-list-item-meta-avatar .ant-avatar {
+  .nui-list-item-meta-avatar .ant-avatar {
     border: 1px solid #303030 !important;
   }
 }
 
 // Deep selector optimizations
-:deep(.ant-list-item-meta) {
+:deep(.nui-list-item-meta) {
   width: 100%;
   display: flex;
 
-  .ant-list-item-meta-content {
+  .nui-list-item-meta-content {
     width: 100%;
     min-width: 0; // Allow content to shrink
   }
 
-  .ant-list-item-meta-title {
+  .nui-list-item-meta-title {
     margin-bottom: 0;
     display: flex;
     align-items: center;
@@ -270,7 +271,7 @@ const visible = computed(() => {
     }
   }
 
-  .ant-list-item-meta-avatar {
+  .nui-list-item-meta-avatar {
     display: flex;
     align-items: center;
     align-self: center; // Vertically center relative to the entire meta container

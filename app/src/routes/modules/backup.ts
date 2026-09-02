@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { ClockCircleOutlined } from '@ant-design/icons-vue'
+import { ClockCircleOutlined } from '@antdv-next/icons'
 
 export const backupRoutes: RouteRecordRaw[] = [
   {

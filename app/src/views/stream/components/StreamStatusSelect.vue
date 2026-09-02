@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { SiteStatus } from '@/api/site'
 import type { CheckedType } from '@/types'
-import { Modal } from 'ant-design-vue'
+import { Modal } from 'antdv-next'
 import stream from '@/api/stream'
 import { ConfigStatus } from '@/constants'
 
