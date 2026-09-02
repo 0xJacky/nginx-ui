@@ -118,6 +118,10 @@ nginx
 start-stop-daemon --start --quiet --pidfile $PID --exec $SBIN_PATH
 ```
 
+::: tip 通过 SSH 管理宿主机模式
+在通过 SSH 管理宿主机模式下，非空的 `TestConfigCmd`、`ReloadCmd` 或 `RestartCmd` 会以 SSH 用户身份通过 `/bin/sh -c` 在宿主机上执行。留空时，Nginx UI 会使用宿主机的 nginx 可执行文件进行测试，并通过 systemd 或 launchd 重载或重启。参见 [在 Docker 中管理宿主机 Nginx](manage-host-nginx-from-docker.md)。
+:::
+
 ### StubStatusPort
 - 类型：`uint`
 - 默认值：`51820`
@@ -187,3 +191,52 @@ services:
 
 Nginx UI 通过自身的文件系统读写 Nginx 配置和日志文件。请将相同的配置和日志目录以相同路径挂载到两个容器中。配置目录在 Nginx UI 容器中必须可写，在 Nginx 容器中可以保持只读。映射 `docker.sock` 和设置 `ContainerName` 只会将状态检查和控制命令转发到另一个容器，不会自动共享文件或转发业务流量。
 :::
+
+## 通过 SSH 控制宿主机 Nginx
+
+对于 Nginx UI 运行在 Docker 容器中、而 Nginx 以原生方式安装在宿主机上的部署场景，Nginx UI 提供了第三种控制模式，通过 SSH 执行命令，并使用 SFTP 或绑定挂载进行文件 I/O。该模式支持 Linux systemd 服务和 macOS Homebrew launchd 服务。
+
+### 限制
+
+::: warning 限制
+- **仅限同一宿主机**：Nginx UI 容器与目标 nginx 进程必须在同一台物理机或虚拟机上。如需多主机管理，请参阅 [使用集群节点管理多主机 Nginx](manage-multi-host-nginx-with-cluster.md)。
+- Linux 上的 nginx 必须由 systemd 管理，并允许 SSH 用户通过免密码 `sudo -n` 调用一组受限命令。
+- macOS 上的 nginx 必须作为 Homebrew 用户服务运行；SSH 用户必须是拥有 `homebrew.mxcl.nginx` 的登录用户，并且不会使用 sudo。
+:::
+
+### 快速开始
+
+1. 在 Web 界面中，前往**偏好设置 → Nginx**，选择**通过 SSH 控制宿主机**模式，并打开配置向导。
+2. 按照五步配置向导操作（**SSH 目标**、**信任与测试**、**检测平台**、**访问与安装**、**验证**）：选择或生成密钥对、信任主机密钥并测试连接、检测服务管理器和 nginx 路径、选择文件访问模式并应用生成的容器与宿主机片段，然后执行验证。
+3. 所有检查通过后，保存配置。
+
+也可以使用命令行：
+
+```bash
+nginx-ui host-setup print --host-address host.docker.internal:22 --host-user nginxui --access-mode sftp
+nginx-ui host-setup test
+```
+
+### 配置字段
+
+| 字段 | 描述 |
+|---|---|
+| `host_mode` | 设置为 `ssh` 以启用此模式 |
+| `host_access_mode` | `sftp` 或 `mounted`。SSH 模式下必填：容器通过 SFTP 还是通过 bind mount 访问宿主机 nginx 文件 |
+| `host_key_source` | `generated`（默认）、`existing` 或 `provided`：SSH 私钥的来源 |
+| `host_address` | 远程 `host:port` |
+| `host_user` | 宿主机上的 SSH 用户 |
+| `host_auth_method` | SSH 认证方式。当前宿主机 SSH 配置请使用密钥认证 |
+| `host_private_key_path` | 容器内的私钥路径 |
+| `host_known_hosts_path` | 容器内的 known_hosts 允许列表路径 |
+| `host_sudo_prefix` | 特权命令前缀。默认值为 `sudo -n` |
+| `host_service_manager` | `systemd`（默认）或 `launchd` |
+| `host_systemd_unit_name` | 默认为 `nginx.service` |
+| `host_systemctl_path` | 默认为 `/bin/systemctl` |
+| `host_launchd_service` | 默认为 `homebrew.mxcl.nginx` |
+| `host_launchctl_path` | 默认为 `/bin/launchctl` |
+| `host_config_dir` | 宿主机侧 nginx 配置目录 |
+| `host_log_dir` | 宿主机侧 nginx 日志目录 |
+| `sbin_path` | SSH 模式下可选：宿主机上的 nginx 可执行文件。留空时，Nginx UI 会解析服务管理器的默认值（systemd 为 `/usr/sbin/nginx`，launchd 为 `/opt/homebrew/opt/nginx/bin/nginx`），并在保存控制设置时写入。生成的 sudoers 允许列表会精确匹配解析后的路径 |
+
+另请参阅：[在 Docker 中管理宿主机 Nginx](manage-host-nginx-from-docker.md) 和 [使用集群节点管理多主机 Nginx](manage-multi-host-nginx-with-cluster.md)。

@@ -2,12 +2,12 @@ package config
 
 import (
 	"net/http"
-	"os"
 	"path/filepath"
 
 	"github.com/0xJacky/Nginx-UI/internal/clustersync"
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
 )
@@ -50,9 +50,16 @@ func SyncConfigBatch(c *gin.Context) {
 			continue
 		}
 
-		if !json.Overwrite && helper.FileExists(path) {
-			skipped++
-			continue
+		if !json.Overwrite {
+			exists, existsErr := nginx.Exists(path)
+			if existsErr != nil {
+				failures = append(failures, gin.H{"path": relativePath, "error": existsErr.Error()})
+				continue
+			}
+			if exists {
+				skipped++
+				continue
+			}
 		}
 
 		if err = config.ValidateConfigFile(path, file.Content); err != nil {
@@ -60,7 +67,7 @@ func SyncConfigBatch(c *gin.Context) {
 			continue
 		}
 
-		if err = os.MkdirAll(filepath.Dir(path), 0755); err != nil {
+		if err = nginx.MkdirAll(filepath.Dir(path), 0755); err != nil {
 			failures = append(failures, gin.H{"path": relativePath, "error": err.Error()})
 			continue
 		}

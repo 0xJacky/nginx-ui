@@ -3,6 +3,7 @@ package nginx
 import (
 	"context"
 	"errors"
+	"fmt"
 	"os"
 	"os/exec"
 	"strconv"
@@ -94,8 +95,16 @@ func reloadContext(ctx context.Context) (stdOut string, stdErr error) {
 		return stdOut, stdErr
 	}
 
+	// An operator-authored command wins on every target, as it does for
+	// TestConfigCmd; execShellContext already runs it through the SSH runner.
 	if settings.NginxSettings.ReloadCmd != "" {
 		return execShellContext(ctx, settings.NginxSettings.ReloadCmd)
+	}
+
+	// SSH mode controls the native host service without crossing PID namespaces.
+	if settings.NginxSettings.ControlMode() == settings.ControlModeHostViaSSH {
+		name, args := hostReloadCommand(settings.NginxSettings)
+		return execCommandContext(ctx, name, args...)
 	}
 
 	sbin := GetSbinPath()
@@ -136,8 +145,20 @@ func restartContext(ctx context.Context) (stdOut string, stdErr error) {
 	// fix(docker): nginx restart always output network error
 	time.Sleep(500 * time.Millisecond)
 
+	// An operator-authored command wins on every target, as it does for
+	// TestConfigCmd; execShellContext already runs it through the SSH runner.
 	if settings.NginxSettings.RestartCmd != "" {
 		return execShellContext(ctx, settings.NginxSettings.RestartCmd)
+	}
+
+	// SSH mode routes restart through the host's native service manager.
+	if settings.NginxSettings.ControlMode() == settings.ControlModeHostViaSSH {
+		runner := resolveRunner()
+		name, args, err := hostRestartCommand(runner, settings.NginxSettings)
+		if err != nil {
+			return "", err
+		}
+		return runner.Exec(ctx, name, args...)
 	}
 
 	pidPath := GetPIDPath()
@@ -323,14 +344,91 @@ func truncateControlOutput(output string) string {
 }
 
 func IsRunning() bool {
-	pidPath := GetPIDPath()
-	switch settings.NginxSettings.RunningInAnotherContainer() {
-	case true:
-		return docker.StatPath(pidPath)
-	case false:
-		return isProcessRunning(pidPath)
+	switch settings.NginxSettings.ControlMode() {
+	case settings.ControlModeHostViaSSH:
+		return isRunningViaHostService()
+	case settings.ControlModeExternalContainer:
+		return docker.StatPath(GetPIDPath())
+	default:
+		return isProcessRunning(GetPIDPath())
 	}
-	return false
+}
+
+func hostReloadCommand(n *settings.Nginx) (string, []string) {
+	if n.GetHostServiceManager() == settings.HostServiceManagerLaunchd {
+		return n.GetHostSbinPath(), []string{"-s", "reload"}
+	}
+	return n.GetHostSystemctlPath(), []string{"reload", n.GetHostSystemdUnitName()}
+}
+
+func hostRestartCommand(runner Runner, n *settings.Nginx) (string, []string, error) {
+	if n.GetHostServiceManager() == settings.HostServiceManagerLaunchd {
+		target, err := launchdTarget(runner, n.GetHostLaunchdService())
+		if err != nil {
+			return "", nil, err
+		}
+		return n.GetHostLaunchctlPath(), []string{"kickstart", "-k", target}, nil
+	}
+	return n.GetHostSystemctlPath(), []string{"restart", n.GetHostSystemdUnitName()}, nil
+}
+
+func launchdTarget(runner Runner, service string) (string, error) {
+	out, err := runner.Exec(context.Background(), "/usr/bin/id", "-u")
+	if err != nil {
+		return "", fmt.Errorf("resolve launchd user domain: %w", err)
+	}
+	uid := strings.TrimSpace(out)
+	if parsed, parseErr := strconv.ParseUint(uid, 10, 32); parseErr != nil || parsed == 0 {
+		return "", fmt.Errorf("invalid launchd user id %q", uid)
+	}
+	service = strings.TrimSpace(service)
+	if service == "" {
+		return "", errors.New("launchd service label is empty")
+	}
+	return "gui/" + uid + "/" + service, nil
+}
+
+// isRunningViaHostService queries the configured host service manager over SSH.
+// On manager errors it validates the remote PID instead of inspecting the container PID namespace.
+func isRunningViaHostService() bool {
+	runner := resolveRunner()
+	n := settings.NginxSettings
+	if n.GetHostServiceManager() == settings.HostServiceManagerLaunchd {
+		target, err := launchdTarget(runner, n.GetHostLaunchdService())
+		if err == nil {
+			if _, err = runner.Exec(context.Background(), n.GetHostLaunchctlPath(), "print", target); err == nil {
+				return true
+			}
+		}
+	} else {
+		name, args := hostSystemdStatusCommand(n)
+		out, err := runner.Exec(context.Background(), name, args...)
+		if err == nil && strings.TrimSpace(out) == "active" {
+			return true
+		}
+	}
+	return isRemotePIDRunning(runner, GetPIDPath())
+}
+
+func hostSystemdStatusCommand(n *settings.Nginx) (string, []string) {
+	return n.GetHostSystemctlPath(), []string{"is-active", n.GetHostSystemdUnitName()}
+}
+
+func isRemotePIDRunning(runner Runner, pidPath string) bool {
+	if pidPath == "" {
+		return false
+	}
+	out, err := runner.Exec(context.Background(), "/bin/cat", pidPath)
+	if err != nil {
+		return false
+	}
+	pid := strings.TrimSpace(out)
+	parsed, err := strconv.ParseInt(pid, 10, 32)
+	if err != nil || parsed <= 0 {
+		return false
+	}
+	_, err = runner.Exec(context.Background(), "/bin/kill", "-0", pid)
+	return err == nil
 }
 
 // isProcessRunning checks if the process with the PID from pidPath is actually running

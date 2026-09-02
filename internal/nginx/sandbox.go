@@ -31,8 +31,10 @@ func SandboxTestConfigWithPaths(namespace *NamespaceInfo, sitePaths, streamPaths
 		}
 	}
 
-	// A process-local temporary directory is not visible inside a separate Nginx container.
-	if namespace != nil && settings.NginxSettings.RunningInAnotherContainer() {
+	// A process-local temporary directory is not visible to nginx on any target
+	// other than this process: neither a separate container nor a host reached
+	// over SSH can open the generated path.
+	if namespace != nil && settings.NginxSettings.ControlMode() != settings.ControlModeLocal {
 		return TestConfigResult{
 			Level:         Notice,
 			TestScope:     TestScopeNamespaceSandbox,

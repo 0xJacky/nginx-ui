@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
-	"os"
 
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
@@ -40,11 +39,11 @@ func SyncToRemoteServer(c *model.Cert) (err error) {
 		return e.NewWithParams(50006, ErrPathIsNotUnderTheNginxConfDir.Error(), c.SSLCertificateKeyPath, nginxConfPath)
 	}
 
-	certBytes, err := os.ReadFile(c.SSLCertificatePath)
+	certBytes, err := nginx.ReadFile(c.SSLCertificatePath)
 	if err != nil {
 		return
 	}
-	keyBytes, err := os.ReadFile(c.SSLCertificateKeyPath)
+	keyBytes, err := nginx.ReadFile(c.SSLCertificateKeyPath)
 	if err != nil {
 		return
 	}

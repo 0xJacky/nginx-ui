@@ -1,0 +1,8 @@
+{{ if not .NeedsSudoers }}{{ else -}}
+{{ .HostUser }} ALL=(root) NOPASSWD: \
+    {{ .SystemctlPath }} reload {{ .SystemdUnit }}, \
+    {{ .SystemctlPath }} restart {{ .SystemdUnit }}, \
+    {{ .NginxSbinPath }} -t, \
+    {{ .NginxSbinPath }} -T
+Defaults!{{ .SystemctlPath }},{{ .NginxSbinPath }} env_keep += "TZ LANG LC_ALL"
+{{ end -}}

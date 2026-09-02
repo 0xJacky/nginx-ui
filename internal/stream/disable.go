@@ -3,11 +3,9 @@ package stream
 import (
 	"fmt"
 	"net/http"
-	"os"
 	"runtime"
 	"sync"
 
-	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
@@ -36,11 +34,15 @@ func Disable(name string) (err error) {
 
 	// Already disabled: keep the operation idempotent so cluster syncs can
 	// converge a node without reporting spurious failures.
-	if !helper.FileExists(enabledConfigFilePath) {
+	enabledExists, err := nginx.Exists(enabledConfigFilePath)
+	if err != nil {
+		return err
+	}
+	if !enabledExists {
 		return
 	}
 
-	err = os.Remove(enabledConfigFilePath)
+	err = nginx.Remove(enabledConfigFilePath)
 	if err != nil {
 		return
 	}

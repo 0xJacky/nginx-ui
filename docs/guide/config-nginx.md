@@ -117,6 +117,10 @@ If the `--sbin-path` path can be obtained, Nginx UI will use the following comma
 start-stop-daemon --start --quiet --pidfile $PID --exec $SBIN_PATH
 ```
 
+::: tip Host via SSH mode
+In Host via SSH mode, a non-empty `TestConfigCmd`, `ReloadCmd` or `RestartCmd` is run on the host through `/bin/sh -c` as the SSH user. When they are empty, Nginx UI tests with the host nginx binary and reloads or restarts through systemd or launchd instead. See [Manage Host Nginx from Docker](manage-host-nginx-from-docker.md).
+:::
+
 ### StubStatusPort
 - Type: `uint`
 - Default: `51820`
@@ -186,3 +190,52 @@ For example: `-v /var/run/docker.sock:/var/run/docker.sock`
 
 Nginx UI reads and writes Nginx configuration and log files through its own filesystem. Mount the same configuration and log directories at the same paths in both containers. The configuration mount must be writable in the Nginx UI container; it can remain read-only in the Nginx container. Mapping `docker.sock` and setting `ContainerName` only route status checks and control commands to the other container.
 :::
+
+## Host SSH Control
+
+For deployments where Nginx UI runs in a Docker container but Nginx is installed natively on the host machine, Nginx UI provides a third control mode that uses SSH for command execution and either SFTP or bind-mounts for file I/O. Linux systemd services and macOS Homebrew launchd services are supported.
+
+### Constraints
+
+::: warning Constraints
+- **Same-host only**: the Nginx UI container and the target nginx process must be on the same physical/virtual machine. For multi-host management, see [Manage Multi-Host Nginx with Cluster](manage-multi-host-nginx-with-cluster.md).
+- On Linux, nginx must be managed by systemd and the SSH user must be allowed to invoke a narrow command set through passwordless `sudo -n`.
+- On macOS, nginx must run as a Homebrew user service. The configured SSH user must be the login user that owns `homebrew.mxcl.nginx`; sudo is not used.
+:::
+
+### Quick start
+
+1. From the Web UI, go to **Preferences → Nginx**, select **Host via SSH** mode, and open the setup wizard.
+2. Follow the five-step wizard (**SSH Target**, **Trust & Test**, **Detect Platform**, **Access & Install**, **Verify**): choose or generate a keypair, trust the host key and test the connection, detect the service manager and nginx paths, pick the file access mode and apply the generated container and host snippets, then run the verification.
+3. Once all checks pass, save the configuration.
+
+Alternatively, use the CLI:
+
+```bash
+nginx-ui host-setup print --host-address host.docker.internal:22 --host-user nginxui --access-mode sftp
+nginx-ui host-setup test
+```
+
+### Configuration fields
+
+| Field | Description |
+|---|---|
+| `host_mode` | Set to `ssh` to enable this mode |
+| `host_access_mode` | `sftp` or `mounted`. Required in SSH mode: whether the container reaches the host nginx files over SFTP or through bind mounts |
+| `host_key_source` | `generated` (default), `existing` or `provided`: where the SSH private key comes from |
+| `host_address` | Remote `host:port` |
+| `host_user` | SSH user on the host |
+| `host_auth_method` | SSH authentication method. Use key authentication for the current host SSH setup |
+| `host_private_key_path` | Private key path inside the container |
+| `host_known_hosts_path` | known_hosts allow-list path inside the container |
+| `host_sudo_prefix` | Prefix used for privileged commands. Default `sudo -n` |
+| `host_service_manager` | `systemd` (default) or `launchd` |
+| `host_systemd_unit_name` | Default `nginx.service` |
+| `host_systemctl_path` | Default `/bin/systemctl` |
+| `host_launchd_service` | Default `homebrew.mxcl.nginx` |
+| `host_launchctl_path` | Default `/bin/launchctl` |
+| `host_config_dir` | Host-side nginx config directory |
+| `host_log_dir` | Host-side nginx log directory |
+| `sbin_path` | Optional in SSH mode: the nginx binary on the host. When empty, Nginx UI resolves the service manager default (`/usr/sbin/nginx` for systemd, `/opt/homebrew/opt/nginx/bin/nginx` for launchd) and stores it when the control settings are saved. The generated sudoers allow-list matches the resolved path exactly |
+
+See also: [Manage Host Nginx from Docker](manage-host-nginx-from-docker.md) and [Manage Multi-Host Nginx with Cluster](manage-multi-host-nginx-with-cluster.md).

@@ -7,7 +7,6 @@ import (
 	"sync"
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
-	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
@@ -27,8 +26,14 @@ func Save(name string, content string, overwrite bool, namespaceId uint64, syncN
 		return err
 	}
 
-	if !overwrite && helper.FileExists(path) {
-		return ErrDstFileExists
+	if !overwrite {
+		exists, existsErr := nginx.Exists(path)
+		if existsErr != nil {
+			return existsErr
+		}
+		if exists {
+			return ErrDstFileExists
+		}
 	}
 
 	// Hold the apply lock for the whole write -> test -> reload sequence so a
@@ -63,7 +68,12 @@ func Save(name string, content string, overwrite bool, namespaceId uint64, syncN
 	// must neither validate nor load the configuration. Nothing can be enabled
 	// locally for such a site, so the namespace is only resolved when the site
 	// currently participates in the local Nginx.
-	isEnabled := helper.FileExists(enabledConfigFilePath)
+	isEnabled, err := nginx.Exists(enabledConfigFilePath)
+	if err != nil {
+		return rollbackError(err, func() error {
+			return snapshot.Restore(path)
+		})
+	}
 	remoteDeploy := false
 	if isEnabled {
 		remoteDeploy = ResolveNamespaceByID(namespaceId).IsRemoteDeploy()
@@ -125,7 +135,7 @@ func Save(name string, content string, overwrite bool, namespaceId uint64, syncN
 		})
 	if err != nil {
 		return rollbackError(err, func() error {
-			if !remoteDeploy && helper.FileExists(enabledConfigFilePath) && postAction == model.PostSyncActionReloadNginx {
+			if !remoteDeploy && isEnabled && postAction == model.PostSyncActionReloadNginx {
 				return restoreConfigAndReload(path, snapshot)
 			}
 			return snapshot.Restore(path)

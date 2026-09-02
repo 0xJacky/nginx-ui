@@ -215,7 +215,7 @@ func TestService_GetDashboardAnalytics_EmptyResult(t *testing.T) {
 
 	assert.NoError(t, err)
 	assert.NotNil(t, result)
-	
+
 	// All arrays should not be nil, but can be empty
 	assert.NotNil(t, result.HourlyStats)
 	assert.NotNil(t, result.DailyStats)
@@ -254,7 +254,7 @@ func TestService_calculateHourlyStats(t *testing.T) {
 			{
 				Fields: map[string]interface{}{
 					"timestamp": float64(1640999500), // 2022-01-01 01:11:40 UTC (hour 1)
-					"ip":        "192.168.1.1", // Same IP as first hit
+					"ip":        "192.168.1.1",       // Same IP as first hit
 				},
 			},
 		},
@@ -282,7 +282,7 @@ func TestService_calculateHourlyStats(t *testing.T) {
 	assert.Equal(t, 1, statsWithData[0].PV)
 	assert.Equal(t, 1, statsWithData[0].UV)
 
-	// Second hour with data should have 2 PV and 2 UV  
+	// Second hour with data should have 2 PV and 2 UV
 	assert.Equal(t, 2, statsWithData[1].PV)
 	assert.Equal(t, 2, statsWithData[1].UV)
 }
@@ -310,7 +310,7 @@ func TestService_calculateDailyStats(t *testing.T) {
 			{
 				Fields: map[string]interface{}{
 					"timestamp": float64(1641082800), // 2022-01-02 00:20:00 UTC
-					"ip":        "192.168.1.1", // Same IP as first hit
+					"ip":        "192.168.1.1",       // Same IP as first hit
 				},
 			},
 		},

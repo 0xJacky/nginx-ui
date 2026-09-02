@@ -1,18 +1,19 @@
 package nginx
 
 import (
-	"os"
 	"path/filepath"
 	"runtime"
 	"strings"
 
-	"github.com/0xJacky/Nginx-UI/internal/docker"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/uozi-tech/cosy/logger"
 )
 
-var nginxPrefixCache nginxStringCache
+var (
+	nginxPrefixCache  nginxStringCache
+	nginxPIDPathCache nginxStringCache
+)
 
 // GetNginxExeDir Returns the directory containing the nginx executable
 func GetNginxExeDir() string {
@@ -33,7 +34,11 @@ func resolvePath(path string) string {
 	return path
 }
 
-func extractConfigureArg(out, flag string) string {
+// ExtractConfigureArg returns the value of a `--flag=value` entry from
+// `nginx -V` output. The flag may be given with or without its leading dashes;
+// quoted values are unwrapped and unquoted ones end at the next ` --` or line
+// break. It returns "" when the flag is absent.
+func ExtractConfigureArg(out, flag string) string {
 	if out == "" || flag == "" {
 		return ""
 	}
@@ -84,7 +89,7 @@ func extractConfigureArg(out, flag string) string {
 func GetPrefix() string {
 	return nginxPrefixCache.get(func() string {
 		out := getNginxV()
-		prefix := extractConfigureArg(out, "--prefix")
+		prefix := ExtractConfigureArg(out, "--prefix")
 		if prefix == "" {
 			logger.Debug("nginx.GetPrefix len(match) < 1")
 			if runtime.GOOS == "windows" {
@@ -103,7 +108,7 @@ func GetPrefix() string {
 func GetConfPath(dir ...string) (confPath string) {
 	if settings.NginxSettings.ConfigDir == "" {
 		out := getNginxV()
-		fullConf := extractConfigureArg(out, "--conf-path")
+		fullConf := ExtractConfigureArg(out, "--conf-path")
 
 		if fullConf != "" {
 			confPath = filepath.Dir(fullConf)
@@ -135,7 +140,7 @@ func GetConfPath(dir ...string) (confPath string) {
 func GetConfEntryPath() (path string) {
 	if settings.NginxSettings.ConfigPath == "" {
 		out := getNginxV()
-		path = extractConfigureArg(out, "--conf-path")
+		path = ExtractConfigureArg(out, "--conf-path")
 
 		if path == "" {
 			baseDir := GetConfPath()
@@ -157,16 +162,30 @@ func GetConfEntryPath() (path string) {
 // GetPIDPath returns the nginx master process PID file path.
 // Resolution order:
 //  1. User override via settings (PIDPath)
-//  2. Runtime override from `nginx -T` for external containers
+//  2. Runtime override from `nginx -T` for non-local modes (handles nginx-unprivileged etc.)
 //  3. Compile-time default from `nginx -V --pid-path=...`
-//  4. Probing common candidate paths (Docker-aware)
+//  4. Probing common candidate paths on the resolved runner
+//
+// The configured override is read on every call so a settings change takes
+// effect immediately. The discovered path is memoized because resolving it on a
+// remote target costs one exec per probe, and callers such as the performance
+// ticker ask for it every few seconds.
 func GetPIDPath() (path string) {
 	if settings.NginxSettings.PIDPath != "" {
 		return resolvePath(settings.NginxSettings.PIDPath)
 	}
 
-	isExternalContainer := settings.NginxSettings.RunningInAnotherContainer()
-	if isExternalContainer {
+	return nginxPIDPathCache.get(discoverPIDPath)
+}
+
+// discoverPIDPath resolves the PID path from the target nginx without
+// consulting the cache. It returns "" when nothing could be determined so the
+// cache keeps retrying on the next call.
+func discoverPIDPath() (path string) {
+	runner := resolveRunner()
+	isLocal := settings.NginxSettings.ControlMode() == settings.ControlModeLocal
+
+	if !isLocal {
 		// The running configuration is authoritative. Images such as
 		// nginx-unprivileged override the compiled /run/nginx.pid default with
 		// a writable path such as /tmp/nginx.pid.
@@ -177,19 +196,16 @@ func GetPIDPath() (path string) {
 
 	// Try compile-time default from nginx -V
 	out := getNginxV()
-	path = extractConfigureArg(out, "--pid-path")
+	path = ExtractConfigureArg(out, "--pid-path")
 
-	// If the runtime configuration could not be read, only retain the compiled
-	// default when it exists in the external container.
-	if path != "" && isExternalContainer {
-		if !docker.StatPath(path) {
-			logger.Debug("GetPIDPath: compile-time pid-path not found in container", "path", path)
-			path = ""
-		}
+	// Only retain the compiled default when it exists on the target.
+	if path != "" && !isLocal && !runner.Stat(path) {
+		logger.Debug("GetPIDPath: compile-time pid-path not found on target", "path", path)
+		path = ""
 	}
 
 	// For local Nginx, try the runtime directive when nginx -V has no default.
-	if path == "" && !isExternalContainer {
+	if path == "" && isLocal {
 		path = getPIDPathFromNginxT()
 	}
 
@@ -202,18 +218,10 @@ func GetPIDPath() (path string) {
 		}
 
 		for _, c := range candidates {
-			if isExternalContainer {
-				if docker.StatPath(c) {
-					logger.Debug("GetPIDPath fallback hit (docker)", "path", c)
-					path = c
-					break
-				}
-			} else {
-				if _, err := os.Stat(c); err == nil {
-					logger.Debug("GetPIDPath fallback hit", "path", c)
-					path = c
-					break
-				}
+			if runner.Stat(c) {
+				logger.Debug("GetPIDPath fallback hit", "path", c, "mode", settings.NginxSettings.ControlMode())
+				path = c
+				break
 			}
 		}
 
@@ -237,7 +245,7 @@ func GetAccessLogPath() (path string) {
 
 	if path == "" {
 		out := getNginxV()
-		path = extractConfigureArg(out, "--http-log-path")
+		path = ExtractConfigureArg(out, "--http-log-path")
 		if path != "" {
 			resolvedPath := resolvePath(path)
 
@@ -266,7 +274,7 @@ func GetErrorLogPath() string {
 
 	if path == "" {
 		out := getNginxV()
-		path = extractConfigureArg(out, "--error-log-path")
+		path = ExtractConfigureArg(out, "--error-log-path")
 		if path != "" {
 			resolvedPath := resolvePath(path)
 
@@ -294,7 +302,7 @@ func GetModulesPath() string {
 	// First try to get from nginx -V output
 	out := getNginxV()
 	if out != "" {
-		if path := extractConfigureArg(out, "--modules-path"); path != "" {
+		if path := ExtractConfigureArg(out, "--modules-path"); path != "" {
 			return resolvePath(path)
 		}
 	}

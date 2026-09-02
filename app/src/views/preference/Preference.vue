@@ -23,11 +23,12 @@ const systemSettingsStore = useSystemSettingsStore()
 const globalStore = useGlobalStore()
 const isDemoResolved = ref(false)
 
-systemSettingsStore.getSettings()
+void systemSettingsStore.getSettings()
 
 const router = useRouter()
 const route = useRoute()
 const activeKey = ref('server')
+const isNginxControlEditing = ref(false)
 
 watch(activeKey, () => {
   router.push({
@@ -117,7 +118,7 @@ onMounted(async () => {
           key="nginx"
           :tab="$gettext('Nginx')"
         >
-          <NginxSettings />
+          <NginxSettings @control-editing="isNginxControlEditing = $event" />
         </ATabPane>
         <ATabPane
           key="openai"
@@ -139,7 +140,12 @@ onMounted(async () => {
         </ATabPane>
       </ATabs>
     </div>
-    <FooterToolBar v-if="activeKey !== 'external_notify' && activeKey !== 'geolite' && activeKey !== 'access_tokens'">
+    <FooterToolBar
+      v-if="activeKey !== 'external_notify'
+        && activeKey !== 'geolite'
+        && activeKey !== 'access_tokens'
+        && !(activeKey === 'nginx' && isNginxControlEditing)"
+    >
       <AButton
         type="primary"
         @click="systemSettingsStore.save"

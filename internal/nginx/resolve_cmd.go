@@ -35,13 +35,32 @@ var (
 	nginxTOutputCache  nginxStringCache
 )
 
+// resetPathCaches drops everything derived from the target nginx. The values
+// describe one control target, so switching targets must not keep serving the
+// previous one.
+func resetPathCaches() {
+	nginxSbinPathCache.set("")
+	nginxVOutputCache.set("")
+	nginxTOutputCache.set("")
+	nginxPrefixCache.set("")
+	nginxPIDPathCache.set("")
+}
+
 // Returns the path to the nginx executable
 func getNginxSbinPath() string {
-	return nginxSbinPathCache.get(func() string {
-		if settings.NginxSettings.SbinPath != "" {
-			return settings.NginxSettings.SbinPath
-		}
+	// The configured path is read on every call so a settings change takes
+	// effect without a restart. Only the discovered path is cached.
+	if settings.NginxSettings.SbinPath != "" {
+		return settings.NginxSettings.SbinPath
+	}
 
+	// The binary runs on the SSH host, so a lookup in this container's PATH
+	// would name a path the host may not have. Use the host default instead.
+	if settings.NginxSettings.ControlMode() == settings.ControlModeHostViaSSH {
+		return settings.NginxSettings.GetHostSbinPath()
+	}
+
+	return nginxSbinPathCache.get(func() string {
 		var path string
 		var err error
 		if runtime.GOOS == "windows" {

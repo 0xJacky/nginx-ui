@@ -1,0 +1,10 @@
+services:
+  nginx-ui:
+    environment:
+      - NGINX_UI_DISABLE_BUNDLED_NGINX=true
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - /etc/nginx:/etc/nginx
+      - /var/log/nginx:/var/log/nginx:ro
+      - /var/run:/var/run:ro

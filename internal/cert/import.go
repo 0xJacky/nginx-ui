@@ -323,7 +323,7 @@ func CertificateFingerprintFromPath(certPath string) (string, error) {
 		return "", err
 	}
 
-	certPEM, err := os.ReadFile(certPath)
+	certPEM, err := nginx.ReadFile(certPath)
 	if err != nil {
 		return "", e.NewWithParams(50045, ErrReadCertificate.Error(), certPath, err.Error())
 	}
@@ -354,11 +354,11 @@ func validateCertificateAndKey(certPath, keyPath string) (*x509.Certificate, err
 		return nil, err
 	}
 
-	certPEM, err := os.ReadFile(certPath)
+	certPEM, err := nginx.ReadFile(certPath)
 	if err != nil {
 		return nil, e.NewWithParams(50045, ErrReadCertificate.Error(), certPath, err.Error())
 	}
-	keyPEM, err := os.ReadFile(keyPath)
+	keyPEM, err := nginx.ReadFile(keyPath)
 	if err != nil {
 		return nil, e.NewWithParams(50047, ErrReadPrivateKey.Error(), keyPath, err.Error())
 	}

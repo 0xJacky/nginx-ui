@@ -4,11 +4,11 @@ import (
 	"embed"
 	"html/template"
 	"net/http"
-	"os"
 	"path/filepath"
 	"regexp"
 	"strings"
 
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 )
@@ -116,7 +116,10 @@ func readMaintenanceTemplate(siteName string) []byte {
 			continue
 		}
 		candidate := filepath.Join(dir, name)
-		if content, err := os.ReadFile(candidate); err == nil && len(content) > 0 {
+		// The maintenance directory lives next to the nginx configuration, so
+		// in host_via_ssh with SFTP access it is on the host rather than in
+		// the container. nginx.ReadFile follows the configured target.
+		if content, err := nginx.ReadFile(candidate); err == nil && len(content) > 0 {
 			return content
 		}
 	}

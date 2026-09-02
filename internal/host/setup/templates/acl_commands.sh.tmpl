@@ -1,0 +1,10 @@
+{{- if .IsLaunchd }}
+test -w {{ .HostConfigDir }}
+test -r {{ .HostLogDir }}/access.log
+{{- else if .NeedsSudoers }}
+setfacl -R  -m u:{{ .HostUser }}:rwx {{ .HostConfigDir }}
+setfacl -dR -m u:{{ .HostUser }}:rwx {{ .HostConfigDir }}
+setfacl -R  -m u:{{ .HostUser }}:rx  {{ .HostLogDir }}
+setfacl -dR -m u:{{ .HostUser }}:rx  {{ .HostLogDir }}
+setfacl -m u:{{ .HostUser }}:r {{ .PIDPath }} 2>/dev/null || true
+{{- end }}

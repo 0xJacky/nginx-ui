@@ -7,4 +7,5 @@ export default {
   51005: () => $gettext('Failed to parse nginx config: {0}'),
   51006: () => $gettext('Failed to build nginx config: {0}'),
   51007: () => $gettext('Failed to get nginx.conf path'),
+  51008: () => $gettext('Nginx process information is not available when nginx runs on an SSH host'),
 }

@@ -3,12 +3,10 @@ package stream
 import (
 	"fmt"
 	"net/http"
-	"os"
 	"runtime"
 	"sync"
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
-	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
@@ -37,14 +35,18 @@ func Rename(oldName string, newName string) (err error) {
 	}
 
 	// check if dst file exists, do not rename
-	if helper.FileExists(newPath) {
+	destinationExists, err := nginx.Exists(newPath)
+	if err != nil {
+		return err
+	}
+	if destinationExists {
 		return ErrDstFileExists
 	}
 
 	s := query.Stream
 	_, _ = s.Where(s.Path.Eq(oldPath)).Update(s.Path, newPath)
 
-	err = os.Rename(oldPath, newPath)
+	err = nginx.Rename(oldPath, newPath)
 	if err != nil {
 		return
 	}
@@ -55,16 +57,23 @@ func Rename(oldName string, newName string) (err error) {
 		return err
 	}
 
+	// Any entry in the enabled tree counts, not only a symlink: a copied
+	// config or a restored backup leaves a regular file there, and leaving it
+	// behind would keep serving the old content under the old name.
 	relinked := false
-	if helper.SymbolLinkExists(oldEnabledConfigFilePath) {
-		_ = os.Remove(oldEnabledConfigFilePath)
+	enabledEntryExists, err := nginx.EntryExists(oldEnabledConfigFilePath)
+	if err != nil {
+		return err
+	}
+	if enabledEntryExists {
+		_ = nginx.Remove(oldEnabledConfigFilePath)
 		var newEnabledConfigFilePath string
 		newEnabledConfigFilePath, err = ResolveEnabledPath(newName)
 		if err != nil {
 			return err
 		}
 
-		err = os.Symlink(newPath, newEnabledConfigFilePath)
+		err = nginx.Symlink(newPath, newEnabledConfigFilePath)
 		if err != nil {
 			return
 		}
