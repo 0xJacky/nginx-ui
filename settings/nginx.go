@@ -99,16 +99,31 @@ func (n *Nginx) GetHostPrivateKeyPath() string {
 	return n.HostPrivateKeyPath
 }
 
+// NormalizeHostKeySource fills an empty key source from the private key path:
+// the managed default path means a generated key, anything else an existing
+// one. A non-empty value is returned unchanged, even when it is unknown, so a
+// validator downstream can still reject it. This is the single rule shared by
+// the persisted settings and the settings API payload.
+func NormalizeHostKeySource(source, privateKeyPath string) string {
+	if source != "" {
+		return source
+	}
+	if privateKeyPath == DefaultHostPrivateKeyPath {
+		return HostKeySourceGenerated
+	}
+	return HostKeySourceExisting
+}
+
+// GetHostKeySource returns the configured key source. Unlike the API payload,
+// a persisted setting is never validated again, so an unknown value is
+// coerced through the same fallback as an empty one.
 func (n *Nginx) GetHostKeySource() string {
 	if n.HostKeySource == HostKeySourceGenerated ||
 		n.HostKeySource == HostKeySourceExisting ||
 		n.HostKeySource == HostKeySourceProvided {
 		return n.HostKeySource
 	}
-	if n.GetHostPrivateKeyPath() == DefaultHostPrivateKeyPath {
-		return HostKeySourceGenerated
-	}
-	return HostKeySourceExisting
+	return NormalizeHostKeySource("", n.GetHostPrivateKeyPath())
 }
 
 func (n *Nginx) GetHostServiceManager() string {

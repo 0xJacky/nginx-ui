@@ -86,3 +86,51 @@ func TestNginx_GetHostSystemdDefaults(t *testing.T) {
 		})
 	}
 }
+
+func TestNormalizeHostKeySource(t *testing.T) {
+	tests := []struct {
+		name   string
+		source string
+		path   string
+		want   string
+	}{
+		{"empty source with managed path is generated", "", DefaultHostPrivateKeyPath, HostKeySourceGenerated},
+		{"empty source with custom path is existing", "", "/root/.ssh/id_ed25519", HostKeySourceExisting},
+		{"empty source with empty path is existing", "", "", HostKeySourceExisting},
+		{"generated passes through", HostKeySourceGenerated, "/root/.ssh/id_ed25519", HostKeySourceGenerated},
+		{"existing passes through", HostKeySourceExisting, DefaultHostPrivateKeyPath, HostKeySourceExisting},
+		{"provided passes through", HostKeySourceProvided, "", HostKeySourceProvided},
+		// An unknown value must survive so the API validator can reject it.
+		{"unknown passes through", "vault", DefaultHostPrivateKeyPath, "vault"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := NormalizeHostKeySource(tt.source, tt.path); got != tt.want {
+				t.Errorf("NormalizeHostKeySource(%q, %q) = %q, want %q", tt.source, tt.path, got, tt.want)
+			}
+		})
+	}
+}
+
+// The persisted getter coerces unknown values and defaults an empty path,
+// which is the one place its behaviour differs from the shared rule.
+func TestNginx_GetHostKeySource(t *testing.T) {
+	tests := []struct {
+		name  string
+		nginx Nginx
+		want  string
+	}{
+		{"empty everything is generated", Nginx{}, HostKeySourceGenerated},
+		{"empty source with custom path is existing", Nginx{HostPrivateKeyPath: "/root/.ssh/id_ed25519"}, HostKeySourceExisting},
+		{"unknown source with managed path is generated", Nginx{HostKeySource: "vault"}, HostKeySourceGenerated},
+		{"unknown source with custom path is existing", Nginx{HostKeySource: "vault", HostPrivateKeyPath: "/root/.ssh/id_ed25519"}, HostKeySourceExisting},
+		{"provided wins over the path", Nginx{HostKeySource: HostKeySourceProvided, HostPrivateKeyPath: DefaultHostPrivateKeyPath}, HostKeySourceProvided},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := tt.nginx.GetHostKeySource(); got != tt.want {
+				t.Errorf("GetHostKeySource() = %q, want %q", got, tt.want)
+			}
+		})
+	}
+}

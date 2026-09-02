@@ -52,13 +52,9 @@ func normalizeNginxControlSettings(payload nginxControlSettingsPayload) nginxCon
 	payload.HostAuthMethod = strings.TrimSpace(payload.HostAuthMethod)
 	payload.HostKeySource = strings.TrimSpace(payload.HostKeySource)
 	payload.HostPrivateKeyPath = strings.TrimSpace(payload.HostPrivateKeyPath)
-	if payload.HostKeySource == "" {
-		if payload.HostPrivateKeyPath == appsettings.DefaultHostPrivateKeyPath {
-			payload.HostKeySource = appsettings.HostKeySourceGenerated
-		} else {
-			payload.HostKeySource = appsettings.HostKeySourceExisting
-		}
-	}
+	// The raw path is passed on purpose: an empty path is a validation error
+	// the operator must see, not a silent fallback to the managed key.
+	payload.HostKeySource = appsettings.NormalizeHostKeySource(payload.HostKeySource, payload.HostPrivateKeyPath)
 	payload.HostPasswordRef = strings.TrimSpace(payload.HostPasswordRef)
 	payload.HostKnownHostsPath = strings.TrimSpace(payload.HostKnownHostsPath)
 	payload.HostSudoPrefix = strings.TrimSpace(payload.HostSudoPrefix)
