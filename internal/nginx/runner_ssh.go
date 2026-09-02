@@ -74,10 +74,6 @@ func buildSSHOptions() hostssh.ClientOptions {
 	_ = n.HostPasswordRef // suppress unused-field lint until decryption lands
 
 	sudo := n.GetHostSudoPrefix()
-	systemctl := n.HostSystemctlPath
-	if systemctl == "" {
-		systemctl = "/bin/systemctl"
-	}
 
 	return hostssh.ClientOptions{
 		Address:        n.HostAddress,
@@ -88,7 +84,7 @@ func buildSSHOptions() hostssh.ClientOptions {
 		KnownHosts:     kh,
 		Config: hostssh.Config{
 			SudoPrefix:    sudo,
-			SystemctlPath: systemctl,
+			SystemctlPath: n.GetHostSystemctlPath(),
 			// The resolved path must match what -t/-T is invoked with, or the
 			// sudo whitelist check in needsSudo never fires.
 			NginxSbinPath: n.GetHostSbinPath(),

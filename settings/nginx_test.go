@@ -62,3 +62,27 @@ func TestNginx_GetHostSbinPath(t *testing.T) {
 		})
 	}
 }
+
+func TestNginx_GetHostSystemdDefaults(t *testing.T) {
+	tests := []struct {
+		name          string
+		nginx         Nginx
+		wantSystemctl string
+		wantUnit      string
+	}{
+		{"defaults", Nginx{}, DefaultHostSystemctlPath, DefaultHostSystemdUnitName},
+		{"configured systemctl", Nginx{HostSystemctlPath: "/usr/bin/systemctl"}, "/usr/bin/systemctl", DefaultHostSystemdUnitName},
+		{"configured unit", Nginx{HostSystemdUnitName: "openresty.service"}, DefaultHostSystemctlPath, "openresty.service"},
+		{"both configured", Nginx{HostSystemctlPath: "/usr/bin/systemctl", HostSystemdUnitName: "openresty.service"}, "/usr/bin/systemctl", "openresty.service"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := tt.nginx.GetHostSystemctlPath(); got != tt.wantSystemctl {
+				t.Errorf("GetHostSystemctlPath() = %q, want %q", got, tt.wantSystemctl)
+			}
+			if got := tt.nginx.GetHostSystemdUnitName(); got != tt.wantUnit {
+				t.Errorf("GetHostSystemdUnitName() = %q, want %q", got, tt.wantUnit)
+			}
+		})
+	}
+}

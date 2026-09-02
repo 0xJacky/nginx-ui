@@ -23,6 +23,11 @@ const (
 	// same paths when SbinPath is left empty.
 	DefaultHostSbinPathSystemd = "/usr/sbin/nginx"
 	DefaultHostSbinPathLaunchd = "/opt/homebrew/opt/nginx/bin/nginx"
+
+	// Default systemd control paths on an SSH host, used whenever the
+	// corresponding setting is left empty.
+	DefaultHostSystemctlPath   = "/bin/systemctl"
+	DefaultHostSystemdUnitName = "nginx.service"
 )
 
 const DefaultMaintenanceDir = "/etc/nginx/maintenance"
@@ -139,6 +144,23 @@ func (n *Nginx) GetHostSudoPrefix() string {
 		return "sudo -n"
 	}
 	return n.HostSudoPrefix
+}
+
+// GetHostSystemctlPath returns the systemctl binary to run on the SSH host.
+func (n *Nginx) GetHostSystemctlPath() string {
+	if n.HostSystemctlPath == "" {
+		return DefaultHostSystemctlPath
+	}
+	return n.HostSystemctlPath
+}
+
+// GetHostSystemdUnitName returns the systemd unit that manages nginx on the
+// SSH host.
+func (n *Nginx) GetHostSystemdUnitName() string {
+	if n.HostSystemdUnitName == "" {
+		return DefaultHostSystemdUnitName
+	}
+	return n.HostSystemdUnitName
 }
 
 func (n *Nginx) GetHostLaunchdService() string {

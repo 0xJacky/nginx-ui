@@ -359,15 +359,7 @@ func hostReloadCommand(n *settings.Nginx) (string, []string) {
 	if n.GetHostServiceManager() == settings.HostServiceManagerLaunchd {
 		return n.GetHostSbinPath(), []string{"-s", "reload"}
 	}
-	systemctl := n.HostSystemctlPath
-	if systemctl == "" {
-		systemctl = "/bin/systemctl"
-	}
-	unit := n.HostSystemdUnitName
-	if unit == "" {
-		unit = "nginx.service"
-	}
-	return systemctl, []string{"reload", unit}
+	return n.GetHostSystemctlPath(), []string{"reload", n.GetHostSystemdUnitName()}
 }
 
 func hostRestartCommand(runner Runner, n *settings.Nginx) (string, []string, error) {
@@ -378,15 +370,7 @@ func hostRestartCommand(runner Runner, n *settings.Nginx) (string, []string, err
 		}
 		return n.GetHostLaunchctlPath(), []string{"kickstart", "-k", target}, nil
 	}
-	systemctl := n.HostSystemctlPath
-	if systemctl == "" {
-		systemctl = "/bin/systemctl"
-	}
-	unit := n.HostSystemdUnitName
-	if unit == "" {
-		unit = "nginx.service"
-	}
-	return systemctl, []string{"restart", unit}, nil
+	return n.GetHostSystemctlPath(), []string{"restart", n.GetHostSystemdUnitName()}, nil
 }
 
 func launchdTarget(runner Runner, service string) (string, error) {
@@ -428,15 +412,7 @@ func isRunningViaHostService() bool {
 }
 
 func hostSystemdStatusCommand(n *settings.Nginx) (string, []string) {
-	systemctl := n.HostSystemctlPath
-	if systemctl == "" {
-		systemctl = "/bin/systemctl"
-	}
-	unit := n.HostSystemdUnitName
-	if unit == "" {
-		unit = "nginx.service"
-	}
-	return systemctl, []string{"is-active", unit}
+	return n.GetHostSystemctlPath(), []string{"is-active", n.GetHostSystemdUnitName()}
 }
 
 func isRemotePIDRunning(runner Runner, pidPath string) bool {
