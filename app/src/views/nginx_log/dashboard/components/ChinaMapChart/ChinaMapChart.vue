@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { EChartsOption } from 'echarts'
 import { ReloadOutlined } from '@ant-design/icons-vue'
-import { message } from 'ant-design-vue'
 import { MapChart } from 'echarts/charts'
 import { LegendComponent, TitleComponent, TooltipComponent, VisualMapComponent } from 'echarts/components'
 import { registerMap, use } from 'echarts/core'
@@ -46,6 +45,7 @@ const CHINA_BOUND_API = `${CITY_BOUND_API}/100000_full.json`
 
 const settings = useSettingsStore()
 const { theme } = storeToRefs(settings)
+const { message } = useGlobalApp()
 
 // Drill-down state: null means showing the province-level China map.
 interface DrilldownState {
