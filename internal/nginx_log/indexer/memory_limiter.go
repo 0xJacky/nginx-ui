@@ -87,7 +87,8 @@ func estimateDocumentsBytes(documents []*Document) int64 {
 		}
 		total += int64(
 			len(fields.IP) + len(fields.RegionCode) + len(fields.Province) +
-				len(fields.City) + len(fields.Method) + len(fields.Path) +
+				len(fields.City) + len(fields.C1) + len(fields.C2) +
+				len(fields.C3) + len(fields.C4) + len(fields.Method) + len(fields.Path) +
 				len(fields.PathExact) + len(fields.Protocol) + len(fields.Referer) +
 				len(fields.UserAgent) + len(fields.Browser) + len(fields.BrowserVer) +
 				len(fields.OS) + len(fields.OSVersion) + len(fields.DeviceType) +

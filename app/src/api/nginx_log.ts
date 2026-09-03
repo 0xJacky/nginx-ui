@@ -37,6 +37,11 @@ export interface AccessLogEntry {
   region_code: string
   province: string
   city: string
+  c1?: string
+  c2?: string
+  c3?: string
+  c4?: string
+  ip_location_label?: string
   path: string
   protocol: string
   status: number
@@ -354,7 +359,7 @@ const nginx_log = extendCurdApi(useCurdApi('/nginx_logs'), {
     return http.post('/nginx_log/geo/china', data)
   },
 
-  getChinaCityMapData(data: ChinaCityMapRequest): Promise<{ data: CityData[] }> {
+  getChinaCityMapData(data: ChinaCityMapRequest): Promise<{ data: CityData[], top_data?: CityData[], custom_mmdb_mode?: boolean }> {
     return http.post('/nginx_log/geo/china/city', data)
   },
 

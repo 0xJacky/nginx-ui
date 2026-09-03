@@ -15,6 +15,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/analytics"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/searcher"
 	nginxLogUtils "github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
+	nginxSettings "github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
@@ -30,6 +31,11 @@ type GeoDataItem struct {
 	Name    string  `json:"name"`
 	Value   int     `json:"value"`
 	Percent float64 `json:"percent"`
+}
+
+type ChinaCityMapResponse struct {
+	Data    []GeoDataItem `json:"data"`
+	TopData []GeoDataItem `json:"top_data,omitempty"`
 }
 
 // decodeAndValidateLogPath normalizes user input before it can be used in any
@@ -211,6 +217,95 @@ func splitCommaSeparated(value string) []string {
 	return result
 }
 
+func toOptionalString(value interface{}) string {
+	s, ok := value.(string)
+	if !ok {
+		return ""
+	}
+
+	return strings.TrimSpace(s)
+}
+
+func isChineseLanguageRequest(c *gin.Context) bool {
+	if c == nil {
+		return false
+	}
+
+	for _, header := range []string{"Accept-Language", "X-Language", "X-Locale"} {
+		value := strings.ToLower(strings.TrimSpace(c.GetHeader(header)))
+		if value == "" {
+			continue
+		}
+		if strings.HasPrefix(value, "zh") || strings.Contains(value, "zh-") || strings.Contains(value, "zh_") {
+			return true
+		}
+	}
+
+	return false
+}
+
+func displayCountryName(regionCode string, countryNameZH string, useChineseName bool) string {
+	code := strings.TrimSpace(regionCode)
+	if !useChineseName {
+		return code
+	}
+
+	if cnName := strings.TrimSpace(countryNameZH); cnName != "" {
+		return cnName
+	}
+
+	if code == "CN" {
+		return "中国"
+	}
+
+	return code
+}
+
+func buildStructuredIPLocationLabel(entry map[string]interface{}, useChineseName bool) string {
+	baseParts := make([]string, 0, 3)
+	if regionCode := displayCountryName(
+		toOptionalString(entry["region_code"]),
+		toOptionalString(entry["country_name_zh"]),
+		useChineseName,
+	); regionCode != "" {
+		baseParts = append(baseParts, regionCode)
+	}
+	if province := toOptionalString(entry["province"]); province != "" {
+		baseParts = append(baseParts, province)
+	}
+	if city := toOptionalString(entry["city"]); city != "" {
+		baseParts = append(baseParts, city)
+	}
+
+	customParts := make([]string, 0, 4)
+	for _, key := range []string{"c1", "c2", "c3", "c4"} {
+		if value := toOptionalString(entry[key]); value != "" {
+			customParts = append(customParts, value)
+		}
+	}
+
+	baseLabel := strings.Join(baseParts, " · ")
+	if len(customParts) == 0 {
+		return baseLabel
+	}
+
+	customLabel := strings.Join(customParts, " · ")
+	if baseLabel == "" {
+		return customLabel
+	}
+
+	return baseLabel + " · " + customLabel
+}
+
+func enrichEntryWithIPLocationLabel(entry map[string]interface{}, useChineseName bool) map[string]interface{} {
+	if entry == nil {
+		return entry
+	}
+
+	entry["ip_location_label"] = buildStructuredIPLocationLabel(entry, useChineseName)
+	return entry
+}
+
 // AdvancedSearchLogs provides advanced search capabilities for logs
 func AdvancedSearchLogs(c *gin.Context) {
 	var req AdvancedSearchRequest
@@ -353,13 +448,14 @@ func AdvancedSearchLogs(c *gin.Context) {
 		cosy.ErrHandler(c, err)
 		return
 	}
+	useChineseName := isChineseLanguageRequest(c)
 
 	// --- Transform the searcher result to the API response structure ---
 
 	// 1. Extract entries from hits
 	entries := make([]map[string]interface{}, len(result.Hits))
 	for i, hit := range result.Hits {
-		entries[i] = hit.Fields
+		entries[i] = enrichEntryWithIPLocationLabel(hit.Fields, useChineseName)
 	}
 
 	// 2. Calculate summary stats from the overall results using Counter for accuracy
@@ -488,11 +584,12 @@ func GetLogEntries(c *gin.Context) {
 		cosy.ErrHandler(c, err)
 		return
 	}
+	useChineseName := isChineseLanguageRequest(c)
 
 	// Convert search hits to simple entries format
 	var entries []map[string]interface{}
 	for _, hit := range result.Hits {
-		entries = append(entries, hit.Fields)
+		entries = append(entries, enrichEntryWithIPLocationLabel(hit.Fields, useChineseName))
 	}
 
 	c.JSON(http.StatusOK, AnalyticsResponse{
@@ -942,6 +1039,126 @@ func bindChinaCityMapRequest(c *gin.Context) (ChinaCityMapRequest, bool) {
 	return payload, true
 }
 
+func isCustomMMDBEnabled() bool {
+	return strings.TrimSpace(nginxSettings.NginxLogSettings.IndexCustomMMDB) != ""
+}
+
+func buildCityCustomLabel(city string, fields map[string]interface{}) string {
+	base := strings.TrimSpace(city)
+	if base == "" {
+		return ""
+	}
+
+	customParts := make([]string, 0, 4)
+	for _, key := range []string{"c1", "c2", "c3", "c4"} {
+		if value := toOptionalString(fields[key]); value != "" {
+			customParts = append(customParts, value)
+		}
+	}
+
+	if len(customParts) == 0 {
+		return base
+	}
+
+	return base + " · " + strings.Join(customParts, " · ")
+}
+
+func buildCustomMMDBCityTopData(
+	ctx context.Context,
+	searcherService searcher.SearcherInterface,
+	geoReq *analytics.GeoQueryRequest,
+	province string,
+) ([]GeoDataItem, error) {
+	if searcherService == nil || geoReq == nil {
+		return nil, nil
+	}
+
+	const pageSize = 1000
+	const maxPages = 200
+
+	labelCounts := make(map[string]int)
+	var searchAfter []string
+
+	for range maxPages {
+		searchReq := &searcher.SearchRequest{
+			StartTime:      &geoReq.StartTime,
+			EndTime:        &geoReq.EndTime,
+			LogPaths:       geoReq.LogPaths,
+			UseMainLogPath: geoReq.UseMainLogPath,
+			Countries:      []string{"CN"},
+			Provinces:      []string{province},
+			Limit:          pageSize,
+			SortBy:         "timestamp",
+			SortOrder:      "desc",
+			SearchAfter:    searchAfter,
+			UseCache:       true,
+		}
+
+		result, err := searcherService.Search(ctx, searchReq)
+		if err != nil {
+			return nil, err
+		}
+
+		if len(result.Hits) == 0 {
+			break
+		}
+
+		for _, hit := range result.Hits {
+			city := toOptionalString(hit.Fields["city"])
+			if city == "" {
+				continue
+			}
+
+			label := buildCityCustomLabel(city, hit.Fields)
+			if label == "" {
+				continue
+			}
+
+			labelCounts[label]++
+		}
+
+		lastSort := result.Hits[len(result.Hits)-1].Sort
+		if len(lastSort) == 0 {
+			break
+		}
+
+		searchAfter = append([]string(nil), lastSort...)
+		if len(result.Hits) < pageSize {
+			break
+		}
+	}
+
+	if len(labelCounts) == 0 {
+		return nil, nil
+	}
+
+	total := 0
+	topData := make([]GeoDataItem, 0, len(labelCounts))
+	for label, count := range labelCounts {
+		total += count
+		topData = append(topData, GeoDataItem{Name: label, Value: count})
+	}
+
+	sort.Slice(topData, func(i, j int) bool {
+		if topData[i].Value == topData[j].Value {
+			return topData[i].Name < topData[j].Name
+		}
+		return topData[i].Value > topData[j].Value
+	})
+
+	if len(topData) > 10 {
+		topData = topData[:10]
+	}
+
+	for i := range topData {
+		if total > 0 {
+			topData[i].Percent = (float64(topData[i].Value) / float64(total)) * 100
+		}
+	}
+
+	return topData, nil
+}
+
 // GetChinaCityMapData provides city-level geographic data for a China province
 func GetChinaCityMapData(c *gin.Context) {
 	req, ok := bindChinaCityMapRequest(c)
@@ -952,6 +1169,11 @@ func GetChinaCityMapData(c *gin.Context) {
 	analyticsService := nginx_log.GetAnalytics()
 	if analyticsService == nil {
 		cosy.ErrHandler(c, nginx_log.ErrModernAnalyticsNotAvailable)
+		return
+	}
+	searcherService := nginx_log.GetSearcher()
+	if searcherService == nil {
+		cosy.ErrHandler(c, nginx_log.ErrModernSearcherNotAvailable)
 		return
 	}
 
@@ -1017,8 +1239,18 @@ func GetChinaCityMapData(c *gin.Context) {
 		return chartData[i].Value > chartData[j].Value
 	})
 
-	c.JSON(http.StatusOK, GeoDataResponse{
-		Data: chartData,
+	var topData []GeoDataItem
+	if isCustomMMDBEnabled() {
+		topData, err = buildCustomMMDBCityTopData(ctx, searcherService, geoReq, req.Province)
+		if err != nil {
+			cosy.ErrHandler(c, err)
+			return
+		}
+	}
+
+	c.JSON(http.StatusOK, ChinaCityMapResponse{
+		Data:    chartData,
+		TopData: topData,
 	})
 }
 

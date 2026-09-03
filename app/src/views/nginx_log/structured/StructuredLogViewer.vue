@@ -5,6 +5,7 @@ import { DownOutlined, ExclamationCircleOutlined, ReloadOutlined } from '@antdv-
 import { DatePicker, Tag } from 'antdv-next'
 import dayjs from 'dayjs'
 import nginx_log from '@/api/nginx_log'
+import gettext from '@/gettext'
 import { bytesToSize } from '@/lib/helper'
 import { useWebSocketEventBusStore } from '@/pinia'
 import LoadingState from '../components/LoadingState.vue'
@@ -183,6 +184,29 @@ function getSortOrder(fieldName: string): 'ascend' | 'descend' | undefined {
   return undefined
 }
 
+function buildLocationLabel(record: AccessLogEntry): string {
+  const isChineseLocale = gettext.current.toLowerCase().startsWith('zh')
+  const displayRegion = isChineseLocale && record.region_code?.trim() === 'CN' ? '中国' : record.region_code
+
+  const locationParts = [displayRegion, record.province, record.city]
+    .map(part => part?.trim())
+    .filter((part): part is string => Boolean(part))
+
+  const customParts = [record.c1, record.c2, record.c3, record.c4]
+    .map(part => part?.trim())
+    .filter((part): part is string => Boolean(part))
+
+  const baseLabel = locationParts.join(' · ')
+  if (customParts.length === 0)
+    return baseLabel
+
+  const customLabel = customParts.join(' · ')
+  if (!baseLabel)
+    return customLabel
+
+  return `${baseLabel} · ${customLabel}`
+}
+
 // Table columns configuration
 const structuredLogColumns = computed(() => [
   {
@@ -201,19 +225,10 @@ const structuredLogColumns = computed(() => [
     sorter: true,
     sortOrder: getSortOrder('ip'),
     render: (_value: unknown, record: AccessLogEntry) => {
-      const locationParts: string[] = []
-      if (record.region_code) {
-        locationParts.push(record.region_code)
-      }
-      if (record.province) {
-        locationParts.push(record.province)
-      }
-      if (record.city) {
-        locationParts.push(record.city)
-      }
+      const locationLabel = (record.ip_location_label || '').trim() || buildLocationLabel(record)
 
       return h('div', { class: 'flex items-center gap-2' }, [
-        locationParts.length > 0 ? h(Tag, { color: 'blue', size: 'small' }, { default: () => locationParts.join(' · ') }) : null,
+        locationLabel ? h(Tag, { color: 'blue', size: 'small' }, { default: () => locationLabel }) : null,
         h('span', record.ip),
       ])
     },

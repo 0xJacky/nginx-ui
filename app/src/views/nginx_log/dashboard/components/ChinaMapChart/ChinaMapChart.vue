@@ -56,6 +56,8 @@ interface DrilldownState {
 const drilldown = ref<DrilldownState | null>(null)
 const drillLoading = ref(false)
 const cityChartData = ref<CityData[]>([])
+const cityTopData = ref<CityData[]>([])
+const customMMDBMode = ref(false)
 const isChinaMapLoaded = ref(false)
 
 // Cache of already-fetched/registered city-level maps, keyed by adcode.
@@ -138,6 +140,8 @@ async function drillIntoProvince(name: string) {
       ...city,
       name: matchCityName(city.name, featureNames!),
     }))
+    cityTopData.value = cityStats.top_data ?? []
+    customMMDBMode.value = Boolean(cityStats.custom_mmdb_mode)
     drilldown.value = { name, adcode, mapName }
   }
   catch {
@@ -151,6 +155,8 @@ async function drillIntoProvince(name: string) {
 function backToProvinces() {
   drilldown.value = null
   cityChartData.value = []
+  cityTopData.value = []
+  customMMDBMode.value = false
 }
 
 // Reset drill-down whenever fresh data arrives so stale city data is never shown.
@@ -158,7 +164,9 @@ watch(() => props.data, () => backToProvinces())
 
 // Table data for top 10 provinces, or top 10 cities once drilled into a province.
 const tableData = computed(() => {
-  const source = drilldown.value ? cityChartData.value : props.data
+  const source = drilldown.value
+    ? (cityTopData.value.length > 0 ? cityTopData.value : cityChartData.value)
+    : props.data
 
   if (!source || source.length === 0)
     return []
@@ -171,11 +179,29 @@ const tableData = computed(() => {
   }))
 })
 
+const cityColumnTitle = computed(() => {
+  if (!drilldown.value)
+    return $gettext('Province / Region')
+
+  return customMMDBMode.value
+    ? $gettext('City / C1 / C2 / C3 / C4')
+    : $gettext('City')
+})
+
+const cityTopTitle = computed(() => {
+  if (!drilldown.value)
+    return $gettext('Top 10 Provinces / Regions')
+
+  return customMMDBMode.value
+    ? $gettext('Top 10 City Labels (City + C1 + C2 + C3 + C4)')
+    : $gettext('Top 10 Cities')
+})
+
 // Table columns
 const columns = computed(() => {
   return [
     {
-      title: drilldown.value ? $gettext('City') : $gettext('Province / Region'),
+      title: cityColumnTitle.value,
       dataIndex: 'province',
       key: 'province',
     },
@@ -395,7 +421,7 @@ function handleChartClick(params: { name?: string }) {
         <!-- Table on right (or bottom on small screens) -->
         <div class="lg:col-span-1 flex flex-col justify-center">
           <div class="table-title">
-            {{ drilldown ? $gettext('Top 10 Cities') : $gettext('Top 10 Provinces / Regions') }}
+            {{ cityTopTitle }}
           </div>
           <ATable
             :columns="columns"
@@ -442,7 +468,7 @@ function handleChartClick(params: { name?: string }) {
         <!-- Table on right (or bottom on small screens) -->
         <div class="lg:col-span-1 flex flex-col justify-center">
           <div class="table-title">
-            {{ drilldown ? $gettext('Top 10 Cities') : $gettext('Top 10 Provinces / Regions') }}
+            {{ cityTopTitle }}
           </div>
           <ATable
             :columns="columns"

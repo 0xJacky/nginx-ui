@@ -23,5 +23,9 @@ func (a *GeoLiteAdapter) Search(ip string) (*GeoLocation, error) {
 		RegionCode: location.RegionCode,
 		Province:   location.Province,
 		City:       location.City,
+		C1:         location.C1,
+		C2:         location.C2,
+		C3:         location.C3,
+		C4:         location.C4,
 	}, nil
 }
