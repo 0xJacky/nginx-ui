@@ -166,6 +166,7 @@ function handleCancel() {
           <ATypographyText type="secondary" class="text-xs">
             {{ $gettext('* Index files are stored in the "log-index" directory within your Nginx UI config path by default.') }}
             {{ $gettext('If you want to change the storage location, you can set the `IndexPath` of `nginx_log` section in the Nginx UI config.') }}
+            {{ $gettext('The frontend read-only config `IndexCustomMMDB` defaults to an MMDB file placed alongside the Nginx UI directory.') }}
           </ATypographyText>
         </div>
       </div>
