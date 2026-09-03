@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/cache"
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/uozi-tech/cosy/logger"
@@ -34,10 +35,12 @@ type Service struct {
 	availabilityMap map[string]*Status     // key: host:port
 	configTargets   map[string][]string    // configPath -> []targetKeys
 	configUpstreams map[string][]string    // configPath -> []upstreamNames
+	configAliases   map[string]string      // scanned configPath -> canonical configPath
 	// Public upstream definitions storage
 	Upstreams                 map[string]*Definition // key: upstream name
 	upstreamsMutex            sync.RWMutex
 	targetsMutex              sync.RWMutex
+	configScanMutex           sync.Mutex
 	lastUpdateTime            time.Time
 	testInProgress            bool
 	testMutex                 sync.Mutex
@@ -75,6 +78,7 @@ func GetUpstreamService() *Service {
 			availabilityMap:           make(map[string]*Status),
 			configTargets:             make(map[string][]string),
 			configUpstreams:           make(map[string][]string),
+			configAliases:             make(map[string]string),
 			Upstreams:                 make(map[string]*Definition),
 			lastUpdateTime:            time.Now(),
 			disabledSocketsCacheValid: false, // Initialize as invalid to force first load
@@ -90,23 +94,79 @@ func init() {
 
 // scanForProxyTargets is the callback function for cache scanner
 func scanForProxyTargets(configPath string, content []byte) error {
+	service := GetUpstreamService()
+	canonicalPath := configPath
+	if len(content) > 0 {
+		if resolvedPath, err := nginx.EvalSymlinks(configPath); err == nil {
+			canonicalPath = resolvedPath
+		}
+	}
+
+	service.configScanMutex.Lock()
+	defer service.configScanMutex.Unlock()
+
 	// Handle file removal - clean up targets from this config
 	if len(content) == 0 {
-		service := GetUpstreamService()
-		service.RemoveConfigTargets(configPath)
+		canonicalPath, isLastAlias := service.removeConfigAlias(configPath)
+		if isLastAlias {
+			service.RemoveConfigTargets(canonicalPath)
+		}
 		return nil
 	}
+
+	obsoletePath := service.trackConfigAlias(configPath, canonicalPath)
+	if obsoletePath != "" {
+		service.RemoveConfigTargets(obsoletePath)
+	}
+	configPath = canonicalPath
 
 	// logger.Debug("scanForProxyTargets", configPath)
 	// Parse proxy targets and upstream definitions from config content
 	result := ParseProxyTargetsAndUpstreamsFromRawContent(string(content))
 
-	service := GetUpstreamService()
 	service.updateUpstreamsFromConfig(configPath, result.Upstreams)
 	service.updateTargetsFromConfig(configPath, service.filterKnownUpstreamReferences(result.ProxyTargets))
 	service.removeKnownUpstreamReferenceTargets()
 
 	return nil
+}
+
+// trackConfigAlias gives symlinked and real paths a shared identity while
+// retaining each observed path so removals can release the identity safely.
+func (s *Service) trackConfigAlias(configPath, canonicalPath string) (obsoletePath string) {
+	if s.configAliases == nil {
+		s.configAliases = make(map[string]string)
+	}
+
+	previousPath := s.configAliases[configPath]
+	s.configAliases[configPath] = canonicalPath
+	if previousPath == "" || previousPath == canonicalPath {
+		return ""
+	}
+
+	for alias, trackedPath := range s.configAliases {
+		if alias != configPath && trackedPath == previousPath {
+			return ""
+		}
+	}
+
+	return previousPath
+}
+
+func (s *Service) removeConfigAlias(configPath string) (canonicalPath string, isLastAlias bool) {
+	canonicalPath, tracked := s.configAliases[configPath]
+	if !tracked {
+		return configPath, true
+	}
+
+	delete(s.configAliases, configPath)
+	for _, trackedPath := range s.configAliases {
+		if trackedPath == canonicalPath {
+			return canonicalPath, false
+		}
+	}
+
+	return canonicalPath, true
 }
 
 // updateTargetsFromConfig updates proxy targets from a specific config file
@@ -379,6 +439,9 @@ func (s *Service) InvalidateDisabledSocketsCache() {
 
 // ClearTargets clears all targets (useful for testing or reloading)
 func (s *Service) ClearTargets() {
+	s.configScanMutex.Lock()
+	defer s.configScanMutex.Unlock()
+
 	s.targetsMutex.Lock()
 	s.targets = make(map[string]*TargetInfo)
 	s.availabilityMap = make(map[string]*Status)
@@ -390,6 +453,8 @@ func (s *Service) ClearTargets() {
 	s.configUpstreams = make(map[string][]string)
 	s.Upstreams = make(map[string]*Definition)
 	s.upstreamsMutex.Unlock()
+
+	s.configAliases = make(map[string]string)
 
 	// logger.Debug("Cleared all proxy targets and upstream definitions")
 }
