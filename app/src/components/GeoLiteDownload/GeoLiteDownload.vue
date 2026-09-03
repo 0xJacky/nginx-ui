@@ -159,6 +159,9 @@ defineExpose({
           <p class="text-sm">
             {{ $gettext('Alternatively, if you cannot download the database, you can manually place GeoLite2-City.mmdb in the same directory as app.ini.') }}
           </p>
+          <p class="text-sm">
+            {{ $gettext('If you want to enable custom MMDB data, configure `IndexCustomMMDB` and place the generated file in the same directory as app.ini.') }}
+          </p>
         </div>
       </template>
     </AAlert>

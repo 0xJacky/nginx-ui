@@ -81,6 +81,7 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
     nginx_log: {
       indexing_enabled: false,
       index_path: '',
+      index_custom_mmdb: '',
     },
     node: {
       name: '',
