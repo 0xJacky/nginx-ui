@@ -508,6 +508,15 @@ type DashboardRequest struct {
 	EndDate   string `json:"end_date" form:"end_date"`     // Format: 2006-01-02
 }
 
+func bindDashboardRequest(c *gin.Context) (DashboardRequest, bool) {
+	var payload DashboardRequest
+	if !cosy.BindAndValid(c, &payload) {
+		return DashboardRequest{}, false
+	}
+
+	return payload, true
+}
+
 // HourlyStats represents hourly UV/PV statistics
 type HourlyStats struct {
 	Hour      int   `json:"hour"`      // 0-23
@@ -575,14 +584,13 @@ type DashboardResponse struct {
 
 // GetDashboardAnalytics provides comprehensive dashboard analytics from modern analytics service
 func GetDashboardAnalytics(c *gin.Context) {
-	var req DashboardRequest
-
 	// Parse JSON body for POST request
 	// The previous direct binding path was flagged by security scans as
 	// "Uncontrolled data used in path expression".
 	// Use cosy.BindAndValid for consistent bind+validation handling before
 	// path-related fields are normalized and whitelist-validated.
-	if !cosy.BindAndValid(c, &req) {
+	req, ok := bindDashboardRequest(c)
+	if !ok {
 		return
 	}
 
