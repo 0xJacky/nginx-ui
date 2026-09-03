@@ -13,6 +13,7 @@ const isValid = computed(() => dayjs().isAfter(props.cert?.not_before) && dayjs(
   <ACard
     v-if="cert"
     size="small"
+    :styles="{ body: { padding: '12px' } }"
   >
     <template #title>
       {{ cert.subject_name }}
@@ -42,9 +43,3 @@ const isValid = computed(() => dayjs().isAfter(props.cert?.not_before) && dayjs(
     </p>
   </ACard>
 </template>
-
-<style lang="less" scoped>
-:deep(.ant-card-body) {
-  padding: 12px !important;
-}
-</style>

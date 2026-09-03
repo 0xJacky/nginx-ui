@@ -2,6 +2,7 @@ package parser
 
 import (
 	"testing"
+
 	"github.com/stretchr/testify/assert"
 )
 
@@ -150,7 +151,7 @@ func TestSimpleUserAgentParser_Parse(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			result := parser.Parse(tc.userAgent)
-			
+
 			assert.Equal(t, tc.expectedInfo.Browser, result.Browser, "Browser mismatch")
 			assert.Equal(t, tc.expectedInfo.BrowserVer, result.BrowserVer, "Browser version mismatch")
 			assert.Equal(t, tc.expectedInfo.OS, result.OS, "OS mismatch")

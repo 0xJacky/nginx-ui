@@ -1,6 +1,8 @@
 package cert
 
 import (
+	"crypto/rand"
+	"encoding/hex"
 	"os"
 	"path/filepath"
 
@@ -29,12 +31,15 @@ func (c *Content) WriteFile() (err error) {
 		return e.NewWithParams(50006, ErrPathIsNotUnderTheNginxConfDir.Error(), c.SSLCertificateKeyPath, nginxConfPath)
 	}
 
-	err = os.MkdirAll(filepath.Dir(c.SSLCertificatePath), 0755)
+	// Certificates are loaded by nginx, so they must be written to the nginx
+	// target filesystem: the local disk in local/container mode, the remote host
+	// over SFTP in host_via_ssh + sftp mode.
+	err = nginx.MkdirAll(filepath.Dir(c.SSLCertificatePath), 0755)
 	if err != nil {
 		return
 	}
 
-	err = os.MkdirAll(filepath.Dir(c.SSLCertificateKeyPath), 0755)
+	err = nginx.MkdirAll(filepath.Dir(c.SSLCertificateKeyPath), 0755)
 	if err != nil {
 		return
 	}
@@ -49,7 +54,7 @@ func (c *Content) WriteFile() (err error) {
 	tmpFiles := make(map[string]string, 2)
 	defer func() {
 		for _, tmpPath := range tmpFiles {
-			_ = os.Remove(tmpPath)
+			_ = nginx.Remove(tmpPath)
 		}
 	}()
 
@@ -76,11 +81,13 @@ func (c *Content) WriteFile() (err error) {
 }
 
 // writeFileWithMode atomically replaces path with content and guarantees the
-// resulting file carries perm. os.WriteFile keeps the mode of an already
+// resulting file carries perm. A plain WriteFile keeps the mode of an already
 // existing file, so staging into a fresh temp file next to the target is what
 // repairs keys that earlier versions created with looser permissions. The
 // content is never visible under a looser mode because the temp file is
-// created 0600 by os.CreateTemp and chmod'd before the rename.
+// created exclusively, chmod'd to perm before any byte is written, and only
+// then renamed over the target. Every step goes through the nginx target
+// filesystem so the files land where nginx will load them.
 func writeFileWithMode(path string, content []byte, perm os.FileMode) error {
 	if err := ensureWritableFileTarget(path); err != nil {
 		return err
@@ -92,7 +99,7 @@ func writeFileWithMode(path string, content []byte, perm os.FileMode) error {
 	}
 
 	if err = replaceFile(tmpPath, path); err != nil {
-		_ = os.Remove(tmpPath)
+		_ = nginx.Remove(tmpPath)
 		return err
 	}
 
@@ -100,7 +107,7 @@ func writeFileWithMode(path string, content []byte, perm os.FileMode) error {
 }
 
 func ensureWritableFileTarget(path string) error {
-	info, err := os.Stat(path)
+	info, err := nginx.Stat(path)
 	if err == nil && info.IsDir() {
 		return &os.PathError{Op: "write", Path: path, Err: os.ErrInvalid}
 	}
@@ -110,38 +117,68 @@ func ensureWritableFileTarget(path string) error {
 	return nil
 }
 
+// tempFileCreateAttempts bounds the retries when a randomly named temp file
+// already exists, mirroring os.CreateTemp.
+const tempFileCreateAttempts = 10
+
+// writeTempFileNextTo stages content into a fresh, exclusively created temp
+// file in the directory of path on the nginx target filesystem and returns
+// the temp file path. The file is chmod'd to perm before any content is
+// written: the local backend already creates it with perm, but the SFTP
+// backend ignores the mode passed to OpenFile and would otherwise expose a
+// private key under the server's default umask until the chmod.
 func writeTempFileNextTo(path string, content []byte, perm os.FileMode) (string, error) {
-	tmpFile, err := os.CreateTemp(filepath.Dir(path), "."+filepath.Base(path)+".*.tmp")
-	if err != nil {
-		return "", err
-	}
-	tmpPath := tmpFile.Name()
+	dir := filepath.Dir(path)
+	prefix := "." + filepath.Base(path) + "."
 
-	if _, err = tmpFile.Write(content); err != nil {
-		_ = tmpFile.Close()
-		_ = os.Remove(tmpPath)
-		return "", err
-	}
-	if err = tmpFile.Chmod(perm); err != nil {
-		_ = tmpFile.Close()
-		_ = os.Remove(tmpPath)
-		return "", err
-	}
-	if err = tmpFile.Close(); err != nil {
-		_ = os.Remove(tmpPath)
-		return "", err
+	var lastErr error
+	for i := 0; i < tempFileCreateAttempts; i++ {
+		var random [8]byte
+		if _, err := rand.Read(random[:]); err != nil {
+			return "", err
+		}
+		tmpPath := filepath.Join(dir, prefix+hex.EncodeToString(random[:])+".tmp")
+
+		tmpFile, err := nginx.OpenFile(tmpPath, os.O_WRONLY|os.O_CREATE|os.O_EXCL, perm)
+		if err != nil {
+			if os.IsExist(err) {
+				lastErr = err
+				continue
+			}
+			return "", err
+		}
+
+		if err = nginx.Chmod(tmpPath, perm); err != nil {
+			_ = tmpFile.Close()
+			_ = nginx.Remove(tmpPath)
+			return "", err
+		}
+		if _, err = tmpFile.Write(content); err != nil {
+			_ = tmpFile.Close()
+			_ = nginx.Remove(tmpPath)
+			return "", err
+		}
+		if err = tmpFile.Close(); err != nil {
+			_ = nginx.Remove(tmpPath)
+			return "", err
+		}
+
+		return tmpPath, nil
 	}
 
-	return tmpPath, nil
+	return "", &os.PathError{Op: "createtemp", Path: filepath.Join(dir, prefix+"*.tmp"), Err: lastErr}
 }
 
+// replaceFile moves tmpPath over targetPath. A local rename replaces the
+// target atomically; SFTP servers commonly refuse to rename onto an existing
+// file, so the target is removed and the rename retried in that case.
 func replaceFile(tmpPath, targetPath string) error {
-	if err := os.Rename(tmpPath, targetPath); err == nil {
+	if err := nginx.Rename(tmpPath, targetPath); err == nil {
 		return nil
 	}
 
-	if err := os.Remove(targetPath); err != nil && !os.IsNotExist(err) {
+	if err := nginx.Remove(targetPath); err != nil && !os.IsNotExist(err) {
 		return err
 	}
-	return os.Rename(tmpPath, targetPath)
+	return nginx.Rename(tmpPath, targetPath)
 }

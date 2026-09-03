@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { DeleteOutlined } from '@ant-design/icons-vue'
+import type { SelectProps } from 'antdv-next'
+import { DeleteOutlined } from '@antdv-next/icons'
 import CodeEditor from '@/components/CodeEditor'
 import { MultiLineDirective, SingleLineDirective } from '.'
 import { useDirectiveStore } from './store'
@@ -12,6 +13,16 @@ const { nginxDirectivesDocsMap, nginxDirectivesOptions } = storeToRefs(directive
 const directive = reactive({ directive: '', params: '' })
 const adding = ref(false)
 const mode = ref(SingleLineDirective)
+const modeOptions = computed<SelectProps['options']>(() => [
+  {
+    value: SingleLineDirective,
+    label: $gettext('Single Directive'),
+  },
+  {
+    value: MultiLineDirective,
+    label: $gettext('Multi-line Directive'),
+  },
+])
 
 function add() {
   adding.value = true
@@ -42,15 +53,9 @@ function filterOption(inputValue: string, option: { label: string }) {
         <ASelect
           v-model:value="mode"
           :default-value="SingleLineDirective"
+          :options="modeOptions"
           style="width: 180px"
-        >
-          <ASelectOption :value="SingleLineDirective">
-            {{ $gettext('Single Directive') }}
-          </ASelectOption>
-          <ASelectOption :value="MultiLineDirective">
-            {{ $gettext('Multi-line Directive') }}
-          </ASelectOption>
-        </ASelect>
+        />
       </AFormItem>
       <AFormItem>
         <div class="input-wrapper">
@@ -60,9 +65,8 @@ function filterOption(inputValue: string, option: { label: string }) {
             default-height="100px"
             style="width: 100%;"
           />
-          <AInputGroup
+          <ASpaceCompact
             v-else
-            compact
           >
             <AAutoComplete
               v-model:value="directive.directive"
@@ -76,7 +80,7 @@ function filterOption(inputValue: string, option: { label: string }) {
               style="width: 70%"
               :placeholder="$gettext('Params')"
             />
-          </AInputGroup>
+          </ASpaceCompact>
 
           <AButton @click="adding = false">
             <template #icon>

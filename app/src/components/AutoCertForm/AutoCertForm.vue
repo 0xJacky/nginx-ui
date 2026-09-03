@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { SelectProps } from 'antdv-next'
 import type { AutoCertOptions } from '@/api/auto_cert'
 import { AutoCertChallengeMethod } from '@/api/auto_cert'
 import { PrivateKeyTypeEnum, PrivateKeyTypeList } from '@/constants'
@@ -21,6 +22,24 @@ const data = defineModel<AutoCertOptions>('options', {
 })
 
 const manualIpAddress = defineModel<string>('manualIpAddress', { default: '' })
+
+const challengeMethodOptions = computed<SelectProps['options']>(() => [
+  {
+    value: AutoCertChallengeMethod.http01,
+    label: $gettext('HTTP01'),
+  },
+  {
+    value: AutoCertChallengeMethod.dns01,
+    disabled: props.isIpCertificate || props.needsManualIpInput,
+    label: $gettext('DNS01'),
+  },
+])
+
+const keyTypeOptions: SelectProps['options'] = PrivateKeyTypeList.map(t => ({
+  key: t.key,
+  value: t.key,
+  label: t.name,
+}))
 
 onMounted(() => {
   if (!data.value.key_type)
@@ -73,7 +92,7 @@ defineExpose({
       v-if="(isIpCertificate || needsManualIpInput) && !hideNote"
       type="warning"
       show-icon
-      :message="$gettext('IP Certificate Notice')"
+      :title="$gettext('IP Certificate Notice')"
       class="mb-4"
     >
       <template #description>
@@ -100,7 +119,7 @@ defineExpose({
       v-if="!hideNote && !isIpCertificate && !needsManualIpInput"
       type="info"
       show-icon
-      :message="$gettext('Note')"
+      :title="$gettext('Note')"
       class="mb-4"
     >
       <template #description>
@@ -123,10 +142,11 @@ defineExpose({
         </p>
       </template>
     </AAlert>
-    <AForm layout="vertical">
+    <AForm layout="vertical" :model="{ manualIpAddress }">
       <!-- IP Address Input for IP certificates without explicit IP -->
       <AFormItem
         v-if="needsManualIpInput"
+        name="manualIpAddress"
         :label="$gettext('Server IP Address')"
         :rules="[{ validator: validateIpAddress, trigger: 'blur' }]"
       >
@@ -169,19 +189,28 @@ defineExpose({
         v-if="!forceDnsChallenge"
         :label="$gettext('Challenge Method')"
       >
-        <ASelect v-model:value="data.challenge_method">
-          <ASelectOption value="http01">
-            {{ $gettext('HTTP01') }}
-          </ASelectOption>
-          <ASelectOption
-            value="dns01"
-            :disabled="isIpCertificate || needsManualIpInput"
-          >
-            {{ $gettext('DNS01') }}
-            <span v-if="isIpCertificate || needsManualIpInput" class="text-gray-400 ml-2">
+        <ASelect
+          v-model:value="data.challenge_method"
+          :options="challengeMethodOptions"
+        >
+          <template #optionRender="{ option }">
+            {{ option.data.label }}
+            <span
+              v-if="option.data.value === AutoCertChallengeMethod.dns01 && (isIpCertificate || needsManualIpInput)"
+              class="text-gray-400 ml-2"
+            >
               ({{ $gettext('Not supported for IP certificates') }})
             </span>
-          </ASelectOption>
+          </template>
+          <template #labelRender="{ label, value }">
+            {{ label }}
+            <span
+              v-if="value === AutoCertChallengeMethod.dns01 && (isIpCertificate || needsManualIpInput)"
+              class="text-gray-400 ml-2"
+            >
+              ({{ $gettext('Not supported for IP certificates') }})
+            </span>
+          </template>
         </ASelect>
       </AFormItem>
       <AFormItem
@@ -190,15 +219,8 @@ defineExpose({
         <ASelect
           v-model:value="data.key_type"
           :disabled="keyTypeReadOnly"
-        >
-          <ASelectOption
-            v-for="t in PrivateKeyTypeList"
-            :key="t.key"
-            :value="t.key"
-          >
-            {{ t.name }}
-          </ASelectOption>
-        </ASelect>
+          :options="keyTypeOptions"
+        />
       </AFormItem>
     </AForm>
     <ACMEUserSelector v-model:options="data" />

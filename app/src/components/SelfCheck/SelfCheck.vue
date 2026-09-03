@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { SelfCheckAccessOptions } from '@/api/self_check'
-import { CheckCircleOutlined, CloseCircleOutlined, WarningOutlined } from '@ant-design/icons-vue'
+import { CheckCircleOutlined, CloseCircleOutlined, WarningOutlined } from '@antdv-next/icons'
 import GeoLiteDownload from '@/components/GeoLiteDownload'
+import { List, ListItem, ListItemMeta } from '@/components/List'
 import AsyncErrorDisplay from './AsyncErrorDisplay.vue'
 import { useSelfCheckStore } from './store'
 
@@ -69,51 +70,53 @@ watch(accessOptions, options => {
       type="info"
       show-icon
       class="mb-4"
-      :message="$gettext('Enter the install secret to run the system check.')"
+      :title="$gettext('Enter the install secret to run the system check.')"
     />
     <AAlert
       v-else-if="accessError"
       type="error"
       show-icon
       class="mb-4"
-      :message="accessError"
+      :title="accessError"
     />
-    <AList>
-      <AListItem v-for="(item, index) in data" :key="index">
-        <template v-if="item.status === 'error' && item.fixable" #actions>
-          <AButton type="link" size="small" :loading="fixing[item.key]" @click="handleFix(item.key)">
-            {{ $gettext('Attempt to fix') }}
-          </AButton>
-        </template>
-        <AListItemMeta>
-          <template #title>
-            {{ item.name?.() }}
+    <List :data-source="data" item-layout="horizontal">
+      <template #renderItem="{ item }">
+        <ListItem>
+          <template v-if="item.status === 'error' && item.fixable" #actions>
+            <AButton type="link" size="small" :loading="fixing[item.key]" @click="handleFix(item.key)">
+              {{ $gettext('Attempt to fix') }}
+            </AButton>
           </template>
-          <template #description>
-            <div>
-              {{ item.description?.() }}
-            </div>
-            <div v-if="item.status !== 'success' && item.err?.message" class="mt-1">
-              <Suspense>
-                <AsyncErrorDisplay :error="item.err" :status="item.status" />
-                <template #fallback>
-                  <ATag :color="item.status === 'warning' ? 'warning' : 'error'">
-                    {{ item.err.message }}
-                  </ATag>
-                </template>
-              </Suspense>
-            </div>
-          </template>
-          <template #avatar>
-            <div class="text-23px">
-              <CheckCircleOutlined v-if="item.status === 'success'" class="text-green" />
-              <WarningOutlined v-else-if="item.status === 'warning'" class="text-yellow" />
-              <CloseCircleOutlined v-else class="text-red" />
-            </div>
-          </template>
-        </AListItemMeta>
-      </AListItem>
-    </AList>
+          <ListItemMeta>
+            <template #title>
+              {{ item.name?.() }}
+            </template>
+            <template #description>
+              <div>
+                {{ item.description?.() }}
+              </div>
+              <div v-if="item.status !== 'success' && item.err?.message" class="mt-1">
+                <Suspense>
+                  <AsyncErrorDisplay :error="item.err" :status="item.status" />
+                  <template #fallback>
+                    <ATag :color="item.status === 'warning' ? 'warning' : 'error'">
+                      {{ item.err.message }}
+                    </ATag>
+                  </template>
+                </Suspense>
+              </div>
+            </template>
+            <template #avatar>
+              <div class="text-23px">
+                <CheckCircleOutlined v-if="item.status === 'success'" class="text-green" />
+                <WarningOutlined v-else-if="item.status === 'warning'" class="text-yellow" />
+                <CloseCircleOutlined v-else class="text-red" />
+              </div>
+            </template>
+          </ListItemMeta>
+        </ListItem>
+      </template>
+    </List>
 
     <AModal
       v-model:open="geoLiteModalVisible"
@@ -127,7 +130,7 @@ watch(accessOptions, options => {
 </template>
 
 <style scoped lang="less">
-:deep(.ant-list-item-meta) {
+:deep(.nui-list-item-meta) {
   align-items: center !important;
 }
 

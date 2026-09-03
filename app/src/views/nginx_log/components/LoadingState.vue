@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { CSSProperties } from 'vue'
-import { LoadingOutlined } from '@ant-design/icons-vue'
+import { LoadingOutlined } from '@antdv-next/icons'
 import { computed } from 'vue'
 import { useIndexProgress } from '../composables/useIndexProgress'
 import IndexProgressBar from '../indexing/components/IndexProgressBar.vue'
@@ -29,7 +29,7 @@ const statusInfo = computed(() => {
   switch (status) {
     case 'indexing':
       return {
-        icon: LoadingOutlined,
+        icon: markRaw(LoadingOutlined),
         message: $gettext('Indexing logs...'),
         color: 'text-blue-500',
         showProgress: true,
@@ -37,28 +37,28 @@ const statusInfo = computed(() => {
     case 'indexed':
     case 'ready': // Treat 'ready' as 'indexed'
       return {
-        icon: LoadingOutlined,
+        icon: markRaw(LoadingOutlined),
         message: $gettext('Loading...'),
         color: 'text-green-500',
         showProgress: false,
       }
     case 'queued':
       return {
-        icon: LoadingOutlined,
+        icon: markRaw(LoadingOutlined),
         message: $gettext('Queued for indexing...'),
         color: 'text-orange-500',
         showProgress: false,
       }
     case 'error':
       return {
-        icon: LoadingOutlined,
+        icon: markRaw(LoadingOutlined),
         message: $gettext('Index failed, please try rebuilding'),
         color: 'text-red-500',
         showProgress: false,
       }
     case 'not_indexed':
       return {
-        icon: LoadingOutlined,
+        icon: markRaw(LoadingOutlined),
         message: $gettext('Log file not indexed yet'),
         color: 'text-gray-500',
         showProgress: false,
@@ -67,14 +67,14 @@ const statusInfo = computed(() => {
       // Fallback for active indexing check
       if (isCurrentFileIndexing.value) {
         return {
-          icon: LoadingOutlined,
+          icon: markRaw(LoadingOutlined),
           message: $gettext('Indexing...'),
           color: 'text-blue-500',
           showProgress: true,
         }
       }
       return {
-        icon: LoadingOutlined,
+        icon: markRaw(LoadingOutlined),
         message: $gettext('Loading...'),
         color: 'text-blue-500',
         showProgress: false,

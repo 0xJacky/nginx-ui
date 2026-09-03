@@ -54,13 +54,13 @@ jobs:
         if: github.event_name == 'release'
         uses: actions/setup-go@v7
         with:
-          go-version: ^1.26.5
+          go-version: ^1.27.0
           cache: false
 
       - name: Set up Bun
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: 1.3.14
+          bun-version: 1.4.0
 
       - name: Install dependencies
         run: bun ci
@@ -159,7 +159,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v7
         with:
-          go-version: ^1.26.5
+          go-version: ^1.27.0
           cache: false
 
       - name: Setup environment
@@ -351,7 +351,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v7
         with:
-          go-version: ^1.26.5
+          go-version: ^1.27.0
           cache: false
 
       - name: Setup environment
@@ -499,7 +499,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v7
         with:
-          go-version: ^1.26.5
+          go-version: ^1.27.0
           cache: false
 
       - name: Setup environment
@@ -720,7 +720,7 @@ jobs:
       - name: Set up Helm
         uses: azure/setup-helm@v5
         with:
-          version: v4.2.3
+          version: v4.2.4
 
       - name: Create kind cluster
         uses: helm/kind-action@v1.14.0
@@ -796,7 +796,7 @@ jobs:
       - name: Set up Helm
         uses: azure/setup-helm@v5
         with:
-          version: v4.2.3
+          version: v4.2.4
 
       - name: Package chart
         env:

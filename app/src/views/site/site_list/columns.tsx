@@ -5,7 +5,7 @@ import type {
 import type { Site, SiteStatus } from '@/api/site'
 import type { JSXElements } from '@/types'
 import { datetimeRender } from '@uozi-admin/curd'
-import { Tag } from 'ant-design-vue'
+import { Tag } from 'antdv-next'
 import namespace from '@/api/namespace'
 import NamespaceRender from '@/components/NamespaceRender'
 import ProxyTargets from '@/components/ProxyTargets'
@@ -53,7 +53,7 @@ const columns: StdTableColumn[] = [{
           const displayUrl = url.replace(/^https?:\/\//, '')
           urlsContainer.push(
             <a href={url} target="_blank" rel="noopener noreferrer">
-              <Tag color="blue" bordered={false} style="margin-right: 8px; margin-bottom: 4px;">
+              <Tag color="blue" variant="filled" style={{ marginRight: '8px', marginBottom: '4px' }}>
                 {displayUrl}
               </Tag>
             </a>,
@@ -63,7 +63,7 @@ const columns: StdTableColumn[] = [{
       else {
         record.urls.forEach((url: string) => {
           const displayUrl = url.replace(/^https?:\/\//, '')
-          urlsContainer.push(<Tag bordered={false} style="margin-right: 8px; margin-bottom: 4px;">{displayUrl}</Tag>)
+          urlsContainer.push(<Tag variant="filled" style={{ marginRight: '8px', marginBottom: '4px' }}>{displayUrl}</Tag>)
         })
       }
 

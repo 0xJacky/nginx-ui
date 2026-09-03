@@ -30,7 +30,7 @@ export function useClusterSync() {
       .join('\n')
 
     notification.error({
-      message: $gettext('Synchronization finished with %{count} failures', { count: summary.failed.toString() }),
+      title: $gettext('Synchronization finished with %{count} failures', { count: summary.failed.toString() }),
       description,
       duration: 10,
     })

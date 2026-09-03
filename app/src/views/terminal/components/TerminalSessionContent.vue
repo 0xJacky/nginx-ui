@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { TerminalTab } from '@/pinia/moudule/terminal'
-import { ReloadOutlined } from '@ant-design/icons-vue'
+import { ReloadOutlined } from '@antdv-next/icons'
 
 interface Props {
   tab: TerminalTab
@@ -35,7 +35,7 @@ function handleRefresh() {
       type="error"
       show-icon
       size="small"
-      :message="$gettext('Connection lost for this terminal. Please refresh if needed.')"
+      :title="$gettext('Connection lost for this terminal. Please refresh if needed.')"
       banner
     >
       <template #action>

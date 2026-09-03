@@ -1,7 +1,7 @@
 import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
 import type { JSXElements } from '@/types'
 import { datetimeRender } from '@uozi-admin/curd'
-import { Tag } from 'ant-design-vue'
+import { Tag } from 'antdv-next'
 
 const columns: StdTableColumn[] = [{
   title: () => $gettext('Username'),

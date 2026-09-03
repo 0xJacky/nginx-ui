@@ -2,7 +2,6 @@ package certificate
 
 import (
 	"net/http"
-	"os"
 	"path/filepath"
 
 	"github.com/0xJacky/Nginx-UI/internal/cert"
@@ -32,8 +31,8 @@ func Transformer(certModel *model.Cert) (certificate *APICertificate) {
 	var certificateInfo *cert.Info
 	if certModel.SSLCertificatePath != "" &&
 		helper.IsUnderDirectory(certModel.SSLCertificatePath, nginx.GetConfPath()) {
-		if _, err := os.Stat(certModel.SSLCertificatePath); err == nil {
-			sslCertificationBytes, _ = os.ReadFile(certModel.SSLCertificatePath)
+		if _, err := nginx.Stat(certModel.SSLCertificatePath); err == nil {
+			sslCertificationBytes, _ = nginx.ReadFile(certModel.SSLCertificatePath)
 			if !cert.IsCertificate(string(sslCertificationBytes)) {
 				sslCertificationBytes = []byte{}
 			}
@@ -44,8 +43,8 @@ func Transformer(certModel *model.Cert) (certificate *APICertificate) {
 
 	if certModel.SSLCertificateKeyPath != "" &&
 		helper.IsUnderDirectory(certModel.SSLCertificateKeyPath, nginx.GetConfPath()) {
-		if _, err := os.Stat(certModel.SSLCertificateKeyPath); err == nil {
-			sslCertificationKeyBytes, _ = os.ReadFile(certModel.SSLCertificateKeyPath)
+		if _, err := nginx.Stat(certModel.SSLCertificateKeyPath); err == nil {
+			sslCertificationKeyBytes, _ = nginx.ReadFile(certModel.SSLCertificateKeyPath)
 			if !cert.IsPrivateKey(string(sslCertificationKeyBytes)) {
 				sslCertificationKeyBytes = []byte{}
 			}
@@ -309,7 +308,7 @@ func cleanupSelfSignedCertFiles(certModel *model.Cert) {
 	if !helper.IsUnderDirectory(certPath, sslDir) || !helper.IsUnderDirectory(keyPath, sslDir) || !helper.IsUnderDirectory(certDir, sslDir) {
 		return
 	}
-	if err := os.RemoveAll(certDir); err != nil {
+	if err := nginx.RemoveAll(certDir); err != nil {
 		logger.Errorf("self-signed cert directory cleanup failed for id %d at %s: %v", certModel.ID, certDir, err)
 	}
 }

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { SelectProps } from 'antdv-next'
 import type { Ref } from 'vue'
 import type { AutoCertOptions } from '@/api/auto_cert'
 import type { SelfSignedCertPayload } from '@/api/cert'
@@ -25,6 +26,21 @@ const certType = ref<CertType>('wildcard')
 const customDomains = ref<string[]>([''])
 const errored = ref(false)
 const selfSignedLoading = ref(false)
+
+const certTypeOptions = computed<SelectProps['options']>(() => [
+  {
+    value: 'wildcard',
+    label: $gettext('Wildcard Certificate'),
+  },
+  {
+    value: 'custom',
+    label: $gettext('Custom Domains Certificate'),
+  },
+  {
+    value: 'self_signed',
+    label: $gettext('Self-signed Certificate'),
+  },
+])
 
 function emptySelfSignedPayload(): SelfSignedCertPayload {
   return {
@@ -157,7 +173,7 @@ async function submitSelfSigned() {
       v-model:open="visible"
       :mask="false"
       :title="$gettext('Issue Certificate')"
-      destroy-on-close
+      destroy-on-hidden
       :footer="null"
       :mask-closable="modalClosable"
       :closable="modalClosable"
@@ -166,24 +182,17 @@ async function submitSelfSigned() {
       <template v-if="step === 0">
         <AForm layout="vertical">
           <AFormItem :label="$gettext('Certificate Type')">
-            <ASelect v-model:value="certType">
-              <ASelectOption value="wildcard">
-                {{ $gettext('Wildcard Certificate') }}
-              </ASelectOption>
-              <ASelectOption value="custom">
-                {{ $gettext('Custom Domains Certificate') }}
-              </ASelectOption>
-              <ASelectOption value="self_signed">
-                {{ $gettext('Self-signed Certificate') }}
-              </ASelectOption>
-            </ASelect>
+            <ASelect
+              v-model:value="certType"
+              :options="certTypeOptions"
+            />
           </AFormItem>
 
           <template v-if="certType === 'wildcard'">
             <AFormItem :label="$gettext('Domain')">
               <AInput
                 v-model:value="domain"
-                addon-before="*."
+                prefix="*."
                 :placeholder="$gettext('Enter your domain')"
               />
             </AFormItem>
@@ -197,7 +206,7 @@ async function submitSelfSigned() {
                 :add-button-text="$gettext('Add Domain')"
               />
               <AAlert
-                :message="$gettext('All selected subdomains must belong to the same DNS Provider, otherwise the certificate application will fail.')"
+                :title="$gettext('All selected subdomains must belong to the same DNS Provider, otherwise the certificate application will fail.')"
                 type="info"
                 show-icon
                 banner

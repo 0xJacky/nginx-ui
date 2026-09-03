@@ -1,5 +1,5 @@
 import type { CosyError, CosyErrorRecord, HttpConfig } from './types'
-import { registerError, useMessageDedupe } from './error'
+import { getErrorMessage, isTwoFactorCancelled, registerError, useMessageDedupe } from './error'
 
 // Export everything needed from this module
 export type {
@@ -9,6 +9,8 @@ export type {
 }
 
 export {
+  getErrorMessage,
+  isTwoFactorCancelled,
   registerError,
   useMessageDedupe,
 }

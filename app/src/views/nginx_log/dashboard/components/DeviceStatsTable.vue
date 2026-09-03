@@ -19,13 +19,13 @@ const deviceColumns = [
     key: 'count',
     sorter: (a: DeviceStatItem, b: DeviceStatItem) => a.count - b.count,
     width: 80,
-    customRender: ({ text }: { text: number }) => text.toLocaleString(),
+    render: (value: number) => value.toLocaleString(),
   },
   {
     title: () => $gettext('Percentage'),
     dataIndex: 'percent',
     key: 'percent',
-    customRender: ({ text }: { text: number }) => `${text.toFixed(2)}%`,
+    render: (value: number) => `${value.toFixed(2)}%`,
     width: 100,
   },
 ]

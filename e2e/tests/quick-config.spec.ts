@@ -125,7 +125,9 @@ test('quick setup redirect emits the chosen status code', async ({ page }) => {
   await fillFormItem(page, 'Target URL', 'https://new.example.com')
 
   const statusItem = page.locator('.ant-form-item').filter({ has: page.getByText('Status Code', { exact: true }) }).first()
-  await statusItem.locator('.ant-select-selector').click()
+  await statusItem.getByRole('combobox').click()
+  // antdv-next renders dropdown options without role="option" or aria-selected, so the
+  // option itself still has to be matched by its class rather than by role.
   await page.locator('.ant-select-item-option').filter({ hasText: '308 Permanent Redirect' }).click()
 
   const result = await submitQuickConfig(page)

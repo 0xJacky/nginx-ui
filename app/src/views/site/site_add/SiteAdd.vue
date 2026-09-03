@@ -225,12 +225,13 @@ function onDNSRecordCleared() {
       <ASteps
         :current="currentStep"
         size="small"
-      >
-        <AStep :title="$gettext('Base information')" />
-        <AStep :title="$gettext('DNS Record')" />
-        <AStep :title="$gettext('Configure SSL')" />
-        <AStep :title="$gettext('Finished')" />
-      </ASteps>
+        :items="[
+          { title: $gettext('Base information') },
+          { title: $gettext('DNS Record') },
+          { title: $gettext('Configure SSL') },
+          { title: $gettext('Finished') },
+        ]"
+      />
 
       <div v-if="currentStep === 0" class="mb-6">
         <QuickSetupForm
@@ -250,7 +251,7 @@ function onDNSRecordCleared() {
             type="warning"
             class="mb-4"
             show-icon
-            :message="$gettext('The parameter of server_name is required')"
+            :title="$gettext('The parameter of server_name is required')"
           />
 
           <DirectiveEditor
@@ -281,7 +282,7 @@ function onDNSRecordCleared() {
           type="warning"
           class="mb-4"
           show-icon
-          :message="$gettext('Issue a certificate to enable TLS before continuing.')"
+          :title="$gettext('Issue a certificate to enable TLS before continuing.')"
         />
 
         <EnableTLS />

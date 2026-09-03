@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { TerminalSessionCallbacks } from '@/composables/useTerminalSession'
-import { theme } from 'ant-design-vue'
+import { theme } from 'antdv-next'
 import use2FAModal from '@/components/TwoFA/use2FAModal'
 import { useDemoTerminalSession } from '@/composables/useDemoTerminalSession'
 import { useTerminalSession } from '@/composables/useTerminalSession'
@@ -246,14 +246,14 @@ const terminalMainContainerHeight = computed(() => {
         class="mb-6"
         type="info"
         show-icon
-        :message="$gettext('This is a simulated terminal running entirely in your browser. Commands are answered locally and never reach a server.')"
+        :title="$gettext('This is a simulated terminal running entirely in your browser. Commands are answered locally and never reach a server.')"
       />
       <AAlert
         v-if="insecureConnection"
         class="mb-6"
         type="warning"
         show-icon
-        :message="$gettext('You are accessing this terminal over an insecure HTTP connection on a non-localhost domain. This may expose sensitive information.')"
+        :title="$gettext('You are accessing this terminal over an insecure HTTP connection on a non-localhost domain. This may expose sensitive information.')"
       />
       <div class="terminal-layout">
         <div class="terminal-container" :style="{ height: terminalMainContainerHeight }">

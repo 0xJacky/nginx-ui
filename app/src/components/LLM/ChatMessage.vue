@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ChatComplicationMessage } from '@/api/llm'
+import { ListItem } from '@/components/List'
 import { useAnimationCoordinator } from './animationCoordinator'
 import { useLLMStore } from './llm'
 import { marked } from './markdown'
@@ -212,47 +213,60 @@ onMounted(() => {
 </script>
 
 <template>
-  <AListItem>
-    <AComment :author="message.role === 'assistant' ? $gettext('Assistant') : $gettext('User')">
-      <template #content>
+  <ListItem>
+    <div class="ant-comment w-full">
+      <div class="flex items-start w-full">
         <div
-          v-if="message.role === 'assistant' || !isEditing"
-          class="content"
-          :class="{ typing: isTyping }"
+          v-if="$slots.avatar"
+          class="ant-comment-avatar flex-shrink-0"
         >
-          <div
-            v-dompurify-html="marked.parse(displayText)"
-            class="message-content"
-          />
+          <slot name="avatar" />
         </div>
-        <AInput
-          v-else
-          :value="editValue"
-          class="pa-0"
-          :bordered="false"
-          @update:value="updateEditValue"
-        />
-      </template>
-      <template #actions>
-        <span
-          v-if="message.role === 'user' && !isEditing"
-          @click="$emit('edit', index)"
-        >
-          {{ $gettext('Modify') }}
-        </span>
-        <template v-else-if="isEditing">
-          <span @click="$emit('save', index + 1)">{{ $gettext('Save') }}</span>
-          <span @click="$emit('cancel')">{{ $gettext('Cancel') }}</span>
-        </template>
-        <span
-          v-else-if="!loading"
-          @click="$emit('regenerate', index)"
-        >
-          {{ $gettext('Reload') }}
-        </span>
-      </template>
-    </AComment>
-  </AListItem>
+        <div class="ant-comment-content flex-1 min-w-0">
+          <div class="ant-comment-content-author">
+            {{ message.role === 'assistant' ? $gettext('Assistant') : $gettext('User') }}
+          </div>
+          <div class="ant-comment-content-detail">
+            <div
+              v-if="message.role === 'assistant' || !isEditing"
+              class="content"
+              :class="{ typing: isTyping }"
+            >
+              <div
+                v-dompurify-html="marked.parse(displayText)"
+                class="message-content"
+              />
+            </div>
+            <AInput
+              v-else
+              :value="editValue"
+              class="pa-0"
+              variant="borderless"
+              @update:value="updateEditValue"
+            />
+          </div>
+          <div class="ant-comment-actions flex gap-4">
+            <span
+              v-if="message.role === 'user' && !isEditing"
+              @click="$emit('edit', index)"
+            >
+              {{ $gettext('Modify') }}
+            </span>
+            <template v-else-if="isEditing">
+              <span @click="$emit('save', index + 1)">{{ $gettext('Save') }}</span>
+              <span @click="$emit('cancel')">{{ $gettext('Cancel') }}</span>
+            </template>
+            <span
+              v-else-if="!loading"
+              @click="$emit('regenerate', index)"
+            >
+              {{ $gettext('Reload') }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ListItem>
 </template>
 
 <style lang="less" scoped>

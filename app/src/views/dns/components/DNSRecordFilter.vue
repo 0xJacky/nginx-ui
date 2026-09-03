@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { SelectProps } from 'antdv-next'
 import type { RecordListParams } from '@/api/dns'
 
 const emit = defineEmits<{
@@ -23,6 +24,11 @@ const recordTypes = [
   'SRV',
   'CAA',
 ]
+
+const recordTypeOptions = computed<SelectProps['options']>(() => recordTypes.map(type => ({
+  label: type || $gettext('All'),
+  value: type,
+})))
 
 function handleSubmit() {
   emit('submit')
@@ -49,12 +55,9 @@ function handleReset() {
     <AFormItem :label="$gettext('Type')">
       <ASelect
         v-model:value="filters.type"
+        :options="recordTypeOptions"
         style="width: 160px;"
-      >
-        <ASelectOption v-for="type in recordTypes" :key="type" :value="type">
-          {{ type || $gettext('All') }}
-        </ASelectOption>
-      </ASelect>
+      />
     </AFormItem>
     <AFormItem>
       <ASpace>

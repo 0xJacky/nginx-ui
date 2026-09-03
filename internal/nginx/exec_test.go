@@ -10,47 +10,67 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+// shellCommand receives the GOOS of the target that runs the command, so a
+// Windows hosted Nginx UI controlling a Linux container or an SSH host gets
+// /bin/sh while a local Windows nginx gets cmd.
 func TestShellCommand(t *testing.T) {
 	tests := []struct {
-		name              string
-		goos              string
-		externalContainer bool
-		wantName          string
-		wantArgs          []string
+		name     string
+		goos     string
+		wantName string
+		wantArgs []string
 	}{
 		{
-			name:     "local unix",
+			name:     "linux target",
 			goos:     "linux",
 			wantName: "/bin/sh",
 			wantArgs: []string{"-c", "nginx -t"},
 		},
 		{
-			name:     "local windows",
+			name:     "darwin target",
+			goos:     "darwin",
+			wantName: "/bin/sh",
+			wantArgs: []string{"-c", "nginx -t"},
+		},
+		{
+			name:     "windows target",
 			goos:     "windows",
 			wantName: "cmd",
 			wantArgs: []string{"/c", "nginx -t"},
-		},
-		{
-			name:              "external container from unix",
-			goos:              "linux",
-			externalContainer: true,
-			wantName:          "/bin/sh",
-			wantArgs:          []string{"-c", "nginx -t"},
-		},
-		{
-			name:              "external container from windows",
-			goos:              "windows",
-			externalContainer: true,
-			wantName:          "/bin/sh",
-			wantArgs:          []string{"-c", "nginx -t"},
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			name, args := shellCommand(tt.goos, tt.externalContainer, "nginx -t")
+			name, args := shellCommand(tt.goos, "nginx -t")
 			assert.Equal(t, tt.wantName, name)
 			assert.Equal(t, tt.wantArgs, args)
+		})
+	}
+}
+
+// execShell must ask the runner for the target OS, not the local one: a
+// Windows hosted Nginx UI controlling a Linux target must not send cmd /c.
+func TestExecShellUsesTargetGOOS(t *testing.T) {
+	originalResolve := resolveRunner
+	t.Cleanup(func() { resolveRunner = originalResolve })
+
+	tests := []struct {
+		name string
+		goos string
+		want string
+	}{
+		{name: "linux target", goos: "linux", want: "/bin/sh -c nginx -t"},
+		{name: "windows target", goos: "windows", want: "cmd /c nginx -t"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			runner := &recordingRunner{goos: tt.goos}
+			resolveRunner = func() Runner { return runner }
+
+			_, err := execShell("nginx -t")
+			assert.NoError(t, err)
+			assert.Equal(t, []string{tt.want}, runner.commands)
 		})
 	}
 }

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { KeyOutlined, LoadingOutlined, LockOutlined, UserOutlined } from '@ant-design/icons-vue'
+import type { FormInstance } from 'antdv-next'
+import { KeyOutlined, LoadingOutlined, LockOutlined, UserOutlined } from '@antdv-next/icons'
 import { startAuthentication } from '@simplewebauthn/browser'
-import { Form } from 'ant-design-vue'
 import auth from '@/api/auth'
 import install from '@/api/install'
 import passkey from '@/api/passkey'
@@ -82,15 +82,16 @@ const rulesRef = reactive({
   ],
 })
 
-const { validate, validateInfos, clearValidate } = Form.useForm(modelRef, rulesRef)
+const formRef = ref<FormInstance>()
 const userStore = useUserStore()
 const settingsStore = useSettingsStore()
 const { login, passkeyLogin } = userStore
-const { secureSessionId } = storeToRefs(userStore)
+const { setSecureSession } = userStore
 
 interface LoginSuccessOptions {
   token?: string
   secureSessionId?: string
+  secureSessionTTL?: number
   loginType?: 'normal' | 'passkey'
   passkeyRawId?: string
   showSuccessMessage?: boolean
@@ -119,7 +120,7 @@ async function handleLoginSuccess(options: LoginSuccessOptions = {}) {
   await nextTick()
 
   if (sessionId) {
-    secureSessionId.value = sessionId
+    setSecureSession(sessionId, options.secureSessionTTL)
   }
 
   await userStore.fetchShortToken()
@@ -142,7 +143,7 @@ async function handleLoginSuccess(options: LoginSuccessOptions = {}) {
 }
 
 function onSubmit() {
-  validate().then(async () => {
+  formRef.value?.validate().then(async () => {
     loading.value = true
 
     await auth.login(modelRef.username, modelRef.password, passcode.value, recoveryCode.value).then(async r => {
@@ -151,6 +152,7 @@ function onSubmit() {
           await handleLoginSuccess({
             token: r.token,
             secureSessionId: r.secure_session_id,
+            secureSessionTTL: r.secure_session_ttl,
           })
           break
         case 199:
@@ -168,6 +170,7 @@ function onSubmit() {
           await handleLoginSuccess({
             token: verified.token,
             secureSessionId: verified.secure_session_id,
+            secureSessionTTL: verified.secure_session_ttl,
             loginType: 'passkey',
             passkeyRawId: assertion.rawId,
           })
@@ -192,7 +195,7 @@ if (user.isLogin) {
 }
 
 watch(() => gettext.current, () => {
-  clearValidate()
+  formRef.value?.clearValidate()
 })
 
 const has_casdoor = ref(false)
@@ -277,6 +280,7 @@ async function handlePasskeyLogin() {
       await handleLoginSuccess({
         token: r.token,
         secureSessionId: r.secure_session_id,
+        secureSessionTTL: r.secure_session_ttl,
         loginType: 'passkey',
         passkeyRawId: asseResp.rawId,
       })
@@ -327,8 +331,8 @@ async function handlePasskeyLogin() {
             />
           </div>
 
-          <AForm v-else id="components-form-demo-normal-login">
-            <AFormItem v-bind="validateInfos.username">
+          <AForm v-else id="components-form-demo-normal-login" ref="formRef" :model="modelRef" :rules="rulesRef">
+            <AFormItem name="username">
               <AInput
                 v-model:value="modelRef.username"
                 :placeholder="$gettext('Username')"
@@ -338,7 +342,7 @@ async function handlePasskeyLogin() {
                 </template>
               </AInput>
             </AFormItem>
-            <AFormItem v-bind="validateInfos.password">
+            <AFormItem name="password">
               <AInputPassword
                 v-model:value="modelRef.password"
                 :placeholder="$gettext('Password')"
@@ -430,7 +434,7 @@ async function handlePasskeyLogin() {
             <div class="debug-item">
               <span class="debug-label">Quick Actions:</span>
               <div class="mt-2">
-                <ASpace direction="vertical" :size="8">
+                <ASpace orientation="vertical" :size="8">
                   <AButton size="small" block @click="toggleDebugLoading">
                     {{ (slotDebugData as any).loading ? 'Stop Loading' : 'Toggle Loading' }}
                   </AButton>
@@ -463,7 +467,11 @@ async function handlePasskeyLogin() {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  // min-height rather than a fixed height: when the form is taller than the
+  // viewport, a centred flex container pushes the overflow out of both ends and
+  // the page background stops covering it.
+  min-height: 100vh;
+  padding: 24px 0;
 
   .login-form {
     max-width: 420px;

@@ -7,7 +7,7 @@ import {
   HistoryOutlined,
   MoreOutlined,
   PlusOutlined,
-} from '@ant-design/icons-vue'
+} from '@antdv-next/icons'
 import { storeToRefs } from 'pinia'
 import { useLLMStore } from './llm'
 import { useLLMSessionStore } from './sessionStore'
@@ -255,7 +255,7 @@ function formatDate(dateStr: string) {
               <AInput
                 v-model:value="editingTitle"
                 size="small"
-                :bordered="false"
+                variant="borderless"
                 @press-enter="saveTitle"
                 @blur="saveTitle"
                 @keydown="handleKeyDown"
@@ -276,24 +276,35 @@ function formatDate(dateStr: string) {
                 >
                   <MoreOutlined />
                 </AButton>
-                <template #overlay>
-                  <AMenu>
-                    <AMenuItem @click="startEditingTitle(session.session_id, session.title, $event)">
-                      <EditOutlined />
-                      {{ $gettext('Rename') }}
-                    </AMenuItem>
-                    <AMenuItem @click="duplicateSession(session.session_id, $event)">
-                      <CopyOutlined />
-                      {{ $gettext('Duplicate') }}
-                    </AMenuItem>
-                    <template v-if="sortedSessions.length > 1">
-                      <AMenuDivider />
-                      <AMenuItem danger @click="closeSession(session.session_id, $event)">
-                        <DeleteOutlined />
-                        {{ $gettext('Delete') }}
-                      </AMenuItem>
-                    </template>
-                  </AMenu>
+                <template #popupRender>
+                  <AMenu
+                    :items="[
+                      {
+                        key: 'rename',
+                        label: $gettext('Rename'),
+                        icon: EditOutlined,
+                        onClick: ({ domEvent }) => startEditingTitle(session.session_id, session.title, domEvent),
+                      },
+                      {
+                        key: 'duplicate',
+                        label: $gettext('Duplicate'),
+                        icon: CopyOutlined,
+                        onClick: ({ domEvent }) => duplicateSession(session.session_id, domEvent),
+                      },
+                      ...(sortedSessions.length > 1
+                        ? [
+                          { type: 'divider' as const },
+                          {
+                            key: 'delete',
+                            danger: true,
+                            label: $gettext('Delete'),
+                            icon: DeleteOutlined,
+                            onClick: ({ domEvent }) => closeSession(session.session_id, domEvent),
+                          },
+                        ]
+                        : []),
+                    ]"
+                  />
                 </template>
               </ADropdown>
 
@@ -318,7 +329,7 @@ function formatDate(dateStr: string) {
           v-model:open="sessionsDropdownVisible"
           :trigger="['click']"
           placement="bottomRight"
-          overlay-class-name="sessions-popover"
+          :styles="{ root: { width: '360px' }, container: { width: '360px', padding: 0 } }"
           @open-change="(open) => { if (!open) searchText = '' }"
         >
           <AButton
@@ -367,24 +378,35 @@ function formatDate(dateStr: string) {
                       >
                         <MoreOutlined />
                       </AButton>
-                      <template #overlay>
-                        <AMenu>
-                          <AMenuItem @click.stop="startEditingTitle(session.session_id, session.title, $event)">
-                            <EditOutlined />
-                            {{ $gettext('Rename') }}
-                          </AMenuItem>
-                          <AMenuItem @click.stop="duplicateSession(session.session_id, $event)">
-                            <CopyOutlined />
-                            {{ $gettext('Duplicate') }}
-                          </AMenuItem>
-                          <template v-if="sortedSessions.length > 1">
-                            <AMenuDivider />
-                            <AMenuItem danger @click.stop="closeSession(session.session_id, $event)">
-                              <DeleteOutlined />
-                              {{ $gettext('Delete') }}
-                            </AMenuItem>
-                          </template>
-                        </AMenu>
+                      <template #popupRender>
+                        <AMenu
+                          :items="[
+                            {
+                              key: 'rename',
+                              label: $gettext('Rename'),
+                              icon: EditOutlined,
+                              onClick: ({ domEvent }) => startEditingTitle(session.session_id, session.title, domEvent),
+                            },
+                            {
+                              key: 'duplicate',
+                              label: $gettext('Duplicate'),
+                              icon: CopyOutlined,
+                              onClick: ({ domEvent }) => duplicateSession(session.session_id, domEvent),
+                            },
+                            ...(sortedSessions.length > 1
+                              ? [
+                                { type: 'divider' as const },
+                                {
+                                  key: 'delete',
+                                  danger: true,
+                                  label: $gettext('Delete'),
+                                  icon: DeleteOutlined,
+                                  onClick: ({ domEvent }) => closeSession(session.session_id, domEvent),
+                                },
+                              ]
+                              : []),
+                          ]"
+                        />
                       </template>
                     </ADropdown>
                   </div>
@@ -849,12 +871,6 @@ function formatDate(dateStr: string) {
   }
 }
 
-:deep(.sessions-popover) {
-  .ant-popover-inner {
-    padding: 0;
-  }
-}
-
 .dark {
   .llm-session-tabs {
     background: rgba(30, 30, 30, 0.8);
@@ -1006,11 +1022,5 @@ function formatDate(dateStr: string) {
     }
   }
 
-  :deep(.sessions-popover) {
-    .ant-popover-inner {
-      background: #1a1a1a;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    }
-  }
 }
 </style>

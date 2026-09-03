@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { MessageInstance } from 'ant-design-vue/es/message/interface'
-import type { ModalStaticFunctions } from 'ant-design-vue/es/modal/confirm'
-import type { NotificationInstance } from 'ant-design-vue/es/notification/interface'
-import { App } from 'ant-design-vue'
+import type { MessageInstance } from 'antdv-next/dist/message/interface'
+import type { HookAPI } from 'antdv-next/dist/modal/useModal/types'
+import type { NotificationInstance } from 'antdv-next/dist/notification/interface'
+import { App } from 'antdv-next'
 import { useAppStore } from '@/pinia'
 
 const appStore = useAppStore()
@@ -13,7 +13,7 @@ onMounted(() => {
     const appInstance = App.useApp()
     appStore.setAppContext({
       message: appInstance.message as MessageInstance,
-      modal: appInstance.modal as ModalStaticFunctions,
+      modal: appInstance.modal as HookAPI,
       notification: appInstance.notification as NotificationInstance,
     })
   }

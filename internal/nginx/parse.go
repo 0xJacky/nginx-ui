@@ -260,10 +260,11 @@ func ParseNgxConfigByContent(content string) (ngxConfig *NgxConfig, err error) {
 }
 
 func ParseNgxConfig(filename string) (ngxConfig *NgxConfig, err error) {
-	p, err := parser.NewParser(filename, parser.WithSkipValidDirectivesErr())
+	content, err := ReadFile(filename)
 	if err != nil {
 		return nil, errors.Wrap(err, "error ParseNgxConfig")
 	}
+	p := parser.NewStringParser(string(content), parser.WithSkipValidDirectivesErr())
 	c, err := p.Parse()
 	if err != nil {
 		return

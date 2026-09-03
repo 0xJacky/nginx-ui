@@ -27,7 +27,7 @@ func GetStreamInfo(name string) (*Info, error) {
 		return nil, err
 	}
 
-	fileInfo, err := os.Stat(path)
+	fileInfo, err := nginx.Stat(path)
 	if os.IsNotExist(err) {
 		return nil, ErrStreamNotFound
 	}
@@ -42,7 +42,7 @@ func GetStreamInfo(name string) (*Info, error) {
 		return nil, err
 	}
 
-	if _, err := os.Stat(enabledPath); os.IsNotExist(err) {
+	if _, err := nginx.Stat(enabledPath); os.IsNotExist(err) {
 		status = config.StatusDisabled
 	}
 
@@ -60,7 +60,7 @@ func GetStreamInfo(name string) (*Info, error) {
 	}
 
 	// Read raw content
-	rawContent, err := os.ReadFile(path)
+	rawContent, err := nginx.ReadFile(path)
 	if err != nil {
 		return nil, err
 	}

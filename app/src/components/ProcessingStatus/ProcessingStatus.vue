@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { SyncOutlined } from '@ant-design/icons-vue'
+import { SyncOutlined } from '@antdv-next/icons'
 import { useGlobalStore, useWebSocketEventBusStore } from '@/pinia'
 
 const websocketEventBus = useWebSocketEventBusStore()

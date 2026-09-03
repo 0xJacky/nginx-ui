@@ -1,6 +1,6 @@
 import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
 import { datetimeRender } from '@uozi-admin/curd'
-import { Tag } from 'ant-design-vue'
+import { Tag } from 'antdv-next'
 import { detailRender } from '@/components/Notification/detailRender'
 import { NotificationType, NotificationTypeT } from '@/constants'
 

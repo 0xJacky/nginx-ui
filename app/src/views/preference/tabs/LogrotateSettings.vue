@@ -9,7 +9,7 @@ const { data } = storeToRefs(systemSettingsStore)
   <AForm layout="vertical">
     <AAlert
       class="mb-4"
-      :message="$gettext('Tips')"
+      :title="$gettext('Tips')"
       :description="$gettext('Logrotate, by default, is enabled in most mainstream '
         + 'Linux distributions for users who install Nginx UI on the host machine, '
         + 'so you don\'t need to modify the parameters on this page. '
@@ -27,7 +27,7 @@ const { data } = storeToRefs(systemSettingsStore)
       <AInputNumber
         v-model:value="data.logrotate.interval"
         :min="1"
-        :addon-after="$gettext('Minutes')"
+        :suffix="$gettext('Minutes')"
       />
     </AFormItem>
   </AForm>

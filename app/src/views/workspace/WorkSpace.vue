@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { SplitpanesResizedPayload } from 'splitpanes'
-import { CloseOutlined } from '@ant-design/icons-vue'
+import { CloseOutlined } from '@antdv-next/icons'
 import { Pane, Splitpanes } from 'splitpanes'
 import 'splitpanes/dist/splitpanes.css'
 

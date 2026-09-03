@@ -9,10 +9,10 @@ import (
 	"encoding/pem"
 	"math/big"
 	"net"
-	"os"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/go-acme/lego/v5/certcrypto"
 	"github.com/uozi-tech/cosy"
@@ -175,7 +175,7 @@ func loadSelfSignedKey(path string) (crypto.Signer, error) {
 	if path == "" {
 		return nil, ErrCertPathIsEmpty
 	}
-	pemBytes, err := os.ReadFile(path)
+	pemBytes, err := nginx.ReadFile(path)
 	if err != nil {
 		return nil, err
 	}

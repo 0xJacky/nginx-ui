@@ -1,8 +1,8 @@
-import { message as antMessage, notification as antNotification, Modal } from 'ant-design-vue'
+import { message as antMessage, notification as antNotification, Modal } from 'antdv-next'
 import { useAppStore } from '@/pinia'
 
 /**
- * Global composable for Ant Design Vue App context
+ * Global composable for the antdv-next App context
  * Provides message, modal, and notification APIs with fallback
  */
 export function useGlobalApp() {

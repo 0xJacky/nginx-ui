@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { TerminalTab } from '@/pinia/moudule/terminal'
-import { CloseOutlined, PlusOutlined } from '@ant-design/icons-vue'
+import { CloseOutlined, PlusOutlined } from '@antdv-next/icons'
 import { nextTick, ref } from 'vue'
 
 interface Props {

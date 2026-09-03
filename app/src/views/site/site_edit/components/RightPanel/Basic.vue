@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { SiteStatus } from '@/api/site'
-import { InfoCircleOutlined } from '@ant-design/icons-vue'
+import { InfoCircleOutlined } from '@antdv-next/icons'
 import { StdSelector } from '@uozi-admin/curd'
 import namespace from '@/api/namespace'
 import NodeSelector from '@/components/NodeSelector'
@@ -89,7 +89,7 @@ function handleStatusChanged(event: { status: SiteStatus }) {
 </template>
 
 <style scoped lang="less">
-:deep(.ant-collapse-ghost > .ant-collapse-item > .ant-collapse-content > .ant-collapse-content-box) {
+:deep(.ant-collapse-ghost > .ant-collapse-item > .ant-collapse-panel > .ant-collapse-body) {
   padding: 0;
 }
 

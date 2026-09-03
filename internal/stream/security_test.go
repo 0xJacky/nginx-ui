@@ -217,3 +217,42 @@ func TestDuplicateRejectsBinaryStreamContent(t *testing.T) {
 		t.Fatalf("Duplicate expected cosy error, got %v", err)
 	}
 }
+
+// A regular file in streams-enabled (copied config, restored backup) used to
+// be re-linked on rename just like a symlink. Gating on symlink mode alone
+// left the stale file serving the old content under the old name.
+func TestRenameRelinksRegularFileInEnabledDir(t *testing.T) {
+	confDir, waitForSyncQuery := setupStreamMutationTest(t)
+
+	availableDir := filepath.Join(confDir, "streams-available")
+	enabledDir := filepath.Join(confDir, "streams-enabled")
+	if err := os.WriteFile(filepath.Join(availableDir, "tcp_proxy"), []byte("server {\n}\n"), 0o644); err != nil {
+		t.Fatalf("failed to seed stream config: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(enabledDir, "tcp_proxy"), []byte("server {\n}\n"), 0o644); err != nil {
+		t.Fatalf("failed to seed enabled copy: %v", err)
+	}
+
+	if err := Rename("tcp_proxy", "tcp_proxy_new"); err != nil {
+		t.Fatalf("Rename returned error: %v", err)
+	}
+	waitForSyncQuery()
+
+	if _, err := os.Lstat(filepath.Join(enabledDir, "tcp_proxy")); !errors.Is(err, os.ErrNotExist) {
+		t.Fatalf("expected the stale enabled file to be removed, got %v", err)
+	}
+	info, err := os.Lstat(filepath.Join(enabledDir, "tcp_proxy_new"))
+	if err != nil {
+		t.Fatalf("expected relinked enabled entry: %v", err)
+	}
+	if info.Mode()&os.ModeSymlink == 0 {
+		t.Fatalf("expected enabled entry to be a symlink, got mode %v", info.Mode())
+	}
+	target, err := os.Readlink(filepath.Join(enabledDir, "tcp_proxy_new"))
+	if err != nil {
+		t.Fatalf("failed to read relinked entry: %v", err)
+	}
+	if target != filepath.Join(availableDir, "tcp_proxy_new") {
+		t.Fatalf("relinked entry points at %q, want the renamed available file", target)
+	}
+}

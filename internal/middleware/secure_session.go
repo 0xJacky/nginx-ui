@@ -104,6 +104,47 @@ func RequireSecureSession() gin.HandlerFunc {
 	}
 }
 
+// VerifiedSecureSession reports whether RequireSecureSession marked the
+// request as carrying a verified two-factor session. When it did not, the
+// request is aborted with 401 and the given message, so the caller only has
+// to return.
+func VerifiedSecureSession(c *gin.Context, message string) bool {
+	if verified, _ := c.Get(SecureSessionVerifiedKey); verified != true {
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+			"message": message,
+		})
+		return false
+	}
+
+	return true
+}
+
+// VerifiedTwoFactorOrProxy gates handlers that change the nginx control
+// target or the SSH material behind it. A controller configuring a child node
+// reaches them through Proxy(), which signs the forwarded request as that
+// node, so a node principal is accepted the same way RequireSecureSession
+// does. Rejecting it would surface as an opaque 503, because the proxy
+// rewrites 403 responses. Everyone else needs a verified two-factor session.
+func VerifiedTwoFactorOrProxy(c *gin.Context, message string) bool {
+	if _, ok := c.Get(nodeauth.GinPrincipalKey); ok {
+		return true
+	}
+
+	return VerifiedSecureSession(c, message)
+}
+
+// RequireVerifiedTwoFactorOrProxy is the middleware form of
+// VerifiedTwoFactorOrProxy. Place it after RequireSecureSession, which is what
+// sets the verified marker.
+func RequireVerifiedTwoFactorOrProxy(message string) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		if !VerifiedTwoFactorOrProxy(c, message) {
+			return
+		}
+		c.Next()
+	}
+}
+
 // RequireInteractiveUser prevents a verified node principal from invoking
 // controller-administration APIs intended only for a logged-in administrator.
 func RequireInteractiveUser() gin.HandlerFunc {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Config } from '@/api/config'
-import { InfoCircleOutlined } from '@ant-design/icons-vue'
+import { InfoCircleOutlined } from '@antdv-next/icons'
 import NodeSelector from '@/components/NodeSelector'
 
 const data = defineModel<Config>('data', { required: true })

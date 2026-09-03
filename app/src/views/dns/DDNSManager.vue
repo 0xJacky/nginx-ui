@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { DDNSDomainItem, DDNSIPVersion, DNSRecord, UpdateDDNSPayload } from '@/api/dns'
-import { InfoCircleOutlined, ReloadOutlined, SearchOutlined } from '@ant-design/icons-vue'
-import { message } from 'ant-design-vue'
+import { InfoCircleOutlined, ReloadOutlined, SearchOutlined } from '@antdv-next/icons'
+import { message } from 'antdv-next'
 import dayjs from 'dayjs'
 import { computed, onMounted, ref, watch } from 'vue'
 import { dnsApi } from '@/api/dns'
@@ -173,12 +173,12 @@ const columns = [
   {
     title: $gettext('Credential'),
     key: 'credential',
-    customRender: ({ record }: { record: DDNSDomainItem }) => record.credential_name ?? '-',
+    render: (_value: unknown, record: DDNSDomainItem) => record.credential_name ?? '-',
   },
   {
     title: $gettext('Provider'),
     key: 'provider',
-    customRender: ({ record }: { record: DDNSDomainItem }) => record.credential_provider ?? '-',
+    render: (_value: unknown, record: DDNSDomainItem) => record.credential_provider ?? '-',
   },
   {
     title: $gettext('Status'),
@@ -299,7 +299,10 @@ watch(() => ddnsForm.value.ip_version, handleIPVersionChange)
 
 <template>
   <div class="ddns-page">
-    <ACard class="ddns-card">
+    <ACard
+      class="ddns-card"
+      :styles="{ header: { paddingInline: '20px' }, body: { padding: '20px' } }"
+    >
       <template #title>
         <ASpace align="center">
           {{ $gettext('DDNS Overview') }}
@@ -330,7 +333,7 @@ watch(() => ddnsForm.value.ip_version, handleIPVersionChange)
         class="mb-4"
         type="info"
         show-icon
-        :message="$gettext('DDNS updates records within a DNS zone')"
+        :title="$gettext('DDNS updates records within a DNS zone')"
         :description="$gettext('Configure a zone, then select the A/AAAA records to update. For ddns.example.com, select the ddns record under example.com.')"
       />
 
@@ -397,7 +400,7 @@ watch(() => ddnsForm.value.ip_version, handleIPVersionChange)
     <ADrawer
       :open="drawerOpen"
       :title="currentDomain ? `${$gettext('Configure DDNS')} - ${currentDomain.domain}` : ''"
-      width="520"
+      :size="520"
       @close="closeDrawer"
     >
       <ASkeleton v-if="recordsLoading" active />
@@ -474,14 +477,6 @@ watch(() => ddnsForm.value.ip_version, handleIPVersionChange)
 <style scoped>
 .ddns-page {
   padding-bottom: 16px;
-}
-
-.ddns-card :deep(.ant-card-head) {
-  padding-inline: 20px;
-}
-
-.ddns-card :deep(.ant-card-body) {
-  padding: 20px;
 }
 
 .toolbar {

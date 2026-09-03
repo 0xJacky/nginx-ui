@@ -1,7 +1,8 @@
 <script setup lang="tsx">
-import { CheckCircleOutlined, CloseCircleOutlined, DownloadOutlined, HeartOutlined, InfoCircleOutlined, MailOutlined, ThunderboltOutlined, WarningOutlined } from '@ant-design/icons-vue'
+import { CheckCircleOutlined, CloseCircleOutlined, DownloadOutlined, HeartOutlined, InfoCircleOutlined, MailOutlined, ThunderboltOutlined, WarningOutlined } from '@antdv-next/icons'
 import geolite from '@/api/geolite'
 import GeoLiteDownload from '@/components/GeoLiteDownload'
+import { List, ListItem, ListItemMeta } from '@/components/List'
 
 interface Props {
   loading?: boolean
@@ -47,19 +48,19 @@ const systemRequirements = [
     title: $gettext('CPU'),
     requirement: $gettext('1 core minimum'),
     recommended: $gettext('2+ cores recommended'),
-    icon: <CheckCircleOutlined class="text-green-500" />,
+    icon: markRaw(<CheckCircleOutlined class="text-green-500" />),
   },
   {
     title: $gettext('Memory'),
     requirement: $gettext('1GB RAM minimum'),
     recommended: $gettext('4GB+ RAM recommended'),
-    icon: <CheckCircleOutlined class="text-green-500" />,
+    icon: markRaw(<CheckCircleOutlined class="text-green-500" />),
   },
   {
     title: $gettext('Storage'),
     requirement: $gettext('At least 20GB available disk space'),
     recommended: $gettext('SSD storage for better I/O performance'),
-    icon: <CheckCircleOutlined class="text-green-500" />,
+    icon: markRaw(<CheckCircleOutlined class="text-green-500" />),
   },
 ]
 
@@ -106,7 +107,7 @@ function handleCancel() {
     <div class="space-y-6">
       <!-- Warning Alert -->
       <AAlert
-        :message="$gettext('Resource Usage Warning')"
+        :title="$gettext('Resource Usage Warning')"
         :description="$gettext('Enabling advanced log indexing will consume significant computational resources including CPU and memory. Please ensure your system meets the minimum requirements before proceeding.')"
         type="warning"
         show-icon
@@ -120,13 +121,13 @@ function handleCancel() {
           {{ $gettext('System Requirements') }}
         </ATypographyTitle>
 
-        <AList
+        <List
           :data-source="systemRequirements"
           item-layout="horizontal"
         >
           <template #renderItem="{ item }">
-            <AListItem>
-              <AListItemMeta>
+            <ListItem>
+              <ListItemMeta>
                 <template #avatar>
                   <component :is="item.icon" />
                 </template>
@@ -155,10 +156,10 @@ function handleCancel() {
                     </div>
                   </div>
                 </template>
-              </AListItemMeta>
-            </AListItem>
+              </ListItemMeta>
+            </ListItem>
           </template>
-        </AList>
+        </List>
 
         <!-- Subtle note about Bleve index storage location -->
         <div class="mt-2">
@@ -310,7 +311,7 @@ function handleCancel() {
 
       <!-- Final Warning -->
       <AAlert
-        :message="$gettext('Confirmation Required')"
+        :title="$gettext('Confirmation Required')"
         :description="$gettext('By enabling advanced indexing, you acknowledge that your system meets the requirements and understand the performance implications. This will start indexing existing log files immediately.')"
         type="info"
         show-icon
@@ -321,7 +322,7 @@ function handleCancel() {
 </template>
 
 <style scoped lang="less">
-:deep(.ant-list-item-meta-description) {
+:deep(.nui-list-item-meta-description) {
   margin-top: 8px;
 }
 </style>

@@ -58,9 +58,9 @@ function ok() {
       class="mb-4"
       type="warning"
       show-icon
-      :message="$gettext('The selected content will be pushed to: %{nodes}', { nodes: nodeNames.join(', ') })"
+      :title="$gettext('The selected content will be pushed to: %{nodes}', { nodes: nodeNames.join(', ') })"
     />
-    <ASpace direction="vertical">
+    <ASpace orientation="vertical">
       <ACheckbox v-model:checked="scope.configs">
         {{ $gettext('Configurations') }}
       </ACheckbox>

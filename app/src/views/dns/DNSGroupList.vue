@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { TableColumnsType } from 'ant-design-vue'
+import type { TableColumnsType } from 'antdv-next'
 import type { DNSDomain } from '@/api/dns'
 import type { DNSDomainGroup } from '@/pinia/moudule/dnsGroup'
-import { PlusOutlined, ReloadOutlined } from '@ant-design/icons-vue'
-import { message } from 'ant-design-vue'
+import { PlusOutlined, ReloadOutlined } from '@antdv-next/icons'
+import { message } from 'antdv-next'
 import dayjs from 'dayjs'
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -163,7 +163,7 @@ onMounted(loadDomains)
       type="info"
       show-icon
       class="mb-4"
-      :message="$gettext('Groups are stored in this browser')"
+      :title="$gettext('Groups are stored in this browser')"
       :description="$gettext('Groups are scoped to the current user and selected node. Record operations run once and are not continuous synchronization.')"
     />
 
@@ -253,7 +253,7 @@ onMounted(loadDomains)
     <ADrawer
       :open="isDrawerOpen"
       :title="editingGroupId ? $gettext('Edit DNS group') : $gettext('Create DNS group')"
-      width="520"
+      :size="520"
       @close="closeDrawer"
     >
       <AForm layout="vertical">

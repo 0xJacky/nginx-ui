@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { HistoryOutlined, ThunderboltOutlined } from '@ant-design/icons-vue'
+import { HistoryOutlined, ThunderboltOutlined } from '@antdv-next/icons'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 import ConfigHistory from '@/components/ConfigHistory'
 import FooterToolBar from '@/components/FooterToolbar'
@@ -68,7 +68,7 @@ async function save() {
 </script>
 
 <template>
-  <ACard class="site-edit-container" :bordered="false">
+  <ACard class="site-edit-container overflow-hidden" variant="borderless">
     <template #title>
       <span style="margin-right: 10px">{{ $gettext('Edit %{n}', { n: name }) }}</span>
       <ATag
@@ -150,7 +150,7 @@ async function save() {
           >
             <AAlert
               banner
-              :message="$gettext('Nginx Configuration Parse Error')"
+              :title="$gettext('Nginx Configuration Parse Error')"
               :description="parseErrorMessage"
               type="error"
               show-icon

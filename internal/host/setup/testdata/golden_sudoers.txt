@@ -1,0 +1,6 @@
+nginxui ALL=(root) NOPASSWD: \
+    /bin/systemctl reload nginx.service, \
+    /bin/systemctl restart nginx.service, \
+    /usr/sbin/nginx -t, \
+    /usr/sbin/nginx -T
+Defaults!/bin/systemctl,/usr/sbin/nginx env_keep += "TZ LANG LC_ALL"

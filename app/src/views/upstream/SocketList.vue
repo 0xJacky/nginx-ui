@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { ColumnsType } from 'ant-design-vue/es/table'
+import type { TableColumnsType } from 'antdv-next'
 import type { SocketInfo } from '@/api/upstream'
-import { ReloadOutlined } from '@ant-design/icons-vue'
-import { message, Tag } from 'ant-design-vue'
+import { ReloadOutlined } from '@antdv-next/icons'
+import { message, Tag } from 'antdv-next'
 import upstream from '@/api/upstream'
 import { formatDateTime } from '@/lib/helper'
 import { useProxyAvailabilityStore } from '@/pinia/moudule/proxyAvailability'
@@ -14,7 +14,7 @@ const globalHealthCheckEnabled = ref(true)
 // Initialize proxy availability store
 const proxyAvailabilityStore = useProxyAvailabilityStore()
 
-const columns: ColumnsType<SocketInfo> = [
+const columns: TableColumnsType<SocketInfo> = [
   {
     title: () => $gettext('Socket'),
     dataIndex: 'socket',
@@ -26,7 +26,7 @@ const columns: ColumnsType<SocketInfo> = [
     dataIndex: 'upstream_name',
     key: 'upstream_name',
     width: 150,
-    customRender: ({ record }) => {
+    render: (_value, record) => {
       if (!record.upstream_name) {
         return $gettext('Direct')
       }
@@ -37,9 +37,9 @@ const columns: ColumnsType<SocketInfo> = [
     title: () => $gettext('Health Status'),
     key: 'status',
     width: 180,
-    customRender: ({ record }) => {
+    render: (_value, record) => {
       if (!globalHealthCheckEnabled.value) {
-        return h(Tag, { color: 'warning', bordered: false }, () => $gettext('Paused'))
+        return h(Tag, { color: 'warning', variant: 'filled' }, () => $gettext('Paused'))
       }
       if (!record.status) {
         return $gettext('No Data')
@@ -56,8 +56,8 @@ const columns: ColumnsType<SocketInfo> = [
     dataIndex: 'last_check',
     key: 'last_check',
     width: 180,
-    customRender: ({ text }) => {
-      return text ? formatDateTime(text) : '-'
+    render: value => {
+      return value ? formatDateTime(value) : '-'
     },
   },
   {
@@ -150,7 +150,7 @@ onUnmounted(() => {
       class="mb-4"
       type="warning"
       show-icon
-      :message="$gettext('Upstream health checks are globally paused')"
+      :title="$gettext('Upstream health checks are globally paused')"
       :description="$gettext('Per-target selections are preserved. Resume probes from Health Check preferences.')"
     />
 
@@ -164,7 +164,7 @@ onUnmounted(() => {
     >
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'socket'">
-          <ATag color="default" :bordered="false" class="socket-tag">
+          <ATag color="default" variant="filled" class="socket-tag">
             <template #icon>
               <span v-if="record.type === 'upstream'" class="target-type-icon">U</span>
               <span v-else class="target-type-icon">P</span>
