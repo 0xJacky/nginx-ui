@@ -4,6 +4,9 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+
+	"github.com/0xJacky/Nginx-UI/internal/cache"
+	"github.com/0xJacky/Nginx-UI/settings"
 )
 
 func TestScanForProxyTargets_IgnoresCrossFileUpstreamReferences(t *testing.T) {
@@ -94,6 +97,12 @@ func TestScanForProxyTargets_ReplacesStaleTargetFromSymlinkedConfig(t *testing.T
 	})
 
 	root := t.TempDir()
+	originalSettings := *settings.NginxSettings
+	settings.NginxSettings.ConfigDir = root
+	settings.NginxSettings.HostMode = ""
+	settings.NginxSettings.HostAccessMode = ""
+	t.Cleanup(func() { *settings.NginxSettings = originalSettings })
+
 	availableDir := filepath.Join(root, "sites-available")
 	enabledDir := filepath.Join(root, "sites-enabled")
 	if err := os.Mkdir(availableDir, 0o755); err != nil {
@@ -126,11 +135,11 @@ server {
     }
 }`
 
-	if err := scanForProxyTargets(availablePath, []byte(initialConfig)); err != nil {
-		t.Fatalf("scan available config: %v", err)
+	if err := os.WriteFile(availablePath, []byte(initialConfig), 0o644); err != nil {
+		t.Fatalf("write initial config: %v", err)
 	}
-	if err := scanForProxyTargets(enabledPath, []byte(initialConfig)); err != nil {
-		t.Fatalf("scan enabled config: %v", err)
+	if err := cache.GetScanner().ScanAllConfigs(); err != nil {
+		t.Fatalf("scan available and enabled configs: %v", err)
 	}
 	if err := scanForProxyTargets(availablePath, []byte(updatedConfig)); err != nil {
 		t.Fatalf("scan updated config: %v", err)
@@ -142,6 +151,9 @@ server {
 	}
 	if targets[0].Host != "192.168.10.101" || targets[0].Port != "8080" {
 		t.Fatalf("unexpected target after config update: %+v", targets[0])
+	}
+	if configPath := service.GetTargetInfos()[0].ConfigPath; configPath != availablePath {
+		t.Fatalf("unexpected config path: got %q, want %q", configPath, availablePath)
 	}
 
 	if err := os.Remove(enabledPath); err != nil {

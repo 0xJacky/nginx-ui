@@ -845,6 +845,27 @@ func (s *Scanner) scanSingleFileInternal(filePath string, skipPostScan bool) err
 			return nil
 		}
 
+		// Give every consumer the target's identity before reading its content.
+		resolvedPath, err := nginx.EvalSymlinks(filePath)
+		if err != nil {
+			logger.Debugf("Skipping unresolved symlink: %s (%v)", filePath, err)
+			return nil
+		}
+
+		// Keep the configured root prefix so symlink scans and file events use
+		// the same key even when an ancestor of the config directory is a symlink.
+		root := nginx.GetConfPath()
+		resolvedRoot, err := nginx.EvalSymlinks(root)
+		if err != nil {
+			logger.Debugf("Skipping symlink with unresolved config root: %s (%v)", filePath, err)
+			return nil
+		}
+		if relativePath, err := filepath.Rel(resolvedRoot, resolvedPath); err == nil &&
+			relativePath != ".." && !strings.HasPrefix(relativePath, ".."+string(filepath.Separator)) {
+			resolvedPath = filepath.Join(root, relativePath)
+		}
+		filePath = resolvedPath
+
 		// Process symlinks to files, but use the target's info for size check
 		fileInfo = targetInfo
 	}
