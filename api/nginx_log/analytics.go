@@ -2,6 +2,7 @@ package nginx_log
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"sort"
 	"strings"
@@ -12,6 +13,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/analytics"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/searcher"
+	nginxLogUtils "github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
@@ -29,23 +31,16 @@ type GeoDataItem struct {
 	Percent float64 `json:"percent"`
 }
 
-type logPathValidator interface {
-	ValidateLogPath(logPath string) error
-}
-
 // decodeAndValidateLogPath normalizes user input before it can be used in any
 // path-related operation.
-func decodeAndValidateLogPath(rawPath string, validator logPathValidator) (string, error) {
+func decodeAndValidateLogPath(rawPath string) (string, error) {
 	if rawPath == "" {
 		return "", nil
 	}
 
 	decodedPath, _ := helper.DecodePathParam(rawPath)
-
-	if validator != nil {
-		if err := validator.ValidateLogPath(decodedPath); err != nil {
-			return "", err
-		}
+	if !nginxLogUtils.IsValidLogPath(decodedPath) {
+		return "", fmt.Errorf("log path is not under whitelist")
 	}
 
 	return decodedPath, nil
@@ -118,7 +113,7 @@ func GetLogAnalytics(c *gin.Context) {
 	}
 
 	if req.Path != "" {
-		decodedPath, err := decodeAndValidateLogPath(req.Path, analyticsService)
+		decodedPath, err := decodeAndValidateLogPath(req.Path)
 		if err != nil {
 			cosy.ErrHandler(c, err)
 			return
@@ -234,7 +229,7 @@ func AdvancedSearchLogs(c *gin.Context) {
 	}
 
 	if req.LogPath != "" {
-		decodedPath, err := decodeAndValidateLogPath(req.LogPath, analyticsService)
+		decodedPath, err := decodeAndValidateLogPath(req.LogPath)
 		if err != nil {
 			cosy.ErrHandler(c, err)
 			return
@@ -591,7 +586,7 @@ func GetDashboardAnalytics(c *gin.Context) {
 	}
 
 	if req.LogPath != "" {
-		decodedPath, err := decodeAndValidateLogPath(req.LogPath, analyticsService)
+		decodedPath, err := decodeAndValidateLogPath(req.LogPath)
 		if err != nil {
 			cosy.ErrHandler(c, err)
 			return
@@ -707,7 +702,7 @@ func GetWorldMapData(c *gin.Context) {
 	}
 
 	if req.Path != "" {
-		decodedPath, err := decodeAndValidateLogPath(req.Path, analyticsService)
+		decodedPath, err := decodeAndValidateLogPath(req.Path)
 		if err != nil {
 			cosy.ErrHandler(c, err)
 			return
@@ -817,7 +812,7 @@ func GetChinaMapData(c *gin.Context) {
 	}
 
 	if req.Path != "" {
-		decodedPath, err := decodeAndValidateLogPath(req.Path, analyticsService)
+		decodedPath, err := decodeAndValidateLogPath(req.Path)
 		if err != nil {
 			cosy.ErrHandler(c, err)
 			return
@@ -926,7 +921,7 @@ func GetChinaCityMapData(c *gin.Context) {
 	}
 
 	if req.Path != "" {
-		decodedPath, err := decodeAndValidateLogPath(req.Path, analyticsService)
+		decodedPath, err := decodeAndValidateLogPath(req.Path)
 		if err != nil {
 			cosy.ErrHandler(c, err)
 			return
@@ -1004,7 +999,7 @@ func GetGeoStats(c *gin.Context) {
 	}
 
 	if req.Path != "" {
-		decodedPath, err := decodeAndValidateLogPath(req.Path, analyticsService)
+		decodedPath, err := decodeAndValidateLogPath(req.Path)
 		if err != nil {
 			cosy.ErrHandler(c, err)
 			return
