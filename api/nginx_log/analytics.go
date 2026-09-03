@@ -34,8 +34,9 @@ type GeoDataItem struct {
 }
 
 type ChinaCityMapResponse struct {
-	Data    []GeoDataItem `json:"data"`
-	TopData []GeoDataItem `json:"top_data,omitempty"`
+	Data           []GeoDataItem `json:"data"`
+	TopData        []GeoDataItem `json:"top_data,omitempty"`
+	CustomMMDBMode bool          `json:"custom_mmdb_mode"`
 }
 
 // decodeAndValidateLogPath normalizes user input before it can be used in any
@@ -1249,8 +1250,9 @@ func GetChinaCityMapData(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, ChinaCityMapResponse{
-		Data:    chartData,
-		TopData: topData,
+		Data:           chartData,
+		TopData:        topData,
+		CustomMMDBMode: isCustomMMDBEnabled(),
 	})
 }
 
