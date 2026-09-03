@@ -9,6 +9,12 @@ defineProps<{
 }>()
 
 const modelValue = defineModel<string | number>('activeKey')
+const tabsActiveKey = computed({
+  get: () => modelValue.value === undefined ? undefined : String(modelValue.value),
+  set: value => {
+    modelValue.value = value === undefined ? undefined : Number(value)
+  },
+})
 const nodeStore = useNodeAvailabilityStore()
 const namespaces = ref<Namespace[]>([])
 const { message } = useGlobalApp()
@@ -53,7 +59,7 @@ const loading = ref({
 const currentNamespace = computed(() => {
   if (!modelValue.value || modelValue.value === 0)
     return null
-  return namespaces.value.find(g => g.id === modelValue.value)
+  return namespaces.value.find(g => g.id === Number(modelValue.value))
 })
 
 // Get the list of nodes in the current group
@@ -112,14 +118,13 @@ async function handleRestartNginx() {
 
 <template>
   <div>
-    <ATabs v-model:active-key="modelValue">
-      <ATabPane :key="0" :tab="$gettext('Local')" />
-      <ATabPane
-        v-for="ns in namespaces"
-        :key="ns.id"
-        :tab="ns.name"
-      />
-    </ATabs>
+    <ATabs
+      v-model:active-key="tabsActiveKey"
+      :items="[
+        { key: String(0), label: $gettext('Local') },
+        ...namespaces.map(ns => ({ key: String(ns.id), label: ns.name })),
+      ]"
+    />
 
     <!-- Display node information -->
     <ACard

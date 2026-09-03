@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { InfoCircleOutlined } from '@ant-design/icons-vue'
+import { InfoCircleOutlined } from '@antdv-next/icons'
 import { StdSelector } from '@uozi-admin/curd'
 import { storeToRefs } from 'pinia'
 import namespace from '@/api/namespace'

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { EyeInvisibleOutlined, EyeOutlined, ReloadOutlined } from '@ant-design/icons-vue'
-import { message } from 'ant-design-vue'
+import { EyeInvisibleOutlined, EyeOutlined, ReloadOutlined } from '@antdv-next/icons'
+import { message } from 'antdv-next'
 import system from '@/api/system'
 
 interface Props {

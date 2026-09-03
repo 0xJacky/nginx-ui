@@ -7,7 +7,6 @@ import (
 	"sync"
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
-	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
@@ -23,8 +22,14 @@ func Save(name string, content string, overwrite bool, syncNodeIds []uint64, pos
 		return err
 	}
 
-	if !overwrite && helper.FileExists(path) {
-		return ErrDstFileExists
+	if !overwrite {
+		exists, existsErr := nginx.Exists(path)
+		if existsErr != nil {
+			return existsErr
+		}
+		if exists {
+			return ErrDstFileExists
+		}
 	}
 
 	err = config.ValidateConfigFile(path, content)
@@ -66,7 +71,12 @@ func Save(name string, content string, overwrite bool, syncNodeIds []uint64, pos
 	// must neither validate nor load the configuration. Nothing can be enabled
 	// locally for such a stream, so the namespace is only resolved when the
 	// stream currently participates in the local Nginx.
-	isEnabled := helper.FileExists(enabledConfigFilePath)
+	isEnabled, err := nginx.Exists(enabledConfigFilePath)
+	if err != nil {
+		return config.RollbackError(err, func() error {
+			return snapshot.Restore(path)
+		})
+	}
 	remoteDeploy := false
 	if isEnabled {
 		remoteDeploy = IsRemoteDeploy(name)

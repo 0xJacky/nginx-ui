@@ -79,6 +79,9 @@ func TestSetup(t *testing.T) {
 	_ = os.Setenv("NGINX_UI_NGINX_RELOAD_CMD", "nginx -s reload")
 	_ = os.Setenv("NGINX_UI_NGINX_RESTART_CMD", "nginx -s restart")
 	_ = os.Setenv("NGINX_UI_NGINX_LOG_DIR_WHITE_LIST", "/var/log/nginx")
+	_ = os.Setenv("NGINX_UI_NGINX_HOST_SERVICE_MANAGER", "launchd")
+	_ = os.Setenv("NGINX_UI_NGINX_HOST_LAUNCHD_SERVICE", "homebrew.mxcl.nginx")
+	_ = os.Setenv("NGINX_UI_NGINX_HOST_LAUNCHCTL_PATH", "/bin/launchctl")
 
 	// Node
 	_ = os.Setenv("NGINX_UI_NODE_NAME", "test")
@@ -173,6 +176,10 @@ func TestSetup(t *testing.T) {
 	assert.Equal(t, "nginx -s reload", NginxSettings.ReloadCmd)
 	assert.Equal(t, "nginx -s restart", NginxSettings.RestartCmd)
 	assert.Equal(t, []string{"/var/log/nginx"}, NginxSettings.LogDirWhiteList)
+	assert.Equal(t, HostServiceManagerLaunchd, NginxSettings.HostServiceManager)
+	assert.Equal(t, "homebrew.mxcl.nginx", NginxSettings.HostLaunchdService)
+	assert.Equal(t, "/bin/launchctl", NginxSettings.HostLaunchctlPath)
+	assert.Empty(t, NginxSettings.GetHostSudoPrefix())
 
 	// Node
 	assert.Equal(t, "test", NodeSettings.Name)

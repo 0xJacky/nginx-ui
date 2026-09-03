@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { FileTextOutlined } from '@ant-design/icons-vue'
+import { FileTextOutlined } from '@antdv-next/icons'
 
 export const nginxLogRoutes: RouteRecordRaw[] = [
   {

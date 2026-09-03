@@ -11,7 +11,7 @@ cmd = "CGO_ENABLED=1 go build -tags=jsoniter,unembed,dev -ldflags=\"-X 'github.c
 # Binary file yields from `cmd`.
 bin = "tmp/main"
 # Customize binary.
-full_bin = "APP_ENV=dev APP_USER=air ./tmp/main"
+full_bin = "APP_ENV=dev APP_USER=air ./tmp/main -config /etc/nginx-ui/app.ini"
 # Watch these filename extensions.
 include_ext = ["go", "tpl", "tmpl", "html", "toml", "po", "conf"]
 # Ignore these filename extensions or directories.

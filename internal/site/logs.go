@@ -25,7 +25,7 @@ func GetLogs(name string) ([]LogEntry, error) {
 		return nil, err
 	}
 
-	content, err := os.ReadFile(path)
+	content, err := nginx.ReadFile(path)
 	if err != nil {
 		if os.IsNotExist(err) {
 			return nil, ErrSiteNotFound

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Modal } from 'ant-design-vue'
+import { Modal } from 'antdv-next'
 import template from '@/api/template'
 import { useGlobalStore } from '@/pinia'
 import { useSiteEditorStore } from '@/views/site/site_edit/components/SiteEditor/store'

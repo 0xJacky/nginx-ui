@@ -14,7 +14,7 @@ const data = defineModel<SelfSignedCertPayload>('value', { required: true })
   <div class="self-signed-cert-management mb-4">
     <AAlert
       class="mb-4"
-      :message="$gettext('This self-signed certificate is managed by Nginx UI and renewed automatically.')"
+      :title="$gettext('This self-signed certificate is managed by Nginx UI and renewed automatically.')"
       type="success"
       show-icon
     />

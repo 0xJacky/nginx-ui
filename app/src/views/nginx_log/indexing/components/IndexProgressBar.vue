@@ -81,6 +81,26 @@ const stageText = computed(() => {
         :stroke-color="progressColor"
         :show-info="false"
         class="compact-progress"
+        :styles="{
+          root: {
+            margin: 0,
+            padding: 0,
+          },
+          body: {
+            display: 'flex',
+            alignItems: 'center',
+            height: '100%',
+            margin: 0,
+          },
+          rail: {
+            height: '6px',
+            margin: 0,
+          },
+          track: {
+            height: '6px',
+            margin: 0,
+          },
+        }"
       />
       <span class="percent-info text-blue-500 dark:text-blue-400">
         {{ Math.round(progress.progress) }}%
@@ -162,38 +182,6 @@ const stageText = computed(() => {
   flex: 1;
   display: flex;
   align-items: center;
-  margin: 0 !important;
-}
-
-.compact-progress :deep(.ant-progress-inner) {
-  height: 6px !important;
-}
-
-.compact-progress :deep(.ant-progress-outer) {
-  display: flex;
-  align-items: center;
-  height: 100%;
-  margin: 0 !important;
-}
-
-.compact-progress :deep(.ant-progress-line) {
-  margin: 0 !important;
-}
-
-.compact-progress :deep(.ant-progress-status-normal) {
-  margin: 0 !important;
-}
-
-.compact-progress :deep(.ant-progress-small) {
-  margin: 0 !important;
-}
-
-.compact-progress :deep(.ant-progress) {
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-.compact-progress :deep(.ant-progress *) {
   margin: 0 !important;
 }
 </style>

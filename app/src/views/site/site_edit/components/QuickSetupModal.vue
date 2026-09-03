@@ -83,7 +83,7 @@ async function generateConfig() {
       type="warning"
       class="mb-4"
       show-icon
-      :message="$gettext('Issue a certificate to enable TLS before saving.')"
+      :title="$gettext('Issue a certificate to enable TLS before saving.')"
     />
 
     <QuickSetupForm

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { URLStatItem } from '../types'
 import type { DashboardAnalytics } from '@/api/nginx_log'
-import { Card, Table } from 'ant-design-vue'
+import { Card, Table } from 'antdv-next'
 
 defineProps<{
   dashboardData: DashboardAnalytics | null
@@ -21,13 +21,13 @@ const urlColumns = [
     key: 'visits',
     sorter: (a: URLStatItem, b: URLStatItem) => a.visits - b.visits,
     width: 100,
-    customRender: ({ text }: { text: number }) => text.toLocaleString(),
+    render: (value: number) => value.toLocaleString(),
   },
   {
     title: () => $gettext('Percentage'),
     dataIndex: 'percent',
     key: 'percent',
-    customRender: ({ text }: { text: number }) => `${text.toFixed(2)}%`,
+    render: (value: number) => `${value.toFixed(2)}%`,
     width: 120,
   },
 ]

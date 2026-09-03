@@ -44,7 +44,7 @@ function handleCertChange(certs: Cert[]) {
 
       <AAlert
         type="info"
-        :message="$gettext('Protocol configuration only takes effect when directly connecting. If using reverse proxy, please configure the protocol separately in the reverse proxy.')"
+        :title="$gettext('Protocol configuration only takes effect when directly connecting. If using reverse proxy, please configure the protocol separately in the reverse proxy.')"
         show-icon
         class="mb-4"
       />

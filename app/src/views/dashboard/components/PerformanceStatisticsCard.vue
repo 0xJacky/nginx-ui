@@ -6,7 +6,7 @@ import {
   DashboardOutlined,
   InfoCircleOutlined,
   ThunderboltOutlined,
-} from '@ant-design/icons-vue'
+} from '@antdv-next/icons'
 
 const props = defineProps<{
   nginxInfo: NginxPerformanceInfo
@@ -33,7 +33,7 @@ const maxRPS = computed(() => {
       <ACol :xs="24" :sm="12" :md="8" :lg="6">
         <AStatistic
           :value="maxRPS"
-          :value-style="{ color: '#1890ff', fontSize: '24px' }"
+          :styles="{ content: { color: '#1890ff', fontSize: '24px' } }"
         >
           <template #prefix>
             <ThunderboltOutlined />
@@ -55,7 +55,7 @@ const maxRPS = computed(() => {
         <AStatistic
           :title="$gettext('Max Concurrent Connections')"
           :value="nginxInfo.worker_processes * nginxInfo.worker_connections"
-          :value-style="{ color: '#52c41a', fontSize: '24px' }"
+          :styles="{ content: { color: '#52c41a', fontSize: '24px' } }"
         >
           <template #prefix>
             <ApiOutlined />
@@ -71,7 +71,7 @@ const maxRPS = computed(() => {
         <AStatistic
           :value="requestsPerConnection"
           :precision="2"
-          :value-style="{ color: '#3a7f99', fontSize: '24px' }"
+          :styles="{ content: { color: '#3a7f99', fontSize: '24px' } }"
         >
           <template #title>
             {{ $gettext('Requests Per Connection') }}
@@ -93,7 +93,7 @@ const maxRPS = computed(() => {
         <AStatistic
           :title="$gettext('Total Nginx Processes')"
           :value="nginxInfo.workers + nginxInfo.master + nginxInfo.cache + nginxInfo.other"
-          :value-style="{ color: '#722ed1', fontSize: '24px' }"
+          :styles="{ content: { color: '#722ed1', fontSize: '24px' } }"
         >
           <template #prefix>
             <CloudServerOutlined />

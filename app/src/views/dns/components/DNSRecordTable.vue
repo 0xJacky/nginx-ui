@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { TableColumnsType } from 'ant-design-vue'
+import type { TableColumnsType } from 'antdv-next'
+import type { AnyObject } from 'antdv-next/dist/_util/type'
 import type { DNSRecord, DNSRecordLine } from '@/api/dns'
 import { computed, ref, watch } from 'vue'
 
@@ -233,7 +234,7 @@ defineExpose({ resetPagination })
     :expanded-row-keys="expandedRowKeys"
     :row-expandable="isGroupExpandable"
     @change="handleTableChange"
-    @expand="handleExpand"
+    @expand="(expanded: boolean, record: AnyObject) => handleExpand(expanded, record as DNSRecordGroup)"
   >
     <template #bodyCell="{ column, record }">
       <template v-if="column.key === 'names'">

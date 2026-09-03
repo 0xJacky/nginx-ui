@@ -140,11 +140,11 @@ const steps = computed(() => {
   return [
     {
       title: $gettext('System Check'),
-      description: $gettext('Verify system requirements'),
+      content: $gettext('Verify system requirements'),
     },
     {
       title: $gettext('Installation'),
-      description: $gettext('Setup your Nginx UI'),
+      content: $gettext('Setup your Nginx UI'),
     },
   ]
 })
@@ -164,7 +164,7 @@ const steps = computed(() => {
               show-icon
               type="info"
               class="mb-4"
-              :message="isFrontendDebugMode
+              :title="isFrontendDebugMode
                 ? $gettext('Frontend debug mode is active. Enter the debug secret to unlock the mock installation flow without sending backend requests.')
                 : $gettext('Enter the one-time install secret shown by the install script or found in the config directory hidden file to unlock setup.')"
             />
@@ -188,22 +188,16 @@ const steps = computed(() => {
               type="error"
               show-icon
               class="mt-4"
-              :message="debugAccessError || accessError"
+              :title="debugAccessError || accessError"
             />
           </div>
 
           <template v-else>
             <ASteps
               :current="step - 1"
+              :items="steps"
               class="mb-6"
-            >
-              <AStep
-                v-for="(item, index) in steps"
-                :key="index"
-                :title="item.title"
-                :description="item.description"
-              />
-            </ASteps>
+            />
 
             <div v-if="step === 1">
               <SelfCheck class="mb-4" setup-auth :install-secret="installSecret" :frontend-debug="isFrontendDebugMode" />
@@ -215,25 +209,33 @@ const steps = computed(() => {
                   v-else
                   type="error"
                   class="mt-4"
-                  :message="blockedMessage"
+                  :title="blockedMessage"
                   show-icon
                 />
               </div>
             </div>
 
-            <ATabs v-if="step === 2" v-model:active-key="activeTab" class="max-w-400px mx-auto">
-              <ATabPane key="1" :tab="$gettext('New Installation')">
-                <InstallForm :install-secret="installSecret" :frontend-debug="isFrontendDebugMode" />
-              </ATabPane>
-              <ATabPane key="2" :tab="$gettext('Restore from Backup')">
+            <ATabs
+              v-if="step === 2"
+              v-model:active-key="activeTab"
+              centered
+              :items="[
+                { key: '1', label: $gettext('New Installation') },
+                { key: '2', label: $gettext('Restore from Backup') },
+              ]"
+              class="max-w-400px mx-auto"
+            >
+              <template #contentRender="{ item }">
+                <InstallForm v-if="item.key === '1'" :install-secret="installSecret" :frontend-debug="isFrontendDebugMode" />
                 <SystemRestoreContent
+                  v-else
                   :install-secret="installSecret"
                   setup-auth
                   :frontend-debug="isFrontendDebugMode"
                   :show-title="false"
                   @restore-success="handleRestoreSuccess"
                 />
-              </ATabPane>
+              </template>
             </ATabs>
           </template>
         </div>
@@ -247,10 +249,6 @@ const steps = computed(() => {
 <style lang="less" scoped>
 .ant-layout-content {
   background: #fff;
-}
-
-:deep(.ant-tabs-nav-wrap) {
-  justify-content: center;
 }
 
 .dark .ant-layout-content {

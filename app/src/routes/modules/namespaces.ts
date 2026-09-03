@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { StarOutlined } from '@ant-design/icons-vue'
+import { StarOutlined } from '@antdv-next/icons'
 
 export const namespacesRoutes: RouteRecordRaw[] = [
   {

@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import type { Template } from '@/api/template'
-import { SearchOutlined } from '@ant-design/icons-vue'
+import { SearchOutlined } from '@antdv-next/icons'
 import { storeToRefs } from 'pinia'
 import template from '@/api/template'
 import CodeEditor from '@/components/CodeEditor'
+import { List, ListItem, ListItemMeta } from '@/components/List'
 import { DirectiveEditor, LocationEditor, useNgxConfigStore } from '@/components/NgxConfigEditor'
 import { useSettingsStore } from '@/pinia'
 import { useConfigTemplateStore } from './store'
@@ -85,10 +86,10 @@ async function add() {
       </AInput>
     </div>
     <div class="config-list-wrapper">
-      <AList :data-source="filteredBlocks">
+      <List :data-source="filteredBlocks">
         <template #renderItem="{ item }">
-          <AListItem>
-            <AListItemMeta
+          <ListItem>
+            <ListItemMeta
               :title="item.name"
             >
               <template #description>
@@ -99,8 +100,8 @@ async function add() {
                   {{ $gettext('Description') }}: {{ transDescription(item) }}
                 </p>
               </template>
-            </AListItemMeta>
-            <template #extra>
+            </ListItemMeta>
+            <template #actions>
               <AButton
                 type="link"
                 @click="view(item.filename)"
@@ -108,9 +109,9 @@ async function add() {
                 {{ $gettext('View') }}
               </AButton>
             </template>
-          </AListItem>
+          </ListItem>
         </template>
-      </AList>
+      </List>
     </div>
     <AModal
       v-model:open="visible"
@@ -147,11 +148,11 @@ async function add() {
 </template>
 
 <style lang="less" scoped>
-:deep(.ant-list-item) {
+:deep(.nui-list-item) {
   padding: 12px;
 }
 
-:deep(.ant-list-item:first-child) {
+:deep(.nui-list-item:first-child) {
   padding-top: 0;
 }
 </style>

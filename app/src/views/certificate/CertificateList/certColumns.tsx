@@ -1,7 +1,7 @@
 import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
 import type { JSXElements } from '@/types'
 import { datetimeRender } from '@uozi-admin/curd'
-import { Badge, Tag, Tooltip } from 'ant-design-vue'
+import { Badge, Tag, Tooltip } from 'antdv-next'
 import dayjs from 'dayjs'
 import { AutoCertState, formatPrivateKeyType } from '@/constants'
 
@@ -31,28 +31,28 @@ const columns: StdTableColumn[] = [{
     const selfSigned = $gettext('Self-signed Certificate')
     if (text === true || text === AutoCertState.Enable) {
       template.push(
-        <Tag bordered={false} color="processing">
+        <Tag variant="filled" color="processing">
           {managed}
         </Tag>,
       )
     }
     else if (text === AutoCertState.Sync) {
       template.push(
-        <Tag bordered={false} color="success">
+        <Tag variant="filled" color="success">
           {sync}
         </Tag>,
       )
     }
     else if (text === AutoCertState.SelfSigned) {
       template.push(
-        <Tag bordered={false} color="cyan">
+        <Tag variant="filled" color="cyan">
           {selfSigned}
         </Tag>,
       )
     }
     else {
       template.push(
-        <Tag bordered={false} color="purple">
+        <Tag variant="filled" color="purple">
           {general}
         </Tag>,
       )

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { SiteInfo } from '@/api/site_navigation'
-import { GlobalOutlined } from '@ant-design/icons-vue'
+import { GlobalOutlined } from '@antdv-next/icons'
 import VueDraggable from 'vuedraggable'
 import { siteNavigationApi } from '@/api/site_navigation'
 import { useWebSocket } from '@/lib/websocket'

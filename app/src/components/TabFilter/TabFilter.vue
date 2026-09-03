@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import type { Key } from 'ant-design-vue/es/_util/type'
 import { storeToRefs } from 'pinia'
 import { useSettingsStore } from '@/pinia'
+
+type Key = string | number
 
 export interface TabOption {
   key: string
@@ -36,6 +37,15 @@ const { theme } = storeToRefs(settings)
 
 const isDarkMode = computed(() => theme.value === 'dark')
 
+const tabItems = computed(() => props.options.map(option => ({
+  ...option,
+  icon: undefined,
+  tabOption: {
+    ...option,
+    icon: option.icon ? markRaw(option.icon) : undefined,
+  },
+})))
+
 const currentActiveKey = computed({
   get: () => props.activeKey,
   set: value => emit('update:activeKey', value),
@@ -53,34 +63,32 @@ function handleTabChange(key: Key) {
     :active-key="currentActiveKey"
     class="tab-filter mb-4" :class="[{ 'tab-filter-dark': isDarkMode }]"
     :size="size"
+    :items="tabItems"
     @change="handleTabChange"
   >
     <template #rightExtra>
       <slot name="rightExtra" />
     </template>
 
-    <ATabPane
-      v-for="option in options"
-      :key="option.key"
-      :disabled="option.disabled"
-    >
-      <template #tab>
-        <div
-          class="tab-content flex items-center gap-1.5"
-          :style="{ color: option.color || '#1890ff' }"
+    <template #labelRender="{ item }">
+      <div
+        class="tab-content flex items-center gap-1.5"
+        :style="{ color: item.color || '#1890ff' }"
+      >
+        <span
+          v-if="item.tabOption.icon"
+          class="tab-icon-wrapper flex items-center text-base"
         >
-          <span
-            v-if="option.icon"
-            class="tab-icon-wrapper flex items-center text-base"
-          >
-            <component :is="option.icon" />
-          </span>
-          <span class="tab-label font-medium">{{ option.label }}</span>
-          <ABadge
-            v-if="counts && counts[option.key] !== undefined && counts[option.key] > 0"
-            :count="counts[option.key]"
-            :number-style="{
-              backgroundColor: option.color || '#1890ff',
+          <component :is="item.tabOption.icon" />
+        </span>
+        <span class="tab-label font-medium">{{ item.label }}</span>
+        <ABadge
+          v-if="counts && counts[item.key] !== undefined && counts[item.key] > 0"
+          :count="counts[item.key]"
+          size="small"
+          :styles="{
+            indicator: {
+              backgroundColor: item.color || '#1890ff',
               fontSize: '10px',
               height: '16px',
               lineHeight: '16px',
@@ -88,15 +96,18 @@ function handleTabChange(key: Key) {
               marginLeft: '6px',
               color: '#ffffff',
               border: 'none',
-            }"
-          />
-        </div>
-      </template>
+            },
+          }"
+        />
+      </div>
+    </template>
+
+    <template #contentRender="{ item }">
       <slot
-        :name="`content-${option.key}`"
-        :option="option"
+        :name="`content-${item.key}`"
+        :option="item.tabOption"
       />
-    </ATabPane>
+    </template>
   </ATabs>
 </template>
 

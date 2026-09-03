@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { SelectProps } from 'antdv-next'
 import type { SelfSignedCertPayload } from '@/api/cert'
 import NodeSelector from '@/components/NodeSelector'
 import StringListInput from '@/components/StringListInput'
@@ -10,6 +11,11 @@ const props = defineProps<{
 }>()
 
 const data = defineModel<SelfSignedCertPayload>({ required: true })
+
+const privateKeyTypeOptions: SelectProps['options'] = PrivateKeyTypeList.map(t => ({
+  label: t.name,
+  value: t.key,
+}))
 </script>
 
 <template>
@@ -22,7 +28,7 @@ const data = defineModel<SelfSignedCertPayload>({ required: true })
       class="mb-4"
       type="info"
       show-icon
-      :message="$gettext('Nginx UI will automatically renew this certificate as it approaches expiration, based on the global certificate renewal interval and this certificate\'s validity period.')"
+      :title="$gettext('Nginx UI will automatically renew this certificate as it approaches expiration, based on the global certificate renewal interval and this certificate\'s validity period.')"
     />
     <AFormItem
       :label="$gettext('Name')"
@@ -51,15 +57,8 @@ const data = defineModel<SelfSignedCertPayload>({ required: true })
       <ASelect
         v-model:value="data.key_type"
         :disabled="props.isKeyTypeReadonly"
-      >
-        <ASelectOption
-          v-for="t in PrivateKeyTypeList"
-          :key="t.key"
-          :value="t.key"
-        >
-          {{ t.name }}
-        </ASelectOption>
-      </ASelect>
+        :options="privateKeyTypeOptions"
+      />
     </AFormItem>
     <AFormItem :label="$gettext('Valid For (days)')">
       <AInputNumber

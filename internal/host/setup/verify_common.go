@@ -1,0 +1,121 @@
+package setup
+
+import (
+	"context"
+	"strings"
+
+	"github.com/0xJacky/Nginx-UI/settings"
+)
+
+const (
+	remediationAddBindMount                  = "add_bind_mount"
+	remediationAddMissingSudoersEntries      = "add_missing_sudoers_entries"
+	remediationCheckHostAddress              = "check_host_address"
+	remediationCheckHostAddressOutsideDocker = "check_host_address_outside_docker"
+	remediationCheckSSHConnection            = "check_ssh_connection"
+	remediationCheckSystemdUnit              = "check_systemd_unit"
+	remediationConfirmHomebrewServiceOwner   = "confirm_homebrew_service_owner"
+	remediationConfirmHostNginxDirectory     = "confirm_host_nginx_directory"
+	remediationConfirmMacOSHostAlias         = "confirm_macos_host_alias"
+	remediationConfirmUname                  = "confirm_uname"
+	remediationCorrectParameters             = "correct_parameters"
+	remediationFixNginxConfig                = "fix_nginx_config"
+	remediationInspectSudoPermissions        = "inspect_sudo_permissions"
+	remediationInspectSystemdUnit            = "inspect_systemd_unit"
+	remediationMountNginxLogs                = "mount_nginx_logs"
+	remediationMountPIDDirectory             = "mount_pid_directory"
+	remediationPersistKnownHosts             = "persist_known_hosts"
+	remediationReplaceBindMount              = "replace_bind_mount"
+	remediationRestartWithoutExecReload      = "restart_without_exec_reload"
+	remediationReviewCrossHostGuide          = "review_cross_host_guide"
+	remediationReviewInstallPermissions      = "review_install_permissions"
+	remediationReviewSudoersRules            = "review_sudoers_rules"
+	remediationSelectServiceManager          = "select_service_manager"
+	remediationStartHomebrewNginx            = "start_homebrew_nginx"
+	remediationUseClusterNode                = "use_cluster_node"
+	remediationUseDockerHostAlias            = "use_docker_host_alias"
+	remediationUseMacOSHostAlias             = "use_macos_host_alias"
+	remediationVerifyBindMount               = "verify_bind_mount"
+)
+
+// StepRemediation identifies a translatable UI message and its interpolation
+// values without coupling the backend to a display language.
+type StepRemediation struct {
+	Code   string            `json:"code"`
+	Params map[string]string `json:"params"`
+}
+
+func newStepRemediation(code string, params ...map[string]string) *StepRemediation {
+	values := map[string]string{}
+	if len(params) > 0 {
+		values = params[0]
+	}
+	return &StepRemediation{Code: code, Params: values}
+}
+
+// StepOutcome is a single check result. Detail is raw evidence, while
+// Remediation is a language-neutral message contract rendered by the UI.
+type StepOutcome struct {
+	OK          bool             `json:"ok"`
+	Level       string           `json:"level,omitempty"`
+	Detail      string           `json:"detail"`
+	Remediation *StepRemediation `json:"remediation,omitempty"`
+}
+
+// VerifyResult aggregates all step outcomes.
+type VerifyResult struct {
+	Steps map[string]StepOutcome `json:"steps"`
+}
+
+// VerifyOptions narrows the input to what verify actually needs.
+type VerifyOptions struct {
+	Client     CommandRunner
+	Params     SetupParams
+	SkipNginxT bool
+	// Groups limits the pipeline to the listed check groups. Empty runs all.
+	Groups []CheckGroup
+}
+
+// CommandRunner is the part of the SSH client the verify pipeline uses.
+// Depending on the interface rather than the concrete client lets the checks
+// be exercised without a live host.
+type CommandRunner interface {
+	Exec(ctx context.Context, name string, args ...string) (string, error)
+}
+
+// persistedDataDir is the container directory operators are expected to mount
+// as a volume, so files under it survive container rebuilds.
+const persistedDataDir = "/etc/nginx-ui/"
+
+// IsPersistedDataPath reports whether path lives under the recommended
+// persisted data directory.
+func IsPersistedDataPath(path string) bool {
+	return strings.HasPrefix(path, persistedDataDir)
+}
+
+func checkKnownHostsPersistence(path string) StepOutcome {
+	if path == "" {
+		path = settings.DefaultHostKnownHostsPath
+	}
+	if IsPersistedDataPath(path) {
+		return StepOutcome{OK: true, Level: "success", Detail: path + " is under the recommended persisted data directory"}
+	}
+	return StepOutcome{
+		OK:          false,
+		Level:       "warning",
+		Detail:      path + " is outside the recommended /etc/nginx-ui data directory",
+		Remediation: newStepRemediation(remediationPersistKnownHosts),
+	}
+}
+
+// findMissingSudoEntries reports which required sudoers entries are absent from
+// the `sudo -l` output. It has no syscalls, so it is shared by every platform.
+func findMissingSudoEntries(sudoListOutput string, required []string) []string {
+	var missing []string
+	for _, req := range required {
+		if !strings.Contains(sudoListOutput, req) {
+			missing = append(missing, req)
+		}
+	}
+	return missing
+}

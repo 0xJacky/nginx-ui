@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { MoreOutlined, PlusOutlined } from '@ant-design/icons-vue'
-import { Modal } from 'ant-design-vue'
+import { MoreOutlined, PlusOutlined } from '@antdv-next/icons'
+import { Modal } from 'antdv-next'
 import { DirectiveEditor, useNgxConfigStore } from '.'
 
 const [modal, ContextHolder] = Modal.useModal()
@@ -8,7 +8,13 @@ const [modal, ContextHolder] = Modal.useModal()
 const ngxConfigStore = useNgxConfigStore()
 const { ngxConfig } = storeToRefs(ngxConfigStore)
 
-const currentUpstreamIdx = ref(0)
+const currentUpstreamIdx = ref('0')
+
+const upstreamTabItems = computed(() => ngxConfig.value.upstreams?.map((upstream, index) => ({
+  key: String(index),
+  label: `Upstream ${upstream.name}`,
+  upstream,
+})) ?? [])
 
 async function addUpstream() {
   if (!ngxConfig.value.upstreams)
@@ -32,9 +38,24 @@ function removeUpstream(index: number) {
     cancelText: $gettext('Cancel'),
     onOk() {
       ngxConfig.value.upstreams?.splice(index, 1)
-      currentUpstreamIdx.value = (index > 1 ? index - 1 : 0)
+      currentUpstreamIdx.value = String(index > 1 ? index - 1 : 0)
     },
   })
+}
+
+function getUpstreamMenuItems(index: number) {
+  return [
+    {
+      key: 'rename',
+      label: $gettext('Rename'),
+      onClick: () => rename(index),
+    },
+    {
+      key: 'delete',
+      label: $gettext('Delete'),
+      onClick: () => removeUpstream(index),
+    },
+  ]
 }
 
 const open = ref(false)
@@ -60,32 +81,23 @@ function renameOK() {
     <ATabs
       v-if="ngxConfig.upstreams && ngxConfig.upstreams.length > 0"
       v-model:active-key="currentUpstreamIdx"
+      :items="upstreamTabItems"
     >
-      <ATabPane
-        v-for="(v, k) in ngxConfig.upstreams"
-        :key="k"
-      >
-        <template #tab>
-          Upstream {{ v.name }}
-          <ADropdown>
-            <MoreOutlined />
-            <template #overlay>
-              <AMenu>
-                <AMenuItem>
-                  <a @click="rename(k)">{{ $gettext('Rename') }}</a>
-                </AMenuItem>
-                <AMenuItem>
-                  <a @click="removeUpstream(k)">{{ $gettext('Delete') }}</a>
-                </AMenuItem>
-              </AMenu>
-            </template>
-          </ADropdown>
-        </template>
+      <template #labelRender="{ item, index }">
+        Upstream {{ item.upstream.name }}
+        <ADropdown>
+          <MoreOutlined />
+          <template #popupRender>
+            <AMenu :items="getUpstreamMenuItems(index)" />
+          </template>
+        </ADropdown>
+      </template>
 
+      <template #contentRender="{ item }">
         <div class="tab-content">
-          <DirectiveEditor v-model:directives="v.directives" />
+          <DirectiveEditor v-model:directives="item.upstream.directives" />
         </div>
-      </ATabPane>
+      </template>
 
       <template #rightExtra>
         <AButton

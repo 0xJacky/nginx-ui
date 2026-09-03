@@ -80,7 +80,7 @@ func (ps *Preflight) CheckLogPreflight(logPath string) (*PreflightResponse, erro
 			}, nil
 		}
 
-		if stat, err := os.Stat(logPath); os.IsNotExist(err) {
+		if stat, err := nginx.Stat(logPath); os.IsNotExist(err) {
 			// File doesn't exist - check for historical data
 			return ps.handleMissingFile(logPath, searcherService)
 		} else if err != nil {

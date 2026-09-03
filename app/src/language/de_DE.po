@@ -171,6 +171,14 @@ msgstr ""
 "Wenn Ihre Domain CNAME-Einträge enthält und Sie keine Zertifikate erhalten "
 "können,"
 
+#: src/components/AutoCertForm/AutoCertForm.vue:231
+msgid "Disable Authoritative DNS Propagation Check"
+msgstr ""
+
+#: src/components/AutoCertForm/AutoCertForm.vue:235
+msgid "Skip local DNS propagation checks and wait 60 seconds before asking "
+msgstr ""
+
 #: src/components/AutoCertForm/AutoCertForm.vue:229
 msgid "Enable Common Name"
 msgstr "Allgemeinen Namen aktivieren"
@@ -1188,6 +1196,30 @@ msgid "This is a test message sent at %{timestamp} from Nginx UI."
 msgstr ""
 "Dies ist eine Testnachricht, die mit %{Timestamp} von Nginx UI gesendet "
 "wurde."
+
+#: src/components/Notification/notifications.ts:113
+msgid "Certificate Paths Migrated"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:114
+msgid "Automatically migrated certificate paths for %{sites} sites"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:117
+msgid "Certificate Configuration Mismatch"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:118
+msgid "Site %{site} is not using the certificate path managed by Nginx UI"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:121
+msgid "Certificate Path Migration Failed"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:122
+msgid "Automatic certificate path migration failed for site %{site}: %{error}"
+msgstr ""
 
 #: src/components/Notification/notifications.ts:113
 #: src/language/constants.ts:50
@@ -4175,6 +4207,10 @@ msgstr "Knoten"
 msgid "Preference"
 msgstr "Einstellungen"
 
+#: src/routes/modules/preference.ts:19
+msgid "Host SSH Setup"
+msgstr "Host-SSH-Einrichtung"
+
 #: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:158
 msgid "Manage Sites"
 msgstr "Verwalte Seiten"
@@ -4762,6 +4798,22 @@ msgstr "Ausstellen..."
 #: src/views/certificate/CertificateList/certColumns.tsx:83
 msgid "Issuance failed"
 msgstr "Ausstellung fehlgeschlagen"
+
+#: src/views/certificate/CertificateList/certColumns.tsx:93
+msgid "Automatic migration pending"
+msgstr ""
+
+#: src/views/certificate/CertificateList/certColumns.tsx:94
+msgid "Configuration mismatch"
+msgstr ""
+
+#: src/views/certificate/CertificateList/certColumns.tsx:97
+msgid "Configured path: %{configured}; managed path: %{managed}"
+msgstr ""
+
+#: src/views/certificate/CertificateList/certColumns.tsx:111
+msgid "Unable to verify deployment"
+msgstr ""
 
 #: src/views/certificate/CertificateList/certColumns.tsx:107
 #: src/views/certificate/CertificateList/Certificate.vue:62
@@ -6550,6 +6602,14 @@ msgstr "DDNS-Übersicht"
 msgid "Search domain, provider or target"
 msgstr "Suche nach Domain, Anbieter oder Ziel"
 
+#: src/views/dns/DDNSManager.vue:333
+msgid "DDNS updates records within a DNS zone"
+msgstr ""
+
+#: src/views/dns/DDNSManager.vue:334
+msgid "Configure a zone, then select the A/AAAA records to update. For ddns.example.com, select the ddns record under example.com."
+msgstr ""
+
 #: src/views/dns/DDNSManager.vue:346
 msgid "Configure"
 msgstr "Konfigurieren"
@@ -6586,6 +6646,14 @@ msgstr ""
 "Datensätze, deren IP-Familie nicht erreichbar ist. Deaktivieren Sie die "
 "Option, um nur die explizit ausgewählten Datensätze zu verwalten und den "
 "gesamten anderen DNS-Zustand unverändert zu lassen."
+
+#: src/views/dns/DDNSManager.vue:428
+msgid "Records to update"
+msgstr ""
+
+#: src/views/dns/DDNSManager.vue:435
+msgid "Select A/AAAA records to update"
+msgstr ""
 
 #: src/views/dns/DDNSManager.vue:400
 msgid "Records"
@@ -6647,6 +6715,14 @@ msgstr ""
 "Erstellen Sie für die ACME DNS-01-Zertifikatsausstellung DNS-Zugangsdaten "
 "unter DNS > Zugangsdaten und wählen Sie diese in den "
 "Zertifikatseinstellungen aus."
+
+#: src/views/dns/DNSDomainList.vue:128
+msgid "DNS Zone"
+msgstr ""
+
+#: src/views/dns/DNSDomainList.vue:134
+msgid "Enter the zone managed by your DNS provider, such as example.com. Add subdomains such as ddns.example.com later as DNS records."
+msgstr ""
 
 #: src/views/dns/DNSDomainList.vue:267
 msgid "Manage Records"
@@ -8171,6 +8247,126 @@ msgstr "Ungepaart"
 msgid "Revoked"
 msgstr "Widerrufen"
 
+#: src/views/node/NodeAuthStatus.vue:46
+msgid "Upgrading"
+msgstr ""
+
+#: src/views/node/NodeAuthStatus.vue:48
+msgid "Waiting for target"
+msgstr ""
+
+#: src/views/node/NodeAuthStatus.vue:50
+msgid "Upgrade failed"
+msgstr ""
+
+#: src/views/node/NodeAuthStatus.vue:52
+msgid "Upgrade paused"
+msgstr ""
+
+#: src/views/node/NodeAuthStatus.vue:54
+msgid "Upgrade pending"
+msgstr ""
+
+#: src/views/node/NodeAuthStatus.vue:61
+msgid "Authentication upgrade in progress"
+msgstr ""
+
+#: src/views/node/NodeAuthStatus.vue:63
+msgid "Waiting for target node upgrade"
+msgstr ""
+
+#: src/views/node/NodeAuthStatus.vue:65
+msgid "Authentication upgrade failed"
+msgstr ""
+
+#: src/views/node/NodeAuthStatus.vue:67
+msgid "Authentication upgrade paused"
+msgstr ""
+
+#: src/views/node/NodeAuthStatus.vue:69
+msgid "Authentication upgrade pending"
+msgstr ""
+
+#: src/views/node/NodeAuthStatus.vue:78
+msgid "The target node did not respond before the authentication upgrade timed out."
+msgstr ""
+
+#: src/views/node/NodeAuthStatus.vue:80
+msgid "The target node could not be reached. Check the node URL, network, and TLS settings."
+msgstr ""
+
+#: src/views/node/NodeAuthStatus.vue:82
+msgid "The target node rejected the saved Node Secret. Check and save the correct secret before retrying."
+msgstr ""
+
+#: src/views/node/NodeAuthStatus.vue:84
+msgid "The target node rejected the authentication upgrade request. Check the target node logs before retrying."
+msgstr ""
+
+#: src/views/node/NodeAuthStatus.vue:86
+msgid "The target node returned an invalid pairing response."
+msgstr ""
+
+#: src/views/node/NodeAuthStatus.vue:88
+msgid "The target returned an invalid upgrade confirmation. Nginx UI stopped before accepting the new credential."
+msgstr ""
+
+#: src/views/node/NodeAuthStatus.vue:90
+msgid "The paired credential could not be saved on this Nginx UI instance."
+msgstr ""
+
+#: src/views/node/NodeAuthStatus.vue:92
+msgid "The saved legacy Node Secret is unavailable. Save the Node Secret again before retrying."
+msgstr ""
+
+#: src/views/node/NodeAuthStatus.vue:94
+msgid "The authentication upgrade failed because of an internal error."
+msgstr ""
+
+#: src/views/node/NodeAuthStatus.vue:101
+msgid "The node is still connected with the legacy secret while Nginx UI switches this relationship to paired signatures."
+msgstr ""
+
+#: src/views/node/NodeAuthStatus.vue:103
+msgid "The target node does not support paired signatures yet. Upgrade the target node and Nginx UI will retry automatically."
+msgstr ""
+
+#: src/views/node/NodeAuthStatus.vue:107
+msgid "Enable the node to resume the authentication upgrade. The saved relationship has not been changed."
+msgstr ""
+
+#: src/views/node/NodeAuthStatus.vue:109
+msgid "The legacy secret is saved and the authentication upgrade is queued. The current node connection remains available."
+msgstr ""
+
+#: src/views/node/NodeAuthStatus.vue:114
+msgid "Legacy connection ready"
+msgstr ""
+
+#: src/views/node/NodeAuthStatus.vue:115
+msgid "Request paired credential"
+msgstr ""
+
+#: src/views/node/NodeAuthStatus.vue:116
+msgid "Verify target confirmation"
+msgstr ""
+
+#: src/views/node/NodeAuthStatus.vue:117
+msgid "Save and switch authentication"
+msgstr ""
+
+#: src/views/node/NodeAuthStatus.vue:148
+msgid "Authentication upgrade queued"
+msgstr ""
+
+#: src/views/node/NodeAuthStatus.vue:196
+msgid "Last attempt"
+msgstr ""
+
+#: src/views/node/NodeAuthStatus.vue:204
+msgid "Automatic retry after"
+msgstr ""
+
 #: src/views/node/nodeColumns.tsx:24
 msgid "Check the node URL, network, TLS certificate, and authentication settings."
 msgstr ""
@@ -8181,6 +8377,10 @@ msgstr ""
 #: src/views/node/nodeColumns.tsx:58
 msgid "Technical details"
 msgstr "Technische Details"
+
+#: src/views/node/NodeAuthStatus.vue:237
+msgid "Retry authentication upgrade"
+msgstr ""
 
 #: src/views/node/nodeColumns.tsx:41
 msgid ""
@@ -8612,6 +8812,10 @@ msgstr "Bitte wählen Sie einen Benachrichtigungstyp aus"
 msgid "Test message sent successfully"
 msgstr "Testnachricht erfolgreich gesendet"
 
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:74
+msgid "HTML Template (Optional)"
+msgstr ""
+
 #: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:78
 msgid "Send test message"
 msgstr "Testnachricht senden"
@@ -9012,6 +9216,10 @@ msgstr "Github-Proxy"
 msgid "For Chinese user: https://cloud.nginxui.com/"
 msgstr "Für chinesische Benutzer: https://cloud.nginxui.com/"
 
+#: src/views/preference/tabs/HTTPSettings.vue:23
+msgid "HTTP Proxy"
+msgstr ""
+
 #: src/views/preference/tabs/HTTPSettings.vue:22
 msgid "Insecure Skip Verify"
 msgstr "Unsicheres Überspringen der Überprüfung"
@@ -9043,6 +9251,10 @@ msgstr "maintenance.html"
 #: src/views/preference/tabs/NginxSettings.vue:19
 msgid "Mounted directory"
 msgstr "Eingebundenes Verzeichnis"
+
+#: src/views/preference/tabs/NginxSettings.vue:181
+msgid "The file named <site name>.<filename> is used first; if it does not exist, the generic <filename> is used; if neither exists, the built-in Nginx UI maintenance page is used."
+msgstr ""
 
 #: src/views/preference/tabs/NginxSettings.vue:22
 msgid "Nginx Access Log Path"
@@ -9084,9 +9296,38 @@ msgstr "Beffehl zum Neustarten von Nginx"
 msgid "Nginx Control Mode"
 msgstr "Nginx-Steuerungsmodus"
 
+#: src/views/preference/tabs/NginxSettings.vue:220
+#: src/views/preference/tabs/NginxSettings.vue:269
+msgid "Host via SSH"
+msgstr "Host über SSH"
+
 #: src/views/preference/tabs/NginxSettings.vue:58
 msgid "External Docker Container"
 msgstr "Externer Docker-Container"
+
+#: src/views/preference/tabs/NginxSettings.vue:247
+msgid "High-performance mode is available"
+msgstr "Der Hochleistungsmodus ist verfügbar"
+
+#: src/views/preference/tabs/NginxSettings.vue:248
+msgid "Compatibility mode works entirely over SSH. For lower file-access latency, configure bind mounts and switch to high-performance mode after recreating the container."
+msgstr "Der Kompatibilitätsmodus arbeitet vollständig über SSH. Für geringere Dateizugriffslatenz richten Sie Bind-Mounts ein und wechseln nach der Neuerstellung des Containers in den Hochleistungsmodus."
+
+#: src/views/preference/tabs/NginxSettings.vue:252
+msgid "Review high-performance setup"
+msgstr "Hochleistungseinrichtung prüfen"
+
+#: src/views/preference/tabs/NginxSettings.vue:263
+msgid "Local / Bundled"
+msgstr "Lokal / Mitgeliefert"
+
+#: src/views/preference/tabs/NginxSettings.vue:266
+msgid "External Container"
+msgstr "Externer Container"
+
+#: src/views/preference/tabs/NginxSettings.vue:275
+msgid "Open SSH setup wizard"
+msgstr "SSH-Einrichtungsassistenten öffnen"
 
 #: src/views/preference/tabs/NodeSettings.vue:14
 msgid "Instance ID"
@@ -9516,6 +9757,11 @@ msgstr "Keine DNS-Domänen verfügbar"
 msgid "Please add a DNS domain first in the DNS management section."
 msgstr "Bitte fügen Sie zuerst eine DNS-Domain im DNS-Verwaltungsbereich hinzu"
 
+#: src/views/site/site_add/SiteAdd.vue:70
+#: src/views/site/site_add/SiteAdd.vue:284
+msgid "Issue a certificate to enable TLS before continuing."
+msgstr ""
+
 #: src/views/site/site_add/SiteAdd.vue:151
 msgid "DNS record selected: %{name}"
 msgstr "DNS-Eintrag ausgewählt: %{name}"
@@ -9523,6 +9769,16 @@ msgstr "DNS-Eintrag ausgewählt: %{name}"
 #: src/views/site/site_add/SiteAdd.vue:159
 msgid "DNS record created and linked successfully"
 msgstr "DNS-Eintrag erfolgreich erstellt und verknüpft"
+
+#: src/views/site/site_add/SiteAdd.vue:217
+#: src/views/site/site_edit/components/QuickSetupModal.vue:76
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:112
+msgid "Quick Setup"
+msgstr ""
+
+#: src/views/site/site_add/SiteAdd.vue:218
+msgid "Advanced"
+msgstr ""
 
 #: src/views/site/site_add/SiteAdd.vue:183
 msgid "Base information"
@@ -9535,6 +9791,54 @@ msgstr "SSL konfigurieren"
 #: src/views/site/site_add/SiteAdd.vue:190
 msgid "Configuration Name"
 msgstr "Konf"
+
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:35
+msgid "Reverse Proxy"
+msgstr ""
+
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:38
+msgid "Static Site"
+msgstr ""
+
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:41
+msgid "Redirect"
+msgstr ""
+
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:52
+msgid "example.com www.example.com"
+msgstr ""
+
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:57
+msgid "Scheme"
+msgstr ""
+
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:63
+msgid "HTTPS"
+msgstr ""
+
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:82
+msgid "Enable WebSocket"
+msgstr ""
+
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:93
+msgid "Web Root"
+msgstr ""
+
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:102
+msgid "Index"
+msgstr ""
+
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:106
+msgid "Single Page Application Fallback"
+msgstr ""
+
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:113
+msgid "Target URL"
+msgstr ""
+
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:122
+msgid "Status Code"
+msgstr ""
 
 #: src/views/site/site_add/SiteAdd.vue:200
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:491
@@ -9627,6 +9931,11 @@ msgstr "Hole das Zertifikat, bitte warten..."
 msgid "Fail to obtain certificate"
 msgstr "Zertifikat konnte nicht abgerufen werden"
 
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:113
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:117
+msgid "Certificate issuance connection closed before completion."
+msgstr ""
+
 #: src/views/site/site_edit/components/Cert/SelfSignedCert.vue:31
 msgid "Save the site configuration now?"
 msgstr "Die Seitenkonfiguration jetzt speichern?"
@@ -9676,9 +9985,37 @@ msgstr "Vorlagen suchen"
 msgid "Author"
 msgstr "Autor"
 
+#: src/views/site/site_edit/components/QuickSetupModal.vue:52
+msgid "Replace configuration?"
+msgstr ""
+
+#: src/views/site/site_edit/components/QuickSetupModal.vue:53
+msgid "The generated configuration will replace the current one. Any custom directives or locations will be lost."
+msgstr ""
+
+#: src/views/site/site_edit/components/QuickSetupModal.vue:54
+msgid "Replace"
+msgstr ""
+
+#: src/views/site/site_edit/components/QuickSetupModal.vue:67
+msgid "Configuration regenerated"
+msgstr ""
+
+#: src/views/site/site_edit/components/QuickSetupModal.vue:86
+msgid "Issue a certificate to enable TLS before saving."
+msgstr ""
+
+#: src/views/site/site_edit/components/QuickSetupModal.vue:105
+msgid "Generate Config"
+msgstr ""
+
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:97
 msgid "Enable TLS"
 msgstr "Aktiviere TLS"
+
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:144
+msgid "Redirect HTTP to HTTPS"
+msgstr ""
 
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:42
 #: src/views/site/site_list/columns.tsx:91 src/views/stream/columns.tsx:58
@@ -9974,6 +10311,1038 @@ msgstr "Zuletzt überprüft am"
 msgid "Check again"
 msgstr "Erneut prüfen"
 
+#: src/views/preference/components/NginxHostSetup/CheckPanel.vue:74
+msgid "Run checks"
+msgstr "Prüfungen ausführen"
+
+#: src/views/preference/components/NginxHostSetup/CheckPanel.vue:87
+msgid "Could not run the checks"
+msgstr "Die Prüfungen konnten nicht ausgeführt werden"
+
+#: src/views/preference/components/NginxHostSetup/CheckResults.vue:20
+msgid "Some checks failed. Fix them before continuing."
+msgstr "Einige Prüfungen sind fehlgeschlagen. Beheben Sie sie, bevor Sie fortfahren."
+
+#: src/views/preference/components/NginxHostSetup/CheckResults.vue:34
+msgid "Blocking checks passed. Review the warnings below."
+msgstr "Blockierende Prüfungen bestanden. Prüfen Sie die Warnungen unten."
+
+#: src/views/preference/components/NginxHostSetup/CheckResults.vue:40
+msgid "All checks passed."
+msgstr "Alle Prüfungen bestanden."
+
+#: src/views/preference/components/NginxHostSetup/CheckResults.vue:63
+msgid "Suggested fix"
+msgstr "Lösungsvorschlag"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:18
+msgid "nginx config directory is the host directory"
+msgstr "Das nginx-Konfigurationsverzeichnis ist das Hostverzeichnis"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:19
+msgid "nginx config directory is writable"
+msgstr "nginx-Konfigurationsverzeichnis ist beschreibbar"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:20
+msgid "Host platform matches the service manager"
+msgstr "Host-Plattform passt zum Dienstmanager"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:21
+msgid "known_hosts is persisted"
+msgstr "known_hosts wird dauerhaft gespeichert"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:22
+msgid "launchd service is loaded"
+msgstr "launchd-Dienst ist geladen"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:23
+msgid "nginx log directory is readable"
+msgstr "nginx-Protokollverzeichnis ist lesbar"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:24
+msgid "nginx -t passes"
+msgstr "nginx -t erfolgreich"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:25
+msgid "nginx PID file is present"
+msgstr "nginx-PID-Datei ist vorhanden"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:26
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:286
+msgid "Host platform"
+msgstr "Host-Plattform"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:27
+msgid "Target is the container host"
+msgstr "Ziel ist der Container-Host"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:28
+msgid "SSH connection"
+msgstr "SSH-Verbindung"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:29
+msgid "Passwordless sudo is available"
+msgstr "Passwortloses sudo ist verfügbar"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:30
+msgid "sudoers rules cover the nginx commands"
+msgstr "sudoers-Regeln decken die nginx-Befehle ab"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:31
+msgid "systemd unit is active"
+msgstr "systemd-Unit ist aktiv"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:32
+msgid "systemd unit defines ExecReload"
+msgstr "systemd-Unit definiert ExecReload"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:36
+msgid "Add a bind mount: -v %{source}:%{target}"
+msgstr "Bind-Mount hinzufügen: -v %{source}:%{target}"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:40
+msgid "Append the missing entries to %{path} (see the Install step)."
+msgstr "Die fehlenden Einträge an %{path} anhängen (siehe Schritt „Installation“)."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:43
+msgid "Confirm that the address reaches the machine running nginx."
+msgstr "Prüfen Sie, ob die Adresse den Rechner erreicht, auf dem nginx ausgeführt wird."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:44
+msgid "This is expected on Docker Desktop. On other runtimes, confirm that the address reaches the machine running nginx."
+msgstr "Unter Docker Desktop ist dies zu erwarten. Prüfen Sie bei anderen Laufzeitumgebungen, ob die Adresse den Rechner erreicht, auf dem nginx ausgeführt wird."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:45
+msgid "Confirm that the SSH server is running, the user exists, and the key or password is correct."
+msgstr "Prüfen Sie, ob der SSH-Server läuft, der Benutzer existiert und Schlüssel oder Passwort korrekt sind."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:46
+msgid "Confirm that the systemd unit name matches the installation, such as nginx.service or openresty.service."
+msgstr "Prüfen Sie, ob der Name der systemd-Unit zur Installation passt, zum Beispiel nginx.service oder openresty.service."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:47
+msgid "Confirm that the configured SSH user owns the Homebrew service."
+msgstr "Prüfen Sie, ob der konfigurierte SSH-Benutzer Eigentümer des Homebrew-Dienstes ist."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:48
+msgid "Confirm that the configured nginx directory exists on the host."
+msgstr "Prüfen Sie, ob das konfigurierte nginx-Verzeichnis auf dem Host vorhanden ist."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:49
+msgid "Confirm that the container runtime provides host.docker.internal."
+msgstr "Prüfen Sie, ob die Container-Laufzeit host.docker.internal bereitstellt."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:50
+msgid "Confirm that /usr/bin/uname exists on the host."
+msgstr "Prüfen Sie, ob /usr/bin/uname auf dem Host vorhanden ist."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:51
+msgid "Correct the highlighted path or identifier, then run verification again."
+msgstr "Korrigieren Sie den markierten Pfad oder Bezeichner und führen Sie die Prüfung erneut aus."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:52
+msgid "Fix the nginx configuration error shown in the details."
+msgstr "Beheben Sie den in den Details angezeigten nginx-Konfigurationsfehler."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:53
+msgid "Run `sudo -l` on the host to inspect the configured permissions."
+msgstr "Führen Sie `sudo -l` auf dem Host aus, um die konfigurierten Berechtigungen zu prüfen."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:54
+msgid "Inspect the systemd unit file."
+msgstr "Prüfen Sie die systemd-Unit-Datei."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:55
+msgid "Bind-mount the host nginx log directory read-only at the configured container log path, and ensure the container can read it."
+msgstr "Binden Sie das nginx-Protokollverzeichnis des Hosts schreibgeschützt am konfigurierten Protokollpfad des Containers ein und stellen Sie sicher, dass der Container es lesen kann."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:56
+msgid "Bind-mount the host PID directory containing %{path} at the same container path."
+msgstr "Binden Sie das Host-PID-Verzeichnis mit %{path} am gleichen Pfad im Container ein."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:59
+msgid "Persist /etc/nginx-ui with a Docker named volume or bind mount so known_hosts survives container rebuilds."
+msgstr "Speichern Sie /etc/nginx-ui in einem benannten Docker-Volume oder Bind-Mount, damit known_hosts Container-Neuerstellungen übersteht."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:60
+msgid "Replace the mount with: -v %{source}:%{target}"
+msgstr "Mount ersetzen durch: -v %{source}:%{target}"
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:64
+msgid "Some packages omit ExecReload. Use `systemctl restart` instead."
+msgstr "Einige Pakete definieren kein ExecReload. Verwenden Sie stattdessen `systemctl restart`."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:65
+msgid "If this is a remote host, review the cluster Node cross-host guide."
+msgstr "Wenn dies ein Remote-Host ist, lesen Sie den Cluster-Node-Leitfaden für hostübergreifende Bereitstellungen."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:66
+msgid "Review the file permission commands in the Install step."
+msgstr "Prüfen Sie die Befehle für Dateiberechtigungen im Schritt „Installation“."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:67
+msgid "Review the sudoers rules shown in the Install step."
+msgstr "Prüfen Sie die im Schritt „Installation“ angezeigten sudoers-Regeln."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:68
+msgid "Select the service manager that matches the SSH host."
+msgstr "Wählen Sie den Dienstmanager aus, der zum SSH-Host passt."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:69
+msgid "Run `brew services start nginx` as the configured SSH user."
+msgstr "Führen Sie `brew services start nginx` als konfigurierter SSH-Benutzer aus."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:70
+msgid "Review the cluster Node cross-host guide for the correct deployment method."
+msgstr "Lesen Sie den Cluster-Node-Leitfaden für hostübergreifende Bereitstellungen, um die richtige Bereitstellungsmethode zu verwenden."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:71
+msgid "Use host.docker.internal when nginx runs on the Docker host."
+msgstr "Verwenden Sie host.docker.internal, wenn nginx auf dem Docker-Host läuft."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:72
+msgid "Use host.docker.internal when nginx runs on the macOS host."
+msgstr "Verwenden Sie host.docker.internal, wenn nginx auf dem macOS-Host läuft."
+
+#: src/views/preference/components/NginxHostSetup/checks.ts:73
+msgid "Verify the bind mount manually."
+msgstr "Prüfen Sie den Bind-Mount manuell."
+
+#: src/views/preference/components/NginxHostSetup/CodeBlock.vue:30
+msgid "Clipboard access is unavailable in this browser context"
+msgstr "Der Zugriff auf die Zwischenablage ist in diesem Browser-Kontext nicht verfügbar"
+
+#: src/views/preference/components/NginxHostSetup/PathField.vue:35
+msgid "Auto-detected"
+msgstr "Automatisch erkannt"
+
+#: src/views/preference/components/NginxHostSetup/PathField.vue:39
+msgid "Manual override"
+msgstr "Manuelle Überschreibung"
+
+#: src/views/preference/components/NginxHostSetup/PathField.vue:49
+msgid "Detected:"
+msgstr "Erkannt:"
+
+#: src/views/preference/components/NginxHostSetup/PathField.vue:56
+msgid "Restore detected value"
+msgstr "Erkannten Wert wiederherstellen"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:77
+msgid "Point Nginx UI at a private key that already exists inside the container."
+msgstr "Verweisen Sie Nginx UI auf einen privaten Schlüssel, der bereits im Container vorhanden ist."
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:79
+msgid "Paste or upload a private key. Nginx UI stores it at the managed path with mode 0600."
+msgstr "Fügen Sie einen privaten Schlüssel ein oder laden Sie ihn hoch. Nginx UI speichert ihn im verwalteten Pfad mit Modus 0600."
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:81
+msgid "Nginx UI generates an ed25519 keypair and stores it at the managed path."
+msgstr "Nginx UI erzeugt ein ed25519-Schlüsselpaar und speichert es im verwalteten Pfad."
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:99
+msgid "Private key path is required"
+msgstr "Der Pfad des privaten Schlüssels ist erforderlich"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:159
+msgid "Private key content is required"
+msgstr "Der Inhalt des privaten Schlüssels ist erforderlich"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:163
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:197
+msgid "Private key exceeds the 64 KiB limit"
+msgstr "Der private Schlüssel überschreitet das Limit von 64 KiB"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:182
+msgid "Private key saved securely"
+msgstr "Privater Schlüssel sicher gespeichert"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:224
+msgid "Use my own SSH key"
+msgstr "Eigenen SSH-Schlüssel verwenden"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:225
+msgid "Private key source"
+msgstr "Quelle des privaten Schlüssels"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:231
+msgid "Existing path"
+msgstr "Vorhandener Pfad"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:232
+msgid "Paste or upload"
+msgstr "Einfügen oder hochladen"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:247
+msgid "The private key must already be available inside the Nginx UI container."
+msgstr "Der private Schlüssel muss bereits im Nginx-UI-Container vorhanden sein."
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:248
+msgid "Encrypted private keys are not supported. You may provide the host-side source path below to include a read-only bind mount in the generated container instructions."
+msgstr "Verschlüsselte private Schlüssel werden nicht unterstützt. Sie können unten den Quellpfad auf der Host-Seite angeben, um einen schreibgeschützten Bind-Mount in die generierten Container-Anweisungen aufzunehmen."
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:256
+msgid "Saving will replace the Nginx UI managed SSH private key."
+msgstr "Beim Speichern wird der von Nginx UI verwaltete private SSH-Schlüssel ersetzt."
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:257
+msgid "Only unencrypted SSH private keys are accepted. The submitted content is cleared from the browser after it is stored with file mode 0600."
+msgstr "Es werden nur unverschlüsselte private SSH-Schlüssel akzeptiert. Der übermittelte Inhalt wird aus dem Browser gelöscht, nachdem er mit dem Dateimodus 0600 gespeichert wurde."
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:260
+msgid "Private key path inside container"
+msgstr "Pfad des privaten Schlüssels im Container"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:268
+msgid "Managed by Nginx UI. Switch to \"Existing path\" to use another location."
+msgstr "Von Nginx UI verwaltet. Wechseln Sie zu \\\"Vorhandener Pfad\\\", um einen anderen Ort zu verwenden."
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:273
+msgid "Private key content"
+msgstr "Inhalt des privaten Schlüssels"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:283
+msgid "Choose private key file"
+msgstr "Datei mit privatem Schlüssel wählen"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:297
+msgid "Private key path on Docker host (optional)"
+msgstr "Pfad des privaten Schlüssels auf dem Docker-Host (optional)"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:302
+msgid "Adds a read-only bind mount to the generated container instructions."
+msgstr "Fügt den generierten Container-Anweisungen einen schreibgeschützten Bind-Mount hinzu."
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:314
+msgid "Replace the stored private key with a new one?"
+msgstr "Den gespeicherten privaten Schlüssel durch einen neuen ersetzen?"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:315
+msgid "The current key stops working until the new public key is installed on the host."
+msgstr "Der aktuelle Schlüssel funktioniert nicht mehr, bis der neue öffentliche Schlüssel auf dem Host installiert ist."
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:316
+msgid "Regenerate"
+msgstr "Neu erzeugen"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:322
+msgid "Regenerate keypair"
+msgstr "Schlüsselpaar neu erzeugen"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:327
+msgid "Generate keypair"
+msgstr "Schlüsselpaar erzeugen"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:338
+msgid "Validate existing key"
+msgstr "Vorhandenen Schlüssel validieren"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:349
+msgid "Validate and save private key"
+msgstr "Privaten Schlüssel validieren und speichern"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:354
+msgid "Key is readable"
+msgstr "Schlüssel ist lesbar"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:364
+msgid "Private key validation failed"
+msgstr "Validierung des privaten Schlüssels fehlgeschlagen"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:368
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:310
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:156
+msgid "Public key"
+msgstr "Öffentlicher Schlüssel"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:378
+msgid "Generate a keypair to continue, or open \"Use my own SSH key\" above."
+msgstr "Erzeugen Sie ein Schlüsselpaar, um fortzufahren, oder öffnen Sie oben \\\"Eigenen SSH-Schlüssel verwenden\\\"."
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:382
+msgid "The Install step shows where to put this on the host. Nothing has been installed there yet."
+msgstr "Der Schritt \\\"Installieren\\\" zeigt, wohin dies auf dem Host gehört. Dort wurde noch nichts installiert."
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:393
+msgid "Private key generated (shown once)"
+msgstr "Privater Schlüssel erzeugt (wird nur einmal angezeigt)"
+
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:396
+msgid "Save this private key somewhere safe. It will NOT be shown again."
+msgstr "Bewahren Sie diesen privaten Schlüssel sicher auf. Er wird NICHT erneut angezeigt."
+
+#: src/views/preference/components/NginxHostSetup/steps/ConnectionTest.vue:63
+msgid "Trust every presented host key before testing the connection."
+msgstr "Vertrauen Sie jedem präsentierten Host-Schlüssel, bevor Sie die Verbindung testen."
+
+#: src/views/preference/components/NginxHostSetup/steps/ConnectionTest.vue:69
+msgid "Test SSH connection"
+msgstr "SSH-Verbindung testen"
+
+#: src/views/preference/components/NginxHostSetup/steps/ConnectionTest.vue:80
+msgid "SSH connection failed"
+msgstr "SSH-Verbindung fehlgeschlagen"
+
+#: src/views/preference/components/NginxHostSetup/steps/ConnectionTest.vue:87
+msgid "SSH connection succeeded"
+msgstr "SSH-Verbindung erfolgreich"
+
+#: src/views/preference/components/NginxHostSetup/steps/ConnectionTest.vue:94
+msgid "SSH connection was not established"
+msgstr "Es wurde keine SSH-Verbindung hergestellt"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:90
+msgid "Trusted"
+msgstr "Vertrauenswürdig"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:92
+msgid "New algorithm"
+msgstr "Neuer Algorithmus"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:94
+msgid "Changed"
+msgstr "Geändert"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:96
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:356
+msgid "Stale"
+msgstr "Veraltet"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:100
+msgid "Unknown host"
+msgstr "Unbekannter Host"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:232
+msgid "Verify the SSH host key before trusting it"
+msgstr "Prüfen Sie den SSH-Host-Schlüssel, bevor Sie ihm vertrauen"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:233
+msgid "Nginx UI can read the key presented by the SSH server, but it cannot prove the key is genuine by itself. Verify the fingerprint through the host console or another trusted channel before trusting or replacing it."
+msgstr "Nginx UI kann den vom SSH-Server präsentierten Schlüssel lesen, aber nicht selbst nachweisen, dass er echt ist. Prüfen Sie den Fingerabdruck über die Host-Konsole oder einen anderen vertrauenswürdigen Kanal, bevor Sie ihm vertrauen oder ihn ersetzen."
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:236
+msgid "Current target"
+msgstr "Aktuelles Ziel"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:241
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:123
+msgid "SSH user"
+msgstr "SSH-Benutzer"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:244
+msgid "known_hosts"
+msgstr "known_hosts"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:258
+msgid "1. Verify and trust the host key"
+msgstr "1. Host-Schlüssel prüfen und ihm vertrauen"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:264
+msgid "Scan host keys"
+msgstr "Host-Schlüssel scannen"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:272
+msgid "Failed to scan host keys"
+msgstr "Host-Schlüssel konnten nicht gescannt werden"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:279
+msgid "Failed to update trusted host keys"
+msgstr "Vertrauenswürdige Host-Schlüssel konnten nicht aktualisiert werden"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:284
+msgid "Paste ssh-keyscan output"
+msgstr "ssh-keyscan-Ausgabe einfügen"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:285
+msgid "Run on a trusted terminal"
+msgstr "Auf einem vertrauenswürdigen Terminal ausführen"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:288
+msgid "Parse pasted output"
+msgstr "Eingefügte Ausgabe auswerten"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:304
+msgid "Fingerprint"
+msgstr "Fingerabdruck"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:307
+msgid "Existing fingerprint"
+msgstr "Vorhandener Fingerabdruck"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:323
+msgid "I verified this fingerprint through a trusted channel."
+msgstr "Ich habe diesen Fingerabdruck über einen vertrauenswürdigen Kanal geprüft."
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:326
+msgid "Trust this algorithm"
+msgstr "Diesem Algorithmus vertrauen"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:326
+msgid "Trust this key"
+msgstr "Diesem Schlüssel vertrauen"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:331
+msgid "Host key changed. Replace only after confirming an intentional host SSH key rotation."
+msgstr "Der Host-Schlüssel hat sich geändert. Ersetzen Sie ihn nur, nachdem eine beabsichtigte SSH-Host-Schlüsselrotation bestätigt wurde."
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:333
+msgid "I verified the new fingerprint through a trusted channel."
+msgstr "Ich habe den neuen Fingerabdruck über einen vertrauenswürdigen Kanal geprüft."
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:336
+msgid "Replace trusted key"
+msgstr "Vertrauenswürdigen Schlüssel ersetzen"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:346
+msgid "No SSH host keys were returned"
+msgstr "Es wurden keine SSH-Host-Schlüssel zurückgegeben"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:350
+msgid "Advanced cleanup"
+msgstr "Erweiterte Bereinigung"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:363
+msgid "I understand this removes only the selected stale known_hosts entry."
+msgstr "Mir ist bewusst, dass dies nur den ausgewählten veralteten known_hosts-Eintrag entfernt."
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:367
+msgid "Delete stale key"
+msgstr "Veralteten Schlüssel löschen"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:381
+msgid "Host identity is trusted"
+msgstr "Host-Identität ist vertrauenswürdig"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:387
+msgid "Resolve changed host keys before continuing."
+msgstr "Beheben Sie geänderte Host-Schlüssel, bevor Sie fortfahren."
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:393
+msgid "The host presented a revoked key"
+msgstr "Der Host hat einen widerrufenen Schlüssel vorgelegt"
+
+#: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:394
+msgid "This key is marked @revoked in known_hosts. SSH will refuse it, so trusting it here would only fail later. Investigate why the host is presenting a revoked key before continuing."
+msgstr "Dieser Schlüssel ist in known_hosts mit @revoked markiert. SSH lehnt ihn ab; ihm hier zu vertrauen würde daher später fehlschlagen. Klären Sie vor dem Fortfahren, warum der Host einen widerrufenen Schlüssel vorlegt."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:180
+msgid "Paths refreshed from %{path}"
+msgstr "Pfade aus %{path} aktualisiert"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:213
+msgid "Target diagnosis"
+msgstr "Zieldiagnose"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:217
+msgid "Detect again"
+msgstr "Erneut erkennen"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:217
+msgid "Detect target"
+msgstr "Ziel erkennen"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:225
+msgid "Every field matches the detected values"
+msgstr "Alle Felder stimmen mit den erkannten Werten überein"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:229
+msgid "Some fields differ from the detected values"
+msgstr "Einige Felder weichen von den erkannten Werten ab"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:233
+msgid "Apply all detected values"
+msgstr "Alle erkannten Werte übernehmen"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:241
+msgid "Target diagnosis failed"
+msgstr "Zieldiagnose fehlgeschlagen"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:249
+msgid "The target platform could not be classified automatically"
+msgstr "Die Zielplattform konnte nicht automatisch bestimmt werden"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:250
+msgid "Choose the platform and confirm every path below manually, then continue."
+msgstr "Wählen Sie die Plattform, bestätigen Sie jeden Pfad unten manuell und fahren Sie dann fort."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:253
+msgid "Diagnosis completed with warnings"
+msgstr "Diagnose mit Warnungen abgeschlossen"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:264
+msgid "Operating system"
+msgstr "Betriebssystem"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:267
+msgid "Service manager"
+msgstr "Dienstmanager"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:270
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:296
+msgid "Homebrew prefix"
+msgstr "Homebrew-Präfix"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:273
+msgid "Detected nginx version"
+msgstr "Erkannte nginx-Version"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:276
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:322
+msgid "nginx executable path"
+msgstr "Pfad der ausführbaren nginx-Datei"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:284
+msgid "Adjust detected values"
+msgstr "Erkannte Werte anpassen"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:285
+msgid "Platform"
+msgstr "Plattform"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:290
+msgid "Linux (systemd)"
+msgstr "Linux (systemd)"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:291
+msgid "macOS (Homebrew)"
+msgstr "macOS (Homebrew)"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:300
+msgid "Apple Silicon"
+msgstr "Apple Silicon"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:301
+msgid "Intel Mac"
+msgstr "Intel Mac"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:306
+msgid "Detection fills this in. Switching it rewrites the four paths below that still hold a conventional default."
+msgstr "Die Erkennung füllt dies aus. Ein Wechsel überschreibt die vier Pfade unten, die noch einen üblichen Standardwert enthalten."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:312
+msgid "systemd unit"
+msgstr "systemd-Unit"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:313
+msgid "systemctl path"
+msgstr "systemctl-Pfad"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:316
+msgid "launchd service label"
+msgstr "launchd-Dienstlabel"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:317
+msgid "launchctl path"
+msgstr "launchctl-Pfad"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:321
+msgid "nginx paths"
+msgstr "nginx-Pfade"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:329
+msgid "Re-detect paths from this executable"
+msgstr "Pfade aus dieser ausführbaren Datei erneut erkennen"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:333
+msgid "Runs nginx -V on the target and refreshes the config, log and PID paths below."
+msgstr "Führt nginx -V auf dem Ziel aus und aktualisiert die Konfigurations-, Protokoll- und PID-Pfade unten."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:343
+msgid "Could not read the nginx build configuration"
+msgstr "Die nginx-Build-Konfiguration konnte nicht gelesen werden"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:354
+msgid "nginx config directory"
+msgstr "nginx-Konfigurationsverzeichnis"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:355
+msgid "nginx log directory"
+msgstr "nginx-Protokollverzeichnis"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:356
+msgid "nginx PID file"
+msgstr "nginx-PID-Datei"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepDetectPlatform.vue:365
+msgid "Platform and paths are complete."
+msgstr "Plattform und Pfade sind vollständig."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:88
+msgid "File access mode"
+msgstr "Dateizugriffsmodus"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:91
+#: src/views/preference/tabs/NginxSettings.vue:232
+msgid "Compatibility (SFTP)"
+msgstr "Kompatibilitätsmodus (SFTP)"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:94
+#: src/views/preference/tabs/NginxSettings.vue:235
+msgid "High performance (mounted)"
+msgstr "Hohe Leistung (eingebunden)"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:99
+msgid "Nginx UI reads configuration and logs from bind-mounted host directories. This is faster, but requires recreating the container."
+msgstr "Nginx UI liest Konfiguration und Protokolle aus per Bind-Mount eingebundenen Hostverzeichnissen. Dies ist schneller, erfordert aber eine Neuerstellung des Containers."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:100
+msgid "Nginx UI reads configuration and logs entirely over SSH and SFTP. No host directories are mounted into the container."
+msgstr "Nginx UI liest Konfiguration und Protokolle vollständig über SSH und SFTP. Es werden keine Hostverzeichnisse in den Container eingebunden."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:108
+msgid "Failed to load setup instructions"
+msgstr "Einrichtungsanweisungen konnten nicht geladen werden"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:126
+msgid "No container changes are required in compatibility mode"
+msgstr "Im Kompatibilitätsmodus sind keine Containeränderungen erforderlich"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:127
+msgid "Complete the host permissions below, then run the setup checks."
+msgstr "Richten Sie die Hostberechtigungen unten ein und führen Sie anschließend die Einrichtungsprüfungen aus."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:132
+msgid "1. On the nginx host"
+msgstr "1. Auf dem nginx-Host"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:138
+msgid "Run these on the machine that runs nginx, as a user who can use sudo."
+msgstr "Führen Sie diese Befehle auf dem Rechner aus, auf dem nginx läuft, als Benutzer, der sudo verwenden kann."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:139
+msgid "Run these on the machine that runs nginx, as the SSH user configured above."
+msgstr "Führen Sie diese Befehle auf dem Rechner aus, auf dem nginx läuft, als der oben konfigurierte SSH-Benutzer."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:147
+msgid "Install the public key"
+msgstr "Öffentlichen Schlüssel installieren"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:148
+msgid "Creates %{file} with the permissions sshd requires and appends the key. sshd silently ignores an authorized_keys file that other users can write, which shows up later as a permission denied error."
+msgstr "Erstellt %{file} mit den von sshd geforderten Berechtigungen und hängt den Schlüssel an. sshd ignoriert eine authorized_keys-Datei, die andere Benutzer beschreiben können, stillschweigend, was sich später als Fehler wegen fehlender Berechtigung zeigt."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:157
+msgid "The same key on its own, for appending by hand. To restrict where it may be used from, prefix it with from='…'."
+msgstr "Derselbe Schlüssel allein, zum manuellen Anhängen. Um einzuschränken, von wo aus er verwendet werden darf, stellen Sie ihm from='…' voran."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:165
+msgid "Open the sudoers file"
+msgstr "sudoers-Datei öffnen"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:166
+msgid "visudo checks the syntax before saving, so a typo cannot lock you out of sudo."
+msgstr "visudo prüft die Syntax vor dem Speichern, damit ein Tippfehler Sie nicht von sudo aussperrt."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:172
+msgid "sudoers rules"
+msgstr "sudoers-Regeln"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:173
+msgid "Paste this into the editor visudo opened, then save and exit. It lets the SSH user reload nginx without a password."
+msgstr "Fügen Sie dies in den von visudo geöffneten Editor ein, speichern Sie und beenden Sie ihn. Damit kann der SSH-Benutzer nginx ohne Passwort neu laden."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:182
+msgid "File access check"
+msgstr "Dateizugriffsprüfung"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:182
+msgid "File permissions"
+msgstr "Dateiberechtigungen"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:184
+msgid "Run as the SSH user. Both commands only test access and change nothing. A failure means the SSH user cannot reach the Homebrew paths."
+msgstr "Als SSH-Benutzer ausführen. Beide Befehle testen nur den Zugriff und ändern nichts. Ein Fehlschlag bedeutet, dass der SSH-Benutzer die Homebrew-Pfade nicht erreichen kann."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:185
+msgid "Run as root. Grants the SSH user write access to the nginx config directory and read access to the logs, including files created later, plus read access to the PID file."
+msgstr "Als root ausführen. Gewährt dem SSH-Benutzer Schreibzugriff auf das nginx-Konfigurationsverzeichnis und Lesezugriff auf die Protokolle, auch auf später erstellte Dateien, sowie Lesezugriff auf die PID-Datei."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:192
+msgid "Nothing else to install on the host"
+msgstr "Nichts weiter auf dem Host zu installieren"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:194
+msgid "A Homebrew launchd service runs as the SSH user, so no sudoers entry or extra permissions are needed."
+msgstr "Ein Homebrew-launchd-Dienst läuft als SSH-Benutzer, daher sind kein sudoers-Eintrag und keine zusätzlichen Berechtigungen nötig."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:195
+msgid "The SSH user is root, so no sudoers entry or extra permissions are needed."
+msgstr "Der SSH-Benutzer ist root, daher sind kein sudoers-Eintrag und keine zusätzlichen Berechtigungen nötig."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:200
+msgid "2. On the Nginx UI container"
+msgstr "2. Im Nginx-UI-Container"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:206
+msgid "Pick the format that matches how you run Nginx UI, then recreate the container with the bind mounts."
+msgstr "Wählen Sie das Format passend zu Ihrer Nginx-UI-Ausführung und erstellen Sie den Container anschließend mit den Bind-Mounts neu."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:207
+msgid "Linux Docker Engine requires this host-gateway mapping for host.docker.internal. No directory mounts are added."
+msgstr "Docker Engine unter Linux benötigt diese host-gateway-Zuordnung für host.docker.internal. Es werden keine Verzeichnisse eingebunden."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:213
+msgid "Recreating the container closes this page"
+msgstr "Das Neuerstellen des Containers schließt diese Seite"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:217
+msgid "Finish the host side first, then come back here."
+msgstr "Schließen Sie zuerst die Host-Seite ab und kehren Sie dann hierher zurück."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:218
+msgid "Restarting Nginx UI ends the two-factor session and clears anything typed in the earlier steps."
+msgstr "Ein Neustart von Nginx UI beendet die Zwei-Faktor-Sitzung und verwirft alle Eingaben aus den vorherigen Schritten."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:219
+msgid "The generated key and known_hosts survive, because they live under the persisted /etc/nginx-ui directory."
+msgstr "Der erzeugte Schlüssel und known_hosts bleiben erhalten, da sie im dauerhaft gespeicherten Verzeichnis /etc/nginx-ui liegen."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:220
+msgid "Note the host address and SSH user before you recreate, then reopen the wizard and verify again."
+msgstr "Notieren Sie sich Host-Adresse und SSH-Benutzer vor dem Neuerstellen, öffnen Sie danach den Assistenten erneut und führen Sie die Überprüfung noch einmal aus."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:226
+msgid "docker compose"
+msgstr "docker compose"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:232
+msgid "docker-compose.yml"
+msgstr "docker-compose.yml"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:234
+msgid "Merge this under services.nginx-ui in your existing file. Each bind mount uses the same path inside the container as on the host."
+msgstr "Fügen Sie dies in Ihrer vorhandenen Datei unter services.nginx-ui ein. Jeder Bind-Mount verwendet im Container denselben Pfad wie auf dem Host."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:235
+msgid "Merge this host-gateway mapping under services.nginx-ui in your existing file."
+msgstr "Fügen Sie diese host-gateway-Zuordnung in Ihrer vorhandenen Datei unter services.nginx-ui ein."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:238
+msgid "override file"
+msgstr "Override-Datei"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:244
+msgid "docker-compose.override.yml"
+msgstr "docker-compose.override.yml"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:245
+msgid "Save as a new file next to your main compose file. Docker Compose merges it automatically, so your original file stays untouched."
+msgstr "Speichern Sie dies als neue Datei neben Ihrer Haupt-Compose-Datei. Docker Compose führt sie automatisch zusammen, sodass Ihre Originaldatei unverändert bleibt."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:248
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:254
+msgid "docker run"
+msgstr "docker run"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:255
+msgid "Replaces your current docker run command. Adjust the published port and the image tag to match your current deployment."
+msgstr "Ersetzt Ihren aktuellen docker run-Befehl. Passen Sie den veröffentlichten Port und das Image-Tag an Ihre aktuelle Bereitstellung an."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:265
+msgid "Apply the change"
+msgstr "Änderung übernehmen"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:268
+msgid "Remove the old container, then run the command above with the mounted host directories."
+msgstr "Entfernen Sie den alten Container und führen Sie den obigen Befehl mit den eingebundenen Hostverzeichnissen aus."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:269
+msgid "The bind mounts take effect once the container is recreated."
+msgstr "Die Bind-Mounts werden wirksam, sobald der Container neu erstellt wurde."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:270
+msgid "The host-gateway mapping takes effect once the container is recreated."
+msgstr "Die host-gateway-Zuordnung wird wirksam, sobald der Container neu erstellt wurde."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:280
+msgid "Setup checks"
+msgstr "Einrichtungsprüfungen"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:281
+msgid "Run these after applying the relevant host and container instructions above. They verify the service, file access and required privileges for the selected mode."
+msgstr "Führen Sie diese Prüfungen nach Anwendung der obigen Host- und Containeranweisungen aus. Sie prüfen Dienst, Dateizugriff und erforderliche Berechtigungen für den ausgewählten Modus."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:83
+msgid "SSH target"
+msgstr "SSH-Ziel"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:84
+msgid "Host address (host:port)"
+msgstr "Host-Adresse (host:port)"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:91
+msgid "This address answers on the SSH port."
+msgstr "Diese Adresse antwortet auf dem SSH-Port."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:96
+msgid "These addresses answer on the SSH port from this container:"
+msgstr "Diese Adressen antworten aus diesem Container auf dem SSH-Port:"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:110
+msgid "Could not probe for reachable addresses: %{reason}"
+msgstr "Erreichbare Adressen konnten nicht ermittelt werden: %{reason}"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:113
+msgid "No address answered. Enter one manually, then use Probe again to test it."
+msgstr "Keine Adresse hat geantwortet. Geben Sie eine manuell ein und testen Sie sie dann mit \\\"Erneut prüfen\\\"."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:117
+msgid "Probe again"
+msgstr "Erneut prüfen"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:133
+msgid "Remote address detected"
+msgstr "Entfernte Adresse erkannt"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:137
+msgid "This mode only supports nginx-ui and target nginx on the same host."
+msgstr "Dieser Modus unterstützt nur nginx-ui und das Ziel-nginx auf demselben Host."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:138
+msgid "bind-mount cannot reach remote filesystems, so config editing, log viewing and certificate management will fail."
+msgstr "bind-mount kann entfernte Dateisysteme nicht erreichen — Konfigurationsbearbeitung, Protokollanzeige und Zertifikatsverwaltung schlagen fehl."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepSshTarget.vue:145
+msgid "Use the cluster Node guide for cross-host setups."
+msgstr "Verwenden Sie für Einrichtungen über mehrere Hosts hinweg die Anleitung zu Cluster-Knoten."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepTrustAndTest.vue:26
+msgid "2. Test the SSH connection"
+msgstr "2. SSH-Verbindung testen"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:66
+msgid "Verification"
+msgstr "Überprüfung"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:69
+msgid "Run verification"
+msgstr "Überprüfung ausführen"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:73
+msgid "The earlier steps already verified SSH, platform, file access and privileges. This final check only runs nginx -t against the host configuration."
+msgstr "Die vorherigen Schritte haben SSH, Plattform, Dateizugriff und Berechtigungen bereits geprüft. Diese letzte Prüfung führt nur nginx -t für die Hostkonfiguration aus."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:81
+msgid "The nginx configuration on the host failed validation"
+msgstr "Die nginx-Konfiguration auf dem Host hat die Validierung nicht bestanden"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:85
+msgid "This is the configuration already present on the host, not something this wizard wrote. The SSH setup itself can still be saved, and the configuration can be fixed from Nginx UI afterwards."
+msgstr "Dies ist die bereits auf dem Host vorhandene Konfiguration, nicht etwas, das dieser Assistent geschrieben hat. Die SSH-Einrichtung selbst kann trotzdem gespeichert werden, und die Konfiguration lässt sich anschließend in Nginx UI korrigieren."
+
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:88
+msgid "Continue without validating the configuration"
+msgstr "Ohne Validierung der Konfiguration fortfahren"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:97
+msgid "Verification failed"
+msgstr "Überprüfung fehlgeschlagen"
+
+#: src/views/preference/components/NginxHostSetup/steps/StepVerify.vue:105
+msgid "Run the final nginx configuration check to enable saving."
+msgstr "Führen Sie die abschließende nginx-Konfigurationsprüfung aus, um das Speichern zu aktivieren."
+
+#: src/views/preference/components/NginxHostSetup/useHostSetupWizard.ts:197
+msgid "Enter the SSH host address."
+msgstr "Geben Sie die SSH-Host-Adresse ein."
+
+#: src/views/preference/components/NginxHostSetup/useHostSetupWizard.ts:199
+msgid "Enter the SSH user."
+msgstr "Geben Sie den SSH-Benutzer ein."
+
+#: src/views/preference/components/NginxHostSetup/useHostSetupWizard.ts:201
+msgid "Generate, validate or import a private key first."
+msgstr "Erzeugen, validieren oder importieren Sie zuerst einen privaten Schlüssel."
+
+#: src/views/preference/components/NginxHostSetup/useHostSetupWizard.ts:205
+msgid "Trust every presented host key first."
+msgstr "Vertrauen Sie zuerst jedem präsentierten Host-Schlüssel."
+
+#: src/views/preference/components/NginxHostSetup/useHostSetupWizard.ts:207
+msgid "Run the SSH connection test first."
+msgstr "Führen Sie zuerst den SSH-Verbindungstest aus."
+
+#: src/views/preference/components/NginxHostSetup/useHostSetupWizard.ts:211
+msgid "Fill in the platform and every nginx path below."
+msgstr "Füllen Sie die Plattform und jeden nginx-Pfad unten aus."
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:36
+msgid "SSH Target"
+msgstr "SSH-Ziel"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:36
+msgid "Address, user and private key"
+msgstr "Adresse, Benutzer und privater Schlüssel"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:37
+msgid "Trust & Test"
+msgstr "Vertrauen & Testen"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:37
+msgid "Host key and connectivity"
+msgstr "Host-Schlüssel und Erreichbarkeit"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:38
+msgid "Detect Platform"
+msgstr "Plattform erkennen"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:38
+msgid "Service manager and nginx paths"
+msgstr "Dienstmanager und nginx-Pfade"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:39
+msgid "Access & Install"
+msgstr "Zugriff und Installation"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:39
+msgid "File mode and setup instructions"
+msgstr "Dateimodus und Einrichtungsanweisungen"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:40
+msgid "Verify"
+msgstr "Überprüfen"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:40
+msgid "Run checks and save"
+msgstr "Prüfen und speichern"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:94
+msgid "Previous"
+msgstr "Zurück"
+
+#: src/views/preference/components/NginxHostSetup/Wizard.vue:115
+msgid "Save configuration"
+msgstr "Konfiguration speichern"
+
+#: src/views/preference/NginxHostSetup.vue:51
+msgid "Failed to load settings"
+msgstr "Einstellungen konnten nicht geladen werden"
+
+#: src/views/preference/NginxHostSetup.vue:58
+msgid "The saved SSH access mode is missing or invalid. Set host_access_mode to sftp or mounted in the configuration file."
+msgstr "Der gespeicherte SSH-Zugriffsmodus fehlt oder ist ungültig. Setzen Sie host_access_mode in der Konfigurationsdatei auf sftp oder mounted."
+
+#: src/views/preference/NginxHostSetup.vue:68
+msgid "Failed to authorize protected settings"
+msgstr "Autorisierung für geschützte Einstellungen fehlgeschlagen"
+
+#: src/views/preference/NginxHostSetup.vue:88
+#: src/views/preference/NginxHostSetup.vue:159
+msgid "Failed to save Nginx control settings"
+msgstr "Fehler beim Speichern der Nginx-Steuerungseinstellungen"
+
+#: src/views/preference/NginxHostSetup.vue:109
+msgid "Back to Nginx settings"
+msgstr "Zurück zu den Nginx-Einstellungen"
+
+#: src/views/preference/NginxHostSetup.vue:114
+msgid "Authorizing..."
+msgstr "Autorisierung läuft..."
+
+#: src/views/preference/NginxHostSetup.vue:121
+msgid "Enable two-factor authentication before changing Nginx control settings."
+msgstr "Aktivieren Sie die Zwei-Faktor-Authentifizierung, bevor Sie die Nginx-Steuerungseinstellungen ändern."
+
 #: src/views/system/Upgrade.vue:216
 msgid "Dev"
 msgstr "Entwicklung"
@@ -10083,6 +11452,10 @@ msgstr "Profil aktualisieren"
 #: src/views/user/UserProfile.vue:146
 msgid "2FA Settings"
 msgstr "2FA-Einstellungen"
+
+#: src/views/preference/NginxHostSetup.vue:138
+msgid "Unable to open SSH setup"
+msgstr "SSH-Einrichtung kann nicht geöffnet werden"
 
 #: src/views/user/UserProfile.vue:170
 msgid "Security Settings"
@@ -10384,39 +11757,11 @@ msgstr "Passwort aktualisieren"
 #~ msgstr "Kopieren"
 
 #, fuzzy
-#~ msgid "External Container"
-#~ msgstr "Externer Docker-Container"
-
-#, fuzzy
-#~ msgid "Generate keypair"
-#~ msgstr "Generieren"
-
-#, fuzzy
-#~ msgid "override file"
-#~ msgstr "Zu überschreibende Datei existiert"
-
-#, fuzzy
-#~ msgid "Regenerate keypair"
-#~ msgstr "Auffrischen der Antwort"
-
-#, fuzzy
-#~ msgid "Remote address detected"
-#~ msgstr "Keine Knoten ausgewählt"
-
-#, fuzzy
-#~ msgid "Run verification"
-#~ msgstr "Zertifikat erneuern"
-
-#, fuzzy
 #~ msgid "SSH key (recommended)"
 #~ msgstr "2+ Kerne empfohlen"
 
 #~ msgid "Type or select A/AAAA records"
 #~ msgstr "Geben Sie A/AAAA-Datensätze ein oder wählen Sie sie aus"
-
-#, fuzzy
-#~ msgid "Verify"
-#~ msgstr "Geheimnis überprüfen"
 
 #~ msgid "OpenAI"
 #~ msgstr "OpenAI"

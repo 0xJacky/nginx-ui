@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { DNSRecord, DNSRecordLine, RecordListParams, RecordPayload } from '@/api/dns'
-import { PlusOutlined, ReloadOutlined } from '@ant-design/icons-vue'
-import { message } from 'ant-design-vue'
+import { PlusOutlined, ReloadOutlined } from '@antdv-next/icons'
+import { message } from 'antdv-next'
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { dnsApi } from '@/api/dns'
@@ -226,7 +226,7 @@ onBeforeUnmount(() => {
     <ADrawer
       :open="isDrawerOpen"
       :title="editingRecord ? $gettext('Edit Record') : $gettext('Create Record')"
-      width="480"
+      :size="480"
       @close="closeRecordDrawer"
     >
       <DNSRecordForm

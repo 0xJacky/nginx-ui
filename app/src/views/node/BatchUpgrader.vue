@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { SelectProps } from 'antdv-next'
 import type { Node } from '@/api/node'
 import type { ReleaseInfo } from '@/api/upgrade'
 import { cloneDeep } from 'lodash'
@@ -13,6 +14,20 @@ const visible = ref(false)
 const nodeIds = ref<number[]>([])
 const nodes = ref<Node[]>([])
 const channel = ref('stable')
+const channelOptions = computed<SelectProps['options']>(() => [
+  {
+    label: $gettext('Stable'),
+    value: 'stable',
+  },
+  {
+    label: $gettext('Pre-release'),
+    value: 'prerelease',
+  },
+  {
+    label: $gettext('Development'),
+    value: 'dev',
+  },
+])
 const nodeNames = computed(() => nodes.value.map(v => v.name).join(', '))
 const loading = ref(false)
 
@@ -161,17 +176,10 @@ async function performUpgrade() {
         :label="$gettext('Channel')"
         class="max-w-40"
       >
-        <ASelect v-model:value="channel">
-          <ASelectOption key="stable">
-            {{ $gettext('Stable') }}
-          </ASelectOption>
-          <ASelectOption key="prerelease">
-            {{ $gettext('Pre-release') }}
-          </ASelectOption>
-          <ASelectOption key="dev">
-            {{ $gettext('Development') }}
-          </ASelectOption>
-        </ASelect>
+        <ASelect
+          v-model:value="channel"
+          :options="channelOptions"
+        />
       </AFormItem>
     </AForm>
 
@@ -180,7 +188,7 @@ async function performUpgrade() {
         v-if="getReleaseError"
         type="error"
         :title="$gettext('Get release information error')"
-        :message="getReleaseError"
+        :description="getReleaseError"
         banner
       />
       <template v-else>
@@ -190,7 +198,7 @@ async function performUpgrade() {
           v-if="dryRun"
           type="info"
           class="mb-4"
-          :message="$gettext('Dry run mode enabled')"
+          :title="$gettext('Dry run mode enabled')"
           banner
         />
 

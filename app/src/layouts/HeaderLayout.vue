@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { DesktopOutlined, HomeOutlined, LogoutOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue'
+import { DesktopOutlined, HomeOutlined, LogoutOutlined, MenuUnfoldOutlined } from '@antdv-next/icons'
 import { useElementSize } from '@vueuse/core'
 import auth from '@/api/auth'
 import NginxControl from '@/components/NginxControl'

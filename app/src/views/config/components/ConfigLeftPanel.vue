@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Config } from '@/api/config'
-import { HistoryOutlined } from '@ant-design/icons-vue'
+import { HistoryOutlined } from '@antdv-next/icons'
 import { trim, trimEnd } from 'lodash'
 import config from '@/api/config'
 import ngx from '@/api/ngx'
@@ -240,7 +240,7 @@ function openHistory() {
 <template>
   <ACard
     :title="addMode ? $gettext('Add Configuration') : $gettext('Edit Configuration')"
-    :bordered="false" :loading
+    variant="borderless" :loading
   >
     <template #extra>
       <AButton

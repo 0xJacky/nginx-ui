@@ -128,14 +128,14 @@ defineExpose({
     <AAlert
       v-if="testLoading"
       :banner
-      :message="$gettext('Testing Nginx configuration...')"
+      :title="$gettext('Testing Nginx configuration...')"
       type="info"
       show-icon
     />
     <AAlert
       v-else-if="alertKind === 'request_error'"
       :banner
-      :message="$gettext('Could not reach the server')"
+      :title="$gettext('Could not reach the server')"
       type="error"
       show-icon
     >
@@ -149,7 +149,7 @@ defineExpose({
     <AAlert
       v-else-if="alertKind === 'skipped'"
       :banner
-      :message="$gettext('Sandbox validation skipped')"
+      :title="$gettext('Sandbox validation skipped')"
       type="info"
       show-icon
     >
@@ -165,7 +165,7 @@ defineExpose({
     <AAlert
       v-else-if="alertKind === 'failed'"
       :banner
-      :message="$gettext('Sandbox validation failed')"
+      :title="$gettext('Sandbox validation failed')"
       type="error"
       show-icon
     >
@@ -184,7 +184,7 @@ defineExpose({
     <AAlert
       v-else-if="alertKind === 'success'"
       :banner
-      :message="namespaceId
+      :title="namespaceId
         ? $gettext('Configuration file is test successful in isolated sandbox')
         : $gettext('Configuration file is test successful')"
       type="success"
@@ -192,7 +192,7 @@ defineExpose({
     />
     <AAlert
       v-else-if="alertKind === 'warning'"
-      :message="$gettext('Warning')"
+      :title="$gettext('Warning')"
       :banner
       type="warning"
       show-icon
@@ -204,7 +204,7 @@ defineExpose({
 
     <AAlert
       v-else-if="alertKind === 'error'"
-      :message="statusMessage"
+      :title="statusMessage"
       :banner
       type="error"
       show-icon

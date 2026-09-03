@@ -94,8 +94,16 @@ func reloadContext(ctx context.Context) (stdOut string, stdErr error) {
 		return stdOut, stdErr
 	}
 
+	// An operator-authored command wins on every target, as it does for
+	// TestConfigCmd; execShellContext already runs it through the SSH runner.
 	if settings.NginxSettings.ReloadCmd != "" {
 		return execShellContext(ctx, settings.NginxSettings.ReloadCmd)
+	}
+
+	// SSH mode controls the native host service without crossing PID namespaces.
+	if settings.NginxSettings.ControlMode() == settings.ControlModeHostViaSSH {
+		name, args := resolveHostService().reloadCommand()
+		return execCommandContext(ctx, name, args...)
 	}
 
 	sbin := GetSbinPath()
@@ -136,8 +144,20 @@ func restartContext(ctx context.Context) (stdOut string, stdErr error) {
 	// fix(docker): nginx restart always output network error
 	time.Sleep(500 * time.Millisecond)
 
+	// An operator-authored command wins on every target, as it does for
+	// TestConfigCmd; execShellContext already runs it through the SSH runner.
 	if settings.NginxSettings.RestartCmd != "" {
 		return execShellContext(ctx, settings.NginxSettings.RestartCmd)
+	}
+
+	// SSH mode routes restart through the host's native service manager.
+	if settings.NginxSettings.ControlMode() == settings.ControlModeHostViaSSH {
+		runner := resolveRunner()
+		name, args, err := resolveHostService().restartCommand(runner)
+		if err != nil {
+			return "", err
+		}
+		return runner.Exec(ctx, name, args...)
 	}
 
 	pidPath := GetPIDPath()
@@ -323,14 +343,45 @@ func truncateControlOutput(output string) string {
 }
 
 func IsRunning() bool {
-	pidPath := GetPIDPath()
-	switch settings.NginxSettings.RunningInAnotherContainer() {
-	case true:
-		return docker.StatPath(pidPath)
-	case false:
-		return isProcessRunning(pidPath)
+	switch settings.NginxSettings.ControlMode() {
+	case settings.ControlModeHostViaSSH:
+		return isRunningViaHostService()
+	case settings.ControlModeExternalContainer:
+		return docker.StatPath(GetPIDPath())
+	default:
+		return isProcessRunning(GetPIDPath())
 	}
-	return false
+}
+
+// isRunningViaHostService queries the configured host service manager over SSH.
+// On manager errors it validates the remote PID instead of inspecting the container PID namespace.
+func isRunningViaHostService() bool {
+	runner := resolveRunner()
+	service := resolveHostService()
+	if name, args, err := service.statusCommand(runner); err == nil {
+		out, err := runner.Exec(context.Background(), name, args...)
+		if err == nil && service.isActiveOutput(out) {
+			return true
+		}
+	}
+	return isRemotePIDRunning(runner, GetPIDPath())
+}
+
+func isRemotePIDRunning(runner Runner, pidPath string) bool {
+	if pidPath == "" {
+		return false
+	}
+	out, err := runner.Exec(context.Background(), "/bin/cat", pidPath)
+	if err != nil {
+		return false
+	}
+	pid := strings.TrimSpace(out)
+	parsed, err := strconv.ParseInt(pid, 10, 32)
+	if err != nil || parsed <= 0 {
+		return false
+	}
+	_, err = runner.Exec(context.Background(), "/bin/kill", "-0", pid)
+	return err == nil
 }
 
 // isProcessRunning checks if the process with the PID from pidPath is actually running

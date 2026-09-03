@@ -601,7 +601,7 @@ func TestRotationLogSupport(t *testing.T) {
 
 	// Test rotation log detection
 	rotationTests := []struct {
-		filePath  string
+		filePath   string
 		isRotation bool
 	}{
 		{"/var/log/nginx/access.log", true},
@@ -626,7 +626,7 @@ func TestRotationLogSupport(t *testing.T) {
 
 	// Test AddRotationFiles convenience method
 	tracker := NewProgressTracker("/var/log/nginx/access.log", nil)
-	
+
 	// Add multiple rotation files at once
 	rotationFiles := []string{
 		"/var/log/nginx/access.log",
@@ -635,9 +635,9 @@ func TestRotationLogSupport(t *testing.T) {
 		"/var/log/nginx/access.1.log",
 		"/var/log/nginx/access.2.log.gz",
 	}
-	
+
 	tracker.AddRotationFiles(rotationFiles...)
-	
+
 	progress := tracker.GetProgress()
 	if progress.TotalFiles != 5 {
 		t.Errorf("Expected 5 files after AddRotationFiles, got %d", progress.TotalFiles)
@@ -646,11 +646,11 @@ func TestRotationLogSupport(t *testing.T) {
 	// Verify compression was detected correctly
 	files := tracker.GetAllFiles()
 	expectedCompression := map[string]bool{
-		"/var/log/nginx/access.log":       false,
-		"/var/log/nginx/access.log.1":     false,
-		"/var/log/nginx/access.log.2.gz":  true,
-		"/var/log/nginx/access.1.log":     false,
-		"/var/log/nginx/access.2.log.gz":  true,
+		"/var/log/nginx/access.log":      false,
+		"/var/log/nginx/access.log.1":    false,
+		"/var/log/nginx/access.log.2.gz": true,
+		"/var/log/nginx/access.1.log":    false,
+		"/var/log/nginx/access.2.log.gz": true,
 	}
 
 	for filePath, expectedComp := range expectedCompression {
@@ -659,7 +659,7 @@ func TestRotationLogSupport(t *testing.T) {
 			if file.FilePath == filePath {
 				found = true
 				if file.IsCompressed != expectedComp {
-					t.Errorf("File %s: expected compressed=%v, got compressed=%v", 
+					t.Errorf("File %s: expected compressed=%v, got compressed=%v",
 						filePath, expectedComp, file.IsCompressed)
 				}
 				break

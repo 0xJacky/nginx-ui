@@ -103,7 +103,7 @@ func inspectCertificateDeployment(certModel *model.Cert) certificateInspection {
 	foundLegacyDrift := false
 
 	for _, path := range paths {
-		content, readErr := os.ReadFile(path)
+		content, readErr := nginx.ReadFile(path)
 		if readErr != nil {
 			status.State = CertificateDeploymentUnreadable
 			status.Error = readErr.Error()
@@ -295,7 +295,7 @@ func MigrateLegacyCertificatePaths() (CertificateMigrationResult, error) {
 	migratedSites := make(map[string]struct{})
 	for _, path := range paths {
 		target := targetsByPath[path]
-		content, readErr := os.ReadFile(path)
+		content, readErr := nginx.ReadFile(path)
 		if readErr != nil {
 			return result, config.RollbackError(readErr, tx.Rollback)
 		}
@@ -315,7 +315,7 @@ func MigrateLegacyCertificatePaths() (CertificateMigrationResult, error) {
 		if historyErr := config.CheckAndCreateHistory(path, rewritten); historyErr != nil {
 			return result, config.RollbackError(historyErr, tx.Rollback)
 		}
-		info, statErr := os.Stat(path)
+		info, statErr := nginx.Stat(path)
 		if statErr != nil {
 			return result, config.RollbackError(statErr, tx.Rollback)
 		}
@@ -491,12 +491,12 @@ func containsPathOrSameFile(paths []string, target string) bool {
 	if containsExactPath(paths, target) {
 		return true
 	}
-	targetInfo, err := os.Stat(target)
+	targetInfo, err := nginx.Stat(target)
 	if err != nil {
 		return false
 	}
 	for _, path := range paths {
-		info, statErr := os.Stat(path)
+		info, statErr := nginx.Stat(path)
 		if statErr == nil && os.SameFile(info, targetInfo) {
 			return true
 		}

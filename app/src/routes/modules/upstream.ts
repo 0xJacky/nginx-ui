@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { ClusterOutlined } from '@ant-design/icons-vue'
+import { ClusterOutlined } from '@antdv-next/icons'
 
 export const upstreamRoutes: RouteRecordRaw[] = [
   {

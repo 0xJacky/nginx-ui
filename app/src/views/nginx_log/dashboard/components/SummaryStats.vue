@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { DashboardAnalytics } from '@/api/nginx_log'
-import { Card, Col, Row, Statistic } from 'ant-design-vue'
+import { Card, Col, Row, Statistic } from 'antdv-next'
 import { bytesToSize } from '@/lib/helper'
 
 const props = defineProps<{
@@ -51,7 +51,7 @@ const cards = computed(() => {
         <Statistic
           :title="card.title"
           :value="card.value"
-          :value-style="{ color: card.color }"
+          :styles="{ content: { color: card.color } }"
         />
       </Card>
     </Col>

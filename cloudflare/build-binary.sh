@@ -22,7 +22,7 @@ docker run --rm --platform linux/amd64 \
     -v "$repo_root":/src -w /src \
     -v "$HOME/go/pkg/mod":/go/pkg/mod \
     -e GOWORK=off -e CGO_ENABLED=1 -e GOOS=linux -e GOARCH=amd64 \
-    golang:1.26-trixie \
+    golang:1.27-trixie \
     go build -trimpath -tags=jsoniter \
         -ldflags "-s -w -X 'github.com/0xJacky/Nginx-UI/settings.buildTime=$(date +%s)'" \
         -o /src/nginx-ui-linux-amd64/nginx-ui main.go

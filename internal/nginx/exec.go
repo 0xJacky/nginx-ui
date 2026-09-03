@@ -2,11 +2,6 @@ package nginx
 
 import (
 	"context"
-	"os/exec"
-	"runtime"
-
-	"github.com/0xJacky/Nginx-UI/internal/docker"
-	"github.com/0xJacky/Nginx-UI/settings"
 )
 
 func execShell(cmd string) (stdOut string, stdErr error) {
@@ -14,39 +9,36 @@ func execShell(cmd string) (stdOut string, stdErr error) {
 }
 
 func execShellContext(ctx context.Context, cmd string) (stdOut string, stdErr error) {
-	name, args := shellCommand(runtime.GOOS, settings.NginxSettings.RunningInAnotherContainer(), cmd)
-	return execCommandContext(ctx, name, args...)
+	// The shell must match the OS of the target that runs the command, which
+	// the runner reports: an external container is Linux and an SSH host is
+	// Linux or macOS, so a Windows hosted Nginx UI must not send cmd /c to
+	// either. Custom test, reload, and restart commands therefore run through
+	// the same runner as every other nginx invocation.
+	runner := resolveRunner()
+	name, args := shellCommand(runner.GOOS(), cmd)
+	return runner.Exec(ctx, name, args...)
 }
 
-func shellCommand(goos string, externalContainer bool, cmd string) (name string, args []string) {
-	// External Nginx containers are Linux containers even when Nginx UI runs
-	// on a different host OS. Route the shell itself through execCommand so
-	// custom test, reload, and restart commands use the configured target.
-	if externalContainer || goos != "windows" {
+// shellCommand wraps cmd in the shell of the operating system named by goos.
+func shellCommand(goos string, cmd string) (name string, args []string) {
+	if goos != "windows" {
 		return "/bin/sh", []string{"-c", cmd}
 	}
 
 	return "cmd", []string{"/c", cmd}
 }
 
-func execCommand(name string, cmd ...string) (stdOut string, stdErr error) {
-	return execCommandContext(context.Background(), name, cmd...)
+// execCommand routes nginx invocations through the Runner chosen by the
+// current control mode. Callers should keep using execCommand as before —
+// the routing is transparent.
+func execCommand(name string, args ...string) (stdOut string, stdErr error) {
+	return execCommandContext(context.Background(), name, args...)
 }
 
-func execCommandContext(ctx context.Context, name string, cmd ...string) (stdOut string, stdErr error) {
-	switch settings.NginxSettings.RunningInAnotherContainer() {
-	case true:
-		cmd = append([]string{name}, cmd...)
-		stdOut, stdErr = docker.Exec(ctx, cmd)
-	case false:
-		execCmd := exec.CommandContext(ctx, name, cmd...)
-		// fix #1046
-		execCmd.Dir = GetNginxExeDir()
-		bytes, err := execCmd.CombinedOutput()
-		stdOut = string(bytes)
-		if err != nil {
-			stdErr = err
-		}
-	}
-	return
+// execCommandContext is the context-aware variant of execCommand. The context
+// bounds the command on every control target, so a hung nginx test or reload
+// cannot block the caller forever.
+func execCommandContext(ctx context.Context, name string, args ...string) (stdOut string, stdErr error) {
+	runner := resolveRunner()
+	return runner.Exec(ctx, name, args...)
 }

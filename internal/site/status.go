@@ -1,7 +1,7 @@
 package site
 
 import (
-	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/uozi-tech/cosy/logger"
 )
@@ -24,7 +24,11 @@ func GetSiteStatus(name string) Status {
 		return StatusDisabled
 	}
 
-	enabledExists := helper.FileExists(enabledFilePath)
+	enabledExists, err := nginx.Exists(enabledFilePath)
+	if err != nil {
+		logger.Error(err)
+		return StatusDisabled
+	}
 	if enabledExists {
 		return StatusEnabled
 	}
@@ -35,7 +39,11 @@ func GetSiteStatus(name string) Status {
 		return StatusDisabled
 	}
 
-	maintenanceExists := helper.FileExists(mantainanceFilePath)
+	maintenanceExists, err := nginx.Exists(mantainanceFilePath)
+	if err != nil {
+		logger.Error(err)
+		return StatusDisabled
+	}
 	if maintenanceExists {
 		return StatusMaintenance
 	}

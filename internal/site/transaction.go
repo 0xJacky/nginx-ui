@@ -7,7 +7,9 @@ import (
 )
 
 // The site editor and the configuration editor share the same rollback rules,
-// so both go through the transaction helpers of the config package.
+// so both go through the transaction helpers of the config package. Those
+// helpers address the nginx target filesystem, so they also work when the
+// configuration lives on an SSH host reached over SFTP.
 type configFileSnapshot = config.FileSnapshot
 
 func captureConfigFile(path string) (configFileSnapshot, error) {

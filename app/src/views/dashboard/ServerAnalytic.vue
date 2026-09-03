@@ -231,7 +231,7 @@ function wsOnMessage(m: MessageEvent) {
       >
         <ACard
           :title="$gettext('Server Info')"
-          :bordered="false"
+          variant="borderless"
         >
           <p>
             {{ $gettext('Uptime:') }}
@@ -268,7 +268,7 @@ function wsOnMessage(m: MessageEvent) {
       >
         <ACard
           :title="$gettext('Memory and Storage')"
-          :bordered="false"
+          variant="borderless"
         >
           <ARow :gutter="[0, 32]">
             <ACol
@@ -328,7 +328,7 @@ function wsOnMessage(m: MessageEvent) {
       >
         <ACard
           :title="$gettext('Network Statistics')"
-          :bordered="false"
+          variant="borderless"
         >
           <ARow :gutter="16">
             <ACol :span="12">
@@ -360,7 +360,7 @@ function wsOnMessage(m: MessageEvent) {
       >
         <ACard
           :title="$gettext('CPU Status')"
-          :bordered="false"
+          variant="borderless"
         >
           <AStatistic
             :value="cpu"
@@ -386,7 +386,7 @@ function wsOnMessage(m: MessageEvent) {
       >
         <ACard
           :title="$gettext('Network')"
-          :bordered="false"
+          variant="borderless"
         >
           <ARow :gutter="16">
             <ACol :span="12">
@@ -425,7 +425,7 @@ function wsOnMessage(m: MessageEvent) {
       >
         <ACard
           :title="$gettext('Disk IO')"
-          :bordered="false"
+          variant="borderless"
         >
           <ARow :gutter="16">
             <ACol :span="12">

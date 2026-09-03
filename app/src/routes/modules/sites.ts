@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { CloudOutlined } from '@ant-design/icons-vue'
+import { CloudOutlined } from '@antdv-next/icons'
 
 export const sitesRoutes: RouteRecordRaw[] = [
   {

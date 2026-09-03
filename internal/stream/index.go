@@ -48,7 +48,7 @@ func scanForStream(configPath string, content []byte) error {
 		targets := upstream.ParseProxyTargetsFromRawContent(string(content))
 		done <- targets
 	}()
-	
+
 	select {
 	case targets := <-done:
 		streamIndex.ProxyTargets = targets

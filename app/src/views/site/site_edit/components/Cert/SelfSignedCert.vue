@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Cert } from '@/api/cert'
-import { Modal } from 'ant-design-vue'
+import { Modal } from 'antdv-next'
 import SelfSignedCertForm from '@/views/certificate/components/SelfSignedCertForm.vue'
 import { useTLSDirectives } from '../../composables/useTLSDirectives'
 import { useSiteEditorStore } from '../SiteEditor/store'

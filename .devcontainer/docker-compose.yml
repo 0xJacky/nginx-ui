@@ -9,10 +9,12 @@ services:
       - go-modules:/root/go
       - ./data/nginx:/etc/nginx
       - ./data/nginx-logs:/var/log/nginx
+      - ./data/nginx-ui:/etc/nginx-ui
       - /var/run/docker.sock:/var/run/docker.sock
     command: sleep infinity
     environment:
       - NGINX_UI_CERT_CA_DIR=https://pebble:14000/dir
+      - NGINX_UI_DEV_SECURE_SESSION_MINUTES=1440
     networks:
       nginxui:
   nginx-ui-2:
@@ -24,6 +26,8 @@ services:
       - ./data/nginx-ui-2/nginx-ui:/etc/nginx-ui
     working_dir: /workspaces/nginx-ui
     command: ./.devcontainer/node-supervisor.sh
+    environment:
+      - NGINX_UI_DEV_SECURE_SESSION_MINUTES=1440
     depends_on:
       - nginx-ui
     networks:
@@ -33,6 +37,7 @@ services:
     container_name: nginx-ui-3
     environment:
       - NGINX_UI_OFFICIAL_DOCKER=true
+      - NGINX_UI_DEV_SECURE_SESSION_MINUTES=1440
     volumes:
       - ../..:/workspaces:cached
       - ./data/nginx-ui-3/nginx:/etc/nginx

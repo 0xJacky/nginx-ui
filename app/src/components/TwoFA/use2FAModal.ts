@@ -101,7 +101,7 @@ function use2FAModal() {
             }
 
             modalInstance.destroy()
-            secureSessionId.value = result.session_id
+            userStore.setSecureSession(result.session_id, result.session_ttl)
             resolve(result.session_id)
 
             try {
@@ -114,9 +114,9 @@ function use2FAModal() {
             }
           }
 
-          const setSessionId = (sessionId: string) => {
+          const setSessionId = (sessionId: string, sessionTTL?: number) => {
             modalInstance.destroy()
-            secureSessionId.value = sessionId
+            userStore.setSecureSession(sessionId, sessionTTL)
             resolve(sessionId)
           }
 
@@ -125,7 +125,9 @@ function use2FAModal() {
             {
               ref: refOTPAuthorization,
               twoFAStatus,
-              class: 'mt-3 mr-34px',
+              // The right inset balances the confirm dialog icon indent. On a
+              // phone that indent already eats most of the row, so drop it.
+              class: 'mt-3 sm:mr-34px',
               onSubmitOTP: verifyOTP,
               onSubmitSecureSessionID: setSessionId,
             },

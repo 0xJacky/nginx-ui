@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { UploadFile } from 'ant-design-vue'
+import type { UploadFile } from 'antdv-next'
 import type { RestoreOptions, RestoreResponse } from '@/api/backup'
-import { InboxOutlined } from '@ant-design/icons-vue'
+import { InboxOutlined } from '@antdv-next/icons'
 import backup from '@/api/backup'
 
 // Define props using TypeScript interface
@@ -29,7 +29,7 @@ const props = withDefaults(defineProps<SystemRestoreProps>(), {
 const emit = defineEmits<SystemRestoreEmits>()
 const { message } = useGlobalApp()
 
-// Use UploadFile from ant-design-vue
+// Use UploadFile from antdv-next
 const uploadFiles = ref<UploadFile[]>([])
 const isRestoring = ref(false)
 
@@ -191,17 +191,17 @@ async function doRestore() {
 
 <template>
   <div>
-    <ACard v-if="showTitle" :title="$gettext('System Restore')" :bordered="false">
+    <ACard v-if="showTitle" :title="$gettext('System Restore')" variant="borderless">
       <AAlert
         show-icon
         type="warning"
-        :message="$gettext('Warning: Restore operation will overwrite current configurations. Make sure you have a valid backup file and security token, and carefully select what to restore.')"
+        :title="$gettext('Warning: Restore operation will overwrite current configurations. Make sure you have a valid backup file and security token, and carefully select what to restore.')"
         class="mb-4"
       />
       <AAlert
         show-icon
         type="info"
-        :message="$gettext('Only backups created by versions that support signed manifests can be restored. Legacy backups are no longer supported.')"
+        :title="$gettext('Only backups created by versions that support signed manifests can be restored. Legacy backups are no longer supported.')"
         class="mb-4"
       />
 
@@ -278,13 +278,13 @@ async function doRestore() {
       <AAlert
         show-icon
         type="warning"
-        :message="$gettext('Warning: Restore operation will overwrite current configurations. Make sure you have a valid backup file and security token, and carefully select what to restore.')"
+        :title="$gettext('Warning: Restore operation will overwrite current configurations. Make sure you have a valid backup file and security token, and carefully select what to restore.')"
         class="mb-4"
       />
       <AAlert
         show-icon
         type="info"
-        :message="$gettext('Only backups created by versions that support signed manifests can be restored. Legacy backups are no longer supported.')"
+        :title="$gettext('Only backups created by versions that support signed manifests can be restored. Legacy backups are no longer supported.')"
         class="mb-4"
       />
 

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { HistoryOutlined, LoadingOutlined } from '@ant-design/icons-vue'
+import { HistoryOutlined, LoadingOutlined } from '@antdv-next/icons'
 import CodeEditor from '@/components/CodeEditor'
 import ConfigHistory from '@/components/ConfigHistory'
 import FooterToolBar from '@/components/FooterToolbar'
@@ -38,8 +38,8 @@ async function save() {
 </script>
 
 <template>
-  <ASpin :spinning="loading" :indicator="LoadingOutlined">
-    <ACard class="mb-4" :bordered="false">
+  <ASpin :spinning="loading" :indicator="h(LoadingOutlined)">
+    <ACard class="mb-4" variant="borderless">
       <template #title>
         <span style="margin-right: 10px">{{ $gettext('Edit %{n}', { n: name }) }}</span>
         <ATag
@@ -102,7 +102,7 @@ async function save() {
             <div v-if="parseErrorStatus">
               <AAlert
                 banner
-                :message="$gettext('Nginx Configuration Parse Error')"
+                :title="$gettext('Nginx Configuration Parse Error')"
                 :description="parseErrorMessage"
                 type="error"
                 show-icon

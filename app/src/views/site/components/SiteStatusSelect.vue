@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { SelectValue } from 'ant-design-vue/es/select'
+import type { SelectProps, SelectValue } from 'antdv-next'
 import type { SiteStatus } from '@/api/site'
-import { Modal } from 'ant-design-vue'
+import { Modal } from 'antdv-next'
 import site from '@/api/site'
 import { ConfigStatus } from '@/constants'
 
@@ -22,6 +22,21 @@ const status = defineModel<string>({
 
 const { message } = useGlobalApp()
 const [modal, ContextHolder] = Modal.useModal()
+
+const statusOptions = computed<SelectProps['options']>(() => [
+  {
+    value: ConfigStatus.Enabled,
+    label: $gettext('Enabled'),
+  },
+  {
+    value: ConfigStatus.Disabled,
+    label: $gettext('Disabled'),
+  },
+  {
+    value: ConfigStatus.Maintenance,
+    label: $gettext('Maintenance'),
+  },
+])
 
 // Computed property for select style based on current status
 const selectStyle = computed(() => {
@@ -152,19 +167,18 @@ function onChangeStatus(value: SelectValue) {
     <ASelect
       :value="status"
       class="status-select"
+      :classes="{
+        root: 'status-select-root',
+        content: 'status-select-content',
+        suffix: 'status-select-suffix',
+        popup: {
+          listItem: 'status-select-list-item',
+        },
+      }"
       :style="selectStyle"
+      :options="statusOptions"
       @change="onChangeStatus"
-    >
-      <ASelectOption :value="ConfigStatus.Enabled">
-        {{ $gettext('Enabled') }}
-      </ASelectOption>
-      <ASelectOption :value="ConfigStatus.Disabled">
-        {{ $gettext('Disabled') }}
-      </ASelectOption>
-      <ASelectOption :value="ConfigStatus.Maintenance">
-        {{ $gettext('Maintenance') }}
-      </ASelectOption>
-    </ASelect>
+    />
   </div>
 </template>
 
@@ -180,52 +194,52 @@ function onChangeStatus(value: SelectValue) {
   min-width: 120px;
 }
 
-:deep(.ant-select-selector) {
+:deep(.status-select-root) {
   transition: all 0.3s ease !important;
   font-weight: 500 !important;
   border-radius: 6px !important;
 }
 
-:deep(.ant-select-selection-item) {
+:deep(.status-select-content) {
   font-weight: 500 !important;
 }
 
 /* Ensure custom background colors are applied correctly */
-:deep(.status-select .ant-select-selector) {
+:deep(.status-select-root) {
   background-color: var(--ant-select-bg) !important;
   color: var(--ant-select-color) !important;
 }
 
-:deep(.status-select .ant-select-selection-item) {
+:deep(.status-select-content) {
   color: var(--ant-select-color) !important;
 }
 
-:deep(.status-select .ant-select-arrow) {
+:deep(.status-select-suffix) {
   color: var(--ant-select-color) !important;
 }
 
 /* Override focus and hover styles to maintain custom colors */
-:deep(.ant-select:not(.ant-select-disabled):hover .ant-select-selector) {
+:deep(.status-select-root:not(.ant-select-disabled):hover) {
   border-color: var(--ant-select-border) !important;
   background-color: var(--ant-select-bg) !important;
 }
 
-:deep(.ant-select-focused .ant-select-selector) {
+:deep(.status-select-root.ant-select-focused) {
   border-color: var(--ant-select-border) !important;
   background-color: var(--ant-select-bg) !important;
   box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1) !important;
 }
 
 /* Make sure dropdown options also have appropriate styling */
-:deep(.ant-select-dropdown .ant-select-item-option) {
+:deep(.ant-select-dropdown .status-select-list-item) {
   padding: 8px 12px !important;
 }
 
-:deep(.ant-select-dropdown .ant-select-item-option:hover) {
+:deep(.ant-select-dropdown .status-select-list-item:hover) {
   background-color: rgba(0, 0, 0, 0.04) !important;
 }
 
-:deep(.ant-select-dropdown .ant-select-item-option-selected) {
+:deep(.ant-select-dropdown .status-select-list-item.ant-select-item-option-selected) {
   background-color: rgba(24, 144, 255, 0.1) !important;
   font-weight: 600 !important;
 }

@@ -2,6 +2,53 @@ import type { CosyError, CosyErrorRecord } from './types'
 
 const errors: Record<string, CosyErrorRecord> = {}
 
+interface ErrorResponse {
+  response?: {
+    data?: unknown
+  }
+}
+
+// Cosy sends the template and its arguments separately, so a raw message still
+// contains {0} style placeholders.
+function substituteParams(message: string, params?: string[]): string {
+  if (!params?.length)
+    return message
+  return params.reduce((result, param, index) => result.replaceAll(`{${index}}`, param), message)
+}
+
+// The interceptor rejects a dismissed 2FA prompt with an empty message on
+// purpose. Reporting a fallback here would surface a bogus server error.
+export function isTwoFactorCancelled(error: unknown): boolean {
+  if (!error || typeof error !== 'object')
+    return false
+  return (error as CosyError).code === 'two_factor_cancelled'
+}
+
+function resolveCosyMessage(candidate: unknown): string {
+  if (!candidate || typeof candidate !== 'object')
+    return ''
+  const err = candidate as CosyError
+  if (typeof err.message !== 'string' || !err.message)
+    return ''
+  return translateErrorSync(err)
+}
+
+export function getErrorMessage(error: unknown, fallback = $gettext('Server error')): string {
+  if (typeof error === 'string' && error)
+    return error
+
+  if (!error || typeof error !== 'object')
+    return fallback
+
+  if (isTwoFactorCancelled(error) || isTwoFactorCancelled((error as ErrorResponse).response?.data))
+    return ''
+
+  const errorResponse = error as ErrorResponse
+  return resolveCosyMessage(errorResponse.response?.data)
+    || resolveCosyMessage(error)
+    || fallback
+}
+
 export function registerError(scope: string, record: CosyErrorRecord) {
   errors[scope] = record
 }
@@ -32,24 +79,10 @@ export function useMessageDedupe(interval = 5000): MessageDedupe {
 function translateErrorSync(err: CosyError): string {
   const msg = errors?.[err.scope ?? '']?.[err.code ?? '']
 
-  if (msg) {
-    // if err has params
-    if (err?.params && err.params.length > 0) {
-      let res = msg()
+  if (msg)
+    return substituteParams(msg(), err?.params)
 
-      err.params.forEach((param, index) => {
-        res = res.replaceAll(`{${index}}`, param)
-      })
-
-      return res
-    }
-    else {
-      return msg()
-    }
-  }
-  else {
-    return $gettext(err?.message ?? 'Server error')
-  }
+  return substituteParams($gettext(err?.message ?? 'Server error'), err?.params)
 }
 
 // Asynchronous version that handles dynamic loading

@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { CheckOutlined, CopyOutlined, InfoCircleFilled, WarningOutlined } from '@ant-design/icons-vue'
+import { CheckOutlined, CopyOutlined, InfoCircleFilled, WarningOutlined } from '@antdv-next/icons'
 import { UseClipboard } from '@vueuse/components'
 import backup from '@/api/backup'
 
@@ -68,11 +68,11 @@ function handleCopy(copy) {
 </script>
 
 <template>
-  <ACard :title="$gettext('System Backup')" :bordered="false">
+  <ACard :title="$gettext('System Backup')" variant="borderless">
     <AAlert
       show-icon
       type="info"
-      :message="$gettext('Create system backups including Nginx configuration and Nginx UI settings. Backup files will be automatically downloaded to your computer.')"
+      :title="$gettext('Create system backups including Nginx configuration and Nginx UI settings. Backup files will be automatically downloaded to your computer.')"
       class="mb-4"
     />
 
@@ -91,15 +91,15 @@ function handleCopy(copy) {
     <!-- Security Token Modal Component -->
     <AModal
       v-model:open="showSecurityModal"
-      :title="$gettext('Security Token Information')"
       :mask-closable="false"
       :centered="true"
       class="backup-token-modal"
       width="550"
       @ok="handleCloseModal"
     >
-      <template #icon>
+      <template #title>
         <InfoCircleFilled style="color: #1677ff; font-size: 22px" />
+        {{ $gettext('Security Token Information') }}
       </template>
 
       <div class="security-token-info py-2">
@@ -168,7 +168,7 @@ function handleCopy(copy) {
 /* Dark mode optimization */
 :deep(.backup-token-modal) {
   /* Modal background */
-  .ant-modal-content {
+  .ant-modal-container {
     background-color: #1f1f1f;
   }
 

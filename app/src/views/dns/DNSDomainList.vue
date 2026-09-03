@@ -1,11 +1,11 @@
 <script setup lang="tsx">
 import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
-import type { SelectProps } from 'ant-design-vue'
+import type { SelectProps } from 'antdv-next'
 import type { DNSProvider } from '@/api/auto_cert'
 import type { DNSDomain } from '@/api/dns'
-import { HeartOutlined, MailOutlined, StarOutlined } from '@ant-design/icons-vue'
+import { HeartOutlined, MailOutlined, StarOutlined } from '@antdv-next/icons'
 import { datetimeRender, StdCurd } from '@uozi-admin/curd'
-import { Alert, FormItem, Select } from 'ant-design-vue'
+import { Alert, FormItem, Select } from 'antdv-next'
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import auto_cert from '@/api/auto_cert'
@@ -106,7 +106,7 @@ function renderDnsDomainClarification() {
       class="mb-4"
       type="info"
       showIcon
-      message={$gettext('DNS record management only')}
+      title={$gettext('DNS record management only')}
       description={(
         <div class="space-y-1">
           <p>

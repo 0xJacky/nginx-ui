@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { SelectProps } from 'antdv-next'
 import type { DNSDomain, DNSRecord } from '@/api/dns'
 import { isAllowedDnsProvider } from '@/constants/dns_providers'
 import { useDnsStore } from '@/pinia/moudule/dns'
@@ -30,6 +31,43 @@ const newRecordForm = reactive({
 })
 
 const recordTypes = ['A', 'AAAA', 'CNAME']
+const recordTypeOptions: SelectProps['options'] = recordTypes.map(type => ({
+  label: type,
+  value: type,
+}))
+
+function findDomainById(domainId: unknown) {
+  return availableDomains.value.find(domain => domain.id === domainId)
+}
+
+function findRecordById(recordId: unknown) {
+  return availableRecords.value.find(record => record.id === recordId)
+}
+
+const domainOptions = computed<SelectProps['options']>(() => availableDomains.value.map(domain => ({
+  key: domain.id,
+  label: domain.domain,
+  value: domain.id,
+  domainName: domain.domain,
+  credentialName: domain.dns_credential?.name,
+  hasCredential: Boolean(domain.dns_credential),
+})))
+
+const recordOptions = computed<SelectProps['options']>(() => availableRecords.value.map(record => {
+  const recordName = record.name === '@'
+    ? findDomainById(selectedDomainId.value)?.domain
+    : record.name
+
+  return {
+    key: record.id,
+    label: `${record.type} ${recordName ?? ''} → ${record.content}${record.proxied ? ` ${$gettext('Proxied')}` : ''}`,
+    value: record.id,
+    recordType: record.type,
+    recordName: record.name,
+    recordContent: record.content,
+    isProxied: record.proxied,
+  }
+}))
 
 // Computed properties for v-model bindings to handle null values
 const selectedDomainValue = computed({
@@ -263,21 +301,29 @@ defineExpose({
       <AFormItem :label="$gettext('DNS Domain')">
         <ASelect
           v-model:value="selectedDomainValue"
+          :options="domainOptions"
           :placeholder="$gettext('Select DNS domain')"
           :loading="loading"
           allow-clear
           @change="onDomainChange"
         >
-          <ASelectOption
-            v-for="domain in availableDomains"
-            :key="domain.id"
-            :value="domain.id"
-          >
-            {{ domain.domain }}
-            <span v-if="domain.dns_credential" class="text-gray-400">
-              ({{ domain.dns_credential.name }})
+          <template #optionRender="{ option }">
+            {{ option.data.domainName }}
+            <span v-if="option.data.hasCredential" class="text-gray-400">
+              ({{ option.data.credentialName }})
             </span>
-          </ASelectOption>
+          </template>
+          <template #labelRender="{ label, value }">
+            <template v-if="findDomainById(value)">
+              {{ label }}
+              <span v-if="findDomainById(value)?.dns_credential" class="text-gray-400">
+                ({{ findDomainById(value)?.dns_credential?.name }})
+              </span>
+            </template>
+            <template v-else>
+              {{ label ?? value }}
+            </template>
+          </template>
         </ASelect>
       </AFormItem>
 
@@ -285,7 +331,7 @@ defineExpose({
         v-if="selectedDomainId"
         :label="$gettext('DNS Record')"
       >
-        <ASpace direction="vertical" style="width: 100%">
+        <ASpace orientation="vertical" style="width: 100%">
           <ASelect
             v-model:value="selectedRecordValue"
             mode="multiple"
@@ -294,22 +340,34 @@ defineExpose({
             :disabled="createNewRecord"
             max-tag-count="responsive"
             allow-clear
+            :options="recordOptions"
             @change="onRecordSelect"
           >
-            <ASelectOption
-              v-for="record in availableRecords"
-              :key="record.id"
-              :value="record.id"
-            >
-              <ATag :color="record.type === 'A' ? 'blue' : record.type === 'AAAA' ? 'green' : 'orange'">
-                {{ record.type }}
+            <template #optionRender="{ option }">
+              <ATag :color="option.data.recordType === 'A' ? 'blue' : option.data.recordType === 'AAAA' ? 'green' : 'orange'">
+                {{ option.data.recordType }}
               </ATag>
-              {{ record.name === '@' ? availableDomains.find(d => d.id === selectedDomainId)?.domain : record.name }}
-              → {{ record.content }}
-              <ATag v-if="record.proxied" color="orange" class="ml-2">
+              {{ option.data.recordName === '@' ? findDomainById(selectedDomainId)?.domain : option.data.recordName }}
+              → {{ option.data.recordContent }}
+              <ATag v-if="option.data.isProxied" color="orange" class="ml-2">
                 {{ $gettext('Proxied') }}
               </ATag>
-            </ASelectOption>
+            </template>
+            <template #labelRender="{ label, value }">
+              <template v-if="findRecordById(value)">
+                <ATag :color="findRecordById(value)?.type === 'A' ? 'blue' : findRecordById(value)?.type === 'AAAA' ? 'green' : 'orange'">
+                  {{ findRecordById(value)?.type }}
+                </ATag>
+                {{ findRecordById(value)?.name === '@' ? findDomainById(selectedDomainId)?.domain : findRecordById(value)?.name }}
+                → {{ findRecordById(value)?.content }}
+                <ATag v-if="findRecordById(value)?.proxied" color="orange" class="ml-2">
+                  {{ $gettext('Proxied') }}
+                </ATag>
+              </template>
+              <template v-else>
+                {{ label ?? value }}
+              </template>
+            </template>
           </ASelect>
 
           <ACheckbox
@@ -323,17 +381,10 @@ defineExpose({
 
       <template v-if="createNewRecord && selectedDomainId">
         <AFormItem :label="$gettext('Record Type')">
-          <ASelect v-model:value="newRecordForm.type">
-            <ASelectOption value="A">
-              A
-            </ASelectOption>
-            <ASelectOption value="AAAA">
-              AAAA
-            </ASelectOption>
-            <ASelectOption value="CNAME">
-              CNAME
-            </ASelectOption>
-          </ASelect>
+          <ASelect
+            v-model:value="newRecordForm.type"
+            :options="recordTypeOptions"
+          />
         </AFormItem>
 
         <AFormItem :label="$gettext('Record Name')">
@@ -383,7 +434,7 @@ defineExpose({
       <AAlert
         v-if="!availableDomains.length"
         type="info"
-        :message="$gettext('No DNS domains available')"
+        :title="$gettext('No DNS domains available')"
         :description="$gettext('Please add a DNS domain first in the DNS management section.')"
         show-icon
         class="mt-4"

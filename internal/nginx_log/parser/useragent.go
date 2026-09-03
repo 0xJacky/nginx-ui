@@ -465,34 +465,34 @@ func (p *SimpleUserAgentParser) Parse(userAgent string) UserAgentInfo {
 // postProcessInfo applies post-processing rules to improve detection accuracy
 func (p *SimpleUserAgentParser) postProcessInfo(info UserAgentInfo, userAgent string) UserAgentInfo {
 	userAgentLower := strings.ToLower(userAgent)
-	
+
 	// Fix version extraction for some browsers
 	if info.BrowserVer == "" {
 		info.BrowserVer = p.extractVersion(info.Browser, userAgent)
 	}
-	
+
 	// Special handling for mobile vs tablet detection
 	if info.DeviceType == "Mobile" {
-		if strings.Contains(userAgentLower, "ipad") || 
-		   strings.Contains(userAgentLower, "tablet") ||
-		   (strings.Contains(userAgentLower, "android") && !strings.Contains(userAgentLower, "mobile")) {
+		if strings.Contains(userAgentLower, "ipad") ||
+			strings.Contains(userAgentLower, "tablet") ||
+			(strings.Contains(userAgentLower, "android") && !strings.Contains(userAgentLower, "mobile")) {
 			info.DeviceType = "Tablet"
 		}
 	}
-	
+
 	// Fix Android tablet detection when detected as Desktop
 	if info.DeviceType == "Desktop" && strings.Contains(userAgentLower, "android") && !strings.Contains(userAgentLower, "mobile") {
 		info.DeviceType = "Tablet"
 	}
-	
+
 	// Clean up OS versions
 	if info.OSVersion != "" {
 		info.OSVersion = p.cleanVersion(info.OSVersion)
 	}
-	
+
 	// Fix browser names for specific cases
 	info.Browser = p.fixBrowserName(info.Browser, userAgent)
-	
+
 	return info
 }
 
@@ -519,19 +519,19 @@ func (p *SimpleUserAgentParser) extractVersion(browser, userAgent string) string
 func (p *SimpleUserAgentParser) cleanVersion(version string) string {
 	// Replace underscores with dots for iOS versions
 	version = strings.ReplaceAll(version, "_", ".")
-	
+
 	// Only trim trailing .0 patterns, not individual zeros
 	for strings.HasSuffix(version, ".0") {
 		version = strings.TrimSuffix(version, ".0")
 	}
-	
+
 	return version
 }
 
 // fixBrowserName applies corrections to browser names
 func (p *SimpleUserAgentParser) fixBrowserName(browser, userAgent string) string {
 	userAgentLower := strings.ToLower(userAgent)
-	
+
 	// Distinguish between different Chrome-based browsers
 	if browser == "Chrome" {
 		if strings.Contains(userAgentLower, "edg/") {
@@ -544,7 +544,7 @@ func (p *SimpleUserAgentParser) fixBrowserName(browser, userAgent string) string
 			return "Samsung Browser"
 		}
 	}
-	
+
 	return browser
 }
 
@@ -569,7 +569,7 @@ func (p *SimpleUserAgentParser) IsTablet(userAgent string) bool {
 // GetSimpleDeviceType returns a simplified device type (Mobile, Tablet, Desktop, Bot)
 func (p *SimpleUserAgentParser) GetSimpleDeviceType(userAgent string) string {
 	info := p.Parse(userAgent)
-	
+
 	switch info.DeviceType {
 	case "iPhone", "Mobile":
 		return "Mobile"
@@ -584,10 +584,10 @@ func (p *SimpleUserAgentParser) GetSimpleDeviceType(userAgent string) string {
 
 // CachedUserAgentParser provides caching for parsed user agents
 type CachedUserAgentParser struct {
-	parser UserAgentParser
-	cache  map[string]UserAgentInfo
+	parser  UserAgentParser
+	cache   map[string]UserAgentInfo
 	maxSize int
-	mu     sync.RWMutex
+	mu      sync.RWMutex
 }
 
 // NewCachedUserAgentParser creates a cached user agent parser
@@ -595,7 +595,7 @@ func NewCachedUserAgentParser(parser UserAgentParser, maxSize int) *CachedUserAg
 	if maxSize <= 0 {
 		maxSize = 1000
 	}
-	
+
 	return &CachedUserAgentParser{
 		parser:  parser,
 		cache:   make(map[string]UserAgentInfo),
@@ -616,7 +616,7 @@ func (p *CachedUserAgentParser) Parse(userAgent string) UserAgentInfo {
 	// Parse and cache with write lock
 	p.mu.Lock()
 	defer p.mu.Unlock()
-	
+
 	// Double-check after acquiring write lock
 	if info, exists := p.cache[userAgent]; exists {
 		return info

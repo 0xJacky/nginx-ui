@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { LoadingOutlined, SendOutlined } from '@ant-design/icons-vue'
+import { LoadingOutlined, SendOutlined } from '@antdv-next/icons'
 import { useElementSize } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { useSettingsStore } from '@/pinia'

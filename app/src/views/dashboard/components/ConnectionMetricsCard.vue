@@ -21,7 +21,7 @@ const workerProcessesPercent = computed(() => {
   <ARow :gutter="[16, 16]" class="h-full">
     <!-- Current active connections -->
     <ACol :xs="24" :sm="12">
-      <ACard class="h-full" :bordered="false" :body-style="{ padding: '20px', height: '100%' }">
+      <ACard class="h-full" variant="borderless" :styles="{ body: { padding: '20px', height: '100%' } }">
         <div class="flex flex-col h-full">
           <div class="mb-2 text-gray-500 font-medium truncate">
             {{ $gettext('Current active connections') }}
@@ -42,7 +42,7 @@ const workerProcessesPercent = computed(() => {
 
     <!-- Worker processes -->
     <ACol :xs="24" :sm="12">
-      <ACard class="h-full" :bordered="false" :body-style="{ padding: '20px', height: '100%' }">
+      <ACard class="h-full" variant="borderless" :styles="{ body: { padding: '20px', height: '100%' } }">
         <div class="flex flex-col h-full">
           <div class="mb-2 text-gray-500 font-medium truncate">
             {{ $gettext('Worker Processes') }}

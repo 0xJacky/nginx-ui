@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { NginxStatusResponse } from '@/api/ngx'
 import type { HttpConfig } from '@/lib/http/types'
-import { ReloadOutlined } from '@ant-design/icons-vue'
+import { ReloadOutlined } from '@antdv-next/icons'
 import { v4 as uuid } from 'uuid'
 import ngx from '@/api/ngx'
 import { NginxStatus } from '@/constants'

@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import type { SelectProps } from 'ant-design-vue'
-import type { DefaultOptionType } from 'ant-design-vue/es/select'
+import type { SelectProps } from 'antdv-next'
 import type { Ref } from 'vue'
 import type { DNSProvider } from '@/api/auto_cert'
 import type { DnsCredential } from '@/api/dns_credential'
 import auto_cert from '@/api/auto_cert'
 import { isAllowedDnsProviderCode } from '@/constants/dns_providers'
+
+interface DefaultOptionType {
+  label?: string
+  value?: string
+}
 
 const providers = ref([]) as Ref<DNSProvider[]>
 
@@ -107,7 +111,7 @@ function filterOption(input: string, option?: DefaultOptionType) {
         class="mt-2"
         show-icon
         :type="dnsProviderHintType"
-        :message="dnsProviderHint"
+        :title="dnsProviderHint"
       />
     </AFormItem>
     <AFormItem>

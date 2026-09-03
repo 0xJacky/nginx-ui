@@ -16,11 +16,11 @@ import (
 // BenchmarkConservativeWorkerScaling tests lower worker multipliers to show clearer performance differences
 func BenchmarkConservativeWorkerScaling(b *testing.B) {
 	recordCount := 10000 // Moderate dataset for clear differences
-	
+
 	// Test lower multipliers to show more obvious improvements
 	testConfigs := []struct {
-		name        string
-		multiplier  float64
+		name       string
+		multiplier float64
 	}{
 		{"0.5x_CPU_Conservative", 0.5},
 		{"1x_CPU_Old_Default", 1.0},
@@ -44,30 +44,30 @@ func BenchmarkConservativeWorkerScaling(b *testing.B) {
 			if workerCount < 1 {
 				workerCount = 1
 			}
-			
+
 			b.ResetTimer()
 			for i := 0; i < b.N; i++ {
 				indexDir := filepath.Join(tempDir, fmt.Sprintf("index_%s_%d", tc.name, i))
-				
+
 				// Create config with specific worker count
 				config := indexer.DefaultIndexerConfig()
 				config.IndexPath = indexDir
 				config.WorkerCount = workerCount
 				config.EnableMetrics = false
-				
+
 				// Run test
 				start := time.Now()
 				result := runConservativeWorkerTest(b, config, testLogFile)
 				duration := time.Since(start)
-				
+
 				// Report metrics
 				throughput := float64(result.Processed) / duration.Seconds()
 				b.ReportMetric(throughput, "records/sec")
 				b.ReportMetric(float64(workerCount), "workers")
 				b.ReportMetric(float64(result.Processed), "processed")
-				
+
 				if i == 0 {
-					b.Logf("Multiplier=%.1fx, Workers=%d, Processed=%d, Duration=%v, Throughput=%.0f rec/s", 
+					b.Logf("Multiplier=%.1fx, Workers=%d, Processed=%d, Duration=%v, Throughput=%.0f rec/s",
 						tc.multiplier, workerCount, result.Processed, duration, throughput)
 				}
 			}
@@ -82,32 +82,32 @@ type ConservativeTestResult struct {
 
 func runConservativeWorkerTest(b *testing.B, config *indexer.Config, logFile string) *ConservativeTestResult {
 	ctx := context.Background()
-	
+
 	// Parser setup with proportional worker count
 	parserConfig := &parser.Config{
 		MaxLineLength: 4 * 1024,
-		WorkerCount:   max(1, config.WorkerCount / 3), // Parser uses 1/3 of indexer workers
+		WorkerCount:   max(1, config.WorkerCount/3), // Parser uses 1/3 of indexer workers
 		BatchSize:     500,
 	}
-	
+
 	optimizedParser := parser.NewParser(
 		parserConfig,
 		nil, // No UA parser for speed
 		nil, // No Geo service for speed
 	)
-	
+
 	// Parse only for consistent measurement
 	file, err := os.Open(logFile)
 	if err != nil {
 		b.Fatalf("Failed to open log file: %v", err)
 	}
 	defer file.Close()
-	
+
 	parseResult, err := optimizedParser.ParseStream(ctx, file)
 	if err != nil {
 		b.Fatalf("Parsing failed: %v", err)
 	}
-	
+
 	return &ConservativeTestResult{
 		Processed: parseResult.Processed,
 		Duration:  parseResult.Duration,
@@ -120,9 +120,9 @@ func generateConservativeTestData(filename string, recordCount int) error {
 		return err
 	}
 	defer file.Close()
-	
+
 	baseTime := time.Now().Unix()
-	
+
 	for i := 0; i < recordCount; i++ {
 		logLine := fmt.Sprintf(
 			`192.168.1.%d - - [%s] "GET /api/test%d HTTP/1.1" 200 %d "-" "Test/1.0" 0.001`,
@@ -133,7 +133,7 @@ func generateConservativeTestData(filename string, recordCount int) error {
 		)
 		fmt.Fprintln(file, logLine)
 	}
-	
+
 	return nil
 }
 

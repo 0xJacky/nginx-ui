@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { CheckedType } from '@/types'
-import { Modal } from 'ant-design-vue'
+import { Modal } from 'antdv-next'
 import template from '@/api/template'
 import { useSiteEditorStore } from '@/views/site/site_edit/components/SiteEditor/store'
 

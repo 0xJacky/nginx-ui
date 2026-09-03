@@ -10,6 +10,7 @@ export interface AuthResponse {
   code: number
   error: string
   secure_session_id: string
+  secure_session_ttl?: number
   pre_auth_id?: string
   options?: {
     publicKey: PublicKeyCredentialRequestOptionsJSON

@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { DatabaseOutlined } from '@ant-design/icons-vue'
+import { DatabaseOutlined } from '@antdv-next/icons'
 import { useSettingsStore } from '@/pinia'
 
 export const nodesRoutes: RouteRecordRaw[] = [

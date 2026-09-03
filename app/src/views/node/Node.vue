@@ -1,4 +1,5 @@
 <script setup lang="tsx">
+import type { SelectProps } from 'antdv-next'
 import type { AnalyticNode } from '@/api/node'
 import { StdCurd } from '@uozi-admin/curd'
 import nodeApi from '@/api/node'
@@ -18,6 +19,12 @@ const loadingRestart = ref(false)
 const isAutoRefresh = ref(true)
 const autoRefreshInterval = ref(5) // seconds
 const autoRefreshTimer = ref<NodeJS.Timeout | null>(null)
+const autoRefreshIntervalOptions: SelectProps['options'] = [
+  { label: '5s', value: 5 },
+  { label: '10s', value: 10 },
+  { label: '30s', value: 30 },
+  { label: '60s', value: 60 },
+]
 
 function startAutoRefresh() {
   if (autoRefreshTimer.value) {
@@ -159,21 +166,9 @@ const inTrash = computed(() => {
             size="small"
             class="w-16"
             :disabled="isAutoRefresh"
+            :options="autoRefreshIntervalOptions"
             @change="isAutoRefresh && startAutoRefresh()"
-          >
-            <ASelectOption :value="5">
-              5s
-            </ASelectOption>
-            <ASelectOption :value="10">
-              10s
-            </ASelectOption>
-            <ASelectOption :value="30">
-              30s
-            </ASelectOption>
-            <ASelectOption :value="60">
-              60s
-            </ASelectOption>
-          </ASelect>
+          />
 
           <span>{{ $gettext('Auto Refresh') }}</span>
           <ASwitch

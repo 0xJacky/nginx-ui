@@ -2,10 +2,10 @@
 import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
 import type { NginxLogData } from '@/api/nginx_log'
 import type { TabOption } from '@/components/TabFilter'
-import { CheckCircleOutlined, ExclamationCircleOutlined, StopOutlined, SyncOutlined } from '@ant-design/icons-vue'
+import { CheckCircleOutlined, ExclamationCircleOutlined, StopOutlined, SyncOutlined } from '@antdv-next/icons'
 import { StdCurd } from '@uozi-admin/curd'
 import { useRouteQuery } from '@vueuse/router'
-import { Badge, Modal, Tag, Tooltip } from 'ant-design-vue'
+import { Badge, Modal, Tag, Tooltip } from 'antdv-next'
 import dayjs from 'dayjs'
 import nginxLog from '@/api/nginx_log'
 import { DevDebugPanel } from '@/components/DevDebugPanel'
@@ -231,23 +231,23 @@ const indexColumns: StdTableColumn[] = [
       select: {
         options: [
           {
-            label: () => $gettext('Not Indexed'),
+            label: $gettext('Not Indexed'),
             value: 'not_indexed',
           },
           {
-            label: () => $gettext('Queued'),
+            label: $gettext('Queued'),
             value: 'queued',
           },
           {
-            label: () => $gettext('Indexing'),
+            label: $gettext('Indexing'),
             value: 'indexing',
           },
           {
-            label: () => $gettext('Indexed'),
+            label: $gettext('Indexed'),
             value: 'indexed',
           },
           {
-            label: () => $gettext('Error'),
+            label: $gettext('Error'),
             value: 'error',
           },
         ],
@@ -579,7 +579,7 @@ const debugData = computed(() => ({
         <div class="debug-item">
           <span class="debug-label">Quick Actions:</span>
           <div class="mt-2">
-            <ASpace direction="vertical" :size="8">
+            <ASpace orientation="vertical" :size="8">
               <AButton size="small" @click="showIndexingSettingsModal">
                 Show Indexing Modal
               </AButton>

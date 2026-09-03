@@ -103,7 +103,7 @@ func IsUnderNginxConfDir(path, nginxConfPath string) bool {
 
 // CheckFileExists checks if file or directory exists and returns file info
 func CheckFileExists(fullPath string) (os.FileInfo, error) {
-	stat, err := os.Stat(fullPath)
+	stat, err := nginx.Stat(fullPath)
 	if err != nil {
 		if os.IsNotExist(err) {
 			return nil, ErrFileNotFound

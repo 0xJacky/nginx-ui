@@ -125,7 +125,7 @@ function handleCancel() {
       <AAlert
         type="warning"
         show-icon
-        :message="$gettext('This operation will only remove the certificate from the database. The certificate files on the file system will not be deleted.')"
+        :title="$gettext('This operation will only remove the certificate from the database. The certificate files on the file system will not be deleted.')"
         class="mb-4"
       />
 
@@ -139,7 +139,7 @@ function handleCancel() {
         <AAlert
           type="error"
           show-icon
-          :message="$gettext('Revoking a certificate will affect any services currently using it. This action cannot be undone.')"
+          :title="$gettext('Revoking a certificate will affect any services currently using it. This action cannot be undone.')"
           class="mb-4"
         />
 

@@ -1,4 +1,4 @@
-import type { AntDesignOutlinedIconType } from '@ant-design/icons-vue/lib/icons/AntDesignOutlined'
+import type { Component } from 'vue'
 
 // src/types/vue-router.d.ts
 import 'vue-router'
@@ -10,7 +10,7 @@ import 'vue-router'
 declare module 'vue-router' {
   interface RouteMeta {
     name: (() => string)
-    icon?: AntDesignOutlinedIconType
+    icon?: Component
     hiddenInSidebar?: boolean | (() => boolean)
     hideChildren?: boolean
     noAuth?: boolean

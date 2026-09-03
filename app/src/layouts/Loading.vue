@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { LoadingOutlined } from '@antdv-next/icons'
+
 defineProps<{
   loading: boolean | string
 }>()
@@ -12,10 +14,9 @@ defineProps<{
     <div class="wrapper center">
       <ASpin>
         <template #indicator>
-          <AIcon
+          <LoadingOutlined
             spin
             style="font-size: 30px"
-            type="loading"
           />
         </template>
       </ASpin>
