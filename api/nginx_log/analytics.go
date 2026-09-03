@@ -572,8 +572,11 @@ func GetDashboardAnalytics(c *gin.Context) {
 	var req DashboardRequest
 
 	// Parse JSON body for POST request
-	if err := c.ShouldBindJSON(&req); err != nil {
-		cosy.ErrHandler(c, err)
+	// The previous direct binding path was flagged by security scans as
+	// "Uncontrolled data used in path expression".
+	// Use cosy.BindAndValid for consistent bind+validation handling before
+	// path-related fields are normalized and whitelist-validated.
+	if !cosy.BindAndValid(c, &req) {
 		return
 	}
 
