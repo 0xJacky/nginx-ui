@@ -933,11 +933,19 @@ type ChinaCityMapRequest struct {
 	Province string `json:"province" binding:"required"`
 }
 
+func bindChinaCityMapRequest(c *gin.Context) (ChinaCityMapRequest, bool) {
+	var payload ChinaCityMapRequest
+	if !cosy.BindAndValid(c, &payload) {
+		return ChinaCityMapRequest{}, false
+	}
+
+	return payload, true
+}
+
 // GetChinaCityMapData provides city-level geographic data for a China province
 func GetChinaCityMapData(c *gin.Context) {
-	var req ChinaCityMapRequest
-	if err := c.ShouldBindJSON(&req); err != nil {
-		cosy.ErrHandler(c, err)
+	req, ok := bindChinaCityMapRequest(c)
+	if !ok {
 		return
 	}
 
