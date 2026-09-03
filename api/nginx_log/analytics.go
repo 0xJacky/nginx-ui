@@ -29,6 +29,28 @@ type GeoDataItem struct {
 	Percent float64 `json:"percent"`
 }
 
+type logPathValidator interface {
+	ValidateLogPath(logPath string) error
+}
+
+// decodeAndValidateLogPath normalizes user input before it can be used in any
+// path-related operation.
+func decodeAndValidateLogPath(rawPath string, validator logPathValidator) (string, error) {
+	if rawPath == "" {
+		return "", nil
+	}
+
+	decodedPath, _ := helper.DecodePathParam(rawPath)
+
+	if validator != nil {
+		if err := validator.ValidateLogPath(decodedPath); err != nil {
+			return "", err
+		}
+	}
+
+	return decodedPath, nil
+}
+
 // AnalyticsRequest represents the request for log analytics
 type AnalyticsRequest struct {
 	Path      string `json:"path" form:"path"`
@@ -93,6 +115,15 @@ func GetLogAnalytics(c *gin.Context) {
 	if analyticsService == nil {
 		cosy.ErrHandler(c, nginx_log.ErrModernAnalyticsNotAvailable)
 		return
+	}
+
+	if req.Path != "" {
+		decodedPath, err := decodeAndValidateLogPath(req.Path, analyticsService)
+		if err != nil {
+			cosy.ErrHandler(c, err)
+			return
+		}
+		req.Path = decodedPath
 	}
 
 	// Validate log path
@@ -200,6 +231,15 @@ func AdvancedSearchLogs(c *gin.Context) {
 	if analyticsService == nil {
 		cosy.ErrHandler(c, nginx_log.ErrModernAnalyticsNotAvailable)
 		return
+	}
+
+	if req.LogPath != "" {
+		decodedPath, err := decodeAndValidateLogPath(req.LogPath, analyticsService)
+		if err != nil {
+			cosy.ErrHandler(c, err)
+			return
+		}
+		req.LogPath = decodedPath
 	}
 
 	// Use default access log path if LogPath is empty
@@ -550,6 +590,15 @@ func GetDashboardAnalytics(c *gin.Context) {
 		return
 	}
 
+	if req.LogPath != "" {
+		decodedPath, err := decodeAndValidateLogPath(req.LogPath, analyticsService)
+		if err != nil {
+			cosy.ErrHandler(c, err)
+			return
+		}
+		req.LogPath = decodedPath
+	}
+
 	// Use default access log path if LogPath is empty
 	if req.LogPath == "" {
 		defaultLogPath := nginx.GetAccessLogPath()
@@ -657,6 +706,15 @@ func GetWorldMapData(c *gin.Context) {
 		return
 	}
 
+	if req.Path != "" {
+		decodedPath, err := decodeAndValidateLogPath(req.Path, analyticsService)
+		if err != nil {
+			cosy.ErrHandler(c, err)
+			return
+		}
+		req.Path = decodedPath
+	}
+
 	// Use default access log path if Path is empty
 	if req.Path == "" {
 		defaultLogPath := nginx.GetAccessLogPath()
@@ -756,6 +814,15 @@ func GetChinaMapData(c *gin.Context) {
 	if analyticsService == nil {
 		cosy.ErrHandler(c, nginx_log.ErrModernAnalyticsNotAvailable)
 		return
+	}
+
+	if req.Path != "" {
+		decodedPath, err := decodeAndValidateLogPath(req.Path, analyticsService)
+		if err != nil {
+			cosy.ErrHandler(c, err)
+			return
+		}
+		req.Path = decodedPath
 	}
 
 	// Use default access log path if Path is empty
@@ -858,6 +925,15 @@ func GetChinaCityMapData(c *gin.Context) {
 		return
 	}
 
+	if req.Path != "" {
+		decodedPath, err := decodeAndValidateLogPath(req.Path, analyticsService)
+		if err != nil {
+			cosy.ErrHandler(c, err)
+			return
+		}
+		req.Path = decodedPath
+	}
+
 	if req.Path == "" {
 		defaultLogPath := nginx.GetAccessLogPath()
 		if defaultLogPath != "" {
@@ -925,6 +1001,15 @@ func GetGeoStats(c *gin.Context) {
 	if analyticsService == nil {
 		cosy.ErrHandler(c, nginx_log.ErrModernAnalyticsNotAvailable)
 		return
+	}
+
+	if req.Path != "" {
+		decodedPath, err := decodeAndValidateLogPath(req.Path, analyticsService)
+		if err != nil {
+			cosy.ErrHandler(c, err)
+			return
+		}
+		req.Path = decodedPath
 	}
 
 	// Use default access log path if Path is empty
