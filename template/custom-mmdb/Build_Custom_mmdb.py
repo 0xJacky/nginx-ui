@@ -13,6 +13,7 @@ REGION_CODES_JSON_FILE = BASE_DIR / "region_codes.json"
 IP_INVENTORY_JSON_FILE = BASE_DIR / "ip_inventory.json"
 
 DATABASE_TYPE = "Enterprise-Custom"
+LANGUAGES = ["en", "zh-CN"]
 LANGUAGES = ["en", "cn"]
 
 
@@ -33,6 +34,7 @@ REGION_CODES = load_region_codes(REGION_CODES_JSON_FILE)
 # ==========================================
 # 企业内部 IP / 网段（键可为单 IP 或 CIDR）
 # country/province/city: 对应 REGION_CODES 逐层嵌套的编码路径
+# c1~c4: Branch / Supplier / Environment / Business Office
 # c1~c4: Branch / Supplier / Environment / Business Office; each value uses
 # {"en": "...", "cn": "..."} for localized descriptions.
 # 数据来源于 ip_inventory.json，新增/修改 IP 直接编辑该 JSON 文件即可。
@@ -90,16 +92,6 @@ def validate_ip_inventory():
             raise ValueError(f"Invalid IP or network: {key}")
 
         resolve_region(key, meta)
-
-        for field in ("c1", "c2", "c3", "c4"):
-            description = meta.get(field)
-            if not isinstance(description, dict) or not all(
-                language in description for language in LANGUAGES
-            ):
-                raise ValueError(
-                    f"Missing localized descriptions for {key}.{field}; "
-                    f"expected languages: {', '.join(LANGUAGES)}"
-                )
 
 
 def build_record(key, meta):
@@ -171,6 +163,7 @@ def write_mmdb(networks, output_file):
         languages=LANGUAGES,
         description={
             "en": "Enterprise internal IP database",
+            "zh-CN": "企业内网 IP 数据库",
             "cn": "企业内网 IP 数据库",
         },
         int_type="u32",
@@ -206,6 +199,10 @@ def main():
         print(
             f"{item['network']} -> "
             f"{meta['country']}-{meta['province']}-{meta['city']} / "
+            f"{meta['c1']} / "
+            f"{meta['c2']} / "
+            f"{meta['c3']} / "
+            f"{meta['c4']}"
                 f"{meta['c1']['cn']} / "
                 f"{meta['c2']['cn']} / "
                 f"{meta['c3']['cn']} / "
