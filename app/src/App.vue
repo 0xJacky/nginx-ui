@@ -5,10 +5,13 @@ import zh_CN from 'antdv-next/locale/zh_CN'
 import zh_TW from 'antdv-next/locale/zh_TW'
 import loadTranslations from '@/api/translations'
 import AppProvider from '@/components/AppProvider'
+import { useSessionExpiry } from '@/composables/useSessionExpiry'
 import gettext from '@/gettext'
 import { useSettingsStore } from '@/pinia'
 
 const route = useRoute()
+
+useSessionExpiry()
 
 const media = window.matchMedia('(prefers-color-scheme: dark)')
 

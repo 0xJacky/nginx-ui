@@ -28,6 +28,7 @@ Applicable for version v2.0.0-beta.37 and above.
 | Configuration Setting | Environment Variable                |
 |-----------------------|-------------------------------------|
 | IPWhiteList           | NGINX_UI_AUTH_IP_WHITE_LIST         |
+| TrustedProxies        | NGINX_UI_AUTH_TRUSTED_PROXIES      |
 | BanThresholdMinutes   | NGINX_UI_AUTH_BAN_THRESHOLD_MINUTES |
 | MaxAttempts           | NGINX_UI_AUTH_MAX_ATTEMPTS          |
 
@@ -108,7 +109,7 @@ Applicable for version v2.0.0-beta.37 and above.
 |------------------------|---------------------------------------|
 | IndexingEnabled | NGINX_UI_NGINX_LOG_INDEXING_ENABLED |
 | IndexPath               | NGINX_UI_NGINX_LOG_INDEX_PATH                |
-| IndexCustomMMDB         | NGINX_UI_NGINX_LOG_INDEX_CUSTOM_MMDB         |
+| [IndexCustomMMDB](./config-nginx-log.md#indexcustommmdb) | NGINX_UI_NGINX_LOG_INDEX_CUSTOM_MMDB |
 
 ## Node
 | Configuration Setting | Environment Variable            |

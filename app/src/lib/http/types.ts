@@ -2,8 +2,9 @@ import type { AxiosRequestConfig } from 'axios'
 
 // server response
 export interface CosyError {
+  httpStatus?: number
   scope?: string
-  code: string
+  code: string | number
   message: string
   params?: string[]
 }

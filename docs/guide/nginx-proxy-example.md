@@ -3,6 +3,17 @@
 In this guide, we'll walk you through the process of configuring an Nginx server to redirect HTTP traffic to HTTPS and
 set up a reverse proxy for the Nginx UI running on `http://127.0.0.1:9000/`.
 
+When using this configuration outside the official Docker image, add the
+reverse proxy address to the Nginx UI configuration and restart Nginx UI:
+
+```ini
+[auth]
+TrustedProxies = 127.0.0.1
+```
+
+Only list proxy addresses you control. Nginx UI ignores forwarded client IP
+headers received from other peers.
+
 ```nginx
 server {
     listen          80;

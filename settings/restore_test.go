@@ -23,6 +23,8 @@ JwtSecret = destination-jwt
 [auth]
 IPWhiteList = 192.0.2.1
 IPWhiteList = 192.0.2.2
+TrustedProxies = 127.0.0.1
+TrustedProxies = 10.0.0.0/8
 [crypto]
 Secret = destination-crypto
 [cluster]
@@ -41,6 +43,7 @@ Port = 9000
 JwtSecret = source-jwt
 [auth]
 IPWhiteList = 198.51.100.1
+TrustedProxies = 0.0.0.0/0
 [crypto]
 Secret = source-crypto
 [cluster]
@@ -63,6 +66,7 @@ Port = 9443
 	require.NoError(t, err)
 	assert.Equal(t, "destination-jwt", config.Section("app").Key("JwtSecret").String())
 	assert.Equal(t, []string{"192.0.2.1", "192.0.2.2"}, config.Section("auth").Key("IPWhiteList").ValueWithShadows())
+	assert.Equal(t, []string{"127.0.0.1", "10.0.0.0/8"}, config.Section("auth").Key("TrustedProxies").ValueWithShadows())
 	assert.Equal(t, "destination-crypto", config.Section("crypto").Key("Secret").String())
 	assert.Contains(t, config.Section("cluster").Key("Node").String(), "destination-secret")
 	assert.Equal(t, "destination-node", config.Section("node").Key("Secret").String())
@@ -72,6 +76,7 @@ Port = 9443
 	assert.Equal(t, "/destination/nginx", config.Section("nginx").Key("ConfigDir").String())
 	assert.Equal(t, "9443", config.Section("server").Key("Port").String())
 	assert.Contains(t, skipped, "app.JwtSecret")
+	assert.Contains(t, skipped, "auth.TrustedProxies")
 	assert.Contains(t, skipped, "crypto.Secret")
 	assert.Contains(t, skipped, "cluster.Node")
 	assert.Contains(t, skipped, "node.Secret")

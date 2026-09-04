@@ -47,20 +47,18 @@ func TestSaveSettingsRejectsNegativeLogrotateInterval(t *testing.T) {
 	assert.Contains(t, w.Body.String(), "\"interval\":\"min\"")
 }
 
-// TestSaveSettingsAcceptsRedactedIPWhiteList reproduces the reported bug where the
+// TestSaveSettingsAcceptsRedactedAuthNetworks reproduces the reported bug where the
 // frontend round-trips the sensitive-field placeholder `__NGINX_UI_REDACTED__` back
-// to POST /api/settings. Without the `redacted` validator composed via `ip|redacted`,
-// the payload fails binding on `auth.ip_white_list` with tag `ip`. With the fix, the
-// placeholder is accepted; other unrelated binding errors (here, negative
-// logrotate.interval) still fire, so the response is still 406 but must not mention
-// `ip_white_list`. This avoids exercising the success path, which would need a
-// fully initialized settings.Conf on disk.
-func TestSaveSettingsAcceptsRedactedIPWhiteList(t *testing.T) {
+// to POST /api/settings. Without the `redacted` validator composed with the network
+// validators, the payload fails binding on the protected auth fields. With the fix,
+// the placeholders are accepted; another unrelated binding error still fires, so
+// the response is still 406 but must not mention either auth network field.
+func TestSaveSettingsAcceptsRedactedAuthNetworks(t *testing.T) {
 	w := httptest.NewRecorder()
 	c, _ := gin.CreateTestContext(w)
 	c.Request = httptest.NewRequest(http.MethodPost, "/api/settings",
 		bytes.NewBufferString(`{
-			"auth":{"ip_white_list":["__NGINX_UI_REDACTED__"],"ban_threshold_minutes":1,"max_attempts":1},
+			"auth":{"ip_white_list":["__NGINX_UI_REDACTED__"],"trusted_proxies":["__NGINX_UI_REDACTED__"],"ban_threshold_minutes":1,"max_attempts":1},
 			"cert":{"renewal_interval":7},
 			"logrotate":{"enabled":true,"interval":-1}
 		}`))
@@ -71,6 +69,7 @@ func TestSaveSettingsAcceptsRedactedIPWhiteList(t *testing.T) {
 	assert.Equal(t, http.StatusNotAcceptable, w.Code)
 	assert.Contains(t, w.Body.String(), "\"interval\":\"min\"")
 	assert.NotContains(t, w.Body.String(), "ip_white_list")
+	assert.NotContains(t, w.Body.String(), "trusted_proxies")
 }
 
 func TestGetSettingsRedactsSensitiveFields(t *testing.T) {
@@ -104,6 +103,7 @@ func TestGetSettingsRedactsSensitiveFields(t *testing.T) {
 	cSettings.AppSettings.JwtSecret = "jwt-secret"
 	cSettings.AppSettings.PageSize = 50
 	appsettings.AuthSettings.IPWhiteList = []string{"192.0.2.1"}
+	appsettings.AuthSettings.TrustedProxies = []string{"127.0.0.1", "10.0.0.0/8"}
 	appsettings.CasdoorSettings.Endpoint = "https://casdoor.example.com"
 	appsettings.CasdoorSettings.ClientId = "casdoor-client-id"
 	appsettings.CasdoorSettings.ClientSecret = "casdoor-secret"
@@ -160,6 +160,7 @@ func TestGetSettingsRedactsSensitiveFields(t *testing.T) {
 	assert.Equal(t, []any{"/var/log/nginx"}, body["nginx"]["log_dir_white_list"])
 	assert.Equal(t, "nginx-container", body["nginx"]["container_name"])
 	assert.Equal(t, []any{"192.0.2.1"}, body["auth"]["ip_white_list"])
+	assert.Equal(t, []any{"127.0.0.1", "10.0.0.0/8"}, body["auth"]["trusted_proxies"])
 	assert.Equal(t, "login", body["terminal"]["start_cmd"])
 }
 

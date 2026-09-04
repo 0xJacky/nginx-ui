@@ -25,6 +25,7 @@ func TestSetup(t *testing.T) {
 
 	// Auth
 	_ = os.Setenv("NGINX_UI_AUTH_IP_WHITE_LIST", "127.0.0.1,192.168.1.1")
+	_ = os.Setenv("NGINX_UI_AUTH_TRUSTED_PROXIES", "127.0.0.1,10.0.0.0/8,2001:db8::/32")
 	_ = os.Setenv("NGINX_UI_AUTH_BAN_THRESHOLD_MINUTES", "20")
 	_ = os.Setenv("NGINX_UI_AUTH_MAX_ATTEMPTS", "20")
 
@@ -119,6 +120,7 @@ func TestSetup(t *testing.T) {
 
 	// Auth
 	assert.Equal(t, []string{"127.0.0.1", "192.168.1.1"}, AuthSettings.IPWhiteList)
+	assert.Equal(t, []string{"127.0.0.1", "10.0.0.0/8", "2001:db8::/32"}, AuthSettings.TrustedProxies)
 	assert.Equal(t, 20, AuthSettings.BanThresholdMinutes)
 	assert.Equal(t, 20, AuthSettings.MaxAttempts)
 

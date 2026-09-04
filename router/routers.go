@@ -35,6 +35,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/debug"
+	"github.com/uozi-tech/cosy/logger"
 )
 
 func InitRouter() {
@@ -44,7 +45,9 @@ func InitRouter() {
 
 	r.Use(audit.LoggingMiddleware())
 
-	r.SetTrustedProxies(nil)
+	if err := configureTrustedProxies(r); err != nil {
+		logger.Fatalf("Configure trusted proxies: %v", err)
+	}
 
 	// Add CORS middleware to allow all origins
 	r.Use(middleware.CORS())

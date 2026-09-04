@@ -1,4 +1,4 @@
-import type { NginxPerformanceInfo } from '@/api/ngx'
+import type { NginxPerformanceInfo, NginxPerformanceResponse } from '@/api/ngx'
 import ngx from '@/api/ngx'
 import { formatDateTime } from '@/lib/helper'
 
@@ -25,6 +25,15 @@ export function useNginxPerformance() {
     lastUpdateTime.value = new Date().toISOString()
   }
 
+  function applyPerformanceData(response: NginxPerformanceResponse) {
+    loading.value = false
+    stubStatusEnabled.value = response.stub_status_enabled
+    error.value = response.error || (response.running ? '' : response.message || $gettext('Nginx is not running'))
+    nginxInfo.value = response.running ? response.info : null
+    if (response.running)
+      updateLastUpdateTime()
+  }
+
   // Check stub_status availability and get initial data
   async function fetchInitialData() {
     try {
@@ -35,15 +44,7 @@ export function useNginxPerformance() {
       // Get performance data
       const response = await ngx.detail_status()
 
-      if (response.running) {
-        stubStatusEnabled.value = response.stub_status_enabled
-        nginxInfo.value = response.info
-        updateLastUpdateTime()
-      }
-      else {
-        error.value = $gettext('Nginx is not running')
-        nginxInfo.value = null
-      }
+      applyPerformanceData(response)
     }
     catch (err) {
       console.error('Failed to get Nginx performance data:', err)
@@ -63,6 +64,7 @@ export function useNginxPerformance() {
     formattedUpdateTime,
     updateLastUpdateTime,
     fetchInitialData,
+    applyPerformanceData,
     stubStatusEnabled,
     stubStatusLoading,
     stubStatusError,

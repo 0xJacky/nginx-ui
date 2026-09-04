@@ -39,21 +39,69 @@ Controls how frequently the incremental indexing job scans access logs for new e
 ### IndexCustomMMDB
 
 - Type: `string`
+- Default: empty (use the standard GeoLite2 database)
 - Environment Variable: `NGINX_UI_NGINX_LOG_INDEX_CUSTOM_MMDB`
-- Version: `>= v2.11.0`
+- Requires a build that includes [PR #1843](https://github.com/0xJacky/nginx-ui/pull/1843).
 
-Sets the custom MMDB file path used for log GeoIP enrichment. This file should be generated in MaxMind MMDB format and contain your custom labels.
+Sets the path to a custom MaxMind DB (`.mmdb`) file for GeoIP enrichment during log indexing. Custom records can supply country, province, city, and four business labels (`c1` through `c4`), such as branch, factory, department, and network type. Enable `IndexingEnabled` to use indexed log analytics.
 
-You can create a custom MMDB using the script in `template/custom-mmdb`:
+Absolute paths are used as configured. Relative paths are resolved against the directory containing the active `app.ini`, not the process working directory. For example, place `enterprise.mmdb` beside `app.ini` and configure:
 
-1. Update `template/custom-mmdb/ip_inventory.json` and `template/custom-mmdb/region_codes.json` with your data.
-2. Run the build script from the project root:
-
-```bash
-python template/custom-mmdb/Build_Custom_mmdb.py
+```ini
+[nginx_log]
+IndexingEnabled = true
+IndexCustomMMDB = enterprise.mmdb
 ```
 
-The script generates `template/custom-mmdb/enterprise.mmdb`. Set `IndexCustomMMDB` to this file path (or copy it next to `app.ini` and configure that path).
+Alternatively, set the environment variable to a path visible to the Nginx UI process:
+
+```bash
+NGINX_UI_NGINX_LOG_INDEX_CUSTOM_MMDB=/etc/nginx-ui/enterprise.mmdb
+```
+
+For Docker deployments, mount the database into the container and use its container path. The file must be readable by the user running Nginx UI.
+
+::: warning Database selection
+If `GeoLite2-City.mmdb` exists beside `app.ini`, it takes precedence over `IndexCustomMMDB`. To use the custom database, move the standard database to a backup location first. The two databases are not merged, and unmatched custom IP ranges do not fall back to the standard city database.
+
+When the standard file is absent, a missing or invalid custom file prevents the GeoIP database from loading. Configuring a path does not download or generate the file.
+:::
+
+#### Build a custom database
+
+The repository includes a generator and sample data in [template/custom-mmdb](https://github.com/0xJacky/nginx-ui/tree/dev/template/custom-mmdb). Use these files from a checkout containing PR #1843.
+
+1. Prepare a Python 3 environment with the generator's dependencies: `mmdb_writer` and `netaddr`.
+2. Edit `region_codes.json` to define the country, province, and city hierarchy. The supplied file is a starting template; add any missing regions before referencing them.
+3. Edit `ip_inventory.json` to map individual IPv4 addresses or CIDR ranges to that hierarchy and your business labels. Include all four label keys; use an empty string for unused labels.
+
+For example, an inventory entry for a network in Suzhou is:
+
+```json
+{
+  "10.10.0.0/16": {
+    "country": "CN",
+    "province": "320000",
+    "city": "320500",
+    "c1": "Suzhou branch",
+    "c2": "Factory A",
+    "c3": "Production IT",
+    "c4": "Wired network"
+  }
+}
+```
+
+Run the generator from the repository root:
+
+```bash
+python3 template/custom-mmdb/Build_Custom_mmdb.py
+```
+
+The script validates the network addresses and region references, then writes `enterprise.mmdb` and an inventory export, `enterprise_data.json`, to `template/custom-mmdb`. The supplied generator creates an IPv4 database; individual IPv4 addresses become `/32` networks.
+
+Copy `enterprise.mmdb` to the configured location and restart Nginx UI after changing the setting or replacing the database. GeoIP fields are stored during indexing, so existing indexed entries need to be reindexed to reflect the new geographic data and business labels.
+
+The GeoLite2 settings page displays the configured custom database filename and hides the re-download action while `IndexCustomMMDB` is nonempty. This indicator reflects the configured path; database selection still follows the precedence described above.
 
 ## System Requirements
 

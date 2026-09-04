@@ -1,6 +1,7 @@
 import type { InternalAxiosRequestConfig } from 'axios'
 import type { CosyError } from './types'
 import { http, service, useAxios } from '@uozi-admin/request'
+import { CanceledError } from 'axios'
 import dayjs from 'dayjs'
 import JSEncrypt from 'jsencrypt'
 import { storeToRefs } from 'pinia'
@@ -10,6 +11,7 @@ import { ENCODED_PATH_PREFIX, encodePathParam, normalizeRequestUrl, PATH_PARAMS_
 import { useSettingsStore, useUserStore } from '@/pinia'
 import router from '@/routes'
 import { handleApiError, useMessageDedupe } from './error'
+import { normalizeHttpError, shouldLogoutOnAuthFailure } from './normalizeError'
 
 const { setRequestInterceptor, setResponseInterceptor } = useAxios()
 
@@ -108,6 +110,10 @@ export function setupRequestInterceptor() {
   const { token, secureSessionId } = storeToRefs(user)
   setRequestInterceptor(
     async config => {
+      if (user.expireSession()) {
+        await router.replace('/login')
+        throw new CanceledError('Session expired')
+      }
       if (token.value) {
         config.headers.Authorization = token.value
       }
@@ -226,17 +232,13 @@ export function setupResponseInterceptor() {
             break
           }
           case 403:
-            if (!error.config?.skipAuthRedirect && token.value) {
+            if (shouldLogoutOnAuthFailure(error, token.value)) {
               user.logout()
               await router.push('/login')
               // Reject so callers `await api.x()` don't resolve with
               // `undefined` and crash on downstream property access while
               // the route navigation is still in flight.
-              const authFailedError: CosyError = error.response?.data ?? {
-                code: error?.code || 'AUTH_FAILED',
-                message: error?.message || 'Authorization failed',
-              }
-              return Promise.reject(authFailedError)
+              return Promise.reject(normalizeHttpError(error))
             }
             break
         }
@@ -261,13 +263,10 @@ export function setupResponseInterceptor() {
       }
 
       console.error(error)
-      const errData = (error.response?.data as CosyError) || {
-        code: error?.code || 'NETWORK_ERROR',
-        message: error?.message || 'Network error',
-      }
+      const errData = normalizeHttpError(error)
       await handleApiError(errData, dedupe)
 
-      return Promise.reject(error.response?.data ?? errData)
+      return Promise.reject(errData)
     },
   )
 }

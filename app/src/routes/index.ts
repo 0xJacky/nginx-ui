@@ -80,6 +80,7 @@ router.beforeEach(to => {
   nprogress.start()
 
   const user = useUserStore()
+  user.expireSession()
 
   if (to.meta.noAuth || user.isLogin)
     return true

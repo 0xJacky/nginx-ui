@@ -12,7 +12,7 @@ const props = defineProps<{
 }>()
 
 interface TestResult extends NgxTestResult {
-  code?: string
+  code?: CosyError['code']
   scope?: string
   params?: string[]
 }

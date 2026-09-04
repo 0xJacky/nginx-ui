@@ -23,7 +23,7 @@ const {
   nginxInfo,
   error,
   formattedUpdateTime,
-  updateLastUpdateTime,
+  applyPerformanceData,
   fetchInitialData,
   stubStatusEnabled,
   stubStatusLoading,
@@ -74,21 +74,7 @@ function connectWebSocket() {
       loading.value = false
 
       try {
-        const data = JSON.parse(event.data)
-
-        if (data.running) {
-          nginxInfo.value = data.info
-          updateLastUpdateTime()
-        }
-        else {
-          error.value = data.message || $gettext('Nginx is not running')
-        }
-
-        if (data.error) {
-          error.value = data.error
-        }
-
-        stubStatusEnabled.value = data.stub_status_enabled
+        applyPerformanceData(JSON.parse(event.data))
       }
       catch (parseError) {
         console.error('Error parsing WebSocket message:', parseError)

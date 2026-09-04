@@ -145,6 +145,14 @@ export interface NginxStatusResponse {
   control?: NginxControlOperation
 }
 
+export interface NginxPerformanceResponse {
+  running: boolean
+  stub_status_enabled: boolean
+  info: NginxPerformanceInfo
+  error?: string
+  message?: string
+}
+
 export interface NginxRestartResponse {
   message: string
   control: NginxControlOperation
@@ -167,7 +175,7 @@ const ngx = {
     return http.get('/nginx/status', config)
   },
 
-  detail_status(): Promise<{ running: boolean, stub_status_enabled: boolean, info: NginxPerformanceInfo }> {
+  detail_status(): Promise<NginxPerformanceResponse> {
     return http.get('/nginx/detail_status')
   },
 

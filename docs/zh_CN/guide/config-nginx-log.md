@@ -39,21 +39,69 @@
 ### IndexCustomMMDB
 
 - 类型：`string`
+- 默认值：空（使用标准 GeoLite2 数据库）
 - 环境变量：`NGINX_UI_NGINX_LOG_INDEX_CUSTOM_MMDB`
-- 版本：`>= v2.11.0`
+- 需要使用包含 [PR #1843](https://github.com/0xJacky/nginx-ui/pull/1843) 的构建版本。
 
-设置用于日志 GeoIP 增强的自定义 MMDB 文件路径。该文件应为 MaxMind MMDB 格式，并包含你的自定义标签。
+指定自定义 MaxMind DB（`.mmdb`）文件的路径，用于在日志索引过程中补充 GeoIP 信息。自定义记录可以提供国家、省份、城市及四个业务标签（`c1` 至 `c4`），例如分公司、工厂、部门和网络类型。使用索引日志分析功能时，还需启用 `IndexingEnabled`。
 
-你可以使用项目中的 `template/custom-mmdb` 脚本创建自定义 MMDB：
+绝对路径直接使用配置值。相对路径以当前使用的 `app.ini` 所在目录为基准解析，而非进程的工作目录。例如，将 `enterprise.mmdb` 放在 `app.ini` 同一目录下，并配置：
 
-1. 按需修改 `template/custom-mmdb/ip_inventory.json` 和 `template/custom-mmdb/region_codes.json`。
-2. 在项目根目录执行构建脚本：
-
-```bash
-python template/custom-mmdb/Build_Custom_mmdb.py
+```ini
+[nginx_log]
+IndexingEnabled = true
+IndexCustomMMDB = enterprise.mmdb
 ```
 
-脚本会生成 `template/custom-mmdb/enterprise.mmdb`。将 `IndexCustomMMDB` 配置为该文件路径即可（也可以将文件复制到 `app.ini` 同目录后再配置对应路径）。
+也可以通过环境变量指定 Nginx UI 进程可访问的路径：
+
+```bash
+NGINX_UI_NGINX_LOG_INDEX_CUSTOM_MMDB=/etc/nginx-ui/enterprise.mmdb
+```
+
+使用 Docker 部署时，需要将数据库挂载到容器内，并填写容器内的路径。运行 Nginx UI 的用户必须具有该文件的读取权限。
+
+::: warning 数据库选择规则
+如果 `app.ini` 同一目录下存在 `GeoLite2-City.mmdb`，它的优先级高于 `IndexCustomMMDB`。要使用自定义数据库，请先将标准数据库移至备份位置。两个数据库不会合并；未匹配自定义 IP 范围的地址也不会回退到标准城市数据库查询。
+
+当标准数据库文件不存在时，如果自定义文件缺失或无效，GeoIP 数据库将无法加载。配置路径不会自动下载或生成文件。
+:::
+
+#### 生成自定义数据库
+
+仓库的 [template/custom-mmdb](https://github.com/0xJacky/nginx-ui/tree/dev/template/custom-mmdb) 目录提供了生成脚本和示例数据。请使用包含 PR #1843 的代码版本中的这些文件。
+
+1. 准备 Python 3 环境及生成脚本所需的依赖：`mmdb_writer` 和 `netaddr`。
+2. 编辑 `region_codes.json`，定义国家、省份和城市的层级关系。附带的文件仅作为起始模板；引用尚未列出的地区前，请先补充对应数据。
+3. 编辑 `ip_inventory.json`，将单个 IPv4 地址或 CIDR 网段映射到上述地区层级及业务标签。四个标签键均需保留，未使用的标签填写空字符串。
+
+例如，苏州某网段的清单条目可以写为：
+
+```json
+{
+  "10.10.0.0/16": {
+    "country": "CN",
+    "province": "320000",
+    "city": "320500",
+    "c1": "苏州分公司",
+    "c2": "工厂 A",
+    "c3": "生产 IT 部门",
+    "c4": "有线网络"
+  }
+}
+```
+
+在仓库根目录运行生成脚本：
+
+```bash
+python3 template/custom-mmdb/Build_Custom_mmdb.py
+```
+
+脚本会校验网络地址和地区引用，然后在 `template/custom-mmdb` 中生成 `enterprise.mmdb` 及清单导出文件 `enterprise_data.json`。附带的生成脚本创建的是 IPv4 数据库，单个 IPv4 地址会转换为 `/32` 网段。
+
+将 `enterprise.mmdb` 复制到配置指定的位置，并在修改配置或替换数据库后重启 Nginx UI。GeoIP 字段在索引时写入，因此已有索引记录需要重新索引，才能反映新的地理信息和业务标签。
+
+当 `IndexCustomMMDB` 非空时，GeoLite2 设置页面会显示所配置的自定义数据库文件名，并隐藏重新下载操作。该提示仅反映配置的路径；实际数据库选择仍遵循上述优先级规则。
 
 ## 系统要求
 

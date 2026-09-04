@@ -82,7 +82,15 @@ function translateErrorSync(err: CosyError): string {
   if (msg)
     return substituteParams(msg(), err?.params)
 
-  return substituteParams($gettext(err?.message ?? 'Server error'), err?.params)
+  return substituteParams(fallbackMessage(err), err?.params)
+}
+
+function fallbackMessage(err: CosyError): string {
+  const message = err?.message ?? 'Server error'
+  const translated = $gettext(message)
+  return message === 'Server error' && err.httpStatus
+    ? `${translated} (HTTP ${err.httpStatus})`
+    : translated
 }
 
 // Asynchronous version that handles dynamic loading
@@ -100,7 +108,7 @@ export async function translateError(err: CosyError): Promise<string> {
   }
   catch (error) {
     console.error(error)
-    return $gettext(err?.message ?? 'Server error')
+    return substituteParams(fallbackMessage(err), err?.params)
   }
 }
 

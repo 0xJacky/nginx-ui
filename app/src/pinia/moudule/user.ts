@@ -4,6 +4,7 @@ import type { User } from '@/api/user'
 import { useCookies } from '@vueuse/integrations/useCookies'
 import twoFA from '@/api/2fa'
 import userApi from '@/api/user'
+import { isTokenExpired } from '@/lib/auth/tokenExpiry'
 
 // Matches the release-build two-factor session window on the backend.
 const defaultSecureSessionTTL = 60 * 10
@@ -114,27 +115,37 @@ export const useUserStore = defineStore('user', () => {
     unreadCount.value = 0
     info.value = {} as User
     twoFAStatus.value = getEmptyTwoFAStatus()
+    shortTokenRequest = null
+  }
+
+  function expireSession(): boolean {
+    if (!isTokenExpired(token.value))
+      return false
+    logout()
+    return true
   }
 
   async function fetchShortToken() {
-    if (!token.value)
+    if (expireSession() || !token.value)
       return
     if (shortTokenRequest)
       return shortTokenRequest
-    shortTokenRequest = (async () => {
-      try {
-        const data = await userApi.fetchShortToken()
-        shortToken.value = data.short_token
-      }
-      catch (error) {
+    const requestedToken = token.value
+    const request = userApi.fetchShortToken()
+      .then(data => {
+        // A response from a previous login must not repopulate the new session.
+        if (token.value === requestedToken)
+          shortToken.value = data.short_token
+      })
+      .catch(error => {
         console.error('Failed to fetch short token:', error)
-      }
-      finally {
-        shortTokenRequest = null
-      }
-    })()
-
-    return shortTokenRequest
+      })
+      .finally(() => {
+        if (shortTokenRequest === request)
+          shortTokenRequest = null
+      })
+    shortTokenRequest = request
+    return request
   }
 
   async function getCurrentUser() {
@@ -218,6 +229,7 @@ export const useUserStore = defineStore('user', () => {
     passkeyLogin,
     login,
     logout,
+    expireSession,
     fetchShortToken,
     refreshTwoFAStatus,
     getCurrentUser,
