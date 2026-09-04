@@ -43,7 +43,7 @@ const { server_name } = storeToRefs(useSettingsStore())
       >
         {{ node.name }}
       </span>
-      <ATag @click="clear_node">
+      <ATag variant="outlined" @click="clear_node">
         <DashboardOutlined v-if="isLocal" />
         <CloseOutlined v-else />
       </ATag>

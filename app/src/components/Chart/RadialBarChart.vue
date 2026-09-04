@@ -77,7 +77,7 @@ const chartOptions = computed(() => ({
       v-if="centerText"
       class="radialBar"
       type="radialBar"
-      height="180"
+      height="205"
       :options="chartOptions"
       :series="series"
     />
@@ -95,11 +95,11 @@ const chartOptions = computed(() => ({
   margin: 0 auto;
 
   .radialBar {
-    // ApexCharts reserves ~36px of empty canvas above the ring and ~34px below
+    // ApexCharts reserves ~41px of empty canvas above the ring and ~38px below
     // it. Crop that dead space so the card stays compact without shrinking the
     // ring itself.
-    margin-top: -30px;
-    margin-bottom: -18px;
+    margin-top: -35px;
+    margin-bottom: -23px;
   }
 
   .bottom-text {
