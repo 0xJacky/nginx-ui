@@ -459,10 +459,12 @@ function wsOnMessage(m: MessageEvent) {
 <style lang="less" scoped>
 .first-row {
   .ant-card {
-    min-height: 227px;
+    // Columns already stretch to the tallest one, so let the card fill its
+    // column to keep all cards in this row flush at the bottom.
+    height: 100%;
 
     p {
-      margin-bottom: 8px;
+      margin-bottom: 4px;
     }
   }
 

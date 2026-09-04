@@ -73,51 +73,38 @@ const chartOptions = computed(() => ({
     :key="theme"
     class="radial-bar-container"
   >
-    <p class="bottom-text">
-      {{ bottomText }}
-    </p>
     <VueApexCharts
       v-if="centerText"
       class="radialBar"
       type="radialBar"
-      height="205"
+      height="180"
       :options="chartOptions"
       :series="series"
     />
+    <p class="bottom-text">
+      {{ bottomText }}
+    </p>
   </div>
 </template>
 
 <style lang="less" scoped>
 .radial-bar-container {
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin: 0 auto;
-  height: 112px !important;
 
   .radialBar {
-    position: absolute;
-    top: -30px;
-    @media (max-width: 1700px) and (min-width: 1200px) {
-      top: -30px;
-    }
-    @media (max-width: 768px) and (min-width: 290px) {
-      left: 50%;
-      transform: translateX(-50%);
-    }
-  }
-
-  .text {
-    position: absolute;
-    width: 100%;
-    text-align: center;
+    // ApexCharts reserves ~36px of empty canvas above the ring and ~34px below
+    // it. Crop that dead space so the card stays compact without shrinking the
+    // ring itself.
+    margin-top: -30px;
+    margin-bottom: -18px;
   }
 
   .bottom-text {
-    position: absolute;
-    top: calc(106px);
-    left: 50%;
-    transform: translateX(-50%);
+    margin: 0;
     font-weight: 600;
-    width: 100%;
     text-align: center;
   }
 }
