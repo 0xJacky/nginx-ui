@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/settings"
+	"github.com/fsnotify/fsnotify"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -68,7 +69,9 @@ func TestPeriodicScanIntervalUsesRemoteIntervalWhenPolling(t *testing.T) {
 }
 
 func TestScanDirectoryRecursiveReadsConfigsThroughTargetFilesystem(t *testing.T) {
-	confDir := t.TempDir()
+	realConfDir := t.TempDir()
+	confDir := filepath.Join(t.TempDir(), "nginx")
+	require.NoError(t, os.Symlink(realConfDir, confDir))
 	originalConfigDir := settings.NginxSettings.ConfigDir
 	settings.NginxSettings.ConfigDir = confDir
 	t.Cleanup(func() { settings.NginxSettings.ConfigDir = originalConfigDir })
@@ -85,6 +88,12 @@ func TestScanDirectoryRecursiveReadsConfigsThroughTargetFilesystem(t *testing.T)
 
 	siteConf := filepath.Join(sitesDir, "example.conf")
 	require.NoError(t, os.WriteFile(siteConf, []byte("server { listen 80; }"), 0o644))
+	enabledDir := filepath.Join(confDir, "sites-enabled")
+	require.NoError(t, os.MkdirAll(enabledDir, 0o755))
+	enabledConf := filepath.Join(enabledDir, "example.conf")
+	require.NoError(t, os.Symlink(filepath.Join("..", "sites-available", "example.conf"), enabledConf))
+	require.NoError(t, os.Symlink(filepath.Join(realConfDir, "sites-available", "example.conf"), filepath.Join(enabledDir, "absolute.conf")))
+	require.NoError(t, os.Symlink("missing.conf", filepath.Join(enabledDir, "broken.conf")))
 	mainConf := filepath.Join(confDir, "nginx.conf")
 	require.NoError(t, os.WriteFile(mainConf, []byte("events {}"), 0o644))
 	// Certificates live under ssl/ which the scanner must skip.
@@ -110,13 +119,14 @@ func TestScanDirectoryRecursiveReadsConfigsThroughTargetFilesystem(t *testing.T)
 		seen[configPath] = string(content)
 		return nil
 	})
+	indexer := newTestSearchIndexer(t, 1024)
+	RegisterCallback("search_test", indexer.handleConfigScan)
 
 	s := &Scanner{debouncer: newFileEventDebouncer()}
 	fileCount, dirCount := 0, 0
 	require.NoError(t, s.scanDirectoryRecursive(context.Background(), confDir, &fileCount, &dirCount))
 
 	mu.Lock()
-	defer mu.Unlock()
 	paths := make([]string, 0, len(seen))
 	for p := range seen {
 		paths = append(paths, p)
@@ -125,4 +135,29 @@ func TestScanDirectoryRecursiveReadsConfigsThroughTargetFilesystem(t *testing.T)
 	assert.Equal(t, []string{mainConf, siteConf}, paths)
 	assert.Equal(t, "server { listen 80; }", seen[siteConf])
 	assert.Equal(t, "events {}", seen[mainConf])
+	mu.Unlock()
+
+	// A save only rescans the available path; no alias may retain old content.
+	require.NoError(t, os.WriteFile(siteConf, []byte("server { listen 9090; }"), 0o644))
+	require.NoError(t, s.scanSingleFileInternal(siteConf, true))
+	results, err := indexer.Search(context.Background(), "80", 10)
+	require.NoError(t, err)
+	assert.Empty(t, results)
+	results, err = indexer.Search(context.Background(), "9090", 10)
+	require.NoError(t, err)
+	require.Len(t, results, 1)
+	assert.Equal(t, siteConf, results[0].Document.Path)
+
+	// Removing the enabled link must leave the available config indexed.
+	require.NoError(t, os.Remove(enabledConf))
+	s.handleFileEvent(fsnotify.Event{Name: enabledConf, Op: fsnotify.Remove})
+	results, err = indexer.Search(context.Background(), "9090", 10)
+	require.NoError(t, err)
+	assert.Len(t, results, 1)
+
+	require.NoError(t, os.Remove(siteConf))
+	s.handleFileEvent(fsnotify.Event{Name: siteConf, Op: fsnotify.Remove})
+	results, err = indexer.Search(context.Background(), "9090", 10)
+	require.NoError(t, err)
+	assert.Empty(t, results)
 }
