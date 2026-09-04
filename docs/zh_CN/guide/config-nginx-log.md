@@ -44,6 +44,17 @@
 
 设置用于日志 GeoIP 增强的自定义 MMDB 文件路径。该文件应为 MaxMind MMDB 格式，并包含你的自定义标签。
 
+你可以使用项目中的 `template/custom-mmdb` 脚本创建自定义 MMDB：
+
+1. 按需修改 `template/custom-mmdb/ip_inventory.json` 和 `template/custom-mmdb/region_codes.json`。
+2. 在项目根目录执行构建脚本：
+
+```bash
+python template/custom-mmdb/Build_Custom_mmdb.py
+```
+
+脚本会生成 `template/custom-mmdb/enterprise.mmdb`。将 `IndexCustomMMDB` 配置为该文件路径即可（也可以将文件复制到 `app.ini` 同目录后再配置对应路径）。
+
 ## 系统要求
 
 ### 最低要求

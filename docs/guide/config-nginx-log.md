@@ -44,6 +44,17 @@ Controls how frequently the incremental indexing job scans access logs for new e
 
 Sets the custom MMDB file path used for log GeoIP enrichment. This file should be generated in MaxMind MMDB format and contain your custom labels.
 
+You can create a custom MMDB using the script in `template/custom-mmdb`:
+
+1. Update `template/custom-mmdb/ip_inventory.json` and `template/custom-mmdb/region_codes.json` with your data.
+2. Run the build script from the project root:
+
+```bash
+python template/custom-mmdb/Build_Custom_mmdb.py
+```
+
+The script generates `template/custom-mmdb/enterprise.mmdb`. Set `IndexCustomMMDB` to this file path (or copy it next to `app.ini` and configure that path).
+
 ## System Requirements
 
 ### Minimum Requirements
