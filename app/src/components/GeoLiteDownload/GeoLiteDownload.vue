@@ -9,6 +9,12 @@ interface Emits {
   (e: 'downloadComplete'): void
 }
 
+const props = withDefaults(defineProps<{
+  hideRedownload?: boolean
+}>(), {
+  hideRedownload: false,
+})
+
 const emit = defineEmits<Emits>()
 
 // GeoLite database state
@@ -190,7 +196,7 @@ defineExpose({
           {{ $gettext('Download GeoLite2 Database') }}
         </AButton>
         <AButton
-          v-else
+          v-else-if="!props.hideRedownload"
           :loading="geoLiteLoading"
           :disabled="downloading"
           @click="downloadGeoLiteDB"
