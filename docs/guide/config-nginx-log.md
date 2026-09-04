@@ -36,6 +36,14 @@ When `IndexingEnabled` is set to `false`, Nginx UI still discovers log entries f
 
 Controls how frequently the incremental indexing job scans access logs for new entries. Lower values keep analytics closer to real time but increase background CPU usage; higher values reduce CPU load at the cost of staler analytics data. Set `0` or a negative value to use the safe default of 15 minutes.
 
+### IndexCustomMMDB
+
+- Type: `string`
+- Environment Variable: `NGINX_UI_NGINX_LOG_INDEX_CUSTOM_MMDB`
+- Version: `>= v2.11.0`
+
+Sets the custom MMDB file path used for log GeoIP enrichment. This file should be generated in MaxMind MMDB format and contain your custom labels.
+
 ## System Requirements
 
 ### Minimum Requirements
