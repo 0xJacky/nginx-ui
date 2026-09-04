@@ -13,7 +13,6 @@ REGION_CODES_JSON_FILE = BASE_DIR / "region_codes.json"
 IP_INVENTORY_JSON_FILE = BASE_DIR / "ip_inventory.json"
 
 DATABASE_TYPE = "Enterprise-Custom"
-LANGUAGES = ["en", "zh-CN"]
 
 
 # ==========================================
@@ -157,9 +156,8 @@ def write_mmdb(networks, output_file):
     writer = MMDBWriter(
         ip_version=4,
         database_type=DATABASE_TYPE,
-        languages=LANGUAGES,
+        languages=["zh-CN"],
         description={
-            "en": "Enterprise internal IP database",
             "zh-CN": "企业内网 IP 数据库",
         },
         int_type="u32",
