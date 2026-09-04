@@ -9,6 +9,12 @@ interface Emits {
   (e: 'downloadComplete'): void
 }
 
+const props = withDefaults(defineProps<{
+  hideRedownload?: boolean
+}>(), {
+  hideRedownload: false,
+})
+
 const emit = defineEmits<Emits>()
 
 // GeoLite database state
@@ -159,6 +165,9 @@ defineExpose({
           <p class="text-sm">
             {{ $gettext('Alternatively, if you cannot download the database, you can manually place GeoLite2-City.mmdb in the same directory as app.ini.') }}
           </p>
+          <p class="text-sm">
+            {{ $gettext('If you want to enable custom MMDB data, configure `IndexCustomMMDB` and place the generated file in the same directory as app.ini.') }}
+          </p>
         </div>
       </template>
     </AAlert>
@@ -187,7 +196,7 @@ defineExpose({
           {{ $gettext('Download GeoLite2 Database') }}
         </AButton>
         <AButton
-          v-else
+          v-else-if="!props.hideRedownload"
           :loading="geoLiteLoading"
           :disabled="downloading"
           @click="downloadGeoLiteDB"

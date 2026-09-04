@@ -114,6 +114,10 @@ msgstr "私有 CA："
 msgid "Any reachable IP address can be used with private Certificate Authorities"
 msgstr "任何可訪問的 IP 地址均可用於私有證書頒發機構"
 
+#: src/components/GeoLiteDownload/GeoLiteDownload.vue:163
+msgid "If you want to enable custom MMDB data, configure `IndexCustomMMDB` and place the generated file in the same directory as app.ini."
+msgstr "如果您要啟用自訂 MMDB 資料，請設定 `IndexCustomMMDB`，並將產生的檔案放置在與 app.ini 相同的目錄中。"
+
 #: src/components/AutoCertForm/AutoCertForm.vue:170
 msgid "Challenge Method"
 msgstr "驗證方式"
@@ -129,6 +133,22 @@ msgstr "DNS01"
 #: src/components/AutoCertForm/AutoCertForm.vue:182
 msgid "Not supported for IP certificates"
 msgstr "不支援 IP 證書"
+
+#: src/views/preference/tabs/GeoLiteSettings.vue:18
+msgid "Custom MMDB is currently enabled"
+msgstr "目前已啟用自訂 MMDB"
+
+#: src/views/preference/tabs/GeoLiteSettings.vue:19
+msgid "The current IndexCustomMMDB setting is read-only here. Make sure custom MMDB labels are adapted for multilingual display (Chinese uses cn, other languages use en)."
+msgstr "目前 IndexCustomMMDB 設定在此處為唯讀。請確認自訂 MMDB 標籤已適配多語系顯示（中文使用 cn，其他語言使用 en）。"
+
+#: src/views/preference/tabs/GeoLiteSettings.vue:21
+msgid "IndexCustomMMDB File Name"
+msgstr "IndexCustomMMDB 檔名"
+
+#: src/views/preference/tabs/GeoLiteSettings.vue:22
+msgid "The current IndexCustomMMDB setting is read-only here."
+msgstr "目前 IndexCustomMMDB 設定在此處為唯讀。"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:188
 #: src/views/certificate/CertificateList/certColumns.tsx:65
@@ -7227,6 +7247,14 @@ msgstr "瀏覽器統計"
 msgid "Province / Region"
 msgstr "省份 / 地區"
 
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:178
+msgid "City"
+msgstr "城市"
+
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:187
+msgid "City / C1 / C2 / C3 / C4"
+msgstr "城市 / C1 / C2 / C3 / C4"
+
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:212
 #: src/views/nginx_log/dashboard/components/GeoMapChart.vue:47
 msgid "China Access Map"
@@ -7241,6 +7269,15 @@ msgstr "無中國地理數據"
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:282
 msgid "Top 10 Provinces / Regions"
 msgstr "前十省份/地區"
+
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:398
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:445
+msgid "Top 10 Cities"
+msgstr "前 10 個城市"
+
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:196
+msgid "Top 10 City Labels (City + C1 + C2 + C3 + C4)"
+msgstr "前 10 個城市標籤（城市 + C1 + C2 + C3 + C4）"
 
 #: src/views/nginx_log/dashboard/components/DailyTrendsChart.vue:41
 msgid "Daily Access Trends"

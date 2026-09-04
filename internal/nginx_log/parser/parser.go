@@ -415,6 +415,10 @@ func (p *Parser) parseIP(line []byte, pos int, entry *AccessLogEntry) int {
 			if location, err := p.geoService.Search(entry.IP); err == nil && location != nil {
 				entry.Province = location.Province
 				entry.City = location.City
+				entry.C1 = location.C1
+				entry.C2 = location.C2
+				entry.C3 = location.C3
+				entry.C4 = location.C4
 				// Use the specific RegionCode (e.g., province code 'CA') if available,
 				// otherwise, fall back to the CountryCode (e.g., 'US').
 				if location.RegionCode != "" {

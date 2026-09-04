@@ -5,6 +5,7 @@ import (
 	"errors"
 	"net/http"
 	"net/url"
+	"strings"
 	"time"
 
 	internalTransport "github.com/0xJacky/Nginx-UI/internal/transport"
@@ -31,8 +32,8 @@ func (transport *authenticatedTransport) RoundTrip(request *http.Request) (*http
 		return nil, errors.New("node authentication database is unavailable")
 	}
 
-	var node model.Node
-	if err := database.First(&node, transport.nodeID).Error; err != nil {
+	node, err := loadNodeWithRetry(database, transport.nodeID)
+	if err != nil {
 		return nil, err
 	}
 
@@ -51,6 +52,39 @@ func (transport *authenticatedTransport) RoundTrip(request *http.Request) (*http
 		Where("id = ?", node.ID).
 		Update("last_credential_use_at", now).Error
 	return response, err
+}
+
+func loadNodeWithRetry(database *gorm.DB, nodeID uint64) (model.Node, error) {
+	const maxAttempts = 5
+	const baseDelay = 5 * time.Millisecond
+
+	var node model.Node
+	var err error
+
+	for attempt := 1; attempt <= maxAttempts; attempt++ {
+		err = database.First(&node, nodeID).Error
+		if err == nil {
+			return node, nil
+		}
+
+		if !isRetriableDBLockError(err) || attempt == maxAttempts {
+			return model.Node{}, err
+		}
+
+		time.Sleep(time.Duration(attempt) * baseDelay)
+	}
+
+	return model.Node{}, err
+}
+
+func isRetriableDBLockError(err error) bool {
+	if err == nil {
+		return false
+	}
+
+	message := strings.ToLower(err.Error())
+	return strings.Contains(message, "database table is locked") ||
+		strings.Contains(message, "database is locked")
 }
 
 func applyNodeAuthentication(request *http.Request, database *gorm.DB, node *model.Node, now time.Time) error {

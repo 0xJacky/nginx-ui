@@ -8,6 +8,9 @@ const props = defineProps<{
   worldData: WorldMapData[] | null
   chinaData: ChinaMapData[] | null
   loading: boolean
+  logPath: string
+  startTime: number
+  endTime: number
 }>()
 
 const emit = defineEmits<{
@@ -69,6 +72,7 @@ const cardTitle = computed(() => {
           :loading="props.loading"
           :hide-card="true"
           @refresh="emit('refresh')"
+          @drill-china="mapType = 'china'"
         />
       </div>
 
@@ -78,6 +82,9 @@ const cardTitle = computed(() => {
           :data="props.chinaData"
           :loading="props.loading"
           :hide-card="true"
+          :log-path="props.logPath"
+          :start-time="props.startTime"
+          :end-time="props.endTime"
           @refresh="emit('refresh')"
         />
       </div>

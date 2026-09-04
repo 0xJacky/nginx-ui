@@ -7,7 +7,9 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"strings"
 
+	nginxSettings "github.com/0xJacky/Nginx-UI/settings"
 	"github.com/ulikunitz/xz"
 	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/settings"
@@ -44,14 +46,41 @@ func (pw *DownloadProgressWriter) Write(p []byte) (int, error) {
 
 // GetDBPath returns the path to the GeoLite2 database file
 func GetDBPath() string {
-	confDir := filepath.Dir(settings.ConfPath)
-	return filepath.Join(confDir, "GeoLite2-City.mmdb")
+	defaultPath := getDefaultDBPath()
+	if _, err := os.Stat(defaultPath); err == nil {
+		return defaultPath
+	}
+
+	if customPath := getCustomDBPath(); customPath != "" {
+		return customPath
+	}
+
+	return defaultPath
 }
 
 // GetDBXZPath returns the path to the compressed GeoLite2 database file
 func GetDBXZPath() string {
 	confDir := filepath.Dir(settings.ConfPath)
 	return filepath.Join(confDir, "GeoLite2-City.mmdb.xz")
+}
+
+func getDefaultDBPath() string {
+	confDir := filepath.Dir(settings.ConfPath)
+	return filepath.Join(confDir, "GeoLite2-City.mmdb")
+}
+
+func getCustomDBPath() string {
+	customPath := strings.TrimSpace(nginxSettings.NginxLogSettings.IndexCustomMMDB)
+	if customPath == "" {
+		return ""
+	}
+
+	if filepath.IsAbs(customPath) {
+		return customPath
+	}
+
+	confDir := filepath.Dir(settings.ConfPath)
+	return filepath.Join(confDir, customPath)
 }
 
 // DownloadGeoLiteDB downloads the GeoLite2 database

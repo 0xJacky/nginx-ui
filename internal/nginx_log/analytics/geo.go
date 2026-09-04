@@ -137,6 +137,48 @@ func (s *service) GetGeoDistributionByCountry(ctx context.Context, req *GeoQuery
 	return dist, nil
 }
 
+func (s *service) GetGeoDistributionByProvince(ctx context.Context, req *GeoQueryRequest, countryCode, province string) (*GeoDistribution, error) {
+	if req == nil {
+		return nil, fmt.Errorf("request cannot be nil")
+	}
+
+	if err := s.ValidateTimeRange(req.StartTime, req.EndTime); err != nil {
+		return nil, fmt.Errorf("invalid time range: %w", err)
+	}
+
+	searchReq := &searcher.SearchRequest{
+		StartTime:      &req.StartTime,
+		EndTime:        &req.EndTime,
+		LogPaths:       req.LogPaths,
+		UseMainLogPath: req.UseMainLogPath,
+		Countries:      []string{countryCode},
+		Provinces:      []string{province},
+		Limit:          -1, // Facet-only query, no documents needed
+		IncludeFacets:  true,
+		FacetFields:    []string{"city"},
+		FacetSize:      100, // Large enough to cover all cities in a province
+		UseCache:       true,
+	}
+
+	result, err := s.searcher.Search(ctx, searchReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get geo distribution by province: %w", err)
+	}
+
+	dist := &GeoDistribution{
+		Countries: make(map[string]int), // Reusing 'Countries' map for cities
+	}
+	if result.Facets != nil {
+		if cityFacet, ok := result.Facets["city"]; ok {
+			for _, term := range cityFacet.Terms {
+				dist.Countries[term.Term] = term.Count
+			}
+		}
+	}
+
+	return dist, nil
+}
+
 func (s *service) GetTopCountries(ctx context.Context, req *GeoQueryRequest) ([]CountryStats, error) {
 	if req == nil {
 		return nil, fmt.Errorf("request cannot be nil")

@@ -36,6 +36,25 @@ When `IndexingEnabled` is set to `false`, Nginx UI still discovers log entries f
 
 Controls how frequently the incremental indexing job scans access logs for new entries. Lower values keep analytics closer to real time but increase background CPU usage; higher values reduce CPU load at the cost of staler analytics data. Set `0` or a negative value to use the safe default of 15 minutes.
 
+### IndexCustomMMDB
+
+- Type: `string`
+- Environment Variable: `NGINX_UI_NGINX_LOG_INDEX_CUSTOM_MMDB`
+- Version: `>= v2.11.0`
+
+Sets the custom MMDB file path used for log GeoIP enrichment. This file should be generated in MaxMind MMDB format and contain your custom labels.
+
+You can create a custom MMDB using the script in `template/custom-mmdb`:
+
+1. Update `template/custom-mmdb/ip_inventory.json` and `template/custom-mmdb/region_codes.json` with your data.
+2. Run the build script from the project root:
+
+```bash
+python template/custom-mmdb/Build_Custom_mmdb.py
+```
+
+The script generates `template/custom-mmdb/enterprise.mmdb`. Set `IndexCustomMMDB` to this file path (or copy it next to `app.ini` and configure that path).
+
 ## System Requirements
 
 ### Minimum Requirements

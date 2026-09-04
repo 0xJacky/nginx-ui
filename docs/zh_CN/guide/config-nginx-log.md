@@ -36,6 +36,25 @@
 
 控制增量索引任务扫描访问日志的频率。数值越小，分析数据越接近实时，但后台 CPU 占用越高；数值越大则降低 CPU 占用，但分析数据更新会更滞后。配置为 `0` 或负数时会自动回退到安全的默认 15 分钟。
 
+### IndexCustomMMDB
+
+- 类型：`string`
+- 环境变量：`NGINX_UI_NGINX_LOG_INDEX_CUSTOM_MMDB`
+- 版本：`>= v2.11.0`
+
+设置用于日志 GeoIP 增强的自定义 MMDB 文件路径。该文件应为 MaxMind MMDB 格式，并包含你的自定义标签。
+
+你可以使用项目中的 `template/custom-mmdb` 脚本创建自定义 MMDB：
+
+1. 按需修改 `template/custom-mmdb/ip_inventory.json` 和 `template/custom-mmdb/region_codes.json`。
+2. 在项目根目录执行构建脚本：
+
+```bash
+python template/custom-mmdb/Build_Custom_mmdb.py
+```
+
+脚本会生成 `template/custom-mmdb/enterprise.mmdb`。将 `IndexCustomMMDB` 配置为该文件路径即可（也可以将文件复制到 `app.ini` 同目录后再配置对应路径）。
+
 ## 系统要求
 
 ### 最低要求

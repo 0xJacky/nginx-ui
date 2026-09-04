@@ -223,9 +223,9 @@ onDeactivated(invalidate)
               { key: 'docker-run', label: $gettext('docker run') },
             ]"
           >
-            <template #contentRender="{ item }">
+            <template #contentRender="{ item: formatItem }">
               <CodeBlock
-                v-if="item.key === 'compose' && snippets"
+                v-if="formatItem.key === 'compose' && snippets"
                 :order="containerSnippetOrder"
                 :code="snippets.compose_snippet"
                 language="yaml"
@@ -235,7 +235,7 @@ onDeactivated(invalidate)
                   : $gettext('Merge this host-gateway mapping under services.nginx-ui in your existing file.')"
               />
               <CodeBlock
-                v-else-if="item.key === 'override' && snippets"
+                v-else-if="formatItem.key === 'override' && snippets"
                 :order="containerSnippetOrder"
                 :code="snippets.compose_override"
                 language="yaml"
@@ -243,7 +243,7 @@ onDeactivated(invalidate)
                 :description="$gettext('Save as a new file next to your main compose file. Docker Compose merges it automatically, so your original file stays untouched.')"
               />
               <CodeBlock
-                v-else-if="item.key === 'docker-run' && snippets"
+                v-else-if="formatItem.key === 'docker-run' && snippets"
                 :order="containerSnippetOrder"
                 :code="snippets.docker_run"
                 language="shell"

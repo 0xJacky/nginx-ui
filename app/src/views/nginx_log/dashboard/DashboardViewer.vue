@@ -191,6 +191,9 @@ watch(dateRange, () => {
             :world-data="worldMapData"
             :china-data="chinaMapData"
             :loading="geoLoading"
+            :log-path="logPath"
+            :start-time="dateRange[0].unix()"
+            :end-time="dateRange[1].unix()"
           />
         </Col>
       </Row>

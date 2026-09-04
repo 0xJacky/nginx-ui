@@ -65,6 +65,7 @@ type CacheKeyData struct {
 	UserAgents     []string `json:"user_agents"`
 	Referers       []string `json:"referers"`
 	Countries      []string `json:"countries"`
+	Provinces      []string `json:"provinces"`
 	Browsers       []string `json:"browsers"`
 	OSs            []string `json:"operating_systems"`
 	Devices        []string `json:"devices"`
@@ -139,6 +140,7 @@ func (c *Cache) GenerateKey(req *SearchRequest) string {
 		UserAgents:     sortedUniqueStrings(req.UserAgents),
 		Referers:       sortedUniqueStrings(req.Referers),
 		Countries:      sortedUniqueStrings(req.Countries),
+		Provinces:      sortedUniqueStrings(req.Provinces),
 		Browsers:       sortedUniqueStrings(req.Browsers),
 		OSs:            sortedUniqueStrings(req.OSs),
 		Devices:        sortedUniqueStrings(req.Devices),

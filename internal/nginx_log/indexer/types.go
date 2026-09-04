@@ -262,6 +262,10 @@ type LogDocument struct {
 	RegionCode   string   `json:"region_code,omitempty"`
 	Province     string   `json:"province,omitempty"`
 	City         string   `json:"city,omitempty"`
+	C1           string   `json:"c1,omitempty"`
+	C2           string   `json:"c2,omitempty"`
+	C3           string   `json:"c3,omitempty"`
+	C4           string   `json:"c4,omitempty"`
 	Method       string   `json:"method"`
 	Path         string   `json:"path"`
 	PathExact    string   `json:"path_exact"`
@@ -464,6 +468,10 @@ func CreateLogIndexMapping() mapping.IndexMapping {
 	addTextField("region_code", "keyword", storedIndexedAndSortable)
 	addTextField("province", "keyword", storedIndexedAndSortable)
 	addTextField("city", "keyword", storedAndIndexed)
+	addTextField("c1", "keyword", storedAndIndexed)
+	addTextField("c2", "keyword", storedAndIndexed)
+	addTextField("c3", "keyword", storedAndIndexed)
+	addTextField("c4", "keyword", storedAndIndexed)
 	addTextField("method", "keyword", storedIndexedAndSortable)
 	addTextField("path", "standard", storedPhraseSearchable)
 	addTextField("path_exact", "keyword", fieldOptions{index: true, docValues: true})

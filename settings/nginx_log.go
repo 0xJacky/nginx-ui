@@ -5,6 +5,7 @@ import "time"
 type NginxLog struct {
 	IndexingEnabled bool   `json:"indexing_enabled"`
 	IndexPath       string `json:"index_path"`
+	IndexCustomMMDB string `json:"index_custom_mmdb"`
 	// IncrementalIndexInterval controls how often the incremental indexing job runs, in minutes.
 	// When set to 0 or a negative value, a conservative default will be used.
 	IncrementalIndexInterval int `json:"incremental_index_interval"`

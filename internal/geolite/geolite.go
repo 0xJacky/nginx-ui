@@ -3,9 +3,10 @@ package geolite
 import (
 	"fmt"
 	"net/netip"
+	"strings"
 	"sync"
 
-	"github.com/oschwald/geoip2-golang/v2"
+	"github.com/oschwald/maxminddb-golang/v2"
 	"github.com/uozi-tech/cosy/geoip"
 )
 
@@ -13,10 +14,49 @@ type IPLocation struct {
 	RegionCode string `json:"region_code"`
 	Province   string `json:"province"`
 	City       string `json:"city"`
+	C1         string `json:"c1,omitempty"`
+	C2         string `json:"c2,omitempty"`
+	C3         string `json:"c3,omitempty"`
+	C4         string `json:"c4,omitempty"`
 }
 
 type Service struct {
-	cityDB *geoip2.Reader
+	cityDB *maxminddb.Reader
+}
+
+type mmdbNames struct {
+	English           string `maxminddb:"en"`
+	SimplifiedChinese string `maxminddb:"zh-CN"`
+}
+
+type mmdbCountry struct {
+	ISOCode string    `maxminddb:"iso_code"`
+	Names   mmdbNames `maxminddb:"names"`
+	Name    string    `maxminddb:"name"`
+	NameZH  string    `maxminddb:"name_zh"`
+}
+
+type mmdbProvince struct {
+	Names  mmdbNames `maxminddb:"names"`
+	Name   string    `maxminddb:"name"`
+	NameZH string    `maxminddb:"name_zh"`
+}
+
+type mmdbCity struct {
+	Names  mmdbNames `maxminddb:"names"`
+	Name   string    `maxminddb:"name"`
+	NameZH string    `maxminddb:"name_zh"`
+}
+
+type mmdbRecord struct {
+	Country      mmdbCountry    `maxminddb:"country"`
+	Subdivisions []mmdbProvince `maxminddb:"subdivisions"`
+	Province     mmdbProvince   `maxminddb:"province"`
+	City         mmdbCity       `maxminddb:"city"`
+	C1           string         `maxminddb:"c1"`
+	C2           string         `maxminddb:"c2"`
+	C3           string         `maxminddb:"c3"`
+	C4           string         `maxminddb:"c4"`
 }
 
 var (
@@ -50,7 +90,7 @@ func (s *Service) init() error {
 
 func (s *Service) loadFromFile(path string) error {
 	// Open database file with memory mapping (more efficient than loading into memory)
-	cityDB, err := geoip2.Open(path)
+	cityDB, err := maxminddb.Open(path)
 	if err != nil {
 		return fmt.Errorf("failed to open GeoLite2 database: %v", err)
 	}
@@ -74,32 +114,45 @@ func (s *Service) Search(ipStr string) (*IPLocation, error) {
 	// Use cosy geoip for country code
 	loc.RegionCode = geoip.ParseIP(ipStr)
 
-	// Use city database for detailed information
-	if record, err := s.cityDB.City(ip); err == nil {
-		// Override country code from city database if cosy didn't provide it
+	// Decode both standard GeoLite fields and custom enterprise fields.
+	var record mmdbRecord
+	lookupResult := s.cityDB.Lookup(ip)
+	if err := lookupResult.Decode(&record); err == nil {
 		if loc.RegionCode == "" {
-			loc.RegionCode = record.Country.ISOCode
+			loc.RegionCode = strings.TrimSpace(record.Country.ISOCode)
 		}
 
-		if len(record.Subdivisions) > 0 {
-			loc.Province = record.Subdivisions[0].Names.English
-		}
+		loc.C1 = strings.TrimSpace(record.C1)
+		loc.C2 = strings.TrimSpace(record.C2)
+		loc.C3 = strings.TrimSpace(record.C3)
+		loc.C4 = strings.TrimSpace(record.C4)
 
-		loc.City = record.City.Names.English
+		provinceEN := firstNonEmpty(
+			record.Province.Name,
+			record.Province.Names.English,
+			firstSubdivisionValue(record.Subdivisions, false),
+		)
+		provinceZH := firstNonEmpty(
+			record.Province.NameZH,
+			record.Province.Names.SimplifiedChinese,
+			firstSubdivisionValue(record.Subdivisions, true),
+		)
 
-		// Get Chinese names for Chinese regions
-		if loc.RegionCode == "CN" || loc.RegionCode == "HK" ||
-			loc.RegionCode == "MO" || loc.RegionCode == "TW" {
-			if len(record.Subdivisions) > 0 {
-				if cnRegion := record.Subdivisions[0].Names.SimplifiedChinese; cnRegion != "" {
-					loc.Province = cnRegion
-				}
-			} else {
-				// If it's a Chinese IP but has no province, mark it as "其它"
+		cityEN := firstNonEmpty(record.City.Name, record.City.Names.English)
+		cityZH := firstNonEmpty(record.City.NameZH, record.City.Names.SimplifiedChinese)
+
+		loc.Province = provinceEN
+		loc.City = cityEN
+
+		if IsChineseRegion(loc.RegionCode) || IsChineseRegion(record.Country.ISOCode) {
+			if provinceZH != "" {
+				loc.Province = provinceZH
+			} else if loc.Province == "" {
 				loc.Province = "其它"
 			}
-			if cnCity := record.City.Names.SimplifiedChinese; cnCity != "" {
-				loc.City = cnCity
+
+			if cityZH != "" {
+				loc.City = cityZH
 			}
 
 			loc.RegionCode = "CN"
@@ -117,43 +170,7 @@ func (s *Service) Search(ipStr string) (*IPLocation, error) {
 }
 
 func (s *Service) SearchWithISO(ipStr string) (*IPLocation, error) {
-	// This method specifically returns English names and ISO codes
-	if s.cityDB == nil {
-		return nil, fmt.Errorf("no databases loaded")
-	}
-
-	ip, err := netip.ParseAddr(ipStr)
-	if err != nil {
-		return nil, fmt.Errorf("invalid IP address: %s", ipStr)
-	}
-
-	loc := &IPLocation{}
-
-	// Use cosy geoip for country code
-	loc.RegionCode = geoip.ParseIP(ipStr)
-
-	// Use city database for detailed information
-	if record, err := s.cityDB.City(ip); err == nil {
-		// Override country code from city database if cosy didn't provide it
-		if loc.RegionCode == "" {
-			loc.RegionCode = record.Country.ISOCode
-		}
-
-		if len(record.Subdivisions) > 0 {
-			loc.RegionCode = record.Subdivisions[0].Names.English
-		}
-
-		loc.RegionCode = record.City.Names.English
-
-		return loc, nil
-	}
-
-	// If city database lookup fails, return minimal info with country code
-	if loc.RegionCode != "" {
-		return loc, nil
-	}
-
-	return nil, fmt.Errorf("no location data found for IP: %s", ipStr)
+	return s.Search(ipStr)
 }
 
 func (s *Service) Close() {
@@ -178,4 +195,27 @@ func IsChineseRegion(regionCode string) bool {
 		}
 	}
 	return false
+}
+
+func firstNonEmpty(values ...string) string {
+	for _, value := range values {
+		trimmed := strings.TrimSpace(value)
+		if trimmed != "" {
+			return trimmed
+		}
+	}
+
+	return ""
+}
+
+func firstSubdivisionValue(subdivisions []mmdbProvince, chinese bool) string {
+	if len(subdivisions) == 0 {
+		return ""
+	}
+
+	if chinese {
+		return firstNonEmpty(subdivisions[0].NameZH, subdivisions[0].Names.SimplifiedChinese)
+	}
+
+	return firstNonEmpty(subdivisions[0].Name, subdivisions[0].Names.English)
 }

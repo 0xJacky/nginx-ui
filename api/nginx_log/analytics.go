@@ -2,7 +2,9 @@ package nginx_log
 
 import (
 	"context"
+	"fmt"
 	"net/http"
+	"path/filepath"
 	"sort"
 	"strings"
 	"time"
@@ -12,6 +14,8 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/analytics"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/searcher"
+	nginxLogUtils "github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
+	nginxSettings "github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
@@ -27,6 +31,28 @@ type GeoDataItem struct {
 	Name    string  `json:"name"`
 	Value   int     `json:"value"`
 	Percent float64 `json:"percent"`
+}
+
+type ChinaCityMapResponse struct {
+	Data           []GeoDataItem `json:"data"`
+	TopData        []GeoDataItem `json:"top_data,omitempty"`
+	CustomMMDBMode bool          `json:"custom_mmdb_mode"`
+}
+
+// decodeAndValidateLogPath normalizes user input before it can be used in any
+// path-related operation.
+func decodeAndValidateLogPath(rawPath string) (string, error) {
+	if rawPath == "" {
+		return "", nil
+	}
+
+	decodedPath, _ := helper.DecodePathParam(rawPath)
+	normalizedPath := filepath.Clean(decodedPath)
+	if !nginxLogUtils.IsValidLogPath(normalizedPath) {
+		return "", fmt.Errorf("log path is not under whitelist")
+	}
+
+	return normalizedPath, nil
 }
 
 // AnalyticsRequest represents the request for log analytics
@@ -93,6 +119,15 @@ func GetLogAnalytics(c *gin.Context) {
 	if analyticsService == nil {
 		cosy.ErrHandler(c, nginx_log.ErrModernAnalyticsNotAvailable)
 		return
+	}
+
+	if req.Path != "" {
+		decodedPath, err := decodeAndValidateLogPath(req.Path)
+		if err != nil {
+			cosy.ErrHandler(c, err)
+			return
+		}
+		req.Path = decodedPath
 	}
 
 	// Validate log path
@@ -183,6 +218,95 @@ func splitCommaSeparated(value string) []string {
 	return result
 }
 
+func toOptionalString(value interface{}) string {
+	s, ok := value.(string)
+	if !ok {
+		return ""
+	}
+
+	return strings.TrimSpace(s)
+}
+
+func isChineseLanguageRequest(c *gin.Context) bool {
+	if c == nil {
+		return false
+	}
+
+	for _, header := range []string{"Accept-Language", "X-Language", "X-Locale"} {
+		value := strings.ToLower(strings.TrimSpace(c.GetHeader(header)))
+		if value == "" {
+			continue
+		}
+		if strings.HasPrefix(value, "zh") || strings.Contains(value, "zh-") || strings.Contains(value, "zh_") {
+			return true
+		}
+	}
+
+	return false
+}
+
+func displayCountryName(regionCode string, countryNameZH string, useChineseName bool) string {
+	code := strings.TrimSpace(regionCode)
+	if !useChineseName {
+		return code
+	}
+
+	if cnName := strings.TrimSpace(countryNameZH); cnName != "" {
+		return cnName
+	}
+
+	if code == "CN" {
+		return "中国"
+	}
+
+	return code
+}
+
+func buildStructuredIPLocationLabel(entry map[string]interface{}, useChineseName bool) string {
+	baseParts := make([]string, 0, 3)
+	if regionCode := displayCountryName(
+		toOptionalString(entry["region_code"]),
+		toOptionalString(entry["country_name_zh"]),
+		useChineseName,
+	); regionCode != "" {
+		baseParts = append(baseParts, regionCode)
+	}
+	if province := toOptionalString(entry["province"]); province != "" {
+		baseParts = append(baseParts, province)
+	}
+	if city := toOptionalString(entry["city"]); city != "" {
+		baseParts = append(baseParts, city)
+	}
+
+	customParts := make([]string, 0, 4)
+	for _, key := range []string{"c1", "c2", "c3", "c4"} {
+		if value := toOptionalString(entry[key]); value != "" {
+			customParts = append(customParts, value)
+		}
+	}
+
+	baseLabel := strings.Join(baseParts, " · ")
+	if len(customParts) == 0 {
+		return baseLabel
+	}
+
+	customLabel := strings.Join(customParts, " · ")
+	if baseLabel == "" {
+		return customLabel
+	}
+
+	return baseLabel + " · " + customLabel
+}
+
+func enrichEntryWithIPLocationLabel(entry map[string]interface{}, useChineseName bool) map[string]interface{} {
+	if entry == nil {
+		return entry
+	}
+
+	entry["ip_location_label"] = buildStructuredIPLocationLabel(entry, useChineseName)
+	return entry
+}
+
 // AdvancedSearchLogs provides advanced search capabilities for logs
 func AdvancedSearchLogs(c *gin.Context) {
 	var req AdvancedSearchRequest
@@ -202,18 +326,30 @@ func AdvancedSearchLogs(c *gin.Context) {
 		return
 	}
 
+	rawLogPath := req.LogPath
+	safeLogPath := ""
+
+	if rawLogPath != "" {
+		decodedPath, err := decodeAndValidateLogPath(rawLogPath)
+		if err != nil {
+			cosy.ErrHandler(c, err)
+			return
+		}
+		safeLogPath = decodedPath
+	}
+
 	// Use default access log path if LogPath is empty
-	if req.LogPath == "" {
+	if safeLogPath == "" {
 		defaultLogPath := nginx.GetAccessLogPath()
 		if defaultLogPath != "" {
-			req.LogPath = defaultLogPath
-			logger.Debugf("Using default access log path for search: %s", req.LogPath)
+			safeLogPath = defaultLogPath
+			logger.Debugf("Using default access log path for search: %s", safeLogPath)
 		}
 	}
 
 	// Validate log path if provided
-	if req.LogPath != "" {
-		if err := analyticsService.ValidateLogPath(req.LogPath); err != nil {
+	if safeLogPath != "" {
+		if err := analyticsService.ValidateLogPath(safeLogPath); err != nil {
 			cosy.ErrHandler(c, err)
 			return
 		}
@@ -242,17 +378,18 @@ func AdvancedSearchLogs(c *gin.Context) {
 	}
 
 	// Expand the base log path to all physical files in the group using filesystem globbing.
-	if req.LogPath != "" {
-		logPaths, err := nginx_log.ExpandLogGroupPath(req.LogPath)
+	if safeLogPath != "" {
+		// lgtm[go/path-injection]
+		logPaths, err := nginx_log.ExpandLogGroupPath(safeLogPath)
 		if err != nil {
-			logger.Warnf("Could not expand log group path %s: %v", req.LogPath, err)
+			logger.Warnf("Could not expand log group path %s: %v", safeLogPath, err)
 			// Fallback to using the raw path when expansion fails
-			searchReq.LogPaths = []string{req.LogPath}
+			searchReq.LogPaths = []string{safeLogPath}
 		} else if len(logPaths) == 0 {
 			// ExpandLogGroupPath succeeded but returned empty slice (file doesn't exist on filesystem)
 			// Still search for historical indexed data using the requested path
-			logger.Debugf("Log file %s does not exist on filesystem, but searching for historical indexed data", req.LogPath)
-			searchReq.LogPaths = []string{req.LogPath}
+			logger.Debugf("Log file %s does not exist on filesystem, but searching for historical indexed data", safeLogPath)
+			searchReq.LogPaths = []string{safeLogPath}
 		} else {
 			searchReq.LogPaths = logPaths
 		}
@@ -312,13 +449,14 @@ func AdvancedSearchLogs(c *gin.Context) {
 		cosy.ErrHandler(c, err)
 		return
 	}
+	useChineseName := isChineseLanguageRequest(c)
 
 	// --- Transform the searcher result to the API response structure ---
 
 	// 1. Extract entries from hits
 	entries := make([]map[string]interface{}, len(result.Hits))
 	for i, hit := range result.Hits {
-		entries[i] = hit.Fields
+		entries[i] = enrichEntryWithIPLocationLabel(hit.Fields, useChineseName)
 	}
 
 	// 2. Calculate summary stats from the overall results using Counter for accuracy
@@ -447,11 +585,12 @@ func GetLogEntries(c *gin.Context) {
 		cosy.ErrHandler(c, err)
 		return
 	}
+	useChineseName := isChineseLanguageRequest(c)
 
 	// Convert search hits to simple entries format
 	var entries []map[string]interface{}
 	for _, hit := range result.Hits {
-		entries = append(entries, hit.Fields)
+		entries = append(entries, enrichEntryWithIPLocationLabel(hit.Fields, useChineseName))
 	}
 
 	c.JSON(http.StatusOK, AnalyticsResponse{
@@ -465,6 +604,15 @@ type DashboardRequest struct {
 	LogPath   string `json:"log_path" form:"log_path"`
 	StartDate string `json:"start_date" form:"start_date"` // Format: 2006-01-02
 	EndDate   string `json:"end_date" form:"end_date"`     // Format: 2006-01-02
+}
+
+func bindDashboardRequest(c *gin.Context) (DashboardRequest, bool) {
+	var payload DashboardRequest
+	if !cosy.BindAndValid(c, &payload) {
+		return DashboardRequest{}, false
+	}
+
+	return payload, true
 }
 
 // HourlyStats represents hourly UV/PV statistics
@@ -534,11 +682,13 @@ type DashboardResponse struct {
 
 // GetDashboardAnalytics provides comprehensive dashboard analytics from modern analytics service
 func GetDashboardAnalytics(c *gin.Context) {
-	var req DashboardRequest
-
 	// Parse JSON body for POST request
-	if err := c.ShouldBindJSON(&req); err != nil {
-		cosy.ErrHandler(c, err)
+	// The previous direct binding path was flagged by security scans as
+	// "Uncontrolled data used in path expression".
+	// Use cosy.BindAndValid for consistent bind+validation handling before
+	// path-related fields are normalized and whitelist-validated.
+	req, ok := bindDashboardRequest(c)
+	if !ok {
 		return
 	}
 
@@ -550,18 +700,30 @@ func GetDashboardAnalytics(c *gin.Context) {
 		return
 	}
 
+	rawLogPath := req.LogPath
+	safeLogPath := ""
+
+	if rawLogPath != "" {
+		decodedPath, err := decodeAndValidateLogPath(rawLogPath)
+		if err != nil {
+			cosy.ErrHandler(c, err)
+			return
+		}
+		safeLogPath = decodedPath
+	}
+
 	// Use default access log path if LogPath is empty
-	if req.LogPath == "" {
+	if safeLogPath == "" {
 		defaultLogPath := nginx.GetAccessLogPath()
 		if defaultLogPath != "" {
-			req.LogPath = defaultLogPath
-			logger.Debugf("Using default access log path: %s", req.LogPath)
+			safeLogPath = defaultLogPath
+			logger.Debugf("Using default access log path: %s", safeLogPath)
 		}
 	}
 
 	// Validate log path if provided
-	if req.LogPath != "" {
-		if err := analyticsService.ValidateLogPath(req.LogPath); err != nil {
+	if safeLogPath != "" {
+		if err := analyticsService.ValidateLogPath(safeLogPath); err != nil {
 			cosy.ErrHandler(c, err)
 			return
 		}
@@ -601,16 +763,17 @@ func GetDashboardAnalytics(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
 	defer cancel()
 
-	logger.Debugf("Dashboard request for log_path: %s, parsed start_time: %v, end_time: %v", req.LogPath, startTime, endTime)
+	logger.Debugf("Dashboard request for log_path: %s, parsed start_time: %v, end_time: %v", safeLogPath, startTime, endTime)
 
 	// Use main_log_path field for efficient log group queries instead of expanding file paths
 	// This provides much better performance by using indexed field filtering
-	logger.Debugf("Dashboard querying log group with main_log_path: %s", req.LogPath)
+	logger.Debugf("Dashboard querying log group with main_log_path: %s", safeLogPath)
 
 	// Build dashboard query request
+	// lgtm[go/path-injection]
 	dashboardReq := &analytics.DashboardQueryRequest{
-		LogPath:   req.LogPath,
-		LogPaths:  []string{req.LogPath}, // Use single main log path
+		LogPath:   safeLogPath,
+		LogPaths:  []string{safeLogPath}, // Use single main log path
 		StartTime: startTime.Unix(),
 		EndTime:   endTime.Unix(),
 	}
@@ -657,25 +820,37 @@ func GetWorldMapData(c *gin.Context) {
 		return
 	}
 
+	rawLogPath := req.Path
+	safeLogPath := ""
+
+	if rawLogPath != "" {
+		decodedPath, err := decodeAndValidateLogPath(rawLogPath)
+		if err != nil {
+			cosy.ErrHandler(c, err)
+			return
+		}
+		safeLogPath = decodedPath
+	}
+
 	// Use default access log path if Path is empty
-	if req.Path == "" {
+	if safeLogPath == "" {
 		defaultLogPath := nginx.GetAccessLogPath()
 		if defaultLogPath != "" {
-			req.Path = defaultLogPath
-			logger.Debugf("Using default access log path for world map: %s", req.Path)
+			safeLogPath = defaultLogPath
+			logger.Debugf("Using default access log path for world map: %s", safeLogPath)
 		}
 	}
 
 	// Validate log path if provided
-	if req.Path != "" {
-		if err := analyticsService.ValidateLogPath(req.Path); err != nil {
+	if safeLogPath != "" {
+		if err := analyticsService.ValidateLogPath(safeLogPath); err != nil {
 			cosy.ErrHandler(c, err)
 			return
 		}
 	}
 
 	// Use main_log_path field for efficient log group queries instead of expanding file paths
-	logger.Debugf("WorldMapData - Using main_log_path field for log group: %s", req.Path)
+	logger.Debugf("WorldMapData - Using main_log_path field for log group: %s", safeLogPath)
 
 	// Get world map data with timeout
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
@@ -684,9 +859,9 @@ func GetWorldMapData(c *gin.Context) {
 	geoReq := &analytics.GeoQueryRequest{
 		StartTime:      req.StartTime,
 		EndTime:        req.EndTime,
-		LogPath:        req.Path,
-		LogPaths:       []string{req.Path}, // Use single main log path
-		UseMainLogPath: true,               // Use main_log_path field for efficient queries
+		LogPath:        safeLogPath,
+		LogPaths:       []string{safeLogPath}, // Use single main log path
+		UseMainLogPath: true,                  // Use main_log_path field for efficient queries
 		Limit:          req.Limit,
 	}
 	logger.Debugf("WorldMapData - GeoQueryRequest: %+v", geoReq)
@@ -758,25 +933,37 @@ func GetChinaMapData(c *gin.Context) {
 		return
 	}
 
+	rawLogPath := req.Path
+	safeLogPath := ""
+
+	if rawLogPath != "" {
+		decodedPath, err := decodeAndValidateLogPath(rawLogPath)
+		if err != nil {
+			cosy.ErrHandler(c, err)
+			return
+		}
+		safeLogPath = decodedPath
+	}
+
 	// Use default access log path if Path is empty
-	if req.Path == "" {
+	if safeLogPath == "" {
 		defaultLogPath := nginx.GetAccessLogPath()
 		if defaultLogPath != "" {
-			req.Path = defaultLogPath
-			logger.Debugf("Using default access log path for China map: %s", req.Path)
+			safeLogPath = defaultLogPath
+			logger.Debugf("Using default access log path for China map: %s", safeLogPath)
 		}
 	}
 
 	// Validate log path if provided
-	if req.Path != "" {
-		if err := analyticsService.ValidateLogPath(req.Path); err != nil {
+	if safeLogPath != "" {
+		if err := analyticsService.ValidateLogPath(safeLogPath); err != nil {
 			cosy.ErrHandler(c, err)
 			return
 		}
 	}
 
 	// Use main_log_path field for efficient log group queries instead of expanding file paths
-	logger.Debugf("ChinaMapData - Using main_log_path field for log group: %s", req.Path)
+	logger.Debugf("ChinaMapData - Using main_log_path field for log group: %s", safeLogPath)
 
 	// Get China map data with timeout
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
@@ -785,9 +972,9 @@ func GetChinaMapData(c *gin.Context) {
 	geoReq := &analytics.GeoQueryRequest{
 		StartTime:      req.StartTime,
 		EndTime:        req.EndTime,
-		LogPath:        req.Path,
-		LogPaths:       []string{req.Path}, // Use single main log path
-		UseMainLogPath: true,               // Use main_log_path field for efficient queries
+		LogPath:        safeLogPath,
+		LogPaths:       []string{safeLogPath}, // Use single main log path
+		UseMainLogPath: true,                  // Use main_log_path field for efficient queries
 		Limit:          req.Limit,
 	}
 	logger.Debugf("ChinaMapData - GeoQueryRequest: %+v", geoReq)
@@ -838,6 +1025,237 @@ func GetChinaMapData(c *gin.Context) {
 	})
 }
 
+// ChinaCityMapRequest represents the request for city-level data within a China province
+type ChinaCityMapRequest struct {
+	AnalyticsRequest
+	Province string `json:"province" binding:"required"`
+}
+
+func bindChinaCityMapRequest(c *gin.Context) (ChinaCityMapRequest, bool) {
+	var payload ChinaCityMapRequest
+	if !cosy.BindAndValid(c, &payload) {
+		return ChinaCityMapRequest{}, false
+	}
+
+	return payload, true
+}
+
+func isCustomMMDBEnabled() bool {
+	return strings.TrimSpace(nginxSettings.NginxLogSettings.IndexCustomMMDB) != ""
+}
+
+func buildCityCustomLabel(city string, fields map[string]interface{}) string {
+	base := strings.TrimSpace(city)
+	if base == "" {
+		return ""
+	}
+
+	customParts := make([]string, 0, 4)
+	for _, key := range []string{"c1", "c2", "c3", "c4"} {
+		if value := toOptionalString(fields[key]); value != "" {
+			customParts = append(customParts, value)
+		}
+	}
+
+	if len(customParts) == 0 {
+		return base
+	}
+
+	return base + " · " + strings.Join(customParts, " · ")
+}
+
+func buildCustomMMDBCityTopData(
+	ctx context.Context,
+	searcherService searcher.SearcherInterface,
+	geoReq *analytics.GeoQueryRequest,
+	province string,
+) ([]GeoDataItem, error) {
+	if searcherService == nil || geoReq == nil {
+		return nil, nil
+	}
+
+	const pageSize = 1000
+	const maxPages = 200
+
+	labelCounts := make(map[string]int)
+	var searchAfter []string
+
+	for range maxPages {
+		searchReq := &searcher.SearchRequest{
+			StartTime:      &geoReq.StartTime,
+			EndTime:        &geoReq.EndTime,
+			LogPaths:       geoReq.LogPaths,
+			UseMainLogPath: geoReq.UseMainLogPath,
+			Countries:      []string{"CN"},
+			Provinces:      []string{province},
+			Limit:          pageSize,
+			SortBy:         "timestamp",
+			SortOrder:      "desc",
+			SearchAfter:    searchAfter,
+			UseCache:       true,
+		}
+
+		result, err := searcherService.Search(ctx, searchReq)
+		if err != nil {
+			return nil, err
+		}
+
+		if len(result.Hits) == 0 {
+			break
+		}
+
+		for _, hit := range result.Hits {
+			city := toOptionalString(hit.Fields["city"])
+			if city == "" {
+				continue
+			}
+
+			label := buildCityCustomLabel(city, hit.Fields)
+			if label == "" {
+				continue
+			}
+
+			labelCounts[label]++
+		}
+
+		lastSort := result.Hits[len(result.Hits)-1].Sort
+		if len(lastSort) == 0 {
+			break
+		}
+
+		searchAfter = append([]string(nil), lastSort...)
+		if len(result.Hits) < pageSize {
+			break
+		}
+	}
+
+	if len(labelCounts) == 0 {
+		return nil, nil
+	}
+
+	total := 0
+	topData := make([]GeoDataItem, 0, len(labelCounts))
+	for label, count := range labelCounts {
+		total += count
+		topData = append(topData, GeoDataItem{Name: label, Value: count})
+	}
+
+	sort.Slice(topData, func(i, j int) bool {
+		if topData[i].Value == topData[j].Value {
+			return topData[i].Name < topData[j].Name
+		}
+		return topData[i].Value > topData[j].Value
+	})
+
+	if len(topData) > 10 {
+		topData = topData[:10]
+	}
+
+	for i := range topData {
+		if total > 0 {
+			topData[i].Percent = (float64(topData[i].Value) / float64(total)) * 100
+		}
+	}
+
+	return topData, nil
+}
+
+// GetChinaCityMapData provides city-level geographic data for a China province
+func GetChinaCityMapData(c *gin.Context) {
+	req, ok := bindChinaCityMapRequest(c)
+	if !ok {
+		return
+	}
+
+	analyticsService := nginx_log.GetAnalytics()
+	if analyticsService == nil {
+		cosy.ErrHandler(c, nginx_log.ErrModernAnalyticsNotAvailable)
+		return
+	}
+	searcherService := nginx_log.GetSearcher()
+	if searcherService == nil {
+		cosy.ErrHandler(c, nginx_log.ErrModernSearcherNotAvailable)
+		return
+	}
+
+	rawLogPath := req.Path
+	safeLogPath := ""
+
+	if rawLogPath != "" {
+		decodedPath, err := decodeAndValidateLogPath(rawLogPath)
+		if err != nil {
+			cosy.ErrHandler(c, err)
+			return
+		}
+		safeLogPath = decodedPath
+	}
+
+	if safeLogPath == "" {
+		defaultLogPath := nginx.GetAccessLogPath()
+		if defaultLogPath != "" {
+			safeLogPath = defaultLogPath
+		}
+	}
+
+	if safeLogPath != "" {
+		if err := analyticsService.ValidateLogPath(safeLogPath); err != nil {
+			cosy.ErrHandler(c, err)
+			return
+		}
+	}
+
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
+	defer cancel()
+
+	geoReq := &analytics.GeoQueryRequest{
+		StartTime:      req.StartTime,
+		EndTime:        req.EndTime,
+		LogPath:        safeLogPath,
+		LogPaths:       []string{safeLogPath},
+		UseMainLogPath: true,
+		Limit:          req.Limit,
+	}
+
+	data, err := analyticsService.GetGeoDistributionByProvince(ctx, geoReq, "CN", req.Province)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	chartData := make([]GeoDataItem, 0, len(data.Countries))
+	totalValue := 0
+	for _, value := range data.Countries {
+		totalValue += value
+	}
+
+	for name, value := range data.Countries {
+		percent := 0.0
+		if totalValue > 0 {
+			percent = (float64(value) / float64(totalValue)) * 100
+		}
+		chartData = append(chartData, GeoDataItem{Name: name, Value: value, Percent: percent})
+	}
+
+	sort.Slice(chartData, func(i, j int) bool {
+		return chartData[i].Value > chartData[j].Value
+	})
+
+	var topData []GeoDataItem
+	if isCustomMMDBEnabled() {
+		topData, err = buildCustomMMDBCityTopData(ctx, searcherService, geoReq, req.Province)
+		if err != nil {
+			cosy.ErrHandler(c, err)
+			return
+		}
+	}
+
+	c.JSON(http.StatusOK, ChinaCityMapResponse{
+		Data:           chartData,
+		TopData:        topData,
+		CustomMMDBMode: isCustomMMDBEnabled(),
+	})
+}
+
 // GetGeoStats provides geographic statistics
 func GetGeoStats(c *gin.Context) {
 	var req AnalyticsRequest
@@ -852,25 +1270,37 @@ func GetGeoStats(c *gin.Context) {
 		return
 	}
 
+	rawLogPath := req.Path
+	safeLogPath := ""
+
+	if rawLogPath != "" {
+		decodedPath, err := decodeAndValidateLogPath(rawLogPath)
+		if err != nil {
+			cosy.ErrHandler(c, err)
+			return
+		}
+		safeLogPath = decodedPath
+	}
+
 	// Use default access log path if Path is empty
-	if req.Path == "" {
+	if safeLogPath == "" {
 		defaultLogPath := nginx.GetAccessLogPath()
 		if defaultLogPath != "" {
-			req.Path = defaultLogPath
-			logger.Debugf("Using default access log path for geo stats: %s", req.Path)
+			safeLogPath = defaultLogPath
+			logger.Debugf("Using default access log path for geo stats: %s", safeLogPath)
 		}
 	}
 
 	// Validate log path if provided
-	if req.Path != "" {
-		if err := analyticsService.ValidateLogPath(req.Path); err != nil {
+	if safeLogPath != "" {
+		if err := analyticsService.ValidateLogPath(safeLogPath); err != nil {
 			cosy.ErrHandler(c, err)
 			return
 		}
 	}
 
 	// Use main_log_path field for efficient log group queries instead of expanding file paths
-	logger.Debugf("GeoStats - Using main_log_path field for log group: %s", req.Path)
+	logger.Debugf("GeoStats - Using main_log_path field for log group: %s", safeLogPath)
 
 	// Set default limit if not provided
 	if req.Limit == 0 {
@@ -884,9 +1314,9 @@ func GetGeoStats(c *gin.Context) {
 	geoReq := &analytics.GeoQueryRequest{
 		StartTime:      req.StartTime,
 		EndTime:        req.EndTime,
-		LogPath:        req.Path,
-		LogPaths:       []string{req.Path}, // Use single main log path
-		UseMainLogPath: true,               // Use main_log_path field for efficient queries
+		LogPath:        safeLogPath,
+		LogPaths:       []string{safeLogPath}, // Use single main log path
+		UseMainLogPath: true,                  // Use main_log_path field for efficient queries
 		Limit:          req.Limit,
 	}
 
