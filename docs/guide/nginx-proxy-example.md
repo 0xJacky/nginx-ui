@@ -68,3 +68,16 @@ Within the second server block, the location `/` section contains proxy settings
 `9000`. The proxy settings also include a number of headers for proper handling of the forwarded requests, such
 as `Host`,
 `X-Real-IP`, `X-Forwarded-For`, `X-Forwarded-Proto`, `X-Forwarded-Host`, `Upgrade`, and `Connection`.
+
+## Paired nodes behind a path prefix
+
+If a node is published under `/nui/`, configure its URL on the controller as
+`https://node.example.com/nui`. Use `location /nui/` with a trailing-slash
+`proxy_pass http://127.0.0.1:9000/` so the backend receives `/api/...` rather
+than `/nui/api/...`.
+
+Paired HTTP requests and WebSocket handshakes sign the backend path after
+removing the configured node URL prefix. The outgoing URL still includes that
+prefix. The remaining path, query, method, and body remain authenticated;
+forwarded headers do not determine the signed path. Additional proxy rewrites
+of the remaining path or query will invalidate the signature.
