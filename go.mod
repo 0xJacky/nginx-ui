@@ -46,6 +46,7 @@ require (
 	github.com/nxadm/tail v1.4.11
 	github.com/oschwald/geoip2-golang/v2 v2.3.0
 	github.com/oschwald/maxminddb-golang/v2 v2.5.0
+	github.com/pires/go-proxyproto v0.15.0
 	github.com/pkg/errors v0.9.1
 	github.com/pkg/sftp v1.13.11
 	github.com/pquerna/otp v1.5.0
@@ -271,7 +272,6 @@ require (
 	github.com/peterhellberg/link v1.2.0 // indirect
 	github.com/philhofer/fwd v1.2.0 // indirect
 	github.com/pierrec/lz4/v4 v4.1.27 // indirect
-	github.com/pires/go-proxyproto v0.15.0 // indirect
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c // indirect
 	github.com/power-devops/perfstat v0.0.0-20240221224432-82ca36839d55 // indirect
 	github.com/quic-go/qpack v0.6.0 // indirect

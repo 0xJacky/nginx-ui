@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"crypto/tls"
-	"fmt"
 	"net"
 	"os"
 	"os/signal"
@@ -152,6 +151,13 @@ func main() {
 	confPath := appCmd.String("config")
 	settings.Init(confPath)
 
+	network, address, err := settings.ListenerSettings.Address(*cSettings.ServerSettings)
+	if err != nil {
+		logger.Fatalf("Invalid listener configuration: %v", err)
+		return
+	}
+	process.ConfigureProxyProtocol(network)
+
 	mainCtx, mainCancel := signal.NotifyContext(context.Background(), syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM)
 	defer mainCancel()
 
@@ -167,7 +173,7 @@ func main() {
 
 	var programCancel context.CancelFunc
 
-	err := risefront.New(mainCtx, risefront.Config{
+	err = risefront.New(mainCtx, risefront.Config{
 		Run: func(l []net.Listener) error {
 			// Create a new context for the program itself, derived from the main context.
 			programCtx, cancel := context.WithCancel(mainCtx)
@@ -192,7 +198,8 @@ func main() {
 			}
 		},
 		Name:      "nginx-ui",
-		Addresses: []string{fmt.Sprintf("%s:%d", cSettings.ServerSettings.Host, cSettings.ServerSettings.Port)},
+		Network:   network,
+		Addresses: []string{address},
 		LogHandler: func(loglevel risefront.LogLevel, kind string, args ...any) {
 			logger := logger.GetLogger()
 			args = append([]any{kind}, args...)

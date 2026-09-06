@@ -18,15 +18,20 @@ import (
 // value (still restored on cleanup).
 func setupMaintenanceTestSettings(t *testing.T, nginxConfigDir string) {
 	t.Helper()
+	originalListener := *settings.ListenerSettings
+	t.Cleanup(func() { *settings.ListenerSettings = originalListener })
+	*settings.ListenerSettings = settings.Listener{}
 	originalPort := cSettings.ServerSettings.Port
 	originalHTTPS := cSettings.ServerSettings.EnableHTTPS
 	originalChallengePort := settings.CertSettings.HTTPChallengePort
 	originalConfigDir := settings.NginxSettings.ConfigDir
+	originalMaintenanceHost := settings.NginxSettings.MaintenanceHost
 	t.Cleanup(func() {
 		cSettings.ServerSettings.Port = originalPort
 		cSettings.ServerSettings.EnableHTTPS = originalHTTPS
 		settings.CertSettings.HTTPChallengePort = originalChallengePort
 		settings.NginxSettings.ConfigDir = originalConfigDir
+		settings.NginxSettings.MaintenanceHost = originalMaintenanceHost
 	})
 
 	if nginxConfigDir != "" {
@@ -35,6 +40,7 @@ func setupMaintenanceTestSettings(t *testing.T, nginxConfigDir string) {
 	cSettings.ServerSettings.Port = 9000
 	cSettings.ServerSettings.EnableHTTPS = false
 	settings.CertSettings.HTTPChallengePort = "9180"
+	settings.NginxSettings.MaintenanceHost = ""
 }
 
 func TestCreateMaintenanceConfig_PreservesForwardedHost(t *testing.T) {
@@ -67,8 +73,6 @@ func TestCreateMaintenanceConfig_PreservesForwardedHost(t *testing.T) {
 
 func TestCreateMaintenanceConfig_UsesConfiguredMaintenanceHost(t *testing.T) {
 	setupMaintenanceTestSettings(t, "")
-	originalHost := settings.NginxSettings.MaintenanceHost
-	t.Cleanup(func() { settings.NginxSettings.MaintenanceHost = originalHost })
 	settings.NginxSettings.MaintenanceHost = "https://maintenance.internal:9443"
 
 	p := parser.NewStringParser(`server {
@@ -1040,5 +1044,63 @@ server {
 	}
 	if !strings.Contains(content, "server_name a.example.com;") || !strings.Contains(content, "server_name b.example.com;") {
 		t.Fatalf("maintenance config = %q, want both server_name directives preserved", content)
+	}
+}
+
+func TestCreateMaintenanceConfigUnixSocket(t *testing.T) {
+	setupMaintenanceTestSettings(t, "")
+	settings.ListenerSettings.UnixSocket = "/tmp/nginx ui.sock"
+	p := parser.NewStringParser(`server { listen 80; server_name example.com; }`, parser.WithSkipValidDirectivesErr())
+	conf, err := p.Parse()
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, https := range []bool{false, true} {
+		cSettings.ServerSettings.EnableHTTPS = https
+		scheme := "http"
+		if https {
+			scheme = "https"
+		}
+		content := createMaintenanceConfig(conf, "", "example.com")
+		want := fmt.Sprintf("proxy_pass %q;", scheme+"://unix:/tmp/nginx ui.sock:")
+		if !strings.Contains(content, want) || strings.Contains(content, "127.0.0.1:9000") {
+			t.Fatalf("maintenance config = %q, want %q and no TCP backend", content, want)
+		}
+		if !strings.Contains(content, "proxy_pass http://127.0.0.1:9180;") {
+			t.Fatal("ACME challenge listener changed")
+		}
+	}
+}
+
+func TestCreateMaintenanceConfigUnixSocketRespectsMaintenanceHost(t *testing.T) {
+	setupMaintenanceTestSettings(t, "")
+	settings.ListenerSettings.UnixSocket = "/tmp/nginx-ui.sock"
+	settings.NginxSettings.MaintenanceHost = "https://maintenance.internal:9443"
+	p := parser.NewStringParser(`server { listen 80; server_name example.com; }`, parser.WithSkipValidDirectivesErr())
+	conf, err := p.Parse()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	content := createMaintenanceConfig(conf, "", "example.com")
+	if !strings.Contains(content, "proxy_pass https://maintenance.internal:9443;") || strings.Contains(content, "unix:/tmp/nginx-ui.sock") {
+		t.Fatalf("maintenance config = %q, want configured maintenance host instead of local Unix listener", content)
+	}
+}
+
+func TestCreateMaintenanceConfigUnixSocketRejectsInvalidMaintenanceHost(t *testing.T) {
+	setupMaintenanceTestSettings(t, "")
+	settings.ListenerSettings.UnixSocket = "/tmp/nginx ui.sock"
+	settings.NginxSettings.MaintenanceHost = "http://host; return 200"
+	p := parser.NewStringParser(`server { listen 80; server_name example.com; }`, parser.WithSkipValidDirectivesErr())
+	conf, err := p.Parse()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	content := createMaintenanceConfig(conf, "", "example.com")
+	want := `proxy_pass "http://unix:/tmp/nginx ui.sock:";`
+	if !strings.Contains(content, want) || strings.Contains(content, "return 200") {
+		t.Fatalf("maintenance config = %q, want safe local Unix fallback %q", content, want)
 	}
 }
