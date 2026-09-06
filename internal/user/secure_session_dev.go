@@ -26,14 +26,14 @@ const MaxDevSecureSessionDuration = 24 * time.Hour
 func SecureSessionDuration() time.Duration {
 	raw := os.Getenv(SecureSessionDurationEnv)
 	if raw == "" {
-		return DefaultSecureSessionDuration
+		return configuredSecureSessionDuration()
 	}
 
 	minutes := cast.ToInt(raw)
 	if minutes <= 0 {
 		logger.Warnf("%s=%q is not a positive number of minutes, falling back to %s",
 			SecureSessionDurationEnv, raw, DefaultSecureSessionDuration)
-		return DefaultSecureSessionDuration
+		return configuredSecureSessionDuration()
 	}
 
 	// Clamp before converting so a huge value cannot overflow the int64.

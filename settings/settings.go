@@ -106,6 +106,10 @@ func Init(confPath string) {
 	if AuthSettings.MaxAttempts <= 0 {
 		AuthSettings.MaxAttempts = 10
 	}
+
+	if AuthSettings.SecureSessionTimeoutMinutes <= 0 {
+		AuthSettings.SecureSessionTimeoutMinutes = DefaultSecureSessionTimeoutMinutes
+	}
 }
 
 func Update(fn func()) (err error) {

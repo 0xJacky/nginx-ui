@@ -12,6 +12,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
+	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/google/uuid"
 	"github.com/pquerna/otp/totp"
 	"gorm.io/gorm"
@@ -110,9 +111,19 @@ func secureSessionIDCacheKey(sessionId string) string {
 	return fmt.Sprintf("2fa_secure_session:_%s", sessionId)
 }
 
-// DefaultSecureSessionDuration is the two factor session window used by every
-// release build. See secure_session.go and secure_session_dev.go.
-const DefaultSecureSessionDuration = 10 * time.Minute
+// DefaultSecureSessionDuration is the fallback two factor session window when
+// no valid timeout is configured. See secure_session.go and secure_session_dev.go.
+const DefaultSecureSessionDuration = time.Duration(settings.DefaultSecureSessionTimeoutMinutes) * time.Minute
+
+const maxSecureSessionTimeoutMinutes = int((1<<63 - 1) / int64(time.Minute))
+
+func configuredSecureSessionDuration() time.Duration {
+	minutes := settings.AuthSettings.SecureSessionTimeoutMinutes
+	if minutes <= 0 || minutes > maxSecureSessionTimeoutMinutes {
+		return DefaultSecureSessionDuration
+	}
+	return time.Duration(minutes) * time.Minute
+}
 
 func SetSecureSessionID(userId uint64) (sessionId string) {
 	sessionId = uuid.NewString()

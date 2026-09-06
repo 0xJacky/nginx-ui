@@ -5,9 +5,8 @@ package user
 import "time"
 
 // SecureSessionDuration is how long a verified two-factor session is accepted.
-// Release builds keep it fixed so the window cannot be widened at runtime.
 func SecureSessionDuration() time.Duration {
-	return DefaultSecureSessionDuration
+	return configuredSecureSessionDuration()
 }
 
 // storeSecureSession keeps the session in memory only, so restarting the
