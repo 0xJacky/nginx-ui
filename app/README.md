@@ -65,3 +65,10 @@ bun run typecheck
 ```sh
 bun run build
 ```
+
+## DNS Record Matching
+
+The site editor matches DNS records against the normalized full `server_name`.
+Root (`@`), relative, wildcard, and provider-returned fully qualified record
+names are normalized before exact comparison so unrelated records are not
+selected automatically.

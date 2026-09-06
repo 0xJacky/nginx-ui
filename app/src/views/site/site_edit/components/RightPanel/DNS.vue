@@ -7,6 +7,7 @@ import { Tag } from 'antdv-next'
 import { Fragment, h } from 'vue'
 import { isAllowedDnsProvider } from '@/constants/dns_providers'
 import { useDnsStore } from '@/pinia/moudule/dns'
+import { findMatchingDNSRecordIds } from '@/utils/dnsRecordMatching'
 import { useSiteEditorStore } from '../SiteEditor/store'
 
 const { message } = useGlobalApp()
@@ -353,6 +354,11 @@ async function autoMatchDomain() {
       if (matchingDomain) {
         selectedDomainId.value = matchingDomain.id
         await loadRecordsForDomain(matchingDomain.id)
+        selectedRecordIds.value = findMatchingDNSRecordIds(
+          serverNameValue.value,
+          matchingDomain.domain,
+          availableRecords.value,
+        )
       }
     }
   }
