@@ -76,3 +76,88 @@ func TestBuildConfig_UpstreamPerDirectiveComments(t *testing.T) {
 		t.Fatalf("BuildConfig() placed %q after the uncommented server:\n%s", "# second", built)
 	}
 }
+
+// hasCommentLine reports whether built contains comment as a whole line,
+// ignoring the indentation the dumper chooses.
+func hasCommentLine(built, comment string) bool {
+	for _, line := range strings.Split(built, "\n") {
+		if strings.TrimSpace(line) == comment {
+			return true
+		}
+	}
+	return false
+}
+
+// TestBuildConfig_CommentKeepsInnerHash guards the # characters that belong to
+// the comment text, such as a URL fragment or an issue number. The four places
+// a comment is read are covered: server, location, directive and upstream.
+func TestBuildConfig_CommentKeepsInnerHash(t *testing.T) {
+	content := `# server #0 terminates TLS
+server {
+    # see https://example.com/docs#tls
+    listen 80;
+
+    # route #1 of #2
+    location / {
+        proxy_pass http://backend;
+    }
+}
+
+upstream backend {
+    # shard #2 of #3
+    server 10.0.0.1:8080;
+}
+`
+
+	ngxConfig, err := ParseNgxConfigByContent(content)
+	if err != nil {
+		t.Fatalf("ParseNgxConfigByContent() error = %v", err)
+	}
+
+	built, err := ngxConfig.BuildConfig()
+	if err != nil {
+		t.Fatalf("BuildConfig() error = %v", err)
+	}
+
+	for _, comment := range []string{
+		"# server #0 terminates TLS",
+		"# see https://example.com/docs#tls",
+		"# route #1 of #2",
+		"# shard #2 of #3",
+	} {
+		if !hasCommentLine(built, comment) {
+			t.Fatalf("BuildConfig() = %q, want it to contain the line %q", built, comment)
+		}
+	}
+}
+
+// TestBuildConfig_CommentMarkerIsNormalised pins the marker handling that was
+// already in place, so only the comment text changes.
+func TestBuildConfig_CommentMarkerIsNormalised(t *testing.T) {
+	content := `server {
+    ## double marker
+    listen 80;
+}
+
+upstream backend {
+    #no space
+    server 10.0.0.1:8080;
+}
+`
+
+	ngxConfig, err := ParseNgxConfigByContent(content)
+	if err != nil {
+		t.Fatalf("ParseNgxConfigByContent() error = %v", err)
+	}
+
+	built, err := ngxConfig.BuildConfig()
+	if err != nil {
+		t.Fatalf("BuildConfig() error = %v", err)
+	}
+
+	for _, comment := range []string{"# double marker", "# no space"} {
+		if !hasCommentLine(built, comment) {
+			t.Fatalf("BuildConfig() = %q, want it to contain the line %q", built, comment)
+		}
+	}
+}
