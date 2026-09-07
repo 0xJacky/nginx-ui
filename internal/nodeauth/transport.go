@@ -195,6 +195,16 @@ func applyPairedAuthentication(request *http.Request, database *gorm.DB, node *m
 	if err != nil {
 		return err
 	}
+	// The configured node URL prefix is removed by the reverse proxy before
+	// verification. Sign the backend path, while retaining the original URL
+	// for the actual HTTP request (and WebSocket handshake).
+	wireURL := request.URL
+	signingURL, err := nodeSigningURL(wireURL, node.URL)
+	if err != nil {
+		return err
+	}
+	request.URL = signingURL
+	defer func() { request.URL = wireURL }()
 	return SignRequestWithKey(
 		request,
 		credential.CredentialID,
@@ -202,4 +212,30 @@ func applyPairedAuthentication(request *http.Request, database *gorm.DB, node *m
 		ed25519.PrivateKey(privateKey),
 		now,
 	)
+}
+
+// nodeSigningURL removes only the configured path prefix, on a segment boundary.
+// Never derive the signed path from forwarded headers supplied by a peer.
+func nodeSigningURL(wireURL *url.URL, nodeURL string) (*url.URL, error) {
+	baseURL, err := url.Parse(nodeURL)
+	if err != nil {
+		return nil, err
+	}
+	prefix := strings.TrimRight(baseURL.EscapedPath(), "/")
+	if prefix == "" {
+		return wireURL, nil
+	}
+	path := wireURL.EscapedPath()
+	if !strings.HasPrefix(path, prefix+"/") {
+		return nil, errors.New("node request path is outside the configured URL prefix")
+	}
+	path = strings.TrimPrefix(path, prefix)
+	decodedPath, err := url.PathUnescape(path)
+	if err != nil {
+		return nil, err
+	}
+	signingURL := *wireURL
+	signingURL.Path = decodedPath
+	signingURL.RawPath = path
+	return &signingURL, nil
 }
