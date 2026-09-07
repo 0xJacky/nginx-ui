@@ -31,6 +31,7 @@ Applicable for version v2.0.0-beta.37 and above.
 | TrustedProxies        | NGINX_UI_AUTH_TRUSTED_PROXIES      |
 | BanThresholdMinutes   | NGINX_UI_AUTH_BAN_THRESHOLD_MINUTES |
 | MaxAttempts           | NGINX_UI_AUTH_MAX_ATTEMPTS          |
+| SecureSessionTimeoutMinutes | NGINX_UI_AUTH_SECURE_SESSION_TIMEOUT_MINUTES |
 
 ## Casdoor
 | Configuration Setting | Environment Variable              |

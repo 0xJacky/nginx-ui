@@ -5,6 +5,8 @@ package user
 import (
 	"testing"
 	"time"
+
+	"github.com/0xJacky/Nginx-UI/settings"
 )
 
 func TestSecureSessionDurationDevOverride(t *testing.T) {
@@ -39,5 +41,18 @@ func TestSecureSessionDurationDevRejectsOverflowingValue(t *testing.T) {
 	}
 	if got <= 0 {
 		t.Fatalf("duration must stay positive, got %s", got)
+	}
+}
+
+func TestSecureSessionDurationDevUsesAuthSettingWithoutOverride(t *testing.T) {
+	originalTimeout := settings.AuthSettings.SecureSessionTimeoutMinutes
+	t.Cleanup(func() {
+		settings.AuthSettings.SecureSessionTimeoutMinutes = originalTimeout
+	})
+	settings.AuthSettings.SecureSessionTimeoutMinutes = 60
+	t.Setenv(SecureSessionDurationEnv, "")
+
+	if got := SecureSessionDuration(); got != time.Hour {
+		t.Fatalf("duration = %s, want 1h from auth setting", got)
 	}
 }

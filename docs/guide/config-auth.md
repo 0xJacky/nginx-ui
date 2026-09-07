@@ -46,3 +46,12 @@ By default, if a user fails to log in 10 times within 10 minutes, the user will 
 - Default: `10`
 
 By default, a user can try to log in 10 times within 10 minutes.
+
+## SecureSessionTimeoutMinutes
+- Type: `int`
+- Default: `10`
+
+Controls how many minutes a successful TOTP or passkey verification authorizes
+protected operations. The setting does not change the normal login session
+lifetime. Values must be positive; missing, zero, and negative values use the
+10-minute default.

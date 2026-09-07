@@ -28,6 +28,7 @@ func TestSetup(t *testing.T) {
 	_ = os.Setenv("NGINX_UI_AUTH_TRUSTED_PROXIES", "127.0.0.1,10.0.0.0/8,2001:db8::/32")
 	_ = os.Setenv("NGINX_UI_AUTH_BAN_THRESHOLD_MINUTES", "20")
 	_ = os.Setenv("NGINX_UI_AUTH_MAX_ATTEMPTS", "20")
+	_ = os.Setenv("NGINX_UI_AUTH_SECURE_SESSION_TIMEOUT_MINUTES", "60")
 
 	// Casdoor
 	_ = os.Setenv("NGINX_UI_CASDOOR_ENDPOINT", "https://casdoor.example.com")
@@ -123,6 +124,7 @@ func TestSetup(t *testing.T) {
 	assert.Equal(t, []string{"127.0.0.1", "10.0.0.0/8", "2001:db8::/32"}, AuthSettings.TrustedProxies)
 	assert.Equal(t, 20, AuthSettings.BanThresholdMinutes)
 	assert.Equal(t, 20, AuthSettings.MaxAttempts)
+	assert.Equal(t, 60, AuthSettings.SecureSessionTimeoutMinutes)
 
 	// Casdoor
 	assert.Equal(t, "https://casdoor.example.com", CasdoorSettings.Endpoint)

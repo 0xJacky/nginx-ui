@@ -1,13 +1,17 @@
 package settings
 
 type Auth struct {
-	IPWhiteList         []string `json:"ip_white_list" binding:"omitempty,dive,ip|redacted" ini:",,allowshadow" protected:"true"`
-	TrustedProxies      []string `json:"trusted_proxies" binding:"omitempty,dive,ip|cidr|redacted" ini:",,allowshadow" protected:"true"`
-	BanThresholdMinutes int      `json:"ban_threshold_minutes" binding:"min=1"`
-	MaxAttempts         int      `json:"max_attempts" binding:"min=1"`
+	IPWhiteList                 []string `json:"ip_white_list" binding:"omitempty,dive,ip|redacted" ini:",,allowshadow" protected:"true"`
+	TrustedProxies              []string `json:"trusted_proxies" binding:"omitempty,dive,ip|cidr|redacted" ini:",,allowshadow" protected:"true"`
+	BanThresholdMinutes         int      `json:"ban_threshold_minutes" binding:"min=1"`
+	MaxAttempts                 int      `json:"max_attempts" binding:"min=1"`
+	SecureSessionTimeoutMinutes int      `json:"secure_session_timeout_minutes" binding:"min=1"`
 }
 
+const DefaultSecureSessionTimeoutMinutes = 10
+
 var AuthSettings = &Auth{
-	BanThresholdMinutes: 10,
-	MaxAttempts:         10,
+	BanThresholdMinutes:         10,
+	MaxAttempts:                 10,
+	SecureSessionTimeoutMinutes: DefaultSecureSessionTimeoutMinutes,
 }
