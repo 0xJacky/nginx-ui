@@ -36,6 +36,60 @@ server {
 	}
 }
 
+// TestRewriteDirectiveValuesEscapesBackslash keeps a rewritten value readable
+// back as itself, whichever form the original directive used. A backslash is an
+// escape inside both quote styles and outside them, so leaving one bare loses a
+// character, or lets it swallow the closing quote or the semicolon.
+func TestRewriteDirectiveValuesEscapesBackslash(t *testing.T) {
+	// The empty value only has somewhere to go once the directive is quoted,
+	// so it is not a case for the already-quoted forms.
+	quoted := []string{
+		`/etc/ssl/a\b/key.pem`,
+		`/etc/ssl/a\\b/key.pem`,
+		`/etc/ssl/a\tb/key.pem`,
+		`/etc/ssl/o'brien/key.pem`,
+		`/etc/ssl/say"hi"/key.pem`,
+		`/etc/ssl/trailing\`,
+	}
+
+	for _, tt := range []struct {
+		name     string
+		original string
+		values   []string
+	}{
+		{"single quoted", "'/old/key.pem'", quoted},
+		{"double quoted", `"/old/key.pem"`, quoted},
+		{"unquoted", "/old/key.pem", append(append([]string{}, quoted...), "")},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			for _, newValue := range tt.values {
+				content := "server {\n    ssl_certificate_key " + tt.original + ";\n}\n"
+
+				rewritten, count, err := RewriteDirectiveValues(content, []DirectiveValueReplacement{
+					{Directive: "ssl_certificate_key", OldValue: "/old/key.pem", NewValue: newValue},
+				})
+				if err != nil {
+					t.Errorf("RewriteDirectiveValues(%q) error = %v", newValue, err)
+					continue
+				}
+				if count != 1 {
+					t.Errorf("RewriteDirectiveValues(%q) count = %d, want 1", newValue, count)
+					continue
+				}
+
+				values, err := DirectiveValues(rewritten, "ssl_certificate_key")
+				if err != nil {
+					t.Errorf("DirectiveValues(%q) error = %v, rewritten:\n%s", newValue, err, rewritten)
+					continue
+				}
+				if len(values) != 1 || values[0] != newValue {
+					t.Errorf("round trip gave %#v, want [%q], rewritten:\n%s", values, newValue, rewritten)
+				}
+			}
+		})
+	}
+}
+
 func TestDirectiveValuesIgnoresCommentsAndOtherDirectives(t *testing.T) {
 	content := `
 # ssl_certificate /commented/cert.pem;

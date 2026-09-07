@@ -98,13 +98,18 @@ func renderDirectiveValue(original, value string) (string, error) {
 
 	switch original[0] {
 	case '\'':
-		return "'" + strings.ReplaceAll(value, "'", "\\'") + "'", nil
+		escaped := strings.ReplaceAll(value, `\`, `\\`)
+		escaped = strings.ReplaceAll(escaped, "'", `\'`)
+		return "'" + escaped + "'", nil
 	case '"':
 		escaped := strings.ReplaceAll(value, `\`, `\\`)
 		escaped = strings.ReplaceAll(escaped, `"`, `\"`)
 		return `"` + escaped + `"`, nil
 	default:
-		if strings.ContainsAny(value, " \t\r\n#{};") {
+		// A backslash escapes the next character, so leaving one bare lets it
+		// swallow the terminating semicolon. An empty value needs the quotes to
+		// stay an argument at all.
+		if value == "" || strings.ContainsAny(value, " \t\r\n#{};\\") {
 			escaped := strings.ReplaceAll(value, `\`, `\\`)
 			escaped = strings.ReplaceAll(escaped, `"`, `\"`)
 			return `"` + escaped + `"`, nil
