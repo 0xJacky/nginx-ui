@@ -167,6 +167,14 @@ function onChangeStatus(value: SelectValue) {
     <ASelect
       :value="status"
       class="status-select"
+      :popup-match-select-width="false"
+      :styles="{
+        popup: {
+          root: {
+            minWidth: '164px',
+          },
+        },
+      }"
       :classes="{
         root: 'status-select-root',
         content: 'status-select-content',
@@ -187,11 +195,10 @@ function onChangeStatus(value: SelectValue) {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  max-width: 200px;
 }
 
 .status-select {
-  min-width: 120px;
+  min-width: 164px;
 }
 
 :deep(.status-select-root) {
