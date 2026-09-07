@@ -256,6 +256,12 @@ function batchDisableSites() {
   </div>
 </template>
 
-<style scoped>
-
+<style>
+.std-curd-edit-modal.ant-modal,
+.std-curd-edit-modal .ant-modal,
+.ant-modal-wrap .std-curd-edit-modal.ant-modal {
+  width: fit-content !important;
+  min-width: min(760px, calc(100vw - 24px)) !important;
+  max-width: calc(100vw - 24px) !important;
+}
 </style>
