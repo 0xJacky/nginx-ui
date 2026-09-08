@@ -9,6 +9,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/0xJacky/Nginx-UI/internal/transport"
 	nginxSettings "github.com/0xJacky/Nginx-UI/settings"
 	"github.com/ulikunitz/xz"
 	"github.com/uozi-tech/cosy"
@@ -83,9 +84,26 @@ func getCustomDBPath() string {
 	return filepath.Join(confDir, customPath)
 }
 
+func newHTTPClient() (*http.Client, error) {
+	if nginxSettings.HTTPSettings.HTTPProxy == "" {
+		return http.DefaultClient, nil
+	}
+
+	clientTransport, err := transport.NewTransport(transport.WithProxy(nginxSettings.HTTPSettings.HTTPProxy))
+	if err != nil {
+		return nil, err
+	}
+
+	return &http.Client{Transport: clientTransport}, nil
+}
+
 // DownloadGeoLiteDB downloads the GeoLite2 database
 func DownloadGeoLiteDB(progressChan chan float64) error {
-	client := &http.Client{}
+	client, err := newHTTPClient()
+	if err != nil {
+		return cosy.WrapErrorWithParams(ErrDownloadFailed, err.Error())
+	}
+
 	req, err := http.NewRequest("GET", DownloadURL, nil)
 	if err != nil {
 		return cosy.WrapErrorWithParams(ErrDownloadFailed, err.Error())
