@@ -20,6 +20,7 @@ const selectedSiteNames = ref<string[]>([])
 const selectedSites = ref<Site[]>([])
 const loadingEnable = ref(false)
 const loadingDisable = ref(false)
+const loadingMaintenance = ref(false)
 const [modal, ContextHolder] = Modal.useModal()
 
 const namespaceId = ref(Number.parseInt(route.query.namespace_id as string) || 0)
@@ -91,13 +92,28 @@ function refreshAfterBatchStatusChanged() {
   inspectConfig.value?.test()
 }
 
-type BatchStatusAction = 'enable' | 'disable'
+type BatchStatusAction = 'enable' | 'disable' | 'maintenance'
 
 function executeBatchStatusAction(action: BatchStatusAction, names: string[]) {
-  const isEnable = action === 'enable'
-  const loading = isEnable ? loadingEnable : loadingDisable
-  const request = isEnable ? site.batchEnable : site.batchDisable
-  const successMessage = isEnable ? $gettext('Sites enabled successfully') : $gettext('Sites disabled successfully')
+  const loadingMap = {
+    enable: loadingEnable,
+    disable: loadingDisable,
+    maintenance: loadingMaintenance,
+  }
+  const requestMap: Record<BatchStatusAction, (names: string[]) => Promise<unknown>> = {
+    enable: site.batchEnable,
+    disable: site.batchDisable,
+    maintenance: site.batchEnableMaintenance,
+  }
+  const successMessageMap: Record<BatchStatusAction, string> = {
+    enable: $gettext('Sites enabled successfully'),
+    disable: $gettext('Sites disabled successfully'),
+    maintenance: $gettext('Sites switched to maintenance mode successfully'),
+  }
+
+  const loading = loadingMap[action]
+  const request = requestMap[action]
+  const successMessage = successMessageMap[action]
 
   loading.value = true
   return request(names).then(() => {
@@ -110,30 +126,43 @@ function executeBatchStatusAction(action: BatchStatusAction, names: string[]) {
 
 function confirmBatchStatusAction(action: BatchStatusAction) {
   if (selectedSiteNames.value.length === 0) {
-    message.warning(action === 'enable'
-      ? $gettext('Please select at least one site to enable')
-      : $gettext('Please select at least one site to disable'))
+    const warningMessageMap: Record<BatchStatusAction, string> = {
+      enable: $gettext('Please select at least one site to enable'),
+      disable: $gettext('Please select at least one site to disable'),
+      maintenance: $gettext('Please select at least one site to switch to maintenance mode'),
+    }
+    message.warning(warningMessageMap[action])
     return
   }
 
   const names = [...selectedSiteNames.value]
-  const isEnable = action === 'enable'
+  const titleMap: Record<BatchStatusAction, string> = {
+    enable: $gettext('Do you want to enable selected sites?'),
+    disable: $gettext('Do you want to disable selected sites?'),
+    maintenance: $gettext('Do you want to switch selected sites to maintenance mode?'),
+  }
+  const introMap: Record<BatchStatusAction, string> = {
+    enable: $gettext('The following sites will be enabled:'),
+    disable: $gettext('The following sites will be disabled:'),
+    maintenance: $gettext('The following sites will be switched to maintenance mode:'),
+  }
+  const okTextMap: Record<BatchStatusAction, string> = {
+    enable: $gettext('Enable'),
+    disable: $gettext('Disable'),
+    maintenance: $gettext('Maintenance'),
+  }
 
   modal.confirm({
-    title: isEnable
-      ? $gettext('Do you want to enable selected sites?')
-      : $gettext('Do you want to disable selected sites?'),
+    title: titleMap[action],
     content: () => h('div', [
-      h('p', isEnable
-        ? $gettext('The following sites will be enabled:')
-        : $gettext('The following sites will be disabled:')),
+      h('p', introMap[action]),
       h('ul', { class: 'max-h-60 overflow-auto pl-5' }, names.map(name => h('li', { key: name }, name))),
     ]),
     mask: false,
     centered: true,
-    okText: isEnable ? $gettext('Enable') : $gettext('Disable'),
+    okText: okTextMap[action],
     okButtonProps: {
-      danger: !isEnable,
+      danger: action === 'disable',
     },
     cancelText: $gettext('Cancel'),
     onOk: () => executeBatchStatusAction(action, names),
@@ -146,6 +175,10 @@ function batchEnableSites() {
 
 function batchDisableSites() {
   confirmBatchStatusAction('disable')
+}
+
+function batchEnableMaintenanceSites() {
+  confirmBatchStatusAction('maintenance')
 }
 </script>
 
@@ -250,6 +283,15 @@ function batchDisableSites() {
           @click="batchDisableSites"
         >
           {{ $gettext('Disable') }}
+        </AButton>
+
+        <AButton
+          :loading="loadingMaintenance"
+          type="primary"
+          class="!bg-amber-500 !border-amber-500 hover:!bg-amber-600 hover:!border-amber-600"
+          @click="batchEnableMaintenanceSites"
+        >
+          {{ $gettext('Maintenance') }}
         </AButton>
       </ASpace>
     </FooterToolBar>

@@ -379,6 +379,26 @@ func disableSiteByName(name string) error {
 	return site.Disable(name)
 }
 
+func enableMaintenanceByName(name string) error {
+	// If site is already enabled, disable the normal site first.
+	enabledConfigPath, err := site.ResolveEnabledPath(name)
+	if err != nil {
+		return err
+	}
+
+	enabledExists, err := nginx.Exists(enabledConfigPath)
+	if err != nil {
+		return err
+	}
+	if enabledExists {
+		if err := site.Disable(name); err != nil {
+			return err
+		}
+	}
+
+	return site.EnableMaintenance(name)
+}
+
 func EnableSite(c *gin.Context) {
 	name := helper.UnescapeURL(c.Param("name"))
 	if rejectInvalidSiteName(c, name) {
@@ -449,6 +469,27 @@ func BatchDisableSites(c *gin.Context) {
 			return
 		}
 		if err := disableSiteByName(name); err != nil {
+			cosy.ErrHandler(c, err)
+			return
+		}
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "ok",
+	})
+}
+
+func BatchEnableMaintenanceSites(c *gin.Context) {
+	var json batchSiteNamesRequest
+	if !cosy.BindAndValid(c, &json) {
+		return
+	}
+
+	for _, name := range json.Names {
+		if rejectInvalidSiteName(c, name) {
+			return
+		}
+		if err := enableMaintenanceByName(name); err != nil {
 			cosy.ErrHandler(c, err)
 			return
 		}
@@ -530,29 +571,7 @@ func EnableMaintenanceSite(c *gin.Context) {
 		return
 	}
 
-	// If site is already enabled, disable the normal site first
-	enabledConfigPath, err := site.ResolveEnabledPath(name)
-	if err != nil {
-		cosy.ErrHandler(c, err)
-		return
-	}
-
-	enabledExists, err := nginx.Exists(enabledConfigPath)
-	if err != nil {
-		cosy.ErrHandler(c, err)
-		return
-	}
-	if enabledExists {
-		// Site is already enabled, disable normal site first
-		err := site.Disable(name)
-		if err != nil {
-			cosy.ErrHandler(c, err)
-			return
-		}
-	}
-
-	// Then enable maintenance mode
-	err = site.EnableMaintenance(name)
+	err := enableMaintenanceByName(name)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
