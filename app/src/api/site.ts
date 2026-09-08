@@ -73,6 +73,7 @@ const site = extendCurdApi(useCurdApi<Site>(baseUrl), {
   disable: (name: string) => http.post(`${baseUrl}/${encodeURIComponent(name)}/disable`),
   batchEnable: (names: string[]) => http.post(`${baseUrl}/batch/enable`, { names }),
   batchDisable: (names: string[]) => http.post(`${baseUrl}/batch/disable`, { names }),
+  batchEnableMaintenance: (names: string[]) => http.post(`${baseUrl}/batch/maintenance`, { names }),
   rename: (oldName: string, newName: string) => http.post(`${baseUrl}/${encodeURIComponent(oldName)}/rename`, { new_name: newName }),
   get_default_template: () => http.get('default_site_template'),
   add_auto_cert: (domain: string, data: AutoCertRequest) => http.post(`auto_cert/${encodeURIComponent(domain)}`, data),

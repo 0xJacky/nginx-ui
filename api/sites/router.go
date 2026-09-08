@@ -32,6 +32,8 @@ func InitRouter(r *gin.RouterGroup) {
 		o.POST("sites/batch/enable", BatchEnableSites)
 		// batch disable sites
 		o.POST("sites/batch/disable", BatchDisableSites)
+		// batch enable maintenance mode for sites
+		o.POST("sites/batch/maintenance", BatchEnableMaintenanceSites)
 		// rename site
 		o.POST("sites/:name/rename", RenameSite)
 		// enable site
