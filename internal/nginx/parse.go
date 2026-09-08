@@ -168,8 +168,14 @@ func (c *NgxConfig) parseCustom(directive config.IDirective) {
 	c.Custom += "}\n"
 }
 
+// buildComment drops the leading marker only. buildComments re-adds one when
+// the config is written back, so a # inside the body has to survive.
 func buildComment(c []string) string {
-	return strings.ReplaceAll(strings.Join(c, "\n"), "#", "")
+	lines := make([]string, 0, len(c))
+	for _, line := range c {
+		lines = append(lines, strings.TrimLeft(line, "#"))
+	}
+	return strings.Join(lines, "\n")
 }
 
 func shouldUnwrapRootBlock(block config.IBlock) config.IDirective {
