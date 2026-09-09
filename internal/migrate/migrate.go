@@ -6,7 +6,6 @@ import (
 
 var Migrations = []*gormigrate.Migration{
 	SiteCategoryToNamespace,
-	RenameAuthsToUsers,
 	UpdateCertDomains,
 	RenameEnvGroupsToNamespaces,
 	RenameEnvironmentsToNodes,
@@ -17,4 +16,5 @@ var Migrations = []*gormigrate.Migration{
 
 var BeforeAutoMigrate = []*gormigrate.Migration{
 	FixSiteAndStreamPathUnique,
+	RenameAuthsToUsers,
 }
