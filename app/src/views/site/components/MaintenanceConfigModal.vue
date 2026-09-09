@@ -10,7 +10,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   'update:open': [value: boolean]
-  confirm: [payload: MaintenancePayload]
+  'confirm': [payload: MaintenancePayload]
 }>()
 
 const { message } = useGlobalApp()
@@ -48,7 +48,7 @@ function handleOk() {
   emit('update:open', false)
 }
 
-const disabledEndDate = (current: Dayjs) => {
+function disabledEndDate(current: Dayjs) {
   if (!startAt.value) {
     return false
   }
