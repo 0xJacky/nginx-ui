@@ -180,7 +180,7 @@ function getStatusClass(status: string): string {
 
     <div class="site-info">
       <h3 class="site-title">
-        {{ site.title || site.name }}
+        {{ site.site_name || site.name }}
       </h3>
       <p class="site-url">
         <span v-if="site.scheme && site.host_port" class="url-parts">
