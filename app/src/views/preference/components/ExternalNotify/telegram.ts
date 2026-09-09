@@ -13,6 +13,10 @@ const TelegramConfig: ExternalNotifyConfig = {
       label: 'Chat ID',
     },
     {
+      key: 'message_thread_id',
+      label: 'Message Thread ID',
+    },
+    {
       key: 'http_proxy',
       label: 'HTTP Proxy',
     },

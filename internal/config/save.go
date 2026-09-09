@@ -11,7 +11,7 @@ import (
 	"gorm.io/gen/field"
 )
 
-func Save(absPath string, content string, cfg *model.Config) (err error) {
+func Save(absPath string, content string, cfg *model.Config, userNames ...string) (err error) {
 	q := query.Config
 	if cfg == nil {
 		cfg, err = q.Assign(field.Attrs(&model.Config{
@@ -54,7 +54,11 @@ func Save(absPath string, content string, cfg *model.Config) (err error) {
 		return
 	}
 
-	err = SyncToRemoteServer(cfg)
+	userName := ""
+	if len(userNames) > 0 {
+		userName = userNames[0]
+	}
+	err = SyncToRemoteServer(cfg, userName)
 	if err != nil {
 		return
 	}

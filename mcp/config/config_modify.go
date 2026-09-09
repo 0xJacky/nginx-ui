@@ -89,7 +89,7 @@ func handleNginxConfigModify(ctx context.Context, request mcpgo.CallToolRequest)
 	cfg.SyncNodeIds = syncNodeIds
 	cfg.SyncOverwrite = syncOverwrite
 
-	err = config.Save(absPath, content, cfg)
+	err = config.Save(absPath, content, cfg, "")
 	if err != nil {
 		return nil, err
 	}
