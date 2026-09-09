@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
@@ -115,7 +116,7 @@ func AddConfig(c *gin.Context) {
 		return
 	}
 
-	err = config.SyncToRemoteServer(cfg)
+	err = config.SyncToRemoteServer(cfg, api.CurrentUser(c).Name)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

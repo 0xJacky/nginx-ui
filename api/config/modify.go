@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -77,7 +78,7 @@ func EditConfig(c *gin.Context) {
 	cfg.SyncNodeIds = json.SyncNodeIds
 	cfg.SyncOverwrite = json.SyncOverwrite
 
-	err = config.Save(absPath, content, cfg)
+	err = config.Save(absPath, content, cfg, api.CurrentUser(c).Name)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

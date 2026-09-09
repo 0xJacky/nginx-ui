@@ -115,7 +115,7 @@ func handleNginxConfigAdd(ctx context.Context, request mcpgo.CallToolRequest) (*
 		return nil, err
 	}
 
-	err = config.SyncToRemoteServer(cfg)
+	err = config.SyncToRemoteServer(cfg, "")
 	if err != nil {
 		return nil, err
 	}

@@ -25,7 +25,7 @@ type SyncConfigPayload struct {
 	Overwrite bool   `json:"overwrite"`
 }
 
-func SyncToRemoteServer(c *model.Config) (err error) {
+func SyncToRemoteServer(c *model.Config, userName string) (err error) {
 	if c == nil || c.Filepath == "" {
 		return
 	}
@@ -62,7 +62,7 @@ func SyncToRemoteServer(c *model.Config) (err error) {
 	nodes, _ := q.Where(q.ID.In(syncNodeIds...), q.Enabled.Is(true)).Find()
 	for _, node := range nodes {
 		go func() {
-			err := payload.deploy(node, c, payloadBytes)
+			err := payload.deploy(node, c, payloadBytes, userName)
 			if err != nil {
 				logger.Error(err)
 			}
@@ -109,10 +109,11 @@ type SyncNotificationPayload struct {
 	StatusCode int    `json:"status_code"`
 	ConfigName string `json:"config_name"`
 	NodeName   string `json:"node_name"`
+	UserName   string `json:"user_name,omitempty"`
 	Response   string `json:"response"`
 }
 
-func (p *SyncConfigPayload) deploy(node *model.Node, c *model.Config, payloadBytes []byte) (err error) {
+func (p *SyncConfigPayload) deploy(node *model.Node, c *model.Config, payloadBytes []byte, userName string) (err error) {
 	client, err := nodeauth.NewHTTPClient(node, 0)
 	if err != nil {
 		return
@@ -140,17 +141,31 @@ func (p *SyncConfigPayload) deploy(node *model.Node, c *model.Config, payloadByt
 		StatusCode: resp.StatusCode,
 		ConfigName: c.Name,
 		NodeName:   node.Name,
+		UserName:   userName,
 		Response:   string(respBody),
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		notification.Error("Sync Config Error", "Sync config %{config_name} to %{node_name} failed", notificationPayload)
+		notification.Error("Sync Config Error", syncConfigNotificationContent(userName, false), notificationPayload)
 		return
 	}
 
-	notification.Success("Sync Config Success", "Sync config %{config_name} to %{node_name} successfully", notificationPayload)
+	notification.Success("Sync Config Success", syncConfigNotificationContent(userName, true), notificationPayload)
 
 	return
+}
+
+func syncConfigNotificationContent(userName string, success bool) string {
+	if userName == "" {
+		if success {
+			return "Sync config %{config_name} to %{node_name} successfully"
+		}
+		return "Sync config %{config_name} to %{node_name} failed"
+	}
+	if success {
+		return "User %{user_name} synced config %{config_name} to %{node_name} successfully"
+	}
+	return "User %{user_name} failed to sync config %{config_name} to %{node_name}"
 }
 
 type RenameConfigPayload struct {
