@@ -75,10 +75,7 @@ func ResetInitUserPassword(ctx context.Context, command *cli.Command) error {
 		return err
 	}
 
-	_, err = u.Where(u.ID.Eq(1)).Updates(&model.User{
-		Password: string(pwdBytes),
-	})
-	if err != nil {
+	if err = updateInitUserPassword(string(pwdBytes)); err != nil {
 		return err
 	}
 
@@ -86,4 +83,13 @@ func ResetInitUserPassword(ctx context.Context, command *cli.Command) error {
 
 	logger.Infof("User: %s, Password: %s", user.Name, pwd)
 	return nil
+}
+
+func updateInitUserPassword(password string) error {
+	u := query.User
+	_, err := u.Where(u.ID.Eq(1)).Updates(&model.User{
+		Password: password,
+		Status:   true,
+	})
+	return err
 }

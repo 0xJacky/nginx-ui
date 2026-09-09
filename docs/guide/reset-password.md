@@ -1,6 +1,6 @@
 # Reset Initial User Password
 
-The `reset-password` command allows you to reset the initial administrator account's password to a randomly generated 12-character password that includes uppercase letters, lowercase letters, numbers, and special symbols.
+The `reset-password` command allows you to reset the initial administrator account's password to a randomly generated 12-character password that includes uppercase letters, lowercase letters, numbers, and special symbols. It also re-enables the initial administrator account so it can recover from a disabled state.
 
 This feature was introduced in `v2.0.0-rc.4`.
 
@@ -60,4 +60,4 @@ Replace `<nginx-ui-container>` with your actual container name or ID.
 - This command is useful if you've forgotten the initial administrator password
 - The new password will be displayed in the logs, so be sure to copy it immediately
 - You must have access to the server's command line to use this feature
-- The database file must exist for this command to work 
+- The database file must exist for this command to work
