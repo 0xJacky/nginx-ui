@@ -135,6 +135,42 @@ func TestCreateMaintenanceConfig_ForwardsSiteName(t *testing.T) {
 	}
 }
 
+func TestCreateMaintenanceConfig_WithMetadataHeadersAndEndpoint(t *testing.T) {
+	setupMaintenanceTestSettings(t, "")
+
+	p := parser.NewStringParser(`server {
+    listen 80;
+    server_name example.com;
+}`, parser.WithSkipValidDirectivesErr())
+
+	conf, err := p.Parse()
+	if err != nil {
+		t.Fatalf("Parse() error = %v", err)
+	}
+
+	content := createMaintenanceConfigWithPayload(conf, "", "example.com", MaintenancePayload{
+		StartTime:           "2026-09-09 10:00:00",
+		EndTime:             "2026-09-09 12:00:00",
+		Contact:             "ops@example.com",
+		AdditionInformation: "planned db migration",
+	})
+
+	expected := []string{
+		`proxy_set_header X-Maintenance-Site "example.com";`,
+		`proxy_set_header X-Maintenance-Start-Time "2026-09-09 10:00:00";`,
+		`proxy_set_header X-Maintenance-End-Time "2026-09-09 12:00:00";`,
+		`proxy_set_header X-Maintenance-Contact "ops@example.com";`,
+		`proxy_set_header X-Maintenance-Additional-Information "planned db migration";`,
+		`location = /pages/maintenance/meta {`,
+	}
+
+	for _, fragment := range expected {
+		if !strings.Contains(content, fragment) {
+			t.Fatalf("maintenance config = %q, want %q", content, fragment)
+		}
+	}
+}
+
 func TestCreateMaintenanceConfig_PreservesTLSHandshakeDirectives(t *testing.T) {
 	nginxConfigDir := t.TempDir()
 	sitesAvailableDir := filepath.Join(nginxConfigDir, "sites-available")

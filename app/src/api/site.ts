@@ -66,6 +66,13 @@ export interface AutoCertRequest {
   revoke_old?: boolean
 }
 
+export interface MaintenancePayload {
+  start_time?: string
+  end_time?: string
+  contact?: string
+  additioninfomation?: string
+}
+
 const baseUrl = '/sites'
 
 const site = extendCurdApi(useCurdApi<Site>(baseUrl), {
@@ -73,14 +80,14 @@ const site = extendCurdApi(useCurdApi<Site>(baseUrl), {
   disable: (name: string) => http.post(`${baseUrl}/${encodeURIComponent(name)}/disable`),
   batchEnable: (names: string[]) => http.post(`${baseUrl}/batch/enable`, { names }),
   batchDisable: (names: string[]) => http.post(`${baseUrl}/batch/disable`, { names }),
-  batchEnableMaintenance: (names: string[]) => http.post(`${baseUrl}/batch/maintenance`, { names }),
+  batchEnableMaintenance: (names: string[], payload: MaintenancePayload = {}) => http.post(`${baseUrl}/batch/maintenance`, { names, ...payload }),
   rename: (oldName: string, newName: string) => http.post(`${baseUrl}/${encodeURIComponent(oldName)}/rename`, { new_name: newName }),
   get_default_template: () => http.get('default_site_template'),
   add_auto_cert: (domain: string, data: AutoCertRequest) => http.post(`auto_cert/${encodeURIComponent(domain)}`, data),
   remove_auto_cert: (domain: string) => http.delete(`auto_cert/${encodeURIComponent(domain)}`),
   duplicate: (name: string, data: { name: string }) => http.post(`${baseUrl}/${encodeURIComponent(name)}/duplicate`, data),
   advance_mode: (name: string, data: { advanced: boolean }) => http.post(`${baseUrl}/${encodeURIComponent(name)}/advance`, data),
-  enableMaintenance: (name: string) => http.post(`${baseUrl}/${encodeURIComponent(name)}/maintenance`),
+  enableMaintenance: (name: string, payload: MaintenancePayload = {}) => http.post(`${baseUrl}/${encodeURIComponent(name)}/maintenance`, payload),
   getLogs: (name: string) => http.get<{ logs: SiteLog[] }>(`${baseUrl}/${encodeURIComponent(name)}/logs`),
 })
 

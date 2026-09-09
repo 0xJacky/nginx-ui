@@ -24,6 +24,21 @@ import (
 
 const MaintenanceSuffix = "_nginx_ui_maintenance"
 
+const (
+	maintenanceSiteHeaderKey           = "X-Maintenance-Site"
+	maintenanceStartTimeHeaderKey      = "X-Maintenance-Start-Time"
+	maintenanceEndTimeHeaderKey        = "X-Maintenance-End-Time"
+	maintenanceContactHeaderKey        = "X-Maintenance-Contact"
+	maintenanceAdditionalInfoHeaderKey = "X-Maintenance-Additional-Information"
+)
+
+type MaintenancePayload struct {
+	StartTime           string `json:"start_time"`
+	EndTime             string `json:"end_time"`
+	Contact             string `json:"contact"`
+	AdditionInformation string `json:"additioninfomation"`
+}
+
 var baseMaintenanceServerDirectives = map[string]struct{}{
 	"listen":      {},
 	"server_name": {},
@@ -49,8 +64,36 @@ type maintenanceIncludeExpander struct {
 	visited map[string]struct{}
 }
 
+func sanitizeMaintenanceHeaderValue(value string) string {
+	value = strings.TrimSpace(value)
+	value = strings.ReplaceAll(value, "\r", " ")
+	value = strings.ReplaceAll(value, "\n", " ")
+	return value
+}
+
+func normalizeMaintenancePayload(payload *MaintenancePayload) MaintenancePayload {
+	if payload == nil {
+		return MaintenancePayload{}
+	}
+
+	return MaintenancePayload{
+		StartTime:           sanitizeMaintenanceHeaderValue(payload.StartTime),
+		EndTime:             sanitizeMaintenanceHeaderValue(payload.EndTime),
+		Contact:             sanitizeMaintenanceHeaderValue(payload.Contact),
+		AdditionInformation: sanitizeMaintenanceHeaderValue(payload.AdditionInformation),
+	}
+}
+
 // EnableMaintenance enables maintenance mode for a site
 func EnableMaintenance(name string) (err error) {
+	return EnableMaintenanceWithPayload(name, nil)
+}
+
+// EnableMaintenanceWithPayload enables maintenance mode for a site and injects
+// custom metadata used by maintenance pages.
+func EnableMaintenanceWithPayload(name string, payload *MaintenancePayload) (err error) {
+	normalizedPayload := normalizeMaintenancePayload(payload)
+
 	if err = validateSiteName(name); err != nil {
 		return err
 	}
@@ -88,7 +131,7 @@ func EnableMaintenance(name string) (err error) {
 	// Remote namespaces have no local Nginx to switch into maintenance mode, so
 	// the request is only dispatched to the member nodes.
 	if IsRemoteDeploy(name) {
-		go syncEnableMaintenance(name)
+		go syncEnableMaintenance(name, normalizedPayload)
 
 		return
 	}
@@ -107,7 +150,7 @@ func EnableMaintenance(name string) (err error) {
 	}
 
 	// Create new maintenance configuration
-	maintenanceConfig := createMaintenanceConfig(conf, filepath.Dir(configFilePath), name)
+	maintenanceConfig := createMaintenanceConfigWithPayload(conf, filepath.Dir(configFilePath), name, normalizedPayload)
 
 	// Write maintenance configuration to file
 	err = nginx.WriteFile(maintenanceConfigPath, []byte(maintenanceConfig), 0644)
@@ -159,7 +202,7 @@ func EnableMaintenance(name string) (err error) {
 	}
 
 	// Synchronize with other nodes
-	go syncEnableMaintenance(name)
+	go syncEnableMaintenance(name, normalizedPayload)
 
 	return nil
 }
@@ -256,6 +299,10 @@ func DisableMaintenance(name string) (err error) {
 // to the nginx configuration directory. siteName is forwarded to the maintenance page so it
 // can render a site specific template; pass "" to skip it.
 func createMaintenanceConfig(conf *config.Config, baseDir string, siteName string) string {
+	return createMaintenanceConfigWithPayload(conf, baseDir, siteName, MaintenancePayload{})
+}
+
+func createMaintenanceConfigWithPayload(conf *config.Config, baseDir string, siteName string, payload MaintenancePayload) string {
 	nginxUIPort := cSettings.ServerSettings.Port
 	schema := "http"
 	if cSettings.ServerSettings.EnableHTTPS {
@@ -314,13 +361,53 @@ func createMaintenanceConfig(conf *config.Config, baseDir string, siteName strin
 		locationContent.WriteString("proxy_set_header X-Forwarded-Proto $scheme;\n")
 		locationContent.WriteString("proxy_set_header X-Forwarded-Host $http_host;\n")
 		if siteName != "" {
-			locationContent.WriteString(fmt.Sprintf("proxy_set_header X-Maintenance-Site \"%s\";\n", escapeNginxQuotedValue(siteName)))
+			locationContent.WriteString(fmt.Sprintf("proxy_set_header %s \"%s\";\n", maintenanceSiteHeaderKey, escapeNginxQuotedValue(siteName)))
+		}
+		if payload.StartTime != "" {
+			locationContent.WriteString(fmt.Sprintf("proxy_set_header %s \"%s\";\n", maintenanceStartTimeHeaderKey, escapeNginxQuotedValue(payload.StartTime)))
+		}
+		if payload.EndTime != "" {
+			locationContent.WriteString(fmt.Sprintf("proxy_set_header %s \"%s\";\n", maintenanceEndTimeHeaderKey, escapeNginxQuotedValue(payload.EndTime)))
+		}
+		if payload.Contact != "" {
+			locationContent.WriteString(fmt.Sprintf("proxy_set_header %s \"%s\";\n", maintenanceContactHeaderKey, escapeNginxQuotedValue(payload.Contact)))
+		}
+		if payload.AdditionInformation != "" {
+			locationContent.WriteString(fmt.Sprintf("proxy_set_header %s \"%s\";\n", maintenanceAdditionalInfoHeaderKey, escapeNginxQuotedValue(payload.AdditionInformation)))
 		}
 		locationContent.WriteString("rewrite ^ /pages/maintenance break;\n")
 		locationContent.WriteString(fmt.Sprintf("proxy_pass %s://127.0.0.1:%d;\n", schema, nginxUIPort))
 
 		location.Content = locationContent.String()
 		ngxServer.Locations = append(ngxServer.Locations, location)
+
+		maintenanceMetaLocation := &nginx.NgxLocation{
+			Path: "= /pages/maintenance/meta",
+		}
+		locationContent.Reset()
+		locationContent.WriteString("proxy_set_header Host $host;\n")
+		locationContent.WriteString("proxy_set_header X-Real-IP $remote_addr;\n")
+		locationContent.WriteString("proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n")
+		locationContent.WriteString("proxy_set_header X-Forwarded-Proto $scheme;\n")
+		locationContent.WriteString("proxy_set_header X-Forwarded-Host $http_host;\n")
+		if siteName != "" {
+			locationContent.WriteString(fmt.Sprintf("proxy_set_header %s \"%s\";\n", maintenanceSiteHeaderKey, escapeNginxQuotedValue(siteName)))
+		}
+		if payload.StartTime != "" {
+			locationContent.WriteString(fmt.Sprintf("proxy_set_header %s \"%s\";\n", maintenanceStartTimeHeaderKey, escapeNginxQuotedValue(payload.StartTime)))
+		}
+		if payload.EndTime != "" {
+			locationContent.WriteString(fmt.Sprintf("proxy_set_header %s \"%s\";\n", maintenanceEndTimeHeaderKey, escapeNginxQuotedValue(payload.EndTime)))
+		}
+		if payload.Contact != "" {
+			locationContent.WriteString(fmt.Sprintf("proxy_set_header %s \"%s\";\n", maintenanceContactHeaderKey, escapeNginxQuotedValue(payload.Contact)))
+		}
+		if payload.AdditionInformation != "" {
+			locationContent.WriteString(fmt.Sprintf("proxy_set_header %s \"%s\";\n", maintenanceAdditionalInfoHeaderKey, escapeNginxQuotedValue(payload.AdditionInformation)))
+		}
+		locationContent.WriteString(fmt.Sprintf("proxy_pass %s://127.0.0.1:%d;\n", schema, nginxUIPort))
+		maintenanceMetaLocation.Content = locationContent.String()
+		ngxServer.Locations = append(ngxServer.Locations, maintenanceMetaLocation)
 
 		// Add to configuration
 		ngxConfig.Servers = append(ngxConfig.Servers, ngxServer)
@@ -669,7 +756,7 @@ func extractParams(directive config.IDirective) []string {
 }
 
 // syncEnableMaintenance synchronizes enabling maintenance mode with other nodes
-func syncEnableMaintenance(name string) {
+func syncEnableMaintenance(name string, payload MaintenancePayload) {
 	nodes := getSyncNodes(name)
 
 	wg := &sync.WaitGroup{}
@@ -689,6 +776,7 @@ func syncEnableMaintenance(name string) {
 			client := nodeauth.NewRestyClient(node)
 			client.SetBaseURL(node.URL)
 			resp, err := client.R().
+				SetBody(payload).
 				Post(fmt.Sprintf("/api/sites/%s/maintenance", name))
 			if err != nil {
 				notification.Error("Enable Remote Site Maintenance Error", err.Error(), nil)

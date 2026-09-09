@@ -19,14 +19,23 @@ var tmplFS embed.FS
 // maintenanceSiteHeader carries the site name injected by the generated
 // maintenance nginx configuration, so a per-site template can be selected.
 const maintenanceSiteHeader = "X-Maintenance-Site"
+const maintenanceStartTimeHeader = "X-Maintenance-Start-Time"
+const maintenanceEndTimeHeader = "X-Maintenance-End-Time"
+const maintenanceContactHeader = "X-Maintenance-Contact"
+const maintenanceAdditionalInfoHeader = "X-Maintenance-Additional-Information"
 
 // MaintenancePageData maintenance page data structure
 type MaintenancePageData struct {
-	Title                string `json:"title"`
-	Message              string `json:"message"`
-	Description          string `json:"description"`
-	ICPNumber            string `json:"icp_number"`
-	PublicSecurityNumber string `json:"public_security_number"`
+	Title                 string `json:"title"`
+	Message               string `json:"message"`
+	Description           string `json:"description"`
+	ICPNumber             string `json:"icp_number"`
+	PublicSecurityNumber  string `json:"public_security_number"`
+	SiteName              string `json:"site_name"`
+	StartTime             string `json:"start_time"`
+	EndTime               string `json:"end_time"`
+	Contact               string `json:"contact"`
+	AdditionalInformation string `json:"additioninfomation"`
 }
 
 const (
@@ -39,11 +48,16 @@ const (
 func MaintenancePage(c *gin.Context) {
 	// Prepare template data
 	data := MaintenancePageData{
-		Title:                Title,
-		Message:              Message,
-		Description:          Description,
-		ICPNumber:            settings.NodeSettings.ICPNumber,
-		PublicSecurityNumber: settings.NodeSettings.PublicSecurityNumber,
+		Title:                 Title,
+		Message:               Message,
+		Description:           Description,
+		ICPNumber:             settings.NodeSettings.ICPNumber,
+		PublicSecurityNumber:  settings.NodeSettings.PublicSecurityNumber,
+		SiteName:              strings.TrimSpace(c.GetHeader(maintenanceSiteHeader)),
+		StartTime:             strings.TrimSpace(c.GetHeader(maintenanceStartTimeHeader)),
+		EndTime:               strings.TrimSpace(c.GetHeader(maintenanceEndTimeHeader)),
+		Contact:               strings.TrimSpace(c.GetHeader(maintenanceContactHeader)),
+		AdditionalInformation: strings.TrimSpace(c.GetHeader(maintenanceAdditionalInfoHeader)),
 	}
 
 	// Check User-Agent
@@ -84,6 +98,17 @@ func MaintenancePage(c *gin.Context) {
 		c.String(http.StatusInternalServerError, "503 Service Unavailable")
 		return
 	}
+}
+
+// MaintenanceMeta returns maintenance metadata used by custom HTML/JS pages.
+func MaintenanceMeta(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"site_name":          strings.TrimSpace(c.GetHeader(maintenanceSiteHeader)),
+		"start_time":         strings.TrimSpace(c.GetHeader(maintenanceStartTimeHeader)),
+		"end_time":           strings.TrimSpace(c.GetHeader(maintenanceEndTimeHeader)),
+		"contact":            strings.TrimSpace(c.GetHeader(maintenanceContactHeader)),
+		"additioninfomation": strings.TrimSpace(c.GetHeader(maintenanceAdditionalInfoHeader)),
+	})
 }
 
 // Helper function to check if a string contains a substring

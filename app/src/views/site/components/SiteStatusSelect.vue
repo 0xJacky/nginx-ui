@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import type { SelectProps, SelectValue } from 'antdv-next'
-import type { SiteStatus } from '@/api/site'
+import type { MaintenancePayload, SiteStatus } from '@/api/site'
 import { Modal } from 'antdv-next'
 import site from '@/api/site'
 import { ConfigStatus } from '@/constants'
+import MaintenanceConfigModal from '@/views/site/components/MaintenanceConfigModal.vue'
 
 // Define props with TypeScript
 const props = defineProps<{
@@ -22,6 +23,8 @@ const status = defineModel<string>({
 
 const { message } = useGlobalApp()
 const [modal, ContextHolder] = Modal.useModal()
+const maintenanceModalOpen = ref(false)
+const pendingMaintenanceOriginalStatus = ref<string>(ConfigStatus.Disabled)
 
 const statusOptions = computed<SelectProps['options']>(() => [
   {
@@ -90,8 +93,8 @@ function disable() {
 }
 
 // Enable maintenance mode for the site
-function enableMaintenance() {
-  site.enableMaintenance(props.siteName).then(() => {
+function enableMaintenance(payload: MaintenancePayload) {
+  site.enableMaintenance(props.siteName, payload).then(() => {
     message.success($gettext('Maintenance mode enabled successfully'))
     status.value = ConfigStatus.Maintenance
     emit('statusChanged', {
@@ -125,6 +128,12 @@ function onChangeStatus(value: SelectValue) {
   // Save original status to restore if user cancels
   const originalStatus = status.value
 
+  if (statusValue === ConfigStatus.Maintenance) {
+    pendingMaintenanceOriginalStatus.value = originalStatus
+    maintenanceModalOpen.value = true
+    return
+  }
+
   const statusMap = {
     [ConfigStatus.Enabled]: $gettext('enable'),
     [ConfigStatus.Disabled]: $gettext('disable'),
@@ -149,9 +158,6 @@ function onChangeStatus(value: SelectValue) {
       else if (statusValue === ConfigStatus.Disabled) {
         disable()
       }
-      else if (statusValue === ConfigStatus.Maintenance) {
-        enableMaintenance()
-      }
     },
     onCancel() {
       // Restore original status if user cancels
@@ -159,11 +165,39 @@ function onChangeStatus(value: SelectValue) {
     },
   })
 }
+
+function onMaintenanceConfirm(payload: MaintenancePayload) {
+  modal.confirm({
+    title: $gettext('Do you want to set this site to maintenance mode?'),
+    mask: false,
+    centered: true,
+    okText: $gettext('Maintenance'),
+    cancelText: $gettext('Cancel'),
+    onOk: () => enableMaintenance(payload),
+    onCancel: () => {
+      status.value = pendingMaintenanceOriginalStatus.value
+    },
+  })
+}
+
+function onMaintenanceModalOpenChange(open: boolean) {
+  maintenanceModalOpen.value = open
+  if (!open) {
+    status.value = pendingMaintenanceOriginalStatus.value
+  }
+}
 </script>
 
 <template>
   <div class="site-status-select">
     <ContextHolder />
+    <MaintenanceConfigModal
+      :open="maintenanceModalOpen"
+      :title="$gettext('Set maintenance information for this site')"
+      :ok-text="$gettext('Next')"
+      @update:open="onMaintenanceModalOpenChange"
+      @confirm="onMaintenanceConfirm"
+    />
     <ASelect
       :value="status"
       class="status-select"
