@@ -9,6 +9,7 @@ export interface SiteInfo {
   scheme: string // http, https, grpc, grpcs
   display_url: string // computed URL for display
   custom_order: number
+  site_name: string // configured site name from the site list
   name: string
   status: SiteStatusType
   status_code: number
