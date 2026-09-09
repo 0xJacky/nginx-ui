@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import type { Site } from '@/api/site'
+import type { MaintenancePayload, Site } from '@/api/site'
 import { StdCurd } from '@uozi-admin/curd'
 import { message, Modal } from 'antdv-next'
 import nginxLog from '@/api/nginx_log'
@@ -8,6 +8,7 @@ import FooterToolBar from '@/components/FooterToolbar'
 import InspectConfig from '@/components/InspectConfig'
 import NamespaceTabs from '@/components/NamespaceTabs'
 import { ConfigStatus } from '@/constants'
+import MaintenanceConfigModal from '@/views/site/components/MaintenanceConfigModal.vue'
 import columns from '@/views/site/site_list/columns'
 import SiteDuplicate from '@/views/site/site_list/SiteDuplicate.vue'
 
@@ -22,6 +23,8 @@ const loadingEnable = ref(false)
 const loadingDisable = ref(false)
 const loadingMaintenance = ref(false)
 const [modal, ContextHolder] = Modal.useModal()
+const maintenanceModalOpen = ref(false)
+const pendingMaintenanceNames = ref<string[]>([])
 
 const namespaceId = ref(Number.parseInt(route.query.namespace_id as string) || 0)
 
@@ -94,16 +97,16 @@ function refreshAfterBatchStatusChanged() {
 
 type BatchStatusAction = 'enable' | 'disable' | 'maintenance'
 
-function executeBatchStatusAction(action: BatchStatusAction, names: string[]) {
+function executeBatchStatusAction(action: BatchStatusAction, names: string[], payload: MaintenancePayload = {}) {
   const loadingMap = {
     enable: loadingEnable,
     disable: loadingDisable,
     maintenance: loadingMaintenance,
   }
-  const requestMap: Record<BatchStatusAction, (names: string[]) => Promise<unknown>> = {
+  const requestMap: Record<BatchStatusAction, (names: string[], payload: MaintenancePayload) => Promise<unknown>> = {
     enable: site.batchEnable,
     disable: site.batchDisable,
-    maintenance: site.batchEnableMaintenance,
+    maintenance: (maintenanceNames: string[], maintenancePayload: MaintenancePayload) => site.batchEnableMaintenance(maintenanceNames, maintenancePayload),
   }
   const successMessageMap: Record<BatchStatusAction, string> = {
     enable: $gettext('Sites enabled successfully'),
@@ -116,7 +119,7 @@ function executeBatchStatusAction(action: BatchStatusAction, names: string[]) {
   const successMessage = successMessageMap[action]
 
   loading.value = true
-  return request(names).then(() => {
+  return request(names, payload).then(() => {
     message.success(successMessage)
     refreshAfterBatchStatusChanged()
   }).finally(() => {
@@ -124,8 +127,12 @@ function executeBatchStatusAction(action: BatchStatusAction, names: string[]) {
   })
 }
 
-function confirmBatchStatusAction(action: BatchStatusAction) {
-  if (selectedSiteNames.value.length === 0) {
+function confirmBatchStatusAction(action: BatchStatusAction, payload: MaintenancePayload = {}, namesOverride?: string[]) {
+  const names = namesOverride && namesOverride.length > 0
+    ? [...namesOverride]
+    : [...selectedSiteNames.value]
+
+  if (names.length === 0) {
     const warningMessageMap: Record<BatchStatusAction, string> = {
       enable: $gettext('Please select at least one site to enable'),
       disable: $gettext('Please select at least one site to disable'),
@@ -135,7 +142,6 @@ function confirmBatchStatusAction(action: BatchStatusAction) {
     return
   }
 
-  const names = [...selectedSiteNames.value]
   const titleMap: Record<BatchStatusAction, string> = {
     enable: $gettext('Do you want to enable selected sites?'),
     disable: $gettext('Do you want to disable selected sites?'),
@@ -165,7 +171,7 @@ function confirmBatchStatusAction(action: BatchStatusAction) {
       danger: action === 'disable',
     },
     cancelText: $gettext('Cancel'),
-    onOk: () => executeBatchStatusAction(action, names),
+    onOk: () => executeBatchStatusAction(action, names, payload),
   })
 }
 
@@ -178,7 +184,25 @@ function batchDisableSites() {
 }
 
 function batchEnableMaintenanceSites() {
-  confirmBatchStatusAction('maintenance')
+  if (selectedSiteNames.value.length === 0) {
+    message.warning($gettext('Please select at least one site to switch to maintenance mode'))
+    return
+  }
+  pendingMaintenanceNames.value = [...selectedSiteNames.value]
+  maintenanceModalOpen.value = true
+}
+
+function onMaintenanceModalOpenChange(open: boolean) {
+  maintenanceModalOpen.value = open
+  if (!open) {
+    pendingMaintenanceNames.value = []
+  }
+}
+
+function onMaintenanceConfirm(payload: MaintenancePayload) {
+  const names = pendingMaintenanceNames.value.length > 0 ? pendingMaintenanceNames.value : [...selectedSiteNames.value]
+  pendingMaintenanceNames.value = []
+  confirmBatchStatusAction('maintenance', payload, names)
 }
 </script>
 
@@ -262,6 +286,13 @@ function batchEnableMaintenanceSites() {
       @duplicated="() => curd.refresh()"
     />
     <ContextHolder />
+    <MaintenanceConfigModal
+      :open="maintenanceModalOpen"
+      :title="$gettext('Set maintenance information for selected sites')"
+      :ok-text="$gettext('Next')"
+      @update:open="onMaintenanceModalOpenChange"
+      @confirm="onMaintenanceConfirm"
+    />
 
     <FooterToolBar v-if="selectedSiteNames.length > 0">
       <template #extra>

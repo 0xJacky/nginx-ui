@@ -67,6 +67,33 @@
             color: #999;
             border-top: 1px solid #f0f0f0;
         }
+
+        .maintenance-meta {
+            margin-top: 20px;
+            text-align: left;
+            border: 1px solid #f0f0f0;
+            border-radius: 8px;
+            padding: 14px 16px;
+            background: #fafafa;
+        }
+
+        .maintenance-meta-item {
+            margin: 0;
+            color: #555;
+            font-size: 14px;
+            line-height: 1.6;
+            word-break: break-word;
+        }
+
+        .maintenance-meta-item + .maintenance-meta-item {
+            margin-top: 6px;
+        }
+
+        .maintenance-meta-label {
+            color: #222;
+            font-weight: 600;
+            margin-right: 8px;
+        }
         
         .footer p {
             margin: 0;
@@ -135,6 +162,12 @@
             <h1>{{.Title}}</h1>
             <p>{{.Message}}</p>
             <p>{{.Description}}</p>
+            <div id="maintenance-meta" class="maintenance-meta" style="display: none;">
+                <p id="maintenance-start" class="maintenance-meta-item" style="display: none;"><span class="maintenance-meta-label">Start:</span><span id="maintenance-start-value"></span></p>
+                <p id="maintenance-end" class="maintenance-meta-item" style="display: none;"><span class="maintenance-meta-label">End:</span><span id="maintenance-end-value"></span></p>
+                <p id="maintenance-contact" class="maintenance-meta-item" style="display: none;"><span class="maintenance-meta-label">Contact:</span><span id="maintenance-contact-value"></span></p>
+                <p id="maintenance-additional" class="maintenance-meta-item" style="display: none;"><span class="maintenance-meta-label">Additional:</span><span id="maintenance-additional-value"></span></p>
+            </div>
             <div class="footer">
                 <p>Powered by <a href="https://nginxui.com" target="_blank">Nginx UI</a></p>
             </div>
@@ -148,5 +181,52 @@
             {{end}}
         </div>
     </div>
+    <script>
+        (function () {
+            function showField(wrapperId, valueId, value) {
+                if (!value) {
+                    return false
+                }
+
+                var wrapper = document.getElementById(wrapperId)
+                var valueElement = document.getElementById(valueId)
+                if (!wrapper || !valueElement) {
+                    return false
+                }
+
+                valueElement.textContent = value
+                wrapper.style.display = 'block'
+                return true
+            }
+
+            fetch('/pages/maintenance/meta', {
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }).then(function (response) {
+                if (!response.ok) {
+                    return null
+                }
+                return response.json()
+            }).then(function (data) {
+                if (!data) {
+                    return
+                }
+
+                var hasAny = false
+                hasAny = showField('maintenance-start', 'maintenance-start-value', data.start_time) || hasAny
+                hasAny = showField('maintenance-end', 'maintenance-end-value', data.end_time) || hasAny
+                hasAny = showField('maintenance-contact', 'maintenance-contact-value', data.contact) || hasAny
+                hasAny = showField('maintenance-additional', 'maintenance-additional-value', data.additioninfomation) || hasAny
+
+                var meta = document.getElementById('maintenance-meta')
+                if (meta && hasAny) {
+                    meta.style.display = 'block'
+                }
+            }).catch(function () {
+                // Keep the page functional even if metadata cannot be fetched.
+            })
+        })()
+    </script>
 </body>
 </html>

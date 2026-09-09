@@ -1,11 +1,15 @@
 package pages
 
 import (
+	"encoding/json"
+	"net/http"
+	"net/http/httptest"
 	"os"
 	"path/filepath"
 	"testing"
 
 	"github.com/0xJacky/Nginx-UI/settings"
+	"github.com/gin-gonic/gin"
 )
 
 func setupMaintenanceTemplateSettings(t *testing.T, dir, template string) {
@@ -95,5 +99,45 @@ func TestSanitizeMaintenanceFileNameRejectsTraversal(t *testing.T) {
 				t.Fatalf("sanitizeMaintenanceFileName(%q) = %q, want %q", test.input, got, test.want)
 			}
 		})
+	}
+}
+
+func TestMaintenanceMeta(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	w := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(w)
+	req := httptest.NewRequest(http.MethodGet, "/pages/maintenance/meta", nil)
+	req.Header.Set(maintenanceSiteHeader, "example.com")
+	req.Header.Set(maintenanceStartTimeHeader, "2026-09-09 10:00:00")
+	req.Header.Set(maintenanceEndTimeHeader, "2026-09-09 12:00:00")
+	req.Header.Set(maintenanceContactHeader, "ops@example.com")
+	req.Header.Set(maintenanceAdditionalInfoHeader, "planned db migration")
+	c.Request = req
+
+	MaintenanceMeta(c)
+
+	if w.Code != http.StatusOK {
+		t.Fatalf("MaintenanceMeta() status = %d, want %d", w.Code, http.StatusOK)
+	}
+
+	var payload map[string]string
+	if err := json.Unmarshal(w.Body.Bytes(), &payload); err != nil {
+		t.Fatalf("failed to decode response: %v", err)
+	}
+
+	if payload["site_name"] != "example.com" {
+		t.Fatalf("site_name = %q, want %q", payload["site_name"], "example.com")
+	}
+	if payload["start_time"] != "2026-09-09 10:00:00" {
+		t.Fatalf("start_time = %q, want %q", payload["start_time"], "2026-09-09 10:00:00")
+	}
+	if payload["end_time"] != "2026-09-09 12:00:00" {
+		t.Fatalf("end_time = %q, want %q", payload["end_time"], "2026-09-09 12:00:00")
+	}
+	if payload["contact"] != "ops@example.com" {
+		t.Fatalf("contact = %q, want %q", payload["contact"], "ops@example.com")
+	}
+	if payload["additioninfomation"] != "planned db migration" {
+		t.Fatalf("additioninfomation = %q, want %q", payload["additioninfomation"], "planned db migration")
 	}
 }

@@ -2,6 +2,8 @@ package sites
 
 import (
 	"context"
+	"errors"
+	"io"
 	"net/http"
 	"os"
 	"strings"
@@ -379,7 +381,7 @@ func disableSiteByName(name string) error {
 	return site.Disable(name)
 }
 
-func enableMaintenanceByName(name string) error {
+func enableMaintenanceByName(name string, payload *site.MaintenancePayload) error {
 	// If site is already enabled, disable the normal site first.
 	enabledConfigPath, err := site.ResolveEnabledPath(name)
 	if err != nil {
@@ -396,7 +398,7 @@ func enableMaintenanceByName(name string) error {
 		}
 	}
 
-	return site.EnableMaintenance(name)
+	return site.EnableMaintenanceWithPayload(name, payload)
 }
 
 func EnableSite(c *gin.Context) {
@@ -480,16 +482,31 @@ func BatchDisableSites(c *gin.Context) {
 }
 
 func BatchEnableMaintenanceSites(c *gin.Context) {
-	var json batchSiteNamesRequest
+	type batchEnableMaintenanceRequest struct {
+		Names                 []string `json:"names" binding:"required,min=1"`
+		StartTime             string   `json:"start_time"`
+		EndTime               string   `json:"end_time"`
+		Contact               string   `json:"contact"`
+		AdditionalInformation string   `json:"additioninfomation"`
+	}
+
+	var json batchEnableMaintenanceRequest
 	if !cosy.BindAndValid(c, &json) {
 		return
+	}
+
+	payload := &site.MaintenancePayload{
+		StartTime:           json.StartTime,
+		EndTime:             json.EndTime,
+		Contact:             json.Contact,
+		AdditionInformation: json.AdditionalInformation,
 	}
 
 	for _, name := range json.Names {
 		if rejectInvalidSiteName(c, name) {
 			return
 		}
-		if err := enableMaintenanceByName(name); err != nil {
+		if err := enableMaintenanceByName(name, payload); err != nil {
 			cosy.ErrHandler(c, err)
 			return
 		}
@@ -571,7 +588,14 @@ func EnableMaintenanceSite(c *gin.Context) {
 		return
 	}
 
-	err := enableMaintenanceByName(name)
+	var req site.MaintenancePayload
+	err := c.ShouldBindJSON(&req)
+	if err != nil && !errors.Is(err, io.EOF) {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	err = enableMaintenanceByName(name, &req)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
