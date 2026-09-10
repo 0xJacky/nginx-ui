@@ -9,6 +9,7 @@ import MaintenanceConfigModal from '@/views/site/components/MaintenanceConfigMod
 // Define props with TypeScript
 const props = defineProps<{
   siteName: string
+  status: SiteStatus
 }>()
 
 // Define event for status change notification
@@ -16,15 +17,22 @@ const emit = defineEmits<{
   statusChanged: [{ status: SiteStatus }]
 }>()
 
-// Use defineModel for v-model binding
-const status = defineModel<string>({
-  default: ConfigStatus.Disabled,
-})
-
 const { message } = useGlobalApp()
 const [modal, ContextHolder] = Modal.useModal()
 const maintenanceModalOpen = ref(false)
-const pendingMaintenanceOriginalStatus = ref<string>(ConfigStatus.Disabled)
+const pendingMaintenanceOriginalStatus = ref<SiteStatus>(ConfigStatus.Disabled)
+const displayStatus = ref<SiteStatus>(props.status)
+const selectRenderKey = ref(0)
+
+watch(() => props.status, val => {
+  displayStatus.value = val
+  selectRenderKey.value += 1
+}, { immediate: true })
+
+function restoreDisplayStatus(statusValue: SiteStatus) {
+  displayStatus.value = statusValue
+  selectRenderKey.value += 1
+}
 
 const statusOptions = computed<SelectProps['options']>(() => [
   {
@@ -63,14 +71,14 @@ const selectStyle = computed(() => {
       'color': '#ffffff',
     },
   }
-  return statusStyles[status.value] || {}
+  return statusStyles[displayStatus.value] || {}
 })
 
 // Enable the site
 function enable() {
   site.enable(props.siteName).then(() => {
     message.success($gettext('Enabled successfully'))
-    status.value = ConfigStatus.Enabled
+    restoreDisplayStatus(ConfigStatus.Enabled)
     emit('statusChanged', {
       status: ConfigStatus.Enabled,
     })
@@ -83,7 +91,7 @@ function enable() {
 function disable() {
   site.disable(props.siteName).then(() => {
     message.success($gettext('Disabled successfully'))
-    status.value = ConfigStatus.Disabled
+    restoreDisplayStatus(ConfigStatus.Disabled)
     emit('statusChanged', {
       status: ConfigStatus.Disabled,
     })
@@ -96,7 +104,7 @@ function disable() {
 function enableMaintenance(payload: MaintenancePayload) {
   site.enableMaintenance(props.siteName, payload).then(() => {
     message.success($gettext('Maintenance mode enabled successfully'))
-    status.value = ConfigStatus.Maintenance
+    restoreDisplayStatus(ConfigStatus.Maintenance)
     emit('statusChanged', {
       status: ConfigStatus.Maintenance,
     })
@@ -109,7 +117,7 @@ function enableMaintenance(payload: MaintenancePayload) {
 function disableMaintenance() {
   site.enable(props.siteName).then(() => {
     message.success($gettext('Maintenance mode disabled successfully'))
-    status.value = ConfigStatus.Enabled
+    restoreDisplayStatus(ConfigStatus.Enabled)
     emit('statusChanged', {
       status: ConfigStatus.Enabled,
     })
@@ -120,13 +128,13 @@ function disableMaintenance() {
 
 // Handle status change from select
 function onChangeStatus(value: SelectValue) {
-  const statusValue = value as string
-  if (!statusValue || statusValue === status.value) {
+  const statusValue = value as SiteStatus
+  if (!statusValue || statusValue === displayStatus.value) {
     return
   }
 
-  // Save original status to restore if user cancels
-  const originalStatus = status.value
+  const originalStatus = displayStatus.value
+  restoreDisplayStatus(originalStatus)
 
   if (statusValue === ConfigStatus.Maintenance) {
     pendingMaintenanceOriginalStatus.value = originalStatus
@@ -148,7 +156,7 @@ function onChangeStatus(value: SelectValue) {
     cancelText: $gettext('Cancel'),
     async onOk() {
       if (statusValue === ConfigStatus.Enabled) {
-        if (status.value === ConfigStatus.Maintenance) {
+        if (displayStatus.value === ConfigStatus.Maintenance) {
           disableMaintenance()
         }
         else {
@@ -160,8 +168,7 @@ function onChangeStatus(value: SelectValue) {
       }
     },
     onCancel() {
-      // Restore original status if user cancels
-      status.value = originalStatus
+      restoreDisplayStatus(originalStatus)
     },
   })
 }
@@ -174,16 +181,14 @@ function onMaintenanceConfirm(payload: MaintenancePayload) {
     okText: $gettext('Maintenance'),
     cancelText: $gettext('Cancel'),
     onOk: () => enableMaintenance(payload),
-    onCancel: () => {
-      status.value = pendingMaintenanceOriginalStatus.value
-    },
+    onCancel: () => restoreDisplayStatus(pendingMaintenanceOriginalStatus.value),
   })
 }
 
 function onMaintenanceModalOpenChange(open: boolean) {
   maintenanceModalOpen.value = open
   if (!open) {
-    status.value = pendingMaintenanceOriginalStatus.value
+    restoreDisplayStatus(pendingMaintenanceOriginalStatus.value)
   }
 }
 </script>
@@ -199,7 +204,8 @@ function onMaintenanceModalOpenChange(open: boolean) {
       @confirm="onMaintenanceConfirm"
     />
     <ASelect
-      :value="status"
+      :key="selectRenderKey"
+      :value="displayStatus"
       class="status-select"
       :popup-match-select-width="false"
       :styles="{
