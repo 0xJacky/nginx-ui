@@ -112,6 +112,49 @@ server {
 	}
 }
 
+func TestHTTPSProbeFallsBackToTCPWhenTLSHandshakeFails(t *testing.T) {
+	listener, err := net.Listen("tcp", "127.0.0.1:0")
+	if err != nil {
+		t.Fatalf("listen tcp: %v", err)
+	}
+	t.Cleanup(func() {
+		_ = listener.Close()
+	})
+
+	stop := make(chan struct{})
+	go func() {
+		for {
+			conn, acceptErr := listener.Accept()
+			if acceptErr != nil {
+				select {
+				case <-stop:
+					return
+				default:
+					return
+				}
+			}
+			_ = conn.Close()
+		}
+	}()
+	t.Cleanup(func() {
+		close(stop)
+	})
+
+	host, port, splitErr := net.SplitHostPort(listener.Addr().String())
+	if splitErr != nil {
+		t.Fatalf("split listener addr: %v", splitErr)
+	}
+
+	target := ProxyTarget{Host: host, Port: port, Type: "proxy_pass", Scheme: "https"}
+	results := AvailabilityTestTargets([]ProxyTarget{target})
+	socket := formatSocketAddress(host, port)
+	status := results[socket]
+
+	if status == nil || !status.Online {
+		t.Fatalf("status = %+v, want online when TCP socket is reachable", status)
+	}
+}
+
 type synchronizedLog struct {
 	mu      sync.Mutex
 	buffer  bytes.Buffer
