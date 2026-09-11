@@ -28,7 +28,7 @@ function handleStatusChanged(event: { status: SiteStatus }) {
       <AForm layout="vertical">
         <AFormItem :label="$gettext('Status')">
           <SiteStatusSelect
-            v-model="data.status"
+            :status="data.status"
             :site-name="name"
             @status-changed="handleStatusChanged"
           />

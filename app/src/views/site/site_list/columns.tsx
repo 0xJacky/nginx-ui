@@ -122,14 +122,9 @@ const columns: StdTableColumn[] = [{
   customRender: (args: CustomRenderArgs<Site>) => {
     const { text, record } = args
     return h(SiteStatusSelect, {
-      'modelValue': text,
-      'siteName': record.name,
-      'enabled': record.status !== ConfigStatus.Disabled,
-      'onUpdate:modelValue': (val: string) => {
-        // This will be handled by the component internal events
-        record.status = val as SiteStatus
-      },
-      'onStatusChanged': ({ status }: { status: SiteStatus }) => {
+      status: text as SiteStatus,
+      siteName: record.name,
+      onStatusChanged: ({ status }: { status: SiteStatus }) => {
         record.status = status
       },
     })
