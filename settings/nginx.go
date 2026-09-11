@@ -1,7 +1,6 @@
 package settings
 
 import (
-	"fmt"
 	"net/url"
 	"strings"
 )
@@ -91,20 +90,19 @@ func (n *Nginx) GetMaintenanceDir() string {
 }
 
 // GetMaintenanceHost returns the upstream used by generated maintenance
-// configurations. Invalid values fall back to the local Nginx UI listener so
-// persisted configuration can never inject arbitrary Nginx directives.
-func (n *Nginx) GetMaintenanceHost(defaultScheme string, defaultPort uint) string {
-	fallback := fmt.Sprintf("%s://127.0.0.1:%d", defaultScheme, defaultPort)
+// configurations. Invalid values fall back to defaultHost so persisted
+// configuration can never inject arbitrary Nginx directives.
+func (n *Nginx) GetMaintenanceHost(defaultHost string) string {
 	raw := strings.TrimSpace(n.MaintenanceHost)
 	if raw == "" {
-		return fallback
+		return defaultHost
 	}
 
 	parsed, err := url.Parse(raw)
 	if err != nil || (parsed.Scheme != "http" && parsed.Scheme != "https") ||
 		parsed.Host == "" || parsed.User != nil ||
 		(parsed.Path != "" && parsed.Path != "/") || parsed.RawQuery != "" || parsed.Fragment != "" {
-		return fallback
+		return defaultHost
 	}
 
 	return parsed.Scheme + "://" + parsed.Host

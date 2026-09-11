@@ -308,7 +308,7 @@ func createMaintenanceConfigWithPayload(conf *config.Config, baseDir string, sit
 	if cSettings.ServerSettings.EnableHTTPS {
 		schema = "https"
 	}
-	maintenanceHost := settings.NginxSettings.GetMaintenanceHost(schema, nginxUIPort)
+	maintenanceProxyPass := nginxUIProxyPass(schema, nginxUIPort)
 
 	// Create new configuration
 	ngxConfig := nginx.NewNgxConfig("")
@@ -377,7 +377,7 @@ func createMaintenanceConfigWithPayload(conf *config.Config, baseDir string, sit
 			locationContent.WriteString(fmt.Sprintf("proxy_set_header %s \"%s\";\n", maintenanceAdditionalInfoHeaderKey, escapeNginxQuotedValue(payload.AdditionInformation)))
 		}
 		locationContent.WriteString("rewrite ^ /pages/maintenance break;\n")
-		locationContent.WriteString(fmt.Sprintf("proxy_pass %s;\n", maintenanceHost))
+		locationContent.WriteString(maintenanceProxyPass)
 
 		location.Content = locationContent.String()
 		ngxServer.Locations = append(ngxServer.Locations, location)
@@ -406,7 +406,7 @@ func createMaintenanceConfigWithPayload(conf *config.Config, baseDir string, sit
 		if payload.AdditionInformation != "" {
 			locationContent.WriteString(fmt.Sprintf("proxy_set_header %s \"%s\";\n", maintenanceAdditionalInfoHeaderKey, escapeNginxQuotedValue(payload.AdditionInformation)))
 		}
-		locationContent.WriteString(fmt.Sprintf("proxy_pass %s://127.0.0.1:%d;\n", schema, nginxUIPort))
+		locationContent.WriteString(maintenanceProxyPass)
 		maintenanceMetaLocation.Content = locationContent.String()
 		ngxServer.Locations = append(ngxServer.Locations, maintenanceMetaLocation)
 
@@ -422,6 +422,19 @@ func createMaintenanceConfigWithPayload(conf *config.Config, baseDir string, sit
 	}
 
 	return content
+}
+
+func nginxUIProxyPass(schema string, port uint) string {
+	localHost := fmt.Sprintf("%s://127.0.0.1:%d", schema, port)
+	if settings.ListenerSettings.UnixSocket != "" {
+		localHost = schema + "://unix:" + settings.ListenerSettings.UnixSocket + ":"
+	}
+
+	maintenanceHost := settings.NginxSettings.GetMaintenanceHost(localHost)
+	if maintenanceHost == localHost && settings.ListenerSettings.UnixSocket != "" {
+		maintenanceHost = fmt.Sprintf("%q", maintenanceHost)
+	}
+	return fmt.Sprintf("proxy_pass %s;\n", maintenanceHost)
 }
 
 // escapeNginxQuotedValue escapes a value embedded in a double quoted nginx parameter.
