@@ -87,6 +87,7 @@ export interface NginxSettings {
   container_name: string
   maintenance_dir?: string
   maintenance_template?: string
+  maintenance_host?: string
   host_mode?: string
 
   // Host-via-SSH mode fields

@@ -169,6 +169,15 @@ async function openSSHSetup() {
     <AFormItem :label="$gettext('Stub Status Port')">
       <AInputNumber v-model:value="data.nginx.stub_status_port" />
     </AFormItem>
+    <AFormItem :label="$gettext('Maintenance host')">
+      <AInput
+        v-model:value="data.nginx.maintenance_host"
+        :placeholder="$gettext('http://127.0.0.1:9000')"
+      />
+      <div class="text-secondary mt-1">
+        {{ $gettext('Optional HTTP or HTTPS origin that serves the maintenance page. Leave empty to use this Nginx UI instance.') }}
+      </div>
+    </AFormItem>
     <AFormItem :label="$gettext('Maintenance template (filename only)')">
       <AInput
         v-model:value="data.nginx.maintenance_template"

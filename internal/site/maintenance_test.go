@@ -65,6 +65,27 @@ func TestCreateMaintenanceConfig_PreservesForwardedHost(t *testing.T) {
 	}
 }
 
+func TestCreateMaintenanceConfig_UsesConfiguredMaintenanceHost(t *testing.T) {
+	setupMaintenanceTestSettings(t, "")
+	originalHost := settings.NginxSettings.MaintenanceHost
+	t.Cleanup(func() { settings.NginxSettings.MaintenanceHost = originalHost })
+	settings.NginxSettings.MaintenanceHost = "https://maintenance.internal:9443"
+
+	p := parser.NewStringParser(`server {
+    listen 443 ssl;
+    server_name example.com;
+}`, parser.WithSkipValidDirectivesErr())
+	conf, err := p.Parse()
+	if err != nil {
+		t.Fatalf("Parse() error = %v", err)
+	}
+
+	content := createMaintenanceConfig(conf, "", "example.com")
+	if !strings.Contains(content, "proxy_pass https://maintenance.internal:9443;") {
+		t.Fatalf("maintenance config = %q, want configured maintenance host", content)
+	}
+}
+
 // TestDisableMaintenanceRestoresMaintenanceConfigWhenReloadFails guards against
 // leaving a site with neither the normal nor the maintenance config enabled:
 // when Nginx accepts the new config on `-t` but fails to reload it, the site
