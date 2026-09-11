@@ -207,3 +207,28 @@ func TestSetup(t *testing.T) {
 
 	os.Clearenv()
 }
+
+func TestGetMaintenanceHost(t *testing.T) {
+	tests := []struct {
+		name  string
+		value string
+		want  string
+	}{
+		{name: "default", want: "http://127.0.0.1:9000"},
+		{name: "custom host", value: "https://maintenance.internal:9443", want: "https://maintenance.internal:9443"},
+		{name: "trailing slash", value: "http://maintenance.internal/", want: "http://maintenance.internal"},
+		{name: "directive injection", value: "http://host; return 200", want: "http://127.0.0.1:9000"},
+		{name: "path", value: "https://maintenance.internal/page", want: "http://127.0.0.1:9000"},
+		{name: "credentials", value: "https://user:pass@maintenance.internal", want: "http://127.0.0.1:9000"},
+		{name: "unsupported scheme", value: "file:///tmp/page", want: "http://127.0.0.1:9000"},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			nginxSettings := &Nginx{MaintenanceHost: test.value}
+			if got := nginxSettings.GetMaintenanceHost("http", 9000); got != test.want {
+				t.Fatalf("GetMaintenanceHost() = %q, want %q", got, test.want)
+			}
+		})
+	}
+}

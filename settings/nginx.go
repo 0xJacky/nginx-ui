@@ -1,5 +1,11 @@
 package settings
 
+import (
+	"fmt"
+	"net/url"
+	"strings"
+)
+
 const (
 	ControlModeLocal             = "local"
 	ControlModeExternalContainer = "external_container"
@@ -47,6 +53,7 @@ type Nginx struct {
 	ContainerName       string   `json:"container_name" protected:"true"`
 	MaintenanceDir      string   `json:"maintenance_dir" protected:"true"`
 	MaintenanceTemplate string   `json:"maintenance_template"`
+	MaintenanceHost     string   `json:"maintenance_host"`
 
 	// Host SSH mode fields enable nginx-ui (running in Docker) to control
 	// nginx installed natively on the same host via an SSH tunnel.
@@ -81,6 +88,26 @@ func (n *Nginx) GetMaintenanceDir() string {
 		return DefaultMaintenanceDir
 	}
 	return n.MaintenanceDir
+}
+
+// GetMaintenanceHost returns the upstream used by generated maintenance
+// configurations. Invalid values fall back to the local Nginx UI listener so
+// persisted configuration can never inject arbitrary Nginx directives.
+func (n *Nginx) GetMaintenanceHost(defaultScheme string, defaultPort uint) string {
+	fallback := fmt.Sprintf("%s://127.0.0.1:%d", defaultScheme, defaultPort)
+	raw := strings.TrimSpace(n.MaintenanceHost)
+	if raw == "" {
+		return fallback
+	}
+
+	parsed, err := url.Parse(raw)
+	if err != nil || (parsed.Scheme != "http" && parsed.Scheme != "https") ||
+		parsed.Host == "" || parsed.User != nil ||
+		(parsed.Path != "" && parsed.Path != "/") || parsed.RawQuery != "" || parsed.Fragment != "" {
+		return fallback
+	}
+
+	return parsed.Scheme + "://" + parsed.Host
 }
 
 func (n *Nginx) GetHostKnownHostsPath() string {
