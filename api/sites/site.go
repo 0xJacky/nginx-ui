@@ -258,6 +258,7 @@ func SaveSite(c *gin.Context) {
 		DNSRecordName *string                `json:"dns_record_name"`
 		DNSRecordType *string                `json:"dns_record_type"`
 		DNSRecords    *[]model.SiteDNSRecord `json:"dns_records"`
+		Description   string                 `json:"description" binding:"max=500"`
 	}
 
 	if !cosy.BindAndValid(c, &json) {
@@ -289,6 +290,7 @@ func SaveSite(c *gin.Context) {
 	if err != nil {
 		logger.Warn("Failed to find or create site for DNS update:", err)
 	} else {
+		siteModel.Description = strings.TrimSpace(json.Description)
 		var linkedRecords []model.SiteDNSRecord
 		if json.DNSRecords != nil {
 			linkedRecords = normalizeDNSRecords(*json.DNSRecords)

@@ -25,6 +25,7 @@ export interface Site extends ModelBase {
   path: string
   advanced: boolean
   name: string
+  description?: string
   filepath: string
   config: string
   auto_cert: boolean

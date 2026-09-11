@@ -36,6 +36,14 @@ function handleStatusChanged(event: { status: SiteStatus }) {
         <AFormItem :label="$gettext('Name')">
           <ConfigName v-if="name" :name />
         </AFormItem>
+        <AFormItem :label="$gettext('Description')">
+          <ATextarea
+            v-model:value="data.description"
+            :maxlength="500"
+            :auto-size="{ minRows: 2, maxRows: 4 }"
+            show-count
+          />
+        </AFormItem>
         <AFormItem :label="$gettext('Updated at')">
           {{ formatDateTime(data.modified_at) }}
         </AFormItem>

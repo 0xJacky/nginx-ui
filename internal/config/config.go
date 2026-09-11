@@ -20,6 +20,7 @@ type ProxyTarget = upstream.ProxyTarget
 
 type Config struct {
 	Name          string           `json:"name"`
+	Description   string           `json:"description,omitempty"`
 	Content       string           `json:"content"`
 	FilePath      string           `json:"filepath,omitempty"`
 	ModifiedAt    time.Time        `json:"modified_at"`
