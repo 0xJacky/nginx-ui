@@ -7,6 +7,7 @@ import LarkConfig from './lark'
 import LarkCustomConfig from './lark_custom'
 import MattermostConfig from './mattermost'
 import NtfyConfig from './ntfy'
+import TeamsConfig from './teams'
 import TelegramConfig from './telegram'
 import WeComConfig from './wecom'
 
@@ -20,6 +21,7 @@ const configMap = {
   mattermost: MattermostConfig,
   ntfy: NtfyConfig,
   telegram: TelegramConfig,
+  teams: TeamsConfig,
   wecom: WeComConfig,
 }
 

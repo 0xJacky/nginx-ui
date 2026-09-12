@@ -2,6 +2,7 @@
 import type { ExternalNotify } from '@/api/external_notify'
 import { StdCurd } from '@uozi-admin/curd'
 import externalNotify, { testMessage } from '@/api/external_notify'
+import configMap from '../components/ExternalNotify'
 import columns from '../components/ExternalNotify/columns'
 
 const { message } = App.useApp()
@@ -19,11 +20,17 @@ async function handleTestSingleMessage(record: ExternalNotify) {
 
   loadingStates.value[record.id] = true
   try {
+    const notifierConfig = configMap[record.type?.toLowerCase() ?? '']
+    const allowedConfigKeys = new Set((notifierConfig?.config ?? []).map(item => item.key))
+    const sanitizedConfig = Object.fromEntries(
+      Object.entries(record.config ?? {}).filter(([key]) => allowedConfigKeys.has(key)),
+    )
+
     // Use new API with direct parameters instead of ID
     await testMessage({
       type: record.type,
       language: record.language,
-      config: record.config,
+      config: sanitizedConfig,
     })
     message.success($gettext('Test message sent successfully'))
   }
