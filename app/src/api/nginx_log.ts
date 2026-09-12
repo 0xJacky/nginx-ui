@@ -23,6 +23,16 @@ export interface NginxLogData {
   partial_offset?: number
 }
 
+export interface LogListResponse {
+  data: NginxLogData[]
+  summary?: {
+    total_files?: number
+    indexed_files?: number
+    indexing_files?: number
+    document_count?: number
+  }
+}
+
 export interface AnalyticsRequest {
   path: string
   start_time?: number
@@ -319,6 +329,10 @@ export interface GeoStats {
 }
 
 const nginx_log = extendCurdApi(useCurdApi('/nginx_logs'), {
+  list(params?: Pick<NginxLogData, 'type' | 'name' | 'path'>): Promise<LogListResponse> {
+    return http.get('/nginx_logs', { params })
+  },
+
   page(page = 0, data: NginxLogData | undefined = undefined) {
     return http.post(`/nginx_log/page?page=${page}`, data)
   },
