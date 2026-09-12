@@ -20,6 +20,10 @@ func createZipArchive(zipPath, srcDir string) error {
 		return cosy.WrapErrorWithParams(ErrCreateZipFile, err.Error())
 	}
 	defer zipFile.Close()
+	outputInfo, err := zipFile.Stat()
+	if err != nil {
+		return err
+	}
 
 	// Create a new zip writer
 	zipWriter := zip.NewWriter(zipFile)
@@ -29,6 +33,12 @@ func createZipArchive(zipPath, srcDir string) error {
 	err = filepath.Walk(srcDir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
+		}
+
+		// A local destination may be inside the source tree. Do not read the
+		// archive while writing it, including through a hard-link alias.
+		if os.SameFile(info, outputInfo) {
+			return nil
 		}
 
 		// Get relative path
