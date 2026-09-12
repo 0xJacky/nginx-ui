@@ -1,6 +1,9 @@
 package model
 
 import (
+	"fmt"
+	"net"
+	"net/url"
 	"strconv"
 	"strings"
 )
@@ -74,54 +77,43 @@ func (sc *SiteConfig) GetURL() string {
 }
 
 // SetFromURL parses a URL and sets the Host, Port, and Scheme fields
-func (sc *SiteConfig) SetFromURL(url string) error {
-	// Parse URL to extract host, port, and scheme
-	// This is a simplified implementation - you may want to use net/url package
-	if url == "" {
+func (sc *SiteConfig) SetFromURL(value string) error {
+	rawURL := strings.TrimSpace(value)
+	if rawURL == "" {
 		return nil
 	}
 
 	// Store the original URL as display URL for backward compatibility
-	sc.DisplayURL = url
-
-	// Extract scheme
-	if strings.HasPrefix(url, "https://") {
-		sc.Scheme = "https"
-		url = strings.TrimPrefix(url, "https://")
-	} else if strings.HasPrefix(url, "http://") {
-		sc.Scheme = "http"
-		url = strings.TrimPrefix(url, "http://")
-	} else if strings.HasPrefix(url, "grpcs://") {
-		sc.Scheme = "grpcs"
-		url = strings.TrimPrefix(url, "grpcs://")
-	} else if strings.HasPrefix(url, "grpc://") {
-		sc.Scheme = "grpc"
-		url = strings.TrimPrefix(url, "grpc://")
-	} else {
-		sc.Scheme = "http" // default
+	sc.DisplayURL = value
+	if !strings.Contains(rawURL, "://") {
+		rawURL = "http://" + rawURL
 	}
 
-	// Extract host and port
-	if strings.Contains(url, "/") {
-		url = strings.Split(url, "/")[0]
+	parsed, err := url.Parse(rawURL)
+	if err != nil || parsed.Hostname() == "" {
+		return fmt.Errorf("invalid site URL %q", value)
+	}
+	scheme := strings.ToLower(parsed.Scheme)
+	if scheme != "http" && scheme != "https" && scheme != "grpc" && scheme != "grpcs" {
+		return fmt.Errorf("unsupported site URL scheme %q", parsed.Scheme)
 	}
 
-	if strings.Contains(url, ":") {
-		parts := strings.Split(url, ":")
-		sc.Host = parts[0] + ":" + parts[1]
-		if len(parts) > 1 {
-			if port, err := strconv.Atoi(parts[1]); err == nil {
-				sc.Port = port
-			}
-		}
-	} else {
-		sc.Host = url + ":80" // default port
-		sc.Port = 80
-		if sc.Scheme == "https" || sc.Scheme == "grpcs" {
-			sc.Host = url + ":443"
-			sc.Port = 443
+	portText := parsed.Port()
+	if portText == "" {
+		if scheme == "https" || scheme == "grpcs" {
+			portText = "443"
+		} else {
+			portText = "80"
 		}
 	}
+	port, err := strconv.Atoi(portText)
+	if err != nil || port < 1 || port > 65535 {
+		return fmt.Errorf("invalid site URL port %q", portText)
+	}
+
+	sc.Scheme = scheme
+	sc.Port = port
+	sc.Host = net.JoinHostPort(parsed.Hostname(), portText)
 
 	return nil
 }
