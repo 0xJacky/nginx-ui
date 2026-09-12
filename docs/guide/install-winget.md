@@ -140,7 +140,7 @@ RunMode = release
 HTTPChallengePort = 9180
 
 [terminal]
-StartCmd = cmd
+StartCmd = cmd.exe
 "@ | Out-File -FilePath "$env:LOCALAPPDATA\nginx-ui\app.ini" -Encoding utf8
 ```
 
@@ -158,7 +158,7 @@ RunMode = release
 HTTPChallengePort = 9180
 
 [terminal]
-StartCmd = cmd
+StartCmd = cmd.exe
 ```
 
 ## Updating
