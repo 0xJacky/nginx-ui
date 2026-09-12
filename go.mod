@@ -15,9 +15,9 @@ require (
 	github.com/blevesearch/bleve/v2 v2.6.1
 	github.com/blevesearch/bleve_index_api v1.4.1
 	github.com/caarlos0/env/v11 v11.4.1
-	github.com/casdoor/casdoor-go-sdk v1.53.0
-	github.com/cloudflare/cloudflare-go/v7 v7.9.0
-	github.com/coreos/go-oidc/v3 v3.20.0
+	github.com/casdoor/casdoor-go-sdk v1.54.0
+	github.com/cloudflare/cloudflare-go/v7 v7.10.0
+	github.com/coreos/go-oidc/v3 v3.21.0
 	github.com/creack/pty v1.1.24
 	github.com/dgraph-io/ristretto/v2 v2.4.2
 	github.com/docker/docker v28.5.2+incompatible
@@ -25,50 +25,50 @@ require (
 	github.com/elliotchance/orderedmap/v3 v3.1.1
 	github.com/fsnotify/fsnotify v1.10.1
 	github.com/gabriel-vasile/mimetype v1.4.15
-	github.com/gin-contrib/cors v1.7.7
-	github.com/gin-contrib/static v1.1.6
+	github.com/gin-contrib/cors v1.7.8
+	github.com/gin-contrib/static v1.1.7
 	github.com/gin-gonic/gin v1.12.0
 	github.com/go-acme/lego/v5 v5.4.1
 	github.com/go-co-op/gocron/v2 v2.22.0
 	github.com/go-gormigrate/gormigrate/v2 v2.1.6
-	github.com/go-playground/validator/v10 v10.30.3
+	github.com/go-playground/validator/v10 v10.30.4
 	github.com/go-resty/resty/v2 v2.17.2
 	github.com/go-telegram-bot-api/telegram-bot-api v4.6.4+incompatible
 	github.com/go-webauthn/webauthn v0.18.0
 	github.com/golang-jwt/jwt/v5 v5.3.1
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674
-	github.com/huaweicloud/huaweicloud-sdk-go-v3 v0.1.213
+	github.com/huaweicloud/huaweicloud-sdk-go-v3 v0.1.214
 	github.com/mark3labs/mcp-go v1.0.0
 	github.com/miekg/dns v1.1.73
 	github.com/minio/minio-go/v7 v7.3.0
 	github.com/minio/selfupdate v0.6.0
 	github.com/nikoksr/notify v1.6.0
 	github.com/nxadm/tail v1.4.11
-	github.com/oschwald/geoip2-golang/v2 v2.3.0
-	github.com/oschwald/maxminddb-golang/v2 v2.5.0
+	github.com/oschwald/geoip2-golang/v2 v2.4.0
+	github.com/oschwald/maxminddb-golang/v2 v2.6.0
 	github.com/pkg/errors v0.9.1
 	github.com/pkg/sftp v1.13.11
 	github.com/pquerna/otp v1.5.0
 	github.com/pretty66/websocketproxy v0.0.0-20220507015215-930b3a686308
 	github.com/samber/lo v1.53.0
 	github.com/sashabaranov/go-openai v1.42.0
-	github.com/shirou/gopsutil/v4 v4.26.7
+	github.com/shirou/gopsutil/v4 v4.26.8
 	github.com/spf13/afero v1.15.0
 	github.com/spf13/cast v1.10.0
 	github.com/stretchr/testify v1.12.1
-	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.3.171
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.3.176
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20260220081509-8e17ce617db3
 	github.com/ulikunitz/xz v0.5.16
-	github.com/uozi-tech/cosy v1.34.1
-	github.com/uozi-tech/cosy-driver-sqlite v0.2.1
+	github.com/uozi-tech/cosy v1.35.1
+	github.com/uozi-tech/cosy-driver-sqlite v0.2.2
 	github.com/urfave/cli/v3 v3.11.0
 	go.etcd.io/bbolt v1.5.0
 	go.uber.org/zap v1.28.0
-	golang.org/x/crypto v0.55.0
-	golang.org/x/net v0.58.0
-	golang.org/x/oauth2 v0.36.0
-	golang.org/x/sys v0.47.0
+	golang.org/x/crypto v0.57.0
+	golang.org/x/net v0.59.0
+	golang.org/x/oauth2 v0.37.0
+	golang.org/x/sys v0.48.0
 	google.golang.org/grpc v1.83.2
 	gopkg.in/ini.v1 v1.67.3
 	gorm.io/datatypes v1.2.7
@@ -161,7 +161,7 @@ require (
 	github.com/felixge/httpsnoop v1.1.0 // indirect
 	github.com/fxamacker/cbor/v2 v2.9.3 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
-	github.com/gin-contrib/pprof v1.5.4 // indirect
+	github.com/gin-contrib/pprof v1.5.5 // indirect
 	github.com/gin-contrib/sse v1.1.1 // indirect
 	github.com/go-acme/alidns-20150109/v5 v5.6.1 // indirect
 	github.com/go-acme/esa-20240910/v3 v3.13.0 // indirect
@@ -270,13 +270,13 @@ require (
 	github.com/pelletier/go-toml/v2 v2.4.3 // indirect
 	github.com/peterhellberg/link v1.2.0 // indirect
 	github.com/philhofer/fwd v1.2.0 // indirect
-	github.com/pierrec/lz4/v4 v4.1.27 // indirect
+	github.com/pierrec/lz4/v4 v4.1.29 // indirect
 	github.com/pires/go-proxyproto v0.15.0 // indirect
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c // indirect
 	github.com/power-devops/perfstat v0.0.0-20240221224432-82ca36839d55 // indirect
 	github.com/quic-go/qpack v0.6.0 // indirect
-	github.com/quic-go/quic-go v0.61.0 // indirect
-	github.com/redis/go-redis/v9 v9.21.0 // indirect
+	github.com/quic-go/quic-go v0.62.0 // indirect
+	github.com/redis/go-redis/v9 v9.22.0 // indirect
 	github.com/regfish/regfish-dnsapi-go v0.2.0 // indirect
 	github.com/robfig/cron/v3 v3.0.1 // indirect
 	github.com/rs/xid v1.6.0 // indirect
@@ -342,11 +342,11 @@ require (
 	go.yaml.in/yaml/v3 v3.0.5 // indirect
 	golang.org/x/arch v0.29.0 // indirect
 	golang.org/x/exp v0.0.0-20260718201538-764159d718ef // indirect
-	golang.org/x/mod v0.38.0 // indirect
-	golang.org/x/sync v0.22.0 // indirect
-	golang.org/x/text v0.41.0 // indirect
+	golang.org/x/mod v0.41.0 // indirect
+	golang.org/x/sync v0.23.0 // indirect
+	golang.org/x/text v0.42.0 // indirect
 	golang.org/x/time v0.15.0 // indirect
-	golang.org/x/tools v0.48.0 // indirect
+	golang.org/x/tools v0.49.0 // indirect
 	google.golang.org/api v0.295.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20260724162435-b2f20204f0df // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260819154853-08b0e4226688 // indirect

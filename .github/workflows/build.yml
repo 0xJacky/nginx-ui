@@ -54,13 +54,13 @@ jobs:
         if: github.event_name == 'release'
         uses: actions/setup-go@v7
         with:
-          go-version: ^1.27.0
+          go-version: ^1.27.1
           cache: false
 
       - name: Set up Bun
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: 1.4.0
+          bun-version: 1.4.2
 
       - name: Install dependencies
         run: bun ci
@@ -159,7 +159,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v7
         with:
-          go-version: ^1.27.0
+          go-version: ^1.27.1
           cache: false
 
       - name: Setup environment
@@ -351,7 +351,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v7
         with:
-          go-version: ^1.27.0
+          go-version: ^1.27.1
           cache: false
 
       - name: Setup environment
@@ -499,7 +499,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v7
         with:
-          go-version: ^1.27.0
+          go-version: ^1.27.1
           cache: false
 
       - name: Setup environment
@@ -723,7 +723,7 @@ jobs:
           version: v4.2.4
 
       - name: Create kind cluster
-        uses: helm/kind-action@v1.14.0
+        uses: helm/kind-action@v1.15.0
         with:
           version: v0.31.0
           kubectl_version: v1.35.0
