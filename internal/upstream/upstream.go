@@ -148,8 +148,9 @@ func testTLSLatency(workers chan struct{}, wg *sync.WaitGroup, target ProxyTarge
 	}()
 
 	start := time.Now()
+	address := formatSocketAddress(target.Host, target.Port)
 	dialer := &net.Dialer{Timeout: MaxTimeout}
-	conn, err := tls.DialWithDialer(dialer, "tcp", formatSocketAddress(target.Host, target.Port), &tls.Config{
+	conn, err := tls.DialWithDialer(dialer, "tcp", address, &tls.Config{
 		// Availability checks validate that the endpoint can negotiate TLS. They
 		// intentionally do not duplicate certificate-policy validation performed
 		// by the real proxy request, which may use a private CA or an IP address.
@@ -157,6 +158,17 @@ func testTLSLatency(workers chan struct{}, wg *sync.WaitGroup, target ProxyTarge
 		ServerName:         target.Host,
 	})
 	if err != nil {
+		// Some HTTPS backends intentionally reject generic probe handshakes
+		// (for example mTLS-only policies). Fall back to plain TCP reachability
+		// so the availability check still reflects whether the socket is up.
+		tcpConn, tcpErr := net.DialTimeout("tcp", address, MaxTimeout)
+		if tcpErr != nil {
+			return
+		}
+		defer tcpConn.Close()
+
+		status.Online = true
+		status.Latency = float32(time.Since(start)) / float32(time.Millisecond)
 		return
 	}
 	defer conn.Close()
