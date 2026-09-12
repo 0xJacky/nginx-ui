@@ -2,8 +2,8 @@
 import type { ExternalNotify } from '@/api/external_notify'
 import { StdCurd } from '@uozi-admin/curd'
 import externalNotify, { testMessage } from '@/api/external_notify'
-import columns from '../components/ExternalNotify/columns'
 import configMap from '../components/ExternalNotify'
+import columns from '../components/ExternalNotify/columns'
 
 const { message } = App.useApp()
 

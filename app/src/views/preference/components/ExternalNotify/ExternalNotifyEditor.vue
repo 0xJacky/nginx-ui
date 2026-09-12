@@ -2,8 +2,8 @@
 import type { StdTableColumn } from '@uozi-admin/curd'
 import type { ExternalNotifyConfig } from './types'
 import { StdForm } from '@uozi-admin/curd'
-import CodeEditor from '@/components/CodeEditor'
 import { testMessage } from '@/api/external_notify'
+import CodeEditor from '@/components/CodeEditor'
 import gettext from '@/gettext'
 import configMap from './index'
 
