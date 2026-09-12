@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { FileOutlined } from '@antdv-next/icons'
 import { useRouteQuery } from '@vueuse/router'
 import nginxLog from '@/api/nginx_log'
 import FooterToolBar from '@/components/FooterToolbar'
@@ -21,6 +20,96 @@ const logType = computed(() => {
 
 const viewMode = useRouteQuery<'raw' | 'structured' | 'dashboard'>('view', 'structured')
 
+interface LogPathOption {
+  label: string
+  value: string
+}
+
+const logPathOptions = ref<LogPathOption[]>([])
+const isLoadingLogPathOptions = ref(false)
+
+const maxLogPathLength = computed(() => {
+  const optionMax = logPathOptions.value.reduce((max, option) => {
+    return Math.max(max, option.label.length)
+  }, 0)
+  return Math.max(optionMax, logPath.value.length, 20)
+})
+
+const logSelectStyle = computed(() => ({
+  width: `min(calc(100vw - 4rem), ${maxLogPathLength.value + 8}ch)`,
+  minWidth: '20rem',
+}))
+
+const logSelectDropdownStyle = computed(() => ({
+  width: `min(calc(100vw - 2rem), ${maxLogPathLength.value + 12}ch)`,
+  minWidth: '20rem',
+}))
+
+const selectedLogPath = computed({
+  get: () => logPath.value,
+  set: (value: string) => {
+    const query = { ...route.query }
+    if (value) {
+      query.path = value
+    }
+    else {
+      delete query.path
+    }
+    router.replace({ query })
+  },
+})
+
+function normalizePath(path: string) {
+  return path.replace(/\\/g, '/')
+}
+
+function ensureCurrentPathOption(path: string) {
+  if (!path)
+    return
+
+  const normalizedCurrent = normalizePath(path)
+  const exists = logPathOptions.value.some(option => normalizePath(option.value) === normalizedCurrent)
+  if (!exists) {
+    logPathOptions.value.unshift({
+      label: path,
+      value: path,
+    })
+  }
+}
+
+async function fetchLogPathOptions() {
+  if (logType.value !== 'access' && logType.value !== 'error') {
+    logPathOptions.value = []
+    return
+  }
+
+  isLoadingLogPathOptions.value = true
+  try {
+    const res = await nginxLog.list({ type: logType.value })
+    const logs = Array.isArray(res?.data) ? res.data : []
+
+    logPathOptions.value = logs
+      .filter(item => !!item.path)
+      .map(item => ({
+        label: item.path!,
+        value: item.path!,
+      }))
+
+    ensureCurrentPathOption(logPath.value)
+
+    if (!selectedLogPath.value && logPathOptions.value.length > 0) {
+      selectedLogPath.value = logPathOptions.value[0].value
+    }
+  }
+  catch (err) {
+    console.error('Failed to load log path options:', err)
+    ensureCurrentPathOption(logPath.value)
+  }
+  finally {
+    isLoadingLogPathOptions.value = false
+  }
+}
+
 // Indexing status
 const isIndexingEnabled = ref(false)
 
@@ -33,6 +122,16 @@ onMounted(async () => {
     console.error('Failed to get indexing status:', err)
     isIndexingEnabled.value = false
   }
+
+  await fetchLogPathOptions()
+})
+
+watch(logType, async () => {
+  await fetchLogPathOptions()
+})
+
+watch(logPath, newPath => {
+  ensureCurrentPathOption(newPath)
 })
 
 // Check if this is an error log
@@ -76,14 +175,22 @@ watch([isErrorLog, isIndexingEnabled], ([isError, enabled], [prevIsError, prevEn
     :title="$gettext('Nginx Log')"
     variant="borderless"
   >
-    <!-- Log Path Header -->
-    <div v-if="logPath" class="mb-4 px-2 py-1.5 bg-gray-50 dark:bg-gray-800 rounded text-xs text-gray-500 dark:text-gray-400">
-      <FileOutlined class="mr-2" />
-      <span class="font-mono">{{ logPath }}</span>
-    </div>
-
     <template #extra>
-      <div class="flex items-center gap-4">
+      <div class="flex flex-wrap items-center justify-end gap-4">
+        <ASelect
+          v-model:value="selectedLogPath"
+          class="flex-none font-mono"
+          :style="logSelectStyle"
+          :dropdown-style="logSelectDropdownStyle"
+          show-search
+          allow-clear
+          :loading="isLoadingLogPathOptions"
+          :options="logPathOptions"
+          :placeholder="$gettext('Select log file')"
+          :filter-option="(input, option) =>
+            ((option?.label ?? '') as string).toLowerCase().includes(input.toLowerCase())"
+        />
+
         <!-- View Mode Toggle (hide for error logs or when indexing is disabled) -->
         <div v-if="!isErrorLog && isIndexingEnabled" class="flex items-center">
           <ASegmented
