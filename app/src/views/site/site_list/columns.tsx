@@ -44,6 +44,12 @@ const columns: StdTableColumn[] = [{
       <div>{text}</div>,
     )
 
+    if (record.description) {
+      template.push(
+        <div class="text-secondary mt-1">{record.description}</div>,
+      )
+    }
+
     // Add URLs below the name
     if (record.urls && record.urls.length > 0) {
       const urlsContainer: JSXElements = []

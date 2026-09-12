@@ -154,6 +154,7 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
 
       const response = await site.updateItem(encodeURIComponent(name.value), {
         content,
+        description: data.value.description,
         overwrite: true,
         namespace_id: data.value.namespace_id,
         sync_node_ids: data.value.sync_node_ids,

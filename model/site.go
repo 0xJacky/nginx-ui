@@ -10,6 +10,7 @@ type SiteDNSRecord struct {
 type Site struct {
 	Model
 	Path        string     `json:"path" gorm:"uniqueIndex"`
+	Description string     `json:"description"`
 	Advanced    bool       `json:"advanced"`
 	NamespaceID uint64     `json:"namespace_id"`
 	Namespace   *Namespace `json:"namespace,omitempty"`

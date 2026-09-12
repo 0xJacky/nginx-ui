@@ -49,7 +49,21 @@ func GetSiteConfigs(ctx context.Context, options *ListOptions, sites []*model.Si
 		return nil, err
 	}
 
-	return applyRemoteStatus(configs, sites, options.Status), nil
+	configs = applyRemoteStatus(configs, sites, options.Status)
+	return applySiteDescriptions(configs, sites), nil
+}
+
+func applySiteDescriptions(configs []config.Config, sites []*model.Site) []config.Config {
+	descriptions := make(map[string]string, len(sites))
+	for _, siteModel := range sites {
+		if siteModel.Description != "" {
+			descriptions[filepath.Base(siteModel.Path)] = siteModel.Description
+		}
+	}
+	for i := range configs {
+		configs[i].Description = descriptions[configs[i].Name]
+	}
+	return configs
 }
 
 // applyRemoteStatus overrides the filesystem derived status for sites owned by a
