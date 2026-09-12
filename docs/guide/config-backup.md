@@ -69,6 +69,9 @@ For custom directory backups:
 - **No Encryption**: Custom directory backups are stored as standard ZIP files without encryption
 - **Path Validation**: Source directories must be within `GrantedAccessPath` boundaries
 - **Flexible Content**: Can backup any directory structure within allowed paths
+- **Output Exclusion**: If the destination is inside the source directory, the
+  archive being created is excluded from its own contents. Existing backup files
+  remain included; choose a separate storage directory to avoid archiving them.
 
 ## Storage Configuration
 
