@@ -177,8 +177,14 @@ func GetAnalyticInit(c *gin.Context) {
 		loadAvg = &load.AvgStat{}
 	}
 
+	ipAddresses, err := analytic.GetHostIPAddresses()
+	if err != nil {
+		logger.Error(err)
+	}
+
 	c.JSON(http.StatusOK, InitResp{
-		Host: hostInfo,
+		Host:        hostInfo,
+		IPAddresses: ipAddresses,
 		CPU: CPURecords{
 			Info:  cpuInfo,
 			User:  analytic.CpuUserRecord,

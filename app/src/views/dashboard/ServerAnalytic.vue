@@ -64,6 +64,7 @@ const disk_io = reactive({ writes: 0, reads: 0 })
 const uptime = ref('')
 const loadavg = reactive({ load1: 0, load5: 0, load15: 0 }) as LoadStat
 const net = reactive({ recv: 0, sent: 0, last_recv: 0, last_sent: 0 })
+const ipAddresses = ref<string[]>([])
 
 interface NetworkSample {
   bytesRecv: number
@@ -126,6 +127,7 @@ onMounted(async () => {
   Object.assign(cpu_info, r.cpu.info)
   Object.assign(memory, r.memory)
   Object.assign(disk, r.disk)
+  ipAddresses.value = r.ip_addresses ?? []
 
   // uptime
   handle_uptime(r.host?.uptime)
@@ -248,6 +250,14 @@ function wsOnMessage(m: MessageEvent) {
             <span class="os-platform">{{ ` ${host.platform}` }}</span> {{ host.platformVersion }}
             <span class="os-info">({{ host.os }} {{ host.kernelVersion }}
               {{ host.kernelArch }})</span>
+          </p>
+          <p>
+            {{ `${$gettext('Host')}:` }}
+            {{ host.hostname || 'N/A' }}
+          </p>
+          <p>
+            {{ `${$gettext('IP Address')}:` }}
+            <span class="ip-addresses">{{ ipAddresses.length > 0 ? ipAddresses.join(', ') : 'N/A' }}</span>
           </p>
           <p v-if="cpu_info">
             {{ `${$gettext('CPU:')} ` }}
@@ -521,5 +531,9 @@ function wsOnMessage(m: MessageEvent) {
   @media (min-width: 1790px) or (max-width: 1200px) {
     display: none;
   }
+}
+
+.ip-addresses {
+  word-break: break-all;
 }
 </style>

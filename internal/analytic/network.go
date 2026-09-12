@@ -3,6 +3,7 @@ package analytic
 import (
 	"fmt"
 	stdnet "net"
+	"sort"
 	"strings"
 
 	"github.com/shirou/gopsutil/v4/net"
@@ -150,6 +151,64 @@ func GetNetworkStat() (data *net.IOCountersStat, err error) {
 		Fifoin:      totalFifoIn,
 		Fifoout:     totalFifoOut,
 	}, nil
+}
+
+func GetHostIPAddresses() ([]string, error) {
+	interfaces, err := stdnet.Interfaces()
+	if err != nil {
+		return nil, err
+	}
+
+	ipSet := make(map[string]struct{})
+
+	for _, iface := range interfaces {
+		addrs, err := iface.Addrs()
+		if err != nil {
+			logger.Error(err)
+			continue
+		}
+
+		ifaceInfo := networkInterfaceInfo{
+			Name:         iface.Name,
+			Flags:        iface.Flags,
+			HardwareAddr: iface.HardwareAddr,
+			Addrs:        addrs,
+		}
+
+		if !shouldCountNetworkInterface(ifaceInfo) {
+			continue
+		}
+
+		for _, addr := range addrs {
+			ip, _, err := stdnet.ParseCIDR(addr.String())
+			if err != nil {
+				continue
+			}
+
+			if !ip.IsGlobalUnicast() {
+				continue
+			}
+
+			if ip.IsLinkLocalUnicast() || ip.IsLoopback() || ip.IsMulticast() || ip.IsUnspecified() {
+				continue
+			}
+
+			if isReservedIP(ip) {
+				continue
+			}
+
+			ipSet[ip.String()] = struct{}{}
+		}
+	}
+
+	ipAddresses := make([]string, 0, len(ipSet))
+	for ip := range ipSet {
+		ipAddresses = append(ipAddresses, ip)
+	}
+
+	sort.Strings(ipAddresses)
+
+	return ipAddresses, nil
 }
 
 // isVirtualInterface checks if the interface is a virtual one based on name patterns

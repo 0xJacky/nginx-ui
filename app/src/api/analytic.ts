@@ -107,6 +107,7 @@ export interface DiskIORecords {
 
 export interface AnalyticInit {
   host: HostInfoStat
+  ip_addresses: string[]
   cpu: CPURecords
   network: NetworkRecords
   disk_io: DiskIORecords

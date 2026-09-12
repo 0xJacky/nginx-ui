@@ -43,11 +43,12 @@ type DiskIORecords struct {
 }
 
 type InitResp struct {
-	Host    *host.InfoStat    `json:"host"`
-	CPU     CPURecords        `json:"cpu"`
-	Network NetworkRecords    `json:"network"`
-	DiskIO  DiskIORecords     `json:"disk_io"`
-	Memory  analytic.MemStat  `json:"memory"`
-	Disk    analytic.DiskStat `json:"disk"`
-	LoadAvg *load.AvgStat     `json:"loadavg"`
+	Host        *host.InfoStat    `json:"host"`
+	IPAddresses []string          `json:"ip_addresses"`
+	CPU         CPURecords        `json:"cpu"`
+	Network     NetworkRecords    `json:"network"`
+	DiskIO      DiskIORecords     `json:"disk_io"`
+	Memory      analytic.MemStat  `json:"memory"`
+	Disk        analytic.DiskStat `json:"disk"`
+	LoadAvg     *load.AvgStat     `json:"loadavg"`
 }
