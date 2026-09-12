@@ -1,6 +1,7 @@
 package site
 
 import (
+	"crypto/sha256"
 	"fmt"
 	"net/http"
 	"path/filepath"
@@ -309,6 +310,11 @@ func createMaintenanceConfigWithPayload(conf *config.Config, baseDir string, sit
 		schema = "https"
 	}
 	maintenanceHost := settings.NginxSettings.GetMaintenanceHost(schema, nginxUIPort)
+	if bypassIP := settings.NginxSettings.GetMaintenanceBypassIP(); bypassIP != "" {
+		if content, ok := createBypassMaintenanceConfig(conf, siteName, payload, bypassIP, maintenanceHost, schema, nginxUIPort); ok {
+			return content
+		}
+	}
 
 	// Create new configuration
 	ngxConfig := nginx.NewNgxConfig("")
@@ -422,6 +428,100 @@ func createMaintenanceConfigWithPayload(conf *config.Config, baseDir string, sit
 	}
 
 	return content
+}
+
+func createBypassMaintenanceConfig(conf *config.Config, siteName string, payload MaintenancePayload, bypassIP, maintenanceHost, schema string, nginxUIPort uint) (string, bool) {
+	original := dumper.DumpConfig(conf, dumper.IndentedStyle)
+	ngxConfig, err := nginx.ParseNgxConfigByContent(original)
+	if err != nil {
+		logger.Errorf("Failed to preserve site configuration for maintenance bypass: %v", err)
+		return "", false
+	}
+
+	digest := sha256.Sum256([]byte(siteName))
+	suffix := fmt.Sprintf("%x", digest[:4])
+	bypassVariable := "nginx_ui_maintenance_bypass_" + suffix
+	modeVariable := "nginx_ui_maintenance_mode_" + suffix
+	locationName := "@nginx_ui_maintenance_" + suffix
+	ngxConfig.Custom += fmt.Sprintf(`
+geo $%s {
+    default 0;
+    %s 1;
+}
+map "$%s:$uri" $%s {
+    default 1;
+    ~^1: 0;
+    ~^0:/\.well-known/acme-challenge/ 0;
+    ~^0:/pages/maintenance/meta$ 0;
+}
+`, bypassVariable, bypassIP, bypassVariable, modeVariable)
+
+	for _, server := range ngxConfig.Servers {
+		server.Directives = append(server.Directives,
+			&nginx.NgxDirective{Raw: fmt.Sprintf("error_page 418 = %s;", locationName)},
+			&nginx.NgxDirective{Raw: fmt.Sprintf("if ($%s) {\n    return 418;\n}", modeVariable)},
+		)
+		server.Locations = append(server.Locations, &nginx.NgxLocation{
+			Path:    locationName,
+			Content: buildMaintenanceProxyContent(siteName, payload, maintenanceHost, true),
+		})
+		if !hasMaintenanceLocation(server, "/pages/maintenance/meta") {
+			server.Locations = append(server.Locations, &nginx.NgxLocation{
+				Path:    "= /pages/maintenance/meta",
+				Content: buildMaintenanceProxyContent(siteName, payload, fmt.Sprintf("%s://127.0.0.1:%d", schema, nginxUIPort), false),
+			})
+		}
+		if !hasMaintenanceLocation(server, "/.well-known/acme-challenge") {
+			server.Locations = append(server.Locations, &nginx.NgxLocation{
+				Path: "^~ /.well-known/acme-challenge",
+				Content: "proxy_set_header Host $host;\n" +
+					"proxy_set_header X-Real-IP $remote_addr;\n" +
+					"proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n" +
+					fmt.Sprintf("proxy_pass http://127.0.0.1:%s;\n", settings.CertSettings.HTTPChallengePort),
+			})
+		}
+	}
+
+	content, err := ngxConfig.BuildConfig()
+	if err != nil {
+		logger.Errorf("Failed to build maintenance bypass configuration: %v", err)
+		return "", false
+	}
+	return content, true
+}
+
+func hasMaintenanceLocation(server *nginx.NgxServer, fragment string) bool {
+	for _, location := range server.Locations {
+		if strings.Contains(location.Path, fragment) {
+			return true
+		}
+	}
+	return false
+}
+
+func buildMaintenanceProxyContent(siteName string, payload MaintenancePayload, host string, rewrite bool) string {
+	var content strings.Builder
+	content.WriteString("proxy_set_header Host $host;\n")
+	content.WriteString("proxy_set_header X-Real-IP $remote_addr;\n")
+	content.WriteString("proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n")
+	content.WriteString("proxy_set_header X-Forwarded-Proto $scheme;\n")
+	content.WriteString("proxy_set_header X-Forwarded-Host $http_host;\n")
+	for _, header := range []struct{ name, value string }{
+		{maintenanceSiteHeaderKey, siteName},
+		{maintenanceStartTimeHeaderKey, payload.StartTime},
+		{maintenanceEndTimeHeaderKey, payload.EndTime},
+		{maintenanceContactHeaderKey, payload.Contact},
+		{maintenanceAdditionalInfoHeaderKey, payload.AdditionInformation},
+	} {
+		if header.value != "" {
+			content.WriteString(fmt.Sprintf("proxy_set_header %s \"%s\";\n", header.name, escapeNginxQuotedValue(header.value)))
+		}
+	}
+	if rewrite {
+		content.WriteString("rewrite ^ /pages/maintenance break;\n")
+	}
+	content.WriteString(fmt.Sprintf("proxy_pass %s;\n", host))
+	return content.String()
 }
 
 // escapeNginxQuotedValue escapes a value embedded in a double quoted nginx parameter.

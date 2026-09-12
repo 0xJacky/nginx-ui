@@ -178,6 +178,15 @@ async function openSSHSetup() {
         {{ $gettext('Optional HTTP or HTTPS origin that serves the maintenance page. Leave empty to use this Nginx UI instance.') }}
       </div>
     </AFormItem>
+    <AFormItem :label="$gettext('Maintenance bypass IP')">
+      <AInput
+        v-model:value="data.nginx.maintenance_bypass_ip"
+        :placeholder="$gettext('203.0.113.10')"
+      />
+      <div class="text-secondary mt-1">
+        {{ $gettext('Requests from this IPv4 or IPv6 address continue to use the original site while maintenance mode is active.') }}
+      </div>
+    </AFormItem>
     <AFormItem :label="$gettext('Maintenance template (filename only)')">
       <AInput
         v-model:value="data.nginx.maintenance_template"

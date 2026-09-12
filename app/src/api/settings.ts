@@ -88,6 +88,7 @@ export interface NginxSettings {
   maintenance_dir?: string
   maintenance_template?: string
   maintenance_host?: string
+  maintenance_bypass_ip?: string
   host_mode?: string
 
   // Host-via-SSH mode fields

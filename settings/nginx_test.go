@@ -37,6 +37,26 @@ func TestNginx_GetHostKnownHostsPath_Default(t *testing.T) {
 	}
 }
 
+func TestNginx_GetMaintenanceBypassIP(t *testing.T) {
+	tests := []struct {
+		value string
+		want  string
+	}{
+		{value: "203.0.113.10", want: "203.0.113.10"},
+		{value: " 2001:db8::1 ", want: "2001:db8::1"},
+		{value: "203.0.113.10/32", want: ""},
+		{value: "203.0.113.10; return 200", want: ""},
+		{value: "", want: ""},
+	}
+
+	for _, test := range tests {
+		nginxSettings := Nginx{MaintenanceBypassIP: test.value}
+		if got := nginxSettings.GetMaintenanceBypassIP(); got != test.want {
+			t.Errorf("GetMaintenanceBypassIP(%q) = %q, want %q", test.value, got, test.want)
+		}
+	}
+}
+
 func TestNginx_GetHostKnownHostsPath_Configured(t *testing.T) {
 	n := Nginx{HostKnownHostsPath: "/custom/known_hosts"}
 	if got := n.GetHostKnownHostsPath(); got != "/custom/known_hosts" {

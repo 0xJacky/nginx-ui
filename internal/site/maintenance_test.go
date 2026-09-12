@@ -22,11 +22,13 @@ func setupMaintenanceTestSettings(t *testing.T, nginxConfigDir string) {
 	originalHTTPS := cSettings.ServerSettings.EnableHTTPS
 	originalChallengePort := settings.CertSettings.HTTPChallengePort
 	originalConfigDir := settings.NginxSettings.ConfigDir
+	originalBypassIP := settings.NginxSettings.MaintenanceBypassIP
 	t.Cleanup(func() {
 		cSettings.ServerSettings.Port = originalPort
 		cSettings.ServerSettings.EnableHTTPS = originalHTTPS
 		settings.CertSettings.HTTPChallengePort = originalChallengePort
 		settings.NginxSettings.ConfigDir = originalConfigDir
+		settings.NginxSettings.MaintenanceBypassIP = originalBypassIP
 	})
 
 	if nginxConfigDir != "" {
@@ -35,6 +37,58 @@ func setupMaintenanceTestSettings(t *testing.T, nginxConfigDir string) {
 	cSettings.ServerSettings.Port = 9000
 	cSettings.ServerSettings.EnableHTTPS = false
 	settings.CertSettings.HTTPChallengePort = "9180"
+}
+
+func TestCreateMaintenanceConfig_BypassPreservesOriginalSite(t *testing.T) {
+	setupMaintenanceTestSettings(t, "")
+	settings.NginxSettings.MaintenanceBypassIP = "203.0.113.10"
+
+	p := parser.NewStringParser(`server {
+    listen 80;
+    server_name example.com;
+    root /srv/example;
+    location /api {
+        proxy_pass http://backend;
+    }
+}`, parser.WithSkipValidDirectivesErr())
+	conf, err := p.Parse()
+	if err != nil {
+		t.Fatalf("Parse() error = %v", err)
+	}
+
+	content := createMaintenanceConfig(conf, "", "example.com")
+	for _, expected := range []string{
+		"203.0.113.10 1;",
+		"root /srv/example;",
+		"location /api",
+		"proxy_pass http://backend;",
+		"return 418;",
+		"rewrite ^ /pages/maintenance break;",
+	} {
+		if !strings.Contains(content, expected) {
+			t.Fatalf("maintenance config missing %q:\n%s", expected, content)
+		}
+	}
+}
+
+func TestCreateMaintenanceConfig_InvalidBypassUsesRegularMaintenance(t *testing.T) {
+	setupMaintenanceTestSettings(t, "")
+	settings.NginxSettings.MaintenanceBypassIP = "203.0.113.10; return 200"
+
+	p := parser.NewStringParser(`server {
+    listen 80;
+    server_name example.com;
+    root /srv/example;
+}`, parser.WithSkipValidDirectivesErr())
+	conf, err := p.Parse()
+	if err != nil {
+		t.Fatalf("Parse() error = %v", err)
+	}
+
+	content := createMaintenanceConfig(conf, "", "example.com")
+	if strings.Contains(content, "203.0.113.10") || strings.Contains(content, "root /srv/example") {
+		t.Fatalf("invalid bypass leaked into maintenance config:\n%s", content)
+	}
 }
 
 func TestCreateMaintenanceConfig_PreservesForwardedHost(t *testing.T) {

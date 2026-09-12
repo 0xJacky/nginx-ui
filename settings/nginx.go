@@ -2,6 +2,7 @@ package settings
 
 import (
 	"fmt"
+	"net"
 	"net/url"
 	"strings"
 )
@@ -54,6 +55,7 @@ type Nginx struct {
 	MaintenanceDir      string   `json:"maintenance_dir" protected:"true"`
 	MaintenanceTemplate string   `json:"maintenance_template"`
 	MaintenanceHost     string   `json:"maintenance_host"`
+	MaintenanceBypassIP string   `json:"maintenance_bypass_ip"`
 
 	// Host SSH mode fields enable nginx-ui (running in Docker) to control
 	// nginx installed natively on the same host via an SSH tunnel.
@@ -108,6 +110,14 @@ func (n *Nginx) GetMaintenanceHost(defaultScheme string, defaultPort uint) strin
 	}
 
 	return parsed.Scheme + "://" + parsed.Host
+}
+
+func (n *Nginx) GetMaintenanceBypassIP() string {
+	address := net.ParseIP(strings.TrimSpace(n.MaintenanceBypassIP))
+	if address == nil {
+		return ""
+	}
+	return address.String()
 }
 
 func (n *Nginx) GetHostKnownHostsPath() string {
