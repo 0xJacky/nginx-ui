@@ -43,6 +43,7 @@ import (
 	"context"
 	"fmt"
 	"net"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -103,7 +104,7 @@ func (dr *DynamicResolver) ResolveService(serviceURL string) ([]string, error) {
 		// Return IP addresses with default port (80)
 		var addresses []string
 		for _, ip := range ips {
-			addresses = append(addresses, fmt.Sprintf("%s:80", ip.IP.String()))
+			addresses = append(addresses, net.JoinHostPort(ip.IP.String(), "80"))
 		}
 		return addresses, nil
 	}
@@ -118,7 +119,7 @@ func (dr *DynamicResolver) ResolveService(serviceURL string) ([]string, error) {
 		}
 
 		for _, ip := range ips {
-			addresses = append(addresses, fmt.Sprintf("%s:%d", ip.IP.String(), srv.Port))
+			addresses = append(addresses, net.JoinHostPort(ip.IP.String(), strconv.Itoa(int(srv.Port))))
 		}
 	}
 
