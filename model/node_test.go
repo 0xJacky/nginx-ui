@@ -45,6 +45,12 @@ func TestNodeGetWebSocketURL(t *testing.T) {
 			uri:  "/api/nginx_log?type=http",
 			want: "wss://node.example.com:9000/api/nginx_log?type=http",
 		},
+		{
+			name: "escaped query data remains escaped",
+			url:  "https://node.example.com:9000",
+			uri:  "/api/configs?name=folder%2Fsite+copy",
+			want: "wss://node.example.com:9000/api/configs?name=folder%2Fsite+copy",
+		},
 	}
 
 	for _, test := range tests {
@@ -58,5 +64,17 @@ func TestNodeGetWebSocketURL(t *testing.T) {
 				t.Fatalf("expected %q, got %q", test.want, got)
 			}
 		})
+	}
+}
+
+func TestNodeGetURLPreservesEscapedComponents(t *testing.T) {
+	node := &Node{URL: "https://node.example.com/nginx%20ui"}
+	got, err := node.GetUrl("/api/configs?name=folder%2Fsite+copy")
+	if err != nil {
+		t.Fatalf("GetUrl returned error: %v", err)
+	}
+	want := "https://node.example.com/nginx%20ui/api/configs?name=folder%2Fsite+copy"
+	if got != want {
+		t.Fatalf("GetUrl() = %q, want %q", got, want)
 	}
 }

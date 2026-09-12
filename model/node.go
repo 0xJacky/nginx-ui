@@ -101,29 +101,19 @@ type NodeControllerCredential struct {
 	RevokedAt            *time.Time `json:"revoked_at,omitempty" gorm:"index"`
 }
 
-func (n *Node) GetUrl(uri string) (decodedUri string, err error) {
+func (n *Node) GetUrl(uri string) (string, error) {
 	baseUrl, err := url.Parse(n.URL)
 	if err != nil {
-		return
+		return "", err
 	}
 
-	u, err := url.JoinPath(baseUrl.String(), uri)
-	if err != nil {
-		return
-	}
-
-	decodedUri, err = url.QueryUnescape(u)
-	if err != nil {
-		return
-	}
-
-	return
+	return joinNodeURL(baseUrl, uri)
 }
 
-func (n *Node) GetWebSocketURL(uri string) (decodedUri string, err error) {
+func (n *Node) GetWebSocketURL(uri string) (string, error) {
 	baseUrl, err := url.Parse(n.URL)
 	if err != nil {
-		return
+		return "", err
 	}
 
 	// Switch the scheme on the parsed URL instead of rewriting the rendered
@@ -143,17 +133,23 @@ func (n *Node) GetWebSocketURL(uri string) (decodedUri string, err error) {
 		baseUrl.Host = net.JoinHostPort(baseUrl.Hostname(), defaultPort)
 	}
 
-	u, err := url.JoinPath(baseUrl.String(), uri)
+	return joinNodeURL(baseUrl, uri)
+}
 
+func joinNodeURL(baseURL *url.URL, uri string) (string, error) {
+	reference, err := url.Parse(uri)
 	if err != nil {
-		return
+		return "", err
 	}
-
-	decodedUri, err = url.QueryUnescape(u)
-
+	joined, err := url.JoinPath(baseURL.String(), reference.EscapedPath())
 	if err != nil {
-		return
+		return "", err
 	}
-
-	return
+	result, err := url.Parse(joined)
+	if err != nil {
+		return "", err
+	}
+	result.RawQuery = reference.RawQuery
+	result.Fragment = reference.Fragment
+	return result.String(), nil
 }
