@@ -5,6 +5,7 @@ import extSearchboxUrl from 'ace-builds/src-noconflict/ext-searchbox?url'
 import { VAceEditor } from 'vue3-ace-editor'
 import useCodeCompletion from './CodeCompletion'
 import 'ace-builds/src-noconflict/mode-nginx'
+import 'ace-builds/src-noconflict/mode-json'
 import 'ace-builds/src-noconflict/theme-monokai'
 
 const props = defineProps<{
@@ -13,6 +14,7 @@ const props = defineProps<{
   placeholder?: string
   disableCodeCompletion?: boolean
   noBorderRadius?: boolean
+  lang?: string
 }>()
 
 const content = defineModel<string>('content', { default: '' })
@@ -43,7 +45,7 @@ onUnmounted(() => {
 <template>
   <VAceEditor
     v-model:value="content"
-    lang="nginx"
+    :lang="props.lang || 'nginx'"
     theme="monokai"
     :style="{
       minHeight: defaultHeight || '100vh',
