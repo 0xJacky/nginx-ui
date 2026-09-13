@@ -21,6 +21,7 @@ type windowsTerminal struct {
 	process       windows.Handle
 	job           windows.Handle
 	jobErr        error
+	consoleErr    error
 	waitErr       error
 	mu            sync.Mutex
 	closed        bool
@@ -167,7 +168,7 @@ func (p *windowsTerminal) closeConsole() {
 		p.job = 0
 	}
 	if p.console != 0 {
-		windows.ClosePseudoConsole(p.console)
+		p.consoleErr = closePseudoConsole(p.console)
 		p.console = 0
 	}
 	p.closed = true
@@ -235,7 +236,7 @@ func (p *windowsTerminal) Close() error {
 		if p.process != 0 {
 			processErr = windows.CloseHandle(p.process)
 		}
-		p.closeErr = errors.Join(inputErr, outputErr, processErr, p.jobErr, p.waitErr)
+		p.closeErr = errors.Join(inputErr, outputErr, processErr, p.jobErr, p.consoleErr, p.waitErr)
 	})
 	return p.closeErr
 }

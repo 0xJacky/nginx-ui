@@ -62,6 +62,107 @@ func TestWindowsTerminalPipeHandles(t *testing.T) {
 	}
 }
 
+func TestWindowsTerminalLegacyConsoleCleanup(t *testing.T) {
+	// Newer Windows may change HPCON's layout. Only the old platform's CI
+	// exercises the actual legacy ABI; never force it on a modern host.
+	if modernConPTY() {
+		t.Skip("real legacy HPCON test requires ReleasePseudoConsole to be absent")
+	}
+	inputRead, inputWrite, err := terminalPipe()
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer inputWrite.Close()
+	defer inputRead.Close()
+	outputRead, outputWrite, err := terminalPipe()
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer outputRead.Close()
+	defer outputWrite.Close()
+	var console windows.Handle
+	if err := windows.CreatePseudoConsole(windows.Coord{X: 90, Y: 60}, windows.Handle(inputRead.Fd()), windows.Handle(outputWrite.Fd()), 0, &console); err != nil {
+		t.Fatal(err)
+	}
+	pc := *(*legacyPseudoConsole)(unsafe.Pointer(console))
+	var observedProcess windows.Handle
+	if err := windows.DuplicateHandle(windows.CurrentProcess(), pc.process, windows.CurrentProcess(), &observedProcess, windows.SYNCHRONIZE, false, 0); err != nil {
+		_ = closeLegacyPseudoConsole(console)
+		t.Fatal(err)
+	}
+	defer windows.CloseHandle(observedProcess)
+	inputRead.Close()
+	outputWrite.Close()
+	drained := make(chan struct{})
+	go func() { _, _ = io.Copy(io.Discard, outputRead); close(drained) }()
+	if err := closeLegacyPseudoConsole(console); err != nil {
+		t.Fatal(err)
+	}
+	// None of the original handles may survive compatibility teardown.
+	getInfo := windows.NewLazySystemDLL("kernel32.dll").NewProc("GetHandleInformation")
+	for _, h := range []windows.Handle{pc.signal, pc.reference, pc.process} {
+		var flags uint32
+		if ok, _, _ := getInfo.Call(uintptr(h), uintptr(unsafe.Pointer(&flags))); ok != 0 {
+			t.Error("legacy ConPTY handle survived close")
+		}
+	}
+	if status, err := windows.WaitForSingleObject(observedProcess, 5000); err != nil || status != windows.WAIT_OBJECT_0 {
+		t.Fatalf("conhost survived close: status=%d err=%v", status, err)
+	}
+	select {
+	case <-drained:
+	case <-time.After(5 * time.Second):
+		t.Fatal("legacy output drain did not finish")
+	}
+	t.Log("Legacy close released all three native handles and conhost exited")
+}
+
+func TestWindowsTerminalLegacyCleanupOwnership(t *testing.T) {
+	// Modern systems exercise ownership with a synthetic, process-heap object,
+	// never with an opaque HPCON returned by the modern OS.
+	kernel := windows.NewLazySystemDLL("kernel32.dll")
+	heap, _, _ := kernel.NewProc("GetProcessHeap").Call()
+	getCount := kernel.NewProc("GetProcessHandleCount")
+	count := func() uint32 {
+		var n uint32
+		if ok, _, err := getCount.Call(uintptr(windows.CurrentProcess()), uintptr(unsafe.Pointer(&n))); ok == 0 {
+			t.Fatal(err)
+		}
+		return n
+	}
+	before := count()
+	signal, err := windows.CreateEvent(nil, 0, 0, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	reference, err := windows.CreateEvent(nil, 0, 0, nil)
+	if err != nil {
+		windows.CloseHandle(signal)
+		t.Fatal(err)
+	}
+	var process windows.Handle
+	if err := windows.DuplicateHandle(windows.CurrentProcess(), windows.CurrentProcess(), windows.CurrentProcess(), &process, windows.SYNCHRONIZE, false, 0); err != nil {
+		windows.CloseHandle(signal)
+		windows.CloseHandle(reference)
+		t.Fatal(err)
+	}
+	memory, _, err := kernel.NewProc("HeapAlloc").Call(heap, 0, unsafe.Sizeof(legacyPseudoConsole{}))
+	if memory == 0 {
+		windows.CloseHandle(signal)
+		windows.CloseHandle(reference)
+		windows.CloseHandle(process)
+		t.Fatal(err)
+	}
+	*(*legacyPseudoConsole)(unsafe.Pointer(memory)) = legacyPseudoConsole{signal, reference, process}
+	if err := closeLegacyPseudoConsole(windows.Handle(memory)); err != nil {
+		t.Fatal(err)
+	}
+	if after := count(); after != before {
+		t.Fatalf("synthetic legacy cleanup retained handles: %d -> %d", before, after)
+	}
+	t.Log("Synthetic legacy allocation released both event handles and the duplicated Process handle")
+}
+
 func TestWindowsTerminalShellExitWithoutReader(t *testing.T) {
 	for _, command := range []string{"cmd.exe", "powershell.exe"} {
 		t.Run(command, func(t *testing.T) {
@@ -145,6 +246,39 @@ func TestWindowsTerminalInteractiveAndDisconnect(t *testing.T) {
 	}
 }
 
+func TestWindowsTerminalConsoleSizeHelper(t *testing.T) {
+	if os.Args[len(os.Args)-1] != "terminal-size-child" {
+		return
+	}
+	name, err := windows.UTF16PtrFromString("CONOUT$")
+	if err != nil {
+		t.Fatal(err)
+	}
+	console, err := windows.CreateFile(name, windows.GENERIC_READ|windows.GENERIC_WRITE, windows.FILE_SHARE_READ|windows.FILE_SHARE_WRITE, nil, windows.OPEN_EXISTING, 0, 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer windows.CloseHandle(console)
+	// Resize is queued on ConPTY's out-of-band signal pipe, independently of
+	// shell command input. Poll the real attached console, never set its size.
+	deadline := time.Now().Add(5 * time.Second)
+	var info windows.ConsoleScreenBufferInfo
+	for {
+		if err := windows.GetConsoleScreenBufferInfo(console, &info); err != nil {
+			t.Fatal(err)
+		}
+		cols, rows := info.Window.Right-info.Window.Left+1, info.Window.Bottom-info.Window.Top+1
+		if cols == 120 && rows == 30 {
+			fmt.Printf("CONSOLE_SIZE_%d_%d\n", cols, rows)
+			return
+		}
+		if time.Now().After(deadline) {
+			t.Fatalf("console resize not applied: window=%dx%d buffer=%dx%d", cols, rows, info.Size.X, info.Size.Y)
+		}
+		time.Sleep(20 * time.Millisecond)
+	}
+}
+
 func testWindowsTerminal(t *testing.T, command string, exitShell bool) {
 	if command == "powershell.exe" {
 		// Use Windows PowerShell's modules, not modules injected by the host
@@ -204,9 +338,6 @@ func testWindowsTerminal(t *testing.T, command string, exitShell bool) {
 	}
 	defer windows.CloseHandle(handle)
 	ws.SetReadDeadline(time.Now().Add(30 * time.Second))
-	if err = ws.WriteJSON(map[string]any{"Type": TypeResize, "Data": map[string]int{"Cols": 120, "Rows": 30}}); err != nil {
-		t.Fatal(err)
-	}
 	input := "echo NGINX_UI_%OS%\r"
 	if command == "powershell.exe" {
 		input = "Write-Output ('NGINX_UI_' + $env:OS)\r"
@@ -222,21 +353,31 @@ func testWindowsTerminal(t *testing.T, command string, exitShell bool) {
 		}
 		output.Write(data)
 	}
-	t.Logf("Real %s expanded OS through the WebSocket after resize", command)
-	if command == "powershell.exe" {
-		if err := ws.WriteJSON(map[string]any{"Type": TypeData, "Data": "Write-Output ('SIZE_' + $Host.UI.RawUI.WindowSize.Width + '_' + $Host.UI.RawUI.WindowSize.Height)\r"}); err != nil {
-			t.Fatal(err)
-		}
-		output.Reset()
-		for !strings.Contains(output.String(), "SIZE_120_30") {
-			_, data, err := ws.ReadMessage()
-			if err != nil {
-				t.Fatalf("resize not visible to shell: %v; output %q", err, output.String())
-			}
-			output.Write(data)
-		}
-		t.Log("PowerShell observed actual 120x30 console dimensions")
+	t.Logf("Real %s expanded OS through the WebSocket; console session is active", command)
+	// On Server 2022 a resize sent before the first console client finishes
+	// attaching can be superseded by its initial 90x60 buffer. Synchronize on
+	// a real command result before testing resize of the active session.
+	if err = ws.WriteJSON(map[string]any{"Type": TypeResize, "Data": map[string]int{"Cols": 120, "Rows": 30}}); err != nil {
+		t.Fatal(err)
 	}
+	// Run an independent console-API observer inside each shell's session.
+	// RawUI is a PowerShell host abstraction, not the ConPTY API boundary.
+	query := fmt.Sprintf("\"%s\" -test.run=^TestWindowsTerminalConsoleSizeHelper$ -test.v terminal-size-child\r", os.Args[0])
+	if command == "powershell.exe" {
+		query = fmt.Sprintf("Write-Output ('RAWUI_' + $Host.UI.RawUI.WindowSize.Width + '_' + $Host.UI.RawUI.WindowSize.Height); & '%s' '-test.run=^TestWindowsTerminalConsoleSizeHelper$' '-test.v' terminal-size-child\r", strings.ReplaceAll(os.Args[0], "'", "''"))
+	}
+	if err := ws.WriteJSON(map[string]any{"Type": TypeData, "Data": query}); err != nil {
+		t.Fatal(err)
+	}
+	output.Reset()
+	for !strings.Contains(output.String(), "CONSOLE_SIZE_120_30") {
+		_, data, err := ws.ReadMessage()
+		if err != nil {
+			t.Fatalf("native console resize not observed: %v; output %q", err, output.String())
+		}
+		output.Write(data)
+	}
+	t.Logf("%s: attached CONOUT$ reported actual 120x30 console dimensions (RawUI 90x60 observed: %t)", command, strings.Contains(output.String(), "RAWUI_90_60"))
 	if err := ws.WriteJSON(map[string]any{"Type": TypeData, "Data": "ping -t 127.0.0.1\r"}); err != nil {
 		t.Fatal(err)
 	}
