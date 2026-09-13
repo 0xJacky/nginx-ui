@@ -3,6 +3,7 @@ package pty
 import (
 	"errors"
 	"fmt"
+	"io"
 	"os"
 	"os/exec"
 	"sync"
@@ -13,6 +14,9 @@ import (
 
 type windowsTerminal struct {
 	input, output *os.File
+	reader        *io.PipeReader
+	writer        *io.PipeWriter
+	readDone      chan struct{}
 	console       windows.Handle
 	process       windows.Handle
 	job           windows.Handle
@@ -25,9 +29,23 @@ type windowsTerminal struct {
 	waitDone      chan struct{}
 }
 
+var enableTerminalCtrlC = sync.OnceValue(func() error {
+	// MSYS and process-group launchers can pass down the inheritable Ctrl+C
+	// ignore flag. Clear it before spawning a terminal; registered Go signal
+	// handlers are preserved, and the parent launcher is unaffected.
+	ok, _, err := windows.NewLazySystemDLL("kernel32.dll").NewProc("SetConsoleCtrlHandler").Call(0, 0)
+	if ok == 0 {
+		return err
+	}
+	return nil
+})
+
 func startTerminal(command string) (_ terminal, err error) {
 	if err := windows.NewLazySystemDLL("kernel32.dll").NewProc("CreatePseudoConsole").Find(); err != nil {
 		return nil, fmt.Errorf("Windows ConPTY requires Windows 10 version 1809 or later: %w", err)
+	}
+	if err := enableTerminalCtrlC(); err != nil {
+		return nil, fmt.Errorf("enable terminal Ctrl+C: %w", err)
 	}
 	// Resolve the executable exactly as exec.Command does, including paths with spaces.
 	path, err := exec.LookPath(command)
@@ -42,19 +60,25 @@ func startTerminal(command string) (_ terminal, err error) {
 	if err != nil {
 		return nil, err
 	}
-	inputRead, inputWrite, err := os.Pipe()
+	inputRead, inputWrite, err := terminalPipe()
 	if err != nil {
 		return nil, err
 	}
-	defer inputRead.Close()
-	outputRead, outputWrite, err := os.Pipe()
+	outputRead, outputWrite, err := terminalPipe()
 	if err != nil {
+		inputRead.Close()
 		inputWrite.Close()
 		return nil, err
 	}
-	defer outputWrite.Close()
 	p := &windowsTerminal{input: inputWrite, output: outputRead}
+	p.reader, p.writer = io.Pipe()
+	p.readDone = make(chan struct{})
+	go p.readOutput()
 	defer func() {
+		// Release our copies of ConPTY's ends before closing the session,
+		// including when CreateProcess fails.
+		inputRead.Close()
+		outputWrite.Close()
 		if err != nil {
 			_ = p.Close()
 		}
@@ -83,7 +107,9 @@ func startTerminal(command string) (_ terminal, err error) {
 	}
 	startup := windows.StartupInfoEx{ProcThreadAttributeList: attributes.List()}
 	startup.Cb = uint32(unsafe.Sizeof(startup))
-	// Do not reuse the nginx-ui host's standard handles when it runs in a console.
+	// ConPTY requires NULL standard handles here to avoid inheriting the
+	// host's redirected streams. Removing this flag sends shell output to
+	// the host instead of the PTY: microsoft/terminal discussion #15814.
 	startup.Flags = windows.STARTF_USESTDHANDLES
 	var process windows.ProcessInformation
 	// Assign the suspended shell before it can create any descendants. Console
@@ -107,6 +133,16 @@ func startTerminal(command string) (_ terminal, err error) {
 	return p, nil
 }
 
+func terminalPipe() (*os.File, *os.File, error) {
+	// os.Pipe creates inheritable Windows handles. Keep other subprocesses
+	// from inheriting the host ends and keeping these pipes open.
+	var read, write windows.Handle
+	if err := windows.CreatePipe(&read, &write, nil, 0); err != nil {
+		return nil, nil, err
+	}
+	return os.NewFile(uintptr(read), "terminal-read"), os.NewFile(uintptr(write), "terminal-write"), nil
+}
+
 func (p *windowsTerminal) wait() {
 	defer close(p.waitDone)
 	_, p.waitErr = windows.WaitForSingleObject(p.process, windows.INFINITE)
@@ -117,8 +153,8 @@ func (p *windowsTerminal) wait() {
 	p.closeConsole()
 }
 
-// The caller holds mu. Close closes the pipes before taking this lock so it
-// can also unblock a flush when the browser stops consuming output.
+// The caller holds mu. A dedicated reader drains the native output channel
+// throughout ClosePseudoConsole, including when the browser stops reading.
 func (p *windowsTerminal) closeConsole() {
 	// Kill console-detached descendants as well, both on browser disconnect
 	// and when the root shell exits normally. Only wait owns process waiting.
@@ -133,7 +169,27 @@ func (p *windowsTerminal) closeConsole() {
 	p.closed = true
 }
 
-func (p *windowsTerminal) Read(data []byte) (int, error)  { return p.output.Read(data) }
+func (p *windowsTerminal) readOutput() {
+	defer close(p.readDone)
+	defer p.writer.Close()
+	buf := make([]byte, bufferSize)
+	discard := false
+	for {
+		n, err := p.output.Read(buf)
+		if n > 0 && !discard {
+			_, writeErr := p.writer.Write(buf[:n])
+			discard = writeErr != nil
+		}
+		if err != nil {
+			if !errors.Is(err, io.EOF) {
+				_ = p.writer.CloseWithError(err)
+			}
+			return
+		}
+	}
+}
+
+func (p *windowsTerminal) Read(data []byte) (int, error)  { return p.reader.Read(data) }
 func (p *windowsTerminal) Write(data []byte) (int, error) { return p.input.Write(data) }
 
 func (p *windowsTerminal) Resize(cols, rows uint16) error {
@@ -151,13 +207,18 @@ func (p *windowsTerminal) Resize(cols, rows uint16) error {
 func (p *windowsTerminal) Close() error {
 	p.closeOnce.Do(func() {
 		inputErr := p.input.Close()
-		outputErr := p.output.Close()
+		// Release a blocked browser write, then drain/discard native output
+		// until ConPTY closes its writer. Closing the native read handle first
+		// can deadlock older Windows during their synchronous final flush.
+		_ = p.reader.Close()
 		p.mu.Lock()
 		p.closeConsole()
 		p.mu.Unlock()
 		if p.waitDone != nil {
 			<-p.waitDone
 		}
+		<-p.readDone
+		outputErr := p.output.Close()
 		var processErr error
 		if p.process != 0 {
 			processErr = windows.CloseHandle(p.process)

@@ -1,6 +1,7 @@
 package pty
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -21,6 +22,45 @@ import (
 	"github.com/gorilla/websocket"
 	"golang.org/x/sys/windows"
 )
+
+func TestWindowsTerminalInheritedCtrlCIgnore(t *testing.T) {
+	if os.Args[len(os.Args)-1] == "terminal-ctrlc-child" {
+		for _, command := range []string{"cmd.exe", "powershell.exe"} {
+			t.Run(command, func(t *testing.T) { testWindowsTerminal(t, command, false) })
+		}
+		return
+	}
+	// CREATE_NEW_PROCESS_GROUP disables Ctrl+C in the child, reproducing
+	// launchers such as MSYS without changing this test process's handlers.
+	ctx, cancel := context.WithTimeout(context.Background(), 75*time.Second)
+	defer cancel()
+	child := exec.CommandContext(ctx, os.Args[0], "-test.run=^TestWindowsTerminalInheritedCtrlCIgnore$", "-test.v", "-test.timeout=70s", "terminal-ctrlc-child")
+	child.SysProcAttr = &syscall.SysProcAttr{CreationFlags: windows.CREATE_NEW_PROCESS_GROUP | windows.CREATE_NO_WINDOW}
+	output, err := child.CombinedOutput()
+	if err != nil {
+		t.Fatalf("terminal inherited Ctrl+C ignore: %v\n%s", err, output)
+	}
+	t.Logf("cmd.exe and PowerShell interrupted successfully beneath a Ctrl+C-ignoring launcher:\n%s", output)
+}
+
+func TestWindowsTerminalPipeHandles(t *testing.T) {
+	read, write, err := terminalPipe()
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer read.Close()
+	defer write.Close()
+	for _, file := range []*os.File{read, write} {
+		var flags uint32
+		ok, _, err := windows.NewLazySystemDLL("kernel32.dll").NewProc("GetHandleInformation").Call(file.Fd(), uintptr(unsafe.Pointer(&flags)))
+		if ok == 0 {
+			t.Fatal(err)
+		}
+		if flags&windows.HANDLE_FLAG_INHERIT != 0 {
+			t.Fatal("terminal pipe can be inherited by an unrelated child")
+		}
+	}
+}
 
 func TestWindowsTerminalInteractiveAndDisconnect(t *testing.T) {
 	for _, command := range []string{"cmd.exe", "powershell.exe"} {
@@ -440,7 +480,18 @@ func TestWindowsTerminalFailedStartCleanup(t *testing.T) {
 		for range 40 {
 			failStart()
 		}
-		runtime.GC()
+		// Teardown can complete asynchronously on current Windows. Require
+		// eventual zero growth instead of sampling retained process handles
+		// before ConPTY has finished exiting.
+		deadline := time.Now().Add(5 * time.Second)
+		for time.Now().Before(deadline) {
+			runtime.GC()
+			threads, _ := runtime.ThreadCreateProfile(nil)
+			if threads != beforeT || handleCount() <= before {
+				break
+			}
+			time.Sleep(25 * time.Millisecond)
+		}
 		after := handleCount()
 		afterT, _ := runtime.ThreadCreateProfile(nil)
 		if beforeT != afterT {
@@ -448,7 +499,7 @@ func TestWindowsTerminalFailedStartCleanup(t *testing.T) {
 			continue
 		}
 		t.Logf("40 failed starts after warmup: handles %d -> %d", before, after)
-		if after > before+2 {
+		if after > before {
 			t.Errorf("failed-start handle leak: %d -> %d", before, after)
 		}
 		return

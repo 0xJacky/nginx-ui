@@ -78,7 +78,17 @@ jobs:
 
       - name: Test native Windows terminals
         shell: msys2 {0}
-        run: go test -tags=unembed -race -cover -count=3 -timeout=5m -v ./settings ./api/terminal ./internal/pty
+        run: |
+          set -o pipefail
+          go test -tags=unembed -race -cover -count=3 -timeout=5m -v ./settings ./api/terminal ./internal/pty 2>&1 | tee windows-terminal.log
+
+      - name: Preserve native terminal test logs
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: terminal-${{ matrix.os }}-${{ github.event.pull_request.head.sha || github.sha }}
+          path: windows-terminal.log
+          if-no-files-found: warn
 
   openwrt-install:
     name: OpenWrt installer

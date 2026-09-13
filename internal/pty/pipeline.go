@@ -46,25 +46,26 @@ func NewPipeLine(conn *websocket.Conn) (p Runner, err error) {
 }
 
 func (p *Pipeline) ReadWsAndWritePty(errorChan chan error) {
-	defer signalError(errorChan, nil)
+	errorChan <- p.readWsAndWritePty()
+}
+
+func (p *Pipeline) readWsAndWritePty() error {
 	for {
 		msgType, payload, err := p.ws.ReadMessage()
 		if err != nil {
 			if helper.IsUnexpectedWebsocketError(err) {
-				signalError(errorChan, errors.Wrap(err, "Error ReadWsAndWritePty unexpected close"))
+				return errors.Wrap(err, "Error ReadWsAndWritePty unexpected close")
 			}
-			return
+			return nil
 		}
 		if msgType != websocket.TextMessage {
-			signalError(errorChan, errors.Errorf("Error ReadWsAndWritePty Invalid msgType: %v", msgType))
-			return
+			return errors.Errorf("Error ReadWsAndWritePty Invalid msgType: %v", msgType)
 		}
 
 		var msg Message
 		err = json.Unmarshal(payload, &msg)
 		if err != nil {
-			signalError(errorChan, errors.Wrap(err, "Error ReadWsAndWritePty json.Unmarshal"))
-			return
+			return errors.Wrap(err, "Error ReadWsAndWritePty json.Unmarshal")
 		}
 
 		switch msg.Type {
@@ -72,15 +73,13 @@ func (p *Pipeline) ReadWsAndWritePty(errorChan chan error) {
 			var data string
 			err = json.Unmarshal(msg.Data, &data)
 			if err != nil {
-				signalError(errorChan, errors.Wrap(err, "Error ReadWsAndWritePty json.Unmarshal msg.Data"))
-				return
+				return errors.Wrap(err, "Error ReadWsAndWritePty json.Unmarshal msg.Data")
 			}
 
 			_, err = p.Pty.Write([]byte(data))
 
 			if err != nil {
-				signalError(errorChan, errors.Wrap(err, "Error ReadWsAndWritePty write pty"))
-				return
+				return errors.Wrap(err, "Error ReadWsAndWritePty write pty")
 			}
 		case TypeResize:
 			var win struct {
@@ -90,43 +89,55 @@ func (p *Pipeline) ReadWsAndWritePty(errorChan chan error) {
 
 			err = json.Unmarshal(msg.Data, &win)
 			if err != nil {
-				signalError(errorChan, errors.Wrap(err, "Error ReadSktAndWritePty Invalid resize message"))
-				return
+				return errors.Wrap(err, "Error ReadSktAndWritePty Invalid resize message")
 			}
 			err = p.Pty.Resize(win.Cols, win.Rows)
 			if err != nil {
-				signalError(errorChan, errors.Wrap(err, "Error ReadSktAndWritePty set pty size"))
-				return
+				return errors.Wrap(err, "Error ReadSktAndWritePty set pty size")
 			}
 		case TypePing:
 			err = p.ws.WriteControl(websocket.PongMessage, []byte{}, time.Now().Add(time.Second))
 			if err != nil {
-				signalError(errorChan, errors.Wrap(err, "Error ReadSktAndWritePty write pong"))
-				return
+				return errors.Wrap(err, "Error ReadSktAndWritePty write pong")
 			}
 		default:
-			signalError(errorChan, errors.Errorf("Error ReadWsAndWritePty unknown msg.Type %v", msg.Type))
-			return
+			return errors.Errorf("Error ReadWsAndWritePty unknown msg.Type %v", msg.Type)
 		}
 	}
 }
 
 func (p *Pipeline) ReadPtyAndWriteWs(errorChan chan error) {
-	defer signalError(errorChan, nil)
+	errorChan <- p.readPtyAndWriteWs()
+}
+
+func (p *Pipeline) readPtyAndWriteWs() error {
 	buf := make([]byte, bufferSize)
+	pending := make([]byte, 0, bufferSize+utf8.UTFMax)
 	for {
-		n, err := p.Pty.Read(buf)
-		if err != nil {
-			signalError(errorChan, errors.Wrap(err, "Error ReadPtyAndWriteWs read pty"))
-			return
+		n, readErr := p.Pty.Read(buf)
+		pending = append(pending, buf[:n]...)
+		complete := 0
+		for complete < len(pending) && utf8.FullRune(pending[complete:]) {
+			_, size := utf8.DecodeRune(pending[complete:])
+			complete += size
 		}
-		processedOutput := validString(string(buf[:n]))
-		err = p.ws.WriteMessage(websocket.TextMessage, []byte(processedOutput))
-		if err != nil {
-			if helper.IsUnexpectedWebsocketError(err) {
-				signalError(errorChan, errors.Wrap(err, "Error ReadPtyAndWriteWs websocket write"))
+		// Keep an incomplete trailing rune for the next PTY read. Process
+		// complete output even when Read returns both data and an error.
+		processedOutput := validString(string(pending[:complete]))
+		if len(processedOutput) > 0 {
+			if err := p.ws.WriteMessage(websocket.TextMessage, []byte(processedOutput)); err != nil {
+				if helper.IsUnexpectedWebsocketError(err) {
+					return errors.Wrap(err, "Error ReadPtyAndWriteWs websocket write")
+				}
+				return nil
 			}
-			return
+		}
+		pending = append(pending[:0], pending[complete:]...)
+		if readErr == io.EOF {
+			return nil
+		}
+		if readErr != nil {
+			return errors.Wrap(readErr, "Error ReadPtyAndWriteWs read pty")
 		}
 	}
 }
@@ -139,14 +150,6 @@ func (p *Pipeline) Close() {
 			logger.Error(err)
 		}
 	})
-}
-
-// Both pumps may stop together; reporting must not strand the second goroutine.
-func signalError(ch chan error, err error) {
-	select {
-	case ch <- err:
-	default:
-	}
 }
 
 func validString(s string) string {
