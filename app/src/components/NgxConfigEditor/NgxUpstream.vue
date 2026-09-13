@@ -2,6 +2,7 @@
 import { MoreOutlined, PlusOutlined } from '@antdv-next/icons'
 import { Modal } from 'antdv-next'
 import { DirectiveEditor, useNgxConfigStore } from '.'
+import { isUpstreamServerEnabled, setUpstreamServerEnabled } from './upstreamServer'
 
 const [modal, ContextHolder] = Modal.useModal()
 
@@ -95,7 +96,22 @@ function renameOK() {
 
       <template #contentRender="{ item }">
         <div class="tab-content">
-          <DirectiveEditor v-model:directives="item.upstream.directives" />
+          <DirectiveEditor v-model:directives="item.upstream.directives">
+            <template #directiveSuffix="{ directive }">
+              <div
+                v-if="directive.directive === 'server'"
+                class="upstream-server-toggle"
+                @click.stop
+              >
+                <span>{{ $gettext('Enabled') }}</span>
+                <ASwitch
+                  :checked="isUpstreamServerEnabled(directive)"
+                  :aria-label="$gettext('Enabled')"
+                  @change="isEnabled => setUpstreamServerEnabled(directive, isEnabled)"
+                />
+              </div>
+            </template>
+          </DirectiveEditor>
         </div>
       </template>
 
@@ -155,5 +171,12 @@ function renameOK() {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.upstream-server-toggle {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  white-space: nowrap;
 }
 </style>
