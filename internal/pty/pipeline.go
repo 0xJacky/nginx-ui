@@ -4,20 +4,24 @@ import (
 	"encoding/json"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/settings"
-	"github.com/creack/pty"
 	"github.com/gorilla/websocket"
 	"github.com/pkg/errors"
 	"github.com/uozi-tech/cosy/logger"
-	"os"
-	"os/exec"
+	"io"
+	"sync"
 	"time"
 	"unicode/utf8"
 )
 
 type Pipeline struct {
-	Pty *os.File
-	cmd *exec.Cmd
-	ws  *websocket.Conn
+	Pty       terminal
+	ws        *websocket.Conn
+	closeOnce sync.Once
+}
+
+type terminal interface {
+	io.ReadWriteCloser
+	Resize(cols, rows uint16) error
 }
 
 type Message struct {
@@ -28,16 +32,13 @@ type Message struct {
 const bufferSize = 2048
 
 func NewPipeLine(conn *websocket.Conn) (p Runner, err error) {
-	c := exec.Command(settings.TerminalSettings.StartCmd)
-
-	ptmx, err := pty.StartWithSize(c, &pty.Winsize{Cols: 90, Rows: 60})
+	ptmx, err := startTerminal(settings.TerminalSettings.StartCmd)
 	if err != nil {
 		return nil, errors.Wrap(err, "start pty error")
 	}
 
 	p = &Pipeline{
 		Pty: ptmx,
-		cmd: c,
 		ws:  conn,
 	}
 
@@ -45,23 +46,24 @@ func NewPipeLine(conn *websocket.Conn) (p Runner, err error) {
 }
 
 func (p *Pipeline) ReadWsAndWritePty(errorChan chan error) {
+	defer signalError(errorChan, nil)
 	for {
 		msgType, payload, err := p.ws.ReadMessage()
 		if err != nil {
 			if helper.IsUnexpectedWebsocketError(err) {
-				errorChan <- errors.Wrap(err, "Error ReadWsAndWritePty unexpected close")
+				signalError(errorChan, errors.Wrap(err, "Error ReadWsAndWritePty unexpected close"))
 			}
 			return
 		}
 		if msgType != websocket.TextMessage {
-			errorChan <- errors.Errorf("Error ReadWsAndWritePty Invalid msgType: %v", msgType)
+			signalError(errorChan, errors.Errorf("Error ReadWsAndWritePty Invalid msgType: %v", msgType))
 			return
 		}
 
 		var msg Message
 		err = json.Unmarshal(payload, &msg)
 		if err != nil {
-			errorChan <- errors.Wrap(err, "Error ReadWsAndWritePty json.Unmarshal")
+			signalError(errorChan, errors.Wrap(err, "Error ReadWsAndWritePty json.Unmarshal"))
 			return
 		}
 
@@ -70,14 +72,14 @@ func (p *Pipeline) ReadWsAndWritePty(errorChan chan error) {
 			var data string
 			err = json.Unmarshal(msg.Data, &data)
 			if err != nil {
-				errorChan <- errors.Wrap(err, "Error ReadWsAndWritePty json.Unmarshal msg.Data")
+				signalError(errorChan, errors.Wrap(err, "Error ReadWsAndWritePty json.Unmarshal msg.Data"))
 				return
 			}
 
 			_, err = p.Pty.Write([]byte(data))
 
 			if err != nil {
-				errorChan <- errors.Wrap(err, "Error ReadWsAndWritePty write pty")
+				signalError(errorChan, errors.Wrap(err, "Error ReadWsAndWritePty write pty"))
 				return
 			}
 		case TypeResize:
@@ -88,40 +90,41 @@ func (p *Pipeline) ReadWsAndWritePty(errorChan chan error) {
 
 			err = json.Unmarshal(msg.Data, &win)
 			if err != nil {
-				errorChan <- errors.Wrap(err, "Error ReadSktAndWritePty Invalid resize message")
+				signalError(errorChan, errors.Wrap(err, "Error ReadSktAndWritePty Invalid resize message"))
 				return
 			}
-			err = pty.Setsize(p.Pty, &pty.Winsize{Rows: win.Rows, Cols: win.Cols})
+			err = p.Pty.Resize(win.Cols, win.Rows)
 			if err != nil {
-				errorChan <- errors.Wrap(err, "Error ReadSktAndWritePty set pty size")
+				signalError(errorChan, errors.Wrap(err, "Error ReadSktAndWritePty set pty size"))
 				return
 			}
 		case TypePing:
 			err = p.ws.WriteControl(websocket.PongMessage, []byte{}, time.Now().Add(time.Second))
 			if err != nil {
-				errorChan <- errors.Wrap(err, "Error ReadSktAndWritePty write pong")
+				signalError(errorChan, errors.Wrap(err, "Error ReadSktAndWritePty write pong"))
 				return
 			}
 		default:
-			errorChan <- errors.Errorf("Error ReadWsAndWritePty unknown msg.Type %v", msg.Type)
+			signalError(errorChan, errors.Errorf("Error ReadWsAndWritePty unknown msg.Type %v", msg.Type))
 			return
 		}
 	}
 }
 
 func (p *Pipeline) ReadPtyAndWriteWs(errorChan chan error) {
+	defer signalError(errorChan, nil)
 	buf := make([]byte, bufferSize)
 	for {
 		n, err := p.Pty.Read(buf)
 		if err != nil {
-			errorChan <- errors.Wrap(err, "Error ReadPtyAndWriteWs read pty")
+			signalError(errorChan, errors.Wrap(err, "Error ReadPtyAndWriteWs read pty"))
 			return
 		}
 		processedOutput := validString(string(buf[:n]))
 		err = p.ws.WriteMessage(websocket.TextMessage, []byte(processedOutput))
 		if err != nil {
 			if helper.IsUnexpectedWebsocketError(err) {
-				errorChan <- errors.Wrap(err, "Error ReadPtyAndWriteWs websocket write")
+				signalError(errorChan, errors.Wrap(err, "Error ReadPtyAndWriteWs websocket write"))
 			}
 			return
 		}
@@ -129,22 +132,20 @@ func (p *Pipeline) ReadPtyAndWriteWs(errorChan chan error) {
 }
 
 func (p *Pipeline) Close() {
-	err := p.Pty.Close()
+	p.closeOnce.Do(func() {
+		// Unblock both pumps before releasing the terminal and its child process.
+		_ = p.ws.Close()
+		if err := p.Pty.Close(); err != nil {
+			logger.Error(err)
+		}
+	})
+}
 
-	if err != nil {
-		logger.Error(err)
-	}
-
-	err = p.cmd.Process.Kill()
-
-	if err != nil {
-		logger.Error(err)
-	}
-
-	_, err = p.cmd.Process.Wait()
-
-	if err != nil {
-		logger.Error(err)
+// Both pumps may stop together; reporting must not strand the second goroutine.
+func signalError(ch chan error, err error) {
+	select {
+	case ch <- err:
+	default:
 	}
 }
 
