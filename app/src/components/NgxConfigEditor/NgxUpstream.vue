@@ -2,7 +2,11 @@
 import { MoreOutlined, PlusOutlined } from '@antdv-next/icons'
 import { Modal } from 'antdv-next'
 import { DirectiveEditor, useNgxConfigStore } from '.'
-import { isUpstreamServerEnabled, setUpstreamServerEnabled } from './upstreamServer'
+import {
+  hasUpstreamServerAddress,
+  isUpstreamServerEnabled,
+  setUpstreamServerEnabled,
+} from './upstreamServer'
 
 const [modal, ContextHolder] = Modal.useModal()
 
@@ -106,6 +110,7 @@ function renameOK() {
                 <span>{{ $gettext('Enabled') }}</span>
                 <ASwitch
                   :checked="isUpstreamServerEnabled(directive)"
+                  :disabled="!hasUpstreamServerAddress(directive)"
                   :aria-label="$gettext('Enabled')"
                   @change="isEnabled => setUpstreamServerEnabled(directive, isEnabled)"
                 />

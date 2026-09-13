@@ -1,6 +1,7 @@
 import type { NgxDirective } from '@/api/ngx'
 import { describe, expect, test } from 'bun:test'
 import {
+  hasUpstreamServerAddress,
   isUpstreamServerEnabled,
   setUpstreamServerEnabled,
 } from '@/components/NgxConfigEditor/upstreamServer'
@@ -31,5 +32,28 @@ describe('upstream server toggle', () => {
     setUpstreamServerEnabled(directive, true)
 
     expect(directive.params).toBe('127.0.0.1:8080 max_fails=2')
+  })
+
+  test('preserves an address named down', () => {
+    const directive = server('down')
+
+    expect(hasUpstreamServerAddress(directive)).toBe(true)
+    expect(isUpstreamServerEnabled(directive)).toBe(true)
+
+    setUpstreamServerEnabled(directive, false)
+    expect(directive.params).toBe('down down')
+    expect(isUpstreamServerEnabled(directive)).toBe(false)
+
+    setUpstreamServerEnabled(directive, true)
+    expect(directive.params).toBe('down')
+  })
+
+  test('does not modify an incomplete server directive', () => {
+    const directive = server('')
+
+    expect(hasUpstreamServerAddress(directive)).toBe(false)
+    setUpstreamServerEnabled(directive, false)
+
+    expect(directive.params).toBe('')
   })
 })
