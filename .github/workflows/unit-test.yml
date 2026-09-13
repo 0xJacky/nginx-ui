@@ -78,9 +78,16 @@ jobs:
 
       - name: Test native Windows terminals
         shell: msys2 {0}
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          EVENT_SHA: ${{ github.sha }}
         run: |
           set -o pipefail
-          go test -tags=unembed -race -cover -count=3 -timeout=5m -v ./settings ./api/terminal ./internal/pty 2>&1 | tee windows-terminal.log
+          {
+            printf 'Checked out SHA: %s\nPR base SHA: %s\nPR head SHA: %s\nEvent SHA: %s\n' "$(git rev-parse HEAD)" "$PR_BASE_SHA" "$PR_HEAD_SHA" "$EVENT_SHA"
+            go test -tags=unembed -race -cover -count=3 -timeout=5m -v ./settings ./api/terminal ./internal/pty
+          } 2>&1 | tee windows-terminal.log
 
       - name: Preserve native terminal test logs
         if: always()

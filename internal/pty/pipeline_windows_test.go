@@ -62,6 +62,80 @@ func TestWindowsTerminalPipeHandles(t *testing.T) {
 	}
 }
 
+func TestWindowsTerminalShellExitWithoutReader(t *testing.T) {
+	for _, command := range []string{"cmd.exe", "powershell.exe"} {
+		t.Run(command, func(t *testing.T) {
+			if command == "powershell.exe" {
+				t.Setenv("PSModulePath", filepath.Join(os.Getenv("SystemRoot"), "System32", "WindowsPowerShell", "v1.0", "Modules"))
+			}
+			terminal, err := startTerminal(command)
+			if err != nil {
+				t.Fatal(err)
+			}
+			p := terminal.(*windowsTerminal)
+			t.Cleanup(func() {
+				// Release the reader even when testing a broken wait path.
+				_ = p.reader.Close()
+				if err := p.Close(); err != nil {
+					t.Error(err)
+				}
+			})
+			// Let the shell initialize, then stop reading entirely to model a
+			// downstream pump blocked in a browser write during shell exit.
+			ready := make(chan error, 1)
+			go func() {
+				var output strings.Builder
+				buf := make([]byte, bufferSize)
+				for !strings.Contains(output.String(), ">") {
+					n, err := p.Read(buf)
+					if err != nil {
+						ready <- err
+						return
+					}
+					output.Write(buf[:n])
+				}
+				ready <- nil
+			}()
+			select {
+			case err := <-ready:
+				if err != nil {
+					t.Fatal(err)
+				}
+			case <-time.After(10 * time.Second):
+				t.Fatal("shell did not reach its initial prompt")
+			}
+			if _, err := p.Write([]byte("exit\r")); err != nil {
+				t.Fatal(err)
+			}
+			select {
+			case <-p.waitDone:
+			case <-time.After(10 * time.Second):
+				t.Fatal("root-shell exit blocked on unread output")
+			}
+			select {
+			case <-p.readDone:
+			case <-time.After(5 * time.Second):
+				t.Fatal("native output reader remained blocked after shell exit")
+			}
+			t.Log("Root shell and native output drain stopped after downstream stopped reading")
+		})
+
+	}
+}
+
+func TestWindowsTerminalReadAfterClose(t *testing.T) {
+	p, err := startTerminal("cmd.exe")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := p.Close(); err != nil {
+		t.Fatal(err)
+	}
+	if n, err := p.Read(make([]byte, 1)); n != 0 || err != io.EOF {
+		t.Fatalf("owned teardown must read as EOF: n=%d err=%v", n, err)
+	}
+}
+
 func TestWindowsTerminalInteractiveAndDisconnect(t *testing.T) {
 	for _, command := range []string{"cmd.exe", "powershell.exe"} {
 		t.Run(command, func(t *testing.T) {
@@ -416,6 +490,7 @@ func TestWindowsTerminalRepeatedLifecycle(t *testing.T) {
 		before := handleCount()
 		beforeG := runtime.NumGoroutine()
 		beforeT, _ := runtime.ThreadCreateProfile(nil)
+		beforeTypes := terminalHandleTypes(t)
 		for i := 0; i < 40; i++ {
 			cycle(i%2 == 0)
 		}
@@ -436,6 +511,7 @@ func TestWindowsTerminalRepeatedLifecycle(t *testing.T) {
 		}
 		t.Logf("40 cycles (20 unread-output), 8 concurrent close/resize callers: handles %d -> %d, goroutines %d -> %d", before, after, beforeG, afterG)
 		if after > before+2 {
+			t.Logf("handle types before=%v after=%v", beforeTypes, terminalHandleTypes(t))
 			t.Errorf("handle leak: %d -> %d", before, after)
 		}
 		if afterG > beforeG+2 {
@@ -477,6 +553,7 @@ func TestWindowsTerminalFailedStartCleanup(t *testing.T) {
 		runtime.GC()
 		before := handleCount()
 		beforeT, _ := runtime.ThreadCreateProfile(nil)
+		beforeTypes := terminalHandleTypes(t)
 		for range 40 {
 			failStart()
 		}
@@ -500,11 +577,51 @@ func TestWindowsTerminalFailedStartCleanup(t *testing.T) {
 		}
 		t.Logf("40 failed starts after warmup: handles %d -> %d", before, after)
 		if after > before {
+			t.Logf("failed-start handle types before=%v after=%v", beforeTypes, terminalHandleTypes(t))
 			t.Errorf("failed-start handle leak: %d -> %d", before, after)
 		}
 		return
 	}
 	t.Fatal("OS-thread count never stabilized during failed-start cleanup")
+}
+
+// Diagnose remote-only leaks without exposing object names or filesystem paths.
+func terminalHandleTypes(t *testing.T) map[string]int {
+	t.Helper()
+	type entry struct {
+		Handle                             windows.Handle
+		HandleCount, PointerCount          uintptr
+		Access, Type, Attributes, Reserved uint32
+	}
+	buf := make([]byte, 1<<20)
+	var needed uint32
+	if err := windows.NtQueryInformationProcess(windows.CurrentProcess(), windows.ProcessHandleInformation, unsafe.Pointer(&buf[0]), uint32(len(buf)), &needed); err != nil {
+		t.Logf("handle type diagnostic unavailable: %v", err)
+		return nil
+	}
+	count := *(*uintptr)(unsafe.Pointer(&buf[0]))
+	offset := 2 * unsafe.Sizeof(uintptr(0))
+	if count > (uintptr(len(buf))-offset)/unsafe.Sizeof(entry{}) {
+		t.Fatal("invalid handle snapshot size")
+	}
+	entries := unsafe.Slice((*entry)(unsafe.Pointer(&buf[offset])), int(count))
+	query := windows.NewLazySystemDLL("ntdll.dll").NewProc("NtQueryObject")
+	names := map[uint32]string{}
+	result := map[string]int{}
+	for _, h := range entries {
+		name, ok := names[h.Type]
+		if !ok {
+			name = fmt.Sprintf("type-%d", h.Type)
+			var object [1024]byte
+			status, _, _ := query.Call(uintptr(h.Handle), 2, uintptr(unsafe.Pointer(&object[0])), uintptr(len(object)), uintptr(unsafe.Pointer(&needed)))
+			if status == 0 {
+				name = (*windows.NTUnicodeString)(unsafe.Pointer(&object[0])).String()
+			}
+			names[h.Type] = name
+		}
+		result[name]++
+	}
+	return result
 }
 
 func TestWindowsTerminalRejectsMissingCommand(t *testing.T) {

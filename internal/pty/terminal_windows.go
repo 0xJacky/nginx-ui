@@ -146,9 +146,13 @@ func terminalPipe() (*os.File, *os.File, error) {
 func (p *windowsTerminal) wait() {
 	defer close(p.waitDone)
 	_, p.waitErr = windows.WaitForSingleObject(p.process, windows.INFINITE)
+	// The downstream consumer may be stuck writing to a browser. Release
+	// forwarding before HPCON's synchronous final flush, just as Close does.
+	// Once the shell exits, unread terminal output is discarded.
+	_ = p.writer.Close()
 	p.mu.Lock()
 	defer p.mu.Unlock()
-	// Flush the final shell output, then let the reader observe EOF. Keeping
+	// Drain the final native output. Keeping
 	// HPCON alive after the shell exits would leave the WebSocket open forever.
 	p.closeConsole()
 }
@@ -189,7 +193,15 @@ func (p *windowsTerminal) readOutput() {
 	}
 }
 
-func (p *windowsTerminal) Read(data []byte) (int, error)  { return p.reader.Read(data) }
+func (p *windowsTerminal) Read(data []byte) (int, error) {
+	n, err := p.reader.Read(data)
+	// Only our session teardown closes the forwarding pipe. Report normal
+	// completion instead of a spurious terminal-device failure on disconnect.
+	if errors.Is(err, io.ErrClosedPipe) {
+		err = io.EOF
+	}
+	return n, err
+}
 func (p *windowsTerminal) Write(data []byte) (int, error) { return p.input.Write(data) }
 
 func (p *windowsTerminal) Resize(cols, rows uint16) error {
