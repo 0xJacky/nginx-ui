@@ -25,7 +25,7 @@ export const backupRoutes: RouteRecordRaw[] = [
         name: 'BackupAndRestore',
         component: () => import('@/views/backup/index.vue'),
         meta: {
-          name: () => $gettext('Backup'),
+          name: () => $gettext('Backup Management'),
         },
       },
       {
