@@ -6,23 +6,23 @@ const TeamsConfig: ExternalNotifyConfig = {
   config: [
     {
       key: 'tenant_id',
-      label: $gettext('Tenant ID'),
+      label: 'Tenant ID',
     },
     {
       key: 'client_id',
-      label: $gettext('Client ID'),
+      label: 'Client ID',
     },
     {
       key: 'client_secret',
-      label: $gettext('Client Secret'),
+      label: 'Client Secret',
     },
     {
       key: 'workflow_webhook_url',
-      label: $gettext('Workflow Webhook URL'),
+      label: 'Workflow Webhook URL',
     },
     {
       key: 'message_body',
-      label: $gettext('Message Body (JSON)'),
+      label: 'Message Body (JSON)',
     },
   ],
 }

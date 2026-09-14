@@ -20,8 +20,8 @@ const configMap = {
   lark_custom: LarkCustomConfig,
   mattermost: MattermostConfig,
   ntfy: NtfyConfig,
-  telegram: TelegramConfig,
   teams: TeamsConfig,
+  telegram: TelegramConfig,
   wecom: WeComConfig,
 }
 

@@ -20,7 +20,7 @@ var (
 	teamsTokenURLTemplate = "https://login.microsoftonline.com/%s/oauth2/v2.0/token"
 )
 
-// @external_notifier(Microsoft Teams（Power Automate webhook）)
+// @external_notifier(Teams|Microsoft Teams（Power Automate webhook）)
 type Teams struct {
 	TenantID           string `json:"tenant_id" title:"Tenant ID"`
 	ClientID           string `json:"client_id" title:"Client ID"`
