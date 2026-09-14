@@ -138,8 +138,8 @@ async function handleLoginSuccess(options: LoginSuccessOptions = {}) {
     window.history.replaceState(null, '', newUrl)
   }
 
-  const next = (route.query?.next || '').toString() || '/'
-  await router.push(next)
+  const next = (route.query?.next || '').toString()
+  await router.push(next && next !== '/' ? next : '/dashboard/server')
 }
 
 function onSubmit() {
@@ -189,9 +189,9 @@ function onSubmit() {
 const user = useUserStore()
 
 if (user.isLogin) {
-  const next = (route.query?.next || '').toString() || '/dashboard'
+  const next = (route.query?.next || '').toString()
 
-  router.push(next)
+  router.push(next && next !== '/' ? next : '/dashboard/server')
 }
 
 watch(() => gettext.current, () => {

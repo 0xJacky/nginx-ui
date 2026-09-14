@@ -12,6 +12,15 @@ export const backupRoutes: RouteRecordRaw[] = [
     },
     children: [
       {
+        path: '',
+        name: 'Backup Home',
+        component: () => import('@/views/backup/BackupHome.vue'),
+        meta: {
+          name: () => $gettext('Backup'),
+          hiddenInSidebar: true,
+        },
+      },
+      {
         path: 'backup-and-restore',
         name: 'BackupAndRestore',
         component: () => import('@/views/backup/index.vue'),

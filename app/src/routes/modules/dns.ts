@@ -6,12 +6,20 @@ export const dnsRoutes: RouteRecordRaw[] = [
     path: 'dns',
     name: 'DNS',
     component: () => import('@/layouts/BaseRouterView.vue'),
-    redirect: '/dns/domains',
     meta: {
       name: () => $gettext('DNS'),
       icon: CloudServerOutlined,
     },
     children: [
+      {
+        path: '',
+        name: 'DNS Home',
+        component: () => import('@/views/dns/index.vue'),
+        meta: {
+          name: () => $gettext('DNS'),
+          hiddenInSidebar: true,
+        },
+      },
       {
         path: 'credentials',
         name: 'DNS Credentials',

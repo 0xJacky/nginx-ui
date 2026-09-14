@@ -105,9 +105,9 @@ async function init() {
       })
 
       breadcrumbs.value = [{
-        name: 'Dashboard',
-        translatedName: () => $gettext('Dashboard'),
-        path: '/dashboard',
+        name: 'Home',
+        translatedName: () => $gettext('Home'),
+        path: '/',
         hasChildren: false,
       }, {
         name: 'Manage Configs',
@@ -155,9 +155,9 @@ async function init() {
     })
 
     breadcrumbs.value = [{
-      name: 'Dashboard',
-      translatedName: () => $gettext('Dashboard'),
-      path: '/dashboard',
+      name: 'Home',
+      translatedName: () => $gettext('Home'),
+      path: '/',
       hasChildren: false,
     }, {
       name: 'Manage Configs',

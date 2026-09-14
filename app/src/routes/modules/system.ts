@@ -5,13 +5,21 @@ import { useSettingsStore } from '@/pinia'
 export const systemRoutes: RouteRecordRaw[] = [
   {
     path: 'system',
+    component: () => import('@/layouts/BaseRouterView.vue'),
     name: 'System',
-    redirect: 'system/about',
     meta: {
       name: () => $gettext('System'),
       icon: InfoCircleOutlined,
     },
     children: [{
+      path: '',
+      name: 'System Home',
+      component: () => import('@/views/system/index.vue'),
+      meta: {
+        name: () => $gettext('System'),
+        hiddenInSidebar: true,
+      },
+    }, {
       path: 'self_check',
       name: 'Self Check',
       component: () => import('@/views/system/SelfCheck.vue'),
