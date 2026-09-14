@@ -13,9 +13,15 @@ const router = useRouter()
 // Setup log control data based on route params
 const logPath = computed(() => route.query.path?.toString() ?? '')
 const logType = computed(() => {
-  if (route.path.indexOf('access') > 0)
-    return 'access'
-  return route.path.indexOf('error') > 0 ? 'error' : 'site'
+  const queryType = route.query.type?.toString().toLowerCase() ?? ''
+  if (queryType === 'access' || queryType === 'error')
+    return queryType
+
+  const pathType = route.path.split('/').filter(Boolean).pop()?.toLowerCase() ?? ''
+  if (pathType === 'access' || pathType === 'error' || pathType === 'site')
+    return pathType
+
+  return 'site'
 })
 
 const viewMode = useRouteQuery<'raw' | 'structured' | 'dashboard'>('view', 'structured')
@@ -40,9 +46,13 @@ const logSelectStyle = computed(() => ({
   minWidth: '20rem',
 }))
 
-const logSelectDropdownStyle = computed(() => ({
-  width: `min(calc(100vw - 2rem), ${maxLogPathLength.value + 12}ch)`,
-  minWidth: '20rem',
+const logSelectStyles = computed(() => ({
+  popup: {
+    root: {
+      width: `min(calc(100vw - 2rem), ${maxLogPathLength.value + 12}ch)`,
+      minWidth: '20rem',
+    },
+  },
 }))
 
 const selectedLogPath = computed({
@@ -111,12 +121,12 @@ async function fetchLogPathOptions() {
 }
 
 // Indexing status
-const isIndexingEnabled = ref(false)
+const isIndexingEnabled = ref<boolean | null>(null)
 
 onMounted(async () => {
   try {
     const res = await nginxLog.getAdvancedIndexingStatus()
-    isIndexingEnabled.value = !!res.enabled
+    isIndexingEnabled.value = !!(res.enabled ?? (res as any).data?.enabled)
   }
   catch (err) {
     console.error('Failed to get indexing status:', err)
@@ -136,19 +146,38 @@ watch(logPath, newPath => {
 
 // Check if this is an error log
 const isErrorLog = computed(() => {
-  return logType.value === 'error' || logPath.value.includes('error.log') || logPath.value.includes('error_log')
+  if (logType.value === 'error')
+    return true
+
+  if (logType.value === 'access')
+    return false
+
+  return logPath.value.includes('error.log') || logPath.value.includes('error_log')
 })
 
 const autoRefresh = ref(true)
 
+const viewModeOptions = computed(() => {
+  const advancedViewDisabled = isIndexingEnabled.value !== true
+
+  return [
+    { label: $gettext('Structured'), value: 'structured', disabled: advancedViewDisabled },
+    { label: $gettext('Dashboard'), value: 'dashboard', disabled: advancedViewDisabled },
+    { label: $gettext('Raw'), value: 'raw' },
+  ]
+})
+
 watch(viewMode, v => {
-  if (v === 'structured' && (!isIndexingEnabled.value || isErrorLog.value)) {
+  if (v === 'structured' && (isIndexingEnabled.value === false || isErrorLog.value)) {
     viewMode.value = 'raw'
   }
 }, { immediate: true })
 
 // View mode logic: set defaults based on log type and indexing status
 watch([isErrorLog, isIndexingEnabled], ([isError, enabled], [prevIsError, prevEnabled]) => {
+  if (enabled === null)
+    return
+
   // Only set default when conditions change or initial load
   const isInitialLoad = prevIsError === undefined && prevEnabled === undefined
   const conditionsChanged = isError !== prevIsError || enabled !== prevEnabled
@@ -175,41 +204,35 @@ watch([isErrorLog, isIndexingEnabled], ([isError, enabled], [prevIsError, prevEn
     :title="$gettext('Nginx Log')"
     variant="borderless"
   >
-    <template #extra>
-      <div class="flex flex-wrap items-center justify-end gap-4">
-        <ASelect
-          v-model:value="selectedLogPath"
-          class="flex-none font-mono"
-          :style="logSelectStyle"
-          :dropdown-style="logSelectDropdownStyle"
-          show-search
-          allow-clear
-          :loading="isLoadingLogPathOptions"
-          :options="logPathOptions"
-          :placeholder="$gettext('Select log file')"
-          :filter-option="(input, option) =>
-            ((option?.label ?? '') as string).toLowerCase().includes(input.toLowerCase())"
+    <div v-if="viewMode !== 'structured'" class="mb-4 flex flex-wrap items-center justify-end gap-4">
+      <ASelect
+        v-model:value="selectedLogPath"
+        class="flex-none font-mono"
+        :style="logSelectStyle"
+        :styles="logSelectStyles"
+        show-search
+        allow-clear
+        :loading="isLoadingLogPathOptions"
+        :options="logPathOptions"
+        :placeholder="$gettext('Select log file')"
+        :filter-option="(input, option) =>
+          ((option?.label ?? '') as string).toLowerCase().includes(input.toLowerCase())"
+      />
+
+      <!-- View Mode Toggle (hide only for error logs) -->
+      <div v-if="!isErrorLog" class="flex items-center">
+        <ASegmented
+          v-model:value="viewMode"
+          :options="viewModeOptions"
         />
-
-        <!-- View Mode Toggle (hide for error logs or when indexing is disabled) -->
-        <div v-if="!isErrorLog && isIndexingEnabled" class="flex items-center">
-          <ASegmented
-            v-model:value="viewMode"
-            :options="[
-              { label: $gettext('Structured'), value: 'structured' },
-              { label: $gettext('Dashboard'), value: 'dashboard' },
-              { label: $gettext('Raw'), value: 'raw' },
-            ]"
-          />
-        </div>
-
-        <!-- Auto Refresh (only for raw mode) -->
-        <div v-if="viewMode === 'raw'" class="flex items-center">
-          <span class="mr-2">{{ $gettext('Auto Refresh') }}</span>
-          <ASwitch v-model:checked="autoRefresh" />
-        </div>
       </div>
-    </template>
+
+      <!-- Auto Refresh (only for raw mode) -->
+      <div v-if="viewMode === 'raw'" class="flex items-center">
+        <span class="mr-2">{{ $gettext('Auto Refresh') }}</span>
+        <ASwitch v-model:checked="autoRefresh" />
+      </div>
+    </div>
 
     <!-- Raw Log View -->
     <RawLogViewer
@@ -223,7 +246,29 @@ watch([isErrorLog, isIndexingEnabled], ([isError, enabled], [prevIsError, prevEn
     <StructuredLogViewer
       v-else-if="viewMode === 'structured'"
       :log-path="logPath"
-    />
+    >
+      <template #time-range-right>
+        <ASelect
+          v-model:value="selectedLogPath"
+          class="flex-none font-mono"
+          :style="logSelectStyle"
+          :styles="logSelectStyles"
+          show-search
+          allow-clear
+          :loading="isLoadingLogPathOptions"
+          :options="logPathOptions"
+          :placeholder="$gettext('Select log file')"
+          :filter-option="(input, option) =>
+            ((option?.label ?? '') as string).toLowerCase().includes(input.toLowerCase())"
+        />
+        <div v-if="!isErrorLog" class="flex items-center">
+          <ASegmented
+            v-model:value="viewMode"
+            :options="viewModeOptions"
+          />
+        </div>
+      </template>
+    </StructuredLogViewer>
 
     <!-- Dashboard View -->
     <DashboardViewer
