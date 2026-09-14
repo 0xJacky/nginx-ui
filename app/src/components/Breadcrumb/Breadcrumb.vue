@@ -51,13 +51,13 @@ watch(route, () => {
 <template>
   <ABreadcrumb class="breadcrumb" :items="breadcrumbItems">
     <template #itemRender="{ route: breadcrumbRoute, routes }">
+      
       <RouterLink
-        v-if="routes.indexOf(breadcrumbRoute) === 0 || !getBread(breadcrumbRoute, routes)?.hasChildren && routes.indexOf(breadcrumbRoute) !== routes.length - 1"
+        v-if="routes.indexOf(breadcrumbRoute) !== routes.length - 1 && getBread(breadcrumbRoute, routes)?.path"
         :to="{ path: getBread(breadcrumbRoute, routes)?.path === '' ? '/' : getBread(breadcrumbRoute, routes)?.path, query: getBread(breadcrumbRoute, routes)?.query }"
       >
         {{ getBread(breadcrumbRoute, routes)?.translatedName() }}
       </RouterLink>
-      <span v-else-if="getBread(breadcrumbRoute, routes)?.hasChildren">{{ getBread(breadcrumbRoute, routes)?.translatedName() }}</span>
       <span v-else>{{ getBread(breadcrumbRoute, routes)?.translatedName() }}</span>
     </template>
   </ABreadcrumb>
