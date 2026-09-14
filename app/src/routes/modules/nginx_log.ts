@@ -5,11 +5,20 @@ export const nginxLogRoutes: RouteRecordRaw[] = [
   {
     path: 'nginx_log',
     name: 'Nginx Log',
+    component: () => import('@/layouts/BaseRouterView.vue'),
     meta: {
       name: () => $gettext('Nginx Log'),
       icon: FileTextOutlined,
     },
     children: [{
+      path: '',
+      name: 'Nginx Log Home',
+      component: () => import('@/views/nginx_log/index.vue'),
+      meta: {
+        name: () => $gettext('Nginx Log'),
+        hiddenInSidebar: true,
+      },
+    }, {
       path: 'access',
       name: 'Access Logs',
       component: () => import('@/views/nginx_log/NginxLog.vue'),

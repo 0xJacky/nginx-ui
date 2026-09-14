@@ -8,9 +8,18 @@ export const backupRoutes: RouteRecordRaw[] = [
     component: () => import('@/layouts/BaseRouterView.vue'),
     meta: {
       icon: ClockCircleOutlined,
-      name: () => $gettext('Backup'),
+      name: () => $gettext('Backup Management'),
     },
     children: [
+      {
+        path: '',
+        name: 'Backup Home',
+        component: () => import('@/views/backup/BackupHome.vue'),
+        meta: {
+          name: () => $gettext('Backup Management'),
+          hiddenInSidebar: true,
+        },
+      },
       {
         path: 'backup-and-restore',
         name: 'BackupAndRestore',
