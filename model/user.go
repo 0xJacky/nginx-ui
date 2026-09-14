@@ -29,7 +29,7 @@ type User struct {
 
 	Name          string        `json:"name" cosy:"add:max=20;update:omitempty,max=20;list:fussy;db_unique"`
 	Password      string        `json:"-" cosy:"json:password;add:required,max=20;update:omitempty,max=20"`
-	Status        bool          `json:"status" gorm:"default:1"`
+	Status        bool          `json:"status" cosy:"update:omitempty" gorm:"default:1"`
 	OTPSecret     []byte        `json:"-" gorm:"type:blob"`
 	RecoveryCodes RecoveryCodes `json:"-" gorm:"serializer:json[aes]"`
 	EnabledTwoFA  bool          `json:"enabled_2fa" gorm:"-"`
