@@ -146,24 +146,27 @@ func (p *SyncConfigPayload) deploy(node *model.Node, c *model.Config, payloadByt
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		notification.Error("Sync Config Error", syncConfigNotificationContent(userName, false), notificationPayload)
+		notification.Error("Sync Config Error", syncConfigErrorContent(userName), notificationPayload)
 		return
 	}
 
-	notification.Success("Sync Config Success", syncConfigNotificationContent(userName, true), notificationPayload)
+	notification.Success("Sync Config Success", syncConfigSuccessContent(userName), notificationPayload)
 
 	return
 }
 
-func syncConfigNotificationContent(userName string, success bool) string {
+// syncConfigSuccessContent and syncConfigErrorContent are kept separate so the
+// notification extractor pairs every message with the right notification title.
+func syncConfigSuccessContent(userName string) string {
 	if userName == "" {
-		if success {
-			return "Sync config %{config_name} to %{node_name} successfully"
-		}
-		return "Sync config %{config_name} to %{node_name} failed"
+		return "Sync config %{config_name} to %{node_name} successfully"
 	}
-	if success {
-		return "User %{user_name} synced config %{config_name} to %{node_name} successfully"
+	return "User %{user_name} synced config %{config_name} to %{node_name} successfully"
+}
+
+func syncConfigErrorContent(userName string) string {
+	if userName == "" {
+		return "Sync config %{config_name} to %{node_name} failed"
 	}
 	return "User %{user_name} failed to sync config %{config_name} to %{node_name}"
 }

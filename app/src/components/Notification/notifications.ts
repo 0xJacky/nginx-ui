@@ -81,9 +81,17 @@ const notifications: Record<string, { title: () => string, content: (args: any) 
     title: () => $gettext('Sync Config Error'),
     content: (args: any) => $gettext('Sync config %{config_name} to %{node_name} failed', args),
   },
+  'Sync Config Error_1': {
+    title: () => $gettext('Sync Config Error'),
+    content: (args: any) => $gettext('User %{user_name} failed to sync config %{config_name} to %{node_name}', args),
+  },
   'Sync Config Success': {
     title: () => $gettext('Sync Config Success'),
     content: (args: any) => $gettext('Sync config %{config_name} to %{node_name} successfully', args),
+  },
+  'Sync Config Success_1': {
+    title: () => $gettext('Sync Config Success'),
+    content: (args: any) => $gettext('User %{user_name} synced config %{config_name} to %{node_name} successfully', args),
   },
   'Rename Remote Config Error': {
     title: () => $gettext('Rename Remote Config Error'),

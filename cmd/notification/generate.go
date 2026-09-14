@@ -96,6 +96,10 @@ func findNotificationCalls(filePath string, calls *[]NotificationCall) {
 	isNotificationPackage := strings.Contains(filePath, "internal/notification") ||
 		strings.Contains(filePath, "notification/")
 
+	// Notification contents are sometimes built by a small helper in the same
+	// file, so collect the literals those helpers can return.
+	localStringFuncs := collectStringReturningFuncs(node)
+
 	// Traverse the AST to find function calls
 	ast.Inspect(node, func(n ast.Node) bool {
 		callExpr, ok := n.(*ast.CallExpr)
@@ -126,12 +130,12 @@ func findNotificationCalls(filePath string, calls *[]NotificationCall) {
 				titleArg := callExpr.Args[0]
 				contentArg := callExpr.Args[1]
 
-				// Get parameter values
 				title := getStringValue(titleArg)
-				content := getStringValue(contentArg)
 
-				// Ignore cases where content is a variable name or function call
-				if content != "" && !isVariableOrFunctionCall(content) {
+				// A content argument may be a literal or a helper call, and a
+				// helper can return one message per branch. Emit them all so
+				// every variant reaches the translation catalog.
+				for _, content := range resolveContents(contentArg, localStringFuncs) {
 					*calls = append(*calls, NotificationCall{
 						Type:    funcName,
 						Title:   title,
@@ -144,6 +148,63 @@ func findNotificationCalls(filePath string, calls *[]NotificationCall) {
 
 		return true
 	})
+}
+
+// resolveContents returns every translatable message a content argument can
+// produce: the literal itself, or the literals returned by a helper declared in
+// the same file.
+func resolveContents(expr ast.Expr, localStringFuncs map[string][]string) []string {
+	if content := getStringValue(expr); content != "" && !isVariableOrFunctionCall(content) {
+		return []string{content}
+	}
+
+	callExpr, ok := expr.(*ast.CallExpr)
+	if !ok {
+		return nil
+	}
+
+	ident, ok := callExpr.Fun.(*ast.Ident)
+	if !ok {
+		return nil
+	}
+
+	return localStringFuncs[ident.Name]
+}
+
+// collectStringReturningFuncs maps each top-level function in the file to the
+// string literals it returns, so helper-built notification contents stay visible
+// to the extractor.
+func collectStringReturningFuncs(node *ast.File) map[string][]string {
+	funcs := make(map[string][]string)
+
+	for _, decl := range node.Decls {
+		funcDecl, ok := decl.(*ast.FuncDecl)
+		if !ok || funcDecl.Recv != nil || funcDecl.Body == nil {
+			continue
+		}
+
+		var literals []string
+		ast.Inspect(funcDecl.Body, func(n ast.Node) bool {
+			returnStmt, ok := n.(*ast.ReturnStmt)
+			if !ok {
+				return true
+			}
+
+			for _, result := range returnStmt.Results {
+				if content := getStringValue(result); content != "" && !isVariableOrFunctionCall(content) {
+					literals = append(literals, content)
+				}
+			}
+
+			return true
+		})
+
+		if len(literals) > 0 {
+			funcs[funcDecl.Name.Name] = literals
+		}
+	}
+
+	return funcs
 }
 
 // Check if the string is a variable name or function call

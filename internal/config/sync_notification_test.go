@@ -9,26 +9,28 @@ import (
 )
 
 func TestSyncConfigNotificationContentIncludesActingUser(t *testing.T) {
-	for _, success := range []bool{true, false} {
-		content := syncConfigNotificationContent("alice", success)
+	for name, content := range map[string]string{
+		"success": syncConfigSuccessContent("alice"),
+		"error":   syncConfigErrorContent("alice"),
+	} {
 		if !strings.Contains(content, "%{user_name}") {
-			t.Fatalf("content = %q", content)
+			t.Fatalf("%s content = %q", name, content)
 		}
 	}
 }
 
 func TestSyncConfigNotificationContentKeepsLegacyMessageWithoutUser(t *testing.T) {
-	if got := syncConfigNotificationContent("", true); got != "Sync config %{config_name} to %{node_name} successfully" {
+	if got := syncConfigSuccessContent(""); got != "Sync config %{config_name} to %{node_name} successfully" {
 		t.Fatalf("success content = %q", got)
 	}
-	if got := syncConfigNotificationContent("", false); got != "Sync config %{config_name} to %{node_name} failed" {
+	if got := syncConfigErrorContent(""); got != "Sync config %{config_name} to %{node_name} failed" {
 		t.Fatalf("failure content = %q", got)
 	}
 }
 
 func TestSyncConfigNotificationRendersActingUser(t *testing.T) {
 	message := &notification.ExternalMessage{Notification: &model.Notification{
-		Content: syncConfigNotificationContent("alice", true),
+		Content: syncConfigSuccessContent("alice"),
 		Details: &SyncNotificationPayload{
 			ConfigName: "nginx.conf",
 			NodeName:   "edge-1",
