@@ -1,0 +1,15 @@
+export default {
+  520007: () => $gettext('{0} contains characters that are unsafe to paste into the generated host instructions: {1}'),
+  520008: () => $gettext('Public key must be a single valid OpenSSH key line'),
+  520009: () => $gettext('Access mode must be either sftp or mounted'),
+  520010: () => $gettext('Host address must be a hostname or IP with an optional port: {0}'),
+  520011: () => $gettext('Private key path is required'),
+  520012: () => $gettext('Private key path must be absolute'),
+  520001: () => $gettext('Failed to render template {0}: {1}'),
+  520002: () => $gettext('Failed to generate keypair: {0}'),
+  520003: () => $gettext('Failed to write key file {0}: {1}'),
+  520004: () => $gettext('Failed to read key file {0}: {1}'),
+  520005: () => $gettext('Verify step {0} failed: {1}'),
+  520006: () => $gettext('Failed to discover host nginx: {0}'),
+  520013: () => $gettext('Failed to delete key file {0}: {1}'),
+}
