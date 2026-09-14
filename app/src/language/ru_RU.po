@@ -12126,8 +12126,246 @@ msgstr "Подтвердите новый пароль"
 msgid "Update Password"
 msgstr "Обновить пароль"
 
-#~ msgid "HTML Template (Optional)"
-#~ msgstr "HTML-шаблон (необязательно)"
+#: src/components/Notification/notifications.ts:86
+#, fuzzy
+msgid "User %{user_name} failed to sync config %{config_name} to %{node_name}"
+msgstr "Не удалось синхронизировать конфигурацию %{config_name} с %{node_name}"
+
+#: src/components/Notification/notifications.ts:94
+#, fuzzy
+msgid ""
+"User %{user_name} synced config %{config_name} to %{node_name} successfully"
+msgstr "Конфигурация %{config_name} успешно синхронизирована с %{node_name}"
+
+#: src/constants/errors/host_setup.ts:2
+msgid ""
+"{0} contains characters that are unsafe to paste into the generated host "
+"instructions: {1}"
+msgstr ""
+
+#: src/constants/errors/host_setup.ts:3
+msgid "Public key must be a single valid OpenSSH key line"
+msgstr ""
+
+#: src/constants/errors/host_setup.ts:4
+msgid "Access mode must be either sftp or mounted"
+msgstr ""
+
+#: src/constants/errors/host_setup.ts:5
+msgid "Host address must be a hostname or IP with an optional port: {0}"
+msgstr ""
+
+#: src/constants/errors/host_setup.ts:7
+#, fuzzy
+msgid "Private key path must be absolute"
+msgstr "Требуется путь к закрытому ключу"
+
+#: src/constants/errors/host_setup.ts:8
+#, fuzzy
+msgid "Failed to render template {0}: {1}"
+msgstr "Не удалось разобрать шаблон: {0}"
+
+#: src/constants/errors/host_setup.ts:9
+#, fuzzy
+msgid "Failed to generate keypair: {0}"
+msgstr "Не удалось сгенерировать AES-ключ: {0}"
+
+#: src/constants/errors/host_setup.ts:10
+#, fuzzy
+msgid "Failed to write key file {0}: {1}"
+msgstr "Не удалось записать файл резервной копии: {0}"
+
+#: src/constants/errors/host_setup.ts:11
+#, fuzzy
+msgid "Failed to read key file {0}: {1}"
+msgstr "Не удалось прочитать файл: {0}"
+
+#: src/constants/errors/host_setup.ts:12
+#, fuzzy
+msgid "Verify step {0} failed: {1}"
+msgstr "Тест Nginx не пройден: {0}"
+
+#: src/constants/errors/host_setup.ts:13
+#, fuzzy
+msgid "Failed to discover host nginx: {0}"
+msgstr "Не удалось проверить контейнер: {0}"
+
+#: src/constants/errors/host_setup.ts:14
+#, fuzzy
+msgid "Failed to delete key file {0}: {1}"
+msgstr "Не удалось создать файл: {0}"
+
+#: src/constants/errors/host_ssh.ts:2
+#, fuzzy
+msgid "Ssh connect failed: {0}"
+msgstr "Тест подключения S3 не удался: {0}"
+
+#: src/constants/errors/host_ssh.ts:3
+#, fuzzy
+msgid "Ssh authentication failed: {0}"
+msgstr "Сбой обновления аутентификации"
+
+#: src/constants/errors/host_ssh.ts:4
+msgid "Host key verification failed: expected {0}, got {1}"
+msgstr ""
+
+#: src/constants/errors/host_ssh.ts:5
+msgid "Sudo requires a password; check /etc/sudoers.d/nginx-ui"
+msgstr ""
+
+#: src/constants/errors/host_ssh.ts:6
+#, fuzzy
+msgid "Systemctl not found on remote host"
+msgstr "server_name не нашел в директивах"
+
+#: src/constants/errors/host_ssh.ts:7
+msgid "Remote command timed out after {0}"
+msgstr ""
+
+#: src/constants/errors/host_ssh.ts:8
+#, fuzzy
+msgid "Failed to open ssh session: {0}"
+msgstr "Не удалось открыть запись в ZIP: {0}"
+
+#: src/constants/errors/host_ssh.ts:9
+msgid "Ssh client was closed after a settings change"
+msgstr ""
+
+#: src/constants/errors/host_ssh.ts:10
+#, fuzzy
+msgid "Failed to read known_hosts: {0}"
+msgstr "Не удалось прочитать вывод: {0}"
+
+#: src/constants/errors/host_ssh.ts:11
+#, fuzzy
+msgid "Failed to write known_hosts: {0}"
+msgstr "Не удалось проверить хеши: {0}"
+
+#: src/constants/errors/host_ssh.ts:12
+#, fuzzy
+msgid "Failed to parse public key: {0}"
+msgstr "Не удалось разобрать шаблон: {0}"
+
+#: src/constants/errors/host_ssh.ts:13
+#, fuzzy
+msgid "Known_hosts entry not found: {0}"
+msgstr "Файл или каталог не найден: {0}"
+
+#: src/constants/errors/host_ssh.ts:14
+msgid "Host key operation requires explicit confirmation"
+msgstr ""
+
+#: src/constants/errors/host_ssh.ts:15
+#, fuzzy
+msgid "Failed to scan host key: {0}"
+msgstr "Не удалось просканировать ключи хоста"
+
+#: src/constants/errors/host_ssh.ts:16
+msgid "Host key algorithm mismatch: expected {0}, got {1}"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/labels.ts:6
+#, fuzzy
+msgid "Access Token"
+msgstr "Токены доступа"
+
+#: src/views/preference/components/ExternalNotify/labels.ts:8
+msgid "App ID"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/labels.ts:9
+#, fuzzy
+msgid "App Secret"
+msgstr "Jwt секрет"
+
+#: src/views/preference/components/ExternalNotify/labels.ts:10
+#, fuzzy
+msgid "Bot Token"
+msgstr "Создать токен"
+
+#: src/views/preference/components/ExternalNotify/labels.ts:11
+#, fuzzy
+msgid "Chat ID"
+msgstr "Чат"
+
+#: src/views/preference/components/ExternalNotify/labels.ts:12
+msgid "Click URL"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/labels.ts:15
+#, fuzzy
+msgid "Device Key"
+msgstr "Тип устройства"
+
+#: src/views/preference/components/ExternalNotify/labels.ts:18
+msgid "Encryption (none, starttls, opportunistic, tls)"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/labels.ts:19
+msgid "From"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/labels.ts:20
+msgid "HTML"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/labels.ts:21
+msgid "HTML Template (Optional)"
+msgstr "HTML-шаблон (необязательно)"
+
+#: src/views/preference/components/ExternalNotify/labels.ts:25
+msgid "Message Thread ID"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/labels.ts:26
+#, fuzzy
+msgid "Open ID"
+msgstr "OpenAI"
+
+#: src/views/preference/components/ExternalNotify/labels.ts:30
+msgid "SSL"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/labels.ts:31
+#, fuzzy
+msgid "Secret (Optional)"
+msgstr "Интеграция DNS-записи (Необязательно)"
+
+#: src/views/preference/components/ExternalNotify/labels.ts:32
+#, fuzzy
+msgid "Server URL"
+msgstr "Информация о сервере"
+
+#: src/views/preference/components/ExternalNotify/labels.ts:33
+msgid "Tags"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/labels.ts:35
+msgid "To"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/labels.ts:36
+#, fuzzy
+msgid "Token"
+msgstr "токены"
+
+#: src/views/preference/components/ExternalNotify/labels.ts:37
+msgid "Topic"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/labels.ts:39
+msgid "Union ID"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/labels.ts:40
+#, fuzzy
+msgid "User ID"
+msgstr "Пользователь"
+
+#: src/views/preference/components/ExternalNotify/labels.ts:42
+#, fuzzy
+msgid "Webhook URL"
+msgstr "URL вебхука рабочего процесса"
 
 #~ msgid "Records"
 #~ msgstr "Записи"
@@ -12702,10 +12940,6 @@ msgstr "Обновить пароль"
 
 #~ msgid "Format error %{msg}"
 #~ msgstr "Ошибка формата %{msg}"
-
-#, fuzzy
-#~ msgid "Server URL"
-#~ msgstr "Информация о сервере"
 
 #, fuzzy
 #~ msgid "Created At"

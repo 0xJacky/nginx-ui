@@ -11606,8 +11606,246 @@ msgstr "새 비밀번호 확인"
 msgid "Update Password"
 msgstr "비밀번호 업데이트"
 
-#~ msgid "HTML Template (Optional)"
-#~ msgstr "HTML 템플릿 (선택 사항)"
+#: src/components/Notification/notifications.ts:86
+#, fuzzy
+msgid "User %{user_name} failed to sync config %{config_name} to %{node_name}"
+msgstr "구성 %{config_name}을(를) %{node_name}에 동기화하지 못했습니다"
+
+#: src/components/Notification/notifications.ts:94
+#, fuzzy
+msgid ""
+"User %{user_name} synced config %{config_name} to %{node_name} successfully"
+msgstr "구성 %{config_name}을(를) %{node_name}에 성공적으로 동기화했습니다"
+
+#: src/constants/errors/host_setup.ts:2
+msgid ""
+"{0} contains characters that are unsafe to paste into the generated host "
+"instructions: {1}"
+msgstr ""
+
+#: src/constants/errors/host_setup.ts:3
+msgid "Public key must be a single valid OpenSSH key line"
+msgstr ""
+
+#: src/constants/errors/host_setup.ts:4
+msgid "Access mode must be either sftp or mounted"
+msgstr ""
+
+#: src/constants/errors/host_setup.ts:5
+msgid "Host address must be a hostname or IP with an optional port: {0}"
+msgstr ""
+
+#: src/constants/errors/host_setup.ts:7
+#, fuzzy
+msgid "Private key path must be absolute"
+msgstr "개인 키 경로가 필요합니다"
+
+#: src/constants/errors/host_setup.ts:8
+#, fuzzy
+msgid "Failed to render template {0}: {1}"
+msgstr "템플릿 구문 분석 실패: {0}"
+
+#: src/constants/errors/host_setup.ts:9
+#, fuzzy
+msgid "Failed to generate keypair: {0}"
+msgstr "AES 키 생성 실패: {0}"
+
+#: src/constants/errors/host_setup.ts:10
+#, fuzzy
+msgid "Failed to write key file {0}: {1}"
+msgstr "백업 파일 쓰기 실패: {0}"
+
+#: src/constants/errors/host_setup.ts:11
+#, fuzzy
+msgid "Failed to read key file {0}: {1}"
+msgstr "파일 읽기 실패: {0}"
+
+#: src/constants/errors/host_setup.ts:12
+#, fuzzy
+msgid "Verify step {0} failed: {1}"
+msgstr "Nginx 테스트 실패: {0}"
+
+#: src/constants/errors/host_setup.ts:13
+#, fuzzy
+msgid "Failed to discover host nginx: {0}"
+msgstr "컨테이너 검사 실패: {0}"
+
+#: src/constants/errors/host_setup.ts:14
+#, fuzzy
+msgid "Failed to delete key file {0}: {1}"
+msgstr "파일 생성 실패: {0}"
+
+#: src/constants/errors/host_ssh.ts:2
+#, fuzzy
+msgid "Ssh connect failed: {0}"
+msgstr "S3 연결 테스트 실패: {0}"
+
+#: src/constants/errors/host_ssh.ts:3
+#, fuzzy
+msgid "Ssh authentication failed: {0}"
+msgstr "인증 업그레이드에 실패했습니다"
+
+#: src/constants/errors/host_ssh.ts:4
+msgid "Host key verification failed: expected {0}, got {1}"
+msgstr ""
+
+#: src/constants/errors/host_ssh.ts:5
+msgid "Sudo requires a password; check /etc/sudoers.d/nginx-ui"
+msgstr ""
+
+#: src/constants/errors/host_ssh.ts:6
+#, fuzzy
+msgid "Systemctl not found on remote host"
+msgstr "directives에서 server_name을 찾을 수 없습니다"
+
+#: src/constants/errors/host_ssh.ts:7
+msgid "Remote command timed out after {0}"
+msgstr ""
+
+#: src/constants/errors/host_ssh.ts:8
+#, fuzzy
+msgid "Failed to open ssh session: {0}"
+msgstr "ZIP 항목 열기 실패: {0}"
+
+#: src/constants/errors/host_ssh.ts:9
+msgid "Ssh client was closed after a settings change"
+msgstr ""
+
+#: src/constants/errors/host_ssh.ts:10
+#, fuzzy
+msgid "Failed to read known_hosts: {0}"
+msgstr "출력 읽기 실패: {0}"
+
+#: src/constants/errors/host_ssh.ts:11
+#, fuzzy
+msgid "Failed to write known_hosts: {0}"
+msgstr "해시 확인 실패: {0}"
+
+#: src/constants/errors/host_ssh.ts:12
+#, fuzzy
+msgid "Failed to parse public key: {0}"
+msgstr "템플릿 구문 분석 실패: {0}"
+
+#: src/constants/errors/host_ssh.ts:13
+#, fuzzy
+msgid "Known_hosts entry not found: {0}"
+msgstr "파일 또는 디렉터리를 찾을 수 없음: {0}"
+
+#: src/constants/errors/host_ssh.ts:14
+msgid "Host key operation requires explicit confirmation"
+msgstr ""
+
+#: src/constants/errors/host_ssh.ts:15
+#, fuzzy
+msgid "Failed to scan host key: {0}"
+msgstr "호스트 키 스캔 실패"
+
+#: src/constants/errors/host_ssh.ts:16
+msgid "Host key algorithm mismatch: expected {0}, got {1}"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/labels.ts:6
+#, fuzzy
+msgid "Access Token"
+msgstr "액세스 토큰"
+
+#: src/views/preference/components/ExternalNotify/labels.ts:8
+msgid "App ID"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/labels.ts:9
+#, fuzzy
+msgid "App Secret"
+msgstr "Jwt 토큰"
+
+#: src/views/preference/components/ExternalNotify/labels.ts:10
+#, fuzzy
+msgid "Bot Token"
+msgstr "토큰 생성"
+
+#: src/views/preference/components/ExternalNotify/labels.ts:11
+#, fuzzy
+msgid "Chat ID"
+msgstr "채팅"
+
+#: src/views/preference/components/ExternalNotify/labels.ts:12
+msgid "Click URL"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/labels.ts:15
+#, fuzzy
+msgid "Device Key"
+msgstr "장치 유형"
+
+#: src/views/preference/components/ExternalNotify/labels.ts:18
+msgid "Encryption (none, starttls, opportunistic, tls)"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/labels.ts:19
+msgid "From"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/labels.ts:20
+msgid "HTML"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/labels.ts:21
+msgid "HTML Template (Optional)"
+msgstr "HTML 템플릿 (선택 사항)"
+
+#: src/views/preference/components/ExternalNotify/labels.ts:25
+msgid "Message Thread ID"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/labels.ts:26
+#, fuzzy
+msgid "Open ID"
+msgstr "오픈AI"
+
+#: src/views/preference/components/ExternalNotify/labels.ts:30
+msgid "SSL"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/labels.ts:31
+#, fuzzy
+msgid "Secret (Optional)"
+msgstr "DNS 레코드 통합 (선택 사항)"
+
+#: src/views/preference/components/ExternalNotify/labels.ts:32
+#, fuzzy
+msgid "Server URL"
+msgstr "서버 정보"
+
+#: src/views/preference/components/ExternalNotify/labels.ts:33
+msgid "Tags"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/labels.ts:35
+msgid "To"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/labels.ts:36
+#, fuzzy
+msgid "Token"
+msgstr "토큰"
+
+#: src/views/preference/components/ExternalNotify/labels.ts:37
+msgid "Topic"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/labels.ts:39
+msgid "Union ID"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/labels.ts:40
+#, fuzzy
+msgid "User ID"
+msgstr "사용자"
+
+#: src/views/preference/components/ExternalNotify/labels.ts:42
+#, fuzzy
+msgid "Webhook URL"
+msgstr "워크플로우 Webhook URL"
 
 #~ msgid "Records"
 #~ msgstr "레코드"
@@ -12146,10 +12384,6 @@ msgstr "비밀번호 업데이트"
 #, fuzzy
 #~ msgid "Format error %{msg}"
 #~ msgstr "형식 오류 %{msg}"
-
-#, fuzzy
-#~ msgid "Server URL"
-#~ msgstr "서버 정보"
 
 #, fuzzy
 #~ msgid "Created At"
