@@ -15,6 +15,7 @@ const display = computed(() => {
   >
     <div class="page-header-index-wide">
       <Breadcrumb />
+      <div class="action" />
     </div>
   </div>
 </template>
@@ -36,8 +37,22 @@ const display = computed(() => {
   padding: 16px 32px;
   border-bottom: 1px solid #e8e8e8;
 
+  .page-header-index-wide {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
   .breadcrumb {
     margin-bottom: 0;
+  }
+
+  .action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 0 0 auto;
   }
 }
 </style>
