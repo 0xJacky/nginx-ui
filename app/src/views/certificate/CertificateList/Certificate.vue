@@ -1,6 +1,6 @@
 <script setup lang="tsx">
 import type { DiscoveredCertificatePair } from '@/api/cert'
-import { CloudUploadOutlined, SafetyCertificateOutlined } from '@antdv-next/icons'
+import { CloudUploadOutlined, SafetyCertificateOutlined, SearchOutlined } from '@antdv-next/icons'
 import { StdTable } from '@uozi-admin/curd'
 import { Tag } from 'antdv-next'
 import cert from '@/api/cert'
@@ -135,7 +135,7 @@ async function importSelectedDiscoveredCerts() {
         :aria-label="$gettext('Discover')"
         @click="openDiscovery"
       >
-        <CloudUploadOutlined />
+        <SearchOutlined />
         <span class="certificate-action-label">{{ $gettext('Discover') }}</span>
       </AButton>
 
