@@ -95,18 +95,25 @@ const isLatestVer = computed(() => {
   return data.value.name === `v${version.version}`
 })
 
-const currentShortSha = computed(() => {
+const runtimeShortSha = computed(() => {
   return data.value?.cur_version?.short_hash?.slice(0, 7) || ''
+})
+
+const releaseShortSha = computed(() => {
+  if (!data.value?.name?.startsWith('sha-'))
+    return ''
+
+  return data.value.name.slice(4, 11)
 })
 
 const isCurrentDevBuild = computed(() => {
   if (channel.value !== 'dev')
     return false
 
-  if (!currentShortSha.value || !data.value?.name?.startsWith('sha-'))
+  if (!runtimeShortSha.value || !releaseShortSha.value)
     return false
 
-  return currentShortSha.value.toLowerCase() === data.value.name.slice(4).toLowerCase()
+  return runtimeShortSha.value.toLowerCase() === releaseShortSha.value.toLowerCase()
 })
 
 const isCurrentChannelLatest = computed(() => {
@@ -248,7 +255,7 @@ const performUpgradeBtnText = computed(() => {
       <p>{{ $gettext('You can check Nginx UI upgrade at this page.') }}</p>
       <h3>
         {{ $gettext('Current Version') }}: v{{ version.version }}
-        <span v-if="currentShortSha" class="short-hash">({{ currentShortSha }})</span>
+        <span v-if="runtimeShortSha" class="short-hash">({{ runtimeShortSha }})</span>
       </h3>
       <template v-if="getReleaseError">
         <AAlert
