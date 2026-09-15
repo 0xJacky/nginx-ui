@@ -33,6 +33,7 @@ func newExternalNotify(db *gorm.DB, opts ...gen.DOOption) externalNotify {
 	_externalNotify.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_externalNotify.DeletedAt = field.NewField(tableName, "deleted_at")
 	_externalNotify.Type = field.NewString(tableName, "type")
+	_externalNotify.Description = field.NewString(tableName, "description")
 	_externalNotify.Language = field.NewString(tableName, "language")
 	_externalNotify.Config = field.NewField(tableName, "config")
 	_externalNotify.Enabled = field.NewBool(tableName, "enabled")
@@ -45,15 +46,16 @@ func newExternalNotify(db *gorm.DB, opts ...gen.DOOption) externalNotify {
 type externalNotify struct {
 	externalNotifyDo
 
-	ALL       field.Asterisk
-	ID        field.Uint64
-	CreatedAt field.Time
-	UpdatedAt field.Time
-	DeletedAt field.Field
-	Type      field.String
-	Language  field.String
-	Config    field.Field
-	Enabled   field.Bool
+	ALL         field.Asterisk
+	ID          field.Uint64
+	CreatedAt   field.Time
+	UpdatedAt   field.Time
+	DeletedAt   field.Field
+	Type        field.String
+	Description field.String
+	Language    field.String
+	Config      field.Field
+	Enabled     field.Bool
 
 	fieldMap map[string]field.Expr
 }
@@ -75,6 +77,7 @@ func (e *externalNotify) updateTableName(table string) *externalNotify {
 	e.UpdatedAt = field.NewTime(table, "updated_at")
 	e.DeletedAt = field.NewField(table, "deleted_at")
 	e.Type = field.NewString(table, "type")
+	e.Description = field.NewString(table, "description")
 	e.Language = field.NewString(table, "language")
 	e.Config = field.NewField(table, "config")
 	e.Enabled = field.NewBool(table, "enabled")
@@ -94,12 +97,13 @@ func (e *externalNotify) GetFieldByName(fieldName string) (field.OrderExpr, bool
 }
 
 func (e *externalNotify) fillFieldMap() {
-	e.fieldMap = make(map[string]field.Expr, 8)
+	e.fieldMap = make(map[string]field.Expr, 9)
 	e.fieldMap["id"] = e.ID
 	e.fieldMap["created_at"] = e.CreatedAt
 	e.fieldMap["updated_at"] = e.UpdatedAt
 	e.fieldMap["deleted_at"] = e.DeletedAt
 	e.fieldMap["type"] = e.Type
+	e.fieldMap["description"] = e.Description
 	e.fieldMap["language"] = e.Language
 	e.fieldMap["config"] = e.Config
 	e.fieldMap["enabled"] = e.Enabled
