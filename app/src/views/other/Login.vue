@@ -142,8 +142,25 @@ async function handleLoginSuccess(options: LoginSuccessOptions = {}) {
   await router.push(next && next !== '/' ? next : '/dashboard/server')
 }
 
-function onSubmit() {
-  formRef.value?.validate().then(async () => {
+async function onSubmit() {
+  if (loading.value)
+    return
+
+  if (!enabled2FA.value) {
+    if (!formRef.value)
+      return
+    try {
+      await formRef.value.validate()
+    }
+    catch {
+      return
+    }
+  }
+
+  if (loading.value)
+    return
+
+  try {
     loading.value = true
 
     await auth.login(modelRef.username, modelRef.password, passcode.value, recoveryCode.value).then(async r => {
@@ -182,8 +199,10 @@ function onSubmit() {
         refOTP.value?.clearInput()
       }
     })
+  }
+  finally {
     loading.value = false
-  })
+  }
 }
 
 const user = useUserStore()
