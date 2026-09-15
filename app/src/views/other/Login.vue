@@ -232,8 +232,24 @@ const searchParams = new URLSearchParams(window.location.search)
 const query = route.query
 const code = query?.code?.toString() ?? searchParams.get('code')
 const state = query?.state?.toString() ?? searchParams.get('state')
+const oidcToken = query?.oidc_token?.toString() ?? searchParams.get('oidc_token')
+const ssoError = query?.sso_error?.toString() ?? searchParams.get('sso_error')
 
-if (code && state) {
+if (ssoError) {
+  message.error($gettext(ssoError))
+  if (window.location.search) {
+    const newUrl = window.location.pathname + window.location.hash
+    window.history.replaceState(null, '', newUrl)
+  }
+}
+
+if (oidcToken) {
+  loading.value = true
+  handleLoginSuccess({ token: oidcToken }).finally(() => {
+    loading.value = false
+  })
+}
+else if (code && state) {
   loading.value = true
   if (state.startsWith('nginx-ui-oidc_')) {
     auth.oidc_login(code, state).then(async () => {
