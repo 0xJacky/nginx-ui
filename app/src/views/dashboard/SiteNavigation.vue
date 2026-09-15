@@ -137,11 +137,8 @@ function openConfigModal(site: SiteInfo) {
   configModalVisible.value = true
 }
 
-const mounted = ref(false)
-
 onMounted(async () => {
   await loadSites()
-  mounted.value = true
 })
 
 onUnmounted(() => {
@@ -151,18 +148,17 @@ onUnmounted(() => {
 
 <template>
   <div class="site-navigation">
-    <Teleport v-if="mounted" to=".action">
-      <SiteNavigationToolbar
-        :is-connected="isConnected"
-        :health-check-enabled="healthCheckEnabled"
-        :refreshing="refreshing"
-        :settings-mode="settingsMode"
-        @refresh="handleRefresh"
-        @toggle-settings="toggleSettingsMode"
-        @save-order="saveOrder"
-        @cancel-settings="cancelSettingsMode"
-      />
-    </Teleport>
+    <SiteNavigationToolbar
+      class="mb-4"
+      :is-connected="isConnected"
+      :health-check-enabled="healthCheckEnabled"
+      :refreshing="refreshing"
+      :settings-mode="settingsMode"
+      @refresh="handleRefresh"
+      @toggle-settings="toggleSettingsMode"
+      @save-order="saveOrder"
+      @cancel-settings="cancelSettingsMode"
+    />
 
     <div v-if="loading" class="flex items-center justify-center py-12">
       <ASpin size="large" />
