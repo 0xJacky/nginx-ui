@@ -92,7 +92,21 @@ async function initUpgradeChannel() {
 initUpgradeChannel()
 
 const isLatestVer = computed(() => {
-  return data.value.name === `v${version.version}`
+  const currentVersion = data.value?.cur_version?.version || version.version
+  return data.value.name === `v${currentVersion}`
+})
+
+const isCurrentDevRuntime = computed(() => {
+  return data.value?.cur_version?.total_build === 0
+})
+
+const currentVersionDisplay = computed(() => {
+  const currentShortHash = data.value?.cur_version?.short_hash
+
+  if (isCurrentDevRuntime.value && currentShortHash)
+    return `sha-${currentShortHash.slice(0, 7)}`
+
+  return `v${data.value?.cur_version?.version || version.version}`
 })
 
 const isCurrentDevBuild = computed(() => {
@@ -244,8 +258,8 @@ const performUpgradeBtnText = computed(() => {
     <div class="upgrade-container">
       <p>{{ $gettext('You can check Nginx UI upgrade at this page.') }}</p>
       <h3>
-        {{ $gettext('Current Version') }}: v{{ version.version }}
-        <span v-if="data?.cur_version?.short_hash" class="short-hash">({{ data?.cur_version?.short_hash }})</span>
+        {{ $gettext('Current Version') }}: {{ currentVersionDisplay }}
+        <span v-if="!isCurrentDevRuntime && data?.cur_version?.short_hash" class="short-hash">({{ data?.cur_version?.short_hash }})</span>
       </h3>
       <template v-if="getReleaseError">
         <AAlert
