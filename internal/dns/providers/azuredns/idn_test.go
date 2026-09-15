@@ -4,6 +4,8 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
+
+	"github.com/0xJacky/Nginx-UI/internal/dns"
 )
 
 // Azure reports a zone by the spelling it was created with, so names only compare
@@ -79,4 +81,20 @@ func TestNormalizeRelativeNameEncodesIDNAndStillRejectsBadInput(t *testing.T) {
 		_, err := normalizeRelativeName(bad)
 		require.Error(t, err, "name %q must stay rejected", bad)
 	}
+}
+
+func TestMatchesFilterAcceptsUnicodeNameTerm(t *testing.T) {
+	t.Parallel()
+
+	record := dns.Record{Type: "A", Name: "xn--fsq"}
+
+	// The UI shows the decoded label, so filtering by it has to match.
+	require.True(t, matchesFilter(record, dns.RecordFilter{Name: "例"}))
+	require.True(t, matchesFilter(record, dns.RecordFilter{Name: "xn--fsq"}))
+	require.True(t, matchesFilter(record, dns.RecordFilter{Name: "例", Type: "A"}))
+	require.False(t, matchesFilter(record, dns.RecordFilter{Name: "例", Type: "AAAA"}))
+	require.False(t, matchesFilter(record, dns.RecordFilter{Name: "other"}))
+
+	// An ASCII record still filters the way it did before.
+	require.True(t, matchesFilter(dns.Record{Type: "A", Name: "www"}, dns.RecordFilter{Name: "ww"}))
 }

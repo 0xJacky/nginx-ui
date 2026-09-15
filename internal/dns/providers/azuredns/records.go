@@ -548,7 +548,11 @@ func matchesFilter(record dns.Record, filter dns.RecordFilter) bool {
 	}
 
 	if name := strings.ToLower(strings.TrimSpace(filter.Name)); name != "" {
-		if !strings.Contains(strings.ToLower(record.Name), name) {
+		// Record names are stored as punycode, so a term typed in Unicode is also
+		// matched in that spelling.
+		recordName := strings.ToLower(record.Name)
+		if !strings.Contains(recordName, name) &&
+			!strings.Contains(recordName, dns.ToASCIIName(filter.Name)) {
 			return false
 		}
 	}
