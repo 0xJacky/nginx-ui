@@ -229,13 +229,20 @@ func OIDCCallback(c *gin.Context) {
 func buildOIDCFrontendLoginRedirect(redirectUri string, token string) string {
 	parsed, err := url.Parse(redirectUri)
 	if err != nil {
-		return "/login?oidc_token=" + url.QueryEscape(token)
+		return "/#/login?oidc_token=" + url.QueryEscape(token)
 	}
 
-	parsed.Path = strings.TrimSuffix(parsed.Path, "/api/oidc_callback") + "/login"
-	query := parsed.Query()
+	basePath := strings.TrimSuffix(parsed.Path, "/api/oidc_callback")
+	if basePath == "" {
+		basePath = "/"
+	}
+
+	query := url.Values{}
 	query.Set("oidc_token", token)
-	parsed.RawQuery = query.Encode()
+
+	parsed.Path = basePath
+	parsed.RawQuery = ""
+	parsed.Fragment = "/login?" + query.Encode()
 
 	return parsed.String()
 }
@@ -243,13 +250,20 @@ func buildOIDCFrontendLoginRedirect(redirectUri string, token string) string {
 func buildOIDCFrontendLoginErrorRedirect(redirectUri string, message string) string {
 	parsed, err := url.Parse(redirectUri)
 	if err != nil {
-		return "/login?sso_error=" + url.QueryEscape(message)
+		return "/#/login?sso_error=" + url.QueryEscape(message)
 	}
 
-	parsed.Path = strings.TrimSuffix(parsed.Path, "/api/oidc_callback") + "/login"
-	query := parsed.Query()
+	basePath := strings.TrimSuffix(parsed.Path, "/api/oidc_callback")
+	if basePath == "" {
+		basePath = "/"
+	}
+
+	query := url.Values{}
 	query.Set("sso_error", message)
-	parsed.RawQuery = query.Encode()
+
+	parsed.Path = basePath
+	parsed.RawQuery = ""
+	parsed.Fragment = "/login?" + query.Encode()
 
 	return parsed.String()
 }
