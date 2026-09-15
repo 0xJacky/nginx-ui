@@ -127,42 +127,42 @@ async function importSelectedDiscoveredCerts() {
 </script>
 
 <template>
-  <Teleport v-if="isPageHeaderReady" to=".action">
-    <ASpace>
-      <AButton
-        type="link"
-        size="small"
-        :aria-label="$gettext('Discover')"
-        @click="openDiscovery"
-      >
-        <SearchOutlined />
-        <span class="certificate-action-label">{{ $gettext('Discover') }}</span>
-      </AButton>
-
-      <AButton
-        type="link"
-        size="small"
-        :aria-label="$gettext('Import')"
-        @click="$router.push('/certificates/import')"
-      >
-        <CloudUploadOutlined />
-        <span class="certificate-action-label">{{ $gettext('Import') }}</span>
-      </AButton>
-
-      <AButton
-        type="link"
-        size="small"
-        :aria-label="$gettext('Issue certificate')"
-        :disabled="processingStatus.auto_cert_processing"
-        @click="() => refWildcard.open()"
-      >
-        <SafetyCertificateOutlined />
-        <span class="certificate-action-label">{{ $gettext('Issue certificate') }}</span>
-      </AButton>
-    </ASpace>
-  </Teleport>
-
   <ACard :title="$gettext('Certificates')">
+    <Teleport v-if="isPageHeaderReady" to=".action">
+      <ASpace>
+        <AButton
+          type="link"
+          size="small"
+          :aria-label="$gettext('Discover')"
+          @click="openDiscovery"
+        >
+          <SearchOutlined />
+          <span class="certificate-action-label">{{ $gettext('Discover') }}</span>
+        </AButton>
+
+        <AButton
+          type="link"
+          size="small"
+          :aria-label="$gettext('Import')"
+          @click="$router.push('/certificates/import')"
+        >
+          <CloudUploadOutlined />
+          <span class="certificate-action-label">{{ $gettext('Import') }}</span>
+        </AButton>
+
+        <AButton
+          type="link"
+          size="small"
+          :aria-label="$gettext('Issue certificate')"
+          :disabled="processingStatus.auto_cert_processing"
+          @click="() => refWildcard.open()"
+        >
+          <SafetyCertificateOutlined />
+          <span class="certificate-action-label">{{ $gettext('Issue certificate') }}</span>
+        </AButton>
+      </ASpace>
+    </Teleport>
+
     <StdTable
       ref="refTable"
       :api="cert"
