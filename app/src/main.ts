@@ -9,12 +9,15 @@ import { getBrowserLanguage } from '@/lib/helper'
 import { setupInterceptors } from '@/lib/http/interceptors'
 import { initPWAThemeColor, watchThemeChanges } from '@/lib/pwa'
 import { useSettingsStore } from '@/pinia'
+import { installPreloadErrorRecovery } from '@/routes/preloadErrorRecovery'
 import i18n from '../i18n.json'
 import App from './App.vue'
 import gettext from './gettext'
 import router from './routes'
 import '@uozi-admin/curd/dist/index.css'
 import 'virtual:uno.css'
+
+installPreloadErrorRecovery()
 
 const pinia = createPinia()
 
