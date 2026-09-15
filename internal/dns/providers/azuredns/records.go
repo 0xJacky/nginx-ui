@@ -64,8 +64,9 @@ func parseRecordID(id string) (string, armdns.RecordType, error) {
 // normalizeRelativeName canonicalizes a relative record set name and rejects any
 // character that would break the record ID encoding or the API route it travels on.
 func normalizeRelativeName(name string) (string, error) {
-	trimmed := strings.ToLower(strings.TrimSpace(name))
-	trimmed = strings.TrimSuffix(trimmed, ".")
+	// Converted before validation so an internationalized label is checked and
+	// sent as punycode rather than raw Unicode.
+	trimmed := dns.ToASCIIName(name)
 
 	if trimmed == "" || trimmed == apexName {
 		return apexName, nil
@@ -86,8 +87,9 @@ func normalizeRelativeName(name string) (string, error) {
 
 // relativeName converts a possibly fully qualified name into a zone relative one.
 func relativeName(name, zone string) (string, error) {
-	trimmed := strings.ToLower(strings.TrimSpace(name))
-	trimmed = strings.TrimSuffix(trimmed, ".")
+	// Canonical ASCII so a name given in Unicode still strips against a zone
+	// stored as punycode.
+	trimmed := dns.ToASCIIName(name)
 
 	if trimmed == "" || trimmed == apexName {
 		return apexName, nil

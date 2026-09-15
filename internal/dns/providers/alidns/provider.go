@@ -201,7 +201,8 @@ func (p *provider) ListRecords(ctx context.Context, domain string, filter dns.Re
 	result := make([]dns.Record, 0)
 	for pageNumber := 1; ; pageNumber++ {
 		query := map[string]any{
-			"DomainName": domain,
+			// Aliyun keys an internationalized domain by its punycode spelling.
+			"DomainName": dns.ToASCIIName(domain),
 			"PageNumber": pageNumber,
 			"PageSize":   maxRecordsPageSize,
 		}
@@ -231,7 +232,7 @@ func (p *provider) ListRecords(ctx context.Context, domain string, filter dns.Re
 
 func (p *provider) ListRecordLines(ctx context.Context, domain string) ([]dns.RecordLine, error) {
 	var response describeSupportLinesResponse
-	if err := p.client.Call(ctx, "DescribeSupportLines", map[string]any{"DomainName": domain}, &response); err != nil {
+	if err := p.client.Call(ctx, "DescribeSupportLines", map[string]any{"DomainName": dns.ToASCIIName(domain)}, &response); err != nil {
 		return nil, fmt.Errorf("alidns: list record lines: %w", err)
 	}
 
@@ -253,7 +254,7 @@ func (p *provider) ListRecordLines(ctx context.Context, domain string) ([]dns.Re
 
 func (p *provider) CreateRecord(ctx context.Context, domain string, input dns.RecordInput) (dns.Record, error) {
 	query := recordMutationQuery(input)
-	query["DomainName"] = domain
+	query["DomainName"] = dns.ToASCIIName(domain)
 	query["Line"] = recordLine(input.Line, defaultLineName)
 
 	var response recordIDResponse
@@ -373,7 +374,8 @@ func recordLine(line *string, fallback string) string {
 }
 
 func rrFromName(name string) string {
-	name = strings.TrimSpace(name)
+	// An internationalized label travels as punycode, matching the zone spelling.
+	name = dns.ToASCIIName(name)
 	if name == "" || name == "@" {
 		return "@"
 	}
