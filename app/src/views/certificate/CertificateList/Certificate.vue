@@ -1,6 +1,6 @@
 <script setup lang="tsx">
 import type { DiscoveredCertificatePair } from '@/api/cert'
-import { CloudUploadOutlined, SafetyCertificateOutlined } from '@antdv-next/icons'
+import { CloudUploadOutlined, SafetyCertificateOutlined, SearchOutlined } from '@antdv-next/icons'
 import { StdTable } from '@uozi-admin/curd'
 import { Tag } from 'antdv-next'
 import cert from '@/api/cert'
@@ -23,6 +23,11 @@ const discoveryImporting = ref(false)
 const discoveryCandidates = ref<DiscoveredCertificatePair[]>([])
 const selectedDiscoveryKeys = ref<string[]>([])
 const { message } = App.useApp()
+const isPageHeaderReady = ref(false)
+
+onMounted(() => {
+  isPageHeaderReady.value = true
+})
 
 function discoveryRowKey(record: DiscoveredCertificatePair) {
   return record.fingerprint || `${record.ssl_certificate_path}|${record.ssl_certificate_key_path}`
@@ -123,35 +128,41 @@ async function importSelectedDiscoveredCerts() {
 
 <template>
   <ACard :title="$gettext('Certificates')">
-    <template #extra>
-      <AButton
-        type="link"
-        size="small"
-        @click="openDiscovery"
-      >
-        <CloudUploadOutlined />
-        {{ $gettext('Discover') }}
-      </AButton>
+    <Teleport v-if="isPageHeaderReady" to=".action">
+      <ASpace>
+        <AButton
+          type="link"
+          size="small"
+          :aria-label="$gettext('Discover')"
+          @click="openDiscovery"
+        >
+          <SearchOutlined />
+          <span class="certificate-action-label">{{ $gettext('Discover') }}</span>
+        </AButton>
 
-      <AButton
-        type="link"
-        size="small"
-        @click="$router.push('/certificates/import')"
-      >
-        <CloudUploadOutlined />
-        {{ $gettext('Import') }}
-      </AButton>
+        <AButton
+          type="link"
+          size="small"
+          :aria-label="$gettext('Import')"
+          @click="$router.push('/certificates/import')"
+        >
+          <CloudUploadOutlined />
+          <span class="certificate-action-label">{{ $gettext('Import') }}</span>
+        </AButton>
 
-      <AButton
-        type="link"
-        size="small"
-        :disabled="processingStatus.auto_cert_processing"
-        @click="() => refWildcard.open()"
-      >
-        <SafetyCertificateOutlined />
-        {{ $gettext('Issue certificate') }}
-      </AButton>
-    </template>
+        <AButton
+          type="link"
+          size="small"
+          :aria-label="$gettext('Issue certificate')"
+          :disabled="processingStatus.auto_cert_processing"
+          @click="() => refWildcard.open()"
+        >
+          <SafetyCertificateOutlined />
+          <span class="certificate-action-label">{{ $gettext('Issue certificate') }}</span>
+        </AButton>
+      </ASpace>
+    </Teleport>
+
     <StdTable
       ref="refTable"
       :api="cert"
@@ -211,5 +222,9 @@ async function importSelectedDiscoveredCerts() {
 </template>
 
 <style lang="less" scoped>
-
+@media (max-width: 600px) {
+  .certificate-action-label {
+    display: none;
+  }
+}
 </style>
