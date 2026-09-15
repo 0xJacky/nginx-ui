@@ -1,23 +1,57 @@
 <script setup lang="ts">
+import type { Component } from 'vue'
+import type { EntryItem } from '@/components/EntryGrid/types'
+import { FileOutlined } from '@antdv-next/icons'
 import EntryGrid from '@/components/EntryGrid/EntryGrid.vue'
+import { configFavoriteDir, configFavoriteRoute, useConfigFavorites } from '@/composables/useConfigFavorites'
 
-interface EntryItem {
-  title: string
-  description: string
-  path: string
-}
-
-interface HomeTab {
+interface HomeSection {
   key: string
   label: string
   entries: EntryItem[]
 }
 
-const HOME_TAB_STORAGE_KEY = 'nginx-ui.home.active-tab'
+const router = useRouter()
+const { favorites } = useConfigFavorites()
 
-const activeTab = ref('management')
+/**
+ * Reuse the sidebar icon of the destination so a card and its menu item are
+ * recognisably the same entry point. Routes without an icon render a plain card.
+ */
+function resolveRouteIcon(path: string): Component | undefined {
+  const { matched } = router.resolve(path)
 
-const tabs = computed<HomeTab[]>(() => [
+  for (let i = matched.length - 1; i >= 0; i--) {
+    const icon = matched[i].meta?.icon
+    if (icon)
+      return markRaw(icon)
+  }
+
+  return undefined
+}
+
+/**
+ * Config files the user starred, pinned above the fixed entry points. Hidden
+ * entirely while nothing is starred so the hub stays quiet by default.
+ */
+const favoriteSection = computed<HomeSection | undefined>(() => {
+  if (favorites.value.length === 0)
+    return undefined
+
+  return {
+    key: 'favorites',
+    label: $gettext('Favorites'),
+    entries: favorites.value.map(item => ({
+      key: `${item.dir}${item.name}`,
+      title: item.name,
+      description: configFavoriteDir(item) || undefined,
+      path: configFavoriteRoute(item),
+      icon: markRaw(FileOutlined),
+    })),
+  }
+})
+
+const staticSections = computed<HomeSection[]>(() => ([
   {
     key: 'management',
     label: $gettext('Management'),
@@ -55,7 +89,7 @@ const tabs = computed<HomeTab[]>(() => [
     ],
   },
   {
-    key: 'Observability',
+    key: 'observability',
     label: $gettext('Observability'),
     entries: [
       {
@@ -76,7 +110,7 @@ const tabs = computed<HomeTab[]>(() => [
     ],
   },
   {
-    key: 'System',
+    key: 'system',
     label: $gettext('System'),
     entries: [
       {
@@ -106,57 +140,51 @@ const tabs = computed<HomeTab[]>(() => [
       },
     ],
   },
-])
+] satisfies HomeSection[]).map(section => ({
+  ...section,
+  entries: section.entries.map(item => ({ ...item, icon: resolveRouteIcon(item.path) })),
+})))
 
-function getAvailableTabKeys() {
-  return tabs.value.map(tab => tab.key)
-}
-
-function restoreActiveTab() {
-  if (typeof window === 'undefined')
-    return
-
-  const stored = localStorage.getItem(HOME_TAB_STORAGE_KEY)
-  if (!stored)
-    return
-
-  if (getAvailableTabKeys().includes(stored))
-    activeTab.value = stored
-}
-
-watch(activeTab, value => {
-  if (typeof window === 'undefined')
-    return
-
-  localStorage.setItem(HOME_TAB_STORAGE_KEY, value)
-})
-
-watch(tabs, () => {
-  const available = getAvailableTabKeys()
-  if (!available.includes(activeTab.value)) {
-    activeTab.value = available[0] ?? 'management'
-  }
-})
-
-onMounted(() => {
-  restoreActiveTab()
-})
+const sections = computed<HomeSection[]>(() => (
+  favoriteSection.value
+    ? [favoriteSection.value, ...staticSections.value]
+    : staticSections.value
+))
 </script>
 
 <template>
-  <ATabs v-model:active-key="activeTab" class="home-tabs" :animated="false">
-    <ATabPane
-      v-for="tab in tabs"
-      :key="tab.key"
-      :tab="tab.label"
+  <div class="home">
+    <section
+      v-for="section in sections"
+      :key="section.key"
+      class="home-section"
+      :aria-labelledby="`home-section-${section.key}`"
     >
-      <EntryGrid :entries="tab.entries" />
-    </ATabPane>
-  </ATabs>
+      <h2
+        :id="`home-section-${section.key}`"
+        class="home-section-title"
+      >
+        {{ section.label }}
+      </h2>
+
+      <EntryGrid :entries="section.entries" />
+    </section>
+  </div>
 </template>
 
-<style scoped>
-.home-tabs :deep(.ant-tabs-nav) {
-  margin-bottom: 16px;
+<style lang="less" scoped>
+.home {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.home-section-title {
+  margin: 0 0 12px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ant-color-text-secondary);
 }
 </style>

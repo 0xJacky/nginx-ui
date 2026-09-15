@@ -2,9 +2,11 @@
 import config from '@/api/config'
 import NodeSelector from '@/components/NodeSelector'
 import use2FAModal from '@/components/TwoFA/use2FAModal'
+import { useConfigFavorites } from '@/composables/useConfigFavorites'
 
 const emit = defineEmits(['renamed'])
 const { message } = useGlobalApp()
+const { renameFavorites } = useConfigFavorites()
 const visible = ref(false)
 const isDirFlag = ref(false)
 
@@ -42,6 +44,7 @@ function ok() {
         visible.value = false
         message.success($gettext('Rename successfully'))
 
+        renameFavorites(basePath, orig_name, new_name, isDirFlag.value)
         emit('renamed')
       })
     })

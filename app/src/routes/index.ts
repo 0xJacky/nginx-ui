@@ -27,8 +27,8 @@ import 'nprogress/nprogress.css'
 const mainLayoutChildren: RouteRecordRaw[] = [
   {
     path: '',
-    name: 'Home Tabs',
-    component: () => import('@/views/home/HomeTabs.vue'),
+    name: 'Home Overview',
+    component: () => import('@/views/home/Home.vue'),
     meta: {
       name: () => $gettext('Home'),
       hiddenInSidebar: true,

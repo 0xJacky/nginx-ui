@@ -1,11 +1,6 @@
 <script setup lang="ts">
+import type { EntryItem } from '@/components/EntryGrid/types'
 import EntryGrid from '@/components/EntryGrid/EntryGrid.vue'
-
-interface EntryItem {
-  title: string
-  description: string
-  path: string
-}
 
 const entries = computed<EntryItem[]>(() => [
   {
