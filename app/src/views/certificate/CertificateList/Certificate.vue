@@ -23,6 +23,11 @@ const discoveryImporting = ref(false)
 const discoveryCandidates = ref<DiscoveredCertificatePair[]>([])
 const selectedDiscoveryKeys = ref<string[]>([])
 const { message } = App.useApp()
+const isPageHeaderReady = ref(false)
+
+onMounted(() => {
+  isPageHeaderReady.value = true
+})
 
 function discoveryRowKey(record: DiscoveredCertificatePair) {
   return record.fingerprint || `${record.ssl_certificate_path}|${record.ssl_certificate_key_path}`
@@ -122,36 +127,42 @@ async function importSelectedDiscoveredCerts() {
 </script>
 
 <template>
-  <ACard :title="$gettext('Certificates')">
-    <template #extra>
+  <Teleport v-if="isPageHeaderReady" to=".action">
+    <ASpace>
       <AButton
         type="link"
         size="small"
+        :aria-label="$gettext('Discover')"
         @click="openDiscovery"
       >
         <CloudUploadOutlined />
-        {{ $gettext('Discover') }}
+        <span class="certificate-action-label">{{ $gettext('Discover') }}</span>
       </AButton>
 
       <AButton
         type="link"
         size="small"
+        :aria-label="$gettext('Import')"
         @click="$router.push('/certificates/import')"
       >
         <CloudUploadOutlined />
-        {{ $gettext('Import') }}
+        <span class="certificate-action-label">{{ $gettext('Import') }}</span>
       </AButton>
 
       <AButton
         type="link"
         size="small"
+        :aria-label="$gettext('Issue certificate')"
         :disabled="processingStatus.auto_cert_processing"
         @click="() => refWildcard.open()"
       >
         <SafetyCertificateOutlined />
-        {{ $gettext('Issue certificate') }}
+        <span class="certificate-action-label">{{ $gettext('Issue certificate') }}</span>
       </AButton>
-    </template>
+    </ASpace>
+  </Teleport>
+
+  <ACard :title="$gettext('Certificates')">
     <StdTable
       ref="refTable"
       :api="cert"
@@ -211,5 +222,9 @@ async function importSelectedDiscoveredCerts() {
 </template>
 
 <style lang="less" scoped>
-
+@media (max-width: 600px) {
+  .certificate-action-label {
+    display: none;
+  }
+}
 </style>
