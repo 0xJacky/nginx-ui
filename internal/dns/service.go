@@ -304,7 +304,10 @@ func ensureDomainUnique(ctx context.Context, domain string, credentialID uint64,
 }
 
 func normalizeDomain(value string) (string, error) {
-	domain := strings.Trim(strings.ToLower(value), ".")
+	// Internationalized domains are stored as punycode so the persisted value is
+	// always the canonical ASCII form the DNS protocol and provider APIs use, and
+	// so both spellings of one domain collapse to the same uniqueness key.
+	domain := ToASCIIName(strings.Trim(value, "."))
 	if domain == "" || !domainPattern.MatchString(domain) {
 		return "", cosy.WrapErrorWithParams(ErrInvalidDomain, value)
 	}
