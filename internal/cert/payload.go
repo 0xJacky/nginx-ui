@@ -137,10 +137,10 @@ func (c *ConfigPayload) WriteFile(l *Logger) error {
 		return cosy.WrapErrorWithParams(ErrWriteFullchainCer, err.Error())
 	}
 
-	// The private key must stay owner-only; the certificate above is public.
+	// New private keys stay owner-only. An existing, explicitly group-readable
+	// key keeps its safe ownership and mode for dynamic certificate loading.
 	l.Info(translation.C("[Nginx UI] Writing certificate private key to disk"))
-	err = writeFileWithMode(c.GetCertificateKeyPath(),
-		c.Resource.PrivateKey, 0600)
+	err = writePrivateKey(c.GetCertificateKeyPath(), c.Resource.PrivateKey)
 
 	if err != nil {
 		return cosy.WrapErrorWithParams(ErrWritePrivateKey, err.Error())
