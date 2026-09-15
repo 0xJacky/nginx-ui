@@ -69,11 +69,10 @@ const hasIcons = computed(() => props.entries.some(entry => entry.icon))
   border-radius: var(--ant-border-radius-lg);
   background: var(--ant-color-bg-container);
   color: var(--ant-color-text);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.2s ease;
 
   &:hover {
     border-color: var(--ant-color-primary-border);
-    box-shadow: var(--ant-box-shadow-tertiary);
   }
 
   &:focus-visible {
