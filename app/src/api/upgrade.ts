@@ -30,6 +30,12 @@ const upgrade = {
       },
     })
   },
+  get_channel() {
+    return http.get('/upgrade/channel')
+  },
+  save_channel(channel: string) {
+    return http.post('/upgrade/channel', { channel })
+  },
   current_version() {
     return http.get('/upgrade/current')
   },

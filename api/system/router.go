@@ -25,6 +25,8 @@ func InitSetupRouter(r *gin.RouterGroup) {
 func InitPrivateRouter(r *gin.RouterGroup) {
 	r.GET("upgrade/release", GetRelease)
 	r.GET("upgrade/current", GetCurrentVersion)
+	r.GET("upgrade/channel", GetUpgradeChannel)
+	r.POST("upgrade/channel", SaveUpgradeChannel)
 
 	r.POST("system/port_scan", PortScan)
 
