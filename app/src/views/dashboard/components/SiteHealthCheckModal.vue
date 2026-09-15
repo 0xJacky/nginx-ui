@@ -30,8 +30,14 @@ const methodOptions: SelectProps['options'] = [
   { label: 'OPTIONS', value: 'OPTIONS' },
 ]
 
+function formatNotifyLabel(notify: ExternalNotify): string {
+  const description = notify.description?.trim()
+  const suffix = description ? ` (${description})` : ''
+  return `${notify.type} (#${notify.id})${suffix}`
+}
+
 const notificationOptions = computed<SelectProps['options']>(() => externalNotifies.value.map(notify => ({
-  label: `${notify.type} (#${notify.id})`,
+  label: formatNotifyLabel(notify),
   value: notify.id,
 })))
 
