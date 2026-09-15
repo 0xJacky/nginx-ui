@@ -6,6 +6,7 @@ import dayjs from 'dayjs'
 import { computed, onMounted, ref, watch } from 'vue'
 import { dnsApi } from '@/api/dns'
 import { useDnsStore } from '@/pinia/moudule/dns'
+import { toUnicodeDomain } from '@/utils/idnDomain'
 
 const store = useDnsStore()
 
@@ -64,7 +65,8 @@ function formatRecordName(name: string, zone?: string) {
 }
 
 function formatRecordLabel(name: string, type: string, zone?: string) {
-  return `${formatRecordName(name, zone)} (${normalizeRecordType(type)})`
+  // Zones are stored as punycode; decode for display only.
+  return `${toUnicodeDomain(formatRecordName(name, zone))} (${normalizeRecordType(type)})`
 }
 
 function isRecordAllowedByIPVersion(recordType: string, ipVersion: DDNSIPVersion) {
@@ -157,6 +159,8 @@ function matchKeyword(item: DDNSDomainItem, keyword: string) {
 
   return [
     item.domain,
+    // The table shows the decoded spelling, so searching it must work too.
+    toUnicodeDomain(item.domain),
     item.credential_name,
     item.credential_provider,
     targetText,
@@ -169,6 +173,7 @@ const columns = [
     title: $gettext('Domain'),
     dataIndex: 'domain',
     key: 'domain',
+    customRender: ({ record }: { record: DDNSDomainItem }) => toUnicodeDomain(record.domain),
   },
   {
     title: $gettext('Credential'),
@@ -399,7 +404,7 @@ watch(() => ddnsForm.value.ip_version, handleIPVersionChange)
 
     <ADrawer
       :open="drawerOpen"
-      :title="currentDomain ? `${$gettext('Configure DDNS')} - ${currentDomain.domain}` : ''"
+      :title="currentDomain ? `${$gettext('Configure DDNS')} - ${toUnicodeDomain(currentDomain.domain)}` : ''"
       :size="520"
       @close="closeDrawer"
     >

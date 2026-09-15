@@ -8,6 +8,7 @@ import dayjs from 'dayjs'
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useDnsGroupStore } from '@/pinia'
+import { toUnicodeDomain } from '@/utils/idnDomain'
 import { listAllDNSDomains } from '@/views/dns/group'
 
 const router = useRouter()
@@ -145,7 +146,7 @@ function manageGroupRecords(group: DNSDomainGroup) {
 function getGroupDomains(group: DNSDomainGroup) {
   return group.domainIds.map(domainId => ({
     id: domainId,
-    name: domainMap.value.get(domainId)?.domain ?? $gettext('Unavailable domain #%{id}', { id: String(domainId) }),
+    name: toUnicodeDomain(domainMap.value.get(domainId)?.domain) || $gettext('Unavailable domain #%{id}', { id: String(domainId) }),
     isMissing: !domainMap.value.has(domainId),
   }))
 }

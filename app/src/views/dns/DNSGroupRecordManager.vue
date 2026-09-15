@@ -9,6 +9,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { dnsApi } from '@/api/dns'
 import FooterToolBar from '@/components/FooterToolbar'
 import { useDnsGroupStore } from '@/pinia'
+import { toUnicodeDomain } from '@/utils/idnDomain'
 import DNSRecordForm from '@/views/dns/components/DNSRecordForm.vue'
 import {
   getCommonRecordPayload,
@@ -351,7 +352,7 @@ const operationSourceOptions = computed(() => {
       && selectedNames.has(normalizeRecordName(source.record.name)))
     .map(source => ({
       value: source.key,
-      label: `${source.domain.domain} · ${source.record.name} · ${source.record.content}`,
+      label: `${toUnicodeDomain(source.domain.domain)} · ${source.record.name} · ${source.record.content}`,
     }))
 })
 
@@ -1245,7 +1246,7 @@ onMounted(loadGroupRecords)
       <template #description>
         <ul class="load-error-list">
           <li v-for="domain in domains.filter(item => loadErrors[item.id])" :key="domain.id">
-            {{ domain.domain }}: {{ loadErrors[domain.id] }}
+            {{ toUnicodeDomain(domain.domain) }}: {{ loadErrors[domain.id] }}
           </li>
         </ul>
       </template>
@@ -1356,7 +1357,7 @@ onMounted(loadGroupRecords)
                 <tr>
                   <th>{{ $gettext('Name') }}</th>
                   <th v-for="domain in domains" :key="domain.id">
-                    <span>{{ domain.domain }}</span>
+                    <span>{{ toUnicodeDomain(domain.domain) }}</span>
                     <small>{{ domain.dns_credential?.provider ?? $gettext('Unknown provider') }}</small>
                   </th>
                   <th>{{ $gettext('Actions') }}</th>
@@ -1470,7 +1471,7 @@ onMounted(loadGroupRecords)
           class="provider-domain-fields"
         >
           <div class="provider-domain-heading">
-            <span>{{ domain.domain }}</span>
+            <span>{{ toUnicodeDomain(domain.domain) }}</span>
             <ASpace wrap size="small">
               <ATag>{{ domain.dns_credential?.provider ?? $gettext('Unknown provider') }}</ATag>
               <ATag
@@ -1563,7 +1564,7 @@ onMounted(loadGroupRecords)
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'domain'">
-            {{ (record as BatchTask).domain.domain }}
+            {{ toUnicodeDomain((record as BatchTask).domain.domain) }}
           </template>
           <template v-else-if="column.key === 'name'">
             {{ (record as BatchTask).payload.name }}
@@ -1598,7 +1599,7 @@ onMounted(loadGroupRecords)
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'domain'">
-            {{ (record as BatchResult).domain.domain }}
+            {{ toUnicodeDomain((record as BatchResult).domain.domain) }}
           </template>
           <template v-else-if="column.key === 'name'">
             {{ (record as BatchResult).payload.name }}
