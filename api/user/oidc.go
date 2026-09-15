@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/0xJacky/Nginx-UI/internal/middleware"
+	"github.com/0xJacky/Nginx-UI/internal/transport"
 	"github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/coreos/go-oidc/v3/oidc"
@@ -23,6 +24,21 @@ import (
 type OIDCLoginUser struct {
 	Code  string `form:"code" json:"code" uri:"code" binding:"max=255"`
 	State string `form:"state" json:"state" uri:"state" binding:"max=255"`
+}
+
+func newOIDCRequestContext(ctx context.Context) (context.Context, error) {
+	if strings.TrimSpace(settings.HTTPSettings.HTTPProxy) == "" {
+		return ctx, nil
+	}
+
+	httpTransport, err := transport.NewTransport(transport.WithProxy(settings.HTTPSettings.HTTPProxy))
+	if err != nil {
+		return nil, err
+	}
+
+	httpClient := &http.Client{Transport: httpTransport}
+
+	return context.WithValue(ctx, oauth2.HTTPClient, httpClient), nil
 }
 
 func respondOIDCError(c *gin.Context, redirectUri string, status int, message string, extra gin.H) {
@@ -85,6 +101,12 @@ func OIDCCallback(c *gin.Context) {
 	}
 
 	ctx := context.Background()
+	ctx, err = newOIDCRequestContext(ctx)
+	if err != nil {
+		respondOIDCCosyError(c, redirectUri, err)
+		return
+	}
+
 	provider, err := oidc.NewProvider(ctx, endpoint)
 	if err != nil {
 		respondOIDCCosyError(c, redirectUri, err)
@@ -246,6 +268,12 @@ func GetOIDCUri(c *gin.Context) {
 	}
 
 	ctx := context.Background()
+	ctx, err := newOIDCRequestContext(ctx)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
 	provider, err := oidc.NewProvider(ctx, endpoint)
 	if err != nil {
 		cosy.ErrHandler(c, err)
