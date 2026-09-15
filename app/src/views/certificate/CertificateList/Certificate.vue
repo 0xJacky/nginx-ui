@@ -23,11 +23,6 @@ const discoveryImporting = ref(false)
 const discoveryCandidates = ref<DiscoveredCertificatePair[]>([])
 const selectedDiscoveryKeys = ref<string[]>([])
 const { message } = App.useApp()
-const isPageHeaderReady = ref(false)
-
-onMounted(() => {
-  isPageHeaderReady.value = true
-})
 
 function discoveryRowKey(record: DiscoveredCertificatePair) {
   return record.fingerprint || `${record.ssl_certificate_path}|${record.ssl_certificate_key_path}`
@@ -128,7 +123,7 @@ async function importSelectedDiscoveredCerts() {
 
 <template>
   <ACard :title="$gettext('Certificates')">
-    <Teleport v-if="isPageHeaderReady" to=".action">
+    <template #extra>
       <ASpace>
         <AButton
           type="link"
@@ -161,7 +156,7 @@ async function importSelectedDiscoveredCerts() {
           <span class="certificate-action-label">{{ $gettext('Issue certificate') }}</span>
         </AButton>
       </ASpace>
-    </Teleport>
+    </template>
 
     <StdTable
       ref="refTable"

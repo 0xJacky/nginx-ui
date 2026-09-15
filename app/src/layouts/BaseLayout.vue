@@ -227,9 +227,6 @@ body {
     position: relative;
   }
 
-  .router-view > .ant-card:only-child > .ant-card-head {
-    display: none;
-  }
 }
 
 .ant-layout-footer {
