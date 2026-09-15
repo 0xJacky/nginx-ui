@@ -65,6 +65,26 @@ func TestDomainLifecycle(t *testing.T) {
 	require.Equal(t, "mock", records[0].Type)
 }
 
+func TestCreateDomainCanonicalizesIDN(t *testing.T) {
+	registerMockProvider()
+	q := setupTestQuery(t)
+	service := dnsSvc.NewService()
+	cred := createCredential(t, q)
+
+	domain, err := service.CreateDomain(t.Context(), dnsSvc.DomainInput{
+		Domain:          "例。Example.com。",
+		DnsCredentialID: cred.ID,
+	})
+	require.NoError(t, err)
+	require.Equal(t, "xn--fsq.example.com", domain.Domain)
+
+	_, err = service.CreateDomain(t.Context(), dnsSvc.DomainInput{
+		Domain:          "xn--fsq.example.com",
+		DnsCredentialID: cred.ID,
+	})
+	require.ErrorIs(t, err, dnsSvc.ErrDuplicateDomain)
+}
+
 func TestRecordLineLifecycle(t *testing.T) {
 	registerMockProvider()
 	setMockRecords(nil)

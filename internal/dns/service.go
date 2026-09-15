@@ -11,6 +11,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/samber/lo"
 	"github.com/uozi-tech/cosy"
+	"golang.org/x/net/idna"
 	"gorm.io/gorm"
 )
 
@@ -304,7 +305,11 @@ func ensureDomainUnique(ctx context.Context, domain string, credentialID uint64,
 }
 
 func normalizeDomain(value string) (string, error) {
-	domain := strings.Trim(strings.ToLower(value), ".")
+	domain, err := idna.Lookup.ToASCII(strings.Trim(strings.TrimSpace(value), "."))
+	if err != nil {
+		return "", cosy.WrapErrorWithParams(ErrInvalidDomain, value)
+	}
+	domain = strings.Trim(strings.ToLower(domain), ".")
 	if domain == "" || !domainPattern.MatchString(domain) {
 		return "", cosy.WrapErrorWithParams(ErrInvalidDomain, value)
 	}

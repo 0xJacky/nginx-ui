@@ -237,7 +237,10 @@ func (p *provider) DeleteRecord(ctx context.Context, domain string, recordID str
 }
 
 func (p *provider) zoneID(ctx context.Context, domain string) (string, error) {
-	normalized := strings.TrimSuffix(strings.ToLower(strings.TrimSpace(domain)), ".")
+	normalized, err := dns.NormalizeDomain(domain)
+	if err != nil {
+		return "", fmt.Errorf("cloudflare: normalize zone name: %w", err)
+	}
 	if zoneID, ok := p.zoneCache.Load(normalized); ok {
 		return zoneID.(string), nil
 	}
@@ -247,7 +250,8 @@ func (p *provider) zoneID(ctx context.Context, domain string) (string, error) {
 	pager := p.zones.ListAutoPaging(ctx, params)
 	for pager.Next() {
 		zone := pager.Current()
-		if strings.EqualFold(strings.TrimSuffix(zone.Name, "."), normalized) {
+		zoneName, err := dns.NormalizeDomain(zone.Name)
+		if err == nil && zoneName == normalized {
 			p.zoneCache.Store(normalized, zone.ID)
 			return zone.ID, nil
 		}

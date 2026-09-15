@@ -212,6 +212,49 @@ func TestProviderUsesSeparateDNSAndZoneAPITokens(t *testing.T) {
 	require.Empty(t, records)
 }
 
+func TestProviderResolvesUnicodeZoneForIDN(t *testing.T) {
+	t.Parallel()
+
+	var mu sync.Mutex
+	zoneRequests := 0
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		switch r.URL.Path {
+		case "/zones":
+			require.Equal(t, "xn--fsq.example.com", r.URL.Query().Get("name"))
+			mu.Lock()
+			zoneRequests++
+			mu.Unlock()
+			if r.URL.Query().Get("page") == "2" {
+				writeCloudflareResponse(t, w, []map[string]any{}, true)
+				return
+			}
+			writeCloudflareResponse(t, w, []map[string]any{{"id": "zone-idn", "name": "例.example.com"}}, true)
+		case "/zones/zone-idn/dns_records":
+			writeCloudflareResponse(t, w, []map[string]any{}, true)
+		default:
+			http.Error(w, "unexpected request", http.StatusNotFound)
+		}
+	}))
+	t.Cleanup(server.Close)
+
+	createdProvider, err := newProvider(&dns.Credential{
+		Values:     map[string]string{"CF_API_TOKEN": "test-token"},
+		Additional: map[string]string{"CF_BASE_URL": server.URL},
+	})
+	require.NoError(t, err)
+
+	for _, domain := range []string{"xn--fsq.example.com", "例.example.com"} {
+		records, err := createdProvider.ListRecords(t.Context(), domain, dns.RecordFilter{})
+		require.NoError(t, err)
+		require.Empty(t, records)
+	}
+
+	mu.Lock()
+	require.Equal(t, 1, zoneRequests)
+	mu.Unlock()
+}
+
 func TestProviderUsesProductionBaseURLByDefault(t *testing.T) {
 	t.Parallel()
 
