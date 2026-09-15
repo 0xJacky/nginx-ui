@@ -78,6 +78,11 @@ func (s *Service) ListDomains(ctx context.Context, opts DomainListOptions) ([]*m
 		keyword := "%" + opts.Keyword + "%"
 		d = d.Where(dao.Domain.Like(keyword)).
 			Or(dao.Description.Like(keyword))
+		// Domains are persisted as punycode, so a term entered in Unicode has to be
+		// matched in its ASCII spelling as well.
+		if ascii := ToASCIIName(opts.Keyword); ascii != "" && ascii != strings.ToLower(opts.Keyword) {
+			d = d.Or(dao.Domain.Like("%" + ascii + "%"))
+		}
 	}
 
 	return d.Order(dao.UpdatedAt.Desc()).FindByPage(offset, perPage)
