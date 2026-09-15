@@ -110,8 +110,7 @@ onMounted(async () => {
 <style lang="less" scoped>
 .preference-container {
   width: 100%;
-  max-width: 850px;
-  margin: 0 auto;
+  margin: 0;
   padding: 0 10px;
 
   :deep(label) {
