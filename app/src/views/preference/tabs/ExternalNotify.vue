@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import type { ExternalNotify } from '@/api/external_notify'
 import { StdCurd } from '@uozi-admin/curd'
-import externalNotify, { testMessage } from '@/api/external_notify'
+import externalNotify, { createExternalNotify, testMessage } from '@/api/external_notify'
 import configMap from '../components/ExternalNotify'
 import columns from '../components/ExternalNotify/columns'
 
 const { message } = App.useApp()
+const table = useTemplateRef('table')
 
 const loadingStates = ref<Record<number, boolean>>({})
+const copyLoadingStates = ref<Record<number, boolean>>({})
 
 async function handleTestSingleMessage(record: ExternalNotify) {
   if (!record.id)
@@ -42,19 +44,64 @@ async function handleTestSingleMessage(record: ExternalNotify) {
     loadingStates.value[record.id] = false
   }
 }
+
+async function handleCopy(record: ExternalNotify) {
+  if (!record.id)
+    return
+
+  copyLoadingStates.value[record.id] = true
+  try {
+    const notifierConfig = configMap[record.type?.toLowerCase() ?? '']
+    const allowedConfigKeys = new Set((notifierConfig?.config ?? []).map(item => item.key))
+    const sanitizedConfig = Object.fromEntries(
+      Object.entries(record.config ?? {}).filter(([key]) => allowedConfigKeys.has(key)),
+    )
+
+    await createExternalNotify({
+      type: record.type,
+      description: record.description,
+      language: record.language,
+      config: sanitizedConfig,
+      enabled: record.enabled,
+    })
+
+    message.success($gettext('Copied'))
+    table.value?.refresh()
+  }
+  catch (error) {
+    console.error('Copy external notify error:', error)
+    message.error($gettext('Failed'))
+  }
+  finally {
+    copyLoadingStates.value[record.id] = false
+  }
+}
 </script>
 
 <template>
   <StdCurd
+    ref="table"
     :title="$gettext('External Notify')"
     :columns="columns"
     :api="externalNotify"
+    :custom-query-params="{
+      sort_by: 'id',
+      order: 'asc',
+    }"
     disable-view
     disable-export
     disable-trash
     disable-search
   >
     <template #beforeActions="{ record }">
+      <AButton
+        type="link"
+        size="small"
+        :loading="copyLoadingStates[record.id] || false"
+        @click="handleCopy(record)"
+      >
+        {{ $gettext('Copy') }}
+      </AButton>
       <AButton
         type="link"
         size="small"

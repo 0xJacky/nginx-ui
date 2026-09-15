@@ -1,4 +1,4 @@
-import type { StdTableColumn } from '@uozi-admin/curd'
+import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
 import type { ExternalNotify } from '@/api/external_notify'
 import { datetimeRender, maskRender } from '@uozi-admin/curd'
 import gettext from '@/gettext'
@@ -15,6 +15,12 @@ const configTypeMask = Object.keys(configMap).reduce((acc, key) => {
 
 const columns: StdTableColumn[] = [
   {
+    dataIndex: 'index',
+    title: () => $gettext('Index'),
+    customRender: ({ record }: CustomRenderArgs<ExternalNotify>) => record.id,
+    width: 80,
+  },
+  {
     dataIndex: 'type',
     title: () => $gettext('Type'),
     customRender: maskRender(configTypeMask),
@@ -26,6 +32,13 @@ const columns: StdTableColumn[] = [
       formItem: {
         required: true,
       },
+    },
+  },
+  {
+    dataIndex: 'description',
+    title: () => $gettext('Description'),
+    edit: {
+      type: 'input',
     },
   },
   {
