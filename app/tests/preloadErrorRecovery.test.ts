@@ -1,23 +1,46 @@
 import { describe, expect, mock, test } from 'bun:test'
 import { installPreloadErrorRecovery } from '../src/routes/preloadErrorRecovery'
 
-function fixture(initialMarker?: string) {
+interface FixtureOptions {
+  historyState?: { value: unknown }
+  initialMarker?: string
+  throwOnStorage?: boolean
+}
+
+function fixture(options: FixtureOptions = {}) {
   const events = new EventTarget()
   const values = new Map<string, string>()
-  if (initialMarker)
-    values.set('nginx-ui:preload-error-recovery', initialMarker)
+  const historyState = options.historyState ?? { value: null }
+  if (options.initialMarker)
+    values.set('nginx-ui:preload-error-recovery', options.initialMarker)
 
   const reload = mock(() => {})
   installPreloadErrorRecovery({
     addEventListener: events.addEventListener.bind(events),
+    history: {
+      get state() {
+        return historyState.value
+      },
+      replaceState: value => {
+        historyState.value = value
+      },
+    },
     location: { reload },
     sessionStorage: {
-      getItem: key => values.get(key) ?? null,
-      setItem: (key, value) => values.set(key, value),
+      getItem: key => {
+        if (options.throwOnStorage)
+          throw new Error('storage denied')
+        return values.get(key) ?? null
+      },
+      setItem: (key, value) => {
+        if (options.throwOnStorage)
+          throw new Error('storage denied')
+        values.set(key, value)
+      },
     },
   })
 
-  return { events, reload, values }
+  return { events, historyState, reload, values }
 }
 
 describe('preload error recovery', () => {
@@ -40,11 +63,37 @@ describe('preload error recovery', () => {
     first.events.dispatchEvent(new Event('vite:preloadError', { cancelable: true }))
     const currentMarker = first.values.get('nginx-ui:preload-error-recovery')
 
-    const second = fixture(currentMarker)
+    const second = fixture({ initialMarker: currentMarker })
     const event = new Event('vite:preloadError', { cancelable: true })
     second.events.dispatchEvent(event)
 
     expect(event.defaultPrevented).toBe(true)
     expect(second.reload).not.toHaveBeenCalled()
+  })
+
+  test('uses reload-persistent history state when session storage is denied', () => {
+    const historyState = { value: null as unknown }
+    const first = fixture({ historyState, throwOnStorage: true })
+    first.events.dispatchEvent(new Event('vite:preloadError', { cancelable: true }))
+    expect(first.reload).toHaveBeenCalledTimes(1)
+
+    const second = fixture({ historyState, throwOnStorage: true })
+    const event = new Event('vite:preloadError', { cancelable: true })
+    second.events.dispatchEvent(event)
+
+    expect(event.defaultPrevented).toBe(true)
+    expect(second.reload).not.toHaveBeenCalled()
+  })
+
+  test('does not reload when no persistent guard is available', () => {
+    const f = fixture({ throwOnStorage: true })
+    Object.defineProperty(f.historyState, 'value', {
+      get: () => null,
+      set: () => { throw new Error('history denied') },
+    })
+
+    f.events.dispatchEvent(new Event('vite:preloadError', { cancelable: true }))
+
+    expect(f.reload).not.toHaveBeenCalled()
   })
 })
