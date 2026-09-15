@@ -7,7 +7,7 @@ const { data } = storeToRefs(systemSettingsStore)
 </script>
 
 <template>
-  <AForm layout="vertical">
+  <AForm layout="vertical" class="max-w-150">
     <AFormItem :label="$gettext('Jwt Secret')">
       <SensitiveString path="app.jwt_secret" :value="data.app.jwt_secret" />
     </AFormItem>

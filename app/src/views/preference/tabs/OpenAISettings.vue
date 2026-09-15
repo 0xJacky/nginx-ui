@@ -132,7 +132,7 @@ watch(
 </script>
 
 <template>
-  <AForm layout="vertical">
+  <AForm layout="vertical" class="max-w-150">
     <AFormItem
       :label="$gettext('Provider')"
       :validate-status="errors?.openai?.provider ? 'error' : ''"
@@ -140,6 +140,7 @@ watch(
       <ASelect
         v-model:value="data.openai.provider"
         :options="providerOptions"
+        class="max-w-100"
       />
     </AFormItem>
     <AFormItem
@@ -152,6 +153,7 @@ watch(
       <AAutoComplete
         v-model:value="data.openai.model"
         :options="modelOptions"
+        class="max-w-100"
       />
     </AFormItem>
     <AAlert
@@ -254,6 +256,7 @@ watch(
       <ASelect
         v-model:value="data.openai.api_type"
         :options="apiTypeOptions"
+        class="max-w-100"
       />
     </AFormItem>
     <AFormItem
@@ -272,6 +275,7 @@ watch(
       <AAutoComplete
         v-model:value="data.openai.code_completion_model"
         :options="modelOptions"
+        class="max-w-100"
       />
     </AFormItem>
   </AForm>

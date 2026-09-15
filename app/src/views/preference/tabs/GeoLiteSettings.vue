@@ -18,7 +18,7 @@ const isCustomMMDBEnabled = computed(() => customMMDBPath.value.length > 0)
 </script>
 
 <template>
-  <AForm layout="vertical">
+  <AForm layout="vertical" class="max-w-150">
     <AAlert
       v-if="isCustomMMDBEnabled"
       class="mb-4"

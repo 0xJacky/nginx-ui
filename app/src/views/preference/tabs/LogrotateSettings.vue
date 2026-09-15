@@ -6,7 +6,7 @@ const { data } = storeToRefs(systemSettingsStore)
 </script>
 
 <template>
-  <AForm layout="vertical">
+  <AForm layout="vertical" class="max-w-150">
     <AAlert
       class="mb-4"
       :title="$gettext('Tips')"
@@ -24,6 +24,7 @@ const { data } = storeToRefs(systemSettingsStore)
         v-model:value="data.logrotate.interval"
         :min="1"
         :suffix="$gettext('Minutes')"
+        class="w-40"
       />
     </AFormItem>
   </AForm>

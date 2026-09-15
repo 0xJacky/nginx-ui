@@ -6,7 +6,7 @@ const { data } = storeToRefs(systemSettingsStore)
 </script>
 
 <template>
-  <AForm layout="vertical">
+  <AForm layout="vertical" class="max-w-150">
     <AAlert
       class="mb-4"
       type="info"
@@ -22,13 +22,14 @@ const { data } = storeToRefs(systemSettingsStore)
       <ASwitch v-model:checked="data.site_check.enabled" data-testid="site-check-global-enabled" />
     </AFormItem>
     <AFormItem :label="$gettext('Concurrency')">
-      <AInputNumber v-model:value="data.site_check.concurrency" :min="1" :max="20" />
+      <AInputNumber v-model:value="data.site_check.concurrency" :min="1" :max="20" class="w-30" />
     </AFormItem>
     <AFormItem :label="$gettext('Interval')">
       <AInputNumber
         v-model:value="data.site_check.interval_seconds"
         :min="30"
         :suffix="$gettext('Seconds')"
+        class="w-40"
       />
     </AFormItem>
 
@@ -43,6 +44,7 @@ const { data } = storeToRefs(systemSettingsStore)
         v-model:value="data.upstream_check.interval_seconds"
         :min="5"
         :suffix="$gettext('Seconds')"
+        class="w-40"
       />
     </AFormItem>
   </AForm>

@@ -9,12 +9,12 @@ const { data, errors } = storeToRefs(systemSettingsStore)
 </script>
 
 <template>
-  <AForm layout="vertical">
+  <AForm layout="vertical" class="max-w-150">
     <AFormItem :label="$gettext('Email')">
       <p>{{ data.cert.email }}</p>
     </AFormItem>
     <AFormItem :label="$gettext('HTTP Challenge Port')">
-      <AInputNumber v-model:value="data.cert.http_challenge_port" />
+      <AInputNumber v-model:value="data.cert.http_challenge_port" class="w-30" />
     </AFormItem>
     <AFormItem
       :label="$gettext('CADir')"
@@ -39,6 +39,7 @@ const { data, errors } = storeToRefs(systemSettingsStore)
         :min="1"
         :max="90"
         :suffix="$gettext('Days')"
+        class="w-40"
       />
     </AFormItem>
     <AFormItem
@@ -63,34 +64,31 @@ const { data, errors } = storeToRefs(systemSettingsStore)
         handle=".anticon-holder"
       >
         <template #item="{ index }">
-          <ARow>
-            <ACol :span="2">
-              <HolderOutlined class="p-2" />
-            </ACol>
-            <ACol :span="20">
-              <AInput
-                v-model:value="data.cert.recursive_nameservers[index]"
-                :status="errors?.cert?.recursive_nameservers?.[index] ? 'error' : undefined"
-                placeholder="8.8.8.8:53"
-                class="mb-4"
-              />
-            </ACol>
-            <ACol :span="2">
-              <APopconfirm
-                :title="$gettext('Are you sure you want to remove this item?')"
-                :ok-text="$gettext('Yes')"
-                :cancel-text="$gettext('No')"
-                @confirm="data.cert.recursive_nameservers.splice(index, 1)"
+          <AFlex
+            align="center"
+            gap="small"
+            class="mb-2 max-w-100"
+          >
+            <HolderOutlined class="cursor-move p-1" />
+            <AInput
+              v-model:value="data.cert.recursive_nameservers[index]"
+              :status="errors?.cert?.recursive_nameservers?.[index] ? 'error' : undefined"
+              placeholder="8.8.8.8:53"
+            />
+            <APopconfirm
+              :title="$gettext('Are you sure you want to remove this item?')"
+              :ok-text="$gettext('Yes')"
+              :cancel-text="$gettext('No')"
+              @confirm="data.cert.recursive_nameservers.splice(index, 1)"
+            >
+              <AButton
+                type="link"
+                danger
               >
-                <AButton
-                  type="link"
-                  danger
-                >
-                  <DeleteOutlined />
-                </AButton>
-              </APopconfirm>
-            </ACol>
-          </ARow>
+                <DeleteOutlined />
+              </AButton>
+            </APopconfirm>
+          </AFlex>
         </template>
       </Draggable>
     </AFormItem>
