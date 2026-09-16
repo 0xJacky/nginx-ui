@@ -4,6 +4,25 @@ import { Tag } from 'antdv-next'
 import { detailRender } from '@/components/Notification/detailRender'
 import { NotificationType, NotificationTypeT } from '@/constants'
 
+function getNotificationLink(args: CustomRenderArgs): string {
+  const record = args.record as {
+    url?: string | null
+    details?: Record<string, unknown> | string | null
+  }
+
+  if (typeof record?.url === 'string' && record.url.trim())
+    return record.url
+
+  if (record?.details && typeof record.details === 'object') {
+    const details = record.details as Record<string, unknown>
+    const url = details.url
+    if (typeof url === 'string' && url.trim())
+      return url
+  }
+
+  return ''
+}
+
 const columns: StdTableColumn[] = [{
   title: () => $gettext('Type'),
   dataIndex: 'type',
@@ -46,14 +65,14 @@ const columns: StdTableColumn[] = [{
   },
   sorter: true,
   pure: true,
-  width: 100,
+  width: 90,
 }, {
   title: () => $gettext('Created at'),
   dataIndex: 'created_at',
   sorter: true,
   customRender: datetimeRender,
   pure: true,
-  width: 180,
+  width: 170,
 }, {
   title: () => $gettext('Title'),
   dataIndex: 'title',
@@ -61,18 +80,33 @@ const columns: StdTableColumn[] = [{
     return h('span', $gettext(args.text))
   },
   pure: true,
-  width: 250,
+  width: 210,
 }, {
   title: () => $gettext('Details'),
   dataIndex: 'details',
   customRender: detailRender,
   pure: true,
-  width: 500,
+  width: 560,
+}, {
+  title: () => $gettext('Go To'),
+  dataIndex: 'jump_to',
+  customRender: (args: CustomRenderArgs) => {
+    const url = getNotificationLink(args)
+
+    if (!url)
+      return null
+
+    return h('a', {
+      href: url,
+    }, $gettext('View'))
+  },
+  pure: true,
+  width: 80,
 }, {
   title: () => $gettext('Actions'),
   dataIndex: 'actions',
   fixed: 'right',
-  width: 200,
+  width: 160,
 }]
 
 export default columns

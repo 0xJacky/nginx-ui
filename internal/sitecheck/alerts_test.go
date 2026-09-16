@@ -90,6 +90,9 @@ func TestSiteHealthAlertTransitionsAreDeduplicated(t *testing.T) {
 	if notifications[0].Type != model.NotificationWarning || notifications[1].Type != model.NotificationSuccess {
 		t.Fatalf("expected warning then recovery notifications, got %v then %v", notifications[0].Type, notifications[1].Type)
 	}
+	if notifications[1].Title != "Site Health Check Recovered" {
+		t.Fatalf("expected recovery notification title, got %q", notifications[1].Title)
+	}
 }
 
 func TestSiteHealthAlertConcurrentFailuresNotifyOnce(t *testing.T) {

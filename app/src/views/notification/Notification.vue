@@ -24,7 +24,7 @@ watch(unreadCount, () => {
 <template>
   <StdCurd
     ref="curd"
-    :scroll-x="1000"
+    :scroll-x="1080"
     :title="$gettext('Notification')"
     :columns="notificationColumns"
     :api="notification"
