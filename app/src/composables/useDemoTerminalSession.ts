@@ -291,12 +291,14 @@ export function useDemoTerminalSession() {
   }
 
   const destroySession = (tabId: string) => sessions.get(tabId)?.dispose()
+  const hasSession = (tabId: string) => sessions.has(tabId)
   const focusSession = (tabId: string) => sessions.get(tabId)?.terminal.focus()
   const resizeAllSessions = () => sessions.forEach(session => session.fitAddon.fit())
 
   return {
     createSession,
     destroySession,
+    hasSession,
     focusSession,
     resizeAllSessions,
     /** Commands the fake shell answers — exported so tests can assert coverage. */
