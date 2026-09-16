@@ -23,6 +23,33 @@ import (
 	"golang.org/x/sys/windows"
 )
 
+// Windows PowerShell's first launch on a cold CI runner can take tens of
+// seconds to write anything, while later launches reach their prompt in about
+// a second. Shell startup and interactive steps therefore get separate
+// budgets instead of sharing one deadline for the whole session.
+const (
+	shellStartupTimeout = 60 * time.Second
+	shellCommandTimeout = 30 * time.Second
+)
+
+// waitForShellOutput reads WebSocket frames until marker appears, restarting
+// the read budget for this step only, and reports stage when it runs out.
+func waitForShellOutput(t *testing.T, ws *websocket.Conn, stage, marker string, budget time.Duration) string {
+	t.Helper()
+	if err := ws.SetReadDeadline(time.Now().Add(budget)); err != nil {
+		t.Fatal(err)
+	}
+	var output strings.Builder
+	for !strings.Contains(output.String(), marker) {
+		_, data, err := ws.ReadMessage()
+		if err != nil {
+			t.Fatalf("%s: %v; received %q", stage, err, output.String())
+		}
+		output.Write(data)
+	}
+	return output.String()
+}
+
 func TestWindowsTerminalInheritedCtrlCIgnore(t *testing.T) {
 	if os.Args[len(os.Args)-1] == "terminal-ctrlc-child" {
 		for _, command := range []string{"cmd.exe", "powershell.exe"} {
@@ -32,9 +59,9 @@ func TestWindowsTerminalInheritedCtrlCIgnore(t *testing.T) {
 	}
 	// CREATE_NEW_PROCESS_GROUP disables Ctrl+C in the child, reproducing
 	// launchers such as MSYS without changing this test process's handlers.
-	ctx, cancel := context.WithTimeout(context.Background(), 75*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 150*time.Second)
 	defer cancel()
-	child := exec.CommandContext(ctx, os.Args[0], "-test.run=^TestWindowsTerminalInheritedCtrlCIgnore$", "-test.v", "-test.timeout=70s", "terminal-ctrlc-child")
+	child := exec.CommandContext(ctx, os.Args[0], "-test.run=^TestWindowsTerminalInheritedCtrlCIgnore$", "-test.v", "-test.timeout=145s", "terminal-ctrlc-child")
 	child.SysProcAttr = &syscall.SysProcAttr{CreationFlags: windows.CREATE_NEW_PROCESS_GROUP | windows.CREATE_NO_WINDOW}
 	output, err := child.CombinedOutput()
 	if err != nil {
@@ -202,7 +229,7 @@ func TestWindowsTerminalShellExitWithoutReader(t *testing.T) {
 				if err != nil {
 					t.Fatal(err)
 				}
-			case <-time.After(10 * time.Second):
+			case <-time.After(shellStartupTimeout):
 				t.Fatal("shell did not reach its initial prompt")
 			}
 			if _, err := p.Write([]byte("exit\r")); err != nil {
@@ -337,7 +364,9 @@ func testWindowsTerminal(t *testing.T, command string, exitShell bool) {
 		t.Fatal("no shell process handle")
 	}
 	defer windows.CloseHandle(handle)
-	ws.SetReadDeadline(time.Now().Add(30 * time.Second))
+	// Typing before the shell owns the console leaves the input in ConPTY's
+	// buffer while a cold start burns this session's whole read budget.
+	waitForShellOutput(t, ws, "shell did not reach its initial prompt", ">", shellStartupTimeout)
 	input := "echo NGINX_UI_%OS%\r"
 	if command == "powershell.exe" {
 		input = "Write-Output ('NGINX_UI_' + $env:OS)\r"
@@ -345,14 +374,7 @@ func testWindowsTerminal(t *testing.T, command string, exitShell bool) {
 	if err = ws.WriteJSON(map[string]any{"Type": TypeData, "Data": input}); err != nil {
 		t.Fatal(err)
 	}
-	var output strings.Builder
-	for !strings.Contains(output.String(), "NGINX_UI_Windows_NT") {
-		_, data, readErr := ws.ReadMessage()
-		if readErr != nil {
-			t.Fatalf("command output: %v; received %q", readErr, output.String())
-		}
-		output.Write(data)
-	}
+	waitForShellOutput(t, ws, "command output", "NGINX_UI_Windows_NT", shellCommandTimeout)
 	t.Logf("Real %s expanded OS through the WebSocket; console session is active", command)
 	// On Server 2022 a resize sent before the first console client finishes
 	// attaching can be superseded by its initial 90x60 buffer. Synchronize on
@@ -369,37 +391,16 @@ func testWindowsTerminal(t *testing.T, command string, exitShell bool) {
 	if err := ws.WriteJSON(map[string]any{"Type": TypeData, "Data": query}); err != nil {
 		t.Fatal(err)
 	}
-	output.Reset()
-	for !strings.Contains(output.String(), "CONSOLE_SIZE_120_30") {
-		_, data, err := ws.ReadMessage()
-		if err != nil {
-			t.Fatalf("native console resize not observed: %v; output %q", err, output.String())
-		}
-		output.Write(data)
-	}
-	t.Logf("%s: attached CONOUT$ reported actual 120x30 console dimensions (RawUI 90x60 observed: %t)", command, strings.Contains(output.String(), "RAWUI_90_60"))
+	resized := waitForShellOutput(t, ws, "native console resize not observed", "CONSOLE_SIZE_120_30", shellCommandTimeout)
+	t.Logf("%s: attached CONOUT$ reported actual 120x30 console dimensions (RawUI 90x60 observed: %t)", command, strings.Contains(resized, "RAWUI_90_60"))
 	if err := ws.WriteJSON(map[string]any{"Type": TypeData, "Data": "ping -t 127.0.0.1\r"}); err != nil {
 		t.Fatal(err)
 	}
-	output.Reset()
-	for !strings.Contains(output.String(), "TTL=") {
-		_, data, err := ws.ReadMessage()
-		if err != nil {
-			t.Fatalf("child output: %v", err)
-		}
-		output.Write(data)
-	}
+	waitForShellOutput(t, ws, "child output", "TTL=", shellCommandTimeout)
 	if err := ws.WriteJSON(map[string]any{"Type": TypeData, "Data": "\x03"}); err != nil {
 		t.Fatal(err)
 	}
-	output.Reset()
-	for !strings.Contains(output.String(), ">") {
-		_, data, err := ws.ReadMessage()
-		if err != nil {
-			t.Fatalf("Ctrl+C did not return to shell: %v; output %q", err, output.String())
-		}
-		output.Write(data)
-	}
+	waitForShellOutput(t, ws, "Ctrl+C did not return to shell", ">", shellCommandTimeout)
 	t.Log("Ctrl+C stopped the real child command and returned to the shell")
 	if exitShell {
 		if err := ws.WriteJSON(map[string]any{"Type": TypeData, "Data": "exit\r"}); err != nil {

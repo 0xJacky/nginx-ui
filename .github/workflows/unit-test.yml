@@ -86,7 +86,7 @@ jobs:
           set -o pipefail
           {
             printf 'Checked out SHA: %s\nPR base SHA: %s\nPR head SHA: %s\nEvent SHA: %s\n' "$(git rev-parse HEAD)" "$PR_BASE_SHA" "$PR_HEAD_SHA" "$EVENT_SHA"
-            go test -tags=unembed -race -cover -count=3 -timeout=5m -v ./settings ./api/terminal ./internal/pty
+            go test -tags=unembed -race -cover -count=3 -timeout=10m -v ./settings ./api/terminal ./internal/pty
           } 2>&1 | tee windows-terminal.log
 
       - name: Preserve native terminal test logs
