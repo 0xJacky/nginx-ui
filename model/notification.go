@@ -14,5 +14,6 @@ type Notification struct {
 	Type    NotificationType `json:"type"`
 	Title   string           `json:"title"`
 	Content string           `json:"content"`
+	URL     string           `json:"url"`
 	Details any              `json:"details" gorm:"serializer:json"`
 }
