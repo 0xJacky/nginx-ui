@@ -2,7 +2,6 @@ package llm
 
 import (
 	"net/http"
-	"sync"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/api"
@@ -15,8 +14,6 @@ import (
 	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 )
-
-var mutex sync.Mutex
 
 // CodeCompletion handles code completion requests
 func CodeCompletion(c *gin.Context) {
@@ -35,9 +32,20 @@ func CodeCompletion(c *gin.Context) {
 	}
 	defer ws.Close()
 
+	// The read loop below blocks until the editor sends a request, which on a
+	// vanished peer would be forever. Reading through the keepalive processes
+	// pongs and turns a silent peer into a read timeout.
+	keepalive := helper.StartWebSocketKeepalive(ws)
+	defer keepalive.Stop()
+
+	// Completions finish concurrently, so their writes are serialized per
+	// connection and bounded by a write deadline. A stalled editor can then
+	// neither block other users' completions nor starve the keepalive pings.
+	writer := helper.NewSafeWebSocketWriter(ws)
+
 	for {
 		var codeCompletionRequest llm.CodeCompletionRequest
-		err := ws.ReadJSON(&codeCompletionRequest)
+		err := keepalive.ReadJSON(&codeCompletionRequest)
 		if err != nil {
 			if helper.IsUnexpectedWebsocketError(err) {
 				logger.Errorf("Error reading JSON: %v", err)
@@ -56,10 +64,7 @@ func CodeCompletion(c *gin.Context) {
 			}
 			elapsed := time.Since(start)
 
-			mutex.Lock()
-			defer mutex.Unlock()
-
-			err = ws.WriteJSON(gin.H{
+			err = writer.WriteJSON(gin.H{
 				"code":          completedCode,
 				"request_id":    codeCompletionRequest.RequestID,
 				"completion_ms": elapsed.Milliseconds(),

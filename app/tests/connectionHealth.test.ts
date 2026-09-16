@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test'
-import { resolveConnectionRecovery } from '@/lib/websocket/connectionHealth'
+import { reconnectBackoffMs, resolveConnectionRecovery } from '@/lib/websocket/connectionHealth'
 
 const NOW = 1_700_000_000_000
 const STALE_AFTER_MS = 20_000
@@ -43,5 +43,19 @@ describe('shared connection health', () => {
 
   test('does not judge a socket that has not reported yet', () => {
     expect(health({ lastMessageAt: 0 })).toBe('none')
+  })
+})
+
+describe('supervised reconnect backoff', () => {
+  test('retries immediately before any failure', () => {
+    expect(reconnectBackoffMs(0, 15_000, 300_000)).toBe(0)
+  })
+
+  test('doubles per failed attempt up to the cap', () => {
+    expect(reconnectBackoffMs(1, 15_000, 300_000)).toBe(15_000)
+    expect(reconnectBackoffMs(2, 15_000, 300_000)).toBe(30_000)
+    expect(reconnectBackoffMs(5, 15_000, 300_000)).toBe(240_000)
+    expect(reconnectBackoffMs(6, 15_000, 300_000)).toBe(300_000)
+    expect(reconnectBackoffMs(50, 15_000, 300_000)).toBe(300_000)
   })
 })

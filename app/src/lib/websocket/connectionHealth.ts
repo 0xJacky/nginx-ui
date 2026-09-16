@@ -60,3 +60,20 @@ export function resolveConnectionRecovery(input: ConnectionHealthInput): Connect
 
   return now - lastMessageAt > staleAfterMs ? 'reopen' : 'none'
 }
+
+/**
+ * Delay before the next supervised reconnect after `failures` attempts that
+ * did not bring the connection back.
+ *
+ * Each supervised attempt restarts VueUse's own retry burst, so retrying at a
+ * fixed interval would keep hammering a backend that is down for good. Doubling
+ * from `baseMs` up to `maxMs` keeps recovery quick after a short outage while
+ * an hour-long one costs a handful of attempts.
+ */
+export function reconnectBackoffMs(failures: number, baseMs: number, maxMs: number): number {
+  if (failures <= 0) {
+    return 0
+  }
+
+  return Math.min(baseMs * 2 ** (failures - 1), maxMs)
+}

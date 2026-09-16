@@ -27,7 +27,9 @@ func GetNodeStat(c *gin.Context) {
 
 	defer ws.Close()
 
-	peerGone := startWSKeepalive(ws)
+	keepalive := helper.StartWebSocketKeepaliveReader(ws)
+	defer keepalive.Stop()
+	peerGone := keepalive.Done()
 
 	// Counter to track iterations for periodic full info update
 	counter := 0
@@ -72,7 +74,7 @@ func GetNodeStat(c *gin.Context) {
 		}
 
 		// write
-		_ = ws.SetWriteDeadline(time.Now().Add(wsWriteWait))
+		_ = ws.SetWriteDeadline(time.Now().Add(helper.WebSocketWriteWait))
 		err = ws.WriteJSON(data)
 		if err != nil {
 			if helper.IsUnexpectedWebsocketError(err) {
@@ -108,12 +110,14 @@ func GetNodesAnalytic(c *gin.Context) {
 
 	defer ws.Close()
 
-	peerGone := startWSKeepalive(ws)
+	keepalive := helper.StartWebSocketKeepaliveReader(ws)
+	defer keepalive.Stop()
+	peerGone := keepalive.Done()
 
 	for {
 		// Send snapshot of NodeMap data to client to avoid concurrent access
 		nodeSnapshot := analytic.SnapshotNodeMap()
-		_ = ws.SetWriteDeadline(time.Now().Add(wsWriteWait))
+		_ = ws.SetWriteDeadline(time.Now().Add(helper.WebSocketWriteWait))
 		err = ws.WriteJSON(nodeSnapshot)
 		if err != nil {
 			if helper.IsUnexpectedWebsocketError(err) {

@@ -4,7 +4,7 @@ import { storeToRefs } from 'pinia'
 import settings from '@/api/settings'
 import PageHeader from '@/components/PageHeader'
 import { useRouteHashScroll } from '@/composables/useRouteHashScroll'
-import { useSettingsStore, useUserStore } from '@/pinia'
+import { useSettingsStore, useUserStore, useWebSocketEventBusStore } from '@/pinia'
 import { useNodeAvailabilityStore } from '@/pinia/moudule/nodeAvailability'
 import { useProxyAvailabilityStore } from '@/pinia/moudule/proxyAvailability'
 import FooterLayout from './FooterLayout.vue'
@@ -45,6 +45,7 @@ settings.get_server_name().then(r => {
 // through useProxyAvailability(), so the socket only exists while it is needed.
 const proxyAvailabilityStore = useProxyAvailabilityStore()
 const nodeAvailabilityStore = useNodeAvailabilityStore()
+const websocketEventBus = useWebSocketEventBusStore()
 const userStore = useUserStore()
 
 onMounted(() => {
@@ -61,9 +62,12 @@ onUnmounted(() => {
   // Remove resize listener
   removeEventListener('resize', init)
 
-  // Leaving the authenticated layout (logout) drops every subscriber
+  // Leaving the authenticated layout (logout) closes every session-bound
+  // socket right away instead of leaving them streaming for a session that
+  // has ended.
   proxyAvailabilityStore.shutdownMonitoring()
   nodeAvailabilityStore.stopMonitoring()
+  websocketEventBus.disconnect()
 })
 
 const breadList = ref([])

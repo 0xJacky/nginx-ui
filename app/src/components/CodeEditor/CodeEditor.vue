@@ -37,7 +37,9 @@ async function init(editor: Editor) {
   codeCompletion.init(editor)
 }
 
-onUnmounted(() => {
+// Before unmount, so the Ace editor (destroyed in VAceEditor's own
+// beforeUnmount) is still alive while completion detaches from it.
+onBeforeUnmount(() => {
   codeCompletion.cleanUp()
 })
 </script>
