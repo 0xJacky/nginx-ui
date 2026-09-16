@@ -9,6 +9,7 @@ export interface TerminalSession {
   terminal: Terminal
   websocket: WebSocket
   fitAddon: FitAddon
+  resizeHandler: ReturnType<typeof throttle>
   ping?: ReturnType<typeof setTimeout>
   isWebSocketReady: boolean
   lostConnection: boolean
@@ -50,18 +51,19 @@ export function useTerminalSession() {
     const { ws } = useWebSocket(`/api/pty?X-Secure-Session-ID=${secureSessionId}`, false)
     const websocket = ws.value!
 
+    const fit = throttle(() => {
+      fitAddon.fit()
+    }, 50)
+
     const session: TerminalSession = {
       tab,
       terminal,
       websocket,
       fitAddon,
+      resizeHandler: fit,
       isWebSocketReady: false,
       lostConnection: false,
     }
-
-    const fit = throttle(() => {
-      fitAddon.fit()
-    }, 50)
 
     const sendMessage = (data: Message) => {
       if (session.websocket && session.isWebSocketReady) {
@@ -137,6 +139,8 @@ export function useTerminalSession() {
     if (!session)
       return
 
+    window.removeEventListener('resize', session.resizeHandler)
+    session.resizeHandler.cancel()
     clearInterval(session.ping)
     session.terminal.dispose()
     session.websocket.close()
@@ -145,6 +149,10 @@ export function useTerminalSession() {
 
   const getSession = (tabId: string): TerminalSession | undefined => {
     return sessions.get(tabId)
+  }
+
+  const hasSession = (tabId: string) => {
+    return sessions.has(tabId)
   }
 
   const focusSession = (tabId: string) => {
@@ -193,6 +201,7 @@ export function useTerminalSession() {
     createSession,
     destroySession,
     getSession,
+    hasSession,
     focusSession,
     resizeSession,
     resizeAllSessions,
