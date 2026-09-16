@@ -167,3 +167,44 @@ func TestNewS3Client_ValidationErrors(t *testing.T) {
 		})
 	}
 }
+
+func TestNewS3Client_EndpointScheme(t *testing.T) {
+	tests := []struct {
+		name       string
+		endpoint   string
+		wantScheme string
+	}{
+		{
+			// With no endpoint the client talks to AWS itself, which must go
+			// over TLS rather than plain HTTP.
+			name:       "default AWS endpoint uses https",
+			endpoint:   "",
+			wantScheme: "https",
+		},
+		{
+			name:       "https endpoint uses https",
+			endpoint:   "https://s3.example.com",
+			wantScheme: "https",
+		},
+		{
+			name:       "http endpoint stays on http",
+			endpoint:   "http://minio.local:9000",
+			wantScheme: "http",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			client, err := NewS3Client(&model.AutoBackup{
+				S3AccessKeyID:     "test-access-key",
+				S3SecretAccessKey: "test-secret-key",
+				S3Bucket:          "test-bucket",
+				S3Endpoint:        tt.endpoint,
+			})
+			if !assert.NoError(t, err) {
+				return
+			}
+			assert.Equal(t, tt.wantScheme, client.client.EndpointURL().Scheme)
+		})
+	}
+}

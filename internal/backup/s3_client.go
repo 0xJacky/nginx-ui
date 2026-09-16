@@ -35,7 +35,7 @@ func NewS3Client(autoBackup *model.AutoBackup) (*S3Client, error) {
 	// Determine endpoint and SSL settings
 	endpoint := autoBackup.S3Endpoint
 	if endpoint == "" {
-		endpoint = "s3.amazonaws.com"
+		endpoint = "https://s3.amazonaws.com"
 	}
 
 	var secure bool
