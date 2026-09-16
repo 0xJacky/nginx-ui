@@ -127,11 +127,6 @@ onMounted(async () => {
   // Start real-time monitoring for availability updates
   proxyAvailabilityStore.startMonitoring()
 })
-
-// Clean up WebSocket connections when component unmounts
-onUnmounted(() => {
-  proxyAvailabilityStore.stopMonitoring()
-})
 </script>
 
 <template>
