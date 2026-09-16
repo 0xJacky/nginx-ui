@@ -50,8 +50,16 @@ func (p *Pipeline) ReadWsAndWritePty(errorChan chan error) {
 }
 
 func (p *Pipeline) readWsAndWritePty() error {
+	// This pump is the connection's only reader, so it owns liveness
+	// detection. A browser that vanished without a close frame stops
+	// answering pings, the read times out and the session is closed, which
+	// kills the shell instead of leaving it running until TCP gives up. A live
+	// but idle browser keeps answering pings and is never disconnected.
+	keepalive := helper.StartWebSocketKeepalive(p.ws)
+	defer keepalive.Stop()
+
 	for {
-		msgType, payload, err := p.ws.ReadMessage()
+		msgType, payload, err := keepalive.ReadMessage()
 		if err != nil {
 			if helper.IsUnexpectedWebsocketError(err) {
 				return errors.Wrap(err, "Error ReadWsAndWritePty unexpected close")
@@ -125,6 +133,9 @@ func (p *Pipeline) readPtyAndWriteWs() error {
 		// complete output even when Read returns both data and an error.
 		processedOutput := validString(string(pending[:complete]))
 		if len(processedOutput) > 0 {
+			// Bound the write so a stalled peer cannot hold the write lock
+			// that keepalive pings also need.
+			_ = p.ws.SetWriteDeadline(time.Now().Add(helper.WebSocketWriteWait))
 			if err := p.ws.WriteMessage(websocket.TextMessage, []byte(processedOutput)); err != nil {
 				if helper.IsUnexpectedWebsocketError(err) {
 					return errors.Wrap(err, "Error ReadPtyAndWriteWs websocket write")

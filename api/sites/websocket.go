@@ -89,7 +89,7 @@ func (c *WSClient) closeSendChannel() {
 
 func (c *WSClient) writePump() {
 	for message := range c.send {
-		c.conn.SetWriteDeadline(time.Now().Add(10 * time.Second))
+		c.conn.SetWriteDeadline(time.Now().Add(helper.WebSocketWriteWait))
 		if err := c.conn.WriteJSON(message); err != nil {
 			logger.Error("Failed to write site websocket message:", err)
 			return
@@ -175,15 +175,25 @@ func SiteNavigationWebSocket(c *gin.Context) {
 		return
 	}
 
+	logger.Info("Site navigation WebSocket connection established")
+	serveSiteNavigation(conn, sitecheck.GetService())
+	logger.Info("Site navigation WebSocket connection closed")
+}
+
+// serveSiteNavigation runs one site navigation session until the peer closes
+// the connection or stops answering pings, then releases the connection.
+func serveSiteNavigation(conn *websocket.Conn, service *sitecheck.Service) {
+	// Arm the keepalive before the read loop starts. The read loop below
+	// processes the pongs, so a silent peer makes the read time out and the
+	// connection leaves the broadcast manager within the pong wait.
+	keepalive := helper.StartWebSocketKeepalive(conn)
+
 	client := wsManager.AddConnection(conn)
 	defer func() {
+		keepalive.Stop()
 		wsManager.RemoveConnection(conn)
 		conn.Close()
 	}()
-
-	logger.Info("Site navigation WebSocket connection established")
-
-	service := sitecheck.GetService()
 
 	go client.writePump()
 
@@ -193,8 +203,7 @@ func SiteNavigationWebSocket(c *gin.Context) {
 		return
 	}
 
-	handleClientMessages(client, service)
-	logger.Info("Site navigation WebSocket connection closed")
+	handleClientMessages(client, keepalive, service)
 }
 
 // sendSiteData sends site data via WebSocket
@@ -212,10 +221,10 @@ func sendSiteData(client *WSClient, msgType string, sites []*sitecheck.SiteInfo)
 }
 
 // handleClientMessages handles incoming WebSocket messages
-func handleClientMessages(client *WSClient, service *sitecheck.Service) {
+func handleClientMessages(client *WSClient, keepalive *helper.WebSocketKeepalive, service *sitecheck.Service) {
 	for {
 		var msg ClientMessage
-		if err := client.conn.ReadJSON(&msg); err != nil {
+		if err := keepalive.ReadJSON(&msg); err != nil {
 			if helper.IsUnexpectedWebsocketError(err) {
 				logger.Error("WebSocket read error:", err)
 			}

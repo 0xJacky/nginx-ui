@@ -34,7 +34,11 @@ func Analytic(c *gin.Context) {
 
 	defer ws.Close()
 
-	peerGone := startWSKeepalive(ws)
+	// This handler only writes. The keepalive owns the reader so pongs are
+	// processed, and Done fires when the peer stops answering pings.
+	keepalive := helper.StartWebSocketKeepaliveReader(ws)
+	defer keepalive.Stop()
+	peerGone := keepalive.Done()
 
 	var stat Stat
 
@@ -122,7 +126,7 @@ func Analytic(c *gin.Context) {
 		stat.SampledAt = time.Now().UnixMilli()
 
 		// write
-		_ = ws.SetWriteDeadline(time.Now().Add(wsWriteWait))
+		_ = ws.SetWriteDeadline(time.Now().Add(helper.WebSocketWriteWait))
 		err = ws.WriteJSON(stat)
 		if err != nil {
 			if helper.IsUnexpectedWebsocketError(err) {
