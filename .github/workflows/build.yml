@@ -1122,89 +1122,6 @@ jobs:
           echo "linux_intel_sha256=$LINUX_INTEL_SHA256" >> $GITHUB_OUTPUT
           echo "linux_arm_sha256=$LINUX_ARM_SHA256" >> $GITHUB_OUTPUT
 
-      - name: Generate Homebrew Formula
-        id: formula
-        run: |
-          cat > nginx-ui.rb << 'EOF'
-          class NginxUi < Formula
-            desc     "Yet another Nginx Web UI"
-            homepage "https://github.com/0xJacky/nginx-ui"
-            license  "AGPL-3.0"
-
-            on_macos do
-              on_intel do
-                url     "https://github.com/0xJacky/nginx-ui/releases/download/${{ steps.release.outputs.tag_name }}/nginx-ui-macos-64.tar.gz"
-                sha256  "${{ steps.checksums.outputs.macos_intel_sha256 }}"
-              end
-              on_arm do
-                url     "https://github.com/0xJacky/nginx-ui/releases/download/${{ steps.release.outputs.tag_name }}/nginx-ui-macos-arm64-v8a.tar.gz"
-                sha256  "${{ steps.checksums.outputs.macos_arm_sha256 }}"
-              end
-            end
-
-            on_linux do
-              on_intel do
-                url     "https://github.com/0xJacky/nginx-ui/releases/download/${{ steps.release.outputs.tag_name }}/nginx-ui-linux-64.tar.gz"
-                sha256  "${{ steps.checksums.outputs.linux_intel_sha256 }}"
-              end
-              on_arm do
-                url     "https://github.com/0xJacky/nginx-ui/releases/download/${{ steps.release.outputs.tag_name }}/nginx-ui-linux-arm64-v8a.tar.gz"
-                sha256  "${{ steps.checksums.outputs.linux_arm_sha256 }}"
-              end
-            end
-
-            def install
-              bin.install "nginx-ui"
-
-              # Create configuration directory
-              (etc/"nginx-ui").mkpath
-
-              # Create default configuration file if it doesn't exist
-              config_file = etc/"nginx-ui/app.ini"
-              unless config_file.exist?
-                config_file.write <<~EOS
-                  [app]
-                  PageSize = 10
-
-                  [server]
-                  Host = 0.0.0.0
-                  Port = 9000
-                  RunMode = release
-
-                  [cert]
-                  HTTPChallengePort = 9180
-
-                  [terminal]
-                  StartCmd = login
-                EOS
-              end
-
-              # Create data directory
-              (var/"nginx-ui").mkpath
-            end
-
-            def post_install
-              # Ensure correct permissions
-              (var/"nginx-ui").chmod 0755
-            end
-
-            service do
-              run [opt_bin/"nginx-ui", "serve", "--config", etc/"nginx-ui/app.ini"]
-              keep_alive true
-              working_dir var/"nginx-ui"
-              log_path var/"log/nginx-ui.log"
-              error_log_path var/"log/nginx-ui.err.log"
-            end
-
-            test do
-              assert_match version.to_s, shell_output("#{bin}/nginx-ui --version")
-            end
-          end
-          EOF
-
-          echo "Generated Homebrew Formula:"
-          cat nginx-ui.rb
-
       - name: Checkout homebrew-tools repository
         uses: actions/checkout@v7
         with:
@@ -1213,17 +1130,69 @@ jobs:
           token: ${{ secrets.HOMEBREW_GITHUB_TOKEN }}
 
       - name: Update Formula file
+        env:
+          REPOSITORY: ${{ github.repository }}
+          TAG_NAME: ${{ steps.release.outputs.tag_name }}
+          MACOS_INTEL_SHA256: ${{ steps.checksums.outputs.macos_intel_sha256 }}
+          MACOS_ARM_SHA256: ${{ steps.checksums.outputs.macos_arm_sha256 }}
+          LINUX_INTEL_SHA256: ${{ steps.checksums.outputs.linux_intel_sha256 }}
+          LINUX_ARM_SHA256: ${{ steps.checksums.outputs.linux_arm_sha256 }}
         run: |
-          # Copy the generated formula to the correct location
-          mkdir -p homebrew-tools/Formula/
-          cp nginx-ui.rb homebrew-tools/Formula/nginx-ui.rb
+          # Only the download URLs and checksums are rewritten here. The formula
+          # body is owned by the tap, so fixes landed there (for example when
+          # Homebrew deprecates a formula DSL method) survive the next release.
+          python3 - << 'PY'
+          import os
+          import pathlib
+          import re
+          import sys
+
+          formula = pathlib.Path("homebrew-tools/Formula/nginx-ui.rb")
+          if not formula.exists():
+              sys.exit(f"{formula} is missing: add the formula to the tap first")
+
+          repository = os.environ["REPOSITORY"]
+          tag_name = os.environ["TAG_NAME"]
+          assets = {
+              "nginx-ui-macos-64.tar.gz": os.environ["MACOS_INTEL_SHA256"],
+              "nginx-ui-macos-arm64-v8a.tar.gz": os.environ["MACOS_ARM_SHA256"],
+              "nginx-ui-linux-64.tar.gz": os.environ["LINUX_INTEL_SHA256"],
+              "nginx-ui-linux-arm64-v8a.tar.gz": os.environ["LINUX_ARM_SHA256"],
+          }
+
+          content = formula.read_text()
+          for asset, sha256 in assets.items():
+              pattern = re.compile(
+                  r'(url\s+"https://github\.com/'
+                  + re.escape(repository)
+                  + r'/releases/download/)[^/"]+(/'
+                  + re.escape(asset)
+                  + r'"\s*\n\s*sha256\s+")[0-9a-f]{64}(")'
+              )
+              content, replaced = pattern.subn(
+                  lambda match: match[1] + tag_name + match[2] + sha256 + match[3],
+                  content,
+              )
+              if replaced != 1:
+                  sys.exit(f"expected 1 url/sha256 pair for {asset}, found {replaced}")
+
+          formula.write_text(content)
+          PY
+
+          echo "Updated Homebrew Formula:"
+          cat homebrew-tools/Formula/nginx-ui.rb
+
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@main
+        with:
+          token: ${{ github.token }}
 
       - name: Verify Formula
         run: |
-          cd homebrew-tools
-          # Basic syntax check
-          ruby -c Formula/nginx-ui.rb
-          echo "Formula syntax is valid"
+          ruby -c homebrew-tools/Formula/nginx-ui.rb
+          # The tap runs `brew style` on the pull request, so run it here too:
+          # a deprecated formula DSL fails the release job instead of the tap.
+          brew style homebrew-tools/Formula/nginx-ui.rb
 
       - name: Create Pull Request to homebrew-tools
         uses: peter-evans/create-pull-request@v8
