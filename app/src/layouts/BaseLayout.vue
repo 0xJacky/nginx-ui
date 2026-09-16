@@ -138,21 +138,33 @@ provide('breadList', breadList)
 </style>
 
 <style lang="less">
+// The collapse trigger is position: fixed at the bottom of the viewport, so the
+// sticky sidebar has to stop above it. Keep in sync with the Layout
+// `triggerHeight` theme token.
+@sider-trigger-height: 48px;
+
 .layout-sider .sidebar {
-  ul.ant-menu-inline.ant-menu-root {
-    height: calc(100vh - 160px);
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - @sider-trigger-height);
+
+  > .logo, > .indicator {
+    flex: none;
+  }
+
+  // Let the menu take whatever is left below the logo and the node indicator
+  // rather than subtracting a fixed offset, which hides the last entries as
+  // soon as either of them changes height. ant-menu-root also covers the
+  // collapsed menu, which renders as ant-menu-vertical.
+  > ul.ant-menu-root {
+    flex: 1 1 auto;
+    min-height: 0;
     overflow-y: auto;
     overflow-x: hidden;
 
     .ant-menu-item {
       width: unset;
     }
-  }
-
-  ul.ant-menu-inline-collapsed {
-    height: calc(100vh - 200px);
-    overflow-y: auto;
-    overflow-x: hidden;
   }
 }
 </style>
