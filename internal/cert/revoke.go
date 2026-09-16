@@ -79,6 +79,7 @@ func RevokeCert(payload *ConfigPayload, certLogger *Logger, logChan chan string,
 
 	err = revoke(payload, client, certLogger)
 	if err != nil {
+		errChan <- err
 		return
 	}
 

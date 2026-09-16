@@ -94,7 +94,9 @@ func RevokeCert(c *gin.Context) {
 	go handleRevokeCertLogChan(wsWriter, logChan)
 
 	// block, until errChan closes
+	revokeFailed := false
 	for err = range errChan {
+		revokeFailed = true
 		logger.Error(err)
 		err = wsWriter.WriteJSON(RevokeCertResponse{
 			Status: Error,
@@ -106,6 +108,11 @@ func RevokeCert(c *gin.Context) {
 			logger.Error(err)
 			return
 		}
+	}
+
+	// The CA did not revoke the certificate, so keep the record.
+	if revokeFailed {
+		return
 	}
 
 	// Update certificate status in database
