@@ -43,14 +43,13 @@ export function installPreloadErrorRecovery(target: PreloadErrorRecoveryTarget =
   let reloadRequested = false
 
   target.addEventListener('vite:preloadError', (event: Event) => {
-    event.preventDefault()
-
     if (reloadRequested)
       return
 
     if (!markRecoveryAttempt(target))
       return
 
+    event.preventDefault()
     reloadRequested = true
     target.location.reload()
   })

@@ -53,7 +53,7 @@ describe('preload error recovery', () => {
     events.dispatchEvent(second)
 
     expect(first.defaultPrevented).toBe(true)
-    expect(second.defaultPrevented).toBe(true)
+    expect(second.defaultPrevented).toBe(false)
     expect(reload).toHaveBeenCalledTimes(1)
     expect(values.get('nginx-ui:preload-error-recovery')).toBeTruthy()
   })
@@ -67,7 +67,7 @@ describe('preload error recovery', () => {
     const event = new Event('vite:preloadError', { cancelable: true })
     second.events.dispatchEvent(event)
 
-    expect(event.defaultPrevented).toBe(true)
+    expect(event.defaultPrevented).toBe(false)
     expect(second.reload).not.toHaveBeenCalled()
   })
 
@@ -81,7 +81,7 @@ describe('preload error recovery', () => {
     const event = new Event('vite:preloadError', { cancelable: true })
     second.events.dispatchEvent(event)
 
-    expect(event.defaultPrevented).toBe(true)
+    expect(event.defaultPrevented).toBe(false)
     expect(second.reload).not.toHaveBeenCalled()
   })
 
@@ -92,8 +92,10 @@ describe('preload error recovery', () => {
       set: () => { throw new Error('history denied') },
     })
 
-    f.events.dispatchEvent(new Event('vite:preloadError', { cancelable: true }))
+    const event = new Event('vite:preloadError', { cancelable: true })
+    f.events.dispatchEvent(event)
 
+    expect(event.defaultPrevented).toBe(false)
     expect(f.reload).not.toHaveBeenCalled()
   })
 })
