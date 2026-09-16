@@ -1,8 +1,14 @@
 import type { AnalyticNode, Node } from '@/api/node'
-import { useDocumentVisibility, useEventListener, useOnline } from '@vueuse/core'
+import { useEventListener } from '@vueuse/core'
 import analytic from '@/api/analytic'
 import nodeApi from '@/api/node'
-import { useWebSocket } from '@/lib/websocket'
+import { useStoreWebSocket } from '@/lib/websocket'
+import { useConnectionSupervisor } from '@/lib/websocket/useConnectionSupervisor'
+
+// The backend pushes the node map every 10s, so this much silence means the
+// connection is gone even if readyState still reads OPEN.
+const STALE_MESSAGE_MS = 30_000
+const WATCHDOG_INTERVAL_MS = 15_000
 
 export const useNodeAvailabilityStore = defineStore('nodeAvailability', () => {
   const cacheKey = 'node-availability-snapshot'
@@ -12,6 +18,9 @@ export const useNodeAvailabilityStore = defineStore('nodeAvailability', () => {
   const isInitialized = ref(false)
   const lastUpdateTime = ref<string>('')
   const isConnecting = ref(false)
+  // Whether BaseLayout currently wants live node data (logged-in session).
+  let isMonitoring = false
+  let initializing: Promise<void> | undefined
   const nodeList = computed<Partial<AnalyticNode>[]>(() => Object.values(nodes.value))
 
   function readCachedNodes(): Record<string, Partial<AnalyticNode>> {
@@ -46,9 +55,7 @@ export const useNodeAvailabilityStore = defineStore('nodeAvailability', () => {
     }
   }
 
-  const socket = useWebSocket<Record<string, Partial<AnalyticNode>>>(analytic.nodesWebSocketUrl, true, {
-    immediate: false,
-    autoClose: false,
+  const socket = useStoreWebSocket<Record<string, Partial<AnalyticNode>>>(analytic.nodesWebSocketUrl, true, {
     onConnected(webSocket) {
       websocket.value = webSocket
       isConnected.value = true
@@ -80,14 +87,25 @@ export const useNodeAvailabilityStore = defineStore('nodeAvailability', () => {
     },
   })
 
-  // Initialize node data from API and WebSocket
+  // Load the node list from the API once. Connecting is startMonitoring()'s job:
+  // this runs only for the first session in a tab, while the socket has to be
+  // reopened after every logout and login.
   async function initialize() {
     if (isInitialized.value) {
       return
     }
 
+    // The upstream store may call this while BaseLayout is starting monitoring;
+    // share the in-flight request instead of fetching twice.
+    initializing ??= loadNodes().finally(() => {
+      initializing = undefined
+    })
+
+    return initializing
+  }
+
+  async function loadNodes() {
     try {
-      // First, load the initial node data from API
       const response = await nodeApi.getList({ enabled: true })
       const nodeMap: Record<string, Partial<AnalyticNode>> = {}
       const cachedNodes = readCachedNodes()
@@ -112,15 +130,12 @@ export const useNodeAvailabilityStore = defineStore('nodeAvailability', () => {
 
       nodes.value = nodeMap
       writeCachedNodes(nodes.value)
-
-      // Then connect WebSocket for real-time updates
-      connectWebSocket()
-      isInitialized.value = true
     }
     catch (error) {
+      // The WebSocket snapshot still fills the map once connected.
       console.error('Failed to initialize node data:', error)
-      // Still try to connect WebSocket even if API call fails
-      connectWebSocket()
+    }
+    finally {
       isInitialized.value = true
     }
   }
@@ -135,7 +150,9 @@ export const useNodeAvailabilityStore = defineStore('nodeAvailability', () => {
       return
     }
 
-    if (readyState === WebSocket.CONNECTING || isConnecting.value) {
+    // Trust the socket, not the flag: VueUse creates the WebSocket synchronously
+    // in open(), so a stale isConnecting would only block recovery.
+    if (readyState === WebSocket.CONNECTING) {
       isConnecting.value = true
       return
     }
@@ -151,44 +168,39 @@ export const useNodeAvailabilityStore = defineStore('nodeAvailability', () => {
     }
   }
 
-  // The underlying useWebSocket gives up after ~10 quick retries. That's fine
-  // for a transient blip but leaves us stuck for long pauses — backend restart,
-  // laptop sleep, flaky VPN. Re-opening the socket whenever the tab becomes
-  // visible or the network comes back provides a cheap recovery path without
-  // hammering the server while the user isn't looking.
-  if (typeof window !== 'undefined') {
-    const visibility = useDocumentVisibility()
-    const online = useOnline()
+  // Reconnects a socket that died under a live session (sleep, backend restart,
+  // a proxy dropping an idle tunnel) and rebuilds one that went silent.
+  const supervisor = useConnectionSupervisor({
+    socket,
+    connect: connectWebSocket,
+    staleAfterMs: STALE_MESSAGE_MS,
+    intervalMs: WATCHDOG_INTERVAL_MS,
+  })
 
-    watch(visibility, (value, previous) => {
-      if (!isInitialized.value) {
-        return
-      }
-      if (value === 'visible' && previous !== 'visible' && !isConnected.value) {
-        connectWebSocket()
-      }
-    })
-
-    watch(online, (value, previous) => {
-      if (!isInitialized.value) {
-        return
-      }
-      if (value && !previous && !isConnected.value) {
-        connectWebSocket()
-      }
-    })
-  }
-
-  // Start monitoring (initialize + WebSocket)
+  // Start monitoring (initialize + WebSocket). Safe to call again after
+  // stopMonitoring(): every call connects, not just the first one.
   async function startMonitoring() {
+    isMonitoring = true
+
+    // Load the API snapshot first so it cannot overwrite fresher socket data.
     await initialize()
+
+    // Logged out while the request was in flight: stay closed.
+    if (!isMonitoring) {
+      return
+    }
+
+    connectWebSocket()
+    supervisor.start()
   }
 
-  // Stop monitoring and cleanup
+  // Stop monitoring and cleanup. close() runs unconditionally: between
+  // autoReconnect retries the socket is already CLOSED, and skipping close()
+  // would let the queued retry reopen it after logout.
   function stopMonitoring() {
-    if (socket.ws.value && socket.ws.value.readyState !== WebSocket.CLOSED) {
-      socket.close()
-    }
+    isMonitoring = false
+    supervisor.stop()
+    socket.close()
 
     websocket.value = null
     isConnected.value = false

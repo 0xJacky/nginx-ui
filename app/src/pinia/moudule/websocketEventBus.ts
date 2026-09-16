@@ -1,5 +1,8 @@
+import type { SubscriptionToken } from '@/lib/websocket/sharedConnection'
 import { v4 as uuidv4 } from 'uuid'
-import { useWebSocket } from '@/lib/websocket'
+import { useStoreWebSocket } from '@/lib/websocket'
+import { createSharedConnection } from '@/lib/websocket/sharedConnection'
+import { useConnectionSupervisor } from '@/lib/websocket/useConnectionSupervisor'
 
 export interface WebSocketMessage {
   event: string
@@ -16,10 +19,17 @@ export interface EventSubscription {
   handler: EventHandler
 }
 
+// Keep the bus open briefly after the last subscriber leaves, so a page that
+// unsubscribes on its way out does not bounce the connection for the next one.
+const IDLE_LINGER_MS = 15_000
+const WATCHDOG_INTERVAL_MS = 15_000
+
 export const useWebSocketEventBusStore = defineStore('websocketEventBus', () => {
   // State
   const ws = ref<WebSocket | null>(null)
   const subscriptions = ref<Map<string, EventSubscription>>(new Map())
+  // Each subscription holds a reference on the shared connection.
+  const connectionTokens = new Map<string, SubscriptionToken>()
   const isConnected = ref(false)
   const isConnecting = ref(false)
 
@@ -39,9 +49,7 @@ export const useWebSocketEventBusStore = defineStore('websocketEventBus', () => 
   }
 
   // Connect to WebSocket
-  const socket = useWebSocket<WebSocketMessage>('/api/events', true, {
-    immediate: false,
-    autoClose: false,
+  const socket = useStoreWebSocket<WebSocketMessage>('/api/events', true, {
     onConnected(webSocket) {
       ws.value = webSocket
       isConnected.value = true
@@ -77,7 +85,9 @@ export const useWebSocketEventBusStore = defineStore('websocketEventBus', () => 
       return
     }
 
-    if (readyState === WebSocket.CONNECTING || isConnecting.value) {
+    // Trust the socket, not the flag: a stale isConnecting would only block
+    // recovery, and VueUse creates the WebSocket synchronously in open().
+    if (readyState === WebSocket.CONNECTING) {
       isConnecting.value = true
       return
     }
@@ -93,6 +103,39 @@ export const useWebSocketEventBusStore = defineStore('websocketEventBus', () => 
     }
   }
 
+  // Events arrive whenever something happens, so silence is normal and only a
+  // dead socket is reconnected (the server pings to catch half-open clients).
+  const supervisor = useConnectionSupervisor({
+    socket,
+    connect,
+    staleAfterMs: Number.POSITIVE_INFINITY,
+    intervalMs: WATCHDOG_INTERVAL_MS,
+  })
+
+  function closeSocket() {
+    // Unconditional: between autoReconnect retries the socket is already
+    // CLOSED, and skipping close() would let the queued retry reopen it.
+    socket.close()
+    isConnected.value = false
+    isConnecting.value = false
+    ws.value = null
+  }
+
+  // The bus is open while anything is subscribed, not from the first subscribe
+  // until the tab closes. Header components subscribe for the whole session,
+  // so in practice this closes it on logout and reopens it on the next login.
+  const connection = createSharedConnection({
+    open: () => {
+      connect()
+      supervisor.start()
+    },
+    close: () => {
+      supervisor.stop()
+      closeSocket()
+    },
+    lingerMs: IDLE_LINGER_MS,
+  })
+
   // Subscribe to an event
   // eslint-disable-next-line ts/no-explicit-any
   function subscribe<T = any>(event: string, handler: EventHandler<T>): string {
@@ -104,10 +147,9 @@ export const useWebSocketEventBusStore = defineStore('websocketEventBus', () => 
       handler,
     })
 
-    // Ensure WebSocket is connected
-    if (!isConnected.value) {
-      connect()
-    }
+    // Holding a reference keeps the WebSocket connected (and reconnects it if
+    // it had died) for as long as this subscription exists.
+    connectionTokens.set(id, connection.acquire())
 
     return id
   }
@@ -115,19 +157,19 @@ export const useWebSocketEventBusStore = defineStore('websocketEventBus', () => 
   // Unsubscribe from an event
   function unsubscribe(subscriptionId: string): void {
     subscriptions.value.delete(subscriptionId)
+
+    const token = connectionTokens.get(subscriptionId)
+    if (token) {
+      connectionTokens.delete(subscriptionId)
+      connection.release(token)
+    }
   }
 
-  // Disconnect WebSocket
+  // Disconnect WebSocket immediately and drop every subscription (logout)
   function disconnect(): void {
-    isConnected.value = false
-    isConnecting.value = false
     subscriptions.value.clear()
-
-    if (socket.ws.value && socket.ws.value.readyState !== WebSocket.CLOSED) {
-      socket.close()
-    }
-
-    ws.value = null
+    connectionTokens.clear()
+    connection.shutdown()
   }
 
   // Get all subscriptions for debugging

@@ -1,11 +1,11 @@
 import type { ProxyTarget } from '@/api/site'
 import type { UpstreamAvailabilityResponse, UpstreamStatus } from '@/api/upstream'
 import type { SubscriptionToken } from '@/lib/websocket/sharedConnection'
-import { useDocumentVisibility, useEventListener, useIntervalFn, useOnline } from '@vueuse/core'
+import { useEventListener } from '@vueuse/core'
 import upstream from '@/api/upstream'
-import { useWebSocket } from '@/lib/websocket'
-import { resolveConnectionRecovery } from '@/lib/websocket/connectionHealth'
+import { useStoreWebSocket } from '@/lib/websocket'
 import { createSharedConnection } from '@/lib/websocket/sharedConnection'
+import { useConnectionSupervisor } from '@/lib/websocket/useConnectionSupervisor'
 import { useNodeAvailabilityStore } from './nodeAvailability'
 
 // Extended types for multi-node support
@@ -50,23 +50,16 @@ export const useProxyAvailabilityStore = defineStore('proxyAvailability', () => 
 
   const nodeStore = useNodeAvailabilityStore()
 
-  // Last sign of life from the peer: the initial payload on connect, then
-  // every push. Drives the staleness half of the watchdog below.
-  const lastMessageAt = ref(0)
-
   let disconnectTimer: ReturnType<typeof setTimeout> | undefined
   const clearDisconnectTimer = () => {
     clearTimeout(disconnectTimer)
     disconnectTimer = undefined
   }
 
-  const socket = useWebSocket<Record<string, ProxyAvailabilityResult>>(upstream.availabilityWebSocketUrl, true, {
-    immediate: false,
-    autoClose: false,
+  const socket = useStoreWebSocket<Record<string, ProxyAvailabilityResult>>(upstream.availabilityWebSocketUrl, true, {
     onConnected() {
       clearDisconnectTimer()
       isConnected.value = true
-      lastMessageAt.value = Date.now()
     },
     onDisconnected() {
       clearDisconnectTimer()
@@ -81,7 +74,6 @@ export const useProxyAvailabilityStore = defineStore('proxyAvailability', () => 
       try {
         availabilityResults.value = JSON.parse(event.data) as Record<string, ProxyAvailabilityResult>
         lastUpdateTime.value = new Date().toISOString()
-        lastMessageAt.value = Date.now()
       }
       catch (error) {
         console.error('Failed to parse WebSocket message:', error)
@@ -169,11 +161,17 @@ export const useProxyAvailabilityStore = defineStore('proxyAvailability', () => 
     clearDisconnectTimer()
     socket.close()
     isConnected.value = false
-    lastMessageAt.value = 0
   }
 
-  // Runs only while someone is subscribed; see superviseConnection() below.
-  const watchdog = useIntervalFn(() => superviseConnection(), WATCHDOG_INTERVAL_MS, { immediate: false })
+  // A subscribed socket can still die (sleep, backend restart, half-open
+  // tunnel); the supervisor brings it back for as long as the connection is
+  // open on behalf of subscribers.
+  const supervisor = useConnectionSupervisor({
+    socket,
+    connect: connectWebSocket,
+    staleAfterMs: STALE_MESSAGE_MS,
+    intervalMs: WATCHDOG_INTERVAL_MS,
+  })
 
   // The socket is shared by every page that renders upstream status (the
   // upstream list, the site and stream editors), so its lifetime is tied to the
@@ -182,10 +180,10 @@ export const useProxyAvailabilityStore = defineStore('proxyAvailability', () => 
   const connection = createSharedConnection({
     open: () => {
       void startMonitoring()
-      watchdog.resume()
+      supervisor.start()
     },
     close: () => {
-      watchdog.pause()
+      supervisor.stop()
       stopMonitoring()
     },
     lingerMs: MONITOR_LINGER_MS,
@@ -202,52 +200,6 @@ export const useProxyAvailabilityStore = defineStore('proxyAvailability', () => 
   // Tear everything down regardless of subscribers (logout, page unload).
   function shutdownMonitoring() {
     connection.shutdown()
-  }
-
-  // Subscribers say the data is wanted; they cannot say the connection is
-  // healthy. useWebSocket gives up after ~10 quick retries, which covers a blip
-  // but not a laptop sleep, a backend restart or a proxy dropping an idle
-  // tunnel — and a half-open socket never reports a close at all. So while
-  // anyone is subscribed, supervise the socket and rebuild it when it stops
-  // delivering.
-  function superviseConnection() {
-    const action = resolveConnectionRecovery({
-      hasSubscribers: connection.hasSubscribers,
-      readyState: socket.ws.value?.readyState,
-      lastMessageAt: lastMessageAt.value,
-      now: Date.now(),
-      staleAfterMs: STALE_MESSAGE_MS,
-    })
-
-    if (action === 'connect') {
-      connectWebSocket()
-      return
-    }
-
-    if (action === 'reopen') {
-      // open() closes the stale socket, clears the retry budget and dials again.
-      lastMessageAt.value = 0
-      socket.open()
-    }
-  }
-
-  // Recover as soon as the tab comes back or the network returns instead of
-  // waiting for the next watchdog tick.
-  if (typeof window !== 'undefined') {
-    const visibility = useDocumentVisibility()
-    const online = useOnline()
-
-    watch(visibility, (value, previous) => {
-      if (value === 'visible' && previous !== 'visible') {
-        superviseConnection()
-      }
-    })
-
-    watch(online, (value, previous) => {
-      if (value && !previous) {
-        superviseConnection()
-      }
-    })
   }
 
   // Get availability result for a specific target
