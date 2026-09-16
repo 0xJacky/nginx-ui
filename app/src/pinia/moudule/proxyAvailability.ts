@@ -1,8 +1,11 @@
 import type { ProxyTarget } from '@/api/site'
 import type { UpstreamAvailabilityResponse, UpstreamStatus } from '@/api/upstream'
-import { useEventListener } from '@vueuse/core'
+import type { SubscriptionToken } from '@/lib/websocket/sharedConnection'
+import { useDocumentVisibility, useEventListener, useIntervalFn, useOnline } from '@vueuse/core'
 import upstream from '@/api/upstream'
 import { useWebSocket } from '@/lib/websocket'
+import { resolveConnectionRecovery } from '@/lib/websocket/connectionHealth'
+import { createSharedConnection } from '@/lib/websocket/sharedConnection'
 import { useNodeAvailabilityStore } from './nodeAvailability'
 
 // Extended types for multi-node support
@@ -26,6 +29,17 @@ export type ProxyAvailabilityResult = UpstreamStatus
 // flicker during VueUse's autoReconnect retries (10 × 1s) on transient drops.
 const DISCONNECT_GRACE_MS = 1500
 
+// How long the shared socket stays open after the last page that needs it is
+// gone. Long enough to cover a detour through a page without upstream data,
+// short enough that an idle tab stops holding a backend goroutine.
+const MONITOR_LINGER_MS = 15_000
+
+// A subscribed socket that stops delivering has to be noticed and replaced:
+// the backend pushes every 5s, so silence for this long means the connection
+// is gone even when readyState still claims otherwise.
+const STALE_MESSAGE_MS = 20_000
+const WATCHDOG_INTERVAL_MS = 15_000
+
 export const useProxyAvailabilityStore = defineStore('proxyAvailability', () => {
   const availabilityResults = ref<Record<string, ProxyAvailabilityResult>>({})
   const upstreamStatusMap = ref<UpstreamStatusMap>({})
@@ -35,6 +49,10 @@ export const useProxyAvailabilityStore = defineStore('proxyAvailability', () => 
   const targetCount = ref(0)
 
   const nodeStore = useNodeAvailabilityStore()
+
+  // Last sign of life from the peer: the initial payload on connect, then
+  // every push. Drives the staleness half of the watchdog below.
+  const lastMessageAt = ref(0)
 
   let disconnectTimer: ReturnType<typeof setTimeout> | undefined
   const clearDisconnectTimer = () => {
@@ -48,6 +66,7 @@ export const useProxyAvailabilityStore = defineStore('proxyAvailability', () => 
     onConnected() {
       clearDisconnectTimer()
       isConnected.value = true
+      lastMessageAt.value = Date.now()
     },
     onDisconnected() {
       clearDisconnectTimer()
@@ -62,6 +81,7 @@ export const useProxyAvailabilityStore = defineStore('proxyAvailability', () => 
       try {
         availabilityResults.value = JSON.parse(event.data) as Record<string, ProxyAvailabilityResult>
         lastUpdateTime.value = new Date().toISOString()
+        lastMessageAt.value = Date.now()
       }
       catch (error) {
         console.error('Failed to parse WebSocket message:', error)
@@ -130,7 +150,8 @@ export const useProxyAvailabilityStore = defineStore('proxyAvailability', () => 
     }
   }
 
-  // Start monitoring (initialize + WebSocket)
+  // Start monitoring (initialize + WebSocket). Idempotent: repeated calls reuse
+  // an open socket and only reconnect one that has died.
   async function startMonitoring() {
     // Initialize node store first
     if (!nodeStore.isInitialized) {
@@ -141,15 +162,92 @@ export const useProxyAvailabilityStore = defineStore('proxyAvailability', () => 
     connectWebSocket()
   }
 
-  // Stop monitoring and cleanup
+  // Stop monitoring and cleanup. close() runs unconditionally: when the socket
+  // is already CLOSED, VueUse may still be sitting on a queued autoReconnect
+  // retry that would otherwise reopen a connection nobody asked for.
   function stopMonitoring() {
     clearDisconnectTimer()
+    socket.close()
+    isConnected.value = false
+    lastMessageAt.value = 0
+  }
 
-    if (socket.ws.value && socket.ws.value.readyState !== WebSocket.CLOSED) {
-      socket.close()
+  // Runs only while someone is subscribed; see superviseConnection() below.
+  const watchdog = useIntervalFn(() => superviseConnection(), WATCHDOG_INTERVAL_MS, { immediate: false })
+
+  // The socket is shared by every page that renders upstream status (the
+  // upstream list, the site and stream editors), so its lifetime is tied to the
+  // set of subscribers rather than to whichever component opened it. Use
+  // useProxyAvailability() from a component instead of calling these directly.
+  const connection = createSharedConnection({
+    open: () => {
+      void startMonitoring()
+      watchdog.resume()
+    },
+    close: () => {
+      watchdog.pause()
+      stopMonitoring()
+    },
+    lingerMs: MONITOR_LINGER_MS,
+  })
+
+  function acquireMonitor(): SubscriptionToken {
+    return connection.acquire()
+  }
+
+  function releaseMonitor(token: SubscriptionToken) {
+    connection.release(token)
+  }
+
+  // Tear everything down regardless of subscribers (logout, page unload).
+  function shutdownMonitoring() {
+    connection.shutdown()
+  }
+
+  // Subscribers say the data is wanted; they cannot say the connection is
+  // healthy. useWebSocket gives up after ~10 quick retries, which covers a blip
+  // but not a laptop sleep, a backend restart or a proxy dropping an idle
+  // tunnel — and a half-open socket never reports a close at all. So while
+  // anyone is subscribed, supervise the socket and rebuild it when it stops
+  // delivering.
+  function superviseConnection() {
+    const action = resolveConnectionRecovery({
+      hasSubscribers: connection.hasSubscribers,
+      readyState: socket.ws.value?.readyState,
+      lastMessageAt: lastMessageAt.value,
+      now: Date.now(),
+      staleAfterMs: STALE_MESSAGE_MS,
+    })
+
+    if (action === 'connect') {
+      connectWebSocket()
+      return
     }
 
-    isConnected.value = false
+    if (action === 'reopen') {
+      // open() closes the stale socket, clears the retry budget and dials again.
+      lastMessageAt.value = 0
+      socket.open()
+    }
+  }
+
+  // Recover as soon as the tab comes back or the network returns instead of
+  // waiting for the next watchdog tick.
+  if (typeof window !== 'undefined') {
+    const visibility = useDocumentVisibility()
+    const online = useOnline()
+
+    watch(visibility, (value, previous) => {
+      if (value === 'visible' && previous !== 'visible') {
+        superviseConnection()
+      }
+    })
+
+    watch(online, (value, previous) => {
+      if (value && !previous) {
+        superviseConnection()
+      }
+    })
   }
 
   // Get availability result for a specific target
@@ -222,7 +320,7 @@ export const useProxyAvailabilityStore = defineStore('proxyAvailability', () => 
   // Auto-cleanup WebSocket on page unload. VueUse removes the listener with
   // the store scope (pinia setup stores have an effectScope), so this stays
   // a single, scope-bound registration for the lifetime of the app.
-  useEventListener(window, 'beforeunload', () => stopMonitoring())
+  useEventListener(window, 'beforeunload', () => shutdownMonitoring())
 
   return {
     availabilityResults: readonly(availabilityResults),
@@ -232,9 +330,9 @@ export const useProxyAvailabilityStore = defineStore('proxyAvailability', () => 
     lastUpdateTime: readonly(lastUpdateTime),
     targetCount: readonly(targetCount),
     initialize,
-    startMonitoring,
-    stopMonitoring,
-    connectWebSocket,
+    acquireMonitor,
+    releaseMonitor,
+    shutdownMonitoring,
     getAvailabilityResult,
     hasAvailabilityData,
     getAllTargets,
