@@ -40,7 +40,9 @@ settings.get_server_name().then(r => {
   server_name.value = r.name
 })
 
-// Initialize stores monitoring after user is logged in and layout is mounted
+// Initialize stores monitoring after user is logged in and layout is mounted.
+// Upstream availability is not started here: the pages that render it subscribe
+// through useProxyAvailability(), so the socket only exists while it is needed.
 const proxyAvailabilityStore = useProxyAvailabilityStore()
 const nodeAvailabilityStore = useNodeAvailabilityStore()
 const userStore = useUserStore()
@@ -51,9 +53,6 @@ onMounted(() => {
 
   void userStore.refreshTwoFAStatus()
 
-  // Start monitoring for upstream availability
-  proxyAvailabilityStore.startMonitoring()
-
   // Start monitoring for node availability
   nodeAvailabilityStore.startMonitoring()
 })
@@ -62,8 +61,8 @@ onUnmounted(() => {
   // Remove resize listener
   removeEventListener('resize', init)
 
-  // Stop monitoring when layout is unmounted
-  proxyAvailabilityStore.stopMonitoring()
+  // Leaving the authenticated layout (logout) drops every subscriber
+  proxyAvailabilityStore.shutdownMonitoring()
   nodeAvailabilityStore.stopMonitoring()
 })
 

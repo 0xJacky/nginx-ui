@@ -3,10 +3,12 @@ import type { Namespace } from '@/api/namespace'
 import type { ProxyTarget } from '@/api/site'
 import { useNodeAvailabilityStore } from '@/pinia/moudule/nodeAvailability'
 import { useNodeGroupStore } from '@/pinia/moudule/nodeGroupStore'
-import { useProxyAvailabilityStore } from '@/pinia/moudule/proxyAvailability'
+import { useProxyAvailability } from './useProxyAvailability'
 
 export function useUpstreamStatus(namespaceId?: Ref<number | undefined>) {
-  const proxyStore = useProxyAvailabilityStore()
+  // Subscribing here keeps the shared socket alive for every component that
+  // renders upstream status, and releases it with the component's scope.
+  const proxyStore = useProxyAvailability()
   const nodeStore = useNodeAvailabilityStore()
   const nodeGroupStore = useNodeGroupStore()
 

@@ -4,15 +4,17 @@ import type { SocketInfo } from '@/api/upstream'
 import { ReloadOutlined } from '@antdv-next/icons'
 import { message, Tag } from 'antdv-next'
 import upstream from '@/api/upstream'
+import { useProxyAvailability } from '@/composables/useProxyAvailability'
 import { formatDateTime } from '@/lib/helper'
-import { useProxyAvailabilityStore } from '@/pinia/moudule/proxyAvailability'
 
 const dataSource = ref<SocketInfo[]>([])
 const loading = ref(false)
 const globalHealthCheckEnabled = ref(true)
 
-// Initialize proxy availability store
-const proxyAvailabilityStore = useProxyAvailabilityStore()
+// Subscribe to the shared availability socket for this page's lifetime. The
+// connection is reference counted, so it is only closed once no other page
+// needs it either.
+const proxyAvailabilityStore = useProxyAvailability()
 
 const columns: TableColumnsType<SocketInfo> = [
   {
@@ -121,16 +123,8 @@ async function handleToggleEnabled(socket: string, enabled: boolean | string | n
   }
 }
 
-// Start monitoring when component mounts
 onMounted(async () => {
   await loadData()
-  // Start real-time monitoring for availability updates
-  proxyAvailabilityStore.startMonitoring()
-})
-
-// Clean up WebSocket connections when component unmounts
-onUnmounted(() => {
-  proxyAvailabilityStore.stopMonitoring()
 })
 </script>
 
