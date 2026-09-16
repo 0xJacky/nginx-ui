@@ -10,6 +10,7 @@ export interface Notification extends ModelBase {
   type: string
   title: string
   content: string
+  url?: string | null
   details: string | NotificationDetails | null
 }
 
