@@ -720,13 +720,13 @@ jobs:
       - name: Set up Helm
         uses: azure/setup-helm@v5
         with:
-          version: v4.2.4
+          version: v4.3.0
 
       - name: Create kind cluster
         uses: helm/kind-action@v1.15.0
         with:
-          version: v0.31.0
-          kubectl_version: v1.35.0
+          version: v0.33.0
+          kubectl_version: v1.37.0
           cluster_name: nginx-ui-helm
           wait: 120s
 
@@ -796,7 +796,7 @@ jobs:
       - name: Set up Helm
         uses: azure/setup-helm@v5
         with:
-          version: v4.2.4
+          version: v4.3.0
 
       - name: Package chart
         env:

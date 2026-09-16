@@ -34,11 +34,11 @@ require (
 	github.com/go-playground/validator/v10 v10.30.4
 	github.com/go-resty/resty/v2 v2.17.2
 	github.com/go-telegram-bot-api/telegram-bot-api v4.6.4+incompatible
-	github.com/go-webauthn/webauthn v0.18.0
+	github.com/go-webauthn/webauthn v0.18.1
 	github.com/golang-jwt/jwt/v5 v5.3.1
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674
-	github.com/huaweicloud/huaweicloud-sdk-go-v3 v0.1.214
+	github.com/huaweicloud/huaweicloud-sdk-go-v3 v0.1.215
 	github.com/mark3labs/mcp-go v1.0.0
 	github.com/miekg/dns v1.1.73
 	github.com/minio/minio-go/v7 v7.3.0
@@ -52,12 +52,12 @@ require (
 	github.com/pquerna/otp v1.5.0
 	github.com/pretty66/websocketproxy v0.0.0-20220507015215-930b3a686308
 	github.com/samber/lo v1.53.0
-	github.com/sashabaranov/go-openai v1.42.0
+	github.com/sashabaranov/go-openai v1.42.1
 	github.com/shirou/gopsutil/v4 v4.26.8
 	github.com/spf13/afero v1.15.0
 	github.com/spf13/cast v1.10.0
 	github.com/stretchr/testify v1.12.1
-	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.3.176
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.3.178
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20260220081509-8e17ce617db3
 	github.com/ulikunitz/xz v0.5.16
 	github.com/uozi-tech/cosy v1.35.1
@@ -179,7 +179,7 @@ require (
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-sql-driver/mysql v1.10.0 // indirect
 	github.com/go-viper/mapstructure/v2 v2.5.0 // indirect
-	github.com/go-webauthn/x v0.3.0 // indirect
+	github.com/go-webauthn/x v0.3.1 // indirect
 	github.com/goccy/go-json v0.10.6 // indirect
 	github.com/goccy/go-yaml v1.19.2 // indirect
 	github.com/gofrs/flock v0.13.0 // indirect
