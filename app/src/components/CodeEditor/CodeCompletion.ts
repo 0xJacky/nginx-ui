@@ -1,10 +1,13 @@
+import type { UseWebSocketReturn } from '@vueuse/core'
 import type { Editor } from 'ace-builds'
 import type { Point } from 'ace-builds-internal/document'
+import type { LazyResource, LifecycleSession } from './completionLifecycle'
 import ace from 'ace-builds'
 import { debounce } from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
 import llm from '@/api/llm'
 import { useWebSocket } from '@/lib/websocket'
+import { createLazyResource, createLifecycle } from './completionLifecycle'
 
 function debug(...args: unknown[]) {
   if (import.meta.env.DEV) {
@@ -34,6 +37,13 @@ const SENSITIVE_CONTENT_PATTERNS = [
   /secret\s*[:=]\s*["'][^"']+["']/,
 ]
 
+const GHOST_TEXT_COMMANDS = ['acceptGhostText', 'clearGhostText']
+
+interface PendingCompletion {
+  id: string
+  callback: (suggestion: string) => void
+}
+
 function useCodeCompletion() {
   const editorRef = ref<Editor>()
   const currentGhostText = ref<string>('')
@@ -43,7 +53,14 @@ function useCodeCompletion() {
   const lastTriggerTime = ref<number>(0)
   const lastTriggerPosition = ref<{ row: number, column: number } | null>(null)
 
-  const ws = shallowRef<WebSocket>()
+  // Every init() runs in its own session, disposed by cleanUp() or the next
+  // init(), so work that resolves late cannot outlive the editor.
+  const lifecycle = createLifecycle({
+    onError: error => console.error('[CodeEditor] Failed to release code completion resource', error),
+  })
+  let connection: LazyResource<UseWebSocketReturn<string>> | undefined
+  // Only the response to the latest request is applied.
+  let pendingRequest: PendingCompletion | undefined
 
   // Check if the current file is a configuration file
   function checkIfConfigFile(filename: string, content: string): boolean {
@@ -260,13 +277,47 @@ function useCodeCompletion() {
     return shouldTrigger
   }
 
-  function getAISuggestions(code: string, context: string, position: Point, callback: (suggestion: string) => void, language: string = 'nginx', suffix: string = '', requestId: string, currentIndent: string = '') {
-    if (!ws.value || ws.value.readyState !== WebSocket.OPEN) {
-      debug('WebSocket is not open')
-      clearLoadingSpinner()
+  function handleCompletionMessage(event: MessageEvent) {
+    const data = JSON.parse(event.data)
+    debug(`Received message`, data, pendingRequest?.id)
+    if (!pendingRequest || data.request_id !== pendingRequest.id) {
       return
     }
 
+    const { callback } = pendingRequest
+    pendingRequest = undefined
+
+    // Clear loading spinner when receiving response
+    clearLoadingSpinner()
+    callback(data.code)
+  }
+
+  // The socket is opened from an editor event, outside any effect scope, where
+  // VueUse's autoClose would leave a beforeunload listener behind for every
+  // socket. The session closes it instead.
+  function openCompletionSocket(session: LifecycleSession) {
+    const socket = useWebSocket<string>(llm.codeCompletionWebSocketUrl, false, {
+      autoClose: false,
+      onMessage: (_ws, event) => {
+        if (session.active) {
+          handleCompletionMessage(event)
+        }
+      },
+      onDisconnected: () => {
+        // A request still waiting on this socket will never be answered.
+        if (!session.active || connection?.current !== socket || !pendingRequest) {
+          return
+        }
+
+        pendingRequest = undefined
+        clearLoadingSpinner()
+      },
+    })
+
+    return socket
+  }
+
+  function getAISuggestions(code: string, context: string, position: Point, callback: (suggestion: string) => void, language: string = 'nginx', suffix: string = '', requestId: string, currentIndent: string = '') {
     if (!code.trim()) {
       debug('Code is empty')
       clearLoadingSpinner()
@@ -286,6 +337,15 @@ function useCodeCompletion() {
       return
     }
 
+    // Connect on the first request rather than at init: a page renders an
+    // editor per location or include, and most of them are never typed in.
+    const socket = connection?.acquire()
+    if (!socket) {
+      debug('Code completion session is not active')
+      clearLoadingSpinner()
+      return
+    }
+
     const message = {
       context,
       code,
@@ -298,20 +358,13 @@ function useCodeCompletion() {
 
     debug('Sending message', message)
 
+    pendingRequest = { id: requestId, callback }
+
     // Show loading spinner when sending request
     showLoadingSpinner()
 
-    ws.value.send(JSON.stringify(message))
-
-    ws.value.onmessage = event => {
-      const data = JSON.parse(event.data)
-      debug(`Received message`, data, requestId)
-      if (data.request_id === requestId) {
-        // Clear loading spinner when receiving response
-        clearLoadingSpinner()
-        callback(data.code)
-      }
-    }
+    // VueUse buffers the message until a freshly opened socket is connected.
+    socket.send(JSON.stringify(message))
   }
 
   function applyGhostText() {
@@ -400,6 +453,15 @@ function useCodeCompletion() {
     }
   }
 
+  function removeKeyHandlers(editor: Editor) {
+    for (const name of GHOST_TEXT_COMMANDS) {
+      const existingCommand = editor.commands.byName[name]
+      if (existingCommand) {
+        editor.commands.removeCommand(existingCommand)
+      }
+    }
+  }
+
   // Accept the ghost text suggestion with Tab key and clear with Esc key
   function setupKeyHandlers(editor: Editor) {
     if (!editor) {
@@ -410,15 +472,7 @@ function useCodeCompletion() {
     debug('Setting up key handlers')
 
     // Remove existing commands to avoid conflicts
-    const existingTabCommand = editor.commands.byName.acceptGhostText
-    if (existingTabCommand) {
-      editor.commands.removeCommand(existingTabCommand)
-    }
-
-    const existingEscCommand = editor.commands.byName.clearGhostText
-    if (existingEscCommand) {
-      editor.commands.removeCommand(existingEscCommand)
-    }
+    removeKeyHandlers(editor)
 
     // Register Tab key handler - accept ghost text
     editor.commands.addCommand({
@@ -490,16 +544,40 @@ function useCodeCompletion() {
   debug('Editor initialized')
 
   async function init(editor: Editor, filename: string = '') {
+    // Releases the socket, listeners and timers of a previous init().
+    const session = lifecycle.begin()
+
     const { enabled } = await llm.get_code_completion_enabled_status()
+
+    // cleanUp() or another init() ran while the status request was in flight.
+    if (!session.active) {
+      debug('Code completion init cancelled')
+      return
+    }
+
     if (!enabled) {
       debug('Code completion is not enabled')
       return
     }
 
-    const { ws: wsRef } = useWebSocket(llm.codeCompletionWebSocketUrl, false)
-    ws.value = wsRef.value!
+    connection = createLazyResource(session, {
+      create: () => openCompletionSocket(session),
+      isAlive: socket => socket.status.value !== 'CLOSED',
+      destroy: socket => socket.close(),
+    })
 
     editorRef.value = editor
+    session.onDispose(() => {
+      connection = undefined
+      pendingRequest = undefined
+      editorRef.value = undefined
+    })
+    // A trailing debounced call would otherwise send a request after cleanup.
+    session.onDispose(() => debouncedApplyGhostText.cancel())
+    // Teardowns run in reverse order, so these still see the editor. A request
+    // abandoned mid-flight must not leave its spinner behind on re-init.
+    session.onDispose(clearLoadingSpinner)
+    session.onDispose(clearGhostText)
 
     // Determine if the current file is a configuration file
     const content = editor.getValue()
@@ -508,33 +586,40 @@ function useCodeCompletion() {
 
     // Set up key handlers (Tab and Esc)
     setupKeyHandlers(editor)
+    session.onDispose(() => removeKeyHandlers(editor))
 
-    setTimeout(() => {
-      editor.on('change', (e: { action: string }) => {
+    session.setTimeout(() => {
+      function onChange(e: { action: string }) {
         // If change is caused by user input, interrupt current completion
         clearGhostText()
 
         if ((e.action === 'insert' || e.action === 'remove') && isConfigFile.value) {
           debouncedApplyGhostText()
         }
-      })
+      }
 
       // Listen for cursor changes, using debounce
-      editor.selection.on('changeCursor', () => {
+      function onChangeCursor() {
         clearGhostText()
         if (isConfigFile.value) {
           debouncedApplyGhostText()
         }
+      }
+
+      // Ace's destroy() does not detach selection listeners, so both are
+      // removed explicitly, from the selection they were added to.
+      const { selection } = editor
+      editor.on('change', onChange)
+      selection.on('changeCursor', onChangeCursor)
+      session.onDispose(() => {
+        editor.off('change', onChange)
+        selection.off('changeCursor', onChangeCursor)
       })
     }, 2000)
   }
 
   function cleanUp() {
-    clearLoadingSpinner()
-    clearGhostText()
-    if (ws.value) {
-      ws.value.close()
-    }
+    lifecycle.dispose()
     debug('CodeCompletion unmounted')
   }
 
