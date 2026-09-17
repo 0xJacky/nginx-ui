@@ -121,6 +121,7 @@
 | IndexingEnabled | NGINX_UI_NGINX_LOG_INDEXING_ENABLED |
 | IndexPath               | NGINX_UI_NGINX_LOG_INDEX_PATH                |
 | [IndexCustomMMDB](./config-nginx-log.md#indexcustommmdb) | NGINX_UI_NGINX_LOG_INDEX_CUSTOM_MMDB |
+| [GeoMapPath](./config-nginx-log.md#geomappath) | NGINX_UI_NGINX_LOG_GEO_MAP_PATH |
 
 ## Node
 

@@ -103,6 +103,33 @@ python3 template/custom-mmdb/Build_Custom_mmdb.py
 
 當 `IndexCustomMMDB` 非空時，GeoLite2 設定頁面會顯示所設定的自訂資料庫檔名，並隱藏重新下載操作。該提示僅反映設定的路徑；實際資料庫選擇仍遵循上述優先順序規則。
 
+### GeoMapPath
+
+- 類型：`string`
+- 預設值：空
+- 環境變數：`NGINX_UI_NGINX_LOG_GEO_MAP_PATH`
+
+指定中國地圖與省級地圖邊界檔案目錄，目錄內檔名需遵循 `100000_full.json`、`<省級adcode>_full.json` 的命名規則。
+
+- 設定為絕對路徑時，直接使用該路徑。
+- 設定為相對路徑時，以目前 `app.ini` 所在目錄為基準解析。
+- 在儀表板中，只有當此設定為非空值時才會顯示中國地圖入口。
+- 當此設定為空時，後端讀取邊界檔案會回退到預設 `maps` 目錄，但儀表板不會顯示中國地圖入口。
+
+範例：
+
+```ini
+[nginx_log]
+GeoMapPath = /etc/nginx-ui/maps
+```
+
+Windows 範例：
+
+```ini
+[nginx_log]
+GeoMapPath = D:/OpCon/GIT/nginx-ui/maps
+```
+
 ## 系統需求
 
 ### 最低需求
