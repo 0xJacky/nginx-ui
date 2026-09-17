@@ -52,6 +52,7 @@ func SendTestMessageContext(ctx context.Context, notifyType, language string, co
 	data := Define("External Notification Test", "This is a test message sent at %{timestamp} from Nginx UI.", map[string]any{
 		"timestamp": timestamp,
 	})
+	data.URL = toAbsoluteNotificationURL("#/preference")
 
 	// Create external message and send with direct parameters
 	extNotify := &ExternalMessage{data}

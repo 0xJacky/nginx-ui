@@ -412,7 +412,14 @@ func TestSupportsSMTPAuth(t *testing.T) {
 }
 
 func TestBuildEmailMessageUsesPlainTextByDefault(t *testing.T) {
-	message, err := buildEmailMessage("sender@example.com", "receiver@example.com", "Plain subject", "Line 1\nLine 2", false, "")
+	message, err := buildEmailMessage("sender@example.com", "receiver@example.com", ExternalMessageTemplateData{
+		Title:                 "Plain subject",
+		Content:               "Line 1\nLine 2",
+		NotificationType:      "warning",
+		NotificationTypeI18n:  "Warning",
+		NotificationTypeLabel: "Warning",
+		GoToURL:               "#/notifications",
+	}, false, "")
 	if err != nil {
 		t.Fatalf("buildEmailMessage() error = %v", err)
 	}
@@ -424,10 +431,23 @@ func TestBuildEmailMessageUsesPlainTextByDefault(t *testing.T) {
 	if !strings.Contains(body, "Plain subject\n\nLine 1\nLine 2") {
 		t.Fatalf("message body = %q, want plain title and content", body)
 	}
+	if !strings.Contains(body, "Type: Warning (Warning)") {
+		t.Fatalf("message body = %q, want notification type metadata", body)
+	}
+	if !strings.Contains(body, "Go To: #/notifications") {
+		t.Fatalf("message body = %q, want go-to URL metadata", body)
+	}
 }
 
 func TestBuildEmailMessageUsesHTMLTemplate(t *testing.T) {
-	message, err := buildEmailMessage("sender@example.com", "receiver@example.com", "HTML subject", "<b>Line 1</b>\nLine 2", true, "")
+	message, err := buildEmailMessage("sender@example.com", "receiver@example.com", ExternalMessageTemplateData{
+		Title:                 "HTML subject",
+		Content:               "<b>Line 1</b>\nLine 2",
+		NotificationType:      "error",
+		NotificationTypeI18n:  "Error",
+		NotificationTypeLabel: "<Error>",
+		GoToURL:               "#/notifications?search={}",
+	}, true, "")
 	if err != nil {
 		t.Fatalf("buildEmailMessage() error = %v", err)
 	}
@@ -436,11 +456,17 @@ func TestBuildEmailMessageUsesHTMLTemplate(t *testing.T) {
 	if !strings.Contains(body, "Content-Type: text/html; charset=UTF-8") {
 		t.Fatalf("message content type = %q, want text/html", body)
 	}
-	if !strings.Contains(body, "<h1 style=\"margin: 0 0 16px; color: #1677ff;\">HTML subject</h1>") {
+	if !strings.Contains(body, "<h1 style=\"margin: 0 0 16px; color: #1f2937;\">HTML subject</h1>") {
 		t.Fatalf("message body = %q, want HTML title", body)
+	}
+	if !strings.Contains(body, "<strong>&lt;Error&gt;</strong>") {
+		t.Fatalf("message body = %q, want escaped HTML notification type", body)
 	}
 	if !strings.Contains(body, "&lt;b&gt;Line 1&lt;/b&gt;<br>\nLine 2") {
 		t.Fatalf("message body = %q, want escaped HTML content with line breaks", body)
+	}
+	if !strings.Contains(body, "<a href=\"#/notifications?search=%7b%7d\">#/notifications?search={}</a>") {
+		t.Fatalf("message body = %q, want go-to URL link", body)
 	}
 }
 
@@ -448,17 +474,23 @@ func TestBuildEmailMessageUsesCustomHTMLTemplate(t *testing.T) {
 	message, err := buildEmailMessage(
 		"sender@example.com",
 		"receiver@example.com",
-		"Custom subject",
-		"Line 1\nLine 2",
+		ExternalMessageTemplateData{
+			Title:                 "Custom subject",
+			Content:               "Line 1\nLine 2",
+			NotificationType:      "success",
+			NotificationTypeI18n:  "Success",
+			NotificationTypeLabel: "Success",
+			GoToURL:               "#/certificates/list",
+		},
 		true,
-		`<main><h1>{{.Title}}</h1><article>{{.Content}}</article></main>`,
+		`<main><h1 style="color: {{.LevelColor}}">{{.Title}}</h1><p>{{.Type}}</p><p>{{.TypeI18nKey}}</p><p>{{.LevelColor}}</p><article>{{.Content}}</article><a href="{{.GoToURL}}">{{.GoToURL}}</a></main>`,
 	)
 	if err != nil {
 		t.Fatalf("buildEmailMessage() error = %v", err)
 	}
 
 	body := string(message)
-	if !strings.Contains(body, "<main><h1>Custom subject</h1><article>Line 1<br>\nLine 2</article></main>") {
+	if !strings.Contains(body, "<main><h1 style=\"color: #1f2937\">Custom subject</h1><p>success</p><p>Success</p><p>#1f2937</p><article>Line 1<br>\nLine 2</article><a href=\"#/certificates/list\">#/certificates/list</a></main>") {
 		t.Fatalf("message body = %q, want custom HTML template", body)
 	}
 }

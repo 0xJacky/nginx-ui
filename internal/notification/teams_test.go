@@ -71,7 +71,7 @@ func TestTeamsNotifierSendsWorkflowWebhookPayload(t *testing.T) {
 		"client_id":            "client-1",
 		"client_secret":        "secret-1",
 		"workflow_webhook_url": server.URL + "/powerautomate/automations/direct/workflows/9985c2d3ed3b4a84bdbe8dd1c0d36e7d/triggers/manual/paths/invoke?api-version=1",
-		"message_body":         `[{"type":"TextBlock","text":"{{title}}","weight":"Bolder","size":"Large","color":"red"},{"type":"FactSet","facts":[{"title":"Content","value":"{{content}}"}]}]`,
+		"message_body":         `[{"type":"TextBlock","text":"{{title}}","weight":"Bolder","size":"Large","color":"{{level_color}}"},{"type":"FactSet","facts":[{"title":"Type","value":"{{type}}/{{type_label}}/{{type_i18n_key}}"},{"title":"LevelColor","value":"{{level_color}}"},{"title":"Content","value":"{{content}}"},{"title":"Go To","value":"{{go_to_url}}"}]}]`,
 	})
 	if err != nil {
 		t.Fatalf("SendWithConfigContext() error = %v", err)
@@ -91,6 +91,21 @@ func TestTeamsNotifierSendsWorkflowWebhookPayload(t *testing.T) {
 	}
 	if got, _ := sentMessage["type"].(string); got != "message" {
 		t.Fatalf("type = %q", got)
+	}
+	if got, _ := sentMessage["notification_type"].(string); got != "error" {
+		t.Fatalf("notification_type = %q", got)
+	}
+	if got, _ := sentMessage["notification_type_i18n_key"].(string); got != "Error" {
+		t.Fatalf("notification_type_i18n_key = %q", got)
+	}
+	if got, _ := sentMessage["notification_type_label"].(string); got != "Error" {
+		t.Fatalf("notification_type_label = %q", got)
+	}
+	if got, _ := sentMessage["notification_level_color"].(string); got != "Attention" {
+		t.Fatalf("notification_level_color = %q", got)
+	}
+	if got, _ := sentMessage["go_to_url"].(string); got != "" {
+		t.Fatalf("go_to_url = %q", got)
 	}
 	attachments, ok := sentMessage["attachments"].([]any)
 	if !ok || len(attachments) != 1 {
@@ -120,12 +135,24 @@ func TestTeamsNotifierSendsWorkflowWebhookPayload(t *testing.T) {
 	}
 	secondBlock, _ := bodyBlocks[1].(map[string]any)
 	facts, _ := secondBlock["facts"].([]any)
-	if len(facts) != 1 {
+	if len(facts) != 4 {
 		t.Fatalf("facts = %#v", secondBlock["facts"])
 	}
-	fact, _ := facts[0].(map[string]any)
-	if got, _ := fact["value"].(string); got != "Line1\nLine2" {
+	typeFact, _ := facts[0].(map[string]any)
+	if got, _ := typeFact["value"].(string); got != "error/Error/Error" {
+		t.Fatalf("type fact = %q", got)
+	}
+	levelColorFact, _ := facts[1].(map[string]any)
+	if got, _ := levelColorFact["value"].(string); got != "Attention" {
+		t.Fatalf("level color fact = %q", got)
+	}
+	contentFact, _ := facts[2].(map[string]any)
+	if got, _ := contentFact["value"].(string); got != "Line1\nLine2" {
 		t.Fatalf("fact content = %q", got)
+	}
+	goToFact, _ := facts[3].(map[string]any)
+	if got, _ := goToFact["value"].(string); got != "" {
+		t.Fatalf("go to fact = %q", got)
 	}
 	if _, hasActions := contentObj["actions"]; hasActions {
 		t.Fatalf("actions should not be present in fixed payload: %#v", contentObj["actions"])
@@ -133,7 +160,10 @@ func TestTeamsNotifierSendsWorkflowWebhookPayload(t *testing.T) {
 }
 
 func TestBuildTeamsWorkflowPayloadFallbackTitle(t *testing.T) {
-	payload, err := buildTeamsWorkflowPayload("", "content", "")
+	payload, err := buildTeamsWorkflowPayload(ExternalMessageTemplateData{
+		Content:               "content",
+		NotificationTypeLabel: "Info",
+	}, "")
 	if err != nil {
 		t.Fatalf("buildTeamsWorkflowPayload() error = %v", err)
 	}
@@ -151,14 +181,22 @@ func TestBuildTeamsWorkflowPayloadFallbackTitle(t *testing.T) {
 }
 
 func TestBuildTeamsWorkflowPayloadRejectsInvalidMessageBody(t *testing.T) {
-	_, err := buildTeamsWorkflowPayload("title", "content", "{not-json}")
+	_, err := buildTeamsWorkflowPayload(ExternalMessageTemplateData{
+		Title:                 "title",
+		Content:               "content",
+		NotificationTypeLabel: "Info",
+	}, "{not-json}")
 	if err == nil {
 		t.Fatal("expected invalid config error")
 	}
 }
 
 func TestBuildTeamsWorkflowPayloadForcesMessageType(t *testing.T) {
-	payload, err := buildTeamsWorkflowPayload("title", "content", `[{"type":"TextBlock","text":"{{title}}"}]`)
+	payload, err := buildTeamsWorkflowPayload(ExternalMessageTemplateData{
+		Title:                 "title",
+		Content:               "content",
+		NotificationTypeLabel: "Info",
+	}, `[{"type":"TextBlock","text":"{{title}}"}]`)
 	if err != nil {
 		t.Fatalf("buildTeamsWorkflowPayload() error = %v", err)
 	}

@@ -21,10 +21,20 @@ const emailHTMLTemplate = `<!doctype html>
 <html>
 	<body style="font-family: sans-serif; color: #1f2937;">
 		<main style="max-width: 640px; margin: 0 auto; padding: 24px;">
-			<h1 style="margin: 0 0 16px; color: #1677ff;">{{.Title}}</h1>
+			<h1 style="margin: 0 0 16px; color: {{.LevelColor}};">{{.Title}}</h1>
+			<p style="margin: 0 0 12px; color: #6b7280; font-size: 12px;">
+				<strong>{{.TypeLabel}}</strong>
+				{{if .TypeI18nKey}}<span style="margin-left: 6px;">({{.TypeI18nKey}})</span>{{end}}
+			</p>
 			<section style="padding: 16px; background: #f6f8fa; border-radius: 6px;">
 				{{.Content}}
 			</section>
+			{{if .GoToURL}}
+			<p style="margin: 16px 0 0; font-size: 13px;">
+				<strong>{{.GoToLabel}}:</strong>
+				<a href="{{.GoToURL}}">{{.GoToURL}}</a>
+			</p>
+			{{end}}
 		</main>
 	</body>
 </html>`
@@ -88,9 +98,17 @@ func parseEmailTransport(raw string, ssl bool) (emailTransport, error) {
 
 // emailMessageData is the data passed to the HTML email template.
 type emailMessageData struct {
-	Title   string
-	Content any
+	Title       string
+	Content     any
+	Type        string
+	LevelColor  string
+	TypeI18nKey string
+	TypeLabel   htmltemplate.HTML
+	GoToURL     string
+	GoToLabel   string
 }
+
+const emailLevelColor = "#1f2937"
 
 func init() {
 	// RegisterExternalNotifier wires the "email" notifier into the generic
@@ -133,8 +151,7 @@ func init() {
 		message, err := buildEmailMessage(
 			emailConfig.From,
 			emailConfig.To,
-			msg.GetTitle(n.Language),
-			msg.GetContent(n.Language),
+			msg.GetTemplateData(n.Language),
 			isHTML,
 			emailConfig.Template,
 		)
@@ -187,7 +204,7 @@ func parseEmailRecipients(raw string) ([]string, error) {
 // buildEmailMessage renders the RFC 5322 message (headers + body) ready to be
 // streamed to an SMTP DATA command, optionally wrapping content in the
 // built-in or a user-supplied HTML template.
-func buildEmailMessage(from, to, subject, content string, html bool, customTemplate string) ([]byte, error) {
+func buildEmailMessage(from, to string, data ExternalMessageTemplateData, html bool, customTemplate string) ([]byte, error) {
 	fromAddress, err := mail.ParseAddress(from)
 	if err != nil {
 		return nil, err
@@ -197,8 +214,16 @@ func buildEmailMessage(from, to, subject, content string, html bool, customTempl
 		return nil, err
 	}
 
+	subject := data.Title
+	content := data.Content
 	contentType := "text/plain; charset=UTF-8"
 	body := fmt.Sprintf("%s\n\n%s", subject, content)
+	if strings.TrimSpace(data.NotificationTypeLabel) != "" {
+		body += fmt.Sprintf("\n\nType: %s (%s)", data.NotificationTypeLabel, data.NotificationTypeI18n)
+	}
+	if strings.TrimSpace(data.GoToURL) != "" {
+		body += fmt.Sprintf("\nGo To: %s", data.GoToURL)
+	}
 	if html {
 		contentType = "text/html; charset=UTF-8"
 		var htmlBody bytes.Buffer
@@ -211,8 +236,14 @@ func buildEmailMessage(from, to, subject, content string, html bool, customTempl
 			return nil, err
 		}
 		err = tmpl.Execute(&htmlBody, emailMessageData{
-			Title:   subject,
-			Content: htmltemplate.HTML(strings.ReplaceAll(htmltemplate.HTMLEscapeString(content), "\n", "<br>\n")),
+			Title:       subject,
+			Content:     htmltemplate.HTML(strings.ReplaceAll(htmltemplate.HTMLEscapeString(content), "\n", "<br>\n")),
+			Type:        data.NotificationType,
+			LevelColor:  emailLevelColor,
+			TypeI18nKey: data.NotificationTypeI18n,
+			TypeLabel:   htmltemplate.HTML(htmltemplate.HTMLEscapeString(data.NotificationTypeLabel)),
+			GoToURL:     strings.TrimSpace(data.GoToURL),
+			GoToLabel:   "Go To",
 		})
 		if err != nil {
 			return nil, err
