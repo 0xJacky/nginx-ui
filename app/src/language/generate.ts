@@ -2,6 +2,7 @@
 
 export const msg = [
   $gettext('Bundled nginx-ui.conf has WebSocket reverse-proxy fix'),
+  $gettext('Certificate deleted, but revocation failed: %{error}'),
   $gettext('Certificate not found: %{error}'),
   $gettext('Certificate revoked successfully'),
   $gettext('Check if /var/run/docker.sock exists. If you are using Nginx UI Official Docker Image, please make sure the docker socket is mounted like this: `-v /var/run/docker.sock:/var/run/docker.sock`. Nginx UI official image uses /var/run/docker.sock to communicate with the host Docker Engine via Docker Client API. This feature is used to control Nginx in another container and perform container replacement rather than binary replacement during OTA upgrades of Nginx UI to ensure container dependencies are also upgraded. If you don\'t need this feature, please add the environment variable NGINX_UI_IGNORE_DOCKER_SOCKET=true to the container.'),
