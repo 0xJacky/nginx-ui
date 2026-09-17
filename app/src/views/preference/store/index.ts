@@ -82,6 +82,7 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
       indexing_enabled: false,
       index_path: '',
       index_custom_mmdb: '',
+      geo_map_path: '',
     },
     node: {
       name: '',

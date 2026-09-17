@@ -3,6 +3,7 @@ import type { AnalyticsRequest, ChinaMapData, DashboardAnalytics, DashboardReque
 import { Col, Row } from 'antdv-next'
 import dayjs from 'dayjs'
 import nginx_log from '@/api/nginx_log'
+import settingsApi from '@/api/settings'
 import LoadingState from '../components/LoadingState.vue'
 import BrowserStatsTable from './components/BrowserStatsTable.vue'
 import DailyTrendsChart from './components/DailyTrendsChart.vue'
@@ -31,6 +32,7 @@ const hasValidTimeRange = ref(false)
 const worldMapData = ref<WorldMapData[] | null>(null)
 const chinaMapData = ref<ChinaMapData[] | null>(null)
 const geoLoading = ref(false)
+const hasGeoMapPathConfigured = ref(false)
 
 // Overall loading state for refresh button
 const refreshLoading = computed(() => loading.value || geoLoading.value)
@@ -89,6 +91,17 @@ async function loadDashboardData() {
   }
 }
 
+async function loadGeoMapConfig() {
+  try {
+    const settings = await settingsApi.get()
+    hasGeoMapPathConfigured.value = Boolean(settings.nginx_log?.geo_map_path?.trim())
+  }
+  catch (error) {
+    console.error('Failed to load nginx_log geo map path settings:', error)
+    hasGeoMapPathConfigured.value = false
+  }
+}
+
 // Load geographic data
 async function loadGeographicData() {
   geoLoading.value = true
@@ -99,13 +112,11 @@ async function loadGeographicData() {
       end_time: dateRange.value[1].unix(),
     }
 
-    // Load both world and China map data in parallel
-    const [worldResponse, chinaResponse] = await Promise.all([
-      nginx_log.getWorldMapData(request),
-      nginx_log.getChinaMapData(request),
-    ])
+    const worldResponse = await nginx_log.getWorldMapData(request)
 
     worldMapData.value = worldResponse.data
+
+    const chinaResponse = await nginx_log.getChinaMapData(request)
     chinaMapData.value = chinaResponse.data
   }
   catch (error) {
@@ -127,7 +138,7 @@ function refreshAllData() {
 watch(() => props.logPath, async () => {
   timeRangeLoaded.value = false
   const oldDateRange = dateRange.value
-  await loadTimeRange()
+  await Promise.all([loadTimeRange(), loadGeoMapConfig()])
 
   // Load dashboard data if dateRange didn't change (no automatic trigger from watch below)
   if (timeRangeLoaded.value
@@ -190,6 +201,8 @@ watch(dateRange, () => {
           <GeoMapChart
             :world-data="worldMapData"
             :china-data="chinaMapData"
+            :enable-china-map="true"
+            :geo-map-path-configured="hasGeoMapPathConfigured"
             :loading="geoLoading"
             :log-path="logPath"
             :start-time="dateRange[0].unix()"
