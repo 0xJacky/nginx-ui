@@ -1,11 +1,13 @@
 package notification
 
 import (
+	"net/url"
 	"strings"
 
 	"github.com/0xJacky/Nginx-UI/internal/event"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
+	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/uozi-tech/cosy/logger"
 )
 
@@ -66,22 +68,69 @@ var notificationURLByTitle = map[string]string{
 }
 
 func resolveNotificationURL(title string, details any) string {
+	fallback := notificationURLByTitle[title]
+
 	payload, ok := details.(map[string]any)
 	if !ok {
-		return notificationURLByTitle[title]
+		return toAbsoluteNotificationURL(fallback)
 	}
 
-	url, ok := payload["url"].(string)
+	customURL, ok := payload["url"].(string)
 	if !ok {
-		return notificationURLByTitle[title]
+		return toAbsoluteNotificationURL(fallback)
 	}
 
-	url = strings.TrimSpace(url)
-	if url == "" {
-		return notificationURLByTitle[title]
+	customURL = strings.TrimSpace(customURL)
+	if customURL == "" {
+		return toAbsoluteNotificationURL(fallback)
 	}
 
-	return url
+	return toAbsoluteNotificationURL(customURL)
+}
+
+func preferredNotificationOrigin() string {
+	for _, origin := range settings.WebAuthnSettings.RPOrigins {
+		trimmed := strings.TrimSpace(origin)
+		if trimmed == "" {
+			continue
+		}
+
+		parsed, err := url.Parse(trimmed)
+		if err != nil || parsed.Scheme == "" || parsed.Host == "" {
+			continue
+		}
+
+		return strings.TrimRight(trimmed, "/")
+	}
+
+	return ""
+}
+
+func toAbsoluteNotificationURL(raw string) string {
+	raw = strings.TrimSpace(raw)
+	if raw == "" {
+		return ""
+	}
+
+	lower := strings.ToLower(raw)
+	if strings.HasPrefix(lower, "http://") || strings.HasPrefix(lower, "https://") {
+		return raw
+	}
+
+	origin := preferredNotificationOrigin()
+	if origin == "" {
+		return raw
+	}
+
+	if strings.HasPrefix(raw, "#") {
+		return origin + "/" + raw
+	}
+
+	if strings.HasPrefix(raw, "/") {
+		return origin + raw
+	}
+
+	return origin + "/" + raw
 }
 
 func push(nType model.NotificationType, title string, content string, details any) {
