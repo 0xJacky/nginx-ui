@@ -14,6 +14,7 @@ const props = defineProps<{
   data: ChinaMapData[] | null
   loading: boolean
   hideCard?: boolean
+  geoMapPathConfigured?: boolean
   logPath: string
   startTime: number
   endTime: number
@@ -41,7 +42,38 @@ interface ChinaMapData {
 
 // Local boundary API for national and province-level GeoJSON.
 const CITY_BOUND_API = '/api/nginx_log/geo/boundary'
-const CHINA_BOUND_API = `${CITY_BOUND_API}/100000_full.json`
+const ALIYUN_BOUND_API = 'https://geo.datav.aliyun.com/areas_v3/bound'
+
+function boundarySources(path: string): string[] {
+  const local = `${CITY_BOUND_API}/${path}`
+  const aliyun = `${ALIYUN_BOUND_API}/${path}`
+
+  if (props.geoMapPathConfigured)
+    return [local, aliyun]
+
+  return [aliyun, local]
+}
+
+async function fetchBoundary(path: string): Promise<unknown> {
+  const sources = boundarySources(path)
+  let lastError: Error | null = null
+
+  for (const url of sources) {
+    try {
+      const isCDN = url.startsWith(ALIYUN_BOUND_API)
+      const res = await fetch(url, isCDN ? { referrerPolicy: 'no-referrer' } : undefined)
+      if (!res.ok)
+        throw new Error(`boundary request failed: ${res.status}`)
+
+      return await res.json()
+    }
+    catch (error) {
+      lastError = error instanceof Error ? error : new Error(String(error))
+    }
+  }
+
+  throw lastError ?? new Error('failed to load boundary data')
+}
 
 const settings = useSettingsStore()
 const { theme } = storeToRefs(settings)
@@ -74,11 +106,7 @@ function normalizeProvinceName(name: string): string {
 
 async function loadChinaMap() {
   try {
-    const res = await fetch(CHINA_BOUND_API)
-    if (!res.ok)
-      throw new Error(`Failed to fetch China boundaries: ${res.status}`)
-
-    const geojson = await res.json() as {
+    const geojson = await fetchBoundary('100000_full.json') as {
       features: Array<{ properties: { name: string, adcode?: string | number } }>
     }
 
@@ -126,10 +154,7 @@ async function drillIntoProvince(name: string) {
       (async () => {
         if (featureNames)
           return
-        const res = await fetch(`${CITY_BOUND_API}/${encodeURIComponent(adcode)}_full.json`)
-        if (!res.ok)
-          throw new Error(`Failed to fetch city boundaries: ${res.status}`)
-        const geojson = await res.json()
+        const geojson = await fetchBoundary(`${encodeURIComponent(adcode)}_full.json`)
         registerMap(mapName, geojson as unknown as Parameters<typeof registerMap>[1])
         featureNames = (geojson.features as Array<{ properties: { name: string } }>).map(f => f.properties.name)
         registeredCityMaps.set(adcode, featureNames)

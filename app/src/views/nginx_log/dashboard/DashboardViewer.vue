@@ -116,13 +116,8 @@ async function loadGeographicData() {
 
     worldMapData.value = worldResponse.data
 
-    if (hasGeoMapPathConfigured.value) {
-      const chinaResponse = await nginx_log.getChinaMapData(request)
-      chinaMapData.value = chinaResponse.data
-    }
-    else {
-      chinaMapData.value = null
-    }
+    const chinaResponse = await nginx_log.getChinaMapData(request)
+    chinaMapData.value = chinaResponse.data
   }
   catch (error) {
     console.error('Failed to load geographic data:', error)
@@ -206,7 +201,8 @@ watch(dateRange, () => {
           <GeoMapChart
             :world-data="worldMapData"
             :china-data="chinaMapData"
-            :enable-china-map="hasGeoMapPathConfigured"
+            :enable-china-map="true"
+            :geo-map-path-configured="hasGeoMapPathConfigured"
             :loading="geoLoading"
             :log-path="logPath"
             :start-time="dateRange[0].unix()"
