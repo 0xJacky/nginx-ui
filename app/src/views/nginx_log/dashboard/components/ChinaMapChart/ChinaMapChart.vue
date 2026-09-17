@@ -154,9 +154,11 @@ async function drillIntoProvince(name: string) {
       (async () => {
         if (featureNames)
           return
-        const geojson = await fetchBoundary(`${encodeURIComponent(adcode)}_full.json`)
+        const geojson = await fetchBoundary(`${encodeURIComponent(adcode)}_full.json`) as {
+          features: Array<{ properties: { name: string } }>
+        }
         registerMap(mapName, geojson as unknown as Parameters<typeof registerMap>[1])
-        featureNames = (geojson.features as Array<{ properties: { name: string } }>).map(f => f.properties.name)
+        featureNames = geojson.features.map(f => f.properties.name)
         registeredCityMaps.set(adcode, featureNames)
       })(),
     ])
