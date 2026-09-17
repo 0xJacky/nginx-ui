@@ -23,6 +23,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
         with:
+          persist-credentials: false
           ref: ${{ env.DEVELOP_BRANCH }}
           clean: false
           fetch-depth: 0
@@ -50,6 +51,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: Setup python
         uses: actions/setup-python@v7
@@ -76,6 +79,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
         with:
+          # persist-credentials stays on here: the push below is authenticated
+          # by the credential this checkout stores.
           ref: ${{ env.DEVELOP_BRANCH }}
           fetch-depth: 0
 
