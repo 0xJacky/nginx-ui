@@ -326,7 +326,7 @@ msgstr ""
 #: src/constants/index.ts:24
 #: src/views/nginx_log/NginxLogList.vue:210
 #: src/views/nginx_log/NginxLogList.vue:250
-#: src/views/notification/notificationColumns.tsx:14
+#: src/views/notification/notificationColumns.tsx:33
 msgid "Error"
 msgstr ""
 
@@ -383,7 +383,7 @@ msgstr ""
 #: src/components/InspectConfig/InspectConfig.vue:195
 #: src/constants/index.ts:25
 #: src/views/backup/components/BackupCreator.vue:138
-#: src/views/notification/notificationColumns.tsx:21
+#: src/views/notification/notificationColumns.tsx:40
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:97
 #: src/views/preference/components/NginxHostSetup/checks.ts:121
 msgid "Warning"
@@ -547,7 +547,7 @@ msgstr ""
 #: src/components/NgxConfigEditor/NgxServer.vue:86
 #: src/components/NgxConfigEditor/NgxUpstream.vue:60
 #: src/language/curd.ts:9
-#: src/views/certificate/components/RemoveCert.vue:112
+#: src/views/certificate/components/RemoveCert.vue:122
 #: src/views/config/components/Delete.vue:67
 #: src/views/config/components/Delete.vue:100
 #: src/views/config/ConfigList.vue:228
@@ -641,7 +641,7 @@ msgstr ""
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
 #: src/views/dashboard/Nodes.vue:111
 #: src/views/node/nodeColumns.tsx:150
-#: src/views/upstream/SocketList.vue:49
+#: src/views/upstream/SocketList.vue:51
 msgid "Online"
 msgstr ""
 
@@ -651,7 +651,7 @@ msgstr ""
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
 #: src/views/dashboard/Nodes.vue:118
 #: src/views/node/nodeColumns.tsx:154
-#: src/views/upstream/SocketList.vue:49
+#: src/views/upstream/SocketList.vue:51
 msgid "Offline"
 msgstr ""
 
@@ -832,8 +832,8 @@ msgstr ""
 
 #: src/components/NgxConfigEditor/NginxStatusAlert.vue:15
 #: src/composables/useNginxPerformance.ts:31
-#: src/views/dashboard/NginxDashBoard.vue:120
-#: src/views/dashboard/NginxDashBoard.vue:139
+#: src/views/dashboard/NginxDashBoard.vue:216
+#: src/views/dashboard/NginxDashBoard.vue:245
 msgid "Nginx is not running"
 msgstr ""
 
@@ -1837,7 +1837,7 @@ msgid "N/A"
 msgstr ""
 
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:51
-#: src/composables/useUpstreamStatus.ts:146
+#: src/composables/useUpstreamStatus.ts:148
 msgid "Main Node"
 msgstr ""
 
@@ -1889,7 +1889,7 @@ msgid "Percentage"
 msgstr ""
 
 #: src/composables/useGeoTranslation.ts:169
-#: src/views/dashboard/NginxDashBoard.vue:188
+#: src/views/dashboard/NginxDashBoard.vue:294
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:304
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:126
 msgid "No data"
@@ -1993,7 +1993,7 @@ msgstr ""
 msgid "Maximum number of connections per worker process"
 msgstr ""
 
-#: src/composables/useUpstreamStatus.ts:122
+#: src/composables/useUpstreamStatus.ts:124
 #: src/views/certificate/CertificateList/certColumns.tsx:24
 #: src/views/certificate/CertificateList/Certificate.vue:44
 #: src/views/config/components/Delete.vue:125
@@ -2003,20 +2003,20 @@ msgstr ""
 #: src/views/dns/components/DNSRecordTable.vue:45
 #: src/views/dns/DNSGroupRecordManager.vue:126
 #: src/views/nginx_log/NginxLogList.vue:147
-#: src/views/notification/notificationColumns.tsx:8
+#: src/views/notification/notificationColumns.tsx:27
 #: src/views/preference/components/ExternalNotify/columns.tsx:25
 #: src/views/site/components/QuickSetup/QuickSetupForm.vue:57
 msgid "Type"
 msgstr ""
 
-#: src/composables/useUpstreamStatus.ts:122
+#: src/composables/useUpstreamStatus.ts:124
 #: src/routes/modules/upstream.ts:10
 #: src/views/home/Home.vue:80
-#: src/views/upstream/SocketList.vue:25
+#: src/views/upstream/SocketList.vue:27
 msgid "Upstream"
 msgstr ""
 
-#: src/composables/useUpstreamStatus.ts:122
+#: src/composables/useUpstreamStatus.ts:124
 msgid "Proxy Pass"
 msgstr ""
 
@@ -3383,14 +3383,14 @@ msgid "This field should only contain letters, unicode characters, numbers, and 
 msgstr ""
 
 #: src/constants/index.ts:26
-#: src/views/notification/notificationColumns.tsx:28
+#: src/views/notification/notificationColumns.tsx:47
 msgid "Info"
 msgstr ""
 
 #: src/constants/index.ts:27
 #: src/views/backup/AutoBackup/AutoBackup.vue:224
 #: src/views/backup/AutoBackup/AutoBackup.vue:249
-#: src/views/notification/notificationColumns.tsx:35
+#: src/views/notification/notificationColumns.tsx:54
 msgid "Success"
 msgstr ""
 
@@ -3559,6 +3559,7 @@ msgstr ""
 
 #: src/language/curd.ts:7
 #: src/views/nginx_log/NginxLogList.vue:532
+#: src/views/notification/notificationColumns.tsx:101
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:109
 #: src/views/system/Licenses.vue:187
 msgid "View"
@@ -3758,230 +3759,234 @@ msgid "Bundled nginx-ui.conf has WebSocket reverse-proxy fix"
 msgstr ""
 
 #: src/language/generate.ts:5
-msgid "Certificate not found: %{error}"
+msgid "Certificate deleted, but revocation failed: %{error}"
 msgstr ""
 
 #: src/language/generate.ts:6
-msgid "Certificate revoked successfully"
+msgid "Certificate not found: %{error}"
 msgstr ""
 
 #: src/language/generate.ts:7
-msgid "Check if /var/run/docker.sock exists. If you are using Nginx UI Official Docker Image, please make sure the docker socket is mounted like this: `-v /var/run/docker.sock:/var/run/docker.sock`. Nginx UI official image uses /var/run/docker.sock to communicate with the host Docker Engine via Docker Client API. This feature is used to control Nginx in another container and perform container replacement rather than binary replacement during OTA upgrades of Nginx UI to ensure container dependencies are also upgraded. If you don't need this feature, please add the environment variable NGINX_UI_IGNORE_DOCKER_SOCKET=true to the container."
+msgid "Certificate revoked successfully"
 msgstr ""
 
 #: src/language/generate.ts:8
-msgid "Check if Nginx UI can write a temporary file to the configured Nginx directory and the external Nginx container can see it at the same path. Docker socket access and ContainerName only route control commands; configuration and log directories must be mounted into both containers at matching paths."
+msgid "Check if /var/run/docker.sock exists. If you are using Nginx UI Official Docker Image, please make sure the docker socket is mounted like this: `-v /var/run/docker.sock:/var/run/docker.sock`. Nginx UI official image uses /var/run/docker.sock to communicate with the host Docker Engine via Docker Client API. This feature is used to control Nginx in another container and perform container replacement rather than binary replacement during OTA upgrades of Nginx UI to ensure container dependencies are also upgraded. If you don't need this feature, please add the environment variable NGINX_UI_IGNORE_DOCKER_SOCKET=true to the container."
 msgstr ""
 
 #: src/language/generate.ts:9
-msgid "Check if the GeoLite2 database is available when log indexing is enabled. The GeoLite2 database is required for geographic IP analysis in log indexing. You can download it from the Preference page or manually place GeoLite2-City.mmdb in the same directory as app.ini"
+msgid "Check if Nginx UI can write a temporary file to the configured Nginx directory and the external Nginx container can see it at the same path. Docker socket access and ContainerName only route control commands; configuration and log directories must be mounted into both containers at matching paths."
 msgstr ""
 
 #: src/language/generate.ts:10
-msgid "Check if the conf.d directory is under the nginx configuration directory"
+msgid "Check if the GeoLite2 database is available when log indexing is enabled. The GeoLite2 database is required for geographic IP analysis in log indexing. You can download it from the Preference page or manually place GeoLite2-City.mmdb in the same directory as app.ini"
 msgstr ""
 
 #: src/language/generate.ts:11
-msgid "Check if the nginx PID path exists. By default, this path is obtained from 'nginx -V'. If it cannot be obtained, an error will be reported. In this case, you need to modify the configuration file to specify the Nginx PID path.Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
+msgid "Check if the conf.d directory is under the nginx configuration directory"
 msgstr ""
 
 #: src/language/generate.ts:12
-msgid "Check if the nginx access log path exists. By default, this path is obtained from 'nginx -V'. If it cannot be obtained or the obtained path does not point to a valid, existing file, an error will be reported. In this case, you need to modify the configuration file to specify the access log path.Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
+msgid "Check if the nginx PID path exists. By default, this path is obtained from 'nginx -V'. If it cannot be obtained, an error will be reported. In this case, you need to modify the configuration file to specify the Nginx PID path.Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
 msgstr ""
 
 #: src/language/generate.ts:13
-msgid "Check if the nginx configuration directory exists"
+msgid "Check if the nginx access log path exists. By default, this path is obtained from 'nginx -V'. If it cannot be obtained or the obtained path does not point to a valid, existing file, an error will be reported. In this case, you need to modify the configuration file to specify the access log path.Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
 msgstr ""
 
 #: src/language/generate.ts:14
-msgid "Check if the nginx configuration entry file exists"
+msgid "Check if the nginx configuration directory exists"
 msgstr ""
 
 #: src/language/generate.ts:15
-msgid "Check if the nginx error log path exists. By default, this path is obtained from 'nginx -V'. If it cannot be obtained or the obtained path does not point to a valid, existing file, an error will be reported. In this case, you need to modify the configuration file to specify the error log path. Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
+msgid "Check if the nginx configuration entry file exists"
 msgstr ""
 
 #: src/language/generate.ts:16
-msgid "Check if the nginx sbin path exists"
+msgid "Check if the nginx error log path exists. By default, this path is obtained from 'nginx -V'. If it cannot be obtained or the obtained path does not point to a valid, existing file, an error will be reported. In this case, you need to modify the configuration file to specify the error log path. Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
 msgstr ""
 
 #: src/language/generate.ts:17
-msgid "Check if the nginx.conf includes the conf.d directory"
+msgid "Check if the nginx sbin path exists"
 msgstr ""
 
 #: src/language/generate.ts:18
-msgid "Check if the nginx.conf includes the sites-enabled directory"
+msgid "Check if the nginx.conf includes the conf.d directory"
 msgstr ""
 
 #: src/language/generate.ts:19
-msgid "Check if the nginx.conf includes the streams-enabled directory"
+msgid "Check if the nginx.conf includes the sites-enabled directory"
 msgstr ""
 
 #: src/language/generate.ts:20
-msgid "Check if the sites-available and sites-enabled directories are under the nginx configuration directory"
+msgid "Check if the nginx.conf includes the streams-enabled directory"
 msgstr ""
 
 #: src/language/generate.ts:21
-msgid "Check if the streams-available and streams-enabled directories are under the nginx configuration directory"
+msgid "Check if the sites-available and sites-enabled directories are under the nginx configuration directory"
 msgstr ""
 
 #: src/language/generate.ts:22
-msgid "Conf.d directory exists"
+msgid "Check if the streams-available and streams-enabled directories are under the nginx configuration directory"
 msgstr ""
 
 #: src/language/generate.ts:23
-msgid "Docker socket exists"
+msgid "Conf.d directory exists"
 msgstr ""
 
 #: src/language/generate.ts:24
-msgid "External Nginx configuration directory is shared"
+msgid "Docker socket exists"
 msgstr ""
 
 #: src/language/generate.ts:25
-msgid "Failed to delete certificate from database: %{error}"
+msgid "External Nginx configuration directory is shared"
 msgstr ""
 
 #: src/language/generate.ts:26
-msgid "Failed to revoke certificate: %{error}"
+msgid "Failed to delete certificate from database: %{error}"
 msgstr ""
 
 #: src/language/generate.ts:27
-msgid "GeoLite2 database available"
+msgid "Failed to revoke certificate: %{error}"
 msgstr ""
 
 #: src/language/generate.ts:28
-msgid "Log file %{log_path} is not a regular file. If you are using nginx-ui in docker container, please refer to https://nginxui.com/zh_CN/guide/config-nginx-log.html for more information."
+msgid "GeoLite2 database available"
 msgstr ""
 
 #: src/language/generate.ts:29
-msgid "Nginx PID path exists"
+msgid "Log file %{log_path} is not a regular file. If you are using nginx-ui in docker container, please refer to https://nginxui.com/zh_CN/guide/config-nginx-log.html for more information."
 msgstr ""
 
 #: src/language/generate.ts:30
-msgid "Nginx access log path exists"
+msgid "Nginx PID path exists"
 msgstr ""
 
 #: src/language/generate.ts:31
-msgid "Nginx configuration directory exists"
+msgid "Nginx access log path exists"
 msgstr ""
 
 #: src/language/generate.ts:32
-msgid "Nginx configuration entry file exists"
+msgid "Nginx configuration directory exists"
 msgstr ""
 
 #: src/language/generate.ts:33
-msgid "Nginx error log path exists"
+msgid "Nginx configuration entry file exists"
 msgstr ""
 
 #: src/language/generate.ts:34
-msgid "Nginx sbin path exists"
+msgid "Nginx error log path exists"
 msgstr ""
 
 #: src/language/generate.ts:35
-msgid "Nginx.conf includes conf.d directory"
+msgid "Nginx sbin path exists"
 msgstr ""
 
 #: src/language/generate.ts:36
-msgid "Nginx.conf includes sites-enabled directory"
+msgid "Nginx.conf includes conf.d directory"
 msgstr ""
 
 #: src/language/generate.ts:37
-msgid "Nginx.conf includes streams-enabled directory"
+msgid "Nginx.conf includes sites-enabled directory"
 msgstr ""
 
 #: src/language/generate.ts:38
-msgid "Sites directory exists"
+msgid "Nginx.conf includes streams-enabled directory"
 msgstr ""
 
 #: src/language/generate.ts:39
-msgid "Streams directory exists"
+msgid "Sites directory exists"
 msgstr ""
 
 #: src/language/generate.ts:40
-msgid "When the container is behind an outer reverse proxy that terminates TLS (e.g. host nginx, Cloudflare), the bundled conf.d/nginx-ui.conf must trust the inbound X-Forwarded-Proto/Host headers; otherwise WebSocket origin checks fail. Older deployments that persisted /etc/nginx may still have the unfixed version."
+msgid "Streams directory exists"
 msgstr ""
 
 #: src/language/generate.ts:41
-msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
+msgid "When the container is behind an outer reverse proxy that terminates TLS (e.g. host nginx, Cloudflare), the bundled conf.d/nginx-ui.conf must trust the inbound X-Forwarded-Proto/Host headers; otherwise WebSocket origin checks fail. Older deployments that persisted /etc/nginx may still have the unfixed version."
 msgstr ""
 
 #: src/language/generate.ts:42
-msgid "[Nginx UI] Backing up current certificate for later revocation"
+msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
 msgstr ""
 
 #: src/language/generate.ts:43
-msgid "[Nginx UI] Certificate renewed successfully"
+msgid "[Nginx UI] Backing up current certificate for later revocation"
 msgstr ""
 
 #: src/language/generate.ts:44
-msgid "[Nginx UI] Certificate successfully revoked"
+msgid "[Nginx UI] Certificate renewed successfully"
 msgstr ""
 
 #: src/language/generate.ts:45
-msgid "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
+msgid "[Nginx UI] Certificate successfully revoked"
 msgstr ""
 
 #: src/language/generate.ts:46
-msgid "[Nginx UI] Creating client facilitates communication with the CA server"
+msgid "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
 msgstr ""
 
 #: src/language/generate.ts:47
-msgid "[Nginx UI] Environment variables cleaned"
+msgid "[Nginx UI] Creating client facilitates communication with the CA server"
 msgstr ""
 
 #: src/language/generate.ts:48
-msgid "[Nginx UI] Finished"
+msgid "[Nginx UI] Environment variables cleaned"
 msgstr ""
 
 #: src/language/generate.ts:49
-msgid "[Nginx UI] Issued certificate successfully"
+msgid "[Nginx UI] Finished"
 msgstr ""
 
 #: src/language/generate.ts:50
-msgid "[Nginx UI] Obtaining certificate"
+msgid "[Nginx UI] Issued certificate successfully"
 msgstr ""
 
 #: src/language/generate.ts:51
-msgid "[Nginx UI] Preparing for certificate revocation"
+msgid "[Nginx UI] Obtaining certificate"
 msgstr ""
 
 #: src/language/generate.ts:52
-msgid "[Nginx UI] Preparing lego configurations"
+msgid "[Nginx UI] Preparing for certificate revocation"
 msgstr ""
 
 #: src/language/generate.ts:53
-msgid "[Nginx UI] Reloading nginx"
+msgid "[Nginx UI] Preparing lego configurations"
 msgstr ""
 
 #: src/language/generate.ts:54
-msgid "[Nginx UI] Revocation completed"
+msgid "[Nginx UI] Reloading nginx"
 msgstr ""
 
 #: src/language/generate.ts:55
-msgid "[Nginx UI] Revoking certificate"
+msgid "[Nginx UI] Revocation completed"
 msgstr ""
 
 #: src/language/generate.ts:56
-msgid "[Nginx UI] Revoking old certificate"
+msgid "[Nginx UI] Revoking certificate"
 msgstr ""
 
 #: src/language/generate.ts:57
-msgid "[Nginx UI] Setting DNS01 challenge provider"
+msgid "[Nginx UI] Revoking old certificate"
 msgstr ""
 
 #: src/language/generate.ts:58
-msgid "[Nginx UI] Setting HTTP01 challenge provider"
+msgid "[Nginx UI] Setting DNS01 challenge provider"
 msgstr ""
 
 #: src/language/generate.ts:59
-msgid "[Nginx UI] Setting environment variables"
+msgid "[Nginx UI] Setting HTTP01 challenge provider"
 msgstr ""
 
 #: src/language/generate.ts:60
-msgid "[Nginx UI] Writing certificate private key to disk"
+msgid "[Nginx UI] Setting environment variables"
 msgstr ""
 
 #: src/language/generate.ts:61
+msgid "[Nginx UI] Writing certificate private key to disk"
+msgstr ""
+
+#: src/language/generate.ts:62
 msgid "[Nginx UI] Writing certificate to disk"
 msgstr ""
 
@@ -4357,7 +4362,7 @@ msgstr ""
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:258
 #: src/views/namespace/columns.ts:110
-#: src/views/notification/notificationColumns.tsx:51
+#: src/views/notification/notificationColumns.tsx:70
 #: src/views/preference/components/AuthSettings/Passkey.vue:97
 #: src/views/preference/components/ExternalNotify/columns.tsx:93
 #: src/views/user/userColumns.tsx:46
@@ -4421,7 +4426,7 @@ msgstr ""
 #: src/views/namespace/columns.ts:122
 #: src/views/nginx_log/NginxLogList.vue:339
 #: src/views/node/nodeColumns.tsx:198
-#: src/views/notification/notificationColumns.tsx:72
+#: src/views/notification/notificationColumns.tsx:106
 #: src/views/preference/components/ExternalNotify/columns.tsx:98
 #: src/views/preference/components/ExternalNotify/labels.ts:7
 #: src/views/site/site_list/columns.tsx:161
@@ -5117,49 +5122,53 @@ msgstr ""
 msgid "Retry"
 msgstr ""
 
-#: src/views/certificate/components/RemoveCert.vue:38
-#: src/views/certificate/components/RemoveCert.vue:120
+#: src/views/certificate/components/RemoveCert.vue:46
+#: src/views/certificate/components/RemoveCert.vue:130
 msgid "Revoke"
 msgstr ""
 
-#: src/views/certificate/components/RemoveCert.vue:39
+#: src/views/certificate/components/RemoveCert.vue:47
 msgid "Please type \"Revoke\" to confirm"
 msgstr ""
 
-#: src/views/certificate/components/RemoveCert.vue:64
-#: src/views/certificate/components/RemoveCert.vue:84
+#: src/views/certificate/components/RemoveCert.vue:73
+#: src/views/certificate/components/RemoveCert.vue:95
 msgid "Certificate removed successfully"
 msgstr ""
 
-#: src/views/certificate/components/RemoveCert.vue:71
+#: src/views/certificate/components/RemoveCert.vue:82
 msgid "Failed to revoke certificate"
 msgstr ""
 
-#: src/views/certificate/components/RemoveCert.vue:77
+#: src/views/certificate/components/RemoveCert.vue:88
 msgid "WebSocket connection error"
 msgstr ""
 
-#: src/views/certificate/components/RemoveCert.vue:89
+#: src/views/certificate/components/RemoveCert.vue:98
 msgid "Failed to delete certificate"
 msgstr ""
 
-#: src/views/certificate/components/RemoveCert.vue:117
+#: src/views/certificate/components/RemoveCert.vue:127
 msgid "Delete Certificate"
 msgstr ""
 
-#: src/views/certificate/components/RemoveCert.vue:128
+#: src/views/certificate/components/RemoveCert.vue:138
 msgid "This operation will only remove the certificate from the database. The certificate files on the file system will not be deleted."
 msgstr ""
 
-#: src/views/certificate/components/RemoveCert.vue:134
+#: src/views/certificate/components/RemoveCert.vue:144
 msgid "Revoke this certificate"
 msgstr ""
 
-#: src/views/certificate/components/RemoveCert.vue:142
+#: src/views/certificate/components/RemoveCert.vue:148
+msgid "Delete the certificate even if revocation fails"
+msgstr ""
+
+#: src/views/certificate/components/RemoveCert.vue:157
 msgid "Revoking a certificate will affect any services currently using it. This action cannot be undone."
 msgstr ""
 
-#: src/views/certificate/components/RemoveCert.vue:146
+#: src/views/certificate/components/RemoveCert.vue:161
 msgid "To confirm revocation, please type \"Revoke\" in the field below:"
 msgstr ""
 
@@ -5903,7 +5912,7 @@ msgid "Invalid health check request"
 msgstr ""
 
 #: src/views/dashboard/components/SiteCard.vue:170
-#: src/views/upstream/SocketList.vue:42
+#: src/views/upstream/SocketList.vue:44
 msgid "Paused"
 msgstr ""
 
@@ -6130,6 +6139,7 @@ msgid "Test"
 msgstr ""
 
 #: src/views/dashboard/components/SiteNavigationToolbar.vue:36
+#: src/views/dashboard/NginxDashBoard.vue:235
 msgid "Disconnected"
 msgstr ""
 
@@ -6153,51 +6163,51 @@ msgstr ""
 msgid "Navigate configured sites and monitor availability and health checks."
 msgstr ""
 
-#: src/views/dashboard/NginxDashBoard.vue:56
+#: src/views/dashboard/NginxDashBoard.vue:162
 msgid "Toggle failed"
 msgstr ""
 
-#: src/views/dashboard/NginxDashBoard.vue:86
-msgid "Connection error, trying to reconnect..."
-msgstr ""
-
-#: src/views/dashboard/NginxDashBoard.vue:120
+#: src/views/dashboard/NginxDashBoard.vue:216
 msgid "Nginx is running"
 msgstr ""
 
-#: src/views/dashboard/NginxDashBoard.vue:124
+#: src/views/dashboard/NginxDashBoard.vue:220
 msgid "Last update"
 msgstr ""
 
-#: src/views/dashboard/NginxDashBoard.vue:140
+#: src/views/dashboard/NginxDashBoard.vue:236
+msgid "Connection error, trying to reconnect..."
+msgstr ""
+
+#: src/views/dashboard/NginxDashBoard.vue:246
 msgid "Cannot get performance data in this state"
 msgstr ""
 
-#: src/views/dashboard/NginxDashBoard.vue:149
+#: src/views/dashboard/NginxDashBoard.vue:255
 msgid "Get data failed"
 msgstr ""
 
-#: src/views/dashboard/NginxDashBoard.vue:158
+#: src/views/dashboard/NginxDashBoard.vue:264
 msgid "Enable stub_status module"
 msgstr ""
 
-#: src/views/dashboard/NginxDashBoard.vue:161
+#: src/views/dashboard/NginxDashBoard.vue:267
 msgid "This module provides Nginx request statistics, connection count, etc. data. After enabling it, you can view performance statistics"
 msgstr ""
 
-#: src/views/dashboard/NginxDashBoard.vue:181
+#: src/views/dashboard/NginxDashBoard.vue:287
 msgid "Need to enable the stub_status module"
 msgstr ""
 
-#: src/views/dashboard/NginxDashBoard.vue:182
+#: src/views/dashboard/NginxDashBoard.vue:288
 msgid "Please enable the stub_status module to get request statistics, connection count, etc."
 msgstr ""
 
-#: src/views/dashboard/NginxDashBoard.vue:186
+#: src/views/dashboard/NginxDashBoard.vue:292
 msgid "Loading data..."
 msgstr ""
 
-#: src/views/dashboard/NginxDashBoard.vue:193
+#: src/views/dashboard/NginxDashBoard.vue:299
 msgid "Performance Metrics"
 msgstr ""
 
@@ -6755,7 +6765,7 @@ msgstr ""
 
 #: src/views/dns/DNSGroupRecordManager.vue:165
 #: src/views/dns/DNSGroupRecordManager.vue:186
-#: src/views/notification/notificationColumns.tsx:66
+#: src/views/notification/notificationColumns.tsx:85
 msgid "Details"
 msgstr ""
 
@@ -8364,8 +8374,12 @@ msgstr ""
 msgid "Notification"
 msgstr ""
 
-#: src/views/notification/notificationColumns.tsx:58
+#: src/views/notification/notificationColumns.tsx:77
 msgid "Title"
+msgstr ""
+
+#: src/views/notification/notificationColumns.tsx:91
+msgid "Go To"
 msgstr ""
 
 #: src/views/other/Error.vue:8
@@ -8650,28 +8664,78 @@ msgstr ""
 msgid "Failed to update status"
 msgstr ""
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:116
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:153
 msgid "Invalid JSON at line"
 msgstr ""
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:116
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:153
 msgid "column"
 msgstr ""
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:160
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:212
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:245
+msgid "Notification title text"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:216
+msgid "Notification content text"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:220
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:253
+msgid "Notification type code, such as error, warning, info, or success"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:224
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:261
+msgid "Localized notification type label for the current language"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:228
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:265
+msgid "Translation key of the notification type, such as Error or Warning"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:232
+msgid "Teams notification level color enum: Error=Attention, Warning=Warning, Info=Accent, Success=Good"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:236
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:269
+msgid "Full go-to URL generated from WebAuthn RPOrigins and route path"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:249
+msgid "Notification content text (HTML-escaped in the default template)"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:257
+msgid "Email notification level color, fixed to #1f2937"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:279
 msgid "Please select a notification type"
 msgstr ""
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:176
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:295
 #: src/views/preference/tabs/ExternalNotify.vue:37
 msgid "Test message sent successfully"
 msgstr ""
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:207
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:326
 msgid "Microsoft Docs"
 msgstr ""
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:247
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:335
+msgid "Teams Request Example"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:355
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:379
+msgid "Available placeholders"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:400
 msgid "Send test message"
 msgstr ""
 
@@ -9882,7 +9946,7 @@ msgid "External Notify"
 msgstr ""
 
 #: src/views/preference/Preference.vue:61
-#: src/views/upstream/SocketList.vue:64
+#: src/views/upstream/SocketList.vue:66
 msgid "Health Check"
 msgstr ""
 
@@ -11367,43 +11431,43 @@ msgstr ""
 msgid "Connection lost for this terminal. Please refresh if needed."
 msgstr ""
 
-#: src/views/terminal/Terminal.vue:249
+#: src/views/terminal/Terminal.vue:298
 msgid "This is a simulated terminal running entirely in your browser. Commands are answered locally and never reach a server."
 msgstr ""
 
-#: src/views/terminal/Terminal.vue:256
+#: src/views/terminal/Terminal.vue:305
 msgid "You are accessing this terminal over an insecure HTTP connection on a non-localhost domain. This may expose sensitive information."
 msgstr ""
 
-#: src/views/upstream/SocketList.vue:19
+#: src/views/upstream/SocketList.vue:21
 msgid "Socket"
 msgstr ""
 
-#: src/views/upstream/SocketList.vue:31
+#: src/views/upstream/SocketList.vue:33
 msgid "Direct"
 msgstr ""
 
-#: src/views/upstream/SocketList.vue:37
+#: src/views/upstream/SocketList.vue:39
 msgid "Health Status"
 msgstr ""
 
-#: src/views/upstream/SocketList.vue:45
+#: src/views/upstream/SocketList.vue:47
 msgid "No Data"
 msgstr ""
 
-#: src/views/upstream/SocketList.vue:55
+#: src/views/upstream/SocketList.vue:57
 msgid "Last Check"
 msgstr ""
 
-#: src/views/upstream/SocketList.vue:138
+#: src/views/upstream/SocketList.vue:132
 msgid "Upstream Sockets"
 msgstr ""
 
-#: src/views/upstream/SocketList.vue:153
+#: src/views/upstream/SocketList.vue:147
 msgid "Upstream health checks are globally paused"
 msgstr ""
 
-#: src/views/upstream/SocketList.vue:154
+#: src/views/upstream/SocketList.vue:148
 msgid "Per-target selections are preserved. Resume probes from Health Check preferences."
 msgstr ""
 

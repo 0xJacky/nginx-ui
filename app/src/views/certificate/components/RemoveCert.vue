@@ -19,6 +19,7 @@ const otpModal = use2FAModal()
 const modalVisible = ref(false)
 const confirmLoading = ref(false)
 const shouldRevoke = ref(false)
+const deleteOnRevokeFailure = ref(true)
 const revokeInput = ref('')
 
 // Check if it's a managed certificate (auto_cert === AutoCertState.Enable)
@@ -30,6 +31,13 @@ const isManagedCertificate = computed(() => {
 function handleDelete() {
   // Open the combined modal directly
   modalVisible.value = true
+}
+
+// Close modal and refresh list
+function handleRemoved() {
+  modalVisible.value = false
+  confirmLoading.value = false
+  emit('removed')
 }
 
 // Handle confirmation
@@ -54,6 +62,7 @@ async function handleConfirm() {
 
     const { ws } = useWebSocket(`/api/certs/${props.id}/revoke`, false, undefined, {
       'X-Secure-Session-ID': secureSessionId,
+      'delete_on_failure': deleteOnRevokeFailure.value ? 'true' : undefined,
     })
     const socket = ws.value!
 
@@ -62,13 +71,15 @@ async function handleConfirm() {
 
       if (response.status === 'success') {
         message.success($gettext('Certificate removed successfully'))
-        // Close modal and refresh list
-        modalVisible.value = false
-        confirmLoading.value = false
-        emit('removed')
+        handleRemoved()
+      }
+      else if (response.status === 'warning') {
+        // Revocation failed, but the record was deleted as requested
+        message.warning($gettext(response.message, response.args), 10)
+        handleRemoved()
       }
       else if (response.status === 'error') {
-        message.error(response.message || $gettext('Failed to revoke certificate'))
+        message.error(response.message ? $gettext(response.message, response.args) : $gettext('Failed to revoke certificate'))
         confirmLoading.value = false
       }
     }
@@ -82,9 +93,7 @@ async function handleConfirm() {
     // Only remove certificate from database
     cert.deleteItem(props.id).then(() => {
       message.success($gettext('Certificate removed successfully'))
-      modalVisible.value = false
-      confirmLoading.value = false
-      emit('removed')
+      handleRemoved()
     }).catch(error => {
       message.error(error.message || $gettext('Failed to delete certificate'))
       confirmLoading.value = false
@@ -96,6 +105,7 @@ async function handleConfirm() {
 function handleCancel() {
   modalVisible.value = false
   shouldRevoke.value = false
+  deleteOnRevokeFailure.value = true
   revokeInput.value = ''
 }
 </script>
@@ -133,6 +143,11 @@ function handleCancel() {
         <ACheckbox v-model:checked="shouldRevoke">
           {{ $gettext('Revoke this certificate') }}
         </ACheckbox>
+        <div v-if="shouldRevoke" class="mt-2 ml-6">
+          <ACheckbox v-model:checked="deleteOnRevokeFailure">
+            {{ $gettext('Delete the certificate even if revocation fails') }}
+          </ACheckbox>
+        </div>
       </div>
 
       <div v-if="shouldRevoke">
