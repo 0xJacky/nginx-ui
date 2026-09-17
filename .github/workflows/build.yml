@@ -58,7 +58,7 @@ jobs:
           cache: false
 
       - name: Set up Bun
-        uses: oven-sh/setup-bun@v2
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
         with:
           bun-version: 1.4.2
 
@@ -102,7 +102,7 @@ jobs:
         run: env CGO_ENABLED=0 go run ./cmd/sign-release app-dist.tar.gz
 
       - name: Publish
-        uses: softprops/action-gh-release@v3
+        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3
         if: github.event_name == 'release'
         with:
           files: |
@@ -222,7 +222,7 @@ jobs:
 
       - name: Install musl cross compiler
         if: env.GOOS == 'linux'
-        uses: nginxui/musl-cross-compilers@v1
+        uses: nginxui/musl-cross-compilers@57f4de0b40cd0b53b1dc02fb8b317d87f78f3483 # v1
         id: musl
         with:
           target: ${{ env.ARCH_NAME }}-linux-musl${{ env.ABI }}
@@ -308,7 +308,7 @@ jobs:
           env GOOS="$(go env GOHOSTOS)" GOARCH="$(go env GOHOSTARCH)" CGO_ENABLED=0 go run ./cmd/sign-release "${archives[@]}"
 
       - name: Publish
-        uses: softprops/action-gh-release@v3
+        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3
         if: github.event_name == 'release'
         with:
           files: |
@@ -410,7 +410,7 @@ jobs:
 
       - name: Set up Android NDK
         id: ndk
-        uses: nttld/setup-ndk@v1
+        uses: nttld/setup-ndk@ed92fe6cadad69be94a966a7ee3271275e62f779 # v1
         with:
           ndk-version: r27c
 
@@ -456,7 +456,7 @@ jobs:
         run: env GOOS="$(go env GOHOSTOS)" GOARCH="$(go env GOHOSTARCH)" CGO_ENABLED=0 go run ./cmd/sign-release "${{ env.DIST }}.tar.gz"
 
       - name: Publish
-        uses: softprops/action-gh-release@v3
+        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3
         if: github.event_name == 'release'
         with:
           files: |
@@ -571,7 +571,7 @@ jobs:
         run: env GOOS="$(go env GOHOSTOS)" GOARCH="$(go env GOHOSTARCH)" CGO_ENABLED=0 go run ./cmd/sign-release "${{ env.DIST }}.tar.gz"
 
       - name: Publish
-        uses: softprops/action-gh-release@v3
+        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3
         if: github.event_name == 'release'
         with:
           files: |
@@ -609,7 +609,7 @@ jobs:
 
       - name: Docker meta
         id: meta
-        uses: docker/metadata-action@v6
+        uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6
         with:
           images: |
             uozi/nginx-ui
@@ -630,16 +630,16 @@ jobs:
         run: chmod +x ./dist/nginx-ui-*/nginx-ui*
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v4
+        uses: docker/setup-qemu-action@99012661954931238ded8c8b007157a8430204e1 # v4
         with:
           platforms: arm,arm64,riscv64
 
       - name: Set up Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v4
+        uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
 
       - name: Login to DockerHub
-        uses: docker/login-action@v4
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4
         with:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -650,7 +650,7 @@ jobs:
           cp -rp ./resources ./dist
 
       - name: Build and push
-        uses: docker/build-push-action@v7
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7
         with:
           context: ./dist
           file: ./dist/Dockerfile
@@ -666,7 +666,7 @@ jobs:
           cp -rp ./resources ./dist
 
       - name: Build and push demo
-        uses: docker/build-push-action@v7
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7
         if: github.ref == 'refs/heads/dev'
         with:
           context: ./dist
@@ -693,7 +693,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
 
       - name: Install Worker dependencies
         working-directory: cloudflare
@@ -718,12 +718,12 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Set up Helm
-        uses: azure/setup-helm@v5
+        uses: azure/setup-helm@9bc31f4ebc9c6b171d7bfbaa5d006ae7abdb4310 # v5
         with:
           version: v4.3.0
 
       - name: Create kind cluster
-        uses: helm/kind-action@v1.15.0
+        uses: helm/kind-action@06c1ae10762d3b9c1644e7fe69596ae519e015a2 # v1.15.0
         with:
           version: v0.33.0
           kubectl_version: v1.37.0
@@ -794,7 +794,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Set up Helm
-        uses: azure/setup-helm@v5
+        uses: azure/setup-helm@9bc31f4ebc9c6b171d7bfbaa5d006ae7abdb4310 # v5
         with:
           version: v4.3.0
 
@@ -1186,7 +1186,7 @@ jobs:
           cat homebrew-tools/Formula/nginx-ui.rb
 
       - name: Set up Homebrew
-        uses: Homebrew/actions/setup-homebrew@main
+        uses: Homebrew/actions/setup-homebrew@1e34f2e2acaa766b7efacb8c26352e6abbb023f9 # 2026.09.13.1
         with:
           token: ${{ github.token }}
 
@@ -1199,7 +1199,7 @@ jobs:
 
       - name: Create Pull Request to homebrew-tools
         id: homebrew-pr
-        uses: peter-evans/create-pull-request@v8
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8
         with:
           token: ${{ secrets.HOMEBREW_GITHUB_TOKEN }}
           path: homebrew-tools
@@ -1275,7 +1275,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Publish to WinGet
-        uses: vedantmgoyal9/winget-releaser@v2
+        uses: vedantmgoyal9/winget-releaser@4ffc7888bffd451b357355dc214d43bb9f23917e # v2
         with:
           identifier: 0xJacky.nginx-ui
           max-versions-to-keep: 0
