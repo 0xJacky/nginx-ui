@@ -191,21 +191,21 @@ jobs:
 
       - name: Setup Go modules cache
         uses: actions/cache@v6
+        # Release builds must not restore a cache any other ref could have written.
+        if: github.event_name != 'release'
         with:
           path: |
             ~/go/pkg/mod
-          key: go-${{ runner.os }}-${{ runner.arch }}-mod-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            go-${{ runner.os }}-${{ runner.arch }}-mod-
+          key: go-${{ runner.os }}-${{ runner.arch }}-mod-${{ github.ref }}-${{ hashFiles('**/go.sum') }}
 
       - name: Setup Go build cache
         uses: actions/cache@v6
+        # Release builds must not restore a cache any other ref could have written.
+        if: github.event_name != 'release'
         with:
           path: |
             ~/.cache/go-build
-          key: go-${{ runner.os }}-${{ runner.arch }}-${{ env.CACHE_NAME }}-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-              go-${{ runner.os }}-${{ runner.arch }}-${{ env.CACHE_NAME }}-
+          key: go-${{ runner.os }}-${{ runner.arch }}-${{ env.CACHE_NAME }}-${{ github.ref }}-${{ hashFiles('**/go.sum') }}
 
       - name: Download app artifacts
         uses: actions/download-artifact@v8
@@ -383,21 +383,21 @@ jobs:
 
       - name: Setup Go modules cache
         uses: actions/cache@v6
+        # Release builds must not restore a cache any other ref could have written.
+        if: github.event_name != 'release'
         with:
           path: |
             ~/go/pkg/mod
-          key: go-${{ runner.os }}-${{ runner.arch }}-mod-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            go-${{ runner.os }}-${{ runner.arch }}-mod-
+          key: go-${{ runner.os }}-${{ runner.arch }}-mod-${{ github.ref }}-${{ hashFiles('**/go.sum') }}
 
       - name: Setup Go build cache
         uses: actions/cache@v6
+        # Release builds must not restore a cache any other ref could have written.
+        if: github.event_name != 'release'
         with:
           path: |
             ~/.cache/go-build
-          key: go-${{ runner.os }}-${{ runner.arch }}-${{ env.CACHE_NAME }}-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-              go-${{ runner.os }}-${{ runner.arch }}-${{ env.CACHE_NAME }}-
+          key: go-${{ runner.os }}-${{ runner.arch }}-${{ env.CACHE_NAME }}-${{ github.ref }}-${{ hashFiles('**/go.sum') }}
 
       - name: Download app artifacts
         uses: actions/download-artifact@v8
@@ -535,13 +535,13 @@ jobs:
 
       - name: Setup Go build cache
         uses: actions/cache@v6
+        # Release builds must not restore a cache any other ref could have written.
+        if: github.event_name != 'release'
         with:
           path: |
             ~/go/pkg/mod
             ~/.cache/go-build
-          key: go-${{ runner.os }}-${{ runner.arch }}-${{ env.CACHE_NAME }}-${{ hashFiles('go.sum') }}
-          restore-keys: |
-            go-${{ runner.os }}-${{ runner.arch }}-${{ env.CACHE_NAME }}-
+          key: go-${{ runner.os }}-${{ runner.arch }}-${{ env.CACHE_NAME }}-${{ github.ref }}-${{ hashFiles('go.sum') }}
 
       - name: Download app artifacts
         uses: actions/download-artifact@v8
