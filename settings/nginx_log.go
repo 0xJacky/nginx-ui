@@ -6,6 +6,11 @@ type NginxLog struct {
 	IndexingEnabled bool   `json:"indexing_enabled"`
 	IndexPath       string `json:"index_path"`
 	IndexCustomMMDB string `json:"index_custom_mmdb"`
+	// GeoMapPath points to the local directory that stores map boundary files
+	// (for example 100000_full.json and province-level *_full.json files).
+	// When empty, the runtime falls back to the default "maps" path and the
+	// dashboard hides the China map entry until a non-empty path is configured.
+	GeoMapPath string `json:"geo_map_path"`
 	// IncrementalIndexInterval controls how often the incremental indexing job runs, in minutes.
 	// When set to 0 or a negative value, a conservative default will be used.
 	IncrementalIndexInterval int `json:"incremental_index_interval"`

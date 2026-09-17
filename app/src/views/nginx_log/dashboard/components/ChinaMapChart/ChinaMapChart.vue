@@ -39,8 +39,8 @@ interface ChinaMapData {
   cities?: CityData[]
 }
 
-// Public boundary API for national and province-level GeoJSON.
-const CITY_BOUND_API = 'https://geo.datav.aliyun.com/areas_v3/bound'
+// Local boundary API for national and province-level GeoJSON.
+const CITY_BOUND_API = '/api/nginx_log/geo/boundary'
 const CHINA_BOUND_API = `${CITY_BOUND_API}/100000_full.json`
 
 const settings = useSettingsStore()
@@ -126,7 +126,7 @@ async function drillIntoProvince(name: string) {
       (async () => {
         if (featureNames)
           return
-        const res = await fetch(`${CITY_BOUND_API}/${adcode}_full.json`)
+        const res = await fetch(`${CITY_BOUND_API}/${encodeURIComponent(adcode)}_full.json`)
         if (!res.ok)
           throw new Error(`Failed to fetch city boundaries: ${res.status}`)
         const geojson = await res.json()

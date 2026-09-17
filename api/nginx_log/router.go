@@ -23,6 +23,10 @@ func InitRouter(r *gin.RouterGroup) {
 	r.GET("nginx_log/default_log_dir", GetDefaultLogDir)
 }
 
+func InitPublicRouter(r *gin.RouterGroup) {
+	r.GET("nginx_log/geo/boundary/:filename", GetGeoBoundaryFile)
+}
+
 func InitWebSocketRouter(r *gin.RouterGroup) {
 	r.GET("nginx_log", Log)
 }
