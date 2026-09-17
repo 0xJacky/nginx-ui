@@ -116,6 +116,11 @@ func (s *Service) updateTargetsFromConfig(configPath string, targets []ProxyTarg
 
 	now := time.Now()
 
+	stillReferenced := make(map[string]bool, len(targets))
+	for _, target := range targets {
+		stillReferenced[formatSocketAddress(target.Host, target.Port)] = true
+	}
+
 	// Remove old targets from this config path
 	if oldTargetKeys, exists := s.configTargets[configPath]; exists {
 		for _, key := range oldTargetKeys {
@@ -134,7 +139,13 @@ func (s *Service) updateTargetsFromConfig(configPath string, targets []ProxyTarg
 				}
 				if isOnlyConfig {
 					delete(s.targets, key)
-					delete(s.availabilityMap, key)
+					// A target the config still references is added back below.
+					// Keep its last result: the periodic rescan and every file
+					// event would otherwise report it as unchecked to all
+					// clients until the next availability test.
+					if !stillReferenced[key] {
+						delete(s.availabilityMap, key)
+					}
 					// logger.Debug("Removed proxy target:", key, "from config:", configPath)
 				} else {
 					// logger.Debug("Keeping proxy target:", key, "still used by other configs")
