@@ -9,6 +9,9 @@ env:
   DEVELOP_BRANCH: dev
   WEBLATE_BRANCH: weblate
 
+permissions:
+  contents: read
+
 jobs:
   check:
     name: Check Branches
@@ -65,6 +68,8 @@ jobs:
   sync-branch:
     name: Sync Weblate Branch
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     needs: [check, force-update]
     if: ${{ needs.check.outputs.ahead > 0 || needs.check.outputs.behind > 0 && always() }}
     steps:

@@ -28,6 +28,9 @@ on:
       - 'demo.Dockerfile'
       - '.github/workflows/docker-init-config-test.yml'
 
+permissions:
+  contents: read
+
 jobs:
   hash-consistency:
     runs-on: ubuntu-latest

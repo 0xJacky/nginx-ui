@@ -43,9 +43,14 @@ on:
     types:
       - published
 
+permissions:
+  contents: read
+
 jobs:
   build_app:
     runs-on: macos-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -111,6 +116,8 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     needs: build_app
     strategy:
       max-parallel: 3
@@ -339,6 +346,8 @@ jobs:
 
   build_termux:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     needs: [build_app, build]
     env:
       CGO_ENABLED: 1
@@ -484,6 +493,8 @@ jobs:
 
   build_macos_native:
     runs-on: macos-latest
+    permissions:
+      contents: write
     needs: [build_app, build]
     strategy:
       matrix:
