@@ -186,7 +186,8 @@ In addition to the variables defined in the template header, we also provide mac
 
 | Variable Name |        Description        |
 |:-------------:|:-------------------------:|
-|   HTTPPORT    |  Nginx UI listening port  |
+|   HTTPPORT    |  Nginx UI configured TCP port  |
+| UNIXSOCKET | Nginx UI Unix socket path, or empty when using TCP |
 |  HTTP01PORT   | Port for HTTP01 Challenge |
 
 The variables above can be used directly in the configuration part without definition in the header.

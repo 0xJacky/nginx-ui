@@ -226,7 +226,7 @@ func TestGetMaintenanceHost(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			nginxSettings := &Nginx{MaintenanceHost: test.value}
-			if got := nginxSettings.GetMaintenanceHost("http", 9000); got != test.want {
+			if got := nginxSettings.GetMaintenanceHost("http://127.0.0.1:9000"); got != test.want {
 				t.Fatalf("GetMaintenanceHost() = %q, want %q", got, test.want)
 			}
 		})

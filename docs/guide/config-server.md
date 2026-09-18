@@ -19,6 +19,49 @@ Changing the default hostname can be useful for improving the security of Nginx 
 This option is used to configure the port on which the Nginx UI server listens for incoming
 HTTP requests. Changing the default port can be useful for avoiding port conflicts or enhancing security.
 
+## Unix domain socket
+
+To listen only on a Unix domain socket instead of TCP, configure the optional
+`UnixSocket` key in the **`[listener]` section**:
+
+```ini
+[listener]
+UnixSocket = /run/nginx-ui/nginx-ui.sock
+```
+
+The equivalent environment variable is `NGINX_UI_LISTENER_UNIX_SOCKET`. An empty
+value (the default) keeps the existing `[server]` `Host` and `Port` behavior. A
+nonempty value must be an absolute path and replaces the TCP listener. Colons,
+dollar signs, NUL and newlines are not supported in this path because it is also
+used as a literal upstream in generated Nginx configurations. This mode
+is not supported on Windows or with `EnableH3`, which requires UDP. A local
+reverse proxy can terminate TLS and forward HTTP to this socket.
+
+Create the parent directory before starting Nginx UI, and arrange permissions so
+both Nginx UI and the reverse proxy can access it. The socket uses the process's
+normal umask. For systemd deployments, `RuntimeDirectory=nginx-ui` can manage the
+parent directory. Nginx UI does not create directories, change their permissions,
+or remove an existing file to make room for the socket. After an unclean exit,
+check that no process still uses a leftover socket before removing it manually.
+
+The socket stays bound through graceful application handover and is removed when
+the owning parent process shuts down. Changing the transport or socket path
+requires a full stop and start of Nginx UI; a graceful reload keeps the parent's
+existing listener.
+
+A reverse proxy location can use:
+
+```nginx
+location / {
+    proxy_pass http://unix:/run/nginx-ui/nginx-ui.sock:;
+}
+```
+
+See the [reverse-proxy guide](./nginx-proxy-example.md) for headers and WebSocket
+configuration. Gin treats Unix socket peers as trusted for forwarded client IP
+headers. Restrict socket access to trusted local processes and configure the
+reverse proxy to overwrite those headers.
+
 ## RunMode
 
 - Type: `string`

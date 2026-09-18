@@ -117,6 +117,7 @@ func ParseTemplate(path, name string, bindData map[string]Variable) (c ConfigDet
 
 	data := gin.H{
 		"HTTPPORT":   cSettings.ServerSettings.Port,
+		"UNIXSOCKET": settings.ListenerSettings.UnixSocket,
 		"HTTP01PORT": settings.CertSettings.HTTPChallengePort,
 	}
 

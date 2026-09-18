@@ -309,9 +309,9 @@ func createMaintenanceConfigWithPayload(conf *config.Config, baseDir string, sit
 	if cSettings.ServerSettings.EnableHTTPS {
 		schema = "https"
 	}
-	maintenanceHost := settings.NginxSettings.GetMaintenanceHost(schema, nginxUIPort)
+	maintenanceProxyPass := nginxUIProxyPass(schema, nginxUIPort)
 	if bypassIP := settings.NginxSettings.GetMaintenanceBypassIP(); bypassIP != "" {
-		if content, ok := createBypassMaintenanceConfig(conf, siteName, payload, bypassIP, maintenanceHost, schema, nginxUIPort); ok {
+		if content, ok := createBypassMaintenanceConfig(conf, siteName, payload, bypassIP, maintenanceProxyPass); ok {
 			return content
 		}
 	}
@@ -383,7 +383,7 @@ func createMaintenanceConfigWithPayload(conf *config.Config, baseDir string, sit
 			locationContent.WriteString(fmt.Sprintf("proxy_set_header %s \"%s\";\n", maintenanceAdditionalInfoHeaderKey, escapeNginxQuotedValue(payload.AdditionInformation)))
 		}
 		locationContent.WriteString("rewrite ^ /pages/maintenance break;\n")
-		locationContent.WriteString(fmt.Sprintf("proxy_pass %s;\n", maintenanceHost))
+		locationContent.WriteString(maintenanceProxyPass)
 
 		location.Content = locationContent.String()
 		ngxServer.Locations = append(ngxServer.Locations, location)
@@ -412,7 +412,7 @@ func createMaintenanceConfigWithPayload(conf *config.Config, baseDir string, sit
 		if payload.AdditionInformation != "" {
 			locationContent.WriteString(fmt.Sprintf("proxy_set_header %s \"%s\";\n", maintenanceAdditionalInfoHeaderKey, escapeNginxQuotedValue(payload.AdditionInformation)))
 		}
-		locationContent.WriteString(fmt.Sprintf("proxy_pass %s://127.0.0.1:%d;\n", schema, nginxUIPort))
+		locationContent.WriteString(maintenanceProxyPass)
 		maintenanceMetaLocation.Content = locationContent.String()
 		ngxServer.Locations = append(ngxServer.Locations, maintenanceMetaLocation)
 
@@ -430,7 +430,7 @@ func createMaintenanceConfigWithPayload(conf *config.Config, baseDir string, sit
 	return content
 }
 
-func createBypassMaintenanceConfig(conf *config.Config, siteName string, payload MaintenancePayload, bypassIP, maintenanceHost, schema string, nginxUIPort uint) (string, bool) {
+func createBypassMaintenanceConfig(conf *config.Config, siteName string, payload MaintenancePayload, bypassIP, maintenanceProxyPass string) (string, bool) {
 	original := dumper.DumpConfig(conf, dumper.IndentedStyle)
 	ngxConfig, err := nginx.ParseNgxConfigByContent(original)
 	if err != nil {
@@ -463,12 +463,12 @@ map "$%s:$uri" $%s {
 		)
 		server.Locations = append(server.Locations, &nginx.NgxLocation{
 			Path:    locationName,
-			Content: buildMaintenanceProxyContent(siteName, payload, maintenanceHost, true),
+			Content: buildMaintenanceProxyContent(siteName, payload, maintenanceProxyPass, true),
 		})
 		if !hasMaintenanceLocation(server, "/pages/maintenance/meta") {
 			server.Locations = append(server.Locations, &nginx.NgxLocation{
 				Path:    "= /pages/maintenance/meta",
-				Content: buildMaintenanceProxyContent(siteName, payload, fmt.Sprintf("%s://127.0.0.1:%d", schema, nginxUIPort), false),
+				Content: buildMaintenanceProxyContent(siteName, payload, maintenanceProxyPass, false),
 			})
 		}
 		if !hasMaintenanceLocation(server, "/.well-known/acme-challenge") {
@@ -499,7 +499,7 @@ func hasMaintenanceLocation(server *nginx.NgxServer, fragment string) bool {
 	return false
 }
 
-func buildMaintenanceProxyContent(siteName string, payload MaintenancePayload, host string, rewrite bool) string {
+func buildMaintenanceProxyContent(siteName string, payload MaintenancePayload, proxyPass string, rewrite bool) string {
 	var content strings.Builder
 	content.WriteString("proxy_set_header Host $host;\n")
 	content.WriteString("proxy_set_header X-Real-IP $remote_addr;\n")
@@ -520,8 +520,21 @@ func buildMaintenanceProxyContent(siteName string, payload MaintenancePayload, h
 	if rewrite {
 		content.WriteString("rewrite ^ /pages/maintenance break;\n")
 	}
-	content.WriteString(fmt.Sprintf("proxy_pass %s;\n", host))
+	content.WriteString(proxyPass)
 	return content.String()
+}
+
+func nginxUIProxyPass(schema string, port uint) string {
+	localHost := fmt.Sprintf("%s://127.0.0.1:%d", schema, port)
+	if settings.ListenerSettings.UnixSocket != "" {
+		localHost = schema + "://unix:" + settings.ListenerSettings.UnixSocket + ":"
+	}
+
+	maintenanceHost := settings.NginxSettings.GetMaintenanceHost(localHost)
+	if maintenanceHost == localHost && settings.ListenerSettings.UnixSocket != "" {
+		maintenanceHost = fmt.Sprintf("%q", maintenanceHost)
+	}
+	return fmt.Sprintf("proxy_pass %s;\n", maintenanceHost)
 }
 
 // escapeNginxQuotedValue escapes a value embedded in a double quoted nginx parameter.

@@ -36,6 +36,7 @@ var envPrefixMap = map[string]interface{}{
 	"CLUSTER":        ClusterSettings,
 	"CRYPTO":         CryptoSettings,
 	"HTTP":           HTTPSettings,
+	"LISTENER":       ListenerSettings,
 	"LOGROTATE":      LogrotateSettings,
 	"NGINX":          NginxSettings,
 	"NGINX_LOG":      NginxLogSettings,
@@ -62,6 +63,7 @@ func init() {
 	sections.Set("cluster", ClusterSettings)
 	sections.Set("crypto", CryptoSettings)
 	sections.Set("http", HTTPSettings)
+	sections.Set("listener", ListenerSettings)
 	sections.Set("logrotate", LogrotateSettings)
 	sections.Set("nginx", NginxSettings)
 	sections.Set("nginx_log", NginxLogSettings)
