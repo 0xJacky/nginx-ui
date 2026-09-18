@@ -5,6 +5,7 @@ import (
 	"regexp"
 	"runtime"
 	"strconv"
+	"strings"
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/pkg/errors"
@@ -62,7 +63,13 @@ func GetNginxWorkerConfigInfo() (*NginxConfigInfo, error) {
 		return nil, errors.Wrap(err, "failed to read nginx.conf")
 	}
 
-	outputStr := string(content)
+	// The directives below are matched with plain regexes over the whole file,
+	// so a commented directive would be read as if it were in effect. The stock
+	// nginx.conf ships `#keepalive_timeout  0;` directly above the real
+	// `keepalive_timeout  65;`, and `#gzip  on;` while gzip is actually off.
+	// Whatever is read here is posted straight back by UpdatePerfOpt when the
+	// dialog is saved, which would turn the commented value into a live one.
+	outputStr := stripComments(string(content))
 
 	// Parse worker_processes
 	wpRe := regexp.MustCompile(`worker_processes\s+(\d+|auto);`)
@@ -243,4 +250,51 @@ func GetNginxWorkerConfigInfo() (*NginxConfigInfo, error) {
 	}
 
 	return result, nil
+}
+
+// stripComments removes the comment text from nginx configuration content so
+// the directive regexes cannot match a directive that is commented out. In
+// nginx a `#` outside a quoted string starts a comment that runs to the end of
+// the line, while a `#` inside quotes is a literal character. Line breaks are
+// kept so the content stays line-aligned, and the quoting state is reset at
+// every line: a configuration with an unbalanced quote then affects only its
+// own line instead of everything that follows.
+func stripComments(content string) string {
+	var builder strings.Builder
+	builder.Grow(len(content))
+
+	inSingleQuote := false
+	inDoubleQuote := false
+	inComment := false
+
+	for i := 0; i < len(content); i++ {
+		c := content[i]
+
+		switch c {
+		case '\n':
+			inSingleQuote = false
+			inDoubleQuote = false
+			inComment = false
+		case '\'':
+			if !inComment && !inDoubleQuote {
+				inSingleQuote = !inSingleQuote
+			}
+		case '"':
+			if !inComment && !inSingleQuote {
+				inDoubleQuote = !inDoubleQuote
+			}
+		case '#':
+			if !inSingleQuote && !inDoubleQuote {
+				inComment = true
+			}
+		}
+
+		if inComment && c != '\n' {
+			continue
+		}
+
+		builder.WriteByte(c)
+	}
+
+	return builder.String()
 }
