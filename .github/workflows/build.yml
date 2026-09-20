@@ -1195,6 +1195,7 @@ jobs:
           brew style homebrew-tools/Formula/nginx-ui.rb
 
       - name: Create Pull Request to homebrew-tools
+        id: homebrew-pr
         uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ secrets.HOMEBREW_GITHUB_TOKEN }}
@@ -1223,6 +1224,44 @@ jobs:
           author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
           add-paths: |
             Formula/nginx-ui.rb
+
+      - name: Close superseded Homebrew pull requests
+        if: ${{ steps.homebrew-pr.outputs.pull-request-number }}
+        env:
+          GH_TOKEN: ${{ secrets.HOMEBREW_GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          mapfile -t nginx_ui_pull_requests < <(
+            gh pr list \
+              --repo 0xJacky/homebrew-tools \
+              --state open \
+              --limit 100 \
+              --json number,headRefName,baseRefName \
+              --jq '.[]
+                | select(.baseRefName == "main")
+                | select(.headRefName | startswith("update-nginx-ui-"))
+                | [(.headRefName | sub("^update-nginx-ui-"; "")), (.number | tostring)]
+                | @tsv'
+          )
+
+          if (( ${#nginx_ui_pull_requests[@]} <= 1 )); then
+            exit 0
+          fi
+
+          keeper="$(printf '%s\n' "${nginx_ui_pull_requests[@]}" | sort -t $'\t' -k1,1V -k2,2n | tail -n 1)"
+          keeper_number="${keeper##*$'\t'}"
+
+          for pull_request in "${nginx_ui_pull_requests[@]}"; do
+            pull_request_number="${pull_request##*$'\t'}"
+            if [[ "$pull_request_number" == "$keeper_number" ]]; then
+              continue
+            fi
+
+            gh pr close "$pull_request_number" \
+              --repo 0xJacky/homebrew-tools \
+              --comment "Superseded by #${keeper_number}."
+          done
 
   publish-winget:
     runs-on: windows-latest
