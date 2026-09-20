@@ -4,6 +4,7 @@ import {
   ClockCircleOutlined,
   CodeOutlined,
   ExclamationCircleOutlined,
+  SafetyCertificateOutlined,
   SettingOutlined,
 } from '@antdv-next/icons'
 import { truncate, upperFirst } from 'lodash'
@@ -121,6 +122,16 @@ function getStatusClass(status: string): string {
       return 'status-unknown'
   }
 }
+
+function formatCertRemaining(site: SiteInfo): string {
+  if (site.cert_days_remaining === undefined)
+    return ''
+
+  if (site.cert_days_remaining < 0)
+    return $gettext('Expired')
+
+  return $gettext('%{days}d', { days: String(site.cert_days_remaining) })
+}
 </script>
 
 <template>
@@ -197,6 +208,14 @@ function getStatusClass(status: string): string {
         <div v-if="site.status_code" class="detail-item">
           <CodeOutlined class="detail-icon" />
           <span>{{ site.status_code }}</span>
+        </div>
+        <div
+          v-if="site.cert_days_remaining !== undefined"
+          class="detail-item"
+          :class="{ error: site.cert_days_remaining < 0 }"
+        >
+          <SafetyCertificateOutlined class="detail-icon" />
+          <span>{{ formatCertRemaining(site) }}</span>
         </div>
         <ATooltip v-if="site.error" :title="site.error">
           <div class="detail-item error" data-testid="site-health-check-error">

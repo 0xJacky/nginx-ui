@@ -21,6 +21,7 @@ type SiteInfo struct {
 	Status                      string `json:"status"` // StatusOnline, StatusOffline, StatusError, StatusChecking
 	StatusCode                  int    `json:"status_code"`
 	ResponseTime                int64  `json:"response_time"` // in milliseconds
+	CertDaysRemaining           *int64 `json:"cert_days_remaining,omitempty"`
 	FaviconURL                  string `json:"favicon_url"`
 	FaviconData                 string `json:"favicon_data"` // base64 encoded favicon
 	Title                       string `json:"title"`
