@@ -251,7 +251,7 @@ require (
 	github.com/namedotcom/go/v4 v4.0.2 // indirect
 	github.com/nrdcg/auroradns v1.2.0 // indirect
 	github.com/nrdcg/bunny-go v0.1.0 // indirect
-	github.com/nrdcg/desec v0.11.2 // indirect
+	github.com/nrdcg/desec v0.11.1 // indirect
 	github.com/nrdcg/freemyip v0.3.0 // indirect
 	github.com/nrdcg/goacmedns v0.2.0 // indirect
 	github.com/nrdcg/goinwx v0.12.0 // indirect
@@ -360,6 +360,9 @@ require (
 	gorm.io/hints v1.1.2 // indirect
 	software.sslmate.com/src/go-pkcs12 v0.7.3 // indirect
 )
+
+// v0.11.2 sends the create-only subname field in PATCH requests.
+exclude github.com/nrdcg/desec v0.11.2
 
 replace (
 	code.pfad.fr/risefront => github.com/nginxui/risefront v1.3.3
