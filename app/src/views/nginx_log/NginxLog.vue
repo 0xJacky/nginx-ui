@@ -126,7 +126,7 @@ const isIndexingEnabled = ref<boolean | null>(null)
 onMounted(async () => {
   try {
     const res = await nginxLog.getAdvancedIndexingStatus()
-    isIndexingEnabled.value = !!(res.enabled ?? (res as any).data?.enabled)
+    isIndexingEnabled.value = res.enabled
   }
   catch (err) {
     console.error('Failed to get indexing status:', err)
