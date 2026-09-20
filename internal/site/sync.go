@@ -11,8 +11,8 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 )
 
-// getSyncData returns the nodes that need to be synchronized by site name and the post-sync action
-func getSyncData(name string) (nodes []*model.Node, postSyncAction string) {
+// getSyncData returns the nodes and namespace metadata that need to be synchronized by site name.
+func getSyncData(name string) (nodes []*model.Node, postSyncAction, namespaceName string) {
 	configFilePath, err := ResolveAvailablePath(name)
 	if err != nil {
 		logger.Error(err)
@@ -32,6 +32,7 @@ func getSyncData(name string) (nodes []*model.Node, postSyncAction string) {
 	if site.Namespace != nil {
 		syncNodeIds = append(syncNodeIds, site.Namespace.SyncNodeIds...)
 		postSyncAction = site.Namespace.PostSyncAction
+		namespaceName = site.Namespace.Name
 	}
 	syncNodeIds = lo.Uniq(syncNodeIds)
 
@@ -46,7 +47,7 @@ func getSyncData(name string) (nodes []*model.Node, postSyncAction string) {
 
 // getSyncNodes returns the nodes that need to be synchronized by site name (for backward compatibility)
 func getSyncNodes(name string) (nodes []*model.Node) {
-	nodes, _ = getSyncData(name)
+	nodes, _, _ = getSyncData(name)
 	return
 }
 
