@@ -21,7 +21,7 @@ func init() {
 		if err != nil {
 			return err
 		}
-		if barkConfig.DeviceKey == "" && barkConfig.ServerURL == "" {
+		if barkConfig.DeviceKey == "" {
 			return ErrInvalidNotifierConfig
 		}
 		barkService := bark.NewWithServers(barkConfig.DeviceKey, barkConfig.ServerURL)
