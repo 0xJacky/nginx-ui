@@ -21,9 +21,11 @@ The API scopes are:
 MCP scopes are independent of API scopes. Granting `mcp:write` does not grant
 management API access, and granting `api:write` does not grant MCP access.
 
-Service tokens cannot access interactive account security operations, reveal
-protected settings, manage other service tokens, or open the web terminal.
-Use an authenticated administrator session for those operations.
+Service tokens cannot access interactive account security operations, create or
+modify interactive users, reveal protected settings, manage other service
+tokens, or open the web terminal. The `api:read` scope may list and inspect
+users, but user creation, modification, deletion, and recovery require an
+authenticated interactive administrator session.
 
 ## Configure the client
 
@@ -46,17 +48,24 @@ Use `--node-id` to route a supported request to a specific cluster node.
 
 ## Common operations
 
-List and create users:
+List users with an `api:read` service token:
 
 ```bash
 nginx-ui ctl --token-file /run/secrets/nginx-ui-token users list
-nginx-ui ctl --token-file /run/secrets/nginx-ui-token users create \
+```
+
+Create a user with an interactive administrator token:
+
+```bash
+nginx-ui ctl --token-file /run/secrets/admin-session-token users create \
   --name deploy-user --password-file /run/secrets/deploy-user-password
 ```
 
 The predefined-user environment variables remain useful for the initial user
-in skip-installation deployments. Use `ctl users create` for users managed
-after the instance has started.
+in skip-installation deployments. After installation, use the web interface or
+`ctl users create` with an interactive administrator token. Administrators who
+have two-factor authentication enabled should use the web interface so the
+secure-session verification can be completed.
 
 List certificates and register certificate files that already exist on the
 Nginx UI server:

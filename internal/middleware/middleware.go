@@ -103,6 +103,7 @@ var serviceTokenInteractivePaths = map[string]struct{}{
 var serviceTokenInteractiveRoutes = map[string]struct{}{
 	http.MethodDelete + " /api/node/credentials/:credential_id": {},
 	http.MethodDelete + " /api/nodes/:id":                       {},
+	http.MethodDelete + " /api/users/:id":                       {},
 	http.MethodGet + " /api/node/credentials":                   {},
 	http.MethodGet + " /api/nodes/:id/credentials":              {},
 	http.MethodGet + " /api/nodes/:id/secret":                   {},
@@ -110,6 +111,9 @@ var serviceTokenInteractiveRoutes = map[string]struct{}{
 	http.MethodPost + " /api/nodes/:id":                         {},
 	http.MethodPost + " /api/nodes/:id/credentials/rotate":      {},
 	http.MethodPost + " /api/nodes/load_from_settings":          {},
+	http.MethodPost + " /api/users":                             {},
+	http.MethodPost + " /api/users/:id":                         {},
+	http.MethodPatch + " /api/users/:id":                        {},
 }
 
 func apiScopeForRequest(c *gin.Context) string {

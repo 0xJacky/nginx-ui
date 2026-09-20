@@ -65,10 +65,10 @@ func InitManageUserRouter(g *gin.RouterGroup) {
 		})
 	})
 
-	c.BeforeCreate(middleware.RequireSecureSession())
-	c.BeforeModify(middleware.RequireSecureSession())
-	c.BeforeDestroy(middleware.RequireSecureSession())
-	c.BeforeRecover(middleware.RequireSecureSession())
+	c.BeforeCreate(middleware.RequireInteractiveUser(), middleware.RequireSecureSession())
+	c.BeforeModify(middleware.RequireInteractiveUser(), middleware.RequireSecureSession())
+	c.BeforeDestroy(middleware.RequireInteractiveUser(), middleware.RequireSecureSession())
+	c.BeforeRecover(middleware.RequireInteractiveUser(), middleware.RequireSecureSession())
 
 	c.InitRouter(g)
 }

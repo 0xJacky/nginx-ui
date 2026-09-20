@@ -19,8 +19,8 @@ API 权限范围如下：
 
 MCP 权限与 API 权限彼此独立。授予 `mcp:write` 不会获得管理 API 访问权限，授予 `api:write` 也不会获得 MCP 访问权限。
 
-服务令牌无法访问交互式账户安全操作、受保护设置、其他服务令牌管理接口，也无法打开 Web 终端。
-这些操作请使用已认证的管理员会话。
+服务令牌无法访问交互式账户安全操作、创建或修改交互式用户、受保护设置、其他服务令牌管理接口，也无法打开 Web 终端。
+`api:read` 权限可以列出和查看用户，但用户的创建、修改、删除和恢复需要已认证的交互式管理员会话。
 
 ## 配置客户端
 
@@ -40,16 +40,22 @@ nginx-ui ctl --token-file /run/secrets/nginx-ui-token users list
 
 ## 常见操作
 
-列出并创建用户：
+使用 `api:read` 服务令牌列出用户：
 
 ```bash
 nginx-ui ctl --token-file /run/secrets/nginx-ui-token users list
-nginx-ui ctl --token-file /run/secrets/nginx-ui-token users create \
+```
+
+使用交互式管理员令牌创建用户：
+
+```bash
+nginx-ui ctl --token-file /run/secrets/admin-session-token users create \
   --name deploy-user --password-file /run/secrets/deploy-user-password
 ```
 
 在跳过安装流程的部署中，预置用户环境变量仍可用于初始化首个用户。
-实例启动后新增用户请使用 `ctl users create`。
+安装完成后，请通过 Web 界面或使用交互式管理员令牌执行 `ctl users create` 来新增用户。
+已启用双因素认证的管理员应使用 Web 界面，以便完成安全会话验证。
 
 列出证书，并注册 Nginx UI 服务器上已存在的证书文件：
 
