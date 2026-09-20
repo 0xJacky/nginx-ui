@@ -14,6 +14,7 @@ export interface SiteInfo {
   status: SiteStatusType
   status_code: number
   response_time: number
+  cert_days_remaining?: number
   favicon_url: string
   favicon_data: string
   title: string

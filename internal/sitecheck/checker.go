@@ -2,6 +2,7 @@ package sitecheck
 
 import (
 	"context"
+	"crypto/tls"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
@@ -21,6 +22,24 @@ import (
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/uozi-tech/cosy/logger"
 )
+
+func calculateCertDaysRemaining(state *tls.ConnectionState) *int64 {
+	if state == nil || len(state.PeerCertificates) == 0 {
+		return nil
+	}
+
+	remaining := state.PeerCertificates[0].NotAfter.Sub(time.Now())
+	day := 24 * time.Hour
+
+	var days int64
+	if remaining >= 0 {
+		days = int64((remaining + day - time.Nanosecond) / day)
+	} else {
+		days = -int64(((-remaining) + day - time.Nanosecond) / day)
+	}
+
+	return &days
+}
 
 // Site config cache with expiration
 var (
@@ -132,6 +151,7 @@ func (sc *SiteChecker) CollectSites() {
 					siteInfo.LastChecked = previous.LastChecked
 					siteInfo.Error = previous.Error
 					siteInfo.ErrorType = previous.ErrorType
+					siteInfo.CertDaysRemaining = previous.CertDaysRemaining
 				}
 				if !settings.SiteCheckSettings.Enabled {
 					siteInfo.HealthCheckDisabledReason = "global"
@@ -418,6 +438,7 @@ func (sc *SiteChecker) checkSite(ctx context.Context, siteName, siteURL string) 
 			siteInfo.LastChecked = existing.LastChecked
 			siteInfo.Error = existing.Error
 			siteInfo.ErrorType = existing.ErrorType
+			siteInfo.CertDaysRemaining = existing.CertDaysRemaining
 			if siteInfo.Title == "" {
 				siteInfo.Title = existing.Title
 			}
@@ -514,11 +535,12 @@ func (sc *SiteChecker) checkSiteBasic(ctx context.Context, siteName, siteURL str
 	siteConfig := getOrCreateSiteConfigForURL(siteName, siteURL)
 
 	siteInfo := &SiteInfo{
-		SiteConfig:   *siteConfig,
-		Name:         extractDomainName(siteURL),
-		StatusCode:   resp.StatusCode,
-		ResponseTime: responseTime,
-		LastChecked:  time.Now().Unix(),
+		SiteConfig:        *siteConfig,
+		Name:              extractDomainName(siteURL),
+		StatusCode:        resp.StatusCode,
+		ResponseTime:      responseTime,
+		CertDaysRemaining: calculateCertDaysRemaining(resp.TLS),
+		LastChecked:       time.Now().Unix(),
 	}
 
 	// Determine status based on status code

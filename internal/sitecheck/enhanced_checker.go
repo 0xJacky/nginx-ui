@@ -235,11 +235,12 @@ func (ec *EnhancedSiteChecker) checkHTTP(ctx context.Context, siteURL string, co
 
 	return &CheckResult{
 		Info: &SiteInfo{
-			Status:       status,
-			StatusCode:   resp.StatusCode,
-			ResponseTime: responseTime,
-			Error:        errorMsg,
-			ErrorType:    errorType,
+			Status:            status,
+			StatusCode:        resp.StatusCode,
+			ResponseTime:      responseTime,
+			CertDaysRemaining: calculateCertDaysRemaining(resp.TLS),
+			Error:             errorMsg,
+			ErrorType:         errorType,
 		},
 		Body: body,
 	}, nil
