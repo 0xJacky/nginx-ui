@@ -2,6 +2,7 @@ package clustersync
 
 import (
 	"context"
+	"fmt"
 	"runtime"
 	"sync"
 
@@ -10,9 +11,10 @@ import (
 
 // item is one unit of work replicated to a node.
 type item struct {
-	kind Kind
-	name string
-	push func(ctx context.Context, node nodeRef) error
+	kind     Kind
+	name     string
+	blocking bool
+	push     func(ctx context.Context, node nodeRef) error
 }
 
 // run pushes every item to every node. Nodes are processed concurrently while a
@@ -38,15 +40,23 @@ func run(ctx context.Context, nodes []nodeRef, items []item) *Summary {
 			}()
 			defer wg.Done()
 
+			var blockedBy error
 			for _, current := range items {
 				if ctx.Err() != nil {
 					results.fail(node, current.kind, current.name, ctx.Err())
+					continue
+				}
+				if blockedBy != nil {
+					results.fail(node, current.kind, current.name, fmt.Errorf("skipped after prerequisite failed: %w", blockedBy))
 					continue
 				}
 
 				if err := current.push(ctx, node); err != nil {
 					logger.Errorf("cluster sync %s %s to %s: %v", current.kind, current.name, node.name, err)
 					results.fail(node, current.kind, current.name, err)
+					if current.blocking {
+						blockedBy = fmt.Errorf("%s %s: %w", current.kind, current.name, err)
+					}
 					continue
 				}
 

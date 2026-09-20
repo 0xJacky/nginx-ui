@@ -38,9 +38,22 @@ type namespacePayload struct {
 
 // configBatchItem replicates a set of configuration files in a single request.
 func configBatchItem(name string, files []ConfigFile, overwrite bool) item {
+	return newConfigBatchItem(name, files, overwrite, false)
+}
+
+// managedConfigBatchItem stages every site and stream file before any of them
+// is enabled or validated through its resource endpoint. Nginx validates the
+// whole configuration tree, so applying a dependent site one at a time can
+// fail solely because its upstream file has not arrived yet.
+func managedConfigBatchItem(name string, files []ConfigFile, overwrite bool) item {
+	return newConfigBatchItem(name, files, overwrite, true)
+}
+
+func newConfigBatchItem(name string, files []ConfigFile, overwrite, blocking bool) item {
 	return item{
-		kind: KindConfig,
-		name: name,
+		kind:     KindConfig,
+		name:     name,
+		blocking: blocking,
 		push: func(ctx context.Context, node nodeRef) error {
 			payload := configBatchPayload{Files: files, Overwrite: overwrite}
 			body, status, err := node.postForBody(ctx, "/api/config_sync_batch", payload)

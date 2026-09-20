@@ -102,6 +102,8 @@ func SyncNamespace(ctx context.Context, namespaceID uint64) (*Summary, error) {
 // set only its members are collected and they are tagged with its name.
 func buildItems(scope Scope, namespace *model.Namespace) ([]item, error) {
 	var items []item
+	var managedFiles []ConfigFile
+	var managedItems []item
 
 	if scope.Configs {
 		files, err := CollectConfigFiles(nginx.GetConfPath())
@@ -114,25 +116,39 @@ func buildItems(scope Scope, namespace *model.Namespace) ([]item, error) {
 	}
 
 	if scope.Sites {
-		siteItems, err := collectSiteItems(namespace, scope.Overwrite)
+		siteItems, siteFiles, err := collectSiteItems(namespace, scope.Overwrite)
 		if err != nil {
 			return nil, err
 		}
-		items = append(items, siteItems...)
+		managedFiles = append(managedFiles, siteFiles...)
+		managedItems = append(managedItems, siteItems...)
 	}
 
 	if scope.Streams {
-		streamItems, err := collectStreamItems(namespace, scope.Overwrite)
+		streamItems, streamFiles, err := collectStreamItems(namespace, scope.Overwrite)
 		if err != nil {
 			return nil, err
 		}
-		items = append(items, streamItems...)
+		managedFiles = append(managedFiles, streamFiles...)
+		managedItems = append(managedItems, streamItems...)
 	}
+
+	// Staging creates the destination files before the resource endpoints see
+	// them, so it is only compatible with overwrite syncs. A non-overwrite sync
+	// must leave the existing per-resource create-or-reject semantics untouched.
+	if len(managedFiles) > 0 && scope.Overwrite {
+		items = append(items, managedConfigBatchItem(
+			fmt.Sprintf("managed configurations (%d)", len(managedFiles)),
+			managedFiles,
+			scope.Overwrite,
+		))
+	}
+	items = append(items, managedItems...)
 
 	return items, nil
 }
 
-func collectSiteItems(namespace *model.Namespace, overwrite bool) ([]item, error) {
+func collectSiteItems(namespace *model.Namespace, overwrite bool) ([]item, []ConfigFile, error) {
 	s := query.Site
 	stmt := s.Preload(s.Namespace)
 	if namespace != nil {
@@ -141,10 +157,11 @@ func collectSiteItems(namespace *model.Namespace, overwrite bool) ([]item, error
 
 	sites, err := stmt.Find()
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	items := make([]item, 0, len(sites))
+	files := make([]ConfigFile, 0, len(sites))
 	for _, siteModel := range sites {
 		content, err := os.ReadFile(siteModel.Path)
 		if err != nil {
@@ -153,6 +170,11 @@ func collectSiteItems(namespace *model.Namespace, overwrite bool) ([]item, error
 		}
 
 		name := filepath.Base(siteModel.Path)
+		files = append(files, ConfigFile{
+			BaseDir: "sites-available",
+			Name:    name,
+			Content: string(content),
+		})
 		items = append(items, siteItem(
 			name,
 			string(content),
@@ -163,10 +185,10 @@ func collectSiteItems(namespace *model.Namespace, overwrite bool) ([]item, error
 		))
 	}
 
-	return items, nil
+	return items, files, nil
 }
 
-func collectStreamItems(namespace *model.Namespace, overwrite bool) ([]item, error) {
+func collectStreamItems(namespace *model.Namespace, overwrite bool) ([]item, []ConfigFile, error) {
 	s := query.Stream
 	stmt := s.Preload(s.Namespace)
 	if namespace != nil {
@@ -175,10 +197,11 @@ func collectStreamItems(namespace *model.Namespace, overwrite bool) ([]item, err
 
 	streams, err := stmt.Find()
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	items := make([]item, 0, len(streams))
+	files := make([]ConfigFile, 0, len(streams))
 	for _, streamModel := range streams {
 		content, err := os.ReadFile(streamModel.Path)
 		if err != nil {
@@ -187,6 +210,11 @@ func collectStreamItems(namespace *model.Namespace, overwrite bool) ([]item, err
 		}
 
 		name := filepath.Base(streamModel.Path)
+		files = append(files, ConfigFile{
+			BaseDir: "streams-available",
+			Name:    name,
+			Content: string(content),
+		})
 		items = append(items, streamItem(
 			name,
 			string(content),
@@ -197,7 +225,7 @@ func collectStreamItems(namespace *model.Namespace, overwrite bool) ([]item, err
 		))
 	}
 
-	return items, nil
+	return items, files, nil
 }
 
 func namespaceName(namespace *model.Namespace) string {
