@@ -195,8 +195,14 @@ func IssueLoginToken(user *model.User, proof LoginProof) (*AccessTokenPayload, e
 	if user == nil {
 		return nil, errors.New("user is required")
 	}
-	if proof == LoginProofPassword && !user.EnabledOTP() && user.EnabledPasskey() {
-		return nil, ErrPasskeyRequired
+	if proof == LoginProofPassword && !user.EnabledOTP() {
+		enabledPasskey, err := user.EnabledPasskey()
+		if err != nil {
+			return nil, err
+		}
+		if enabledPasskey {
+			return nil, ErrPasskeyRequired
+		}
 	}
 	return generateJWT(user)
 }

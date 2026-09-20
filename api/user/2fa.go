@@ -26,13 +26,17 @@ type Status2FA struct {
 	RecoveryCodesMigrationRequired bool `json:"recovery_codes_migration_required"`
 }
 
-func get2FAStatus(c *gin.Context) (status Status2FA) {
+func get2FAStatus(c *gin.Context) (status Status2FA, err error) {
 	// when accessing the node from the main cluster, there is no user in the context
 	u, ok := c.Get("user")
 	if ok {
 		userPtr := u.(*model.User)
 		status.OTPStatus = userPtr.EnabledOTP()
-		status.PasskeyStatus = userPtr.EnabledPasskey() && passkey.Enabled()
+		status.PasskeyStatus, err = userPtr.EnabledPasskey()
+		if err != nil {
+			return status, err
+		}
+		status.PasskeyStatus = status.PasskeyStatus && passkey.Enabled()
 		status.Enabled = status.OTPStatus || status.PasskeyStatus
 		status.RecoveryCodesGenerated = userPtr.RecoveryCodeGenerated()
 		status.RecoveryCodesViewed = userPtr.RecoveryCodeViewed()
@@ -42,11 +46,21 @@ func get2FAStatus(c *gin.Context) (status Status2FA) {
 }
 
 func Get2FAStatus(c *gin.Context) {
-	c.JSON(http.StatusOK, get2FAStatus(c))
+	status, err := get2FAStatus(c)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, status)
 }
 
 func SecureSessionStatus(c *gin.Context) {
-	status2FA := get2FAStatus(c)
+	status2FA, err := get2FAStatus(c)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
 	if !status2FA.Enabled {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,

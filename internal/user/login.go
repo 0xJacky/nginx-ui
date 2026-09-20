@@ -1,20 +1,25 @@
 package user
 
 import (
+	"errors"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
 )
 
 func Login(name string, password string) (user *model.User, err error) {
 	u := query.User
 
 	user, err = u.Where(u.Name.Eq(name)).First()
-	if err != nil {
+	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, ErrPasswordIncorrect
+	}
+	if err != nil {
+		return nil, err
 	}
 
 	// if the user is not initialized, return error

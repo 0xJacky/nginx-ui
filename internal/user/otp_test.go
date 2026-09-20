@@ -20,7 +20,7 @@ func setupOTPTestDB(t *testing.T) *gorm.DB {
 	dbName := fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name())
 	db, err := gorm.Open(sqlite.Open(dbName), &gorm.Config{})
 	require.NoError(t, err)
-	require.NoError(t, db.AutoMigrate(&model.User{}))
+	require.NoError(t, db.AutoMigrate(&model.User{}, &model.Passkey{}))
 
 	model.Use(db)
 	query.Use(db)

@@ -10,6 +10,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
+	"github.com/uozi-tech/cosy"
 	cSettings "github.com/uozi-tech/cosy/settings"
 )
 
@@ -77,7 +78,13 @@ func RequireSecureSession() gin.HandlerFunc {
 			return
 		}
 		cUser := u.(*model.User)
-		if !userNeedsSecureSession(cUser) {
+		needsSecureSession, err := userNeedsSecureSession(cUser)
+		if err != nil {
+			cosy.ErrHandler(c, err)
+			c.Abort()
+			return
+		}
+		if !needsSecureSession {
 			c.Next()
 			return
 		}
@@ -165,13 +172,16 @@ func RequireInteractiveUser() gin.HandlerFunc {
 	}
 }
 
-func userNeedsSecureSession(cUser *model.User) bool {
+func userNeedsSecureSession(cUser *model.User) (bool, error) {
 	if cUser.EnabledOTP() || cUser.EnabledTwoFA {
-		return true
+		return true, nil
 	}
 
-	if cUser.ID == 0 || model.UseDB() == nil {
-		return false
+	if cUser.ID == 0 {
+		return false, nil
+	}
+	if model.UseDB() == nil {
+		return true, nil
 	}
 
 	return cUser.EnabledPasskey()
