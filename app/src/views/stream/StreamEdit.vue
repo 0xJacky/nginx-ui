@@ -11,9 +11,11 @@ const name = computed(() => decodeURIComponent(route.params?.name?.toString() ??
 const store = useStreamEditorStore()
 const { loading } = storeToRefs(store)
 
-onMounted(() => {
-  store.init(name.value)
-})
+// Vue Router can reuse this component when only the stream name changes, so
+// reload on the route parameter instead of on mount alone.
+watch(name, value => {
+  store.init(value)
+}, { immediate: true })
 </script>
 
 <template>

@@ -40,23 +40,39 @@ watch(data, value => {
     selfSignedPayload.value = toSelfSignedPayload(value)
 }, { immediate: true })
 
+// The store is a singleton, so editing another certificate starts out holding
+// the previous one's data. Every load takes a ticket so a slow response cannot
+// land after the operator moved on to another record.
+let loadSeq = 0
+
 function init() {
-  if (id.value > 0) {
-    cert.getItem(id.value).then(r => {
-      // Backend stores key_type in its canonical form (EC256, RSA2048…); the
-      // ACME form's ASelect options use the legacy keys (P256, 2048…). Normalize
-      // on load so the dropdown highlights the right option when editing.
-      data.value = { ...r, key_type: normalizePrivateKeyType(r.key_type) }
-    })
-  }
-  else {
+  const seq = ++loadSeq
+  const target = id.value
+
+  // Keep the form filled when this is a reload of the record already on screen,
+  // e.g. after a renewal.
+  if (data.value.id !== target) {
     data.value = {} as Cert
+    selfSignedPayload.value = undefined
   }
+
+  if (!(target > 0))
+    return
+
+  cert.getItem(target).then(r => {
+    if (seq !== loadSeq)
+      return
+
+    // Backend stores key_type in its canonical form (EC256, RSA2048…); the
+    // ACME form's ASelect options use the legacy keys (P256, 2048…). Normalize
+    // on load so the dropdown highlights the right option when editing.
+    data.value = { ...r, key_type: normalizePrivateKeyType(r.key_type) }
+  })
 }
 
-onMounted(() => {
-  init()
-})
+// Vue Router can reuse this component when only the id changes, so reload on
+// the route parameter instead of on mount alone.
+watch(id, init, { immediate: true })
 
 async function save() {
   try {
