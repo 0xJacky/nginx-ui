@@ -1275,6 +1275,6 @@ jobs:
         uses: vedantmgoyal9/winget-releaser@v2
         with:
           identifier: 0xJacky.nginx-ui
-          max-versions-to-keep: 2
+          max-versions-to-keep: 0
           token: ${{ secrets.HOMEBREW_GITHUB_TOKEN }}
           installers-regex: 'nginx-ui-windows.*\.zip$'
