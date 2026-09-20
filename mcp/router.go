@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto/subtle"
 	"encoding/json"
+	"errors"
 	"io"
 	"net/http"
 	"strings"
@@ -18,7 +19,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var sensitiveMCPTools = map[string]struct{}{
+var writeMCPTools = map[string]struct{}{
 	"nginx_config_add":    {},
 	"nginx_config_enable": {},
 	"nginx_config_mkdir":  {},
@@ -27,6 +28,16 @@ var sensitiveMCPTools = map[string]struct{}{
 	"reload_nginx":        {},
 	"restart_nginx":       {},
 }
+
+var readOnlyMCPTools = map[string]struct{}{
+	"nginx_config_base_path": {},
+	"nginx_config_get":       {},
+	"nginx_config_history":   {},
+	"nginx_config_list":      {},
+	"nginx_status":           {},
+}
+
+var errInvalidMCPRequestBody = errors.New("invalid MCP request body")
 
 type mcpToolCallProbe struct {
 	Method string `json:"method"`
@@ -123,8 +134,15 @@ func authorizeMCPToolRequest() gin.HandlerFunc {
 		}
 
 		requiredScope := model.MCPTokenScopeRead
-		if mcpRequestNeedsSecureSession(body) {
-			requiredScope = model.MCPTokenScopeWrite
+		if c.Request.Method == http.MethodPost {
+			var err error
+			requiredScope, err = classifyMCPRequest(body)
+			if err != nil {
+				c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+					"message": "Invalid MCP request body",
+				})
+				return
+			}
 		}
 		if value, ok := c.Get(internalmcp.ServiceTokenPrincipalKey); ok {
 			principal, valid := value.(*internalmcp.ServiceTokenPrincipal)
@@ -144,39 +162,29 @@ func authorizeMCPToolRequest() gin.HandlerFunc {
 	}
 }
 
-func mcpRequestNeedsSecureSession(body []byte) bool {
+func classifyMCPRequest(body []byte) (string, error) {
 	body = bytes.TrimSpace(body)
-	if len(body) == 0 {
-		return false
-	}
-
-	if body[0] == '[' {
-		var messages []mcpToolCallProbe
-		if err := json.Unmarshal(body, &messages); err != nil {
-			return false
-		}
-
-		for _, message := range messages {
-			if mcpMessageNeedsSecureSession(message) {
-				return true
-			}
-		}
-		return false
+	if len(body) == 0 || body[0] != '{' {
+		return "", errInvalidMCPRequestBody
 	}
 
 	var message mcpToolCallProbe
 	if err := json.Unmarshal(body, &message); err != nil {
-		return false
+		return "", errInvalidMCPRequestBody
 	}
 
-	return mcpMessageNeedsSecureSession(message)
-}
-
-func mcpMessageNeedsSecureSession(message mcpToolCallProbe) bool {
 	if message.Method != "tools/call" {
-		return false
+		return model.MCPTokenScopeRead, nil
 	}
 
-	_, ok := sensitiveMCPTools[message.Params.Name]
-	return ok
+	if _, ok := readOnlyMCPTools[message.Params.Name]; ok {
+		return model.MCPTokenScopeRead, nil
+	}
+	if _, ok := writeMCPTools[message.Params.Name]; ok {
+		return model.MCPTokenScopeWrite, nil
+	}
+
+	// Unknown tools fail closed. This keeps newly added mutating tools behind
+	// write scope and secure-session checks until they are explicitly classified.
+	return model.MCPTokenScopeWrite, nil
 }
