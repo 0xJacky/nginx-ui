@@ -13,7 +13,6 @@ import (
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
-	"github.com/go-webauthn/webauthn/webauthn"
 	"github.com/google/uuid"
 	"github.com/uozi-tech/cosy"
 )
@@ -120,7 +119,7 @@ func BeginStart2FASecureSessionByPasskey(c *gin.Context) {
 		return
 	}
 	passkeySessionID := uuid.NewString()
-	cache.Set(passkeySessionID, sessionData, passkeyTimeout)
+	cache.Set(buildPasskeySecureSessionKey(passkeySessionID), sessionData, passkeyTimeout)
 	c.JSON(http.StatusOK, gin.H{
 		"session_id": passkeySessionID,
 		"options":    options,
@@ -133,12 +132,11 @@ func FinishStart2FASecureSessionByPasskey(c *gin.Context) {
 		return
 	}
 	passkeySessionID := c.GetHeader("X-Passkey-Session-ID")
-	sessionDataBytes, ok := cache.Take(passkeySessionID)
+	sessionData, ok := takeWebAuthnSession(passkeySessionID, buildPasskeySecureSessionKey)
 	if !ok {
 		cosy.ErrHandler(c, user.ErrSessionNotFound)
 		return
 	}
-	sessionData := sessionDataBytes.(*webauthn.SessionData)
 	webauthnInstance := passkey.GetInstance()
 	u := api.CurrentUser(c)
 	credential, err := webauthnInstance.FinishLogin(u, *sessionData, c.Request)

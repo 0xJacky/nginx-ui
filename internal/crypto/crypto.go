@@ -24,6 +24,21 @@ type Params struct {
 	PublicKey  string `json:"public_key"`
 }
 
+func getCachedParams() (*Params, bool) {
+	value, ok := cache.Get(CacheKey)
+	if !ok {
+		return nil, false
+	}
+
+	params, ok := value.(*Params)
+	if !ok || params == nil {
+		cache.Del(CacheKey)
+		return nil, false
+	}
+
+	return params, true
+}
+
 // GenerateRSAKeyPair generates a new RSA key pair
 func GenerateRSAKeyPair() (privateKeyPEM, publicKeyPEM []byte, err error) {
 	privateKey, err := rsa.GenerateKey(rand.Reader, 2048)
@@ -45,8 +60,8 @@ func GenerateRSAKeyPair() (privateKeyPEM, publicKeyPEM []byte, err error) {
 // otherwise, it returns the existing nonce and public key
 func GetCryptoParams() (params *Params, err error) {
 	// Check if the key pair exists in then cache
-	if value, ok := cache.Get(CacheKey); ok {
-		return value.(*Params), nil
+	if cachedParams, ok := getCachedParams(); ok {
+		return cachedParams, nil
 	}
 	// Generate a nonce = hash(publicKey)
 	privateKeyPEM, publicKeyPEM, err := GenerateRSAKeyPair()
@@ -64,12 +79,11 @@ func GetCryptoParams() (params *Params, err error) {
 // Decrypt decrypts the data with the private key (nonce, paramEncrypted)
 func Decrypt(paramEncrypted string) (data map[string]interface{}, err error) {
 	// Get crypto params from cache
-	value, ok := cache.Get(CacheKey)
+	params, ok := getCachedParams()
 	if !ok {
 		return nil, ErrTimeout
 	}
 
-	params := value.(*Params)
 	block, _ := pem.Decode([]byte(params.PrivateKey))
 	if block == nil {
 		return nil, fmt.Errorf("failed to decode PEM block containing private key")
