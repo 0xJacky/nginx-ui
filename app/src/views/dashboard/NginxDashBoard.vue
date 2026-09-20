@@ -211,10 +211,11 @@ onUnmounted(() => {
   <div class="max-w-full of-x-hidden">
     <!-- Top operation bar -->
     <div class="mb-4 mx-6 md:mx-0 flex flex-wrap gap-4 justify-between items-center">
-      <div class="flex items-center">
-        <ABadge :status="status === NginxStatus.Running ? 'success' : 'error'" />
-        <span class="font-medium">{{ status === NginxStatus.Running ? $gettext('Nginx is running') : $gettext('Nginx is not running') }}</span>
-      </div>
+      <ABadge :status="status === NginxStatus.Running ? 'success' : 'error'">
+        <template #text>
+          <span class="font-medium">{{ status === NginxStatus.Running ? $gettext('Nginx is running') : $gettext('Nginx is not running') }}</span>
+        </template>
+      </ABadge>
       <div class="flex items-center">
         <ClockCircleOutlined class="mr-1 text-gray-500" />
         <span class="mr-4 text-gray-500 text-sm text-nowrap">{{ $gettext('Last update') }}: {{ formattedUpdateTime }}</span>
