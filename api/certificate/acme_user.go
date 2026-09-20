@@ -3,6 +3,7 @@ package certificate
 import (
 	"net/http"
 
+	internalmcp "github.com/0xJacky/Nginx-UI/internal/mcp"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
@@ -11,12 +12,38 @@ import (
 	"github.com/uozi-tech/cosy"
 )
 
+type redactedAcmeUser struct {
+	model.Model
+	Name              string                 `json:"name"`
+	Email             string                 `json:"email"`
+	CADir             string                 `json:"ca_dir"`
+	Registration      model.AcmeRegistration `json:"registration"`
+	Proxy             string                 `json:"proxy"`
+	RegisterOnStartup bool                   `json:"register_on_startup"`
+}
+
+func redactAcmeUser(user *model.AcmeUser) redactedAcmeUser {
+	return redactedAcmeUser{
+		Model:             user.Model,
+		Name:              user.Name,
+		Email:             user.Email,
+		CADir:             user.CADir,
+		Registration:      user.Registration,
+		Proxy:             user.Proxy,
+		RegisterOnStartup: user.RegisterOnStartup,
+	}
+}
+
 func GetAcmeUser(c *gin.Context) {
 	u := query.AcmeUser
 	id := cast.ToUint64(c.Param("id"))
 	user, err := u.FirstByID(id)
 	if err != nil {
 		cosy.ErrHandler(c, err)
+		return
+	}
+	if internalmcp.IsServiceTokenRequest(c) {
+		c.JSON(http.StatusOK, redactAcmeUser(user))
 		return
 	}
 	c.JSON(http.StatusOK, user)
@@ -69,9 +96,11 @@ func ModifyAcmeUser(c *gin.Context) {
 }
 
 func GetAcmeUserList(c *gin.Context) {
-	cosy.Core[model.AcmeUser](c).
-		SetFussy("name", "email").
-		PagingList()
+	core := cosy.Core[model.AcmeUser](c).SetFussy("name", "email")
+	if internalmcp.IsServiceTokenRequest(c) {
+		core.SetTransformer(redactAcmeUser)
+	}
+	core.PagingList()
 }
 
 func DestroyAcmeUser(c *gin.Context) {

@@ -2,15 +2,53 @@ package backup
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/backup"
 	"github.com/0xJacky/Nginx-UI/internal/cron"
+	internalmcp "github.com/0xJacky/Nginx-UI/internal/mcp"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
 	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 )
+
+type redactedAutoBackup struct {
+	model.Model
+	Name             string             `json:"name"`
+	BackupType       model.BackupType   `json:"backup_type"`
+	StorageType      model.StorageType  `json:"storage_type"`
+	BackupPath       string             `json:"backup_path"`
+	StoragePath      string             `json:"storage_path"`
+	CronExpression   string             `json:"cron_expression"`
+	Enabled          bool               `json:"enabled"`
+	LastBackupTime   *time.Time         `json:"last_backup_time"`
+	LastBackupStatus model.BackupStatus `json:"last_backup_status"`
+	LastBackupError  string             `json:"last_backup_error"`
+	S3Endpoint       string             `json:"s3_endpoint"`
+	S3Bucket         string             `json:"s3_bucket"`
+	S3Region         string             `json:"s3_region"`
+}
+
+func redactAutoBackup(autoBackup *model.AutoBackup) redactedAutoBackup {
+	return redactedAutoBackup{
+		Model:            autoBackup.Model,
+		Name:             autoBackup.Name,
+		BackupType:       autoBackup.BackupType,
+		StorageType:      autoBackup.StorageType,
+		BackupPath:       autoBackup.BackupPath,
+		StoragePath:      autoBackup.StoragePath,
+		CronExpression:   autoBackup.CronExpression,
+		Enabled:          autoBackup.Enabled,
+		LastBackupTime:   autoBackup.LastBackupTime,
+		LastBackupStatus: autoBackup.LastBackupStatus,
+		LastBackupError:  autoBackup.LastBackupError,
+		S3Endpoint:       autoBackup.S3Endpoint,
+		S3Bucket:         autoBackup.S3Bucket,
+		S3Region:         autoBackup.S3Region,
+	}
+}
 
 // GetAutoBackupList retrieves a paginated list of auto backup configurations.
 // This endpoint supports fuzzy search by backup name and filtering by backup type and enabled status.
@@ -24,10 +62,13 @@ import (
 //
 // Response: Paginated list of auto backup configurations
 func GetAutoBackupList(c *gin.Context) {
-	cosy.Core[model.AutoBackup](c).
+	core := cosy.Core[model.AutoBackup](c).
 		SetFussy("name").
-		SetEqual("backup_type", "enabled", "storage_type", "last_backup_status").
-		PagingList()
+		SetEqual("backup_type", "enabled", "storage_type", "last_backup_status")
+	if internalmcp.IsServiceTokenRequest(c) {
+		core.SetTransformer(redactAutoBackup)
+	}
+	core.PagingList()
 }
 
 // CreateAutoBackup creates a new auto backup configuration with comprehensive validation.
@@ -73,7 +114,11 @@ func CreateAutoBackup(c *gin.Context) {
 //
 // Response: Auto backup configuration details
 func GetAutoBackup(c *gin.Context) {
-	cosy.Core[model.AutoBackup](c).Get()
+	core := cosy.Core[model.AutoBackup](c)
+	if internalmcp.IsServiceTokenRequest(c) {
+		core.SetTransformer(redactAutoBackup)
+	}
+	core.Get()
 }
 
 // ModifyAutoBackup updates an existing auto backup configuration with validation.

@@ -5,12 +5,29 @@ import (
 	"strings"
 
 	"github.com/0xJacky/Nginx-UI/internal/cert/dns"
+	internalmcp "github.com/0xJacky/Nginx-UI/internal/mcp"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
 	"github.com/uozi-tech/cosy"
 )
+
+type redactedDnsCredential struct {
+	model.Model
+	Name         string `json:"name"`
+	Provider     string `json:"provider"`
+	ProviderCode string `json:"provider_code"`
+}
+
+func redactDnsCredential(credential *model.DnsCredential) redactedDnsCredential {
+	return redactedDnsCredential{
+		Model:        credential.Model,
+		Name:         credential.Name,
+		Provider:     credential.Provider,
+		ProviderCode: credential.ProviderCode,
+	}
+}
 
 func GetDnsCredential(c *gin.Context) {
 	id := cast.ToUint64(c.Param("id"))
@@ -20,6 +37,10 @@ func GetDnsCredential(c *gin.Context) {
 	dnsCredential, err := d.FirstByID(id)
 	if err != nil {
 		cosy.ErrHandler(c, err)
+		return
+	}
+	if internalmcp.IsServiceTokenRequest(c) {
+		c.JSON(http.StatusOK, redactDnsCredential(dnsCredential))
 		return
 	}
 	type apiDnsCredential struct {
@@ -39,11 +60,14 @@ func GetDnsCredential(c *gin.Context) {
 }
 
 func GetDnsCredentialList(c *gin.Context) {
-	cosy.Core[model.DnsCredential](c).
+	core := cosy.Core[model.DnsCredential](c).
 		SetEqual("provider_code").
 		SetEqual("provider").
-		SetFussy("name").
-		PagingList()
+		SetFussy("name")
+	if internalmcp.IsServiceTokenRequest(c) {
+		core.SetTransformer(redactDnsCredential)
+	}
+	core.PagingList()
 }
 
 type DnsCredentialManageJson struct {
