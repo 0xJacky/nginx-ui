@@ -1,6 +1,6 @@
 ---
 name: release
-description: Use when preparing or publishing an NGINX UI release, including version bumping with version.sh, release note drafting, release-prep commits, Avira pre-publication checks, annotated tags, pushing dev and tags, and creating GitHub Releases with Announcements discussions.
+description: Use when preparing or publishing an NGINX UI release, including version bumping with version.sh, release notes, Avira pre-publication checks, tags, GitHub Releases, and optional post-release publication to the RainYun cloud app store.
 ---
 
 # NGINX UI Release
@@ -101,3 +101,11 @@ Notes:
 - Verify publication with `gh release view vX.Y.Z` and, if needed, inspect recent Discussions in the `Announcements` category.
 - Download the final `nginx-ui-windows-64.zip`, record its SHA-256, extract `nginx-ui.exe`, and record the executable SHA-256.
 - After a successful release, leave the release-note markdown untracked unless the user asks to delete it.
+
+## RainYun Cloud App Publication
+
+RainYun is a downstream distribution phase. Start it only after the GitHub Release is final, the required release workflows have completed, and the versioned Docker image is available for the target RainYun architecture. Do not make RainYun a prerequisite for publishing the GitHub Release.
+
+When the release request includes RainYun or store publication, read and follow [references/rainyun.md](references/rainyun.md). Its template contract, deployment proof, external-action boundaries, billing confirmation, CAPTCHA handoff, store-state readback, and README promotion requirements are release gates for this phase.
+
+A generic GitHub release authorization does not by itself authorize RainYun template changes, a potentially billed test deployment, or application submission. Obtain the required RainYun scope before external mutations and obtain action-time confirmation immediately before the final install/deploy control.
