@@ -29,11 +29,8 @@ const (
 	dns01MinCallTimeout = 2 * time.Minute
 )
 
-// DNS01ProviderEntry is one vendor a running plugin can solve DNS-01 for.
-type DNS01ProviderEntry struct {
-	PluginID string
-	Provider protocol.DNS01Provider
-}
+// DNS01ProviderEntry is one provider declared by an enabled plugin.
+type DNS01ProviderEntry = plugin.DNS01ProviderEntry
 
 // Host is the part of the plugin manager the capability adapters need.
 type Host interface {
@@ -50,6 +47,11 @@ type Host interface {
 
 // NewDNS01Source exposes the dns01 capability of every enabled plugin as a
 // provider source.
+// RegisterDNS01 exposes the plugins of h as a DNS-01 provider source.
+func RegisterDNS01(h Host) {
+	dns.RegisterSource(NewDNS01Source(h))
+}
+
 func NewDNS01Source(h Host) dns.Source {
 	return &dns01Source{host: h}
 }

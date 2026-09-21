@@ -94,6 +94,10 @@ func runTestPlugin(mode string) {
 				continue
 			}
 			os.Exit(0)
+		case protocol.MethodEventsOn:
+			var notification protocol.EventNotification
+			_ = json.Unmarshal(msg.Params, &notification)
+			fmt.Fprintf(os.Stderr, "event %s\n", notification.Type)
 		case "echo.hello":
 			var params struct {
 				Text string `json:"text"`

@@ -22,6 +22,7 @@ import (
 	nginxLog "github.com/0xJacky/Nginx-UI/api/nginx_log"
 	"github.com/0xJacky/Nginx-UI/api/notification"
 	"github.com/0xJacky/Nginx-UI/api/pages"
+	pluginapi "github.com/0xJacky/Nginx-UI/api/plugin"
 	"github.com/0xJacky/Nginx-UI/api/public"
 	"github.com/0xJacky/Nginx-UI/api/settings"
 	"github.com/0xJacky/Nginx-UI/api/sites"
@@ -49,12 +50,20 @@ func InitRouter() {
 	r.Use(middleware.UnixPeerAddr())
 	r.Use(audit.LoggingMiddleware())
 
+	// Plugin packages are far larger than any other request body, see
+	// middleware.LargeUploads.
+	r.Use(middleware.ScopedBodyLimit())
+
 	if err := configureTrustedProxies(r); err != nil {
 		logger.Fatalf("Configure trusted proxies: %v", err)
 	}
 
 	// Add CORS middleware to allow all origins
 	r.Use(middleware.CORS())
+
+	// Registered before the embedded assets so the plugin routes skip the
+	// asset cache middleware and revalidate against their own files.
+	pluginapi.InitStaticRouter(r)
 
 	initEmbedRoute(r)
 
@@ -127,6 +136,7 @@ func InitRouter() {
 			cluster.InitRouter(g)
 			host.InitRouter(g)
 			notification.InitRouter(g)
+			pluginapi.InitRouter(g)
 			external_notify.InitRouter(g)
 			backup.InitAutoBackupRouter(g)
 			nginxLog.InitRouter(g)

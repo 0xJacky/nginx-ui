@@ -47,6 +47,7 @@ func NewAppCmd() *cli.Command {
 				Action: user.ResetInitUserPassword,
 			},
 			CertCommand,
+			PluginCommand,
 			CtlCommand,
 			UpgradeDockerStep2Command,
 			HostSetupCommand,
