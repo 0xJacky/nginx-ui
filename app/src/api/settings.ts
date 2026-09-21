@@ -54,7 +54,6 @@ export interface CertSettings {
   email: string
   ca_dir: string
   renewal_interval: number
-  recursive_nameservers: string[]
   http_challenge_port: string
 }
 

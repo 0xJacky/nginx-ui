@@ -11,6 +11,7 @@ import (
 	"runtime"
 	"slices"
 	"strconv"
+	"strings"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -624,15 +625,39 @@ func (s *Supervisor) readStderr(r *os.File) {
 	}
 }
 
+// hostOnlyEnv are variables the host sets for its own ACME client. They must
+// not be inherited: LEGO_DISABLE_CNAME_SUPPORT stops the core from following
+// the challenge record CNAME, while a dns01 plugin is expected to follow it
+// unless the certificate asked otherwise.
+var hostOnlyEnv = []string{
+	"LEGO_DISABLE_CNAME_SUPPORT",
+}
+
 // env builds the child environment. Credentials never travel this way.
 func (s *Supervisor) env() []string {
-	env := append(os.Environ(),
+	parent := os.Environ()
+	env := make([]string, 0, len(parent)+4+len(s.extraEnv))
+	for _, entry := range parent {
+		if isHostOnlyEnv(entry) {
+			continue
+		}
+		env = append(env, entry)
+	}
+	env = append(env,
 		EnvPluginID+"="+s.cfg.PluginID,
 		EnvPluginAPIVersion+"="+strconv.Itoa(protocol.APIVersion),
 		EnvPluginDataDir+"="+s.cfg.DataDir,
 		EnvHostVersion+"="+s.cfg.HostVersion,
 	)
 	return append(env, s.extraEnv...)
+}
+
+func isHostOnlyEnv(entry string) bool {
+	key, _, ok := strings.Cut(entry, "=")
+	if !ok {
+		return false
+	}
+	return slices.Contains(hostOnlyEnv, key)
 }
 
 func (s *Supervisor) notify(state State, err error) {
