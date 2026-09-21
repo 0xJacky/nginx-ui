@@ -160,9 +160,12 @@ func moveIntoPlace(staged, target string) (func(commit bool), error) {
 
 // finishInstall updates the database row and brings the plugin up.
 func (m *Manager) finishInstall(ctx context.Context, manifest *protocol.Manifest, opts InstallOptions, upgrading bool) (*Info, error) {
-	row, err := m.loadOrCreateRow(ctx, manifest.ID)
+	row, created, err := m.loadOrCreateRow(ctx, manifest.ID)
 	if err != nil {
 		return nil, err
+	}
+	if created {
+		seedSettings(manifest, row)
 	}
 
 	hash := PermissionsHash(manifest)
@@ -228,11 +231,11 @@ func (m *Manager) finishInstall(ctx context.Context, manifest *protocol.Manifest
 }
 
 // loadOrCreateRow returns the database row of a plugin, creating it when the
-// package is new to this node.
-func (m *Manager) loadOrCreateRow(ctx context.Context, id string) (*model.Plugin, error) {
-	row, err := query.Plugin.WithContext(ctx).Where(query.Plugin.PluginID.Eq(id)).First()
+// package is new to this node. created reports which of the two happened.
+func (m *Manager) loadOrCreateRow(ctx context.Context, id string) (row *model.Plugin, created bool, err error) {
+	row, err = query.Plugin.WithContext(ctx).Where(query.Plugin.PluginID.Eq(id)).First()
 	if err == nil {
-		return row, nil
+		return row, false, nil
 	}
 
 	row = &model.Plugin{
@@ -240,9 +243,9 @@ func (m *Manager) loadOrCreateRow(ctx context.Context, id string) (*model.Plugin
 		SyncPolicy: settings.PluginSettings.GetDefaultSyncPolicy(),
 	}
 	if err = query.Plugin.WithContext(ctx).Create(row); err != nil {
-		return nil, err
+		return nil, false, err
 	}
-	return row, nil
+	return row, true, nil
 }
 
 // Uninstall stops a plugin and removes its files, its data directory, its row

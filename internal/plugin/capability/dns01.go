@@ -18,6 +18,7 @@ import (
 	"github.com/go-acme/lego/v5/challenge"
 	"github.com/go-acme/lego/v5/challenge/dns01"
 	legolog "github.com/go-acme/lego/v5/log"
+	"github.com/spf13/cast"
 )
 
 const (
@@ -28,6 +29,11 @@ const (
 	// that is slower than the propagation timeout still gets a fair chance.
 	dns01MinCallTimeout = 2 * time.Minute
 )
+
+// disabledAuthoritativeNSPropagationWait is how long the core waits instead
+// of checking when a certificate turned the authoritative check off and no
+// plugin can check. A variable so the tests can shorten it.
+var disabledAuthoritativeNSPropagationWait = time.Minute
 
 // DNS01ProviderEntry is one provider declared by an enabled plugin.
 type DNS01ProviderEntry = plugin.DNS01ProviderEntry
@@ -114,7 +120,13 @@ func (s *dns01Source) NewChallengeProvider(ctx context.Context, code string, cfg
 		interval: timings.polling,
 	}
 
-	opts := []dns01.ChallengeOption{p.preCheckOption()}
+	opts := []dns01.ChallengeOption{
+		// The core check behind the plugin fallback only asks the
+		// authoritative nameservers, as the core did before the providers
+		// moved into plugins.
+		dns01.DisableRecursiveNSsPropagationRequirement(),
+		p.preCheckOption(),
+	}
 
 	var provider challenge.Provider = p
 	if timings.sequential > 0 {
@@ -259,7 +271,9 @@ func (p *challengeProvider) preCheckOption() dns01.ChallengeOption {
 }
 
 // preCheckFunc routes the propagation check to a plugin. When no plugin can
-// answer it falls back to lego's own check, which queries DNS from the core.
+// answer it falls back to lego's own check, which queries DNS from the core,
+// honouring the certificate option that turns the check off the way the core
+// did before the providers moved into plugins.
 func (p *challengeProvider) preCheckFunc() dns01.WrapPreCheckFunc {
 	return func(ctx context.Context, domain, fqdn, value string, check dns01.PreCheckFunc) (bool, error) {
 		ready, handled, err := p.remoteCheck(ctx, domain, fqdn, value)
@@ -267,11 +281,33 @@ func (p *challengeProvider) preCheckFunc() dns01.WrapPreCheckFunc {
 			return ready, err
 		}
 
+		if cast.ToBool(p.options[protocol.DNS01OptionDisableAuthoritativeNSPropagation]) {
+			p.warnCoreCheck.Do(func() {
+				legolog.Warn("dns01: no plugin can check the record propagation and the authoritative check is off, waiting for the propagation instead",
+					slog.String("provider", p.code),
+					slog.Duration("wait", disabledAuthoritativeNSPropagationWait))
+			})
+			return waitForPropagation(ctx, disabledAuthoritativeNSPropagationWait)
+		}
+
 		p.warnCoreCheck.Do(func() {
 			legolog.Warn("dns01: no plugin can check the record propagation, nginx-ui is querying DNS itself",
 				slog.String("provider", p.code))
 		})
 		return check(ctx, fqdn, value)
+	}
+}
+
+// waitForPropagation gives the record a fixed time to propagate, which is all
+// that is left when the active check is off.
+func waitForPropagation(ctx context.Context, wait time.Duration) (bool, error) {
+	timer := time.NewTimer(wait)
+	defer timer.Stop()
+	select {
+	case <-ctx.Done():
+		return false, ctx.Err()
+	case <-timer.C:
+		return true, nil
 	}
 }
 

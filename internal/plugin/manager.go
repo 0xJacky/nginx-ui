@@ -191,6 +191,7 @@ func GetManager() *Manager {
 // plugin handshakes, the processes start in the background.
 func Init(ctx context.Context) {
 	GetManager().Start(ctx)
+	GetManager().StartMarketplace(ctx)
 }
 
 // newManager builds a manager rooted at dir. An empty dir is resolved from the
@@ -412,7 +413,7 @@ func (m *Manager) scanDirectory() (map[string]*protocol.Manifest, error) {
 	for _, item := range items {
 		name := item.Name()
 		// Hidden directories hold host data, .bak is an interrupted upgrade.
-		if !item.IsDir() || strings.HasPrefix(name, ".") || strings.HasSuffix(name, backupSuffix) {
+		if !item.IsDir() || strings.HasPrefix(name, ".") || name == PackagesDirName || strings.HasSuffix(name, backupSuffix) {
 			continue
 		}
 		manifest, err := LoadManifest(filepath.Join(dir, name))

@@ -70,15 +70,29 @@ func (m *Manager) ArchivePath(id string) (string, bool) {
 	if err != nil {
 		return "", false
 	}
-	prefix := id + "-"
 	for _, entry := range entries {
-		name := entry.Name()
-		if entry.IsDir() || !strings.HasPrefix(name, prefix) || !strings.HasSuffix(name, archiveSuffix) {
+		if entry.IsDir() || archiveOwner(entry.Name()) != id {
 			continue
 		}
-		return filepath.Join(m.archivesDir(), name), true
+		return filepath.Join(m.archivesDir(), entry.Name()), true
 	}
 	return "", false
+}
+
+// archiveOwner is the plugin id a kept package belongs to, empty for any other
+// file. The version part never contains a hyphen, see sanitizeArchiveVersion,
+// so the last one separates the id from the version and "dns01-1.0.0.tar.gz"
+// is never taken for a package of "dns01-x".
+func archiveOwner(name string) string {
+	stem, ok := strings.CutSuffix(name, archiveSuffix)
+	if !ok {
+		return ""
+	}
+	index := strings.LastIndex(stem, "-")
+	if index <= 0 {
+		return ""
+	}
+	return stem[:index]
 }
 
 // EnsureArchive returns a package for a plugin, building one from the files on
@@ -139,10 +153,9 @@ func (m *Manager) keepArchive(id, version, archivePath string) {
 	if err != nil {
 		return
 	}
-	prefix := id + "-"
 	for _, entry := range entries {
 		name := entry.Name()
-		if entry.IsDir() || !strings.HasPrefix(name, prefix) || !strings.HasSuffix(name, archiveSuffix) {
+		if entry.IsDir() || archiveOwner(name) != id {
 			continue
 		}
 		if filepath.Join(dir, name) == target {
