@@ -119,6 +119,9 @@ func (m *Manager) Install(ctx context.Context, archivePath string, opts InstallO
 		return nil, err
 	}
 	restore(true)
+	// Cluster sync pushes the very bytes this node was given, so the package
+	// is kept next to the plugins instead of being rebuilt from the files.
+	m.keepArchive(manifest.ID, manifest.Version, archivePath)
 	return info, nil
 }
 

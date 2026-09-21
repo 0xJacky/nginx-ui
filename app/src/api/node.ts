@@ -7,6 +7,8 @@ export interface Node extends ModelBase {
   url: string
   status: boolean
   enabled: boolean
+  /** Whether the controller may install plugins on this node automatically. */
+  accept_plugin_sync: boolean
   auth_method: 'legacy_secret' | 'paired_ed25519'
   /** Only ever the redaction sentinel; reveal the real value with getSecret. */
   legacy_secret?: string
