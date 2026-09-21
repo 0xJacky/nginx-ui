@@ -61,6 +61,12 @@ func invalidManifest(format string, args ...any) error {
 	return fmt.Errorf("%w: %s", ErrManifestInvalid, fmt.Sprintf(format, args...))
 }
 
+// IsValidID reports whether id is a well formed plugin id. Route handlers use
+// it before a plugin id ever reaches the filesystem.
+func IsValidID(id string) bool {
+	return id != "" && len(id) <= maxPluginIDLength && pluginIDPattern.MatchString(id)
+}
+
 // LoadManifest reads and decodes plugin.json from a plugin directory. It does
 // not validate the content, call ValidateManifest for that.
 func LoadManifest(dir string) (*protocol.Manifest, error) {

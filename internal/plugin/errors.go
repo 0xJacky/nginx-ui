@@ -20,13 +20,16 @@ var (
 	ErrPackageTooLarge            = e.New(55008, "plugin package is too large")
 	ErrIncompatibleAPIVersion     = e.New(55009, "plugin api version is incompatible")
 	ErrPermissionApprovalRequired = e.New(55010, "plugin permissions need approval")
-	ErrDependencyMissing          = e.New(55011, "plugin dependency is missing")
+	ErrDependencyMissing          = e.New(55011, "plugin dependency is missing: {0}")
 	ErrDependencyCycle            = e.New(55012, "plugin dependencies form a cycle")
-	ErrPluginInUse                = e.New(55013, "plugin is in use")
+	ErrPluginInUse                = e.New(55013, "plugin is in use by {0}")
 	ErrPluginsDisabled            = e.New(55014, "plugin system is disabled")
 	ErrUploadsDisabled            = e.New(55015, "plugin uploads are disabled")
 	ErrCallTimeout                = e.New(55016, "plugin call timed out")
 	ErrRPC                        = e.New(55017, "plugin rpc error: {0}")
+	ErrSettingsInvalid            = e.New(55018, "plugin setting {0} is invalid")
+	ErrHostVersionTooOld          = e.New(55019, "plugin needs nginx-ui {0} or newer, this node runs {1}")
+	ErrPluginIDMismatch           = e.New(55020, "plugin package declares another id")
 )
 
 // rpcError carries both the cosy error the API layer reports and the original

@@ -15,6 +15,7 @@ import (
 
 	"code.pfad.fr/risefront"
 	"github.com/0xJacky/Nginx-UI/internal/kernel"
+	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/0xJacky/Nginx-UI/internal/migrate"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/router"
@@ -63,8 +64,9 @@ func Program(ctx context.Context, confPath string) func(l []net.Listener) error 
 		// Kernel boot
 		cKernel.Boot(programCtx)
 
-		// Get the HTTP handler from Cosy router
-		handler := cRouter.GetEngine()
+		// Get the HTTP handler from Cosy router. Plugin package uploads are
+		// far larger than the request body cap, see middleware.LargeUploads.
+		handler := middleware.LargeUploads(cRouter.GetEngine())
 
 		// Configure TLS if HTTPS is enabled
 		var tlsConfig *tls.Config
