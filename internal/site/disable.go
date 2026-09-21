@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"sync"
 
+	"github.com/0xJacky/Nginx-UI/internal/event"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
@@ -29,6 +30,7 @@ func Disable(ctx context.Context, name string) (err error) {
 		}
 
 		go syncDisable(ctx, name)
+		event.PublishSiteDisabled(name)
 
 		return
 	}
@@ -61,6 +63,7 @@ func Disable(ctx context.Context, name string) (err error) {
 	}
 
 	go syncDisable(ctx, name)
+	event.PublishSiteDisabled(name)
 
 	return
 }

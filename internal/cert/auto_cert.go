@@ -9,6 +9,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/event"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/0xJacky/Nginx-UI/internal/translation"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -133,6 +134,7 @@ func autoCert(certModel *model.Cert) {
 	notification.Success("Renew Certificate Success", "Certificate %{name} renewed successfully", map[string]any{
 		"name": targetName,
 	})
+	event.PublishCertIssued(certModel.ID, targetName, certModel.Domains, true)
 
 	err = SyncToRemoteServer(certModel)
 	if err != nil {
