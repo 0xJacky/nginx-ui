@@ -601,7 +601,7 @@ async function handleTest() {
             <AInput
               v-model:value="formData.targetURL"
               data-testid="health-check-target-url"
-              placeholder="https://127.0.0.1:8443"
+              :placeholder="getTestUrl() || 'https://127.0.0.1:8443'"
             />
           </AFormItem>
 
