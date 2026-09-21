@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import type { UploadProps } from 'antdv-next'
 import type { PluginInspect } from '@/api/plugin'
+import type { PluginNodeResult } from '@/api/plugin_sync'
 import { InboxOutlined } from '@antdv-next/icons'
+import nodeApi from '@/api/node'
 import pluginApi from '@/api/plugin'
+import { setSyncPolicy, syncPlugin } from '@/api/plugin_sync'
+import NodeSelector from '@/components/NodeSelector'
 import { getErrorMessage } from '@/lib/http'
 import PermissionList from './PermissionList.vue'
 
@@ -21,16 +25,70 @@ const installing = ref(false)
 const enableAfterInstall = ref(true)
 const error = ref('')
 
+/** How far the bundle travels: this node only, every node, or a selection. */
+type NodeTarget = 'none' | 'all' | 'selected'
+
+const hasNodes = ref(false)
+const nodeTarget = ref<NodeTarget>('none')
+const targetNodeIds = ref<number[]>([])
+const keepInSync = ref(false)
+const syncResults = ref<PluginNodeResult[]>([])
+
+const nodeTargetOptions = computed(() => [
+  { value: 'none', label: $gettext('This node only') },
+  { value: 'all', label: $gettext('All child nodes') },
+  { value: 'selected', label: $gettext('Selected nodes') },
+])
+
+async function loadNodes() {
+  try {
+    const { data } = await nodeApi.getList({ enabled: true })
+    hasNodes.value = data.length > 0
+  }
+  catch {
+    hasNodes.value = false
+  }
+}
+
 const manifest = computed(() => inspect.value?.manifest)
 const permissions = computed(() => inspect.value?.permissions ?? [])
 const requiresMissing = computed(() => inspect.value?.requires_missing ?? [])
-const canInstall = computed(() => Boolean(file.value) && requiresMissing.value.length === 0 && !inspecting.value)
 
 function reset() {
   file.value = undefined
   inspect.value = undefined
   error.value = ''
   enableAfterInstall.value = true
+  nodeTarget.value = 'none'
+  targetNodeIds.value = []
+  keepInSync.value = false
+  syncResults.value = []
+}
+
+// A selection that ends up empty would mean "every node" to the backend, so an
+// explicit selection has to carry at least one node.
+const canInstall = computed(() => Boolean(file.value)
+  && requiresMissing.value.length === 0
+  && !inspecting.value
+  && (nodeTarget.value !== 'selected' || targetNodeIds.value.length > 0))
+
+/** Pushes the freshly installed plugin to the nodes the user picked. */
+async function applyClusterOptions(pluginId: string) {
+  const nodeIds = nodeTarget.value === 'selected' ? targetNodeIds.value : []
+
+  if (keepInSync.value) {
+    await setSyncPolicy(pluginId, {
+      sync_policy: 'auto',
+      sync_node_ids: nodeIds,
+      sync_settings: false,
+    })
+  }
+
+  if (nodeTarget.value === 'none')
+    return
+
+  const { results } = await syncPlugin(pluginId, nodeIds)
+  syncResults.value = results
 }
 
 // The upload component is only a file picker here, so the request is cancelled
@@ -59,12 +117,28 @@ async function install() {
     return
 
   installing.value = true
+  syncResults.value = []
   try {
-    await pluginApi.install(file.value, enableAfterInstall.value)
+    const info = await pluginApi.install(file.value, enableAfterInstall.value)
     message.success($gettext('Plugin installed'))
+    emit('installed')
+
+    try {
+      await applyClusterOptions(info.id)
+    }
+    catch (e) {
+      // The local install already succeeded, so only the cluster step failed.
+      error.value = getErrorMessage(e, $gettext('The plugin was installed here but could not be pushed to the nodes'))
+      return
+    }
+
+    if (syncResults.value.some(result => !result.success)) {
+      message.warning($gettext('Some nodes could not be synchronized'))
+      return
+    }
+
     open.value = false
     reset()
-    emit('installed')
   }
   catch (e) {
     error.value = getErrorMessage(e, $gettext('Failed to install the plugin'))
@@ -75,8 +149,11 @@ async function install() {
 }
 
 watch(open, value => {
-  if (!value)
-    reset()
+  if (value) {
+    loadNodes()
+    return
+  }
+  reset()
 })
 </script>
 
@@ -185,7 +262,71 @@ watch(open, value => {
         <ACheckbox v-model:checked="enableAfterInstall" class="mt-4">
           {{ $gettext('Enable after install') }}
         </ACheckbox>
+
+        <template v-if="hasNodes">
+          <ADivider class="my-4" />
+
+          <h4 class="mb-2">
+            {{ $gettext('Also install to child nodes') }}
+          </h4>
+          <ARadioGroup
+            v-model:value="nodeTarget"
+            option-type="button"
+            button-style="solid"
+            size="small"
+            :options="nodeTargetOptions"
+          />
+
+          <div v-if="nodeTarget === 'selected'" class="mt-3">
+            <NodeSelector v-model:target="targetNodeIds" hidden-local />
+          </div>
+
+          <ACheckbox v-model:checked="keepInSync" class="mt-3">
+            {{ $gettext('Keep in sync automatically') }}
+          </ACheckbox>
+          <p class="mb-0 mt-1 text-gray-500">
+            {{ $gettext('The version, the enabled state and future updates are kept aligned on those nodes.') }}
+          </p>
+
+          <div v-if="syncResults.length > 0" class="sync-results mt-4">
+            <div
+              v-for="result in syncResults"
+              :key="result.node_id"
+              class="sync-result-row"
+            >
+              <span class="font-medium">{{ result.node }}</span>
+              <ATag v-if="result.success" color="green">
+                {{ result.actions.length > 0 ? result.actions.join(', ') : $gettext('Already in sync') }}
+              </ATag>
+              <ATooltip v-else :title="result.error">
+                <ATag color="red">
+                  {{ $gettext('Failed') }}
+                </ATag>
+              </ATooltip>
+            </div>
+          </div>
+        </template>
       </template>
     </ASpin>
   </AModal>
 </template>
+
+<style lang="less" scoped>
+.sync-results {
+  border: 1px solid var(--ant-color-border-secondary);
+  border-radius: var(--ant-border-radius);
+  overflow: hidden;
+}
+
+.sync-result-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 12px;
+
+  & + & {
+    border-top: 1px solid var(--ant-color-border-secondary);
+  }
+}
+</style>
