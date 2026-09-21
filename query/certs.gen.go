@@ -50,6 +50,7 @@ func newCert(db *gorm.DB, opts ...gen.DOOption) cert {
 	_cert.MustStaple = field.NewBool(tableName, "must_staple")
 	_cert.LegoDisableCNAMESupport = field.NewBool(tableName, "lego_disable_cname_support")
 	_cert.DisableAuthoritativeNSPropagation = field.NewBool(tableName, "disable_authoritative_ns_propagation")
+	_cert.ChallengeConfig = field.NewField(tableName, "challenge_config")
 	_cert.EnableCommonName = field.NewBool(tableName, "enable_common_name")
 	_cert.RevokeOld = field.NewBool(tableName, "revoke_old")
 	_cert.SelfSignedConfig = field.NewField(tableName, "self_signed_config")
@@ -109,6 +110,7 @@ type cert struct {
 	MustStaple                        field.Bool
 	LegoDisableCNAMESupport           field.Bool
 	DisableAuthoritativeNSPropagation field.Bool
+	ChallengeConfig                   field.Field
 	EnableCommonName                  field.Bool
 	RevokeOld                         field.Bool
 	SelfSignedConfig                  field.Field
@@ -166,6 +168,7 @@ func (c *cert) updateTableName(table string) *cert {
 	c.MustStaple = field.NewBool(table, "must_staple")
 	c.LegoDisableCNAMESupport = field.NewBool(table, "lego_disable_cname_support")
 	c.DisableAuthoritativeNSPropagation = field.NewBool(table, "disable_authoritative_ns_propagation")
+	c.ChallengeConfig = field.NewField(table, "challenge_config")
 	c.EnableCommonName = field.NewBool(table, "enable_common_name")
 	c.RevokeOld = field.NewBool(table, "revoke_old")
 	c.SelfSignedConfig = field.NewField(table, "self_signed_config")
@@ -198,7 +201,7 @@ func (c *cert) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (c *cert) fillFieldMap() {
-	c.fieldMap = make(map[string]field.Expr, 40)
+	c.fieldMap = make(map[string]field.Expr, 41)
 	c.fieldMap["id"] = c.ID
 	c.fieldMap["created_at"] = c.CreatedAt
 	c.fieldMap["updated_at"] = c.UpdatedAt
@@ -221,6 +224,7 @@ func (c *cert) fillFieldMap() {
 	c.fieldMap["must_staple"] = c.MustStaple
 	c.fieldMap["lego_disable_cname_support"] = c.LegoDisableCNAMESupport
 	c.fieldMap["disable_authoritative_ns_propagation"] = c.DisableAuthoritativeNSPropagation
+	c.fieldMap["challenge_config"] = c.ChallengeConfig
 	c.fieldMap["enable_common_name"] = c.EnableCommonName
 	c.fieldMap["revoke_old"] = c.RevokeOld
 	c.fieldMap["self_signed_config"] = c.SelfSignedConfig
