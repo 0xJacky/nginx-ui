@@ -48,7 +48,7 @@ func TestBuildConfig_UpstreamExpansion(t *testing.T) {
 	}
 
 	// Call buildConfig
-	result := buildConfig("test_stream", fileInfo, config.StatusEnabled, 0, nil)
+	result := buildConfig("test_stream", fileInfo, config.StatusEnabled, 0, 0, nil)
 
 	// Verify the results
 	expectedTargetCount := 6 // 3 from tcp_backend + 2 from udp_backend + 1 direct
@@ -112,7 +112,7 @@ func TestBuildConfig_NoUpstreamExpansion(t *testing.T) {
 		isDir:   false,
 	}
 
-	result := buildConfig("test_stream_no_upstream", fileInfo, config.StatusEnabled, 0, nil)
+	result := buildConfig("test_stream_no_upstream", fileInfo, config.StatusEnabled, 0, 0, nil)
 
 	// Should have exactly 3 targets, unchanged
 	if len(result.ProxyTargets) != 3 {

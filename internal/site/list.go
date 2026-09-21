@@ -55,6 +55,22 @@ func GetSiteConfigs(ctx context.Context, options *ListOptions, sites []*model.Si
 	return attachSiteMetadata(configs, sites)
 }
 
+// applySiteDescriptions maps DB site descriptions to config entries by basename.
+func applySiteDescriptions(configs []config.Config, sites []*model.Site) []config.Config {
+	sitesByName := make(map[string]*model.Site, len(sites))
+	for _, siteModel := range sites {
+		sitesByName[filepath.Base(siteModel.Path)] = siteModel
+	}
+
+	for i := range configs {
+		if siteModel, ok := sitesByName[configs[i].Name]; ok {
+			configs[i].Description = siteModel.Description
+		}
+	}
+
+	return configs
+}
+
 func attachSiteMetadata(configs []config.Config, sites []*model.Site) ([]config.Config, error) {
 	sitesByName := make(map[string]*model.Site, len(sites))
 	for _, siteModel := range sites {
