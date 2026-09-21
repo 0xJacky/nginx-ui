@@ -154,20 +154,28 @@ function getSiteTitle(site: SiteInfo): string {
     @click="!settingsMode && canOpenSite(site) && openSite(site)"
   >
     <div class="site-card-header">
-      <div class="site-icon">
-        <img
-          v-if="site.favicon_data"
-          :src="site.favicon_data"
-          :alt="site.name"
-          class="w-8 h-8 rounded"
-          @error="handleFaviconError"
-        >
-        <div
-          v-else
-          class="avatar-fallback"
-          :style="{ backgroundColor: getAvatarColor(site.name) }"
-        >
-          {{ getInitials(site.name) }}
+      <div class="site-main">
+        <div class="site-icon">
+          <img
+            v-if="site.favicon_data"
+            :src="site.favicon_data"
+            :alt="site.name"
+            class="w-8 h-8 rounded"
+            @error="handleFaviconError"
+          >
+          <div
+            v-else
+            class="avatar-fallback"
+            :style="{ backgroundColor: getAvatarColor(site.name) }"
+          >
+            {{ getInitials(site.name) }}
+          </div>
+        </div>
+
+        <div class="site-info">
+          <h3 class="site-title">
+            {{ getSiteTitle(site) }}
+          </h3>
         </div>
       </div>
 
@@ -197,41 +205,36 @@ function getSiteTitle(site: SiteInfo): string {
       </div>
     </div>
 
-    <div class="site-info">
-      <h3 class="site-title">
-        {{ getSiteTitle(site) }}
-      </h3>
-      <p class="site-url">
-        <span v-if="site.scheme && site.host_port" class="url-parts">
-          <span class="scheme">{{ site.scheme }}://</span><span class="host-port">{{ site.host_port }}</span>
-        </span>
-        <span v-else>{{ site.display_url || site.url }}</span>
-      </p>
+    <p class="site-url">
+      <span v-if="site.scheme && site.host_port" class="url-parts">
+        <span class="scheme">{{ site.scheme }}://</span><span class="host-port">{{ site.host_port }}</span>
+      </span>
+      <span v-else>{{ site.display_url || site.url }}</span>
+    </p>
 
-      <div class="site-details">
-        <div v-if="site.status === SiteStatus.ONLINE" class="detail-item">
-          <ClockCircleOutlined class="detail-icon" />
-          <span>{{ site.response_time }}ms</span>
-        </div>
-        <div v-if="site.status_code" class="detail-item">
-          <CodeOutlined class="detail-icon" />
-          <span>{{ site.status_code }}</span>
-        </div>
-        <div
-          v-if="site.cert_days_remaining !== undefined"
-          class="detail-item"
-          :class="{ error: site.cert_days_remaining < 0 }"
-        >
-          <SafetyCertificateOutlined class="detail-icon" />
-          <span>{{ formatCertRemaining(site) }}</span>
-        </div>
-        <ATooltip v-if="site.error" :title="site.error">
-          <div class="detail-item error" data-testid="site-health-check-error">
-            <ExclamationCircleOutlined class="detail-icon" />
-            <span>{{ getErrorSummary(site) }}</span>
-          </div>
-        </ATooltip>
+    <div class="site-details">
+      <div v-if="site.status === SiteStatus.ONLINE" class="detail-item">
+        <ClockCircleOutlined class="detail-icon" />
+        <span>{{ site.response_time }}ms</span>
       </div>
+      <div v-if="site.status_code" class="detail-item">
+        <CodeOutlined class="detail-icon" />
+        <span>{{ site.status_code }}</span>
+      </div>
+      <div
+        v-if="site.cert_days_remaining !== undefined"
+        class="detail-item"
+        :class="{ error: site.cert_days_remaining < 0 }"
+      >
+        <SafetyCertificateOutlined class="detail-icon" />
+        <span>{{ formatCertRemaining(site) }}</span>
+      </div>
+      <ATooltip v-if="site.error" :title="site.error">
+        <div class="detail-item error" data-testid="site-health-check-error">
+          <ExclamationCircleOutlined class="detail-icon" />
+          <span>{{ getErrorSummary(site) }}</span>
+        </div>
+      </ATooltip>
     </div>
 
     <!-- Settings button in settings mode -->
@@ -282,7 +285,11 @@ function getSiteTitle(site: SiteInfo): string {
 }
 
 .site-card-header {
-  @apply flex items-center justify-between mb-3;
+  @apply flex items-start justify-between gap-3 mb-3;
+}
+
+.site-main {
+  @apply flex items-center gap-3 min-w-0 flex-1;
 }
 
 .site-icon img {
@@ -322,11 +329,11 @@ function getSiteTitle(site: SiteInfo): string {
 }
 
 .site-info {
-  @apply space-y-2;
+  @apply min-w-0 flex-1;
 }
 
 .site-title {
-  @apply font-medium text-gray-900 dark:text-gray-100 text-lg truncate;
+  @apply min-w-0 mb-0 font-medium text-gray-900 dark:text-gray-100 text-lg truncate;
 }
 
 .scheme {
@@ -334,7 +341,7 @@ function getSiteTitle(site: SiteInfo): string {
 }
 
 .site-url {
-  @apply text-sm text-gray-600 dark:text-gray-400 truncate;
+  @apply mb-2 text-sm text-gray-600 dark:text-gray-400 truncate;
 }
 
 .url-parts {
