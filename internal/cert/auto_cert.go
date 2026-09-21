@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"runtime"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/notification"
@@ -19,6 +20,15 @@ import (
 
 const (
 	autoRenewFailureRetryCooldown = 12 * time.Hour
+	// dns01PluginNotifyInterval throttles the "install the plugin" reminder.
+	// Nothing changes until the user acts on it, so one reminder a day is
+	// enough no matter how often the renewal worker runs.
+	dns01PluginNotifyInterval = 24 * time.Hour
+)
+
+var (
+	dns01PluginNotifyMu sync.Mutex
+	dns01PluginNotified = make(map[uint64]time.Time)
 )
 
 func AutoCert() {
@@ -219,6 +229,41 @@ func handleAutoRenewFailure(certModel *model.Cert, log *Logger, name string, err
 	updateAutoRenewStatus(certModel, time.Now(), err.Error())
 	notification.Error("Renew Certificate Error", "Certificate %{name} renewal failed: %{error}",
 		buildAutoRenewNotificationDetails(name, err))
+	notifyDNS01PluginUnavailable(certModel, name, err)
+}
+
+// notifyDNS01PluginUnavailable tells the user that the renewal needs a plugin
+// nothing provides. The generic renewal failure alone does not say what to do
+// about it, so the reminder is sent next to it, once a day per certificate.
+func notifyDNS01PluginUnavailable(certModel *model.Cert, name string, err error) {
+	if certModel == nil || !isNoDNS01ProviderError(err) {
+		return
+	}
+
+	now := time.Now()
+	dns01PluginNotifyMu.Lock()
+	last, ok := dns01PluginNotified[certModel.ID]
+	if ok && now.Sub(last) < dns01PluginNotifyInterval {
+		dns01PluginNotifyMu.Unlock()
+		return
+	}
+	dns01PluginNotified[certModel.ID] = now
+	dns01PluginNotifyMu.Unlock()
+
+	notification.Error("DNS-01 plugin unavailable",
+		"Certificate %{name} cannot be renewed because no enabled plugin provides the DNS-01 challenge",
+		map[string]any{"name": name})
+}
+
+// isNoDNS01ProviderError matches ErrNoDNS01Provider. Parameterising a cosy
+// error produces a new value rather than wrapping the sentinel, so the scope
+// and the code are what identify it.
+func isNoDNS01ProviderError(err error) bool {
+	var actual, expected *cosy.Error
+	if !stderrors.As(err, &actual) || !stderrors.As(ErrNoDNS01Provider, &expected) {
+		return false
+	}
+	return actual.Scope == expected.Scope && actual.Code == expected.Code
 }
 
 func updateAutoRenewStatus(certModel *model.Cert, at time.Time, renewalError string) {

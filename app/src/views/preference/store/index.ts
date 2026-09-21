@@ -93,7 +93,6 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
       email: '',
       ca_dir: '',
       renewal_interval: 30,
-      recursive_nameservers: [],
       http_challenge_port: '9180',
     },
     http: {
@@ -208,7 +207,6 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
   async function getSettings(): Promise<boolean> {
     try {
       const r = await settings.get()
-      r.cert.recursive_nameservers ||= []
       savedEnableHTTPS.value = r.server.enable_https
       data.value = r
       snapshot.value = cloneSettings(r)
@@ -224,16 +222,11 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
 
   function normalizeBeforeSave() {
     data.value.cert.http_challenge_port = data.value.cert.http_challenge_port.toString()
-    data.value.cert.recursive_nameservers = (data.value.cert.recursive_nameservers ?? [])
-      .map(nameserver => nameserver.trim())
-      .filter(Boolean)
   }
 
   async function saveSection(section: SavableSettingsSection): Promise<SectionSaveResult> {
     try {
       const r = await settings.saveSection(section, data.value[section], { skipErrHandling: true })
-      if (section === 'cert')
-        (r as Settings['cert']).recursive_nameservers ||= []
       data.value[section] = r as never
       if (snapshot.value)
         snapshot.value[section] = cloneSettings(r) as never
