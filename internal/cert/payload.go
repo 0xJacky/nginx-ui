@@ -6,6 +6,7 @@ import (
 	"errors"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"time"
 
@@ -42,13 +43,16 @@ type ConfigPayload struct {
 	MustStaple                        bool                       `json:"must_staple"`
 	LegoDisableCNAMESupport           bool                       `json:"lego_disable_cname_support"`
 	DisableAuthoritativeNSPropagation bool                       `json:"disable_authoritative_ns_propagation"`
-	EnableCommonName                  bool                       `json:"enable_common_name"`
-	NotBefore                         time.Time                  `json:"-"`
-	CertificateDir                    string                     `json:"-"`
-	SSLCertificatePath                string                     `json:"-"`
-	SSLCertificateKeyPath             string                     `json:"-"`
-	RevokeOld                         bool                       `json:"revoke_old"`
-	ReplacesCertID                    string                     `json:"-"`
+	// ChallengeConfig carries challenge specific options that the core does
+	// not interpret. Legacy fields are merged in by EffectiveChallengeConfig.
+	ChallengeConfig       map[string]any `json:"challenge_config"`
+	EnableCommonName      bool           `json:"enable_common_name"`
+	NotBefore             time.Time      `json:"-"`
+	CertificateDir        string         `json:"-"`
+	SSLCertificatePath    string         `json:"-"`
+	SSLCertificateKeyPath string         `json:"-"`
+	RevokeOld             bool           `json:"revoke_old"`
+	ReplacesCertID        string         `json:"-"`
 }
 
 func (c *ConfigPayload) GetACMEUser() (user *model.AcmeUser, err error) {
@@ -288,4 +292,32 @@ func notifyCertificateRelocated(name, previousPath, currentPath string) {
 	notification.Warning("Certificate Relocated",
 		"Certificate %{name} is now stored in %{path}, point the sites that load %{previous_path} to it",
 		map[string]any{"name": name, "path": currentPath, "previous_path": previousPath})
+}
+
+// Keys of the challenge configuration understood by the core when mapping
+// legacy DNS-01 fields. Plugins may define more.
+const (
+	ChallengeConfigCredentialID                      = "credential_id"
+	ChallengeConfigDisableCNAME                      = "disable_cname"
+	ChallengeConfigDisableAuthoritativeNSPropagation = "disable_authoritative_ns_propagation"
+)
+
+// EffectiveChallengeConfig returns ChallengeConfig with the legacy DNS-01
+// fields filled in when the map does not already define them. The result is
+// a copy, so callers may modify it freely.
+func (c *ConfigPayload) EffectiveChallengeConfig() map[string]any {
+	out := make(map[string]any, len(c.ChallengeConfig)+3)
+	for k, v := range c.ChallengeConfig {
+		out[k] = v
+	}
+	if _, ok := out[ChallengeConfigCredentialID]; !ok && c.DNSCredentialID != 0 {
+		out[ChallengeConfigCredentialID] = strconv.FormatUint(c.DNSCredentialID, 10)
+	}
+	if _, ok := out[ChallengeConfigDisableCNAME]; !ok && c.LegoDisableCNAMESupport {
+		out[ChallengeConfigDisableCNAME] = true
+	}
+	if _, ok := out[ChallengeConfigDisableAuthoritativeNSPropagation]; !ok && c.DisableAuthoritativeNSPropagation {
+		out[ChallengeConfigDisableAuthoritativeNSPropagation] = true
+	}
+	return out
 }
