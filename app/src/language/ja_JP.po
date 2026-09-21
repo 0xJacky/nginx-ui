@@ -418,27 +418,6 @@ msgstr "無効"
 msgid "Maintenance"
 msgstr "メンテナンス"
 
-msgid "Site"
-msgstr "サイト"
-
-msgid "Stream"
-msgstr "ストリーム"
-
-msgid "Configuration"
-msgstr "設定"
-
-msgid "+%{count} more"
-msgstr "+%{count} 件"
-
-msgid "Search"
-msgstr "検索"
-
-msgid "No file matches the search"
-msgstr "検索に一致するファイルはありません"
-
-msgid "Not used"
-msgstr "未使用"
-
 msgid "Starting download..."
 msgstr "ダウンロードを開始しています..."
 
@@ -928,6 +907,9 @@ msgstr "完了"
 msgid "Unknown"
 msgstr "不明"
 
+msgid "Search"
+msgstr "検索"
+
 msgid "Open in split view"
 msgstr "分割表示で開く"
 
@@ -1024,6 +1006,12 @@ msgstr ""
 "タスク %{backup_name} の古いバックアップは削除されませんでした。タスク %{conflict_names} "
 "が同じファイル名のバックアップを同じストレージの場所に書き込んでいるためです。いずれかのタスクの名前を変更するか、ストレージのパスを変更してください。"
 
+msgid "Backups to Keep"
+msgstr "保持するバックアップ"
+
+msgid "Backups to Keep (0 keeps all)"
+msgstr "保持するバックアップ数 (0 で全件保持)"
+
 msgid "Renew Certificate Success"
 msgstr "証明書の更新に成功しました"
 
@@ -1053,14 +1041,6 @@ msgstr "証明書 %{name} は %{days} 日後に期限切れになります"
 
 msgid "Certificate Expiring Soon"
 msgstr "証明書の有効期限が近づいています"
-
-msgid "Certificate Relocated"
-msgstr "証明書が移動されました"
-
-msgid ""
-"Certificate %{name} is now stored in %{path}, point the sites that load "
-"%{previous_path} to it"
-msgstr "証明書 %{name} は %{path} に保存されました。%{previous_path} を読み込むサイトをこちらに指定してください"
 
 msgid "Sync Certificate Error"
 msgstr "証明書の同期エラー"
@@ -2762,32 +2742,6 @@ msgstr "サイトはメンテナンスモードです"
 msgid "Read dir failed: {0}"
 msgstr "ディレクトリの読み込みに失敗しました: {0}"
 
-msgid ""
-"The file name must end in .conf and use only letters, digits, dots, dashes "
-"and underscores"
-msgstr "ファイル名は .conf で終わる必要があり、英字、数字、ピリオド、ハイフン、アンダースコアのみ使用できます"
-
-msgid "Snippet not found"
-msgstr "スニペットが見つかりません"
-
-msgid "The snippet exceeds 256 KiB"
-msgstr "スニペットが 256 KiB を超えています"
-
-msgid "The header of the snippet does not parse: {0}"
-msgstr "スニペットのヘッダーを解析できません: {0}"
-
-msgid "The snippet is still included by {0}"
-msgstr "スニペットはまだ {0} によって含まれています"
-
-msgid "A snippet with this file name already exists"
-msgstr "このファイル名のスニペットはすでに存在します"
-
-msgid "The variable {0} is invalid: {1}"
-msgstr "変数 {0} が無効です: {1}"
-
-msgid "The content does not parse as a template: {0}"
-msgstr "コンテンツをテンプレートとして解析できません: {0}"
-
 msgid "Stream not found"
 msgstr "ストリームが見つかりません"
 
@@ -3919,18 +3873,6 @@ msgstr "サイト一覧"
 msgid "Add Site"
 msgstr "サイトを追加"
 
-msgid "Snippets"
-msgstr "スニペット"
-
-msgid "Create Snippet"
-msgstr "スニペットを作成"
-
-msgid "Built-in Template"
-msgstr "組み込みテンプレート"
-
-msgid "Edit Snippet"
-msgstr "スニペットを編集"
-
 msgid "Edit Site"
 msgstr "サイトを編集"
 
@@ -4011,17 +3953,29 @@ msgstr ""
 "アドレスを一元管理します。サイトエディターでサーバーまたはロケーションに割り当てることができ、ここでリストを変更すると使用中のすべてのサイトが更新されま"
 "す。"
 
+msgid "+%{count} more"
+msgstr "+%{count} 件"
+
 msgid "Deny"
 msgstr "拒否"
 
 msgid "Allow"
 msgstr "許可"
 
+msgid "Not used"
+msgstr "未使用"
+
 msgid "Use list"
 msgstr "リストを使用"
 
 msgid "Deny (403)"
 msgstr "拒否 (403)"
+
+msgid "Site"
+msgstr "サイト"
+
+msgid "Stream"
+msgstr "ストリーム"
 
 msgid "Access list %{name} saved"
 msgstr "アクセスリスト %{name} を保存しました"
@@ -4113,15 +4067,6 @@ msgstr "毎週%{day}の%{time}"
 
 msgid "Monthly on day %{day} at %{time}"
 msgstr "毎月%{day}日%{time}に"
-
-msgid "Backups to Keep"
-msgstr "保持するバックアップ"
-
-msgid "All"
-msgstr "すべて"
-
-msgid "Backups to Keep (0 keeps all)"
-msgstr "保持するバックアップ数 (0 で全件保持)"
 
 msgid "Last Backup Time"
 msgstr "最終バックアップ時刻"
@@ -4474,10 +4419,6 @@ msgstr "デプロイを検証できません"
 msgid "Not After"
 msgstr "有効期限"
 
-msgid "Used by %{count} configuration"
-msgid_plural "Used by %{count} configurations"
-msgstr[0] "%{count} 個の構成で使用されています"
-
 msgid "Failed to scan certificates"
 msgstr "証明書のスキャンに失敗しました"
 
@@ -4522,12 +4463,6 @@ msgstr "戻る"
 
 msgid "This field is required"
 msgstr "このフィールドは必須です"
-
-msgid "The path exists, but the file is not a certificate"
-msgstr "パスは存在しますが、ファイルは証明書ではありません"
-
-msgid "The path exists, but the file is not a private key"
-msgstr "パスは存在しますが、ファイルは秘密鍵ではありません"
 
 msgid "Sync to"
 msgstr "同期先"
@@ -4599,11 +4534,11 @@ msgstr "証明書ファイルが正常にダウンロードされました"
 msgid "Failed to download certificate files"
 msgstr "証明書ファイルのダウンロードに失敗しました"
 
-msgid "Download Certificate Files"
-msgstr "証明書ファイルをダウンロード"
-
 msgid "Download"
 msgstr "ダウンロード"
+
+msgid "Download Certificate Files"
+msgstr "証明書ファイルをダウンロード"
 
 msgid "Download Format"
 msgstr "ダウンロード形式"
@@ -4766,14 +4701,14 @@ msgstr "失効を確認するには、下の欄に「失効」と入力してく
 msgid "Renew successfully"
 msgstr "証明書の更新に成功しました"
 
-msgid "AutoCert is running, please wait..."
-msgstr "AutoCert が実行中です。お待ちください..."
+msgid "Renew"
+msgstr "更新"
 
 msgid "Renew Certificate"
 msgstr "証明書を更新"
 
-msgid "Renew"
-msgstr "更新"
+msgid "AutoCert is running, please wait..."
+msgstr "AutoCert が実行中です。お待ちください..."
 
 msgid "Certificate issued successfully"
 msgstr "証明書が正常に発行されました"
@@ -5362,14 +5297,6 @@ msgid ""
 "actual upstream host or port."
 msgstr "任意の絶対 URL です。公開アドレスが実際のアップストリームのホストやポートと異なる場合に使用します。"
 
-msgid "Site Card Click URL"
-msgstr "サイトカードのクリック URL"
-
-msgid ""
-"Optional absolute HTTP/HTTPS URL used when opening this site card. If "
-"empty, the default site URL is used."
-msgstr "このサイトカードを開く際に使用される、任意の絶対 HTTP/HTTPS URL。空の場合は、デフォルトのサイト URL が使用されます。"
-
 msgid "HTTP Method"
 msgstr "HTTPメソッド"
 
@@ -5658,6 +5585,9 @@ msgstr "SDK"
 msgid "Additional"
 msgstr "追加設定"
 
+msgid "All"
+msgstr "すべて"
+
 msgid "Host, e.g. @ or www"
 msgstr "ホスト、例: @ または www"
 
@@ -5809,6 +5739,9 @@ msgstr "名前は空にできません"
 
 msgid "Please select DNS provider"
 msgstr "DNS プロバイダーを選択してください"
+
+msgid "Configuration"
+msgstr "設定"
 
 msgid "DNS Credentials"
 msgstr "DNS 認証情報"
@@ -9581,9 +9514,6 @@ msgstr "名前空間"
 msgid "The parameter of server_name is required"
 msgstr "server_name のパラメーターが必要です"
 
-msgid "Config Template"
-msgstr "設定テンプレート"
-
 msgid "Save the edited configuration before enabling HTTPS."
 msgstr "HTTPS を有効にする前に、編集した設定を保存してください。"
 
@@ -9678,30 +9608,11 @@ msgstr "自己署名証明書"
 msgid "Generate self-signed certificate"
 msgstr "自己署名証明書を生成"
 
-msgid "Built-in"
-msgstr "内蔵"
-
 msgid "Search templates"
 msgstr "テンプレートを検索"
 
-msgid "Snippet"
-msgstr "スニペット"
-
 msgid "Author"
 msgstr "著者"
-
-msgid ""
-"Include keeps the site linked to snippets/%{file}, so later changes of the "
-"snippet apply to it. Insert copies the content into the site instead."
-msgstr ""
-"Include はサイトを snippets/%{file} にリンクしたままにし、スニペットの後続の変更が反映されます。Insert "
-"はコンテンツをサイトにコピーします。"
-
-msgid "Insert"
-msgstr "挿入"
-
-msgid "Include"
-msgstr "含める"
 
 msgid "Do you want to enable TLS?"
 msgstr "TLSを有効にしますか？"
@@ -9967,6 +9878,9 @@ msgstr "DNSレコードを再作成"
 msgid "Clear Link"
 msgstr "リンクをクリア"
 
+msgid "Config Template"
+msgstr "設定テンプレート"
+
 msgid "Port Scanner"
 msgstr "ポートスキャナー"
 
@@ -10049,308 +9963,6 @@ msgstr "選択したサイトのメンテナンス情報を設定"
 
 msgid "%{count} sites selected"
 msgstr "%{count} サイト選択中"
-
-msgid "Read Only"
-msgstr "読み取り専用"
-
-msgid "Preview"
-msgstr "プレビュー"
-
-msgid "Updates as the snippet changes."
-msgstr "スニペットが変更されると更新されます。"
-
-msgid ""
-"Built-in templates come with Nginx UI and cannot be changed. Copy one as a "
-"snippet to change it."
-msgstr "組み込みテンプレートは Nginx UI に付属しており、変更できません。変更するには、1 つをスニペットとしてコピーしてください。"
-
-msgid "File Name"
-msgstr "ファイル名"
-
-msgid "Variables"
-msgstr "変数"
-
-msgid "Copy as Snippet"
-msgstr "スニペットとしてコピー"
-
-msgid "Template"
-msgstr "テンプレート"
-
-msgid "No template matches the search"
-msgstr "検索に一致するテンプレートはありません"
-
-msgid "%{count} variable"
-msgid_plural "%{count} variables"
-msgstr[0] "%{count} 変数"
-
-msgid "Translations"
-msgstr "翻訳"
-
-msgid ""
-"The field is in %{language}. Users of other languages see their "
-"translation, or English when there is none."
-msgstr "このフィールドは %{language} です。他の言語のユーザーには翻訳が表示され、翻訳がない場合は英語が表示されます。"
-
-msgid "Remove translation"
-msgstr "翻訳を削除"
-
-msgid "Add a language"
-msgstr "言語を追加"
-
-msgid "Text"
-msgstr "テキスト"
-
-msgid "Switch"
-msgstr "切り替え"
-
-msgid "Select"
-msgstr "選択"
-
-msgid "New Variable…"
-msgstr "新しい変数…"
-
-msgid "Insert Variable"
-msgstr "変数を挿入"
-
-msgid ""
-"Type %{open} to complete a variable, or select a value and press %{keys} to "
-"make it one."
-msgstr "%{open} と入力して変数を補完するか、値を選択して %{keys} を押すと変数にできます。"
-
-msgid "Default Value"
-msgstr "デフォルト値"
-
-msgid "Edit Variable"
-msgstr "変数を編集"
-
-msgid ""
-"This variable is not declared, so it has no value when the snippet is "
-"inserted."
-msgstr "この変数は宣言されていないため、スニペットを挿入するときに値がありません。"
-
-msgid "Declare Variable"
-msgstr "変数を宣言する"
-
-msgid "Make Variable"
-msgstr "変数を作成"
-
-msgid "New Variable"
-msgstr "新しい変数"
-
-msgid "Key"
-msgstr "キー"
-
-msgid "Label"
-msgstr "ラベル"
-
-msgid "The variable is declared and inserted at the cursor."
-msgstr "変数が宣言され、カーソル位置に挿入されます。"
-
-msgid ""
-"The selected value becomes the default value, and the content refers to the "
-"variable instead."
-msgstr "選択した値がデフォルト値となり、内容は代わりに変数を参照します。"
-
-msgid "Add Variable"
-msgstr "変数を追加"
-
-msgid "Not declared, so left without a value: %{names}"
-msgstr "未宣言のため、値なしで残されました: %{names}"
-
-msgid "The snippet does not render as valid Nginx configuration."
-msgstr "このスニペットは有効な Nginx 設定としてレンダリングされません。"
-
-msgid "The snippet renders as valid Nginx configuration."
-msgstr "スニペットは有効な Nginx 設定としてレンダリングされます。"
-
-msgid "What the site editor asks for"
-msgstr "サイトエディターが求めていること"
-
-msgid "Restore Default Values"
-msgstr "デフォルト値を復元"
-
-msgid "Nothing to fill in."
-msgstr "入力する項目はありません。"
-
-msgid "Fix the variables to preview the snippet."
-msgstr "変数を修正して、スニペットをプレビューしてください。"
-
-msgid "Snippets are no longer synchronized"
-msgstr "スニペットは同期されなくなりました"
-
-msgid "Synchronize Snippets"
-msgstr "スニペットを同期"
-
-msgid ""
-"Every snippet is copied to the selected nodes now, and later changes follow "
-"automatically. Clear the selection to stop synchronizing."
-msgstr "すべてのスニペットが選択したノードにコピーされ、以降の変更は自動的に反映されます。選択を解除すると同期が停止します。"
-
-msgid "Replace snippets that already exist on the nodes"
-msgstr "ノードに既に存在するスニペットを置き換える"
-
-msgid "Included by %{count} file"
-msgid_plural "Included by %{count} files"
-msgstr[0] "%{count} 個のファイルに含まれる"
-
-msgid "Not Used"
-msgstr "未使用"
-
-msgid "Max Age"
-msgstr "最大経過時間"
-
-msgid "Options"
-msgstr "オプション"
-
-msgid "Remove option"
-msgstr "オプションを削除"
-
-msgid "Add Option"
-msgstr "オプションを追加"
-
-msgid "Remove variable"
-msgstr "変数を削除"
-
-msgid "Used in the content, not declared"
-msgstr "コンテンツ内で使用されており、宣言されていません"
-
-msgid "Snippet %{name} saved"
-msgstr "スニペット %{name} を保存しました"
-
-msgid "Discard the unsaved changes?"
-msgstr "保存されていない変更を破棄しますか？"
-
-msgid "Keep Editing"
-msgstr "編集を続ける"
-
-msgid "Edit Snippet %{name}"
-msgstr "スニペット %{name} を編集"
-
-msgid "Sites can include this snippet and follow its later changes."
-msgstr "サイトはこのスニペットを含め、その後の変更を追跡できます。"
-
-msgid ""
-"This snippet has variables, so sites insert a filled in copy from the "
-"config template panel."
-msgstr "このスニペットには変数が含まれているため、各サイトは設定テンプレートパネルから入力済みのコピーを挿入します。"
-
-msgid "Includable"
-msgstr "インクルード可能"
-
-msgid "Insert Only"
-msgstr "挿入のみ"
-
-msgid "Use"
-msgstr "使用する"
-
-msgid ""
-"Add this directive to a server or location block. Sites that include the "
-"snippet follow its later changes."
-msgstr "このディレクティブを server または location ブロックに追加してください。このスニペットを含むサイトは、その後の変更に従います。"
-
-msgid "Static file cache"
-msgstr "静的ファイルキャッシュ"
-
-msgid "Fixed while configurations include the snippet, so they keep working."
-msgstr "構成にスニペットが含まれる間は修正されているため、動作し続けます。"
-
-msgid "Letters, digits, dots, dashes and underscores."
-msgstr "英字、数字、ドット、ハイフン、アンダースコア。"
-
-msgid ""
-"Variables are filled in when the snippet is inserted from the config "
-"template panel of the site editor. A snippet with variables can only be "
-"inserted, not included."
-msgstr ""
-"変数は、サイトエディターの設定テンプレートパネルからスニペットを挿入する際に埋め込まれます。変数を含むスニペットは挿入のみ可能で、インクルードすることは"
-"できません。"
-
-msgid "No configuration includes this snippet yet."
-msgstr "まだどの設定にもこのスニペットは含まれていません。"
-
-msgid "Unsaved changes"
-msgstr "未保存の変更"
-
-msgid "My Snippets"
-msgstr "マイ スニペット"
-
-msgid "Built-in Templates"
-msgstr "組み込みテンプレート"
-
-msgid "Copied %{include}"
-msgstr "%{include} をコピーしました"
-
-msgid "Delete snippet %{name}?"
-msgstr "スニペット %{name} を削除しますか？"
-
-msgid "snippets/%{file} will be removed here and on the synchronized nodes."
-msgstr "snippets/%{file} はここおよび同期ノード上で削除されます。"
-
-msgid "snippets/%{file} will be removed."
-msgstr "snippets/%{file} は削除されます。"
-
-msgid "Snippet %{name} deleted"
-msgstr "スニペット %{name} を削除しました"
-
-msgid "Synchronize"
-msgstr "同期"
-
-msgid "Synchronized to %{count} node"
-msgid_plural "Synchronized to %{count} nodes"
-msgstr[0] "%{count} ノードに同期されました"
-
-msgid ""
-"Has %{count} variable. Sites insert a filled in copy from the config "
-"template panel of the site editor."
-msgid_plural ""
-"Has %{count} variables. Sites insert a filled in copy from the config "
-"template panel of the site editor."
-msgstr[0] "変数が %{count} 個あります。サイトでは、サイトエディターの設定テンプレートパネルから入力済みのコピーを挿入します。"
-
-msgid "Copy the include directive"
-msgstr "include ディレクティブをコピー"
-
-msgid "Remove the snippet from the files that include it first."
-msgstr "まず、スニペットを含むファイルからスニペットを削除してください。"
-
-msgid ""
-"A snippet keeps a piece of Nginx configuration in one place. Include it in "
-"a site, or insert it from the config template panel of the site editor; "
-"changing an included snippet updates every site that uses it."
-msgstr ""
-"スニペットは Nginx "
-"の設定の一部を一箇所に保存します。サイトに含めるか、サイトエディターの設定テンプレートパネルから挿入してください。含められたスニペットを変更すると、それ"
-"を使用するすべてのサイトが更新されます。"
-
-msgid "Search snippets"
-msgstr "検索スニペット"
-
-msgid "No snippets yet"
-msgstr "まだスニペットはありません"
-
-msgid "No snippet matches the search"
-msgstr "検索に一致するスニペットがありません"
-
-msgid "Enter a key."
-msgstr "キーを入力してください。"
-
-msgid "Use letters, digits and underscores, starting with a letter or underscore."
-msgstr "英字、数字、アンダースコアを使用し、英字またはアンダースコアで始めてください。"
-
-msgid "Another variable uses this key."
-msgstr "別の変数がこのキーを使用しています。"
-
-msgid "Add at least one option."
-msgstr "少なくとも 1 つのオプションを追加してください。"
-
-msgid "Every option needs a value."
-msgstr "すべてのオプションには値が必要です。"
-
-msgid "Option values must be unique."
-msgstr "オプション値は一意である必要があります。"
-
-msgid "Choose the default option."
-msgstr "デフォルトのオプションを選択してください。"
 
 msgid "Do you want to %{action} this stream?"
 msgstr "このストリームを%{action}しますか？"
@@ -10731,6 +10343,610 @@ msgctxt "preference group"
 msgid "Maintenance"
 msgstr "メンテナンス"
 
+msgid ""
+"DNS-01 challenge requires the DNS-01 plugin. Install it from System > "
+"Plugins."
+msgstr ""
+"DNS-01 チャレンジには DNS-01 プラグインが必要です。「システム > プラグイン」"
+"からインストールしてください。"
+
+msgid "Install DNS-01 plugin"
+msgstr "DNS-01 プラグインをインストール"
+
+msgid "Go to System > Plugins"
+msgstr "「システム > プラグイン」へ移動"
+
+msgid "If your domain has CNAME records and you cannot obtain certificates, "
+msgstr "ドメインに CNAME レコードがあり、証明書を取得できない場合は、"
+
+msgid "Skip local DNS propagation checks and wait 60 seconds before asking "
+msgstr "ローカル DNS 伝播チェックをスキップして、依頼する前に 60 秒待ちます。"
+
+msgid "DNS-01 plugin unavailable"
+msgstr "DNS-01 プラグインが利用できません"
+
+msgid ""
+"Certificate %{name} cannot be renewed because no enabled plugin provides the "
+"DNS-01 challenge"
+msgstr ""
+"証明書 %{name} を更新できません。DNS-01 チャレンジを提供する有効なプラグイン"
+"がありません"
+
+msgid "Plugin %{plugin} failed to render"
+msgstr "プラグイン %{plugin} のレンダリングに失敗しました"
+
+msgid "No DNS-01 provider for {0}: install and enable the DNS-01 plugin"
+msgstr ""
+"{0} に対応する DNS-01 プロバイダーがありません。DNS-01 プラグインをインストー"
+"ルして有効にしてください"
+
+msgid "Plugin manifest is invalid"
+msgstr "プラグインマニフェストが無効です"
+
+msgid "Plugin not found"
+msgstr "プラグインが見つかりません"
+
+msgid "Plugin already exists"
+msgstr "プラグインは既に存在します"
+
+msgid "Plugin is not running"
+msgstr "プラグインが実行されていません"
+
+msgid "Plugin handshake failed"
+msgstr "プラグインのハンドシェイクに失敗しました"
+
+msgid "Plugin has no executable for this platform"
+msgstr "プラグインにこのプラットフォーム用の実行ファイルがありません"
+
+msgid "Plugin package is invalid"
+msgstr "プラグインパッケージが無効です"
+
+msgid "Plugin package is too large"
+msgstr "プラグインパッケージが大きすぎます"
+
+msgid "Plugin api version is incompatible"
+msgstr "プラグインの API バージョンに互換性がありません"
+
+msgid "Plugin permissions need approval"
+msgstr "プラグインの権限には承認が必要です"
+
+msgid "Plugin dependency is missing: {0}"
+msgstr "プラグインの依存関係が不足しています: {0}"
+
+msgid "Plugin dependencies form a cycle"
+msgstr "プラグインの依存関係が循環しています"
+
+msgid "Plugin is in use by {0}"
+msgstr "プラグインは {0} によって使用されています"
+
+msgid "Plugin system is disabled"
+msgstr "プラグインシステムが無効になっています"
+
+msgid "Plugin uploads are disabled"
+msgstr "プラグインのアップロードが無効になっています"
+
+msgid "Plugin call timed out"
+msgstr "プラグインの呼び出しがタイムアウトしました"
+
+msgid "Plugin rpc error: {0}"
+msgstr "プラグインの RPC エラー: {0}"
+
+msgid "Plugin setting {0} is invalid"
+msgstr "プラグイン設定 {0} が無効です"
+
+msgid "Plugin needs nginx-ui {0} or newer, this node runs {1}"
+msgstr ""
+"プラグインには nginx-ui {0} 以降が必要ですが、このノードでは {1} が実行されて"
+"います"
+
+msgid "Plugin package declares another id"
+msgstr "プラグインパッケージが別の ID を宣言しています"
+
+msgid "Plugins"
+msgstr "プラグイン"
+
+msgid "Accept plugin sync"
+msgstr "プラグインの同期を受け入れる"
+
+msgid "Accepted"
+msgstr "受け入れ済み"
+
+msgid "Opted out"
+msgstr "除外済み"
+
+msgid "Install, configure and troubleshoot plugins that extend Nginx UI."
+msgstr ""
+"Nginx UI を拡張するプラグインのインストール、設定、トラブルシューティングを行"
+"います。"
+
+msgid "Plugin"
+msgstr "プラグイン"
+
+msgid "Capabilities"
+msgstr "機能"
+
+msgid "Auto install to nodes"
+msgstr "ノードへの自動インストール"
+
+msgid "Plugin synchronized to %{count} node(s)"
+msgstr "プラグインは %{count} 件のノードに同期されました"
+
+msgid "Some nodes could not be synchronized"
+msgstr "一部のノードを同期できませんでした"
+
+msgid "Failed to synchronize the plugin"
+msgstr "プラグインの同期に失敗しました"
+
+msgid "Installed"
+msgstr "インストール済み"
+
+msgid "Starting"
+msgstr "起動中"
+
+msgid "Missing"
+msgstr "欠落"
+
+msgid "Incompatible"
+msgstr "非互換"
+
+msgid "Needs approval"
+msgstr "承認が必要"
+
+msgid "Failed to load the plugin list"
+msgstr "プラグイン一覧の読み込みに失敗しました"
+
+msgid "Plugin enabled"
+msgstr "プラグインを有効にしました"
+
+msgid "Failed to enable the plugin"
+msgstr "プラグインの有効化に失敗しました"
+
+msgid "Plugin disabled"
+msgstr "プラグインを無効にしました"
+
+msgid "Failed to disable the plugin"
+msgstr "プラグインの無効化に失敗しました"
+
+msgid "Plugin uninstalled"
+msgstr "プラグインをアンインストールしました"
+
+msgid "Failed to uninstall the plugin"
+msgstr "プラグインのアンインストールに失敗しました"
+
+msgid "Reload the page to apply the development plugin URL"
+msgstr "開発用プラグイン URL を適用するにはページを再読み込みしてください"
+
+msgid ""
+"Plugins extend Nginx UI with extra capabilities. Only install bundles from "
+"authors you trust."
+msgstr ""
+"プラグインは Nginx UI に追加の機能を拡張します。信頼できる作者が公開したバン"
+"ドルのみをインストールしてください。"
+
+msgid "Development plugin URL"
+msgstr "開発用プラグイン URL"
+
+msgid ""
+"Address of a plugin.json served by any static server. The plugin is loaded "
+"in addition to the installed ones."
+msgstr ""
+"任意の静的サーバーで配信される plugin.json のアドレスです。このプラグインはイ"
+"ンストール済みのプラグインに加えて読み込まれます。"
+
+msgid "Dev plugin"
+msgstr "開発用プラグイン"
+
+msgid "No plugins installed"
+msgstr "インストール済みのプラグインはありません"
+
+msgid "Settings"
+msgstr "設定"
+
+msgid "Logs"
+msgstr "ログ"
+
+msgid "Sync to nodes"
+msgstr "ノードへ同期"
+
+msgid "Uninstall %{name}? Its data and settings are removed."
+msgstr "%{name} をアンインストールしますか？データと設定はすべて削除されます。"
+
+msgid "Uninstall"
+msgstr "アンインストール"
+
+msgid "Sync %{name} to nodes"
+msgstr "%{name} をノードへ同期"
+
+msgid "Leave every node unchecked to sync to all child nodes."
+msgstr "どのノードもチェックしない場合、すべての子ノードに同期されます。"
+
+msgid "Already in sync"
+msgstr "同期済み"
+
+msgid "This node only"
+msgstr "このノードのみ"
+
+msgid "All child nodes"
+msgstr "すべての子ノード"
+
+msgid "Selected nodes"
+msgstr "選択したノード"
+
+msgid "Failed to read the plugin bundle"
+msgstr "プラグインバンドルの読み込みに失敗しました"
+
+msgid "Plugin installed"
+msgstr "プラグインをインストールしました"
+
+msgid "The plugin was installed here but could not be pushed to the nodes"
+msgstr ""
+"プラグインはこのノードにはインストールされましたが、各ノードへの配信に失敗し"
+"ました"
+
+msgid "Failed to install the plugin"
+msgstr "プラグインのインストールに失敗しました"
+
+msgid "Install plugin"
+msgstr "プラグインをインストール"
+
+msgid "Click or drag a plugin bundle here"
+msgstr "ここをクリックするか、プラグインバンドルをドラッグしてください"
+
+msgid "A .tar.gz produced by the plugin author"
+msgstr "プラグイン作者が作成した .tar.gz ファイル"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "(replaces %{version})"
+msgstr "（%{version} を置き換えます）"
+
+msgid "None"
+msgstr "なし"
+
+msgid "Install the plugins below first"
+msgstr "先に以下のプラグインをインストールしてください"
+
+msgid "This version asks for permissions you have not approved yet."
+msgstr "このバージョンは、まだ承認していない権限を要求しています。"
+
+msgid ""
+"Review the list below before installing. The plugin stays disabled until you "
+"approve them."
+msgstr ""
+"インストール前に以下の一覧を確認してください。権限を承認するまでプラグインは"
+"無効のままになります。"
+
+msgid "Requested permissions"
+msgstr "要求される権限"
+
+msgid "Enable after install"
+msgstr "インストール後に有効にする"
+
+msgid "Also install to child nodes"
+msgstr "子ノードにも同時にインストール"
+
+msgid "Keep in sync automatically"
+msgstr "自動的に同期を維持する"
+
+msgid ""
+"The version, the enabled state and future updates are kept aligned on those "
+"nodes."
+msgstr ""
+"これらのノードでは、バージョン、有効状態、今後の更新が常に一致するように保た"
+"れます。"
+
+msgid "Failed to load the plugin logs"
+msgstr "プラグインログの読み込みに失敗しました"
+
+msgid "Logs copied to clipboard"
+msgstr "ログをクリップボードにコピーしました"
+
+msgid "Failed to copy the logs"
+msgstr "ログのコピーに失敗しました"
+
+msgid "Logs: %{name}"
+msgstr "ログ: %{name}"
+
+msgid "No log output yet"
+msgstr "まだログ出力がありません"
+
+msgid "Failed to load the plugin marketplace"
+msgstr "プラグインマーケットプレイスの読み込みに失敗しました"
+
+msgid "Reloading the catalog"
+msgstr "カタログを再読み込み中"
+
+msgid "Search plugins"
+msgstr "プラグインを検索"
+
+msgid "All categories"
+msgstr "すべてのカテゴリ"
+
+msgid "All sources"
+msgstr "すべてのソース"
+
+msgid "Updates only"
+msgstr "更新のあるものだけ"
+
+msgid "Sources"
+msgstr "ソース"
+
+msgid "Every installed plugin is up to date"
+msgstr "インストール済みのプラグインはすべて最新です"
+
+msgid "No plugins match your search"
+msgstr "検索条件に一致するプラグインがありません"
+
+msgid "Downloading the package"
+msgstr "パッケージをダウンロード中"
+
+msgid "Verifying the signature"
+msgstr "署名を検証中"
+
+msgid "Installing"
+msgstr "インストール中"
+
+msgid "%{phase}: %{plugin}"
+msgstr "%{phase}: %{plugin}"
+
+msgid "Failed to load the plugin from the marketplace"
+msgstr "マーケットプレイスからのプラグインの読み込みに失敗しました"
+
+msgid "Update plugin"
+msgstr "プラグインを更新"
+
+msgid "No release available for this platform"
+msgstr "このプラットフォーム向けのリリースがありません"
+
+msgid "Source"
+msgstr "ソース"
+
+msgid "This is a community plugin"
+msgstr "これはコミュニティプラグインです"
+
+msgid "The plugins below are installed together with it"
+msgstr "以下のプラグインも一緒にインストールされます"
+
+msgid "Live progress is unavailable, checking the plugin list instead"
+msgstr ""
+"リアルタイムの進捗を取得できないため、代わりにプラグイン一覧を確認しています"
+
+msgid "No description provided."
+msgstr "説明はありません。"
+
+msgid "Installed: %{version}"
+msgstr "インストール済み: %{version}"
+
+msgid "Homepage"
+msgstr "ホームページ"
+
+msgid "Repository"
+msgstr "リポジトリ"
+
+msgid "Release notes"
+msgstr "リリースノート"
+
+msgid "Released"
+msgstr "リリース日"
+
+msgid "Platforms"
+msgstr "プラットフォーム"
+
+msgid "Failed to load the plugin details"
+msgstr "プラグインの詳細の読み込みに失敗しました"
+
+msgid "Installed version"
+msgstr "インストール済みバージョン"
+
+msgid "Versions"
+msgstr "バージョン"
+
+msgid "Yanked"
+msgstr "取り下げ済み"
+
+msgid "Latest"
+msgstr "最新"
+
+msgid "Readme"
+msgstr "Readme"
+
+msgid "Failed to load the marketplace sources"
+msgstr "マーケットプレイスのソースの読み込みに失敗しました"
+
+msgid "Marketplace sources saved"
+msgstr "マーケットプレイスのソースを保存しました"
+
+msgid "Failed to save the marketplace sources"
+msgstr "マーケットプレイスのソースの保存に失敗しました"
+
+msgid "Marketplace sources"
+msgstr "マーケットプレイスのソース"
+
+msgid ""
+"Catalogs are merged in order, the first source that offers a plugin wins. "
+"Leave the list empty to use the official catalog."
+msgstr ""
+"カタログは順番にマージされ、最初にそのプラグインを提供したソースが採用されま"
+"す。リストを空にすると公式カタログが使用されます。"
+
+msgid "Using the official catalog"
+msgstr "公式カタログを使用中"
+
+msgid "Add source"
+msgstr "ソースを追加"
+
+msgid "Add the official catalog"
+msgstr "公式カタログを追加"
+
+msgid "Official"
+msgstr "公式"
+
+msgid "Built and signed by the Nginx UI maintainers."
+msgstr "Nginx UI のメンテナーによってビルドされ、署名されています。"
+
+msgid "Verified"
+msgstr "検証済み"
+
+msgid "Reviewed by the Nginx UI maintainers and signed with a release key."
+msgstr ""
+"Nginx UI のメンテナーによってレビューされ、リリースキーで署名されています。"
+
+msgid "Community"
+msgstr "コミュニティ"
+
+msgid ""
+"Published by a third party and not reviewed. It runs with the permissions "
+"you grant it, so only install it if you trust the author."
+msgstr ""
+"サードパーティによって公開されたもので、レビューされていません。付与した権限"
+"で動作するため、作者を信頼できる場合のみインストールしてください。"
+
+msgid "Approve permissions"
+msgstr "権限を承認"
+
+msgid "Approve and enable"
+msgstr "承認して有効にする"
+
+msgid "%{name} needs your approval before it can run."
+msgstr "%{name} を実行するには、あなたの承認が必要です。"
+
+msgid ""
+"Approve only if you trust the author. The approval is recorded and asked "
+"again whenever the requested permissions change."
+msgstr ""
+"作者を信頼できる場合のみ承認してください。承認内容は記録され、要求される権限"
+"が変わるたびに再度確認されます。"
+
+msgid "This plugin does not request any host permission."
+msgstr "このプラグインはホストの権限を要求していません。"
+
+msgid "Read stored %{kind} credentials, including their secrets."
+msgstr ""
+"保存されている %{kind} の資格情報を、シークレットを含めて読み取ります。"
+
+msgid "unknown"
+msgstr "不明"
+
+msgid "Store and read its own key-value data inside the Nginx UI database."
+msgstr ""
+"Nginx UI のデータベース内にプラグイン自身のキーバリューデータを保存・読み取り"
+"します。"
+
+msgid "Make outbound network requests to the hosts declared in its manifest."
+msgstr "マニフェストに宣言されたホストへ発信ネットワークリクエストを行います。"
+
+msgid "Run scheduled tasks on the schedules declared in its manifest."
+msgstr "マニフェストに宣言されたスケジュールで定期タスクを実行します。"
+
+msgid "Send notifications through the Nginx UI notification channels."
+msgstr "Nginx UI の通知チャネルを通じて通知を送信します。"
+
+msgid "Read CPU, memory, network and Nginx status metrics of this node."
+msgstr ""
+"このノードの CPU、メモリ、ネットワーク、Nginx のステータス指標を読み取りま"
+"す。"
+
+msgid "Call the Nginx UI management API with your permissions."
+msgstr "あなたの権限で Nginx UI の管理 API を呼び出します。"
+
+msgid "Unknown permission. Only grant it if you trust the plugin author."
+msgstr "不明な権限です。プラグインの作者を信頼できる場合のみ許可してください。"
+
+msgid "In sync"
+msgstr "同期済み"
+
+msgid "Outdated"
+msgstr "旧バージョン"
+
+msgid "Not installed"
+msgstr "未インストール"
+
+msgid "Unsupported platform"
+msgstr "対応していないプラットフォーム"
+
+msgid "Unsupported"
+msgstr "非対応"
+
+msgid "Failed to load the plugin matrix"
+msgstr "プラグインマトリクスの読み込みに失敗しました"
+
+msgid "Update to %{version}"
+msgstr "%{version} に更新"
+
+msgid "Sync to this node"
+msgstr "このノードへ同期"
+
+msgid ""
+"What every child node has installed, compared with this controller. "
+"Switching the selected node in the header manages that node directly."
+msgstr ""
+"各子ノードにインストールされているものを、このコントローラーと比較して表示し"
+"ます。ヘッダーで選択ノードを切り替えると、そのノードを直接管理できます。"
+
+msgid "All nodes"
+msgstr "すべてのノード"
+
+msgid "This instance has no child node"
+msgstr "このインスタンスには子ノードがありません"
+
+msgid "Add a node first, then plugins can be installed on it from here."
+msgstr ""
+"先にノードを追加すると、ここからそのノードにプラグインをインストールできるよ"
+"うになります。"
+
+msgid "Sync to selected"
+msgstr "選択したノードへ同期"
+
+msgid "Sync to all"
+msgstr "すべてのノードへ同期"
+
+msgid "Marketplace"
+msgstr "マーケットプレイス"
+
+msgid "%{field} is required"
+msgstr "%{field} は必須です"
+
+msgid "Failed to load the plugin settings"
+msgstr "プラグイン設定の読み込みに失敗しました"
+
+msgid "Plugin settings saved"
+msgstr "プラグイン設定を保存しました"
+
+msgid "Failed to save the plugin settings"
+msgstr "プラグイン設定の保存に失敗しました"
+
+msgid "Settings: %{name}"
+msgstr "設定: %{name}"
+
+msgid "This plugin has no settings."
+msgstr "このプラグインには設定項目がありません。"
+
+msgid "%{count} node"
+msgid_plural "%{count} nodes"
+msgstr[0] "他 %{count} 件"
+
+msgid "Sync policy saved"
+msgstr "同期ポリシーを保存しました"
+
+msgid "Failed to save the sync policy"
+msgstr "同期ポリシーの保存に失敗しました"
+
+msgid "Automatic installation"
+msgstr "自動インストール"
+
+msgid ""
+"Keep this plugin at the same version and state on the selected child nodes. "
+"Leave every node unchecked to cover all of them, including the ones added "
+"later."
+msgstr ""
+"選択した子ノードで、このプラグインのバージョンと状態を常に一致させます。どの"
+"ノードもチェックしない場合、後から追加されるノードを含むすべてのノードが対象"
+"になります。"
+
+msgid "Also sync the plugin settings"
+msgstr "プラグイン設定も同期する"
+
 #~ msgid "Webauthn"
 #~ msgstr "WebAuthn"
 
@@ -10762,3 +10978,391 @@ msgstr "メンテナンス"
 
 #~ msgid "Global health check controls"
 #~ msgstr "ヘルスチェックの全体設定"
+
+msgid "No file matches the search"
+msgstr "検索に一致するファイルはありません"
+
+msgid ""
+"The file name must end in .conf and use only letters, digits, dots, dashes "
+"and underscores"
+msgstr "ファイル名は .conf で終わる必要があり、英字、数字、ピリオド、ハイフン、アンダースコアのみ使用できます"
+
+msgid "Snippet not found"
+msgstr "スニペットが見つかりません"
+
+msgid "The snippet exceeds 256 KiB"
+msgstr "スニペットが 256 KiB を超えています"
+
+msgid "The header of the snippet does not parse: {0}"
+msgstr "スニペットのヘッダーを解析できません: {0}"
+
+msgid "The snippet is still included by {0}"
+msgstr "スニペットはまだ {0} によって含まれています"
+
+msgid "A snippet with this file name already exists"
+msgstr "このファイル名のスニペットはすでに存在します"
+
+msgid "The variable {0} is invalid: {1}"
+msgstr "変数 {0} が無効です: {1}"
+
+msgid "The content does not parse as a template: {0}"
+msgstr "コンテンツをテンプレートとして解析できません: {0}"
+
+msgid "Snippets"
+msgstr "スニペット"
+
+msgid "Create Snippet"
+msgstr "スニペットを作成"
+
+msgid "Built-in Template"
+msgstr "組み込みテンプレート"
+
+msgid "Edit Snippet"
+msgstr "スニペットを編集"
+
+msgid "Used by %{count} configuration"
+msgid_plural "Used by %{count} configurations"
+msgstr[0] "%{count} 個の構成で使用されています"
+
+msgid "Site Card Click URL"
+msgstr "サイトカードのクリック URL"
+
+msgid ""
+"Optional absolute HTTP/HTTPS URL used when opening this site card. If "
+"empty, the default site URL is used."
+msgstr "このサイトカードを開く際に使用される、任意の絶対 HTTP/HTTPS URL。空の場合は、デフォルトのサイト URL が使用されます。"
+
+msgid "Built-in"
+msgstr "内蔵"
+
+msgid "Snippet"
+msgstr "スニペット"
+
+msgid ""
+"Include keeps the site linked to snippets/%{file}, so later changes of the "
+"snippet apply to it. Insert copies the content into the site instead."
+msgstr ""
+"Include はサイトを snippets/%{file} にリンクしたままにし、スニペットの後続の変更が反映されます。Insert "
+"はコンテンツをサイトにコピーします。"
+
+msgid "Insert"
+msgstr "挿入"
+
+msgid "Include"
+msgstr "含める"
+
+msgid "Read Only"
+msgstr "読み取り専用"
+
+msgid "Preview"
+msgstr "プレビュー"
+
+msgid "Updates as the snippet changes."
+msgstr "スニペットが変更されると更新されます。"
+
+msgid ""
+"Built-in templates come with Nginx UI and cannot be changed. Copy one as a "
+"snippet to change it."
+msgstr "組み込みテンプレートは Nginx UI に付属しており、変更できません。変更するには、1 つをスニペットとしてコピーしてください。"
+
+msgid "File Name"
+msgstr "ファイル名"
+
+msgid "Variables"
+msgstr "変数"
+
+msgid "Copy as Snippet"
+msgstr "スニペットとしてコピー"
+
+msgid "Template"
+msgstr "テンプレート"
+
+msgid "No template matches the search"
+msgstr "検索に一致するテンプレートはありません"
+
+msgid "%{count} variable"
+msgid_plural "%{count} variables"
+msgstr[0] "%{count} 変数"
+
+msgid "Translations"
+msgstr "翻訳"
+
+msgid ""
+"The field is in %{language}. Users of other languages see their "
+"translation, or English when there is none."
+msgstr "このフィールドは %{language} です。他の言語のユーザーには翻訳が表示され、翻訳がない場合は英語が表示されます。"
+
+msgid "Remove translation"
+msgstr "翻訳を削除"
+
+msgid "Add a language"
+msgstr "言語を追加"
+
+msgid "Text"
+msgstr "テキスト"
+
+msgid "Switch"
+msgstr "切り替え"
+
+msgid "Select"
+msgstr "選択"
+
+msgid "New Variable…"
+msgstr "新しい変数…"
+
+msgid "Insert Variable"
+msgstr "変数を挿入"
+
+msgid ""
+"Type %{open} to complete a variable, or select a value and press %{keys} to "
+"make it one."
+msgstr "%{open} と入力して変数を補完するか、値を選択して %{keys} を押すと変数にできます。"
+
+msgid "Default Value"
+msgstr "デフォルト値"
+
+msgid "Edit Variable"
+msgstr "変数を編集"
+
+msgid ""
+"This variable is not declared, so it has no value when the snippet is "
+"inserted."
+msgstr "この変数は宣言されていないため、スニペットを挿入するときに値がありません。"
+
+msgid "Declare Variable"
+msgstr "変数を宣言する"
+
+msgid "Make Variable"
+msgstr "変数を作成"
+
+msgid "New Variable"
+msgstr "新しい変数"
+
+msgid "Key"
+msgstr "キー"
+
+msgid "Label"
+msgstr "ラベル"
+
+msgid "The variable is declared and inserted at the cursor."
+msgstr "変数が宣言され、カーソル位置に挿入されます。"
+
+msgid ""
+"The selected value becomes the default value, and the content refers to the "
+"variable instead."
+msgstr "選択した値がデフォルト値となり、内容は代わりに変数を参照します。"
+
+msgid "Add Variable"
+msgstr "変数を追加"
+
+msgid "Not declared, so left without a value: %{names}"
+msgstr "未宣言のため、値なしで残されました: %{names}"
+
+msgid "The snippet does not render as valid Nginx configuration."
+msgstr "このスニペットは有効な Nginx 設定としてレンダリングされません。"
+
+msgid "The snippet renders as valid Nginx configuration."
+msgstr "スニペットは有効な Nginx 設定としてレンダリングされます。"
+
+msgid "What the site editor asks for"
+msgstr "サイトエディターが求めていること"
+
+msgid "Restore Default Values"
+msgstr "デフォルト値を復元"
+
+msgid "Nothing to fill in."
+msgstr "入力する項目はありません。"
+
+msgid "Fix the variables to preview the snippet."
+msgstr "変数を修正して、スニペットをプレビューしてください。"
+
+msgid "Snippets are no longer synchronized"
+msgstr "スニペットは同期されなくなりました"
+
+msgid "Synchronize Snippets"
+msgstr "スニペットを同期"
+
+msgid ""
+"Every snippet is copied to the selected nodes now, and later changes follow "
+"automatically. Clear the selection to stop synchronizing."
+msgstr "すべてのスニペットが選択したノードにコピーされ、以降の変更は自動的に反映されます。選択を解除すると同期が停止します。"
+
+msgid "Replace snippets that already exist on the nodes"
+msgstr "ノードに既に存在するスニペットを置き換える"
+
+msgid "Included by %{count} file"
+msgid_plural "Included by %{count} files"
+msgstr[0] "%{count} 個のファイルに含まれる"
+
+msgid "Not Used"
+msgstr "未使用"
+
+msgid "Max Age"
+msgstr "最大経過時間"
+
+msgid "Options"
+msgstr "オプション"
+
+msgid "Remove option"
+msgstr "オプションを削除"
+
+msgid "Add Option"
+msgstr "オプションを追加"
+
+msgid "Remove variable"
+msgstr "変数を削除"
+
+msgid "Used in the content, not declared"
+msgstr "コンテンツ内で使用されており、宣言されていません"
+
+msgid "Snippet %{name} saved"
+msgstr "スニペット %{name} を保存しました"
+
+msgid "Discard the unsaved changes?"
+msgstr "保存されていない変更を破棄しますか？"
+
+msgid "Keep Editing"
+msgstr "編集を続ける"
+
+msgid "Edit Snippet %{name}"
+msgstr "スニペット %{name} を編集"
+
+msgid "Sites can include this snippet and follow its later changes."
+msgstr "サイトはこのスニペットを含め、その後の変更を追跡できます。"
+
+msgid ""
+"This snippet has variables, so sites insert a filled in copy from the "
+"config template panel."
+msgstr "このスニペットには変数が含まれているため、各サイトは設定テンプレートパネルから入力済みのコピーを挿入します。"
+
+msgid "Includable"
+msgstr "インクルード可能"
+
+msgid "Insert Only"
+msgstr "挿入のみ"
+
+msgid "Use"
+msgstr "使用する"
+
+msgid ""
+"Add this directive to a server or location block. Sites that include the "
+"snippet follow its later changes."
+msgstr "このディレクティブを server または location ブロックに追加してください。このスニペットを含むサイトは、その後の変更に従います。"
+
+msgid "Static file cache"
+msgstr "静的ファイルキャッシュ"
+
+msgid "Fixed while configurations include the snippet, so they keep working."
+msgstr "構成にスニペットが含まれる間は修正されているため、動作し続けます。"
+
+msgid "Letters, digits, dots, dashes and underscores."
+msgstr "英字、数字、ドット、ハイフン、アンダースコア。"
+
+msgid ""
+"Variables are filled in when the snippet is inserted from the config "
+"template panel of the site editor. A snippet with variables can only be "
+"inserted, not included."
+msgstr ""
+"変数は、サイトエディターの設定テンプレートパネルからスニペットを挿入する際に埋め込まれます。変数を含むスニペットは挿入のみ可能で、インクルードすることは"
+"できません。"
+
+msgid "No configuration includes this snippet yet."
+msgstr "まだどの設定にもこのスニペットは含まれていません。"
+
+msgid "Unsaved changes"
+msgstr "未保存の変更"
+
+msgid "My Snippets"
+msgstr "マイ スニペット"
+
+msgid "Built-in Templates"
+msgstr "組み込みテンプレート"
+
+msgid "Copied %{include}"
+msgstr "%{include} をコピーしました"
+
+msgid "Delete snippet %{name}?"
+msgstr "スニペット %{name} を削除しますか？"
+
+msgid "snippets/%{file} will be removed here and on the synchronized nodes."
+msgstr "snippets/%{file} はここおよび同期ノード上で削除されます。"
+
+msgid "snippets/%{file} will be removed."
+msgstr "snippets/%{file} は削除されます。"
+
+msgid "Snippet %{name} deleted"
+msgstr "スニペット %{name} を削除しました"
+
+msgid "Synchronize"
+msgstr "同期"
+
+msgid "Synchronized to %{count} node"
+msgid_plural "Synchronized to %{count} nodes"
+msgstr[0] "%{count} ノードに同期されました"
+
+msgid ""
+"Has %{count} variable. Sites insert a filled in copy from the config "
+"template panel of the site editor."
+msgid_plural ""
+"Has %{count} variables. Sites insert a filled in copy from the config "
+"template panel of the site editor."
+msgstr[0] "変数が %{count} 個あります。サイトでは、サイトエディターの設定テンプレートパネルから入力済みのコピーを挿入します。"
+
+msgid "Copy the include directive"
+msgstr "include ディレクティブをコピー"
+
+msgid "Remove the snippet from the files that include it first."
+msgstr "まず、スニペットを含むファイルからスニペットを削除してください。"
+
+msgid ""
+"A snippet keeps a piece of Nginx configuration in one place. Include it in "
+"a site, or insert it from the config template panel of the site editor; "
+"changing an included snippet updates every site that uses it."
+msgstr ""
+"スニペットは Nginx "
+"の設定の一部を一箇所に保存します。サイトに含めるか、サイトエディターの設定テンプレートパネルから挿入してください。含められたスニペットを変更すると、それ"
+"を使用するすべてのサイトが更新されます。"
+
+msgid "Search snippets"
+msgstr "検索スニペット"
+
+msgid "No snippets yet"
+msgstr "まだスニペットはありません"
+
+msgid "No snippet matches the search"
+msgstr "検索に一致するスニペットがありません"
+
+msgid "Enter a key."
+msgstr "キーを入力してください。"
+
+msgid "Use letters, digits and underscores, starting with a letter or underscore."
+msgstr "英字、数字、アンダースコアを使用し、英字またはアンダースコアで始めてください。"
+
+msgid "Another variable uses this key."
+msgstr "別の変数がこのキーを使用しています。"
+
+msgid "Add at least one option."
+msgstr "少なくとも 1 つのオプションを追加してください。"
+
+msgid "Every option needs a value."
+msgstr "すべてのオプションには値が必要です。"
+
+msgid "Option values must be unique."
+msgstr "オプション値は一意である必要があります。"
+
+msgid "Choose the default option."
+msgstr "デフォルトのオプションを選択してください。"
+
+msgid "Certificate Relocated"
+msgstr "証明書が移動されました"
+
+msgid ""
+"Certificate %{name} is now stored in %{path}, point the sites that load "
+"%{previous_path} to it"
+msgstr "証明書 %{name} は %{path} に保存されました。%{previous_path} を読み込むサイトをこちらに指定してください"
+
+msgid "The path exists, but the file is not a certificate"
+msgstr "パスは存在しますが、ファイルは証明書ではありません"
+
+msgid "The path exists, but the file is not a private key"
+msgstr "パスは存在しますが、ファイルは秘密鍵ではありません"

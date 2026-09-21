@@ -414,27 +414,6 @@ msgstr "비활성화됨"
 msgid "Maintenance"
 msgstr "유지보수"
 
-msgid "Site"
-msgstr "사이트"
-
-msgid "Stream"
-msgstr "스트림"
-
-msgid "Configuration"
-msgstr "구성"
-
-msgid "+%{count} more"
-msgstr "+%{count}개 더"
-
-msgid "Search"
-msgstr "검색"
-
-msgid "No file matches the search"
-msgstr "검색과 일치하는 파일이 없습니다"
-
-msgid "Not used"
-msgstr "사용 안 함"
-
 msgid "Starting download..."
 msgstr "다운로드를 시작하고 있습니다..."
 
@@ -922,6 +901,9 @@ msgstr "완료"
 msgid "Unknown"
 msgstr "알 수 없음"
 
+msgid "Search"
+msgstr "검색"
+
 msgid "Open in split view"
 msgstr "분할 보기로 열기"
 
@@ -1018,6 +1000,12 @@ msgstr ""
 "작업 %{backup_name}의 이전 백업이 삭제되지 않았습니다. 작업 %{conflict_names}이(가) 동일한 파일 이름으로 "
 "동일한 스토리지 위치에 백업을 작성하고 있기 때문입니다. 작업 중 하나의 이름을 변경하거나 스토리지 경로를 변경하세요."
 
+msgid "Backups to Keep"
+msgstr "보관할 백업"
+
+msgid "Backups to Keep (0 keeps all)"
+msgstr "보관할 백업 수 (0이면 모두 보관)"
+
 msgid "Renew Certificate Success"
 msgstr "인증서 갱신 성공"
 
@@ -1047,16 +1035,6 @@ msgstr "인증서 %{name}은(는) %{days}일 후에 만료됩니다"
 
 msgid "Certificate Expiring Soon"
 msgstr "인증서 만료 임박"
-
-msgid "Certificate Relocated"
-msgstr "인증서가 이동되었습니다"
-
-msgid ""
-"Certificate %{name} is now stored in %{path}, point the sites that load "
-"%{previous_path} to it"
-msgstr ""
-"인증서 %{name}이(가) 이제 %{path}에 저장됩니다. %{previous_path}을(를) 로드하는 사이트를 이 경로로 "
-"지정하세요"
 
 msgid "Sync Certificate Error"
 msgstr "인증서 동기화 오류"
@@ -2758,32 +2736,6 @@ msgstr "사이트가 점검 모드입니다"
 msgid "Read dir failed: {0}"
 msgstr "디렉터리 읽기 실패: {0}"
 
-msgid ""
-"The file name must end in .conf and use only letters, digits, dots, dashes "
-"and underscores"
-msgstr "파일 이름은 .conf 로 끝나야 하며, 영문자, 숫자, 점, 하이픈, 밑줄만 사용할 수 있습니다"
-
-msgid "Snippet not found"
-msgstr "스니펫을 찾을 수 없습니다"
-
-msgid "The snippet exceeds 256 KiB"
-msgstr "스니펫이 256 KiB를 초과합니다"
-
-msgid "The header of the snippet does not parse: {0}"
-msgstr "스니펫의 헤더를 파싱할 수 없습니다: {0}"
-
-msgid "The snippet is still included by {0}"
-msgstr "스니펫은 여전히 {0} 에 의해 포함되어 있습니다"
-
-msgid "A snippet with this file name already exists"
-msgstr "이 파일 이름의 스니펫이 이미 존재합니다"
-
-msgid "The variable {0} is invalid: {1}"
-msgstr "변수 {0}이(가) 유효하지 않습니다: {1}"
-
-msgid "The content does not parse as a template: {0}"
-msgstr "콘텐츠를 템플릿으로 분석할 수 없습니다: {0}"
-
 msgid "Stream not found"
 msgstr "스트림을 찾을 수 없습니다"
 
@@ -3919,18 +3871,6 @@ msgstr "사이트 목록"
 msgid "Add Site"
 msgstr "사이트 추가"
 
-msgid "Snippets"
-msgstr "스니펫"
-
-msgid "Create Snippet"
-msgstr "스니펫 만들기"
-
-msgid "Built-in Template"
-msgstr "내장 템플릿"
-
-msgid "Edit Snippet"
-msgstr "스니펫 편집"
-
 msgid "Edit Site"
 msgstr "사이트 편집"
 
@@ -4010,17 +3950,29 @@ msgstr ""
 "액세스 목록은 IP 주소를 한 곳에 모아 관리합니다. 사이트 편집기에서 서버 또는 위치에 대해 선택하면 됩니다. 여기에서 목록을 "
 "변경하면 해당 목록을 사용하는 모든 사이트에 반영됩니다."
 
+msgid "+%{count} more"
+msgstr "+%{count}개 더"
+
 msgid "Deny"
 msgstr "거부"
 
 msgid "Allow"
 msgstr "허용"
 
+msgid "Not used"
+msgstr "사용 안 함"
+
 msgid "Use list"
 msgstr "목록 사용"
 
 msgid "Deny (403)"
 msgstr "거부됨 (403)"
+
+msgid "Site"
+msgstr "사이트"
+
+msgid "Stream"
+msgstr "스트림"
 
 msgid "Access list %{name} saved"
 msgstr "접근 목록 %{name}이(가) 저장되었습니다"
@@ -4112,15 +4064,6 @@ msgstr "매주 %{day} %{time}"
 
 msgid "Monthly on day %{day} at %{time}"
 msgstr "매월 %{day}일 %{time}"
-
-msgid "Backups to Keep"
-msgstr "보관할 백업"
-
-msgid "All"
-msgstr "전체"
-
-msgid "Backups to Keep (0 keeps all)"
-msgstr "보관할 백업 수 (0이면 모두 보관)"
 
 msgid "Last Backup Time"
 msgstr "마지막 백업 시간"
@@ -4473,10 +4416,6 @@ msgstr "배포를 확인할 수 없습니다"
 msgid "Not After"
 msgstr "유효 종료"
 
-msgid "Used by %{count} configuration"
-msgid_plural "Used by %{count} configurations"
-msgstr[0] "%{count} 개의 구성에서 사용됨"
-
 msgid "Failed to scan certificates"
 msgstr "인증서 스캔에 실패했습니다"
 
@@ -4521,12 +4460,6 @@ msgstr "뒤로"
 
 msgid "This field is required"
 msgstr "이 항목은 필수입니다"
-
-msgid "The path exists, but the file is not a certificate"
-msgstr ""
-
-msgid "The path exists, but the file is not a private key"
-msgstr ""
 
 msgid "Sync to"
 msgstr "동기화 대상"
@@ -4598,11 +4531,11 @@ msgstr "인증서 파일이 성공적으로 다운로드되었습니다"
 msgid "Failed to download certificate files"
 msgstr "인증서 파일을 다운로드하지 못했습니다"
 
-msgid "Download Certificate Files"
-msgstr "인증서 파일 다운로드"
-
 msgid "Download"
 msgstr "다운로드"
+
+msgid "Download Certificate Files"
+msgstr "인증서 파일 다운로드"
 
 msgid "Download Format"
 msgstr "다운로드 형식"
@@ -4765,14 +4698,14 @@ msgstr "취소를 확인하려면 아래 필드에 \"Revoke\"를 입력하세요
 msgid "Renew successfully"
 msgstr "갱신에 성공했습니다"
 
-msgid "AutoCert is running, please wait..."
-msgstr "AutoCert 실행 중입니다. 잠시 기다려 주세요..."
+msgid "Renew"
+msgstr "갱신"
 
 msgid "Renew Certificate"
 msgstr "인증서 갱신"
 
-msgid "Renew"
-msgstr "갱신"
+msgid "AutoCert is running, please wait..."
+msgstr "AutoCert 실행 중입니다. 잠시 기다려 주세요..."
 
 msgid "Certificate issued successfully"
 msgstr "인증서가 성공적으로 발급되었습니다"
@@ -5363,14 +5296,6 @@ msgid ""
 "actual upstream host or port."
 msgstr "선택 사항인 절대 URL입니다. 공개 주소가 실제 업스트림 호스트 또는 포트와 다를 때 사용하세요."
 
-msgid "Site Card Click URL"
-msgstr "사이트 카드 클릭 URL"
-
-msgid ""
-"Optional absolute HTTP/HTTPS URL used when opening this site card. If "
-"empty, the default site URL is used."
-msgstr "이 사이트 카드를 열 때 사용되는 선택적 절대 HTTP/HTTPS URL입니다. 비어 있는 경우 기본 사이트 URL이 사용됩니다."
-
 msgid "HTTP Method"
 msgstr "HTTP 메서드"
 
@@ -5661,6 +5586,9 @@ msgstr "SDK"
 msgid "Additional"
 msgstr "추가"
 
+msgid "All"
+msgstr "전체"
+
 msgid "Host, e.g. @ or www"
 msgstr "호스트 (예: @ 또는 www)"
 
@@ -5812,6 +5740,9 @@ msgstr "이름은 비워 둘 수 없습니다"
 
 msgid "Please select DNS provider"
 msgstr "DNS 제공자를 선택하세요"
+
+msgid "Configuration"
+msgstr "구성"
 
 msgid "DNS Credentials"
 msgstr "DNS 자격 증명"
@@ -9577,9 +9508,6 @@ msgstr "네임스페이스"
 msgid "The parameter of server_name is required"
 msgstr "server_name 매개변수는 필수입니다"
 
-msgid "Config Template"
-msgstr "설정 템플릿"
-
 msgid "Save the edited configuration before enabling HTTPS."
 msgstr "HTTPS를 활성화하기 전에 편집한 설정을 저장하세요."
 
@@ -9674,30 +9602,11 @@ msgstr "자체 서명 인증서"
 msgid "Generate self-signed certificate"
 msgstr "자체 서명 인증서 생성"
 
-msgid "Built-in"
-msgstr "내장"
-
 msgid "Search templates"
 msgstr "템플릿 검색"
 
-msgid "Snippet"
-msgstr "스니펫"
-
 msgid "Author"
 msgstr "작성자"
-
-msgid ""
-"Include keeps the site linked to snippets/%{file}, so later changes of the "
-"snippet apply to it. Insert copies the content into the site instead."
-msgstr ""
-"Include는 사이트를 snippets/%{file}에 연결된 상태로 유지하여 스니펫의 후속 변경 사항이 적용됩니다. Insert는 "
-"콘텐츠를 사이트에 복사합니다."
-
-msgid "Insert"
-msgstr "삽입"
-
-msgid "Include"
-msgstr "포함"
 
 msgid "Do you want to enable TLS?"
 msgstr "TLS를 활성화하시겠습니까?"
@@ -9963,6 +9872,9 @@ msgstr "DNS 레코드 다시 생성"
 msgid "Clear Link"
 msgstr "연결 해제"
 
+msgid "Config Template"
+msgstr "설정 템플릿"
+
 msgid "Port Scanner"
 msgstr "포트 스캐너"
 
@@ -10045,305 +9957,6 @@ msgstr "선택한 사이트의 유지 관리 정보 설정"
 
 msgid "%{count} sites selected"
 msgstr "사이트 %{count}개 선택됨"
-
-msgid "Read Only"
-msgstr "읽기 전용"
-
-msgid "Preview"
-msgstr "미리 보기"
-
-msgid "Updates as the snippet changes."
-msgstr "스니펫이 변경되면 업데이트됩니다."
-
-msgid ""
-"Built-in templates come with Nginx UI and cannot be changed. Copy one as a "
-"snippet to change it."
-msgstr "내장 템플릿은 Nginx UI에 포함되어 있으며 변경할 수 없습니다. 변경하려면 하나를 스니펫으로 복사하세요."
-
-msgid "File Name"
-msgstr "파일 이름"
-
-msgid "Variables"
-msgstr "변수"
-
-msgid "Copy as Snippet"
-msgstr "스니펫으로 복사"
-
-msgid "Template"
-msgstr "템플릿"
-
-msgid "No template matches the search"
-msgstr "검색과 일치하는 템플릿이 없습니다"
-
-msgid "%{count} variable"
-msgid_plural "%{count} variables"
-msgstr[0] "%{count} 변수"
-
-msgid "Translations"
-msgstr "번역"
-
-msgid ""
-"The field is in %{language}. Users of other languages see their "
-"translation, or English when there is none."
-msgstr "이 필드는 %{language}입니다. 다른 언어 사용자에게는 번역이 표시되며, 번역이 없으면 영어가 표시됩니다."
-
-msgid "Remove translation"
-msgstr "번역 삭제"
-
-msgid "Add a language"
-msgstr "언어 추가"
-
-msgid "Text"
-msgstr "텍스트"
-
-msgid "Switch"
-msgstr "전환"
-
-msgid "Select"
-msgstr "선택"
-
-msgid "New Variable…"
-msgstr "새 변수…"
-
-msgid "Insert Variable"
-msgstr "변수 삽입"
-
-msgid ""
-"Type %{open} to complete a variable, or select a value and press %{keys} to "
-"make it one."
-msgstr "%{open}을(를) 입력하여 변수를 완성하거나, 값을 선택한 후 %{keys}을(를) 눌러 변수로 만드세요."
-
-msgid "Default Value"
-msgstr "기본값"
-
-msgid "Edit Variable"
-msgstr "변수 편집"
-
-msgid ""
-"This variable is not declared, so it has no value when the snippet is "
-"inserted."
-msgstr "이 변수는 선언되지 않았으므로 스니펫을 삽입할 때 값이 없습니다."
-
-msgid "Declare Variable"
-msgstr "변수 선언"
-
-msgid "Make Variable"
-msgstr "변수 만들기"
-
-msgid "New Variable"
-msgstr "새 변수"
-
-msgid "Key"
-msgstr "키"
-
-msgid "Label"
-msgstr "레이블"
-
-msgid "The variable is declared and inserted at the cursor."
-msgstr "변수가 선언되고 커서 위치에 삽입됩니다."
-
-msgid ""
-"The selected value becomes the default value, and the content refers to the "
-"variable instead."
-msgstr "선택한 값이 기본값이 되며, 내용은 대신 변수를 참조합니다."
-
-msgid "Add Variable"
-msgstr "변수 추가"
-
-msgid "Not declared, so left without a value: %{names}"
-msgstr "선언되지 않아 값 없이 남겨짐: %{names}"
-
-msgid "The snippet does not render as valid Nginx configuration."
-msgstr "이 스니펫은 유효한 Nginx 구성으로 렌더링되지 않습니다."
-
-msgid "The snippet renders as valid Nginx configuration."
-msgstr "스니펫이 유효한 Nginx 설정으로 렌더링됩니다."
-
-msgid "What the site editor asks for"
-msgstr "사이트 편집기가 요청하는 내용"
-
-msgid "Restore Default Values"
-msgstr "기본값 복원"
-
-msgid "Nothing to fill in."
-msgstr "입력할 항목이 없습니다."
-
-msgid "Fix the variables to preview the snippet."
-msgstr "스니펫을 미리 보려면 변수를 수정하세요."
-
-msgid "Snippets are no longer synchronized"
-msgstr "스니펫이 더 이상 동기화되지 않습니다"
-
-msgid "Synchronize Snippets"
-msgstr "스니펫 동기화"
-
-msgid ""
-"Every snippet is copied to the selected nodes now, and later changes follow "
-"automatically. Clear the selection to stop synchronizing."
-msgstr "모든 스니펫이 선택한 노드에 복사되며, 이후 변경 사항은 자동으로 따라옵니다. 선택을 해제하면 동기화가 중지됩니다."
-
-msgid "Replace snippets that already exist on the nodes"
-msgstr "노드에 이미 존재하는 스니펫 교체"
-
-msgid "Included by %{count} file"
-msgid_plural "Included by %{count} files"
-msgstr[0] "%{count}개 파일에 포함됨"
-
-msgid "Not Used"
-msgstr "사용 안 함"
-
-msgid "Max Age"
-msgstr "최대 수명"
-
-msgid "Options"
-msgstr "옵션"
-
-msgid "Remove option"
-msgstr "옵션 삭제"
-
-msgid "Add Option"
-msgstr "옵션 추가"
-
-msgid "Remove variable"
-msgstr "변수 삭제"
-
-msgid "Used in the content, not declared"
-msgstr "콘텐츠에서 사용되며, 선언되지 않음"
-
-msgid "Snippet %{name} saved"
-msgstr "스니펫 %{name} 이(가) 저장되었습니다"
-
-msgid "Discard the unsaved changes?"
-msgstr "저장하지 않은 변경 사항을 삭제하시겠습니까?"
-
-msgid "Keep Editing"
-msgstr "편집 계속하기"
-
-msgid "Edit Snippet %{name}"
-msgstr "스니펫 %{name} 편집"
-
-msgid "Sites can include this snippet and follow its later changes."
-msgstr "사이트는 이 스니펫을 포함하고 이후 변경 사항을 추적할 수 있습니다."
-
-msgid ""
-"This snippet has variables, so sites insert a filled in copy from the "
-"config template panel."
-msgstr "이 코드 스니펫에는 변수가 포함되어 있으므로, 사이트에서 설정 템플릿 패널에서 작성된 사본을 삽입합니다."
-
-msgid "Includable"
-msgstr "인클루드 가능"
-
-msgid "Insert Only"
-msgstr "삽입 전용"
-
-msgid "Use"
-msgstr "사용"
-
-msgid ""
-"Add this directive to a server or location block. Sites that include the "
-"snippet follow its later changes."
-msgstr "이 지시문을 server 또는 location 블록에 추가하세요. 이 스니펫을 포함하는 사이트는 이후 변경 사항을 따릅니다."
-
-msgid "Static file cache"
-msgstr "정적 파일 캐시"
-
-msgid "Fixed while configurations include the snippet, so they keep working."
-msgstr "구성이 스니펫을 포함하는 동안 수정되어 계속 작동합니다."
-
-msgid "Letters, digits, dots, dashes and underscores."
-msgstr "영문자, 숫자, 점, 하이픈 및 밑줄."
-
-msgid ""
-"Variables are filled in when the snippet is inserted from the config "
-"template panel of the site editor. A snippet with variables can only be "
-"inserted, not included."
-msgstr "변수는 사이트 편집기의 구성 템플릿 패널에서 스니펫을 삽입할 때 채워집니다. 변수가 있는 스니펫은 삽입만 가능하며, 포함할 수 없습니다."
-
-msgid "No configuration includes this snippet yet."
-msgstr "아직 어떤 구성에도 이 스니펫이 포함되어 있지 않습니다."
-
-msgid "Unsaved changes"
-msgstr "저장되지 않은 변경 사항"
-
-msgid "My Snippets"
-msgstr "내 스니펫"
-
-msgid "Built-in Templates"
-msgstr "내장 템플릿"
-
-msgid "Copied %{include}"
-msgstr "%{include} 복사됨"
-
-msgid "Delete snippet %{name}?"
-msgstr "스니펫 %{name}을(를) 삭제하시겠습니까?"
-
-msgid "snippets/%{file} will be removed here and on the synchronized nodes."
-msgstr "snippets/%{file} 은(는) 여기와 동기화된 노드에서 제거됩니다."
-
-msgid "snippets/%{file} will be removed."
-msgstr "snippets/%{file} 이(가) 삭제됩니다."
-
-msgid "Snippet %{name} deleted"
-msgstr "스니펫 %{name} 삭제됨"
-
-msgid "Synchronize"
-msgstr "동기화"
-
-msgid "Synchronized to %{count} node"
-msgid_plural "Synchronized to %{count} nodes"
-msgstr[0] "%{count} 노드에 동기화되었습니다"
-
-msgid ""
-"Has %{count} variable. Sites insert a filled in copy from the config "
-"template panel of the site editor."
-msgid_plural ""
-"Has %{count} variables. Sites insert a filled in copy from the config "
-"template panel of the site editor."
-msgstr[0] "변수가 %{count}개 있습니다. 사이트에서는 사이트 편집기의 구성 템플릿 패널에서 입력된 사본을 삽입합니다."
-
-msgid "Copy the include directive"
-msgstr "include 디렉티브 복사"
-
-msgid "Remove the snippet from the files that include it first."
-msgstr "먼저 스니펫을 포함하는 파일에서 스니펫을 제거하세요."
-
-msgid ""
-"A snippet keeps a piece of Nginx configuration in one place. Include it in "
-"a site, or insert it from the config template panel of the site editor; "
-"changing an included snippet updates every site that uses it."
-msgstr ""
-"스니펫은 Nginx 설정의 일부를 한 곳에 보관합니다. 사이트에 포함하거나 사이트 편집기의 구성 템플릿 패널에서 삽입하세요. 포함된 "
-"스니펫을 변경하면 해당 스니펫을 사용하는 모든 사이트가 업데이트됩니다."
-
-msgid "Search snippets"
-msgstr "검색 스니펫"
-
-msgid "No snippets yet"
-msgstr "아직 스니펫이 없습니다"
-
-msgid "No snippet matches the search"
-msgstr "검색과 일치하는 코드 스니펫이 없습니다"
-
-msgid "Enter a key."
-msgstr "키를 입력하세요."
-
-msgid "Use letters, digits and underscores, starting with a letter or underscore."
-msgstr "문자, 숫자 및 밑줄을 사용하며, 문자 또는 밑줄로 시작해야 합니다."
-
-msgid "Another variable uses this key."
-msgstr "다른 변수가 이 키를 사용하고 있습니다."
-
-msgid "Add at least one option."
-msgstr "하나 이상의 옵션을 추가하세요."
-
-msgid "Every option needs a value."
-msgstr "모든 옵션에는 값이 필요합니다."
-
-msgid "Option values must be unique."
-msgstr "옵션 값은 고유해야 합니다."
-
-msgid "Choose the default option."
-msgstr "기본 옵션을 선택하세요."
 
 msgid "Do you want to %{action} this stream?"
 msgstr "이 스트림을 %{action} 하시겠습니까?"
@@ -10719,3 +10332,954 @@ msgstr "메모"
 msgctxt "preference group"
 msgid "Maintenance"
 msgstr "유지 관리"
+
+msgid ""
+"DNS-01 challenge requires the DNS-01 plugin. Install it from System > "
+"Plugins."
+msgstr ""
+
+msgid "Install DNS-01 plugin"
+msgstr ""
+
+msgid "Go to System > Plugins"
+msgstr ""
+
+msgid "If your domain has CNAME records and you cannot obtain certificates, "
+msgstr "도메인에 CNAME 레코드가 있고 인증서를 발급받을 수 없는 경우,"
+
+msgid "Skip local DNS propagation checks and wait 60 seconds before asking "
+msgstr "로컬 DNS 전파 검사를 건너뛰고 요청하기 전에 60초를 기다립니다."
+
+msgid "DNS-01 plugin unavailable"
+msgstr ""
+
+msgid ""
+"Certificate %{name} cannot be renewed because no enabled plugin provides the "
+"DNS-01 challenge"
+msgstr ""
+
+msgid "Plugin %{plugin} failed to render"
+msgstr ""
+
+msgid "No DNS-01 provider for {0}: install and enable the DNS-01 plugin"
+msgstr ""
+
+msgid "Plugin manifest is invalid"
+msgstr ""
+
+msgid "Plugin not found"
+msgstr ""
+
+msgid "Plugin already exists"
+msgstr ""
+
+msgid "Plugin is not running"
+msgstr ""
+
+msgid "Plugin handshake failed"
+msgstr ""
+
+msgid "Plugin has no executable for this platform"
+msgstr ""
+
+msgid "Plugin package is invalid"
+msgstr ""
+
+msgid "Plugin package is too large"
+msgstr ""
+
+msgid "Plugin api version is incompatible"
+msgstr ""
+
+msgid "Plugin permissions need approval"
+msgstr ""
+
+msgid "Plugin dependency is missing: {0}"
+msgstr ""
+
+msgid "Plugin dependencies form a cycle"
+msgstr ""
+
+msgid "Plugin is in use by {0}"
+msgstr ""
+
+msgid "Plugin system is disabled"
+msgstr ""
+
+msgid "Plugin uploads are disabled"
+msgstr ""
+
+msgid "Plugin call timed out"
+msgstr ""
+
+msgid "Plugin rpc error: {0}"
+msgstr ""
+
+msgid "Plugin setting {0} is invalid"
+msgstr ""
+
+msgid "Plugin needs nginx-ui {0} or newer, this node runs {1}"
+msgstr ""
+
+msgid "Plugin package declares another id"
+msgstr ""
+
+msgid "Plugins"
+msgstr ""
+
+msgid "Accept plugin sync"
+msgstr ""
+
+msgid "Accepted"
+msgstr ""
+
+msgid "Opted out"
+msgstr ""
+
+msgid "Install, configure and troubleshoot plugins that extend Nginx UI."
+msgstr ""
+
+msgid "Plugin"
+msgstr ""
+
+msgid "Capabilities"
+msgstr ""
+
+msgid "Auto install to nodes"
+msgstr ""
+
+msgid "Plugin synchronized to %{count} node(s)"
+msgstr ""
+
+msgid "Some nodes could not be synchronized"
+msgstr ""
+
+msgid "Failed to synchronize the plugin"
+msgstr ""
+
+msgid "Installed"
+msgstr ""
+
+msgid "Starting"
+msgstr ""
+
+msgid "Missing"
+msgstr ""
+
+msgid "Incompatible"
+msgstr ""
+
+msgid "Needs approval"
+msgstr ""
+
+msgid "Failed to load the plugin list"
+msgstr ""
+
+msgid "Plugin enabled"
+msgstr ""
+
+msgid "Failed to enable the plugin"
+msgstr ""
+
+msgid "Plugin disabled"
+msgstr ""
+
+msgid "Failed to disable the plugin"
+msgstr ""
+
+msgid "Plugin uninstalled"
+msgstr ""
+
+msgid "Failed to uninstall the plugin"
+msgstr ""
+
+msgid "Reload the page to apply the development plugin URL"
+msgstr ""
+
+msgid ""
+"Plugins extend Nginx UI with extra capabilities. Only install bundles from "
+"authors you trust."
+msgstr ""
+
+msgid "Development plugin URL"
+msgstr ""
+
+msgid ""
+"Address of a plugin.json served by any static server. The plugin is loaded "
+"in addition to the installed ones."
+msgstr ""
+
+msgid "Dev plugin"
+msgstr ""
+
+msgid "No plugins installed"
+msgstr ""
+
+msgid "Settings"
+msgstr "설정"
+
+msgid "Logs"
+msgstr ""
+
+msgid "Sync to nodes"
+msgstr ""
+
+msgid "Uninstall %{name}? Its data and settings are removed."
+msgstr ""
+
+msgid "Uninstall"
+msgstr ""
+
+msgid "Sync %{name} to nodes"
+msgstr ""
+
+msgid "Leave every node unchecked to sync to all child nodes."
+msgstr ""
+
+msgid "Already in sync"
+msgstr ""
+
+msgid "This node only"
+msgstr ""
+
+msgid "All child nodes"
+msgstr ""
+
+msgid "Selected nodes"
+msgstr ""
+
+msgid "Failed to read the plugin bundle"
+msgstr ""
+
+msgid "Plugin installed"
+msgstr ""
+
+msgid "The plugin was installed here but could not be pushed to the nodes"
+msgstr ""
+
+msgid "Failed to install the plugin"
+msgstr ""
+
+msgid "Install plugin"
+msgstr ""
+
+msgid "Click or drag a plugin bundle here"
+msgstr ""
+
+msgid "A .tar.gz produced by the plugin author"
+msgstr ""
+
+msgid "ID"
+msgstr ""
+
+msgid "(replaces %{version})"
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "Install the plugins below first"
+msgstr ""
+
+msgid "This version asks for permissions you have not approved yet."
+msgstr ""
+
+msgid ""
+"Review the list below before installing. The plugin stays disabled until you "
+"approve them."
+msgstr ""
+
+msgid "Requested permissions"
+msgstr ""
+
+msgid "Enable after install"
+msgstr ""
+
+msgid "Also install to child nodes"
+msgstr ""
+
+msgid "Keep in sync automatically"
+msgstr ""
+
+msgid ""
+"The version, the enabled state and future updates are kept aligned on those "
+"nodes."
+msgstr ""
+
+msgid "Failed to load the plugin logs"
+msgstr ""
+
+msgid "Logs copied to clipboard"
+msgstr ""
+
+msgid "Failed to copy the logs"
+msgstr ""
+
+msgid "Logs: %{name}"
+msgstr ""
+
+msgid "No log output yet"
+msgstr ""
+
+msgid "Failed to load the plugin marketplace"
+msgstr ""
+
+msgid "Reloading the catalog"
+msgstr ""
+
+msgid "Search plugins"
+msgstr ""
+
+msgid "All categories"
+msgstr ""
+
+msgid "All sources"
+msgstr ""
+
+msgid "Updates only"
+msgstr ""
+
+msgid "Sources"
+msgstr ""
+
+msgid "Every installed plugin is up to date"
+msgstr ""
+
+msgid "No plugins match your search"
+msgstr ""
+
+msgid "Downloading the package"
+msgstr ""
+
+msgid "Verifying the signature"
+msgstr ""
+
+msgid "Installing"
+msgstr ""
+
+msgid "%{phase}: %{plugin}"
+msgstr ""
+
+msgid "Failed to load the plugin from the marketplace"
+msgstr ""
+
+msgid "Update plugin"
+msgstr ""
+
+msgid "No release available for this platform"
+msgstr ""
+
+msgid "Source"
+msgstr ""
+
+msgid "This is a community plugin"
+msgstr ""
+
+msgid "The plugins below are installed together with it"
+msgstr ""
+
+msgid "Live progress is unavailable, checking the plugin list instead"
+msgstr ""
+
+msgid "No description provided."
+msgstr ""
+
+msgid "Installed: %{version}"
+msgstr ""
+
+msgid "Homepage"
+msgstr ""
+
+msgid "Repository"
+msgstr ""
+
+msgid "Release notes"
+msgstr ""
+
+msgid "Released"
+msgstr ""
+
+msgid "Platforms"
+msgstr ""
+
+msgid "Failed to load the plugin details"
+msgstr ""
+
+msgid "Installed version"
+msgstr ""
+
+msgid "Versions"
+msgstr ""
+
+msgid "Yanked"
+msgstr ""
+
+msgid "Latest"
+msgstr ""
+
+msgid "Readme"
+msgstr ""
+
+msgid "Failed to load the marketplace sources"
+msgstr ""
+
+msgid "Marketplace sources saved"
+msgstr ""
+
+msgid "Failed to save the marketplace sources"
+msgstr ""
+
+msgid "Marketplace sources"
+msgstr ""
+
+msgid ""
+"Catalogs are merged in order, the first source that offers a plugin wins. "
+"Leave the list empty to use the official catalog."
+msgstr ""
+
+msgid "Using the official catalog"
+msgstr ""
+
+msgid "Add source"
+msgstr ""
+
+msgid "Add the official catalog"
+msgstr ""
+
+msgid "Official"
+msgstr ""
+
+msgid "Built and signed by the Nginx UI maintainers."
+msgstr ""
+
+msgid "Verified"
+msgstr ""
+
+msgid "Reviewed by the Nginx UI maintainers and signed with a release key."
+msgstr ""
+
+msgid "Community"
+msgstr ""
+
+msgid ""
+"Published by a third party and not reviewed. It runs with the permissions "
+"you grant it, so only install it if you trust the author."
+msgstr ""
+
+msgid "Approve permissions"
+msgstr ""
+
+msgid "Approve and enable"
+msgstr ""
+
+msgid "%{name} needs your approval before it can run."
+msgstr ""
+
+msgid ""
+"Approve only if you trust the author. The approval is recorded and asked "
+"again whenever the requested permissions change."
+msgstr ""
+
+msgid "This plugin does not request any host permission."
+msgstr ""
+
+msgid "Read stored %{kind} credentials, including their secrets."
+msgstr ""
+
+msgid "unknown"
+msgstr ""
+
+msgid "Store and read its own key-value data inside the Nginx UI database."
+msgstr ""
+
+msgid "Make outbound network requests to the hosts declared in its manifest."
+msgstr ""
+
+msgid "Run scheduled tasks on the schedules declared in its manifest."
+msgstr ""
+
+msgid "Send notifications through the Nginx UI notification channels."
+msgstr ""
+
+msgid "Read CPU, memory, network and Nginx status metrics of this node."
+msgstr ""
+
+msgid "Call the Nginx UI management API with your permissions."
+msgstr ""
+
+msgid "Unknown permission. Only grant it if you trust the plugin author."
+msgstr ""
+
+msgid "In sync"
+msgstr ""
+
+msgid "Outdated"
+msgstr ""
+
+msgid "Not installed"
+msgstr ""
+
+msgid "Unsupported platform"
+msgstr ""
+
+msgid "Unsupported"
+msgstr ""
+
+msgid "Failed to load the plugin matrix"
+msgstr ""
+
+msgid "Update to %{version}"
+msgstr ""
+
+msgid "Sync to this node"
+msgstr ""
+
+msgid ""
+"What every child node has installed, compared with this controller. "
+"Switching the selected node in the header manages that node directly."
+msgstr ""
+
+msgid "All nodes"
+msgstr ""
+
+msgid "This instance has no child node"
+msgstr ""
+
+msgid "Add a node first, then plugins can be installed on it from here."
+msgstr ""
+
+msgid "Sync to selected"
+msgstr ""
+
+msgid "Sync to all"
+msgstr ""
+
+msgid "Marketplace"
+msgstr ""
+
+msgid "%{field} is required"
+msgstr ""
+
+msgid "Failed to load the plugin settings"
+msgstr ""
+
+msgid "Plugin settings saved"
+msgstr ""
+
+msgid "Failed to save the plugin settings"
+msgstr ""
+
+msgid "Settings: %{name}"
+msgstr ""
+
+msgid "This plugin has no settings."
+msgstr ""
+
+msgid "%{count} node"
+msgid_plural "%{count} nodes"
+msgstr[0] ""
+
+msgid "Sync policy saved"
+msgstr ""
+
+msgid "Failed to save the sync policy"
+msgstr ""
+
+msgid "Automatic installation"
+msgstr ""
+
+msgid ""
+"Keep this plugin at the same version and state on the selected child nodes. "
+"Leave every node unchecked to cover all of them, including the ones added "
+"later."
+msgstr ""
+
+msgid "Also sync the plugin settings"
+msgstr ""
+
+msgid "No file matches the search"
+msgstr "검색과 일치하는 파일이 없습니다"
+
+msgid ""
+"The file name must end in .conf and use only letters, digits, dots, dashes "
+"and underscores"
+msgstr "파일 이름은 .conf 로 끝나야 하며, 영문자, 숫자, 점, 하이픈, 밑줄만 사용할 수 있습니다"
+
+msgid "Snippet not found"
+msgstr "스니펫을 찾을 수 없습니다"
+
+msgid "The snippet exceeds 256 KiB"
+msgstr "스니펫이 256 KiB를 초과합니다"
+
+msgid "The header of the snippet does not parse: {0}"
+msgstr "스니펫의 헤더를 파싱할 수 없습니다: {0}"
+
+msgid "The snippet is still included by {0}"
+msgstr "스니펫은 여전히 {0} 에 의해 포함되어 있습니다"
+
+msgid "A snippet with this file name already exists"
+msgstr "이 파일 이름의 스니펫이 이미 존재합니다"
+
+msgid "The variable {0} is invalid: {1}"
+msgstr "변수 {0}이(가) 유효하지 않습니다: {1}"
+
+msgid "The content does not parse as a template: {0}"
+msgstr "콘텐츠를 템플릿으로 분석할 수 없습니다: {0}"
+
+msgid "Snippets"
+msgstr "스니펫"
+
+msgid "Create Snippet"
+msgstr "스니펫 만들기"
+
+msgid "Built-in Template"
+msgstr "내장 템플릿"
+
+msgid "Edit Snippet"
+msgstr "스니펫 편집"
+
+msgid "Used by %{count} configuration"
+msgid_plural "Used by %{count} configurations"
+msgstr[0] "%{count} 개의 구성에서 사용됨"
+
+msgid "Site Card Click URL"
+msgstr "사이트 카드 클릭 URL"
+
+msgid ""
+"Optional absolute HTTP/HTTPS URL used when opening this site card. If "
+"empty, the default site URL is used."
+msgstr "이 사이트 카드를 열 때 사용되는 선택적 절대 HTTP/HTTPS URL입니다. 비어 있는 경우 기본 사이트 URL이 사용됩니다."
+
+msgid "Built-in"
+msgstr "내장"
+
+msgid "Snippet"
+msgstr "스니펫"
+
+msgid ""
+"Include keeps the site linked to snippets/%{file}, so later changes of the "
+"snippet apply to it. Insert copies the content into the site instead."
+msgstr ""
+"Include는 사이트를 snippets/%{file}에 연결된 상태로 유지하여 스니펫의 후속 변경 사항이 적용됩니다. Insert는 "
+"콘텐츠를 사이트에 복사합니다."
+
+msgid "Insert"
+msgstr "삽입"
+
+msgid "Include"
+msgstr "포함"
+
+msgid "Read Only"
+msgstr "읽기 전용"
+
+msgid "Preview"
+msgstr "미리 보기"
+
+msgid "Updates as the snippet changes."
+msgstr "스니펫이 변경되면 업데이트됩니다."
+
+msgid ""
+"Built-in templates come with Nginx UI and cannot be changed. Copy one as a "
+"snippet to change it."
+msgstr "내장 템플릿은 Nginx UI에 포함되어 있으며 변경할 수 없습니다. 변경하려면 하나를 스니펫으로 복사하세요."
+
+msgid "File Name"
+msgstr "파일 이름"
+
+msgid "Variables"
+msgstr "변수"
+
+msgid "Copy as Snippet"
+msgstr "스니펫으로 복사"
+
+msgid "Template"
+msgstr "템플릿"
+
+msgid "No template matches the search"
+msgstr "검색과 일치하는 템플릿이 없습니다"
+
+msgid "%{count} variable"
+msgid_plural "%{count} variables"
+msgstr[0] "%{count} 변수"
+
+msgid "Translations"
+msgstr "번역"
+
+msgid ""
+"The field is in %{language}. Users of other languages see their "
+"translation, or English when there is none."
+msgstr "이 필드는 %{language}입니다. 다른 언어 사용자에게는 번역이 표시되며, 번역이 없으면 영어가 표시됩니다."
+
+msgid "Remove translation"
+msgstr "번역 삭제"
+
+msgid "Add a language"
+msgstr "언어 추가"
+
+msgid "Text"
+msgstr "텍스트"
+
+msgid "Switch"
+msgstr "전환"
+
+msgid "Select"
+msgstr "선택"
+
+msgid "New Variable…"
+msgstr "새 변수…"
+
+msgid "Insert Variable"
+msgstr "변수 삽입"
+
+msgid ""
+"Type %{open} to complete a variable, or select a value and press %{keys} to "
+"make it one."
+msgstr "%{open}을(를) 입력하여 변수를 완성하거나, 값을 선택한 후 %{keys}을(를) 눌러 변수로 만드세요."
+
+msgid "Default Value"
+msgstr "기본값"
+
+msgid "Edit Variable"
+msgstr "변수 편집"
+
+msgid ""
+"This variable is not declared, so it has no value when the snippet is "
+"inserted."
+msgstr "이 변수는 선언되지 않았으므로 스니펫을 삽입할 때 값이 없습니다."
+
+msgid "Declare Variable"
+msgstr "변수 선언"
+
+msgid "Make Variable"
+msgstr "변수 만들기"
+
+msgid "New Variable"
+msgstr "새 변수"
+
+msgid "Key"
+msgstr "키"
+
+msgid "Label"
+msgstr "레이블"
+
+msgid "The variable is declared and inserted at the cursor."
+msgstr "변수가 선언되고 커서 위치에 삽입됩니다."
+
+msgid ""
+"The selected value becomes the default value, and the content refers to the "
+"variable instead."
+msgstr "선택한 값이 기본값이 되며, 내용은 대신 변수를 참조합니다."
+
+msgid "Add Variable"
+msgstr "변수 추가"
+
+msgid "Not declared, so left without a value: %{names}"
+msgstr "선언되지 않아 값 없이 남겨짐: %{names}"
+
+msgid "The snippet does not render as valid Nginx configuration."
+msgstr "이 스니펫은 유효한 Nginx 구성으로 렌더링되지 않습니다."
+
+msgid "The snippet renders as valid Nginx configuration."
+msgstr "스니펫이 유효한 Nginx 설정으로 렌더링됩니다."
+
+msgid "What the site editor asks for"
+msgstr "사이트 편집기가 요청하는 내용"
+
+msgid "Restore Default Values"
+msgstr "기본값 복원"
+
+msgid "Nothing to fill in."
+msgstr "입력할 항목이 없습니다."
+
+msgid "Fix the variables to preview the snippet."
+msgstr "스니펫을 미리 보려면 변수를 수정하세요."
+
+msgid "Snippets are no longer synchronized"
+msgstr "스니펫이 더 이상 동기화되지 않습니다"
+
+msgid "Synchronize Snippets"
+msgstr "스니펫 동기화"
+
+msgid ""
+"Every snippet is copied to the selected nodes now, and later changes follow "
+"automatically. Clear the selection to stop synchronizing."
+msgstr "모든 스니펫이 선택한 노드에 복사되며, 이후 변경 사항은 자동으로 따라옵니다. 선택을 해제하면 동기화가 중지됩니다."
+
+msgid "Replace snippets that already exist on the nodes"
+msgstr "노드에 이미 존재하는 스니펫 교체"
+
+msgid "Included by %{count} file"
+msgid_plural "Included by %{count} files"
+msgstr[0] "%{count}개 파일에 포함됨"
+
+msgid "Not Used"
+msgstr "사용 안 함"
+
+msgid "Max Age"
+msgstr "최대 수명"
+
+msgid "Options"
+msgstr "옵션"
+
+msgid "Remove option"
+msgstr "옵션 삭제"
+
+msgid "Add Option"
+msgstr "옵션 추가"
+
+msgid "Remove variable"
+msgstr "변수 삭제"
+
+msgid "Used in the content, not declared"
+msgstr "콘텐츠에서 사용되며, 선언되지 않음"
+
+msgid "Snippet %{name} saved"
+msgstr "스니펫 %{name} 이(가) 저장되었습니다"
+
+msgid "Discard the unsaved changes?"
+msgstr "저장하지 않은 변경 사항을 삭제하시겠습니까?"
+
+msgid "Keep Editing"
+msgstr "편집 계속하기"
+
+msgid "Edit Snippet %{name}"
+msgstr "스니펫 %{name} 편집"
+
+msgid "Sites can include this snippet and follow its later changes."
+msgstr "사이트는 이 스니펫을 포함하고 이후 변경 사항을 추적할 수 있습니다."
+
+msgid ""
+"This snippet has variables, so sites insert a filled in copy from the "
+"config template panel."
+msgstr "이 코드 스니펫에는 변수가 포함되어 있으므로, 사이트에서 설정 템플릿 패널에서 작성된 사본을 삽입합니다."
+
+msgid "Includable"
+msgstr "인클루드 가능"
+
+msgid "Insert Only"
+msgstr "삽입 전용"
+
+msgid "Use"
+msgstr "사용"
+
+msgid ""
+"Add this directive to a server or location block. Sites that include the "
+"snippet follow its later changes."
+msgstr "이 지시문을 server 또는 location 블록에 추가하세요. 이 스니펫을 포함하는 사이트는 이후 변경 사항을 따릅니다."
+
+msgid "Static file cache"
+msgstr "정적 파일 캐시"
+
+msgid "Fixed while configurations include the snippet, so they keep working."
+msgstr "구성이 스니펫을 포함하는 동안 수정되어 계속 작동합니다."
+
+msgid "Letters, digits, dots, dashes and underscores."
+msgstr "영문자, 숫자, 점, 하이픈 및 밑줄."
+
+msgid ""
+"Variables are filled in when the snippet is inserted from the config "
+"template panel of the site editor. A snippet with variables can only be "
+"inserted, not included."
+msgstr "변수는 사이트 편집기의 구성 템플릿 패널에서 스니펫을 삽입할 때 채워집니다. 변수가 있는 스니펫은 삽입만 가능하며, 포함할 수 없습니다."
+
+msgid "No configuration includes this snippet yet."
+msgstr "아직 어떤 구성에도 이 스니펫이 포함되어 있지 않습니다."
+
+msgid "Unsaved changes"
+msgstr "저장되지 않은 변경 사항"
+
+msgid "My Snippets"
+msgstr "내 스니펫"
+
+msgid "Built-in Templates"
+msgstr "내장 템플릿"
+
+msgid "Copied %{include}"
+msgstr "%{include} 복사됨"
+
+msgid "Delete snippet %{name}?"
+msgstr "스니펫 %{name}을(를) 삭제하시겠습니까?"
+
+msgid "snippets/%{file} will be removed here and on the synchronized nodes."
+msgstr "snippets/%{file} 은(는) 여기와 동기화된 노드에서 제거됩니다."
+
+msgid "snippets/%{file} will be removed."
+msgstr "snippets/%{file} 이(가) 삭제됩니다."
+
+msgid "Snippet %{name} deleted"
+msgstr "스니펫 %{name} 삭제됨"
+
+msgid "Synchronize"
+msgstr "동기화"
+
+msgid "Synchronized to %{count} node"
+msgid_plural "Synchronized to %{count} nodes"
+msgstr[0] "%{count} 노드에 동기화되었습니다"
+
+msgid ""
+"Has %{count} variable. Sites insert a filled in copy from the config "
+"template panel of the site editor."
+msgid_plural ""
+"Has %{count} variables. Sites insert a filled in copy from the config "
+"template panel of the site editor."
+msgstr[0] "변수가 %{count}개 있습니다. 사이트에서는 사이트 편집기의 구성 템플릿 패널에서 입력된 사본을 삽입합니다."
+
+msgid "Copy the include directive"
+msgstr "include 디렉티브 복사"
+
+msgid "Remove the snippet from the files that include it first."
+msgstr "먼저 스니펫을 포함하는 파일에서 스니펫을 제거하세요."
+
+msgid ""
+"A snippet keeps a piece of Nginx configuration in one place. Include it in "
+"a site, or insert it from the config template panel of the site editor; "
+"changing an included snippet updates every site that uses it."
+msgstr ""
+"스니펫은 Nginx 설정의 일부를 한 곳에 보관합니다. 사이트에 포함하거나 사이트 편집기의 구성 템플릿 패널에서 삽입하세요. 포함된 "
+"스니펫을 변경하면 해당 스니펫을 사용하는 모든 사이트가 업데이트됩니다."
+
+msgid "Search snippets"
+msgstr "검색 스니펫"
+
+msgid "No snippets yet"
+msgstr "아직 스니펫이 없습니다"
+
+msgid "No snippet matches the search"
+msgstr "검색과 일치하는 코드 스니펫이 없습니다"
+
+msgid "Enter a key."
+msgstr "키를 입력하세요."
+
+msgid "Use letters, digits and underscores, starting with a letter or underscore."
+msgstr "문자, 숫자 및 밑줄을 사용하며, 문자 또는 밑줄로 시작해야 합니다."
+
+msgid "Another variable uses this key."
+msgstr "다른 변수가 이 키를 사용하고 있습니다."
+
+msgid "Add at least one option."
+msgstr "하나 이상의 옵션을 추가하세요."
+
+msgid "Every option needs a value."
+msgstr "모든 옵션에는 값이 필요합니다."
+
+msgid "Option values must be unique."
+msgstr "옵션 값은 고유해야 합니다."
+
+msgid "Choose the default option."
+msgstr "기본 옵션을 선택하세요."
+
+msgid "Certificate Relocated"
+msgstr "인증서가 이동되었습니다"
+
+msgid ""
+"Certificate %{name} is now stored in %{path}, point the sites that load "
+"%{previous_path} to it"
+msgstr ""
+"인증서 %{name}이(가) 이제 %{path}에 저장됩니다. %{previous_path}을(를) 로드하는 사이트를 이 경로로 "
+"지정하세요"
+
+msgid "The path exists, but the file is not a certificate"
+msgstr ""
+
+msgid "The path exists, but the file is not a private key"
+msgstr ""

@@ -238,6 +238,17 @@ msgstr "私有 CA："
 msgid "Any reachable IP address can be used with private Certificate Authorities"
 msgstr "任何可訪問的 IP 地址均可用於私有證書頒發機構"
 
+msgid ""
+"DNS-01 challenge requires the DNS-01 plugin. Install it from System > "
+"Plugins."
+msgstr "DNS-01 驗證需要 DNS-01 外掛，請前往「系統 > 外掛」安裝。"
+
+msgid "Install DNS-01 plugin"
+msgstr "安裝 DNS-01 外掛"
+
+msgid "Go to System > Plugins"
+msgstr "前往「系統 > 外掛」"
+
 msgid "Challenge Method"
 msgstr "驗證方式"
 
@@ -264,6 +275,9 @@ msgstr "OCSP 強制裝訂可能會導致部分使用者在首次使用 Firefox �
 msgid "Lego disable CNAME Support"
 msgstr "Lego 停用 CNAME 支援"
 
+msgid "If your domain has CNAME records and you cannot obtain certificates, "
+msgstr "如果您的域名有 CNAME 記錄且無法獲取證書，"
+
 msgid ""
 "If your domain has CNAME records and you cannot obtain certificates, you "
 "need to enable this option."
@@ -271,6 +285,9 @@ msgstr "如果您的網域有 CNAME 記錄且無法取得憑證，則需要啟�
 
 msgid "Disable Authoritative DNS Propagation Check"
 msgstr "停用權威 DNS 傳播檢查"
+
+msgid "Skip local DNS propagation checks and wait 60 seconds before asking "
+msgstr "跳過本地 DNS 傳播檢查，並在請求前等待 60 秒。"
 
 msgid ""
 "Skip local DNS propagation checks and wait 60 seconds before asking the "
@@ -410,27 +427,6 @@ msgstr "停用"
 
 msgid "Maintenance"
 msgstr "維護"
-
-msgid "Site"
-msgstr "站點"
-
-msgid "Stream"
-msgstr "串流"
-
-msgid "Configuration"
-msgstr "配置"
-
-msgid "+%{count} more"
-msgstr "+%{count} 更多"
-
-msgid "Search"
-msgstr "搜尋"
-
-msgid "No file matches the search"
-msgstr "沒有符合的檔案"
-
-msgid "Not used"
-msgstr "未使用"
 
 msgid "Starting download..."
 msgstr "開始下載..."
@@ -913,6 +909,9 @@ msgstr "完成"
 msgid "Unknown"
 msgstr "未知"
 
+msgid "Search"
+msgstr "搜尋"
+
 msgid "Open in split view"
 msgstr "在分割檢視中開啟"
 
@@ -1009,6 +1008,12 @@ msgstr ""
 "任務 %{backup_name} 的舊備份未被刪除，因為任務 %{conflict_names} "
 "會將同名備份檔案寫入同一儲存位置。請重新命名其中一個任務或變更其儲存路徑。"
 
+msgid "Backups to Keep"
+msgstr "保留備份數"
+
+msgid "Backups to Keep (0 keeps all)"
+msgstr "保留備份數（0 表示全部保留）"
+
 msgid "Renew Certificate Success"
 msgstr "更新憑證成功"
 
@@ -1020,6 +1025,14 @@ msgstr "更新憑證錯誤"
 
 msgid "Certificate %{name} renewal failed: %{error}"
 msgstr "憑證 %{name} 續期失敗：%{error}"
+
+msgid "DNS-01 plugin unavailable"
+msgstr "DNS-01 外掛不可用"
+
+msgid ""
+"Certificate %{name} cannot be renewed because no enabled plugin provides the "
+"DNS-01 challenge"
+msgstr "憑證 %{name} 無法續簽，因為沒有已啟用的外掛提供 DNS-01 驗證"
 
 msgid "Certificate Expired"
 msgstr "憑證已過期"
@@ -1038,14 +1051,6 @@ msgstr "憑證 %{name} 將在 %{days} 天後過期"
 
 msgid "Certificate Expiring Soon"
 msgstr "憑證即將到期"
-
-msgid "Certificate Relocated"
-msgstr "憑證已遷移"
-
-msgid ""
-"Certificate %{name} is now stored in %{path}, point the sites that load "
-"%{previous_path} to it"
-msgstr "憑證 %{name} 現已儲存在 %{path}，請將載入 %{previous_path} 的站點指向它"
 
 msgid "Sync Certificate Error"
 msgstr "同步憑證錯誤"
@@ -2208,6 +2213,9 @@ msgstr "歸檔中未找到私鑰"
 msgid "No certificate in the archive matches its private key"
 msgstr "歸檔中沒有憑證與其私鑰匹配"
 
+msgid "No DNS-01 provider for {0}: install and enable the DNS-01 plugin"
+msgstr "{0} 沒有可用的 DNS-01 提供者：請安裝並啟用 DNS-01 外掛"
+
 msgid "Path is not under the nginx conf dir"
 msgstr "路徑不在 Nginx 設定目錄下"
 
@@ -2622,6 +2630,66 @@ msgstr "構建 nginx 配置失敗: {0}"
 msgid "Failed to get nginx.conf path"
 msgstr "無法獲取 nginx.conf 路徑"
 
+msgid "Plugin manifest is invalid"
+msgstr "外掛清單無效"
+
+msgid "Plugin not found"
+msgstr "找不到外掛"
+
+msgid "Plugin already exists"
+msgstr "外掛已存在"
+
+msgid "Plugin is not running"
+msgstr "外掛未執行"
+
+msgid "Plugin handshake failed"
+msgstr "外掛握手失敗"
+
+msgid "Plugin has no executable for this platform"
+msgstr "外掛沒有適用於此平台的可執行檔"
+
+msgid "Plugin package is invalid"
+msgstr "外掛套件無效"
+
+msgid "Plugin package is too large"
+msgstr "外掛套件過大"
+
+msgid "Plugin api version is incompatible"
+msgstr "外掛 API 版本不相容"
+
+msgid "Plugin permissions need approval"
+msgstr "外掛權限需要核准"
+
+msgid "Plugin dependency is missing: {0}"
+msgstr "外掛缺少相依項目：{0}"
+
+msgid "Plugin dependencies form a cycle"
+msgstr "外掛相依關係形成循環"
+
+msgid "Plugin is in use by {0}"
+msgstr "外掛正被 {0} 使用中"
+
+msgid "Plugin system is disabled"
+msgstr "外掛系統已停用"
+
+msgid "Plugin uploads are disabled"
+msgstr "外掛上傳已停用"
+
+msgid "Plugin call timed out"
+msgstr "外掛呼叫逾時"
+
+msgid "Plugin rpc error: {0}"
+msgstr "外掛 RPC 錯誤：{0}"
+
+msgid "Plugin setting {0} is invalid"
+msgstr "外掛設定 {0} 無效"
+
+msgid "Plugin needs nginx-ui {0} or newer, this node runs {1}"
+msgstr "外掛需要 nginx-ui {0} 或更新版本，而此節點執行的是 {1}"
+
+msgid "Plugin package declares another id"
+msgstr "外掛套件宣告了另一個 ID"
+
 msgid "Task not found"
 msgstr "找不到任務"
 
@@ -2740,32 +2808,6 @@ msgstr "網站處於維護模式"
 
 msgid "Read dir failed: {0}"
 msgstr "讀取目錄失敗: {0}"
-
-msgid ""
-"The file name must end in .conf and use only letters, digits, dots, dashes "
-"and underscores"
-msgstr "檔名必須以 .conf 結尾，且只能包含字母、數字、點、連字號和底線"
-
-msgid "Snippet not found"
-msgstr "找不到片段"
-
-msgid "The snippet exceeds 256 KiB"
-msgstr "片段超過 256 KiB"
-
-msgid "The header of the snippet does not parse: {0}"
-msgstr "片段的檔案標頭無法解析：{0}"
-
-msgid "The snippet is still included by {0}"
-msgstr "片段仍被以下檔案引用：{0}"
-
-msgid "A snippet with this file name already exists"
-msgstr "已存在相同檔名的片段"
-
-msgid "The variable {0} is invalid: {1}"
-msgstr "變數 {0} 無效：{1}"
-
-msgid "The content does not parse as a template: {0}"
-msgstr "內容無法解析為範本：{0}"
 
 msgid "Stream not found"
 msgstr "串流未找到"
@@ -3877,18 +3919,6 @@ msgstr "網站列表"
 msgid "Add Site"
 msgstr "新增網站"
 
-msgid "Snippets"
-msgstr "片段"
-
-msgid "Create Snippet"
-msgstr "建立片段"
-
-msgid "Built-in Template"
-msgstr "內建範本"
-
-msgid "Edit Snippet"
-msgstr "編輯片段"
-
 msgid "Edit Site"
 msgstr "編輯網站"
 
@@ -3900,6 +3930,9 @@ msgstr "編輯 Stream"
 
 msgid "Upgrade"
 msgstr "升級"
+
+msgid "Plugins"
+msgstr "外掛"
 
 msgid "About"
 msgstr "關於"
@@ -3966,17 +3999,29 @@ msgid ""
 "uses it."
 msgstr "存取清單將 IP 位址集中管理。可在網站編輯器中為伺服器或位置選擇存取清單；在此處修改清單會同步更新所有使用該清單的網站。"
 
+msgid "+%{count} more"
+msgstr "+%{count} 更多"
+
 msgid "Deny"
 msgstr "拒絕"
 
 msgid "Allow"
 msgstr "允許"
 
+msgid "Not used"
+msgstr "未使用"
+
 msgid "Use list"
 msgstr "使用清單"
 
 msgid "Deny (403)"
 msgstr "拒絕 (403)"
+
+msgid "Site"
+msgstr "站點"
+
+msgid "Stream"
+msgstr "串流"
 
 msgid "Access list %{name} saved"
 msgstr "存取清單 %{name} 已儲存"
@@ -4003,6 +4048,10 @@ msgstr "操作"
 
 msgid "Address or list"
 msgstr "位址或列表"
+
+msgctxt "Access list rule"
+msgid "Note"
+msgstr "備註"
 
 msgid "Select a list"
 msgstr "選擇清單"
@@ -4068,15 +4117,6 @@ msgstr "每週 %{day} 的 %{time}"
 
 msgid "Monthly on day %{day} at %{time}"
 msgstr "每月 %{day} 日 %{time}"
-
-msgid "Backups to Keep"
-msgstr "保留備份數"
-
-msgid "All"
-msgstr "全部"
-
-msgid "Backups to Keep (0 keeps all)"
-msgstr "保留備份數（0 表示全部保留）"
 
 msgid "Last Backup Time"
 msgstr "上次備份時間"
@@ -4429,10 +4469,6 @@ msgstr "無法驗證部署狀態"
 msgid "Not After"
 msgstr "不晚於"
 
-msgid "Used by %{count} configuration"
-msgid_plural "Used by %{count} configurations"
-msgstr[0] "被 %{count} 個配置使用"
-
 msgid "Failed to scan certificates"
 msgstr "掃描憑證失敗"
 
@@ -4477,12 +4513,6 @@ msgstr "返回"
 
 msgid "This field is required"
 msgstr "此欄位為必填項"
-
-msgid "The path exists, but the file is not a certificate"
-msgstr "路徑存在，但檔案不是憑證"
-
-msgid "The path exists, but the file is not a private key"
-msgstr "路徑存在，但檔案不是金鑰"
 
 msgid "Sync to"
 msgstr "同步到"
@@ -4554,11 +4584,11 @@ msgstr "憑證檔案下載成功"
 msgid "Failed to download certificate files"
 msgstr "下載憑證檔案失敗"
 
-msgid "Download Certificate Files"
-msgstr "下載證書文件"
-
 msgid "Download"
 msgstr "下載"
+
+msgid "Download Certificate Files"
+msgstr "下載證書文件"
 
 msgid "Download Format"
 msgstr "下載格式"
@@ -4721,14 +4751,14 @@ msgstr "若要確認撤銷，請在下方欄位中輸入「撤銷」："
 msgid "Renew successfully"
 msgstr "更新成功"
 
-msgid "AutoCert is running, please wait..."
-msgstr "AutoCert 正在執行中，請稍候..."
+msgid "Renew"
+msgstr "更換"
 
 msgid "Renew Certificate"
 msgstr "更換憑證"
 
-msgid "Renew"
-msgstr "更換"
+msgid "AutoCert is running, please wait..."
+msgstr "AutoCert 正在執行中，請稍候..."
 
 msgid "Certificate issued successfully"
 msgstr "憑證簽發成功"
@@ -5605,6 +5635,9 @@ msgstr "SDK"
 msgid "Additional"
 msgstr "其他設定"
 
+msgid "All"
+msgstr "全部"
+
 msgid "Host, e.g. @ or www"
 msgstr "主機，例如 @ 或 www"
 
@@ -5755,6 +5788,9 @@ msgstr "名稱不能為空"
 
 msgid "Please select DNS provider"
 msgstr "請選擇 DNS 供應商"
+
+msgid "Configuration"
+msgstr "配置"
 
 msgid "DNS Credentials"
 msgstr "DNS 認證"
@@ -6113,6 +6149,9 @@ msgstr "建立記錄"
 
 msgid "Unknown error"
 msgstr "未知錯誤"
+
+msgid "Plugin %{plugin} failed to render"
+msgstr "外掛 %{plugin} 渲染失敗"
 
 msgid "Manage DNS zones and records for domains under your account."
 msgstr "管理帳戶下網域的 DNS 區域與記錄。"
@@ -7087,6 +7126,15 @@ msgstr "版本"
 msgid "Authentication"
 msgstr "認證"
 
+msgid "Accept plugin sync"
+msgstr "接受外掛同步"
+
+msgid "Accepted"
+msgstr "已接受"
+
+msgid "Opted out"
+msgstr "已選擇退出"
+
 msgid "The selected content will be pushed to: %{nodes}"
 msgstr "所選內容將推送到：%{nodes}"
 
@@ -7267,14 +7315,6 @@ msgid ""
 "Renew certificates when their remaining validity is less than or equal to "
 "this value."
 msgstr "當憑證剩餘有效期小於或等於此值時續簽憑證。"
-
-msgid "Recursive Nameservers"
-msgstr "遞迴名稱伺服器"
-
-msgid ""
-"Set the recursive nameservers to override the systems nameservers for the "
-"step of DNS challenge."
-msgstr "設定遞迴網域名稱伺服器，在 DNS 驗證步驟中覆寫系統的網域名稱伺服器。"
 
 msgid "Stub Status Port"
 msgstr "存根狀態端口"
@@ -8738,6 +8778,10 @@ msgstr "無法開啟 SSH 設定"
 msgid "Basics"
 msgstr "基礎"
 
+msgctxt "preference group"
+msgid "Maintenance"
+msgstr "維護"
+
 msgid "Address, protocol and certificate used to reach this Nginx UI instance."
 msgstr "存取此 Nginx UI 執行個體所用的位址、協定和憑證。"
 
@@ -8967,12 +9011,6 @@ msgstr "續期"
 
 msgid "Days"
 msgstr "天"
-
-msgid "DNS Challenge"
-msgstr "DNS 驗證"
-
-msgid "Are you sure you want to remove this item?"
-msgstr "您確定要刪除此項目嗎？"
 
 msgid "This notification is disabled"
 msgstr "此通知已停用"
@@ -9466,9 +9504,6 @@ msgstr "命名空間"
 msgid "The parameter of server_name is required"
 msgstr "必須提供 server_name 參數"
 
-msgid "Config Template"
-msgstr "配置模板"
-
 msgid "Save the edited configuration before enabling HTTPS."
 msgstr "啟用 HTTPS 前，請先儲存已編輯的設定。"
 
@@ -9563,28 +9598,11 @@ msgstr "自行簽署憑證"
 msgid "Generate self-signed certificate"
 msgstr "產生自簽名憑證"
 
-msgid "Built-in"
-msgstr "內建"
-
 msgid "Search templates"
 msgstr "搜尋模板"
 
-msgid "Snippet"
-msgstr "片段"
-
 msgid "Author"
 msgstr "作者"
-
-msgid ""
-"Include keeps the site linked to snippets/%{file}, so later changes of the "
-"snippet apply to it. Insert copies the content into the site instead."
-msgstr "引用會讓網站與 snippets/%{file} 保持關聯，之後對片段的修改都會作用到網站。插入則會把內容複製到網站中。"
-
-msgid "Insert"
-msgstr "插入"
-
-msgid "Include"
-msgstr "引用"
 
 msgid "Do you want to enable TLS?"
 msgstr "您想啟用 TLS 嗎？"
@@ -9848,6 +9866,9 @@ msgstr "重新創建 DNS 記錄"
 msgid "Clear Link"
 msgstr "清除連結"
 
+msgid "Config Template"
+msgstr "配置模板"
+
 msgid "Port Scanner"
 msgstr "端口掃描器"
 
@@ -9931,303 +9952,6 @@ msgstr "為選取的站點設定維護資訊"
 msgid "%{count} sites selected"
 msgstr "%{count} 個已選站點"
 
-msgid "Read Only"
-msgstr "唯讀"
-
-msgid "Preview"
-msgstr "預覽"
-
-msgid "Updates as the snippet changes."
-msgstr "隨片段修改即時更新。"
-
-msgid ""
-"Built-in templates come with Nginx UI and cannot be changed. Copy one as a "
-"snippet to change it."
-msgstr "內建範本隨 Nginx UI 提供，無法修改。如需修改，請將其複製為片段。"
-
-msgid "File Name"
-msgstr "檔名"
-
-msgid "Variables"
-msgstr "變數"
-
-msgid "Copy as Snippet"
-msgstr "複製為片段"
-
-msgid "Template"
-msgstr "範本"
-
-msgid "No template matches the search"
-msgstr "沒有符合的範本"
-
-msgid "%{count} variable"
-msgid_plural "%{count} variables"
-msgstr[0] "%{count} 個變數"
-
-msgid "Translations"
-msgstr "翻譯"
-
-msgid ""
-"The field is in %{language}. Users of other languages see their "
-"translation, or English when there is none."
-msgstr "輸入框中為%{language}文字。其他語言的使用者將看到對應的翻譯，沒有翻譯時顯示英文。"
-
-msgid "Remove translation"
-msgstr "刪除翻譯"
-
-msgid "Add a language"
-msgstr "新增語言"
-
-msgid "Text"
-msgstr "文字"
-
-msgid "Switch"
-msgstr "開關"
-
-msgid "Select"
-msgstr "選擇"
-
-msgid "New Variable…"
-msgstr "新增變數…"
-
-msgid "Insert Variable"
-msgstr "插入變數"
-
-msgid ""
-"Type %{open} to complete a variable, or select a value and press %{keys} to "
-"make it one."
-msgstr "輸入 %{open} 補全變數，或選取一個值後按 %{keys} 將其設為變數。"
-
-msgid "Default Value"
-msgstr "預設值"
-
-msgid "Edit Variable"
-msgstr "編輯變數"
-
-msgid ""
-"This variable is not declared, so it has no value when the snippet is "
-"inserted."
-msgstr "此變數未宣告，插入片段時將沒有值。"
-
-msgid "Declare Variable"
-msgstr "宣告變數"
-
-msgid "Make Variable"
-msgstr "設為變數"
-
-msgid "New Variable"
-msgstr "新變數"
-
-msgid "Key"
-msgstr "鍵名"
-
-msgid "Label"
-msgstr "顯示名稱"
-
-msgid "The variable is declared and inserted at the cursor."
-msgstr "變數將被宣告，並插入到游標處。"
-
-msgid ""
-"The selected value becomes the default value, and the content refers to the "
-"variable instead."
-msgstr "選取的值將成為預設值，內容中改為引用該變數。"
-
-msgid "Add Variable"
-msgstr "新增變數"
-
-msgid "Not declared, so left without a value: %{names}"
-msgstr "以下變數未宣告，將沒有值：%{names}"
-
-msgid "The snippet does not render as valid Nginx configuration."
-msgstr "片段無法轉譯為有效的 Nginx 設定。"
-
-msgid "The snippet renders as valid Nginx configuration."
-msgstr "片段可以轉譯為有效的 Nginx 設定。"
-
-msgid "What the site editor asks for"
-msgstr "網站編輯器中填寫的內容"
-
-msgid "Restore Default Values"
-msgstr "還原預設值"
-
-msgid "Nothing to fill in."
-msgstr "沒有需要填寫的內容。"
-
-msgid "Fix the variables to preview the snippet."
-msgstr "請先修正變數，再預覽片段。"
-
-msgid "Snippets are no longer synchronized"
-msgstr "片段已停止同步"
-
-msgid "Synchronize Snippets"
-msgstr "同步片段"
-
-msgid ""
-"Every snippet is copied to the selected nodes now, and later changes follow "
-"automatically. Clear the selection to stop synchronizing."
-msgstr "所有片段會立即複製到所選節點，之後的修改也會自動同步。清空選擇即可停止同步。"
-
-msgid "Replace snippets that already exist on the nodes"
-msgstr "取代節點上已存在的片段"
-
-msgid "Included by %{count} file"
-msgid_plural "Included by %{count} files"
-msgstr[0] "被 %{count} 個檔案引用"
-
-msgid "Not Used"
-msgstr "未使用"
-
-msgid "Max Age"
-msgstr "有效時間"
-
-msgid "Options"
-msgstr "選項"
-
-msgid "Remove option"
-msgstr "刪除選項"
-
-msgid "Add Option"
-msgstr "新增選項"
-
-msgid "Remove variable"
-msgstr "刪除變數"
-
-msgid "Used in the content, not declared"
-msgstr "內容中使用但未宣告"
-
-msgid "Snippet %{name} saved"
-msgstr "片段 %{name} 已儲存"
-
-msgid "Discard the unsaved changes?"
-msgstr "放棄未儲存的變更？"
-
-msgid "Keep Editing"
-msgstr "繼續編輯"
-
-msgid "Edit Snippet %{name}"
-msgstr "編輯片段 %{name}"
-
-msgid "Sites can include this snippet and follow its later changes."
-msgstr "網站可以引用此片段，並隨片段的後續修改同步更新。"
-
-msgid ""
-"This snippet has variables, so sites insert a filled in copy from the "
-"config template panel."
-msgstr "此片段含有變數，網站需從設定範本面板插入填寫後的副本。"
-
-msgid "Includable"
-msgstr "可引用"
-
-msgid "Insert Only"
-msgstr "僅可插入"
-
-msgid "Use"
-msgstr "使用方式"
-
-msgid ""
-"Add this directive to a server or location block. Sites that include the "
-"snippet follow its later changes."
-msgstr "將此指令加入 server 或 location 區塊中。引用此片段的網站會隨其後續修改同步更新。"
-
-msgid "Static file cache"
-msgstr "靜態檔案快取"
-
-msgid "Fixed while configurations include the snippet, so they keep working."
-msgstr "有設定引用此片段時不可修改，以確保這些設定繼續正常運作。"
-
-msgid "Letters, digits, dots, dashes and underscores."
-msgstr "字母、數字、點、連字號和底線。"
-
-msgid ""
-"Variables are filled in when the snippet is inserted from the config "
-"template panel of the site editor. A snippet with variables can only be "
-"inserted, not included."
-msgstr "從網站編輯器的設定範本面板插入片段時填寫變數。含有變數的片段只能插入，不能被引用。"
-
-msgid "No configuration includes this snippet yet."
-msgstr "目前沒有設定引用此片段。"
-
-msgid "Unsaved changes"
-msgstr "有未儲存的變更"
-
-msgid "My Snippets"
-msgstr "我的片段"
-
-msgid "Built-in Templates"
-msgstr "內建範本"
-
-msgid "Copied %{include}"
-msgstr "已複製 %{include}"
-
-msgid "Delete snippet %{name}?"
-msgstr "刪除片段 %{name}？"
-
-msgid "snippets/%{file} will be removed here and on the synchronized nodes."
-msgstr "將在本節點和已同步的節點上刪除 snippets/%{file}。"
-
-msgid "snippets/%{file} will be removed."
-msgstr "將刪除 snippets/%{file}。"
-
-msgid "Snippet %{name} deleted"
-msgstr "片段 %{name} 已刪除"
-
-msgid "Synchronize"
-msgstr "同步"
-
-msgid "Synchronized to %{count} node"
-msgid_plural "Synchronized to %{count} nodes"
-msgstr[0] "已同步到 %{count} 個節點"
-
-msgid ""
-"Has %{count} variable. Sites insert a filled in copy from the config "
-"template panel of the site editor."
-msgid_plural ""
-"Has %{count} variables. Sites insert a filled in copy from the config "
-"template panel of the site editor."
-msgstr[0] "含有 %{count} 個變數。網站從網站編輯器的設定範本面板插入填寫後的副本。"
-
-msgid "Copy the include directive"
-msgstr "複製引用指令"
-
-msgid "Remove the snippet from the files that include it first."
-msgstr "請先從引用它的檔案中移除該片段。"
-
-msgid ""
-"A snippet keeps a piece of Nginx configuration in one place. Include it in "
-"a site, or insert it from the config template panel of the site editor; "
-"changing an included snippet updates every site that uses it."
-msgstr "片段把一段 Nginx 設定放在一處統一管理。可以在網站中引用它，也可以在網站編輯器的配置模板面板中插入它；修改被引用的片段會更新所有使用它的網站。"
-
-msgid "Search snippets"
-msgstr "搜尋片段"
-
-msgid "No snippets yet"
-msgstr "還沒有片段"
-
-msgid "No snippet matches the search"
-msgstr "沒有符合的片段"
-
-msgid "Enter a key."
-msgstr "請輸入鍵名。"
-
-msgid "Use letters, digits and underscores, starting with a letter or underscore."
-msgstr "只能使用字母、數字和底線，且須以字母或底線開頭。"
-
-msgid "Another variable uses this key."
-msgstr "此鍵名已被其他變數使用。"
-
-msgid "Add at least one option."
-msgstr "請至少新增一個選項。"
-
-msgid "Every option needs a value."
-msgstr "每個選項都需要填寫值。"
-
-msgid "Option values must be unique."
-msgstr "選項的值不能重複。"
-
-msgid "Choose the default option."
-msgstr "請選擇預設選項。"
-
 msgid "Do you want to %{action} this stream?"
 msgstr "您要 %{action} 此串流嗎？"
 
@@ -10270,6 +9994,9 @@ msgstr "執行內建診斷以驗證環境與服務就緒狀態。"
 msgid "Check release updates and execute upgrade operations when available."
 msgstr "檢查版本更新並在可用時執行升級操作。"
 
+msgid "Install, configure and troubleshoot plugins that extend Nginx UI."
+msgstr "安裝、設定並疑難排解為 Nginx UI 擴充功能的外掛。"
+
 msgid "Review third-party licenses and open source component attributions."
 msgstr "檢視第三方授權與開源元件歸屬資訊。"
 
@@ -10293,6 +10020,471 @@ msgstr "組件"
 
 msgid "All Components"
 msgstr "所有組件"
+
+msgid "Plugin"
+msgstr "外掛"
+
+msgid "Capabilities"
+msgstr "功能"
+
+msgid "Auto install to nodes"
+msgstr "自動安裝至節點"
+
+msgid "Plugin synchronized to %{count} node(s)"
+msgstr "外掛已同步至 %{count} 個節點"
+
+msgid "Some nodes could not be synchronized"
+msgstr "部分節點未能同步"
+
+msgid "Failed to synchronize the plugin"
+msgstr "同步外掛失敗"
+
+msgid "Installed"
+msgstr "已安裝"
+
+msgid "Starting"
+msgstr "啟動中"
+
+msgid "Missing"
+msgstr "缺失"
+
+msgid "Incompatible"
+msgstr "不相容"
+
+msgid "Needs approval"
+msgstr "需要核准"
+
+msgid "Failed to load the plugin list"
+msgstr "載入外掛清單失敗"
+
+msgid "Plugin enabled"
+msgstr "外掛已啟用"
+
+msgid "Failed to enable the plugin"
+msgstr "啟用外掛失敗"
+
+msgid "Plugin disabled"
+msgstr "外掛已停用"
+
+msgid "Failed to disable the plugin"
+msgstr "停用外掛失敗"
+
+msgid "Plugin uninstalled"
+msgstr "外掛已解除安裝"
+
+msgid "Failed to uninstall the plugin"
+msgstr "解除安裝外掛失敗"
+
+msgid "Reload the page to apply the development plugin URL"
+msgstr "請重新整理頁面以套用開發外掛網址"
+
+msgid ""
+"Plugins extend Nginx UI with extra capabilities. Only install bundles from "
+"authors you trust."
+msgstr "外掛可以為 Nginx UI 擴充額外功能，請僅安裝您信任的作者發布的外掛套件。"
+
+msgid "Development plugin URL"
+msgstr "開發外掛網址"
+
+msgid ""
+"Address of a plugin.json served by any static server. The plugin is loaded "
+"in addition to the installed ones."
+msgstr ""
+"由任意靜態伺服器提供的 plugin.json 位址，該外掛會在已安裝外掛之外額外載入。"
+
+msgid "Dev plugin"
+msgstr "開發外掛"
+
+msgid "No plugins installed"
+msgstr "尚未安裝任何外掛"
+
+msgid "Settings"
+msgstr "設定"
+
+msgid "Logs"
+msgstr "日誌"
+
+msgid "Sync to nodes"
+msgstr "同步至節點"
+
+msgid "Uninstall %{name}? Its data and settings are removed."
+msgstr "確定要解除安裝 %{name} 嗎？其資料和設定都會被移除。"
+
+msgid "Uninstall"
+msgstr "解除安裝"
+
+msgid "Sync %{name} to nodes"
+msgstr "將 %{name} 同步至節點"
+
+msgid "Leave every node unchecked to sync to all child nodes."
+msgstr "不勾選任何節點即可同步至所有子節點。"
+
+msgid "Already in sync"
+msgstr "已同步"
+
+msgid "This node only"
+msgstr "僅此節點"
+
+msgid "All child nodes"
+msgstr "所有子節點"
+
+msgid "Selected nodes"
+msgstr "已選節點"
+
+msgid "Failed to read the plugin bundle"
+msgstr "讀取外掛套件失敗"
+
+msgid "Plugin installed"
+msgstr "外掛已安裝"
+
+msgid "The plugin was installed here but could not be pushed to the nodes"
+msgstr "外掛已在本機安裝，但未能推送至各節點"
+
+msgid "Failed to install the plugin"
+msgstr "安裝外掛失敗"
+
+msgid "Install plugin"
+msgstr "安裝外掛"
+
+msgid "Click or drag a plugin bundle here"
+msgstr "點擊或將外掛套件拖曳至此處"
+
+msgid "A .tar.gz produced by the plugin author"
+msgstr "由外掛作者產生的 .tar.gz 檔案"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "(replaces %{version})"
+msgstr "（取代 %{version}）"
+
+msgid "None"
+msgstr "無"
+
+msgid "Install the plugins below first"
+msgstr "請先安裝以下外掛"
+
+msgid "This version asks for permissions you have not approved yet."
+msgstr "此版本要求了您尚未核准的權限。"
+
+msgid ""
+"Review the list below before installing. The plugin stays disabled until you "
+"approve them."
+msgstr "安裝前請檢視以下清單，外掛在您核准這些權限前將保持停用狀態。"
+
+msgid "Requested permissions"
+msgstr "要求的權限"
+
+msgid "Enable after install"
+msgstr "安裝後啟用"
+
+msgid "Also install to child nodes"
+msgstr "同時安裝至子節點"
+
+msgid "Keep in sync automatically"
+msgstr "自動保持同步"
+
+msgid ""
+"The version, the enabled state and future updates are kept aligned on those "
+"nodes."
+msgstr "這些節點上的版本、啟用狀態及後續更新都會保持一致。"
+
+msgid "Failed to load the plugin logs"
+msgstr "載入外掛日誌失敗"
+
+msgid "Logs copied to clipboard"
+msgstr "日誌已複製到剪貼簿"
+
+msgid "Failed to copy the logs"
+msgstr "複製日誌失敗"
+
+msgid "Logs: %{name}"
+msgstr "日誌：%{name}"
+
+msgid "No log output yet"
+msgstr "尚無日誌輸出"
+
+msgid "Failed to load the plugin marketplace"
+msgstr "載入外掛市集失敗"
+
+msgid "Reloading the catalog"
+msgstr "正在重新載入目錄"
+
+msgid "Search plugins"
+msgstr "搜尋外掛"
+
+msgid "All categories"
+msgstr "所有分類"
+
+msgid "All sources"
+msgstr "所有來源"
+
+msgid "Updates only"
+msgstr "僅顯示可更新"
+
+msgid "Sources"
+msgstr "來源"
+
+msgid "Every installed plugin is up to date"
+msgstr "所有已安裝的外掛皆為最新版本"
+
+msgid "No plugins match your search"
+msgstr "找不到符合搜尋條件的外掛"
+
+msgid "Downloading the package"
+msgstr "正在下載安裝套件"
+
+msgid "Verifying the signature"
+msgstr "正在驗證簽章"
+
+msgid "Installing"
+msgstr "正在安裝"
+
+msgid "%{phase}: %{plugin}"
+msgstr "%{phase}：%{plugin}"
+
+msgid "Failed to load the plugin from the marketplace"
+msgstr "從市集載入外掛失敗"
+
+msgid "Update plugin"
+msgstr "更新外掛"
+
+msgid "No release available for this platform"
+msgstr "此平台沒有可用的發行版本"
+
+msgid "Source"
+msgstr "來源"
+
+msgid "This is a community plugin"
+msgstr "這是一個社群外掛"
+
+msgid "The plugins below are installed together with it"
+msgstr "以下外掛將隨其一併安裝"
+
+msgid "Live progress is unavailable, checking the plugin list instead"
+msgstr "無法取得即時進度，改為檢查外掛清單"
+
+msgid "No description provided."
+msgstr "未提供描述。"
+
+msgid "Installed: %{version}"
+msgstr "已安裝：%{version}"
+
+msgid "Homepage"
+msgstr "首頁"
+
+msgid "Repository"
+msgstr "原始碼庫"
+
+msgid "Release notes"
+msgstr "發行說明"
+
+msgid "Released"
+msgstr "發布日期"
+
+msgid "Platforms"
+msgstr "平台"
+
+msgid "Failed to load the plugin details"
+msgstr "載入外掛詳情失敗"
+
+msgid "Installed version"
+msgstr "已安裝版本"
+
+msgid "Versions"
+msgstr "版本"
+
+msgid "Yanked"
+msgstr "已撤回"
+
+msgid "Latest"
+msgstr "最新"
+
+msgid "Readme"
+msgstr "Readme"
+
+msgid "Failed to load the marketplace sources"
+msgstr "載入市集來源失敗"
+
+msgid "Marketplace sources saved"
+msgstr "市集來源已儲存"
+
+msgid "Failed to save the marketplace sources"
+msgstr "儲存市集來源失敗"
+
+msgid "Marketplace sources"
+msgstr "市集來源"
+
+msgid ""
+"Catalogs are merged in order, the first source that offers a plugin wins. "
+"Leave the list empty to use the official catalog."
+msgstr "目錄按順序合併，最先提供該外掛的來源生效。清單留空即使用官方目錄。"
+
+msgid "Using the official catalog"
+msgstr "正在使用官方目錄"
+
+msgid "Add source"
+msgstr "新增來源"
+
+msgid "Add the official catalog"
+msgstr "新增官方目錄"
+
+msgid "Official"
+msgstr "官方"
+
+msgid "Built and signed by the Nginx UI maintainers."
+msgstr "由 Nginx UI 維護者建置並簽署。"
+
+msgid "Verified"
+msgstr "已驗證"
+
+msgid "Reviewed by the Nginx UI maintainers and signed with a release key."
+msgstr "經 Nginx UI 維護者審核，並使用發布金鑰簽署。"
+
+msgid "Community"
+msgstr "社群"
+
+msgid ""
+"Published by a third party and not reviewed. It runs with the permissions "
+"you grant it, so only install it if you trust the author."
+msgstr ""
+"由第三方發布，未經審核。它會以您授予的權限執行，請僅在信任其作者時安裝。"
+
+msgid "Approve permissions"
+msgstr "核准權限"
+
+msgid "Approve and enable"
+msgstr "核准並啟用"
+
+msgid "%{name} needs your approval before it can run."
+msgstr "%{name} 需要獲得您的核准才能執行。"
+
+msgid ""
+"Approve only if you trust the author. The approval is recorded and asked "
+"again whenever the requested permissions change."
+msgstr ""
+"請僅在信任作者時核准。核准記錄會被保留，且當所要求的權限有變動時會再次詢問。"
+
+msgid "This plugin does not request any host permission."
+msgstr "此外掛未要求任何主機權限。"
+
+msgid "Read stored %{kind} credentials, including their secrets."
+msgstr "讀取已儲存的 %{kind} 憑證，包括其密鑰。"
+
+msgid "unknown"
+msgstr "未知"
+
+msgid "Store and read its own key-value data inside the Nginx UI database."
+msgstr "在 Nginx UI 資料庫中儲存和讀取外掛自身的鍵值資料。"
+
+msgid "Make outbound network requests to the hosts declared in its manifest."
+msgstr "向其清單中宣告的主機發出對外網路請求。"
+
+msgid "Run scheduled tasks on the schedules declared in its manifest."
+msgstr "依其清單中宣告的排程執行定時任務。"
+
+msgid "Send notifications through the Nginx UI notification channels."
+msgstr "透過 Nginx UI 的通知管道發送通知。"
+
+msgid "Read CPU, memory, network and Nginx status metrics of this node."
+msgstr "讀取此節點的 CPU、記憶體、網路及 Nginx 狀態指標。"
+
+msgid "Call the Nginx UI management API with your permissions."
+msgstr "以您的權限呼叫 Nginx UI 管理 API。"
+
+msgid "Unknown permission. Only grant it if you trust the plugin author."
+msgstr "未知權限，請僅在信任外掛作者時授予。"
+
+msgid "In sync"
+msgstr "已同步"
+
+msgid "Outdated"
+msgstr "版本過舊"
+
+msgid "Not installed"
+msgstr "未安裝"
+
+msgid "Unsupported platform"
+msgstr "不支援的平台"
+
+msgid "Unsupported"
+msgstr "不支援"
+
+msgid "Failed to load the plugin matrix"
+msgstr "載入外掛矩陣失敗"
+
+msgid "Update to %{version}"
+msgstr "更新至 %{version}"
+
+msgid "Sync to this node"
+msgstr "同步至此節點"
+
+msgid ""
+"What every child node has installed, compared with this controller. "
+"Switching the selected node in the header manages that node directly."
+msgstr ""
+"顯示各子節點已安裝的外掛，並與本控制節點比對。於頁首切換所選節點後即可直接管"
+"理該節點。"
+
+msgid "All nodes"
+msgstr "所有節點"
+
+msgid "This instance has no child node"
+msgstr "此執行個體沒有子節點"
+
+msgid "Add a node first, then plugins can be installed on it from here."
+msgstr "請先新增節點，之後即可在此處為其安裝外掛。"
+
+msgid "Sync to selected"
+msgstr "同步至所選"
+
+msgid "Sync to all"
+msgstr "同步至全部"
+
+msgid "Marketplace"
+msgstr "市集"
+
+msgid "%{field} is required"
+msgstr "%{field} 為必填項目"
+
+msgid "Failed to load the plugin settings"
+msgstr "載入外掛設定失敗"
+
+msgid "Plugin settings saved"
+msgstr "外掛設定已儲存"
+
+msgid "Failed to save the plugin settings"
+msgstr "儲存外掛設定失敗"
+
+msgid "Settings: %{name}"
+msgstr "設定：%{name}"
+
+msgid "This plugin has no settings."
+msgstr "該外掛沒有可設定的項目。"
+
+msgid "%{count} node"
+msgid_plural "%{count} nodes"
+msgstr[0] "還有 %{count} 筆"
+
+msgid "Sync policy saved"
+msgstr "同步政策已儲存"
+
+msgid "Failed to save the sync policy"
+msgstr "儲存同步政策失敗"
+
+msgid "Automatic installation"
+msgstr "自動安裝"
+
+msgid ""
+"Keep this plugin at the same version and state on the selected child nodes. "
+"Leave every node unchecked to cover all of them, including the ones added "
+"later."
+msgstr ""
+"讓此外掛在所選子節點上保持相同的版本與狀態。不勾選任何節點即可涵蓋全部節點，"
+"包括之後新增的節點。"
+
+msgid "Also sync the plugin settings"
+msgstr "同時同步外掛設定"
 
 msgid "Dev"
 msgstr "Dev"
@@ -10591,30 +10783,378 @@ msgstr "單窗格"
 msgid "Split view"
 msgstr "分割檢視"
 
-msgctxt "Access list rule"
-msgid "Note"
-msgstr "備註"
-
-msgctxt "preference group"
-msgid "Maintenance"
-msgstr "維護"
-
-#~ msgid "Fixed after creation, so the sites that include the snippet keep working."
-#~ msgstr "建立後不可修改，以確保引用該片段的網站繼續正常運作。"
+#~ msgid "Recursive Nameservers"
+#~ msgstr "遞迴名稱伺服器"
 
 #~ msgid ""
-#~ "This snippet has variables: %{names}. Insert it from the config template "
-#~ "panel of the site editor, which fills them in; Nginx cannot include it "
-#~ "directly."
-#~ msgstr "此片段包含變數：%{names}。請在網站編輯器的配置模板面板中插入它，由面板填寫變數；Nginx 無法直接引用它。"
+#~ "Set the recursive nameservers to override the systems nameservers for the "
+#~ "step of DNS challenge."
+#~ msgstr "設定遞迴網域名稱伺服器，在 DNS 驗證步驟中覆寫系統的網域名稱伺服器。"
 
-#~ msgid "To use the snippet, add this directive to a server or location block:"
-#~ msgstr "在 server 或 location 區塊中加入以下指令即可使用該片段："
+#~ msgid "DNS Challenge"
+#~ msgstr "DNS 驗證"
 
-#~ msgid ""
-#~ "Fill in the variables by inserting the snippet from the config template "
-#~ "panel of the site editor."
-#~ msgstr "請在網站編輯器的配置模板面板中插入該片段並填寫變數。"
+#~ msgid "Are you sure you want to remove this item?"
+#~ msgstr "您確定要刪除此項目嗎？"
+
+msgid ""
+"The file name must end in .conf and use only letters, digits, dots, dashes "
+"and underscores"
+msgstr "檔名必須以 .conf 結尾，且只能包含字母、數字、點、連字號和底線"
+
+msgid "Snippet not found"
+msgstr "找不到片段"
+
+msgid "The snippet exceeds 256 KiB"
+msgstr "片段超過 256 KiB"
+
+msgid "The header of the snippet does not parse: {0}"
+msgstr "片段的檔案標頭無法解析：{0}"
+
+msgid "The snippet is still included by {0}"
+msgstr "片段仍被以下檔案引用：{0}"
+
+msgid "A snippet with this file name already exists"
+msgstr "已存在相同檔名的片段"
+
+msgid "Snippets"
+msgstr "片段"
+
+msgid "Snippet"
+msgstr "片段"
+
+msgid ""
+"Include keeps the site linked to snippets/%{file}, so later changes of the "
+"snippet apply to it. Insert copies the content into the site instead."
+msgstr "引用會讓網站與 snippets/%{file} 保持關聯，之後對片段的修改都會作用到網站。插入則會把內容複製到網站中。"
+
+msgid "Insert"
+msgstr "插入"
+
+msgid "Include"
+msgstr "引用"
+
+msgid "Snippet %{name} saved"
+msgstr "片段 %{name} 已儲存"
+
+msgid "Edit Snippet %{name}"
+msgstr "編輯片段 %{name}"
+
+msgid "Create Snippet"
+msgstr "建立片段"
+
+msgid "Static file cache"
+msgstr "靜態檔案快取"
+
+msgid "File Name"
+msgstr "檔名"
+
+msgid "Letters, digits, dots, dashes and underscores."
+msgstr "字母、數字、點、連字號和底線。"
+
+msgid "No configuration includes this snippet yet."
+msgstr "目前沒有設定引用此片段。"
+
+msgid "Snippets are no longer synchronized"
+msgstr "片段已停止同步"
+
+msgid "Synchronize Snippets"
+msgstr "同步片段"
+
+msgid ""
+"Every snippet is copied to the selected nodes now, and later changes follow "
+"automatically. Clear the selection to stop synchronizing."
+msgstr "所有片段會立即複製到所選節點，之後的修改也會自動同步。清空選擇即可停止同步。"
+
+msgid "Replace snippets that already exist on the nodes"
+msgstr "取代節點上已存在的片段"
+
+msgid "Delete snippet %{name}?"
+msgstr "刪除片段 %{name}？"
+
+msgid "snippets/%{file} will be removed here and on the synchronized nodes."
+msgstr "將在本節點和已同步的節點上刪除 snippets/%{file}。"
+
+msgid "snippets/%{file} will be removed."
+msgstr "將刪除 snippets/%{file}。"
+
+msgid "Snippet %{name} deleted"
+msgstr "片段 %{name} 已刪除"
+
+msgid "Synchronize"
+msgstr "同步"
+
+msgid "Synchronized to %{count} node"
+msgid_plural "Synchronized to %{count} nodes"
+msgstr[0] "已同步到 %{count} 個節點"
+
+msgid ""
+"A snippet keeps a piece of Nginx configuration in one place. Include it in "
+"a site, or insert it from the config template panel of the site editor; "
+"changing an included snippet updates every site that uses it."
+msgstr "片段把一段 Nginx 設定放在一處統一管理。可以在網站中引用它，也可以在網站編輯器的配置模板面板中插入它；修改被引用的片段會更新所有使用它的網站。"
+
+msgid "Copied %{include}"
+msgstr "已複製 %{include}"
+
+msgid "%{count} variable"
+msgid_plural "%{count} variables"
+msgstr[0] "%{count} 個變數"
+
+msgid "Copy the include directive"
+msgstr "複製引用指令"
+
+msgid "Remove the snippet from the files that include it first."
+msgstr "請先從引用它的檔案中移除該片段。"
+
+msgid "Search snippets"
+msgstr "搜尋片段"
+
+msgid "No snippets yet"
+msgstr "還沒有片段"
+
+msgid "No snippet matches the search"
+msgstr "沒有符合的片段"
+
+msgid "Included by %{count} file"
+msgid_plural "Included by %{count} files"
+msgstr[0] "被 %{count} 個檔案引用"
+
+msgid "Used by %{count} configuration"
+msgid_plural "Used by %{count} configurations"
+msgstr[0] "被 %{count} 個配置使用"
+
+msgid "No file matches the search"
+msgstr "沒有符合的檔案"
+
+msgid "Built-in"
+msgstr "內建"
+
+msgid "The variable {0} is invalid: {1}"
+msgstr "變數 {0} 無效：{1}"
+
+msgid "The content does not parse as a template: {0}"
+msgstr "內容無法解析為範本：{0}"
+
+msgid "Built-in Template"
+msgstr "內建範本"
+
+msgid "Edit Snippet"
+msgstr "編輯片段"
+
+msgid "Read Only"
+msgstr "唯讀"
+
+msgid "Preview"
+msgstr "預覽"
+
+msgid "Updates as the snippet changes."
+msgstr "隨片段修改即時更新。"
+
+msgid ""
+"Built-in templates come with Nginx UI and cannot be changed. Copy one as a "
+"snippet to change it."
+msgstr "內建範本隨 Nginx UI 提供，無法修改。如需修改，請將其複製為片段。"
+
+msgid "Variables"
+msgstr "變數"
+
+msgid "Copy as Snippet"
+msgstr "複製為片段"
+
+msgid "Template"
+msgstr "範本"
+
+msgid "No template matches the search"
+msgstr "沒有符合的範本"
+
+msgid "Translations"
+msgstr "翻譯"
+
+msgid ""
+"The field is in %{language}. Users of other languages see their "
+"translation, or English when there is none."
+msgstr "輸入框中為%{language}文字。其他語言的使用者將看到對應的翻譯，沒有翻譯時顯示英文。"
+
+msgid "Remove translation"
+msgstr "刪除翻譯"
+
+msgid "Add a language"
+msgstr "新增語言"
+
+msgid "Text"
+msgstr "文字"
+
+msgid "Switch"
+msgstr "開關"
+
+msgid "Select"
+msgstr "選擇"
+
+msgid "New Variable…"
+msgstr "新增變數…"
+
+msgid "Insert Variable"
+msgstr "插入變數"
+
+msgid ""
+"Type %{open} to complete a variable, or select a value and press %{keys} to "
+"make it one."
+msgstr "輸入 %{open} 補全變數，或選取一個值後按 %{keys} 將其設為變數。"
+
+msgid "Default Value"
+msgstr "預設值"
+
+msgid "Edit Variable"
+msgstr "編輯變數"
+
+msgid ""
+"This variable is not declared, so it has no value when the snippet is "
+"inserted."
+msgstr "此變數未宣告，插入片段時將沒有值。"
+
+msgid "Declare Variable"
+msgstr "宣告變數"
+
+msgid "Make Variable"
+msgstr "設為變數"
+
+msgid "New Variable"
+msgstr "新變數"
+
+msgid "Key"
+msgstr "鍵名"
+
+msgid "Label"
+msgstr "顯示名稱"
+
+msgid "The variable is declared and inserted at the cursor."
+msgstr "變數將被宣告，並插入到游標處。"
+
+msgid ""
+"The selected value becomes the default value, and the content refers to the "
+"variable instead."
+msgstr "選取的值將成為預設值，內容中改為引用該變數。"
+
+msgid "Add Variable"
+msgstr "新增變數"
+
+msgid "Not declared, so left without a value: %{names}"
+msgstr "以下變數未宣告，將沒有值：%{names}"
+
+msgid "The snippet does not render as valid Nginx configuration."
+msgstr "片段無法轉譯為有效的 Nginx 設定。"
+
+msgid "The snippet renders as valid Nginx configuration."
+msgstr "片段可以轉譯為有效的 Nginx 設定。"
+
+msgid "What the site editor asks for"
+msgstr "網站編輯器中填寫的內容"
+
+msgid "Restore Default Values"
+msgstr "還原預設值"
+
+msgid "Nothing to fill in."
+msgstr "沒有需要填寫的內容。"
+
+msgid "Fix the variables to preview the snippet."
+msgstr "請先修正變數，再預覽片段。"
+
+msgid "Not Used"
+msgstr "未使用"
+
+msgid "Max Age"
+msgstr "有效時間"
+
+msgid "Options"
+msgstr "選項"
+
+msgid "Remove option"
+msgstr "刪除選項"
+
+msgid "Add Option"
+msgstr "新增選項"
+
+msgid "Remove variable"
+msgstr "刪除變數"
+
+msgid "Used in the content, not declared"
+msgstr "內容中使用但未宣告"
+
+msgid "Discard the unsaved changes?"
+msgstr "放棄未儲存的變更？"
+
+msgid "Keep Editing"
+msgstr "繼續編輯"
+
+msgid "Sites can include this snippet and follow its later changes."
+msgstr "網站可以引用此片段，並隨片段的後續修改同步更新。"
+
+msgid ""
+"This snippet has variables, so sites insert a filled in copy from the "
+"config template panel."
+msgstr "此片段含有變數，網站需從設定範本面板插入填寫後的副本。"
+
+msgid "Includable"
+msgstr "可引用"
+
+msgid "Insert Only"
+msgstr "僅可插入"
+
+msgid "Use"
+msgstr "使用方式"
+
+msgid ""
+"Add this directive to a server or location block. Sites that include the "
+"snippet follow its later changes."
+msgstr "將此指令加入 server 或 location 區塊中。引用此片段的網站會隨其後續修改同步更新。"
+
+msgid "Fixed while configurations include the snippet, so they keep working."
+msgstr "有設定引用此片段時不可修改，以確保這些設定繼續正常運作。"
+
+msgid ""
+"Variables are filled in when the snippet is inserted from the config "
+"template panel of the site editor. A snippet with variables can only be "
+"inserted, not included."
+msgstr "從網站編輯器的設定範本面板插入片段時填寫變數。含有變數的片段只能插入，不能被引用。"
+
+msgid "Unsaved changes"
+msgstr "有未儲存的變更"
+
+msgid "My Snippets"
+msgstr "我的片段"
+
+msgid "Built-in Templates"
+msgstr "內建範本"
+
+msgid ""
+"Has %{count} variable. Sites insert a filled in copy from the config "
+"template panel of the site editor."
+msgid_plural ""
+"Has %{count} variables. Sites insert a filled in copy from the config "
+"template panel of the site editor."
+msgstr[0] "含有 %{count} 個變數。網站從網站編輯器的設定範本面板插入填寫後的副本。"
+
+msgid "Enter a key."
+msgstr "請輸入鍵名。"
+
+msgid "Use letters, digits and underscores, starting with a letter or underscore."
+msgstr "只能使用字母、數字和底線，且須以字母或底線開頭。"
+
+msgid "Another variable uses this key."
+msgstr "此鍵名已被其他變數使用。"
+
+msgid "Add at least one option."
+msgstr "請至少新增一個選項。"
+
+msgid "Every option needs a value."
+msgstr "每個選項都需要填寫值。"
+
+msgid "Option values must be unique."
+msgstr "選項的值不能重複。"
+
+msgid "Choose the default option."
+msgstr "請選擇預設選項。"
 
 #~ msgid "Webauthn"
 #~ msgstr "Webauthn"
@@ -10648,3 +11188,34 @@ msgstr "維護"
 
 #~ msgid "SAN Aliases: %{aliases}"
 #~ msgstr "SAN 別名：%{aliases}"
+
+#~ msgid "Fixed after creation, so the sites that include the snippet keep working."
+#~ msgstr "建立後不可修改，以確保引用該片段的網站繼續正常運作。"
+
+#~ msgid ""
+#~ "This snippet has variables: %{names}. Insert it from the config template "
+#~ "panel of the site editor, which fills them in; Nginx cannot include it "
+#~ "directly."
+#~ msgstr "此片段包含變數：%{names}。請在網站編輯器的配置模板面板中插入它，由面板填寫變數；Nginx 無法直接引用它。"
+
+#~ msgid "To use the snippet, add this directive to a server or location block:"
+#~ msgstr "在 server 或 location 區塊中加入以下指令即可使用該片段："
+
+#~ msgid ""
+#~ "Fill in the variables by inserting the snippet from the config template "
+#~ "panel of the site editor."
+#~ msgstr "請在網站編輯器的配置模板面板中插入該片段並填寫變數。"
+
+msgid "Certificate Relocated"
+msgstr "憑證已遷移"
+
+msgid ""
+"Certificate %{name} is now stored in %{path}, point the sites that load "
+"%{previous_path} to it"
+msgstr "憑證 %{name} 現已儲存在 %{path}，請將載入 %{previous_path} 的站點指向它"
+
+msgid "The path exists, but the file is not a certificate"
+msgstr "路徑存在，但檔案不是憑證"
+
+msgid "The path exists, but the file is not a private key"
+msgstr "路徑存在，但檔案不是金鑰"

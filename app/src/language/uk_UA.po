@@ -490,27 +490,6 @@ msgstr "Вимкнено"
 msgid "Maintenance"
 msgstr "Технічне обслуговування"
 
-msgid "Site"
-msgstr "Сайт"
-
-msgid "Stream"
-msgstr "Потік"
-
-msgid "Configuration"
-msgstr "Конфігурація"
-
-msgid "+%{count} more"
-msgstr "+%{count} ще"
-
-msgid "Search"
-msgstr "Пошук"
-
-msgid "No file matches the search"
-msgstr "Жоден файл не відповідає пошуку"
-
-msgid "Not used"
-msgstr "Не використовується"
-
 msgid "Starting download..."
 msgstr "Починається завантаження..."
 
@@ -1042,6 +1021,9 @@ msgstr "Готово"
 msgid "Unknown"
 msgstr "Невідомо"
 
+msgid "Search"
+msgstr "Пошук"
+
 msgid "Open in split view"
 msgstr "Відкрити в розділеному вигляді"
 
@@ -1148,6 +1130,12 @@ msgstr ""
 "файлів до того самого сховища. Перейменуйте одне із завдань або змініть "
 "його шлях зберігання."
 
+msgid "Backups to Keep"
+msgstr "Резервні копії для збереження"
+
+msgid "Backups to Keep (0 keeps all)"
+msgstr "Кількість резервних копій для зберігання (0 — зберігати всі)"
+
 msgid "Renew Certificate Success"
 msgstr "Успішне поновлення сертифіката"
 
@@ -1177,16 +1165,6 @@ msgstr "Сертифікат %{name} закінчиться через %{days} �
 
 msgid "Certificate Expiring Soon"
 msgstr "Сертифікат незабаром закінчується"
-
-msgid "Certificate Relocated"
-msgstr "Сертифікат переміщено"
-
-msgid ""
-"Certificate %{name} is now stored in %{path}, point the sites that load "
-"%{previous_path} to it"
-msgstr ""
-"Сертифікат %{name} тепер зберігається в %{path}. Перенаправте сайти, які "
-"завантажують %{previous_path}, на цей шлях"
 
 msgid "Sync Certificate Error"
 msgstr "Помилка синхронізації сертифіката"
@@ -2949,34 +2927,6 @@ msgstr "Сайт у режимі технічного обслуговуванн
 msgid "Read dir failed: {0}"
 msgstr "Не вдалося прочитати каталог: {0}"
 
-msgid ""
-"The file name must end in .conf and use only letters, digits, dots, dashes "
-"and underscores"
-msgstr ""
-"Ім'я файлу має закінчуватися на .conf і містити лише літери, цифри, крапки, "
-"дефіси та підкреслення"
-
-msgid "Snippet not found"
-msgstr "Фрагмент не знайдено"
-
-msgid "The snippet exceeds 256 KiB"
-msgstr "Фрагмент перевищує 256 КіБ"
-
-msgid "The header of the snippet does not parse: {0}"
-msgstr "Заголовок фрагмента коду не вдається проаналізувати: {0}"
-
-msgid "The snippet is still included by {0}"
-msgstr "Фрагмент коду все ще включається через {0}"
-
-msgid "A snippet with this file name already exists"
-msgstr "Сніппет з такою назвою файлу вже існує"
-
-msgid "The variable {0} is invalid: {1}"
-msgstr "Змінна {0} недійсна: {1}"
-
-msgid "The content does not parse as a template: {0}"
-msgstr "Вміст не аналізується як шаблон: {0}"
-
 msgid "Stream not found"
 msgstr "Потік не знайдено"
 
@@ -4186,18 +4136,6 @@ msgstr "Список сайтів"
 msgid "Add Site"
 msgstr "Додати сайт"
 
-msgid "Snippets"
-msgstr "Сніпети"
-
-msgid "Create Snippet"
-msgstr "Створити снипет"
-
-msgid "Built-in Template"
-msgstr "Вбудований шаблон"
-
-msgid "Edit Snippet"
-msgstr "Редагувати сниппет"
-
 msgid "Edit Site"
 msgstr "Редагувати сайт"
 
@@ -4280,17 +4218,29 @@ msgstr ""
 "або розташування в редакторі сайту; зміна списку тут оновлює кожен сайт, "
 "який його використовує."
 
+msgid "+%{count} more"
+msgstr "+%{count} ще"
+
 msgid "Deny"
 msgstr "Заборонити"
 
 msgid "Allow"
 msgstr "Дозволити"
 
+msgid "Not used"
+msgstr "Не використовується"
+
 msgid "Use list"
 msgstr "Використати список"
 
 msgid "Deny (403)"
 msgstr "Заборонити (403)"
+
+msgid "Site"
+msgstr "Сайт"
+
+msgid "Stream"
+msgstr "Потік"
 
 msgid "Access list %{name} saved"
 msgstr "Список доступу %{name} збережено"
@@ -4390,15 +4340,6 @@ msgstr "Щотижня в %{day} о %{time}"
 
 msgid "Monthly on day %{day} at %{time}"
 msgstr "Щомісяця %{day} числа о %{time}"
-
-msgid "Backups to Keep"
-msgstr "Резервні копії для збереження"
-
-msgid "All"
-msgstr "Усі"
-
-msgid "Backups to Keep (0 keeps all)"
-msgstr "Кількість резервних копій для зберігання (0 — зберігати всі)"
 
 msgid "Last Backup Time"
 msgstr "Час останньої резервної копії"
@@ -4772,11 +4713,6 @@ msgstr "Не вдається перевірити розгортання"
 msgid "Not After"
 msgstr "Не пізніше"
 
-msgid "Used by %{count} configuration"
-msgid_plural "Used by %{count} configurations"
-msgstr[0] "Використовується в %{count} конфігурації"
-msgstr[1] "Використовується в %{count} конфігураціях"
-
 msgid "Failed to scan certificates"
 msgstr "Не вдалося просканувати сертифікати"
 
@@ -4823,12 +4759,6 @@ msgstr "Назад"
 
 msgid "This field is required"
 msgstr "Це поле обов'язкове"
-
-msgid "The path exists, but the file is not a certificate"
-msgstr "Шлях існує, але файл не є сертифікатом"
-
-msgid "The path exists, but the file is not a private key"
-msgstr "Шлях існує, але файл не є приватним ключем"
 
 msgid "Sync to"
 msgstr "Синхронізувати з"
@@ -4900,11 +4830,11 @@ msgstr "Файли сертифікатів успішно завантажен�
 msgid "Failed to download certificate files"
 msgstr "Не вдалося завантажити файли сертифіката"
 
-msgid "Download Certificate Files"
-msgstr "Завантажити файли сертифіката"
-
 msgid "Download"
 msgstr "Завантажити"
+
+msgid "Download Certificate Files"
+msgstr "Завантажити файли сертифіката"
 
 msgid "Download Format"
 msgstr "Формат завантаження"
@@ -5077,14 +5007,14 @@ msgstr "Щоб підтвердити анулювання, введіть \"А�
 msgid "Renew successfully"
 msgstr "Оновлення успішне"
 
-msgid "AutoCert is running, please wait..."
-msgstr "AutoCert виконується, будь ласка, зачекайте..."
+msgid "Renew"
+msgstr "Оновити"
 
 msgid "Renew Certificate"
 msgstr "Оновити сертифікат"
 
-msgid "Renew"
-msgstr "Оновити"
+msgid "AutoCert is running, please wait..."
+msgstr "AutoCert виконується, будь ласка, зачекайте..."
 
 msgid "Certificate issued successfully"
 msgstr "Сертифікат успішно видано"
@@ -5700,17 +5630,6 @@ msgstr ""
 "Необовʼязкова абсолютна URL-адреса. Використовуйте її, коли публічна адреса "
 "відрізняється від фактичного хоста або порту upstream."
 
-msgid "Site Card Click URL"
-msgstr "URL кліку картки сайту"
-
-msgid ""
-"Optional absolute HTTP/HTTPS URL used when opening this site card. If "
-"empty, the default site URL is used."
-msgstr ""
-"Необов'язкова абсолютна HTTP/HTTPS-URL, що використовується під час "
-"відкриття цієї картки сайту. Якщо порожня, використовується URL сайту за "
-"замовчуванням."
-
 msgid "HTTP Method"
 msgstr "Метод HTTP"
 
@@ -6014,6 +5933,9 @@ msgstr "SDK"
 msgid "Additional"
 msgstr "Додатково"
 
+msgid "All"
+msgstr "Усі"
+
 msgid "Host, e.g. @ or www"
 msgstr "Хост, напр. @ або www"
 
@@ -6172,6 +6094,9 @@ msgstr "Назва не може бути порожньою"
 
 msgid "Please select DNS provider"
 msgstr "Будь ласка, виберіть DNS-провайдера"
+
+msgid "Configuration"
+msgstr "Конфігурація"
 
 msgid "DNS Credentials"
 msgstr "DNS облікові дані"
@@ -10277,9 +10202,6 @@ msgstr "Простір імен"
 msgid "The parameter of server_name is required"
 msgstr "Параметр server_name є обов'язковим"
 
-msgid "Config Template"
-msgstr "Шаблон конфігурації"
-
 msgid "Save the edited configuration before enabling HTTPS."
 msgstr "Збережіть відредаговану конфігурацію перед увімкненням HTTPS."
 
@@ -10378,30 +10300,11 @@ msgstr "Самопідписаний сертифікат"
 msgid "Generate self-signed certificate"
 msgstr "Створити самопідписаний сертифікат"
 
-msgid "Built-in"
-msgstr "Вбудований"
-
 msgid "Search templates"
 msgstr "Пошук шаблонів"
 
-msgid "Snippet"
-msgstr "Фрагмент"
-
 msgid "Author"
 msgstr "Автор"
-
-msgid ""
-"Include keeps the site linked to snippets/%{file}, so later changes of the "
-"snippet apply to it. Insert copies the content into the site instead."
-msgstr ""
-"Include зберігає зв'язок сайту з snippets/%{file}, тому подальші зміни "
-"сниппета застосовуються до нього. Insert натомість копіює вміст у сайт."
-
-msgid "Insert"
-msgstr "Вставити"
-
-msgid "Include"
-msgstr "Включити"
 
 msgid "Do you want to enable TLS?"
 msgstr "Ви хочете увімкнути TLS?"
@@ -10706,6 +10609,9 @@ msgstr "Відтворити DNS-запис"
 msgid "Clear Link"
 msgstr "Очистити посилання"
 
+msgid "Config Template"
+msgstr "Шаблон конфігурації"
+
 msgid "Port Scanner"
 msgstr "Сканер портів"
 
@@ -10790,338 +10696,6 @@ msgstr "Налаштувати інформацію про технічне об
 
 msgid "%{count} sites selected"
 msgstr "%{count} сайтів вибрано"
-
-msgid "Read Only"
-msgstr "Тільки для читання"
-
-msgid "Preview"
-msgstr "Попередній перегляд"
-
-msgid "Updates as the snippet changes."
-msgstr "Оновлюється при зміні снипета."
-
-msgid ""
-"Built-in templates come with Nginx UI and cannot be changed. Copy one as a "
-"snippet to change it."
-msgstr ""
-"Вбудовані шаблони постачаються з Nginx UI і не можуть бути змінені. "
-"Скопіюйте один як фрагмент, щоб змінити його."
-
-msgid "File Name"
-msgstr "Ім'я файлу"
-
-msgid "Variables"
-msgstr "Змінні"
-
-msgid "Copy as Snippet"
-msgstr "Копіювати як снипет"
-
-msgid "Template"
-msgstr "Шаблон"
-
-msgid "No template matches the search"
-msgstr "Жоден шаблон не відповідає пошуку"
-
-msgid "%{count} variable"
-msgid_plural "%{count} variables"
-msgstr[0] "%{count} змінна"
-msgstr[1] "%{count} змінних"
-
-msgid "Translations"
-msgstr "Переклади"
-
-msgid ""
-"The field is in %{language}. Users of other languages see their "
-"translation, or English when there is none."
-msgstr ""
-"Поле мовою %{language}. Користувачі інших мов бачать переклад або "
-"англійську, якщо перекладу немає."
-
-msgid "Remove translation"
-msgstr "Видалити переклад"
-
-msgid "Add a language"
-msgstr "Додати мову"
-
-msgid "Text"
-msgstr "Текст"
-
-msgid "Switch"
-msgstr "Перемкнути"
-
-msgid "Select"
-msgstr "Вибрати"
-
-msgid "New Variable…"
-msgstr "Нова змінна…"
-
-msgid "Insert Variable"
-msgstr "Вставити змінну"
-
-msgid ""
-"Type %{open} to complete a variable, or select a value and press %{keys} to "
-"make it one."
-msgstr ""
-"Введіть %{open}, щоб доповнити змінну, або виберіть значення та натисніть "
-"%{keys}, щоб перетворити його на змінну."
-
-msgid "Default Value"
-msgstr "Значення за замовчуванням"
-
-msgid "Edit Variable"
-msgstr "Редагувати змінну"
-
-msgid ""
-"This variable is not declared, so it has no value when the snippet is "
-"inserted."
-msgstr ""
-"Цю змінну не оголошено, тому вона не має значення під час вставлення "
-"фрагмента коду."
-
-msgid "Declare Variable"
-msgstr "Оголосити змінну"
-
-msgid "Make Variable"
-msgstr "Створити змінну"
-
-msgid "New Variable"
-msgstr "Нова змінна"
-
-msgid "Key"
-msgstr "Ключ"
-
-msgid "Label"
-msgstr "Мітка"
-
-msgid "The variable is declared and inserted at the cursor."
-msgstr "Змінна оголошується та вставляється в позиції курсора."
-
-msgid ""
-"The selected value becomes the default value, and the content refers to the "
-"variable instead."
-msgstr ""
-"Вибране значення стає значенням за замовчуванням, а вміст посилається на "
-"змінну замість цього."
-
-msgid "Add Variable"
-msgstr "Додати змінну"
-
-msgid "Not declared, so left without a value: %{names}"
-msgstr "Не оголошено, тому залишено без значення: %{names}"
-
-msgid "The snippet does not render as valid Nginx configuration."
-msgstr "Фрагмент не відображається як коректна конфігурація Nginx."
-
-msgid "The snippet renders as valid Nginx configuration."
-msgstr "Фрагмент відображається як коректна конфігурація Nginx."
-
-msgid "What the site editor asks for"
-msgstr "Що просить редактор сайту"
-
-msgid "Restore Default Values"
-msgstr "Відновити значення за замовчуванням"
-
-msgid "Nothing to fill in."
-msgstr "Нічого заповнювати."
-
-msgid "Fix the variables to preview the snippet."
-msgstr "Виправте змінні, щоб переглянути фрагмент коду."
-
-msgid "Snippets are no longer synchronized"
-msgstr "Сніппети більше не синхронізуються"
-
-msgid "Synchronize Snippets"
-msgstr "Синхронізувати фрагменти"
-
-msgid ""
-"Every snippet is copied to the selected nodes now, and later changes follow "
-"automatically. Clear the selection to stop synchronizing."
-msgstr ""
-"Кожен сниппет тепер копіюється у вибрані вузли, а подальші зміни "
-"автоматично синхронізуються. Очистіть виділення, щоб припинити "
-"синхронізацію."
-
-msgid "Replace snippets that already exist on the nodes"
-msgstr "Замінити снипети, які вже існують у вузлах"
-
-msgid "Included by %{count} file"
-msgid_plural "Included by %{count} files"
-msgstr[0] "Включено в %{count} файлі"
-msgstr[1] "Включено в %{count} файлах"
-
-msgid "Not Used"
-msgstr "Не використовується"
-
-msgid "Max Age"
-msgstr "Максимальний вік"
-
-msgid "Options"
-msgstr "Параметри"
-
-msgid "Remove option"
-msgstr "Видалити варіант"
-
-msgid "Add Option"
-msgstr "Додати опцію"
-
-msgid "Remove variable"
-msgstr "Видалити змінну"
-
-msgid "Used in the content, not declared"
-msgstr "Використовується в змісті, не оголошено"
-
-msgid "Snippet %{name} saved"
-msgstr "Сніпет %{name} збережено"
-
-msgid "Discard the unsaved changes?"
-msgstr "Відмінити незбережені зміни?"
-
-msgid "Keep Editing"
-msgstr "Продовжити редагування"
-
-msgid "Edit Snippet %{name}"
-msgstr "Редагувати сниппет %{name}"
-
-msgid "Sites can include this snippet and follow its later changes."
-msgstr "Сайти можуть включати цей фрагмент і відстежувати його подальші зміни."
-
-msgid ""
-"This snippet has variables, so sites insert a filled in copy from the "
-"config template panel."
-msgstr ""
-"Цей фрагмент коду містить змінні, тому сайти вставляють заповнену копію з "
-"панелі шаблону конфігурації."
-
-msgid "Includable"
-msgstr "Включуваний"
-
-msgid "Insert Only"
-msgstr "Лише вставка"
-
-msgid "Use"
-msgstr "Використати"
-
-msgid ""
-"Add this directive to a server or location block. Sites that include the "
-"snippet follow its later changes."
-msgstr ""
-"Додайте цю директиву до блоку server або location. Сайти, які включають "
-"сниппет, відстежують його подальші зміни."
-
-msgid "Static file cache"
-msgstr "Кеш статичних файлів"
-
-msgid "Fixed while configurations include the snippet, so they keep working."
-msgstr ""
-"Виправлено, поки конфігурації містять фрагмент коду, тому вони продовжують "
-"працювати."
-
-msgid "Letters, digits, dots, dashes and underscores."
-msgstr "Літери, цифри, крапки, дефіси та підкреслення."
-
-msgid ""
-"Variables are filled in when the snippet is inserted from the config "
-"template panel of the site editor. A snippet with variables can only be "
-"inserted, not included."
-msgstr ""
-"Змінні заповнюються під час вставлення сниппета з панелі шаблону "
-"конфігурації редактора сайту. Сниппет із змінними можна лише вставити, а не "
-"включити."
-
-msgid "No configuration includes this snippet yet."
-msgstr "Жодна конфігурація ще не містить цей фрагмент."
-
-msgid "Unsaved changes"
-msgstr "Незбережені зміни"
-
-msgid "My Snippets"
-msgstr "Мої фрагменти коду"
-
-msgid "Built-in Templates"
-msgstr "Вбудовані шаблони"
-
-msgid "Copied %{include}"
-msgstr "%{include} скопійовано"
-
-msgid "Delete snippet %{name}?"
-msgstr "Видалити сниппет %{name}?"
-
-msgid "snippets/%{file} will be removed here and on the synchronized nodes."
-msgstr "snippets/%{file} буде видалено тут і на синхронізованих вузлах."
-
-msgid "snippets/%{file} will be removed."
-msgstr "snippets/%{file} буде видалено."
-
-msgid "Snippet %{name} deleted"
-msgstr "Сніпет %{name} видалено"
-
-msgid "Synchronize"
-msgstr "Синхронізувати"
-
-msgid "Synchronized to %{count} node"
-msgid_plural "Synchronized to %{count} nodes"
-msgstr[0] "Синхронізовано на %{count} вузол"
-msgstr[1] "Синхронізовано на %{count} вузлів"
-
-msgid ""
-"Has %{count} variable. Sites insert a filled in copy from the config "
-"template panel of the site editor."
-msgid_plural ""
-"Has %{count} variables. Sites insert a filled in copy from the config "
-"template panel of the site editor."
-msgstr[0] ""
-"Має %{count} змінну. Сайти вставляють заповнену копію з панелі шаблонів "
-"конфігурації редактора сайту."
-msgstr[1] ""
-"Має %{count} змінних. Сайти вставляють заповнену копію з панелі шаблонів "
-"конфігурації редактора сайту."
-
-msgid "Copy the include directive"
-msgstr "Скопіювати директиву include"
-
-msgid "Remove the snippet from the files that include it first."
-msgstr "Спочатку видаліть сниппет із файлів, які його містять."
-
-msgid ""
-"A snippet keeps a piece of Nginx configuration in one place. Include it in "
-"a site, or insert it from the config template panel of the site editor; "
-"changing an included snippet updates every site that uses it."
-msgstr ""
-"Сніпет зберігає частину конфігурації Nginx в одному місці. Додайте його до "
-"сайту або вставте з панелі шаблонів конфігурації редактора сайтів; зміна "
-"включеного сніпета оновлює кожен сайт, який його використовує."
-
-msgid "Search snippets"
-msgstr "Фрагменти пошуку"
-
-msgid "No snippets yet"
-msgstr "Поки немає фрагментів"
-
-msgid "No snippet matches the search"
-msgstr "Фрагменти, що відповідають пошуку, не знайдено"
-
-msgid "Enter a key."
-msgstr "Введіть ключ."
-
-msgid "Use letters, digits and underscores, starting with a letter or underscore."
-msgstr ""
-"Використовуйте літери, цифри та підкреслення, починаючи з літери або "
-"підкреслення."
-
-msgid "Another variable uses this key."
-msgstr "Інша змінна використовує цей ключ."
-
-msgid "Add at least one option."
-msgstr "Додайте принаймні один варіант."
-
-msgid "Every option needs a value."
-msgstr "Для кожної опції потрібне значення."
-
-msgid "Option values must be unique."
-msgstr "Значення параметрів повинні бути унікальними."
-
-msgid "Choose the default option."
-msgstr "Виберіть варіант за замовчуванням."
 
 msgid "Do you want to %{action} this stream?"
 msgstr "Ви хочете %{action} цей потік?"
@@ -11522,6 +11096,575 @@ msgctxt "preference group"
 msgid "Maintenance"
 msgstr "Обслуговування"
 
+msgid ""
+"DNS-01 challenge requires the DNS-01 plugin. Install it from System > "
+"Plugins."
+msgstr ""
+
+msgid "Install DNS-01 plugin"
+msgstr ""
+
+msgid "Go to System > Plugins"
+msgstr ""
+
+msgid "If your domain has CNAME records and you cannot obtain certificates, "
+msgstr ""
+"Якщо ваш домен містить записи CNAME і ви не можете отримати сертифікати,"
+
+msgid "Skip local DNS propagation checks and wait 60 seconds before asking "
+msgstr ""
+"Пропустіть локальні перевірки поширення DNS та зачекайте 60 секунд перед "
+"запитом "
+
+msgid "DNS-01 plugin unavailable"
+msgstr ""
+
+msgid ""
+"Certificate %{name} cannot be renewed because no enabled plugin provides the "
+"DNS-01 challenge"
+msgstr ""
+
+msgid "Plugin %{plugin} failed to render"
+msgstr ""
+
+msgid "No DNS-01 provider for {0}: install and enable the DNS-01 plugin"
+msgstr ""
+
+msgid "Plugin manifest is invalid"
+msgstr ""
+
+msgid "Plugin not found"
+msgstr ""
+
+msgid "Plugin already exists"
+msgstr ""
+
+msgid "Plugin is not running"
+msgstr ""
+
+msgid "Plugin handshake failed"
+msgstr ""
+
+msgid "Plugin has no executable for this platform"
+msgstr ""
+
+msgid "Plugin package is invalid"
+msgstr ""
+
+msgid "Plugin package is too large"
+msgstr ""
+
+msgid "Plugin api version is incompatible"
+msgstr ""
+
+msgid "Plugin permissions need approval"
+msgstr ""
+
+msgid "Plugin dependency is missing: {0}"
+msgstr ""
+
+msgid "Plugin dependencies form a cycle"
+msgstr ""
+
+msgid "Plugin is in use by {0}"
+msgstr ""
+
+msgid "Plugin system is disabled"
+msgstr ""
+
+msgid "Plugin uploads are disabled"
+msgstr ""
+
+msgid "Plugin call timed out"
+msgstr ""
+
+msgid "Plugin rpc error: {0}"
+msgstr ""
+
+msgid "Plugin setting {0} is invalid"
+msgstr ""
+
+msgid "Plugin needs nginx-ui {0} or newer, this node runs {1}"
+msgstr ""
+
+msgid "Plugin package declares another id"
+msgstr ""
+
+msgid "Plugins"
+msgstr ""
+
+msgid "Accept plugin sync"
+msgstr ""
+
+msgid "Accepted"
+msgstr ""
+
+msgid "Opted out"
+msgstr ""
+
+msgid "Install, configure and troubleshoot plugins that extend Nginx UI."
+msgstr ""
+
+msgid "Plugin"
+msgstr ""
+
+msgid "Capabilities"
+msgstr ""
+
+msgid "Auto install to nodes"
+msgstr ""
+
+msgid "Plugin synchronized to %{count} node(s)"
+msgstr ""
+
+msgid "Some nodes could not be synchronized"
+msgstr ""
+
+msgid "Failed to synchronize the plugin"
+msgstr ""
+
+msgid "Installed"
+msgstr ""
+
+msgid "Starting"
+msgstr ""
+
+msgid "Missing"
+msgstr ""
+
+msgid "Incompatible"
+msgstr ""
+
+msgid "Needs approval"
+msgstr ""
+
+msgid "Failed to load the plugin list"
+msgstr ""
+
+msgid "Plugin enabled"
+msgstr ""
+
+msgid "Failed to enable the plugin"
+msgstr ""
+
+msgid "Plugin disabled"
+msgstr ""
+
+msgid "Failed to disable the plugin"
+msgstr ""
+
+msgid "Plugin uninstalled"
+msgstr ""
+
+msgid "Failed to uninstall the plugin"
+msgstr ""
+
+msgid "Reload the page to apply the development plugin URL"
+msgstr ""
+
+msgid ""
+"Plugins extend Nginx UI with extra capabilities. Only install bundles from "
+"authors you trust."
+msgstr ""
+
+msgid "Development plugin URL"
+msgstr ""
+
+msgid ""
+"Address of a plugin.json served by any static server. The plugin is loaded "
+"in addition to the installed ones."
+msgstr ""
+
+msgid "Dev plugin"
+msgstr ""
+
+msgid "No plugins installed"
+msgstr ""
+
+msgid "Settings"
+msgstr "Налаштування"
+
+msgid "Logs"
+msgstr ""
+
+msgid "Sync to nodes"
+msgstr ""
+
+msgid "Uninstall %{name}? Its data and settings are removed."
+msgstr ""
+
+msgid "Uninstall"
+msgstr ""
+
+msgid "Sync %{name} to nodes"
+msgstr ""
+
+msgid "Leave every node unchecked to sync to all child nodes."
+msgstr ""
+
+msgid "Already in sync"
+msgstr ""
+
+msgid "This node only"
+msgstr ""
+
+msgid "All child nodes"
+msgstr ""
+
+msgid "Selected nodes"
+msgstr ""
+
+msgid "Failed to read the plugin bundle"
+msgstr ""
+
+msgid "Plugin installed"
+msgstr ""
+
+msgid "The plugin was installed here but could not be pushed to the nodes"
+msgstr ""
+
+msgid "Failed to install the plugin"
+msgstr ""
+
+msgid "Install plugin"
+msgstr ""
+
+msgid "Click or drag a plugin bundle here"
+msgstr ""
+
+msgid "A .tar.gz produced by the plugin author"
+msgstr ""
+
+msgid "ID"
+msgstr ""
+
+msgid "(replaces %{version})"
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "Install the plugins below first"
+msgstr ""
+
+msgid "This version asks for permissions you have not approved yet."
+msgstr ""
+
+msgid ""
+"Review the list below before installing. The plugin stays disabled until you "
+"approve them."
+msgstr ""
+
+msgid "Requested permissions"
+msgstr ""
+
+msgid "Enable after install"
+msgstr ""
+
+msgid "Also install to child nodes"
+msgstr ""
+
+msgid "Keep in sync automatically"
+msgstr ""
+
+msgid ""
+"The version, the enabled state and future updates are kept aligned on those "
+"nodes."
+msgstr ""
+
+msgid "Failed to load the plugin logs"
+msgstr ""
+
+msgid "Logs copied to clipboard"
+msgstr ""
+
+msgid "Failed to copy the logs"
+msgstr ""
+
+msgid "Logs: %{name}"
+msgstr ""
+
+msgid "No log output yet"
+msgstr ""
+
+msgid "Failed to load the plugin marketplace"
+msgstr ""
+
+msgid "Reloading the catalog"
+msgstr ""
+
+msgid "Search plugins"
+msgstr ""
+
+msgid "All categories"
+msgstr ""
+
+msgid "All sources"
+msgstr ""
+
+msgid "Updates only"
+msgstr ""
+
+msgid "Sources"
+msgstr ""
+
+msgid "Every installed plugin is up to date"
+msgstr ""
+
+msgid "No plugins match your search"
+msgstr ""
+
+msgid "Downloading the package"
+msgstr ""
+
+msgid "Verifying the signature"
+msgstr ""
+
+msgid "Installing"
+msgstr ""
+
+msgid "%{phase}: %{plugin}"
+msgstr ""
+
+msgid "Failed to load the plugin from the marketplace"
+msgstr ""
+
+msgid "Update plugin"
+msgstr ""
+
+msgid "No release available for this platform"
+msgstr ""
+
+msgid "Source"
+msgstr ""
+
+msgid "This is a community plugin"
+msgstr ""
+
+msgid "The plugins below are installed together with it"
+msgstr ""
+
+msgid "Live progress is unavailable, checking the plugin list instead"
+msgstr ""
+
+msgid "No description provided."
+msgstr ""
+
+msgid "Installed: %{version}"
+msgstr ""
+
+msgid "Homepage"
+msgstr ""
+
+msgid "Repository"
+msgstr ""
+
+msgid "Release notes"
+msgstr ""
+
+msgid "Released"
+msgstr ""
+
+msgid "Platforms"
+msgstr ""
+
+msgid "Failed to load the plugin details"
+msgstr ""
+
+msgid "Installed version"
+msgstr ""
+
+msgid "Versions"
+msgstr ""
+
+msgid "Yanked"
+msgstr ""
+
+msgid "Latest"
+msgstr ""
+
+msgid "Readme"
+msgstr ""
+
+msgid "Failed to load the marketplace sources"
+msgstr ""
+
+msgid "Marketplace sources saved"
+msgstr ""
+
+msgid "Failed to save the marketplace sources"
+msgstr ""
+
+msgid "Marketplace sources"
+msgstr ""
+
+msgid ""
+"Catalogs are merged in order, the first source that offers a plugin wins. "
+"Leave the list empty to use the official catalog."
+msgstr ""
+
+msgid "Using the official catalog"
+msgstr ""
+
+msgid "Add source"
+msgstr ""
+
+msgid "Add the official catalog"
+msgstr ""
+
+msgid "Official"
+msgstr ""
+
+msgid "Built and signed by the Nginx UI maintainers."
+msgstr ""
+
+msgid "Verified"
+msgstr ""
+
+msgid "Reviewed by the Nginx UI maintainers and signed with a release key."
+msgstr ""
+
+msgid "Community"
+msgstr ""
+
+msgid ""
+"Published by a third party and not reviewed. It runs with the permissions "
+"you grant it, so only install it if you trust the author."
+msgstr ""
+
+msgid "Approve permissions"
+msgstr ""
+
+msgid "Approve and enable"
+msgstr ""
+
+msgid "%{name} needs your approval before it can run."
+msgstr ""
+
+msgid ""
+"Approve only if you trust the author. The approval is recorded and asked "
+"again whenever the requested permissions change."
+msgstr ""
+
+msgid "This plugin does not request any host permission."
+msgstr ""
+
+msgid "Read stored %{kind} credentials, including their secrets."
+msgstr ""
+
+msgid "unknown"
+msgstr ""
+
+msgid "Store and read its own key-value data inside the Nginx UI database."
+msgstr ""
+
+msgid "Make outbound network requests to the hosts declared in its manifest."
+msgstr ""
+
+msgid "Run scheduled tasks on the schedules declared in its manifest."
+msgstr ""
+
+msgid "Send notifications through the Nginx UI notification channels."
+msgstr ""
+
+msgid "Read CPU, memory, network and Nginx status metrics of this node."
+msgstr ""
+
+msgid "Call the Nginx UI management API with your permissions."
+msgstr ""
+
+msgid "Unknown permission. Only grant it if you trust the plugin author."
+msgstr ""
+
+msgid "In sync"
+msgstr ""
+
+msgid "Outdated"
+msgstr ""
+
+msgid "Not installed"
+msgstr ""
+
+msgid "Unsupported platform"
+msgstr ""
+
+msgid "Unsupported"
+msgstr ""
+
+msgid "Failed to load the plugin matrix"
+msgstr ""
+
+msgid "Update to %{version}"
+msgstr ""
+
+msgid "Sync to this node"
+msgstr ""
+
+msgid ""
+"What every child node has installed, compared with this controller. "
+"Switching the selected node in the header manages that node directly."
+msgstr ""
+
+msgid "All nodes"
+msgstr ""
+
+msgid "This instance has no child node"
+msgstr ""
+
+msgid "Add a node first, then plugins can be installed on it from here."
+msgstr ""
+
+msgid "Sync to selected"
+msgstr ""
+
+msgid "Sync to all"
+msgstr ""
+
+msgid "Marketplace"
+msgstr ""
+
+msgid "%{field} is required"
+msgstr ""
+
+msgid "Failed to load the plugin settings"
+msgstr ""
+
+msgid "Plugin settings saved"
+msgstr ""
+
+msgid "Failed to save the plugin settings"
+msgstr ""
+
+msgid "Settings: %{name}"
+msgstr ""
+
+msgid "This plugin has no settings."
+msgstr ""
+
+msgid "%{count} node"
+msgid_plural "%{count} nodes"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+msgid "Sync policy saved"
+msgstr ""
+
+msgid "Failed to save the sync policy"
+msgstr ""
+
+msgid "Automatic installation"
+msgstr ""
+
+msgid ""
+"Keep this plugin at the same version and state on the selected child nodes. "
+"Leave every node unchecked to cover all of them, including the ones added "
+"later."
+msgstr ""
+
+msgid "Also sync the plugin settings"
+msgstr ""
+
 #~ msgid "Webauthn"
 #~ msgstr "WebAuthn"
 
@@ -11557,3 +11700,429 @@ msgstr "Обслуговування"
 
 #~ msgid "Global health check controls"
 #~ msgstr "Глобальне керування перевірками стану"
+
+msgid "No file matches the search"
+msgstr "Жоден файл не відповідає пошуку"
+
+msgid ""
+"The file name must end in .conf and use only letters, digits, dots, dashes "
+"and underscores"
+msgstr ""
+"Ім'я файлу має закінчуватися на .conf і містити лише літери, цифри, крапки, "
+"дефіси та підкреслення"
+
+msgid "Snippet not found"
+msgstr "Фрагмент не знайдено"
+
+msgid "The snippet exceeds 256 KiB"
+msgstr "Фрагмент перевищує 256 КіБ"
+
+msgid "The header of the snippet does not parse: {0}"
+msgstr "Заголовок фрагмента коду не вдається проаналізувати: {0}"
+
+msgid "The snippet is still included by {0}"
+msgstr "Фрагмент коду все ще включається через {0}"
+
+msgid "A snippet with this file name already exists"
+msgstr "Сніппет з такою назвою файлу вже існує"
+
+msgid "The variable {0} is invalid: {1}"
+msgstr "Змінна {0} недійсна: {1}"
+
+msgid "The content does not parse as a template: {0}"
+msgstr "Вміст не аналізується як шаблон: {0}"
+
+msgid "Snippets"
+msgstr "Сніпети"
+
+msgid "Create Snippet"
+msgstr "Створити снипет"
+
+msgid "Built-in Template"
+msgstr "Вбудований шаблон"
+
+msgid "Edit Snippet"
+msgstr "Редагувати сниппет"
+
+msgid "Used by %{count} configuration"
+msgid_plural "Used by %{count} configurations"
+msgstr[0] "Використовується в %{count} конфігурації"
+msgstr[1] "Використовується в %{count} конфігураціях"
+
+msgid "Site Card Click URL"
+msgstr "URL кліку картки сайту"
+
+msgid ""
+"Optional absolute HTTP/HTTPS URL used when opening this site card. If "
+"empty, the default site URL is used."
+msgstr ""
+"Необов'язкова абсолютна HTTP/HTTPS-URL, що використовується під час "
+"відкриття цієї картки сайту. Якщо порожня, використовується URL сайту за "
+"замовчуванням."
+
+msgid "Built-in"
+msgstr "Вбудований"
+
+msgid "Snippet"
+msgstr "Фрагмент"
+
+msgid ""
+"Include keeps the site linked to snippets/%{file}, so later changes of the "
+"snippet apply to it. Insert copies the content into the site instead."
+msgstr ""
+"Include зберігає зв'язок сайту з snippets/%{file}, тому подальші зміни "
+"сниппета застосовуються до нього. Insert натомість копіює вміст у сайт."
+
+msgid "Insert"
+msgstr "Вставити"
+
+msgid "Include"
+msgstr "Включити"
+
+msgid "Read Only"
+msgstr "Тільки для читання"
+
+msgid "Preview"
+msgstr "Попередній перегляд"
+
+msgid "Updates as the snippet changes."
+msgstr "Оновлюється при зміні снипета."
+
+msgid ""
+"Built-in templates come with Nginx UI and cannot be changed. Copy one as a "
+"snippet to change it."
+msgstr ""
+"Вбудовані шаблони постачаються з Nginx UI і не можуть бути змінені. "
+"Скопіюйте один як фрагмент, щоб змінити його."
+
+msgid "File Name"
+msgstr "Ім'я файлу"
+
+msgid "Variables"
+msgstr "Змінні"
+
+msgid "Copy as Snippet"
+msgstr "Копіювати як снипет"
+
+msgid "Template"
+msgstr "Шаблон"
+
+msgid "No template matches the search"
+msgstr "Жоден шаблон не відповідає пошуку"
+
+msgid "%{count} variable"
+msgid_plural "%{count} variables"
+msgstr[0] "%{count} змінна"
+msgstr[1] "%{count} змінних"
+
+msgid "Translations"
+msgstr "Переклади"
+
+msgid ""
+"The field is in %{language}. Users of other languages see their "
+"translation, or English when there is none."
+msgstr ""
+"Поле мовою %{language}. Користувачі інших мов бачать переклад або "
+"англійську, якщо перекладу немає."
+
+msgid "Remove translation"
+msgstr "Видалити переклад"
+
+msgid "Add a language"
+msgstr "Додати мову"
+
+msgid "Text"
+msgstr "Текст"
+
+msgid "Switch"
+msgstr "Перемкнути"
+
+msgid "Select"
+msgstr "Вибрати"
+
+msgid "New Variable…"
+msgstr "Нова змінна…"
+
+msgid "Insert Variable"
+msgstr "Вставити змінну"
+
+msgid ""
+"Type %{open} to complete a variable, or select a value and press %{keys} to "
+"make it one."
+msgstr ""
+"Введіть %{open}, щоб доповнити змінну, або виберіть значення та натисніть "
+"%{keys}, щоб перетворити його на змінну."
+
+msgid "Default Value"
+msgstr "Значення за замовчуванням"
+
+msgid "Edit Variable"
+msgstr "Редагувати змінну"
+
+msgid ""
+"This variable is not declared, so it has no value when the snippet is "
+"inserted."
+msgstr ""
+"Цю змінну не оголошено, тому вона не має значення під час вставлення "
+"фрагмента коду."
+
+msgid "Declare Variable"
+msgstr "Оголосити змінну"
+
+msgid "Make Variable"
+msgstr "Створити змінну"
+
+msgid "New Variable"
+msgstr "Нова змінна"
+
+msgid "Key"
+msgstr "Ключ"
+
+msgid "Label"
+msgstr "Мітка"
+
+msgid "The variable is declared and inserted at the cursor."
+msgstr "Змінна оголошується та вставляється в позиції курсора."
+
+msgid ""
+"The selected value becomes the default value, and the content refers to the "
+"variable instead."
+msgstr ""
+"Вибране значення стає значенням за замовчуванням, а вміст посилається на "
+"змінну замість цього."
+
+msgid "Add Variable"
+msgstr "Додати змінну"
+
+msgid "Not declared, so left without a value: %{names}"
+msgstr "Не оголошено, тому залишено без значення: %{names}"
+
+msgid "The snippet does not render as valid Nginx configuration."
+msgstr "Фрагмент не відображається як коректна конфігурація Nginx."
+
+msgid "The snippet renders as valid Nginx configuration."
+msgstr "Фрагмент відображається як коректна конфігурація Nginx."
+
+msgid "What the site editor asks for"
+msgstr "Що просить редактор сайту"
+
+msgid "Restore Default Values"
+msgstr "Відновити значення за замовчуванням"
+
+msgid "Nothing to fill in."
+msgstr "Нічого заповнювати."
+
+msgid "Fix the variables to preview the snippet."
+msgstr "Виправте змінні, щоб переглянути фрагмент коду."
+
+msgid "Snippets are no longer synchronized"
+msgstr "Сніппети більше не синхронізуються"
+
+msgid "Synchronize Snippets"
+msgstr "Синхронізувати фрагменти"
+
+msgid ""
+"Every snippet is copied to the selected nodes now, and later changes follow "
+"automatically. Clear the selection to stop synchronizing."
+msgstr ""
+"Кожен сниппет тепер копіюється у вибрані вузли, а подальші зміни "
+"автоматично синхронізуються. Очистіть виділення, щоб припинити "
+"синхронізацію."
+
+msgid "Replace snippets that already exist on the nodes"
+msgstr "Замінити снипети, які вже існують у вузлах"
+
+msgid "Included by %{count} file"
+msgid_plural "Included by %{count} files"
+msgstr[0] "Включено в %{count} файлі"
+msgstr[1] "Включено в %{count} файлах"
+
+msgid "Not Used"
+msgstr "Не використовується"
+
+msgid "Max Age"
+msgstr "Максимальний вік"
+
+msgid "Options"
+msgstr "Параметри"
+
+msgid "Remove option"
+msgstr "Видалити варіант"
+
+msgid "Add Option"
+msgstr "Додати опцію"
+
+msgid "Remove variable"
+msgstr "Видалити змінну"
+
+msgid "Used in the content, not declared"
+msgstr "Використовується в змісті, не оголошено"
+
+msgid "Snippet %{name} saved"
+msgstr "Сніпет %{name} збережено"
+
+msgid "Discard the unsaved changes?"
+msgstr "Відмінити незбережені зміни?"
+
+msgid "Keep Editing"
+msgstr "Продовжити редагування"
+
+msgid "Edit Snippet %{name}"
+msgstr "Редагувати сниппет %{name}"
+
+msgid "Sites can include this snippet and follow its later changes."
+msgstr "Сайти можуть включати цей фрагмент і відстежувати його подальші зміни."
+
+msgid ""
+"This snippet has variables, so sites insert a filled in copy from the "
+"config template panel."
+msgstr ""
+"Цей фрагмент коду містить змінні, тому сайти вставляють заповнену копію з "
+"панелі шаблону конфігурації."
+
+msgid "Includable"
+msgstr "Включуваний"
+
+msgid "Insert Only"
+msgstr "Лише вставка"
+
+msgid "Use"
+msgstr "Використати"
+
+msgid ""
+"Add this directive to a server or location block. Sites that include the "
+"snippet follow its later changes."
+msgstr ""
+"Додайте цю директиву до блоку server або location. Сайти, які включають "
+"сниппет, відстежують його подальші зміни."
+
+msgid "Static file cache"
+msgstr "Кеш статичних файлів"
+
+msgid "Fixed while configurations include the snippet, so they keep working."
+msgstr ""
+"Виправлено, поки конфігурації містять фрагмент коду, тому вони продовжують "
+"працювати."
+
+msgid "Letters, digits, dots, dashes and underscores."
+msgstr "Літери, цифри, крапки, дефіси та підкреслення."
+
+msgid ""
+"Variables are filled in when the snippet is inserted from the config "
+"template panel of the site editor. A snippet with variables can only be "
+"inserted, not included."
+msgstr ""
+"Змінні заповнюються під час вставлення сниппета з панелі шаблону "
+"конфігурації редактора сайту. Сниппет із змінними можна лише вставити, а не "
+"включити."
+
+msgid "No configuration includes this snippet yet."
+msgstr "Жодна конфігурація ще не містить цей фрагмент."
+
+msgid "Unsaved changes"
+msgstr "Незбережені зміни"
+
+msgid "My Snippets"
+msgstr "Мої фрагменти коду"
+
+msgid "Built-in Templates"
+msgstr "Вбудовані шаблони"
+
+msgid "Copied %{include}"
+msgstr "%{include} скопійовано"
+
+msgid "Delete snippet %{name}?"
+msgstr "Видалити сниппет %{name}?"
+
+msgid "snippets/%{file} will be removed here and on the synchronized nodes."
+msgstr "snippets/%{file} буде видалено тут і на синхронізованих вузлах."
+
+msgid "snippets/%{file} will be removed."
+msgstr "snippets/%{file} буде видалено."
+
+msgid "Snippet %{name} deleted"
+msgstr "Сніпет %{name} видалено"
+
+msgid "Synchronize"
+msgstr "Синхронізувати"
+
+msgid "Synchronized to %{count} node"
+msgid_plural "Synchronized to %{count} nodes"
+msgstr[0] "Синхронізовано на %{count} вузол"
+msgstr[1] "Синхронізовано на %{count} вузлів"
+
+msgid ""
+"Has %{count} variable. Sites insert a filled in copy from the config "
+"template panel of the site editor."
+msgid_plural ""
+"Has %{count} variables. Sites insert a filled in copy from the config "
+"template panel of the site editor."
+msgstr[0] ""
+"Має %{count} змінну. Сайти вставляють заповнену копію з панелі шаблонів "
+"конфігурації редактора сайту."
+msgstr[1] ""
+"Має %{count} змінних. Сайти вставляють заповнену копію з панелі шаблонів "
+"конфігурації редактора сайту."
+
+msgid "Copy the include directive"
+msgstr "Скопіювати директиву include"
+
+msgid "Remove the snippet from the files that include it first."
+msgstr "Спочатку видаліть сниппет із файлів, які його містять."
+
+msgid ""
+"A snippet keeps a piece of Nginx configuration in one place. Include it in "
+"a site, or insert it from the config template panel of the site editor; "
+"changing an included snippet updates every site that uses it."
+msgstr ""
+"Сніпет зберігає частину конфігурації Nginx в одному місці. Додайте його до "
+"сайту або вставте з панелі шаблонів конфігурації редактора сайтів; зміна "
+"включеного сніпета оновлює кожен сайт, який його використовує."
+
+msgid "Search snippets"
+msgstr "Фрагменти пошуку"
+
+msgid "No snippets yet"
+msgstr "Поки немає фрагментів"
+
+msgid "No snippet matches the search"
+msgstr "Фрагменти, що відповідають пошуку, не знайдено"
+
+msgid "Enter a key."
+msgstr "Введіть ключ."
+
+msgid "Use letters, digits and underscores, starting with a letter or underscore."
+msgstr ""
+"Використовуйте літери, цифри та підкреслення, починаючи з літери або "
+"підкреслення."
+
+msgid "Another variable uses this key."
+msgstr "Інша змінна використовує цей ключ."
+
+msgid "Add at least one option."
+msgstr "Додайте принаймні один варіант."
+
+msgid "Every option needs a value."
+msgstr "Для кожної опції потрібне значення."
+
+msgid "Option values must be unique."
+msgstr "Значення параметрів повинні бути унікальними."
+
+msgid "Choose the default option."
+msgstr "Виберіть варіант за замовчуванням."
+
+msgid "Certificate Relocated"
+msgstr "Сертифікат переміщено"
+
+msgid ""
+"Certificate %{name} is now stored in %{path}, point the sites that load "
+"%{previous_path} to it"
+msgstr ""
+"Сертифікат %{name} тепер зберігається в %{path}. Перенаправте сайти, які "
+"завантажують %{previous_path}, на цей шлях"
+
+msgid "The path exists, but the file is not a certificate"
+msgstr "Шлях існує, але файл не є сертифікатом"
+
+msgid "The path exists, but the file is not a private key"
+msgstr "Шлях існує, але файл не є приватним ключем"

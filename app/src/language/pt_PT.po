@@ -456,27 +456,6 @@ msgstr "Desativado"
 msgid "Maintenance"
 msgstr "Manutenção"
 
-msgid "Site"
-msgstr "Site"
-
-msgid "Stream"
-msgstr "Stream"
-
-msgid "Configuration"
-msgstr "Configuração"
-
-msgid "+%{count} more"
-msgstr "+%{count} mais"
-
-msgid "Search"
-msgstr "Pesquisar"
-
-msgid "No file matches the search"
-msgstr "Nenhum ficheiro corresponde à pesquisa"
-
-msgid "Not used"
-msgstr "Não utilizado"
-
 msgid "Starting download..."
 msgstr "A iniciar o download..."
 
@@ -1012,6 +991,9 @@ msgstr "Concluído"
 msgid "Unknown"
 msgstr "Desconhecido"
 
+msgid "Search"
+msgstr "Pesquisar"
+
 msgid "Open in split view"
 msgstr "Abrir em vista dividida"
 
@@ -1116,6 +1098,12 @@ msgstr ""
 "mesma localização de armazenamento. Altere o nome de uma das tarefas ou "
 "altere o seu caminho de armazenamento."
 
+msgid "Backups to Keep"
+msgstr "Backups a manter"
+
+msgid "Backups to Keep (0 keeps all)"
+msgstr "Backups a manter (0 mantém todos)"
+
 msgid "Renew Certificate Success"
 msgstr "Certificado Renovado com Sucesso"
 
@@ -1145,16 +1133,6 @@ msgstr "O certificado %{name} expirará em %{days} dias"
 
 msgid "Certificate Expiring Soon"
 msgstr "Certificado a expirar em breve"
-
-msgid "Certificate Relocated"
-msgstr "Certificado relocalizado"
-
-msgid ""
-"Certificate %{name} is now stored in %{path}, point the sites that load "
-"%{previous_path} to it"
-msgstr ""
-"O certificado %{name} agora está armazenado em %{path}. Aponte os sites que "
-"carregam %{previous_path} para ele"
 
 msgid "Sync Certificate Error"
 msgstr "Erro ao Sincronizar Certificado"
@@ -2931,34 +2909,6 @@ msgstr "O site está em modo de manutenção"
 msgid "Read dir failed: {0}"
 msgstr "Falha ao ler o diretório: {0}"
 
-msgid ""
-"The file name must end in .conf and use only letters, digits, dots, dashes "
-"and underscores"
-msgstr ""
-"O nome do ficheiro deve terminar em .conf e conter apenas letras, dígitos, "
-"pontos, hífenes e traços inferiores"
-
-msgid "Snippet not found"
-msgstr "Fragmento não encontrado"
-
-msgid "The snippet exceeds 256 KiB"
-msgstr "O fragmento excede 256 KiB"
-
-msgid "The header of the snippet does not parse: {0}"
-msgstr "O cabeçalho do snippet não pode ser analisado: {0}"
-
-msgid "The snippet is still included by {0}"
-msgstr "O snippet ainda é incluído por {0}"
-
-msgid "A snippet with this file name already exists"
-msgstr "Já existe um snippet com este nome de ficheiro"
-
-msgid "The variable {0} is invalid: {1}"
-msgstr "A variável {0} é inválida: {1}"
-
-msgid "The content does not parse as a template: {0}"
-msgstr "O conteúdo não é analisado como um modelo: {0}"
-
 msgid "Stream not found"
 msgstr "Transmissão não encontrada"
 
@@ -4184,18 +4134,6 @@ msgstr "Lista de Sites"
 msgid "Add Site"
 msgstr "Adicionar Site"
 
-msgid "Snippets"
-msgstr "Snippets"
-
-msgid "Create Snippet"
-msgstr "Criar snippet"
-
-msgid "Built-in Template"
-msgstr "Modelo incorporado"
-
-msgid "Edit Snippet"
-msgstr "Editar snippet"
-
 msgid "Edit Site"
 msgstr "Editar Site"
 
@@ -4278,17 +4216,29 @@ msgstr ""
 "um servidor ou uma localização no editor do site; alterar a lista aqui "
 "atualiza todos os sites que a utilizam."
 
+msgid "+%{count} more"
+msgstr "+%{count} mais"
+
 msgid "Deny"
 msgstr "Negar"
 
 msgid "Allow"
 msgstr "Permitir"
 
+msgid "Not used"
+msgstr "Não utilizado"
+
 msgid "Use list"
 msgstr "Usar lista"
 
 msgid "Deny (403)"
 msgstr "Negar (403)"
+
+msgid "Site"
+msgstr "Site"
+
+msgid "Stream"
+msgstr "Stream"
 
 msgid "Access list %{name} saved"
 msgstr "Lista de acesso %{name} guardada"
@@ -4388,15 +4338,6 @@ msgstr "Semanalmente no %{day} às %{time}"
 
 msgid "Monthly on day %{day} at %{time}"
 msgstr "Mensalmente no dia %{day} às %{time}"
-
-msgid "Backups to Keep"
-msgstr "Backups a manter"
-
-msgid "All"
-msgstr "Todos"
-
-msgid "Backups to Keep (0 keeps all)"
-msgstr "Backups a manter (0 mantém todos)"
 
 msgid "Last Backup Time"
 msgstr "Hora do último backup"
@@ -4770,11 +4711,6 @@ msgstr "Não é possível verificar a implementação"
 msgid "Not After"
 msgstr "Não Depois"
 
-msgid "Used by %{count} configuration"
-msgid_plural "Used by %{count} configurations"
-msgstr[0] "Usado por %{count} configuração"
-msgstr[1] "Usado por %{count} configurações"
-
 msgid "Failed to scan certificates"
 msgstr "Falha ao analisar certificados"
 
@@ -4819,12 +4755,6 @@ msgstr "Voltar"
 
 msgid "This field is required"
 msgstr "Este campo é mantatório"
-
-msgid "The path exists, but the file is not a certificate"
-msgstr "O caminho existe, mas o ficheiro não é um certificado"
-
-msgid "The path exists, but the file is not a private key"
-msgstr "O caminho existe, mas o ficheiro não é uma chave privada"
 
 msgid "Sync to"
 msgstr "Sincronizar para"
@@ -4900,11 +4830,11 @@ msgstr "Ficheiros de certificado transferidos com sucesso"
 msgid "Failed to download certificate files"
 msgstr "Falha ao baixar os ficheiros do certificado"
 
-msgid "Download Certificate Files"
-msgstr "Baixar arquivos de certificado"
-
 msgid "Download"
 msgstr "Baixar"
+
+msgid "Download Certificate Files"
+msgstr "Baixar arquivos de certificado"
 
 msgid "Download Format"
 msgstr "Formato de download"
@@ -5075,14 +5005,14 @@ msgstr "Para confirmar a revogação, digite \"Revogar\" no campo abaixo:"
 msgid "Renew successfully"
 msgstr "Renovado com Sucesso"
 
-msgid "AutoCert is running, please wait..."
-msgstr "O AutoCert está em execução, aguarde..."
+msgid "Renew"
+msgstr "Renovar"
 
 msgid "Renew Certificate"
 msgstr "Renovar Certificado"
 
-msgid "Renew"
-msgstr "Renovar"
+msgid "AutoCert is running, please wait..."
+msgstr "O AutoCert está em execução, aguarde..."
 
 msgid "Certificate issued successfully"
 msgstr "Certificado emitido com sucesso"
@@ -5700,16 +5630,6 @@ msgstr ""
 "URL absoluto opcional. Utilize-o quando o endereço público for diferente do "
 "host ou porta real do upstream."
 
-msgid "Site Card Click URL"
-msgstr "URL de clique do cartão do site"
-
-msgid ""
-"Optional absolute HTTP/HTTPS URL used when opening this site card. If "
-"empty, the default site URL is used."
-msgstr ""
-"URL HTTP/HTTPS absoluta opcional utilizada ao abrir este cartão de site. Se "
-"estiver vazia, é utilizada a URL predefinida do site."
-
 msgid "HTTP Method"
 msgstr "Método HTTP"
 
@@ -6018,6 +5938,9 @@ msgstr "SDK"
 msgid "Additional"
 msgstr "Adicional"
 
+msgid "All"
+msgstr "Todos"
+
 msgid "Host, e.g. @ or www"
 msgstr "Host, por ex. @ ou www"
 
@@ -6177,6 +6100,9 @@ msgstr "O nome não pode estar vazio"
 
 msgid "Please select DNS provider"
 msgstr "Por favor, selecione o provedor DNS"
+
+msgid "Configuration"
+msgstr "Configuração"
 
 msgid "DNS Credentials"
 msgstr "Credenciais DNS"
@@ -10289,9 +10215,6 @@ msgstr "Espaço de nomes"
 msgid "The parameter of server_name is required"
 msgstr "O parâmetro de server_name é obrigatório"
 
-msgid "Config Template"
-msgstr "Modelo de Configuração"
-
 msgid "Save the edited configuration before enabling HTTPS."
 msgstr "Guarde a configuração editada antes de ativar o HTTPS."
 
@@ -10391,31 +10314,11 @@ msgstr "Certificado autoassinado"
 msgid "Generate self-signed certificate"
 msgstr "Gerar certificado autoassinado"
 
-msgid "Built-in"
-msgstr "Integrado"
-
 msgid "Search templates"
 msgstr "Pesquisar modelos"
 
-msgid "Snippet"
-msgstr "Trecho"
-
 msgid "Author"
 msgstr "Autor"
-
-msgid ""
-"Include keeps the site linked to snippets/%{file}, so later changes of the "
-"snippet apply to it. Insert copies the content into the site instead."
-msgstr ""
-"Include mantém o site ligado a snippets/%{file}, de modo que as alterações "
-"posteriores do snippet se aplicam a ele. Insert copia o conteúdo para o "
-"site em vez disso."
-
-msgid "Insert"
-msgstr "Inserir"
-
-msgid "Include"
-msgstr "Incluir"
 
 msgid "Do you want to enable TLS?"
 msgstr "Activar TLS?"
@@ -10725,6 +10628,9 @@ msgstr "Recriar registo DNS"
 msgid "Clear Link"
 msgstr "Limpar ligação"
 
+msgid "Config Template"
+msgstr "Modelo de Configuração"
+
 msgid "Port Scanner"
 msgstr "Scanner de portas"
 
@@ -10809,339 +10715,6 @@ msgstr "Definir informações de manutenção para os sites selecionados"
 
 msgid "%{count} sites selected"
 msgstr "%{count} sites selecionados"
-
-msgid "Read Only"
-msgstr "Somente leitura"
-
-msgid "Preview"
-msgstr "Pré-visualização"
-
-msgid "Updates as the snippet changes."
-msgstr "Atualiza-se quando o fragmento é alterado."
-
-msgid ""
-"Built-in templates come with Nginx UI and cannot be changed. Copy one as a "
-"snippet to change it."
-msgstr ""
-"Os modelos integrados vêm com o Nginx UI e não podem ser alterados. Copie "
-"um como um snippet para o alterar."
-
-msgid "File Name"
-msgstr "Nome do ficheiro"
-
-msgid "Variables"
-msgstr "Variáveis"
-
-msgid "Copy as Snippet"
-msgstr "Copiar como snippet"
-
-msgid "Template"
-msgstr "Modelo"
-
-msgid "No template matches the search"
-msgstr "Nenhum modelo corresponde à pesquisa"
-
-msgid "%{count} variable"
-msgid_plural "%{count} variables"
-msgstr[0] "%{count} variável"
-msgstr[1] "%{count} variáveis"
-
-msgid "Translations"
-msgstr "Traduções"
-
-msgid ""
-"The field is in %{language}. Users of other languages see their "
-"translation, or English when there is none."
-msgstr ""
-"O campo está em %{language}. Os utilizadores de outros idiomas veem a sua "
-"tradução, ou o inglês quando não existe."
-
-msgid "Remove translation"
-msgstr "Remover tradução"
-
-msgid "Add a language"
-msgstr "Adicionar um idioma"
-
-msgid "Text"
-msgstr "Texto"
-
-msgid "Switch"
-msgstr "Alternar"
-
-msgid "Select"
-msgstr "Selecionar"
-
-msgid "New Variable…"
-msgstr "Nova variável…"
-
-msgid "Insert Variable"
-msgstr "Inserir variável"
-
-msgid ""
-"Type %{open} to complete a variable, or select a value and press %{keys} to "
-"make it one."
-msgstr ""
-"Digite %{open} para completar uma variável, ou selecione um valor e "
-"pressione %{keys} para transformá-lo numa variável."
-
-msgid "Default Value"
-msgstr "Valor predefinido"
-
-msgid "Edit Variable"
-msgstr "Editar variável"
-
-msgid ""
-"This variable is not declared, so it has no value when the snippet is "
-"inserted."
-msgstr ""
-"Esta variável não está declarada, pelo que não tem valor quando o excerto é "
-"inserido."
-
-msgid "Declare Variable"
-msgstr "Declarar variável"
-
-msgid "Make Variable"
-msgstr "Criar variável"
-
-msgid "New Variable"
-msgstr "Nova variável"
-
-msgid "Key"
-msgstr "Chave"
-
-msgid "Label"
-msgstr "Etiqueta"
-
-msgid "The variable is declared and inserted at the cursor."
-msgstr "A variável é declarada e inserida na posição do cursor."
-
-msgid ""
-"The selected value becomes the default value, and the content refers to the "
-"variable instead."
-msgstr ""
-"O valor selecionado torna-se o valor predefinido, e o conteúdo refere-se à "
-"variável em vez disso."
-
-msgid "Add Variable"
-msgstr "Adicionar variável"
-
-msgid "Not declared, so left without a value: %{names}"
-msgstr "Não declarado, por isso ficou sem valor: %{names}"
-
-msgid "The snippet does not render as valid Nginx configuration."
-msgstr "O snippet não é renderizado como uma configuração de Nginx válida."
-
-msgid "The snippet renders as valid Nginx configuration."
-msgstr "O fragmento é renderizado como uma configuração válida do Nginx."
-
-msgid "What the site editor asks for"
-msgstr "O que o editor do site pede"
-
-msgid "Restore Default Values"
-msgstr "Restaurar valores predefinidos"
-
-msgid "Nothing to fill in."
-msgstr "Nada para preencher."
-
-msgid "Fix the variables to preview the snippet."
-msgstr "Corrija as variáveis para pré-visualizar o fragmento de código."
-
-msgid "Snippets are no longer synchronized"
-msgstr "Os snippets já não são sincronizados"
-
-msgid "Synchronize Snippets"
-msgstr "Sincronizar fragmentos"
-
-msgid ""
-"Every snippet is copied to the selected nodes now, and later changes follow "
-"automatically. Clear the selection to stop synchronizing."
-msgstr ""
-"Cada snippet é copiado para os nós selecionados agora, e as alterações "
-"futuras são seguidas automaticamente. Limpe a seleção para parar a "
-"sincronização."
-
-msgid "Replace snippets that already exist on the nodes"
-msgstr "Substituir snippets que já existem nos nós"
-
-msgid "Included by %{count} file"
-msgid_plural "Included by %{count} files"
-msgstr[0] "Incluído por %{count} ficheiro"
-msgstr[1] "Incluído por %{count} ficheiros"
-
-msgid "Not Used"
-msgstr "Não utilizado"
-
-msgid "Max Age"
-msgstr "Idade máxima"
-
-msgid "Options"
-msgstr "Opções"
-
-msgid "Remove option"
-msgstr "Remover opção"
-
-msgid "Add Option"
-msgstr "Adicionar opção"
-
-msgid "Remove variable"
-msgstr "Remover variável"
-
-msgid "Used in the content, not declared"
-msgstr "Utilizado no conteúdo, não declarado"
-
-msgid "Snippet %{name} saved"
-msgstr "Snippet %{name} guardado"
-
-msgid "Discard the unsaved changes?"
-msgstr "Descartar as alterações não guardadas?"
-
-msgid "Keep Editing"
-msgstr "Continuar a editar"
-
-msgid "Edit Snippet %{name}"
-msgstr "Editar fragmento %{name}"
-
-msgid "Sites can include this snippet and follow its later changes."
-msgstr ""
-"Os sites podem incluir este snippet e acompanhar as suas alterações "
-"posteriores."
-
-msgid ""
-"This snippet has variables, so sites insert a filled in copy from the "
-"config template panel."
-msgstr ""
-"Este snippet tem variáveis, pelo que os sites inserem uma cópia preenchida "
-"a partir do painel do modelo de configuração."
-
-msgid "Includable"
-msgstr "Incluível"
-
-msgid "Insert Only"
-msgstr "Apenas inserir"
-
-msgid "Use"
-msgstr "Usar"
-
-msgid ""
-"Add this directive to a server or location block. Sites that include the "
-"snippet follow its later changes."
-msgstr ""
-"Adicione esta diretiva a um bloco server ou location. Os sites que incluem "
-"o snippet seguem as suas alterações posteriores."
-
-msgid "Static file cache"
-msgstr "Cache de arquivos estáticos"
-
-msgid "Fixed while configurations include the snippet, so they keep working."
-msgstr ""
-"Corrigido enquanto as configurações incluem o snippet, para que continuem a "
-"funcionar."
-
-msgid "Letters, digits, dots, dashes and underscores."
-msgstr "Letras, dígitos, pontos, hifens e sublinhados."
-
-msgid ""
-"Variables are filled in when the snippet is inserted from the config "
-"template panel of the site editor. A snippet with variables can only be "
-"inserted, not included."
-msgstr ""
-"As variáveis são preenchidas quando o snippet é inserido a partir do painel "
-"de modelos de configuração do editor do site. Um snippet com variáveis pode "
-"apenas ser inserido, não incluído."
-
-msgid "No configuration includes this snippet yet."
-msgstr "Nenhuma configuração inclui este snippet ainda."
-
-msgid "Unsaved changes"
-msgstr "Alterações não guardadas"
-
-msgid "My Snippets"
-msgstr "Meus trechos de código"
-
-msgid "Built-in Templates"
-msgstr "Modelos integrados"
-
-msgid "Copied %{include}"
-msgstr "%{include} copiado"
-
-msgid "Delete snippet %{name}?"
-msgstr "Eliminar o snippet %{name}?"
-
-msgid "snippets/%{file} will be removed here and on the synchronized nodes."
-msgstr "snippets/%{file} será removido aqui e nos nós sincronizados."
-
-msgid "snippets/%{file} will be removed."
-msgstr "snippets/%{file} será removido."
-
-msgid "Snippet %{name} deleted"
-msgstr "Snippet %{name} eliminado"
-
-msgid "Synchronize"
-msgstr "Sincronizar"
-
-msgid "Synchronized to %{count} node"
-msgid_plural "Synchronized to %{count} nodes"
-msgstr[0] "Sincronizado para %{count} nó"
-msgstr[1] "Sincronizado para %{count} nós"
-
-msgid ""
-"Has %{count} variable. Sites insert a filled in copy from the config "
-"template panel of the site editor."
-msgid_plural ""
-"Has %{count} variables. Sites insert a filled in copy from the config "
-"template panel of the site editor."
-msgstr[0] ""
-"Tem %{count} variável. Os sites inserem uma cópia preenchida a partir do "
-"painel de modelos de configuração do editor de sites."
-msgstr[1] ""
-"Tem %{count} variáveis. Os sites inserem uma cópia preenchida a partir do "
-"painel de modelos de configuração do editor de sites."
-
-msgid "Copy the include directive"
-msgstr "Copiar a diretiva include"
-
-msgid "Remove the snippet from the files that include it first."
-msgstr "Remova primeiro o snippet dos ficheiros que o incluem."
-
-msgid ""
-"A snippet keeps a piece of Nginx configuration in one place. Include it in "
-"a site, or insert it from the config template panel of the site editor; "
-"changing an included snippet updates every site that uses it."
-msgstr ""
-"Um snippet mantém uma parte da configuração do Nginx num único local. "
-"Inclua-o num site ou insira-o a partir do painel de modelos de configuração "
-"do editor de sites; ao alterar um snippet incluído, todos os sites que o "
-"utilizam são atualizados."
-
-msgid "Search snippets"
-msgstr "Excertos de pesquisa"
-
-msgid "No snippets yet"
-msgstr "Ainda não há excertos"
-
-msgid "No snippet matches the search"
-msgstr "Nenhum excerto corresponde à pesquisa"
-
-msgid "Enter a key."
-msgstr "Introduza uma chave."
-
-msgid "Use letters, digits and underscores, starting with a letter or underscore."
-msgstr "Use letras, dígitos e sublinhados, começando com uma letra ou um sublinhado."
-
-msgid "Another variable uses this key."
-msgstr "Outra variável usa esta chave."
-
-msgid "Add at least one option."
-msgstr "Adicione pelo menos uma opção."
-
-msgid "Every option needs a value."
-msgstr "Cada opção precisa de um valor."
-
-msgid "Option values must be unique."
-msgstr "Os valores das opções devem ser únicos."
-
-msgid "Choose the default option."
-msgstr "Escolha a opção predefinida."
 
 msgid "Do you want to %{action} this stream?"
 msgstr "Deseja %{action} este fluxo?"
@@ -11542,6 +11115,574 @@ msgctxt "preference group"
 msgid "Maintenance"
 msgstr "Manutenção"
 
+msgid ""
+"DNS-01 challenge requires the DNS-01 plugin. Install it from System > "
+"Plugins."
+msgstr ""
+
+msgid "Install DNS-01 plugin"
+msgstr ""
+
+msgid "Go to System > Plugins"
+msgstr ""
+
+msgid "If your domain has CNAME records and you cannot obtain certificates, "
+msgstr ""
+"Se o seu domínio tiver registos CNAME e não conseguir obter certificados,"
+
+msgid "Skip local DNS propagation checks and wait 60 seconds before asking "
+msgstr ""
+"Ignore as verificações de propagação DNS locais e aguarde 60 segundos antes "
+"de solicitar "
+
+msgid "DNS-01 plugin unavailable"
+msgstr ""
+
+msgid ""
+"Certificate %{name} cannot be renewed because no enabled plugin provides the "
+"DNS-01 challenge"
+msgstr ""
+
+msgid "Plugin %{plugin} failed to render"
+msgstr ""
+
+msgid "No DNS-01 provider for {0}: install and enable the DNS-01 plugin"
+msgstr ""
+
+msgid "Plugin manifest is invalid"
+msgstr ""
+
+msgid "Plugin not found"
+msgstr ""
+
+msgid "Plugin already exists"
+msgstr ""
+
+msgid "Plugin is not running"
+msgstr ""
+
+msgid "Plugin handshake failed"
+msgstr ""
+
+msgid "Plugin has no executable for this platform"
+msgstr ""
+
+msgid "Plugin package is invalid"
+msgstr ""
+
+msgid "Plugin package is too large"
+msgstr ""
+
+msgid "Plugin api version is incompatible"
+msgstr ""
+
+msgid "Plugin permissions need approval"
+msgstr ""
+
+msgid "Plugin dependency is missing: {0}"
+msgstr ""
+
+msgid "Plugin dependencies form a cycle"
+msgstr ""
+
+msgid "Plugin is in use by {0}"
+msgstr ""
+
+msgid "Plugin system is disabled"
+msgstr ""
+
+msgid "Plugin uploads are disabled"
+msgstr ""
+
+msgid "Plugin call timed out"
+msgstr ""
+
+msgid "Plugin rpc error: {0}"
+msgstr ""
+
+msgid "Plugin setting {0} is invalid"
+msgstr ""
+
+msgid "Plugin needs nginx-ui {0} or newer, this node runs {1}"
+msgstr ""
+
+msgid "Plugin package declares another id"
+msgstr ""
+
+msgid "Plugins"
+msgstr ""
+
+msgid "Accept plugin sync"
+msgstr ""
+
+msgid "Accepted"
+msgstr ""
+
+msgid "Opted out"
+msgstr ""
+
+msgid "Install, configure and troubleshoot plugins that extend Nginx UI."
+msgstr ""
+
+msgid "Plugin"
+msgstr ""
+
+msgid "Capabilities"
+msgstr ""
+
+msgid "Auto install to nodes"
+msgstr ""
+
+msgid "Plugin synchronized to %{count} node(s)"
+msgstr ""
+
+msgid "Some nodes could not be synchronized"
+msgstr ""
+
+msgid "Failed to synchronize the plugin"
+msgstr ""
+
+msgid "Installed"
+msgstr ""
+
+msgid "Starting"
+msgstr ""
+
+msgid "Missing"
+msgstr ""
+
+msgid "Incompatible"
+msgstr ""
+
+msgid "Needs approval"
+msgstr ""
+
+msgid "Failed to load the plugin list"
+msgstr ""
+
+msgid "Plugin enabled"
+msgstr ""
+
+msgid "Failed to enable the plugin"
+msgstr ""
+
+msgid "Plugin disabled"
+msgstr ""
+
+msgid "Failed to disable the plugin"
+msgstr ""
+
+msgid "Plugin uninstalled"
+msgstr ""
+
+msgid "Failed to uninstall the plugin"
+msgstr ""
+
+msgid "Reload the page to apply the development plugin URL"
+msgstr ""
+
+msgid ""
+"Plugins extend Nginx UI with extra capabilities. Only install bundles from "
+"authors you trust."
+msgstr ""
+
+msgid "Development plugin URL"
+msgstr ""
+
+msgid ""
+"Address of a plugin.json served by any static server. The plugin is loaded "
+"in addition to the installed ones."
+msgstr ""
+
+msgid "Dev plugin"
+msgstr ""
+
+msgid "No plugins installed"
+msgstr ""
+
+msgid "Settings"
+msgstr "Configurações"
+
+msgid "Logs"
+msgstr ""
+
+msgid "Sync to nodes"
+msgstr ""
+
+msgid "Uninstall %{name}? Its data and settings are removed."
+msgstr ""
+
+msgid "Uninstall"
+msgstr ""
+
+msgid "Sync %{name} to nodes"
+msgstr ""
+
+msgid "Leave every node unchecked to sync to all child nodes."
+msgstr ""
+
+msgid "Already in sync"
+msgstr ""
+
+msgid "This node only"
+msgstr ""
+
+msgid "All child nodes"
+msgstr ""
+
+msgid "Selected nodes"
+msgstr ""
+
+msgid "Failed to read the plugin bundle"
+msgstr ""
+
+msgid "Plugin installed"
+msgstr ""
+
+msgid "The plugin was installed here but could not be pushed to the nodes"
+msgstr ""
+
+msgid "Failed to install the plugin"
+msgstr ""
+
+msgid "Install plugin"
+msgstr ""
+
+msgid "Click or drag a plugin bundle here"
+msgstr ""
+
+msgid "A .tar.gz produced by the plugin author"
+msgstr ""
+
+msgid "ID"
+msgstr ""
+
+msgid "(replaces %{version})"
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "Install the plugins below first"
+msgstr ""
+
+msgid "This version asks for permissions you have not approved yet."
+msgstr ""
+
+msgid ""
+"Review the list below before installing. The plugin stays disabled until you "
+"approve them."
+msgstr ""
+
+msgid "Requested permissions"
+msgstr ""
+
+msgid "Enable after install"
+msgstr ""
+
+msgid "Also install to child nodes"
+msgstr ""
+
+msgid "Keep in sync automatically"
+msgstr ""
+
+msgid ""
+"The version, the enabled state and future updates are kept aligned on those "
+"nodes."
+msgstr ""
+
+msgid "Failed to load the plugin logs"
+msgstr ""
+
+msgid "Logs copied to clipboard"
+msgstr ""
+
+msgid "Failed to copy the logs"
+msgstr ""
+
+msgid "Logs: %{name}"
+msgstr ""
+
+msgid "No log output yet"
+msgstr ""
+
+msgid "Failed to load the plugin marketplace"
+msgstr ""
+
+msgid "Reloading the catalog"
+msgstr ""
+
+msgid "Search plugins"
+msgstr ""
+
+msgid "All categories"
+msgstr ""
+
+msgid "All sources"
+msgstr ""
+
+msgid "Updates only"
+msgstr ""
+
+msgid "Sources"
+msgstr ""
+
+msgid "Every installed plugin is up to date"
+msgstr ""
+
+msgid "No plugins match your search"
+msgstr ""
+
+msgid "Downloading the package"
+msgstr ""
+
+msgid "Verifying the signature"
+msgstr ""
+
+msgid "Installing"
+msgstr ""
+
+msgid "%{phase}: %{plugin}"
+msgstr ""
+
+msgid "Failed to load the plugin from the marketplace"
+msgstr ""
+
+msgid "Update plugin"
+msgstr ""
+
+msgid "No release available for this platform"
+msgstr ""
+
+msgid "Source"
+msgstr ""
+
+msgid "This is a community plugin"
+msgstr ""
+
+msgid "The plugins below are installed together with it"
+msgstr ""
+
+msgid "Live progress is unavailable, checking the plugin list instead"
+msgstr ""
+
+msgid "No description provided."
+msgstr ""
+
+msgid "Installed: %{version}"
+msgstr ""
+
+msgid "Homepage"
+msgstr ""
+
+msgid "Repository"
+msgstr ""
+
+msgid "Release notes"
+msgstr ""
+
+msgid "Released"
+msgstr ""
+
+msgid "Platforms"
+msgstr ""
+
+msgid "Failed to load the plugin details"
+msgstr ""
+
+msgid "Installed version"
+msgstr ""
+
+msgid "Versions"
+msgstr ""
+
+msgid "Yanked"
+msgstr ""
+
+msgid "Latest"
+msgstr ""
+
+msgid "Readme"
+msgstr ""
+
+msgid "Failed to load the marketplace sources"
+msgstr ""
+
+msgid "Marketplace sources saved"
+msgstr ""
+
+msgid "Failed to save the marketplace sources"
+msgstr ""
+
+msgid "Marketplace sources"
+msgstr ""
+
+msgid ""
+"Catalogs are merged in order, the first source that offers a plugin wins. "
+"Leave the list empty to use the official catalog."
+msgstr ""
+
+msgid "Using the official catalog"
+msgstr ""
+
+msgid "Add source"
+msgstr ""
+
+msgid "Add the official catalog"
+msgstr ""
+
+msgid "Official"
+msgstr ""
+
+msgid "Built and signed by the Nginx UI maintainers."
+msgstr ""
+
+msgid "Verified"
+msgstr ""
+
+msgid "Reviewed by the Nginx UI maintainers and signed with a release key."
+msgstr ""
+
+msgid "Community"
+msgstr ""
+
+msgid ""
+"Published by a third party and not reviewed. It runs with the permissions "
+"you grant it, so only install it if you trust the author."
+msgstr ""
+
+msgid "Approve permissions"
+msgstr ""
+
+msgid "Approve and enable"
+msgstr ""
+
+msgid "%{name} needs your approval before it can run."
+msgstr ""
+
+msgid ""
+"Approve only if you trust the author. The approval is recorded and asked "
+"again whenever the requested permissions change."
+msgstr ""
+
+msgid "This plugin does not request any host permission."
+msgstr ""
+
+msgid "Read stored %{kind} credentials, including their secrets."
+msgstr ""
+
+msgid "unknown"
+msgstr ""
+
+msgid "Store and read its own key-value data inside the Nginx UI database."
+msgstr ""
+
+msgid "Make outbound network requests to the hosts declared in its manifest."
+msgstr ""
+
+msgid "Run scheduled tasks on the schedules declared in its manifest."
+msgstr ""
+
+msgid "Send notifications through the Nginx UI notification channels."
+msgstr ""
+
+msgid "Read CPU, memory, network and Nginx status metrics of this node."
+msgstr ""
+
+msgid "Call the Nginx UI management API with your permissions."
+msgstr ""
+
+msgid "Unknown permission. Only grant it if you trust the plugin author."
+msgstr ""
+
+msgid "In sync"
+msgstr ""
+
+msgid "Outdated"
+msgstr ""
+
+msgid "Not installed"
+msgstr ""
+
+msgid "Unsupported platform"
+msgstr ""
+
+msgid "Unsupported"
+msgstr ""
+
+msgid "Failed to load the plugin matrix"
+msgstr ""
+
+msgid "Update to %{version}"
+msgstr ""
+
+msgid "Sync to this node"
+msgstr ""
+
+msgid ""
+"What every child node has installed, compared with this controller. "
+"Switching the selected node in the header manages that node directly."
+msgstr ""
+
+msgid "All nodes"
+msgstr ""
+
+msgid "This instance has no child node"
+msgstr ""
+
+msgid "Add a node first, then plugins can be installed on it from here."
+msgstr ""
+
+msgid "Sync to selected"
+msgstr ""
+
+msgid "Sync to all"
+msgstr ""
+
+msgid "Marketplace"
+msgstr ""
+
+msgid "%{field} is required"
+msgstr ""
+
+msgid "Failed to load the plugin settings"
+msgstr ""
+
+msgid "Plugin settings saved"
+msgstr ""
+
+msgid "Failed to save the plugin settings"
+msgstr ""
+
+msgid "Settings: %{name}"
+msgstr ""
+
+msgid "This plugin has no settings."
+msgstr ""
+
+msgid "%{count} node"
+msgid_plural "%{count} nodes"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Sync policy saved"
+msgstr ""
+
+msgid "Failed to save the sync policy"
+msgstr ""
+
+msgid "Automatic installation"
+msgstr ""
+
+msgid ""
+"Keep this plugin at the same version and state on the selected child nodes. "
+"Leave every node unchecked to cover all of them, including the ones added "
+"later."
+msgstr ""
+
+msgid "Also sync the plugin settings"
+msgstr ""
+
 #~ msgid "Webauthn"
 #~ msgstr "Webauthn"
 
@@ -11580,3 +11721,430 @@ msgstr "Manutenção"
 
 #~ msgid "Global health check controls"
 #~ msgstr "Controlos globais de verificação de estado"
+
+msgid "No file matches the search"
+msgstr "Nenhum ficheiro corresponde à pesquisa"
+
+msgid ""
+"The file name must end in .conf and use only letters, digits, dots, dashes "
+"and underscores"
+msgstr ""
+"O nome do ficheiro deve terminar em .conf e conter apenas letras, dígitos, "
+"pontos, hífenes e traços inferiores"
+
+msgid "Snippet not found"
+msgstr "Fragmento não encontrado"
+
+msgid "The snippet exceeds 256 KiB"
+msgstr "O fragmento excede 256 KiB"
+
+msgid "The header of the snippet does not parse: {0}"
+msgstr "O cabeçalho do snippet não pode ser analisado: {0}"
+
+msgid "The snippet is still included by {0}"
+msgstr "O snippet ainda é incluído por {0}"
+
+msgid "A snippet with this file name already exists"
+msgstr "Já existe um snippet com este nome de ficheiro"
+
+msgid "The variable {0} is invalid: {1}"
+msgstr "A variável {0} é inválida: {1}"
+
+msgid "The content does not parse as a template: {0}"
+msgstr "O conteúdo não é analisado como um modelo: {0}"
+
+msgid "Snippets"
+msgstr "Snippets"
+
+msgid "Create Snippet"
+msgstr "Criar snippet"
+
+msgid "Built-in Template"
+msgstr "Modelo incorporado"
+
+msgid "Edit Snippet"
+msgstr "Editar snippet"
+
+msgid "Used by %{count} configuration"
+msgid_plural "Used by %{count} configurations"
+msgstr[0] "Usado por %{count} configuração"
+msgstr[1] "Usado por %{count} configurações"
+
+msgid "Site Card Click URL"
+msgstr "URL de clique do cartão do site"
+
+msgid ""
+"Optional absolute HTTP/HTTPS URL used when opening this site card. If "
+"empty, the default site URL is used."
+msgstr ""
+"URL HTTP/HTTPS absoluta opcional utilizada ao abrir este cartão de site. Se "
+"estiver vazia, é utilizada a URL predefinida do site."
+
+msgid "Built-in"
+msgstr "Integrado"
+
+msgid "Snippet"
+msgstr "Trecho"
+
+msgid ""
+"Include keeps the site linked to snippets/%{file}, so later changes of the "
+"snippet apply to it. Insert copies the content into the site instead."
+msgstr ""
+"Include mantém o site ligado a snippets/%{file}, de modo que as alterações "
+"posteriores do snippet se aplicam a ele. Insert copia o conteúdo para o "
+"site em vez disso."
+
+msgid "Insert"
+msgstr "Inserir"
+
+msgid "Include"
+msgstr "Incluir"
+
+msgid "Read Only"
+msgstr "Somente leitura"
+
+msgid "Preview"
+msgstr "Pré-visualização"
+
+msgid "Updates as the snippet changes."
+msgstr "Atualiza-se quando o fragmento é alterado."
+
+msgid ""
+"Built-in templates come with Nginx UI and cannot be changed. Copy one as a "
+"snippet to change it."
+msgstr ""
+"Os modelos integrados vêm com o Nginx UI e não podem ser alterados. Copie "
+"um como um snippet para o alterar."
+
+msgid "File Name"
+msgstr "Nome do ficheiro"
+
+msgid "Variables"
+msgstr "Variáveis"
+
+msgid "Copy as Snippet"
+msgstr "Copiar como snippet"
+
+msgid "Template"
+msgstr "Modelo"
+
+msgid "No template matches the search"
+msgstr "Nenhum modelo corresponde à pesquisa"
+
+msgid "%{count} variable"
+msgid_plural "%{count} variables"
+msgstr[0] "%{count} variável"
+msgstr[1] "%{count} variáveis"
+
+msgid "Translations"
+msgstr "Traduções"
+
+msgid ""
+"The field is in %{language}. Users of other languages see their "
+"translation, or English when there is none."
+msgstr ""
+"O campo está em %{language}. Os utilizadores de outros idiomas veem a sua "
+"tradução, ou o inglês quando não existe."
+
+msgid "Remove translation"
+msgstr "Remover tradução"
+
+msgid "Add a language"
+msgstr "Adicionar um idioma"
+
+msgid "Text"
+msgstr "Texto"
+
+msgid "Switch"
+msgstr "Alternar"
+
+msgid "Select"
+msgstr "Selecionar"
+
+msgid "New Variable…"
+msgstr "Nova variável…"
+
+msgid "Insert Variable"
+msgstr "Inserir variável"
+
+msgid ""
+"Type %{open} to complete a variable, or select a value and press %{keys} to "
+"make it one."
+msgstr ""
+"Digite %{open} para completar uma variável, ou selecione um valor e "
+"pressione %{keys} para transformá-lo numa variável."
+
+msgid "Default Value"
+msgstr "Valor predefinido"
+
+msgid "Edit Variable"
+msgstr "Editar variável"
+
+msgid ""
+"This variable is not declared, so it has no value when the snippet is "
+"inserted."
+msgstr ""
+"Esta variável não está declarada, pelo que não tem valor quando o excerto é "
+"inserido."
+
+msgid "Declare Variable"
+msgstr "Declarar variável"
+
+msgid "Make Variable"
+msgstr "Criar variável"
+
+msgid "New Variable"
+msgstr "Nova variável"
+
+msgid "Key"
+msgstr "Chave"
+
+msgid "Label"
+msgstr "Etiqueta"
+
+msgid "The variable is declared and inserted at the cursor."
+msgstr "A variável é declarada e inserida na posição do cursor."
+
+msgid ""
+"The selected value becomes the default value, and the content refers to the "
+"variable instead."
+msgstr ""
+"O valor selecionado torna-se o valor predefinido, e o conteúdo refere-se à "
+"variável em vez disso."
+
+msgid "Add Variable"
+msgstr "Adicionar variável"
+
+msgid "Not declared, so left without a value: %{names}"
+msgstr "Não declarado, por isso ficou sem valor: %{names}"
+
+msgid "The snippet does not render as valid Nginx configuration."
+msgstr "O snippet não é renderizado como uma configuração de Nginx válida."
+
+msgid "The snippet renders as valid Nginx configuration."
+msgstr "O fragmento é renderizado como uma configuração válida do Nginx."
+
+msgid "What the site editor asks for"
+msgstr "O que o editor do site pede"
+
+msgid "Restore Default Values"
+msgstr "Restaurar valores predefinidos"
+
+msgid "Nothing to fill in."
+msgstr "Nada para preencher."
+
+msgid "Fix the variables to preview the snippet."
+msgstr "Corrija as variáveis para pré-visualizar o fragmento de código."
+
+msgid "Snippets are no longer synchronized"
+msgstr "Os snippets já não são sincronizados"
+
+msgid "Synchronize Snippets"
+msgstr "Sincronizar fragmentos"
+
+msgid ""
+"Every snippet is copied to the selected nodes now, and later changes follow "
+"automatically. Clear the selection to stop synchronizing."
+msgstr ""
+"Cada snippet é copiado para os nós selecionados agora, e as alterações "
+"futuras são seguidas automaticamente. Limpe a seleção para parar a "
+"sincronização."
+
+msgid "Replace snippets that already exist on the nodes"
+msgstr "Substituir snippets que já existem nos nós"
+
+msgid "Included by %{count} file"
+msgid_plural "Included by %{count} files"
+msgstr[0] "Incluído por %{count} ficheiro"
+msgstr[1] "Incluído por %{count} ficheiros"
+
+msgid "Not Used"
+msgstr "Não utilizado"
+
+msgid "Max Age"
+msgstr "Idade máxima"
+
+msgid "Options"
+msgstr "Opções"
+
+msgid "Remove option"
+msgstr "Remover opção"
+
+msgid "Add Option"
+msgstr "Adicionar opção"
+
+msgid "Remove variable"
+msgstr "Remover variável"
+
+msgid "Used in the content, not declared"
+msgstr "Utilizado no conteúdo, não declarado"
+
+msgid "Snippet %{name} saved"
+msgstr "Snippet %{name} guardado"
+
+msgid "Discard the unsaved changes?"
+msgstr "Descartar as alterações não guardadas?"
+
+msgid "Keep Editing"
+msgstr "Continuar a editar"
+
+msgid "Edit Snippet %{name}"
+msgstr "Editar fragmento %{name}"
+
+msgid "Sites can include this snippet and follow its later changes."
+msgstr ""
+"Os sites podem incluir este snippet e acompanhar as suas alterações "
+"posteriores."
+
+msgid ""
+"This snippet has variables, so sites insert a filled in copy from the "
+"config template panel."
+msgstr ""
+"Este snippet tem variáveis, pelo que os sites inserem uma cópia preenchida "
+"a partir do painel do modelo de configuração."
+
+msgid "Includable"
+msgstr "Incluível"
+
+msgid "Insert Only"
+msgstr "Apenas inserir"
+
+msgid "Use"
+msgstr "Usar"
+
+msgid ""
+"Add this directive to a server or location block. Sites that include the "
+"snippet follow its later changes."
+msgstr ""
+"Adicione esta diretiva a um bloco server ou location. Os sites que incluem "
+"o snippet seguem as suas alterações posteriores."
+
+msgid "Static file cache"
+msgstr "Cache de arquivos estáticos"
+
+msgid "Fixed while configurations include the snippet, so they keep working."
+msgstr ""
+"Corrigido enquanto as configurações incluem o snippet, para que continuem a "
+"funcionar."
+
+msgid "Letters, digits, dots, dashes and underscores."
+msgstr "Letras, dígitos, pontos, hifens e sublinhados."
+
+msgid ""
+"Variables are filled in when the snippet is inserted from the config "
+"template panel of the site editor. A snippet with variables can only be "
+"inserted, not included."
+msgstr ""
+"As variáveis são preenchidas quando o snippet é inserido a partir do painel "
+"de modelos de configuração do editor do site. Um snippet com variáveis pode "
+"apenas ser inserido, não incluído."
+
+msgid "No configuration includes this snippet yet."
+msgstr "Nenhuma configuração inclui este snippet ainda."
+
+msgid "Unsaved changes"
+msgstr "Alterações não guardadas"
+
+msgid "My Snippets"
+msgstr "Meus trechos de código"
+
+msgid "Built-in Templates"
+msgstr "Modelos integrados"
+
+msgid "Copied %{include}"
+msgstr "%{include} copiado"
+
+msgid "Delete snippet %{name}?"
+msgstr "Eliminar o snippet %{name}?"
+
+msgid "snippets/%{file} will be removed here and on the synchronized nodes."
+msgstr "snippets/%{file} será removido aqui e nos nós sincronizados."
+
+msgid "snippets/%{file} will be removed."
+msgstr "snippets/%{file} será removido."
+
+msgid "Snippet %{name} deleted"
+msgstr "Snippet %{name} eliminado"
+
+msgid "Synchronize"
+msgstr "Sincronizar"
+
+msgid "Synchronized to %{count} node"
+msgid_plural "Synchronized to %{count} nodes"
+msgstr[0] "Sincronizado para %{count} nó"
+msgstr[1] "Sincronizado para %{count} nós"
+
+msgid ""
+"Has %{count} variable. Sites insert a filled in copy from the config "
+"template panel of the site editor."
+msgid_plural ""
+"Has %{count} variables. Sites insert a filled in copy from the config "
+"template panel of the site editor."
+msgstr[0] ""
+"Tem %{count} variável. Os sites inserem uma cópia preenchida a partir do "
+"painel de modelos de configuração do editor de sites."
+msgstr[1] ""
+"Tem %{count} variáveis. Os sites inserem uma cópia preenchida a partir do "
+"painel de modelos de configuração do editor de sites."
+
+msgid "Copy the include directive"
+msgstr "Copiar a diretiva include"
+
+msgid "Remove the snippet from the files that include it first."
+msgstr "Remova primeiro o snippet dos ficheiros que o incluem."
+
+msgid ""
+"A snippet keeps a piece of Nginx configuration in one place. Include it in "
+"a site, or insert it from the config template panel of the site editor; "
+"changing an included snippet updates every site that uses it."
+msgstr ""
+"Um snippet mantém uma parte da configuração do Nginx num único local. "
+"Inclua-o num site ou insira-o a partir do painel de modelos de configuração "
+"do editor de sites; ao alterar um snippet incluído, todos os sites que o "
+"utilizam são atualizados."
+
+msgid "Search snippets"
+msgstr "Excertos de pesquisa"
+
+msgid "No snippets yet"
+msgstr "Ainda não há excertos"
+
+msgid "No snippet matches the search"
+msgstr "Nenhum excerto corresponde à pesquisa"
+
+msgid "Enter a key."
+msgstr "Introduza uma chave."
+
+msgid "Use letters, digits and underscores, starting with a letter or underscore."
+msgstr "Use letras, dígitos e sublinhados, começando com uma letra ou um sublinhado."
+
+msgid "Another variable uses this key."
+msgstr "Outra variável usa esta chave."
+
+msgid "Add at least one option."
+msgstr "Adicione pelo menos uma opção."
+
+msgid "Every option needs a value."
+msgstr "Cada opção precisa de um valor."
+
+msgid "Option values must be unique."
+msgstr "Os valores das opções devem ser únicos."
+
+msgid "Choose the default option."
+msgstr "Escolha a opção predefinida."
+
+msgid "Certificate Relocated"
+msgstr "Certificado relocalizado"
+
+msgid ""
+"Certificate %{name} is now stored in %{path}, point the sites that load "
+"%{previous_path} to it"
+msgstr ""
+"O certificado %{name} agora está armazenado em %{path}. Aponte os sites que "
+"carregam %{previous_path} para ele"
+
+msgid "The path exists, but the file is not a certificate"
+msgstr "O caminho existe, mas o ficheiro não é um certificado"
+
+msgid "The path exists, but the file is not a private key"
+msgstr "O caminho existe, mas o ficheiro não é uma chave privada"
