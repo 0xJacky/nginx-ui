@@ -56,4 +56,5 @@ export default {
   50062: () => $gettext('No certificate found in the archive'),
   50063: () => $gettext('No private key found in the archive'),
   50064: () => $gettext('No certificate in the archive matches its private key'),
+  50065: () => $gettext('No DNS-01 provider for {0}: install and enable the DNS-01 plugin'),
 }

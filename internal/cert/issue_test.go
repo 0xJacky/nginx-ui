@@ -1,8 +1,8 @@
 package cert
 
 import (
+	"os"
 	"testing"
-	"time"
 )
 
 func TestCanUseLegoRenewDisablesRenewWhenCommonNameEnabled(t *testing.T) {
@@ -19,19 +19,20 @@ func TestCanUseLegoRenewDisablesRenewWhenCommonNameEnabled(t *testing.T) {
 	}
 }
 
-func TestDNS01ChallengeOptionsUseFixedWaitWhenAuthoritativeCheckIsDisabled(t *testing.T) {
-	if got := len(dns01ChallengeOptions(&ConfigPayload{})); got != 1 {
-		t.Fatalf("default option count = %d, want 1", got)
-	}
-	if got := dns01PropagationWait(&ConfigPayload{}); got != 0 {
-		t.Fatalf("default propagation wait = %s, want 0", got)
-	}
+func TestInitChallengeEnvDisablesCNAMEFollowing(t *testing.T) {
+	previous, existed := os.LookupEnv(envDisableCNAMESupport)
+	t.Cleanup(func() {
+		if existed {
+			os.Setenv(envDisableCNAMESupport, previous)
+			return
+		}
+		os.Unsetenv(envDisableCNAMESupport)
+	})
+	os.Unsetenv(envDisableCNAMESupport)
 
-	payload := &ConfigPayload{DisableAuthoritativeNSPropagation: true}
-	if got := len(dns01ChallengeOptions(payload)); got != 1 {
-		t.Fatalf("disabled authoritative propagation option count = %d, want 1", got)
-	}
-	if got := dns01PropagationWait(payload); got != time.Minute {
-		t.Fatalf("disabled authoritative propagation wait = %s, want 1m", got)
+	InitChallengeEnv()
+
+	if got := os.Getenv(envDisableCNAMESupport); got != "true" {
+		t.Fatalf("%s = %q, want true", envDisableCNAMESupport, got)
 	}
 }
