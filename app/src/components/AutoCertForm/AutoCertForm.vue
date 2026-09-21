@@ -7,6 +7,7 @@ import PluginSlot from '@/components/PluginSlot'
 import { PrivateKeyTypeEnum, PrivateKeyTypeList } from '@/constants'
 import { isIPAddress } from '@/utils/certificate'
 import ACMEUserSelector from '@/views/certificate/components/ACMEUserSelector.vue'
+import InstallConfirmModal from '@/views/system/plugins/marketplace/InstallConfirmModal.vue'
 import DNSChallenge from './DNSChallenge.vue'
 
 const props = defineProps<{
@@ -18,6 +19,9 @@ const props = defineProps<{
   isIpCertificate?: boolean
   needsManualIpInput?: boolean
 }>()
+
+/** The official plugin that contributes the DNS-01 challenge. */
+const DNS01_PLUGIN_ID = 'com.nginxui.dns01'
 
 const data = defineModel<AutoCertOptions>('options', {
   required: true,
@@ -69,6 +73,19 @@ async function loadChallengeMethods() {
 
 function goToPluginsPage() {
   router.push('/system/plugins')
+}
+
+// Installing the plugin from here saves a trip to System > Plugins, which is
+// the only other place that offers it.
+const dns01InstallOpen = ref(false)
+
+function installDns01Plugin() {
+  dns01InstallOpen.value = true
+}
+
+async function onDns01PluginInstalled() {
+  challengeMethodsLoaded.value = false
+  await loadChallengeMethods()
 }
 
 const keyTypeOptions: SelectProps['options'] = PrivateKeyTypeList.map(t => ({
@@ -232,11 +249,22 @@ defineExpose({
           :title="$gettext('DNS-01 challenge requires the DNS-01 plugin. Install it from System > Plugins.')"
         >
           <template #description>
-            <AButton type="link" size="small" class="px-0" @click="goToPluginsPage">
-              {{ $gettext('Go to System > Plugins') }}
-            </AButton>
+            <ASpace wrap>
+              <AButton type="primary" size="small" @click="installDns01Plugin">
+                {{ $gettext('Install DNS-01 plugin') }}
+              </AButton>
+              <AButton type="link" size="small" class="px-0" @click="goToPluginsPage">
+                {{ $gettext('Go to System > Plugins') }}
+              </AButton>
+            </ASpace>
           </template>
         </AAlert>
+
+        <InstallConfirmModal
+          v-model:open="dns01InstallOpen"
+          :plugin-id="DNS01_PLUGIN_ID"
+          @installed="onDns01PluginInstalled"
+        />
         <AFormItem
           v-if="!forceDnsChallenge"
           :label="$gettext('Challenge Method')"

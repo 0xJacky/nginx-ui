@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import InstalledList from './InstalledList.vue'
-import MarketplacePlaceholder from './MarketplacePlaceholder.vue'
+import Marketplace from './Marketplace.vue'
 import PluginMatrix from './PluginMatrix.vue'
 
 const activeKey = ref('installed')
@@ -17,7 +17,7 @@ const tabs = computed(() => [
     <ATabs v-model:active-key="activeKey" :items="tabs">
       <template #contentRender="{ item }">
         <InstalledList v-if="item.key === 'installed'" />
-        <MarketplacePlaceholder v-else-if="item.key === 'marketplace'" />
+        <Marketplace v-else-if="item.key === 'marketplace'" />
         <PluginMatrix v-else-if="item.key === 'nodes'" />
       </template>
     </ATabs>
