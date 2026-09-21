@@ -49,6 +49,10 @@ const notifications: Record<string, { title: () => string, content: (args: any) 
     title: () => $gettext('Renew Certificate Error'),
     content: (args: any) => $gettext('Certificate %{name} renewal failed: %{error}', args),
   },
+  'DNS-01 plugin unavailable': {
+    title: () => $gettext('DNS-01 plugin unavailable'),
+    content: (args: any) => $gettext('Certificate %{name} cannot be renewed because no enabled plugin provides the DNS-01 challenge', args),
+  },
   'Renew Certificate Success_1': {
     title: () => $gettext('Renew Certificate Success'),
     content: (args: any) => $gettext('Certificate %{name} renewed successfully', args),
