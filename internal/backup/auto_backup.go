@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/event"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -31,9 +32,10 @@ type ExecutionResult struct {
 //
 // Returns:
 //   - error: CosyError if backup execution fails, nil if successful
-func ExecuteAutoBackup(autoBackup *model.AutoBackup) error {
+func ExecuteAutoBackup(autoBackup *model.AutoBackup) (err error) {
 	logger.Infof("Starting auto backup task: %s (ID: %d, Type: %s, Storage: %s)",
 		autoBackup.GetName(), autoBackup.ID, autoBackup.BackupType, autoBackup.StorageType)
+	defer func() { event.PublishBackupCompleted(autoBackup.GetName(), err == nil) }()
 
 	// Validate storage configuration before starting backup
 	if err := validateStorageConfiguration(autoBackup); err != nil {
