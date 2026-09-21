@@ -148,6 +148,7 @@ func newAutoRenewPayload(certModel *model.Cert, certInfo *Info, replacesCertID s
 		MustStaple:                        certModel.MustStaple,
 		LegoDisableCNAMESupport:           certModel.LegoDisableCNAMESupport,
 		DisableAuthoritativeNSPropagation: certModel.DisableAuthoritativeNSPropagation,
+		ChallengeConfig:                   certModel.ChallengeConfig,
 		EnableCommonName:                  certModel.EnableCommonName,
 		RevokeOld:                         certModel.RevokeOld,
 		ReplacesCertID:                    replacesCertID,

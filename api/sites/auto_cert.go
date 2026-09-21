@@ -22,6 +22,7 @@ type autoCertRequest struct {
 	MustStaple                        bool               `json:"must_staple"`
 	LegoDisableCNAMESupport           bool               `json:"lego_disable_cname_support"`
 	DisableAuthoritativeNSPropagation bool               `json:"disable_authoritative_ns_propagation"`
+	ChallengeConfig                   map[string]any     `json:"challenge_config"`
 	EnableCommonName                  bool               `json:"enable_common_name"`
 	RevokeOld                         bool               `json:"revoke_old"`
 }
@@ -105,6 +106,7 @@ func persistAutoCertOptions(certModel *model.Cert, name string, json autoCertReq
 		MustStaple:                        json.MustStaple,
 		LegoDisableCNAMESupport:           json.LegoDisableCNAMESupport,
 		DisableAuthoritativeNSPropagation: json.DisableAuthoritativeNSPropagation,
+		ChallengeConfig:                   json.ChallengeConfig,
 		EnableCommonName:                  json.EnableCommonName,
 		RevokeOld:                         json.RevokeOld,
 	}
@@ -113,7 +115,7 @@ func persistAutoCertOptions(certModel *model.Cert, name string, json autoCertReq
 		Select(
 			"name", "domains", "auto_cert", "dns_credential_id", "challenge_method", "profile",
 			"key_type", "acme_user_id", "must_staple", "lego_disable_cname_support",
-			"disable_authoritative_ns_propagation",
+			"disable_authoritative_ns_propagation", "challenge_config",
 			"enable_common_name", "revoke_old",
 		).
 		Updates(updates).Error
