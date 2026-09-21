@@ -1,0 +1,41 @@
+// Package main implements the {{.Name}} nginx-ui plugin: a dns01 challenge
+// solver for the "{{.ProviderCode}}" provider.
+//
+// TODO: pin a released version of github.com/0xJacky/nginx-ui-plugin-sdk-go
+// once one is tagged (see the TODO in go.mod), and replace the illustrative
+// SDK calls below with whatever that SDK's real API turns out to be.
+package main
+
+import (
+	"context"
+
+	pluginsdk "github.com/0xJacky/nginx-ui-plugin-sdk-go"
+)
+
+// {{.GoTypeName}} implements the dns01 capability for the "{{.ProviderCode}}" provider.
+type {{.GoTypeName}} struct{}
+
+// Present publishes the challenge TXT record.
+// TODO: call the real {{.ProviderName}} API using req.Config[{{json .CredentialKey}}]
+// instead of doing nothing.
+func (p {{.GoTypeName}}) Present(ctx context.Context, req pluginsdk.DNS01Request) error {
+	_ = req
+	return nil
+}
+
+// CleanUp removes what Present published for the same challenge. It MUST be
+// safe to call even when Present never ran or already failed (DNS01-8).
+// TODO: call the real {{.ProviderName}} API to remove the record.
+func (p {{.GoTypeName}}) CleanUp(ctx context.Context, req pluginsdk.DNS01Request) error {
+	_ = req
+	return nil
+}
+
+func main() {
+	pluginsdk.Serve(pluginsdk.Config{
+		ID:      {{json .ID}},
+		Name:    {{json .Name}},
+		Version: "0.1.0",
+		DNS01:   {{.GoTypeName}}{},
+	})
+}

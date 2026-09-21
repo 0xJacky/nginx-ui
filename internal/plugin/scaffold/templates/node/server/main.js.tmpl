@@ -1,0 +1,94 @@
+#!/usr/bin/env node
+// {{.Name}} dns01 plugin for nginx-ui.
+//
+// Zero dependencies: uses only Node's built-in readline module. Speaks
+// JSON-RPC 2.0 as newline-delimited JSON on stdin/stdout; stdout carries
+// protocol frames only, everything else goes to stderr. See the
+// nginx-ui-plugin-spec repository, spec/03-wire-protocol.md and
+// spec/05-capabilities-dns01.md, for the wire contract.
+'use strict';
+
+const readline = require('readline');
+
+const API_VERSION = 1;
+const PROVIDER_CODE = {{json .ProviderCode}};
+const CREDENTIAL_KEY = {{json .CredentialKey}};
+let settings = {};
+
+function log(message) {
+  process.stderr.write(`[${PROVIDER_CODE}] ${message}\n`);
+}
+
+function reply(id, result, error) {
+  const frame = { jsonrpc: '2.0', id };
+  if (error) {
+    frame.error = error;
+  } else {
+    frame.result = result || {};
+  }
+  process.stdout.write(JSON.stringify(frame) + '\n');
+}
+
+function invalidConfig(field, message) {
+  return { code: -32003, message, data: { field } };
+}
+
+function handleInitialize() {
+  return [{ api_version: API_VERSION, capabilities: ['dns01'] }, null];
+}
+
+function handleConfigure(params) {
+  settings = (params && params.settings) || {};
+  return [{}, null];
+}
+
+function handlePresent(params) {
+  // TODO: call the real {{.ProviderName}} API instead of only logging.
+  const config = (params && params.config) || {};
+  if (!config[CREDENTIAL_KEY]) {
+    return [null, invalidConfig(CREDENTIAL_KEY, `${CREDENTIAL_KEY} is required`)];
+  }
+  log(`present ${params.effective_fqdn} = ${params.value}`);
+  return [{}, null];
+}
+
+function handleCleanup(params) {
+  // TODO: call the real {{.ProviderName}} API to remove the record. This
+  // MUST be safe to call even when present never ran (DNS01-8).
+  log(`cleanup ${params && params.effective_fqdn}`);
+  return [{}, null];
+}
+
+const HANDLERS = {
+  'plugin.initialize': handleInitialize,
+  'plugin.configure': handleConfigure,
+  'plugin.ping': () => [{}, null],
+  'plugin.shutdown': () => [{}, null],
+  'dns01.present': handlePresent,
+  'dns01.cleanup': handleCleanup,
+};
+
+const rl = readline.createInterface({ input: process.stdin, terminal: false });
+
+rl.on('line', (rawLine) => {
+  const line = rawLine.trim();
+  if (!line) {
+    return;
+  }
+  const message = JSON.parse(line);
+  const method = message.method;
+  const id = message.id;
+  if (method === 'plugin.exit') {
+    process.exit(0);
+  }
+  if (id === undefined || id === null) {
+    return; // other notifications (plugin.initialized) need no reply
+  }
+  const handler = HANDLERS[method];
+  if (!handler) {
+    reply(id, null, { code: -32601, message: `method not found: ${method}` });
+    return;
+  }
+  const [result, error] = handler(message.params || {});
+  reply(id, result, error);
+});
