@@ -18,5 +18,11 @@ declare module 'vue-router' {
     error?: () => string
     lastRouteName?: string
     modules?: string[]
+    /** Id of the plugin that contributed this route. */
+    pluginId?: string
+    /** Name of the top level sidebar entry this plugin route is nested under. */
+    pluginParent?: string
+    /** Sort order of this plugin route inside its sidebar group. */
+    pluginOrder?: number
   }
 }
