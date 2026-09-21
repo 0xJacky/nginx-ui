@@ -6,6 +6,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/event"
 	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -73,6 +74,7 @@ func Login(c *gin.Context) {
 	u, err := user.Login(json.Name, json.Password)
 	if err != nil {
 		user.BanIP(clientIP)
+		event.PublishAuthLoginFailed(json.Name, clientIP)
 		random := time.Duration(rand.Int() % 10)
 		time.Sleep(random * time.Second)
 		cosy.ErrHandler(c, err)
@@ -102,6 +104,7 @@ func Login(c *gin.Context) {
 		if _, err = user.VerifyOTP(u, json.OTP, json.RecoveryCode); err != nil {
 			cosy.ErrHandler(c, err)
 			user.BanIP(clientIP)
+			event.PublishAuthLoginFailed(u.Name, clientIP)
 			return
 		}
 
