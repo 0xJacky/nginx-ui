@@ -1085,6 +1085,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: Get release info
         id: release
@@ -1128,6 +1130,7 @@ jobs:
           repository: 0xJacky/homebrew-tools
           path: homebrew-tools
           token: ${{ secrets.HOMEBREW_GITHUB_TOKEN }}
+          persist-credentials: false
 
       - name: Update Formula file
         env:
