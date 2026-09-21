@@ -12,6 +12,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/analytic"
 	"github.com/0xJacky/Nginx-UI/internal/cache"
 	internalCluster "github.com/0xJacky/Nginx-UI/internal/cluster"
+	"github.com/0xJacky/Nginx-UI/internal/event"
 	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -28,6 +29,14 @@ type nodeMutationRequest struct {
 	Enabled      bool    `json:"enabled"`
 	LegacySecret *string `json:"legacy_secret"`
 	Token        *string `json:"token"`
+	// AcceptPluginSync is optional so a client that predates plugin cluster
+	// sync keeps the node opted in.
+	AcceptPluginSync *bool `json:"accept_plugin_sync"`
+}
+
+// acceptPluginSync reads the submitted opt-in, defaulting to true.
+func acceptPluginSync(request nodeMutationRequest) bool {
+	return request.AcceptPluginSync == nil || *request.AcceptPluginSync
 }
 
 type nodeResponse struct {
@@ -37,6 +46,7 @@ type nodeResponse struct {
 	Name                    string                           `json:"name"`
 	URL                     string                           `json:"url"`
 	Enabled                 bool                             `json:"enabled"`
+	AcceptPluginSync        bool                             `json:"accept_plugin_sync"`
 	AuthMethod              string                           `json:"auth_method"`
 	HasCredential           bool                             `json:"has_credential"`
 	CredentialStatus        string                           `json:"credential_status"`
@@ -82,6 +92,7 @@ func newNodeResponse(node *model.Node) nodeResponse {
 		Name:                    node.Name,
 		URL:                     node.URL,
 		Enabled:                 node.Enabled,
+		AcceptPluginSync:        node.AcceptPluginSync,
 		AuthMethod:              node.AuthMethod,
 		HasCredential:           node.HasCredential(),
 		CredentialStatus:        node.CredentialStatus,
@@ -155,6 +166,7 @@ func AddNode(c *gin.Context) {
 		Name:              request.Name,
 		URL:               normalizedURL,
 		Enabled:           request.Enabled,
+		AcceptPluginSync:  acceptPluginSync(request),
 		AuthMethod:        authMethod,
 		CredentialStatus:  credentialStatus,
 		AuthUpgradeStatus: authUpgradeStatus,
@@ -164,6 +176,13 @@ func AddNode(c *gin.Context) {
 	err = database.Transaction(func(tx *gorm.DB) error {
 		if err := tx.Create(node).Error; err != nil {
 			return err
+		}
+		if !node.AcceptPluginSync {
+			// The column carries a true default, so opting out has to be
+			// written back explicitly.
+			if err := tx.Model(node).Update("accept_plugin_sync", false).Error; err != nil {
+				return err
+			}
 		}
 		if legacySecret == "" {
 			return nil
@@ -186,6 +205,11 @@ func AddNode(c *gin.Context) {
 	if node.Enabled && legacySecret != "" {
 		nodeauth.QueueLegacyRelationshipUpgrade(node.ID)
 	}
+	// Whatever keeps cluster content aligned picks the new node up from here.
+	event.Publish(event.Event{
+		Type: event.TypeNodeJoined,
+		Data: map[string]any{"node_id": node.ID},
+	})
 	c.JSON(http.StatusCreated, newNodeResponse(node))
 }
 
@@ -205,9 +229,10 @@ func EditNode(c *gin.Context) {
 		return
 	}
 	updates := map[string]any{
-		"name":    request.Name,
-		"url":     normalizedURL,
-		"enabled": request.Enabled,
+		"name":               request.Name,
+		"url":                normalizedURL,
+		"enabled":            request.Enabled,
+		"accept_plugin_sync": acceptPluginSync(request),
 	}
 	legacySecret := mutationLegacySecret(request)
 	database := model.UseDB()

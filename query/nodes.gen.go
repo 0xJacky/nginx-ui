@@ -48,6 +48,7 @@ func newNode(db *gorm.DB, opts ...gen.DOOption) node {
 	_node.AuthUpgradeErrorCode = field.NewString(tableName, "auth_upgrade_error_code")
 	_node.AuthUpgradeError = field.NewString(tableName, "auth_upgrade_error")
 	_node.Enabled = field.NewBool(tableName, "enabled")
+	_node.AcceptPluginSync = field.NewBool(tableName, "accept_plugin_sync")
 
 	_node.fillFieldMap()
 
@@ -78,6 +79,7 @@ type node struct {
 	AuthUpgradeErrorCode    field.String
 	AuthUpgradeError        field.String
 	Enabled                 field.Bool
+	AcceptPluginSync        field.Bool
 
 	fieldMap map[string]field.Expr
 }
@@ -114,6 +116,7 @@ func (n *node) updateTableName(table string) *node {
 	n.AuthUpgradeErrorCode = field.NewString(table, "auth_upgrade_error_code")
 	n.AuthUpgradeError = field.NewString(table, "auth_upgrade_error")
 	n.Enabled = field.NewBool(table, "enabled")
+	n.AcceptPluginSync = field.NewBool(table, "accept_plugin_sync")
 
 	n.fillFieldMap()
 
@@ -130,7 +133,7 @@ func (n *node) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (n *node) fillFieldMap() {
-	n.fieldMap = make(map[string]field.Expr, 20)
+	n.fieldMap = make(map[string]field.Expr, 21)
 	n.fieldMap["id"] = n.ID
 	n.fieldMap["created_at"] = n.CreatedAt
 	n.fieldMap["updated_at"] = n.UpdatedAt
@@ -151,6 +154,7 @@ func (n *node) fillFieldMap() {
 	n.fieldMap["auth_upgrade_error_code"] = n.AuthUpgradeErrorCode
 	n.fieldMap["auth_upgrade_error"] = n.AuthUpgradeError
 	n.fieldMap["enabled"] = n.Enabled
+	n.fieldMap["accept_plugin_sync"] = n.AcceptPluginSync
 }
 
 func (n node) clone(db *gorm.DB) node {
