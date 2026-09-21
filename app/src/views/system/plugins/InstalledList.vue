@@ -1,15 +1,20 @@
 <script setup lang="ts">
 import type { BadgeProps } from 'antdv-next'
 import type { PluginInfo, PluginStatus } from '@/api/plugin'
+import type { PluginNodeResult } from '@/api/plugin_sync'
 import { AppstoreOutlined, ExperimentOutlined, PlusOutlined, ReloadOutlined } from '@antdv-next/icons'
 import { useIntervalFn } from '@vueuse/core'
+import nodeApi from '@/api/node'
 import pluginApi from '@/api/plugin'
+import { syncPlugin } from '@/api/plugin_sync'
+import NodeSelector from '@/components/NodeSelector'
 import { getErrorMessage } from '@/lib/http'
 import { usePluginStore } from '@/plugin'
 import InstallModal from './InstallModal.vue'
 import LogsDrawer from './LogsDrawer.vue'
 import PermissionApprovalModal from './PermissionApprovalModal.vue'
 import SettingsDrawer from './SettingsDrawer.vue'
+import SyncPolicyEditor from './SyncPolicyEditor.vue'
 
 const { message } = App.useApp()
 const pluginStore = usePluginStore()
@@ -29,14 +34,65 @@ const selected = ref<PluginInfo>()
 const pendingApproval = ref<PluginInfo>()
 const devUrlDraft = ref('')
 
+// The cluster columns only make sense once this instance has a child node.
+const hasNodes = ref(false)
+
 const columns = computed(() => [
   { title: $gettext('Plugin'), dataIndex: 'name' },
   { title: $gettext('Version'), dataIndex: 'version', width: 110 },
   { title: $gettext('Capabilities'), dataIndex: 'capabilities' },
   { title: $gettext('Status'), dataIndex: 'status', width: 150 },
   { title: $gettext('Enabled'), dataIndex: 'enabled', width: 100 },
-  { title: $gettext('Action'), dataIndex: 'action', width: 220 },
+  ...(hasNodes.value
+    ? [{ title: $gettext('Auto install to nodes'), dataIndex: 'sync_policy', width: 220 }]
+    : []),
+  { title: $gettext('Action'), dataIndex: 'action', width: hasNodes.value ? 300 : 220 },
 ])
+
+const syncOpen = ref(false)
+const syncing = ref(false)
+const syncTarget = ref<PluginInfo>()
+const syncNodeIds = ref<number[]>([])
+const syncResults = ref<PluginNodeResult[]>([])
+
+async function loadNodes() {
+  try {
+    const { data } = await nodeApi.getList({ enabled: true })
+    hasNodes.value = data.length > 0
+  }
+  catch {
+    hasNodes.value = false
+  }
+}
+
+function openSync(record: PluginInfo) {
+  syncTarget.value = record
+  syncNodeIds.value = [...(record.sync_node_ids ?? [])]
+  syncResults.value = []
+  syncOpen.value = true
+}
+
+async function runSync() {
+  const record = syncTarget.value
+  if (!record)
+    return
+
+  syncing.value = true
+  try {
+    const { results } = await syncPlugin(record.id, syncNodeIds.value)
+    syncResults.value = results
+    if (results.every(result => result.success))
+      message.success($gettext('Plugin synchronized to %{count} node(s)', { count: String(results.length) }))
+    else
+      message.warning($gettext('Some nodes could not be synchronized'))
+  }
+  catch (error) {
+    message.error(getErrorMessage(error, $gettext('Failed to synchronize the plugin')))
+  }
+  finally {
+    syncing.value = false
+  }
+}
 
 interface StatusPreset {
   badge: BadgeProps['status']
@@ -196,7 +252,10 @@ function clearDevUrl() {
   message.success($gettext('Reload the page to apply the development plugin URL'))
 }
 
-onMounted(() => loadPlugins())
+onMounted(() => {
+  loadPlugins()
+  loadNodes()
+})
 onUnmounted(pause)
 </script>
 
@@ -317,6 +376,10 @@ onUnmounted(pause)
           />
         </template>
 
+        <template v-else-if="column.dataIndex === 'sync_policy'">
+          <SyncPolicyEditor :plugin="record" @updated="loadPlugins(false)" />
+        </template>
+
         <template v-else-if="column.dataIndex === 'action'">
           <ASpace :size="0" wrap>
             <AButton type="link" size="small" @click="openSettings(record)">
@@ -324,6 +387,14 @@ onUnmounted(pause)
             </AButton>
             <AButton type="link" size="small" @click="openLogs(record)">
               {{ $gettext('Logs') }}
+            </AButton>
+            <AButton
+              v-if="hasNodes"
+              type="link"
+              size="small"
+              @click="openSync(record)"
+            >
+              {{ $gettext('Sync to nodes') }}
             </AButton>
             <APopconfirm
               :title="$gettext('Uninstall %{name}? Its data and settings are removed.', { name: record.name })"
@@ -340,6 +411,39 @@ onUnmounted(pause)
       </template>
     </ATable>
 
+    <AModal
+      v-model:open="syncOpen"
+      :title="$gettext('Sync %{name} to nodes', { name: syncTarget?.name ?? '' })"
+      :width="640"
+      :ok-text="$gettext('Sync')"
+      :cancel-text="$gettext('Close')"
+      :confirm-loading="syncing"
+      @ok="runSync"
+    >
+      <p class="mb-2 text-gray-500">
+        {{ $gettext('Leave every node unchecked to sync to all child nodes.') }}
+      </p>
+      <NodeSelector v-model:target="syncNodeIds" hidden-local />
+
+      <div v-if="syncResults.length > 0" class="sync-results mt-4">
+        <div
+          v-for="result in syncResults"
+          :key="result.node_id"
+          class="sync-result-row"
+        >
+          <span class="font-medium">{{ result.node }}</span>
+          <ATag v-if="result.success" color="green">
+            {{ result.actions.length > 0 ? result.actions.join(', ') : $gettext('Already in sync') }}
+          </ATag>
+          <ATooltip v-else :title="result.error">
+            <ATag color="red">
+              {{ $gettext('Failed') }}
+            </ATag>
+          </ATooltip>
+        </div>
+      </div>
+    </AModal>
+
     <InstallModal v-model:open="installOpen" @installed="loadPlugins()" />
     <SettingsDrawer v-model:open="settingsOpen" :plugin="selected" />
     <LogsDrawer v-model:open="logsOpen" :plugin="selected" />
@@ -353,6 +457,24 @@ onUnmounted(pause)
 </template>
 
 <style lang="less" scoped>
+.sync-results {
+  border: 1px solid var(--ant-color-border-secondary);
+  border-radius: var(--ant-border-radius);
+  overflow: hidden;
+}
+
+.sync-result-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 12px;
+
+  & + & {
+    border-top: 1px solid var(--ant-color-border-secondary);
+  }
+}
+
 .plugin-icon {
   width: 20px;
   height: 20px;

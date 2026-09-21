@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import InstalledList from './InstalledList.vue'
 import MarketplacePlaceholder from './MarketplacePlaceholder.vue'
+import PluginMatrix from './PluginMatrix.vue'
 
 const activeKey = ref('installed')
 
 const tabs = computed(() => [
   { key: 'installed', label: $gettext('Installed') },
   { key: 'marketplace', label: $gettext('Marketplace') },
+  { key: 'nodes', label: $gettext('Nodes') },
 ])
 </script>
 
@@ -16,6 +18,7 @@ const tabs = computed(() => [
       <template #contentRender="{ item }">
         <InstalledList v-if="item.key === 'installed'" />
         <MarketplacePlaceholder v-else-if="item.key === 'marketplace'" />
+        <PluginMatrix v-else-if="item.key === 'nodes'" />
       </template>
     </ATabs>
   </ACard>

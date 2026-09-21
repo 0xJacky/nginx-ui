@@ -15,6 +15,7 @@ var Migrations = []*gormigrate.Migration{
 	RepairCertDomainsJSON,
 	CollapseBanIPRows,
 	BackfillCertChallengeConfig,
+	BackfillNodeAcceptPluginSync,
 }
 
 var BeforeAutoMigrate = []*gormigrate.Migration{
