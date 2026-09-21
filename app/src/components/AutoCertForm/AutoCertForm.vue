@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import type { SelectProps } from 'antdv-next'
-import type { AutoCertOptions } from '@/api/auto_cert'
-import { AutoCertChallengeMethod } from '@/api/auto_cert'
+import type { AutoCertOptions, ChallengeMethod } from '@/api/auto_cert'
+import { useRouter } from 'vue-router'
+import auto_cert, { AutoCertChallengeMethod } from '@/api/auto_cert'
+import PluginSlot from '@/components/PluginSlot'
 import { PrivateKeyTypeEnum, PrivateKeyTypeList } from '@/constants'
 import { isIPAddress } from '@/utils/certificate'
 import ACMEUserSelector from '@/views/certificate/components/ACMEUserSelector.vue'
@@ -23,17 +25,51 @@ const data = defineModel<AutoCertOptions>('options', {
 
 const manualIpAddress = defineModel<string>('manualIpAddress', { default: '' })
 
+const router = useRouter()
+
+const challengeMethods = ref<ChallengeMethod[]>([])
+// Until the backend answers, assume every method is available so the form does
+// not flash a warning for a plugin that is in fact installed.
+const challengeMethodsLoaded = ref(false)
+
+const availableMethods = computed(() => new Set(challengeMethods.value.map(method => method.code)))
+
+function isMethodAvailable(code: keyof typeof AutoCertChallengeMethod) {
+  return !challengeMethodsLoaded.value || availableMethods.value.has(code)
+}
+
+// DNS-01 is contributed by a plugin, so it can legitimately be missing.
+const isDns01Available = computed(() => isMethodAvailable(AutoCertChallengeMethod.dns01))
+
 const challengeMethodOptions = computed<SelectProps['options']>(() => [
   {
     value: AutoCertChallengeMethod.http01,
+    disabled: !isMethodAvailable(AutoCertChallengeMethod.http01),
     label: $gettext('HTTP01'),
   },
   {
     value: AutoCertChallengeMethod.dns01,
-    disabled: props.isIpCertificate || props.needsManualIpInput,
+    disabled: props.isIpCertificate || props.needsManualIpInput || !isDns01Available.value,
     label: $gettext('DNS01'),
   },
 ])
+
+async function loadChallengeMethods() {
+  try {
+    challengeMethods.value = await auto_cert.get_challenge_methods()
+  }
+  catch {
+    // Keep both options usable rather than blocking issuance on a failed probe.
+    challengeMethods.value = []
+    return
+  }
+
+  challengeMethodsLoaded.value = true
+}
+
+function goToPluginsPage() {
+  router.push('/system/plugins')
+}
 
 const keyTypeOptions: SelectProps['options'] = PrivateKeyTypeList.map(t => ({
   key: t.key,
@@ -45,6 +81,8 @@ const compactLabelCol = { flex: '170px' }
 const compactWrapperCol = { flex: 'auto' }
 
 onMounted(() => {
+  void loadChallengeMethods()
+
   if (!data.value.key_type)
     data.value.key_type = PrivateKeyTypeEnum.P256
 
@@ -186,6 +224,19 @@ defineExpose({
           </template>
         </AFormItem>
 
+        <AAlert
+          v-if="!isDns01Available"
+          class="mb-4"
+          type="warning"
+          show-icon
+          :title="$gettext('DNS-01 challenge requires the DNS-01 plugin. Install it from System > Plugins.')"
+        >
+          <template #description>
+            <AButton type="link" size="small" class="px-0" @click="goToPluginsPage">
+              {{ $gettext('Go to System > Plugins') }}
+            </AButton>
+          </template>
+        </AAlert>
         <AFormItem
           v-if="!forceDnsChallenge"
           :label="$gettext('Challenge Method')"
@@ -226,9 +277,15 @@ defineExpose({
       </AForm>
 
       <ACMEUserSelector v-model:options="data" compact />
-      <div v-if="data.challenge_method === 'dns01'" class="mt-4">
-        <DNSChallenge v-model:options="data" compact />
-      </div>
+      <PluginSlot
+        v-if="data.challenge_method === 'dns01'"
+        :name="`certificate.challenge.form:${data.challenge_method}`"
+        :context="{ options: data }"
+      >
+        <div class="mt-4">
+          <DNSChallenge v-model:options="data" compact />
+        </div>
+      </PluginSlot>
     </ACard>
 
     <ACard size="small" class="cert-config-card" :title="$gettext('Special Settings')">
@@ -242,25 +299,6 @@ defineExpose({
             </p>
           </template>
           <ASwitch v-model:checked="data.must_staple" />
-        </AFormItem>
-        <AFormItem :label="$gettext('Lego disable CNAME Support')">
-          <template #help>
-            <p>
-              {{ $gettext('If your domain has CNAME records and you cannot obtain certificates, you need to enable this option.') }}
-            </p>
-          </template>
-          <ASwitch v-model:checked="data.lego_disable_cname_support" />
-        </AFormItem>
-        <AFormItem
-          v-if="data.challenge_method === 'dns01'"
-          :label="$gettext('Disable Authoritative DNS Propagation Check')"
-        >
-          <template #help>
-            <p>
-              {{ $gettext('Skip local DNS propagation checks and wait 60 seconds before asking the certificate authority to validate the record.') }}
-            </p>
-          </template>
-          <ASwitch v-model:checked="data.disable_authoritative_ns_propagation" />
         </AFormItem>
         <AFormItem :label="$gettext('Enable Common Name')">
           <template #help>
@@ -280,6 +318,7 @@ defineExpose({
         </AFormItem>
       </AForm>
     </ACard>
+    <PluginSlot name="certificate.issue.footer" :context="{ options: data }" />
   </div>
 </template>
 
