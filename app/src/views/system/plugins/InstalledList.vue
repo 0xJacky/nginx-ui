@@ -9,7 +9,7 @@ import pluginApi from '@/api/plugin'
 import { syncPlugin } from '@/api/plugin_sync'
 import NodeSelector from '@/components/NodeSelector'
 import { getErrorMessage } from '@/lib/http'
-import { usePluginStore } from '@/plugin'
+import { usePluginLoader, usePluginStore } from '@/plugin'
 import InstallModal from './InstallModal.vue'
 import LogsDrawer from './LogsDrawer.vue'
 import PermissionApprovalModal from './PermissionApprovalModal.vue'
@@ -119,6 +119,14 @@ function isToggleDisabled(record: PluginInfo) {
   return record.status === 'incompatible' || record.status === 'missing'
 }
 
+const pluginLoader = usePluginLoader()
+
+// A freshly installed bundle is picked up without a page reload.
+async function onInstalled() {
+  await loadPlugins()
+  await pluginLoader.loadNew()
+}
+
 async function loadPlugins(showSpinner = true) {
   if (showSpinner)
     loading.value = true
@@ -153,6 +161,7 @@ async function enablePlugin(record: PluginInfo, approvePermissions?: boolean) {
     await pluginApi.enable(record.id, approvePermissions)
     message.success($gettext('Plugin enabled'))
     await loadPlugins(false)
+    await pluginLoader.loadNew()
   }
   catch (error) {
     message.error(getErrorMessage(error, $gettext('Failed to enable the plugin')))
@@ -444,7 +453,7 @@ onUnmounted(pause)
       </div>
     </AModal>
 
-    <InstallModal v-model:open="installOpen" @installed="loadPlugins()" />
+    <InstallModal v-model:open="installOpen" @installed="onInstalled" />
     <SettingsDrawer v-model:open="settingsOpen" :plugin="selected" />
     <LogsDrawer v-model:open="logsOpen" :plugin="selected" />
     <PermissionApprovalModal
