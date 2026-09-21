@@ -208,8 +208,9 @@ func TestNewChallengeProviderUsesTheReportedTimings(t *testing.T) {
 	}
 	defer release()
 
-	if len(opts) != 1 {
-		t.Fatalf("challenge option count = %d, want 1", len(opts))
+	// The recursive requirement is dropped and the pre-check is wrapped.
+	if len(opts) != 2 {
+		t.Fatalf("challenge option count = %d, want 2", len(opts))
 	}
 
 	timeouter, ok := provider.(challenge.ProviderTimeout)
@@ -381,8 +382,9 @@ func TestPresentWrapsThePluginError(t *testing.T) {
 // sets an unexported lego field, so the test drives the func behind it.
 func preCheck(t *testing.T, provider challenge.Provider, opts []legodns01.ChallengeOption, fallback legodns01.PreCheckFunc) (bool, error) {
 	t.Helper()
-	if len(opts) != 1 {
-		t.Fatalf("challenge option count = %d, want 1", len(opts))
+	// The recursive requirement is dropped and the pre-check is wrapped.
+	if len(opts) != 2 {
+		t.Fatalf("challenge option count = %d, want 2", len(opts))
 	}
 	return challengeProviderOf(t, provider).preCheckFunc()(t.Context(), "example.com", "_acme-challenge.example.com.", "value", fallback)
 }
@@ -447,6 +449,30 @@ func TestPreCheckFallsBackToTheOfficialPlugin(t *testing.T) {
 	}
 	if len(official.methodCalls(protocol.MethodDNS01Check)) != 1 {
 		t.Fatal("the official plugin was not asked to check")
+	}
+}
+
+func TestPreCheckWaitsWhenTheAuthoritativeCheckIsOff(t *testing.T) {
+	previous := disabledAuthoritativeNSPropagationWait
+	disabledAuthoritativeNSPropagationWait = 10 * time.Millisecond
+	t.Cleanup(func() { disabledAuthoritativeNSPropagationWait = previous })
+
+	owner := newFakeCaller()
+	owner.errs[protocol.MethodDNS01Check] = &protocol.Error{Code: protocol.CodeMethodNotFound, Message: "unknown method"}
+	options := map[string]any{protocol.DNS01OptionDisableAuthoritativeNSPropagation: true}
+
+	provider, opts, release, err := NewDNS01Source(testHost(owner)).NewChallengeProvider(t.Context(), "cloudflare", testConfiguration(), options)
+	if err != nil {
+		t.Fatalf("NewChallengeProvider error = %v", err)
+	}
+	defer release()
+
+	ready, err := preCheck(t, provider, opts, func(context.Context, string, string) (bool, error) {
+		t.Fatal("the core check ran although the certificate turned it off")
+		return false, nil
+	})
+	if err != nil || !ready {
+		t.Fatalf("pre-check = (%v, %v), want (true, nil)", ready, err)
 	}
 }
 
