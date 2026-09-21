@@ -269,6 +269,7 @@ func (m *Manager) Start(ctx context.Context) {
 	m.opMu.Unlock()
 
 	go m.startEnabled(ctx)
+	m.StartSync(ctx)
 }
 
 // Stop shuts every plugin and every background worker down. The manager can be
@@ -286,6 +287,7 @@ func (m *Manager) Stop(ctx context.Context) {
 		m.scheduler = nil
 	}
 
+	m.StopSync()
 	for _, item := range m.snapshot() {
 		m.stopEntry(ctx, item)
 		m.stopEventPump(item)
