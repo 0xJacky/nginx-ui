@@ -3,6 +3,7 @@ import { http } from '@uozi-admin/request'
 
 export interface SiteInfo {
   id: number // primary identifier for API operations
+  index: number // stable site index shared with site list records
   health_check_enabled: boolean // whether health check is enabled
   host: string // host:port format
   port: number
