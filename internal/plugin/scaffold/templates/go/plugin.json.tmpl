@@ -1,0 +1,29 @@
+{
+  "id": {{json .ID}},
+  "name": {{json .Name}},
+  "version": "0.1.0",
+  "description": {{json (printf "%s DNS-01 challenge plugin" .Name)}},
+  "api_version": 1,
+  "server": {
+    "executables": {
+      {{json .Platform}}: {{json .ExecutablePath}}
+    },
+    "lifecycle": "on_demand",
+    "idle_timeout_seconds": 300
+  },
+  "capabilities": ["dns01"],
+  "permissions": ["network"],
+  "dns01": {
+    "providers": [
+      {
+        "name": {{json .ProviderName}},
+        "code": {{json .ProviderCode}},
+        "configuration": {
+          "credentials": {
+            {{json .CredentialKey}}: "API token"
+          }
+        }
+      }
+    ]
+  }
+}
