@@ -10320,6 +10320,610 @@ msgctxt "preference group"
 msgid "Maintenance"
 msgstr "メンテナンス"
 
+msgid ""
+"DNS-01 challenge requires the DNS-01 plugin. Install it from System > "
+"Plugins."
+msgstr ""
+"DNS-01 チャレンジには DNS-01 プラグインが必要です。「システム > プラグイン」"
+"からインストールしてください。"
+
+msgid "Install DNS-01 plugin"
+msgstr "DNS-01 プラグインをインストール"
+
+msgid "Go to System > Plugins"
+msgstr "「システム > プラグイン」へ移動"
+
+msgid "If your domain has CNAME records and you cannot obtain certificates, "
+msgstr "ドメインに CNAME レコードがあり、証明書を取得できない場合は、"
+
+msgid "Skip local DNS propagation checks and wait 60 seconds before asking "
+msgstr "ローカル DNS 伝播チェックをスキップして、依頼する前に 60 秒待ちます。"
+
+msgid "DNS-01 plugin unavailable"
+msgstr "DNS-01 プラグインが利用できません"
+
+msgid ""
+"Certificate %{name} cannot be renewed because no enabled plugin provides the "
+"DNS-01 challenge"
+msgstr ""
+"証明書 %{name} を更新できません。DNS-01 チャレンジを提供する有効なプラグイン"
+"がありません"
+
+msgid "Plugin %{plugin} failed to render"
+msgstr "プラグイン %{plugin} のレンダリングに失敗しました"
+
+msgid "No DNS-01 provider for {0}: install and enable the DNS-01 plugin"
+msgstr ""
+"{0} に対応する DNS-01 プロバイダーがありません。DNS-01 プラグインをインストー"
+"ルして有効にしてください"
+
+msgid "Plugin manifest is invalid"
+msgstr "プラグインマニフェストが無効です"
+
+msgid "Plugin not found"
+msgstr "プラグインが見つかりません"
+
+msgid "Plugin already exists"
+msgstr "プラグインは既に存在します"
+
+msgid "Plugin is not running"
+msgstr "プラグインが実行されていません"
+
+msgid "Plugin handshake failed"
+msgstr "プラグインのハンドシェイクに失敗しました"
+
+msgid "Plugin has no executable for this platform"
+msgstr "プラグインにこのプラットフォーム用の実行ファイルがありません"
+
+msgid "Plugin package is invalid"
+msgstr "プラグインパッケージが無効です"
+
+msgid "Plugin package is too large"
+msgstr "プラグインパッケージが大きすぎます"
+
+msgid "Plugin api version is incompatible"
+msgstr "プラグインの API バージョンに互換性がありません"
+
+msgid "Plugin permissions need approval"
+msgstr "プラグインの権限には承認が必要です"
+
+msgid "Plugin dependency is missing: {0}"
+msgstr "プラグインの依存関係が不足しています: {0}"
+
+msgid "Plugin dependencies form a cycle"
+msgstr "プラグインの依存関係が循環しています"
+
+msgid "Plugin is in use by {0}"
+msgstr "プラグインは {0} によって使用されています"
+
+msgid "Plugin system is disabled"
+msgstr "プラグインシステムが無効になっています"
+
+msgid "Plugin uploads are disabled"
+msgstr "プラグインのアップロードが無効になっています"
+
+msgid "Plugin call timed out"
+msgstr "プラグインの呼び出しがタイムアウトしました"
+
+msgid "Plugin rpc error: {0}"
+msgstr "プラグインの RPC エラー: {0}"
+
+msgid "Plugin setting {0} is invalid"
+msgstr "プラグイン設定 {0} が無効です"
+
+msgid "Plugin needs nginx-ui {0} or newer, this node runs {1}"
+msgstr ""
+"プラグインには nginx-ui {0} 以降が必要ですが、このノードでは {1} が実行されて"
+"います"
+
+msgid "Plugin package declares another id"
+msgstr "プラグインパッケージが別の ID を宣言しています"
+
+msgid "Plugins"
+msgstr "プラグイン"
+
+msgid "Accept plugin sync"
+msgstr "プラグインの同期を受け入れる"
+
+msgid "Accepted"
+msgstr "受け入れ済み"
+
+msgid "Opted out"
+msgstr "除外済み"
+
+msgid "Install, configure and troubleshoot plugins that extend Nginx UI."
+msgstr ""
+"Nginx UI を拡張するプラグインのインストール、設定、トラブルシューティングを行"
+"います。"
+
+msgid "Plugin"
+msgstr "プラグイン"
+
+msgid "Capabilities"
+msgstr "機能"
+
+msgid "Auto install to nodes"
+msgstr "ノードへの自動インストール"
+
+msgid "Plugin synchronized to %{count} node(s)"
+msgstr "プラグインは %{count} 件のノードに同期されました"
+
+msgid "Some nodes could not be synchronized"
+msgstr "一部のノードを同期できませんでした"
+
+msgid "Failed to synchronize the plugin"
+msgstr "プラグインの同期に失敗しました"
+
+msgid "Installed"
+msgstr "インストール済み"
+
+msgid "Starting"
+msgstr "起動中"
+
+msgid "Missing"
+msgstr "欠落"
+
+msgid "Incompatible"
+msgstr "非互換"
+
+msgid "Needs approval"
+msgstr "承認が必要"
+
+msgid "Failed to load the plugin list"
+msgstr "プラグイン一覧の読み込みに失敗しました"
+
+msgid "Plugin enabled"
+msgstr "プラグインを有効にしました"
+
+msgid "Failed to enable the plugin"
+msgstr "プラグインの有効化に失敗しました"
+
+msgid "Plugin disabled"
+msgstr "プラグインを無効にしました"
+
+msgid "Failed to disable the plugin"
+msgstr "プラグインの無効化に失敗しました"
+
+msgid "Plugin uninstalled"
+msgstr "プラグインをアンインストールしました"
+
+msgid "Failed to uninstall the plugin"
+msgstr "プラグインのアンインストールに失敗しました"
+
+msgid "Reload the page to apply the development plugin URL"
+msgstr "開発用プラグイン URL を適用するにはページを再読み込みしてください"
+
+msgid ""
+"Plugins extend Nginx UI with extra capabilities. Only install bundles from "
+"authors you trust."
+msgstr ""
+"プラグインは Nginx UI に追加の機能を拡張します。信頼できる作者が公開したバン"
+"ドルのみをインストールしてください。"
+
+msgid "Development plugin URL"
+msgstr "開発用プラグイン URL"
+
+msgid ""
+"Address of a plugin.json served by any static server. The plugin is loaded "
+"in addition to the installed ones."
+msgstr ""
+"任意の静的サーバーで配信される plugin.json のアドレスです。このプラグインはイ"
+"ンストール済みのプラグインに加えて読み込まれます。"
+
+msgid "Dev plugin"
+msgstr "開発用プラグイン"
+
+msgid "No plugins installed"
+msgstr "インストール済みのプラグインはありません"
+
+msgid "Settings"
+msgstr "設定"
+
+msgid "Logs"
+msgstr "ログ"
+
+msgid "Sync to nodes"
+msgstr "ノードへ同期"
+
+msgid "Uninstall %{name}? Its data and settings are removed."
+msgstr "%{name} をアンインストールしますか？データと設定はすべて削除されます。"
+
+msgid "Uninstall"
+msgstr "アンインストール"
+
+msgid "Sync %{name} to nodes"
+msgstr "%{name} をノードへ同期"
+
+msgid "Leave every node unchecked to sync to all child nodes."
+msgstr "どのノードもチェックしない場合、すべての子ノードに同期されます。"
+
+msgid "Already in sync"
+msgstr "同期済み"
+
+msgid "This node only"
+msgstr "このノードのみ"
+
+msgid "All child nodes"
+msgstr "すべての子ノード"
+
+msgid "Selected nodes"
+msgstr "選択したノード"
+
+msgid "Failed to read the plugin bundle"
+msgstr "プラグインバンドルの読み込みに失敗しました"
+
+msgid "Plugin installed"
+msgstr "プラグインをインストールしました"
+
+msgid "The plugin was installed here but could not be pushed to the nodes"
+msgstr ""
+"プラグインはこのノードにはインストールされましたが、各ノードへの配信に失敗し"
+"ました"
+
+msgid "Failed to install the plugin"
+msgstr "プラグインのインストールに失敗しました"
+
+msgid "Install plugin"
+msgstr "プラグインをインストール"
+
+msgid "Click or drag a plugin bundle here"
+msgstr "ここをクリックするか、プラグインバンドルをドラッグしてください"
+
+msgid "A .tar.gz produced by the plugin author"
+msgstr "プラグイン作者が作成した .tar.gz ファイル"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "(replaces %{version})"
+msgstr "（%{version} を置き換えます）"
+
+msgid "None"
+msgstr "なし"
+
+msgid "Install the plugins below first"
+msgstr "先に以下のプラグインをインストールしてください"
+
+msgid "This version asks for permissions you have not approved yet."
+msgstr "このバージョンは、まだ承認していない権限を要求しています。"
+
+msgid ""
+"Review the list below before installing. The plugin stays disabled until you "
+"approve them."
+msgstr ""
+"インストール前に以下の一覧を確認してください。権限を承認するまでプラグインは"
+"無効のままになります。"
+
+msgid "Requested permissions"
+msgstr "要求される権限"
+
+msgid "Enable after install"
+msgstr "インストール後に有効にする"
+
+msgid "Also install to child nodes"
+msgstr "子ノードにも同時にインストール"
+
+msgid "Keep in sync automatically"
+msgstr "自動的に同期を維持する"
+
+msgid ""
+"The version, the enabled state and future updates are kept aligned on those "
+"nodes."
+msgstr ""
+"これらのノードでは、バージョン、有効状態、今後の更新が常に一致するように保た"
+"れます。"
+
+msgid "Failed to load the plugin logs"
+msgstr "プラグインログの読み込みに失敗しました"
+
+msgid "Logs copied to clipboard"
+msgstr "ログをクリップボードにコピーしました"
+
+msgid "Failed to copy the logs"
+msgstr "ログのコピーに失敗しました"
+
+msgid "Logs: %{name}"
+msgstr "ログ: %{name}"
+
+msgid "No log output yet"
+msgstr "まだログ出力がありません"
+
+msgid "Failed to load the plugin marketplace"
+msgstr "プラグインマーケットプレイスの読み込みに失敗しました"
+
+msgid "Reloading the catalog"
+msgstr "カタログを再読み込み中"
+
+msgid "Search plugins"
+msgstr "プラグインを検索"
+
+msgid "All categories"
+msgstr "すべてのカテゴリ"
+
+msgid "All sources"
+msgstr "すべてのソース"
+
+msgid "Updates only"
+msgstr "更新のあるものだけ"
+
+msgid "Sources"
+msgstr "ソース"
+
+msgid "Every installed plugin is up to date"
+msgstr "インストール済みのプラグインはすべて最新です"
+
+msgid "No plugins match your search"
+msgstr "検索条件に一致するプラグインがありません"
+
+msgid "Downloading the package"
+msgstr "パッケージをダウンロード中"
+
+msgid "Verifying the signature"
+msgstr "署名を検証中"
+
+msgid "Installing"
+msgstr "インストール中"
+
+msgid "%{phase}: %{plugin}"
+msgstr "%{phase}: %{plugin}"
+
+msgid "Failed to load the plugin from the marketplace"
+msgstr "マーケットプレイスからのプラグインの読み込みに失敗しました"
+
+msgid "Update plugin"
+msgstr "プラグインを更新"
+
+msgid "No release available for this platform"
+msgstr "このプラットフォーム向けのリリースがありません"
+
+msgid "Source"
+msgstr "ソース"
+
+msgid "This is a community plugin"
+msgstr "これはコミュニティプラグインです"
+
+msgid "The plugins below are installed together with it"
+msgstr "以下のプラグインも一緒にインストールされます"
+
+msgid "Live progress is unavailable, checking the plugin list instead"
+msgstr ""
+"リアルタイムの進捗を取得できないため、代わりにプラグイン一覧を確認しています"
+
+msgid "No description provided."
+msgstr "説明はありません。"
+
+msgid "Installed: %{version}"
+msgstr "インストール済み: %{version}"
+
+msgid "Homepage"
+msgstr "ホームページ"
+
+msgid "Repository"
+msgstr "リポジトリ"
+
+msgid "Release notes"
+msgstr "リリースノート"
+
+msgid "Released"
+msgstr "リリース日"
+
+msgid "Platforms"
+msgstr "プラットフォーム"
+
+msgid "Failed to load the plugin details"
+msgstr "プラグインの詳細の読み込みに失敗しました"
+
+msgid "Installed version"
+msgstr "インストール済みバージョン"
+
+msgid "Versions"
+msgstr "バージョン"
+
+msgid "Yanked"
+msgstr "取り下げ済み"
+
+msgid "Latest"
+msgstr "最新"
+
+msgid "Readme"
+msgstr "Readme"
+
+msgid "Failed to load the marketplace sources"
+msgstr "マーケットプレイスのソースの読み込みに失敗しました"
+
+msgid "Marketplace sources saved"
+msgstr "マーケットプレイスのソースを保存しました"
+
+msgid "Failed to save the marketplace sources"
+msgstr "マーケットプレイスのソースの保存に失敗しました"
+
+msgid "Marketplace sources"
+msgstr "マーケットプレイスのソース"
+
+msgid ""
+"Catalogs are merged in order, the first source that offers a plugin wins. "
+"Leave the list empty to use the official catalog."
+msgstr ""
+"カタログは順番にマージされ、最初にそのプラグインを提供したソースが採用されま"
+"す。リストを空にすると公式カタログが使用されます。"
+
+msgid "Using the official catalog"
+msgstr "公式カタログを使用中"
+
+msgid "Add source"
+msgstr "ソースを追加"
+
+msgid "Add the official catalog"
+msgstr "公式カタログを追加"
+
+msgid "Official"
+msgstr "公式"
+
+msgid "Built and signed by the Nginx UI maintainers."
+msgstr "Nginx UI のメンテナーによってビルドされ、署名されています。"
+
+msgid "Verified"
+msgstr "検証済み"
+
+msgid "Reviewed by the Nginx UI maintainers and signed with a release key."
+msgstr ""
+"Nginx UI のメンテナーによってレビューされ、リリースキーで署名されています。"
+
+msgid "Community"
+msgstr "コミュニティ"
+
+msgid ""
+"Published by a third party and not reviewed. It runs with the permissions "
+"you grant it, so only install it if you trust the author."
+msgstr ""
+"サードパーティによって公開されたもので、レビューされていません。付与した権限"
+"で動作するため、作者を信頼できる場合のみインストールしてください。"
+
+msgid "Approve permissions"
+msgstr "権限を承認"
+
+msgid "Approve and enable"
+msgstr "承認して有効にする"
+
+msgid "%{name} needs your approval before it can run."
+msgstr "%{name} を実行するには、あなたの承認が必要です。"
+
+msgid ""
+"Approve only if you trust the author. The approval is recorded and asked "
+"again whenever the requested permissions change."
+msgstr ""
+"作者を信頼できる場合のみ承認してください。承認内容は記録され、要求される権限"
+"が変わるたびに再度確認されます。"
+
+msgid "This plugin does not request any host permission."
+msgstr "このプラグインはホストの権限を要求していません。"
+
+msgid "Read stored %{kind} credentials, including their secrets."
+msgstr ""
+"保存されている %{kind} の資格情報を、シークレットを含めて読み取ります。"
+
+msgid "unknown"
+msgstr "不明"
+
+msgid "Store and read its own key-value data inside the Nginx UI database."
+msgstr ""
+"Nginx UI のデータベース内にプラグイン自身のキーバリューデータを保存・読み取り"
+"します。"
+
+msgid "Make outbound network requests to the hosts declared in its manifest."
+msgstr "マニフェストに宣言されたホストへ発信ネットワークリクエストを行います。"
+
+msgid "Run scheduled tasks on the schedules declared in its manifest."
+msgstr "マニフェストに宣言されたスケジュールで定期タスクを実行します。"
+
+msgid "Send notifications through the Nginx UI notification channels."
+msgstr "Nginx UI の通知チャネルを通じて通知を送信します。"
+
+msgid "Read CPU, memory, network and Nginx status metrics of this node."
+msgstr ""
+"このノードの CPU、メモリ、ネットワーク、Nginx のステータス指標を読み取りま"
+"す。"
+
+msgid "Call the Nginx UI management API with your permissions."
+msgstr "あなたの権限で Nginx UI の管理 API を呼び出します。"
+
+msgid "Unknown permission. Only grant it if you trust the plugin author."
+msgstr "不明な権限です。プラグインの作者を信頼できる場合のみ許可してください。"
+
+msgid "In sync"
+msgstr "同期済み"
+
+msgid "Outdated"
+msgstr "旧バージョン"
+
+msgid "Not installed"
+msgstr "未インストール"
+
+msgid "Unsupported platform"
+msgstr "対応していないプラットフォーム"
+
+msgid "Unsupported"
+msgstr "非対応"
+
+msgid "Failed to load the plugin matrix"
+msgstr "プラグインマトリクスの読み込みに失敗しました"
+
+msgid "Update to %{version}"
+msgstr "%{version} に更新"
+
+msgid "Sync to this node"
+msgstr "このノードへ同期"
+
+msgid ""
+"What every child node has installed, compared with this controller. "
+"Switching the selected node in the header manages that node directly."
+msgstr ""
+"各子ノードにインストールされているものを、このコントローラーと比較して表示し"
+"ます。ヘッダーで選択ノードを切り替えると、そのノードを直接管理できます。"
+
+msgid "All nodes"
+msgstr "すべてのノード"
+
+msgid "This instance has no child node"
+msgstr "このインスタンスには子ノードがありません"
+
+msgid "Add a node first, then plugins can be installed on it from here."
+msgstr ""
+"先にノードを追加すると、ここからそのノードにプラグインをインストールできるよ"
+"うになります。"
+
+msgid "Sync to selected"
+msgstr "選択したノードへ同期"
+
+msgid "Sync to all"
+msgstr "すべてのノードへ同期"
+
+msgid "Marketplace"
+msgstr "マーケットプレイス"
+
+msgid "%{field} is required"
+msgstr "%{field} は必須です"
+
+msgid "Failed to load the plugin settings"
+msgstr "プラグイン設定の読み込みに失敗しました"
+
+msgid "Plugin settings saved"
+msgstr "プラグイン設定を保存しました"
+
+msgid "Failed to save the plugin settings"
+msgstr "プラグイン設定の保存に失敗しました"
+
+msgid "Settings: %{name}"
+msgstr "設定: %{name}"
+
+msgid "This plugin has no settings."
+msgstr "このプラグインには設定項目がありません。"
+
+msgid "%{count} node"
+msgid_plural "%{count} nodes"
+msgstr[0] "他 %{count} 件"
+
+msgid "Sync policy saved"
+msgstr "同期ポリシーを保存しました"
+
+msgid "Failed to save the sync policy"
+msgstr "同期ポリシーの保存に失敗しました"
+
+msgid "Automatic installation"
+msgstr "自動インストール"
+
+msgid ""
+"Keep this plugin at the same version and state on the selected child nodes. "
+"Leave every node unchecked to cover all of them, including the ones added "
+"later."
+msgstr ""
+"選択した子ノードで、このプラグインのバージョンと状態を常に一致させます。どの"
+"ノードもチェックしない場合、後から追加されるノードを含むすべてのノードが対象"
+"になります。"
+
+msgid "Also sync the plugin settings"
+msgstr "プラグイン設定も同期する"
+
 #~ msgid "Webauthn"
 #~ msgstr "WebAuthn"
 

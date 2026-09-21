@@ -249,6 +249,17 @@ msgid ""
 "Any reachable IP address can be used with private Certificate Authorities"
 msgstr "任何可访问的 IP 地址均可用于私有证书颁发机构"
 
+msgid ""
+"DNS-01 challenge requires the DNS-01 plugin. Install it from System > "
+"Plugins."
+msgstr "DNS-01 验证需要 DNS-01 插件，请前往「系统 > 插件」安装。"
+
+msgid "Install DNS-01 plugin"
+msgstr "安装 DNS-01 插件"
+
+msgid "Go to System > Plugins"
+msgstr "前往「系统 > 插件」"
+
 msgid "Challenge Method"
 msgstr "挑战方法"
 
@@ -275,6 +286,9 @@ msgstr "某些用户在使用 Firefox 首次访问时，OCSP Must Staple 可能�
 msgid "Lego disable CNAME Support"
 msgstr "Lego 禁用 CNAME 支持"
 
+msgid "If your domain has CNAME records and you cannot obtain certificates, "
+msgstr "如果您的域名有 CNAME 记录且无法获取证书，"
+
 msgid ""
 "If your domain has CNAME records and you cannot obtain certificates, you "
 "need to enable this option."
@@ -282,6 +296,9 @@ msgstr "如果您的域名有 CNAME 记录且无法获取证书，则需要启�
 
 msgid "Disable Authoritative DNS Propagation Check"
 msgstr "禁用权威 DNS 传播检查"
+
+msgid "Skip local DNS propagation checks and wait 60 seconds before asking "
+msgstr "跳过本地 DNS 传播检查，并在请求前等待 60 秒。"
 
 msgid ""
 "Skip local DNS propagation checks and wait 60 seconds before asking the "
@@ -1024,6 +1041,14 @@ msgstr "证书续期错误"
 
 msgid "Certificate %{name} renewal failed: %{error}"
 msgstr "证书 %{name} 续期失败：%{error}"
+
+msgid "DNS-01 plugin unavailable"
+msgstr "DNS-01 插件不可用"
+
+msgid ""
+"Certificate %{name} cannot be renewed because no enabled plugin provides the "
+"DNS-01 challenge"
+msgstr "证书 %{name} 无法续签，因为没有已启用的插件提供 DNS-01 验证"
 
 msgid "Certificate Expired"
 msgstr "证书已过期"
@@ -2215,6 +2240,9 @@ msgstr "归档中未找到私钥"
 msgid "No certificate in the archive matches its private key"
 msgstr "归档中没有证书与其私钥匹配"
 
+msgid "No DNS-01 provider for {0}: install and enable the DNS-01 plugin"
+msgstr "{0} 没有可用的 DNS-01 提供商：请安装并启用 DNS-01 插件"
+
 msgid "Path is not under the nginx conf dir"
 msgstr "路径不在 Nginx 配置目录下"
 
@@ -2628,6 +2656,66 @@ msgstr "构建 nginx 配置失败: {0}"
 
 msgid "Failed to get nginx.conf path"
 msgstr "无法获取 nginx.conf 路径"
+
+msgid "Plugin manifest is invalid"
+msgstr "插件清单无效"
+
+msgid "Plugin not found"
+msgstr "插件未找到"
+
+msgid "Plugin already exists"
+msgstr "插件已存在"
+
+msgid "Plugin is not running"
+msgstr "插件未运行"
+
+msgid "Plugin handshake failed"
+msgstr "插件握手失败"
+
+msgid "Plugin has no executable for this platform"
+msgstr "插件没有适用于该平台的可执行文件"
+
+msgid "Plugin package is invalid"
+msgstr "插件包无效"
+
+msgid "Plugin package is too large"
+msgstr "插件包过大"
+
+msgid "Plugin api version is incompatible"
+msgstr "插件 API 版本不兼容"
+
+msgid "Plugin permissions need approval"
+msgstr "插件权限需要批准"
+
+msgid "Plugin dependency is missing: {0}"
+msgstr "插件缺少依赖项：{0}"
+
+msgid "Plugin dependencies form a cycle"
+msgstr "插件依赖关系形成了循环"
+
+msgid "Plugin is in use by {0}"
+msgstr "插件正被 {0} 使用"
+
+msgid "Plugin system is disabled"
+msgstr "插件系统已禁用"
+
+msgid "Plugin uploads are disabled"
+msgstr "插件上传已禁用"
+
+msgid "Plugin call timed out"
+msgstr "插件调用超时"
+
+msgid "Plugin rpc error: {0}"
+msgstr "插件 RPC 错误：{0}"
+
+msgid "Plugin setting {0} is invalid"
+msgstr "插件设置 {0} 无效"
+
+msgid "Plugin needs nginx-ui {0} or newer, this node runs {1}"
+msgstr "插件需要 nginx-ui {0} 或更高版本，而该节点运行的是 {1}"
+
+msgid "Plugin package declares another id"
+msgstr "插件包声明了另一个 ID"
 
 msgid "Task not found"
 msgstr "未找到任务"
@@ -3908,6 +3996,9 @@ msgstr "编辑 Stream"
 
 msgid "Upgrade"
 msgstr "升级"
+
+msgid "Plugins"
+msgstr "插件"
 
 msgid "About"
 msgstr "关于"
@@ -6158,6 +6249,9 @@ msgstr "创建记录"
 msgid "Unknown error"
 msgstr "未知错误"
 
+msgid "Plugin %{plugin} failed to render"
+msgstr "插件 %{plugin} 渲染失败"
+
 msgid "Manage DNS zones and records for domains under your account."
 msgstr "管理账号下域名的 DNS 域区与记录。"
 
@@ -7149,6 +7243,15 @@ msgstr "版本"
 msgid "Authentication"
 msgstr "认证"
 
+msgid "Accept plugin sync"
+msgstr "接受插件同步"
+
+msgid "Accepted"
+msgstr "已接受"
+
+msgid "Opted out"
+msgstr "已选择退出"
+
 msgid "The selected content will be pushed to: %{nodes}"
 msgstr "所选内容将推送到：%{nodes}"
 
@@ -7333,14 +7436,6 @@ msgid ""
 "Renew certificates when their remaining validity is less than or equal to "
 "this value."
 msgstr "当证书剩余有效期小于或等于此值时续签证书。"
-
-msgid "Recursive Nameservers"
-msgstr "递归域名服务器"
-
-msgid ""
-"Set the recursive nameservers to override the systems nameservers for the "
-"step of DNS challenge."
-msgstr "设置递归域名服务器，在 DNS 验证步骤中覆盖系统的域名服务器。"
 
 msgid "Stub Status Port"
 msgstr "Stub 状态端口"
@@ -9119,12 +9214,6 @@ msgstr "续期"
 msgid "Days"
 msgstr "天"
 
-msgid "DNS Challenge"
-msgstr "DNS 验证"
-
-msgid "Are you sure you want to remove this item?"
-msgstr "您确定要删除这个项目吗?"
-
 msgid "This notification is disabled"
 msgstr "此通知已禁用"
 
@@ -10130,6 +10219,9 @@ msgstr "运行内置诊断以验证环境和服务就绪情况。"
 msgid "Check release updates and execute upgrade operations when available."
 msgstr "检查版本更新并在可用时执行升级操作。"
 
+msgid "Install, configure and troubleshoot plugins that extend Nginx UI."
+msgstr "安装、配置和排查扩展 Nginx UI 功能的插件。"
+
 msgid "Review third-party licenses and open source component attributions."
 msgstr "查看第三方许可证与开源组件归属信息。"
 
@@ -10153,6 +10245,473 @@ msgstr "组件"
 
 msgid "All Components"
 msgstr "所有组件"
+
+msgid "Plugin"
+msgstr "插件"
+
+msgid "Capabilities"
+msgstr "功能"
+
+msgid "Auto install to nodes"
+msgstr "自动安装到节点"
+
+msgid "Plugin synchronized to %{count} node(s)"
+msgstr "插件已同步到 %{count} 个节点"
+
+msgid "Some nodes could not be synchronized"
+msgstr "部分节点未能同步"
+
+msgid "Failed to synchronize the plugin"
+msgstr "同步插件失败"
+
+msgid "Installed"
+msgstr "已安装"
+
+msgid "Starting"
+msgstr "启动中"
+
+msgid "Missing"
+msgstr "缺失"
+
+msgid "Incompatible"
+msgstr "不兼容"
+
+msgid "Needs approval"
+msgstr "需要批准"
+
+msgid "Failed to load the plugin list"
+msgstr "加载插件列表失败"
+
+msgid "Plugin enabled"
+msgstr "插件已启用"
+
+msgid "Failed to enable the plugin"
+msgstr "启用插件失败"
+
+msgid "Plugin disabled"
+msgstr "插件已禁用"
+
+msgid "Failed to disable the plugin"
+msgstr "禁用插件失败"
+
+msgid "Plugin uninstalled"
+msgstr "插件已卸载"
+
+msgid "Failed to uninstall the plugin"
+msgstr "卸载插件失败"
+
+msgid "Reload the page to apply the development plugin URL"
+msgstr "请刷新页面以应用开发插件地址"
+
+msgid ""
+"Plugins extend Nginx UI with extra capabilities. Only install bundles from "
+"authors you trust."
+msgstr "插件可以为 Nginx UI 扩展额外功能，请仅安装您信任的作者发布的插件包。"
+
+msgid "Development plugin URL"
+msgstr "开发插件地址"
+
+msgid ""
+"Address of a plugin.json served by any static server. The plugin is loaded "
+"in addition to the installed ones."
+msgstr ""
+"由任意静态服务器提供的 plugin.json 地址，该插件会在已安装插件的基础上额外加"
+"载。"
+
+msgid "Dev plugin"
+msgstr "开发插件"
+
+msgid "No plugins installed"
+msgstr "尚未安装任何插件"
+
+msgid "Settings"
+msgstr "设置"
+
+msgid "Logs"
+msgstr "日志"
+
+msgid "Sync to nodes"
+msgstr "同步到节点"
+
+msgid "Uninstall %{name}? Its data and settings are removed."
+msgstr "确定要卸载 %{name} 吗？其数据和设置都将被移除。"
+
+msgid "Uninstall"
+msgstr "卸载"
+
+msgid "Sync %{name} to nodes"
+msgstr "将 %{name} 同步到节点"
+
+msgid "Leave every node unchecked to sync to all child nodes."
+msgstr "不勾选任何节点即可同步到所有子节点。"
+
+msgid "Already in sync"
+msgstr "已同步"
+
+msgid "This node only"
+msgstr "仅本节点"
+
+msgid "All child nodes"
+msgstr "所有子节点"
+
+msgid "Selected nodes"
+msgstr "已选节点"
+
+msgid "Failed to read the plugin bundle"
+msgstr "读取插件包失败"
+
+msgid "Plugin installed"
+msgstr "插件已安装"
+
+msgid "The plugin was installed here but could not be pushed to the nodes"
+msgstr "插件已在本地安装，但未能推送到各节点"
+
+msgid "Failed to install the plugin"
+msgstr "安装插件失败"
+
+msgid "Install plugin"
+msgstr "安装插件"
+
+msgid "Click or drag a plugin bundle here"
+msgstr "点击或将插件包拖拽到此处"
+
+msgid "A .tar.gz produced by the plugin author"
+msgstr "由插件作者生成的 .tar.gz 文件"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "(replaces %{version})"
+msgstr "（替换 %{version}）"
+
+msgid "None"
+msgstr "无"
+
+msgid "Install the plugins below first"
+msgstr "请先安装以下插件"
+
+msgid "This version asks for permissions you have not approved yet."
+msgstr "此版本请求了您尚未批准的权限。"
+
+msgid ""
+"Review the list below before installing. The plugin stays disabled until you "
+"approve them."
+msgstr "安装前请查看以下列表，插件在您批准这些权限前将保持禁用状态。"
+
+msgid "Requested permissions"
+msgstr "请求的权限"
+
+msgid "Enable after install"
+msgstr "安装后启用"
+
+msgid "Also install to child nodes"
+msgstr "同时安装到子节点"
+
+msgid "Keep in sync automatically"
+msgstr "自动保持同步"
+
+msgid ""
+"The version, the enabled state and future updates are kept aligned on those "
+"nodes."
+msgstr "这些节点上的版本、启用状态及后续更新都会保持一致。"
+
+msgid "Failed to load the plugin logs"
+msgstr "加载插件日志失败"
+
+msgid "Logs copied to clipboard"
+msgstr "日志已复制到剪贴板"
+
+msgid "Failed to copy the logs"
+msgstr "复制日志失败"
+
+msgid "Logs: %{name}"
+msgstr "日志：%{name}"
+
+msgid "No log output yet"
+msgstr "暂无日志输出"
+
+msgid "Failed to load the plugin marketplace"
+msgstr "加载插件市场失败"
+
+msgid "Reloading the catalog"
+msgstr "正在重新加载目录"
+
+msgid "Search plugins"
+msgstr "搜索插件"
+
+msgid "All categories"
+msgstr "所有分类"
+
+msgid "All sources"
+msgstr "所有来源"
+
+msgid "Updates only"
+msgstr "仅显示可更新"
+
+msgid "Sources"
+msgstr "来源"
+
+msgid "Every installed plugin is up to date"
+msgstr "所有已安装的插件均为最新版本"
+
+msgid "No plugins match your search"
+msgstr "没有找到匹配的插件"
+
+msgid "Downloading the package"
+msgstr "正在下载安装包"
+
+msgid "Verifying the signature"
+msgstr "正在验证签名"
+
+msgid "Installing"
+msgstr "正在安装"
+
+msgid "%{phase}: %{plugin}"
+msgstr "%{phase}：%{plugin}"
+
+msgid "Failed to load the plugin from the marketplace"
+msgstr "从市场加载插件失败"
+
+msgid "Update plugin"
+msgstr "更新插件"
+
+msgid "No release available for this platform"
+msgstr "该平台没有可用的发行版本"
+
+msgid "Source"
+msgstr "来源"
+
+msgid "This is a community plugin"
+msgstr "这是一个社区插件"
+
+msgid "The plugins below are installed together with it"
+msgstr "以下插件将随其一起安装"
+
+msgid "Live progress is unavailable, checking the plugin list instead"
+msgstr "无法获取实时进度，正在改为检查插件列表"
+
+msgid "No description provided."
+msgstr "未提供描述。"
+
+msgid "Installed: %{version}"
+msgstr "已安装：%{version}"
+
+msgid "Homepage"
+msgstr "主页"
+
+msgid "Repository"
+msgstr "代码仓库"
+
+msgid "Release notes"
+msgstr "更新日志"
+
+msgid "Released"
+msgstr "发布日期"
+
+msgid "Platforms"
+msgstr "平台"
+
+msgid "Failed to load the plugin details"
+msgstr "加载插件详情失败"
+
+msgid "Installed version"
+msgstr "已安装版本"
+
+msgid "Versions"
+msgstr "版本"
+
+msgid "Yanked"
+msgstr "已撤回"
+
+msgid "Latest"
+msgstr "最新"
+
+msgid "Readme"
+msgstr "Readme"
+
+msgid "Failed to load the marketplace sources"
+msgstr "加载市场源失败"
+
+msgid "Marketplace sources saved"
+msgstr "市场源已保存"
+
+msgid "Failed to save the marketplace sources"
+msgstr "保存市场源失败"
+
+msgid "Marketplace sources"
+msgstr "市场源"
+
+msgid ""
+"Catalogs are merged in order, the first source that offers a plugin wins. "
+"Leave the list empty to use the official catalog."
+msgstr "目录按顺序合并，最先提供该插件的源生效。留空列表即使用官方目录。"
+
+msgid "Using the official catalog"
+msgstr "正在使用官方目录"
+
+msgid "Add source"
+msgstr "添加来源"
+
+msgid "Add the official catalog"
+msgstr "添加官方目录"
+
+msgid "Official"
+msgstr "官方"
+
+msgid "Built and signed by the Nginx UI maintainers."
+msgstr "由 Nginx UI 维护者构建并签名。"
+
+msgid "Verified"
+msgstr "已验证"
+
+msgid "Reviewed by the Nginx UI maintainers and signed with a release key."
+msgstr "经 Nginx UI 维护者审核，并使用发布密钥签名。"
+
+msgid "Community"
+msgstr "社区"
+
+msgid ""
+"Published by a third party and not reviewed. It runs with the permissions "
+"you grant it, so only install it if you trust the author."
+msgstr ""
+"由第三方发布，未经审核。它将以您授予的权限运行，请仅在信任其作者时安装。"
+
+msgid "Approve permissions"
+msgstr "批准权限"
+
+msgid "Approve and enable"
+msgstr "批准并启用"
+
+msgid "%{name} needs your approval before it can run."
+msgstr "%{name} 需要获得您的批准才能运行。"
+
+msgid ""
+"Approve only if you trust the author. The approval is recorded and asked "
+"again whenever the requested permissions change."
+msgstr ""
+"请仅在信任作者时批准。批准记录会被保存，且当所请求的权限发生变化时会再次询"
+"问。"
+
+msgid "This plugin does not request any host permission."
+msgstr "此插件未请求任何宿主权限。"
+
+msgid "Read stored %{kind} credentials, including their secrets."
+msgstr "读取已保存的 %{kind} 凭据，包括其密钥。"
+
+msgid "unknown"
+msgstr "未知"
+
+msgid "Store and read its own key-value data inside the Nginx UI database."
+msgstr "在 Nginx UI 数据库中存储和读取插件自身的键值数据。"
+
+msgid "Make outbound network requests to the hosts declared in its manifest."
+msgstr "向其清单中声明的主机发起出站网络请求。"
+
+msgid "Run scheduled tasks on the schedules declared in its manifest."
+msgstr "按其清单中声明的计划执行定时任务。"
+
+msgid "Send notifications through the Nginx UI notification channels."
+msgstr "通过 Nginx UI 的通知渠道发送通知。"
+
+msgid "Read CPU, memory, network and Nginx status metrics of this node."
+msgstr "读取本节点的 CPU、内存、网络及 Nginx 状态指标。"
+
+msgid "Call the Nginx UI management API with your permissions."
+msgstr "以您的权限调用 Nginx UI 管理 API。"
+
+msgid "Unknown permission. Only grant it if you trust the plugin author."
+msgstr "未知权限，请仅在信任插件作者时授予。"
+
+msgid "In sync"
+msgstr "已同步"
+
+msgid "Outdated"
+msgstr "版本过旧"
+
+msgid "Not installed"
+msgstr "未安装"
+
+msgid "Unsupported platform"
+msgstr "不支持的平台"
+
+msgid "Unsupported"
+msgstr "不支持"
+
+msgid "Failed to load the plugin matrix"
+msgstr "加载插件矩阵失败"
+
+msgid "Update to %{version}"
+msgstr "更新到 %{version}"
+
+msgid "Sync to this node"
+msgstr "同步到此节点"
+
+msgid ""
+"What every child node has installed, compared with this controller. "
+"Switching the selected node in the header manages that node directly."
+msgstr ""
+"展示各子节点已安装的插件，并与本控制节点进行对比。在页头切换所选节点后可直接"
+"管理该节点。"
+
+msgid "All nodes"
+msgstr "所有节点"
+
+msgid "This instance has no child node"
+msgstr "此实例没有子节点"
+
+msgid "Add a node first, then plugins can be installed on it from here."
+msgstr "请先添加节点，之后即可在此处为其安装插件。"
+
+msgid "Sync to selected"
+msgstr "同步到所选"
+
+msgid "Sync to all"
+msgstr "同步到全部"
+
+msgid "Marketplace"
+msgstr "市场"
+
+msgid "%{field} is required"
+msgstr "%{field} 为必填项"
+
+msgid "Failed to load the plugin settings"
+msgstr "加载插件设置失败"
+
+msgid "Plugin settings saved"
+msgstr "插件设置已保存"
+
+msgid "Failed to save the plugin settings"
+msgstr "保存插件设置失败"
+
+msgid "Settings: %{name}"
+msgstr "设置：%{name}"
+
+msgid "This plugin has no settings."
+msgstr "该插件没有可配置的设置。"
+
+msgid "%{count} node"
+msgid_plural "%{count} nodes"
+msgstr[0] "另有 %{count} 个"
+
+msgid "Sync policy saved"
+msgstr "同步策略已保存"
+
+msgid "Failed to save the sync policy"
+msgstr "保存同步策略失败"
+
+msgid "Automatic installation"
+msgstr "自动安装"
+
+msgid ""
+"Keep this plugin at the same version and state on the selected child nodes. "
+"Leave every node unchecked to cover all of them, including the ones added "
+"later."
+msgstr ""
+"让该插件在所选子节点上保持相同的版本和状态。不勾选任何节点即可覆盖全部节点，"
+"包括后续新增的节点。"
+
+msgid "Also sync the plugin settings"
+msgstr "同时同步插件设置"
 
 msgid "Dev"
 msgstr "开发版"
@@ -10457,6 +11016,20 @@ msgstr "单窗格"
 
 msgid "Split view"
 msgstr "分屏视图"
+
+#~ msgid "Recursive Nameservers"
+#~ msgstr "递归域名服务器"
+
+#~ msgid ""
+#~ "Set the recursive nameservers to override the systems nameservers for the "
+#~ "step of DNS challenge."
+#~ msgstr "设置递归域名服务器，在 DNS 验证步骤中覆盖系统的域名服务器。"
+
+#~ msgid "DNS Challenge"
+#~ msgstr "DNS 验证"
+
+#~ msgid "Are you sure you want to remove this item?"
+#~ msgstr "您确定要删除这个项目吗?"
 
 #: src/constants/errors/snippet.ts:2
 msgid ""

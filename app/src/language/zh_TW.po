@@ -253,6 +253,17 @@ msgid ""
 "Any reachable IP address can be used with private Certificate Authorities"
 msgstr "任何可訪問的 IP 地址均可用於私有證書頒發機構"
 
+msgid ""
+"DNS-01 challenge requires the DNS-01 plugin. Install it from System > "
+"Plugins."
+msgstr "DNS-01 驗證需要 DNS-01 外掛，請前往「系統 > 外掛」安裝。"
+
+msgid "Install DNS-01 plugin"
+msgstr "安裝 DNS-01 外掛"
+
+msgid "Go to System > Plugins"
+msgstr "前往「系統 > 外掛」"
+
 msgid "Challenge Method"
 msgstr "驗證方式"
 
@@ -279,6 +290,9 @@ msgstr "OCSP 強制裝訂可能會導致部分使用者在首次使用 Firefox �
 msgid "Lego disable CNAME Support"
 msgstr "Lego 停用 CNAME 支援"
 
+msgid "If your domain has CNAME records and you cannot obtain certificates, "
+msgstr "如果您的域名有 CNAME 記錄且無法獲取證書，"
+
 msgid ""
 "If your domain has CNAME records and you cannot obtain certificates, you "
 "need to enable this option."
@@ -286,6 +300,9 @@ msgstr "如果您的網域有 CNAME 記錄且無法取得憑證，則需要啟�
 
 msgid "Disable Authoritative DNS Propagation Check"
 msgstr "停用權威 DNS 傳播檢查"
+
+msgid "Skip local DNS propagation checks and wait 60 seconds before asking "
+msgstr "跳過本地 DNS 傳播檢查，並在請求前等待 60 秒。"
 
 msgid ""
 "Skip local DNS propagation checks and wait 60 seconds before asking the "
@@ -1028,6 +1045,14 @@ msgstr "更新憑證錯誤"
 
 msgid "Certificate %{name} renewal failed: %{error}"
 msgstr "憑證 %{name} 續期失敗：%{error}"
+
+msgid "DNS-01 plugin unavailable"
+msgstr "DNS-01 外掛不可用"
+
+msgid ""
+"Certificate %{name} cannot be renewed because no enabled plugin provides the "
+"DNS-01 challenge"
+msgstr "憑證 %{name} 無法續簽，因為沒有已啟用的外掛提供 DNS-01 驗證"
 
 msgid "Certificate Expired"
 msgstr "憑證已過期"
@@ -2219,6 +2244,9 @@ msgstr "歸檔中未找到私鑰"
 msgid "No certificate in the archive matches its private key"
 msgstr "歸檔中沒有憑證與其私鑰匹配"
 
+msgid "No DNS-01 provider for {0}: install and enable the DNS-01 plugin"
+msgstr "{0} 沒有可用的 DNS-01 提供者：請安裝並啟用 DNS-01 外掛"
+
 msgid "Path is not under the nginx conf dir"
 msgstr "路徑不在 Nginx 設定目錄下"
 
@@ -2632,6 +2660,66 @@ msgstr "構建 nginx 配置失敗: {0}"
 
 msgid "Failed to get nginx.conf path"
 msgstr "無法獲取 nginx.conf 路徑"
+
+msgid "Plugin manifest is invalid"
+msgstr "外掛清單無效"
+
+msgid "Plugin not found"
+msgstr "找不到外掛"
+
+msgid "Plugin already exists"
+msgstr "外掛已存在"
+
+msgid "Plugin is not running"
+msgstr "外掛未執行"
+
+msgid "Plugin handshake failed"
+msgstr "外掛握手失敗"
+
+msgid "Plugin has no executable for this platform"
+msgstr "外掛沒有適用於此平台的可執行檔"
+
+msgid "Plugin package is invalid"
+msgstr "外掛套件無效"
+
+msgid "Plugin package is too large"
+msgstr "外掛套件過大"
+
+msgid "Plugin api version is incompatible"
+msgstr "外掛 API 版本不相容"
+
+msgid "Plugin permissions need approval"
+msgstr "外掛權限需要核准"
+
+msgid "Plugin dependency is missing: {0}"
+msgstr "外掛缺少相依項目：{0}"
+
+msgid "Plugin dependencies form a cycle"
+msgstr "外掛相依關係形成循環"
+
+msgid "Plugin is in use by {0}"
+msgstr "外掛正被 {0} 使用中"
+
+msgid "Plugin system is disabled"
+msgstr "外掛系統已停用"
+
+msgid "Plugin uploads are disabled"
+msgstr "外掛上傳已停用"
+
+msgid "Plugin call timed out"
+msgstr "外掛呼叫逾時"
+
+msgid "Plugin rpc error: {0}"
+msgstr "外掛 RPC 錯誤：{0}"
+
+msgid "Plugin setting {0} is invalid"
+msgstr "外掛設定 {0} 無效"
+
+msgid "Plugin needs nginx-ui {0} or newer, this node runs {1}"
+msgstr "外掛需要 nginx-ui {0} 或更新版本，而此節點執行的是 {1}"
+
+msgid "Plugin package declares another id"
+msgstr "外掛套件宣告了另一個 ID"
 
 msgid "Task not found"
 msgstr "找不到任務"
@@ -3914,6 +4002,9 @@ msgstr "編輯 Stream"
 
 msgid "Upgrade"
 msgstr "升級"
+
+msgid "Plugins"
+msgstr "外掛"
 
 msgid "About"
 msgstr "關於"
@@ -6165,6 +6256,9 @@ msgstr "建立記錄"
 msgid "Unknown error"
 msgstr "未知錯誤"
 
+msgid "Plugin %{plugin} failed to render"
+msgstr "外掛 %{plugin} 渲染失敗"
+
 msgid "Manage DNS zones and records for domains under your account."
 msgstr "管理帳戶下網域的 DNS 區域與記錄。"
 
@@ -7156,6 +7250,15 @@ msgstr "版本"
 msgid "Authentication"
 msgstr "認證"
 
+msgid "Accept plugin sync"
+msgstr "接受外掛同步"
+
+msgid "Accepted"
+msgstr "已接受"
+
+msgid "Opted out"
+msgstr "已選擇退出"
+
 msgid "The selected content will be pushed to: %{nodes}"
 msgstr "所選內容將推送到：%{nodes}"
 
@@ -7342,14 +7445,6 @@ msgid ""
 "Renew certificates when their remaining validity is less than or equal to "
 "this value."
 msgstr "當憑證剩餘有效期小於或等於此值時續簽憑證。"
-
-msgid "Recursive Nameservers"
-msgstr "遞迴名稱伺服器"
-
-msgid ""
-"Set the recursive nameservers to override the systems nameservers for the "
-"step of DNS challenge."
-msgstr "設定遞迴網域名稱伺服器，在 DNS 驗證步驟中覆寫系統的網域名稱伺服器。"
 
 msgid "Stub Status Port"
 msgstr "存根狀態端口"
@@ -9129,12 +9224,6 @@ msgstr "續期"
 msgid "Days"
 msgstr "天"
 
-msgid "DNS Challenge"
-msgstr "DNS 驗證"
-
-msgid "Are you sure you want to remove this item?"
-msgstr "您確定要刪除此項目嗎？"
-
 msgid "This notification is disabled"
 msgstr "此通知已停用"
 
@@ -10140,6 +10229,9 @@ msgstr "執行內建診斷以驗證環境與服務就緒狀態。"
 msgid "Check release updates and execute upgrade operations when available."
 msgstr "檢查版本更新並在可用時執行升級操作。"
 
+msgid "Install, configure and troubleshoot plugins that extend Nginx UI."
+msgstr "安裝、設定並疑難排解為 Nginx UI 擴充功能的外掛。"
+
 msgid "Review third-party licenses and open source component attributions."
 msgstr "檢視第三方授權與開源元件歸屬資訊。"
 
@@ -10163,6 +10255,471 @@ msgstr "組件"
 
 msgid "All Components"
 msgstr "所有組件"
+
+msgid "Plugin"
+msgstr "外掛"
+
+msgid "Capabilities"
+msgstr "功能"
+
+msgid "Auto install to nodes"
+msgstr "自動安裝至節點"
+
+msgid "Plugin synchronized to %{count} node(s)"
+msgstr "外掛已同步至 %{count} 個節點"
+
+msgid "Some nodes could not be synchronized"
+msgstr "部分節點未能同步"
+
+msgid "Failed to synchronize the plugin"
+msgstr "同步外掛失敗"
+
+msgid "Installed"
+msgstr "已安裝"
+
+msgid "Starting"
+msgstr "啟動中"
+
+msgid "Missing"
+msgstr "缺失"
+
+msgid "Incompatible"
+msgstr "不相容"
+
+msgid "Needs approval"
+msgstr "需要核准"
+
+msgid "Failed to load the plugin list"
+msgstr "載入外掛清單失敗"
+
+msgid "Plugin enabled"
+msgstr "外掛已啟用"
+
+msgid "Failed to enable the plugin"
+msgstr "啟用外掛失敗"
+
+msgid "Plugin disabled"
+msgstr "外掛已停用"
+
+msgid "Failed to disable the plugin"
+msgstr "停用外掛失敗"
+
+msgid "Plugin uninstalled"
+msgstr "外掛已解除安裝"
+
+msgid "Failed to uninstall the plugin"
+msgstr "解除安裝外掛失敗"
+
+msgid "Reload the page to apply the development plugin URL"
+msgstr "請重新整理頁面以套用開發外掛網址"
+
+msgid ""
+"Plugins extend Nginx UI with extra capabilities. Only install bundles from "
+"authors you trust."
+msgstr "外掛可以為 Nginx UI 擴充額外功能，請僅安裝您信任的作者發布的外掛套件。"
+
+msgid "Development plugin URL"
+msgstr "開發外掛網址"
+
+msgid ""
+"Address of a plugin.json served by any static server. The plugin is loaded "
+"in addition to the installed ones."
+msgstr ""
+"由任意靜態伺服器提供的 plugin.json 位址，該外掛會在已安裝外掛之外額外載入。"
+
+msgid "Dev plugin"
+msgstr "開發外掛"
+
+msgid "No plugins installed"
+msgstr "尚未安裝任何外掛"
+
+msgid "Settings"
+msgstr "設定"
+
+msgid "Logs"
+msgstr "日誌"
+
+msgid "Sync to nodes"
+msgstr "同步至節點"
+
+msgid "Uninstall %{name}? Its data and settings are removed."
+msgstr "確定要解除安裝 %{name} 嗎？其資料和設定都會被移除。"
+
+msgid "Uninstall"
+msgstr "解除安裝"
+
+msgid "Sync %{name} to nodes"
+msgstr "將 %{name} 同步至節點"
+
+msgid "Leave every node unchecked to sync to all child nodes."
+msgstr "不勾選任何節點即可同步至所有子節點。"
+
+msgid "Already in sync"
+msgstr "已同步"
+
+msgid "This node only"
+msgstr "僅此節點"
+
+msgid "All child nodes"
+msgstr "所有子節點"
+
+msgid "Selected nodes"
+msgstr "已選節點"
+
+msgid "Failed to read the plugin bundle"
+msgstr "讀取外掛套件失敗"
+
+msgid "Plugin installed"
+msgstr "外掛已安裝"
+
+msgid "The plugin was installed here but could not be pushed to the nodes"
+msgstr "外掛已在本機安裝，但未能推送至各節點"
+
+msgid "Failed to install the plugin"
+msgstr "安裝外掛失敗"
+
+msgid "Install plugin"
+msgstr "安裝外掛"
+
+msgid "Click or drag a plugin bundle here"
+msgstr "點擊或將外掛套件拖曳至此處"
+
+msgid "A .tar.gz produced by the plugin author"
+msgstr "由外掛作者產生的 .tar.gz 檔案"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "(replaces %{version})"
+msgstr "（取代 %{version}）"
+
+msgid "None"
+msgstr "無"
+
+msgid "Install the plugins below first"
+msgstr "請先安裝以下外掛"
+
+msgid "This version asks for permissions you have not approved yet."
+msgstr "此版本要求了您尚未核准的權限。"
+
+msgid ""
+"Review the list below before installing. The plugin stays disabled until you "
+"approve them."
+msgstr "安裝前請檢視以下清單，外掛在您核准這些權限前將保持停用狀態。"
+
+msgid "Requested permissions"
+msgstr "要求的權限"
+
+msgid "Enable after install"
+msgstr "安裝後啟用"
+
+msgid "Also install to child nodes"
+msgstr "同時安裝至子節點"
+
+msgid "Keep in sync automatically"
+msgstr "自動保持同步"
+
+msgid ""
+"The version, the enabled state and future updates are kept aligned on those "
+"nodes."
+msgstr "這些節點上的版本、啟用狀態及後續更新都會保持一致。"
+
+msgid "Failed to load the plugin logs"
+msgstr "載入外掛日誌失敗"
+
+msgid "Logs copied to clipboard"
+msgstr "日誌已複製到剪貼簿"
+
+msgid "Failed to copy the logs"
+msgstr "複製日誌失敗"
+
+msgid "Logs: %{name}"
+msgstr "日誌：%{name}"
+
+msgid "No log output yet"
+msgstr "尚無日誌輸出"
+
+msgid "Failed to load the plugin marketplace"
+msgstr "載入外掛市集失敗"
+
+msgid "Reloading the catalog"
+msgstr "正在重新載入目錄"
+
+msgid "Search plugins"
+msgstr "搜尋外掛"
+
+msgid "All categories"
+msgstr "所有分類"
+
+msgid "All sources"
+msgstr "所有來源"
+
+msgid "Updates only"
+msgstr "僅顯示可更新"
+
+msgid "Sources"
+msgstr "來源"
+
+msgid "Every installed plugin is up to date"
+msgstr "所有已安裝的外掛皆為最新版本"
+
+msgid "No plugins match your search"
+msgstr "找不到符合搜尋條件的外掛"
+
+msgid "Downloading the package"
+msgstr "正在下載安裝套件"
+
+msgid "Verifying the signature"
+msgstr "正在驗證簽章"
+
+msgid "Installing"
+msgstr "正在安裝"
+
+msgid "%{phase}: %{plugin}"
+msgstr "%{phase}：%{plugin}"
+
+msgid "Failed to load the plugin from the marketplace"
+msgstr "從市集載入外掛失敗"
+
+msgid "Update plugin"
+msgstr "更新外掛"
+
+msgid "No release available for this platform"
+msgstr "此平台沒有可用的發行版本"
+
+msgid "Source"
+msgstr "來源"
+
+msgid "This is a community plugin"
+msgstr "這是一個社群外掛"
+
+msgid "The plugins below are installed together with it"
+msgstr "以下外掛將隨其一併安裝"
+
+msgid "Live progress is unavailable, checking the plugin list instead"
+msgstr "無法取得即時進度，改為檢查外掛清單"
+
+msgid "No description provided."
+msgstr "未提供描述。"
+
+msgid "Installed: %{version}"
+msgstr "已安裝：%{version}"
+
+msgid "Homepage"
+msgstr "首頁"
+
+msgid "Repository"
+msgstr "原始碼庫"
+
+msgid "Release notes"
+msgstr "發行說明"
+
+msgid "Released"
+msgstr "發布日期"
+
+msgid "Platforms"
+msgstr "平台"
+
+msgid "Failed to load the plugin details"
+msgstr "載入外掛詳情失敗"
+
+msgid "Installed version"
+msgstr "已安裝版本"
+
+msgid "Versions"
+msgstr "版本"
+
+msgid "Yanked"
+msgstr "已撤回"
+
+msgid "Latest"
+msgstr "最新"
+
+msgid "Readme"
+msgstr "Readme"
+
+msgid "Failed to load the marketplace sources"
+msgstr "載入市集來源失敗"
+
+msgid "Marketplace sources saved"
+msgstr "市集來源已儲存"
+
+msgid "Failed to save the marketplace sources"
+msgstr "儲存市集來源失敗"
+
+msgid "Marketplace sources"
+msgstr "市集來源"
+
+msgid ""
+"Catalogs are merged in order, the first source that offers a plugin wins. "
+"Leave the list empty to use the official catalog."
+msgstr "目錄按順序合併，最先提供該外掛的來源生效。清單留空即使用官方目錄。"
+
+msgid "Using the official catalog"
+msgstr "正在使用官方目錄"
+
+msgid "Add source"
+msgstr "新增來源"
+
+msgid "Add the official catalog"
+msgstr "新增官方目錄"
+
+msgid "Official"
+msgstr "官方"
+
+msgid "Built and signed by the Nginx UI maintainers."
+msgstr "由 Nginx UI 維護者建置並簽署。"
+
+msgid "Verified"
+msgstr "已驗證"
+
+msgid "Reviewed by the Nginx UI maintainers and signed with a release key."
+msgstr "經 Nginx UI 維護者審核，並使用發布金鑰簽署。"
+
+msgid "Community"
+msgstr "社群"
+
+msgid ""
+"Published by a third party and not reviewed. It runs with the permissions "
+"you grant it, so only install it if you trust the author."
+msgstr ""
+"由第三方發布，未經審核。它會以您授予的權限執行，請僅在信任其作者時安裝。"
+
+msgid "Approve permissions"
+msgstr "核准權限"
+
+msgid "Approve and enable"
+msgstr "核准並啟用"
+
+msgid "%{name} needs your approval before it can run."
+msgstr "%{name} 需要獲得您的核准才能執行。"
+
+msgid ""
+"Approve only if you trust the author. The approval is recorded and asked "
+"again whenever the requested permissions change."
+msgstr ""
+"請僅在信任作者時核准。核准記錄會被保留，且當所要求的權限有變動時會再次詢問。"
+
+msgid "This plugin does not request any host permission."
+msgstr "此外掛未要求任何主機權限。"
+
+msgid "Read stored %{kind} credentials, including their secrets."
+msgstr "讀取已儲存的 %{kind} 憑證，包括其密鑰。"
+
+msgid "unknown"
+msgstr "未知"
+
+msgid "Store and read its own key-value data inside the Nginx UI database."
+msgstr "在 Nginx UI 資料庫中儲存和讀取外掛自身的鍵值資料。"
+
+msgid "Make outbound network requests to the hosts declared in its manifest."
+msgstr "向其清單中宣告的主機發出對外網路請求。"
+
+msgid "Run scheduled tasks on the schedules declared in its manifest."
+msgstr "依其清單中宣告的排程執行定時任務。"
+
+msgid "Send notifications through the Nginx UI notification channels."
+msgstr "透過 Nginx UI 的通知管道發送通知。"
+
+msgid "Read CPU, memory, network and Nginx status metrics of this node."
+msgstr "讀取此節點的 CPU、記憶體、網路及 Nginx 狀態指標。"
+
+msgid "Call the Nginx UI management API with your permissions."
+msgstr "以您的權限呼叫 Nginx UI 管理 API。"
+
+msgid "Unknown permission. Only grant it if you trust the plugin author."
+msgstr "未知權限，請僅在信任外掛作者時授予。"
+
+msgid "In sync"
+msgstr "已同步"
+
+msgid "Outdated"
+msgstr "版本過舊"
+
+msgid "Not installed"
+msgstr "未安裝"
+
+msgid "Unsupported platform"
+msgstr "不支援的平台"
+
+msgid "Unsupported"
+msgstr "不支援"
+
+msgid "Failed to load the plugin matrix"
+msgstr "載入外掛矩陣失敗"
+
+msgid "Update to %{version}"
+msgstr "更新至 %{version}"
+
+msgid "Sync to this node"
+msgstr "同步至此節點"
+
+msgid ""
+"What every child node has installed, compared with this controller. "
+"Switching the selected node in the header manages that node directly."
+msgstr ""
+"顯示各子節點已安裝的外掛，並與本控制節點比對。於頁首切換所選節點後即可直接管"
+"理該節點。"
+
+msgid "All nodes"
+msgstr "所有節點"
+
+msgid "This instance has no child node"
+msgstr "此執行個體沒有子節點"
+
+msgid "Add a node first, then plugins can be installed on it from here."
+msgstr "請先新增節點，之後即可在此處為其安裝外掛。"
+
+msgid "Sync to selected"
+msgstr "同步至所選"
+
+msgid "Sync to all"
+msgstr "同步至全部"
+
+msgid "Marketplace"
+msgstr "市集"
+
+msgid "%{field} is required"
+msgstr "%{field} 為必填項目"
+
+msgid "Failed to load the plugin settings"
+msgstr "載入外掛設定失敗"
+
+msgid "Plugin settings saved"
+msgstr "外掛設定已儲存"
+
+msgid "Failed to save the plugin settings"
+msgstr "儲存外掛設定失敗"
+
+msgid "Settings: %{name}"
+msgstr "設定：%{name}"
+
+msgid "This plugin has no settings."
+msgstr "該外掛沒有可設定的項目。"
+
+msgid "%{count} node"
+msgid_plural "%{count} nodes"
+msgstr[0] "還有 %{count} 筆"
+
+msgid "Sync policy saved"
+msgstr "同步政策已儲存"
+
+msgid "Failed to save the sync policy"
+msgstr "儲存同步政策失敗"
+
+msgid "Automatic installation"
+msgstr "自動安裝"
+
+msgid ""
+"Keep this plugin at the same version and state on the selected child nodes. "
+"Leave every node unchecked to cover all of them, including the ones added "
+"later."
+msgstr ""
+"讓此外掛在所選子節點上保持相同的版本與狀態。不勾選任何節點即可涵蓋全部節點，"
+"包括之後新增的節點。"
+
+msgid "Also sync the plugin settings"
+msgstr "同時同步外掛設定"
 
 msgid "Dev"
 msgstr "Dev"
@@ -10470,6 +11027,20 @@ msgstr "單窗格"
 
 msgid "Split view"
 msgstr "分割檢視"
+
+#~ msgid "Recursive Nameservers"
+#~ msgstr "遞迴名稱伺服器"
+
+#~ msgid ""
+#~ "Set the recursive nameservers to override the systems nameservers for the "
+#~ "step of DNS challenge."
+#~ msgstr "設定遞迴網域名稱伺服器，在 DNS 驗證步驟中覆寫系統的網域名稱伺服器。"
+
+#~ msgid "DNS Challenge"
+#~ msgstr "DNS 驗證"
+
+#~ msgid "Are you sure you want to remove this item?"
+#~ msgstr "您確定要刪除此項目嗎？"
 
 #: src/constants/errors/snippet.ts:2
 msgid ""
