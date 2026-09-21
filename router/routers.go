@@ -139,6 +139,7 @@ func InitRouter() {
 			pluginapi.InitRouter(g)
 			pluginapi.InitSyncRouter(g)
 			pluginapi.InitMarketplaceRouter(g)
+			pluginapi.InitHTTPRouter(g)
 			external_notify.InitRouter(g)
 			backup.InitAutoBackupRouter(g)
 			nginxLog.InitRouter(g)

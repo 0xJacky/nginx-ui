@@ -5,6 +5,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/event"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/translation"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -222,6 +223,7 @@ func IssueWithRecord(name string, payload *ConfigPayload, log *Logger) (*model.C
 
 	MarkCertSuccess(certModel.ID, payload.GetCertificatePath(), payload.GetCertificateKeyPath(), payload.Resource, payload.Profile)
 	notifyCertificateRelocated(getAutoRenewTargetName(certModel), certModel.SSLCertificatePath, payload.GetCertificatePath())
+	event.PublishCertIssued(certModel.ID, certModel.Name, payload.ServerName, false)
 	return certModel, nil
 }
 

@@ -4,6 +4,7 @@ import (
 	"math"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/event"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -54,6 +55,7 @@ func ExpiredNotify() {
 		}
 
 		sendExpiryNotification(notice)
+		event.PublishCertExpiring(certModel.ID, certModel.Name, certModel.Domains, certInfo.NotAfter)
 		updateExpiryNotificationState(certModel, certInfo.NotAfter, notice.Stage, now)
 	}
 }

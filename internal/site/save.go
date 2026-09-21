@@ -9,6 +9,7 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/clustersync"
 	"github.com/0xJacky/Nginx-UI/internal/config"
+	"github.com/0xJacky/Nginx-UI/internal/event"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
@@ -153,6 +154,7 @@ func Save(ctx context.Context, name string, content string, overwrite bool, name
 	}
 
 	startSyncSave(ctx, name, content)
+	event.PublishSiteSaved(name)
 
 	return
 }

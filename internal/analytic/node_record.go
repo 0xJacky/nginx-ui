@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/cache"
+	"github.com/0xJacky/Nginx-UI/internal/event"
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/internal/transport"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -72,6 +73,7 @@ func markNodeOfflineIfStale(nodeID uint64, timeout time.Duration) {
 	}
 	if node.ResponseAt.IsZero() || time.Since(node.ResponseAt) >= timeout {
 		node.Status = false
+		event.PublishNodeStatusChanged(nodeID, false)
 	}
 }
 
@@ -357,9 +359,10 @@ func checkNodeTimeouts(timeout time.Duration) {
 	nodeMapMu.Lock()
 	defer nodeMapMu.Unlock()
 	now := time.Now()
-	for _, node := range NodeMap {
+	for id, node := range NodeMap {
 		if node != nil && node.Status && now.Sub(node.ResponseAt) > timeout {
 			node.Status = false
+			event.PublishNodeStatusChanged(id, false)
 		}
 	}
 }
@@ -517,6 +520,7 @@ func nodeAnalyticRecord(nodeModel *model.Node, ctx context.Context) error {
 		}
 
 		nodeMapMu.Lock()
+		wasOnline := NodeMap[nodeModel.ID] != nil && NodeMap[nodeModel.ID].Status
 		if NodeMap[nodeModel.ID] == nil {
 			NodeMap[nodeModel.ID] = &Node{
 				Node:     nodeModel,
@@ -537,6 +541,9 @@ func nodeAnalyticRecord(nodeModel *model.Node, ctx context.Context) error {
 			NodeMap[nodeModel.ID].ResponseAt = time.Now()
 		}
 		nodeMapMu.Unlock()
+		if !wasOnline {
+			event.PublishNodeStatusChanged(nodeModel.ID, true)
+		}
 		if markConnectionSuccess(nodeModel.ID) {
 			logger.Infof("Node status connection restored for node %d (%q)", nodeModel.ID, nodeModel.Name)
 		}
