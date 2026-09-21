@@ -38,6 +38,8 @@ var (
 	NodeCredential           *nodeCredential
 	Notification             *notification
 	Passkey                  *passkey
+	Plugin                   *plugin
+	PluginKV                 *pluginKV
 	Site                     *site
 	SiteConfig               *siteConfig
 	SiteHealthAlertState     *siteHealthAlertState
@@ -69,6 +71,8 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	NodeCredential = &Q.NodeCredential
 	Notification = &Q.Notification
 	Passkey = &Q.Passkey
+	Plugin = &Q.Plugin
+	PluginKV = &Q.PluginKV
 	Site = &Q.Site
 	SiteConfig = &Q.SiteConfig
 	SiteHealthAlertState = &Q.SiteHealthAlertState
@@ -101,6 +105,8 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		NodeCredential:           newNodeCredential(db, opts...),
 		Notification:             newNotification(db, opts...),
 		Passkey:                  newPasskey(db, opts...),
+		Plugin:                   newPlugin(db, opts...),
+		PluginKV:                 newPluginKV(db, opts...),
 		Site:                     newSite(db, opts...),
 		SiteConfig:               newSiteConfig(db, opts...),
 		SiteHealthAlertState:     newSiteHealthAlertState(db, opts...),
@@ -134,6 +140,8 @@ type Query struct {
 	NodeCredential           nodeCredential
 	Notification             notification
 	Passkey                  passkey
+	Plugin                   plugin
+	PluginKV                 pluginKV
 	Site                     site
 	SiteConfig               siteConfig
 	SiteHealthAlertState     siteHealthAlertState
@@ -170,6 +178,8 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		NodeCredential:           q.NodeCredential.clone(db),
 		Notification:             q.Notification.clone(db),
 		Passkey:                  q.Passkey.clone(db),
+		Plugin:                   q.Plugin.clone(db),
+		PluginKV:                 q.PluginKV.clone(db),
 		Site:                     q.Site.clone(db),
 		SiteConfig:               q.SiteConfig.clone(db),
 		SiteHealthAlertState:     q.SiteHealthAlertState.clone(db),
@@ -211,6 +221,8 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		NodeCredential:           q.NodeCredential.replaceDB(db),
 		Notification:             q.Notification.replaceDB(db),
 		Passkey:                  q.Passkey.replaceDB(db),
+		Plugin:                   q.Plugin.replaceDB(db),
+		PluginKV:                 q.PluginKV.replaceDB(db),
 		Site:                     q.Site.replaceDB(db),
 		SiteConfig:               q.SiteConfig.replaceDB(db),
 		SiteHealthAlertState:     q.SiteHealthAlertState.replaceDB(db),
@@ -242,6 +254,8 @@ type queryCtx struct {
 	NodeCredential           *nodeCredentialDo
 	Notification             *notificationDo
 	Passkey                  *passkeyDo
+	Plugin                   *pluginDo
+	PluginKV                 *pluginKVDo
 	Site                     *siteDo
 	SiteConfig               *siteConfigDo
 	SiteHealthAlertState     *siteHealthAlertStateDo
@@ -273,6 +287,8 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		NodeCredential:           q.NodeCredential.WithContext(ctx),
 		Notification:             q.Notification.WithContext(ctx),
 		Passkey:                  q.Passkey.WithContext(ctx),
+		Plugin:                   q.Plugin.WithContext(ctx),
+		PluginKV:                 q.PluginKV.WithContext(ctx),
 		Site:                     q.Site.WithContext(ctx),
 		SiteConfig:               q.SiteConfig.WithContext(ctx),
 		SiteHealthAlertState:     q.SiteHealthAlertState.WithContext(ctx),

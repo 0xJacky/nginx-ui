@@ -48,6 +48,7 @@ var envPrefixMap = map[string]interface{}{
 	"WEBAUTHN":       WebAuthnSettings,
 	"BACKUP":         BackupSettings,
 	"OIDC":           OIDCSettings,
+	"PLUGIN":         PluginSettings,
 }
 
 func init() {
@@ -73,6 +74,7 @@ func init() {
 	sections.Set("upstream_check", UpstreamCheckSettings)
 	sections.Set("terminal", TerminalSettings)
 	sections.Set("webauthn", WebAuthnSettings)
+	sections.Set("plugin", PluginSettings)
 
 	for k, v := range sections.AllFromFront() {
 		settings.Register(k, v)

@@ -256,6 +256,11 @@ var upstreamCheckSection = settingsSection[settings.UpstreamCheck]{
 	},
 }
 
+var pluginSection = settingsSection[settings.Plugin]{
+	name:   "plugin",
+	target: func() *settings.Plugin { return settings.PluginSettings },
+}
+
 // sectionHandlers maps each writable section to its save handler. The keys
 // match the section names in the GET /settings response.
 func sectionHandlers() map[string]gin.HandlerFunc {
@@ -272,6 +277,7 @@ func sectionHandlers() map[string]gin.HandlerFunc {
 		oidcSection.name:          oidcSection.handler(),
 		siteCheckSection.name:     siteCheckSection.handler(),
 		upstreamCheckSection.name: upstreamCheckSection.handler(),
+		pluginSection.name:        pluginSection.handler(),
 	}
 }
 

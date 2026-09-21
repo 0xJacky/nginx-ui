@@ -15,6 +15,22 @@ const (
 	TypeNginxLogIndexComplete Type = "nginx_log_index_complete"
 
 	TypeNotification Type = "notification"
+
+	// Domain events that plugins may subscribe to. Values match the plugin
+	// protocol event names.
+	TypeCertIssued        Type = "cert.issued"
+	TypeCertRenewed       Type = "cert.renewed"
+	TypeCertExpiring      Type = "cert.expiring"
+	TypeSiteSaved         Type = "site.saved"
+	TypeSiteEnabled       Type = "site.enabled"
+	TypeSiteDisabled      Type = "site.disabled"
+	TypeNginxReloaded     Type = "nginx.reloaded"
+	TypeNginxReloadFailed Type = "nginx.reload_failed"
+	TypeNodeStatusChanged Type = "node.status_changed"
+	TypeNodeJoined        Type = "node.joined"
+	TypeBackupCompleted   Type = "backup.completed"
+	TypeAuthLoginFailed   Type = "auth.login_failed"
+	TypePluginChanged     Type = "plugin.changed"
 )
 
 // Event represents a generic event structure
