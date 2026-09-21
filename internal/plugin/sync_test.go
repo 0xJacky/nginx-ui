@@ -246,6 +246,27 @@ func TestKeepArchiveStoresTheInstalledPackage(t *testing.T) {
 	assert.Len(t, entries, 1)
 }
 
+func TestArchivePathTellsHyphenatedSiblingsApart(t *testing.T) {
+	m, _ := newSyncTestManager(t)
+	installSyncTestPlugin(t, m, "official.alpha", "1.0.0", false)
+	installSyncTestPlugin(t, m, "official.alpha-extra", "2.0.0", false)
+
+	path, ok := m.ArchivePath("official.alpha")
+	require.True(t, ok)
+	assert.Equal(t, "official.alpha-1.0.0.tar.gz", filepath.Base(path))
+	path, ok = m.ArchivePath("official.alpha-extra")
+	require.True(t, ok)
+	assert.Equal(t, "official.alpha-extra-2.0.0.tar.gz", filepath.Base(path))
+
+	// Upgrading one plugin leaves the package of its sibling alone.
+	installSyncTestPlugin(t, m, "official.alpha", "1.1.0", false)
+	_, ok = m.ArchivePath("official.alpha-extra")
+	assert.True(t, ok)
+	entries, err := os.ReadDir(m.archivesDir())
+	require.NoError(t, err)
+	assert.Len(t, entries, 2)
+}
+
 func TestEnsureArchiveBuildsOneWhenNoneWasKept(t *testing.T) {
 	m, _ := newSyncTestManager(t)
 	// A plugin dropped into the directory by hand never goes through Install.

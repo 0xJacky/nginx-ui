@@ -138,6 +138,7 @@ func InitRouter() {
 			notification.InitRouter(g)
 			pluginapi.InitRouter(g)
 			pluginapi.InitSyncRouter(g)
+			pluginapi.InitMarketplaceRouter(g)
 			external_notify.InitRouter(g)
 			backup.InitAutoBackupRouter(g)
 			nginxLog.InitRouter(g)
