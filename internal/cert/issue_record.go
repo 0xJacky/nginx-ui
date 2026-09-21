@@ -42,6 +42,7 @@ func PersistCertDraft(name string, payload *ConfigPayload) (*model.Cert, error) 
 		MustStaple:                        payload.MustStaple,
 		LegoDisableCNAMESupport:           payload.LegoDisableCNAMESupport,
 		DisableAuthoritativeNSPropagation: payload.DisableAuthoritativeNSPropagation,
+		ChallengeConfig:                   payload.ChallengeConfig,
 		EnableCommonName:                  payload.EnableCommonName,
 		RevokeOld:                         payload.RevokeOld,
 		Status:                            model.CertStatusPending,
@@ -79,6 +80,7 @@ func PersistCertDraft(name string, payload *ConfigPayload) (*model.Cert, error) 
 		MustStaple:                        payload.MustStaple,
 		LegoDisableCNAMESupport:           payload.LegoDisableCNAMESupport,
 		DisableAuthoritativeNSPropagation: payload.DisableAuthoritativeNSPropagation,
+		ChallengeConfig:                   payload.ChallengeConfig,
 		EnableCommonName:                  payload.EnableCommonName,
 		RevokeOld:                         payload.RevokeOld,
 		Status:                            model.CertStatusPending,
@@ -89,7 +91,7 @@ func PersistCertDraft(name string, payload *ConfigPayload) (*model.Cert, error) 
 		Select(
 			"name", "domains", "challenge_method", "profile", "dns_credential_id", "acme_user_id",
 			"auto_cert", "must_staple", "lego_disable_cname_support",
-			"disable_authoritative_ns_propagation", "enable_common_name",
+			"disable_authoritative_ns_propagation", "challenge_config", "enable_common_name",
 			"revoke_old", "status", "last_error", "last_attempt_at",
 		).
 		Updates(updates).Error; err != nil {
