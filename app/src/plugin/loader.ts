@@ -243,5 +243,35 @@ export function usePluginLoader() {
     }
   }
 
-  return { load }
+  /**
+   * Loads bundles of plugins enabled after the page was loaded. Entries that
+   * already went through the loader are left alone, because a bundle cannot
+   * be evaluated twice on the same page.
+   */
+  async function loadNew() {
+    if (store.loading)
+      return
+
+    store.loading = true
+
+    try {
+      const entries = await pluginApi.getWebapp().catch(() => [] as WebappEntry[])
+      const pending = entries.filter(entry => !(entry.id in store.loaded))
+      if (pending.length === 0)
+        return
+
+      store.entries = entries
+
+      const list = await pluginApi.getList().catch(() => [] as PluginInfo[])
+      const infoById = new Map(list.map(info => [info.id, info]))
+
+      for (const entry of pending)
+        await loadEntrySafely(entry, manifestFromInfo(entry, infoById.get(entry.id)))
+    }
+    finally {
+      store.loading = false
+    }
+  }
+
+  return { load, loadNew }
 }
