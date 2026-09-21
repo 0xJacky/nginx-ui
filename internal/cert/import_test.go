@@ -1,6 +1,7 @@
 package cert
 
 import (
+	"encoding/json"
 	"errors"
 	"os"
 	"path/filepath"
@@ -9,8 +10,41 @@ import (
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/go-acme/lego/v5/certcrypto"
+	"github.com/stretchr/testify/require"
 	"github.com/uozi-tech/cosy"
 )
+
+func TestImportExistingCertificatePreservesDomainsJSON(t *testing.T) {
+	db := setupTestDB(t)
+	confDir := withImportTestNginxConfigDir(t)
+	name := "example.internal"
+	existing := &model.Cert{
+		Name:     name,
+		Domains:  []string{"old.example.internal"},
+		AutoCert: model.AutoCertEnabled,
+	}
+	require.NoError(t, db.Create(existing).Error)
+
+	dir := filepath.Join(confDir, "ssl", name)
+	writeImportTestPair(t, dir, []string{"fullchain.pem"}, []string{"privkey.pem"})
+	imported, err := ImportExistingCertificate(ImportCertificateOptions{
+		Name:     name,
+		CertPath: filepath.Join(dir, "fullchain.pem"),
+		KeyPath:  filepath.Join(dir, "privkey.pem"),
+	})
+	require.NoError(t, err)
+	require.Equal(t, existing.ID, imported.ID)
+	require.Equal(t, []string{name}, imported.Domains)
+
+	var got model.Cert
+	require.NoError(t, db.First(&got, existing.ID).Error)
+	require.Equal(t, []string{name}, got.Domains)
+	require.Equal(t, model.AutoCertDisabled, got.AutoCert)
+
+	var rawDomains string
+	require.NoError(t, db.Raw("SELECT domains FROM certs WHERE id = ?", existing.ID).Scan(&rawDomains).Error)
+	require.True(t, json.Valid([]byte(rawDomains)), "domains must be valid JSON: %q", rawDomains)
+}
 
 func withImportTestNginxConfigDir(t *testing.T) string {
 	t.Helper()

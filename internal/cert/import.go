@@ -87,7 +87,27 @@ func ImportExistingCertificate(opts ImportCertificateOptions) (*model.Cert, erro
 	}
 
 	if certModel.ID > 0 {
-		if err := db.Model(certModel).Updates(updates).Error; err != nil {
+		// Use a struct so GORM applies the JSON serializer for Domains.
+		existingUpdates := &model.Cert{
+			Name:                  name,
+			Domains:               domainsFromInfo(pair.CertificateInfo),
+			SSLCertificatePath:    pair.SSLCertificatePath,
+			SSLCertificateKeyPath: pair.SSLCertificateKeyPath,
+			Fingerprint:           pair.Fingerprint,
+			KeyType:               pair.KeyType,
+			AutoCert:              model.AutoCertDisabled,
+		}
+		if err := db.Model(certModel).
+			Select(
+				"name",
+				"domains",
+				"ssl_certificate_path",
+				"ssl_certificate_key_path",
+				"fingerprint",
+				"key_type",
+				"auto_cert",
+			).
+			Updates(existingUpdates).Error; err != nil {
 			return nil, err
 		}
 		if err := db.First(certModel, certModel.ID).Error; err != nil {
