@@ -60,7 +60,6 @@ export function buildSettingCatalog(): SettingCatalogEntry[] {
     { path: 'cert.http_challenge_port', section: 'cert', title: $gettext('HTTP Challenge Port'), description: $gettext('Port that answers validation requests while a certificate is being issued.') },
     { path: 'cert.ca_dir', section: 'cert', title: $gettext('CADir'), description: $gettext('Service that issues certificates. Leave empty to use the default.') },
     { path: 'cert.renewal_interval', section: 'cert', title: $gettext('Certificate Renewal Threshold'), description: $gettext('Renew certificates when their remaining validity is less than or equal to this value.') },
-    { path: 'cert.recursive_nameservers', section: 'cert', title: $gettext('Recursive Nameservers'), description: $gettext('Set the recursive nameservers to override the systems nameservers for the step of DNS challenge.') },
 
     // Nginx
     { path: 'nginx.stub_status_port', section: 'nginx', title: $gettext('Stub Status Port'), description: $gettext('Local port used to read Nginx connection statistics.') },

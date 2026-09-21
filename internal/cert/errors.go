@@ -61,6 +61,7 @@ var (
 	ErrCertificateArchiveNoCertificate   = e.New(50062, "no certificate found in the archive")
 	ErrCertificateArchiveNoPrivateKey    = e.New(50063, "no private key found in the archive")
 	ErrCertificateArchiveKeyMismatch     = e.New(50064, "no certificate in the archive matches its private key")
+	ErrNoDNS01Provider                   = e.New(50065, "no DNS-01 provider for {0}: install and enable the DNS-01 plugin")
 )
 
 func NewInvalidKeyTypeError(keyType string) error {

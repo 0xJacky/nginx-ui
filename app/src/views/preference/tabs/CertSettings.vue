@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { DeleteOutlined, HolderOutlined } from '@antdv-next/icons'
-import Draggable from 'vuedraggable'
 import { SettingPanel, SettingRow } from '@/components/SettingPanel'
 import { CA_SERVER_OPTIONS } from '@/constants/acme'
 import useSystemSettingsStore from '../store'
@@ -58,61 +56,6 @@ const { data, errors } = storeToRefs(systemSettingsStore)
           />
           <ASpaceAddon>{{ $gettext('Days') }}</ASpaceAddon>
         </ASpaceCompact>
-      </SettingRow>
-    </SettingPanel>
-
-    <SettingPanel :title="$gettext('DNS Challenge')">
-      <SettingRow
-        :title="$gettext('Recursive Nameservers')"
-        :description="$gettext('Set the recursive nameservers to override the systems nameservers for the step of DNS challenge.')"
-        path="cert.recursive_nameservers"
-        stacked
-      >
-        <template #tags>
-          <AButton
-            type="link"
-            size="small"
-            @click="data.cert.recursive_nameservers.push('')"
-          >
-            {{ $gettext('Add') }}
-          </AButton>
-        </template>
-
-        <Draggable
-          :list="data.cert.recursive_nameservers"
-          item-key="name"
-          class="list-group"
-          ghost-class="ghost"
-          handle=".anticon-holder"
-        >
-          <template #item="{ index }">
-            <AFlex
-              align="center"
-              gap="small"
-              class="mb-2 max-w-100"
-            >
-              <HolderOutlined class="cursor-move p-1" />
-              <AInput
-                v-model:value="data.cert.recursive_nameservers[index]"
-                :status="errors?.cert?.recursive_nameservers?.[index] ? 'error' : undefined"
-                placeholder="8.8.8.8:53"
-              />
-              <APopconfirm
-                :title="$gettext('Are you sure you want to remove this item?')"
-                :ok-text="$gettext('Yes')"
-                :cancel-text="$gettext('No')"
-                @confirm="data.cert.recursive_nameservers.splice(index, 1)"
-              >
-                <AButton
-                  type="link"
-                  danger
-                >
-                  <DeleteOutlined />
-                </AButton>
-              </APopconfirm>
-            </AFlex>
-          </template>
-        </Draggable>
       </SettingRow>
     </SettingPanel>
   </div>

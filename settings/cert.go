@@ -3,9 +3,13 @@ package settings
 import "github.com/go-acme/lego/v5/lego"
 
 type Cert struct {
-	Email                string   `json:"email" protected:"true"`
-	CADir                string   `json:"ca_dir" binding:"omitempty,url"`
-	RenewalInterval      int      `json:"renewal_interval" binding:"min=1,max=90"`
+	Email           string `json:"email" protected:"true"`
+	CADir           string `json:"ca_dir" binding:"omitempty,url"`
+	RenewalInterval int    `json:"renewal_interval" binding:"min=1,max=90"`
+	// RecursiveNameservers is deprecated: the DNS-01 propagation check moved
+	// into the dns01 plugin, which has a setting of its own. The value is kept
+	// so it can be migrated into the plugin settings on its first install, and
+	// the form item is gone from the UI.
 	RecursiveNameservers []string `json:"recursive_nameservers" binding:"omitempty,dive,hostname_port"`
 	HTTPChallengePort    string   `json:"http_challenge_port"`
 }
