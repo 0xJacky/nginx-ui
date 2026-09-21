@@ -440,27 +440,6 @@ msgstr "معطل"
 msgid "Maintenance"
 msgstr "صيانة"
 
-msgid "Site"
-msgstr "موقع"
-
-msgid "Stream"
-msgstr "تدفق"
-
-msgid "Configuration"
-msgstr "إعدادات"
-
-msgid "+%{count} more"
-msgstr "+%{count} أخرى"
-
-msgid "Search"
-msgstr "بحث"
-
-msgid "No file matches the search"
-msgstr "لا يوجد ملف مطابق للبحث"
-
-msgid "Not used"
-msgstr "غير مستخدم"
-
 msgid "Starting download..."
 msgstr "بدء التحميل..."
 
@@ -971,6 +950,9 @@ msgstr "تم"
 msgid "Unknown"
 msgstr "غير معروف"
 
+msgid "Search"
+msgstr "بحث"
+
 msgid "Open in split view"
 msgstr "فتح في عرض مقسّم"
 
@@ -1072,6 +1054,12 @@ msgstr ""
 "%{conflict_names} تكتب نسخًا احتياطية بأسماء ملفات مطابقة إلى نفس موقع "
 "التخزين. أعد تسمية إحدى المهام أو غيّر مسار التخزين الخاصة بها."
 
+msgid "Backups to Keep"
+msgstr "النسخ الاحتياطية المراد الاحتفاظ بها"
+
+msgid "Backups to Keep (0 keeps all)"
+msgstr "النسخ الاحتياطية للاحتفاظ بها (0 يحتفظ بجميعها)"
+
 msgid "Renew Certificate Success"
 msgstr "تجديد الشهادة بنجاح"
 
@@ -1101,16 +1089,6 @@ msgstr "ستنتهي صلاحية الشهادة %{name} خلال %{days} يوم
 
 msgid "Certificate Expiring Soon"
 msgstr "انتهاء صلاحية الشهادة قريبًا"
-
-msgid "Certificate Relocated"
-msgstr "تم نقل الشهادة"
-
-msgid ""
-"Certificate %{name} is now stored in %{path}, point the sites that load "
-"%{previous_path} to it"
-msgstr ""
-"شهادة %{name} مخزنة الآن في %{path}، وجّه المواقع التي تحمّل "
-"%{previous_path} إليها"
 
 msgid "Sync Certificate Error"
 msgstr "خطأ في مزامنة الشهادة"
@@ -1670,51 +1648,6 @@ msgstr "استخدم رمز الاسترداد"
 msgid "Use OTP"
 msgstr "استخدم كلمة المرور لمرة واحدة"
 
-msgid "Recovery codes downloaded"
-msgstr "تم تنزيل رموز الاسترداد"
-
-msgid "MFA setup completed. Save your recovery codes before continuing."
-msgstr "تم إعداد MFA. احفظ رموز الاسترداد قبل المتابعة."
-
-msgid "Download"
-msgstr "تنزيل"
-
-msgid "Continue"
-msgstr "متابعة"
-
-msgid "MFA session expired. Please sign in again."
-msgstr "انتهت صلاحية جلسة MFA. يرجى تسجيل الدخول مرة أخرى."
-
-msgid "MFA is required. Set up an authenticator or a passkey to continue."
-msgstr "مطلوب MFA. قم بإعداد مصادِق أو مفتاح مرور للمتابعة."
-
-msgid "Verify your MFA method to continue signing in."
-msgstr "تحقق من طريقة MFA الخاصة بك لمتابعة تسجيل الدخول."
-
-msgid "Enable TOTP"
-msgstr "تفعيل TOTP"
-
-msgid "Verify"
-msgstr "التحقق"
-
-msgid "Add a passkey"
-msgstr "إضافة مفتاح مرور"
-
-msgid "Back to sign in"
-msgstr "العودة إلى تسجيل الدخول"
-
-msgid "Secret has been copied"
-msgstr "تم نسخ السر"
-
-msgid "Click to copy"
-msgstr "انقر لنسخ"
-
-msgid "Current Password"
-msgstr "كلمة المرور الحالية"
-
-msgid "Scan the QR code with your mobile phone to add the account to the app."
-msgstr "امسح رمز الاستجابة السريعة بهاتفك المحمول لإضافة الحساب إلى التطبيق."
-
 msgid "Generate new recovery codes"
 msgstr "إنشاء رموز استرداد جديدة"
 
@@ -1736,11 +1669,6 @@ msgstr "يتطلب المصادقة الثنائية"
 
 msgid "Invalid passcode or recovery code"
 msgstr "رمز المرور أو رمز الاسترداد غير صالح"
-
-msgid ""
-"Enable MFA on your own account before managing MFA policies or resetting "
-"another user."
-msgstr "فعّل MFA على حسابك الشخصي قبل إدارة سياسات MFA أو إعادة تعيين مستخدم آخر."
 
 msgid "Node Status"
 msgstr "حالة العقدة"
@@ -2381,9 +2309,6 @@ msgstr "محتوى الملف يحتوي على أحرف تحكم غير صال�
 msgid "File content contains restricted nginx directive: {0}"
 msgstr "محتوى الملف يحتوي على توجيه nginx مقيد: {0}"
 
-msgid "File content must be valid PEM or htpasswd data"
-msgstr "يجب أن يكون محتوى الملف بيانات PEM أو htpasswd صالحة"
-
 msgid "Destination file: {0} already exists"
 msgstr "الملف الوجهة: {0} موجود بالفعل"
 
@@ -2571,75 +2496,6 @@ msgstr "فشل في مسح مفتاح المضيف : {0}"
 
 msgid "Host key algorithm mismatch: expected {0}, got {1}"
 msgstr "خوارزمية مفتاح المضيف غير متطابقة: متوقعة {0}، تم الحصول على {1}"
-
-msgid "Invalid request: {0}"
-msgstr "طلب غير صالح: {0}"
-
-msgid ""
-"Invalid ingress name: use 1-40 lowercase letters, digits and hyphens, "
-"starting and ending with a letter or digit"
-msgstr ""
-"اسم ingress غير صالح: استخدم 1-40 من الأحرف الصغيرة والأرقام والشرطات، يبدأ "
-"وينتهي بحرف أو رقم"
-
-msgid "Invalid owner: use 1-64 letters, digits, dots, underscores and hyphens"
-msgstr ""
-"مالك غير صالح: استخدم من 1 إلى 64 حرفًا أو رقمًا أو نقطة أو شرطة سفلية أو "
-"شرطة"
-
-msgid "Invalid host: {0}"
-msgstr "مضيف غير صالح: {0}"
-
-msgid "Invalid backend {0}: {1}"
-msgstr "واجهة خلفية غير صالحة {0}: {1}"
-
-msgid "Backend server {0} is outside the allowed backend ranges"
-msgstr "خادم الخلفية {0} خارج نطاقات الخلفية المسموح بها"
-
-msgid "Invalid route {0}: {1}"
-msgstr "مسار غير صالح {0}: {1}"
-
-msgid "Invalid tls: {0}"
-msgstr "TLS غير صالح: {0}"
-
-msgid "Invalid policy: {0}"
-msgstr "سياسة غير صالحة: {0}"
-
-msgid "Server {0} not found in backend {1}"
-msgstr "لم يتم العثور على الخادم {0} في الخلفية {1}"
-
-msgid "Ingress {0} not found"
-msgstr "Ingress {0} غير موجود"
-
-msgid "Ingress {0} is owned by {1}; pass force to take it over"
-msgstr "Ingress {0} مملوك لـ {1}؛ مرّر force للاستيلاء عليه"
-
-msgid "Host {0} is already served by ingress {1}"
-msgstr "المضيف {0} يخدم بالفعل بواسطة ingress {1}"
-
-msgid "Site {0} already exists and is not managed by this ingress"
-msgstr "الموقع {0} موجود بالفعل وليس مُدارًا بواسطة هذا ingress"
-
-msgid "Ingress {0} was updated while being deleted"
-msgstr "تم تحديث Ingress {0} أثناء حذفه"
-
-msgid "Upstream {0} already exists and is not managed by this ingress"
-msgstr "الـ upstream {0} موجود بالفعل ولا يتم إدارته بواسطة هذا الـ ingress"
-
-msgid "Timed out waiting for ingress {0} to reach generation {1}"
-msgstr "انتهت المهلة أثناء انتظار وصول ingress {0} إلى الجيل {1}"
-
-msgid "Timed out waiting for ingress {0} to be deleted"
-msgstr "انتهت المهلة في انتظار حذف ingress {0}"
-
-msgid "Apply failed: {0}"
-msgstr "فشل التطبيق: {0}"
-
-msgid "Certificate not ready: {0}"
-msgstr "الشهادة غير جاهزة: {0}"
-
-msgid "Not implemented"
-msgstr "غير مُنفَّذ"
 
 msgid "Code completion is not enabled"
 msgstr "إكمال الكود غير مفعّل"
@@ -2966,41 +2822,6 @@ msgstr "الموقع في وضع الصيانة"
 msgid "Read dir failed: {0}"
 msgstr "فشل قراءة الدليل: {0}"
 
-msgid ""
-"Site is managed by ingress {0}; change the ingress instead or force the "
-"change"
-msgstr ""
-"الموقع يُدار بواسطة ingress {0}؛ قم بتغيير ingress بدلاً من ذلك أو أفرض "
-"التغيير"
-
-msgid ""
-"The file name must end in .conf and use only letters, digits, dots, dashes "
-"and underscores"
-msgstr ""
-"يجب أن ينتهي اسم الملف بـ .conf وأن يحتوي فقط على الحروف والأرقام والنقاط "
-"والشرطات والشرطات السفلية"
-
-msgid "Snippet not found"
-msgstr "لم يتم العثور على المقتطف"
-
-msgid "The snippet exceeds 256 KiB"
-msgstr "يتجاوز المقتطف 256 كيلوبايت"
-
-msgid "The header of the snippet does not parse: {0}"
-msgstr "رأس المقتطف لا يتم تحليله: {0}"
-
-msgid "The snippet is still included by {0}"
-msgstr "ما زالت المقتطفات مُضمَّنة بواسطة {0}"
-
-msgid "A snippet with this file name already exists"
-msgstr "توجد مقتطفة بهذا الاسم بالفعل"
-
-msgid "The variable {0} is invalid: {1}"
-msgstr "المتغير {0} غير صالح: {1}"
-
-msgid "The content does not parse as a template: {0}"
-msgstr "المحتوى لا يتم تحليله كقالب: {0}"
-
 msgid "Stream not found"
 msgstr "البث غير موجود"
 
@@ -3184,9 +3005,6 @@ msgstr ""
 "يتم تعيين منطقة الذاكرة المشتركة من خلال مفتاح zone؛ قم بإزالة التوجيه zone "
 "من التوجيهات الإضافية"
 
-msgid "Upstream names starting with {0} are reserved for ingresses"
-msgstr "الأسماء الأعلى في التدفق التي تبدأ بـ {0} محجوزة للingresses"
-
 msgid "Upstream not found: {0}"
 msgstr "لم يتم العثور على upstream: {0}"
 
@@ -3206,13 +3024,6 @@ msgid ""
 "The shared memory zone {0} is already used by another directive; nginx "
 "reported: {1}"
 msgstr "منطقة الذاكرة المشتركة {0} مستخدمة بالفعل بواسطة توجيه آخر؛ أفاد nginx: {1}"
-
-msgid ""
-"Upstream {0} is managed by ingress {1}; change the ingress instead or force "
-"the change"
-msgstr ""
-"الـ upstream {0} تتم إدارته بواسطة الـ ingress {1}؛ قم بتغيير الـ ingress "
-"بدلاً من ذلك أو فرض التغيير"
 
 msgid "The nginx conf.d directory is not available: {0}"
 msgstr "مجلد nginx conf.d غير متاح: {0}"
@@ -3240,15 +3051,6 @@ msgstr "رمز الاسترداد غير صالح"
 
 msgid "Legacy recovery code not allowed since totp is not enabled"
 msgstr "لا يُسمح برمز الاسترداد القديم نظرًا لعدم تمكين TOTP"
-
-msgid "MFA enrollment is required"
-msgstr "يلزم التسجيل في MFA"
-
-msgid "MFA verification is required"
-msgstr "مطلوب التحقق عبر MFA"
-
-msgid "Cannot remove the last required MFA method"
-msgstr "لا يمكن إزالة طريقة MFA المطلوبة الأخيرة"
 
 msgid "WebAuthn settings are not configured"
 msgstr "إعدادات WebAuthn غير مضبوطة"
@@ -4169,9 +3971,6 @@ msgstr "سجلات المجموعة"
 msgid "Not Found"
 msgstr "غير موجود"
 
-msgid "Ingresses"
-msgstr "Ingresses"
-
 msgid "Namespaces"
 msgstr "مساحات الأسماء"
 
@@ -4198,18 +3997,6 @@ msgstr "قائمة المواقع"
 
 msgid "Add Site"
 msgstr "أضف موقع"
-
-msgid "Snippets"
-msgstr "المقتطفات"
-
-msgid "Create Snippet"
-msgstr "إنشاء مقتطف"
-
-msgid "Built-in Template"
-msgstr "قالب مدمج"
-
-msgid "Edit Snippet"
-msgstr "تعديل المقتطف"
 
 msgid "Edit Site"
 msgstr "تعديل الموقع"
@@ -4292,17 +4079,29 @@ msgstr ""
 "تحفظ قائمة الوصول عناوين IP في مكان واحد. اخترها لخادم أو موقع في محرر "
 "الموقع؛ وعند تغيير القائمة هنا سيتم تحديث كل موقع يستخدمها."
 
+msgid "+%{count} more"
+msgstr "+%{count} أخرى"
+
 msgid "Deny"
 msgstr "رفض"
 
 msgid "Allow"
 msgstr "السماح"
 
+msgid "Not used"
+msgstr "غير مستخدم"
+
 msgid "Use list"
 msgstr "استخدام قائمة"
 
 msgid "Deny (403)"
 msgstr "رفض (403)"
+
+msgid "Site"
+msgstr "موقع"
+
+msgid "Stream"
+msgstr "تدفق"
 
 msgid "Access list %{name} saved"
 msgstr "تم حفظ قائمة الوصول %{name}"
@@ -4398,15 +4197,6 @@ msgstr "أسبوعيًا يوم %{day} الساعة %{time}"
 
 msgid "Monthly on day %{day} at %{time}"
 msgstr "يوميًا في اليوم %{day} الساعة %{time}"
-
-msgid "Backups to Keep"
-msgstr "النسخ الاحتياطية المراد الاحتفاظ بها"
-
-msgid "All"
-msgstr "الكل"
-
-msgid "Backups to Keep (0 keeps all)"
-msgstr "النسخ الاحتياطية للاحتفاظ بها (0 يحتفظ بجميعها)"
 
 msgid "Last Backup Time"
 msgstr "وقت آخر نسخة احتياطية"
@@ -4769,11 +4559,6 @@ msgstr "تعذر التحقق من النشر"
 msgid "Not After"
 msgstr "ليس بعد"
 
-msgid "Used by %{count} configuration"
-msgid_plural "Used by %{count} configurations"
-msgstr[0] "يُستخدم بواسطة %{count} إعداد"
-msgstr[1] "يُستخدم بواسطة %{count} إعدادات"
-
 msgid "Failed to scan certificates"
 msgstr "فشل فحص الشهادات"
 
@@ -4818,12 +4603,6 @@ msgstr "رجوع"
 
 msgid "This field is required"
 msgstr "هذا الحقل مطلوب"
-
-msgid "The path exists, but the file is not a certificate"
-msgstr "المسار موجود، لكن الملف ليس شهادة"
-
-msgid "The path exists, but the file is not a private key"
-msgstr "المسار موجود، لكن الملف ليس مفتاحًا خاصًا"
 
 msgid "Sync to"
 msgstr "مزامنة إلى"
@@ -4894,6 +4673,9 @@ msgstr "تم تنزيل ملفات الشهادة بنجاح"
 
 msgid "Failed to download certificate files"
 msgstr "فشل تنزيل ملفات الشهادة"
+
+msgid "Download"
+msgstr "تنزيل"
 
 msgid "Download Certificate Files"
 msgstr "تنزيل ملفات الشهادة"
@@ -5065,14 +4847,14 @@ msgstr "لتأكيد الإلغاء، يرجى كتابة \"إلغاء\" في ا
 msgid "Renew successfully"
 msgstr "تم التجديد بنجاح"
 
-msgid "AutoCert is running, please wait..."
-msgstr "AutoCert قيد التشغيل، يرجى الانتظار..."
+msgid "Renew"
+msgstr "تجديد"
 
 msgid "Renew Certificate"
 msgstr "تجديد الشهادة"
 
-msgid "Renew"
-msgstr "تجديد"
+msgid "AutoCert is running, please wait..."
+msgstr "AutoCert قيد التشغيل، يرجى الانتظار..."
 
 msgid "Certificate issued successfully"
 msgstr "تم إصدار الشهادة بنجاح"
@@ -5673,16 +5455,6 @@ msgstr ""
 "عنوان URL مطلق اختياري. استخدمه عندما يختلف العنوان العام عن مضيف أو منفذ "
 "الخادم الأعلى الفعلي."
 
-msgid "Site Card Click URL"
-msgstr "رابط النقر لبطاقة الموقع"
-
-msgid ""
-"Optional absolute HTTP/HTTPS URL used when opening this site card. If "
-"empty, the default site URL is used."
-msgstr ""
-"عنوان URL مطلق اختياري بـ HTTP/HTTPS يُستخدم عند فتح بطاقة الموقع هذه. إذا "
-"كان فارغًا، يُستخدم عنوان URL الافتراضي للموقع."
-
 msgid "HTTP Method"
 msgstr "طريقة HTTP"
 
@@ -5983,6 +5755,9 @@ msgstr "حزمة تطوير البرمجيات SDK"
 msgid "Additional"
 msgstr "إضافي"
 
+msgid "All"
+msgstr "الكل"
+
 msgid "Host, e.g. @ or www"
 msgstr "المضيف، مثل @ أو www"
 
@@ -6139,6 +5914,9 @@ msgstr "لا يمكن أن يكون الاسم فارغًا"
 
 msgid "Please select DNS provider"
 msgstr "يرجى اختيار مزود DNS"
+
+msgid "Configuration"
+msgstr "إعدادات"
 
 msgid "DNS Credentials"
 msgstr "بيانات اعتماد DNS"
@@ -6579,303 +6357,6 @@ msgstr "مراجعة صحة النظام، وحالة الترقية، وتفا�
 
 msgid "Access integrated terminal sessions for maintenance tasks."
 msgstr "الوصول إلى جلسات الطرفية المدمجة لمهام الصيانة."
-
-msgid "HTTP only"
-msgstr "HTTP فقط"
-
-msgid "Not issued yet"
-msgstr "لم يتم إصدارها بعد"
-
-msgid "Expired %{date}"
-msgstr "منتهي الصلاحية %{date}"
-
-msgid "%{date} (%{days} day left)"
-msgid_plural "%{date} (%{days} days left)"
-msgstr[0] "%{date} (يتبقى %{days} يوم)"
-msgstr[1] "%{date} (يتبقى %{days} أيام)"
-
-msgid "Address"
-msgstr "العنوان"
-
-msgid "Health"
-msgstr "الصحة"
-
-msgid "Max Fails"
-msgstr "الحد الأقصى للفشل"
-
-msgid "Fail Timeout"
-msgstr "مهلة الفشل"
-
-msgid "Path Prefix"
-msgstr "بادئة المسار"
-
-msgid "Backend"
-msgstr "الخلفية"
-
-msgid "Options"
-msgstr "الخيارات"
-
-msgid "Allowed Sources"
-msgstr "المصادر المسموح بها"
-
-msgid "Last Transition"
-msgstr "الانتقال الأخير"
-
-msgid "Drained"
-msgstr "مُرهَق"
-
-msgid "No Data"
-msgstr "لا بيانات"
-
-msgid "Healthy"
-msgstr "صحي"
-
-msgid "Unhealthy"
-msgstr "غير صحي"
-
-msgid ""
-"The generated site could not be loaded. It is written by the first "
-"successful apply."
-msgstr "تعذّر تحميل الموقع المُولَّد. يُكتب عند أول تطبيق ناجح."
-
-msgid "Reconcile Now"
-msgstr "تسوية الآن"
-
-msgid "The last apply failed; the previous config is still live"
-msgstr "فشلت عملية التطبيق الأخيرة؛ لا تزال التكوينات السابقة سارية المفعول."
-
-msgid "Owner"
-msgstr "المالك"
-
-msgid "External ID"
-msgstr "المعرّف الخارجي"
-
-msgid "Generation"
-msgstr "جيل"
-
-msgid "%{observed} applied of %{generation}"
-msgstr "تم تطبيق %{observed} من %{generation}"
-
-msgid "Generated Site"
-msgstr "الموقع المُولَّد"
-
-msgid "Last Applied"
-msgstr "آخر تطبيق"
-
-msgid "Config Hash"
-msgstr "تجزئة الإعدادات"
-
-msgid "Labels"
-msgstr "التسميات"
-
-msgid "Hosts"
-msgstr "المضيفين"
-
-msgid "TLS"
-msgstr "TLS"
-
-msgid "Mode"
-msgstr "الوضع"
-
-msgid "Certificate"
-msgstr "الشهادة"
-
-msgid "View certificate"
-msgstr "عرض الشهادة"
-
-msgid "Challenge"
-msgstr "التحدي"
-
-msgid "Redirect to HTTPS"
-msgstr "إعادة التوجيه إلى HTTPS"
-
-msgid "HSTS"
-msgstr "HSTS"
-
-msgid "Only the HTTP listener is served until the certificate is issued."
-msgstr "لا يتم تقديم أي خدمة سوى مستمع HTTP حتى صدور الشهادة."
-
-msgid "Backends"
-msgstr "الأنظمة الخلفية"
-
-msgid "Routes"
-msgstr "المسارات"
-
-msgid "Policy default"
-msgstr "الافتراضي للسياسة"
-
-msgid "Policy"
-msgstr "السياسة"
-
-msgid "Everyone"
-msgstr "الجميع"
-
-msgid "Rate Limit"
-msgstr "حد المعدل"
-
-msgid "%{rps} requests/s per client, burst %{burst}"
-msgstr "%{rps} طلب/ثانية لكل عميل، حد أقصى %{burst}"
-
-msgid "Unlimited"
-msgstr "غير محدود"
-
-msgid "Max Body Size"
-msgstr "الحجم الأقصى للجسم"
-
-msgid "Extra Headers"
-msgstr "ترويسات إضافية"
-
-msgid "Conditions"
-msgstr "الشروط"
-
-msgid "True"
-msgstr "صحيح"
-
-msgid "False"
-msgstr "خطأ"
-
-msgid "Generated Site Config"
-msgstr "إعدادات الموقع المُولّدة"
-
-msgid "Open in site editor"
-msgstr "افتح في محرر الموقع"
-
-msgid "Not ready"
-msgstr "غير جاهز"
-
-msgid "The latest spec has not been applied yet"
-msgstr "لم يتم تطبيق أحدث مواصفة بعد"
-
-msgid "Applying"
-msgstr "جارٍ التطبيق"
-
-msgid "Ready"
-msgstr "جاهز"
-
-msgid "Degraded"
-msgstr "متدهور"
-
-msgid "Config Applied"
-msgstr "تم تطبيق الإعدادات"
-
-msgid "Certificate Ready"
-msgstr "الشهادة جاهزة"
-
-msgid "Backends Healthy"
-msgstr "الخوادم الخلفية سليمة"
-
-msgid "Issued automatically (ACME)"
-msgstr "تم الإصدار تلقائيًا (ACME)"
-
-msgid "Existing certificate"
-msgstr "شهادة موجودة"
-
-msgid "HTTP-01"
-msgstr "HTTP-01"
-
-msgid "DNS-01"
-msgstr "DNS-01"
-
-msgid "Round Robin"
-msgstr "Round Robin"
-
-msgid "Least Connections"
-msgstr "أقل اتصالات"
-
-msgid "IP Hash"
-msgstr "تجزئة IP"
-
-msgid "All owners"
-msgstr "جميع المالكين"
-
-msgid "Reconcile of %{name} queued"
-msgstr "تمت جدولة مطابقة %{name} في قائمة الانتظار"
-
-msgid "Delete ingress %{name}?"
-msgstr "حذف ingress %{name}؟"
-
-msgid ""
-"This ingress is owned by %{owner}. Its controller will probably recreate it "
-"on the next sync; remove it from the controller to delete it for good."
-msgstr ""
-"يملك %{owner} هذا الـ ingress. من المرجح أن يعيد الـ controller إنشاءه عند "
-"المزامنة التالية؛ أزله من الـ controller لحذفه نهائيًا."
-
-msgid "The generated site and upstream files are removed and nginx is reloaded."
-msgstr "يتم إزالة الموقع المُولَّد وملفات upstream وإعادة تحميل nginx."
-
-msgid "Also delete the certificate"
-msgstr "احذف الشهادة أيضًا"
-
-msgid "Ingress %{name} deleted"
-msgstr "تم حذف Ingress %{name}"
-
-msgid "Ingress"
-msgstr "Ingress"
-
-msgid "Phase"
-msgstr "مرحلة"
-
-msgid "%{healthy}/%{total} healthy"
-msgstr "%{healthy}/%{total} سليم"
-
-msgid "%{total} server"
-msgid_plural "%{total} servers"
-msgstr[0] "%{total} خادم"
-msgstr[1] "%{total} خوادم"
-
-msgid "%{count} down"
-msgstr "٪{count} متبقي"
-
-msgid "Filter by owner"
-msgstr "تصفية حسب المالك"
-
-msgid "Applied generation / latest generation"
-msgstr "الجيل المطبق / الجيل الأحدث"
-
-msgid "gen %{observed}/%{generation}"
-msgstr "gen %{observed}/%{generation}"
-
-msgid "Reconcile"
-msgstr "تسوية"
-
-msgid ""
-"Ingresses are reverse proxy entries published by external controllers "
-"through the Ingress API. Nginx UI renders each one into a managed site and "
-"upstreams, issues its certificate and reports its status here. Change them "
-"in their controller; edits made here are overwritten by the next reconcile."
-msgstr ""
-"Ingresses هي عناصر الوكيل العكسي التي تنشرها المتحكمات الخارجية عبر Ingress "
-"API. يقوم Nginx UI بعرض كل منها كموقع مُدار مع الـ upstreams، وإصدار شهادته "
-"والإبلاغ عن حالته هنا. قم بتغييرها في متحكمها؛ التعديلات التي تجريها هنا "
-"سيتم استبدالها بواسطة عملية reconciliation التالية."
-
-msgid "Learn more"
-msgstr "اعرف المزيد"
-
-msgid "No ingresses yet"
-msgstr "لا توجد توجيهات بعد"
-
-msgid ""
-"A controller such as a deployment platform creates ingresses with PUT "
-"/api/ingresses/:name, authenticated as a cluster node or with an API token. "
-"They show up here as soon as they are stored."
-msgstr ""
-"يقوم وحدة تحكم مثل منصة النشر بإنشاء نقاط الدخول (ingresses) عبر PUT "
-"/api/ingresses/:name، باستخدام المصادقة كعقدة عنقود أو باستخدام رمز API. "
-"تظهر هنا بمجرد تخزينها."
-
-msgid "Read the Ingress API guide"
-msgstr "اقرأ دليل واجهة Ingress API البرمجية"
-
-msgid "Search by name, host or external ID"
-msgstr "البحث بالاسم أو المضيف أو المعرف الخارجي"
-
-msgid "Search ingresses"
-msgstr "البحث في Ingress"
-
-msgid "No ingress matches the filter"
-msgstr "لا توجد Ingress تطابق عامل التصفية"
 
 msgid "Please input your E-mail!"
 msgstr "يرجى إدخال بريدك الإلكتروني!"
@@ -8208,6 +7689,9 @@ msgstr ""
 msgid "Register passkey successfully"
 msgstr "تم تسجيل مفتاح المرور بنجاح"
 
+msgid "Add a passkey"
+msgstr "إضافة مفتاح مرور"
+
 msgid "Tips"
 msgstr "نصائح"
 
@@ -8223,6 +7707,9 @@ msgid ""
 "Follow the instructions in the dialog to complete the passkey registration "
 "process."
 msgstr "اتبع التعليمات في الحوار لإكمال عملية تسجيل مفتاح المرور."
+
+msgid "Current Password"
+msgstr "كلمة المرور الحالية"
 
 msgid ""
 "You have not configured the settings of Webauthn, so you cannot add a "
@@ -8349,9 +7836,6 @@ msgstr "يرجى إدخال كلمة المرور الحالية"
 msgid "Enable 2FA successfully"
 msgstr "تم تفعيل المصادقة الثنائية بنجاح"
 
-msgid "TOTP disabled"
-msgstr "تم تعطيل TOTP"
-
 msgid "TOTP"
 msgstr "كلمة مرور لمرة واحدة تعتمد على الوقت"
 
@@ -8369,27 +7853,23 @@ msgstr ""
 "لتفعيله، تحتاج إلى تثبيت تطبيق Google Authenticator أو Microsoft "
 "Authenticator على هاتفك المحمول."
 
+msgid "Scan the QR code with your mobile phone to add the account to the app."
+msgstr "امسح رمز الاستجابة السريعة بهاتفك المحمول لإضافة الحساب إلى التطبيق."
+
 msgid "Current account is not enabled TOTP."
 msgstr "TOTP معطل للحساب الحالي."
 
 msgid "Current account is enabled TOTP."
 msgstr "TOTP مفعل للحساب الحالي."
 
-msgid "Replace TOTP"
-msgstr "استبدال TOTP"
+msgid "Enable TOTP"
+msgstr "تفعيل TOTP"
 
-msgid "Disable TOTP for this account?"
-msgstr "هل تريد تعطيل TOTP لهذا الحساب؟"
+msgid "Secret has been copied"
+msgstr "تم نسخ السر"
 
-msgid "Disable TOTP"
-msgstr "تعطيل TOTP"
-
-msgid ""
-"Your current authenticator remains active until the new code is verified. "
-"New recovery codes replace the old ones."
-msgstr ""
-"يظل المُصادِق الحالي الخاص بك نشطًا حتى يتم التحقق من الرمز الجديد. تحل "
-"رموز الاسترداد الجديدة محل القديمة."
+msgid "Click to copy"
+msgstr "انقر لنسخ"
 
 msgid "Bark"
 msgstr "بارك"
@@ -9516,6 +8996,9 @@ msgstr "الوصول والتثبيت"
 msgid "File mode and setup instructions"
 msgstr "وضع الملفات وتعليمات الإعداد"
 
+msgid "Verify"
+msgstr "التحقق"
+
 msgid "Run checks and save"
 msgstr "تشغيل الفحوصات والحفظ"
 
@@ -9792,29 +9275,6 @@ msgstr "عام"
 
 msgid "Banned Until"
 msgstr "محظور حتى"
-
-msgid "MFA Policy"
-msgstr "سياسة MFA"
-
-msgid ""
-"Require MFA at the next sign-in. Users must enroll their own authenticator "
-"or passkey."
-msgstr ""
-"اشترط استخدام MFA عند تسجيل الدخول التالي. يجب على المستخدمين تسجيل جهاز "
-"المصادقة الخاص بهم أو مفتاح المرور."
-
-msgid "Require MFA for all users"
-msgstr "اشتراط MFA لجميع المستخدمين"
-
-msgid "Require local MFA for SSO sign-in"
-msgstr " exigir المصادقة متعددة العوامل المحلية لتسجيل الدخول عبر SSO"
-
-msgid ""
-"Apply local MFA verification and enrollment requirements to OIDC and "
-"Casdoor sign-in."
-msgstr ""
-"تطبيق متطلبات التحقق من MFA المحلي والتسجيل على تسجيل الدخول عبر OIDC و "
-"Casdoor."
 
 msgid "Passkeys"
 msgstr "مفاتيح المرور"
@@ -10099,6 +9559,9 @@ msgstr "جميع الواجهات"
 msgid "HTTPS"
 msgstr "HTTPS"
 
+msgid "Certificate"
+msgstr "الشهادة"
+
 msgid "Pick the certificate that secures the web interface."
 msgstr "اختر الشهادة التي تؤمّن واجهة الويب."
 
@@ -10123,6 +9586,9 @@ msgstr "يجب أن يكون وقت الانتهاء لاحقًا لوقت ال�
 msgid "Set maintenance information"
 msgstr "تحديد معلومات الصيانة"
 
+msgid "Continue"
+msgstr "متابعة"
+
 msgid "Start time"
 msgstr "وقت البدء"
 
@@ -10146,22 +9612,6 @@ msgstr "معلومات إضافية"
 
 msgid "For example: expected recovery plan or incident reference"
 msgstr "على سبيل المثال: خطة التعافي المتوقعة أو مرجع الحادث"
-
-msgid "Managed by ingress %{name}"
-msgstr "تُدار بواسطة ingress %{name}"
-
-msgid ""
-"Changes will be overwritten by the next reconcile. Edit the ingress in its "
-"controller instead."
-msgstr ""
-"سيتم استبدال التغييرات بواسطة عملية reconcile التالية. قم بتعديل الـ "
-"ingress من خلال الـ controller الخاص به بدلاً من ذلك."
-
-msgid "View ingress"
-msgstr "عرض Ingress"
-
-msgid "Edit anyway"
-msgstr "تحرير على أي حال"
 
 msgid "Configuration Name"
 msgstr "اسم التكوين"
@@ -10379,9 +9829,6 @@ msgstr "مساحة الاسم"
 msgid "The parameter of server_name is required"
 msgstr "معلمة server_name مطلوبة"
 
-msgid "Config Template"
-msgstr "قالب التكوين"
-
 msgid "Save the edited configuration before enabling HTTPS."
 msgstr "احفظ الإعدادات المعدّلة قبل تمكين HTTPS."
 
@@ -10481,30 +9928,11 @@ msgstr "شهادة موقعة ذاتيًا"
 msgid "Generate self-signed certificate"
 msgstr "إنشاء شهادة موقعة ذاتياً"
 
-msgid "Built-in"
-msgstr "مدمج"
-
 msgid "Search templates"
 msgstr "البحث عن القوالب"
 
-msgid "Snippet"
-msgstr "مقتطف"
-
 msgid "Author"
 msgstr "الكاتب"
-
-msgid ""
-"Include keeps the site linked to snippets/%{file}, so later changes of the "
-"snippet apply to it. Insert copies the content into the site instead."
-msgstr ""
-"يُبقي Include الموقع مرتبطًا بـ snippets/%{file}، بحيث تُطبَّق التغييرات "
-"اللاحقة على المقتطف عليه. أما Insert فينسخ المحتوى إلى الموقع بدلاً من ذلك."
-
-msgid "Insert"
-msgstr "إدراج"
-
-msgid "Include"
-msgstr "تضمين"
 
 msgid "Do you want to enable TLS?"
 msgstr "هل تريد تفعيل TLS؟"
@@ -10531,6 +9959,15 @@ msgstr ""
 
 msgid "Not a valid domain name or IP address: %{value}"
 msgstr "اسم النطاق أو عنوان IP غير صالح: %{value}"
+
+msgid "HTTP-01"
+msgstr "HTTP-01"
+
+msgid "DNS-01"
+msgstr "DNS-01"
+
+msgid "Existing certificate"
+msgstr "شهادة موجودة"
 
 msgid "Skip for now"
 msgstr "التخطي الآن"
@@ -10783,6 +10220,9 @@ msgstr "إعادة إنشاء سجل DNS"
 msgid "Clear Link"
 msgstr "مسح الرابط"
 
+msgid "Config Template"
+msgstr "قالب التكوين"
+
 msgid "Port Scanner"
 msgstr "ماسح المنافذ"
 
@@ -10800,9 +10240,6 @@ msgstr "خطأ في تحليل تكوين Nginx"
 
 msgid "No."
 msgstr "الرقم"
-
-msgid "Ingress: %{name}"
-msgstr "Ingress: %{name}"
 
 msgid "Please input name, "
 msgstr "الرجاء إدخال الاسم، "
@@ -10871,14 +10308,1068 @@ msgstr "تعيين معلومات الصيانة للمواقع المحددة"
 msgid "%{count} sites selected"
 msgstr "%{count} مواقع محددة"
 
-msgid "Include %{count} site managed by an ingress"
-msgid_plural "Include %{count} sites managed by ingresses"
-msgstr[0] "تضمين %{count} موقع مُدار بواسطة Ingress"
-msgstr[1] "تضمين %{count} موقع مُدار بواسطة Ingress"
-msgstr[2] "تضمين %{count} موقعين مُدارين بواسطة Ingress"
-msgstr[3] "تضمين %{count} مواقع مُدارة بواسطة Ingress"
-msgstr[4] "تضمين %{count} موقعًا مُدارًا بواسطة Ingress"
-msgstr[5] "تضمين %{count} موقع مُدار بواسطة Ingress"
+msgid "Do you want to %{action} this stream?"
+msgstr "هل تريد %{action} هذا البث؟"
+
+msgid "Delete stream: %{stream_name}"
+msgstr "حذف البث: ‎%{stream_name}"
+
+msgid "Added successfully"
+msgstr "تمت الإضافة بنجاح"
+
+msgid "Add Stream"
+msgstr "أضف Stream"
+
+msgid "%{count} streams selected"
+msgstr "%{count} تدفقات محددة"
+
+msgid "Development Mode"
+msgstr "وضع التطوير"
+
+msgid "Official Document"
+msgstr "الوثيقة الرسمية"
+
+msgid "Sponsor"
+msgstr "راعي"
+
+msgid "Project Team"
+msgstr "فريق المشروع"
+
+msgid "License"
+msgstr "رخصة"
+
+msgid "View Third-party Components"
+msgstr "عرض المكونات الخارجية"
+
+msgid "View version details and core information about this Nginx UI instance."
+msgstr "اعرض تفاصيل الإصدار والمعلومات الأساسية حول مثيل Nginx UI هذا."
+
+msgid "Run built-in diagnostics to validate environment and service readiness."
+msgstr "قم بتشغيل التشخيصات المدمجة للتحقق من جهوزية البيئة والخدمات."
+
+msgid "Check release updates and execute upgrade operations when available."
+msgstr "تحقق من إصدارات التحديثات ونفذ عمليات الترقية عند توفرها."
+
+msgid "Review third-party licenses and open source component attributions."
+msgstr "مراجعة التراخيص الخاصة بطرف ثالث وصفات مكونات المصدر المفتوح."
+
+msgid "Total Components"
+msgstr "إجمالي المكونات"
+
+msgid "Backend"
+msgstr "الخلفية"
+
+msgid "Frontend"
+msgstr "واجهة المستخدم"
+
+msgid "License Types"
+msgstr "أنواع التراخيص"
+
+msgid "License Distribution"
+msgstr "توزيع الرخصة"
+
+msgid "components"
+msgstr "المكونات"
+
+msgid "All Components"
+msgstr "جميع المكونات"
+
+msgid "Dev"
+msgstr "تطوير"
+
+msgid "Reinstall"
+msgstr "إعادة التثبيت"
+
+msgid "Core Upgrade"
+msgstr "ترقية نواة"
+
+msgid "You can check Nginx UI upgrade at this page."
+msgstr "يمكنك التحقق من ترقية Nginx UI في هذه الصفحة."
+
+msgid "Current Version"
+msgstr "الإصدار الحالي"
+
+msgid "Arch"
+msgstr "أرك"
+
+msgid "Executable Path"
+msgstr "مسار الملف التنفيذي"
+
+msgid "Last checked at"
+msgstr "آخر فحص في"
+
+msgid "You are using the latest version"
+msgstr "أنت تستخدم أحدث إصدار"
+
+msgid "New version released"
+msgstr "تم إصدار نسخة جديدة"
+
+msgid "Release Note"
+msgstr "ملاحظة الإصدار"
+
+msgid "Hide Assistant"
+msgstr "إخفاء المساعد"
+
+msgid "Show Assistant"
+msgstr "إظهار المساعد"
+
+msgid "Connection lost for this terminal. Please refresh if needed."
+msgstr "فقد الاتصال بهذا الطرف. يرجى التحديث إذا لزم الأمر."
+
+msgid ""
+"This is a simulated terminal running entirely in your browser. Commands are "
+"answered locally and never reach a server."
+msgstr ""
+"هذه محطة طرفية تحاكي العمل بالكامل داخل متصفحك. الأوامر تتم معالجتها محليًا "
+"ولا تصل إلى أي خادم."
+
+msgid ""
+"You are accessing this terminal over an insecure HTTP connection on a "
+"non-localhost domain. This may expose sensitive information."
+msgstr ""
+"أنت تتصل بهذا الطرف عبر اتصال HTTP غير آمن في نطاق غير محلي. قد يؤدي هذا "
+"إلى كشف معلومات حساسة."
+
+msgid "Round Robin (default)"
+msgstr "Round Robin (الافتراضي)"
+
+msgid "Least Connections (least_conn)"
+msgstr "أقل عدد الاتصالات (least_conn)"
+
+msgid "IP Hash (ip_hash)"
+msgstr "تجزئة IP (ip_hash)"
+
+msgid "Hash (hash)"
+msgstr "هاش (hash)"
+
+msgid "Random (random)"
+msgstr "عشوائي (random)"
+
+msgid "Upstream %{name} saved and Nginx reloaded"
+msgstr "تم حفظ Upstream %{name} وإعادة تحميل Nginx"
+
+msgid "Edit Upstream %{name}"
+msgstr "تحرير Upstream %{name}"
+
+msgid "Create Upstream"
+msgstr "إنشاء Upstream"
+
+msgid "Sites use it as proxy_pass http://%{name};"
+msgstr "تستخدمها المواقع في proxy_pass http://%{name};"
+
+msgid "Load Balancing Method"
+msgstr "طريقة موازنة الحمل"
+
+msgid "Hash Key"
+msgstr "مفتاح Hash"
+
+msgid "Consistent Hashing"
+msgstr "التشفير المتسق"
+
+msgid "Servers"
+msgstr "الخوادم"
+
+msgid "Address"
+msgstr "العنوان"
+
+msgid "Max Fails"
+msgstr "الحد الأقصى للفشل"
+
+msgid "Fail Timeout"
+msgstr "مهلة الفشل"
+
+msgid "Not available with this load balancing method"
+msgstr "غير متاح مع أسلوب توازن الحمل هذا"
+
+msgid "Keepalive"
+msgstr "Keepalive"
+
+msgid ""
+"Idle connections to keep open per worker; 0 disables it. Proxied sites also "
+"need proxy_http_version 1.1 and an empty Connection header."
+msgstr ""
+"الاتصالات الخاملة التي يُبقى عليها مفتوحة لكل عملية عامل؛ 0 يُعطّلها. تحتاج "
+"المواقع المُوَجَّهة أيضًا إلى proxy_http_version 1.1 ورأس Connection فارغ."
+
+msgid "Connections"
+msgstr "اتصالات"
+
+msgid "Additional Directives"
+msgstr "التوجيهات الإضافية"
+
+msgid "One directive per line, for example keepalive_timeout or keepalive_requests."
+msgstr ""
+"موجّه واحد في كل سطر، على سبيل المثال keepalive_timeout أو "
+"keepalive_requests."
+
+msgid "Referenced By"
+msgstr "يُشار إليه بواسطة"
+
+msgid "No site uses this upstream yet."
+msgstr "لا يستخدم أي موقع هذا upstream بعد."
+
+msgid "Configuration Preview"
+msgstr "معاينة الإعدادات"
+
+msgid "Enable server %{address}"
+msgstr "تفعيل الخادم %{address}"
+
+msgid "Disable server %{address}"
+msgstr "تعطيل الخادم %{address}"
+
+msgid ""
+"Create shared upstream groups with load balancing and reuse them across "
+"sites."
+msgstr "أنشئ مجموعات upstream مشتركة مع موازنة الحمل وأعد استخدامها عبر المواقع."
+
+msgid "Monitor the health of every proxy target and toggle its health check."
+msgstr "راقب صحة كل هدف وكلاء التحويل وقم بتبديل فحص صحته."
+
+msgid "Socket"
+msgstr "المنفذ"
+
+msgid "Direct"
+msgstr "مباشر"
+
+msgid "Health Status"
+msgstr "حالة الصحة"
+
+msgid "No Data"
+msgstr "لا بيانات"
+
+msgid "Last Check"
+msgstr "آخر التحقق"
+
+msgid "Upstream health checks are globally paused"
+msgstr "فحوصات سلامة الخوادم العليا متوقفة مؤقتًا بشكل عام"
+
+msgid ""
+"Per-target selections are preserved. Resume probes from Health Check "
+"preferences."
+msgstr "يتم الاحتفاظ باختيارات كل هدف. استأنف الفحوصات من تفضيلات فحص السلامة."
+
+msgid "Round Robin"
+msgstr "Round Robin"
+
+msgid "Least Connections"
+msgstr "أقل اتصالات"
+
+msgid "IP Hash"
+msgstr "تجزئة IP"
+
+msgid "Hash"
+msgstr "تجزئة"
+
+msgid "Random"
+msgstr "عشوائي"
+
+msgid "Load Balancing"
+msgstr "موازنة الأحمال"
+
+msgid "Defined In"
+msgstr "معرَّف في"
+
+msgid "Matched upstreams: %{groups}, servers: %{servers}"
+msgstr "الـ upstream المطابقة: %{groups}، الخوادم: %{servers}"
+
+msgid "Server %{address} enabled"
+msgstr "تم تفعيل الخادم %{address}"
+
+msgid "Server %{address} disabled"
+msgstr "تم تعطيل الخادم %{address}"
+
+msgid "Disable the last active server of %{name}?"
+msgstr "هل تريد تعطيل آخر خادم نشط في %{name}؟"
+
+msgid ""
+"No other primary server of this upstream is enabled. Requests will fail "
+"unless a backup server takes over."
+msgstr ""
+"لا يوجد خادم أساسي آخر لهذا الـ Upstream مفعّل. ستفشل الطلبات إلا إذا استلم "
+"خادم احتياطي الأمر."
+
+msgid "Upstream %{name} is still in use"
+msgstr "Upstream %{name} لا تزال قيد الاستخدام"
+
+msgid "Point these configurations at another upstream before deleting it:"
+msgstr "وجِّه هذه الإعدادات إلى upstream آخر قبل حذفه:"
+
+msgid "Delete upstream %{name}?"
+msgstr "حذف upstream %{name}؟"
+
+msgid "%{path} will be removed and Nginx reloaded."
+msgstr "سيتم حذف %{path} وإعادة تحميل Nginx."
+
+msgid "Upstream %{name} deleted"
+msgstr "تم حذف Upstream %{name}"
+
+msgid ""
+"An upstream group shares its servers and load balancing method across "
+"sites. Choose it as the proxy target when setting up a site; later changes "
+"here apply to every site that uses it."
+msgstr ""
+"تشارك مجموعة Upstream خوادمها وطريقة توزيع التحميل بين المواقع. اخترها كهدف "
+"proxy عند إعداد موقع؛ ستُطبَّق التغييرات اللاحقة هنا على كل موقع يستخدمها."
+
+msgid "Files are stored in %{dir}."
+msgstr "يتم تخزين الملفات في %{dir}."
+
+msgid "Search by name or IP:port"
+msgstr "البحث بالاسم أو IP:port"
+
+msgid "Search upstreams by name or server address"
+msgstr "ابحث في الـ upstreams حسب الاسم أو عنوان الخادم"
+
+msgid "No upstream group matches the search"
+msgstr "لا توجد مجموعة upstream تطابق البحث"
+
+msgid "Upstreams Defined in Other Files"
+msgstr "مجموعات Upstream المُعرَّفة في ملفات أخرى"
+
+msgid ""
+"These upstream blocks live inside site or other configuration files. Edit "
+"their settings in their own file; servers can be switched on and off here. "
+"A block inside a site can be converted to a shared group that other sites "
+"can use too."
+msgstr ""
+"توجد كتل upstream هذه داخل ملفات الموقع أو ملفات الإعداد الأخرى. عدّل "
+"إعداداتها في ملفها الخاص؛ يمكن تشغيل الخوادم وإيقافها من هنا. يمكن تحويل "
+"كتلة داخل موقع إلى مجموعة مشتركة يمكن لمواقع أخرى استخدامها أيضًا."
+
+msgid "User info updated successfully"
+msgstr "تم تحديث معلومات المستخدم بنجاح"
+
+msgid "Passwords do not match"
+msgstr "كلمات المرور غير متطابقة"
+
+msgid "Password updated successfully"
+msgstr "تم تحديث كلمة المرور بنجاح"
+
+msgid "Personal Information"
+msgstr "المعلومات الشخصية"
+
+msgid "Update Profile"
+msgstr "تحديث الملف الشخصي"
+
+msgid "Security Settings"
+msgstr "إعدادات الأمان"
+
+msgid "Change Password"
+msgstr "تغيير كلمة المرور"
+
+msgid "New Password"
+msgstr "كلمة مرور جديدة"
+
+msgid "Confirm New Password"
+msgstr "تأكيد كلمة المرور الجديدة"
+
+msgid "Update Password"
+msgstr "تحديث كلمة المرور"
+
+msgid "Node %{name} cannot be opened"
+msgstr "لا يمكن فتح العقدة %{name}"
+
+msgid "Exit workspace"
+msgstr "الخروج من مساحة العمل"
+
+msgid "New tab"
+msgstr "تبويب جديد"
+
+msgid "Single pane"
+msgstr "لوحة واحدة"
+
+msgid "Split view"
+msgstr "عرض مقسّم"
+
+msgctxt "Access list rule"
+msgid "Note"
+msgstr "ملاحظة"
+
+msgctxt "preference group"
+msgid "Maintenance"
+msgstr "الصيانة"
+
+msgid ""
+"DNS-01 challenge requires the DNS-01 plugin. Install it from System > "
+"Plugins."
+msgstr ""
+
+msgid "Install DNS-01 plugin"
+msgstr ""
+
+msgid "Go to System > Plugins"
+msgstr ""
+
+msgid "If your domain has CNAME records and you cannot obtain certificates, "
+msgstr "إذا كان نطاقك يحتوي على سجلات CNAME ولا يمكنك الحصول على الشهادات،"
+
+msgid "Skip local DNS propagation checks and wait 60 seconds before asking "
+msgstr "تخطي عمليات فحص انتشار DNS المحلية وانتظر 60 ثانية قبل الطلب"
+
+msgid "DNS-01 plugin unavailable"
+msgstr ""
+
+msgid ""
+"Certificate %{name} cannot be renewed because no enabled plugin provides the "
+"DNS-01 challenge"
+msgstr ""
+
+msgid "Plugin %{plugin} failed to render"
+msgstr ""
+
+msgid "No DNS-01 provider for {0}: install and enable the DNS-01 plugin"
+msgstr ""
+
+msgid "Plugin manifest is invalid"
+msgstr ""
+
+msgid "Plugin not found"
+msgstr ""
+
+msgid "Plugin already exists"
+msgstr ""
+
+msgid "Plugin is not running"
+msgstr ""
+
+msgid "Plugin handshake failed"
+msgstr ""
+
+msgid "Plugin has no executable for this platform"
+msgstr ""
+
+msgid "Plugin package is invalid"
+msgstr ""
+
+msgid "Plugin package is too large"
+msgstr ""
+
+msgid "Plugin api version is incompatible"
+msgstr ""
+
+msgid "Plugin permissions need approval"
+msgstr ""
+
+msgid "Plugin dependency is missing: {0}"
+msgstr ""
+
+msgid "Plugin dependencies form a cycle"
+msgstr ""
+
+msgid "Plugin is in use by {0}"
+msgstr ""
+
+msgid "Plugin system is disabled"
+msgstr ""
+
+msgid "Plugin uploads are disabled"
+msgstr ""
+
+msgid "Plugin call timed out"
+msgstr ""
+
+msgid "Plugin rpc error: {0}"
+msgstr ""
+
+msgid "Plugin setting {0} is invalid"
+msgstr ""
+
+msgid "Plugin needs nginx-ui {0} or newer, this node runs {1}"
+msgstr ""
+
+msgid "Plugin package declares another id"
+msgstr ""
+
+msgid "Plugins"
+msgstr ""
+
+msgid "Accept plugin sync"
+msgstr ""
+
+msgid "Accepted"
+msgstr ""
+
+msgid "Opted out"
+msgstr ""
+
+msgid "Install, configure and troubleshoot plugins that extend Nginx UI."
+msgstr ""
+
+msgid "Plugin"
+msgstr ""
+
+msgid "Capabilities"
+msgstr ""
+
+msgid "Auto install to nodes"
+msgstr ""
+
+msgid "Plugin synchronized to %{count} node(s)"
+msgstr ""
+
+msgid "Some nodes could not be synchronized"
+msgstr ""
+
+msgid "Failed to synchronize the plugin"
+msgstr ""
+
+msgid "Installed"
+msgstr ""
+
+msgid "Starting"
+msgstr ""
+
+msgid "Missing"
+msgstr ""
+
+msgid "Incompatible"
+msgstr ""
+
+msgid "Needs approval"
+msgstr ""
+
+msgid "Failed to load the plugin list"
+msgstr ""
+
+msgid "Plugin enabled"
+msgstr ""
+
+msgid "Failed to enable the plugin"
+msgstr ""
+
+msgid "Plugin disabled"
+msgstr ""
+
+msgid "Failed to disable the plugin"
+msgstr ""
+
+msgid "Plugin uninstalled"
+msgstr ""
+
+msgid "Failed to uninstall the plugin"
+msgstr ""
+
+msgid "Reload the page to apply the development plugin URL"
+msgstr ""
+
+msgid ""
+"Plugins extend Nginx UI with extra capabilities. Only install bundles from "
+"authors you trust."
+msgstr ""
+
+msgid "Development plugin URL"
+msgstr ""
+
+msgid ""
+"Address of a plugin.json served by any static server. The plugin is loaded "
+"in addition to the installed ones."
+msgstr ""
+
+msgid "Dev plugin"
+msgstr ""
+
+msgid "No plugins installed"
+msgstr ""
+
+msgid "Settings"
+msgstr "الإعدادات"
+
+msgid "Logs"
+msgstr ""
+
+msgid "Sync to nodes"
+msgstr ""
+
+msgid "Uninstall %{name}? Its data and settings are removed."
+msgstr ""
+
+msgid "Uninstall"
+msgstr ""
+
+msgid "Sync %{name} to nodes"
+msgstr ""
+
+msgid "Leave every node unchecked to sync to all child nodes."
+msgstr ""
+
+msgid "Already in sync"
+msgstr ""
+
+msgid "This node only"
+msgstr ""
+
+msgid "All child nodes"
+msgstr ""
+
+msgid "Selected nodes"
+msgstr ""
+
+msgid "Failed to read the plugin bundle"
+msgstr ""
+
+msgid "Plugin installed"
+msgstr ""
+
+msgid "The plugin was installed here but could not be pushed to the nodes"
+msgstr ""
+
+msgid "Failed to install the plugin"
+msgstr ""
+
+msgid "Install plugin"
+msgstr ""
+
+msgid "Click or drag a plugin bundle here"
+msgstr ""
+
+msgid "A .tar.gz produced by the plugin author"
+msgstr ""
+
+msgid "ID"
+msgstr ""
+
+msgid "(replaces %{version})"
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "Install the plugins below first"
+msgstr ""
+
+msgid "This version asks for permissions you have not approved yet."
+msgstr ""
+
+msgid ""
+"Review the list below before installing. The plugin stays disabled until you "
+"approve them."
+msgstr ""
+
+msgid "Requested permissions"
+msgstr ""
+
+msgid "Enable after install"
+msgstr ""
+
+msgid "Also install to child nodes"
+msgstr ""
+
+msgid "Keep in sync automatically"
+msgstr ""
+
+msgid ""
+"The version, the enabled state and future updates are kept aligned on those "
+"nodes."
+msgstr ""
+
+msgid "Failed to load the plugin logs"
+msgstr ""
+
+msgid "Logs copied to clipboard"
+msgstr ""
+
+msgid "Failed to copy the logs"
+msgstr ""
+
+msgid "Logs: %{name}"
+msgstr ""
+
+msgid "No log output yet"
+msgstr ""
+
+msgid "Failed to load the plugin marketplace"
+msgstr ""
+
+msgid "Reloading the catalog"
+msgstr ""
+
+msgid "Search plugins"
+msgstr ""
+
+msgid "All categories"
+msgstr ""
+
+msgid "All sources"
+msgstr ""
+
+msgid "Updates only"
+msgstr ""
+
+msgid "Sources"
+msgstr ""
+
+msgid "Every installed plugin is up to date"
+msgstr ""
+
+msgid "No plugins match your search"
+msgstr ""
+
+msgid "Downloading the package"
+msgstr ""
+
+msgid "Verifying the signature"
+msgstr ""
+
+msgid "Installing"
+msgstr ""
+
+msgid "%{phase}: %{plugin}"
+msgstr ""
+
+msgid "Failed to load the plugin from the marketplace"
+msgstr ""
+
+msgid "Update plugin"
+msgstr ""
+
+msgid "No release available for this platform"
+msgstr ""
+
+msgid "Source"
+msgstr ""
+
+msgid "This is a community plugin"
+msgstr ""
+
+msgid "The plugins below are installed together with it"
+msgstr ""
+
+msgid "Live progress is unavailable, checking the plugin list instead"
+msgstr ""
+
+msgid "No description provided."
+msgstr ""
+
+msgid "Installed: %{version}"
+msgstr ""
+
+msgid "Homepage"
+msgstr ""
+
+msgid "Repository"
+msgstr ""
+
+msgid "Release notes"
+msgstr ""
+
+msgid "Released"
+msgstr ""
+
+msgid "Platforms"
+msgstr ""
+
+msgid "Failed to load the plugin details"
+msgstr ""
+
+msgid "Installed version"
+msgstr ""
+
+msgid "Versions"
+msgstr ""
+
+msgid "Yanked"
+msgstr ""
+
+msgid "Latest"
+msgstr ""
+
+msgid "Readme"
+msgstr ""
+
+msgid "Failed to load the marketplace sources"
+msgstr ""
+
+msgid "Marketplace sources saved"
+msgstr ""
+
+msgid "Failed to save the marketplace sources"
+msgstr ""
+
+msgid "Marketplace sources"
+msgstr ""
+
+msgid ""
+"Catalogs are merged in order, the first source that offers a plugin wins. "
+"Leave the list empty to use the official catalog."
+msgstr ""
+
+msgid "Using the official catalog"
+msgstr ""
+
+msgid "Add source"
+msgstr ""
+
+msgid "Add the official catalog"
+msgstr ""
+
+msgid "Official"
+msgstr ""
+
+msgid "Built and signed by the Nginx UI maintainers."
+msgstr ""
+
+msgid "Verified"
+msgstr ""
+
+msgid "Reviewed by the Nginx UI maintainers and signed with a release key."
+msgstr ""
+
+msgid "Community"
+msgstr ""
+
+msgid ""
+"Published by a third party and not reviewed. It runs with the permissions "
+"you grant it, so only install it if you trust the author."
+msgstr ""
+
+msgid "Approve permissions"
+msgstr ""
+
+msgid "Approve and enable"
+msgstr ""
+
+msgid "%{name} needs your approval before it can run."
+msgstr ""
+
+msgid ""
+"Approve only if you trust the author. The approval is recorded and asked "
+"again whenever the requested permissions change."
+msgstr ""
+
+msgid "This plugin does not request any host permission."
+msgstr ""
+
+msgid "Read stored %{kind} credentials, including their secrets."
+msgstr ""
+
+msgid "unknown"
+msgstr ""
+
+msgid "Store and read its own key-value data inside the Nginx UI database."
+msgstr ""
+
+msgid "Make outbound network requests to the hosts declared in its manifest."
+msgstr ""
+
+msgid "Run scheduled tasks on the schedules declared in its manifest."
+msgstr ""
+
+msgid "Send notifications through the Nginx UI notification channels."
+msgstr ""
+
+msgid "Read CPU, memory, network and Nginx status metrics of this node."
+msgstr ""
+
+msgid "Call the Nginx UI management API with your permissions."
+msgstr ""
+
+msgid "Unknown permission. Only grant it if you trust the plugin author."
+msgstr ""
+
+msgid "In sync"
+msgstr ""
+
+msgid "Outdated"
+msgstr ""
+
+msgid "Not installed"
+msgstr ""
+
+msgid "Unsupported platform"
+msgstr ""
+
+msgid "Unsupported"
+msgstr ""
+
+msgid "Failed to load the plugin matrix"
+msgstr ""
+
+msgid "Update to %{version}"
+msgstr ""
+
+msgid "Sync to this node"
+msgstr ""
+
+msgid ""
+"What every child node has installed, compared with this controller. "
+"Switching the selected node in the header manages that node directly."
+msgstr ""
+
+msgid "All nodes"
+msgstr ""
+
+msgid "This instance has no child node"
+msgstr ""
+
+msgid "Add a node first, then plugins can be installed on it from here."
+msgstr ""
+
+msgid "Sync to selected"
+msgstr ""
+
+msgid "Sync to all"
+msgstr ""
+
+msgid "Marketplace"
+msgstr ""
+
+msgid "%{field} is required"
+msgstr ""
+
+msgid "Failed to load the plugin settings"
+msgstr ""
+
+msgid "Plugin settings saved"
+msgstr ""
+
+msgid "Failed to save the plugin settings"
+msgstr ""
+
+msgid "Settings: %{name}"
+msgstr ""
+
+msgid "This plugin has no settings."
+msgstr ""
+
+msgid "%{count} node"
+msgid_plural "%{count} nodes"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+msgid "Sync policy saved"
+msgstr ""
+
+msgid "Failed to save the sync policy"
+msgstr ""
+
+msgid "Automatic installation"
+msgstr ""
+
+msgid ""
+"Keep this plugin at the same version and state on the selected child nodes. "
+"Leave every node unchecked to cover all of them, including the ones added "
+"later."
+msgstr ""
+
+msgid "Also sync the plugin settings"
+msgstr ""
+
+#~ msgid "Webauthn"
+#~ msgstr "ويب أوثن"
+
+#~ msgid ""
+#~ "If the number of login failed attempts from a ip reach the max attempts in "
+#~ "ban threshold minutes,"
+#~ msgstr ""
+#~ "إذا وصل عدد محاولات تسجيل الدخول الفاشلة من عنوان IP إلى الحد الأقصى خلال "
+#~ "دقائق حد الحظر،"
+
+#~ msgid "Set the recursive nameservers to override the systems nameservers "
+#~ msgstr "قم بتعيين مُخدّمات الأسماء التكرارية لتجاوز مُخدّمات أسماء النظام"
+
+#~ msgid "Custom MMDB is currently enabled"
+#~ msgstr "MMDB المخصص مفعّل حاليًا"
+
+#~ msgid "IndexCustomMMDB File Name"
+#~ msgstr "اسم ملف IndexCustomMMDB"
+
+#~ msgid ""
+#~ "Configured from [nginx_log].GeoMapPath. Keep files with names like "
+#~ "100000_full.json in this directory."
+#~ msgstr ""
+#~ "تم التهيئة من [nginx_log].GeoMapPath. احتفظ بالملفات ذات الأسماء مثل "
+#~ "100000_full.json في هذا الدليل."
+
+#~ msgid ""
+#~ "Only the world map is provided by default. Please download China and "
+#~ "province boundary files yourself and place them in this directory."
+#~ msgstr ""
+#~ "يتم توفير خريطة العالم فقط افتراضيًا. يرجى تنزيل ملفات حدود الصين "
+#~ "والمقاطعات بنفسك ووضعها في هذا الدليل."
+
+#~ msgid "Global health check controls"
+#~ msgstr "عناصر التحكم العامة بفحوصات السلامة"
+
+msgid "No file matches the search"
+msgstr "لا يوجد ملف مطابق للبحث"
+
+msgid ""
+"The file name must end in .conf and use only letters, digits, dots, dashes "
+"and underscores"
+msgstr ""
+"يجب أن ينتهي اسم الملف بـ .conf وأن يحتوي فقط على الحروف والأرقام والنقاط "
+"والشرطات والشرطات السفلية"
+
+msgid "Snippet not found"
+msgstr "لم يتم العثور على المقتطف"
+
+msgid "The snippet exceeds 256 KiB"
+msgstr "يتجاوز المقتطف 256 كيلوبايت"
+
+msgid "The header of the snippet does not parse: {0}"
+msgstr "رأس المقتطف لا يتم تحليله: {0}"
+
+msgid "The snippet is still included by {0}"
+msgstr "ما زالت المقتطفات مُضمَّنة بواسطة {0}"
+
+msgid "A snippet with this file name already exists"
+msgstr "توجد مقتطفة بهذا الاسم بالفعل"
+
+msgid "The variable {0} is invalid: {1}"
+msgstr "المتغير {0} غير صالح: {1}"
+
+msgid "The content does not parse as a template: {0}"
+msgstr "المحتوى لا يتم تحليله كقالب: {0}"
+
+msgid "Snippets"
+msgstr "المقتطفات"
+
+msgid "Create Snippet"
+msgstr "إنشاء مقتطف"
+
+msgid "Built-in Template"
+msgstr "قالب مدمج"
+
+msgid "Edit Snippet"
+msgstr "تعديل المقتطف"
+
+msgid "Used by %{count} configuration"
+msgid_plural "Used by %{count} configurations"
+msgstr[0] "يُستخدم بواسطة %{count} إعداد"
+msgstr[1] "يُستخدم بواسطة %{count} إعدادات"
+
+msgid "Site Card Click URL"
+msgstr "رابط النقر لبطاقة الموقع"
+
+msgid ""
+"Optional absolute HTTP/HTTPS URL used when opening this site card. If "
+"empty, the default site URL is used."
+msgstr ""
+"عنوان URL مطلق اختياري بـ HTTP/HTTPS يُستخدم عند فتح بطاقة الموقع هذه. إذا "
+"كان فارغًا، يُستخدم عنوان URL الافتراضي للموقع."
+
+msgid "Built-in"
+msgstr "مدمج"
+
+msgid "Snippet"
+msgstr "مقتطف"
+
+msgid ""
+"Include keeps the site linked to snippets/%{file}, so later changes of the "
+"snippet apply to it. Insert copies the content into the site instead."
+msgstr ""
+"يُبقي Include الموقع مرتبطًا بـ snippets/%{file}، بحيث تُطبَّق التغييرات "
+"اللاحقة على المقتطف عليه. أما Insert فينسخ المحتوى إلى الموقع بدلاً من ذلك."
+
+msgid "Insert"
+msgstr "إدراج"
+
+msgid "Include"
+msgstr "تضمين"
 
 msgid "Read Only"
 msgstr "للقراءة فقط"
@@ -11038,6 +11529,9 @@ msgstr "غير مستخدم"
 
 msgid "Max Age"
 msgstr "العمر الأقصى"
+
+msgid "Options"
+msgstr "الخيارات"
 
 msgid "Remove option"
 msgstr "إزالة الخيار"
@@ -11199,248 +11693,408 @@ msgstr "يجب أن تكون قيم الخيارات فريدة."
 msgid "Choose the default option."
 msgstr "اختر الخيار الافتراضي."
 
-msgid "Do you want to %{action} this stream?"
-msgstr "هل تريد %{action} هذا البث؟"
-
-msgid "Delete stream: %{stream_name}"
-msgstr "حذف البث: ‎%{stream_name}"
-
-msgid "Added successfully"
-msgstr "تمت الإضافة بنجاح"
-
-msgid "Add Stream"
-msgstr "أضف Stream"
-
-msgid "%{count} streams selected"
-msgstr "%{count} تدفقات محددة"
-
-msgid "Development Mode"
-msgstr "وضع التطوير"
-
-msgid "Official Document"
-msgstr "الوثيقة الرسمية"
-
-msgid "Sponsor"
-msgstr "راعي"
-
-msgid "Project Team"
-msgstr "فريق المشروع"
-
-msgid "License"
-msgstr "رخصة"
-
-msgid "View Third-party Components"
-msgstr "عرض المكونات الخارجية"
-
-msgid "View version details and core information about this Nginx UI instance."
-msgstr "اعرض تفاصيل الإصدار والمعلومات الأساسية حول مثيل Nginx UI هذا."
-
-msgid "Run built-in diagnostics to validate environment and service readiness."
-msgstr "قم بتشغيل التشخيصات المدمجة للتحقق من جهوزية البيئة والخدمات."
-
-msgid "Check release updates and execute upgrade operations when available."
-msgstr "تحقق من إصدارات التحديثات ونفذ عمليات الترقية عند توفرها."
-
-msgid "Review third-party licenses and open source component attributions."
-msgstr "مراجعة التراخيص الخاصة بطرف ثالث وصفات مكونات المصدر المفتوح."
-
-msgid "Total Components"
-msgstr "إجمالي المكونات"
-
-msgid "Frontend"
-msgstr "واجهة المستخدم"
-
-msgid "License Types"
-msgstr "أنواع التراخيص"
-
-msgid "License Distribution"
-msgstr "توزيع الرخصة"
-
-msgid "components"
-msgstr "المكونات"
-
-msgid "All Components"
-msgstr "جميع المكونات"
-
-msgid "Dev"
-msgstr "تطوير"
-
-msgid "Reinstall"
-msgstr "إعادة التثبيت"
-
-msgid "Core Upgrade"
-msgstr "ترقية نواة"
-
-msgid "You can check Nginx UI upgrade at this page."
-msgstr "يمكنك التحقق من ترقية Nginx UI في هذه الصفحة."
-
-msgid "Current Version"
-msgstr "الإصدار الحالي"
-
-msgid "Arch"
-msgstr "أرك"
-
-msgid "Executable Path"
-msgstr "مسار الملف التنفيذي"
-
-msgid "Last checked at"
-msgstr "آخر فحص في"
-
-msgid "You are using the latest version"
-msgstr "أنت تستخدم أحدث إصدار"
-
-msgid "New version released"
-msgstr "تم إصدار نسخة جديدة"
-
-msgid "Release Note"
-msgstr "ملاحظة الإصدار"
-
-msgid "Hide Assistant"
-msgstr "إخفاء المساعد"
-
-msgid "Show Assistant"
-msgstr "إظهار المساعد"
-
-msgid "Connection lost for this terminal. Please refresh if needed."
-msgstr "فقد الاتصال بهذا الطرف. يرجى التحديث إذا لزم الأمر."
+msgid "Certificate Relocated"
+msgstr "تم نقل الشهادة"
 
 msgid ""
-"This is a simulated terminal running entirely in your browser. Commands are "
-"answered locally and never reach a server."
+"Certificate %{name} is now stored in %{path}, point the sites that load "
+"%{previous_path} to it"
 msgstr ""
-"هذه محطة طرفية تحاكي العمل بالكامل داخل متصفحك. الأوامر تتم معالجتها محليًا "
-"ولا تصل إلى أي خادم."
+"شهادة %{name} مخزنة الآن في %{path}، وجّه المواقع التي تحمّل "
+"%{previous_path} إليها"
+
+msgid "The path exists, but the file is not a certificate"
+msgstr "المسار موجود، لكن الملف ليس شهادة"
+
+msgid "The path exists, but the file is not a private key"
+msgstr "المسار موجود، لكن الملف ليس مفتاحًا خاصًا"
+
+msgid "MFA Enrollment"
+msgstr "حالة التسجيل في المصادقة متعددة العوامل"
+
+msgid "Enrolled"
+msgstr "مسجّل"
+
+msgid "Not enrolled"
+msgstr "غير مسجّل"
+
+msgid "Pending enrollment"
+msgstr "بانتظار التسجيل"
+
+msgid "Invalid request: {0}"
+msgstr "طلب غير صالح: {0}"
 
 msgid ""
-"You are accessing this terminal over an insecure HTTP connection on a "
-"non-localhost domain. This may expose sensitive information."
+"Invalid ingress name: use 1-40 lowercase letters, digits and hyphens, "
+"starting and ending with a letter or digit"
 msgstr ""
-"أنت تتصل بهذا الطرف عبر اتصال HTTP غير آمن في نطاق غير محلي. قد يؤدي هذا "
-"إلى كشف معلومات حساسة."
+"اسم ingress غير صالح: استخدم 1-40 من الأحرف الصغيرة والأرقام والشرطات، يبدأ "
+"وينتهي بحرف أو رقم"
 
-msgid "Create Upstream"
-msgstr "إنشاء Upstream"
-
-msgid "View Upstream %{name}"
-msgstr "عرض upstream %{name}"
-
-msgid "Edit Upstream %{name}"
-msgstr "تحرير Upstream %{name}"
-
-msgid "Round Robin (default)"
-msgstr "Round Robin (الافتراضي)"
-
-msgid "Least Connections (least_conn)"
-msgstr "أقل عدد الاتصالات (least_conn)"
-
-msgid "IP Hash (ip_hash)"
-msgstr "تجزئة IP (ip_hash)"
-
-msgid "Hash (hash)"
-msgstr "هاش (hash)"
-
-msgid "Random (random)"
-msgstr "عشوائي (random)"
-
-msgid "Upstream %{name} saved and Nginx reloaded"
-msgstr "تم حفظ Upstream %{name} وإعادة تحميل Nginx"
-
-msgid "Sites use it as proxy_pass http://%{name};"
-msgstr "تستخدمها المواقع في proxy_pass http://%{name};"
-
-msgid "Load Balancing Method"
-msgstr "طريقة موازنة الحمل"
-
-msgid "Hash Key"
-msgstr "مفتاح Hash"
-
-msgid "Consistent Hashing"
-msgstr "التشفير المتسق"
-
-msgid "Servers"
-msgstr "الخوادم"
-
-msgid "Not available with this load balancing method"
-msgstr "غير متاح مع أسلوب توازن الحمل هذا"
-
-msgid "Keepalive"
-msgstr "Keepalive"
-
-msgid ""
-"Idle connections to keep open per worker; 0 disables it. Proxied sites also "
-"need proxy_http_version 1.1 and an empty Connection header."
+msgid "Invalid owner: use 1-64 letters, digits, dots, underscores and hyphens"
 msgstr ""
-"الاتصالات الخاملة التي يُبقى عليها مفتوحة لكل عملية عامل؛ 0 يُعطّلها. تحتاج "
-"المواقع المُوَجَّهة أيضًا إلى proxy_http_version 1.1 ورأس Connection فارغ."
+"مالك غير صالح: استخدم من 1 إلى 64 حرفًا أو رقمًا أو نقطة أو شرطة سفلية أو "
+"شرطة"
 
-msgid "Connections"
-msgstr "اتصالات"
+msgid "Invalid host: {0}"
+msgstr "مضيف غير صالح: {0}"
 
-msgid "Additional Directives"
-msgstr "التوجيهات الإضافية"
+msgid "Invalid backend {0}: {1}"
+msgstr "واجهة خلفية غير صالحة {0}: {1}"
 
-msgid "One directive per line, for example keepalive_timeout or keepalive_requests."
+msgid "Backend server {0} is outside the allowed backend ranges"
+msgstr "خادم الخلفية {0} خارج نطاقات الخلفية المسموح بها"
+
+msgid "Invalid route {0}: {1}"
+msgstr "مسار غير صالح {0}: {1}"
+
+msgid "Invalid tls: {0}"
+msgstr "TLS غير صالح: {0}"
+
+msgid "Invalid policy: {0}"
+msgstr "سياسة غير صالحة: {0}"
+
+msgid "Server {0} not found in backend {1}"
+msgstr "لم يتم العثور على الخادم {0} في الخلفية {1}"
+
+msgid "Ingress {0} not found"
+msgstr "Ingress {0} غير موجود"
+
+msgid "Ingress {0} is owned by {1}; pass force to take it over"
+msgstr "Ingress {0} مملوك لـ {1}؛ مرّر force للاستيلاء عليه"
+
+msgid "Host {0} is already served by ingress {1}"
+msgstr "المضيف {0} يخدم بالفعل بواسطة ingress {1}"
+
+msgid "Site {0} already exists and is not managed by this ingress"
+msgstr "الموقع {0} موجود بالفعل وليس مُدارًا بواسطة هذا ingress"
+
+msgid "Timed out waiting for ingress {0} to reach generation {1}"
+msgstr "انتهت المهلة أثناء انتظار وصول ingress {0} إلى الجيل {1}"
+
+msgid "Apply failed: {0}"
+msgstr "فشل التطبيق: {0}"
+
+msgid "Certificate not ready: {0}"
+msgstr "الشهادة غير جاهزة: {0}"
+
+msgid "Not implemented"
+msgstr "غير مُنفَّذ"
+
+msgid ""
+"Site is managed by ingress {0}; change the ingress instead or force the "
+"change"
 msgstr ""
-"موجّه واحد في كل سطر، على سبيل المثال keepalive_timeout أو "
-"keepalive_requests."
+"الموقع يُدار بواسطة ingress {0}؛ قم بتغيير ingress بدلاً من ذلك أو أفرض "
+"التغيير"
 
-msgid "Referenced By"
-msgstr "يُشار إليه بواسطة"
+msgid "Ingresses"
+msgstr "Ingresses"
 
-msgid "No site uses this upstream yet."
-msgstr "لا يستخدم أي موقع هذا upstream بعد."
+msgid "HTTP only"
+msgstr "HTTP فقط"
 
-msgid "Configuration Preview"
-msgstr "معاينة الإعدادات"
+msgid "Not issued yet"
+msgstr "لم يتم إصدارها بعد"
 
-msgid "Enable server %{address}"
-msgstr "تفعيل الخادم %{address}"
+msgid "Expired %{date}"
+msgstr "منتهي الصلاحية %{date}"
 
-msgid "Disable server %{address}"
-msgstr "تعطيل الخادم %{address}"
+msgid "%{date} (%{days} day left)"
+msgid_plural "%{date} (%{days} days left)"
+msgstr[0] "%{date} (يتبقى %{days} يوم)"
+msgstr[1] "%{date} (يتبقى %{days} أيام)"
+
+msgid "Health"
+msgstr "الصحة"
+
+msgid "Path Prefix"
+msgstr "بادئة المسار"
+
+msgid "Allowed Sources"
+msgstr "المصادر المسموح بها"
+
+msgid "Last Transition"
+msgstr "الانتقال الأخير"
+
+msgid "Drained"
+msgstr "مُرهَق"
+
+msgid "Healthy"
+msgstr "صحي"
+
+msgid "Unhealthy"
+msgstr "غير صحي"
 
 msgid ""
-"Create shared upstream groups with load balancing and reuse them across "
-"sites."
-msgstr "أنشئ مجموعات upstream مشتركة مع موازنة الحمل وأعد استخدامها عبر المواقع."
+"The generated site could not be loaded. It is written by the first "
+"successful apply."
+msgstr "تعذّر تحميل الموقع المُولَّد. يُكتب عند أول تطبيق ناجح."
 
-msgid "Monitor the health of every proxy target and toggle its health check."
-msgstr "راقب صحة كل هدف وكلاء التحويل وقم بتبديل فحص صحته."
+msgid "Reconcile Now"
+msgstr "تسوية الآن"
 
-msgid "Socket"
-msgstr "المنفذ"
+msgid "The last apply failed; the previous config is still live"
+msgstr "فشلت عملية التطبيق الأخيرة؛ لا تزال التكوينات السابقة سارية المفعول."
 
-msgid "Direct"
-msgstr "مباشر"
+msgid "Owner"
+msgstr "المالك"
 
-msgid "Health Status"
-msgstr "حالة الصحة"
+msgid "External ID"
+msgstr "المعرّف الخارجي"
 
-msgid "Last Check"
-msgstr "آخر التحقق"
+msgid "Generation"
+msgstr "جيل"
 
-msgid "Upstream health checks are globally paused"
-msgstr "فحوصات سلامة الخوادم العليا متوقفة مؤقتًا بشكل عام"
+msgid "%{observed} applied of %{generation}"
+msgstr "تم تطبيق %{observed} من %{generation}"
+
+msgid "Generated Site"
+msgstr "الموقع المُولَّد"
+
+msgid "Last Applied"
+msgstr "آخر تطبيق"
+
+msgid "Config Hash"
+msgstr "تجزئة الإعدادات"
+
+msgid "Labels"
+msgstr "التسميات"
+
+msgid "Hosts"
+msgstr "المضيفين"
+
+msgid "TLS"
+msgstr "TLS"
+
+msgid "Mode"
+msgstr "الوضع"
+
+msgid "View certificate"
+msgstr "عرض الشهادة"
+
+msgid "Challenge"
+msgstr "التحدي"
+
+msgid "Redirect to HTTPS"
+msgstr "إعادة التوجيه إلى HTTPS"
+
+msgid "HSTS"
+msgstr "HSTS"
+
+msgid "Only the HTTP listener is served until the certificate is issued."
+msgstr "لا يتم تقديم أي خدمة سوى مستمع HTTP حتى صدور الشهادة."
+
+msgid "Backends"
+msgstr "الأنظمة الخلفية"
+
+msgid "Routes"
+msgstr "المسارات"
+
+msgid "Policy default"
+msgstr "الافتراضي للسياسة"
+
+msgid "Policy"
+msgstr "السياسة"
+
+msgid "Everyone"
+msgstr "الجميع"
+
+msgid "Rate Limit"
+msgstr "حد المعدل"
+
+msgid "%{rps} requests/s per client, burst %{burst}"
+msgstr "%{rps} طلب/ثانية لكل عميل، حد أقصى %{burst}"
+
+msgid "Unlimited"
+msgstr "غير محدود"
+
+msgid "Max Body Size"
+msgstr "الحجم الأقصى للجسم"
+
+msgid "Extra Headers"
+msgstr "ترويسات إضافية"
+
+msgid "Conditions"
+msgstr "الشروط"
+
+msgid "True"
+msgstr "صحيح"
+
+msgid "False"
+msgstr "خطأ"
+
+msgid "Generated Site Config"
+msgstr "إعدادات الموقع المُولّدة"
+
+msgid "Open in site editor"
+msgstr "افتح في محرر الموقع"
+
+msgid "Not ready"
+msgstr "غير جاهز"
+
+msgid "The latest spec has not been applied yet"
+msgstr "لم يتم تطبيق أحدث مواصفة بعد"
+
+msgid "Applying"
+msgstr "جارٍ التطبيق"
+
+msgid "Ready"
+msgstr "جاهز"
+
+msgid "Degraded"
+msgstr "متدهور"
+
+msgid "Config Applied"
+msgstr "تم تطبيق الإعدادات"
+
+msgid "Certificate Ready"
+msgstr "الشهادة جاهزة"
+
+msgid "Backends Healthy"
+msgstr "الخوادم الخلفية سليمة"
+
+msgid "Issued automatically (ACME)"
+msgstr "تم الإصدار تلقائيًا (ACME)"
+
+msgid "All owners"
+msgstr "جميع المالكين"
+
+msgid "Reconcile of %{name} queued"
+msgstr "تمت جدولة مطابقة %{name} في قائمة الانتظار"
+
+msgid "Delete ingress %{name}?"
+msgstr "حذف ingress %{name}؟"
 
 msgid ""
-"Per-target selections are preserved. Resume probes from Health Check "
-"preferences."
-msgstr "يتم الاحتفاظ باختيارات كل هدف. استأنف الفحوصات من تفضيلات فحص السلامة."
+"This ingress is owned by %{owner}. Its controller will probably recreate it "
+"on the next sync; remove it from the controller to delete it for good."
+msgstr ""
+"يملك %{owner} هذا الـ ingress. من المرجح أن يعيد الـ controller إنشاءه عند "
+"المزامنة التالية؛ أزله من الـ controller لحذفه نهائيًا."
 
-msgid "Hash"
-msgstr "تجزئة"
+msgid "The generated site and upstream files are removed and nginx is reloaded."
+msgstr "يتم إزالة الموقع المُولَّد وملفات upstream وإعادة تحميل nginx."
 
-msgid "Random"
-msgstr "عشوائي"
+msgid "Also delete the certificate"
+msgstr "احذف الشهادة أيضًا"
 
-msgid "Load Balancing"
-msgstr "موازنة الأحمال"
+msgid "Ingress %{name} deleted"
+msgstr "تم حذف Ingress %{name}"
 
-msgid "Defined In"
-msgstr "معرَّف في"
+msgid "Ingress"
+msgstr "Ingress"
 
-msgid "Matched upstreams: %{groups}, servers: %{servers}"
-msgstr "الـ upstream المطابقة: %{groups}، الخوادم: %{servers}"
+msgid "Phase"
+msgstr "مرحلة"
+
+msgid "%{healthy}/%{total} healthy"
+msgstr "%{healthy}/%{total} سليم"
+
+msgid "%{total} server"
+msgid_plural "%{total} servers"
+msgstr[0] "%{total} خادم"
+msgstr[1] "%{total} خوادم"
+
+msgid "%{count} down"
+msgstr "٪{count} متبقي"
+
+msgid "Filter by owner"
+msgstr "تصفية حسب المالك"
+
+msgid "Applied generation / latest generation"
+msgstr "الجيل المطبق / الجيل الأحدث"
+
+msgid "gen %{observed}/%{generation}"
+msgstr "gen %{observed}/%{generation}"
+
+msgid "Reconcile"
+msgstr "تسوية"
+
+msgid ""
+"Ingresses are reverse proxy entries published by external controllers "
+"through the Ingress API. Nginx UI renders each one into a managed site and "
+"upstreams, issues its certificate and reports its status here. Change them "
+"in their controller; edits made here are overwritten by the next reconcile."
+msgstr ""
+"Ingresses هي عناصر الوكيل العكسي التي تنشرها المتحكمات الخارجية عبر Ingress "
+"API. يقوم Nginx UI بعرض كل منها كموقع مُدار مع الـ upstreams، وإصدار شهادته "
+"والإبلاغ عن حالته هنا. قم بتغييرها في متحكمها؛ التعديلات التي تجريها هنا "
+"سيتم استبدالها بواسطة عملية reconciliation التالية."
+
+msgid "Learn more"
+msgstr "اعرف المزيد"
+
+msgid "No ingresses yet"
+msgstr "لا توجد توجيهات بعد"
+
+msgid ""
+"A controller such as a deployment platform creates ingresses with PUT "
+"/api/ingresses/:name, authenticated as a cluster node or with an API token. "
+"They show up here as soon as they are stored."
+msgstr ""
+"يقوم وحدة تحكم مثل منصة النشر بإنشاء نقاط الدخول (ingresses) عبر PUT "
+"/api/ingresses/:name، باستخدام المصادقة كعقدة عنقود أو باستخدام رمز API. "
+"تظهر هنا بمجرد تخزينها."
+
+msgid "Read the Ingress API guide"
+msgstr "اقرأ دليل واجهة Ingress API البرمجية"
+
+msgid "Search by name, host or external ID"
+msgstr "البحث بالاسم أو المضيف أو المعرف الخارجي"
+
+msgid "Search ingresses"
+msgstr "البحث في Ingress"
+
+msgid "No ingress matches the filter"
+msgstr "لا توجد Ingress تطابق عامل التصفية"
+
+msgid "Managed by ingress %{name}"
+msgstr "تُدار بواسطة ingress %{name}"
+
+msgid ""
+"Changes will be overwritten by the next reconcile. Edit the ingress in its "
+"controller instead."
+msgstr ""
+"سيتم استبدال التغييرات بواسطة عملية reconcile التالية. قم بتعديل الـ "
+"ingress من خلال الـ controller الخاص به بدلاً من ذلك."
+
+msgid "View ingress"
+msgstr "عرض Ingress"
+
+msgid "Edit anyway"
+msgstr "تحرير على أي حال"
+
+msgid "Ingress: %{name}"
+msgstr "Ingress: %{name}"
+
+msgid "Include %{count} site managed by an ingress"
+msgid_plural "Include %{count} sites managed by ingresses"
+msgstr[0] "تضمين %{count} موقع مُدار بواسطة Ingress"
+msgstr[1] "تضمين %{count} موقع مُدار بواسطة Ingress"
+msgstr[2] "تضمين %{count} موقعين مُدارين بواسطة Ingress"
+msgstr[3] "تضمين %{count} مواقع مُدارة بواسطة Ingress"
+msgstr[4] "تضمين %{count} موقعًا مُدارًا بواسطة Ingress"
+msgstr[5] "تضمين %{count} موقع مُدار بواسطة Ingress"
+
+msgid "Ingress {0} was updated while being deleted"
+msgstr "تم تحديث Ingress {0} أثناء حذفه"
+
+msgid "Upstream {0} already exists and is not managed by this ingress"
+msgstr "الـ upstream {0} موجود بالفعل ولا يتم إدارته بواسطة هذا الـ ingress"
+
+msgid "Timed out waiting for ingress {0} to be deleted"
+msgstr "انتهت المهلة في انتظار حذف ingress {0}"
+
+msgid "Upstream names starting with {0} are reserved for ingresses"
+msgstr "الأسماء الأعلى في التدفق التي تبدأ بـ {0} محجوزة للingresses"
+
+msgid ""
+"Upstream {0} is managed by ingress {1}; change the ingress instead or force "
+"the change"
+msgstr ""
+"الـ upstream {0} تتم إدارته بواسطة الـ ingress {1}؛ قم بتغيير الـ ingress "
+"بدلاً من ذلك أو فرض التغيير"
 
 msgid ""
 "Ingress %{name} owns this upstream. Change the ingress instead; its next "
@@ -11449,69 +12103,85 @@ msgstr ""
 "Ingress %{name} يمتلك هذا upstream. قم بتغيير Ingress بدلاً من ذلك؛ سيؤدي "
 "تطبيقه التالي إلى الكتابة فوق التغييرات التي أُجريت هنا."
 
-msgid "Server %{address} enabled"
-msgstr "تم تفعيل الخادم %{address}"
+msgid "View Upstream %{name}"
+msgstr "عرض upstream %{name}"
 
-msgid "Server %{address} disabled"
-msgstr "تم تعطيل الخادم %{address}"
+msgid "Recovery codes downloaded"
+msgstr "تم تنزيل رموز الاسترداد"
 
-msgid "Disable the last active server of %{name}?"
-msgstr "هل تريد تعطيل آخر خادم نشط في %{name}؟"
+msgid "MFA setup completed. Save your recovery codes before continuing."
+msgstr "تم إعداد MFA. احفظ رموز الاسترداد قبل المتابعة."
 
-msgid ""
-"No other primary server of this upstream is enabled. Requests will fail "
-"unless a backup server takes over."
-msgstr ""
-"لا يوجد خادم أساسي آخر لهذا الـ Upstream مفعّل. ستفشل الطلبات إلا إذا استلم "
-"خادم احتياطي الأمر."
+msgid "MFA session expired. Please sign in again."
+msgstr "انتهت صلاحية جلسة MFA. يرجى تسجيل الدخول مرة أخرى."
 
-msgid "Upstream %{name} is still in use"
-msgstr "Upstream %{name} لا تزال قيد الاستخدام"
+msgid "MFA is required. Set up an authenticator or a passkey to continue."
+msgstr "مطلوب MFA. قم بإعداد مصادِق أو مفتاح مرور للمتابعة."
 
-msgid "Point these configurations at another upstream before deleting it:"
-msgstr "وجِّه هذه الإعدادات إلى upstream آخر قبل حذفه:"
+msgid "Verify your MFA method to continue signing in."
+msgstr "تحقق من طريقة MFA الخاصة بك لمتابعة تسجيل الدخول."
 
-msgid "Delete upstream %{name}?"
-msgstr "حذف upstream %{name}؟"
-
-msgid "%{path} will be removed and Nginx reloaded."
-msgstr "سيتم حذف %{path} وإعادة تحميل Nginx."
-
-msgid "Upstream %{name} deleted"
-msgstr "تم حذف Upstream %{name}"
+msgid "Back to sign in"
+msgstr "العودة إلى تسجيل الدخول"
 
 msgid ""
-"An upstream group shares its servers and load balancing method across "
-"sites. Choose it as the proxy target when setting up a site; later changes "
-"here apply to every site that uses it."
-msgstr ""
-"تشارك مجموعة Upstream خوادمها وطريقة توزيع التحميل بين المواقع. اخترها كهدف "
-"proxy عند إعداد موقع؛ ستُطبَّق التغييرات اللاحقة هنا على كل موقع يستخدمها."
+"Enable MFA on your own account before managing MFA policies or resetting "
+"another user."
+msgstr "فعّل MFA على حسابك الشخصي قبل إدارة سياسات MFA أو إعادة تعيين مستخدم آخر."
 
-msgid "Files are stored in %{dir}."
-msgstr "يتم تخزين الملفات في %{dir}."
+msgid "File content must be valid PEM or htpasswd data"
+msgstr "يجب أن يكون محتوى الملف بيانات PEM أو htpasswd صالحة"
 
-msgid "Search by name or IP:port"
-msgstr "البحث بالاسم أو IP:port"
+msgid "MFA enrollment is required"
+msgstr "يلزم التسجيل في MFA"
 
-msgid "Search upstreams by name or server address"
-msgstr "ابحث في الـ upstreams حسب الاسم أو عنوان الخادم"
+msgid "MFA verification is required"
+msgstr "مطلوب التحقق عبر MFA"
 
-msgid "No upstream group matches the search"
-msgstr "لا توجد مجموعة upstream تطابق البحث"
+msgid "Cannot remove the last required MFA method"
+msgstr "لا يمكن إزالة طريقة MFA المطلوبة الأخيرة"
 
-msgid "Upstreams Defined in Other Files"
-msgstr "مجموعات Upstream المُعرَّفة في ملفات أخرى"
+msgid "TOTP disabled"
+msgstr "تم تعطيل TOTP"
+
+msgid "Replace TOTP"
+msgstr "استبدال TOTP"
+
+msgid "Disable TOTP for this account?"
+msgstr "هل تريد تعطيل TOTP لهذا الحساب؟"
+
+msgid "Disable TOTP"
+msgstr "تعطيل TOTP"
 
 msgid ""
-"These upstream blocks live inside site or other configuration files. Edit "
-"their settings in their own file; servers can be switched on and off here. "
-"A block inside a site can be converted to a shared group that other sites "
-"can use too."
+"Your current authenticator remains active until the new code is verified. "
+"New recovery codes replace the old ones."
 msgstr ""
-"توجد كتل upstream هذه داخل ملفات الموقع أو ملفات الإعداد الأخرى. عدّل "
-"إعداداتها في ملفها الخاص؛ يمكن تشغيل الخوادم وإيقافها من هنا. يمكن تحويل "
-"كتلة داخل موقع إلى مجموعة مشتركة يمكن لمواقع أخرى استخدامها أيضًا."
+"يظل المُصادِق الحالي الخاص بك نشطًا حتى يتم التحقق من الرمز الجديد. تحل "
+"رموز الاسترداد الجديدة محل القديمة."
+
+msgid "MFA Policy"
+msgstr "سياسة MFA"
+
+msgid ""
+"Require MFA at the next sign-in. Users must enroll their own authenticator "
+"or passkey."
+msgstr ""
+"اشترط استخدام MFA عند تسجيل الدخول التالي. يجب على المستخدمين تسجيل جهاز "
+"المصادقة الخاص بهم أو مفتاح المرور."
+
+msgid "Require MFA for all users"
+msgstr "اشتراط MFA لجميع المستخدمين"
+
+msgid "Require local MFA for SSO sign-in"
+msgstr " exigir المصادقة متعددة العوامل المحلية لتسجيل الدخول عبر SSO"
+
+msgid ""
+"Apply local MFA verification and enrollment requirements to OIDC and "
+"Casdoor sign-in."
+msgstr ""
+"تطبيق متطلبات التحقق من MFA المحلي والتسجيل على تسجيل الدخول عبر OIDC و "
+"Casdoor."
 
 msgid "MFA Settings"
 msgstr "إعدادات MFA"
@@ -11527,18 +12197,6 @@ msgstr "إنفاذ المستخدم"
 
 msgid "Optional"
 msgstr "اختياري"
-
-msgid "MFA Enrollment"
-msgstr "حالة التسجيل في المصادقة متعددة العوامل"
-
-msgid "Pending enrollment"
-msgstr "بانتظار التسجيل"
-
-msgid "Enrolled"
-msgstr "مسجّل"
-
-msgid "Not enrolled"
-msgstr "غير مسجّل"
 
 msgid "MFA policy updated. It takes effect at the next sign-in."
 msgstr "تم تحديث سياسة MFA. يسري في الدخول التالي."
@@ -11566,21 +12224,6 @@ msgstr "إعادة تعيين جميع بيانات اعتماد وجلسات MF
 msgid "Reset MFA"
 msgstr "إعادة تعيين MFA"
 
-msgid "User info updated successfully"
-msgstr "تم تحديث معلومات المستخدم بنجاح"
-
-msgid "Passwords do not match"
-msgstr "كلمات المرور غير متطابقة"
-
-msgid "Password updated successfully"
-msgstr "تم تحديث كلمة المرور بنجاح"
-
-msgid "Personal Information"
-msgstr "المعلومات الشخصية"
-
-msgid "Update Profile"
-msgstr "تحديث الملف الشخصي"
-
 msgid ""
 "MFA is required by the global policy. You cannot remove your last MFA "
 "method."
@@ -11590,44 +12233,6 @@ msgstr ""
 
 msgid "MFA is required for your account. You cannot remove your last MFA method."
 msgstr "MFA مطلوب لحسابك. لا يمكنك إزالة آخر طريقة MFA."
-
-msgid "Security Settings"
-msgstr "إعدادات الأمان"
-
-msgid "Change Password"
-msgstr "تغيير كلمة المرور"
-
-msgid "New Password"
-msgstr "كلمة مرور جديدة"
-
-msgid "Confirm New Password"
-msgstr "تأكيد كلمة المرور الجديدة"
-
-msgid "Update Password"
-msgstr "تحديث كلمة المرور"
-
-msgid "Node %{name} cannot be opened"
-msgstr "لا يمكن فتح العقدة %{name}"
-
-msgid "Exit workspace"
-msgstr "الخروج من مساحة العمل"
-
-msgid "New tab"
-msgstr "تبويب جديد"
-
-msgid "Single pane"
-msgstr "لوحة واحدة"
-
-msgid "Split view"
-msgstr "عرض مقسّم"
-
-msgctxt "Access list rule"
-msgid "Note"
-msgstr "ملاحظة"
-
-msgctxt "preference group"
-msgid "Maintenance"
-msgstr "الصيانة"
 
 #~ msgid "Are you sure to reset 2FA?"
 #~ msgstr "هل أنت متأكد من رغبتك في إعادة تعيين المصادقة الثنائية؟"
@@ -11643,39 +12248,3 @@ msgstr "الصيانة"
 
 #~ msgid "2FA"
 #~ msgstr "المصادقة الثنائية"
-
-#~ msgid "Webauthn"
-#~ msgstr "ويب أوثن"
-
-#~ msgid ""
-#~ "If the number of login failed attempts from a ip reach the max attempts in "
-#~ "ban threshold minutes,"
-#~ msgstr ""
-#~ "إذا وصل عدد محاولات تسجيل الدخول الفاشلة من عنوان IP إلى الحد الأقصى خلال "
-#~ "دقائق حد الحظر،"
-
-#~ msgid "Set the recursive nameservers to override the systems nameservers "
-#~ msgstr "قم بتعيين مُخدّمات الأسماء التكرارية لتجاوز مُخدّمات أسماء النظام"
-
-#~ msgid "Custom MMDB is currently enabled"
-#~ msgstr "MMDB المخصص مفعّل حاليًا"
-
-#~ msgid "IndexCustomMMDB File Name"
-#~ msgstr "اسم ملف IndexCustomMMDB"
-
-#~ msgid ""
-#~ "Configured from [nginx_log].GeoMapPath. Keep files with names like "
-#~ "100000_full.json in this directory."
-#~ msgstr ""
-#~ "تم التهيئة من [nginx_log].GeoMapPath. احتفظ بالملفات ذات الأسماء مثل "
-#~ "100000_full.json في هذا الدليل."
-
-#~ msgid ""
-#~ "Only the world map is provided by default. Please download China and "
-#~ "province boundary files yourself and place them in this directory."
-#~ msgstr ""
-#~ "يتم توفير خريطة العالم فقط افتراضيًا. يرجى تنزيل ملفات حدود الصين "
-#~ "والمقاطعات بنفسك ووضعها في هذا الدليل."
-
-#~ msgid "Global health check controls"
-#~ msgstr "عناصر التحكم العامة بفحوصات السلامة"
