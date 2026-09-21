@@ -62,6 +62,8 @@ func GenerateAllModel() []any {
 		UpstreamConfig{},
 		AccessList{},
 		Ingress{},
+		Plugin{},
+		PluginKV{},
 	}
 }
 
