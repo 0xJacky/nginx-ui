@@ -11,6 +11,7 @@ import { initPWAThemeColor, watchThemeChanges } from '@/lib/pwa'
 import { installPaneBridge } from '@/lib/workspace/bridge'
 import { paneTabId } from '@/lib/workspace/env'
 import { useSettingsStore } from '@/pinia'
+import { installSharedRuntime } from '@/plugin'
 import i18n from '../i18n.json'
 import App from './App.vue'
 import gettext from './gettext'
@@ -78,6 +79,10 @@ if (!settings.language) {
 else {
   gettext.current = settings.language
 }
+
+// Publish the shared runtime before mounting so a plugin bundle injected by
+// the loader always finds window.NginxUI in place.
+installSharedRuntime()
 
 app.use(router).use(autoAnimatePlugin).mount('#app')
 

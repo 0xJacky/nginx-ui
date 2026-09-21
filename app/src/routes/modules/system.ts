@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { InfoCircleOutlined } from '@antdv-next/icons'
+import { AppstoreOutlined, InfoCircleOutlined } from '@antdv-next/icons'
 import { useSettingsStore } from '@/pinia'
 
 export const systemRoutes: RouteRecordRaw[] = [
@@ -21,13 +21,20 @@ export const systemRoutes: RouteRecordRaw[] = [
           hiddenInSidebar: true,
         },
       },
-      {
-        path: 'self_check',
-        name: 'Self Check',
-        component: () => import('@/views/system/SelfCheck.vue'),
-        meta: {
-          name: () => $gettext('Self Check'),
-        },
+    }, {
+      path: 'plugins',
+      name: 'Plugins',
+      component: () => import('@/views/system/plugins/Plugins.vue'),
+      meta: {
+        name: () => $gettext('Plugins'),
+        icon: AppstoreOutlined,
+      },
+    }, {
+      path: 'about',
+      name: 'About',
+      component: () => import('@/views/system/About.vue'),
+      meta: {
+        name: () => $gettext('About'),
       },
       {
         path: 'upgrade',

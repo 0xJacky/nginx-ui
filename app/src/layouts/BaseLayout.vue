@@ -7,6 +7,7 @@ import { useRouteHashScroll } from '@/composables/useRouteHashScroll'
 import { useSettingsStore, useUserStore, useWebSocketEventBusStore } from '@/pinia'
 import { useNodeAvailabilityStore } from '@/pinia/moudule/nodeAvailability'
 import { useProxyAvailabilityStore } from '@/pinia/moudule/proxyAvailability'
+import { usePluginLoader } from '@/plugin'
 import FooterLayout from './FooterLayout.vue'
 import HeaderLayout from './HeaderLayout.vue'
 import SideBar from './SideBar.vue'
@@ -47,6 +48,7 @@ const proxyAvailabilityStore = useProxyAvailabilityStore()
 const nodeAvailabilityStore = useNodeAvailabilityStore()
 const websocketEventBus = useWebSocketEventBusStore()
 const userStore = useUserStore()
+const pluginLoader = usePluginLoader()
 
 onMounted(() => {
   // Initialize layout
@@ -56,6 +58,10 @@ onMounted(() => {
 
   // Start monitoring for node availability
   nodeAvailabilityStore.startMonitoring()
+
+  // Load plugin bundles once the authenticated layout is up. It never
+  // rejects: a broken plugin is reported through the plugin store.
+  void pluginLoader.load()
 })
 
 onUnmounted(() => {

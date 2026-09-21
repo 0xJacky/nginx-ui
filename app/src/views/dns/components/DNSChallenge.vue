@@ -4,6 +4,7 @@ import type { Ref } from 'vue'
 import type { DNSProvider } from '@/api/auto_cert'
 import type { DnsCredential } from '@/api/dns_credential'
 import auto_cert from '@/api/auto_cert'
+import PluginSlot from '@/components/PluginSlot'
 import { isAllowedDnsProviderCode } from '@/constants/dns_providers'
 
 interface DefaultOptionType {
@@ -43,8 +44,18 @@ const selectedProviderName = computed(() => {
 })
 
 const isDnsRecordManagementSupported = computed(() => {
+  // A provider contributed by a plugin reports the capability itself; fall back
+  // to the built-in list for providers that predate the flag.
+  if (typeof current.value?.record_management === 'boolean')
+    return current.value.record_management
+
   return isAllowedDnsProviderCode(data.value.code)
 })
+
+const slotContext = computed(() => ({
+  credential: data.value,
+  provider: current.value,
+}))
 
 const dnsProviderHintType = computed(() => {
   if (!data.value.code)
@@ -132,28 +143,37 @@ function filterOption(input: string, option?: DefaultOptionType) {
       </p>
       <!-- eslint-enable -->
     </AFormItem>
-    <template v-if="current?.configuration?.credentials">
-      <h4>{{ $gettext('Credentials') }}</h4>
-      <AFormItem
-        v-for="(v, k) in current?.configuration?.credentials"
-        :key="k"
-        :label="k"
-        :extra="v"
-      >
-        <AInput v-model:value="data.configuration.credentials[k]" />
-      </AFormItem>
-    </template>
-    <template v-if="current?.configuration?.additional">
-      <h4>{{ $gettext('Additional') }}</h4>
-      <AFormItem
-        v-for="(v, k) in current?.configuration?.additional"
-        :key="k"
-        :label="k"
-        :extra="v"
-      >
-        <AInput v-model:value="data.configuration.additional[k]" />
-      </AFormItem>
-    </template>
+    <PluginSlot
+      :name="`dns.credential.hint:${data.code}`"
+      :context="slotContext"
+    />
+    <PluginSlot
+      :name="`dns.credential.form:${data.code}`"
+      :context="slotContext"
+    >
+      <template v-if="current?.configuration?.credentials">
+        <h4>{{ $gettext('Credentials') }}</h4>
+        <AFormItem
+          v-for="(v, k) in current?.configuration?.credentials"
+          :key="k"
+          :label="k"
+          :extra="v"
+        >
+          <AInput v-model:value="data.configuration.credentials[k]" />
+        </AFormItem>
+      </template>
+      <template v-if="current?.configuration?.additional">
+        <h4>{{ $gettext('Additional') }}</h4>
+        <AFormItem
+          v-for="(v, k) in current?.configuration?.additional"
+          :key="k"
+          :label="k"
+          :extra="v"
+        >
+          <AInput v-model:value="data.configuration.additional[k]" />
+        </AFormItem>
+      </template>
+    </PluginSlot>
   </div>
 </template>
 
