@@ -26,6 +26,7 @@ type GenericListOptions struct {
 
 // Entity represents a generic configuration entity interface
 type Entity interface {
+	GetID() uint64
 	GetPath() string
 	GetNamespaceID() uint64
 	GetNamespace() *model.Namespace
@@ -41,7 +42,7 @@ type Paths struct {
 type StatusMapBuilder func(configFiles, enabledConfig []os.DirEntry) map[string]Status
 
 // Builder is a function type for building Config objects with custom logic
-type Builder func(fileName string, fileInfo os.FileInfo, status Status, namespaceID uint64, namespace *model.Namespace) Config
+type Builder func(fileName string, fileInfo os.FileInfo, status Status, index uint64, namespaceID uint64, namespace *model.Namespace) Config
 
 // FilterMatcher is a function type for custom filtering logic
 type FilterMatcher func(fileName string, status Status, namespaceID uint64, options *GenericListOptions) bool
@@ -114,8 +115,10 @@ func GetGenericConfigs[T Entity](
 
 		// Get environment group info from database
 		var namespaceID uint64
+		var index uint64
 		var namespace *model.Namespace
 		if entity, ok := entitiesMap[fileName]; ok {
+			index = entity.GetID()
 			namespaceID = entity.GetNamespaceID()
 			namespace = entity.GetNamespace()
 		}
@@ -154,7 +157,7 @@ func GetGenericConfigs[T Entity](
 		}
 
 		// Build configuration using custom logic
-		configs = append(configs, processor.ConfigBuilder(fileName, fileInfo, status, namespaceID, namespace))
+		configs = append(configs, processor.ConfigBuilder(fileName, fileInfo, status, index, namespaceID, namespace))
 	}
 
 	// Sort and return
@@ -302,8 +305,9 @@ func FuzzyFilterMatcher(fileName string, status Status, namespaceID uint64, opti
 }
 
 // DefaultConfigBuilder provides basic config building logic
-func DefaultConfigBuilder(fileName string, fileInfo os.FileInfo, status Status, namespaceID uint64, namespace *model.Namespace) Config {
+func DefaultConfigBuilder(fileName string, fileInfo os.FileInfo, status Status, index uint64, namespaceID uint64, namespace *model.Namespace) Config {
 	return Config{
+		Index:       index,
 		Name:        fileName,
 		ModifiedAt:  fileInfo.ModTime(),
 		Size:        fileInfo.Size(),
