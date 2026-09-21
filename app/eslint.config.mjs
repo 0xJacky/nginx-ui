@@ -13,6 +13,8 @@ export default createConfig(
       globals: {
         ...autoImport.globals,
         ApexCharts: 'readonly',
+        // Injected by the vite `define` that publishes the shared plugin runtime versions.
+        __NGINX_UI_SHARED_VERSIONS__: 'readonly',
         NodeJS: 'readonly',
         JSX: 'readonly',
       },
