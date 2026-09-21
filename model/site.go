@@ -27,6 +27,11 @@ type Site struct {
 	DNSRecordExists *bool   `json:"dns_record_exists"` // Whether the DNS record still exists
 }
 
+// GetID implements ConfigEntity interface
+func (s *Site) GetID() uint64 {
+	return s.ID
+}
+
 // GetPath implements ConfigEntity interface
 func (s *Site) GetPath() string {
 	return s.Path
